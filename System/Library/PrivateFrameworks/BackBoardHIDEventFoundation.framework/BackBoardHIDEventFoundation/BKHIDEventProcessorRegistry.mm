@@ -1,8 +1,8 @@
 @interface BKHIDEventProcessorRegistry
 + (id)sharedInstance;
 - (BKHIDEventProcessorRegistry)init;
-- (id)eventProcessorOfClass:(Class)a3;
-- (void)addEventProcessor:(id)a3;
+- (id)eventProcessorOfClass:(Class)class;
+- (void)addEventProcessor:(id)processor;
 @end
 
 @implementation BKHIDEventProcessorRegistry
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __45__BKHIDEventProcessorRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -24,19 +24,19 @@
   return v2;
 }
 
-- (id)eventProcessorOfClass:(Class)a3
+- (id)eventProcessorOfClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(NSMutableDictionary *)self->_eventProcessorsByClassName objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addEventProcessor:(id)a3
+- (void)addEventProcessor:(id)processor
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  processorCopy = processor;
+  if (!processorCopy)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"eventProcessor"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -49,7 +49,7 @@
       v21 = 2114;
       v22 = v13;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BKHIDEventProcessorRegistry.m";
       v27 = 1024;
@@ -65,7 +65,7 @@
     JUMPOUT(0x223CE55A4);
   }
 
-  v18 = v5;
+  v18 = processorCopy;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [(NSMutableDictionary *)self->_eventProcessorsByClassName objectForKeyedSubscript:v7];
@@ -83,7 +83,7 @@
       v21 = 2114;
       v22 = v17;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BKHIDEventProcessorRegistry.m";
       v27 = 1024;
@@ -111,9 +111,9 @@
   v2 = [(BKHIDEventProcessorRegistry *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     eventProcessorsByClassName = v2->_eventProcessorsByClassName;
-    v2->_eventProcessorsByClassName = v3;
+    v2->_eventProcessorsByClassName = dictionary;
   }
 
   return v2;

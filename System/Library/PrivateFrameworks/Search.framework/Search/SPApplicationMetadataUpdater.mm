@@ -3,14 +3,14 @@
 + (id)metadataFilePathOld;
 + (id)metadataTokenPath;
 + (id)sharedInstance;
-- (BOOL)incrementDataValues:(double *)a3 fromIndex:(unsigned int)a4 toIndex:(unsigned int)a5 byProportion:(double)a6;
-- (BOOL)migrateDataIfNecessaryFromOlderFormatFile:(id)a3 newFormatFile:(id)a4;
+- (BOOL)incrementDataValues:(double *)values fromIndex:(unsigned int)index toIndex:(unsigned int)toIndex byProportion:(double)proportion;
+- (BOOL)migrateDataIfNecessaryFromOlderFormatFile:(id)file newFormatFile:(id)formatFile;
 - (SPApplicationMetadataUpdater)init;
 - (id)appMetadata;
-- (id)computeAppLaunchesFromTime:(double)a3 toTime:(double)a4 yesterday:(double)a5;
+- (id)computeAppLaunchesFromTime:(double)time toTime:(double)toTime yesterday:(double)yesterday;
 - (void)update;
-- (void)updateApplicationMetadataWithFilePath:(id)a3 currentDate:(id)a4 legacyPath:(id)a5;
-- (void)updateMetadata:(_app_metadata *)a3 lastUpdatedTime:(double)a4 nowTime:(double)a5;
+- (void)updateApplicationMetadataWithFilePath:(id)path currentDate:(id)date legacyPath:(id)legacyPath;
+- (void)updateMetadata:(_app_metadata *)metadata lastUpdatedTime:(double)time nowTime:(double)nowTime;
 @end
 
 @implementation SPApplicationMetadataUpdater
@@ -29,28 +29,28 @@
 
 - (id)appMetadata
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSFileManager defaultManager];
-  v4 = [objc_opt_class() metadataFilePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  metadataFilePath = [objc_opt_class() metadataFilePath];
+  v5 = [v3 fileExistsAtPath:metadataFilePath];
 
   if (v5)
   {
     v6 = [NSData alloc];
-    v7 = [objc_opt_class() metadataFilePath];
-    v8 = [v6 initWithContentsOfFile:v7];
+    metadataFilePath2 = [objc_opt_class() metadataFilePath];
+    v8 = [v6 initWithContentsOfFile:metadataFilePath2];
 
     if ([v8 length] >= 0x12)
     {
       v31 = objc_opt_new();
-      v10 = [v8 bytes];
-      if (!strcmp(v10 + 8, "10.4.1"))
+      bytes = [v8 bytes];
+      if (!strcmp(bytes + 8, "10.4.1"))
       {
-        v11 = (v10 + 18);
-        for (i = v10; ; v10 = i)
+        v11 = (bytes + 18);
+        for (i = bytes; ; bytes = i)
         {
-          if (v11 >= [v8 length] + v10)
+          if (v11 >= [v8 length] + bytes)
           {
             v9 = v31;
             goto LABEL_22;
@@ -125,7 +125,7 @@ LABEL_22:
     v9 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -193,15 +193,15 @@ LABEL_22:
 
 - (void)update
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [objc_opt_class() metadataTokenPath];
-  v4 = [objc_opt_class() metadataFilePathOld];
-  v5 = [objc_opt_class() metadataFilePath];
-  v6 = open([v3 UTF8String], 1, 384);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metadataTokenPath = [objc_opt_class() metadataTokenPath];
+  metadataFilePathOld = [objc_opt_class() metadataFilePathOld];
+  metadataFilePath = [objc_opt_class() metadataFilePath];
+  v6 = open([metadataTokenPath UTF8String], 1, 384);
   if (v6 == -1)
   {
-    v8 = open([v3 UTF8String], 513, 384);
+    v8 = open([metadataTokenPath UTF8String], 513, 384);
     if (v8 == -1)
     {
       v10 = SPLogForSPLogCategoryDefault();
@@ -214,10 +214,10 @@ LABEL_22:
     else
     {
       v9 = [NSDate dateWithTimeIntervalSinceNow:0.0];
-      [(SPApplicationMetadataUpdater *)v2 updateApplicationMetadataWithFilePath:v5 currentDate:v9 legacyPath:v4];
+      [(SPApplicationMetadataUpdater *)selfCopy updateApplicationMetadataWithFilePath:metadataFilePath currentDate:v9 legacyPath:metadataFilePathOld];
 
       close(v8);
-      unlink([v3 UTF8String]);
+      unlink([metadataTokenPath UTF8String]);
     }
   }
 
@@ -229,52 +229,52 @@ LABEL_22:
       sub_100062850();
     }
 
-    unlink([v4 UTF8String]);
-    unlink([v5 UTF8String]);
-    unlink([v3 UTF8String]);
+    unlink([metadataFilePathOld UTF8String]);
+    unlink([metadataFilePath UTF8String]);
+    unlink([metadataTokenPath UTF8String]);
     close(v6);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)migrateDataIfNecessaryFromOlderFormatFile:(id)a3 newFormatFile:(id)a4
+- (BOOL)migrateDataIfNecessaryFromOlderFormatFile:(id)file newFormatFile:(id)formatFile
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  formatFileCopy = formatFile;
   v7 = +[NSFileManager defaultManager];
-  if (![v7 fileExistsAtPath:v5])
+  if (![v7 fileExistsAtPath:fileCopy])
   {
 LABEL_5:
     LOBYTE(v8) = 1;
     goto LABEL_15;
   }
 
-  if ([v7 fileExistsAtPath:v6])
+  if ([v7 fileExistsAtPath:formatFileCopy])
   {
-    if ([v7 fileExistsAtPath:v5])
+    if ([v7 fileExistsAtPath:fileCopy])
     {
-      [v7 removeItemAtPath:v5 error:0];
+      [v7 removeItemAtPath:fileCopy error:0];
     }
 
     goto LABEL_5;
   }
 
-  v9 = [v7 attributesOfItemAtPath:v5 error:0];
-  v10 = [v9 fileSize];
+  v9 = [v7 attributesOfItemAtPath:fileCopy error:0];
+  fileSize = [v9 fileSize];
 
-  if (v10 <= 0x12)
+  if (fileSize <= 0x12)
   {
     v11 = 18;
   }
 
   else
   {
-    v11 = v10;
+    v11 = fileSize;
   }
 
   v12 = malloc_type_calloc(1uLL, v11, 0xC18D5FFAuLL);
-  v13 = [NSDictionary dictionaryWithContentsOfFile:v5];
+  v13 = [NSDictionary dictionaryWithContentsOfFile:fileCopy];
   strcpy(v12 + 8, "10.4.1");
   v14 = [v13 objectForKeyedSubscript:@"lastUpdated"];
   [v14 timeIntervalSinceReferenceDate];
@@ -306,10 +306,10 @@ LABEL_5:
   {
     v16 = [NSData alloc];
     v17 = [v16 initWithBytesNoCopy:v12 length:v25[3] + 18 freeWhenDone:1];
-    v8 = [v17 writeToFile:v6 atomically:1];
+    v8 = [v17 writeToFile:formatFileCopy atomically:1];
     if (v8)
     {
-      [v7 removeItemAtPath:v5 error:0];
+      [v7 removeItemAtPath:fileCopy error:0];
     }
   }
 
@@ -320,15 +320,15 @@ LABEL_15:
   return v8;
 }
 
-- (void)updateApplicationMetadataWithFilePath:(id)a3 currentDate:(id)a4 legacyPath:(id)a5
+- (void)updateApplicationMetadataWithFilePath:(id)path currentDate:(id)date legacyPath:(id)legacyPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  dateCopy = date;
+  legacyPathCopy = legacyPath;
   v11 = +[NSFileManager defaultManager];
-  if (![(SPApplicationMetadataUpdater *)self migrateDataIfNecessaryFromOlderFormatFile:v10 newFormatFile:v8])
+  if (![(SPApplicationMetadataUpdater *)self migrateDataIfNecessaryFromOlderFormatFile:legacyPathCopy newFormatFile:pathCopy])
   {
-    [v11 removeItemAtPath:v10 error:0];
+    [v11 removeItemAtPath:legacyPathCopy error:0];
     v15 = SPLogForSPLogCategoryDefault();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -338,25 +338,25 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v12 = [(SPApplicationMetadataUpdater *)self lookupDict];
-  [v12 removeAllObjects];
+  lookupDict = [(SPApplicationMetadataUpdater *)self lookupDict];
+  [lookupDict removeAllObjects];
 
-  [v9 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v14 = v13;
-  if ([v11 fileExistsAtPath:v8])
+  if ([v11 fileExistsAtPath:pathCopy])
   {
-    v15 = [[NSMutableData alloc] initWithContentsOfFile:v8];
-    v16 = [v15 mutableBytes];
-    if (!v16 || (v17 = v16, [v15 length]< 0x12) || strcmp(v17 + 8, "10.4.1"))
+    v15 = [[NSMutableData alloc] initWithContentsOfFile:pathCopy];
+    mutableBytes = [v15 mutableBytes];
+    if (!mutableBytes || (v17 = mutableBytes, [v15 length]< 0x12) || strcmp(v17 + 8, "10.4.1"))
     {
       v18 = +[NSFileManager defaultManager];
-      [v18 removeItemAtPath:v8 error:0];
+      [v18 removeItemAtPath:pathCopy error:0];
 
 LABEL_14:
       goto LABEL_15;
     }
 
-    v64 = v9;
+    v64 = dateCopy;
     v24 = *v17;
     *v17 = v14;
     if ([v15 length]>= 0x13)
@@ -421,17 +421,17 @@ LABEL_14:
         v53 = v52;
         [NSNumber numberWithLongLong:v35];
         v62 = v35;
-        v54 = v8;
-        v55 = v10;
+        v54 = pathCopy;
+        v55 = legacyPathCopy;
         v56 = v11;
         v58 = v57 = v17;
-        v59 = [(SPApplicationMetadataUpdater *)self lookupDict];
-        [v59 setObject:v58 forKeyedSubscript:v53];
+        lookupDict2 = [(SPApplicationMetadataUpdater *)self lookupDict];
+        [lookupDict2 setObject:v58 forKeyedSubscript:v53];
 
         v17 = v57;
         v11 = v56;
-        v10 = v55;
-        v8 = v54;
+        legacyPathCopy = v55;
+        pathCopy = v54;
 
         v35 = v51 + v62 + 146;
         if (v35 >= [v15 length])
@@ -447,20 +447,20 @@ LABEL_14:
       }
 
 LABEL_26:
-      v9 = v64;
+      dateCopy = v64;
 
-      [v11 removeItemAtPath:v8 error:0];
+      [v11 removeItemAtPath:pathCopy error:0];
       goto LABEL_14;
     }
 
 LABEL_21:
-    v9 = v64;
+    dateCopy = v64;
 LABEL_11:
     v25 = objc_opt_new();
     [v25 setDay:-1];
-    v26 = [(SPApplicationMetadataUpdater *)self calendar];
-    v63 = v9;
-    v27 = [v26 dateByAddingComponents:v25 toDate:v9 options:0];
+    calendar = [(SPApplicationMetadataUpdater *)self calendar];
+    v63 = dateCopy;
+    v27 = [calendar dateByAddingComponents:v25 toDate:dateCopy options:0];
 
     v61 = v27;
     [v27 timeIntervalSinceReferenceDate];
@@ -476,11 +476,11 @@ LABEL_11:
     v31 = v30;
     v67 = v31;
     [v29 enumerateKeysAndObjectsUsingBlock:v65];
-    v32 = [(SPApplicationMetadataUpdater *)self lookupDict];
-    [v32 removeAllObjects];
+    lookupDict3 = [(SPApplicationMetadataUpdater *)self lookupDict];
+    [lookupDict3 removeAllObjects];
 
     [v15 appendData:v31];
-    [v15 writeToFile:v8 atomically:1];
+    [v15 writeToFile:pathCopy atomically:1];
     v33 = SPLogForSPLogCategoryDefault();
     v34 = gSPLogInfoAsDefault;
     if (os_log_type_enabled(v33, ((gSPLogInfoAsDefault & 1) == 0)))
@@ -490,7 +490,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v33, ((v34 & 1) == 0), "updated app metadata with launches %@", buf, 0xCu);
     }
 
-    v9 = v63;
+    dateCopy = v63;
     goto LABEL_14;
   }
 
@@ -502,8 +502,8 @@ LABEL_11:
     v15 = [[NSMutableData alloc] initWithBytesNoCopy:v19 length:18 freeWhenDone:1];
     v20 = objc_opt_new();
     [v20 setWeekOfMonth:-1];
-    v21 = [(SPApplicationMetadataUpdater *)self calendar];
-    v22 = [v21 dateByAddingComponents:v20 toDate:v9 options:0];
+    calendar2 = [(SPApplicationMetadataUpdater *)self calendar];
+    v22 = [calendar2 dateByAddingComponents:v20 toDate:dateCopy options:0];
     [v22 timeIntervalSinceReferenceDate];
     v24 = v23;
 
@@ -513,9 +513,9 @@ LABEL_11:
 LABEL_15:
 }
 
-- (BOOL)incrementDataValues:(double *)a3 fromIndex:(unsigned int)a4 toIndex:(unsigned int)a5 byProportion:(double)a6
+- (BOOL)incrementDataValues:(double *)values fromIndex:(unsigned int)index toIndex:(unsigned int)toIndex byProportion:(double)proportion
 {
-  if (a5 <= a4)
+  if (toIndex <= index)
   {
     v6 = 0;
   }
@@ -523,34 +523,34 @@ LABEL_15:
   else
   {
     v6 = 0;
-    v7 = a5;
-    v8 = &a3[a5];
+    toIndexCopy = toIndex;
+    v8 = &values[toIndex];
     v10 = *v8;
     v9 = v8 - 1;
     v11 = v10;
     do
     {
-      --v7;
+      --toIndexCopy;
       v12 = *v9;
-      v13 = v11 + *v9 * a6;
-      v11 = v12 - v12 * a6;
+      v13 = v11 + *v9 * proportion;
+      v11 = v12 - v12 * proportion;
       *v9 = v11;
       v9[1] = v13;
       --v9;
       v6 |= v12 != 0.0;
     }
 
-    while (v7 > a4);
+    while (toIndexCopy > index);
   }
 
   return v6 & 1;
 }
 
-- (void)updateMetadata:(_app_metadata *)a3 lastUpdatedTime:(double)a4 nowTime:(double)a5
+- (void)updateMetadata:(_app_metadata *)metadata lastUpdatedTime:(double)time nowTime:(double)nowTime
 {
-  v7 = a5 - a4;
-  var1 = a3->var1;
-  v9 = (a5 - var1) / 604800.0;
+  v7 = nowTime - time;
+  var1 = metadata->var1;
+  v9 = (nowTime - var1) / 604800.0;
   v10 = var1 <= 0.0;
   v11 = 0.0;
   if (!v10)
@@ -569,9 +569,9 @@ LABEL_15:
     v12 = 1.0;
   }
 
-  if (v12 > 0.0 && [(SPApplicationMetadataUpdater *)self incrementDataValues:a3->var2 fromIndex:2 toIndex:15 byProportion:?])
+  if (v12 > 0.0 && [(SPApplicationMetadataUpdater *)self incrementDataValues:metadata->var2 fromIndex:2 toIndex:15 byProportion:?])
   {
-    a3->var1 = a5;
+    metadata->var1 = nowTime;
   }
 
   if (v7 / 86400.0 / 7.0 <= 1.0)
@@ -584,28 +584,28 @@ LABEL_15:
     v13 = 1.0;
   }
 
-  v14 = a3->var2[1];
+  v14 = metadata->var2[1];
   v15 = v13 * v14;
   if (v15 > 0.0)
   {
-    v16 = v15 + a3->var2[2];
+    v16 = v15 + metadata->var2[2];
     v14 = v14 - v15;
-    a3->var2[1] = v14;
-    a3->var2[2] = v16;
+    metadata->var2[1] = v14;
+    metadata->var2[2] = v16;
   }
 
-  v17 = a3->var2[0];
+  v17 = metadata->var2[0];
   if (v17 > 0.0)
   {
-    a3->var2[1] = v17 + v14;
-    a3->var2[0] = 0.0;
+    metadata->var2[1] = v17 + v14;
+    metadata->var2[0] = 0.0;
   }
 }
 
-- (id)computeAppLaunchesFromTime:(double)a3 toTime:(double)a4 yesterday:(double)a5
+- (id)computeAppLaunchesFromTime:(double)time toTime:(double)toTime yesterday:(double)yesterday
 {
-  v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
-  v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:a4];
+  v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:time];
+  v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:toTime];
   v9 = SPLogForSPLogCategoryDefault();
   v10 = gSPLogInfoAsDefault;
   if (os_log_type_enabled(v9, ((gSPLogInfoAsDefault & 1) == 0)))
@@ -669,42 +669,42 @@ LABEL_15:
           }
 
           v26 = *(*(&v51 + 1) + 8 * i);
-          v27 = [v26 stringValue];
-          v28 = [v26 metadata];
-          v29 = [v28 count];
+          stringValue = [v26 stringValue];
+          metadata = [v26 metadata];
+          metadata2 = [metadata count];
 
-          if (v29)
+          if (metadata2)
           {
-            v29 = [v26 metadata];
+            metadata2 = [v26 metadata];
             v30 = +[_DKApplicationMetadataKey extensionContainingBundleIdentifier];
-            v31 = [v29 objectForKey:v30];
+            v31 = [metadata2 objectForKey:v30];
 
             v32 = [v31 length];
-            LOBYTE(v29) = v32 != 0;
+            LOBYTE(metadata2) = v32 != 0;
             if (v32)
             {
               v33 = v31;
 
-              v27 = v33;
+              stringValue = v33;
             }
           }
 
-          v34 = [v20 objectForKey:v27];
+          v34 = [v20 objectForKey:stringValue];
           if (!v34)
           {
             v34 = [&off_100098FD0 mutableCopy];
-            [v20 setObject:v34 forKey:v27];
+            [v20 setObject:v34 forKey:stringValue];
           }
 
-          v35 = [v26 startDate];
-          [v35 timeIntervalSinceReferenceDate];
+          startDate = [v26 startDate];
+          [startDate timeIntervalSinceReferenceDate];
           v37 = v36;
 
-          if ((v29 & 1) == 0)
+          if ((metadata2 & 1) == 0)
           {
-            v38 = [v34 objectAtIndexedSubscript:v37 <= a5];
-            v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v38 unsignedIntegerValue] + 1);
-            [v34 setObject:v39 atIndexedSubscript:v37 <= a5];
+            yesterday = [v34 objectAtIndexedSubscript:v37 <= yesterday];
+            v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [yesterday unsignedIntegerValue] + 1);
+            [v34 setObject:v39 atIndexedSubscript:v37 <= yesterday];
           }
 
           v40 = [v34 objectAtIndexedSubscript:2];

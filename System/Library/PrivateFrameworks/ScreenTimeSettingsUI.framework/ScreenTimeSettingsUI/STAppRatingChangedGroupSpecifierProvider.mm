@@ -1,21 +1,21 @@
 @interface STAppRatingChangedGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4;
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller;
 - (STAppRatingChangedGroupSpecifierProvider)init;
 - (UIViewController)rootViewController;
-- (void)closeTip:(id)a3;
-- (void)openContentPrivacyAppRestrictions:(id)a3;
-- (void)setCoordinator:(id)a3;
+- (void)closeTip:(id)tip;
+- (void)openContentPrivacyAppRestrictions:(id)restrictions;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STAppRatingChangedGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___STAppRatingChangedGroupSpecifierProvider;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_providerWithCoordinator_, a3);
-  [v6 setRootViewController:{v5, v8.receiver, v8.super_class}];
+  controllerCopy = controller;
+  v6 = objc_msgSendSuper2(&v8, sel_providerWithCoordinator_, coordinator);
+  [v6 setRootViewController:{controllerCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
@@ -32,8 +32,8 @@
     [(STGroupSpecifierProvider *)v2 setIsHidden:1];
     v4 = MEMORY[0x277D3FAD8];
     v5 = objc_opt_new();
-    v6 = [v5 UUIDString];
-    v7 = [v4 groupSpecifierWithID:v6];
+    uUIDString = [v5 UUIDString];
+    v7 = [v4 groupSpecifierWithID:uUIDString];
     [(STGroupSpecifierProvider *)v3 setGroupSpecifier:v7];
 
     v8 = +[STScreenTimeSettingsUIBundle bundle];
@@ -57,56 +57,56 @@
     [v16 setObject:NSClassFromString(&cfstr_Screentimesett_0.isa) forKeyedSubscript:v12];
     [v16 setButtonAction:sel_openContentPrivacyAppRestrictions_];
     [(STAppRatingChangedGroupSpecifierProvider *)v3 setReviewRestrictionSpecifier:v16];
-    v17 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    v18 = [(STAppRatingChangedGroupSpecifierProvider *)v3 ratingHeaderSpecifier];
-    v24[0] = v18;
-    v19 = [(STAppRatingChangedGroupSpecifierProvider *)v3 reviewRestrictionSpecifier];
-    v24[1] = v19;
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    ratingHeaderSpecifier = [(STAppRatingChangedGroupSpecifierProvider *)v3 ratingHeaderSpecifier];
+    v24[0] = ratingHeaderSpecifier;
+    reviewRestrictionSpecifier = [(STAppRatingChangedGroupSpecifierProvider *)v3 reviewRestrictionSpecifier];
+    v24[1] = reviewRestrictionSpecifier;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-    [v17 addObjectsFromArray:v20];
+    [mutableSpecifiers addObjectsFromArray:v20];
   }
 
   return v3;
 }
 
-- (void)closeTip:(id)a3
+- (void)closeTip:(id)tip
 {
   [(STGroupSpecifierProvider *)self setIsHidden:1];
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v4 setHasShownAppRatingChangeTip:1];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator setHasShownAppRatingChangeTip:1];
 }
 
-- (void)openContentPrivacyAppRestrictions:(id)a3
+- (void)openContentPrivacyAppRestrictions:(id)restrictions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  restrictionsCopy = restrictions;
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v6 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime/CONTENT_PRIVACY/CONTENT_RESTRICTIONS/APP_RATING"];
-  [v5 openSensitiveURL:v6 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v6 withOptions:0];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__STAppRatingChangedGroupSpecifierProvider_openContentPrivacyAppRestrictions___block_invoke;
   v8[3] = &unk_279B7CAE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = restrictionsCopy;
+  v7 = restrictionsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v6.receiver = self;
   v6.super_class = STAppRatingChangedGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  if (v4 && ([v4 hasShownAppRatingChangeTip] & 1) == 0)
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  if (coordinatorCopy && ([coordinatorCopy hasShownAppRatingChangeTip] & 1) == 0)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __59__STAppRatingChangedGroupSpecifierProvider_setCoordinator___block_invoke;
     v5[3] = &unk_279B7CFA0;
     v5[4] = self;
-    [v4 loadRegionRatingsWithCompletionHandler:v5];
+    [coordinatorCopy loadRegionRatingsWithCompletionHandler:v5];
   }
 }
 

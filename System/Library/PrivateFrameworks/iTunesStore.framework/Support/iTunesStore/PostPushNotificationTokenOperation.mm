@@ -1,25 +1,25 @@
 @interface PostPushNotificationTokenOperation
-- (BOOL)_postTokenToURL:(id)a3 error:(id *)a4;
+- (BOOL)_postTokenToURL:(id)l error:(id *)error;
 - (NSData)tokenData;
 - (NSString)environmentName;
-- (PostPushNotificationTokenOperation)initWithEnvironmentName:(id)a3 tokenData:(id)a4;
+- (PostPushNotificationTokenOperation)initWithEnvironmentName:(id)name tokenData:(id)data;
 - (SSAuthenticationContext)authenticationContext;
 - (void)dealloc;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
+- (void)setAuthenticationContext:(id)context;
 @end
 
 @implementation PostPushNotificationTokenOperation
 
-- (PostPushNotificationTokenOperation)initWithEnvironmentName:(id)a3 tokenData:(id)a4
+- (PostPushNotificationTokenOperation)initWithEnvironmentName:(id)name tokenData:(id)data
 {
   v8.receiver = self;
   v8.super_class = PostPushNotificationTokenOperation;
   v6 = [(PostPushNotificationTokenOperation *)&v8 init];
   if (v6)
   {
-    v6->_environmentName = [a3 copy];
-    v6->_tokenData = [a4 copy];
+    v6->_environmentName = [name copy];
+    v6->_tokenData = [data copy];
   }
 
   return v6;
@@ -47,14 +47,14 @@
   return v2;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   [(PostPushNotificationTokenOperation *)self lock];
   authenticationContext = self->_authenticationContext;
-  if (authenticationContext != a3)
+  if (authenticationContext != context)
   {
 
-    self->_authenticationContext = [a3 copy];
+    self->_authenticationContext = [context copy];
   }
 
   [(PostPushNotificationTokenOperation *)self unlock];
@@ -92,15 +92,15 @@
           v18 = +[SSLogConfig sharedConfig];
         }
 
-        v19 = [v18 shouldLog];
+        shouldLog = [v18 shouldLog];
         if ([v18 shouldLogToDisk])
         {
-          v20 = v19 | 2;
+          v20 = shouldLog | 2;
         }
 
         else
         {
-          v20 = v19;
+          v20 = shouldLog;
         }
 
         if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_INFO))
@@ -142,15 +142,15 @@ LABEL_9:
             v8 = +[SSLogConfig sharedConfig];
           }
 
-          v9 = [v8 shouldLog];
+          shouldLog2 = [v8 shouldLog];
           if ([v8 shouldLogToDisk])
           {
-            v10 = v9 | 2;
+            v10 = shouldLog2 | 2;
           }
 
           else
           {
-            v10 = v9;
+            v10 = shouldLog2;
           }
 
           if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -201,15 +201,15 @@ LABEL_44:
     v14 = +[SSLogConfig sharedConfig];
   }
 
-  v15 = [v14 shouldLog];
+  shouldLog3 = [v14 shouldLog];
   if ([v14 shouldLogToDisk])
   {
-    v16 = v15 | 2;
+    v16 = shouldLog3 | 2;
   }
 
   else
   {
-    v16 = v15;
+    v16 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_INFO))
@@ -243,7 +243,7 @@ LABEL_45:
   [(PostPushNotificationTokenOperation *)self setSuccess:v12];
 }
 
-- (BOOL)_postTokenToURL:(id)a3 error:(id *)a4
+- (BOOL)_postTokenToURL:(id)l error:(id *)error
 {
   v30 = 0;
   v7 = objc_alloc_init(ISStoreURLOperation);
@@ -257,15 +257,15 @@ LABEL_45:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
   if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -297,7 +297,7 @@ LABEL_45:
     }
   }
 
-  v17 = [[SSMutableURLRequestProperties alloc] initWithURL:a3];
+  v17 = [[SSMutableURLRequestProperties alloc] initWithURL:l];
   [v17 setHTTPMethod:@"POST"];
   [v17 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
   v18 = objc_alloc_init(NSMutableDictionary);
@@ -314,26 +314,26 @@ LABEL_45:
     [v18 setObject:v21 forKey:@"token"];
   }
 
-  v22 = [(ISDevice *)v19 deviceName];
-  if (v22)
+  deviceName = [(ISDevice *)v19 deviceName];
+  if (deviceName)
   {
-    v23 = [v22 dataUsingEncoding:4 allowLossyConversion:1];
+    v23 = [deviceName dataUsingEncoding:4 allowLossyConversion:1];
     if (v23)
     {
       [v18 setObject:v23 forKey:@"device-name-data"];
     }
   }
 
-  v24 = [(ISDevice *)v19 serialNumber];
-  if (v24)
+  serialNumber = [(ISDevice *)v19 serialNumber];
+  if (serialNumber)
   {
-    [v18 setObject:v24 forKey:@"serial-number"];
+    [v18 setObject:serialNumber forKey:@"serial-number"];
   }
 
-  v25 = [(ISDevice *)v19 guid];
-  if (v25)
+  guid = [(ISDevice *)v19 guid];
+  if (guid)
   {
-    [v18 setObject:v25 forKey:@"guid"];
+    [v18 setObject:guid forKey:@"guid"];
   }
 
   [v17 setRequestParameters:v18];
@@ -342,9 +342,9 @@ LABEL_45:
   v26 = [(PostPushNotificationTokenOperation *)self runSubOperation:v7 returningError:&v30];
   [v7 setDelegate:0];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v30;
+    *error = v30;
   }
 
   return v26;

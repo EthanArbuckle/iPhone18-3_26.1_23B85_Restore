@@ -1,21 +1,21 @@
 @interface ARExtrinsicsWrapper
-- (ARExtrinsicsWrapper)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (__n128)initWithMatrix:(__n128)a3;
+- (ARExtrinsicsWrapper)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (__n128)initWithMatrix:(__n128)matrix;
 - (id)description;
 @end
 
 @implementation ARExtrinsicsWrapper
 
-- (__n128)initWithMatrix:(__n128)a3
+- (__n128)initWithMatrix:(__n128)matrix
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = ARExtrinsicsWrapper;
   v5 = [(ARExtrinsicsWrapper *)&v11 init];
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = matrix;
     result = a5;
     v5[3] = a4;
     v5[4] = a5;
@@ -24,13 +24,13 @@
   return result;
 }
 
-- (ARExtrinsicsWrapper)initWithCoder:(id)a3
+- (ARExtrinsicsWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ARExtrinsicsWrapper *)self init];
   if (v5)
   {
-    [v4 ar_decodeMatrix4x4ForKey:@"matrix"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"matrix"];
     v5[1] = v6;
     v5[2] = v7;
     v5[3] = v8;
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5.i64[0] = 0x3400000034000000;
     v5.i64[1] = 0x3400000034000000;
-    v6 = vminvq_u32(vandq_s8(vandq_s8(vcgeq_f32(v5, vabdq_f32(self[2], v4[2])), vcgeq_f32(v5, vabdq_f32(self[1], v4[1]))), vandq_s8(vcgeq_f32(v5, vabdq_f32(self[3], v4[3])), vcgeq_f32(v5, vabdq_f32(self[4], v4[4]))))) >> 31;
+    v6 = vminvq_u32(vandq_s8(vandq_s8(vcgeq_f32(v5, vabdq_f32(self[2], equalCopy[2])), vcgeq_f32(v5, vabdq_f32(self[1], equalCopy[1]))), vandq_s8(vcgeq_f32(v5, vabdq_f32(self[3], equalCopy[3])), vcgeq_f32(v5, vabdq_f32(self[4], equalCopy[4]))))) >> 31;
   }
 
   else

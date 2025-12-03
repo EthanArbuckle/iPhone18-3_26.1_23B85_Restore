@@ -1,5 +1,5 @@
 @interface CRLLineSpacingAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (NSString)crlaxLineSpacingDescription;
 - (double)crlaxAmount;
 - (int64_t)crlaxMode;
@@ -7,27 +7,27 @@
 
 @implementation CRLLineSpacingAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (int64_t)crlaxMode
 {
-  v2 = [(CRLLineSpacingAccessibility *)self crlaxTarget];
-  v3 = [v2 mode];
+  crlaxTarget = [(CRLLineSpacingAccessibility *)self crlaxTarget];
+  mode = [crlaxTarget mode];
 
-  return v3;
+  return mode;
 }
 
 - (double)crlaxAmount
 {
-  v2 = [(CRLLineSpacingAccessibility *)self crlaxTarget];
-  [v2 amount];
+  crlaxTarget = [(CRLLineSpacingAccessibility *)self crlaxTarget];
+  [crlaxTarget amount];
   v4 = v3;
 
   return v4;
@@ -35,8 +35,8 @@
 
 - (NSString)crlaxLineSpacingDescription
 {
-  v3 = [(CRLLineSpacingAccessibility *)self crlaxMode];
-  if (v3 >= 5)
+  crlaxMode = [(CRLLineSpacingAccessibility *)self crlaxMode];
+  if (crlaxMode >= 5)
   {
     if (CRLAccessibilityShouldPerformValidationChecks())
     {
@@ -52,7 +52,7 @@
 
   else
   {
-    v4 = *(&off_1018713C0 + v3);
+    v4 = *(&off_1018713C0 + crlaxMode);
   }
 
   v11 = CRLAccessibilityStringsDictKey(v4);

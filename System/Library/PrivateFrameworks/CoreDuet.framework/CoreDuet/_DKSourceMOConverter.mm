@@ -1,56 +1,56 @@
 @interface _DKSourceMOConverter
-+ (id)insertSource:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)sourceFromManagedObject:(id)a3;
++ (id)insertSource:(id)source inManagedObjectContext:(id)context;
++ (id)sourceFromManagedObject:(id)object;
 @end
 
 @implementation _DKSourceMOConverter
 
-+ (id)sourceFromManagedObject:(id)a3
++ (id)sourceFromManagedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = [_DKSource alloc];
-  v5 = [v3 sourceID];
-  v6 = [v3 bundleID];
-  v7 = [v3 itemID];
-  v8 = [v3 groupID];
-  v9 = [v3 deviceID];
-  v10 = [v3 userID];
-  v11 = [v3 intentID];
+  sourceID = [objectCopy sourceID];
+  bundleID = [objectCopy bundleID];
+  itemID = [objectCopy itemID];
+  groupID = [objectCopy groupID];
+  deviceID = [objectCopy deviceID];
+  userID = [objectCopy userID];
+  intentID = [objectCopy intentID];
 
-  v12 = [(_DKSource *)v4 initWithIdentifier:v5 bundleIdentifier:v6 itemIdentifier:v7 groupIdentifier:v8 deviceIdentifier:v9 userIdentifier:v10 intentIdentifier:v11];
+  v12 = [(_DKSource *)v4 initWithIdentifier:sourceID bundleIdentifier:bundleID itemIdentifier:itemID groupIdentifier:groupID deviceIdentifier:deviceID userIdentifier:userID intentIdentifier:intentID];
 
   return v12;
 }
 
-+ (id)insertSource:(id)a3 inManagedObjectContext:(id)a4
++ (id)insertSource:(id)source inManagedObjectContext:(id)context
 {
   v5 = MEMORY[0x1E695D5B8];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  sourceCopy = source;
   v8 = +[_DKSource entityName];
-  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:v6];
+  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:contextCopy];
 
-  v10 = [v7 sourceID];
-  [v9 setSourceID:v10];
+  sourceID = [sourceCopy sourceID];
+  [v9 setSourceID:sourceID];
 
-  v11 = [v7 bundleID];
-  [v9 setBundleID:v11];
+  bundleID = [sourceCopy bundleID];
+  [v9 setBundleID:bundleID];
 
-  v12 = [v7 itemID];
-  [v9 setItemID:v12];
+  itemID = [sourceCopy itemID];
+  [v9 setItemID:itemID];
 
-  v13 = [v7 groupID];
-  [v9 setGroupID:v13];
+  groupID = [sourceCopy groupID];
+  [v9 setGroupID:groupID];
 
-  v14 = [v7 deviceID];
-  [v9 setDeviceID:v14];
+  deviceID = [sourceCopy deviceID];
+  [v9 setDeviceID:deviceID];
 
-  v15 = [v7 userID];
-  [v9 setUserID:v15];
+  userID = [sourceCopy userID];
+  [v9 setUserID:userID];
 
-  v16 = [v7 intentID];
+  intentID = [sourceCopy intentID];
 
-  [v9 setIntentID:v16];
+  [v9 setIntentID:intentID];
 
   return v9;
 }

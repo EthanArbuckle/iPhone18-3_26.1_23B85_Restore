@@ -1,6 +1,6 @@
 @interface MFXPCClient
-- (BOOL)hasEntitlement:(id)a3;
-- (MFXPCClient)initWithConnection:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (MFXPCClient)initWithConnection:(id)connection;
 - (NSXPCConnection)connection;
 - (id)description;
 @end
@@ -14,46 +14,46 @@
   return WeakRetained;
 }
 
-- (MFXPCClient)initWithConnection:(id)a3
+- (MFXPCClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = MFXPCClient;
   v5 = [(MFXPCClient *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(MFXPCClient *)self connection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  connection = [(MFXPCClient *)self connection];
+  v6 = [connection valueForEntitlement:entitlementCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)description
 {
-  v3 = [(MFXPCClient *)self connection];
+  connection = [(MFXPCClient *)self connection];
   v4 = objc_opt_class();
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p> / <%@: %p> connection from pid %d", v4, self, objc_opt_class(), v3, [v3 processIdentifier]);
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p> / <%@: %p> connection from pid %d", v4, self, objc_opt_class(), connection, [connection processIdentifier]);
 
   return v5;
 }

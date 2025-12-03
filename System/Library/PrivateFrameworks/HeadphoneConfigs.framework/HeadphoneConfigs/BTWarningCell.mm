@@ -1,7 +1,7 @@
 @interface BTWarningCell
-- (BTWarningCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BTWarningCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
@@ -15,11 +15,11 @@
   [(BTWarningCell *)self setNeedsUpdateConstraints];
 }
 
-- (BTWarningCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BTWarningCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = BTWarningCell;
-  v4 = [(PSTableCell *)&v11 initWithStyle:a3 reuseIdentifier:0];
+  v4 = [(PSTableCell *)&v11 initWithStyle:style reuseIdentifier:0];
   if (v4)
   {
     v5 = createWarningCellTitle();
@@ -31,37 +31,37 @@
     v4->_bodyTextView = v7;
 
     [(UITextView *)v4->_bodyTextView setDelegate:v4];
-    v9 = [(BTWarningCell *)v4 contentView];
-    [v9 addSubview:v4->_titleTextView];
-    [v9 addSubview:v4->_bodyTextView];
+    contentView = [(BTWarningCell *)v4 contentView];
+    [contentView addSubview:v4->_titleTextView];
+    [contentView addSubview:v4->_bodyTextView];
     [(BTWarningCell *)v4 layoutSubviews];
   }
 
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v24.receiver = self;
   v24.super_class = BTWarningCell;
-  [(PSTableCell *)&v24 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCell *)&v24 refreshCellContentsWithSpecifier:specifier];
   v4 = *MEMORY[0x277D3FCE0];
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v4));
-  v6 = [WeakRetained userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"warning-cell-title"];
+  userInfo = [WeakRetained userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"warning-cell-title"];
 
   v8 = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v4));
-  v9 = [v8 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"warning-cell-body-link-text"];
+  userInfo2 = [v8 userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"warning-cell-body-link-text"];
 
   v11 = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v4));
-  v12 = [v11 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"warning-cell-body-url"];
+  userInfo3 = [v11 userInfo];
+  v13 = [userInfo3 objectForKeyedSubscript:@"warning-cell-body-url"];
 
   [(UITextView *)self->_titleTextView setText:v7];
   v14 = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v4));
-  v15 = [v14 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"warning-cell-body"];
+  userInfo4 = [v14 userInfo];
+  v16 = [userInfo4 objectForKeyedSubscript:@"warning-cell-body"];
 
   if (v10 && v13)
   {
@@ -72,16 +72,16 @@
     [v17 addAttribute:v18 value:v19 range:{0, objc_msgSend(v17, "length")}];
 
     v20 = *MEMORY[0x277D740C0];
-    v21 = [MEMORY[0x277D3FA48] appearance];
-    v22 = [v21 textColor];
-    v23 = v22;
-    if (!v22)
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    textColor = [appearance textColor];
+    blackColor = textColor;
+    if (!textColor)
     {
-      v23 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    [v17 addAttribute:v20 value:v23 range:{0, objc_msgSend(v17, "length")}];
-    if (!v22)
+    [v17 addAttribute:v20 value:blackColor range:{0, objc_msgSend(v17, "length")}];
+    if (!textColor)
     {
     }
 

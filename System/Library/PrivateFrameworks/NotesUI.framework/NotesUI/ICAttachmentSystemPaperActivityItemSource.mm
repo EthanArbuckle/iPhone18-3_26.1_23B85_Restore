@@ -1,13 +1,13 @@
 @interface ICAttachmentSystemPaperActivityItemSource
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 @end
 
 @implementation ICAttachmentSystemPaperActivityItemSource
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -15,15 +15,15 @@
   v18 = __Block_byref_object_dispose__30;
   v19 = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(ICAttachmentActivityItemSource *)self attachment];
-  v10 = [v9 managedObjectContext];
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__ICAttachmentSystemPaperActivityItemSource_activityViewController_itemForActivityType___block_invoke;
   v13[3] = &unk_1E846B1D8;
   v13[4] = self;
   v13[5] = &v14;
-  [v10 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
   objc_autoreleasePoolPop(v8);
   v11 = v15[5];

@@ -1,85 +1,85 @@
 @interface RAPReportComposerIncorrectSearchViewController
-- (RAPReportComposerIncorrectSearchViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportComposerIncorrectSearchViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (id)tableParts;
 - (void)_instrumentSelectedSearch;
-- (void)proceedToNextQuestion:(id)a3;
-- (void)proceedToPlaceClosureQuestion:(id)a3;
-- (void)proceedToProblemNotListedQuestion:(id)a3;
-- (void)proceedToSearchResultIncorrectQuestion:(id)a3;
+- (void)proceedToNextQuestion:(id)question;
+- (void)proceedToPlaceClosureQuestion:(id)question;
+- (void)proceedToProblemNotListedQuestion:(id)question;
+- (void)proceedToSearchResultIncorrectQuestion:(id)question;
 @end
 
 @implementation RAPReportComposerIncorrectSearchViewController
 
-- (void)proceedToSearchResultIncorrectQuestion:(id)a3
+- (void)proceedToSearchResultIncorrectQuestion:(id)question
 {
-  v4 = a3;
+  questionCopy = question;
   v5 = [RAPReportComposerCommentViewController alloc];
-  v8 = [(RAPReportTableViewController *)self report];
-  v6 = [(RAPReportTableViewController *)self completion];
-  v7 = [(RAPReportComposerCommentViewController *)v5 initWithReport:v8 question:v4 completion:v6];
+  report = [(RAPReportTableViewController *)self report];
+  completion = [(RAPReportTableViewController *)self completion];
+  v7 = [(RAPReportComposerCommentViewController *)v5 initWithReport:report question:questionCopy completion:completion];
 
   [(RAPTableViewController *)self segueToViewController:v7];
 }
 
-- (void)proceedToPlaceClosureQuestion:(id)a3
+- (void)proceedToPlaceClosureQuestion:(id)question
 {
-  v4 = a3;
+  questionCopy = question;
   v5 = [RAPReportComposerPlaceClosureViewController alloc];
-  v8 = [(RAPReportTableViewController *)self report];
-  v6 = [(RAPReportTableViewController *)self completion];
-  v7 = [(RAPReportComposerPlaceClosureViewController *)v5 initWithReport:v8 question:v4 completion:v6];
+  report = [(RAPReportTableViewController *)self report];
+  completion = [(RAPReportTableViewController *)self completion];
+  v7 = [(RAPReportComposerPlaceClosureViewController *)v5 initWithReport:report question:questionCopy completion:completion];
 
   [(RAPTableViewController *)self segueToViewController:v7];
 }
 
-- (void)proceedToProblemNotListedQuestion:(id)a3
+- (void)proceedToProblemNotListedQuestion:(id)question
 {
-  v4 = a3;
+  questionCopy = question;
   v5 = [RAPReportComposerCommentViewController alloc];
-  v8 = [(RAPReportTableViewController *)self report];
-  v6 = [(RAPReportTableViewController *)self completion];
-  v7 = [(RAPReportComposerCommentViewController *)v5 initWithReport:v8 question:v4 completion:v6];
+  report = [(RAPReportTableViewController *)self report];
+  completion = [(RAPReportTableViewController *)self completion];
+  v7 = [(RAPReportComposerCommentViewController *)v5 initWithReport:report question:questionCopy completion:completion];
 
   [(RAPTableViewController *)self segueToViewController:v7];
 }
 
-- (void)proceedToNextQuestion:(id)a3
+- (void)proceedToNextQuestion:(id)question
 {
-  v8 = a3;
-  if ([v8 userAction] && -[RAPReportComposerIncorrectSearchViewController analyticTarget](self, "analyticTarget"))
+  questionCopy = question;
+  if ([questionCopy userAction] && -[RAPReportComposerIncorrectSearchViewController analyticTarget](self, "analyticTarget"))
   {
     v4 = +[MKMapService sharedService];
-    [v4 captureUserAction:objc_msgSend(v8 onTarget:"userAction") eventValue:{-[RAPReportComposerIncorrectSearchViewController analyticTarget](self, "analyticTarget"), 0}];
+    [v4 captureUserAction:objc_msgSend(questionCopy onTarget:"userAction") eventValue:{-[RAPReportComposerIncorrectSearchViewController analyticTarget](self, "analyticTarget"), 0}];
   }
 
-  v5 = [v8 questionCategory];
-  if (v5 == 1)
+  questionCategory = [questionCopy questionCategory];
+  if (questionCategory == 1)
   {
-    [(RAPReportComposerIncorrectSearchViewController *)self proceedToProblemNotListedQuestion:v8];
+    [(RAPReportComposerIncorrectSearchViewController *)self proceedToProblemNotListedQuestion:questionCopy];
     goto LABEL_11;
   }
 
-  if (v5 == 9)
+  if (questionCategory == 9)
   {
-    [(RAPReportComposerIncorrectSearchViewController *)self proceedToPlaceClosureQuestion:v8];
+    [(RAPReportComposerIncorrectSearchViewController *)self proceedToPlaceClosureQuestion:questionCopy];
     goto LABEL_11;
   }
 
-  v6 = v5 == 10;
-  v7 = v8;
+  v6 = questionCategory == 10;
+  v7 = questionCopy;
   if (v6)
   {
-    [(RAPReportComposerIncorrectSearchViewController *)self proceedToSearchResultIncorrectQuestion:v8];
+    [(RAPReportComposerIncorrectSearchViewController *)self proceedToSearchResultIncorrectQuestion:questionCopy];
 LABEL_11:
-    v7 = v8;
+    v7 = questionCopy;
   }
 }
 
 - (void)_instrumentSelectedSearch
 {
-  v3 = [(RAPSearchWhichOneQuestion *)self->_question selectedValue];
+  selectedValue = [(RAPSearchWhichOneQuestion *)self->_question selectedValue];
 
-  if (v3)
+  if (selectedValue)
   {
     v4 = +[MKMapService sharedService];
     [v4 captureUserAction:10140 onTarget:-[RAPReportComposerIncorrectSearchViewController analyticTarget](self eventValue:{"analyticTarget"), 0}];
@@ -94,14 +94,14 @@ LABEL_11:
   {
     v4 = [RAPReportComposerWhichSearchSection alloc];
     question = self->_question;
-    v6 = [(RAPSearchWhichOneQuestion *)question selectableSearches];
-    v7 = [(RAPSearchWhichOneQuestion *)self->_question selectedValue];
+    selectableSearches = [(RAPSearchWhichOneQuestion *)question selectableSearches];
+    selectedValue = [(RAPSearchWhichOneQuestion *)self->_question selectedValue];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100F0F98C;
     v33[3] = &unk_10165CEC0;
     objc_copyWeak(&v34, &location);
-    v8 = [(RAPTableCollapsableCheckmarkSection *)v4 initWithOwner:question initialValues:v6 initialSelectedValue:v7 configureForValue:&stru_10165CE98 selection:v33];
+    v8 = [(RAPTableCollapsableCheckmarkSection *)v4 initWithOwner:question initialValues:selectableSearches initialSelectedValue:selectedValue configureForValue:&stru_10165CE98 selection:v33];
     searchSection = self->_searchSection;
     self->_searchSection = v8;
 
@@ -126,20 +126,20 @@ LABEL_11:
   }
 
   [v3 addObject:searchRequestPart];
-  v17 = [(RAPSearchWhichOneQuestion *)self->_question selectedValue];
+  selectedValue2 = [(RAPSearchWhichOneQuestion *)self->_question selectedValue];
 
-  if (v17)
+  if (selectedValue2)
   {
     if (!self->_subcategorySection)
     {
       v18 = [RAPReportComposerSearchSubcategorySection alloc];
-      v19 = [(RAPSearchWhichOneQuestion *)self->_question followUpQuestion];
+      followUpQuestion = [(RAPSearchWhichOneQuestion *)self->_question followUpQuestion];
       v28 = _NSConcreteStackBlock;
       v29 = 3221225472;
       v30 = sub_100F0FA10;
       v31 = &unk_10165CEE8;
       objc_copyWeak(&v32, &location);
-      v20 = [(RAPReportComposerSearchSubcategorySection *)v18 initWithQuestion:v19 selection:&v28];
+      v20 = [(RAPReportComposerSearchSubcategorySection *)v18 initWithQuestion:followUpQuestion selection:&v28];
       subcategorySection = self->_subcategorySection;
       self->_subcategorySection = v20;
 
@@ -167,24 +167,24 @@ LABEL_11:
   return v3;
 }
 
-- (RAPReportComposerIncorrectSearchViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportComposerIncorrectSearchViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v9 = a4;
+  questionCopy = question;
   v17.receiver = self;
   v17.super_class = RAPReportComposerIncorrectSearchViewController;
-  v10 = [(RAPReportTableViewController *)&v17 initWithReport:a3 question:v9 completion:a5];
+  v10 = [(RAPReportTableViewController *)&v17 initWithReport:report question:questionCopy completion:completion];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_question, a4);
-    v12 = [v9 selectableSearches];
-    v13 = [v12 count];
+    objc_storeStrong(&v10->_question, question);
+    selectableSearches = [questionCopy selectableSearches];
+    v13 = [selectableSearches count];
 
     if (v13 == 1)
     {
-      v14 = [v9 selectableSearches];
-      v15 = [v14 firstObject];
-      [v9 setSelectedValue:v15];
+      selectableSearches2 = [questionCopy selectableSearches];
+      firstObject = [selectableSearches2 firstObject];
+      [questionCopy setSelectedValue:firstObject];
     }
 
     [(RAPQuestion *)v11->_question addObserver:v11 changeHandler:&stru_10165CE58];

@@ -1,6 +1,6 @@
 @interface HomeManager
 - (_TtC18HomeMessagingUtils11HomeManager)init;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeManager
@@ -14,11 +14,11 @@
   return v3;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  HomeManager.homeManagerDidUpdateHomes(_:)(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  HomeManager.homeManagerDidUpdateHomes(_:)(homesCopy);
 }
 
 @end

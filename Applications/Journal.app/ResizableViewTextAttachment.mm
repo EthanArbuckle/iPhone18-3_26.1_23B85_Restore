@@ -1,28 +1,28 @@
 @interface ResizableViewTextAttachment
-- (_TtC7Journal27ResizableViewTextAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
+- (_TtC7Journal27ResizableViewTextAttachment)initWithData:(id)data ofType:(id)type;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
 @end
 
 @implementation ResizableViewTextAttachment
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v9 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1007C9488(a3, a4, a5);
+  containerCopy = container;
+  selfCopy = self;
+  v12 = sub_1007C9488(view, location, container);
 
   swift_unknownObjectRelease();
 
   return v12;
 }
 
-- (_TtC7Journal27ResizableViewTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC7Journal27ResizableViewTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_1000340DC(v5, v6);
   }

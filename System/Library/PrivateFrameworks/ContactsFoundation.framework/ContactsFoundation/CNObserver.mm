@@ -1,28 +1,28 @@
 @interface CNObserver
-+ (CNObserver)observerWithCompletionHandler:(id)a3;
-+ (CNObserver)observerWithResultBlock:(id)a3;
-+ (CNObserver)observerWithResultBlock:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5;
-+ (CNObserver)observerWithWeakTarget:(id)a3 resultSelector:(SEL)a4;
-+ (id)blockObserverOfClass:(Class)a3 withResultBlock:(id)a4 completionBlock:(id)a5 failureBlock:(id)a6;
-+ (void)sendArray:(id)a3 error:(id)a4 toObserver:(id)a5;
-+ (void)sendArray:(id)a3 error:(id)a4 toObserver:(id)a5 untilCanceled:(id)a6;
-+ (void)sendObserver:(id)a3 resultsOfBlock:(id)a4;
-+ (void)sendResult:(id)a3 error:(id)a4 toObserver:(id)a5;
++ (CNObserver)observerWithCompletionHandler:(id)handler;
++ (CNObserver)observerWithResultBlock:(id)block;
++ (CNObserver)observerWithResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock;
++ (CNObserver)observerWithWeakTarget:(id)target resultSelector:(SEL)selector;
++ (id)blockObserverOfClass:(Class)class withResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock;
++ (void)sendArray:(id)array error:(id)error toObserver:(id)observer;
++ (void)sendArray:(id)array error:(id)error toObserver:(id)observer untilCanceled:(id)canceled;
++ (void)sendObserver:(id)observer resultsOfBlock:(id)block;
++ (void)sendResult:(id)result error:(id)error toObserver:(id)observer;
 @end
 
 @implementation CNObserver
 
-+ (CNObserver)observerWithWeakTarget:(id)a3 resultSelector:(SEL)a4
++ (CNObserver)observerWithWeakTarget:(id)target resultSelector:(SEL)selector
 {
-  v6 = a3;
-  objc_initWeak(&location, v6);
+  targetCopy = target;
+  objc_initWeak(&location, targetCopy);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__CNObserver_observerWithWeakTarget_resultSelector___block_invoke;
   v9[3] = &unk_1E6ED8550;
   objc_copyWeak(v10, &location);
-  v10[1] = a4;
-  v7 = [a1 observerWithResultBlock:v9];
+  v10[1] = selector;
+  v7 = [self observerWithResultBlock:v9];
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 
@@ -40,49 +40,49 @@ void __52__CNObserver_observerWithWeakTarget_resultSelector___block_invoke(uint6
   }
 }
 
-+ (CNObserver)observerWithResultBlock:(id)a3
++ (CNObserver)observerWithResultBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[_CNBlockObserver alloc] initWithResultBlock:v3 completionBlock:0 failureBlock:0];
+  blockCopy = block;
+  v4 = [[_CNBlockObserver alloc] initWithResultBlock:blockCopy completionBlock:0 failureBlock:0];
 
   return v4;
 }
 
-+ (CNObserver)observerWithResultBlock:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5
++ (CNObserver)observerWithResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 blockObserverOfClass:objc_opt_class() withResultBlock:v10 completionBlock:v9 failureBlock:v8];
+  failureBlockCopy = failureBlock;
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  v11 = [self blockObserverOfClass:objc_opt_class() withResultBlock:blockCopy completionBlock:completionBlockCopy failureBlock:failureBlockCopy];
 
   return v11;
 }
 
-+ (id)blockObserverOfClass:(Class)a3 withResultBlock:(id)a4 completionBlock:(id)a5 failureBlock:(id)a6
++ (id)blockObserverOfClass:(Class)class withResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[a3 alloc] initWithResultBlock:v11 completionBlock:v10 failureBlock:v9];
+  failureBlockCopy = failureBlock;
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  v12 = [[class alloc] initWithResultBlock:blockCopy completionBlock:completionBlockCopy failureBlock:failureBlockCopy];
 
   return v12;
 }
 
-+ (CNObserver)observerWithCompletionHandler:(id)a3
++ (CNObserver)observerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __44__CNObserver_observerWithCompletionHandler___block_invoke;
   v15[3] = &unk_1E6ED6988;
-  v16 = v5;
+  v16 = array;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__CNObserver_observerWithCompletionHandler___block_invoke_2;
   v12[3] = &unk_1E6ED52C0;
   v13 = v16;
-  v14 = v4;
+  v14 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__CNObserver_observerWithCompletionHandler___block_invoke_3;
@@ -90,27 +90,27 @@ void __52__CNObserver_observerWithWeakTarget_resultSelector___block_invoke(uint6
   v11 = v14;
   v6 = v14;
   v7 = v16;
-  v8 = [a1 observerWithResultBlock:v15 completionBlock:v12 failureBlock:v10];
+  v8 = [self observerWithResultBlock:v15 completionBlock:v12 failureBlock:v10];
 
   return v8;
 }
 
-+ (void)sendArray:(id)a3 error:(id)a4 toObserver:(id)a5
++ (void)sendArray:(id)array error:(id)error toObserver:(id)observer
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  observerCopy = observer;
+  errorCopy = error;
+  arrayCopy = array;
   v11 = objc_alloc_init(CNCancelationToken);
-  [a1 sendArray:v10 error:v9 toObserver:v8 untilCanceled:v11];
+  [self sendArray:arrayCopy error:errorCopy toObserver:observerCopy untilCanceled:v11];
 }
 
-+ (void)sendArray:(id)a3 error:(id)a4 toObserver:(id)a5 untilCanceled:(id)a6
++ (void)sendArray:(id)array error:(id)error toObserver:(id)observer untilCanceled:(id)canceled
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4)
+  observerCopy = observer;
+  canceledCopy = canceled;
+  if (error)
   {
-    [v9 observerDidFailWithError:a4];
+    [observerCopy observerDidFailWithError:error];
   }
 
   else
@@ -119,46 +119,46 @@ void __52__CNObserver_observerWithWeakTarget_resultSelector___block_invoke(uint6
     v12[1] = 3221225472;
     v12[2] = __55__CNObserver_sendArray_error_toObserver_untilCanceled___block_invoke;
     v12[3] = &unk_1E6ED6988;
-    v11 = v9;
+    v11 = observerCopy;
     v13 = v11;
-    [a3 _cn_each:v12 untilCancelled:v10];
-    if (([v10 isCanceled] & 1) == 0)
+    [array _cn_each:v12 untilCancelled:canceledCopy];
+    if (([canceledCopy isCanceled] & 1) == 0)
     {
       [v11 observerDidComplete];
     }
   }
 }
 
-+ (void)sendResult:(id)a3 error:(id)a4 toObserver:(id)a5
++ (void)sendResult:(id)result error:(id)error toObserver:(id)observer
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  observerCopy = observer;
+  v9 = observerCopy;
+  if (errorCopy)
   {
-    [v8 observerDidFailWithError:v7];
+    [observerCopy observerDidFailWithError:errorCopy];
   }
 
   else
   {
-    if (v10)
+    if (resultCopy)
     {
-      [v8 observerDidReceiveResult:v10];
+      [observerCopy observerDidReceiveResult:resultCopy];
     }
 
     [v9 observerDidComplete];
   }
 }
 
-+ (void)sendObserver:(id)a3 resultsOfBlock:(id)a4
++ (void)sendObserver:(id)observer resultsOfBlock:(id)block
 {
   v10 = 0;
-  v6 = *(a4 + 2);
-  v7 = a3;
-  v8 = v6(a4, &v10);
+  v6 = *(block + 2);
+  observerCopy = observer;
+  v8 = v6(block, &v10);
   v9 = v10;
-  [a1 sendArray:v8 error:v9 toObserver:v7];
+  [self sendArray:v8 error:v9 toObserver:observerCopy];
 }
 
 @end

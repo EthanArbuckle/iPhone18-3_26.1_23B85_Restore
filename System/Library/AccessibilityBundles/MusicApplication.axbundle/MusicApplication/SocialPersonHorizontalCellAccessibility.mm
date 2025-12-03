@@ -1,73 +1,73 @@
 @interface SocialPersonHorizontalCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityApproveButtonAction:(id)a3;
-- (void)_accessibilityDeclineButtonAction:(id)a3;
+- (void)_accessibilityApproveButtonAction:(id)action;
+- (void)_accessibilityDeclineButtonAction:(id)action;
 @end
 
 @implementation SocialPersonHorizontalCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityPersonName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityPersonSubtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityFollowButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityApproveButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityDeclineButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityIsFollowRequest" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityPersonName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityPersonSubtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityFollowButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityApproveButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityDeclineButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonHorizontalCell" hasInstanceMethod:@"accessibilityIsFollowRequest" withFullSignature:{"B", 0}];
 }
 
 - (id)automationElements
 {
   v10.receiver = self;
   v10.super_class = SocialPersonHorizontalCellAccessibility;
-  v3 = [(SocialPersonHorizontalCellAccessibility *)&v10 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(SocialPersonHorizontalCellAccessibility *)&v10 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(SocialPersonHorizontalCellAccessibility *)self _axFollowButton];
-  [v7 axSafelyAddObject:v8];
+  _axFollowButton = [(SocialPersonHorizontalCellAccessibility *)self _axFollowButton];
+  [v7 axSafelyAddObject:_axFollowButton];
 
   return v7;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(SocialPersonHorizontalCellAccessibility *)self _axFollowButton];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axFollowButton = [(SocialPersonHorizontalCellAccessibility *)self _axFollowButton];
   v5 = [(SocialPersonHorizontalCellAccessibility *)self safeValueForKey:@"accessibilityPersonName"];
-  [v4 setAccessibilityValue:v5];
+  [_axFollowButton setAccessibilityValue:v5];
 
-  if (v4)
+  if (_axFollowButton)
   {
-    [v3 addObject:v4];
+    [array addObject:_axFollowButton];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)_accessibilityApproveButtonAction:(id)a3
+- (void)_accessibilityApproveButtonAction:(id)action
 {
   v3 = [(SocialPersonHorizontalCellAccessibility *)self safeValueForKey:@"accessibilityApproveButton"];
   [v3 accessibilityActivate];
 }
 
-- (void)_accessibilityDeclineButtonAction:(id)a3
+- (void)_accessibilityDeclineButtonAction:(id)action
 {
   v3 = [(SocialPersonHorizontalCellAccessibility *)self safeValueForKey:@"accessibilityDeclineButton"];
   [v3 accessibilityActivate];

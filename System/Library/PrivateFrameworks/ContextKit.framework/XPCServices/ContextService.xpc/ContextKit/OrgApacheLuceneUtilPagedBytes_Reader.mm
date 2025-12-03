@@ -2,31 +2,31 @@
 + (void)initialize;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
-- (void)fillSliceWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4 withInt:(int)a5;
-- (void)fillWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4;
+- (void)fillSliceWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long withInt:(int)int;
+- (void)fillWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPagedBytes_Reader
 
-- (void)fillSliceWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4 withInt:(int)a5
+- (void)fillSliceWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long withInt:(int)int
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_17;
   }
 
-  *(a3 + 5) = a5;
-  if (!a5)
+  *(ref + 5) = int;
+  if (!int)
   {
     return;
   }
 
-  v8 = a4 >> self->blockBits_;
-  v9 = self->blockMask_ & a4;
-  if (self->blockSize_ - v9 < a5)
+  v8 = long >> self->blockBits_;
+  v9 = self->blockMask_ & long;
+  if (self->blockSize_ - v9 < int)
   {
-    JreStrongAssignAndConsume(a3 + 1, [IOSByteArray newArrayWithLength:a5]);
-    *(a3 + 4) = 0;
+    JreStrongAssignAndConsume(ref + 1, [IOSByteArray newArrayWithLength:int]);
+    *(ref + 4) = 0;
     blocks = self->blocks_;
     if (blocks)
     {
@@ -36,7 +36,7 @@
         IOSArray_throwOutOfBoundsWithMsg(size, v8);
       }
 
-      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_((&blocks->elementType_)[v8], v9, *(a3 + 1), 0, (self->blockSize_ - v9));
+      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_((&blocks->elementType_)[v8], v9, *(ref + 1), 0, (self->blockSize_ - v9));
       v13 = self->blocks_;
       v11 = v8 << 32;
       v14 = (&_mh_execute_header + (v8 << 32)) >> 32;
@@ -47,10 +47,10 @@
       }
 
       v16 = (&v13->elementType_)[v14];
-      v17 = *(a3 + 1);
+      v17 = *(ref + 1);
       v18 = (self->blockSize_ - v9);
 
-      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v16, 0, v17, v18, (a5 - v18));
+      JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v16, 0, v17, v18, (int - v18));
       return;
     }
 
@@ -70,26 +70,26 @@ LABEL_17:
     IOSArray_throwOutOfBoundsWithMsg(v20, v8);
   }
 
-  JreStrongAssign(a3 + 1, (&v19->elementType_)[v8]);
-  *(a3 + 4) = v9;
+  JreStrongAssign(ref + 1, (&v19->elementType_)[v8]);
+  *(ref + 4) = v9;
 }
 
-- (void)fillWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4
+- (void)fillWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long
 {
-  if (!a3 || (blocks = self->blocks_) == 0)
+  if (!ref || (blocks = self->blocks_) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = a4 >> self->blockBits_;
-  v7 = self->blockMask_ & a4;
+  v6 = long >> self->blockBits_;
+  v7 = self->blockMask_ & long;
   size = blocks->super.size_;
   if ((v6 & 0x80000000) != 0 || size <= v6)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v6);
   }
 
-  v9 = JreStrongAssign(a3 + 1, (&blocks->elementType_)[v6]);
+  v9 = JreStrongAssign(ref + 1, (&blocks->elementType_)[v6]);
   v10 = v9[2];
   if ((v7 & 0x80000000) != 0 || v7 >= v10)
   {
@@ -128,8 +128,8 @@ LABEL_17:
     v16 = 1;
   }
 
-  *(a3 + 5) = v15;
-  *(a3 + 4) = v7 + v16;
+  *(ref + 5) = v15;
+  *(ref + 4) = v7 + v16;
 }
 
 - (int64_t)ramBytesUsed
@@ -164,7 +164,7 @@ LABEL_17:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilPagedBytes_Reader_class_();
     qword_100554820 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

@@ -1,7 +1,7 @@
 @interface SKUISystemCombinedIndexBarEntry
 - (CGSize)_calculatedContentSize;
 - (SKUISystemCombinedIndexBarEntry)init;
-- (void)_drawContentInRect:(CGRect)a3;
+- (void)_drawContentInRect:(CGRect)rect;
 @end
 
 @implementation SKUISystemCombinedIndexBarEntry
@@ -41,14 +41,14 @@
   return result;
 }
 
-- (void)_drawContentInRect:(CGRect)a3
+- (void)_drawContentInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SKUIIndexBarEntry *)self tintColor];
-  [v7 setFill];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  tintColor = [(SKUIIndexBarEntry *)self tintColor];
+  [tintColor setFill];
 
   v8 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x, y, width, height}];
   [v8 fill];

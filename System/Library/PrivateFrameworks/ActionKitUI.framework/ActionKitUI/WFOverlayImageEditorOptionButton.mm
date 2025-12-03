@@ -1,7 +1,7 @@
 @interface WFOverlayImageEditorOptionButton
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)intrinsicContentSize;
-- (WFOverlayImageEditorOptionButton)initWithFrame:(CGRect)a3;
+- (WFOverlayImageEditorOptionButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation WFOverlayImageEditorOptionButton
@@ -9,18 +9,18 @@
 - (CGSize)intrinsicContentSize
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WFOverlayImageEditorOptionButton *)self currentImage];
-  [v3 size];
+  currentImage = [(WFOverlayImageEditorOptionButton *)self currentImage];
+  [currentImage size];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(WFOverlayImageEditorOptionButton *)self currentTitle];
+  currentTitle = [(WFOverlayImageEditorOptionButton *)self currentTitle];
   v20 = *MEMORY[0x277D740A8];
-  v9 = [(WFOverlayImageEditorOptionButton *)self titleLabel];
-  v10 = [v9 font];
-  v21[0] = v10;
+  titleLabel = [(WFOverlayImageEditorOptionButton *)self titleLabel];
+  font = [titleLabel font];
+  v21[0] = font;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  [v8 sizeWithAttributes:v11];
+  [currentTitle sizeWithAttributes:v11];
   v13 = v12;
   v15 = v14;
 
@@ -42,20 +42,20 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v17[1] = *MEMORY[0x277D85DE8];
-  remainder = a3;
-  v8 = [(WFOverlayImageEditorOptionButton *)self currentTitle];
+  remainder = rect;
+  currentTitle = [(WFOverlayImageEditorOptionButton *)self currentTitle];
   v16 = *MEMORY[0x277D740A8];
-  v9 = [(WFOverlayImageEditorOptionButton *)self customFont];
-  v17[0] = v9;
+  customFont = [(WFOverlayImageEditorOptionButton *)self customFont];
+  v17[0] = customFont;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  [v8 sizeWithAttributes:v10];
+  [currentTitle sizeWithAttributes:v10];
   v12 = v11;
 
   memset(&v14, 0, sizeof(v14));
@@ -69,21 +69,21 @@
   return result;
 }
 
-- (WFOverlayImageEditorOptionButton)initWithFrame:(CGRect)a3
+- (WFOverlayImageEditorOptionButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = WFOverlayImageEditorOptionButton;
-  v3 = [(WFOverlayImageEditorOptionButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFOverlayImageEditorOptionButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFOverlayImageEditorOptionButton *)v3 titleLabel];
-    v6 = [(WFOverlayImageEditorOptionButton *)v4 customFont];
-    [v5 setFont:v6];
+    titleLabel = [(WFOverlayImageEditorOptionButton *)v3 titleLabel];
+    customFont = [(WFOverlayImageEditorOptionButton *)v4 customFont];
+    [titleLabel setFont:customFont];
 
-    [v5 setTextAlignment:1];
-    v7 = [(WFOverlayImageEditorOptionButton *)v4 imageView];
-    [v7 setContentMode:5];
+    [titleLabel setTextAlignment:1];
+    imageView = [(WFOverlayImageEditorOptionButton *)v4 imageView];
+    [imageView setContentMode:5];
 
     v8 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.756862745 blue:0.0274509804 alpha:1.0];
     v9 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.699999988];

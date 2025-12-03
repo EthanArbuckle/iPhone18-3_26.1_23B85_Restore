@@ -1,39 +1,39 @@
 @interface BMProactiveHarvestingParsecSearchEntity
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingParsecSearchEntity)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMProactiveHarvestingParsecSearchEntity)initWithName:(id)a3 category:(id)a4 probabilityScore:(id)a5 topics:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingParsecSearchEntity)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMProactiveHarvestingParsecSearchEntity)initWithName:(id)name category:(id)category probabilityScore:(id)score topics:(id)topics;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_topicsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingParsecSearchEntity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingParsecSearchEntity *)self name];
-    v7 = [v5 name];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    name = [(BMProactiveHarvestingParsecSearchEntity *)self name];
+    name2 = [v5 name];
+    v8 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingParsecSearchEntity *)self name];
-      v10 = [v5 name];
-      v11 = [v9 isEqual:v10];
+      name3 = [(BMProactiveHarvestingParsecSearchEntity *)self name];
+      name4 = [v5 name];
+      v11 = [name3 isEqual:name4];
 
       if (!v11)
       {
@@ -45,18 +45,18 @@
     {
       if (!-[BMProactiveHarvestingParsecSearchEntity hasProbabilityScore](self, "hasProbabilityScore") && ![v5 hasProbabilityScore] || -[BMProactiveHarvestingParsecSearchEntity hasProbabilityScore](self, "hasProbabilityScore") && objc_msgSend(v5, "hasProbabilityScore") && (-[BMProactiveHarvestingParsecSearchEntity probabilityScore](self, "probabilityScore"), v15 = v14, objc_msgSend(v5, "probabilityScore"), v15 == v16))
       {
-        v17 = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
-        v18 = [v5 topics];
-        if (v17 == v18)
+        topics = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
+        topics2 = [v5 topics];
+        if (topics == topics2)
         {
           v12 = 1;
         }
 
         else
         {
-          v19 = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
-          v20 = [v5 topics];
-          v12 = [v19 isEqual:v20];
+          topics3 = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
+          topics4 = [v5 topics];
+          v12 = [topics3 isEqual:topics4];
         }
 
         goto LABEL_20;
@@ -79,7 +79,7 @@ LABEL_21:
 - (id)jsonDictionary
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingParsecSearchEntity *)self name];
+  name = [(BMProactiveHarvestingParsecSearchEntity *)self name];
   if ([(BMProactiveHarvestingParsecSearchEntity *)self hasCategory])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMProactiveHarvestingParsecSearchEntity category](self, "category")}];
@@ -103,41 +103,41 @@ LABEL_21:
     v7 = [v6 numberWithDouble:?];
   }
 
-  v8 = [(BMProactiveHarvestingParsecSearchEntity *)self _topicsJSONArray];
+  _topicsJSONArray = [(BMProactiveHarvestingParsecSearchEntity *)self _topicsJSONArray];
   v16[0] = @"name";
-  v9 = v3;
-  if (!v3)
+  null = name;
+  if (!name)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v9;
+  v17[0] = null;
   v16[1] = @"category";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v10;
+  v17[1] = null2;
   v16[2] = @"probabilityScore";
-  v11 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v11;
+  v17[2] = null3;
   v16[3] = @"topics";
-  v12 = v8;
-  if (!v8)
+  null4 = _topicsJSONArray;
+  if (!_topicsJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[3] = v12;
+  v17[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
-  if (v8)
+  if (_topicsJSONArray)
   {
     if (v7)
     {
@@ -158,7 +158,7 @@ LABEL_18:
 
 LABEL_25:
 
-      if (v3)
+      if (name)
       {
         goto LABEL_20;
       }
@@ -173,7 +173,7 @@ LABEL_25:
   }
 
 LABEL_19:
-  if (v3)
+  if (name)
   {
     goto LABEL_20;
   }
@@ -194,8 +194,8 @@ LABEL_20:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  topics = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
+  v5 = [topics countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -206,14 +206,14 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(topics);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [topics countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -224,17 +224,17 @@ LABEL_20:
   return v3;
 }
 
-- (BMProactiveHarvestingParsecSearchEntity)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingParsecSearchEntity)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
@@ -243,14 +243,14 @@ LABEL_20:
         v77[0] = v27;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:&v76 count:1];
         v8 = 0;
-        v24 = 0;
-        *a4 = [v25 initWithDomain:v26 code:2 userInfo:v9];
-        a4 = v27;
+        selfCopy3 = 0;
+        *error = [v25 initWithDomain:v26 code:2 userInfo:v9];
+        error = v27;
         goto LABEL_54;
       }
 
       v8 = 0;
-      v24 = 0;
+      selfCopy3 = 0;
       goto LABEL_55;
     }
 
@@ -262,30 +262,30 @@ LABEL_20:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"category"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"category"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v28 = objc_alloc(MEMORY[0x1E696ABC0]);
         v29 = *MEMORY[0x1E698F240];
         v74 = *MEMORY[0x1E696A578];
-        v30 = a4;
+        errorCopy = error;
         v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"category"];
         v75 = v59;
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
         v32 = v29;
         v10 = v31;
-        a4 = 0;
-        v24 = 0;
-        *v30 = [v28 initWithDomain:v32 code:2 userInfo:v31];
+        error = 0;
+        selfCopy3 = 0;
+        *errorCopy = [v28 initWithDomain:v32 code:2 userInfo:v31];
         goto LABEL_53;
       }
 
-      v24 = 0;
+      selfCopy3 = 0;
       goto LABEL_54;
     }
 
@@ -297,19 +297,19 @@ LABEL_20:
     v58 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"probabilityScore"];
-  v56 = a4;
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"probabilityScore"];
+  errorCopy2 = error;
   v57 = v7;
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v59 = 0;
-        v24 = 0;
-        a4 = v58;
+        selfCopy3 = 0;
+        error = v58;
         goto LABEL_53;
       }
 
@@ -320,8 +320,8 @@ LABEL_20:
       v73 = v11;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
       v59 = 0;
-      v24 = 0;
-      *v56 = [v33 initWithDomain:v34 code:2 userInfo:v14];
+      selfCopy3 = 0;
+      *errorCopy2 = [v33 initWithDomain:v34 code:2 userInfo:v14];
       goto LABEL_50;
     }
 
@@ -333,9 +333,9 @@ LABEL_20:
     v59 = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"topics"];
-  v12 = [MEMORY[0x1E695DFB0] null];
-  v13 = [v11 isEqual:v12];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"topics"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v13 = [v11 isEqual:null];
 
   if (!v13)
   {
@@ -343,14 +343,14 @@ LABEL_20:
     {
       v53 = v9;
       v54 = v8;
-      v55 = self;
+      selfCopy2 = self;
       goto LABEL_17;
     }
 
-    if (!a4)
+    if (!error)
     {
-      v24 = 0;
-      a4 = v58;
+      selfCopy3 = 0;
+      error = v58;
       goto LABEL_52;
     }
 
@@ -361,20 +361,20 @@ LABEL_20:
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"topics"];
     v71 = v14;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-    v46 = v45 = a4;
+    v46 = v45 = error;
     v47 = v44;
     v10 = v52;
     *v45 = [v43 initWithDomain:v47 code:2 userInfo:v46];
 
-    v24 = 0;
+    selfCopy3 = 0;
 LABEL_50:
-    a4 = v58;
+    error = v58;
     goto LABEL_51;
   }
 
   v53 = v9;
   v54 = v8;
-  v55 = self;
+  selfCopy2 = self;
 
   v11 = 0;
 LABEL_17:
@@ -392,7 +392,7 @@ LABEL_17:
 
   v16 = v15;
   v17 = *v62;
-  v50 = v6;
+  v50 = dictionaryCopy;
   v51 = v10;
   while (2)
   {
@@ -407,11 +407,11 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v50;
+        dictionaryCopy = v50;
         v8 = v54;
-        self = v55;
-        a4 = v58;
-        if (v56)
+        self = selfCopy2;
+        error = v58;
+        if (errorCopy2)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
@@ -424,14 +424,14 @@ LABEL_17:
 LABEL_42:
           v40 = [v37 dictionaryWithObjects:v38 forKeys:v39 count:1];
           v41 = v35;
-          a4 = v58;
-          *v56 = [v41 initWithDomain:v36 code:2 userInfo:v40];
+          error = v58;
+          *errorCopy2 = [v41 initWithDomain:v36 code:2 userInfo:v40];
 LABEL_46:
         }
 
 LABEL_47:
 
-        v24 = 0;
+        selfCopy3 = 0;
         v10 = v51;
         v9 = v53;
         goto LABEL_51;
@@ -440,11 +440,11 @@ LABEL_47:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v6 = v50;
+        dictionaryCopy = v50;
         v8 = v54;
-        self = v55;
-        a4 = v58;
-        if (v56)
+        self = selfCopy2;
+        error = v58;
+        if (errorCopy2)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
@@ -468,16 +468,16 @@ LABEL_47:
       if (v23)
       {
         v40 = v23;
-        if (v56)
+        if (errorCopy2)
         {
           v42 = v23;
-          *v56 = v40;
+          *errorCopy2 = v40;
         }
 
-        v6 = v50;
+        dictionaryCopy = v50;
         v8 = v54;
-        self = v55;
-        a4 = v58;
+        self = selfCopy2;
+        error = v58;
         goto LABEL_46;
       }
 
@@ -485,7 +485,7 @@ LABEL_47:
     }
 
     v16 = [v11 countByEnumeratingWithState:&v61 objects:v69 count:16];
-    v6 = v50;
+    dictionaryCopy = v50;
     v10 = v51;
     if (v16)
     {
@@ -498,9 +498,9 @@ LABEL_47:
 LABEL_27:
 
   v8 = v54;
-  a4 = v58;
-  self = [(BMProactiveHarvestingParsecSearchEntity *)v55 initWithName:v54 category:v58 probabilityScore:v59 topics:v14];
-  v24 = self;
+  error = v58;
+  self = [(BMProactiveHarvestingParsecSearchEntity *)selfCopy2 initWithName:v54 category:v58 probabilityScore:v59 topics:v14];
+  selfCopy3 = self;
   v9 = v53;
 LABEL_51:
 
@@ -512,22 +512,22 @@ LABEL_54:
 LABEL_55:
 
   v48 = *MEMORY[0x1E69E9840];
-  return v24;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingParsecSearchEntity *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -566,7 +566,7 @@ LABEL_55:
 
         v12 = *(*(&v14 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v12 writeTo:v4];
+        [v12 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -579,9 +579,9 @@ LABEL_55:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMProactiveHarvestingParsecSearchEntity;
   v5 = [(BMEventBase *)&v37 init];
@@ -591,12 +591,12 @@ LABEL_55:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_48;
       }
@@ -607,18 +607,18 @@ LABEL_55:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v38[0] & 0x7F) << v8;
@@ -636,9 +636,9 @@ LABEL_55:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_48;
       }
@@ -653,18 +653,18 @@ LABEL_16:
       {
         v5->_hasProbabilityScore = 1;
         LODWORD(v38[0]) = 0;
-        v28 = [v4 position] + 4;
-        if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 4, v29 <= objc_msgSend(v4, "length")))
+        v28 = [fromCopy position] + 4;
+        if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 4, v29 <= objc_msgSend(fromCopy, "length")))
         {
-          v30 = [v4 data];
-          [v30 getBytes:v38 range:{objc_msgSend(v4, "position"), 4}];
+          data2 = [fromCopy data];
+          [data2 getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_probabilityScore = *v38;
@@ -678,7 +678,7 @@ LABEL_16:
 
       v38[0] = 0;
       v38[1] = 0;
-      if (!PBReaderPlaceMark() || (v24 = [[BMProactiveHarvestingParsecSearchEntityTopic alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v24 = [[BMProactiveHarvestingParsecSearchEntityTopic alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_52:
 
@@ -690,8 +690,8 @@ LABEL_52:
       PBReaderRecallMark();
 
 LABEL_47:
-      v31 = [v4 position];
-      if (v31 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_48;
       }
@@ -715,18 +715,18 @@ LABEL_47:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v20 = [v4 position] + 1;
-        if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+        v20 = [fromCopy position] + 1;
+        if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
         {
-          v22 = [v4 data];
-          [v22 getBytes:v38 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v38[0] & 0x7F) << v17;
@@ -744,7 +744,7 @@ LABEL_47:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v23 = 0;
       }
@@ -773,8 +773,8 @@ LABEL_48:
   topics = v5->_topics;
   v5->_topics = v32;
 
-  v34 = [v4 hasError];
-  if (v34)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_49:
     v35 = 0;
@@ -792,47 +792,47 @@ LABEL_50:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMProactiveHarvestingParsecSearchEntity *)self name];
+  name = [(BMProactiveHarvestingParsecSearchEntity *)self name];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMProactiveHarvestingParsecSearchEntity category](self, "category")}];
   v6 = MEMORY[0x1E696AD98];
   [(BMProactiveHarvestingParsecSearchEntity *)self probabilityScore];
   v7 = [v6 numberWithDouble:?];
-  v8 = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
-  v9 = [v3 initWithFormat:@"BMProactiveHarvestingParsecSearchEntity with name: %@, category: %@, probabilityScore: %@, topics: %@", v4, v5, v7, v8];
+  topics = [(BMProactiveHarvestingParsecSearchEntity *)self topics];
+  v9 = [v3 initWithFormat:@"BMProactiveHarvestingParsecSearchEntity with name: %@, category: %@, probabilityScore: %@, topics: %@", name, v5, v7, topics];
 
   return v9;
 }
 
-- (BMProactiveHarvestingParsecSearchEntity)initWithName:(id)a3 category:(id)a4 probabilityScore:(id)a5 topics:(id)a6
+- (BMProactiveHarvestingParsecSearchEntity)initWithName:(id)name category:(id)category probabilityScore:(id)score topics:(id)topics
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  categoryCopy = category;
+  scoreCopy = score;
+  topicsCopy = topics;
   v20.receiver = self;
   v20.super_class = BMProactiveHarvestingParsecSearchEntity;
   v15 = [(BMEventBase *)&v20 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_name, a3);
-    if (v12)
+    objc_storeStrong(&v15->_name, name);
+    if (categoryCopy)
     {
       v15->_hasCategory = 1;
-      v16 = [v12 unsignedIntValue];
+      unsignedIntValue = [categoryCopy unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue = 0;
       v15->_hasCategory = 0;
     }
 
-    v15->_category = v16;
-    if (v13)
+    v15->_category = unsignedIntValue;
+    if (scoreCopy)
     {
       v15->_hasProbabilityScore = 1;
-      [v13 floatValue];
+      [scoreCopy floatValue];
       v18 = v17;
     }
 
@@ -843,7 +843,7 @@ LABEL_50:
     }
 
     v15->_probabilityScore = v18;
-    objc_storeStrong(&v15->_topics, a6);
+    objc_storeStrong(&v15->_topics, topics);
   }
 
   return v15;
@@ -894,13 +894,13 @@ id __50__BMProactiveHarvestingParsecSearchEntity_columns__block_invoke(uint64_t 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingParsecSearchEntity alloc] initByReadFrom:v6];
     v8 = v7;

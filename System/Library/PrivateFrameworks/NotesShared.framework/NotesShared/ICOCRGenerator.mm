@@ -1,12 +1,12 @@
 @interface ICOCRGenerator
-+ (id)ocrStringFromImage:(CGImage *)a3 title:(id *)a4 languages:(id)a5;
-+ (id)ocrStringFromImageRequestHandler:(id)a3 title:(id *)a4 languages:(id)a5 session:(id)a6;
-+ (id)ocrStringFromImageURL:(id)a3 title:(id *)a4 languages:(id)a5;
++ (id)ocrStringFromImage:(CGImage *)image title:(id *)title languages:(id)languages;
++ (id)ocrStringFromImageRequestHandler:(id)handler title:(id *)title languages:(id)languages session:(id)session;
++ (id)ocrStringFromImageURL:(id)l title:(id *)title languages:(id)languages;
 @end
 
 @implementation ICOCRGenerator
 
-+ (id)ocrStringFromImage:(CGImage *)a3 title:(id *)a4 languages:(id)a5
++ (id)ocrStringFromImage:(CGImage *)image title:(id *)title languages:(id)languages
 {
   gotLoadHelper_x8__OBJC_CLASS___VNSession(v5);
   v10 = *(v9 + 3608);
@@ -14,55 +14,55 @@
   v13 = objc_alloc_init(v10);
   gotLoadHelper_x8__OBJC_CLASS___VNImageRequestHandler(v14);
   v16 = objc_alloc(*(v15 + 3408));
-  v17 = [v16 initWithCGImage:a3 options:MEMORY[0x277CBEC10] session:v13];
-  v18 = [a1 ocrStringFromImageRequestHandler:v17 title:a4 languages:v12 session:v13];
+  v17 = [v16 initWithCGImage:image options:MEMORY[0x277CBEC10] session:v13];
+  v18 = [self ocrStringFromImageRequestHandler:v17 title:title languages:v12 session:v13];
 
   return v18;
 }
 
-+ (id)ocrStringFromImageURL:(id)a3 title:(id *)a4 languages:(id)a5
++ (id)ocrStringFromImageURL:(id)l title:(id *)title languages:(id)languages
 {
   gotLoadHelper_x8__OBJC_CLASS___VNSession(v5);
   v10 = *(v9 + 3608);
   v12 = v11;
-  v13 = a3;
+  lCopy = l;
   v14 = objc_alloc_init(v10);
   gotLoadHelper_x8__OBJC_CLASS___VNImageRequestHandler(v15);
   v17 = objc_alloc(*(v16 + 3408));
-  v18 = [v17 initWithURL:v13 options:MEMORY[0x277CBEC10] session:v14];
+  v18 = [v17 initWithURL:lCopy options:MEMORY[0x277CBEC10] session:v14];
 
-  v19 = [a1 ocrStringFromImageRequestHandler:v18 title:a4 languages:v12 session:v14];
+  v19 = [self ocrStringFromImageRequestHandler:v18 title:title languages:v12 session:v14];
 
   return v19;
 }
 
-+ (id)ocrStringFromImageRequestHandler:(id)a3 title:(id *)a4 languages:(id)a5 session:(id)a6
++ (id)ocrStringFromImageRequestHandler:(id)handler title:(id *)title languages:(id)languages session:(id)session
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  handlerCopy = handler;
+  languagesCopy = languages;
+  sessionCopy = session;
   gotLoadHelper_x8__OBJC_CLASS___VNRecognizeTextRequest(v11);
   v13 = objc_alloc_init(*(v12 + 3512));
-  [v13 setRecognitionLanguages:v9];
+  [v13 setRecognitionLanguages:languagesCopy];
   v52[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
-  [v8 performRequests:v14 error:0];
+  [handlerCopy performRequests:v14 error:0];
 
-  v15 = [v13 results];
-  v36 = v15;
-  if ([v15 count])
+  results = [v13 results];
+  v36 = results;
+  if ([results count])
   {
     v32 = v13;
-    v33 = v10;
-    v34 = v9;
-    v35 = v8;
+    v33 = sessionCopy;
+    v34 = languagesCopy;
+    v35 = handlerCopy;
     v16 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v15;
+    obj = results;
     v40 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v40)
     {
@@ -107,8 +107,8 @@
                     [v16 appendString:@"\t"];
                   }
 
-                  v26 = [v24 string];
-                  [v16 appendString:v26];
+                  string = [v24 string];
+                  [v16 appendString:string];
 
                   v21 = 1;
                 }
@@ -123,12 +123,12 @@
           if ([v41 isTitle])
           {
             v27 = [v18 count];
-            if (a4)
+            if (title)
             {
               if (v27)
               {
-                v28 = [v18 firstObject];
-                *a4 = [v28 string];
+                firstObject = [v18 firstObject];
+                *title = [firstObject string];
               }
             }
           }
@@ -141,28 +141,28 @@
     }
 
     v29 = [v16 copy];
-    v30 = [v29 ic_trimmedString];
+    ic_trimmedString = [v29 ic_trimmedString];
 
-    v9 = v34;
-    v8 = v35;
+    languagesCopy = v34;
+    handlerCopy = v35;
     v13 = v32;
-    v10 = v33;
+    sessionCopy = v33;
   }
 
   else
   {
-    v30 = 0;
+    ic_trimmedString = 0;
   }
 
-  if (![(__CFString *)v30 length:v32])
+  if (![(__CFString *)ic_trimmedString length:v32])
   {
 
-    v30 = @" ";
+    ic_trimmedString = @" ";
   }
 
-  [v10 releaseCachedResources];
+  [sessionCopy releaseCachedResources];
 
-  return v30;
+  return ic_trimmedString;
 }
 
 @end

@@ -7,13 +7,13 @@
 
 - (void)contentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB38DF0();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB38FA4();
 }
 

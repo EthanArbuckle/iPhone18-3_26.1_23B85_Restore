@@ -1,14 +1,14 @@
 @interface TVRCFilmography
-+ (id)filmographyWithDictionaries:(id)a3;
-- (TVRCFilmography)initWithDictionaries:(id)a3;
++ (id)filmographyWithDictionaries:(id)dictionaries;
+- (TVRCFilmography)initWithDictionaries:(id)dictionaries;
 @end
 
 @implementation TVRCFilmography
 
-- (TVRCFilmography)initWithDictionaries:(id)a3
+- (TVRCFilmography)initWithDictionaries:(id)dictionaries
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v20.receiver = self;
   v20.super_class = TVRCFilmography;
   v5 = [(TVRCFilmography *)&v20 init];
@@ -19,7 +19,7 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = dictionariesCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
@@ -56,10 +56,10 @@
   return v5;
 }
 
-+ (id)filmographyWithDictionaries:(id)a3
++ (id)filmographyWithDictionaries:(id)dictionaries
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionaries:v4];
+  dictionariesCopy = dictionaries;
+  v5 = [[self alloc] initWithDictionaries:dictionariesCopy];
 
   return v5;
 }

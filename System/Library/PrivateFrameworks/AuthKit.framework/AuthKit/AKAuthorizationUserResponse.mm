@@ -1,38 +1,38 @@
 @interface AKAuthorizationUserResponse
-- (AKAuthorizationUserResponse)initWithCoder:(id)a3;
+- (AKAuthorizationUserResponse)initWithCoder:(id)coder;
 - (BOOL)hasSelectedSharedAccountForLogin;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKAuthorizationUserResponse
 
-- (AKAuthorizationUserResponse)initWithCoder:(id)a3
+- (AKAuthorizationUserResponse)initWithCoder:(id)coder
 {
   v42[3] = *MEMORY[0x1E69E9840];
-  v36 = &v41;
-  v41 = self;
+  v36 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v41;
-  v41 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v39.receiver = v3;
   v39.super_class = AKAuthorizationUserResponse;
   v37 = [(AKAuthorizationUserResponse *)&v39 init];
-  v41 = v37;
-  objc_storeStrong(&v41, v37);
+  selfCopy = v37;
+  objc_storeStrong(&selfCopy, v37);
   if (v37)
   {
     v24 = location[0];
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_userSelection"];
-    userSelection = v41->_userSelection;
-    v41->_userSelection = v4;
+    userSelection = selfCopy->_userSelection;
+    selfCopy->_userSelection = v4;
     MEMORY[0x1E69E5920](userSelection);
     v25 = location[0];
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_loginChoiceIndex"];
-    loginChoiceIndex = v41->_loginChoiceIndex;
-    v41->_loginChoiceIndex = v6;
+    loginChoiceIndex = selfCopy->_loginChoiceIndex;
+    selfCopy->_loginChoiceIndex = v6;
     MEMORY[0x1E69E5920](loginChoiceIndex);
     v27 = MEMORY[0x1E695DFA8];
     v28 = 0x1E695D000uLL;
@@ -51,29 +51,29 @@
     [v30 addObjectsFromArray:?];
     MEMORY[0x1E69E5920](v31);
     v10 = [location[0] decodeObjectOfClasses:v38 forKey:@"_loginChoice"];
-    loginChoice = v41->_loginChoice;
-    v41->_loginChoice = v10;
+    loginChoice = selfCopy->_loginChoice;
+    selfCopy->_loginChoice = v10;
     MEMORY[0x1E69E5920](loginChoice);
     v32 = location[0];
     v12 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_selectedRequest"];
-    selectedRequest = v41->_selectedRequest;
-    v41->_selectedRequest = v12;
+    selectedRequest = selfCopy->_selectedRequest;
+    selfCopy->_selectedRequest = v12;
     MEMORY[0x1E69E5920](selectedRequest);
     v33 = location[0];
     v14 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_rawAccountPassword"];
-    rawAccountPassword = v41->_rawAccountPassword;
-    v41->_rawAccountPassword = v14;
+    rawAccountPassword = selfCopy->_rawAccountPassword;
+    selfCopy->_rawAccountPassword = v14;
     MEMORY[0x1E69E5920](rawAccountPassword);
     v16 = [location[0] decodeBoolForKey:@"_requestParentalPermission"];
     v17 = obj;
     v18 = v16;
     v19 = v35;
-    v41->_requestParentalPermission = v18;
+    selfCopy->_requestParentalPermission = v18;
     objc_storeStrong(v19, v17);
   }
 
-  v22 = &v41;
-  v21 = MEMORY[0x1E69E5928](v41);
+  v22 = &selfCopy;
+  v21 = MEMORY[0x1E69E5928](selfCopy);
   v23 = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v22, v23);
@@ -81,27 +81,27 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_userSelection forKey:@"_userSelection"];
-  [location[0] encodeObject:v4->_loginChoiceIndex forKey:@"_loginChoiceIndex"];
-  [location[0] encodeObject:v4->_loginChoice forKey:@"_loginChoice"];
-  [location[0] encodeObject:v4->_selectedRequest forKey:@"_selectedRequest"];
-  [location[0] encodeObject:v4->_rawAccountPassword forKey:@"_rawAccountPassword"];
-  [location[0] encodeBool:v4->_requestParentalPermission forKey:@"_requestParentalPermission"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_userSelection forKey:@"_userSelection"];
+  [location[0] encodeObject:selfCopy->_loginChoiceIndex forKey:@"_loginChoiceIndex"];
+  [location[0] encodeObject:selfCopy->_loginChoice forKey:@"_loginChoice"];
+  [location[0] encodeObject:selfCopy->_selectedRequest forKey:@"_selectedRequest"];
+  [location[0] encodeObject:selfCopy->_rawAccountPassword forKey:@"_rawAccountPassword"];
+  [location[0] encodeBool:selfCopy->_requestParentalPermission forKey:@"_requestParentalPermission"];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)hasSelectedSharedAccountForLogin
 {
-  v3 = [(AKAuthorizationUserResponse *)self loginChoice];
+  loginChoice = [(AKAuthorizationUserResponse *)self loginChoice];
   objc_opt_class();
   v4 = (objc_opt_isKindOfClass() & 1) == 1;
-  MEMORY[0x1E69E5920](v3);
+  MEMORY[0x1E69E5920](loginChoice);
   return v4;
 }
 
@@ -136,9 +136,9 @@
     v10 = @"(null)";
   }
 
-  v6 = [(AKAuthorizationUserResponse *)self requestParentalPermission];
+  requestParentalPermission = [(AKAuthorizationUserResponse *)self requestParentalPermission];
   v7 = @"YES";
-  if (!v6)
+  if (!requestParentalPermission)
   {
     v7 = @"NO";
   }

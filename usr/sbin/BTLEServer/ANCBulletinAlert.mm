@@ -9,95 +9,95 @@
 - (id)negativeActionLabel;
 - (id)subtitle;
 - (id)title;
-- (id)updateDNDEventDetails:(id)a3;
+- (id)updateDNDEventDetails:(id)details;
 @end
 
 @implementation ANCBulletinAlert
 
 - (BOOL)isSilent
 {
-  v2 = self;
-  v3 = [(ANCBulletinAlert *)self bulletin];
-  v4 = [v3 isLoading];
-  LOBYTE(v2) = [(ANCAlert *)v2 silent];
+  selfCopy = self;
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  isLoading = [bulletin isLoading];
+  LOBYTE(selfCopy) = [(ANCAlert *)selfCopy silent];
 
-  return v4 | v2;
+  return isLoading | selfCopy;
 }
 
 - (id)appIdentifier
 {
-  v2 = [(ANCBulletinAlert *)self bulletin];
-  v3 = [v2 sectionID];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  sectionID = [bulletin sectionID];
 
-  return v3;
+  return sectionID;
 }
 
 - (id)title
 {
-  v3 = [(ANCBulletinAlert *)self bulletin];
-  v4 = [v3 title];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  title = [bulletin title];
 
-  v5 = [(ANCBulletinAlert *)self bulletin];
-  v6 = v5;
-  if (v4)
+  bulletin2 = [(ANCBulletinAlert *)self bulletin];
+  v6 = bulletin2;
+  if (title)
   {
-    v7 = [v5 title];
-    v8 = [v7 substringWithValidUnicode];
+    title2 = [bulletin2 title];
+    substringWithValidUnicode = [title2 substringWithValidUnicode];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v5 sectionID];
+  sectionID = [bulletin2 sectionID];
 
-  if (v9)
+  if (sectionID)
   {
-    v10 = [(ANCBulletinAlert *)self bulletin];
-    v11 = [v10 sectionID];
-    v6 = [LSApplicationProxy applicationProxyForIdentifier:v11];
+    bulletin3 = [(ANCBulletinAlert *)self bulletin];
+    sectionID2 = [bulletin3 sectionID];
+    v6 = [LSApplicationProxy applicationProxyForIdentifier:sectionID2];
 
-    v8 = [v6 localizedName];
+    substringWithValidUnicode = [v6 localizedName];
     goto LABEL_5;
   }
 
-  v8 = 0;
+  substringWithValidUnicode = 0;
 LABEL_6:
 
-  return v8;
+  return substringWithValidUnicode;
 }
 
 - (id)subtitle
 {
-  v2 = [(ANCBulletinAlert *)self bulletin];
-  v3 = [v2 subtitle];
-  v4 = [v3 substringWithValidUnicode];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  subtitle = [bulletin subtitle];
+  substringWithValidUnicode = [subtitle substringWithValidUnicode];
 
-  return v4;
+  return substringWithValidUnicode;
 }
 
 - (id)message
 {
-  v2 = [(ANCBulletinAlert *)self bulletin];
-  v3 = [v2 message];
-  v4 = [v3 substringWithValidUnicode];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  message = [bulletin message];
+  substringWithValidUnicode = [message substringWithValidUnicode];
 
-  return v4;
+  return substringWithValidUnicode;
 }
 
 - (id)date
 {
-  v2 = [(ANCBulletinAlert *)self bulletin];
-  v3 = [v2 date];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  date = [bulletin date];
 
-  return v3;
+  return date;
 }
 
 - (BOOL)hasNegativeAction
 {
-  v2 = [(ANCBulletinAlert *)self bulletin];
-  v3 = [v2 clearable];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  clearable = [bulletin clearable];
 
-  return v3;
+  return clearable;
 }
 
 - (id)negativeActionLabel
@@ -111,136 +111,136 @@ LABEL_6:
 - (BOOL)performNegativeAction
 {
   observer = self->_observer;
-  v4 = [(ANCBulletinAlert *)self bulletin];
-  v5 = [NSSet setWithObject:v4];
-  v6 = [(ANCBulletinAlert *)self bulletin];
-  v7 = [v6 sectionID];
-  [(BBObserver *)observer clearBulletins:v5 inSection:v7];
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  v5 = [NSSet setWithObject:bulletin];
+  bulletin2 = [(ANCBulletinAlert *)self bulletin];
+  sectionID = [bulletin2 sectionID];
+  [(BBObserver *)observer clearBulletins:v5 inSection:sectionID];
 
   return 1;
 }
 
 - (BOOL)hasExtraContent
 {
-  v2 = [(ANCBulletinAlert *)self bulletin];
-  v3 = [v2 primaryAttachmentType] != 0;
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  v3 = [bulletin primaryAttachmentType] != 0;
 
   return v3;
 }
 
-- (id)updateDNDEventDetails:(id)a3
+- (id)updateDNDEventDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(ANCBulletinAlert *)self bulletin];
-  v6 = [v5 sectionID];
-  [v4 setBundleIdentifier:v6];
+  detailsCopy = details;
+  bulletin = [(ANCBulletinAlert *)self bulletin];
+  sectionID = [bulletin sectionID];
+  [detailsCopy setBundleIdentifier:sectionID];
 
-  v7 = [(ANCBulletinAlert *)self bulletin];
-  v8 = [v7 threadID];
-  v9 = [v8 length];
+  bulletin2 = [(ANCBulletinAlert *)self bulletin];
+  threadID = [bulletin2 threadID];
+  v9 = [threadID length];
 
-  v10 = [(ANCBulletinAlert *)self bulletin];
+  bulletin3 = [(ANCBulletinAlert *)self bulletin];
   if (v9)
   {
-    v11 = [v10 threadID];
-    [v4 setThreadIdentifier:v11];
+    threadID2 = [bulletin3 threadID];
+    [detailsCopy setThreadIdentifier:threadID2];
   }
 
   else
   {
-    v11 = [v10 sectionID];
-    v12 = [NSString stringWithFormat:@"req-%@", v11];
-    [v4 setThreadIdentifier:v12];
+    threadID2 = [bulletin3 sectionID];
+    v12 = [NSString stringWithFormat:@"req-%@", threadID2];
+    [detailsCopy setThreadIdentifier:v12];
   }
 
-  v13 = [(ANCBulletinAlert *)self bulletin];
-  v14 = [v13 filterCriteria];
-  [v4 setFilterCriteria:v14];
+  bulletin4 = [(ANCBulletinAlert *)self bulletin];
+  filterCriteria = [bulletin4 filterCriteria];
+  [detailsCopy setFilterCriteria:filterCriteria];
 
-  v15 = [(ANCBulletinAlert *)self bulletin];
-  v16 = [v15 publisherMatchID];
-  [v4 setIdentifier:v16];
+  bulletin5 = [(ANCBulletinAlert *)self bulletin];
+  publisherMatchID = [bulletin5 publisherMatchID];
+  [detailsCopy setIdentifier:publisherMatchID];
 
-  v17 = [(ANCBulletinAlert *)self bulletin];
-  v18 = [v17 communicationContext];
+  bulletin6 = [(ANCBulletinAlert *)self bulletin];
+  communicationContext = [bulletin6 communicationContext];
 
-  if (v18)
+  if (communicationContext)
   {
-    v19 = [v18 sender];
+    sender = [communicationContext sender];
     v20 = objc_alloc_init(DNDMutableContactHandle);
-    v21 = [v19 handleType];
-    if (v21 == 1)
+    handleType = [sender handleType];
+    if (handleType == 1)
     {
       v22 = 1;
     }
 
     else
     {
-      v22 = 2 * (v21 == 2);
+      v22 = 2 * (handleType == 2);
     }
 
     [v20 setType:v22];
-    v23 = [v19 handle];
-    [v20 setValue:v23];
+    handle = [sender handle];
+    [v20 setValue:handle];
 
-    [v4 setSender:v20];
+    [detailsCopy setSender:v20];
   }
 
-  v24 = [(ANCBulletinAlert *)self bulletin];
-  if ([v24 ignoresQuietMode])
+  bulletin7 = [(ANCBulletinAlert *)self bulletin];
+  if ([bulletin7 ignoresQuietMode])
   {
 
 LABEL_12:
     v27 = 2;
 LABEL_13:
-    [v4 setUrgency:v27];
+    [detailsCopy setUrgency:v27];
     goto LABEL_14;
   }
 
-  v25 = [(ANCBulletinAlert *)self bulletin];
-  v26 = [v25 interruptionLevel];
+  bulletin8 = [(ANCBulletinAlert *)self bulletin];
+  interruptionLevel = [bulletin8 interruptionLevel];
 
-  if (v26 == 3)
+  if (interruptionLevel == 3)
   {
     goto LABEL_12;
   }
 
-  v31 = [(ANCBulletinAlert *)self bulletin];
-  v32 = [v31 interruptionLevel];
+  bulletin9 = [(ANCBulletinAlert *)self bulletin];
+  interruptionLevel2 = [bulletin9 interruptionLevel];
 
-  if (v32 == 2)
+  if (interruptionLevel2 == 2)
   {
     v27 = 1;
     goto LABEL_13;
   }
 
 LABEL_14:
-  v28 = [(ANCBulletinAlert *)self bulletin];
-  v29 = [v28 contentType];
+  bulletin10 = [(ANCBulletinAlert *)self bulletin];
+  contentType = [bulletin10 contentType];
 
-  if ([v29 isEqualToString:BBBulletinContentTypeMessagingDirect])
+  if ([contentType isEqualToString:BBBulletinContentTypeMessagingDirect])
   {
     v30 = 3;
   }
 
-  else if ([v29 isEqualToString:BBBulletinContentTypeMessagingGroup])
+  else if ([contentType isEqualToString:BBBulletinContentTypeMessagingGroup])
   {
     v30 = 4;
   }
 
-  else if ([v29 isEqualToString:BBBulletinContentTypeVoicemail] & 1) != 0 || (objc_msgSend(v29, "isEqualToString:", BBBulletinContentTypeMissedCall) & 1) != 0 || (objc_msgSend(v29, "isEqualToString:", BBBulletinContentTypeCallOther))
+  else if ([contentType isEqualToString:BBBulletinContentTypeVoicemail] & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", BBBulletinContentTypeMissedCall) & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", BBBulletinContentTypeCallOther))
   {
     v30 = 2;
   }
 
   else
   {
-    v30 = [v29 isEqualToString:BBBulletinContentTypeIncomingCall];
+    v30 = [contentType isEqualToString:BBBulletinContentTypeIncomingCall];
   }
 
-  [v4 setType:v30];
+  [detailsCopy setType:v30];
 
-  return v4;
+  return detailsCopy;
 }
 
 @end

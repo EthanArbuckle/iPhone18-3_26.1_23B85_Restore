@@ -7,9 +7,9 @@
 - (void)_deactivateInterface;
 - (void)_invalidateInterfaceDeactivationTimer;
 - (void)_startInterfaceDeactivationTimerIfNeeded;
-- (void)associateNetwork:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)scanAvailableNetworksWithCompletion:(id)a3;
-- (void)wifiStatusWithCompletion:(id)a3;
+- (void)associateNetwork:(id)network password:(id)password completion:(id)completion;
+- (void)scanAvailableNetworksWithCompletion:(id)completion;
+- (void)wifiStatusWithCompletion:(id)completion;
 @end
 
 @implementation CWFRemoteInterfaceManager
@@ -46,10 +46,10 @@
   return v2;
 }
 
-- (void)scanAvailableNetworksWithCompletion:(id)a3
+- (void)scanAvailableNetworksWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = CWFGetOSLog();
   if (v5)
   {
@@ -76,28 +76,28 @@
   }
 
   objc_initWeak(location, self);
-  v8 = [(CWFRemoteInterfaceManager *)self requestQueue];
+  requestQueue = [(CWFRemoteInterfaceManager *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C19C3C;
   block[3] = &unk_1E86E6618;
   block[4] = self;
   objc_copyWeak(&v13, location);
-  v12 = v4;
-  v9 = v4;
-  dispatch_async(v8, block);
+  v12 = completionCopy;
+  v9 = completionCopy;
+  dispatch_async(requestQueue, block);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(location);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateNetwork:(id)a3 password:(id)a4 completion:(id)a5
+- (void)associateNetwork:(id)network password:(id)password completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  networkCopy = network;
+  passwordCopy = password;
+  completionCopy = completion;
   v11 = CWFGetOSLog();
   if (v11)
   {
@@ -124,30 +124,30 @@
   }
 
   objc_initWeak(location, self);
-  v14 = [(CWFRemoteInterfaceManager *)self requestQueue];
+  requestQueue = [(CWFRemoteInterfaceManager *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C1A33C;
   block[3] = &unk_1E86E6668;
   block[4] = self;
   objc_copyWeak(&v23, location);
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  dispatch_async(v14, block);
+  v20 = networkCopy;
+  v21 = passwordCopy;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = passwordCopy;
+  v17 = networkCopy;
+  dispatch_async(requestQueue, block);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(location);
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)wifiStatusWithCompletion:(id)a3
+- (void)wifiStatusWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = CWFGetOSLog();
   if (v5)
   {
@@ -174,16 +174,16 @@
   }
 
   objc_initWeak(location, self);
-  v8 = [(CWFRemoteInterfaceManager *)self requestQueue];
+  requestQueue = [(CWFRemoteInterfaceManager *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C1A9E4;
   block[3] = &unk_1E86E6618;
   block[4] = self;
   objc_copyWeak(&v13, location);
-  v12 = v4;
-  v9 = v4;
-  dispatch_async(v8, block);
+  v12 = completionCopy;
+  v9 = completionCopy;
+  dispatch_async(requestQueue, block);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(location);
@@ -195,24 +195,24 @@
   objc_initWeak(&location, self);
   if (![(CWFRemoteInterfaceManager *)self _isInterfaceDeactivationTimerValid])
   {
-    v3 = [(CWFRemoteInterfaceManager *)self requestQueue];
-    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v3);
+    requestQueue = [(CWFRemoteInterfaceManager *)self requestQueue];
+    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, requestQueue);
     [(CWFRemoteInterfaceManager *)self setInterfaceDeactivationTimer:v4];
 
-    v5 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
+    interfaceDeactivationTimer = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = sub_1E0C1AE64;
     v12 = &unk_1E86E6190;
     objc_copyWeak(&v13, &location);
-    dispatch_source_set_event_handler(v5, &v9);
+    dispatch_source_set_event_handler(interfaceDeactivationTimer, &v9);
 
     v6 = dispatch_time(0, 30000000000);
     v7 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer:v9];
     dispatch_source_set_timer(v7, v6, 0x6FC23AC00uLL, 0);
 
-    v8 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
-    dispatch_resume(v8);
+    interfaceDeactivationTimer2 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
+    dispatch_resume(interfaceDeactivationTimer2);
 
     objc_destroyWeak(&v13);
   }
@@ -223,13 +223,13 @@
 - (void)_invalidateInterfaceDeactivationTimer
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
-  if (v3)
+  interfaceDeactivationTimer = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
+  if (interfaceDeactivationTimer)
   {
-    v4 = v3;
-    v5 = [(CWFRemoteInterfaceManager *)self _isInterfaceDeactivationTimerValid];
+    v4 = interfaceDeactivationTimer;
+    _isInterfaceDeactivationTimerValid = [(CWFRemoteInterfaceManager *)self _isInterfaceDeactivationTimerValid];
 
-    if (v5)
+    if (_isInterfaceDeactivationTimerValid)
     {
       v6 = CWFGetOSLog();
       if (v6)
@@ -248,8 +248,8 @@
         _os_log_send_and_compose_impl();
       }
 
-      v9 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
-      dispatch_source_cancel(v9);
+      interfaceDeactivationTimer2 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
+      dispatch_source_cancel(interfaceDeactivationTimer2);
 
       [(CWFRemoteInterfaceManager *)self setInterfaceDeactivationTimer:0];
     }
@@ -260,11 +260,11 @@
 
 - (BOOL)_isInterfaceDeactivationTimerValid
 {
-  v3 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
-  if (v3)
+  interfaceDeactivationTimer = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
+  if (interfaceDeactivationTimer)
   {
-    v4 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    interfaceDeactivationTimer2 = [(CWFRemoteInterfaceManager *)self interfaceDeactivationTimer];
+    v5 = dispatch_source_testcancel(interfaceDeactivationTimer2) == 0;
   }
 
   else
@@ -279,9 +279,9 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = dispatch_get_current_queue();
-  v4 = [(CWFRemoteInterfaceManager *)self requestQueue];
+  requestQueue = [(CWFRemoteInterfaceManager *)self requestQueue];
 
-  if (v3 == v4)
+  if (v3 == requestQueue)
   {
     v6 = CWFGetOSLog();
     if (v6)
@@ -308,8 +308,8 @@
       _os_log_send_and_compose_impl();
     }
 
-    v9 = [(CWFRemoteInterfaceManager *)self interface];
-    v10 = v9 == 0;
+    interface = [(CWFRemoteInterfaceManager *)self interface];
+    v10 = interface == 0;
 
     if (v10)
     {
@@ -324,13 +324,13 @@
   else
   {
     objc_initWeak(location, self);
-    v5 = [(CWFRemoteInterfaceManager *)self requestQueue];
+    requestQueue2 = [(CWFRemoteInterfaceManager *)self requestQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C1B2D4;
     block[3] = &unk_1E86E6190;
     objc_copyWeak(&v17, location);
-    dispatch_async(v5, block);
+    dispatch_async(requestQueue2, block);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(location);
@@ -343,9 +343,9 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = dispatch_get_current_queue();
-  v4 = [(CWFRemoteInterfaceManager *)self requestQueue];
+  requestQueue = [(CWFRemoteInterfaceManager *)self requestQueue];
 
-  if (v3 == v4)
+  if (v3 == requestQueue)
   {
     v6 = CWFGetOSLog();
     if (v6)
@@ -370,8 +370,8 @@
       _os_log_send_and_compose_impl();
     }
 
-    v9 = [(CWFRemoteInterfaceManager *)self interface];
-    [v9 invalidate];
+    interface = [(CWFRemoteInterfaceManager *)self interface];
+    [interface invalidate];
 
     [(CWFRemoteInterfaceManager *)self setInterface:0];
   }
@@ -379,13 +379,13 @@
   else
   {
     objc_initWeak(location, self);
-    v5 = [(CWFRemoteInterfaceManager *)self requestQueue];
+    requestQueue2 = [(CWFRemoteInterfaceManager *)self requestQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C1B528;
     block[3] = &unk_1E86E6190;
     objc_copyWeak(&v12, location);
-    dispatch_async(v5, block);
+    dispatch_async(requestQueue2, block);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(location);

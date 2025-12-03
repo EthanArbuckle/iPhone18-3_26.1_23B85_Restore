@@ -1,23 +1,23 @@
 @interface HSPreferenceStage
-- (HSPreferenceStage)initWithUserDefaults:(id)a3 domain:(id)a4;
+- (HSPreferenceStage)initWithUserDefaults:(id)defaults domain:(id)domain;
 - (id).cxx_construct;
 - (void)_loadPreferences;
 - (void)_savePreferences;
 - (void)_updatePrefStages;
 - (void)restorePreferences;
-- (void)stage:(id)a3 postedNotification:(id)a4;
+- (void)stage:(id)stage postedNotification:(id)notification;
 @end
 
 @implementation HSPreferenceStage
 
-- (HSPreferenceStage)initWithUserDefaults:(id)a3 domain:(id)a4
+- (HSPreferenceStage)initWithUserDefaults:(id)defaults domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  defaultsCopy = defaults;
+  domainCopy = domain;
+  v10 = domainCopy;
+  if (defaultsCopy)
   {
-    if (v9)
+    if (domainCopy)
     {
       goto LABEL_3;
     }
@@ -44,19 +44,19 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_defaults, a3);
-    objc_storeStrong(&v12->_domain, a4);
+    objc_storeStrong(&v11->_defaults, defaults);
+    objc_storeStrong(&v12->_domain, domain);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (void)stage:(id)a3 postedNotification:(id)a4
+- (void)stage:(id)stage postedNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   HSUtil::ObjectLock::ObjectLock(v6, self);
-  if (!self->_state.ignoreNotifications && [v5 isEqual:HSPreferenceChangedNotification])
+  if (!self->_state.ignoreNotifications && [notificationCopy isEqual:HSPreferenceChangedNotification])
   {
     [(HSPreferenceStage *)self _savePreferences];
   }
@@ -103,7 +103,7 @@ LABEL_3:
 - (void)_savePreferences
 {
   [(HSPreferenceStage *)self _updatePrefStages];
-  v20 = self;
+  selfCopy = self;
   next = self->_state.prefStages.__table_.__first_node_.__next_;
   if (next)
   {
@@ -112,13 +112,13 @@ LABEL_3:
       v24 = next;
       WeakRetained = objc_loadWeakRetained(next + 2);
       context = objc_autoreleasePoolPush();
-      v27 = [WeakRetained preferences];
-      if (v27)
+      preferences = [WeakRetained preferences];
+      if (preferences)
       {
-        v26 = [WeakRetained name];
-        if (v26)
+        name = [WeakRetained name];
+        if (name)
         {
-          v5 = [(NSUserDefaults *)v20->_defaults dictionaryForKey:v20->_domain];
+          v5 = [(NSUserDefaults *)selfCopy->_defaults dictionaryForKey:selfCopy->_domain];
           v6 = [v5 mutableCopy];
 
           v7 = v6;
@@ -128,7 +128,7 @@ LABEL_3:
           }
 
           v21 = v7;
-          v22 = [v7 objectForKeyedSubscript:v26];
+          v22 = [v7 objectForKeyedSubscript:name];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -152,7 +152,7 @@ LABEL_3:
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v12 = v27;
+          v12 = preferences;
           v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
           if (v13)
           {
@@ -202,8 +202,8 @@ LABEL_3:
             while (v13);
           }
 
-          [v21 setObject:v11 forKeyedSubscript:v26];
-          [(NSUserDefaults *)v20->_defaults setObject:v21 forKey:v20->_domain];
+          [v21 setObject:v11 forKeyedSubscript:name];
+          [(NSUserDefaults *)selfCopy->_defaults setObject:v21 forKey:selfCopy->_domain];
         }
 
         else
@@ -263,14 +263,14 @@ LABEL_3:
       v20 = next;
       WeakRetained = objc_loadWeakRetained(next + 2);
       context = objc_autoreleasePoolPush();
-      v22 = [WeakRetained preferences];
-      if (v22)
+      preferences = [WeakRetained preferences];
+      if (preferences)
       {
-        v19 = [WeakRetained name];
-        if (v19)
+        name = [WeakRetained name];
+        if (name)
         {
           v18 = [(NSUserDefaults *)self->_defaults dictionaryForKey:self->_domain];
-          v5 = [v18 objectForKeyedSubscript:v19];
+          v5 = [v18 objectForKeyedSubscript:name];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -282,7 +282,7 @@ LABEL_3:
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v6 = v22;
+          v6 = preferences;
           v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v7)
           {

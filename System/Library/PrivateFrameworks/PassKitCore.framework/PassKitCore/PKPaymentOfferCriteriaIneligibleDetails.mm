@@ -1,8 +1,8 @@
 @interface PKPaymentOfferCriteriaIneligibleDetails
-+ (id)ineligibleDetailsWithReason:(unint64_t)a3 preferredLanguage:(id)a4 criteria:(id)a5 isWebPaymentRequest:(BOOL)a6;
-+ (id)ineligibleDetailsWithReason:(unint64_t)a3 preferredLanguage:(id)a4 overrideDisplayString:(id)a5 criteria:(id)a6 isWebPaymentRequest:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferCriteriaIneligibleDetails)initWithIneligibleDetailsWithReason:(unint64_t)a3 overrideDisplayString:(id)a4 preferredLanguage:(id)a5 criteria:(id)a6 isWebPaymentRequest:(BOOL)a7;
++ (id)ineligibleDetailsWithReason:(unint64_t)reason preferredLanguage:(id)language criteria:(id)criteria isWebPaymentRequest:(BOOL)request;
++ (id)ineligibleDetailsWithReason:(unint64_t)reason preferredLanguage:(id)language overrideDisplayString:(id)string criteria:(id)criteria isWebPaymentRequest:(BOOL)request;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferCriteriaIneligibleDetails)initWithIneligibleDetailsWithReason:(unint64_t)reason overrideDisplayString:(id)string preferredLanguage:(id)language criteria:(id)criteria isWebPaymentRequest:(BOOL)request;
 - (id)analyticsValue;
 - (id)description;
 - (unint64_t)hash;
@@ -10,52 +10,52 @@
 
 @implementation PKPaymentOfferCriteriaIneligibleDetails
 
-+ (id)ineligibleDetailsWithReason:(unint64_t)a3 preferredLanguage:(id)a4 criteria:(id)a5 isWebPaymentRequest:(BOOL)a6
++ (id)ineligibleDetailsWithReason:(unint64_t)reason preferredLanguage:(id)language criteria:(id)criteria isWebPaymentRequest:(BOOL)request
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[PKPaymentOfferCriteriaIneligibleDetails alloc] initWithIneligibleDetailsWithReason:a3 overrideDisplayString:0 preferredLanguage:v10 criteria:v9 isWebPaymentRequest:v6];
+  requestCopy = request;
+  criteriaCopy = criteria;
+  languageCopy = language;
+  v11 = [[PKPaymentOfferCriteriaIneligibleDetails alloc] initWithIneligibleDetailsWithReason:reason overrideDisplayString:0 preferredLanguage:languageCopy criteria:criteriaCopy isWebPaymentRequest:requestCopy];
 
   return v11;
 }
 
-+ (id)ineligibleDetailsWithReason:(unint64_t)a3 preferredLanguage:(id)a4 overrideDisplayString:(id)a5 criteria:(id)a6 isWebPaymentRequest:(BOOL)a7
++ (id)ineligibleDetailsWithReason:(unint64_t)reason preferredLanguage:(id)language overrideDisplayString:(id)string criteria:(id)criteria isWebPaymentRequest:(BOOL)request
 {
-  v7 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[PKPaymentOfferCriteriaIneligibleDetails alloc] initWithIneligibleDetailsWithReason:a3 overrideDisplayString:v12 preferredLanguage:v13 criteria:v11 isWebPaymentRequest:v7];
+  requestCopy = request;
+  criteriaCopy = criteria;
+  stringCopy = string;
+  languageCopy = language;
+  v14 = [[PKPaymentOfferCriteriaIneligibleDetails alloc] initWithIneligibleDetailsWithReason:reason overrideDisplayString:stringCopy preferredLanguage:languageCopy criteria:criteriaCopy isWebPaymentRequest:requestCopy];
 
   return v14;
 }
 
-- (PKPaymentOfferCriteriaIneligibleDetails)initWithIneligibleDetailsWithReason:(unint64_t)a3 overrideDisplayString:(id)a4 preferredLanguage:(id)a5 criteria:(id)a6 isWebPaymentRequest:(BOOL)a7
+- (PKPaymentOfferCriteriaIneligibleDetails)initWithIneligibleDetailsWithReason:(unint64_t)reason overrideDisplayString:(id)string preferredLanguage:(id)language criteria:(id)criteria isWebPaymentRequest:(BOOL)request
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v14 type] == 1)
+  stringCopy = string;
+  languageCopy = language;
+  criteriaCopy = criteria;
+  if ([criteriaCopy type] == 1)
   {
-    v24 = a7;
-    v15 = v13;
-    v16 = v12;
-    v17 = v14;
-    v18 = [v17 supportedCurrencyCodes];
-    v19 = [v17 minimumAmounts];
-    v20 = [v17 maximumAmounts];
+    requestCopy = request;
+    v15 = languageCopy;
+    v16 = stringCopy;
+    v17 = criteriaCopy;
+    supportedCurrencyCodes = [v17 supportedCurrencyCodes];
+    minimumAmounts = [v17 minimumAmounts];
+    maximumAmounts = [v17 maximumAmounts];
 
-    v12 = v16;
-    v13 = v15;
-    a7 = v24;
+    stringCopy = v16;
+    languageCopy = v15;
+    request = requestCopy;
   }
 
   else
   {
-    v18 = 0;
-    v19 = 0;
-    v20 = 0;
+    supportedCurrencyCodes = 0;
+    minimumAmounts = 0;
+    maximumAmounts = 0;
   }
 
   v26.receiver = self;
@@ -64,13 +64,13 @@
   v22 = v21;
   if (v21)
   {
-    v21->_reason = a3;
-    objc_storeStrong(&v21->_overrideDisplayString, a4);
-    objc_storeStrong(&v22->_preferredLanguage, a5);
-    objc_storeStrong(&v22->_supportedCurrencyCodes, v18);
-    v22->_isWebPaymentRequest = a7;
-    objc_storeStrong(&v22->_minimumAmounts, v19);
-    objc_storeStrong(&v22->_maximumAmounts, v20);
+    v21->_reason = reason;
+    objc_storeStrong(&v21->_overrideDisplayString, string);
+    objc_storeStrong(&v22->_preferredLanguage, language);
+    objc_storeStrong(&v22->_supportedCurrencyCodes, supportedCurrencyCodes);
+    v22->_isWebPaymentRequest = request;
+    objc_storeStrong(&v22->_minimumAmounts, minimumAmounts);
+    objc_storeStrong(&v22->_maximumAmounts, maximumAmounts);
   }
 
   return v22;
@@ -92,18 +92,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

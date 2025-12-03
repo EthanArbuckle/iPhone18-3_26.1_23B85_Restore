@@ -1,52 +1,52 @@
 @interface PHFaceCropChangeRequest
-+ (id)_creationRequestForFaceCropWithOriginatingFace:(id)a3 resourceData:(id)a4 person:(id)a5;
-+ (id)_creationRequestForFaceCropWithOriginatingFace:(id)a3 resourceData:(id)a4 personLocalIdentifier:(id)a5;
-+ (id)creationRequestForFaceCropCopyFromFaceCrop:(id)a3 withType:(signed __int16)a4 onPerson:(id)a5;
-+ (id)creationRequestsForFaceCropsWithOriginatingFace:(id)a3 resourceData:(id)a4;
-+ (void)deleteFaceCrops:(id)a3;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
++ (id)_creationRequestForFaceCropWithOriginatingFace:(id)face resourceData:(id)data person:(id)person;
++ (id)_creationRequestForFaceCropWithOriginatingFace:(id)face resourceData:(id)data personLocalIdentifier:(id)identifier;
++ (id)creationRequestForFaceCropCopyFromFaceCrop:(id)crop withType:(signed __int16)type onPerson:(id)person;
++ (id)creationRequestsForFaceCropsWithOriginatingFace:(id)face resourceData:(id)data;
++ (void)deleteFaceCrops:(id)crops;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (NSData)resourceData;
-- (PHFaceCropChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHFaceCropChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHFaceCropChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHFaceCropChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedFaceCrop;
 - (id)_mutableFaceObjectIDsAndUUIDs;
 - (id)_mutablePersonObjectIDsAndUUIDs;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (signed)state;
 - (signed)type;
 - (void)_prepareFaceHelperIfNeeded;
 - (void)_preparePersonHelperIfNeeded;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setFace:(id)a3;
-- (void)setResourceData:(id)a3;
-- (void)setState:(signed __int16)a3;
-- (void)setType:(signed __int16)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setFace:(id)face;
+- (void)setResourceData:(id)data;
+- (void)setState:(signed __int16)state;
+- (void)setType:(signed __int16)type;
 @end
 
 @implementation PHFaceCropChangeRequest
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  libraryCopy = library;
+  helper = [(PHChangeRequest *)self helper];
   v43 = 0;
-  v11 = [v10 applyMutationsToManagedObject:v8 error:&v43];
+  v11 = [helper applyMutationsToManagedObject:objectCopy error:&v43];
   v12 = v43;
 
-  v13 = [(PHFaceCropChangeRequest *)self faceHelper];
-  v14 = v13;
+  faceHelper = [(PHFaceCropChangeRequest *)self faceHelper];
+  v14 = faceHelper;
   if (v11)
   {
-    v15 = [v13 mutableObjectIDsAndUUIDs];
-    v16 = [v15 count];
+    mutableObjectIDsAndUUIDs = [faceHelper mutableObjectIDsAndUUIDs];
+    v16 = [mutableObjectIDsAndUUIDs count];
 
     if (v16)
     {
-      v17 = v8;
-      v18 = [v17 face];
+      v17 = objectCopy;
+      face = [v17 face];
       [v14 setAllowsInsert:1];
       [v14 setDestinationEntityName:@"DetectedFace"];
       [v14 setIsDestinationObjectValid:&__block_literal_global_112];
@@ -56,41 +56,41 @@
 
       if (v19)
       {
-        v38 = v18;
+        v38 = face;
         v20 = v17;
-        v21 = [v20 face];
-        v39 = [v21 objectID];
+        face2 = [v20 face];
+        objectID = [face2 objectID];
 
         [v20 applyPropertiesToTrainingFace];
-        v22 = [v20 face];
-        v23 = [v22 trainingType];
-        v24 = v23 != 0;
+        face3 = [v20 face];
+        trainingType = [face3 trainingType];
+        v24 = trainingType != 0;
 
-        if (!v23)
+        if (!trainingType)
         {
           v25 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:@"Adding a training face to a face crop with 'None' type is invalid"];
 
           v40 = v25;
         }
 
-        v18 = v38;
-        v26 = v39;
+        face = v38;
+        v26 = objectID;
         if (v38)
         {
-          if (v39)
+          if (objectID)
           {
-            v27 = [v38 objectID];
-            v28 = [v27 isEqual:v39];
+            objectID2 = [v38 objectID];
+            v28 = [objectID2 isEqual:objectID];
 
-            v18 = v38;
-            v26 = v39;
+            face = v38;
+            v26 = objectID;
             if ((v28 & 1) == 0)
             {
-              v29 = [v9 managedObjectContext];
-              [v29 deleteObject:v38];
+              managedObjectContext = [libraryCopy managedObjectContext];
+              [managedObjectContext deleteObject:v38];
 
-              v18 = v38;
-              v26 = v39;
+              face = v38;
+              v26 = objectID;
             }
           }
         }
@@ -115,12 +115,12 @@
     v24 = 0;
   }
 
-  v30 = [(PHFaceCropChangeRequest *)self personHelper];
-  v31 = v30;
+  personHelper = [(PHFaceCropChangeRequest *)self personHelper];
+  v31 = personHelper;
   if (v24)
   {
-    v32 = [v30 mutableObjectIDsAndUUIDs];
-    v33 = [v32 count];
+    mutableObjectIDsAndUUIDs2 = [personHelper mutableObjectIDsAndUUIDs];
+    v33 = [mutableObjectIDsAndUUIDs2 count];
 
     if (!v33)
     {
@@ -134,7 +134,7 @@
     [v31 setDestinationUUIDKeyPath:@"personUUID"];
     [v31 setIsDestinationObjectValid:&__block_literal_global_118];
     v41 = v12;
-    v34 = [v31 applyMutationsToManagedObjectToOneRelationship:v8 error:&v41];
+    v34 = [v31 applyMutationsToManagedObjectToOneRelationship:objectCopy error:&v41];
     v35 = v41;
 
     v12 = v35;
@@ -145,11 +145,11 @@
     v34 = 0;
   }
 
-  if (a5 && (v34 & 1) == 0)
+  if (error && (v34 & 1) == 0)
   {
     v36 = v12;
     v34 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_23:
@@ -174,18 +174,18 @@ BOOL __76__PHFaceCropChangeRequest_applyMutationsToManagedObject_photoLibrary_er
   return v2 == 0;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
+  libraryCopy = library;
+  originatingFaceCropUUID = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
 
-  if (!v7)
+  if (!originatingFaceCropUUID)
   {
     v20 = MEMORY[0x1E69BE3D0];
-    v21 = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
-    v22 = [v6 managedObjectContext];
-    v23 = [v20 detectedFaceWithUUID:v21 inManagedObjectContext:v22];
+    originatingFaceUUID = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v23 = [v20 detectedFaceWithUUID:originatingFaceUUID inManagedObjectContext:managedObjectContext];
 
     v24 = [v23 associatedAssetForFaceOrTorso:0 orTemporal:0];
     if (v24)
@@ -205,32 +205,32 @@ BOOL __76__PHFaceCropChangeRequest_applyMutationsToManagedObject_photoLibrary_er
       v14 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:{@"Attempting to create a face crop for a face with no asset, this is not allowed"}];
     }
 
-    v26 = [(PHFaceCropChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
-    v27 = [v26 firstObject];
+    _mutablePersonObjectIDsAndUUIDs = [(PHFaceCropChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
+    firstObject = [_mutablePersonObjectIDsAndUUIDs firstObject];
 
     v28 = MEMORY[0x1E69BE608];
-    v29 = [v6 managedObjectContext];
-    v30 = [v28 personWithUUID:v27 inManagedObjectContext:v29];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    v30 = [v28 personWithUUID:firstObject inManagedObjectContext:managedObjectContext2];
 
     if (!v24)
     {
       goto LABEL_39;
     }
 
-    v31 = [v23 rejectedPersons];
-    v32 = [v31 containsObject:v30];
+    rejectedPersons = [v23 rejectedPersons];
+    v32 = [rejectedPersons containsObject:v30];
 
     if (v32)
     {
       v55 = v23;
-      v58 = v27;
+      v58 = firstObject;
       v33 = v30;
       v34 = 2;
 LABEL_19:
       v35 = MEMORY[0x1E69BE410];
-      v36 = [(PHChangeRequest *)self uuid];
-      v37 = [(PHFaceCropChangeRequest *)self resourceData];
-      v11 = [v35 insertIntoPhotoLibrary:v6 withUUID:v36 resourceData:v37 type:v34];
+      uuid = [(PHChangeRequest *)self uuid];
+      resourceData = [(PHFaceCropChangeRequest *)self resourceData];
+      v11 = [v35 insertIntoPhotoLibrary:libraryCopy withUUID:uuid resourceData:resourceData type:v34];
 
       if (v11)
       {
@@ -240,24 +240,24 @@ LABEL_19:
         {
           v23 = v55;
           v38 = [v55 associatedPersonForFaceOrTorso:1 orTemporal:0];
-          v39 = [v30 invalidMergeCandidates];
-          v40 = [v39 containsObject:v38];
+          invalidMergeCandidates = [v30 invalidMergeCandidates];
+          v40 = [invalidMergeCandidates containsObject:v38];
 
           if (v40)
           {
-            v41 = [v38 personUUID];
-            [v11 setInvalidMergeCandidatePersonUUID:v41];
+            personUUID = [v38 personUUID];
+            [v11 setInvalidMergeCandidatePersonUUID:personUUID];
           }
 
           v42 = 1;
-          v27 = v58;
+          firstObject = v58;
         }
 
         else
         {
           v42 = 1;
           v23 = v55;
-          v27 = v58;
+          firstObject = v58;
         }
 
         goto LABEL_44;
@@ -274,7 +274,7 @@ LABEL_19:
       v45 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Unable to insert face crop into photo library"];
       v43 = v14;
       v23 = v55;
-      v27 = v58;
+      firstObject = v58;
       goto LABEL_38;
     }
 
@@ -286,7 +286,7 @@ LABEL_19:
         if ([v23 nameSource] == 1)
         {
           v55 = v23;
-          v58 = v27;
+          v58 = firstObject;
           v34 = 1;
 LABEL_49:
           v33 = v30;
@@ -297,15 +297,15 @@ LABEL_49:
         if ([v23 nameSource] == 3)
         {
           v55 = v23;
-          v58 = v27;
+          v58 = firstObject;
           v34 = 3;
           goto LABEL_49;
         }
 
         v61 = MEMORY[0x1E696AEC0];
-        v54 = [v23 namingDescription];
-        v57 = [v30 pointerDescription];
-        v60 = [v61 stringWithFormat:@"Cannot create face crop for face %@ with invalid nameSource for user-verified person %@", v54, v57];
+        namingDescription = [v23 namingDescription];
+        pointerDescription = [v30 pointerDescription];
+        v60 = [v61 stringWithFormat:@"Cannot create face crop for face %@ with invalid nameSource for user-verified person %@", namingDescription, pointerDescription];
 
         v53 = PLPhotoKitGetLog();
         if (!os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -324,19 +324,19 @@ LABEL_55:
 LABEL_38:
         v14 = v45;
 LABEL_39:
-        if (a4)
+        if (error)
         {
           if (!v14)
           {
             v47 = MEMORY[0x1E696ABC0];
-            v48 = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
-            v14 = [v47 ph_genericErrorWithLocalizedDescription:{@"Unable to create face crops for originating face UUID %@ and person UUID %@", v48, v27}];
+            originatingFaceUUID2 = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
+            v14 = [v47 ph_genericErrorWithLocalizedDescription:{@"Unable to create face crops for originating face UUID %@ and person UUID %@", originatingFaceUUID2, firstObject}];
           }
 
           v49 = v14;
           v42 = 0;
           v11 = 0;
-          *a4 = v14;
+          *error = v14;
         }
 
         else
@@ -360,15 +360,15 @@ LABEL_44:
         if ([v23 nameSource] == 5)
         {
           v55 = v23;
-          v58 = v27;
+          v58 = firstObject;
           v34 = 5;
           goto LABEL_49;
         }
 
         v59 = MEMORY[0x1E696AEC0];
-        v52 = [v23 namingDescription];
-        v56 = [v30 pointerDescription];
-        v60 = [v59 stringWithFormat:@"Cannot create face crop for face %@ with invalid nameSource for graph-verified person %@", v52, v56];
+        namingDescription2 = [v23 namingDescription];
+        pointerDescription2 = [v30 pointerDescription];
+        v60 = [v59 stringWithFormat:@"Cannot create face crop for face %@ with invalid nameSource for graph-verified person %@", namingDescription2, pointerDescription2];
 
         v53 = PLPhotoKitGetLog();
         if (!os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -395,14 +395,14 @@ LABEL_44:
   }
 
   v8 = MEMORY[0x1E69BE410];
-  v9 = [(PHChangeRequest *)self uuid];
-  v10 = [(PHFaceCropChangeRequest *)self resourceData];
-  v11 = [v8 insertIntoPhotoLibrary:v6 withUUID:v9 resourceData:v10 type:{-[PHFaceCropChangeRequest type](self, "type")}];
+  uuid2 = [(PHChangeRequest *)self uuid];
+  resourceData2 = [(PHFaceCropChangeRequest *)self resourceData];
+  v11 = [v8 insertIntoPhotoLibrary:libraryCopy withUUID:uuid2 resourceData:resourceData2 type:{-[PHFaceCropChangeRequest type](self, "type")}];
 
   [v11 setState:0];
-  v12 = [(PHFaceCropChangeRequest *)self personHelper];
-  v13 = [v12 mutableObjectIDsAndUUIDs];
-  v14 = [v13 count];
+  personHelper = [(PHFaceCropChangeRequest *)self personHelper];
+  mutableObjectIDsAndUUIDs = [personHelper mutableObjectIDsAndUUIDs];
+  v14 = [mutableObjectIDsAndUUIDs count];
 
   if (!v14)
   {
@@ -410,15 +410,15 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  [v12 setAllowsInsert:1];
-  [v12 setDestinationEntityName:@"Person"];
-  [v12 setDestinationUUIDKeyPath:@"personUUID"];
-  [v12 setIsDestinationObjectValid:&__block_literal_global_17808];
+  [personHelper setAllowsInsert:1];
+  [personHelper setDestinationEntityName:@"Person"];
+  [personHelper setDestinationUUIDKeyPath:@"personUUID"];
+  [personHelper setIsDestinationObjectValid:&__block_literal_global_17808];
   v62 = 0;
-  v15 = [v12 applyMutationsToManagedObjectToOneRelationship:v11 error:&v62];
+  v15 = [personHelper applyMutationsToManagedObjectToOneRelationship:v11 error:&v62];
   v14 = v62;
 
-  if (!a4 || (v15 & 1) != 0)
+  if (!error || (v15 & 1) != 0)
   {
     if ((v15 & 1) == 0)
     {
@@ -435,53 +435,53 @@ LABEL_45:
   if (!v14)
   {
     v16 = MEMORY[0x1E696ABC0];
-    v17 = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
-    v14 = [v16 ph_genericErrorWithLocalizedDescription:{@"Unable to create face crops from originating face crop with UUID %@", v17}];
+    originatingFaceCropUUID2 = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
+    v14 = [v16 ph_genericErrorWithLocalizedDescription:{@"Unable to create face crops from originating face crop with UUID %@", originatingFaceCropUUID2}];
   }
 
   v18 = v14;
   v19 = 0;
-  *a4 = v14;
+  *error = v14;
 LABEL_46:
   v50 = v19;
 
   return v19;
 }
 
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
+  originatingFaceCropUUID = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
 
-  if (v6)
+  if (originatingFaceCropUUID)
   {
     return 1;
   }
 
-  v8 = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
+  originatingFaceUUID = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
 
-  if (v8)
+  if (originatingFaceUUID)
   {
-    v9 = [(PHFaceCropChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
-    v10 = [v9 count];
+    _mutablePersonObjectIDsAndUUIDs = [(PHFaceCropChangeRequest *)self _mutablePersonObjectIDsAndUUIDs];
+    v10 = [_mutablePersonObjectIDsAndUUIDs count];
 
     if (v10 == 1)
     {
       return 1;
     }
 
-    if (a4)
+    if (error)
     {
       v11 = @"All FaceCrops require a person";
 LABEL_9:
       v12 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:v11];
       v13 = v12;
       result = 0;
-      *a4 = v12;
+      *error = v12;
       return result;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = @"All FaceCrops require an originating face UUID";
     goto LABEL_9;
@@ -490,46 +490,46 @@ LABEL_9:
   return 0;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  v6 = [(PHFaceCropChangeRequest *)self faceHelper];
-  [v6 encodeToXPCDict:v4];
+  faceHelper = [(PHFaceCropChangeRequest *)self faceHelper];
+  [faceHelper encodeToXPCDict:dictCopy];
 
-  v7 = [(PHFaceCropChangeRequest *)self personHelper];
-  [v7 encodeToXPCDict:v4];
+  personHelper = [(PHFaceCropChangeRequest *)self personHelper];
+  [personHelper encodeToXPCDict:dictCopy];
 
-  v8 = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
+  originatingFaceUUID = [(PHFaceCropChangeRequest *)self originatingFaceUUID];
   PLXPCDictionarySetString();
 
-  v9 = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
+  originatingFaceCropUUID = [(PHFaceCropChangeRequest *)self originatingFaceCropUUID];
   PLXPCDictionarySetString();
 }
 
-- (PHFaceCropChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHFaceCropChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v23.receiver = self;
   v23.super_class = PHFaceCropChangeRequest;
   v11 = [(PHChangeRequest *)&v23 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
     if (v12)
     {
-      v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"face" xpcDict:v8 changeRequestHelper:v11->super._helper];
+      v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"face" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
       faceHelper = v11->_faceHelper;
       v11->_faceHelper = v14;
 
-      v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"person" xpcDict:v8 changeRequestHelper:v11->super._helper];
+      v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"person" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
       personHelper = v11->_personHelper;
       v11->_personHelper = v16;
 
@@ -546,110 +546,110 @@ LABEL_9:
   return v11;
 }
 
-- (void)setType:(signed __int16)a3
+- (void)setType:(signed __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"type"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"type"];
 }
 
 - (signed)type
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"type"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"type"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setState:(signed __int16)a3
+- (void)setState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"state"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"state"];
 }
 
 - (signed)state
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"state"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"state"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setResourceData:(id)a3
+- (void)setResourceData:(id)data
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dataCopy = data;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dataCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"resourceData"];
+    [mutations setObject:dataCopy forKeyedSubscript:@"resourceData"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"resourceData"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"resourceData"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"resourceData"];
+    [mutations removeObjectForKey:@"resourceData"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"resourceData"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"resourceData"];
   }
 }
 
 - (NSData)resourceData
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"resourceData"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"resourceData"];
 
   return v5;
 }
 
-- (void)setFace:(id)a3
+- (void)setFace:(id)face
 {
-  v9 = a3;
+  faceCopy = face;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PHFaceCropChangeRequest.m" lineNumber:160 description:{@"face has incorrect class: %@", v9}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHFaceCropChangeRequest.m" lineNumber:160 description:{@"face has incorrect class: %@", faceCopy}];
     }
   }
 
-  v5 = PLObjectIDOrUUIDFromPHObject(v9);
-  v6 = [(PHFaceCropChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
-  [v6 removeAllObjects];
+  v5 = PLObjectIDOrUUIDFromPHObject(faceCopy);
+  _mutableFaceObjectIDsAndUUIDs = [(PHFaceCropChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
+  [_mutableFaceObjectIDsAndUUIDs removeAllObjects];
 
-  v7 = [(PHFaceCropChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
-  [v7 addObject:v5];
+  _mutableFaceObjectIDsAndUUIDs2 = [(PHFaceCropChangeRequest *)self _mutableFaceObjectIDsAndUUIDs];
+  [_mutableFaceObjectIDsAndUUIDs2 addObject:v5];
 }
 
 - (id)_mutablePersonObjectIDsAndUUIDs
@@ -671,20 +671,20 @@ LABEL_9:
 - (void)_preparePersonHelperIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_personHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_personHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     [(PHRelationshipChangeRequestHelper *)self->_personHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
   }
 
-  v4 = [(PHRelationshipChangeRequestHelper *)self->_personHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_personHelper mutableObjectIDsAndUUIDs];
 
-  if (!v4)
+  if (!mutableObjectIDsAndUUIDs)
   {
     personHelper = self->_personHelper;
-    v7 = [(PHRelationshipChangeRequestHelper *)personHelper originalObjectIDs];
-    v6 = [v7 mutableCopy];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)personHelper originalObjectIDs];
+    v6 = [originalObjectIDs2 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)personHelper setMutableObjectIDsAndUUIDs:v6];
   }
 }
@@ -692,42 +692,42 @@ LABEL_9:
 - (void)_prepareFaceHelperIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_faceHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_faceHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     [(PHRelationshipChangeRequestHelper *)self->_faceHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
   }
 
-  v4 = [(PHRelationshipChangeRequestHelper *)self->_faceHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_faceHelper mutableObjectIDsAndUUIDs];
 
-  if (!v4)
+  if (!mutableObjectIDsAndUUIDs)
   {
     faceHelper = self->_faceHelper;
-    v7 = [(PHRelationshipChangeRequestHelper *)faceHelper originalObjectIDs];
-    v6 = [v7 mutableCopy];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)faceHelper originalObjectIDs];
+    v6 = [originalObjectIDs2 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)faceHelper setMutableObjectIDsAndUUIDs:v6];
   }
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedFaceCrop
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (PHFaceCropChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHFaceCropChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = PHFaceCropChangeRequest;
   v8 = [(PHChangeRequest *)&v16 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -766,28 +766,28 @@ LABEL_9:
   return v2;
 }
 
-+ (void)deleteFaceCrops:(id)a3
++ (void)deleteFaceCrops:(id)crops
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHFaceCropDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  cropsCopy = crops;
+  v4 = [(PHObjectDeleteRequest *)PHFaceCropDeleteRequest deleteRequestsForObjects:cropsCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)creationRequestsForFaceCropsWithOriginatingFace:(id)a3 resourceData:(id)a4
++ (id)creationRequestsForFaceCropsWithOriginatingFace:(id)face resourceData:(id)data
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v23 = a4;
+  faceCopy = face;
+  dataCopy = data;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [v6 photoLibrary];
-  v9 = [v8 managedObjectContextForCurrentQueueQoS];
+  photoLibrary = [faceCopy photoLibrary];
+  managedObjectContextForCurrentQueueQoS = [photoLibrary managedObjectContextForCurrentQueueQoS];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __88__PHFaceCropChangeRequest_creationRequestsForFaceCropsWithOriginatingFace_resourceData___block_invoke;
   v28[3] = &unk_1E75AB248;
-  v10 = v6;
+  v10 = faceCopy;
   v29 = v10;
-  v30 = v9;
+  v30 = managedObjectContextForCurrentQueueQoS;
   v11 = v7;
   v31 = v11;
   v22 = v30;
@@ -813,7 +813,7 @@ LABEL_9:
         }
 
         v18 = [(PHObject *)PHPerson localIdentifierWithUUID:*(*(&v24 + 1) + 8 * i)];
-        v19 = [a1 _creationRequestForFaceCropWithOriginatingFace:v10 resourceData:v23 personLocalIdentifier:v18];
+        v19 = [self _creationRequestForFaceCropWithOriginatingFace:v10 resourceData:dataCopy personLocalIdentifier:v18];
         [v12 addObject:v19];
       }
 
@@ -897,54 +897,54 @@ void __88__PHFaceCropChangeRequest_creationRequestsForFaceCropsWithOriginatingFa
   }
 }
 
-+ (id)_creationRequestForFaceCropWithOriginatingFace:(id)a3 resourceData:(id)a4 person:(id)a5
++ (id)_creationRequestForFaceCropWithOriginatingFace:(id)face resourceData:(id)data person:(id)person
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 localIdentifier];
-  v11 = [a1 _creationRequestForFaceCropWithOriginatingFace:v9 resourceData:v8 personLocalIdentifier:v10];
+  dataCopy = data;
+  faceCopy = face;
+  localIdentifier = [person localIdentifier];
+  v11 = [self _creationRequestForFaceCropWithOriginatingFace:faceCopy resourceData:dataCopy personLocalIdentifier:localIdentifier];
 
   return v11;
 }
 
-+ (id)_creationRequestForFaceCropWithOriginatingFace:(id)a3 resourceData:(id)a4 personLocalIdentifier:(id)a5
++ (id)_creationRequestForFaceCropWithOriginatingFace:(id)face resourceData:(id)data personLocalIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initForNewObject];
-  [v11 setResourceData:v9];
+  identifierCopy = identifier;
+  dataCopy = data;
+  faceCopy = face;
+  initForNewObject = [[self alloc] initForNewObject];
+  [initForNewObject setResourceData:dataCopy];
 
-  v12 = [v10 uuid];
+  uuid = [faceCopy uuid];
 
-  [v11 setOriginatingFaceUUID:v12];
-  v13 = [v11 _mutablePersonObjectIDsAndUUIDs];
-  v14 = [PHObject uuidFromLocalIdentifier:v8];
+  [initForNewObject setOriginatingFaceUUID:uuid];
+  _mutablePersonObjectIDsAndUUIDs = [initForNewObject _mutablePersonObjectIDsAndUUIDs];
+  v14 = [PHObject uuidFromLocalIdentifier:identifierCopy];
 
-  [v13 addObject:v14];
+  [_mutablePersonObjectIDsAndUUIDs addObject:v14];
 
-  return v11;
+  return initForNewObject;
 }
 
-+ (id)creationRequestForFaceCropCopyFromFaceCrop:(id)a3 withType:(signed __int16)a4 onPerson:(id)a5
++ (id)creationRequestForFaceCropCopyFromFaceCrop:(id)crop withType:(signed __int16)type onPerson:(id)person
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initForNewObject];
-  v11 = [v9 uuid];
-  [v10 setOriginatingFaceCropUUID:v11];
+  typeCopy = type;
+  personCopy = person;
+  cropCopy = crop;
+  initForNewObject = [[self alloc] initForNewObject];
+  uuid = [cropCopy uuid];
+  [initForNewObject setOriginatingFaceCropUUID:uuid];
 
-  v12 = [v9 resourceData];
+  resourceData = [cropCopy resourceData];
 
-  [v10 setResourceData:v12];
-  [v10 setType:v5];
-  v13 = [v10 _mutablePersonObjectIDsAndUUIDs];
-  v14 = PLObjectIDOrUUIDFromPHObject(v8);
+  [initForNewObject setResourceData:resourceData];
+  [initForNewObject setType:typeCopy];
+  _mutablePersonObjectIDsAndUUIDs = [initForNewObject _mutablePersonObjectIDsAndUUIDs];
+  v14 = PLObjectIDOrUUIDFromPHObject(personCopy);
 
-  [v13 addObject:v14];
+  [_mutablePersonObjectIDsAndUUIDs addObject:v14];
 
-  return v10;
+  return initForNewObject;
 }
 
 @end

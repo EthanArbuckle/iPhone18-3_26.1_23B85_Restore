@@ -1,45 +1,45 @@
 @interface AXUpdateAssetTask
-- (AXUpdateAssetTask)initWithPolicy:(id)a3 context:(id)a4;
+- (AXUpdateAssetTask)initWithPolicy:(id)policy context:(id)context;
 - (void)_housekeeping_op1_refreshAssets;
-- (void)_housekeeping_op2_purgeAssets:(id)a3;
-- (void)_housekeeping_op3_downloadAssets:(id)a3;
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishPurgingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
+- (void)_housekeeping_op2_purgeAssets:(id)assets;
+- (void)_housekeeping_op3_downloadAssets:(id)assets;
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishPurgingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
 @end
 
 @implementation AXUpdateAssetTask
 
-- (AXUpdateAssetTask)initWithPolicy:(id)a3 context:(id)a4
+- (AXUpdateAssetTask)initWithPolicy:(id)policy context:(id)context
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100006C60;
   v10[3] = &unk_100018960;
-  v11 = a3;
+  policyCopy = policy;
   v9.receiver = self;
   v9.super_class = AXUpdateAssetTask;
-  v6 = v11;
-  v7 = [(AXManagedAssetTask *)&v9 initWithName:@"Update Assets" policy:v6 context:a4 block:v10];
+  v6 = policyCopy;
+  v7 = [(AXManagedAssetTask *)&v9 initWithName:@"Update Assets" policy:v6 context:context block:v10];
 
   return v7;
 }
 
 - (void)_housekeeping_op1_refreshAssets
 {
-  v3 = [(AXUpdateAssetTask *)self _restorationState];
-  v4 = [v3 hasCompletedRefreshingAssets];
+  _restorationState = [(AXUpdateAssetTask *)self _restorationState];
+  hasCompletedRefreshingAssets = [_restorationState hasCompletedRefreshingAssets];
 
-  v5 = AXLogAssetDaemon();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  restorationState2 = AXLogAssetDaemon();
+  v6 = os_log_type_enabled(restorationState2, OS_LOG_TYPE_DEFAULT);
+  if (hasCompletedRefreshingAssets)
   {
     if (v6)
     {
       *buf = 138412290;
-      v13 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Restoration state: 'hasCompletedRefreshingAssets'. Moving on to next step", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, restorationState2, OS_LOG_TYPE_DEFAULT, "%@: Restoration state: 'hasCompletedRefreshingAssets'. Moving on to next step", buf, 0xCu);
     }
   }
 
@@ -47,50 +47,50 @@
   {
     if (v6)
     {
-      v7 = [(AXManagedAssetTask *)self restorationState];
+      restorationState = [(AXManagedAssetTask *)self restorationState];
       *buf = 138412546;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
-      v15 = v7;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: About to refresh assets. Restoration: %@", buf, 0x16u);
+      v15 = restorationState;
+      _os_log_impl(&_mh_execute_header, restorationState2, OS_LOG_TYPE_DEFAULT, "%@: About to refresh assets. Restoration: %@", buf, 0x16u);
     }
 
-    v5 = [(AXManagedAssetTask *)self restorationState];
+    restorationState2 = [(AXManagedAssetTask *)self restorationState];
     v8 = +[AXAssetMetadataStore store];
-    [v5 updatePhase:@"Refreshing Assets" saveToStore:v8];
+    [restorationState2 updatePhase:@"Refreshing Assets" saveToStore:v8];
   }
 
   objc_initWeak(buf, self);
-  v9 = [(AXManagedAssetTask *)self assetController];
+  assetController = [(AXManagedAssetTask *)self assetController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100006F90;
   v10[3] = &unk_100018988;
   objc_copyWeak(&v11, buf);
-  [v9 refreshAssetsByForceUpdatingCatalog:v4 ^ 1 updatingCatalogIfNeeded:v4 ^ 1 catalogRefreshOverrideTimeout:&off_1000193E0 completion:v10];
+  [assetController refreshAssetsByForceUpdatingCatalog:hasCompletedRefreshingAssets ^ 1 updatingCatalogIfNeeded:hasCompletedRefreshingAssets ^ 1 catalogRefreshOverrideTimeout:&off_1000193E0 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
 }
 
-- (void)_housekeeping_op2_purgeAssets:(id)a3
+- (void)_housekeeping_op2_purgeAssets:(id)assets
 {
-  v23 = a3;
+  assetsCopy = assets;
   val = self;
-  v4 = [(AXUpdateAssetTask *)self _restorationState];
-  v5 = [v4 hasCompletedPurgingAssets];
+  _restorationState = [(AXUpdateAssetTask *)self _restorationState];
+  hasCompletedPurgingAssets = [_restorationState hasCompletedPurgingAssets];
 
-  if (v5)
+  if (hasCompletedPurgingAssets)
   {
     v6 = AXLogAssetDaemon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: Restoration state: 'hasCompletedPurgingAssets'. Moving on to next step", buf, 0xCu);
     }
 
-    [(AXUpdateAssetTask *)self _housekeeping_op3_downloadAssets:v23];
+    [(AXUpdateAssetTask *)self _housekeeping_op3_downloadAssets:assetsCopy];
   }
 
   else
@@ -99,21 +99,21 @@
     v7 = AXLogAssetDaemon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(AXManagedAssetTask *)self restorationState];
+      restorationState = [(AXManagedAssetTask *)self restorationState];
       *buf = 138412546;
-      v35 = self;
+      selfCopy4 = self;
       v36 = 2112;
-      v37 = v8;
+      v37 = restorationState;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: About to purge installed assets. Restoration: %@", buf, 0x16u);
     }
 
-    v9 = [(AXManagedAssetTask *)self restorationState];
+    restorationState2 = [(AXManagedAssetTask *)self restorationState];
     v10 = +[AXAssetMetadataStore store];
-    [v9 updatePhase:@"Purging Assets" saveToStore:v10];
+    [restorationState2 updatePhase:@"Purging Assets" saveToStore:v10];
 
-    v21 = [AXAsset installedAssets:v23];
-    v11 = [(AXManagedAssetTask *)self policy];
-    v22 = [v11 assetsToPurgeFromInstalledAssets:v21 withRefreshedAssets:v23];
+    v21 = [AXAsset installedAssets:assetsCopy];
+    policy = [(AXManagedAssetTask *)self policy];
+    v22 = [policy assetsToPurgeFromInstalledAssets:v21 withRefreshedAssets:assetsCopy];
 
     if ([v22 count])
     {
@@ -121,7 +121,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v35 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: Assets that will be purged", buf, 0xCu);
       }
 
@@ -148,7 +148,7 @@
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v35 = v17;
+              selfCopy4 = v17;
               v36 = 2112;
               v37 = val;
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@:   %@", buf, 0x16u);
@@ -161,14 +161,14 @@
         while (v14);
       }
 
-      v19 = [(AXManagedAssetTask *)val assetController];
+      assetController = [(AXManagedAssetTask *)val assetController];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_100007508;
       v25[3] = &unk_1000189B0;
       objc_copyWeak(&v27, &location);
-      v26 = v23;
-      [v19 purgeAssets:v13 completion:v25];
+      v26 = assetsCopy;
+      [assetController purgeAssets:v13 completion:v25];
 
       objc_destroyWeak(&v27);
     }
@@ -179,41 +179,41 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v35 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%@: No assets found that need to be purged", buf, 0xCu);
       }
 
-      [(AXUpdateAssetTask *)self _housekeeping_op3_downloadAssets:v23];
+      [(AXUpdateAssetTask *)self _housekeeping_op3_downloadAssets:assetsCopy];
     }
 
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_housekeeping_op3_downloadAssets:(id)a3
+- (void)_housekeeping_op3_downloadAssets:(id)assets
 {
-  v31 = a3;
+  assetsCopy = assets;
   val = self;
-  v4 = [(AXManagedAssetTask *)self policy];
-  v5 = [v4 daemonShouldDownloadInBackgroundIfNeeded];
+  policy = [(AXManagedAssetTask *)self policy];
+  daemonShouldDownloadInBackgroundIfNeeded = [policy daemonShouldDownloadInBackgroundIfNeeded];
 
   v6 = AXLogAssetDaemon();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (daemonShouldDownloadInBackgroundIfNeeded)
   {
     if (v7)
     {
-      v8 = [(AXManagedAssetTask *)self restorationState];
+      restorationState = [(AXManagedAssetTask *)self restorationState];
       *buf = 138412546;
-      v46 = self;
+      selfCopy2 = self;
       v47 = 2112;
-      v48 = v8;
+      v48 = restorationState;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: About to kick off downloadable assets. Restoration: %@", buf, 0x16u);
     }
 
-    v9 = [(AXManagedAssetTask *)self restorationState];
+    restorationState2 = [(AXManagedAssetTask *)self restorationState];
     v10 = +[AXAssetMetadataStore store];
-    [v9 updatePhase:@"Downloading Assets" saveToStore:v10];
+    [restorationState2 updatePhase:@"Downloading Assets" saveToStore:v10];
 
     v11 = AXLogAssetDaemon();
     LODWORD(v10) = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -230,7 +230,7 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v13 = v31;
+      v13 = assetsCopy;
       v14 = [v13 countByEnumeratingWithState:&v39 objects:v44 count:16];
       if (v14)
       {
@@ -250,7 +250,7 @@
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v46 = v17;
+              selfCopy2 = v17;
               _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "  %@", buf, 0xCu);
             }
 
@@ -265,8 +265,8 @@
       }
     }
 
-    v19 = [(AXManagedAssetTask *)val policy];
-    v30 = [v19 assetsToDownloadFromRefreshedAssets:v31];
+    policy2 = [(AXManagedAssetTask *)val policy];
+    v30 = [policy2 assetsToDownloadFromRefreshedAssets:assetsCopy];
 
     v20 = [v30 count] == 0;
     v21 = AXLogAssetDaemon();
@@ -276,7 +276,7 @@
       if (v22)
       {
         *buf = 138412290;
-        v46 = val;
+        selfCopy2 = val;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@: No assets found that need to be downloaded", buf, 0xCu);
       }
 
@@ -288,7 +288,7 @@
       if (v22)
       {
         *buf = 138412290;
-        v46 = val;
+        selfCopy2 = val;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@: Assets that will be downloaded", buf, 0xCu);
       }
 
@@ -315,7 +315,7 @@
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v46 = v27;
+              selfCopy2 = v27;
               v47 = 2112;
               v48 = val;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@:   %@", buf, 0x16u);
@@ -329,13 +329,13 @@
       }
 
       objc_initWeak(buf, val);
-      v29 = [(AXManagedAssetTask *)val assetController];
+      assetController = [(AXManagedAssetTask *)val assetController];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_100007B28;
       v33[3] = &unk_1000189D8;
       objc_copyWeak(&v34, buf);
-      [v29 downloadAssets:v23 successStartBlock:v33];
+      [assetController downloadAssets:v23 successStartBlock:v33];
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(buf);
@@ -347,7 +347,7 @@
     if (v7)
     {
       *buf = 138412290;
-      v46 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: Honoring asset policy to not proceed with downloads", buf, 0xCu);
     }
 
@@ -355,76 +355,76 @@
   }
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v6 = a5;
-  v8 = a6;
+  successfulCopy = successful;
+  errorCopy = error;
   v9 = AXLogAssetDaemon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = v6;
+    v13 = successfulCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: didFinishRefreshingAssets. success:%ld error:%@", &v10, 0x20u);
   }
 }
 
-- (void)assetController:(id)a3 didFinishPurgingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishPurgingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v6 = a5;
-  v8 = a6;
+  successfulCopy = successful;
+  errorCopy = error;
   v9 = AXLogAssetDaemon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = v6;
+    v13 = successfulCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: didFinishPurgingAssets. success:%ld error:%@", &v10, 0x20u);
   }
 }
 
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining
 {
-  v8 = a7;
-  v12 = a4;
+  stalledCopy = stalled;
+  assetCopy = asset;
   v13 = AXLogAssetDaemon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138413314;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = a5;
+    writtenCopy = written;
     v18 = 2048;
-    v19 = a6;
+    expectedCopy = expected;
     v20 = 2048;
-    v21 = v8;
+    v21 = stalledCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = assetCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@: Asset D/L progress: %lld / %lld. stalled: %ld. asset: %@", &v14, 0x34u);
   }
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
-  v8 = a5;
-  v10 = a4;
-  v11 = a6;
+  successfulCopy = successful;
+  assetCopy = asset;
+  errorCopy = error;
   v12 = AXLogAssetDaemon();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (successfulCopy)
   {
     if (v13)
     {
       v17 = 138412546;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v10;
+      v20 = assetCopy;
       v14 = "%@: Asset download finished: %@";
       v15 = v12;
       v16 = 22;
@@ -436,11 +436,11 @@ LABEL_6:
   else if (v13)
   {
     v17 = 138412802;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
-    v20 = v10;
+    v20 = assetCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = errorCopy;
     v14 = "%@: Asset download failed: %@ - %@";
     v15 = v12;
     v16 = 32;

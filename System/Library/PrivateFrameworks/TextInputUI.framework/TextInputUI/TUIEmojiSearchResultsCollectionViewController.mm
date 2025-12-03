@@ -1,19 +1,19 @@
 @interface TUIEmojiSearchResultsCollectionViewController
 + (id)emojiTextAttributes;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (TUIEmojiSearchResultsCollectionViewController)init;
 - (TUIEmojiSearchResultsCollectionViewControllerDelegate)delegate;
-- (id)_userPreferredEmojiStringVariantForToken:(id)a3;
-- (id)configuredEmojiCollectionViewCellForCollectionView:(id)a3 atIndexPath:(id)a4 forEmojiString:(id)a5;
-- (void)_didRecognizeLongPressGesture:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)resetScrollPositionAnimated:(BOOL)a3;
-- (void)setCellHighlightFrozen:(BOOL)a3;
-- (void)setDisplayedEmojis:(id)a3 verbatimSkinTones:(BOOL)a4 animated:(BOOL)a5;
-- (void)setDisplayingNoResultsLabel:(BOOL)a3 animated:(BOOL)a4;
+- (id)_userPreferredEmojiStringVariantForToken:(id)token;
+- (id)configuredEmojiCollectionViewCellForCollectionView:(id)view atIndexPath:(id)path forEmojiString:(id)string;
+- (void)_didRecognizeLongPressGesture:(id)gesture;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)resetScrollPositionAnimated:(BOOL)animated;
+- (void)setCellHighlightFrozen:(BOOL)frozen;
+- (void)setDisplayedEmojis:(id)emojis verbatimSkinTones:(BOOL)tones animated:(BOOL)animated;
+- (void)setDisplayingNoResultsLabel:(BOOL)label animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TUIEmojiSearchResultsCollectionViewController
@@ -25,37 +25,37 @@
   return WeakRetained;
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(TUIEmojiSearchResultsCollectionViewController *)self isCellHighlightFrozen])
   {
-    v7 = [v8 cellForItemAtIndexPath:v6];
+    v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
     [v7 setHighlighted:1];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v11 = a4;
-  v5 = [(TUIEmojiSearchResultsCollectionViewController *)self dataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v11];
+  pathCopy = path;
+  dataSource = [(TUIEmojiSearchResultsCollectionViewController *)self dataSource];
+  v6 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = -[NSArray objectAtIndex:](self->_displayedEmojis, "objectAtIndex:", [v6 unsignedIntegerValue]);
-  v8 = [v7 string];
+  string = [v7 string];
   if (!self->_displayingVerbatimResults)
   {
     v9 = [(TUIEmojiSearchResultsCollectionViewController *)self _userPreferredEmojiStringVariantForToken:v7];
 
-    v8 = v9;
+    string = v9;
   }
 
-  v10 = [(TUIEmojiSearchResultsCollectionViewController *)self delegate];
-  [v10 emojiSearchResultsController:self didSelectEmoji:v8 indexPath:v11];
+  delegate = [(TUIEmojiSearchResultsCollectionViewController *)self delegate];
+  [delegate emojiSearchResultsController:self didSelectEmoji:string indexPath:pathCopy];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -67,8 +67,8 @@
     dispatch_once(&collectionView_layout_sizeForItemAtIndexPath__onceToken, block);
   }
 
-  v6 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-  [v6 bounds];
+  collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+  [collectionView bounds];
   Height = CGRectGetHeight(v12);
 
   v8 = *&collectionView_layout_sizeForItemAtIndexPath__emojiWidth;
@@ -85,16 +85,16 @@ void __94__TUIEmojiSearchResultsCollectionViewController_collectionView_layout_s
   collectionView_layout_sizeForItemAtIndexPath__emojiWidth = ceil(v0);
 }
 
-- (void)_didRecognizeLongPressGesture:(id)a3
+- (void)_didRecognizeLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+  [gestureCopy locationInView:collectionView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-  v27 = [v10 indexPathForItemAtPoint:{v7, v9}];
+  collectionView2 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+  v27 = [collectionView2 indexPathForItemAtPoint:{v7, v9}];
 
   if (v27 && [(TUIEmojiSearchResultsCollectionViewController *)self _isSelectableEmojiTokenAtIndexPath:v27])
   {
@@ -103,21 +103,21 @@ void __94__TUIEmojiSearchResultsCollectionViewController_collectionView_layout_s
     if ([v12 supportsSkinToneVariants])
     {
       v13 = MEMORY[0x1E699BB10];
-      v14 = [v12 string];
-      v15 = [v13 _baseStringForEmojiString:v14];
+      string = [v12 string];
+      v15 = [v13 _baseStringForEmojiString:string];
 
       if (([MEMORY[0x1E699BAC8] _isCoupleMultiSkinToneEmoji:v15] & 1) == 0)
       {
-        v16 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-        v17 = [v16 layoutAttributesForItemAtIndexPath:v27];
+        collectionView3 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+        v17 = [collectionView3 layoutAttributesForItemAtIndexPath:v27];
         [v17 frame];
         v19 = v18;
         v21 = v20;
         v23 = v22;
         v25 = v24;
 
-        v26 = [(TUIEmojiSearchResultsCollectionViewController *)self delegate];
-        [v26 emojiSearchResultsController:self didRequestVariantSelectorForEmojiToken:v12 fromRect:{v19, v21, v23, v25}];
+        delegate = [(TUIEmojiSearchResultsCollectionViewController *)self delegate];
+        [delegate emojiSearchResultsController:self didRequestVariantSelectorForEmojiToken:v12 fromRect:{v19, v21, v23, v25}];
       }
     }
   }
@@ -125,18 +125,18 @@ void __94__TUIEmojiSearchResultsCollectionViewController_collectionView_layout_s
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = TUIEmojiSearchResultsCollectionViewController;
-  v5 = a4;
+  coordinatorCopy = coordinator;
   [(TUIEmojiSearchResultsCollectionViewController *)&v7 viewDidLayoutSubviews];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v6[3] = &unk_1E72D8008;
   v6[4] = self;
-  [v5 animateAlongsideTransition:v6 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v6 completion:0];
 }
 
 void __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -145,20 +145,20 @@ void __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSi
   [v1 invalidateLayout];
 }
 
-- (void)setCellHighlightFrozen:(BOOL)a3
+- (void)setCellHighlightFrozen:(BOOL)frozen
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_cellHighlightFrozen = a3;
-  if (!a3)
+  self->_cellHighlightFrozen = frozen;
+  if (!frozen)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-    v4 = [v3 visibleCells];
+    collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -169,13 +169,13 @@ void __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSi
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v9 + 1) + 8 * i) setHighlighted:0];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -183,22 +183,22 @@ void __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSi
   }
 }
 
-- (void)resetScrollPositionAnimated:(BOOL)a3
+- (void)resetScrollPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-  [v4 setContentOffset:v3 animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  animatedCopy = animated;
+  collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+  [collectionView setContentOffset:animatedCopy animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 }
 
-- (void)setDisplayingNoResultsLabel:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisplayingNoResultsLabel:(BOOL)label animated:(BOOL)animated
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  if (self->_displayingNoResultsLabel != a3)
+  if (self->_displayingNoResultsLabel != label)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_displayingNoResultsLabel = a3;
-    if (a3 && !self->_noResultsLabel)
+    animatedCopy = animated;
+    labelCopy = label;
+    self->_displayingNoResultsLabel = label;
+    if (label && !self->_noResultsLabel)
     {
       v7 = objc_alloc(MEMORY[0x1E69DCC10]);
       v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -217,22 +217,22 @@ void __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSi
       v13 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_1415];
       [(UILabel *)self->_noResultsLabel setTextColor:v13];
 
-      v14 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-      v15 = [v14 superview];
+      collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+      superview = [collectionView superview];
       v16 = self->_noResultsLabel;
-      v17 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-      [v15 insertSubview:v16 belowSubview:v17];
+      collectionView2 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+      [superview insertSubview:v16 belowSubview:collectionView2];
 
       v27 = MEMORY[0x1E696ACD8];
-      v29 = [(UILabel *)self->_noResultsLabel centerXAnchor];
-      v30 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-      v28 = [v30 centerXAnchor];
-      v18 = [v29 constraintEqualToAnchor:v28];
+      centerXAnchor = [(UILabel *)self->_noResultsLabel centerXAnchor];
+      collectionView3 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+      centerXAnchor2 = [collectionView3 centerXAnchor];
+      v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v33[0] = v18;
-      v19 = [(UILabel *)self->_noResultsLabel centerYAnchor];
-      v20 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-      v21 = [v20 centerYAnchor];
-      v22 = [v19 constraintEqualToAnchor:v21];
+      centerYAnchor = [(UILabel *)self->_noResultsLabel centerYAnchor];
+      collectionView4 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+      centerYAnchor2 = [collectionView4 centerYAnchor];
+      v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v33[1] = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
       [v27 activateConstraints:v23];
@@ -245,13 +245,13 @@ void __100__TUIEmojiSearchResultsCollectionViewController_viewWillTransitionToSi
     aBlock[2] = __86__TUIEmojiSearchResultsCollectionViewController_setDisplayingNoResultsLabel_animated___block_invoke_2;
     aBlock[3] = &unk_1E72D85B8;
     aBlock[4] = self;
-    v32 = v5;
+    v32 = labelCopy;
     v24 = _Block_copy(aBlock);
     v25 = v24;
-    if (v4)
+    if (animatedCopy)
     {
       v26 = 0.2;
-      if (v5)
+      if (labelCopy)
       {
         v26 = 0.33;
       }
@@ -293,24 +293,24 @@ id __86__TUIEmojiSearchResultsCollectionViewController_setDisplayingNoResultsLab
   return v2;
 }
 
-- (void)setDisplayedEmojis:(id)a3 verbatimSkinTones:(BOOL)a4 animated:(BOOL)a5
+- (void)setDisplayedEmojis:(id)emojis verbatimSkinTones:(BOOL)tones animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  self->_animatingCellUpdates = v5;
+  animatedCopy = animated;
+  emojisCopy = emojis;
+  self->_animatingCellUpdates = animatedCopy;
   self->_animationBeginOffset = -1;
-  self->_displayingVerbatimResults = a4;
+  self->_displayingVerbatimResults = tones;
   v9 = objc_alloc_init(MEMORY[0x1E69955A0]);
   [v9 appendSectionsWithIdentifiers:&unk_1F03D8F00];
   v10 = MEMORY[0x1E695DF70];
-  v11 = v8;
-  v12 = [v10 array];
+  v11 = emojisCopy;
+  array = [v10 array];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __AsIdentifiers_block_invoke;
   v38[3] = &unk_1E72D2AA8;
-  v39 = v12;
-  v13 = v12;
+  v39 = array;
+  v13 = array;
   [(NSArray *)v11 enumerateObjectsUsingBlock:v38];
 
   [v9 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:&unk_1F03D8BE8];
@@ -321,9 +321,9 @@ id __86__TUIEmojiSearchResultsCollectionViewController_setDisplayingNoResultsLab
     self->_placeholderIdentifiers = 0;
   }
 
-  v15 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-  v16 = [v15 visibleCells];
-  v17 = [v16 count];
+  collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
+  v17 = [visibleCells count];
   v18 = v17 - [v9 numberOfItems];
 
   if (v18 >= 1)
@@ -354,30 +354,30 @@ id __86__TUIEmojiSearchResultsCollectionViewController_setDisplayingNoResultsLab
   self->_displayedEmojis = v11;
   v23 = v11;
 
-  v24 = [(TUIEmojiSearchResultsCollectionViewController *)self dataSource];
-  [v24 applySnapshotUsingReloadData:v9];
+  dataSource = [(TUIEmojiSearchResultsCollectionViewController *)self dataSource];
+  [dataSource applySnapshotUsingReloadData:v9];
 
-  [(TUIEmojiSearchResultsCollectionViewController *)self setDisplayingNoResultsLabel:[(NSArray *)v23 count]== 0 animated:v5];
+  [(TUIEmojiSearchResultsCollectionViewController *)self setDisplayingNoResultsLabel:[(NSArray *)v23 count]== 0 animated:animatedCopy];
   v25 = [(NSArray *)v23 count];
 
   self->_lastAnimatedCellCount = v25;
   self->_animatingCellUpdates = 0;
-  v26 = [(TUIEmojiSearchResultsCollectionViewController *)self flowLayout];
-  [v26 collectionViewContentSize];
+  flowLayout = [(TUIEmojiSearchResultsCollectionViewController *)self flowLayout];
+  [flowLayout collectionViewContentSize];
   v28 = v27;
   v30 = v29;
 
   if (v28 > 0.0)
   {
-    v31 = [(TUIEmojiSearchResultsCollectionViewController *)self flowLayout];
-    [v31 minimumLineSpacing];
+    flowLayout2 = [(TUIEmojiSearchResultsCollectionViewController *)self flowLayout];
+    [flowLayout2 minimumLineSpacing];
     v33 = v32;
-    v34 = [(TUIEmojiSearchResultsCollectionViewController *)self flowLayout];
-    [v34 itemSize];
+    flowLayout3 = [(TUIEmojiSearchResultsCollectionViewController *)self flowLayout];
+    [flowLayout3 itemSize];
     v36 = v28 - (v33 + v35) * v18;
 
-    v37 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-    [v37 setContentSize:{v36, v30}];
+    collectionView2 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+    [collectionView2 setContentSize:{v36, v30}];
   }
 }
 
@@ -389,17 +389,17 @@ id __86__TUIEmojiSearchResultsCollectionViewController_setDisplayingNoResultsLab
   for (i = 0; i != 20; ++i)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emojistr__%lu", i];
-    v5 = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
-    [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:v4];
+    collectionView = [(TUIEmojiSearchResultsCollectionViewController *)self collectionView];
+    [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:v4];
   }
 }
 
-- (id)configuredEmojiCollectionViewCellForCollectionView:(id)a3 atIndexPath:(id)a4 forEmojiString:(id)a5
+- (id)configuredEmojiCollectionViewCellForCollectionView:(id)view atIndexPath:(id)path forEmojiString:(id)string
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v9 integerValue] < 0)
+  pathCopy = path;
+  stringCopy = string;
+  viewCopy = view;
+  if ([stringCopy integerValue] < 0)
   {
     v11 = 0;
     v16 = 0;
@@ -407,42 +407,42 @@ id __86__TUIEmojiSearchResultsCollectionViewController_setDisplayingNoResultsLab
 
   else
   {
-    v11 = -[NSArray objectAtIndex:](self->_displayedEmojis, "objectAtIndex:", [v9 unsignedIntegerValue]);
-    v12 = [v11 string];
+    v11 = -[NSArray objectAtIndex:](self->_displayedEmojis, "objectAtIndex:", [stringCopy unsignedIntegerValue]);
+    string = [v11 string];
     if (!self->_displayingVerbatimResults)
     {
       v13 = [(TUIEmojiSearchResultsCollectionViewController *)self _userPreferredEmojiStringVariantForToken:v11];
 
-      v12 = v13;
+      string = v13;
     }
 
     v14 = objc_alloc(MEMORY[0x1E696AAB0]);
     v15 = +[TUIEmojiSearchResultsCollectionViewController emojiTextAttributes];
-    v16 = [v14 initWithString:v12 attributes:v15];
+    v16 = [v14 initWithString:string attributes:v15];
   }
 
-  v17 = [v8 row];
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emojistr__%lu", v17 % 0x14];
-  v19 = [v10 dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:v8];
+  v17 = [pathCopy row];
+  0x14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emojistr__%lu", v17 % 0x14];
+  v19 = [viewCopy dequeueReusableCellWithReuseIdentifier:0x14 forIndexPath:pathCopy];
 
-  if ([v8 row] >= self->_lastAnimatedCellCount)
+  if ([pathCopy row] >= self->_lastAnimatedCellCount)
   {
     [v19 setDisplayedEmojiString:0];
   }
 
   if (!self->_animatingCellUpdates)
   {
-    v23 = [v8 row];
+    v23 = [pathCopy row];
     goto LABEL_13;
   }
 
-  v20 = [v19 displayedEmojiString];
-  if ([v20 length])
+  displayedEmojiString = [v19 displayedEmojiString];
+  if ([displayedEmojiString length])
   {
-    v21 = [v19 displayedEmojiString];
-    v22 = [v16 isEqualToAttributedString:v21];
+    displayedEmojiString2 = [v19 displayedEmojiString];
+    v22 = [v16 isEqualToAttributedString:displayedEmojiString2];
 
-    v23 = [v8 row];
+    v23 = [pathCopy row];
     if ((v22 & 1) == 0)
     {
       goto LABEL_15;
@@ -453,7 +453,7 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v23 = [v8 row];
+  v23 = [pathCopy row];
 LABEL_15:
   animationBeginOffset = self->_animationBeginOffset;
   if (v23 < animationBeginOffset)
@@ -481,14 +481,14 @@ LABEL_18:
   return v19;
 }
 
-- (id)_userPreferredEmojiStringVariantForToken:(id)a3
+- (id)_userPreferredEmojiStringVariantForToken:(id)token
 {
   v3 = MEMORY[0x1E69DCBD8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v4 string];
+  tokenCopy = token;
+  sharedInstance = [v3 sharedInstance];
+  string = [tokenCopy string];
 
-  v7 = [v5 lastUsedVariantEmojiForEmojiString:v6];
+  v7 = [sharedInstance lastUsedVariantEmojiForEmojiString:string];
 
   return v7;
 }
@@ -504,44 +504,44 @@ LABEL_18:
   {
     [(TUIEmojiSearchResultsCollectionViewController *)v4 setFlowLayout:v3];
     v6 = objc_alloc(MEMORY[0x1E69DC820]);
-    v7 = [(TUIEmojiSearchResultsCollectionViewController *)v5 collectionView];
+    collectionView = [(TUIEmojiSearchResultsCollectionViewController *)v5 collectionView];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __53__TUIEmojiSearchResultsCollectionViewController_init__block_invoke;
     v23[3] = &unk_1E72D2A80;
     v8 = v5;
     v24 = v8;
-    v9 = [v6 initWithCollectionView:v7 cellProvider:v23];
+    v9 = [v6 initWithCollectionView:collectionView cellProvider:v23];
     [(TUIEmojiSearchResultsCollectionViewController *)v8 setDataSource:v9];
 
-    v10 = [(TUIEmojiSearchResultsCollectionViewController *)v8 dataSource];
-    v11 = [v10 snapshot];
+    dataSource = [(TUIEmojiSearchResultsCollectionViewController *)v8 dataSource];
+    snapshot = [dataSource snapshot];
 
-    [v11 appendSectionsWithIdentifiers:&unk_1F03D8EE8];
-    v12 = [(TUIEmojiSearchResultsCollectionViewController *)v8 dataSource];
-    [v12 applySnapshotUsingReloadData:v11];
+    [snapshot appendSectionsWithIdentifiers:&unk_1F03D8EE8];
+    dataSource2 = [(TUIEmojiSearchResultsCollectionViewController *)v8 dataSource];
+    [dataSource2 applySnapshotUsingReloadData:snapshot];
 
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    v14 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
-    [v14 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    collectionView2 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
+    [collectionView2 setBackgroundColor:clearColor];
 
-    v15 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
-    [v15 setShowsHorizontalScrollIndicator:0];
+    collectionView3 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
+    [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-    v16 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
-    [v16 setShowsVerticalScrollIndicator:0];
+    collectionView4 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
+    [collectionView4 setShowsVerticalScrollIndicator:0];
 
-    v17 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
-    [v17 setDelegate:v8];
+    collectionView5 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
+    [collectionView5 setDelegate:v8];
 
     [(UICollectionViewFlowLayout *)v3 setScrollDirection:1];
     [(UICollectionViewFlowLayout *)v3 setSectionInsetReference:2];
     v18 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v8 action:sel__didRecognizeLongPressGesture_];
     [(TUIEmojiSearchResultsCollectionViewController *)v8 setLongPressGestureRecognizer:v18];
 
-    v19 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
-    v20 = [(TUIEmojiSearchResultsCollectionViewController *)v8 longPressGestureRecognizer];
-    [v19 addGestureRecognizer:v20];
+    collectionView6 = [(TUIEmojiSearchResultsCollectionViewController *)v8 collectionView];
+    longPressGestureRecognizer = [(TUIEmojiSearchResultsCollectionViewController *)v8 longPressGestureRecognizer];
+    [collectionView6 addGestureRecognizer:longPressGestureRecognizer];
 
     v8->_animationBeginOffset = -1;
     v8->_lastAnimatedCellCount = -1;

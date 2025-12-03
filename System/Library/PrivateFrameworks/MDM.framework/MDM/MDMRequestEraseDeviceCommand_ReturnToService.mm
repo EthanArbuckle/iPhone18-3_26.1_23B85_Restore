@@ -1,8 +1,8 @@
 @interface MDMRequestEraseDeviceCommand_ReturnToService
 + (NSSet)allowedCommandKeys;
-+ (id)buildRequiredOnlyWithEnabled:(id)a3;
-+ (id)buildWithEnabled:(id)a3 wiFiProfileData:(id)a4 mdmProfileData:(id)a5 bootstrapToken:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildRequiredOnlyWithEnabled:(id)enabled;
++ (id)buildWithEnabled:(id)enabled wiFiProfileData:(id)data mdmProfileData:(id)profileData bootstrapToken:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MDMRequestEraseDeviceCommand_ReturnToService
@@ -23,37 +23,37 @@
   return v4;
 }
 
-+ (id)buildWithEnabled:(id)a3 wiFiProfileData:(id)a4 mdmProfileData:(id)a5 bootstrapToken:(id)a6
++ (id)buildWithEnabled:(id)enabled wiFiProfileData:(id)data mdmProfileData:(id)profileData bootstrapToken:(id)token
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  tokenCopy = token;
+  profileDataCopy = profileData;
+  dataCopy = data;
+  enabledCopy = enabled;
   v13 = objc_opt_new();
-  [v13 setCommandEnabled:v12];
+  [v13 setCommandEnabled:enabledCopy];
 
-  [v13 setCommandWiFiProfileData:v11];
-  [v13 setCommandMDMProfileData:v10];
+  [v13 setCommandWiFiProfileData:dataCopy];
+  [v13 setCommandMDMProfileData:profileDataCopy];
 
-  [v13 setCommandBootstrapToken:v9];
+  [v13 setCommandBootstrapToken:tokenCopy];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithEnabled:(id)a3
++ (id)buildRequiredOnlyWithEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_new();
-  [v4 setCommandEnabled:v3];
+  [v4 setCommandEnabled:enabledCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = MDMRequestEraseDeviceCommand_ReturnToService;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSNumber *)self->_commandEnabled copy];
   v6 = v4[2];
   v4[2] = v5;

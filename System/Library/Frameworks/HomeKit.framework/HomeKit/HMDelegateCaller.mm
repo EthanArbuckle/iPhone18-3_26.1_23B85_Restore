@@ -1,52 +1,52 @@
 @interface HMDelegateCaller
-+ (id)delegateCallerWithOperationQueue:(id)a3;
-- (HMDelegateCaller)initWithQueue:(id)a3;
-- (id)_localizedError:(id)a3;
-- (void)callCompletion:(id)a3 actionSet:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 array:(id)a4;
-- (void)callCompletion:(id)a3 array:(id)a4 additionalAccessoryInfo:(id)a5 error:(id)a6;
-- (void)callCompletion:(id)a3 error:(id)a4;
-- (void)callCompletion:(id)a3 error:(id)a4 BOOLValue:(BOOL)a5 array:(id)a6;
-- (void)callCompletion:(id)a3 error:(id)a4 array:(id)a5;
-- (void)callCompletion:(id)a3 error:(id)a4 dictionary:(id)a5;
-- (void)callCompletion:(id)a3 error:(id)a4 mediaSystem:(id)a5;
-- (void)callCompletion:(id)a3 error:(id)a4 obj:(id)a5;
-- (void)callCompletion:(id)a3 error:(id)a4 proxiedDevice:(id)a5;
-- (void)callCompletion:(id)a3 error:(id)a4 snapshot:(id)a5;
-- (void)callCompletion:(id)a3 errorString:(id)a4;
-- (void)callCompletion:(id)a3 eventTrigger:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 home:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 invitations:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 isUsingHomeKit:(BOOL)a4 isUsingCloudServices:(BOOL)a5 error:(id)a6;
-- (void)callCompletion:(id)a3 obj:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 room:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 service:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 serviceGroup:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 timerTrigger:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 user:(id)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 value:(BOOL)a4 conflictName:(id)a5 error:(id)a6;
-- (void)callCompletion:(id)a3 value:(BOOL)a4 error:(id)a5;
-- (void)callCompletion:(id)a3 zone:(id)a4 error:(id)a5;
-- (void)invokeBlock:(id)a3;
++ (id)delegateCallerWithOperationQueue:(id)queue;
+- (HMDelegateCaller)initWithQueue:(id)queue;
+- (id)_localizedError:(id)error;
+- (void)callCompletion:(id)completion actionSet:(id)set error:(id)error;
+- (void)callCompletion:(id)completion array:(id)array;
+- (void)callCompletion:(id)completion array:(id)array additionalAccessoryInfo:(id)info error:(id)error;
+- (void)callCompletion:(id)completion error:(id)error;
+- (void)callCompletion:(id)completion error:(id)error BOOLValue:(BOOL)value array:(id)array;
+- (void)callCompletion:(id)completion error:(id)error array:(id)array;
+- (void)callCompletion:(id)completion error:(id)error dictionary:(id)dictionary;
+- (void)callCompletion:(id)completion error:(id)error mediaSystem:(id)system;
+- (void)callCompletion:(id)completion error:(id)error obj:(id)obj;
+- (void)callCompletion:(id)completion error:(id)error proxiedDevice:(id)device;
+- (void)callCompletion:(id)completion error:(id)error snapshot:(id)snapshot;
+- (void)callCompletion:(id)completion errorString:(id)string;
+- (void)callCompletion:(id)completion eventTrigger:(id)trigger error:(id)error;
+- (void)callCompletion:(id)completion home:(id)home error:(id)error;
+- (void)callCompletion:(id)completion invitations:(id)invitations error:(id)error;
+- (void)callCompletion:(id)completion isUsingHomeKit:(BOOL)kit isUsingCloudServices:(BOOL)services error:(id)error;
+- (void)callCompletion:(id)completion obj:(id)obj error:(id)error;
+- (void)callCompletion:(id)completion room:(id)room error:(id)error;
+- (void)callCompletion:(id)completion service:(id)service error:(id)error;
+- (void)callCompletion:(id)completion serviceGroup:(id)group error:(id)error;
+- (void)callCompletion:(id)completion timerTrigger:(id)trigger error:(id)error;
+- (void)callCompletion:(id)completion user:(id)user error:(id)error;
+- (void)callCompletion:(id)completion value:(BOOL)value conflictName:(id)name error:(id)error;
+- (void)callCompletion:(id)completion value:(BOOL)value error:(id)error;
+- (void)callCompletion:(id)completion zone:(id)zone error:(id)error;
+- (void)invokeBlock:(id)block;
 @end
 
 @implementation HMDelegateCaller
 
-- (void)callCompletion:(id)a3 service:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion service:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  serviceCopy = service;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __49__HMDelegateCaller_callCompletion_service_error___block_invoke;
   v14[3] = &unk_1E754E0F8;
-  v16 = v10;
-  v17 = v8;
-  v15 = v9;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v16 = errorCopy;
+  v17 = completionCopy;
+  v15 = serviceCopy;
+  v11 = errorCopy;
+  v12 = serviceCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -61,22 +61,22 @@ uint64_t __49__HMDelegateCaller_callCompletion_service_error___block_invoke(void
   return result;
 }
 
-- (void)callCompletion:(id)a3 value:(BOOL)a4 conflictName:(id)a5 error:(id)a6
+- (void)callCompletion:(id)completion value:(BOOL)value conflictName:(id)name error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  completionCopy = completion;
+  nameCopy = name;
+  errorCopy = error;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __60__HMDelegateCaller_callCompletion_value_conflictName_error___block_invoke;
   v16[3] = &unk_1E754A040;
-  v18 = v12;
-  v19 = v10;
-  v20 = a4;
-  v17 = v11;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v18 = errorCopy;
+  v19 = completionCopy;
+  valueCopy = value;
+  v17 = nameCopy;
+  v13 = errorCopy;
+  v14 = nameCopy;
+  v15 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v16];
 }
 
@@ -91,22 +91,22 @@ uint64_t __60__HMDelegateCaller_callCompletion_value_conflictName_error___block_
   return result;
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 mediaSystem:(id)a5
+- (void)callCompletion:(id)completion error:(id)error mediaSystem:(id)system
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
+  systemCopy = system;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__HMDelegateCaller_callCompletion_error_mediaSystem___block_invoke;
   v14[3] = &unk_1E754D208;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = systemCopy;
+  v17 = completionCopy;
+  v11 = systemCopy;
+  v12 = errorCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -120,22 +120,22 @@ void __53__HMDelegateCaller_callCompletion_error_mediaSystem___block_invoke(uint
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 proxiedDevice:(id)a5
+- (void)callCompletion:(id)completion error:(id)error proxiedDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
+  deviceCopy = device;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __55__HMDelegateCaller_callCompletion_error_proxiedDevice___block_invoke;
   v14[3] = &unk_1E754D208;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = deviceCopy;
+  v17 = completionCopy;
+  v11 = deviceCopy;
+  v12 = errorCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -149,22 +149,22 @@ void __55__HMDelegateCaller_callCompletion_error_proxiedDevice___block_invoke(ui
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 snapshot:(id)a5
+- (void)callCompletion:(id)completion error:(id)error snapshot:(id)snapshot
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
+  snapshotCopy = snapshot;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__HMDelegateCaller_callCompletion_error_snapshot___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v10;
-  v16 = self;
-  v17 = v9;
-  v18 = v8;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = snapshotCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = snapshotCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -179,22 +179,22 @@ void __50__HMDelegateCaller_callCompletion_error_snapshot___block_invoke(uint64_
   }
 }
 
-- (void)callCompletion:(id)a3 user:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion user:(id)user error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  userCopy = user;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__HMDelegateCaller_callCompletion_user_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = userCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = userCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -209,22 +209,22 @@ void __46__HMDelegateCaller_callCompletion_user_error___block_invoke(uint64_t a1
   }
 }
 
-- (void)callCompletion:(id)a3 invitations:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion invitations:(id)invitations error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  invitationsCopy = invitations;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__HMDelegateCaller_callCompletion_invitations_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = invitationsCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = invitationsCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -239,18 +239,18 @@ void __53__HMDelegateCaller_callCompletion_invitations_error___block_invoke(uint
   }
 }
 
-- (void)callCompletion:(id)a3 array:(id)a4
+- (void)callCompletion:(id)completion array:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  arrayCopy = array;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__HMDelegateCaller_callCompletion_array___block_invoke;
   v10[3] = &unk_1E754E458;
-  v11 = v7;
-  v12 = v6;
-  v8 = v7;
-  v9 = v6;
+  v11 = arrayCopy;
+  v12 = completionCopy;
+  v8 = arrayCopy;
+  v9 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v10];
 }
 
@@ -265,25 +265,25 @@ uint64_t __41__HMDelegateCaller_callCompletion_array___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)callCompletion:(id)a3 array:(id)a4 additionalAccessoryInfo:(id)a5 error:(id)a6
+- (void)callCompletion:(id)completion array:(id)array additionalAccessoryInfo:(id)info error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  completionCopy = completion;
+  arrayCopy = array;
+  infoCopy = info;
+  errorCopy = error;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__HMDelegateCaller_callCompletion_array_additionalAccessoryInfo_error___block_invoke;
   v18[3] = &unk_1E754D7A8;
-  v22 = v13;
-  v23 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = self;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v22 = errorCopy;
+  v23 = completionCopy;
+  v19 = arrayCopy;
+  v20 = infoCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v15 = infoCopy;
+  v16 = arrayCopy;
+  v17 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v18];
 }
 
@@ -299,22 +299,22 @@ void __71__HMDelegateCaller_callCompletion_array_additionalAccessoryInfo_error__
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 array:(id)a5
+- (void)callCompletion:(id)completion error:(id)error array:(id)array
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
+  arrayCopy = array;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__HMDelegateCaller_callCompletion_error_array___block_invoke;
   v14[3] = &unk_1E754D208;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = arrayCopy;
+  v17 = completionCopy;
+  v11 = arrayCopy;
+  v12 = errorCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -328,23 +328,23 @@ void __47__HMDelegateCaller_callCompletion_error_array___block_invoke(uint64_t a
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 BOOLValue:(BOOL)a5 array:(id)a6
+- (void)callCompletion:(id)completion error:(id)error BOOLValue:(BOOL)value array:(id)array
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  completionCopy = completion;
+  errorCopy = error;
+  arrayCopy = array;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __57__HMDelegateCaller_callCompletion_error_BOOLValue_array___block_invoke;
   v16[3] = &unk_1E754A988;
   v16[4] = self;
-  v17 = v11;
-  v20 = a5;
-  v18 = v12;
-  v19 = v10;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = errorCopy;
+  valueCopy = value;
+  v18 = arrayCopy;
+  v19 = completionCopy;
+  v13 = arrayCopy;
+  v14 = errorCopy;
+  v15 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v16];
 }
 
@@ -358,22 +358,22 @@ void __57__HMDelegateCaller_callCompletion_error_BOOLValue_array___block_invoke(
   }
 }
 
-- (void)callCompletion:(id)a3 timerTrigger:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion timerTrigger:(id)trigger error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  triggerCopy = trigger;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__HMDelegateCaller_callCompletion_timerTrigger_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = triggerCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = triggerCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -388,22 +388,22 @@ void __54__HMDelegateCaller_callCompletion_timerTrigger_error___block_invoke(uin
   }
 }
 
-- (void)callCompletion:(id)a3 eventTrigger:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion eventTrigger:(id)trigger error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  triggerCopy = trigger;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__HMDelegateCaller_callCompletion_eventTrigger_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = triggerCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = triggerCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -418,22 +418,22 @@ void __54__HMDelegateCaller_callCompletion_eventTrigger_error___block_invoke(uin
   }
 }
 
-- (void)callCompletion:(id)a3 actionSet:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion actionSet:(id)set error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  setCopy = set;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__HMDelegateCaller_callCompletion_actionSet_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = setCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = setCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -448,22 +448,22 @@ void __51__HMDelegateCaller_callCompletion_actionSet_error___block_invoke(uint64
   }
 }
 
-- (void)callCompletion:(id)a3 serviceGroup:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion serviceGroup:(id)group error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  groupCopy = group;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__HMDelegateCaller_callCompletion_serviceGroup_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = groupCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = groupCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -478,22 +478,22 @@ void __54__HMDelegateCaller_callCompletion_serviceGroup_error___block_invoke(uin
   }
 }
 
-- (void)callCompletion:(id)a3 zone:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion zone:(id)zone error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  zoneCopy = zone;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__HMDelegateCaller_callCompletion_zone_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = zoneCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = zoneCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -508,22 +508,22 @@ void __46__HMDelegateCaller_callCompletion_zone_error___block_invoke(uint64_t a1
   }
 }
 
-- (void)callCompletion:(id)a3 room:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion room:(id)room error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  roomCopy = room;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__HMDelegateCaller_callCompletion_room_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = roomCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = roomCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -538,22 +538,22 @@ void __46__HMDelegateCaller_callCompletion_room_error___block_invoke(uint64_t a1
   }
 }
 
-- (void)callCompletion:(id)a3 home:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion home:(id)home error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  homeCopy = home;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__HMDelegateCaller_callCompletion_home_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = homeCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = homeCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -568,21 +568,21 @@ void __46__HMDelegateCaller_callCompletion_home_error___block_invoke(uint64_t a1
   }
 }
 
-- (void)callCompletion:(id)a3 isUsingHomeKit:(BOOL)a4 isUsingCloudServices:(BOOL)a5 error:(id)a6
+- (void)callCompletion:(id)completion isUsingHomeKit:(BOOL)kit isUsingCloudServices:(BOOL)services error:(id)error
 {
-  v10 = a3;
-  v11 = a6;
+  completionCopy = completion;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__HMDelegateCaller_callCompletion_isUsingHomeKit_isUsingCloudServices_error___block_invoke;
   v14[3] = &unk_1E7547058;
-  v15 = v11;
-  v16 = v10;
-  v17 = a4;
-  v18 = a5;
+  v15 = errorCopy;
+  v16 = completionCopy;
+  kitCopy = kit;
+  servicesCopy = services;
   v14[4] = self;
-  v12 = v11;
-  v13 = v10;
+  v12 = errorCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -598,22 +598,22 @@ void __77__HMDelegateCaller_callCompletion_isUsingHomeKit_isUsingCloudServices_e
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 dictionary:(id)a5
+- (void)callCompletion:(id)completion error:(id)error dictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
+  dictionaryCopy = dictionary;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __52__HMDelegateCaller_callCompletion_error_dictionary___block_invoke;
   v14[3] = &unk_1E754D208;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = dictionaryCopy;
+  v17 = completionCopy;
+  v11 = dictionaryCopy;
+  v12 = errorCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -627,18 +627,18 @@ void __52__HMDelegateCaller_callCompletion_error_dictionary___block_invoke(uint6
   }
 }
 
-- (void)callCompletion:(id)a3 errorString:(id)a4
+- (void)callCompletion:(id)completion errorString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  stringCopy = string;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__HMDelegateCaller_callCompletion_errorString___block_invoke;
   v10[3] = &unk_1E754E458;
-  v11 = v7;
-  v12 = v6;
-  v8 = v7;
-  v9 = v6;
+  v11 = stringCopy;
+  v12 = completionCopy;
+  v8 = stringCopy;
+  v9 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v10];
 }
 
@@ -653,20 +653,20 @@ uint64_t __47__HMDelegateCaller_callCompletion_errorString___block_invoke(uint64
   return result;
 }
 
-- (void)callCompletion:(id)a3 value:(BOOL)a4 error:(id)a5
+- (void)callCompletion:(id)completion value:(BOOL)value error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  completionCopy = completion;
+  errorCopy = error;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__HMDelegateCaller_callCompletion_value_error___block_invoke;
   v12[3] = &unk_1E754A040;
-  v13 = v9;
-  v14 = v8;
-  v15 = a4;
+  v13 = errorCopy;
+  v14 = completionCopy;
+  valueCopy = value;
   v12[4] = self;
-  v10 = v9;
-  v11 = v8;
+  v10 = errorCopy;
+  v11 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v12];
 }
 
@@ -681,22 +681,22 @@ void __47__HMDelegateCaller_callCompletion_value_error___block_invoke(uint64_t a
   }
 }
 
-- (void)callCompletion:(id)a3 obj:(id)a4 error:(id)a5
+- (void)callCompletion:(id)completion obj:(id)obj error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  objCopy = obj;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __45__HMDelegateCaller_callCompletion_obj_error___block_invoke;
   v14[3] = &unk_1E754D208;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = objCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v11 = errorCopy;
+  v12 = objCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -711,22 +711,22 @@ void __45__HMDelegateCaller_callCompletion_obj_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4 obj:(id)a5
+- (void)callCompletion:(id)completion error:(id)error obj:(id)obj
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
+  objCopy = obj;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __45__HMDelegateCaller_callCompletion_error_obj___block_invoke;
   v14[3] = &unk_1E754D208;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = objCopy;
+  v17 = completionCopy;
+  v11 = objCopy;
+  v12 = errorCopy;
+  v13 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v14];
 }
 
@@ -740,19 +740,19 @@ void __45__HMDelegateCaller_callCompletion_error_obj___block_invoke(uint64_t a1)
   }
 }
 
-- (void)callCompletion:(id)a3 error:(id)a4
+- (void)callCompletion:(id)completion error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__HMDelegateCaller_callCompletion_error___block_invoke;
   v10[3] = &unk_1E754E0F8;
-  v11 = v7;
-  v12 = v6;
+  v11 = errorCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v7;
-  v9 = v6;
+  v8 = errorCopy;
+  v9 = completionCopy;
   [(HMDelegateCaller *)self invokeBlock:v10];
 }
 
@@ -766,27 +766,27 @@ void __41__HMDelegateCaller_callCompletion_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)invokeBlock:(id)a3
+- (void)invokeBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
-- (id)_localizedError:(id)a3
+- (id)_localizedError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v10 = 0;
     goto LABEL_152;
   }
 
-  v5 = [v3 userInfo];
+  userInfo = [errorCopy userInfo];
   v6 = *MEMORY[0x1E696A578];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
 
   if (!v7)
   {
@@ -1095,20 +1095,20 @@ LABEL_144:
         v9 = @"WIFI_CREDENTIAL_GENERATION_FAILED";
         goto LABEL_145;
       default:
-        v11 = [v8 code];
-        if (v11 <= 2200)
+        code = [v8 code];
+        if (code <= 2200)
         {
-          if (v11 > 2004)
+          if (code > 2004)
           {
-            if (v11 > 2099)
+            if (code > 2099)
             {
-              if (v11 == 2100)
+              if (code == 2100)
               {
                 v9 = @"NO_TARGET_ACCESSORY";
                 goto LABEL_145;
               }
 
-              if (v11 == 2200)
+              if (code == 2200)
               {
                 v9 = @"INVALID_CHARACTERS";
                 goto LABEL_145;
@@ -1117,13 +1117,13 @@ LABEL_144:
 
             else
             {
-              if (v11 == 2005)
+              if (code == 2005)
               {
                 v9 = @"MEDIA_REMOTE_ERROR";
                 goto LABEL_145;
               }
 
-              if (v11 == 2007)
+              if (code == 2007)
               {
                 v9 = @"CLOUD_PHOTO_LIBRARY_NOT_ENABLED";
                 goto LABEL_145;
@@ -1133,9 +1133,9 @@ LABEL_144:
 
           else
           {
-            if (v11 > 2002)
+            if (code > 2002)
             {
-              if (v11 == 2003)
+              if (code == 2003)
               {
                 v9 = @"SECURE_ACCESS_DENIED";
               }
@@ -1148,13 +1148,13 @@ LABEL_144:
               goto LABEL_145;
             }
 
-            if (v11 == 2001)
+            if (code == 2001)
             {
               v9 = @"OPERATION_CANCELED_BY_USER";
               goto LABEL_145;
             }
 
-            if (v11 == 2002)
+            if (code == 2002)
             {
               v9 = @"INCORRECT_SETUP_CODE";
               goto LABEL_145;
@@ -1162,17 +1162,17 @@ LABEL_144:
           }
         }
 
-        else if (v11 <= 2499)
+        else if (code <= 2499)
         {
-          if (v11 > 2403)
+          if (code > 2403)
           {
-            if (v11 == 2404)
+            if (code == 2404)
             {
               v9 = @"OPERATION_STARTED";
               goto LABEL_145;
             }
 
-            if (v11 == 2405)
+            if (code == 2405)
             {
               v9 = @"ACCESSORY_IS_CALIBRATING";
               goto LABEL_145;
@@ -1181,13 +1181,13 @@ LABEL_144:
 
           else
           {
-            if (v11 == 2201)
+            if (code == 2201)
             {
               v9 = @"PASSWORD_WEAK";
               goto LABEL_145;
             }
 
-            if (v11 == 2300)
+            if (code == 2300)
             {
               v9 = @"VOICE_SHORTCUT_WITH_SIMILAR_NAME_EXISTS";
               goto LABEL_145;
@@ -1197,9 +1197,9 @@ LABEL_144:
 
         else
         {
-          if (v11 <= 2501)
+          if (code <= 2501)
           {
-            if (v11 == 2500)
+            if (code == 2500)
             {
               v9 = @"CONFIG_RESET";
             }
@@ -1212,7 +1212,7 @@ LABEL_144:
             goto LABEL_145;
           }
 
-          switch(v11)
+          switch(code)
           {
             case 2502:
               v9 = @"HOME_UI_SERVICE_BACKGROUNDED";
@@ -1237,58 +1237,58 @@ LABEL_145:
                 v15 = v18;
               }
 
-              v19 = [v5 mutableCopy];
+              v19 = [userInfo mutableCopy];
               v20 = v19;
               if (v19)
               {
-                v21 = v19;
+                dictionary = v19;
               }
 
               else
               {
-                v21 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary = [MEMORY[0x1E695DF90] dictionary];
               }
 
-              v22 = v21;
+              v22 = dictionary;
 
               [v22 setObject:v15 forKeyedSubscript:v6];
               v23 = [v22 copy];
 
-              v5 = v23;
+              userInfo = v23;
               goto LABEL_151;
           }
         }
 
-        v12 = [v8 code];
-        if ((v12 - 1001) > 8)
+        code2 = [v8 code];
+        if ((code2 - 1001) > 8)
         {
           goto LABEL_144;
         }
 
-        v9 = off_1E75473A8[v12 - 1001];
+        v9 = off_1E75473A8[code2 - 1001];
         goto LABEL_145;
     }
   }
 
 LABEL_151:
   v24 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v25 = [v4 domain];
-  v10 = [v24 initWithDomain:v25 code:objc_msgSend(v4 userInfo:{"code"), v5}];
+  domain = [v4 domain];
+  v10 = [v24 initWithDomain:domain code:objc_msgSend(v4 userInfo:{"code"), userInfo}];
 
 LABEL_152:
 
   return v10;
 }
 
-- (HMDelegateCaller)initWithQueue:(id)a3
+- (HMDelegateCaller)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = [[__HMQueueDelegateCaller alloc] initWithQueue:v4];
+      v6 = [[__HMQueueDelegateCaller alloc] initWithQueue:queueCopy];
     }
 
     else
@@ -1310,10 +1310,10 @@ LABEL_152:
   return p_super;
 }
 
-+ (id)delegateCallerWithOperationQueue:(id)a3
++ (id)delegateCallerWithOperationQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[__HMOperationQueueDelegateCaller alloc] initWithOperationQueue:v3];
+  queueCopy = queue;
+  v4 = [[__HMOperationQueueDelegateCaller alloc] initWithOperationQueue:queueCopy];
 
   return v4;
 }

@@ -1,30 +1,30 @@
 @interface TSCEFunctorWithArgsThunkValue
-+ (id)functorWithArgsValue:(const TSCEFunctor *)a3 args:(const void *)a4;
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (TSCEFunctorWithArgsThunkValue)initWithFunctor:(const TSCEFunctor *)a3 args:(const void *)a4;
-- (TSCERichTextStorage)asRawRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6;
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6;
++ (id)functorWithArgsValue:(const TSCEFunctor *)value args:(const void *)args;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (TSCEFunctorWithArgsThunkValue)initWithFunctor:(const TSCEFunctor *)functor args:(const void *)args;
+- (TSCERichTextStorage)asRawRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error;
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error;
 - (id).cxx_construct;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)evaluateThunk:(id)a3;
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)evaluateThunk:(id)thunk;
 @end
 
 @implementation TSCEFunctorWithArgsThunkValue
 
-+ (id)functorWithArgsValue:(const TSCEFunctor *)a3 args:(const void *)a4
++ (id)functorWithArgsValue:(const TSCEFunctor *)value args:(const void *)args
 {
   v6 = [TSCEFunctorWithArgsThunkValue alloc];
-  v9 = objc_msgSend_initWithFunctor_args_(v6, v7, a3, a4, v8);
+  v9 = objc_msgSend_initWithFunctor_args_(v6, v7, value, args, v8);
 
   return v9;
 }
 
-- (TSCEFunctorWithArgsThunkValue)initWithFunctor:(const TSCEFunctor *)a3 args:(const void *)a4
+- (TSCEFunctorWithArgsThunkValue)initWithFunctor:(const TSCEFunctor *)functor args:(const void *)args
 {
   v9.receiver = self;
   v9.super_class = TSCEFunctorWithArgsThunkValue;
@@ -32,10 +32,10 @@
   v7 = v6;
   if (v6)
   {
-    TSCEFunctor::operator=(&v6->_functor._formula, a3);
-    if (&v7->_arguments != a4)
+    TSCEFunctor::operator=(&v6->_functor._formula, functor);
+    if (&v7->_arguments != args)
     {
-      sub_22116CF34(&v7->_arguments, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 3);
+      sub_22116CF34(&v7->_arguments, *args, *(args + 1), (*(args + 1) - *args) >> 3);
     }
 
     v7->_rangeContextOverride = 3;
@@ -44,11 +44,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TSCEFunctorWithArgsThunkValue;
-  v4 = [(TSCEValue *)&v7 copyWithZone:a3];
+  v4 = [(TSCEValue *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -64,62 +64,62 @@
   return v5;
 }
 
-- (id)evaluateThunk:(id)a3
+- (id)evaluateThunk:(id)thunk
 {
-  v3 = TSCEFunctor::evaluateWithArgs(&self->_functor, a3, &self->_arguments);
+  v3 = TSCEFunctor::evaluateWithArgs(&self->_functor, thunk, &self->_arguments);
 
   return v3;
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
-  v14 = objc_msgSend_unwrapThunk_(v10, v11, self, v12, v13);
-  v16 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v14, v15, v10, a4, v7, a6);
+  v7 = *&index;
+  numberCopy = number;
+  v14 = objc_msgSend_unwrapThunk_(numberCopy, v11, self, v12, v13);
+  v16 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v14, v15, numberCopy, spec, v7, error);
 
   return v16;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
-  v14 = objc_msgSend_unwrapThunk_(v10, v11, self, v12, v13);
-  v16 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v14, v15, v10, a4, v7, a6);
+  v7 = *&index;
+  dateCopy = date;
+  v14 = objc_msgSend_unwrapThunk_(dateCopy, v11, self, v12, v13);
+  v16 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v14, v15, dateCopy, spec, v7, error);
 
   return v16;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
-  v14 = objc_msgSend_unwrapThunk_(v10, v11, self, v12, v13);
-  v16 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v14, v15, v10, a4, v7, a6);
+  v7 = *&index;
+  stringCopy = string;
+  v14 = objc_msgSend_unwrapThunk_(stringCopy, v11, self, v12, v13);
+  v16 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v14, v15, stringCopy, spec, v7, error);
 
   return v16;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
-  v14 = objc_msgSend_unwrapThunk_(v10, v11, self, v12, v13);
-  v16 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v14, v15, v10, a4, v7, a6);
+  v7 = *&index;
+  stringCopy = string;
+  v14 = objc_msgSend_unwrapThunk_(stringCopy, v11, self, v12, v13);
+  v16 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v14, v15, stringCopy, spec, v7, error);
 
   return v16;
 }
 
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error
 {
-  v8 = *&a6;
-  v19 = a4;
-  v15 = objc_msgSend_unwrapThunk_(v19, v12, self, v13, v14);
+  v8 = *&error;
+  specCopy = spec;
+  v15 = objc_msgSend_unwrapThunk_(specCopy, v12, self, v13, v14);
   v17 = v15;
   if (v15)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v15, v16, v19, a5, v8, a7);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v15, v16, specCopy, index, v8, a7);
   }
 
   else
@@ -132,15 +132,15 @@
   return result;
 }
 
-- (TSCERichTextStorage)asRawRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6
+- (TSCERichTextStorage)asRawRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error
 {
-  v8 = *&a6;
-  v19 = a4;
-  v15 = objc_msgSend_unwrapThunk_(v19, v12, self, v13, v14);
+  v8 = *&error;
+  specCopy = spec;
+  v15 = objc_msgSend_unwrapThunk_(specCopy, v12, self, v13, v14);
   v17 = v15;
   if (v15)
   {
-    objc_msgSend_asRawRichTextStorage_functionSpec_argumentIndex_outError_(v15, v16, v19, a5, v8, a7);
+    objc_msgSend_asRawRichTextStorage_functionSpec_argumentIndex_outError_(v15, v16, specCopy, index, v8, a7);
   }
 
   else
@@ -153,23 +153,23 @@
   return result;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
-  v14 = objc_msgSend_unwrapThunk_(v10, v11, self, v12, v13);
-  LOBYTE(a6) = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v14, v15, v10, a4, v7, a6);
+  v7 = *&index;
+  booleanCopy = boolean;
+  v14 = objc_msgSend_unwrapThunk_(booleanCopy, v11, self, v12, v13);
+  LOBYTE(error) = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v14, v15, booleanCopy, spec, v7, error);
 
-  return a6;
+  return error;
 }
 
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error
 {
-  v8 = a6;
-  v9 = *&a5;
-  v12 = a3;
-  v16 = objc_msgSend_unwrapThunk_(v12, v13, self, v14, v15);
-  v18 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v16, v17, v12, a4, v9, v8, a7);
+  formatCopy = format;
+  v9 = *&index;
+  gridCopy = grid;
+  v16 = objc_msgSend_unwrapThunk_(gridCopy, v13, self, v14, v15);
+  v18 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v16, v17, gridCopy, spec, v9, formatCopy, error);
 
   return v18;
 }

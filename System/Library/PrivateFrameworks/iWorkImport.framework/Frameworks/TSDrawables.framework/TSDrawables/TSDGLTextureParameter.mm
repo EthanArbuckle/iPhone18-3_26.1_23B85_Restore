@@ -1,12 +1,12 @@
 @interface TSDGLTextureParameter
 + (id)stringWithCurrentTextureParameters;
-+ (id)textureParameterWithPName:(unsigned int)a3 floatParameter:(double)a4;
-+ (id)textureParameterWithPName:(unsigned int)a3 floatParameters:(double *)a4 count:(unint64_t)a5;
-+ (id)textureParameterWithPName:(unsigned int)a3 floatParameters:(double *)a4 count:(unint64_t)a5 target:(unsigned int)a6;
-+ (id)textureParameterWithPName:(unsigned int)a3 integerParameter:(int)a4;
-+ (id)textureParameterWithPName:(unsigned int)a3 integerParameters:(int *)a4 count:(unint64_t)a5;
-+ (id)textureParameterWithPName:(unsigned int)a3 integerParameters:(int *)a4 count:(unint64_t)a5 target:(unsigned int)a6;
-- (TSDGLTextureParameter)initWithPName:(unsigned int)a3 paramCount:(unint64_t)a4 intData:(int *)a5 floatData:(double *)a6 target:(unsigned int)a7;
++ (id)textureParameterWithPName:(unsigned int)name floatParameter:(double)parameter;
++ (id)textureParameterWithPName:(unsigned int)name floatParameters:(double *)parameters count:(unint64_t)count;
++ (id)textureParameterWithPName:(unsigned int)name floatParameters:(double *)parameters count:(unint64_t)count target:(unsigned int)target;
++ (id)textureParameterWithPName:(unsigned int)name integerParameter:(int)parameter;
++ (id)textureParameterWithPName:(unsigned int)name integerParameters:(int *)parameters count:(unint64_t)count;
++ (id)textureParameterWithPName:(unsigned int)name integerParameters:(int *)parameters count:(unint64_t)count target:(unsigned int)target;
+- (TSDGLTextureParameter)initWithPName:(unsigned int)name paramCount:(unint64_t)count intData:(int *)data floatData:(double *)floatData target:(unsigned int)target;
 - (void)dealloc;
 - (void)setGLTextureParameter;
 @end
@@ -50,9 +50,9 @@
   return objc_msgSend_componentsJoinedByString_(v2, v20, @", ");
 }
 
-- (TSDGLTextureParameter)initWithPName:(unsigned int)a3 paramCount:(unint64_t)a4 intData:(int *)a5 floatData:(double *)a6 target:(unsigned int)a7
+- (TSDGLTextureParameter)initWithPName:(unsigned int)name paramCount:(unint64_t)count intData:(int *)data floatData:(double *)floatData target:(unsigned int)target
 {
-  if (!a4)
+  if (!count)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGLTextureParameter initWithPName:paramCount:intData:floatData:target:]");
@@ -61,7 +61,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  if (!(a5 | a6))
+  if (!(data | floatData))
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGLTextureParameter initWithPName:paramCount:intData:floatData:target:]");
@@ -70,7 +70,7 @@
     goto LABEL_8;
   }
 
-  if (a5 && a6)
+  if (data && floatData)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGLTextureParameter initWithPName:paramCount:intData:floatData:target:]");
@@ -86,23 +86,23 @@ LABEL_8:
   v33 = v32;
   if (v32)
   {
-    v32->_pname = a3;
-    v32->_paramCount = a4;
-    if (a5)
+    v32->_pname = name;
+    v32->_paramCount = count;
+    if (data)
     {
-      v34 = malloc_type_calloc(4uLL, a4, 0x51BD4484uLL);
+      v34 = malloc_type_calloc(4uLL, count, 0x51BD4484uLL);
       v33->_intData = v34;
-      memcpy(v34, a5, 4 * a4);
+      memcpy(v34, data, 4 * count);
     }
 
-    if (a6)
+    if (floatData)
     {
-      v35 = malloc_type_calloc(4uLL, a4, 0x6297AE5EuLL);
+      v35 = malloc_type_calloc(4uLL, count, 0x6297AE5EuLL);
       v33->_floatData = v35;
-      memcpy(v35, a6, 8 * a4);
+      memcpy(v35, floatData, 8 * count);
     }
 
-    v33->_target = a7;
+    v33->_target = target;
   }
 
   return v33;
@@ -117,56 +117,56 @@ LABEL_8:
   [(TSDGLTextureParameter *)&v3 dealloc];
 }
 
-+ (id)textureParameterWithPName:(unsigned int)a3 integerParameter:(int)a4
++ (id)textureParameterWithPName:(unsigned int)name integerParameter:(int)parameter
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&name;
+  parameterCopy = parameter;
   v5 = objc_alloc(objc_opt_class());
-  return objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v5, v6, v4, 1, &v8, 0, 3553);
+  return objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v5, v6, v4, 1, &parameterCopy, 0, 3553);
 }
 
-+ (id)textureParameterWithPName:(unsigned int)a3 integerParameters:(int *)a4 count:(unint64_t)a5
++ (id)textureParameterWithPName:(unsigned int)name integerParameters:(int *)parameters count:(unint64_t)count
 {
-  v7 = *&a3;
+  v7 = *&name;
   v8 = objc_alloc(objc_opt_class());
-  v10 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v8, v9, v7, a5, a4, 0, 3553);
+  v10 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v8, v9, v7, count, parameters, 0, 3553);
 
   return v10;
 }
 
-+ (id)textureParameterWithPName:(unsigned int)a3 integerParameters:(int *)a4 count:(unint64_t)a5 target:(unsigned int)a6
++ (id)textureParameterWithPName:(unsigned int)name integerParameters:(int *)parameters count:(unint64_t)count target:(unsigned int)target
 {
-  v6 = *&a6;
-  v9 = *&a3;
+  v6 = *&target;
+  v9 = *&name;
   v10 = objc_alloc(objc_opt_class());
-  v12 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v10, v11, v9, a5, a4, 0, v6);
+  v12 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v10, v11, v9, count, parameters, 0, v6);
 
   return v12;
 }
 
-+ (id)textureParameterWithPName:(unsigned int)a3 floatParameter:(double)a4
++ (id)textureParameterWithPName:(unsigned int)name floatParameter:(double)parameter
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&name;
+  parameterCopy = parameter;
   v5 = objc_alloc(objc_opt_class());
-  return objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v5, v6, v4, 1, 0, &v8, 3553);
+  return objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v5, v6, v4, 1, 0, &parameterCopy, 3553);
 }
 
-+ (id)textureParameterWithPName:(unsigned int)a3 floatParameters:(double *)a4 count:(unint64_t)a5
++ (id)textureParameterWithPName:(unsigned int)name floatParameters:(double *)parameters count:(unint64_t)count
 {
-  v7 = *&a3;
+  v7 = *&name;
   v8 = objc_alloc(objc_opt_class());
-  v10 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v8, v9, v7, a5, 0, a4, 3553);
+  v10 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v8, v9, v7, count, 0, parameters, 3553);
 
   return v10;
 }
 
-+ (id)textureParameterWithPName:(unsigned int)a3 floatParameters:(double *)a4 count:(unint64_t)a5 target:(unsigned int)a6
++ (id)textureParameterWithPName:(unsigned int)name floatParameters:(double *)parameters count:(unint64_t)count target:(unsigned int)target
 {
-  v6 = *&a6;
-  v9 = *&a3;
+  v6 = *&target;
+  v9 = *&name;
   v10 = objc_alloc(objc_opt_class());
-  v12 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v10, v11, v9, a5, 0, a4, v6);
+  v12 = objc_msgSend_initWithPName_paramCount_intData_floatData_target_(v10, v11, v9, count, 0, parameters, v6);
 
   return v12;
 }

@@ -1,66 +1,66 @@
 @interface MTShareUtilStringFactory
-+ (id)_bodyForShareEmailWithDataSource:(id)a3;
-+ (id)_descriptionHTMLForDataSource:(id)a3;
-+ (id)_footerHTMLForDataSource:(id)a3;
-+ (id)_subtitleHTMLForDataSource:(id)a3;
-+ (id)_titleHTMLForDataSource:(id)a3;
-+ (id)subjectForShareEmailFromDataSource:(id)a3;
-+ (id)textForShareToNotesFromDataSource:(id)a3;
++ (id)_bodyForShareEmailWithDataSource:(id)source;
++ (id)_descriptionHTMLForDataSource:(id)source;
++ (id)_footerHTMLForDataSource:(id)source;
++ (id)_subtitleHTMLForDataSource:(id)source;
++ (id)_titleHTMLForDataSource:(id)source;
++ (id)subjectForShareEmailFromDataSource:(id)source;
++ (id)textForShareToNotesFromDataSource:(id)source;
 @end
 
 @implementation MTShareUtilStringFactory
 
-+ (id)subjectForShareEmailFromDataSource:(id)a3
++ (id)subjectForShareEmailFromDataSource:(id)source
 {
-  v3 = a3;
-  if ([v3 currentShareMode] == 2)
+  sourceCopy = source;
+  if ([sourceCopy currentShareMode] == 2)
   {
-    v4 = [v3 sharePodcastTitle];
-    v5 = [v3 shareEpisodeTitle];
+    sharePodcastTitle = [sourceCopy sharePodcastTitle];
+    shareEpisodeTitle = [sourceCopy shareEpisodeTitle];
 
-    [NSString stringWithFormat:@"%@: %@", v4, v5];
+    [NSString stringWithFormat:@"%@: %@", sharePodcastTitle, shareEpisodeTitle];
   }
 
   else
   {
     v6 = +[NSBundle mainBundle];
-    v4 = [v6 localizedStringForKey:@"SHARE_EMAIL_SHOW_SUBJECT_FORMAT" value:&stru_1004F3018 table:0];
+    sharePodcastTitle = [v6 localizedStringForKey:@"SHARE_EMAIL_SHOW_SUBJECT_FORMAT" value:&stru_1004F3018 table:0];
 
-    v5 = [v3 sharePodcastTitle];
+    shareEpisodeTitle = [sourceCopy sharePodcastTitle];
 
-    [NSString stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, v5];
+    [NSString stringWithValidatedFormat:sharePodcastTitle validFormatSpecifiers:@"%@" error:0, shareEpisodeTitle];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)textForShareToNotesFromDataSource:(id)a3
++ (id)textForShareToNotesFromDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"EPISODE_OR_PODCAST_SHARE_NOTES" value:&stru_1004F3018 table:0];
 
-  if ([v3 currentShareMode] == 1)
+  if ([sourceCopy currentShareMode] == 1)
   {
-    v6 = [v3 sharePodcastTitle];
-    [v3 shareProvider];
+    sharePodcastTitle = [sourceCopy sharePodcastTitle];
+    [sourceCopy shareProvider];
   }
 
   else
   {
-    v6 = [v3 shareEpisodeTitle];
-    [v3 sharePodcastTitle];
+    sharePodcastTitle = [sourceCopy shareEpisodeTitle];
+    [sourceCopy sharePodcastTitle];
   }
   v7 = ;
   if ([v7 length])
   {
-    v8 = [NSString stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@ %@" error:0, v6, v7];
+    v8 = [NSString stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@ %@" error:0, sharePodcastTitle, v7];
   }
 
   else
   {
-    v8 = v6;
+    v8 = sharePodcastTitle;
   }
 
   v9 = v8;
@@ -68,17 +68,17 @@
   return v9;
 }
 
-+ (id)_titleHTMLForDataSource:(id)a3
++ (id)_titleHTMLForDataSource:(id)source
 {
-  v3 = a3;
-  if ([v3 currentShareMode] == 1)
+  sourceCopy = source;
+  if ([sourceCopy currentShareMode] == 1)
   {
-    [v3 sharePodcastTitle];
+    [sourceCopy sharePodcastTitle];
   }
 
   else
   {
-    [v3 shareEpisodeTitle];
+    [sourceCopy shareEpisodeTitle];
   }
   v4 = ;
 
@@ -95,17 +95,17 @@
   return v5;
 }
 
-+ (id)_subtitleHTMLForDataSource:(id)a3
++ (id)_subtitleHTMLForDataSource:(id)source
 {
-  v3 = a3;
-  if ([v3 currentShareMode] == 1)
+  sourceCopy = source;
+  if ([sourceCopy currentShareMode] == 1)
   {
-    [v3 shareProvider];
+    [sourceCopy shareProvider];
   }
 
   else
   {
-    [v3 sharePodcastTitle];
+    [sourceCopy sharePodcastTitle];
   }
   v4 = ;
 
@@ -122,14 +122,14 @@
   return v5;
 }
 
-+ (id)_descriptionHTMLForDataSource:(id)a3
++ (id)_descriptionHTMLForDataSource:(id)source
 {
-  v3 = a3;
-  v4 = [v3 shareDescription];
-  if (v4)
+  sourceCopy = source;
+  shareDescription = [sourceCopy shareDescription];
+  if (shareDescription)
   {
-    v5 = [v3 shareDescription];
-    v6 = [NSString stringWithFormat:@"<br/><br/>%@", v5];
+    shareDescription2 = [sourceCopy shareDescription];
+    v6 = [NSString stringWithFormat:@"<br/><br/>%@", shareDescription2];
   }
 
   else
@@ -140,12 +140,12 @@
   return v6;
 }
 
-+ (id)_footerHTMLForDataSource:(id)a3
++ (id)_footerHTMLForDataSource:(id)source
 {
-  v3 = [a3 shareURL];
-  v4 = [v3 absoluteString];
+  shareURL = [source shareURL];
+  absoluteString = [shareURL absoluteString];
 
-  v5 = [NSString stringWithFormat:@"<a href=%@>%@</a>", v4, v4];
+  v5 = [NSString stringWithFormat:@"<a href=%@>%@</a>", absoluteString, absoluteString];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"SHARE_EMAIL_FOOTER_FORMAT" value:&stru_1004F3018 table:0];
 
@@ -155,20 +155,20 @@
   return v9;
 }
 
-+ (id)_bodyForShareEmailWithDataSource:(id)a3
++ (id)_bodyForShareEmailWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [NSMutableString stringWithString:@"<html><body>"];
-  v6 = [a1 _titleHTMLForDataSource:v4];
+  v6 = [self _titleHTMLForDataSource:sourceCopy];
   [v5 appendString:v6];
 
-  v7 = [a1 _subtitleHTMLForDataSource:v4];
+  v7 = [self _subtitleHTMLForDataSource:sourceCopy];
   [v5 appendString:v7];
 
-  v8 = [a1 _descriptionHTMLForDataSource:v4];
+  v8 = [self _descriptionHTMLForDataSource:sourceCopy];
   [v5 appendString:v8];
 
-  v9 = [a1 _footerHTMLForDataSource:v4];
+  v9 = [self _footerHTMLForDataSource:sourceCopy];
 
   [v5 appendString:v9];
   [v5 appendString:@"</body></html>"];

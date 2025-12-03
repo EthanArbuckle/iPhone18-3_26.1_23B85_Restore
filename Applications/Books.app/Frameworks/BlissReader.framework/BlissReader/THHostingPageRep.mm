@@ -1,11 +1,11 @@
 @interface THHostingPageRep
 - (TSDLayerAndSubviewHosting)layerAndSubviewHost;
-- (int)positionForChildView:(id)a3;
-- (void)addChildViewsToArray:(id)a3;
+- (int)positionForChildView:(id)view;
+- (void)addChildViewsToArray:(id)array;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 - (void)p_updateHostGeometry;
-- (void)updateLayerGeometryFromLayout:(id)a3;
+- (void)updateLayerGeometryFromLayout:(id)layout;
 - (void)willBeRemoved;
 @end
 
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   v3 = sub_15FAAC;
   v4 = &unk_45AE00;
-  v5 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v3(block);
@@ -61,34 +61,34 @@
   }
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = THHostingPageRep;
-  [(THHostingPageRep *)&v4 updateLayerGeometryFromLayout:a3];
+  [(THHostingPageRep *)&v4 updateLayerGeometryFromLayout:layout];
   [(THHostingPageRep *)self p_updateHostGeometry];
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
-  v5 = [(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost view];
-  v6 = [(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost borderView];
+  view = [(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost view];
+  borderView = [(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost borderView];
   [(THHostingPageRep *)self p_updateHostGeometry];
-  if (v5)
+  if (view)
   {
-    [a3 addObject:v5];
+    [array addObject:view];
   }
 
-  if (v6)
+  if (borderView)
   {
 
-    [a3 addObject:v6];
+    [array addObject:borderView];
   }
 }
 
-- (int)positionForChildView:(id)a3
+- (int)positionForChildView:(id)view
 {
-  if ([(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost borderView]== a3)
+  if ([(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost borderView]== view)
   {
     return 3;
   }
@@ -99,11 +99,11 @@
   }
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = THHostingPageRep;
-  [(THPageRep *)&v4 didUpdateLayer:a3];
+  [(THPageRep *)&v4 didUpdateLayer:layer];
   [(THPageLayerAndSubviewHost *)self->_layerAndSubviewHost updateTopLevelLayers];
 }
 

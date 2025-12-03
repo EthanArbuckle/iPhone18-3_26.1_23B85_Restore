@@ -1,12 +1,12 @@
 @interface JFXGuidedFilter
-- (JFXGuidedFilter)initWithDiameter:(int)a3;
+- (JFXGuidedFilter)initWithDiameter:(int)diameter;
 - (void)dealloc;
-- (void)scaleImage:(__CVBuffer *)a3 guidanceImage:(__CVBuffer *)a4 destinationImage:(__CVBuffer *)a5;
+- (void)scaleImage:(__CVBuffer *)image guidanceImage:(__CVBuffer *)guidanceImage destinationImage:(__CVBuffer *)destinationImage;
 @end
 
 @implementation JFXGuidedFilter
 
-- (JFXGuidedFilter)initWithDiameter:(int)a3
+- (JFXGuidedFilter)initWithDiameter:(int)diameter
 {
   v21.receiver = self;
   v21.super_class = JFXGuidedFilter;
@@ -31,9 +31,9 @@
         }
       }
 
-      v9 = [(MTLDevice *)v4->_device newCommandQueue];
+      newCommandQueue = [(MTLDevice *)v4->_device newCommandQueue];
       commandQueue = v4->_commandQueue;
-      v4->_commandQueue = v9;
+      v4->_commandQueue = newCommandQueue;
 
       if (!v4->_commandQueue)
       {
@@ -48,8 +48,8 @@
       if (!v4->_osGuidedFilter)
       {
         v12 = objc_alloc(MEMORY[0x277CD7528]);
-        v13 = (a3 + (a3 >> 31)) | 1;
-        if (a3 < 2)
+        v13 = (diameter + (diameter >> 31)) | 1;
+        if (diameter < 2)
         {
           v13 = 3;
         }
@@ -72,14 +72,14 @@
   return v4;
 }
 
-- (void)scaleImage:(__CVBuffer *)a3 guidanceImage:(__CVBuffer *)a4 destinationImage:(__CVBuffer *)a5
+- (void)scaleImage:(__CVBuffer *)image guidanceImage:(__CVBuffer *)guidanceImage destinationImage:(__CVBuffer *)destinationImage
 {
   if (self->_device && (commandQueue = self->_commandQueue) != 0 && self->_textureCache)
   {
-    v10 = [(MTLCommandQueue *)commandQueue commandBuffer];
-    if (v10)
+    commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+    if (commandBuffer)
     {
-      v11 = v10;
+      v11 = commandBuffer;
       if (!self->_osGuidedFilter)
       {
         v15 = JFXLog_matting();
@@ -93,9 +93,9 @@
       }
 
       pixelBufferOut[0] = 0;
-      v12 = [JFXMetalHelpers createCVTextureFromImage:a3 withTextureCache:self->_textureCache];
-      v13 = [JFXMetalHelpers createCVTextureFromImage:a4 withTextureCache:self->_textureCache];
-      v14 = [JFXMetalHelpers createCVTextureFromImage:a5 withTextureCache:self->_textureCache];
+      v12 = [JFXMetalHelpers createCVTextureFromImage:image withTextureCache:self->_textureCache];
+      v13 = [JFXMetalHelpers createCVTextureFromImage:guidanceImage withTextureCache:self->_textureCache];
+      v14 = [JFXMetalHelpers createCVTextureFromImage:destinationImage withTextureCache:self->_textureCache];
       v15 = CVMetalTextureGetTexture(v12);
       v16 = CVMetalTextureGetTexture(v13);
       v17 = CVMetalTextureGetTexture(v14);
@@ -120,8 +120,8 @@
               }
 
               v28 = v22;
-              self->_guideImageWidth = CVPixelBufferGetWidth(a4);
-              Height = CVPixelBufferGetHeight(a4);
+              self->_guideImageWidth = CVPixelBufferGetWidth(guidanceImage);
+              Height = CVPixelBufferGetHeight(guidanceImage);
               self->_guideImageHeight = Height;
               if (JFXCreatePixelBufferPool(self->_guideImageWidth, Height, v28, &self->_coeffPool))
               {

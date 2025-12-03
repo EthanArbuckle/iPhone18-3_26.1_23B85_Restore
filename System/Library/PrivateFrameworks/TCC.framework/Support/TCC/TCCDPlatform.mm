@@ -5,20 +5,20 @@
 + (id)iosFamilyPlatformNames;
 + (id)macOSPlatformNames;
 - (NSUUID)bootUUID;
-- (TCCDPlatform)initWithName:(id)a3;
+- (TCCDPlatform)initWithName:(id)name;
 - (TCCDServer)server;
-- (id)appBundleURLContainingExecutableURL:(id)a3;
-- (id)bundleURLContainingExecutableURL:(id)a3;
-- (id)serviceByName:(id)a3;
-- (id)stringForAnalyticsAction:(int64_t)a3;
+- (id)appBundleURLContainingExecutableURL:(id)l;
+- (id)bundleURLContainingExecutableURL:(id)l;
+- (id)serviceByName:(id)name;
+- (id)stringForAnalyticsAction:(int64_t)action;
 - (void)loadConfigurationDictionary;
-- (void)sendAnalyticsAsyncWithEventName:(id)a3 fields:(id)a4;
-- (void)sendAnalyticsForAction:(int64_t)a3 service:(id)a4 subjectIdentity:(id)a5 indirectObjectIdentity:(id)a6 authValue:(unint64_t)a7 includeV1AuthValue:(BOOL)a8 v1AuthValue:(unint64_t)a9 desiredAuth:(unint64_t)a10 domainReason:(id)a11 promptType:(int64_t)a12 macBuddyStatus:(int64_t)a13;
-- (void)sendAnalyticsForEntitlement:(id)a3 withIdentifier:(id)a4 service:(id)a5 function:(id)a6;
-- (void)sendAnalyticsForExternal:(id)a3 withMacBuddyStatus:(int64_t)a4 function:(id)a5;
-- (void)sendAnalyticsForPlugin:(id)a3 service:(id)a4 API:(id)a5;
-- (void)sendAnalyticsWithEventName:(id)a3 fields:(id)a4;
-- (void)updateAnalyticsEvent:(id)a3 fromIdentity:(id)a4 keyPrefix:(id)a5;
+- (void)sendAnalyticsAsyncWithEventName:(id)name fields:(id)fields;
+- (void)sendAnalyticsForAction:(int64_t)action service:(id)service subjectIdentity:(id)identity indirectObjectIdentity:(id)objectIdentity authValue:(unint64_t)value includeV1AuthValue:(BOOL)authValue v1AuthValue:(unint64_t)v1AuthValue desiredAuth:(unint64_t)self0 domainReason:(id)self1 promptType:(int64_t)self2 macBuddyStatus:(int64_t)self3;
+- (void)sendAnalyticsForEntitlement:(id)entitlement withIdentifier:(id)identifier service:(id)service function:(id)function;
+- (void)sendAnalyticsForExternal:(id)external withMacBuddyStatus:(int64_t)status function:(id)function;
+- (void)sendAnalyticsForPlugin:(id)plugin service:(id)service API:(id)i;
+- (void)sendAnalyticsWithEventName:(id)name fields:(id)fields;
+- (void)updateAnalyticsEvent:(id)event fromIdentity:(id)identity keyPrefix:(id)prefix;
 @end
 
 @implementation TCCDPlatform
@@ -90,15 +90,15 @@
   return v3;
 }
 
-- (TCCDPlatform)initWithName:(id)a3
+- (TCCDPlatform)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = TCCDPlatform;
   v5 = [(TCCDPlatform *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -108,14 +108,14 @@
 
 - (void)loadConfigurationDictionary
 {
-  v3 = [(TCCDPlatform *)self server];
-  v4 = [v3 allowsInternalSecurityPolicies];
+  server = [(TCCDPlatform *)self server];
+  allowsInternalSecurityPolicies = [server allowsInternalSecurityPolicies];
 
-  if (v4)
+  if (allowsInternalSecurityPolicies)
   {
-    v5 = [(TCCDPlatform *)self server];
-    v6 = [v5 stateDirectory];
-    v7 = [v6 stringByAppendingPathComponent:@"tccd-config.plist"];
+    server2 = [(TCCDPlatform *)self server];
+    stateDirectory = [server2 stateDirectory];
+    v7 = [stateDirectory stringByAppendingPathComponent:@"tccd-config.plist"];
 
     v8 = [NSData dataWithContentsOfFile:v7 options:0 error:0];
     if (v8)
@@ -127,25 +127,25 @@
       self->_configurationDictionary = v9;
 
       v12 = self->_configurationDictionary;
-      v13 = [(TCCDPlatform *)self server];
-      v14 = [v13 logHandle];
+      server3 = [(TCCDPlatform *)self server];
+      logHandle = [server3 logHandle];
 
       if (v12)
       {
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
         {
           v15 = self->_configurationDictionary;
           *buf = 138543618;
           v20 = v7;
           v21 = 2114;
           v22 = v15;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Using config file at %{public}@: contents:\n%{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "Using config file at %{public}@: contents:\n%{public}@", buf, 0x16u);
         }
       }
 
-      else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      else if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        sub_100055EB0(v7, v10, v14);
+        sub_100055EB0(v7, v10, logHandle);
       }
     }
   }
@@ -158,7 +158,7 @@
   }
 }
 
-- (id)serviceByName:(id)a3
+- (id)serviceByName:(id)name
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -166,14 +166,14 @@
   block[3] = &unk_1000A4F58;
   block[4] = self;
   v4 = qword_1000C1298;
-  v5 = a3;
+  nameCopy = name;
   if (v4 != -1)
   {
     dispatch_once(&qword_1000C1298, block);
   }
 
-  v6 = [(TCCDPlatform *)self servicesByName];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  servicesByName = [(TCCDPlatform *)self servicesByName];
+  v7 = [servicesByName objectForKeyedSubscript:nameCopy];
 
   return v7;
 }
@@ -200,13 +200,13 @@
         v5 = self->_bootUUID;
         self->_bootUUID = v4;
 
-        v6 = [(TCCDPlatform *)self server];
-        v7 = [v6 logHandle];
+        server = [(TCCDPlatform *)self server];
+        logHandle = [server logHandle];
 
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
           *v9 = 0;
-          _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Successfully loaded bootUUID", v9, 2u);
+          _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Successfully loaded bootUUID", v9, 2u);
         }
       }
     }
@@ -217,28 +217,28 @@
   return bootUUID;
 }
 
-- (id)bundleURLContainingExecutableURL:(id)a3
+- (id)bundleURLContainingExecutableURL:(id)l
 {
   v3 = _CFBundleCopyBundleURLForExecutableURL();
-  v4 = [v3 absoluteURL];
+  absoluteURL = [v3 absoluteURL];
 
-  return v4;
+  return absoluteURL;
 }
 
-- (id)appBundleURLContainingExecutableURL:(id)a3
+- (id)appBundleURLContainingExecutableURL:(id)l
 {
-  v4 = a3;
-  v31 = self;
-  v5 = [(TCCDPlatform *)self bundleURLContainingExecutableURL:v4];
+  lCopy = l;
+  selfCopy = self;
+  v5 = [(TCCDPlatform *)self bundleURLContainingExecutableURL:lCopy];
   v6 = v5;
   if (v5)
   {
-    v30 = v4;
-    v7 = [v5 pathComponents];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    v30 = lCopy;
+    pathComponents = [v5 pathComponents];
+    v8 = [pathComponents objectAtIndexedSubscript:0];
     v9 = [NSURL fileURLWithPath:v8];
 
-    if ([v7 count] >= 2)
+    if ([pathComponents count] >= 2)
     {
       v11 = 2;
       v12 = 1;
@@ -247,7 +247,7 @@
       do
       {
         v13 = v9;
-        v14 = [v7 objectAtIndexedSubscript:{v12, v29}];
+        v14 = [pathComponents objectAtIndexedSubscript:{v12, v29}];
         v9 = [v9 URLByAppendingPathComponent:v14];
 
         if (!v9)
@@ -255,8 +255,8 @@
           break;
         }
 
-        v15 = [v9 pathExtension];
-        v16 = [v15 caseInsensitiveCompare:@"app"];
+        pathExtension = [v9 pathExtension];
+        v16 = [pathExtension caseInsensitiveCompare:@"app"];
 
         if (!v16)
         {
@@ -269,14 +269,14 @@
           {
             if ([v18 BOOLValue])
             {
-              v26 = [(TCCDPlatform *)v31 server];
-              v27 = [v26 logHandle];
+              server = [(TCCDPlatform *)selfCopy server];
+              logHandle = [server logHandle];
 
-              v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
-              v4 = v30;
+              v28 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG);
+              lCopy = v30;
               if (v28)
               {
-                sub_100055F90(v30, v9, v27);
+                sub_100055F90(v30, v9, logHandle);
               }
 
               v9 = v9;
@@ -287,17 +287,17 @@
 
           else
           {
-            v20 = [(TCCDPlatform *)v31 server];
-            v21 = [v20 logHandle];
+            server2 = [(TCCDPlatform *)selfCopy server];
+            logHandle2 = [server2 logHandle];
 
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+            if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_INFO))
             {
-              v22 = [v9 path];
+              path = [v9 path];
               *buf = v29;
-              v35 = v22;
+              v35 = path;
               v36 = 2114;
               v37 = v19;
-              _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Failed to get NSURLIsApplicationKey for %@: %{public}@", buf, 0x16u);
+              _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_INFO, "Failed to get NSURLIsApplicationKey for %@: %{public}@", buf, 0x16u);
             }
           }
         }
@@ -305,11 +305,11 @@
         v12 = v11;
       }
 
-      while ([v7 count] > v11++);
+      while ([pathComponents count] > v11++);
     }
 
     v24 = v6;
-    v4 = v30;
+    lCopy = v30;
 LABEL_15:
   }
 
@@ -321,84 +321,84 @@ LABEL_15:
   return v24;
 }
 
-- (id)stringForAnalyticsAction:(int64_t)a3
+- (id)stringForAnalyticsAction:(int64_t)action
 {
-  if (a3 > 7)
+  if (action > 7)
   {
     return @"<Invalid Action>";
   }
 
   else
   {
-    return off_1000A6B10[a3];
+    return off_1000A6B10[action];
   }
 }
 
-- (void)updateAnalyticsEvent:(id)a3 fromIdentity:(id)a4 keyPrefix:(id)a5
+- (void)updateAnalyticsEvent:(id)event fromIdentity:(id)identity keyPrefix:(id)prefix
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 client_type]);
-  v10 = [v8 stringByAppendingString:@"_ID_type"];
-  [v19 setObject:v9 forKeyedSubscript:v10];
+  eventCopy = event;
+  identityCopy = identity;
+  prefixCopy = prefix;
+  v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [identityCopy client_type]);
+  v10 = [prefixCopy stringByAppendingString:@"_ID_type"];
+  [eventCopy setObject:v9 forKeyedSubscript:v10];
 
-  if (![v7 client_type])
+  if (![identityCopy client_type])
   {
-    v14 = [v7 bundle];
+    bundle = [identityCopy bundle];
 
-    if (v14)
+    if (bundle)
     {
-      v15 = [v7 bundle];
-      v16 = [v15 bundleIdentifier];
-      v17 = [v8 stringByAppendingString:@"_ID"];
-      [v19 setObject:v16 forKeyedSubscript:v17];
+      bundle2 = [identityCopy bundle];
+      bundleIdentifier = [bundle2 bundleIdentifier];
+      v17 = [prefixCopy stringByAppendingString:@"_ID"];
+      [eventCopy setObject:bundleIdentifier forKeyedSubscript:v17];
 
-      v12 = [v7 bundle];
-      v13 = [v12 bundleVersion];
-      v18 = [v8 stringByAppendingString:@"_bundle_version"];
-      [v19 setObject:v13 forKeyedSubscript:v18];
+      bundle3 = [identityCopy bundle];
+      bundleVersion = [bundle3 bundleVersion];
+      v18 = [prefixCopy stringByAppendingString:@"_bundle_version"];
+      [eventCopy setObject:bundleVersion forKeyedSubscript:v18];
 
       goto LABEL_7;
     }
   }
 
-  if ([v7 client_type] == 1)
+  if ([identityCopy client_type] == 1)
   {
-    v11 = [v7 path];
+    path = [identityCopy path];
 
-    if (v11)
+    if (path)
     {
-      v12 = [v7 path];
-      v13 = [v8 stringByAppendingString:@"_ID"];
-      [v19 setObject:v12 forKeyedSubscript:v13];
+      bundle3 = [identityCopy path];
+      bundleVersion = [prefixCopy stringByAppendingString:@"_ID"];
+      [eventCopy setObject:bundle3 forKeyedSubscript:bundleVersion];
 LABEL_7:
     }
   }
 }
 
-- (void)sendAnalyticsForPlugin:(id)a3 service:(id)a4 API:(id)a5
+- (void)sendAnalyticsForPlugin:(id)plugin service:(id)service API:(id)i
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pluginCopy = plugin;
+  serviceCopy = service;
+  iCopy = i;
   if (&_AnalyticsSendEventLazy)
   {
-    v11 = [(TCCDPlatform *)self server];
-    v12 = [v11 logHandle];
+    server = [(TCCDPlatform *)self server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      v13 = [v9 name];
+      name = [serviceCopy name];
       *buf = 138544130;
       v21 = @"com.apple.TCC.management_action";
       v22 = 2114;
-      v23 = v8;
+      v23 = pluginCopy;
       v24 = 2114;
-      v25 = v10;
+      v25 = iCopy;
       v26 = 2114;
-      v27 = v13;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Sending %{public}@ Analytics Event for plugin=%{public}@, API=%{public}@, service=%{public}@", buf, 0x2Au);
+      v27 = name;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "Sending %{public}@ Analytics Event for plugin=%{public}@, API=%{public}@, service=%{public}@", buf, 0x2Au);
     }
 
     v16[1] = _NSConcreteStackBlock;
@@ -406,9 +406,9 @@ LABEL_7:
     v16[3] = sub_100054D8C;
     v16[4] = &unk_1000A6A78;
     v14 = &v17;
-    v17 = v9;
-    v18 = v10;
-    v19 = v8;
+    v17 = serviceCopy;
+    v18 = iCopy;
+    v19 = pluginCopy;
     AnalyticsSendEventLazy();
   }
 
@@ -427,22 +427,22 @@ LABEL_7:
   }
 }
 
-- (void)sendAnalyticsForEntitlement:(id)a3 withIdentifier:(id)a4 service:(id)a5 function:(id)a6
+- (void)sendAnalyticsForEntitlement:(id)entitlement withIdentifier:(id)identifier service:(id)service function:(id)function
 {
-  v15 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  serviceCopy = service;
+  functionCopy = function;
+  identifierCopy = identifier;
+  entitlementCopy = entitlement;
   v13 = objc_alloc_init(NSMutableDictionary);
-  [v13 setObject:v10 forKeyedSubscript:@"function_name"];
+  [v13 setObject:functionCopy forKeyedSubscript:@"function_name"];
 
-  [v13 setObject:v12 forKeyedSubscript:@"entitlement"];
-  [v13 setObject:v11 forKeyedSubscript:@"subject_ID"];
+  [v13 setObject:entitlementCopy forKeyedSubscript:@"entitlement"];
+  [v13 setObject:identifierCopy forKeyedSubscript:@"subject_ID"];
 
-  if (v15)
+  if (serviceCopy)
   {
-    v14 = [v15 name];
-    [v13 setObject:v14 forKeyedSubscript:@"service"];
+    name = [serviceCopy name];
+    [v13 setObject:name forKeyedSubscript:@"service"];
   }
 
   else
@@ -453,62 +453,62 @@ LABEL_7:
   [(TCCDPlatform *)self sendAnalyticsAsyncWithEventName:@"com.apple.TCC.entitlement_usage" fields:v13];
 }
 
-- (void)sendAnalyticsForExternal:(id)a3 withMacBuddyStatus:(int64_t)a4 function:(id)a5
+- (void)sendAnalyticsForExternal:(id)external withMacBuddyStatus:(int64_t)status function:(id)function
 {
-  v11 = a3;
-  v8 = a5;
+  externalCopy = external;
+  functionCopy = function;
   v9 = objc_alloc_init(NSMutableDictionary);
   v10 = [(TCCDPlatform *)self stringForAnalyticsAction:7];
   [v9 setObject:v10 forKeyedSubscript:@"action"];
 
-  [v9 setObject:v8 forKeyedSubscript:@"function_name"];
-  if (a4 <= 2)
+  [v9 setObject:functionCopy forKeyedSubscript:@"function_name"];
+  if (status <= 2)
   {
-    [v9 setObject:(&off_1000A6B50)[a4] forKeyedSubscript:@"macbuddy_on"];
+    [v9 setObject:(&off_1000A6B50)[status] forKeyedSubscript:@"macbuddy_on"];
   }
 
-  [v9 setObject:v11 forKeyedSubscript:@"service"];
+  [v9 setObject:externalCopy forKeyedSubscript:@"service"];
   [(TCCDPlatform *)self sendAnalyticsAsyncWithEventName:@"com.apple.TCC.authorization_action" fields:v9];
 }
 
-- (void)sendAnalyticsForAction:(int64_t)a3 service:(id)a4 subjectIdentity:(id)a5 indirectObjectIdentity:(id)a6 authValue:(unint64_t)a7 includeV1AuthValue:(BOOL)a8 v1AuthValue:(unint64_t)a9 desiredAuth:(unint64_t)a10 domainReason:(id)a11 promptType:(int64_t)a12 macBuddyStatus:(int64_t)a13
+- (void)sendAnalyticsForAction:(int64_t)action service:(id)service subjectIdentity:(id)identity indirectObjectIdentity:(id)objectIdentity authValue:(unint64_t)value includeV1AuthValue:(BOOL)authValue v1AuthValue:(unint64_t)v1AuthValue desiredAuth:(unint64_t)self0 domainReason:(id)self1 promptType:(int64_t)self2 macBuddyStatus:(int64_t)self3
 {
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a11;
+  serviceCopy = service;
+  identityCopy = identity;
+  objectIdentityCopy = objectIdentity;
+  reasonCopy = reason;
   if (&_AnalyticsSendEventLazy)
   {
-    v27 = v20;
-    v23 = v19;
-    v24 = [(TCCDPlatform *)self server];
-    v25 = [v24 logHandle];
+    v27 = identityCopy;
+    v23 = serviceCopy;
+    server = [(TCCDPlatform *)self server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v48 = @"com.apple.TCC.authorization_action";
-      _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Analytics Event preparing: %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "Analytics Event preparing: %{public}@", buf, 0xCu);
     }
 
     v30 = _NSConcreteStackBlock;
     v31 = 3221225472;
     v32 = sub_10005534C;
     v33 = &unk_1000A6AA0;
-    v34 = self;
-    v40 = a3;
-    v19 = v23;
+    selfCopy = self;
+    actionCopy = action;
+    serviceCopy = v23;
     v35 = v23;
-    v46 = a8;
-    v41 = a7;
-    v42 = a12;
-    v43 = a9;
-    v20 = v27;
+    authValueCopy = authValue;
+    valueCopy = value;
+    typeCopy = type;
+    v1AuthValueCopy = v1AuthValue;
+    identityCopy = v27;
     v36 = v27;
-    v37 = v21;
-    v44 = a10;
-    v45 = a13;
-    v38 = v22;
+    v37 = objectIdentityCopy;
+    authCopy = auth;
+    statusCopy = status;
+    v38 = reasonCopy;
     v39 = @"com.apple.TCC.authorization_action";
     AnalyticsSendEventLazy();
 
@@ -531,29 +531,29 @@ LABEL_7:
   }
 }
 
-- (void)sendAnalyticsWithEventName:(id)a3 fields:(id)a4
+- (void)sendAnalyticsWithEventName:(id)name fields:(id)fields
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  fieldsCopy = fields;
   if (&_AnalyticsSendEventLazy)
   {
-    v8 = [(TCCDPlatform *)self server];
-    v9 = [v8 logHandle];
+    server = [(TCCDPlatform *)self server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v21 = v6;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Analytics Event preparing: %{public}@", buf, 0xCu);
+      v21 = nameCopy;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "Analytics Event preparing: %{public}@", buf, 0xCu);
     }
 
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000558A4;
     v16 = &unk_1000A6AC8;
-    v17 = self;
-    v18 = v6;
-    v19 = v7;
+    selfCopy = self;
+    v18 = nameCopy;
+    v19 = fieldsCopy;
     AnalyticsSendEventLazy();
 
     v10 = v18;
@@ -565,7 +565,7 @@ LABEL_7:
     v11[1] = 3221225472;
     v11[2] = sub_10005598C;
     v11[3] = &unk_1000A4F58;
-    v12 = v6;
+    v12 = nameCopy;
     if (qword_1000C12B0 != -1)
     {
       dispatch_once(&qword_1000C12B0, v11);
@@ -575,29 +575,29 @@ LABEL_7:
   }
 }
 
-- (void)sendAnalyticsAsyncWithEventName:(id)a3 fields:(id)a4
+- (void)sendAnalyticsAsyncWithEventName:(id)name fields:(id)fields
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  fieldsCopy = fields;
   if (&_AnalyticsSendEventLazy)
   {
-    v8 = [(TCCDPlatform *)self server];
-    v9 = [v8 logHandle];
+    server = [(TCCDPlatform *)self server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v21 = v6;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Analytics Event sync preparing: %{public}@", buf, 0xCu);
+      v21 = nameCopy;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "Analytics Event sync preparing: %{public}@", buf, 0xCu);
     }
 
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_100055BBC;
     v16 = &unk_1000A6AC8;
-    v17 = self;
-    v18 = v6;
-    v19 = v7;
+    selfCopy = self;
+    v18 = nameCopy;
+    v19 = fieldsCopy;
     AnalyticsSendEventLazy();
 
     v10 = v18;
@@ -609,7 +609,7 @@ LABEL_7:
     v11[1] = 3221225472;
     v11[2] = sub_100055CA4;
     v11[3] = &unk_1000A4F58;
-    v12 = v6;
+    v12 = nameCopy;
     if (qword_1000C12B8 != -1)
     {
       dispatch_once(&qword_1000C12B8, v11);

@@ -1,19 +1,19 @@
 @interface SPUISBookResultBuilder
-- (SPUISBookResultBuilder)initWithResult:(id)a3;
+- (SPUISBookResultBuilder)initWithResult:(id)result;
 - (id)buildCompactCardSection;
 @end
 
 @implementation SPUISBookResultBuilder
 
-- (SPUISBookResultBuilder)initWithResult:(id)a3
+- (SPUISBookResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = SPUISBookResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v12 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v12 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2690] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2690] withType:objc_opt_class()];
     v7 = v6;
     if (v6)
     {
@@ -27,10 +27,10 @@
     v8 = ;
     [(SPUISBookResultBuilder *)v5 setAuthor:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC2B68] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC2B68] withType:objc_opt_class()];
     [(SPUISBookResultBuilder *)v5 setGenre:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC2D10] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC2D10] withType:objc_opt_class()];
     [(SPUISBookResultBuilder *)v5 setDate:v10];
   }
 
@@ -40,34 +40,34 @@
 - (id)buildCompactCardSection
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISBookResultBuilder *)self author];
-  if (v4)
+  author = [(SPUISBookResultBuilder *)self author];
+  if (author)
   {
-    [v3 addObject:v4];
+    [v3 addObject:author];
   }
 
-  v5 = [(SPUISBookResultBuilder *)self genre];
-  if (v5)
+  genre = [(SPUISBookResultBuilder *)self genre];
+  if (genre)
   {
-    [v3 addObject:v5];
+    [v3 addObject:genre];
   }
 
-  v6 = [(SPUISBookResultBuilder *)self date];
-  v7 = [(SPUISBookResultBuilder *)self date];
+  date = [(SPUISBookResultBuilder *)self date];
+  date2 = [(SPUISBookResultBuilder *)self date];
 
-  if (v7)
+  if (date2)
   {
-    v8 = [SPUISDateFormatManager stringsFromDate:v6 toDate:v6 isAllDay:0];
+    v8 = [SPUISDateFormatManager stringsFromDate:date toDate:date isAllDay:0];
     [v3 addObjectsFromArray:v8];
   }
 
   v12.receiver = self;
   v12.super_class = SPUISBookResultBuilder;
-  v9 = [(SPUISResultBuilder *)&v12 buildCompactCardSection];
+  buildCompactCardSection = [(SPUISResultBuilder *)&v12 buildCompactCardSection];
   v10 = [objc_opt_class() richTextsFromStrings:v3];
-  [v9 setDescriptions:v10];
+  [buildCompactCardSection setDescriptions:v10];
 
-  return v9;
+  return buildCompactCardSection;
 }
 
 @end

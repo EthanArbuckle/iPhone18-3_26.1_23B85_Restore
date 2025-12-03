@@ -1,84 +1,84 @@
 @interface THModelContentNode
-+ (id)annotationIDForInfoID:(id)a3 contentNodeID:(id)a4;
-+ (id)legacyBookmarkIDForInfoID:(id)a3 contentNodeID:(id)a4;
-- (BOOL)containsInfo:(id)a3;
-- (BOOL)hasBodyStorageUID:(id)a3;
++ (id)annotationIDForInfoID:(id)d contentNodeID:(id)iD;
++ (id)legacyBookmarkIDForInfoID:(id)d contentNodeID:(id)iD;
+- (BOOL)containsInfo:(id)info;
+- (BOOL)hasBodyStorageUID:(id)d;
 - (BOOL)hasCachedVersion;
-- (BOOL)isBodyStorage:(id)a3;
+- (BOOL)isBodyStorage:(id)storage;
 - (BOOL)nodeBodyExists;
-- (BOOL)p_possiblyReplaceCFIFragmentForExistingOffsetEntry:(id)a3 newEntry:(id)a4;
+- (BOOL)p_possiblyReplaceCFIFragmentForExistingOffsetEntry:(id)entry newEntry:(id)newEntry;
 - (NSString)description;
-- (THModelContentNode)initWithTitle:(id)a3 includeInTOC:(BOOL)a4 context:(id)a5;
-- (id)annotationIDForInfo:(id)a3;
-- (id)bodyStorageForPresentationType:(id)a3;
-- (id)cfiForOffset:(unint64_t)a3 storageUID:(id)a4 includeFilename:(BOOL)a5 pedantic:(BOOL)a6;
-- (id)cfiForRange:(_NSRange)a3 storageUID:(id)a4 includeFilename:(BOOL)a5 pedantic:(BOOL)a6;
-- (id)cfiFragWithOffset:(unint64_t)a3 storageUID:(id)a4 pedantic:(BOOL)a5;
-- (id)contentNodeForRelativePageIndex:(unint64_t)a3 forPresentationType:(id)a4;
-- (id)expandableInfoForWidgetInfo:(id)a3 forPresentationType:(id)a4;
-- (id)gutterStorageForPresentationType:(id)a3;
-- (id)infoForNodeUniqueID:(id)a3;
-- (id)infoForNodeUniqueID:(id)a3 forPresentationType:(id)a4;
-- (id)legacyBookmarkIDForInfo:(id)a3;
-- (id)nodeBodyForPresentationType:(id)a3;
-- (id)nodeUniqueIDForInfo:(id)a3;
-- (id)nodeUniqueIDForInfo:(id)a3 forPresentationType:(id)a4;
-- (id)p_bodyForPresentationType:(id)a3;
-- (id)pageAtRelativeIndex:(unint64_t)a3 forPresentationType:(id)a4;
-- (id)pageInfoForStorageAnchor:(id)a3 forPresentationType:(id)a4;
-- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)a3 presentationType:(id)a4;
-- (id)pagesForPresentationType:(id)a3;
-- (id)storageAnchorAfterAnchor:(id)a3 forNthInstance:(unint64_t)a4 ofSearchString:(id)a5 presentationType:(id)a6;
-- (id)storageAnchorForAnchorId:(id)a3;
-- (id)storageAnchorForCfiFrag:(id)a3;
-- (id)storageAnchorForCfiInnerPathReader:(id)a3;
-- (id)storageAnchorForCfiReader:(id)a3;
-- (id)storageAnchorForNodeRelativePageIndex:(unint64_t)a3;
+- (THModelContentNode)initWithTitle:(id)title includeInTOC:(BOOL)c context:(id)context;
+- (id)annotationIDForInfo:(id)info;
+- (id)bodyStorageForPresentationType:(id)type;
+- (id)cfiForOffset:(unint64_t)offset storageUID:(id)d includeFilename:(BOOL)filename pedantic:(BOOL)pedantic;
+- (id)cfiForRange:(_NSRange)range storageUID:(id)d includeFilename:(BOOL)filename pedantic:(BOOL)pedantic;
+- (id)cfiFragWithOffset:(unint64_t)offset storageUID:(id)d pedantic:(BOOL)pedantic;
+- (id)contentNodeForRelativePageIndex:(unint64_t)index forPresentationType:(id)type;
+- (id)expandableInfoForWidgetInfo:(id)info forPresentationType:(id)type;
+- (id)gutterStorageForPresentationType:(id)type;
+- (id)infoForNodeUniqueID:(id)d;
+- (id)infoForNodeUniqueID:(id)d forPresentationType:(id)type;
+- (id)legacyBookmarkIDForInfo:(id)info;
+- (id)nodeBodyForPresentationType:(id)type;
+- (id)nodeUniqueIDForInfo:(id)info;
+- (id)nodeUniqueIDForInfo:(id)info forPresentationType:(id)type;
+- (id)p_bodyForPresentationType:(id)type;
+- (id)pageAtRelativeIndex:(unint64_t)index forPresentationType:(id)type;
+- (id)pageInfoForStorageAnchor:(id)anchor forPresentationType:(id)type;
+- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)index presentationType:(id)type;
+- (id)pagesForPresentationType:(id)type;
+- (id)storageAnchorAfterAnchor:(id)anchor forNthInstance:(unint64_t)instance ofSearchString:(id)string presentationType:(id)type;
+- (id)storageAnchorForAnchorId:(id)id;
+- (id)storageAnchorForCfiFrag:(id)frag;
+- (id)storageAnchorForCfiInnerPathReader:(id)reader;
+- (id)storageAnchorForCfiReader:(id)reader;
+- (id)storageAnchorForNodeRelativePageIndex:(unint64_t)index;
 - (id)storagesForAllPresentationTypes;
-- (id)storagesForPresentationType:(id)a3;
-- (int)displayStartingPageFormatForPresentationType:(id)a3;
-- (int64_t)p_binarySearchPageArray:(id)a3 forCharacterIndex:(unint64_t)a4 min:(int64_t)a5 max:(int64_t)a6;
-- (unint64_t)absolutePhysicalPageIndex:(unint64_t)a3 forFragment:(id)a4;
-- (unint64_t)bodyCharIndexForGutterDrawableForWidgetInfo:(id)a3 forPresentationType:(id)a4;
-- (unint64_t)displayStartingPageNumberForPresentationType:(id)a3;
-- (unint64_t)pageCountForPresentationType:(id)a3;
-- (unint64_t)relativeIndexOfPage:(id)a3 forPresentationType:(id)a4;
-- (unint64_t)relativePageIndexForBodyCharacterIndex:(unint64_t)a3;
-- (unint64_t)relativePageIndexForCharacterIndex:(unint64_t)a3 forInfo:(id)a4;
-- (unint64_t)relativePageIndexForInfo:(id)a3 forPresentationType:(id)a4;
-- (void)accumulateDisplayPageNumbersIntoAbsolutePageIndexMap:(id)a3 AndDisplayPageNumberArray:(id)a4;
-- (void)addPageInfo:(id)a3 insertContext:(id)a4 forPresentationType:(id)a5;
+- (id)storagesForPresentationType:(id)type;
+- (int)displayStartingPageFormatForPresentationType:(id)type;
+- (int64_t)p_binarySearchPageArray:(id)array forCharacterIndex:(unint64_t)index min:(int64_t)min max:(int64_t)max;
+- (unint64_t)absolutePhysicalPageIndex:(unint64_t)index forFragment:(id)fragment;
+- (unint64_t)bodyCharIndexForGutterDrawableForWidgetInfo:(id)info forPresentationType:(id)type;
+- (unint64_t)displayStartingPageNumberForPresentationType:(id)type;
+- (unint64_t)pageCountForPresentationType:(id)type;
+- (unint64_t)relativeIndexOfPage:(id)page forPresentationType:(id)type;
+- (unint64_t)relativePageIndexForBodyCharacterIndex:(unint64_t)index;
+- (unint64_t)relativePageIndexForCharacterIndex:(unint64_t)index forInfo:(id)info;
+- (unint64_t)relativePageIndexForInfo:(id)info forPresentationType:(id)type;
+- (void)accumulateDisplayPageNumbersIntoAbsolutePageIndexMap:(id)map AndDisplayPageNumberArray:(id)array;
+- (void)addPageInfo:(id)info insertContext:(id)context forPresentationType:(id)type;
 - (void)cancelLoading;
-- (void)contentLoadOperation:(id)a3 loadedContentBodies:(id)a4;
-- (void)contentLoadOperationFailed:(id)a3;
+- (void)contentLoadOperation:(id)operation loadedContentBodies:(id)bodies;
+- (void)contentLoadOperationFailed:(id)failed;
 - (void)dealloc;
-- (void)i_flushingBody:(id)a3;
-- (void)invalidatePresentationType:(id)a3;
+- (void)i_flushingBody:(id)body;
+- (void)invalidatePresentationType:(id)type;
 - (void)p_clearFieldsForFutureLoading;
 - (void)p_releaseFlushedBodies;
-- (void)p_setStorageAnchorsForCfis:(id)a3;
-- (void)p_setTextChildOffsetStorageAnchorsForCfis:(id)a3;
-- (void)paginationController:(id)a3 paginatedBody:(id)a4 forPresentationType:(id)a5;
-- (void)performWhenFinishedLoading:(id)a3 onError:(id)a4;
+- (void)p_setStorageAnchorsForCfis:(id)cfis;
+- (void)p_setTextChildOffsetStorageAnchorsForCfis:(id)cfis;
+- (void)paginationController:(id)controller paginatedBody:(id)body forPresentationType:(id)type;
+- (void)performWhenFinishedLoading:(id)loading onError:(id)error;
 - (void)releaseBodies;
 - (void)retainBodies;
-- (void)setAbsolutePhysicalPageIndex:(unint64_t)a3 forFragment:(id)a4;
-- (void)setAnchorForCfiFrag:(id)a3;
-- (void)setCfiBase:(id)a3;
-- (void)setCfiFragsForTextChildOffsets:(id)a3;
-- (void)setDisplayStartingPageFormat:(int)a3 presentationType:(id)a4;
-- (void)setDisplayStartingPageFormats:(id)a3;
-- (void)setDisplayStartingPageNumber:(unint64_t)a3 presentationType:(id)a4;
-- (void)setDisplayStartingPageNumbers:(id)a3;
-- (void)setFragmentPhysicalPageIndexes:(id)a3;
-- (void)setNodeUniqueID:(id)a3 forInfo:(id)a4 presentationType:(id)a5;
-- (void)setPresentationContentBodies:(id)a3;
-- (void)setStorage:(id)a3 range:(_NSRange)a4 forAnchorId:(id)a5;
-- (void)setStorageAnchor:(id)a3 forAnchorId:(id)a4;
-- (void)setStorageAnchorsForAnchorID:(id)a3;
-- (void)setStorageAnchorsForAnchorIDs:(id)a3;
-- (void)setStorageAnchorsForCfiFrag:(id)a3;
-- (void)setTextChildOffsetStorageAnchorsForCfiFrag:(id)a3;
+- (void)setAbsolutePhysicalPageIndex:(unint64_t)index forFragment:(id)fragment;
+- (void)setAnchorForCfiFrag:(id)frag;
+- (void)setCfiBase:(id)base;
+- (void)setCfiFragsForTextChildOffsets:(id)offsets;
+- (void)setDisplayStartingPageFormat:(int)format presentationType:(id)type;
+- (void)setDisplayStartingPageFormats:(id)formats;
+- (void)setDisplayStartingPageNumber:(unint64_t)number presentationType:(id)type;
+- (void)setDisplayStartingPageNumbers:(id)numbers;
+- (void)setFragmentPhysicalPageIndexes:(id)indexes;
+- (void)setNodeUniqueID:(id)d forInfo:(id)info presentationType:(id)type;
+- (void)setPresentationContentBodies:(id)bodies;
+- (void)setStorage:(id)storage range:(_NSRange)range forAnchorId:(id)id;
+- (void)setStorageAnchor:(id)anchor forAnchorId:(id)id;
+- (void)setStorageAnchorsForAnchorID:(id)d;
+- (void)setStorageAnchorsForAnchorIDs:(id)ds;
+- (void)setStorageAnchorsForCfiFrag:(id)frag;
+- (void)setTextChildOffsetStorageAnchorsForCfiFrag:(id)frag;
 - (void)startLoading;
 - (void)waitUntilFinishedLoading;
 - (void)waitUntilFinishedLoadingAndPaginating;
@@ -88,91 +88,91 @@
 
 @implementation THModelContentNode
 
-- (void)setPresentationContentBodies:(id)a3
+- (void)setPresentationContentBodies:(id)bodies
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  bodiesCopy = bodies;
 
-  self->mPresentationContentBodies = a3;
+  self->mPresentationContentBodies = bodies;
 }
 
-- (void)setDisplayStartingPageNumbers:(id)a3
+- (void)setDisplayStartingPageNumbers:(id)numbers
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  numbersCopy = numbers;
 
-  self->mDisplayStartingPageNumbers = a3;
+  self->mDisplayStartingPageNumbers = numbers;
 }
 
-- (void)setDisplayStartingPageFormats:(id)a3
+- (void)setDisplayStartingPageFormats:(id)formats
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  formatsCopy = formats;
 
-  self->mDisplayStartingPageFormats = a3;
+  self->mDisplayStartingPageFormats = formats;
 }
 
-- (void)setFragmentPhysicalPageIndexes:(id)a3
+- (void)setFragmentPhysicalPageIndexes:(id)indexes
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  indexesCopy = indexes;
 
-  self->mFragmentPhysicalPageIndexes = a3;
+  self->mFragmentPhysicalPageIndexes = indexes;
 }
 
-- (void)setStorageAnchorsForAnchorID:(id)a3
+- (void)setStorageAnchorsForAnchorID:(id)d
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  dCopy = d;
 
-  self->mStorageAnchorsForAnchorID = a3;
+  self->mStorageAnchorsForAnchorID = d;
 }
 
-- (void)setAnchorForCfiFrag:(id)a3
+- (void)setAnchorForCfiFrag:(id)frag
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  fragCopy = frag;
 
-  self->mAnchorForCfiFrag = a3;
+  self->mAnchorForCfiFrag = frag;
 }
 
-- (void)setStorageAnchorsForCfiFrag:(id)a3
+- (void)setStorageAnchorsForCfiFrag:(id)frag
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  fragCopy = frag;
 
-  self->mStorageAnchorsForCfiFrag = a3;
+  self->mStorageAnchorsForCfiFrag = frag;
 }
 
-- (void)setTextChildOffsetStorageAnchorsForCfiFrag:(id)a3
+- (void)setTextChildOffsetStorageAnchorsForCfiFrag:(id)frag
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  fragCopy = frag;
 
-  self->mTextChildOffsetStorageAnchorsForCfiFrag = a3;
+  self->mTextChildOffsetStorageAnchorsForCfiFrag = frag;
 }
 
-- (void)setCfiFragsForTextChildOffsets:(id)a3
+- (void)setCfiFragsForTextChildOffsets:(id)offsets
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  offsetsCopy = offsets;
 
-  self->mCfiFragsForTextChildOffsets = a3;
+  self->mCfiFragsForTextChildOffsets = offsets;
 }
 
-- (void)setCfiBase:(id)a3
+- (void)setCfiBase:(id)base
 {
   [(THModelContentNode *)self willModify];
-  v5 = a3;
+  baseCopy = base;
 
-  self->mCfiBase = a3;
+  self->mCfiBase = base;
 }
 
-- (THModelContentNode)initWithTitle:(id)a3 includeInTOC:(BOOL)a4 context:(id)a5
+- (THModelContentNode)initWithTitle:(id)title includeInTOC:(BOOL)c context:(id)context
 {
   v8.receiver = self;
   v8.super_class = THModelContentNode;
-  v5 = [(THModelNode *)&v8 initWithTitle:a3 includeInTOC:a4 context:a5];
+  v5 = [(THModelNode *)&v8 initWithTitle:title includeInTOC:c context:context];
   if (v5)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, 0);
@@ -208,8 +208,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -221,7 +221,7 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v14 + 1) + 8 * v12) ownerRelease];
@@ -229,7 +229,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -260,7 +260,7 @@
   [(THModelNode *)&v13 dealloc];
 }
 
-- (void)i_flushingBody:(id)a3
+- (void)i_flushingBody:(id)body
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
   if (self->mLoadState != 4)
@@ -275,9 +275,9 @@
   os_unfair_lock_unlock(&self->mLoadStateLock);
 }
 
-- (id)p_bodyForPresentationType:(id)a3
+- (id)p_bodyForPresentationType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;
@@ -290,7 +290,7 @@
 
   [(THModelContentNode *)self willRead];
   os_unfair_lock_lock(&self->mLoadStateLock);
-  v5 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:a3];
+  v5 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:type];
   [v5 ownerAutoreleasedAccess];
   os_unfair_lock_unlock(&self->mLoadStateLock);
   return v5;
@@ -308,8 +308,8 @@
       v10 = 0u;
       v7 = 0u;
       v8 = 0u;
-      v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
-      v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v4)
       {
         v5 = *v8;
@@ -320,7 +320,7 @@
           {
             if (*v8 != v5)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v7 + 1) + 8 * v6) ownerRelease];
@@ -328,7 +328,7 @@
           }
 
           while (v4 != v6);
-          v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+          v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
         }
 
         while (v4);
@@ -345,9 +345,9 @@
   }
 }
 
-- (void)invalidatePresentationType:(id)a3
+- (void)invalidatePresentationType:(id)type
 {
-  if ([a3 isFlow])
+  if ([type isFlow])
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [NSString stringWithUTF8String:"[THModelContentNode invalidatePresentationType:]"];
@@ -356,7 +356,7 @@
     [v5 handleFailureInFunction:v6 file:v7 lineNumber:192 description:@"Code for unloading the flow presentation type is not done."];
   }
 
-  else if ([a3 isPaginated])
+  else if ([type isPaginated])
   {
     os_unfair_lock_lock(&self->mLoadStateLock);
     mLoadState = self->mLoadState;
@@ -372,21 +372,21 @@
       [(THModelContentNode *)self setPaginatedBodyStale:1];
     }
 
-    [(THModelContentNode *)self setDisplayStartingPageNumber:0x7FFFFFFFFFFFFFFFLL presentationType:a3];
-    [(THModelNode *)self setPageCount:0x7FFFFFFFFFFFFFFFLL forPresentationType:a3];
+    [(THModelContentNode *)self setDisplayStartingPageNumber:0x7FFFFFFFFFFFFFFFLL presentationType:type];
+    [(THModelNode *)self setPageCount:0x7FFFFFFFFFFFFFFFLL forPresentationType:type];
 
     os_unfair_lock_unlock(&self->mLoadStateLock);
   }
 }
 
-- (unint64_t)displayStartingPageNumberForPresentationType:(id)a3
+- (unint64_t)displayStartingPageNumberForPresentationType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self displayStartingPageNumbers] objectForKey:a3];
+  v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self displayStartingPageNumbers] objectForKey:type];
   if (v3)
   {
     return [v3 intValue];
@@ -398,22 +398,22 @@
   }
 }
 
-- (void)setDisplayStartingPageNumber:(unint64_t)a3 presentationType:(id)a4
+- (void)setDisplayStartingPageNumber:(unint64_t)number presentationType:(id)type
 {
-  v6 = [(THModelContentNode *)self displayStartingPageNumbers];
-  v7 = [NSNumber numberWithInteger:a3];
+  displayStartingPageNumbers = [(THModelContentNode *)self displayStartingPageNumbers];
+  v7 = [NSNumber numberWithInteger:number];
 
-  [(TSUNoCopyDictionary *)v6 setObject:v7 forUncopiedKey:a4];
+  [(TSUNoCopyDictionary *)displayStartingPageNumbers setObject:v7 forUncopiedKey:type];
 }
 
-- (int)displayStartingPageFormatForPresentationType:(id)a3
+- (int)displayStartingPageFormatForPresentationType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self displayStartingPageFormats] objectForKey:a3];
+  v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self displayStartingPageFormats] objectForKey:type];
   if (!v3)
   {
     return 0;
@@ -422,12 +422,12 @@
   return [v3 intValue];
 }
 
-- (void)setDisplayStartingPageFormat:(int)a3 presentationType:(id)a4
+- (void)setDisplayStartingPageFormat:(int)format presentationType:(id)type
 {
-  v6 = [(THModelContentNode *)self displayStartingPageFormats];
-  v7 = [NSNumber numberWithInteger:a3];
+  displayStartingPageFormats = [(THModelContentNode *)self displayStartingPageFormats];
+  v7 = [NSNumber numberWithInteger:format];
 
-  [(TSUNoCopyDictionary *)v6 setObject:v7 forUncopiedKey:a4];
+  [(TSUNoCopyDictionary *)displayStartingPageFormats setObject:v7 forUncopiedKey:type];
 }
 
 - (void)retainBodies
@@ -440,8 +440,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+    v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -453,7 +453,7 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -461,7 +461,7 @@
           [v9 ownerAutoreleasedAccess];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -491,8 +491,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+    v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -504,11 +504,11 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -562,28 +562,28 @@
   }
 }
 
-- (id)bodyStorageForPresentationType:(id)a3
+- (id)bodyStorageForPresentationType:(id)type
 {
-  v3 = [(THModelContentNode *)self p_bodyForPresentationType:a3];
+  v3 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
   return [v3 bodyStorage];
 }
 
-- (id)nodeBodyForPresentationType:(id)a3
+- (id)nodeBodyForPresentationType:(id)type
 {
-  v3 = a3;
-  if (a3)
+  typeCopy = type;
+  if (type)
   {
-    v3 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:a3];
+    typeCopy = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:type];
   }
 
-  [v3 ownerAutoreleasedAccess];
-  return v3;
+  [typeCopy ownerAutoreleasedAccess];
+  return typeCopy;
 }
 
-- (unint64_t)pageCountForPresentationType:(id)a3
+- (unint64_t)pageCountForPresentationType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
 LABEL_9:
@@ -597,9 +597,9 @@ LABEL_9:
   }
 
   mPageCountByPresentationType = self->super.mPageCountByPresentationType;
-  if (!mPageCountByPresentationType || (v6 = -[TSUNoCopyDictionary objectForKey:](mPageCountByPresentationType, "objectForKey:", a3)) == 0 || (result = [v6 unsignedIntegerValue], result == 0x7FFFFFFFFFFFFFFFLL))
+  if (!mPageCountByPresentationType || (v6 = -[TSUNoCopyDictionary objectForKey:](mPageCountByPresentationType, "objectForKey:", type)) == 0 || (result = [v6 unsignedIntegerValue], result == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v8 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:a3];
+    v8 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:type];
     if (!v8)
     {
       goto LABEL_9;
@@ -615,70 +615,70 @@ LABEL_9:
   return result;
 }
 
-- (id)pagesForPresentationType:(id)a3
+- (id)pagesForPresentationType:(id)type
 {
-  v3 = [(THModelContentNode *)self p_bodyForPresentationType:a3];
+  v3 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
   return [v3 pages];
 }
 
-- (void)addPageInfo:(id)a3 insertContext:(id)a4 forPresentationType:(id)a5
+- (void)addPageInfo:(id)info insertContext:(id)context forPresentationType:(id)type
 {
   if ([(THModelNode *)self state]== 2)
   {
-    [a3 willBeAddedToDocumentRoot:-[THModelContentNode documentRoot](self context:{"documentRoot"), a4}];
+    [info willBeAddedToDocumentRoot:-[THModelContentNode documentRoot](self context:{"documentRoot"), context}];
   }
 
-  [-[THModelContentNode p_bodyForPresentationType:](self p_bodyForPresentationType:{a5), "addPageInfo:", a3}];
-  [a3 setParent:self];
+  [-[THModelContentNode p_bodyForPresentationType:](self p_bodyForPresentationType:{type), "addPageInfo:", info}];
+  [info setParent:self];
   if ([(THModelNode *)self state]== 2)
   {
-    v9 = [(THModelContentNode *)self documentRoot];
+    documentRoot = [(THModelContentNode *)self documentRoot];
 
-    [a3 wasAddedToDocumentRoot:v9 context:a4];
+    [info wasAddedToDocumentRoot:documentRoot context:context];
   }
 }
 
-- (unint64_t)relativePageIndexForInfo:(id)a3 forPresentationType:(id)a4
+- (unint64_t)relativePageIndexForInfo:(id)info forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [v5 relativePageIndexForInfo:a3];
+  return [v5 relativePageIndexForInfo:info];
 }
 
-- (id)pageAtRelativeIndex:(unint64_t)a3 forPresentationType:(id)a4
+- (id)pageAtRelativeIndex:(unint64_t)index forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  if ([objc_msgSend(v5 "pages")] <= a3)
+  if ([objc_msgSend(v5 "pages")] <= index)
   {
     return 0;
   }
 
-  v7 = [v6 pages];
+  pages = [v6 pages];
 
-  return [v7 objectAtIndex:a3];
+  return [pages objectAtIndex:index];
 }
 
-- (id)pageInfoForStorageAnchor:(id)a3 forPresentationType:(id)a4
+- (id)pageInfoForStorageAnchor:(id)anchor forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
-  v6 = [a3 range];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
+  range = [anchor range];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v5 pages];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  pages = [v5 pages];
+  v8 = [pages countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v8)
   {
     return 0;
@@ -692,19 +692,19 @@ LABEL_3:
   {
     if (*v18 != v10)
     {
-      objc_enumerationMutation(v7);
+      objc_enumerationMutation(pages);
     }
 
     v12 = *(*(&v17 + 1) + 8 * v11);
-    v13 = [v12 bodyStorageRange];
-    if (v13 <= v6 && &v13[v14] >= v6)
+    bodyStorageRange = [v12 bodyStorageRange];
+    if (bodyStorageRange <= range && &bodyStorageRange[v14] >= range)
     {
       return v12;
     }
 
     if (v9 == ++v11)
     {
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [pages countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         goto LABEL_3;
@@ -715,33 +715,33 @@ LABEL_3:
   }
 }
 
-- (unint64_t)relativeIndexOfPage:(id)a3 forPresentationType:(id)a4
+- (unint64_t)relativeIndexOfPage:(id)page forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [v5 pages];
+  pages = [v5 pages];
 
-  return [v6 indexOfObject:a3];
+  return [pages indexOfObject:page];
 }
 
-- (id)contentNodeForRelativePageIndex:(unint64_t)a3 forPresentationType:(id)a4
+- (id)contentNodeForRelativePageIndex:(unint64_t)index forPresentationType:(id)type
 {
-  v5 = self;
-  v6 = [(THModelContentNode *)self pageCountForPresentationType:a4];
-  if (v6 <= a3 || v6 == 0x7FFFFFFFFFFFFFFFLL)
+  selfCopy = self;
+  v6 = [(THModelContentNode *)self pageCountForPresentationType:type];
+  if (v6 <= index || v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)storagesForPresentationType:(id)a3
+- (id)storagesForPresentationType:(id)type
 {
   if (self->mLoadState != 4)
   {
@@ -749,7 +749,7 @@ LABEL_3:
   }
 
   [(THModelContentNode *)self willRead];
-  v5 = [[TSKDocumentModelEnumerator alloc] initWithRootModelObject:-[THModelContentNode p_bodyForPresentationType:](self filter:{"p_bodyForPresentationType:", a3), &stru_45B780}];
+  v5 = [[TSKDocumentModelEnumerator alloc] initWithRootModelObject:-[THModelContentNode p_bodyForPresentationType:](self filter:{"p_bodyForPresentationType:", type), &stru_45B780}];
 
   return v5;
 }
@@ -766,8 +766,8 @@ LABEL_3:
   v22 = 0u;
   v23 = 0u;
   v17 = v4;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -779,7 +779,7 @@ LABEL_3:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v22 + 1) + 8 * v9);
@@ -818,7 +818,7 @@ LABEL_3:
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
@@ -827,42 +827,42 @@ LABEL_3:
   return v3;
 }
 
-- (int64_t)p_binarySearchPageArray:(id)a3 forCharacterIndex:(unint64_t)a4 min:(int64_t)a5 max:(int64_t)a6
+- (int64_t)p_binarySearchPageArray:(id)array forCharacterIndex:(unint64_t)index min:(int64_t)min max:(int64_t)max
 {
-  if (a6 < a5)
+  if (max < min)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = a5 + (a6 - a5) / 2;
-  v13 = [a3 objectAtIndex:v6];
-  if ([v13 pageStartCharIndex] <= a4)
+  v6 = min + (max - min) / 2;
+  v13 = [array objectAtIndex:v6];
+  if ([v13 pageStartCharIndex] <= index)
   {
-    if ([v13 pageEndCharIndex] > a4)
+    if ([v13 pageEndCharIndex] > index)
     {
       return v6;
     }
 
-    v18 = v6 + 1;
-    v15 = self;
-    v16 = a3;
-    v17 = a4;
-    v14 = a6;
+    minCopy = v6 + 1;
+    selfCopy2 = self;
+    arrayCopy2 = array;
+    indexCopy2 = index;
+    maxCopy = max;
   }
 
   else
   {
-    v14 = v6 - 1;
-    v15 = self;
-    v16 = a3;
-    v17 = a4;
-    v18 = a5;
+    maxCopy = v6 - 1;
+    selfCopy2 = self;
+    arrayCopy2 = array;
+    indexCopy2 = index;
+    minCopy = min;
   }
 
-  return [(THModelContentNode *)v15 p_binarySearchPageArray:v16 forCharacterIndex:v17 min:v18 max:v14];
+  return [(THModelContentNode *)selfCopy2 p_binarySearchPageArray:arrayCopy2 forCharacterIndex:indexCopy2 min:minCopy max:maxCopy];
 }
 
-- (unint64_t)relativePageIndexForBodyCharacterIndex:(unint64_t)a3
+- (unint64_t)relativePageIndexForBodyCharacterIndex:(unint64_t)index
 {
   v5 = [-[THModelContentNode p_bodyForPresentationType:](self p_bodyForPresentationType:{+[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", -[THModelContentNode context](self, "context"))), "pages"}];
   if ([v5 count] == &dword_0 + 1)
@@ -870,15 +870,15 @@ LABEL_3:
     return 0;
   }
 
-  result = -[THModelContentNode p_binarySearchPageArray:forCharacterIndex:min:max:](self, "p_binarySearchPageArray:forCharacterIndex:min:max:", v5, a3, 0, [v5 count] - 1);
+  result = -[THModelContentNode p_binarySearchPageArray:forCharacterIndex:min:max:](self, "p_binarySearchPageArray:forCharacterIndex:min:max:", v5, index, 0, [v5 count] - 1);
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!a3)
+    if (!index)
     {
       return 0;
     }
 
-    if ([objc_msgSend(v5 objectAtIndex:{objc_msgSend(v5, "count") - 1), "pageEndCharIndex"}] == a3)
+    if ([objc_msgSend(v5 objectAtIndex:{objc_msgSend(v5, "count") - 1), "pageEndCharIndex"}] == index)
     {
       return [v5 count] - 1;
     }
@@ -892,9 +892,9 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)relativePageIndexForCharacterIndex:(unint64_t)a3 forInfo:(id)a4
+- (unint64_t)relativePageIndexForCharacterIndex:(unint64_t)index forInfo:(id)info
 {
-  if (!a4)
+  if (!info)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -904,18 +904,18 @@ LABEL_3:
   if (v7 && [(THModelContentNode *)self isBodyStorage:v7])
   {
 
-    return [(THModelContentNode *)self relativePageIndexForBodyCharacterIndex:a3];
+    return [(THModelContentNode *)self relativePageIndexForBodyCharacterIndex:index];
   }
 
   else
   {
     v9 = [THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)self context]];
 
-    return [(THModelContentNode *)self relativePageIndexForInfo:a4 forPresentationType:v9];
+    return [(THModelContentNode *)self relativePageIndexForInfo:info forPresentationType:v9];
   }
 }
 
-- (void)accumulateDisplayPageNumbersIntoAbsolutePageIndexMap:(id)a3 AndDisplayPageNumberArray:(id)a4
+- (void)accumulateDisplayPageNumbersIntoAbsolutePageIndexMap:(id)map AndDisplayPageNumberArray:(id)array
 {
   v7 = [THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)self context]];
   v8 = [(THModelContentNode *)self pageCountForPresentationType:v7];
@@ -931,27 +931,27 @@ LABEL_3:
       do
       {
         v16 = [+[NSString stringForValue:withListNumberFormat:includeFormatting:](NSString stringForValue:v13 withListNumberFormat:v15 includeFormatting:0), "lowercaseString"];
-        v17 = [a3 objectForKey:v16];
+        v17 = [map objectForKey:v16];
         if (!v17)
         {
           v17 = +[NSMutableArray array];
-          [a3 setObject:v17 forKey:v16];
+          [map setObject:v17 forKey:v16];
         }
 
         [v17 addObject:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v9)}];
         if (v16)
         {
-          v18 = a4;
+          arrayCopy2 = array;
           v19 = v16;
         }
 
         else
         {
           v19 = +[NSNull null];
-          v18 = a4;
+          arrayCopy2 = array;
         }
 
-        [v18 insertObject:v19 atIndex:v9];
+        [arrayCopy2 insertObject:v19 atIndex:v9];
         v13 = (v13 + 1);
         ++v9;
         --v8;
@@ -962,35 +962,35 @@ LABEL_3:
   }
 }
 
-- (id)nodeUniqueIDForInfo:(id)a3 forPresentationType:(id)a4
+- (id)nodeUniqueIDForInfo:(id)info forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
-  return [v5 nodeUniqueIDForInfo:a3];
+  return [v5 nodeUniqueIDForInfo:info];
 }
 
-- (id)infoForNodeUniqueID:(id)a3 forPresentationType:(id)a4
+- (id)infoForNodeUniqueID:(id)d forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
-  return [v5 infoForNodeUniqueID:a3];
+  return [v5 infoForNodeUniqueID:d];
 }
 
-- (id)infoForNodeUniqueID:(id)a3
+- (id)infoForNodeUniqueID:(id)d
 {
-  v5 = [(THModelNode *)self paginatedPresentationType];
+  paginatedPresentationType = [(THModelNode *)self paginatedPresentationType];
 
-  return [(THModelContentNode *)self infoForNodeUniqueID:a3 forPresentationType:v5];
+  return [(THModelContentNode *)self infoForNodeUniqueID:d forPresentationType:paginatedPresentationType];
 }
 
-- (void)setNodeUniqueID:(id)a3 forInfo:(id)a4 presentationType:(id)a5
+- (void)setNodeUniqueID:(id)d forInfo:(id)info presentationType:(id)type
 {
-  v7 = [(THModelContentNode *)self p_bodyForPresentationType:a5];
+  v7 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
-  [v7 setNodeUniqueID:a3 forInfo:a4];
+  [v7 setNodeUniqueID:d forInfo:info];
 }
 
-- (BOOL)isBodyStorage:(id)a3
+- (BOOL)isBodyStorage:(id)storage
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
   mLoadState = self->mLoadState;
@@ -1008,13 +1008,13 @@ LABEL_3:
   }
 
   os_unfair_lock_lock(&self->mLoadStateLock);
-  v7 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+  allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
   os_unfair_lock_unlock(&self->mLoadStateLock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1026,10 +1026,10 @@ LABEL_3:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v11) bodyStorage] == a3)
+        if ([*(*(&v13 + 1) + 8 * v11) bodyStorage] == storage)
         {
           LOBYTE(v8) = 1;
           return v8;
@@ -1039,7 +1039,7 @@ LABEL_3:
       }
 
       while (v9 != v11);
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       v9 = v8;
       if (v8)
       {
@@ -1053,15 +1053,15 @@ LABEL_3:
   return v8;
 }
 
-- (BOOL)hasBodyStorageUID:(id)a3
+- (BOOL)hasBodyStorageUID:(id)d
 {
   [(THModelContentNode *)self willReadJustLoad];
-  v5 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+  allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1073,10 +1073,10 @@ LABEL_3:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        if ([objc_msgSend(*(*(&v11 + 1) + 8 * v9) nodeUniqueIDForInfo:{objc_msgSend(*(*(&v11 + 1) + 8 * v9), "bodyStorage")), "isEqualToString:", a3}])
+        if ([objc_msgSend(*(*(&v11 + 1) + 8 * v9) nodeUniqueIDForInfo:{objc_msgSend(*(*(&v11 + 1) + 8 * v9), "bodyStorage")), "isEqualToString:", d}])
         {
           LOBYTE(v6) = 1;
           return v6;
@@ -1086,7 +1086,7 @@ LABEL_3:
       }
 
       while (v7 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       v7 = v6;
       if (v6)
       {
@@ -1100,7 +1100,7 @@ LABEL_3:
   return v6;
 }
 
-- (id)nodeUniqueIDForInfo:(id)a3
+- (id)nodeUniqueIDForInfo:(id)info
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
   v5 = self->mLoadState - 1;
@@ -1111,7 +1111,7 @@ LABEL_3:
   }
 
   os_unfair_lock_lock(&self->mLoadStateLock);
-  v6 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+  allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
   os_unfair_lock_unlock(&self->mLoadStateLock);
   if (self->mLoadState < 3u)
   {
@@ -1122,7 +1122,7 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v7)
   {
 LABEL_12:
@@ -1138,10 +1138,10 @@ LABEL_6:
   {
     if (*v13 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(allValues);
     }
 
-    result = [*(*(&v12 + 1) + 8 * v10) nodeUniqueIDForInfo:a3];
+    result = [*(*(&v12 + 1) + 8 * v10) nodeUniqueIDForInfo:info];
     if (result)
     {
       return result;
@@ -1149,7 +1149,7 @@ LABEL_6:
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         goto LABEL_6;
@@ -1160,7 +1160,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)containsInfo:(id)a3
+- (BOOL)containsInfo:(id)info
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
   mLoadState = self->mLoadState;
@@ -1178,13 +1178,13 @@ LABEL_6:
   }
 
   os_unfair_lock_lock(&self->mLoadStateLock);
-  v7 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
+  allValues = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] allValues];
   os_unfair_lock_unlock(&self->mLoadStateLock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1196,7 +1196,7 @@ LABEL_6:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         if ([objc_msgSend(*(*(&v13 + 1) + 8 * v11) "infos")])
@@ -1209,7 +1209,7 @@ LABEL_6:
       }
 
       while (v9 != v11);
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       v9 = v8;
       if (v8)
       {
@@ -1223,9 +1223,9 @@ LABEL_6:
   return v8;
 }
 
-- (void)setStorageAnchor:(id)a3 forAnchorId:(id)a4
+- (void)setStorageAnchor:(id)anchor forAnchorId:(id)id
 {
-  if ([a3 contentNode] != self)
+  if ([anchor contentNode] != self)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -1233,21 +1233,21 @@ LABEL_6:
   [(THModelContentNode *)self willModify];
   mStorageAnchorsForAnchorID = self->mStorageAnchorsForAnchorID;
 
-  [(NSMutableDictionary *)mStorageAnchorsForAnchorID setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)mStorageAnchorsForAnchorID setObject:anchor forKey:id];
 }
 
-- (id)storageAnchorForNodeRelativePageIndex:(unint64_t)a3
+- (id)storageAnchorForNodeRelativePageIndex:(unint64_t)index
 {
   [(THModelContentNode *)self willRead];
-  v5 = [(THModelContentNode *)self pageAtRelativeIndex:a3 forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)self context]]];
+  v5 = [(THModelContentNode *)self pageAtRelativeIndex:index forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)self context]]];
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [v5 bodyStorageRange];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  bodyStorageRange = [v5 bodyStorageRange];
+  if (bodyStorageRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (![(THModelContentNode *)self reflowablePaginationController])
     {
@@ -1260,47 +1260,47 @@ LABEL_6:
       return 0;
     }
 
-    v7 = [v9 hintRangeForRelativePageIndex:a3];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+    bodyStorageRange = [v9 hintRangeForRelativePageIndex:index];
+    if (bodyStorageRange == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
   }
 
-  v11 = v7;
+  v11 = bodyStorageRange;
   v12 = v8;
   v13 = -[THModelContentNode nodeUniqueIDForInfo:](self, "nodeUniqueIDForInfo:", [v6 bodyStorage]);
 
   return [THModelStorageAnchor storageAnchorWithContentNode:self storageUID:v13 range:v11, v12];
 }
 
-- (id)storageAnchorForAnchorId:(id)a3
+- (id)storageAnchorForAnchorId:(id)id
 {
   [(THModelContentNode *)self willRead];
-  v5 = [(THModelContentNode *)self storageAnchorsForAnchorID];
+  storageAnchorsForAnchorID = [(THModelContentNode *)self storageAnchorsForAnchorID];
 
-  return [(NSMutableDictionary *)v5 objectForKey:a3];
+  return [(NSMutableDictionary *)storageAnchorsForAnchorID objectForKey:id];
 }
 
-- (void)setStorage:(id)a3 range:(_NSRange)a4 forAnchorId:(id)a5
+- (void)setStorage:(id)storage range:(_NSRange)range forAnchorId:(id)id
 {
-  v7 = [THModelStorageAnchor storageAnchorWithContentNode:self storageUID:[(THModelContentNode *)self nodeUniqueIDForInfo:a3] range:a4.location, a4.length];
+  v7 = [THModelStorageAnchor storageAnchorWithContentNode:self storageUID:[(THModelContentNode *)self nodeUniqueIDForInfo:storage] range:range.location, range.length];
 
-  [(THModelContentNode *)self setStorageAnchor:v7 forAnchorId:a5];
+  [(THModelContentNode *)self setStorageAnchor:v7 forAnchorId:id];
 }
 
-- (void)setAbsolutePhysicalPageIndex:(unint64_t)a3 forFragment:(id)a4
+- (void)setAbsolutePhysicalPageIndex:(unint64_t)index forFragment:(id)fragment
 {
   [(THModelContentNode *)self willModify];
-  v7 = [(THModelContentNode *)self fragmentPhysicalPageIndexes];
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  fragmentPhysicalPageIndexes = [(THModelContentNode *)self fragmentPhysicalPageIndexes];
+  v8 = [NSNumber numberWithUnsignedInteger:index];
 
-  [(NSMutableDictionary *)v7 setObject:v8 forKey:a4];
+  [(NSMutableDictionary *)fragmentPhysicalPageIndexes setObject:v8 forKey:fragment];
 }
 
-- (unint64_t)absolutePhysicalPageIndex:(unint64_t)a3 forFragment:(id)a4
+- (unint64_t)absolutePhysicalPageIndex:(unint64_t)index forFragment:(id)fragment
 {
-  v4 = [(NSMutableDictionary *)[(THModelContentNode *)self fragmentPhysicalPageIndexes] objectForKey:a4];
+  v4 = [(NSMutableDictionary *)[(THModelContentNode *)self fragmentPhysicalPageIndexes] objectForKey:fragment];
   if (!v4)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1309,15 +1309,15 @@ LABEL_6:
   return [v4 unsignedIntegerValue];
 }
 
-- (void)setStorageAnchorsForAnchorIDs:(id)a3
+- (void)setStorageAnchorsForAnchorIDs:(id)ds
 {
   [(NSMutableDictionary *)self->mStorageAnchorsForAnchorID removeAllObjects];
-  v5 = [a3 allKeys];
+  allKeys = [ds allKeys];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1328,31 +1328,31 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [a3 objectForKey:v10];
+        v11 = [ds objectForKey:v10];
         [v11 setContentNode:self];
         [(NSMutableDictionary *)self->mStorageAnchorsForAnchorID setObject:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)p_setStorageAnchorsForCfis:(id)a3
+- (void)p_setStorageAnchorsForCfis:(id)cfis
 {
   [(NSMutableDictionary *)self->mStorageAnchorsForCfiFrag removeAllObjects];
-  v5 = [a3 allKeys];
+  allKeys = [cfis allKeys];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1363,49 +1363,49 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [a3 objectForKey:v10];
+        v11 = [cfis objectForKey:v10];
         [v11 setContentNode:self];
         [(NSMutableDictionary *)self->mStorageAnchorsForCfiFrag setObject:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)p_possiblyReplaceCFIFragmentForExistingOffsetEntry:(id)a3 newEntry:(id)a4
+- (BOOL)p_possiblyReplaceCFIFragmentForExistingOffsetEntry:(id)entry newEntry:(id)newEntry
 {
-  v6 = [objc_msgSend(a3 "first")];
+  v6 = [objc_msgSend(entry "first")];
   if (!v6)
   {
-    v7 = [objc_msgSend(objc_msgSend(a4 "second")];
-    if (v7 > [objc_msgSend(objc_msgSend(a3 "second")])
+    v7 = [objc_msgSend(objc_msgSend(newEntry "second")];
+    if (v7 > [objc_msgSend(objc_msgSend(entry "second")])
     {
-      [a3 setSecond:{objc_msgSend(a4, "second")}];
+      [entry setSecond:{objc_msgSend(newEntry, "second")}];
     }
   }
 
   return v6 == 0;
 }
 
-- (void)p_setTextChildOffsetStorageAnchorsForCfis:(id)a3
+- (void)p_setTextChildOffsetStorageAnchorsForCfis:(id)cfis
 {
   [(NSMutableDictionary *)self->mTextChildOffsetStorageAnchorsForCfiFrag removeAllObjects];
   [(NSMutableDictionary *)self->mCfiFragsForTextChildOffsets removeAllObjects];
-  v5 = [a3 allKeys];
-  v19 = [(THModelContentNode *)self p_cfiFragsForOffsetsComparator];
+  allKeys = [cfis allKeys];
+  p_cfiFragsForOffsetsComparator = [(THModelContentNode *)self p_cfiFragsForOffsetsComparator];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  obj = allKeys;
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v6)
   {
     v8 = v6;
@@ -1424,7 +1424,7 @@ LABEL_6:
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
-        v12 = [a3 objectForKey:{v11, v18}];
+        v12 = [cfis objectForKey:{v11, v18}];
         [v12 setContentNode:self];
         [(NSMutableDictionary *)self->mTextChildOffsetStorageAnchorsForCfiFrag setObject:v12 forKey:v11];
         if ([v12 storageUID])
@@ -1439,7 +1439,7 @@ LABEL_6:
             }
 
             v14 = +[TSUMutablePair pairWithFirst:second:](TSUMutablePair, "pairWithFirst:second:", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 range]), v11);
-            v15 = [v13 indexOfObject:v14 inSortedRange:0 options:objc_msgSend(v13 usingComparator:{"count"), 1024, v19}];
+            v15 = [v13 indexOfObject:v14 inSortedRange:0 options:objc_msgSend(v13 usingComparator:{"count"), 1024, p_cfiFragsForOffsetsComparator}];
             v8 = v20;
             if (([v13 count] <= v15 || !-[THModelContentNode p_possiblyReplaceCFIFragmentForExistingOffsetEntry:newEntry:](self, "p_possiblyReplaceCFIFragmentForExistingOffsetEntry:newEntry:", objc_msgSend(v13, "objectAtIndexedSubscript:", v15), v14)) && (!v15 || objc_msgSend(v13, "count") <= v15 - 1 || !-[THModelContentNode p_possiblyReplaceCFIFragmentForExistingOffsetEntry:newEntry:](self, "p_possiblyReplaceCFIFragmentForExistingOffsetEntry:newEntry:", objc_msgSend(v13, "objectAtIndexedSubscript:"), v14)))
             {
@@ -1471,40 +1471,40 @@ LABEL_6:
   }
 }
 
-- (id)storageAnchorForCfiFrag:(id)a3
+- (id)storageAnchorForCfiFrag:(id)frag
 {
   [(THModelContentNode *)self willRead];
-  result = [(NSMutableDictionary *)[(THModelContentNode *)self storageAnchorsForCfiFrag] objectForKey:a3];
+  result = [(NSMutableDictionary *)[(THModelContentNode *)self storageAnchorsForCfiFrag] objectForKey:frag];
   if (!result)
   {
-    v6 = [(THModelContentNode *)self textChildOffsetStorageAnchorsForCfiFrag];
+    textChildOffsetStorageAnchorsForCfiFrag = [(THModelContentNode *)self textChildOffsetStorageAnchorsForCfiFrag];
 
-    return [(NSMutableDictionary *)v6 objectForKey:a3];
+    return [(NSMutableDictionary *)textChildOffsetStorageAnchorsForCfiFrag objectForKey:frag];
   }
 
   return result;
 }
 
-- (id)cfiFragWithOffset:(unint64_t)a3 storageUID:(id)a4 pedantic:(BOOL)a5
+- (id)cfiFragWithOffset:(unint64_t)offset storageUID:(id)d pedantic:(BOOL)pedantic
 {
-  v5 = a5;
+  pedanticCopy = pedantic;
   [(THModelContentNode *)self willRead];
-  if (v5)
+  if (pedanticCopy)
   {
-    v9 = [(THModelContentNode *)self p_cfiFragsForOffsetsComparator];
-    v10 = [(NSMutableDictionary *)self->mCfiFragsForTextChildOffsets objectForKeyedSubscript:a4];
+    p_cfiFragsForOffsetsComparator = [(THModelContentNode *)self p_cfiFragsForOffsetsComparator];
+    v10 = [(NSMutableDictionary *)self->mCfiFragsForTextChildOffsets objectForKeyedSubscript:d];
     if (v10)
     {
       v11 = v10;
-      v12 = [NSNumber numberWithUnsignedInteger:a3];
-      v13 = [v11 indexOfObject:+[TSUMutablePair pairWithFirst:second:](TSUMutablePair inSortedRange:"pairWithFirst:second:" options:v12 usingComparator:{&stru_471858), 0, objc_msgSend(v11, "count"), 1024, v9}];
+      v12 = [NSNumber numberWithUnsignedInteger:offset];
+      v13 = [v11 indexOfObject:+[TSUMutablePair pairWithFirst:second:](TSUMutablePair inSortedRange:"pairWithFirst:second:" options:v12 usingComparator:{&stru_471858), 0, objc_msgSend(v11, "count"), 1024, p_cfiFragsForOffsetsComparator}];
       if ([v11 count] > v13 && !objc_msgSend(objc_msgSend(objc_msgSend(v11, "objectAtIndexedSubscript:", v13), "first"), "compare:", v12))
       {
-        v15 = [objc_msgSend(v11 objectAtIndexedSubscript:{v13), "second"}];
+        second = [objc_msgSend(v11 objectAtIndexedSubscript:{v13), "second"}];
         v16 = 0;
 LABEL_30:
-        v19 = v15;
-        if (v15)
+        nextObject2 = second;
+        if (second)
         {
           goto LABEL_31;
         }
@@ -1515,8 +1515,8 @@ LABEL_30:
       if (v13 && [v11 count] > v13 - 1)
       {
         v14 = [v11 objectAtIndexedSubscript:?];
-        v15 = [v14 second];
-        v16 = a3 - [objc_msgSend(v14 "first")];
+        second = [v14 second];
+        v16 = offset - [objc_msgSend(v14 "first")];
         goto LABEL_30;
       }
     }
@@ -1524,46 +1524,46 @@ LABEL_30:
     return 0;
   }
 
-  v17 = [(NSMutableDictionary *)self->mStorageAnchorsForCfiFrag keyEnumerator];
-  v18 = [v17 nextObject];
-  if (!v18)
+  keyEnumerator = [(NSMutableDictionary *)self->mStorageAnchorsForCfiFrag keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (!nextObject)
   {
     return 0;
   }
 
-  v19 = v18;
-  v15 = 0;
+  nextObject2 = nextObject;
+  second = 0;
   v16 = -1;
   while (1)
   {
-    v20 = [(THModelContentNode *)self storageAnchorForCfiFrag:v19];
+    v20 = [(THModelContentNode *)self storageAnchorForCfiFrag:nextObject2];
     if ([objc_msgSend(v20 "storageUID")])
     {
       break;
     }
 
 LABEL_26:
-    v19 = [v17 nextObject];
-    if (!v19)
+    nextObject2 = [keyEnumerator nextObject];
+    if (!nextObject2)
     {
       goto LABEL_30;
     }
   }
 
-  v21 = [v20 range];
-  v22 = a3 - v21;
-  if (a3 != v21)
+  range = [v20 range];
+  v22 = offset - range;
+  if (offset != range)
   {
     v24 = v16 == -1 || v22 < v16;
     v25 = !v24;
     if (v24)
     {
-      v26 = v19;
+      v26 = nextObject2;
     }
 
     else
     {
-      v26 = v15;
+      v26 = second;
     }
 
     if (v25)
@@ -1573,12 +1573,12 @@ LABEL_26:
 
     else
     {
-      v27 = a3 - v21;
+      v27 = offset - range;
     }
 
     if (v22 >= 1)
     {
-      v15 = v26;
+      second = v26;
       v16 = v27;
     }
 
@@ -1587,7 +1587,7 @@ LABEL_26:
 
   v16 = 0;
 LABEL_31:
-  if (v5 || (v28 = [(NSMutableDictionary *)self->mAnchorForCfiFrag objectForKey:v19]) == 0)
+  if (pedanticCopy || (v28 = [(NSMutableDictionary *)self->mAnchorForCfiFrag objectForKey:nextObject2]) == 0)
   {
     v29 = &stru_471858;
   }
@@ -1597,31 +1597,31 @@ LABEL_31:
     v29 = [NSString stringWithFormat:@"[%@]", v28];
   }
 
-  return [v19 stringByAppendingFormat:@"%@:%ld", v29, v16];
+  return [nextObject2 stringByAppendingFormat:@"%@:%ld", v29, v16];
 }
 
-- (id)storageAnchorForCfiInnerPathReader:(id)a3
+- (id)storageAnchorForCfiInnerPathReader:(id)reader
 {
   v19 = 0;
-  v5 = [a3 componentCount];
-  v6 = [a3 pathStringNoIds];
-  if (v5)
+  componentCount = [reader componentCount];
+  pathStringNoIds = [reader pathStringNoIds];
+  if (componentCount)
   {
-    v7 = v6;
+    stringByDeletingLastPathComponent = pathStringNoIds;
     v8 = 0;
     do
     {
       if (v8)
       {
-        [a3 componentAtIndex:--v5 identifier:&v19];
-        v7 = [v7 stringByDeletingLastPathComponent];
+        [reader componentAtIndex:--componentCount identifier:&v19];
+        stringByDeletingLastPathComponent = [stringByDeletingLastPathComponent stringByDeletingLastPathComponent];
         v9 = 0;
       }
 
       else
       {
-        v9 = [a3 characterOffsetTerminatingStepIdentifier:&v19];
-        --v5;
+        v9 = [reader characterOffsetTerminatingStepIdentifier:&v19];
+        --componentCount;
       }
 
       if (v19)
@@ -1639,7 +1639,7 @@ LABEL_31:
         }
       }
 
-      v11 = [(THModelContentNode *)self storageAnchorForCfiFrag:v7];
+      v11 = [(THModelContentNode *)self storageAnchorForCfiFrag:stringByDeletingLastPathComponent];
       v12 = v11;
       if (!((v11 != 0) | v8 & 1))
       {
@@ -1647,7 +1647,7 @@ LABEL_31:
       }
     }
 
-    while (!v11 && v5);
+    while (!v11 && componentCount);
     if ((v8 & 1) == 0)
     {
 LABEL_13:
@@ -1661,14 +1661,14 @@ LABEL_13:
 
 LABEL_16:
     v16 = -[THModelContentNode cfiFragWithOffset:storageUID:pedantic:](self, "cfiFragWithOffset:storageUID:pedantic:", [v12 range], objc_msgSend(v12, "storageUID"), 0);
-    if (v16 && [a3 updateWithCfiFrag:v16 toIndex:v5 + 1])
+    if (v16 && [reader updateWithCfiFrag:v16 toIndex:componentCount + 1])
     {
-      v17 = [a3 pathStringNoIds];
+      pathStringNoIds2 = [reader pathStringNoIds];
       v18 = v12;
-      if (v17)
+      if (pathStringNoIds2)
       {
-        v18 = [(THModelContentNode *)self storageAnchorForCfiFrag:v17];
-        v9 = [a3 characterOffsetTerminatingStepIdentifier:&v19];
+        v18 = [(THModelContentNode *)self storageAnchorForCfiFrag:pathStringNoIds2];
+        v9 = [reader characterOffsetTerminatingStepIdentifier:&v19];
       }
     }
 
@@ -1690,21 +1690,21 @@ LABEL_16:
     if (v12)
     {
 LABEL_14:
-      v13 = [v12 range];
-      return +[THModelStorageAnchor storageAnchorWithContentNode:storageUID:range:](THModelStorageAnchor, "storageAnchorWithContentNode:storageUID:range:", self, [v12 storageUID], &v9[v13], v14);
+      range = [v12 range];
+      return +[THModelStorageAnchor storageAnchorWithContentNode:storageUID:range:](THModelStorageAnchor, "storageAnchorWithContentNode:storageUID:range:", self, [v12 storageUID], &v9[range], v14);
     }
   }
 
   return 0;
 }
 
-- (id)storageAnchorForCfiReader:(id)a3
+- (id)storageAnchorForCfiReader:(id)reader
 {
   [(THModelContentNode *)self willRead];
-  v5 = [a3 innerPathReader];
-  v6 = [a3 innerPathMaxRangeReader];
-  v7 = [(THModelContentNode *)self storageAnchorForCfiInnerPathReader:v5];
-  v8 = [(THModelContentNode *)self storageAnchorForCfiInnerPathReader:v6];
+  innerPathReader = [reader innerPathReader];
+  innerPathMaxRangeReader = [reader innerPathMaxRangeReader];
+  v7 = [(THModelContentNode *)self storageAnchorForCfiInnerPathReader:innerPathReader];
+  v8 = [(THModelContentNode *)self storageAnchorForCfiInnerPathReader:innerPathMaxRangeReader];
   if (v7)
   {
     v9 = v8;
@@ -1712,22 +1712,22 @@ LABEL_14:
     {
       if ([objc_msgSend(v7 "storageUID")])
       {
-        v10 = [v9 range];
-        if (v10 <= [v7 range])
+        range = [v9 range];
+        if (range <= [v7 range])
         {
-          v11 = [v9 range];
-          v14 = [v7 range];
-          v13 = v14 - [v9 range];
+          range2 = [v9 range];
+          range3 = [v7 range];
+          v13 = range3 - [v9 range];
         }
 
         else
         {
-          v11 = [v7 range];
-          v12 = [v9 range];
-          v13 = v12 - [v7 range];
+          range2 = [v7 range];
+          range4 = [v9 range];
+          v13 = range4 - [v7 range];
         }
 
-        [v7 setRange:{v11, v13}];
+        [v7 setRange:{range2, v13}];
       }
 
       else
@@ -1740,40 +1740,40 @@ LABEL_14:
   return v7;
 }
 
-- (id)storageAnchorAfterAnchor:(id)a3 forNthInstance:(unint64_t)a4 ofSearchString:(id)a5 presentationType:(id)a6
+- (id)storageAnchorAfterAnchor:(id)anchor forNthInstance:(unint64_t)instance ofSearchString:(id)string presentationType:(id)type
 {
-  if (!a3)
+  if (!anchor)
   {
     return 0;
   }
 
-  -[THModelContentNode infoForNodeUniqueID:forPresentationType:](self, "infoForNodeUniqueID:forPresentationType:", [a3 storageUID], a6);
+  -[THModelContentNode infoForNodeUniqueID:forPresentationType:](self, "infoForNodeUniqueID:forPresentationType:", [anchor storageUID], type);
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (!v9)
   {
-    return a3;
+    return anchor;
   }
 
   v10 = v9;
-  v11 = [a3 range];
+  range = [anchor range];
   v12 = [v10 length];
-  v13 = [a3 range];
-  if (!a4)
+  range2 = [anchor range];
+  if (!instance)
   {
-    return a3;
+    return anchor;
   }
 
-  v14 = (v12 - v13);
-  v15 = a3;
+  v14 = (v12 - range2);
+  anchorCopy = anchor;
   do
   {
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL || v14 == 0)
+    if (range == 0x7FFFFFFFFFFFFFFFLL || v14 == 0)
     {
       break;
     }
 
-    v17 = [v10 rangeOfString:a5 searchOptions:1 range:{v11, v14}];
+    v17 = [v10 rangeOfString:string searchOptions:1 range:{range, v14}];
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
@@ -1786,61 +1786,61 @@ LABEL_14:
     }
 
     v20 = v17;
-    if (a4 == 1)
+    if (instance == 1)
     {
-      v21 = a5;
-      v22 = [a3 contentNode];
-      v23 = [a3 storageUID];
-      v24 = v22;
-      a5 = v21;
-      v15 = [THModelStorageAnchor storageAnchorWithContentNode:v24 storageUID:v23 range:v20, v19];
+      stringCopy = string;
+      contentNode = [anchor contentNode];
+      storageUID = [anchor storageUID];
+      v24 = contentNode;
+      string = stringCopy;
+      anchorCopy = [THModelStorageAnchor storageAnchorWithContentNode:v24 storageUID:storageUID range:v20, v19];
     }
 
     else
     {
-      v11 = &v17[v18];
+      range = &v17[v18];
       v14 = ([v10 length] - &v17[v18]);
     }
 
-    --a4;
+    --instance;
   }
 
-  while (a4);
-  return v15;
+  while (instance);
+  return anchorCopy;
 }
 
-- (id)cfiForOffset:(unint64_t)a3 storageUID:(id)a4 includeFilename:(BOOL)a5 pedantic:(BOOL)a6
+- (id)cfiForOffset:(unint64_t)offset storageUID:(id)d includeFilename:(BOOL)filename pedantic:(BOOL)pedantic
 {
-  v6 = a6;
-  v7 = a5;
+  pedanticCopy = pedantic;
+  filenameCopy = filename;
   [(THModelContentNode *)self willRead];
   if (!self->mCfiBase)
   {
     self->mCfiBase = &stru_471858;
   }
 
-  v11 = [(THModelContentNode *)self cfiFragWithOffset:a3 storageUID:a4 pedantic:v6];
-  if (v7)
+  v11 = [(THModelContentNode *)self cfiFragWithOffset:offset storageUID:d pedantic:pedanticCopy];
+  if (filenameCopy)
   {
-    v12 = [(NSURL *)self->mApplePubURL lastPathComponent];
+    lastPathComponent = [(NSURL *)self->mApplePubURL lastPathComponent];
   }
 
   else
   {
-    v12 = 0;
+    lastPathComponent = 0;
   }
 
   mCfiBase = self->mCfiBase;
 
-  return [THCFIReader cfiWithFilename:v12 base:mCfiBase innerComponents:v11];
+  return [THCFIReader cfiWithFilename:lastPathComponent base:mCfiBase innerComponents:v11];
 }
 
-- (id)cfiForRange:(_NSRange)a3 storageUID:(id)a4 includeFilename:(BOOL)a5 pedantic:(BOOL)a6
+- (id)cfiForRange:(_NSRange)range storageUID:(id)d includeFilename:(BOOL)filename pedantic:(BOOL)pedantic
 {
-  v6 = a6;
-  v7 = a5;
-  length = a3.length;
-  location = a3.location;
+  pedanticCopy = pedantic;
+  filenameCopy = filename;
+  length = range.length;
+  location = range.location;
   [(THModelContentNode *)self willRead];
   if (self->mCfiBase)
   {
@@ -1856,11 +1856,11 @@ LABEL_14:
     if (length)
     {
 LABEL_3:
-      v12 = [(THModelContentNode *)self cfiFragWithOffset:location storageUID:a4 pedantic:v6];
-      v13 = [(THModelContentNode *)self cfiFragWithOffset:location + length storageUID:a4 pedantic:v6];
-      if (v7)
+      v12 = [(THModelContentNode *)self cfiFragWithOffset:location storageUID:d pedantic:pedanticCopy];
+      v13 = [(THModelContentNode *)self cfiFragWithOffset:location + length storageUID:d pedantic:pedanticCopy];
+      if (filenameCopy)
       {
-        v14 = [(NSURL *)self->mApplePubURL lastPathComponent];
+        lastPathComponent = [(NSURL *)self->mApplePubURL lastPathComponent];
         if (!v12)
         {
           return 0;
@@ -1869,7 +1869,7 @@ LABEL_3:
 
       else
       {
-        v14 = 0;
+        lastPathComponent = 0;
         if (!v12)
         {
           return 0;
@@ -1880,60 +1880,60 @@ LABEL_3:
       {
         mCfiBase = self->mCfiBase;
 
-        return [THCFIReader cfiRangeWithFilename:v14 base:mCfiBase innerComponents1:v12 innerComponents2:v13];
+        return [THCFIReader cfiRangeWithFilename:lastPathComponent base:mCfiBase innerComponents1:v12 innerComponents2:v13];
       }
 
       return 0;
     }
   }
 
-  return [(THModelContentNode *)self cfiForOffset:location storageUID:a4 includeFilename:v7 pedantic:v6];
+  return [(THModelContentNode *)self cfiForOffset:location storageUID:d includeFilename:filenameCopy pedantic:pedanticCopy];
 }
 
-- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)a3 presentationType:(id)a4
+- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)index presentationType:(id)type
 {
-  v7 = [(THModelContentNode *)self displayStartingPageNumberForPresentationType:a4];
+  v7 = [(THModelContentNode *)self displayStartingPageNumberForPresentationType:type];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12.receiver = self;
     v12.super_class = THModelContentNode;
-    return [(THModelNode *)&v12 pageNumberStringForAbsolutePageIndex:a3 presentationType:a4];
+    return [(THModelNode *)&v12 pageNumberStringForAbsolutePageIndex:index presentationType:type];
   }
 
   else
   {
     v9 = v7;
-    v10 = [(THModelNode *)self relativePageIndexForAbsolutePageIndex:a3 forPresentationType:a4];
-    v11 = [(THModelContentNode *)self displayStartingPageFormatForPresentationType:a4];
+    v10 = [(THModelNode *)self relativePageIndexForAbsolutePageIndex:index forPresentationType:type];
+    v11 = [(THModelContentNode *)self displayStartingPageFormatForPresentationType:type];
 
     return [NSString stringForValue:v10 + v9 withListNumberFormat:v11 includeFormatting:0];
   }
 }
 
-- (id)gutterStorageForPresentationType:(id)a3
+- (id)gutterStorageForPresentationType:(id)type
 {
-  v3 = [(THModelContentNode *)self p_bodyForPresentationType:a3];
+  v3 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
   return [v3 gutterDrawableStorage];
 }
 
-- (id)expandableInfoForWidgetInfo:(id)a3 forPresentationType:(id)a4
+- (id)expandableInfoForWidgetInfo:(id)info forPresentationType:(id)type
 {
-  v5 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v5 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
-  return [v5 expandableInfoForWidgetInfo:a3];
+  return [v5 expandableInfoForWidgetInfo:info];
 }
 
-- (unint64_t)bodyCharIndexForGutterDrawableForWidgetInfo:(id)a3 forPresentationType:(id)a4
+- (unint64_t)bodyCharIndexForGutterDrawableForWidgetInfo:(id)info forPresentationType:(id)type
 {
-  v6 = [(THModelContentNode *)self expandableInfoForWidgetInfo:a3 forPresentationType:?];
+  v6 = [(THModelContentNode *)self expandableInfoForWidgetInfo:info forPresentationType:?];
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v7 = v6;
-  v8 = [(THModelContentNode *)self p_bodyForPresentationType:a4];
+  v8 = [(THModelContentNode *)self p_bodyForPresentationType:type];
 
   return [v8 bodyCharIndexOfGutterDrawable:v7];
 }
@@ -2030,7 +2030,7 @@ LABEL_3:
   os_unfair_lock_unlock(&self->mLoadStateLock);
 }
 
-- (void)performWhenFinishedLoading:(id)a3 onError:(id)a4
+- (void)performWhenFinishedLoading:(id)loading onError:(id)error
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
   mLoadState = self->mLoadState;
@@ -2050,22 +2050,22 @@ LABEL_3:
       v10[2] = sub_371B8;
       v10[3] = &unk_45B838;
       v10[4] = self;
-      v10[5] = a4;
-      v10[6] = a3;
+      v10[5] = error;
+      v10[6] = loading;
       [(THModelContentLoadOperation *)mLoadOperation appendMainThreadCompletionBlock:v10];
       os_unfair_lock_unlock(&self->mLoadStateLock);
       return;
     }
 
-    a4 = a3;
+    error = loading;
   }
 
   os_unfair_lock_unlock(&self->mLoadStateLock);
-  if (a4)
+  if (error)
   {
-    v8 = *(a4 + 2);
+    v8 = *(error + 2);
 
-    v8(a4);
+    v8(error);
   }
 }
 
@@ -2127,7 +2127,7 @@ LABEL_8:
   [(THReflowableContentPaginationOperation *)v4 waitUntilFinished];
 }
 
-- (void)paginationController:(id)a3 paginatedBody:(id)a4 forPresentationType:(id)a5
+- (void)paginationController:(id)controller paginatedBody:(id)body forPresentationType:(id)type
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
   if (self->mLoadState != 3)
@@ -2135,7 +2135,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  v8 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:a5];
+  v8 = [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] objectForKey:type];
   if (!v8)
   {
     mLoadedBodyRetainCount = self->mLoadedBodyRetainCount;
@@ -2143,7 +2143,7 @@ LABEL_8:
   }
 
   v9 = v8;
-  [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] removeObjectForKey:a5];
+  [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] removeObjectForKey:type];
   [v9 ownerRelease];
   p_mLoadedBodyRetainCount = &self->mLoadedBodyRetainCount;
   if (self->mLoadedBodyRetainCount >= 1)
@@ -2164,7 +2164,7 @@ LABEL_8:
       v13 = 0;
       do
       {
-        v14 = a4;
+        bodyCopy = body;
         ++v13;
       }
 
@@ -2172,23 +2172,23 @@ LABEL_8:
     }
   }
 
-  [a4 ownerRetain];
-  [a4 setParent:self];
-  [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] setObject:a4 forUncopiedKey:a5];
-  -[THModelNode setPageCount:forPresentationType:](self, "setPageCount:forPresentationType:", [a4 pageCount], a5);
+  [body ownerRetain];
+  [body setParent:self];
+  [(TSUNoCopyDictionary *)[(THModelContentNode *)self presentationContentBodies] setObject:body forUncopiedKey:type];
+  -[THModelNode setPageCount:forPresentationType:](self, "setPageCount:forPresentationType:", [body pageCount], type);
   if (self->mPreloadingBodyRetainCount >= 1)
   {
     v15 = 0;
     do
     {
-      v16 = a4;
+      bodyCopy2 = body;
       ++v15;
     }
 
     while (v15 < self->mPreloadingBodyRetainCount);
   }
 
-  [a4 ownerAutoreleasedAccess];
+  [body ownerAutoreleasedAccess];
 
   self->_paginationOperation = 0;
   *p_mLoadedBodyRetainCount += self->mPreloadingBodyRetainCount;
@@ -2199,10 +2199,10 @@ LABEL_15:
   os_unfair_lock_unlock(&self->mLoadStateLock);
 }
 
-- (void)contentLoadOperationFailed:(id)a3
+- (void)contentLoadOperationFailed:(id)failed
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
-  if ([a3 isCancelled])
+  if ([failed isCancelled])
   {
     self->mLoadState = 0;
 
@@ -2215,7 +2215,7 @@ LABEL_15:
     self->mLoadState = 5;
     [-[THModelContentNode documentRoot](self "documentRoot")];
     mLoadOperation = self->mLoadOperation;
-    if (mLoadOperation != a3)
+    if (mLoadOperation != failed)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       mLoadOperation = self->mLoadOperation;
@@ -2227,10 +2227,10 @@ LABEL_15:
   os_unfair_lock_unlock(&self->mLoadStateLock);
 }
 
-- (void)contentLoadOperation:(id)a3 loadedContentBodies:(id)a4
+- (void)contentLoadOperation:(id)operation loadedContentBodies:(id)bodies
 {
   os_unfair_lock_lock(&self->mLoadStateLock);
-  if ([a3 isCancelled])
+  if ([operation isCancelled])
   {
     self->mLoadState = 0;
 
@@ -2246,9 +2246,9 @@ LABEL_15:
     block[2] = sub_37874;
     block[3] = &unk_45B330;
     block[4] = self;
-    block[5] = a4;
+    block[5] = bodies;
     block[6] = v7;
-    block[7] = a3;
+    block[7] = operation;
     os_activity_apply(v7, block);
   }
 
@@ -2261,26 +2261,26 @@ LABEL_15:
   [THPerformanceRegressionLogger logEventWithBlock:v8];
 }
 
-- (id)annotationIDForInfo:(id)a3
+- (id)annotationIDForInfo:(id)info
 {
-  result = [(THModelContentNode *)self nodeUniqueIDForInfo:a3];
+  result = [(THModelContentNode *)self nodeUniqueIDForInfo:info];
   if (result)
   {
     v5 = result;
     v6 = objc_opt_class();
-    v7 = [(THModelNode *)self nodeGUID];
+    nodeGUID = [(THModelNode *)self nodeGUID];
 
-    return [v6 annotationIDForInfoID:v5 contentNodeID:v7];
+    return [v6 annotationIDForInfoID:v5 contentNodeID:nodeGUID];
   }
 
   return result;
 }
 
-+ (id)annotationIDForInfoID:(id)a3 contentNodeID:(id)a4
++ (id)annotationIDForInfoID:(id)d contentNodeID:(id)iD
 {
-  if (a3 && a4)
+  if (d && iD)
   {
-    return [NSString stringWithFormat:@"%@-%@", a4, a3];
+    return [NSString stringWithFormat:@"%@-%@", iD, d];
   }
 
   else
@@ -2289,26 +2289,26 @@ LABEL_15:
   }
 }
 
-- (id)legacyBookmarkIDForInfo:(id)a3
+- (id)legacyBookmarkIDForInfo:(id)info
 {
-  result = [(THModelContentNode *)self nodeUniqueIDForInfo:a3];
+  result = [(THModelContentNode *)self nodeUniqueIDForInfo:info];
   if (result)
   {
     v5 = result;
     v6 = objc_opt_class();
-    v7 = [(THModelNode *)self nodeGUID];
+    nodeGUID = [(THModelNode *)self nodeGUID];
 
-    return [v6 legacyBookmarkIDForInfoID:v5 contentNodeID:v7];
+    return [v6 legacyBookmarkIDForInfoID:v5 contentNodeID:nodeGUID];
   }
 
   return result;
 }
 
-+ (id)legacyBookmarkIDForInfoID:(id)a3 contentNodeID:(id)a4
++ (id)legacyBookmarkIDForInfoID:(id)d contentNodeID:(id)iD
 {
-  if (a4)
+  if (iD)
   {
-    return a3;
+    return d;
   }
 
   else

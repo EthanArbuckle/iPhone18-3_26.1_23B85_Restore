@@ -1,30 +1,30 @@
 @interface IDSIDInfoResult
-- (BOOL)isEqual:(id)a3;
-- (IDSIDInfoResult)initWithCoder:(id)a3;
-- (IDSIDInfoResult)initWithURI:(id)a3 status:(int64_t)a4 endpoints:(id)a5 ktData:(id)a6 gameCenterData:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (IDSIDInfoResult)initWithCoder:(id)coder;
+- (IDSIDInfoResult)initWithURI:(id)i status:(int64_t)status endpoints:(id)endpoints ktData:(id)data gameCenterData:(id)centerData;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSIDInfoResult
 
-- (IDSIDInfoResult)initWithURI:(id)a3 status:(int64_t)a4 endpoints:(id)a5 ktData:(id)a6 gameCenterData:(id)a7
+- (IDSIDInfoResult)initWithURI:(id)i status:(int64_t)status endpoints:(id)endpoints ktData:(id)data gameCenterData:(id)centerData
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  iCopy = i;
+  endpointsCopy = endpoints;
+  dataCopy = data;
+  centerDataCopy = centerData;
   v20.receiver = self;
   v20.super_class = IDSIDInfoResult;
   v17 = [(IDSIDInfoResult *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_uri, a3);
-    v18->_status = a4;
-    objc_storeStrong(&v18->_endpoints, a5);
-    objc_storeStrong(&v18->_ktData, a6);
-    objc_storeStrong(&v18->_gameCenterData, a7);
+    objc_storeStrong(&v17->_uri, i);
+    v18->_status = status;
+    objc_storeStrong(&v18->_endpoints, endpoints);
+    objc_storeStrong(&v18->_ktData, data);
+    objc_storeStrong(&v18->_gameCenterData, centerData);
   }
 
   return v18;
@@ -34,19 +34,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(IDSIDInfoResult *)self uri];
-  v5 = [(IDSIDInfoResult *)self status];
-  v6 = [(IDSIDInfoResult *)self endpoints];
-  v7 = [(IDSIDInfoResult *)self ktData];
-  v8 = [(IDSIDInfoResult *)self gameCenterData];
-  v9 = [v3 stringWithFormat:@"<IDSIDInfoResult %p>: uri %@ status %ld endpoints %@ ktData %@ gameCenterData %@", self, v4, v5, v6, v7, v8];
+  status = [(IDSIDInfoResult *)self status];
+  endpoints = [(IDSIDInfoResult *)self endpoints];
+  ktData = [(IDSIDInfoResult *)self ktData];
+  gameCenterData = [(IDSIDInfoResult *)self gameCenterData];
+  v9 = [v3 stringWithFormat:@"<IDSIDInfoResult %p>: uri %@ status %ld endpoints %@ ktData %@ gameCenterData %@", self, v4, status, endpoints, ktData, gameCenterData];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -56,7 +56,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       uri = self->_uri;
       v7 = [(IDSIDInfoResult *)v5 uri];
       if (![(NSString *)uri isEqualToString:v7])
@@ -79,8 +79,8 @@ LABEL_22:
 
       v10 = [MEMORY[0x1E695DFD8] setWithArray:self->_endpoints];
       v11 = MEMORY[0x1E695DFD8];
-      v12 = [(IDSIDInfoResult *)v5 endpoints];
-      v13 = [v11 setWithArray:v12];
+      endpoints = [(IDSIDInfoResult *)v5 endpoints];
+      v13 = [v11 setWithArray:endpoints];
       if (![v10 isEqualToSet:v13])
       {
         v18 = 0;
@@ -91,13 +91,13 @@ LABEL_21:
 
       v28 = v10;
       ktData = self->_ktData;
-      v27 = [(IDSIDInfoResult *)v5 ktData];
+      ktData = [(IDSIDInfoResult *)v5 ktData];
       v15 = [(IDSIDKTData *)ktData isEqual:?];
       if (!v15)
       {
         v16 = self->_ktData;
-        v17 = [(IDSIDInfoResult *)v5 ktData];
-        if (v16 != v17)
+        ktData2 = [(IDSIDInfoResult *)v5 ktData];
+        if (v16 != ktData2)
         {
           v18 = 0;
 LABEL_19:
@@ -107,13 +107,13 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v24 = v17;
+        v24 = ktData2;
       }
 
       v26 = v15;
       gameCenterData = self->_gameCenterData;
-      v20 = [(IDSIDInfoResult *)v5 gameCenterData];
-      if ([(IDSGameCenterData *)gameCenterData isEqual:v20])
+      gameCenterData = [(IDSIDInfoResult *)v5 gameCenterData];
+      if ([(IDSGameCenterData *)gameCenterData isEqual:gameCenterData])
       {
 
         v18 = 1;
@@ -122,11 +122,11 @@ LABEL_20:
       else
       {
         v21 = self->_gameCenterData;
-        v22 = [(IDSIDInfoResult *)v5 gameCenterData];
-        v18 = v21 == v22;
+        gameCenterData2 = [(IDSIDInfoResult *)v5 gameCenterData];
+        v18 = v21 == gameCenterData2;
       }
 
-      v17 = v25;
+      ktData2 = v25;
       if (v26)
       {
         goto LABEL_20;
@@ -143,31 +143,31 @@ LABEL_24:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(IDSIDInfoResult *)self uri];
-  [v4 encodeObject:v5 forKey:@"IDSIDInfoResultURIKey"];
+  [coderCopy encodeObject:v5 forKey:@"IDSIDInfoResultURIKey"];
 
-  [v4 encodeInteger:-[IDSIDInfoResult status](self forKey:{"status"), @"IDSIDInfoResultStatusKey"}];
-  v6 = [(IDSIDInfoResult *)self endpoints];
-  [v4 encodeObject:v6 forKey:@"IDSIDInfoResultEndpointsKey"];
+  [coderCopy encodeInteger:-[IDSIDInfoResult status](self forKey:{"status"), @"IDSIDInfoResultStatusKey"}];
+  endpoints = [(IDSIDInfoResult *)self endpoints];
+  [coderCopy encodeObject:endpoints forKey:@"IDSIDInfoResultEndpointsKey"];
 
-  v7 = [(IDSIDInfoResult *)self ktData];
-  [v4 encodeObject:v7 forKey:@"IDSIDInfoResultKTDataKey"];
+  ktData = [(IDSIDInfoResult *)self ktData];
+  [coderCopy encodeObject:ktData forKey:@"IDSIDInfoResultKTDataKey"];
 
-  v8 = [(IDSIDInfoResult *)self gameCenterData];
-  [v4 encodeObject:v8 forKey:@"IDSIDInfoResultGameCenterDataKey"];
+  gameCenterData = [(IDSIDInfoResult *)self gameCenterData];
+  [coderCopy encodeObject:gameCenterData forKey:@"IDSIDInfoResultGameCenterDataKey"];
 }
 
-- (IDSIDInfoResult)initWithCoder:(id)a3
+- (IDSIDInfoResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"IDSIDInfoResultURIKey"];
-  v6 = [v4 decodeIntegerForKey:@"IDSIDInfoResultStatusKey"];
-  v7 = [v4 decodeObjectForKey:@"IDSIDInfoResultEndpointsKey"];
-  v8 = [v4 decodeObjectForKey:@"IDSIDInfoResultKTDataKey"];
-  v9 = [v4 decodeObjectForKey:@"IDSIDInfoResultGameCenterDataKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"IDSIDInfoResultURIKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"IDSIDInfoResultStatusKey"];
+  v7 = [coderCopy decodeObjectForKey:@"IDSIDInfoResultEndpointsKey"];
+  v8 = [coderCopy decodeObjectForKey:@"IDSIDInfoResultKTDataKey"];
+  v9 = [coderCopy decodeObjectForKey:@"IDSIDInfoResultGameCenterDataKey"];
 
   v10 = [(IDSIDInfoResult *)self initWithURI:v5 status:v6 endpoints:v7 ktData:v8 gameCenterData:v9];
   return v10;

@@ -1,31 +1,31 @@
 @interface SBSADefaultElementContentProvider
-- (id)_updatedElementDescriptionAssociatedWithElementContext:(id)a3 transitionDescriptions:(id)a4 context:(id)a5 updateReasons:(id)a6;
-- (id)_updatedElementDescriptionFromDescription:(id)a3 associatedElementContext:(id)a4 associatedSnapshotContext:(id)a5 transitionDescriptions:(id)a6 context:(id)a7 updateReasons:(id)a8;
-- (id)_updatedIndicatorElementDescriptionFromDescription:(id)a3 associatedElementIdentity:(id)a4 transitionDescriptions:(id)a5 context:(id)a6 updateReasons:(id)a7;
+- (id)_updatedElementDescriptionAssociatedWithElementContext:(id)context transitionDescriptions:(id)descriptions context:(id)a5 updateReasons:(id)reasons;
+- (id)_updatedElementDescriptionFromDescription:(id)description associatedElementContext:(id)context associatedSnapshotContext:(id)snapshotContext transitionDescriptions:(id)descriptions context:(id)a7 updateReasons:(id)reasons;
+- (id)_updatedIndicatorElementDescriptionFromDescription:(id)description associatedElementIdentity:(id)identity transitionDescriptions:(id)descriptions context:(id)context updateReasons:(id)reasons;
 - (id)defaultTransitionSettings;
-- (id)preferencesFromContext:(id)a3;
-- (void)_pruneElementDescriptionWithIdentifier:(id)a3;
-- (void)_updateElementDescriptionsWithDescription:(id)a3;
+- (id)preferencesFromContext:(id)context;
+- (void)_pruneElementDescriptionWithIdentifier:(id)identifier;
+- (void)_updateElementDescriptionsWithDescription:(id)description;
 @end
 
 @implementation SBSADefaultElementContentProvider
 
 - (id)defaultTransitionSettings
 {
-  v2 = [objc_opt_class() settings];
-  v3 = [v2 elementContentTransitionSettings];
+  settings = [objc_opt_class() settings];
+  elementContentTransitionSettings = [settings elementContentTransitionSettings];
 
-  return v3;
+  return elementContentTransitionSettings;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v99 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -60,12 +60,12 @@
   v68 = a2;
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v11 = [v9 preferences];
-  v67 = v5;
-  if (v11)
+  preferences = [v9 preferences];
+  v67 = contextCopy;
+  if (preferences)
   {
     v12 = objc_opt_self();
-    v13 = v11;
+    v13 = preferences;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -105,8 +105,8 @@
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v16 = [v9 elementContexts];
-  v17 = [v16 countByEnumeratingWithState:&v92 objects:v98 count:16];
+  elementContexts = [v9 elementContexts];
+  v17 = [elementContexts countByEnumeratingWithState:&v92 objects:v98 count:16];
   v73 = v9;
   if (v17)
   {
@@ -118,21 +118,21 @@
       {
         if (*v93 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(elementContexts);
         }
 
         v21 = [(SBSADefaultElementContentProvider *)self _updatedElementDescriptionAssociatedWithElementContext:*(*(&v92 + 1) + 8 * i) transitionDescriptions:v74 context:v9 updateReasons:v10];
         v22 = v21;
         if (v21)
         {
-          v23 = [v21 interfaceElementIdentifier];
-          [v75 addObject:v23];
+          interfaceElementIdentifier = [v21 interfaceElementIdentifier];
+          [v75 addObject:interfaceElementIdentifier];
 
           v9 = v73;
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v92 objects:v98 count:16];
+      v18 = [elementContexts countByEnumeratingWithState:&v92 objects:v98 count:16];
     }
 
     while (v18);
@@ -140,92 +140,92 @@
 
   v71 = v10;
 
-  v24 = [v9 isAnimatedTransitionInProgress];
+  isAnimatedTransitionInProgress = [v9 isAnimatedTransitionInProgress];
   wasAnimating = self->_wasAnimating;
-  self->_wasAnimating = v24 & 1;
+  self->_wasAnimating = isAnimatedTransitionInProgress & 1;
   v26 = [v9 containsAnyOfSignals:3];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v72 = self;
-  v27 = [(NSMutableDictionary *)self->_identifiersToElementDescriptions allValues];
-  v28 = [v27 countByEnumeratingWithState:&v88 objects:v97 count:16];
+  selfCopy = self;
+  allValues = [(NSMutableDictionary *)self->_identifiersToElementDescriptions allValues];
+  v28 = [allValues countByEnumeratingWithState:&v88 objects:v97 count:16];
   if (v28)
   {
     v29 = v28;
-    v30 = v26 | wasAnimating & (v24 ^ 1u);
+    v30 = v26 | wasAnimating & (isAnimatedTransitionInProgress ^ 1u);
     v31 = *v89;
-    v69 = v27;
+    v69 = allValues;
     do
     {
       for (j = 0; j != v29; ++j)
       {
         if (*v89 != v31)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(allValues);
         }
 
         v33 = *(*(&v88 + 1) + 8 * j);
-        v34 = [v33 interfaceElementIdentifier];
-        if (([v75 containsObject:v34] & 1) == 0)
+        interfaceElementIdentifier2 = [v33 interfaceElementIdentifier];
+        if (([v75 containsObject:interfaceElementIdentifier2] & 1) == 0)
         {
           if (v30)
           {
-            [(SBSADefaultElementContentProvider *)v72 _pruneElementDescriptionWithIdentifier:v34];
+            [(SBSADefaultElementContentProvider *)selfCopy _pruneElementDescriptionWithIdentifier:interfaceElementIdentifier2];
           }
 
           else
           {
-            v35 = [v33 associatedSystemApertureElementIdentity];
+            associatedSystemApertureElementIdentity = [v33 associatedSystemApertureElementIdentity];
             [v9 elementContexts];
             v37 = v36 = v30;
             v86[0] = MEMORY[0x277D85DD0];
             v86[1] = 3221225472;
             v86[2] = __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invoke;
             v86[3] = &unk_2783AD700;
-            v38 = v35;
+            v38 = associatedSystemApertureElementIdentity;
             v87 = v38;
             v39 = [v37 bs_firstObjectPassingTest:v86];
 
-            v40 = [v9 elementSnapshotContexts];
+            elementSnapshotContexts = [v9 elementSnapshotContexts];
             v84[0] = MEMORY[0x277D85DD0];
             v84[1] = 3221225472;
             v84[2] = __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invoke_2;
             v84[3] = &unk_2783AD728;
             v85 = v38;
             v41 = v38;
-            v42 = [v40 bs_firstObjectPassingTest:v84];
+            v42 = [elementSnapshotContexts bs_firstObjectPassingTest:v84];
 
-            v43 = [(SBSADefaultElementContentProvider *)v72 _updatedElementDescriptionFromDescription:v33 associatedElementContext:v39 associatedSnapshotContext:v42 transitionDescriptions:v74 context:v73 updateReasons:v71];
+            v43 = [(SBSADefaultElementContentProvider *)selfCopy _updatedElementDescriptionFromDescription:v33 associatedElementContext:v39 associatedSnapshotContext:v42 transitionDescriptions:v74 context:v73 updateReasons:v71];
             v30 = v36;
-            [(SBSADefaultElementContentProvider *)v72 _updateElementDescriptionsWithDescription:v43];
+            [(SBSADefaultElementContentProvider *)selfCopy _updateElementDescriptionsWithDescription:v43];
 
             v9 = v73;
-            v27 = v69;
+            allValues = v69;
           }
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v88 objects:v97 count:16];
+      v29 = [allValues countByEnumeratingWithState:&v88 objects:v97 count:16];
     }
 
     while (v29);
   }
 
   v44 = v66;
-  v45 = [v66 maintainedPreferences];
-  v46 = [v45 indicatorAppearanceStateContext];
+  maintainedPreferences = [v66 maintainedPreferences];
+  indicatorAppearanceStateContext = [maintainedPreferences indicatorAppearanceStateContext];
 
-  indicatorElementDescription = v72->_indicatorElementDescription;
-  v70 = v46;
-  if (v46)
+  indicatorElementDescription = selfCopy->_indicatorElementDescription;
+  v70 = indicatorAppearanceStateContext;
+  if (indicatorAppearanceStateContext)
   {
-    v48 = [v46 activeIndicatorElementContext];
+    activeIndicatorElementContext = [indicatorAppearanceStateContext activeIndicatorElementContext];
     v49 = v74;
-    v50 = [(SBSADefaultElementContentProvider *)v72 _updatedIndicatorElementDescriptionFromDescription:indicatorElementDescription associatedElementIdentity:v48 transitionDescriptions:v74 context:v9 updateReasons:v71];
+    v50 = [(SBSADefaultElementContentProvider *)selfCopy _updatedIndicatorElementDescriptionFromDescription:indicatorElementDescription associatedElementIdentity:activeIndicatorElementContext transitionDescriptions:v74 context:v9 updateReasons:v71];
 
-    objc_storeStrong(&v72->_indicatorElementDescription, v50);
+    objc_storeStrong(&selfCopy->_indicatorElementDescription, v50);
     v81[0] = MEMORY[0x277D85DD0];
     v81[1] = 3221225472;
     v81[2] = __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invoke_3;
@@ -233,7 +233,7 @@
     v51 = v68;
     v82 = v50;
     v83 = v68;
-    v81[4] = v72;
+    v81[4] = selfCopy;
     indicatorElementDescription = v50;
     v52 = [v66 copyWithBlock:v81];
 
@@ -242,18 +242,18 @@
 
   else
   {
-    v72->_indicatorElementDescription = 0;
+    selfCopy->_indicatorElementDescription = 0;
     v51 = v68;
     v49 = v74;
   }
 
-  v53 = v72->_identifiersToElementDescriptions;
+  v53 = selfCopy->_identifiersToElementDescriptions;
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invoke_4;
   v77[3] = &unk_2783AD778;
   v80 = v51;
-  v77[4] = v72;
+  v77[4] = selfCopy;
   v54 = v53;
   v78 = v54;
   v55 = v49;
@@ -272,8 +272,8 @@
   if ([v71 count])
   {
     v58 = [SBSAPreferencesDidChangeAction alloc];
-    v59 = [v71 allObjects];
-    v60 = [(SBSAPreferencesDidChangeAction *)v58 initWithReasons:v59];
+    allObjects = [v71 allObjects];
+    v60 = [(SBSAPreferencesDidChangeAction *)v58 initWithReasons:allObjects];
     v96 = v60;
     v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v96 count:1];
     v62 = [v57 copyByAddingActions:v61];
@@ -284,7 +284,7 @@
 
   v63 = [v9 copyByUpdatingPreferences:v57];
 
-  v76.receiver = v72;
+  v76.receiver = selfCopy;
   v76.super_class = SBSADefaultElementContentProvider;
   v64 = [(SBSABasePreferencesProvider *)&v76 preferencesFromContext:v63];
 
@@ -437,27 +437,27 @@ void __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invo
   }
 }
 
-- (id)_updatedElementDescriptionFromDescription:(id)a3 associatedElementContext:(id)a4 associatedSnapshotContext:(id)a5 transitionDescriptions:(id)a6 context:(id)a7 updateReasons:(id)a8
+- (id)_updatedElementDescriptionFromDescription:(id)description associatedElementContext:(id)context associatedSnapshotContext:(id)snapshotContext transitionDescriptions:(id)descriptions context:(id)a7 updateReasons:(id)reasons
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  descriptionCopy = description;
+  contextCopy = context;
+  snapshotContextCopy = snapshotContext;
+  descriptionsCopy = descriptions;
   v19 = a7;
-  v20 = a8;
-  v21 = self;
-  objc_sync_enter(v21);
+  reasonsCopy = reasons;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __175__SBSADefaultElementContentProvider__updatedElementDescriptionFromDescription_associatedElementContext_associatedSnapshotContext_transitionDescriptions_context_updateReasons___block_invoke;
   v40[3] = &unk_2783AD7A0;
-  v40[4] = v21;
-  v22 = v18;
+  v40[4] = selfCopy;
+  v22 = descriptionsCopy;
   v41 = v22;
   v23 = MEMORY[0x223D6F7F0](v40);
-  if (!v15)
+  if (!descriptionCopy)
   {
-    [v20 addObject:@"defaultElementContentProvider.updateReason.newElementDescription"];
+    [reasonsCopy addObject:@"defaultElementContentProvider.updateReason.newElementDescription"];
   }
 
   v32[0] = MEMORY[0x277D85DD0];
@@ -465,22 +465,22 @@ void __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invo
   v32[2] = __175__SBSADefaultElementContentProvider__updatedElementDescriptionFromDescription_associatedElementContext_associatedSnapshotContext_transitionDescriptions_context_updateReasons___block_invoke_2;
   v32[3] = &unk_2783AD7C8;
   v38 = a2;
-  v32[4] = v21;
-  v39 = v15 == 0;
-  v24 = v16;
+  v32[4] = selfCopy;
+  v39 = descriptionCopy == 0;
+  v24 = contextCopy;
   v33 = v24;
   v25 = v23;
   v37 = v25;
-  v26 = v17;
+  v26 = snapshotContextCopy;
   v34 = v26;
   v27 = v19;
   v35 = v27;
-  v28 = v20;
+  v28 = reasonsCopy;
   v36 = v28;
   v29 = MEMORY[0x223D6F7F0](v32);
-  if (v15)
+  if (descriptionCopy)
   {
-    v30 = [v15 copyWithBlock:v29];
+    v30 = [descriptionCopy copyWithBlock:v29];
   }
 
   else
@@ -488,7 +488,7 @@ void __60__SBSADefaultElementContentProvider_preferencesFromContext___block_invo
     v30 = [SBSAElementDescription instanceWithBlock:v29];
   }
 
-  objc_sync_exit(v21);
+  objc_sync_exit(selfCopy);
 
   return v30;
 }
@@ -657,26 +657,26 @@ void __175__SBSADefaultElementContentProvider__updatedElementDescriptionFromDesc
   }
 }
 
-- (id)_updatedIndicatorElementDescriptionFromDescription:(id)a3 associatedElementIdentity:(id)a4 transitionDescriptions:(id)a5 context:(id)a6 updateReasons:(id)a7
+- (id)_updatedIndicatorElementDescriptionFromDescription:(id)description associatedElementIdentity:(id)identity transitionDescriptions:(id)descriptions context:(id)context updateReasons:(id)reasons
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
-  objc_sync_enter(v18);
+  descriptionCopy = description;
+  identityCopy = identity;
+  descriptionsCopy = descriptions;
+  contextCopy = context;
+  reasonsCopy = reasons;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __159__SBSADefaultElementContentProvider__updatedIndicatorElementDescriptionFromDescription_associatedElementIdentity_transitionDescriptions_context_updateReasons___block_invoke;
   v31[3] = &unk_2783AD7A0;
-  v31[4] = v18;
-  v19 = v15;
+  v31[4] = selfCopy;
+  v19 = descriptionsCopy;
   v32 = v19;
   v20 = MEMORY[0x223D6F7F0](v31);
-  if (!v13)
+  if (!descriptionCopy)
   {
-    [v17 addObject:@"defaultElementContentProvider.updateReason.newIndicatorElementDescription"];
+    [reasonsCopy addObject:@"defaultElementContentProvider.updateReason.newIndicatorElementDescription"];
   }
 
   v26[0] = MEMORY[0x277D85DD0];
@@ -684,16 +684,16 @@ void __175__SBSADefaultElementContentProvider__updatedElementDescriptionFromDesc
   v26[2] = __159__SBSADefaultElementContentProvider__updatedIndicatorElementDescriptionFromDescription_associatedElementIdentity_transitionDescriptions_context_updateReasons___block_invoke_2;
   v26[3] = &unk_2783AD7F0;
   v29 = a2;
-  v26[4] = v18;
-  v30 = v13 == 0;
-  v21 = v14;
+  v26[4] = selfCopy;
+  v30 = descriptionCopy == 0;
+  v21 = identityCopy;
   v27 = v21;
   v22 = v20;
   v28 = v22;
   v23 = MEMORY[0x223D6F7F0](v26);
-  if (v13)
+  if (descriptionCopy)
   {
-    v24 = [v13 copyWithBlock:v23];
+    v24 = [descriptionCopy copyWithBlock:v23];
   }
 
   else
@@ -701,7 +701,7 @@ void __175__SBSADefaultElementContentProvider__updatedElementDescriptionFromDesc
     v24 = [SBSAIndicatorElementDescription instanceWithBlock:v23];
   }
 
-  objc_sync_exit(v18);
+  objc_sync_exit(selfCopy);
 
   return v24;
 }
@@ -808,36 +808,36 @@ void __159__SBSADefaultElementContentProvider__updatedIndicatorElementDescriptio
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_updatedElementDescriptionAssociatedWithElementContext:(id)a3 transitionDescriptions:(id)a4 context:(id)a5 updateReasons:(id)a6
+- (id)_updatedElementDescriptionAssociatedWithElementContext:(id)context transitionDescriptions:(id)descriptions context:(id)a5 updateReasons:(id)reasons
 {
-  v10 = a3;
-  v11 = a4;
+  contextCopy = context;
+  descriptionsCopy = descriptions;
   v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  if (v10)
+  reasonsCopy = reasons;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (contextCopy)
   {
-    v15 = [(NSMutableDictionary *)v14->_identifiersToElementDescriptions allValues];
+    allValues = [(NSMutableDictionary *)selfCopy->_identifiersToElementDescriptions allValues];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __137__SBSADefaultElementContentProvider__updatedElementDescriptionAssociatedWithElementContext_transitionDescriptions_context_updateReasons___block_invoke;
     v28[3] = &unk_2783AD818;
-    v16 = v10;
+    v16 = contextCopy;
     v29 = v16;
-    v17 = [v15 bs_firstObjectPassingTest:v28];
-    v18 = [v12 elementSnapshotContexts];
+    v17 = [allValues bs_firstObjectPassingTest:v28];
+    elementSnapshotContexts = [v12 elementSnapshotContexts];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __137__SBSADefaultElementContentProvider__updatedElementDescriptionAssociatedWithElementContext_transitionDescriptions_context_updateReasons___block_invoke_2;
     v26 = &unk_2783AD728;
     v19 = v16;
     v27 = v19;
-    v20 = [v18 bs_firstObjectPassingTest:&v23];
+    v20 = [elementSnapshotContexts bs_firstObjectPassingTest:&v23];
 
-    v21 = [(SBSADefaultElementContentProvider *)v14 _updatedElementDescriptionFromDescription:v17 associatedElementContext:v19 associatedSnapshotContext:v20 transitionDescriptions:v11 context:v12 updateReasons:v13, v23, v24, v25, v26];
+    v21 = [(SBSADefaultElementContentProvider *)selfCopy _updatedElementDescriptionFromDescription:v17 associatedElementContext:v19 associatedSnapshotContext:v20 transitionDescriptions:descriptionsCopy context:v12 updateReasons:reasonsCopy, v23, v24, v25, v26];
 
-    [(SBSADefaultElementContentProvider *)v14 _updateElementDescriptionsWithDescription:v21];
+    [(SBSADefaultElementContentProvider *)selfCopy _updateElementDescriptionsWithDescription:v21];
   }
 
   else
@@ -845,7 +845,7 @@ void __159__SBSADefaultElementContentProvider__updatedIndicatorElementDescriptio
     v21 = 0;
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
   return v21;
 }
@@ -858,37 +858,37 @@ uint64_t __137__SBSADefaultElementContentProvider__updatedElementDescriptionAsso
   return v3;
 }
 
-- (void)_updateElementDescriptionsWithDescription:(id)a3
+- (void)_updateElementDescriptionsWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   identifiersToElementDescriptions = self->_identifiersToElementDescriptions;
-  v9 = v4;
+  v9 = descriptionCopy;
   if (!identifiersToElementDescriptions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = self->_identifiersToElementDescriptions;
     self->_identifiersToElementDescriptions = v6;
 
-    v4 = v9;
+    descriptionCopy = v9;
     identifiersToElementDescriptions = self->_identifiersToElementDescriptions;
   }
 
-  v8 = [v4 interfaceElementIdentifier];
-  [(NSMutableDictionary *)identifiersToElementDescriptions setObject:v9 forKey:v8];
+  interfaceElementIdentifier = [descriptionCopy interfaceElementIdentifier];
+  [(NSMutableDictionary *)identifiersToElementDescriptions setObject:v9 forKey:interfaceElementIdentifier];
 }
 
-- (void)_pruneElementDescriptionWithIdentifier:(id)a3
+- (void)_pruneElementDescriptionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableDictionary *)v5->_identifiersToElementDescriptions removeObjectForKey:v6];
-    objc_sync_exit(v5);
+    v6 = identifierCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_identifiersToElementDescriptions removeObjectForKey:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    identifierCopy = v6;
   }
 }
 

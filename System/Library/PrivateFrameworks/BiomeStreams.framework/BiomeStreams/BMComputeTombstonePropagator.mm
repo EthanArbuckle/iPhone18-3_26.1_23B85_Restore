@@ -1,7 +1,7 @@
 @interface BMComputeTombstonePropagator
-- (BMComputeTombstonePropagator)initWithStreamIdentifier:(id)a3 domain:(unint64_t)a4 user:(unsigned int)a5;
+- (BMComputeTombstonePropagator)initWithStreamIdentifier:(id)identifier domain:(unint64_t)domain user:(unsigned int)user;
 - (id)computeSource;
-- (void)didWriteTombstone:(id)a3 timestamp:(double)a4 account:(id)a5 remoteName:(id)a6;
+- (void)didWriteTombstone:(id)tombstone timestamp:(double)timestamp account:(id)account remoteName:(id)name;
 @end
 
 @implementation BMComputeTombstonePropagator
@@ -22,14 +22,14 @@
   return computeSource;
 }
 
-- (BMComputeTombstonePropagator)initWithStreamIdentifier:(id)a3 domain:(unint64_t)a4 user:(unsigned int)a5
+- (BMComputeTombstonePropagator)initWithStreamIdentifier:(id)identifier domain:(unint64_t)domain user:(unsigned int)user
 {
-  v8 = a3;
-  if (([v8 hasSuffix:@":tombstones"] & 1) == 0)
+  identifierCopy = identifier;
+  if (([identifierCopy hasSuffix:@":tombstones"] & 1) == 0)
   {
-    v9 = [v8 stringByAppendingString:@":tombstones"];
+    v9 = [identifierCopy stringByAppendingString:@":tombstones"];
 
-    v8 = v9;
+    identifierCopy = v9;
   }
 
   v13.receiver = self;
@@ -38,21 +38,21 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_streamIdentifier, v8);
-    v11->_domain = a4;
-    v11->_user = a5;
+    objc_storeStrong(&v10->_streamIdentifier, identifierCopy);
+    v11->_domain = domain;
+    v11->_user = user;
   }
 
   return v11;
 }
 
-- (void)didWriteTombstone:(id)a3 timestamp:(double)a4 account:(id)a5 remoteName:(id)a6
+- (void)didWriteTombstone:(id)tombstone timestamp:(double)timestamp account:(id)account remoteName:(id)name
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(BMComputeTombstonePropagator *)self computeSource];
-  [v13 sendEvent:v12 account:v11 remoteName:v10 timestamp:0 signpostID:0 sendFullEvent:a4];
+  nameCopy = name;
+  accountCopy = account;
+  tombstoneCopy = tombstone;
+  computeSource = [(BMComputeTombstonePropagator *)self computeSource];
+  [computeSource sendEvent:tombstoneCopy account:accountCopy remoteName:nameCopy timestamp:0 signpostID:0 sendFullEvent:timestamp];
 }
 
 @end

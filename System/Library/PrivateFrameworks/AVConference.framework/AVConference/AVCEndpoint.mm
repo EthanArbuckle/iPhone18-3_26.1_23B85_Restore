@@ -1,13 +1,13 @@
 @interface AVCEndpoint
-+ (id)newEndpointXPCDictionaryWithAVCEndpoint:(id)a3;
-- (AVCEndpoint)initWithNWEndpoint:(id)a3;
++ (id)newEndpointXPCDictionaryWithAVCEndpoint:(id)endpoint;
+- (AVCEndpoint)initWithNWEndpoint:(id)endpoint;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVCEndpoint
 
-- (AVCEndpoint)initWithNWEndpoint:(id)a3
+- (AVCEndpoint)initWithNWEndpoint:(id)endpoint
 {
   v23 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -21,7 +21,7 @@ LABEL_22:
     return 0;
   }
 
-  if (!a3)
+  if (!endpoint)
   {
     if (objc_opt_class() == v4)
     {
@@ -99,7 +99,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v4->_endpoint = nw_retain(a3);
+  v4->_endpoint = nw_retain(endpoint);
   v4->_description = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%s", nw_endpoint_get_description()];
   v4->_rtpSSRC = 0;
   return v4;
@@ -122,20 +122,20 @@ LABEL_22:
   [(AVCEndpoint *)&v3 dealloc];
 }
 
-+ (id)newEndpointXPCDictionaryWithAVCEndpoint:(id)a3
++ (id)newEndpointXPCDictionaryWithAVCEndpoint:(id)endpoint
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = xpc_dictionary_create(0, 0, 0);
   if (v4)
   {
-    [a3 endpoint];
+    [endpoint endpoint];
     v5 = nw_endpoint_copy_dictionary();
     if (v5)
     {
       v6 = v5;
       xpc_dictionary_set_value(v4, "vcMediaStreamAVCEndpointNWEndpoint", v5);
       xpc_release(v6);
-      valuePtr = [a3 rtpSSRC];
+      valuePtr = [endpoint rtpSSRC];
       v7 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt32Type, &valuePtr);
       if (v7)
       {

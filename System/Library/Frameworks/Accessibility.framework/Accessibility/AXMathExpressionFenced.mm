@@ -1,21 +1,21 @@
 @interface AXMathExpressionFenced
-- (AXMathExpressionFenced)initWithExpressions:(id)a3 openString:(id)a4 closeString:(id)a5;
+- (AXMathExpressionFenced)initWithExpressions:(id)expressions openString:(id)string closeString:(id)closeString;
 @end
 
 @implementation AXMathExpressionFenced
 
-- (AXMathExpressionFenced)initWithExpressions:(id)a3 openString:(id)a4 closeString:(id)a5
+- (AXMathExpressionFenced)initWithExpressions:(id)expressions openString:(id)string closeString:(id)closeString
 {
   v12.receiver = self;
   v12.super_class = AXMathExpressionFenced;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  closeStringCopy = closeString;
+  stringCopy = string;
+  expressionsCopy = expressions;
   v10 = [(AXMathExpressionFenced *)&v12 init];
-  [(AXMathExpressionFenced *)v10 setOpenString:v8, v12.receiver, v12.super_class];
+  [(AXMathExpressionFenced *)v10 setOpenString:stringCopy, v12.receiver, v12.super_class];
 
-  [(AXMathExpressionFenced *)v10 setExpressions:v9];
-  [(AXMathExpressionFenced *)v10 setCloseString:v7];
+  [(AXMathExpressionFenced *)v10 setExpressions:expressionsCopy];
+  [(AXMathExpressionFenced *)v10 setCloseString:closeStringCopy];
 
   return v10;
 }

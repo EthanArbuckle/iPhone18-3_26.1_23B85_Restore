@@ -1,29 +1,29 @@
 @interface HFEventBuilderItemProviderEventGroup
-+ (id)eventGroupWithBuilders:(id)a3;
-- (HFEventBuilderItemProviderEventGroup)initWithEventBuilders:(id)a3;
++ (id)eventGroupWithBuilders:(id)builders;
+- (HFEventBuilderItemProviderEventGroup)initWithEventBuilders:(id)builders;
 @end
 
 @implementation HFEventBuilderItemProviderEventGroup
 
-- (HFEventBuilderItemProviderEventGroup)initWithEventBuilders:(id)a3
+- (HFEventBuilderItemProviderEventGroup)initWithEventBuilders:(id)builders
 {
-  v5 = a3;
+  buildersCopy = builders;
   v9.receiver = self;
   v9.super_class = HFEventBuilderItemProviderEventGroup;
   v6 = [(HFEventBuilderItemProviderEventGroup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventBuilders, a3);
+    objc_storeStrong(&v6->_eventBuilders, builders);
   }
 
   return v7;
 }
 
-+ (id)eventGroupWithBuilders:(id)a3
++ (id)eventGroupWithBuilders:(id)builders
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithEventBuilders:v4];
+  buildersCopy = builders;
+  v5 = [[self alloc] initWithEventBuilders:buildersCopy];
 
   return v5;
 }

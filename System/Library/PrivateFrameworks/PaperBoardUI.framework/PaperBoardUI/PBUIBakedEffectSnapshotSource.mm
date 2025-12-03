@@ -1,34 +1,34 @@
 @interface PBUIBakedEffectSnapshotSource
-- (PBUIBakedEffectSnapshotSource)initWithSnapshotSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (PBUIBakedEffectSnapshotSource)initWithSnapshotSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation PBUIBakedEffectSnapshotSource
 
-- (PBUIBakedEffectSnapshotSource)initWithSnapshotSource:(id)a3
+- (PBUIBakedEffectSnapshotSource)initWithSnapshotSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     v5 = [(PBUIBakedEffectSnapshotSource *)self init];
     if (v5)
     {
-      v6 = [v4 cacheIdentifier];
-      v7 = [v6 copy];
+      cacheIdentifier = [sourceCopy cacheIdentifier];
+      v7 = [cacheIdentifier copy];
       cacheIdentifier = v5->_cacheIdentifier;
       v5->_cacheIdentifier = v7;
 
-      v9 = [v4 legibilitySettings];
-      v10 = [v9 copy];
+      legibilitySettings = [sourceCopy legibilitySettings];
+      v10 = [legibilitySettings copy];
       legibilitySettings = v5->_legibilitySettings;
       v5->_legibilitySettings = v10;
 
-      v12 = [v4 snapshot];
+      snapshot = [sourceCopy snapshot];
       snapshot = v5->_snapshot;
-      v5->_snapshot = v12;
+      v5->_snapshot = snapshot;
 
       v14 = +[PBUIWallpaperEffectConfiguration normal];
       effectConfiguration = v5->_effectConfiguration;
@@ -36,61 +36,61 @@
     }
 
     self = v5;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PBUIBakedEffectSnapshotSource *)self cacheIdentifier];
-  [v4 setCacheIdentifier:v5];
+  cacheIdentifier = [(PBUIBakedEffectSnapshotSource *)self cacheIdentifier];
+  [v4 setCacheIdentifier:cacheIdentifier];
 
-  v6 = [(PBUIBakedEffectSnapshotSource *)self legibilitySettings];
-  [v4 setLegibilitySettings:v6];
+  legibilitySettings = [(PBUIBakedEffectSnapshotSource *)self legibilitySettings];
+  [v4 setLegibilitySettings:legibilitySettings];
 
-  v7 = [(PBUIBakedEffectSnapshotSource *)self snapshot];
-  [v4 setSnapshot:v7];
+  snapshot = [(PBUIBakedEffectSnapshotSource *)self snapshot];
+  [v4 setSnapshot:snapshot];
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIBakedEffectSnapshotSource *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIBakedEffectSnapshotSource *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(PBUIBakedEffectSnapshotSource *)self cacheIdentifier];
-  [v4 appendString:v5 withName:@"cacheIdentifier"];
+  cacheIdentifier = [(PBUIBakedEffectSnapshotSource *)self cacheIdentifier];
+  [v4 appendString:cacheIdentifier withName:@"cacheIdentifier"];
 
-  v6 = [(PBUIBakedEffectSnapshotSource *)self snapshot];
-  v7 = [v4 appendObject:v6 withName:@"snapshot"];
+  snapshot = [(PBUIBakedEffectSnapshotSource *)self snapshot];
+  v7 = [v4 appendObject:snapshot withName:@"snapshot"];
 
-  v8 = [(PBUIBakedEffectSnapshotSource *)self effectConfiguration];
-  v9 = [v4 appendObject:v8 withName:@"effectConfiguration"];
+  effectConfiguration = [(PBUIBakedEffectSnapshotSource *)self effectConfiguration];
+  v9 = [v4 appendObject:effectConfiguration withName:@"effectConfiguration"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIBakedEffectSnapshotSource *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIBakedEffectSnapshotSource *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

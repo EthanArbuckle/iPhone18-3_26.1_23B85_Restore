@@ -1,34 +1,34 @@
 @interface CEKLightingCubeRenderer
-- (CEKLightingCubeRenderer)initWithCube:(id)a3 appearance:(id)a4 components:(int64_t)a5;
-- (void)renderInContext:(CGContext *)a3 size:(CGSize)a4 scale:(double)a5 cornerRadius:(double)a6 stroke:(double)a7;
+- (CEKLightingCubeRenderer)initWithCube:(id)cube appearance:(id)appearance components:(int64_t)components;
+- (void)renderInContext:(CGContext *)context size:(CGSize)size scale:(double)scale cornerRadius:(double)radius stroke:(double)stroke;
 @end
 
 @implementation CEKLightingCubeRenderer
 
-- (CEKLightingCubeRenderer)initWithCube:(id)a3 appearance:(id)a4 components:(int64_t)a5
+- (CEKLightingCubeRenderer)initWithCube:(id)cube appearance:(id)appearance components:(int64_t)components
 {
-  v9 = a3;
-  v10 = a4;
+  cubeCopy = cube;
+  appearanceCopy = appearance;
   v14.receiver = self;
   v14.super_class = CEKLightingCubeRenderer;
   v11 = [(CEKLightingCubeRenderer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_cube, a3);
-    objc_storeStrong(&v12->_appearance, a4);
-    v12->_components = a5;
+    objc_storeStrong(&v11->_cube, cube);
+    objc_storeStrong(&v12->_appearance, appearance);
+    v12->_components = components;
   }
 
   return v12;
 }
 
-- (void)renderInContext:(CGContext *)a3 size:(CGSize)a4 scale:(double)a5 cornerRadius:(double)a6 stroke:(double)a7
+- (void)renderInContext:(CGContext *)context size:(CGSize)size scale:(double)scale cornerRadius:(double)radius stroke:(double)stroke
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a4.width - a7 * 0.5;
-  v11 = a4.height - a7 * 0.5;
-  v12 = [(CEKLightingCube *)self->_cube pathForOutlineWithSize:v10 cornerRadius:v11, a6];
+  v10 = size.width - stroke * 0.5;
+  v11 = size.height - stroke * 0.5;
+  radius = [(CEKLightingCube *)self->_cube pathForOutlineWithSize:v10 cornerRadius:v11, radius];
   v13 = MEMORY[0x1E695EFF8];
   v14 = self->_components;
   if (v14)
@@ -37,10 +37,10 @@
     *components = xmmword_1B7EDA6D0;
     v16 = CGColorCreate(DeviceGray, components);
     CGColorSpaceRelease(DeviceGray);
-    CGContextSetFillColorWithColor(a3, v16);
-    CGContextAddPath(a3, v12);
-    CGContextFillPath(a3);
-    CGContextBeginPath(a3);
+    CGContextSetFillColorWithColor(context, v16);
+    CGContextAddPath(context, radius);
+    CGContextFillPath(context);
+    CGContextBeginPath(context);
     CGColorRelease(v16);
     v14 = self->_components;
   }
@@ -49,16 +49,16 @@
   v42 = *v13;
   if ((v14 & 2) != 0)
   {
-    CGContextAddPath(a3, v12);
-    CGContextClip(a3);
-    CGContextBeginPath(a3);
-    v17 = [(CEKLightingCubeAppearance *)self->_appearance background];
+    CGContextAddPath(context, radius);
+    CGContextClip(context);
+    CGContextBeginPath(context);
+    background = [(CEKLightingCubeAppearance *)self->_appearance background];
     v51.y = v41;
     v51.x = v42;
     v53.x = v42;
     v53.y = v41;
-    CGContextDrawRadialGradient(a3, v17, v51, 0.0, v53, v10 * 0.5, 3u);
-    CGContextResetClip(a3);
+    CGContextDrawRadialGradient(context, background, v51, 0.0, v53, v10 * 0.5, 3u);
+    CGContextResetClip(context);
     v14 = self->_components;
   }
 
@@ -74,7 +74,7 @@
     *&v46[6] = v11;
     *&v46[7] = v11 / 6.0;
     v19 = 1;
-    Mask = CreateMask(1, v46, v10, v11, a5);
+    Mask = CreateMask(1, v46, v10, v11, scale);
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __74__CEKLightingCubeRenderer_renderInContext_size_scale_cornerRadius_stroke___block_invoke_2;
@@ -83,7 +83,7 @@
     *&v45[5] = v10;
     *&v45[6] = v11;
     *&v45[7] = v11 / 6.0;
-    v21 = CreateMask(1, v45, v10, v11, a5);
+    v21 = CreateMask(1, v45, v10, v11, scale);
     do
     {
       v22 = [(CEKLightingCube *)self->_cube pathForPlane:v19 size:v10, v11];
@@ -104,24 +104,24 @@
         v24 = 1.0 - v29 + v24 * v28;
       }
 
-      v30 = [(CEKLightingCubeAppearance *)self->_appearance verticalFillColor];
+      verticalFillColor = [(CEKLightingCubeAppearance *)self->_appearance verticalFillColor];
       Alpha = CGColorGetAlpha([(CEKLightingCubeAppearance *)self->_appearance verticalFillColor]);
-      CopyWithAlpha = CGColorCreateCopyWithAlpha(v30, v24 * Alpha);
-      CGContextSetFillColorWithColor(a3, CopyWithAlpha);
+      CopyWithAlpha = CGColorCreateCopyWithAlpha(verticalFillColor, v24 * Alpha);
+      CGContextSetFillColorWithColor(context, CopyWithAlpha);
       v55.origin.x = v10 * -0.5;
       v55.origin.y = v11 * -0.5;
       v55.size.width = v10;
       v55.size.height = v11;
-      CGContextClipToMask(a3, v55, Mask);
+      CGContextClipToMask(context, v55, Mask);
       v56.origin.x = v10 * -0.5;
       v56.origin.y = v11 * -0.5;
       v56.size.width = v10;
       v56.size.height = v11;
-      CGContextClipToMask(a3, v56, v21);
-      CGContextAddPath(a3, v22);
-      CGContextFillPath(a3);
-      CGContextBeginPath(a3);
-      CGContextResetClip(a3);
+      CGContextClipToMask(context, v56, v21);
+      CGContextAddPath(context, v22);
+      CGContextFillPath(context);
+      CGContextBeginPath(context);
+      CGContextResetClip(context);
       CGColorRelease(CopyWithAlpha);
       ++v19;
     }
@@ -146,7 +146,7 @@
         v44[4] = self;
         *&v44[7] = v42;
         *&v44[8] = v41;
-        v33 = CreateMask(0, v44, v10, v11, a5);
+        v33 = CreateMask(0, v44, v10, v11, scale);
       }
 
       else
@@ -157,10 +157,10 @@
       [(CEKLightingCube *)self->_cube points:v48 forPlane:0 size:v10, v11];
       if ([(CEKLightingCubeAppearance *)self->_appearance topFill])
       {
-        DrawPlaneFill(a3, v48, [(CEKLightingCubeAppearance *)self->_appearance topFill], v33, v12, v10 * -0.5, v11 * -0.5, v10, v11);
+        DrawPlaneFill(context, v48, [(CEKLightingCubeAppearance *)self->_appearance topFill], v33, radius, v10 * -0.5, v11 * -0.5, v10, v11);
       }
 
-      DrawPlaneGlow(a3, v48, [(CEKLightingCubeAppearance *)self->_appearance topGlow], v33, v12, 0, v18, v10 * -0.5, v11 * -0.5, v10, v11);
+      DrawPlaneGlow(context, v48, [(CEKLightingCubeAppearance *)self->_appearance topGlow], v33, radius, 0, v18, v10 * -0.5, v11 * -0.5, v10, v11);
       CGImageRelease(v33);
     }
 
@@ -177,7 +177,7 @@
         v43[4] = self;
         *&v43[7] = v42;
         *&v43[8] = v41;
-        v34 = CreateMask(0, v43, v10, v11, a5);
+        v34 = CreateMask(0, v43, v10, v11, scale);
       }
 
       else
@@ -188,27 +188,27 @@
       [(CEKLightingCube *)self->_cube points:v48 forPlane:5 size:v10, v11];
       if ([(CEKLightingCubeAppearance *)self->_appearance bottomFill])
       {
-        DrawPlaneFill(a3, v48, [(CEKLightingCubeAppearance *)self->_appearance bottomFill], v34, v12, v10 * -0.5, v11 * -0.5, v10, v11);
+        DrawPlaneFill(context, v48, [(CEKLightingCubeAppearance *)self->_appearance bottomFill], v34, radius, v10 * -0.5, v11 * -0.5, v10, v11);
       }
 
-      DrawPlaneGlow(a3, v48, [(CEKLightingCubeAppearance *)self->_appearance bottomOuterGlow], v34, v12, 0, v18, v10 * -0.5, v11 * -0.5, v10, v11);
-      DrawPlaneGlow(a3, v48, [(CEKLightingCubeAppearance *)self->_appearance bottomInnerGlow], v34, v12, 6, -v18, v10 * -0.5, v11 * -0.5, v10, v11);
+      DrawPlaneGlow(context, v48, [(CEKLightingCubeAppearance *)self->_appearance bottomOuterGlow], v34, radius, 0, v18, v10 * -0.5, v11 * -0.5, v10, v11);
+      DrawPlaneGlow(context, v48, [(CEKLightingCubeAppearance *)self->_appearance bottomInnerGlow], v34, radius, 6, -v18, v10 * -0.5, v11 * -0.5, v10, v11);
       CGImageRelease(v34);
     }
   }
 
   if ((self->_components & 0x10) != 0 && [(CEKLightingCubeAppearance *)self->_appearance topOver])
   {
-    CGContextAddPath(a3, [(CEKLightingCube *)self->_cube pathForPlane:0 size:v10, v11]);
-    CGContextClip(a3);
-    CGContextBeginPath(a3);
-    v35 = [(CEKLightingCubeAppearance *)self->_appearance topOver];
+    CGContextAddPath(context, [(CEKLightingCube *)self->_cube pathForPlane:0 size:v10, v11]);
+    CGContextClip(context);
+    CGContextBeginPath(context);
+    topOver = [(CEKLightingCubeAppearance *)self->_appearance topOver];
     v52.y = v41;
     v52.x = v42;
     v54.x = v42;
     v54.y = v41;
-    CGContextDrawRadialGradient(a3, v35, v52, 0.0, v54, v10 * 0.5, 3u);
-    CGContextResetClip(a3);
+    CGContextDrawRadialGradient(context, topOver, v52, 0.0, v54, v10 * 0.5, 3u);
+    CGContextResetClip(context);
   }
 
   if ((self->_components & 0x20) != 0)
@@ -216,32 +216,32 @@
     v36 = CGColorSpaceCreateDeviceGray();
     *v47 = xmmword_1B7EDA6E0;
     v37 = CGColorCreate(v36, v47);
-    v38 = [(CEKLightingCube *)self->_cube centerShadowPathWithSize:v10 width:v11, a7];
-    CGContextAddPath(a3, v12);
-    CGContextClip(a3);
-    CGContextBeginPath(a3);
-    CGContextSetFillColorWithColor(a3, v37);
-    CGContextAddPath(a3, v38);
-    CGContextFillPath(a3);
-    CGContextBeginPath(a3);
-    CGContextResetClip(a3);
+    stroke = [(CEKLightingCube *)self->_cube centerShadowPathWithSize:v10 width:v11, stroke];
+    CGContextAddPath(context, radius);
+    CGContextClip(context);
+    CGContextBeginPath(context);
+    CGContextSetFillColorWithColor(context, v37);
+    CGContextAddPath(context, stroke);
+    CGContextFillPath(context);
+    CGContextBeginPath(context);
+    CGContextResetClip(context);
     CGColorRelease(v37);
     CGColorSpaceRelease(v36);
     v39 = [(CEKLightingCube *)self->_cube centerPathWithSize:v10, v11];
-    CGContextAddPath(a3, v12);
-    CGContextClip(a3);
-    CGContextBeginPath(a3);
-    CGContextSetLineWidth(a3, a7);
-    CGContextSetStrokeColorWithColor(a3, [(CEKLightingCubeAppearance *)self->_appearance stroke]);
-    CGContextAddPath(a3, v39);
-    CGContextStrokePath(a3);
-    CGContextBeginPath(a3);
-    CGContextResetClip(a3);
-    CGContextSetLineWidth(a3, a7);
-    CGContextSetStrokeColorWithColor(a3, [(CEKLightingCubeAppearance *)self->_appearance stroke]);
-    CGContextAddPath(a3, v12);
-    CGContextStrokePath(a3);
-    CGContextBeginPath(a3);
+    CGContextAddPath(context, radius);
+    CGContextClip(context);
+    CGContextBeginPath(context);
+    CGContextSetLineWidth(context, stroke);
+    CGContextSetStrokeColorWithColor(context, [(CEKLightingCubeAppearance *)self->_appearance stroke]);
+    CGContextAddPath(context, v39);
+    CGContextStrokePath(context);
+    CGContextBeginPath(context);
+    CGContextResetClip(context);
+    CGContextSetLineWidth(context, stroke);
+    CGContextSetStrokeColorWithColor(context, [(CEKLightingCubeAppearance *)self->_appearance stroke]);
+    CGContextAddPath(context, radius);
+    CGContextStrokePath(context);
+    CGContextBeginPath(context);
   }
 }
 

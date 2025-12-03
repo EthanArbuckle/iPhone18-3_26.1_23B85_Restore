@@ -1,7 +1,7 @@
 @interface RBProcessAppNapState
 - (RBProcessAppNapState)init;
-- (id)_initWithProcessAppNapState:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithProcessAppNapState:(id)state;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   return [(RBProcessAppNapState *)&v3 init];
 }
 
-- (id)_initWithProcessAppNapState:(id)a3
+- (id)_initWithProcessAppNapState:(id)state
 {
   v4.receiver = self;
   v4.super_class = RBProcessAppNapState;
@@ -28,9 +28,9 @@
   [(RBProcessAppNapState *)&v2 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [RBMutableProcessAppNapState allocWithZone:a3];
+  v4 = [RBMutableProcessAppNapState allocWithZone:zone];
 
   return [(RBProcessAppNapState *)v4 _initWithProcessAppNapState:self];
 }

@@ -1,16 +1,16 @@
 @interface BPSTumblingWindowAssigner
-- (BPSTumblingWindowAssigner)initWithInterval:(double)a3 timestamp:(id)a4 aggregator:(id)a5;
-- (id)assignWindow:(id)a3 input:(id)a4;
-- (id)updateAndReturnNewWindowStates:(id)a3 input:(id)a4;
+- (BPSTumblingWindowAssigner)initWithInterval:(double)interval timestamp:(id)timestamp aggregator:(id)aggregator;
+- (id)assignWindow:(id)window input:(id)input;
+- (id)updateAndReturnNewWindowStates:(id)states input:(id)input;
 @end
 
 @implementation BPSTumblingWindowAssigner
 
-- (BPSTumblingWindowAssigner)initWithInterval:(double)a3 timestamp:(id)a4 aggregator:(id)a5
+- (BPSTumblingWindowAssigner)initWithInterval:(double)interval timestamp:(id)timestamp aggregator:(id)aggregator
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 <= 0.0)
+  timestampCopy = timestamp;
+  aggregatorCopy = aggregator;
+  if (interval <= 0.0)
   {
     [BPSTumblingWindowAssigner initWithInterval:a2 timestamp:self aggregator:?];
   }
@@ -21,28 +21,28 @@
   v12 = v11;
   if (v11)
   {
-    v11->_interval = a3;
-    v13 = [v9 copy];
+    v11->_interval = interval;
+    v13 = [timestampCopy copy];
     timestamp = v12->_timestamp;
     v12->_timestamp = v13;
 
-    objc_storeStrong(&v12->_aggregator, a5);
+    objc_storeStrong(&v12->_aggregator, aggregator);
     v12->_identifier = 0;
   }
 
   return v12;
 }
 
-- (id)assignWindow:(id)a3 input:(id)a4
+- (id)assignWindow:(id)window input:(id)input
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  windowCopy = window;
   v6 = (*(self->_timestamp + 2))();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = windowCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -58,8 +58,8 @@ LABEL_3:
       }
 
       v12 = *(*(&v29 + 1) + 8 * v11);
-      v13 = [v12 dateInterval];
-      v14 = [v13 containsDate:v6];
+      dateInterval = [v12 dateInterval];
+      v14 = [dateInterval containsDate:v6];
 
       if (v14)
       {
@@ -117,18 +117,18 @@ LABEL_14:
   return v26;
 }
 
-- (id)updateAndReturnNewWindowStates:(id)a3 input:(id)a4
+- (id)updateAndReturnNewWindowStates:(id)states input:(id)input
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = self;
-  v39 = a4;
+  statesCopy = states;
+  selfCopy = self;
+  inputCopy = input;
   v8 = (*(self->_timestamp + 2))();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = v6;
+  v9 = statesCopy;
   v10 = [v9 countByEnumeratingWithState:&v40 objects:v44 count:16];
   v38 = v9;
   if (v10)
@@ -146,14 +146,14 @@ LABEL_14:
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        v16 = [v15 dateInterval];
-        v17 = [v16 containsDate:v8];
+        dateInterval = [v15 dateInterval];
+        v17 = [dateInterval containsDate:v8];
 
         if (v17)
         {
-          v18 = [(BPSAggregator *)v7->_aggregator closure];
-          v19 = [v15 aggregate];
-          v20 = (v18)[2](v18, v19, v39);
+          closure = [(BPSAggregator *)selfCopy->_aggregator closure];
+          aggregate = [v15 aggregate];
+          v20 = (closure)[2](closure, aggregate, inputCopy);
           [v15 setAggregate:v20];
 
           v9 = v38;
@@ -188,7 +188,7 @@ LABEL_14:
       v23 = v23 + -1.0;
     }
 
-    interval = v7->_interval;
+    interval = selfCopy->_interval;
     v25 = interval * trunc(v23 / interval);
     v26 = interval + -0.0001;
     v27 = objc_alloc(MEMORY[0x1E696AB80]);
@@ -196,18 +196,18 @@ LABEL_14:
     v29 = [v27 initWithStartDate:v28 duration:v26];
 
     v30 = [BPSTimeWindowState alloc];
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v7->_identifier];
-    v32 = [(BPSAggregator *)v7->_aggregator accumulator];
-    v12 = [(BPSTimeWindowState *)v30 initWithDateInterval:v29 identifier:v31 aggregate:v32 completed:0];
+    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", selfCopy->_identifier];
+    accumulator = [(BPSAggregator *)selfCopy->_aggregator accumulator];
+    v12 = [(BPSTimeWindowState *)v30 initWithDateInterval:v29 identifier:v31 aggregate:accumulator completed:0];
 
-    v33 = [(BPSAggregator *)v7->_aggregator closure];
-    v34 = [(BPSWindowState *)v12 aggregate];
-    v35 = (v33)[2](v33, v34, v39);
+    closure2 = [(BPSAggregator *)selfCopy->_aggregator closure];
+    aggregate2 = [(BPSWindowState *)v12 aggregate];
+    v35 = (closure2)[2](closure2, aggregate2, inputCopy);
     [(BPSWindowState *)v12 setAggregate:v35];
 
     v9 = v38;
     [v22 addObject:v12];
-    ++v7->_identifier;
+    ++selfCopy->_identifier;
   }
 
   v36 = *MEMORY[0x1E69E9840];

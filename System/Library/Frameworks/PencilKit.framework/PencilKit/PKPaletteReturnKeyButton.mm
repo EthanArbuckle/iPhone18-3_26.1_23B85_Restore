@@ -3,7 +3,7 @@
 - (BOOL)_useCompactLayout;
 - (CGSize)_contentViewSize;
 - (CGSize)intrinsicContentSize;
-- (PKPaletteReturnKeyButton)initWithFrame:(CGRect)a3;
+- (PKPaletteReturnKeyButton)initWithFrame:(CGRect)frame;
 - (id)_backgroundColor;
 - (id)_regularLayoutBackgroundColor;
 - (id)_returnKeyImage;
@@ -17,22 +17,22 @@
 - (void)_updateUI;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAxis:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setReturnKeyType:(int64_t)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAxis:(int64_t)axis;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setReturnKeyType:(int64_t)type;
+- (void)setScalingFactor:(double)factor;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPaletteReturnKeyButton
 
-- (PKPaletteReturnKeyButton)initWithFrame:(CGRect)a3
+- (PKPaletteReturnKeyButton)initWithFrame:(CGRect)frame
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = PKPaletteReturnKeyButton;
-  v3 = [(PKPaletteButton *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteButton *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,13 +45,13 @@
     [(PKPaletteReturnKeyButtonContentView *)v4->_contentView setUserInteractionEnabled:0];
     [(PKPaletteReturnKeyButton *)v4 addSubview:v4->_contentView];
     v7 = MEMORY[0x1E696ACD8];
-    v8 = [(PKPaletteReturnKeyButtonContentView *)v4->_contentView centerXAnchor];
-    v9 = [(PKPaletteReturnKeyButton *)v4 centerXAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    centerXAnchor = [(PKPaletteReturnKeyButtonContentView *)v4->_contentView centerXAnchor];
+    centerXAnchor2 = [(PKPaletteReturnKeyButton *)v4 centerXAnchor];
+    v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v23[0] = v10;
-    v11 = [(PKPaletteReturnKeyButtonContentView *)v4->_contentView centerYAnchor];
-    v12 = [(PKPaletteReturnKeyButton *)v4 centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    centerYAnchor = [(PKPaletteReturnKeyButtonContentView *)v4->_contentView centerYAnchor];
+    centerYAnchor2 = [(PKPaletteReturnKeyButton *)v4 centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v23[1] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     [v7 activateConstraints:v14];
@@ -94,9 +94,9 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
   v9.receiver = self;
   v9.super_class = PKPaletteReturnKeyButton;
   [(PKPaletteButton *)&v9 layoutSubviews];
-  v3 = [(PKPaletteReturnKeyButton *)self axis];
+  axis = [(PKPaletteReturnKeyButton *)self axis];
   [(PKPaletteReturnKeyButton *)self bounds];
-  if (v3)
+  if (axis)
   {
     v6 = v4;
   }
@@ -107,8 +107,8 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
   }
 
   v7 = v6 * 0.5;
-  v8 = [(PKPaletteReturnKeyButton *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(PKPaletteReturnKeyButton *)self layer];
+  [layer setCornerRadius:v7];
 }
 
 - (CGSize)intrinsicContentSize
@@ -130,8 +130,8 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
   v4 = 28.0;
   if (![(PKPaletteReturnKeyButton *)self _useCompactLayout])
   {
-    v5 = [(PKPaletteReturnKeyButton *)self contentView];
-    [v5 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+    contentView = [(PKPaletteReturnKeyButton *)self contentView];
+    [contentView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
     v4 = v6;
     v3 = v7;
 
@@ -153,54 +153,54 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteReturnKeyButton *)self _updateUI];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(PKPaletteReturnKeyButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(PKPaletteReturnKeyButton *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = PKPaletteReturnKeyButton;
-    [(PKPaletteButton *)&v5 setHighlighted:v3];
+    [(PKPaletteButton *)&v5 setHighlighted:highlightedCopy];
     [(PKPaletteReturnKeyButton *)self _updateUI];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PKPaletteReturnKeyButton *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PKPaletteReturnKeyButton *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = PKPaletteReturnKeyButton;
-    [(PKPaletteButton *)&v5 setEnabled:v3];
+    [(PKPaletteButton *)&v5 setEnabled:enabledCopy];
     [(PKPaletteReturnKeyButton *)self _updateUI];
   }
 }
 
-- (void)setReturnKeyType:(int64_t)a3
+- (void)setReturnKeyType:(int64_t)type
 {
-  if (self->_returnKeyType != a3)
+  if (self->_returnKeyType != type)
   {
-    self->_returnKeyType = a3;
+    self->_returnKeyType = type;
     [(PKPaletteReturnKeyButton *)self _updateUI];
   }
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  if (self->_axis != a3)
+  if (self->_axis != axis)
   {
-    self->_axis = a3;
+    self->_axis = axis;
     [(PKPaletteReturnKeyButton *)self _updateUI];
   }
 }
@@ -210,37 +210,37 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
   [(PKPaletteReturnKeyButton *)self _updateLabelText];
   [(PKPaletteReturnKeyButton *)self _updateImageView];
   [(PKPaletteReturnKeyButton *)self _updateContentViewOrientation];
-  v3 = [(PKPaletteReturnKeyButton *)self _useCompactLayout];
-  v4 = [(PKPaletteReturnKeyButton *)self contentView];
-  [v4 setUseCompactLayout:v3];
+  _useCompactLayout = [(PKPaletteReturnKeyButton *)self _useCompactLayout];
+  contentView = [(PKPaletteReturnKeyButton *)self contentView];
+  [contentView setUseCompactLayout:_useCompactLayout];
 
-  v5 = [(PKPaletteReturnKeyButton *)self _backgroundColor];
-  [(PKPaletteReturnKeyButton *)self setBackgroundColor:v5];
+  _backgroundColor = [(PKPaletteReturnKeyButton *)self _backgroundColor];
+  [(PKPaletteReturnKeyButton *)self setBackgroundColor:_backgroundColor];
 
   [(PKPaletteReturnKeyButton *)self invalidateIntrinsicContentSize];
 }
 
 - (BOOL)_useCompactLayout
 {
-  v3 = [(PKPaletteReturnKeyButton *)self traitCollection];
-  v4 = [(PKPaletteReturnKeyButton *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteReturnKeyButton *)self traitCollection];
+  window = [(PKPaletteReturnKeyButton *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   return v6;
 }
 
 - (void)_updateImageView
 {
-  v3 = [(PKPaletteReturnKeyButton *)self _returnKeyImage];
-  v4 = [(PKPaletteReturnKeyButton *)self contentView];
-  v5 = [v4 imageView];
-  [v5 setImage:v3];
+  _returnKeyImage = [(PKPaletteReturnKeyButton *)self _returnKeyImage];
+  contentView = [(PKPaletteReturnKeyButton *)self contentView];
+  imageView = [contentView imageView];
+  [imageView setImage:_returnKeyImage];
 
-  v8 = [(PKPaletteReturnKeyButton *)self _returnKeyTintColor];
-  v6 = [(PKPaletteReturnKeyButton *)self contentView];
-  v7 = [v6 imageView];
-  [v7 setTintColor:v8];
+  _returnKeyTintColor = [(PKPaletteReturnKeyButton *)self _returnKeyTintColor];
+  contentView2 = [(PKPaletteReturnKeyButton *)self contentView];
+  imageView2 = [contentView2 imageView];
+  [imageView2 setTintColor:_returnKeyTintColor];
 }
 
 - (id)_backgroundColor
@@ -261,25 +261,25 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
 
 - (id)_regularLayoutBackgroundColor
 {
-  v3 = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
+  pk_paletteButtonBackgroundColor = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
   if ([(PKPaletteReturnKeyButton *)self isEnabled])
   {
     if ([(PKPaletteReturnKeyButton *)self _shouldUseBlueReturnKeyColor])
     {
-      v4 = [MEMORY[0x1E69DC888] systemBlueColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
 
-      v3 = v4;
+      pk_paletteButtonBackgroundColor = systemBlueColor;
     }
 
     if ([(PKPaletteReturnKeyButton *)self isHighlighted])
     {
-      v5 = [v3 colorWithAlphaComponent:0.5];
+      v5 = [pk_paletteButtonBackgroundColor colorWithAlphaComponent:0.5];
 
-      v3 = v5;
+      pk_paletteButtonBackgroundColor = v5;
     }
   }
 
-  return v3;
+  return pk_paletteButtonBackgroundColor;
 }
 
 - (id)_returnKeyTintColor
@@ -301,38 +301,38 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
 - (void)_updateContentViewOrientation
 {
   v3 = [(PKPaletteReturnKeyButton *)self axis]== 1;
-  v4 = [(PKPaletteReturnKeyButton *)self contentView];
-  [v4 setLayoutOrientation:v3];
+  contentView = [(PKPaletteReturnKeyButton *)self contentView];
+  [contentView setLayoutOrientation:v3];
 
   [(PKPaletteReturnKeyButton *)self scalingFactor];
   v6 = v5;
   [(PKPaletteReturnKeyButton *)self scalingFactor];
   CGAffineTransformMakeScale(&v10, v6, v7);
-  v8 = [(PKPaletteReturnKeyButton *)self contentView];
+  contentView2 = [(PKPaletteReturnKeyButton *)self contentView];
   v9 = v10;
-  [v8 setTransform:&v9];
+  [contentView2 setTransform:&v9];
 }
 
 - (void)_updateLabelText
 {
-  v3 = [(PKPaletteReturnKeyButton *)self _returnKeyLabelText];
-  v4 = [(PKPaletteReturnKeyButton *)self contentView];
-  [v4 setText:v3];
+  _returnKeyLabelText = [(PKPaletteReturnKeyButton *)self _returnKeyLabelText];
+  contentView = [(PKPaletteReturnKeyButton *)self contentView];
+  [contentView setText:_returnKeyLabelText];
 
-  v6 = [(PKPaletteReturnKeyButton *)self _textColor];
-  v5 = [(PKPaletteReturnKeyButton *)self contentView];
-  [v5 setTextColor:v6];
+  _textColor = [(PKPaletteReturnKeyButton *)self _textColor];
+  contentView2 = [(PKPaletteReturnKeyButton *)self contentView];
+  [contentView2 setTextColor:_textColor];
 }
 
 - (id)_returnKeyLabelText
 {
   v3 = +[PKTextInputLanguageSelectionController sharedInstance];
-  v4 = [v3 currentLanguageIdentifiers];
-  v5 = [v4 firstObject];
+  currentLanguageIdentifiers = [v3 currentLanguageIdentifiers];
+  firstObject = [currentLanguageIdentifiers firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v5];
+    v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject];
   }
 
   else
@@ -349,43 +349,43 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
 
 - (id)_textColor
 {
-  v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   if ([(PKPaletteReturnKeyButton *)self _shouldUseBlueReturnKeyColor])
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
 
-    v3 = v4;
+    secondaryLabelColor = whiteColor;
   }
 
   if (([(PKPaletteReturnKeyButton *)self isEnabled]& 1) == 0)
   {
-    v5 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
 
-    v3 = v5;
+    secondaryLabelColor = quaternaryLabelColor;
   }
 
-  return v3;
+  return secondaryLabelColor;
 }
 
 - (BOOL)_shouldUseBlueReturnKeyColor
 {
-  v3 = [(PKPaletteReturnKeyButton *)self returnKeyType];
-  if (v3)
+  returnKeyType = [(PKPaletteReturnKeyButton *)self returnKeyType];
+  if (returnKeyType)
   {
-    LOBYTE(v3) = [(PKPaletteReturnKeyButton *)self returnKeyType]!= 4 && [(PKPaletteReturnKeyButton *)self returnKeyType]!= 11;
+    LOBYTE(returnKeyType) = [(PKPaletteReturnKeyButton *)self returnKeyType]!= 4 && [(PKPaletteReturnKeyButton *)self returnKeyType]!= 11;
   }
 
-  return v3;
+  return returnKeyType;
 }
 
 - (id)_returnKeyImage
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [(PKPaletteReturnKeyButton *)self _returnKeyImageSymbolConfiguration];
-  v4 = [v2 systemImageNamed:@"arrow.forward.circle" withConfiguration:v3];
-  v5 = [v4 imageFlippedForRightToLeftLayoutDirection];
+  _returnKeyImageSymbolConfiguration = [(PKPaletteReturnKeyButton *)self _returnKeyImageSymbolConfiguration];
+  v4 = [v2 systemImageNamed:@"arrow.forward.circle" withConfiguration:_returnKeyImageSymbolConfiguration];
+  imageFlippedForRightToLeftLayoutDirection = [v4 imageFlippedForRightToLeftLayoutDirection];
 
-  return v5;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (id)_returnKeyImageSymbolConfiguration
@@ -404,21 +404,21 @@ void __42__PKPaletteReturnKeyButton_initWithFrame___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPaletteReturnKeyButton;
-  [(PKPaletteButton *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteReturnKeyButton *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteButton *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteReturnKeyButton *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteReturnKeyButton *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteReturnKeyButton *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }

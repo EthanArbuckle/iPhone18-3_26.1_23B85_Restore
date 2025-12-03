@@ -1,46 +1,46 @@
 @interface HKAuthorizationSettingsViewController
-- (BOOL)_enableToggleAtIndexPath:(id)a3;
+- (BOOL)_enableToggleAtIndexPath:(id)path;
 - (BOOL)_shouldDisplaySharingSection;
 - (BOOL)shouldPresent;
-- (HKAuthorizationSettingsViewController)initWithHealthStore:(id)a3 style:(int64_t)a4 source:(id)a5 typesToShare:(id)a6 typesToRead:(id)a7 shareDescription:(id)a8 updateDescription:(id)a9 researchStudyUsageDescription:(id)a10;
+- (HKAuthorizationSettingsViewController)initWithHealthStore:(id)store style:(int64_t)style source:(id)source typesToShare:(id)share typesToRead:(id)read shareDescription:(id)description updateDescription:(id)updateDescription researchStudyUsageDescription:(id)self0;
 - (HKHealthPrivacyServicePromptControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (id)_authorizationSettingCellForRowAtIndexPath:(id)a3;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (id)_authorizationSettingCellForRowAtIndexPath:(id)path;
 - (id)_headerIcon;
-- (id)_indexPathsInAuthorizationSection:(int64_t)a3;
-- (id)_localizedNameForSection:(int64_t)a3 type:(id)a4;
-- (id)_localizedSourceExplanationWithDescription:(id)a3 forReadingSection:(BOOL)a4;
+- (id)_indexPathsInAuthorizationSection:(int64_t)section;
+- (id)_localizedNameForSection:(int64_t)section type:(id)type;
+- (id)_localizedSourceExplanationWithDescription:(id)description forReadingSection:(BOOL)section;
 - (id)_openAppCell;
 - (id)_researchStudyExplanationCell;
-- (id)_specialCellWithIdentifier:(id)a3;
+- (id)_specialCellWithIdentifier:(id)identifier;
 - (id)_toggleAllCell;
-- (id)_typeForIndexPath:(id)a3 section:(int64_t *)a4;
-- (id)sectionsForAuthController:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)authorizationSectionForSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_typeForIndexPath:(id)path section:(int64_t *)section;
+- (id)sectionsForAuthController:(id)controller;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)authorizationSectionForSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addCancelAndDoneButtons;
-- (void)_configurationFailedWithError:(id)a3;
+- (void)_configurationFailedWithError:(id)error;
 - (void)_configureTableView;
-- (void)_didFetchBackgroundAppRefreshStatus:(BOOL)a3;
-- (void)_displayGuestModeAlertWithCompletion:(id)a3;
-- (void)_done:(id)a3;
-- (void)_fetchBackgroundAppRefreshStatusWithHandler:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)authorizationController:(id)a3 parentTypeIsDisabled:(id)a4 forType:(id)a5 inSection:(int64_t)a6;
-- (void)authorizationController:(id)a3 subTypesEnabled:(id)a4 forType:(id)a5 inSection:(int64_t)a6;
-- (void)pickerControllerDidFinish:(id)a3 error:(id)a4;
+- (void)_didFetchBackgroundAppRefreshStatus:(BOOL)status;
+- (void)_displayGuestModeAlertWithCompletion:(id)completion;
+- (void)_done:(id)_done;
+- (void)_fetchBackgroundAppRefreshStatusWithHandler:(id)handler;
+- (void)_finishWithError:(id)error;
+- (void)authorizationController:(id)controller parentTypeIsDisabled:(id)disabled forType:(id)type inSection:(int64_t)section;
+- (void)authorizationController:(id)controller subTypesEnabled:(id)enabled forType:(id)type inSection:(int64_t)section;
+- (void)pickerControllerDidFinish:(id)finish error:(id)error;
 - (void)reloadAuthorizationSettings;
-- (void)setSource:(id)a3;
+- (void)setSource:(id)source;
 - (void)sourceConfigure;
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateAllowButtonEnabledState;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKAuthorizationSettingsViewController
@@ -54,70 +54,70 @@
   return v4;
 }
 
-- (HKAuthorizationSettingsViewController)initWithHealthStore:(id)a3 style:(int64_t)a4 source:(id)a5 typesToShare:(id)a6 typesToRead:(id)a7 shareDescription:(id)a8 updateDescription:(id)a9 researchStudyUsageDescription:(id)a10
+- (HKAuthorizationSettingsViewController)initWithHealthStore:(id)store style:(int64_t)style source:(id)source typesToShare:(id)share typesToRead:(id)read shareDescription:(id)description updateDescription:(id)updateDescription researchStudyUsageDescription:(id)self0
 {
-  v17 = a10;
-  v18 = a3;
-  v39 = a5;
-  v45 = a5;
-  v41 = a6;
-  v19 = a6;
-  v40 = a7;
-  v44 = a7;
-  v20 = a8;
-  v43 = a9;
-  v42 = a10;
-  if (!v18)
+  usageDescriptionCopy3 = usageDescription;
+  storeCopy = store;
+  sourceCopy = source;
+  sourceCopy2 = source;
+  shareCopy = share;
+  shareCopy2 = share;
+  readCopy = read;
+  readCopy2 = read;
+  descriptionCopy = description;
+  updateDescriptionCopy = updateDescription;
+  usageDescriptionCopy2 = usageDescription;
+  if (!storeCopy)
   {
     [HKAuthorizationSettingsViewController initWithHealthStore:a2 style:self source:? typesToShare:? typesToRead:? shareDescription:? updateDescription:? researchStudyUsageDescription:?];
   }
 
-  v38 = a4;
-  if (a4 == 1)
+  styleCopy = style;
+  if (style == 1)
   {
-    v21 = self;
-    v22 = [(HKAuthorizationSettingsViewController *)self _headerIcon];
-    v36 = v19;
+    selfCopy2 = self;
+    _headerIcon = [(HKAuthorizationSettingsViewController *)self _headerIcon];
+    v36 = shareCopy2;
     [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v24 = v23 = a8;
-    v35 = v18;
+    v24 = v23 = description;
+    v35 = storeCopy;
     v25 = [v24 localizedStringForKey:@"HEALTH" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
     v26 = MEMORY[0x1E696AEC0];
     v27 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v28 = [v27 localizedStringForKey:@"%@_WOULD_LIKE_TO_ACCESS_YOUR_HEALTH_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v29 = [v45 name];
+    name = [sourceCopy2 name];
     v30 = v26;
-    a8 = v23;
-    v17 = a10;
-    v31 = [v30 stringWithFormat:v28, v29];
+    description = v23;
+    usageDescriptionCopy3 = usageDescription;
+    v31 = [v30 stringWithFormat:v28, name];
 
-    v18 = v35;
-    v19 = v36;
+    storeCopy = v35;
+    shareCopy2 = v36;
   }
 
   else
   {
     v25 = 0;
     v31 = 0;
-    v22 = 0;
-    v21 = self;
+    _headerIcon = 0;
+    selfCopy2 = self;
   }
 
-  v46.receiver = v21;
+  v46.receiver = selfCopy2;
   v46.super_class = HKAuthorizationSettingsViewController;
-  v32 = [(OBTableWelcomeController *)&v46 initWithTitle:v25 detailText:v31 icon:v22 adoptTableViewScrollView:1];
+  v32 = [(OBTableWelcomeController *)&v46 initWithTitle:v25 detailText:v31 icon:_headerIcon adoptTableViewScrollView:1];
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_healthStore, a3);
-    v33->_style = v38;
-    objc_storeStrong(&v33->_source, v39);
-    objc_storeStrong(&v33->_typesToRead, v40);
-    objc_storeStrong(&v33->_typesToShare, v41);
-    objc_storeStrong(&v33->_updateDescription, a9);
-    objc_storeStrong(&v33->_shareDescription, a8);
-    objc_storeStrong(&v33->_researchStudyUsageDescription, v17);
+    objc_storeStrong(&v32->_healthStore, store);
+    v33->_style = styleCopy;
+    objc_storeStrong(&v33->_source, sourceCopy);
+    objc_storeStrong(&v33->_typesToRead, readCopy);
+    objc_storeStrong(&v33->_typesToShare, shareCopy);
+    objc_storeStrong(&v33->_updateDescription, updateDescription);
+    objc_storeStrong(&v33->_shareDescription, description);
+    objc_storeStrong(&v33->_researchStudyUsageDescription, usageDescriptionCopy3);
   }
 
   return v33;
@@ -142,13 +142,13 @@
   objc_storeStrong(&self->_readingTypeOrdering, v6);
   if (![(HKAuthorizationSettingsViewController *)self isPrompting])
   {
-    v8 = [(HKSource *)self->_source name];
-    v9 = [(OBBaseWelcomeController *)self navigationItem];
-    [v9 setTitle:v8];
+    name = [(HKSource *)self->_source name];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setTitle:name];
   }
 
-  v10 = [(HKAuthorizationSettingsViewController *)self sourceAuthorizationController];
-  v11 = [(HKAuthorizationSettingsViewController *)self sectionsForAuthController:v10];
+  sourceAuthorizationController = [(HKAuthorizationSettingsViewController *)self sourceAuthorizationController];
+  v11 = [(HKAuthorizationSettingsViewController *)self sectionsForAuthController:sourceAuthorizationController];
   [(HKAuthorizationSettingsViewController *)self setActualSections:v11];
 
   if (![(HKSource *)self->_source _isAllowedBackgroundDelivery])
@@ -157,13 +157,13 @@
     goto LABEL_9;
   }
 
-  v12 = [(HKSource *)self->_source _isResearchStudy];
-  self->_requiresBackgroundAppRefreshDisclosure = v12 ^ 1;
-  if (v12)
+  _isResearchStudy = [(HKSource *)self->_source _isResearchStudy];
+  self->_requiresBackgroundAppRefreshDisclosure = _isResearchStudy ^ 1;
+  if (_isResearchStudy)
   {
 LABEL_9:
-    v13 = [(OBTableWelcomeController *)self tableView];
-    [v13 reloadData];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView reloadData];
 
     goto LABEL_10;
   }
@@ -192,26 +192,26 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
   }
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  objc_storeStrong(&self->_source, a3);
+  objc_storeStrong(&self->_source, source);
 
   [(HKAuthorizationSettingsViewController *)self sourceConfigure];
 }
 
-- (void)_didFetchBackgroundAppRefreshStatus:(BOOL)a3
+- (void)_didFetchBackgroundAppRefreshStatus:(BOOL)status
 {
-  self->_isBackgroundAppRefreshEnabled = a3;
+  self->_isBackgroundAppRefreshEnabled = status;
   self->_hasFetchedBackgroundAppRefreshStatus = 1;
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)reloadAuthorizationSettings
 {
   [(HKSourceAuthorizationController *)self->_sourceAuthorizationController reload];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_configureTableView
@@ -220,25 +220,25 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setDataSource:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDataSource:self];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v7 = [(HKAuthorizationSettingsViewController *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(HKAuthorizationSettingsViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v9 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    v10 = [(HKAuthorizationSettingsViewController *)self view];
-    [v10 setBackgroundColor:v9];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    view = [(HKAuthorizationSettingsViewController *)self view];
+    [view setBackgroundColor:systemGroupedBackgroundColor];
 
-    v13 = [(HKAuthorizationSettingsViewController *)self view];
-    v11 = [v13 backgroundColor];
-    v12 = [(OBTableWelcomeController *)self tableView];
-    [v12 setBackgroundColor:v11];
+    view2 = [(HKAuthorizationSettingsViewController *)self view];
+    backgroundColor = [view2 backgroundColor];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 setBackgroundColor:backgroundColor];
   }
 }
 
@@ -248,63 +248,63 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
   v23.super_class = HKAuthorizationSettingsViewController;
   [(OBTableWelcomeController *)&v23 viewDidLoad];
   [(HKAuthorizationSettingsViewController *)self _configureTableView];
-  v3 = [(HKAuthorizationSettingsViewController *)self navigationController];
-  [v3 setModalInPresentation:1];
+  navigationController = [(HKAuthorizationSettingsViewController *)self navigationController];
+  [navigationController setModalInPresentation:1];
 
-  v4 = [(HKAuthorizationSettingsViewController *)self headerView];
-  [v4 setAllowFullWidthIcon:1];
+  headerView = [(HKAuthorizationSettingsViewController *)self headerView];
+  [headerView setAllowFullWidthIcon:1];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 hk_onboardingListEdgeInsets];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView hk_onboardingListEdgeInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 _setSectionContentInset:{v7, v9, v11, v13}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 _setSectionContentInset:{v7, v9, v11, v13}];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 _setSectionCornerRadius:26.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 _setSectionCornerRadius:26.0];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setEstimatedRowHeight:52.0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setEstimatedRowHeight:52.0];
 
   v17 = *MEMORY[0x1E69DE3D0];
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setRowHeight:v17];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setRowHeight:v17];
 
   if ([(HKAuthorizationSettingsViewController *)self isPrompting])
   {
     [(HKAuthorizationSettingsViewController *)self _addCancelAndDoneButtons];
     [(HKAuthorizationSettingsViewController *)self setModalInPresentation:1];
-    v19 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v20 = [(HKAuthorizationSettingsViewController *)self view];
-    [v20 setBackgroundColor:v19];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view = [(HKAuthorizationSettingsViewController *)self view];
+    [view setBackgroundColor:systemBackgroundColor];
 
-    v21 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v22 = [(OBTableWelcomeController *)self tableView];
-    [v22 setBackgroundColor:v21];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    tableView6 = [(OBTableWelcomeController *)self tableView];
+    [tableView6 setBackgroundColor:systemBackgroundColor2];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HKAuthorizationSettingsViewController;
-  [(OBTableWelcomeController *)&v4 viewWillAppear:a3];
+  [(OBTableWelcomeController *)&v4 viewWillAppear:appear];
   [(HKAuthorizationSettingsViewController *)self reloadAuthorizationSettings];
 }
 
 - (void)_addCancelAndDoneButtons
 {
-  v19 = [(OBBaseWelcomeController *)self navigationItem];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v4 = [v3 localizedStringForKey:@"HEALTH_ACCESS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [v19 setTitle:v4];
+  [navigationItem setTitle:v4];
 
-  v5 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   cancelButtonItem = self->_cancelButtonItem;
-  self->_cancelButtonItem = v5;
+  self->_cancelButtonItem = linkButton;
 
   v7 = self->_cancelButtonItem;
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -313,9 +313,9 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
 
   [(OBLinkTrayButton *)self->_cancelButtonItem addTarget:self action:sel__done_ forControlEvents:64];
   [(OBLinkTrayButton *)self->_cancelButtonItem setAccessibilityIdentifier:@"UIA.Health.DoNotAllow.Button"];
-  v10 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   doneButtonItem = self->_doneButtonItem;
-  self->_doneButtonItem = v10;
+  self->_doneButtonItem = boldButton;
 
   v12 = self->_doneButtonItem;
   v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -325,22 +325,22 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
   [(OBBoldTrayButton *)self->_doneButtonItem addTarget:self action:sel__done_ forControlEvents:64];
   [(OBBoldTrayButton *)self->_doneButtonItem setAccessibilityIdentifier:@"UIA.Health.Allow.Button"];
   v15 = self->_doneButtonItem;
-  v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(OBBoldTrayButton *)v15 setTintColor:v16];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(OBBoldTrayButton *)v15 setTintColor:systemBlueColor];
 
   [(OBBoldTrayButton *)self->_doneButtonItem setEnabled:0];
-  v17 = [(HKAuthorizationSettingsViewController *)self buttonTray];
-  [v17 addButton:self->_doneButtonItem];
+  buttonTray = [(HKAuthorizationSettingsViewController *)self buttonTray];
+  [buttonTray addButton:self->_doneButtonItem];
 
-  v18 = [(HKAuthorizationSettingsViewController *)self buttonTray];
-  [v18 addButton:self->_cancelButtonItem];
+  buttonTray2 = [(HKAuthorizationSettingsViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_cancelButtonItem];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_doneButtonItem == v4)
+  _doneCopy = _done;
+  if (self->_doneButtonItem == _doneCopy)
   {
     [(HKSourceAuthorizationController *)self->_sourceAuthorizationController commitAuthorizationStatuses];
     [(HKAuthorizationSettingsViewController *)self _finishWithError:0];
@@ -441,20 +441,20 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  if ([v5 isiPad])
+  errorCopy = error;
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  if ([mEMORY[0x1E696C608] isiPad])
   {
     v6 = [HKiPadHealthSyncEnablement isSyncPromptedForHealthKit:self->_healthStore];
 
     if (!v6)
     {
-      v7 = [[HKHealthSyncDisplayController alloc] initWithHealthStore:self->_healthStore source:self->_source];
-      v8 = [(HKAuthorizationSettingsViewController *)self delegate];
-      [(HKHealthSyncDisplayController *)v7 setDelegate:v8];
+      delegate2 = [[HKHealthSyncDisplayController alloc] initWithHealthStore:self->_healthStore source:self->_source];
+      delegate = [(HKAuthorizationSettingsViewController *)self delegate];
+      [(HKHealthSyncDisplayController *)delegate2 setDelegate:delegate];
 
       _HKInitializeLogging();
       v9 = HKLogAuthorization();
@@ -466,7 +466,7 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
         _os_log_impl(&dword_1C3942000, v9, OS_LOG_TYPE_DEFAULT, "%@: Prompting health sync view controller", &v14, 0xCu);
       }
 
-      [(HKAuthorizationSettingsViewController *)self presentViewController:v7 animated:1 completion:0];
+      [(HKAuthorizationSettingsViewController *)self presentViewController:delegate2 animated:1 completion:0];
       goto LABEL_12;
     }
   }
@@ -488,8 +488,8 @@ void __56__HKAuthorizationSettingsViewController_sourceConfigure__block_invoke(u
     }
   }
 
-  v7 = [(HKAuthorizationSettingsViewController *)self delegate];
-  [(HKHealthSyncDisplayController *)v7 promptControllerDidFinish:self error:v4];
+  delegate2 = [(HKAuthorizationSettingsViewController *)self delegate];
+  [(HKHealthSyncDisplayController *)delegate2 promptControllerDidFinish:self error:errorCopy];
 LABEL_12:
 }
 
@@ -497,16 +497,16 @@ LABEL_12:
 {
   if ([(HKAuthorizationSettingsViewController *)self isPrompting])
   {
-    v3 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController anyTypeEnabled];
+    anyTypeEnabled = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController anyTypeEnabled];
     doneButtonItem = self->_doneButtonItem;
 
-    [(OBBoldTrayButton *)doneButtonItem setEnabled:v3];
+    [(OBBoldTrayButton *)doneButtonItem setEnabled:anyTypeEnabled];
   }
 }
 
-- (void)_displayGuestModeAlertWithCompletion:(id)a3
+- (void)_displayGuestModeAlertWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x1E69DC650];
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"GUEST_MODE_CHANGE_AUTHORIZATION_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -521,8 +521,8 @@ LABEL_12:
   v16[1] = 3221225472;
   v16[2] = __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithCompletion___block_invoke;
   v16[3] = &unk_1E81B8440;
-  v17 = v3;
-  v13 = v3;
+  v17 = completionCopy;
+  v13 = completionCopy;
   v14 = [v10 actionWithTitle:v12 style:0 handler:v16];
 
   [v9 addAction:v14];
@@ -540,7 +540,7 @@ uint64_t __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithC
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_requiresBackgroundAppRefreshDisclosure && !self->_hasFetchedBackgroundAppRefreshStatus)
   {
@@ -553,9 +553,9 @@ uint64_t __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithC
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:a4];
+  v5 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:section];
   v6 = v5 - 1;
   if (v5 - 1) < 8 && ((0xC7u >> v6))
   {
@@ -565,8 +565,8 @@ uint64_t __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithC
   v8 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController typesInSection:v5];
   v7 = [v8 count];
 
-  v9 = [(HKAuthorizationSettingsViewController *)self isPrompting];
-  if (v5 == 6 && v9)
+  isPrompting = [(HKAuthorizationSettingsViewController *)self isPrompting];
+  if (v5 == 6 && isPrompting)
   {
     v7 -= [(HKSourceAuthorizationController *)self->_sourceAuthorizationController isRequestingDocumentAuthorization];
   }
@@ -574,9 +574,9 @@ uint64_t __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithC
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v4 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:a4];
+  v4 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:section];
   if (v4 != 5 && v4 != 2)
   {
     return *MEMORY[0x1E69DE3D0];
@@ -585,9 +585,9 @@ uint64_t __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithC
   return HKUIOnePixel();
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:a4];
+  v5 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:section];
   switch(v5)
   {
     case 6:
@@ -603,8 +603,8 @@ uint64_t __78__HKAuthorizationSettingsViewController__displayGuestModeAlertWithC
       v10 = @"ALLOW_%@_TO_UPDATE";
 LABEL_7:
       v11 = [v9 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v12 = [(HKSource *)self->_source name];
-      v7 = [v8 stringWithFormat:v11, v12];
+      name = [(HKSource *)self->_source name];
+      v7 = [v8 stringWithFormat:v11, name];
 
       goto LABEL_8;
     case 1:
@@ -621,9 +621,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:a4];
+  v5 = [(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:section];
   v6 = 0;
   if (v5 > 5)
   {
@@ -639,7 +639,7 @@ LABEL_10:
     }
 
     shareDescription = self->_shareDescription;
-    v8 = self;
+    selfCopy2 = self;
     v9 = 1;
   }
 
@@ -650,8 +650,8 @@ LABEL_10:
       v11 = MEMORY[0x1E696AEC0];
       v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v13 = [v12 localizedStringForKey:@"CLINICAL_DOCUMENTS_REQUEST_AUTH_DESCRIPTION %@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v14 = [(HKSource *)self->_source name];
-      v6 = [v11 stringWithFormat:v13, v14];
+      name = [(HKSource *)self->_source name];
+      v6 = [v11 stringWithFormat:v13, name];
 
       goto LABEL_12;
     }
@@ -662,11 +662,11 @@ LABEL_10:
     }
 
     shareDescription = self->_updateDescription;
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
   }
 
-  v10 = [(HKAuthorizationSettingsViewController *)v8 _localizedSourceExplanationWithDescription:shareDescription forReadingSection:v9];
+  v10 = [(HKAuthorizationSettingsViewController *)selfCopy2 _localizedSourceExplanationWithDescription:shareDescription forReadingSection:v9];
 LABEL_11:
   v6 = v10;
 LABEL_12:
@@ -674,14 +674,14 @@ LABEL_12:
   return v6;
 }
 
-- (id)_localizedSourceExplanationWithDescription:(id)a3 forReadingSection:(BOOL)a4
+- (id)_localizedSourceExplanationWithDescription:(id)description forReadingSection:(BOOL)section
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HKSource *)self->_source _isResearchStudy];
+  sectionCopy = section;
+  descriptionCopy = description;
+  _isResearchStudy = [(HKSource *)self->_source _isResearchStudy];
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v9 = v8;
-  if (v7)
+  if (_isResearchStudy)
   {
     v10 = @"STUDY_EXPLANATION_%@";
   }
@@ -693,12 +693,12 @@ LABEL_12:
 
   v11 = [v8 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-  if (v6)
+  if (descriptionCopy)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, v6];
-    if (v12)
+    descriptionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:v11, descriptionCopy];
+    if (descriptionCopy)
     {
-      v13 = !v4;
+      v13 = !sectionCopy;
     }
 
     else
@@ -725,9 +725,9 @@ LABEL_12:
 
         v18 = [v15 localizedStringForKey:v17 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-        v19 = [v12 stringByAppendingString:v18];
+        v19 = [descriptionCopy stringByAppendingString:v18];
 
-        v12 = v19;
+        descriptionCopy = v19;
       }
 
       else
@@ -744,16 +744,16 @@ LABEL_12:
 
   else
   {
-    v12 = 0;
+    descriptionCopy = 0;
   }
 
-  return v12;
+  return descriptionCopy;
 }
 
-- (void)_fetchBackgroundAppRefreshStatusWithHandler:(id)a3
+- (void)_fetchBackgroundAppRefreshStatusWithHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -770,17 +770,17 @@ LABEL_12:
     }
   }
 
-  v9 = [MEMORY[0x1E699A4B8] sharedScheduler];
-  v10 = [(HKSource *)self->_source bundleIdentifier];
+  mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
+  bundleIdentifier = [(HKSource *)self->_source bundleIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__HKAuthorizationSettingsViewController__fetchBackgroundAppRefreshStatusWithHandler___block_invoke;
   v13[3] = &unk_1E81B8958;
-  v14 = v10;
-  v15 = v4;
-  v11 = v4;
-  v12 = v10;
-  [v9 backgroundAppRefreshEnabledForApp:v12 withHandler:v13];
+  v14 = bundleIdentifier;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = bundleIdentifier;
+  [mEMORY[0x1E699A4B8] backgroundAppRefreshEnabledForApp:v12 withHandler:v13];
 }
 
 void __85__HKAuthorizationSettingsViewController__fetchBackgroundAppRefreshStatusWithHandler___block_invoke(uint64_t a1, char a2, char a3)
@@ -834,16 +834,16 @@ uint64_t __85__HKAuthorizationSettingsViewController__fetchBackgroundAppRefreshS
   return (*(*(a1 + 40) + 16))(*(a1 + 40), v8 & 1);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [v5 section]);
+  pathCopy = path;
+  v6 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [pathCopy section]);
   v7 = 0;
   if (v6 <= 2)
   {
     if (v6 == 1)
     {
-      v9 = [(HKAuthorizationSettingsViewController *)self _researchStudyExplanationCell];
+      _researchStudyExplanationCell = [(HKAuthorizationSettingsViewController *)self _researchStudyExplanationCell];
     }
 
     else
@@ -853,13 +853,13 @@ uint64_t __85__HKAuthorizationSettingsViewController__fetchBackgroundAppRefreshS
         goto LABEL_15;
       }
 
-      v9 = [(HKAuthorizationSettingsViewController *)self _toggleAllCell];
+      _researchStudyExplanationCell = [(HKAuthorizationSettingsViewController *)self _toggleAllCell];
     }
   }
 
   else if ((v6 - 3) < 2 || v6 == 6)
   {
-    v9 = [(HKAuthorizationSettingsViewController *)self _authorizationSettingCellForRowAtIndexPath:v5];
+    _researchStudyExplanationCell = [(HKAuthorizationSettingsViewController *)self _authorizationSettingCellForRowAtIndexPath:pathCopy];
   }
 
   else
@@ -869,15 +869,15 @@ uint64_t __85__HKAuthorizationSettingsViewController__fetchBackgroundAppRefreshS
       goto LABEL_15;
     }
 
-    v9 = [(HKAuthorizationSettingsViewController *)self _openAppCell];
+    _researchStudyExplanationCell = [(HKAuthorizationSettingsViewController *)self _openAppCell];
   }
 
-  v7 = v9;
+  v7 = _researchStudyExplanationCell;
 LABEL_15:
   if ([(HKAuthorizationSettingsViewController *)self isPrompting])
   {
-    v10 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v7 setBackgroundColor:v10];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [v7 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   if (v7)
@@ -898,12 +898,12 @@ LABEL_15:
 - (id)_researchStudyExplanationCell
 {
   v3 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"ResearchStudyExplanation"];
-  v4 = [v3 textLabel];
-  [v4 setNumberOfLines:0];
+  textLabel = [v3 textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v5 = [(HKAuthorizationSettingsViewController *)self researchStudyUsageDescription];
-  v6 = [v3 textLabel];
-  [v6 setText:v5];
+  researchStudyUsageDescription = [(HKAuthorizationSettingsViewController *)self researchStudyUsageDescription];
+  textLabel2 = [v3 textLabel];
+  [textLabel2 setText:researchStudyUsageDescription];
 
   [v3 setSelectionStyle:0];
 
@@ -912,12 +912,12 @@ LABEL_15:
 
 - (id)_toggleAllCell
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(HKAuthorizationSettingsViewController *)self _specialCellWithIdentifier:@"ToggleAllCell"];
-  LODWORD(v2) = [(HKSourceAuthorizationController *)v2->_sourceAuthorizationController allTypesEnabled];
+  LODWORD(selfCopy) = [(HKSourceAuthorizationController *)selfCopy->_sourceAuthorizationController allTypesEnabled];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = v4;
-  if (v2)
+  if (selfCopy)
   {
     v6 = @"DISABLE_ALL_CATEGORIES";
   }
@@ -928,8 +928,8 @@ LABEL_15:
   }
 
   v7 = [v4 localizedStringForKey:v6 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v8 = [v3 textLabel];
-  [v8 setText:v7];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v7];
 
   v9 = [@"UIA.Health" stringByAppendingString:@".AuthSheet.AllCategoryButton"];
   [v3 setAccessibilityIdentifier:v9];
@@ -943,71 +943,71 @@ LABEL_15:
   v4 = MEMORY[0x1E696AEC0];
   v5 = HKHealthKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"OPEN_%@" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B918]];
-  v7 = [(HKAuthorizationSettingsViewController *)self source];
-  v8 = [v7 name];
-  v9 = [v4 stringWithFormat:v6, v8];
-  v10 = [v3 textLabel];
-  [v10 setText:v9];
+  source = [(HKAuthorizationSettingsViewController *)self source];
+  name = [source name];
+  v9 = [v4 stringWithFormat:v6, name];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v9];
 
   return v3;
 }
 
-- (id)_specialCellWithIdentifier:(id)a3
+- (id)_specialCellWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(OBTableWelcomeController *)self tableView];
-  v6 = [v5 dequeueReusableCellWithIdentifier:v4];
+  identifierCopy = identifier;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v6 = [tableView dequeueReusableCellWithIdentifier:identifierCopy];
 
   if (!v6)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:identifierCopy];
   }
 
   v7 = HKHealthKeyColor();
-  v8 = [v6 textLabel];
-  [v8 setTextColor:v7];
+  textLabel = [v6 textLabel];
+  [textLabel setTextColor:v7];
 
   return v6;
 }
 
-- (id)_localizedNameForSection:(int64_t)a3 type:(id)a4
+- (id)_localizedNameForSection:(int64_t)section type:(id)type
 {
-  v6 = a4;
-  if ([(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:a3]== 3)
+  typeCopy = type;
+  if ([(HKAuthorizationSettingsViewController *)self authorizationSectionForSection:section]== 3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v8 = [v7 localizedStringForKey:@"CLINICAL_DOCUMENT_REQUESTS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+      displayName = [v7 localizedStringForKey:@"CLINICAL_DOCUMENT_REQUESTS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 LABEL_6:
 
       goto LABEL_8;
     }
   }
 
-  if ([v6 isClinicalType])
+  if ([typeCopy isClinicalType])
   {
     v9 = [HKDisplayTypeController sharedInstanceForHealthStore:self->_healthStore];
-    v7 = [v9 displayTypeForObjectTypeUnifyingBloodPressureTypes:v6];
+    v7 = [v9 displayTypeForObjectTypeUnifyingBloodPressureTypes:typeCopy];
 
-    v10 = [v7 localization];
-    v8 = [v10 displayName];
+    localization = [v7 localization];
+    displayName = [localization displayName];
 
     goto LABEL_6;
   }
 
-  v8 = [v6 hk_localizedName];
+  displayName = [typeCopy hk_localizedName];
 LABEL_8:
 
-  return v8;
+  return displayName;
 }
 
-- (id)_authorizationSettingCellForRowAtIndexPath:(id)a3
+- (id)_authorizationSettingCellForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(OBTableWelcomeController *)self tableView];
-  v6 = [v5 dequeueReusableCellWithIdentifier:@"AuthorizationSettingsCell"];
+  pathCopy = path;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v6 = [tableView dequeueReusableCellWithIdentifier:@"AuthorizationSettingsCell"];
 
   if (!v6)
   {
@@ -1016,27 +1016,27 @@ LABEL_8:
     [(HKSwitchTableViewCell *)v6 setCentersIcon:1];
   }
 
-  v7 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:v4 section:0];
+  v7 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:pathCopy section:0];
   v8 = [HKDisplayTypeController sharedInstanceForHealthStore:self->_healthStore];
   v9 = [v8 displayTypeForObjectTypeUnifyingBloodPressureTypes:v7];
 
-  v10 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [v4 section]);
+  v10 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [pathCopy section]);
   v32 = v9;
   if (v10 == 6)
   {
-    v11 = [v9 isDocument];
+    isDocument = [v9 isDocument];
   }
 
   else
   {
-    v11 = 0;
+    isDocument = 0;
   }
 
-  [(HKSwitchTableViewCell *)v6 setShouldHideSwitch:v11];
-  v12 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController objectAuthorizationStatusesForDocuments];
-  v13 = [v12 count];
+  [(HKSwitchTableViewCell *)v6 setShouldHideSwitch:isDocument];
+  objectAuthorizationStatusesForDocuments = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController objectAuthorizationStatusesForDocuments];
+  v13 = [objectAuthorizationStatusesForDocuments count];
 
-  if (v11 && v13)
+  if (isDocument && v13)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v13, v32];
     [(HKSwitchTableViewCell *)v6 setCountText:v14];
@@ -1058,13 +1058,13 @@ LABEL_8:
 
   else
   {
-    v17 = [v7 parentType];
+    parentType = [v7 parentType];
 
-    if (v17)
+    if (parentType)
     {
       v18 = [HKDisplayTypeController sharedInstanceForHealthStore:self->_healthStore];
-      v19 = [v7 parentType];
-      v16 = [v18 displayTypeForObjectTypeUnifyingBloodPressureTypes:v19];
+      parentType2 = [v7 parentType];
+      v16 = [v18 displayTypeForObjectTypeUnifyingBloodPressureTypes:parentType2];
     }
 
     else
@@ -1073,11 +1073,11 @@ LABEL_8:
     }
   }
 
-  v20 = -[HKAuthorizationSettingsViewController _localizedNameForSection:type:](self, "_localizedNameForSection:type:", [v4 section], v7);
+  v20 = -[HKAuthorizationSettingsViewController _localizedNameForSection:type:](self, "_localizedNameForSection:type:", [pathCopy section], v7);
   [(HKSwitchTableViewCell *)v6 setDisplayText:v20];
-  v21 = [v16 listIcon];
+  listIcon = [v16 listIcon];
   v22 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-  v23 = [v21 imageByApplyingSymbolConfiguration:v22];
+  v23 = [listIcon imageByApplyingSymbolConfiguration:v22];
 
   [(HKSwitchTableViewCell *)v6 setIconImage:v23];
   v24 = @"UIA.Health.Default";
@@ -1093,74 +1093,74 @@ LABEL_8:
 
   v25 = MEMORY[0x1E696AB08];
   v26 = v24;
-  v27 = [v25 whitespaceAndNewlineCharacterSet];
-  v28 = [v20 hk_stringByRemovingCharactersInSet:v27];
+  whitespaceAndNewlineCharacterSet = [v25 whitespaceAndNewlineCharacterSet];
+  v28 = [v20 hk_stringByRemovingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v29 = [(__CFString *)v26 stringByAppendingFormat:@".%@.SwitchCell", v28];
 
   [(HKSwitchTableViewCell *)v6 setAccessibilityIdentifier:v29];
-  [(HKSwitchTableViewCell *)v6 setOn:[(HKAuthorizationSettingsViewController *)self _enableToggleAtIndexPath:v4]];
-  v30 = [(HKSwitchTableViewCell *)v6 textLabel];
-  [v30 setNumberOfLines:3];
+  [(HKSwitchTableViewCell *)v6 setOn:[(HKAuthorizationSettingsViewController *)self _enableToggleAtIndexPath:pathCopy]];
+  textLabel = [(HKSwitchTableViewCell *)v6 textLabel];
+  [textLabel setNumberOfLines:3];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [v7 section]);
-  v9 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:v7 section:0];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [pathCopy section]);
+  v9 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:pathCopy section:0];
 
   switch(v8)
   {
     case 8:
-      v18 = [(HKAuthorizationSettingsViewController *)self source];
-      v19 = [v18 bundleIdentifier];
+      source = [(HKAuthorizationSettingsViewController *)self source];
+      bundleIdentifier = [source bundleIdentifier];
 
-      v20 = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
+      serviceWithDefaultShellEndpoint = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v22[3] = &unk_1E81B8980;
-      v23 = v19;
-      v21 = v19;
-      [v20 openApplication:v21 withOptions:0 completion:v22];
+      v23 = bundleIdentifier;
+      v21 = bundleIdentifier;
+      [serviceWithDefaultShellEndpoint openApplication:v21 withOptions:0 completion:v22];
 
       break;
     case 6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController objectAuthorizationStatusesForDocuments];
-        v13 = [v12 count];
+        objectAuthorizationStatusesForDocuments = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController objectAuthorizationStatusesForDocuments];
+        v13 = [objectAuthorizationStatusesForDocuments count];
 
         if (v13)
         {
-          v14 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController objectAuthorizationStatusesForDocuments];
-          v15 = [[HKDocumentPickerViewController alloc] initWithDocumentAuthorizations:v14];
+          objectAuthorizationStatusesForDocuments2 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController objectAuthorizationStatusesForDocuments];
+          v15 = [[HKDocumentPickerViewController alloc] initWithDocumentAuthorizations:objectAuthorizationStatusesForDocuments2];
           [(HKDocumentPickerViewController *)v15 setSource:self->_source];
-          v16 = [v9 hk_localizedName];
-          [(HKDocumentPickerViewController *)v15 setTitle:v16];
+          hk_localizedName = [v9 hk_localizedName];
+          [(HKDocumentPickerViewController *)v15 setTitle:hk_localizedName];
 
-          v17 = [(HKAuthorizationSettingsViewController *)self navigationController];
-          [v17 pushViewController:v15 animated:1];
+          navigationController = [(HKAuthorizationSettingsViewController *)self navigationController];
+          [navigationController pushViewController:v15 animated:1];
         }
       }
 
       break;
     case 2:
-      v10 = [(HKAuthorizationSettingsViewController *)self isPrompting];
+      isPrompting = [(HKAuthorizationSettingsViewController *)self isPrompting];
       v11 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController allTypesEnabled]^ 1;
-      [(HKSourceAuthorizationController *)self->_sourceAuthorizationController setEnabled:v11 forAllTypesInSection:4 commit:!v10];
-      [(HKSourceAuthorizationController *)self->_sourceAuthorizationController setEnabled:v11 forAllTypesInSection:6 commit:!v10];
-      if ((v11 & 1) == 0 && !v10)
+      [(HKSourceAuthorizationController *)self->_sourceAuthorizationController setEnabled:v11 forAllTypesInSection:4 commit:!isPrompting];
+      [(HKSourceAuthorizationController *)self->_sourceAuthorizationController setEnabled:v11 forAllTypesInSection:6 commit:!isPrompting];
+      if ((v11 & 1) == 0 && !isPrompting)
       {
         [(HKSourceAuthorizationController *)self->_sourceAuthorizationController resetObjectAuthorizationStatuses];
       }
 
-      [v6 reloadData];
+      [viewCopy reloadData];
       [(HKAuthorizationSettingsViewController *)self updateAllowButtonEnabledState];
       break;
   }
@@ -1180,38 +1180,38 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
   }
 }
 
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(OBTableWelcomeController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  valueCopy = value;
+  changedCopy = changed;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v8 = [tableView indexPathForCell:changedCopy];
 
   v12 = 0;
   v9 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:v8 section:&v12];
-  v10 = [(HKAuthorizationSettingsViewController *)self isPrompting];
+  isPrompting = [(HKAuthorizationSettingsViewController *)self isPrompting];
   if (v12 == 3)
   {
     v12 = 6;
-    if (!v10)
+    if (!isPrompting)
     {
       [(HKSourceAuthorizationController *)self->_sourceAuthorizationController resetObjectAuthorizationStatuses];
     }
   }
 
-  [HKSourceAuthorizationController setEnabled:"setEnabled:forType:inSection:commit:" forType:v4 inSection:v9 commit:?];
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 reloadData];
+  [HKSourceAuthorizationController setEnabled:"setEnabled:forType:inSection:commit:" forType:valueCopy inSection:v9 commit:?];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 reloadData];
 
   [(HKAuthorizationSettingsViewController *)self updateAllowButtonEnabledState];
 }
 
-- (void)pickerControllerDidFinish:(id)a3 error:(id)a4
+- (void)pickerControllerDidFinish:(id)finish error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  finishCopy = finish;
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v8 = HKLogAuthorization();
@@ -1228,8 +1228,8 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = [v6 allSamples];
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    allSamples = [finishCopy allSamples];
+    v10 = [allSamples countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1241,14 +1241,14 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allSamples);
           }
 
-          v15 = [*(*(&v27 + 1) + 8 * i) UUID];
-          [v8 setObject:v13 forKeyedSubscript:v15];
+          uUID = [*(*(&v27 + 1) + 8 * i) UUID];
+          [v8 setObject:v13 forKeyedSubscript:uUID];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v11 = [allSamples countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v11);
@@ -1258,8 +1258,8 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v16 = [v6 enabledSamples];
-    v17 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    enabledSamples = [finishCopy enabledSamples];
+    v17 = [enabledSamples countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1271,14 +1271,14 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
         {
           if (*v24 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(enabledSamples);
           }
 
-          v22 = [*(*(&v23 + 1) + 8 * j) UUID];
-          [v8 setObject:v20 forKeyedSubscript:v22];
+          uUID2 = [*(*(&v23 + 1) + 8 * j) UUID];
+          [v8 setObject:v20 forKeyedSubscript:uUID2];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v18 = [enabledSamples countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v18);
@@ -1288,16 +1288,16 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
   }
 }
 
-- (void)authorizationController:(id)a3 parentTypeIsDisabled:(id)a4 forType:(id)a5 inSection:(int64_t)a6
+- (void)authorizationController:(id)controller parentTypeIsDisabled:(id)disabled forType:(id)type inSection:(int64_t)section
 {
-  v35 = a3;
-  v33 = a4;
-  v9 = a5;
-  v10 = [v9 hk_localizedNameForAuthSheet];
-  v38 = v10;
-  v11 = [v33 hk_localizedNameForAuthSheet];
+  controllerCopy = controller;
+  disabledCopy = disabled;
+  typeCopy = type;
+  hk_localizedNameForAuthSheet = [typeCopy hk_localizedNameForAuthSheet];
+  v38 = hk_localizedNameForAuthSheet;
+  hk_localizedNameForAuthSheet2 = [disabledCopy hk_localizedNameForAuthSheet];
   v12 = @"ENABLING_%@_TO_WRITE_WILL_ENABLE_%@";
-  if (a6 == 6)
+  if (section == 6)
   {
     v12 = @"ENABLING_%@_TO_READ_WILL_ENABLE_%@";
   }
@@ -1308,7 +1308,7 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
   v16 = [v14 bundleWithIdentifier:@"com.apple.HealthUI"];
   v17 = [v16 localizedStringForKey:v15 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-  v37 = [v13 stringWithFormat:v17, v10, v11];
+  v37 = [v13 stringWithFormat:v17, hk_localizedNameForAuthSheet, hk_localizedNameForAuthSheet2];
 
   v18 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v37 message:0 preferredStyle:0];
   v19 = MEMORY[0x1E69DC648];
@@ -1320,8 +1320,8 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
   v23 = MEMORY[0x1E696AEC0];
   v24 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v25 = [v24 localizedStringForKey:@"AUTHORIZATION_STATUS_ENABLE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v26 = v11;
-  v27 = [v23 stringWithFormat:v25, v11];
+  v26 = hk_localizedNameForAuthSheet2;
+  v27 = [v23 stringWithFormat:v25, hk_localizedNameForAuthSheet2];
 
   v28 = MEMORY[0x1E69DC648];
   v39[0] = MEMORY[0x1E69E9820];
@@ -1329,13 +1329,13 @@ void __75__HKAuthorizationSettingsViewController_tableView_didSelectRowAtIndexPa
   v39[2] = __104__HKAuthorizationSettingsViewController_authorizationController_parentTypeIsDisabled_forType_inSection___block_invoke;
   v39[3] = &unk_1E81B89A8;
   v39[4] = self;
-  v40 = v35;
-  v42 = v9;
-  v43 = a6;
-  v41 = v33;
-  v29 = v9;
-  v30 = v33;
-  v31 = v35;
+  v40 = controllerCopy;
+  v42 = typeCopy;
+  sectionCopy = section;
+  v41 = disabledCopy;
+  v29 = typeCopy;
+  v30 = disabledCopy;
+  v31 = controllerCopy;
   v32 = [v28 actionWithTitle:v27 style:0 handler:v39];
   [v18 addAction:v32];
 
@@ -1355,19 +1355,19 @@ uint64_t __104__HKAuthorizationSettingsViewController_authorizationController_pa
   return [v4 updateAllowButtonEnabledState];
 }
 
-- (void)authorizationController:(id)a3 subTypesEnabled:(id)a4 forType:(id)a5 inSection:(int64_t)a6
+- (void)authorizationController:(id)controller subTypesEnabled:(id)enabled forType:(id)type inSection:(int64_t)section
 {
-  v29 = a3;
-  v28 = a4;
-  v8 = a5;
-  v33 = [v8 hk_localizedNameForAuthSheet];
-  v9 = [v28 anyObject];
-  v10 = [v9 hk_localizedNameForAuthSheet];
+  controllerCopy = controller;
+  enabledCopy = enabled;
+  typeCopy = type;
+  hk_localizedNameForAuthSheet = [typeCopy hk_localizedNameForAuthSheet];
+  anyObject = [enabledCopy anyObject];
+  hk_localizedNameForAuthSheet2 = [anyObject hk_localizedNameForAuthSheet];
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v13 = [v12 localizedStringForKey:@"DISABLING_%@_WILL_DISABLE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v31 = [v11 stringWithFormat:v13, v33, v10];
+  v31 = [v11 stringWithFormat:v13, hk_localizedNameForAuthSheet, hk_localizedNameForAuthSheet2];
 
   v14 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v31 message:0 preferredStyle:0];
   v15 = MEMORY[0x1E69DC648];
@@ -1379,7 +1379,7 @@ uint64_t __104__HKAuthorizationSettingsViewController_authorizationController_pa
   v19 = MEMORY[0x1E696AEC0];
   v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v21 = [v20 localizedStringForKey:@"AUTHORIZATION_STATUS_DISABLE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v22 = [v19 stringWithFormat:v21, v10];
+  v22 = [v19 stringWithFormat:v21, hk_localizedNameForAuthSheet2];
 
   v23 = MEMORY[0x1E69DC648];
   v34[0] = MEMORY[0x1E69E9820];
@@ -1387,13 +1387,13 @@ uint64_t __104__HKAuthorizationSettingsViewController_authorizationController_pa
   v34[2] = __99__HKAuthorizationSettingsViewController_authorizationController_subTypesEnabled_forType_inSection___block_invoke;
   v34[3] = &unk_1E81B89A8;
   v34[4] = self;
-  v35 = v28;
-  v37 = v8;
-  v38 = a6;
-  v36 = v29;
-  v24 = v8;
-  v25 = v29;
-  v26 = v28;
+  v35 = enabledCopy;
+  v37 = typeCopy;
+  sectionCopy = section;
+  v36 = controllerCopy;
+  v24 = typeCopy;
+  v25 = controllerCopy;
+  v26 = enabledCopy;
   v27 = [v23 actionWithTitle:v22 style:0 handler:v34];
   [v14 addAction:v27];
 
@@ -1441,16 +1441,16 @@ uint64_t __99__HKAuthorizationSettingsViewController_authorizationController_sub
   return [*(a1 + 32) updateAllowButtonEnabledState];
 }
 
-- (id)sectionsForAuthController:(id)a3
+- (id)sectionsForAuthController:(id)controller
 {
-  v4 = [(HKAuthorizationSettingsViewController *)self source];
-  if ([v4 _isSiri])
+  source = [(HKAuthorizationSettingsViewController *)self source];
+  if ([source _isSiri])
   {
-    v5 = [(HKAuthorizationSettingsViewController *)self isPrompting];
+    isPrompting = [(HKAuthorizationSettingsViewController *)self isPrompting];
 
-    if (!v5)
+    if (!isPrompting)
     {
-      v6 = &unk_1F43812E8;
+      array = &unk_1F43812E8;
       goto LABEL_22;
     }
   }
@@ -1459,15 +1459,15 @@ uint64_t __99__HKAuthorizationSettingsViewController_authorizationController_sub
   {
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(HKAuthorizationSettingsViewController *)self source];
-  if ([v7 _isResearchStudy])
+  array = [MEMORY[0x1E695DF70] array];
+  source2 = [(HKAuthorizationSettingsViewController *)self source];
+  if ([source2 _isResearchStudy])
   {
-    v8 = [(HKAuthorizationSettingsViewController *)self isPrompting];
+    isPrompting2 = [(HKAuthorizationSettingsViewController *)self isPrompting];
 
-    if (v8)
+    if (isPrompting2)
     {
-      [v6 addObject:&unk_1F4383A48];
+      [array addObject:&unk_1F4383A48];
     }
   }
 
@@ -1478,36 +1478,36 @@ uint64_t __99__HKAuthorizationSettingsViewController_authorizationController_sub
   v9 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController countOfTypesInSection:4];
   if (v9 | [(HKSourceAuthorizationController *)self->_sourceAuthorizationController countOfTypesInSection:6])
   {
-    [v6 addObject:&unk_1F4383A60];
+    [array addObject:&unk_1F4383A60];
   }
 
   if ([(HKAuthorizationSettingsViewController *)self _shouldDisplayHealthRecordsRequests])
   {
-    [v6 addObject:&unk_1F4383A78];
+    [array addObject:&unk_1F4383A78];
   }
 
   if ([(HKAuthorizationSettingsViewController *)self _shouldDisplaySharingSection])
   {
-    [v6 addObject:&unk_1F4383A90];
+    [array addObject:&unk_1F4383A90];
   }
 
   if ([(HKAuthorizationSettingsViewController *)self _shouldDisplayReadingSection])
   {
-    [v6 addObject:&unk_1F4383AA8];
+    [array addObject:&unk_1F4383AA8];
   }
 
-  v10 = [(HKAuthorizationSettingsViewController *)self source];
-  if ([v10 _isApplication])
+  source3 = [(HKAuthorizationSettingsViewController *)self source];
+  if ([source3 _isApplication])
   {
-    v11 = [(HKAuthorizationSettingsViewController *)self researchStudyUsageDescription];
-    v12 = [v11 length];
+    researchStudyUsageDescription = [(HKAuthorizationSettingsViewController *)self researchStudyUsageDescription];
+    v12 = [researchStudyUsageDescription length];
 
     if (v12)
     {
-      [v6 addObject:&unk_1F4383AC0];
+      [array addObject:&unk_1F4383AC0];
       if (![(HKAuthorizationSettingsViewController *)self isPrompting])
       {
-        [v6 addObject:&unk_1F4383AD8];
+        [array addObject:&unk_1F4383AD8];
       }
     }
   }
@@ -1518,7 +1518,7 @@ uint64_t __99__HKAuthorizationSettingsViewController_authorizationController_sub
 
 LABEL_22:
 
-  return v6;
+  return array;
 }
 
 - (BOOL)_shouldDisplaySharingSection
@@ -1529,21 +1529,21 @@ LABEL_22:
   return v3;
 }
 
-- (int64_t)authorizationSectionForSection:(int64_t)a3
+- (int64_t)authorizationSectionForSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_actualSections objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_actualSections objectAtIndexedSubscript:section];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)_typeForIndexPath:(id)a3 section:(int64_t *)a4
+- (id)_typeForIndexPath:(id)path section:(int64_t *)section
 {
-  v7 = a3;
-  v8 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [v7 section]);
-  if (a4)
+  pathCopy = path;
+  v8 = -[HKAuthorizationSettingsViewController authorizationSectionForSection:](self, "authorizationSectionForSection:", [pathCopy section]);
+  if (section)
   {
-    *a4 = v8;
+    *section = v8;
   }
 
   v9 = 0;
@@ -1582,13 +1582,13 @@ LABEL_12:
   }
 
 LABEL_13:
-  v11 = [v7 row];
+  v11 = [pathCopy row];
   if (v11 >= [v9 count])
   {
-    [(HKAuthorizationSettingsViewController *)v7 _typeForIndexPath:a2 section:self, v9];
+    [(HKAuthorizationSettingsViewController *)pathCopy _typeForIndexPath:a2 section:self, v9];
   }
 
-  v12 = [v7 row];
+  v12 = [pathCopy row];
   if (v12 >= [v9 count])
   {
 
@@ -1597,7 +1597,7 @@ LABEL_13:
 
   else
   {
-    v13 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v13 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v9 = v13;
   }
@@ -1607,10 +1607,10 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)_enableToggleAtIndexPath:(id)a3
+- (BOOL)_enableToggleAtIndexPath:(id)path
 {
   v7 = 0;
-  v4 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:a3 section:&v7];
+  v4 = [(HKAuthorizationSettingsViewController *)self _typeForIndexPath:path section:&v7];
   if (v7 == 3)
   {
     v7 = 6;
@@ -1631,7 +1631,7 @@ LABEL_19:
   return [(HKAuthorizationSettingsViewController *)self _shouldDisplayReadingSection];
 }
 
-- (id)_indexPathsInAuthorizationSection:(int64_t)a3
+- (id)_indexPathsInAuthorizationSection:(int64_t)section
 {
   v4 = [(HKSourceAuthorizationController *)self->_sourceAuthorizationController typesInSection:?];
   v5 = [v4 count];
@@ -1641,7 +1641,7 @@ LABEL_19:
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:a3];
+      v8 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:section];
       [v6 addObject:v8];
     }
   }
@@ -1649,9 +1649,9 @@ LABEL_19:
   return v6;
 }
 
-- (void)_configurationFailedWithError:(id)a3
+- (void)_configurationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1659,7 +1659,7 @@ LABEL_19:
     [HKAuthorizationSettingsViewController _configurationFailedWithError:];
   }
 
-  [(HKAuthorizationSettingsViewController *)self _finishWithError:v4];
+  [(HKAuthorizationSettingsViewController *)self _finishWithError:errorCopy];
 }
 
 - (HKHealthPrivacyServicePromptControllerDelegate)delegate

@@ -14,7 +14,7 @@
     a3 = *a3;
   }
 
-  return [a1 initWithCString:a3 encoding:4];
+  return [self initWithCString:a3 encoding:4];
 }
 
 - (uint64_t)initWithCXXStringNoCopy:()SNN
@@ -31,7 +31,7 @@
     v4 = v3;
   }
 
-  return [a1 initWithBytesNoCopy:a3 length:v4 encoding:4 freeWhenDone:0];
+  return [self initWithBytesNoCopy:a3 length:v4 encoding:4 freeWhenDone:0];
 }
 
 - (void)initWithOwnedCXXStringNoCopy:()SNN
@@ -47,8 +47,8 @@
 
 - (size_t)cxxString
 {
-  v3 = [a1 UTF8String];
-  result = strlen(v3);
+  uTF8String = [self UTF8String];
+  result = strlen(uTF8String);
   if (result >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -63,7 +63,7 @@
   a2[23] = result;
   if (result)
   {
-    result = memmove(a2, v3, result);
+    result = memmove(a2, uTF8String, result);
   }
 
   a2[v5] = 0;

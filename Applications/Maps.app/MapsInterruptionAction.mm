@@ -1,38 +1,38 @@
 @interface MapsInterruptionAction
-+ (id)actionWithTitle:(id)a3 cancels:(BOOL)a4 handler:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)actionWithTitle:(id)title cancels:(BOOL)cancels handler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)fire;
 @end
 
 @implementation MapsInterruptionAction
 
-+ (id)actionWithTitle:(id)a3 cancels:(BOOL)a4 handler:(id)a5
++ (id)actionWithTitle:(id)title cancels:(BOOL)cancels handler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  [v10 setTitle:v9];
+  cancelsCopy = cancels;
+  handlerCopy = handler;
+  titleCopy = title;
+  v10 = objc_alloc_init(self);
+  [v10 setTitle:titleCopy];
 
-  [v10 setCancels:v5];
-  [v10 setHandler:v8];
+  [v10 setCancels:cancelsCopy];
+  [v10 setHandler:handlerCopy];
 
   return v10;
 }
 
 - (void)fire
 {
-  v3 = [(MapsInterruptionAction *)self handler];
+  handler = [(MapsInterruptionAction *)self handler];
 
-  if (v3)
+  if (handler)
   {
-    v4 = [(MapsInterruptionAction *)self handler];
+    handler2 = [(MapsInterruptionAction *)self handler];
     [(MapsInterruptionAction *)self setHandler:0];
-    v4[2]();
+    handler2[2]();
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 2, self->_title);

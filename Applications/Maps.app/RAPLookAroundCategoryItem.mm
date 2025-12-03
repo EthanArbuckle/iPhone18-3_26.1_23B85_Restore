@@ -1,6 +1,6 @@
 @interface RAPLookAroundCategoryItem
-+ (id)_titleForQuestionType:(unint64_t)a3;
-- (RAPLookAroundCategoryItem)initWithType:(unint64_t)a3;
++ (id)_titleForQuestionType:(unint64_t)type;
+- (RAPLookAroundCategoryItem)initWithType:(unint64_t)type;
 - (int)analyticAction;
 @end
 
@@ -20,7 +20,7 @@
   }
 }
 
-- (RAPLookAroundCategoryItem)initWithType:(unint64_t)a3
+- (RAPLookAroundCategoryItem)initWithType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = RAPLookAroundCategoryItem;
@@ -28,8 +28,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    v6 = [RAPLookAroundCategoryItem _titleForQuestionType:a3];
+    v4->_type = type;
+    v6 = [RAPLookAroundCategoryItem _titleForQuestionType:type];
     localizedName = v5->_localizedName;
     v5->_localizedName = v6;
   }
@@ -37,11 +37,11 @@
   return v5;
 }
 
-+ (id)_titleForQuestionType:(unint64_t)a3
++ (id)_titleForQuestionType:(unint64_t)type
 {
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    v4 = *(&off_101651168 + a3);
+    v4 = *(&off_101651168 + type);
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }

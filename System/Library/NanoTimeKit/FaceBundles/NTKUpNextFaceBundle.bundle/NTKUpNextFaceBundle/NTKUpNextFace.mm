@@ -1,14 +1,14 @@
 @interface NTKUpNextFace
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (int64_t)_customEditModeForUniqueConfiguration;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKUpNextFace
@@ -21,9 +21,9 @@
 
   [v4 addIndex:29];
   v5 = +[CLKDevice currentDevice];
-  v6 = [v5 isRunningGraceOrLater];
+  isRunningGraceOrLater = [v5 isRunningGraceOrLater];
   v7 = &off_19098;
-  if (v6)
+  if (isRunningGraceOrLater)
   {
     v7 = &off_19080;
   }
@@ -56,10 +56,10 @@
 
 - (id)_customEditModes
 {
-  v2 = [(NTKUpNextFace *)self device];
-  v3 = [v2 pdrDeviceVersion];
+  device = [(NTKUpNextFace *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (v3 >= 0x50000)
+  if (pdrDeviceVersion >= 0x50000)
   {
     return &off_192F8;
   }
@@ -72,10 +72,10 @@
 
 - (int64_t)_customEditModeForUniqueConfiguration
 {
-  v2 = [(NTKUpNextFace *)self device];
-  v3 = [v2 pdrDeviceVersion];
+  device = [(NTKUpNextFace *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (v3 >= 0x50000)
+  if (pdrDeviceVersion >= 0x50000)
   {
     return 10;
   }
@@ -86,9 +86,9 @@
   }
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = [(NTKUpNextFace *)self device:10];
     [NTKFaceColorUpNextEditOption optionWithFaceColor:201 forDevice:v4];
@@ -96,7 +96,7 @@
 
   else
   {
-    v4 = [(NTKUpNextFace *)self device:a3];
+    v4 = [(NTKUpNextFace *)self device:mode];
     [NTKUpNextDisabledDataSourcesEditOption optionWithDisabledDataSourceIdentifiers:0 forDevice:v4];
   }
   v5 = ;
@@ -104,43 +104,43 @@
   return v5;
 }
 
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 16)
+  if (mode == 16)
   {
     return 1;
   }
 
-  if (a3 != 10)
+  if (mode != 10)
   {
     return 0;
   }
 
-  v3 = [(NTKUpNextFace *)self device];
-  v4 = [v3 pdrDeviceVersion] >> 16 > 4;
+  device = [(NTKUpNextFace *)self device];
+  v4 = [device pdrDeviceVersion] >> 16 > 4;
 
   return v4;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 != 10)
+  if (mode != 10)
   {
     return 0;
   }
 
-  v4 = [(NTKUpNextFace *)self device:a3];
+  v4 = [(NTKUpNextFace *)self device:mode];
   v5 = [NTKFaceColorUpNextEditOption numberOfOptionsForDevice:v4];
 
   return v5;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v6 = [(NTKUpNextFace *)self device:a3];
-    v7 = [NTKFaceColorUpNextEditOption optionAtIndex:a3 forDevice:v6];
+    v6 = [(NTKUpNextFace *)self device:index];
+    v7 = [NTKFaceColorUpNextEditOption optionAtIndex:index forDevice:v6];
   }
 
   else
@@ -151,23 +151,23 @@
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 != 10)
+  if (mode != 10)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = a3;
-  v7 = [(NTKUpNextFace *)self device];
-  v8 = [NTKFaceColorUpNextEditOption indexOfOption:v6 forDevice:v7];
+  optionCopy = option;
+  device = [(NTKUpNextFace *)self device];
+  v8 = [NTKFaceColorUpNextEditOption indexOfOption:optionCopy forDevice:device];
 
   return v8;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 16)
+  if (mode == 16)
   {
     v4 = NTKUpNextDisabledDataSourcesEditOption_ptr;
 LABEL_5:
@@ -177,7 +177,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = off_18320;
     goto LABEL_5;

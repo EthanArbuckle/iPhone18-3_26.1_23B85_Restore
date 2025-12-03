@@ -21,14 +21,14 @@
 + (id)chsh_secureContainer
 {
   v3 = objc_alloc_init(CKContainerOptions);
-  v4 = [a1 chsh_applicationBundleIdentifierOverrideForNetworkAttribution];
-  [v3 setApplicationBundleIdentifierOverrideForNetworkAttribution:v4];
+  chsh_applicationBundleIdentifierOverrideForNetworkAttribution = [self chsh_applicationBundleIdentifierOverrideForNetworkAttribution];
+  [v3 setApplicationBundleIdentifierOverrideForNetworkAttribution:chsh_applicationBundleIdentifierOverrideForNetworkAttribution];
 
   [v3 setUseZoneWidePCS:1];
   v5 = [CKContainer containerWithIdentifier:@"com.apple.callhistory.cloud-storage2"];
   v6 = [CKContainer alloc];
-  v7 = [v5 containerID];
-  v8 = [v6 initWithContainerID:v7 options:v3];
+  containerID = [v5 containerID];
+  v8 = [v6 initWithContainerID:containerID options:v3];
 
   return v8;
 }

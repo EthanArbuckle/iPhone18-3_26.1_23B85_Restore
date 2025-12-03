@@ -2,7 +2,7 @@
 + (id)Prediction;
 + (id)configurationForPrediction;
 + (id)storeConfigurationForPrediction;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Prediction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPrediction];
+  configurationForPrediction = [self configurationForPrediction];
   v3 = +[BMDeviceActivityPrediction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Activity.Prediction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Activity.Prediction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Activity.Prediction" schema:v9 configuration:configurationForPrediction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForPrediction
 {
-  v3 = [a1 storeConfigurationForPrediction];
-  v4 = [a1 syncPolicyForPrediction];
+  storeConfigurationForPrediction = [self storeConfigurationForPrediction];
+  syncPolicyForPrediction = [self syncPolicyForPrediction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5DDAC376-21D4-4520-81C5-EF780A04A162"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Activity.Prediction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Activity.Prediction" eventClass:objc_opt_class() storeConfig:storeConfigurationForPrediction syncPolicy:syncPolicyForPrediction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Prediction"])
+  if ([name isEqualToString:@"Prediction"])
   {
-    v4 = [a1 Prediction];
+    prediction = [self Prediction];
   }
 
   else
   {
-    v4 = 0;
+    prediction = 0;
   }
 
-  return v4;
+  return prediction;
 }
 
 + (id)validKeyPaths

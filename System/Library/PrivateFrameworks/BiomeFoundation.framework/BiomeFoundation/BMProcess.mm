@@ -2,26 +2,26 @@
 + (id)current;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BMProcess)init;
-- (BMProcess)initWithAuditToken:(id *)a3;
-- (BOOL)BOOLForEntitlement:(id)a3;
-- (BOOL)canPerformFileOperation:(id)a3 onPath:(id)a4 report:(BOOL)a5;
-- (BOOL)canPerformGlobalMachLookup:(id)a3 report:(BOOL)a4;
-- (BOOL)canPerformSyscall:(id)a3 report:(BOOL)a4;
-- (BOOL)hasNonEmptyArrayForEntitlement:(id)a3;
-- (BOOL)hasNonEmptyDictionaryForEntitlement:(id)a3;
+- (BMProcess)initWithAuditToken:(id *)token;
+- (BOOL)BOOLForEntitlement:(id)entitlement;
+- (BOOL)canPerformFileOperation:(id)operation onPath:(id)path report:(BOOL)report;
+- (BOOL)canPerformGlobalMachLookup:(id)lookup report:(BOOL)report;
+- (BOOL)canPerformSyscall:(id)syscall report:(BOOL)report;
+- (BOOL)hasNonEmptyArrayForEntitlement:(id)entitlement;
+- (BOOL)hasNonEmptyDictionaryForEntitlement:(id)entitlement;
 - (BOOL)isSandboxed;
 - (NSSet)useCases;
 - (NSString)executableName;
 - (NSString)executablePath;
-- (id)_initWithAuditToken:(id *)a3;
+- (id)_initWithAuditToken:(id *)token;
 - (id)description;
-- (id)dictionaryForEntitlement:(id)a3;
-- (id)nonnullArrayForEntitlement:(id)a3;
-- (id)nonnullSetOfStringsForEntitlement:(id)a3;
-- (id)stringForEntitlement:(id)a3;
-- (id)valueForEntitlement:(id)a3;
+- (id)dictionaryForEntitlement:(id)entitlement;
+- (id)nonnullArrayForEntitlement:(id)entitlement;
+- (id)nonnullSetOfStringsForEntitlement:(id)entitlement;
+- (id)stringForEntitlement:(id)entitlement;
+- (id)valueForEntitlement:(id)entitlement;
 - (void)_initializeProcessProperties;
-- (void)cacheValuesForEntitlements:(id)a3;
+- (void)cacheValuesForEntitlements:(id)entitlements;
 @end
 
 @implementation BMProcess
@@ -41,11 +41,11 @@
 - (void)_initializeProcessProperties
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a1 executableName];
+  executableName = [self executableName];
   v6 = 138543618;
-  v7 = v4;
+  v7 = executableName;
   v8 = 1024;
-  v9 = [a1 pid];
+  v9 = [self pid];
   _os_log_error_impl(&dword_1AC15D000, a2, OS_LOG_TYPE_ERROR, "Warning: Not trusting process %{public}@(%d)", &v6, 0x12u);
 
   v5 = *MEMORY[0x1E69E9840];
@@ -53,10 +53,10 @@
 
 - (NSString)executableName
 {
-  v2 = [(BMProcess *)self executablePath];
-  v3 = [v2 lastPathComponent];
+  executablePath = [(BMProcess *)self executablePath];
+  lastPathComponent = [executablePath lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (NSString)executablePath
@@ -249,10 +249,10 @@ void __20__BMProcess_current__block_invoke()
   return 0;
 }
 
-- (BMProcess)initWithAuditToken:(id *)a3
+- (BMProcess)initWithAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  v7[0] = *a3->var0;
+  v3 = *&token->var0[4];
+  v7[0] = *token->var0;
   v7[1] = v3;
   v4 = [(BMProcess *)self _initWithAuditToken:v7];
   if (v4)
@@ -265,7 +265,7 @@ void __20__BMProcess_current__block_invoke()
   return v4;
 }
 
-- (id)_initWithAuditToken:(id *)a3
+- (id)_initWithAuditToken:(id *)token
 {
   v13.receiver = self;
   v13.super_class = BMProcess;
@@ -273,8 +273,8 @@ void __20__BMProcess_current__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v6 = *a3->var0;
-    *(v4 + 24) = *&a3->var0[4];
+    v6 = *token->var0;
+    *(v4 + 24) = *&token->var0[4];
     *(v4 + 8) = v6;
     *(v4 + 12) = 0;
     v7 = objc_opt_new();
@@ -296,11 +296,11 @@ void __20__BMProcess_current__block_invoke()
   return v5;
 }
 
-- (BOOL)canPerformSyscall:(id)a3 report:(BOOL)a4
+- (BOOL)canPerformSyscall:(id)syscall report:(BOOL)report
 {
   v5 = *self->_auditToken.val;
   v6 = *&self->_auditToken.val[4];
-  if (a4)
+  if (report)
   {
     v7 = 14;
   }
@@ -312,33 +312,33 @@ void __20__BMProcess_current__block_invoke()
 
   v9[0] = *self->_auditToken.val;
   v9[1] = v6;
-  return BMSandboxCheck(v9, @"syscall-unix", v7, a3) == 0;
+  return BMSandboxCheck(v9, @"syscall-unix", v7, syscall) == 0;
 }
 
-- (BOOL)canPerformGlobalMachLookup:(id)a3 report:(BOOL)a4
+- (BOOL)canPerformGlobalMachLookup:(id)lookup report:(BOOL)report
 {
-  v4 = a4;
-  v6 = a3;
+  reportCopy = report;
+  lookupCopy = lookup;
   os_unfair_lock_lock(&self->_machLookupCacheLock);
-  v7 = [(NSMutableDictionary *)self->_machLookupCache objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_machLookupCache objectForKeyedSubscript:lookupCopy];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_13;
   }
 
-  v9 = [v7 intValue];
-  if (v9 > 0)
+  intValue = [v7 intValue];
+  if (intValue > 0)
   {
-    if (v9 == 1)
+    if (intValue == 1)
     {
-      if (v4)
+      if (reportCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (v9 != 2)
+    else if (intValue != 2)
     {
       goto LABEL_13;
     }
@@ -348,7 +348,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v9 == -1)
+  if (intValue == -1)
   {
     v11 = __biome_log_for_category(6);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -359,14 +359,14 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!intValue)
   {
     v10 = 1;
     goto LABEL_18;
   }
 
 LABEL_13:
-  if (v4)
+  if (reportCopy)
   {
     v12 = 2;
   }
@@ -379,10 +379,10 @@ LABEL_13:
   v13 = *&self->_auditToken.val[4];
   v18[0] = *self->_auditToken.val;
   v18[1] = v13;
-  v14 = BMSandboxCheck(v18, @"mach-lookup", v12, v6);
+  v14 = BMSandboxCheck(v18, @"mach-lookup", v12, lookupCopy);
   v15 = v14;
   v16 = [MEMORY[0x1E696AD98] numberWithInt:v14];
-  [(NSMutableDictionary *)self->_machLookupCache setObject:v16 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_machLookupCache setObject:v16 forKeyedSubscript:lookupCopy];
 
   v10 = v15 == 0;
 LABEL_18:
@@ -391,11 +391,11 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)canPerformFileOperation:(id)a3 onPath:(id)a4 report:(BOOL)a5
+- (BOOL)canPerformFileOperation:(id)operation onPath:(id)path report:(BOOL)report
 {
   v6 = *self->_auditToken.val;
   v7 = *&self->_auditToken.val[4];
-  if (a5)
+  if (report)
   {
     v8 = 1;
   }
@@ -407,15 +407,15 @@ LABEL_18:
 
   v10[0] = *self->_auditToken.val;
   v10[1] = v7;
-  return BMSandboxCheck(v10, a3, v8, a4) == 0;
+  return BMSandboxCheck(v10, operation, v8, path) == 0;
 }
 
-- (void)cacheValuesForEntitlements:(id)a3
+- (void)cacheValuesForEntitlements:(id)entitlements
 {
   v32 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  entitlementsCopy = entitlements;
   os_unfair_lock_lock(&self->_entitlementCacheLock);
-  v21 = self;
+  selfCopy = self;
   v5 = xpc_copy_entitlement_for_token();
   v6 = v5;
   if (!v5 || MEMORY[0x1AC5ADDC0](v5) == MEMORY[0x1E69E9E80])
@@ -424,7 +424,7 @@ LABEL_18:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v20;
+    v7 = entitlementsCopy;
     v9 = [v7 countByEnumeratingWithState:&v22 objects:v31 count:16];
     if (v9)
     {
@@ -449,13 +449,13 @@ LABEL_18:
 
           else
           {
-            v3 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
             v16 = 0;
             v17 = 1;
-            v18 = v3;
+            v18 = null;
           }
 
-          [(NSMutableDictionary *)v21->_entitlementCache setObject:v18 forKeyedSubscript:v12, v20];
+          [(NSMutableDictionary *)selfCopy->_entitlementCache setObject:v18 forKeyedSubscript:v12, entitlementsCopy];
           if (v17)
           {
           }
@@ -494,19 +494,19 @@ LABEL_18:
     }
   }
 
-  os_unfair_lock_unlock(&v21->_entitlementCacheLock);
+  os_unfair_lock_unlock(&selfCopy->_entitlementCacheLock);
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   os_unfair_lock_lock(&self->_entitlementCacheLock);
-  v5 = [(NSMutableDictionary *)self->_entitlementCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_entitlementCache objectForKeyedSubscript:entitlementCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
-    if (v5 == v6)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (v5 == null)
     {
       v7 = 0;
     }
@@ -519,22 +519,22 @@ LABEL_18:
 
   else
   {
-    [v4 UTF8String];
-    v6 = xpc_copy_entitlement_for_token();
-    if (v6 && (v8 = _CFXPCCreateCFObjectFromXPCObject(), (v7 = v8) != 0))
+    [entitlementCopy UTF8String];
+    null = xpc_copy_entitlement_for_token();
+    if (null && (v8 = _CFXPCCreateCFObjectFromXPCObject(), (v7 = v8) != 0))
     {
       v9 = 0;
-      v10 = v8;
+      null2 = v8;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
       v7 = 0;
       v9 = 1;
     }
 
-    [(NSMutableDictionary *)self->_entitlementCache setObject:v10 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_entitlementCache setObject:null2 forKeyedSubscript:entitlementCopy];
     if (v9)
     {
     }
@@ -549,9 +549,9 @@ LABEL_18:
   return v11;
 }
 
-- (id)stringForEntitlement:(id)a3
+- (id)stringForEntitlement:(id)entitlement
 {
-  v3 = [(BMProcess *)self valueForEntitlement:a3];
+  v3 = [(BMProcess *)self valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -566,10 +566,10 @@ LABEL_18:
   return v4;
 }
 
-- (id)nonnullArrayForEntitlement:(id)a3
+- (id)nonnullArrayForEntitlement:(id)entitlement
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProcess *)self valueForEntitlement:a3];
+  v3 = [(BMProcess *)self valueForEntitlement:entitlement];
   if (v3)
   {
     objc_opt_class();
@@ -597,33 +597,33 @@ LABEL_18:
   return v5;
 }
 
-- (id)nonnullSetOfStringsForEntitlement:(id)a3
+- (id)nonnullSetOfStringsForEntitlement:(id)entitlement
 {
-  v3 = [(BMProcess *)self valueForEntitlement:a3];
+  v3 = [(BMProcess *)self valueForEntitlement:entitlement];
   v4 = BMNonnullSetOfStringsFromEntitlementValue(v3);
 
   return v4;
 }
 
-- (BOOL)hasNonEmptyArrayForEntitlement:(id)a3
+- (BOOL)hasNonEmptyArrayForEntitlement:(id)entitlement
 {
-  v3 = [(BMProcess *)self nonnullArrayForEntitlement:a3];
+  v3 = [(BMProcess *)self nonnullArrayForEntitlement:entitlement];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (BOOL)BOOLForEntitlement:(id)a3
+- (BOOL)BOOLForEntitlement:(id)entitlement
 {
-  v3 = [(BMProcess *)self valueForEntitlement:a3];
+  v3 = [(BMProcess *)self valueForEntitlement:entitlement];
   v4 = [v3 isEqual:MEMORY[0x1E695E118]];
 
   return v4;
 }
 
-- (id)dictionaryForEntitlement:(id)a3
+- (id)dictionaryForEntitlement:(id)entitlement
 {
-  v3 = [(BMProcess *)self valueForEntitlement:a3];
+  v3 = [(BMProcess *)self valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -638,9 +638,9 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)hasNonEmptyDictionaryForEntitlement:(id)a3
+- (BOOL)hasNonEmptyDictionaryForEntitlement:(id)entitlement
 {
-  v3 = [(BMProcess *)self dictionaryForEntitlement:a3];
+  v3 = [(BMProcess *)self dictionaryForEntitlement:entitlement];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -649,8 +649,8 @@ LABEL_18:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMProcess *)self executableName];
-  v5 = [v3 initWithFormat:@"<BMProcess %@(%d) %@>", v4, self->_pid, self->_identifier];
+  executableName = [(BMProcess *)self executableName];
+  v5 = [v3 initWithFormat:@"<BMProcess %@(%d) %@>", executableName, self->_pid, self->_identifier];
 
   return v5;
 }

@@ -1,23 +1,23 @@
 @interface AKAutoBugCapture
-+ (BOOL)shouldCapturePromptBugForContext:(id)a3;
-+ (id)userInfoFromAccount:(id)a3;
-+ (id)userInfoFromContext:(id)a3;
-+ (void)triggerAutoBugCaptureWithSubType:(id)a3 andBundleID:(id)a4 userInfo:(id)a5;
++ (BOOL)shouldCapturePromptBugForContext:(id)context;
++ (id)userInfoFromAccount:(id)account;
++ (id)userInfoFromContext:(id)context;
++ (void)triggerAutoBugCaptureWithSubType:(id)type andBundleID:(id)d userInfo:(id)info;
 @end
 
 @implementation AKAutoBugCapture
 
-+ (void)triggerAutoBugCaptureWithSubType:(id)a3 andBundleID:(id)a4 userInfo:(id)a5
++ (void)triggerAutoBugCaptureWithSubType:(id)type andBundleID:(id)d userInfo:(id)info
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, d);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, info);
   v19 = &triggerAutoBugCaptureWithSubType_andBundleID_userInfo__onceToken;
   v18 = 0;
   objc_storeStrong(&v18, &__block_literal_global_56);
@@ -109,20 +109,20 @@ void __74__AKAutoBugCapture_triggerAutoBugCaptureWithSubType_andBundleID_userInf
   *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)shouldCapturePromptBugForContext:(id)a3
++ (BOOL)shouldCapturePromptBugForContext:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v5 = 0;
   v4 = 0;
   if ([location[0] _capabilityForUIDisplay] == 1)
   {
-    v6 = [location[0] username];
+    username = [location[0] username];
     v5 = 1;
     v4 = 0;
-    if (v6)
+    if (username)
     {
       v4 = [location[0] isUsernameEditable] == 0;
     }
@@ -131,30 +131,30 @@ void __74__AKAutoBugCapture_triggerAutoBugCaptureWithSubType_andBundleID_userInf
   v8 = v4;
   if (v5)
   {
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](username);
   }
 
   objc_storeStrong(location, 0);
   return v8;
 }
 
-+ (id)userInfoFromContext:(id)a3
++ (id)userInfoFromContext:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(location[0], "serviceType")}];
   [v8 setObject:? forKeyedSubscript:?];
   MEMORY[0x1E69E5920](v6);
-  v7 = [location[0] _proxiedAppBundleID];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  _proxiedAppBundleID = [location[0] _proxiedAppBundleID];
+  MEMORY[0x1E69E5920](_proxiedAppBundleID);
+  if (_proxiedAppBundleID)
   {
-    v5 = [location[0] _proxiedAppBundleID];
+    _proxiedAppBundleID2 = [location[0] _proxiedAppBundleID];
     [v8 setObject:? forKeyedSubscript:?];
-    MEMORY[0x1E69E5920](v5);
+    MEMORY[0x1E69E5920](_proxiedAppBundleID2);
   }
 
   v4 = MEMORY[0x1E69E5928](v8);
@@ -164,13 +164,13 @@ void __74__AKAutoBugCapture_triggerAutoBugCaptureWithSubType_andBundleID_userInf
   return v4;
 }
 
-+ (id)userInfoFromAccount:(id)a3
++ (id)userInfoFromAccount:(id)account
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v34[0] = @"altDSID";
   v18 = +[AKAccountManager sharedInstance];
   v19 = [(AKAccountManager *)v18 altDSIDForAccount:location[0]];

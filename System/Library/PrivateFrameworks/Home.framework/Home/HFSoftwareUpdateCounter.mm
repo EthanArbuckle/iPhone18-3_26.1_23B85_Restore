@@ -1,16 +1,16 @@
 @interface HFSoftwareUpdateCounter
-+ (id)progressForAccessoriesDownloadingSoftwareUpdate:(id)a3;
++ (id)progressForAccessoriesDownloadingSoftwareUpdate:(id)update;
 - (HFSoftwareUpdateCounter)init;
-- (HFSoftwareUpdateCounter)initWithAccessories:(id)a3;
+- (HFSoftwareUpdateCounter)initWithAccessories:(id)accessories;
 - (id)description;
 @end
 
 @implementation HFSoftwareUpdateCounter
 
-+ (id)progressForAccessoriesDownloadingSoftwareUpdate:(id)a3
++ (id)progressForAccessoriesDownloadingSoftwareUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 count])
+  updateCopy = update;
+  if ([updateCopy count])
   {
     v12 = 0;
     v13 = &v12;
@@ -26,7 +26,7 @@
     v7[3] = &unk_277DF9AC0;
     v7[4] = &v12;
     v7[5] = &v8;
-    [v3 na_each:v7];
+    [updateCopy na_each:v7];
     v4 = v9[3];
     if (v4)
     {
@@ -67,9 +67,9 @@ void __75__HFSoftwareUpdateCounter_progressForAccessoriesDownloadingSoftwareUpda
   }
 }
 
-- (HFSoftwareUpdateCounter)initWithAccessories:(id)a3
+- (HFSoftwareUpdateCounter)initWithAccessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   v39.receiver = self;
   v39.super_class = HFSoftwareUpdateCounter;
   v5 = [(HFSoftwareUpdateCounter *)&v39 init];
@@ -82,7 +82,7 @@ void __75__HFSoftwareUpdateCounter_progressForAccessoriesDownloadingSoftwareUpda
     v10 = [MEMORY[0x277CBEB58] set];
     v11 = [MEMORY[0x277CBEB58] set];
     [MEMORY[0x277CBEB58] set];
-    v12 = v28 = v4;
+    v12 = v28 = accessoriesCopy;
     v13 = [MEMORY[0x277CBEB58] set];
     v14 = [MEMORY[0x277CBEB58] set];
     v29[0] = MEMORY[0x277D85DD0];
@@ -116,10 +116,10 @@ void __75__HFSoftwareUpdateCounter_progressForAccessoriesDownloadingSoftwareUpda
     -[HFSoftwareUpdateCounter setSoftwareUpdatesInstalled:](v5, "setSoftwareUpdatesInstalled:", [v15 count]);
     -[HFSoftwareUpdateCounter setFirmwareUpdatesReadyToInstall:](v5, "setFirmwareUpdatesReadyToInstall:", [v21 count]);
     [(HFSoftwareUpdateCounter *)v5 setUpdatesReadyToInstall:[(HFSoftwareUpdateCounter *)v5 firmwareUpdatesReadyToInstall]+ [(HFSoftwareUpdateCounter *)v5 softwareUpdatesReadyToInstall]];
-    v22 = [(HFSoftwareUpdateCounter *)v5 updatesReadyToInstall];
-    v23 = [(HFSoftwareUpdateCounter *)v5 softwareUpdatesInProgress]+ v22;
+    updatesReadyToInstall = [(HFSoftwareUpdateCounter *)v5 updatesReadyToInstall];
+    v23 = [(HFSoftwareUpdateCounter *)v5 softwareUpdatesInProgress]+ updatesReadyToInstall;
     v24 = v23 + [(HFSoftwareUpdateCounter *)v5 softwareUpdatesInstalled];
-    v4 = v28;
+    accessoriesCopy = v28;
     [(HFSoftwareUpdateCounter *)v5 setAllUpdates:v24];
     [(HFSoftwareUpdateCounter *)v5 setAccessoriesWithRequestedSoftwareUpdates:v26];
     [(HFSoftwareUpdateCounter *)v5 setAccessoriesDownloadingSoftwareUpdates:v17];
@@ -217,9 +217,9 @@ LABEL_19:
 
 - (HFSoftwareUpdateCounter)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccessories_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFSoftwareUpdateCounter.m" lineNumber:121 description:{@"%s is unavailable; use %@ instead", "-[HFSoftwareUpdateCounter init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFSoftwareUpdateCounter.m" lineNumber:121 description:{@"%s is unavailable; use %@ instead", "-[HFSoftwareUpdateCounter init]", v5}];
 
   return 0;
 }
@@ -236,9 +236,9 @@ LABEL_19:
   v10 = [v3 appendUnsignedInteger:-[HFSoftwareUpdateCounter firmwareUpdatesReadyToInstall](self withName:{"firmwareUpdatesReadyToInstall"), @"firmwareUpdatesReadyToInstall"}];
   v11 = [v3 appendUnsignedInteger:-[HFSoftwareUpdateCounter updatesReadyToInstall](self withName:{"updatesReadyToInstall"), @"updatesReadyToInstall"}];
   v12 = [v3 appendUnsignedInteger:-[HFSoftwareUpdateCounter allUpdates](self withName:{"allUpdates"), @"allUpdates"}];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

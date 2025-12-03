@@ -1,16 +1,16 @@
 @interface PKPaymentOffersControllerLoadingDetails
-+ (id)loadingDetailsWithError:(id)a3;
-+ (id)loadingDetailsWithState:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOffersControllerLoadingDetails)initWithError:(id)a3;
++ (id)loadingDetailsWithError:(id)error;
++ (id)loadingDetailsWithState:(unint64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOffersControllerLoadingDetails)initWithError:(id)error;
 - (id)description;
-- (id)initWitState:(unint64_t)a3;
+- (id)initWitState:(unint64_t)state;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentOffersControllerLoadingDetails
 
-- (id)initWitState:(unint64_t)a3
+- (id)initWitState:(unint64_t)state
 {
   v9.receiver = self;
   v9.super_class = PKPaymentOffersControllerLoadingDetails;
@@ -18,55 +18,55 @@
   v5 = v4;
   if (v4)
   {
-    v4->_state = a3;
-    v6 = [MEMORY[0x1E695DF00] date];
+    v4->_state = state;
+    date = [MEMORY[0x1E695DF00] date];
     lastUpdated = v5->_lastUpdated;
-    v5->_lastUpdated = v6;
+    v5->_lastUpdated = date;
   }
 
   return v5;
 }
 
-- (PKPaymentOffersControllerLoadingDetails)initWithError:(id)a3
+- (PKPaymentOffersControllerLoadingDetails)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = [(PKPaymentOffersControllerLoadingDetails *)self initWitState:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(v6 + 3, error);
   }
 
   return v7;
 }
 
-+ (id)loadingDetailsWithState:(unint64_t)a3
++ (id)loadingDetailsWithState:(unint64_t)state
 {
-  v3 = [[PKPaymentOffersControllerLoadingDetails alloc] initWitState:a3];
+  v3 = [[PKPaymentOffersControllerLoadingDetails alloc] initWitState:state];
 
   return v3;
 }
 
-+ (id)loadingDetailsWithError:(id)a3
++ (id)loadingDetailsWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[PKPaymentOffersControllerLoadingDetails alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[PKPaymentOffersControllerLoadingDetails alloc] initWithError:errorCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

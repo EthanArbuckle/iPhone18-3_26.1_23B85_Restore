@@ -1,59 +1,59 @@
 @interface PPSSQLiteHistogramIngester
-- (PPSSQLiteHistogramIngester)initWithFilepath:(id)a3;
-- (id)_convertSQLiteDataFromQuery:(id)a3 withDimensions:(id)a4 outError:(id *)a5;
-- (id)parseDataForRequest:(id)a3 outError:(id *)a4;
+- (PPSSQLiteHistogramIngester)initWithFilepath:(id)filepath;
+- (id)_convertSQLiteDataFromQuery:(id)query withDimensions:(id)dimensions outError:(id *)error;
+- (id)parseDataForRequest:(id)request outError:(id *)error;
 @end
 
 @implementation PPSSQLiteHistogramIngester
 
-- (PPSSQLiteHistogramIngester)initWithFilepath:(id)a3
+- (PPSSQLiteHistogramIngester)initWithFilepath:(id)filepath
 {
-  v5 = a3;
+  filepathCopy = filepath;
   v9.receiver = self;
   v9.super_class = PPSSQLiteHistogramIngester;
   v6 = [(PPSSQLiteHistogramIngester *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filepath, a3);
+    objc_storeStrong(&v6->_filepath, filepath);
   }
 
   return v7;
 }
 
-- (id)parseDataForRequest:(id)a3 outError:(id *)a4
+- (id)parseDataForRequest:(id)request outError:(id *)error
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v53 = [v5 subsystem];
-  v52 = [v5 category];
-  v50 = [v5 valueFilter];
-  v54 = [v5 timeFilter];
-  v6 = [v5 metrics];
-  v7 = [v6 allObjects];
+  requestCopy = request;
+  subsystem = [requestCopy subsystem];
+  category = [requestCopy category];
+  valueFilter = [requestCopy valueFilter];
+  timeFilter = [requestCopy timeFilter];
+  metrics = [requestCopy metrics];
+  allObjects = [metrics allObjects];
 
-  if (v54)
+  if (timeFilter)
   {
-    v8 = [(PPSSQLiteHistogramIngester *)self filepath];
-    v9 = [PPSTimestampConverterRegistry converterForFilepath:v8];
+    filepath = [(PPSSQLiteHistogramIngester *)self filepath];
+    v9 = [PPSTimestampConverterRegistry converterForFilepath:filepath];
 
-    v10 = [v54 startDate];
-    [v10 timeIntervalSince1970];
+    startDate = [timeFilter startDate];
+    [startDate timeIntervalSince1970];
     v12 = v11;
 
     [v9 monotonicTimeFromEpochTime:v12];
     v14 = v13;
-    v15 = [v54 endDate];
-    [v15 timeIntervalSince1970];
+    endDate = [timeFilter endDate];
+    [endDate timeIntervalSince1970];
     v17 = v16;
 
     [v9 monotonicTimeFromEpochTime:v17];
     v19 = [PPSPredicateUtilities predicateForStartTimestamp:@"timestamp" endTimestamp:v14 withKeyPath:v18];
     v20 = v19;
-    if (v50)
+    if (valueFilter)
     {
       v21 = MEMORY[0x277CCA920];
-      v60[0] = v50;
+      v60[0] = valueFilter;
       v60[1] = v19;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
       v49 = [v21 andPredicateWithSubpredicates:v22];
@@ -67,18 +67,18 @@
 
   else
   {
-    v49 = v50;
+    v49 = valueFilter;
   }
 
-  v23 = [(PPSSQLiteHistogramIngester *)self filepath];
-  v24 = [PPSOffDeviceIngesterUtilities metricDefinitionsForFilepath:v23 subsystem:v53 category:v52 metricNames:v7];
+  filepath2 = [(PPSSQLiteHistogramIngester *)self filepath];
+  v24 = [PPSOffDeviceIngesterUtilities metricDefinitionsForFilepath:filepath2 subsystem:subsystem category:category metricNames:allObjects];
   v25 = [v24 mutableCopy];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v26 = v7;
+  v26 = allObjects;
   v27 = [v26 countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v27)
   {
@@ -98,8 +98,8 @@
 
         if (v32)
         {
-          v33 = [MEMORY[0x277CBEB68] null];
-          [v25 setObject:v33 forKeyedSubscript:v30];
+          null = [MEMORY[0x277CBEB68] null];
+          [v25 setObject:null forKeyedSubscript:v30];
         }
       }
 
@@ -109,17 +109,17 @@
     while (v27);
   }
 
-  v34 = [(PPSSQLiteHistogramIngester *)self filepath];
-  v35 = [PPSOffDeviceIngesterUtilities allDataSourcesForFilepath:v34 subsystem:v53 category:v52];
+  filepath3 = [(PPSSQLiteHistogramIngester *)self filepath];
+  v35 = [PPSOffDeviceIngesterUtilities allDataSourcesForFilepath:filepath3 subsystem:subsystem category:category];
 
   v36 = [[PPSSQLiteEntity alloc] initWithTableNames:v35];
   v37 = [PPSSQLiteQueryDescriptor alloc];
-  v38 = [v49 pps_sqlPredicateForSelect];
-  v39 = [(PPSSQLiteQueryDescriptor *)v37 initWithEntity:v36 predicate:v38];
+  pps_sqlPredicateForSelect = [v49 pps_sqlPredicateForSelect];
+  v39 = [(PPSSQLiteQueryDescriptor *)v37 initWithEntity:v36 predicate:pps_sqlPredicateForSelect];
 
   v40 = [PPSSQLiteDatabase alloc];
-  v41 = [(PPSSQLiteHistogramIngester *)self filepath];
-  v42 = [(PPSSQLiteDatabase *)v40 initWithDatabaseURL:v41];
+  filepath4 = [(PPSSQLiteHistogramIngester *)self filepath];
+  v42 = [(PPSSQLiteDatabase *)v40 initWithDatabaseURL:filepath4];
 
   v43 = [[PPSSQLiteQuery alloc] initWithDatabase:v42 descriptor:v39];
   v44 = PPSReaderLog();
@@ -128,16 +128,16 @@
     [(PPSSQLiteHistogramIngester *)v43 parseDataForRequest:v26 outError:v44];
   }
 
-  [(PPSSQLiteDatabase *)v42 openForReadingWithError:a4];
-  if (*a4)
+  [(PPSSQLiteDatabase *)v42 openForReadingWithError:error];
+  if (*error)
   {
     v45 = 0;
   }
 
   else
   {
-    v46 = [v5 dimensions];
-    v45 = [(PPSSQLiteHistogramIngester *)self _convertSQLiteDataFromQuery:v43 withDimensions:v46 outError:a4];
+    dimensions = [requestCopy dimensions];
+    v45 = [(PPSSQLiteHistogramIngester *)self _convertSQLiteDataFromQuery:v43 withDimensions:dimensions outError:error];
   }
 
   [(PPSSQLiteDatabase *)v42 close];
@@ -147,20 +147,20 @@
   return v45;
 }
 
-- (id)_convertSQLiteDataFromQuery:(id)a3 withDimensions:(id)a4 outError:(id *)a5
+- (id)_convertSQLiteDataFromQuery:(id)query withDimensions:(id)dimensions outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  queryCopy = query;
+  dimensionsCopy = dimensions;
+  if (queryCopy)
   {
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy__3;
     v25 = __Block_byref_object_dispose__3;
-    v26 = [[PPSHistogram alloc] initWithDimensions:v8];
-    v9 = [v8 valueForKeyPath:@"@unionOfObjects.metricName"];
-    v10 = [v7 columnNamesForProperties:v9];
+    v26 = [[PPSHistogram alloc] initWithDimensions:dimensionsCopy];
+    v9 = [dimensionsCopy valueForKeyPath:@"@unionOfObjects.metricName"];
+    v10 = [queryCopy columnNamesForProperties:v9];
     v11 = [v10 count];
     if (v11 != [v9 count])
     {
@@ -168,7 +168,7 @@
     }
 
     v12 = [v10 count];
-    if (v12 != [v8 count])
+    if (v12 != [dimensionsCopy count])
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Number of columns and histogram dimensions should be the same."];
     }
@@ -180,9 +180,9 @@
     v20 = v11;
     v13 = v10;
     v17 = v13;
-    v18 = v8;
+    v18 = dimensionsCopy;
     v19 = &v21;
-    [v7 enumerateProperties:v9 error:a5 enumerationHandler:v16];
+    [queryCopy enumerateProperties:v9 error:error enumerationHandler:v16];
     v14 = v22[5];
 
     _Block_object_dispose(&v21, 8);

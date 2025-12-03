@@ -1,30 +1,30 @@
 @interface TRISystemConfiguration
 + (id)_sharedSystemInfo;
 + (id)sharedInstance;
-+ (void)updateSystemInfoUsingContext:(id)a3;
++ (void)updateSystemInfoUsingContext:(id)context;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)marketingOSVersion;
-- (BOOL)_updateSystemInfo:(id)a3;
-- (BOOL)deleteDeviceIdentifierWithPath:(id)a3;
+- (BOOL)_updateSystemInfo:(id)info;
+- (BOOL)deleteDeviceIdentifierWithPath:(id)path;
 - (BOOL)hasAne;
 - (BOOL)isAutomatedTestDevice;
-- (BOOL)isBetaUserWithIsStale:(BOOL *)a3;
+- (BOOL)isBetaUserWithIsStale:(BOOL *)stale;
 - (BOOL)isDiagnosticsAndUsageEnabled;
 - (BOOL)resetDeviceIdentifier;
-- (BOOL)setDeviceIdentifier:(id)a3 path:(id)a4;
+- (BOOL)setDeviceIdentifier:(id)identifier path:(id)path;
 - (BOOL)userSettingsIsSiriEnabled;
-- (TRISystemConfiguration)initWithPaths:(id)a3;
+- (TRISystemConfiguration)initWithPaths:(id)paths;
 - (id)_dispatchQueueForCarrierInfoGathering;
-- (id)_systemInfoWithIsStale:(BOOL *)a3;
+- (id)_systemInfoWithIsStale:(BOOL *)stale;
 - (id)_trialVersion;
 - (id)activeDictationLocales;
 - (id)aneVersion;
 - (id)carrierBundleIdentifier;
 - (id)carrierCountryIsoCode;
-- (id)createDeviceIdentifierWithPath:(id)a3;
+- (id)createDeviceIdentifierWithPath:(id)path;
 - (id)deviceClass;
 - (id)deviceHardwareModel;
 - (id)deviceId;
-- (id)deviceInfoForQuestion:(id)a3;
+- (id)deviceInfoForQuestion:(id)question;
 - (id)deviceModelCode;
 - (id)deviceSystemId;
 - (id)enabledInputModeIdentifiers;
@@ -32,7 +32,7 @@
 - (id)mapsBucketId;
 - (id)mapsDeviceCountryCode;
 - (id)osBuild;
-- (id)readDeviceIdentifierWithPath:(id)a3;
+- (id)readDeviceIdentifierWithPath:(id)path;
 - (id)reloadDeviceId;
 - (id)reloadSystemInfo;
 - (id)siriDeviceAggregationIdRotationDate;
@@ -49,17 +49,17 @@
 
 @implementation TRISystemConfiguration
 
-- (TRISystemConfiguration)initWithPaths:(id)a3
+- (TRISystemConfiguration)initWithPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v9.receiver = self;
   v9.super_class = TRISystemConfiguration;
   v5 = [(TRISystemConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 deviceIdentifierFile];
+    deviceIdentifierFile = [pathsCopy deviceIdentifierFile];
     persistentDeviceIdentifierPath = v5->_persistentDeviceIdentifierPath;
-    v5->_persistentDeviceIdentifierPath = v6;
+    v5->_persistentDeviceIdentifierPath = deviceIdentifierFile;
   }
 
   return v5;
@@ -151,7 +151,7 @@ void __43__TRISystemConfiguration__sharedSystemInfo__block_invoke()
   return v4;
 }
 
-- (id)_systemInfoWithIsStale:(BOOL *)a3
+- (id)_systemInfoWithIsStale:(BOOL *)stale
 {
   v8 = 0;
   v9 = &v8;
@@ -159,14 +159,14 @@ void __43__TRISystemConfiguration__sharedSystemInfo__block_invoke()
   v11 = __Block_byref_object_copy__14;
   v12 = __Block_byref_object_dispose__14;
   v13 = 0;
-  v4 = [objc_opt_class() _sharedSystemInfo];
+  _sharedSystemInfo = [objc_opt_class() _sharedSystemInfo];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__TRISystemConfiguration__systemInfoWithIsStale___block_invoke;
   v7[3] = &unk_279DE1298;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v4 runWithLockAcquired:v7];
+  v7[5] = stale;
+  [_sharedSystemInfo runWithLockAcquired:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -196,27 +196,27 @@ void __49__TRISystemConfiguration__systemInfoWithIsStale___block_invoke(uint64_t
   objc_storeStrong((*(*(a1 + 32) + 8) + 40), *(v3 + 2));
 }
 
-- (BOOL)_updateSystemInfo:(id)a3
+- (BOOL)_updateSystemInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [objc_opt_class() _sharedSystemInfo];
+  _sharedSystemInfo = [objc_opt_class() _sharedSystemInfo];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__TRISystemConfiguration__updateSystemInfo___block_invoke;
   v7[3] = &unk_279DE12C0;
-  v5 = v3;
+  v5 = infoCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 runWithLockAcquired:v7];
+  [_sharedSystemInfo runWithLockAcquired:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(_sharedSystemInfo) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return _sharedSystemInfo;
 }
 
 void __44__TRISystemConfiguration__updateSystemInfo___block_invoke(uint64_t a1, uint64_t a2)
@@ -234,13 +234,13 @@ void __44__TRISystemConfiguration__updateSystemInfo___block_invoke(uint64_t a1, 
   v9 = __Block_byref_object_copy__14;
   v10 = __Block_byref_object_dispose__14;
   v11 = 0;
-  v2 = [objc_opt_class() _sharedSystemInfo];
+  _sharedSystemInfo = [objc_opt_class() _sharedSystemInfo];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__TRISystemConfiguration_reloadSystemInfo__block_invoke;
   v5[3] = &unk_279DE12E8;
   v5[4] = &v6;
-  [v2 runWithLockAcquired:v5];
+  [_sharedSystemInfo runWithLockAcquired:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -262,73 +262,73 @@ void __42__TRISystemConfiguration_reloadSystemInfo__block_invoke(uint64_t a1, _B
 - (id)_trialVersion
 {
   v2 = MEMORY[0x277D73800];
-  v3 = [(TRISystemConfiguration *)self trialVersionTag];
-  v4 = [v2 parseVersionFromString:v3 withPrefix:@"TrialXP-"];
+  trialVersionTag = [(TRISystemConfiguration *)self trialVersionTag];
+  v4 = [v2 parseVersionFromString:trialVersionTag withPrefix:@"TrialXP-"];
 
   return v4;
 }
 
 - (unint64_t)trialVersionMajor
 {
-  v2 = [(TRISystemConfiguration *)self _trialVersion];
-  v3 = [v2 majorVersion];
-  v4 = [v3 unsignedIntegerValue];
+  _trialVersion = [(TRISystemConfiguration *)self _trialVersion];
+  majorVersion = [_trialVersion majorVersion];
+  unsignedIntegerValue = [majorVersion unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)trialVersionMinor
 {
-  v2 = [(TRISystemConfiguration *)self _trialVersion];
-  v3 = [v2 minorVersion];
-  v4 = [v3 unsignedIntegerValue];
+  _trialVersion = [(TRISystemConfiguration *)self _trialVersion];
+  minorVersion = [_trialVersion minorVersion];
+  unsignedIntegerValue = [minorVersion unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)isBetaUserWithIsStale:(BOOL *)a3
+- (BOOL)isBetaUserWithIsStale:(BOOL *)stale
 {
   if ([(TRISystemConfiguration *)self isInternalBuild])
   {
-    v5 = 0;
-    if (a3)
+    isEnrolledInBetaProgram = 0;
+    if (stale)
     {
-      *a3 = 0;
+      *stale = 0;
     }
   }
 
   else
   {
-    v6 = [(TRISystemConfiguration *)self _systemInfoWithIsStale:a3];
+    v6 = [(TRISystemConfiguration *)self _systemInfoWithIsStale:stale];
     v7 = v6;
-    if (!a3 || v6)
+    if (!stale || v6)
     {
       if (v6)
       {
-        v5 = [v6 isEnrolledInBetaProgram];
+        isEnrolledInBetaProgram = [v6 isEnrolledInBetaProgram];
       }
 
       else
       {
-        v5 = 0;
+        isEnrolledInBetaProgram = 0;
       }
     }
 
     else
     {
-      v5 = 0;
-      *a3 = 1;
+      isEnrolledInBetaProgram = 0;
+      *stale = 1;
     }
   }
 
-  return v5;
+  return isEnrolledInBetaProgram;
 }
 
-- (id)readDeviceIdentifierWithPath:(id)a3
+- (id)readDeviceIdentifierWithPath:(id)path
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
-  v3 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:a3 encoding:4 error:&v9];
+  v3 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:path encoding:4 error:&v9];
   v4 = v9;
   if (!v3)
   {
@@ -354,18 +354,18 @@ void __42__TRISystemConfiguration_reloadSystemInfo__block_invoke(uint64_t a1, _B
     return 0;
   }
 
-  v3 = [(TRISystemConfiguration *)self createPersistentDeviceIdentifier];
-  v4 = v3 != 0;
+  createPersistentDeviceIdentifier = [(TRISystemConfiguration *)self createPersistentDeviceIdentifier];
+  v4 = createPersistentDeviceIdentifier != 0;
 
   return v4;
 }
 
-- (BOOL)deleteDeviceIdentifierWithPath:(id)a3
+- (BOOL)deleteDeviceIdentifierWithPath:(id)path
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if (![v4 fileExistsAtPath:v3] || ((v14 = 0, v5 = objc_msgSend(v4, "removeItemAtPath:error:", v3, &v14), v6 = v14, v5) ? (v7 = v6 == 0) : (v7 = 0), v7))
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (![defaultManager fileExistsAtPath:pathCopy] || ((v14 = 0, v5 = objc_msgSend(defaultManager, "removeItemAtPath:error:", pathCopy, &v14), v6 = v14, v5) ? (v7 = v6 == 0) : (v7 = 0), v7))
   {
     v10 = 1;
   }
@@ -389,22 +389,22 @@ void __42__TRISystemConfiguration_reloadSystemInfo__block_invoke(uint64_t a1, _B
   return v10;
 }
 
-- (BOOL)setDeviceIdentifier:(id)a3 path:(id)a4
+- (BOOL)setDeviceIdentifier:(id)identifier path:(id)path
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  identifierCopy = identifier;
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21 = 0;
-  v9 = [v8 triCreateDirectoryForPath:v7 isDirectory:0 error:&v21];
+  v9 = [defaultManager triCreateDirectoryForPath:pathCopy isDirectory:0 error:&v21];
   v10 = v21;
   if (v10)
   {
-    v11 = v10;
+    selfCopy = v10;
     v12 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(TRISystemConfiguration *)v11 description];
+      v13 = [(TRISystemConfiguration *)selfCopy description];
       *buf = 138412290;
       v23 = v13;
       v14 = "Error creating persistent identifier folder: %@";
@@ -416,25 +416,25 @@ LABEL_10:
   else
   {
     v20 = 0;
-    [v6 writeToFile:v7 atomically:1 encoding:4 error:&v20];
+    [identifierCopy writeToFile:pathCopy atomically:1 encoding:4 error:&v20];
     v15 = v20;
     if (!v15)
     {
-      v11 = self;
-      objc_sync_enter(v11);
-      cachedDeviceIdentifier = v11->_cachedDeviceIdentifier;
-      v11->_cachedDeviceIdentifier = 0;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      cachedDeviceIdentifier = selfCopy->_cachedDeviceIdentifier;
+      selfCopy->_cachedDeviceIdentifier = 0;
 
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy);
       v16 = 1;
       goto LABEL_7;
     }
 
-    v11 = v15;
+    selfCopy = v15;
     v12 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(TRISystemConfiguration *)v11 description];
+      v13 = [(TRISystemConfiguration *)selfCopy description];
       *buf = 138412290;
       v23 = v13;
       v14 = "Error writing persistent identifier: %@";
@@ -449,18 +449,18 @@ LABEL_7:
   return v16;
 }
 
-- (id)createDeviceIdentifierWithPath:(id)a3
+- (id)createDeviceIdentifierWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TRISystemConfiguration *)self readDeviceIdentifierWithPath:v4];
+  pathCopy = path;
+  v5 = [(TRISystemConfiguration *)self readDeviceIdentifierWithPath:pathCopy];
   if (!v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    if ([(TRISystemConfiguration *)self setDeviceIdentifier:v7 path:v4])
+    if ([(TRISystemConfiguration *)self setDeviceIdentifier:uUIDString path:pathCopy])
     {
-      v5 = v7;
+      v5 = uUIDString;
     }
 
     else
@@ -472,7 +472,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)deviceInfoForQuestion:(id)a3
+- (id)deviceInfoForQuestion:(id)question
 {
   v3 = MGCopyAnswer();
   v4 = v3;
@@ -493,32 +493,32 @@ LABEL_7:
 
 - (id)reloadDeviceId
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedDeviceIdentifier = v2->_cachedDeviceIdentifier;
-  v2->_cachedDeviceIdentifier = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedDeviceIdentifier = selfCopy->_cachedDeviceIdentifier;
+  selfCopy->_cachedDeviceIdentifier = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return [(TRISystemConfiguration *)v2 deviceId];
+  return [(TRISystemConfiguration *)selfCopy deviceId];
 }
 
 - (id)deviceId
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedDeviceIdentifier = v2->_cachedDeviceIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedDeviceIdentifier = selfCopy->_cachedDeviceIdentifier;
   if (!cachedDeviceIdentifier)
   {
-    v4 = [(TRISystemConfiguration *)v2 storedDeviceIdentifier];
-    v5 = v2->_cachedDeviceIdentifier;
-    v2->_cachedDeviceIdentifier = v4;
+    storedDeviceIdentifier = [(TRISystemConfiguration *)selfCopy storedDeviceIdentifier];
+    v5 = selfCopy->_cachedDeviceIdentifier;
+    selfCopy->_cachedDeviceIdentifier = storedDeviceIdentifier;
 
-    cachedDeviceIdentifier = v2->_cachedDeviceIdentifier;
+    cachedDeviceIdentifier = selfCopy->_cachedDeviceIdentifier;
   }
 
   v6 = cachedDeviceIdentifier;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -547,12 +547,12 @@ uint64_t __40__TRISystemConfiguration_deviceSystemId__block_invoke(uint64_t a1)
 
 - (id)iCloudId
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 iCloudIdentifier];
-  v4 = v3;
-  if (v3)
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  iCloudIdentifier = [systemInfo iCloudIdentifier];
+  v4 = iCloudIdentifier;
+  if (iCloudIdentifier)
   {
-    v5 = v3;
+    v5 = iCloudIdentifier;
   }
 
   else
@@ -633,35 +633,35 @@ uint64_t __33__TRISystemConfiguration_osBuild__block_invoke(uint64_t a1)
 
 - (id)userSettingsLanguageCode
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 languageCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  return v3;
+  return languageCode;
 }
 
 - (id)userSettingsRegionCode
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (id)userSettingsBCP47DeviceLocale
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 languageCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 countryCode];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale2 countryCode];
 
   v6 = &stru_287FA0430;
-  if (v5)
+  if (countryCode)
   {
-    v6 = v5;
+    v6 = countryCode;
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v3, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", languageCode, v6];
 
   return v7;
 }
@@ -690,12 +690,12 @@ void __63__TRISystemConfiguration__dispatchQueueForCarrierInfoGathering__block_i
 
 - (id)carrierBundleIdentifier
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 carrierBundleIdentifier];
-  v4 = v3;
-  if (v3)
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  carrierBundleIdentifier = [systemInfo carrierBundleIdentifier];
+  v4 = carrierBundleIdentifier;
+  if (carrierBundleIdentifier)
   {
-    v5 = v3;
+    v5 = carrierBundleIdentifier;
   }
 
   else
@@ -710,12 +710,12 @@ void __63__TRISystemConfiguration__dispatchQueueForCarrierInfoGathering__block_i
 
 - (id)carrierCountryIsoCode
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 carrierCountryIsoCode];
-  v4 = v3;
-  if (v3)
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  carrierCountryIsoCode = [systemInfo carrierCountryIsoCode];
+  v4 = carrierCountryIsoCode;
+  if (carrierCountryIsoCode)
   {
-    v5 = v3;
+    v5 = carrierCountryIsoCode;
   }
 
   else
@@ -730,36 +730,36 @@ void __63__TRISystemConfiguration__dispatchQueueForCarrierInfoGathering__block_i
 
 - (BOOL)isDiagnosticsAndUsageEnabled
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 isDiagnosticsAndUsageEnabled];
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  isDiagnosticsAndUsageEnabled = [systemInfo isDiagnosticsAndUsageEnabled];
 
-  return v3;
+  return isDiagnosticsAndUsageEnabled;
 }
 
 - (BOOL)hasAne
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 hasAne];
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  hasAne = [systemInfo hasAne];
 
-  return v3;
+  return hasAne;
 }
 
 - (id)aneVersion
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 aneVersion];
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  aneVersion = [systemInfo aneVersion];
 
-  return v3;
+  return aneVersion;
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)marketingOSVersion
 {
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  if (v4)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  if (processInfo)
   {
-    v6 = v4;
-    [v4 operatingSystemVersion];
-    v4 = v6;
+    v6 = processInfo;
+    [processInfo operatingSystemVersion];
+    processInfo = v6;
   }
 
   else
@@ -774,12 +774,12 @@ void __63__TRISystemConfiguration__dispatchQueueForCarrierInfoGathering__block_i
 
 - (id)enabledInputModeIdentifiers
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 enabledInputModeIdentifiers];
-  v4 = v3;
-  if (v3)
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  enabledInputModeIdentifiers = [systemInfo enabledInputModeIdentifiers];
+  v4 = enabledInputModeIdentifiers;
+  if (enabledInputModeIdentifiers)
   {
-    v5 = v3;
+    v5 = enabledInputModeIdentifiers;
   }
 
   else
@@ -794,27 +794,27 @@ void __63__TRISystemConfiguration__dispatchQueueForCarrierInfoGathering__block_i
 
 - (BOOL)isAutomatedTestDevice
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 isAutomatedTestDevice];
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  isAutomatedTestDevice = [systemInfo isAutomatedTestDevice];
 
-  return v3;
+  return isAutomatedTestDevice;
 }
 
 - (id)siriDeviceAggregationIdRotationDate
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 siriDeviceAggregationIdRotationDate];
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  siriDeviceAggregationIdRotationDate = [systemInfo siriDeviceAggregationIdRotationDate];
 
-  return v3;
+  return siriDeviceAggregationIdRotationDate;
 }
 
 - (int64_t)appleIntelligenceState
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = v2;
-  if (v2)
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  v3 = systemInfo;
+  if (systemInfo)
   {
-    v4 = [v2 appleIntelligenceState];
+    appleIntelligenceState = [systemInfo appleIntelligenceState];
   }
 
   else
@@ -826,10 +826,10 @@ void __63__TRISystemConfiguration__dispatchQueueForCarrierInfoGathering__block_i
       _os_log_error_impl(&dword_26F567000, v5, OS_LOG_TYPE_ERROR, "Error: systemInfo is null.", v7, 2u);
     }
 
-    v4 = 2;
+    appleIntelligenceState = 2;
   }
 
-  return v4;
+  return appleIntelligenceState;
 }
 
 - (int64_t)deviceChipId
@@ -887,12 +887,12 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
 
 - (id)mapsBucketId
 {
-  v2 = [(TRISystemConfiguration *)self systemInfo];
-  v3 = [v2 mapsBucketId];
-  v4 = v3;
-  if (v3)
+  systemInfo = [(TRISystemConfiguration *)self systemInfo];
+  mapsBucketId = [systemInfo mapsBucketId];
+  v4 = mapsBucketId;
+  if (mapsBucketId)
   {
-    v5 = v3;
+    v5 = mapsBucketId;
   }
 
   else
@@ -907,11 +907,11 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_alloc_init(TRIXPCCovariateFetcher);
-  v4 = [(TRIXPCCovariateFetcher *)v3 mapsDeviceCountryCode];
+  mapsDeviceCountryCode = [(TRIXPCCovariateFetcher *)v3 mapsDeviceCountryCode];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return mapsDeviceCountryCode;
 }
 
 - (BOOL)userSettingsIsSiriEnabled
@@ -919,15 +919,15 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
   v2 = CFPreferencesCopyAppValue(@"Assistant Enabled", @"com.apple.assistant.support");
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)userSettingsSiriLocale
@@ -977,8 +977,8 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v8 = [v7 allKeys];
-      v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      allKeys = [v7 allKeys];
+      v9 = [allKeys countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v9)
       {
         v10 = v9;
@@ -989,20 +989,20 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
           {
             if (*v30 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allKeys);
             }
 
             v13 = *(*(&v29 + 1) + 8 * i);
             v14 = [v7 objectForKeyedSubscript:v13];
-            v15 = [v14 BOOLValue];
+            bOOLValue = [v14 BOOLValue];
 
-            if (v15)
+            if (bOOLValue)
             {
               [v4 addObject:v13];
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+          v10 = [allKeys countByEnumeratingWithState:&v29 objects:v35 count:16];
         }
 
         while (v10);
@@ -1057,10 +1057,10 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
   return v2;
 }
 
-+ (void)updateSystemInfoUsingContext:(id)a3
++ (void)updateSystemInfoUsingContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = TRILogCategory_Server();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1070,18 +1070,18 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
 
   v5 = objc_autoreleasePoolPush();
   v6 = [TRISystemConfiguration alloc];
-  v7 = [v3 paths];
-  v8 = [(TRISystemConfiguration *)v6 initWithPaths:v7];
+  paths = [contextCopy paths];
+  v8 = [(TRISystemConfiguration *)v6 initWithPaths:paths];
 
-  v9 = [(TRISystemConfiguration *)v8 deviceId];
+  deviceId = [(TRISystemConfiguration *)v8 deviceId];
 
-  if (!v9)
+  if (!deviceId)
   {
-    v10 = [(TRISystemConfiguration *)v8 createPersistentDeviceIdentifier];
+    createPersistentDeviceIdentifier = [(TRISystemConfiguration *)v8 createPersistentDeviceIdentifier];
   }
 
-  v11 = [v3 client];
-  v12 = [TRISystemInfo createSystemInfoWithFactorProvider:v11];
+  client = [contextCopy client];
+  v12 = [TRISystemInfo createSystemInfoWithFactorProvider:client];
 
   if (v12 && ([v12 save] & 1) != 0)
   {
@@ -1092,7 +1092,7 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
       _os_log_impl(&dword_26F567000, v13, OS_LOG_TYPE_DEFAULT, "Update sysconfig", &v19, 2u);
     }
 
-    v14 = [(TRISystemConfiguration *)v8 reloadSystemInfo];
+    reloadSystemInfo = [(TRISystemConfiguration *)v8 reloadSystemInfo];
   }
 
   else
@@ -1105,12 +1105,12 @@ uint64_t __45__TRISystemConfiguration_deviceHardwareModel__block_invoke(uint64_t
       _os_log_error_impl(&dword_26F567000, v15, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
     }
 
-    v16 = [v3 client];
-    v17 = [v16 shouldLogAtLevel:50 withPrivacyRadar:54260918];
+    client2 = [contextCopy client];
+    v17 = [client2 shouldLogAtLevel:50 withPrivacyRadar:54260918];
 
     if (v17)
     {
-      [v3 logErrorMetric:@"Failed to create system info"];
+      [contextCopy logErrorMetric:@"Failed to create system info"];
     }
   }
 

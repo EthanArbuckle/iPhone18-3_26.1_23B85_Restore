@@ -154,7 +154,7 @@
   v3 = getGCHapticsLogger();
   if (OUTLINED_FUNCTION_4_5(v3))
   {
-    v4 = *(a1 + 176);
+    v4 = *(self + 176);
     OUTLINED_FUNCTION_4_1();
     OUTLINED_FUNCTION_10();
     _os_log_impl(v5, v6, v7, v8, v9, 0xCu);
@@ -364,7 +364,7 @@
   v3 = getGCHapticsLogger();
   if (OUTLINED_FUNCTION_4_5(v3))
   {
-    v4 = *(a1 + 176);
+    v4 = *(self + 176);
     OUTLINED_FUNCTION_4_1();
     OUTLINED_FUNCTION_10();
     _os_log_impl(v5, v6, v7, v8, v9, 0xCu);
@@ -394,7 +394,7 @@
   v3 = getGCHapticsLogger();
   if (OUTLINED_FUNCTION_4_5(v3))
   {
-    v4 = *(a1 + 176);
+    v4 = *(self + 176);
     OUTLINED_FUNCTION_4_1();
     OUTLINED_FUNCTION_10();
     _os_log_impl(v5, v6, v7, v8, v9, 0xCu);

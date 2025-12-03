@@ -1,18 +1,18 @@
 @interface TSCEFunction_CODE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_CODE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v45 = 0;
-  v9 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v45);
+  v9 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v45);
   v14 = v45;
   if (v14)
   {
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v14, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v14, v12, v13);
   }
 
   else
@@ -32,9 +32,9 @@
 
     else
     {
-      v19 = objc_msgSend_functionName(a4, v10, v11, v12, v13);
+      v19 = objc_msgSend_functionName(spec, v10, v11, v12, v13);
       v23 = objc_msgSend_nonEmptyStringRequiredErrorForFunctionName_(TSCEError, v33, v19, v34, v35);
-      v41 = objc_msgSend_raiseErrorOrConvert_(a3, v36, v23, v37, v38);
+      v41 = objc_msgSend_raiseErrorOrConvert_(context, v36, v23, v37, v38);
     }
 
     v15 = v41;

@@ -2,33 +2,33 @@
 + (CGSize)progressIndicatorTileSize;
 + (id)_loadErrorIcon;
 - (BOOL)_needsUpdate;
-- (void)_handleAssetSharedViewModel:(id)a3 didChange:(id)a4;
-- (void)_handleErrorButtonTap:(id)a3;
-- (void)_handleVideoPlayer:(id)a3 didChange:(id)a4;
+- (void)_handleAssetSharedViewModel:(id)model didChange:(id)change;
+- (void)_handleErrorButtonTap:(id)tap;
+- (void)_handleVideoPlayer:(id)player didChange:(id)change;
 - (void)_invalidateProgressViewStyle;
 - (void)_invalidateStatus;
 - (void)_invalidateStatusViews;
-- (void)_setProgressViewStyle:(int64_t)a3;
-- (void)_setProgressViewVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setStatus:(id)a3;
+- (void)_setProgressViewStyle:(int64_t)style;
+- (void)_setProgressViewVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_setStatus:(id)status;
 - (void)_updateIfNeeded;
 - (void)_updateProgressViewStyleIfNeeded;
 - (void)_updateStatusIfNeeded;
 - (void)_updateStatusViewsIfNeeded;
 - (void)_updateSubviewOrdering;
-- (void)applyLayoutInfo:(id)a3;
+- (void)applyLayoutInfo:(id)info;
 - (void)becomeReusable;
-- (void)setAssetSharedViewModel:(id)a3;
-- (void)setVideoPlayer:(id)a3;
+- (void)setAssetSharedViewModel:(id)model;
+- (void)setVideoPlayer:(id)player;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUAssetExplorerReviewScreenProgressIndicatorTileViewController
 
-- (void)_handleVideoPlayer:(id)a3 didChange:(id)a4
+- (void)_handleVideoPlayer:(id)player didChange:(id)change
 {
-  if ([a4 desiredPlayStateDidChange])
+  if ([change desiredPlayStateDidChange])
   {
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatusViews];
 
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)_handleAssetSharedViewModel:(id)a3 didChange:(id)a4
+- (void)_handleAssetSharedViewModel:(id)model didChange:(id)change
 {
-  if ([a4 loadingStatusChanged])
+  if ([change loadingStatusChanged])
   {
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatus];
 
@@ -46,36 +46,36 @@
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self assetSharedViewModel];
+  modelCopy = model;
+  changeCopy = change;
+  assetSharedViewModel = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self assetSharedViewModel];
 
-  if (v7 == v9)
+  if (assetSharedViewModel == modelCopy)
   {
-    [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _handleAssetSharedViewModel:v9 didChange:v6];
+    [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _handleAssetSharedViewModel:modelCopy didChange:changeCopy];
   }
 
   else
   {
-    v8 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self videoPlayer];
+    videoPlayer = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self videoPlayer];
 
-    if (v8 == v9)
+    if (videoPlayer == modelCopy)
     {
-      [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _handleVideoPlayer:v9 didChange:v6];
+      [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _handleVideoPlayer:modelCopy didChange:changeCopy];
     }
   }
 }
 
 - (void)_updateSubviewOrdering
 {
-  v5 = [(PUTileViewController *)self view];
-  v3 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _debugProgressLabel];
-  [v5 bringSubviewToFront:v3];
+  view = [(PUTileViewController *)self view];
+  _debugProgressLabel = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _debugProgressLabel];
+  [view bringSubviewToFront:_debugProgressLabel];
 
-  v4 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _errorButton];
-  [v5 bringSubviewToFront:v4];
+  _errorButton = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _errorButton];
+  [view bringSubviewToFront:_errorButton];
 }
 
 - (void)_updateStatusViewsIfNeeded
@@ -91,38 +91,38 @@
     return;
   }
 
-  v24 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _status];
-  v3 = [v24 state];
-  v4 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _progressView];
-  v5 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _progressViewStyle];
-  if (v4 && [v4 style] != v5)
+  _status = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _status];
+  state = [_status state];
+  _progressView = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _progressView];
+  _progressViewStyle = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _progressViewStyle];
+  if (_progressView && [_progressView style] != _progressViewStyle)
   {
-    [v4 removeFromSuperview];
+    [_progressView removeFromSuperview];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressView:0];
 
-    v4 = 0;
+    _progressView = 0;
   }
 
-  v6 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self videoPlayer];
-  v7 = [v6 desiredPlayState];
+  videoPlayer = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self videoPlayer];
+  desiredPlayState = [videoPlayer desiredPlayState];
 
-  v8 = [(PUTileViewController *)self view];
-  if ((v3 - 1) <= 1 && v7 != 4)
+  view = [(PUTileViewController *)self view];
+  if ((state - 1) <= 1 && desiredPlayState != 4)
   {
-    if (!v4)
+    if (!_progressView)
     {
       v9 = objc_alloc(MEMORY[0x1E69BE1C8]);
-      [v8 bounds];
-      v4 = [v9 initWithFrame:v5 style:?];
-      [v4 setAutoresizingMask:18];
-      [v8 addSubview:v4];
-      [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressView:v4];
+      [view bounds];
+      _progressView = [v9 initWithFrame:_progressViewStyle style:?];
+      [_progressView setAutoresizingMask:18];
+      [view addSubview:_progressView];
+      [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressView:_progressView];
       [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateSubviewOrdering];
-      [v4 setAlpha:0.0];
+      [_progressView setAlpha:0.0];
     }
 
-    [v24 progress];
-    if (v3 == 2)
+    [_status progress];
+    if (state == 2)
     {
       v11 = 1.0;
     }
@@ -132,86 +132,86 @@
       v11 = v10;
     }
 
-    [v4 progress];
+    [_progressView progress];
     if (v11 < v12)
     {
-      [v4 resetProgress];
+      [_progressView resetProgress];
     }
 
-    [v4 setProgress:v11];
-    [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressViewVisible:v3 != 2 animated:1];
+    [_progressView setProgress:v11];
+    [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressViewVisible:state != 2 animated:1];
     goto LABEL_19;
   }
 
   [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressViewVisible:0];
-  if (v4)
+  if (_progressView)
   {
-    [v4 removeFromSuperview];
+    [_progressView removeFromSuperview];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setProgressView:0];
 LABEL_19:
   }
 
-  v13 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _errorButton];
-  v14 = v13;
-  if (v3 != 3 || v7 == 4)
+  _errorButton = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _errorButton];
+  v14 = _errorButton;
+  if (state != 3 || desiredPlayState == 4)
   {
-    if (v13)
+    if (_errorButton)
     {
-      [v13 removeFromSuperview];
+      [_errorButton removeFromSuperview];
       [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setErrorButton:0];
     }
   }
 
-  else if (!v13)
+  else if (!_errorButton)
   {
-    v15 = [objc_opt_class() _loadErrorIcon];
+    _loadErrorIcon = [objc_opt_class() _loadErrorIcon];
     v14 = [MEMORY[0x1E69DC738] buttonWithType:0];
-    [v14 setImage:v15 forState:0];
-    [v8 bounds];
+    [v14 setImage:_loadErrorIcon forState:0];
+    [view bounds];
     [v14 setFrame:?];
     [v14 setAutoresizingMask:18];
     [v14 addTarget:self action:sel__handleErrorButtonTap_ forControlEvents:64];
-    [v8 addSubview:v14];
+    [view addSubview:v14];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setErrorButton:v14];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateSubviewOrdering];
   }
 
-  v16 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _debugProgressLabel];
+  _debugProgressLabel = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _debugProgressLabel];
   v17 = +[PUOneUpSettings sharedInstance];
-  v18 = [v17 useDebuggingProgressLabel];
+  useDebuggingProgressLabel = [v17 useDebuggingProgressLabel];
 
-  if (v18)
+  if (useDebuggingProgressLabel)
   {
-    if (!v16)
+    if (!_debugProgressLabel)
     {
       v19 = objc_alloc(MEMORY[0x1E69DCC10]);
-      [v8 bounds];
-      v16 = [v19 initWithFrame:?];
-      [v16 setAutoresizingMask:18];
+      [view bounds];
+      _debugProgressLabel = [v19 initWithFrame:?];
+      [_debugProgressLabel setAutoresizingMask:18];
       v20 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0];
-      [v16 setFont:v20];
+      [_debugProgressLabel setFont:v20];
 
-      [v16 setTextAlignment:1];
-      v21 = [MEMORY[0x1E69DC888] orangeColor];
-      [v16 setTextColor:v21];
+      [_debugProgressLabel setTextAlignment:1];
+      orangeColor = [MEMORY[0x1E69DC888] orangeColor];
+      [_debugProgressLabel setTextColor:orangeColor];
 
       v22 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.100000001];
-      [v16 setBackgroundColor:v22];
+      [_debugProgressLabel setBackgroundColor:v22];
 
-      [v8 addSubview:v16];
-      [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setDebugProgressLabel:v16];
+      [view addSubview:_debugProgressLabel];
+      [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setDebugProgressLabel:_debugProgressLabel];
       [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateSubviewOrdering];
     }
 
-    v23 = [v24 description];
-    [v16 setText:v23];
+    v23 = [_status description];
+    [_debugProgressLabel setText:v23];
 
     goto LABEL_32;
   }
 
-  if (v16)
+  if (_debugProgressLabel)
   {
-    [v16 removeFromSuperview];
+    [_debugProgressLabel removeFromSuperview];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setDebugProgressLabel:0];
 LABEL_32:
   }
@@ -229,10 +229,10 @@ LABEL_32:
   if ([(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _needsUpdateStatus])
   {
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setNeedsUpdateStatus:0];
-    v3 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self assetSharedViewModel];
-    v4 = [v3 loadingStatus];
+    assetSharedViewModel = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self assetSharedViewModel];
+    loadingStatus = [assetSharedViewModel loadingStatus];
 
-    [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setStatus:v4];
+    [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _setStatus:loadingStatus];
   }
 }
 
@@ -281,38 +281,38 @@ LABEL_32:
       [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateStatusViewsIfNeeded];
       if ([(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _needsUpdate])
       {
-        v4 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v4 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenProgressIndicatorTileViewController.m" lineNumber:181 description:@"updates still needed after an update cycle"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenProgressIndicatorTileViewController.m" lineNumber:181 description:@"updates still needed after an update cycle"];
       }
     }
   }
 }
 
-- (void)_handleErrorButtonTap:(id)a3
+- (void)_handleErrorButtonTap:(id)tap
 {
-  v3 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self assetSharedViewModel];
-  v5 = [v3 asset];
+  assetSharedViewModel = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self assetSharedViewModel];
+  asset = [assetSharedViewModel asset];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PUShouldReloadAssetMediaNotification" object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PUShouldReloadAssetMediaNotification" object:asset];
 }
 
-- (void)_setProgressViewVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setProgressViewVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->__isProgressViewVisible != a3)
+  if (self->__isProgressViewVisible != visible)
   {
     v22[1] = v7;
     v22[2] = v6;
     v22[9] = v4;
     v22[10] = v5;
-    v8 = a4;
-    v9 = a3;
-    self->__isProgressViewVisible = a3;
-    v10 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _progressView];
-    v11 = v10;
-    if (v9)
+    animatedCopy = animated;
+    visibleCopy = visible;
+    self->__isProgressViewVisible = visible;
+    _progressView = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _progressView];
+    v11 = _progressView;
+    if (visibleCopy)
     {
-      [v10 startProgressTimer];
+      [_progressView startProgressTimer];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __99__PUAssetExplorerReviewScreenProgressIndicatorTileViewController__setProgressViewVisible_animated___block_invoke;
@@ -321,7 +321,7 @@ LABEL_32:
       v22[0] = v11;
       v13 = _Block_copy(aBlock);
       v14 = v13;
-      if (v8)
+      if (animatedCopy)
       {
         [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v13 options:0 animations:0.15 completion:0.0];
       }
@@ -339,7 +339,7 @@ LABEL_32:
       v19[2] = __99__PUAssetExplorerReviewScreenProgressIndicatorTileViewController__setProgressViewVisible_animated___block_invoke_2;
       v19[3] = &unk_1E7B80DD0;
       v12 = &v20;
-      v15 = v10;
+      v15 = _progressView;
       v20 = v15;
       v14 = _Block_copy(v19);
       v17[0] = MEMORY[0x1E69E9820];
@@ -348,7 +348,7 @@ LABEL_32:
       v17[3] = &unk_1E7B7F020;
       v18 = v15;
       v16 = _Block_copy(v17);
-      if (v8)
+      if (animatedCopy)
       {
         [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v14 options:v16 animations:0.15 completion:0.0];
       }
@@ -375,78 +375,78 @@ uint64_t __99__PUAssetExplorerReviewScreenProgressIndicatorTileViewController__s
   return result;
 }
 
-- (void)_setStatus:(id)a3
+- (void)_setStatus:(id)status
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->__status != v5)
+  statusCopy = status;
+  v6 = statusCopy;
+  if (self->__status != statusCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = statusCopy;
+    statusCopy = [statusCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((statusCopy & 1) == 0)
     {
-      objc_storeStrong(&self->__status, a3);
-      v5 = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatusViews];
+      objc_storeStrong(&self->__status, status);
+      statusCopy = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatusViews];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](statusCopy, v6);
 }
 
-- (void)_setProgressViewStyle:(int64_t)a3
+- (void)_setProgressViewStyle:(int64_t)style
 {
-  if (self->__progressViewStyle != a3)
+  if (self->__progressViewStyle != style)
   {
-    self->__progressViewStyle = a3;
+    self->__progressViewStyle = style;
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatusViews];
   }
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = PUAssetExplorerReviewScreenProgressIndicatorTileViewController;
-  [(PUTileViewController *)&v4 applyLayoutInfo:a3];
+  [(PUTileViewController *)&v4 applyLayoutInfo:info];
   [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateIfNeeded];
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(PUBrowsingVideoPlayer *)videoPlayer unregisterChangeObserver:self];
-    objc_storeStrong(&self->_videoPlayer, a3);
+    objc_storeStrong(&self->_videoPlayer, player);
     [(PUBrowsingVideoPlayer *)self->_videoPlayer registerChangeObserver:self];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatusViews];
     videoPlayer = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateIfNeeded];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](videoPlayer, v5);
+  MEMORY[0x1EEE66BB8](videoPlayer, playerCopy);
 }
 
-- (void)setAssetSharedViewModel:(id)a3
+- (void)setAssetSharedViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetSharedViewModel = self->_assetSharedViewModel;
-  if (assetSharedViewModel != v5)
+  if (assetSharedViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUAssetSharedViewModel *)assetSharedViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetSharedViewModel, a3);
+    objc_storeStrong(&self->_assetSharedViewModel, model);
     [(PUAssetSharedViewModel *)self->_assetSharedViewModel registerChangeObserver:self];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateProgressViewStyle];
     [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _invalidateStatus];
     assetSharedViewModel = [(PUAssetExplorerReviewScreenProgressIndicatorTileViewController *)self _updateIfNeeded];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](assetSharedViewModel, v5);
+  MEMORY[0x1EEE66BB8](assetSharedViewModel, modelCopy);
 }
 
 - (void)becomeReusable
@@ -470,9 +470,9 @@ uint64_t __99__PUAssetExplorerReviewScreenProgressIndicatorTileViewController__s
 + (id)_loadErrorIcon
 {
   v2 = +[PUInterfaceManager currentTheme];
-  v3 = [v2 compactLoadErrorIcon];
+  compactLoadErrorIcon = [v2 compactLoadErrorIcon];
 
-  return v3;
+  return compactLoadErrorIcon;
 }
 
 + (CGSize)progressIndicatorTileSize

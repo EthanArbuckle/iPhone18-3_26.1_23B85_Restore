@@ -1,67 +1,67 @@
 @interface PlaylistEditingViewController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (_TtC5Music29PlaylistEditingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (_TtC5Music29PlaylistEditingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PlaylistEditingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006CCC9C();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1006CFE60(a3);
+  selfCopy = self;
+  sub_1006CFE60(appearing);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D0184();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = *&a3.width;
-  v9 = *&a3.height;
+  height = size.height;
+  width = size.width;
+  v8 = *&size.width;
+  v9 = *&size.height;
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
   sub_1006DEEF8(v8, v9, 0);
-  v11.receiver = v10;
+  v11.receiver = selfCopy;
   v11.super_class = type metadata accessor for PlaylistEditingViewController(0);
-  [(PlaylistEditingViewController *)&v11 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(PlaylistEditingViewController *)&v11 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   swift_unknownObjectRelease();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_1006D03A4(v5, a4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1006D03A4(editingCopy, animated);
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if (*(self + OBJC_IVAR____TtC5Music29PlaylistEditingViewController_editController))
   {
-    v4 = self;
+    selfCopy = self;
 
     v5 = dispatch thunk of MusicLibraryPlaylistEditViewModel.entries.getter();
 
@@ -78,7 +78,7 @@
   return self;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -87,25 +87,25 @@
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = self;
-  v16 = sub_1006D0BA8(v14, v11, v13);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = sub_1006D0BA8(viewCopy, v11, v13);
 
   (*(v8 + 8))(v10, v7);
 
   return v16;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_1006D0EA8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1006D0EA8(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);
@@ -113,7 +113,7 @@
   return v13;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -123,7 +123,7 @@
   v12 = &v15 - v11;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = self;
+  selfCopy = self;
   sub_1006DAF60();
 
   v14 = *(v7 + 8);
@@ -131,34 +131,34 @@
   v14(v12, v6);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1006D251C();
-  [(objc_class *)v10 setEnabled:[(PlaylistEditingViewController *)v9 isEditing]];
+  [(objc_class *)v10 setEnabled:[(PlaylistEditingViewController *)selfCopy isEditing]];
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_1006D251C();
-  v13 = [v10 indexPathsForSelectedItems];
-  if (v13)
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+  if (indexPathsForSelectedItems)
   {
-    v14 = v13;
+    v14 = indexPathsForSelectedItems;
     v15 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
     v16 = *(v15 + 16);
@@ -176,16 +176,16 @@
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC5Music29PlaylistEditingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Music29PlaylistEditingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   if (sub_1006D65D8())
   {
 
@@ -194,7 +194,7 @@
 
   else
   {
-    v5 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC5Music29PlaylistEditingViewController_hasTracklistChanges);
+    v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Music29PlaylistEditingViewController_hasTracklistChanges);
 
     v4 = v5 ^ 1;
   }
@@ -202,9 +202,9 @@
   return v4 & 1;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   sub_1006DE91C();
 }
 

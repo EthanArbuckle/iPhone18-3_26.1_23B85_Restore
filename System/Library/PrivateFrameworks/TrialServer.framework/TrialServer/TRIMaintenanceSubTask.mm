@@ -1,21 +1,21 @@
 @interface TRIMaintenanceSubTask
-- (TRIMaintenanceSubTask)initWithName:(id)a3 subtaskBlock:(id)a4;
+- (TRIMaintenanceSubTask)initWithName:(id)name subtaskBlock:(id)block;
 @end
 
 @implementation TRIMaintenanceSubTask
 
-- (TRIMaintenanceSubTask)initWithName:(id)a3 subtaskBlock:(id)a4
+- (TRIMaintenanceSubTask)initWithName:(id)name subtaskBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = TRIMaintenanceSubTask;
   v9 = [(TRIMaintenanceSubTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    v11 = MEMORY[0x2743948D0](v8);
+    objc_storeStrong(&v9->_name, name);
+    v11 = MEMORY[0x2743948D0](blockCopy);
     block = v10->_block;
     v10->_block = v11;
   }

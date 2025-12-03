@@ -1,42 +1,42 @@
 @interface GKInstallMetadata
 + (id)secureCodedPropertyKeys;
-- (GKInstallMetadata)initWithBundleID:(id)a3 adamID:(id)a4 bundleShortVersion:(id)a5 name:(id)a6 shortName:(id)a7 estimatedInstallDate:(id)a8 supportsGameController:(BOOL)a9 isArcade:(BOOL)a10 platform:(int64_t)a11 isHidden:(BOOL)a12 metadataEligibility:(int64_t)a13 applicationType:(int64_t)a14 isBeta:(BOOL)a15 persistentRecordID:(id)a16;
+- (GKInstallMetadata)initWithBundleID:(id)d adamID:(id)iD bundleShortVersion:(id)version name:(id)name shortName:(id)shortName estimatedInstallDate:(id)date supportsGameController:(BOOL)controller isArcade:(BOOL)self0 platform:(int64_t)self1 isHidden:(BOOL)self2 metadataEligibility:(int64_t)self3 applicationType:(int64_t)self4 isBeta:(BOOL)self5 persistentRecordID:(id)self6;
 @end
 
 @implementation GKInstallMetadata
 
-- (GKInstallMetadata)initWithBundleID:(id)a3 adamID:(id)a4 bundleShortVersion:(id)a5 name:(id)a6 shortName:(id)a7 estimatedInstallDate:(id)a8 supportsGameController:(BOOL)a9 isArcade:(BOOL)a10 platform:(int64_t)a11 isHidden:(BOOL)a12 metadataEligibility:(int64_t)a13 applicationType:(int64_t)a14 isBeta:(BOOL)a15 persistentRecordID:(id)a16
+- (GKInstallMetadata)initWithBundleID:(id)d adamID:(id)iD bundleShortVersion:(id)version name:(id)name shortName:(id)shortName estimatedInstallDate:(id)date supportsGameController:(BOOL)controller isArcade:(BOOL)self0 platform:(int64_t)self1 isHidden:(BOOL)self2 metadataEligibility:(int64_t)self3 applicationType:(int64_t)self4 isBeta:(BOOL)self5 persistentRecordID:(id)self6
 {
-  v23 = a3;
-  v24 = a4;
-  obj = a5;
-  v25 = a5;
-  v35 = a6;
-  v32 = a7;
-  v34 = a7;
-  v33 = a8;
-  v26 = a8;
-  v27 = a16;
+  dCopy = d;
+  iDCopy = iD;
+  obj = version;
+  versionCopy = version;
+  nameCopy = name;
+  shortNameCopy = shortName;
+  shortNameCopy2 = shortName;
+  dateCopy = date;
+  dateCopy2 = date;
+  recordIDCopy = recordID;
   v36.receiver = self;
   v36.super_class = GKInstallMetadata;
   v28 = [(GKInstallMetadata *)&v36 init];
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_bundleID, a3);
-    objc_storeStrong(&v29->_adamID, a4);
+    objc_storeStrong(&v28->_bundleID, d);
+    objc_storeStrong(&v29->_adamID, iD);
     objc_storeStrong(&v29->_bundleShortVersion, obj);
-    objc_storeStrong(&v29->_name, a6);
-    objc_storeStrong(&v29->_shortName, v32);
-    objc_storeStrong(&v29->_estimatedInstallDate, v33);
-    v29->_supportsGameController = a9;
-    v29->_isArcade = a10;
-    v29->_platform = a11;
-    v29->_isHidden = a12;
-    v29->_metadataEligibility = a13;
-    v29->_applicationType = a14;
-    v29->_isBeta = a15;
-    objc_storeStrong(&v29->_persistentRecordID, a16);
+    objc_storeStrong(&v29->_name, name);
+    objc_storeStrong(&v29->_shortName, shortNameCopy);
+    objc_storeStrong(&v29->_estimatedInstallDate, dateCopy);
+    v29->_supportsGameController = controller;
+    v29->_isArcade = arcade;
+    v29->_platform = platform;
+    v29->_isHidden = hidden;
+    v29->_metadataEligibility = eligibility;
+    v29->_applicationType = type;
+    v29->_isBeta = beta;
+    objc_storeStrong(&v29->_persistentRecordID, recordID);
   }
 
   return v29;

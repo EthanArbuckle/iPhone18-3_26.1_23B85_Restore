@@ -5,8 +5,8 @@
 - (BOOL)shouldShowTethering;
 - (PSSystemConfigurationDynamicStoreNETRBWatcher)init;
 - (void)dealloc;
-- (void)getNETRBState:(int *)a3 andReason:(int *)a4;
-- (void)readNETRBState:(int *)a3 andReason:(int *)a4;
+- (void)getNETRBState:(int *)state andReason:(int *)reason;
+- (void)readNETRBState:(int *)state andReason:(int *)reason;
 - (void)sendStateUpdate;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __62__PSSystemConfigurationDynamicStoreNETRBWatcher_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_cacheOnce != -1)
   {
     dispatch_once(&sharedManager_cacheOnce, block);
@@ -82,21 +82,21 @@ void __62__PSSystemConfigurationDynamicStoreNETRBWatcher_sharedManager__block_in
   [(PSSystemConfigurationDynamicStoreNETRBWatcher *)&v5 dealloc];
 }
 
-- (void)getNETRBState:(int *)a3 andReason:(int *)a4
+- (void)getNETRBState:(int *)state andReason:(int *)reason
 {
   [(PSSystemConfigurationDynamicStoreNETRBWatcher *)self readNETRBState:&self->_netrbState andReason:&self->_netrbReason];
-  if (a3)
+  if (state)
   {
-    *a3 = self->_netrbState;
+    *state = self->_netrbState;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = self->_netrbReason;
+    *reason = self->_netrbReason;
   }
 }
 
-- (void)readNETRBState:(int *)a3 andReason:(int *)a4
+- (void)readNETRBState:(int *)state andReason:(int *)reason
 {
   netrbState = self->_netrbState;
   netrbReason = self->_netrbReason;
@@ -111,14 +111,14 @@ void __62__PSSystemConfigurationDynamicStoreNETRBWatcher_sharedManager__block_in
     netrbReason = [v10 intValue];
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = netrbState;
+    *state = netrbState;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = netrbReason;
+    *reason = netrbReason;
   }
 }
 
@@ -150,8 +150,8 @@ LABEL_5:
     v12 = v14;
     self->_netrbState = HIDWORD(v14);
     self->_netrbReason = v12;
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"com.apple.Preferences.NETRB" object:0 userInfo:v11];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.Preferences.NETRB" object:0 userInfo:v11];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface PDCollectionSearchOperation
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
 - (BOOL)wantsToExecute;
-- (PDCollectionSearchOperation)initWithDatabase:(id)a3;
+- (PDCollectionSearchOperation)initWithDatabase:(id)database;
 - (id)createCollectionQueryRequest;
 - (id)createHandoutQueryRequest;
-- (id)initForCollectionItemsWithDatabase:(id)a3;
-- (id)initForCollectionsWithDatabase:(id)a3;
+- (id)initForCollectionItemsWithDatabase:(id)database;
+- (id)initForCollectionsWithDatabase:(id)database;
 - (id)requestData;
 - (void)execute;
 @end
 
 @implementation PDCollectionSearchOperation
 
-- (PDCollectionSearchOperation)initWithDatabase:(id)a3
+- (PDCollectionSearchOperation)initWithDatabase:(id)database
 {
   v4.receiver = self;
   v4.super_class = PDCollectionSearchOperation;
-  result = [(PDURLRequestOperation *)&v4 initWithDatabase:a3];
+  result = [(PDURLRequestOperation *)&v4 initWithDatabase:database];
   if (result)
   {
     BYTE3(result->super.super._responseStatusError) = 1;
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (id)initForCollectionsWithDatabase:(id)a3
+- (id)initForCollectionsWithDatabase:(id)database
 {
   v4.receiver = self;
   v4.super_class = PDCollectionSearchOperation;
-  result = [(PDURLRequestOperation *)&v4 initWithDatabase:a3];
+  result = [(PDURLRequestOperation *)&v4 initWithDatabase:database];
   if (result)
   {
     *(result + 231) = 0;
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (id)initForCollectionItemsWithDatabase:(id)a3
+- (id)initForCollectionItemsWithDatabase:(id)database
 {
   v4.receiver = self;
   v4.super_class = PDCollectionSearchOperation;
-  result = [(PDURLRequestOperation *)&v4 initWithDatabase:a3];
+  result = [(PDURLRequestOperation *)&v4 initWithDatabase:database];
   if (result)
   {
     *(result + 231) = 1;
@@ -58,10 +58,10 @@
   v3 = *(&self->super.super._responseStatusError + 7);
   if (v3 == 1)
   {
-    v4 = [(PDCollectionSearchOperation *)self createHandoutQueryRequest];
+    createHandoutQueryRequest = [(PDCollectionSearchOperation *)self createHandoutQueryRequest];
 LABEL_5:
-    v5 = v4;
-    if (v4)
+    v5 = createHandoutQueryRequest;
+    if (createHandoutQueryRequest)
     {
       goto LABEL_7;
     }
@@ -71,7 +71,7 @@ LABEL_5:
 
   if (!v3)
   {
-    v4 = [(PDCollectionSearchOperation *)self createCollectionQueryRequest];
+    createHandoutQueryRequest = [(PDCollectionSearchOperation *)self createCollectionQueryRequest];
     goto LABEL_5;
   }
 
@@ -79,14 +79,14 @@ LABEL_6:
   [(PDEndpointRequestOperation *)self markAsFinished];
   v5 = 0;
 LABEL_7:
-  v6 = [v5 data];
+  data = [v5 data];
 
-  return v6;
+  return data;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if ([(PDOperation *)self isAborted])
   {
     v7 = 0;
@@ -95,25 +95,25 @@ LABEL_7:
   else
   {
     CLSInitLog();
-    v8 = [(PDCollectionSearchOperation *)self logSubsystem];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    logSubsystem = [(PDCollectionSearchOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543618;
       *&buf[4] = v9;
       *&buf[12] = 2114;
-      *&buf[14] = v11;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ processing response;", buf, 0x16u);
+      *&buf[14] = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ processing response;", buf, 0x16u);
     }
 
-    v12 = [v6 queryPayloads];
-    v13 = [v12 count];
-    v14 = [(PDURLRequestOperation *)self stats];
-    if (v14)
+    queryPayloads = [objectCopy queryPayloads];
+    v13 = [queryPayloads count];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v14[15] = v13;
+      stats[15] = v13;
     }
 
     *buf = 0;
@@ -122,18 +122,18 @@ LABEL_7:
     v23 = sub_10004F3E8;
     v24 = sub_10004F3F8;
     v25 = 0;
-    v15 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10004F400;
     v19[3] = &unk_100203110;
     v19[4] = self;
-    v16 = v12;
+    v16 = queryPayloads;
     v20 = v16;
     v21 = buf;
-    if (v15)
+    if (database)
     {
-      v7 = [v15 performTransaction:v19 forWriting:1];
+      v7 = [database performTransaction:v19 forWriting:1];
     }
 
     else
@@ -145,9 +145,9 @@ LABEL_7:
     if (v17)
     {
       v7 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v17;
+        *error = v17;
       }
     }
 
@@ -172,8 +172,8 @@ LABEL_7:
     return BYTE3(self->super.super._responseStatusError);
   }
 
-  v2 = [(PDOperation *)self database];
-  v3 = sub_1000D6984(v2);
+  database = [(PDOperation *)self database];
+  v3 = sub_1000D6984(database);
 
   return v3;
 }
@@ -182,11 +182,11 @@ LABEL_7:
 {
   v3 = objc_alloc_init(PDDPQueryRequest);
   v4 = objc_alloc_init(PDDPSchoolworkQueryZone);
-  v5 = [(PDEndpointRequestOperation *)self endpointInfo];
-  v6 = v5;
-  if (v5)
+  endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+  v6 = endpointInfo;
+  if (endpointInfo)
   {
-    v7 = *(v5 + 64);
+    v7 = *(endpointInfo + 64);
   }
 
   else
@@ -219,7 +219,7 @@ LABEL_7:
 
 - (id)createHandoutQueryRequest
 {
-  v3 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -231,8 +231,8 @@ LABEL_7:
   v8[1] = 3221225472;
   v8[2] = sub_10004FB30;
   v8[3] = &unk_100203138;
-  v5 = v3;
-  v10 = self;
+  v5 = database;
+  selfCopy = self;
   v11 = &v12;
   v9 = v5;
   [v5 selectAll:v4 where:@"type in (? bindings:?)" block:{&off_10021B970, v8}];

@@ -1,21 +1,21 @@
 @interface SKUIRedeemResultMessageView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIRedeemResultMessageView
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v15 = a3;
-  v4 = [(SKUIRedeemResultMessageView *)self message];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  messageCopy = message;
+  message = [(SKUIRedeemResultMessageView *)self message];
+  if (message != messageCopy && ([messageCopy isEqualToString:message] & 1) == 0)
   {
     messageLabel = self->_messageLabel;
-    if (v15)
+    if (messageCopy)
     {
       if (!messageLabel)
       {
@@ -24,8 +24,8 @@
         self->_messageLabel = v6;
 
         v8 = self->_messageLabel;
-        v9 = [(SKUIRedeemResultMessageView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIRedeemResultMessageView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_messageLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -55,14 +55,14 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(SKUIRedeemResultMessageView *)self title];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIRedeemResultMessageView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -71,8 +71,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SKUIRedeemResultMessageView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIRedeemResultMessageView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -81,8 +81,8 @@
         [(UILabel *)self->_titleLabel setNumberOfLines:3];
         [(UILabel *)self->_titleLabel setTextAlignment:1];
         v12 = self->_titleLabel;
-        v13 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v12 setTextColor:v13];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v12 setTextColor:blackColor];
 
         [(SKUIRedeemResultMessageView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
@@ -109,25 +109,25 @@
   v1 = "[SKUIRedeemResultMessageView layoutSubviews]";
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   messageLabel = self->_messageLabel;
-  v5 = a3;
-  [(UILabel *)messageLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)messageLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIRedeemResultMessageView;
-  [(SKUIRedeemResultMessageView *)&v6 setBackgroundColor:v5];
+  [(SKUIRedeemResultMessageView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  width = fits.width;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v7 = 60.0;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v7 = 30.0;
   }

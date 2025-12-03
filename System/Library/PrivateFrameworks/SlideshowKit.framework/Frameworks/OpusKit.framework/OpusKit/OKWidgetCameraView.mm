@@ -1,12 +1,12 @@
 @interface OKWidgetCameraView
-+ (id)deviceWithInputType:(int64_t)a3 inputDeviceName:(id)a4;
++ (id)deviceWithInputType:(int64_t)type inputDeviceName:(id)name;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (BOOL)isSessionRunningAndDeviceAuthorized;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (OKWidgetCameraView)initWithWidget:(id)a3;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (OKWidgetCameraView)initWithWidget:(id)widget;
 - (void)__stopRunning;
 - (void)_prepareSessionIfNeeded;
 - (void)_startRunning;
@@ -14,29 +14,29 @@
 - (void)checkDeviceAuthorizationStatus;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSettingInputDeviceName:(id)a3;
-- (void)setSettingVolume:(float)a3;
+- (void)setSettingInputDeviceName:(id)name;
+- (void)setSettingVolume:(float)volume;
 @end
 
 @implementation OKWidgetCameraView
 
 - (BOOL)isSessionRunningAndDeviceAuthorized
 {
-  v3 = [(AVCaptureSession *)self->_session isRunning];
-  if (v3)
+  isRunning = [(AVCaptureSession *)self->_session isRunning];
+  if (isRunning)
   {
 
-    LOBYTE(v3) = [(OKWidgetCameraView *)self isDeviceAuthorized];
+    LOBYTE(isRunning) = [(OKWidgetCameraView *)self isDeviceAuthorized];
   }
 
-  return v3;
+  return isRunning;
 }
 
-- (OKWidgetCameraView)initWithWidget:(id)a3
+- (OKWidgetCameraView)initWithWidget:(id)widget
 {
   v11.receiver = self;
   v11.super_class = OKWidgetCameraView;
-  v3 = [(OKWidgetViewProxy *)&v11 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v11 initWithWidget:widget];
   if (v3)
   {
     v3->_sessionQueue = dispatch_queue_create("OKWidgetCameraViewQueue", 0);
@@ -58,9 +58,9 @@
     v3->_inputDeviceName = 0;
     v3->_volume = 0.0;
     v6 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:v3];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v3->_deviceConnectedObserver = [v7 addObserverForName:*MEMORY[0x277CE5898] object:0 queue:0 usingBlock:&v10];
-    v3->_deviceDisconnectedObserver = [v7 addObserverForName:*MEMORY[0x277CE58A0] object:0 queue:0 usingBlock:&v9];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v3->_deviceConnectedObserver = [defaultCenter addObserverForName:*MEMORY[0x277CE5898] object:0 queue:0 usingBlock:&v10];
+    v3->_deviceDisconnectedObserver = [defaultCenter addObserverForName:*MEMORY[0x277CE58A0] object:0 queue:0 usingBlock:&v9];
   }
 
   return v3;
@@ -177,11 +177,11 @@ id *__37__OKWidgetCameraView_initWithWidget___block_invoke_3(uint64_t a1, void *
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   if (self->_deviceConnectedObserver)
   {
-    [v3 removeObserver:?];
+    [defaultCenter removeObserver:?];
     if (self->_deviceConnectedObserver)
     {
       self->_deviceConnectedObserver = 0;
@@ -281,7 +281,7 @@ void __29__OKWidgetCameraView_dealloc__block_invoke(uint64_t a1)
 + (id)supportedSettings
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetCameraView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v11[0] = @"input";
@@ -308,7 +308,7 @@ void __29__OKWidgetCameraView_dealloc__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setSettingInputDeviceName:(id)a3
+- (void)setSettingInputDeviceName:(id)name
 {
   inputDeviceName = self->_inputDeviceName;
   if (inputDeviceName)
@@ -317,14 +317,14 @@ void __29__OKWidgetCameraView_dealloc__block_invoke(uint64_t a1)
     self->_inputDeviceName = 0;
   }
 
-  self->_inputDeviceName = [a3 copy];
+  self->_inputDeviceName = [name copy];
 }
 
-- (void)setSettingVolume:(float)a3
+- (void)setSettingVolume:(float)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
   }
 }
 
@@ -493,10 +493,10 @@ void __35__OKWidgetCameraView__startRunning__block_invoke_2(uint64_t a1)
 - (void)__stopRunning
 {
   [(AVCaptureSession *)self->_session stopRunning];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   if (self->_runtimeErrorHandlingObserver)
   {
-    [v3 removeObserver:?];
+    [defaultCenter removeObserver:?];
     if (self->_runtimeErrorHandlingObserver)
     {
       self->_runtimeErrorHandlingObserver = 0;
@@ -515,11 +515,11 @@ void __35__OKWidgetCameraView__startRunning__block_invoke_2(uint64_t a1)
   dispatch_async(sessionQueue, block);
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetCameraView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4)
   {
     [(OKWidgetCameraView *)self checkDeviceAuthorizationStatus];
@@ -530,11 +530,11 @@ void __35__OKWidgetCameraView__startRunning__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v8.receiver = self;
   v8.super_class = OKWidgetCameraView;
-  v4 = [(OKWidgetViewProxy *)&v8 prepareForWarmup:a3];
+  v4 = [(OKWidgetViewProxy *)&v8 prepareForWarmup:warmup];
   if (v4)
   {
     sessionQueue = self->_sessionQueue;
@@ -585,11 +585,11 @@ uint64_t __39__OKWidgetCameraView_prepareForWarmup___block_invoke(uint64_t a1)
   return [v5 commitConfiguration];
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v8.receiver = self;
   v8.super_class = OKWidgetCameraView;
-  v4 = [(OKWidgetViewProxy *)&v8 prepareForUnload:a3];
+  v4 = [(OKWidgetViewProxy *)&v8 prepareForUnload:unload];
   if (v4)
   {
     sessionQueue = self->_sessionQueue;
@@ -640,12 +640,12 @@ uint64_t __39__OKWidgetCameraView_prepareForUnload___block_invoke(uint64_t a1)
   return [v5 commitConfiguration];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetCameraView"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetCameraView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 - (void)checkDeviceAuthorizationStatus
@@ -681,27 +681,27 @@ void __52__OKWidgetCameraView_checkDeviceAuthorizationStatus__block_invoke(uint6
   }
 }
 
-+ (id)deviceWithInputType:(int64_t)a3 inputDeviceName:(id)a4
++ (id)deviceWithInputType:(int64_t)type inputDeviceName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       if (*MEMORY[0x277D62808] >= 4)
       {
-        v4 = @"Default";
-        if (a4)
+        nameCopy = @"Default";
+        if (name)
         {
-          v4 = a4;
+          nameCopy = name;
         }
 
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetCameraView.m" line:649 andFormat:@"Failed to find iOS device camera input %@", v4];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetCameraView.m" line:649 andFormat:@"Failed to find iOS device camera input %@", nameCopy];
       }
 
       return 0;
@@ -710,8 +710,8 @@ void __52__OKWidgetCameraView_checkDeviceAuthorizationStatus__block_invoke(uint6
     v5 = 2;
   }
 
-  v6 = [MEMORY[0x277CE5AC8] devicesWithMediaType:{*MEMORY[0x277CE5EA8], a4}];
-  v7 = [v6 firstObject];
+  v6 = [MEMORY[0x277CE5AC8] devicesWithMediaType:{*MEMORY[0x277CE5EA8], name}];
+  firstObject = [v6 firstObject];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -733,7 +733,7 @@ void __52__OKWidgetCameraView_checkDeviceAuthorizationStatus__block_invoke(uint6
         v12 = *(*(&v16 + 1) + 8 * i);
         if ([v12 position] == v5)
         {
-          v7 = v12;
+          firstObject = v12;
           goto LABEL_19;
         }
       }
@@ -749,7 +749,7 @@ void __52__OKWidgetCameraView_checkDeviceAuthorizationStatus__block_invoke(uint6
   }
 
 LABEL_19:
-  if (v7)
+  if (firstObject)
   {
     v13 = 1;
   }
@@ -765,12 +765,12 @@ LABEL_19:
     return 0;
   }
 
-  if (!v7)
+  if (!firstObject)
   {
     return 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 @end

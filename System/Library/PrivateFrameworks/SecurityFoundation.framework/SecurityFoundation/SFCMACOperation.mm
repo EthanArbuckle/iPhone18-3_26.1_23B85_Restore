@@ -1,9 +1,9 @@
 @interface SFCMACOperation
 - (SFCMACOperation)init;
-- (SFCMACOperation)initWithCoder:(id)a3;
-- (SFCMACOperation)initWithEncryptionOperation:(id)a3;
+- (SFCMACOperation)initWithCoder:(id)coder;
+- (SFCMACOperation)initWithEncryptionOperation:(id)operation;
 - (SFSymmetricEncryptionOperation)encryptionOperation;
-- (void)setEncryptionOperation:(id)a3;
+- (void)setEncryptionOperation:(id)operation;
 @end
 
 @implementation SFCMACOperation
@@ -16,26 +16,26 @@
   return v4;
 }
 
-- (SFCMACOperation)initWithEncryptionOperation:(id)a3
+- (SFCMACOperation)initWithEncryptionOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = SFCMACOperation;
   v6 = [(SFMessageAuthenticationCodeOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6->_cmacOperationInternal + 1, a3);
+    objc_storeStrong(v6->_cmacOperationInternal + 1, operation);
   }
 
   return v7;
 }
 
-- (SFCMACOperation)initWithCoder:(id)a3
+- (SFCMACOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFCMACOperation;
-  return [(SFMessageAuthenticationCodeOperation *)&v4 initWithCoder:a3];
+  return [(SFMessageAuthenticationCodeOperation *)&v4 initWithCoder:coder];
 }
 
 - (SFSymmetricEncryptionOperation)encryptionOperation
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (void)setEncryptionOperation:(id)a3
+- (void)setEncryptionOperation:(id)operation
 {
-  v4 = [a3 copy];
+  v4 = [operation copy];
   cmacOperationInternal = self->_cmacOperationInternal;
   v6 = cmacOperationInternal[1];
   cmacOperationInternal[1] = v4;

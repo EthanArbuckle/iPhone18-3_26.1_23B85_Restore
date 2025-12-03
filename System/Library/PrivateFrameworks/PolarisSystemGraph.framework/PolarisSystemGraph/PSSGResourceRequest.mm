@@ -1,21 +1,21 @@
 @interface PSSGResourceRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PSSGResourceRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSSGResourceRequest *)self resourcesWanted];
-  v6 = [v4 resourcesWanted];
-  v7 = [v5 isEqual:v6];
+  equalCopy = equal;
+  resourcesWanted = [(PSSGResourceRequest *)self resourcesWanted];
+  resourcesWanted2 = [equalCopy resourcesWanted];
+  v7 = [resourcesWanted isEqual:resourcesWanted2];
   if ((v7 & 1) == 0)
   {
-    v21 = [(PSSGResourceRequest *)self resourcesWanted];
-    if (v21)
+    resourcesWanted3 = [(PSSGResourceRequest *)self resourcesWanted];
+    if (resourcesWanted3)
     {
       v20 = 0;
 LABEL_32:
@@ -23,22 +23,22 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v23 = [v4 resourcesWanted];
-    if (v23)
+    resourcesWanted4 = [equalCopy resourcesWanted];
+    if (resourcesWanted4)
     {
       goto LABEL_21;
     }
   }
 
-  v8 = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
-  v9 = [v4 resourcesNoLongerWanted];
-  if ([v8 isEqual:v9])
+  resourcesNoLongerWanted = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
+  resourcesNoLongerWanted2 = [equalCopy resourcesNoLongerWanted];
+  if ([resourcesNoLongerWanted isEqual:resourcesNoLongerWanted2])
   {
     goto LABEL_3;
   }
 
-  v22 = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
-  if (v22)
+  resourcesNoLongerWanted3 = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
+  if (resourcesNoLongerWanted3)
   {
 
     if (v7)
@@ -47,17 +47,17 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v23 = 0;
+    resourcesWanted4 = 0;
 LABEL_21:
 
     v20 = 0;
 LABEL_31:
-    v21 = 0;
+    resourcesWanted3 = 0;
     goto LABEL_32;
   }
 
-  v25 = [v4 resourcesNoLongerWanted];
-  if (v25)
+  resourcesNoLongerWanted4 = [equalCopy resourcesNoLongerWanted];
+  if (resourcesNoLongerWanted4)
   {
 
     v20 = 0;
@@ -71,64 +71,64 @@ LABEL_31:
 
 LABEL_3:
   v10 = objc_alloc(MEMORY[0x277CCA940]);
-  v36 = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
+  resourcesWantedWithStrides = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
   v11 = [v10 initWithArray:?];
   v12 = objc_alloc(MEMORY[0x277CCA940]);
-  v34 = [v4 resourcesWantedWithStrides];
+  resourcesWantedWithStrides2 = [equalCopy resourcesWantedWithStrides];
   v13 = [v12 initWithArray:?];
   v35 = v11;
   v14 = [v11 isEqual:v13];
   if ((v14 & 1) == 0)
   {
-    v24 = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
-    if (v24)
+    resourcesWantedWithStrides3 = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
+    if (resourcesWantedWithStrides3)
     {
       v20 = 0;
       goto LABEL_29;
     }
 
-    v27 = [v4 resourcesWantedWithStrides];
-    if (v27)
+    resourcesWantedWithStrides4 = [equalCopy resourcesWantedWithStrides];
+    if (resourcesWantedWithStrides4)
     {
 
       v20 = 0;
-      v24 = 0;
+      resourcesWantedWithStrides3 = 0;
       goto LABEL_29;
     }
   }
 
-  v30 = v8;
+  v30 = resourcesNoLongerWanted;
   v33 = v13;
   v15 = objc_alloc(MEMORY[0x277CCA940]);
-  v32 = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
+  resourcesNoLongerWantedWithStrides = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
   v16 = [v15 initWithArray:?];
   v17 = objc_alloc(MEMORY[0x277CCA940]);
-  v18 = [v4 resourcesNoLongerWantedWithStrides];
-  v19 = [v17 initWithArray:v18];
+  resourcesNoLongerWantedWithStrides2 = [equalCopy resourcesNoLongerWantedWithStrides];
+  v19 = [v17 initWithArray:resourcesNoLongerWantedWithStrides2];
   v31 = v16;
   if ([v16 isEqual:v19])
   {
     v20 = 1;
-    v8 = v30;
+    resourcesNoLongerWanted = v30;
   }
 
   else
   {
-    v26 = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
-    if (v26)
+    resourcesNoLongerWantedWithStrides3 = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
+    if (resourcesNoLongerWantedWithStrides3)
     {
       v20 = 0;
     }
 
     else
     {
-      v28 = [v4 resourcesNoLongerWantedWithStrides];
-      v20 = v28 == 0;
+      resourcesNoLongerWantedWithStrides4 = [equalCopy resourcesNoLongerWantedWithStrides];
+      v20 = resourcesNoLongerWantedWithStrides4 == 0;
 
-      v26 = 0;
+      resourcesNoLongerWantedWithStrides3 = 0;
     }
 
-    v8 = v30;
+    resourcesNoLongerWanted = v30;
   }
 
   if (v14)
@@ -137,7 +137,7 @@ LABEL_3:
     goto LABEL_30;
   }
 
-  v24 = 0;
+  resourcesWantedWithStrides3 = 0;
   v13 = v33;
 LABEL_29:
 
@@ -154,14 +154,14 @@ LABEL_33:
 
 - (unint64_t)hash
 {
-  v3 = [(PSSGResourceRequest *)self resourcesWanted];
-  v4 = [v3 hash];
-  v5 = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
-  v8 = [v7 hash];
-  v9 = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
-  v10 = v8 ^ [v9 hash];
+  resourcesWanted = [(PSSGResourceRequest *)self resourcesWanted];
+  v4 = [resourcesWanted hash];
+  resourcesNoLongerWanted = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
+  v6 = [resourcesNoLongerWanted hash] ^ v4;
+  resourcesWantedWithStrides = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
+  v8 = [resourcesWantedWithStrides hash];
+  resourcesNoLongerWantedWithStrides = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
+  v10 = v8 ^ [resourcesNoLongerWantedWithStrides hash];
 
   return v6 ^ v10;
 }
@@ -171,27 +171,27 @@ LABEL_33:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
-  v7 = v6;
-  if (!v6)
+  resourcesWantedWithStrides = [(PSSGResourceRequest *)self resourcesWantedWithStrides];
+  resourcesWanted = resourcesWantedWithStrides;
+  if (!resourcesWantedWithStrides)
   {
-    v7 = [(PSSGResourceRequest *)self resourcesWanted];
+    resourcesWanted = [(PSSGResourceRequest *)self resourcesWanted];
   }
 
-  v8 = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
-  v9 = v8;
-  if (v8)
+  resourcesNoLongerWantedWithStrides = [(PSSGResourceRequest *)self resourcesNoLongerWantedWithStrides];
+  v9 = resourcesNoLongerWantedWithStrides;
+  if (resourcesNoLongerWantedWithStrides)
   {
-    v10 = [v3 stringWithFormat:@"<%@: %p, wanted %@, not wanted %@>", v5, self, v7, v8];
+    v10 = [v3 stringWithFormat:@"<%@: %p, wanted %@, not wanted %@>", v5, self, resourcesWanted, resourcesNoLongerWantedWithStrides];
   }
 
   else
   {
-    v11 = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
-    v10 = [v3 stringWithFormat:@"<%@: %p, wanted %@, not wanted %@>", v5, self, v7, v11];
+    resourcesNoLongerWanted = [(PSSGResourceRequest *)self resourcesNoLongerWanted];
+    v10 = [v3 stringWithFormat:@"<%@: %p, wanted %@, not wanted %@>", v5, self, resourcesWanted, resourcesNoLongerWanted];
   }
 
-  if (!v6)
+  if (!resourcesWantedWithStrides)
   {
   }
 

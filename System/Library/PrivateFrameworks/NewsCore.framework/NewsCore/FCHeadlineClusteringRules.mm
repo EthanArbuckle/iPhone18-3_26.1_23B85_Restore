@@ -1,7 +1,7 @@
 @interface FCHeadlineClusteringRules
-+ (id)rulesWithTreatment:(id)a3 configurationSet:(int64_t)a4 deviceIsiPad:(BOOL)a5 limitUnpaidArticles:(BOOL)a6 enforcePublisherCap:(BOOL)a7 minClusterSizeiPhone:(int64_t)a8 maxClusterSizeiPhone:(int64_t)a9 minClusterSizeiPad:(int64_t)a10 maxClusterSizeiPad:(int64_t)a11 todayFeedEnabled:(BOOL)a12;
++ (id)rulesWithTreatment:(id)treatment configurationSet:(int64_t)set deviceIsiPad:(BOOL)pad limitUnpaidArticles:(BOOL)articles enforcePublisherCap:(BOOL)cap minClusterSizeiPhone:(int64_t)phone maxClusterSizeiPhone:(int64_t)sizeiPhone minClusterSizeiPad:(int64_t)self0 maxClusterSizeiPad:(int64_t)self1 todayFeedEnabled:(BOOL)self2;
 - (FCHeadlineClusteringRules)init;
-- (FCHeadlineClusteringRules)initWithMinClusterSize:(unint64_t)a3 maxClusterSize:(unint64_t)a4 minIdealClusterSize:(unint64_t)a5 maxIdealClusterSize:(unint64_t)a6 minClusterSizeAutoFavorite:(unint64_t)a7 maxClusterSizeAutoFavorite:(unint64_t)a8 minIdealClusterSizeAutoFavorite:(unint64_t)a9 maxIdealClusterSizeAutoFavorite:(unint64_t)a10 maxPublisherOccurrences:(unint64_t)a11 enforcePublisherCap:(BOOL)a12 maxUnpaidArticles:(unint64_t)a13 maxEvergreenArticles:(unint64_t)a14 topicDiversityThreshold:(double)a15 maxNativeAdCount:(unint64_t)a16 thumbnailMinHammingDistance:(unint64_t)a17;
+- (FCHeadlineClusteringRules)initWithMinClusterSize:(unint64_t)size maxClusterSize:(unint64_t)clusterSize minIdealClusterSize:(unint64_t)idealClusterSize maxIdealClusterSize:(unint64_t)maxIdealClusterSize minClusterSizeAutoFavorite:(unint64_t)favorite maxClusterSizeAutoFavorite:(unint64_t)autoFavorite minIdealClusterSizeAutoFavorite:(unint64_t)sizeAutoFavorite maxIdealClusterSizeAutoFavorite:(unint64_t)self0 maxPublisherOccurrences:(unint64_t)self1 enforcePublisherCap:(BOOL)self2 maxUnpaidArticles:(unint64_t)self3 maxEvergreenArticles:(unint64_t)self4 topicDiversityThreshold:(double)self5 maxNativeAdCount:(unint64_t)self6 thumbnailMinHammingDistance:(unint64_t)self7;
 - (unint64_t)maxClusterSizeAutoFavorite;
 - (unint64_t)maxIdealClusterSizeAutoFavorite;
 - (unint64_t)minClusterSizeAutoFavorite;
@@ -10,30 +10,30 @@
 
 @implementation FCHeadlineClusteringRules
 
-+ (id)rulesWithTreatment:(id)a3 configurationSet:(int64_t)a4 deviceIsiPad:(BOOL)a5 limitUnpaidArticles:(BOOL)a6 enforcePublisherCap:(BOOL)a7 minClusterSizeiPhone:(int64_t)a8 maxClusterSizeiPhone:(int64_t)a9 minClusterSizeiPad:(int64_t)a10 maxClusterSizeiPad:(int64_t)a11 todayFeedEnabled:(BOOL)a12
++ (id)rulesWithTreatment:(id)treatment configurationSet:(int64_t)set deviceIsiPad:(BOOL)pad limitUnpaidArticles:(BOOL)articles enforcePublisherCap:(BOOL)cap minClusterSizeiPhone:(int64_t)phone maxClusterSizeiPhone:(int64_t)sizeiPhone minClusterSizeiPad:(int64_t)self0 maxClusterSizeiPad:(int64_t)self1 todayFeedEnabled:(BOOL)self2
 {
-  v14 = a6;
-  v15 = a5;
-  v17 = a12;
-  v18 = a10;
-  v19 = a3;
-  v20 = v19;
-  v21 = &a9;
-  if (v15)
+  articlesCopy = articles;
+  padCopy = pad;
+  enabledCopy = enabled;
+  phoneCopy = sizeiPad;
+  treatmentCopy = treatment;
+  v20 = treatmentCopy;
+  v21 = &sizeiPhone;
+  if (padCopy)
   {
-    v21 = &a11;
+    v21 = &clusterSizeiPad;
   }
 
   v22 = *v21;
-  if (!v15)
+  if (!padCopy)
   {
-    v18 = a8;
+    phoneCopy = phone;
   }
 
-  if (!v19)
+  if (!treatmentCopy)
   {
     v25 = [FCHeadlineClusteringRules alloc];
-    if (v15)
+    if (padCopy)
     {
       v26 = 5;
     }
@@ -43,64 +43,64 @@
       v26 = 3;
     }
 
-    LOBYTE(v45) = a7;
-    v27 = [(FCHeadlineClusteringRules *)v25 initWithMinClusterSize:v18 maxClusterSize:v22 minIdealClusterSize:3 maxIdealClusterSize:9 minClusterSizeAutoFavorite:3 maxClusterSizeAutoFavorite:1.0 minIdealClusterSizeAutoFavorite:3 maxIdealClusterSizeAutoFavorite:v26 maxPublisherOccurrences:2 enforcePublisherCap:v45 maxUnpaidArticles:1 maxEvergreenArticles:0 topicDiversityThreshold:0 maxNativeAdCount:0 thumbnailMinHammingDistance:?];
+    LOBYTE(v45) = cap;
+    v27 = [(FCHeadlineClusteringRules *)v25 initWithMinClusterSize:phoneCopy maxClusterSize:v22 minIdealClusterSize:3 maxIdealClusterSize:9 minClusterSizeAutoFavorite:3 maxClusterSizeAutoFavorite:1.0 minIdealClusterSizeAutoFavorite:3 maxIdealClusterSizeAutoFavorite:v26 maxPublisherOccurrences:2 enforcePublisherCap:v45 maxUnpaidArticles:1 maxEvergreenArticles:0 topicDiversityThreshold:0 maxNativeAdCount:0 thumbnailMinHammingDistance:?];
     goto LABEL_49;
   }
 
-  if (v15)
+  if (padCopy)
   {
-    v23 = [v19 maxUnpaidArticlesIPad];
-    v50 = [v20 maxPublisherOccurrencesIPad];
-    v24 = [v20 maxNativeAdCountIPad];
+    maxUnpaidArticlesIPad = [treatmentCopy maxUnpaidArticlesIPad];
+    maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPad];
+    maxNativeAdCountIPad = [v20 maxNativeAdCountIPad];
   }
 
   else
   {
-    v23 = [v19 maxUnpaidArticlesIPhone];
-    v50 = [v20 maxPublisherOccurrencesIPhone];
-    v24 = [v20 maxNativeAdCountIPhone];
+    maxUnpaidArticlesIPad = [treatmentCopy maxUnpaidArticlesIPhone];
+    maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPhone];
+    maxNativeAdCountIPad = [v20 maxNativeAdCountIPhone];
   }
 
-  v28 = v24;
+  v28 = maxNativeAdCountIPad;
   [v20 topicDiversityThreshold];
   v30 = v29;
-  v49 = v18;
-  v48 = v14;
-  if (a4 > 0x1C)
+  v49 = phoneCopy;
+  v48 = articlesCopy;
+  if (set > 0x1C)
   {
     goto LABEL_24;
   }
 
-  if (((1 << a4) & 0x18280000) == 0)
+  if (((1 << set) & 0x18280000) == 0)
   {
-    if (a4 == 11)
+    if (set == 11)
     {
-      if (v15)
+      if (padCopy)
       {
-        v31 = [v20 maxUnpaidArticlesIPadForYouGroup];
-        v50 = [v20 maxPublisherOccurrencesIPadForYouGroup];
-        v33 = [v20 maxNativeAdCountIPadForYouGroup];
+        maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPadForYouGroup];
+        maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPadForYouGroup];
+        maxNativeAdCountIPadForYouGroup = [v20 maxNativeAdCountIPadForYouGroup];
         goto LABEL_31;
       }
 
-      v31 = [v20 maxUnpaidArticlesIPhoneForYouGroup];
-      v50 = [v20 maxPublisherOccurrencesIPhoneForYouGroup];
-      v40 = [v20 maxNativeAdCountIPhoneForYouGroup];
+      maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPhoneForYouGroup];
+      maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPhoneForYouGroup];
+      maxNativeAdCountIPhoneForYouGroup = [v20 maxNativeAdCountIPhoneForYouGroup];
       goto LABEL_40;
     }
 
-    if (a4 == 12)
+    if (set == 12)
     {
-      if (v15)
+      if (padCopy)
       {
-        v31 = [v20 maxUnpaidArticlesIPadGreatStoriesYouMissed];
-        v50 = [v20 maxPublisherOccurrencesIPadGreatStoriesYouMissed];
-        v33 = [v20 maxNativeAdCountIPadGreatStoriesYouMissed];
+        maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPadGreatStoriesYouMissed];
+        maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPadGreatStoriesYouMissed];
+        maxNativeAdCountIPadForYouGroup = [v20 maxNativeAdCountIPadGreatStoriesYouMissed];
 LABEL_31:
-        if (v17)
+        if (enabledCopy)
         {
-          v34 = v33;
+          v34 = maxNativeAdCountIPadForYouGroup;
         }
 
         else
@@ -113,47 +113,47 @@ LABEL_31:
         goto LABEL_35;
       }
 
-      v31 = [v20 maxUnpaidArticlesIPhoneGreatStoriesYouMissed];
-      v50 = [v20 maxPublisherOccurrencesIPhoneGreatStoriesYouMissed];
-      v40 = [v20 maxNativeAdCountIPhoneGreatStoriesYouMissed];
+      maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPhoneGreatStoriesYouMissed];
+      maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPhoneGreatStoriesYouMissed];
+      maxNativeAdCountIPhoneForYouGroup = [v20 maxNativeAdCountIPhoneGreatStoriesYouMissed];
       goto LABEL_40;
     }
 
 LABEL_24:
-    if (a4 == 10)
+    if (set == 10)
     {
-      if (v15)
+      if (padCopy)
       {
-        v31 = [v20 maxUnpaidArticlesIPadBestOfBundle];
-        v50 = [v20 maxPublisherOccurrencesIPadBestOfBundle];
-        v33 = [v20 maxNativeAdCountIPadBestOfBundle];
+        maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPadBestOfBundle];
+        maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPadBestOfBundle];
+        maxNativeAdCountIPadForYouGroup = [v20 maxNativeAdCountIPadBestOfBundle];
         goto LABEL_31;
       }
 
-      v31 = [v20 maxUnpaidArticlesIPhoneBestOfBundle];
-      v50 = [v20 maxPublisherOccurrencesIPhoneBestOfBundle];
-      v40 = [v20 maxNativeAdCountIPhoneBestOfBundle];
+      maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPhoneBestOfBundle];
+      maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPhoneBestOfBundle];
+      maxNativeAdCountIPhoneForYouGroup = [v20 maxNativeAdCountIPhoneBestOfBundle];
     }
 
     else
     {
-      if (v15)
+      if (padCopy)
       {
-        v31 = [v20 maxUnpaidArticlesIPad];
-        v50 = [v20 maxPublisherOccurrencesIPad];
-        v33 = [v20 maxNativeAdCountIPad];
+        maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPad];
+        maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPad];
+        maxNativeAdCountIPadForYouGroup = [v20 maxNativeAdCountIPad];
         goto LABEL_31;
       }
 
-      v31 = [v20 maxUnpaidArticlesIPhone];
-      v50 = [v20 maxPublisherOccurrencesIPhone];
-      v40 = [v20 maxNativeAdCountIPhone];
+      maxUnpaidArticlesIPadForYouGroup = [v20 maxUnpaidArticlesIPhone];
+      maxPublisherOccurrencesIPad = [v20 maxPublisherOccurrencesIPhone];
+      maxNativeAdCountIPhoneForYouGroup = [v20 maxNativeAdCountIPhone];
     }
 
 LABEL_40:
-    if (v17)
+    if (enabledCopy)
     {
-      v41 = v40;
+      v41 = maxNativeAdCountIPhoneForYouGroup;
     }
 
     else
@@ -166,8 +166,8 @@ LABEL_40:
     goto LABEL_44;
   }
 
-  v31 = v23;
-  if (v17)
+  maxUnpaidArticlesIPadForYouGroup = maxUnpaidArticlesIPad;
+  if (enabledCopy)
   {
     v32 = v28;
   }
@@ -180,29 +180,29 @@ LABEL_40:
   v47 = v32;
   v46 = [FCHeadlineClusteringRules alloc];
   v30 = 1.0;
-  if (!v15)
+  if (!padCopy)
   {
 LABEL_44:
-    v35 = [v20 minIdealClusterSizeIPhone];
-    v36 = [v20 maxIdealClusterSizeIPhone];
-    v37 = [v20 minClusterSizeIPhoneAutoFavorite];
+    minIdealClusterSizeIPhone = [v20 minIdealClusterSizeIPhone];
+    maxIdealClusterSizeIPhone = [v20 maxIdealClusterSizeIPhone];
+    minClusterSizeIPhoneAutoFavorite = [v20 minClusterSizeIPhoneAutoFavorite];
     [v20 maxClusterSizeIPhoneAutoFavorite];
-    v38 = [v20 minIdealClusterSizeIPhoneAutoFavorite];
-    v39 = [v20 maxIdealClusterSizeIPhoneAutoFavorite];
+    minIdealClusterSizeIPhoneAutoFavorite = [v20 minIdealClusterSizeIPhoneAutoFavorite];
+    maxIdealClusterSizeIPhoneAutoFavorite = [v20 maxIdealClusterSizeIPhoneAutoFavorite];
     goto LABEL_45;
   }
 
 LABEL_35:
-  v35 = [v20 minIdealClusterSizeIPad];
-  v36 = [v20 maxIdealClusterSizeIPad];
-  v37 = [v20 minClusterSizeIPadAutoFavorite];
+  minIdealClusterSizeIPhone = [v20 minIdealClusterSizeIPad];
+  maxIdealClusterSizeIPhone = [v20 maxIdealClusterSizeIPad];
+  minClusterSizeIPhoneAutoFavorite = [v20 minClusterSizeIPadAutoFavorite];
   [v20 maxClusterSizeIPadAutoFavorite];
-  v38 = [v20 minIdealClusterSizeIPadAutoFavorite];
-  v39 = [v20 maxIdealClusterSizeIPadAutoFavorite];
+  minIdealClusterSizeIPhoneAutoFavorite = [v20 minIdealClusterSizeIPadAutoFavorite];
+  maxIdealClusterSizeIPhoneAutoFavorite = [v20 maxIdealClusterSizeIPadAutoFavorite];
 LABEL_45:
   if (v48)
   {
-    v42 = v31;
+    v42 = maxUnpaidArticlesIPadForYouGroup;
   }
 
   else
@@ -210,36 +210,36 @@ LABEL_45:
     v42 = v22;
   }
 
-  LOBYTE(v45) = a7;
-  v27 = -[FCHeadlineClusteringRules initWithMinClusterSize:maxClusterSize:minIdealClusterSize:maxIdealClusterSize:minClusterSizeAutoFavorite:maxClusterSizeAutoFavorite:minIdealClusterSizeAutoFavorite:maxIdealClusterSizeAutoFavorite:maxPublisherOccurrences:enforcePublisherCap:maxUnpaidArticles:maxEvergreenArticles:topicDiversityThreshold:maxNativeAdCount:thumbnailMinHammingDistance:](v46, "initWithMinClusterSize:maxClusterSize:minIdealClusterSize:maxIdealClusterSize:minClusterSizeAutoFavorite:maxClusterSizeAutoFavorite:minIdealClusterSizeAutoFavorite:maxIdealClusterSizeAutoFavorite:maxPublisherOccurrences:enforcePublisherCap:maxUnpaidArticles:maxEvergreenArticles:topicDiversityThreshold:maxNativeAdCount:thumbnailMinHammingDistance:", v49, v22, v35, v36, v37, v30, v38, v39, v50, v45, v42, [v20 maxEvergreenArticlesPerGroup], v47, objc_msgSend(v20, "thumbnailMinHammingDistance"));
+  LOBYTE(v45) = cap;
+  v27 = -[FCHeadlineClusteringRules initWithMinClusterSize:maxClusterSize:minIdealClusterSize:maxIdealClusterSize:minClusterSizeAutoFavorite:maxClusterSizeAutoFavorite:minIdealClusterSizeAutoFavorite:maxIdealClusterSizeAutoFavorite:maxPublisherOccurrences:enforcePublisherCap:maxUnpaidArticles:maxEvergreenArticles:topicDiversityThreshold:maxNativeAdCount:thumbnailMinHammingDistance:](v46, "initWithMinClusterSize:maxClusterSize:minIdealClusterSize:maxIdealClusterSize:minClusterSizeAutoFavorite:maxClusterSizeAutoFavorite:minIdealClusterSizeAutoFavorite:maxIdealClusterSizeAutoFavorite:maxPublisherOccurrences:enforcePublisherCap:maxUnpaidArticles:maxEvergreenArticles:topicDiversityThreshold:maxNativeAdCount:thumbnailMinHammingDistance:", v49, v22, minIdealClusterSizeIPhone, maxIdealClusterSizeIPhone, minClusterSizeIPhoneAutoFavorite, v30, minIdealClusterSizeIPhoneAutoFavorite, maxIdealClusterSizeIPhoneAutoFavorite, maxPublisherOccurrencesIPad, v45, v42, [v20 maxEvergreenArticlesPerGroup], v47, objc_msgSend(v20, "thumbnailMinHammingDistance"));
 LABEL_49:
   v43 = v27;
 
   return v43;
 }
 
-- (FCHeadlineClusteringRules)initWithMinClusterSize:(unint64_t)a3 maxClusterSize:(unint64_t)a4 minIdealClusterSize:(unint64_t)a5 maxIdealClusterSize:(unint64_t)a6 minClusterSizeAutoFavorite:(unint64_t)a7 maxClusterSizeAutoFavorite:(unint64_t)a8 minIdealClusterSizeAutoFavorite:(unint64_t)a9 maxIdealClusterSizeAutoFavorite:(unint64_t)a10 maxPublisherOccurrences:(unint64_t)a11 enforcePublisherCap:(BOOL)a12 maxUnpaidArticles:(unint64_t)a13 maxEvergreenArticles:(unint64_t)a14 topicDiversityThreshold:(double)a15 maxNativeAdCount:(unint64_t)a16 thumbnailMinHammingDistance:(unint64_t)a17
+- (FCHeadlineClusteringRules)initWithMinClusterSize:(unint64_t)size maxClusterSize:(unint64_t)clusterSize minIdealClusterSize:(unint64_t)idealClusterSize maxIdealClusterSize:(unint64_t)maxIdealClusterSize minClusterSizeAutoFavorite:(unint64_t)favorite maxClusterSizeAutoFavorite:(unint64_t)autoFavorite minIdealClusterSizeAutoFavorite:(unint64_t)sizeAutoFavorite maxIdealClusterSizeAutoFavorite:(unint64_t)self0 maxPublisherOccurrences:(unint64_t)self1 enforcePublisherCap:(BOOL)self2 maxUnpaidArticles:(unint64_t)self3 maxEvergreenArticles:(unint64_t)self4 topicDiversityThreshold:(double)self5 maxNativeAdCount:(unint64_t)self6 thumbnailMinHammingDistance:(unint64_t)self7
 {
   v30.receiver = self;
   v30.super_class = FCHeadlineClusteringRules;
   result = [(FCHeadlineClusteringRules *)&v30 init];
   if (result)
   {
-    result->_minClusterSize = a3;
-    result->_maxClusterSize = a4;
-    result->_minIdealClusterSize = a5;
-    result->_maxIdealClusterSize = a6;
-    result->_minClusterSizeAutoFavorite = a7;
-    result->_maxClusterSizeAutoFavorite = a8;
-    result->_minIdealClusterSizeAutoFavorite = a9;
-    result->_maxIdealClusterSizeAutoFavorite = a10;
-    result->_enforcePublisherCap = a12;
-    result->_maxUnpaidArticles = a13;
-    result->_maxEvergreenArticles = a14;
-    result->_topicDiversityThreshold = a15;
-    result->_maxPublisherOccurrences = a11;
-    result->_maxNativeAdCount = a16;
-    result->_thumbnailMinHammingDistance = a17;
+    result->_minClusterSize = size;
+    result->_maxClusterSize = clusterSize;
+    result->_minIdealClusterSize = idealClusterSize;
+    result->_maxIdealClusterSize = maxIdealClusterSize;
+    result->_minClusterSizeAutoFavorite = favorite;
+    result->_maxClusterSizeAutoFavorite = autoFavorite;
+    result->_minIdealClusterSizeAutoFavorite = sizeAutoFavorite;
+    result->_maxIdealClusterSizeAutoFavorite = clusterSizeAutoFavorite;
+    result->_enforcePublisherCap = cap;
+    result->_maxUnpaidArticles = articles;
+    result->_maxEvergreenArticles = evergreenArticles;
+    result->_topicDiversityThreshold = threshold;
+    result->_maxPublisherOccurrences = occurrences;
+    result->_maxNativeAdCount = count;
+    result->_thumbnailMinHammingDistance = distance;
     __asm { FMOV            V0.2D, #1.0 }
 
     *&result->_autoFavoriteClusterMinSizeMultiplier = _Q0;

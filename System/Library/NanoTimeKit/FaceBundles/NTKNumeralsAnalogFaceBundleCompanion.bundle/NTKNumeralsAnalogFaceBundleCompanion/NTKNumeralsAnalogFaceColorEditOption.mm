@@ -1,27 +1,27 @@
 @interface NTKNumeralsAnalogFaceColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
 @end
 
 @implementation NTKNumeralsAnalogFaceColorEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_F8C;
   v5[3] = &unk_103C8;
-  v5[4] = a1;
-  v3 = sub_F8C(v5, a3);
+  v5[4] = self;
+  v3 = sub_F8C(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NTKNumeralsAnalogFaceColorEditOption;
-  v3 = objc_msgSendSuper2(&v7, "__orderedValuesForDevice:", a3);
+  v3 = objc_msgSendSuper2(&v7, "__orderedValuesForDevice:", device);
   v4 = [v3 mutableCopy];
 
   v5 = [v4 indexOfObject:&off_10E28];

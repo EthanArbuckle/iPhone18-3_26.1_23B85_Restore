@@ -1,6 +1,6 @@
 @interface AppleEthernetIPv6Configurator
 - (AppleEthernetIPv6Configurator)init;
-- (void)setValuesForConfig:(id)a3 fromService:(__SCNetworkService *)a4;
+- (void)setValuesForConfig:(id)config fromService:(__SCNetworkService *)service;
 @end
 
 @implementation AppleEthernetIPv6Configurator
@@ -19,20 +19,20 @@
   return v3;
 }
 
-- (void)setValuesForConfig:(id)a3 fromService:(__SCNetworkService *)a4
+- (void)setValuesForConfig:(id)config fromService:(__SCNetworkService *)service
 {
-  v6 = a3;
-  v7 = [(AppleEthernetProtocolConfigurator *)self delegate];
-  v11 = [v7 getDynamicSettingsForKey:kSCEntNetIPv6 inService:a4];
+  configCopy = config;
+  delegate = [(AppleEthernetProtocolConfigurator *)self delegate];
+  v11 = [delegate getDynamicSettingsForKey:kSCEntNetIPv6 inService:service];
 
   v8 = [v11 objectForKeyedSubscript:kSCPropNetIPv6Addresses];
-  [v6 setIpv6Addresses:v8];
+  [configCopy setIpv6Addresses:v8];
 
   v9 = [v11 objectForKeyedSubscript:kSCPropNetIPv6PrefixLength];
-  [v6 setIpv6PrefixLengths:v9];
+  [configCopy setIpv6PrefixLengths:v9];
 
   v10 = [v11 objectForKeyedSubscript:kSCPropNetIPv6Router];
-  [v6 setIpv6RouterAddress:v10];
+  [configCopy setIpv6RouterAddress:v10];
 }
 
 @end

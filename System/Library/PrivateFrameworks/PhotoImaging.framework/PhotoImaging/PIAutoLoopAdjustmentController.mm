@@ -2,32 +2,32 @@
 - (CGRect)stabilizedCropRect;
 - (NSDictionary)recipe;
 - (NSString)flavor;
-- (void)setFlavor:(id)a3;
-- (void)setRecipe:(id)a3;
+- (void)setFlavor:(id)flavor;
+- (void)setRecipe:(id)recipe;
 @end
 
 @implementation PIAutoLoopAdjustmentController
 
-- (void)setFlavor:(id)a3
+- (void)setFlavor:(id)flavor
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [flavor copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIAutoLoopAdjustmentController flavorKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [recipe copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIAutoLoopAdjustmentController recipeKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (CGRect)stabilizedCropRect
 {
-  v2 = [(PIAutoLoopAdjustmentController *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"NormStabilizeInstructions"];
+  recipe = [(PIAutoLoopAdjustmentController *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"NormStabilizeInstructions"];
   v4 = [v3 objectForKeyedSubscript:@"stabCropRect"];
   v5 = [v4 objectForKeyedSubscript:@"X"];
   [v5 doubleValue];
@@ -58,18 +58,18 @@
 
 - (NSString)flavor
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIAutoLoopAdjustmentController flavorKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }
 
 - (NSDictionary)recipe
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIAutoLoopAdjustmentController recipeKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }

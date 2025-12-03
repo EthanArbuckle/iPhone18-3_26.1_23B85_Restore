@@ -1,51 +1,51 @@
 @interface UARPAssetManagerServiceManager
 - (BOOL)queryIsBusy;
-- (UARPAssetManagerServiceManager)initWithDelegate:(id)a3;
-- (id)checkCacheForPersonality:(id)a3;
-- (void)checkAssetAvailabilityForDomain:(id)a3;
+- (UARPAssetManagerServiceManager)initWithDelegate:(id)delegate;
+- (id)checkCacheForPersonality:(id)personality;
+- (void)checkAssetAvailabilityForDomain:(id)domain;
 - (void)checkForUpdate;
-- (void)clearAssetCacheForDomain:(id)a3;
+- (void)clearAssetCacheForDomain:(id)domain;
 - (void)initServiceNameList;
-- (void)primeCache:(id)a3;
-- (void)settingsChangedForSerialNumber:(id)a3;
-- (void)subscribeForPersonality:(id)a3;
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4;
-- (void)updateSettingsForPersonality:(id)a3;
+- (void)primeCache:(id)cache;
+- (void)settingsChangedForSerialNumber:(id)number;
+- (void)subscribeForPersonality:(id)personality;
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable;
+- (void)updateSettingsForPersonality:(id)personality;
 @end
 
 @implementation UARPAssetManagerServiceManager
 
-- (UARPAssetManagerServiceManager)initWithDelegate:(id)a3
+- (UARPAssetManagerServiceManager)initWithDelegate:(id)delegate
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, delegate);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = UARPAssetManagerServiceManager;
-  v10 = [(UARPAssetManagerServiceManager *)&v8 init];
-  objc_storeStrong(&v10, v10);
-  if (v10)
+  selfCopy = [(UARPAssetManagerServiceManager *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = os_log_create("com.apple.uarpassetmanager.uarp", "uarpAssetManager");
-    log = v10->_log;
-    v10->_log = v4;
+    log = selfCopy->_log;
+    selfCopy->_log = v4;
 
-    objc_storeStrong(&v10->_delegate, location[0]);
-    [(UARPAssetManagerServiceManager *)v10 initServiceNameList];
+    objc_storeStrong(&selfCopy->_delegate, location[0]);
+    [(UARPAssetManagerServiceManager *)selfCopy initServiceNameList];
   }
 
-  v7 = v10;
+  v7 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (void)initServiceNameList
 {
-  v39 = self;
+  selfCopy = self;
   v38[1] = a2;
   v38[0] = +[NSMutableArray array];
   v37 = [NSURL fileURLWithPath:@"/System/Library/PrivateFrameworks/UARPAssetManager.framework/XPCServices/" isDirectory:1];
@@ -59,22 +59,22 @@
     v33 = [NSBundle bundleWithURL:location];
     if (v33)
     {
-      v16 = [v33 infoDictionary];
-      v15 = [v16 objectForKeyedSubscript:@"UARP Asset Manager"];
-      v17 = [v15 BOOLValue];
+      infoDictionary = [v33 infoDictionary];
+      v15 = [infoDictionary objectForKeyedSubscript:@"UARP Asset Manager"];
+      bOOLValue = [v15 BOOLValue];
 
-      if (!v17)
+      if (!bOOLValue)
       {
         v34 = 4;
         goto LABEL_24;
       }
 
-      v14 = [v33 infoDictionary];
-      v30 = [v14 objectForKeyedSubscript:@"AssetType"];
+      infoDictionary2 = [v33 infoDictionary];
+      v30 = [infoDictionary2 objectForKeyedSubscript:@"AssetType"];
 
       if (!v30)
       {
-        v29 = v39->_log;
+        v29 = selfCopy->_log;
         v28 = 16;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
@@ -87,16 +87,16 @@
         objc_storeStrong(&v29, 0);
       }
 
-      v26 = [v33 bundleIdentifier];
-      if (v26)
+      bundleIdentifier = [v33 bundleIdentifier];
+      if (bundleIdentifier)
       {
-        v25 = v39->_log;
+        v25 = selfCopy->_log;
         v24 = 1;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           v10 = v25;
           v11 = v24;
-          __os_log_helper_16_2_1_8_64(v41, v26);
+          __os_log_helper_16_2_1_8_64(v41, bundleIdentifier);
           _os_log_impl(&_mh_execute_header, v10, v11, "Located UARP asset manager bundle %@", v41, 0xCu);
         }
 
@@ -104,8 +104,8 @@
         if ([v30 isEqualToString:@"mobileasset"] == 1)
         {
           v8 = [UARPAssetManagerServiceInstanceMobileAsset alloc];
-          v9 = [v33 bundleIdentifier];
-          delegate = v39->_delegate;
+          bundleIdentifier2 = [v33 bundleIdentifier];
+          delegate = selfCopy->_delegate;
           v23 = [UARPAssetManagerServiceInstanceMobileAsset initWithServiceName:v8 delegate:"initWithServiceName:delegate:"];
 
           [v38[0] addObject:v23];
@@ -113,7 +113,7 @@
           goto LABEL_22;
         }
 
-        oslog = v39->_log;
+        oslog = selfCopy->_log;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
           v7 = oslog;
@@ -131,12 +131,12 @@ LABEL_22:
         v34 = 0;
       }
 
-      objc_storeStrong(&v26, 0);
+      objc_storeStrong(&bundleIdentifier, 0);
       objc_storeStrong(&v30, 0);
       goto LABEL_24;
     }
 
-    v32 = v39->_log;
+    v32 = selfCopy->_log;
     v31 = 16;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -151,30 +151,30 @@ LABEL_22:
 LABEL_24:
     objc_storeStrong(&v33, 0);
     objc_autoreleasePoolPop(context);
-    v3 = [v36 nextObject];
+    nextObject = [v36 nextObject];
     v4 = location;
-    location = v3;
+    location = nextObject;
   }
 
   v34 = 2;
   objc_storeStrong(&location, 0);
   v5 = [[NSArray alloc] initWithArray:v38[0]];
-  assetManagerServiceList = v39->_assetManagerServiceList;
-  v39->_assetManagerServiceList = v5;
+  assetManagerServiceList = selfCopy->_assetManagerServiceList;
+  selfCopy->_assetManagerServiceList = v5;
 
   objc_storeStrong(&v36, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(v38, 0);
 }
 
-- (void)subscribeForPersonality:(id)a3
+- (void)subscribeForPersonality:(id)personality
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   memset(__b, 0, sizeof(__b));
-  obj = v13->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -208,14 +208,14 @@ LABEL_24:
   objc_storeStrong(location, 0);
 }
 
-- (id)checkCacheForPersonality:(id)a3
+- (id)checkCacheForPersonality:(id)personality
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   memset(__b, 0, sizeof(__b));
-  obj = v16->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v10 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v18 count:16];
   if (v10)
   {
@@ -279,14 +279,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)checkAssetAvailabilityForDomain:(id)a3
+- (void)checkAssetAvailabilityForDomain:(id)domain
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   memset(__b, 0, sizeof(__b));
-  obj = v13->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -320,14 +320,14 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (void)clearAssetCacheForDomain:(id)a3
+- (void)clearAssetCacheForDomain:(id)domain
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   memset(__b, 0, sizeof(__b));
-  obj = v13->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -361,14 +361,14 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (void)primeCache:(id)a3
+- (void)primeCache:(id)cache
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cache);
   memset(__b, 0, sizeof(__b));
-  obj = v13->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -404,10 +404,10 @@ LABEL_11:
 
 - (void)checkForUpdate
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = v11->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v7 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v12 count:16];
   if (v7)
   {
@@ -438,15 +438,15 @@ LABEL_11:
   }
 }
 
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, personality);
+  reachableCopy = reachable;
   memset(__b, 0, sizeof(__b));
-  obj = v16->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v17 count:16];
   if (v11)
   {
@@ -462,7 +462,7 @@ LABEL_11:
       }
 
       v13 = *(__b[1] + 8 * v7);
-      [v13 updateReachabilityForPersonality:location[0] reachable:{v14, v8}];
+      [v13 updateReachabilityForPersonality:location[0] reachable:{reachableCopy, v8}];
       ++v7;
       v8 = v4;
       if (v5 + 1 >= v4)
@@ -480,14 +480,14 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (void)updateSettingsForPersonality:(id)a3
+- (void)updateSettingsForPersonality:(id)personality
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   memset(__b, 0, sizeof(__b));
-  obj = v13->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -521,14 +521,14 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (void)settingsChangedForSerialNumber:(id)a3
+- (void)settingsChangedForSerialNumber:(id)number
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   memset(__b, 0, sizeof(__b));
-  obj = v13->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -564,11 +564,11 @@ LABEL_11:
 
 - (BOOL)queryIsBusy
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v12 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = v14->_assetManagerServiceList;
+  obj = selfCopy->_assetManagerServiceList;
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v9)
   {
@@ -584,8 +584,8 @@ LABEL_11:
       }
 
       v11 = *(__b[1] + 8 * v6);
-      v2 = [v11 queryIsBusy];
-      v12 = (v12 | v2) != 0;
+      queryIsBusy = [v11 queryIsBusy];
+      v12 = (v12 | queryIsBusy) != 0;
       ++v6;
       if (v4 + 1 >= v7)
       {

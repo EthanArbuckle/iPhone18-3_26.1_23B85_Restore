@@ -1,24 +1,24 @@
 @interface OKActionPinch
-+ (id)pinchActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 scale:(double)a6 angle:(double)a7 translation:(CGPoint)a8 velocity:(double)a9 context:(id)a10;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)pinchActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count scale:(double)scale angle:(double)angle translation:(CGPoint)translation velocity:(double)velocity context:(id)self0;
++ (void)setupJavascriptContext:(id)context;
 - (CGPoint)translation;
 - (OKActionPinch)init;
-- (OKActionPinch)initWithCoder:(id)a3;
+- (OKActionPinch)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionPinch
 
-+ (id)pinchActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 scale:(double)a6 angle:(double)a7 translation:(CGPoint)a8 velocity:(double)a9 context:(id)a10
++ (id)pinchActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count scale:(double)scale angle:(double)angle translation:(CGPoint)translation velocity:(double)velocity context:(id)self0
 {
-  y = a8.y;
-  x = a8.x;
-  v15 = [[OKActionPinch alloc] initWithState:a3 location:a5 touchCount:a10 context:a4.x, a4.y];
-  [(OKActionPinch *)v15 setScale:a6];
-  [(OKActionPinch *)v15 setAngle:a7];
+  y = translation.y;
+  x = translation.x;
+  v15 = [[OKActionPinch alloc] initWithState:state location:count touchCount:context context:location.x, location.y];
+  [(OKActionPinch *)v15 setScale:scale];
+  [(OKActionPinch *)v15 setAngle:angle];
   [(OKActionPinch *)v15 setTranslation:x, y];
-  [(OKActionPinch *)v15 setVelocity:a9];
+  [(OKActionPinch *)v15 setVelocity:velocity];
 
   return v15;
 }
@@ -46,29 +46,29 @@
   [(OKAction *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OKActionPinch;
   [(OKAction *)&v6 encodeWithCoder:?];
   if (self->_translation.x != *MEMORY[0x277CBF348] || self->_translation.y != *(MEMORY[0x277CBF348] + 8))
   {
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"translation"}];
+    [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"translation"}];
   }
 
-  [a3 encodeDouble:@"scale" forKey:self->_scale];
-  [a3 encodeDouble:@"angle" forKey:self->_angle];
-  [a3 encodeDouble:@"velocity" forKey:self->_velocity];
+  [coder encodeDouble:@"scale" forKey:self->_scale];
+  [coder encodeDouble:@"angle" forKey:self->_angle];
+  [coder encodeDouble:@"velocity" forKey:self->_velocity];
 }
 
-- (OKActionPinch)initWithCoder:(id)a3
+- (OKActionPinch)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = OKActionPinch;
   v4 = [(OKAction *)&v12 initWithCoder:?];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"translation"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"translation"];
     if (v5)
     {
       [v5 CGPointValue];
@@ -76,22 +76,22 @@
       v4->_translation.y = v7;
     }
 
-    [a3 decodeDoubleForKey:@"scale"];
+    [coder decodeDoubleForKey:@"scale"];
     v4->_scale = v8;
-    [a3 decodeDoubleForKey:@"angle"];
+    [coder decodeDoubleForKey:@"angle"];
     v4->_angle = v9;
-    [a3 decodeDoubleForKey:@"velocity"];
+    [coder decodeDoubleForKey:@"velocity"];
     v4->_velocity = v10;
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionPinch"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionPinch"];
 }
 
 - (CGPoint)translation

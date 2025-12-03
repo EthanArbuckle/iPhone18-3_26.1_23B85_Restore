@@ -1,24 +1,24 @@
 @interface MechanismKofNReorganizer
-- (MechanismKofNReorganizer)initWithMin:(int64_t)a3 max:(int64_t)a4 k:(id)a5 request:(id)a6 apply:(id)a7;
-- (id)reorganizeMechanisms:(id)a3 k:(int64_t)a4 error:(id *)a5;
+- (MechanismKofNReorganizer)initWithMin:(int64_t)min max:(int64_t)max k:(id)k request:(id)request apply:(id)apply;
+- (id)reorganizeMechanisms:(id)mechanisms k:(int64_t)k error:(id *)error;
 @end
 
 @implementation MechanismKofNReorganizer
 
-- (MechanismKofNReorganizer)initWithMin:(int64_t)a3 max:(int64_t)a4 k:(id)a5 request:(id)a6 apply:(id)a7
+- (MechanismKofNReorganizer)initWithMin:(int64_t)min max:(int64_t)max k:(id)k request:(id)request apply:(id)apply
 {
-  v13 = a5;
-  v14 = a7;
+  kCopy = k;
+  applyCopy = apply;
   v20.receiver = self;
   v20.super_class = MechanismKofNReorganizer;
-  v15 = [(MechanismBase *)&v20 initWithEventIdentifier:0 remoteViewController:0 cachedExternalizationDelegate:0 request:a6];
+  v15 = [(MechanismBase *)&v20 initWithEventIdentifier:0 remoteViewController:0 cachedExternalizationDelegate:0 request:request];
   v16 = v15;
   if (v15)
   {
-    v15->_min = a3;
-    v15->_max = a4;
-    objc_storeStrong(&v15->_k, a5);
-    v17 = MEMORY[0x23EE73C30](v14);
+    v15->_min = min;
+    v15->_max = max;
+    objc_storeStrong(&v15->_k, k);
+    v17 = MEMORY[0x23EE73C30](applyCopy);
     apply = v16->_apply;
     v16->_apply = v17;
   }
@@ -26,32 +26,32 @@
   return v16;
 }
 
-- (id)reorganizeMechanisms:(id)a3 k:(int64_t)a4 error:(id *)a5
+- (id)reorganizeMechanisms:(id)mechanisms k:(int64_t)k error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  mechanismsCopy = mechanisms;
   v9 = objc_opt_new();
-  if ([v8 count] >= self->_min && objc_msgSend(v8, "count") <= self->_max)
+  if ([mechanismsCopy count] >= self->_min && objc_msgSend(mechanismsCopy, "count") <= self->_max)
   {
     k = self->_k;
-    if (k && [(NSNumber *)k integerValue]!= a4)
+    if (k && [(NSNumber *)k integerValue]!= k)
     {
       v30 = MEMORY[0x277CD47F0];
       v31 = MEMORY[0x277CCACA8];
-      v32 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v32 = [MEMORY[0x277CCABB0] numberWithInteger:k];
       v33 = [v31 stringWithFormat:@"k is %@, but should be %@", v32, self->_k];
       v16 = [v30 internalErrorWithMessage:v33];
     }
 
     else
     {
-      if ([v8 count])
+      if ([mechanismsCopy count])
       {
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v23 = v8;
+        v23 = mechanismsCopy;
         v24 = [v23 countByEnumeratingWithState:&v35 objects:v39 count:16];
         if (v24)
         {
@@ -102,17 +102,17 @@
   {
     v10 = MEMORY[0x277CD47F0];
     v11 = MEMORY[0x277CCACA8];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(mechanismsCopy, "count")}];
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:self->_min];
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:self->_max];
     v15 = [v11 stringWithFormat:@"number of mechanisms to reorganize is %@, but should be in [%@-%@]", v12, v13, v14];
     v16 = [v10 internalErrorWithMessage:v15];
   }
 
-  if (a5)
+  if (error)
   {
     v17 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   if (v16)

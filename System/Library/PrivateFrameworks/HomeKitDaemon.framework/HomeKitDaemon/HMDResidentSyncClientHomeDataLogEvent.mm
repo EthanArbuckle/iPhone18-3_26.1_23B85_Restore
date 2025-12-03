@@ -1,5 +1,5 @@
 @interface HMDResidentSyncClientHomeDataLogEvent
-- (HMDResidentSyncClientHomeDataLogEvent)initWithHomeUUID:(id)a3 encodedDataSize:(unint64_t)a4 homeDataType:(int64_t)a5 transportType:(int)a6;
+- (HMDResidentSyncClientHomeDataLogEvent)initWithHomeUUID:(id)d encodedDataSize:(unint64_t)size homeDataType:(int64_t)type transportType:(int)transportType;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -108,16 +108,16 @@
   return v13;
 }
 
-- (HMDResidentSyncClientHomeDataLogEvent)initWithHomeUUID:(id)a3 encodedDataSize:(unint64_t)a4 homeDataType:(int64_t)a5 transportType:(int)a6
+- (HMDResidentSyncClientHomeDataLogEvent)initWithHomeUUID:(id)d encodedDataSize:(unint64_t)size homeDataType:(int64_t)type transportType:(int)transportType
 {
   v10.receiver = self;
   v10.super_class = HMDResidentSyncClientHomeDataLogEvent;
-  result = [(HMMHomeLogEvent *)&v10 initWithHomeUUID:a3];
+  result = [(HMMHomeLogEvent *)&v10 initWithHomeUUID:d];
   if (result)
   {
-    result->_encodedDataSize = a4;
-    result->_homeDataType = a5;
-    result->_transportType = a6;
+    result->_encodedDataSize = size;
+    result->_homeDataType = type;
+    result->_transportType = transportType;
   }
 
   return result;

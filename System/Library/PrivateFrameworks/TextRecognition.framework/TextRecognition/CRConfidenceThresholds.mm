@@ -1,11 +1,11 @@
 @interface CRConfidenceThresholds
 + (id)defaultConfidenceThresholds;
-- (CRConfidenceThresholds)initWithMediumThreshold:(float)a3 highThreshold:(float)a4;
+- (CRConfidenceThresholds)initWithMediumThreshold:(float)threshold highThreshold:(float)highThreshold;
 @end
 
 @implementation CRConfidenceThresholds
 
-- (CRConfidenceThresholds)initWithMediumThreshold:(float)a3 highThreshold:(float)a4
+- (CRConfidenceThresholds)initWithMediumThreshold:(float)threshold highThreshold:(float)highThreshold
 {
   v9.receiver = self;
   v9.super_class = CRConfidenceThresholds;
@@ -13,8 +13,8 @@
 
   if (v7)
   {
-    v7->_mediumConfidenceThreshold = a3;
-    v7->_highConfidenceThreshold = a4;
+    v7->_mediumConfidenceThreshold = threshold;
+    v7->_highConfidenceThreshold = highThreshold;
   }
 
   return v7;

@@ -1,19 +1,19 @@
 @interface CESRSpeechProfileInstance
-+ (id)loadAllInstancesAtSpeechProfileSiteURL:(id)a3 error:(id *)a4;
-+ (id)loadInstanceAtSpeechProfileSiteURL:(id)a3 locale:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstance:(id)a3;
-- (BOOL)remove:(id *)a3;
++ (id)loadAllInstancesAtSpeechProfileSiteURL:(id)l error:(id *)error;
++ (id)loadInstanceAtSpeechProfileSiteURL:(id)l locale:(id)locale error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstance:(id)instance;
+- (BOOL)remove:(id *)remove;
 - (CESRSpeechProfileInstance)init;
 - (id)_changeRegistryFilename;
-- (id)_updateVersion:(id)a3 forKeys:(id)a4 logKey:(id)a5;
+- (id)_updateVersion:(id)version forKeys:(id)keys logKey:(id)key;
 - (id)description;
-- (id)lastCompletedVersionForSpeechCategory:(id)a3;
-- (id)lastRegisteredVersionForSpeechCategory:(id)a3;
+- (id)lastCompletedVersionForSpeechCategory:(id)category;
+- (id)lastRegisteredVersionForSpeechCategory:(id)category;
 - (unint64_t)hash;
 - (unsigned)options;
-- (void)recordUpdateCompletedForSpeechCategories:(id)a3 version:(id)a4;
-- (void)registerUpdateForSpeechCategories:(id)a3 version:(id)a4;
+- (void)recordUpdateCompletedForSpeechCategories:(id)categories version:(id)version;
+- (void)registerUpdateForSpeechCategories:(id)categories version:(id)version;
 @end
 
 @implementation CESRSpeechProfileInstance
@@ -27,15 +27,15 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqualToInstance:(id)a3
+- (BOOL)isEqualToInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   locale = self->_locale;
-  v6 = [v4 locale];
-  if ([(NSLocale *)locale isEqual:v6])
+  locale = [instanceCopy locale];
+  if ([(NSLocale *)locale isEqual:locale])
   {
-    v7 = [(CESRSpeechProfileInstance *)self options];
-    v8 = v7 == [v4 options];
+    options = [(CESRSpeechProfileInstance *)self options];
+    v8 = options == [instanceCopy options];
   }
 
   else
@@ -46,18 +46,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRSpeechProfileInstance *)self isEqualToInstance:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRSpeechProfileInstance *)self isEqualToInstance:v5];
   }
 
   return v6;
@@ -66,56 +66,56 @@
 - (unsigned)options
 {
   v2 = [(CESRDictionaryLog *)self->_log objectForKey:@"options"];
-  v3 = [v2 unsignedCharValue];
+  unsignedCharValue = [v2 unsignedCharValue];
 
-  return v3;
+  return unsignedCharValue;
 }
 
-- (id)lastCompletedVersionForSpeechCategory:(id)a3
+- (id)lastCompletedVersionForSpeechCategory:(id)category
 {
   log = self->_log;
-  v4 = a3;
+  categoryCopy = category;
   v5 = [(CESRDictionaryLog *)log mutableDictionaryForKey:@"completed" error:0];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:categoryCopy];
 
   return v6;
 }
 
-- (id)lastRegisteredVersionForSpeechCategory:(id)a3
+- (id)lastRegisteredVersionForSpeechCategory:(id)category
 {
   log = self->_log;
-  v4 = a3;
+  categoryCopy = category;
   v5 = [(CESRDictionaryLog *)log mutableDictionaryForKey:@"registered" error:0];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:categoryCopy];
 
   return v6;
 }
 
-- (void)recordUpdateCompletedForSpeechCategories:(id)a3 version:(id)a4
+- (void)recordUpdateCompletedForSpeechCategories:(id)categories version:(id)version
 {
   log = self->_log;
-  v5 = [(CESRSpeechProfileInstance *)self _updateVersion:a4 forKeys:a3 logKey:@"completed"];
+  v5 = [(CESRSpeechProfileInstance *)self _updateVersion:version forKeys:categories logKey:@"completed"];
   [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"completed" error:0];
 }
 
-- (void)registerUpdateForSpeechCategories:(id)a3 version:(id)a4
+- (void)registerUpdateForSpeechCategories:(id)categories version:(id)version
 {
   log = self->_log;
-  v5 = [(CESRSpeechProfileInstance *)self _updateVersion:a4 forKeys:a3 logKey:@"registered"];
+  v5 = [(CESRSpeechProfileInstance *)self _updateVersion:version forKeys:categories logKey:@"registered"];
   [(CESRDictionaryLog *)log writeUpdatedObject:v5 forKey:@"registered" error:0];
 }
 
-- (id)_updateVersion:(id)a3 forKeys:(id)a4 logKey:(id)a5
+- (id)_updateVersion:(id)version forKeys:(id)keys logKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CESRDictionaryLog *)self->_log mutableDictionaryForKey:a5 error:0];
+  versionCopy = version;
+  keysCopy = keys;
+  v10 = [(CESRDictionaryLog *)self->_log mutableDictionaryForKey:key error:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v9;
+  v11 = keysCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -130,7 +130,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [v10 setObject:v8 forKey:{*(*(&v18 + 1) + 8 * i), v18}];
+        [v10 setObject:versionCopy forKey:{*(*(&v18 + 1) + 8 * i), v18}];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -144,14 +144,14 @@
   return v10;
 }
 
-- (BOOL)remove:(id *)a3
+- (BOOL)remove:(id *)remove
 {
   v5 = [(CCSetChangeRegistry *)self->_changeRegistry clearAllBookmarksAndCommit:?];
   if (v5)
   {
     log = self->_log;
 
-    LOBYTE(v5) = [(CESRDictionaryLog *)log clear:a3];
+    LOBYTE(v5) = [(CESRDictionaryLog *)log clear:remove];
   }
 
   return v5;
@@ -160,17 +160,17 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSLocale *)self->_locale localeIdentifier];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
   v5 = CESRSpeechProfileInstanceOptionsDescription([(CESRSpeechProfileInstance *)self options]);
-  v6 = [v3 stringWithFormat:@"%@:[%@]", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@:[%@]", localeIdentifier, v5];
 
   return v6;
 }
 
 - (id)_changeRegistryFilename
 {
-  v2 = [(NSLocale *)self->_locale localeIdentifier];
-  v3 = [@"registry_" stringByAppendingString:v2];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  v3 = [@"registry_" stringByAppendingString:localeIdentifier];
 
   return v3;
 }
@@ -181,23 +181,23 @@
   objc_exception_throw(v2);
 }
 
-+ (id)loadInstanceAtSpeechProfileSiteURL:(id)a3 locale:(id)a4 error:(id *)a5
++ (id)loadInstanceAtSpeechProfileSiteURL:(id)l locale:(id)locale error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CESRSpeechProfileInstance alloc] initWithSpeechProfileSiteURL:v8 create:0 locale:v7 options:0 error:a5];
+  localeCopy = locale;
+  lCopy = l;
+  v9 = [[CESRSpeechProfileInstance alloc] initWithSpeechProfileSiteURL:lCopy create:0 locale:localeCopy options:0 error:error];
 
   return v9;
 }
 
-+ (id)loadAllInstancesAtSpeechProfileSiteURL:(id)a3 error:(id *)a4
++ (id)loadAllInstancesAtSpeechProfileSiteURL:(id)l error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 path];
-  v30 = a4;
-  v8 = [v6 contentsOfDirectoryAtPath:v7 error:a4];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  errorCopy = error;
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:error];
 
   if (v8)
   {
@@ -226,14 +226,14 @@
           }
 
           v14 = *(*(&v31 + 1) + 8 * i);
-          v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v14 relativeToURL:{v5, v26}];
-          v16 = [v15 path];
+          v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v14 relativeToURL:{lCopy, v26}];
+          path2 = [v15 path];
 
-          if ([v6 fileExistsAtPath:v16 isDirectory:&v35] && (v35 & 1) == 0 && objc_msgSend(v14, "hasPrefix:", @"instance_"))
+          if ([defaultManager fileExistsAtPath:path2 isDirectory:&v35] && (v35 & 1) == 0 && objc_msgSend(v14, "hasPrefix:", @"instance_"))
           {
             v17 = [v14 substringFromIndex:{objc_msgSend(@"instance_", "length")}];
             v18 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v17];
-            v19 = [CESRSpeechProfileInstance loadInstanceAtSpeechProfileSiteURL:v5 locale:v18 error:v30];
+            v19 = [CESRSpeechProfileInstance loadInstanceAtSpeechProfileSiteURL:lCopy locale:v18 error:errorCopy];
             if (!v19)
             {
 

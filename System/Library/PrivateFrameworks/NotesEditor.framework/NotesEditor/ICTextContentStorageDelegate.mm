@@ -1,14 +1,14 @@
 @interface ICTextContentStorageDelegate
-- (BOOL)textContentManager:(id)a3 shouldEnumerateTextElement:(id)a4 options:(unint64_t)a5;
-- (id)textContentStorage:(id)a3 textParagraphWithRange:(_NSRange)a4;
+- (BOOL)textContentManager:(id)manager shouldEnumerateTextElement:(id)element options:(unint64_t)options;
+- (id)textContentStorage:(id)storage textParagraphWithRange:(_NSRange)range;
 @end
 
 @implementation ICTextContentStorageDelegate
 
-- (BOOL)textContentManager:(id)a3 shouldEnumerateTextElement:(id)a4 options:(unint64_t)a5
+- (BOOL)textContentManager:(id)manager shouldEnumerateTextElement:(id)element options:(unint64_t)options
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -16,8 +16,8 @@
     v67[1] = 3221225472;
     v67[2] = __86__ICTextContentStorageDelegate_textContentManager_shouldEnumerateTextElement_options___block_invoke;
     v67[3] = &unk_2781AD930;
-    v68 = v7;
-    [v8 setMarkerTextAttributeOverrides:v67];
+    v68 = managerCopy;
+    [elementCopy setMarkerTextAttributeOverrides:v67];
   }
 
   if (!ICInternalSettingsIsCollapsibleSectionsEnabled() || [(ICTextContentStorageDelegate *)self insideSiriSnippet])
@@ -27,31 +27,31 @@
 
   objc_opt_class();
   v9 = ICDynamicCast();
-  v10 = [v9 elementRange];
-  v11 = v10;
-  if (v10 && ([v10 isEmpty] & 1) == 0)
+  elementRange = [v9 elementRange];
+  v11 = elementRange;
+  if (elementRange && ([elementRange isEmpty] & 1) == 0)
   {
     objc_opt_class();
     v14 = ICCheckedDynamicCast();
-    v12 = [v7 documentRange];
-    v15 = [v12 location];
-    v16 = [v11 location];
-    v17 = [v7 offsetFromLocation:v15 toLocation:v16];
+    documentRange = [managerCopy documentRange];
+    location = [documentRange location];
+    location2 = [v11 location];
+    v17 = [managerCopy offsetFromLocation:location toLocation:location2];
 
-    v18 = [v14 textStorage];
-    v19 = [v18 attribute:*MEMORY[0x277D35DA8] atIndex:v17 effectiveRange:0];
+    textStorage = [v14 textStorage];
+    v19 = [textStorage attribute:*MEMORY[0x277D35DA8] atIndex:v17 effectiveRange:0];
 
-    v20 = [v19 uuid];
-    if (!v20)
+    uuid = [v19 uuid];
+    if (!uuid)
     {
       v43 = 1;
       goto LABEL_30;
     }
 
-    v21 = v20;
+    v21 = uuid;
     v66 = v19;
-    v22 = [v19 uuid];
-    v23 = [v14 isUUIDHidden:v22];
+    uuid2 = [v19 uuid];
+    v23 = [v14 isUUIDHidden:uuid2];
 
     if (!v23)
     {
@@ -71,53 +71,53 @@ LABEL_30:
     objc_opt_class();
     objc_opt_class();
     v24 = ICDynamicCast();
-    v25 = [v24 textStorage];
+    textStorage2 = [v24 textStorage];
     ICDynamicCast();
     v26 = v65 = v14;
 
-    v27 = [v7 documentRange];
-    v28 = [v27 location];
-    v29 = [v11 endLocation];
-    v30 = [v7 offsetFromLocation:v28 toLocation:v29];
+    documentRange2 = [managerCopy documentRange];
+    location3 = [documentRange2 location];
+    endLocation = [v11 endLocation];
+    v30 = [managerCopy offsetFromLocation:location3 toLocation:endLocation];
 
     v31 = v26;
     v14 = v65;
-    v32 = [v31 string];
-    v33 = [v32 substringWithRange:{v17, v30 - v17}];
+    string = [v31 string];
+    v33 = [string substringWithRange:{v17, v30 - v17}];
 
     if (([v33 ic_containsNonWhitespaceCharacters] & 1) == 0)
     {
-      v34 = [v31 string];
-      v35 = [v34 length];
+      string2 = [v31 string];
+      v35 = [string2 length];
       v36 = v30 + 1;
 
       if (v35 > v36)
       {
         v64 = v31;
         v37 = [v31 attribute:*MEMORY[0x277D35DA8] atIndex:v36 effectiveRange:0];
-        v38 = [v65 outlineController];
-        v39 = [v37 uuid];
-        if (v39)
+        outlineController = [v65 outlineController];
+        uuid3 = [v37 uuid];
+        if (uuid3)
         {
-          v40 = v39;
-          v63 = v38;
+          v40 = uuid3;
+          v63 = outlineController;
           [v37 uuid];
           v42 = v41 = v37;
           if ([v65 isUUIDHidden:v42])
           {
 
             v37 = v41;
-            v38 = v63;
+            outlineController = v63;
           }
 
           else
           {
-            v44 = [v41 uuid];
-            LODWORD(v62) = [v63 isUUIDCollapsible:v44];
+            uuid4 = [v41 uuid];
+            LODWORD(v62) = [v63 isUUIDCollapsible:uuid4];
 
             v45 = MEMORY[0x277D35DA8];
             v37 = v41;
-            v38 = v63;
+            outlineController = v63;
             if (v62)
             {
               [v66 uuid];
@@ -127,15 +127,15 @@ LABEL_30:
 
               v49 = [v64 attribute:*v46 atIndex:objc_msgSend(v63 effectiveRange:{"rangeForUUID:", v48), 0}];
               LODWORD(v46) = [v62 style];
-              v50 = [v49 style];
+              style = [v49 style];
 
-              v51 = v46 >= v50;
+              v51 = v46 >= style;
               v37 = v62;
-              v38 = v63;
+              outlineController = v63;
               if (!v51)
               {
 
-                LOBYTE(v12) = 1;
+                LOBYTE(documentRange) = 1;
                 v31 = v64;
 LABEL_28:
 
@@ -150,17 +150,17 @@ LABEL_28:
       }
     }
 
-    v52 = [v65 textStorage];
-    v53 = [v52 alwaysEnumerateTrailingParagraph];
-    LOBYTE(v12) = v53 && ([v7 documentRange], v54 = ;
+    textStorage3 = [v65 textStorage];
+    alwaysEnumerateTrailingParagraph = [textStorage3 alwaysEnumerateTrailingParagraph];
+    LOBYTE(documentRange) = alwaysEnumerateTrailingParagraph && ([managerCopy documentRange], v54 = ;
     goto LABEL_28;
   }
 
 LABEL_8:
-  LOBYTE(v12) = 1;
+  LOBYTE(documentRange) = 1;
 LABEL_9:
 
-  return v12 & 1;
+  return documentRange & 1;
 }
 
 id __86__ICTextContentStorageDelegate_textContentManager_shouldEnumerateTextElement_options___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -255,12 +255,12 @@ id __86__ICTextContentStorageDelegate_textContentManager_shouldEnumerateTextElem
   return v32;
 }
 
-- (id)textContentStorage:(id)a3 textParagraphWithRange:(_NSRange)a4
+- (id)textContentStorage:(id)storage textParagraphWithRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = v6;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v7 = storageCopy;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -268,12 +268,12 @@ id __86__ICTextContentStorageDelegate_textContentManager_shouldEnumerateTextElem
 
   else
   {
-    v9 = [v6 textStorage];
-    v10 = [v9 attribute:*MEMORY[0x277D35DA8] atIndex:location effectiveRange:0];
+    textStorage = [storageCopy textStorage];
+    v10 = [textStorage attribute:*MEMORY[0x277D35DA8] atIndex:location effectiveRange:0];
 
-    v11 = [v7 textStorage];
+    textStorage2 = [v7 textStorage];
     v12 = *MEMORY[0x277D74060];
-    v13 = [v11 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
+    v13 = [textStorage2 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
 
     if ([v10 isList] && (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
     {
@@ -302,25 +302,25 @@ id __86__ICTextContentStorageDelegate_textContentManager_shouldEnumerateTextElem
       v58 = length;
       v15 = _Block_copy(aBlock);
       objc_opt_class();
-      v16 = [v14 textStorage];
+      textStorage3 = [v14 textStorage];
       v49 = ICDynamicCast();
 
       objc_opt_class();
-      v17 = [v49 textViews];
-      v18 = [v17 anyObject];
+      textViews = [v49 textViews];
+      anyObject = [textViews anyObject];
       v19 = ICDynamicCast();
-      v20 = [v19 editorContainer];
-      v21 = [v20 note];
+      editorContainer = [v19 editorContainer];
+      note = [editorContainer note];
 
-      v47 = v21;
-      v22 = [v21 calculateDocumentController];
+      v47 = note;
+      calculateDocumentController = [note calculateDocumentController];
       v23 = v15 + 2;
       v24 = v15[2](v15);
       v25 = v15[2](v15);
-      v26 = [v25 ic_range];
-      [v22 formatExpressionsInAttributedString:v24 range:v26 textStorageOffset:v27 skipStaleExpressions:{location, 0}];
+      ic_range = [v25 ic_range];
+      [calculateDocumentController formatExpressionsInAttributedString:v24 range:ic_range textStorageOffset:v27 skipStaleExpressions:{location, 0}];
 
-      v28 = [v14 textStorage];
+      textStorage4 = [v14 textStorage];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __74__ICTextContentStorageDelegate_textContentStorage_textParagraphWithRange___block_invoke_2;
@@ -329,8 +329,8 @@ id __86__ICTextContentStorageDelegate_textContentManager_shouldEnumerateTextElem
       v53 = length;
       v29 = v15;
       v51 = v29;
-      [v28 enumerateAttribute:v45 inRange:location options:length usingBlock:{0, v50}];
-      v46 = v22;
+      [textStorage4 enumerateAttribute:v45 inRange:location options:length usingBlock:{0, v50}];
+      v46 = calculateDocumentController;
 
       [v14 attributedString];
       v31 = v30 = v47;

@@ -1,17 +1,17 @@
 @interface NTKPigmentAddController
-- (NTKPigmentAddController)initWithFace:(id)a3 faceView:(id)a4 slot:(id)a5 willExitHandler:(id)a6;
+- (NTKPigmentAddController)initWithFace:(id)face faceView:(id)view slot:(id)slot willExitHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKPigmentAddController
 
-- (NTKPigmentAddController)initWithFace:(id)a3 faceView:(id)a4 slot:(id)a5 willExitHandler:(id)a6
+- (NTKPigmentAddController)initWithFace:(id)face faceView:(id)view slot:(id)slot willExitHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[_NTKPigmentAddController alloc] initWithFace:v13 faceView:v12 slot:v11 willExitHandler:v10];
+  handlerCopy = handler;
+  slotCopy = slot;
+  viewCopy = view;
+  faceCopy = face;
+  v14 = [[_NTKPigmentAddController alloc] initWithFace:faceCopy faceView:viewCopy slot:slotCopy willExitHandler:handlerCopy];
 
   v19.receiver = self;
   v19.super_class = NTKPigmentAddController;
@@ -19,8 +19,8 @@
   v16 = v15;
   if (v15)
   {
-    v17 = [(NTKPigmentAddController *)v15 presentationController];
-    [v17 setDelegate:v14];
+    presentationController = [(NTKPigmentAddController *)v15 presentationController];
+    [presentationController setDelegate:v14];
   }
 
   return v16;

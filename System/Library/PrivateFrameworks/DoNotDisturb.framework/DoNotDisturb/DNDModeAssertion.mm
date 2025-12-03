@@ -1,53 +1,53 @@
 @interface DNDModeAssertion
-- (BOOL)isEqual:(id)a3;
-- (DNDModeAssertion)initWithCoder:(id)a3;
-- (DNDModeAssertion)initWithUUID:(id)a3 startDate:(id)a4 details:(id)a5 source:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeAssertion)initWithCoder:(id)coder;
+- (DNDModeAssertion)initWithUUID:(id)d startDate:(id)date details:(id)details source:(id)source;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeAssertion
 
-- (DNDModeAssertion)initWithUUID:(id)a3 startDate:(id)a4 details:(id)a5 source:(id)a6
+- (DNDModeAssertion)initWithUUID:(id)d startDate:(id)date details:(id)details source:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dateCopy = date;
+  detailsCopy = details;
+  sourceCopy = source;
   v27.receiver = self;
   v27.super_class = DNDModeAssertion;
   v14 = [(DNDModeAssertion *)&v27 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     UUID = v14->_UUID;
     v14->_UUID = v15;
 
-    v17 = [v11 copy];
+    v17 = [dateCopy copy];
     v18 = v17;
     if (v17)
     {
-      v19 = v17;
+      distantPast = v17;
     }
 
     else
     {
-      v19 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
     startDate = v14->_startDate;
-    v14->_startDate = v19;
+    v14->_startDate = distantPast;
 
-    v21 = [v12 copy];
+    v21 = [detailsCopy copy];
     details = v14->_details;
     v14->_details = v21;
 
-    v23 = [v13 copy];
+    v23 = [sourceCopy copy];
     source = v14->_source;
     v14->_source = v23;
 
-    if (!v11)
+    if (!dateCopy)
     {
       v25 = DNDLogModeAssertion;
       if (os_log_type_enabled(DNDLogModeAssertion, OS_LOG_TYPE_FAULT))
@@ -62,22 +62,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDModeAssertion *)self UUID];
-  v4 = [v3 hash];
-  v5 = [(DNDModeAssertion *)self startDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDModeAssertion *)self details];
-  v8 = [v7 hash];
-  v9 = [(DNDModeAssertion *)self source];
-  v10 = v8 ^ [v9 hash];
+  uUID = [(DNDModeAssertion *)self UUID];
+  v4 = [uUID hash];
+  startDate = [(DNDModeAssertion *)self startDate];
+  v6 = [startDate hash] ^ v4;
+  details = [(DNDModeAssertion *)self details];
+  v8 = [details hash];
+  source = [(DNDModeAssertion *)self source];
+  v10 = v8 ^ [source hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -87,21 +87,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDModeAssertion *)self UUID];
-      v8 = [(DNDModeAssertion *)v6 UUID];
-      if (v7 != v8)
+      v6 = equalCopy;
+      uUID = [(DNDModeAssertion *)self UUID];
+      uUID2 = [(DNDModeAssertion *)v6 UUID];
+      if (uUID != uUID2)
       {
-        v9 = [(DNDModeAssertion *)self UUID];
-        if (!v9)
+        uUID3 = [(DNDModeAssertion *)self UUID];
+        if (!uUID3)
         {
           v13 = 0;
           goto LABEL_50;
         }
 
-        v10 = v9;
-        v11 = [(DNDModeAssertion *)v6 UUID];
-        if (!v11)
+        v10 = uUID3;
+        uUID4 = [(DNDModeAssertion *)v6 UUID];
+        if (!uUID4)
         {
           v13 = 0;
 LABEL_49:
@@ -109,9 +109,9 @@ LABEL_49:
           goto LABEL_50;
         }
 
-        v12 = [(DNDModeAssertion *)self UUID];
-        v3 = [(DNDModeAssertion *)v6 UUID];
-        if (![v12 isEqual:v3])
+        uUID5 = [(DNDModeAssertion *)self UUID];
+        uUID6 = [(DNDModeAssertion *)v6 UUID];
+        if (![uUID5 isEqual:uUID6])
         {
           v13 = 0;
 LABEL_48:
@@ -119,34 +119,34 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v48 = v3;
-        v49 = v12;
-        v50 = v11;
+        v48 = uUID6;
+        v49 = uUID5;
+        v50 = uUID4;
         v51 = v10;
       }
 
-      v14 = [(DNDModeAssertion *)self startDate];
-      v15 = [(DNDModeAssertion *)v6 startDate];
-      if (v14 != v15)
+      startDate = [(DNDModeAssertion *)self startDate];
+      startDate2 = [(DNDModeAssertion *)v6 startDate];
+      if (startDate != startDate2)
       {
-        v16 = [(DNDModeAssertion *)self startDate];
-        if (v16)
+        startDate3 = [(DNDModeAssertion *)self startDate];
+        if (startDate3)
         {
-          v17 = v16;
-          v18 = [(DNDModeAssertion *)v6 startDate];
-          if (v18)
+          v17 = startDate3;
+          startDate4 = [(DNDModeAssertion *)v6 startDate];
+          if (startDate4)
           {
-            v19 = v18;
-            v47 = v14;
-            v20 = [(DNDModeAssertion *)self startDate];
-            v3 = [(DNDModeAssertion *)v6 startDate];
-            if (([v20 isEqual:v3] & 1) == 0)
+            v19 = startDate4;
+            v47 = startDate;
+            startDate5 = [(DNDModeAssertion *)self startDate];
+            uUID6 = [(DNDModeAssertion *)v6 startDate];
+            if (([startDate5 isEqual:uUID6] & 1) == 0)
             {
 
               goto LABEL_38;
             }
 
-            v41 = v20;
+            v41 = startDate5;
             v42 = v19;
             v43 = v17;
             goto LABEL_17;
@@ -156,39 +156,39 @@ LABEL_48:
         goto LABEL_38;
       }
 
-      v47 = v14;
+      v47 = startDate;
 LABEL_17:
-      v21 = [(DNDModeAssertion *)self details];
-      v46 = [(DNDModeAssertion *)v6 details];
-      if (v21 == v46)
+      details = [(DNDModeAssertion *)self details];
+      details2 = [(DNDModeAssertion *)v6 details];
+      if (details == details2)
       {
-        v44 = v21;
-        v45 = v3;
+        v44 = details;
+        v45 = uUID6;
         goto LABEL_25;
       }
 
-      v22 = [(DNDModeAssertion *)self details];
-      if (v22)
+      details3 = [(DNDModeAssertion *)self details];
+      if (details3)
       {
-        v23 = v22;
-        v24 = [(DNDModeAssertion *)v6 details];
-        if (v24)
+        v23 = details3;
+        details4 = [(DNDModeAssertion *)v6 details];
+        if (details4)
         {
-          v45 = v3;
-          v40 = v24;
-          v25 = [(DNDModeAssertion *)self details];
-          v26 = [(DNDModeAssertion *)v6 details];
-          if ([v25 isEqual:v26])
+          v45 = uUID6;
+          v40 = details4;
+          details5 = [(DNDModeAssertion *)self details];
+          details6 = [(DNDModeAssertion *)v6 details];
+          if ([details5 isEqual:details6])
           {
-            v37 = v26;
-            v38 = v25;
+            v37 = details6;
+            v38 = details5;
             v39 = v23;
-            v44 = v21;
+            v44 = details;
 LABEL_25:
-            v27 = [(DNDModeAssertion *)self source];
-            v28 = [(DNDModeAssertion *)v6 source];
-            v29 = v28;
-            if (v27 == v28)
+            source = [(DNDModeAssertion *)self source];
+            source2 = [(DNDModeAssertion *)v6 source];
+            v29 = source2;
+            if (source == source2)
             {
 
               v13 = 1;
@@ -196,19 +196,19 @@ LABEL_25:
 
             else
             {
-              v30 = [(DNDModeAssertion *)self source];
-              if (v30)
+              source3 = [(DNDModeAssertion *)self source];
+              if (source3)
               {
-                v36 = v30;
-                v31 = [(DNDModeAssertion *)v6 source];
-                if (v31)
+                v36 = source3;
+                source4 = [(DNDModeAssertion *)v6 source];
+                if (source4)
                 {
-                  v35 = v31;
-                  v32 = [(DNDModeAssertion *)self source];
-                  v33 = [(DNDModeAssertion *)v6 source];
-                  v13 = [v32 isEqual:v33];
+                  v35 = source4;
+                  source5 = [(DNDModeAssertion *)self source];
+                  source6 = [(DNDModeAssertion *)v6 source];
+                  v13 = [source5 isEqual:source6];
 
-                  v31 = v35;
+                  source4 = v35;
                 }
 
                 else
@@ -224,20 +224,20 @@ LABEL_25:
               }
             }
 
-            if (v44 != v46)
+            if (v44 != details2)
             {
             }
 
-            if (v47 != v15)
+            if (v47 != startDate2)
             {
             }
 
 LABEL_47:
-            v11 = v50;
+            uUID4 = v50;
             v10 = v51;
-            v12 = v49;
-            v3 = v48;
-            if (v7 != v8)
+            uUID5 = v49;
+            uUID6 = v48;
+            if (uUID != uUID2)
             {
               goto LABEL_48;
             }
@@ -247,12 +247,12 @@ LABEL_50:
             goto LABEL_51;
           }
 
-          v24 = v40;
-          v3 = v45;
+          details4 = v40;
+          uUID6 = v45;
         }
       }
 
-      if (v47 != v15)
+      if (v47 != startDate2)
       {
       }
 
@@ -273,41 +273,41 @@ LABEL_51:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeAssertion *)self UUID];
-  v6 = [(DNDModeAssertion *)self startDate];
-  v7 = [(DNDModeAssertion *)self details];
-  v8 = [(DNDModeAssertion *)self source];
-  v9 = [v3 stringWithFormat:@"<%@: %p UUID: %@; startDate: %@; details: %@; source: %@>", v4, self, v5, v6, v7, v8];;
+  uUID = [(DNDModeAssertion *)self UUID];
+  startDate = [(DNDModeAssertion *)self startDate];
+  details = [(DNDModeAssertion *)self details];
+  source = [(DNDModeAssertion *)self source];
+  v9 = [v3 stringWithFormat:@"<%@: %p UUID: %@; startDate: %@; details: %@; source: %@>", v4, self, uUID, startDate, details, source];;
 
   return v9;
 }
 
-- (DNDModeAssertion)initWithCoder:(id)a3
+- (DNDModeAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"details"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"details"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
 
   v9 = [(DNDModeAssertion *)self initWithUUID:v5 startDate:v6 details:v7 source:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDModeAssertion *)self UUID];
-  [v4 encodeObject:v5 forKey:@"UUID"];
+  coderCopy = coder;
+  uUID = [(DNDModeAssertion *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"UUID"];
 
-  v6 = [(DNDModeAssertion *)self startDate];
-  [v4 encodeObject:v6 forKey:@"startDate"];
+  startDate = [(DNDModeAssertion *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
 
-  v7 = [(DNDModeAssertion *)self details];
-  [v4 encodeObject:v7 forKey:@"details"];
+  details = [(DNDModeAssertion *)self details];
+  [coderCopy encodeObject:details forKey:@"details"];
 
-  v8 = [(DNDModeAssertion *)self source];
-  [v4 encodeObject:v8 forKey:@"source"];
+  source = [(DNDModeAssertion *)self source];
+  [coderCopy encodeObject:source forKey:@"source"];
 }
 
 - (void)initWithUUID:(uint64_t)a1 startDate:(NSObject *)a2 details:source:.cold.1(uint64_t a1, NSObject *a2)

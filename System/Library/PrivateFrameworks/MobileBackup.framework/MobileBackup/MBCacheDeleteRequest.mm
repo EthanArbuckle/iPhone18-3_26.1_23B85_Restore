@@ -1,9 +1,9 @@
 @interface MBCacheDeleteRequest
-+ (id)purgeRequestForCloudBackupReason:(int64_t)a3;
-+ (id)purgeRequestForCloudForegroundRestoreOfSize:(int64_t)a3;
++ (id)purgeRequestForCloudBackupReason:(int64_t)reason;
++ (id)purgeRequestForCloudForegroundRestoreOfSize:(int64_t)size;
 + (id)purgeRequestForSourceD2DPreflight;
-+ (id)purgeRequestForSourceD2DUploadSize:(int64_t)a3 targetFreeDiskSpace:(int64_t)a4;
-- (id)_initWithUrgency:(int)a3 qos:(unsigned int)a4 purgeRequestSize:(int64_t)a5;
++ (id)purgeRequestForSourceD2DUploadSize:(int64_t)size targetFreeDiskSpace:(int64_t)space;
+- (id)_initWithUrgency:(int)urgency qos:(unsigned int)qos purgeRequestSize:(int64_t)size;
 - (int64_t)purge;
 - (void)_cancel;
 - (void)cancel;
@@ -12,7 +12,7 @@
 
 @implementation MBCacheDeleteRequest
 
-+ (id)purgeRequestForCloudBackupReason:(int64_t)a3
++ (id)purgeRequestForCloudBackupReason:(int64_t)reason
 {
   IsScheduled = MBBackupReasonIsScheduled();
   if (IsScheduled)
@@ -61,20 +61,20 @@
   return v7;
 }
 
-+ (id)purgeRequestForCloudForegroundRestoreOfSize:(int64_t)a3
++ (id)purgeRequestForCloudForegroundRestoreOfSize:(int64_t)size
 {
   v4 = MBFreeDiskSpaceForVolume();
-  if (a3 + 0x140000000 >= v4)
+  if (size + 0x140000000 >= v4)
   {
     v6 = v4;
-    if (a3 + 0x140000000 - v4 <= 0x140000000)
+    if (size + 0x140000000 - v4 <= 0x140000000)
     {
       v7 = 0x140000000;
     }
 
     else
     {
-      v7 = a3 + 0x140000000 - v4;
+      v7 = size + 0x140000000 - v4;
     }
 
     v8 = MBGetDefaultLog();
@@ -129,29 +129,29 @@
   return v3;
 }
 
-+ (id)purgeRequestForSourceD2DUploadSize:(int64_t)a3 targetFreeDiskSpace:(int64_t)a4
++ (id)purgeRequestForSourceD2DUploadSize:(int64_t)size targetFreeDiskSpace:(int64_t)space
 {
-  if (a3 + 0x1C0000000 >= a4)
+  if (size + 0x1C0000000 >= space)
   {
-    if (a3 + 0x1C0000000 - a4 <= 0x1C0000000)
+    if (size + 0x1C0000000 - space <= 0x1C0000000)
     {
       v7 = 0x1C0000000;
     }
 
     else
     {
-      v7 = a3 + 0x1C0000000 - a4;
+      v7 = size + 0x1C0000000 - space;
     }
 
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218752;
-      v11 = a3;
+      sizeCopy = size;
       v12 = 2048;
       v13 = 0x1C0000000;
       v14 = 2048;
-      v15 = a4;
+      spaceCopy = space;
       v16 = 2048;
       v17 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "=cache-delete= Disk space on the target device is too low (%llu, %llu, %llu): requesting purge %llu bytes", buf, 0x2Au);
@@ -169,7 +169,7 @@
   return v4;
 }
 
-- (id)_initWithUrgency:(int)a3 qos:(unsigned int)a4 purgeRequestSize:(int64_t)a5
+- (id)_initWithUrgency:(int)urgency qos:(unsigned int)qos purgeRequestSize:(int64_t)size
 {
   v17.receiver = self;
   v17.super_class = MBCacheDeleteRequest;
@@ -181,13 +181,13 @@
     v10 = objc_opt_class();
     Name = class_getName(v10);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_attr_make_with_qos_class(v12, a4, 0);
+    v13 = dispatch_queue_attr_make_with_qos_class(v12, qos, 0);
     v14 = dispatch_queue_create(Name, v13);
     queue = v9->_queue;
     v9->_queue = v14;
 
-    v9->_urgency = a3;
-    v9->_purgeRequestSize = a5;
+    v9->_urgency = urgency;
+    v9->_purgeRequestSize = size;
   }
 
   return v9;

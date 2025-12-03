@@ -1,5 +1,5 @@
 @interface HMDAppleMediaAccessoryRemovalLogEvent
-- (HMDAppleMediaAccessoryRemovalLogEvent)initWithIsLocalRemoval:(BOOL)a3 isLocalFallback:(BOOL)a4 isDuplicate:(BOOL)a5 duplicateCount:(int64_t)a6;
+- (HMDAppleMediaAccessoryRemovalLogEvent)initWithIsLocalRemoval:(BOOL)removal isLocalFallback:(BOOL)fallback isDuplicate:(BOOL)duplicate duplicateCount:(int64_t)count;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -23,17 +23,17 @@
   return v3;
 }
 
-- (HMDAppleMediaAccessoryRemovalLogEvent)initWithIsLocalRemoval:(BOOL)a3 isLocalFallback:(BOOL)a4 isDuplicate:(BOOL)a5 duplicateCount:(int64_t)a6
+- (HMDAppleMediaAccessoryRemovalLogEvent)initWithIsLocalRemoval:(BOOL)removal isLocalFallback:(BOOL)fallback isDuplicate:(BOOL)duplicate duplicateCount:(int64_t)count
 {
   v11.receiver = self;
   v11.super_class = HMDAppleMediaAccessoryRemovalLogEvent;
   result = [(HMMLogEvent *)&v11 init];
   if (result)
   {
-    result->_isLocalRemoval = a3;
-    result->_isLocalFallback = a4;
-    result->_isDuplicate = a5;
-    result->_duplicateCount = a6;
+    result->_isLocalRemoval = removal;
+    result->_isLocalFallback = fallback;
+    result->_isDuplicate = duplicate;
+    result->_duplicateCount = count;
   }
 
   return result;

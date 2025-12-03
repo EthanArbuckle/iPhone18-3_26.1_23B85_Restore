@@ -1,47 +1,47 @@
 @interface TransitSchedulesHeadsignCellProvider
-- (id)collectionView:(id)a3 headsignCellWithIdentifier:(id)a4 indexPath:(id)a5 dataProvider:(id)a6;
-- (id)identifiersForDepartureSequences:(id)a3;
-- (void)collectionView:(id)a3 selectedHeadsignForDepartureSequence:(id)a4 atIndexPath:(id)a5;
-- (void)registerCellsForCollectionView:(id)a3;
+- (id)collectionView:(id)view headsignCellWithIdentifier:(id)identifier indexPath:(id)path dataProvider:(id)provider;
+- (id)identifiersForDepartureSequences:(id)sequences;
+- (void)collectionView:(id)view selectedHeadsignForDepartureSequence:(id)sequence atIndexPath:(id)path;
+- (void)registerCellsForCollectionView:(id)view;
 @end
 
 @implementation TransitSchedulesHeadsignCellProvider
 
-- (id)collectionView:(id)a3 headsignCellWithIdentifier:(id)a4 indexPath:(id)a5 dataProvider:(id)a6
+- (id)collectionView:(id)view headsignCellWithIdentifier:(id)identifier indexPath:(id)path dataProvider:(id)provider
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  pathCopy = path;
+  viewCopy = view;
   v11 = +[TransitSchedulesHeadsignCollectionViewCell cellIdentifier];
-  v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [v9 row];
-  v14 = [v8 departureSequences];
-  v15 = [v14 count];
+  v13 = [pathCopy row];
+  departureSequences = [providerCopy departureSequences];
+  v15 = [departureSequences count];
 
   if (v13 < v15)
   {
-    v16 = [v8 departureSequences];
-    v17 = [v16 objectAtIndexedSubscript:v13];
+    departureSequences2 = [providerCopy departureSequences];
+    v17 = [departureSequences2 objectAtIndexedSubscript:v13];
 
-    v18 = [v17 headsign];
-    [v12 setHeadsign:v18];
+    headsign = [v17 headsign];
+    [v12 setHeadsign:headsign];
   }
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 selectedHeadsignForDepartureSequence:(id)a4 atIndexPath:(id)a5
+- (void)collectionView:(id)view selectedHeadsignForDepartureSequence:(id)sequence atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v6 indexPathsForSelectedItems];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+  v10 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -52,42 +52,42 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v14 = *(*(&v15 + 1) + 8 * i);
-        if ([v14 section] == v8)
+        if ([v14 section] == section)
         {
-          [v6 deselectItemAtIndexPath:v14 animated:0];
+          [viewCopy deselectItemAtIndexPath:v14 animated:0];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  [v6 selectItemAtIndexPath:v7 animated:0 scrollPosition:16];
+  [viewCopy selectItemAtIndexPath:pathCopy animated:0 scrollPosition:16];
 }
 
-- (void)registerCellsForCollectionView:(id)a3
+- (void)registerCellsForCollectionView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_class();
   v5 = +[TransitSchedulesHeadsignCollectionViewCell cellIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [viewCopy registerClass:v4 forCellWithReuseIdentifier:v5];
 }
 
-- (id)identifiersForDepartureSequences:(id)a3
+- (id)identifiersForDepartureSequences:(id)sequences
 {
-  v3 = a3;
+  sequencesCopy = sequences;
   v4 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = sequencesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -102,8 +102,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) uniqueId];
-        [v4 addObject:v10];
+        uniqueId = [*(*(&v13 + 1) + 8 * i) uniqueId];
+        [v4 addObject:uniqueId];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

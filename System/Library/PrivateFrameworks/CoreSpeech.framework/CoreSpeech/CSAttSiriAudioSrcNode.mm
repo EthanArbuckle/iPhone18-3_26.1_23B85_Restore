@@ -1,20 +1,20 @@
 @interface CSAttSiriAudioSrcNode
 - (BOOL)isBuiltInRoute;
 - (BOOL)isJarvisRoute;
-- (CSAttSiriAudioSrcNode)initWithAttSiriController:(id)a3;
-- (CSAttSiriAudioSrcNode)initWithTargetQueue:(id)a3;
+- (CSAttSiriAudioSrcNode)initWithAttSiriController:(id)controller;
+- (CSAttSiriAudioSrcNode)initWithTargetQueue:(id)queue;
 - (CSAttSiriAudioSrcNodeDelegate)delegate;
 - (CSAttSiriController)attSiriController;
 - (void)_handleDidStop;
-- (void)addReceiver:(id)a3;
-- (void)attachToMasterStream:(id)a3 name:(id)a4 completion:(id)a5;
-- (void)audioDecoderDidDecodePackets:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 timestamp:(unint64_t)a7 arrivalTimestampToAudioRecorder:(unint64_t)a8 wasBuffered:(BOOL)a9 receivedNumChannels:(unsigned int)a10;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)addReceiver:(id)receiver;
+- (void)attachToMasterStream:(id)stream name:(id)name completion:(id)completion;
+- (void)audioDecoderDidDecodePackets:(id)packets audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)buffered receivedNumChannels:(unsigned int)self0;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)dealloc;
-- (void)fetchRoutesWithCompletion:(id)a3;
-- (void)removeReceiver:(id)a3;
+- (void)fetchRoutesWithCompletion:(id)completion;
+- (void)removeReceiver:(id)receiver;
 @end
 
 @implementation CSAttSiriAudioSrcNode
@@ -75,20 +75,20 @@
   }
 }
 
-- (void)audioDecoderDidDecodePackets:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 timestamp:(unint64_t)a7 arrivalTimestampToAudioRecorder:(unint64_t)a8 wasBuffered:(BOOL)a9 receivedNumChannels:(unsigned int)a10
+- (void)audioDecoderDidDecodePackets:(id)packets audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)buffered receivedNumChannels:(unsigned int)self0
 {
-  v12 = a5;
+  bufferCopy = buffer;
   v13 = +[CSAudioTimeConverterPool sharedInstance];
-  v14 = [v13 defaultConverter];
-  [v14 processSampleCount:self->_decoderProcessedSampleCountForTV hostTime:a7];
+  defaultConverter = [v13 defaultConverter];
+  [defaultConverter processSampleCount:self->_decoderProcessedSampleCountForTV hostTime:timestamp];
 
-  v15 = ([v12 length] >> 1) / a10;
+  v15 = ([bufferCopy length] >> 1) / channels;
   v16 = [CSAudioChunk alloc];
   v17 = +[CSConfig inputRecordingSampleByteDepth];
   decoderProcessedSampleCountForTV = self->_decoderProcessedSampleCountForTV;
   LOBYTE(v26) = +[CSConfig inputRecordingIsFloat];
-  LOBYTE(v25) = a9;
-  v19 = [v16 initWithData:v12 numChannels:a10 numSamples:v15 sampleByteDepth:v17 startSampleCount:decoderProcessedSampleCountForTV hostTime:a7 arrivalHostTimeToAudioRecorder:a8 wasBuffered:v25 remoteVAD:0 isFloat:v26];
+  LOBYTE(v25) = buffered;
+  v19 = [v16 initWithData:bufferCopy numChannels:channels numSamples:v15 sampleByteDepth:v17 startSampleCount:decoderProcessedSampleCountForTV hostTime:timestamp arrivalHostTimeToAudioRecorder:recorder wasBuffered:v25 remoteVAD:0 isFloat:v26];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -123,35 +123,35 @@
   self->_decoderProcessedSampleCountForTV += v15;
 }
 
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C99C8;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = availableCopy;
+  selfCopy = self;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C9B4C;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = availableCopy;
+  selfCopy = self;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -159,7 +159,7 @@
   v5[2] = sub_1000C9CD8;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = unexpectedly;
   dispatch_async(queue, v5);
 }
 
@@ -183,45 +183,45 @@
   [(CSAttSiriAudioSrcNode *)&v4 dealloc];
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C9F44;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C9FE8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)fetchRoutesWithCompletion:(id)a3
+- (void)fetchRoutesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CA1A4;
   v7[3] = &unk_100253718;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -277,24 +277,24 @@
   return v3;
 }
 
-- (void)attachToMasterStream:(id)a3 name:(id)a4 completion:(id)a5
+- (void)attachToMasterStream:(id)stream name:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  streamCopy = stream;
+  nameCopy = name;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000CA8EC;
   v22[3] = &unk_100253220;
-  v10 = a5;
-  v23 = v10;
+  completionCopy = completion;
+  v23 = completionCopy;
   v11 = objc_retainBlock(v22);
-  if (v8)
+  if (streamCopy)
   {
-    v12 = [[CSAudioTandemStream alloc] initWithMasterAudioStream:v8 name:v9];
+    v12 = [[CSAudioTandemStream alloc] initWithMasterAudioStream:streamCopy name:nameCopy];
     if (v12)
     {
       v13 = v12;
-      v14 = [(CSAttSiriAudioSrcNode *)self queue];
+      queue = [(CSAttSiriAudioSrcNode *)self queue];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_1000CA904;
@@ -303,7 +303,7 @@
       v15 = v13;
       v20 = v15;
       v21 = v11;
-      dispatch_async(v14, v19);
+      dispatch_async(queue, v19);
     }
 
     else
@@ -338,30 +338,30 @@
   }
 }
 
-- (CSAttSiriAudioSrcNode)initWithAttSiriController:(id)a3
+- (CSAttSiriAudioSrcNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriAudioSrcNode *)self initWithTargetQueue:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;
 }
 
-- (CSAttSiriAudioSrcNode)initWithTargetQueue:(id)a3
+- (CSAttSiriAudioSrcNode)initWithTargetQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CSAttSiriAudioSrcNode;
   v5 = [(CSAttSiriAudioSrcNode *)&v14 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = dispatch_queue_create_with_target_V2("CSAttSiriAudioSrcNode Queue", 0, v4);
+      v6 = dispatch_queue_create_with_target_V2("CSAttSiriAudioSrcNode Queue", 0, queueCopy);
     }
 
     else

@@ -5,7 +5,7 @@
 - (id)_accountSpecifiers;
 - (id)_autoPlayNextVideoSpecifiers;
 - (id)_clearHistorySpecifiers;
-- (id)_createAxIdFromTableCell:(id)a3;
+- (id)_createAxIdFromTableCell:(id)cell;
 - (id)_dialogMetricsData;
 - (id)_externalSpecifiers;
 - (id)_mySportsSpecifiers;
@@ -14,32 +14,32 @@
 - (id)_signOutSpecifiers;
 - (id)_sourcesSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_alertStyle;
-- (void)_addPrivacyFooterToGroup:(id)a3;
-- (void)_checkConnectedAppsWithDispatchGroup:(id)a3;
-- (void)_checkExternalLinksWithDispatchGroup:(id)a3;
-- (void)_clearPlayHistory:(id)a3;
-- (void)_clearPlayHistoryHelper:(BOOL)a3 error:(id)a4;
-- (void)_didSelectSpecifier:(id)a3 isManualSelection:(BOOL)a4;
-- (void)_fetchMySportsSyncSettingWithCompletion:(id)a3;
-- (void)_handleAccountSettingsEventWithAmsWebView:(id)a3 storeServicesBagKey:(id)a4 storeServicesUrl:(id)a5;
-- (void)_handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5;
+- (void)_addPrivacyFooterToGroup:(id)group;
+- (void)_checkConnectedAppsWithDispatchGroup:(id)group;
+- (void)_checkExternalLinksWithDispatchGroup:(id)group;
+- (void)_clearPlayHistory:(id)history;
+- (void)_clearPlayHistoryHelper:(BOOL)helper error:(id)error;
+- (void)_didSelectSpecifier:(id)specifier isManualSelection:(BOOL)selection;
+- (void)_fetchMySportsSyncSettingWithCompletion:(id)completion;
+- (void)_handleAccountSettingsEventWithAmsWebView:(id)view storeServicesBagKey:(id)key storeServicesUrl:(id)url;
+- (void)_handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view;
 - (void)_handleNotificationsOff;
-- (void)_navigateToSubsection:(int64_t)a3 clearSubsection:(BOOL)a4;
-- (void)_parseUrl:(id)a3;
+- (void)_navigateToSubsection:(int64_t)subsection clearSubsection:(BOOL)clearSubsection;
+- (void)_parseUrl:(id)url;
 - (void)_promptForNotificationsAuth;
-- (void)_recordDialogClick:(id)a3;
+- (void)_recordDialogClick:(id)click;
 - (void)_resolveLandingBehavior;
 - (void)_resolveSportsFavoriteFeatureEnabler;
-- (void)_setSyncMySportsEnabled:(id)a3;
-- (void)_showPrivacySheet:(id)a3;
-- (void)_syncMySportsSettingDidChange:(id)a3;
+- (void)_setSyncMySportsEnabled:(id)enabled;
+- (void)_showPrivacySheet:(id)sheet;
+- (void)_syncMySportsSettingDidChange:(id)change;
 - (void)nextEpisodeSettingDidChange;
 - (void)recommendedItemsSettingDidChange;
-- (void)setAuthenticationInProgress:(BOOL)a3;
+- (void)setAuthenticationInProgress:(BOOL)progress;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VUIAccountSettingsViewController
@@ -56,9 +56,9 @@
     v2->_installedWatchListAppCount = 0;
     v2->_connectedWatchListAppCount = 0;
     v2->_initialSubsection = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = +[_TtC8VideosUI24VUISportsFavoriteService UserConsentDidChangeNotification];
-    [v4 addObserver:v3 selector:sel__syncMySportsSettingDidChange_ name:v5 object:0];
+    [defaultCenter addObserver:v3 selector:sel__syncMySportsSettingDidChange_ name:v5 object:0];
 
     objc_initWeak(&location, v3);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -74,13 +74,13 @@
 
     else
     {
-      v7 = [MEMORY[0x1E6983308] vuiNotificationCenter];
+      vuiNotificationCenter = [MEMORY[0x1E6983308] vuiNotificationCenter];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __40__VUIAccountSettingsViewController_init__block_invoke_3;
       v17[3] = &unk_1E872E530;
       v18 = v6;
-      [v7 getNotificationSettingsWithCompletionHandler:v17];
+      [vuiNotificationCenter getNotificationSettingsWithCompletionHandler:v17];
     }
 
     v12 = MEMORY[0x1E69E9820];
@@ -148,16 +148,16 @@ void __40__VUIAccountSettingsViewController_init__block_invoke_4(uint64_t a1, ui
   }
 }
 
-- (void)_fetchMySportsSyncSettingWithCompletion:(id)a3
+- (void)_fetchMySportsSyncSettingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__VUIAccountSettingsViewController__fetchMySportsSyncSettingWithCompletion___block_invoke;
   block[3] = &unk_1E872D7E0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -232,35 +232,35 @@ void __76__VUIAccountSettingsViewController__fetchMySportsSyncSettingWithComplet
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (+[VUIAuthenticationManager userHasActiveAccount])
   {
-    v4 = [(VUIAccountSettingsViewController *)self _accountSpecifiers];
-    [v3 addObjectsFromArray:v4];
+    _accountSpecifiers = [(VUIAccountSettingsViewController *)self _accountSpecifiers];
+    [v3 addObjectsFromArray:_accountSpecifiers];
 
     if (self->_installedWatchListAppCount > 0 || self->_initialSubsection == 1)
     {
-      v5 = [(VUIAccountSettingsViewController *)self _sourcesSpecifiers];
-      [v3 addObjectsFromArray:v5];
+      _sourcesSpecifiers = [(VUIAccountSettingsViewController *)self _sourcesSpecifiers];
+      [v3 addObjectsFromArray:_sourcesSpecifiers];
     }
 
-    v6 = [(VUIAccountSettingsViewController *)self _externalSpecifiers];
-    [v3 addObjectsFromArray:v6];
+    _externalSpecifiers = [(VUIAccountSettingsViewController *)self _externalSpecifiers];
+    [v3 addObjectsFromArray:_externalSpecifiers];
 
-    v7 = [(VUIAccountSettingsViewController *)self _clearHistorySpecifiers];
-    [v3 addObjectsFromArray:v7];
+    _clearHistorySpecifiers = [(VUIAccountSettingsViewController *)self _clearHistorySpecifiers];
+    [v3 addObjectsFromArray:_clearHistorySpecifiers];
 
     if (_os_feature_enabled_impl())
     {
-      v8 = [(VUIAccountSettingsViewController *)self _autoPlayNextVideoSpecifiers];
-      [v3 addObjectsFromArray:v8];
+      _autoPlayNextVideoSpecifiers = [(VUIAccountSettingsViewController *)self _autoPlayNextVideoSpecifiers];
+      [v3 addObjectsFromArray:_autoPlayNextVideoSpecifiers];
     }
 
     if ([(VUIAccountSettingsViewController *)self notifAuthStatus]!= 2)
     {
-      v9 = [(VUIAccountSettingsViewController *)self _notificationSpecifiers];
-      [v3 addObjectsFromArray:v9];
+      _notificationSpecifiers = [(VUIAccountSettingsViewController *)self _notificationSpecifiers];
+      [v3 addObjectsFromArray:_notificationSpecifiers];
     }
 
-    v10 = [(VUIAccountSettingsViewController *)self sportsFavoriteFeatureEnabled];
-    if ([v10 BOOLValue])
+    sportsFavoriteFeatureEnabled = [(VUIAccountSettingsViewController *)self sportsFavoriteFeatureEnabled];
+    if ([sportsFavoriteFeatureEnabled BOOLValue])
     {
       syncMySportsEnabled = self->__syncMySportsEnabled;
 
@@ -269,15 +269,15 @@ void __76__VUIAccountSettingsViewController__fetchMySportsSyncSettingWithComplet
 LABEL_13:
         if (!+[VUIUtilities isStoreOrPressDemoMode](VUIUtilities, "isStoreOrPressDemoMode") && +[VUIUtilities allowsAccountModification])
         {
-          v12 = [(VUIAccountSettingsViewController *)self _signOutSpecifiers];
-          [v3 addObjectsFromArray:v12];
+          _signOutSpecifiers = [(VUIAccountSettingsViewController *)self _signOutSpecifiers];
+          [v3 addObjectsFromArray:_signOutSpecifiers];
         }
 
         goto LABEL_19;
       }
 
-      v10 = [(VUIAccountSettingsViewController *)self _mySportsSpecifiers];
-      [v3 addObjectsFromArray:v10];
+      sportsFavoriteFeatureEnabled = [(VUIAccountSettingsViewController *)self _mySportsSpecifiers];
+      [v3 addObjectsFromArray:sportsFavoriteFeatureEnabled];
     }
 
     goto LABEL_13;
@@ -302,31 +302,31 @@ LABEL_19:
   v26.receiver = self;
   v26.super_class = VUIAccountSettingsViewController;
   [(VUIAccountSettingsViewController *)&v26 viewDidLoad];
-  v3 = [(VUIAccountSettingsViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VUIAccountSettingsViewController *)self view];
+  vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  [view setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-  v5 = [(VUIAccountSettingsViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0];
+  navigationController = [(VUIAccountSettingsViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
-  v6 = [(VUIAccountSettingsViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 setPrefersLargeTitles:0];
+  navigationController2 = [(VUIAccountSettingsViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setPrefersLargeTitles:0];
 
-  v8 = [(VUIAccountSettingsViewController *)self navigationItem];
+  navigationItem = [(VUIAccountSettingsViewController *)self navigationItem];
   v9 = +[VUILocalizationManager sharedInstance];
   v10 = [v9 localizedStringForKey:@"SETTINGS_ACCOUNT"];
-  [v8 setTitle:v10];
+  [navigationItem setTitle:v10];
 
   if (MEMORY[0x1E6913230]())
   {
     v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark" withConfiguration:0];
-    v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v11 style:0 target:self action:sel__dismissViewController];
-    v13 = [(VUIAccountSettingsViewController *)self navigationItem];
-    [v13 setLeftBarButtonItem:0];
+    appearance2 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v11 style:0 target:self action:sel__dismissViewController];
+    navigationItem2 = [(VUIAccountSettingsViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:0];
 
-    v14 = [(VUIAccountSettingsViewController *)self navigationItem];
-    [v14 setRightBarButtonItem:v12];
+    navigationItem3 = [(VUIAccountSettingsViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:appearance2];
   }
 
   else
@@ -336,35 +336,35 @@ LABEL_19:
     v17 = [v16 localizedStringForKey:@"DONE"];
     v11 = [v15 initWithTitle:v17 style:2 target:self action:sel__dismissViewController];
 
-    v18 = [(VUIAccountSettingsViewController *)self navigationItem];
-    [v18 setLeftBarButtonItem:0];
+    navigationItem4 = [(VUIAccountSettingsViewController *)self navigationItem];
+    [navigationItem4 setLeftBarButtonItem:0];
 
-    v19 = [(VUIAccountSettingsViewController *)self navigationItem];
-    [v19 setRightBarButtonItem:v11];
+    navigationItem5 = [(VUIAccountSettingsViewController *)self navigationItem];
+    [navigationItem5 setRightBarButtonItem:v11];
 
-    v20 = [MEMORY[0x1E69DCCC0] appearance];
-    v21 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [v20 setBarTintColor:v21];
+    appearance = [MEMORY[0x1E69DCCC0] appearance];
+    vui_primaryDynamicBackgroundColor2 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [appearance setBarTintColor:vui_primaryDynamicBackgroundColor2];
 
-    v12 = [MEMORY[0x1E69DCCC0] appearance];
-    v14 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
-    [v12 setShadowImage:v14];
+    appearance2 = [MEMORY[0x1E69DCCC0] appearance];
+    navigationItem3 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
+    [appearance2 setShadowImage:navigationItem3];
   }
 
-  v22 = [MEMORY[0x1E69DC708] appearance];
-  v23 = [MEMORY[0x1E69DC888] vui_keyColor];
-  [v22 setTintColor:v23];
+  appearance3 = [MEMORY[0x1E69DC708] appearance];
+  vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+  [appearance3 setTintColor:vui_keyColor];
 
   v24 = +[VUIMetricsController sharedInstance];
-  v25 = [(VUIAccountSettingsViewController *)self _dialogMetricsData];
-  [v24 recordDialog:v25];
+  _dialogMetricsData = [(VUIAccountSettingsViewController *)self _dialogMetricsData];
+  [v24 recordDialog:_dialogMetricsData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VUIAccountSettingsViewController;
-  [(VUIAccountSettingsViewController *)&v4 viewWillAppear:a3];
+  [(VUIAccountSettingsViewController *)&v4 viewWillAppear:appear];
   [(VUIAccountSettingsViewController *)self _resolveLandingBehavior];
   [(VUIAccountSettingsViewController *)self _resolveSportsFavoriteFeatureEnabler];
 }
@@ -400,8 +400,8 @@ LABEL_19:
   v15 = +[VUIAuthenticationManager userAccountName];
   [v12 setProperty:v15 forKey:*MEMORY[0x1E69C59A0]];
 
-  v16 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [v12 setProperty:v16 forKey:*MEMORY[0x1E69C5998]];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [v12 setProperty:systemGrayColor forKey:*MEMORY[0x1E69C5998]];
 
   [v12 setProperty:@"accountName" forKey:*MEMORY[0x1E69C5918]];
   [v12 setControllerLoadAction:sel__didSelectSpecifier_];
@@ -582,8 +582,8 @@ LABEL_19:
 
   [v3 setProperty:v5 forKey:*MEMORY[0x1E69C5900]];
   v6 = MEMORY[0x1E69C5748];
-  v7 = [(VUIAccountSettingsViewController *)self _notificationGroupSpecifierIdentifier];
-  v8 = [v6 preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  _notificationGroupSpecifierIdentifier = [(VUIAccountSettingsViewController *)self _notificationGroupSpecifierIdentifier];
+  v8 = [v6 preferenceSpecifierNamed:_notificationGroupSpecifierIdentifier target:self set:0 get:0 detail:0 cell:13 edit:0];
 
   [v8 setProperty:objc_opt_class() forKey:*MEMORY[0x1E69C5860]];
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DE3D0]];
@@ -626,34 +626,34 @@ LABEL_19:
   return v14;
 }
 
-- (void)_addPrivacyFooterToGroup:(id)a3
+- (void)_addPrivacyFooterToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setProperty:v6 forKey:*MEMORY[0x1E69C58D8]];
+  [groupCopy setProperty:v6 forKey:*MEMORY[0x1E69C58D8]];
 
   v7 = +[VUILocalizationManager sharedInstance];
   v15 = [v7 localizedStringForKey:@"SPORTS_PRIVACY_FOOTER_FORMAT"];
 
   v8 = [MEMORY[0x1E69B7D50] linkWithBundleIdentifier:@"com.apple.onboarding.mysports"];
-  v9 = [v8 flow];
-  v10 = [v9 localizedButtonTitle];
+  flow = [v8 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v15, v10];
-  [v4 setProperty:v11 forKey:*MEMORY[0x1E69C58F8]];
-  v17.location = [v11 rangeOfString:v10];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v15, localizedButtonTitle];
+  [groupCopy setProperty:v11 forKey:*MEMORY[0x1E69C58F8]];
+  v17.location = [v11 rangeOfString:localizedButtonTitle];
   v12 = NSStringFromRange(v17);
-  [v4 setProperty:v12 forKey:*MEMORY[0x1E69C58E8]];
+  [groupCopy setProperty:v12 forKey:*MEMORY[0x1E69C58E8]];
 
   v13 = [MEMORY[0x1E696B098] valueWithNonretainedObject:self];
-  [v4 setProperty:v13 forKey:*MEMORY[0x1E69C58F0]];
+  [groupCopy setProperty:v13 forKey:*MEMORY[0x1E69C58F0]];
 
   v14 = NSStringFromSelector(sel__showPrivacySheet_);
-  [v4 setProperty:v14 forKey:*MEMORY[0x1E69C58E0]];
+  [groupCopy setProperty:v14 forKey:*MEMORY[0x1E69C58E0]];
 }
 
-- (void)_showPrivacySheet:(id)a3
+- (void)_showPrivacySheet:(id)sheet
 {
   v4 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.mysports"];
   [v4 setPresentingViewController:self];
@@ -750,13 +750,13 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
   }
 }
 
-- (void)_didSelectSpecifier:(id)a3 isManualSelection:(BOOL)a4
+- (void)_didSelectSpecifier:(id)specifier isManualSelection:(BOOL)selection
 {
-  v4 = a4;
+  selectionCopy = selection;
   v51[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:@"accountName"];
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v8 = [identifier isEqualToString:@"accountName"];
 
   if (v8)
   {
@@ -773,15 +773,15 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
   else
   {
-    v10 = [v6 identifier];
-    v11 = [v10 isEqualToString:@"connectedApps"];
+    identifier2 = [specifierCopy identifier];
+    v11 = [identifier2 isEqualToString:@"connectedApps"];
 
     if (v11)
     {
       v12 = objc_alloc_init(VUIAccountSettingsConnectedAppsViewController);
-      [(VUIAccountSettingsConnectedAppsViewController *)v12 setShowsDoneButton:v4 ^ 1];
-      v13 = [(VUIAccountSettingsViewController *)self navigationController];
-      [v13 pushViewController:v12 animated:v4];
+      [(VUIAccountSettingsConnectedAppsViewController *)v12 setShowsDoneButton:selectionCopy ^ 1];
+      navigationController = [(VUIAccountSettingsViewController *)self navigationController];
+      [navigationController pushViewController:v12 animated:selectionCopy];
 
       v48[0] = @"targetId";
       v48[1] = @"targetType";
@@ -795,8 +795,8 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
     else
     {
-      v15 = [v6 identifier];
-      v16 = [v15 isEqualToString:@"manageSubscriptions"];
+      identifier3 = [specifierCopy identifier];
+      v16 = [identifier3 isEqualToString:@"manageSubscriptions"];
 
       if (v16)
       {
@@ -813,8 +813,8 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
       else
       {
-        v18 = [v6 identifier];
-        v19 = [v18 isEqualToString:@"redeemGiftCardOrCode"];
+        identifier4 = [specifierCopy identifier];
+        v19 = [identifier4 isEqualToString:@"redeemGiftCardOrCode"];
 
         if (v19)
         {
@@ -832,8 +832,8 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
         else
         {
-          v22 = [v6 identifier];
-          v23 = [v22 isEqualToString:@"addMoneyToAccount"];
+          identifier5 = [specifierCopy identifier];
+          v23 = [identifier5 isEqualToString:@"addMoneyToAccount"];
 
           if (v23)
           {
@@ -850,8 +850,8 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
           else
           {
-            v25 = [v6 identifier];
-            v26 = [v25 isEqualToString:@"signOut"];
+            identifier6 = [specifierCopy identifier];
+            v26 = [identifier6 isEqualToString:@"signOut"];
 
             if (v26)
             {
@@ -878,9 +878,9 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
             else
             {
-              v28 = [v6 identifier];
-              v29 = [(VUIAccountSettingsViewController *)self _notificationGroupSpecifierIdentifier];
-              v30 = [v28 isEqualToString:v29];
+              identifier7 = [specifierCopy identifier];
+              _notificationGroupSpecifierIdentifier = [(VUIAccountSettingsViewController *)self _notificationGroupSpecifierIdentifier];
+              v30 = [identifier7 isEqualToString:_notificationGroupSpecifierIdentifier];
 
               if (v30)
               {
@@ -898,13 +898,13 @@ void __68__VUIAccountSettingsViewController_recommendedItemsSettingDidChange__bl
 
                 else
                 {
-                  v32 = [MEMORY[0x1E6983308] vuiNotificationCenter];
+                  vuiNotificationCenter = [MEMORY[0x1E6983308] vuiNotificationCenter];
                   v33[0] = MEMORY[0x1E69E9820];
                   v33[1] = 3221225472;
                   v33[2] = __74__VUIAccountSettingsViewController__didSelectSpecifier_isManualSelection___block_invoke_5;
                   v33[3] = &unk_1E872E530;
                   v34 = v31;
-                  [v32 getNotificationSettingsWithCompletionHandler:v33];
+                  [vuiNotificationCenter getNotificationSettingsWithCompletionHandler:v33];
                 }
 
                 objc_destroyWeak(&v36);
@@ -984,15 +984,15 @@ uint64_t __74__VUIAccountSettingsViewController__didSelectSpecifier_isManualSele
   return v3();
 }
 
-- (void)_clearPlayHistoryHelper:(BOOL)a3 error:(id)a4
+- (void)_clearPlayHistoryHelper:(BOOL)helper error:(id)error
 {
-  v4 = a3;
+  helperCopy = helper;
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
-    v7 = [v5 description];
+    v7 = [errorCopy description];
   }
 
   else
@@ -1004,7 +1004,7 @@ uint64_t __74__VUIAccountSettingsViewController__didSelectSpecifier_isManualSele
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v4)
+    if (helperCopy)
     {
       v9 = @"YES";
     }
@@ -1016,7 +1016,7 @@ uint64_t __74__VUIAccountSettingsViewController__didSelectSpecifier_isManualSele
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIAccountSettings - Delete-all! %@ %@", &v10, 0x16u);
   }
 
-  if (v4)
+  if (helperCopy)
   {
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_51);
   }
@@ -1028,7 +1028,7 @@ void __66__VUIAccountSettingsViewController__clearPlayHistoryHelper_error___bloc
   [v0 postNotificationName:@"VUIClearPlayHistoryNotification" object:0];
 }
 
-- (void)_clearPlayHistory:(id)a3
+- (void)_clearPlayHistory:(id)history
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v4 = +[VUIAuthenticationManager userAccountName];
@@ -1120,7 +1120,7 @@ void __54__VUIAccountSettingsViewController__clearPlayHistory___block_invoke_3(u
   [WeakRetained _clearPlayHistoryHelper:a2 error:v5];
 }
 
-- (void)_syncMySportsSettingDidChange:(id)a3
+- (void)_syncMySportsSettingDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->__pendingSyncMySportsEnabled);
 
@@ -1229,11 +1229,11 @@ void __66__VUIAccountSettingsViewController__syncMySportsSettingDidChange___bloc
   return syncMySportsEnabled;
 }
 
-- (void)_setSyncMySportsEnabled:(id)a3
+- (void)_setSyncMySportsEnabled:(id)enabled
 {
-  v5 = a3;
-  objc_storeStrong(&self->__syncMySportsEnabled, a3);
-  objc_storeWeak(&self->__pendingSyncMySportsEnabled, v5);
+  enabledCopy = enabled;
+  objc_storeStrong(&self->__syncMySportsEnabled, enabled);
+  objc_storeWeak(&self->__pendingSyncMySportsEnabled, enabledCopy);
   [(NSTimer *)self->_syncMySportsDebouncer invalidate];
   [(NSTimer *)self->_syncMySportsNotifyDebouncer invalidate];
   objc_initWeak(&location, self);
@@ -1314,9 +1314,9 @@ void __60__VUIAccountSettingsViewController__setSyncMySportsEnabled___block_invo
 
 - (void)_resolveSportsFavoriteFeatureEnabler
 {
-  v3 = [(VUIAccountSettingsViewController *)self sportsFavoriteFeatureEnabled];
+  sportsFavoriteFeatureEnabled = [(VUIAccountSettingsViewController *)self sportsFavoriteFeatureEnabled];
 
-  if (!v3)
+  if (!sportsFavoriteFeatureEnabled)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v4, &location);
@@ -1368,9 +1368,9 @@ uint64_t __72__VUIAccountSettingsViewController__resolveSportsFavoriteFeatureEna
 {
   if ([(VUIAccountSettingsViewController *)self initialSubsection])
   {
-    v3 = [(VUIAccountSettingsViewController *)self initialSubsection];
+    initialSubsection = [(VUIAccountSettingsViewController *)self initialSubsection];
 
-    [(VUIAccountSettingsViewController *)self _navigateToSubsection:v3 clearSubsection:1];
+    [(VUIAccountSettingsViewController *)self _navigateToSubsection:initialSubsection clearSubsection:1];
   }
 
   else
@@ -1401,10 +1401,10 @@ void __59__VUIAccountSettingsViewController__resolveLandingBehavior__block_invok
   }
 }
 
-- (void)_checkConnectedAppsWithDispatchGroup:(id)a3
+- (void)_checkConnectedAppsWithDispatchGroup:(id)group
 {
-  v4 = a3;
-  dispatch_group_enter(v4);
+  groupCopy = group;
+  dispatch_group_enter(groupCopy);
   [(VUIAccountSettingsViewController *)self setInstalledWatchListAppCount:0];
   [(VUIAccountSettingsViewController *)self setConnectedWatchListAppCount:0];
   objc_initWeak(&location, self);
@@ -1413,7 +1413,7 @@ void __59__VUIAccountSettingsViewController__resolveLandingBehavior__block_invok
   v6[2] = __73__VUIAccountSettingsViewController__checkConnectedAppsWithDispatchGroup___block_invoke;
   v6[3] = &unk_1E87307C8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = groupCopy;
   v7 = v5;
   [VUIAccountSettingsConnectedAppsViewController fetchConnectedAppsWithCompletion:v6];
 
@@ -1484,7 +1484,7 @@ void __73__VUIAccountSettingsViewController__checkConnectedAppsWithDispatchGroup
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_checkExternalLinksWithDispatchGroup:(id)a3
+- (void)_checkExternalLinksWithDispatchGroup:(id)group
 {
   v4 = [MEMORY[0x1E69D5928] app];
   v6 = [v4 urlForKey:kVUIBagKeyAddFundsURL];
@@ -1509,33 +1509,33 @@ void __73__VUIAccountSettingsViewController__checkConnectedAppsWithDispatchGroup
   return v2;
 }
 
-- (void)_recordDialogClick:(id)a3
+- (void)_recordDialogClick:(id)click
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [(VUIAccountSettingsViewController *)self _dialogMetricsData];
-  v8 = [v4 dictionaryWithDictionary:v6];
+  clickCopy = click;
+  _dialogMetricsData = [(VUIAccountSettingsViewController *)self _dialogMetricsData];
+  v8 = [v4 dictionaryWithDictionary:_dialogMetricsData];
 
-  [v8 addEntriesFromDictionary:v5];
+  [v8 addEntriesFromDictionary:clickCopy];
   v7 = +[VUIMetricsController sharedInstance];
   [v7 recordClick:v8];
 }
 
 - (id)_notificationGroupSpecifierIdentifier
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     v6 = @"SETTINGS_ALLOW_NOTIFICATIONS_ON_THIS_IPHONE";
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom2 == 1)
   {
     v6 = @"SETTINGS_ALLOW_NOTIFICATIONS_ON_THIS_IPAD";
 LABEL_7:
@@ -1545,10 +1545,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if (v8 == 6)
+  if (userInterfaceIdiom3 == 6)
   {
     v6 = @"SETTINGS_ALLOW_NOTIFICATIONS_ON_THIS_VISION_PRO";
     goto LABEL_7;
@@ -1560,16 +1560,16 @@ LABEL_8:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = VUIAccountSettingsViewController;
-  v5 = [(VUIAccountSettingsViewController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(VUIAccountSettingsViewController *)&v10 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 textField];
-    [v6 setDelegate:self];
+    textField = [v5 textField];
+    [textField setDelegate:self];
   }
 
   else
@@ -1594,20 +1594,20 @@ LABEL_6:
 - (int64_t)_alertStyle
 {
   v3 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:2];
-  v4 = [(VUIAccountSettingsViewController *)self traitCollection];
-  v5 = [v4 containsTraitsInCollection:v3];
+  traitCollection = [(VUIAccountSettingsViewController *)self traitCollection];
+  v5 = [traitCollection containsTraitsInCollection:v3];
 
   return v5;
 }
 
-- (void)_handleAccountSettingsEventWithAmsWebView:(id)a3 storeServicesBagKey:(id)a4 storeServicesUrl:(id)a5
+- (void)_handleAccountSettingsEventWithAmsWebView:(id)view storeServicesBagKey:(id)key storeServicesUrl:(id)url
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  urlCopy = url;
   v10 = MEMORY[0x1E69D5928];
-  v11 = a3;
+  viewCopy = view;
   v12 = [v10 app];
-  v13 = [v12 urlForKey:v11];
+  v13 = [v12 urlForKey:viewCopy];
 
   if (v13)
   {
@@ -1615,7 +1615,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (v8)
+  if (keyCopy)
   {
     v14 = VUIDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1624,17 +1624,17 @@ LABEL_6:
       _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, "VUIAccountSettings - Falling back to legacy StoreServices key", buf, 2u);
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
-    v17 = v8;
+    v17 = keyCopy;
 LABEL_11:
-    [(VUIAccountSettingsViewController *)v15 _handleAccountSettingsEventWithUrl:v16 amsBagKey:v17 useAMSWebView:0];
+    [(VUIAccountSettingsViewController *)selfCopy2 _handleAccountSettingsEventWithUrl:v16 amsBagKey:v17 useAMSWebView:0];
     goto LABEL_12;
   }
 
   v18 = VUIDefaultLogObject();
   v19 = v18;
-  if (v9)
+  if (urlCopy)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -1642,8 +1642,8 @@ LABEL_11:
       _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "VUIAccountSettings - Falling back to legacy StoreServices URL", v20, 2u);
     }
 
-    v15 = self;
-    v16 = v9;
+    selfCopy2 = self;
+    v16 = urlCopy;
     v17 = 0;
     goto LABEL_11;
   }
@@ -1656,20 +1656,20 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_parseUrl:(id)a3
+- (void)_parseUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E698CB70]);
-  v6 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-  v7 = [v5 initWithBag:v6];
+  vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+  v7 = [v5 initWithBag:vui_defaultBag];
 
-  v8 = [v7 typeForURL:v4];
+  v8 = [v7 typeForURL:urlCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__VUIAccountSettingsViewController__parseUrl___block_invoke;
   v10[3] = &unk_1E87307F0;
-  v9 = v4;
+  v9 = urlCopy;
   v11 = v9;
   objc_copyWeak(&v12, &location);
   [v8 addFinishBlock:v10];
@@ -1705,21 +1705,21 @@ void __46__VUIAccountSettingsViewController__parseUrl___block_invoke(uint64_t a1
   [WeakRetained _handleAccountSettingsEventWithUrl:*(a1 + 32) amsBagKey:0 useAMSWebView:v8 == 0];
 }
 
-- (void)_handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5
+- (void)_handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view
 {
-  v8 = a3;
-  v9 = a4;
+  urlCopy = url;
+  keyCopy = key;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__VUIAccountSettingsViewController__handleAccountSettingsEventWithUrl_amsBagKey_useAMSWebView___block_invoke;
   block[3] = &unk_1E872F3A0;
   objc_copyWeak(&v15, &location);
-  v16 = a5;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  viewCopy = view;
+  v13 = urlCopy;
+  v14 = keyCopy;
+  v10 = keyCopy;
+  v11 = urlCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v15);
@@ -1748,12 +1748,12 @@ void __95__VUIAccountSettingsViewController__handleAccountSettingsEventWithUrl_a
   }
 }
 
-- (id)_createAxIdFromTableCell:(id)a3
+- (id)_createAxIdFromTableCell:(id)cell
 {
-  v3 = [a3 specifier];
-  v4 = [v3 identifier];
+  specifier = [cell specifier];
+  identifier = [specifier identifier];
 
-  v5 = [@"UIA.TV.AccountSettings." stringByAppendingString:v4];
+  v5 = [@"UIA.TV.AccountSettings." stringByAppendingString:identifier];
 
   return v5;
 }
@@ -1814,8 +1814,8 @@ void __59__VUIAccountSettingsViewController__handleNotificationsOff__block_invok
 
   else
   {
-    v3 = [MEMORY[0x1E6983308] vuiNotificationCenter];
-    [v3 requestAuthorizationWithOptions:7 completionHandler:v2];
+    vuiNotificationCenter = [MEMORY[0x1E6983308] vuiNotificationCenter];
+    [vuiNotificationCenter requestAuthorizationWithOptions:7 completionHandler:v2];
   }
 
   objc_destroyWeak(&v8);
@@ -1861,26 +1861,26 @@ void __63__VUIAccountSettingsViewController__promptForNotificationsAuth__block_i
   [v3 _recordDialogClick:v5];
 }
 
-- (void)_navigateToSubsection:(int64_t)a3 clearSubsection:(BOOL)a4
+- (void)_navigateToSubsection:(int64_t)subsection clearSubsection:(BOOL)clearSubsection
 {
-  v4 = a4;
+  clearSubsectionCopy = clearSubsection;
   v14 = *MEMORY[0x1E69E9840];
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = [(VUIAccountSettingsViewController *)self initialSubsection];
+    initialSubsection = [(VUIAccountSettingsViewController *)self initialSubsection];
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIAccountSettings - Navigating to initial subsection: %ld", &v12, 0xCu);
   }
 
-  if (a3 == 1)
+  if (subsection == 1)
   {
     v8 = @"connectedApps";
   }
 
   else
   {
-    if (a3 != 2)
+    if (subsection != 2)
     {
       v11 = VUIDefaultLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1911,22 +1911,22 @@ LABEL_12:
 
 LABEL_14:
 
-  if (v4)
+  if (clearSubsectionCopy)
   {
     [(VUIAccountSettingsViewController *)self setInitialSubsection:0];
   }
 }
 
-- (void)setAuthenticationInProgress:(BOOL)a3
+- (void)setAuthenticationInProgress:(BOOL)progress
 {
   v22 = *MEMORY[0x1E69E9840];
-  self->_authenticationInProgress = a3;
+  self->_authenticationInProgress = progress;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(VUIAccountSettingsViewController *)self specifiers];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  specifiers = [(VUIAccountSettingsViewController *)self specifiers];
+  v5 = [specifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1938,7 +1938,7 @@ LABEL_14:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(specifiers);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -1946,7 +1946,7 @@ LABEL_14:
         [v10 setProperty:v11 forKey:v8];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [specifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -1955,8 +1955,8 @@ LABEL_14:
   v12 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   [v12 startAnimating];
   v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v12];
-  v14 = [(VUIAccountSettingsViewController *)self navigationItem];
-  v15 = v14;
+  navigationItem = [(VUIAccountSettingsViewController *)self navigationItem];
+  v15 = navigationItem;
   if (self->_authenticationInProgress)
   {
     v16 = v13;
@@ -1967,7 +1967,7 @@ LABEL_14:
     v16 = 0;
   }
 
-  [v14 setLeftBarButtonItem:v16];
+  [navigationItem setLeftBarButtonItem:v16];
 }
 
 - (NSNumber)_pendingSyncMySportsEnabled

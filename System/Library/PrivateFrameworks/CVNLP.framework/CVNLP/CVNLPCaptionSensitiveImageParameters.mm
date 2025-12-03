@@ -1,26 +1,26 @@
 @interface CVNLPCaptionSensitiveImageParameters
-- (CVNLPCaptionSensitiveImageParameters)initWithVisionIdentifier:(id)a3 minConfidence:(double)a4 commonBlockingTokens:(id)a5 categoryBlockingTokens:(id)a6 categoryBlockingTokensAnnex:(id)a7;
+- (CVNLPCaptionSensitiveImageParameters)initWithVisionIdentifier:(id)identifier minConfidence:(double)confidence commonBlockingTokens:(id)tokens categoryBlockingTokens:(id)blockingTokens categoryBlockingTokensAnnex:(id)annex;
 @end
 
 @implementation CVNLPCaptionSensitiveImageParameters
 
-- (CVNLPCaptionSensitiveImageParameters)initWithVisionIdentifier:(id)a3 minConfidence:(double)a4 commonBlockingTokens:(id)a5 categoryBlockingTokens:(id)a6 categoryBlockingTokensAnnex:(id)a7
+- (CVNLPCaptionSensitiveImageParameters)initWithVisionIdentifier:(id)identifier minConfidence:(double)confidence commonBlockingTokens:(id)tokens categoryBlockingTokens:(id)blockingTokens categoryBlockingTokensAnnex:(id)annex
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  tokensCopy = tokens;
+  blockingTokensCopy = blockingTokens;
+  annexCopy = annex;
   v29.receiver = self;
   v29.super_class = CVNLPCaptionSensitiveImageParameters;
   v17 = [(CVNLPCaptionSensitiveImageParameters *)&v29 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_visionIdentifier, a3);
-    v18->_minConfidence = a4;
-    if (v15)
+    objc_storeStrong(&v17->_visionIdentifier, identifier);
+    v18->_minConfidence = confidence;
+    if (blockingTokensCopy)
     {
-      v22 = v15;
+      v22 = blockingTokensCopy;
       blockingTokens = v18->_blockingTokens;
       v18->_blockingTokens = v22;
     }
@@ -29,14 +29,14 @@
     {
       v24 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20, v21);
       v27 = v24;
-      if (v14)
+      if (tokensCopy)
       {
-        objc_msgSend_addObjectsFromArray_(v24, v25, v14, v26);
+        objc_msgSend_addObjectsFromArray_(v24, v25, tokensCopy, v26);
       }
 
-      if (v16)
+      if (annexCopy)
       {
-        objc_msgSend_addObjectsFromArray_(v27, v25, v16, v26);
+        objc_msgSend_addObjectsFromArray_(v27, v25, annexCopy, v26);
       }
 
       blockingTokens = v18->_blockingTokens;

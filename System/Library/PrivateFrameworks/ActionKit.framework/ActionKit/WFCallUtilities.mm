@@ -1,24 +1,24 @@
 @interface WFCallUtilities
-- (void)getFavoriteContactsWithLimit:(int64_t)a3 completion:(id)a4;
-- (void)getRecentsCallWithTelephony:(BOOL)a3 limit:(int64_t)a4 completion:(id)a5;
+- (void)getFavoriteContactsWithLimit:(int64_t)limit completion:(id)completion;
+- (void)getRecentsCallWithTelephony:(BOOL)telephony limit:(int64_t)limit completion:(id)completion;
 @end
 
 @implementation WFCallUtilities
 
-- (void)getFavoriteContactsWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getFavoriteContactsWithLimit:(int64_t)limit completion:(id)completion
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBDAF8] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277CBDAF8] = [MEMORY[0x277CBDAF8] sharedInstance];
   v7 = _WFCallUtilitiesContactsProcessingQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__WFCallUtilities_getFavoriteContactsWithLimit_completion___block_invoke;
   block[3] = &unk_278C20110;
-  v12 = v5;
-  v13 = a3;
-  v11 = v6;
-  v8 = v5;
-  v9 = v6;
+  v12 = completionCopy;
+  limitCopy = limit;
+  v11 = mEMORY[0x277CBDAF8];
+  v8 = completionCopy;
+  v9 = mEMORY[0x277CBDAF8];
   dispatch_async(v7, block);
 }
 
@@ -192,9 +192,9 @@ LABEL_22:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getRecentsCallWithTelephony:(BOOL)a3 limit:(int64_t)a4 completion:(id)a5
+- (void)getRecentsCallWithTelephony:(BOOL)telephony limit:(int64_t)limit completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   if ([MEMORY[0x277CBDAB8] authorizationStatusForEntityType:0] == 3)
   {
     v8 = _WFCallUtilitiesContactsProcessingQueue();
@@ -202,16 +202,16 @@ LABEL_22:
     block[1] = 3221225472;
     block[2] = __64__WFCallUtilities_getRecentsCallWithTelephony_limit_completion___block_invoke;
     block[3] = &unk_278C19E90;
-    v13 = a3;
-    v12 = a4;
-    v11 = v7;
+    telephonyCopy = telephony;
+    limitCopy = limit;
+    v11 = completionCopy;
     dispatch_async(v8, block);
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1011 reason:@"Contact Access was denied"];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 

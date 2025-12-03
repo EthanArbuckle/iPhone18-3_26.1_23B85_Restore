@@ -1,24 +1,24 @@
 @interface ShelfBackgroundView
-- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation ShelfBackgroundView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_173564(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_173564(attributesCopy);
 }
 
-- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews19ShelfBackgroundView_backgroundFill) = 0;
   v7 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews19ShelfBackgroundView_background;
   *v7 = 0;
@@ -28,7 +28,7 @@
   return [(ShelfBackgroundView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews19ShelfBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews19ShelfBackgroundView_backgroundFill) = 0;
   v4 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews19ShelfBackgroundView_background;
@@ -36,8 +36,8 @@
   *(v4 + 2) = 256;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ShelfBackgroundView();
-  v5 = a3;
-  v6 = [(ShelfBackgroundView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ShelfBackgroundView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

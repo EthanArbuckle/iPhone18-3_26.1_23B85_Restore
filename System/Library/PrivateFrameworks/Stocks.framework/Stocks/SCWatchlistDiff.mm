@@ -1,16 +1,16 @@
 @interface SCWatchlistDiff
-+ (id)reorderedStocksFrom:(id)a3 to:(id)a4;
++ (id)reorderedStocksFrom:(id)from to:(id)to;
 - (BOOL)isEmpty;
-- (SCWatchlistDiff)initWithOldStocks:(id)a3 newStocks:(id)a4;
+- (SCWatchlistDiff)initWithOldStocks:(id)stocks newStocks:(id)newStocks;
 @end
 
 @implementation SCWatchlistDiff
 
-- (SCWatchlistDiff)initWithOldStocks:(id)a3 newStocks:(id)a4
+- (SCWatchlistDiff)initWithOldStocks:(id)stocks newStocks:(id)newStocks
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stocksCopy = stocks;
+  newStocksCopy = newStocks;
   v67.receiver = self;
   v67.super_class = SCWatchlistDiff;
   v8 = [(SCWatchlistDiff *)&v67 init];
@@ -18,15 +18,15 @@
   if (v8)
   {
     v57 = v8;
-    v10 = [MEMORY[0x277CBEB98] setWithArray:v6];
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v7];
+    v10 = [MEMORY[0x277CBEB98] setWithArray:stocksCopy];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:newStocksCopy];
     v56 = [v10 mutableCopy];
     [v56 minusSet:v11];
     v53 = v11;
     v12 = [v11 mutableCopy];
     v54 = v10;
     [v12 minusSet:v10];
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
@@ -47,8 +47,8 @@
           }
 
           v18 = *(*(&v63 + 1) + 8 * i);
-          v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "indexOfObject:", v18)}];
-          [(NSDictionary *)v13 setObject:v19 forKey:v18];
+          v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(newStocksCopy, "indexOfObject:", v18)}];
+          [(NSDictionary *)dictionary setObject:v19 forKey:v18];
         }
 
         v15 = [obj countByEnumeratingWithState:&v63 objects:v69 count:16];
@@ -57,11 +57,11 @@
       while (v15);
     }
 
-    v55 = v6;
-    v20 = [MEMORY[0x277CBEB40] orderedSetWithArray:v6];
+    v55 = stocksCopy;
+    v20 = [MEMORY[0x277CBEB40] orderedSetWithArray:stocksCopy];
     [v20 minusSet:v56];
     [v20 minusSet:obj];
-    v21 = [MEMORY[0x277CBEB40] orderedSetWithArray:v7];
+    v21 = [MEMORY[0x277CBEB40] orderedSetWithArray:newStocksCopy];
     [v21 minusSet:v56];
     [v21 minusSet:obj];
     v22 = [objc_opt_class() reorderedStocksFrom:v20 to:v21];
@@ -82,7 +82,7 @@
     }
 
     v26 = v25;
-    v27 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
@@ -103,8 +103,8 @@
           }
 
           v33 = *(*(&v59 + 1) + 8 * j);
-          v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "indexOfObject:", v33, v49, v50)}];
-          [(NSDictionary *)v27 setObject:v34 forKey:v33];
+          v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(newStocksCopy, "indexOfObject:", v33, v49, v50)}];
+          [(NSDictionary *)dictionary2 setObject:v34 forKey:v33];
         }
 
         v30 = [v28 countByEnumeratingWithState:&v59 objects:v68 count:16];
@@ -113,54 +113,54 @@
       while (v30);
     }
 
-    v6 = v55;
+    stocksCopy = v55;
     v35 = [v55 copy];
     v9 = v57;
     stocksPreDiff = v57->_stocksPreDiff;
     v57->_stocksPreDiff = v35;
 
-    v37 = [v7 copy];
+    v37 = [newStocksCopy copy];
     stocksPostDiff = v57->_stocksPostDiff;
     v57->_stocksPostDiff = v37;
 
-    v39 = [obj allObjects];
+    allObjects = [obj allObjects];
     addedStocks = v57->_addedStocks;
-    v57->_addedStocks = v39;
+    v57->_addedStocks = allObjects;
 
     indexesOfAddedStocks = v57->_indexesOfAddedStocks;
-    v57->_indexesOfAddedStocks = v13;
-    v42 = v13;
+    v57->_indexesOfAddedStocks = dictionary;
+    v42 = dictionary;
 
-    v43 = [v56 allObjects];
+    allObjects2 = [v56 allObjects];
     removedStocks = v57->_removedStocks;
-    v57->_removedStocks = v43;
+    v57->_removedStocks = allObjects2;
 
-    v45 = [v28 allObjects];
+    allObjects3 = [v28 allObjects];
     reorderedStocks = v57->_reorderedStocks;
-    v57->_reorderedStocks = v45;
+    v57->_reorderedStocks = allObjects3;
 
     indexesOfReorderedStocks = v57->_indexesOfReorderedStocks;
-    v57->_indexesOfReorderedStocks = v27;
+    v57->_indexesOfReorderedStocks = dictionary2;
   }
 
   return v9;
 }
 
-+ (id)reorderedStocksFrom:(id)a3 to:(id)a4
++ (id)reorderedStocksFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  toCopy = to;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [v5 mutableCopy];
-  v9 = [v6 mutableCopy];
+  v8 = [fromCopy mutableCopy];
+  v9 = [toCopy mutableCopy];
   v10 = v9;
   while ([v9 count])
   {
-    v11 = [v10 firstObject];
-    v12 = [v8 indexOfObject:v11];
+    firstObject = [v10 firstObject];
+    v12 = [v8 indexOfObject:firstObject];
     if (v12)
     {
-      [v7 addObject:v11];
+      [v7 addObject:firstObject];
     }
 
     [v10 removeObjectAtIndex:0];
@@ -174,24 +174,24 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(SCWatchlistDiff *)self addedStocks];
-  if ([v3 count])
+  addedStocks = [(SCWatchlistDiff *)self addedStocks];
+  if ([addedStocks count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(SCWatchlistDiff *)self removedStocks];
-    if ([v5 count])
+    removedStocks = [(SCWatchlistDiff *)self removedStocks];
+    if ([removedStocks count])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(SCWatchlistDiff *)self reorderedStocks];
-      v4 = [v6 count] == 0;
+      reorderedStocks = [(SCWatchlistDiff *)self reorderedStocks];
+      v4 = [reorderedStocks count] == 0;
     }
   }
 

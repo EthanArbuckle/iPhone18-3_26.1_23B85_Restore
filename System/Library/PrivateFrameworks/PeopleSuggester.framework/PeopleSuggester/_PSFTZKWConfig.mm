@@ -2,7 +2,7 @@
 + (BOOL)onNonUIBuild;
 + (BOOL)useBlendingLayer;
 - (_PSFTZKWConfig)init;
-- (_PSFTZKWConfig)initWithTrialData:(id)a3;
+- (_PSFTZKWConfig)initWithTrialData:(id)data;
 @end
 
 @implementation _PSFTZKWConfig
@@ -38,9 +38,9 @@
   _Block_object_dispose(&v9, 8);
   if (!v2)
   {
-    v7 = [_PSBlockedHandlesCache beginSyncingWithTU];
+    beginSyncingWithTU = [_PSBlockedHandlesCache beginSyncingWithTU];
     _Block_object_dispose(&v9, 8);
-    _Unwind_Resume(v7);
+    _Unwind_Resume(beginSyncingWithTU);
   }
 
   v3 = v2(@"ReleaseType", 0);
@@ -75,32 +75,32 @@
   return v3;
 }
 
-- (_PSFTZKWConfig)initWithTrialData:(id)a3
+- (_PSFTZKWConfig)initWithTrialData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = _PSFTZKWConfig;
   v5 = [(_PSFTZKWConfig *)&v17 init];
   if (v5)
   {
     v5->_useBlendingLayer = +[_PSFTZKWConfig useBlendingLayer];
-    v6 = -[_PSZKWFTCalendarEventConfig initWithIsEnabled:defaultConfidenceCategory:]([_PSZKWFTCalendarEventConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:", [v4 structuredCalendarIsEnabled], objc_msgSend(v4, "structuredCalendarDefaultConfidenceCategory"));
+    v6 = -[_PSZKWFTCalendarEventConfig initWithIsEnabled:defaultConfidenceCategory:]([_PSZKWFTCalendarEventConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:", [dataCopy structuredCalendarIsEnabled], objc_msgSend(dataCopy, "structuredCalendarDefaultConfidenceCategory"));
     calendarEventConfig = v5->_calendarEventConfig;
     v5->_calendarEventConfig = v6;
 
-    v8 = -[_PSZKWFTUnstructuredCalendarConfig initWithIsEnabled:defaultConfidenceCategory:]([_PSZKWFTUnstructuredCalendarConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:", [v4 unstructuredCalendarIsEnabled], objc_msgSend(v4, "unstructuredRemindersIsEnabled"));
+    v8 = -[_PSZKWFTUnstructuredCalendarConfig initWithIsEnabled:defaultConfidenceCategory:]([_PSZKWFTUnstructuredCalendarConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:", [dataCopy unstructuredCalendarIsEnabled], objc_msgSend(dataCopy, "unstructuredRemindersIsEnabled"));
     unstructuredCalendarConfig = v5->_unstructuredCalendarConfig;
     v5->_unstructuredCalendarConfig = v8;
 
-    v10 = -[_PSZKWFTUnstructuredRemindersConfig initWithIsEnabled:defaultConfidenceCategory:]([_PSZKWFTUnstructuredRemindersConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:", [v4 unstructuredRemindersIsEnabled], objc_msgSend(v4, "unstructuredRemindersDefaultConfidenceCategory"));
+    v10 = -[_PSZKWFTUnstructuredRemindersConfig initWithIsEnabled:defaultConfidenceCategory:]([_PSZKWFTUnstructuredRemindersConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:", [dataCopy unstructuredRemindersIsEnabled], objc_msgSend(dataCopy, "unstructuredRemindersDefaultConfidenceCategory"));
     unstructuredRemindersConfig = v5->_unstructuredRemindersConfig;
     v5->_unstructuredRemindersConfig = v10;
 
-    v12 = -[_PSZKWFTPrimaryInteractionsConfig initWithIsEnabled:defaultConfidenceCategory:modelType:]([_PSZKWFTPrimaryInteractionsConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:modelType:", [v4 primaryInteractionsIsEnabled], objc_msgSend(v4, "primaryInteractionsDefaultConfidenceCategory"), objc_msgSend(v4, "primaryInteractionsModelType"));
+    v12 = -[_PSZKWFTPrimaryInteractionsConfig initWithIsEnabled:defaultConfidenceCategory:modelType:]([_PSZKWFTPrimaryInteractionsConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:modelType:", [dataCopy primaryInteractionsIsEnabled], objc_msgSend(dataCopy, "primaryInteractionsDefaultConfidenceCategory"), objc_msgSend(dataCopy, "primaryInteractionsModelType"));
     faceTimeInteractionsConfig = v5->_faceTimeInteractionsConfig;
     v5->_faceTimeInteractionsConfig = v12;
 
-    v14 = -[_PSZKWFTFallbackInteractionsConfig initWithIsEnabled:defaultConfidenceCategory:modelType:]([_PSZKWFTFallbackInteractionsConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:modelType:", [v4 fallbackInteractionsIsEnabled], objc_msgSend(v4, "fallbackInteractionsDefaultConfidenceCategory"), objc_msgSend(v4, "fallbackInteractionsModelType"));
+    v14 = -[_PSZKWFTFallbackInteractionsConfig initWithIsEnabled:defaultConfidenceCategory:modelType:]([_PSZKWFTFallbackInteractionsConfig alloc], "initWithIsEnabled:defaultConfidenceCategory:modelType:", [dataCopy fallbackInteractionsIsEnabled], objc_msgSend(dataCopy, "fallbackInteractionsDefaultConfidenceCategory"), objc_msgSend(dataCopy, "fallbackInteractionsModelType"));
     fallbackInteractionsConfig = v5->_fallbackInteractionsConfig;
     v5->_fallbackInteractionsConfig = v14;
   }

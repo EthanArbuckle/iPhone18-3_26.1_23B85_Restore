@@ -1,33 +1,33 @@
 @interface CNLabelValuePair
-+ (id)labeledValueWithLabel:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CNLabelValuePair)initWithLabel:(id)a3 value:(id)a4;
++ (id)labeledValueWithLabel:(id)label value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (CNLabelValuePair)initWithLabel:(id)label value:(id)value;
 - (id)description;
 @end
 
 @implementation CNLabelValuePair
 
-+ (id)labeledValueWithLabel:(id)a3 value:(id)a4
++ (id)labeledValueWithLabel:(id)label value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNLabelValuePair alloc] initWithLabel:v6 value:v5];
+  valueCopy = value;
+  labelCopy = label;
+  v7 = [[CNLabelValuePair alloc] initWithLabel:labelCopy value:valueCopy];
 
   return v7;
 }
 
-- (CNLabelValuePair)initWithLabel:(id)a3 value:(id)a4
+- (CNLabelValuePair)initWithLabel:(id)label value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = CNLabelValuePair;
   v9 = [(CNLabelValuePair *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_label, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_label, label);
+    objc_storeStrong(&v10->_value, value);
     v11 = v10;
   }
 
@@ -38,14 +38,14 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendNamesAndObjects:{@"label", self->_label, @"value", self->_value, 0}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -56,10 +56,10 @@
     if (objc_opt_isKindOfClass())
     {
       label = self->_label;
-      if (!(label | *(a3 + 1)) || (v6 = [(NSString *)label isEqual:?]) != 0)
+      if (!(label | *(equal + 1)) || (v6 = [(NSString *)label isEqual:?]) != 0)
       {
         value = self->_value;
-        if (!(value | *(a3 + 2)) || (v6 = [value isEqual:?]) != 0)
+        if (!(value | *(equal + 2)) || (v6 = [value isEqual:?]) != 0)
         {
           LOBYTE(v6) = 1;
         }

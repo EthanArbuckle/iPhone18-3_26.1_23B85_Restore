@@ -1,14 +1,14 @@
 @interface _WKWebExtensionWebNavigationURLFilter
-- (BOOL)matchesURL:(id)a3;
-- (_WKWebExtensionWebNavigationURLFilter)initWithDictionary:(id)a3 outErrorMessage:(id *)a4;
+- (BOOL)matchesURL:(id)l;
+- (_WKWebExtensionWebNavigationURLFilter)initWithDictionary:(id)dictionary outErrorMessage:(id *)message;
 @end
 
 @implementation _WKWebExtensionWebNavigationURLFilter
 
-- (_WKWebExtensionWebNavigationURLFilter)initWithDictionary:(id)a3 outErrorMessage:(id *)a4
+- (_WKWebExtensionWebNavigationURLFilter)initWithDictionary:(id)dictionary outErrorMessage:(id *)message
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  dictionaryCopy = dictionary;
   if ((byte_1ED6417BA & 1) == 0)
   {
     v44[0] = @"url";
@@ -27,7 +27,7 @@
     byte_1ED6417BB = 1;
   }
 
-  if (WebKit::validateDictionary(v22, @"filters", qword_1ED6417D0, qword_1ED6417D8, a4))
+  if (WebKit::validateDictionary(dictionaryCopy, @"filters", qword_1ED6417D0, qword_1ED6417D8, message))
   {
     if ((byte_1ED6417BC & 1) == 0)
     {
@@ -83,7 +83,7 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v5 = [v22 objectForKeyedSubscript:@"url"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     v6 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v6)
     {
@@ -99,7 +99,7 @@
           }
 
           v9 = *(*(&v33 + 1) + 8 * i);
-          if (!WebKit::validateDictionary(v9, @"url", 0, qword_1ED6417E0, a4))
+          if (!WebKit::validateDictionary(v9, @"url", 0, qword_1ED6417E0, message))
           {
             goto LABEL_26;
           }
@@ -123,7 +123,7 @@
           if (v12)
           {
             v13 = v12;
-            *a4 = v12;
+            *message = v12;
           }
 
           else
@@ -188,10 +188,10 @@ LABEL_27:
   return v14;
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   predicateGroups = self->_predicateGroups;
   if (predicateGroups)
   {
@@ -235,7 +235,7 @@ LABEL_9:
             objc_enumerationMutation(v11);
           }
 
-          if (([*(*(&v17 + 1) + 8 * v14) matchesURL:v4] & 1) == 0)
+          if (([*(*(&v17 + 1) + 8 * v14) matchesURL:lCopy] & 1) == 0)
           {
             break;
           }

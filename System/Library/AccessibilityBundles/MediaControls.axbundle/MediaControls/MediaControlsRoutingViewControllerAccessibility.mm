@@ -1,17 +1,17 @@
 @interface MediaControlsRoutingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation MediaControlsRoutingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPAVRoutingViewController" hasInstanceMethod:@"_tableView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsRoutingViewController" isKindOfClass:@"MPAVRoutingViewController"];
-  [v3 validateClass:@"MPAVRoutingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPAVRoutingViewController" hasInstanceMethod:@"_tableView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsRoutingViewController" isKindOfClass:@"MPAVRoutingViewController"];
+  [validationsCopy validateClass:@"MPAVRoutingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

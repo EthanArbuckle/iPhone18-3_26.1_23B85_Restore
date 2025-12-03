@@ -1,15 +1,15 @@
 @interface SGMailQuoteParser
-+ (id)_tofuRegions:(id)a3 utf8:(const char *)a4 isAOSPMail:(BOOL)a5;
-+ (id)_xWrote:(id)a3 utf8:(const char *)a4;
++ (id)_tofuRegions:(id)regions utf8:(const char *)utf8 isAOSPMail:(BOOL)mail;
++ (id)_xWrote:(id)wrote utf8:(const char *)utf8;
 @end
 
 @implementation SGMailQuoteParser
 
-+ (id)_xWrote:(id)a3 utf8:(const char *)a4
++ (id)_xWrote:(id)wrote utf8:(const char *)utf8
 {
-  v7 = a3;
+  wroteCopy = wrote;
   v8 = objc_opt_new();
-  v4 = v7;
+  v4 = wroteCopy;
   _PASMemoryHeavyOperation();
   v5 = v8;
 
@@ -59,10 +59,10 @@ uint64_t __34__SGMailQuoteParser__xWrote_utf8___block_invoke_2(uint64_t a1, unin
   return 0;
 }
 
-+ (id)_tofuRegions:(id)a3 utf8:(const char *)a4 isAOSPMail:(BOOL)a5
++ (id)_tofuRegions:(id)regions utf8:(const char *)utf8 isAOSPMail:(BOOL)mail
 {
-  v5 = a5;
-  v6 = a3;
+  mailCopy = mail;
+  regionsCopy = regions;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -71,7 +71,7 @@ uint64_t __34__SGMailQuoteParser__xWrote_utf8___block_invoke_2(uint64_t a1, unin
   v46 = 3221225472;
   v47 = __50__SGMailQuoteParser__tofuRegions_utf8_isAOSPMail___block_invoke;
   v48 = &unk_2789561D0;
-  v49 = v6;
+  v49 = regionsCopy;
   v50 = &v51;
   _PASMemoryHeavyOperation();
   v39 = 0;
@@ -99,16 +99,16 @@ uint64_t __34__SGMailQuoteParser__xWrote_utf8___block_invoke_2(uint64_t a1, unin
   v8 = v40[5];
   if (v8 && v34[5])
   {
-    v9 = [v8 unsignedIntegerValue];
-    v10 = [v34[5] unsignedIntegerValue];
-    v11 = v9 >= v10 ? v10 : v9;
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v34[5] unsignedIntegerValue];
+    v11 = unsignedIntegerValue >= unsignedIntegerValue2 ? unsignedIntegerValue2 : unsignedIntegerValue;
     if (v11 < v52[3])
     {
       v52[3] = v11;
     }
   }
 
-  if (v5)
+  if (mailCopy)
   {
     v12 = patterns_24207();
     v13 = [v12 regex2ForKey:@"SXReply"];

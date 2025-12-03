@@ -1,9 +1,9 @@
 @interface IDSReportGeneralSpamMessage
 - (IDSReportGeneralSpamMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSReportGeneralSpamMessage
@@ -22,19 +22,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IDSReportGeneralSpamMessage;
-  v4 = [(IDSReportGeneralSpamMessage *)&v9 copyWithZone:a3];
-  v5 = [(IDSReportGeneralSpamMessage *)self spamMessage];
-  [v4 setSpamMessage:v5];
+  v4 = [(IDSReportGeneralSpamMessage *)&v9 copyWithZone:zone];
+  spamMessage = [(IDSReportGeneralSpamMessage *)self spamMessage];
+  [v4 setSpamMessage:spamMessage];
 
-  v6 = [(IDSReportGeneralSpamMessage *)self responseMessage];
-  [v4 setResponseMessage:v6];
+  responseMessage = [(IDSReportGeneralSpamMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
-  v7 = [(IDSReportGeneralSpamMessage *)self responseSpamMessage];
-  [v4 setResponseSpamMessage:v7];
+  responseSpamMessage = [(IDSReportGeneralSpamMessage *)self responseSpamMessage];
+  [v4 setResponseSpamMessage:responseSpamMessage];
 
   return v4;
 }
@@ -50,10 +50,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSReportGeneralSpamMessage *)self spamMessage];
-  if (v4)
+  spamMessage = [(IDSReportGeneralSpamMessage *)self spamMessage];
+  if (spamMessage)
   {
-    CFDictionarySetValue(v3, @"spam-message", v4);
+    CFDictionarySetValue(v3, @"spam-message", spamMessage);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -64,30 +64,30 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "General Report Spam response: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v8 = v4;
+    v8 = dictionaryCopy;
     _IDSLogV();
   }
 
   v9.receiver = self;
   v9.super_class = IDSReportGeneralSpamMessage;
-  [(IDSReportGeneralSpamMessage *)&v9 handleResponseDictionary:v4, v8];
-  v6 = [v4 objectForKey:@"message"];
+  [(IDSReportGeneralSpamMessage *)&v9 handleResponseDictionary:dictionaryCopy, v8];
+  v6 = [dictionaryCopy objectForKey:@"message"];
   [(IDSReportGeneralSpamMessage *)self setResponseMessage:v6];
 
-  v7 = [v4 objectForKey:@"spam-messages"];
+  v7 = [dictionaryCopy objectForKey:@"spam-messages"];
   [(IDSReportGeneralSpamMessage *)self setResponseSpamMessage:v7];
 }
 

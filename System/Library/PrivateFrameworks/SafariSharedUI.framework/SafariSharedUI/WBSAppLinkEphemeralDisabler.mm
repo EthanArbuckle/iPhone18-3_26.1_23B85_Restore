@@ -1,8 +1,8 @@
 @interface WBSAppLinkEphemeralDisabler
 + (id)defaultDisabler;
-- (BOOL)shouldDisableAppLink:(id)a3;
+- (BOOL)shouldDisableAppLink:(id)link;
 - (WBSAppLinkEphemeralDisabler)init;
-- (void)disableAppLink:(id)a3;
+- (void)disableAppLink:(id)link;
 @end
 
 @implementation WBSAppLinkEphemeralDisabler
@@ -14,9 +14,9 @@
   v2 = [(WBSAppLinkEphemeralDisabler *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     appLinks = v2->_appLinks;
-    v2->_appLinks = v3;
+    v2->_appLinks = dictionary;
 
     v5 = v2;
   }
@@ -43,29 +43,29 @@ void __46__WBSAppLinkEphemeralDisabler_defaultDisabler__block_invoke()
   defaultDisabler_defaultDisabler = v0;
 }
 
-- (void)disableAppLink:(id)a3
+- (void)disableAppLink:(id)link
 {
-  if (a3)
+  if (link)
   {
-    v4 = [a3 targetApplicationRecord];
-    if (v4)
+    targetApplicationRecord = [link targetApplicationRecord];
+    if (targetApplicationRecord)
     {
-      v6 = v4;
+      v6 = targetApplicationRecord;
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
       [(NSMutableDictionary *)self->_appLinks setObject:v5 forKeyedSubscript:v6];
 
-      v4 = v6;
+      targetApplicationRecord = v6;
     }
   }
 }
 
-- (BOOL)shouldDisableAppLink:(id)a3
+- (BOOL)shouldDisableAppLink:(id)link
 {
-  if (a3)
+  if (link)
   {
-    v4 = [a3 targetApplicationRecord];
-    if (!v4)
+    targetApplicationRecord = [link targetApplicationRecord];
+    if (!targetApplicationRecord)
     {
       v10 = 0;
 LABEL_11:
@@ -73,7 +73,7 @@ LABEL_11:
       return v10;
     }
 
-    v5 = [(NSMutableDictionary *)self->_appLinks objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_appLinks objectForKey:targetApplicationRecord];
     v6 = v5;
     if (v5)
     {
@@ -88,7 +88,7 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      [(NSMutableDictionary *)self->_appLinks removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_appLinks removeObjectForKey:targetApplicationRecord];
     }
 
     v10 = 0;

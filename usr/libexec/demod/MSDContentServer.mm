@@ -1,14 +1,14 @@
 @interface MSDContentServer
-- (BOOL)shouldTryLocalHub:(id)a3;
+- (BOOL)shouldTryLocalHub:(id)hub;
 - (MSDContentServer)init;
-- (id)getSessionForRequest:(id)a3;
+- (id)getSessionForRequest:(id)request;
 - (id)getSessionWithMinRequestLoad;
-- (void)allocateRequest:(id)a3 forSession:(id)a4;
-- (void)downloadFile:(id)a3;
-- (void)freeRequest:(id)a3 forSession:(id)a4;
-- (void)handleCompletionForDownloadRequest:(id)a3 withResponse:(id)a4 forSession:(id)a5;
+- (void)allocateRequest:(id)request forSession:(id)session;
+- (void)downloadFile:(id)file;
+- (void)freeRequest:(id)request forSession:(id)session;
+- (void)handleCompletionForDownloadRequest:(id)request withResponse:(id)response forSession:(id)session;
 - (void)initServer;
-- (void)launchRequest:(id)a3 toSession:(id)a4;
+- (void)launchRequest:(id)request toSession:(id)session;
 - (void)limitConcurrentRequests;
 @end
 
@@ -29,9 +29,9 @@
       do
       {
         v5 = objc_alloc_init(MSDCDNSession);
-        v6 = [(MSDContentServer *)v3 sessionTable];
+        sessionTable = [(MSDContentServer *)v3 sessionTable];
         v7 = objc_alloc_init(NSMutableArray);
-        [v6 setObject:v7 forKey:v5];
+        [sessionTable setObject:v7 forKey:v5];
 
         ++v4;
       }
@@ -45,20 +45,20 @@
   return v3;
 }
 
-- (void)downloadFile:(id)a3
+- (void)downloadFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v4 = [(MSDContentServer *)self getSessionForRequest:?];
   if (v4)
   {
-    [(MSDContentServer *)self launchRequest:v5 toSession:v4];
+    [(MSDContentServer *)self launchRequest:fileCopy toSession:v4];
   }
 }
 
-- (void)launchRequest:(id)a3 toSession:(id)a4
+- (void)launchRequest:(id)request toSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  sessionCopy = session;
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x3032000000;
@@ -84,37 +84,37 @@
   v38[4] = sub_1000BFE30;
   v39 = 0;
   v8 = objc_alloc_init(MSDServerRetryPolicyContext);
-  v9 = [v6 downloadCredentials];
-  [(MSDServerRetryPolicyContext *)v8 setFdc:v9];
+  downloadCredentials = [requestCopy downloadCredentials];
+  [(MSDServerRetryPolicyContext *)v8 setFdc:downloadCredentials];
 
-  v10 = [v6 originServer];
-  [(MSDServerRetryPolicyContext *)v8 setOriginServer:v10];
+  originServer = [requestCopy originServer];
+  [(MSDServerRetryPolicyContext *)v8 setOriginServer:originServer];
 
-  [(MSDServerRetryPolicyContext *)v8 setTryCachingHub:[(MSDContentServer *)self shouldTryLocalHub:v6]];
-  v11 = [(MSDContentServer *)self localHubURLSchema];
-  [(MSDServerRetryPolicyContext *)v8 setCachedLocalURL:v11];
+  [(MSDServerRetryPolicyContext *)v8 setTryCachingHub:[(MSDContentServer *)self shouldTryLocalHub:requestCopy]];
+  localHubURLSchema = [(MSDContentServer *)self localHubURLSchema];
+  [(MSDServerRetryPolicyContext *)v8 setCachedLocalURL:localHubURLSchema];
 
   v12 = objc_alloc_init(MSDCDNSessionTaskInfo);
-  v13 = [v6 fileInfo];
-  v14 = [v13 fileHash];
-  [(MSDCDNSessionTaskInfo *)v12 setFileHash:v14];
+  fileInfo = [requestCopy fileInfo];
+  fileHash = [fileInfo fileHash];
+  [(MSDCDNSessionTaskInfo *)v12 setFileHash:fileHash];
 
   [(MSDSessionTaskInfo *)v12 setMaxRetry:3];
-  v15 = [v6 savePath];
-  [(MSDSessionTaskInfo *)v12 setSavePath:v15];
+  savePath = [requestCopy savePath];
+  [(MSDSessionTaskInfo *)v12 setSavePath:savePath];
 
   v16 = [[MSDContentServerURLRetryPolicy alloc] initWithContext:v8];
   v17 = +[NSDate date];
   [v17 timeIntervalSince1970];
-  [v6 setDispatchTime:?];
+  [requestCopy setDispatchTime:?];
 
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
   v26 = sub_1000BFE38;
   v27 = &unk_10016C698;
   v34 = v44;
-  v28 = self;
-  v18 = v6;
+  selfCopy = self;
+  v18 = requestCopy;
   v29 = v18;
   v35 = v40;
   v36 = v42;
@@ -122,13 +122,13 @@
   v30 = v19;
   v20 = v12;
   v31 = v20;
-  v21 = v7;
+  v21 = sessionCopy;
   v32 = v21;
   v37 = v38;
   v22 = v8;
   v33 = v22;
   v23 = objc_retainBlock(&v24);
-  [(MSDSessionTaskInfo *)v20 setHandler:v23, v24, v25, v26, v27, v28];
+  [(MSDSessionTaskInfo *)v20 setHandler:v23, v24, v25, v26, v27, selfCopy];
   (v23[2])(v23, 0, 0);
 
   _Block_object_dispose(v38, 8);
@@ -164,35 +164,35 @@
   if (os_variant_has_internal_content())
   {
     v6 = +[MSDTestPreferences sharedInstance];
-    v7 = [v6 concurrentSession];
+    concurrentSession = [v6 concurrentSession];
 
-    if (v7 >= 1)
+    if (concurrentSession >= 1)
     {
       v8 = sub_100063A54();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 134217984;
-        v17 = *&v7;
+        v17 = *&concurrentSession;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Override default number of concurrent download session: %ld", &v16, 0xCu);
       }
 
-      [(MSDContentServer *)self setConcurrentSession:v7];
+      [(MSDContentServer *)self setConcurrentSession:concurrentSession];
     }
 
     v9 = +[MSDTestPreferences sharedInstance];
-    v10 = [v9 concurrentDownloadRequest];
+    concurrentDownloadRequest = [v9 concurrentDownloadRequest];
 
-    if (v10 >= 1)
+    if (concurrentDownloadRequest >= 1)
     {
       v11 = sub_100063A54();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 134217984;
-        v17 = *&v10;
+        v17 = *&concurrentDownloadRequest;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Override default number of concurrent requests per session: %ld", &v16, 0xCu);
       }
 
-      [(MSDContentServer *)self setRequestPerSession:v10];
+      [(MSDContentServer *)self setRequestPerSession:concurrentDownloadRequest];
     }
 
     v12 = +[MSDTestPreferences sharedInstance];
@@ -216,22 +216,22 @@
   [(MSDContentServer *)self setMaxConcurrentRequests:[(MSDContentServer *)self requestPerSession]* [(MSDContentServer *)self concurrentSession]];
 }
 
-- (void)handleCompletionForDownloadRequest:(id)a3 withResponse:(id)a4 forSession:(id)a5
+- (void)handleCompletionForDownloadRequest:(id)request withResponse:(id)response forSession:(id)session
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_requestDispatchLock);
-  [(MSDContentServer *)self freeRequest:v17 forSession:v9];
-  v10 = [(MSDContentServer *)self numConcurrentRequests];
-  if (v10 < -[MSDContentServer maxConcurrentRequests](self, "maxConcurrentRequests") && (-[MSDContentServer pendingRequests](self, "pendingRequests"), v11 = objc_claimAutoreleasedReturnValue(), [v11 firstObject], v12 = objc_claimAutoreleasedReturnValue(), v11, v12))
+  [(MSDContentServer *)self freeRequest:requestCopy forSession:sessionCopy];
+  numConcurrentRequests = [(MSDContentServer *)self numConcurrentRequests];
+  if (numConcurrentRequests < -[MSDContentServer maxConcurrentRequests](self, "maxConcurrentRequests") && (-[MSDContentServer pendingRequests](self, "pendingRequests"), v11 = objc_claimAutoreleasedReturnValue(), [v11 firstObject], v12 = objc_claimAutoreleasedReturnValue(), v11, v12))
   {
-    v13 = [(MSDContentServer *)self pendingRequests];
-    [v13 removeObjectAtIndex:0];
+    pendingRequests = [(MSDContentServer *)self pendingRequests];
+    [pendingRequests removeObjectAtIndex:0];
 
-    [(MSDContentServer *)self allocateRequest:v12 forSession:v9];
+    [(MSDContentServer *)self allocateRequest:v12 forSession:sessionCopy];
     os_unfair_lock_unlock(&self->_requestDispatchLock);
-    [(MSDContentServer *)self launchRequest:v12 toSession:v9];
+    [(MSDContentServer *)self launchRequest:v12 toSession:sessionCopy];
   }
 
   else
@@ -239,74 +239,74 @@
     os_unfair_lock_unlock(&self->_requestDispatchLock);
   }
 
-  v14 = [(MSDContentServer *)self observer];
+  observer = [(MSDContentServer *)self observer];
 
-  if (v14)
+  if (observer)
   {
-    v15 = [(MSDContentServer *)self observer];
-    [v15 requestComplete:v17 withResponse:v8];
+    observer2 = [(MSDContentServer *)self observer];
+    [observer2 requestComplete:requestCopy withResponse:responseCopy];
   }
 
   else
   {
-    v16 = [v17 completion];
+    completion = [requestCopy completion];
 
-    if (!v16)
+    if (!completion)
     {
       goto LABEL_10;
     }
 
-    v15 = [v17 completion];
-    (v15)[2](v15, v8);
+    observer2 = [requestCopy completion];
+    (observer2)[2](observer2, responseCopy);
   }
 
 LABEL_10:
 }
 
-- (id)getSessionForRequest:(id)a3
+- (id)getSessionForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_requestDispatchLock);
-  v5 = [(MSDContentServer *)self numConcurrentRequests];
-  if (v5 >= [(MSDContentServer *)self maxConcurrentRequests])
+  numConcurrentRequests = [(MSDContentServer *)self numConcurrentRequests];
+  if (numConcurrentRequests >= [(MSDContentServer *)self maxConcurrentRequests])
   {
-    v7 = [(MSDContentServer *)self pendingRequests];
-    [v7 addObject:v4];
+    pendingRequests = [(MSDContentServer *)self pendingRequests];
+    [pendingRequests addObject:requestCopy];
 
-    v6 = 0;
-    v4 = v7;
+    getSessionWithMinRequestLoad = 0;
+    requestCopy = pendingRequests;
   }
 
   else
   {
-    v6 = [(MSDContentServer *)self getSessionWithMinRequestLoad];
-    [(MSDContentServer *)self allocateRequest:v4 forSession:v6];
+    getSessionWithMinRequestLoad = [(MSDContentServer *)self getSessionWithMinRequestLoad];
+    [(MSDContentServer *)self allocateRequest:requestCopy forSession:getSessionWithMinRequestLoad];
   }
 
   os_unfair_lock_unlock(&self->_requestDispatchLock);
 
-  return v6;
+  return getSessionWithMinRequestLoad;
 }
 
-- (void)allocateRequest:(id)a3 forSession:(id)a4
+- (void)allocateRequest:(id)request forSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDContentServer *)self sessionTable];
-  v9 = [v8 objectForKey:v6];
+  sessionCopy = session;
+  requestCopy = request;
+  sessionTable = [(MSDContentServer *)self sessionTable];
+  v9 = [sessionTable objectForKey:sessionCopy];
 
-  [v9 addObject:v7];
+  [v9 addObject:requestCopy];
   [(MSDContentServer *)self setNumConcurrentRequests:[(MSDContentServer *)self numConcurrentRequests]+ 1];
 }
 
-- (void)freeRequest:(id)a3 forSession:(id)a4
+- (void)freeRequest:(id)request forSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDContentServer *)self sessionTable];
-  v9 = [v8 objectForKey:v6];
+  sessionCopy = session;
+  requestCopy = request;
+  sessionTable = [(MSDContentServer *)self sessionTable];
+  v9 = [sessionTable objectForKey:sessionCopy];
 
-  [v9 removeObject:v7];
+  [v9 removeObject:requestCopy];
   [(MSDContentServer *)self setNumConcurrentRequests:[(MSDContentServer *)self numConcurrentRequests]- 1];
 }
 
@@ -316,8 +316,8 @@ LABEL_10:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(MSDContentServer *)self sessionTable];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sessionTable = [(MSDContentServer *)self sessionTable];
+  v4 = [sessionTable countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -330,12 +330,12 @@ LABEL_10:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sessionTable);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(MSDContentServer *)self sessionTable];
-        v12 = [v11 objectForKey:v10];
+        sessionTable2 = [(MSDContentServer *)self sessionTable];
+        v12 = [sessionTable2 objectForKey:v10];
 
         if ([v12 count] < v8)
         {
@@ -346,7 +346,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [sessionTable countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -377,29 +377,29 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_requestDispatchLock);
 }
 
-- (BOOL)shouldTryLocalHub:(id)a3
+- (BOOL)shouldTryLocalHub:(id)hub
 {
-  v4 = a3;
-  v5 = [v4 downloadCredentials];
-  v6 = [v4 originServer];
-  v7 = [v5 localCredentialForOriginServer:v6];
+  hubCopy = hub;
+  downloadCredentials = [hubCopy downloadCredentials];
+  originServer = [hubCopy originServer];
+  v7 = [downloadCredentials localCredentialForOriginServer:originServer];
 
   os_unfair_lock_lock(&self->_cachingHubRetryLock);
-  v8 = [(MSDContentServer *)self localHubReachable];
-  v9 = v8;
-  if (v7 && (v8 & 1) == 0)
+  localHubReachable = [(MSDContentServer *)self localHubReachable];
+  v9 = localHubReachable;
+  if (v7 && (localHubReachable & 1) == 0)
   {
-    v10 = [(MSDContentServer *)self cachingHubRequest];
+    cachingHubRequest = [(MSDContentServer *)self cachingHubRequest];
 
-    if (v10)
+    if (cachingHubRequest)
     {
 LABEL_4:
       LOBYTE(v9) = 0;
       goto LABEL_18;
     }
 
-    v11 = [(MSDContentServer *)self cachedFDC];
-    if (v11 && (v12 = v11, -[MSDContentServer cachedFDC](self, "cachedFDC"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v7 isEqualToDictionary:v13], v13, v12, (v14 & 1) != 0))
+    cachedFDC = [(MSDContentServer *)self cachedFDC];
+    if (cachedFDC && (v12 = cachedFDC, -[MSDContentServer cachedFDC](self, "cachedFDC"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v7 isEqualToDictionary:v13], v13, v12, (v14 & 1) != 0))
     {
       v15 = +[NSDate date];
       [v15 timeIntervalSince1970];
@@ -437,12 +437,12 @@ LABEL_4:
       }
     }
 
-    [(MSDContentServer *)self setCachingHubRequest:v4];
+    [(MSDContentServer *)self setCachingHubRequest:hubCopy];
     v25 = sub_100063A54();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138543362;
-      v28 = v4;
+      v28 = hubCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Launching request %{public}@ to retry caching hub", &v27, 0xCu);
     }
 

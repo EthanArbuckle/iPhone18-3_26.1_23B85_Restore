@@ -1,14 +1,14 @@
 @interface EKUITravelUtilities
-- (id)travelTimePopupMenuForCurrentTravelTime:(double)a3 selectionHandler:(id)a4;
+- (id)travelTimePopupMenuForCurrentTravelTime:(double)time selectionHandler:(id)handler;
 @end
 
 @implementation EKUITravelUtilities
 
-- (id)travelTimePopupMenuForCurrentTravelTime:(double)a3 selectionHandler:(id)a4
+- (id)travelTimePopupMenuForCurrentTravelTime:(double)time selectionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
   v7 = EventKitUIBundle();
   v8 = [v7 localizedStringForKey:@"Travel time menu no travel time" value:@"None" table:0];
 
@@ -17,12 +17,12 @@
   v31[1] = 3221225472;
   v31[2] = __80__EKUITravelUtilities_travelTimePopupMenuForCurrentTravelTime_selectionHandler___block_invoke;
   v31[3] = &unk_1E8442858;
-  v10 = v5;
+  v10 = handlerCopy;
   v32 = v10;
   v27 = v8;
   v11 = [v9 actionWithTitle:v8 image:0 identifier:0 handler:v31];
   v12 = v11;
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     [v11 setState:1];
   }
@@ -32,7 +32,7 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   CUIKAddInlineMenuItemArrayToArray();
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 6; ++i)
   {
     v16 = *&_travelTimeDurations_0[i];
@@ -52,16 +52,16 @@
     v23 = [v21 stringWithFormat:@"tavel-time-menu-option:%@", v22];
     [v20 setAccessibilityIdentifier:v23];
 
-    if (v16 == a3)
+    if (v16 == time)
     {
       [v20 setState:1];
     }
 
-    [v14 addObject:v20];
+    [array2 addObject:v20];
   }
 
   CUIKAddInlineMenuItemArrayToArray();
-  v24 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:@"travel-time-pop-up-menu" options:1 children:v6];
+  v24 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:@"travel-time-pop-up-menu" options:1 children:array];
 
   return v24;
 }

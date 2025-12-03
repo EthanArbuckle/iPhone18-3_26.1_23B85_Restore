@@ -1,7 +1,7 @@
 @interface AXCaptionPreviewView
 + (NSArray)cloudImages;
 - (AXCaptionPreviewDelegate)previewDelegate;
-- (AXCaptionPreviewView)initWithFrame:(CGRect)a3;
+- (AXCaptionPreviewView)initWithFrame:(CGRect)frame;
 - (BOOL)inTable;
 - (CGPoint)originalCenter;
 - (CGRect)originalFrame;
@@ -11,12 +11,12 @@
 - (id)currentSlide;
 - (id)enclosingViewController;
 - (id)nextSlide;
-- (void)_expandPressed:(id)a3;
-- (void)_previewTapped:(id)a3;
+- (void)_expandPressed:(id)pressed;
+- (void)_previewTapped:(id)tapped;
 - (void)_updateButtonStyle;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setIsExpanded:(BOOL)a3;
+- (void)setIsExpanded:(BOOL)expanded;
 - (void)showNextImage;
 - (void)stopBackgroundAnimation;
 - (void)updateExpandButtonPosition;
@@ -26,8 +26,8 @@
 
 - (id)captionCell
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
@@ -37,16 +37,16 @@
         break;
       }
 
-      v3 = [(AXCaptionPreviewView *)v2 superview];
+      superview = [(AXCaptionPreviewView *)selfCopy superview];
 
-      v2 = v3;
-      if (!v3)
+      selfCopy = superview;
+      if (!superview)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    selfCopy = selfCopy;
   }
 
 LABEL_6:
@@ -57,7 +57,7 @@ LABEL_6:
 
 - (BOOL)inTable
 {
-  v2 = [(AXCaptionPreviewView *)self captionCell];
+  captionCell = [(AXCaptionPreviewView *)self captionCell];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -68,11 +68,11 @@ LABEL_6:
 {
   if ([(AXCaptionPreviewView *)self inTable])
   {
-    v3 = [(AXCaptionPreviewView *)self captionCell];
-    [v3 frame];
+    captionCell = [(AXCaptionPreviewView *)self captionCell];
+    [captionCell frame];
     v5 = v4;
     v7 = v6;
-    [v3 frame];
+    [captionCell frame];
     v9 = v7 - fabs(v8);
     v10 = v9;
     v11 = v7 - v9;
@@ -99,10 +99,10 @@ LABEL_6:
   return result;
 }
 
-- (void)_previewTapped:(id)a3
+- (void)_previewTapped:(id)tapped
 {
-  v3 = [(AXCaptionPreviewView *)self previewDelegate];
-  [v3 captionPreviewWasTapped:1];
+  previewDelegate = [(AXCaptionPreviewView *)self previewDelegate];
+  [previewDelegate captionPreviewWasTapped:1];
 }
 
 void __40__AXCaptionPreviewView__updateSubtitle___block_invoke(uint64_t a1)
@@ -119,11 +119,11 @@ void __40__AXCaptionPreviewView__updateSubtitle___block_invoke(uint64_t a1)
   [v3 afterDelay:v5 processBlock:&__block_literal_global_67 cancelBlock:0.25];
 }
 
-- (void)setIsExpanded:(BOOL)a3
+- (void)setIsExpanded:(BOOL)expanded
 {
-  self->_isExpanded = a3;
+  self->_isExpanded = expanded;
   v4 = &selRef__previewTapped_;
-  if (!a3)
+  if (!expanded)
   {
     v4 = &selRef__expandPressed_;
   }
@@ -139,7 +139,7 @@ void __40__AXCaptionPreviewView__updateSubtitle___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__AXCaptionPreviewView_cloudImages__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cloudImages_onceToken != -1)
   {
     dispatch_once(&cloudImages_onceToken, block);
@@ -201,20 +201,20 @@ void __35__AXCaptionPreviewView_cloudImages__block_invoke()
 
 - (double)_xOffset
 {
-  v2 = [(AXCaptionPreviewView *)self captionCell];
-  [v2 xOffset];
+  captionCell = [(AXCaptionPreviewView *)self captionCell];
+  [captionCell xOffset];
   v4 = v3;
 
   return v4;
 }
 
-- (AXCaptionPreviewView)initWithFrame:(CGRect)a3
+- (AXCaptionPreviewView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v71.receiver = self;
   v71.super_class = AXCaptionPreviewView;
-  v5 = [(AXCaptionPreviewView *)&v71 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(AXCaptionPreviewView *)&v71 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:v5 selector:"_updateSubtitle:" name:kMACaptionAppearanceSettingsChangedNotification object:0];
 
@@ -268,37 +268,37 @@ void __35__AXCaptionPreviewView_cloudImages__block_invoke()
   [(UIView *)v5->_cloudContainer setClipsToBounds:1];
   [(UIView *)v5->_cloudContainer addSubview:v5->_cloudView1];
   [(UIView *)v5->_cloudContainer addSubview:v5->_cloudView2];
-  v68 = [(UIImageView *)v5->_cloudView1 leadingAnchor];
-  v67 = [(UIView *)v5->_cloudContainer leadingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  leadingAnchor = [(UIImageView *)v5->_cloudView1 leadingAnchor];
+  leadingAnchor2 = [(UIView *)v5->_cloudContainer leadingAnchor];
+  v66 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v72[0] = v66;
-  v65 = [(UIImageView *)v5->_cloudView1 trailingAnchor];
-  v64 = [(UIView *)v5->_cloudContainer trailingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  trailingAnchor = [(UIImageView *)v5->_cloudView1 trailingAnchor];
+  trailingAnchor2 = [(UIView *)v5->_cloudContainer trailingAnchor];
+  v63 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v72[1] = v63;
-  v62 = [(UIImageView *)v5->_cloudView1 topAnchor];
-  v61 = [(UIView *)v5->_cloudContainer topAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  topAnchor = [(UIImageView *)v5->_cloudView1 topAnchor];
+  topAnchor2 = [(UIView *)v5->_cloudContainer topAnchor];
+  v60 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v72[2] = v60;
-  v59 = [(UIImageView *)v5->_cloudView1 bottomAnchor];
-  v58 = [(UIView *)v5->_cloudContainer bottomAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  bottomAnchor = [(UIImageView *)v5->_cloudView1 bottomAnchor];
+  bottomAnchor2 = [(UIView *)v5->_cloudContainer bottomAnchor];
+  v57 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v72[3] = v57;
-  v56 = [(UIImageView *)v5->_cloudView2 leadingAnchor];
-  v55 = [(UIView *)v5->_cloudContainer leadingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  leadingAnchor3 = [(UIImageView *)v5->_cloudView2 leadingAnchor];
+  leadingAnchor4 = [(UIView *)v5->_cloudContainer leadingAnchor];
+  v54 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v72[4] = v54;
-  v53 = [(UIImageView *)v5->_cloudView2 trailingAnchor];
-  v52 = [(UIView *)v5->_cloudContainer trailingAnchor];
-  v26 = [v53 constraintEqualToAnchor:v52];
+  trailingAnchor3 = [(UIImageView *)v5->_cloudView2 trailingAnchor];
+  trailingAnchor4 = [(UIView *)v5->_cloudContainer trailingAnchor];
+  v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v72[5] = v26;
-  v27 = [(UIImageView *)v5->_cloudView2 topAnchor];
-  v28 = [(UIView *)v5->_cloudContainer topAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  topAnchor3 = [(UIImageView *)v5->_cloudView2 topAnchor];
+  topAnchor4 = [(UIView *)v5->_cloudContainer topAnchor];
+  v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v72[6] = v29;
-  v30 = [(UIImageView *)v5->_cloudView2 bottomAnchor];
-  v31 = [(UIView *)v5->_cloudContainer bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  bottomAnchor3 = [(UIImageView *)v5->_cloudView2 bottomAnchor];
+  bottomAnchor4 = [(UIView *)v5->_cloudContainer bottomAnchor];
+  v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v72[7] = v32;
   v33 = [NSArray arrayWithObjects:v72 count:8];
   [NSLayoutConstraint activateConstraints:v33];
@@ -360,8 +360,8 @@ void __35__AXCaptionPreviewView_cloudImages__block_invoke()
 
 - (id)enclosingViewController
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
@@ -371,15 +371,15 @@ void __35__AXCaptionPreviewView_cloudImages__block_invoke()
         break;
       }
 
-      v3 = [(AXCaptionPreviewView *)v2 nextResponder];
+      nextResponder = [(AXCaptionPreviewView *)selfCopy nextResponder];
 
-      v2 = v3;
+      selfCopy = nextResponder;
     }
 
-    while (v3);
+    while (nextResponder);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)updateExpandButtonPosition
@@ -389,35 +389,35 @@ void __35__AXCaptionPreviewView_cloudImages__block_invoke()
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AXCaptionPreviewView *)self enclosingViewController];
-  v43 = v11;
-  if (v11)
+  enclosingViewController = [(AXCaptionPreviewView *)self enclosingViewController];
+  v43 = enclosingViewController;
+  if (enclosingViewController)
   {
-    v12 = [v11 view];
-    v13 = [v43 view];
+    view = [enclosingViewController view];
+    view2 = [v43 view];
   }
 
   else
   {
-    v14 = [(AXCaptionPreviewView *)self window];
+    window = [(AXCaptionPreviewView *)self window];
 
     v15 = v10;
     v16 = v8;
     v17 = v6;
     v18 = v4;
-    if (!v14)
+    if (!window)
     {
       goto LABEL_6;
     }
 
-    v12 = [(AXCaptionPreviewView *)self window];
-    v13 = [(AXCaptionPreviewView *)self window];
+    view = [(AXCaptionPreviewView *)self window];
+    view2 = [(AXCaptionPreviewView *)self window];
   }
 
-  v19 = v13;
-  v20 = [v13 safeAreaLayoutGuide];
-  [v20 layoutFrame];
-  [v12 convertRect:self toView:?];
+  v19 = view2;
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
+  [view convertRect:self toView:?];
   v18 = v21;
   v17 = v22;
   v16 = v23;
@@ -437,16 +437,16 @@ LABEL_6:
   y = v46.origin.y;
   width = v46.size.width;
   height = v46.size.height;
-  v29 = [(AXCaptionPreviewView *)self superview];
+  superview = [(AXCaptionPreviewView *)self superview];
   v30 = 0;
-  if (v29)
+  if (superview)
   {
     do
     {
       AXSafeClassFromString();
       if (objc_opt_isKindOfClass())
       {
-        v31 = v29;
+        v31 = superview;
 
         v30 = v31;
       }
@@ -460,12 +460,12 @@ LABEL_6:
         }
       }
 
-      v32 = [v29 superview];
+      v29Superview = [superview superview];
 
-      v29 = v32;
+      superview = v29Superview;
     }
 
-    while (v32);
+    while (v29Superview);
     if (v30)
     {
       [v30 frame];
@@ -509,10 +509,10 @@ LABEL_6:
   [(UIView *)self->_cloudContainer setFrame:?];
 }
 
-- (void)_expandPressed:(id)a3
+- (void)_expandPressed:(id)pressed
 {
-  v3 = [(AXCaptionPreviewView *)self previewDelegate];
-  [v3 captionPreviewWasTapped:1];
+  previewDelegate = [(AXCaptionPreviewView *)self previewDelegate];
+  [previewDelegate captionPreviewWasTapped:1];
 }
 
 - (void)stopBackgroundAnimation
@@ -629,8 +629,8 @@ LABEL_10:
   v4 = +[AXCaptionPreviewView cloudImages];
   self->_cloudIndex = v3 % [v4 count];
 
-  v5 = [(AXCaptionPreviewView *)self nextSlide];
-  v6 = [(AXCaptionPreviewView *)self currentSlide];
+  nextSlide = [(AXCaptionPreviewView *)self nextSlide];
+  currentSlide = [(AXCaptionPreviewView *)self currentSlide];
   v7 = +[AXCaptionPreviewView cloudImages];
   v8 = [v7 count];
   cloudIndex = self->_cloudIndex;
@@ -639,39 +639,39 @@ LABEL_10:
   {
     v10 = +[AXCaptionPreviewView cloudImages];
     v11 = [v10 objectAtIndex:self->_cloudIndex];
-    [v5 setImage:v11];
+    [nextSlide setImage:v11];
   }
 
-  [v5 setAlpha:1.0];
-  v12 = [v5 image];
-  v13 = [v6 image];
+  [nextSlide setAlpha:1.0];
+  image = [nextSlide image];
+  image2 = [currentSlide image];
 
-  if (v12 == v13)
+  if (image == image2)
   {
-    __37__AXCaptionPreviewView_showNextImage__block_invoke(v14, v5, v6);
+    __37__AXCaptionPreviewView_showNextImage__block_invoke(v14, nextSlide, currentSlide);
   }
 
   else
   {
     [(AXCaptionPreviewView *)self _xOffset];
     v16 = v15;
-    [v5 frame];
+    [nextSlide frame];
     v18 = v17;
-    [v5 frame];
+    [nextSlide frame];
     v20 = v19;
-    [v5 frame];
-    [v5 setFrame:{v16, v18, v20}];
+    [nextSlide frame];
+    [nextSlide setFrame:{v16, v18, v20}];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = __37__AXCaptionPreviewView_showNextImage__block_invoke_3;
     v25[3] = &unk_2553B0;
-    v26 = v5;
+    v26 = nextSlide;
     [UIView animateWithDuration:v25 animations:4.9];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = __37__AXCaptionPreviewView_showNextImage__block_invoke_4;
     v23[3] = &unk_2553B0;
-    v24 = v6;
+    v24 = currentSlide;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = __37__AXCaptionPreviewView_showNextImage__block_invoke_5;

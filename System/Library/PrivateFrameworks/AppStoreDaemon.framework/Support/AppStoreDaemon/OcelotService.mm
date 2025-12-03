@@ -1,29 +1,29 @@
 @interface OcelotService
-- (void)flushMetricsWithCompletionBlock:(id)a3;
-- (void)getAppPayoutEventsWithCompletionBlock:(id)a3;
-- (void)getAppSummaryEventsWithCompletionBlock:(id)a3;
-- (void)recordLaunchForBundleID:(id)a3 additionalMetrics:(id)a4 replyHandler:(id)a5;
-- (void)recordLaunchesWithCompletionBlock:(id)a3;
-- (void)recordMetricsWithCompletionBlock:(id)a3;
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4;
-- (void)resetMetricsWithCompletionBlock:(id)a3;
-- (void)resetPayoutWithCompletionBlock:(id)a3;
-- (void)sbsyncIfSubscribedWithAccount:(id)a3 completionBlock:(id)a4;
-- (void)sbsyncWithCompletionBlock:(id)a3;
-- (void)sbsyncWithDuration:(id)a3 completionBlock:(id)a4;
-- (void)sendPayoutMetricsWithCompletionBlock:(id)a3;
-- (void)sendSummaryMetricsWithCompletionBlock:(id)a3;
-- (void)showUpsellForItemID:(id)a3 completionBlock:(id)a4;
-- (void)subscriptionDetailsWithCompletionBlock:(id)a3;
-- (void)subscriptionStateWithCompletionBlock:(id)a3;
-- (void)topAppsForAccount:(id)a3 completionBlock:(id)a4;
+- (void)flushMetricsWithCompletionBlock:(id)block;
+- (void)getAppPayoutEventsWithCompletionBlock:(id)block;
+- (void)getAppSummaryEventsWithCompletionBlock:(id)block;
+- (void)recordLaunchForBundleID:(id)d additionalMetrics:(id)metrics replyHandler:(id)handler;
+- (void)recordLaunchesWithCompletionBlock:(id)block;
+- (void)recordMetricsWithCompletionBlock:(id)block;
+- (void)reportAppEvent:(id)event completionBlock:(id)block;
+- (void)resetMetricsWithCompletionBlock:(id)block;
+- (void)resetPayoutWithCompletionBlock:(id)block;
+- (void)sbsyncIfSubscribedWithAccount:(id)account completionBlock:(id)block;
+- (void)sbsyncWithCompletionBlock:(id)block;
+- (void)sbsyncWithDuration:(id)duration completionBlock:(id)block;
+- (void)sendPayoutMetricsWithCompletionBlock:(id)block;
+- (void)sendSummaryMetricsWithCompletionBlock:(id)block;
+- (void)showUpsellForItemID:(id)d completionBlock:(id)block;
+- (void)subscriptionDetailsWithCompletionBlock:(id)block;
+- (void)subscriptionStateWithCompletionBlock:(id)block;
+- (void)topAppsForAccount:(id)account completionBlock:(id)block;
 @end
 
 @implementation OcelotService
 
-- (void)flushMetricsWithCompletionBlock:(id)a3
+- (void)flushMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -38,12 +38,12 @@
   }
 
   v9 = sub_100355E58();
-  sub_100356338(v9, @"User Request", v4);
+  sub_100356338(v9, @"User Request", blockCopy);
 }
 
-- (void)getAppPayoutEventsWithCompletionBlock:(id)a3
+- (void)getAppPayoutEventsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -58,12 +58,12 @@
   }
 
   v9 = sub_100355E58();
-  sub_100356614(v9, v4);
+  sub_100356614(v9, blockCopy);
 }
 
-- (void)getAppSummaryEventsWithCompletionBlock:(id)a3
+- (void)getAppSummaryEventsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,14 +78,14 @@
   }
 
   v9 = sub_100355E58();
-  sub_100356DDC(v9, v4);
+  sub_100356DDC(v9, blockCopy);
 }
 
-- (void)recordLaunchForBundleID:(id)a3 additionalMetrics:(id)a4 replyHandler:(id)a5
+- (void)recordLaunchForBundleID:(id)d additionalMetrics:(id)metrics replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  metricsCopy = metrics;
+  dCopy = d;
   v11 = sub_1002338F0(self);
   v12 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -99,12 +99,12 @@
   }
 
   v14 = sub_100355E58();
-  sub_100358C08(v14, v10, v11, v9, v8);
+  sub_100358C08(v14, dCopy, v11, metricsCopy, handlerCopy);
 }
 
-- (void)recordLaunchesWithCompletionBlock:(id)a3
+- (void)recordLaunchesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -119,12 +119,12 @@
   }
 
   v9 = sub_100355E58();
-  sub_1003588AC(v9, v4);
+  sub_1003588AC(v9, blockCopy);
 }
 
-- (void)recordMetricsWithCompletionBlock:(id)a3
+- (void)recordMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -139,13 +139,13 @@
   }
 
   v9 = sub_100355E58();
-  sub_100359424(v9, v4);
+  sub_100359424(v9, blockCopy);
 }
 
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4
+- (void)reportAppEvent:(id)event completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  eventCopy = event;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -160,12 +160,12 @@
   }
 
   v12 = sub_100355E58();
-  sub_1003585D4(v12, v7, v6);
+  sub_1003585D4(v12, eventCopy, blockCopy);
 }
 
-- (void)resetMetricsWithCompletionBlock:(id)a3
+- (void)resetMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -180,12 +180,12 @@
   }
 
   v9 = sub_100355E58();
-  sub_10035963C(v9, v4);
+  sub_10035963C(v9, blockCopy);
 }
 
-- (void)resetPayoutWithCompletionBlock:(id)a3
+- (void)resetPayoutWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -200,12 +200,12 @@
   }
 
   v9 = sub_100355E58();
-  sub_100359BEC(v9, v4);
+  sub_100359BEC(v9, blockCopy);
 }
 
-- (void)sendPayoutMetricsWithCompletionBlock:(id)a3
+- (void)sendPayoutMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -220,12 +220,12 @@
   }
 
   v9 = sub_100355E58();
-  sub_10035AFF4(v9, v4);
+  sub_10035AFF4(v9, blockCopy);
 }
 
-- (void)sendSummaryMetricsWithCompletionBlock:(id)a3
+- (void)sendSummaryMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -240,13 +240,13 @@
   }
 
   v9 = sub_100355E58();
-  sub_10035B23C(v9, v4);
+  sub_10035B23C(v9, blockCopy);
 }
 
-- (void)sbsyncIfSubscribedWithAccount:(id)a3 completionBlock:(id)a4
+- (void)sbsyncIfSubscribedWithAccount:(id)account completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  accountCopy = account;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -261,12 +261,12 @@
   }
 
   v12 = sub_100355E58();
-  sub_100359E70(v12, v7, v6);
+  sub_100359E70(v12, accountCopy, blockCopy);
 }
 
-- (void)sbsyncWithCompletionBlock:(id)a3
+- (void)sbsyncWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -281,13 +281,13 @@
   }
 
   v9 = sub_100355E58();
-  sub_10035A248(v9, @"Manual", 0, v4);
+  sub_10035A248(v9, @"Manual", 0, blockCopy);
 }
 
-- (void)sbsyncWithDuration:(id)a3 completionBlock:(id)a4
+- (void)sbsyncWithDuration:(id)duration completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  durationCopy = duration;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -302,13 +302,13 @@
   }
 
   v12 = sub_100355E58();
-  sub_10035A248(v12, @"Manual", v7, v6);
+  sub_10035A248(v12, @"Manual", durationCopy, blockCopy);
 }
 
-- (void)showUpsellForItemID:(id)a3 completionBlock:(id)a4
+- (void)showUpsellForItemID:(id)d completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = sub_1002338F0(self);
   v10 = ASDLogHandleForCategory();
@@ -317,14 +317,14 @@
     v13 = 138543874;
     v14 = v8;
     v15 = 2114;
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2114;
     v18 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] showUpsellForItemID: %{public}@ for client: %{public}@", &v13, 0x20u);
   }
 
   v11 = sub_100355E58();
-  sub_10035CBE0(v11, v6, &__NSDictionary0__struct, v8);
+  sub_10035CBE0(v11, dCopy, &__NSDictionary0__struct, v8);
 
   v12 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -336,15 +336,15 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] showUpsellForItemID complete for client: %{public}@", &v13, 0x16u);
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7, 1, 0);
+    blockCopy[2](blockCopy, 1, 0);
   }
 }
 
-- (void)subscriptionDetailsWithCompletionBlock:(id)a3
+- (void)subscriptionDetailsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100003B90();
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -360,18 +360,18 @@
   }
 
   v10 = +[ACAccountStore ams_sharedAccountStore];
-  v11 = [v10 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v10 ams_activeiTunesAccount];
 
-  v12 = [v11 ams_DSID];
+  ams_DSID = [ams_activeiTunesAccount ams_DSID];
   v31 = 0;
-  v13 = sub_1002A1944(SbsyncTask, v12, &v31);
+  v13 = sub_1002A1944(SbsyncTask, ams_DSID, &v31);
   v14 = v31;
 
-  if (v11)
+  if (ams_activeiTunesAccount)
   {
-    v15 = [v11 username];
-    v16 = [v11 ams_DSID];
-    v17 = [NSString stringWithFormat:@"%@/%@", v15, v16];
+    username = [ams_activeiTunesAccount username];
+    ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
+    v17 = [NSString stringWithFormat:@"%@/%@", username, ams_DSID2];
   }
 
   else
@@ -405,15 +405,15 @@
   v28[2] = sub_1002AE66C;
   v28[3] = &unk_1005209C0;
   v29 = v24;
-  v30 = v4;
+  v30 = blockCopy;
   v26 = v24;
-  v27 = v4;
+  v27 = blockCopy;
   sub_1002F4DEC(v25, 1uLL, v5, 0, 0, 0, v28);
 }
 
-- (void)subscriptionStateWithCompletionBlock:(id)a3
+- (void)subscriptionStateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -428,23 +428,23 @@
   }
 
   v9 = +[ACAccountStore ams_sharedAccountStore];
-  v10 = [v9 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v9 ams_activeiTunesAccount];
 
-  v11 = [v10 ams_DSID];
+  ams_DSID = [ams_activeiTunesAccount ams_DSID];
   v14 = 0;
-  v12 = sub_1002A1944(SbsyncTask, v11, &v14);
+  v12 = sub_1002A1944(SbsyncTask, ams_DSID, &v14);
   v13 = v14;
 
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4, v12, v13);
+    blockCopy[2](blockCopy, v12, v13);
   }
 }
 
-- (void)topAppsForAccount:(id)a3 completionBlock:(id)a4
+- (void)topAppsForAccount:(id)account completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  accountCopy = account;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,7 +455,7 @@
   }
 
   v10 = sub_100355E58();
-  sub_10035D818(v10, v7, v6);
+  sub_10035D818(v10, accountCopy, blockCopy);
 }
 
 @end

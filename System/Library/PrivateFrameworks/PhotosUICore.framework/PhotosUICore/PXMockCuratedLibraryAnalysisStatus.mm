@@ -1,31 +1,31 @@
 @interface PXMockCuratedLibraryAnalysisStatus
 + (BOOL)shouldUseMock;
 + (id)_mockStatus;
-- (PXMockCuratedLibraryAnalysisStatus)initWithDataSourceManager:(id)a3;
+- (PXMockCuratedLibraryAnalysisStatus)initWithDataSourceManager:(id)manager;
 - (void)_updateStatusProperties;
 - (void)dataSourceManagerDidChange;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PXMockCuratedLibraryAnalysisStatus
 
 - (void)_updateStatusProperties
 {
-  v3 = [objc_opt_class() _mockStatus];
-  v4 = [v3 objectForKeyedSubscript:@"Structure"];
+  _mockStatus = [objc_opt_class() _mockStatus];
+  v4 = [_mockStatus objectForKeyedSubscript:@"Structure"];
   v26 = v4;
   if (v4)
   {
-    v25 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v25 = 1;
+    bOOLValue = 1;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"State"];
+  v5 = [_mockStatus objectForKeyedSubscript:@"State"];
   v6 = v5;
   if (v5 && ([v5 isEqualToString:@"unknown"] & 1) == 0)
   {
@@ -45,7 +45,7 @@
     v7 = 0;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"progress"];
+  v8 = [_mockStatus objectForKeyedSubscript:@"progress"];
   v9 = v8;
   if (v8)
   {
@@ -58,35 +58,35 @@
     v11 = -1.0;
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"Unplugged"];
+  v12 = [_mockStatus objectForKeyedSubscript:@"Unplugged"];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 BOOLValue];
+    bOOLValue2 = [v12 BOOLValue];
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue2 = 0;
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"HasBattery"];
+  v15 = [_mockStatus objectForKeyedSubscript:@"HasBattery"];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 BOOLValue];
+    bOOLValue3 = [v15 BOOLValue];
   }
 
   else
   {
-    v17 = 1;
+    bOOLValue3 = 1;
   }
 
-  v18 = _CuratedLibraryAnalysisStatusLocalizedTitleForState(v7, v14, [(PXCuratedLibraryAnalysisStatus *)self alternateTitleIndex]);
-  v19 = _CuratedLibraryAnalysisStatusLocalizedDescriptionForState(v7, v14, v17);
+  v18 = _CuratedLibraryAnalysisStatusLocalizedTitleForState(v7, bOOLValue2, [(PXCuratedLibraryAnalysisStatus *)self alternateTitleIndex]);
+  v19 = _CuratedLibraryAnalysisStatusLocalizedDescriptionForState(v7, bOOLValue2, bOOLValue3);
   if (v7 == 2)
   {
-    v20 = v14;
+    v20 = bOOLValue2;
   }
 
   else
@@ -120,8 +120,8 @@
   v28 = v18;
   v31 = v11;
   v32 = v21;
-  v33 = v25;
-  v34 = v14;
+  v33 = bOOLValue;
+  v34 = bOOLValue2;
   v23 = v19;
   v24 = v18;
   [(PXMockCuratedLibraryAnalysisStatus *)self performChanges:v27];
@@ -142,12 +142,12 @@ void __61__PXMockCuratedLibraryAnalysisStatus__updateStatusProperties__block_inv
   [v6 setIsDevicePlugged:(*(a1 + 65) & 1) == 0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &_PXMockCuratedLibraryAnalysisStatusUserDefaultsContext)
+  if (context == &_PXMockCuratedLibraryAnalysisStatusUserDefaultsContext)
   {
 
-    [(PXMockCuratedLibraryAnalysisStatus *)self _updateStatusProperties:a3];
+    [(PXMockCuratedLibraryAnalysisStatus *)self _updateStatusProperties:path];
   }
 
   else
@@ -156,7 +156,7 @@ void __61__PXMockCuratedLibraryAnalysisStatus__updateStatusProperties__block_inv
     v10 = v7;
     v8.receiver = self;
     v8.super_class = PXMockCuratedLibraryAnalysisStatus;
-    [(PXMockCuratedLibraryAnalysisStatus *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PXMockCuratedLibraryAnalysisStatus *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -176,10 +176,10 @@ void __61__PXMockCuratedLibraryAnalysisStatus__updateStatusProperties__block_inv
   [v3 addObserver:self forKeyPath:@"LibraryAnalysisStatusMock" options:4 context:&_PXMockCuratedLibraryAnalysisStatusUserDefaultsContext];
 }
 
-- (PXMockCuratedLibraryAnalysisStatus)initWithDataSourceManager:(id)a3
+- (PXMockCuratedLibraryAnalysisStatus)initWithDataSourceManager:(id)manager
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -190,7 +190,7 @@ void __61__PXMockCuratedLibraryAnalysisStatus__updateStatusProperties__block_inv
 
   v8.receiver = self;
   v8.super_class = PXMockCuratedLibraryAnalysisStatus;
-  v6 = [(PXCuratedLibraryAnalysisStatus *)&v8 _initWithDataSourceManager:v4];
+  v6 = [(PXCuratedLibraryAnalysisStatus *)&v8 _initWithDataSourceManager:managerCopy];
 
   return v6;
 }
@@ -285,8 +285,8 @@ LABEL_24:
     return 0;
   }
 
-  v3 = [a1 _mockStatus];
-  v4 = v3 != 0;
+  _mockStatus = [self _mockStatus];
+  v4 = _mockStatus != 0;
 
   return v4;
 }

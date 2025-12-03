@@ -1,29 +1,29 @@
 @interface NTKVictoryAnalogRichFaceView
 - (CGPoint)_contentCenterOffset;
-- (NTKVictoryAnalogRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (unint64_t)_layoutStyleForSlot:(id)a3;
-- (void)_applyColor:(id)a3 alternateColor:(id)a4 toComplicationView:(id)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (NTKVictoryAnalogRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (unint64_t)_layoutStyleForSlot:(id)slot;
+- (void)_applyColor:(id)color alternateColor:(id)alternateColor toComplicationView:(id)view;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 - (void)_loadSnapshotContentViews;
 @end
 
 @implementation NTKVictoryAnalogRichFaceView
 
-- (NTKVictoryAnalogRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKVictoryAnalogRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = NTKVictoryAnalogRichFaceView;
-  v9 = [(NTKVictoryAnalogFaceView *)&v17 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKVictoryAnalogFaceView *)&v17 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    v11 = [(NTKVictoryAnalogRichFaceView *)v9 complicationFactory];
-    [v11 setGraphicCornerComplications:1];
-    sub_5CB0(v8, v13);
-    [v11 setScreenEdgeInsets:{v14, v15, 0.0, v16}];
+    complicationFactory = [(NTKVictoryAnalogRichFaceView *)v9 complicationFactory];
+    [complicationFactory setGraphicCornerComplications:1];
+    sub_5CB0(deviceCopy, v13);
+    [complicationFactory setScreenEdgeInsets:{v14, v15, 0.0, v16}];
   }
 
   return v10;
@@ -36,33 +36,33 @@
   [(NTKVictoryAnalogFaceView *)&v6 _loadSnapshotContentViews];
   memset(&v5, 0, sizeof(v5));
   CGAffineTransformMakeScale(&v5, 0.93, 0.93);
-  v3 = [(NTKVictoryAnalogFaceView *)self scaleView];
+  scaleView = [(NTKVictoryAnalogFaceView *)self scaleView];
   v4 = v5;
-  [v3 setTransform:&v4];
+  [scaleView setTransform:&v4];
 }
 
-- (void)_applyColor:(id)a3 alternateColor:(id)a4 toComplicationView:(id)a5
+- (void)_applyColor:(id)color alternateColor:(id)alternateColor toComplicationView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  colorCopy = color;
+  alternateColorCopy = alternateColor;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = NTKVictoryAnalogRichFaceView;
-  [(NTKVictoryAnalogFaceView *)&v12 _applyColor:v8 alternateColor:v9 toComplicationView:v10];
+  [(NTKVictoryAnalogFaceView *)&v12 _applyColor:colorCopy alternateColor:alternateColorCopy toComplicationView:viewCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
-    [(NTKVictoryAnalogRichFaceView *)self setComplicationColor:v8];
-    [(NTKVictoryAnalogRichFaceView *)self setAlternateComplicationColor:v9];
-    [(NTKVictoryAnalogRichFaceView *)self setInterpolatedComplicationColor:v8];
+    v11 = viewCopy;
+    [(NTKVictoryAnalogRichFaceView *)self setComplicationColor:colorCopy];
+    [(NTKVictoryAnalogRichFaceView *)self setAlternateComplicationColor:alternateColorCopy];
+    [(NTKVictoryAnalogRichFaceView *)self setInterpolatedComplicationColor:colorCopy];
     [v11 updateMonochromeColor];
   }
 }
 
-- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
-  if (NTKComplicationSlotBottomCenter != a4)
+  if (NTKComplicationSlotBottomCenter != slot)
   {
     return 0;
   }
@@ -71,7 +71,7 @@
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKVictoryAnalogRichFaceView;
-  return [(NTKVictoryAnalogFaceView *)&v7 _legacyLayoutOverrideforComplicationType:a3 slot:?];
+  return [(NTKVictoryAnalogFaceView *)&v7 _legacyLayoutOverrideforComplicationType:type slot:?];
 }
 
 - (CGPoint)_contentCenterOffset
@@ -83,42 +83,42 @@
   return result;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  if (NTKComplicationSlotBottomCenter == a5)
+  if (NTKComplicationSlotBottomCenter == slot)
   {
     v15.receiver = self;
     v15.super_class = NTKVictoryAnalogRichFaceView;
-    v12 = a5;
-    v13 = a3;
-    v11 = [(NTKVictoryAnalogFaceView *)&v15 _newLegacyViewForComplication:v13 family:a4 slot:v12];
+    slotCopy = slot;
+    complicationCopy = complication;
+    v11 = [(NTKVictoryAnalogFaceView *)&v15 _newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
   }
 
   else
   {
-    v8 = a5;
-    v9 = a3;
-    v10 = [(NTKVictoryAnalogRichFaceView *)self complicationFactory];
-    v11 = [v10 newLegacyViewForComplication:v9 family:a4 slot:v8];
+    slotCopy2 = slot;
+    complicationCopy2 = complication;
+    complicationFactory = [(NTKVictoryAnalogRichFaceView *)self complicationFactory];
+    v11 = [complicationFactory newLegacyViewForComplication:complicationCopy2 family:family slot:slotCopy2];
   }
 
   return v11;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = NTKVictoryAnalogRichFaceView;
-  [(NTKVictoryAnalogFaceView *)&v10 _configureComplicationView:v6 forSlot:a4];
+  [(NTKVictoryAnalogFaceView *)&v10 _configureComplicationView:viewCopy forSlot:slot];
   v7 = [(NTKVictoryAnalogRichFaceView *)self optionForCustomEditMode:10 slot:0];
-  v8 = [v7 pigmentEditOption];
+  pigmentEditOption = [v7 pigmentEditOption];
 
-  if (v8)
+  if (pigmentEditOption)
   {
-    if ([v6 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+    if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
     {
-      v9 = v6;
+      v9 = viewCopy;
       [v9 setUseRoundedFontDesign:1];
       [v9 setFontWeight:UIFontWeightMedium];
     }
@@ -126,15 +126,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 transitionToMonochromeWithFraction:1.0];
+      [viewCopy transitionToMonochromeWithFraction:1.0];
     }
   }
 }
 
-- (unint64_t)_layoutStyleForSlot:(id)a3
+- (unint64_t)_layoutStyleForSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBottomCenter])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottomCenter])
   {
     v5 = &dword_0 + 1;
   }
@@ -143,7 +143,7 @@
   {
     v7.receiver = self;
     v7.super_class = NTKVictoryAnalogRichFaceView;
-    v5 = [(NTKVictoryAnalogRichFaceView *)&v7 _layoutStyleForSlot:v4];
+    v5 = [(NTKVictoryAnalogRichFaceView *)&v7 _layoutStyleForSlot:slotCopy];
   }
 
   return v5;

@@ -13,8 +13,8 @@
   v3 = [(HROnboardingAtrialFibrillationEnableViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v5];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
 }
 
 @end

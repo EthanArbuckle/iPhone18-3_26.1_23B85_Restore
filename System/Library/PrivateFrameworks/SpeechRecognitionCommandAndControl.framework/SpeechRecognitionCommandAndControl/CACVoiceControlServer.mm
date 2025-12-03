@@ -43,10 +43,10 @@ uint64_t __31__CACVoiceControlServer_server__block_invoke()
   if ([(CACVoiceControlServer *)self _connectIfNecessary])
   {
     v3 = [objc_alloc(MEMORY[0x277CE7D90]) initWithKey:+[CACVoiceControlServer _currentDisplayedCorrectionsCommand](CACVoiceControlServer payload:{"_currentDisplayedCorrectionsCommand"), 0}];
-    v4 = [(AXServer *)self client];
-    v5 = [v4 sendMessage:v3 withError:0];
-    v6 = [v5 payload];
-    v7 = [v6 objectForKeyedSubscript:@"result"];
+    client = [(AXServer *)self client];
+    v5 = [client sendMessage:v3 withError:0];
+    payload = [v5 payload];
+    v7 = [payload objectForKeyedSubscript:@"result"];
   }
 
   else
@@ -62,10 +62,10 @@ uint64_t __31__CACVoiceControlServer_server__block_invoke()
   if ([(CACVoiceControlServer *)self _connectIfNecessary])
   {
     v3 = [objc_alloc(MEMORY[0x277CE7D90]) initWithKey:+[CACVoiceControlServer _currentlyDisplayedOverlayLabelsCommand](CACVoiceControlServer payload:{"_currentlyDisplayedOverlayLabelsCommand"), 0}];
-    v4 = [(AXServer *)self client];
-    v5 = [v4 sendMessage:v3 withError:0];
-    v6 = [v5 payload];
-    v7 = [v6 objectForKeyedSubscript:@"result"];
+    client = [(AXServer *)self client];
+    v5 = [client sendMessage:v3 withError:0];
+    payload = [v5 payload];
+    v7 = [payload objectForKeyedSubscript:@"result"];
   }
 
   else

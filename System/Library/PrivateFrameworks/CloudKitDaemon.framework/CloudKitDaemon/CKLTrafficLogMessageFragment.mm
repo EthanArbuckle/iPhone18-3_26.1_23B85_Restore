@@ -1,16 +1,16 @@
 @interface CKLTrafficLogMessageFragment
-- (CKLTrafficLogMessageFragment)initWithMessage:(id)a3;
+- (CKLTrafficLogMessageFragment)initWithMessage:(id)message;
 - (id)description;
 @end
 
 @implementation CKLTrafficLogMessageFragment
 
-- (CKLTrafficLogMessageFragment)initWithMessage:(id)a3
+- (CKLTrafficLogMessageFragment)initWithMessage:(id)message
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6) < 0x26 || (v8 = objc_msgSend_rangeOfString_(v4, v7, @":"), v8 == 0x7FFFFFFFFFFFFFFFLL))
+  messageCopy = message;
+  if (objc_msgSend_length(messageCopy, v5, v6) < 0x26 || (v8 = objc_msgSend_rangeOfString_(messageCopy, v7, @":"), v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -21,26 +21,26 @@
     v12 = [(CKLTrafficLogMessageFragment *)&v27 init];
     if (v12)
     {
-      v13 = objc_msgSend_substringWithRange_(v4, v11, 0, 1);
+      v13 = objc_msgSend_substringWithRange_(messageCopy, v11, 0, 1);
       v12->_type = objc_msgSend_integerValue(v13, v14, v15);
 
-      v17 = objc_msgSend_substringWithRange_(v4, v16, 1, 36);
+      v17 = objc_msgSend_substringWithRange_(messageCopy, v16, 1, 36);
       uuid = v12->_uuid;
       v12->_uuid = v17;
 
-      v20 = objc_msgSend_substringWithRange_(v4, v19, 37, v10 - 37);
+      v20 = objc_msgSend_substringWithRange_(messageCopy, v19, 37, v10 - 37);
       v12->_seqNum = objc_msgSend_integerValue(v20, v21, v22);
 
-      v24 = objc_msgSend_substringFromIndex_(v4, v23, v10 + 1);
+      v24 = objc_msgSend_substringFromIndex_(messageCopy, v23, v10 + 1);
       dataString = v12->_dataString;
       v12->_dataString = v24;
     }
 
     self = v12;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description

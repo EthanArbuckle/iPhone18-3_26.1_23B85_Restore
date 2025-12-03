@@ -1,15 +1,15 @@
 @interface ATXAnchorModelPredictionForwarder
 - (ATXAnchorModelPredictionForwarder)init;
-- (ATXAnchorModelPredictionForwarder)initWithAnchorModelDataStoreWrapper:(id)a3 anchorModelHyperParameters:(id)a4;
-- (id)actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)a3;
-- (id)appAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)a3;
+- (ATXAnchorModelPredictionForwarder)initWithAnchorModelDataStoreWrapper:(id)wrapper anchorModelHyperParameters:(id)parameters;
+- (id)actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)predictions;
+- (id)appAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)predictions;
 - (id)clientModelSpec;
-- (id)linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)a3;
-- (id)modeAnchorModelSuggestionsFromPredictions:(id)a3;
-- (void)forwardModePredictions:(id)a3;
-- (void)forwardNonModePredictions:(id)a3;
-- (void)forwardPredictionTuplesToBlendingLayer:(id)a3 feedbackMetadata:(id)a4;
-- (void)forwardPredictions:(id)a3;
+- (id)linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)predictions;
+- (id)modeAnchorModelSuggestionsFromPredictions:(id)predictions;
+- (void)forwardModePredictions:(id)predictions;
+- (void)forwardNonModePredictions:(id)predictions;
+- (void)forwardPredictionTuplesToBlendingLayer:(id)layer feedbackMetadata:(id)metadata;
+- (void)forwardPredictions:(id)predictions;
 @end
 
 @implementation ATXAnchorModelPredictionForwarder
@@ -23,27 +23,27 @@
   return v5;
 }
 
-- (ATXAnchorModelPredictionForwarder)initWithAnchorModelDataStoreWrapper:(id)a3 anchorModelHyperParameters:(id)a4
+- (ATXAnchorModelPredictionForwarder)initWithAnchorModelDataStoreWrapper:(id)wrapper anchorModelHyperParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  wrapperCopy = wrapper;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = ATXAnchorModelPredictionForwarder;
   v9 = [(ATXAnchorModelPredictionForwarder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storeWrapper, a3);
-    objc_storeStrong(&v10->_hyperParameters, a4);
+    objc_storeStrong(&v9->_storeWrapper, wrapper);
+    objc_storeStrong(&v10->_hyperParameters, parameters);
   }
 
   return v10;
 }
 
-- (void)forwardPredictions:(id)a3
+- (void)forwardPredictions:(id)predictions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -55,7 +55,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
@@ -92,13 +92,13 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forwardNonModePredictions:(id)a3
+- (void)forwardNonModePredictions:(id)predictions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAnchorModelPredictionForwarder *)self actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:v4];
-  v6 = [(ATXAnchorModelPredictionForwarder *)self appAnchorModelPredictionTuplesForBlendingLayerFromPredictions:v4];
-  v7 = [(ATXAnchorModelPredictionForwarder *)self linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:v4];
+  predictionsCopy = predictions;
+  v5 = [(ATXAnchorModelPredictionForwarder *)self actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:predictionsCopy];
+  v6 = [(ATXAnchorModelPredictionForwarder *)self appAnchorModelPredictionTuplesForBlendingLayerFromPredictions:predictionsCopy];
+  v7 = [(ATXAnchorModelPredictionForwarder *)self linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:predictionsCopy];
 
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -135,10 +135,10 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forwardModePredictions:(id)a3
+- (void)forwardModePredictions:(id)predictions
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(ATXAnchorModelPredictionForwarder *)self modeAnchorModelSuggestionsFromPredictions:a3];
+  v4 = [(ATXAnchorModelPredictionForwarder *)self modeAnchorModelSuggestionsFromPredictions:predictions];
   if ([v4 count])
   {
     v5 = __atxlog_handle_anchor();
@@ -165,26 +165,26 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forwardPredictionTuplesToBlendingLayer:(id)a3 feedbackMetadata:(id)a4
+- (void)forwardPredictionTuplesToBlendingLayer:(id)layer feedbackMetadata:(id)metadata
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_70];
+  metadataCopy = metadata;
+  v7 = [layer _pas_mappedArrayWithTransform:&__block_literal_global_70];
   anchorModelClientModel = self->_anchorModelClientModel;
   if (!anchorModelClientModel)
   {
     v9 = objc_alloc(MEMORY[0x277D42070]);
-    v10 = [(ATXAnchorModelPredictionForwarder *)self clientModelId];
+    clientModelId = [(ATXAnchorModelPredictionForwarder *)self clientModelId];
     v11 = +[ATXClientModelSuggestionReceiver sharedInstance];
-    v12 = [v11 blendingLayerServer];
-    v13 = [v9 initWithClientModelId:v10 blendingLayerServer:v12];
+    blendingLayerServer = [v11 blendingLayerServer];
+    v13 = [v9 initWithClientModelId:clientModelId blendingLayerServer:blendingLayerServer];
     v14 = self->_anchorModelClientModel;
     self->_anchorModelClientModel = v13;
 
     anchorModelClientModel = self->_anchorModelClientModel;
   }
 
-  v15 = [ATXAnchorModelFeedbackMetadata archivedDataForAnchorFeedbackMetadata:v6];
+  v15 = [ATXAnchorModelFeedbackMetadata archivedDataForAnchorFeedbackMetadata:metadataCopy];
   [(ATXProactiveSuggestionClientModel *)anchorModelClientModel updateSuggestions:v7 feedbackMetadata:v15];
 
   v16 = __atxlog_handle_anchor();
@@ -200,24 +200,24 @@
 
 - (id)clientModelSpec
 {
-  v3 = [(ATXAnchorModelPredictionForwarder *)self clientModelId];
-  v4 = [(ATXAnchorModelHyperParameters *)self->_hyperParameters abGroup];
-  v5 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v3 clientModelVersion:v4 engagementResetPolicy:1];
+  clientModelId = [(ATXAnchorModelPredictionForwarder *)self clientModelId];
+  abGroup = [(ATXAnchorModelHyperParameters *)self->_hyperParameters abGroup];
+  v5 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:clientModelId clientModelVersion:abGroup engagementResetPolicy:1];
 
   return v5;
 }
 
-- (id)actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)a3
+- (id)actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)predictions
 {
-  v4 = [ATXAnchorModelActionPredictionPostProcessor anchorPredictionScoredActionTuplesFromPredictions:a3];
-  v5 = [(ATXAnchorModelHyperParameters *)self->_hyperParameters anchorsDisabledForHomescreen];
+  v4 = [ATXAnchorModelActionPredictionPostProcessor anchorPredictionScoredActionTuplesFromPredictions:predictions];
+  anchorsDisabledForHomescreen = [(ATXAnchorModelHyperParameters *)self->_hyperParameters anchorsDisabledForHomescreen];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __102__ATXAnchorModelPredictionForwarder_actionAnchorModelPredictionTuplesForBlendingLayerFromPredictions___block_invoke;
   v9[3] = &unk_27859A600;
   v9[4] = self;
-  v10 = v5;
-  v6 = v5;
+  v10 = anchorsDisabledForHomescreen;
+  v6 = anchorsDisabledForHomescreen;
   v7 = [v4 _pas_mappedArrayWithTransform:v9];
 
   return v7;
@@ -255,22 +255,22 @@ id __102__ATXAnchorModelPredictionForwarder_actionAnchorModelPredictionTuplesFor
   return v16;
 }
 
-- (id)linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)a3
+- (id)linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)predictions
 {
   hyperParameters = self->_hyperParameters;
-  v5 = a3;
-  v6 = [(ATXAnchorModelHyperParameters *)hyperParameters anchorsDisabledForHomescreen];
+  predictionsCopy = predictions;
+  anchorsDisabledForHomescreen = [(ATXAnchorModelHyperParameters *)hyperParameters anchorsDisabledForHomescreen];
   v7 = objc_opt_new();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __106__ATXAnchorModelPredictionForwarder_linkActionAnchorModelPredictionTuplesForBlendingLayerFromPredictions___block_invoke;
   v12[3] = &unk_27859A628;
   v12[4] = self;
-  v13 = v6;
+  v13 = anchorsDisabledForHomescreen;
   v14 = v7;
   v8 = v7;
-  v9 = v6;
-  v10 = [v5 _pas_mappedArrayWithTransform:v12];
+  v9 = anchorsDisabledForHomescreen;
+  v10 = [predictionsCopy _pas_mappedArrayWithTransform:v12];
 
   return v10;
 }
@@ -347,17 +347,17 @@ id __106__ATXAnchorModelPredictionForwarder_linkActionAnchorModelPredictionTuple
   return v30;
 }
 
-- (id)appAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)a3
+- (id)appAnchorModelPredictionTuplesForBlendingLayerFromPredictions:(id)predictions
 {
-  v4 = [a3 _pas_filteredArrayWithTest:&__block_literal_global_35_1];
-  v5 = [(ATXAnchorModelHyperParameters *)self->_hyperParameters anchorsDisabledForHomescreen];
+  v4 = [predictions _pas_filteredArrayWithTest:&__block_literal_global_35_1];
+  anchorsDisabledForHomescreen = [(ATXAnchorModelHyperParameters *)self->_hyperParameters anchorsDisabledForHomescreen];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __99__ATXAnchorModelPredictionForwarder_appAnchorModelPredictionTuplesForBlendingLayerFromPredictions___block_invoke_2;
   v9[3] = &unk_27859A670;
   v9[4] = self;
-  v10 = v5;
-  v6 = v5;
+  v10 = anchorsDisabledForHomescreen;
+  v6 = anchorsDisabledForHomescreen;
   v7 = [v4 _pas_mappedArrayWithTransform:v9];
 
   return v7;
@@ -399,16 +399,16 @@ id __99__ATXAnchorModelPredictionForwarder_appAnchorModelPredictionTuplesForBlen
   return v12;
 }
 
-- (id)modeAnchorModelSuggestionsFromPredictions:(id)a3
+- (id)modeAnchorModelSuggestionsFromPredictions:(id)predictions
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  predictionsCopy = predictions;
   v29 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = predictionsCopy;
   v4 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v4)
   {
@@ -430,23 +430,23 @@ id __99__ATXAnchorModelPredictionForwarder_appAnchorModelPredictionTuplesForBlen
         v10 = [objc_alloc(*(v7 + 3840)) initWithAnchorModelPrediction:v9];
         if ([v10 shouldPredictAnchorModelModePrediction])
         {
-          v11 = [v9 candidateId];
-          v12 = [ATXAnchorModelDataStoreWrapper modeDetailsFromModeCandidateId:v11];
+          candidateId = [v9 candidateId];
+          v12 = [ATXAnchorModelDataStoreWrapper modeDetailsFromModeCandidateId:candidateId];
 
           v13 = objc_alloc(MEMORY[0x277D41C28]);
-          v14 = [v12 modeUUID];
-          v15 = [v12 isStart];
-          v16 = [v9 anchorType];
+          modeUUID = [v12 modeUUID];
+          isStart = [v12 isStart];
+          anchorType = [v9 anchorType];
           [v9 score];
           v18 = v17;
           v19 = v6;
-          v20 = [v9 numUniqueOccurrencesAfterAnchor];
+          numUniqueOccurrencesAfterAnchor = [v9 numUniqueOccurrencesAfterAnchor];
           [v9 posteriorProbability];
           v22 = v21;
           [v9 classConditionalProbability];
           v24 = v23;
-          v25 = [v10 serializedTriggers];
-          v26 = [v13 initWithModeUUID:v14 isStart:v15 anchorType:v16 score:v20 numUniqueOccurrencesAfterAnchor:v25 posteriorProbability:v18 classConditionalProbability:v22 serializedTriggers:v24];
+          serializedTriggers = [v10 serializedTriggers];
+          v26 = [v13 initWithModeUUID:modeUUID isStart:isStart anchorType:anchorType score:numUniqueOccurrencesAfterAnchor numUniqueOccurrencesAfterAnchor:serializedTriggers posteriorProbability:v18 classConditionalProbability:v22 serializedTriggers:v24];
 
           [v29 addObject:v26];
           v6 = v19;

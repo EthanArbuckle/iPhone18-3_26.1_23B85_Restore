@@ -1,14 +1,14 @@
 @interface EntryViewModel
-- (void)contextObjectsDidChangeWithNotification:(id)a3;
+- (void)contextObjectsDidChangeWithNotification:(id)notification;
 @end
 
 @implementation EntryViewModel
 
-- (void)contextObjectsDidChangeWithNotification:(id)a3
+- (void)contextObjectsDidChangeWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_5258(v3);
+  sub_5258(notificationCopy);
 }
 
 @end

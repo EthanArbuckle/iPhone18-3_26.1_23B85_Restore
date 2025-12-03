@@ -1,8 +1,8 @@
 @interface CSDarwinVoiceTriggerHandlerPool
-- (CSDarwinVoiceTriggerHandlerPool)initWithVoiceTriggerEventsCoordinator:(id)a3;
+- (CSDarwinVoiceTriggerHandlerPool)initWithVoiceTriggerEventsCoordinator:(id)coordinator;
 - (CSVoiceTriggerEventsCoordinator)voiceTriggerEventsCoordinator;
-- (void)_createHandlerWithDevice:(id)a3;
-- (void)didReceiveDarwinDeviceDisconnected:(id)a3;
+- (void)_createHandlerWithDevice:(id)device;
+- (void)didReceiveDarwinDeviceDisconnected:(id)disconnected;
 - (void)onDaemonExit;
 - (void)start;
 - (void)stop;
@@ -17,28 +17,28 @@
   return WeakRetained;
 }
 
-- (void)didReceiveDarwinDeviceDisconnected:(id)a3
+- (void)didReceiveDarwinDeviceDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029E4C;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = disconnectedCopy;
+  selfCopy = self;
+  v6 = disconnectedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_createHandlerWithDevice:(id)a3
+- (void)_createHandlerWithDevice:(id)device
 {
   queue = self->_queue;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(queue);
   v6 = [CSDarwinVoiceTriggerHandler alloc];
   WeakRetained = objc_loadWeakRetained(&self->_voiceTriggerEventsCoordinator);
-  v8 = [(CSDarwinVoiceTriggerHandler *)v6 initWithRemoteDevice:v5 voiceTriggerEventsCoordinator:WeakRetained delegate:self];
+  v8 = [(CSDarwinVoiceTriggerHandler *)v6 initWithRemoteDevice:deviceCopy voiceTriggerEventsCoordinator:WeakRetained delegate:self];
 
   if (v8)
   {
@@ -158,9 +158,9 @@
   objc_destroyWeak(&location);
 }
 
-- (CSDarwinVoiceTriggerHandlerPool)initWithVoiceTriggerEventsCoordinator:(id)a3
+- (CSDarwinVoiceTriggerHandlerPool)initWithVoiceTriggerEventsCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   if (+[CSUtils supportRemoteDarwinVoiceTrigger])
   {
     v12.receiver = self;
@@ -172,22 +172,22 @@
       queue = v5->_queue;
       v5->_queue = v6;
 
-      objc_storeWeak(&v5->_voiceTriggerEventsCoordinator, v4);
+      objc_storeWeak(&v5->_voiceTriggerEventsCoordinator, coordinatorCopy);
       v8 = +[NSMutableArray array];
       handlers = v5->_handlers;
       v5->_handlers = v8;
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CNIndexChangeHistoryEvents
-+ (BOOL)enumerateEvents:(id)a3 usingBlock:(id)a4;
++ (BOOL)enumerateEvents:(id)events usingBlock:(id)block;
 + (id)log;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation CNIndexChangeHistoryEvents
@@ -30,18 +30,18 @@ uint64_t __33__CNIndexChangeHistoryEvents_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)enumerateEvents:(id)a3 usingBlock:(id)a4
++ (BOOL)enumerateEvents:(id)events usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  blockCopy = block;
   v7 = objc_alloc_init(CNIndexChangeHistoryEvents);
-  [(CNIndexChangeHistoryEvents *)v7 setBlock:v6];
+  [(CNIndexChangeHistoryEvents *)v7 setBlock:blockCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v5;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -80,7 +80,7 @@ LABEL_11:
   return v13;
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -91,38 +91,38 @@ LABEL_11:
   [(CNIndexChangeHistoryEvents *)self setStop:1];
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   v8 = 0;
-  v4 = a3;
-  v5 = [(CNIndexChangeHistoryEvents *)self block];
-  v6 = [v4 contact];
-  v7 = [v4 contactIdentifier];
+  eventCopy = event;
+  block = [(CNIndexChangeHistoryEvents *)self block];
+  contact = [eventCopy contact];
+  contactIdentifier = [eventCopy contactIdentifier];
 
-  (v5)[2](v5, 0, v6, v7, &v8);
+  (block)[2](block, 0, contact, contactIdentifier, &v8);
   [(CNIndexChangeHistoryEvents *)self setStop:v8];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   v8 = 0;
-  v4 = a3;
-  v5 = [(CNIndexChangeHistoryEvents *)self block];
-  v6 = [v4 contact];
-  v7 = [v4 contactIdentifier];
+  eventCopy = event;
+  block = [(CNIndexChangeHistoryEvents *)self block];
+  contact = [eventCopy contact];
+  contactIdentifier = [eventCopy contactIdentifier];
 
-  (v5)[2](v5, 0, v6, v7, &v8);
+  (block)[2](block, 0, contact, contactIdentifier, &v8);
   [(CNIndexChangeHistoryEvents *)self setStop:v8];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   v7 = 0;
-  v4 = a3;
-  v5 = [(CNIndexChangeHistoryEvents *)self block];
-  v6 = [v4 contactIdentifier];
+  eventCopy = event;
+  block = [(CNIndexChangeHistoryEvents *)self block];
+  contactIdentifier = [eventCopy contactIdentifier];
 
-  (v5)[2](v5, 1, 0, v6, &v7);
+  (block)[2](block, 1, 0, contactIdentifier, &v7);
   [(CNIndexChangeHistoryEvents *)self setStop:v7];
 }
 

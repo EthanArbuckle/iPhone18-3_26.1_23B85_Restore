@@ -1,22 +1,22 @@
 @interface MPMusicPlayerControllerApplicationQueueModifications
-- (MPMusicPlayerControllerApplicationQueueModifications)initWithCoder:(id)a3;
-- (MPMusicPlayerControllerApplicationQueueModifications)initWithInsertedDescriptors:(id)a3 removedItemIdentifiers:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPMusicPlayerControllerApplicationQueueModifications)initWithCoder:(id)coder;
+- (MPMusicPlayerControllerApplicationQueueModifications)initWithInsertedDescriptors:(id)descriptors removedItemIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMusicPlayerControllerApplicationQueueModifications
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   insertedDescriptors = self->_insertedDescriptors;
-  v5 = a3;
-  [v5 encodeObject:insertedDescriptors forKey:@"inserted"];
-  [v5 encodeObject:self->_removedItemIdentifiers forKey:@"removed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:insertedDescriptors forKey:@"inserted"];
+  [coderCopy encodeObject:self->_removedItemIdentifiers forKey:@"removed"];
 }
 
-- (MPMusicPlayerControllerApplicationQueueModifications)initWithCoder:(id)a3
+- (MPMusicPlayerControllerApplicationQueueModifications)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MPMusicPlayerControllerApplicationQueueModifications;
   v5 = [(MPMusicPlayerControllerApplicationQueueModifications *)&v19 init];
@@ -27,14 +27,14 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"inserted"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"inserted"];
     insertedDescriptors = v5->_insertedDescriptors;
     v5->_insertedDescriptors = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"removed"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"removed"];
     removedItemIdentifiers = v5->_removedItemIdentifiers;
     v5->_removedItemIdentifiers = v16;
   }
@@ -42,20 +42,20 @@
   return v5;
 }
 
-- (MPMusicPlayerControllerApplicationQueueModifications)initWithInsertedDescriptors:(id)a3 removedItemIdentifiers:(id)a4
+- (MPMusicPlayerControllerApplicationQueueModifications)initWithInsertedDescriptors:(id)descriptors removedItemIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = MPMusicPlayerControllerApplicationQueueModifications;
   v8 = [(MPMusicPlayerControllerApplicationQueueModifications *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptorsCopy copy];
     insertedDescriptors = v8->_insertedDescriptors;
     v8->_insertedDescriptors = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     removedItemIdentifiers = v8->_removedItemIdentifiers;
     v8->_removedItemIdentifiers = v11;
   }

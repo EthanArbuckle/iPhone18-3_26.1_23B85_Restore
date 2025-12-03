@@ -1,30 +1,30 @@
 @interface HDCloudSyncTapToRadar
 + (BOOL)isTapToRadarAllowed;
-+ (void)openTapToRadarWithTitle:(id)a3 description:(id)a4 completion:(id)a5;
-+ (void)showTapToRadarRequestWithTitle:(id)a3 message:(id)a4 proceed:(id)a5 disable:(id)a6 completion:(id)a7;
++ (void)openTapToRadarWithTitle:(id)title description:(id)description completion:(id)completion;
++ (void)showTapToRadarRequestWithTitle:(id)title message:(id)message proceed:(id)proceed disable:(id)disable completion:(id)completion;
 @end
 
 @implementation HDCloudSyncTapToRadar
 
 + (BOOL)isTapToRadarAllowed
 {
-  v2 = [MEMORY[0x277CCDD30] isAppleInternalInstall];
-  if (v2)
+  isAppleInternalInstall = [MEMORY[0x277CCDD30] isAppleInternalInstall];
+  if (isAppleInternalInstall)
   {
-    LOBYTE(v2) = [MEMORY[0x277CCDD30] isTestingDevice] ^ 1;
+    LOBYTE(isAppleInternalInstall) = [MEMORY[0x277CCDD30] isTestingDevice] ^ 1;
   }
 
-  return v2;
+  return isAppleInternalInstall;
 }
 
-+ (void)showTapToRadarRequestWithTitle:(id)a3 message:(id)a4 proceed:(id)a5 disable:(id)a6 completion:(id)a7
++ (void)showTapToRadarRequestWithTitle:(id)title message:(id)message proceed:(id)proceed disable:(id)disable completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([a1 isTapToRadarAllowed])
+  titleCopy = title;
+  messageCopy = message;
+  proceedCopy = proceed;
+  disableCopy = disable;
+  completionCopy = completion;
+  if ([self isTapToRadarAllowed])
   {
     if (showTapToRadarRequestWithTitle_message_proceed_disable_completion__isPresenting == 1)
     {
@@ -32,7 +32,7 @@
       v24 = 3221225472;
       v25 = __91__HDCloudSyncTapToRadar_showTapToRadarRequestWithTitle_message_proceed_disable_completion___block_invoke_2;
       v26 = &unk_278613658;
-      v27 = v16;
+      v27 = completionCopy;
       HKDispatchAsyncOnGlobalConcurrentQueue();
       v17 = v27;
     }
@@ -41,8 +41,8 @@
     {
       showTapToRadarRequestWithTitle_message_proceed_disable_completion__isPresenting = 1;
       v17 = objc_alloc_init(MEMORY[0x277D10BC0]);
-      [v17 setTitle:v12];
-      [v17 setMessage:v13];
+      [v17 setTitle:titleCopy];
+      [v17 setMessage:messageCopy];
       [v17 setDefaultButton:@"Tap-to-Radar"];
       [v17 setCancelButton:@"Not Now"];
       [v17 setOtherButton:@"Do not ask again"];
@@ -50,10 +50,10 @@
       v18[1] = 3221225472;
       v18[2] = __91__HDCloudSyncTapToRadar_showTapToRadarRequestWithTitle_message_proceed_disable_completion___block_invoke_3;
       v18[3] = &unk_278628F08;
-      v22 = a1;
-      v19 = v14;
-      v20 = v15;
-      v21 = v16;
+      selfCopy = self;
+      v19 = proceedCopy;
+      v20 = disableCopy;
+      v21 = completionCopy;
       [v17 presentWithResponseHandler:v18];
     }
   }
@@ -64,7 +64,7 @@
     v29 = 3221225472;
     v30 = __91__HDCloudSyncTapToRadar_showTapToRadarRequestWithTitle_message_proceed_disable_completion___block_invoke;
     v31 = &unk_278613658;
-    v32 = v16;
+    v32 = completionCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
     v17 = v32;
   }
@@ -139,26 +139,26 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)openTapToRadarWithTitle:(id)a3 description:(id)a4 completion:(id)a5
++ (void)openTapToRadarWithTitle:(id)title description:(id)description completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 isTapToRadarAllowed])
+  titleCopy = title;
+  descriptionCopy = description;
+  completionCopy = completion;
+  if ([self isTapToRadarAllowed])
   {
-    v11 = [MEMORY[0x277CBEBC0] hk_tapToHealthRadarURLForComponent:1578787 title:v8 description:v9 classification:6 reproducibility:6 keywords:0 autoDiagnostics:2 attachments:0];
-    v12 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v11 = [MEMORY[0x277CBEBC0] hk_tapToHealthRadarURLForComponent:1578787 title:titleCopy description:descriptionCopy classification:6 reproducibility:6 keywords:0 autoDiagnostics:2 attachments:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __72__HDCloudSyncTapToRadar_openTapToRadarWithTitle_description_completion___block_invoke;
     v13[3] = &unk_278628708;
-    v14 = v10;
-    [v12 openURL:v11 configuration:0 completionHandler:v13];
+    v14 = completionCopy;
+    [defaultWorkspace openURL:v11 configuration:0 completionHandler:v13];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 

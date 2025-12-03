@@ -1,27 +1,27 @@
 @interface SSMetricsMutableEvent
-- (SSMetricsMutableEvent)initWithBodyDictionary:(id)a3;
+- (SSMetricsMutableEvent)initWithBodyDictionary:(id)dictionary;
 - (double)originalTime;
-- (id)decorateReportingURL:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)propertyForBodyKey:(id)a3;
-- (void)appendPropertiesToBody:(id)a3;
-- (void)setCanaryIdentifier:(id)a3;
-- (void)setOriginalTime:(double)a3;
-- (void)setOriginalTimeUsingDate:(id)a3;
-- (void)setProperty:(id)a3 forBodyKey:(id)a4;
+- (id)decorateReportingURL:(id)l;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)propertyForBodyKey:(id)key;
+- (void)appendPropertiesToBody:(id)body;
+- (void)setCanaryIdentifier:(id)identifier;
+- (void)setOriginalTime:(double)time;
+- (void)setOriginalTimeUsingDate:(id)date;
+- (void)setProperty:(id)property forBodyKey:(id)key;
 @end
 
 @implementation SSMetricsMutableEvent
 
-- (SSMetricsMutableEvent)initWithBodyDictionary:(id)a3
+- (SSMetricsMutableEvent)initWithBodyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SSMetricsMutableEvent;
   v5 = [(SSMetricsMutableEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     mutableBody = v5->_mutableBody;
     v5->_mutableBody = v6;
 
@@ -35,19 +35,19 @@
     [(SSMetricsMutableEvent *)v5 setProperty:v8 forBodyKey:@"baseVersion"];
 
     [(SSMetricsMutableEvent *)v5 setProperty:initWithBodyDictionary____osVersion forBodyKey:@"osVersion"];
-    v9 = [objc_opt_class() globalEventCanary];
-    v10 = [objc_opt_class() globalEventCanary];
+    globalEventCanary = [objc_opt_class() globalEventCanary];
+    globalEventCanary2 = [objc_opt_class() globalEventCanary];
 
-    if (v10)
+    if (globalEventCanary2)
     {
-      [(SSMetricsMutableEvent *)v5 setProperty:v9 forBodyKey:@"canary"];
+      [(SSMetricsMutableEvent *)v5 setProperty:globalEventCanary forBodyKey:@"canary"];
     }
 
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:1];
     [(SSMetricsMutableEvent *)v5 setProperty:v11 forBodyKey:@"eventVersion"];
 
-    v12 = [MEMORY[0x1E695DF00] date];
-    [(SSMetricsMutableEvent *)v5 setOriginalTimeUsingDate:v12];
+    date = [MEMORY[0x1E695DF00] date];
+    [(SSMetricsMutableEvent *)v5 setOriginalTimeUsingDate:date];
   }
 
   return v5;
@@ -89,9 +89,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)setOriginalTime:(double)a3
+- (void)setOriginalTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -105,13 +105,13 @@ LABEL_7:
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"eventTime"];
 }
 
-- (void)setCanaryIdentifier:(id)a3
+- (void)setCanaryIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"canary"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mutableBody = self->_mutableBody;
@@ -119,24 +119,24 @@ LABEL_7:
   return [v4 initWithBodyDictionary:mutableBody];
 }
 
-- (void)appendPropertiesToBody:(id)a3
+- (void)appendPropertiesToBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   v5.receiver = self;
   v5.super_class = SSMetricsMutableEvent;
-  [(SSMetricsEvent *)&v5 appendPropertiesToBody:v4];
+  [(SSMetricsEvent *)&v5 appendPropertiesToBody:bodyCopy];
   if ([(NSMutableDictionary *)self->_mutableBody count])
   {
-    [v4 addEntriesFromDictionary:self->_mutableBody];
+    [bodyCopy addEntriesFromDictionary:self->_mutableBody];
   }
 }
 
-- (id)propertyForBodyKey:(id)a3
+- (id)propertyForBodyKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_mutableBody objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_mutableBody objectForKey:keyCopy];
   }
 
   else
@@ -147,58 +147,58 @@ LABEL_7:
   return v5;
 }
 
-- (void)setOriginalTimeUsingDate:(id)a3
+- (void)setOriginalTimeUsingDate:(id)date
 {
   v4 = MEMORY[0x1E695DFE8];
-  v5 = a3;
-  v12 = [v4 localTimeZone];
-  v6 = [v12 secondsFromGMTForDate:v5];
+  dateCopy = date;
+  localTimeZone = [v4 localTimeZone];
+  v6 = [localTimeZone secondsFromGMTForDate:dateCopy];
   v7 = ((v6 * 0x7777777777777777) >> 64) - v6;
   v8 = [MEMORY[0x1E696AD98] numberWithInt:(v7 >> 5) + (v7 >> 63)];
   [(SSMetricsMutableEvent *)self setProperty:v8 forBodyKey:@"timezoneOffset"];
 
-  [v5 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v10 = v9;
 
   v11 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:v10];
   [(SSMetricsMutableEvent *)self setProperty:v11 forBodyKey:@"eventTime"];
 }
 
-- (void)setProperty:(id)a3 forBodyKey:(id)a4
+- (void)setProperty:(id)property forBodyKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 length])
+  propertyCopy = property;
+  keyCopy = key;
+  if ([keyCopy length])
   {
     mutableBody = self->_mutableBody;
-    if (v8)
+    if (propertyCopy)
     {
-      [(NSMutableDictionary *)mutableBody setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)mutableBody setObject:propertyCopy forKey:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)mutableBody removeObjectForKey:v6];
+      [(NSMutableDictionary *)mutableBody removeObjectForKey:keyCopy];
     }
   }
 }
 
-- (id)decorateReportingURL:(id)a3
+- (id)decorateReportingURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SSMetricsMutableEvent *)self topic];
-  v6 = [v5 length];
+  lCopy = l;
+  topic = [(SSMetricsMutableEvent *)self topic];
+  v6 = [topic length];
 
   if (v6)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(SSMetricsMutableEvent *)self topic];
-    v9 = [v7 stringWithFormat:@"%@/2/%@", v4, v8];
+    topic2 = [(SSMetricsMutableEvent *)self topic];
+    v9 = [v7 stringWithFormat:@"%@/2/%@", lCopy, topic2];
   }
 
   else
   {
-    v9 = v4;
+    v9 = lCopy;
   }
 
   return v9;

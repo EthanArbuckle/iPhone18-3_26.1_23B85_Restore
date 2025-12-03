@@ -1,20 +1,20 @@
 @interface ASTDwellMovementToleranceHelper
-- (ASTDwellMovementToleranceHelper)initWithClientType:(unint64_t)a3;
+- (ASTDwellMovementToleranceHelper)initWithClientType:(unint64_t)type;
 - (PSListController)settingsController;
 - (id)dwellSpecifiers;
-- (void)_updateSpecifierState:(id)a3;
+- (void)_updateSpecifierState:(id)state;
 @end
 
 @implementation ASTDwellMovementToleranceHelper
 
-- (ASTDwellMovementToleranceHelper)initWithClientType:(unint64_t)a3
+- (ASTDwellMovementToleranceHelper)initWithClientType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = ASTDwellMovementToleranceHelper;
   result = [(ASTDwellMovementToleranceHelper *)&v5 init];
   if (result)
   {
-    result->_clientType = a3;
+    result->_clientType = type;
   }
 
   return result;
@@ -23,13 +23,13 @@
 - (id)dwellSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ASTDwellMovementToleranceHelper *)self toleranceSpecifierGroupTitle];
-  v5 = [v4 length];
+  toleranceSpecifierGroupTitle = [(ASTDwellMovementToleranceHelper *)self toleranceSpecifierGroupTitle];
+  v5 = [toleranceSpecifierGroupTitle length];
 
   if (v5)
   {
-    v6 = [(ASTDwellMovementToleranceHelper *)self toleranceSpecifierGroupTitle];
-    v7 = [PSSpecifier groupSpecifierWithName:v6];
+    toleranceSpecifierGroupTitle2 = [(ASTDwellMovementToleranceHelper *)self toleranceSpecifierGroupTitle];
+    v7 = [PSSpecifier groupSpecifierWithName:toleranceSpecifierGroupTitle2];
   }
 
   else
@@ -60,11 +60,11 @@
   return v3;
 }
 
-- (void)_updateSpecifierState:(id)a3
+- (void)_updateSpecifierState:(id)state
 {
-  v4 = a3;
-  v5 = [(ASTDwellMovementToleranceHelper *)self settingsController];
-  [v5 reloadSpecifier:v4];
+  stateCopy = state;
+  settingsController = [(ASTDwellMovementToleranceHelper *)self settingsController];
+  [settingsController reloadSpecifier:stateCopy];
 }
 
 - (PSListController)settingsController

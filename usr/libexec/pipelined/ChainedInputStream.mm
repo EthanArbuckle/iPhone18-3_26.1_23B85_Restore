@@ -2,7 +2,7 @@
 - (ChainedInputStream)init;
 - (id).cxx_construct;
 - (id)streamError;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 - (void)addStream:(pair<NSInputStream *);
 - (void)close;
@@ -54,12 +54,12 @@
   }
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   fCurrentStream = self->fCurrentStream;
   p_fStreams = &self->fStreams;
   begin = self->fStreams.__begin_;
-  if (fCurrentStream < self->fStreams.var0 - begin && a4 != 0)
+  if (fCurrentStream < self->fStreams.var0 - begin && length != 0)
   {
     v11 = 0;
     while (1)
@@ -70,7 +70,7 @@
         [(__end_ *)v12 open];
       }
 
-      v13 = [(__end_ *)v12 read:&a3[v11] maxLength:a4 - v11];
+      v13 = [(__end_ *)v12 read:&read[v11] maxLength:length - v11];
       if (v13 < 1)
       {
         if (v13)
@@ -109,7 +109,7 @@ LABEL_14:
         }
       }
 
-      if (v11 >= a4)
+      if (v11 >= length)
       {
         goto LABEL_14;
       }
@@ -139,9 +139,9 @@ LABEL_14:
     v8 = v7;
   }
 
-  v9 = [*v8 streamError];
+  streamError = [*v8 streamError];
 
-  return v9;
+  return streamError;
 }
 
 - (unint64_t)streamStatus

@@ -24,9 +24,9 @@
 {
   v3 = [[NSMutableArray alloc] initWithCapacity:2];
   v4 = [NSString alloc];
-  v5 = [(MBCKFetchInfo *)self recordID];
-  v6 = [v5 recordName];
-  v7 = [v4 initWithFormat:@"recordName=%@", v6];
+  recordID = [(MBCKFetchInfo *)self recordID];
+  recordName = [recordID recordName];
+  v7 = [v4 initWithFormat:@"recordName=%@", recordName];
   [v3 addObject:v7];
 
   v8 = [[NSString alloc] initWithFormat:@"state=%lu", -[MBCKFetchInfo state](self, "state")];

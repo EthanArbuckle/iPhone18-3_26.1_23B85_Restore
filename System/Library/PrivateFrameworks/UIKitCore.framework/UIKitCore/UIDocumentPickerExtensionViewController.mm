@@ -1,9 +1,9 @@
 @interface UIDocumentPickerExtensionViewController
 + (id)_exportedInterface;
-- (void)_prepareWithExtensionInfo:(id)a3 completionHandler:(id)a4;
-- (void)_setTintColor:(id)a3;
-- (void)_setUploadURL:(id)a3;
-- (void)_setUploadURLWrapper:(id)a3;
+- (void)_prepareWithExtensionInfo:(id)info completionHandler:(id)handler;
+- (void)_setTintColor:(id)color;
+- (void)_setUploadURL:(id)l;
+- (void)_setUploadURLWrapper:(id)wrapper;
 - (void)dismissGrantingAccessToURL:(NSURL *)url;
 @end
 
@@ -17,60 +17,60 @@
   {
     if (![(NSURL *)v5 isFileURL])
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:44 description:@"Can only grant access to file URLs"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:44 description:@"Can only grant access to file URLs"];
     }
 
-    v6 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+    documentStorageURL = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
 
-    if (v6)
+    if (documentStorageURL)
     {
-      v7 = [(NSURL *)v22 absoluteString];
-      v8 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
-      v9 = [v8 absoluteString];
-      v10 = [v7 hasPrefix:v9];
+      absoluteString = [(NSURL *)v22 absoluteString];
+      documentStorageURL2 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+      absoluteString2 = [documentStorageURL2 absoluteString];
+      v10 = [absoluteString hasPrefix:absoluteString2];
 
       if ((v10 & 1) == 0)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        v21 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
-        [v20 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:47 description:{@"%@ dismissed with a URL (%@) not contained in its documentStorageURL (%@)", self, v22, v21}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        documentStorageURL3 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:47 description:{@"%@ dismissed with a URL (%@) not contained in its documentStorageURL (%@)", self, v22, documentStorageURL3}];
       }
     }
 
     if ([(UIDocumentPickerExtensionViewController *)self documentPickerMode]== UIDocumentPickerModeMoveToService || [(UIDocumentPickerExtensionViewController *)self documentPickerMode]== UIDocumentPickerModeExportToService)
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [(NSURL *)v22 path];
-      v13 = [v11 fileExistsAtPath:v12 isDirectory:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [(NSURL *)v22 path];
+      v13 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:52 description:{@"%@ was dismissed with a nonexistent URL (%@) in Move or Export mode", self, v22}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:52 description:{@"%@ was dismissed with a nonexistent URL (%@) in Move or Export mode", self, v22}];
       }
     }
 
     v15 = (self->_documentPickerMode & 0xFFFFFFFFFFFFFFFDLL) != 1;
-    v16 = [(UIViewController *)self navigationController];
-    v17 = [v16 _remoteViewControllerProxy];
+    navigationController = [(UIViewController *)self navigationController];
+    _remoteViewControllerProxy = [navigationController _remoteViewControllerProxy];
     v18 = [_UIDocumentPickerNSURLWrapper wrapperWithURL:v22 createSandboxIfNoneAttached:v15];
-    [v17 _didSelectURLWrapper:v18];
+    [_remoteViewControllerProxy _didSelectURLWrapper:v18];
   }
 
   else
   {
-    v16 = [(UIViewController *)self navigationController];
-    v17 = [v16 _remoteViewControllerProxy];
-    [v17 _dismissViewController];
+    navigationController = [(UIViewController *)self navigationController];
+    _remoteViewControllerProxy = [navigationController _remoteViewControllerProxy];
+    [_remoteViewControllerProxy _dismissViewController];
   }
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self view];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  view = [(UIViewController *)self view];
+  [view setTintColor:colorCopy];
 }
 
 + (id)_exportedInterface
@@ -85,19 +85,19 @@
   return v2;
 }
 
-- (void)_setUploadURLWrapper:(id)a3
+- (void)_setUploadURLWrapper:(id)wrapper
 {
-  v4 = [a3 url];
+  v4 = [wrapper url];
   [(UIDocumentPickerExtensionViewController *)self _setUploadURL:v4];
 }
 
-- (void)_setUploadURL:(id)a3
+- (void)_setUploadURL:(id)l
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_originalURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isEqual:self->_originalURL] & 1) == 0)
   {
     [(NSURL *)self->_originalURL stopAccessingSecurityScopedResource];
-    v4 = [v6 copy];
+    v4 = [lCopy copy];
     originalURL = self->_originalURL;
     self->_originalURL = v4;
 
@@ -105,32 +105,32 @@
   }
 }
 
-- (void)_prepareWithExtensionInfo:(id)a3 completionHandler:(id)a4
+- (void)_prepareWithExtensionInfo:(id)info completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKey:@"documentGroup"];
-  v10 = [v8 objectForKey:@"documentStorageURL"];
+  handlerCopy = handler;
+  infoCopy = info;
+  v9 = [infoCopy objectForKey:@"documentGroup"];
+  v10 = [infoCopy objectForKey:@"documentStorageURL"];
   [(UIDocumentPickerExtensionViewController *)self _setDocumentStorageURL:v10];
 
-  v11 = [v8 objectForKey:@"providerIdentifier"];
+  v11 = [infoCopy objectForKey:@"providerIdentifier"];
   [(UIDocumentPickerExtensionViewController *)self _setProviderIdentifier:v11];
 
-  v12 = [v8 objectForKey:@"localizedName"];
+  v12 = [infoCopy objectForKey:@"localizedName"];
 
-  v13 = [(UIViewController *)self navigationItem];
-  [v13 setTitle:v12];
+  navigationItem = [(UIViewController *)self navigationItem];
+  [navigationItem setTitle:v12];
 
   if (v9)
   {
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [v14 containerURLForSecurityApplicationGroupIdentifier:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v15 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:v9];
 
     if (!v15)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:122 description:{@"Could not access the group container with identifier %@. Is the necessary entitlement set?", v9}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:122 description:{@"Could not access the group container with identifier %@. Is the necessary entitlement set?", v9}];
     }
 
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
@@ -161,44 +161,44 @@
     }
   }
 
-  v18 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+  documentStorageURL = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
 
-  if (v18)
+  if (documentStorageURL)
   {
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
-    v20 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
-    v21 = [v20 path];
-    [v19 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    documentStorageURL2 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+    path = [documentStorageURL2 path];
+    [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   if ([(UIDocumentPickerExtensionViewController *)self documentPickerMode]== UIDocumentPickerModeMoveToService || [(UIDocumentPickerExtensionViewController *)self documentPickerMode]== UIDocumentPickerModeOpen)
   {
-    v22 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+    documentStorageURL3 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
 
-    if (!v22)
+    if (!documentStorageURL3)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:136 description:@"documentStorageURL is nil in Open or Move mode."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:136 description:@"documentStorageURL is nil in Open or Move mode."];
     }
 
-    v23 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
-    v24 = CheckSandboxAccess(v23);
+    documentStorageURL4 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+    v24 = CheckSandboxAccess(documentStorageURL4);
 
     if (!v24)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      v26 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
-      v27 = v26;
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      documentStorageURL5 = [(UIDocumentPickerExtensionViewController *)self documentStorageURL];
+      v27 = documentStorageURL5;
       if (v9)
       {
-        v28 = [MEMORY[0x1E696AC08] defaultManager];
-        v29 = [v28 containerURLForSecurityApplicationGroupIdentifier:v9];
-        [v25 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:142 description:{@"No access to documentStorageURL %@; group container is at %@.", v27, v29}];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+        v29 = [defaultManager3 containerURLForSecurityApplicationGroupIdentifier:v9];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:142 description:{@"No access to documentStorageURL %@; group container is at %@.", v27, v29}];
       }
 
       else
       {
-        [v25 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:147 description:{@"No access to documentStorageURL %@; no NSExtensionFileProviderDocumentGroup found.", v26}];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerExtensionViewController.m" lineNumber:147 description:{@"No access to documentStorageURL %@; no NSExtensionFileProviderDocumentGroup found.", documentStorageURL5}];
       }
     }
   }
@@ -206,7 +206,7 @@
   [(UIDocumentPickerExtensionViewController *)self prepareForPresentationInMode:[(UIDocumentPickerExtensionViewController *)self documentPickerMode]];
   [(UIViewController *)self view];
 
-  v7[2](v7, _UIApplicationLinkedOnVersion);
+  handlerCopy[2](handlerCopy, _UIApplicationLinkedOnVersion);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface CKBrowserSwitcherFooterAccessoryCell
-- (CKBrowserSwitcherFooterAccessoryCell)initWithFrame:(CGRect)a3;
+- (CKBrowserSwitcherFooterAccessoryCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CKBrowserSwitcherFooterAccessoryCell
 
-- (CKBrowserSwitcherFooterAccessoryCell)initWithFrame:(CGRect)a3
+- (CKBrowserSwitcherFooterAccessoryCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CKBrowserSwitcherFooterAccessoryCell;
-  v3 = [(CKBrowserSwitcherFooterAccessoryCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBrowserSwitcherFooterAccessoryCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 theme];
-    v8 = [v7 browserAppStripSeperatorBackgroundColor];
-    [v5 setBackgroundColor:v8];
+    theme = [v6 theme];
+    browserAppStripSeperatorBackgroundColor = [theme browserAppStripSeperatorBackgroundColor];
+    [v5 setBackgroundColor:browserAppStripSeperatorBackgroundColor];
 
     [(CKBrowserSwitcherFooterAccessoryCell *)v3 addSubview:v5];
     [(CKBrowserSwitcherFooterAccessoryCell *)v3 setSeperatorView:v5];
@@ -36,16 +36,16 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
-  [(CKBrowserSwitcherFooterAccessoryCell *)self bringSubviewToFront:v11];
+  seperatorView = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
+  [(CKBrowserSwitcherFooterAccessoryCell *)self bringSubviewToFront:seperatorView];
 
-  v12 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
-  v13 = [v12 layer];
-  [v13 setCornerRadius:v8];
+  seperatorView2 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
+  layer = [seperatorView2 layer];
+  [layer setCornerRadius:v8];
 
-  v14 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
-  v15 = [v14 layer];
-  [v15 setMasksToBounds:1];
+  seperatorView3 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
+  layer2 = [seperatorView3 layer];
+  [layer2 setMasksToBounds:1];
 
   [(CKBrowserSwitcherFooterAccessoryCell *)self minHeight];
   v17 = v16;
@@ -69,8 +69,8 @@
   y = v27.origin.y;
   width = v27.size.width;
   height = v27.size.height;
-  v24 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
-  [v24 setFrame:{x, y, width, height}];
+  seperatorView4 = [(CKBrowserSwitcherFooterAccessoryCell *)self seperatorView];
+  [seperatorView4 setFrame:{x, y, width, height}];
 }
 
 @end

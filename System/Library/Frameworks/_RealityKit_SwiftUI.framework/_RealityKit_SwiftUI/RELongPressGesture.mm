@@ -1,14 +1,14 @@
 @interface RELongPressGesture
-- (void)onUILongPress:(id)a3;
+- (void)onUILongPress:(id)press;
 @end
 
 @implementation RELongPressGesture
 
-- (void)onUILongPress:(id)a3
+- (void)onUILongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  RELongPressGesture.onUILongPress(_:)(v4);
+  pressCopy = press;
+  selfCopy = self;
+  RELongPressGesture.onUILongPress(_:)(pressCopy);
 }
 
 @end

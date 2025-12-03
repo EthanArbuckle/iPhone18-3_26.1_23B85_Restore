@@ -28,10 +28,10 @@
 - (id)stringFromDate
 {
   v2 = MEMORY[0x277CCACA8];
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [MEMORY[0x277CBEAA8] dateFormatter];
-  v6 = [v5 stringFromDate:a1];
+  dateFormatter = [MEMORY[0x277CBEAA8] dateFormatter];
+  v6 = [dateFormatter stringFromDate:self];
   v7 = [v2 stringWithFormat:@"%f (%@)", v4, v6];
 
   return v7;
@@ -39,11 +39,11 @@
 
 - (id)startOfDay
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 components:28 fromDate:a1];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar components:28 fromDate:self];
 
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 dateFromComponents:v3];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [currentCalendar2 dateFromComponents:v3];
 
   return v5;
 }
@@ -56,7 +56,7 @@
     v7 = a4;
     [a3 timeIntervalSinceReferenceDate];
     v9 = v8;
-    [a1 timeIntervalSinceReferenceDate];
+    [self timeIntervalSinceReferenceDate];
     v11 = v10;
     [v7 timeIntervalSinceReferenceDate];
     v13 = v12;
@@ -81,24 +81,24 @@
 
 - (id)snapToTheDay
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 components:60 fromDate:a1];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar components:60 fromDate:self];
 
   if ([v3 hour] > 2)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
     [v3 setHour:0];
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
-    v5 = [v4 dateFromComponents:v3];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    v5 = [currentCalendar2 dateFromComponents:v3];
 
-    v6 = [v5 dateByAddingTimeInterval:-1.0];
+    selfCopy = [v5 dateByAddingTimeInterval:-1.0];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (uint64_t)isSameDayWithDate:()MOExtensions timeZone:
@@ -113,7 +113,7 @@
     [v9 setTimeZone:v7];
   }
 
-  v11 = [v10 isDate:a1 inSameDayAsDate:v6];
+  v11 = [v10 isDate:self inSameDayAsDate:v6];
 
   return v11;
 }
@@ -122,8 +122,8 @@
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 isDate:a1 inSameDayAsDate:v5];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar isDate:self inSameDayAsDate:v5];
 
   return v7;
 }
@@ -131,8 +131,8 @@
 - (uint64_t)isFollowingDayAfterDate:()MOExtensions
 {
   v4 = [a3 dateByAddingTimeInterval:86400.0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 isDate:a1 inSameDayAsDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar isDate:self inSameDayAsDate:v4];
 
   return v6;
 }
@@ -141,8 +141,8 @@
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 isDate:a1 equalToDate:v5 toUnitGranularity:0x2000];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar isDate:self equalToDate:v5 toUnitGranularity:0x2000];
 
   return v7;
 }
@@ -150,8 +150,8 @@
 - (uint64_t)isFollowingWeekAfterDate:()MOExtensions
 {
   v4 = [a3 dateByAddingTimeInterval:604800.0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 isDate:a1 equalToDate:v4 toUnitGranularity:0x2000];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar isDate:self equalToDate:v4 toUnitGranularity:0x2000];
 
   return v6;
 }
@@ -160,8 +160,8 @@
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 isDate:a1 equalToDate:v5 toUnitGranularity:8];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar isDate:self equalToDate:v5 toUnitGranularity:8];
 
   return v7;
 }
@@ -170,17 +170,17 @@
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 components:12 fromDate:a1];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar components:12 fromDate:self];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:12 fromDate:v5];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar2 components:12 fromDate:v5];
 
-  v10 = [v7 month];
-  v11 = [v7 year];
-  if (v10 == 1)
+  month = [v7 month];
+  year = [v7 year];
+  if (month == 1)
   {
-    if (v11 - 1 == [v9 year])
+    if (year - 1 == [v9 year])
     {
       v12 = [v9 month] == 1;
       goto LABEL_6;
@@ -191,7 +191,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v11 != [v9 year])
+  if (year != [v9 year])
   {
     goto LABEL_9;
   }
@@ -209,8 +209,8 @@ LABEL_10:
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 isDate:a1 equalToDate:v5 toUnitGranularity:4];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar isDate:self equalToDate:v5 toUnitGranularity:4];
 
   return v7;
 }
@@ -218,33 +218,33 @@ LABEL_10:
 - (uint64_t)isFollowingYearAfterDate:()MOExtensions
 {
   v4 = [a3 dateByAddingTimeInterval:31536000.0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 isDate:a1 equalToDate:v4 toUnitGranularity:4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar isDate:self equalToDate:v4 toUnitGranularity:4];
 
   return v6;
 }
 
 - (id)startOfDayWithBoundaryOfADay:()MOExtensions
 {
-  v3 = [a1 dateByAddingTimeInterval:-a2];
-  v4 = [v3 startOfDay];
-  v5 = [v4 dateByAddingTimeInterval:a2];
+  v3 = [self dateByAddingTimeInterval:-a2];
+  startOfDay = [v3 startOfDay];
+  v5 = [startOfDay dateByAddingTimeInterval:a2];
 
   return v5;
 }
 
 - (uint64_t)hours
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 component:32 fromDate:a1];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar component:32 fromDate:self];
 
   return v3;
 }
 
 - (uint64_t)minutes
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 component:64 fromDate:a1];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar component:64 fromDate:self];
 
   return v3;
 }
@@ -270,37 +270,37 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  v5 = [v3 isEqualToDate:v4];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v5 = [v3 isEqualToDate:distantPast];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
 LABEL_7:
-    v7 = v6;
+    v7 = distantPast2;
     goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] distantFuture];
-  v9 = [v3 isEqualToDate:v8];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v9 = [v3 isEqualToDate:distantFuture];
 
   if (v9)
   {
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantFuture];
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  v11 = [v10 components:512 fromDate:v3];
-  v12 = [v11 weekday];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v11 = [currentCalendar components:512 fromDate:v3];
+  weekday = [v11 weekday];
   v13 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v13 setDay:7 * (v12 / 7) - v12];
-  v14 = [v10 dateByAddingComponents:v13 toDate:v3 options:0];
-  v15 = [v10 components:28 fromDate:v14];
+  [v13 setDay:7 * (weekday / 7) - weekday];
+  v14 = [currentCalendar dateByAddingComponents:v13 toDate:v3 options:0];
+  v15 = [currentCalendar components:28 fromDate:v14];
   [v15 setHour:0];
   [v15 setMinute:0];
   [v15 setSecond:0];
-  v7 = [v10 dateFromComponents:v15];
+  v7 = [currentCalendar dateFromComponents:v15];
 
 LABEL_9:
 
@@ -346,12 +346,12 @@ LABEL_9:
 - (id)getBundleRelativeDate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAA8] dayNameFormatterInEnglish];
-  v3 = [v2 stringFromDate:a1];
+  dayNameFormatterInEnglish = [MEMORY[0x277CBEAA8] dayNameFormatterInEnglish];
+  v3 = [dayNameFormatterInEnglish stringFromDate:self];
 
-  v4 = [MEMORY[0x277CBEAA8] dayNameFormatterInEnglish];
+  dayNameFormatterInEnglish2 = [MEMORY[0x277CBEAA8] dayNameFormatterInEnglish];
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v4 stringFromDate:v5];
+  v6 = [dayNameFormatterInEnglish2 stringFromDate:v5];
 
   v7 = _mo_log_facility_get_os_log(MOLogFacilityNotificationManager);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -363,7 +363,7 @@ LABEL_9:
     _os_log_impl(&dword_22D8C5000, v7, OS_LOG_TYPE_INFO, "bundleDay: %@, nowDay: %@", &v14, 0x16u);
   }
 
-  [a1 timeIntervalSinceNow];
+  [self timeIntervalSinceNow];
   if (v8 < 0.0)
   {
     v8 = -v8;
@@ -371,8 +371,8 @@ LABEL_9:
 
   if (v8 > 604800.0 || v3 == v6)
   {
-    v10 = [MEMORY[0x277CBEAA8] monthDayFormatter];
-    v11 = [v10 stringFromDate:a1];
+    monthDayFormatter = [MEMORY[0x277CBEAA8] monthDayFormatter];
+    v11 = [monthDayFormatter stringFromDate:self];
   }
 
   else

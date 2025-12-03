@@ -1,45 +1,45 @@
 @interface WFAggregateCommonRequest
-- (WFAggregateCommonRequest)initWithLocation:(id)a3 types:(unint64_t)a4 units:(int)a5 requestOptions:(id)a6 trackingParameter:(id)a7 completionHandler:(id)a8;
+- (WFAggregateCommonRequest)initWithLocation:(id)location types:(unint64_t)types units:(int)units requestOptions:(id)options trackingParameter:(id)parameter completionHandler:(id)handler;
 - (id)description;
-- (unint64_t)_supportedForecastTypes:(unint64_t)a3;
+- (unint64_t)_supportedForecastTypes:(unint64_t)types;
 - (void)cleanup;
 - (void)handleCancellation;
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4;
-- (void)handleResponse:(id)a3;
-- (void)startWithService:(id)a3;
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier;
+- (void)handleResponse:(id)response;
+- (void)startWithService:(id)service;
 @end
 
 @implementation WFAggregateCommonRequest
 
-- (WFAggregateCommonRequest)initWithLocation:(id)a3 types:(unint64_t)a4 units:(int)a5 requestOptions:(id)a6 trackingParameter:(id)a7 completionHandler:(id)a8
+- (WFAggregateCommonRequest)initWithLocation:(id)location types:(unint64_t)types units:(int)units requestOptions:(id)options trackingParameter:(id)parameter completionHandler:(id)handler
 {
-  v28 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(WFAggregateCommonRequest *)self _supportedForecastTypes:a4];
+  locationCopy = location;
+  optionsCopy = options;
+  parameterCopy = parameter;
+  handlerCopy = handler;
+  v18 = [(WFAggregateCommonRequest *)self _supportedForecastTypes:types];
   v29.receiver = self;
   v29.super_class = WFAggregateCommonRequest;
   v19 = [(WFTask *)&v29 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_location, a3);
+    objc_storeStrong(&v19->_location, location);
     v20->_types = v18;
-    objc_storeStrong(&v20->_trackingParameter, a7);
-    v20->_units = a5;
-    objc_storeStrong(&v20->_requestOptions, a6);
-    v21 = MEMORY[0x2743D5580](v17);
+    objc_storeStrong(&v20->_trackingParameter, parameter);
+    v20->_units = units;
+    objc_storeStrong(&v20->_requestOptions, options);
+    v21 = MEMORY[0x2743D5580](handlerCopy);
     completionHandler = v20->_completionHandler;
     v20->_completionHandler = v21;
 
-    v23 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     locale = v20->_locale;
-    v20->_locale = v23;
+    v20->_locale = autoupdatingCurrentLocale;
 
-    v25 = [(WFAggregateCommonRequest *)v20 trackingParameter];
+    trackingParameter = [(WFAggregateCommonRequest *)v20 trackingParameter];
 
-    if (!v25)
+    if (!trackingParameter)
     {
       trackingParameter = v20->_trackingParameter;
       v20->_trackingParameter = @"apple_TWC";
@@ -53,13 +53,13 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(WFAggregateCommonRequest *)self location];
-  v6 = [v3 stringWithFormat:@"<%@: %p, location = %@, types = %lu>", v4, self, v5, -[WFAggregateCommonRequest types](self, "types")];
+  location = [(WFAggregateCommonRequest *)self location];
+  v6 = [v3 stringWithFormat:@"<%@: %p, location = %@, types = %lu>", v4, self, location, -[WFAggregateCommonRequest types](self, "types")];
 
   return v6;
 }
 
-- (unint64_t)_supportedForecastTypes:(unint64_t)a3
+- (unint64_t)_supportedForecastTypes:(unint64_t)types
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0;
@@ -69,7 +69,7 @@
   v9 = 0;
   v10[0] = &v9;
   v10[1] = 0x2020000000;
-  v10[2] = a3;
+  v10[2] = types;
   v3 = WFAggregateCommonRequestSupportedForecastTypes();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -118,82 +118,82 @@ uint64_t __52__WFAggregateCommonRequest__supportedForecastTypes___block_invoke(u
 
 - (void)handleCancellation
 {
-  v3 = [(WFAggregateCommonRequest *)self completionHandler];
+  completionHandler = [(WFAggregateCommonRequest *)self completionHandler];
   v4 = [MEMORY[0x277CCA9B8] wf_errorWithCode:13];
-  (v3)[2](v3, 0, 0, v4);
+  (completionHandler)[2](completionHandler, 0, 0, v4);
 
   v5.receiver = self;
   v5.super_class = WFAggregateCommonRequest;
   [(WFTask *)&v5 handleCancellation];
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_opt_new();
-  v6 = [v4 airQualityObservations];
-  [v5 setAirQualityObservations:v6];
+  airQualityObservations = [responseCopy airQualityObservations];
+  [v5 setAirQualityObservations:airQualityObservations];
 
-  v7 = [v4 currentObservations];
-  [v5 setCurrentObservations:v7];
+  currentObservations = [responseCopy currentObservations];
+  [v5 setCurrentObservations:currentObservations];
 
-  v8 = [v4 lastTwentyFourHoursOfObservations];
-  [v5 setLastTwentyFourHoursOfObservations:v8];
+  lastTwentyFourHoursOfObservations = [responseCopy lastTwentyFourHoursOfObservations];
+  [v5 setLastTwentyFourHoursOfObservations:lastTwentyFourHoursOfObservations];
 
-  v9 = [v4 hourlyForecastedConditions];
-  [v5 setHourlyForecastedConditions:v9];
+  hourlyForecastedConditions = [responseCopy hourlyForecastedConditions];
+  [v5 setHourlyForecastedConditions:hourlyForecastedConditions];
 
-  v10 = [v4 dailyForecastedConditions];
-  [v5 setDailyForecastedConditions:v10];
+  dailyForecastedConditions = [responseCopy dailyForecastedConditions];
+  [v5 setDailyForecastedConditions:dailyForecastedConditions];
 
-  v11 = [v4 dailyPollenForecastedConditions];
-  [v5 setDailyPollenForecastedConditions:v11];
+  dailyPollenForecastedConditions = [responseCopy dailyPollenForecastedConditions];
+  [v5 setDailyPollenForecastedConditions:dailyPollenForecastedConditions];
 
-  v12 = [v4 severeWeatherEvents];
-  [v5 setSevereWeatherEvents:v12];
+  severeWeatherEvents = [responseCopy severeWeatherEvents];
+  [v5 setSevereWeatherEvents:severeWeatherEvents];
 
-  v13 = [v4 changeForecasts];
-  [v5 setChangeForecasts:v13];
+  changeForecasts = [responseCopy changeForecasts];
+  [v5 setChangeForecasts:changeForecasts];
 
-  v14 = [v4 nextHourPrecipitation];
-  [v5 setNextHourPrecipitation:v14];
+  nextHourPrecipitation = [responseCopy nextHourPrecipitation];
+  [v5 setNextHourPrecipitation:nextHourPrecipitation];
 
-  v15 = [v5 currentObservations];
-  v16 = [(WFAggregateCommonRequest *)self locale];
-  v17 = [(WFAggregateCommonRequest *)self trackingParameter];
-  [v15 editLinksWithLocale:v16 trackingParameter:v17];
+  currentObservations2 = [v5 currentObservations];
+  locale = [(WFAggregateCommonRequest *)self locale];
+  trackingParameter = [(WFAggregateCommonRequest *)self trackingParameter];
+  [currentObservations2 editLinksWithLocale:locale trackingParameter:trackingParameter];
 
-  v18 = [(WFAggregateCommonRequest *)self completionHandler];
-  v19 = [v4 rawAPIData];
-  (v18)[2](v18, v5, v19, 0);
+  completionHandler = [(WFAggregateCommonRequest *)self completionHandler];
+  rawAPIData = [responseCopy rawAPIData];
+  (completionHandler)[2](completionHandler, v5, rawAPIData, 0);
 
   v20.receiver = self;
   v20.super_class = WFAggregateCommonRequest;
-  [(WFTask *)&v20 handleResponse:v4];
+  [(WFTask *)&v20 handleResponse:responseCopy];
 }
 
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFAggregateCommonRequest *)self completionHandler];
-  (v8)[2](v8, 0, 0, v7);
+  identifierCopy = identifier;
+  errorCopy = error;
+  completionHandler = [(WFAggregateCommonRequest *)self completionHandler];
+  (completionHandler)[2](completionHandler, 0, 0, errorCopy);
 
   v9.receiver = self;
   v9.super_class = WFAggregateCommonRequest;
-  [(WFTask *)&v9 handleError:v7 forResponseIdentifier:v6];
+  [(WFTask *)&v9 handleError:errorCopy forResponseIdentifier:identifierCopy];
 }
 
-- (void)startWithService:(id)a3
+- (void)startWithService:(id)service
 {
-  v4 = a3;
-  v5 = [(WFAggregateCommonRequest *)self types];
-  v10 = [(WFAggregateCommonRequest *)self location];
-  v6 = [(WFAggregateCommonRequest *)self units];
-  v7 = [(WFAggregateCommonRequest *)self locale];
-  v8 = [(WFTask *)self identifier];
-  v9 = [(WFAggregateCommonRequest *)self requestOptions];
-  [v4 forecast:v5 forLocation:v10 withUnits:v6 locale:v7 taskIdentifier:v8 requestOptions:v9];
+  serviceCopy = service;
+  types = [(WFAggregateCommonRequest *)self types];
+  location = [(WFAggregateCommonRequest *)self location];
+  units = [(WFAggregateCommonRequest *)self units];
+  locale = [(WFAggregateCommonRequest *)self locale];
+  identifier = [(WFTask *)self identifier];
+  requestOptions = [(WFAggregateCommonRequest *)self requestOptions];
+  [serviceCopy forecast:types forLocation:location withUnits:units locale:locale taskIdentifier:identifier requestOptions:requestOptions];
 }
 
 - (void)_supportedForecastTypes:(uint64_t)a3 .cold.1(void *a1, uint64_t a2, uint64_t a3, NSObject *a4)

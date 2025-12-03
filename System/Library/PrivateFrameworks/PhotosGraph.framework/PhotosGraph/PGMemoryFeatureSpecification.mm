@@ -1,13 +1,13 @@
 @interface PGMemoryFeatureSpecification
-- (PGMemoryFeatureSpecification)initWithFeatureType:(int64_t)a3 typeSpecificIdentifiers:(id)a4 combineFeatureNodes:(BOOL)a5 graph:(id)a6 loggingConnection:(id)a7;
-- (id)featureNodesInGraph:(id)a3;
+- (PGMemoryFeatureSpecification)initWithFeatureType:(int64_t)type typeSpecificIdentifiers:(id)identifiers combineFeatureNodes:(BOOL)nodes graph:(id)graph loggingConnection:(id)connection;
+- (id)featureNodesInGraph:(id)graph;
 @end
 
 @implementation PGMemoryFeatureSpecification
 
-- (id)featureNodesInGraph:(id)a3
+- (id)featureNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   switch(self->_featureType)
   {
     case 1:
@@ -22,9 +22,9 @@
 
       if ([(NSSet *)typeSpecificIdentifiers count]== 1)
       {
-        v14 = [(NSSet *)self->_typeSpecificIdentifiers anyObject];
-        v15 = [PGGraphSeasonNodeCollection seasonNodesForSeasonName:v14 inGraph:v4];
-        v16 = [v15 featureNodeCollection];
+        anyObject = [(NSSet *)self->_typeSpecificIdentifiers anyObject];
+        v15 = [PGGraphSeasonNodeCollection seasonNodesForSeasonName:anyObject inGraph:graphCopy];
+        featureNodeCollection = [v15 featureNodeCollection];
 
         goto LABEL_65;
       }
@@ -58,8 +58,8 @@ LABEL_61:
         goto LABEL_28;
       }
 
-      v9 = [(NSSet *)v12 allObjects];
-      v10 = [PGGraphROINodeCollection roiNodesForLabels:v9 inGraph:v4];
+      allObjects = [(NSSet *)v12 allObjects];
+      businessNodes = [PGGraphROINodeCollection roiNodesForLabels:allObjects inGraph:graphCopy];
       goto LABEL_41;
     case 5:
       v7 = self->_typeSpecificIdentifiers;
@@ -69,8 +69,8 @@ LABEL_61:
         goto LABEL_28;
       }
 
-      v9 = [(NSSet *)v7 allObjects];
-      v10 = [PGGraphPOINodeCollection poiNodesForLabels:v9 inGraph:v4];
+      allObjects = [(NSSet *)v7 allObjects];
+      businessNodes = [PGGraphPOINodeCollection poiNodesForLabels:allObjects inGraph:graphCopy];
       goto LABEL_41;
     case 6:
       v5 = PGGraphLocationDistrictNodeCollection;
@@ -88,10 +88,10 @@ LABEL_61:
       v5 = PGGraphLocationCountryNodeCollection;
       goto LABEL_62;
     case 0xBLL:
-      v6 = [PGGraphHomeWorkNodeCollection homeNodesInGraph:v4];
+      v6 = [PGGraphHomeWorkNodeCollection homeNodesInGraph:graphCopy];
       goto LABEL_63;
     case 0xCLL:
-      v6 = [PGGraphHomeWorkNodeCollection workNodesInGraph:v4];
+      v6 = [PGGraphHomeWorkNodeCollection workNodesInGraph:graphCopy];
       goto LABEL_63;
     case 0xDLL:
       v5 = PGGraphFrequentLocationNodeCollection;
@@ -100,10 +100,10 @@ LABEL_61:
       v5 = PGGraphSocialGroupNodeCollection;
       goto LABEL_62;
     case 0xFLL:
-      v6 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:v4];
+      v6 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:graphCopy];
       goto LABEL_63;
     case 0x10:
-      v6 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_2844859A0 includingMe:0 inGraph:v4];
+      v6 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_2844859A0 includingMe:0 inGraph:graphCopy];
       goto LABEL_63;
     case 0x11:
       v5 = PGGraphPetNodeCollection;
@@ -112,7 +112,7 @@ LABEL_61:
       v17 = self->_typeSpecificIdentifiers;
       if (v17)
       {
-        v6 = [PGGraphSceneNodeCollection sceneNodesForSceneNames:v17 inGraph:v4];
+        v6 = [PGGraphSceneNodeCollection sceneNodesForSceneNames:v17 inGraph:graphCopy];
         goto LABEL_63;
       }
 
@@ -130,8 +130,8 @@ LABEL_61:
       v20 = self->_typeSpecificIdentifiers;
       if (v20)
       {
-        v9 = [(NSSet *)v20 allObjects];
-        v10 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneNames:v9 inGraph:v4];
+        allObjects = [(NSSet *)v20 allObjects];
+        businessNodes = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneNames:allObjects inGraph:graphCopy];
         goto LABEL_41;
       }
 
@@ -153,14 +153,14 @@ LABEL_61:
         goto LABEL_62;
       }
 
-      v6 = [PGGraphAudioFeatureNodeCollection audioFeatureNodesForLabels:v22 inGraph:v4];
+      v6 = [PGGraphAudioFeatureNodeCollection audioFeatureNodesForLabels:v22 inGraph:graphCopy];
       goto LABEL_63;
     case 0x15:
       v18 = self->_typeSpecificIdentifiers;
       if (v18)
       {
-        v9 = [(NSSet *)v18 allObjects];
-        v10 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v9 inGraph:v4];
+        allObjects = [(NSSet *)v18 allObjects];
+        businessNodes = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:allObjects inGraph:graphCopy];
         goto LABEL_41;
       }
 
@@ -179,21 +179,21 @@ LABEL_61:
       v8 = PGGraphHolidayNodeCollection;
       if (v19)
       {
-        v9 = [(NSSet *)v19 allObjects];
-        v10 = [PGGraphHolidayNodeCollection holidayNodesWithNames:v9 inGraph:v4];
+        allObjects = [(NSSet *)v19 allObjects];
+        businessNodes = [PGGraphHolidayNodeCollection holidayNodesWithNames:allObjects inGraph:graphCopy];
         goto LABEL_41;
       }
 
 LABEL_28:
       v5 = v8;
 LABEL_62:
-      v6 = [(__objc2_class *)v5 nodesInGraph:v4];
+      v6 = [(__objc2_class *)v5 nodesInGraph:graphCopy];
       goto LABEL_63;
     case 0x17:
       v21 = self->_typeSpecificIdentifiers;
       if (v21)
       {
-        v6 = [PGGraphPersonActivityMeaningNodeCollection personActivityMeaningNodesForActivityLabels:v21 inGraph:v4];
+        v6 = [PGGraphPersonActivityMeaningNodeCollection personActivityMeaningNodesForActivityLabels:v21 inGraph:graphCopy];
         goto LABEL_63;
       }
 
@@ -211,11 +211,11 @@ LABEL_62:
       v23 = self->_typeSpecificIdentifiers;
       if (v23)
       {
-        v9 = [PGGraphBusinessCategoryNodeCollection businessCategoryNodesForCategories:v23 inGraph:v4];
-        v10 = [v9 businessNodes];
+        allObjects = [PGGraphBusinessCategoryNodeCollection businessCategoryNodesForCategories:v23 inGraph:graphCopy];
+        businessNodes = [allObjects businessNodes];
 LABEL_41:
-        v24 = v10;
-        v16 = [v10 featureNodeCollection];
+        v24 = businessNodes;
+        featureNodeCollection = [businessNodes featureNodeCollection];
 
         goto LABEL_64;
       }
@@ -234,10 +234,10 @@ LABEL_41:
       v11 = self->_typeSpecificIdentifiers;
       if (v11)
       {
-        v6 = [PGGraphPublicEventNodeCollection publicEventNodesWithCategories:v11 inGraph:v4];
+        v6 = [PGGraphPublicEventNodeCollection publicEventNodesWithCategories:v11 inGraph:graphCopy];
 LABEL_63:
-        v9 = v6;
-        v16 = [v6 featureNodeCollection];
+        allObjects = v6;
+        featureNodeCollection = [v6 featureNodeCollection];
 LABEL_64:
       }
 
@@ -254,15 +254,15 @@ LABEL_59:
         }
 
 LABEL_60:
-        v16 = 0;
+        featureNodeCollection = 0;
       }
 
 LABEL_65:
 
-      return v16;
+      return featureNodeCollection;
     case 0x1ALL:
-      v9 = [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:v4];
-      v10 = [v9 highlightGroupNodes];
+      allObjects = [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:graphCopy];
+      businessNodes = [allObjects highlightGroupNodes];
       goto LABEL_41;
     case 0x1BLL:
       v5 = PGGraphMeNodeCollection;
@@ -272,22 +272,22 @@ LABEL_65:
   }
 }
 
-- (PGMemoryFeatureSpecification)initWithFeatureType:(int64_t)a3 typeSpecificIdentifiers:(id)a4 combineFeatureNodes:(BOOL)a5 graph:(id)a6 loggingConnection:(id)a7
+- (PGMemoryFeatureSpecification)initWithFeatureType:(int64_t)type typeSpecificIdentifiers:(id)identifiers combineFeatureNodes:(BOOL)nodes graph:(id)graph loggingConnection:(id)connection
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = PGMemoryFeatureSpecification;
   v16 = [(PGMemoryFeatureSpecification *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    v16->_featureType = a3;
-    objc_storeStrong(&v16->_typeSpecificIdentifiers, a4);
-    v17->_combineFeatureNodes = a5;
-    objc_storeStrong(&v17->_loggingConnection, a7);
-    v18 = [(PGMemoryFeatureSpecification *)v17 featureNodesInGraph:v14];
+    v16->_featureType = type;
+    objc_storeStrong(&v16->_typeSpecificIdentifiers, identifiers);
+    v17->_combineFeatureNodes = nodes;
+    objc_storeStrong(&v17->_loggingConnection, connection);
+    v18 = [(PGMemoryFeatureSpecification *)v17 featureNodesInGraph:graphCopy];
     featureNodes = v17->_featureNodes;
     v17->_featureNodes = v18;
   }

@@ -1,23 +1,23 @@
 @interface IMBlockActivityItemProvider
-- (IMBlockActivityItemProvider)initWithUTI:(id)a3 resolutionBlock:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (IMBlockActivityItemProvider)initWithUTI:(id)i resolutionBlock:(id)block;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation IMBlockActivityItemProvider
 
-- (IMBlockActivityItemProvider)initWithUTI:(id)a3 resolutionBlock:(id)a4
+- (IMBlockActivityItemProvider)initWithUTI:(id)i resolutionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  blockCopy = block;
   v8 = [(IMBlockActivityItemProvider *)self init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [blockCopy copy];
     resolutionBlock = v8->_resolutionBlock;
     v8->_resolutionBlock = v9;
 
-    v11 = [v6 copy];
+    v11 = [iCopy copy];
     UTI = v8->_UTI;
     v8->_UTI = v11;
   }
@@ -25,7 +25,7 @@
   return v8;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = [(IMBlockActivityItemProvider *)self UTI];
   v5 = [v4 isEqualToString:@"public.plain-text"];
@@ -65,15 +65,15 @@
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  v6 = [(IMBlockActivityItemProvider *)self resolutionBlock];
+  typeCopy = type;
+  resolutionBlock = [(IMBlockActivityItemProvider *)self resolutionBlock];
 
-  if (v6 && (-[IMBlockActivityItemProvider supportedActivityTypes](self, "supportedActivityTypes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v5], v7, v8))
+  if (resolutionBlock && (-[IMBlockActivityItemProvider supportedActivityTypes](self, "supportedActivityTypes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:typeCopy], v7, v8))
   {
-    v9 = [(IMBlockActivityItemProvider *)self resolutionBlock];
-    v10 = (v9)[2](v9, v5);
+    resolutionBlock2 = [(IMBlockActivityItemProvider *)self resolutionBlock];
+    v10 = (resolutionBlock2)[2](resolutionBlock2, typeCopy);
   }
 
   else

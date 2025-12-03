@@ -1,25 +1,25 @@
 @interface VCAlgosStreamingScorer
-- (VCAlgosStreamingScorer)initWithLaunchTime:(double)a3;
-- (double)finalizeScoreStreamingWithTime:(double)a3;
+- (VCAlgosStreamingScorer)initWithLaunchTime:(double)time;
+- (double)finalizeScoreStreamingWithTime:(double)time;
 - (double)scoreStreaming;
 - (double)streamQuality;
-- (void)addCallFailureWithTime:(double)a3 detailedErrorCode:(int)a4;
-- (void)addLargeGapErasureWithTime:(double)a3 largeGapErasureRate:(double)a4;
-- (void)addStreamTierSwitchWithTime:(double)a3;
-- (void)addVideoStallWithStartTime:(double)a3 endStallTime:(double)a4;
+- (void)addCallFailureWithTime:(double)time detailedErrorCode:(int)code;
+- (void)addLargeGapErasureWithTime:(double)time largeGapErasureRate:(double)rate;
+- (void)addStreamTierSwitchWithTime:(double)time;
+- (void)addVideoStallWithStartTime:(double)time endStallTime:(double)stallTime;
 - (void)dealloc;
-- (void)endWithTime:(double)a3 streamType:(int)a4;
+- (void)endWithTime:(double)time streamType:(int)type;
 - (void)scoreStreaming;
-- (void)setVideoFramerate:(double)a3;
-- (void)setVideoResolutionWithTime:(double)a3 width:(int)a4 height:(int)a5;
-- (void)startWithTime:(double)a3 streamType:(int)a4;
-- (void)stopWithTime:(double)a3 streamType:(int)a4;
-- (void)updateRelativeTime:(double)a3;
+- (void)setVideoFramerate:(double)framerate;
+- (void)setVideoResolutionWithTime:(double)time width:(int)width height:(int)height;
+- (void)startWithTime:(double)time streamType:(int)type;
+- (void)stopWithTime:(double)time streamType:(int)type;
+- (void)updateRelativeTime:(double)time;
 @end
 
 @implementation VCAlgosStreamingScorer
 
-- (VCAlgosStreamingScorer)initWithLaunchTime:(double)a3
+- (VCAlgosStreamingScorer)initWithLaunchTime:(double)time
 {
   v25 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -32,7 +32,7 @@
       v4->_algosScore = objc_alloc_init(MEMORY[0x277D2CA40]);
     }
 
-    v4->_launchTime = a3;
+    v4->_launchTime = time;
     v4->_blockAlgosScoreLock._os_unfair_lock_opaque = 0;
     __asm { FMOV            V0.2D, #5.0 }
 
@@ -52,7 +52,7 @@
         v21 = 2048;
         v22 = v4;
         v23 = 2048;
-        v24 = a3;
+        timeCopy = time;
         _os_log_impl(&dword_23D4DF000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] init launchTime %f ", buf, 0x30u);
       }
     }
@@ -72,23 +72,23 @@
   [(VCAlgosStreamingScorer *)&v3 dealloc];
 }
 
-- (void)updateRelativeTime:(double)a3
+- (void)updateRelativeTime:(double)time
 {
   lastStreamTierSwitch = self->_lastStreamTierSwitch;
   if (lastStreamTierSwitch > 0.0)
   {
-    self->_totalStopDuration = a3 - lastStreamTierSwitch + self->_totalStopDuration;
+    self->_totalStopDuration = time - lastStreamTierSwitch + self->_totalStopDuration;
   }
 }
 
-- (void)startWithTime:(double)a3 streamType:(int)a4
+- (void)startWithTime:(double)time streamType:(int)type
 {
   v34 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_blockAlgosScoreLock);
   if (self->_didStopStream)
   {
-    [(VCAlgosStreamingScorer *)self updateRelativeTime:a3];
-    [(VCAlgosStreamingScorer *)self relativeTime:a3];
+    [(VCAlgosStreamingScorer *)self updateRelativeTime:time];
+    [(VCAlgosStreamingScorer *)self relativeTime:time];
     v8 = v7;
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
@@ -104,17 +104,17 @@
         v20 = 1024;
         v21 = 126;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2048;
-        v25 = a3;
+        timeCopy2 = time;
         v26 = 2048;
         v27 = v8;
         v28 = 2048;
-        v29 = a3 - launchTime;
+        v29 = time - launchTime;
         v30 = 2048;
         v31 = v8 - launchTime;
         v32 = 1024;
-        v33 = a4;
+        typeCopy = type;
         _os_log_impl(&dword_23D4DF000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] stream resume time=%f relativeTime=%f timeSinceLaunch=%f relativeTimeSinceLaunch=%f streamType=%d", &v16, 0x54u);
       }
     }
@@ -128,7 +128,7 @@
       v13 = gVRTraceOSLog;
       if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = a3 - self->_launchTime;
+        v14 = time - self->_launchTime;
         v16 = 136316674;
         v17 = v12;
         v18 = 2080;
@@ -136,13 +136,13 @@
         v20 = 1024;
         v21 = 119;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2048;
-        v25 = a3;
+        timeCopy2 = time;
         v26 = 2048;
         v27 = v14;
         v28 = 1024;
-        LODWORD(v29) = a4;
+        LODWORD(v29) = type;
         _os_log_impl(&dword_23D4DF000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] stream start playTime=%f timeSinceLaunch=%f streamType=%d", &v16, 0x40u);
       }
     }
@@ -159,18 +159,18 @@
       goto LABEL_12;
     }
 
-    [(NWSAlgosStreamScore *)self->_algosScore addStreamStart:self->_launchTime play:a3];
+    [(NWSAlgosStreamScore *)self->_algosScore addStreamStart:self->_launchTime play:time];
   }
 
   self->_didEndStream = 0;
   *&self->_didStartStream = 1;
-  self->_lastStreamTierSwitch = a3;
+  self->_lastStreamTierSwitch = time;
 LABEL_12:
   os_unfair_lock_unlock(&self->_blockAlgosScoreLock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopWithTime:(double)a3 streamType:(int)a4
+- (void)stopWithTime:(double)time streamType:(int)type
 {
   v30 = *MEMORY[0x277D85DE8];
   [(VCAlgosStreamingScorer *)self relativeTime:?];
@@ -188,13 +188,13 @@ LABEL_12:
       v20 = 1024;
       v21 = 139;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2048;
-      v25 = a3;
+      timeCopy = time;
       v26 = 2048;
       v27 = v8;
       v28 = 1024;
-      v29 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_23D4DF000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] stream stop with time %f relativeTime=%f streamType %d", &v16, 0x40u);
     }
   }
@@ -218,7 +218,7 @@ LABEL_12:
     [(VCAlgosStreamingScorer *)self streamQuality];
     [(NWSAlgosStreamScore *)algosScore addStreamTierSwitch:v12 end:v8 quality:v14 weight:1.0];
     self->_didStopStream = 1;
-    self->_lastStreamTierSwitch = a3;
+    self->_lastStreamTierSwitch = time;
     ++self->_pendingScoringEventCount;
   }
 
@@ -231,7 +231,7 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endWithTime:(double)a3 streamType:(int)a4
+- (void)endWithTime:(double)time streamType:(int)type
 {
   v26 = *MEMORY[0x277D85DE8];
   [(VCAlgosStreamingScorer *)self relativeTime:?];
@@ -249,13 +249,13 @@ LABEL_12:
       v16 = 1024;
       v17 = 157;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2048;
-      v21 = a3;
+      timeCopy = time;
       v22 = 2048;
       v23 = v8;
       v24 = 1024;
-      v25 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_23D4DF000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] stream end with time %f relativeTime=%f streamType %d", &v12, 0x40u);
     }
   }
@@ -282,15 +282,15 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addVideoStallWithStartTime:(double)a3 endStallTime:(double)a4
+- (void)addVideoStallWithStartTime:(double)time endStallTime:(double)stallTime
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a4 - a3;
-  if (a4 - a3 >= 0.5)
+  v5 = stallTime - time;
+  if (stallTime - time >= 0.5)
   {
-    [(VCAlgosStreamingScorer *)self relativeTime:a3];
+    [(VCAlgosStreamingScorer *)self relativeTime:time];
     v9 = v8;
-    [(VCAlgosStreamingScorer *)self relativeTime:a4];
+    [(VCAlgosStreamingScorer *)self relativeTime:stallTime];
     v11 = v10;
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
@@ -305,11 +305,11 @@ LABEL_12:
         v21 = 1024;
         v22 = 176;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2048;
-        v26 = a4;
+        stallTimeCopy = stallTime;
         v27 = 2048;
-        v28 = a3;
+        timeCopy = time;
         v29 = 2048;
         v30 = v9;
         v31 = 2048;
@@ -340,10 +340,10 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCallFailureWithTime:(double)a3 detailedErrorCode:(int)a4
+- (void)addCallFailureWithTime:(double)time detailedErrorCode:(int)code
 {
   v21 = *MEMORY[0x277D85DE8];
-  if ((a4 - 234) >= 2 && a4 != 0)
+  if ((code - 234) >= 2 && code != 0)
   {
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
@@ -358,9 +358,9 @@ LABEL_12:
         v15 = 1024;
         v16 = 193;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         v19 = 1024;
-        v20 = a4;
+        codeCopy = code;
         _os_log_impl(&dword_23D4DF000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] Call failure with detailedErrorCode = %d", &v11, 0x2Cu);
       }
     }
@@ -368,7 +368,7 @@ LABEL_12:
     os_unfair_lock_lock(&self->_blockAlgosScoreLock);
     if (self->_didStartStream)
     {
-      [(VCAlgosStreamingScorer *)self relativeTime:a3];
+      [(VCAlgosStreamingScorer *)self relativeTime:time];
       [NWSAlgosStreamScore addStreamFailure:"addStreamFailure:weight:" weight:?];
       ++self->_pendingScoringEventCount;
     }
@@ -384,10 +384,10 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLargeGapErasureWithTime:(double)a3 largeGapErasureRate:(double)a4
+- (void)addLargeGapErasureWithTime:(double)time largeGapErasureRate:(double)rate
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a4 >= 0.0001)
+  if (rate >= 0.0001)
   {
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
@@ -402,9 +402,9 @@ LABEL_12:
         v14 = 1024;
         v15 = 209;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2048;
-        v19 = a4;
+        rateCopy = rate;
         _os_log_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] add large gap erasure %f", &v10, 0x30u);
       }
     }
@@ -417,7 +417,7 @@ LABEL_12:
 
     else
     {
-      [(VCAlgosStreamingScorer *)self relativeTime:a3];
+      [(VCAlgosStreamingScorer *)self relativeTime:time];
       [NWSAlgosStreamScore addStreamPenalty:"addStreamPenalty:amount:" amount:?];
       ++self->_pendingScoringEventCount;
     }
@@ -428,7 +428,7 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addStreamTierSwitchWithTime:(double)a3
+- (void)addStreamTierSwitchWithTime:(double)time
 {
   os_unfair_lock_lock(&self->_blockAlgosScoreLock);
   if (!self->_didStartStream || self->_didEndStream)
@@ -438,7 +438,7 @@ LABEL_12:
 
   else
   {
-    [(VCAlgosStreamingScorer *)self relativeTime:a3];
+    [(VCAlgosStreamingScorer *)self relativeTime:time];
     v6 = v5;
     if (self->_lastStreamTierSwitch > 0.0)
     {
@@ -450,16 +450,16 @@ LABEL_12:
       ++self->_pendingScoringEventCount;
     }
 
-    self->_lastStreamTierSwitch = a3;
+    self->_lastStreamTierSwitch = time;
   }
 
   os_unfair_lock_unlock(&self->_blockAlgosScoreLock);
 }
 
-- (double)finalizeScoreStreamingWithTime:(double)a3
+- (double)finalizeScoreStreamingWithTime:(double)time
 {
   [(VCAlgosStreamingScorer *)self stopWithTime:0 streamType:?];
-  [(VCAlgosStreamingScorer *)self endWithTime:0 streamType:a3];
+  [(VCAlgosStreamingScorer *)self endWithTime:0 streamType:time];
 
   [(VCAlgosStreamingScorer *)self scoreStreaming];
   return result;
@@ -501,7 +501,7 @@ LABEL_12:
               v14 = 1024;
               v15 = 262;
               v16 = 2048;
-              v17 = self;
+              selfCopy2 = self;
               v18 = 2112;
               v19 = v4;
               _os_log_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] AlgosStreamScore scoreDictionary: %@", v11, 0x30u);
@@ -517,7 +517,7 @@ LABEL_12:
             v14 = 1024;
             v15 = 262;
             v16 = 2048;
-            v17 = self;
+            selfCopy2 = self;
             v18 = 2112;
             v19 = v4;
             _os_log_debug_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEBUG, " [%s] %s:%d [%p] AlgosStreamScore scoreDictionary: %@", v11, 0x30u);
@@ -547,11 +547,11 @@ LABEL_12:
   return score;
 }
 
-- (void)setVideoResolutionWithTime:(double)a3 width:(int)a4 height:(int)a5
+- (void)setVideoResolutionWithTime:(double)time width:(int)width height:(int)height
 {
   v27 = *MEMORY[0x277D85DE8];
-  self->_resolutionPredictedMOS = fmax(fmin(log((a5 * a4) * 1914160.0) * 0.169076, 5.0), 0.0);
-  [(VCAlgosStreamingScorer *)self addStreamTierSwitchWithTime:a3];
+  self->_resolutionPredictedMOS = fmax(fmin(log((height * width) * 1914160.0) * 0.169076, 5.0), 0.0);
+  [(VCAlgosStreamingScorer *)self addStreamTierSwitchWithTime:time];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
   {
     v9 = VRTraceErrorLogLevelToCSTR(7u);
@@ -566,13 +566,13 @@ LABEL_12:
       v17 = 1024;
       v18 = 289;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2048;
       v22 = resolutionPredictedMOS;
       v23 = 1024;
-      v24 = a4;
+      widthCopy = width;
       v25 = 1024;
-      v26 = a5;
+      heightCopy = height;
       _os_log_impl(&dword_23D4DF000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] resolutionPredictedMOS = %f vraWidth = %d vraHeight = %d", &v13, 0x3Cu);
     }
   }
@@ -580,10 +580,10 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setVideoFramerate:(double)a3
+- (void)setVideoFramerate:(double)framerate
 {
   v21 = *MEMORY[0x277D85DE8];
-  self->_frameratePredictedMOS = fmax(fmin((1.0 - exp(a3 / 60.0 * -7.96)) / 0.999650847 * 5.0, 5.0), 0.0);
+  self->_frameratePredictedMOS = fmax(fmin((1.0 - exp(framerate / 60.0 * -7.96)) / 0.999650847 * 5.0, 5.0), 0.0);
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR(7u);
@@ -598,11 +598,11 @@ LABEL_12:
       v13 = 1024;
       v14 = 300;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = frameratePredictedMOS;
       v19 = 2048;
-      v20 = a3;
+      framerateCopy = framerate;
       _os_log_impl(&dword_23D4DF000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] _frameratePredictedMOS = %f videoFramerate = %f", &v9, 0x3Au);
     }
   }
@@ -629,7 +629,7 @@ LABEL_12:
         v12 = 1024;
         v13 = 305;
         v14 = 2048;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2048;
         v17 = v3;
         _os_log_impl(&dword_23D4DF000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] video quality = %f", &v8, 0x30u);
@@ -645,7 +645,7 @@ LABEL_12:
       v12 = 1024;
       v13 = 305;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = v3;
       _os_log_debug_impl(&dword_23D4DF000, v5, OS_LOG_TYPE_DEBUG, " [%s] %s:%d [%p] video quality = %f", &v8, 0x30u);
@@ -929,7 +929,7 @@ LABEL_12:
     if (OUTLINED_FUNCTION_18())
     {
       v7 = *a2;
-      v8 = *(a1 + 38);
+      v8 = *(self + 38);
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_7(&dword_23D4DF000, v9, v10, " [%s] %s:%d [%p] Cannot start score streaming _didStartStream = %d, _didEndStream = %d", v11, v12, v13, v14, 2u);
     }

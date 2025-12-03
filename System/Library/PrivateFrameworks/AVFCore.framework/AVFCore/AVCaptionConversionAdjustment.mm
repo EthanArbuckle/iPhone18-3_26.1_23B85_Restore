@@ -1,18 +1,18 @@
 @interface AVCaptionConversionAdjustment
-+ (AVCaptionConversionAdjustment)captionConversionAdjustmentWithFigDictionary:(__CFDictionary *)a3;
++ (AVCaptionConversionAdjustment)captionConversionAdjustmentWithFigDictionary:(__CFDictionary *)dictionary;
 - (AVCaptionConversionAdjustmentType)adjustmentType;
 @end
 
 @implementation AVCaptionConversionAdjustment
 
-+ (AVCaptionConversionAdjustment)captionConversionAdjustmentWithFigDictionary:(__CFDictionary *)a3
++ (AVCaptionConversionAdjustment)captionConversionAdjustmentWithFigDictionary:(__CFDictionary *)dictionary
 {
-  if ([-[__CFDictionary objectForKeyedSubscript:](a3 objectForKeyedSubscript:{*MEMORY[0x1E6971818]), "longValue"}] != 1)
+  if ([-[__CFDictionary objectForKeyedSubscript:](dictionary objectForKeyedSubscript:{*MEMORY[0x1E6971818]), "longValue"}] != 1)
   {
     return 0;
   }
 
-  return [AVCaptionConversionTimeRangeAdjustment captionConversionTimeRangeAdjustmentWithFigDictionary:a3];
+  return [AVCaptionConversionTimeRangeAdjustment captionConversionTimeRangeAdjustmentWithFigDictionary:dictionary];
 }
 
 - (AVCaptionConversionAdjustmentType)adjustmentType

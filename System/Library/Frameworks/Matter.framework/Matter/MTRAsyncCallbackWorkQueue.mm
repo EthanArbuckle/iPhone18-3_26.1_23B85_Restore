@@ -2,7 +2,7 @@
 - (MTRAsyncCallbackWorkQueue)initWithContext:(id)context queue:(dispatch_queue_t)queue;
 - (id)description;
 - (void)_callNextReadyWorkItem;
-- (void)_postProcessWorkItem:(id)a3 retry:(BOOL)a4;
+- (void)_postProcessWorkItem:(id)item retry:(BOOL)retry;
 - (void)enqueueWorkItem:(MTRAsyncCallbackQueueWorkItem *)item;
 - (void)invalidate;
 @end
@@ -22,9 +22,9 @@
     v9->_lock._os_unfair_lock_opaque = 0;
     objc_storeStrong(&v9->_context, context);
     objc_storeStrong(&v10->_queue, queue);
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     items = v10->_items;
-    v10->_items = v11;
+    v10->_items = array;
   }
 
   return v10;
@@ -34,9 +34,9 @@
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MTRAsyncCallbackWorkQueue *)self context];
-  v5 = [(MTRAsyncCallbackWorkQueue *)self items];
-  v6 = [v3 stringWithFormat:@"MTRAsyncCallbackWorkQueue context: %@ items count: %lu", v4, objc_msgSend(v5, "count")];
+  context = [(MTRAsyncCallbackWorkQueue *)self context];
+  items = [(MTRAsyncCallbackWorkQueue *)self items];
+  v6 = [v3 stringWithFormat:@"MTRAsyncCallbackWorkQueue context: %@ items count: %lu", context, objc_msgSend(items, "count")];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -66,8 +66,8 @@
     [(MTRAsyncCallbackQueueWorkItem *)v4 markEnqueued];
     os_unfair_lock_lock(&self->_lock);
     [(MTRAsyncCallbackQueueWorkItem *)v4 setWorkQueue:self];
-    v6 = [(MTRAsyncCallbackWorkQueue *)self items];
-    [v6 addObject:v4];
+    items = [(MTRAsyncCallbackWorkQueue *)self items];
+    [items addObject:v4];
 
     [(MTRAsyncCallbackWorkQueue *)self _callNextReadyWorkItem];
     os_unfair_lock_unlock(&self->_lock);
@@ -116,21 +116,21 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postProcessWorkItem:(id)a3 retry:(BOOL)a4
+- (void)_postProcessWorkItem:(id)item retry:(BOOL)retry
 {
-  v6 = a3;
+  itemCopy = item;
   os_unfair_lock_lock(&self->_lock);
   if ([(MTRAsyncCallbackWorkQueue *)self runningWorkItemCount])
   {
-    v7 = [(MTRAsyncCallbackWorkQueue *)self items];
-    v8 = [v7 firstObject];
+    items = [(MTRAsyncCallbackWorkQueue *)self items];
+    firstObject = [items firstObject];
 
-    if (v8 == v6)
+    if (firstObject == itemCopy)
     {
-      if (!a4)
+      if (!retry)
       {
-        v11 = [(MTRAsyncCallbackWorkQueue *)self items];
-        [v11 removeObjectAtIndex:0];
+        items2 = [(MTRAsyncCallbackWorkQueue *)self items];
+        [items2 removeObjectAtIndex:0];
       }
 
       [(MTRAsyncCallbackWorkQueue *)self setRunningWorkItemCount:0];
@@ -175,17 +175,17 @@
 {
   if (![(MTRAsyncCallbackWorkQueue *)self runningWorkItemCount])
   {
-    v3 = [(MTRAsyncCallbackWorkQueue *)self items];
-    v4 = [v3 count];
+    items = [(MTRAsyncCallbackWorkQueue *)self items];
+    v4 = [items count];
 
     if (v4)
     {
       [(MTRAsyncCallbackWorkQueue *)self setRunningWorkItemCount:1];
-      v5 = [(MTRAsyncCallbackWorkQueue *)self items];
-      v7 = [v5 firstObject];
+      items2 = [(MTRAsyncCallbackWorkQueue *)self items];
+      firstObject = [items2 firstObject];
 
-      v6 = [(MTRAsyncCallbackWorkQueue *)self context];
-      [v7 callReadyHandlerWithContext:v6];
+      context = [(MTRAsyncCallbackWorkQueue *)self context];
+      [firstObject callReadyHandlerWithContext:context];
     }
   }
 }

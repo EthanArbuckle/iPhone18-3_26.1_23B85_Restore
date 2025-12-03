@@ -1,38 +1,38 @@
 @interface DCActivityViewController
-- (BOOL)inhibitPDFGenerationForActivityType:(id)a3;
-- (BOOL)writeGalleryPDFDataToPasteboardIfNecessaryForActivity:(id)a3 documentInfoCollection:(id)a4;
+- (BOOL)inhibitPDFGenerationForActivityType:(id)type;
+- (BOOL)writeGalleryPDFDataToPasteboardIfNecessaryForActivity:(id)activity documentInfoCollection:(id)collection;
 - (id)activityTypesThatInhibitPDFGeneration;
-- (void)_performActivity:(id)a3;
+- (void)_performActivity:(id)activity;
 @end
 
 @implementation DCActivityViewController
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [(DCActivityViewController *)self inhibitPDFGenerationForActivityType:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [(DCActivityViewController *)self inhibitPDFGenerationForActivityType:activityType];
 
   if (v6)
   {
     v11.receiver = self;
     v11.super_class = DCActivityViewController;
-    [(DCActivityViewController *)&v11 _performActivity:v4];
+    [(DCActivityViewController *)&v11 _performActivity:activityCopy];
   }
 
   else
   {
-    v7 = [(DCActivityViewController *)self documentInfoCollection];
-    v8 = [(DCActivityViewController *)self imageCache];
-    v9 = [(DCActivityViewController *)self view];
-    v10 = [v9 window];
+    documentInfoCollection = [(DCActivityViewController *)self documentInfoCollection];
+    imageCache = [(DCActivityViewController *)self imageCache];
+    view = [(DCActivityViewController *)self view];
+    window = [view window];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __45__DCActivityViewController__performActivity___block_invoke;
     v12[3] = &unk_278F93758;
     v12[4] = self;
-    v13 = v4;
-    [DCDocCamPDFGenerator generatePDFsIfNecessaryForDocumentInfoCollection:v7 imageCache:v8 displayWindow:v10 presentingViewController:self completionHandler:v12];
+    v13 = activityCopy;
+    [DCDocCamPDFGenerator generatePDFsIfNecessaryForDocumentInfoCollection:documentInfoCollection imageCache:imageCache displayWindow:window presentingViewController:self completionHandler:v12];
   }
 }
 
@@ -62,33 +62,33 @@ void __45__DCActivityViewController__performActivity___block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)inhibitPDFGenerationForActivityType:(id)a3
+- (BOOL)inhibitPDFGenerationForActivityType:(id)type
 {
-  v4 = a3;
-  if (-[DCActivityViewController ignoreAttachmentsForCopyToPasteboard](self, "ignoreAttachmentsForCopyToPasteboard") && ([v4 isEqualToString:*MEMORY[0x277D54720]] & 1) != 0)
+  typeCopy = type;
+  if (-[DCActivityViewController ignoreAttachmentsForCopyToPasteboard](self, "ignoreAttachmentsForCopyToPasteboard") && ([typeCopy isEqualToString:*MEMORY[0x277D54720]] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(DCActivityViewController *)self activityTypesThatInhibitPDFGeneration];
-    v5 = [v6 containsObject:v4];
+    activityTypesThatInhibitPDFGeneration = [(DCActivityViewController *)self activityTypesThatInhibitPDFGeneration];
+    v5 = [activityTypesThatInhibitPDFGeneration containsObject:typeCopy];
   }
 
   return v5;
 }
 
-- (BOOL)writeGalleryPDFDataToPasteboardIfNecessaryForActivity:(id)a3 documentInfoCollection:(id)a4
+- (BOOL)writeGalleryPDFDataToPasteboardIfNecessaryForActivity:(id)activity documentInfoCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [a3 activityType];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D54720]];
+  collectionCopy = collection;
+  activityType = [activity activityType];
+  v7 = [activityType isEqualToString:*MEMORY[0x277D54720]];
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v9 = [DCDocCamPDFGenerator pdfURLForDocumentInfoCollection:v5];
+    v9 = [DCDocCamPDFGenerator pdfURLForDocumentInfoCollection:collectionCopy];
     v10 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v9];
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v12 = v11;
@@ -98,8 +98,8 @@ void __45__DCActivityViewController__performActivity___block_invoke(uint64_t a1,
       [v8 addObject:v12];
     }
 
-    v13 = [MEMORY[0x277D75810] generalPasteboard];
-    [v13 setItems:v8];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [generalPasteboard setItems:v8];
   }
 
   return v7;

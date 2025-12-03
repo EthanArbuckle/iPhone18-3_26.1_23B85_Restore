@@ -1,23 +1,23 @@
 @interface CTAvailablePlan
-- (BOOL)isEqual:(id)a3;
-- (CTAvailablePlan)initWithCoder:(id)a3;
-- (CTAvailablePlan)initWithIccid:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTAvailablePlan)initWithCoder:(id)coder;
+- (CTAvailablePlan)initWithIccid:(id)iccid;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTAvailablePlan
 
-- (CTAvailablePlan)initWithIccid:(id)a3
+- (CTAvailablePlan)initWithIccid:(id)iccid
 {
-  v5 = a3;
+  iccidCopy = iccid;
   v9.receiver = self;
   v9.super_class = CTAvailablePlan;
   v6 = [(CTAvailablePlan *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iccid, a3);
+    objc_storeStrong(&v6->_iccid, iccid);
   }
 
   return v7;
@@ -32,25 +32,25 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = CTAvailablePlan;
-  if ([(CTPlan *)&v11 isEqual:v4])
+  if ([(CTPlan *)&v11 isEqual:equalCopy])
   {
-    v5 = [(CTAvailablePlan *)self iccid];
-    v6 = [v4 iccid];
-    if (v5 == v6)
+    iccid = [(CTAvailablePlan *)self iccid];
+    iccid2 = [equalCopy iccid];
+    if (iccid == iccid2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(CTAvailablePlan *)self iccid];
-      v8 = [v4 iccid];
-      v9 = [v7 isEqual:v8];
+      iccid3 = [(CTAvailablePlan *)self iccid];
+      iccid4 = [equalCopy iccid];
+      v9 = [iccid3 isEqual:iccid4];
     }
   }
 
@@ -62,15 +62,15 @@
   return v9;
 }
 
-- (CTAvailablePlan)initWithCoder:(id)a3
+- (CTAvailablePlan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTAvailablePlan;
-  v5 = [(CTPlan *)&v9 initWithCoder:v4];
+  v5 = [(CTPlan *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
     iccid = v5->_iccid;
     v5->_iccid = v6;
   }
@@ -78,13 +78,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CTAvailablePlan;
-  v4 = a3;
-  [(CTPlan *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_iccid forKey:{@"iccid", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CTPlan *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_iccid forKey:{@"iccid", v5.receiver, v5.super_class}];
 }
 
 @end

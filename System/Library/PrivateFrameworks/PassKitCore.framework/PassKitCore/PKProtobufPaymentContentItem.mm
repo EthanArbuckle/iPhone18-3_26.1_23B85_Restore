@@ -1,12 +1,12 @@
 @interface PKProtobufPaymentContentItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentContentItem
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentContentItem;
   v4 = [(PKProtobufPaymentContentItem *)&v8 description];
-  v5 = [(PKProtobufPaymentContentItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentContentItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   imageRequest = self->_imageRequest;
   if (imageRequest)
   {
-    [v3 setObject:imageRequest forKey:@"imageRequest"];
+    [dictionary setObject:imageRequest forKey:@"imageRequest"];
   }
 
   image = self->_image;
@@ -60,92 +60,92 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_imageRequest)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_image)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_label)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_imageRequest)
   {
-    [v4 setImageRequest:?];
-    v4 = v5;
+    [toCopy setImageRequest:?];
+    toCopy = v5;
   }
 
   if (self->_image)
   {
     [v5 setImage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_label)
   {
     [v5 setLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[40] = self->_centered;
-    v4[44] |= 1u;
+    toCopy[40] = self->_centered;
+    toCopy[44] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_imageRequest copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_imageRequest copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSData *)self->_image copyWithZone:a3];
+  v8 = [(NSData *)self->_image copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSData *)self->_title copyWithZone:a3];
+  v10 = [(NSData *)self->_title copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSData *)self->_label copyWithZone:a3];
+  v12 = [(NSData *)self->_label copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
@@ -158,16 +158,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   imageRequest = self->_imageRequest;
-  if (imageRequest | *(v4 + 2))
+  if (imageRequest | *(equalCopy + 2))
   {
     if (![(NSData *)imageRequest isEqual:?])
     {
@@ -176,7 +176,7 @@
   }
 
   image = self->_image;
-  if (image | *(v4 + 1))
+  if (image | *(equalCopy + 1))
   {
     if (![(NSData *)image isEqual:?])
     {
@@ -185,7 +185,7 @@
   }
 
   title = self->_title;
-  if (title | *(v4 + 4))
+  if (title | *(equalCopy + 4))
   {
     if (![(NSData *)title isEqual:?])
     {
@@ -194,7 +194,7 @@
   }
 
   label = self->_label;
-  if (label | *(v4 + 3))
+  if (label | *(equalCopy + 3))
   {
     if (![(NSData *)label isEqual:?])
     {
@@ -202,10 +202,10 @@
     }
   }
 
-  v9 = (*(v4 + 44) & 1) == 0;
+  v9 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
 LABEL_12:
       v9 = 0;
@@ -214,13 +214,13 @@ LABEL_12:
 
     if (self->_centered)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_12;
     }
@@ -252,37 +252,37 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PKProtobufPaymentContentItem *)self setImageRequest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PKProtobufPaymentContentItem *)self setImage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PKProtobufPaymentContentItem *)self setTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufPaymentContentItem *)self setLabel:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[44])
+  if (fromCopy[44])
   {
-    self->_centered = v4[40];
+    self->_centered = fromCopy[40];
     *&self->_has |= 1u;
   }
 }

@@ -1,7 +1,7 @@
 @interface HMAutoAddWalletKeySupressionAssertion
-- (HMAutoAddWalletKeySupressionAssertion)initWithHomeManager:(id)a3 homeUUID:(id)a4;
+- (HMAutoAddWalletKeySupressionAssertion)initWithHomeManager:(id)manager homeUUID:(id)d;
 - (HMHomeManager)homeManager;
-- (void)acquireWithCompletion:(id)a3;
+- (void)acquireWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -20,29 +20,29 @@
   v17.receiver = self;
   v17.super_class = HMAutoAddWalletKeySupressionAssertion;
   [(HMFAssertion *)&v17 invalidate];
-  v3 = [(HMAutoAddWalletKeySupressionAssertion *)self homeManager];
-  if (v3)
+  homeManager = [(HMAutoAddWalletKeySupressionAssertion *)self homeManager];
+  if (homeManager)
   {
     v18 = @"HMHomeManagerMessageKeyHomeUUID";
-    v4 = [(HMAutoAddWalletKeySupressionAssertion *)self homeUUID];
-    v19 = v4;
+    homeUUID = [(HMAutoAddWalletKeySupressionAssertion *)self homeUUID];
+    v19 = homeUUID;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [v3 uuid];
-    v8 = [v6 initWithTarget:v7];
+    uuid = [homeManager uuid];
+    v8 = [v6 initWithTarget:uuid];
 
     v9 = [MEMORY[0x1E69A2A10] messageWithName:@"HMHomeManagerAutoAddWalletKeySupressionAssertionReleaseMessage" destination:v8 payload:v5];
     [v9 setResponseHandler:&__block_literal_global_61820];
-    v10 = [v3 context];
-    v11 = [v10 messageDispatcher];
-    [v11 sendMessage:v9];
+    context = [homeManager context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -100,42 +100,42 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acquireWithCompletion:(id)a3
+- (void)acquireWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAutoAddWalletKeySupressionAssertion *)self homeManager];
-  if (v5)
+  completionCopy = completion;
+  homeManager = [(HMAutoAddWalletKeySupressionAssertion *)self homeManager];
+  if (homeManager)
   {
     v25.receiver = self;
     v25.super_class = HMAutoAddWalletKeySupressionAssertion;
     [(HMFAssertion *)&v25 acquire:0];
     v26 = @"HMHomeManagerMessageKeyHomeUUID";
-    v6 = [(HMAutoAddWalletKeySupressionAssertion *)self homeUUID];
-    v27 = v6;
+    homeUUID = [(HMAutoAddWalletKeySupressionAssertion *)self homeUUID];
+    v27 = homeUUID;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
     v8 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v9 = [v5 uuid];
-    v10 = [v8 initWithTarget:v9];
+    uuid = [homeManager uuid];
+    v10 = [v8 initWithTarget:uuid];
 
     v11 = [MEMORY[0x1E69A2A10] messageWithName:@"HMHomeManagerAutoAddWalletKeySupressionAssertionAcquireMessage" destination:v10 payload:v7];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __63__HMAutoAddWalletKeySupressionAssertion_acquireWithCompletion___block_invoke;
     v22 = &unk_1E754DE00;
-    v23 = self;
-    v24 = v4;
+    selfCopy = self;
+    v24 = completionCopy;
     [v11 setResponseHandler:&v19];
-    v12 = [v5 context];
-    v13 = [v12 messageDispatcher];
-    [v13 sendMessage:v11];
+    context = [homeManager context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v11];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -147,7 +147,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v14);
     v7 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:2];
-    (*(v4 + 2))(v4, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -166,10 +166,10 @@ void __63__HMAutoAddWalletKeySupressionAssertion_acquireWithCompletion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (HMAutoAddWalletKeySupressionAssertion)initWithHomeManager:(id)a3 homeUUID:(id)a4
+- (HMAutoAddWalletKeySupressionAssertion)initWithHomeManager:(id)manager homeUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  dCopy = d;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v14.receiver = self;
@@ -178,8 +178,8 @@ void __63__HMAutoAddWalletKeySupressionAssertion_acquireWithCompletion___block_i
 
   if (v10)
   {
-    objc_storeWeak(&v10->_homeManager, v6);
-    v11 = [v7 copy];
+    objc_storeWeak(&v10->_homeManager, managerCopy);
+    v11 = [dCopy copy];
     homeUUID = v10->_homeUUID;
     v10->_homeUUID = v11;
   }

@@ -1,21 +1,21 @@
 @interface HKFeatureAvailabilityRequirementSomeRegionIsSupported
-- (id)isSatisfiedWithRegionAvailability:(id)a3 dataSource:(id)a4 error:(id *)a5;
+- (id)isSatisfiedWithRegionAvailability:(id)availability dataSource:(id)source error:(id *)error;
 - (id)requiredEntitlements;
 - (id)requirementDescription;
 @end
 
 @implementation HKFeatureAvailabilityRequirementSomeRegionIsSupported
 
-- (id)isSatisfiedWithRegionAvailability:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (id)isSatisfiedWithRegionAvailability:(id)availability dataSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 allowedCountries];
+  availabilityCopy = availability;
+  allowedCountries = [availabilityCopy allowedCountries];
 
-  if (v6)
+  if (allowedCountries)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [v5 allowedCountries];
-    v9 = [v7 numberWithBool:{objc_msgSend(v8, "someRegionIsSupported")}];
+    allowedCountries2 = [availabilityCopy allowedCountries];
+    v9 = [v7 numberWithBool:{objc_msgSend(allowedCountries2, "someRegionIsSupported")}];
   }
 
   else
@@ -29,8 +29,8 @@
 - (id)requirementDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self featureIdentifier];
-  v4 = [v2 stringWithFormat:@"At least one country must be supported for %@", v3];
+  featureIdentifier = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self featureIdentifier];
+  v4 = [v2 stringWithFormat:@"At least one country must be supported for %@", featureIdentifier];
 
   return v4;
 }
@@ -38,8 +38,8 @@
 - (id)requiredEntitlements
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self featureIdentifier];
-  v3 = [HKFeatureAvailabilityRequirementEntitlement featureAvailabilityReadEntitlementForFeatureIdentifier:v2];
+  featureIdentifier = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)self featureIdentifier];
+  v3 = [HKFeatureAvailabilityRequirementEntitlement featureAvailabilityReadEntitlementForFeatureIdentifier:featureIdentifier];
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 

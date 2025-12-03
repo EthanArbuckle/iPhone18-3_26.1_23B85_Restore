@@ -1,7 +1,7 @@
 @interface PHASEExternalStreamCollection
 - (NSUUID)uuid;
 - (PHASEExternalStreamCollection)init;
-- (PHASEExternalStreamCollection)initWithStreamType:(int64_t)a3 count:(unint64_t)a4;
+- (PHASEExternalStreamCollection)initWithStreamType:(int64_t)type count:(unint64_t)count;
 @end
 
 @implementation PHASEExternalStreamCollection
@@ -13,11 +13,11 @@
   return 0;
 }
 
-- (PHASEExternalStreamCollection)initWithStreamType:(int64_t)a3 count:(unint64_t)a4
+- (PHASEExternalStreamCollection)initWithStreamType:(int64_t)type count:(unint64_t)count
 {
-  v4 = self;
+  selfCopy = self;
   v20 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (count)
   {
     v13.receiver = self;
     v13.super_class = PHASEExternalStreamCollection;
@@ -25,14 +25,14 @@
     v8 = v7;
     if (v7)
     {
-      v7->_streamType = a3;
-      v7->_streamCount = a4;
+      v7->_streamType = type;
+      v7->_streamCount = count;
       uuid = v7->_uuid;
       v7->_uuid = 0;
     }
 
-    v4 = v8;
-    v10 = v4;
+    selfCopy = v8;
+    v10 = selfCopy;
   }
 
   else

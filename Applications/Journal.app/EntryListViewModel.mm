@@ -1,10 +1,10 @@
 @interface EntryListViewModel
-- (void)persistentStoresDidChange:(id)a3;
+- (void)persistentStoresDidChange:(id)change;
 @end
 
 @implementation EntryListViewModel
 
-- (void)persistentStoresDidChange:(id)a3
+- (void)persistentStoresDidChange:(id)change
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

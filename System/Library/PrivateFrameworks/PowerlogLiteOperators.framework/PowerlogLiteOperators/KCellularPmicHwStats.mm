@@ -1,45 +1,45 @@
 @interface KCellularPmicHwStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveDurMs:(BOOL)a3;
-- (void)setHasBctActiveDurMs:(BOOL)a3;
-- (void)setHasCdmaActiveDurMs:(BOOL)a3;
-- (void)setHasDbgActiveDurMs:(BOOL)a3;
-- (void)setHasDpuActiveDurMs:(BOOL)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasGsmActiveDurMs:(BOOL)a3;
-- (void)setHasGsmCa5ActiveDurMs:(BOOL)a3;
-- (void)setHasHighVoltActiveDurMs:(BOOL)a3;
-- (void)setHasHostActiveDurMs:(BOOL)a3;
-- (void)setHasHostCpuActiveDurMs:(BOOL)a3;
-- (void)setHasHostCpuSysActiveDurMs:(BOOL)a3;
-- (void)setHasIoActiveDurMs:(BOOL)a3;
-- (void)setHasLowVoltActiveDurMs:(BOOL)a3;
-- (void)setHasLteActiveDurMs:(BOOL)a3;
-- (void)setHasMidVoltActiveDurMs:(BOOL)a3;
-- (void)setHasPerActiveDurMs:(BOOL)a3;
-- (void)setHasPhyActiveDurMs:(BOOL)a3;
-- (void)setHasPhyNocActiveDurMs:(BOOL)a3;
-- (void)setHasRauActiveDurMs:(BOOL)a3;
-- (void)setHasRpcuActiveDurMs:(BOOL)a3;
-- (void)setHasSleepDurMs:(BOOL)a3;
-- (void)setHasSleepEntryCount:(BOOL)a3;
-- (void)setHasTdscdmaActiveDurMs:(BOOL)a3;
-- (void)setHasTpcuActiveDurMs:(BOOL)a3;
-- (void)setHasWcdmaActiveDurMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveDurMs:(BOOL)ms;
+- (void)setHasBctActiveDurMs:(BOOL)ms;
+- (void)setHasCdmaActiveDurMs:(BOOL)ms;
+- (void)setHasDbgActiveDurMs:(BOOL)ms;
+- (void)setHasDpuActiveDurMs:(BOOL)ms;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasGsmActiveDurMs:(BOOL)ms;
+- (void)setHasGsmCa5ActiveDurMs:(BOOL)ms;
+- (void)setHasHighVoltActiveDurMs:(BOOL)ms;
+- (void)setHasHostActiveDurMs:(BOOL)ms;
+- (void)setHasHostCpuActiveDurMs:(BOOL)ms;
+- (void)setHasHostCpuSysActiveDurMs:(BOOL)ms;
+- (void)setHasIoActiveDurMs:(BOOL)ms;
+- (void)setHasLowVoltActiveDurMs:(BOOL)ms;
+- (void)setHasLteActiveDurMs:(BOOL)ms;
+- (void)setHasMidVoltActiveDurMs:(BOOL)ms;
+- (void)setHasPerActiveDurMs:(BOOL)ms;
+- (void)setHasPhyActiveDurMs:(BOOL)ms;
+- (void)setHasPhyNocActiveDurMs:(BOOL)ms;
+- (void)setHasRauActiveDurMs:(BOOL)ms;
+- (void)setHasRpcuActiveDurMs:(BOOL)ms;
+- (void)setHasSleepDurMs:(BOOL)ms;
+- (void)setHasSleepEntryCount:(BOOL)count;
+- (void)setHasTdscdmaActiveDurMs:(BOOL)ms;
+- (void)setHasTpcuActiveDurMs:(BOOL)ms;
+- (void)setHasWcdmaActiveDurMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularPmicHwStats
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 64;
   }
@@ -52,9 +52,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasSleepDurMs:(BOOL)a3
+- (void)setHasSleepDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x400000;
   }
@@ -67,9 +67,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasActiveDurMs:(BOOL)a3
+- (void)setHasActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -82,9 +82,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasSleepEntryCount:(BOOL)a3
+- (void)setHasSleepEntryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x800000;
   }
@@ -97,9 +97,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasLowVoltActiveDurMs:(BOOL)a3
+- (void)setHasLowVoltActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x4000;
   }
@@ -112,9 +112,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasMidVoltActiveDurMs:(BOOL)a3
+- (void)setHasMidVoltActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x10000;
   }
@@ -127,9 +127,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasHighVoltActiveDurMs:(BOOL)a3
+- (void)setHasHighVoltActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 512;
   }
@@ -142,9 +142,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasGsmCa5ActiveDurMs:(BOOL)a3
+- (void)setHasGsmCa5ActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 256;
   }
@@ -157,9 +157,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasLteActiveDurMs:(BOOL)a3
+- (void)setHasLteActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x8000;
   }
@@ -172,9 +172,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasWcdmaActiveDurMs:(BOOL)a3
+- (void)setHasWcdmaActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x4000000;
   }
@@ -187,9 +187,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasTdscdmaActiveDurMs:(BOOL)a3
+- (void)setHasTdscdmaActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x1000000;
   }
@@ -202,9 +202,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasHostActiveDurMs:(BOOL)a3
+- (void)setHasHostActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 1024;
   }
@@ -217,9 +217,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasHostCpuSysActiveDurMs:(BOOL)a3
+- (void)setHasHostCpuSysActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4096;
   }
@@ -232,9 +232,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasHostCpuActiveDurMs:(BOOL)a3
+- (void)setHasHostCpuActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2048;
   }
@@ -247,9 +247,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasRpcuActiveDurMs:(BOOL)a3
+- (void)setHasRpcuActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x200000;
   }
@@ -262,9 +262,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasPhyActiveDurMs:(BOOL)a3
+- (void)setHasPhyActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x40000;
   }
@@ -277,9 +277,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasPhyNocActiveDurMs:(BOOL)a3
+- (void)setHasPhyNocActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x80000;
   }
@@ -292,9 +292,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasBctActiveDurMs:(BOOL)a3
+- (void)setHasBctActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -307,9 +307,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasCdmaActiveDurMs:(BOOL)a3
+- (void)setHasCdmaActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -322,9 +322,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasGsmActiveDurMs:(BOOL)a3
+- (void)setHasGsmActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 128;
   }
@@ -337,9 +337,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasTpcuActiveDurMs:(BOOL)a3
+- (void)setHasTpcuActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x2000000;
   }
@@ -352,9 +352,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasIoActiveDurMs:(BOOL)a3
+- (void)setHasIoActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x2000;
   }
@@ -367,9 +367,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasPerActiveDurMs:(BOOL)a3
+- (void)setHasPerActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x20000;
   }
@@ -382,9 +382,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasDbgActiveDurMs:(BOOL)a3
+- (void)setHasDbgActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -397,9 +397,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasDpuActiveDurMs:(BOOL)a3
+- (void)setHasDpuActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 32;
   }
@@ -412,9 +412,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasRauActiveDurMs:(BOOL)a3
+- (void)setHasRauActiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x100000;
   }
@@ -433,20 +433,20 @@
   v8.receiver = self;
   v8.super_class = KCellularPmicHwStats;
   v4 = [(KCellularPmicHwStats *)&v8 description];
-  v5 = [(KCellularPmicHwStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularPmicHwStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (*&has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((*&has & 0x40) == 0)
@@ -467,7 +467,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-  [v3 setObject:v8 forKey:@"duration_ms"];
+  [dictionary setObject:v8 forKey:@"duration_ms"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -483,7 +483,7 @@ LABEL_4:
 
 LABEL_34:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sleepDurMs];
-  [v3 setObject:v9 forKey:@"sleep_dur_ms"];
+  [dictionary setObject:v9 forKey:@"sleep_dur_ms"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -499,7 +499,7 @@ LABEL_5:
 
 LABEL_35:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_activeDurMs];
-  [v3 setObject:v10 forKey:@"active_dur_ms"];
+  [dictionary setObject:v10 forKey:@"active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -515,7 +515,7 @@ LABEL_6:
 
 LABEL_36:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sleepEntryCount];
-  [v3 setObject:v11 forKey:@"sleep_entry_count"];
+  [dictionary setObject:v11 forKey:@"sleep_entry_count"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -531,7 +531,7 @@ LABEL_7:
 
 LABEL_37:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lowVoltActiveDurMs];
-  [v3 setObject:v12 forKey:@"low_volt_active_dur_ms"];
+  [dictionary setObject:v12 forKey:@"low_volt_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -547,7 +547,7 @@ LABEL_8:
 
 LABEL_38:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_midVoltActiveDurMs];
-  [v3 setObject:v13 forKey:@"mid_volt_active_dur_ms"];
+  [dictionary setObject:v13 forKey:@"mid_volt_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -563,7 +563,7 @@ LABEL_9:
 
 LABEL_39:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_highVoltActiveDurMs];
-  [v3 setObject:v14 forKey:@"high_volt_active_dur_ms"];
+  [dictionary setObject:v14 forKey:@"high_volt_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -579,7 +579,7 @@ LABEL_10:
 
 LABEL_40:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_gsmCa5ActiveDurMs];
-  [v3 setObject:v15 forKey:@"gsm_ca5_active_dur_ms"];
+  [dictionary setObject:v15 forKey:@"gsm_ca5_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -595,7 +595,7 @@ LABEL_11:
 
 LABEL_41:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lteActiveDurMs];
-  [v3 setObject:v16 forKey:@"lte_active_dur_ms"];
+  [dictionary setObject:v16 forKey:@"lte_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -611,7 +611,7 @@ LABEL_12:
 
 LABEL_42:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_wcdmaActiveDurMs];
-  [v3 setObject:v17 forKey:@"wcdma_active_dur_ms"];
+  [dictionary setObject:v17 forKey:@"wcdma_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -627,7 +627,7 @@ LABEL_13:
 
 LABEL_43:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tdscdmaActiveDurMs];
-  [v3 setObject:v18 forKey:@"tdscdma_active_dur_ms"];
+  [dictionary setObject:v18 forKey:@"tdscdma_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -643,7 +643,7 @@ LABEL_14:
 
 LABEL_44:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_hostActiveDurMs];
-  [v3 setObject:v19 forKey:@"host_active_dur_ms"];
+  [dictionary setObject:v19 forKey:@"host_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -659,7 +659,7 @@ LABEL_15:
 
 LABEL_45:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_hostCpuSysActiveDurMs];
-  [v3 setObject:v20 forKey:@"host_cpu_sys_active_dur_ms"];
+  [dictionary setObject:v20 forKey:@"host_cpu_sys_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -675,7 +675,7 @@ LABEL_16:
 
 LABEL_46:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_hostCpuActiveDurMs];
-  [v3 setObject:v21 forKey:@"host_cpu_active_dur_ms"];
+  [dictionary setObject:v21 forKey:@"host_cpu_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -691,7 +691,7 @@ LABEL_17:
 
 LABEL_47:
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_rpcuActiveDurMs];
-  [v3 setObject:v22 forKey:@"rpcu_active_dur_ms"];
+  [dictionary setObject:v22 forKey:@"rpcu_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -707,7 +707,7 @@ LABEL_18:
 
 LABEL_48:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_phyActiveDurMs];
-  [v3 setObject:v23 forKey:@"phy_active_dur_ms"];
+  [dictionary setObject:v23 forKey:@"phy_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -723,7 +723,7 @@ LABEL_19:
 
 LABEL_49:
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_phyNocActiveDurMs];
-  [v3 setObject:v24 forKey:@"phy_noc_active_dur_ms"];
+  [dictionary setObject:v24 forKey:@"phy_noc_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -739,7 +739,7 @@ LABEL_20:
 
 LABEL_50:
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_bctActiveDurMs];
-  [v3 setObject:v25 forKey:@"bct_active_dur_ms"];
+  [dictionary setObject:v25 forKey:@"bct_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -755,7 +755,7 @@ LABEL_21:
 
 LABEL_51:
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_cdmaActiveDurMs];
-  [v3 setObject:v26 forKey:@"cdma_active_dur_ms"];
+  [dictionary setObject:v26 forKey:@"cdma_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -771,7 +771,7 @@ LABEL_22:
 
 LABEL_52:
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_gsmActiveDurMs];
-  [v3 setObject:v27 forKey:@"gsm_active_dur_ms"];
+  [dictionary setObject:v27 forKey:@"gsm_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -787,7 +787,7 @@ LABEL_23:
 
 LABEL_53:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tpcuActiveDurMs];
-  [v3 setObject:v28 forKey:@"tpcu_active_dur_ms"];
+  [dictionary setObject:v28 forKey:@"tpcu_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -803,7 +803,7 @@ LABEL_24:
 
 LABEL_54:
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ioActiveDurMs];
-  [v3 setObject:v29 forKey:@"io_active_dur_ms"];
+  [dictionary setObject:v29 forKey:@"io_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -819,7 +819,7 @@ LABEL_25:
 
 LABEL_55:
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_perActiveDurMs];
-  [v3 setObject:v30 forKey:@"per_active_dur_ms"];
+  [dictionary setObject:v30 forKey:@"per_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -835,7 +835,7 @@ LABEL_26:
 
 LABEL_56:
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_dbgActiveDurMs];
-  [v3 setObject:v31 forKey:@"dbg_active_dur_ms"];
+  [dictionary setObject:v31 forKey:@"dbg_active_dur_ms"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -851,23 +851,23 @@ LABEL_27:
 
 LABEL_57:
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_dpuActiveDurMs];
-  [v3 setObject:v32 forKey:@"dpu_active_dur_ms"];
+  [dictionary setObject:v32 forKey:@"dpu_active_dur_ms"];
 
   if ((*&self->_has & 0x100000) != 0)
   {
 LABEL_28:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_rauActiveDurMs];
-    [v3 setObject:v5 forKey:@"rau_active_dur_ms"];
+    [dictionary setObject:v5 forKey:@"rau_active_dur_ms"];
   }
 
 LABEL_29:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v32 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1263,14 +1263,14 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 30) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 30) |= 1u;
     has = self->_has;
     if ((*&has & 0x40) == 0)
     {
@@ -1289,8 +1289,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 9) = self->_durationMs;
-  *(v4 + 30) |= 0x40u;
+  *(toCopy + 9) = self->_durationMs;
+  *(toCopy + 30) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1304,8 +1304,8 @@ LABEL_4:
   }
 
 LABEL_34:
-  *(v4 + 25) = self->_sleepDurMs;
-  *(v4 + 30) |= 0x400000u;
+  *(toCopy + 25) = self->_sleepDurMs;
+  *(toCopy + 30) |= 0x400000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1319,8 +1319,8 @@ LABEL_5:
   }
 
 LABEL_35:
-  *(v4 + 4) = self->_activeDurMs;
-  *(v4 + 30) |= 2u;
+  *(toCopy + 4) = self->_activeDurMs;
+  *(toCopy + 30) |= 2u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1334,8 +1334,8 @@ LABEL_6:
   }
 
 LABEL_36:
-  *(v4 + 26) = self->_sleepEntryCount;
-  *(v4 + 30) |= 0x800000u;
+  *(toCopy + 26) = self->_sleepEntryCount;
+  *(toCopy + 30) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1349,8 +1349,8 @@ LABEL_7:
   }
 
 LABEL_37:
-  *(v4 + 17) = self->_lowVoltActiveDurMs;
-  *(v4 + 30) |= 0x4000u;
+  *(toCopy + 17) = self->_lowVoltActiveDurMs;
+  *(toCopy + 30) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1364,8 +1364,8 @@ LABEL_8:
   }
 
 LABEL_38:
-  *(v4 + 19) = self->_midVoltActiveDurMs;
-  *(v4 + 30) |= 0x10000u;
+  *(toCopy + 19) = self->_midVoltActiveDurMs;
+  *(toCopy + 30) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1379,8 +1379,8 @@ LABEL_9:
   }
 
 LABEL_39:
-  *(v4 + 12) = self->_highVoltActiveDurMs;
-  *(v4 + 30) |= 0x200u;
+  *(toCopy + 12) = self->_highVoltActiveDurMs;
+  *(toCopy + 30) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1394,8 +1394,8 @@ LABEL_10:
   }
 
 LABEL_40:
-  *(v4 + 11) = self->_gsmCa5ActiveDurMs;
-  *(v4 + 30) |= 0x100u;
+  *(toCopy + 11) = self->_gsmCa5ActiveDurMs;
+  *(toCopy + 30) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1409,8 +1409,8 @@ LABEL_11:
   }
 
 LABEL_41:
-  *(v4 + 18) = self->_lteActiveDurMs;
-  *(v4 + 30) |= 0x8000u;
+  *(toCopy + 18) = self->_lteActiveDurMs;
+  *(toCopy + 30) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1424,8 +1424,8 @@ LABEL_12:
   }
 
 LABEL_42:
-  *(v4 + 29) = self->_wcdmaActiveDurMs;
-  *(v4 + 30) |= 0x4000000u;
+  *(toCopy + 29) = self->_wcdmaActiveDurMs;
+  *(toCopy + 30) |= 0x4000000u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1439,8 +1439,8 @@ LABEL_13:
   }
 
 LABEL_43:
-  *(v4 + 27) = self->_tdscdmaActiveDurMs;
-  *(v4 + 30) |= 0x1000000u;
+  *(toCopy + 27) = self->_tdscdmaActiveDurMs;
+  *(toCopy + 30) |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1454,8 +1454,8 @@ LABEL_14:
   }
 
 LABEL_44:
-  *(v4 + 13) = self->_hostActiveDurMs;
-  *(v4 + 30) |= 0x400u;
+  *(toCopy + 13) = self->_hostActiveDurMs;
+  *(toCopy + 30) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1469,8 +1469,8 @@ LABEL_15:
   }
 
 LABEL_45:
-  *(v4 + 15) = self->_hostCpuSysActiveDurMs;
-  *(v4 + 30) |= 0x1000u;
+  *(toCopy + 15) = self->_hostCpuSysActiveDurMs;
+  *(toCopy + 30) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1484,8 +1484,8 @@ LABEL_16:
   }
 
 LABEL_46:
-  *(v4 + 14) = self->_hostCpuActiveDurMs;
-  *(v4 + 30) |= 0x800u;
+  *(toCopy + 14) = self->_hostCpuActiveDurMs;
+  *(toCopy + 30) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1499,8 +1499,8 @@ LABEL_17:
   }
 
 LABEL_47:
-  *(v4 + 24) = self->_rpcuActiveDurMs;
-  *(v4 + 30) |= 0x200000u;
+  *(toCopy + 24) = self->_rpcuActiveDurMs;
+  *(toCopy + 30) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1514,8 +1514,8 @@ LABEL_18:
   }
 
 LABEL_48:
-  *(v4 + 21) = self->_phyActiveDurMs;
-  *(v4 + 30) |= 0x40000u;
+  *(toCopy + 21) = self->_phyActiveDurMs;
+  *(toCopy + 30) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1529,8 +1529,8 @@ LABEL_19:
   }
 
 LABEL_49:
-  *(v4 + 22) = self->_phyNocActiveDurMs;
-  *(v4 + 30) |= 0x80000u;
+  *(toCopy + 22) = self->_phyNocActiveDurMs;
+  *(toCopy + 30) |= 0x80000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1544,8 +1544,8 @@ LABEL_20:
   }
 
 LABEL_50:
-  *(v4 + 5) = self->_bctActiveDurMs;
-  *(v4 + 30) |= 4u;
+  *(toCopy + 5) = self->_bctActiveDurMs;
+  *(toCopy + 30) |= 4u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1559,8 +1559,8 @@ LABEL_21:
   }
 
 LABEL_51:
-  *(v4 + 6) = self->_cdmaActiveDurMs;
-  *(v4 + 30) |= 8u;
+  *(toCopy + 6) = self->_cdmaActiveDurMs;
+  *(toCopy + 30) |= 8u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1574,8 +1574,8 @@ LABEL_22:
   }
 
 LABEL_52:
-  *(v4 + 10) = self->_gsmActiveDurMs;
-  *(v4 + 30) |= 0x80u;
+  *(toCopy + 10) = self->_gsmActiveDurMs;
+  *(toCopy + 30) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1589,8 +1589,8 @@ LABEL_23:
   }
 
 LABEL_53:
-  *(v4 + 28) = self->_tpcuActiveDurMs;
-  *(v4 + 30) |= 0x2000000u;
+  *(toCopy + 28) = self->_tpcuActiveDurMs;
+  *(toCopy + 30) |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1604,8 +1604,8 @@ LABEL_24:
   }
 
 LABEL_54:
-  *(v4 + 16) = self->_ioActiveDurMs;
-  *(v4 + 30) |= 0x2000u;
+  *(toCopy + 16) = self->_ioActiveDurMs;
+  *(toCopy + 30) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1619,8 +1619,8 @@ LABEL_25:
   }
 
 LABEL_55:
-  *(v4 + 20) = self->_perActiveDurMs;
-  *(v4 + 30) |= 0x20000u;
+  *(toCopy + 20) = self->_perActiveDurMs;
+  *(toCopy + 30) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1634,8 +1634,8 @@ LABEL_26:
   }
 
 LABEL_56:
-  *(v4 + 7) = self->_dbgActiveDurMs;
-  *(v4 + 30) |= 0x10u;
+  *(toCopy + 7) = self->_dbgActiveDurMs;
+  *(toCopy + 30) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1649,21 +1649,21 @@ LABEL_27:
   }
 
 LABEL_57:
-  *(v4 + 8) = self->_dpuActiveDurMs;
-  *(v4 + 30) |= 0x20u;
+  *(toCopy + 8) = self->_dpuActiveDurMs;
+  *(toCopy + 30) |= 0x20u;
   if ((*&self->_has & 0x100000) != 0)
   {
 LABEL_28:
-    *(v4 + 23) = self->_rauActiveDurMs;
-    *(v4 + 30) |= 0x100000u;
+    *(toCopy + 23) = self->_rauActiveDurMs;
+    *(toCopy + 30) |= 0x100000u;
   }
 
 LABEL_29:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (*&has)
   {
@@ -2060,19 +2060,19 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_137;
   }
 
   has = self->_has;
-  v6 = *(v4 + 30);
+  v6 = *(equalCopy + 30);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_137;
     }
@@ -2087,7 +2087,7 @@ LABEL_137:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_durationMs != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_durationMs != *(equalCopy + 9))
     {
       goto LABEL_137;
     }
@@ -2100,7 +2100,7 @@ LABEL_137:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_sleepDurMs != *(v4 + 25))
+    if ((v6 & 0x400000) == 0 || self->_sleepDurMs != *(equalCopy + 25))
     {
       goto LABEL_137;
     }
@@ -2113,7 +2113,7 @@ LABEL_137:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_activeDurMs != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_activeDurMs != *(equalCopy + 4))
     {
       goto LABEL_137;
     }
@@ -2126,7 +2126,7 @@ LABEL_137:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_sleepEntryCount != *(v4 + 26))
+    if ((v6 & 0x800000) == 0 || self->_sleepEntryCount != *(equalCopy + 26))
     {
       goto LABEL_137;
     }
@@ -2139,7 +2139,7 @@ LABEL_137:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_lowVoltActiveDurMs != *(v4 + 17))
+    if ((v6 & 0x4000) == 0 || self->_lowVoltActiveDurMs != *(equalCopy + 17))
     {
       goto LABEL_137;
     }
@@ -2152,7 +2152,7 @@ LABEL_137:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_midVoltActiveDurMs != *(v4 + 19))
+    if ((v6 & 0x10000) == 0 || self->_midVoltActiveDurMs != *(equalCopy + 19))
     {
       goto LABEL_137;
     }
@@ -2165,7 +2165,7 @@ LABEL_137:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_highVoltActiveDurMs != *(v4 + 12))
+    if ((v6 & 0x200) == 0 || self->_highVoltActiveDurMs != *(equalCopy + 12))
     {
       goto LABEL_137;
     }
@@ -2178,7 +2178,7 @@ LABEL_137:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_gsmCa5ActiveDurMs != *(v4 + 11))
+    if ((v6 & 0x100) == 0 || self->_gsmCa5ActiveDurMs != *(equalCopy + 11))
     {
       goto LABEL_137;
     }
@@ -2191,7 +2191,7 @@ LABEL_137:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_lteActiveDurMs != *(v4 + 18))
+    if ((v6 & 0x8000) == 0 || self->_lteActiveDurMs != *(equalCopy + 18))
     {
       goto LABEL_137;
     }
@@ -2204,7 +2204,7 @@ LABEL_137:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_wcdmaActiveDurMs != *(v4 + 29))
+    if ((v6 & 0x4000000) == 0 || self->_wcdmaActiveDurMs != *(equalCopy + 29))
     {
       goto LABEL_137;
     }
@@ -2217,7 +2217,7 @@ LABEL_137:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_tdscdmaActiveDurMs != *(v4 + 27))
+    if ((v6 & 0x1000000) == 0 || self->_tdscdmaActiveDurMs != *(equalCopy + 27))
     {
       goto LABEL_137;
     }
@@ -2230,7 +2230,7 @@ LABEL_137:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_hostActiveDurMs != *(v4 + 13))
+    if ((v6 & 0x400) == 0 || self->_hostActiveDurMs != *(equalCopy + 13))
     {
       goto LABEL_137;
     }
@@ -2243,7 +2243,7 @@ LABEL_137:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_hostCpuSysActiveDurMs != *(v4 + 15))
+    if ((v6 & 0x1000) == 0 || self->_hostCpuSysActiveDurMs != *(equalCopy + 15))
     {
       goto LABEL_137;
     }
@@ -2256,7 +2256,7 @@ LABEL_137:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_hostCpuActiveDurMs != *(v4 + 14))
+    if ((v6 & 0x800) == 0 || self->_hostCpuActiveDurMs != *(equalCopy + 14))
     {
       goto LABEL_137;
     }
@@ -2269,7 +2269,7 @@ LABEL_137:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_rpcuActiveDurMs != *(v4 + 24))
+    if ((v6 & 0x200000) == 0 || self->_rpcuActiveDurMs != *(equalCopy + 24))
     {
       goto LABEL_137;
     }
@@ -2282,7 +2282,7 @@ LABEL_137:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_phyActiveDurMs != *(v4 + 21))
+    if ((v6 & 0x40000) == 0 || self->_phyActiveDurMs != *(equalCopy + 21))
     {
       goto LABEL_137;
     }
@@ -2295,7 +2295,7 @@ LABEL_137:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_phyNocActiveDurMs != *(v4 + 22))
+    if ((v6 & 0x80000) == 0 || self->_phyNocActiveDurMs != *(equalCopy + 22))
     {
       goto LABEL_137;
     }
@@ -2308,7 +2308,7 @@ LABEL_137:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_bctActiveDurMs != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_bctActiveDurMs != *(equalCopy + 5))
     {
       goto LABEL_137;
     }
@@ -2321,7 +2321,7 @@ LABEL_137:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_cdmaActiveDurMs != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_cdmaActiveDurMs != *(equalCopy + 6))
     {
       goto LABEL_137;
     }
@@ -2334,7 +2334,7 @@ LABEL_137:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_gsmActiveDurMs != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_gsmActiveDurMs != *(equalCopy + 10))
     {
       goto LABEL_137;
     }
@@ -2347,7 +2347,7 @@ LABEL_137:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_tpcuActiveDurMs != *(v4 + 28))
+    if ((v6 & 0x2000000) == 0 || self->_tpcuActiveDurMs != *(equalCopy + 28))
     {
       goto LABEL_137;
     }
@@ -2360,7 +2360,7 @@ LABEL_137:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_ioActiveDurMs != *(v4 + 16))
+    if ((v6 & 0x2000) == 0 || self->_ioActiveDurMs != *(equalCopy + 16))
     {
       goto LABEL_137;
     }
@@ -2373,7 +2373,7 @@ LABEL_137:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_perActiveDurMs != *(v4 + 20))
+    if ((v6 & 0x20000) == 0 || self->_perActiveDurMs != *(equalCopy + 20))
     {
       goto LABEL_137;
     }
@@ -2386,7 +2386,7 @@ LABEL_137:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_dbgActiveDurMs != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_dbgActiveDurMs != *(equalCopy + 7))
     {
       goto LABEL_137;
     }
@@ -2399,7 +2399,7 @@ LABEL_137:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_dpuActiveDurMs != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_dpuActiveDurMs != *(equalCopy + 8))
     {
       goto LABEL_137;
     }
@@ -2412,7 +2412,7 @@ LABEL_137:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_rauActiveDurMs != *(v4 + 23))
+    if ((v6 & 0x100000) == 0 || self->_rauActiveDurMs != *(equalCopy + 23))
     {
       goto LABEL_137;
     }
@@ -2801,15 +2801,15 @@ LABEL_44:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 30);
+  fromCopy = from;
+  v5 = *(fromCopy + 30);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 30);
+    v5 = *(fromCopy + 30);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -2827,9 +2827,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_durationMs = *(v4 + 9);
+  self->_durationMs = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_4:
@@ -2842,9 +2842,9 @@ LABEL_4:
   }
 
 LABEL_34:
-  self->_sleepDurMs = *(v4 + 25);
+  self->_sleepDurMs = *(fromCopy + 25);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -2857,9 +2857,9 @@ LABEL_5:
   }
 
 LABEL_35:
-  self->_activeDurMs = *(v4 + 4);
+  self->_activeDurMs = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_6:
@@ -2872,9 +2872,9 @@ LABEL_6:
   }
 
 LABEL_36:
-  self->_sleepEntryCount = *(v4 + 26);
+  self->_sleepEntryCount = *(fromCopy + 26);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_7:
@@ -2887,9 +2887,9 @@ LABEL_7:
   }
 
 LABEL_37:
-  self->_lowVoltActiveDurMs = *(v4 + 17);
+  self->_lowVoltActiveDurMs = *(fromCopy + 17);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_8:
@@ -2902,9 +2902,9 @@ LABEL_8:
   }
 
 LABEL_38:
-  self->_midVoltActiveDurMs = *(v4 + 19);
+  self->_midVoltActiveDurMs = *(fromCopy + 19);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -2917,9 +2917,9 @@ LABEL_9:
   }
 
 LABEL_39:
-  self->_highVoltActiveDurMs = *(v4 + 12);
+  self->_highVoltActiveDurMs = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x100) == 0)
   {
 LABEL_10:
@@ -2932,9 +2932,9 @@ LABEL_10:
   }
 
 LABEL_40:
-  self->_gsmCa5ActiveDurMs = *(v4 + 11);
+  self->_gsmCa5ActiveDurMs = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_11:
@@ -2947,9 +2947,9 @@ LABEL_11:
   }
 
 LABEL_41:
-  self->_lteActiveDurMs = *(v4 + 18);
+  self->_lteActiveDurMs = *(fromCopy + 18);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_12:
@@ -2962,9 +2962,9 @@ LABEL_12:
   }
 
 LABEL_42:
-  self->_wcdmaActiveDurMs = *(v4 + 29);
+  self->_wcdmaActiveDurMs = *(fromCopy + 29);
   *&self->_has |= 0x4000000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_13:
@@ -2977,9 +2977,9 @@ LABEL_13:
   }
 
 LABEL_43:
-  self->_tdscdmaActiveDurMs = *(v4 + 27);
+  self->_tdscdmaActiveDurMs = *(fromCopy + 27);
   *&self->_has |= 0x1000000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x400) == 0)
   {
 LABEL_14:
@@ -2992,9 +2992,9 @@ LABEL_14:
   }
 
 LABEL_44:
-  self->_hostActiveDurMs = *(v4 + 13);
+  self->_hostActiveDurMs = *(fromCopy + 13);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_15:
@@ -3007,9 +3007,9 @@ LABEL_15:
   }
 
 LABEL_45:
-  self->_hostCpuSysActiveDurMs = *(v4 + 15);
+  self->_hostCpuSysActiveDurMs = *(fromCopy + 15);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x800) == 0)
   {
 LABEL_16:
@@ -3022,9 +3022,9 @@ LABEL_16:
   }
 
 LABEL_46:
-  self->_hostCpuActiveDurMs = *(v4 + 14);
+  self->_hostCpuActiveDurMs = *(fromCopy + 14);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_17:
@@ -3037,9 +3037,9 @@ LABEL_17:
   }
 
 LABEL_47:
-  self->_rpcuActiveDurMs = *(v4 + 24);
+  self->_rpcuActiveDurMs = *(fromCopy + 24);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_18:
@@ -3052,9 +3052,9 @@ LABEL_18:
   }
 
 LABEL_48:
-  self->_phyActiveDurMs = *(v4 + 21);
+  self->_phyActiveDurMs = *(fromCopy + 21);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_19:
@@ -3067,9 +3067,9 @@ LABEL_19:
   }
 
 LABEL_49:
-  self->_phyNocActiveDurMs = *(v4 + 22);
+  self->_phyNocActiveDurMs = *(fromCopy + 22);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 4) == 0)
   {
 LABEL_20:
@@ -3082,9 +3082,9 @@ LABEL_20:
   }
 
 LABEL_50:
-  self->_bctActiveDurMs = *(v4 + 5);
+  self->_bctActiveDurMs = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 8) == 0)
   {
 LABEL_21:
@@ -3097,9 +3097,9 @@ LABEL_21:
   }
 
 LABEL_51:
-  self->_cdmaActiveDurMs = *(v4 + 6);
+  self->_cdmaActiveDurMs = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x80) == 0)
   {
 LABEL_22:
@@ -3112,9 +3112,9 @@ LABEL_22:
   }
 
 LABEL_52:
-  self->_gsmActiveDurMs = *(v4 + 10);
+  self->_gsmActiveDurMs = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_23:
@@ -3127,9 +3127,9 @@ LABEL_23:
   }
 
 LABEL_53:
-  self->_tpcuActiveDurMs = *(v4 + 28);
+  self->_tpcuActiveDurMs = *(fromCopy + 28);
   *&self->_has |= 0x2000000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_24:
@@ -3142,9 +3142,9 @@ LABEL_24:
   }
 
 LABEL_54:
-  self->_ioActiveDurMs = *(v4 + 16);
+  self->_ioActiveDurMs = *(fromCopy + 16);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_25:
@@ -3157,9 +3157,9 @@ LABEL_25:
   }
 
 LABEL_55:
-  self->_perActiveDurMs = *(v4 + 20);
+  self->_perActiveDurMs = *(fromCopy + 20);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x10) == 0)
   {
 LABEL_26:
@@ -3172,9 +3172,9 @@ LABEL_26:
   }
 
 LABEL_56:
-  self->_dbgActiveDurMs = *(v4 + 7);
+  self->_dbgActiveDurMs = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x20) == 0)
   {
 LABEL_27:
@@ -3187,12 +3187,12 @@ LABEL_27:
   }
 
 LABEL_57:
-  self->_dpuActiveDurMs = *(v4 + 8);
+  self->_dpuActiveDurMs = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 30) & 0x100000) != 0)
+  if ((*(fromCopy + 30) & 0x100000) != 0)
   {
 LABEL_28:
-    self->_rauActiveDurMs = *(v4 + 23);
+    self->_rauActiveDurMs = *(fromCopy + 23);
     *&self->_has |= 0x100000u;
   }
 

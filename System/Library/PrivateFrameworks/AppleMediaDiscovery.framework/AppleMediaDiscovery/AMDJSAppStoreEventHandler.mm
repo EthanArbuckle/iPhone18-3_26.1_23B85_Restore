@@ -1,17 +1,17 @@
 @interface AMDJSAppStoreEventHandler
-+ (id)handleAggregatedAppStoreEvent:(id)a3 error:(id *)a4;
++ (id)handleAggregatedAppStoreEvent:(id)event error:(id *)error;
 @end
 
 @implementation AMDJSAppStoreEventHandler
 
-+ (id)handleAggregatedAppStoreEvent:(id)a3 error:(id *)a4
++ (id)handleAggregatedAppStoreEvent:(id)event error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v48 = a4;
+  objc_storeStrong(location, event);
+  errorCopy = error;
   v47 = 0;
   v46 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v45 = [location[0] objectForKey:@"events"];
@@ -64,19 +64,19 @@
                 v36 = *(v35[1] + 8 * v20);
                 v34 = [v38 mutableCopy];
                 [v34 setObject:v36 forKey:0x2852AB308];
-                v47 += [AMDAppStoreEvent saveEvent:v34 forUser:v43 error:v48];
-                if (*v48 && !v41)
+                v47 += [AMDAppStoreEvent saveEvent:v34 forUser:v43 error:errorCopy];
+                if (*errorCopy && !v41)
                 {
                   v16 = MEMORY[0x277CCACA8];
-                  v17 = [*v48 localizedDescription];
-                  v8 = [v16 stringWithFormat:@"Error saving an event: %@", v17];
+                  localizedDescription = [*errorCopy localizedDescription];
+                  v8 = [v16 stringWithFormat:@"Error saving an event: %@", localizedDescription];
                   v9 = v41;
                   v41 = v8;
                   MEMORY[0x277D82BD8](v9);
-                  MEMORY[0x277D82BD8](v17);
+                  MEMORY[0x277D82BD8](localizedDescription);
                 }
 
-                *v48 = 0;
+                *errorCopy = 0;
                 objc_storeStrong(&v34, 0);
                 ++v20;
                 if (v18 + 1 >= v21)
@@ -136,7 +136,7 @@
         objc_storeStrong(&oslog, 0);
         v15 = [AMDError allocError:15 withMessage:v41];
         v10 = v15;
-        *v48 = v15;
+        *errorCopy = v15;
         v50 = 0;
         v44 = 1;
       }
@@ -159,7 +159,7 @@
     {
       v30 = [AMDError allocError:0 withMessage:@"Not a list of AppStore events"];
       v5 = v30;
-      *v48 = v30;
+      *errorCopy = v30;
       v50 = 0;
       v44 = 1;
     }
@@ -171,7 +171,7 @@
   {
     v31 = [AMDError allocError:0 withMessage:@"Array of appstore events is not present."];
     v4 = v31;
-    *v48 = v31;
+    *errorCopy = v31;
     v50 = 0;
     v44 = 1;
   }

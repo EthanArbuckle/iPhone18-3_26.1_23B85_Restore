@@ -1,18 +1,18 @@
 @interface HMDPrimaryResidentDiscoveryManager
 + (id)logCategory;
-- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)a3;
-- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)a3 dataSource:(id)a4;
+- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)queue;
+- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)queue dataSource:(id)source;
 - (HMDPrimaryResidentDiscoveryManagerDelegate)delegate;
 - (void)_discoverPrimaryResident;
-- (void)_handleDeviceMonitorReachableNotification:(id)a3;
+- (void)_handleDeviceMonitorReachableNotification:(id)notification;
 - (void)_removeRetryTimer;
 - (void)_startRetryTimer;
 - (void)cancel;
-- (void)completedDiscoveryWithPrimaryResident:(id)a3 primaryResidentGenerationID:(id)a4 error:(id)a5;
-- (void)configureWithContext:(id)a3;
+- (void)completedDiscoveryWithPrimaryResident:(id)resident primaryResidentGenerationID:(id)d error:(id)error;
+- (void)configureWithContext:(id)context;
 - (void)discoverPrimaryResident;
 - (void)sendCheckForResidentsInHomeNotification;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDPrimaryResidentDiscoveryManager
@@ -46,10 +46,10 @@ uint64_t __62__HMDPrimaryResidentDiscoveryManager__discoverPrimaryResident__bloc
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   if (self)
   {
     Property = objc_getProperty(self, v4, 56, 1);
@@ -60,10 +60,10 @@ uint64_t __62__HMDPrimaryResidentDiscoveryManager__discoverPrimaryResident__bloc
     Property = 0;
   }
 
-  if (Property == v5)
+  if (Property == fireCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -74,13 +74,13 @@ uint64_t __62__HMDPrimaryResidentDiscoveryManager__discoverPrimaryResident__bloc
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDPrimaryResidentDiscoveryManager *)v8 _discoverPrimaryResident];
+    [(HMDPrimaryResidentDiscoveryManager *)selfCopy _discoverPrimaryResident];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeviceMonitorReachableNotification:(id)a3
+- (void)_handleDeviceMonitorReachableNotification:(id)notification
 {
   if (self)
   {
@@ -172,28 +172,28 @@ void __80__HMDPrimaryResidentDiscoveryManager__handleDeviceMonitorReachableNotif
 
 - (void)_startRetryTimer
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     if (objc_getProperty(self, a2, 56, 1))
     {
 LABEL_7:
-      Property = objc_getProperty(v2, v3, 56, 1);
+      Property = objc_getProperty(selfCopy, v3, 56, 1);
       goto LABEL_8;
     }
 
-    self = v2->_dataSource;
+    self = selfCopy->_dataSource;
   }
 
-  v4 = [(HMDPrimaryResidentDiscoveryManager *)self createBackoffTimer];
-  v6 = v4;
-  if (v2)
+  createBackoffTimer = [(HMDPrimaryResidentDiscoveryManager *)self createBackoffTimer];
+  v6 = createBackoffTimer;
+  if (selfCopy)
   {
-    objc_setProperty_atomic(v2, v5, v4, 56);
+    objc_setProperty_atomic(selfCopy, v5, createBackoffTimer, 56);
 
-    [objc_getProperty(v2 v7];
-    v8 = v2->_queue;
-    v10 = objc_getProperty(v2, v9, 56, 1);
+    [objc_getProperty(selfCopy v7];
+    v8 = selfCopy->_queue;
+    v10 = objc_getProperty(selfCopy, v9, 56, 1);
   }
 
   else
@@ -206,7 +206,7 @@ LABEL_7:
 
   [v10 setDelegateQueue:v8];
 
-  if (v2)
+  if (selfCopy)
   {
     goto LABEL_7;
   }
@@ -217,14 +217,14 @@ LABEL_8:
   [Property resume];
 }
 
-- (void)completedDiscoveryWithPrimaryResident:(id)a3 primaryResidentGenerationID:(id)a4 error:(id)a5
+- (void)completedDiscoveryWithPrimaryResident:(id)resident primaryResidentGenerationID:(id)d error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  dCopy = d;
+  residentCopy = resident;
   [(HMDPrimaryResidentDiscoveryManager *)self _removeRetryTimer];
-  v11 = [(HMDPrimaryResidentDiscoveryManager *)self delegate];
-  [v11 discoveryManager:self didCompleteDiscoveryWithPrimaryResidentDevice:v10 primaryResidentGenerationID:v9 error:v8];
+  delegate = [(HMDPrimaryResidentDiscoveryManager *)self delegate];
+  [delegate discoveryManager:self didCompleteDiscoveryWithPrimaryResidentDevice:residentCopy primaryResidentGenerationID:dCopy error:errorCopy];
 }
 
 - (void)sendCheckForResidentsInHomeNotification
@@ -240,11 +240,11 @@ LABEL_8:
     WeakRetained = 0;
   }
 
-  v4 = [WeakRetained home];
-  if (v4)
+  home = [WeakRetained home];
+  if (home)
   {
-    v5 = [WeakRetained availableResidentDevices];
-    v6 = [v5 count];
+    availableResidentDevices = [WeakRetained availableResidentDevices];
+    v6 = [availableResidentDevices count];
 
     if (v6)
     {
@@ -259,19 +259,19 @@ LABEL_8:
       }
 
       v8 = dataSource;
-      v9 = [(HMDPrimaryResidentDiscoveryManagerDataSource *)v8 notificationCenter];
-      v10 = [v4 uuid];
-      v11 = [v10 UUIDString];
-      v19 = v11;
+      notificationCenter = [(HMDPrimaryResidentDiscoveryManagerDataSource *)v8 notificationCenter];
+      uuid = [home uuid];
+      uUIDString = [uuid UUIDString];
+      v19 = uUIDString;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-      [v9 postNotificationName:@"HMDPrimaryResidentDiscoveryFindResidentsNotification" object:0 userInfo:v12];
+      [notificationCenter postNotificationName:@"HMDPrimaryResidentDiscoveryFindResidentsNotification" object:0 userInfo:v12];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -304,11 +304,11 @@ LABEL_8:
     {
       v6 = WeakRetained;
       [objc_getProperty(self v5];
-      v7 = [v6 home];
-      v8 = [v7 homeManager];
+      home = [v6 home];
+      homeManager = [home homeManager];
 
-      v9 = [v8 currentAccessorySetupMetricDispatcher];
-      [v9 markSetupBeginStage:14 error:0];
+      currentAccessorySetupMetricDispatcher = [homeManager currentAccessorySetupMetricDispatcher];
+      [currentAccessorySetupMetricDispatcher markSetupBeginStage:14 error:0];
 
       v10 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:self->_queue];
       v11 = self->_dataSource;
@@ -342,7 +342,7 @@ LABEL_8:
       v19 = [v18 inContext:v10 then:v35 orRecover:v34];
 
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -353,7 +353,7 @@ LABEL_8:
       }
 
       objc_autoreleasePoolPop(v20);
-      objc_initWeak(buf, v21);
+      objc_initWeak(buf, selfCopy);
       v24 = self->_dataSource;
       v25 = [(HMDPrimaryResidentDiscoveryManagerDataSource *)v24 transportStartFutureFromContext:v6];
       v32[0] = MEMORY[0x277D85DD0];
@@ -372,7 +372,7 @@ LABEL_11:
 
 LABEL_8:
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -384,7 +384,7 @@ LABEL_8:
 
     objc_autoreleasePoolPop(v27);
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [(HMDPrimaryResidentDiscoveryManager *)v28 completedDiscoveryWithPrimaryResident:0 primaryResidentGenerationID:0 error:v6];
+    [(HMDPrimaryResidentDiscoveryManager *)selfCopy2 completedDiscoveryWithPrimaryResident:0 primaryResidentGenerationID:0 error:v6];
     goto LABEL_11;
   }
 
@@ -592,7 +592,7 @@ uint64_t __62__HMDPrimaryResidentDiscoveryManager__discoverPrimaryResident__bloc
     if (objc_getProperty(self, v3, 48, 1))
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -603,7 +603,7 @@ uint64_t __62__HMDPrimaryResidentDiscoveryManager__discoverPrimaryResident__bloc
       }
 
       objc_autoreleasePoolPop(v5);
-      [objc_getProperty(v6 v9];
+      [objc_getProperty(selfCopy v9];
       goto LABEL_6;
     }
 
@@ -629,7 +629,7 @@ LABEL_6:
 
 - (void)discoverPrimaryResident
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_queue;
@@ -637,51 +637,51 @@ LABEL_6:
 
   dispatch_assert_queue_V2(&self->super);
 
-  [(HMDPrimaryResidentDiscoveryManager *)v2 _discoverPrimaryResident];
+  [(HMDPrimaryResidentDiscoveryManager *)selfCopy _discoverPrimaryResident];
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
-  v4 = a3;
-  objc_storeWeak(&self->_context, v4);
-  v5 = [v4 home];
-  v6 = [v5 uuid];
-  v7 = [v6 UUIDString];
+  contextCopy = context;
+  objc_storeWeak(&self->_context, contextCopy);
+  home = [contextCopy home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
   logIdentifier = self->_logIdentifier;
-  self->_logIdentifier = v7;
+  self->_logIdentifier = uUIDString;
 
-  v11 = [(HMDPrimaryResidentDiscoveryManagerDataSource *)self->_dataSource remoteDeviceMonitorFromContext:v4];
+  v11 = [(HMDPrimaryResidentDiscoveryManagerDataSource *)self->_dataSource remoteDeviceMonitorFromContext:contextCopy];
 
   v9 = self->_dataSource;
-  v10 = [(HMDPrimaryResidentDiscoveryManagerDataSource *)v9 notificationCenter];
-  [v10 addObserver:self selector:sel__handleDeviceMonitorReachableNotification_ name:@"HMDRemoteDeviceMonitorReachableNotification" object:v11];
+  notificationCenter = [(HMDPrimaryResidentDiscoveryManagerDataSource *)v9 notificationCenter];
+  [notificationCenter addObserver:self selector:sel__handleDeviceMonitorReachableNotification_ name:@"HMDRemoteDeviceMonitorReachableNotification" object:v11];
 }
 
-- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)a3 dataSource:(id)a4
+- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)queue dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = HMDPrimaryResidentDiscoveryManager;
   v9 = [(HMDPrimaryResidentDiscoveryManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     logIdentifier = v10->_logIdentifier;
     v10->_logIdentifier = @"<unconfigured>";
 
-    objc_storeStrong(&v10->_dataSource, a4);
+    objc_storeStrong(&v10->_dataSource, source);
   }
 
   return v10;
 }
 
-- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)a3
+- (HMDPrimaryResidentDiscoveryManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(HMDPrimaryResidentDiscoveryManagerDefaultDataSource);
-  v6 = [(HMDPrimaryResidentDiscoveryManager *)self initWithQueue:v4 dataSource:v5];
+  v6 = [(HMDPrimaryResidentDiscoveryManager *)self initWithQueue:queueCopy dataSource:v5];
 
   return v6;
 }

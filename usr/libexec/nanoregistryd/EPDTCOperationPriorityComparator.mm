@@ -1,10 +1,10 @@
 @interface EPDTCOperationPriorityComparator
-+ (BOOL)shouldAcceptNewTransaction:(id)a3 intoSet:(id)a4;
-+ (BOOL)shouldCancelRunningTransaction:(id)a3 newTransaction:(id)a4 pairingID:(id)a5;
++ (BOOL)shouldAcceptNewTransaction:(id)transaction intoSet:(id)set;
++ (BOOL)shouldCancelRunningTransaction:(id)transaction newTransaction:(id)newTransaction pairingID:(id)d;
 + (id)rankTable;
-+ (id)sortedTransactionsWithSet:(id)a3 pairingID:(id)a4;
-+ (int64_t)compare:(id)a3 to:(id)a4 withActivePairingID:(id)a5;
-+ (unint64_t)statusCodeForContainer:(id)a3;
++ (id)sortedTransactionsWithSet:(id)set pairingID:(id)d;
++ (int64_t)compare:(id)compare to:(id)to withActivePairingID:(id)d;
++ (unint64_t)statusCodeForContainer:(id)container;
 @end
 
 @implementation EPDTCOperationPriorityComparator
@@ -21,16 +21,16 @@
   return v3;
 }
 
-+ (int64_t)compare:(id)a3 to:(id)a4 withActivePairingID:(id)a5
++ (int64_t)compare:(id)compare to:(id)to withActivePairingID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 operationType];
-  if ([v12 isEqual:@"reunionSync"])
+  compareCopy = compare;
+  toCopy = to;
+  dCopy = d;
+  operationType = [compareCopy operationType];
+  if ([operationType isEqual:@"reunionSync"])
   {
-    v5 = [v10 operationType];
-    v13 = [v5 isEqual:@"reunionSync"];
+    operationType2 = [toCopy operationType];
+    v13 = [operationType2 isEqual:@"reunionSync"];
 
     if (!v13)
     {
@@ -42,15 +42,15 @@
   {
   }
 
-  v14 = [v9 operationType];
-  if ([v14 isEqual:@"reunionSync"])
+  operationType3 = [compareCopy operationType];
+  if ([operationType3 isEqual:@"reunionSync"])
   {
   }
 
   else
   {
-    v5 = [v10 operationType];
-    v15 = [v5 isEqual:@"reunionSync"];
+    operationType2 = [toCopy operationType];
+    v15 = [operationType2 isEqual:@"reunionSync"];
 
     if (v15)
     {
@@ -60,11 +60,11 @@ LABEL_24:
     }
   }
 
-  v16 = [v9 operationType];
-  if ([v16 isEqual:@"reunionSync"])
+  operationType4 = [compareCopy operationType];
+  if ([operationType4 isEqual:@"reunionSync"])
   {
-    v5 = [v10 operationType];
-    v17 = [v5 isEqual:@"reunionSync"];
+    operationType2 = [toCopy operationType];
+    v17 = [operationType2 isEqual:@"reunionSync"];
 
     if (v17)
     {
@@ -77,11 +77,11 @@ LABEL_24:
   {
   }
 
-  v19 = [v9 targetPairingID];
-  if (v19)
+  targetPairingID = [compareCopy targetPairingID];
+  if (targetPairingID)
   {
-    v5 = [v9 targetPairingID];
-    if ([v5 isEqual:v11])
+    operationType2 = [compareCopy targetPairingID];
+    if ([operationType2 isEqual:dCopy])
     {
       v20 = 1;
 LABEL_16:
@@ -90,28 +90,28 @@ LABEL_16:
     }
   }
 
-  v21 = [v9 targetPairingID];
-  v20 = v21 == 0;
+  targetPairingID2 = [compareCopy targetPairingID];
+  v20 = targetPairingID2 == 0;
 
-  if (v19)
+  if (targetPairingID)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
 
-  v22 = [v10 targetPairingID];
-  if (v22 && ([v10 targetPairingID], v5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v5, "isEqual:", v11) & 1) != 0))
+  targetPairingID3 = [toCopy targetPairingID];
+  if (targetPairingID3 && ([toCopy targetPairingID], operationType2 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(operationType2, "isEqual:", dCopy) & 1) != 0))
   {
     v23 = 1;
   }
 
   else
   {
-    v24 = [v10 targetPairingID];
-    v23 = v24 == 0;
+    targetPairingID4 = [toCopy targetPairingID];
+    v23 = targetPairingID4 == 0;
 
-    if (!v22)
+    if (!targetPairingID3)
     {
       goto LABEL_22;
     }
@@ -130,31 +130,31 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v25 = [a1 rankTable];
-  v26 = [v9 operationType];
-  v27 = [v25 objectForKeyedSubscript:v26];
-  v41 = [v27 integerValue];
-  v28 = [a1 rankTable];
-  v29 = [v10 operationType];
-  [v28 objectForKeyedSubscript:v29];
-  v30 = v40 = a1;
-  v31 = [v30 integerValue];
+  rankTable = [self rankTable];
+  operationType5 = [compareCopy operationType];
+  v27 = [rankTable objectForKeyedSubscript:operationType5];
+  integerValue = [v27 integerValue];
+  rankTable2 = [self rankTable];
+  operationType6 = [toCopy operationType];
+  [rankTable2 objectForKeyedSubscript:operationType6];
+  v30 = v40 = self;
+  integerValue2 = [v30 integerValue];
 
-  if (v41 > v31)
+  if (integerValue > integerValue2)
   {
     goto LABEL_24;
   }
 
-  v32 = [v40 rankTable];
-  v33 = [v9 operationType];
-  v34 = [v32 objectForKeyedSubscript:v33];
-  v42 = [v34 integerValue];
-  v35 = [v40 rankTable];
-  v36 = [v10 operationType];
-  v37 = [v35 objectForKeyedSubscript:v36];
-  v38 = [v37 integerValue];
+  rankTable3 = [v40 rankTable];
+  operationType7 = [compareCopy operationType];
+  v34 = [rankTable3 objectForKeyedSubscript:operationType7];
+  integerValue3 = [v34 integerValue];
+  rankTable4 = [v40 rankTable];
+  operationType8 = [toCopy operationType];
+  v37 = [rankTable4 objectForKeyedSubscript:operationType8];
+  integerValue4 = [v37 integerValue];
 
-  if (v42 >= v38)
+  if (integerValue3 >= integerValue4)
   {
     v18 = 0;
   }
@@ -169,9 +169,9 @@ LABEL_31:
   return v18;
 }
 
-+ (unint64_t)statusCodeForContainer:(id)a3
++ (unint64_t)statusCodeForContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -189,23 +189,23 @@ LABEL_31:
   }
 
   v4 = v11[5];
-  v5 = [v3 operationType];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  operationType = [containerCopy operationType];
+  v6 = [v4 objectForKeyedSubscript:operationType];
+  integerValue = [v6 integerValue];
 
   _Block_object_dispose(&v10, 8);
-  return v7;
+  return integerValue;
 }
 
-+ (BOOL)shouldAcceptNewTransaction:(id)a3 intoSet:(id)a4
++ (BOOL)shouldAcceptNewTransaction:(id)transaction intoSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 operationType];
-  v8 = [v7 isEqualToString:@"migration"];
+  transactionCopy = transaction;
+  setCopy = set;
+  operationType = [transactionCopy operationType];
+  v8 = [operationType isEqualToString:@"migration"];
 
-  v9 = [v5 operationType];
-  v10 = [v9 isEqualToString:@"pair"];
+  operationType2 = [transactionCopy operationType];
+  v10 = [operationType2 isEqualToString:@"pair"];
 
   if ((v10 & 1) != 0 || v8)
   {
@@ -213,12 +213,12 @@ LABEL_31:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v6;
+    obj = setCopy;
     v12 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
-      v23 = v6;
+      v23 = setCopy;
       v14 = 0;
       v15 = 0;
       v16 = *v26;
@@ -232,14 +232,14 @@ LABEL_31:
           }
 
           v18 = *(*(&v25 + 1) + 8 * i);
-          v19 = [v18 operationType];
-          v20 = [v19 isEqualToString:@"migration"];
+          operationType3 = [v18 operationType];
+          v20 = [operationType3 isEqualToString:@"migration"];
 
           v14 |= v20;
-          v21 = [v18 operationType];
-          LOBYTE(v19) = [v21 isEqualToString:@"pair"];
+          operationType4 = [v18 operationType];
+          LOBYTE(operationType3) = [operationType4 isEqualToString:@"pair"];
 
-          v15 |= v19;
+          v15 |= operationType3;
         }
 
         v13 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -247,7 +247,7 @@ LABEL_31:
 
       while (v13);
       v11 = (v15 | v14) ^ 1;
-      v6 = v23;
+      setCopy = v23;
     }
 
     else
@@ -264,19 +264,19 @@ LABEL_31:
   return v11 & 1;
 }
 
-+ (BOOL)shouldCancelRunningTransaction:(id)a3 newTransaction:(id)a4 pairingID:(id)a5
++ (BOOL)shouldCancelRunningTransaction:(id)transaction newTransaction:(id)newTransaction pairingID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 operationType];
-  if ([v10 isEqual:@"initialSync"])
+  transactionCopy = transaction;
+  newTransactionCopy = newTransaction;
+  dCopy = d;
+  operationType = [newTransactionCopy operationType];
+  if ([operationType isEqual:@"initialSync"])
   {
     goto LABEL_6;
   }
 
-  v11 = [v8 operationType];
-  if ([v11 isEqual:@"storeUnpair"])
+  operationType2 = [newTransactionCopy operationType];
+  if ([operationType2 isEqual:@"storeUnpair"])
   {
 LABEL_5:
 
@@ -284,19 +284,19 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [v7 operationType];
-  if ([v12 isEqual:@"unpair"])
+  operationType3 = [transactionCopy operationType];
+  if ([operationType3 isEqual:@"unpair"])
   {
 
     goto LABEL_5;
   }
 
-  v15 = [v7 operationType];
-  v16 = [v15 isEqual:@"externalSwitch"];
+  operationType4 = [transactionCopy operationType];
+  v16 = [operationType4 isEqual:@"externalSwitch"];
 
   if ((v16 & 1) == 0)
   {
-    v13 = [EPDTCOperationPriorityComparator compare:v7 to:v8 withActivePairingID:v9]== -1;
+    v13 = [EPDTCOperationPriorityComparator compare:transactionCopy to:newTransactionCopy withActivePairingID:dCopy]== -1;
     goto LABEL_8;
   }
 
@@ -307,18 +307,18 @@ LABEL_8:
   return v13;
 }
 
-+ (id)sortedTransactionsWithSet:(id)a3 pairingID:(id)a4
++ (id)sortedTransactionsWithSet:(id)set pairingID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 allObjects];
+  dCopy = d;
+  allObjects = [set allObjects];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000824C;
   v11[3] = &unk_1001758A8;
-  v12 = v6;
-  v13 = a1;
-  v8 = v6;
-  v9 = [v7 sortedArrayUsingComparator:v11];
+  v12 = dCopy;
+  selfCopy = self;
+  v8 = dCopy;
+  v9 = [allObjects sortedArrayUsingComparator:v11];
 
   return v9;
 }

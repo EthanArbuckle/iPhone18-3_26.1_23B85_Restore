@@ -1,21 +1,21 @@
 @interface AAVersionUpdater
-- (AAVersionUpdater)initWithStartingVersion:(unint64_t)a3;
+- (AAVersionUpdater)initWithStartingVersion:(unint64_t)version;
 - (BOOL)needsUpdate;
 - (id)_latestVersion;
-- (void)_performVersionUpdate:(unint64_t)a3;
+- (void)_performVersionUpdate:(unint64_t)update;
 - (void)performMigrations;
 @end
 
 @implementation AAVersionUpdater
 
-- (AAVersionUpdater)initWithStartingVersion:(unint64_t)a3
+- (AAVersionUpdater)initWithStartingVersion:(unint64_t)version
 {
   v5.receiver = self;
   v5.super_class = AAVersionUpdater;
   result = [(AAVersionUpdater *)&v5 init];
   if (result)
   {
-    result->_currentVersion = a3;
+    result->_currentVersion = version;
   }
 
   return result;
@@ -23,34 +23,34 @@
 
 - (void)performMigrations
 {
-  v10 = [objc_opt_class() orderedVersions];
-  v3 = [objc_opt_class() orderedVersions];
-  v4 = [v3 count];
+  orderedVersions = [objc_opt_class() orderedVersions];
+  orderedVersions2 = [objc_opt_class() orderedVersions];
+  v4 = [orderedVersions2 count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [v10 objectAtIndexedSubscript:v5];
-      v7 = [v6 unsignedIntValue];
+      v6 = [orderedVersions objectAtIndexedSubscript:v5];
+      unsignedIntValue = [v6 unsignedIntValue];
 
-      if (self->_currentVersion < v7)
+      if (self->_currentVersion < unsignedIntValue)
       {
-        [(AAVersionUpdater *)self _performVersionUpdate:v7];
-        self->_currentVersion = v7;
+        [(AAVersionUpdater *)self _performVersionUpdate:unsignedIntValue];
+        self->_currentVersion = unsignedIntValue;
       }
 
       ++v5;
-      v8 = [objc_opt_class() orderedVersions];
-      v9 = [v8 count];
+      orderedVersions3 = [objc_opt_class() orderedVersions];
+      v9 = [orderedVersions3 count];
     }
 
     while (v9 > v5);
   }
 }
 
-- (void)_performVersionUpdate:(unint64_t)a3
+- (void)_performVersionUpdate:(unint64_t)update
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = _AALogSystem();
@@ -62,12 +62,12 @@
     v18 = 2048;
     v19 = currentVersion;
     v20 = 2048;
-    v21 = a3;
+    updateCopy2 = update;
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "%s Performing data migration from version %lu to : %lu", buf, 0x20u);
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"performVersionUpdate%ldToVersion%ld", self->_currentVersion, a3];
-  v9 = NSSelectorFromString(v8);
+  update = [MEMORY[0x1E696AEC0] stringWithFormat:@"performVersionUpdate%ldToVersion%ld", self->_currentVersion, update];
+  v9 = NSSelectorFromString(update);
 
   v10 = [(AAVersionUpdater *)self methodSignatureForSelector:v9];
   if ([v10 methodReturnLength] != 1)
@@ -89,7 +89,7 @@
     v18 = 2048;
     v19 = v13;
     v20 = 2048;
-    v21 = a3;
+    updateCopy2 = update;
     v22 = 2048;
     v23 = v15;
     _os_log_impl(&dword_1B6F6A000, v12, OS_LOG_TYPE_DEFAULT, "%s Performed update of version %lu to %lu with success %lu", buf, 0x2Au);
@@ -101,18 +101,18 @@
 - (BOOL)needsUpdate
 {
   currentVersion = self->_currentVersion;
-  v3 = [(AAVersionUpdater *)self _latestVersion];
-  LOBYTE(currentVersion) = currentVersion < [v3 unsignedIntValue];
+  _latestVersion = [(AAVersionUpdater *)self _latestVersion];
+  LOBYTE(currentVersion) = currentVersion < [_latestVersion unsignedIntValue];
 
   return currentVersion;
 }
 
 - (id)_latestVersion
 {
-  v2 = [objc_opt_class() orderedVersions];
-  v3 = [v2 lastObject];
+  orderedVersions = [objc_opt_class() orderedVersions];
+  lastObject = [orderedVersions lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (void)_performVersionUpdate:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

@@ -1,27 +1,27 @@
 @interface PKPassTile
-+ (id)_createDefaultDashboardGroupTileWithChildTiles:(id)a3;
-+ (id)createTileRowsForTiles:(id)a3 forceCompact:(BOOL)a4 maximumRows:(unint64_t)a5 maximumColumns:(unint64_t)a6;
-- (BOOL)supportsPaymentPassAction:(id)a3;
-- (PKPassTile)initWithCoder:(id)a3;
++ (id)_createDefaultDashboardGroupTileWithChildTiles:(id)tiles;
++ (id)createTileRowsForTiles:(id)tiles forceCompact:(BOOL)compact maximumRows:(unint64_t)rows maximumColumns:(unint64_t)columns;
+- (BOOL)supportsPaymentPassAction:(id)action;
+- (PKPassTile)initWithCoder:(id)coder;
 - (id)_init;
-- (id)_initWithMetadata:(id)a3 childTiles:(id)a4 stateIdentifier:(id)a5 state:(id)a6 inProgress:(BOOL)a7;
+- (id)_initWithMetadata:(id)metadata childTiles:(id)tiles stateIdentifier:(id)identifier state:(id)state inProgress:(BOOL)progress;
 - (id)maximumRows;
 - (id)prearmTiles;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTile
 
-+ (id)createTileRowsForTiles:(id)a3 forceCompact:(BOOL)a4 maximumRows:(unint64_t)a5 maximumColumns:(unint64_t)a6
++ (id)createTileRowsForTiles:(id)tiles forceCompact:(BOOL)compact maximumRows:(unint64_t)rows maximumColumns:(unint64_t)columns
 {
-  v37 = a4;
+  compactCopy = compact;
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  tilesCopy = tiles;
   v9 = 0;
-  if (v8 && a6)
+  if (tilesCopy && columns)
   {
-    v38 = a6;
-    v34 = v8;
+    columnsCopy = columns;
+    v34 = tilesCopy;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v53 = 0;
     v54 = &v53;
@@ -44,9 +44,9 @@
     v11 = _Block_copy(aBlock);
     v12 = [v34 count];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v12 >= v38 * a5)
+    if (v12 >= columnsCopy * rows)
     {
-      v14 = v38 * a5;
+      v14 = columnsCopy * rows;
     }
 
     else
@@ -54,13 +54,13 @@
       v14 = v12;
     }
 
-    if (v37 && v12 >= a5 + 1 && v14)
+    if (compactCopy && v12 >= rows + 1 && v14)
     {
       do
       {
-        if (v14 >= v38)
+        if (v14 >= columnsCopy)
         {
-          v15 = v38;
+          v15 = columnsCopy;
         }
 
         else
@@ -97,16 +97,16 @@
           }
 
           v20 = *(*(&v39 + 1) + 8 * v19);
-          v21 = [v20 state];
-          v22 = [v21 stateTypeDefaultV2];
+          state = [v20 state];
+          stateTypeDefaultV2 = [state stateTypeDefaultV2];
 
-          if (v37)
+          if (compactCopy)
           {
             goto LABEL_19;
           }
 
-          v24 = [v20 metadata];
-          if (![v24 preferredStyle])
+          metadata = [v20 metadata];
+          if (![metadata preferredStyle])
           {
 
 LABEL_26:
@@ -115,7 +115,7 @@ LABEL_26:
             goto LABEL_27;
           }
 
-          if (!v22)
+          if (!stateTypeDefaultV2)
           {
 
 LABEL_19:
@@ -123,10 +123,10 @@ LABEL_19:
             goto LABEL_27;
           }
 
-          v25 = [v22 preferredStyle];
+          preferredStyle = [stateTypeDefaultV2 preferredStyle];
 
           v23 = 0;
-          if (v25 <= 4 && ((1 << v25) & 0x15) != 0)
+          if (preferredStyle <= 4 && ((1 << preferredStyle) & 0x15) != 0)
           {
             goto LABEL_26;
           }
@@ -145,14 +145,14 @@ LABEL_27:
           [v26 addObject:v20];
           ++v54[3];
           v29 = [v36 count];
-          v30 = v38;
+          unsignedIntegerValue = columnsCopy;
           if ([v13 count] > v29)
           {
             v31 = [v13 objectAtIndexedSubscript:v29];
-            v30 = [v31 unsignedIntegerValue];
+            unsignedIntegerValue = [v31 unsignedIntegerValue];
           }
 
-          if (((v54[3] < v30) & ~v23) == 0)
+          if (((v54[3] < unsignedIntegerValue) & ~v23) == 0)
           {
             v11[2](v11);
           }
@@ -174,7 +174,7 @@ LABEL_27:
     _Block_object_dispose(&v47, 8);
     _Block_object_dispose(&v53, 8);
 
-    v8 = v34;
+    tilesCopy = v34;
   }
 
   return v9;
@@ -204,40 +204,40 @@ void __77__PKPassTile_createTileRowsForTiles_forceCompact_maximumRows_maximumCol
   return [(PKPassTile *)&v3 init];
 }
 
-- (id)_initWithMetadata:(id)a3 childTiles:(id)a4 stateIdentifier:(id)a5 state:(id)a6 inProgress:(BOOL)a7
+- (id)_initWithMetadata:(id)metadata childTiles:(id)tiles stateIdentifier:(id)identifier state:(id)state inProgress:(BOOL)progress
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  v17 = 0;
-  if (v12 && v15)
+  metadataCopy = metadata;
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  stateCopy = state;
+  v16 = stateCopy;
+  selfCopy = 0;
+  if (metadataCopy && stateCopy)
   {
-    if ([v15 isResolved])
+    if ([stateCopy isResolved])
     {
-      v18 = [(PKPassTile *)self _init];
-      v19 = v18;
-      if (v18)
+      _init = [(PKPassTile *)self _init];
+      v19 = _init;
+      if (_init)
       {
-        objc_storeStrong(v18 + 2, a3);
-        objc_storeStrong(v19 + 5, a4);
-        objc_storeStrong(v19 + 3, a5);
-        objc_storeStrong(v19 + 4, a6);
-        *(v19 + 8) = a7;
+        objc_storeStrong(_init + 2, metadata);
+        objc_storeStrong(v19 + 5, tiles);
+        objc_storeStrong(v19 + 3, identifier);
+        objc_storeStrong(v19 + 4, state);
+        *(v19 + 8) = progress;
       }
 
       self = v19;
-      v17 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)prearmTiles
@@ -268,15 +268,15 @@ uint64_t __25__PKPassTile_prearmTiles__block_invoke(uint64_t a1, void *a2)
 
 - (id)maximumRows
 {
-  v2 = [(PKPassTile *)self metadata];
-  if ([v2 type] == 2)
+  metadata = [(PKPassTile *)self metadata];
+  if ([metadata type] == 2)
   {
-    v3 = [v2 metadataTypeHorizontalFlowGroup];
-    v4 = [v3 maximumRows];
-    if (v4)
+    metadataTypeHorizontalFlowGroup = [metadata metadataTypeHorizontalFlowGroup];
+    maximumRows = [metadataTypeHorizontalFlowGroup maximumRows];
+    if (maximumRows)
     {
 LABEL_3:
-      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
+      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maximumRows];
 LABEL_7:
 
       goto LABEL_9;
@@ -287,11 +287,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v2 type] == 3)
+  if ([metadata type] == 3)
   {
-    v3 = [v2 metadataTypeVerticalFlowGroup];
-    v4 = [v3 rows];
-    if (v4)
+    metadataTypeHorizontalFlowGroup = [metadata metadataTypeVerticalFlowGroup];
+    maximumRows = [metadataTypeHorizontalFlowGroup rows];
+    if (maximumRows)
     {
       goto LABEL_3;
     }
@@ -305,78 +305,78 @@ LABEL_9:
   return v5;
 }
 
-+ (id)_createDefaultDashboardGroupTileWithChildTiles:(id)a3
++ (id)_createDefaultDashboardGroupTileWithChildTiles:(id)tiles
 {
-  v3 = a3;
+  tilesCopy = tiles;
   v4 = +[PKPassTileMetadataHorizontalFlowGroup _createDefaultDashboardGroupMetadata];
   v5 = [PKPassTileStateGroup _createDefaultDashboardGroupStateWithMetadata:v4];
-  v6 = [[PKPassTile alloc] _initWithMetadata:v4 childTiles:v3 stateIdentifier:@"default" state:v5 inProgress:0];
+  v6 = [[PKPassTile alloc] _initWithMetadata:v4 childTiles:tilesCopy stateIdentifier:@"default" state:v5 inProgress:0];
 
   return v6;
 }
 
-- (PKPassTile)initWithCoder:(id)a3
+- (PKPassTile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassTile *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKPassTile *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
-    metadata = v5->_metadata;
-    v5->_metadata = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    metadata = _init->_metadata;
+    _init->_metadata = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"tiles"];
-    tiles = v5->_tiles;
-    v5->_tiles = v8;
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"tiles"];
+    tiles = _init->_tiles;
+    _init->_tiles = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateIdentifier"];
-    stateIdentifier = v5->_stateIdentifier;
-    v5->_stateIdentifier = v10;
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateIdentifier"];
+    stateIdentifier = _init->_stateIdentifier;
+    _init->_stateIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
-    state = v5->_state;
-    v5->_state = v12;
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    state = _init->_state;
+    _init->_state = v12;
 
-    v5->_inProgress = [v4 decodeBoolForKey:@"inProgress"];
+    _init->_inProgress = [coderCopy decodeBoolForKey:@"inProgress"];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   metadata = self->_metadata;
-  v5 = a3;
-  [v5 encodeObject:metadata forKey:@"metadata"];
-  [v5 encodeObject:self->_tiles forKey:@"tiles"];
-  [v5 encodeObject:self->_stateIdentifier forKey:@"stateIdentifier"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeBool:self->_inProgress forKey:@"inProgress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_tiles forKey:@"tiles"];
+  [coderCopy encodeObject:self->_stateIdentifier forKey:@"stateIdentifier"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeBool:self->_inProgress forKey:@"inProgress"];
 }
 
-- (BOOL)supportsPaymentPassAction:(id)a3
+- (BOOL)supportsPaymentPassAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 isActionAvailable])
+  actionCopy = action;
+  v5 = actionCopy;
+  if (!actionCopy || ![actionCopy isActionAvailable])
   {
     goto LABEL_11;
   }
 
-  v6 = [v5 type];
+  type = [v5 type];
   v7 = 0;
-  if (v6 > 0xE)
+  if (type > 0xE)
   {
     goto LABEL_12;
   }
 
-  if (((1 << v6) & 0x6380) != 0 || v6 == 3)
+  if (((1 << type) & 0x6380) != 0 || type == 3)
   {
     v7 = 1;
     goto LABEL_12;
   }
 
-  if (v6 != 4)
+  if (type != 4)
   {
     goto LABEL_12;
   }
@@ -388,12 +388,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [(PKPassTileMetadata *)self->_metadata metadataTypeVehicleFunction];
-  v9 = [v8 vehicleFunctions];
-  if ([v9 count])
+  metadataTypeVehicleFunction = [(PKPassTileMetadata *)self->_metadata metadataTypeVehicleFunction];
+  vehicleFunctions = [metadataTypeVehicleFunction vehicleFunctions];
+  if ([vehicleFunctions count])
   {
-    v10 = [v5 vehicleFunctionActions];
-    v7 = [v10 count] != 0;
+    vehicleFunctionActions = [v5 vehicleFunctionActions];
+    v7 = [vehicleFunctionActions count] != 0;
   }
 
   else

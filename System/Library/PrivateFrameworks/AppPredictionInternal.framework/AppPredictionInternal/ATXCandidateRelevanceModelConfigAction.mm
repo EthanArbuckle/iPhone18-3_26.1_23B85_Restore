@@ -1,8 +1,8 @@
 @interface ATXCandidateRelevanceModelConfigAction
 - (ATXCandidateRelevanceModelConfigAction)init;
-- (BOOL)candidateIsStillValidToSuggest:(id)a3;
+- (BOOL)candidateIsStillValidToSuggest:(id)suggest;
 - (id)datasetGenerator;
-- (id)proactiveSuggestionForCandidate:(id)a3 prediction:(float)a4;
+- (id)proactiveSuggestionForCandidate:(id)candidate prediction:(float)prediction;
 @end
 
 @implementation ATXCandidateRelevanceModelConfigAction
@@ -15,8 +15,8 @@
   if (v2)
   {
     v3 = [ATXCandidateRelevanceLogisticRegressionModelTrainingPlan alloc];
-    v4 = [(ATXCandidateRelevanceModelConfig *)v2 modelTrainingPlanParameters];
-    v5 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)v3 initWithParameters:v4];
+    modelTrainingPlanParameters = [(ATXCandidateRelevanceModelConfig *)v2 modelTrainingPlanParameters];
+    v5 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)v3 initWithParameters:modelTrainingPlanParameters];
     [(ATXCandidateRelevanceModelConfig *)v2 setModelTrainingPlan:v5];
 
     v6 = objc_opt_new();
@@ -25,8 +25,8 @@
     v7 = objc_alloc(MEMORY[0x277D42070]);
     v8 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:5];
     v9 = +[ATXClientModelSuggestionReceiver sharedInstance];
-    v10 = [v9 blendingLayerServer];
-    v11 = [v7 initWithClientModelId:v8 blendingLayerServer:v10];
+    blendingLayerServer = [v9 blendingLayerServer];
+    v11 = [v7 initWithClientModelId:v8 blendingLayerServer:blendingLayerServer];
     [(ATXCandidateRelevanceModelConfig *)v2 setClientModel:v11];
 
     v12 = +[ATXActionPredictionBlacklist sharedInstanceWithAppPredictionBlacklist];
@@ -48,36 +48,36 @@
   return v4;
 }
 
-- (id)proactiveSuggestionForCandidate:(id)a3 prediction:(float)a4
+- (id)proactiveSuggestionForCandidate:(id)candidate prediction:(float)prediction
 {
   v6 = MEMORY[0x277D42078];
-  v7 = a3;
+  candidateCopy = candidate;
   v8 = [v6 alloc];
-  v9 = [(ATXCandidateRelevanceModelConfig *)self clientModel];
-  v10 = [v9 clientModelId];
-  v11 = [v8 initWithClientModelId:v10 clientModelVersion:@"1.0" engagementResetPolicy:0];
+  clientModel = [(ATXCandidateRelevanceModelConfig *)self clientModel];
+  clientModelId = [clientModel clientModelId];
+  v11 = [v8 initWithClientModelId:clientModelId clientModelVersion:@"1.0" engagementResetPolicy:0];
 
-  v12 = [v7 biomeStoreData];
+  biomeStoreData = [candidateCopy biomeStoreData];
 
-  if (!v12)
+  if (!biomeStoreData)
   {
     goto LABEL_5;
   }
 
-  v13 = [v12 actionKey];
-  v14 = [_ATXActionUtils getActionTypeFromActionKey:v13];
+  actionKey = [biomeStoreData actionKey];
+  v14 = [_ATXActionUtils getActionTypeFromActionKey:actionKey];
   v15 = [v14 isEqualToString:@"INPlayMediaIntent"];
 
-  if (!v15 || ([ATXMediaActionPrediction updatedPlayMediaAction:v12], v16 = objc_claimAutoreleasedReturnValue(), v12, (v12 = v16) != 0))
+  if (!v15 || ([ATXMediaActionPrediction updatedPlayMediaAction:biomeStoreData], v16 = objc_claimAutoreleasedReturnValue(), biomeStoreData, (biomeStoreData = v16) != 0))
   {
     v17 = objc_alloc(MEMORY[0x277CEB7F0]);
-    *&v18 = a4;
-    v19 = [v17 initWithPredictedItem:v12 score:v18];
+    *&v18 = prediction;
+    v19 = [v17 initWithPredictedItem:biomeStoreData score:v18];
     v20 = [ATXProactiveSuggestionBuilder _executableSpecForScoredAction:v19];
-    v21 = [objc_alloc(MEMORY[0x277D42090]) initWithRawScore:2 suggestedConfidenceCategory:a4];
+    v21 = [objc_alloc(MEMORY[0x277D42090]) initWithRawScore:2 suggestedConfidenceCategory:prediction];
     v22 = objc_opt_new();
-    v23 = [v22 actionBehavioralReason];
-    v24 = [ATXProactiveSuggestionBuilder _uiSpecForScoredAction:v19 scoreSpec:v21 clientModelSpec:v11 predictionReason:v23];
+    actionBehavioralReason = [v22 actionBehavioralReason];
+    v24 = [ATXProactiveSuggestionBuilder _uiSpecForScoredAction:v19 scoreSpec:v21 clientModelSpec:v11 predictionReason:actionBehavioralReason];
 
     v25 = [objc_alloc(MEMORY[0x277D42068]) initWithClientModelSpecification:v11 executableSpecification:v20 uiSpecification:v24 scoreSpecification:v21];
   }
@@ -91,26 +91,26 @@ LABEL_5:
   return v25;
 }
 
-- (BOOL)candidateIsStillValidToSuggest:(id)a3
+- (BOOL)candidateIsStillValidToSuggest:(id)suggest
 {
-  v4 = [a3 biomeStoreData];
-  v5 = [v4 actionKey];
-  v6 = [_ATXActionUtils getActionTypeFromActionKey:v5];
+  biomeStoreData = [suggest biomeStoreData];
+  actionKey = [biomeStoreData actionKey];
+  v6 = [_ATXActionUtils getActionTypeFromActionKey:actionKey];
 
   if (v6)
   {
-    v7 = [(ATXCandidateRelevanceModelConfig *)self installedAppsKnownToSpringBoard];
-    v8 = [v4 bundleId];
-    v9 = [v7 containsObject:v8];
+    installedAppsKnownToSpringBoard = [(ATXCandidateRelevanceModelConfig *)self installedAppsKnownToSpringBoard];
+    bundleId = [biomeStoreData bundleId];
+    v9 = [installedAppsKnownToSpringBoard containsObject:bundleId];
 
-    v10 = [(ATXCandidateRelevanceModelConfigAction *)self actionBlacklist];
-    v11 = [v4 bundleId];
-    v12 = [v10 shouldPredictBundleId:v11 action:v6];
+    actionBlacklist = [(ATXCandidateRelevanceModelConfigAction *)self actionBlacklist];
+    bundleId2 = [biomeStoreData bundleId];
+    v12 = [actionBlacklist shouldPredictBundleId:bundleId2 action:v6];
 
-    v13 = [(ATXCandidateRelevanceModelConfigAction *)self appDigitalHealthBlacklist];
-    v14 = [v13 blacklistedBundleIds];
-    v15 = [v4 bundleId];
-    v16 = [v14 containsObject:v15];
+    appDigitalHealthBlacklist = [(ATXCandidateRelevanceModelConfigAction *)self appDigitalHealthBlacklist];
+    blacklistedBundleIds = [appDigitalHealthBlacklist blacklistedBundleIds];
+    bundleId3 = [biomeStoreData bundleId];
+    v16 = [blacklistedBundleIds containsObject:bundleId3];
 
     if (v9)
     {

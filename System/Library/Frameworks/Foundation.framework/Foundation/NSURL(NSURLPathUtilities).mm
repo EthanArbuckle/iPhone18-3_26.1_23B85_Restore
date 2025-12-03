@@ -17,55 +17,55 @@
 
 - (id)URLByResolvingSymlinksInPath
 {
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     goto LABEL_10;
   }
 
-  if ([a1 isFileReferenceURL])
+  if ([self isFileReferenceURL])
   {
-    v2 = [a1 filePathURL];
+    filePathURL = [self filePathURL];
 
-    return [v2 URLByResolvingSymlinksInPath];
+    return [filePathURL URLByResolvingSymlinksInPath];
   }
 
-  v4 = [a1 path];
-  if (v4)
+  path = [self path];
+  if (path)
   {
-    v5 = [v4 stringByResolvingSymlinksInPath];
+    stringByResolvingSymlinksInPath = [path stringByResolvingSymlinksInPath];
     v6 = MEMORY[0x1E695DFF8];
 
-    return [v6 fileURLWithPath:v5];
+    return [v6 fileURLWithPath:stringByResolvingSymlinksInPath];
   }
 
   else
   {
 LABEL_10:
-    v7 = a1;
+    selfCopy = self;
 
-    return v7;
+    return selfCopy;
   }
 }
 
 - (uint64_t)lastPathComponent
 {
-  v1 = [a1 path];
+  path = [self path];
 
-  return [v1 lastPathComponent];
+  return [path lastPathComponent];
 }
 
 - (CFURLRef)URLByDeletingLastPathComponent
 {
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v2 = [a1 _trueSelf];
+    _trueSelf = [self _trueSelf];
 
-    return [v2 URLByDeletingLastPathComponent];
+    return [_trueSelf URLByDeletingLastPathComponent];
   }
 
   else
   {
-    PathComponent = CFURLCreateCopyDeletingLastPathComponent(*MEMORY[0x1E695E4A8], a1);
+    PathComponent = CFURLCreateCopyDeletingLastPathComponent(*MEMORY[0x1E695E4A8], self);
 
     return PathComponent;
   }
@@ -73,23 +73,23 @@ LABEL_10:
 
 - (uint64_t)pathExtension
 {
-  v1 = [a1 path];
+  path = [self path];
 
-  return [v1 pathExtension];
+  return [path pathExtension];
 }
 
 - (CFURLRef)URLByDeletingPathExtension
 {
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v2 = [a1 _trueSelf];
+    _trueSelf = [self _trueSelf];
 
-    return [v2 URLByDeletingPathExtension];
+    return [_trueSelf URLByDeletingPathExtension];
   }
 
   else
   {
-    v4 = CFURLCreateCopyDeletingPathExtension(*MEMORY[0x1E695E4A8], a1);
+    v4 = CFURLCreateCopyDeletingPathExtension(*MEMORY[0x1E695E4A8], self);
 
     return v4;
   }
@@ -97,30 +97,30 @@ LABEL_10:
 
 - (uint64_t)pathComponents
 {
-  v1 = [a1 path];
+  path = [self path];
 
-  return [v1 pathComponents];
+  return [path pathComponents];
 }
 
 - (id)URLByStandardizingPath
 {
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     goto LABEL_11;
   }
 
-  if ([a1 isFileReferenceURL])
+  if ([self isFileReferenceURL])
   {
-    v2 = [a1 filePathURL];
+    filePathURL = [self filePathURL];
 
-    return [v2 URLByStandardizingPath];
+    return [filePathURL URLByStandardizingPath];
   }
 
-  v4 = [objc_msgSend(a1 "path")];
+  v4 = [objc_msgSend(self "path")];
   if (v4)
   {
     v5 = v4;
-    v6 = [a1 checkResourceIsReachableAndReturnError:0];
+    v6 = [self checkResourceIsReachableAndReturnError:0];
     v7 = MEMORY[0x1E695DFF8];
     if (v6)
     {
@@ -131,7 +131,7 @@ LABEL_10:
 
     else
     {
-      v10 = CFURLHasDirectoryPath(a1) != 0;
+      v10 = CFURLHasDirectoryPath(self) != 0;
 
       return [v7 fileURLWithPath:v5 isDirectory:v10];
     }
@@ -140,9 +140,9 @@ LABEL_10:
   else
   {
 LABEL_11:
-    v9 = a1;
+    selfCopy = self;
 
-    return v9;
+    return selfCopy;
   }
 }
 
@@ -150,7 +150,7 @@ LABEL_11:
 {
   if (!a3)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(a1, a2)), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v8);
   }
 
@@ -174,20 +174,20 @@ LABEL_11:
 {
   if (!a3)
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(a1, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v10);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v7 = [(objc_class *)a1 _trueSelf];
+    _trueSelf = [(objc_class *)self _trueSelf];
 
-    return [v7 _URLByAppendingPathComponent:a3 isDirectory:a4 encodingSlashes:0];
+    return [_trueSelf _URLByAppendingPathComponent:a3 isDirectory:a4 encodingSlashes:0];
   }
 
   else
   {
-    v9 = CFURLCreateCopyAppendingPathComponent(*MEMORY[0x1E695E4A8], a1, a3, a4);
+    v9 = CFURLCreateCopyAppendingPathComponent(*MEMORY[0x1E695E4A8], self, a3, a4);
 
     return v9;
   }
@@ -198,7 +198,7 @@ LABEL_11:
   v17 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(a1, a2)), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v8);
   }
 
@@ -208,9 +208,9 @@ LABEL_11:
   v14 = __Block_byref_object_copy__17;
   v15 = __Block_byref_object_dispose__17;
   v16 = 0;
-  if (([a3 hasSuffix:@"/"] & 1) != 0 || !-[objc_class isFileURL](a1, "isFileURL"))
+  if (([a3 hasSuffix:@"/"] & 1) != 0 || !-[objc_class isFileURL](self, "isFileURL"))
   {
-    v6 = [(objc_class *)a1 URLByAppendingPathComponent:a3 isDirectory:0];
+    v6 = [(objc_class *)self URLByAppendingPathComponent:a3 isDirectory:0];
     v12[5] = v6;
   }
 
@@ -222,7 +222,7 @@ LABEL_11:
     v10[3] = __Block_byref_object_copy__17;
     v10[4] = __Block_byref_object_dispose__17;
     v10[5] = 0;
-    v5 = [(objc_class *)a1 URLByAppendingPathComponent:a3 isDirectory:0];
+    v5 = [(objc_class *)self URLByAppendingPathComponent:a3 isDirectory:0];
     v12[5] = v5;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -230,7 +230,7 @@ LABEL_11:
     v9[3] = &unk_1E69F64D8;
     v9[6] = &v11;
     v9[7] = v10;
-    v9[4] = a1;
+    v9[4] = self;
     v9[5] = a3;
     [NSURL setIOPolicy:v9 type:? scope:? forBlock:?];
     _Block_object_dispose(v10, 8);
@@ -245,20 +245,20 @@ LABEL_11:
 {
   if (!a3)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(a1, a2)), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: component, components, or pathExtension cannot be nil.", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v8);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v5 = [(objc_class *)a1 _trueSelf];
+    _trueSelf = [(objc_class *)self _trueSelf];
 
-    return [v5 _URLByAppendingPathExtension:a3];
+    return [_trueSelf _URLByAppendingPathExtension:a3];
   }
 
   else
   {
-    v7 = CFURLCreateCopyAppendingPathExtension(*MEMORY[0x1E695E4A8], a1, a3);
+    v7 = CFURLCreateCopyAppendingPathExtension(*MEMORY[0x1E695E4A8], self, a3);
 
     return v7;
   }
@@ -271,26 +271,26 @@ LABEL_11:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [a1 _cfurl];
+  _cfurl = [self _cfurl];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v5 == qword_1ED43FBF0)
+  if (_cfurl == qword_1ED43FBF0)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v5, a2)), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_cfurl, a2)), 0}];
     objc_exception_throw(v8);
   }
 
-  if (v5)
+  if (_cfurl)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __68__NSURL_NSURLPathUtilities__checkResourceIsReachableAndReturnError___block_invoke;
     v9[3] = &unk_1E69F6500;
     v9[4] = &v10;
-    v9[5] = v5;
+    v9[5] = _cfurl;
     v9[6] = a3;
     [NSURL setIOPolicy:v9 type:? scope:? forBlock:?];
     if (a3)

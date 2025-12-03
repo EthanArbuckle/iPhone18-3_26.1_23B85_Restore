@@ -1,30 +1,30 @@
 @interface _SFCKShareCollaborationItem
 - (BOOL)isLoading;
 - (LPLinkMetadata)linkMetadata;
-- (_SFCKShareCollaborationItem)initWithItemProvider:(id)a3 activityItem:(id)a4;
+- (_SFCKShareCollaborationItem)initWithItemProvider:(id)provider activityItem:(id)item;
 - (id)_defaultLoadingOptionsSummary;
-- (void)_didLoadContainerSetupInfo:(id)a3;
+- (void)_didLoadContainerSetupInfo:(id)info;
 - (void)_loadCKContainerSetupInfoIfNeeded;
 - (void)_startLoading;
 @end
 
 @implementation _SFCKShareCollaborationItem
 
-- (_SFCKShareCollaborationItem)initWithItemProvider:(id)a3 activityItem:(id)a4
+- (_SFCKShareCollaborationItem)initWithItemProvider:(id)provider activityItem:(id)item
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  providerCopy = provider;
   v7 = MEMORY[0x1E695DFF8];
-  v8 = a4;
+  itemCopy = item;
   v9 = [v7 URLWithString:@"https://www.apple.com/icloud/"];
   v15.receiver = self;
   v15.super_class = _SFCKShareCollaborationItem;
-  v10 = [(SFCollaborationItem *)&v15 initWithItemProvider:v6 activityItem:v8 placeholderActivityItem:v9 defaultCollaboration:1];
+  v10 = [(SFCollaborationItem *)&v15 initWithItemProvider:providerCopy activityItem:itemCopy placeholderActivityItem:v9 defaultCollaboration:1];
 
   if (v10)
   {
     [(SFCollaborationItem *)v10 setType:1];
-    v10->_isServiceManatee = [SFCollaborationUtilities isServiceManateeCKShareItemProvider:v6];
+    v10->_isServiceManatee = [SFCollaborationUtilities isServiceManateeCKShareItemProvider:providerCopy];
     v11 = share_sheet_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -52,8 +52,8 @@
 
 - (id)_defaultLoadingOptionsSummary
 {
-  v2 = [(SFCollaborationItem *)self itemProvider];
-  v3 = [SFCollaborationUtilities isPreCKShareItemProvider:v2];
+  itemProvider = [(SFCollaborationItem *)self itemProvider];
+  v3 = [SFCollaborationUtilities isPreCKShareItemProvider:itemProvider];
 
   if (v3)
   {
@@ -85,57 +85,57 @@
 
 - (void)_loadCKContainerSetupInfoIfNeeded
 {
-  v3 = [(_SFCKShareCollaborationItem *)self containerSetupInfo];
+  containerSetupInfo = [(_SFCKShareCollaborationItem *)self containerSetupInfo];
 
-  if (!v3)
+  if (!containerSetupInfo)
   {
     [(_SFCKShareCollaborationItem *)self setIsLoadingContainerSetupInfo:1];
     objc_initWeak(&location, self);
-    v4 = [(SFCollaborationItem *)self itemProvider];
+    itemProvider = [(SFCollaborationItem *)self itemProvider];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __64___SFCKShareCollaborationItem__loadCKContainerSetupInfoIfNeeded__block_invoke;
     v5[3] = &unk_1E788CE08;
     objc_copyWeak(&v6, &location);
-    [SFCollaborationUtilities loadCKContainerForItemProvider:v4 completionHandler:v5];
+    [SFCollaborationUtilities loadCKContainerForItemProvider:itemProvider completionHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_didLoadContainerSetupInfo:(id)a3
+- (void)_didLoadContainerSetupInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(_SFCKShareCollaborationItem *)self setIsLoadingContainerSetupInfo:0];
-  [(_SFCKShareCollaborationItem *)self setContainerSetupInfo:v4];
+  [(_SFCKShareCollaborationItem *)self setContainerSetupInfo:infoCopy];
 
   [(SFCollaborationItem *)self _updateLoadingState];
 }
 
 - (LPLinkMetadata)linkMetadata
 {
-  v3 = [(_SFCKShareCollaborationItem *)self updatedShare];
-  if (v3)
+  updatedShare = [(_SFCKShareCollaborationItem *)self updatedShare];
+  if (updatedShare)
   {
-    v4 = v3;
-    v5 = [(_SFCKShareCollaborationItem *)self containerSetupInfo];
+    v4 = updatedShare;
+    containerSetupInfo = [(_SFCKShareCollaborationItem *)self containerSetupInfo];
 
-    if (v5)
+    if (containerSetupInfo)
     {
-      v6 = [(_SFCKShareCollaborationItem *)self updatedShare];
-      v7 = [(_SFCKShareCollaborationItem *)self containerSetupInfo];
-      v8 = [SFCollaborationUtilities createLinkMetadataWithCKShare:v6 containerSetupInfo:v7];
+      updatedShare2 = [(_SFCKShareCollaborationItem *)self updatedShare];
+      containerSetupInfo2 = [(_SFCKShareCollaborationItem *)self containerSetupInfo];
+      v8 = [SFCollaborationUtilities createLinkMetadataWithCKShare:updatedShare2 containerSetupInfo:containerSetupInfo2];
       [(_SFCKShareCollaborationItem *)self setPostSharelinkMetadata:v8];
     }
   }
 
-  v9 = [(_SFCKShareCollaborationItem *)self postSharelinkMetadata];
+  postSharelinkMetadata = [(_SFCKShareCollaborationItem *)self postSharelinkMetadata];
 
-  if (!v9)
+  if (!postSharelinkMetadata)
   {
-    v10 = [(SFCollaborationItem *)self itemProvider];
-    v11 = [SFCollaborationUtilities createLinkMetadataWithCKShareItemProvider:v10];
+    itemProvider = [(SFCollaborationItem *)self itemProvider];
+    v11 = [SFCollaborationUtilities createLinkMetadataWithCKShareItemProvider:itemProvider];
     [(_SFCKShareCollaborationItem *)self setPostSharelinkMetadata:v11];
   }
 

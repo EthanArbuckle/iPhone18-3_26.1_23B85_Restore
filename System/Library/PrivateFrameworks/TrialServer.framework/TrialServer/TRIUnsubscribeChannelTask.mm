@@ -1,25 +1,25 @@
 @interface TRIUnsubscribeChannelTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithExperimentId:(id)a3 startTime:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TRIUnsubscribeChannelTask)initWithCoder:(id)a3;
-- (TRIUnsubscribeChannelTask)initWithExperiment:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithExperimentId:(id)id startTime:(id)time;
+- (BOOL)isEqual:(id)equal;
+- (TRIUnsubscribeChannelTask)initWithCoder:(id)coder;
+- (TRIUnsubscribeChannelTask)initWithExperiment:(id)experiment;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIUnsubscribeChannelTask
 
-- (TRIUnsubscribeChannelTask)initWithExperiment:(id)a3
+- (TRIUnsubscribeChannelTask)initWithExperiment:(id)experiment
 {
-  v6 = a3;
-  if (!v6)
+  experimentCopy = experiment;
+  if (!experimentCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIUnsubscribeChannelTask.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"experimentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIUnsubscribeChannelTask.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"experimentId"}];
   }
 
   v11.receiver = self;
@@ -28,37 +28,37 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_experimentId, a3);
+    objc_storeStrong(&v7->_experimentId, experiment);
   }
 
   return v8;
 }
 
-+ (id)taskWithExperimentId:(id)a3 startTime:(id)a4
++ (id)taskWithExperimentId:(id)id startTime:(id)time
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TRIUnsubscribeChannelTask alloc] initWithExperiment:v6];
+  timeCopy = time;
+  idCopy = id;
+  v7 = [[TRIUnsubscribeChannelTask alloc] initWithExperiment:idCopy];
 
-  [(TRIUnsubscribeChannelTask *)v7 setStartTime:v5];
+  [(TRIUnsubscribeChannelTask *)v7 setStartTime:timeCopy];
 
   return v7;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
-  v5 = [a3 pushServiceMuxer];
-  [v5 unsubscribeForExperimentId:self->_experimentId];
+  pushServiceMuxer = [context pushServiceMuxer];
+  [pushServiceMuxer unsubscribeForExperimentId:self->_experimentId];
 
   v6 = MEMORY[0x277CBEBF8];
 
   return [TRITaskRunResult resultWithRunStatus:2 reportResultToServer:0 nextTasks:v6 earliestRetryDate:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -67,9 +67,9 @@
   {
     v8.receiver = self;
     v8.super_class = TRIUnsubscribeChannelTask;
-    if ([(TRIBaseTask *)&v8 isEqual:v4]&& [(TRIUnsubscribeChannelTask *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(TRIBaseTask *)&v8 isEqual:equalCopy]&& [(TRIUnsubscribeChannelTask *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_experimentId isEqualToString:v5->_experimentId])
       {
         v6 = [MEMORY[0x277CBEAA8] triIsDate:self->_startTime equalToDate:v5->_startTime];
@@ -109,13 +109,13 @@
 {
   v3 = objc_opt_new();
   [v3 setExperimentId:self->_experimentId];
-  v4 = [(TRIUnsubscribeChannelTask *)self startTime];
+  startTime = [(TRIUnsubscribeChannelTask *)self startTime];
 
-  if (v4)
+  if (startTime)
   {
     v5 = objc_alloc(MEMORY[0x277D73B88]);
-    v6 = [(TRIUnsubscribeChannelTask *)self startTime];
-    v7 = [v5 initWithDate:v6];
+    startTime2 = [(TRIUnsubscribeChannelTask *)self startTime];
+    v7 = [v5 initWithDate:startTime2];
     [v3 setStartTimestamp:v7];
   }
 
@@ -124,34 +124,34 @@
 
 - (id)serialize
 {
-  v4 = [(TRIUnsubscribeChannelTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIUnsubscribeChannelTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIUnsubscribeChannelTask.m" lineNumber:101 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIUnsubscribeChannelTask.m" lineNumber:101 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
   v21 = 0;
-  v3 = [(TRIPBMessage *)TRIUnsubscribeChannelPersistedTask parseFromData:a3 error:&v21];
+  v3 = [(TRIPBMessage *)TRIUnsubscribeChannelPersistedTask parseFromData:data error:&v21];
   v4 = v21;
   if (!v3)
   {
-    v8 = TRILogCategory_Server();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    experimentId2 = TRILogCategory_Server();
+    if (os_log_type_enabled(experimentId2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v23 = v4;
-      _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Unable to parse buffer as TRIUnsubscribePersistedTask: %{public}@", buf, 0xCu);
+      _os_log_error_impl(&dword_26F567000, experimentId2, OS_LOG_TYPE_ERROR, "Unable to parse buffer as TRIUnsubscribePersistedTask: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_13;
@@ -169,8 +169,8 @@
       _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, "Cannot decode message of type %@ with missing field: experimentId", buf, 0xCu);
     }
 
-    v8 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    experimentId2 = TRILogCategory_Server();
+    if (!os_log_type_enabled(experimentId2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
@@ -183,13 +183,13 @@
     goto LABEL_19;
   }
 
-  v5 = [v3 experimentId];
-  v6 = [v5 length];
+  experimentId = [v3 experimentId];
+  v6 = [experimentId length];
 
   if (!v6)
   {
-    v8 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    experimentId2 = TRILogCategory_Server();
+    if (!os_log_type_enabled(experimentId2, OS_LOG_TYPE_ERROR))
     {
 LABEL_13:
       v11 = 0;
@@ -202,23 +202,23 @@ LABEL_13:
     v23 = v14;
     v15 = "Cannot decode message of type %@ with field of length 0: experimentId";
 LABEL_19:
-    _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
+    _os_log_error_impl(&dword_26F567000, experimentId2, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
 
     goto LABEL_13;
   }
 
   v7 = objc_opt_class();
-  v8 = [v3 experimentId];
+  experimentId2 = [v3 experimentId];
   if ([v3 hasStartTimestamp])
   {
-    v9 = [v3 startTimestamp];
-    v10 = [v9 date];
-    v11 = [v7 taskWithExperimentId:v8 startTime:v10];
+    startTimestamp = [v3 startTimestamp];
+    date = [startTimestamp date];
+    v11 = [v7 taskWithExperimentId:experimentId2 startTime:date];
   }
 
   else
   {
-    v11 = [v7 taskWithExperimentId:v8 startTime:0];
+    v11 = [v7 taskWithExperimentId:experimentId2 startTime:0];
   }
 
 LABEL_14:
@@ -228,15 +228,15 @@ LABEL_14:
   return v11;
 }
 
-- (TRIUnsubscribeChannelTask)initWithCoder:(id)a3
+- (TRIUnsubscribeChannelTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIUnsubscribeChannelTask;
   v5 = [(TRIUnsubscribeChannelTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -256,18 +256,18 @@ LABEL_14:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIUnsubscribeChannelTask.m" lineNumber:130 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIUnsubscribeChannelTask.m" lineNumber:130 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIUnsubscribeChannelTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIUnsubscribeChannelTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

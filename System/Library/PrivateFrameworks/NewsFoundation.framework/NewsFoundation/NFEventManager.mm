@@ -1,14 +1,14 @@
 @interface NFEventManager
 - (NFEventManager)init;
-- (void)attemptTriggersForCurrentEvent:(id)a3;
-- (void)fireEvent:(id)a3;
-- (void)handleAlwaysTrigger:(id)a3 event:(id)a4;
-- (void)handleOnceTrigger:(id)a3 event:(id)a4;
-- (void)triggerAlwaysWhenAllEventsHaveOccurred:(id)a3 block:(id)a4;
-- (void)triggerOnAnyEvent:(id)a3 block:(id)a4;
-- (void)triggerOnEvent:(id)a3 block:(id)a4;
-- (void)triggerOnceWhenAllEventsHaveOccurred:(id)a3 block:(id)a4;
-- (void)triggerOnceWhenAnyEventHasOccurred:(id)a3 block:(id)a4;
+- (void)attemptTriggersForCurrentEvent:(id)event;
+- (void)fireEvent:(id)event;
+- (void)handleAlwaysTrigger:(id)trigger event:(id)event;
+- (void)handleOnceTrigger:(id)trigger event:(id)event;
+- (void)triggerAlwaysWhenAllEventsHaveOccurred:(id)occurred block:(id)block;
+- (void)triggerOnAnyEvent:(id)event block:(id)block;
+- (void)triggerOnEvent:(id)event block:(id)block;
+- (void)triggerOnceWhenAllEventsHaveOccurred:(id)occurred block:(id)block;
+- (void)triggerOnceWhenAnyEventHasOccurred:(id)occurred block:(id)block;
 @end
 
 @implementation NFEventManager
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (void)fireEvent:(id)a3
+- (void)fireEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [MEMORY[0x277CCACC8] isMainThread];
-  if (v4)
+  if (eventCopy)
   {
-    v5 = [(NFEventManager *)self events];
-    [v5 addObject:v4];
+    events = [(NFEventManager *)self events];
+    [events addObject:eventCopy];
 
-    [(NFEventManager *)self attemptTriggersForCurrentEvent:v4];
+    [(NFEventManager *)self attemptTriggersForCurrentEvent:eventCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -50,21 +50,21 @@
   }
 }
 
-- (void)triggerOnceWhenAllEventsHaveOccurred:(id)a3 block:(id)a4
+- (void)triggerOnceWhenAllEventsHaveOccurred:(id)occurred block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  occurredCopy = occurred;
+  blockCopy = block;
   [MEMORY[0x277CCACC8] isMainThread];
-  if (v7 && [v6 count])
+  if (blockCopy && [occurredCopy count])
   {
     v8 = [NFEventTrigger alloc];
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [(NFEventTrigger *)v8 initWithKey:v10 fireOnce:1 fireOnAny:0 events:v6 block:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [(NFEventTrigger *)v8 initWithKey:uUIDString fireOnce:1 fireOnAny:0 events:occurredCopy block:blockCopy];
 
-    v12 = [(NFEventManager *)self triggers];
+    triggers = [(NFEventManager *)self triggers];
     v13 = [(NFEventTrigger *)v11 key];
-    [v12 setObject:v11 forKey:v13];
+    [triggers setObject:v11 forKey:v13];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -73,21 +73,21 @@
   }
 }
 
-- (void)triggerAlwaysWhenAllEventsHaveOccurred:(id)a3 block:(id)a4
+- (void)triggerAlwaysWhenAllEventsHaveOccurred:(id)occurred block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  occurredCopy = occurred;
+  blockCopy = block;
   [MEMORY[0x277CCACC8] isMainThread];
-  if (v7 && [v6 count])
+  if (blockCopy && [occurredCopy count])
   {
     v8 = [NFEventTrigger alloc];
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [(NFEventTrigger *)v8 initWithKey:v10 fireOnce:0 fireOnAny:0 events:v6 block:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [(NFEventTrigger *)v8 initWithKey:uUIDString fireOnce:0 fireOnAny:0 events:occurredCopy block:blockCopy];
 
-    v12 = [(NFEventManager *)self triggers];
+    triggers = [(NFEventManager *)self triggers];
     v13 = [(NFEventTrigger *)v11 key];
-    [v12 setObject:v11 forKey:v13];
+    [triggers setObject:v11 forKey:v13];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -96,21 +96,21 @@
   }
 }
 
-- (void)triggerOnceWhenAnyEventHasOccurred:(id)a3 block:(id)a4
+- (void)triggerOnceWhenAnyEventHasOccurred:(id)occurred block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  occurredCopy = occurred;
+  blockCopy = block;
   [MEMORY[0x277CCACC8] isMainThread];
-  if (v7 && [v6 count])
+  if (blockCopy && [occurredCopy count])
   {
     v8 = [NFEventTrigger alloc];
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [(NFEventTrigger *)v8 initWithKey:v10 fireOnce:1 fireOnAny:1 events:v6 block:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [(NFEventTrigger *)v8 initWithKey:uUIDString fireOnce:1 fireOnAny:1 events:occurredCopy block:blockCopy];
 
-    v12 = [(NFEventManager *)self triggers];
+    triggers = [(NFEventManager *)self triggers];
     v13 = [(NFEventTrigger *)v11 key];
-    [v12 setObject:v11 forKey:v13];
+    [triggers setObject:v11 forKey:v13];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -119,15 +119,15 @@
   }
 }
 
-- (void)triggerOnEvent:(id)a3 block:(id)a4
+- (void)triggerOnEvent:(id)event block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   [MEMORY[0x277CCACC8] isMainThread];
-  if (v6 && v7)
+  if (eventCopy && blockCopy)
   {
-    v8 = [MEMORY[0x277CBEB98] setWithObject:v6];
-    [(NFEventManager *)self triggerOnAnyEvent:v8 block:v7];
+    v8 = [MEMORY[0x277CBEB98] setWithObject:eventCopy];
+    [(NFEventManager *)self triggerOnAnyEvent:v8 block:blockCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -136,21 +136,21 @@
   }
 }
 
-- (void)triggerOnAnyEvent:(id)a3 block:(id)a4
+- (void)triggerOnAnyEvent:(id)event block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   [MEMORY[0x277CCACC8] isMainThread];
-  if (v6 && v7 && [v6 count])
+  if (eventCopy && blockCopy && [eventCopy count])
   {
     v8 = [NFEventTrigger alloc];
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [(NFEventTrigger *)v8 initWithKey:v10 fireOnce:0 fireOnAny:1 events:v6 block:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [(NFEventTrigger *)v8 initWithKey:uUIDString fireOnce:0 fireOnAny:1 events:eventCopy block:blockCopy];
 
-    v12 = [(NFEventManager *)self triggers];
+    triggers = [(NFEventManager *)self triggers];
     v13 = [(NFEventTrigger *)v11 key];
-    [v12 setObject:v11 forKey:v13];
+    [triggers setObject:v11 forKey:v13];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -159,18 +159,18 @@
   }
 }
 
-- (void)attemptTriggersForCurrentEvent:(id)a3
+- (void)attemptTriggersForCurrentEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NFEventManager *)self triggers];
-  v6 = [v5 allValues];
+  triggers = [(NFEventManager *)self triggers];
+  allValues = [triggers allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -181,22 +181,22 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([v11 fireOnce])
         {
-          [(NFEventManager *)self handleOnceTrigger:v11 event:v4];
+          [(NFEventManager *)self handleOnceTrigger:v11 event:eventCopy];
         }
 
         else
         {
-          [(NFEventManager *)self handleAlwaysTrigger:v11 event:v4];
+          [(NFEventManager *)self handleAlwaysTrigger:v11 event:eventCopy];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -205,15 +205,15 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleOnceTrigger:(id)a3 event:(id)a4
+- (void)handleOnceTrigger:(id)trigger event:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 fireOnAny])
+  triggerCopy = trigger;
+  eventCopy = event;
+  if ([triggerCopy fireOnAny])
   {
-    v8 = [v6 events];
-    v9 = [v8 containsObject:v7];
+    events = [triggerCopy events];
+    v9 = [events containsObject:eventCopy];
 
     if ((v9 & 1) == 0)
     {
@@ -227,8 +227,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v6 events];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    events2 = [triggerCopy events];
+    v11 = [events2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -239,12 +239,12 @@ LABEL_6:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(events2);
         }
 
         v15 = *(*(&v20 + 1) + 8 * v14);
-        v16 = [(NFEventManager *)self events];
-        LODWORD(v15) = [v16 containsObject:v15];
+        events3 = [(NFEventManager *)self events];
+        LODWORD(v15) = [events3 containsObject:v15];
 
         if (!v15)
         {
@@ -253,7 +253,7 @@ LABEL_6:
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v12 = [events2 countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v12)
           {
             goto LABEL_6;
@@ -265,27 +265,27 @@ LABEL_6:
     }
   }
 
-  v17 = [(NFEventManager *)self triggers];
-  v18 = [v6 key];
-  [v17 removeObjectForKey:v18];
+  triggers = [(NFEventManager *)self triggers];
+  v18 = [triggerCopy key];
+  [triggers removeObjectForKey:v18];
 
-  v10 = [v6 block];
-  v10[2]();
+  events2 = [triggerCopy block];
+  events2[2]();
 LABEL_14:
 
 LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlwaysTrigger:(id)a3 event:(id)a4
+- (void)handleAlwaysTrigger:(id)trigger event:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 fireOnAny])
+  triggerCopy = trigger;
+  eventCopy = event;
+  if ([triggerCopy fireOnAny])
   {
-    v8 = [v6 events];
-    v9 = [v8 containsObject:v7];
+    events = [triggerCopy events];
+    v9 = [events containsObject:eventCopy];
 
     if ((v9 & 1) == 0)
     {
@@ -299,8 +299,8 @@ LABEL_15:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v6 events];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    events2 = [triggerCopy events];
+    v11 = [events2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -311,12 +311,12 @@ LABEL_6:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(events2);
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        v16 = [(NFEventManager *)self events];
-        LODWORD(v15) = [v16 containsObject:v15];
+        events3 = [(NFEventManager *)self events];
+        LODWORD(v15) = [events3 containsObject:v15];
 
         if (!v15)
         {
@@ -325,7 +325,7 @@ LABEL_6:
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v12 = [events2 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v12)
           {
             goto LABEL_6;
@@ -337,8 +337,8 @@ LABEL_6:
     }
   }
 
-  v10 = [v6 block];
-  v10[2]();
+  events2 = [triggerCopy block];
+  events2[2]();
 LABEL_14:
 
 LABEL_15:

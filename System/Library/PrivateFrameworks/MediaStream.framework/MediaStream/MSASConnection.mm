@@ -5,68 +5,68 @@
 - (NSMutableDictionary)focusAlbumTimerByPersonID;
 - (NSMutableDictionary)foregroundPingTimerContextByPersonID;
 - (NSMutableDictionary)serverSideConfigurationDictionaryByPersonID;
-- (id)_cloneArray:(id)a3;
+- (id)_cloneArray:(id)array;
 - (id)_communicationFailureError;
-- (void)XPCNSClientConnection:(id)a3 didReceiveRequest:(id)a4;
-- (void)_sendMessageReliably:(id)a3 data:(id)a4 successHandler:(id)a5 failureHandler:(id)a6;
-- (void)acceptInvitationWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)acceptInvitationWithToken:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)acceptInvitationWithToken:(id)a3 personID:(id)a4 info:(id)a5 completionBlock:(id)a6;
-- (void)accessControlGUIDsForAlbumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)accessControlWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)activityIsThrottledByLackOfDiskSpacePersonID:(id)a3 completionBlock:(id)a4;
-- (void)addAccessControlEntries:(id)a3 toAlbumWithGUID:(id)a4 personID:(id)a5 info:(id)a6 completionBlock:(id)a7;
-- (void)addAlbum:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)addAssetCollections:(id)a3 toAlbumWithGUID:(id)a4 personID:(id)a5 info:(id)a6;
-- (void)addComments:(id)a3 toAssetCollectionWithGUID:(id)a4 personID:(id)a5 info:(id)a6;
-- (void)albumGUIDsForPersonID:(id)a3 completionBlock:(id)a4;
-- (void)albumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)assetCollectionGUIDsInAlbumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)assetCollectionWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)cancelActivitiesForPersonID:(id)a3;
-- (void)clientOrgKeyForRecordID:(id)a3 zoneName:(id)a4 ownerUserID:(id)a5 personID:(id)a6 completionBlock:(id)a7;
-- (void)commentGUIDsForAssetCollectionWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)commentWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)deleteAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)deleteAssetCollectionWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)deleteAssetCollectionsWithGUIDs:(id)a3 personID:(id)a4;
-- (void)deleteCommentWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)forgetEverythingAboutPersonID:(id)a3;
-- (void)handlePushNotificationForPersonID:(id)a3;
-- (void)invitationGUIDsForPersonID:(id)a3 completionBlock:(id)a4;
-- (void)invitationWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)isAssetCollectionWithGUID:(id)a3 markedAsUnviewedPersonID:(id)a4 completionBlock:(id)a5;
-- (void)isInRetryStateHandler:(id)a3;
-- (void)markAsSpamAlbumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)markAsSpamInvitationWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)markAsSpamInvitationWithToken:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)markCommentsForAssetCollectionWithGUID:(id)a3 asViewedWithLastViewedDate:(id)a4 personID:(id)a5 info:(id)a6;
-- (void)modifyAlbumMetadata:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)nextActivityDateHandler:(id)a3;
+- (void)XPCNSClientConnection:(id)connection didReceiveRequest:(id)request;
+- (void)_sendMessageReliably:(id)reliably data:(id)data successHandler:(id)handler failureHandler:(id)failureHandler;
+- (void)acceptInvitationWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)acceptInvitationWithToken:(id)token personID:(id)d completionBlock:(id)block;
+- (void)acceptInvitationWithToken:(id)token personID:(id)d info:(id)info completionBlock:(id)block;
+- (void)accessControlGUIDsForAlbumWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)accessControlWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)activityIsThrottledByLackOfDiskSpacePersonID:(id)d completionBlock:(id)block;
+- (void)addAccessControlEntries:(id)entries toAlbumWithGUID:(id)d personID:(id)iD info:(id)info completionBlock:(id)block;
+- (void)addAlbum:(id)album personID:(id)d info:(id)info;
+- (void)addAssetCollections:(id)collections toAlbumWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)addComments:(id)comments toAssetCollectionWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)albumGUIDsForPersonID:(id)d completionBlock:(id)block;
+- (void)albumWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)assetCollectionGUIDsInAlbumWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)assetCollectionWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)cancelActivitiesForPersonID:(id)d;
+- (void)clientOrgKeyForRecordID:(id)d zoneName:(id)name ownerUserID:(id)iD personID:(id)personID completionBlock:(id)block;
+- (void)commentGUIDsForAssetCollectionWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)commentWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)deleteAlbumWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)deleteAssetCollectionWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)deleteAssetCollectionsWithGUIDs:(id)ds personID:(id)d;
+- (void)deleteCommentWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)forgetEverythingAboutPersonID:(id)d;
+- (void)handlePushNotificationForPersonID:(id)d;
+- (void)invitationGUIDsForPersonID:(id)d completionBlock:(id)block;
+- (void)invitationWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)isAssetCollectionWithGUID:(id)d markedAsUnviewedPersonID:(id)iD completionBlock:(id)block;
+- (void)isInRetryStateHandler:(id)handler;
+- (void)markAsSpamAlbumWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)markAsSpamInvitationWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)markAsSpamInvitationWithToken:(id)token personID:(id)d completionBlock:(id)block;
+- (void)markCommentsForAssetCollectionWithGUID:(id)d asViewedWithLastViewedDate:(id)date personID:(id)iD info:(id)info;
+- (void)modifyAlbumMetadata:(id)metadata personID:(id)d info:(id)info;
+- (void)nextActivityDateHandler:(id)handler;
 - (void)pingForeground;
-- (void)refreshAccessControlListForAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)rejectInvitationWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)removeAccessControlEntryWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)retrieveAssets:(id)a3 inAlbumWithGUID:(id)a4 personID:(id)a5;
+- (void)refreshAccessControlListForAlbumWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)rejectInvitationWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)removeAccessControlEntryWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)retrieveAssets:(id)assets inAlbumWithGUID:(id)d personID:(id)iD;
 - (void)retryOutstandingActivities;
-- (void)retryOutstandingActivitiesForPersonID:(id)a3;
-- (void)serverSideConfigurationDictionaryForPersonID:(id)a3 completionBlock:(id)a4;
-- (void)setClientOrgKey:(id)a3 forAlbumWithGUID:(id)a4 personID:(id)a5 info:(id)a6;
-- (void)setFocusAlbum:(id)a3 forPersonID:(id)a4;
-- (void)setFocusAlbumGUID:(id)a3 forPersonID:(id)a4;
-- (void)setFocusAssetCollectionGUID:(id)a3 forPersonID:(id)a4;
-- (void)setIsUIForeground:(BOOL)a3 forPersonID:(id)a4;
-- (void)setMigrationMarker:(id)a3 personID:(id)a4;
-- (void)subscribeToAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)timerPingQueueForegroundPingTimerExpiredContext:(id)a3 personID:(id)a4;
-- (void)unsubscribeFromAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5;
-- (void)videoURLForAssetCollectionWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5;
-- (void)videoURLsForAssetCollectionWithGUID:(id)a3 forMediaAssetType:(unint64_t)a4 personID:(id)a5 completionBlock:(id)a6;
+- (void)retryOutstandingActivitiesForPersonID:(id)d;
+- (void)serverSideConfigurationDictionaryForPersonID:(id)d completionBlock:(id)block;
+- (void)setClientOrgKey:(id)key forAlbumWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)setFocusAlbum:(id)album forPersonID:(id)d;
+- (void)setFocusAlbumGUID:(id)d forPersonID:(id)iD;
+- (void)setFocusAssetCollectionGUID:(id)d forPersonID:(id)iD;
+- (void)setIsUIForeground:(BOOL)foreground forPersonID:(id)d;
+- (void)setMigrationMarker:(id)marker personID:(id)d;
+- (void)subscribeToAlbumWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)timerPingQueueForegroundPingTimerExpiredContext:(id)context personID:(id)d;
+- (void)unsubscribeFromAlbumWithGUID:(id)d personID:(id)iD info:(id)info;
+- (void)videoURLForAssetCollectionWithGUID:(id)d personID:(id)iD completionBlock:(id)block;
+- (void)videoURLsForAssetCollectionWithGUID:(id)d forMediaAssetType:(unint64_t)type personID:(id)iD completionBlock:(id)block;
 @end
 
 @implementation MSASConnection
 
-- (void)XPCNSClientConnection:(id)a3 didReceiveRequest:(id)a4
+- (void)XPCNSClientConnection:(id)connection didReceiveRequest:(id)request
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -75,85 +75,85 @@
   }
 }
 
-- (void)retrieveAssets:(id)a3 inAlbumWithGUID:(id)a4 personID:(id)a5
+- (void)retrieveAssets:(id)assets inAlbumWithGUID:(id)d personID:(id)iD
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001F8], *MEMORY[0x277D00098], a5, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00050], a4, *MEMORY[0x277CFFFF0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001F8], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], assets, *MEMORY[0x277D00050], d, *MEMORY[0x277CFFFF0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)forgetEverythingAboutPersonID:(id)a3
+- (void)forgetEverythingAboutPersonID:(id)d
 {
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00170], *MEMORY[0x277D00098], a3, *MEMORY[0x277D00270], 0}];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00170], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], 0}];
   [(MSASConnection *)self _sendMessageReliably:v4];
 }
 
-- (void)deleteCommentWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)deleteCommentWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00160], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00068], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00160], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00068], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)addComments:(id)a3 toAssetCollectionWithGUID:(id)a4 personID:(id)a5 info:(id)a6
+- (void)addComments:(id)comments toAssetCollectionWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00110], *MEMORY[0x277D00098], a5, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00070], a4, *MEMORY[0x277D00030], a6, *MEMORY[0x277D000A0], 0}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00110], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], comments, *MEMORY[0x277D00070], d, *MEMORY[0x277D00030], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v7];
 }
 
-- (void)markCommentsForAssetCollectionWithGUID:(id)a3 asViewedWithLastViewedDate:(id)a4 personID:(id)a5 info:(id)a6
+- (void)markCommentsForAssetCollectionWithGUID:(id)d asViewedWithLastViewedDate:(id)date personID:(id)iD info:(id)info
 {
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001B0], *MEMORY[0x277D00098], a5, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00030], a4, *MEMORY[0x277D000C8], a6, *MEMORY[0x277D000A0], 0}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001B0], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00030], date, *MEMORY[0x277D000C8], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v7];
 }
 
-- (void)deleteAssetCollectionsWithGUIDs:(id)a3 personID:(id)a4
+- (void)deleteAssetCollectionsWithGUIDs:(id)ds personID:(id)d
 {
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00158], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00038], 0}];
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00158], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], ds, *MEMORY[0x277D00038], 0}];
   [(MSASConnection *)self _sendMessageReliably:v5];
 }
 
-- (void)deleteAssetCollectionWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)deleteAssetCollectionWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00150], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00030], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00150], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00030], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)addAssetCollections:(id)a3 toAlbumWithGUID:(id)a4 personID:(id)a5 info:(id)a6
+- (void)addAssetCollections:(id)collections toAlbumWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00108], *MEMORY[0x277D00098], a5, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00040], a4, *MEMORY[0x277CFFFF0], a6, *MEMORY[0x277D000A0], 0}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00108], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], collections, *MEMORY[0x277D00040], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v7];
 }
 
-- (void)removeAccessControlEntryWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)removeAccessControlEntryWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001E8], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D002C0], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001E8], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D002C0], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)addAccessControlEntries:(id)a3 toAlbumWithGUID:(id)a4 personID:(id)a5 info:(id)a6 completionBlock:(id)a7
+- (void)addAccessControlEntries:(id)entries toAlbumWithGUID:(id)d personID:(id)iD info:(id)info completionBlock:(id)block
 {
-  v12 = a7;
+  blockCopy = block;
   v13 = MEMORY[0x277CBEB38];
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  infoCopy = info;
+  iDCopy = iD;
+  dCopy = d;
+  entriesCopy = entries;
   v18 = objc_alloc_init(v13);
   [v18 setObject:*MEMORY[0x277D000F8] forKeyedSubscript:*MEMORY[0x277D00098]];
-  [v18 setObject:v15 forKeyedSubscript:*MEMORY[0x277D00270]];
+  [v18 setObject:iDCopy forKeyedSubscript:*MEMORY[0x277D00270]];
 
-  [v18 setObject:v17 forKeyedSubscript:*MEMORY[0x277D002C8]];
-  [v18 setObject:v16 forKeyedSubscript:*MEMORY[0x277CFFFF0]];
+  [v18 setObject:entriesCopy forKeyedSubscript:*MEMORY[0x277D002C8]];
+  [v18 setObject:dCopy forKeyedSubscript:*MEMORY[0x277CFFFF0]];
 
-  [v18 setObject:v14 forKeyedSubscript:*MEMORY[0x277D000A0]];
-  v19 = [(MSASConnection *)self connection];
+  [v18 setObject:infoCopy forKeyedSubscript:*MEMORY[0x277D000A0]];
+  connection = [(MSASConnection *)self connection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __88__MSASConnection_addAccessControlEntries_toAlbumWithGUID_personID_info_completionBlock___block_invoke;
   v21[3] = &unk_2798A4FD8;
   v21[4] = self;
-  v22 = v12;
-  v20 = v12;
-  [v19 sendMessageReliably:v18 data:0 maxRetryCount:5 withHandler:v21];
+  v22 = blockCopy;
+  v20 = blockCopy;
+  [connection sendMessageReliably:v18 data:0 maxRetryCount:5 withHandler:v21];
 }
 
 void __88__MSASConnection_addAccessControlEntries_toAlbumWithGUID_personID_info_completionBlock___block_invoke(uint64_t a1, int a2, void *a3)
@@ -189,34 +189,34 @@ void __88__MSASConnection_addAccessControlEntries_toAlbumWithGUID_personID_info_
 LABEL_7:
 }
 
-- (void)rejectInvitationWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)rejectInvitationWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001E0], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D000A8], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001E0], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D000A8], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)acceptInvitationWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)acceptInvitationWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000D0], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D000A8], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000D0], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D000A8], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)acceptInvitationWithToken:(id)a3 personID:(id)a4 info:(id)a5 completionBlock:(id)a6
+- (void)acceptInvitationWithToken:(id)token personID:(id)d info:(id)info completionBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000D8], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D000B0], v10, *MEMORY[0x277D000A0], 0}];
-  v13 = [(MSASConnection *)self connection];
+  infoCopy = info;
+  blockCopy = block;
+  v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000D8], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], token, *MEMORY[0x277D000B0], infoCopy, *MEMORY[0x277D000A0], 0}];
+  connection = [(MSASConnection *)self connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __74__MSASConnection_acceptInvitationWithToken_personID_info_completionBlock___block_invoke;
   v16[3] = &unk_2798A4FB0;
-  v18 = self;
-  v19 = v11;
-  v17 = v10;
-  v14 = v10;
-  v15 = v11;
-  [v13 sendMessageReliably:v12 data:0 maxRetryCount:5 withHandler:v16];
+  selfCopy = self;
+  v19 = blockCopy;
+  v17 = infoCopy;
+  v14 = infoCopy;
+  v15 = blockCopy;
+  [connection sendMessageReliably:v12 data:0 maxRetryCount:5 withHandler:v16];
 }
 
 void __74__MSASConnection_acceptInvitationWithToken_personID_info_completionBlock___block_invoke(uint64_t a1, int a2, void *a3)
@@ -253,43 +253,43 @@ void __74__MSASConnection_acceptInvitationWithToken_personID_info_completionBloc
 LABEL_7:
 }
 
-- (void)acceptInvitationWithToken:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)acceptInvitationWithToken:(id)token personID:(id)d completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__MSASConnection_acceptInvitationWithToken_personID_completionBlock___block_invoke;
   v10[3] = &unk_2798A4F88;
-  v11 = v8;
-  v9 = v8;
-  [(MSASConnection *)self acceptInvitationWithToken:a3 personID:a4 info:0 completionBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(MSASConnection *)self acceptInvitationWithToken:token personID:d info:0 completionBlock:v10];
 }
 
-- (void)markAsSpamAlbumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)markAsSpamAlbumWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v9 = *MEMORY[0x277D00198];
   v10 = *MEMORY[0x277D00270];
   v20[0] = *MEMORY[0x277D00098];
   v20[1] = v10;
   v21[0] = v9;
-  v21[1] = a4;
+  v21[1] = iD;
   v20[2] = *MEMORY[0x277CFFFF0];
-  v21[2] = a3;
+  v21[2] = d;
   v11 = MEMORY[0x277CBEAC0];
-  v12 = a4;
-  v13 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v14 = [v11 dictionaryWithObjects:v21 forKeys:v20 count:3];
-  v15 = [(MSASConnection *)self connection];
+  connection = [(MSASConnection *)self connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__MSASConnection_markAsSpamAlbumWithGUID_personID_completionBlock___block_invoke;
   v18[3] = &unk_2798A4FD8;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [v15 sendMessageReliably:v14 data:0 maxRetryCount:5 withHandler:v18];
+  v19 = blockCopy;
+  v16 = blockCopy;
+  [connection sendMessageReliably:v14 data:0 maxRetryCount:5 withHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -325,31 +325,31 @@ void __67__MSASConnection_markAsSpamAlbumWithGUID_personID_completionBlock___blo
 LABEL_7:
 }
 
-- (void)markAsSpamInvitationWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)markAsSpamInvitationWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v9 = *MEMORY[0x277D001A0];
   v10 = *MEMORY[0x277D00270];
   v20[0] = *MEMORY[0x277D00098];
   v20[1] = v10;
   v21[0] = v9;
-  v21[1] = a4;
+  v21[1] = iD;
   v20[2] = *MEMORY[0x277D000A8];
-  v21[2] = a3;
+  v21[2] = d;
   v11 = MEMORY[0x277CBEAC0];
-  v12 = a4;
-  v13 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v14 = [v11 dictionaryWithObjects:v21 forKeys:v20 count:3];
-  v15 = [(MSASConnection *)self connection];
+  connection = [(MSASConnection *)self connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__MSASConnection_markAsSpamInvitationWithGUID_personID_completionBlock___block_invoke;
   v18[3] = &unk_2798A4FD8;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [v15 sendMessageReliably:v14 data:0 maxRetryCount:5 withHandler:v18];
+  v19 = blockCopy;
+  v16 = blockCopy;
+  [connection sendMessageReliably:v14 data:0 maxRetryCount:5 withHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -385,31 +385,31 @@ void __72__MSASConnection_markAsSpamInvitationWithGUID_personID_completionBlock_
 LABEL_7:
 }
 
-- (void)markAsSpamInvitationWithToken:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)markAsSpamInvitationWithToken:(id)token personID:(id)d completionBlock:(id)block
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v9 = *MEMORY[0x277D001A8];
   v10 = *MEMORY[0x277D00270];
   v20[0] = *MEMORY[0x277D00098];
   v20[1] = v10;
   v21[0] = v9;
-  v21[1] = a4;
+  v21[1] = d;
   v20[2] = *MEMORY[0x277D000B0];
-  v21[2] = a3;
+  v21[2] = token;
   v11 = MEMORY[0x277CBEAC0];
-  v12 = a4;
-  v13 = a3;
+  dCopy = d;
+  tokenCopy = token;
   v14 = [v11 dictionaryWithObjects:v21 forKeys:v20 count:3];
-  v15 = [(MSASConnection *)self connection];
+  connection = [(MSASConnection *)self connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__MSASConnection_markAsSpamInvitationWithToken_personID_completionBlock___block_invoke;
   v18[3] = &unk_2798A4FD8;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [v15 sendMessageReliably:v14 data:0 maxRetryCount:5 withHandler:v18];
+  v19 = blockCopy;
+  v16 = blockCopy;
+  [connection sendMessageReliably:v14 data:0 maxRetryCount:5 withHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -445,15 +445,15 @@ void __73__MSASConnection_markAsSpamInvitationWithToken_personID_completionBlock
 LABEL_7:
 }
 
-- (void)unsubscribeFromAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)unsubscribeFromAlbumWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00238], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00238], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)subscribeToAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)subscribeToAlbumWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00230], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00230], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
@@ -497,69 +497,69 @@ void __88__MSASConnection_setPublicAccessEnabled_forAlbumWithGUID_personID_info_
   }
 }
 
-- (void)deleteAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)deleteAlbumWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00148], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00148], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)setMigrationMarker:(id)a3 personID:(id)a4
+- (void)setMigrationMarker:(id)marker personID:(id)d
 {
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00218], *MEMORY[0x277D00098], a3, *MEMORY[0x277D00268], a4, *MEMORY[0x277D00270], 0}];
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00218], *MEMORY[0x277D00098], marker, *MEMORY[0x277D00268], d, *MEMORY[0x277D00270], 0}];
   [(MSASConnection *)self _sendMessageReliably:v5];
 }
 
-- (void)setClientOrgKey:(id)a3 forAlbumWithGUID:(id)a4 personID:(id)a5 info:(id)a6
+- (void)setClientOrgKey:(id)key forAlbumWithGUID:(id)d personID:(id)iD info:(id)info
 {
   v8 = *MEMORY[0x277D00208];
   v9 = *MEMORY[0x277D00098];
-  if (a3)
+  if (key)
   {
-    [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v8, v9, a3, *MEMORY[0x277D00060], a5, *MEMORY[0x277D00270], a4, *MEMORY[0x277CFFFF0], a6, *MEMORY[0x277D000A0], 0}];
+    [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v8, v9, key, *MEMORY[0x277D00060], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0}];
   }
 
   else
   {
-    [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v8, v9, a5, *MEMORY[0x277D00270], a4, *MEMORY[0x277CFFFF0], a6, *MEMORY[0x277D000A0], 0, v10, v11}];
+    [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v8, v9, iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0, v10, v11}];
   }
   v12 = ;
   [(MSASConnection *)self _sendMessageReliably:v12];
 }
 
-- (void)modifyAlbumMetadata:(id)a3 personID:(id)a4 info:(id)a5
+- (void)modifyAlbumMetadata:(id)metadata personID:(id)d info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001B8], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF8], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001B8], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], metadata, *MEMORY[0x277CFFFF8], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)addAlbum:(id)a3 personID:(id)a4 info:(id)a5
+- (void)addAlbum:(id)album personID:(id)d info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00100], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF8], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00100], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], album, *MEMORY[0x277CFFFF8], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)refreshAccessControlListForAlbumWithGUID:(id)a3 personID:(id)a4 info:(id)a5
+- (void)refreshAccessControlListForAlbumWithGUID:(id)d personID:(id)iD info:(id)info
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001C0], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], a5, *MEMORY[0x277D000A0], 0}];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D001C0], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], info, *MEMORY[0x277D000A0], 0}];
   [(MSASConnection *)self _sendMessageReliably:v6];
 }
 
-- (void)clientOrgKeyForRecordID:(id)a3 zoneName:(id)a4 ownerUserID:(id)a5 personID:(id)a6 completionBlock:(id)a7
+- (void)clientOrgKeyForRecordID:(id)d zoneName:(id)name ownerUserID:(id)iD personID:(id)personID completionBlock:(id)block
 {
-  v12 = a7;
+  blockCopy = block;
   v13 = *MEMORY[0x277D00168];
   v14 = *MEMORY[0x277D00098];
   v15 = *MEMORY[0x277D00280];
   v16 = *MEMORY[0x277D002D8];
-  if (a5)
+  if (iD)
   {
-    v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v13, v14, a3, v15, a4, v16, a5, *MEMORY[0x277D00260], a6, *MEMORY[0x277D00270], 0}];
+    v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v13, v14, d, v15, name, v16, iD, *MEMORY[0x277D00260], personID, *MEMORY[0x277D00270], 0}];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __88__MSASConnection_clientOrgKeyForRecordID_zoneName_ownerUserID_personID_completionBlock___block_invoke;
     v28[3] = &unk_2798A4E98;
     v18 = &v29;
-    v29 = v12;
+    v29 = blockCopy;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __88__MSASConnection_clientOrgKeyForRecordID_zoneName_ownerUserID_personID_completionBlock___block_invoke_2;
@@ -572,13 +572,13 @@ void __88__MSASConnection_setPublicAccessEnabled_forAlbumWithGUID_personID_info_
 
   else
   {
-    v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v13, v14, a3, v15, a4, v16, a6, *MEMORY[0x277D00270], 0}];
+    v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v13, v14, d, v15, name, v16, personID, *MEMORY[0x277D00270], 0}];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __88__MSASConnection_clientOrgKeyForRecordID_zoneName_ownerUserID_personID_completionBlock___block_invoke_3;
     v24[3] = &unk_2798A4E98;
     v18 = &v25;
-    v25 = v12;
+    v25 = blockCopy;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __88__MSASConnection_clientOrgKeyForRecordID_zoneName_ownerUserID_personID_completionBlock___block_invoke_4;
@@ -606,28 +606,28 @@ void __88__MSASConnection_clientOrgKeyForRecordID_zoneName_ownerUserID_personID_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)serverSideConfigurationDictionaryForPersonID:(id)a3 completionBlock:(id)a4
+- (void)serverSideConfigurationDictionaryForPersonID:(id)d completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASConnection *)self serverSideConfigurationDictionaryByPersonID];
-  v9 = [v8 objectForKey:v6];
+  dCopy = d;
+  blockCopy = block;
+  serverSideConfigurationDictionaryByPersonID = [(MSASConnection *)self serverSideConfigurationDictionaryByPersonID];
+  v9 = [serverSideConfigurationDictionaryByPersonID objectForKey:dCopy];
 
   if (v9)
   {
-    v7[2](v7, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00200], *MEMORY[0x277D00098], v6, *MEMORY[0x277D00270], 0}];
+    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00200], *MEMORY[0x277D00098], dCopy, *MEMORY[0x277D00270], 0}];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __79__MSASConnection_serverSideConfigurationDictionaryForPersonID_completionBlock___block_invoke;
     v14[3] = &unk_2798A4F60;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = dCopy;
+    v16 = blockCopy;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __79__MSASConnection_serverSideConfigurationDictionaryForPersonID_completionBlock___block_invoke_31;
@@ -694,15 +694,15 @@ uint64_t __79__MSASConnection_serverSideConfigurationDictionaryForPersonID_compl
   return result;
 }
 
-- (void)commentWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)commentWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00140], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00068], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00140], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00068], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__MSASConnection_commentWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__MSASConnection_commentWithGUID_personID_completionBlock___block_invoke_2;
@@ -719,15 +719,15 @@ void __59__MSASConnection_commentWithGUID_personID_completionBlock___block_invok
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)commentGUIDsForAssetCollectionWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)commentGUIDsForAssetCollectionWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00138], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00030], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00138], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00030], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__MSASConnection_commentGUIDsForAssetCollectionWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__MSASConnection_commentGUIDsForAssetCollectionWithGUID_personID_completionBlock___block_invoke_2;
@@ -744,15 +744,15 @@ void __82__MSASConnection_commentGUIDsForAssetCollectionWithGUID_personID_comple
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)isAssetCollectionWithGUID:(id)a3 markedAsUnviewedPersonID:(id)a4 completionBlock:(id)a5
+- (void)isAssetCollectionWithGUID:(id)d markedAsUnviewedPersonID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00188], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00030], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00188], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00030], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__MSASConnection_isAssetCollectionWithGUID_markedAsUnviewedPersonID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__MSASConnection_isAssetCollectionWithGUID_markedAsUnviewedPersonID_completionBlock___block_invoke_2;
@@ -769,28 +769,28 @@ void __85__MSASConnection_isAssetCollectionWithGUID_markedAsUnviewedPersonID_com
   (*(v2 + 16))(v2, [v3 BOOLValue]);
 }
 
-- (void)videoURLsForAssetCollectionWithGUID:(id)a3 forMediaAssetType:(unint64_t)a4 personID:(id)a5 completionBlock:(id)a6
+- (void)videoURLsForAssetCollectionWithGUID:(id)d forMediaAssetType:(unint64_t)type personID:(id)iD completionBlock:(id)block
 {
-  v22 = a6;
+  blockCopy = block;
   v9 = MEMORY[0x277CBEAC0];
   v10 = *MEMORY[0x277D00248];
   v11 = *MEMORY[0x277D00098];
   v12 = *MEMORY[0x277D00270];
   v13 = *MEMORY[0x277D00030];
   v14 = MEMORY[0x277CCABB0];
-  v15 = a5;
-  v16 = a3;
-  v17 = [v14 numberWithUnsignedInteger:a4];
-  v18 = [v9 dictionaryWithObjectsAndKeys:{v10, v11, v15, v12, v16, v13, v17, *MEMORY[0x277D002E0], 0}];
+  iDCopy = iD;
+  dCopy = d;
+  v17 = [v14 numberWithUnsignedInteger:type];
+  v18 = [v9 dictionaryWithObjectsAndKeys:{v10, v11, iDCopy, v12, dCopy, v13, v17, *MEMORY[0x277D002E0], 0}];
 
-  v19 = [(MSASConnection *)self connection];
+  connection = [(MSASConnection *)self connection];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __97__MSASConnection_videoURLsForAssetCollectionWithGUID_forMediaAssetType_personID_completionBlock___block_invoke;
   v23[3] = &unk_2798A4F38;
-  v24 = v22;
-  v20 = v22;
-  [v19 sendMessageReliably:v18 data:0 maxRetryCount:5 withHandler:v23];
+  v24 = blockCopy;
+  v20 = blockCopy;
+  [connection sendMessageReliably:v18 data:0 maxRetryCount:5 withHandler:v23];
 }
 
 void __97__MSASConnection_videoURLsForAssetCollectionWithGUID_forMediaAssetType_personID_completionBlock___block_invoke(uint64_t a1, int a2, void *a3)
@@ -812,18 +812,18 @@ void __97__MSASConnection_videoURLsForAssetCollectionWithGUID_forMediaAssetType_
   }
 }
 
-- (void)videoURLForAssetCollectionWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)videoURLForAssetCollectionWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00240], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00030], 0}];
-  v10 = [(MSASConnection *)self connection];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00240], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00030], 0}];
+  connection = [(MSASConnection *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__MSASConnection_videoURLForAssetCollectionWithGUID_personID_completionBlock___block_invoke;
   v12[3] = &unk_2798A4F38;
-  v13 = v8;
-  v11 = v8;
-  [v10 sendMessageReliably:v9 data:0 maxRetryCount:5 withHandler:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [connection sendMessageReliably:v9 data:0 maxRetryCount:5 withHandler:v12];
 }
 
 void __78__MSASConnection_videoURLForAssetCollectionWithGUID_personID_completionBlock___block_invoke(uint64_t a1, int a2, void *a3)
@@ -845,15 +845,15 @@ void __78__MSASConnection_videoURLForAssetCollectionWithGUID_personID_completion
   }
 }
 
-- (void)assetCollectionWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)assetCollectionWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00130], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D00030], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00130], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D00030], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__MSASConnection_assetCollectionWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__MSASConnection_assetCollectionWithGUID_personID_completionBlock___block_invoke_2;
@@ -870,15 +870,15 @@ void __67__MSASConnection_assetCollectionWithGUID_personID_completionBlock___blo
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)assetCollectionGUIDsInAlbumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)assetCollectionGUIDsInAlbumWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00128], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00128], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__MSASConnection_assetCollectionGUIDsInAlbumWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__MSASConnection_assetCollectionGUIDsInAlbumWithGUID_personID_completionBlock___block_invoke_2;
@@ -895,15 +895,15 @@ void __79__MSASConnection_assetCollectionGUIDsInAlbumWithGUID_personID_completio
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)invitationWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)invitationWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00180], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277D000A8], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00180], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277D000A8], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__MSASConnection_invitationWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__MSASConnection_invitationWithGUID_personID_completionBlock___block_invoke_2;
@@ -920,15 +920,15 @@ void __62__MSASConnection_invitationWithGUID_personID_completionBlock___block_in
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)invitationGUIDsForPersonID:(id)a3 completionBlock:(id)a4
+- (void)invitationGUIDsForPersonID:(id)d completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00178], *MEMORY[0x277D00098], a3, *MEMORY[0x277D00270], 0}];
+  blockCopy = block;
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00178], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], 0}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__MSASConnection_invitationGUIDsForPersonID_completionBlock___block_invoke;
   v11[3] = &unk_2798A4E98;
-  v12 = v6;
+  v12 = blockCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__MSASConnection_invitationGUIDsForPersonID_completionBlock___block_invoke_2;
@@ -945,15 +945,15 @@ void __61__MSASConnection_invitationGUIDsForPersonID_completionBlock___block_inv
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)accessControlWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)accessControlWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000E8], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFE8], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000E8], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFE8], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__MSASConnection_accessControlWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__MSASConnection_accessControlWithGUID_personID_completionBlock___block_invoke_2;
@@ -970,15 +970,15 @@ void __65__MSASConnection_accessControlWithGUID_personID_completionBlock___block
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)accessControlGUIDsForAlbumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)accessControlGUIDsForAlbumWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000E0], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000E0], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__MSASConnection_accessControlGUIDsForAlbumWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__MSASConnection_accessControlGUIDsForAlbumWithGUID_personID_completionBlock___block_invoke_2;
@@ -995,15 +995,15 @@ void __78__MSASConnection_accessControlGUIDsForAlbumWithGUID_personID_completion
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)albumWithGUID:(id)a3 personID:(id)a4 completionBlock:(id)a5
+- (void)albumWithGUID:(id)d personID:(id)iD completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00120], *MEMORY[0x277D00098], a4, *MEMORY[0x277D00270], a3, *MEMORY[0x277CFFFF0], 0}];
+  blockCopy = block;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00120], *MEMORY[0x277D00098], iD, *MEMORY[0x277D00270], d, *MEMORY[0x277CFFFF0], 0}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__MSASConnection_albumWithGUID_personID_completionBlock___block_invoke;
   v13[3] = &unk_2798A4E98;
-  v14 = v8;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__MSASConnection_albumWithGUID_personID_completionBlock___block_invoke_2;
@@ -1020,15 +1020,15 @@ void __57__MSASConnection_albumWithGUID_personID_completionBlock___block_invoke(
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)albumGUIDsForPersonID:(id)a3 completionBlock:(id)a4
+- (void)albumGUIDsForPersonID:(id)d completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00118], *MEMORY[0x277D00098], a3, *MEMORY[0x277D00270], 0}];
+  blockCopy = block;
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00118], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], 0}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__MSASConnection_albumGUIDsForPersonID_completionBlock___block_invoke;
   v11[3] = &unk_2798A4E98;
-  v12 = v6;
+  v12 = blockCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__MSASConnection_albumGUIDsForPersonID_completionBlock___block_invoke_2;
@@ -1045,79 +1045,79 @@ void __56__MSASConnection_albumGUIDsForPersonID_completionBlock___block_invoke(u
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)setFocusAssetCollectionGUID:(id)a3 forPersonID:(id)a4
+- (void)setFocusAssetCollectionGUID:(id)d forPersonID:(id)iD
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = _timerPingQueue();
   block = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __58__MSASConnection_setFocusAssetCollectionGUID_forPersonID___block_invoke;
   v15 = &unk_2798A5260;
-  v16 = self;
-  v17 = v7;
-  v9 = v7;
+  selfCopy = self;
+  v17 = iDCopy;
+  v9 = iDCopy;
   dispatch_async(v8, &block);
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2114;
-    v21 = v6;
+    v21 = dCopy;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting focus asset collection GUID to %{public}@", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00210], *MEMORY[0x277D00098], v9, *MEMORY[0x277D00270], v6, *MEMORY[0x277D00030], 0, block, v13, v14, v15, v16}];
+  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00210], *MEMORY[0x277D00098], v9, *MEMORY[0x277D00270], dCopy, *MEMORY[0x277D00030], 0, block, v13, v14, v15, selfCopy}];
   [(MSASConnection *)self _sendMessageReliably:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFocusAlbumGUID:(id)a3 forPersonID:(id)a4
+- (void)setFocusAlbumGUID:(id)d forPersonID:(id)iD
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = _timerPingQueue();
   block = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __48__MSASConnection_setFocusAlbumGUID_forPersonID___block_invoke;
   v15 = &unk_2798A5260;
-  v16 = self;
-  v17 = v7;
-  v9 = v7;
+  selfCopy = self;
+  v17 = iDCopy;
+  v9 = iDCopy;
   dispatch_async(v8, &block);
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2114;
-    v21 = v6;
+    v21 = dCopy;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting focus album GUID to %{public}@", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D002B0], *MEMORY[0x277D00098], v9, *MEMORY[0x277D00270], v6, *MEMORY[0x277CFFFF0], 0, block, v13, v14, v15, v16}];
+  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D002B0], *MEMORY[0x277D00098], v9, *MEMORY[0x277D00270], dCopy, *MEMORY[0x277CFFFF0], 0, block, v13, v14, v15, selfCopy}];
   [(MSASConnection *)self _sendMessageReliably:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFocusAlbum:(id)a3 forPersonID:(id)a4
+- (void)setFocusAlbum:(id)album forPersonID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 GUID];
-  [(MSASConnection *)self setFocusAlbumGUID:v7 forPersonID:v6];
+  dCopy = d;
+  gUID = [album GUID];
+  [(MSASConnection *)self setFocusAlbumGUID:gUID forPersonID:dCopy];
 }
 
-- (void)setIsUIForeground:(BOOL)a3 forPersonID:(id)a4
+- (void)setIsUIForeground:(BOOL)foreground forPersonID:(id)d
 {
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = v6;
+    v7 = dCopy;
   }
 
   else
@@ -1130,7 +1130,7 @@ void __56__MSASConnection_albumGUIDsForPersonID_completionBlock___block_invoke(u
   block[1] = 3221225472;
   block[2] = __48__MSASConnection_setIsUIForeground_forPersonID___block_invoke;
   block[3] = &unk_2798A4F10;
-  v12 = a3;
+  foregroundCopy = foreground;
   block[4] = self;
   v11 = v7;
   v9 = v7;
@@ -1183,13 +1183,13 @@ void __48__MSASConnection_setIsUIForeground_forPersonID___block_invoke(uint64_t 
   }
 }
 
-- (void)timerPingQueueForegroundPingTimerExpiredContext:(id)a3 personID:(id)a4
+- (void)timerPingQueueForegroundPingTimerExpiredContext:(id)context personID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 enabled])
+  contextCopy = context;
+  dCopy = d;
+  if ([contextCopy enabled])
   {
-    [(MSASConnection *)self timerPingQueueSendSetUIForeground:1 personID:v7];
+    [(MSASConnection *)self timerPingQueueSendSetUIForeground:1 personID:dCopy];
     v8 = dispatch_time(0, 5000000000);
     v9 = _timerPingQueue();
     block[0] = MEMORY[0x277D85DD0];
@@ -1197,15 +1197,15 @@ void __48__MSASConnection_setIsUIForeground_forPersonID___block_invoke(uint64_t 
     block[2] = __75__MSASConnection_timerPingQueueForegroundPingTimerExpiredContext_personID___block_invoke;
     block[3] = &unk_2798A4EE8;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = contextCopy;
+    v13 = dCopy;
     dispatch_after(v8, v9, block);
   }
 
   else
   {
-    v10 = [(MSASConnection *)self foregroundPingTimerContextByPersonID];
-    [v10 removeObjectForKey:v7];
+    foregroundPingTimerContextByPersonID = [(MSASConnection *)self foregroundPingTimerContextByPersonID];
+    [foregroundPingTimerContextByPersonID removeObjectForKey:dCopy];
   }
 }
 
@@ -1220,15 +1220,15 @@ void __48__MSASConnection_setIsUIForeground_forPersonID___block_invoke(uint64_t 
   dispatch_async(v3, block);
 }
 
-- (void)activityIsThrottledByLackOfDiskSpacePersonID:(id)a3 completionBlock:(id)a4
+- (void)activityIsThrottledByLackOfDiskSpacePersonID:(id)d completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000F0], *MEMORY[0x277D00098], a3, *MEMORY[0x277D00270], 0}];
+  blockCopy = block;
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D000F0], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], 0}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__MSASConnection_activityIsThrottledByLackOfDiskSpacePersonID_completionBlock___block_invoke;
   v11[3] = &unk_2798A4E98;
-  v12 = v6;
+  v12 = blockCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__MSASConnection_activityIsThrottledByLackOfDiskSpacePersonID_completionBlock___block_invoke_2;
@@ -1245,19 +1245,19 @@ void __79__MSASConnection_activityIsThrottledByLackOfDiskSpacePersonID_completio
   (*(v2 + 16))(v2, [v3 intValue] != 0);
 }
 
-- (void)handlePushNotificationForPersonID:(id)a3
+- (void)handlePushNotificationForPersonID:(id)d
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v6 = *MEMORY[0x277D00278];
     v7 = *MEMORY[0x277D00270];
     v12[0] = *MEMORY[0x277D00098];
     v12[1] = v7;
     v13[0] = v6;
-    v13[1] = v4;
+    v13[1] = dCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
     [(MSASConnection *)self _sendMessageReliably:v8];
   }
@@ -1265,37 +1265,37 @@ void __79__MSASConnection_activityIsThrottledByLackOfDiskSpacePersonID_completio
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Missing person ID for push notification, ignoring.", &v10, 0xCu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelActivitiesForPersonID:(id)a3
+- (void)cancelActivitiesForPersonID:(id)d
 {
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00058], *MEMORY[0x277D00098], a3, *MEMORY[0x277D00270], 0}];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277D00058], *MEMORY[0x277D00098], d, *MEMORY[0x277D00270], 0}];
   [(MSASConnection *)self _sendMessageReliably:v4];
 }
 
-- (void)retryOutstandingActivitiesForPersonID:(id)a3
+- (void)retryOutstandingActivitiesForPersonID:(id)d
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = *MEMORY[0x277D00298];
   v6 = *MEMORY[0x277D00270];
   v12[0] = *MEMORY[0x277D00098];
   v12[1] = v6;
   v13[0] = v5;
-  v13[1] = v4;
+  v13[1] = dCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__MSASConnection_retryOutstandingActivitiesForPersonID___block_invoke;
   v10[3] = &unk_2798A4EC0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = dCopy;
+  v8 = dCopy;
   [(MSASConnection *)self _sendMessageReliably:v7 data:0 successHandler:v10 failureHandler:&__block_literal_global_25];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1336,15 +1336,15 @@ void __56__MSASConnection_retryOutstandingActivitiesForPersonID___block_invoke_2
   [(MSASConnection *)self _sendMessageReliably:v3];
 }
 
-- (void)isInRetryStateHandler:(id)a3
+- (void)isInRetryStateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:*MEMORY[0x277D000B8] forKey:*MEMORY[0x277D00098]];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__MSASConnection_isInRetryStateHandler___block_invoke;
   v9[3] = &unk_2798A4E98;
-  v10 = v4;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__MSASConnection_isInRetryStateHandler___block_invoke_2;
@@ -1361,15 +1361,15 @@ void __40__MSASConnection_isInRetryStateHandler___block_invoke(uint64_t a1, void
   (*(v2 + 16))(v2, [v3 BOOLValue]);
 }
 
-- (void)nextActivityDateHandler:(id)a3
+- (void)nextActivityDateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:*MEMORY[0x277D00258] forKey:*MEMORY[0x277D00098]];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__MSASConnection_nextActivityDateHandler___block_invoke;
   v9[3] = &unk_2798A4E98;
-  v10 = v4;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__MSASConnection_nextActivityDateHandler___block_invoke_2;
@@ -1386,13 +1386,13 @@ void __42__MSASConnection_nextActivityDateHandler___block_invoke(uint64_t a1, vo
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)_cloneArray:(id)a3
+- (id)_cloneArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-    v5 = [v3 objectAtIndex:0];
+    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
+    v5 = [arrayCopy objectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1438,12 +1438,12 @@ void __42__MSASConnection_nextActivityDateHandler___block_invoke(uint64_t a1, vo
     v6[3] = &unk_2798A4E70;
     v8 = v4;
     v6[4] = v8;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [arrayCopy enumerateObjectsUsingBlock:v6];
   }
 
   else
   {
-    v8 = v3;
+    v8 = arrayCopy;
   }
 
   return v8;
@@ -1498,35 +1498,35 @@ void __44__MSASConnection__communicationFailureError__block_invoke()
   _communicationFailureError_error = v1;
 }
 
-- (void)_sendMessageReliably:(id)a3 data:(id)a4 successHandler:(id)a5 failureHandler:(id)a6
+- (void)_sendMessageReliably:(id)reliably data:(id)data successHandler:(id)handler failureHandler:(id)failureHandler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [(MSASConnection *)self connection];
+  reliablyCopy = reliably;
+  handlerCopy = handler;
+  failureHandlerCopy = failureHandler;
+  dataCopy = data;
+  connection = [(MSASConnection *)self connection];
 
-  if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!connection && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v20 = [v10 objectForKey:*MEMORY[0x277D00098]];
+    v20 = [reliablyCopy objectForKey:*MEMORY[0x277D00098]];
     *buf = 138543362;
     v26 = v20;
     _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "XPCNSClientConnection is nil. Failed to send XPC command: %{public}@", buf, 0xCu);
   }
 
-  v15 = [(MSASConnection *)self connection];
+  connection2 = [(MSASConnection *)self connection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __74__MSASConnection__sendMessageReliably_data_successHandler_failureHandler___block_invoke;
   v21[3] = &unk_2798A4E48;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
-  [v15 sendMessageReliably:v17 data:v13 maxRetryCount:5 withHandler:v21];
+  v22 = reliablyCopy;
+  v23 = handlerCopy;
+  v24 = failureHandlerCopy;
+  v16 = failureHandlerCopy;
+  v17 = reliablyCopy;
+  v18 = handlerCopy;
+  [connection2 sendMessageReliably:v17 data:dataCopy maxRetryCount:5 withHandler:v21];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1585,9 +1585,9 @@ LABEL_8:
   serverSideConfigurationDictionaryByPersonID = self->_serverSideConfigurationDictionaryByPersonID;
   if (!serverSideConfigurationDictionaryByPersonID)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_serverSideConfigurationDictionaryByPersonID;
-    self->_serverSideConfigurationDictionaryByPersonID = v4;
+    self->_serverSideConfigurationDictionaryByPersonID = dictionary;
 
     serverSideConfigurationDictionaryByPersonID = self->_serverSideConfigurationDictionaryByPersonID;
   }
@@ -1600,9 +1600,9 @@ LABEL_8:
   focusAlbumGUIDByPersonID = self->_focusAlbumGUIDByPersonID;
   if (!focusAlbumGUIDByPersonID)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_focusAlbumGUIDByPersonID;
-    self->_focusAlbumGUIDByPersonID = v4;
+    self->_focusAlbumGUIDByPersonID = dictionary;
 
     focusAlbumGUIDByPersonID = self->_focusAlbumGUIDByPersonID;
   }
@@ -1615,9 +1615,9 @@ LABEL_8:
   focusAlbumTimerByPersonID = self->_focusAlbumTimerByPersonID;
   if (!focusAlbumTimerByPersonID)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_focusAlbumTimerByPersonID;
-    self->_focusAlbumTimerByPersonID = v4;
+    self->_focusAlbumTimerByPersonID = dictionary;
 
     focusAlbumTimerByPersonID = self->_focusAlbumTimerByPersonID;
   }
@@ -1630,9 +1630,9 @@ LABEL_8:
   foregroundPingTimerContextByPersonID = self->_foregroundPingTimerContextByPersonID;
   if (!foregroundPingTimerContextByPersonID)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_foregroundPingTimerContextByPersonID;
-    self->_foregroundPingTimerContextByPersonID = v4;
+    self->_foregroundPingTimerContextByPersonID = dictionary;
 
     foregroundPingTimerContextByPersonID = self->_foregroundPingTimerContextByPersonID;
   }
@@ -1661,7 +1661,7 @@ LABEL_8:
     v2->_memberQueue = v4;
 
     out_token = 0;
-    v6 = [*MEMORY[0x277D002A8] UTF8String];
+    uTF8String = [*MEMORY[0x277D002A8] UTF8String];
     v7 = dispatch_get_global_queue(0, 0);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -1669,9 +1669,9 @@ LABEL_8:
     v11[3] = &unk_2798A4DF8;
     v8 = v2;
     v12 = v8;
-    LODWORD(v6) = notify_register_dispatch(v6, &out_token, v7, v11);
+    LODWORD(uTF8String) = notify_register_dispatch(uTF8String, &out_token, v7, v11);
 
-    if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (uTF8String && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v16 = v8;

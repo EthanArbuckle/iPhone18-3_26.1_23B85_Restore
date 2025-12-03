@@ -3,7 +3,7 @@
 - (BOOL)_wantsRevoked;
 - (BOOL)_wantsVPP;
 - (SKReceiptRefreshRequest)initWithReceiptProperties:(NSDictionary *)properties;
-- (void)_requestCompletedWithError:(id)a3;
+- (void)_requestCompletedWithError:(id)error;
 - (void)_start;
 @end
 
@@ -124,18 +124,18 @@ void __33__SKReceiptRefreshRequest__start__block_invoke_3(uint64_t a1)
   [WeakRetained _requestCompletedWithError:*v3];
 }
 
-- (void)_requestCompletedWithError:(id)a3
+- (void)_requestCompletedWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v14 = v4;
-    v5 = [v4 domain];
-    if ([v5 isEqualToString:@"ASDErrorDomain"])
+    v14 = errorCopy;
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"ASDErrorDomain"])
     {
-      v6 = [v14 code];
+      code = [v14 code];
 
-      if (v6 == 603)
+      if (code == 603)
       {
 
         goto LABEL_5;
@@ -146,7 +146,7 @@ void __33__SKReceiptRefreshRequest__start__block_invoke_3(uint64_t a1)
     {
     }
 
-    v10 = [(SKRequest *)self delegate];
+    delegate = [(SKRequest *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -156,22 +156,22 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    v9 = [(SKRequest *)self delegate];
+    delegate2 = [(SKRequest *)self delegate];
     v12 = _SKErrorFromNSError(v14);
-    [v9 request:self didFailWithError:v12];
+    [delegate2 request:self didFailWithError:v12];
 
 LABEL_10:
     goto LABEL_11;
   }
 
 LABEL_5:
-  v7 = [(SKRequest *)self delegate];
+  delegate3 = [(SKRequest *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SKRequest *)self delegate];
-    [v9 requestDidFinish:self];
+    delegate2 = [(SKRequest *)self delegate];
+    [delegate2 requestDidFinish:self];
     v14 = 0;
     goto LABEL_10;
   }
@@ -183,25 +183,25 @@ LABEL_13:
 - (BOOL)_wantsExpired
 {
   v2 = [(NSDictionary *)self->_properties objectForKey:@"expired"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_wantsRevoked
 {
   v2 = [(NSDictionary *)self->_properties objectForKey:@"revoked"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_wantsVPP
 {
   v2 = [(NSDictionary *)self->_properties objectForKey:@"vpp"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 void __33__SKReceiptRefreshRequest__start__block_invoke_3_cold_1(uint64_t a1, uint64_t *a2)

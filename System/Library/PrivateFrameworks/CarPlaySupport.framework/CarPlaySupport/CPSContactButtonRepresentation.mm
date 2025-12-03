@@ -1,7 +1,7 @@
 @interface CPSContactButtonRepresentation
-- (CPSContactButtonRepresentation)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5 type:(int64_t)a6;
+- (CPSContactButtonRepresentation)initWithIdentifier:(id)identifier title:(id)title image:(id)image type:(int64_t)type;
 - (NSUUID)identifier;
-- (void)setIdentifier:(id)a3;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation CPSContactButtonRepresentation
@@ -19,25 +19,25 @@
   return v6.super.isa;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = type metadata accessor for UUID();
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   ContactButtonRepresentation.identifier.setter(v6);
 }
 
-- (CPSContactButtonRepresentation)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5 type:(int64_t)a6
+- (CPSContactButtonRepresentation)initWithIdentifier:(id)identifier title:(id)title image:(id)image type:(int64_t)type
 {
   v9 = type metadata accessor for UUID();
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (title)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    title = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -46,8 +46,8 @@
     v13 = 0;
   }
 
-  v14 = a5;
-  return ContactButtonRepresentation.init(identifier:title:image:type:)(v11, a4, v13, a5, a6);
+  imageCopy = image;
+  return ContactButtonRepresentation.init(identifier:title:image:type:)(v11, title, v13, image, type);
 }
 
 @end

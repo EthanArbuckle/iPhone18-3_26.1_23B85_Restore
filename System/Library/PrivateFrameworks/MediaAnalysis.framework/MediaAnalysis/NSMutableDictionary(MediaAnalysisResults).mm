@@ -11,7 +11,7 @@
   *&v6.start.epoch = v4;
   *&v6.duration.timescale = a3[2];
   v5 = CMTimeRangeCopyAsDictionary(&v6, 0);
-  [a1 addEntriesFromDictionary:v5];
+  [self addEntriesFromDictionary:v5];
 }
 
 @end

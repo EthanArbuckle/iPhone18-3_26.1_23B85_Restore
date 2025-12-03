@@ -2,23 +2,23 @@
 + (id)controller;
 + (void)initializeMonitor;
 - (BOOL)_accessibilityIsFactoryDiskImagePresent;
-- (BOOL)_checkIfZoomWasActivated:(id)a3 stealEvent:(BOOL *)a4;
+- (BOOL)_checkIfZoomWasActivated:(id)activated stealEvent:(BOOL *)event;
 - (BOOL)_voiceOverWasToggledSinceBoot;
-- (BOOL)captureHomeClick:(id)a3;
+- (BOOL)captureHomeClick:(id)click;
 - (id)_votExistsBreadCrumbFile;
 - (id)_writeLoginNoteTimer;
 - (id)displayFilterUIClient;
 - (void)_appTransition;
 - (void)_didHideAlert;
-- (void)_handleZoomInBuddyAlertResult:(int64_t)a3;
+- (void)_handleZoomInBuddyAlertResult:(int64_t)result;
 - (void)_launchAccessibilityReader;
-- (void)_promptToDisableBrightnessFilters:(id)a3 data:(id)a4;
-- (void)_setVoiceOverWasToggledSinceBoot:(BOOL)a3;
-- (void)_springBoardDied:(id)a3;
+- (void)_promptToDisableBrightnessFilters:(id)filters data:(id)data;
+- (void)_setVoiceOverWasToggledSinceBoot:(BOOL)boot;
+- (void)_springBoardDied:(id)died;
 - (void)_startVoiceOverSequence;
 - (void)_toggleDetectionMode;
 - (void)_toggleDisplayAskSheet;
-- (void)_toggleGuidedAccessBlock:(id)a3;
+- (void)_toggleGuidedAccessBlock:(id)block;
 - (void)_toggleMagnifier;
 - (void)_toggleOnDeviceEyeTracking;
 - (void)_toggleVoiceOver;
@@ -26,11 +26,11 @@
 - (void)_updateBuddyVoiceOverStatus;
 - (void)_updateEventTapSettings;
 - (void)_updateHomeClickEnabled;
-- (void)_updateTripleHomeSettings:(BOOL)a3;
+- (void)_updateTripleHomeSettings:(BOOL)settings;
 - (void)_willShowAlert;
 - (void)_writeNoteToNewUserSession;
 - (void)clearNoteToUserSession;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)initialize;
 @end
 
@@ -61,8 +61,8 @@
 
 - (void)_writeNoteToNewUserSession
 {
-  v2 = [(AXBHomeClickController *)self _writeLoginNoteTimer];
-  [v2 afterDelay:&__block_literal_global_13 processBlock:0.5];
+  _writeLoginNoteTimer = [(AXBHomeClickController *)self _writeLoginNoteTimer];
+  [_writeLoginNoteTimer afterDelay:&__block_literal_global_13 processBlock:0.5];
 }
 
 void __52__AXBHomeClickController__writeNoteToNewUserSession__block_invoke()
@@ -98,8 +98,8 @@ uint64_t __52__AXBHomeClickController__writeNoteToNewUserSession__block_invoke_2
 
 - (void)clearNoteToUserSession
 {
-  v2 = [MEMORY[0x29EDBD5F8] sharedManager];
-  [v2 deleteFileAtAccessibilityContainerPath:*MEMORY[0x29EDBDEC0] completion:&__block_literal_global_292_0];
+  mEMORY[0x29EDBD5F8] = [MEMORY[0x29EDBD5F8] sharedManager];
+  [mEMORY[0x29EDBD5F8] deleteFileAtAccessibilityContainerPath:*MEMORY[0x29EDBDEC0] completion:&__block_literal_global_292_0];
 }
 
 uint64_t __48__AXBHomeClickController_clearNoteToUserSession__block_invoke(uint64_t a1, uint64_t a2)
@@ -112,19 +112,19 @@ uint64_t __48__AXBHomeClickController_clearNoteToUserSession__block_invoke(uint6
   return result;
 }
 
-- (void)_promptToDisableBrightnessFilters:(id)a3 data:(id)a4
+- (void)_promptToDisableBrightnessFilters:(id)filters data:(id)data
 {
-  v5 = a3;
+  filtersCopy = filters;
   v6 = MEMORY[0x29EDBDFA8];
-  v7 = a4;
-  v8 = [v6 server];
+  dataCopy = data;
+  server = [v6 server];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __65__AXBHomeClickController__promptToDisableBrightnessFilters_data___block_invoke;
   v10[3] = &unk_29F2A50D0;
-  v11 = v5;
-  v9 = v5;
-  [v8 showAlert:7 withHandler:v10 withData:v7];
+  v11 = filtersCopy;
+  v9 = filtersCopy;
+  [server showAlert:7 withHandler:v10 withData:dataCopy];
 }
 
 uint64_t __65__AXBHomeClickController__promptToDisableBrightnessFilters_data___block_invoke(uint64_t result, int a2)
@@ -151,29 +151,29 @@ uint64_t __65__AXBHomeClickController__promptToDisableBrightnessFilters_data___b
 
 - (BOOL)_voiceOverWasToggledSinceBoot
 {
-  v3 = [MEMORY[0x29EDB9FB8] defaultManager];
-  v4 = [(AXBHomeClickController *)self _votExistsBreadCrumbFile];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  _votExistsBreadCrumbFile = [(AXBHomeClickController *)self _votExistsBreadCrumbFile];
+  path = [_votExistsBreadCrumbFile path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   return v6;
 }
 
-- (void)_setVoiceOverWasToggledSinceBoot:(BOOL)a3
+- (void)_setVoiceOverWasToggledSinceBoot:(BOOL)boot
 {
-  v3 = a3;
-  v8 = [MEMORY[0x29EDB9FB8] defaultManager];
-  v5 = [(AXBHomeClickController *)self _votExistsBreadCrumbFile];
-  v6 = v5;
-  if (v3)
+  bootCopy = boot;
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  _votExistsBreadCrumbFile = [(AXBHomeClickController *)self _votExistsBreadCrumbFile];
+  v6 = _votExistsBreadCrumbFile;
+  if (bootCopy)
   {
-    v7 = [v5 path];
-    [v8 createFileAtPath:v7 contents:0 attributes:0];
+    path = [_votExistsBreadCrumbFile path];
+    [defaultManager createFileAtPath:path contents:0 attributes:0];
   }
 
   else
   {
-    [v8 removeItemAtURL:v5 error:0];
+    [defaultManager removeItemAtURL:_votExistsBreadCrumbFile error:0];
   }
 }
 
@@ -226,9 +226,9 @@ LABEL_14:
   }
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  if (self->_displayFilterUIClient == a3)
+  if (self->_displayFilterUIClient == client)
   {
     self->_displayFilterUIClient = 0;
     MEMORY[0x2A1C71028]();
@@ -254,20 +254,20 @@ LABEL_14:
 
 - (void)_toggleMagnifier
 {
-  v2 = [MEMORY[0x29EDC8318] sharedInstance];
-  [v2 startMagnifier];
+  mEMORY[0x29EDC8318] = [MEMORY[0x29EDC8318] sharedInstance];
+  [mEMORY[0x29EDC8318] startMagnifier];
 }
 
 - (void)_toggleDetectionMode
 {
   if (_AXSVoiceOverTouchEnabled())
   {
-    v2 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v3 = [v2 liveRecognitionActive];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    liveRecognitionActive = [mEMORY[0x29EDBDFA0] liveRecognitionActive];
 
-    v4 = [MEMORY[0x29EDBDFC8] server];
-    v6 = v4;
-    if (v3)
+    server = [MEMORY[0x29EDBDFC8] server];
+    server2 = server;
+    if (liveRecognitionActive)
     {
       v5 = 51;
     }
@@ -277,13 +277,13 @@ LABEL_14:
       v5 = 50;
     }
 
-    [v4 triggerCommand:v5];
+    [server triggerCommand:v5];
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDBDFA8] server];
-    [v6 toggleDetectionMode];
+    server2 = [MEMORY[0x29EDBDFA8] server];
+    [server2 toggleDetectionMode];
   }
 }
 
@@ -296,13 +296,13 @@ LABEL_14:
     _os_log_impl(&dword_29BBBD000, v2, OS_LOG_TYPE_DEFAULT, "Launching reader in AXBHomeClickController", v4, 2u);
   }
 
-  v3 = [MEMORY[0x29EDBDFA8] server];
-  [v3 launchAccessibilityReader];
+  server = [MEMORY[0x29EDBDFA8] server];
+  [server launchAccessibilityReader];
 }
 
-- (void)_toggleGuidedAccessBlock:(id)a3
+- (void)_toggleGuidedAccessBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = _AXSTripleClickCopyOptions();
   [v4 count];
   AXPerformBlockOnMainThreadAfterDelay();
@@ -311,8 +311,8 @@ LABEL_14:
 - (void)_toggleOnDeviceEyeTracking
 {
   v2 = _AXSOnDeviceEyeTrackingEnabled() == 0;
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  [v3 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:v2];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  [mEMORY[0x29EDBDFA0] setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:v2];
 }
 
 - (void)_didHideAlert
@@ -332,8 +332,8 @@ LABEL_14:
     _AXAssert();
   }
 
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  if ([v3 touchAccommodationsEnabled] && objc_msgSend(v3, "touchAccommodationsHoldDurationEnabled"))
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  if ([mEMORY[0x29EDBDFA0] touchAccommodationsEnabled] && objc_msgSend(mEMORY[0x29EDBDFA0], "touchAccommodationsHoldDurationEnabled"))
   {
     +[AXBTouchAccommodationsController showHoldDurationTripleClickHelp];
     [(AXBHomeClickController *)self setDidShowHoldDurationTripleClickHelp:1];
@@ -343,18 +343,18 @@ LABEL_14:
 - (void)_toggleDisplayAskSheet
 {
   isAlertVisible = self->_isAlertVisible;
-  v4 = [MEMORY[0x29EDBDFA8] server];
-  v10 = v4;
+  server = [MEMORY[0x29EDBDFA8] server];
+  v10 = server;
   if (isAlertVisible)
   {
-    [v4 hideAlert];
+    [server hideAlert];
   }
 
   else
   {
-    v5 = [v4 isShowingAXAlert];
+    isShowingAXAlert = [server isShowingAXAlert];
 
-    if ((v5 & 1) == 0)
+    if ((isShowingAXAlert & 1) == 0)
     {
       if (_AXSTwiceRemoteScreenEnabled())
       {
@@ -373,13 +373,13 @@ LABEL_14:
         _os_log_impl(&dword_29BBBD000, v6, OS_LOG_TYPE_DEFAULT, "Triple click: presenting from backboardd.", buf, 2u);
       }
 
-      v7 = [MEMORY[0x29EDBDFA8] server];
+      server2 = [MEMORY[0x29EDBDFA8] server];
       v11[0] = MEMORY[0x29EDCA5F8];
       v11[1] = 3221225472;
       v11[2] = __48__AXBHomeClickController__toggleDisplayAskSheet__block_invoke;
       v11[3] = &unk_29F2A50F8;
       v11[4] = self;
-      [v7 showAlert:0 withHandler:v11];
+      [server2 showAlert:0 withHandler:v11];
     }
   }
 }
@@ -470,10 +470,10 @@ LABEL_2:
 
   else
   {
-    v5 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v6 = [v5 voiceOverActivationWorkaround];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    voiceOverActivationWorkaround = [mEMORY[0x29EDBDFA0] voiceOverActivationWorkaround];
 
-    switch(v6)
+    switch(voiceOverActivationWorkaround)
     {
       case 1:
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -495,7 +495,7 @@ LABEL_2:
   }
 }
 
-- (void)_updateTripleHomeSettings:(BOOL)a3
+- (void)_updateTripleHomeSettings:(BOOL)settings
 {
   v5 = _AXSTripleClickCopyOptions();
   if ([v5 count])
@@ -506,7 +506,7 @@ LABEL_2:
   else
   {
     _TripleHomeEnabled = 0;
-    if (!a3 && _AXSApplicationAccessibilityEnabled() && _AXSCanDisableApplicationAccessibility())
+    if (!settings && _AXSApplicationAccessibilityEnabled() && _AXSCanDisableApplicationAccessibility())
     {
       _AXSApplicationAccessibilitySetEnabled();
     }
@@ -515,9 +515,9 @@ LABEL_2:
   [(AXBHomeClickController *)self _updateEventTapSettings];
 }
 
-- (BOOL)captureHomeClick:(id)a3
+- (BOOL)captureHomeClick:(id)click
 {
-  v4 = a3;
+  clickCopy = click;
   if (captureHomeClick__onceToken != -1)
   {
     [AXBHomeClickController captureHomeClick:];
@@ -525,7 +525,7 @@ LABEL_2:
 
   if (_HomeClickEnabled)
   {
-    if (!v4)
+    if (!clickCopy)
     {
       goto LABEL_67;
     }
@@ -534,7 +534,7 @@ LABEL_2:
   else
   {
     v5 = 0;
-    if (!v4 || (_TripleHomeEnabled & 1) == 0)
+    if (!clickCopy || (_TripleHomeEnabled & 1) == 0)
     {
       goto LABEL_68;
     }
@@ -550,24 +550,24 @@ LABEL_2:
     v6 = 1010;
   }
 
-  if (captureHomeClick__RequiresReachability == 1 && [v4 type] == 1000 && (AXInPreboardScenario() & 1) == 0 && (AXInCheckerBoardScenario() & 1) == 0)
+  if (captureHomeClick__RequiresReachability == 1 && [clickCopy type] == 1000 && (AXInPreboardScenario() & 1) == 0 && (AXInCheckerBoardScenario() & 1) == 0)
   {
-    v7 = [MEMORY[0x29EDBDFA8] server];
-    [v7 cancelReachabilityDetection];
+    server = [MEMORY[0x29EDBDFA8] server];
+    [server cancelReachabilityDetection];
   }
 
   if (_TripleHomeEnabled == 1 && self->_isAlertVisible)
   {
-    if ([v4 type] == 50)
+    if ([clickCopy type] == 50)
     {
       v5 = AXDeviceIsPad() ^ 1;
       goto LABEL_68;
     }
 
-    if ([v4 type] == 1001 || objc_msgSend(v4, "type") == 1011 || objc_msgSend(v4, "type") == 1104)
+    if ([clickCopy type] == 1001 || objc_msgSend(clickCopy, "type") == 1011 || objc_msgSend(clickCopy, "type") == 1104)
     {
       [_HomeClickTimer cancel];
-      if ([v4 type] == 1001 && (_LockButtonDown & 1) == 0)
+      if ([clickCopy type] == 1001 && (_LockButtonDown & 1) == 0)
       {
         _MergedGlobals = 0;
         qword_2A178F7B8 = 0;
@@ -583,7 +583,7 @@ LABEL_2:
         v5 = 0;
       }
 
-      if ([v4 type] == 1011 || objc_msgSend(v4, "type") == 1104)
+      if ([clickCopy type] == 1011 || objc_msgSend(clickCopy, "type") == 1104)
       {
         _LockButtonDown = 0;
       }
@@ -598,15 +598,15 @@ LABEL_2:
       goto LABEL_68;
     }
 
-    if ([v4 type] == 1010 || objc_msgSend(v4, "type") == 1103)
+    if ([clickCopy type] == 1010 || objc_msgSend(clickCopy, "type") == 1103)
     {
       _LockButtonDown = 1;
     }
 
-    else if ([v4 type] == v6)
+    else if ([clickCopy type] == v6)
     {
       [(NSLock *)self->_menuButtonLock lock];
-      [(NSMutableArray *)self->_menuButtonClientIds addObject:v4];
+      [(NSMutableArray *)self->_menuButtonClientIds addObject:clickCopy];
       [(NSLock *)self->_menuButtonLock unlock];
       ++qword_2A178F7B8;
       if (_LockButtonDown != 1)
@@ -622,14 +622,14 @@ LABEL_90:
     }
   }
 
-  if ([v4 type] == 1011 || objc_msgSend(v4, "type") == 1104)
+  if ([clickCopy type] == 1011 || objc_msgSend(clickCopy, "type") == 1104)
   {
     v8 = 0;
   }
 
   else
   {
-    if ([v4 type] != 1010 && objc_msgSend(v4, "type") != 1103)
+    if ([clickCopy type] != 1010 && objc_msgSend(clickCopy, "type") != 1103)
     {
       goto LABEL_38;
     }
@@ -639,7 +639,7 @@ LABEL_90:
 
   _LockButtonDown = v8;
 LABEL_38:
-  if (([v4 type] == 1001 || objc_msgSend(v4, "type") == 1000) && (+[AXBackBoardGlue isDisplayBacklightOff](AXBackBoardGlue, "isDisplayBacklightOff") || CFAbsoluteTimeGetCurrent() - *&_LastHomeButtonPressWithBacklightOff < 0.25) && (AXInPreboardScenario() & 1) == 0 && (AXInCheckerBoardScenario() & 1) == 0)
+  if (([clickCopy type] == 1001 || objc_msgSend(clickCopy, "type") == 1000) && (+[AXBackBoardGlue isDisplayBacklightOff](AXBackBoardGlue, "isDisplayBacklightOff") || CFAbsoluteTimeGetCurrent() - *&_LastHomeButtonPressWithBacklightOff < 0.25) && (AXInPreboardScenario() & 1) == 0 && (AXInCheckerBoardScenario() & 1) == 0)
   {
     CFAbsoluteTimeGetCurrent();
     v5 = 0;
@@ -647,7 +647,7 @@ LABEL_38:
     goto LABEL_68;
   }
 
-  if (AXDeviceHasHomeButton() && ([v4 type] == 1000 && (_LockButtonDown & 1) != 0 || (objc_msgSend(v4, "type") == 1010 || objc_msgSend(v4, "type") == 1103) && qword_2A178F7B8 == 1))
+  if (AXDeviceHasHomeButton() && ([clickCopy type] == 1000 && (_LockButtonDown & 1) != 0 || (objc_msgSend(clickCopy, "type") == 1010 || objc_msgSend(clickCopy, "type") == 1103) && qword_2A178F7B8 == 1))
   {
     [(AXBHomeClickController *)self _fireHomeButtons:0];
     v5 = 0;
@@ -655,7 +655,7 @@ LABEL_38:
     goto LABEL_68;
   }
 
-  if (-[AXBHomeClickController isHearingAidControlVisible](self, "isHearingAidControlVisible") && [v4 type] == 1001 && CFAbsoluteTimeGetCurrent() - *&_LastScreenshotTake > 0.5)
+  if (-[AXBHomeClickController isHearingAidControlVisible](self, "isHearingAidControlVisible") && [clickCopy type] == 1001 && CFAbsoluteTimeGetCurrent() - *&_LastScreenshotTake > 0.5)
   {
     [(NSMutableArray *)self->_menuButtonClientIds removeAllObjects];
     qword_2A178F7B8 = 0;
@@ -669,16 +669,16 @@ LABEL_67:
     goto LABEL_68;
   }
 
-  if (((_IsBuddyRunning & 1) != 0 || AXSessionIsLoginSession()) && [v4 type] == 3001)
+  if (((_IsBuddyRunning & 1) != 0 || AXSessionIsLoginSession()) && [clickCopy type] == 3001)
   {
     LOBYTE(location[0]) = 0;
-    [(AXBHomeClickController *)self _checkIfZoomWasActivated:v4 stealEvent:location];
+    [(AXBHomeClickController *)self _checkIfZoomWasActivated:clickCopy stealEvent:location];
     v5 = location[0];
     goto LABEL_68;
   }
 
   HasHomeButton = AXDeviceHasHomeButton();
-  v11 = [v4 type];
+  type = [clickCopy type];
   if (HasHomeButton)
   {
     v12 = 1000;
@@ -699,14 +699,14 @@ LABEL_67:
     v13 = 1011;
   }
 
-  v14 = [v4 type];
-  v15 = v14;
-  if (v11 != v12 && v14 != v13)
+  type2 = [clickCopy type];
+  v15 = type2;
+  if (type != v12 && type2 != v13)
   {
     goto LABEL_67;
   }
 
-  if (v11 == v12)
+  if (type == v12)
   {
     [_HomeClickTimer cancel];
     v17 = _HomeClickTimer;
@@ -728,7 +728,7 @@ LABEL_67:
 
   *v18 = v19 + 1;
   [(NSLock *)self->_menuButtonLock lock];
-  [(NSMutableArray *)self->_menuButtonClientIds addObject:v4];
+  [(NSMutableArray *)self->_menuButtonClientIds addObject:clickCopy];
   [(NSLock *)self->_menuButtonLock unlock];
   v20 = _MergedGlobals;
   if (_MergedGlobals != 2)
@@ -763,7 +763,7 @@ LABEL_82:
 
 LABEL_85:
   v5 = 1;
-  if (!_HomeClickTimer && v11 == v12)
+  if (!_HomeClickTimer && type == v12)
   {
     v22 = objc_alloc_init(MEMORY[0x29EDBD6A0]);
     v23 = _HomeClickTimer;
@@ -904,12 +904,12 @@ LABEL_10:
           _AXSApplicationAccessibilitySetEnabled();
         }
 
-        v10 = [MEMORY[0x29EDBD6D8] sharedInstance];
-        v11 = [v10 ignoreLogging];
+        mEMORY[0x29EDBD6D8] = [MEMORY[0x29EDBD6D8] sharedInstance];
+        ignoreLogging = [mEMORY[0x29EDBD6D8] ignoreLogging];
 
-        if ((v11 & 1) == 0)
+        if ((ignoreLogging & 1) == 0)
         {
-          v12 = [MEMORY[0x29EDBD6D8] identifier];
+          identifier = [MEMORY[0x29EDBD6D8] identifier];
           v13 = AXLoggerForFacility();
 
           v14 = AXOSLogLevelFromAXLogLevel();
@@ -1020,19 +1020,19 @@ uint64_t __47__AXBHomeClickController__triggerAppTransition__block_invoke()
   return MEMORY[0x2A1C71028]();
 }
 
-- (BOOL)_checkIfZoomWasActivated:(id)a3 stealEvent:(BOOL *)a4
+- (BOOL)_checkIfZoomWasActivated:(id)activated stealEvent:(BOOL *)event
 {
-  v6 = a3;
+  activatedCopy = activated;
   if (!_AXSZoomTouchEnabled() && !_AXSVoiceOverTouchEnabled())
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v8 = [v6 handInfo];
-    v9 = [v8 eventType];
-    if (v9 <= 0xA && ((1 << v9) & 0x640) != 0)
+    handInfo = [activatedCopy handInfo];
+    eventType = [handInfo eventType];
+    if (eventType <= 0xA && ((1 << eventType) & 0x640) != 0)
     {
-      if ((v9 & 0xFFFFFFFB) != 1)
+      if ((eventType & 0xFFFFFFFB) != 1)
       {
-        if ([v8 currentFingerCount] || _checkIfZoomWasActivated_stealEvent__FingerCount < 1)
+        if ([handInfo currentFingerCount] || _checkIfZoomWasActivated_stealEvent__FingerCount < 1)
         {
           goto LABEL_33;
         }
@@ -1071,15 +1071,15 @@ LABEL_33:
           _checkIfZoomWasActivated_stealEvent__ThreeDownTimeOne = 0;
         }
 
-        *a4 = 1;
+        *event = 1;
         BKSHIDServicesCancelTouchesOnMainDisplay();
         goto LABEL_32;
       }
     }
 
-    else if ((v9 & 0xFFFFFFFB) != 1)
+    else if ((eventType & 0xFFFFFFFB) != 1)
     {
-      if ([v8 eventType] == 8 && _checkIfZoomWasActivated_stealEvent__FingerCount >= 1)
+      if ([handInfo eventType] == 8 && _checkIfZoomWasActivated_stealEvent__FingerCount >= 1)
       {
         _checkIfZoomWasActivated_stealEvent__TapCount = 0;
         _checkIfZoomWasActivated_stealEvent__ThreeDownTimeTwo = 0;
@@ -1089,7 +1089,7 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    if ([v8 currentFingerCount] == 3)
+    if ([handInfo currentFingerCount] == 3)
     {
       if (_checkIfZoomWasActivated_stealEvent__TapCount == 1 && Current - *&_checkIfZoomWasActivated_stealEvent__ThreeDownTimeOne <= 0.5)
       {
@@ -1102,14 +1102,14 @@ LABEL_33:
       }
     }
 
-    else if ([v8 currentFingerCount] >= 4)
+    else if ([handInfo currentFingerCount] >= 4)
     {
       _checkIfZoomWasActivated_stealEvent__TapCount = 0;
       _checkIfZoomWasActivated_stealEvent__ThreeDownTimeTwo = 0;
       _checkIfZoomWasActivated_stealEvent__ThreeDownTimeOne = 0;
     }
 
-    _checkIfZoomWasActivated_stealEvent__FingerCount = [v8 currentFingerCount];
+    _checkIfZoomWasActivated_stealEvent__FingerCount = [handInfo currentFingerCount];
     goto LABEL_33;
   }
 
@@ -1192,9 +1192,9 @@ void __58__AXBHomeClickController__handleZoomActivationDuringBuddy__block_invoke
   }
 }
 
-- (void)_handleZoomInBuddyAlertResult:(int64_t)a3
+- (void)_handleZoomInBuddyAlertResult:(int64_t)result
 {
-  if (!a3)
+  if (!result)
   {
     _AXSZoomTouchSetEnabled();
     v4 = *MEMORY[0x29EDC8550];
@@ -1203,12 +1203,12 @@ void __58__AXBHomeClickController__handleZoomActivationDuringBuddy__block_invoke
   }
 }
 
-- (void)_springBoardDied:(id)a3
+- (void)_springBoardDied:(id)died
 {
   [(AXBHomeClickController *)self _didHideAlert];
   self->_isAlertVisible = 0;
-  v4 = [MEMORY[0x29EDBDFA8] server];
-  [v4 cleanupAlertHandler];
+  server = [MEMORY[0x29EDBDFA8] server];
+  [server cleanupAlertHandler];
 }
 
 - (void)_updateEventTapSettings
@@ -1243,8 +1243,8 @@ void __58__AXBHomeClickController__handleZoomActivationDuringBuddy__block_invoke
       _os_log_impl(&dword_29BBBD000, v13, OS_LOG_TYPE_DEFAULT, "Removing home click event tap", &v15, 2u);
     }
 
-    v14 = [MEMORY[0x29EDBDF60] sharedManager];
-    [v14 removeEventTap:self->_eventTapIdentifier];
+    mEMORY[0x29EDBDF60] = [MEMORY[0x29EDBDF60] sharedManager];
+    [mEMORY[0x29EDBDF60] removeEventTap:self->_eventTapIdentifier];
 
     eventTapIdentifier = self->_eventTapIdentifier;
     self->_eventTapIdentifier = 0;
@@ -1260,8 +1260,8 @@ void __58__AXBHomeClickController__handleZoomActivationDuringBuddy__block_invoke
       _os_log_impl(&dword_29BBBD000, v7, OS_LOG_TYPE_DEFAULT, "Installing home click event tap", &v15, 2u);
     }
 
-    v8 = [MEMORY[0x29EDBDF60] sharedManager];
-    v9 = [v8 installEventTap:&__block_literal_global_369 identifier:@"HomeClick" type:0];
+    mEMORY[0x29EDBDF60]2 = [MEMORY[0x29EDBDF60] sharedManager];
+    v9 = [mEMORY[0x29EDBDF60]2 installEventTap:&__block_literal_global_369 identifier:@"HomeClick" type:0];
     v10 = self->_eventTapIdentifier;
     self->_eventTapIdentifier = v9;
 
@@ -1334,8 +1334,8 @@ uint64_t __49__AXBHomeClickController__updateEventTapSettings__block_invoke(uint
     CFNotificationCenterAddObserver(v11, self, _appTransitionOccurred, @"com.apple.mobile.SubstantialTransition", 0, 1028);
   }
 
-  v12 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v12 addObserver:self selector:sel__springBoardDied_ name:*MEMORY[0x29EDBDF10] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__springBoardDied_ name:*MEMORY[0x29EDBDF10] object:0];
 
   v13 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   menuButtonClientIds = self->_menuButtonClientIds;

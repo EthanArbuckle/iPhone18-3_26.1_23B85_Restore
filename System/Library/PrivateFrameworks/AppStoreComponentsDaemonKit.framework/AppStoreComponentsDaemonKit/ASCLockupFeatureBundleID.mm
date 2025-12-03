@@ -1,23 +1,23 @@
 @interface ASCLockupFeatureBundleID
-- (ASCLockupFeatureBundleID)initWithBundleID:(id)a3;
-- (ASCLockupFeatureBundleID)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureBundleID)initWithBundleID:(id)d;
+- (ASCLockupFeatureBundleID)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureBundleID
 
-- (ASCLockupFeatureBundleID)initWithBundleID:(id)a3
+- (ASCLockupFeatureBundleID)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = ASCLockupFeatureBundleID;
   v5 = [(ASCLockupFeatureBundleID *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
   }
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (ASCLockupFeatureBundleID)initWithCoder:(id)a3
+- (ASCLockupFeatureBundleID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
 
   v6 = [(ASCLockupFeatureBundleID *)self initWithBundleID:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureBundleID *)self bundleID];
-  [v4 encodeObject:v5 forKey:@"bundleID"];
+  coderCopy = coder;
+  bundleID = [(ASCLockupFeatureBundleID *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureBundleID *)self bundleID];
-  [(ASCHasher *)v3 combineObject:v4];
+  bundleID = [(ASCLockupFeatureBundleID *)self bundleID];
+  [(ASCHasher *)v3 combineObject:bundleID];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -85,17 +85,17 @@
 
     if (v8)
     {
-      v9 = [(ASCLockupFeatureBundleID *)self bundleID];
-      v10 = [(ASCLockupFeatureBundleID *)v8 bundleID];
-      v11 = v10;
-      if (v9 && v10)
+      bundleID = [(ASCLockupFeatureBundleID *)self bundleID];
+      bundleID2 = [(ASCLockupFeatureBundleID *)v8 bundleID];
+      v11 = bundleID2;
+      if (bundleID && bundleID2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [bundleID isEqual:bundleID2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = bundleID == bundleID2;
       }
     }
 
@@ -111,12 +111,12 @@
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureBundleID *)self bundleID];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"bundleID"];
+  bundleID = [(ASCLockupFeatureBundleID *)self bundleID];
+  [(ASCDescriber *)v3 addObject:bundleID withName:@"bundleID"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

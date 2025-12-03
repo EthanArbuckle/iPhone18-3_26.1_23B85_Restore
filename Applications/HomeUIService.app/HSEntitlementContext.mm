@@ -1,26 +1,26 @@
 @interface HSEntitlementContext
 - (HSEntitlementContext)init;
-- (HSEntitlementContext)initWithSetupAccessoryDescription:(id)a3;
+- (HSEntitlementContext)initWithSetupAccessoryDescription:(id)description;
 - (id)description;
 @end
 
 @implementation HSEntitlementContext
 
-- (HSEntitlementContext)initWithSetupAccessoryDescription:(id)a3
+- (HSEntitlementContext)initWithSetupAccessoryDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = HSEntitlementContext;
   v5 = [(HSEntitlementContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 appIdentifier];
+    appIdentifier = [descriptionCopy appIdentifier];
     bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v6;
+    v5->_bundleIdentifier = appIdentifier;
 
-    v5->_isEntitledForHomeKitSPI = [v4 isEntitledForHomeKitSPI];
-    v5->_isEntitledForThirdPartySetupAccessoryPayload = [v4 isEntitledForThirdPartySetupAccessoryPayload];
-    v5->_isEntitledForThirdPartyMatterSetupPayload = [v4 isEntitledForThirdPartyMatterSetupPayload];
+    v5->_isEntitledForHomeKitSPI = [descriptionCopy isEntitledForHomeKitSPI];
+    v5->_isEntitledForThirdPartySetupAccessoryPayload = [descriptionCopy isEntitledForThirdPartySetupAccessoryPayload];
+    v5->_isEntitledForThirdPartyMatterSetupPayload = [descriptionCopy isEntitledForThirdPartyMatterSetupPayload];
     v5->_isEntitledForAll3rdPartyAccessoryTypes = _os_feature_enabled_impl();
   }
 
@@ -39,15 +39,15 @@
 - (id)description
 {
   v3 = [NADescriptionBuilder builderWithObject:self];
-  v4 = [(HSEntitlementContext *)self bundleIdentifier];
-  [v3 appendString:v4 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(HSEntitlementContext *)self bundleIdentifier];
+  [v3 appendString:bundleIdentifier withName:@"bundleIdentifier"];
 
   v5 = [v3 appendBool:-[HSEntitlementContext isEntitledForHomeKitSPI](self withName:{"isEntitledForHomeKitSPI"), @"com.apple.homekit.private-spi-access"}];
   v6 = [v3 appendBool:-[HSEntitlementContext isEntitledForThirdPartySetupAccessoryPayload](self withName:{"isEntitledForThirdPartySetupAccessoryPayload"), @"com.apple.developer.homekit.allow-setup-payload"}];
   v7 = [v3 appendBool:-[HSEntitlementContext isEntitledForThirdPartyMatterSetupPayload](self withName:{"isEntitledForThirdPartyMatterSetupPayload"), @"com.apple.developer.matter.allow-setup-payload"}];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

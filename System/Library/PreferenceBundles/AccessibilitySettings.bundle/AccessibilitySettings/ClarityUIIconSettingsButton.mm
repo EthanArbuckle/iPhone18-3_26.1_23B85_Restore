@@ -1,24 +1,24 @@
 @interface ClarityUIIconSettingsButton
-- (ClarityUIIconSettingsButton)initWithTitle:(id)a3 preferenceValue:(id)a4;
-- (void)setSelected:(BOOL)a3;
+- (ClarityUIIconSettingsButton)initWithTitle:(id)title preferenceValue:(id)value;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation ClarityUIIconSettingsButton
 
-- (ClarityUIIconSettingsButton)initWithTitle:(id)a3 preferenceValue:(id)a4
+- (ClarityUIIconSettingsButton)initWithTitle:(id)title preferenceValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  valueCopy = value;
   v42.receiver = self;
   v42.super_class = ClarityUIIconSettingsButton;
   v9 = [(ClarityUIIconSettingsButton *)&v42 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_preferenceValue, a4);
-    v39 = [[ClarityOnboardingPreviewView alloc] initWithListLayout:v8];
+    objc_storeStrong(&v9->_preferenceValue, value);
+    v39 = [[ClarityOnboardingPreviewView alloc] initWithListLayout:valueCopy];
     [(ClarityOnboardingPreviewView *)v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = v8;
+    v40 = valueCopy;
     v11 = [UIStackView alloc];
     v45 = v39;
     v12 = [NSArray arrayWithObjects:&v45 count:1];
@@ -39,7 +39,7 @@
     [v15 setFont:v16];
 
     [v15 setAdjustsFontForContentSizeCategory:1];
-    [v15 setText:v7];
+    [v15 setText:titleCopy];
     LODWORD(v17) = 1148846080;
     [v15 setContentCompressionResistancePriority:0 forAxis:v17];
     v18 = objc_alloc_init(UIImageView);
@@ -64,25 +64,25 @@
     [v24 setSpacing:8.0];
     [v24 setAlignment:3];
     [(ClarityUIIconSettingsButton *)v10 addSubview:v24];
-    v37 = [v24 widthAnchor];
-    v36 = [(ClarityUIIconSettingsButton *)v10 widthAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    widthAnchor = [v24 widthAnchor];
+    widthAnchor2 = [(ClarityUIIconSettingsButton *)v10 widthAnchor];
+    v35 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v43[0] = v35;
-    v25 = [v24 heightAnchor];
+    heightAnchor = [v24 heightAnchor];
     [(ClarityUIIconSettingsButton *)v10 heightAnchor];
-    v26 = v41 = v7;
-    v27 = [v25 constraintEqualToAnchor:v26];
+    v26 = v41 = titleCopy;
+    v27 = [heightAnchor constraintEqualToAnchor:v26];
     v43[1] = v27;
-    v28 = [v24 centerXAnchor];
+    centerXAnchor = [v24 centerXAnchor];
     [(ClarityUIIconSettingsButton *)v10 centerXAnchor];
-    v29 = obj = a3;
-    v30 = [v28 constraintEqualToAnchor:v29];
+    v29 = obj = title;
+    v30 = [centerXAnchor constraintEqualToAnchor:v29];
     v43[2] = v30;
     v31 = [NSArray arrayWithObjects:v43 count:3];
     [NSLayoutConstraint activateConstraints:v31];
 
-    v8 = v40;
-    v7 = v41;
+    valueCopy = v40;
+    titleCopy = v41;
 
     objc_storeStrong(&v10->_title, obj);
     v32 = v10;
@@ -91,13 +91,13 @@
   return v10;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v9.receiver = self;
   v9.super_class = ClarityUIIconSettingsButton;
   [(ClarityUIIconSettingsButton *)&v9 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     [(ClarityUIIconSettingsButton *)self setTintColor:0];
     v5 = [UIImage systemImageNamed:@"checkmark.circle.fill"];

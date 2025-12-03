@@ -40,9 +40,9 @@
       v5 = IFDefaultLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v7 = [(IFBundle *)self bundleURL];
+        bundleURL = [(IFBundle *)self bundleURL];
         *buf = 138412290;
-        v12 = v7;
+        v12 = bundleURL;
         _os_log_impl(&dword_1B9DEC000, v5, OS_LOG_TYPE_INFO, "Failed to determine Info.plist URL for bundle at URL: %@", buf, 0xCu);
       }
 

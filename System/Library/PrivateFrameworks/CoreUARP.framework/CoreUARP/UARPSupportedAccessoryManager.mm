@@ -1,12 +1,12 @@
 @interface UARPSupportedAccessoryManager
 + (id)defaultManager;
 - (UARPSupportedAccessoryManager)init;
-- (id)findByHardwareID:(id)a3;
-- (id)findByIdentifier:(id)a3;
-- (void)addSupportedAccessories:(id)a3;
-- (void)addSupportedAccessoriesByURL:(id)a3;
-- (void)addSupportedAccessory:(id)a3;
-- (void)addSupportedAccessoryByDictionary:(id)a3;
+- (id)findByHardwareID:(id)d;
+- (id)findByIdentifier:(id)identifier;
+- (void)addSupportedAccessories:(id)accessories;
+- (void)addSupportedAccessoriesByURL:(id)l;
+- (void)addSupportedAccessory:(id)accessory;
+- (void)addSupportedAccessoryByDictionary:(id)dictionary;
 @end
 
 @implementation UARPSupportedAccessoryManager
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __47__UARPSupportedAccessoryManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken != -1)
   {
     dispatch_once(&defaultManager_onceToken, block);
@@ -298,14 +298,14 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
   [v123 addSupportedAccessory:v124];
 }
 
-- (void)addSupportedAccessoriesByURL:(id)a3
+- (void)addSupportedAccessoriesByURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v4];
+  lCopy = l;
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:lCopy];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
-    [(UARPSupportedAccessoryManager *)v4 addSupportedAccessoriesByURL:?];
+    [(UARPSupportedAccessoryManager *)lCopy addSupportedAccessoriesByURL:?];
   }
 
   [(UARPSupportedAccessoryManager *)self addSupportedAccessoryByDictionary:v5];
@@ -316,15 +316,15 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
   }
 }
 
-- (void)addSupportedAccessoryByDictionary:(id)a3
+- (void)addSupportedAccessoryByDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [dictionaryCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -336,10 +336,10 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
-        v9 = [v4 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v8)];
+        v9 = [dictionaryCopy objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v8)];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -354,7 +354,7 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [dictionaryCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -363,28 +363,28 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSupportedAccessory:(id)a3
+- (void)addSupportedAccessory:(id)accessory
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (([(NSMutableSet *)v4->_setOfAccessories containsObject:v5]& 1) == 0)
+  accessoryCopy = accessory;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(NSMutableSet *)selfCopy->_setOfAccessories containsObject:accessoryCopy]& 1) == 0)
   {
-    [(NSMutableSet *)v4->_setOfAccessories addObject:v5];
+    [(NSMutableSet *)selfCopy->_setOfAccessories addObject:accessoryCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addSupportedAccessories:(id)a3
+- (void)addSupportedAccessories:(id)accessories
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [accessoriesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -396,14 +396,14 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessoriesCopy);
         }
 
         [(UARPSupportedAccessoryManager *)self addSupportedAccessory:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [accessoriesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -412,17 +412,17 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findByHardwareID:(id)a3
+- (id)findByHardwareID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5->_setOfAccessories;
+  v6 = selfCopy->_setOfAccessories;
   v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -437,8 +437,8 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 hardwareID];
-        v12 = [v11 isEqual:v4];
+        hardwareID = [v10 hardwareID];
+        v12 = [hardwareID isEqual:dCopy];
 
         if (v12)
         {
@@ -459,28 +459,28 @@ void __47__UARPSupportedAccessoryManager_defaultManager__block_invoke(uint64_t a
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)findByIdentifier:(id)a3
+- (id)findByIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v5->_setOfAccessories;
+  v6 = selfCopy->_setOfAccessories;
   v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
     v8 = *v27;
-    v21 = v5;
+    v21 = selfCopy;
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -491,8 +491,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -505,8 +505,8 @@ LABEL_11:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v14 = [v10 alternativeAppleModelNumbers];
-        v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        alternativeAppleModelNumbers = [v10 alternativeAppleModelNumbers];
+        v15 = [alternativeAppleModelNumbers countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v15)
         {
           v16 = *v23;
@@ -516,19 +516,19 @@ LABEL_11:
             {
               if (*v23 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(alternativeAppleModelNumbers);
               }
 
-              if ([*(*(&v22 + 1) + 8 * j) isEqualToString:v4])
+              if ([*(*(&v22 + 1) + 8 * j) isEqualToString:identifierCopy])
               {
                 v18 = v10;
 
-                v5 = v21;
+                selfCopy = v21;
                 goto LABEL_20;
               }
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v15 = [alternativeAppleModelNumbers countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v15)
             {
               continue;
@@ -539,7 +539,7 @@ LABEL_11:
         }
 
         v7 = v13;
-        v5 = v21;
+        selfCopy = v21;
       }
 
       v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -560,7 +560,7 @@ LABEL_11:
 
 LABEL_20:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;

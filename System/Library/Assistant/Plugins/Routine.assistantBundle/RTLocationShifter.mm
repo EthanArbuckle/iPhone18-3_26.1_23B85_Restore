@@ -1,8 +1,8 @@
 @interface RTLocationShifter
 - (RTLocationShifter)init;
-- (id)shiftedLocation:(id)a3 allowNetwork:(BOOL)a4 error:(id *)a5;
-- (void)shiftCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 handler:(id)a5;
-- (void)shiftLocation:(id)a3 handler:(id)a4;
+- (id)shiftedLocation:(id)location allowNetwork:(BOOL)network error:(id *)error;
+- (void)shiftCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy handler:(id)handler;
+- (void)shiftLocation:(id)location handler:(id)handler;
 @end
 
 @implementation RTLocationShifter
@@ -22,32 +22,32 @@
   return v2;
 }
 
-- (void)shiftLocation:(id)a3 handler:(id)a4
+- (void)shiftLocation:(id)location handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 referenceFrame] == 2)
+    if ([locationCopy referenceFrame] == 2)
     {
-      v7[2](v7, v6, 0);
+      handlerCopy[2](handlerCopy, locationCopy, 0);
     }
 
     else
     {
-      [v6 latitude];
+      [locationCopy latitude];
       v10 = v9;
-      [v6 longitude];
+      [locationCopy longitude];
       v12 = CLLocationCoordinate2DMake(v10, v11);
-      [v6 horizontalUncertainty];
+      [locationCopy horizontalUncertainty];
       v14 = v13;
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = sub_233543654;
       v16[3] = &unk_2789DF428;
-      v17 = v6;
-      v18 = v7;
+      v17 = locationCopy;
+      v18 = handlerCopy;
       [(RTLocationShifter *)self shiftCoordinate:v16 accuracy:v12.latitude handler:v12.longitude, v14];
     }
   }
@@ -68,20 +68,20 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)shiftedLocation:(id)a3 allowNetwork:(BOOL)a4 error:(id *)a5
+- (id)shiftedLocation:(id)location allowNetwork:(BOOL)network error:(id *)error
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 referenceFrame] == 2)
+  locationCopy = location;
+  if ([locationCopy referenceFrame] == 2)
   {
-    v9 = v8;
+    v9 = locationCopy;
   }
 
-  else if (a4)
+  else if (network)
   {
-    [v8 latitude];
+    [locationCopy latitude];
     v11 = v10;
-    [v8 longitude];
+    [locationCopy longitude];
     v13 = CLLocationCoordinate2DMake(v11, v12);
     v60 = 0.0;
     *&v61 = COERCE_DOUBLE(&v60);
@@ -100,7 +100,7 @@
     v73 = sub_233543CC0;
     v74 = 0;
     v14 = dispatch_semaphore_create(0);
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v16 = v15;
     v48 = MEMORY[0x277D85DD0];
     v49 = 3221225472;
@@ -124,31 +124,31 @@
       v22 = sub_23354337C(qword_27DE0EC18);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v47 = [v21 localizedDescription];
+        localizedDescription = [v21 localizedDescription];
         *buf = 138412290;
-        v67 = v47;
+        v67 = localizedDescription;
         _os_log_error_impl(&dword_233541000, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v23 = v21;
-        *a5 = v21;
+        *error = v21;
       }
 
-      v9 = v8;
+      v9 = locationCopy;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = *(*(&v70 + 1) + 40);
+        *error = *(*(&v70 + 1) + 40);
       }
 
       if (*(*(&v70 + 1) + 40))
       {
-        v9 = v8;
+        v9 = locationCopy;
       }
 
       else
@@ -157,8 +157,8 @@
         v41 = v61[4];
         v42 = v61[5];
         v43 = v57[3];
-        v44 = [v8 date];
-        v9 = [v40 initWithLatitude:v44 longitude:2 horizontalUncertainty:v41 date:v42 referenceFrame:v43];
+        date = [locationCopy date];
+        v9 = [v40 initWithLatitude:date longitude:2 horizontalUncertainty:v41 date:v42 referenceFrame:v43];
       }
     }
 
@@ -172,20 +172,20 @@
     v60 = 0.0;
     *&v61 = 0.0;
     v56 = 0.0;
-    [v8 latitude];
+    [locationCopy latitude];
     v25 = v24;
-    [v8 longitude];
+    [locationCopy longitude];
     v27 = v26;
     geoLocationShifter = self->_geoLocationShifter;
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     if (([(GEOLocationShifter *)geoLocationShifter shiftCoordinate:&v60 accuracy:&v56 shiftedCoordinate:v25 shiftedAccuracy:v27, v29]& 1) != 0)
     {
       v30 = objc_alloc(MEMORY[0x277D01160]);
       v31 = v60;
       v32 = *&v61;
       v33 = v56;
-      v34 = [v8 date];
-      v35 = [v30 initWithLatitude:v34 longitude:2 horizontalUncertainty:v31 date:v32 referenceFrame:v33];
+      date2 = [locationCopy date];
+      v35 = [v30 initWithLatitude:date2 longitude:2 horizontalUncertainty:v31 date:v32 referenceFrame:v33];
     }
 
     else
@@ -194,23 +194,23 @@
       v75 = *MEMORY[0x277CCA450];
       v76[0] = @"Unable to shift without network allowed";
       v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:&v75 count:1];
-      v34 = [v36 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v37];
+      date2 = [v36 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v37];
 
       v38 = sub_23354337C(qword_27DE0EC18);
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         LODWORD(v70) = 138412290;
-        *(&v70 + 4) = v34;
+        *(&v70 + 4) = date2;
         _os_log_error_impl(&dword_233541000, v38, OS_LOG_TYPE_ERROR, "%@", &v70, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
-        v39 = v34;
-        *a5 = v34;
+        v39 = date2;
+        *error = date2;
       }
 
-      v35 = v8;
+      v35 = locationCopy;
     }
 
     v9 = v35;
@@ -221,13 +221,13 @@
   return v9;
 }
 
-- (void)shiftCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 handler:(id)a5
+- (void)shiftCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy handler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (v9)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([MEMORY[0x277D0EB88] isLocationShiftRequiredForCoordinate:{latitude, longitude}])
     {
@@ -235,7 +235,7 @@
       v22[1] = 3221225472;
       v22[2] = sub_233543F90;
       v22[3] = &unk_2789DF478;
-      v10 = v9;
+      v10 = handlerCopy;
       v23 = v10;
       v11 = MEMORY[0x2383A2300](v22);
       v17[0] = MEMORY[0x277D85DD0];
@@ -245,16 +245,16 @@
       v18 = v10;
       v19 = latitude;
       v20 = longitude;
-      v21 = a4;
+      accuracyCopy = accuracy;
       v12 = MEMORY[0x2383A2300](v17);
       geoLocationShifter = self->_geoLocationShifter;
       v14 = dispatch_get_global_queue(0, 0);
-      [(GEOLocationShifter *)geoLocationShifter shiftCoordinate:v11 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v14 errorHandler:latitude callbackQueue:longitude, a4];
+      [(GEOLocationShifter *)geoLocationShifter shiftCoordinate:v11 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v14 errorHandler:latitude callbackQueue:longitude, accuracy];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, latitude, longitude, a4);
+      (*(handlerCopy + 2))(handlerCopy, 0, latitude, longitude, accuracy);
     }
   }
 

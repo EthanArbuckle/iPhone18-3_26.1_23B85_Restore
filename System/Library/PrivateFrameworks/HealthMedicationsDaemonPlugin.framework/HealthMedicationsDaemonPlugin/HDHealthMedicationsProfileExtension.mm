@@ -1,6 +1,6 @@
 @interface HDHealthMedicationsProfileExtension
 - (HDHealthMedicationsProfileExtension)init;
-- (HDHealthMedicationsProfileExtension)initWithProfile:(id)a3;
+- (HDHealthMedicationsProfileExtension)initWithProfile:(id)profile;
 - (HDPrimaryProfile)profile;
 - (id)createMedicationNotificationManager;
 - (id)createMedicationNotificationSyncManager;
@@ -22,23 +22,23 @@
   return 0;
 }
 
-- (HDHealthMedicationsProfileExtension)initWithProfile:(id)a3
+- (HDHealthMedicationsProfileExtension)initWithProfile:(id)profile
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDHealthMedicationsProfileExtension;
   v5 = [(HDHealthMedicationsProfileExtension *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     _HKInitializeLogging();
     v7 = HKLogMedication();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
-      [v4 profileType];
+      [profileCopy profileType];
       v9 = HKStringFromProfileType();
       *buf = 138543618;
       v14 = v8;
@@ -54,21 +54,21 @@
 
 - (void)start
 {
-  v3 = [(HDHealthMedicationsProfileExtension *)self createMedicationUserDefaults];
+  createMedicationUserDefaults = [(HDHealthMedicationsProfileExtension *)self createMedicationUserDefaults];
   medicationUserDefaults = self->_medicationUserDefaults;
-  self->_medicationUserDefaults = v3;
+  self->_medicationUserDefaults = createMedicationUserDefaults;
 
-  v5 = [(HDHealthMedicationsProfileExtension *)self createMedicationScheduleManager];
+  createMedicationScheduleManager = [(HDHealthMedicationsProfileExtension *)self createMedicationScheduleManager];
   medicationScheduleManager = self->_medicationScheduleManager;
-  self->_medicationScheduleManager = v5;
+  self->_medicationScheduleManager = createMedicationScheduleManager;
 
   v7 = [[HDMedicationDataDonator alloc] initWithProfile:self];
   medicationsDataDonator = self->_medicationsDataDonator;
   self->_medicationsDataDonator = v7;
 
-  v9 = [(HDHealthMedicationsProfileExtension *)self createMedicationNotificationSyncManager];
+  createMedicationNotificationSyncManager = [(HDHealthMedicationsProfileExtension *)self createMedicationNotificationSyncManager];
   medicationNotificationSyncManager = self->_medicationNotificationSyncManager;
-  self->_medicationNotificationSyncManager = v9;
+  self->_medicationNotificationSyncManager = createMedicationNotificationSyncManager;
 
   v11 = [HDMedicationDoseEventObserver alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -99,11 +99,11 @@
   self->_deviceScopedStorageManager = v27;
 
   v29 = objc_loadWeakRetained(&self->_profile);
-  v30 = [v29 daemon];
-  v31 = [v30 behavior];
-  v32 = [v31 hkmd_supportsMedicationsWidget];
+  daemon = [v29 daemon];
+  behavior = [daemon behavior];
+  hkmd_supportsMedicationsWidget = [behavior hkmd_supportsMedicationsWidget];
 
-  if (v32)
+  if (hkmd_supportsMedicationsWidget)
   {
     v33 = [HDMedicationsWidgetSchedulingManager alloc];
     v34 = objc_loadWeakRetained(&self->_profile);
@@ -142,10 +142,10 @@ HDMedicationDailyAnalyticsEvent *__44__HDHealthMedicationsProfileExtension_start
 
 - (id)createMedicationScheduleManager
 {
-  v3 = [(HDHealthMedicationsProfileExtension *)self createMedicationNotificationManager];
+  createMedicationNotificationManager = [(HDHealthMedicationsProfileExtension *)self createMedicationNotificationManager];
   v4 = [HDMedicationScheduleManager alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [(HDMedicationScheduleManager *)v4 initWithProfile:WeakRetained userDefaults:self->_medicationUserDefaults medicationNotificationManager:v3];
+  v6 = [(HDMedicationScheduleManager *)v4 initWithProfile:WeakRetained userDefaults:self->_medicationUserDefaults medicationNotificationManager:createMedicationNotificationManager];
 
   return v6;
 }
@@ -155,15 +155,15 @@ HDMedicationDailyAnalyticsEvent *__44__HDHealthMedicationsProfileExtension_start
   v3 = HKCreateSerialDispatchQueue();
   v4 = objc_alloc(MEMORY[0x277D10838]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained healthDaemon];
-  v7 = [v6 primaryProfile];
-  v8 = [v4 initWithProfile:v7 clientIdentifier:@"HDMedicationNotificationManager" eventHandlerQueue:v3];
+  healthDaemon = [WeakRetained healthDaemon];
+  primaryProfile = [healthDaemon primaryProfile];
+  v8 = [v4 initWithProfile:primaryProfile clientIdentifier:@"HDMedicationNotificationManager" eventHandlerQueue:v3];
 
   v9 = objc_alloc(MEMORY[0x277D10838]);
   v10 = objc_loadWeakRetained(&self->_profile);
-  v11 = [v10 healthDaemon];
-  v12 = [v11 primaryProfile];
-  v13 = [v9 initWithProfile:v12 clientIdentifier:@"MedicationExpirationAlarmIdentifier" eventHandlerQueue:v3];
+  healthDaemon2 = [v10 healthDaemon];
+  primaryProfile2 = [healthDaemon2 primaryProfile];
+  v13 = [v9 initWithProfile:primaryProfile2 clientIdentifier:@"MedicationExpirationAlarmIdentifier" eventHandlerQueue:v3];
 
   v14 = [HDMedicationNotificationManager alloc];
   v15 = objc_loadWeakRetained(&self->_profile);

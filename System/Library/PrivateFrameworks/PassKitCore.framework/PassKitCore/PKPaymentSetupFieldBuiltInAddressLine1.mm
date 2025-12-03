@@ -1,15 +1,15 @@
 @interface PKPaymentSetupFieldBuiltInAddressLine1
-- (PKPaymentSetupFieldBuiltInAddressLine1)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInAddressLine1)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInAddressLine1
 
-- (PKPaymentSetupFieldBuiltInAddressLine1)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInAddressLine1)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  v6 = a3;
-  if ([(__CFString *)v6 length])
+  identifierCopy = identifier;
+  if ([(__CFString *)identifierCopy length])
   {
-    v7 = v6;
+    v7 = identifierCopy;
   }
 
   else
@@ -19,7 +19,7 @@
 
   v11.receiver = self;
   v11.super_class = PKPaymentSetupFieldBuiltInAddressLine1;
-  v8 = [(PKPaymentSetupFieldText *)&v11 initWithIdentifier:v7 type:a4];
+  v8 = [(PKPaymentSetupFieldText *)&v11 initWithIdentifier:v7 type:type];
   if (v8)
   {
     v9 = PKLocalizedPaymentString(&cfstr_Street1_0.isa, 0);

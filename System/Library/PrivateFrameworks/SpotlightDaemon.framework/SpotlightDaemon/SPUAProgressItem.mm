@@ -1,19 +1,19 @@
 @interface SPUAProgressItem
 + (void)initialize;
-+ (void)queueRelatedDelete:(id)a3 forBundleID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (SPUAProgressItem)initWithBundleID:(id)a3 uaID:(id)a4 relatedID:(id)a5;
++ (void)queueRelatedDelete:(id)delete forBundleID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (SPUAProgressItem)initWithBundleID:(id)d uaID:(id)iD relatedID:(id)relatedID;
 - (unint64_t)hash;
 - (void)add;
-- (void)update:(int)a3;
+- (void)update:(int)update;
 @end
 
 @implementation SPUAProgressItem
 
 - (unint64_t)hash
 {
-  v2 = [(SPUAProgressItem *)self uaID];
-  v3 = [v2 hash];
+  uaID = [(SPUAProgressItem *)self uaID];
+  v3 = [uaID hash];
 
   return v3;
 }
@@ -50,7 +50,7 @@ void __23__SPUAProgressItem_add__block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v3 = dispatch_queue_attr_make_with_qos_class(v2, 5u, 0);
@@ -70,43 +70,43 @@ void __23__SPUAProgressItem_add__block_invoke(uint64_t a1)
   }
 }
 
-- (SPUAProgressItem)initWithBundleID:(id)a3 uaID:(id)a4 relatedID:(id)a5
+- (SPUAProgressItem)initWithBundleID:(id)d uaID:(id)iD relatedID:(id)relatedID
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  relatedIDCopy = relatedID;
   v15.receiver = self;
   v15.super_class = SPUAProgressItem;
   v12 = [(SPUAProgressItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleID, a3);
-    objc_storeStrong(&v13->_uaID, a4);
-    objc_storeStrong(&v13->_relatedID, a5);
+    objc_storeStrong(&v12->_bundleID, d);
+    objc_storeStrong(&v13->_uaID, iD);
+    objc_storeStrong(&v13->_relatedID, relatedID);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     bundleID = self->_bundleID;
-    v7 = [v5 bundleID];
-    if ([(NSString *)bundleID isEqual:v7])
+    bundleID = [v5 bundleID];
+    if ([(NSString *)bundleID isEqual:bundleID])
     {
       uaID = self->_uaID;
-      v9 = [v5 uaID];
-      if ([(NSString *)uaID isEqual:v9])
+      uaID = [v5 uaID];
+      if ([(NSString *)uaID isEqual:uaID])
       {
         relatedID = self->_relatedID;
-        v11 = [v5 relatedID];
-        v12 = [(NSString *)relatedID isEqual:v11];
+        relatedID = [v5 relatedID];
+        v12 = [(NSString *)relatedID isEqual:relatedID];
       }
 
       else
@@ -129,24 +129,24 @@ void __23__SPUAProgressItem_add__block_invoke(uint64_t a1)
   return v12;
 }
 
-+ (void)queueRelatedDelete:(id)a3 forBundleID:(id)a4
++ (void)queueRelatedDelete:(id)delete forBundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  deleteCopy = delete;
+  dCopy = d;
   v7 = sBatchDeleteQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__SPUAProgressItem_queueRelatedDelete_forBundleID___block_invoke;
   v11[3] = &unk_2789342C0;
-  v12 = v6;
-  v13 = v5;
-  v8 = v5;
-  v9 = v6;
+  v12 = dCopy;
+  v13 = deleteCopy;
+  v8 = deleteCopy;
+  v9 = dCopy;
   v10 = _setup_block(v11, 0, 22170);
   dispatch_async(v7, v10);
 }
 
-- (void)update:(int)a3
+- (void)update:(int)update
 {
   v3 = sBatchDeleteQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -154,7 +154,7 @@ void __23__SPUAProgressItem_add__block_invoke(uint64_t a1)
   v5[2] = __27__SPUAProgressItem_update___block_invoke;
   v5[3] = &unk_278934C48;
   v5[4] = self;
-  v6 = a3;
+  updateCopy = update;
   v4 = _setup_block(v5, 0, 22202);
   dispatch_async(v3, v4);
 }

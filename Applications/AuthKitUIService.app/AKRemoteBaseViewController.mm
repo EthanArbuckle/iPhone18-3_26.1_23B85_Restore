@@ -11,16 +11,16 @@
   [(AKRemoteBaseViewController *)self setView:?];
 
   v4 = +[UIColor clearColor];
-  v3 = [(AKRemoteBaseViewController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(AKRemoteBaseViewController *)self view];
+  [view setBackgroundColor:v4];
 
-  v5 = [(AKRemoteBaseViewController *)self view];
-  [v5 setClipsToBounds:0];
+  view2 = [(AKRemoteBaseViewController *)self view];
+  [view2 setClipsToBounds:0];
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = AKRemoteBaseViewController;

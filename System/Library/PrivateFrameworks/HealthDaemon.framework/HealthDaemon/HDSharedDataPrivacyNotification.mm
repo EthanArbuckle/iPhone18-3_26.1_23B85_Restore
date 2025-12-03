@@ -1,23 +1,23 @@
 @interface HDSharedDataPrivacyNotification
-- (HDSharedDataPrivacyNotification)initWithNotificationManager:(id)a3 guardianFirstName:(id)a4 lastName:(id)a5;
+- (HDSharedDataPrivacyNotification)initWithNotificationManager:(id)manager guardianFirstName:(id)name lastName:(id)lastName;
 - (id)body;
 - (id)title;
 @end
 
 @implementation HDSharedDataPrivacyNotification
 
-- (HDSharedDataPrivacyNotification)initWithNotificationManager:(id)a3 guardianFirstName:(id)a4 lastName:(id)a5
+- (HDSharedDataPrivacyNotification)initWithNotificationManager:(id)manager guardianFirstName:(id)name lastName:(id)lastName
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v14.receiver = self;
   v14.super_class = HDSharedDataPrivacyNotification;
-  v11 = [(HDNanoHealthNotification *)&v14 initWithNotificationManager:a3];
+  v11 = [(HDNanoHealthNotification *)&v14 initWithNotificationManager:manager];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_firstName, a4);
-    objc_storeStrong(&v12->_lastName, a5);
+    objc_storeStrong(&v11->_firstName, name);
+    objc_storeStrong(&v12->_lastName, lastName);
   }
 
   return v12;

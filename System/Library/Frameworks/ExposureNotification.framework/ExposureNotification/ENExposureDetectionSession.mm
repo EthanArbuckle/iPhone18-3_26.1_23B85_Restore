@@ -1,19 +1,19 @@
 @interface ENExposureDetectionSession
 - (ENExposureDetectionSession)init;
-- (ENExposureDetectionSession)initWithXPCObject:(id)a3 error:(id *)a4;
-- (double)estimateRiskWithExposureInfo:(id)a3 referenceTime:(double)a4 transmissionRiskLevel:(char *)a5 skip:(BOOL *)a6;
-- (double)scoreWithExposureInfo:(id)a3 skip:(BOOL *)a4;
+- (ENExposureDetectionSession)initWithXPCObject:(id)object error:(id *)error;
+- (double)estimateRiskWithExposureInfo:(id)info referenceTime:(double)time transmissionRiskLevel:(char *)level skip:(BOOL *)skip;
+- (double)scoreWithExposureInfo:(id)info skip:(BOOL *)skip;
 - (id)description;
-- (void)_activateWithCompletionHandler:(id)a3;
+- (void)_activateWithCompletionHandler:(id)handler;
 - (void)_invalidated;
-- (void)activateWithCompletionHandler:(id)a3;
-- (void)addDiagnosisKeys:(id)a3 completionHandler:(id)a4;
+- (void)activateWithCompletionHandler:(id)handler;
+- (void)addDiagnosisKeys:(id)keys completionHandler:(id)handler;
 - (void)dealloc;
-- (void)encodeWithXPCObject:(id)a3;
-- (void)finishedDiagnosisKeysWithCompletionHandler:(id)a3;
-- (void)getExposureInfoWithMaximumCount:(unint64_t)a3 completionHandler:(id)a4;
+- (void)encodeWithXPCObject:(id)object;
+- (void)finishedDiagnosisKeysWithCompletionHandler:(id)handler;
+- (void)getExposureInfoWithMaximumCount:(unint64_t)count completionHandler:(id)handler;
 - (void)invalidate;
-- (void)updateDaySummary:(id)a3 exposureInfo:(id)a4 score:(double)a5;
+- (void)updateDaySummary:(id)summary exposureInfo:(id)info score:(double)score;
 @end
 
 @implementation ENExposureDetectionSession
@@ -37,13 +37,13 @@
   return v2;
 }
 
-- (ENExposureDetectionSession)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureDetectionSession)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENExposureDetectionSession *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_8;
     }
@@ -51,13 +51,13 @@
     goto LABEL_9;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
 LABEL_8:
       ENErrorF(2);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_4;
     }
 
@@ -66,24 +66,24 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  [(ENExposureDetectionSession *)v6 initWithXPCObject:a4 error:v7, &v10];
+  [(ENExposureDetectionSession *)objectCopy initWithXPCObject:error error:v7, &v10];
   v8 = v10;
 LABEL_4:
 
   return v8;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   configuration = self->_configuration;
   if (configuration)
   {
     v5 = configuration;
-    v6 = a3;
+    objectCopy = object;
     value = xpc_dictionary_create(0, 0, 0);
     [(ENExposureConfiguration *)v5 encodeWithXPCObject:value];
 
-    xpc_dictionary_set_value(v6, "expC", value);
+    xpc_dictionary_set_value(objectCopy, "expC", value);
   }
 }
 
@@ -110,17 +110,17 @@ LABEL_4:
   return 0;
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__ENExposureDetectionSession_activateWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -153,9 +153,9 @@ void __60__ENExposureDetectionSession_activateWithCompletionHandler___block_invo
   }
 }
 
-- (void)_activateWithCompletionHandler:(id)a3
+- (void)_activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(ENManager);
   manager = self->_manager;
   self->_manager = v5;
@@ -173,8 +173,8 @@ void __60__ENExposureDetectionSession_activateWithCompletionHandler___block_invo
   v9[2] = __61__ENExposureDetectionSession__activateWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_278A4B080;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(ENManager *)v7 exposureDetectionActivate:self completion:v9];
 }
 
@@ -270,20 +270,20 @@ uint64_t __40__ENExposureDetectionSession_invalidate__block_invoke(uint64_t resu
   }
 }
 
-- (void)addDiagnosisKeys:(id)a3 completionHandler:(id)a4
+- (void)addDiagnosisKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ENExposureDetectionSession_addDiagnosisKeys_completionHandler___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keysCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = keysCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -330,17 +330,17 @@ void __65__ENExposureDetectionSession_addDiagnosisKeys_completionHandler___block
   }
 }
 
-- (void)finishedDiagnosisKeysWithCompletionHandler:(id)a3
+- (void)finishedDiagnosisKeysWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__ENExposureDetectionSession_finishedDiagnosisKeysWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -374,18 +374,18 @@ void __73__ENExposureDetectionSession_finishedDiagnosisKeysWithCompletionHandler
   }
 }
 
-- (void)getExposureInfoWithMaximumCount:(unint64_t)a3 completionHandler:(id)a4
+- (void)getExposureInfoWithMaximumCount:(unint64_t)count completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__ENExposureDetectionSession_getExposureInfoWithMaximumCount_completionHandler___block_invoke;
   block[3] = &unk_278A4B0F8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  countCopy = count;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -412,26 +412,26 @@ void __80__ENExposureDetectionSession_getExposureInfoWithMaximumCount_completion
   [v3 exposureDetectionGetExposureInfoWithMaximumCount:v5 completion:v6];
 }
 
-- (double)estimateRiskWithExposureInfo:(id)a3 referenceTime:(double)a4 transmissionRiskLevel:(char *)a5 skip:(BOOL *)a6
+- (double)estimateRiskWithExposureInfo:(id)info referenceTime:(double)time transmissionRiskLevel:(char *)level skip:(BOOL *)skip
 {
-  v10 = a3;
+  infoCopy = info;
   v11 = self->_configuration;
   if (([(ENExposureConfiguration *)v11 flags]& 2) != 0)
   {
-    [(ENExposureDetectionSession *)self scoreWithExposureInfo:v10 skip:a6];
+    [(ENExposureDetectionSession *)self scoreWithExposureInfo:infoCopy skip:skip];
     v20 = v19;
   }
 
   else
   {
-    -[ENExposureConfiguration attenuationLevelValueWithAttenuation:](v11, "attenuationLevelValueWithAttenuation:", [v10 attenuationValue]);
+    -[ENExposureConfiguration attenuationLevelValueWithAttenuation:](v11, "attenuationLevelValueWithAttenuation:", [infoCopy attenuationValue]);
     v13 = v12;
-    v14 = [v10 date];
-    v15 = v14;
-    if (v14)
+    date = [infoCopy date];
+    v15 = date;
+    if (date)
     {
-      [v14 timeIntervalSinceReferenceDate];
-      v17 = a4 - v16;
+      [date timeIntervalSinceReferenceDate];
+      v17 = time - v16;
       if (v17 > 9.22337204e18)
       {
         v17 = 9.22337204e18;
@@ -452,42 +452,42 @@ void __80__ENExposureDetectionSession_getExposureInfoWithMaximumCount_completion
 
     [(ENExposureConfiguration *)v11 daysSinceLastExposureLevelValueWithDays:v18];
     v22 = v21;
-    [v10 duration];
+    [infoCopy duration];
     [(ENExposureConfiguration *)v11 durationLevelValueWithDuration:?];
     v24 = v23;
-    -[ENExposureConfiguration transmissionLevelValueWithTransmissionRiskLevel:](v11, "transmissionLevelValueWithTransmissionRiskLevel:", [v10 transmissionRiskLevel]);
+    -[ENExposureConfiguration transmissionLevelValueWithTransmissionRiskLevel:](v11, "transmissionLevelValueWithTransmissionRiskLevel:", [infoCopy transmissionRiskLevel]);
     v26 = v25;
-    if (a5)
+    if (level)
     {
-      *a5 = [v10 transmissionRiskLevel];
+      *level = [infoCopy transmissionRiskLevel];
     }
 
     v20 = v13 * v22 * v24 * v26;
-    *a6 = 0;
+    *skip = 0;
   }
 
   return v20;
 }
 
-- (double)scoreWithExposureInfo:(id)a3 skip:(BOOL *)a4
+- (double)scoreWithExposureInfo:(id)info skip:(BOOL *)skip
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = self->_configuration;
   v17 = 0;
-  -[ENExposureConfiguration infectiousnessWeightWithDaysSinceOnsetOfSymptoms:skip:](v7, "infectiousnessWeightWithDaysSinceOnsetOfSymptoms:skip:", [v6 daysSinceOnsetOfSymptoms], &v17);
+  -[ENExposureConfiguration infectiousnessWeightWithDaysSinceOnsetOfSymptoms:skip:](v7, "infectiousnessWeightWithDaysSinceOnsetOfSymptoms:skip:", [infoCopy daysSinceOnsetOfSymptoms], &v17);
   v9 = v17;
-  *a4 = v17;
+  *skip = v17;
   v10 = 0.0;
   if (!v9)
   {
     v11 = v8;
-    -[ENExposureConfiguration reportTypeWeightWithReportType:skip:](v7, "reportTypeWeightWithReportType:skip:", [v6 diagnosisReportType], &v17);
+    -[ENExposureConfiguration reportTypeWeightWithReportType:skip:](v7, "reportTypeWeightWithReportType:skip:", [infoCopy diagnosisReportType], &v17);
     v13 = v17;
-    *a4 = v17;
+    *skip = v17;
     if (!v13)
     {
       v14 = v12;
-      [(ENExposureConfiguration *)v7 weightedDurationWithExposureInfo:v6];
+      [(ENExposureConfiguration *)v7 weightedDurationWithExposureInfo:infoCopy];
       v10 = v14 / 100.0 * (v11 / 100.0 * v15);
     }
   }
@@ -495,40 +495,40 @@ void __80__ENExposureDetectionSession_getExposureInfoWithMaximumCount_completion
   return v10;
 }
 
-- (void)updateDaySummary:(id)a3 exposureInfo:(id)a4 score:(double)a5
+- (void)updateDaySummary:(id)summary exposureInfo:(id)info score:(double)score
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = [v21 daySummary];
-  if (!v9)
+  summaryCopy = summary;
+  infoCopy = info;
+  daySummary = [summaryCopy daySummary];
+  if (!daySummary)
   {
-    v9 = objc_alloc_init(ENExposureSummaryItem);
-    [v21 setDaySummary:v9];
+    daySummary = objc_alloc_init(ENExposureSummaryItem);
+    [summaryCopy setDaySummary:daySummary];
   }
 
-  [(ENExposureConfiguration *)self->_configuration weightedDurationWithExposureInfo:v8];
+  [(ENExposureConfiguration *)self->_configuration weightedDurationWithExposureInfo:infoCopy];
   v11 = v10;
-  [(ENExposureSummaryItem *)v9 maximumScore];
-  if (v12 < a5)
+  [(ENExposureSummaryItem *)daySummary maximumScore];
+  if (v12 < score)
   {
-    [(ENExposureSummaryItem *)v9 setMaximumScore:a5];
+    [(ENExposureSummaryItem *)daySummary setMaximumScore:score];
   }
 
-  [(ENExposureSummaryItem *)v9 scoreSum];
-  [(ENExposureSummaryItem *)v9 setScoreSum:v13 + a5];
-  [(ENExposureSummaryItem *)v9 weightedDurationSum];
-  [(ENExposureSummaryItem *)v9 setWeightedDurationSum:v11 + v14];
-  v15 = -[ENExposureConfiguration mappedDiagnosisReportType:](self->_configuration, "mappedDiagnosisReportType:", [v8 diagnosisReportType]);
+  [(ENExposureSummaryItem *)daySummary scoreSum];
+  [(ENExposureSummaryItem *)daySummary setScoreSum:v13 + score];
+  [(ENExposureSummaryItem *)daySummary weightedDurationSum];
+  [(ENExposureSummaryItem *)daySummary setWeightedDurationSum:v11 + v14];
+  v15 = -[ENExposureConfiguration mappedDiagnosisReportType:](self->_configuration, "mappedDiagnosisReportType:", [infoCopy diagnosisReportType]);
   v16 = 0;
   if (v15 <= 2)
   {
     if (v15 == 1)
     {
-      v17 = [v21 confirmedTestSummary];
-      if (!v17)
+      confirmedTestSummary = [summaryCopy confirmedTestSummary];
+      if (!confirmedTestSummary)
       {
         v16 = objc_alloc_init(ENExposureSummaryItem);
-        [v21 setConfirmedTestSummary:v16];
+        [summaryCopy setConfirmedTestSummary:v16];
         goto LABEL_18;
       }
     }
@@ -540,11 +540,11 @@ void __80__ENExposureDetectionSession_getExposureInfoWithMaximumCount_completion
         goto LABEL_18;
       }
 
-      v17 = [v21 confirmedClinicalDiagnosisSummary];
-      if (!v17)
+      confirmedTestSummary = [summaryCopy confirmedClinicalDiagnosisSummary];
+      if (!confirmedTestSummary)
       {
         v16 = objc_alloc_init(ENExposureSummaryItem);
-        [v21 setConfirmedClinicalDiagnosisSummary:v16];
+        [summaryCopy setConfirmedClinicalDiagnosisSummary:v16];
         goto LABEL_18;
       }
     }
@@ -559,36 +559,36 @@ void __80__ENExposureDetectionSession_getExposureInfoWithMaximumCount_completion
       goto LABEL_18;
     }
 
-    v17 = [v21 recursiveSummary];
-    if (!v17)
+    confirmedTestSummary = [summaryCopy recursiveSummary];
+    if (!confirmedTestSummary)
     {
       v16 = objc_alloc_init(ENExposureSummaryItem);
-      [v21 setRecursiveSummary:v16];
+      [summaryCopy setRecursiveSummary:v16];
       goto LABEL_18;
     }
 
     goto LABEL_17;
   }
 
-  v17 = [v21 selfReportedSummary];
-  if (v17)
+  confirmedTestSummary = [summaryCopy selfReportedSummary];
+  if (confirmedTestSummary)
   {
 LABEL_17:
-    v16 = v17;
+    v16 = confirmedTestSummary;
     goto LABEL_18;
   }
 
   v16 = objc_alloc_init(ENExposureSummaryItem);
-  [v21 setSelfReportedSummary:v16];
+  [summaryCopy setSelfReportedSummary:v16];
 LABEL_18:
   [(ENExposureSummaryItem *)v16 maximumScore];
-  if (v18 < a5)
+  if (v18 < score)
   {
-    [(ENExposureSummaryItem *)v16 setMaximumScore:a5];
+    [(ENExposureSummaryItem *)v16 setMaximumScore:score];
   }
 
   [(ENExposureSummaryItem *)v16 scoreSum];
-  [(ENExposureSummaryItem *)v16 setScoreSum:v19 + a5];
+  [(ENExposureSummaryItem *)v16 setScoreSum:v19 + score];
   [(ENExposureSummaryItem *)v16 weightedDurationSum];
   [(ENExposureSummaryItem *)v16 setWeightedDurationSum:v11 + v20];
 }

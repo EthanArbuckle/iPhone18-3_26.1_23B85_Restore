@@ -1,35 +1,35 @@
 @interface PKDynamicCollectionViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
 - (PKDynamicCollectionViewController)init;
-- (id)_cellRegistrationForSection:(id)a3 itemIdentifier:(id)a4 item:(id)a5;
-- (id)_indexPathForItem:(id)a3;
-- (id)_indexPathForItemIdentifier:(id)a3;
-- (id)_sectionAtIndex:(int64_t)a3;
-- (id)_sectionAtIndexPath:(id)a3;
-- (id)_sectionForIdentifier:(id)a3;
-- (id)_supplementaryRegistrationForSection:(id)a3 sectionIdentifier:(id)a4 elementKind:(id)a5;
-- (id)cellForItem:(id)a3;
-- (id)cellLayoutAttributesForItem:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
+- (id)_cellRegistrationForSection:(id)section itemIdentifier:(id)identifier item:(id)item;
+- (id)_indexPathForItem:(id)item;
+- (id)_indexPathForItemIdentifier:(id)identifier;
+- (id)_sectionAtIndex:(int64_t)index;
+- (id)_sectionAtIndexPath:(id)path;
+- (id)_sectionForIdentifier:(id)identifier;
+- (id)_supplementaryRegistrationForSection:(id)section sectionIdentifier:(id)identifier elementKind:(id)kind;
+- (id)cellForItem:(id)item;
+- (id)cellLayoutAttributesForItem:(id)item;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
 - (id)layout;
-- (id)sectionIdentifierForIndex:(int64_t)a3;
-- (void)_deselectCellsForce:(BOOL)a3;
-- (void)_reloadDataForSections:(id)a3 recreateSnapshot:(BOOL)a4 animated:(BOOL)a5;
-- (void)_reloadSectionMapForSections:(id)a3 animated:(BOOL)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (id)sectionIdentifierForIndex:(int64_t)index;
+- (void)_deselectCellsForce:(BOOL)force;
+- (void)_reloadDataForSections:(id)sections recreateSnapshot:(BOOL)snapshot animated:(BOOL)animated;
+- (void)_reloadSectionMapForSections:(id)sections animated:(BOOL)animated;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)reconfigureHeaderAndFooterForSectionIdentifier:(id)a3;
-- (void)reloadDataForSection:(id)a3 animated:(BOOL)a4;
-- (void)reloadDataForSectionIdentifier:(id)a3 animated:(BOOL)a4;
+- (void)reconfigureHeaderAndFooterForSectionIdentifier:(id)identifier;
+- (void)reloadDataForSection:(id)section animated:(BOOL)animated;
+- (void)reloadDataForSectionIdentifier:(id)identifier animated:(BOOL)animated;
 - (void)reloadDataWithoutRebuildingDataStores;
-- (void)reloadItem:(id)a3 animated:(BOOL)a4;
-- (void)scrollToItem:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)reloadItem:(id)item animated:(BOOL)animated;
+- (void)scrollToItem:(id)item atScrollPosition:(unint64_t)position animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -69,21 +69,21 @@
   v26.receiver = self;
   v26.super_class = PKDynamicCollectionViewController;
   [(PKDynamicCollectionViewController *)&v26 loadView];
-  v3 = [(PKDynamicCollectionViewController *)self view];
+  view = [(PKDynamicCollectionViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PKDynamicCollectionViewController *)self layout];
-  v14 = [v4 initWithFrame:v13 collectionViewLayout:{v6, v8, v10, v12}];
+  layout = [(PKDynamicCollectionViewController *)self layout];
+  v14 = [v4 initWithFrame:layout collectionViewLayout:{v6, v8, v10, v12}];
   collectionView = self->_collectionView;
   self->_collectionView = v14;
 
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setShowsVerticalScrollIndicator:0];
-  [v3 addSubview:self->_collectionView];
+  [view addSubview:self->_collectionView];
   objc_initWeak(&location, self);
   v16 = objc_alloc(MEMORY[0x1E69DC820]);
   v17 = self->_collectionView;
@@ -168,28 +168,28 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   [(PKDynamicCollectionViewController *)self reloadDataAnimated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKDynamicCollectionViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewWillAppear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewWillAppear:appear];
   self->_isViewControllerActive = 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKDynamicCollectionViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewDidAppear:appear];
   [(PKDynamicCollectionViewController *)self _deselectCellsForce:0];
   self->_viewDidAppear = 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKDynamicCollectionViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewWillDisappear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewWillDisappear:disappear];
   self->_isViewControllerActive = 0;
 }
 
@@ -198,23 +198,23 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   v4.receiver = self;
   v4.super_class = PKDynamicCollectionViewController;
   [(PKDynamicCollectionViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(PKDynamicCollectionViewController *)self view];
-  [v3 bounds];
+  view = [(PKDynamicCollectionViewController *)self view];
+  [view bounds];
   [(UICollectionView *)self->_collectionView setFrame:?];
 }
 
-- (void)_reloadSectionMapForSections:(id)a3 animated:(BOOL)a4
+- (void)_reloadSectionMapForSections:(id)sections animated:(BOOL)animated
 {
-  v31 = a4;
+  animatedCopy = animated;
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sectionsCopy = sections;
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v5;
+  obj = sectionsCopy;
   v34 = [(NSArray *)obj countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v34)
   {
@@ -235,8 +235,8 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v9 = [v8 identifiers];
-        v10 = [v9 countByEnumeratingWithState:&v37 objects:v49 count:16];
+        identifiers = [v8 identifiers];
+        v10 = [identifiers countByEnumeratingWithState:&v37 objects:v49 count:16];
         if (v10)
         {
           v11 = v10;
@@ -247,7 +247,7 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
             {
               if (*v38 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(identifiers);
               }
 
               v14 = *(*(&v37 + 1) + 8 * i);
@@ -275,7 +275,7 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v37 objects:v49 count:16];
+            v11 = [identifiers countByEnumeratingWithState:&v37 objects:v49 count:16];
           }
 
           while (v11);
@@ -296,12 +296,12 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   [v20 minusSet:v19];
   if ([v20 count])
   {
-    v21 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    v22 = [v20 allObjects];
-    [v21 deleteSectionsWithIdentifiers:v22];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    allObjects = [v20 allObjects];
+    [snapshot deleteSectionsWithIdentifiers:allObjects];
 
-    v23 = v31 && self->_isViewControllerActive;
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v21 animatingDifferences:v23];
+    v23 = animatedCopy && self->_isViewControllerActive;
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:v23];
   }
 
   sections = self->_sections;
@@ -316,18 +316,18 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   sectionMap = self->_sectionMap;
   self->_sectionMap = v28;
 
-  [(PKDynamicCollectionViewController *)self _reloadDataForSections:self->_sectionIdentifiers recreateSnapshot:1 animated:v31];
-  v30 = [(PKDynamicCollectionViewController *)self view];
-  [v30 setNeedsLayout];
+  [(PKDynamicCollectionViewController *)self _reloadDataForSections:self->_sectionIdentifiers recreateSnapshot:1 animated:animatedCopy];
+  view = [(PKDynamicCollectionViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (id)cellForItem:(id)a3
+- (id)cellForItem:(id)item
 {
-  v4 = [(PKDynamicCollectionViewController *)self _indexPathForItem:a3];
+  v4 = [(PKDynamicCollectionViewController *)self _indexPathForItem:item];
   if (v4)
   {
-    v5 = [(PKDynamicCollectionViewController *)self collectionView];
-    v6 = [v5 cellForItemAtIndexPath:v4];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    v6 = [collectionView cellForItemAtIndexPath:v4];
   }
 
   else
@@ -338,13 +338,13 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   return v6;
 }
 
-- (id)cellLayoutAttributesForItem:(id)a3
+- (id)cellLayoutAttributesForItem:(id)item
 {
-  v4 = [(PKDynamicCollectionViewController *)self _indexPathForItem:a3];
+  v4 = [(PKDynamicCollectionViewController *)self _indexPathForItem:item];
   if (v4)
   {
-    v5 = [(PKDynamicCollectionViewController *)self collectionView];
-    v6 = [v5 layoutAttributesForItemAtIndexPath:v4];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    v6 = [collectionView layoutAttributesForItemAtIndexPath:v4];
   }
 
   else
@@ -355,32 +355,32 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   return v6;
 }
 
-- (id)_indexPathForItem:(id)a3
+- (id)_indexPathForItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
     useItemIdentityWhenUpdating = self->_useItemIdentityWhenUpdating;
-    v7 = v4;
-    v8 = v7;
+    v7 = itemCopy;
+    identifier = v7;
     if (useItemIdentityWhenUpdating)
     {
       if ([v7 conformsToProtocol:&unk_1F3D1E168])
       {
-        v9 = v8;
+        v9 = identifier;
       }
 
       else
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKDynamicCollectionViewController: useItemIdentityWhenUpdating was set to true but item %@ does not conform to PKIdentifiable", v8}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKDynamicCollectionViewController: useItemIdentityWhenUpdating was set to true but item %@ does not conform to PKIdentifiable", identifier}];
         v9 = 0;
       }
 
-      v8 = [v9 identifier];
+      identifier = [v9 identifier];
     }
 
-    v10 = [(PKDynamicCollectionViewController *)self _indexPathForItemIdentifier:v8];
+    v10 = [(PKDynamicCollectionViewController *)self _indexPathForItemIdentifier:identifier];
   }
 
   else
@@ -391,9 +391,9 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   return v10;
 }
 
-- (id)_indexPathForItemIdentifier:(id)a3
+- (id)_indexPathForItemIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:?];
   }
@@ -406,24 +406,24 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
   return v4;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v6.receiver = self;
   v6.super_class = PKDynamicCollectionViewController;
-  [(PKDynamicCollectionViewController *)&v6 setEditing:a3 animated:a4];
-  [(UICollectionView *)self->_collectionView setEditing:v4];
+  [(PKDynamicCollectionViewController *)&v6 setEditing:editing animated:animated];
+  [(UICollectionView *)self->_collectionView setEditing:editingCopy];
 }
 
-- (void)reloadItem:(id)a3 animated:(BOOL)a4
+- (void)reloadItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v8 = v6;
+  itemCopy = item;
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v8 = itemCopy;
   v9 = v8;
-  v10 = v8;
+  identifier = v8;
   if (self->_useItemIdentityWhenUpdating)
   {
     v11 = v8;
@@ -438,22 +438,22 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
       v12 = 0;
     }
 
-    v10 = [v12 identifier];
+    identifier = [v12 identifier];
 
-    if (v10)
+    if (identifier)
     {
-      [(NSMutableDictionary *)self->_itemsPendingDeletion removeObjectForKey:v10];
+      [(NSMutableDictionary *)self->_itemsPendingDeletion removeObjectForKey:identifier];
     }
   }
 
-  v13 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:v10];
+  v13 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:identifier];
   if (v13)
   {
     if (self->_useItemIdentityWhenUpdating)
     {
-      [(NSMutableDictionary *)self->_itemsMap setObject:v9 forKey:v10];
-      v14 = [(PKDynamicCollectionViewController *)self collectionView];
-      v15 = [v14 cellForItemAtIndexPath:v13];
+      [(NSMutableDictionary *)self->_itemsMap setObject:v9 forKey:identifier];
+      collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+      v15 = [collectionView cellForItemAtIndexPath:v13];
 
       v16 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:v13];
       v17 = v16;
@@ -469,40 +469,40 @@ id __45__PKDynamicCollectionViewController_loadView__block_invoke_2(uint64_t a1,
 
       if (!v18)
       {
-        v23 = v4;
+        v23 = animatedCopy;
         v19 = [(PKDynamicCollectionViewController *)self _cellRegistrationForSection:v16 itemIdentifier:0 item:v9];
-        v20 = [v19 cellClass];
-        if (v20 == objc_opt_class())
+        cellClass = [v19 cellClass];
+        if (cellClass == objc_opt_class())
         {
-          v22 = [v19 configurationHandler];
-          (v22)[2](v22, v15, v13, v10);
+          configurationHandler = [v19 configurationHandler];
+          (configurationHandler)[2](configurationHandler, v15, v13, identifier);
 
           goto LABEL_17;
         }
 
-        v4 = v23;
+        animatedCopy = v23;
       }
     }
 
-    v24[0] = v10;
+    v24[0] = identifier;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-    [v7 reloadItemsWithIdentifiers:v21];
+    [snapshot reloadItemsWithIdentifiers:v21];
 
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v7 animatingDifferences:v4];
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:animatedCopy];
   }
 
 LABEL_17:
 }
 
-- (void)scrollToItem:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5
+- (void)scrollToItem:(id)item atScrollPosition:(unint64_t)position animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = [(PKDynamicCollectionViewController *)self _indexPathForItem:a3];
+  animatedCopy = animated;
+  v8 = [(PKDynamicCollectionViewController *)self _indexPathForItem:item];
   if (v8)
   {
     v10 = v8;
-    v9 = [(PKDynamicCollectionViewController *)self collectionView];
-    [v9 scrollToItemAtIndexPath:v10 atScrollPosition:a4 animated:v5];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    [collectionView scrollToItemAtIndexPath:v10 atScrollPosition:position animated:animatedCopy];
 
     v8 = v10;
   }
@@ -510,17 +510,17 @@ LABEL_17:
 
 - (void)reloadDataWithoutRebuildingDataStores
 {
-  v2 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v2 reloadData];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)reconfigureHeaderAndFooterForSectionIdentifier:(id)a3
+- (void)reconfigureHeaderAndFooterForSectionIdentifier:(id)identifier
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v4 = [(PKDynamicCollectionViewController *)self _sectionForIdentifier:?];
   if (v4)
   {
-    v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexForSectionIdentifier:v12];
+    v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexForSectionIdentifier:identifierCopy];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v5];
@@ -528,7 +528,7 @@ LABEL_17:
       v8 = [(UICollectionView *)self->_collectionView supplementaryViewForElementKind:*MEMORY[0x1E69DDC08] atIndexPath:v6];
       if (v8)
       {
-        [v4 configureSupplementaryRegistration:v8 elementKind:v7 sectionIdentifier:v12];
+        [v4 configureSupplementaryRegistration:v8 elementKind:v7 sectionIdentifier:identifierCopy];
       }
 
       collectionView = self->_collectionView;
@@ -536,58 +536,58 @@ LABEL_17:
       v11 = [(UICollectionView *)collectionView supplementaryViewForElementKind:*MEMORY[0x1E69DDC00] atIndexPath:v6];
       if (v11)
       {
-        [v4 configureSupplementaryRegistration:v11 elementKind:v10 sectionIdentifier:v12];
+        [v4 configureSupplementaryRegistration:v11 elementKind:v10 sectionIdentifier:identifierCopy];
       }
     }
   }
 }
 
-- (void)reloadDataForSectionIdentifier:(id)a3 animated:(BOOL)a4
+- (void)reloadDataForSectionIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(UICollectionViewDiffableDataSource *)self->_dataSource indexForSectionIdentifier:v6]== 0x7FFFFFFFFFFFFFFFLL)
+  identifierCopy = identifier;
+  if ([(UICollectionViewDiffableDataSource *)self->_dataSource indexForSectionIdentifier:identifierCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PKDynamicCollectionViewController *)self sections];
-    [(PKDynamicCollectionViewController *)self _reloadSectionMapForSections:v7 animated:v4];
+    sections = [(PKDynamicCollectionViewController *)self sections];
+    [(PKDynamicCollectionViewController *)self _reloadSectionMapForSections:sections animated:animatedCopy];
   }
 
   else
   {
-    v8[0] = v6;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-    [(PKDynamicCollectionViewController *)self _reloadDataForSections:v7 recreateSnapshot:0 animated:v4];
+    v8[0] = identifierCopy;
+    sections = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+    [(PKDynamicCollectionViewController *)self _reloadDataForSections:sections recreateSnapshot:0 animated:animatedCopy];
   }
 }
 
-- (void)reloadDataForSection:(id)a3 animated:(BOOL)a4
+- (void)reloadDataForSection:(id)section animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [a3 identifiers];
+  animatedCopy = animated;
+  identifiers = [section identifiers];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__PKDynamicCollectionViewController_reloadDataForSection_animated___block_invoke;
   v8[3] = &unk_1E8013098;
   v8[4] = self;
-  if ([v6 pk_containsObjectPassingTest:v8])
+  if ([identifiers pk_containsObjectPassingTest:v8])
   {
-    v7 = [(PKDynamicCollectionViewController *)self sections];
-    [(PKDynamicCollectionViewController *)self _reloadSectionMapForSections:v7 animated:v4];
+    sections = [(PKDynamicCollectionViewController *)self sections];
+    [(PKDynamicCollectionViewController *)self _reloadSectionMapForSections:sections animated:animatedCopy];
   }
 
   else
   {
-    [(PKDynamicCollectionViewController *)self _reloadDataForSections:v6 recreateSnapshot:0 animated:v4];
+    [(PKDynamicCollectionViewController *)self _reloadDataForSections:identifiers recreateSnapshot:0 animated:animatedCopy];
   }
 }
 
-- (void)_reloadDataForSections:(id)a3 recreateSnapshot:(BOOL)a4 animated:(BOOL)a5
+- (void)_reloadDataForSections:(id)sections recreateSnapshot:(BOOL)snapshot animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  snapshotCopy = snapshot;
   v115 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  sectionsCopy = sections;
   if (!self->_sections)
   {
     goto LABEL_73;
@@ -598,33 +598,33 @@ LABEL_17:
     goto LABEL_73;
   }
 
-  v64 = v8;
-  v9 = [(PKDynamicCollectionViewController *)self isViewLoaded];
-  v8 = v64;
-  if (!v9)
+  v64 = sectionsCopy;
+  isViewLoaded = [(PKDynamicCollectionViewController *)self isViewLoaded];
+  sectionsCopy = v64;
+  if (!isViewLoaded)
   {
     goto LABEL_73;
   }
 
-  v10 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v11 = !self->_retainCellSelectionCellOnReload || !v6;
-  v65 = v10;
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v11 = !self->_retainCellSelectionCellOnReload || !snapshotCopy;
+  v65 = snapshot;
   if (v11)
   {
     if (!self->_retainCellSelectionCellOnReload)
     {
 LABEL_12:
-      v62 = 0;
+      indexPathsForSelectedItems = 0;
       goto LABEL_13;
     }
   }
 
   else
   {
-    v12 = v10;
+    v12 = snapshot;
     v13 = [v64 count];
-    v14 = [v12 sectionIdentifiers];
-    v15 = [v14 count];
+    sectionIdentifiers = [v12 sectionIdentifiers];
+    v15 = [sectionIdentifiers count];
 
     if (v13 != v15)
     {
@@ -632,10 +632,10 @@ LABEL_12:
     }
   }
 
-  v62 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
 LABEL_13:
-  v63 = v5;
-  if (v6)
+  v63 = animatedCopy;
+  if (snapshotCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x1E69955A0]);
     v17 = v64;
@@ -649,7 +649,7 @@ LABEL_13:
   }
 
   v80 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v71 = [v65 sectionIdentifiers];
+  sectionIdentifiers2 = [v65 sectionIdentifiers];
   v81 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v99 = 0u;
   v100 = 0u;
@@ -674,7 +674,7 @@ LABEL_13:
         }
 
         v19 = *(*(&v99 + 1) + 8 * i);
-        if ([v71 containsObject:v19])
+        if ([sectionIdentifiers2 containsObject:v19])
         {
           v20 = [v65 itemIdentifiersInSectionWithIdentifier:v19];
         }
@@ -695,15 +695,15 @@ LABEL_13:
 
         v23 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshotForSection:v19];
         v24 = [v21 snapshotWithPreviousSnapshot:v23 forSectionIdentifier:v19];
-        v25 = [v24 items];
+        items = [v24 items];
 
-        if ([v25 count])
+        if ([items count])
         {
           v74 = v23;
           v75 = v20;
           v76 = i;
           v77 = v19;
-          v73 = v25;
+          v73 = items;
           if (self->_useItemIdentityWhenUpdating)
           {
             v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -712,7 +712,7 @@ LABEL_13:
             v96 = 0u;
             v97 = 0u;
             v98 = 0u;
-            v27 = v25;
+            v27 = items;
             v28 = [v27 countByEnumeratingWithState:&v95 objects:v106 count:16];
             if (v28)
             {
@@ -735,22 +735,22 @@ LABEL_13:
 
                   else
                   {
-                    [MEMORY[0x1E695DF30] raise:v79 format:{@"PKDynamicCollectionViewController: useItemIdentityWhenUpdating was set to true but item %@ does not conform to PKIdentifiable", v32, v62}];
+                    [MEMORY[0x1E695DF30] raise:v79 format:{@"PKDynamicCollectionViewController: useItemIdentityWhenUpdating was set to true but item %@ does not conform to PKIdentifiable", v32, indexPathsForSelectedItems}];
                     v33 = 0;
                   }
 
-                  v34 = [v33 identifier];
+                  identifier = [v33 identifier];
 
-                  v35 = [(NSMutableDictionary *)self->_itemsMap objectForKey:v34];
+                  v35 = [(NSMutableDictionary *)self->_itemsMap objectForKey:identifier];
                   if (v35 && (PKEqualObjects() & 1) == 0)
                   {
-                    [v78 addObject:v34];
+                    [v78 addObject:identifier];
                   }
 
-                  [(NSMutableDictionary *)self->_itemsPendingDeletion removeObjectForKey:v34];
-                  [v81 removeObject:v34];
-                  [v80 setObject:v32 forKey:v34];
-                  [v26 addObject:v34];
+                  [(NSMutableDictionary *)self->_itemsPendingDeletion removeObjectForKey:identifier];
+                  [v81 removeObject:identifier];
+                  [v80 setObject:v32 forKey:identifier];
+                  [v26 addObject:identifier];
                 }
 
                 v29 = [v27 countByEnumeratingWithState:&v95 objects:v106 count:16];
@@ -765,7 +765,7 @@ LABEL_13:
 
           else
           {
-            [v16 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:v19];
+            [v16 appendItemsWithIdentifiers:items intoSectionWithIdentifier:v19];
           }
 
           v93 = 0u;
@@ -789,9 +789,9 @@ LABEL_13:
 
                 v43 = *(*(&v91 + 1) + 8 * k);
                 v44 = [(NSMutableDictionary *)self->_itemsPendingDeletion objectForKeyedSubscript:v43];
-                v45 = [v44 integerValue];
+                integerValue = [v44 integerValue];
 
-                v46 = [MEMORY[0x1E696AD98] numberWithInteger:v45 + 1];
+                v46 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
                 [(NSMutableDictionary *)self->_itemsPendingDeletion setObject:v46 forKeyedSubscript:v43];
               }
 
@@ -805,7 +805,7 @@ LABEL_13:
           v90 = 0u;
           v87 = 0u;
           v88 = 0u;
-          v25 = v73;
+          items = v73;
           v47 = v73;
           v48 = [v47 countByEnumeratingWithState:&v87 objects:v104 count:16];
           v16 = v69;
@@ -844,7 +844,7 @@ LABEL_13:
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v109 = self;
+            selfCopy = self;
             v110 = 2112;
             v111 = v19;
             v112 = 2112;
@@ -882,7 +882,7 @@ LABEL_13:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v57 = v62;
+  v57 = indexPathsForSelectedItems;
   v58 = [v57 countByEnumeratingWithState:&v82 objects:v103 count:16];
   if (v58)
   {
@@ -906,7 +906,7 @@ LABEL_13:
     while (v59);
   }
 
-  v8 = v64;
+  sectionsCopy = v64;
 LABEL_73:
 }
 
@@ -1028,9 +1028,9 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:?];
   if (self->_useItemIdentityWhenUpdating)
   {
@@ -1039,17 +1039,17 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
     v5 = v6;
   }
 
-  v7 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:v8];
+  v7 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:pathCopy];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v7 didSelectItem:v5];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
   if (self->_useItemIdentityWhenUpdating)
   {
     v7 = [(NSMutableDictionary *)self->_itemsMap objectForKey:v6];
@@ -1057,7 +1057,7 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
     v6 = v7;
   }
 
-  v8 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:v5];
+  v8 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:pathCopy];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v9 = [v8 shouldHighlightItem:v6];
@@ -1071,9 +1071,9 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v9 = a5;
+  pathCopy = path;
   v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:?];
   if (self->_useItemIdentityWhenUpdating)
   {
@@ -1082,19 +1082,19 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
     v6 = v7;
   }
 
-  v8 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:v9];
+  v8 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:pathCopy];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v8 willDisplayItem:v6];
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = [a4 firstObject];
-  if (v6)
+  firstObject = [paths firstObject];
+  if (firstObject)
   {
-    v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+    v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:firstObject];
     if (self->_useItemIdentityWhenUpdating)
     {
       v8 = [(NSMutableDictionary *)self->_itemsMap objectForKey:v7];
@@ -1102,7 +1102,7 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
       v7 = v8;
     }
 
-    v9 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:v6];
+    v9 = [(PKDynamicCollectionViewController *)self _sectionAtIndexPath:firstObject];
     if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v10 = [v9 contextMenuConfigurationForItem:v7];
@@ -1122,32 +1122,32 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
   return v10;
 }
 
-- (id)sectionIdentifierForIndex:(int64_t)a3
+- (id)sectionIdentifierForIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSArray *)self->_sectionIdentifiers count]<= a3)
+    if ([(NSArray *)self->_sectionIdentifiers count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:a3];
+      v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:index];
     }
   }
 
   return v6;
 }
 
-- (id)_sectionForIdentifier:(id)a3
+- (id)_sectionForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSDictionary *)self->_sectionMap objectForKey:?];
   }
@@ -1160,35 +1160,35 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
   return v4;
 }
 
-- (id)_sectionAtIndex:(int64_t)a3
+- (id)_sectionAtIndex:(int64_t)index
 {
-  v4 = [(PKDynamicCollectionViewController *)self sectionIdentifierForIndex:a3];
+  v4 = [(PKDynamicCollectionViewController *)self sectionIdentifierForIndex:index];
   v5 = [(PKDynamicCollectionViewController *)self _sectionForIdentifier:v4];
 
   return v5;
 }
 
-- (id)_sectionAtIndexPath:(id)a3
+- (id)_sectionAtIndexPath:(id)path
 {
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(PKDynamicCollectionViewController *)self _sectionAtIndex:v4];
+  return [(PKDynamicCollectionViewController *)self _sectionAtIndex:section];
 }
 
-- (void)_deselectCellsForce:(BOOL)a3
+- (void)_deselectCellsForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  v6 = v5;
-  if (self->_deselectSelectedCellsOnViewWillAppear || v3)
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  v6 = collectionView;
+  if (self->_deselectSelectedCellsOnViewWillAppear || forceCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [v5 indexPathsForSelectedItems];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1200,14 +1200,14 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(indexPathsForSelectedItems);
           }
 
           [v6 deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v11++) animated:1];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -1215,21 +1215,21 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
   }
 }
 
-- (id)_cellRegistrationForSection:(id)a3 itemIdentifier:(id)a4 item:(id)a5
+- (id)_cellRegistrationForSection:(id)section itemIdentifier:(id)identifier item:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  sectionCopy = section;
+  identifierCopy = identifier;
+  itemCopy = item;
+  v11 = itemCopy;
+  if (itemCopy)
   {
-    v12 = v10;
+    v12 = itemCopy;
     v13 = v12;
   }
 
   else
   {
-    v14 = [(NSMutableDictionary *)self->_itemsMap objectForKey:v9];
+    v14 = [(NSMutableDictionary *)self->_itemsMap objectForKey:identifierCopy];
     v15 = v14;
     if (v14)
     {
@@ -1238,27 +1238,27 @@ id __43__PKDynamicCollectionViewController_layout__block_invoke(uint64_t a1, uin
 
     else
     {
-      v16 = v9;
+      v16 = identifierCopy;
     }
 
     v13 = v16;
   }
 
-  v17 = __85__PKDynamicCollectionViewController__cellRegistrationForSection_itemIdentifier_item___block_invoke(v12, v8, v13);
+  v17 = __85__PKDynamicCollectionViewController__cellRegistrationForSection_itemIdentifier_item___block_invoke(v12, sectionCopy, v13);
   v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%@", objc_msgSend(v17, "cellClass"), objc_opt_class()];
   v19 = [(NSMutableDictionary *)self->_cellRegistrations objectForKey:v18];
   if (!v19)
   {
     objc_initWeak(&location, self);
     v20 = MEMORY[0x1E69DC800];
-    v21 = [v17 cellClass];
+    cellClass = [v17 cellClass];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __85__PKDynamicCollectionViewController__cellRegistrationForSection_itemIdentifier_item___block_invoke_2;
     v23[3] = &unk_1E8013108;
     objc_copyWeak(&v25, &location);
     v24 = &__block_literal_global_26;
-    v19 = [v20 registrationWithCellClass:v21 configurationHandler:v23];
+    v19 = [v20 registrationWithCellClass:cellClass configurationHandler:v23];
     [(NSMutableDictionary *)self->_cellRegistrations setObject:v19 forKey:v18];
 
     objc_destroyWeak(&v25);
@@ -1320,14 +1320,14 @@ void __85__PKDynamicCollectionViewController__cellRegistrationForSection_itemIde
   }
 }
 
-- (id)_supplementaryRegistrationForSection:(id)a3 sectionIdentifier:(id)a4 elementKind:(id)a5
+- (id)_supplementaryRegistrationForSection:(id)section sectionIdentifier:(id)identifier elementKind:(id)kind
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sectionCopy = section;
+  identifierCopy = identifier;
+  kindCopy = kind;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 supplementaryRegistrationClassForKind:v10 sectionIdentifier:v9];
+    v11 = [sectionCopy supplementaryRegistrationClassForKind:kindCopy sectionIdentifier:identifierCopy];
   }
 
   else
@@ -1336,8 +1336,8 @@ void __85__PKDynamicCollectionViewController__cellRegistrationForSection_itemIde
   }
 
   v12 = v11;
-  v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%@", v11, v10];
-  v14 = [(NSMutableDictionary *)self->_supplementaryViewRegistrations objectForKey:v13];
+  kindCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%@", v11, kindCopy];
+  v14 = [(NSMutableDictionary *)self->_supplementaryViewRegistrations objectForKey:kindCopy];
   if (!v14)
   {
     objc_initWeak(&location, self);
@@ -1347,8 +1347,8 @@ void __85__PKDynamicCollectionViewController__cellRegistrationForSection_itemIde
     v17[2] = __104__PKDynamicCollectionViewController__supplementaryRegistrationForSection_sectionIdentifier_elementKind___block_invoke;
     v17[3] = &unk_1E8013130;
     objc_copyWeak(&v18, &location);
-    v14 = [v15 registrationWithSupplementaryClass:v12 elementKind:v10 configurationHandler:v17];
-    [(NSMutableDictionary *)self->_supplementaryViewRegistrations setObject:v14 forKey:v13];
+    v14 = [v15 registrationWithSupplementaryClass:v12 elementKind:kindCopy configurationHandler:v17];
+    [(NSMutableDictionary *)self->_supplementaryViewRegistrations setObject:v14 forKey:kindCopy];
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
   }

@@ -2,7 +2,7 @@
 + (HMIVisionSession)sharedInstance;
 - (HMIVisionSession)init;
 - (VNSession)vnSession;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIVisionSession
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __34__HMIVisionSession_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -77,8 +77,8 @@ void __34__HMIVisionSession_sharedInstance__block_invoke(uint64_t a1)
     self->_session = v5;
   }
 
-  v7 = [(HMIVisionSession *)self watchdogTimer];
-  [v7 resume];
+  watchdogTimer = [(HMIVisionSession *)self watchdogTimer];
+  [watchdogTimer resume];
 
   v8 = self->_session;
   os_unfair_lock_unlock(&self->_lock);
@@ -86,14 +86,14 @@ void __34__HMIVisionSession_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
   os_unfair_lock_lock_with_options();
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -104,11 +104,11 @@ void __34__HMIVisionSession_sharedInstance__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v6);
-  session = v7->_session;
-  v7->_session = 0;
+  session = selfCopy->_session;
+  selfCopy->_session = 0;
 
-  transaction = v7->_transaction;
-  v7->_transaction = 0;
+  transaction = selfCopy->_transaction;
+  selfCopy->_transaction = 0;
 
   os_unfair_lock_unlock(&self->_lock);
   objc_autoreleasePoolPop(v5);

@@ -1,32 +1,32 @@
 @interface CNCompoundMultiValuePropertyDescription
 - (id)dictionaryTransform;
 - (id)fromDictionaryTransform;
-- (id)stringForIndexingForContact:(id)a3;
+- (id)stringForIndexingForContact:(id)contact;
 @end
 
 @implementation CNCompoundMultiValuePropertyDescription
 
 - (id)dictionaryTransform
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (id)fromDictionaryTransform
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (id)stringForIndexingForContact:(id)a3
+- (id)stringForIndexingForContact:(id)contact
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [(CNPropertyDescription *)self CNValueForContact:a3];
+  v4 = [(CNPropertyDescription *)self CNValueForContact:contact];
   if ([v4 count])
   {
-    v5 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -47,15 +47,15 @@
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [(CNCompoundMultiValuePropertyDescription *)self dictionaryTransform];
-          v12 = [v10 value];
-          v13 = (v11)[2](v11, v12);
+          dictionaryTransform = [(CNCompoundMultiValuePropertyDescription *)self dictionaryTransform];
+          value = [v10 value];
+          v13 = (dictionaryTransform)[2](dictionaryTransform, value);
 
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __71__CNCompoundMultiValuePropertyDescription_stringForIndexingForContact___block_invoke;
           v16[3] = &unk_1E7416290;
-          v17 = v5;
+          v17 = string;
           [v13 enumerateKeysAndObjectsUsingBlock:v16];
         }
 
@@ -68,10 +68,10 @@
 
   else
   {
-    v5 = 0;
+    string = 0;
   }
 
-  return v5;
+  return string;
 }
 
 void __71__CNCompoundMultiValuePropertyDescription_stringForIndexingForContact___block_invoke(uint64_t a1, uint64_t a2, void *a3)

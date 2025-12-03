@@ -1,100 +1,100 @@
 @interface SFCollaborationUtilities
-+ (BOOL)canDeleteShareForCollaborationItem:(id)a3;
-+ (BOOL)hasiWorkSendCopyRepresentationForItemProvider:(id)a3;
-+ (BOOL)isCKShareItemProvider:(id)a3;
-+ (BOOL)isCollaborationItemPrivateShare:(id)a3;
-+ (BOOL)isHeroCollaborationActivityType:(id)a3;
-+ (BOOL)isInPlaceFileOrURLItemProvider:(id)a3;
-+ (BOOL)isOplockError:(id)a3 updatedShare:(id *)a4;
-+ (BOOL)isPostCKShareItemProvider:(id)a3;
-+ (BOOL)isPreCKShareItemProvider:(id)a3;
-+ (BOOL)isSWYActivityItemProvider:(id)a3;
-+ (BOOL)isServiceManateeCKShareItemProvider:(id)a3;
-+ (BOOL)isSharedFileURL:(id)a3 isLocalStorageFileURL:(BOOL *)a4 isiCloudDriveFileURL:(BOOL *)a5 isInSharedFolder:(BOOL *)a6;
-+ (BOOL)isThirdPartyFileProviderBackedURL:(id)a3;
-+ (BOOL)shareSupportsRequestAccess:(id)a3 options:(id)a4;
++ (BOOL)canDeleteShareForCollaborationItem:(id)item;
++ (BOOL)hasiWorkSendCopyRepresentationForItemProvider:(id)provider;
++ (BOOL)isCKShareItemProvider:(id)provider;
++ (BOOL)isCollaborationItemPrivateShare:(id)share;
++ (BOOL)isHeroCollaborationActivityType:(id)type;
++ (BOOL)isInPlaceFileOrURLItemProvider:(id)provider;
++ (BOOL)isOplockError:(id)error updatedShare:(id *)share;
++ (BOOL)isPostCKShareItemProvider:(id)provider;
++ (BOOL)isPreCKShareItemProvider:(id)provider;
++ (BOOL)isSWYActivityItemProvider:(id)provider;
++ (BOOL)isServiceManateeCKShareItemProvider:(id)provider;
++ (BOOL)isSharedFileURL:(id)l isLocalStorageFileURL:(BOOL *)rL isiCloudDriveFileURL:(BOOL *)uRL isInSharedFolder:(BOOL *)folder;
++ (BOOL)isThirdPartyFileProviderBackedURL:(id)l;
++ (BOOL)shareSupportsRequestAccess:(id)access options:(id)options;
 + (NSString)_copyRepresentationTypeIdentifier;
 + (NSString)defaultCKOptionsSummary;
-+ (id)_dataForFilepath:(id)a3;
-+ (id)baseCollaborationDictionaryFromCollaborationItem:(id)a3;
-+ (id)ckShareDictionaryFromCKShare:(id)a3 setupInfo:(id)a4;
-+ (id)createItemProviderForFileURL:(id)a3;
-+ (id)createLinkMetadataWithCKShare:(id)a3 containerSetupInfo:(id)a4;
-+ (id)createLinkMetadataWithCKShareItemProvider:(id)a3;
-+ (id)descriptionForShareOptions:(id)a3;
-+ (id)fileCollaborationItemFromActivityItems:(id)a3;
-+ (id)fileShareDictionaryFromFileURLItems:(id)a3;
-+ (id)optionsFromCKShare:(id)a3 previousCKOptions:(id)a4 newCKOptions:(id *)a5;
-+ (id)underlyingCKErrorForError:(id)a3;
-+ (id)urlFromActivityItem:(id)a3 allowsLoading:(BOOL)a4;
-+ (id)urlRequestsForCollaborationItems:(id)a3;
-+ (void)_addParticipantsAllowedForShare:(id)a3 completionHandler:(id)a4;
-+ (void)_addParticipantsAllowedForURL:(id)a3 share:(id)a4 collaborationService:(id)a5 completionHandler:(id)a6;
++ (id)_dataForFilepath:(id)filepath;
++ (id)baseCollaborationDictionaryFromCollaborationItem:(id)item;
++ (id)ckShareDictionaryFromCKShare:(id)share setupInfo:(id)info;
++ (id)createItemProviderForFileURL:(id)l;
++ (id)createLinkMetadataWithCKShare:(id)share containerSetupInfo:(id)info;
++ (id)createLinkMetadataWithCKShareItemProvider:(id)provider;
++ (id)descriptionForShareOptions:(id)options;
++ (id)fileCollaborationItemFromActivityItems:(id)items;
++ (id)fileShareDictionaryFromFileURLItems:(id)items;
++ (id)optionsFromCKShare:(id)share previousCKOptions:(id)options newCKOptions:(id *)kOptions;
++ (id)underlyingCKErrorForError:(id)error;
++ (id)urlFromActivityItem:(id)item allowsLoading:(BOOL)loading;
++ (id)urlRequestsForCollaborationItems:(id)items;
++ (void)_addParticipantsAllowedForShare:(id)share completionHandler:(id)handler;
++ (void)_addParticipantsAllowedForURL:(id)l share:(id)share collaborationService:(id)service completionHandler:(id)handler;
 + (void)_copyRepresentationTypeIdentifier;
-+ (void)_fetchCollaborationAppInfoIfNeededForActivityType:(id)a3 deviceScreenScale:(double)a4 appInfoCompletion:(id)a5;
-+ (void)_findOriginatingSharedItemInParentItems:(id)a3 forSubitem:(id)a4 completionHandler:(id)a5;
-+ (void)_loadCKShareWithMetadataForItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)_loadShareOptionsForCKShareItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)_loadShareOptionsForSWYItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)_processRemainingActivityItems:(id)a3 toFinalActivityItems:(id)a4 onQueue:(id)a5 completion:(id)a6;
-+ (void)addParticipantsAllowedForCollaborationItem:(id)a3 collaborationService:(id)a4 completionHandler:(id)a5;
-+ (void)addParticipantsAllowedForURL:(id)a3 share:(id)a4 completionHandler:(id)a5;
-+ (void)canShowShareOptionsForCollaborationItem:(id)a3 service:(id)a4 completionHandler:(id)a5;
-+ (void)createCollaborationRequestWithCollaborationItem:(id)a3 activityType:(id)a4 deviceScreenScale:(double)a5 completionHandler:(id)a6;
-+ (void)createMailContentForRequest:(id)a3 completionHandler:(id)a4;
-+ (void)createSharingURLForCollaborationRequest:(id)a3 completionHandler:(id)a4;
-+ (void)deleteSharingURL:(id)a3 containerSetupInfo:(id)a4 completionHandler:(id)a5;
-+ (void)findOriginatingSharedItemForSubitemURL:(id)a3 completionHandler:(id)a4;
-+ (void)getCKSharingOptionsFromOptions:(id)a3 accessType:(id *)a4 permissionType:(id *)a5 allowOthersToInvite:(id *)a6;
-+ (void)getFailureTitle:(id *)a3 message:(id *)a4 error:(id)a5;
-+ (void)isShareOwnerOrAdminForCollaborationItem:(id)a3 service:(id)a4 completionHandler:(id)a5;
-+ (void)isShareOwnerOrAdminForFileURL:(id)a3 completionHandler:(id)a4;
-+ (void)isShareOwnerOrAdminForShare:(id)a3 completionHandler:(id)a4;
-+ (void)loadCKContainerForItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)loadCKShareItemProvider:(id)a3 onlyPostShare:(BOOL)a4 completionHandler:(id)a5;
-+ (void)loadMetadataForFileURL:(id)a3 completionHandler:(id)a4;
-+ (void)loadMetadataForItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)loadPendingCollaborationForItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)loadSendCopyRepresentationIfNeededForActivityItems:(id)a3 completion:(id)a4;
-+ (void)loadSendCopyRepresentationIfNeededForItemProvider:(id)a3 completion:(id)a4;
-+ (void)loadShareOptionsForItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)loadiWorkCopyRepresentationURLForItemProvider:(id)a3 completionHandler:(id)a4;
-+ (void)requestSharedURLForCollaborationItem:(id)a3 collaborationService:(id)a4 completionHandler:(id)a5;
-+ (void)requestSharedURLForCollaborationRequest:(id)a3 completionHandler:(id)a4;
-+ (void)shareStatusForURL:(id)a3 completionHandler:(id)a4;
++ (void)_fetchCollaborationAppInfoIfNeededForActivityType:(id)type deviceScreenScale:(double)scale appInfoCompletion:(id)completion;
++ (void)_findOriginatingSharedItemInParentItems:(id)items forSubitem:(id)subitem completionHandler:(id)handler;
++ (void)_loadCKShareWithMetadataForItemProvider:(id)provider completionHandler:(id)handler;
++ (void)_loadShareOptionsForCKShareItemProvider:(id)provider completionHandler:(id)handler;
++ (void)_loadShareOptionsForSWYItemProvider:(id)provider completionHandler:(id)handler;
++ (void)_processRemainingActivityItems:(id)items toFinalActivityItems:(id)activityItems onQueue:(id)queue completion:(id)completion;
++ (void)addParticipantsAllowedForCollaborationItem:(id)item collaborationService:(id)service completionHandler:(id)handler;
++ (void)addParticipantsAllowedForURL:(id)l share:(id)share completionHandler:(id)handler;
++ (void)canShowShareOptionsForCollaborationItem:(id)item service:(id)service completionHandler:(id)handler;
++ (void)createCollaborationRequestWithCollaborationItem:(id)item activityType:(id)type deviceScreenScale:(double)scale completionHandler:(id)handler;
++ (void)createMailContentForRequest:(id)request completionHandler:(id)handler;
++ (void)createSharingURLForCollaborationRequest:(id)request completionHandler:(id)handler;
++ (void)deleteSharingURL:(id)l containerSetupInfo:(id)info completionHandler:(id)handler;
++ (void)findOriginatingSharedItemForSubitemURL:(id)l completionHandler:(id)handler;
++ (void)getCKSharingOptionsFromOptions:(id)options accessType:(id *)type permissionType:(id *)permissionType allowOthersToInvite:(id *)invite;
++ (void)getFailureTitle:(id *)title message:(id *)message error:(id)error;
++ (void)isShareOwnerOrAdminForCollaborationItem:(id)item service:(id)service completionHandler:(id)handler;
++ (void)isShareOwnerOrAdminForFileURL:(id)l completionHandler:(id)handler;
++ (void)isShareOwnerOrAdminForShare:(id)share completionHandler:(id)handler;
++ (void)loadCKContainerForItemProvider:(id)provider completionHandler:(id)handler;
++ (void)loadCKShareItemProvider:(id)provider onlyPostShare:(BOOL)share completionHandler:(id)handler;
++ (void)loadMetadataForFileURL:(id)l completionHandler:(id)handler;
++ (void)loadMetadataForItemProvider:(id)provider completionHandler:(id)handler;
++ (void)loadPendingCollaborationForItemProvider:(id)provider completionHandler:(id)handler;
++ (void)loadSendCopyRepresentationIfNeededForActivityItems:(id)items completion:(id)completion;
++ (void)loadSendCopyRepresentationIfNeededForItemProvider:(id)provider completion:(id)completion;
++ (void)loadShareOptionsForItemProvider:(id)provider completionHandler:(id)handler;
++ (void)loadiWorkCopyRepresentationURLForItemProvider:(id)provider completionHandler:(id)handler;
++ (void)requestSharedURLForCollaborationItem:(id)item collaborationService:(id)service completionHandler:(id)handler;
++ (void)requestSharedURLForCollaborationRequest:(id)request completionHandler:(id)handler;
++ (void)shareStatusForURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation SFCollaborationUtilities
 
-+ (id)baseCollaborationDictionaryFromCollaborationItem:(id)a3
++ (id)baseCollaborationDictionaryFromCollaborationItem:(id)item
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 metadata];
-  [v5 setObject:v6 forKeyedSubscript:@"CollaborationMetadata"];
+  metadata = [itemCopy metadata];
+  [v5 setObject:metadata forKeyedSubscript:@"CollaborationMetadata"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "type")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(itemCopy, "type")}];
   [v5 setObject:v7 forKeyedSubscript:@"CollaborationType"];
 
-  v8 = [v4 shareOptions];
-  [v5 setObject:v8 forKeyedSubscript:@"CollaborationShareOptions"];
+  shareOptions = [itemCopy shareOptions];
+  [v5 setObject:shareOptions forKeyedSubscript:@"CollaborationShareOptions"];
 
-  v9 = [v4 shareOptions];
+  shareOptions2 = [itemCopy shareOptions];
 
-  v10 = [v9 optionsGroups];
-  [v5 setObject:v10 forKeyedSubscript:@"CollaborationOptions"];
+  optionsGroups = [shareOptions2 optionsGroups];
+  [v5 setObject:optionsGroups forKeyedSubscript:@"CollaborationOptions"];
 
   [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"CollaborationMode"];
 
   return v5;
 }
 
-+ (BOOL)isCKShareItemProvider:(id)a3
++ (BOOL)isCKShareItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = get_CKCloudKitPreShareType();
-  if ([v3 hasItemConformingToTypeIdentifier:v4])
+  if ([providerCopy hasItemConformingToTypeIdentifier:v4])
   {
     v5 = 1;
   }
@@ -102,37 +102,37 @@
   else
   {
     v6 = get_CKCloudKitPostShareType();
-    v5 = [v3 hasItemConformingToTypeIdentifier:v6];
+    v5 = [providerCopy hasItemConformingToTypeIdentifier:v6];
   }
 
   return v5;
 }
 
-+ (BOOL)isPreCKShareItemProvider:(id)a3
++ (BOOL)isPreCKShareItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = get_CKCloudKitPreShareType();
-  v5 = [v3 hasItemConformingToTypeIdentifier:v4];
+  v5 = [providerCopy hasItemConformingToTypeIdentifier:v4];
 
   return v5;
 }
 
-+ (BOOL)isPostCKShareItemProvider:(id)a3
++ (BOOL)isPostCKShareItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = get_CKCloudKitPostShareType();
-  v5 = [v3 hasItemConformingToTypeIdentifier:v4];
+  v5 = [providerCopy hasItemConformingToTypeIdentifier:v4];
 
   return v5;
 }
 
-+ (void)getCKSharingOptionsFromOptions:(id)a3 accessType:(id *)a4 permissionType:(id *)a5 allowOthersToInvite:(id *)a6
++ (void)getCKSharingOptionsFromOptions:(id)options accessType:(id *)type permissionType:(id *)permissionType allowOthersToInvite:(id *)invite
 {
-  v9 = a3;
-  if ([v9 count])
+  optionsCopy = options;
+  if ([optionsCopy count])
   {
-    v10 = soft_CKSharingAccessTypeFromOptionsGroups(v9);
-    v11 = v9;
+    v10 = soft_CKSharingAccessTypeFromOptionsGroups(optionsCopy);
+    v11 = optionsCopy;
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
@@ -190,95 +190,95 @@
     v10 = 0;
   }
 
-  *a4 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-  *a5 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
-  *a6 = [MEMORY[0x1E696AD98] numberWithBool:v18];
+  *type = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  *permissionType = [MEMORY[0x1E696AD98] numberWithInteger:v14];
+  *invite = [MEMORY[0x1E696AD98] numberWithBool:v18];
 }
 
-+ (id)ckShareDictionaryFromCKShare:(id)a3 setupInfo:(id)a4
++ (id)ckShareDictionaryFromCKShare:(id)share setupInfo:(id)info
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  shareCopy = share;
+  infoCopy = info;
   v7 = gelato_sharing_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v5;
+    v19 = shareCopy;
     _os_log_impl(&dword_1A9662000, v7, OS_LOG_TYPE_INFO, "Creating dictionary from ckShare: %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = 0;
-  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v17];
+  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:shareCopy requiringSecureCoding:1 error:&v17];
   v10 = v17;
   v11 = v10;
   if (v9)
   {
-    [v8 setValue:v9 forKey:@"share"];
+    [dictionary setValue:v9 forKey:@"share"];
   }
 
   else if (v10)
   {
-    [v8 setObject:v10 forKey:@"shareError"];
+    [dictionary setObject:v10 forKey:@"shareError"];
   }
 
   v16 = v11;
-  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v16];
+  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:infoCopy requiringSecureCoding:1 error:&v16];
   v13 = v16;
 
   if (v12)
   {
-    [v8 setValue:v12 forKey:@"setupInfo"];
+    [dictionary setValue:v12 forKey:@"setupInfo"];
   }
 
   else if (v13)
   {
-    [v8 setObject:v13 forKey:@"setupInfoError"];
+    [dictionary setObject:v13 forKey:@"setupInfoError"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return dictionary;
 }
 
 + (NSString)defaultCKOptionsSummary
 {
-  v2 = [getCKAllowedSharingOptionsClass() standardOptions];
-  v3 = [v2 shareOptions];
-  v4 = [v3 summary];
+  standardOptions = [getCKAllowedSharingOptionsClass() standardOptions];
+  shareOptions = [standardOptions shareOptions];
+  summary = [shareOptions summary];
 
-  return v4;
+  return summary;
 }
 
-+ (void)deleteSharingURL:(id)a3 containerSetupInfo:(id)a4 completionHandler:(id)a5
++ (void)deleteSharingURL:(id)l containerSetupInfo:(id)info completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
   v10 = share_sheet_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = lCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = infoCopy;
     _os_log_impl(&dword_1A9662000, v10, OS_LOG_TYPE_DEFAULT, "remove sharingURL:%@ with containerSetupInfo:%@", &v12, 0x16u);
   }
 
-  [getCloudSharingClass() removeFromShareURL:v7 containerSetupInfo:v8 completionHandler:v9];
+  [getCloudSharingClass() removeFromShareURL:lCopy containerSetupInfo:infoCopy completionHandler:handlerCopy];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_loadShareOptionsForCKShareItemProvider:(id)a3 completionHandler:(id)a4
++ (void)_loadShareOptionsForCKShareItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 canLoadObjectOfClass:getCKAllowedSharingOptionsClass()])
+  providerCopy = provider;
+  handlerCopy = handler;
+  if ([providerCopy canLoadObjectOfClass:getCKAllowedSharingOptionsClass()])
   {
     v7 = gelato_sharing_log();
-    v8 = os_signpost_id_make_with_pointer(v7, v5);
+    v8 = os_signpost_id_make_with_pointer(v7, providerCopy);
 
     v9 = gelato_sharing_log();
     v10 = v9;
@@ -294,8 +294,8 @@
     v14[2] = __86__SFCollaborationUtilities__loadShareOptionsForCKShareItemProvider_completionHandler___block_invoke;
     v14[3] = &unk_1E788E340;
     v16 = v8;
-    v15 = v6;
-    v12 = [v5 loadObjectOfClass:CKAllowedSharingOptionsClass completionHandler:v14];
+    v15 = handlerCopy;
+    v12 = [providerCopy loadObjectOfClass:CKAllowedSharingOptionsClass completionHandler:v14];
   }
 
   else
@@ -306,7 +306,7 @@
       +[SFCollaborationUtilities _loadShareOptionsForCKShareItemProvider:completionHandler:];
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -338,12 +338,12 @@ void __86__SFCollaborationUtilities__loadShareOptionsForCKShareItemProvider_comp
   (*(v12 + 16))(v12, v13, v7);
 }
 
-+ (void)loadCKShareItemProvider:(id)a3 onlyPostShare:(BOOL)a4 completionHandler:(id)a5
++ (void)loadCKShareItemProvider:(id)provider onlyPostShare:(BOOL)share completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  providerCopy = provider;
+  handlerCopy = handler;
   v9 = gelato_sharing_log();
-  v10 = os_signpost_id_make_with_pointer(v9, v7);
+  v10 = os_signpost_id_make_with_pointer(v9, providerCopy);
 
   v11 = gelato_sharing_log();
   v12 = v11;
@@ -358,11 +358,11 @@ void __86__SFCollaborationUtilities__loadShareOptionsForCKShareItemProvider_comp
   aBlock[2] = __84__SFCollaborationUtilities_loadCKShareItemProvider_onlyPostShare_completionHandler___block_invoke;
   aBlock[3] = &unk_1E788E368;
   v33 = v10;
-  v13 = v8;
+  v13 = handlerCopy;
   v32 = v13;
   v14 = _Block_copy(aBlock);
   v15 = get_CKCloudKitPostShareType();
-  v16 = [v7 hasItemConformingToTypeIdentifier:v15];
+  v16 = [providerCopy hasItemConformingToTypeIdentifier:v15];
 
   if (v16)
   {
@@ -371,9 +371,9 @@ void __86__SFCollaborationUtilities__loadShareOptionsForCKShareItemProvider_comp
     v27[1] = 3221225472;
     v27[2] = __84__SFCollaborationUtilities_loadCKShareItemProvider_onlyPostShare_completionHandler___block_invoke_165;
     v27[3] = &unk_1E788E3B8;
-    v30 = a4;
+    shareCopy = share;
     v18 = &v28;
-    v19 = v7;
+    v19 = providerCopy;
     v28 = v19;
     v29 = v14;
     v20 = [v19 loadObjectOfClass:CKPostSharingContextClass completionHandler:v27];
@@ -383,7 +383,7 @@ LABEL_8:
   }
 
   v21 = get_CKCloudKitPreShareType();
-  v22 = [v7 hasItemConformingToTypeIdentifier:v21];
+  v22 = [providerCopy hasItemConformingToTypeIdentifier:v21];
 
   if (v22)
   {
@@ -394,7 +394,7 @@ LABEL_8:
     v25[3] = &unk_1E788E390;
     v18 = &v26;
     v26 = v14;
-    v24 = [v7 loadObjectOfClass:CKPreSharingContextClass completionHandler:v25];
+    v24 = [providerCopy loadObjectOfClass:CKPreSharingContextClass completionHandler:v25];
     goto LABEL_8;
   }
 
@@ -496,12 +496,12 @@ void __84__SFCollaborationUtilities_loadCKShareItemProvider_onlyPostShare_comple
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)_loadCKShareWithMetadataForItemProvider:(id)a3 completionHandler:(id)a4
++ (void)_loadCKShareWithMetadataForItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v7 = gelato_sharing_log();
-  v8 = os_signpost_id_make_with_pointer(v7, v5);
+  v8 = os_signpost_id_make_with_pointer(v7, providerCopy);
 
   v9 = gelato_sharing_log();
   v10 = v9;
@@ -515,23 +515,23 @@ void __84__SFCollaborationUtilities_loadCKShareItemProvider_onlyPostShare_comple
   v20 = 3221225472;
   v21 = __86__SFCollaborationUtilities__loadCKShareWithMetadataForItemProvider_completionHandler___block_invoke;
   v22 = &unk_1E788E340;
-  v23 = v6;
+  v23 = handlerCopy;
   v24 = v8;
-  v11 = v6;
+  v11 = handlerCopy;
   v12 = _Block_copy(&v19);
   v13 = get_CKCloudKitPostShareType();
-  v14 = [v5 hasItemConformingToTypeIdentifier:{v13, v19, v20, v21, v22}];
+  v14 = [providerCopy hasItemConformingToTypeIdentifier:{v13, v19, v20, v21, v22}];
 
   if (v14)
   {
     CKPostSharingContextClass = getCKPostSharingContextClass();
 LABEL_8:
-    v18 = [v5 loadObjectOfClass:CKPostSharingContextClass completionHandler:v12];
+    v18 = [providerCopy loadObjectOfClass:CKPostSharingContextClass completionHandler:v12];
     goto LABEL_9;
   }
 
   v16 = get_CKCloudKitPreShareType();
-  v17 = [v5 hasItemConformingToTypeIdentifier:v16];
+  v17 = [providerCopy hasItemConformingToTypeIdentifier:v16];
 
   if (v17)
   {
@@ -585,10 +585,10 @@ void __86__SFCollaborationUtilities__loadCKShareWithMetadataForItemProvider_comp
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)loadCKContainerForItemProvider:(id)a3 completionHandler:(id)a4
++ (void)loadCKContainerForItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -613,10 +613,10 @@ void __86__SFCollaborationUtilities__loadCKShareWithMetadataForItemProvider_comp
     +[SFCollaborationUtilities loadCKContainerForItemProvider:completionHandler:];
   }
 
-  if ([v5 hasItemConformingToTypeIdentifier:*v7])
+  if ([providerCopy hasItemConformingToTypeIdentifier:*v7])
   {
     v9 = gelato_sharing_log();
-    v10 = os_signpost_id_make_with_pointer(v9, v5);
+    v10 = os_signpost_id_make_with_pointer(v9, providerCopy);
 
     v11 = gelato_sharing_log();
     v12 = v11;
@@ -649,13 +649,13 @@ void __86__SFCollaborationUtilities__loadCKShareWithMetadataForItemProvider_comp
     v16[2] = __77__SFCollaborationUtilities_loadCKContainerForItemProvider_completionHandler___block_invoke;
     v16[3] = &unk_1E788E340;
     v18 = v10;
-    v17 = v6;
-    v15 = [v5 loadObjectOfClass:v13 completionHandler:v16];
+    v17 = handlerCopy;
+    v15 = [providerCopy loadObjectOfClass:v13 completionHandler:v16];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -674,9 +674,9 @@ void __77__SFCollaborationUtilities_loadCKContainerForItemProvider_completionHan
   (*(*(a1 + 32) + 16))();
 }
 
-+ (BOOL)isServiceManateeCKShareItemProvider:(id)a3
++ (BOOL)isServiceManateeCKShareItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -689,7 +689,7 @@ void __77__SFCollaborationUtilities_loadCKContainerForItemProvider_completionHan
   v11 = &v12;
   v5 = v4;
   v10 = v5;
-  [SFCollaborationUtilities loadCKContainerForItemProvider:v3 completionHandler:v9];
+  [SFCollaborationUtilities loadCKContainerForItemProvider:providerCopy completionHandler:v9];
   v6 = dispatch_time(0, 200000000);
   dispatch_semaphore_wait(v5, v6);
   v7 = *(v13 + 24);
@@ -708,12 +708,12 @@ intptr_t __64__SFCollaborationUtilities_isServiceManateeCKShareItemProvider___bl
   return dispatch_semaphore_signal(v4);
 }
 
-+ (BOOL)isCollaborationItemPrivateShare:(id)a3
++ (BOOL)isCollaborationItemPrivateShare:(id)share
 {
-  v3 = [a3 options];
-  if ([v3 count])
+  options = [share options];
+  if ([options count])
   {
-    v4 = soft_CKSharingAccessTypeFromOptionsGroups(v3) == 1;
+    v4 = soft_CKSharingAccessTypeFromOptionsGroups(options) == 1;
   }
 
   else
@@ -730,10 +730,10 @@ intptr_t __64__SFCollaborationUtilities_isServiceManateeCKShareItemProvider___bl
   return v4;
 }
 
-+ (id)createLinkMetadataWithCKShareItemProvider:(id)a3
++ (id)createLinkMetadataWithCKShareItemProvider:(id)provider
 {
-  v4 = a3;
-  if ([a1 isPostCKShareItemProvider:v4])
+  providerCopy = provider;
+  if ([self isPostCKShareItemProvider:providerCopy])
   {
     v23 = 0;
     v24 = &v23;
@@ -756,7 +756,7 @@ intptr_t __64__SFCollaborationUtilities_isServiceManateeCKShareItemProvider___bl
     v16 = &v17;
     v6 = v5;
     v14 = v6;
-    [a1 loadCKShareItemProvider:v4 onlyPostShare:1 completionHandler:v13];
+    [self loadCKShareItemProvider:providerCopy onlyPostShare:1 completionHandler:v13];
     v7 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v6, v7);
     v8 = v24[5];
@@ -806,11 +806,11 @@ void __70__SFCollaborationUtilities_createLinkMetadataWithCKShareItemProvider___
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)createLinkMetadataWithCKShare:(id)a3 containerSetupInfo:(id)a4
++ (id)createLinkMetadataWithCKShare:(id)share containerSetupInfo:(id)info
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  shareCopy = share;
+  infoCopy = info;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2050000000;
@@ -831,15 +831,15 @@ void __70__SFCollaborationUtilities_createLinkMetadataWithCKShareItemProvider___
   _Block_object_dispose(&v41, 8);
   v9 = objc_alloc_init(v7);
   v10 = getCKShareTitleKey();
-  v11 = [v5 objectForKeyedSubscript:{v10, v41}];
+  v11 = [shareCopy objectForKeyedSubscript:{v10, v41}];
   [v9 setTitle:v11];
 
-  v12 = [v6 containerOptions];
-  v13 = [v12 applicationBundleIdentifierOverrideForContainerAccess];
+  containerOptions = [infoCopy containerOptions];
+  applicationBundleIdentifierOverrideForContainerAccess = [containerOptions applicationBundleIdentifierOverrideForContainerAccess];
 
-  if ([v13 length])
+  if ([applicationBundleIdentifierOverrideForContainerAccess length])
   {
-    v14 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v13 allowPlaceholder:1 error:0];
+    v14 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:applicationBundleIdentifierOverrideForContainerAccess allowPlaceholder:1 error:0];
     v15 = [v14 URL];
 
     if (v15)
@@ -850,8 +850,8 @@ void __70__SFCollaborationUtilities_createLinkMetadataWithCKShareItemProvider___
 
       if (v18)
       {
-        v19 = [v18 infoDictionary];
-        v20 = [v19 objectForKeyedSubscript:@"CFBundleDisplayName"];
+        infoDictionary = [v18 infoDictionary];
+        v20 = [infoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"];
         [v9 setApplication:v20];
         v21 = share_sheet_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -859,7 +859,7 @@ void __70__SFCollaborationUtilities_createLinkMetadataWithCKShareItemProvider___
           *buf = 138412546;
           *&buf[4] = v20;
           *&buf[12] = 2112;
-          *&buf[14] = v13;
+          *&buf[14] = applicationBundleIdentifierOverrideForContainerAccess;
           _os_log_impl(&dword_1A9662000, v21, OS_LOG_TYPE_DEFAULT, "Setting application to:%@ for bundleIdentifier: %@", buf, 0x16u);
         }
 
@@ -919,7 +919,7 @@ LABEL_17:
     +[SFCollaborationUtilities createLinkMetadataWithCKShare:containerSetupInfo:];
   }
 
-  v26 = [v5 objectForKeyedSubscript:{*v23, v41}];
+  v26 = [shareCopy objectForKeyedSubscript:{*v23, v41}];
   if (v26)
   {
     v41 = 0;
@@ -952,11 +952,11 @@ LABEL_24:
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v13;
+    *&buf[4] = applicationBundleIdentifierOverrideForContainerAccess;
     _os_log_impl(&dword_1A9662000, v40, OS_LOG_TYPE_DEFAULT, "Falling back to using App Icon for bundleIdentifier:%@", buf, 0xCu);
   }
 
-  if (![v13 length])
+  if (![applicationBundleIdentifierOverrideForContainerAccess length])
   {
     v30 = share_sheet_log();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -967,13 +967,13 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ([v13 containsString:@"com.apple."])
+  if ([applicationBundleIdentifierOverrideForContainerAccess containsString:@"com.apple."])
   {
     v30 = share_sheet_log();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v13;
+      *&buf[4] = applicationBundleIdentifierOverrideForContainerAccess;
       _os_log_impl(&dword_1A9662000, v30, OS_LOG_TYPE_DEFAULT, "Not defaulting an icon for %@. Please file a radar!", buf, 0xCu);
     }
 
@@ -1020,7 +1020,7 @@ LABEL_25:
   v35 = v34;
   _Block_object_dispose(&v41, 8);
   v36 = objc_alloc_init(v34);
-  v37 = [v5 URL];
+  v37 = [shareCopy URL];
   [v36 setOriginalURL:v37];
 
   [v36 setSpecialization:v33];
@@ -1029,35 +1029,35 @@ LABEL_25:
   return v36;
 }
 
-+ (id)optionsFromCKShare:(id)a3 previousCKOptions:(id)a4 newCKOptions:(id *)a5
++ (id)optionsFromCKShare:(id)share previousCKOptions:(id)options newCKOptions:(id *)kOptions
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [getCKAllowedSharingOptionsClass() resolvedOptionsFromOptions:v7 forExistingShare:v8];
+  optionsCopy = options;
+  shareCopy = share;
+  v9 = [getCKAllowedSharingOptionsClass() resolvedOptionsFromOptions:optionsCopy forExistingShare:shareCopy];
 
-  if (a5)
+  if (kOptions)
   {
     v10 = v9;
-    *a5 = v9;
+    *kOptions = v9;
   }
 
-  v11 = [v9 shareOptions];
+  shareOptions = [v9 shareOptions];
 
-  return v11;
+  return shareOptions;
 }
 
-+ (BOOL)shareSupportsRequestAccess:(id)a3 options:(id)a4
++ (BOOL)shareSupportsRequestAccess:(id)access options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 allowsAccessRequests])
+  accessCopy = access;
+  optionsCopy = options;
+  if ([accessCopy allowsAccessRequests])
   {
     v7 = 1;
   }
 
-  else if ([v6 count])
+  else if ([optionsCopy count])
   {
-    v8 = v6;
+    v8 = optionsCopy;
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
@@ -1088,31 +1088,31 @@ LABEL_25:
   return v7;
 }
 
-+ (id)fileShareDictionaryFromFileURLItems:(id)a3
++ (id)fileShareDictionaryFromFileURLItems:(id)items
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = gelato_sharing_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v3;
+    v20 = itemsCopy;
     _os_log_impl(&dword_1A9662000, v4, OS_LOG_TYPE_INFO, "Creating dictionary from fileURLs: %@", buf, 0xCu);
   }
 
-  if ([v3 count])
+  if ([itemsCopy count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    if ([v3 count])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if ([itemsCopy count])
     {
-      [v5 setObject:v3 forKeyedSubscript:@"fileURLs"];
-      v6 = [MEMORY[0x1E695DF70] array];
-      [v5 setObject:v6 forKeyedSubscript:@"files"];
+      [dictionary setObject:itemsCopy forKeyedSubscript:@"fileURLs"];
+      array = [MEMORY[0x1E695DF70] array];
+      [dictionary setObject:array forKeyedSubscript:@"files"];
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = v3;
+      v7 = itemsCopy;
       v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
@@ -1128,7 +1128,7 @@ LABEL_25:
               objc_enumerationMutation(v7);
             }
 
-            __64__SFCollaborationUtilities_fileShareDictionaryFromFileURLItems___block_invoke(v8, *(*(&v14 + 1) + 8 * v11++), v6);
+            __64__SFCollaborationUtilities_fileShareDictionaryFromFileURLItems___block_invoke(v8, *(*(&v14 + 1) + 8 * v11++), array);
           }
 
           while (v9 != v11);
@@ -1143,12 +1143,12 @@ LABEL_25:
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
 void __64__SFCollaborationUtilities_fileShareDictionaryFromFileURLItems___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1181,9 +1181,9 @@ void __64__SFCollaborationUtilities_fileShareDictionaryFromFileURLItems___block_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isThirdPartyFileProviderBackedURL:(id)a3
++ (BOOL)isThirdPartyFileProviderBackedURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -1203,7 +1203,7 @@ void __64__SFCollaborationUtilities_fileShareDictionaryFromFileURLItems___block_
   v5 = v4;
   _Block_object_dispose(&v15, 8);
   v13 = 0;
-  v6 = [v4 providerDomainForURL:v3 error:&v13];
+  v6 = [v4 providerDomainForURL:lCopy error:&v13];
   v7 = v13;
   if (!v6)
   {
@@ -1216,8 +1216,8 @@ void __64__SFCollaborationUtilities_fileShareDictionaryFromFileURLItems___block_
     goto LABEL_9;
   }
 
-  v8 = [v6 providerID];
-  v9 = [v8 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+  providerID = [v6 providerID];
+  v9 = [providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"];
 
   if (v9)
   {
@@ -1232,12 +1232,12 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)isSharedFileURL:(id)a3 isLocalStorageFileURL:(BOOL *)a4 isiCloudDriveFileURL:(BOOL *)a5 isInSharedFolder:(BOOL *)a6
++ (BOOL)isSharedFileURL:(id)l isLocalStorageFileURL:(BOOL *)rL isiCloudDriveFileURL:(BOOL *)uRL isInSharedFolder:(BOOL *)folder
 {
-  v9 = a3;
-  v10 = [getFPItemManagerClass() defaultManager];
+  lCopy = l;
+  defaultManager = [getFPItemManagerClass() defaultManager];
   v19 = 0;
-  v11 = [v10 itemForURL:v9 error:&v19];
+  v11 = [defaultManager itemForURL:lCopy error:&v19];
   v12 = v19;
 
   if (!v11)
@@ -1249,22 +1249,22 @@ LABEL_10:
     }
   }
 
-  if (a4)
+  if (rL)
   {
-    *a4 = v11 != 0;
+    *rL = v11 != 0;
   }
 
-  v14 = [v11 isShared];
-  if (a5)
+  isShared = [v11 isShared];
+  if (uRL)
   {
-    v15 = [v11 itemID];
-    v16 = [v15 providerID];
-    *a5 = [v16 fp_isiCloudDriveIdentifier];
+    itemID = [v11 itemID];
+    providerID = [itemID providerID];
+    *uRL = [providerID fp_isiCloudDriveIdentifier];
   }
 
-  if (a6)
+  if (folder)
   {
-    if (v14)
+    if (isShared)
     {
       v17 = [v11 isTopLevelSharedItem] ^ 1;
     }
@@ -1274,21 +1274,21 @@ LABEL_10:
       v17 = 0;
     }
 
-    *a6 = v17;
+    *folder = v17;
   }
 
-  return v14;
+  return isShared;
 }
 
-+ (id)fileCollaborationItemFromActivityItems:(id)a3
++ (id)fileCollaborationItemFromActivityItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1299,7 +1299,7 @@ LABEL_10:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -1314,7 +1314,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1328,11 +1328,11 @@ LABEL_12:
   return v9;
 }
 
-+ (id)urlFromActivityItem:(id)a3 allowsLoading:(BOOL)a4
++ (id)urlFromActivityItem:(id)item allowsLoading:(BOOL)loading
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
 LABEL_15:
     v7 = 0;
@@ -1342,9 +1342,9 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    shareItemURL = itemCopy;
 LABEL_4:
-    v7 = v6;
+    v7 = shareItemURL;
     goto LABEL_18;
   }
 
@@ -1354,9 +1354,9 @@ LABEL_4:
     if (objc_opt_respondsToSelector())
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || a4)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || loading)
       {
-        v6 = [v5 shareItemURL];
+        shareItemURL = [itemCopy shareItemURL];
         goto LABEL_4;
       }
 
@@ -1364,7 +1364,7 @@ LABEL_4:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v5;
+        v14 = itemCopy;
         _os_log_impl(&dword_1A9662000, v10, OS_LOG_TYPE_DEFAULT, "Activity item %@ is an item provider, skipping load for URL since we only want placeholder values", &v13, 0xCu);
       }
     }
@@ -1372,7 +1372,7 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+  v8 = [MEMORY[0x1E695DFF8] URLWithString:itemCopy];
   v9 = v8;
   if (v8 && SFIsStringURLSafelyConvertible(v8))
   {
@@ -1390,11 +1390,11 @@ LABEL_18:
   return v7;
 }
 
-+ (id)createItemProviderForFileURL:(id)a3
++ (id)createItemProviderForFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = gelato_sharing_log();
-  v5 = os_signpost_id_make_with_pointer(v4, v3);
+  v5 = os_signpost_id_make_with_pointer(v4, lCopy);
 
   v6 = gelato_sharing_log();
   v7 = v6;
@@ -1404,8 +1404,8 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1A9662000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "CollaborationCreateItemProviderForFileURL", "", buf, 2u);
   }
 
-  v8 = [v3 pathExtension];
-  if (!v8 || (PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6982C48], v8, 0)) == 0)
+  pathExtension = [lCopy pathExtension];
+  if (!pathExtension || (PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6982C48], pathExtension, 0)) == 0)
   {
     PreferredIdentifierForTag = [*MEMORY[0x1E6982D60] identifier];
   }
@@ -1415,9 +1415,9 @@ LABEL_18:
   v13[1] = 3221225472;
   v13[2] = __57__SFCollaborationUtilities_createItemProviderForFileURL___block_invoke;
   v13[3] = &unk_1E788E430;
-  v14 = v3;
+  v14 = lCopy;
   v15 = v5;
-  v11 = v3;
+  v11 = lCopy;
   [v10 registerFileRepresentationForTypeIdentifier:PreferredIdentifierForTag fileOptions:1 visibility:0 loadHandler:v13];
 
   return v10;
@@ -1439,13 +1439,13 @@ uint64_t __57__SFCollaborationUtilities_createItemProviderForFileURL___block_inv
   return 0;
 }
 
-+ (void)requestSharedURLForCollaborationItem:(id)a3 collaborationService:(id)a4 completionHandler:(id)a5
++ (void)requestSharedURLForCollaborationItem:(id)item collaborationService:(id)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  serviceCopy = service;
+  handlerCopy = handler;
   v11 = gelato_sharing_log();
-  v12 = os_signpost_id_make_with_pointer(v11, v8);
+  v12 = os_signpost_id_make_with_pointer(v11, itemCopy);
 
   v13 = gelato_sharing_log();
   v14 = v13;
@@ -1460,24 +1460,24 @@ uint64_t __57__SFCollaborationUtilities_createItemProviderForFileURL___block_inv
   aBlock[2] = __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collaborationService_completionHandler___block_invoke;
   aBlock[3] = &unk_1E788E458;
   v48 = v12;
-  v15 = v10;
+  v15 = handlerCopy;
   v47 = v15;
   v16 = _Block_copy(aBlock);
-  if (![v8 type])
+  if (![itemCopy type])
   {
-    v17 = v8;
-    v19 = [v17 fileURL];
-    if ([v17 isiCloudDrive])
+    itemProvider = itemCopy;
+    fileURL = [itemProvider fileURL];
+    if ([itemProvider isiCloudDrive])
     {
-      if (v9)
+      if (serviceCopy)
       {
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
         v43[2] = __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collaborationService_completionHandler___block_invoke_203;
         v43[3] = &unk_1E788E4A8;
-        v44 = v9;
+        v44 = serviceCopy;
         v45 = v16;
-        [a1 createCollaborationRequestWithCollaborationItem:v17 activityType:@"com.apple.UIKit.activity.CollaborationCopyLink" deviceScreenScale:v43 completionHandler:0.0];
+        [self createCollaborationRequestWithCollaborationItem:itemProvider activityType:@"com.apple.UIKit.activity.CollaborationCopyLink" deviceScreenScale:v43 completionHandler:0.0];
       }
 
       else
@@ -1512,8 +1512,8 @@ uint64_t __57__SFCollaborationUtilities_createItemProviderForFileURL___block_inv
 
       v23 = v22;
       _Block_object_dispose(&v54, 8);
-      v24 = [v17 metadata];
-      v25 = [v22 actionWithMetadata:v24];
+      metadata = [itemProvider metadata];
+      v25 = [v22 actionWithMetadata:metadata];
 
       if (SharedWithYouCoreLibrary())
       {
@@ -1525,7 +1525,7 @@ uint64_t __57__SFCollaborationUtilities_createItemProviderForFileURL___block_inv
           v41[2] = __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collaborationService_completionHandler___block_invoke_207;
           v41[3] = &unk_1E788E4D0;
           v42 = v16;
-          v35 = v19;
+          v35 = fileURL;
           v27 = v25;
           v28 = v41;
           v54 = 0;
@@ -1561,20 +1561,20 @@ uint64_t __57__SFCollaborationUtilities_createItemProviderForFileURL___block_inv
     goto LABEL_36;
   }
 
-  if ([v8 type] == 1)
+  if ([itemCopy type] == 1)
   {
-    v17 = [v8 itemProvider];
-    if ([SFCollaborationUtilities isPostCKShareItemProvider:v17])
+    itemProvider = [itemCopy itemProvider];
+    if ([SFCollaborationUtilities isPostCKShareItemProvider:itemProvider])
     {
-      if (v9 && [v8 optionsChanged])
+      if (serviceCopy && [itemCopy optionsChanged])
       {
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collaborationService_completionHandler___block_invoke_2_209;
         v38[3] = &unk_1E788E4A8;
-        v39 = v9;
+        v39 = serviceCopy;
         v40 = v16;
-        [a1 createCollaborationRequestWithCollaborationItem:v8 activityType:@"com.apple.UIKit.activity.CollaborationCopyLink" deviceScreenScale:v38 completionHandler:0.0];
+        [self createCollaborationRequestWithCollaborationItem:itemCopy activityType:@"com.apple.UIKit.activity.CollaborationCopyLink" deviceScreenScale:v38 completionHandler:0.0];
 
         v18 = v39;
       }
@@ -1586,7 +1586,7 @@ uint64_t __57__SFCollaborationUtilities_createItemProviderForFileURL___block_inv
         v36[2] = __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collaborationService_completionHandler___block_invoke_4;
         v36[3] = &unk_1E788E4F8;
         v37 = v16;
-        [SFCollaborationUtilities loadCKShareItemProvider:v17 onlyPostShare:1 completionHandler:v36];
+        [SFCollaborationUtilities loadCKShareItemProvider:itemProvider onlyPostShare:1 completionHandler:v36];
         v18 = v37;
       }
     }
@@ -1607,12 +1607,12 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ([v8 type] == 2)
+  if ([itemCopy type] == 2)
   {
-    v20 = [v8 cloudSharingResult];
-    v21 = [v20 sharingURL];
+    cloudSharingResult = [itemCopy cloudSharingResult];
+    sharingURL = [cloudSharingResult sharingURL];
 
-    (*(v16 + 2))(v16, v21, 0);
+    (*(v16 + 2))(v16, sharingURL, 0);
   }
 
   else
@@ -1620,7 +1620,7 @@ LABEL_36:
     v33 = share_sheet_log();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      [SFCollaborationUtilities requestSharedURLForCollaborationItem:v8 collaborationService:? completionHandler:?];
+      [SFCollaborationUtilities requestSharedURLForCollaborationItem:itemCopy collaborationService:? completionHandler:?];
     }
 
     (*(v16 + 2))(v16, 0, 0);
@@ -1703,29 +1703,29 @@ void __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collab
   (*(v2 + 16))(v2, v3, 0);
 }
 
-+ (void)findOriginatingSharedItemForSubitemURL:(id)a3 completionHandler:(id)a4
++ (void)findOriginatingSharedItemForSubitemURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [getFPItemManagerClass() defaultManager];
+  lCopy = l;
+  handlerCopy = handler;
+  defaultManager = [getFPItemManagerClass() defaultManager];
   v20 = 0;
-  v9 = [v8 itemForURL:v6 error:&v20];
+  v9 = [defaultManager itemForURL:lCopy error:&v20];
   v10 = v20;
 
   if (v9)
   {
-    objc_initWeak(&location, a1);
-    v11 = [getFPItemManagerClass() defaultManager];
-    v12 = [v9 itemID];
+    objc_initWeak(&location, self);
+    defaultManager2 = [getFPItemManagerClass() defaultManager];
+    itemID = [v9 itemID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_completionHandler___block_invoke;
     v14[3] = &unk_1E788E520;
-    v15 = v6;
-    v17 = v7;
+    v15 = lCopy;
+    v17 = handlerCopy;
     objc_copyWeak(&v18, &location);
     v16 = v9;
-    [v11 fetchParentsForItemID:v12 recursively:1 completionHandler:v14];
+    [defaultManager2 fetchParentsForItemID:itemID recursively:1 completionHandler:v14];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -1739,7 +1739,7 @@ void __104__SFCollaborationUtilities_requestSharedURLForCollaborationItem_collab
       +[SFCollaborationUtilities isSharedFileURL:isLocalStorageFileURL:isiCloudDriveFileURL:isInSharedFolder:];
     }
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 
@@ -1765,18 +1765,18 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
   }
 }
 
-+ (void)_findOriginatingSharedItemInParentItems:(id)a3 forSubitem:(id)a4 completionHandler:(id)a5
++ (void)_findOriginatingSharedItemInParentItems:(id)items forSubitem:(id)subitem completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  itemsCopy = items;
+  subitemCopy = subitem;
+  handlerCopy = handler;
+  v10 = subitemCopy;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v11 = [itemsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1789,7 +1789,7 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
@@ -1802,13 +1802,13 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
 
         else
         {
-          v20 = [v15 fileURL];
+          fileURL = [v15 fileURL];
           v19 = v13;
-          v13 = v20;
+          v13 = fileURL;
         }
       }
 
-      v12 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [itemsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v12);
@@ -1820,18 +1820,18 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
     v15 = v10;
   }
 
-  v9[2](v9, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)hasiWorkSendCopyRepresentationForItemProvider:(id)a3
++ (BOOL)hasiWorkSendCopyRepresentationForItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[SFCollaborationUtilities _copyRepresentationTypeIdentifier];
   if (v4)
   {
-    v5 = [v3 hasItemConformingToTypeIdentifier:v4];
+    v5 = [providerCopy hasItemConformingToTypeIdentifier:v4];
   }
 
   else
@@ -1842,15 +1842,15 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
   return v5;
 }
 
-+ (void)loadiWorkCopyRepresentationURLForItemProvider:(id)a3 completionHandler:(id)a4
++ (void)loadiWorkCopyRepresentationURLForItemProvider:(id)provider completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([SFCollaborationUtilities hasiWorkSendCopyRepresentationForItemProvider:v5])
+  providerCopy = provider;
+  handlerCopy = handler;
+  if ([SFCollaborationUtilities hasiWorkSendCopyRepresentationForItemProvider:providerCopy])
   {
     v7 = gelato_sharing_log();
-    v8 = os_signpost_id_make_with_pointer(v7, v5);
+    v8 = os_signpost_id_make_with_pointer(v7, providerCopy);
 
     v9 = gelato_sharing_log();
     v10 = v9;
@@ -1864,7 +1864,7 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v5;
+      v19 = providerCopy;
       _os_log_impl(&dword_1A9662000, v11, OS_LOG_TYPE_DEFAULT, "Loading send copy representation for item provider %@", buf, 0xCu);
     }
 
@@ -1874,13 +1874,13 @@ void __85__SFCollaborationUtilities_findOriginatingSharedItemForSubitemURL_compl
     v15[2] = __92__SFCollaborationUtilities_loadiWorkCopyRepresentationURLForItemProvider_completionHandler___block_invoke;
     v15[3] = &unk_1E788E570;
     v17 = v8;
-    v16 = v6;
-    v13 = [v5 loadInPlaceFileRepresentationForTypeIdentifier:v12 completionHandler:v15];
+    v16 = handlerCopy;
+    v13 = [providerCopy loadInPlaceFileRepresentationForTypeIdentifier:v12 completionHandler:v15];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1979,13 +1979,13 @@ void __92__SFCollaborationUtilities_loadiWorkCopyRepresentationURLForItemProvide
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isInPlaceFileOrURLItemProvider:(id)a3
++ (BOOL)isInPlaceFileOrURLItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = providerCopy;
     v5 = [SFCollaborationUtilities isCKShareItemProvider:v4];
     v6 = [SFCollaborationUtilities isSWYActivityItemProvider:v4];
     v10 = 0;
@@ -2083,26 +2083,26 @@ LABEL_14:
   return [v2 copy];
 }
 
-+ (BOOL)isSWYActivityItemProvider:(id)a3
++ (BOOL)isSWYActivityItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = get_SWPendingCollaborationTypeIdentifier();
-  v5 = [v3 hasItemConformingToTypeIdentifier:v4];
+  v5 = [providerCopy hasItemConformingToTypeIdentifier:v4];
 
   return v5;
 }
 
-+ (void)_loadShareOptionsForSWYItemProvider:(id)a3 completionHandler:(id)a4
++ (void)_loadShareOptionsForSWYItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v7 = getUTCollaborationOptionsTypeIdentifier();
-  v8 = [v5 hasItemConformingToTypeIdentifier:v7];
+  v8 = [providerCopy hasItemConformingToTypeIdentifier:v7];
 
   if (v8)
   {
     v9 = gelato_sharing_log();
-    v10 = os_signpost_id_make_with_pointer(v9, v5);
+    v10 = os_signpost_id_make_with_pointer(v9, providerCopy);
 
     v11 = gelato_sharing_log();
     v12 = v11;
@@ -2118,8 +2118,8 @@ LABEL_14:
     v25[2] = __82__SFCollaborationUtilities__loadShareOptionsForSWYItemProvider_completionHandler___block_invoke;
     v25[3] = &unk_1E788E598;
     v27 = v10;
-    v26 = v6;
-    [v5 loadItemForTypeIdentifier:v13 options:0 completionHandler:v25];
+    v26 = handlerCopy;
+    [providerCopy loadItemForTypeIdentifier:v13 options:0 completionHandler:v25];
 
     v14 = v26;
 LABEL_11:
@@ -2128,12 +2128,12 @@ LABEL_11:
   }
 
   v15 = get_SWPendingCollaborationTypeIdentifier();
-  v16 = [v5 hasItemConformingToTypeIdentifier:v15];
+  v16 = [providerCopy hasItemConformingToTypeIdentifier:v15];
 
   if (v16)
   {
     v17 = gelato_sharing_log();
-    v18 = os_signpost_id_make_with_pointer(v17, v5);
+    v18 = os_signpost_id_make_with_pointer(v17, providerCopy);
 
     v19 = gelato_sharing_log();
     v20 = v19;
@@ -2148,8 +2148,8 @@ LABEL_11:
     v22[2] = __82__SFCollaborationUtilities__loadShareOptionsForSWYItemProvider_completionHandler___block_invoke_216;
     v22[3] = &unk_1E788E5C0;
     v24 = v18;
-    v23 = v6;
-    [SFCollaborationUtilities loadPendingCollaborationForItemProvider:v5 completionHandler:v22];
+    v23 = handlerCopy;
+    [SFCollaborationUtilities loadPendingCollaborationForItemProvider:providerCopy completionHandler:v22];
     v14 = v23;
     goto LABEL_11;
   }
@@ -2160,7 +2160,7 @@ LABEL_11:
     +[SFCollaborationUtilities _loadShareOptionsForSWYItemProvider:completionHandler:];
   }
 
-  (*(v6 + 2))(v6, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_15:
 }
 
@@ -2217,21 +2217,21 @@ void __82__SFCollaborationUtilities__loadShareOptionsForSWYItemProvider_completi
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)loadSendCopyRepresentationIfNeededForItemProvider:(id)a3 completion:(id)a4
++ (void)loadSendCopyRepresentationIfNeededForItemProvider:(id)provider completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (![SFCollaborationUtilities hasiWorkSendCopyRepresentationForItemProvider:v5])
+  providerCopy = provider;
+  completionCopy = completion;
+  if (![SFCollaborationUtilities hasiWorkSendCopyRepresentationForItemProvider:providerCopy])
   {
-    if ([SFCollaborationUtilities isCKShareItemProvider:v5]|| [SFCollaborationUtilities isSWYActivityItemProvider:v5])
+    if ([SFCollaborationUtilities isCKShareItemProvider:providerCopy]|| [SFCollaborationUtilities isSWYActivityItemProvider:providerCopy])
     {
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v7 = [v5 registeredTypeIdentifiers];
-      v8 = [v7 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+      v8 = [registeredTypeIdentifiers countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (v8)
       {
         v9 = v8;
@@ -2244,7 +2244,7 @@ LABEL_7:
         {
           if (*v38 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(registeredTypeIdentifiers);
           }
 
           v14 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v37 + 1) + 8 * v13)];
@@ -2255,7 +2255,7 @@ LABEL_7:
 
           if (v9 == ++v13)
           {
-            v9 = [v7 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v9 = [registeredTypeIdentifiers countByEnumeratingWithState:&v37 objects:v45 count:16];
             if (v9)
             {
               goto LABEL_7;
@@ -2274,12 +2274,12 @@ LABEL_7:
         aBlock[1] = 3221225472;
         aBlock[2] = __89__SFCollaborationUtilities_loadSendCopyRepresentationIfNeededForItemProvider_completion___block_invoke_219;
         aBlock[3] = &unk_1E788E610;
-        v15 = v6;
+        v15 = completionCopy;
         v36 = v15;
         v16 = _Block_copy(aBlock);
         if ([v14 conformsToType:v11])
         {
-          if ([v5 canLoadObjectOfClass:objc_opt_class()])
+          if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
           {
             v17 = objc_opt_class();
             v33[0] = MEMORY[0x1E69E9820];
@@ -2293,16 +2293,16 @@ LABEL_7:
 
           else
           {
-            if (![v5 canLoadObjectOfClass:objc_opt_class()])
+            if (![providerCopy canLoadObjectOfClass:objc_opt_class()])
             {
-              v24 = [v14 identifier];
+              identifier = [v14 identifier];
               v29[0] = MEMORY[0x1E69E9820];
               v29[1] = 3221225472;
               v29[2] = __89__SFCollaborationUtilities_loadSendCopyRepresentationIfNeededForItemProvider_completion___block_invoke_3;
               v29[3] = &unk_1E788E688;
               v18 = &v30;
               v30 = v16;
-              [v5 loadItemForTypeIdentifier:v24 options:0 completionHandler:v29];
+              [providerCopy loadItemForTypeIdentifier:identifier options:0 completionHandler:v29];
 
               goto LABEL_28;
             }
@@ -2317,7 +2317,7 @@ LABEL_7:
             v19 = v31;
           }
 
-          v23 = [v5 loadObjectOfClass:v17 completionHandler:v19];
+          v23 = [providerCopy loadObjectOfClass:v17 completionHandler:v19];
         }
 
         else
@@ -2329,7 +2329,7 @@ LABEL_7:
           v18 = &v27;
           v27 = v16;
           v28 = v15;
-          v22 = [v5 loadFileRepresentationForContentType:v14 openInPlace:0 completionHandler:v26];
+          v22 = [providerCopy loadFileRepresentationForContentType:v14 openInPlace:0 completionHandler:v26];
         }
 
 LABEL_28:
@@ -2343,14 +2343,14 @@ LABEL_19:
       v20 = share_sheet_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v5 registeredTypeIdentifiers];
+        registeredTypeIdentifiers2 = [providerCopy registeredTypeIdentifiers];
         *buf = 138412290;
-        v44 = v21;
+        v44 = registeredTypeIdentifiers2;
         _os_log_impl(&dword_1A9662000, v20, OS_LOG_TYPE_DEFAULT, "Could not find send copy type in item provider with type identifiers: %@", buf, 0xCu);
       }
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_29;
   }
 
@@ -2358,8 +2358,8 @@ LABEL_19:
   v41[1] = 3221225472;
   v41[2] = __89__SFCollaborationUtilities_loadSendCopyRepresentationIfNeededForItemProvider_completion___block_invoke;
   v41[3] = &unk_1E788E5E8;
-  v42 = v6;
-  [SFCollaborationUtilities loadiWorkCopyRepresentationURLForItemProvider:v5 completionHandler:v41];
+  v42 = completionCopy;
+  [SFCollaborationUtilities loadiWorkCopyRepresentationURLForItemProvider:providerCopy completionHandler:v41];
 
 LABEL_29:
   v25 = *MEMORY[0x1E69E9840];
@@ -2420,13 +2420,13 @@ void __89__SFCollaborationUtilities_loadSendCopyRepresentationIfNeededForItemPro
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)loadSendCopyRepresentationIfNeededForActivityItems:(id)a3 completion:(id)a4
++ (void)loadSendCopyRepresentationIfNeededForActivityItems:(id)items completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 mutableCopy];
+  completionCopy = completion;
+  itemsCopy = items;
+  v7 = [itemsCopy mutableCopy];
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v6 count];
+  v9 = [itemsCopy count];
 
   v10 = [v8 arrayWithCapacity:v9];
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -2439,38 +2439,38 @@ void __89__SFCollaborationUtilities_loadSendCopyRepresentationIfNeededForItemPro
   v18 = v7;
   v19 = v10;
   v20 = v12;
-  v21 = v5;
-  v13 = v5;
+  v21 = completionCopy;
+  v13 = completionCopy;
   v14 = v12;
   v15 = v10;
   v16 = v7;
   dispatch_async(v14, v17);
 }
 
-+ (void)_processRemainingActivityItems:(id)a3 toFinalActivityItems:(id)a4 onQueue:(id)a5 completion:(id)a6
++ (void)_processRemainingActivityItems:(id)items toFinalActivityItems:(id)activityItems onQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 firstObject];
-  if (v13)
+  itemsCopy = items;
+  activityItemsCopy = activityItems;
+  queueCopy = queue;
+  completionCopy = completion;
+  firstObject = [itemsCopy firstObject];
+  if (firstObject)
   {
-    v14 = v13;
+    v14 = firstObject;
     while (1)
     {
-      [v9 removeObjectAtIndex:0];
+      [itemsCopy removeObjectAtIndex:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      [v10 addObject:v14];
-      v15 = [v9 firstObject];
+      [activityItemsCopy addObject:v14];
+      firstObject2 = [itemsCopy firstObject];
 
-      v14 = v15;
-      if (!v15)
+      v14 = firstObject2;
+      if (!firstObject2)
       {
         goto LABEL_5;
       }
@@ -2481,13 +2481,13 @@ void __89__SFCollaborationUtilities_loadSendCopyRepresentationIfNeededForItemPro
     v22[1] = 3221225472;
     v22[2] = __99__SFCollaborationUtilities__processRemainingActivityItems_toFinalActivityItems_onQueue_completion___block_invoke;
     v22[3] = &unk_1E788E728;
-    v23 = v11;
-    v24 = v10;
+    v23 = queueCopy;
+    v24 = activityItemsCopy;
     v25 = v17;
-    v26 = v9;
-    v27 = v12;
-    v18 = v12;
-    v16 = v10;
+    v26 = itemsCopy;
+    v27 = completionCopy;
+    v18 = completionCopy;
+    v16 = activityItemsCopy;
     [SFCollaborationUtilities loadSendCopyRepresentationIfNeededForItemProvider:v17 completion:v22];
   }
 
@@ -2498,10 +2498,10 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = __99__SFCollaborationUtilities__processRemainingActivityItems_toFinalActivityItems_onQueue_completion___block_invoke_228;
     block[3] = &unk_1E788B318;
-    v20 = v10;
-    v21 = v12;
-    v16 = v12;
-    v17 = v10;
+    v20 = activityItemsCopy;
+    v21 = completionCopy;
+    v16 = completionCopy;
+    v17 = activityItemsCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     v18 = v21;
@@ -2560,18 +2560,18 @@ uint64_t __99__SFCollaborationUtilities__processRemainingActivityItems_toFinalAc
   return result;
 }
 
-+ (void)loadShareOptionsForItemProvider:(id)a3 completionHandler:(id)a4
++ (void)loadShareOptionsForItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([SFCollaborationUtilities isSWYActivityItemProvider:v5])
+  providerCopy = provider;
+  handlerCopy = handler;
+  if ([SFCollaborationUtilities isSWYActivityItemProvider:providerCopy])
   {
-    [SFCollaborationUtilities _loadShareOptionsForSWYItemProvider:v5 completionHandler:v6];
+    [SFCollaborationUtilities _loadShareOptionsForSWYItemProvider:providerCopy completionHandler:handlerCopy];
   }
 
-  else if ([SFCollaborationUtilities isCKShareItemProvider:v5])
+  else if ([SFCollaborationUtilities isCKShareItemProvider:providerCopy])
   {
-    [SFCollaborationUtilities _loadShareOptionsForCKShareItemProvider:v5 completionHandler:v6];
+    [SFCollaborationUtilities _loadShareOptionsForCKShareItemProvider:providerCopy completionHandler:handlerCopy];
   }
 
   else
@@ -2582,40 +2582,40 @@ uint64_t __99__SFCollaborationUtilities__processRemainingActivityItems_toFinalAc
       +[SFCollaborationUtilities loadShareOptionsForItemProvider:completionHandler:];
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-+ (BOOL)isHeroCollaborationActivityType:(id)a3
++ (BOOL)isHeroCollaborationActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.UIKit.activity.Message"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"com.apple.UIKit.activity.Message"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.InCallService.ShareExtension"];
+    v4 = [typeCopy isEqualToString:@"com.apple.InCallService.ShareExtension"];
   }
 
   return v4;
 }
 
-+ (void)loadMetadataForItemProvider:(id)a3 completionHandler:(id)a4
++ (void)loadMetadataForItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__7;
   v21 = __Block_byref_object_dispose__7;
   v22 = 0;
-  if ([SFCollaborationUtilities isCKShareItemProvider:v5])
+  if ([SFCollaborationUtilities isCKShareItemProvider:providerCopy])
   {
     v7 = gelato_sharing_log();
-    v8 = os_signpost_id_make_with_pointer(v7, v5);
+    v8 = os_signpost_id_make_with_pointer(v7, providerCopy);
 
     v9 = gelato_sharing_log();
     v10 = v9;
@@ -2631,8 +2631,8 @@ uint64_t __99__SFCollaborationUtilities__processRemainingActivityItems_toFinalAc
     v12[3] = &unk_1E788E750;
     v14 = &v17;
     v15 = v8;
-    v13 = v6;
-    [SFCollaborationUtilities _loadCKShareWithMetadataForItemProvider:v5 completionHandler:v12];
+    v13 = handlerCopy;
+    [SFCollaborationUtilities _loadCKShareWithMetadataForItemProvider:providerCopy completionHandler:v12];
   }
 
   else
@@ -2643,7 +2643,7 @@ uint64_t __99__SFCollaborationUtilities__processRemainingActivityItems_toFinalAc
       +[SFCollaborationUtilities loadMetadataForItemProvider:completionHandler:];
     }
 
-    (*(v6 + 2))(v6, v18[5]);
+    (*(handlerCopy + 2))(handlerCopy, v18[5]);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -2762,14 +2762,14 @@ void __74__SFCollaborationUtilities_loadMetadataForItemProvider_completionHandle
   (*(a1[4] + 16))();
 }
 
-+ (void)loadPendingCollaborationForItemProvider:(id)a3 completionHandler:(id)a4
++ (void)loadPendingCollaborationForItemProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([SFCollaborationUtilities isSWYActivityItemProvider:v5])
+  providerCopy = provider;
+  handlerCopy = handler;
+  if ([SFCollaborationUtilities isSWYActivityItemProvider:providerCopy])
   {
     v7 = gelato_sharing_log();
-    v8 = os_signpost_id_make_with_pointer(v7, v5);
+    v8 = os_signpost_id_make_with_pointer(v7, providerCopy);
 
     v9 = gelato_sharing_log();
     v10 = v9;
@@ -2785,13 +2785,13 @@ void __74__SFCollaborationUtilities_loadMetadataForItemProvider_completionHandle
     v12[2] = __86__SFCollaborationUtilities_loadPendingCollaborationForItemProvider_completionHandler___block_invoke;
     v12[3] = &unk_1E788E778;
     v14 = v8;
-    v13 = v6;
-    [v5 loadItemForTypeIdentifier:v11 options:0 completionHandler:v12];
+    v13 = handlerCopy;
+    [providerCopy loadItemForTypeIdentifier:v11 options:0 completionHandler:v12];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -2830,18 +2830,18 @@ void __86__SFCollaborationUtilities_loadPendingCollaborationForItemProvider_comp
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)loadMetadataForFileURL:(id)a3 completionHandler:(id)a4
++ (void)loadMetadataForFileURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  handlerCopy = handler;
+  if (!lCopy)
   {
-    [SFCollaborationUtilities loadMetadataForFileURL:a2 completionHandler:a1];
+    [SFCollaborationUtilities loadMetadataForFileURL:a2 completionHandler:self];
   }
 
-  v9 = [[SFCollaborationFileMetadataLoader alloc] initWithFileURL:v7];
+  v9 = [[SFCollaborationFileMetadataLoader alloc] initWithFileURL:lCopy];
   v10 = gelato_sharing_log();
-  v11 = os_signpost_id_make_with_pointer(v10, v7);
+  v11 = os_signpost_id_make_with_pointer(v10, lCopy);
 
   v12 = gelato_sharing_log();
   v13 = v12;
@@ -2855,10 +2855,10 @@ void __86__SFCollaborationUtilities_loadPendingCollaborationForItemProvider_comp
   aBlock[1] = 3221225472;
   aBlock[2] = __69__SFCollaborationUtilities_loadMetadataForFileURL_completionHandler___block_invoke;
   aBlock[3] = &unk_1E788E7A0;
-  v19 = v8;
+  v19 = handlerCopy;
   v20 = v11;
   v18 = v9;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = v9;
   v16 = _Block_copy(aBlock);
   [MEMORY[0x1E696ABF8] addFilePresenter:v15];
@@ -2882,17 +2882,17 @@ void __69__SFCollaborationUtilities_loadMetadataForFileURL_completionHandler___b
   (*(a1[5] + 16))();
 }
 
-+ (void)addParticipantsAllowedForCollaborationItem:(id)a3 collaborationService:(id)a4 completionHandler:(id)a5
++ (void)addParticipantsAllowedForCollaborationItem:(id)item collaborationService:(id)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 type] != 1)
+  itemCopy = item;
+  serviceCopy = service;
+  handlerCopy = handler;
+  if ([itemCopy type] != 1)
   {
-    if (![v8 type])
+    if (![itemCopy type])
     {
-      v15 = [v8 fileURL];
-      [a1 _addParticipantsAllowedForURL:v15 share:0 collaborationService:v9 completionHandler:v10];
+      fileURL = [itemCopy fileURL];
+      [self _addParticipantsAllowedForURL:fileURL share:0 collaborationService:serviceCopy completionHandler:handlerCopy];
 
       goto LABEL_10;
     }
@@ -2907,26 +2907,26 @@ void __69__SFCollaborationUtilities_loadMetadataForFileURL_completionHandler___b
     goto LABEL_8;
   }
 
-  v11 = [v8 itemProvider];
-  v12 = [SFCollaborationUtilities isPostCKShareItemProvider:v11];
+  itemProvider = [itemCopy itemProvider];
+  v12 = [SFCollaborationUtilities isPostCKShareItemProvider:itemProvider];
 
   if (!v12)
   {
 LABEL_8:
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_10;
   }
 
-  objc_initWeak(location, a1);
-  v13 = [v8 itemProvider];
+  objc_initWeak(location, self);
+  itemProvider2 = [itemCopy itemProvider];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __110__SFCollaborationUtilities_addParticipantsAllowedForCollaborationItem_collaborationService_completionHandler___block_invoke;
   v16[3] = &unk_1E788E7C8;
-  v18 = v10;
+  v18 = handlerCopy;
   objc_copyWeak(&v19, location);
-  v17 = v9;
-  [SFCollaborationUtilities loadCKShareItemProvider:v13 onlyPostShare:1 completionHandler:v16];
+  v17 = serviceCopy;
+  [SFCollaborationUtilities loadCKShareItemProvider:itemProvider2 onlyPostShare:1 completionHandler:v16];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(location);
@@ -2948,25 +2948,25 @@ void __110__SFCollaborationUtilities_addParticipantsAllowedForCollaborationItem_
   }
 }
 
-+ (void)addParticipantsAllowedForURL:(id)a3 share:(id)a4 completionHandler:(id)a5
++ (void)addParticipantsAllowedForURL:(id)l share:(id)share completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 | v9)
+  lCopy = l;
+  shareCopy = share;
+  handlerCopy = handler;
+  if (lCopy | shareCopy)
   {
-    if (v8)
+    if (lCopy)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       CloudSharingClass = getCloudSharingClass();
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __81__SFCollaborationUtilities_addParticipantsAllowedForURL_share_completionHandler___block_invoke;
       v17[3] = &unk_1E788E7F0;
-      v18 = v10;
+      v18 = handlerCopy;
       objc_copyWeak(&v19, &location);
-      [CloudSharingClass existingShareForFileOrFolderURL:v8 completionHandler:v17];
+      [CloudSharingClass existingShareForFileOrFolderURL:lCopy completionHandler:v17];
       objc_destroyWeak(&v19);
 
       objc_destroyWeak(&location);
@@ -2974,7 +2974,7 @@ void __110__SFCollaborationUtilities_addParticipantsAllowedForCollaborationItem_
 
     else
     {
-      [a1 _addParticipantsAllowedForShare:v9 completionHandler:v10];
+      [self _addParticipantsAllowedForShare:shareCopy completionHandler:handlerCopy];
     }
   }
 
@@ -2992,7 +2992,7 @@ void __110__SFCollaborationUtilities_addParticipantsAllowedForCollaborationItem_
       [SFCollaborationUtilities addParticipantsAllowedForURL:v14 share:? completionHandler:?];
     }
 
-    (*(v10 + 2))(v10, 1, v14);
+    (*(handlerCopy + 2))(handlerCopy, 1, v14);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -3041,14 +3041,14 @@ LABEL_9:
 LABEL_10:
 }
 
-+ (void)_addParticipantsAllowedForURL:(id)a3 share:(id)a4 collaborationService:(id)a5 completionHandler:(id)a6
++ (void)_addParticipantsAllowedForURL:(id)l share:(id)share collaborationService:(id)service completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!(v9 | v10))
+  lCopy = l;
+  shareCopy = share;
+  serviceCopy = service;
+  handlerCopy = handler;
+  if (!(lCopy | shareCopy))
   {
     v13 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E696A578];
@@ -3081,30 +3081,30 @@ LABEL_10:
 
 LABEL_8:
 
-    v12[2](v12, 1, v15);
+    handlerCopy[2](handlerCopy, 1, v15);
     goto LABEL_9;
   }
 
-  [v11 requestAddParticipantsAllowedForURL:v9 share:v10 completionHandler:v12];
+  [serviceCopy requestAddParticipantsAllowedForURL:lCopy share:shareCopy completionHandler:handlerCopy];
 LABEL_9:
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_addParticipantsAllowedForShare:(id)a3 completionHandler:(id)a4
++ (void)_addParticipantsAllowedForShare:(id)share completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  shareCopy = share;
+  handlerCopy = handler;
+  if (shareCopy)
   {
     CloudSharingClass = getCloudSharingClass();
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __78__SFCollaborationUtilities__addParticipantsAllowedForShare_completionHandler___block_invoke;
     v13[3] = &unk_1E788E818;
-    v14 = v6;
-    [CloudSharingClass sharingStatusForShare:v5 completionHandler:v13];
+    v14 = handlerCopy;
+    [CloudSharingClass sharingStatusForShare:shareCopy completionHandler:v13];
     v8 = v14;
   }
 
@@ -3122,7 +3122,7 @@ LABEL_9:
       [SFCollaborationUtilities _addParticipantsAllowedForURL:v8 share:? collaborationService:? completionHandler:?];
     }
 
-    (*(v6 + 2))(v6, 1, v8);
+    (*(handlerCopy + 2))(handlerCopy, 1, v8);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3134,12 +3134,12 @@ void __78__SFCollaborationUtilities__addParticipantsAllowedForShare_completionHa
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)_dataForFilepath:(id)a3
++ (id)_dataForFilepath:(id)filepath
 {
-  v3 = a3;
-  if ([v3 length])
+  filepathCopy = filepath;
+  if ([filepathCopy length])
   {
-    v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+    v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:filepathCopy];
     if ([v4 isFileURL])
     {
       v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4];
@@ -3159,50 +3159,50 @@ void __78__SFCollaborationUtilities__addParticipantsAllowedForShare_completionHa
   return v5;
 }
 
-+ (void)canShowShareOptionsForCollaborationItem:(id)a3 service:(id)a4 completionHandler:(id)a5
++ (void)canShowShareOptionsForCollaborationItem:(id)item service:(id)service completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 itemProvider];
-  v11 = [SFCollaborationUtilities isPostCKShareItemProvider:v10];
+  itemCopy = item;
+  serviceCopy = service;
+  handlerCopy = handler;
+  itemProvider = [itemCopy itemProvider];
+  v11 = [SFCollaborationUtilities isPostCKShareItemProvider:itemProvider];
 
-  if ([v7 type])
+  if ([itemCopy type])
   {
     if (v11)
     {
-      v12 = [v7 itemProvider];
+      itemProvider2 = [itemCopy itemProvider];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __94__SFCollaborationUtilities_canShowShareOptionsForCollaborationItem_service_completionHandler___block_invoke_3;
       v15[3] = &unk_1E788E4F8;
-      v16 = v9;
-      [SFCollaborationUtilities loadCKShareItemProvider:v12 onlyPostShare:1 completionHandler:v15];
+      v16 = handlerCopy;
+      [SFCollaborationUtilities loadCKShareItemProvider:itemProvider2 onlyPostShare:1 completionHandler:v15];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 
   else
   {
-    v13 = v7;
+    v13 = itemCopy;
     if ([v13 isShared])
     {
-      v14 = [v13 fileURL];
+      fileURL = [v13 fileURL];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __94__SFCollaborationUtilities_canShowShareOptionsForCollaborationItem_service_completionHandler___block_invoke;
       v17[3] = &unk_1E788E868;
-      v18 = v9;
-      [v8 isShareOwnerOrAdminForFileURL:v14 completionHandler:v17];
+      v18 = handlerCopy;
+      [serviceCopy isShareOwnerOrAdminForFileURL:fileURL completionHandler:v17];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 }
@@ -3239,50 +3239,50 @@ void __94__SFCollaborationUtilities_canShowShareOptionsForCollaborationItem_serv
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-+ (void)isShareOwnerOrAdminForCollaborationItem:(id)a3 service:(id)a4 completionHandler:(id)a5
++ (void)isShareOwnerOrAdminForCollaborationItem:(id)item service:(id)service completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 type])
+  itemCopy = item;
+  serviceCopy = service;
+  handlerCopy = handler;
+  if ([itemCopy type])
   {
-    v10 = [v7 itemProvider];
-    v11 = [SFCollaborationUtilities isPostCKShareItemProvider:v10];
+    itemProvider = [itemCopy itemProvider];
+    v11 = [SFCollaborationUtilities isPostCKShareItemProvider:itemProvider];
 
     if (v11)
     {
-      v12 = [v7 itemProvider];
+      itemProvider2 = [itemCopy itemProvider];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __94__SFCollaborationUtilities_isShareOwnerOrAdminForCollaborationItem_service_completionHandler___block_invoke_3;
       v15[3] = &unk_1E788E4F8;
-      v16 = v9;
-      [SFCollaborationUtilities loadCKShareItemProvider:v12 onlyPostShare:1 completionHandler:v15];
+      v16 = handlerCopy;
+      [SFCollaborationUtilities loadCKShareItemProvider:itemProvider2 onlyPostShare:1 completionHandler:v15];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
   }
 
   else
   {
-    v13 = v7;
+    v13 = itemCopy;
     if ([v13 isShared] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v14 = [v13 fileURL];
+      fileURL = [v13 fileURL];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __94__SFCollaborationUtilities_isShareOwnerOrAdminForCollaborationItem_service_completionHandler___block_invoke;
       v17[3] = &unk_1E788E868;
-      v18 = v9;
-      [v8 isShareOwnerOrAdminForFileURL:v14 completionHandler:v17];
+      v18 = handlerCopy;
+      [serviceCopy isShareOwnerOrAdminForFileURL:fileURL completionHandler:v17];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
   }
 }
@@ -3321,19 +3321,19 @@ void __94__SFCollaborationUtilities_isShareOwnerOrAdminForCollaborationItem_serv
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-+ (void)isShareOwnerOrAdminForFileURL:(id)a3 completionHandler:(id)a4
++ (void)isShareOwnerOrAdminForFileURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  lCopy = l;
+  handlerCopy = handler;
+  if (lCopy)
   {
     CloudSharingClass = getCloudSharingClass();
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __76__SFCollaborationUtilities_isShareOwnerOrAdminForFileURL_completionHandler___block_invoke;
     v9[3] = &unk_1E788E8B8;
-    v10 = v5;
-    v11 = v6;
+    v10 = lCopy;
+    v11 = handlerCopy;
     [CloudSharingClass existingShareForFileOrFolderURL:v10 completionHandler:v9];
   }
 
@@ -3345,7 +3345,7 @@ void __94__SFCollaborationUtilities_isShareOwnerOrAdminForCollaborationItem_serv
       +[SFCollaborationUtilities isShareOwnerOrAdminForFileURL:completionHandler:];
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -3365,40 +3365,40 @@ void __76__SFCollaborationUtilities_isShareOwnerOrAdminForFileURL_completionHand
   [SFCollaborationUtilities isShareOwnerOrAdminForShare:v6 completionHandler:*(a1 + 40)];
 }
 
-+ (void)isShareOwnerOrAdminForShare:(id)a3 completionHandler:(id)a4
++ (void)isShareOwnerOrAdminForShare:(id)share completionHandler:(id)handler
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = v12;
-  if (!v12)
+  shareCopy = share;
+  handlerCopy = handler;
+  v6 = shareCopy;
+  if (!shareCopy)
   {
-    v5[2](v5, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     v6 = 0;
   }
 
-  v7 = [v6 currentUserParticipant];
-  v8 = [v7 role];
+  currentUserParticipant = [v6 currentUserParticipant];
+  role = [currentUserParticipant role];
 
-  v9 = [v12 publicPermission] == 2 || objc_msgSend(v12, "publicPermission") == 3;
-  v10 = [v12 currentUserParticipant];
-  v11 = [v10 role] == 2 || v9;
+  v9 = [shareCopy publicPermission] == 2 || objc_msgSend(shareCopy, "publicPermission") == 3;
+  currentUserParticipant2 = [shareCopy currentUserParticipant];
+  v11 = [currentUserParticipant2 role] == 2 || v9;
 
-  (v5)[2](v5, v8 == 1, v11);
+  (handlerCopy)[2](handlerCopy, role == 1, v11);
 }
 
-+ (void)_fetchCollaborationAppInfoIfNeededForActivityType:(id)a3 deviceScreenScale:(double)a4 appInfoCompletion:(id)a5
++ (void)_fetchCollaborationAppInfoIfNeededForActivityType:(id)type deviceScreenScale:(double)scale appInfoCompletion:(id)completion
 {
-  v7 = a5;
-  if ([a3 isEqualToString:@"com.apple.UIKit.activity.Mail"])
+  completionCopy = completion;
+  if ([type isEqualToString:@"com.apple.UIKit.activity.Mail"])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __114__SFCollaborationUtilities__fetchCollaborationAppInfoIfNeededForActivityType_deviceScreenScale_appInfoCompletion___block_invoke;
     v13[3] = &unk_1E788E8E0;
     v8 = &v14;
-    v14 = v7;
-    v9 = v7;
-    SFCurrentAppIconData(v13, a4);
+    v14 = completionCopy;
+    v9 = completionCopy;
+    SFCurrentAppIconData(v13, scale);
   }
 
   else
@@ -3408,8 +3408,8 @@ void __76__SFCollaborationUtilities_isShareOwnerOrAdminForFileURL_completionHand
     v11[2] = __114__SFCollaborationUtilities__fetchCollaborationAppInfoIfNeededForActivityType_deviceScreenScale_appInfoCompletion___block_invoke_2;
     v11[3] = &unk_1E788B1C0;
     v8 = &v12;
-    v12 = v7;
-    v10 = v7;
+    v12 = completionCopy;
+    v10 = completionCopy;
     sf_dispatch_on_main_queue(v11);
   }
 }
@@ -3422,30 +3422,30 @@ void __114__SFCollaborationUtilities__fetchCollaborationAppInfoIfNeededForActivi
   (*(v2 + 16))(v2, v4, v3);
 }
 
-+ (void)createCollaborationRequestWithCollaborationItem:(id)a3 activityType:(id)a4 deviceScreenScale:(double)a5 completionHandler:(id)a6
++ (void)createCollaborationRequestWithCollaborationItem:(id)item activityType:(id)type deviceScreenScale:(double)scale completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  typeCopy = type;
+  handlerCopy = handler;
   v13 = share_sheet_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138412290;
-    v26 = v14;
+    v26 = identifier;
     _os_log_impl(&dword_1A9662000, v13, OS_LOG_TYPE_DEFAULT, "Create Collaboration request for collaboration item %@", buf, 0xCu);
   }
 
-  if ([v10 type] == 2)
+  if ([itemCopy type] == 2)
   {
     v15 = [SFCollaborationCloudSharingRequest alloc];
-    v16 = [v10 identifier];
-    v17 = [v10 options];
-    LOBYTE(v20) = [v10 optionsChanged];
-    v18 = [(SFCollaborationCloudSharingRequest *)v15 initWithCollaborationItemIdentifier:v16 options:v17 fileOrFolderURL:0 share:0 setupInfo:0 phoneNumbers:MEMORY[0x1E695E0F0] emailAddresses:v11 activityType:0 appName:0 appIconData:v20 optionsChanged:?];
+    identifier2 = [itemCopy identifier];
+    options = [itemCopy options];
+    LOBYTE(v20) = [itemCopy optionsChanged];
+    v18 = [(SFCollaborationCloudSharingRequest *)v15 initWithCollaborationItemIdentifier:identifier2 options:options fileOrFolderURL:0 share:0 setupInfo:0 phoneNumbers:MEMORY[0x1E695E0F0] emailAddresses:typeCopy activityType:0 appName:0 appIconData:v20 optionsChanged:?];
 
-    v12[2](v12, v18);
+    handlerCopy[2](handlerCopy, v18);
   }
 
   else
@@ -3454,10 +3454,10 @@ void __114__SFCollaborationUtilities__fetchCollaborationAppInfoIfNeededForActivi
     v21[1] = 3221225472;
     v21[2] = __125__SFCollaborationUtilities_createCollaborationRequestWithCollaborationItem_activityType_deviceScreenScale_completionHandler___block_invoke;
     v21[3] = &unk_1E788E930;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    [a1 _fetchCollaborationAppInfoIfNeededForActivityType:v23 deviceScreenScale:v21 appInfoCompletion:a5];
+    v22 = itemCopy;
+    v23 = typeCopy;
+    v24 = handlerCopy;
+    [self _fetchCollaborationAppInfoIfNeededForActivityType:v23 deviceScreenScale:v21 appInfoCompletion:scale];
 
     v18 = v22;
   }
@@ -3539,12 +3539,12 @@ void __125__SFCollaborationUtilities_createCollaborationRequestWithCollaboration
   (*(*(a1 + 64) + 16))();
 }
 
-+ (void)createSharingURLForCollaborationRequest:(id)a3 completionHandler:(id)a4
++ (void)createSharingURLForCollaborationRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = gelato_sharing_log();
-  v8 = os_signpost_id_make_with_pointer(v7, v5);
+  v8 = os_signpost_id_make_with_pointer(v7, requestCopy);
 
   v9 = gelato_sharing_log();
   v10 = v9;
@@ -3559,30 +3559,30 @@ void __125__SFCollaborationUtilities_createCollaborationRequestWithCollaboration
   aBlock[2] = __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_completionHandler___block_invoke;
   aBlock[3] = &unk_1E788E958;
   v80 = v8;
-  v11 = v6;
+  v11 = handlerCopy;
   v79 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [v5 fileOrFolderURL];
+  fileOrFolderURL = [requestCopy fileOrFolderURL];
 
-  if (v13)
+  if (fileOrFolderURL)
   {
     CloudSharingClass = getCloudSharingClass();
-    v15 = [v5 fileOrFolderURL];
+    fileOrFolderURL2 = [requestCopy fileOrFolderURL];
     v75[0] = MEMORY[0x1E69E9820];
     v75[1] = 3221225472;
     v75[2] = __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_completionHandler___block_invoke_272;
     v75[3] = &unk_1E788E9A8;
-    v76 = v5;
+    v76 = requestCopy;
     v77 = v12;
-    [CloudSharingClass sharingStatusForFileOrFolderURL:v15 completionHandler:v75];
+    [CloudSharingClass sharingStatusForFileOrFolderURL:fileOrFolderURL2 completionHandler:v75];
 
     v16 = v76;
     goto LABEL_6;
   }
 
-  v17 = [v5 share];
+  share = [requestCopy share];
 
-  if (!v17)
+  if (!share)
   {
     v21 = share_sheet_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -3592,18 +3592,18 @@ void __125__SFCollaborationUtilities_createCollaborationRequestWithCollaboration
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.sharesheet.sharingURLCreation" code:0 userInfo:0];
     v22 = [SFCollaborationCloudSharingResult alloc];
-    v23 = [v5 collaborationItemIdentifier];
-    v24 = [(SFCollaborationCloudSharingResult *)v22 initWithCollaborationItemIdentifier:v23 sharingURL:0 share:0 error:v16 mailResult:0];
+    collaborationItemIdentifier = [requestCopy collaborationItemIdentifier];
+    v24 = [(SFCollaborationCloudSharingResult *)v22 initWithCollaborationItemIdentifier:collaborationItemIdentifier sharingURL:0 share:0 error:v16 mailResult:0];
 
     (*(v12 + 2))(v12, v24);
     goto LABEL_6;
   }
 
-  v18 = [v5 options];
-  if ([v18 count])
+  options = [requestCopy options];
+  if ([options count])
   {
-    v19 = [v5 options];
-    v20 = soft_CKSharingAccessTypeFromOptionsGroups(v19) != 1;
+    options2 = [requestCopy options];
+    v20 = soft_CKSharingAccessTypeFromOptionsGroups(options2) != 1;
   }
 
   else
@@ -3611,24 +3611,24 @@ void __125__SFCollaborationUtilities_createCollaborationRequestWithCollaboration
     v20 = 1;
   }
 
-  v25 = [v5 share];
-  v26 = [v25 URL];
+  share2 = [requestCopy share];
+  v26 = [share2 URL];
   if (v26)
   {
     v27 = v26;
-    v28 = [v5 share];
-    v29 = [v28 participants];
-    if ([v29 count] >= 2)
+    share3 = [requestCopy share];
+    participants = [share3 participants];
+    if ([participants count] >= 2)
     {
-      v30 = [v5 emailAddresses];
-      if (![v30 count])
+      emailAddresses = [requestCopy emailAddresses];
+      if (![emailAddresses count])
       {
-        v31 = [v5 phoneNumbers];
-        if (![v31 count])
+        phoneNumbers = [requestCopy phoneNumbers];
+        if (![phoneNumbers count])
         {
-          v65 = [v5 optionsChanged];
+          optionsChanged = [requestCopy optionsChanged];
 
-          if ((v65 & 1) == 0)
+          if ((optionsChanged & 1) == 0)
           {
             v51 = share_sheet_log();
             if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -3638,11 +3638,11 @@ void __125__SFCollaborationUtilities_createCollaborationRequestWithCollaboration
             }
 
             v52 = [SFCollaborationCloudSharingResult alloc];
-            v53 = [v5 collaborationItemIdentifier];
-            v54 = [v5 share];
-            v55 = [v54 URL];
-            v56 = [v5 share];
-            v16 = [(SFCollaborationCloudSharingResult *)v52 initWithCollaborationItemIdentifier:v53 sharingURL:v55 share:v56 existingShare:1 error:0 mailResult:0];
+            collaborationItemIdentifier2 = [requestCopy collaborationItemIdentifier];
+            share4 = [requestCopy share];
+            v55 = [share4 URL];
+            share5 = [requestCopy share];
+            v16 = [(SFCollaborationCloudSharingResult *)v52 initWithCollaborationItemIdentifier:collaborationItemIdentifier2 sharingURL:v55 share:share5 existingShare:1 error:0 mailResult:0];
 
             (*(v12 + 2))(v12, v16);
             goto LABEL_6;
@@ -3655,8 +3655,8 @@ void __125__SFCollaborationUtilities_createCollaborationRequestWithCollaboration
   }
 
 LABEL_22:
-  v32 = [v5 share];
-  v33 = [v32 URL];
+  share6 = [requestCopy share];
+  v33 = [share6 URL];
   if (!v33)
   {
 LABEL_29:
@@ -3665,54 +3665,54 @@ LABEL_29:
   }
 
   v34 = v33;
-  v35 = [v5 share];
-  v36 = [v35 participants];
-  if ([v36 count] < 2)
+  share7 = [requestCopy share];
+  participants2 = [share7 participants];
+  if ([participants2 count] < 2)
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v37 = [v5 emailAddresses];
-  if ([v37 count])
+  emailAddresses2 = [requestCopy emailAddresses];
+  if ([emailAddresses2 count])
   {
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v38 = [v5 phoneNumbers];
-  if ([v38 count])
+  phoneNumbers2 = [requestCopy phoneNumbers];
+  if ([phoneNumbers2 count])
   {
 
     goto LABEL_27;
   }
 
-  v57 = [v5 optionsChanged] & v20;
+  v57 = [requestCopy optionsChanged] & v20;
 
   if (v57 != 1)
   {
 LABEL_30:
-    v39 = [v5 share];
-    v40 = [v39 participants];
-    v41 = [v40 count];
+    share8 = [requestCopy share];
+    participants3 = [share8 participants];
+    v41 = [participants3 count];
 
     if (v41 > 1)
     {
       v45 = getCloudSharingClass();
-      v46 = [v5 share];
-      v47 = [v5 setupInfo];
-      v48 = [v5 emailAddresses];
-      v49 = [v5 phoneNumbers];
-      v50 = [v5 options];
+      share9 = [requestCopy share];
+      setupInfo = [requestCopy setupInfo];
+      emailAddresses3 = [requestCopy emailAddresses];
+      phoneNumbers3 = [requestCopy phoneNumbers];
+      options3 = [requestCopy options];
       v66[0] = MEMORY[0x1E69E9820];
       v66[1] = 3221225472;
       v66[2] = __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_completionHandler___block_invoke_2;
       v66[3] = &unk_1E788E8B8;
-      v67 = v5;
+      v67 = requestCopy;
       v68 = v12;
-      [v45 addParticipantsToShare:v46 containerSetupInfo:v47 emailAddresses:v48 phoneNumbers:v49 optionsGroups:v50 completionHandler:v66];
+      [v45 addParticipantsToShare:share9 containerSetupInfo:setupInfo emailAddresses:emailAddresses3 phoneNumbers:phoneNumbers3 optionsGroups:options3 completionHandler:v66];
 
       v16 = v67;
     }
@@ -3727,14 +3727,14 @@ LABEL_30:
       }
 
       v43 = getCloudSharingClass();
-      v44 = [v5 share];
+      share10 = [requestCopy share];
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
       v69[2] = __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_completionHandler___block_invoke_282;
       v69[3] = &unk_1E788E9A8;
-      v70 = v5;
+      v70 = requestCopy;
       v71 = v12;
-      [v43 sharingStatusForShare:v44 completionHandler:v69];
+      [v43 sharingStatusForShare:share10 completionHandler:v69];
 
       v16 = v70;
     }
@@ -3750,18 +3750,18 @@ LABEL_30:
   }
 
   v59 = getCloudSharingClass();
-  v60 = [v5 share];
-  v61 = [v5 setupInfo];
-  v62 = [v5 emailAddresses];
-  v63 = [v5 phoneNumbers];
-  v64 = [v5 options];
+  share11 = [requestCopy share];
+  setupInfo2 = [requestCopy setupInfo];
+  emailAddresses4 = [requestCopy emailAddresses];
+  phoneNumbers4 = [requestCopy phoneNumbers];
+  options4 = [requestCopy options];
   v72[0] = MEMORY[0x1E69E9820];
   v72[1] = 3221225472;
   v72[2] = __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_completionHandler___block_invoke_281;
   v72[3] = &unk_1E788E8B8;
-  v73 = v5;
+  v73 = requestCopy;
   v74 = v12;
-  [v59 completeShare:v60 containerSetupInfo:v61 emailAddresses:v62 phoneNumbers:v63 optionsGroups:v64 completionHandler:v72];
+  [v59 completeShare:share11 containerSetupInfo:setupInfo2 emailAddresses:emailAddresses4 phoneNumbers:phoneNumbers4 optionsGroups:options4 completionHandler:v72];
 
   v16 = v73;
 LABEL_6:
@@ -4239,12 +4239,12 @@ void __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_comp
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)requestSharedURLForCollaborationRequest:(id)a3 completionHandler:(id)a4
++ (void)requestSharedURLForCollaborationRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = gelato_sharing_log();
-  v8 = os_signpost_id_make_with_pointer(v7, v5);
+  v8 = os_signpost_id_make_with_pointer(v7, requestCopy);
 
   v9 = gelato_sharing_log();
   v10 = v9;
@@ -4259,33 +4259,33 @@ void __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_comp
   aBlock[2] = __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_completionHandler___block_invoke;
   aBlock[3] = &unk_1E788E958;
   v42 = v8;
-  v11 = v6;
+  v11 = handlerCopy;
   v41 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [v5 fileOrFolderURL];
+  fileOrFolderURL = [requestCopy fileOrFolderURL];
 
-  if (v13)
+  if (fileOrFolderURL)
   {
     CloudSharingClass = getCloudSharingClass();
-    v15 = [v5 fileOrFolderURL];
+    fileOrFolderURL2 = [requestCopy fileOrFolderURL];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_completionHandler___block_invoke_288;
     v37[3] = &unk_1E788E8B8;
-    v38 = v5;
+    v38 = requestCopy;
     v39 = v12;
-    [CloudSharingClass existingShareForFileOrFolderURL:v15 completionHandler:v37];
+    [CloudSharingClass existingShareForFileOrFolderURL:fileOrFolderURL2 completionHandler:v37];
 
     v16 = v38;
   }
 
   else
   {
-    v17 = [v5 share];
+    share = [requestCopy share];
 
-    if (v17)
+    if (share)
     {
-      if ([v5 optionsChanged])
+      if ([requestCopy optionsChanged])
       {
         v18 = share_sheet_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -4295,18 +4295,18 @@ void __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_comp
         }
 
         v19 = getCloudSharingClass();
-        v20 = [v5 share];
-        v21 = [v5 setupInfo];
-        v22 = [v5 emailAddresses];
-        v23 = [v5 phoneNumbers];
-        v24 = [v5 options];
+        share2 = [requestCopy share];
+        setupInfo = [requestCopy setupInfo];
+        emailAddresses = [requestCopy emailAddresses];
+        phoneNumbers = [requestCopy phoneNumbers];
+        options = [requestCopy options];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_completionHandler___block_invoke_290;
         v34[3] = &unk_1E788E8B8;
-        v35 = v5;
+        v35 = requestCopy;
         v36 = v12;
-        [v19 completeShare:v20 containerSetupInfo:v21 emailAddresses:v22 phoneNumbers:v23 optionsGroups:v24 completionHandler:v34];
+        [v19 completeShare:share2 containerSetupInfo:setupInfo emailAddresses:emailAddresses phoneNumbers:phoneNumbers optionsGroups:options completionHandler:v34];
 
         v16 = v35;
       }
@@ -4314,11 +4314,11 @@ void __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_comp
       else
       {
         v29 = [SFCollaborationCloudSharingResult alloc];
-        v30 = [v5 collaborationItemIdentifier];
-        v31 = [v5 share];
-        v32 = [v31 URL];
-        v33 = [v5 share];
-        v16 = [(SFCollaborationCloudSharingResult *)v29 initWithCollaborationItemIdentifier:v30 sharingURL:v32 share:v33 error:0 mailResult:0];
+        collaborationItemIdentifier = [requestCopy collaborationItemIdentifier];
+        share3 = [requestCopy share];
+        v32 = [share3 URL];
+        share4 = [requestCopy share];
+        v16 = [(SFCollaborationCloudSharingResult *)v29 initWithCollaborationItemIdentifier:collaborationItemIdentifier sharingURL:v32 share:share4 error:0 mailResult:0];
 
         (*(v12 + 2))(v12, v16);
       }
@@ -4334,8 +4334,8 @@ void __86__SFCollaborationUtilities_createSharingURLForCollaborationRequest_comp
 
       v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.sharesheet.sharedURLRequest" code:0 userInfo:0];
       v26 = [SFCollaborationCloudSharingResult alloc];
-      v27 = [v5 collaborationItemIdentifier];
-      v28 = [(SFCollaborationCloudSharingResult *)v26 initWithCollaborationItemIdentifier:v27 sharingURL:0 share:0 error:v16 mailResult:0];
+      collaborationItemIdentifier2 = [requestCopy collaborationItemIdentifier];
+      v28 = [(SFCollaborationCloudSharingResult *)v26 initWithCollaborationItemIdentifier:collaborationItemIdentifier2 sharingURL:0 share:0 error:v16 mailResult:0];
 
       (*(v12 + 2))(v12, v28);
     }
@@ -4437,13 +4437,13 @@ void __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_comp
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)createMailContentForRequest:(id)a3 completionHandler:(id)a4
++ (void)createMailContentForRequest:(id)request completionHandler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = gelato_sharing_log();
-  v8 = os_signpost_id_make_with_pointer(v7, v5);
+  v8 = os_signpost_id_make_with_pointer(v7, requestCopy);
 
   v9 = gelato_sharing_log();
   v10 = v9;
@@ -4457,23 +4457,23 @@ void __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_comp
   aBlock[1] = 3221225472;
   aBlock[2] = __74__SFCollaborationUtilities_createMailContentForRequest_completionHandler___block_invoke;
   aBlock[3] = &unk_1E788E9D0;
-  v32 = v6;
+  v32 = handlerCopy;
   v33 = v8;
-  v11 = v6;
+  v11 = handlerCopy;
   v12 = _Block_copy(aBlock);
   v13 = share_sheet_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v5 sharingURL];
-    v15 = [v5 fileOrFolderURL];
-    v16 = [v5 appName];
-    v17 = [v5 share];
+    sharingURL = [requestCopy sharingURL];
+    fileOrFolderURL = [requestCopy fileOrFolderURL];
+    appName = [requestCopy appName];
+    share = [requestCopy share];
     *buf = 138413826;
-    v35 = v14;
+    v35 = sharingURL;
     v36 = 2112;
-    v37 = v15;
+    v37 = fileOrFolderURL;
     v38 = 2112;
-    v39 = v16;
+    v39 = appName;
     v40 = 2112;
     v41 = 0;
     v42 = 2112;
@@ -4481,16 +4481,16 @@ void __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_comp
     v44 = 2112;
     v45 = 0;
     v46 = 2112;
-    v47 = v17;
+    v47 = share;
     _os_log_impl(&dword_1A9662000, v13, OS_LOG_TYPE_DEFAULT, "Calling messageContentForMail SPI with sharingURL:%@, fileURL:%@, appName:%@, canEdit:%@, allowOthersToInvite:%@, containerID:%@, share:%@", buf, 0x48u);
   }
 
   CloudSharingClass = getCloudSharingClass();
-  v19 = [v5 sharingURL];
-  v20 = [v5 share];
-  v21 = [v5 fileOrFolderURL];
-  v22 = [v5 appName];
-  v23 = [v5 appIconData];
+  sharingURL2 = [requestCopy sharingURL];
+  share2 = [requestCopy share];
+  fileOrFolderURL2 = [requestCopy fileOrFolderURL];
+  appName2 = [requestCopy appName];
+  appIconData = [requestCopy appIconData];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __74__SFCollaborationUtilities_createMailContentForRequest_completionHandler___block_invoke_295;
@@ -4500,7 +4500,7 @@ void __86__SFCollaborationUtilities_requestSharedURLForCollaborationRequest_comp
   v29 = 0;
   v30 = v12;
   v24 = v12;
-  [CloudSharingClass messageContentForMail:v19 share:v20 fileURL:v21 appName:v22 appIconData:v23 completionHandler:v26];
+  [CloudSharingClass messageContentForMail:sharingURL2 share:share2 fileURL:fileOrFolderURL2 appName:appName2 appIconData:appIconData completionHandler:v26];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -4544,56 +4544,56 @@ void __74__SFCollaborationUtilities_createMailContentForRequest_completionHandle
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)canDeleteShareForCollaborationItem:(id)a3
++ (BOOL)canDeleteShareForCollaborationItem:(id)item
 {
-  v3 = a3;
-  if ([v3 type] == 1)
+  itemCopy = item;
+  if ([itemCopy type] == 1)
   {
-    v4 = [v3 itemProvider];
-    LOBYTE(v5) = [SFCollaborationUtilities isPreCKShareItemProvider:v4];
+    itemProvider = [itemCopy itemProvider];
+    LOBYTE(v5) = [SFCollaborationUtilities isPreCKShareItemProvider:itemProvider];
   }
 
-  else if ([v3 type])
+  else if ([itemCopy type])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = [v3 isShared] ^ 1;
+    v5 = [itemCopy isShared] ^ 1;
   }
 
   return v5;
 }
 
-+ (id)descriptionForShareOptions:(id)a3
++ (id)descriptionForShareOptions:(id)options
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 description];
-  v6 = [v4 summary];
-  v7 = [v4 optionsGroups];
+  optionsCopy = options;
+  v5 = [optionsCopy description];
+  summary = [optionsCopy summary];
+  optionsGroups = [optionsCopy optionsGroups];
 
-  v8 = [v3 stringWithFormat:@"<%@ summary: %@, options: %@>", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ summary: %@, options: %@>", v5, summary, optionsGroups];
 
   return v8;
 }
 
-+ (void)getFailureTitle:(id *)a3 message:(id *)a4 error:(id)a5
++ (void)getFailureTitle:(id *)title message:(id *)message error:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v26 = SFLocalizedStringForKey(@"ERROR_TITLE_COULD_NOT_ADD_PARTICIPANTS");
   v8 = SFLocalizedStringForKey(@"ERROR_MESSAGE_COULD_NOT_ADD_PARTICIPANTS");
-  v9 = [SFCollaborationUtilities underlyingCKErrorForError:v7];
+  v9 = [SFCollaborationUtilities underlyingCKErrorForError:errorCopy];
 
-  v10 = [v9 domain];
+  domain = [v9 domain];
   v11 = getCKErrorDomain();
-  v12 = [v10 isEqualToString:v11];
+  v12 = [domain isEqualToString:v11];
 
   if (!v12)
   {
-    v20 = [v9 domain];
-    v21 = [v20 isEqualToString:*MEMORY[0x1E696A250]];
+    domain2 = [v9 domain];
+    v21 = [domain2 isEqualToString:*MEMORY[0x1E696A250]];
 
     if (!v21)
     {
@@ -4601,21 +4601,21 @@ void __74__SFCollaborationUtilities_createMailContentForRequest_completionHandle
     }
 
     v22 = MEMORY[0x1E696AEC0];
-    v14 = SFLocalizedStringForKey(@"ERROR_MESSAGE_COULD_NOT_ADD_PARTICIPANTS_WITH_ERROR_INFO");
-    v23 = [v9 localizedDescription];
-    v19 = [v22 stringWithFormat:v14, v23];
+    processName = SFLocalizedStringForKey(@"ERROR_MESSAGE_COULD_NOT_ADD_PARTICIPANTS_WITH_ERROR_INFO");
+    localizedDescription = [v9 localizedDescription];
+    v19 = [v22 stringWithFormat:processName, localizedDescription];
 
-    v8 = v23;
+    v8 = localizedDescription;
     goto LABEL_17;
   }
 
-  v13 = [MEMORY[0x1E696AE30] processInfo];
-  v14 = [v13 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  v15 = [v9 code];
-  if (v15 > 28)
+  code = [v9 code];
+  if (code > 28)
   {
-    switch(v15)
+    switch(code)
     {
       case 29:
         v16 = SFLocalizedStringForKey(@"ERROR_TITLE_TOO_MANY_PARTICIPANTS");
@@ -4640,13 +4640,13 @@ void __74__SFCollaborationUtilities_createMailContentForRequest_completionHandle
     goto LABEL_16;
   }
 
-  if ((v15 - 3) < 2)
+  if ((code - 3) < 2)
   {
     v16 = SFLocalizedStringForKey(@"ERROR_TITLE_NETWORK_UNAVAILABLE_OR_FAILURE");
 
     v17 = MEMORY[0x1E696AEC0];
     v18 = SFLocalizedStringForKey(@"ERROR_MESSAGE_NETWORK_UNAVAILABLE_OR_FAILURE");
-    v19 = [v17 localizedStringWithFormat:v18, v14];
+    v19 = [v17 localizedStringWithFormat:v18, processName];
 
     v8 = v18;
 LABEL_16:
@@ -4654,7 +4654,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v15 == 14)
+  if (code == 14)
   {
     v19 = SFLocalizedStringForKey(@"ERROR_MESSAGE_COULD_NOT_ADD_PARTICIPANTS_WITH_TRY_AGAIN");
 LABEL_17:
@@ -4665,33 +4665,33 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  if (a3)
+  if (title)
   {
-    *a3 = v26;
+    *title = v26;
   }
 
-  if (a4)
+  if (message)
   {
     v25 = v8;
-    *a4 = v8;
+    *message = v8;
   }
 }
 
-+ (BOOL)isOplockError:(id)a3 updatedShare:(id *)a4
++ (BOOL)isOplockError:(id)error updatedShare:(id *)share
 {
-  v5 = a3;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v6 = [SFCollaborationUtilities underlyingCKErrorForError:v5];
-    v7 = [v6 domain];
+    v6 = [SFCollaborationUtilities underlyingCKErrorForError:errorCopy];
+    domain = [v6 domain];
     v8 = getCKErrorDomain();
-    if ([v7 isEqualToString:v8])
+    if ([domain isEqualToString:v8])
     {
-      v9 = [v6 code];
+      code = [v6 code];
 
-      if (v9 == 14)
+      if (code == 14)
       {
-        v10 = [v6 userInfo];
+        userInfo = [v6 userInfo];
         v18 = 0;
         v19 = &v18;
         v20 = 0x2020000000;
@@ -4712,12 +4712,12 @@ LABEL_19:
         }
 
         v13 = *v11;
-        v14 = [v10 objectForKeyedSubscript:v13];
+        v14 = [userInfo objectForKeyedSubscript:v13];
 
-        if (a4)
+        if (share)
         {
           v15 = v14;
-          *a4 = v14;
+          *share = v14;
         }
 
         v16 = 1;
@@ -4741,39 +4741,39 @@ LABEL_14:
   return v16;
 }
 
-+ (id)underlyingCKErrorForError:(id)a3
++ (id)underlyingCKErrorForError:(id)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = getCKErrorDomain();
-  if ([v4 isEqualToString:v5] || (objc_msgSend(v3, "userInfo"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([domain isEqualToString:v5] || (objc_msgSend(errorCopy, "userInfo"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
-    v12 = v3;
+    v12 = errorCopy;
   }
 
   else
   {
     v7 = v6;
-    v8 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
     v9 = *MEMORY[0x1E696AA08];
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v12 = v3;
+    v12 = errorCopy;
     if (isKindOfClass)
     {
-      v13 = [v3 userInfo];
-      v14 = [v13 objectForKeyedSubscript:v9];
+      userInfo2 = [errorCopy userInfo];
+      v14 = [userInfo2 objectForKeyedSubscript:v9];
 
-      v15 = [v3 userInfo];
-      v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
+      userInfo3 = [errorCopy userInfo];
+      v16 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
 
-      v17 = [v14 domain];
+      domain2 = [v14 domain];
       v18 = getCKErrorDomain();
-      v19 = [v17 isEqualToString:v18];
+      v19 = [domain2 isEqualToString:v18];
 
       if (v19)
       {
@@ -4782,7 +4782,7 @@ LABEL_14:
 
       else
       {
-        v12 = v3;
+        v12 = errorCopy;
         if (v16)
         {
           v34 = 0u;
@@ -4791,7 +4791,7 @@ LABEL_14:
           v33 = 0u;
           v22 = v16;
           v23 = [v22 countByEnumeratingWithState:&v32 objects:v36 count:16];
-          v12 = v3;
+          v12 = errorCopy;
           if (v23)
           {
             v24 = v23;
@@ -4807,9 +4807,9 @@ LABEL_14:
                 }
 
                 v27 = *(*(&v32 + 1) + 8 * i);
-                v28 = [v27 domain];
+                domain3 = [v27 domain];
                 v29 = getCKErrorDomain();
-                v30 = [v28 isEqualToString:v29];
+                v30 = [domain3 isEqualToString:v29];
 
                 if (v30)
                 {
@@ -4828,7 +4828,7 @@ LABEL_14:
               break;
             }
 
-            v12 = v3;
+            v12 = errorCopy;
 LABEL_21:
             v16 = v31;
           }
@@ -4842,33 +4842,33 @@ LABEL_21:
   return v12;
 }
 
-+ (void)shareStatusForURL:(id)a3 completionHandler:(id)a4
++ (void)shareStatusForURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   CloudSharingClass = getCloudSharingClass();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__SFCollaborationUtilities_shareStatusForURL_completionHandler___block_invoke;
   v9[3] = &unk_1E788E818;
-  v10 = v5;
-  v8 = v5;
-  [CloudSharingClass sharingStatusForFileOrFolderURL:v6 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [CloudSharingClass sharingStatusForFileOrFolderURL:lCopy completionHandler:v9];
 }
 
-+ (id)urlRequestsForCollaborationItems:(id)a3
++ (id)urlRequestsForCollaborationItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    array = 0;
     v7 = *v15;
     do
     {
@@ -4876,25 +4876,25 @@ LABEL_21:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if (![v9 type])
         {
-          if (!v6)
+          if (!array)
           {
-            v6 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          v10 = [v9 fileURL];
-          v11 = [MEMORY[0x1E696AD68] requestWithURL:v10];
+          fileURL = [v9 fileURL];
+          v11 = [MEMORY[0x1E696AD68] requestWithURL:fileURL];
           [v11 _setNonAppInitiated:1];
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -4902,12 +4902,12 @@ LABEL_21:
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
 + (void)getCKSharingOptionsFromOptions:accessType:permissionType:allowOthersToInvite:.cold.1()

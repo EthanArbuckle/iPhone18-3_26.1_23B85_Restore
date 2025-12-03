@@ -4,8 +4,8 @@
 - (BOOL)checkIfCitiesModified;
 - (NSArray)cities;
 - (NTKWorldClockManager)init;
-- (unint64_t)addCity:(id)a3;
-- (unint64_t)addCityByIdentifier:(int64_t)a3;
+- (unint64_t)addCity:(id)city;
+- (unint64_t)addCityByIdentifier:(int64_t)identifier;
 - (void)loadCities;
 - (void)saveCities;
 @end
@@ -38,9 +38,9 @@ void __37__NTKWorldClockManager_sharedManager__block_invoke()
   v2 = [(NTKWorldClockManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D29758] sharedManager];
+    mEMORY[0x277D29758] = [MEMORY[0x277D29758] sharedManager];
     frameworkManager = v2->_frameworkManager;
-    v2->_frameworkManager = v3;
+    v2->_frameworkManager = mEMORY[0x277D29758];
 
     v2->_frameworkLock._os_unfair_lock_opaque = 0;
   }
@@ -51,8 +51,8 @@ void __37__NTKWorldClockManager_sharedManager__block_invoke()
 - (NSArray)cities
 {
   os_unfair_lock_lock(&self->_frameworkLock);
-  v3 = [(WorldClockManager *)self->_frameworkManager cities];
-  v4 = [v3 copy];
+  cities = [(WorldClockManager *)self->_frameworkManager cities];
+  v4 = [cities copy];
 
   os_unfair_lock_unlock(&self->_frameworkLock);
 
@@ -70,9 +70,9 @@ void __37__NTKWorldClockManager_sharedManager__block_invoke()
 - (BOOL)checkIfCitiesModified
 {
   os_unfair_lock_lock(&self->_frameworkLock);
-  v3 = [(WorldClockManager *)self->_frameworkManager checkIfCitiesModified];
+  checkIfCitiesModified = [(WorldClockManager *)self->_frameworkManager checkIfCitiesModified];
   os_unfair_lock_unlock(&self->_frameworkLock);
-  return v3;
+  return checkIfCitiesModified;
 }
 
 - (void)saveCities
@@ -86,25 +86,25 @@ void __37__NTKWorldClockManager_sharedManager__block_invoke()
 - (BOOL)canAddCity
 {
   os_unfair_lock_lock(&self->_frameworkLock);
-  v3 = [(WorldClockManager *)self->_frameworkManager canAddCity];
+  canAddCity = [(WorldClockManager *)self->_frameworkManager canAddCity];
   os_unfair_lock_unlock(&self->_frameworkLock);
-  return v3;
+  return canAddCity;
 }
 
-- (unint64_t)addCity:(id)a3
+- (unint64_t)addCity:(id)city
 {
-  v4 = a3;
+  cityCopy = city;
   os_unfair_lock_lock(&self->_frameworkLock);
-  v5 = [(WorldClockManager *)self->_frameworkManager addCity:v4];
+  v5 = [(WorldClockManager *)self->_frameworkManager addCity:cityCopy];
 
   os_unfair_lock_unlock(&self->_frameworkLock);
   return v5;
 }
 
-- (unint64_t)addCityByIdentifier:(int64_t)a3
+- (unint64_t)addCityByIdentifier:(int64_t)identifier
 {
   os_unfair_lock_lock(&self->_frameworkLock);
-  v5 = [objc_alloc(MEMORY[0x277D29750]) initWithALCityIdentifier:a3];
+  v5 = [objc_alloc(MEMORY[0x277D29750]) initWithALCityIdentifier:identifier];
   v6 = [(WorldClockManager *)self->_frameworkManager addCity:v5];
   os_unfair_lock_unlock(&self->_frameworkLock);
 

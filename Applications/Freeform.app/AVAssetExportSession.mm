@@ -1,20 +1,20 @@
 @interface AVAssetExportSession
-+ (id)crl_exportSessionWithAsset:(id)a3 presetName:(id)a4 preserveFrameDuration:(BOOL)a5;
++ (id)crl_exportSessionWithAsset:(id)asset presetName:(id)name preserveFrameDuration:(BOOL)duration;
 @end
 
 @implementation AVAssetExportSession
 
-+ (id)crl_exportSessionWithAsset:(id)a3 presetName:(id)a4 preserveFrameDuration:(BOOL)a5
++ (id)crl_exportSessionWithAsset:(id)asset presetName:(id)name preserveFrameDuration:(BOOL)duration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = sub_1003265AC(v8);
+  assetCopy = asset;
+  nameCopy = name;
+  v9 = sub_1003265AC(nameCopy);
   if (sub_100326840(v9))
   {
     v10 = +[CRLCapabilities currentCapabilities];
-    v11 = [v10 hasHEVCHardwareEncoding];
+    hasHEVCHardwareEncoding = [v10 hasHEVCHardwareEncoding];
 
-    if (!v11)
+    if (!hasHEVCHardwareEncoding)
     {
       v15 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -57,26 +57,26 @@
       goto LABEL_17;
     }
 
-    if ([CRLMovieCompatibilityChecker assetContainsVideoTracksWithAlpha:v7])
+    if ([CRLMovieCompatibilityChecker assetContainsVideoTracksWithAlpha:assetCopy])
     {
       v13 = v9;
       v14 = 1;
 LABEL_17:
       v20 = sub_1003266C4(v13, v14, v12);
 
-      v8 = v20;
+      nameCopy = v20;
     }
   }
 
-  v21 = [AVAssetExportSession exportSessionWithAsset:v7 presetName:v8];
+  v21 = [AVAssetExportSession exportSessionWithAsset:assetCopy presetName:nameCopy];
   [v21 setShouldOptimizeForNetworkUse:1];
-  if (!a5 && (sub_100326798(v8) & 1) == 0)
+  if (!duration && (sub_100326798(nameCopy) & 1) == 0)
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v22 = [v7 tracksWithMediaType:AVMediaTypeVideo];
+    v22 = [assetCopy tracksWithMediaType:AVMediaTypeVideo];
     v23 = [v22 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v23)
     {
@@ -94,7 +94,7 @@ LABEL_17:
           [*(*(&v32 + 1) + 8 * i) nominalFrameRate];
           if (v27 > 30.0)
           {
-            v28 = [AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:v7];
+            v28 = [AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:assetCopy];
             CMTimeMake(&v31, 1, 30);
             v30 = v31;
             [v28 setFrameDuration:&v30];

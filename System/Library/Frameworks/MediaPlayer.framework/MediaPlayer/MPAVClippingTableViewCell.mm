@@ -1,13 +1,13 @@
 @interface MPAVClippingTableViewCell
-- (MPAVClippingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MPAVClippingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)clippingInsets;
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3;
-- (void)_setShouldHaveFullLengthTopSeparator:(BOOL)a3;
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator;
+- (void)_setShouldHaveFullLengthTopSeparator:(BOOL)separator;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryView:(id)a3;
-- (void)setClippingInsets:(UIEdgeInsets)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setClippingInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation MPAVClippingTableViewCell
@@ -25,23 +25,23 @@
   return result;
 }
 
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator
 {
-  v3 = a3;
+  separatorCopy = separator;
   v6.receiver = self;
   v6.super_class = MPAVClippingTableViewCell;
   [(MPAVClippingTableViewCell *)&v6 _setShouldHaveFullLengthBottomSeparator:?];
-  v5 = v3 && self->_shouldHideSectionBottomSeparator;
+  v5 = separatorCopy && self->_shouldHideSectionBottomSeparator;
   [(UIView *)self->_bottomSeparatorView setHidden:v5];
 }
 
-- (void)_setShouldHaveFullLengthTopSeparator:(BOOL)a3
+- (void)_setShouldHaveFullLengthTopSeparator:(BOOL)separator
 {
-  v3 = a3;
+  separatorCopy = separator;
   v5.receiver = self;
   v5.super_class = MPAVClippingTableViewCell;
   [(MPAVClippingTableViewCell *)&v5 _setShouldHaveFullLengthTopSeparator:?];
-  [(UIView *)self->_topSeparatorView setHidden:!v3];
+  [(UIView *)self->_topSeparatorView setHidden:!separatorCopy];
 }
 
 - (void)layoutSubviews
@@ -57,26 +57,26 @@
   v10 = v9 - (left + self->_clippingInsets.right);
   v12 = v11 - (top + self->_clippingInsets.bottom);
   [(UIView *)self->_clippingContentView setFrame:v5 + left, v7 + top, v10, v12];
-  v13 = [(MPAVClippingTableViewCell *)self _defaultAccessoryView];
-  v14 = [v13 maskView];
+  _defaultAccessoryView = [(MPAVClippingTableViewCell *)self _defaultAccessoryView];
+  maskView = [_defaultAccessoryView maskView];
   clippingMaskView = self->_clippingMaskView;
 
-  if (v14 != clippingMaskView)
+  if (maskView != clippingMaskView)
   {
-    [v13 setMaskView:self->_clippingMaskView];
+    [_defaultAccessoryView setMaskView:self->_clippingMaskView];
   }
 
-  [v13 convertRect:self fromView:{v6, v8, v10, v12}];
+  [_defaultAccessoryView convertRect:self fromView:{v6, v8, v10, v12}];
   [(UIView *)self->_clippingMaskView setFrame:?];
-  v16 = [(MPAVClippingTableViewCell *)self contentView];
-  [v16 frame];
+  contentView = [(MPAVClippingTableViewCell *)self contentView];
+  [contentView frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
   v23 = -self->_clippingInsets.top;
-  v24 = [(MPAVClippingTableViewCell *)self contentView];
-  [v24 setFrame:{v18, v23, v20, v22}];
+  contentView2 = [(MPAVClippingTableViewCell *)self contentView];
+  [contentView2 setFrame:{v18, v23, v20, v22}];
 
   [(MPAVClippingTableViewCell *)self _separatorFrame];
   v26 = v25;
@@ -90,8 +90,8 @@
   v39.size.width = v30;
   v39.size.height = v32;
   [(UIView *)self->_topSeparatorView setFrame:0.0, 0.0, Width, CGRectGetHeight(v39)];
-  v34 = [(MPAVClippingTableViewCell *)self contentView];
-  [v34 bounds];
+  contentView3 = [(MPAVClippingTableViewCell *)self contentView];
+  [contentView3 bounds];
   MaxY = CGRectGetMaxY(v40);
   v41.origin.x = v26;
   v41.origin.y = v28;
@@ -102,15 +102,15 @@
   [(UIView *)self->_bottomSeparatorView setFrame:v26, v36, v30, v32];
 }
 
-- (void)setClippingInsets:(UIEdgeInsets)a3
+- (void)setClippingInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_clippingInsets.top), vceqq_f64(v4, *&self->_clippingInsets.bottom)))) & 1) == 0)
   {
-    self->_clippingInsets = a3;
+    self->_clippingInsets = insets;
     [(UIView *)self->_clippingContentView setClipsToBounds:vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(v3, *MEMORY[0x1E69DDCE0]), vceqq_f64(v4, *(MEMORY[0x1E69DDCE0] + 16)))))) & 1];
 
     [(MPAVClippingTableViewCell *)self setNeedsLayout];
@@ -125,36 +125,36 @@
   [(MPAVClippingTableViewCell *)self setClippingInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(MPAVClippingTableViewCell *)self accessoryView];
-  [v5 setMaskView:0];
+  viewCopy = view;
+  accessoryView = [(MPAVClippingTableViewCell *)self accessoryView];
+  [accessoryView setMaskView:0];
 
   v8.receiver = self;
   v8.super_class = MPAVClippingTableViewCell;
-  [(MPAVClippingTableViewCell *)&v8 setAccessoryView:v4];
+  [(MPAVClippingTableViewCell *)&v8 setAccessoryView:viewCopy];
 
   clippingMaskView = self->_clippingMaskView;
-  v7 = [(MPAVClippingTableViewCell *)self accessoryView];
-  [v7 setMaskView:clippingMaskView];
+  accessoryView2 = [(MPAVClippingTableViewCell *)self accessoryView];
+  [accessoryView2 setMaskView:clippingMaskView];
 }
 
 - (void)dealloc
 {
-  v3 = [(MPAVClippingTableViewCell *)self accessoryView];
-  [v3 setMaskView:0];
+  accessoryView = [(MPAVClippingTableViewCell *)self accessoryView];
+  [accessoryView setMaskView:0];
 
   v4.receiver = self;
   v4.super_class = MPAVClippingTableViewCell;
   [(MPAVClippingTableViewCell *)&v4 dealloc];
 }
 
-- (MPAVClippingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MPAVClippingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v28.receiver = self;
   v28.super_class = MPAVClippingTableViewCell;
-  v4 = [(MPAVClippingTableViewCell *)&v28 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MPAVClippingTableViewCell *)&v28 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -171,38 +171,38 @@
     clippingMaskView = v5->_clippingMaskView;
     v5->_clippingMaskView = v12;
 
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v5->_clippingMaskView setBackgroundColor:v14];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v5->_clippingMaskView setBackgroundColor:whiteColor];
 
     v15 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v8, v9, v10, v11}];
     clippingContentView = v5->_clippingContentView;
     v5->_clippingContentView = v15;
 
     v17 = v5->_clippingContentView;
-    v18 = [(MPAVClippingTableViewCell *)v5 contentView];
-    [(UIView *)v17 addSubview:v18];
+    contentView = [(MPAVClippingTableViewCell *)v5 contentView];
+    [(UIView *)v17 addSubview:contentView];
 
     [(MPAVClippingTableViewCell *)v5 addSubview:v5->_clippingContentView];
     v19 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v8, v9, v10, v11}];
     bottomSeparatorView = v5->_bottomSeparatorView;
     v5->_bottomSeparatorView = v19;
 
-    v21 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v5->_bottomSeparatorView setBackgroundColor:v21];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v5->_bottomSeparatorView setBackgroundColor:whiteColor2];
 
-    v22 = [(MPAVClippingTableViewCell *)v5 contentView];
-    [v22 addSubview:v5->_bottomSeparatorView];
+    contentView2 = [(MPAVClippingTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_bottomSeparatorView];
 
     v23 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v8, v9, v10, v11}];
     topSeparatorView = v5->_topSeparatorView;
     v5->_topSeparatorView = v23;
 
-    v25 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v5->_topSeparatorView setBackgroundColor:v25];
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v5->_topSeparatorView setBackgroundColor:whiteColor3];
 
     [(UIView *)v5->_topSeparatorView setHidden:1];
-    v26 = [(MPAVClippingTableViewCell *)v5 contentView];
-    [v26 addSubview:v5->_topSeparatorView];
+    contentView3 = [(MPAVClippingTableViewCell *)v5 contentView];
+    [contentView3 addSubview:v5->_topSeparatorView];
   }
 
   return v5;

@@ -1,20 +1,20 @@
 @interface UALocalCornerActionItem
-- (UALocalCornerActionItem)initWithUUID:(id)a3 type:(unint64_t)a4 options:(id)a5 originatingClient:(id)a6;
+- (UALocalCornerActionItem)initWithUUID:(id)d type:(unint64_t)type options:(id)options originatingClient:(id)client;
 - (UAUserActivityClientProcess)originatingClient;
 @end
 
 @implementation UALocalCornerActionItem
 
-- (UALocalCornerActionItem)initWithUUID:(id)a3 type:(unint64_t)a4 options:(id)a5 originatingClient:(id)a6
+- (UALocalCornerActionItem)initWithUUID:(id)d type:(unint64_t)type options:(id)options originatingClient:(id)client
 {
-  v10 = a6;
+  clientCopy = client;
   v14.receiver = self;
   v14.super_class = UALocalCornerActionItem;
-  v11 = [(UALocalCornerActionItem *)&v14 initWithUUID:a3 type:a4 options:a5];
+  v11 = [(UALocalCornerActionItem *)&v14 initWithUUID:d type:type options:options];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_originatingClient, v10);
+    objc_storeWeak(&v11->_originatingClient, clientCopy);
   }
 
   return v12;

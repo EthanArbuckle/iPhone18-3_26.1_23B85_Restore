@@ -4,12 +4,12 @@
 - (BOOL)automationModeRequiresAuthentication;
 - (BOOL)currentAutomationModeEnabledStateFromDaemon;
 - (BOOL)isAutomationModeEnabled;
-- (XAMObserver)initWithChangeNotificationName:(id)a3 readerConnectionFactory:(id)a4;
-- (id)registerAutomationModeChangeHandlerOnQueue:(id)a3 withBlock:(id)a4;
+- (XAMObserver)initWithChangeNotificationName:(id)name readerConnectionFactory:(id)factory;
+- (id)registerAutomationModeChangeHandlerOnQueue:(id)queue withBlock:(id)block;
 - (void)_listenForAutomationModeChangeNotifications;
 - (void)_notifyHandlers;
 - (void)dealloc;
-- (void)unregisterAutomationModeChangeHandler:(id)a3;
+- (void)unregisterAutomationModeChangeHandler:(id)handler;
 @end
 
 @implementation XAMObserver
@@ -26,8 +26,8 @@
 
 + (XAMObserver)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!XAMSharedObserver)
   {
     v3 = [XAMObserver alloc];
@@ -37,7 +37,7 @@
     XAMSharedObserver = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v7 = XAMSharedObserver;
 
@@ -66,12 +66,12 @@ id __29__XAMObserver_sharedInstance__block_invoke()
   return v2;
 }
 
-- (XAMObserver)initWithChangeNotificationName:(id)a3 readerConnectionFactory:(id)a4
+- (XAMObserver)initWithChangeNotificationName:(id)name readerConnectionFactory:(id)factory
 {
   v17.receiver = self;
   v17.super_class = XAMObserver;
-  v5 = a4;
-  v6 = a3;
+  factoryCopy = factory;
+  nameCopy = name;
   v7 = [(XAMObserver *)&v17 init];
   v8 = dispatch_queue_create("com.apple.dt.automationmode-reader", 0);
   queue = v7->_queue;
@@ -82,12 +82,12 @@ id __29__XAMObserver_sharedInstance__block_invoke()
   v7->_handlers = v10;
 
   v7->_observationToken = -1;
-  v12 = [v6 copy];
+  v12 = [nameCopy copy];
 
   changeNotificationName = v7->_changeNotificationName;
   v7->_changeNotificationName = v12;
 
-  v14 = [v5 copy];
+  v14 = [factoryCopy copy];
   readerConnectionFactory = v7->_readerConnectionFactory;
   v7->_readerConnectionFactory = v14;
 
@@ -144,7 +144,7 @@ void __58__XAMObserver_currentAutomationModeEnabledStateFromDaemon__block_invoke
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_fault_impl(&dword_241927000, a2, OS_LOG_TYPE_FAULT, "Failed to register for notifications of Automation Mode, status: %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -170,7 +170,7 @@ void __58__XAMObserver__listenForAutomationModeChangeNotifications__block_invoke
 {
   v27 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(XAMObserver *)self currentAutomationModeEnabledStateFromDaemon];
+  currentAutomationModeEnabledStateFromDaemon = [(XAMObserver *)self currentAutomationModeEnabledStateFromDaemon];
   v4 = XAMLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -178,18 +178,18 @@ void __58__XAMObserver__listenForAutomationModeChangeNotifications__block_invoke
     *buf = 67109376;
     v24 = isAutomationModeEnabled;
     v25 = 1024;
-    v26 = v3;
+    v26 = currentAutomationModeEnabledStateFromDaemon;
     _os_log_impl(&dword_241927000, v4, OS_LOG_TYPE_DEFAULT, "Comparing previous enabled state (%d) to current enabled state (%d)", buf, 0xEu);
   }
 
-  if (!self->_hasReceivedAutomationModeEnabledState || self->_isAutomationModeEnabled != v3)
+  if (!self->_hasReceivedAutomationModeEnabledState || self->_isAutomationModeEnabled != currentAutomationModeEnabledStateFromDaemon)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(NSMutableDictionary *)self->_handlers allValues];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allValues = [(NSMutableDictionary *)self->_handlers allValues];
+    v7 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v9 = v7;
@@ -201,7 +201,7 @@ void __58__XAMObserver__listenForAutomationModeChangeNotifications__block_invoke
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v18 + 1) + 8 * v11);
@@ -220,13 +220,13 @@ void __58__XAMObserver__listenForAutomationModeChangeNotifications__block_invoke
           v16[2] = __30__XAMObserver__notifyHandlers__block_invoke;
           v16[3] = &unk_278CF94E0;
           v16[4] = v12;
-          v17 = v3;
+          v17 = currentAutomationModeEnabledStateFromDaemon;
           dispatch_async(Property, v16);
           ++v11;
         }
 
         while (v9 != v11);
-        v14 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v14 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
         v9 = v14;
       }
 
@@ -234,38 +234,38 @@ void __58__XAMObserver__listenForAutomationModeChangeNotifications__block_invoke
     }
   }
 
-  self->_isAutomationModeEnabled = v3;
+  self->_isAutomationModeEnabled = currentAutomationModeEnabledStateFromDaemon;
   self->_hasReceivedAutomationModeEnabledState = 1;
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)registerAutomationModeChangeHandlerOnQueue:(id)a3 withBlock:(id)a4
+- (id)registerAutomationModeChangeHandlerOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x277CCAD78];
-  v8 = a3;
-  v9 = [v7 UUID];
-  v10 = [[XAMHandlerRecord alloc] initWithQueue:v8 block:v6];
+  queueCopy = queue;
+  uUID = [v7 UUID];
+  v10 = [[XAMHandlerRecord alloc] initWithQueue:queueCopy block:blockCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__XAMObserver_registerAutomationModeChangeHandlerOnQueue_withBlock___block_invoke;
   block[3] = &unk_278CF9508;
   block[4] = self;
-  v12 = v9;
+  v12 = uUID;
   v23 = v12;
   v24 = v10;
   v13 = v10;
   dispatch_sync(queue, block);
-  v14 = [(XAMObserver *)self isAutomationModeEnabled];
+  isAutomationModeEnabled = [(XAMObserver *)self isAutomationModeEnabled];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __68__XAMObserver_registerAutomationModeChangeHandlerOnQueue_withBlock___block_invoke_2;
   v19[3] = &unk_278CF9530;
-  v20 = v6;
-  v21 = v14;
-  v15 = v6;
-  dispatch_async(v8, v19);
+  v20 = blockCopy;
+  v21 = isAutomationModeEnabled;
+  v15 = blockCopy;
+  dispatch_async(queueCopy, v19);
 
   v16 = v20;
   v17 = v12;
@@ -273,17 +273,17 @@ void __58__XAMObserver__listenForAutomationModeChangeNotifications__block_invoke
   return v12;
 }
 
-- (void)unregisterAutomationModeChangeHandler:(id)a3
+- (void)unregisterAutomationModeChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__XAMObserver_unregisterAutomationModeChangeHandler___block_invoke;
   v7[3] = &unk_278CF9558;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 

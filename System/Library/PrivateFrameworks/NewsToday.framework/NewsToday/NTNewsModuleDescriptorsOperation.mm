@@ -1,8 +1,8 @@
 @interface NTNewsModuleDescriptorsOperation
 - (BOOL)validateOperation;
-- (void)_continueOperationWithTodayData:(id)a3;
-- (void)_donateTodayConfigDataToNewsd:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_continueOperationWithTodayData:(id)data;
+- (void)_donateTodayConfigDataToNewsd:(id)newsd;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -11,30 +11,30 @@
 
 - (BOOL)validateOperation
 {
-  v3 = [(NTTodayModuleDescriptorsOperation *)self contentContext];
+  contentContext = [(NTTodayModuleDescriptorsOperation *)self contentContext];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!contentContext && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsModuleDescriptorsOperation validateOperation];
   }
 
-  v4 = [(NTTodayModuleDescriptorsOperation *)self privateDataStorage];
+  privateDataStorage = [(NTTodayModuleDescriptorsOperation *)self privateDataStorage];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!privateDataStorage && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsModuleDescriptorsOperation validateOperation];
   }
 
-  v5 = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
+  descriptorsCompletion = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!descriptorsCompletion && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsModuleDescriptorsOperation validateOperation];
   }
 
-  if (v3)
+  if (contentContext)
   {
-    v6 = v4 == 0;
+    v6 = privateDataStorage == 0;
   }
 
   else
@@ -42,7 +42,7 @@
     v6 = 1;
   }
 
-  return !v6 && v5 != 0;
+  return !v6 && descriptorsCompletion != 0;
 }
 
 - (void)performOperation
@@ -52,19 +52,19 @@
   if (os_log_type_enabled(*MEMORY[0x277D30B40], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     *buf = 138543362;
-    v10 = v5;
+    v10 = shortOperationDescription;
     _os_log_impl(&dword_25BF21000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch private data", buf, 0xCu);
   }
 
-  v6 = [(NTTodayModuleDescriptorsOperation *)self privateDataStorage];
+  privateDataStorage = [(NTTodayModuleDescriptorsOperation *)self privateDataStorage];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke;
   v8[3] = &unk_279983A10;
   v8[4] = self;
-  [v6 readPrivateDataSyncWithAccessor:v8];
+  [privateDataStorage readPrivateDataSyncWithAccessor:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -116,11 +116,11 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueOperationWithTodayData:(id)a3
+- (void)_continueOperationWithTodayData:(id)data
 {
   v86 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v4 = [(NTTodayModuleDescriptorsOperation *)self contentRequest];
+  dataCopy = data;
+  contentRequest = [(NTTodayModuleDescriptorsOperation *)self contentRequest];
   v79[0] = 0;
   v79[1] = v79;
   v79[2] = 0x3032000000;
@@ -139,46 +139,46 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
   v75[3] = __Block_byref_object_copy__1;
   v75[4] = __Block_byref_object_dispose__1;
   v76 = 0;
-  v5 = [(NTTodayModuleDescriptorsOperation *)self contentContext];
-  v6 = [v5 appConfigurationManager];
-  v7 = [v6 possiblyUnfetchedAppConfiguration];
-  v8 = [v7 userSegmentationInWidgetAllowed];
+  contentContext = [(NTTodayModuleDescriptorsOperation *)self contentContext];
+  appConfigurationManager = [contentContext appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  userSegmentationInWidgetAllowed = [possiblyUnfetchedAppConfiguration userSegmentationInWidgetAllowed];
 
   v9 = NewsCoreUserDefaults();
   v10 = [v9 BOOLForKey:*MEMORY[0x277D30D18]];
 
-  LODWORD(v9) = v10 & v8;
+  LODWORD(v9) = v10 & userSegmentationInWidgetAllowed;
   v11 = dispatch_group_create();
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     dispatch_group_enter(v11);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    v13 = [v49 bundleSubscription];
-    v14 = [v13 isSubscribed];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    bundleSubscription = [dataCopy bundleSubscription];
+    isSubscribed = [bundleSubscription isSubscribed];
     v15 = @"free";
-    if (v14)
+    if (isSubscribed)
     {
       v15 = @"premium";
     }
 
     v48 = v15;
 
-    [v12 setObject:v48 forKeyedSubscript:@"configType"];
-    v16 = [v6 possiblyUnfetchedAppConfiguration];
-    v17 = [v16 articleEmbeddingsEnabled];
+    [dictionary setObject:v48 forKeyedSubscript:@"configType"];
+    possiblyUnfetchedAppConfiguration2 = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+    articleEmbeddingsEnabled = [possiblyUnfetchedAppConfiguration2 articleEmbeddingsEnabled];
 
-    if (v17)
+    if (articleEmbeddingsEnabled)
     {
-      [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"articleEmbeddingsEnabled"];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"articleEmbeddingsEnabled"];
     }
 
-    v18 = [v6 possiblyUnfetchedAppConfiguration];
-    v19 = [v18 widgetFetchOfTodayFeedLiteConfigEnabled];
+    possiblyUnfetchedAppConfiguration3 = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+    widgetFetchOfTodayFeedLiteConfigEnabled = [possiblyUnfetchedAppConfiguration3 widgetFetchOfTodayFeedLiteConfigEnabled];
 
-    if (v19 && ![v4 moduleDescriptorType])
+    if (widgetFetchOfTodayFeedLiteConfigEnabled && ![contentRequest moduleDescriptorType])
     {
-      v43 = [v49 bundleSubscription];
-      v44 = [v43 unprotectedSubscriptionState] < 2;
+      bundleSubscription2 = [dataCopy bundleSubscription];
+      v44 = [bundleSubscription2 unprotectedSubscriptionState] < 2;
 
       v20 = v44;
     }
@@ -192,7 +192,7 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v47 = v20;
-      v46 = [(FCOperation *)self shortOperationDescription];
+      shortOperationDescription = [(FCOperation *)self shortOperationDescription];
       v22 = @" not";
       if (v20)
       {
@@ -201,25 +201,25 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
 
       v45 = v22;
       v23 = @"NO";
-      if (v19)
+      if (widgetFetchOfTodayFeedLiteConfigEnabled)
       {
         v23 = @"YES";
       }
 
       v24 = v23;
-      v25 = [v4 moduleDescriptorType];
-      v26 = [v49 bundleSubscription];
-      v27 = [v26 unprotectedSubscriptionState];
+      moduleDescriptorType = [contentRequest moduleDescriptorType];
+      bundleSubscription3 = [dataCopy bundleSubscription];
+      unprotectedSubscriptionState = [bundleSubscription3 unprotectedSubscriptionState];
       *buf = 138544386;
-      *&buf[4] = v46;
+      *&buf[4] = shortOperationDescription;
       *&buf[12] = 2114;
       *&buf[14] = v45;
       *&buf[22] = 2114;
       v83 = v24;
       LOWORD(v84) = 1024;
-      *(&v84 + 2) = v25;
+      *(&v84 + 2) = moduleDescriptorType;
       HIWORD(v84) = 2048;
-      v85 = v27;
+      v85 = unprotectedSubscriptionState;
       _os_log_impl(&dword_25BF21000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ will%{public}@ fetch todayLiteConfig, enabledInConfig=%{public}@, descriptorType=%d, subscriptionState=%lu", buf, 0x30u);
 
       v20 = v47;
@@ -234,8 +234,8 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
     v73 = v79;
     v74 = v77;
     v70 = v11;
-    v71 = v6;
-    [v71 fetchAppWidgetConfigurationWithTodayLiteConfig:v20 additionalFields:v12 completion:v69];
+    v71 = appConfigurationManager;
+    [v71 fetchAppWidgetConfigurationWithTodayLiteConfig:v20 additionalFields:dictionary completion:v69];
   }
 
   else
@@ -253,22 +253,22 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
     {
       [(NTNewsModuleDescriptorsOperation *)self qualityOfService];
       v29 = FCDispatchQueueForQualityOfService();
-      [v6 refreshAppConfigurationIfNeededWithCompletionQueue:v29 refreshCompletion:v28];
+      [appConfigurationManager refreshAppConfigurationIfNeededWithCompletionQueue:v29 refreshCompletion:v28];
     }
 
     else
     {
-      [v6 fetchAppConfigurationIfNeededWithCompletion:v28];
+      [appConfigurationManager fetchAppConfigurationIfNeededWithCompletion:v28];
     }
 
-    v12 = v66;
+    dictionary = v66;
   }
 
-  v30 = [v4 tagID];
-  if (v30)
+  tagID = [contentRequest tagID];
+  if (tagID)
   {
-    v31 = [v4 tagID];
-    v81 = v31;
+    tagID2 = [contentRequest tagID];
+    v81 = tagID2;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v81 count:1];
   }
 
@@ -289,11 +289,11 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
   v63[3] = __Block_byref_object_copy__1;
   v63[4] = __Block_byref_object_dispose__1;
   v64 = 0;
-  v33 = [(NTTodayModuleDescriptorsOperation *)self contentContext];
-  v34 = [v33 tagController];
+  contentContext2 = [(NTTodayModuleDescriptorsOperation *)self contentContext];
+  tagController = [contentContext2 tagController];
 
   dispatch_group_enter(v11);
-  v35 = [(NTNewsModuleDescriptorsOperation *)self qualityOfService];
+  qualityOfService = [(NTNewsModuleDescriptorsOperation *)self qualityOfService];
   [(NTNewsModuleDescriptorsOperation *)self qualityOfService];
   v36 = FCDispatchQueueForQualityOfService();
   v59[0] = MEMORY[0x277D85DD0];
@@ -304,7 +304,7 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
   v62 = v63;
   v37 = v11;
   v60 = v37;
-  [v34 fetchTagsForTagIDs:v32 qualityOfService:v35 callbackQueue:v36 completionHandler:v59];
+  [tagController fetchTagsForTagIDs:v32 qualityOfService:qualityOfService callbackQueue:v36 completionHandler:v59];
 
   [(NTNewsModuleDescriptorsOperation *)self qualityOfService];
   v38 = FCDispatchQueueForQualityOfService();
@@ -313,17 +313,17 @@ void __52__NTNewsModuleDescriptorsOperation_performOperation__block_invoke(uint6
   block[2] = __68__NTNewsModuleDescriptorsOperation__continueOperationWithTodayData___block_invoke_4;
   block[3] = &unk_279983B78;
   block[4] = self;
-  v51 = v49;
-  v52 = v5;
-  v53 = v4;
+  v51 = dataCopy;
+  v52 = contentContext;
+  v53 = contentRequest;
   v54 = v75;
   v55 = buf;
   v56 = v63;
   v57 = v79;
   v58 = v77;
-  v39 = v4;
-  v40 = v5;
-  v41 = v49;
+  v39 = contentRequest;
+  v40 = contentContext;
+  v41 = dataCopy;
   dispatch_group_notify(v37, v38, block);
 
   _Block_object_dispose(v63, 8);
@@ -726,31 +726,31 @@ void __68__NTNewsModuleDescriptorsOperation__continueOperationWithTodayData___bl
   [*(a1 + 48) finishedPerformingOperationWithError:v4];
 }
 
-- (void)_donateTodayConfigDataToNewsd:(id)a3
+- (void)_donateTodayConfigDataToNewsd:(id)newsd
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  newsdCopy = newsd;
+  if ([newsdCopy length])
   {
     ++_donateTodayConfigDataToNewsd__connectionIdentifier;
     v5 = *MEMORY[0x277D30B40];
     if (os_log_type_enabled(*MEMORY[0x277D30B40], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(FCOperation *)self shortOperationDescription];
+      shortOperationDescription = [(FCOperation *)self shortOperationDescription];
       *buf = 138543362;
-      v14 = v7;
+      v14 = shortOperationDescription;
       _os_log_impl(&dword_25BF21000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ will donate Today Feed config data to newsd", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277D31418] sharedInstance];
+    mEMORY[0x277D31418] = [MEMORY[0x277D31418] sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__NTNewsModuleDescriptorsOperation__donateTodayConfigDataToNewsd___block_invoke_105;
     v10[3] = &unk_279983BA0;
-    v11 = v4;
-    v12 = self;
-    [v8 withTodayFeedService:v10];
+    v11 = newsdCopy;
+    selfCopy = self;
+    [mEMORY[0x277D31418] withTodayFeedService:v10];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -774,13 +774,13 @@ void __66__NTNewsModuleDescriptorsOperation__donateTodayConfigDataToNewsd___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v7 = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
-  v5 = [(NTNewsModuleDescriptorsOperation *)self resultTodayModuleDescriptors];
-  v6 = [(NTNewsModuleDescriptorsOperation *)self prefetchedContent];
-  v7[2](v7, v5, v6, v4);
+  errorCopy = error;
+  descriptorsCompletion = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
+  resultTodayModuleDescriptors = [(NTNewsModuleDescriptorsOperation *)self resultTodayModuleDescriptors];
+  prefetchedContent = [(NTNewsModuleDescriptorsOperation *)self prefetchedContent];
+  descriptorsCompletion[2](descriptorsCompletion, resultTodayModuleDescriptors, prefetchedContent, errorCopy);
 }
 
 - (void)validateOperation

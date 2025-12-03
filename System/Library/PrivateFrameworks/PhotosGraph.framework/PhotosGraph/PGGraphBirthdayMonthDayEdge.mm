@@ -1,15 +1,15 @@
 @interface PGGraphBirthdayMonthDayEdge
 + (id)filter;
-- (id)initFromPersonNode:(id)a3 toMonthDayNode:(id)a4;
+- (id)initFromPersonNode:(id)node toMonthDayNode:(id)dayNode;
 @end
 
 @implementation PGGraphBirthdayMonthDayEdge
 
-- (id)initFromPersonNode:(id)a3 toMonthDayNode:(id)a4
+- (id)initFromPersonNode:(id)node toMonthDayNode:(id)dayNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphBirthdayMonthDayEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:dayNode];
 }
 
 + (id)filter

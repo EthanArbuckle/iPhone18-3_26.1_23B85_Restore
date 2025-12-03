@@ -1,16 +1,16 @@
 @interface CESRTrialConfigLoader
-+ (id)_configPathForTrialFactor:(id)a3 trialNamespace:(id)a4;
-+ (id)configAtPath:(id)a3;
-+ (id)configJSONForTrialFactor:(id)a3 trialNamespace:(id)a4;
++ (id)_configPathForTrialFactor:(id)factor trialNamespace:(id)namespace;
++ (id)configAtPath:(id)path;
++ (id)configJSONForTrialFactor:(id)factor trialNamespace:(id)namespace;
 @end
 
 @implementation CESRTrialConfigLoader
 
-+ (id)configAtPath:(id)a3
++ (id)configAtPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
     v4 = MEMORY[0x277CEF0E8];
     v5 = *MEMORY[0x277CEF0E8];
@@ -19,12 +19,12 @@
       *buf = 136315394;
       v18 = "+[CESRTrialConfigLoader configAtPath:]";
       v19 = 2112;
-      v20 = v3;
+      v20 = pathCopy;
       _os_log_debug_impl(&dword_225EEB000, v5, OS_LOG_TYPE_DEBUG, "%s Trying to load trial config file at path: %@", buf, 0x16u);
     }
 
     v16 = 0;
-    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:0 error:&v16];
+    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:0 error:&v16];
     v7 = v16;
     if (v6)
     {
@@ -78,23 +78,23 @@
   return v8;
 }
 
-+ (id)_configPathForTrialFactor:(id)a3 trialNamespace:(id)a4
++ (id)_configPathForTrialFactor:(id)factor trialNamespace:(id)namespace
 {
   v5 = MEMORY[0x277D73660];
-  v6 = a4;
-  v7 = a3;
+  namespaceCopy = namespace;
+  factorCopy = factor;
   v8 = [v5 clientWithIdentifier:111];
-  v9 = [v8 levelForFactor:v7 withNamespaceName:v6];
+  v9 = [v8 levelForFactor:factorCopy withNamespaceName:namespaceCopy];
 
-  v10 = [v9 fileValue];
-  v11 = [v10 path];
+  fileValue = [v9 fileValue];
+  path = [fileValue path];
 
-  return v11;
+  return path;
 }
 
-+ (id)configJSONForTrialFactor:(id)a3 trialNamespace:(id)a4
++ (id)configJSONForTrialFactor:(id)factor trialNamespace:(id)namespace
 {
-  v4 = [CESRTrialConfigLoader _configPathForTrialFactor:a3 trialNamespace:a4];
+  v4 = [CESRTrialConfigLoader _configPathForTrialFactor:factor trialNamespace:namespace];
   v5 = [CESRTrialConfigLoader configAtPath:v4];
 
   return v5;

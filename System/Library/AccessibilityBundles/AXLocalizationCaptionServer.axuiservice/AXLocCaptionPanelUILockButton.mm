@@ -1,20 +1,20 @@
 @interface AXLocCaptionPanelUILockButton
-- (void)drawRect:(CGRect)a3;
-- (void)setLocked:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setLocked:(BOOL)locked;
 @end
 
 @implementation AXLocCaptionPanelUILockButton
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  if (self->_locked != a3)
+  if (self->_locked != locked)
   {
-    self->_locked = a3;
+    self->_locked = locked;
     [(AXLocCaptionPanelUILockButton *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v6 = [UIBezierPath bezierPathWithOvalInRect:0.25, 0.25, 19.5, 19.5];
   [v6 setLineWidth:0.5];

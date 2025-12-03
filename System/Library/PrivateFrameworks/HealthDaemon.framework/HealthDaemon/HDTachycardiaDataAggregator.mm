@@ -1,20 +1,20 @@
 @interface HDTachycardiaDataAggregator
-- (BOOL)didPersistObjects:(id)a3 lastDatum:(id)a4 collector:(id)a5 error:(id *)a6;
+- (BOOL)didPersistObjects:(id)objects lastDatum:(id)datum collector:(id)collector error:(id *)error;
 @end
 
 @implementation HDTachycardiaDataAggregator
 
-- (BOOL)didPersistObjects:(id)a3 lastDatum:(id)a4 collector:(id)a5 error:(id *)a6
+- (BOOL)didPersistObjects:(id)objects lastDatum:(id)datum collector:(id)collector error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  collectorCopy = collector;
+  datumCopy = datum;
+  objectsCopy = objects;
   [(HDHeartEventDataAggregator *)self triggerImmediateCloudSyncWithReason:?];
   v14.receiver = self;
   v14.super_class = HDTachycardiaDataAggregator;
-  LOBYTE(a6) = [(HDHeartEventDataAggregator *)&v14 didPersistObjects:v12 lastDatum:v11 collector:v10 error:a6];
+  LOBYTE(error) = [(HDHeartEventDataAggregator *)&v14 didPersistObjects:objectsCopy lastDatum:datumCopy collector:collectorCopy error:error];
 
-  return a6;
+  return error;
 }
 
 @end

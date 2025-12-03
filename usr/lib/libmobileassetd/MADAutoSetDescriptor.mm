@@ -1,31 +1,31 @@
 @interface MADAutoSetDescriptor
-- (MADAutoSetDescriptor)initWithCoder:(id)a3;
+- (MADAutoSetDescriptor)initWithCoder:(id)coder;
 - (id)copy;
-- (id)downloadedEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4;
+- (id)downloadedEntryForAssetType:(id)type forAssetSpecifier:(id)specifier;
 - (id)firstAssetType;
-- (id)initForClientDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withDiscoveredAtomicInstance:(id)a5 withDiscoveredAtomicEntries:(id)a6;
+- (id)initForClientDomainName:(id)name forAssetSetIdentifier:(id)identifier withDiscoveredAtomicInstance:(id)instance withDiscoveredAtomicEntries:(id)entries;
 - (id)newIdentityName;
 - (id)newSummaryWithoutEntryID;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoSetDescriptor
 
-- (id)initForClientDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withDiscoveredAtomicInstance:(id)a5 withDiscoveredAtomicEntries:(id)a6
+- (id)initForClientDomainName:(id)name forAssetSetIdentifier:(id)identifier withDiscoveredAtomicInstance:(id)instance withDiscoveredAtomicEntries:(id)entries
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  instanceCopy = instance;
+  entriesCopy = entries;
   v29.receiver = self;
   v29.super_class = MADAutoSetDescriptor;
   v15 = [(MADAutoSetDescriptor *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_clientDomainName, a3);
-    objc_storeStrong(&v16->_assetSetIdentifier, a4);
+    objc_storeStrong(&v15->_clientDomainName, name);
+    objc_storeStrong(&v16->_assetSetIdentifier, identifier);
     catalogCachedAssetSetID = v16->_catalogCachedAssetSetID;
     v16->_catalogCachedAssetSetID = 0;
 
@@ -41,8 +41,8 @@
     requestedAutoAssetEntries = v16->_requestedAutoAssetEntries;
     v16->_requestedAutoAssetEntries = 0;
 
-    objc_storeStrong(&v16->_discoveredAtomicInstance, a5);
-    objc_storeStrong(&v16->_discoveredAtomicEntries, a6);
+    objc_storeStrong(&v16->_discoveredAtomicInstance, instance);
+    objc_storeStrong(&v16->_discoveredAtomicEntries, entries);
     latestDownloadedAtomicInstance = v16->_latestDownloadedAtomicInstance;
     v16->_latestDownloadedAtomicInstance = 0;
 
@@ -71,9 +71,9 @@
   return v16;
 }
 
-- (MADAutoSetDescriptor)initWithCoder:(id)a3
+- (MADAutoSetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = MADAutoSetDescriptor;
   v5 = [(MADAutoSetDescriptor *)&v41 init];
@@ -89,147 +89,147 @@
     v8 = [NSArray arrayWithObjects:v42 count:2];
     v9 = [NSSet setWithArray:v8];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asetSetIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"catalogCachedAssetSetID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"catalogCachedAssetSetID"];
     catalogCachedAssetSetID = v5->_catalogCachedAssetSetID;
     v5->_catalogCachedAssetSetID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"catalogDownloadedFromLive"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"catalogDownloadedFromLive"];
     catalogDownloadedFromLive = v5->_catalogDownloadedFromLive;
     v5->_catalogDownloadedFromLive = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"catalogLastTimeChecked"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"catalogLastTimeChecked"];
     catalogLastTimeChecked = v5->_catalogLastTimeChecked;
     v5->_catalogLastTimeChecked = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"catalogPostedDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"catalogPostedDate"];
     catalogPostedDate = v5->_catalogPostedDate;
     v5->_catalogPostedDate = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v7 forKey:@"requestedAutoAssetEntries"];
+    v22 = [coderCopy decodeObjectOfClasses:v7 forKey:@"requestedAutoAssetEntries"];
     requestedAutoAssetEntries = v5->_requestedAutoAssetEntries;
     v5->_requestedAutoAssetEntries = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discoveredAtomicInstance"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discoveredAtomicInstance"];
     discoveredAtomicInstance = v5->_discoveredAtomicInstance;
     v5->_discoveredAtomicInstance = v24;
 
-    v26 = [v4 decodeObjectOfClasses:v9 forKey:@"discoveredAtomicEntries"];
+    v26 = [coderCopy decodeObjectOfClasses:v9 forKey:@"discoveredAtomicEntries"];
     discoveredAtomicEntries = v5->_discoveredAtomicEntries;
     v5->_discoveredAtomicEntries = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestDownloadedAtomicInstance"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestDownloadedAtomicInstance"];
     latestDownloadedAtomicInstance = v5->_latestDownloadedAtomicInstance;
     v5->_latestDownloadedAtomicInstance = v28;
 
-    v30 = [v4 decodeObjectOfClasses:v9 forKey:@"latestDowloadedAtomicInstanceEntries"];
+    v30 = [coderCopy decodeObjectOfClasses:v9 forKey:@"latestDowloadedAtomicInstanceEntries"];
     latestDowloadedAtomicInstanceEntries = v5->_latestDowloadedAtomicInstanceEntries;
     v5->_latestDowloadedAtomicInstanceEntries = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogCachedAssetSetID"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogCachedAssetSetID"];
     downloadedCatalogCachedAssetSetID = v5->_downloadedCatalogCachedAssetSetID;
     v5->_downloadedCatalogCachedAssetSetID = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogDownloadedFromLive"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogDownloadedFromLive"];
     downloadedCatalogDownloadedFromLive = v5->_downloadedCatalogDownloadedFromLive;
     v5->_downloadedCatalogDownloadedFromLive = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogLastTimeChecked"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogLastTimeChecked"];
     downloadedCatalogLastTimeChecked = v5->_downloadedCatalogLastTimeChecked;
     v5->_downloadedCatalogLastTimeChecked = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogPostedDate"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadedCatalogPostedDate"];
     downloadedCatalogPostedDate = v5->_downloadedCatalogPostedDate;
     v5->_downloadedCatalogPostedDate = v38;
 
-    v5->_isOnFilesystem = [v4 decodeBoolForKey:@"isOnFilesystem"];
-    v5->_onFilesystemIncomplete = [v4 decodeBoolForKey:@"onFilesystemIncomplete"];
-    v5->_isDiscoveredFullyDownloaded = [v4 decodeBoolForKey:@"isDiscoveredFullyDownloaded"];
-    v5->_atomicInstanceDownloadedNotified = [v4 decodeBoolForKey:@"atomicInstanceDownloadedNotified"];
-    v5->_neverBeenLocked = [v4 decodeBoolForKey:@"neverBeenLocked"];
-    v5->_secureOperationInProgress = [v4 decodeBoolForKey:@"secureOperationInProgress"];
-    v5->_secureOperationEliminating = [v4 decodeBoolForKey:@"secureOperationEliminating"];
-    v5->_downloadUserInitiated = [v4 decodeBoolForKey:@"downloadUserInitiated"];
-    v5->_downloadedNetworkBytes = [v4 decodeIntegerForKey:@"downloadedNetworkBytes"];
-    v5->_downloadedFilesystemBytes = [v4 decodeIntegerForKey:@"downloadedFilesystemBytes"];
-    v5->_stagedPriorToAvailable = [v4 decodeBoolForKey:@"stagedPriorToAvailable"];
+    v5->_isOnFilesystem = [coderCopy decodeBoolForKey:@"isOnFilesystem"];
+    v5->_onFilesystemIncomplete = [coderCopy decodeBoolForKey:@"onFilesystemIncomplete"];
+    v5->_isDiscoveredFullyDownloaded = [coderCopy decodeBoolForKey:@"isDiscoveredFullyDownloaded"];
+    v5->_atomicInstanceDownloadedNotified = [coderCopy decodeBoolForKey:@"atomicInstanceDownloadedNotified"];
+    v5->_neverBeenLocked = [coderCopy decodeBoolForKey:@"neverBeenLocked"];
+    v5->_secureOperationInProgress = [coderCopy decodeBoolForKey:@"secureOperationInProgress"];
+    v5->_secureOperationEliminating = [coderCopy decodeBoolForKey:@"secureOperationEliminating"];
+    v5->_downloadUserInitiated = [coderCopy decodeBoolForKey:@"downloadUserInitiated"];
+    v5->_downloadedNetworkBytes = [coderCopy decodeIntegerForKey:@"downloadedNetworkBytes"];
+    v5->_downloadedFilesystemBytes = [coderCopy decodeIntegerForKey:@"downloadedFilesystemBytes"];
+    v5->_stagedPriorToAvailable = [coderCopy decodeBoolForKey:@"stagedPriorToAvailable"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  v4 = [(MADAutoSetDescriptor *)self clientDomainName];
-  [v19 encodeObject:v4 forKey:@"clientDomainName"];
+  coderCopy = coder;
+  clientDomainName = [(MADAutoSetDescriptor *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v5 = [(MADAutoSetDescriptor *)self assetSetIdentifier];
-  [v19 encodeObject:v5 forKey:@"asetSetIdentifier"];
+  assetSetIdentifier = [(MADAutoSetDescriptor *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"asetSetIdentifier"];
 
-  v6 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
-  [v19 encodeObject:v6 forKey:@"catalogCachedAssetSetID"];
+  catalogCachedAssetSetID = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+  [coderCopy encodeObject:catalogCachedAssetSetID forKey:@"catalogCachedAssetSetID"];
 
-  v7 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
-  [v19 encodeObject:v7 forKey:@"catalogDownloadedFromLive"];
+  catalogDownloadedFromLive = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+  [coderCopy encodeObject:catalogDownloadedFromLive forKey:@"catalogDownloadedFromLive"];
 
-  v8 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
-  [v19 encodeObject:v8 forKey:@"catalogLastTimeChecked"];
+  catalogLastTimeChecked = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+  [coderCopy encodeObject:catalogLastTimeChecked forKey:@"catalogLastTimeChecked"];
 
-  v9 = [(MADAutoSetDescriptor *)self catalogPostedDate];
-  [v19 encodeObject:v9 forKey:@"catalogPostedDate"];
+  catalogPostedDate = [(MADAutoSetDescriptor *)self catalogPostedDate];
+  [coderCopy encodeObject:catalogPostedDate forKey:@"catalogPostedDate"];
 
-  v10 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-  [v19 encodeObject:v10 forKey:@"requestedAutoAssetEntries"];
+  requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+  [coderCopy encodeObject:requestedAutoAssetEntries forKey:@"requestedAutoAssetEntries"];
 
-  v11 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
-  [v19 encodeObject:v11 forKey:@"discoveredAtomicInstance"];
+  discoveredAtomicInstance = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+  [coderCopy encodeObject:discoveredAtomicInstance forKey:@"discoveredAtomicInstance"];
 
-  v12 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-  [v19 encodeObject:v12 forKey:@"discoveredAtomicEntries"];
+  discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+  [coderCopy encodeObject:discoveredAtomicEntries forKey:@"discoveredAtomicEntries"];
 
-  v13 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-  [v19 encodeObject:v13 forKey:@"latestDownloadedAtomicInstance"];
+  latestDownloadedAtomicInstance = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+  [coderCopy encodeObject:latestDownloadedAtomicInstance forKey:@"latestDownloadedAtomicInstance"];
 
-  v14 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-  [v19 encodeObject:v14 forKey:@"latestDowloadedAtomicInstanceEntries"];
+  latestDowloadedAtomicInstanceEntries = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+  [coderCopy encodeObject:latestDowloadedAtomicInstanceEntries forKey:@"latestDowloadedAtomicInstanceEntries"];
 
-  v15 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
-  [v19 encodeObject:v15 forKey:@"downloadedCatalogCachedAssetSetID"];
+  downloadedCatalogCachedAssetSetID = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+  [coderCopy encodeObject:downloadedCatalogCachedAssetSetID forKey:@"downloadedCatalogCachedAssetSetID"];
 
-  v16 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
-  [v19 encodeObject:v16 forKey:@"downloadedCatalogDownloadedFromLive"];
+  downloadedCatalogDownloadedFromLive = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+  [coderCopy encodeObject:downloadedCatalogDownloadedFromLive forKey:@"downloadedCatalogDownloadedFromLive"];
 
-  v17 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
-  [v19 encodeObject:v17 forKey:@"downloadedCatalogLastTimeChecked"];
+  downloadedCatalogLastTimeChecked = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+  [coderCopy encodeObject:downloadedCatalogLastTimeChecked forKey:@"downloadedCatalogLastTimeChecked"];
 
-  v18 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-  [v19 encodeObject:v18 forKey:@"downloadedCatalogPostedDate"];
+  downloadedCatalogPostedDate = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+  [coderCopy encodeObject:downloadedCatalogPostedDate forKey:@"downloadedCatalogPostedDate"];
 
-  [v19 encodeBool:-[MADAutoSetDescriptor isOnFilesystem](self forKey:{"isOnFilesystem"), @"isOnFilesystem"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor onFilesystemIncomplete](self forKey:{"onFilesystemIncomplete"), @"onFilesystemIncomplete"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor isDiscoveredFullyDownloaded](self forKey:{"isDiscoveredFullyDownloaded"), @"isDiscoveredFullyDownloaded"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor atomicInstanceDownloadedNotified](self forKey:{"atomicInstanceDownloadedNotified"), @"atomicInstanceDownloadedNotified"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor neverBeenLocked](self forKey:{"neverBeenLocked"), @"neverBeenLocked"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor secureOperationInProgress](self forKey:{"secureOperationInProgress"), @"secureOperationInProgress"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor secureOperationEliminating](self forKey:{"secureOperationEliminating"), @"secureOperationEliminating"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor downloadUserInitiated](self forKey:{"downloadUserInitiated"), @"downloadUserInitiated"}];
-  [v19 encodeInteger:-[MADAutoSetDescriptor downloadedNetworkBytes](self forKey:{"downloadedNetworkBytes"), @"downloadedNetworkBytes"}];
-  [v19 encodeInteger:-[MADAutoSetDescriptor downloadedFilesystemBytes](self forKey:{"downloadedFilesystemBytes"), @"downloadedFilesystemBytes"}];
-  [v19 encodeBool:-[MADAutoSetDescriptor stagedPriorToAvailable](self forKey:{"stagedPriorToAvailable"), @"stagedPriorToAvailable"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor isOnFilesystem](self forKey:{"isOnFilesystem"), @"isOnFilesystem"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor onFilesystemIncomplete](self forKey:{"onFilesystemIncomplete"), @"onFilesystemIncomplete"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor isDiscoveredFullyDownloaded](self forKey:{"isDiscoveredFullyDownloaded"), @"isDiscoveredFullyDownloaded"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor atomicInstanceDownloadedNotified](self forKey:{"atomicInstanceDownloadedNotified"), @"atomicInstanceDownloadedNotified"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor neverBeenLocked](self forKey:{"neverBeenLocked"), @"neverBeenLocked"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor secureOperationInProgress](self forKey:{"secureOperationInProgress"), @"secureOperationInProgress"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor secureOperationEliminating](self forKey:{"secureOperationEliminating"), @"secureOperationEliminating"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor downloadUserInitiated](self forKey:{"downloadUserInitiated"), @"downloadUserInitiated"}];
+  [coderCopy encodeInteger:-[MADAutoSetDescriptor downloadedNetworkBytes](self forKey:{"downloadedNetworkBytes"), @"downloadedNetworkBytes"}];
+  [coderCopy encodeInteger:-[MADAutoSetDescriptor downloadedFilesystemBytes](self forKey:{"downloadedFilesystemBytes"), @"downloadedFilesystemBytes"}];
+  [coderCopy encodeBool:-[MADAutoSetDescriptor stagedPriorToAvailable](self forKey:{"stagedPriorToAvailable"), @"stagedPriorToAvailable"}];
 }
 
-- (id)downloadedEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4
+- (id)downloadedEntryForAssetType:(id)type forAssetSpecifier:(id)specifier
 {
-  v6 = a3;
-  v23 = a4;
+  typeCopy = type;
+  specifierCopy = specifier;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -253,19 +253,19 @@
 
         v11 = *(*(&v25 + 1) + 8 * v10);
         v12 = p_weak_ivar_lyt[223];
-        v13 = [v11 fullAssetSelector];
-        v14 = [v13 assetType];
-        if ([v12 stringIsEqual:v14 to:v6])
+        fullAssetSelector = [v11 fullAssetSelector];
+        assetType = [fullAssetSelector assetType];
+        if ([v12 stringIsEqual:assetType to:typeCopy])
         {
           v15 = p_weak_ivar_lyt[223];
           [v11 fullAssetSelector];
           v16 = v8;
           v17 = p_weak_ivar_lyt;
-          v19 = v18 = v6;
-          v20 = [v19 assetSpecifier];
-          LODWORD(v15) = [v15 stringIsEqual:v20 to:v23];
+          v19 = v18 = typeCopy;
+          assetSpecifier = [v19 assetSpecifier];
+          LODWORD(v15) = [v15 stringIsEqual:assetSpecifier to:specifierCopy];
 
-          v6 = v18;
+          typeCopy = v18;
           p_weak_ivar_lyt = v17;
           v8 = v16;
           v7 = v22;
@@ -299,46 +299,46 @@ LABEL_12:
 - (id)copy
 {
   v3 = [MADAutoSetDescriptor alloc];
-  v4 = [(MADAutoSetDescriptor *)self clientDomainName];
-  v5 = [(MADAutoSetDescriptor *)self assetSetIdentifier];
-  v6 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
-  v7 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-  v8 = [(MADAutoSetDescriptor *)v3 initForClientDomainName:v4 forAssetSetIdentifier:v5 withDiscoveredAtomicInstance:v6 withDiscoveredAtomicEntries:v7];
+  clientDomainName = [(MADAutoSetDescriptor *)self clientDomainName];
+  assetSetIdentifier = [(MADAutoSetDescriptor *)self assetSetIdentifier];
+  discoveredAtomicInstance = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+  discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+  v8 = [(MADAutoSetDescriptor *)v3 initForClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier withDiscoveredAtomicInstance:discoveredAtomicInstance withDiscoveredAtomicEntries:discoveredAtomicEntries];
 
-  v9 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
-  [v8 setCatalogCachedAssetSetID:v9];
+  catalogCachedAssetSetID = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+  [v8 setCatalogCachedAssetSetID:catalogCachedAssetSetID];
 
-  v10 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
-  [v8 setCatalogDownloadedFromLive:v10];
+  catalogDownloadedFromLive = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+  [v8 setCatalogDownloadedFromLive:catalogDownloadedFromLive];
 
-  v11 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
-  [v8 setCatalogLastTimeChecked:v11];
+  catalogLastTimeChecked = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+  [v8 setCatalogLastTimeChecked:catalogLastTimeChecked];
 
-  v12 = [(MADAutoSetDescriptor *)self catalogPostedDate];
-  [v8 setCatalogPostedDate:v12];
+  catalogPostedDate = [(MADAutoSetDescriptor *)self catalogPostedDate];
+  [v8 setCatalogPostedDate:catalogPostedDate];
 
-  v13 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-  v14 = [v13 copy];
+  requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+  v14 = [requestedAutoAssetEntries copy];
   [v8 setRequestedAutoAssetEntries:v14];
 
-  v15 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-  [v8 setLatestDownloadedAtomicInstance:v15];
+  latestDownloadedAtomicInstance = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+  [v8 setLatestDownloadedAtomicInstance:latestDownloadedAtomicInstance];
 
-  v16 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-  v17 = [v16 copy];
+  latestDowloadedAtomicInstanceEntries = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+  v17 = [latestDowloadedAtomicInstanceEntries copy];
   [v8 setLatestDowloadedAtomicInstanceEntries:v17];
 
-  v18 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
-  [v8 setDownloadedCatalogCachedAssetSetID:v18];
+  downloadedCatalogCachedAssetSetID = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+  [v8 setDownloadedCatalogCachedAssetSetID:downloadedCatalogCachedAssetSetID];
 
-  v19 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
-  [v8 setDownloadedCatalogDownloadedFromLive:v19];
+  downloadedCatalogDownloadedFromLive = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+  [v8 setDownloadedCatalogDownloadedFromLive:downloadedCatalogDownloadedFromLive];
 
-  v20 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
-  [v8 setDownloadedCatalogLastTimeChecked:v20];
+  downloadedCatalogLastTimeChecked = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+  [v8 setDownloadedCatalogLastTimeChecked:downloadedCatalogLastTimeChecked];
 
-  v21 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-  [v8 setDownloadedCatalogPostedDate:v21];
+  downloadedCatalogPostedDate = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+  [v8 setDownloadedCatalogPostedDate:downloadedCatalogPostedDate];
 
   [v8 setIsOnFilesystem:{-[MADAutoSetDescriptor isOnFilesystem](self, "isOnFilesystem")}];
   [v8 setOnFilesystemIncomplete:{-[MADAutoSetDescriptor onFilesystemIncomplete](self, "onFilesystemIncomplete")}];
@@ -356,22 +356,22 @@ LABEL_12:
 
 - (id)summary
 {
-  v3 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-  v4 = [v3 count];
+  latestDowloadedAtomicInstanceEntries = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+  v4 = [latestDowloadedAtomicInstanceEntries count];
 
   if (v4)
   {
-    v5 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-    v6 = [v5 objectAtIndex:0];
+    latestDowloadedAtomicInstanceEntries2 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+    v6 = [latestDowloadedAtomicInstanceEntries2 objectAtIndex:0];
 
     if (v6)
     {
       v7 = [NSString alloc];
-      v8 = [v6 fullAssetSelector];
-      v9 = [v8 assetSpecifier];
-      v10 = [v6 fullAssetSelector];
-      v11 = [v10 assetVersion];
-      v47 = [v7 initWithFormat:@"{[0]%@:%@}", v9, v11];
+      fullAssetSelector = [v6 fullAssetSelector];
+      assetSpecifier = [fullAssetSelector assetSpecifier];
+      fullAssetSelector2 = [v6 fullAssetSelector];
+      assetVersion = [fullAssetSelector2 assetVersion];
+      v47 = [v7 initWithFormat:@"{[0]%@:%@}", assetSpecifier, assetVersion];
     }
 
     else
@@ -385,22 +385,22 @@ LABEL_12:
     v47 = &stru_4BD3F0;
   }
 
-  v12 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-  v13 = [v12 count];
+  discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+  v13 = [discoveredAtomicEntries count];
 
   if (v13)
   {
-    v14 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-    v15 = [v14 objectAtIndex:0];
+    discoveredAtomicEntries2 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+    v15 = [discoveredAtomicEntries2 objectAtIndex:0];
 
     if (v15)
     {
       v16 = [NSString alloc];
-      v17 = [v15 fullAssetSelector];
-      v18 = [v17 assetSpecifier];
-      v19 = [v15 fullAssetSelector];
-      v20 = [v19 assetVersion];
-      v21 = [v16 initWithFormat:@"{[0]%@:%@}", v18, v20];
+      fullAssetSelector3 = [v15 fullAssetSelector];
+      assetSpecifier2 = [fullAssetSelector3 assetSpecifier];
+      fullAssetSelector4 = [v15 fullAssetSelector];
+      assetVersion2 = [fullAssetSelector4 assetVersion];
+      v21 = [v16 initWithFormat:@"{[0]%@:%@}", assetSpecifier2, assetVersion2];
     }
 
     else
@@ -416,9 +416,9 @@ LABEL_12:
     v46 = &stru_4BD3F0;
   }
 
-  v43 = [(MADAutoSetDescriptor *)self newIdentityName];
-  v45 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-  if (v45)
+  newIdentityName = [(MADAutoSetDescriptor *)self newIdentityName];
+  latestDownloadedAtomicInstance = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+  if (latestDownloadedAtomicInstance)
   {
     v22 = @"Y";
   }
@@ -429,13 +429,13 @@ LABEL_12:
   }
 
   v42 = v22;
-  v44 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-  v40 = [v44 count];
-  v39 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
-  v41 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-  v38 = [v41 count];
-  v23 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-  v37 = [v23 count];
+  latestDowloadedAtomicInstanceEntries3 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+  v40 = [latestDowloadedAtomicInstanceEntries3 count];
+  discoveredAtomicInstance = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+  discoveredAtomicEntries3 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+  v38 = [discoveredAtomicEntries3 count];
+  requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+  v37 = [requestedAutoAssetEntries count];
   if ([(MADAutoSetDescriptor *)self isDiscoveredFullyDownloaded])
   {
     v24 = @"Y";
@@ -528,7 +528,7 @@ LABEL_12:
     v32 = @"N";
   }
 
-  v33 = [NSString stringWithFormat:@"[%@ | instance latestDownloaded:%@(entries:%ld)%@, discovered:%@(entries:%ld)%@, requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@]", v43, v42, v40, v47, v39, v38, v46, v37, v36, v35, v26, v27, v28, v29, v30, v31, v32];
+  v33 = [NSString stringWithFormat:@"[%@ | instance latestDownloaded:%@(entries:%ld)%@, discovered:%@(entries:%ld)%@, requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@]", newIdentityName, v42, v40, v47, discoveredAtomicInstance, v38, v46, v37, v36, v35, v26, v27, v28, v29, v30, v31, v32];
 
   return v33;
 }
@@ -537,14 +537,14 @@ LABEL_12:
 {
   v3 = objc_alloc_init(NSDateFormatter);
   [v3 setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
-  v4 = @"N";
+  catalogCachedAssetSetID2 = @"N";
   if (![(MADAutoSetDescriptor *)self isDiscoveredFullyDownloaded])
   {
-    v17 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+    discoveredAtomicInstance = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
 
     v139 = [NSString alloc];
-    v147 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-    if (v147)
+    latestDownloadedAtomicInstance = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+    if (latestDownloadedAtomicInstance)
     {
       v18 = @"Y";
     }
@@ -555,14 +555,14 @@ LABEL_12:
     }
 
     v136 = v18;
-    v146 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-    v133 = [v146 count];
-    v19 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+    latestDowloadedAtomicInstanceEntries = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+    v133 = [latestDowloadedAtomicInstanceEntries count];
+    discoveredAtomicInstance2 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
     v137 = v3;
-    v148 = v19;
-    if (v17)
+    discoveredAtomicInstance3 = discoveredAtomicInstance2;
+    if (discoveredAtomicInstance)
     {
-      if (v19)
+      if (discoveredAtomicInstance2)
       {
         v20 = @"Y";
       }
@@ -573,10 +573,10 @@ LABEL_12:
       }
 
       v117 = v20;
-      v145 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-      v114 = [v145 count];
-      v144 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-      v108 = [v144 count];
+      discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+      v114 = [discoveredAtomicEntries count];
+      requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+      v108 = [requestedAutoAssetEntries count];
       if ([(MADAutoSetDescriptor *)self isDiscoveredFullyDownloaded])
       {
         v21 = @"Y";
@@ -676,27 +676,27 @@ LABEL_12:
       }
 
       v82 = v29;
-      v30 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
-      if (v30)
+      catalogCachedAssetSetID = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+      if (catalogCachedAssetSetID)
       {
-        v4 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+        catalogCachedAssetSetID2 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
       }
 
-      v31 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
-      if (v31)
+      catalogDownloadedFromLive = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+      if (catalogDownloadedFromLive)
       {
-        v131 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+        catalogDownloadedFromLive2 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
       }
 
       else
       {
-        v131 = @"N";
+        catalogDownloadedFromLive2 = @"N";
       }
 
-      v112 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
-      if (v112)
+      catalogLastTimeChecked = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+      if (catalogLastTimeChecked)
       {
-        v79 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+        catalogLastTimeChecked2 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
         v129 = [v3 stringFromDate:?];
       }
 
@@ -705,10 +705,10 @@ LABEL_12:
         v129 = @"N";
       }
 
-      v56 = [(MADAutoSetDescriptor *)self catalogPostedDate];
-      if (v56)
+      catalogPostedDate = [(MADAutoSetDescriptor *)self catalogPostedDate];
+      if (catalogPostedDate)
       {
-        v78 = [(MADAutoSetDescriptor *)self catalogPostedDate];
+        catalogPostedDate2 = [(MADAutoSetDescriptor *)self catalogPostedDate];
         v126 = [v3 stringFromDate:?];
       }
 
@@ -717,34 +717,34 @@ LABEL_12:
         v126 = @"N";
       }
 
-      v57 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
-      if (v57)
+      downloadedCatalogCachedAssetSetID = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+      if (downloadedCatalogCachedAssetSetID)
       {
-        v123 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+        downloadedCatalogCachedAssetSetID2 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
       }
 
       else
       {
-        v123 = @"N";
+        downloadedCatalogCachedAssetSetID2 = @"N";
       }
 
-      v58 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
-      v120 = v31;
-      if (v58)
+      downloadedCatalogDownloadedFromLive = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+      v120 = catalogDownloadedFromLive;
+      if (downloadedCatalogDownloadedFromLive)
       {
-        v59 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+        downloadedCatalogDownloadedFromLive2 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
       }
 
       else
       {
-        v59 = @"N";
+        downloadedCatalogDownloadedFromLive2 = @"N";
       }
 
-      v142 = v30;
-      v60 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
-      if (v60)
+      v142 = catalogCachedAssetSetID;
+      downloadedCatalogLastTimeChecked = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+      if (downloadedCatalogLastTimeChecked)
       {
-        v77 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+        downloadedCatalogLastTimeChecked2 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
         v61 = [v137 stringFromDate:?];
       }
 
@@ -753,53 +753,53 @@ LABEL_12:
         v61 = @"N";
       }
 
-      v62 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-      if (v62)
+      downloadedCatalogPostedDate = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+      if (downloadedCatalogPostedDate)
       {
-        v63 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-        v64 = [v137 stringFromDate:v63];
-        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, v117, v114, v108, v105, v102, v99, v96, v93, v90, v87, v84, v82, v4, v131, v129, v126, v123, v59, v61, v64];
+        downloadedCatalogPostedDate2 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+        v64 = [v137 stringFromDate:downloadedCatalogPostedDate2];
+        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, v117, v114, v108, v105, v102, v99, v96, v93, v90, v87, v84, v82, catalogCachedAssetSetID2, catalogDownloadedFromLive2, v129, v126, downloadedCatalogCachedAssetSetID2, downloadedCatalogDownloadedFromLive2, v61, v64];
       }
 
       else
       {
-        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, v117, v114, v108, v105, v102, v99, v96, v93, v90, v87, v84, v82, v4, v131, v129, v126, v123, v59, v61, @"N"];
+        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, v117, v114, v108, v105, v102, v99, v96, v93, v90, v87, v84, v82, catalogCachedAssetSetID2, catalogDownloadedFromLive2, v129, v126, downloadedCatalogCachedAssetSetID2, downloadedCatalogDownloadedFromLive2, v61, @"N"];
       }
 
       v53 = v120;
-      if (v60)
+      if (downloadedCatalogLastTimeChecked)
       {
       }
 
-      if (v58)
+      if (downloadedCatalogDownloadedFromLive)
       {
       }
 
       v54 = v142;
-      if (v57)
+      if (downloadedCatalogCachedAssetSetID)
       {
       }
 
-      if (v56)
+      if (catalogPostedDate)
       {
       }
 
       v48 = v137;
-      v65 = v112;
-      if (!v112)
+      v65 = catalogLastTimeChecked;
+      if (!catalogLastTimeChecked)
       {
         goto LABEL_195;
       }
 
-      v66 = v79;
+      v66 = catalogLastTimeChecked2;
     }
 
     else
     {
-      v145 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-      v118 = [v145 count];
-      v144 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-      v110 = [v144 count];
+      discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+      v118 = [discoveredAtomicEntries count];
+      requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+      v110 = [requestedAutoAssetEntries count];
       if ([(MADAutoSetDescriptor *)self isDiscoveredFullyDownloaded])
       {
         v33 = @"Y";
@@ -899,27 +899,27 @@ LABEL_12:
       }
 
       v85 = v41;
-      v42 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
-      if (v42)
+      catalogCachedAssetSetID3 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+      if (catalogCachedAssetSetID3)
       {
-        v4 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+        catalogCachedAssetSetID2 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
       }
 
-      v43 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
-      if (v43)
+      catalogDownloadedFromLive3 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+      if (catalogDownloadedFromLive3)
       {
-        v131 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+        catalogDownloadedFromLive2 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
       }
 
       else
       {
-        v131 = @"N";
+        catalogDownloadedFromLive2 = @"N";
       }
 
-      v115 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
-      if (v115)
+      catalogLastTimeChecked3 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+      if (catalogLastTimeChecked3)
       {
-        v80 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+        catalogLastTimeChecked4 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
         v130 = [v3 stringFromDate:?];
       }
 
@@ -928,10 +928,10 @@ LABEL_12:
         v130 = @"N";
       }
 
-      v67 = [(MADAutoSetDescriptor *)self catalogPostedDate];
-      if (v67)
+      catalogPostedDate3 = [(MADAutoSetDescriptor *)self catalogPostedDate];
+      if (catalogPostedDate3)
       {
-        v79 = [(MADAutoSetDescriptor *)self catalogPostedDate];
+        catalogLastTimeChecked2 = [(MADAutoSetDescriptor *)self catalogPostedDate];
         v127 = [v3 stringFromDate:?];
       }
 
@@ -940,34 +940,34 @@ LABEL_12:
         v127 = @"N";
       }
 
-      v68 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
-      if (v68)
+      downloadedCatalogCachedAssetSetID3 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+      if (downloadedCatalogCachedAssetSetID3)
       {
-        v124 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+        downloadedCatalogCachedAssetSetID4 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
       }
 
       else
       {
-        v124 = @"N";
+        downloadedCatalogCachedAssetSetID4 = @"N";
       }
 
-      v69 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
-      v121 = v43;
-      if (v69)
+      downloadedCatalogDownloadedFromLive3 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+      v121 = catalogDownloadedFromLive3;
+      if (downloadedCatalogDownloadedFromLive3)
       {
-        v70 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+        downloadedCatalogDownloadedFromLive4 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
       }
 
       else
       {
-        v70 = @"N";
+        downloadedCatalogDownloadedFromLive4 = @"N";
       }
 
-      v143 = v42;
-      v71 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
-      if (v71)
+      v143 = catalogCachedAssetSetID3;
+      downloadedCatalogLastTimeChecked3 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+      if (downloadedCatalogLastTimeChecked3)
       {
-        v78 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+        catalogPostedDate2 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
         v72 = [v137 stringFromDate:?];
       }
 
@@ -976,45 +976,45 @@ LABEL_12:
         v72 = @"N";
       }
 
-      v73 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-      if (v73)
+      downloadedCatalogPostedDate3 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+      if (downloadedCatalogPostedDate3)
       {
-        v74 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-        v75 = [v137 stringFromDate:v74];
-        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, v148, v118, v110, v109, v106, v103, v100, v97, v94, v91, v88, v85, v4, v131, v130, v127, v124, v70, v72, v75];
+        downloadedCatalogPostedDate4 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+        v75 = [v137 stringFromDate:downloadedCatalogPostedDate4];
+        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, discoveredAtomicInstance3, v118, v110, v109, v106, v103, v100, v97, v94, v91, v88, v85, catalogCachedAssetSetID2, catalogDownloadedFromLive2, v130, v127, downloadedCatalogCachedAssetSetID4, downloadedCatalogDownloadedFromLive4, v72, v75];
       }
 
       else
       {
-        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, v148, v118, v110, v109, v106, v103, v100, v97, v94, v91, v88, v85, v4, v131, v130, v127, v124, v70, v72, @"N"];
+        v140 = [v139 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v136, v133, discoveredAtomicInstance3, v118, v110, v109, v106, v103, v100, v97, v94, v91, v88, v85, catalogCachedAssetSetID2, catalogDownloadedFromLive2, v130, v127, downloadedCatalogCachedAssetSetID4, downloadedCatalogDownloadedFromLive4, v72, @"N"];
       }
 
       v53 = v121;
-      if (v71)
+      if (downloadedCatalogLastTimeChecked3)
       {
       }
 
-      if (v69)
+      if (downloadedCatalogDownloadedFromLive3)
       {
       }
 
       v54 = v143;
-      if (v68)
+      if (downloadedCatalogCachedAssetSetID3)
       {
       }
 
-      if (v67)
+      if (catalogPostedDate3)
       {
       }
 
       v48 = v137;
-      v65 = v115;
-      if (!v115)
+      v65 = catalogLastTimeChecked3;
+      if (!catalogLastTimeChecked3)
       {
         goto LABEL_195;
       }
 
-      v66 = v80;
+      v66 = catalogLastTimeChecked4;
     }
 
 LABEL_195:
@@ -1023,13 +1023,13 @@ LABEL_195:
       goto LABEL_198;
     }
 
-    v55 = v131;
+    v55 = catalogDownloadedFromLive2;
     goto LABEL_197;
   }
 
   v138 = [NSString alloc];
-  v147 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-  if (v147)
+  latestDownloadedAtomicInstance = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+  if (latestDownloadedAtomicInstance)
   {
     v5 = @"Y";
   }
@@ -1040,13 +1040,13 @@ LABEL_195:
   }
 
   v122 = v5;
-  v146 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-  v116 = [v146 count];
-  v148 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
-  v145 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-  v113 = [v145 count];
-  v144 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-  v107 = [v144 count];
+  latestDowloadedAtomicInstanceEntries = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+  v116 = [latestDowloadedAtomicInstanceEntries count];
+  discoveredAtomicInstance3 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+  discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+  v113 = [discoveredAtomicEntries count];
+  requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+  v107 = [requestedAutoAssetEntries count];
   if ([(MADAutoSetDescriptor *)self isDiscoveredFullyDownloaded])
   {
     v6 = @"Y";
@@ -1146,27 +1146,27 @@ LABEL_195:
   }
 
   v81 = v14;
-  v15 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
-  if (v15)
+  catalogCachedAssetSetID4 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+  if (catalogCachedAssetSetID4)
   {
-    v4 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
+    catalogCachedAssetSetID2 = [(MADAutoSetDescriptor *)self catalogCachedAssetSetID];
   }
 
-  v16 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
-  if (v16)
+  catalogDownloadedFromLive4 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+  if (catalogDownloadedFromLive4)
   {
-    v135 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
+    catalogDownloadedFromLive5 = [(MADAutoSetDescriptor *)self catalogDownloadedFromLive];
   }
 
   else
   {
-    v135 = @"N";
+    catalogDownloadedFromLive5 = @"N";
   }
 
-  v32 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
-  if (v32)
+  catalogLastTimeChecked5 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+  if (catalogLastTimeChecked5)
   {
-    v79 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
+    catalogLastTimeChecked2 = [(MADAutoSetDescriptor *)self catalogLastTimeChecked];
     v134 = [v3 stringFromDate:?];
   }
 
@@ -1175,10 +1175,10 @@ LABEL_195:
     v134 = @"N";
   }
 
-  v44 = [(MADAutoSetDescriptor *)self catalogPostedDate];
-  if (v44)
+  catalogPostedDate4 = [(MADAutoSetDescriptor *)self catalogPostedDate];
+  if (catalogPostedDate4)
   {
-    v78 = [(MADAutoSetDescriptor *)self catalogPostedDate];
+    catalogPostedDate2 = [(MADAutoSetDescriptor *)self catalogPostedDate];
     v132 = [v3 stringFromDate:?];
   }
 
@@ -1187,36 +1187,36 @@ LABEL_195:
     v132 = @"N";
   }
 
-  v45 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
-  v111 = v32;
-  if (v45)
+  downloadedCatalogCachedAssetSetID5 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+  v111 = catalogLastTimeChecked5;
+  if (downloadedCatalogCachedAssetSetID5)
   {
-    v128 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
+    downloadedCatalogCachedAssetSetID6 = [(MADAutoSetDescriptor *)self downloadedCatalogCachedAssetSetID];
   }
 
   else
   {
-    v128 = @"N";
+    downloadedCatalogCachedAssetSetID6 = @"N";
   }
 
-  v46 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
-  v119 = v16;
-  if (v46)
+  downloadedCatalogDownloadedFromLive5 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+  v119 = catalogDownloadedFromLive4;
+  if (downloadedCatalogDownloadedFromLive5)
   {
-    v125 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
+    downloadedCatalogDownloadedFromLive6 = [(MADAutoSetDescriptor *)self downloadedCatalogDownloadedFromLive];
   }
 
   else
   {
-    v125 = @"N";
+    downloadedCatalogDownloadedFromLive6 = @"N";
   }
 
-  v141 = v15;
-  v47 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
-  if (v47)
+  v141 = catalogCachedAssetSetID4;
+  downloadedCatalogLastTimeChecked4 = [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
+  if (downloadedCatalogLastTimeChecked4)
   {
     [(MADAutoSetDescriptor *)self downloadedCatalogLastTimeChecked];
-    v77 = v48 = v3;
+    downloadedCatalogLastTimeChecked2 = v48 = v3;
     v49 = [v3 stringFromDate:?];
   }
 
@@ -1226,34 +1226,34 @@ LABEL_195:
     v49 = @"N";
   }
 
-  v50 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-  if (v50)
+  downloadedCatalogPostedDate5 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+  if (downloadedCatalogPostedDate5)
   {
-    v51 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
-    v52 = [v48 stringFromDate:v51];
-    v140 = [v138 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v122, v116, v148, v113, v107, v104, v101, v98, v95, v92, v89, v86, v83, v81, v4, v135, v134, v132, v128, v125, v49, v52];
+    downloadedCatalogPostedDate6 = [(MADAutoSetDescriptor *)self downloadedCatalogPostedDate];
+    v52 = [v48 stringFromDate:downloadedCatalogPostedDate6];
+    v140 = [v138 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v122, v116, discoveredAtomicInstance3, v113, v107, v104, v101, v98, v95, v92, v89, v86, v83, v81, catalogCachedAssetSetID2, catalogDownloadedFromLive5, v134, v132, downloadedCatalogCachedAssetSetID6, downloadedCatalogDownloadedFromLive6, v49, v52];
   }
 
   else
   {
-    v140 = [v138 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v122, v116, v148, v113, v107, v104, v101, v98, v95, v92, v89, v86, v83, v81, v4, v135, v134, v132, v128, v125, v49, @"N"];
+    v140 = [v138 initWithFormat:@"[instance latestDownloaded:%@(entries:%ld), discovered:%@(entries:%ld), requestedEntries:%ld, fullyDownloaded:%@(notified:%@) | onFilesystem:%@(incomplete:%@), neverBeenLocked:%@ | secureOperation(inProgress:%@), (elimintating:%@) | userInitiated:%@, stagedPrior:%@ | catalog(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@) | downloaded(cachedAssetSetID:%@), (downloadedFromLive:%@), (lastTimeChecked:%@), (postedDate:%@)]", v122, v116, discoveredAtomicInstance3, v113, v107, v104, v101, v98, v95, v92, v89, v86, v83, v81, catalogCachedAssetSetID2, catalogDownloadedFromLive5, v134, v132, downloadedCatalogCachedAssetSetID6, downloadedCatalogDownloadedFromLive6, v49, @"N"];
   }
 
   v53 = v119;
-  if (v47)
+  if (downloadedCatalogLastTimeChecked4)
   {
   }
 
-  if (v46)
+  if (downloadedCatalogDownloadedFromLive5)
   {
   }
 
   v54 = v141;
-  if (v45)
+  if (downloadedCatalogCachedAssetSetID5)
   {
   }
 
-  if (v44)
+  if (catalogPostedDate4)
   {
   }
 
@@ -1263,7 +1263,7 @@ LABEL_195:
 
   if (v119)
   {
-    v55 = v135;
+    v55 = catalogDownloadedFromLive5;
 LABEL_197:
   }
 
@@ -1278,57 +1278,57 @@ LABEL_198:
 
 - (id)newIdentityName
 {
-  v3 = [(MADAutoSetDescriptor *)self firstAssetType];
+  firstAssetType = [(MADAutoSetDescriptor *)self firstAssetType];
   if ([(MADAutoSetDescriptor *)self isDiscoveredFullyDownloaded])
   {
     if ([(MADAutoSetDescriptor *)self isOnFilesystem])
     {
-      v4 = [(MADAutoSetDescriptor *)self onFilesystemIncomplete];
+      onFilesystemIncomplete = [(MADAutoSetDescriptor *)self onFilesystemIncomplete];
       v5 = [NSString alloc];
-      v6 = [(MADAutoSetDescriptor *)self clientDomainName];
-      v7 = [(MADAutoSetDescriptor *)self assetSetIdentifier];
-      v8 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-      v9 = v8;
-      if (v4)
+      clientDomainName = [(MADAutoSetDescriptor *)self clientDomainName];
+      assetSetIdentifier = [(MADAutoSetDescriptor *)self assetSetIdentifier];
+      latestDownloadedAtomicInstance = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+      latestDownloadedAtomicInstance2 = latestDownloadedAtomicInstance;
+      if (onFilesystemIncomplete)
       {
-        v10 = [v5 initWithFormat:@"SD_INCOMPLETE[%@](domain:%@|setID:%@|atomic:%@)", v3, v6, v7, v8];
+        v10 = [v5 initWithFormat:@"SD_INCOMPLETE[%@](domain:%@|setID:%@|atomic:%@)", firstAssetType, clientDomainName, assetSetIdentifier, latestDownloadedAtomicInstance];
       }
 
       else
       {
-        v10 = [v5 initWithFormat:@"SD_DOWNLOADED[%@](domain:%@|setID:%@|atomic:%@)", v3, v6, v7, v8];
+        v10 = [v5 initWithFormat:@"SD_DOWNLOADED[%@](domain:%@|setID:%@|atomic:%@)", firstAssetType, clientDomainName, assetSetIdentifier, latestDownloadedAtomicInstance];
       }
     }
 
     else
     {
       v14 = [NSString alloc];
-      v6 = [(MADAutoSetDescriptor *)self clientDomainName];
-      v7 = [(MADAutoSetDescriptor *)self assetSetIdentifier];
-      v9 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
-      v10 = [v14 initWithFormat:@"SD_GONE[%@](domain:%@|setID:%@|atomic:%@)", v3, v6, v7, v9];
+      clientDomainName = [(MADAutoSetDescriptor *)self clientDomainName];
+      assetSetIdentifier = [(MADAutoSetDescriptor *)self assetSetIdentifier];
+      latestDownloadedAtomicInstance2 = [(MADAutoSetDescriptor *)self latestDownloadedAtomicInstance];
+      v10 = [v14 initWithFormat:@"SD_GONE[%@](domain:%@|setID:%@|atomic:%@)", firstAssetType, clientDomainName, assetSetIdentifier, latestDownloadedAtomicInstance2];
     }
 
     goto LABEL_10;
   }
 
-  v11 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+  discoveredAtomicInstance = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
 
   v12 = [NSString alloc];
-  v6 = [(MADAutoSetDescriptor *)self clientDomainName];
-  v13 = [(MADAutoSetDescriptor *)self assetSetIdentifier];
-  v7 = v13;
-  if (v11)
+  clientDomainName = [(MADAutoSetDescriptor *)self clientDomainName];
+  assetSetIdentifier2 = [(MADAutoSetDescriptor *)self assetSetIdentifier];
+  assetSetIdentifier = assetSetIdentifier2;
+  if (discoveredAtomicInstance)
   {
-    v9 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
-    v10 = [v12 initWithFormat:@"SD_DISCOVERED[%@](domain:%@|setID:%@|atomic:%@)", v3, v6, v7, v9];
+    latestDownloadedAtomicInstance2 = [(MADAutoSetDescriptor *)self discoveredAtomicInstance];
+    v10 = [v12 initWithFormat:@"SD_DISCOVERED[%@](domain:%@|setID:%@|atomic:%@)", firstAssetType, clientDomainName, assetSetIdentifier, latestDownloadedAtomicInstance2];
 LABEL_10:
     v15 = v10;
 
     goto LABEL_11;
   }
 
-  v15 = [v12 initWithFormat:@"SD_LOOKUP[%@](domain:%@|setID:%@)", v3, v6, v13];
+  v15 = [v12 initWithFormat:@"SD_LOOKUP[%@](domain:%@|setID:%@)", firstAssetType, clientDomainName, assetSetIdentifier2];
 LABEL_11:
 
   return v15;
@@ -1336,31 +1336,31 @@ LABEL_11:
 
 - (id)firstAssetType
 {
-  v3 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
-  v4 = [v3 count];
+  latestDowloadedAtomicInstanceEntries = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+  v4 = [latestDowloadedAtomicInstanceEntries count];
 
   if (v4)
   {
-    v5 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
+    latestDowloadedAtomicInstanceEntries2 = [(MADAutoSetDescriptor *)self latestDowloadedAtomicInstanceEntries];
     goto LABEL_5;
   }
 
-  v6 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
-  v7 = [v6 count];
+  discoveredAtomicEntries = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+  v7 = [discoveredAtomicEntries count];
 
   if (v7)
   {
-    v5 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
+    latestDowloadedAtomicInstanceEntries2 = [(MADAutoSetDescriptor *)self discoveredAtomicEntries];
 LABEL_5:
-    v8 = v5;
-    v9 = [v5 objectAtIndex:0];
+    v8 = latestDowloadedAtomicInstanceEntries2;
+    v9 = [latestDowloadedAtomicInstanceEntries2 objectAtIndex:0];
 
     if (v9)
     {
-      v10 = [v9 fullAssetSelector];
+      fullAssetSelector = [v9 fullAssetSelector];
 LABEL_7:
-      v11 = v10;
-      v12 = [v10 assetType];
+      v11 = fullAssetSelector;
+      assetType = [fullAssetSelector assetType];
 
 LABEL_12:
       goto LABEL_13;
@@ -1369,29 +1369,29 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v13 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-  v14 = [v13 count];
+  requestedAutoAssetEntries = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+  v14 = [requestedAutoAssetEntries count];
 
   if (v14)
   {
-    v15 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
-    v9 = [v15 objectAtIndex:0];
+    requestedAutoAssetEntries2 = [(MADAutoSetDescriptor *)self requestedAutoAssetEntries];
+    v9 = [requestedAutoAssetEntries2 objectAtIndex:0];
 
     if (v9)
     {
-      v10 = [v9 assetSelector];
+      fullAssetSelector = [v9 assetSelector];
       goto LABEL_7;
     }
 
 LABEL_11:
-    v12 = @"EMPTY";
+    assetType = @"EMPTY";
     goto LABEL_12;
   }
 
-  v12 = @"EMPTY";
+  assetType = @"EMPTY";
 LABEL_13:
 
-  return v12;
+  return assetType;
 }
 
 @end

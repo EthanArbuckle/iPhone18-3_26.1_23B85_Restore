@@ -1,68 +1,68 @@
 @interface ISO18013ReaderAuthInfo
-- (ISO18013ReaderAuthInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ISO18013ReaderAuthInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISO18013ReaderAuthInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_organization forKey:@"organization"];
-  [v5 encodeObject:self->_organizationUnit forKey:@"organizationUnit"];
-  [v5 encodeObject:self->_iconData forKey:@"iconData"];
-  [v5 encodeObject:self->_iconURL forKey:@"iconURL"];
-  [v5 encodeObject:self->_iconMediaType forKey:@"iconMediaType"];
-  [v5 encodeObject:self->_privacyPolicyURL forKey:@"privacyPolicyURL"];
-  [v5 encodeObject:self->_merchantCategoryCode forKey:@"merchantCategoryCode"];
-  [v5 encodeObject:self->_certificateData forKey:@"certificateData"];
-  [v5 encodeObject:self->_readerAnalyticsData forKey:@"readerAnalytics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_organization forKey:@"organization"];
+  [coderCopy encodeObject:self->_organizationUnit forKey:@"organizationUnit"];
+  [coderCopy encodeObject:self->_iconData forKey:@"iconData"];
+  [coderCopy encodeObject:self->_iconURL forKey:@"iconURL"];
+  [coderCopy encodeObject:self->_iconMediaType forKey:@"iconMediaType"];
+  [coderCopy encodeObject:self->_privacyPolicyURL forKey:@"privacyPolicyURL"];
+  [coderCopy encodeObject:self->_merchantCategoryCode forKey:@"merchantCategoryCode"];
+  [coderCopy encodeObject:self->_certificateData forKey:@"certificateData"];
+  [coderCopy encodeObject:self->_readerAnalyticsData forKey:@"readerAnalytics"];
 }
 
-- (ISO18013ReaderAuthInfo)initWithCoder:(id)a3
+- (ISO18013ReaderAuthInfo)initWithCoder:(id)coder
 {
   if (self)
   {
-    v4 = a3;
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    coderCopy = coder;
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = self->_identifier;
     self->_identifier = v5;
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organization"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organization"];
     organization = self->_organization;
     self->_organization = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationUnit"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationUnit"];
     organizationUnit = self->_organizationUnit;
     self->_organizationUnit = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconData"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconData"];
     iconData = self->_iconData;
     self->_iconData = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
     iconURL = self->_iconURL;
     self->_iconURL = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconMediaType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconMediaType"];
     iconMediaType = self->_iconMediaType;
     self->_iconMediaType = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyURL"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyURL"];
     privacyPolicyURL = self->_privacyPolicyURL;
     self->_privacyPolicyURL = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantCategoryCode"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantCategoryCode"];
     merchantCategoryCode = self->_merchantCategoryCode;
     self->_merchantCategoryCode = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certificateData"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certificateData"];
     certificateData = self->_certificateData;
     self->_certificateData = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerAnalytics"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerAnalytics"];
 
     readerAnalyticsData = self->_readerAnalyticsData;
     self->_readerAnalyticsData = v23;

@@ -1,38 +1,38 @@
 @interface _DPDediscoKeyConfiguration
-+ (id)constructTrust:(id)a3 policy:(__SecPolicy *)a4 overrideVerifyDate:(id)a5;
-+ (id)extractCertificatesFromChain:(id)a3;
-+ (id)extractPublicKeyFromString:(id)a3;
-+ (id)keysFromConfiguration:(id)a3 error:(id *)a4 overrideVerifyDate:(id)a5;
-+ (id)verifySignature:(id)a3 data:(id)a4 certificate:(id)a5 overrideVerifyDate:(id)a6 isAppleServer:(BOOL)a7;
-- (_DPDediscoKeyConfiguration)initWithDestinationKey:(id)a3 facilitatorPublicKey:(id)a4 keysMetadataArray:(id)a5;
++ (id)constructTrust:(id)trust policy:(__SecPolicy *)policy overrideVerifyDate:(id)date;
++ (id)extractCertificatesFromChain:(id)chain;
++ (id)extractPublicKeyFromString:(id)string;
++ (id)keysFromConfiguration:(id)configuration error:(id *)error overrideVerifyDate:(id)date;
++ (id)verifySignature:(id)signature data:(id)data certificate:(id)certificate overrideVerifyDate:(id)date isAppleServer:(BOOL)server;
+- (_DPDediscoKeyConfiguration)initWithDestinationKey:(id)key facilitatorPublicKey:(id)publicKey keysMetadataArray:(id)array;
 @end
 
 @implementation _DPDediscoKeyConfiguration
 
-- (_DPDediscoKeyConfiguration)initWithDestinationKey:(id)a3 facilitatorPublicKey:(id)a4 keysMetadataArray:(id)a5
+- (_DPDediscoKeyConfiguration)initWithDestinationKey:(id)key facilitatorPublicKey:(id)publicKey keysMetadataArray:(id)array
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  arrayCopy = array;
   v15.receiver = self;
   v15.super_class = _DPDediscoKeyConfiguration;
   v12 = [(_DPDediscoKeyConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_destinationPublicKey, a3);
-    objc_storeStrong(&v13->_facilitatorPublicKey, a4);
-    objc_storeStrong(&v13->_keysMetadataArray, a5);
+    objc_storeStrong(&v12->_destinationPublicKey, key);
+    objc_storeStrong(&v13->_facilitatorPublicKey, publicKey);
+    objc_storeStrong(&v13->_keysMetadataArray, array);
   }
 
   return v13;
 }
 
-+ (id)keysFromConfiguration:(id)a3 error:(id *)a4 overrideVerifyDate:(id)a5
++ (id)keysFromConfiguration:(id)configuration error:(id *)error overrideVerifyDate:(id)date
 {
-  v7 = a5;
+  dateCopy = date;
   v38 = 0;
-  v8 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:0 error:&v38];
+  v8 = [NSPropertyListSerialization propertyListWithData:configuration options:0 format:0 error:&v38];
   v9 = v38;
   if (v9)
   {
@@ -42,9 +42,9 @@
       sub_10004E3FC();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [_DPDediscoError errorWithCode:300 underlyingError:v9 description:@"Failed to deserialize the configuration."];
+      *error = [_DPDediscoError errorWithCode:300 underlyingError:v9 description:@"Failed to deserialize the configuration."];
     }
   }
 
@@ -65,15 +65,15 @@
   v16 = v15 || v13 == 0;
   if (!v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v17 = [objc_opt_class() verifySignature:v14 data:v11 certificate:v12 overrideVerifyDate:v7 isAppleServer:1];
+    v17 = [objc_opt_class() verifySignature:v14 data:v11 certificate:v12 overrideVerifyDate:dateCopy isAppleServer:1];
     v18 = v17;
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v19 = v17;
         v20 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -97,9 +97,9 @@
           sub_10004E4F8();
         }
 
-        if (a4)
+        if (error)
         {
-          *a4 = [_DPDediscoError errorWithCode:300 underlyingError:v23 description:@"Failed to deserialize the inner configuration"];
+          *error = [_DPDediscoError errorWithCode:300 underlyingError:v23 description:@"Failed to deserialize the inner configuration"];
         }
       }
 
@@ -130,10 +130,10 @@
 
         v29 = v27;
 
-        if (a4)
+        if (error)
         {
           [_DPDediscoError errorWithCode:300 description:@"Failed to obtain fields from the inner configuration"];
-          *a4 = v20 = 0;
+          *error = v20 = 0;
         }
 
         else
@@ -155,10 +155,10 @@
       sub_10004E478();
     }
 
-    if (a4)
+    if (error)
     {
       [_DPDediscoError errorWithCode:300 description:@"Failed to obtain fields from configuration."];
-      *a4 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -170,12 +170,12 @@
   return v20;
 }
 
-+ (id)verifySignature:(id)a3 data:(id)a4 certificate:(id)a5 overrideVerifyDate:(id)a6 isAppleServer:(BOOL)a7
++ (id)verifySignature:(id)signature data:(id)data certificate:(id)certificate overrideVerifyDate:(id)date isAppleServer:(BOOL)server
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [a1 extractCertificatesFromChain:a5];
+  signatureCopy = signature;
+  dataCopy = data;
+  dateCopy = date;
+  v14 = [self extractCertificatesFromChain:certificate];
   ApplePinned = SecPolicyCreateApplePinned();
   if (!ApplePinned)
   {
@@ -184,7 +184,7 @@
   }
 
   v16 = ApplePinned;
-  v17 = [a1 constructTrust:v14 policy:ApplePinned overrideVerifyDate:v13];
+  v17 = [self constructTrust:v14 policy:ApplePinned overrideVerifyDate:dateCopy];
   CFRelease(v16);
   if (v17)
   {
@@ -205,7 +205,7 @@
 
     v18 = SecTrustCopyKey(v17);
     error = 0;
-    v19 = SecKeyVerifySignature(v18, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v12, v11, &error);
+    v19 = SecKeyVerifySignature(v18, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, signatureCopy, &error);
     CFRelease(v18);
     v20 = 0;
     if (!v19)
@@ -234,9 +234,9 @@ LABEL_15:
   return v20;
 }
 
-+ (id)extractCertificatesFromChain:(id)a3
++ (id)extractCertificatesFromChain:(id)chain
 {
-  v3 = a3;
+  chainCopy = chain;
   v27 = 0;
   v4 = [NSRegularExpression regularExpressionWithPattern:@"(-----BEGIN CERTIFICATE-----\n[A-Za-z0-9/+\n]+={0 options:2}\n-----END CERTIFICATE-----\n)" error:0, &v27];
   v5 = v27;
@@ -244,9 +244,9 @@ LABEL_15:
   if (v4)
   {
     v22 = v5;
-    v7 = [[NSString alloc] initWithData:v3 encoding:4];
+    v7 = [[NSString alloc] initWithData:chainCopy encoding:4];
     v8 = [&__NSArray0__struct mutableCopy];
-    [v4 matchesInString:v7 options:0 range:{0, objc_msgSend(v3, "length")}];
+    [v4 matchesInString:v7 options:0 range:{0, objc_msgSend(chainCopy, "length")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -265,8 +265,8 @@ LABEL_15:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v23 + 1) + 8 * i) range];
-          v16 = [v7 substringWithRange:v14, v15];
+          range = [*(*(&v23 + 1) + 8 * i) range];
+          v16 = [v7 substringWithRange:range, v15];
           [v16 dataUsingEncoding:4];
           v17 = SecCertificateCreateWithPEM();
           if (!v17)
@@ -314,11 +314,11 @@ LABEL_14:
   return v19;
 }
 
-+ (id)constructTrust:(id)a3 policy:(__SecPolicy *)a4 overrideVerifyDate:(id)a5
++ (id)constructTrust:(id)trust policy:(__SecPolicy *)policy overrideVerifyDate:(id)date
 {
-  v7 = a5;
+  dateCopy = date;
   trust = 0;
-  if (SecTrustCreateWithCertificates(a3, a4, &trust))
+  if (SecTrustCreateWithCertificates(trust, policy, &trust))
   {
     v8 = +[_DPLog service];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -326,26 +326,26 @@ LABEL_14:
       sub_10004E7A0();
     }
 
-    v9 = 0;
+    trustCopy = 0;
   }
 
   else
   {
-    if (v7)
+    if (dateCopy)
     {
-      SecTrustSetVerifyDate(trust, v7);
+      SecTrustSetVerifyDate(trust, dateCopy);
     }
 
-    v9 = trust;
+    trustCopy = trust;
   }
 
-  return v9;
+  return trustCopy;
 }
 
-+ (id)extractPublicKeyFromString:(id)a3
++ (id)extractPublicKeyFromString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
+  stringCopy = string;
+  v4 = [[NSData alloc] initWithBase64EncodedString:stringCopy options:0];
 
   if (v4)
   {

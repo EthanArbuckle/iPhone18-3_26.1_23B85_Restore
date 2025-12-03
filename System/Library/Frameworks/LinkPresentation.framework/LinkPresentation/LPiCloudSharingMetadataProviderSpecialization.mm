@@ -1,30 +1,30 @@
 @interface LPiCloudSharingMetadataProviderSpecialization
-+ (id)normalizeKind:(id)a3 forApplication:(id)a4;
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
-- (BOOL)canRetrieveThumbnailForApplication:(id)a3;
++ (id)normalizeKind:(id)kind forApplication:(id)application;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
+- (BOOL)canRetrieveThumbnailForApplication:(id)application;
 - (BOOL)canUseCloudKit;
-- (LPiCloudSharingMetadataProviderSpecialization)initWithContext:(id)a3 applicationFromURL:(id)a4 kindFromURL:(id)a5 titleFromURL:(id)a6;
-- (id)applicationFromBundleIdentifiers:(id)a3 containerIdentifier:(id)a4;
-- (id)iconFromShare:(id)a3;
-- (void)completeRetrievingThumbnailForShareMetadata:(id)a3 application:(id)a4 kind:(id)a5 title:(id)a6 icon:(id)a7;
-- (void)completeUsingApplication:(id)a3 kind:(id)a4 title:(id)a5 thumbnail:(id)a6 icon:(id)a7;
-- (void)completeWithShareMetadata:(id)a3 bundleIDs:(id)a4;
+- (LPiCloudSharingMetadataProviderSpecialization)initWithContext:(id)context applicationFromURL:(id)l kindFromURL:(id)rL titleFromURL:(id)uRL;
+- (id)applicationFromBundleIdentifiers:(id)identifiers containerIdentifier:(id)identifier;
+- (id)iconFromShare:(id)share;
+- (void)completeRetrievingThumbnailForShareMetadata:(id)metadata application:(id)application kind:(id)kind title:(id)title icon:(id)icon;
+- (void)completeUsingApplication:(id)application kind:(id)kind title:(id)title thumbnail:(id)thumbnail icon:(id)icon;
+- (void)completeWithShareMetadata:(id)metadata bundleIDs:(id)ds;
 - (void)fail;
 - (void)start;
 @end
 
 @implementation LPiCloudSharingMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 postRedirectURL];
-  v5 = [LPPresentationSpecializations isiCloudSharingURL:v4];
+  contextCopy = context;
+  postRedirectURL = [contextCopy postRedirectURL];
+  v5 = [LPPresentationSpecializations isiCloudSharingURL:postRedirectURL];
 
   if (v5)
   {
-    v6 = [v3 postRedirectURL];
-    v7 = [LPiCloudSharingMetadata extractApplicationFromURL:v6];
+    postRedirectURL2 = [contextCopy postRedirectURL];
+    v7 = [LPiCloudSharingMetadata extractApplicationFromURL:postRedirectURL2];
 
     if ([v7 _lp_isEqualIgnoringCase:@"photos"])
     {
@@ -33,13 +33,13 @@
 
     else
     {
-      v9 = [v3 postRedirectURL];
-      v10 = [LPiCloudSharingMetadata extractKindFromURL:v9];
+      postRedirectURL3 = [contextCopy postRedirectURL];
+      v10 = [LPiCloudSharingMetadata extractKindFromURL:postRedirectURL3];
 
-      v11 = [v3 postRedirectURL];
-      v12 = [LPiCloudSharingMetadata extractTitleFromURL:v11];
+      postRedirectURL4 = [contextCopy postRedirectURL];
+      v12 = [LPiCloudSharingMetadata extractTitleFromURL:postRedirectURL4];
 
-      v8 = [[LPiCloudSharingMetadataProviderSpecialization alloc] initWithContext:v3 applicationFromURL:v7 kindFromURL:v10 titleFromURL:v12];
+      v8 = [[LPiCloudSharingMetadataProviderSpecialization alloc] initWithContext:contextCopy applicationFromURL:v7 kindFromURL:v10 titleFromURL:v12];
     }
   }
 
@@ -72,21 +72,21 @@
   return v6;
 }
 
-- (LPiCloudSharingMetadataProviderSpecialization)initWithContext:(id)a3 applicationFromURL:(id)a4 kindFromURL:(id)a5 titleFromURL:(id)a6
+- (LPiCloudSharingMetadataProviderSpecialization)initWithContext:(id)context applicationFromURL:(id)l kindFromURL:(id)rL titleFromURL:(id)uRL
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v20.receiver = self;
   v20.super_class = LPiCloudSharingMetadataProviderSpecialization;
-  v14 = [(LPMetadataProviderSpecialization *)&v20 initWithContext:v10];
+  v14 = [(LPMetadataProviderSpecialization *)&v20 initWithContext:contextCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_applicationFromURL, a4);
-    objc_storeStrong(&v15->_kindFromURL, a5);
-    objc_storeStrong(&v15->_titleFromURL, a6);
+    objc_storeStrong(&v14->_applicationFromURL, l);
+    objc_storeStrong(&v15->_kindFromURL, rL);
+    objc_storeStrong(&v15->_titleFromURL, uRL);
     if ([(LPiCloudSharingMetadataProviderSpecialization *)v15 canUseCloudKit])
     {
       v16 = [MEMORY[0x1E695B888] containerWithIdentifier:@"com.apple.cloudkit"];
@@ -100,16 +100,16 @@
   return v15;
 }
 
-- (id)applicationFromBundleIdentifiers:(id)a3 containerIdentifier:(id)a4
+- (id)applicationFromBundleIdentifiers:(id)identifiers containerIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v5;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
@@ -163,10 +163,10 @@
         v16 = *(*(&v23 + 1) + 8 * j);
         v17 = objc_alloc(MEMORY[0x1E69635F8]);
         v18 = [v17 initWithBundleIdentifier:v16 allowPlaceholder:1 error:{0, v23}];
-        v19 = [v18 localizedName];
-        if (v19)
+        localizedName = [v18 localizedName];
+        if (localizedName)
         {
-          v21 = v19;
+          v21 = localizedName;
 
           goto LABEL_21;
         }
@@ -182,12 +182,12 @@
     }
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
-  v20 = [v12 localizedName];
-  v21 = v20;
-  if (v20)
+  v12 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
+  localizedName2 = [v12 localizedName];
+  v21 = localizedName2;
+  if (localizedName2)
   {
-    v21 = v20;
+    v21 = localizedName2;
   }
 
 LABEL_21:
@@ -195,22 +195,22 @@ LABEL_21:
   return v21;
 }
 
-+ (id)normalizeKind:(id)a3 forApplication:(id)a4
++ (id)normalizeKind:(id)kind forApplication:(id)application
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 isEqualToString:@"Reminders"])
+  kindCopy = kind;
+  applicationCopy = application;
+  if (![applicationCopy isEqualToString:@"Reminders"])
   {
     goto LABEL_14;
   }
 
-  if (!v5)
+  if (!kindCopy)
   {
     v7 = @"Shared List";
     goto LABEL_11;
   }
 
-  if ([v5 _lp_isEqualIgnoringCase:@"template"])
+  if ([kindCopy _lp_isEqualIgnoringCase:@"template"])
   {
     v7 = @"Template";
   }
@@ -218,9 +218,9 @@ LABEL_21:
   else
   {
 LABEL_14:
-    if ([v6 isEqualToString:@"Freeform"])
+    if ([applicationCopy isEqualToString:@"Freeform"])
     {
-      if ([v5 _lp_isEqualIgnoringCase:@"copy"])
+      if ([kindCopy _lp_isEqualIgnoringCase:@"copy"])
       {
         v7 = @"Copy";
       }
@@ -242,15 +242,15 @@ LABEL_11:
   return v7;
 }
 
-- (id)iconFromShare:(id)a3
+- (id)iconFromShare:(id)share
 {
-  v3 = a3;
+  shareCopy = share;
   v4 = *MEMORY[0x1E695B820];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695B820]];
+  v5 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E695B820]];
   if (v5)
   {
     v6 = [LPImage alloc];
-    v7 = [v3 objectForKeyedSubscript:v4];
+    v7 = [shareCopy objectForKeyedSubscript:v4];
     v8 = [(LPImage *)v6 initWithData:v7 MIMEType:@"image/png"];
   }
 
@@ -391,10 +391,10 @@ uint64_t __54__LPiCloudSharingMetadataProviderSpecialization_start__block_invoke
   return result;
 }
 
-- (void)completeWithShareMetadata:(id)a3 bundleIDs:(id)a4
+- (void)completeWithShareMetadata:(id)metadata bundleIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  dsCopy = ds;
   v8 = LPLogChannelFetching();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -405,17 +405,17 @@ uint64_t __54__LPiCloudSharingMetadataProviderSpecialization_start__block_invoke
   v10 = [v9 objectForKeyedSubscript:self->_applicationFromURL];
 
   v11 = [objc_opt_class() normalizeKind:self->_kindFromURL forApplication:v10];
-  v12 = [v6 share];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E695B828]];
+  share = [metadataCopy share];
+  v13 = [share objectForKeyedSubscript:*MEMORY[0x1E695B828]];
 
-  v14 = [v6 share];
-  v15 = [(LPiCloudSharingMetadataProviderSpecialization *)self iconFromShare:v14];
+  share2 = [metadataCopy share];
+  v15 = [(LPiCloudSharingMetadataProviderSpecialization *)self iconFromShare:share2];
 
   if (v10)
   {
     if ([(LPiCloudSharingMetadataProviderSpecialization *)self canRetrieveThumbnailForApplication:v10])
     {
-      [(LPiCloudSharingMetadataProviderSpecialization *)self completeRetrievingThumbnailForShareMetadata:v6 application:v10 kind:v11 title:v13 icon:v15];
+      [(LPiCloudSharingMetadataProviderSpecialization *)self completeRetrievingThumbnailForShareMetadata:metadataCopy application:v10 kind:v11 title:v13 icon:v15];
     }
 
     else
@@ -426,8 +426,8 @@ uint64_t __54__LPiCloudSharingMetadataProviderSpecialization_start__block_invoke
 
   else
   {
-    v16 = [v6 containerIdentifier];
-    v17 = [(LPiCloudSharingMetadataProviderSpecialization *)self applicationFromBundleIdentifiers:v7 containerIdentifier:v16];
+    containerIdentifier = [metadataCopy containerIdentifier];
+    v17 = [(LPiCloudSharingMetadataProviderSpecialization *)self applicationFromBundleIdentifiers:dsCopy containerIdentifier:containerIdentifier];
 
     if (self->_titleFromURL)
     {
@@ -443,46 +443,46 @@ uint64_t __54__LPiCloudSharingMetadataProviderSpecialization_start__block_invoke
   }
 }
 
-- (void)completeUsingApplication:(id)a3 kind:(id)a4 title:(id)a5 thumbnail:(id)a6 icon:(id)a7
+- (void)completeUsingApplication:(id)application kind:(id)kind title:(id)title thumbnail:(id)thumbnail icon:(id)icon
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  applicationCopy = application;
+  kindCopy = kind;
+  titleCopy = title;
+  thumbnailCopy = thumbnail;
+  iconCopy = icon;
   v17 = LPLogChannelFetching();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [LPiCloudSharingMetadataProviderSpecialization completeUsingApplication:v12 kind:v14 title:v17 thumbnail:? icon:?];
+    [LPiCloudSharingMetadataProviderSpecialization completeUsingApplication:applicationCopy kind:titleCopy title:v17 thumbnail:? icon:?];
   }
 
   v18 = objc_alloc_init(LPiCloudSharingMetadata);
-  [(LPiCloudSharingMetadata *)v18 setApplication:v12];
-  [(LPiCloudSharingMetadata *)v18 setKind:v13];
-  [(LPiCloudSharingMetadata *)v18 setTitle:v14];
-  [(LPiCloudSharingMetadata *)v18 setThumbnail:v15];
-  [(LPiCloudSharingMetadata *)v18 setIcon:v16];
+  [(LPiCloudSharingMetadata *)v18 setApplication:applicationCopy];
+  [(LPiCloudSharingMetadata *)v18 setKind:kindCopy];
+  [(LPiCloudSharingMetadata *)v18 setTitle:titleCopy];
+  [(LPiCloudSharingMetadata *)v18 setThumbnail:thumbnailCopy];
+  [(LPiCloudSharingMetadata *)v18 setIcon:iconCopy];
   v19 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:v18];
-  v20 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v20 metadataProviderSpecialization:self didCompleteWithMetadata:v19];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecialization:self didCompleteWithMetadata:v19];
 }
 
 - (void)fail
 {
   [(LPiCloudSharingMetadataProviderSpecialization *)self cancel];
-  v3 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v3 metadataProviderSpecializationDidFail:self];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecializationDidFail:self];
 }
 
-- (BOOL)canRetrieveThumbnailForApplication:(id)a3
+- (BOOL)canRetrieveThumbnailForApplication:(id)application
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Notes"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Reminders"))
+  applicationCopy = application;
+  if ([applicationCopy isEqualToString:@"Notes"] & 1) != 0 || (objc_msgSend(applicationCopy, "isEqualToString:", @"Reminders"))
   {
-    v4 = 0;
+    bOOLValue = 0;
 LABEL_14:
 
-    return v4;
+    return bOOLValue;
   }
 
   v16 = 0;
@@ -504,7 +504,7 @@ LABEL_14:
     v7 = LPValueForEntitlement(*v5);
     if (([v7 BOOLValue] & 1) == 0)
     {
-      v4 = 0;
+      bOOLValue = 0;
       goto LABEL_13;
     }
 
@@ -525,7 +525,7 @@ LABEL_14:
     if (v8)
     {
       v10 = LPValueForEntitlement(*v8);
-      v4 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
 
 LABEL_13:
       goto LABEL_14;
@@ -534,40 +534,40 @@ LABEL_13:
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getBREntitlementSharingPrivateInterface(void)"];
-    [v12 handleFailureInFunction:v13 file:@"LPiCloudSharingMetadataProviderSpecialization.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"LPiCloudSharingMetadataProviderSpecialization.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getBRContainerProxyEntitlement(void)"];
-  [v14 handleFailureInFunction:v15 file:@"LPiCloudSharingMetadataProviderSpecialization.m" lineNumber:26 description:{@"%s", dlerror()}];
+  [currentHandler2 handleFailureInFunction:v15 file:@"LPiCloudSharingMetadataProviderSpecialization.m" lineNumber:26 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-- (void)completeRetrievingThumbnailForShareMetadata:(id)a3 application:(id)a4 kind:(id)a5 title:(id)a6 icon:(id)a7
+- (void)completeRetrievingThumbnailForShareMetadata:(id)metadata application:(id)application kind:(id)kind title:(id)title icon:(id)icon
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  metadataCopy = metadata;
+  applicationCopy = application;
+  kindCopy = kind;
+  titleCopy = title;
+  iconCopy = icon;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __121__LPiCloudSharingMetadataProviderSpecialization_completeRetrievingThumbnailForShareMetadata_application_kind_title_icon___block_invoke;
   aBlock[3] = &unk_1E7A37478;
   aBlock[4] = self;
-  v17 = v13;
+  v17 = applicationCopy;
   v40 = v17;
-  v18 = v14;
+  v18 = kindCopy;
   v41 = v18;
-  v19 = v15;
+  v19 = titleCopy;
   v42 = v19;
-  v20 = v16;
+  v20 = iconCopy;
   v43 = v20;
   v29 = _Block_copy(aBlock);
   v21 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -575,9 +575,9 @@ LABEL_13:
   v30[1] = 3221225472;
   v30[2] = __121__LPiCloudSharingMetadataProviderSpecialization_completeRetrievingThumbnailForShareMetadata_application_kind_title_icon___block_invoke_2_57;
   v30[3] = &unk_1E7A374A0;
-  v28 = v12;
+  v28 = metadataCopy;
   v31 = v28;
-  v32 = self;
+  selfCopy = self;
   v22 = v17;
   v33 = v22;
   v23 = v18;

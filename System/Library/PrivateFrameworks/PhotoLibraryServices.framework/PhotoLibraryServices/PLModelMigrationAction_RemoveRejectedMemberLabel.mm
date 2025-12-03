@@ -1,26 +1,26 @@
 @interface PLModelMigrationAction_RemoveRejectedMemberLabel
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveRejectedMemberLabel
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v102 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:1];
   [v7 becomeCurrentWithPendingUnitCount:1];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLGraphLabel entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"code", 1002];
-  [v10 setPredicate:v11];
+  1002 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"code", 1002];
+  [v10 setPredicate:1002];
 
   v66 = 0;
-  v12 = [v6 executeFetchRequest:v10 error:&v66];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v66];
   v13 = v66;
-  v14 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
   if (v13)
   {
@@ -35,9 +35,9 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v17 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v17)
+    if (logger)
     {
       v100 = 0u;
       v101 = 0u;
@@ -115,7 +115,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!firstObject)
   {
     v13 = 0;
     v23 = 1;
@@ -124,7 +124,7 @@ LABEL_16:
   }
 
   v65 = 0;
-  v25 = [v14 removeFromAdditionalLabelsOnAllEdgesWithError:&v65];
+  v25 = [firstObject removeFromAdditionalLabelsOnAllEdgesWithError:&v65];
   v26 = v65;
   v27 = PLMigrationGetLog();
   v28 = v27;
@@ -134,9 +134,9 @@ LABEL_16:
 
     if (v29)
     {
-      v30 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v30)
+      if (logger2)
       {
         v100 = 0u;
         v101 = 0u;
@@ -195,9 +195,9 @@ LABEL_16:
       }
     }
 
-    [v6 deleteObject:v14];
+    [contextCopy deleteObject:firstObject];
     v64 = v26;
-    v50 = [v6 save:&v64];
+    v50 = [contextCopy save:&v64];
     v13 = v64;
 
     if (v50)
@@ -215,9 +215,9 @@ LABEL_16:
       goto LABEL_18;
     }
 
-    v53 = [(PLModelMigrationActionCore *)self logger];
+    logger3 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v53)
+    if (logger3)
     {
       v100 = 0u;
       v101 = 0u;
@@ -292,9 +292,9 @@ LABEL_16:
 
   if (v42)
   {
-    v43 = [(PLModelMigrationActionCore *)self logger];
+    logger4 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v43)
+    if (logger4)
     {
       v100 = 0u;
       v101 = 0u;
@@ -370,10 +370,10 @@ LABEL_19:
   [v7 setCompletedUnitCount:{objc_msgSend(v7, "completedUnitCount") + 1}];
   v38 = v13;
   v39 = v38;
-  if ((v23 & 1) == 0 && a4)
+  if ((v23 & 1) == 0 && error)
   {
     v40 = v38;
-    *a4 = v39;
+    *error = v39;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

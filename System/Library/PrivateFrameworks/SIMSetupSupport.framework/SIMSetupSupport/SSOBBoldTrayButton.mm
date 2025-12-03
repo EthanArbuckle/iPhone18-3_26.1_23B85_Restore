@@ -3,31 +3,31 @@
 - (void)_hideLoading;
 - (void)_showLoading;
 - (void)_showSpinning;
-- (void)updateBusyText:(id)a3;
+- (void)updateBusyText:(id)text;
 @end
 
 @implementation SSOBBoldTrayButton
 
-- (void)updateBusyText:(id)a3
+- (void)updateBusyText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   if (!self->_spinner)
   {
-    v4 = [[SSSpinner alloc] initWithText:v7];
+    v4 = [[SSSpinner alloc] initWithText:textCopy];
     spinner = self->_spinner;
     self->_spinner = v4;
   }
 
-  v6 = [(SSOBBoldTrayButton *)self spinner];
-  [v6 updateText:v7];
+  spinner = [(SSOBBoldTrayButton *)self spinner];
+  [spinner updateText:textCopy];
 }
 
 - (void)_showLoading
 {
-  v3 = [(SSOBBoldTrayButton *)self titleLabel];
-  v4 = [v3 text];
+  titleLabel = [(SSOBBoldTrayButton *)self titleLabel];
+  text = [titleLabel text];
   normalStateTitle = self->_normalStateTitle;
-  self->_normalStateTitle = v4;
+  self->_normalStateTitle = text;
 
   [(SSOBBoldTrayButton *)self setTitle:@" " forState:0];
   if (!self->_spinner)
@@ -44,42 +44,42 @@
 
 - (void)_hideLoading
 {
-  v3 = [(SSOBBoldTrayButton *)self normalStateTitle];
+  normalStateTitle = [(SSOBBoldTrayButton *)self normalStateTitle];
 
-  if (v3)
+  if (normalStateTitle)
   {
-    v4 = [(SSOBBoldTrayButton *)self normalStateTitle];
-    [(SSOBBoldTrayButton *)self setTitle:v4 forState:0];
+    normalStateTitle2 = [(SSOBBoldTrayButton *)self normalStateTitle];
+    [(SSOBBoldTrayButton *)self setTitle:normalStateTitle2 forState:0];
   }
 
   [(OBBoldTrayButton *)self setEnabled:1];
-  v5 = [(SSOBBoldTrayButton *)self spinner];
-  [v5 stopAnimating];
+  spinner = [(SSOBBoldTrayButton *)self spinner];
+  [spinner stopAnimating];
 }
 
 - (void)_showSpinning
 {
   [(SSSpinner *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(SSOBBoldTrayButton *)self spinner];
-  [(SSOBBoldTrayButton *)self addSubview:v3];
+  spinner = [(SSOBBoldTrayButton *)self spinner];
+  [(SSOBBoldTrayButton *)self addSubview:spinner];
 
   [(SSOBBoldTrayButton *)self _centerActivityIndicatorInButton];
-  v4 = [(SSOBBoldTrayButton *)self spinner];
-  [v4 startAnimating];
+  spinner2 = [(SSOBBoldTrayButton *)self spinner];
+  [spinner2 startAnimating];
 }
 
 - (void)_centerActivityIndicatorInButton
 {
-  v3 = [(SSOBBoldTrayButton *)self spinner];
-  v4 = [v3 centerXAnchor];
-  v5 = [(SSOBBoldTrayButton *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  spinner = [(SSOBBoldTrayButton *)self spinner];
+  centerXAnchor = [spinner centerXAnchor];
+  centerXAnchor2 = [(SSOBBoldTrayButton *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v6 setActive:1];
 
-  v10 = [(SSOBBoldTrayButton *)self spinner];
-  v7 = [v10 centerYAnchor];
-  v8 = [(SSOBBoldTrayButton *)self centerYAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  spinner2 = [(SSOBBoldTrayButton *)self spinner];
+  centerYAnchor = [spinner2 centerYAnchor];
+  centerYAnchor2 = [(SSOBBoldTrayButton *)self centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v9 setActive:1];
 }
 

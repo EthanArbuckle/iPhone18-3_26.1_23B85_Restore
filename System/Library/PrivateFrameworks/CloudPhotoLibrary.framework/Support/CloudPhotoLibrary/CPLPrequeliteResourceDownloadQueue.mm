@@ -1,21 +1,21 @@
 @interface CPLPrequeliteResourceDownloadQueue
 - (BOOL)_createResourceTypeAndStatusIndex;
-- (BOOL)_deleteEnqueuedResource:(id)a3 error:(id *)a4;
-- (BOOL)_getNextPosition:(unint64_t *)a3 andBumpWithError:(id *)a4;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)enqueueBackgroundDownloadTaskForResource:(id)a3 intent:(unint64_t)a4 downloading:(BOOL)a5 error:(id *)a6;
+- (BOOL)_deleteEnqueuedResource:(id)resource error:(id *)error;
+- (BOOL)_getNextPosition:(unint64_t *)position andBumpWithError:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)enqueueBackgroundDownloadTaskForResource:(id)resource intent:(unint64_t)intent downloading:(BOOL)downloading error:(id *)error;
 - (BOOL)hasActiveOrQueuedBackgroundDownloadOperations;
 - (BOOL)initializeStorage;
-- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)a3 taskIdentifier:(unint64_t)a4 error:(id *)a5;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)reenqueueBackgroundDownloadTaskForResource:(id)a3 taskIdentifier:(unint64_t)a4 bumpRetryCount:(BOOL)a5 didDiscard:(BOOL *)a6 error:(id *)a7;
-- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeBackgroundDownloadTaskForResource:(id)a3 taskIdentifier:(unint64_t)a4 error:(id *)a5;
-- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)a3;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (CPLPrequeliteResourceDownloadQueue)initWithAbstractObject:(id)a3;
-- (id)_enqueuedResourceForResource:(id)a3 verifyScopeIndex:(BOOL)a4;
-- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)a3 andIntent:(unint64_t)a4 maximumSize:(unint64_t)a5 maximumCount:(unint64_t)a6 error:(id *)a7;
+- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)suceeded taskIdentifier:(unint64_t)identifier error:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)reenqueueBackgroundDownloadTaskForResource:(id)resource taskIdentifier:(unint64_t)identifier bumpRetryCount:(BOOL)count didDiscard:(BOOL *)discard error:(id *)error;
+- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeBackgroundDownloadTaskForResource:(id)resource taskIdentifier:(unint64_t)identifier error:(id *)error;
+- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (CPLPrequeliteResourceDownloadQueue)initWithAbstractObject:(id)object;
+- (id)_enqueuedResourceForResource:(id)resource verifyScopeIndex:(BOOL)index;
+- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)type andIntent:(unint64_t)intent maximumSize:(unint64_t)size maximumCount:(unint64_t)count error:(id *)error;
 - (id)enumeratorForDownloadedResources;
 - (id)status;
 - (id)statusPerScopeIndex;
@@ -24,11 +24,11 @@
 
 @implementation CPLPrequeliteResourceDownloadQueue
 
-- (CPLPrequeliteResourceDownloadQueue)initWithAbstractObject:(id)a3
+- (CPLPrequeliteResourceDownloadQueue)initWithAbstractObject:(id)object
 {
   v11.receiver = self;
   v11.super_class = CPLPrequeliteResourceDownloadQueue;
-  v3 = [(CPLPrequeliteStorage *)&v11 initWithAbstractObject:a3];
+  v3 = [(CPLPrequeliteStorage *)&v11 initWithAbstractObject:object];
   if (v3)
   {
     v4 = +[CPLPrequeliteType integerType];
@@ -61,25 +61,25 @@
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteResourceDownloadQueue;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"position INTEGER NOT NULL error:scopeIndex INTEGER NOT NULL, itemIdentifier TEXT NOT NULL, resourceType INTEGER NOT NULL, fingerPrint TEXT NOT NULL, fileUTI TEXT, fileSize INTEGER NOT NULL, taskIdentifier INTEGER NOT NULL, retryCount INTEGER NOT NULL, status INTEGER NOT NULL, intent INTEGER NOT NULL", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"position INTEGER NOT NULL error:scopeIndex INTEGER NOT NULL, itemIdentifier TEXT NOT NULL, resourceType INTEGER NOT NULL, fingerPrint TEXT NOT NULL, fileUTI TEXT, fileSize INTEGER NOT NULL, taskIdentifier INTEGER NOT NULL, retryCount INTEGER NOT NULL, status INTEGER NOT NULL, intent INTEGER NOT NULL", 0];
+    if (initializeStorage)
     {
-      v3 = [(CPLPrequeliteStorage *)self createVariable:*(&self->super._shouldUpgradeSchema + 1) defaultValue:&off_10028F130 error:0];
-      if (v3)
+      initializeStorage = [(CPLPrequeliteStorage *)self createVariable:*(&self->super._shouldUpgradeSchema + 1) defaultValue:&off_10028F130 error:0];
+      if (initializeStorage)
       {
-        v3 = [(CPLPrequeliteStorage *)self createVariable:*(&self->_nextTaskIdentifier + 4) defaultValue:&off_10028F130 error:0];
-        if (v3)
+        initializeStorage = [(CPLPrequeliteStorage *)self createVariable:*(&self->_nextTaskIdentifier + 4) defaultValue:&off_10028F130 error:0];
+        if (initializeStorage)
         {
-          v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"resource" withDefinition:@"itemIdentifier unique:scopeIndex error:resourceType", 1, 0];
-          if (v3)
+          initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"resource" withDefinition:@"itemIdentifier unique:scopeIndex error:resourceType", 1, 0];
+          if (initializeStorage)
           {
-            v3 = [(CPLPrequeliteResourceDownloadQueue *)self _createResourceTypeAndStatusIndex];
-            if (v3)
+            initializeStorage = [(CPLPrequeliteResourceDownloadQueue *)self _createResourceTypeAndStatusIndex];
+            if (initializeStorage)
             {
-              LOBYTE(v3) = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"scopeIndex" error:0];
+              LOBYTE(initializeStorage) = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"scopeIndex" error:0];
             }
           }
         }
@@ -87,28 +87,28 @@
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = CPLPrequeliteResourceDownloadQueue;
   v5 = [(CPLPrequeliteStorage *)&v15 upgradeStorageToVersion:?];
   v6 = v5;
-  if (a3 == 20 || !v5)
+  if (version == 20 || !v5)
   {
     return v6;
   }
 
   v6 = 1;
-  if (a3 <= 57)
+  if (version <= 57)
   {
-    if (a3 <= 48)
+    if (version <= 48)
     {
-      if (a3 != 33)
+      if (version != 33)
       {
-        if (a3 == 39 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+        if (version == 39 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
         {
           sub_1001BFF84(self, &v16);
           return v16;
@@ -117,20 +117,20 @@
         return v6;
       }
 
-      v12 = [(CPLPrequeliteStorage *)self pqStore];
-      v9 = [v12 pqlConnection];
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
-      v10 = [(CPLPrequeliteStorage *)self mainTable];
-      v11 = [v9 cplExecute:{@"ALTER TABLE %@ ADD COLUMN fileSize INTEGER DEFAULT 0", v10, v14}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      v11 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN fileSize INTEGER DEFAULT 0", mainTable, v14}];
 LABEL_25:
       v6 = v11;
 
       return v6;
     }
 
-    if (a3 != 49)
+    if (version != 49)
     {
-      if (a3 != 52 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+      if (version != 52 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
       {
         return v6;
       }
@@ -152,20 +152,20 @@ LABEL_25:
     return 0;
   }
 
-  if (a3 > 65)
+  if (version > 65)
   {
-    if (a3 != 66)
+    if (version != 66)
     {
-      if (a3 != 67 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+      if (version != 67 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
       {
         return v6;
       }
 
-      v8 = [(CPLPrequeliteStorage *)self pqStore];
-      v9 = [v8 pqlConnection];
+      pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore2 pqlConnection];
 
-      v10 = [(CPLPrequeliteStorage *)self mainTable];
-      v11 = [v9 cplExecute:{@"DELETE FROM %@ WHERE intent = %i", v10, 5}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      v11 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE intent = %i", mainTable, 5}];
       goto LABEL_25;
     }
 
@@ -182,7 +182,7 @@ LABEL_25:
     return 0;
   }
 
-  if (a3 == 58)
+  if (version == 58)
   {
     if (![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
     {
@@ -197,7 +197,7 @@ LABEL_25:
     return 0;
   }
 
-  if (a3 == 65 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+  if (version == 65 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
   {
     sub_1001BFE6C(self, &v16);
     return v16;
@@ -206,7 +206,7 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v10.receiver = self;
   v10.super_class = CPLPrequeliteResourceDownloadQueue;
@@ -215,66 +215,66 @@ LABEL_25:
     return 0;
   }
 
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v6 cplExecute:{@"UPDATE OR FAIL %@ SET status = %i WHERE status = %i", v7, 1, 0}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplExecute:{@"UPDATE OR FAIL %@ SET status = %i WHERE status = %i", mainTable, 1, 0}];
 
-  if (a3 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
-    *a3 = [v6 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v8;
 }
 
-- (BOOL)_getNextPosition:(unint64_t *)a3 andBumpWithError:(id *)a4
+- (BOOL)_getNextPosition:(unint64_t *)position andBumpWithError:(id *)error
 {
   v7 = [(CPLPrequeliteStorage *)self valueForVariable:*(&self->_nextTaskIdentifier + 4)];
-  *a3 = [v7 unsignedIntegerValue];
+  *position = [v7 unsignedIntegerValue];
 
-  v8 = [NSNumber numberWithUnsignedInteger:*a3 + 1];
-  LOBYTE(a4) = [(CPLPrequeliteStorage *)self setValue:v8 forVariable:*(&self->_nextTaskIdentifier + 4) error:a4];
+  v8 = [NSNumber numberWithUnsignedInteger:*position + 1];
+  LOBYTE(error) = [(CPLPrequeliteStorage *)self setValue:v8 forVariable:*(&self->_nextTaskIdentifier + 4) error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_deleteEnqueuedResource:(id)a3 error:(id *)a4
+- (BOOL)_deleteEnqueuedResource:(id)resource error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 itemScopedIdentifier];
-  v8 = [v7 scopeIndex];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  scopeIndex = [itemScopedIdentifier scopeIndex];
+  if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     sub_1001C0100();
   }
 
-  v9 = v8;
-  v10 = [(CPLPrequeliteStorage *)self pqStore];
-  v11 = [v10 pqlConnection];
+  v9 = scopeIndex;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v12 = [(CPLPrequeliteStorage *)self mainTable];
-  v13 = [v7 identifier];
-  v14 = [v11 cplExecute:{@"DELETE FROM %@ WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", v12, v13, objc_msgSend(v6, "resourceType"), v9}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [itemScopedIdentifier identifier];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", mainTable, identifier, objc_msgSend(resourceCopy, "resourceType"), v9}];
 
-  if (a4 && (v14 & 1) == 0)
+  if (error && (v14 & 1) == 0)
   {
-    *a4 = [v11 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v14;
 }
 
-- (id)_enqueuedResourceForResource:(id)a3 verifyScopeIndex:(BOOL)a4
+- (id)_enqueuedResourceForResource:(id)resource verifyScopeIndex:(BOOL)index
 {
-  v6 = a3;
-  v7 = [v6 itemScopedIdentifier];
-  v8 = v7;
-  if (a4)
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  v8 = itemScopedIdentifier;
+  if (index)
   {
-    v9 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v7];
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    scopeIndex = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:itemScopedIdentifier];
+    if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
       goto LABEL_6;
@@ -283,61 +283,61 @@ LABEL_25:
 
   else
   {
-    v9 = [v7 scopeIndex];
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    scopeIndex = [itemScopedIdentifier scopeIndex];
+    if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       sub_1001C01B8();
     }
   }
 
-  v11 = v9;
-  v12 = [(CPLPrequeliteStorage *)self pqStore];
-  v13 = [v12 pqlConnection];
+  v11 = scopeIndex;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
   v14 = objc_opt_class();
-  v15 = [(CPLPrequeliteStorage *)self mainTable];
-  v16 = [v8 identifier];
-  v10 = [v13 cplFetchObjectOfClass:v14 sql:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", v15, v16, objc_msgSend(v6, "resourceType"), v11}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [v8 identifier];
+  v10 = [pqlConnection cplFetchObjectOfClass:v14 sql:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", mainTable, identifier, objc_msgSend(resourceCopy, "resourceType"), v11}];
 
 LABEL_6:
 
   return v10;
 }
 
-- (BOOL)enqueueBackgroundDownloadTaskForResource:(id)a3 intent:(unint64_t)a4 downloading:(BOOL)a5 error:(id *)a6
+- (BOOL)enqueueBackgroundDownloadTaskForResource:(id)resource intent:(unint64_t)intent downloading:(BOOL)downloading error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [v10 itemScopedIdentifier];
-  if ([(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v11]!= 0x7FFFFFFFFFFFFFFFLL)
+  downloadingCopy = downloading;
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  if ([(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:itemScopedIdentifier]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v37 = 0;
-    if (![(CPLPrequeliteResourceDownloadQueue *)self _getNextPosition:&v37 andBumpWithError:a6])
+    if (![(CPLPrequeliteResourceDownloadQueue *)self _getNextPosition:&v37 andBumpWithError:error])
     {
       goto LABEL_8;
     }
 
-    v28 = a6;
-    v13 = [[CPLPrequeliteDownloadResource alloc] initWithResource:v10];
+    errorCopy = error;
+    v13 = [[CPLPrequeliteDownloadResource alloc] initWithResource:resourceCopy];
     [(CPLPrequeliteDownloadResource *)v13 setPosition:v37];
-    [(CPLPrequeliteDownloadResource *)v13 setStatus:!v7];
-    [(CPLPrequeliteDownloadResource *)v13 setIntent:a4];
-    v14 = [(CPLPrequeliteStorage *)self pqStore];
-    v36 = [v14 pqlConnection];
+    [(CPLPrequeliteDownloadResource *)v13 setStatus:!downloadingCopy];
+    [(CPLPrequeliteDownloadResource *)v13 setIntent:intent];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v34 = [(CPLPrequeliteStorage *)self mainTable];
-    v32 = [(CPLPrequeliteDownloadResource *)v13 position];
-    v30 = [(CPLPrequeliteDownloadResource *)v13 scopeIndex];
-    v15 = [(CPLPrequeliteDownloadResource *)v13 itemIdentifier];
-    v29 = [(CPLPrequeliteDownloadResource *)v13 resourceType];
-    v16 = [(CPLPrequeliteDownloadResource *)v13 fingerPrint];
-    v17 = [(CPLPrequeliteDownloadResource *)v13 fileUTI];
-    v18 = v36;
-    v19 = [v36 cplExecute:{@"INSERT OR IGNORE INTO %@ (position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent) VALUES (%lu, %ld, %@, %i, %@, %@, %lu, %lu, %i, %i, %lu)", v34, v32, v30, v15, v29, v16, v17, -[CPLPrequeliteDownloadResource fileSize](v13, "fileSize"), -[CPLPrequeliteDownloadResource taskIdentifier](v13, "taskIdentifier"), -[CPLPrequeliteDownloadResource retryCount](v13, "retryCount"), -[CPLPrequeliteDownloadResource status](v13, "status"), -[CPLPrequeliteDownloadResource intent](v13, "intent")}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    position = [(CPLPrequeliteDownloadResource *)v13 position];
+    scopeIndex = [(CPLPrequeliteDownloadResource *)v13 scopeIndex];
+    itemIdentifier = [(CPLPrequeliteDownloadResource *)v13 itemIdentifier];
+    resourceType = [(CPLPrequeliteDownloadResource *)v13 resourceType];
+    fingerPrint = [(CPLPrequeliteDownloadResource *)v13 fingerPrint];
+    fileUTI = [(CPLPrequeliteDownloadResource *)v13 fileUTI];
+    v18 = pqlConnection;
+    v19 = [pqlConnection cplExecute:{@"INSERT OR IGNORE INTO %@ (position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent) VALUES (%lu, %ld, %@, %i, %@, %@, %lu, %lu, %i, %i, %lu)", mainTable, position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, -[CPLPrequeliteDownloadResource fileSize](v13, "fileSize"), -[CPLPrequeliteDownloadResource taskIdentifier](v13, "taskIdentifier"), -[CPLPrequeliteDownloadResource retryCount](v13, "retryCount"), -[CPLPrequeliteDownloadResource status](v13, "status"), -[CPLPrequeliteDownloadResource intent](v13, "intent")}];
 
     if (v19)
     {
-      if ([v36 changes])
+      if ([pqlConnection changes])
       {
         v12 = 1;
 LABEL_20:
@@ -345,7 +345,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      if ([(CPLPrequeliteResourceDownloadQueue *)self _deleteEnqueuedResource:v10 error:v28])
+      if ([(CPLPrequeliteResourceDownloadQueue *)self _deleteEnqueuedResource:resourceCopy error:errorCopy])
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -354,30 +354,30 @@ LABEL_20:
           {
             v22 = [CPLResourceTransferTaskOptions descriptionForIntent:[(CPLPrequeliteDownloadResource *)v13 intent]];
             *buf = 138412546;
-            v39 = v10;
+            v39 = resourceCopy;
             v40 = 2112;
             v41 = v22;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "New background download will superseeds current enqueued one for %@, intent: %@", buf, 0x16u);
           }
         }
 
-        v35 = [(CPLPrequeliteStorage *)self mainTable];
-        v33 = [(CPLPrequeliteDownloadResource *)v13 position];
-        v31 = [(CPLPrequeliteDownloadResource *)v13 scopeIndex];
-        v23 = [(CPLPrequeliteDownloadResource *)v13 itemIdentifier];
-        v24 = [(CPLPrequeliteDownloadResource *)v13 resourceType];
-        v25 = [(CPLPrequeliteDownloadResource *)v13 fingerPrint];
-        v26 = [(CPLPrequeliteDownloadResource *)v13 fileUTI];
-        v12 = [v36 cplExecute:{@"INSERT INTO %@ (position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent) VALUES (%lu, %ld, %@, %i, %@, %@, %lu, %lu, %i, %i, %lu)", v35, v33, v31, v23, v24, v25, v26, -[CPLPrequeliteDownloadResource fileSize](v13, "fileSize"), -[CPLPrequeliteDownloadResource taskIdentifier](v13, "taskIdentifier"), -[CPLPrequeliteDownloadResource retryCount](v13, "retryCount"), -[CPLPrequeliteDownloadResource status](v13, "status"), -[CPLPrequeliteDownloadResource intent](v13, "intent")}];
+        mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+        position2 = [(CPLPrequeliteDownloadResource *)v13 position];
+        scopeIndex2 = [(CPLPrequeliteDownloadResource *)v13 scopeIndex];
+        itemIdentifier2 = [(CPLPrequeliteDownloadResource *)v13 itemIdentifier];
+        resourceType2 = [(CPLPrequeliteDownloadResource *)v13 resourceType];
+        fingerPrint2 = [(CPLPrequeliteDownloadResource *)v13 fingerPrint];
+        fileUTI2 = [(CPLPrequeliteDownloadResource *)v13 fileUTI];
+        v12 = [pqlConnection cplExecute:{@"INSERT INTO %@ (position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent) VALUES (%lu, %ld, %@, %i, %@, %@, %lu, %lu, %i, %i, %lu)", mainTable2, position2, scopeIndex2, itemIdentifier2, resourceType2, fingerPrint2, fileUTI2, -[CPLPrequeliteDownloadResource fileSize](v13, "fileSize"), -[CPLPrequeliteDownloadResource taskIdentifier](v13, "taskIdentifier"), -[CPLPrequeliteDownloadResource retryCount](v13, "retryCount"), -[CPLPrequeliteDownloadResource status](v13, "status"), -[CPLPrequeliteDownloadResource intent](v13, "intent")}];
 
-        v20 = v28;
-        if (!v28)
+        v20 = errorCopy;
+        if (!errorCopy)
         {
-          v18 = v36;
+          v18 = pqlConnection;
           goto LABEL_20;
         }
 
-        v18 = v36;
+        v18 = pqlConnection;
         if (v12)
         {
           goto LABEL_20;
@@ -389,8 +389,8 @@ LABEL_20:
 
     else
     {
-      v20 = v28;
-      if (v28)
+      v20 = errorCopy;
+      if (errorCopy)
       {
 LABEL_10:
         [v18 lastCPLError];
@@ -403,56 +403,56 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  if (!a6)
+  if (!error)
   {
 LABEL_8:
     v12 = 0;
     goto LABEL_21;
   }
 
-  [CPLErrors invalidScopeErrorWithScopedIdentifier:v11];
-  *a6 = v12 = 0;
+  [CPLErrors invalidScopeErrorWithScopedIdentifier:itemScopedIdentifier];
+  *error = v12 = 0;
 LABEL_21:
 
   return v12;
 }
 
-- (BOOL)reenqueueBackgroundDownloadTaskForResource:(id)a3 taskIdentifier:(unint64_t)a4 bumpRetryCount:(BOOL)a5 didDiscard:(BOOL *)a6 error:(id *)a7
+- (BOOL)reenqueueBackgroundDownloadTaskForResource:(id)resource taskIdentifier:(unint64_t)identifier bumpRetryCount:(BOOL)count didDiscard:(BOOL *)discard error:(id *)error
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = [(CPLPrequeliteResourceDownloadQueue *)self _enqueuedResourceForResource:v12 verifyScopeIndex:0];
+  countCopy = count;
+  resourceCopy = resource;
+  v13 = [(CPLPrequeliteResourceDownloadQueue *)self _enqueuedResourceForResource:resourceCopy verifyScopeIndex:0];
   v14 = v13;
-  *a6 = 0;
+  *discard = 0;
   if (v13)
   {
-    if ([v13 taskIdentifier] == a4)
+    if ([v13 taskIdentifier] == identifier)
     {
-      v15 = [(CPLPrequeliteStorage *)self pqStore];
-      v16 = [v15 pqlConnection];
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
-      v17 = [v12 itemScopedIdentifier];
-      v18 = [v17 scopeIndex];
-      if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+      itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+      scopeIndex = [itemScopedIdentifier scopeIndex];
+      if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         sub_1001C0270();
       }
 
-      v19 = v18;
-      if (v9)
+      v19 = scopeIndex;
+      if (countCopy)
       {
-        v20 = [v14 retryCount];
-        if (v20 < 10)
+        retryCount = [v14 retryCount];
+        if (retryCount < 10)
         {
-          v29 = (v20 + 1);
-          v30 = [(CPLPrequeliteStorage *)self mainTable];
-          v31 = [v17 identifier];
-          v22 = -[NSObject cplExecute:](v16, "cplExecute:", @"UPDATE %@ SET retryCount = %i, status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", v30, v29, 2, v31, [v12 resourceType], v19);
+          v29 = (retryCount + 1);
+          mainTable = [(CPLPrequeliteStorage *)self mainTable];
+          identifier = [itemScopedIdentifier identifier];
+          v22 = -[NSObject cplExecute:](pqlConnection, "cplExecute:", @"UPDATE %@ SET retryCount = %i, status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", mainTable, v29, 2, identifier, [resourceCopy resourceType], v19);
 
-          if (a7 && (v22 & 1) == 0)
+          if (error && (v22 & 1) == 0)
           {
-            [v16 lastCPLError];
-            *a7 = v22 = 0;
+            [pqlConnection lastCPLError];
+            *error = v22 = 0;
           }
         }
 
@@ -464,28 +464,28 @@ LABEL_21:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v33 = v12;
+              v33 = resourceCopy;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Discarding background download of %@: failed too many times", buf, 0xCu);
             }
           }
 
-          v22 = [(CPLPrequeliteResourceDownloadQueue *)self _deleteEnqueuedResource:v12 error:a7];
-          *a6 = 1;
+          v22 = [(CPLPrequeliteResourceDownloadQueue *)self _deleteEnqueuedResource:resourceCopy error:error];
+          *discard = 1;
         }
       }
 
       else
       {
-        v24 = [(CPLPrequeliteStorage *)self pqStore];
-        v25 = [v24 pqlConnection];
+        pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+        pqlConnection2 = [pqStore2 pqlConnection];
 
-        v26 = [(CPLPrequeliteStorage *)self mainTable];
-        v27 = [v17 identifier];
-        v22 = [v25 cplExecute:{@"UPDATE %@ SET status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", v26, 2, v27, objc_msgSend(v12, "resourceType"), v19}];
+        mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+        identifier2 = [itemScopedIdentifier identifier];
+        v22 = [pqlConnection2 cplExecute:{@"UPDATE %@ SET status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", mainTable2, 2, identifier2, objc_msgSend(resourceCopy, "resourceType"), v19}];
 
-        if (a7 && (v22 & 1) == 0)
+        if (error && (v22 & 1) == 0)
         {
-          *a7 = [v25 lastCPLError];
+          *error = [pqlConnection2 lastCPLError];
         }
       }
 
@@ -494,11 +494,11 @@ LABEL_21:
 
     if ((_CPLSilentLogging & 1) == 0)
     {
-      v16 = sub_1001645FC();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      pqlConnection = sub_1001645FC();
+      if (os_log_type_enabled(pqlConnection, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v33 = v12;
+        v33 = resourceCopy;
         v23 = "Dropping background download of %@ as the current enqueued task superseeeds it";
         goto LABEL_17;
       }
@@ -516,14 +516,14 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v16 = sub_1001645FC();
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+  pqlConnection = sub_1001645FC();
+  if (os_log_type_enabled(pqlConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v33 = v12;
+    v33 = resourceCopy;
     v23 = "Dropping background download of %@ as it has been removed from the queue";
 LABEL_17:
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, v23, buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, pqlConnection, OS_LOG_TYPE_DEBUG, v23, buf, 0xCu);
   }
 
 LABEL_18:
@@ -534,85 +534,85 @@ LABEL_25:
   return v22;
 }
 
-- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)a3 taskIdentifier:(unint64_t)a4 error:(id *)a5
+- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)suceeded taskIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 itemScopedIdentifier];
-  v10 = [v9 scopeIndex];
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+  suceededCopy = suceeded;
+  itemScopedIdentifier = [suceededCopy itemScopedIdentifier];
+  scopeIndex = [itemScopedIdentifier scopeIndex];
+  if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     sub_1001C0328();
   }
 
-  v11 = v10;
-  v12 = [(CPLPrequeliteStorage *)self pqStore];
-  v13 = [v12 pqlConnection];
+  v11 = scopeIndex;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v14 = [(CPLPrequeliteStorage *)self mainTable];
-  v15 = [v9 identifier];
-  v16 = [v13 cplExecute:{@"UPDATE %@ SET status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND taskIdentifier = %lu AND scopeIndex = %ld", v14, 3, v15, objc_msgSend(v8, "resourceType"), a4, v11}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [itemScopedIdentifier identifier];
+  v16 = [pqlConnection cplExecute:{@"UPDATE %@ SET status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND taskIdentifier = %lu AND scopeIndex = %ld", mainTable, 3, identifier, objc_msgSend(suceededCopy, "resourceType"), identifier, v11}];
 
-  if (a5 && (v16 & 1) == 0)
+  if (error && (v16 & 1) == 0)
   {
-    *a5 = [v13 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v16;
 }
 
-- (BOOL)removeBackgroundDownloadTaskForResource:(id)a3 taskIdentifier:(unint64_t)a4 error:(id *)a5
+- (BOOL)removeBackgroundDownloadTaskForResource:(id)resource taskIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 itemScopedIdentifier];
-  v10 = [v9 scopeIndex];
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  scopeIndex = [itemScopedIdentifier scopeIndex];
+  if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     sub_1001C03E0();
   }
 
-  v11 = v10;
-  v12 = [(CPLPrequeliteStorage *)self pqStore];
-  v13 = [v12 pqlConnection];
+  v11 = scopeIndex;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v14 = [(CPLPrequeliteStorage *)self mainTable];
-  v15 = [v9 identifier];
-  v16 = [v13 cplExecute:{@"DELETE FROM %@ WHERE itemIdentifier = %@ AND resourceType = %i AND taskIdentifier = %lu AND scopeIndex = %ld", v14, v15, objc_msgSend(v8, "resourceType"), a4, v11}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [itemScopedIdentifier identifier];
+  v16 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE itemIdentifier = %@ AND resourceType = %i AND taskIdentifier = %lu AND scopeIndex = %ld", mainTable, identifier, objc_msgSend(resourceCopy, "resourceType"), identifier, v11}];
 
-  if (a5 && (v16 & 1) == 0)
+  if (error && (v16 & 1) == 0)
   {
-    *a5 = [v13 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v16;
 }
 
-- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)a3 andIntent:(unint64_t)a4 maximumSize:(unint64_t)a5 maximumCount:(unint64_t)a6 error:(id *)a7
+- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)type andIntent:(unint64_t)intent maximumSize:(unint64_t)size maximumCount:(unint64_t)count error:(id *)error
 {
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [(CPLPrequeliteStorage *)self pqStore];
-  v13 = [v12 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v14 = [(CPLPrequeliteStorage *)self mainTable];
-  v15 = v14;
-  if (a3 == -1)
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v15 = mainTable;
+  if (type == -1)
   {
-    v16 = [v13 cplFetch:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE status = %i AND intent = %i ORDER BY position", v14, 1, a4, v34}];
+    v16 = [pqlConnection cplFetch:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE status = %i AND intent = %i ORDER BY position", mainTable, 1, intent, v34}];
   }
 
   else
   {
-    v16 = [v13 cplFetch:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE status = %i AND resourceType = %i AND intent = %i ORDER BY position", v14, 1, a3, a4}];
+    v16 = [pqlConnection cplFetch:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE status = %i AND resourceType = %i AND intent = %i ORDER BY position", mainTable, 1, type, intent}];
   }
 
   v17 = v16;
 
   if (!v17)
   {
-    v29 = [v13 lastCPLError];
-    v30 = v29;
-    if (v29)
+    lastCPLError = [pqlConnection lastCPLError];
+    v30 = lastCPLError;
+    if (lastCPLError)
     {
-      v31 = v29;
+      v31 = lastCPLError;
     }
 
     else
@@ -620,10 +620,10 @@ LABEL_25:
       v31 = +[CPLErrors unknownError];
     }
 
-    v28 = v31;
+    lastCPLError2 = v31;
 
     v11 = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -640,8 +640,8 @@ LABEL_25:
   if (v42)
   {
     v35 = v17;
-    v38 = v13;
-    v36 = a7;
+    v38 = pqlConnection;
+    errorCopy = error;
     v18 = 0;
     v41 = *v44;
     while (2)
@@ -657,43 +657,43 @@ LABEL_25:
         v21 = v20;
         if (v20)
         {
-          v22 = [v20 estimatedResourceSize];
-          v23 = v22;
-          if ((a5 <= v18 || a5 - v18 < v22) && [v11 count])
+          estimatedResourceSize = [v20 estimatedResourceSize];
+          v23 = estimatedResourceSize;
+          if ((size <= v18 || size - v18 < estimatedResourceSize) && [v11 count])
           {
-            v28 = 0;
-            a7 = v36;
-            v13 = v38;
+            lastCPLError2 = 0;
+            error = errorCopy;
+            pqlConnection = v38;
             goto LABEL_31;
           }
 
-          v24 = [v21 itemScopedIdentifier];
-          if ([v24 scopeIndex] == 0x7FFFFFFFFFFFFFFFLL)
+          itemScopedIdentifier = [v21 itemScopedIdentifier];
+          if ([itemScopedIdentifier scopeIndex] == 0x7FFFFFFFFFFFFFFFLL)
           {
             sub_1001C0498();
           }
 
-          v25 = [(CPLPrequeliteStorage *)self mainTable];
-          v26 = [v24 identifier];
-          v27 = [v38 cplExecute:{@"UPDATE %@ SET status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", v25, 0, v26, objc_msgSend(v21, "resourceType"), objc_msgSend(v24, "scopeIndex")}];
+          mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+          identifier = [itemScopedIdentifier identifier];
+          v27 = [v38 cplExecute:{@"UPDATE %@ SET status = %i WHERE itemIdentifier = %@ AND resourceType = %i AND scopeIndex = %ld", mainTable2, 0, identifier, objc_msgSend(v21, "resourceType"), objc_msgSend(itemScopedIdentifier, "scopeIndex")}];
 
           if ((v27 & 1) == 0)
           {
-            v13 = v38;
-            v28 = [v38 lastCPLError];
+            pqlConnection = v38;
+            lastCPLError2 = [v38 lastCPLError];
 
             v11 = 0;
             goto LABEL_26;
           }
 
           [v11 addObject:v21];
-          if ([v11 count] >= a6)
+          if ([v11 count] >= count)
           {
-            v28 = 0;
-            v13 = v38;
+            lastCPLError2 = 0;
+            pqlConnection = v38;
 LABEL_26:
 
-            a7 = v36;
+            error = errorCopy;
 LABEL_31:
             v17 = v35;
 
@@ -713,26 +713,26 @@ LABEL_31:
       break;
     }
 
-    v28 = 0;
+    lastCPLError2 = 0;
     v17 = v35;
-    a7 = v36;
-    v13 = v38;
+    error = errorCopy;
+    pqlConnection = v38;
   }
 
   else
   {
-    v28 = 0;
+    lastCPLError2 = 0;
   }
 
 LABEL_32:
 
-  if (a7)
+  if (error)
   {
 LABEL_33:
     if (!v11)
     {
-      v32 = v28;
-      *a7 = v28;
+      v32 = lastCPLError2;
+      *error = lastCPLError2;
     }
   }
 
@@ -741,32 +741,32 @@ LABEL_35:
   return v11;
 }
 
-- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)a3
+- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)error
 {
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v6 cplExecute:{@"UPDATE OR FAIL %@ SET status = %i WHERE status = %i", v7, 1, 2}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplExecute:{@"UPDATE OR FAIL %@ SET status = %i WHERE status = %i", mainTable, 1, 2}];
 
-  if (a3 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
-    *a3 = [v6 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v8;
 }
 
-- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:identifierCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopedIdentifier:v6];
-      *a4 = v8 = 0;
+      [CPLErrors invalidScopeErrorWithScopedIdentifier:identifierCopy];
+      *error = v8 = 0;
     }
 
     else
@@ -778,16 +778,16 @@ LABEL_35:
   else
   {
     v9 = v7;
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v10 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v13 = [v6 identifier];
-    v8 = [v11 cplExecute:{@"DELETE FROM %@ WHERE itemIdentifier = %@ AND scopeIndex = %ld", v12, v13, v9}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v8 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE itemIdentifier = %@ AND scopeIndex = %ld", mainTable, identifier, v9}];
 
-    if (a4 && (v8 & 1) == 0)
+    if (error && (v8 & 1) == 0)
     {
-      *a4 = [v11 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
@@ -796,11 +796,11 @@ LABEL_35:
 
 - (id)enumeratorForDownloadedResources
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [v3 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v5 = [(CPLPrequeliteStorage *)self mainTable];
-  v6 = [v4 cplFetch:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE status = %i", v5, 3}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v6 = [pqlConnection cplFetch:{@"SELECT position, scopeIndex, itemIdentifier, resourceType, fingerPrint, fileUTI, fileSize, taskIdentifier, retryCount, status, intent FROM %@ WHERE status = %i", mainTable, 3}];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -815,10 +815,10 @@ LABEL_35:
 
 - (BOOL)hasActiveOrQueuedBackgroundDownloadOperations
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v5 = [PQLFormatInjection formatInjection:@"status != %i", 3];
-  v6 = [v3 table:v4 hasRecordsMatchingQuery:v5];
+  v6 = [pqStore table:mainTable hasRecordsMatchingQuery:v5];
 
   return v6;
 }
@@ -832,8 +832,8 @@ LABEL_35:
   v19 = sub_1000053BC;
   v14.receiver = self;
   v14.super_class = CPLPrequeliteResourceDownloadQueue;
-  v3 = [(CPLPrequeliteStorage *)&v14 status];
-  v20 = [v3 mutableCopy];
+  status = [(CPLPrequeliteStorage *)&v14 status];
+  v20 = [status mutableCopy];
 
   v4 = [(CPLPrequeliteResourceDownloadQueue *)self _countOfRecordsWithStatus:2];
   v5 = [(CPLPrequeliteResourceDownloadQueue *)self _countOfRecordsWithStatus:3];
@@ -857,15 +857,15 @@ LABEL_35:
   v12[1] = v12;
   v12[2] = 0x2020000000;
   v13 = 1;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100166560;
   v11[3] = &unk_10027BA20;
   v11[4] = v12;
   v11[5] = &v15;
-  [v7 table:v8 enumerateCountGroupedByUnsignedIntegerProperty:@"resourceType" block:v11];
+  [pqStore table:mainTable enumerateCountGroupedByUnsignedIntegerProperty:@"resourceType" block:v11];
 
   v9 = v16[5];
   _Block_object_dispose(v12, 8);
@@ -883,22 +883,22 @@ LABEL_35:
   return v2;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v12 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", v13, a3, a4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", mainTable, index, count}];
 
   if (v14)
   {
-    *a5 = [v12 changes];
+    *deletedCount = [pqlConnection changes];
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [v12 lastError];
+    *error = [pqlConnection lastError];
   }
 
   return v14;
@@ -907,9 +907,9 @@ LABEL_35:
 - (unint64_t)newTaskIdentifier
 {
   v3 = [(CPLPrequeliteStorage *)self valueForVariable:*(&self->super._shouldUpgradeSchema + 1)];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  v5 = [NSNumber numberWithUnsignedInteger:v4 + 1];
+  v5 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
   v6 = *(&self->super._shouldUpgradeSchema + 1);
   v11 = 0;
   v7 = [(CPLPrequeliteStorage *)self setValue:v5 forVariable:v6 error:&v11];
@@ -926,7 +926,7 @@ LABEL_35:
     }
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 @end

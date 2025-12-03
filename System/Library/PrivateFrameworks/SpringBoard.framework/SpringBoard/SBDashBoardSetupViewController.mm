@@ -1,78 +1,78 @@
 @interface SBDashBoardSetupViewController
 - (BOOL)_canCycleAnimationComponents;
 - (BOOL)_canShowSolariumCursiveAnimation;
-- (BOOL)_haveImportantLanguagesChangedFrom:(id)a3;
+- (BOOL)_haveImportantLanguagesChangedFrom:(id)from;
 - (BOOL)_isRunningBookendAnimation;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)handleEvent:(id)a3;
-- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)a3;
-- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)a3 telephonyManager:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)handleEvent:(id)event;
+- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)controller;
+- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)controller telephonyManager:(id)manager;
 - (id)_alignedMarketingOrdering;
-- (id)_applicableIdentifierForDictionary:(id)a3 identifier:(id)a4;
+- (id)_applicableIdentifierForDictionary:(id)dictionary identifier:(id)identifier;
 - (id)_currentActivationLockStringsDictionary;
 - (id)_currentLanguageIdentifier;
 - (id)_currentStoreRestrictedStringsDictionary;
-- (id)_displayStringForLocalizedString:(id)a3 fallbackString:(id)a4;
+- (id)_displayStringForLocalizedString:(id)string fallbackString:(id)fallbackString;
 - (id)_importantLanguageIdentifiers;
-- (id)_subcriptionDataSourceDescription:(int64_t)a3;
-- (id)_subscriptionInfoForSubscriptionDataSource:(int64_t)a3;
-- (id)_supportedLanguageIdentifierFromRegionalLanguageIdentifier:(id)a3 countryCode:(id)a4;
-- (id)firstSupportedLanguageIdentifierInRegionalLanguageIdentifiers:(id)a3 countryCode:(id)a4;
+- (id)_subcriptionDataSourceDescription:(int64_t)description;
+- (id)_subscriptionInfoForSubscriptionDataSource:(int64_t)source;
+- (id)_supportedLanguageIdentifierFromRegionalLanguageIdentifier:(id)identifier countryCode:(id)code;
+- (id)firstSupportedLanguageIdentifierInRegionalLanguageIdentifiers:(id)identifiers countryCode:(id)code;
 - (unint64_t)_componentsToStartCycling;
 - (void)_animateComponentsForNewCycle;
 - (void)_cancelWifiScan;
 - (void)_checkIfActivationLocked;
-- (void)_didClickHomeAffordance:(id)a3;
+- (void)_didClickHomeAffordance:(id)affordance;
 - (void)_evaluateUpdatingLanguageForImportantLanguageChanges;
-- (void)_handleHoverEvent:(id)a3;
+- (void)_handleHoverEvent:(id)event;
 - (void)_incrementLocalizedStringsForNewCycle;
-- (void)_infoButtonTapped:(id)a3;
+- (void)_infoButtonTapped:(id)tapped;
 - (void)_invalidateWallpaperLoadingTimerAndShowUIIfNeeded;
-- (void)_makeSetupAccessoryViewsVisible:(BOOL)a3 animated:(BOOL)a4 delay:(double)a5;
-- (void)_regulatoryInfoButtonTapped:(id)a3;
-- (void)_resetDisplayedLocalizedStringsImmediately:(BOOL)a3;
-- (void)_retrieveChildIconIfNecessaryWithCompletion:(id)a3;
-- (void)_setSuppressingWallpaperForCursiveTextAnimation:(BOOL)a3;
-- (void)_shareIdentityButtonTapped:(id)a3;
-- (void)_startCyclingComponents:(unint64_t)a3 withDelay:(double)a4;
-- (void)_startWallpaperLoadingTimerWithDuration:(double)a3;
+- (void)_makeSetupAccessoryViewsVisible:(BOOL)visible animated:(BOOL)animated delay:(double)delay;
+- (void)_regulatoryInfoButtonTapped:(id)tapped;
+- (void)_resetDisplayedLocalizedStringsImmediately:(BOOL)immediately;
+- (void)_retrieveChildIconIfNecessaryWithCompletion:(id)completion;
+- (void)_setSuppressingWallpaperForCursiveTextAnimation:(BOOL)animation;
+- (void)_shareIdentityButtonTapped:(id)tapped;
+- (void)_startCyclingComponents:(unint64_t)components withDelay:(double)delay;
+- (void)_startWallpaperLoadingTimerWithDuration:(double)duration;
 - (void)_startWifiScan;
-- (void)_stopCyclingComponents:(unint64_t)a3;
+- (void)_stopCyclingComponents:(unint64_t)components;
 - (void)_updateDisplayedStrings;
-- (void)_updateForLockInfo:(id)a3;
-- (void)_updateLanguageFromSubscriptionDataSource:(int64_t)a3;
+- (void)_updateForLockInfo:(id)info;
+- (void)_updateLanguageFromSubscriptionDataSource:(int64_t)source;
 - (void)_updateLanguageFromTelephony;
 - (void)_updateStringOrderingForLanguageChange;
-- (void)_updateWifiPrimaryLanguageFromDiscoveredCountryCodes:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)animationWillBeginForLanguage:(id)a3 animationDuration:(double)a4;
+- (void)_updateWifiPrimaryLanguageFromDiscoveredCountryCodes:(id)codes;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)animationWillBeginForLanguage:(id)language animationDuration:(double)duration;
 - (void)dealloc;
 - (void)loadView;
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBDashBoardSetupViewController
 
-- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)a3
+- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[SBTelephonyManager sharedTelephonyManager];
-  v6 = [(SBDashBoardSetupViewController *)self initWithCoverSheetViewController:v4 telephonyManager:v5];
+  v6 = [(SBDashBoardSetupViewController *)self initWithCoverSheetViewController:controllerCopy telephonyManager:v5];
 
   return v6;
 }
 
-- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)a3 telephonyManager:(id)a4
+- (SBDashBoardSetupViewController)initWithCoverSheetViewController:(id)controller telephonyManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v28.receiver = self;
   v28.super_class = SBDashBoardSetupViewController;
   v8 = [(SBDashBoardSetupViewController *)&v28 init];
@@ -87,13 +87,13 @@
     setupManager = v8->_setupManager;
     v8->_setupManager = v12;
 
-    objc_storeWeak(&v8->_coverSheetViewController, v6);
-    objc_storeStrong(&v8->_telephonyManager, a4);
+    objc_storeWeak(&v8->_coverSheetViewController, controllerCopy);
+    objc_storeStrong(&v8->_telephonyManager, manager);
     [(SBDashBoardSetupViewController *)v8 _updateStringOrderingForLanguageChange];
     v8->_customDelayDuration = 1.5;
-    v14 = [MEMORY[0x277D29520] sharedInstance];
+    mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
     v27 = 0;
-    LOBYTE(v9) = [v14 needOwnershipWarning:&v27];
+    LOBYTE(v9) = [mEMORY[0x277D29520] needOwnershipWarning:&v27];
     v15 = v27;
     v8->_isStoreRestricted = v9;
 
@@ -102,26 +102,26 @@
     v17 = v15;
 
     [(SBDashBoardSetupViewController *)v8 _checkIfActivationLocked];
-    v18 = [(SBDashBoardSetupViewController *)v8 setupView];
-    v19 = [v18 homeAffordanceView];
+    setupView = [(SBDashBoardSetupViewController *)v8 setupView];
+    homeAffordanceView = [setupView homeAffordanceView];
 
-    [v19 setSystemPointerInteractionEnabled:1];
+    [homeAffordanceView setSystemPointerInteractionEnabled:1];
     v20 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v8 action:sel__didClickHomeAffordance_];
     pointerClickGestureRecognizer = v8->_pointerClickGestureRecognizer;
     v8->_pointerClickGestureRecognizer = v20;
 
     [(UITapGestureRecognizer *)v8->_pointerClickGestureRecognizer setDelegate:v8];
-    [v19 addGestureRecognizer:v8->_pointerClickGestureRecognizer];
+    [homeAffordanceView addGestureRecognizer:v8->_pointerClickGestureRecognizer];
     v22 = [objc_alloc(MEMORY[0x277D755A0]) initWithTarget:v8 action:sel__handleHoverEvent_];
     hoverGestureRecognizer = v8->_hoverGestureRecognizer;
     v8->_hoverGestureRecognizer = v22;
 
-    v24 = [(SBDashBoardSetupViewController *)v8 view];
-    [v24 addGestureRecognizer:v8->_hoverGestureRecognizer];
+    view = [(SBDashBoardSetupViewController *)v8 view];
+    [view addGestureRecognizer:v8->_hoverGestureRecognizer];
 
-    v25 = [SBApp telephonyStateProvider];
+    telephonyStateProvider = [SBApp telephonyStateProvider];
 
-    [v25 addObserver:v8];
+    [telephonyStateProvider addObserver:v8];
     [(SBDashBoardSetupViewController *)v8 _updateLanguageFromTelephony];
   }
 
@@ -130,25 +130,25 @@
 
 - (void)dealloc
 {
-  v3 = [SBApp telephonyStateProvider];
-  [v3 removeObserver:self];
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  [telephonyStateProvider removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBDashBoardSetupViewController;
   [(CSCoverSheetViewControllerBase *)&v4 dealloc];
 }
 
-- (void)_didClickHomeAffordance:(id)a3
+- (void)_didClickHomeAffordance:(id)affordance
 {
   v4 = [MEMORY[0x277D02B80] actionWithType:11];
   [(CSCoverSheetViewControllerBase *)self sendAction:v4];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_pointerClickGestureRecognizer == a3)
+  if (self->_pointerClickGestureRecognizer == recognizer)
   {
-    return [a4 _isPointerTouch];
+    return [touch _isPointerTouch];
   }
 
   else
@@ -157,25 +157,25 @@
   }
 }
 
-- (void)_handleHoverEvent:(id)a3
+- (void)_handleHoverEvent:(id)event
 {
-  v22 = a3;
-  if ([v22 state] == 2)
+  eventCopy = event;
+  if ([eventCopy state] == 2)
   {
-    v4 = [(SBDashBoardSetupViewController *)self setupView];
-    [v22 locationInView:v4];
+    setupView = [(SBDashBoardSetupViewController *)self setupView];
+    [eventCopy locationInView:setupView];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(SBDashBoardSetupViewController *)self setupView];
-    v10 = [v9 homeAffordanceView];
+    setupView2 = [(SBDashBoardSetupViewController *)self setupView];
+    homeAffordanceView = [setupView2 homeAffordanceView];
 
-    [v10 extendedFrameForPointerAnimationSuppression];
+    [homeAffordanceView extendedFrameForPointerAnimationSuppression];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(SBDashBoardSetupViewController *)self _componentsRelevantToPointerSuppression];
+    _componentsRelevantToPointerSuppression = [(SBDashBoardSetupViewController *)self _componentsRelevantToPointerSuppression];
     v25.origin.x = v12;
     v25.origin.y = v14;
     v25.size.width = v16;
@@ -183,34 +183,34 @@
     v24.x = v6;
     v24.y = v8;
     v20 = CGRectContainsPoint(v25, v24);
-    v21 = [(SBDashBoardSetupViewController *)self isCyclingComponents:v19];
+    v21 = [(SBDashBoardSetupViewController *)self isCyclingComponents:_componentsRelevantToPointerSuppression];
     if (v20)
     {
       if (v21)
       {
-        [(SBDashBoardSetupViewController *)self _stopCyclingComponents:v19];
+        [(SBDashBoardSetupViewController *)self _stopCyclingComponents:_componentsRelevantToPointerSuppression];
       }
     }
 
     else if (!v21)
     {
-      [(SBDashBoardSetupViewController *)self _startCyclingComponents:v19 withDelay:0.25];
+      [(SBDashBoardSetupViewController *)self _startCyclingComponents:_componentsRelevantToPointerSuppression withDelay:0.25];
     }
   }
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBDashBoardSetupViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v11, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v11, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 > 23)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type > 23)
     {
-      if (v6 == 24)
+      if (type == 24)
       {
         if (!self->_suppressingWallpaperForCursiveTextAnimation || ![(SBDashBoardSetupViewController *)self _canShowSolariumCursiveAnimation])
         {
@@ -228,7 +228,7 @@
 
       else
       {
-        if (v6 != 25)
+        if (type != 25)
         {
           goto LABEL_19;
         }
@@ -240,9 +240,9 @@
 
     else
     {
-      if (v6 != 1)
+      if (type != 1)
       {
-        if (v6 != 8)
+        if (type != 8)
         {
           goto LABEL_19;
         }
@@ -250,26 +250,26 @@
         [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
       }
 
-      v7 = [(SBDashBoardSetupViewController *)self setupView];
-      v8 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-      v9 = [v8 legibilitySettings];
-      [v7 setLegibilitySettings:v9];
+      setupView = [(SBDashBoardSetupViewController *)self setupView];
+      activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+      legibilitySettings = [activeAppearance legibilitySettings];
+      [setupView setLegibilitySettings:legibilitySettings];
     }
 
-    v5 = 0;
+    isConsumable = 0;
     goto LABEL_19;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_19:
 
-  return v5;
+  return isConsumable;
 }
 
 - (void)loadView
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -278,23 +278,23 @@ LABEL_19:
   v12 = SBFEffectiveHomeButtonType() == 2;
   v13 = [SBDashBoardSetupView alloc];
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetViewController);
-  v15 = [WeakRetained coverSheetContext];
-  v16 = [(SBDashBoardSetupView *)v13 initWithFrame:v12 usingHomeAffordance:v15 coverSheetContext:self->_isStoreRestricted isStoreRestricted:[(SBDashBoardSetupViewController *)self _isSecurityResearchDevice] isSecurityResearchDevice:v5, v7, v9, v11];
+  coverSheetContext = [WeakRetained coverSheetContext];
+  v16 = [(SBDashBoardSetupView *)v13 initWithFrame:v12 usingHomeAffordance:coverSheetContext coverSheetContext:self->_isStoreRestricted isStoreRestricted:[(SBDashBoardSetupViewController *)self _isSecurityResearchDevice] isSecurityResearchDevice:v5, v7, v9, v11];
 
   [(SBDashBoardSetupView *)v16 setAutoresizingMask:18];
-  v17 = [(SBDashBoardSetupView *)v16 infoButton];
-  [v17 addTarget:self action:sel__infoButtonTapped_ forControlEvents:64];
+  infoButton = [(SBDashBoardSetupView *)v16 infoButton];
+  [infoButton addTarget:self action:sel__infoButtonTapped_ forControlEvents:64];
 
   queue = self->_queue;
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __42__SBDashBoardSetupViewController_loadView__block_invoke;
   v23 = &unk_2783A92D8;
-  v24 = self;
+  selfCopy = self;
   v25 = v16;
   v19 = v16;
   dispatch_async(queue, &v20);
-  [(SBDashBoardSetupViewController *)self setView:v19, v20, v21, v22, v23, v24];
+  [(SBDashBoardSetupViewController *)self setView:v19, v20, v21, v22, v23, selfCopy];
 }
 
 void __42__SBDashBoardSetupViewController_loadView__block_invoke(uint64_t a1)
@@ -334,19 +334,19 @@ void __42__SBDashBoardSetupViewController_loadView__block_invoke_3(uint64_t a1)
 
 - (void)viewDidLoad
 {
-  v3 = [(SBDashBoardSetupViewController *)self view];
-  [(CSCoverSheetViewControllerBase *)self registerView:v3 forRole:2];
+  view = [(SBDashBoardSetupViewController *)self view];
+  [(CSCoverSheetViewControllerBase *)self registerView:view forRole:2];
 
   if ([(SBDashBoardSetupViewController *)self _canShowSolariumCursiveAnimation])
   {
     objc_initWeak(&location, self);
-    v4 = [(SBDashBoardSetupViewController *)self setupView];
+    setupView = [(SBDashBoardSetupViewController *)self setupView];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__SBDashBoardSetupViewController_viewDidLoad__block_invoke;
     v6[3] = &unk_2783AC358;
     objc_copyWeak(&v7, &location);
-    [v4 prepareSolariumCursiveTextViewWithDelegate:self completion:v6];
+    [setupView prepareSolariumCursiveTextViewWithDelegate:self completion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -371,12 +371,12 @@ void __45__SBDashBoardSetupViewController_viewDidLoad__block_invoke(uint64_t a1,
   [WeakRetained _startWallpaperLoadingTimerWithDuration:v3];
 }
 
-- (void)_setSuppressingWallpaperForCursiveTextAnimation:(BOOL)a3
+- (void)_setSuppressingWallpaperForCursiveTextAnimation:(BOOL)animation
 {
-  v3 = a3;
-  if (self->_suppressingWallpaperForCursiveTextAnimation == a3)
+  animationCopy = animation;
+  if (self->_suppressingWallpaperForCursiveTextAnimation == animation)
   {
-    if (!a3 && !self->_isCyclingComponents)
+    if (!animation && !self->_isCyclingComponents)
     {
       customDelayDuration = self->_customDelayDuration;
 
@@ -386,29 +386,29 @@ void __45__SBDashBoardSetupViewController_viewDidLoad__block_invoke(uint64_t a1,
 
   else
   {
-    v5 = [(SBDashBoardSetupViewController *)self setupView];
-    [v5 setSuppressingAllElements:v3];
+    setupView = [(SBDashBoardSetupViewController *)self setupView];
+    [setupView setSuppressingAllElements:animationCopy];
 
-    self->_suppressingWallpaperForCursiveTextAnimation = v3;
+    self->_suppressingWallpaperForCursiveTextAnimation = animationCopy;
     [(CSCoverSheetViewControllerBase *)self rebuildBehavior];
 
     [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(SBDashBoardSetupViewController *)self _startWifiScan];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appear];
   if ([(SBDashBoardSetupViewController *)self _canShowSolariumCursiveAnimation])
   {
     suppressingWallpaperForCursiveTextAnimation = self->_suppressingWallpaperForCursiveTextAnimation;
@@ -430,35 +430,35 @@ LABEL_6:
   [(CSCoverSheetViewControllerBase *)self sendAction:v5];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:disappear];
   [(SBDashBoardSetupViewController *)self _stopCyclingComponents:6];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(SBDashBoardSetupViewController *)self _stopCyclingComponents:63];
   [(SBDashBoardSetupViewController *)self _makeSetupAccessoryViewsVisible:0 animated:0 delay:0.0];
   [(SBDashBoardSetupViewController *)self _cancelWifiScan];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  if (v7)
+  [(CSCoverSheetViewControllerBase *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -473,7 +473,7 @@ LABEL_6:
     v8[2] = __85__SBDashBoardSetupViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v8[3] = &unk_2783A9488;
     v8[4] = self;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 }
 
@@ -483,16 +483,16 @@ void __85__SBDashBoardSetupViewController_viewWillTransitionToSize_withTransitio
   [v2 setOrientation:{objc_msgSend(*(a1 + 32), "interfaceOrientation")}];
 }
 
-- (void)_retrieveChildIconIfNecessaryWithCompletion:(id)a3
+- (void)_retrieveChildIconIfNecessaryWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D4DA68] current];
-  v5 = [v4 isChild];
-  v6 = [v5 BOOLValue];
+  completionCopy = completion;
+  current = [MEMORY[0x277D4DA68] current];
+  isChild = [current isChild];
+  bOOLValue = [isChild BOOLValue];
 
   v7 = SBLogDashBoard();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (bOOLValue)
   {
     if (v8)
     {
@@ -500,13 +500,13 @@ void __85__SBDashBoardSetupViewController_viewWillTransitionToSize_withTransitio
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "is a child, loading account", buf, 2u);
     }
 
-    v9 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __78__SBDashBoardSetupViewController__retrieveChildIconIfNecessaryWithCompletion___block_invoke;
     v10[3] = &unk_2783AD1C8;
-    v11 = v3;
-    [v9 aa_primaryAppleAccountWithCompletion:v10];
+    v11 = completionCopy;
+    [defaultStore aa_primaryAppleAccountWithCompletion:v10];
   }
 
   else
@@ -517,9 +517,9 @@ void __85__SBDashBoardSetupViewController_viewWillTransitionToSize_withTransitio
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "not a child, bailing", buf, 2u);
     }
 
-    if (v3)
+    if (completionCopy)
     {
-      (*(v3 + 2))(v3, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -607,44 +607,44 @@ void __78__SBDashBoardSetupViewController__retrieveChildIconIfNecessaryWithCompl
   v6();
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v58.receiver = self;
   v58.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v58 aggregateAppearance:v4];
+  [(CSCoverSheetViewControllerBase *)&v58 aggregateAppearance:appearanceCopy];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [MEMORY[0x277D02BC8] wallpaper];
-  v7 = [v6 hidden:1];
+  wallpaper = [MEMORY[0x277D02BC8] wallpaper];
+  v7 = [wallpaper hidden:1];
   v8 = [v5 setWithObject:v7];
-  [v4 setComponents:v8];
+  [appearanceCopy setComponents:v8];
 
-  v9 = [MEMORY[0x277D02BC8] homeAffordance];
-  v10 = [v9 priority:80];
-  v11 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v12 = [v10 identifier:v11];
+  homeAffordance = [MEMORY[0x277D02BC8] homeAffordance];
+  v10 = [homeAffordance priority:80];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v12 = [v10 identifier:appearanceIdentifier];
   v13 = [v12 hidden:1];
-  [v4 addComponent:v13];
+  [appearanceCopy addComponent:v13];
 
-  v14 = [MEMORY[0x277D02BC8] dateView];
-  v15 = [v14 priority:80];
+  dateView = [MEMORY[0x277D02BC8] dateView];
+  v15 = [dateView priority:80];
   v16 = [v15 hidden:1];
-  [v4 addComponent:v16];
+  [appearanceCopy addComponent:v16];
 
-  v17 = [MEMORY[0x277D02BC8] complicationContainer];
-  v18 = [v17 priority:80];
+  complicationContainer = [MEMORY[0x277D02BC8] complicationContainer];
+  v18 = [complicationContainer priority:80];
   v19 = [v18 hidden:1];
-  [v4 addComponent:v19];
+  [appearanceCopy addComponent:v19];
 
-  v20 = [MEMORY[0x277D02BC8] footerCallToActionLabel];
-  v21 = [v20 priority:80];
+  footerCallToActionLabel = [MEMORY[0x277D02BC8] footerCallToActionLabel];
+  v21 = [footerCallToActionLabel priority:80];
   v22 = [v21 hidden:1];
-  [v4 addComponent:v22];
+  [appearanceCopy addComponent:v22];
 
-  v23 = [MEMORY[0x277D02BC8] quickActions];
-  v24 = [v23 priority:80];
+  quickActions = [MEMORY[0x277D02BC8] quickActions];
+  v24 = [quickActions priority:80];
   v25 = [v24 hidden:1];
-  [v4 addComponent:v25];
+  [appearanceCopy addComponent:v25];
 
   if (self->_activationInfoViewController)
   {
@@ -662,26 +662,26 @@ void __78__SBDashBoardSetupViewController__retrieveChildIconIfNecessaryWithCompl
       v45 = v44;
       if (suppressingWallpaperForCursiveTextAnimation)
       {
-        v46 = [MEMORY[0x277D75348] blackColor];
-        v47 = [v45 color:v46];
-        [v4 addComponent:v47];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        v47 = [v45 color:blackColor];
+        [appearanceCopy addComponent:v47];
 
         v48 = objc_opt_new();
         v49 = [v48 priority:80];
         v30 = 1;
         v50 = [v49 hidden:1];
-        [v4 addComponent:v50];
+        [appearanceCopy addComponent:v50];
 
         v26 = objc_opt_new();
         v51 = [v26 priority:80];
         v52 = [v51 hidden:1];
-        [v4 addComponent:v52];
+        [appearanceCopy addComponent:v52];
       }
 
       else
       {
         v55 = [v44 style:&unk_283370178];
-        [v4 addComponent:v55];
+        [appearanceCopy addComponent:v55];
 
         v56 = +[SBWallpaperController sharedInstance];
         v26 = [v56 averageColorForVariant:0];
@@ -698,9 +698,9 @@ void __78__SBDashBoardSetupViewController__retrieveChildIconIfNecessaryWithCompl
   {
     v26 = objc_opt_new();
     v27 = [v26 priority:80];
-    v28 = [MEMORY[0x277D75348] whiteColor];
-    v29 = [v27 color:v28];
-    [v4 addComponent:v29];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v29 = [v27 color:whiteColor];
+    [appearanceCopy addComponent:v29];
 
     v30 = 0;
   }
@@ -710,7 +710,7 @@ void __78__SBDashBoardSetupViewController__retrieveChildIconIfNecessaryWithCompl
     v26 = objc_opt_new();
     v53 = [v26 priority:80];
     v54 = [v53 style:&unk_283370190];
-    [v4 addComponent:v54];
+    [appearanceCopy addComponent:v54];
 
     v30 = 1;
   }
@@ -719,40 +719,40 @@ LABEL_6:
 
   if (self->_isActivationLocked && !BYSetupAssistantHasCompletedInitialRun() || self->_isStoreRestricted)
   {
-    v31 = [MEMORY[0x277D02BC8] proudLock];
-    v32 = [v31 priority:80];
+    proudLock = [MEMORY[0x277D02BC8] proudLock];
+    v32 = [proudLock priority:80];
     v33 = [v32 hidden:1];
-    [v4 addComponent:v33];
+    [appearanceCopy addComponent:v33];
   }
 
   v34 = objc_alloc(MEMORY[0x277D760A8]);
   if (v30)
   {
-    v35 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
     v36 = 1;
   }
 
   else
   {
-    v35 = [MEMORY[0x277D75348] blackColor];
+    whiteColor2 = [MEMORY[0x277D75348] blackColor];
     v36 = 2;
   }
 
-  v37 = [v34 initWithStyle:v36 contentColor:v35];
-  [v4 setLegibilitySettings:v37];
+  v37 = [v34 initWithStyle:v36 contentColor:whiteColor2];
+  [appearanceCopy setLegibilitySettings:v37];
 
   v38 = objc_opt_new();
   v39 = [v38 priority:80];
   v40 = [v39 shouldRenderInline:1];
-  [v4 addComponent:v40];
+  [appearanceCopy addComponent:v40];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v7.receiver = self;
   v7.super_class = SBDashBoardSetupViewController;
-  [(CSCoverSheetViewControllerBase *)&v7 aggregateBehavior:v4];
+  [(CSCoverSheetViewControllerBase *)&v7 aggregateBehavior:behaviorCopy];
   regulatoryInfoViewController = self->_regulatoryInfoViewController;
   if (*&self->_activationInfoViewController == 0)
   {
@@ -764,13 +764,13 @@ LABEL_6:
     v6 = 12;
   }
 
-  [v4 setIdleTimerDuration:v6];
-  [v4 setIdleTimerMode:2];
-  [v4 setIdleWarnMode:1];
-  [v4 setScrollingStrategy:3];
+  [behaviorCopy setIdleTimerDuration:v6];
+  [behaviorCopy setIdleTimerMode:2];
+  [behaviorCopy setIdleWarnMode:1];
+  [behaviorCopy setScrollingStrategy:3];
   if (regulatoryInfoViewController || self->_isStoreRestricted)
   {
-    [v4 addRestrictedCapabilities:4152];
+    [behaviorCopy addRestrictedCapabilities:4152];
   }
 }
 
@@ -840,12 +840,12 @@ LABEL_8:
   return 0;
 }
 
-- (void)_startWallpaperLoadingTimerWithDuration:(double)a3
+- (void)_startWallpaperLoadingTimerWithDuration:(double)duration
 {
   if (![(SBDashBoardSetupViewController *)self _canShowSolariumCursiveAnimation])
   {
-    v7 = SBLogDashBoard();
-    if (!os_log_type_enabled(&v7->super.super.super.super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = SBLogDashBoard();
+    if (!os_log_type_enabled(&selfCopy->super.super.super.super, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_10;
     }
@@ -853,15 +853,15 @@ LABEL_8:
     *buf = 0;
     v10 = "Bailed on Bookend presentation";
 LABEL_9:
-    _os_log_impl(&dword_21ED4E000, &v7->super.super.super.super, OS_LOG_TYPE_DEFAULT, v10, buf, 2u);
+    _os_log_impl(&dword_21ED4E000, &selfCopy->super.super.super.super, OS_LOG_TYPE_DEFAULT, v10, buf, 2u);
     goto LABEL_10;
   }
 
   cursiveTextAnimationApproximationTimer = self->_cursiveTextAnimationApproximationTimer;
   if (cursiveTextAnimationApproximationTimer && ![(NSTimer *)cursiveTextAnimationApproximationTimer isValid])
   {
-    v7 = SBLogDashBoard();
-    if (!os_log_type_enabled(&v7->super.super.super.super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = SBLogDashBoard();
+    if (!os_log_type_enabled(&selfCopy->super.super.super.super, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_10;
     }
@@ -877,8 +877,8 @@ LABEL_9:
   v11[2] = __74__SBDashBoardSetupViewController__startWallpaperLoadingTimerWithDuration___block_invoke;
   v11[3] = &unk_2783AD1F0;
   v11[4] = self;
-  v7 = self;
-  v8 = [v6 scheduledTimerWithTimeInterval:0 repeats:v11 block:a3];
+  selfCopy = self;
+  v8 = [v6 scheduledTimerWithTimeInterval:0 repeats:v11 block:duration];
   v9 = self->_cursiveTextAnimationApproximationTimer;
   self->_cursiveTextAnimationApproximationTimer = v8;
 
@@ -922,9 +922,9 @@ void __74__SBDashBoardSetupViewController__startWallpaperLoadingTimerWithDuratio
   }
 }
 
-- (void)_startCyclingComponents:(unint64_t)a3 withDelay:(double)a4
+- (void)_startCyclingComponents:(unint64_t)components withDelay:(double)delay
 {
-  v4 = self->_componentsToCycle | a3;
+  v4 = self->_componentsToCycle | components;
   self->_componentsToCycle = v4;
   if (!self->_isCyclingComponents && v4 && ![(NSTimer *)self->_cycleStartTimer isValid])
   {
@@ -937,7 +937,7 @@ void __74__SBDashBoardSetupViewController__startWallpaperLoadingTimerWithDuratio
     objc_copyWeak(&v16, &location);
     v7 = MEMORY[0x223D6F7F0](v15);
     v8 = v7;
-    if (a4 <= 0.0)
+    if (delay <= 0.0)
     {
       (*(v7 + 16))(v7);
     }
@@ -951,7 +951,7 @@ void __74__SBDashBoardSetupViewController__startWallpaperLoadingTimerWithDuratio
       v12[3] = &unk_2783AD218;
       objc_copyWeak(&v14, &location);
       v13 = v8;
-      v10 = [v9 scheduledTimerWithTimeInterval:0 repeats:v12 block:a4];
+      v10 = [v9 scheduledTimerWithTimeInterval:0 repeats:v12 block:delay];
       cycleStartTimer = self->_cycleStartTimer;
       self->_cycleStartTimer = v10;
 
@@ -996,14 +996,14 @@ void __68__SBDashBoardSetupViewController__startCyclingComponents_withDelay___bl
 - (BOOL)_canCycleAnimationComponents
 {
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetViewController);
-  v4 = [WeakRetained isInScreenOffMode];
+  isInScreenOffMode = [WeakRetained isInScreenOffMode];
 
-  v5 = [(SBDashBoardSetupViewController *)self view];
-  v6 = [v5 window];
+  view = [(SBDashBoardSetupViewController *)self view];
+  window = [view window];
 
   if ([(SBDashBoardSetupViewController *)self _appearState]== 2)
   {
-    return (v6 != 0) & ~v4;
+    return (window != 0) & ~isInScreenOffMode;
   }
 
   else
@@ -1083,10 +1083,10 @@ void __68__SBDashBoardSetupViewController__startCyclingComponents_withDelay___bl
     v3 = self->_componentsToCycle;
   }
 
-  v7 = [(SBDashBoardSetupViewController *)self _canCycleAnimationComponents];
+  _canCycleAnimationComponents = [(SBDashBoardSetupViewController *)self _canCycleAnimationComponents];
   if (v3)
   {
-    v8 = v7;
+    v8 = _canCycleAnimationComponents;
   }
 
   else
@@ -1099,13 +1099,13 @@ void __68__SBDashBoardSetupViewController__startCyclingComponents_withDelay___bl
   {
     objc_initWeak(&location, self);
     [(SBDashBoardSetupViewController *)self _updateDisplayedStrings];
-    v9 = [(SBDashBoardSetupViewController *)self setupView];
+    setupView = [(SBDashBoardSetupViewController *)self setupView];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__SBDashBoardSetupViewController__animateComponentsForNewCycle__block_invoke;
     v10[3] = &unk_2783A8C68;
     objc_copyWeak(&v11, &location);
-    [v9 animateComponents:v3 toActive:1 withCompletion:v10];
+    [setupView animateComponents:v3 toActive:1 withCompletion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -1143,21 +1143,21 @@ void __63__SBDashBoardSetupViewController__animateComponentsForNewCycle__block_i
 LABEL_7:
 }
 
-- (void)_stopCyclingComponents:(unint64_t)a3
+- (void)_stopCyclingComponents:(unint64_t)components
 {
   if (self->_isCyclingComponents)
   {
-    if (!a3)
+    if (!components)
     {
       return;
     }
 
-    v5 = (self->_componentsToCycle & ~a3) != 0;
-    self->_componentsToCycle &= ~a3;
+    v5 = (self->_componentsToCycle & ~components) != 0;
+    self->_componentsToCycle &= ~components;
     self->_isCyclingComponents = v5;
-    v7 = [(SBDashBoardSetupViewController *)self setupView];
-    [(NSTimer *)v7 animateComponents:a3 toActive:0 withCompletion:0];
-    cycleStartTimer = v7;
+    setupView = [(SBDashBoardSetupViewController *)self setupView];
+    [(NSTimer *)setupView animateComponents:components toActive:0 withCompletion:0];
+    cycleStartTimer = setupView;
   }
 
   else
@@ -1203,18 +1203,18 @@ LABEL_6:
   [(SBDashBoardSetupViewController *)self _resetDisplayedLocalizedStringsImmediately:0];
 }
 
-- (void)_resetDisplayedLocalizedStringsImmediately:(BOOL)a3
+- (void)_resetDisplayedLocalizedStringsImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   [(NSMutableArray *)self->_currentStringsOrdering removeObjectsInRange:0, self->_currentStringsIndex];
-  v7 = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
-  [(NSMutableArray *)self->_currentStringsOrdering removeObjectsInArray:v7];
+  _importantLanguageIdentifiers = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
+  [(NSMutableArray *)self->_currentStringsOrdering removeObjectsInArray:_importantLanguageIdentifiers];
   currentStringsOrdering = self->_currentStringsOrdering;
-  v6 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v7, "count")}];
-  [(NSMutableArray *)currentStringsOrdering insertObjects:v7 atIndexes:v6];
+  v6 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(_importantLanguageIdentifiers, "count")}];
+  [(NSMutableArray *)currentStringsOrdering insertObjects:_importantLanguageIdentifiers atIndexes:v6];
 
   self->_currentStringsIndex = 0;
-  if (v3)
+  if (immediatelyCopy)
   {
     [(SBDashBoardSetupViewController *)self _updateDisplayedStrings];
   }
@@ -1225,24 +1225,24 @@ LABEL_6:
 - (void)_updateDisplayedStrings
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBDashBoardSetupViewController *)self setupView];
-  v4 = [(SBDashBoardSetupViewController *)self _currentLanguageIdentifier];
+  setupView = [(SBDashBoardSetupViewController *)self setupView];
+  _currentLanguageIdentifier = [(SBDashBoardSetupViewController *)self _currentLanguageIdentifier];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = [v5 localizations];
-  v50[0] = v4;
+  localizations = [v5 localizations];
+  v50[0] = _currentLanguageIdentifier;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
-  v9 = [v6 preferredLocalizationsFromArray:v7 forPreferences:v8];
-  v10 = [v9 firstObject];
-  v11 = v10;
-  if (v10)
+  v9 = [v6 preferredLocalizationsFromArray:localizations forPreferences:v8];
+  firstObject = [v9 firstObject];
+  v11 = firstObject;
+  if (firstObject)
   {
-    v12 = v10;
+    v12 = firstObject;
   }
 
   else
   {
-    v12 = v4;
+    v12 = _currentLanguageIdentifier;
   }
 
   v13 = v12;
@@ -1270,9 +1270,9 @@ LABEL_6:
   v48 = v5;
   v20 = [v5 localizedStringForKey:v18 value:v17 table:@"CoverSheetCommon" localization:v13];
 
-  v49 = v3;
+  v49 = setupView;
   v47 = v19;
-  [v3 setTitleString:v19 forLanguage:v13];
+  [setupView setTitleString:v19 forLanguage:v13];
   v22 = v21;
   if (![(SBDashBoardSetupViewController *)self _canShowSolariumCursiveAnimation])
   {
@@ -1285,15 +1285,15 @@ LABEL_6:
     self->_customDelayDuration = v23;
   }
 
-  [v3 setCallToActionString:v20 forLanguage:v13];
+  [setupView setCallToActionString:v20 forLanguage:v13];
   if (self->_isStoreRestricted)
   {
-    v24 = [(SBDashBoardSetupViewController *)self _applicableIdentifierForDictionary:self->_storeRestrictedStrings identifier:v4];
+    v24 = [(SBDashBoardSetupViewController *)self _applicableIdentifierForDictionary:self->_storeRestrictedStrings identifier:_currentLanguageIdentifier];
     v44 = [(NSDictionary *)self->_storeRestrictedStrings bs_safeDictionaryForKey:v24];
     v45 = v13;
-    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Title for %@ -> %@", v4, v24];
-    v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Body for %@ -> %@", v4, v24];
-    v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Link for %@ -> %@", v4, v24];
+    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Title for %@ -> %@", _currentLanguageIdentifier, v24];
+    v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Body for %@ -> %@", _currentLanguageIdentifier, v24];
+    v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Link for %@ -> %@", _currentLanguageIdentifier, v24];
     v25 = [v44 bs_safeStringForKey:*MEMORY[0x277D29540]];
     v26 = [v44 bs_safeStringForKey:*MEMORY[0x277D29530]];
     v27 = [v44 bs_safeStringForKey:*MEMORY[0x277D29538]];
@@ -1301,7 +1301,7 @@ LABEL_6:
     v29 = [(SBDashBoardSetupViewController *)self _displayStringForLocalizedString:v26 fallbackString:v42];
     [(SBDashBoardSetupViewController *)self _displayStringForLocalizedString:v27 fallbackString:v41];
     v31 = v30 = v20;
-    [v49 setStoreRestrictedStrings:v28 bodyString:v29 linkString:v31 forLanguage:v4];
+    [v49 setStoreRestrictedStrings:v28 bodyString:v29 linkString:v31 forLanguage:_currentLanguageIdentifier];
 
     v20 = v30;
     v13 = v45;
@@ -1309,17 +1309,17 @@ LABEL_6:
 
   if (self->_isActivationLocked)
   {
-    v32 = [(SBDashBoardSetupViewController *)self _applicableIdentifierForDictionary:self->_activationLockStrings identifier:v4];
+    v32 = [(SBDashBoardSetupViewController *)self _applicableIdentifierForDictionary:self->_activationLockStrings identifier:_currentLanguageIdentifier];
     v33 = [(NSDictionary *)self->_activationLockStrings bs_safeDictionaryForKey:v32];
-    v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Title for %@ -> %@", v4, v32];
-    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Description for %@ -> %@", v4, v32];
+    v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Title for %@ -> %@", _currentLanguageIdentifier, v32];
+    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing Description for %@ -> %@", _currentLanguageIdentifier, v32];
     v35 = [v33 bs_safeStringForKey:@"ActivationLockInfoTitle"];
     [v33 bs_safeStringForKey:@"ActivationLockInfoDescription"];
     v37 = v36 = v20;
     [(SBDashBoardSetupViewController *)self _displayStringForLocalizedString:v35 fallbackString:v46];
     v39 = v38 = v13;
     v40 = [(SBDashBoardSetupViewController *)self _displayStringForLocalizedString:v37 fallbackString:v34];
-    [v49 setActivationLockWarningString:v39 detailString:v40 forLanguage:v4];
+    [v49 setActivationLockWarningString:v39 detailString:v40 forLanguage:_currentLanguageIdentifier];
 
     v13 = v38;
     v20 = v36;
@@ -1328,12 +1328,12 @@ LABEL_6:
   [v49 setNeedsLayout];
 }
 
-- (id)_displayStringForLocalizedString:(id)a3 fallbackString:(id)a4
+- (id)_displayStringForLocalizedString:(id)string fallbackString:(id)fallbackString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  if (!v5)
+  stringCopy = string;
+  fallbackStringCopy = fallbackString;
+  v7 = stringCopy;
+  if (!stringCopy)
   {
     v8 = SBLogDashBoard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1343,7 +1343,7 @@ LABEL_6:
 
     if (os_variant_has_internal_content())
     {
-      v7 = v6;
+      v7 = fallbackStringCopy;
     }
 
     else
@@ -1357,26 +1357,26 @@ LABEL_6:
   return v7;
 }
 
-- (id)_applicableIdentifierForDictionary:(id)a3 identifier:(id)a4
+- (id)_applicableIdentifierForDictionary:(id)dictionary identifier:(id)identifier
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
-  v7 = [a3 allKeys];
-  v15[0] = v6;
+  identifierCopy = identifier;
+  allKeys = [dictionary allKeys];
+  v15[0] = identifierCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v9 = [v5 preferredLocalizationsFromArray:v7 forPreferences:v8];
+  v9 = [v5 preferredLocalizationsFromArray:allKeys forPreferences:v8];
 
-  v10 = [v9 firstObject];
-  v11 = v10;
-  if (v10)
+  firstObject = [v9 firstObject];
+  v11 = firstObject;
+  if (firstObject)
   {
-    v12 = v10;
+    v12 = firstObject;
   }
 
   else
   {
-    v12 = v6;
+    v12 = identifierCopy;
   }
 
   v13 = v12;
@@ -1387,8 +1387,8 @@ LABEL_6:
 - (id)_alignedMarketingOrdering
 {
   v2 = MEMORY[0x277CBEB18];
-  v3 = [MEMORY[0x277CBEAF8] baseSystemLanguages];
-  v4 = [v2 arrayWithArray:v3];
+  baseSystemLanguages = [MEMORY[0x277CBEAF8] baseSystemLanguages];
+  v4 = [v2 arrayWithArray:baseSystemLanguages];
 
   v5 = SBFEffectiveHomeButtonType();
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1437,9 +1437,9 @@ LABEL_10:
 
 - (void)_updateStringOrderingForLanguageChange
 {
-  v3 = [(SBDashBoardSetupViewController *)self _alignedMarketingOrdering];
+  _alignedMarketingOrdering = [(SBDashBoardSetupViewController *)self _alignedMarketingOrdering];
   stringsOrdering = self->_stringsOrdering;
-  self->_stringsOrdering = v3;
+  self->_stringsOrdering = _alignedMarketingOrdering;
 
   v5 = [(NSArray *)self->_stringsOrdering mutableCopy];
   currentStringsOrdering = self->_currentStringsOrdering;
@@ -1449,8 +1449,8 @@ LABEL_10:
 - (id)_currentStoreRestrictedStringsDictionary
 {
   storeRestrictedStrings = self->_storeRestrictedStrings;
-  v3 = [(SBDashBoardSetupViewController *)self _currentLanguageIdentifier];
-  v4 = [(NSDictionary *)storeRestrictedStrings objectForKey:v3];
+  _currentLanguageIdentifier = [(SBDashBoardSetupViewController *)self _currentLanguageIdentifier];
+  v4 = [(NSDictionary *)storeRestrictedStrings objectForKey:_currentLanguageIdentifier];
 
   return v4;
 }
@@ -1458,8 +1458,8 @@ LABEL_10:
 - (id)_currentActivationLockStringsDictionary
 {
   activationLockStrings = self->_activationLockStrings;
-  v3 = [(SBDashBoardSetupViewController *)self _currentLanguageIdentifier];
-  v4 = [(NSDictionary *)activationLockStrings objectForKey:v3];
+  _currentLanguageIdentifier = [(SBDashBoardSetupViewController *)self _currentLanguageIdentifier];
+  v4 = [(NSDictionary *)activationLockStrings objectForKey:_currentLanguageIdentifier];
 
   return v4;
 }
@@ -1483,11 +1483,11 @@ LABEL_10:
 - (id)_importantLanguageIdentifiers
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_telephonyPrimaryLanguage)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   wifiPrimaryLanguage = self->_wifiPrimaryLanguage;
@@ -1496,9 +1496,9 @@ LABEL_10:
     [v4 addObject:self->_wifiPrimaryLanguage];
   }
 
-  v6 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v7 = v6;
-  if (v6 && ([v6 isEqualToString:self->_telephonyPrimaryLanguage] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", self->_wifiPrimaryLanguage) & 1) == 0)
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  v7 = _deviceLanguage;
+  if (_deviceLanguage && ([_deviceLanguage isEqualToString:self->_telephonyPrimaryLanguage] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", self->_wifiPrimaryLanguage) & 1) == 0)
   {
     [v4 addObject:v7];
   }
@@ -1527,32 +1527,32 @@ LABEL_10:
   return v4;
 }
 
-- (id)_subscriptionInfoForSubscriptionDataSource:(int64_t)a3
+- (id)_subscriptionInfoForSubscriptionDataSource:(int64_t)source
 {
-  if (a3 == 1)
+  if (source == 1)
   {
-    v3 = [(SBTelephonyManager *)self->_telephonyManager _secondarySubscriptionInfoIfEnabled];
+    _secondarySubscriptionInfoIfEnabled = [(SBTelephonyManager *)self->_telephonyManager _secondarySubscriptionInfoIfEnabled];
   }
 
   else
   {
-    if (a3)
+    if (source)
     {
       goto LABEL_6;
     }
 
-    v3 = [(SBTelephonyManager *)self->_telephonyManager _primarySubscriptionInfo];
+    _secondarySubscriptionInfoIfEnabled = [(SBTelephonyManager *)self->_telephonyManager _primarySubscriptionInfo];
   }
 
-  a2 = v3;
+  a2 = _secondarySubscriptionInfoIfEnabled;
 LABEL_6:
 
   return a2;
 }
 
-- (id)_subcriptionDataSourceDescription:(int64_t)a3
+- (id)_subcriptionDataSourceDescription:(int64_t)description
 {
-  if (a3)
+  if (description)
   {
     return @"Secondary Subscription Data Source";
   }
@@ -1563,17 +1563,17 @@ LABEL_6:
   }
 }
 
-- (void)_updateLanguageFromSubscriptionDataSource:(int64_t)a3
+- (void)_updateLanguageFromSubscriptionDataSource:(int64_t)source
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = [(SBDashBoardSetupViewController *)self _subscriptionInfoForSubscriptionDataSource:?];
-  v6 = [v5 lastKnownNetworkCountryCode];
-  v7 = [MEMORY[0x277CBEAF8] languagesForRegion:v6 subdivision:0 withThreshold:0 filter:0];
-  v8 = [(SBDashBoardSetupViewController *)self firstSupportedLanguageIdentifierInRegionalLanguageIdentifiers:v7 countryCode:v6];
+  lastKnownNetworkCountryCode = [v5 lastKnownNetworkCountryCode];
+  v7 = [MEMORY[0x277CBEAF8] languagesForRegion:lastKnownNetworkCountryCode subdivision:0 withThreshold:0 filter:0];
+  v8 = [(SBDashBoardSetupViewController *)self firstSupportedLanguageIdentifierInRegionalLanguageIdentifiers:v7 countryCode:lastKnownNetworkCountryCode];
   v9 = SBLogDashBoard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SBDashBoardSetupViewController *)self _subcriptionDataSourceDescription:a3];
+    v10 = [(SBDashBoardSetupViewController *)self _subcriptionDataSourceDescription:source];
     v16 = 138543618;
     v17 = v8;
     v18 = 2114;
@@ -1586,7 +1586,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v11 = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
+  _importantLanguageIdentifiers = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
   v12 = self->_telephonyPrimaryLanguage;
   objc_storeStrong(&self->_telephonyPrimaryLanguage, v8);
   v13 = SBLogDashBoard();
@@ -1599,7 +1599,7 @@ LABEL_6:
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[Cell][Primary] Language changed from %{public}@ to %{public}@", &v16, 0x16u);
   }
 
-  if ([(NSString *)self->_telephonyPrimaryLanguage isEqualToString:v12]|| ![(SBDashBoardSetupViewController *)self _haveImportantLanguagesChangedFrom:v11])
+  if ([(NSString *)self->_telephonyPrimaryLanguage isEqualToString:v12]|| ![(SBDashBoardSetupViewController *)self _haveImportantLanguagesChangedFrom:_importantLanguageIdentifiers])
   {
 
 LABEL_12:
@@ -1610,9 +1610,9 @@ LABEL_12:
   v14 = SBLogDashBoard();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 firstObject];
+    firstObject = [_importantLanguageIdentifiers firstObject];
     v16 = 138543362;
-    v17 = v15;
+    v17 = firstObject;
     _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[Cell][Primary] Updating important languages, previous best was: %{public}@", &v16, 0xCu);
   }
 
@@ -1630,16 +1630,16 @@ LABEL_13:
   }
 }
 
-- (id)firstSupportedLanguageIdentifierInRegionalLanguageIdentifiers:(id)a3 countryCode:(id)a4
+- (id)firstSupportedLanguageIdentifierInRegionalLanguageIdentifiers:(id)identifiers countryCode:(id)code
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  codeCopy = code;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v9)
   {
@@ -1654,7 +1654,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(SBDashBoardSetupViewController *)self _supportedLanguageIdentifierFromRegionalLanguageIdentifier:*(*(&v17 + 1) + 8 * i) countryCode:v7, v17];
+        v13 = [(SBDashBoardSetupViewController *)self _supportedLanguageIdentifierFromRegionalLanguageIdentifier:*(*(&v17 + 1) + 8 * i) countryCode:codeCopy, v17];
         if (v13)
         {
           v15 = v13;
@@ -1677,7 +1677,7 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v7;
+    v22 = codeCopy;
     _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "No supported languages found for country code: %{public}@", buf, 0xCu);
   }
 
@@ -1687,11 +1687,11 @@ LABEL_13:
   return v15;
 }
 
-- (id)_supportedLanguageIdentifierFromRegionalLanguageIdentifier:(id)a3 countryCode:(id)a4
+- (id)_supportedLanguageIdentifierFromRegionalLanguageIdentifier:(id)identifier countryCode:(id)code
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEAF8] languageFromLanguage:v6 byReplacingRegion:a4];
+  identifierCopy = identifier;
+  v7 = [MEMORY[0x277CBEAF8] languageFromLanguage:identifierCopy byReplacingRegion:code];
   if ([v7 length])
   {
     v8 = MEMORY[0x277CCA8D8];
@@ -1699,15 +1699,15 @@ LABEL_13:
     v21[0] = v7;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v11 = [v8 preferredLocalizationsFromArray:currentStringsOrdering forPreferences:v10];
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
 
     v13 = SBLogDashBoard();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543874;
-      v16 = v12;
+      v16 = firstObject;
       v17 = 2114;
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = 2114;
       v20 = v7;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "Supported language: %{public}@ found for identifier: %{public}@, languageWithRegion: %{public}@", &v15, 0x20u);
@@ -1720,29 +1720,29 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = v6;
+      v16 = identifierCopy;
       v17 = 2114;
       v18 = v7;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "No supported language found for identifier: %{public}@, languageWithRegion: %{public}@", &v15, 0x16u);
     }
 
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
-- (void)_updateWifiPrimaryLanguageFromDiscoveredCountryCodes:(id)a3
+- (void)_updateWifiPrimaryLanguageFromDiscoveredCountryCodes:(id)codes
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codesCopy = codes;
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v4;
+  obj = codesCopy;
   v38 = [obj countByEnumeratingWithState:&v48 objects:v58 count:16];
   if (v38)
   {
@@ -1764,8 +1764,8 @@ LABEL_13:
         v46 = 0u;
         v47 = 0u;
         v39 = v9;
-        v10 = [v9 reverseObjectEnumerator];
-        v11 = [v10 countByEnumeratingWithState:&v44 objects:v57 count:16];
+        reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+        v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v44 objects:v57 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1776,7 +1776,7 @@ LABEL_13:
             {
               if (*v45 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               v15 = [(SBDashBoardSetupViewController *)self _supportedLanguageIdentifierFromRegionalLanguageIdentifier:*(*(&v44 + 1) + 8 * j) countryCode:v7];
@@ -1786,7 +1786,7 @@ LABEL_13:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v44 objects:v57 count:16];
+            v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v44 objects:v57 count:16];
           }
 
           while (v12);
@@ -1809,8 +1809,8 @@ LABEL_13:
     _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "Preferred language identifiers for wifi discovered country codes: %{public}@", buf, 0xCu);
   }
 
-  v17 = [v5 allValues];
-  v18 = [v17 count];
+  allValues = [v5 allValues];
+  v18 = [allValues count];
 
   if (v18)
   {
@@ -1837,12 +1837,12 @@ LABEL_13:
 
             v24 = *(*(&v40 + 1) + 8 * k);
             v25 = [v5 objectForKeyedSubscript:v24];
-            v26 = [v25 lastObject];
-            if (v26)
+            lastObject = [v25 lastObject];
+            if (lastObject)
             {
-              if (([v35 containsObject:v26] & 1) == 0)
+              if (([v35 containsObject:lastObject] & 1) == 0)
               {
-                [v35 addObject:v26];
+                [v35 addObject:lastObject];
               }
 
               [v25 removeLastObject];
@@ -1860,8 +1860,8 @@ LABEL_13:
         while (v21);
       }
 
-      v27 = [v5 allValues];
-      v28 = [v27 count];
+      allValues2 = [v5 allValues];
+      v28 = [allValues2 count];
     }
 
     while (v28);
@@ -1869,28 +1869,28 @@ LABEL_13:
 
   if ([v35 count])
   {
-    v29 = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
-    v30 = [v29 firstObject];
-    v31 = [v35 firstObject];
+    _importantLanguageIdentifiers = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
+    firstObject = [_importantLanguageIdentifiers firstObject];
+    firstObject2 = [v35 firstObject];
     v32 = self->_wifiPrimaryLanguage;
-    objc_storeStrong(&self->_wifiPrimaryLanguage, v31);
+    objc_storeStrong(&self->_wifiPrimaryLanguage, firstObject2);
     v33 = SBLogDashBoard();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v53 = v32;
       v54 = 2114;
-      v55 = v31;
+      v55 = firstObject2;
       _os_log_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_DEFAULT, "[WiFi] Language changed from %{public}@ to %{public}@", buf, 0x16u);
     }
 
-    if (![(NSString *)self->_wifiPrimaryLanguage isEqualToString:v32]&& [(SBDashBoardSetupViewController *)self _haveImportantLanguagesChangedFrom:v29])
+    if (![(NSString *)self->_wifiPrimaryLanguage isEqualToString:v32]&& [(SBDashBoardSetupViewController *)self _haveImportantLanguagesChangedFrom:_importantLanguageIdentifiers])
     {
       v34 = SBLogDashBoard();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v53 = v30;
+        v53 = firstObject;
         _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "[WiFi] Updating important languages, previous best was: %{public}@", buf, 0xCu);
       }
 
@@ -1899,20 +1899,20 @@ LABEL_13:
   }
 }
 
-- (BOOL)_haveImportantLanguagesChangedFrom:(id)a3
+- (BOOL)_haveImportantLanguagesChangedFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
-  v6 = [v4 count];
-  if (v6 == [v5 count])
+  fromCopy = from;
+  _importantLanguageIdentifiers = [(SBDashBoardSetupViewController *)self _importantLanguageIdentifiers];
+  v6 = [fromCopy count];
+  if (v6 == [_importantLanguageIdentifiers count])
   {
-    if ([v5 count])
+    if ([_importantLanguageIdentifiers count])
     {
       v7 = 0;
       do
       {
-        v8 = [v4 objectAtIndex:v7];
-        v9 = [v5 objectAtIndex:v7];
+        v8 = [fromCopy objectAtIndex:v7];
+        v9 = [_importantLanguageIdentifiers objectAtIndex:v7];
         v10 = [v8 isEqualToString:v9];
 
         if ((v10 & 1) == 0)
@@ -1923,7 +1923,7 @@ LABEL_13:
         ++v7;
       }
 
-      while (v7 < [v5 count]);
+      while (v7 < [_importantLanguageIdentifiers count]);
       v11 = v10 ^ 1;
     }
 
@@ -1956,13 +1956,13 @@ LABEL_13:
 
 - (void)_checkIfActivationLocked
 {
-  v3 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__SBDashBoardSetupViewController__checkIfActivationLocked__block_invoke;
   v4[3] = &unk_2783AD240;
   v4[4] = self;
-  [v3 activationLockInfoFromDeviceWithCompletion:v4];
+  [mEMORY[0x277D08F78] activationLockInfoFromDeviceWithCompletion:v4];
 }
 
 void __58__SBDashBoardSetupViewController__checkIfActivationLocked__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2004,35 +2004,35 @@ void __58__SBDashBoardSetupViewController__checkIfActivationLocked__block_invoke
 LABEL_5:
 }
 
-- (void)_updateForLockInfo:(id)a3
+- (void)_updateForLockInfo:(id)info
 {
   isActivationLocked = self->_isActivationLocked;
-  v5 = a3;
-  self->_isActivationLocked = [v5 isActivationLocked];
-  v6 = [v5 maskedAppleID];
-  v7 = [v6 copy];
+  infoCopy = info;
+  self->_isActivationLocked = [infoCopy isActivationLocked];
+  maskedAppleID = [infoCopy maskedAppleID];
+  v7 = [maskedAppleID copy];
   maskedAppleID = self->_maskedAppleID;
   self->_maskedAppleID = v7;
 
-  v9 = [v5 localeStrings];
+  localeStrings = [infoCopy localeStrings];
 
-  v10 = [v9 copy];
+  v10 = [localeStrings copy];
   activationLockStrings = self->_activationLockStrings;
   self->_activationLockStrings = v10;
 
   if (isActivationLocked != self->_isActivationLocked)
   {
-    v12 = [(SBDashBoardSetupViewController *)self setupView];
-    [v12 setActivationLocked:self->_isActivationLocked];
+    setupView = [(SBDashBoardSetupViewController *)self setupView];
+    [setupView setActivationLocked:self->_isActivationLocked];
 
     [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
     if (self->_isActivationLocked)
     {
       [(SBDashBoardSetupViewController *)self _invalidateWallpaperLoadingTimerAndShowUIIfNeeded];
       [(SBDashBoardSetupViewController *)self _stopCyclingComponents:63];
-      v13 = [(SBDashBoardSetupViewController *)self _componentsToStartCycling];
+      _componentsToStartCycling = [(SBDashBoardSetupViewController *)self _componentsToStartCycling];
 
-      [(SBDashBoardSetupViewController *)self _startCyclingComponents:v13 withDelay:0.0];
+      [(SBDashBoardSetupViewController *)self _startCyclingComponents:_componentsToStartCycling withDelay:0.0];
     }
   }
 }
@@ -2072,17 +2072,17 @@ LABEL_5:
   }
 }
 
-- (void)_infoButtonTapped:(id)a3
+- (void)_infoButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SBDashBoardSetupViewController *)self setupView];
+  tappedCopy = tapped;
+  setupView = [(SBDashBoardSetupViewController *)self setupView];
   objc_initWeak(&location, self);
   activationInfoViewController = self->_activationInfoViewController;
   if (*&self->_activationInfoViewController == 0)
   {
     v9 = objc_alloc_init(SBActivationInfoViewController);
-    v10 = [(CSCoverSheetViewControllerBase *)self legibilitySettings];
-    [(SBActivationInfoViewController *)v9 setLegibilitySettings:v10];
+    legibilitySettings = [(CSCoverSheetViewControllerBase *)self legibilitySettings];
+    [(SBActivationInfoViewController *)v9 setLegibilitySettings:legibilitySettings];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -2091,8 +2091,8 @@ LABEL_5:
     objc_copyWeak(&v26, &location);
     v11 = v9;
     v23 = v11;
-    v24 = v5;
-    v25 = self;
+    v24 = setupView;
+    selfCopy = self;
     [(SBDashBoardSetupViewController *)self bs_addChildViewController:v11 animated:0 transitionBlock:v22];
 
     objc_destroyWeak(&v26);
@@ -2105,9 +2105,9 @@ LABEL_5:
     v18[2] = __52__SBDashBoardSetupViewController__infoButtonTapped___block_invoke_2;
     v18[3] = &unk_2783AD290;
     objc_copyWeak(&v21, &location);
-    v7 = v5;
+    v7 = setupView;
     v19 = v7;
-    v20 = self;
+    selfCopy2 = self;
     [(SBDashBoardSetupViewController *)self bs_removeChildViewController:activationInfoViewController animated:0 transitionBlock:v18];
     regulatoryInfoViewController = self->_regulatoryInfoViewController;
     v12 = MEMORY[0x277D85DD0];
@@ -2124,7 +2124,7 @@ LABEL_5:
 
   [(CSCoverSheetViewControllerBase *)self rebuildBehavior:v12];
   [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
-  [v5 setNeedsLayout];
+  [setupView setNeedsLayout];
   objc_destroyWeak(&location);
 }
 
@@ -2195,11 +2195,11 @@ void __52__SBDashBoardSetupViewController__infoButtonTapped___block_invoke_3(uin
   v7[2]();
 }
 
-- (void)_regulatoryInfoButtonTapped:(id)a3
+- (void)_regulatoryInfoButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = self->_regulatoryInfoViewController;
-  v6 = [(SBDashBoardSetupViewController *)self setupView];
+  setupView = [(SBDashBoardSetupViewController *)self setupView];
   if (!v5)
   {
     v7 = [[SBSetupRegulatoryInfoViewController alloc] initWithNibName:0 bundle:0];
@@ -2211,7 +2211,7 @@ void __52__SBDashBoardSetupViewController__infoButtonTapped___block_invoke_3(uin
     objc_copyWeak(&v11, &location);
     v5 = v7;
     v9 = v5;
-    v10 = v6;
+    v10 = setupView;
     [(SBDashBoardSetupViewController *)self bs_addChildViewController:v5 animated:0 transitionBlock:v8];
 
     objc_destroyWeak(&v11);
@@ -2239,7 +2239,7 @@ void __62__SBDashBoardSetupViewController__regulatoryInfoButtonTapped___block_in
   v3[2](v3);
 }
 
-- (void)_shareIdentityButtonTapped:(id)a3
+- (void)_shareIdentityButtonTapped:(id)tapped
 {
   v8 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.SIMSetupUIService" viewControllerClassName:@"TSSIMSetupSupportViewController"];
   v4 = objc_alloc_init(MEMORY[0x277D66BD0]);
@@ -2253,15 +2253,15 @@ void __62__SBDashBoardSetupViewController__regulatoryInfoButtonTapped___block_in
   [(SBSRemoteAlertHandle *)self->_remoteAlertHandle activateWithContext:v7];
 }
 
-- (void)_makeSetupAccessoryViewsVisible:(BOOL)a3 animated:(BOOL)a4 delay:(double)a5
+- (void)_makeSetupAccessoryViewsVisible:(BOOL)visible animated:(BOOL)animated delay:(double)delay
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SBDashBoardSetupViewController *)self setupView];
-  [v9 setInfoButtonVisible:v7 animated:v6 withDelay:a5];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  setupView = [(SBDashBoardSetupViewController *)self setupView];
+  [setupView setInfoButtonVisible:visibleCopy animated:animatedCopy withDelay:delay];
 
-  v10 = [(SBDashBoardSetupViewController *)self setupView];
-  [v10 setChildIconVisible:v7 animated:v6 withDelay:a5];
+  setupView2 = [(SBDashBoardSetupViewController *)self setupView];
+  [setupView2 setChildIconVisible:visibleCopy animated:animatedCopy withDelay:delay];
 }
 
 - (void)_startWifiScan
@@ -2314,7 +2314,7 @@ uint64_t __48__SBDashBoardSetupViewController__startWifiScan__block_invoke_2(uin
   self->_wifiScanner = 0;
 }
 
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2336,10 +2336,10 @@ uint64_t __81__SBDashBoardSetupViewController_subscriptionInfoDidChangeForStateP
   return [*(a1 + 32) _updateLanguageFromTelephony];
 }
 
-- (void)animationWillBeginForLanguage:(id)a3 animationDuration:(double)a4
+- (void)animationWillBeginForLanguage:(id)language animationDuration:(double)duration
 {
-  objc_storeStrong(&self->_solariumCursiveTextLanguage, a3);
-  self->_customDelayDuration = a4;
+  objc_storeStrong(&self->_solariumCursiveTextLanguage, language);
+  self->_customDelayDuration = duration;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;

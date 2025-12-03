@@ -1,14 +1,14 @@
 @interface UIView
-- (void)pinToOther:(void *)a3;
+- (void)pinToOther:(void *)other;
 @end
 
 @implementation UIView
 
-- (void)pinToOther:(void *)a3
+- (void)pinToOther:(void *)other
 {
-  v4 = a3;
-  v5 = a1;
-  UIView.pinToOther(layoutGuide:)(v4);
+  otherCopy = other;
+  selfCopy = self;
+  UIView.pinToOther(layoutGuide:)(otherCopy);
 }
 
 @end

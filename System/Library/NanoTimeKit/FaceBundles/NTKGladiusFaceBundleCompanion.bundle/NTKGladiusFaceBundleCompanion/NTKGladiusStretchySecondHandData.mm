@@ -1,23 +1,23 @@
 @interface NTKGladiusStretchySecondHandData
 - (_TtC29NTKGladiusFaceBundleCompanion32NTKGladiusStretchySecondHandData)init;
-- (_TtC29NTKGladiusFaceBundleCompanion32NTKGladiusStretchySecondHandData)initWithDevice:(id)a3;
-- (double)sampleAtAngle:(double)a3 includeBaseRadius:(BOOL)a4;
+- (_TtC29NTKGladiusFaceBundleCompanion32NTKGladiusStretchySecondHandData)initWithDevice:(id)device;
+- (double)sampleAtAngle:(double)angle includeBaseRadius:(BOOL)radius;
 @end
 
 @implementation NTKGladiusStretchySecondHandData
 
-- (_TtC29NTKGladiusFaceBundleCompanion32NTKGladiusStretchySecondHandData)initWithDevice:(id)a3
+- (_TtC29NTKGladiusFaceBundleCompanion32NTKGladiusStretchySecondHandData)initWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = sub_11F90(v3);
+  deviceCopy = device;
+  v4 = sub_11F90(deviceCopy);
 
   return v4;
 }
 
-- (double)sampleAtAngle:(double)a3 includeBaseRadius:(BOOL)a4
+- (double)sampleAtAngle:(double)angle includeBaseRadius:(BOOL)radius
 {
-  v6 = self;
-  sub_11C08(a4, a3);
+  selfCopy = self;
+  sub_11C08(radius, angle);
   v8 = v7;
 
   return v8;

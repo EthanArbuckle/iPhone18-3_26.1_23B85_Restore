@@ -1,35 +1,35 @@
 @interface _HDSPOSTransaction
-+ (id)assertionWithIdentifier:(id)a3 timeout:(double)a4;
-- (_HDSPOSTransaction)initWithIdentifier:(id)a3 timeout:(double)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)assertionWithIdentifier:(id)identifier timeout:(double)timeout;
+- (_HDSPOSTransaction)initWithIdentifier:(id)identifier timeout:(double)timeout;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_locked_release;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
 - (void)releaseAssertion;
 @end
 
 @implementation _HDSPOSTransaction
 
-+ (id)assertionWithIdentifier:(id)a3 timeout:(double)a4
++ (id)assertionWithIdentifier:(id)identifier timeout:(double)timeout
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithIdentifier:v5 timeout:a4];
+  identifierCopy = identifier;
+  v6 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy timeout:timeout];
 
   return v6;
 }
 
-- (_HDSPOSTransaction)initWithIdentifier:(id)a3 timeout:(double)a4
+- (_HDSPOSTransaction)initWithIdentifier:(id)identifier timeout:(double)timeout
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = _HDSPOSTransaction;
   v8 = [(_HDSPOSTransaction *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
+    objc_storeStrong(&v8->_identifier, identifier);
     v9->_transactionLock._os_unfair_lock_opaque = 0;
     v10 = HKSPLogForCategory();
     v9->_signpost_id = os_signpost_id_generate(v10);
@@ -49,7 +49,7 @@
       }
     }
 
-    [v7 UTF8String];
+    [identifierCopy UTF8String];
     v16 = os_transaction_create();
     transaction = v9->_transaction;
     v9->_transaction = v16;
@@ -67,7 +67,7 @@
     objc_copyWeak(&v26, buf);
     dispatch_source_set_event_handler(v20, handler);
     v21 = v9->_timer;
-    v22 = dispatch_time(0, (a4 * 1000000000.0));
+    v22 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(v21, v22, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(v9->_timer);
     v23 = v9;
@@ -78,11 +78,11 @@
   return v9;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_transactionLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_transactionLock);
 }
@@ -137,27 +137,27 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_HDSPOSTransaction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_HDSPOSTransaction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(_HDSPOSTransaction *)self identifier];
-  [v3 appendString:v4 withName:@"identifier"];
+  identifier = [(_HDSPOSTransaction *)self identifier];
+  [v3 appendString:identifier withName:@"identifier"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_HDSPOSTransaction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_HDSPOSTransaction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -2,11 +2,11 @@
 - (PassThroughViewControllerDelegate)delegate;
 - (UIView)passThroughView;
 - (UIView)targetView;
-- (void)_reloadAXIdentifierWithParentViewController:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)_reloadAXIdentifierWithParentViewController:(id)controller;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)passThroughView:(id)a3 didMoveToView:(id)a4;
-- (void)setTargetView:(id)a3;
+- (void)passThroughView:(id)view didMoveToView:(id)toView;
+- (void)setTargetView:(id)view;
 @end
 
 @implementation PassThroughViewController
@@ -25,44 +25,44 @@
   return WeakRetained;
 }
 
-- (void)_reloadAXIdentifierWithParentViewController:(id)a3
+- (void)_reloadAXIdentifierWithParentViewController:(id)controller
 {
-  v10 = a3;
-  if (v10)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v4 = objc_opt_class();
-    v5 = NSStringFromClass(v4);
+    view2 = NSStringFromClass(v4);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [NSString stringWithFormat:@"%@<%p>.%@<%p>", v5, v10, v7, self];
-    v9 = [(PassThroughViewController *)self view];
-    [v9 setAccessibilityIdentifier:v8];
+    v8 = [NSString stringWithFormat:@"%@<%p>.%@<%p>", view2, controllerCopy, v7, self];
+    view = [(PassThroughViewController *)self view];
+    [view setAccessibilityIdentifier:v8];
   }
 
   else
   {
-    v5 = [(PassThroughViewController *)self view];
-    [v5 setAccessibilityIdentifier:0];
+    view2 = [(PassThroughViewController *)self view];
+    [view2 setAccessibilityIdentifier:0];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PassThroughViewController;
-  v4 = a3;
-  [(PassThroughViewController *)&v5 didMoveToParentViewController:v4];
-  [(PassThroughViewController *)self _reloadAXIdentifierWithParentViewController:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(PassThroughViewController *)&v5 didMoveToParentViewController:controllerCopy];
+  [(PassThroughViewController *)self _reloadAXIdentifierWithParentViewController:controllerCopy, v5.receiver, v5.super_class];
 }
 
-- (void)passThroughView:(id)a3 didMoveToView:(id)a4
+- (void)passThroughView:(id)view didMoveToView:(id)toView
 {
-  v6 = a3;
-  v7 = [(PassThroughViewController *)self viewIfLoaded];
+  viewCopy = view;
+  viewIfLoaded = [(PassThroughViewController *)self viewIfLoaded];
 
-  if (v7 == v6)
+  if (viewIfLoaded == viewCopy)
   {
-    if (a4)
+    if (toView)
     {
       self->_hasParentView = 1;
 
@@ -80,25 +80,25 @@
 
 - (UIView)targetView
 {
-  v2 = [(PassThroughViewController *)self view];
-  v3 = [v2 targetView];
+  view = [(PassThroughViewController *)self view];
+  targetView = [view targetView];
 
-  return v3;
+  return targetView;
 }
 
-- (void)setTargetView:(id)a3
+- (void)setTargetView:(id)view
 {
-  v4 = a3;
-  v5 = [(PassThroughViewController *)self view];
-  [v5 setTargetView:v4];
+  viewCopy = view;
+  view = [(PassThroughViewController *)self view];
+  [view setTargetView:viewCopy];
 }
 
 - (UIView)passThroughView
 {
-  v2 = [(PassThroughViewController *)self delegate];
-  v3 = [v2 passThroughView];
+  delegate = [(PassThroughViewController *)self delegate];
+  passThroughView = [delegate passThroughView];
 
-  return v3;
+  return passThroughView;
 }
 
 @end

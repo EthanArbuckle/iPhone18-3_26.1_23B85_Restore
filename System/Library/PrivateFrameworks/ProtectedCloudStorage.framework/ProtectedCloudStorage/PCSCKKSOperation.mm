@@ -1,53 +1,53 @@
 @interface PCSCKKSOperation
-+ (id)operation:(id)a3 block:(id)a4;
++ (id)operation:(id)operation block:(id)block;
 - (BOOL)checkDependencies;
 - (BOOL)startOperation;
-- (void)addSuccessDependency:(id)a3;
+- (void)addSuccessDependency:(id)dependency;
 - (void)completeOperation;
 @end
 
 @implementation PCSCKKSOperation
 
-+ (id)operation:(id)a3 block:(id)a4
++ (id)operation:(id)operation block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  operationCopy = operation;
   v7 = objc_alloc_init(PCSCKKSOperationBlock);
-  [(PCSCKKSOperationBlock *)v7 setName:v6];
+  [(PCSCKKSOperationBlock *)v7 setName:operationCopy];
 
-  [(PCSCKKSOperationBlock *)v7 setBlock:v5];
+  [(PCSCKKSOperationBlock *)v7 setBlock:blockCopy];
 
   return v7;
 }
 
-- (void)addSuccessDependency:(id)a3
+- (void)addSuccessDependency:(id)dependency
 {
-  v8 = a3;
+  dependencyCopy = dependency;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    successDependencies = v4->_successDependencies;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    successDependencies = selfCopy->_successDependencies;
     if (!successDependencies)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      v7 = v4->_successDependencies;
-      v4->_successDependencies = v6;
+      array = [MEMORY[0x1E695DF70] array];
+      v7 = selfCopy->_successDependencies;
+      selfCopy->_successDependencies = array;
 
-      successDependencies = v4->_successDependencies;
+      successDependencies = selfCopy->_successDependencies;
     }
 
-    [(NSMutableArray *)successDependencies addObject:v8];
-    objc_sync_exit(v4);
+    [(NSMutableArray *)successDependencies addObject:dependencyCopy];
+    objc_sync_exit(selfCopy);
   }
 
-  [(PCSCKKSOperation *)self addDependency:v8];
+  [(PCSCKKSOperation *)self addDependency:dependencyCopy];
 }
 
 - (BOOL)checkDependencies
 {
-  v2 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x1E69E9840];
   v31 = 0u;
   v32 = 0u;
@@ -64,7 +64,7 @@
 
   v5 = 0;
   v6 = 0;
-  v27 = v2;
+  v27 = selfCopy;
   v28 = *v32;
   v25 = *MEMORY[0x1E696AA08];
   v7 = 1;
@@ -79,24 +79,24 @@
       }
 
       v9 = *(*(&v31 + 1) + 8 * v8);
-      v10 = [v9 isFinished];
-      v30 = [v9 isCancelled];
-      v11 = [v9 error];
-      v12 = v11 != 0;
+      isFinished = [v9 isFinished];
+      isCancelled = [v9 isCancelled];
+      error = [v9 error];
+      v12 = error != 0;
 
-      v13 = [v9 error];
+      error2 = [v9 error];
 
-      if (v13)
+      if (error2)
       {
-        v14 = [v9 error];
-        v15 = [v14 domain];
-        v16 = [v15 isEqual:PCSCKKSOperationErrorDomain];
+        error3 = [v9 error];
+        domain = [error3 domain];
+        v16 = [domain isEqual:PCSCKKSOperationErrorDomain];
 
         if (v16)
         {
-          v17 = [v9 error];
-          v2 = v27;
-          [(PCSCKKSOperation *)v27 setError:v17];
+          error4 = [v9 error];
+          selfCopy = v27;
+          [(PCSCKKSOperation *)v27 setError:error4];
         }
 
         else
@@ -104,17 +104,17 @@
           v18 = MEMORY[0x1E696ABC0];
           v19 = PCSCKKSOperationErrorDomain;
           v35 = v25;
-          v17 = [v9 error];
-          v36 = v17;
+          error4 = [v9 error];
+          v36 = error4;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
           v21 = [v18 errorWithDomain:v19 code:1 userInfo:v20];
-          v2 = v27;
+          selfCopy = v27;
           [(PCSCKKSOperation *)v27 setError:v21];
         }
       }
 
-      v7 &= v10;
-      v5 |= v30;
+      v7 &= isFinished;
+      v5 |= isCancelled;
       v6 |= v12;
       ++v8;
     }
@@ -131,12 +131,12 @@
     goto LABEL_19;
   }
 
-  v22 = [(PCSCKKSOperation *)v2 error];
+  error5 = [(PCSCKKSOperation *)selfCopy error];
 
-  if (!v22)
+  if (!error5)
   {
     obj = [MEMORY[0x1E696ABC0] errorWithDomain:PCSCKKSOperationErrorDomain code:2 userInfo:0];
-    [(PCSCKKSOperation *)v2 setError:?];
+    [(PCSCKKSOperation *)selfCopy setError:?];
     v4 = 0;
 LABEL_18:
 
@@ -151,8 +151,8 @@ LABEL_19:
 
 - (BOOL)startOperation
 {
-  v3 = [(PCSCKKSOperation *)self checkDependencies];
-  v4 = [(PCSCKKSOperation *)self isCancelled]|| !v3;
+  checkDependencies = [(PCSCKKSOperation *)self checkDependencies];
+  v4 = [(PCSCKKSOperation *)self isCancelled]|| !checkDependencies;
   if (v4)
   {
     [(PCSCKKSOperation *)self willChangeValueForKey:@"isFinished"];

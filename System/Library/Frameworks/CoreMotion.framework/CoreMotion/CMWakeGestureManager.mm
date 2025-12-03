@@ -2,29 +2,29 @@
 + (BOOL)hasSlowBootArgs;
 + (BOOL)isWakeGestureAvailable;
 + (id)sharedManager;
-+ (id)stringForGestureState:(int64_t)a3;
-+ (id)stringForMode:(unsigned __int8)a3;
-+ (id)stringForNotification:(unsigned __int8)a3;
-+ (id)stringForStartPose:(unsigned __int8)a3;
-+ (id)stringForViewPose:(unsigned __int8)a3;
-+ (int64_t)toState:(unsigned __int8)a3;
-+ (unsigned)toRaw:(int64_t)a3;
-- (BOOL)setNightStandWakeEnabled:(BOOL)a3 withConfiguration:(int64_t)a4;
-- (BOOL)simulateGestureWithDelay:(double)a3 Duration:(double)a4;
-- (CMWakeGestureManager)initWithQueue:(id)a3;
++ (id)stringForGestureState:(int64_t)state;
++ (id)stringForMode:(unsigned __int8)mode;
++ (id)stringForNotification:(unsigned __int8)notification;
++ (id)stringForStartPose:(unsigned __int8)pose;
++ (id)stringForViewPose:(unsigned __int8)pose;
++ (int64_t)toState:(unsigned __int8)state;
++ (unsigned)toRaw:(int64_t)raw;
+- (BOOL)setNightStandWakeEnabled:(BOOL)enabled withConfiguration:(int64_t)configuration;
+- (BOOL)simulateGestureWithDelay:(double)delay Duration:(double)duration;
+- (CMWakeGestureManager)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)invokeDelegateWithState:(int64_t)a3;
+- (void)invokeDelegateWithState:(int64_t)state;
 - (void)loadPreferences;
 - (void)logWakeLatency;
-- (void)onBacklightServiceUpdated:(unsigned int)a3;
-- (void)onNotificationControl:(id)a3;
-- (void)onPowerStateUpdated:(const Sample *)a3;
-- (void)onWakeUpdated:(const Sample *)a3;
+- (void)onBacklightServiceUpdated:(unsigned int)updated;
+- (void)onNotificationControl:(id)control;
+- (void)onPowerStateUpdated:(const Sample *)updated;
+- (void)onWakeUpdated:(const Sample *)updated;
 - (void)playAlert;
 - (void)reenableDetectedStateRecognition;
-- (void)setBacklightState:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)simulateGesture:(int64_t)a3 after:(double)a4;
+- (void)setBacklightState:(int64_t)state;
+- (void)setDelegate:(id)delegate;
+- (void)simulateGesture:(int64_t)gesture after:(double)after;
 - (void)startWakeGestureUpdates;
 - (void)stopWakeGestureUpdates;
 @end
@@ -129,9 +129,9 @@ LABEL_28:
   return byte_1EAFE2FA8;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->fUpdatedDelegate, a3);
+  objc_storeWeak(&self->fUpdatedDelegate, delegate);
   fDispatchQ = self->fDispatchQ;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -141,7 +141,7 @@ LABEL_28:
   dispatch_async(fDispatchQ, block);
 }
 
-- (CMWakeGestureManager)initWithQueue:(id)a3
+- (CMWakeGestureManager)initWithQueue:(id)queue
 {
   v12 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -375,14 +375,14 @@ LABEL_28:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBacklightState:(int64_t)a3
+- (void)setBacklightState:(int64_t)state
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->fIsRunningInPrimaryProcess)
   {
-    v5 = (a3 - 1) < 2;
+    v5 = (state - 1) < 2;
     Current = -1.0;
-    if ((a3 - 1) <= 1)
+    if ((state - 1) <= 1)
     {
       Current = CFAbsoluteTimeGetCurrent();
     }
@@ -410,7 +410,7 @@ LABEL_28:
     v15 = v5;
     v16 = fIsDisplayActive;
     block[4] = self;
-    block[5] = a3;
+    block[5] = state;
     dispatch_async(fDispatchQ, block);
   }
 
@@ -450,23 +450,23 @@ LABEL_28:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)toState:(unsigned __int8)a3
++ (int64_t)toState:(unsigned __int8)state
 {
-  if ((a3 - 1) > 2)
+  if ((state - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_19B7B9AD8[(a3 - 1)];
+    return qword_19B7B9AD8[(state - 1)];
   }
 }
 
-+ (unsigned)toRaw:(int64_t)a3
++ (unsigned)toRaw:(int64_t)raw
 {
-  v3 = 0x2030100u >> (8 * a3);
-  if (a3 >= 4)
+  v3 = 0x2030100u >> (8 * raw);
+  if (raw >= 4)
   {
     LOBYTE(v3) = 0;
   }
@@ -474,7 +474,7 @@ LABEL_28:
   return v3 & 3;
 }
 
-- (BOOL)simulateGestureWithDelay:(double)a3 Duration:(double)a4
+- (BOOL)simulateGestureWithDelay:(double)delay Duration:(double)duration
 {
   v8 = 0;
   v9 = &v8;
@@ -486,15 +486,15 @@ LABEL_28:
   block[2] = sub_19B6205A4;
   block[3] = &unk_1E7533420;
   block[4] = &v8;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = delay;
+  *&block[6] = duration;
   dispatch_async(fDispatchQ, block);
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (void)simulateGesture:(int64_t)a3 after:(double)a4
+- (void)simulateGesture:(int64_t)gesture after:(double)after
 {
   fDispatchQ = self->fDispatchQ;
   block[0] = MEMORY[0x1E69E9820];
@@ -502,25 +502,25 @@ LABEL_28:
   block[2] = sub_19B6206DC;
   block[3] = &unk_1E7533448;
   block[4] = self;
-  block[5] = a3;
-  *&block[6] = a4;
+  block[5] = gesture;
+  *&block[6] = after;
   dispatch_async(fDispatchQ, block);
 }
 
-- (BOOL)setNightStandWakeEnabled:(BOOL)a3 withConfiguration:(int64_t)a4
+- (BOOL)setNightStandWakeEnabled:(BOOL)enabled withConfiguration:(int64_t)configuration
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v34 = *MEMORY[0x1E69E9840];
   self->fNightStandModeEnabled = 0;
-  if (a3)
+  if (enabled)
   {
     self->fNightStandModeEnabled = 1;
-    if (a4 == 1)
+    if (configuration == 1)
     {
       LOBYTE(fNightStandThreshold) = 24;
     }
 
-    else if (a4 == 2)
+    else if (configuration == 2)
     {
       LOBYTE(fNightStandThreshold) = 10;
     }
@@ -550,9 +550,9 @@ LABEL_28:
     *buf = 67240960;
     v27 = v8;
     v28 = 1026;
-    v29 = v5;
+    v29 = enabledCopy;
     v30 = 2050;
-    v31 = a4;
+    configurationCopy = configuration;
     v32 = 1026;
     v33 = fNightStandThreshold;
     _os_log_impl(&dword_19B41C000, v9, OS_LOG_TYPE_DEFAULT, "Setting night stand mode on phone,%{public}d,enable,%{public}d,config,%{public}ld,option,%{public}d", buf, 0x1Eu);
@@ -570,9 +570,9 @@ LABEL_28:
     v18 = 67240960;
     v19 = v8;
     v20 = 1026;
-    v21 = v5;
+    v21 = enabledCopy;
     v22 = 2050;
-    v23 = a4;
+    configurationCopy2 = configuration;
     v24 = 1026;
     v25 = fNightStandThreshold;
     v11 = _os_log_send_and_compose_impl();
@@ -595,7 +595,7 @@ LABEL_28:
   return 1;
 }
 
-- (void)invokeDelegateWithState:(int64_t)a3
+- (void)invokeDelegateWithState:(int64_t)state
 {
   fDispatchQ = self->fDispatchQ;
   v4[0] = MEMORY[0x1E69E9820];
@@ -603,7 +603,7 @@ LABEL_28:
   v4[2] = sub_19B620DFC;
   v4[3] = &unk_1E7533490;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(fDispatchQ, v4);
 }
 
@@ -823,62 +823,62 @@ LABEL_28:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)stringForNotification:(unsigned __int8)a3
++ (id)stringForNotification:(unsigned __int8)notification
 {
-  if (a3 > 8u)
+  if (notification > 8u)
   {
     return &stru_1F0E3D7A0;
   }
 
   else
   {
-    return off_1E7533570[a3];
+    return off_1E7533570[notification];
   }
 }
 
-+ (id)stringForMode:(unsigned __int8)a3
++ (id)stringForMode:(unsigned __int8)mode
 {
-  if (a3 > 3u)
+  if (mode > 3u)
   {
     return &stru_1F0E3D7A0;
   }
 
   else
   {
-    return off_1E75335B8[a3];
+    return off_1E75335B8[mode];
   }
 }
 
-+ (id)stringForStartPose:(unsigned __int8)a3
++ (id)stringForStartPose:(unsigned __int8)pose
 {
-  if (a3 > 8u)
+  if (pose > 8u)
   {
     return &stru_1F0E3D7A0;
   }
 
   else
   {
-    return off_1E75335D8[a3];
+    return off_1E75335D8[pose];
   }
 }
 
-+ (id)stringForViewPose:(unsigned __int8)a3
++ (id)stringForViewPose:(unsigned __int8)pose
 {
-  if (a3 > 9u)
+  if (pose > 9u)
   {
     return &stru_1F0E3D7A0;
   }
 
   else
   {
-    return off_1E7533620[a3];
+    return off_1E7533620[pose];
   }
 }
 
-- (void)onNotificationControl:(id)a3
+- (void)onNotificationControl:(id)control
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(control, a2, control);
   v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"CMSendWakeGestureState");
   if (v6)
   {
@@ -989,10 +989,10 @@ LABEL_35:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onWakeUpdated:(const Sample *)a3
+- (void)onWakeUpdated:(const Sample *)updated
 {
-  v5 = *&a3->timestamp;
-  v6 = *&a3->acceleration.x;
+  v5 = *&updated->timestamp;
+  v6 = *&updated->acceleration.x;
   v12[0] = *v6;
   *(v12 + 12) = *(v6 + 12);
   objc_initWeak(&location, self);
@@ -1006,15 +1006,15 @@ LABEL_35:
   v10[0] = v12[0];
   *(v10 + 12) = *(v12 + 12);
   v9[1] = *&v5;
-  v9[2] = a3;
+  v9[2] = updated;
   dispatch_async(fDispatchQ, block);
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)onPowerStateUpdated:(const Sample *)a3
+- (void)onPowerStateUpdated:(const Sample *)updated
 {
-  if (LODWORD(a3->timestamp) == -536870272 || LODWORD(a3->timestamp) == -536870288)
+  if (LODWORD(updated->timestamp) == -536870272 || LODWORD(updated->timestamp) == -536870288)
   {
     v10[5] = v3;
     v10[6] = v4;
@@ -1032,7 +1032,7 @@ LABEL_35:
   }
 }
 
-- (void)onBacklightServiceUpdated:(unsigned int)a3
+- (void)onBacklightServiceUpdated:(unsigned int)updated
 {
   objc_initWeak(&location, self);
   fDispatchQ = self->fDispatchQ;
@@ -1041,7 +1041,7 @@ LABEL_35:
   v6[2] = sub_19B622EE8;
   v6[3] = &unk_1E7533550;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  updatedCopy = updated;
   v6[4] = self;
   dispatch_async(fDispatchQ, v6);
   objc_destroyWeak(&v7);
@@ -1059,16 +1059,16 @@ LABEL_35:
   dispatch_async(fDispatchQ, block);
 }
 
-+ (id)stringForGestureState:(int64_t)a3
++ (id)stringForGestureState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7535F98[a3];
+    return off_1E7535F98[state];
   }
 }
 

@@ -33,9 +33,9 @@
 
 - (void)_updatePreferredContentSize
 {
-  v3 = [(PRWidgetEducationViewController *)self view];
+  view = [(PRWidgetEducationViewController *)self view];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = view;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -56,11 +56,11 @@
 
   v7 = v6;
 
-  v8 = [v7 contentView];
+  contentView = [v7 contentView];
 
   LODWORD(v9) = 1148846080;
   LODWORD(v10) = 1112014848;
-  [v8 systemLayoutSizeFittingSize:420.0 withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:{v9, v10}];
+  [contentView systemLayoutSizeFittingSize:420.0 withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:{v9, v10}];
   v12 = v11;
   v14 = v13;
 

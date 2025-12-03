@@ -1,19 +1,19 @@
 @interface IRInterface
-- (BOOL)processTimings:(const unsigned int *)a3 range:(_NSRange)a4 timestamp:(unint64_t)a5;
-- (void)receivedCommand:(id)a3;
-- (void)receivedFrame:(id)a3;
+- (BOOL)processTimings:(const unsigned int *)timings range:(_NSRange)range timestamp:(unint64_t)timestamp;
+- (void)receivedCommand:(id)command;
+- (void)receivedFrame:(id)frame;
 @end
 
 @implementation IRInterface
 
-- (void)receivedCommand:(id)a3
+- (void)receivedCommand:(id)command
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __31__IRInterface_receivedCommand___block_invoke;
   v3[3] = &unk_278EA29D8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = command;
   [(CoreRCInterface *)self dispatchAsyncHighPriority:v3];
 }
 
@@ -26,18 +26,18 @@ uint64_t __31__IRInterface_receivedCommand___block_invoke(uint64_t a1)
   return [v2 interface:v3 receivedCommand:v4];
 }
 
-- (void)receivedFrame:(id)a3
+- (void)receivedFrame:(id)frame
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [a3 count];
-  v6 = [a3 timestamp];
+  v5 = [frame count];
+  timestamp = [frame timestamp];
   if (gLogCategory_CoreRCInterface <= 10 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
     v11 = v5;
     LogPrintF();
   }
 
-  [a3 getTimings:v13 range:{0, v5, v11}];
+  [frame getTimings:v13 range:{0, v5, v11}];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
@@ -67,7 +67,7 @@ uint64_t __31__IRInterface_receivedCommand___block_invoke(uint64_t a1)
     {
       if (v13[j] >= 0x1D4Du)
       {
-        if (![(IRInterface *)self processTimings:v13 range:v8 timestamp:j - v8, v6])
+        if (![(IRInterface *)self processTimings:v13 range:v8 timestamp:j - v8, timestamp])
         {
           goto LABEL_26;
         }
@@ -86,10 +86,10 @@ LABEL_26:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processTimings:(const unsigned int *)a3 range:(_NSRange)a4 timestamp:(unint64_t)a5
+- (BOOL)processTimings:(const unsigned int *)timings range:(_NSRange)range timestamp:(unint64_t)timestamp
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v18 = 0;
   v17 = 0;
   v16 = 0;
@@ -101,7 +101,7 @@ LABEL_26:
     LogPrintF();
   }
 
-  if (IRDecoder_Decode(&a3[location], length, &v18, &v17, &v16, &v15))
+  if (IRDecoder_Decode(&timings[location], length, &v18, &v17, &v16, &v15))
   {
     LOBYTE(v10) = 0;
   }
@@ -115,7 +115,7 @@ LABEL_26:
       if (v10)
       {
         v11 = v10;
-        [(IRProtocol *)v10 setTimestamp:a5];
+        [(IRProtocol *)v10 setTimestamp:timestamp];
         [(IRInterface *)self receivedCommand:v11];
         LOBYTE(v10) = 1;
       }

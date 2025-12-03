@@ -1,6 +1,6 @@
 @interface PHMemoryGenerationOptions
 - (PHMemoryGenerationOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 @end
 
@@ -8,34 +8,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PHMemoryGenerationOptions *)self date];
-  [v3 setObject:v4 forKeyedSubscript:@"PHMemoryOptionDateKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  date = [(PHMemoryGenerationOptions *)self date];
+  [dictionary setObject:date forKeyedSubscript:@"PHMemoryOptionDateKey"];
 
-  v5 = [(PHMemoryGenerationOptions *)self location];
-  [v3 setObject:v5 forKeyedSubscript:@"PHMemoryOptionLocationKey"];
+  location = [(PHMemoryGenerationOptions *)self location];
+  [dictionary setObject:location forKeyedSubscript:@"PHMemoryOptionLocationKey"];
 
-  v6 = [(PHMemoryGenerationOptions *)self peopleNames];
-  [v3 setObject:v6 forKeyedSubscript:@"PHMemoryOptionPeopleNamesKey"];
+  peopleNames = [(PHMemoryGenerationOptions *)self peopleNames];
+  [dictionary setObject:peopleNames forKeyedSubscript:@"PHMemoryOptionPeopleNamesKey"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHMemoryGenerationOptions reason](self, "reason")}];
-  [v3 setObject:v7 forKeyedSubscript:@"PHMemoryOptionReasonKey"];
+  [dictionary setObject:v7 forKeyedSubscript:@"PHMemoryOptionReasonKey"];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__PHMemoryGenerationOptions_dictionaryRepresentation__block_invoke;
   aBlock[3] = &unk_1E75A58B8;
-  v8 = v3;
+  v8 = dictionary;
   v16 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(PHMemoryGenerationOptions *)self existingMemories];
-  v9[2](v9, v10, @"PHMemoryOptionExistingMemoryIdentifiersKey");
+  existingMemories = [(PHMemoryGenerationOptions *)self existingMemories];
+  v9[2](v9, existingMemories, @"PHMemoryOptionExistingMemoryIdentifiersKey");
 
-  v11 = [(PHMemoryGenerationOptions *)self blockedMemories];
-  v9[2](v9, v11, @"PHMemoryOptionBlockedMemoryIdentifiersKey");
+  blockedMemories = [(PHMemoryGenerationOptions *)self blockedMemories];
+  v9[2](v9, blockedMemories, @"PHMemoryOptionBlockedMemoryIdentifiersKey");
 
-  v12 = [(PHMemoryGenerationOptions *)self extraParameters];
-  [v8 setObject:v12 forKeyedSubscript:@"PHMemoryOptionExtraParametersKey"];
+  extraParameters = [(PHMemoryGenerationOptions *)self extraParameters];
+  [v8 setObject:extraParameters forKeyedSubscript:@"PHMemoryOptionExtraParametersKey"];
 
   v13 = v8;
   return v8;
@@ -89,34 +89,34 @@ void __53__PHMemoryGenerationOptions_dictionaryRepresentation__block_invoke(uint
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setReason:{-[PHMemoryGenerationOptions reason](self, "reason")}];
-  v5 = [(PHMemoryGenerationOptions *)self date];
-  [v4 setDate:v5];
+  date = [(PHMemoryGenerationOptions *)self date];
+  [v4 setDate:date];
 
-  v6 = [(PHMemoryGenerationOptions *)self location];
-  [v4 setLocation:v6];
+  location = [(PHMemoryGenerationOptions *)self location];
+  [v4 setLocation:location];
 
-  v7 = [(PHMemoryGenerationOptions *)self peopleNames];
-  v8 = [v7 copy];
+  peopleNames = [(PHMemoryGenerationOptions *)self peopleNames];
+  v8 = [peopleNames copy];
   [v4 setPeopleNames:v8];
 
-  v9 = [(PHMemoryGenerationOptions *)self existingMemories];
-  v10 = [v9 copy];
+  existingMemories = [(PHMemoryGenerationOptions *)self existingMemories];
+  v10 = [existingMemories copy];
   [v4 setExistingMemories:v10];
 
-  v11 = [(PHMemoryGenerationOptions *)self blockedMemories];
-  v12 = [v11 copy];
+  blockedMemories = [(PHMemoryGenerationOptions *)self blockedMemories];
+  v12 = [blockedMemories copy];
   [v4 setBlockedMemories:v12];
 
-  v13 = [(PHMemoryGenerationOptions *)self extraParameters];
-  v14 = [v13 copy];
+  extraParameters = [(PHMemoryGenerationOptions *)self extraParameters];
+  v14 = [extraParameters copy];
   [v4 setExtraParameters:v14];
 
-  v15 = [(PHMemoryGenerationOptions *)self photoLibrary];
-  [v4 setPhotoLibrary:v15];
+  photoLibrary = [(PHMemoryGenerationOptions *)self photoLibrary];
+  [v4 setPhotoLibrary:photoLibrary];
 
   return v4;
 }
@@ -128,9 +128,9 @@ void __53__PHMemoryGenerationOptions_dictionaryRepresentation__block_invoke(uint
   v2 = [(PHMemoryGenerationOptions *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     date = v2->_date;
-    v2->_date = v3;
+    v2->_date = date;
 
     v2->_reason = 1;
   }

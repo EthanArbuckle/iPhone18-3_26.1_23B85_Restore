@@ -1,7 +1,7 @@
 @interface FCChannelMembership
 - (BOOL)isAllowedToSeeDrafts;
-- (BOOL)isEqual:(id)a3;
-- (FCChannelMembership)initWithRecord:(id)a3 interestToken:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (FCChannelMembership)initWithRecord:(id)record interestToken:(id)token;
 - (NSString)channelID;
 - (NSString)draftArticleListID;
 - (NSString)draftIssueListID;
@@ -10,18 +10,18 @@
 
 @implementation FCChannelMembership
 
-- (FCChannelMembership)initWithRecord:(id)a3 interestToken:(id)a4
+- (FCChannelMembership)initWithRecord:(id)record interestToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = FCChannelMembership;
   v9 = [(FCChannelMembership *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_record, a3);
-    objc_storeStrong(&v10->_interestToken, a4);
+    objc_storeStrong(&v9->_record, record);
+    objc_storeStrong(&v10->_interestToken, token);
   }
 
   return v10;
@@ -29,54 +29,54 @@
 
 - (NSString)channelID
 {
-  v2 = [(FCChannelMembership *)self record];
-  v3 = [v2 channelID];
+  record = [(FCChannelMembership *)self record];
+  channelID = [record channelID];
 
-  return v3;
+  return channelID;
 }
 
 - (BOOL)isAllowedToSeeDrafts
 {
-  v2 = [(FCChannelMembership *)self record];
-  v3 = [v2 canAccessDrafts];
+  record = [(FCChannelMembership *)self record];
+  canAccessDrafts = [record canAccessDrafts];
 
-  return v3;
+  return canAccessDrafts;
 }
 
 - (NSString)draftArticleListID
 {
-  v2 = [(FCChannelMembership *)self record];
-  v3 = [v2 draftArticleListID];
+  record = [(FCChannelMembership *)self record];
+  draftArticleListID = [record draftArticleListID];
 
-  return v3;
+  return draftArticleListID;
 }
 
 - (NSString)draftIssueListID
 {
-  v2 = [(FCChannelMembership *)self record];
-  v3 = [v2 draftIssueListID];
+  record = [(FCChannelMembership *)self record];
+  draftIssueListID = [record draftIssueListID];
 
-  return v3;
+  return draftIssueListID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 channelID];
-    v7 = [(FCChannelMembership *)self channelID];
-    if ([v6 isEqualToString:v7] && (v8 = objc_msgSend(v5, "isAllowedToSeeDrafts"), v8 == -[FCChannelMembership isAllowedToSeeDrafts](self, "isAllowedToSeeDrafts")))
+    v5 = equalCopy;
+    channelID = [v5 channelID];
+    channelID2 = [(FCChannelMembership *)self channelID];
+    if ([channelID isEqualToString:channelID2] && (v8 = objc_msgSend(v5, "isAllowedToSeeDrafts"), v8 == -[FCChannelMembership isAllowedToSeeDrafts](self, "isAllowedToSeeDrafts")))
     {
-      v10 = [v5 draftArticleListID];
-      v11 = [(FCChannelMembership *)self draftArticleListID];
-      if ([v10 isEqualToString:v11])
+      draftArticleListID = [v5 draftArticleListID];
+      draftArticleListID2 = [(FCChannelMembership *)self draftArticleListID];
+      if ([draftArticleListID isEqualToString:draftArticleListID2])
       {
-        v12 = [v5 draftIssueListID];
-        v13 = [(FCChannelMembership *)self draftIssueListID];
-        v9 = [v12 isEqualToString:v13];
+        draftIssueListID = [v5 draftIssueListID];
+        draftIssueListID2 = [(FCChannelMembership *)self draftIssueListID];
+        v9 = [draftIssueListID isEqualToString:draftIssueListID2];
       }
 
       else
@@ -101,8 +101,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FCChannelMembership *)self record];
-  v3 = [v2 hash];
+  record = [(FCChannelMembership *)self record];
+  v3 = [record hash];
 
   return v3;
 }

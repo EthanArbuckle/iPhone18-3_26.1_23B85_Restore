@@ -1,6 +1,6 @@
 @interface ReactionEffectViewController
-- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithCoder:(id)a3;
-- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithCoder:(id)coder;
+- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -10,14 +10,14 @@
 {
   v3 = OBJC_IVAR____TtC22_GroupActivities_UIKit28ReactionEffectViewController_effectView;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit28ReactionEffectViewController_effectView);
-  v5 = self;
+  selfCopy = self;
   [v4 setUserInteractionEnabled_];
-  [(ReactionEffectViewController *)v5 setView:*(&self->super.super.super.isa + v3)];
+  [(ReactionEffectViewController *)selfCopy setView:*(&self->super.super.super.isa + v3)];
 }
 
-- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -32,7 +32,7 @@
   v9 = OBJC_IVAR____TtC22_GroupActivities_UIKit28ReactionEffectViewController_effectView;
   type metadata accessor for ReactionEffectView();
   v10 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v11 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.isa + v9) = [v10 init];
   if (v8)
   {
@@ -46,21 +46,21 @@
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for ReactionEffectViewController();
-  v13 = [(ReactionEffectViewController *)&v15 initWithNibName:v12 bundle:v11];
+  v13 = [(ReactionEffectViewController *)&v15 initWithNibName:v12 bundle:bundleCopy];
 
   return v13;
 }
 
-- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithCoder:(id)a3
+- (_TtC22_GroupActivities_UIKit28ReactionEffectViewController)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC22_GroupActivities_UIKit28ReactionEffectViewController_effectView;
   type metadata accessor for ReactionEffectView();
   v6 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = type metadata accessor for ReactionEffectViewController();
-  v8 = [(ReactionEffectViewController *)&v10 initWithCoder:v7];
+  v8 = [(ReactionEffectViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

@@ -1,30 +1,30 @@
 @interface PKBackgroundContactlessInterfaceSessionController
-- (PKBackgroundContactlessInterfaceSessionController)initWithFieldProperties:(id)a3 forPassUniqueID:(id)a4 relinquishOwnership:(id)a5;
-- (void)_processContexts:(id)a3 didFinishTransaction:(BOOL)a4;
-- (void)claimActiveSessionWithCompletion:(id)a3;
-- (void)contactlessInterfaceSession:(id)a3 didFinishTransactionWithContext:(id)a4;
+- (PKBackgroundContactlessInterfaceSessionController)initWithFieldProperties:(id)properties forPassUniqueID:(id)d relinquishOwnership:(id)ownership;
+- (void)_processContexts:(id)contexts didFinishTransaction:(BOOL)transaction;
+- (void)claimActiveSessionWithCompletion:(id)completion;
+- (void)contactlessInterfaceSession:(id)session didFinishTransactionWithContext:(id)context;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setSession:(id)a3;
+- (void)setSession:(id)session;
 - (void)start;
 @end
 
 @implementation PKBackgroundContactlessInterfaceSessionController
 
-- (PKBackgroundContactlessInterfaceSessionController)initWithFieldProperties:(id)a3 forPassUniqueID:(id)a4 relinquishOwnership:(id)a5
+- (PKBackgroundContactlessInterfaceSessionController)initWithFieldProperties:(id)properties forPassUniqueID:(id)d relinquishOwnership:(id)ownership
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = 0;
-  if (a3 && v8)
+  dCopy = d;
+  ownershipCopy = ownership;
+  selfCopy = 0;
+  if (properties && dCopy)
   {
-    if ([a3 terminalType] == 4)
+    if ([properties terminalType] == 4)
     {
-      v11 = [MEMORY[0x1E69B8A58] sharedInstance];
-      v12 = [v11 passWithUniqueID:v8];
-      v13 = [v12 secureElementPass];
+      mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+      v12 = [mEMORY[0x1E69B8A58] passWithUniqueID:dCopy];
+      secureElementPass = [v12 secureElementPass];
 
-      if (v13 && [v13 isIdentityPass])
+      if (secureElementPass && [secureElementPass isIdentityPass])
       {
         v19.receiver = self;
         v19.super_class = PKBackgroundContactlessInterfaceSessionController;
@@ -32,8 +32,8 @@
         v15 = v14;
         if (v14)
         {
-          objc_storeStrong(&v14->_pass, v13);
-          v16 = _Block_copy(v9);
+          objc_storeStrong(&v14->_pass, secureElementPass);
+          v16 = _Block_copy(ownershipCopy);
           relinquishOwnershipBlock = v15->_relinquishOwnershipBlock;
           v15->_relinquishOwnershipBlock = v16;
 
@@ -42,22 +42,22 @@
         }
 
         self = v15;
-        v10 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v10 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -178,13 +178,13 @@ LABEL_6:
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __InvalidateSessionHandle_block_invoke;
     v15[3] = &unk_1E8011A18;
     v15[4] = &v16;
-    v13 = [v12 beginBackgroundTaskWithExpirationHandler:v15];
+    v13 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v15];
 
     v17[3] = v13;
     v14[0] = MEMORY[0x1E69E9820];
@@ -203,14 +203,14 @@ LABEL_6:
   }
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_lock);
-  if (v5 && self->_lifecycleState != 2)
+  if (sessionCopy && self->_lifecycleState != 2)
   {
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
     sessionHandle = self->_sessionHandle;
     self->_sessionHandle = 0;
 
@@ -224,14 +224,14 @@ LABEL_6:
     os_unfair_lock_unlock(&self->_lock);
     if (v9)
     {
-      [v5 setDelegate:self];
+      [sessionCopy setDelegate:self];
       v10 = self->_pass;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v11 = [(PKSecureElementPass *)v10 devicePaymentApplications];
-      v12 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      devicePaymentApplications = [(PKSecureElementPass *)v10 devicePaymentApplications];
+      v12 = [devicePaymentApplications countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v12)
       {
         v13 = v12;
@@ -242,7 +242,7 @@ LABEL_7:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
           v16 = *(*(&v24 + 1) + 8 * v15);
@@ -260,7 +260,7 @@ LABEL_7:
 
           if (v13 == ++v15)
           {
-            v13 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+            v13 = [devicePaymentApplications countByEnumeratingWithState:&v24 objects:v29 count:16];
             if (v13)
             {
               goto LABEL_7;
@@ -274,14 +274,14 @@ LABEL_7:
 
         v28 = v18;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-        v20 = [v5 activatePaymentApplications:v19 forPaymentPass:v10];
+        v20 = [sessionCopy activatePaymentApplications:v19 forPaymentPass:v10];
 
         if (!v20)
         {
           goto LABEL_18;
         }
 
-        [v5 authorizeAndStartCardEmulationWithCredential:0 deferAuthorization:0 requiresConfirmationForHandoff:1 startHandoffIfPending:0];
+        [sessionCopy authorizeAndStartCardEmulationWithCredential:0 deferAuthorization:0 requiresConfirmationForHandoff:1 startHandoffIfPending:0];
       }
 
       else
@@ -313,12 +313,12 @@ LABEL_18:
   }
 }
 
-- (void)claimActiveSessionWithCompletion:(id)a3
+- (void)claimActiveSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
     os_unfair_lock_lock(&self->_lock);
     if (self->_lifecycleState == 1)
     {
@@ -371,22 +371,22 @@ LABEL_8:
   __break(1u);
 }
 
-- (void)contactlessInterfaceSession:(id)a3 didFinishTransactionWithContext:(id)a4
+- (void)contactlessInterfaceSession:(id)session didFinishTransactionWithContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextCopy = context;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKBackgroundContactlessInterfaceSessionController (%p): ignoring transaction end....", buf, 0xCu);
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v10 = v7;
+    v10 = contextCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
     [(PKBackgroundContactlessInterfaceSessionController *)self _processContexts:v9 didFinishTransaction:1];
   }
@@ -397,35 +397,35 @@ LABEL_8:
   }
 }
 
-- (void)_processContexts:(id)a3 didFinishTransaction:(BOOL)a4
+- (void)_processContexts:(id)contexts didFinishTransaction:(BOOL)transaction
 {
-  v4 = a4;
+  transactionCopy = transaction;
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 firstObject];
-  v8 = [v7 paymentPass];
+  contextsCopy = contexts;
+  firstObject = [contextsCopy firstObject];
+  paymentPass = [firstObject paymentPass];
 
-  if (v8)
+  if (paymentPass)
   {
-    v9 = [MEMORY[0x1E69B8DB8] paymentService];
-    v10 = [v8 isStoredValuePass];
-    v11 = [v8 uniqueID];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+    isStoredValuePass = [paymentPass isStoredValuePass];
+    uniqueID = [paymentPass uniqueID];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v12 = v6;
+    v12 = contextsCopy;
     v13 = [v12 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v13)
     {
       v14 = v13;
       obj = v12;
-      v26 = self;
-      v27 = v8;
-      v28 = v6;
+      selfCopy = self;
+      v27 = paymentPass;
+      v28 = contextsCopy;
       v15 = 0;
       v16 = *v32;
-      v29 = v10 | v4;
+      v29 = isStoredValuePass | transactionCopy;
       while (1)
       {
         for (i = 0; i != v14; ++i)
@@ -436,13 +436,13 @@ LABEL_8:
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
-          v19 = [v18 paymentApplication];
-          if (v10)
+          paymentApplication = [v18 paymentApplication];
+          if (isStoredValuePass)
           {
-            v20 = [v18 transitHistory];
-            v21 = [v18 date];
-            v22 = [v18 expressState];
-            [v9 processTransitTransactionEventWithHistory:v20 transactionDate:v21 forPaymentApplication:v19 withPassUniqueIdentifier:v11 expressTransactionState:v22];
+            transitHistory = [v18 transitHistory];
+            date = [v18 date];
+            expressState = [v18 expressState];
+            [paymentService processTransitTransactionEventWithHistory:transitHistory transactionDate:date forPaymentApplication:paymentApplication withPassUniqueIdentifier:uniqueID expressTransactionState:expressState];
 
             v15 = 1;
           }
@@ -452,11 +452,11 @@ LABEL_8:
             goto LABEL_11;
           }
 
-          v23 = [v19 applicationIdentifier];
-          [v9 recordPaymentApplicationUsageForPassUniqueIdentifier:v11 paymentApplicationIdentifier:v23];
+          applicationIdentifier = [paymentApplication applicationIdentifier];
+          [paymentService recordPaymentApplicationUsageForPassUniqueIdentifier:uniqueID paymentApplicationIdentifier:applicationIdentifier];
 
-          v24 = [v19 applicationIdentifier];
-          [v9 recordPassTransactionActivitySummaryForPassUniqueIdentifier:v11 paymentApplicationIdentifier:v24 presentmentType:2];
+          applicationIdentifier2 = [paymentApplication applicationIdentifier];
+          [paymentService recordPassTransactionActivitySummaryForPassUniqueIdentifier:uniqueID paymentApplicationIdentifier:applicationIdentifier2 presentmentType:2];
 
 LABEL_11:
         }
@@ -465,9 +465,9 @@ LABEL_11:
         if (!v14)
         {
 
-          v8 = v27;
-          v6 = v28;
-          self = v26;
+          paymentPass = v27;
+          contextsCopy = v28;
+          self = selfCopy;
           if (v15)
           {
             goto LABEL_19;
@@ -484,7 +484,7 @@ LABEL_16:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v36 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1BD026000, v25, OS_LOG_TYPE_DEFAULT, "PKBackgroundContactlessInterfaceSessionController (%p): dropping transaction.", buf, 0xCu);
   }
 

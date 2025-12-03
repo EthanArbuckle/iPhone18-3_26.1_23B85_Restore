@@ -1,15 +1,15 @@
 @interface LiveActivityScheduleRequest
 - (_TtC10NewsDaemon27LiveActivityScheduleRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LiveActivityScheduleRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  LiveActivityScheduleRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  LiveActivityScheduleRequest.encode(with:)(coderCopy);
 }
 
 - (_TtC10NewsDaemon27LiveActivityScheduleRequest)init

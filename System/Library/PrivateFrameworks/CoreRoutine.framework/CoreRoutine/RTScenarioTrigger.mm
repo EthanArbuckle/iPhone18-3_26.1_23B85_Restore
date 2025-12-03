@@ -1,39 +1,39 @@
 @interface RTScenarioTrigger
-+ (id)scenarioTriggerSettledStateToString:(unint64_t)a3;
-+ (id)scenarioTriggerTypeToString:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)scenarioTriggerSettledStateToString:(unint64_t)string;
++ (id)scenarioTriggerTypeToString:(unint64_t)string;
+- (BOOL)isEqual:(id)equal;
 - (RTScenarioTrigger)init;
-- (RTScenarioTrigger)initWithCoder:(id)a3;
-- (RTScenarioTrigger)initWithType:(unint64_t)a3;
+- (RTScenarioTrigger)initWithCoder:(id)coder;
+- (RTScenarioTrigger)initWithType:(unint64_t)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTScenarioTrigger
 
-+ (id)scenarioTriggerTypeToString:(unint64_t)a3
++ (id)scenarioTriggerTypeToString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80B3D88[a3];
+    return off_1E80B3D88[string];
   }
 }
 
-+ (id)scenarioTriggerSettledStateToString:(unint64_t)a3
++ (id)scenarioTriggerSettledStateToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"Settled";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"Unsettled";
   }
@@ -44,23 +44,23 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:type];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 }
 
-- (RTScenarioTrigger)initWithCoder:(id)a3
+- (RTScenarioTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
 
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return [(RTScenarioTrigger *)self initWithType:v6];
+  return [(RTScenarioTrigger *)self initWithType:unsignedIntegerValue];
 }
 
 - (RTScenarioTrigger)init
@@ -71,14 +71,14 @@
   _RTRequireInitializer(v2, sel_initWithType_);
 }
 
-- (RTScenarioTrigger)initWithType:(unint64_t)a3
+- (RTScenarioTrigger)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = RTScenarioTrigger;
   result = [(RTScenarioTrigger *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -93,22 +93,22 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && [(RTScenarioTrigger *)v4 isMemberOfClass:objc_opt_class()])
+  else if (equalCopy && [(RTScenarioTrigger *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v6 = v5;
-    v7 = [(RTScenarioTrigger *)self type];
-    v8 = [(RTScenarioTrigger *)v6 type];
+    type = [(RTScenarioTrigger *)self type];
+    type2 = [(RTScenarioTrigger *)v6 type];
 
-    v9 = v7 == v8;
+    v9 = type == type2;
   }
 
   else

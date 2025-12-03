@@ -1,9 +1,9 @@
 @interface MFAttachmentSecurityScope
-+ (id)securityScopedURL:(id)a3;
-+ (id)securityScopedURL:(id)a3 withToken:(id)a4;
++ (id)securityScopedURL:(id)l;
++ (id)securityScopedURL:(id)l withToken:(id)token;
 - (BOOL)isBundle;
-- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)a3 withToken:(id)a4;
-- (id)_temporaryReadURL:(id)a3 error:(id *)a4;
+- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)l withToken:(id)token;
+- (id)_temporaryReadURL:(id)l error:(id *)error;
 - (id)data;
 - (id)securityScopeToken;
 - (id)startReadAccess;
@@ -18,21 +18,21 @@
 
 @implementation MFAttachmentSecurityScope
 
-+ (id)securityScopedURL:(id)a3
++ (id)securityScopedURL:(id)l
 {
-  v3 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:a3 withToken:0];
+  v3 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:l withToken:0];
 
   return v3;
 }
 
-+ (id)securityScopedURL:(id)a3 withToken:(id)a4
++ (id)securityScopedURL:(id)l withToken:(id)token
 {
-  v4 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:a3 withToken:a4];
+  v4 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:l withToken:token];
 
   return v4;
 }
 
-- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)a3 withToken:(id)a4
+- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)l withToken:(id)token
 {
   v8.receiver = self;
   v8.super_class = MFAttachmentSecurityScope;
@@ -40,8 +40,8 @@
   if (v6)
   {
     v6->_fileCoordinator = objc_alloc_init(MEMORY[0x277CCA9E8]);
-    v6->_securityScopedURL = a3;
-    v6->_securityScopeToken = a4;
+    v6->_securityScopedURL = l;
+    v6->_securityScopeToken = token;
   }
 
   return v6;
@@ -95,8 +95,8 @@
 
     else
     {
-      v8 = [(NSString *)[(NSURL *)self->_securityScopedURL path] stringByDeletingLastPathComponent];
-      if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) != 0 || objc_msgSend(objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), "isWritableFileAtPath:", v8))
+      stringByDeletingLastPathComponent = [(NSString *)[(NSURL *)self->_securityScopedURL path] stringByDeletingLastPathComponent];
+      if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) != 0 || objc_msgSend(objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), "isWritableFileAtPath:", stringByDeletingLastPathComponent))
       {
         self->_secureWriteURL = self->_securityScopedURL;
       }
@@ -221,10 +221,10 @@ id __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_64(uint64_t a1,
   return result;
 }
 
-- (id)_temporaryReadURL:(id)a3 error:(id *)a4
+- (id)_temporaryReadURL:(id)l error:(id *)error
 {
   v6 = -[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", [objc_msgSend(MEMORY[0x277CCAD78] "UUID")]);
-  v7 = [a3 lastPathComponent];
+  lastPathComponent = [l lastPathComponent];
   if (![objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
   {
     v11 = MFLogGeneral();
@@ -236,14 +236,14 @@ id __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_64(uint64_t a1,
     return 0;
   }
 
-  v8 = [(NSString *)v6 stringByAppendingPathComponent:v7];
+  v8 = [(NSString *)v6 stringByAppendingPathComponent:lastPathComponent];
   v9 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v8 isDirectory:0];
   if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
   {
     v10 = MFLogGeneral();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MFAttachmentSecurityScope *)v9 _temporaryReadURL:a4 error:v10];
+      [(MFAttachmentSecurityScope *)v9 _temporaryReadURL:error error:v10];
     }
 
     [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
@@ -256,7 +256,7 @@ id __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_64(uint64_t a1,
 - (void)_removeTemporaryReadURL
 {
   *v4 = 138412546;
-  *&v4[4] = a1;
+  *&v4[4] = self;
   *&v4[12] = 2112;
   *&v4[14] = *a2;
   OUTLINED_FUNCTION_3(&dword_258BDA000, a2, a3, "Failed to remove temporary read directory [%@] error [%@]", *v4, *&v4[8], *&v4[16], *MEMORY[0x277D85DE8]);
@@ -343,9 +343,9 @@ id __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_64(uint64_t a1,
 - (BOOL)isBundle
 {
   v6 = 0;
-  v3 = [(MFAttachmentSecurityScope *)self isReadable];
+  isReadable = [(MFAttachmentSecurityScope *)self isReadable];
   v4 = 0;
-  if (v3)
+  if (isReadable)
   {
     [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
     v4 = v6;
@@ -357,9 +357,9 @@ id __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_64(uint64_t a1,
 - (void)startWriteAccess
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [*a1 ef_publicDescription];
+  ef_publicDescription = [*self ef_publicDescription];
   v5 = 138543362;
-  v6 = v3;
+  v6 = ef_publicDescription;
   _os_log_error_impl(&dword_258BDA000, a2, OS_LOG_TYPE_ERROR, "#Attachments Error accessing secure write URL [%{public}@]", &v5, 0xCu);
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -367,7 +367,7 @@ id __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_64(uint64_t a1,
 - (void)startReadAccess
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_258BDA000, log, OS_LOG_TYPE_ERROR, "#Attachments Error accessing secure read URL [%{public}@]", buf, 0xCu);
 }
 

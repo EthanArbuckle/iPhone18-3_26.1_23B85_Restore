@@ -1,16 +1,16 @@
 @interface PXFocusTimelineEventAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityFocusEventTimeString;
 - (id)accessibilityFocusEventTypeString;
 @end
 
 @implementation PXFocusTimelineEventAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXFocusTimelineEvent" hasInstanceMethod:@"time" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PXFocusTimelineEvent" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXFocusTimelineEvent" hasInstanceMethod:@"time" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXFocusTimelineEvent" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityFocusEventTimeString

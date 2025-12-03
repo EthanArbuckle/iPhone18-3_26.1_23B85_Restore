@@ -13,15 +13,15 @@
   v50 = 0;
   v51 = 0;
   v52 = 0;
-  v7 = [a1 layer];
-  v8 = [v7 filters];
+  layer = [self layer];
+  filters = [layer filters];
 
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count") + 3}];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(filters, "count") + 3}];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = v8;
+  v10 = filters;
   v11 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v11)
   {
@@ -37,8 +37,8 @@
         }
 
         v15 = *(*(&v45 + 1) + 8 * i);
-        v16 = [v15 name];
-        v17 = [v6 objectForKeyedSubscript:v16];
+        name = [v15 name];
+        v17 = [v6 objectForKeyedSubscript:name];
 
         if (v17)
         {
@@ -113,13 +113,13 @@
     }
 
 LABEL_22:
-    v18 = a1;
+    selfCopy2 = self;
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v18 = a1;
+  selfCopy2 = self;
   if (v31 == 2)
   {
     if (fabs(a2 + -1.0) >= 0.00000011920929)
@@ -167,8 +167,8 @@ LABEL_24:
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v26 = [v18 layer];
-  [v26 setFilters:v9];
+  layer2 = [selfCopy2 layer];
+  [layer2 setFilters:v9];
 
   [MEMORY[0x1E6979518] commit];
   for (k = 16; k != -8; k -= 8)
@@ -178,18 +178,18 @@ LABEL_24:
 
 - (void)setMaxAPL:()ClockKitUI
 {
-  v6 = [a1 layer];
-  v2 = [v6 superlayer];
+  layer = [self layer];
+  superlayer = [layer superlayer];
   v3 = objc_alloc_init(MEMORY[0x1E69793A8]);
-  [v6 frame];
+  [layer frame];
   [v3 setFrame:?];
-  v4 = [a1 layer];
-  [v4 removeFromSuperlayer];
+  layer2 = [self layer];
+  [layer2 removeFromSuperlayer];
 
-  [v2 addSublayer:v3];
-  v5 = [MEMORY[0x1E6979320] remoteContext];
-  [v5 setLayer:v6];
-  [v3 setContextId:{objc_msgSend(v5, "contextId")}];
+  [superlayer addSublayer:v3];
+  remoteContext = [MEMORY[0x1E6979320] remoteContext];
+  [remoteContext setLayer:layer];
+  [v3 setContextId:{objc_msgSend(remoteContext, "contextId")}];
   [v3 setRendersAsynchronously:1];
 }
 

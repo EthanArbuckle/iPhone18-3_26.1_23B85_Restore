@@ -6,15 +6,15 @@
 - (void)clearRemoteAcknowledgedState;
 - (void)dealloc;
 - (void)handlLocalFirstUnlockStateChanged;
-- (void)handleFirstUnlockAck:(id)a3;
-- (void)handleFirstUnlockState:(id)a3;
+- (void)handleFirstUnlockAck:(id)ack;
+- (void)handleFirstUnlockState:(id)state;
 - (void)initializeRemoteFirstUnlockState;
-- (void)saveRemoteAcknowledgedState:(id)a3;
+- (void)saveRemoteAcknowledgedState:(id)state;
 - (void)saveRemoteFirstUnlockState;
 - (void)sendFirstUnlockRequest;
 - (void)sendFirstUnlockState;
 - (void)sendStateIfNeccessary;
-- (void)setRemoteDeviceFirstUnlocked:(BOOL)a3;
+- (void)setRemoteDeviceFirstUnlocked:(BOOL)unlocked;
 - (void)subscribeToAllNotifications;
 - (void)systemObserverPairedListChanged;
 - (void)updateLocalFirstUnlockState;
@@ -85,8 +85,8 @@
   NSAppendPrintF();
   v5 = v4;
 
-  v6 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
-  if ([v6 BOOLValue])
+  localDeviceFirstUnlocked = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
+  if ([localDeviceFirstUnlocked BOOLValue])
   {
     v7 = "YES";
   }
@@ -100,8 +100,8 @@
   NSAppendPrintF();
   v8 = v5;
 
-  v9 = [(WCDFirstUnlockManager *)self loadRemoteAcknowledgedState];
-  [v9 BOOLValue];
+  loadRemoteAcknowledgedState = [(WCDFirstUnlockManager *)self loadRemoteAcknowledgedState];
+  [loadRemoteAcknowledgedState BOOLValue];
   NSAppendPrintF();
   v10 = v8;
 
@@ -111,9 +111,9 @@
 - (void)systemObserverPairedListChanged
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 isPaired];
+  isPaired = [v3 isPaired];
 
-  if (v4)
+  if (isPaired)
   {
 
     [(WCDFirstUnlockManager *)self requestFirstUnlockStateIfNeccessary];
@@ -122,14 +122,14 @@
 
 - (void)handlLocalFirstUnlockStateChanged
 {
-  v3 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
+  localDeviceFirstUnlocked = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
 
-  if (!v3)
+  if (!localDeviceFirstUnlocked)
   {
     [(WCDFirstUnlockManager *)self updateLocalFirstUnlockState];
-    v4 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
+    localDeviceFirstUnlocked2 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
 
-    if (v4)
+    if (localDeviceFirstUnlocked2)
     {
 
       [(WCDFirstUnlockManager *)self sendFirstUnlockState];
@@ -147,9 +147,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", &v9, 0xCu);
   }
 
-  v4 = [(WCDFirstUnlockManager *)self loadRemoteAcknowledgedState];
-  v5 = v4;
-  if (!v4 || (v6 = [v4 BOOLValue], -[WCDFirstUnlockManager localDeviceFirstUnlocked](self, "localDeviceFirstUnlocked"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, v6 != v8))
+  loadRemoteAcknowledgedState = [(WCDFirstUnlockManager *)self loadRemoteAcknowledgedState];
+  v5 = loadRemoteAcknowledgedState;
+  if (!loadRemoteAcknowledgedState || (v6 = [loadRemoteAcknowledgedState BOOLValue], -[WCDFirstUnlockManager localDeviceFirstUnlocked](self, "localDeviceFirstUnlocked"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, v6 != v8))
   {
     [(WCDFirstUnlockManager *)self sendFirstUnlockState];
   }
@@ -160,16 +160,16 @@
   [(WCDFirstUnlockManager *)self clearRemoteAcknowledgedState];
   v3 = objc_opt_new();
   [v3 setVersion:1];
-  v4 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
-  [v3 setFirstUnlocked:{objc_msgSend(v4, "BOOLValue")}];
+  localDeviceFirstUnlocked = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
+  [v3 setFirstUnlocked:{objc_msgSend(localDeviceFirstUnlocked, "BOOLValue")}];
 
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
-    v7 = [v6 BOOLValue];
+    localDeviceFirstUnlocked2 = [(WCDFirstUnlockManager *)self localDeviceFirstUnlocked];
+    bOOLValue = [localDeviceFirstUnlocked2 BOOLValue];
     v8 = "NO";
-    if (v7)
+    if (bOOLValue)
     {
       v8 = "YES";
     }
@@ -192,19 +192,19 @@
   }
 }
 
-- (void)handleFirstUnlockAck:(id)a3
+- (void)handleFirstUnlockAck:(id)ack
 {
-  v4 = a3;
-  v5 = [[WCDProtoFirstUnlockAck alloc] initWithData:v4];
+  ackCopy = ack;
+  v5 = [[WCDProtoFirstUnlockAck alloc] initWithData:ackCopy];
 
   if ([(WCDProtoFirstUnlockAck *)v5 hasAcknowledgedState])
   {
-    v6 = [(WCDProtoFirstUnlockAck *)v5 acknowledgedState];
+    acknowledgedState = [(WCDProtoFirstUnlockAck *)v5 acknowledgedState];
     v7 = wc_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "NO";
-      if (v6)
+      if (acknowledgedState)
       {
         v8 = "YES";
       }
@@ -214,23 +214,23 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s", &v10, 0xCu);
     }
 
-    v9 = [NSNumber numberWithBool:v6];
+    v9 = [NSNumber numberWithBool:acknowledgedState];
     [(WCDFirstUnlockManager *)self saveRemoteAcknowledgedState:v9];
   }
 }
 
-- (void)handleFirstUnlockState:(id)a3
+- (void)handleFirstUnlockState:(id)state
 {
-  v4 = a3;
-  v5 = [[WCDProtoFirstUnlockState alloc] initWithData:v4];
+  stateCopy = state;
+  v5 = [[WCDProtoFirstUnlockState alloc] initWithData:stateCopy];
 
   [(WCDFirstUnlockManager *)self setRemoteDeviceFirstUnlocked:[(WCDProtoFirstUnlockState *)v5 firstUnlocked]];
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WCDFirstUnlockManager *)self remoteDeviceFirstUnlocked];
+    remoteDeviceFirstUnlocked = [(WCDFirstUnlockManager *)self remoteDeviceFirstUnlocked];
     v8 = "NO";
-    if (v7)
+    if (remoteDeviceFirstUnlocked)
     {
       v8 = "YES";
     }
@@ -244,11 +244,11 @@
   [(WCDFirstUnlockManager *)self setReceivedFirstUnlockState:1];
 }
 
-- (void)setRemoteDeviceFirstUnlocked:(BOOL)a3
+- (void)setRemoteDeviceFirstUnlocked:(BOOL)unlocked
 {
-  if (self->_remoteDeviceFirstUnlocked != a3)
+  if (self->_remoteDeviceFirstUnlocked != unlocked)
   {
-    self->_remoteDeviceFirstUnlocked = a3;
+    self->_remoteDeviceFirstUnlocked = unlocked;
     v5 = +[WCDSystemMonitor sharedSystemMonitor];
     [v5 setRemoteFirstUnlocked:self->_remoteDeviceFirstUnlocked];
 
@@ -274,13 +274,13 @@
 
 - (void)initializeRemoteFirstUnlockState
 {
-  v3 = [(WCDFirstUnlockManager *)self loadRemoteFirstUnlockState];
+  loadRemoteFirstUnlockState = [(WCDFirstUnlockManager *)self loadRemoteFirstUnlockState];
   v4 = wc_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [loadRemoteFirstUnlockState BOOLValue];
     v6 = "NO";
-    if (v5)
+    if (bOOLValue)
     {
       v6 = "YES";
     }
@@ -290,7 +290,7 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (!-[WCDFirstUnlockManager receivedFirstUnlockState](self, "receivedFirstUnlockState") && (!v3 || ([v3 BOOLValue] & 1) == 0))
+  if (!-[WCDFirstUnlockManager receivedFirstUnlockState](self, "receivedFirstUnlockState") && (!loadRemoteFirstUnlockState || ([loadRemoteFirstUnlockState BOOLValue] & 1) == 0))
   {
     v7 = dispatch_time(0, 5000000000);
     block[0] = _NSConcreteStackBlock;
@@ -301,16 +301,16 @@
     dispatch_after(v7, &_dispatch_main_q, block);
   }
 
-  -[WCDFirstUnlockManager setRemoteDeviceFirstUnlocked:](self, "setRemoteDeviceFirstUnlocked:", [v3 BOOLValue]);
+  -[WCDFirstUnlockManager setRemoteDeviceFirstUnlocked:](self, "setRemoteDeviceFirstUnlocked:", [loadRemoteFirstUnlockState BOOLValue]);
 }
 
-- (void)saveRemoteAcknowledgedState:(id)a3
+- (void)saveRemoteAcknowledgedState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v3 = a3;
+    stateCopy = state;
     v4 = +[NSUserDefaults standardUserDefaults];
-    [v4 setObject:v3 forKey:@"WCDRemoteAcknowledgedState"];
+    [v4 setObject:stateCopy forKey:@"WCDRemoteAcknowledgedState"];
 
     v5 = +[NSUserDefaults standardUserDefaults];
     [v5 synchronize];

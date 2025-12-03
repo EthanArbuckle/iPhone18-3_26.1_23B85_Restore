@@ -2,14 +2,14 @@
 + (BOOL)autoRefineEnabled;
 + (BOOL)proofreadingEnabled;
 + (id)daemonQueue;
-+ (void)_dispatchWithErrorHandler:(id)a3 successHandler:(id)a4;
-+ (void)prefersPencilOnlyDrawing:(BOOL)a3;
++ (void)_dispatchWithErrorHandler:(id)handler successHandler:(id)successHandler;
++ (void)prefersPencilOnlyDrawing:(BOOL)drawing;
 + (void)prewarmServiceConnectionIfNeeded;
-+ (void)setAutoRefineEnabled:(BOOL)a3;
-+ (void)setCurrentScribbleLanguageIdentifiers:(id)a3;
-+ (void)setPrefersPencilHoverPreviewEnabled:(BOOL)a3 withCompletion:(id)a4;
-+ (void)setPrefersPencilOnlyDrawing:(BOOL)a3;
-+ (void)setProofreadingEnabled:(BOOL)a3;
++ (void)setAutoRefineEnabled:(BOOL)enabled;
++ (void)setCurrentScribbleLanguageIdentifiers:(id)identifiers;
++ (void)setPrefersPencilHoverPreviewEnabled:(BOOL)enabled withCompletion:(id)completion;
++ (void)setPrefersPencilOnlyDrawing:(BOOL)drawing;
++ (void)setProofreadingEnabled:(BOOL)enabled;
 @end
 
 @implementation PKSettingsDaemon
@@ -28,13 +28,13 @@
 
       if (v5 && [v5 BOOLValue] && PKIsAutoRefineEnabled() && objc_msgSend(objc_opt_class(), "hasAutoRefineLocaleEnabled"))
       {
-        v6 = [v5 BOOLValue];
+        bOOLValue = [v5 BOOLValue];
         v7 = os_log_create("com.apple.pencilkit", "AutoRefine");
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
           v9 = PKIsPadDevice() && CHGetPersonalizedSynthesisSupportState() > 2;
           v10[0] = 67109376;
-          v10[1] = v6;
+          v10[1] = bOOLValue;
           v11 = 1024;
           v12 = v9;
           _os_log_debug_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEBUG, "Returning auto refine enabled: %d, device supports: %d", v10, 0xEu);
@@ -49,14 +49,14 @@
       v5 = 0;
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(bOOLValue) = 0;
 LABEL_13:
 
-    return v6;
+    return bOOLValue;
   }
 
-  LOBYTE(v6) = 0;
-  return v6;
+  LOBYTE(bOOLValue) = 0;
+  return bOOLValue;
 }
 
 + (void)prewarmServiceConnectionIfNeeded
@@ -65,7 +65,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __52__PKSettingsDaemon_prewarmServiceConnectionIfNeeded__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (prewarmServiceConnectionIfNeeded_onceToken != -1)
   {
     dispatch_once(&prewarmServiceConnectionIfNeeded_onceToken, block);
@@ -117,14 +117,14 @@ void __31__PKSettingsDaemon_daemonQueue__block_invoke()
   _MergedGlobals_150 = v0;
 }
 
-+ (void)setPrefersPencilOnlyDrawing:(BOOL)a3
++ (void)setPrefersPencilOnlyDrawing:(BOOL)drawing
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __48__PKSettingsDaemon_setPrefersPencilOnlyDrawing___block_invoke_21;
   v3[3] = &__block_descriptor_33_e38_v16__0___CHPKRemoteSettingsProtocol__8l;
-  v4 = a3;
-  [a1 _dispatchWithErrorHandler:&__block_literal_global_20 successHandler:v3];
+  drawingCopy = drawing;
+  [self _dispatchWithErrorHandler:&__block_literal_global_20 successHandler:v3];
 }
 
 void __48__PKSettingsDaemon_setPrefersPencilOnlyDrawing___block_invoke(uint64_t a1, void *a2)
@@ -165,14 +165,14 @@ void __48__PKSettingsDaemon_setPrefersPencilOnlyDrawing___block_invoke_21(uint64
   [v3 setGlobalPrefersPencilOnlyDrawing:*(a1 + 32)];
 }
 
-+ (void)prefersPencilOnlyDrawing:(BOOL)a3
++ (void)prefersPencilOnlyDrawing:(BOOL)drawing
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45__PKSettingsDaemon_prefersPencilOnlyDrawing___block_invoke_31;
   v3[3] = &__block_descriptor_33_e38_v16__0___CHPKRemoteSettingsProtocol__8l;
-  v4 = a3;
-  [a1 _dispatchWithErrorHandler:&__block_literal_global_30 successHandler:v3];
+  drawingCopy = drawing;
+  [self _dispatchWithErrorHandler:&__block_literal_global_30 successHandler:v3];
 }
 
 void __45__PKSettingsDaemon_prefersPencilOnlyDrawing___block_invoke(uint64_t a1, void *a2)
@@ -213,14 +213,14 @@ void __45__PKSettingsDaemon_prefersPencilOnlyDrawing___block_invoke_31(uint64_t 
   [v3 setGlobalPrefersPencilOnlyDrawing:*(a1 + 32)];
 }
 
-+ (void)setAutoRefineEnabled:(BOOL)a3
++ (void)setAutoRefineEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__PKSettingsDaemon_setAutoRefineEnabled___block_invoke_34;
   v3[3] = &__block_descriptor_33_e38_v16__0___CHPKRemoteSettingsProtocol__8l;
-  v4 = a3;
-  [a1 _dispatchWithErrorHandler:&__block_literal_global_33_0 successHandler:v3];
+  enabledCopy = enabled;
+  [self _dispatchWithErrorHandler:&__block_literal_global_33_0 successHandler:v3];
 }
 
 void __41__PKSettingsDaemon_setAutoRefineEnabled___block_invoke(uint64_t a1, void *a2)
@@ -266,14 +266,14 @@ void __41__PKSettingsDaemon_setAutoRefineEnabled___block_invoke_37()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"PKRemoteAutoRefineSettingsDidChange", 0, 0, 1u);
 }
 
-+ (void)setProofreadingEnabled:(BOOL)a3
++ (void)setProofreadingEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__PKSettingsDaemon_setProofreadingEnabled___block_invoke_44;
   v3[3] = &__block_descriptor_33_e38_v16__0___CHPKRemoteSettingsProtocol__8l;
-  v4 = a3;
-  [a1 _dispatchWithErrorHandler:&__block_literal_global_43 successHandler:v3];
+  enabledCopy = enabled;
+  [self _dispatchWithErrorHandler:&__block_literal_global_43 successHandler:v3];
 }
 
 void __43__PKSettingsDaemon_setProofreadingEnabled___block_invoke(uint64_t a1, void *a2)
@@ -329,15 +329,15 @@ void __43__PKSettingsDaemon_setProofreadingEnabled___block_invoke_47()
   v2 = PKUIKitUserDefaults();
   if (PKCurrentDeviceSupportsProofreading() && PKCurrentAppSupportsRefinement() && (v3 = objc_opt_class(), [v2 objectForKey:@"UIProofreadingEnabledKey"], v4 = objc_claimAutoreleasedReturnValue(), PKDynamicCast(v3, v4), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 void __41__PKSettingsDaemon_openPencilPreferences__block_invoke(uint64_t a1, void *a2)
@@ -366,16 +366,16 @@ void __41__PKSettingsDaemon_openPencilPreferences__block_invoke_52(uint64_t a1, 
   [v2 openPencilSettings];
 }
 
-+ (void)setCurrentScribbleLanguageIdentifiers:(id)a3
++ (void)setCurrentScribbleLanguageIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PKSettingsDaemon_setCurrentScribbleLanguageIdentifiers___block_invoke_57;
   v6[3] = &unk_1E82DA900;
-  v7 = v4;
-  v5 = v4;
-  [a1 _dispatchWithErrorHandler:&__block_literal_global_56 successHandler:v6];
+  v7 = identifiersCopy;
+  v5 = identifiersCopy;
+  [self _dispatchWithErrorHandler:&__block_literal_global_56 successHandler:v6];
 }
 
 void __58__PKSettingsDaemon_setCurrentScribbleLanguageIdentifiers___block_invoke(uint64_t a1, void *a2)
@@ -414,15 +414,15 @@ void __58__PKSettingsDaemon_setCurrentScribbleLanguageIdentifiers___block_invoke
   }
 }
 
-+ (void)setPrefersPencilHoverPreviewEnabled:(BOOL)a3 withCompletion:(id)a4
++ (void)setPrefersPencilHoverPreviewEnabled:(BOOL)enabled withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__PKSettingsDaemon_setPrefersPencilHoverPreviewEnabled_withCompletion___block_invoke;
   aBlock[3] = &unk_1E82D6F70;
-  v16 = v6;
-  v7 = v6;
+  v16 = completionCopy;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -433,10 +433,10 @@ void __58__PKSettingsDaemon_setCurrentScribbleLanguageIdentifiers___block_invoke
   v10[1] = 3221225472;
   v10[2] = __71__PKSettingsDaemon_setPrefersPencilHoverPreviewEnabled_withCompletion___block_invoke_60;
   v10[3] = &unk_1E82DA950;
-  v12 = a3;
+  enabledCopy = enabled;
   v11 = v14;
   v9 = v14;
-  [a1 _dispatchWithErrorHandler:v13 successHandler:v10];
+  [self _dispatchWithErrorHandler:v13 successHandler:v10];
 }
 
 uint64_t __71__PKSettingsDaemon_setPrefersPencilHoverPreviewEnabled_withCompletion___block_invoke(uint64_t a1)
@@ -524,20 +524,20 @@ void __71__PKSettingsDaemon_setPrefersPencilHoverPreviewEnabled_withCompletion__
   }
 }
 
-+ (void)_dispatchWithErrorHandler:(id)a3 successHandler:(id)a4
++ (void)_dispatchWithErrorHandler:(id)handler successHandler:(id)successHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 daemonQueue];
+  handlerCopy = handler;
+  successHandlerCopy = successHandler;
+  daemonQueue = [self daemonQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__PKSettingsDaemon__dispatchWithErrorHandler_successHandler___block_invoke;
   v11[3] = &unk_1E82DA9A0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = handlerCopy;
+  v13 = successHandlerCopy;
+  v9 = successHandlerCopy;
+  v10 = handlerCopy;
+  dispatch_async(daemonQueue, v11);
 }
 
 void __61__PKSettingsDaemon__dispatchWithErrorHandler_successHandler___block_invoke(uint64_t a1)

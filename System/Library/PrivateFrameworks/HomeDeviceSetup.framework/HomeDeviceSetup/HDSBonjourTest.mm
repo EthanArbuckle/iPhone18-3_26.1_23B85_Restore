@@ -1,7 +1,7 @@
 @interface HDSBonjourTest
 - (HDSBonjourTest)init;
 - (void)_complete;
-- (void)_handleFoundDevice:(id)a3;
+- (void)_handleFoundDevice:(id)device;
 - (void)_handleTimeout;
 - (void)activate;
 - (void)invalidate;
@@ -167,11 +167,11 @@ void __28__HDSBonjourTest_invalidate__block_invoke(uint64_t a1)
   *(v2 + 8) = 0;
 }
 
-- (void)_handleFoundDevice:(id)a3
+- (void)_handleFoundDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 txtDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"rpBA"];
+  deviceCopy = device;
+  txtDictionary = [deviceCopy txtDictionary];
+  v6 = [txtDictionary objectForKeyedSubscript:@"rpBA"];
 
   if ([v6 isEqualToString:self->_testID])
   {

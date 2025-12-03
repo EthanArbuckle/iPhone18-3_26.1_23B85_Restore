@@ -1,14 +1,14 @@
 @interface IRNearbyDeviceContainerDO
-+ (id)miLoNearbyDeviceDOWithFreezeDateNIHomeDevice:(id)a3 nearbyDevices:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMiLoNearbyDeviceDO:(id)a3;
-- (IRNearbyDeviceContainerDO)initWithCoder:(id)a3;
-- (IRNearbyDeviceContainerDO)initWithFreezeDateNIHomeDevice:(id)a3 nearbyDevices:(id)a4;
-- (id)copyWithReplacementFreezeDateNIHomeDevice:(id)a3;
-- (id)copyWithReplacementNearbyDevices:(id)a3;
++ (id)miLoNearbyDeviceDOWithFreezeDateNIHomeDevice:(id)device nearbyDevices:(id)devices;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMiLoNearbyDeviceDO:(id)o;
+- (IRNearbyDeviceContainerDO)initWithCoder:(id)coder;
+- (IRNearbyDeviceContainerDO)initWithFreezeDateNIHomeDevice:(id)device nearbyDevices:(id)devices;
+- (id)copyWithReplacementFreezeDateNIHomeDevice:(id)device;
+- (id)copyWithReplacementNearbyDevices:(id)devices;
 - (id)description;
 - (id)exportAsArray;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRNearbyDeviceContainerDO
@@ -28,8 +28,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(IRNearbyDeviceContainerDO *)self nearbyDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nearbyDevices = [(IRNearbyDeviceContainerDO *)self nearbyDevices];
+  v5 = [nearbyDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,14 +40,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nearbyDevices);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) exportAsDictionary];
-        [v3 addObject:v9];
+        exportAsDictionary = [*(*(&v12 + 1) + 8 * i) exportAsDictionary];
+        [v3 addObject:exportAsDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [nearbyDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -58,60 +58,60 @@
   return v3;
 }
 
-- (IRNearbyDeviceContainerDO)initWithFreezeDateNIHomeDevice:(id)a3 nearbyDevices:(id)a4
+- (IRNearbyDeviceContainerDO)initWithFreezeDateNIHomeDevice:(id)device nearbyDevices:(id)devices
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  devicesCopy = devices;
   v12.receiver = self;
   v12.super_class = IRNearbyDeviceContainerDO;
   v9 = [(IRNearbyDeviceContainerDO *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_freezeDateNIHomeDevice, a3);
-    objc_storeStrong(&v10->_nearbyDevices, a4);
+    objc_storeStrong(&v9->_freezeDateNIHomeDevice, device);
+    objc_storeStrong(&v10->_nearbyDevices, devices);
   }
 
   return v10;
 }
 
-+ (id)miLoNearbyDeviceDOWithFreezeDateNIHomeDevice:(id)a3 nearbyDevices:(id)a4
++ (id)miLoNearbyDeviceDOWithFreezeDateNIHomeDevice:(id)device nearbyDevices:(id)devices
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFreezeDateNIHomeDevice:v7 nearbyDevices:v6];
+  devicesCopy = devices;
+  deviceCopy = device;
+  v8 = [[self alloc] initWithFreezeDateNIHomeDevice:deviceCopy nearbyDevices:devicesCopy];
 
   return v8;
 }
 
-- (id)copyWithReplacementFreezeDateNIHomeDevice:(id)a3
+- (id)copyWithReplacementFreezeDateNIHomeDevice:(id)device
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFreezeDateNIHomeDevice:v4 nearbyDevices:self->_nearbyDevices];
+  deviceCopy = device;
+  v5 = [objc_alloc(objc_opt_class()) initWithFreezeDateNIHomeDevice:deviceCopy nearbyDevices:self->_nearbyDevices];
 
   return v5;
 }
 
-- (id)copyWithReplacementNearbyDevices:(id)a3
+- (id)copyWithReplacementNearbyDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFreezeDateNIHomeDevice:self->_freezeDateNIHomeDevice nearbyDevices:v4];
+  devicesCopy = devices;
+  v5 = [objc_alloc(objc_opt_class()) initWithFreezeDateNIHomeDevice:self->_freezeDateNIHomeDevice nearbyDevices:devicesCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToMiLoNearbyDeviceDO:(id)a3
+- (BOOL)isEqualToMiLoNearbyDeviceDO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (!oCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_freezeDateNIHomeDevice == 0;
-  v7 = [v4 freezeDateNIHomeDevice];
-  v8 = v7 != 0;
+  freezeDateNIHomeDevice = [oCopy freezeDateNIHomeDevice];
+  v8 = freezeDateNIHomeDevice != 0;
 
   if (v6 == v8)
   {
@@ -121,8 +121,8 @@
   freezeDateNIHomeDevice = self->_freezeDateNIHomeDevice;
   if (freezeDateNIHomeDevice)
   {
-    v10 = [v5 freezeDateNIHomeDevice];
-    v11 = [(NSDate *)freezeDateNIHomeDevice isEqual:v10];
+    freezeDateNIHomeDevice2 = [v5 freezeDateNIHomeDevice];
+    v11 = [(NSDate *)freezeDateNIHomeDevice isEqual:freezeDateNIHomeDevice2];
 
     if (!v11)
     {
@@ -131,8 +131,8 @@
   }
 
   v12 = self->_nearbyDevices == 0;
-  v13 = [v5 nearbyDevices];
-  v14 = v13 != 0;
+  nearbyDevices = [v5 nearbyDevices];
+  v14 = nearbyDevices != 0;
 
   if (v12 == v14)
   {
@@ -145,8 +145,8 @@ LABEL_8:
     nearbyDevices = self->_nearbyDevices;
     if (nearbyDevices)
     {
-      v16 = [v5 nearbyDevices];
-      v17 = [(NSSet *)nearbyDevices isEqual:v16];
+      nearbyDevices2 = [v5 nearbyDevices];
+      v17 = [(NSSet *)nearbyDevices isEqual:nearbyDevices2];
     }
 
     else
@@ -158,28 +158,28 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRNearbyDeviceContainerDO *)self isEqualToMiLoNearbyDeviceDO:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRNearbyDeviceContainerDO *)self isEqualToMiLoNearbyDeviceDO:v5];
   }
 
   return v6;
 }
 
-- (IRNearbyDeviceContainerDO)initWithCoder:(id)a3
+- (IRNearbyDeviceContainerDO)initWithCoder:(id)coder
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"freezeDateNIHomeDevice"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"freezeDateNIHomeDevice"];
   if (v5)
   {
     objc_opt_class();
@@ -194,19 +194,19 @@ LABEL_8:
       v23[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRNearbyDeviceContainerDOOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 
 LABEL_5:
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
   }
 
   else
   {
-    v13 = [v4 error];
+    error = [coderCopy error];
 
-    if (v13)
+    if (error)
     {
       goto LABEL_5;
     }
@@ -215,40 +215,40 @@ LABEL_5:
   v15 = objc_alloc(MEMORY[0x277CBEB98]);
   v16 = objc_opt_class();
   v17 = [v15 initWithObjects:{v16, objc_opt_class(), 0}];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"nearbyDevices"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"nearbyDevices"];
 
-  if (v18 || ([v4 error], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
+  if (v18 || ([coderCopy error], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
   {
     self = [(IRNearbyDeviceContainerDO *)self initWithFreezeDateNIHomeDevice:v5 nearbyDevices:v18];
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
 LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   freezeDateNIHomeDevice = self->_freezeDateNIHomeDevice;
-  v7 = v4;
+  v7 = coderCopy;
   if (freezeDateNIHomeDevice)
   {
-    [v4 encodeObject:freezeDateNIHomeDevice forKey:@"freezeDateNIHomeDevice"];
-    v4 = v7;
+    [coderCopy encodeObject:freezeDateNIHomeDevice forKey:@"freezeDateNIHomeDevice"];
+    coderCopy = v7;
   }
 
   nearbyDevices = self->_nearbyDevices;
   if (nearbyDevices)
   {
     [v7 encodeObject:nearbyDevices forKey:@"nearbyDevices"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 

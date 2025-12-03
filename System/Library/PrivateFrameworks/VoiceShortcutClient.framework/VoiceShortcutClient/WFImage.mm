@@ -1,20 +1,20 @@
 @interface WFImage
 + (id)_applicationIconImageLoadingQueue;
-+ (id)applicationIconImageForBundleIdentifier:(id)a3 format:(unint64_t)a4;
-+ (id)applicationIconImageForBundleIdentifier:(id)a3 length:(double)a4 scale:(double)a5;
-+ (id)applicationIconImageForCalendarDate:(id)a3 descriptor:(id)a4;
-+ (id)documentIconImageForFileType:(id)a3;
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 inCatalogs:(id)a5;
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolSize:(unint64_t)a5;
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolSize:(unint64_t)a5 scaleFactor:(double)a6;
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolSize:(unint64_t)a5 symbolWeight:(int64_t)a6 scaleFactor:(double)a7 rightToLeft:(BOOL)a8 appearanceName:(id)a9 inCatalogs:(id)a10;
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolWeight:(int64_t)a5 scaleFactor:(double)a6 inCatalogs:(id)a7;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 scale:(double)a5;
-+ (id)imageWithContentsOfURL:(id)a3;
-+ (id)imageWithDeviceScreenScaleImageData:(id)a3;
-+ (id)systemImageNamed:(id)a3 configuration:(id)a4 renderingMode:(unint64_t)a5;
-+ (void)applicationIconImageForBundleIdentifier:(id)a3 length:(double)a4 scale:(double)a5 completionHandler:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)applicationIconImageForBundleIdentifier:(id)identifier format:(unint64_t)format;
++ (id)applicationIconImageForBundleIdentifier:(id)identifier length:(double)length scale:(double)scale;
++ (id)applicationIconImageForCalendarDate:(id)date descriptor:(id)descriptor;
++ (id)documentIconImageForFileType:(id)type;
++ (id)glyphNamed:(id)named pointSize:(double)size inCatalogs:(id)catalogs;
++ (id)glyphNamed:(id)named pointSize:(double)size symbolSize:(unint64_t)symbolSize;
++ (id)glyphNamed:(id)named pointSize:(double)size symbolSize:(unint64_t)symbolSize scaleFactor:(double)factor;
++ (id)glyphNamed:(id)named pointSize:(double)size symbolSize:(unint64_t)symbolSize symbolWeight:(int64_t)weight scaleFactor:(double)factor rightToLeft:(BOOL)left appearanceName:(id)name inCatalogs:(id)self0;
++ (id)glyphNamed:(id)named pointSize:(double)size symbolWeight:(int64_t)weight scaleFactor:(double)factor inCatalogs:(id)catalogs;
++ (id)imageNamed:(id)named inBundle:(id)bundle scale:(double)scale;
++ (id)imageWithContentsOfURL:(id)l;
++ (id)imageWithDeviceScreenScaleImageData:(id)data;
++ (id)systemImageNamed:(id)named configuration:(id)configuration renderingMode:(unint64_t)mode;
++ (void)applicationIconImageForBundleIdentifier:(id)identifier length:(double)length scale:(double)scale completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
 - (CGImage)CGImage;
 - (CGImage)createNonRotatedCGImageRepresentation;
 - (CGImage)internalCGImage;
@@ -27,30 +27,30 @@
 - (UIImage)UIImage;
 - (UIImage)platformImage;
 - (UIImage)untintedUIImage;
-- (WFImage)imageWithDisplayStyle:(unint64_t)a3;
-- (WFImage)imageWithRenderingMode:(unint64_t)a3;
-- (WFImage)imageWithTintColor:(id)a3;
-- (WFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(unsigned int)a5 renderingMode:(unint64_t)a6;
-- (WFImage)initWithCoder:(id)a3;
-- (WFImage)initWithContentsOfURL:(id)a3;
-- (WFImage)initWithData:(id)a3 scale:(double)a4 allowAnimated:(BOOL)a5;
-- (WFImage)initWithName:(id)a3 bundle:(id)a4 scale:(double)a5;
-- (WFImage)initWithPlatformImage:(id)a3;
-- (WFImage)initWithPlatformImage:(id)a3 scale:(double)a4;
-- (WFImage)initWithRepresentationType:(int64_t)a3;
-- (WFImage)initWithSymbolName:(id)a3 configuration:(id)a4 renderingMode:(unint64_t)a5;
+- (WFImage)imageWithDisplayStyle:(unint64_t)style;
+- (WFImage)imageWithRenderingMode:(unint64_t)mode;
+- (WFImage)imageWithTintColor:(id)color;
+- (WFImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(unsigned int)orientation renderingMode:(unint64_t)mode;
+- (WFImage)initWithCoder:(id)coder;
+- (WFImage)initWithContentsOfURL:(id)l;
+- (WFImage)initWithData:(id)data scale:(double)scale allowAnimated:(BOOL)animated;
+- (WFImage)initWithName:(id)name bundle:(id)bundle scale:(double)scale;
+- (WFImage)initWithPlatformImage:(id)image;
+- (WFImage)initWithPlatformImage:(id)image scale:(double)scale;
+- (WFImage)initWithRepresentationType:(int64_t)type;
+- (WFImage)initWithSymbolName:(id)name configuration:(id)configuration renderingMode:(unint64_t)mode;
 - (double)scale;
-- (id)applicationIconImageWithFormat:(unint64_t)a3;
-- (id)imageByTintingBitmapWithTintColor:(id)a3;
-- (id)resizedImageWithSizeInPoints:(CGSize)a3;
-- (id)resizedImageWithSizeInPoints:(CGSize)a3 scale:(double)a4;
-- (id)roundedWithContinuousCornerRadius:(double)a3 size:(CGSize)a4;
-- (id)tintedImageWithColor:(id)a3;
+- (id)applicationIconImageWithFormat:(unint64_t)format;
+- (id)imageByTintingBitmapWithTintColor:(id)color;
+- (id)resizedImageWithSizeInPoints:(CGSize)points;
+- (id)resizedImageWithSizeInPoints:(CGSize)points scale:(double)scale;
+- (id)roundedWithContinuousCornerRadius:(double)radius size:(CGSize)size;
+- (id)tintedImageWithColor:(id)color;
 - (unint64_t)hash;
 - (unsigned)orientation;
 - (void)dealloc;
-- (void)drawInContext:(id)a3 inRect:(CGRect)a4 blendMode:(int)a5 alpha:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)drawInContext:(id)context inRect:(CGRect)rect blendMode:(int)mode alpha:(double)alpha;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFImage
@@ -76,7 +76,7 @@
   if ([(WFImage *)self hasValidImage])
   {
     v3 = objc_opt_new();
-    v4 = [*MEMORY[0x1E6982F28] identifier];
+    identifier = [*MEMORY[0x1E6982F28] identifier];
     v47 = 0;
     v48 = &v47;
     v49 = 0x2020000000;
@@ -93,14 +93,14 @@
     _Block_object_dispose(&v47, 8);
     if (!v5)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGImageDestinationRef  _Nullable soft_CGImageDestinationCreateWithData(CFMutableDataRef _Nonnull, CFStringRef _Nonnull, size_t, CFDictionaryRef _Nullable)"}];
-      [v31 handleFailureInFunction:v32 file:@"WFImage+Representations.m" lineNumber:19 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v32 file:@"WFImage+Representations.m" lineNumber:19 description:{@"%s", dlerror()}];
 
       goto LABEL_46;
     }
 
-    v7 = v5(v3, v4, 1, 0);
+    v7 = v5(v3, identifier, 1, 0);
 
     if (!v7)
     {
@@ -126,9 +126,9 @@ LABEL_33:
     _Block_object_dispose(&v47, 8);
     if (!v9)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyPNGCompressionFilter(void)"];
-      [v33 handleFailureInFunction:v34 file:@"WFImage+Representations.m" lineNumber:23 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v34 file:@"WFImage+Representations.m" lineNumber:23 description:{@"%s", dlerror()}];
 
       goto LABEL_46;
     }
@@ -152,9 +152,9 @@ LABEL_33:
     _Block_object_dispose(&v47, 8);
     if (!v12)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyPNGDictionary(void)"];
-      [v35 handleFailureInFunction:v36 file:@"WFImage+Representations.m" lineNumber:22 description:{@"%s", dlerror()}];
+      [currentHandler3 handleFailureInFunction:v36 file:@"WFImage+Representations.m" lineNumber:22 description:{@"%s", dlerror()}];
 
       goto LABEL_46;
     }
@@ -177,9 +177,9 @@ LABEL_33:
     _Block_object_dispose(&v47, 8);
     if (!v14)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyPNGBandCount(void)"];
-      [v37 handleFailureInFunction:v38 file:@"WFImage+Representations.m" lineNumber:24 description:{@"%s", dlerror()}];
+      [currentHandler4 handleFailureInFunction:v38 file:@"WFImage+Representations.m" lineNumber:24 description:{@"%s", dlerror()}];
 
       goto LABEL_46;
     }
@@ -205,9 +205,9 @@ LABEL_33:
       _Block_object_dispose(&v47, 8);
       if (!v18)
       {
-        v43 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
         v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyDPIWidth(void)"];
-        [v43 handleFailureInFunction:v44 file:@"WFImage+Representations.m" lineNumber:25 description:{@"%s", dlerror()}];
+        [currentHandler5 handleFailureInFunction:v44 file:@"WFImage+Representations.m" lineNumber:25 description:{@"%s", dlerror()}];
 
         goto LABEL_46;
       }
@@ -229,9 +229,9 @@ LABEL_33:
       _Block_object_dispose(&v47, 8);
       if (!v20)
       {
-        v45 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
         v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyDPIHeight(void)"];
-        [v45 handleFailureInFunction:v46 file:@"WFImage+Representations.m" lineNumber:26 description:{@"%s", dlerror()}];
+        [currentHandler6 handleFailureInFunction:v46 file:@"WFImage+Representations.m" lineNumber:26 description:{@"%s", dlerror()}];
 
         goto LABEL_46;
       }
@@ -239,7 +239,7 @@ LABEL_33:
       [v8 setObject:v17 forKeyedSubscript:*v20];
     }
 
-    v22 = [(WFImage *)self createNonRotatedCGImageRepresentation];
+    createNonRotatedCGImageRepresentation = [(WFImage *)self createNonRotatedCGImageRepresentation];
     v47 = 0;
     v48 = &v47;
     v49 = 0x2020000000;
@@ -256,8 +256,8 @@ LABEL_33:
     _Block_object_dispose(&v47, 8);
     if (v23)
     {
-      v23(v7, v22, v8);
-      CGImageRelease(v22);
+      v23(v7, createNonRotatedCGImageRepresentation, v8);
+      CGImageRelease(createNonRotatedCGImageRepresentation);
       v47 = 0;
       v48 = &v47;
       v49 = 0x2020000000;
@@ -291,16 +291,16 @@ LABEL_33:
         goto LABEL_33;
       }
 
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_Bool soft_CGImageDestinationFinalize(CGImageDestinationRef _Nonnull)"];
-      [v41 handleFailureInFunction:v42 file:@"WFImage+Representations.m" lineNumber:21 description:{@"%s", dlerror()}];
+      [currentHandler7 handleFailureInFunction:v42 file:@"WFImage+Representations.m" lineNumber:21 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void soft_CGImageDestinationAddImage(CGImageDestinationRef _Nonnull, CGImageRef _Nonnull, CFDictionaryRef _Nullable)"}];
-      [v39 handleFailureInFunction:v40 file:@"WFImage+Representations.m" lineNumber:20 description:{@"%s", dlerror()}];
+      [currentHandler8 handleFailureInFunction:v40 file:@"WFImage+Representations.m" lineNumber:20 description:{@"%s", dlerror()}];
     }
 
 LABEL_46:
@@ -323,18 +323,18 @@ LABEL_35:
     goto LABEL_17;
   }
 
-  v5 = [(WFImage *)self representationType];
-  if (v5 > 2)
+  representationType = [(WFImage *)self representationType];
+  if (representationType > 2)
   {
-    if ((v5 - 4) < 2)
+    if ((representationType - 4) < 2)
     {
-      v10 = [(WFImage *)self platformImage];
-      v4 = CGImageRetain([v10 CGImage]);
+      platformImage = [(WFImage *)self platformImage];
+      v4 = CGImageRetain([platformImage CGImage]);
 
       goto LABEL_16;
     }
 
-    if (v5 == 3)
+    if (representationType == 3)
     {
       v9 = CGImageRetain(self->_CGImage);
       goto LABEL_15;
@@ -343,9 +343,9 @@ LABEL_35:
     goto LABEL_19;
   }
 
-  if ((v5 - 1) >= 2)
+  if ((representationType - 1) >= 2)
   {
-    if (!v5)
+    if (!representationType)
     {
       return 0;
     }
@@ -355,7 +355,7 @@ LABEL_19:
     return 0;
   }
 
-  v6 = [(WFImage *)self internalImageSource];
+  internalImageSource = [(WFImage *)self internalImageSource];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -372,7 +372,7 @@ LABEL_19:
   _Block_object_dispose(&v14, 8);
   if (v7)
   {
-    v9 = (v7)(v6, 0, 0);
+    v9 = (v7)(internalImageSource, 0, 0);
 LABEL_15:
     v4 = v9;
 LABEL_16:
@@ -387,9 +387,9 @@ LABEL_17:
     return v4;
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGImageRef  _Nullable soft_CGImageSourceCreateImageAtIndex(CGImageSourceRef _Nonnull, size_t, CFDictionaryRef _Nullable)"}];
-  [v12 handleFailureInFunction:v13 file:@"WFImage.m" lineNumber:40 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v13 file:@"WFImage.m" lineNumber:40 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -397,40 +397,40 @@ LABEL_17:
 
 - (UIImage)platformImage
 {
-  v3 = [(WFImage *)self tintColor];
+  tintColor = [(WFImage *)self tintColor];
 
-  if (v3)
+  if (tintColor)
   {
-    v4 = [(WFImage *)self tintColor];
-    v5 = [(WFImage *)self imageWithTintColor:v4];
-    v6 = [v5 untintedPlatformImage];
+    tintColor2 = [(WFImage *)self tintColor];
+    v5 = [(WFImage *)self imageWithTintColor:tintColor2];
+    untintedPlatformImage = [v5 untintedPlatformImage];
   }
 
   else
   {
-    v6 = [(WFImage *)self untintedPlatformImage];
+    untintedPlatformImage = [(WFImage *)self untintedPlatformImage];
   }
 
-  return v6;
+  return untintedPlatformImage;
 }
 
 - (UIImage)UIImage
 {
-  v3 = [(WFImage *)self tintColor];
+  tintColor = [(WFImage *)self tintColor];
 
-  if (v3)
+  if (tintColor)
   {
-    v4 = [(WFImage *)self tintColor];
-    v5 = [(WFImage *)self imageWithTintColor:v4];
-    v6 = [v5 untintedUIImage];
+    tintColor2 = [(WFImage *)self tintColor];
+    v5 = [(WFImage *)self imageWithTintColor:tintColor2];
+    untintedUIImage = [v5 untintedUIImage];
   }
 
   else
   {
-    v6 = [(WFImage *)self untintedUIImage];
+    untintedUIImage = [(WFImage *)self untintedUIImage];
   }
 
-  return v6;
+  return untintedUIImage;
 }
 
 - (UIImage)untintedUIImage
@@ -438,32 +438,32 @@ LABEL_17:
   WeakRetained = objc_loadWeakRetained(&self->_UIImage);
   if (!WeakRetained)
   {
-    v4 = [(WFImage *)self representationType];
+    representationType = [(WFImage *)self representationType];
     v5 = 0;
-    if (v4 > 2)
+    if (representationType > 2)
     {
-      if (v4 != 3)
+      if (representationType != 3)
       {
-        if (v4 == 4)
+        if (representationType == 4)
         {
           UIImageClass = getUIImageClass();
-          v9 = [(WFImage *)self symbolName];
-          v13 = [(WFImage *)self symbolConfiguration];
-          v24 = [v13 uiKitConfiguration];
-          v5 = [(objc_class *)UIImageClass _systemImageNamed:v9 withConfiguration:v24];
+          symbolName = [(WFImage *)self symbolName];
+          symbolConfiguration = [(WFImage *)self symbolConfiguration];
+          uiKitConfiguration = [symbolConfiguration uiKitConfiguration];
+          v5 = [(objc_class *)UIImageClass _systemImageNamed:symbolName withConfiguration:uiKitConfiguration];
 
           goto LABEL_22;
         }
 
-        if (v4 != 5)
+        if (representationType != 5)
         {
           goto LABEL_30;
         }
 
         v12 = getUIImageClass();
-        v9 = [(WFImage *)self name];
-        v13 = [(WFImage *)self bundle];
-        v14 = [(objc_class *)v12 imageNamed:v9 inBundle:v13 withConfiguration:0];
+        symbolName = [(WFImage *)self name];
+        symbolConfiguration = [(WFImage *)self bundle];
+        v14 = [(objc_class *)v12 imageNamed:symbolName inBundle:symbolConfiguration withConfiguration:0];
 LABEL_20:
         v5 = v14;
 LABEL_22:
@@ -473,7 +473,7 @@ LABEL_29:
       }
 
       v16 = objc_alloc(getUIImageClass());
-      v17 = [(WFImage *)self CGImage];
+      cGImage = [(WFImage *)self CGImage];
       [(WFImage *)self scale];
       v19 = v18;
       v20 = [(WFImage *)self orientation]- 2;
@@ -487,29 +487,29 @@ LABEL_29:
         v21 = qword_1B1F36948[v20];
       }
 
-      v15 = [v16 initWithCGImage:v17 scale:v21 orientation:v19];
+      v15 = [v16 initWithCGImage:cGImage scale:v21 orientation:v19];
     }
 
     else
     {
-      if (v4)
+      if (representationType)
       {
-        if (v4 != 1)
+        if (representationType != 1)
         {
-          if (v4 == 2)
+          if (representationType == 2)
           {
             if ([(WFImage *)self allowsAnimated])
             {
-              v6 = [(WFImage *)self data];
-              if ([v6 length] >= 5 && (v7 = objc_msgSend(v6, "bytes"), *v7 == 71) && v7[1] == 73)
+              data = [(WFImage *)self data];
+              if ([data length] >= 5 && (v7 = objc_msgSend(data, "bytes"), *v7 == 71) && v7[1] == 73)
               {
                 v8 = v7[2];
 
                 if (v8 == 70)
                 {
-                  v9 = [(WFImage *)self data];
+                  symbolName = [(WFImage *)self data];
                   [(WFImage *)self scale];
-                  v11 = WFUIImageWithAnimatedGIFDataAndOptions(v9, v10);
+                  v11 = WFUIImageWithAnimatedGIFDataAndOptions(symbolName, v10);
 LABEL_28:
                   v5 = v11;
                   goto LABEL_29;
@@ -522,9 +522,9 @@ LABEL_28:
             }
 
             v25 = objc_alloc(getUIImageClass());
-            v9 = [(WFImage *)self data];
+            symbolName = [(WFImage *)self data];
             [(WFImage *)self scale];
-            v11 = [v25 initWithData:v9 scale:?];
+            v11 = [v25 initWithData:symbolName scale:?];
             goto LABEL_28;
           }
 
@@ -536,9 +536,9 @@ LABEL_30:
         }
 
         v22 = objc_alloc(getUIImageClass());
-        v9 = [(WFImage *)self URL];
-        v13 = [v9 path];
-        v14 = [v22 initWithContentsOfFile:v13];
+        symbolName = [(WFImage *)self URL];
+        symbolConfiguration = [symbolName path];
+        v14 = [v22 initWithContentsOfFile:symbolConfiguration];
         goto LABEL_20;
       }
 
@@ -560,9 +560,9 @@ LABEL_31:
 {
   if ([(WFImage *)self orientation]== 1)
   {
-    v3 = [(WFImage *)self CGImage];
+    cGImage = [(WFImage *)self CGImage];
 
-    return CGImageRetain(v3);
+    return CGImageRetain(cGImage);
   }
 
   else
@@ -589,8 +589,8 @@ LABEL_31:
     return self->_orientation;
   }
 
-  v3 = [(WFImage *)self internalImageSource];
-  soft_CGImageSourceCopyProperties(v3);
+  internalImageSource = [(WFImage *)self internalImageSource];
+  soft_CGImageSourceCopyProperties(internalImageSource);
   v5 = v4;
   getkCGImagePropertyOrientation();
   v7 = [v5 objectForKeyedSubscript:v6];
@@ -598,10 +598,10 @@ LABEL_31:
   {
     v8 = v7;
 LABEL_4:
-    v9 = [v8 integerValue];
+    integerValue = [v8 integerValue];
 
 LABEL_5:
-    return v9;
+    return integerValue;
   }
 
   v24 = 0;
@@ -624,9 +624,9 @@ LABEL_5:
   _Block_object_dispose(&v24, 8);
   if (v11)
   {
-    if (!v11(v3))
+    if (!v11(internalImageSource))
     {
-      v9 = 1;
+      integerValue = 1;
       goto LABEL_5;
     }
 
@@ -650,13 +650,13 @@ LABEL_5:
     _Block_object_dispose(&v24, 8);
     if (v13)
     {
-      v15 = (v13)(v3, 0, 0);
+      v15 = (v13)(internalImageSource, 0, 0);
 
       getkCGImagePropertyOrientation();
       v17 = [v15 objectForKeyedSubscript:v16];
       if (!v17)
       {
-        v9 = 1;
+        integerValue = 1;
         v5 = v15;
         goto LABEL_5;
       }
@@ -666,16 +666,16 @@ LABEL_5:
       goto LABEL_4;
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CFDictionaryRef  _Nullable soft_CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef _Nonnull, size_t, CFDictionaryRef _Nullable)"}];
-    [v18 handleFailureInFunction:v19 file:@"WFImage.m" lineNumber:42 description:{@"%s", dlerror(), v20, v21, v22, v23}];
+    [currentHandler handleFailureInFunction:v19 file:@"WFImage.m" lineNumber:42 description:{@"%s", dlerror(), v20, v21, v22, v23}];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"size_t soft_CGImageSourceGetCount(CGImageSourceRef _Nonnull)"];
-    [v18 handleFailureInFunction:v19 file:@"WFImage.m" lineNumber:43 description:{@"%s", dlerror(), v20, v21, v22, v23}];
+    [currentHandler handleFailureInFunction:v19 file:@"WFImage.m" lineNumber:43 description:{@"%s", dlerror(), v20, v21, v22, v23}];
   }
 
   __break(1u);
@@ -758,9 +758,9 @@ LABEL_5:
   if (![(WFImage *)self internalImageSource])
   {
 LABEL_13:
-    v18 = [(WFImage *)self CGImage];
-    Width = CGImageGetWidth(v18);
-    Height = CGImageGetHeight(v18);
+    cGImage = [(WFImage *)self CGImage];
+    Width = CGImageGetWidth(cGImage);
+    Height = CGImageGetHeight(cGImage);
     goto LABEL_14;
   }
 
@@ -773,7 +773,7 @@ LABEL_13:
   v31 = getkCGImagePropertyPixelWidthSymbolLoc_ptr;
   if (!getkCGImagePropertyPixelWidthSymbolLoc_ptr)
   {
-    v23 = MEMORY[0x1E69E9820];
+    integerValue = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __getkCGImagePropertyPixelWidthSymbolLoc_block_invoke;
     v26 = &unk_1E7B02C60;
@@ -787,9 +787,9 @@ LABEL_13:
   _Block_object_dispose(&v28, 8);
   if (!v5)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyPixelWidth(void)"];
-    [v21 handleFailureInFunction:v22 file:@"WFImage.m" lineNumber:47 description:{@"%s", dlerror(), *&v23, v24, v25, v26}];
+    [currentHandler handleFailureInFunction:v22 file:@"WFImage.m" lineNumber:47 description:{@"%s", dlerror(), *&integerValue, v24, v25, v26}];
 LABEL_17:
 
     __break(1u);
@@ -804,7 +804,7 @@ LABEL_17:
   v31 = getkCGImagePropertyPixelHeightSymbolLoc_ptr;
   if (!getkCGImagePropertyPixelHeightSymbolLoc_ptr)
   {
-    v23 = MEMORY[0x1E69E9820];
+    integerValue = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __getkCGImagePropertyPixelHeightSymbolLoc_block_invoke;
     v26 = &unk_1E7B02C60;
@@ -818,9 +818,9 @@ LABEL_17:
   _Block_object_dispose(&v28, 8);
   if (!v8)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCGImagePropertyPixelHeight(void)"];
-    [v21 handleFailureInFunction:v22 file:@"WFImage.m" lineNumber:46 description:{@"%s", dlerror(), *&v23, v24, v25, v26}];
+    [currentHandler handleFailureInFunction:v22 file:@"WFImage.m" lineNumber:46 description:{@"%s", dlerror(), *&integerValue, v24, v25, v26}];
     goto LABEL_17;
   }
 
@@ -830,9 +830,9 @@ LABEL_17:
   if (v7 && v10)
   {
     v13 = MEMORY[0x1E696B098];
-    v23 = [v7 integerValue];
+    integerValue = [v7 integerValue];
     *&v24 = [v11 integerValue];
-    v12 = [v13 valueWithBytes:&v23 objCType:"{CGSize=dd}"];
+    v12 = [v13 valueWithBytes:&integerValue objCType:"{CGSize=dd}"];
   }
 
   if (!v12)
@@ -864,10 +864,10 @@ LABEL_3:
     return v4;
   }
 
-  v6 = [(WFImage *)self representationType];
-  if (v6 == 1)
+  representationType = [(WFImage *)self representationType];
+  if (representationType == 1)
   {
-    v7 = [(WFImage *)self URL];
+    data = [(WFImage *)self URL];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -888,14 +888,14 @@ LABEL_3:
     _Block_object_dispose(&v17, 8);
     if (!v8)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGImageSourceRef  _Nullable soft_CGImageSourceCreateWithURL(CFURLRef _Nonnull, CFDictionaryRef _Nullable)"}];
-      [v10 handleFailureInFunction:v11 file:@"WFImage.m" lineNumber:38 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+      [currentHandler handleFailureInFunction:v11 file:@"WFImage.m" lineNumber:38 description:{@"%s", dlerror(), v13, v14, v15, v16}];
       goto LABEL_18;
     }
 
 LABEL_14:
-    v4 = v8(v7, 0);
+    v4 = v8(data, 0);
 
     objc_storeWeak(&self->_internalImageSource, v4);
     if (!v4)
@@ -906,13 +906,13 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  if (v6 != 2)
+  if (representationType != 2)
   {
     objc_storeWeak(&self->_internalImageSource, 0);
     return 0;
   }
 
-  v7 = [(WFImage *)self data];
+  data = [(WFImage *)self data];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -936,43 +936,43 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGImageSourceRef  _Nullable soft_CGImageSourceCreateWithData(CFDataRef _Nonnull, CFDictionaryRef _Nullable)"}];
-  [v10 handleFailureInFunction:v11 file:@"WFImage.m" lineNumber:39 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+  [currentHandler handleFailureInFunction:v11 file:@"WFImage.m" lineNumber:39 description:{@"%s", dlerror(), v13, v14, v15, v16}];
 LABEL_18:
 
   __break(1u);
   return result;
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 scale:(double)a5
++ (id)imageNamed:(id)named inBundle:(id)bundle scale:(double)scale
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  namedCopy = named;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
+  if (bundleCopy)
   {
-    v10 = v8;
+    mainBundle = bundleCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  v11 = v10;
-  v12 = [[WFImage alloc] initWithName:v7 bundle:v10 scale:a5];
+  v11 = mainBundle;
+  v12 = [[WFImage alloc] initWithName:namedCopy bundle:mainBundle scale:scale];
 
   return v12;
 }
 
-- (id)tintedImageWithColor:(id)a3
+- (id)tintedImageWithColor:(id)color
 {
-  v5 = a3;
-  if (!v5)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFImage+Tinting.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"color"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImage+Tinting.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"color"}];
   }
 
   v6 = [WFBitmapContext alloc];
@@ -981,21 +981,21 @@ LABEL_18:
   v10 = v9;
   [(WFImage *)self scale];
   v12 = [(WFBitmapContext *)v6 initWithSize:0 opaque:v8 scale:v10, v11];
-  v13 = [(WFBitmapContext *)v12 CGContext];
+  cGContext = [(WFBitmapContext *)v12 CGContext];
   v14 = *MEMORY[0x1E695EFF8];
   v15 = *(MEMORY[0x1E695EFF8] + 8);
   [(WFImage *)self sizeInPoints];
   v17 = v16;
   v19 = v18;
-  CGContextSetFillColorWithColor(v13, [v5 CGColor]);
+  CGContextSetFillColorWithColor(cGContext, [colorCopy CGColor]);
   v25.origin.x = v14;
   v25.origin.y = v15;
   v25.size.width = v17;
   v25.size.height = v19;
-  CGContextFillRect(v13, v25);
+  CGContextFillRect(cGContext, v25);
   [(WFImage *)self drawInContext:v12 inRect:22 blendMode:v14 alpha:v15, v17, v19, 1.0];
-  v20 = [(WFBitmapContext *)v12 image];
-  v21 = [v20 imageWithRenderingMode:1];
+  image = [(WFBitmapContext *)v12 image];
+  v21 = [image imageWithRenderingMode:1];
 
   return v21;
 }
@@ -1007,51 +1007,51 @@ LABEL_18:
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   if ([(WFImage *)self representationType]== 2)
   {
-    v4 = [(WFImage *)self data];
-    [v9 encodeObject:v4 forKey:@"data"];
+    data = [(WFImage *)self data];
+    [coderCopy encodeObject:data forKey:@"data"];
 
-    [v9 encodeBool:-[WFImage allowsAnimated](self forKey:{"allowsAnimated"), @"allowsAnimated"}];
+    [coderCopy encodeBool:-[WFImage allowsAnimated](self forKey:{"allowsAnimated"), @"allowsAnimated"}];
   }
 
   else
   {
-    v5 = [(WFImage *)self PNGRepresentation];
-    if (v5)
+    pNGRepresentation = [(WFImage *)self PNGRepresentation];
+    if (pNGRepresentation)
     {
-      [v9 encodeObject:v5 forKey:@"data"];
+      [coderCopy encodeObject:pNGRepresentation forKey:@"data"];
     }
   }
 
   [(WFImage *)self scale];
-  [v9 encodeDouble:@"scale" forKey:?];
-  [v9 encodeInteger:-[WFImage renderingMode](self forKey:{"renderingMode"), @"renderingMode"}];
-  v6 = [(WFImage *)self tintColor];
-  [v9 encodeObject:v6 forKey:@"tintColor"];
+  [coderCopy encodeDouble:@"scale" forKey:?];
+  [coderCopy encodeInteger:-[WFImage renderingMode](self forKey:{"renderingMode"), @"renderingMode"}];
+  tintColor = [(WFImage *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 
-  v7 = [(WFImage *)self symbolName];
-  [v9 encodeObject:v7 forKey:@"symbolName"];
+  symbolName = [(WFImage *)self symbolName];
+  [coderCopy encodeObject:symbolName forKey:@"symbolName"];
 
-  v8 = [(WFImage *)self symbolConfiguration];
-  [v9 encodeObject:v8 forKey:@"symbolConfiguration"];
+  symbolConfiguration = [(WFImage *)self symbolConfiguration];
+  [coderCopy encodeObject:symbolConfiguration forKey:@"symbolConfiguration"];
 
-  [v9 encodeInteger:-[WFImage displayStyle](self forKey:{"displayStyle"), @"displayStyle"}];
+  [coderCopy encodeInteger:-[WFImage displayStyle](self forKey:{"displayStyle"), @"displayStyle"}];
 }
 
-- (WFImage)initWithCoder:(id)a3
+- (WFImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"renderingMode"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
-  v7 = [v4 decodeIntegerForKey:@"displayStyle"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"renderingMode"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+  v7 = [coderCopy decodeIntegerForKey:@"displayStyle"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
   if ([v8 length])
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolConfiguration"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolConfiguration"];
     v10 = [(WFImage *)self initWithSymbolName:v8 configuration:v9 renderingMode:v5];
 
     if (!v10)
@@ -1062,15 +1062,15 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  tintColor = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  tintColor = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!tintColor)
   {
     v10 = [(WFImage *)self initWithRepresentationType:0];
     goto LABEL_9;
   }
 
-  v12 = [v4 decodeBoolForKey:@"allowsAnimated"];
-  [v4 decodeDoubleForKey:@"scale"];
+  v12 = [coderCopy decodeBoolForKey:@"allowsAnimated"];
+  [coderCopy decodeDoubleForKey:@"scale"];
   v13 = [(WFImage *)self initWithData:tintColor scale:v12 allowAnimated:?];
   v10 = v13;
   if (v13)
@@ -1092,22 +1092,22 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(WFImage *)self representationType];
+  representationType = [(WFImage *)self representationType];
   [(WFImage *)self scale];
-  return v3 ^ [(WFImage *)self orientation]^ v4;
+  return representationType ^ [(WFImage *)self orientation]^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v14) = 1;
     goto LABEL_21;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -1115,8 +1115,8 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v7 = [(WFImage *)self representationType];
-  if (v7 != [(WFImage *)v6 representationType])
+  representationType = [(WFImage *)self representationType];
+  if (representationType != [(WFImage *)v6 representationType])
   {
     goto LABEL_18;
   }
@@ -1129,30 +1129,30 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v11 = [(WFImage *)self orientation];
-  if (v11 != [(WFImage *)v6 orientation])
+  orientation = [(WFImage *)self orientation];
+  if (orientation != [(WFImage *)v6 orientation])
   {
     goto LABEL_18;
   }
 
-  v12 = [(WFImage *)self renderingMode];
-  if (v12 != [(WFImage *)v6 renderingMode])
+  renderingMode = [(WFImage *)self renderingMode];
+  if (renderingMode != [(WFImage *)v6 renderingMode])
   {
     goto LABEL_18;
   }
 
-  v13 = [(WFImage *)self representationType];
+  representationType2 = [(WFImage *)self representationType];
   LOBYTE(v14) = 1;
-  if (v13 <= 2)
+  if (representationType2 <= 2)
   {
-    if (v13 == 1)
+    if (representationType2 == 1)
     {
       v30 = [(WFImage *)self URL];
       v31 = [(WFImage *)v6 URL];
-      v24 = v30;
+      data = v30;
       v32 = v31;
-      v25 = v32;
-      if (v24 == v32)
+      data2 = v32;
+      if (data == v32)
       {
         LOBYTE(v14) = 1;
       }
@@ -1160,26 +1160,26 @@ LABEL_10:
       else
       {
         LOBYTE(v14) = 0;
-        if (v24 && v32)
+        if (data && v32)
         {
-          LOBYTE(v14) = [v24 isEqual:v32];
+          LOBYTE(v14) = [data isEqual:v32];
         }
       }
 
       goto LABEL_40;
     }
 
-    if (v13 != 2)
+    if (representationType2 != 2)
     {
       goto LABEL_19;
     }
 
-    v23 = [(WFImage *)self allowsAnimated];
-    if (v23 == [(WFImage *)v6 allowsAnimated])
+    allowsAnimated = [(WFImage *)self allowsAnimated];
+    if (allowsAnimated == [(WFImage *)v6 allowsAnimated])
     {
-      v24 = [(WFImage *)self data];
-      v25 = [(WFImage *)v6 data];
-      LOBYTE(v14) = [v24 isEqual:v25];
+      data = [(WFImage *)self data];
+      data2 = [(WFImage *)v6 data];
+      LOBYTE(v14) = [data isEqual:data2];
 LABEL_40:
 
       goto LABEL_19;
@@ -1190,17 +1190,17 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  switch(v13)
+  switch(representationType2)
   {
     case 3:
-      v26 = [(WFImage *)self CGImage];
-      LOBYTE(v14) = v26 == [(WFImage *)v6 CGImage];
+      cGImage = [(WFImage *)self CGImage];
+      LOBYTE(v14) = cGImage == [(WFImage *)v6 CGImage];
       break;
     case 4:
-      v27 = [(WFImage *)self symbolName];
-      v28 = [(WFImage *)v6 symbolName];
-      v17 = v27;
-      v29 = v28;
+      symbolName = [(WFImage *)self symbolName];
+      symbolName2 = [(WFImage *)v6 symbolName];
+      v17 = symbolName;
+      v29 = symbolName2;
       v19 = v29;
       if (v17 == v29)
       {
@@ -1224,11 +1224,11 @@ LABEL_18:
         }
       }
 
-      v33 = [(WFImage *)self symbolConfiguration];
-      v34 = [(WFImage *)v6 symbolConfiguration];
+      symbolConfiguration = [(WFImage *)self symbolConfiguration];
+      symbolConfiguration2 = [(WFImage *)v6 symbolConfiguration];
 LABEL_43:
-      v35 = v34;
-      v21 = v33;
+      v35 = symbolConfiguration2;
+      v21 = symbolConfiguration;
       v36 = v35;
       v20 = v36;
       if (v21 == v36)
@@ -1247,17 +1247,17 @@ LABEL_43:
 
       goto LABEL_49;
     case 5:
-      v15 = [(WFImage *)self name];
-      v16 = [(WFImage *)v6 name];
-      v17 = v15;
-      v18 = v16;
+      name = [(WFImage *)self name];
+      name2 = [(WFImage *)v6 name];
+      v17 = name;
+      v18 = name2;
       v19 = v18;
       if (v17 == v18)
       {
 
 LABEL_42:
-        v33 = [(WFImage *)self bundle];
-        v34 = [(WFImage *)v6 bundle];
+        symbolConfiguration = [(WFImage *)self bundle];
+        symbolConfiguration2 = [(WFImage *)v6 bundle];
         goto LABEL_43;
       }
 
@@ -1288,76 +1288,76 @@ LABEL_21:
   return v14;
 }
 
-- (WFImage)imageWithDisplayStyle:(unint64_t)a3
+- (WFImage)imageWithDisplayStyle:(unint64_t)style
 {
   v4 = [(WFImage *)self copy];
-  v4[8] = a3;
+  v4[8] = style;
 
   return v4;
 }
 
-- (WFImage)imageWithRenderingMode:(unint64_t)a3
+- (WFImage)imageWithRenderingMode:(unint64_t)mode
 {
-  if ([(WFImage *)self renderingMode]== a3)
+  if ([(WFImage *)self renderingMode]== mode)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6 = [WFImage alloc];
-    v7 = [(WFImage *)self CGImage];
+    cGImage = [(WFImage *)self CGImage];
     [(WFImage *)self scale];
-    v5 = [(WFImage *)v6 initWithCGImage:v7 scale:[(WFImage *)self orientation] orientation:a3 renderingMode:v8];
-    if (v5)
+    selfCopy = [(WFImage *)v6 initWithCGImage:cGImage scale:[(WFImage *)self orientation] orientation:mode renderingMode:v8];
+    if (selfCopy)
     {
-      v5->_representationType = [(WFImage *)self representationType];
-      v9 = [(WFImage *)self symbolName];
-      symbolName = v5->_symbolName;
-      v5->_symbolName = v9;
+      selfCopy->_representationType = [(WFImage *)self representationType];
+      symbolName = [(WFImage *)self symbolName];
+      symbolName = selfCopy->_symbolName;
+      selfCopy->_symbolName = symbolName;
 
-      v11 = [(WFImage *)self name];
-      name = v5->_name;
-      v5->_name = v11;
+      name = [(WFImage *)self name];
+      name = selfCopy->_name;
+      selfCopy->_name = name;
 
-      v13 = [(WFImage *)self bundle];
-      bundle = v5->_bundle;
-      v5->_bundle = v13;
+      bundle = [(WFImage *)self bundle];
+      bundle = selfCopy->_bundle;
+      selfCopy->_bundle = bundle;
 
-      v15 = [(WFImage *)self data];
-      data = v5->_data;
-      v5->_data = v15;
+      data = [(WFImage *)self data];
+      data = selfCopy->_data;
+      selfCopy->_data = data;
 
-      v17 = v5;
+      v17 = selfCopy;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (WFImage)imageWithTintColor:(id)a3
+- (WFImage)imageWithTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [(WFImage *)self copy];
-  [v5 setTintColor:v4];
+  [v5 setTintColor:colorCopy];
 
   return v5;
 }
 
-- (id)imageByTintingBitmapWithTintColor:(id)a3
+- (id)imageByTintingBitmapWithTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [WFBitmapContext alloc];
   [(WFImage *)self sizeInPoints];
   v7 = v6;
   v9 = v8;
   [(WFImage *)self scale];
   v11 = [(WFBitmapContext *)v5 initWithSize:0 opaque:v7 scale:v9, v10];
-  v12 = [(WFBitmapContext *)v11 CGContext];
-  v13 = [v4 CGColor];
+  cGContext = [(WFBitmapContext *)v11 CGContext];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(v12, v13);
-  v14 = [(WFBitmapContext *)v11 CGContext];
+  CGContextSetFillColorWithColor(cGContext, cGColor);
+  cGContext2 = [(WFBitmapContext *)v11 CGContext];
   [(WFImage *)self sizeInPixels];
   v16 = v15;
   [(WFImage *)self sizeInPixels];
@@ -1365,33 +1365,33 @@ LABEL_21:
   v24.origin.x = 0.0;
   v24.origin.y = 0.0;
   v24.size.width = v16;
-  CGContextFillRect(v14, v24);
+  CGContextFillRect(cGContext2, v24);
   [(WFImage *)self sizeInPoints];
   v19 = v18;
   [(WFImage *)self sizeInPoints];
   [(WFImage *)self drawInContext:v11 inRect:22 blendMode:0.0 alpha:0.0, v19, v20, 1.0];
-  v21 = [(WFBitmapContext *)v11 image];
+  image = [(WFBitmapContext *)v11 image];
 
-  return v21;
+  return image;
 }
 
-- (void)drawInContext:(id)a3 inRect:(CGRect)a4 blendMode:(int)a5 alpha:(double)a6
+- (void)drawInContext:(id)context inRect:(CGRect)rect blendMode:(int)mode alpha:(double)alpha
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contextCopy = context;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
   if (!CGRectIsEmpty(v20))
   {
-    v14 = [v13 CGContext];
-    CGContextSaveGState(v14);
-    CGContextSetBlendMode(v14, a5);
-    CGContextSetAlpha(v14, a6);
+    cGContext = [contextCopy CGContext];
+    CGContextSaveGState(cGContext);
+    CGContextSetBlendMode(cGContext, mode);
+    CGContextSetAlpha(cGContext, alpha);
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
@@ -1402,45 +1402,45 @@ LABEL_21:
     v22.size.width = width;
     v22.size.height = height;
     MaxY = CGRectGetMaxY(v22);
-    CGContextTranslateCTM(v14, MinX, MaxY);
-    CGContextScaleCTM(v14, 1.0, -1.0);
-    [v13 scale];
+    CGContextTranslateCTM(cGContext, MinX, MaxY);
+    CGContextScaleCTM(cGContext, 1.0, -1.0);
+    [contextCopy scale];
     [(WFImage *)self contentsTransformForDrawingWithSize:width scale:height, v17];
-    CGContextConcatCTM(v14, &v19);
-    v18 = [(WFImage *)self CGImage];
-    if (v18)
+    CGContextConcatCTM(cGContext, &v19);
+    cGImage = [(WFImage *)self CGImage];
+    if (cGImage)
     {
       v23.origin.x = *MEMORY[0x1E695EFF8];
       v23.origin.y = *(MEMORY[0x1E695EFF8] + 8);
       v23.size.width = width;
       v23.size.height = height;
-      CGContextDrawImage(v14, v23, v18);
+      CGContextDrawImage(cGContext, v23, cGImage);
     }
 
-    CGContextRestoreGState(v14);
+    CGContextRestoreGState(cGContext);
   }
 }
 
-- (WFImage)initWithPlatformImage:(id)a3 scale:(double)a4
+- (WFImage)initWithPlatformImage:(id)image scale:(double)scale
 {
-  v5 = [(WFImage *)self initWithPlatformImage:a3];
+  v5 = [(WFImage *)self initWithPlatformImage:image];
   v6 = v5;
   if (v5)
   {
-    v5->_scale = a4;
+    v5->_scale = scale;
     v7 = v5;
   }
 
   return v6;
 }
 
-- (WFImage)initWithPlatformImage:(id)a3
+- (WFImage)initWithPlatformImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    v6 = [v4 renderingMode];
+    renderingMode = [imageCopy renderingMode];
     v7 = [v5 imageOrientation] - 1;
     if (v7 > 6)
     {
@@ -1452,114 +1452,114 @@ LABEL_21:
       v8 = dword_1B1F36928[v7];
     }
 
-    v10 = [v5 CGImage];
+    cGImage = [v5 CGImage];
     [v5 scale];
-    self = [(WFImage *)self initWithCGImage:v10 scale:v8 orientation:v6 renderingMode:?];
-    v9 = self;
+    self = [(WFImage *)self initWithCGImage:cGImage scale:v8 orientation:renderingMode renderingMode:?];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (WFImage)initWithName:(id)a3 bundle:(id)a4 scale:(double)a5
+- (WFImage)initWithName:(id)name bundle:(id)bundle scale:(double)scale
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v10 = [(WFImage *)self initWithRepresentationType:5];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    objc_storeStrong(&v10->_bundle, a4);
-    v10->_scale = a5;
+    objc_storeStrong(&v10->_bundle, bundle);
+    v10->_scale = scale;
     v13 = v10;
   }
 
   return v10;
 }
 
-- (WFImage)initWithData:(id)a3 scale:(double)a4 allowAnimated:(BOOL)a5
+- (WFImage)initWithData:(id)data scale:(double)scale allowAnimated:(BOOL)animated
 {
-  v8 = a3;
-  if (v8 && (self = -[WFImage initWithRepresentationType:](self, "initWithRepresentationType:", 2)) != 0 && (v9 = [v8 copy], data = self->_data, self->_data = v9, data, self->_scale = a4, self->_allowsAnimated = a5, -[WFImage hasValidImage](self, "hasValidImage")))
+  dataCopy = data;
+  if (dataCopy && (self = -[WFImage initWithRepresentationType:](self, "initWithRepresentationType:", 2)) != 0 && (v9 = [dataCopy copy], data = self->_data, self->_data = v9, data, self->_scale = scale, self->_allowsAnimated = animated, -[WFImage hasValidImage](self, "hasValidImage")))
   {
     self = self;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (WFImage)initWithContentsOfURL:(id)a3
+- (WFImage)initWithContentsOfURL:(id)l
 {
-  v5 = a3;
-  if (v5 && (v6 = [(WFImage *)self initWithRepresentationType:1], (self = v6) != 0) && (objc_storeStrong(&v6->_URL, a3), [(WFImage *)self hasValidImage]))
+  lCopy = l;
+  if (lCopy && (v6 = [(WFImage *)self initWithRepresentationType:1], (self = v6) != 0) && (objc_storeStrong(&v6->_URL, l), [(WFImage *)self hasValidImage]))
   {
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (WFImage)initWithSymbolName:(id)a3 configuration:(id)a4 renderingMode:(unint64_t)a5
+- (WFImage)initWithSymbolName:(id)name configuration:(id)configuration renderingMode:(unint64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  configurationCopy = configuration;
   v10 = [(WFImage *)self initWithRepresentationType:4];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     symbolName = v10->_symbolName;
     v10->_symbolName = v11;
 
-    v10->_renderingMode = a5;
-    objc_storeStrong(&v10->_symbolConfiguration, a4);
+    v10->_renderingMode = mode;
+    objc_storeStrong(&v10->_symbolConfiguration, configuration);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (WFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(unsigned int)a5 renderingMode:(unint64_t)a6
+- (WFImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(unsigned int)orientation renderingMode:(unint64_t)mode
 {
-  if (a3 && (self = [(WFImage *)self initWithRepresentationType:3]) != 0)
+  if (image && (self = [(WFImage *)self initWithRepresentationType:3]) != 0)
   {
-    v10 = self;
-    self->_CGImage = CGImageRetain(a3);
-    v10->_scale = a4;
-    v10->_orientation = a5;
-    v10->_renderingMode = a6;
-    self = v10;
-    v11 = self;
+    selfCopy = self;
+    self->_CGImage = CGImageRetain(image);
+    selfCopy->_scale = scale;
+    selfCopy->_orientation = orientation;
+    selfCopy->_renderingMode = mode;
+    self = selfCopy;
+    selfCopy2 = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy2 = 0;
   }
 
-  return v11;
+  return selfCopy2;
 }
 
-- (WFImage)initWithRepresentationType:(int64_t)a3
+- (WFImage)initWithRepresentationType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = WFImage;
@@ -1567,7 +1567,7 @@ LABEL_21:
   v5 = v4;
   if (v4)
   {
-    v4->_representationType = a3;
+    v4->_representationType = type;
     v4->_scale = 1.0;
     v4->_orientation = 1;
     v4->_renderingMode = 0;
@@ -1577,49 +1577,49 @@ LABEL_21:
   return v5;
 }
 
-+ (id)imageWithContentsOfURL:(id)a3
++ (id)imageWithContentsOfURL:(id)l
 {
-  v3 = a3;
-  v4 = [[WFImage alloc] initWithContentsOfURL:v3];
+  lCopy = l;
+  v4 = [[WFImage alloc] initWithContentsOfURL:lCopy];
 
   return v4;
 }
 
-+ (id)imageWithDeviceScreenScaleImageData:(id)a3
++ (id)imageWithDeviceScreenScaleImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[WFDevice currentDevice];
   [v4 screenScale];
-  v5 = [WFImage imageWithData:v3 scale:?];
+  v5 = [WFImage imageWithData:dataCopy scale:?];
 
   return v5;
 }
 
-- (id)roundedWithContinuousCornerRadius:(double)a3 size:(CGSize)a4
+- (id)roundedWithContinuousCornerRadius:(double)radius size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = [WFBitmapContext alloc];
   [(WFImage *)self scale];
   v10 = [(WFBitmapContext *)v8 initWithSize:0 opaque:width scale:height, v9];
-  v11 = [(WFBitmapContext *)v10 CGContext];
+  cGContext = [(WFBitmapContext *)v10 CGContext];
   v16.origin.x = 0.0;
   v16.origin.y = 0.0;
   v16.size.width = width;
   v16.size.height = height;
-  v12 = CGPathCreateWithRoundedRect(v16, a3, a3, 0);
-  CGContextAddPath(v11, v12);
-  CGContextClip(v11);
+  v12 = CGPathCreateWithRoundedRect(v16, radius, radius, 0);
+  CGContextAddPath(cGContext, v12);
+  CGContextClip(cGContext);
   [(WFImage *)self drawInContext:v10 inRect:0.0, 0.0, width, height];
-  v13 = [(WFBitmapContext *)v10 image];
+  image = [(WFBitmapContext *)v10 image];
 
-  return v13;
+  return image;
 }
 
-- (id)applicationIconImageWithFormat:(unint64_t)a3
+- (id)applicationIconImageWithFormat:(unint64_t)format
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = [(WFImage *)self createNonRotatedCGImageRepresentation];
+  createNonRotatedCGImageRepresentation = [(WFImage *)self createNonRotatedCGImageRepresentation];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -1640,25 +1640,25 @@ LABEL_21:
   _Block_object_dispose(&v17, 8);
   v8 = [v6 alloc];
   [(WFImage *)self scale];
-  v9 = [v8 initWithCGImage:v5 scale:?];
-  CGImageRelease(v5);
+  v9 = [v8 initWithCGImage:createNonRotatedCGImageRepresentation scale:?];
+  CGImageRelease(createNonRotatedCGImageRepresentation);
   v10 = objc_alloc(getISIconClass());
   v21[0] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v12 = [v10 initWithImages:v11];
 
-  v13 = WFImageForIconAndFormat(v12, a3);
+  v13 = WFImageForIconAndFormat(v12, format);
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-+ (id)applicationIconImageForCalendarDate:(id)a3 descriptor:(id)a4
++ (id)applicationIconImageForCalendarDate:(id)date descriptor:(id)descriptor
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  descriptorCopy = descriptor;
   v28 = 0;
   if (!CalendarUIKitLibraryCore_frameworkLibrary)
   {
@@ -1683,9 +1683,9 @@ LABEL_21:
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *CalendarUIKitLibrary(void)"];
-    [v5 handleFailureInFunction:v6 file:@"WFImage+Icons.m" lineNumber:22 description:{@"%s", v28}];
+    dateCopy = [MEMORY[0x1E696AAA8] currentHandler];
+    descriptorCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *CalendarUIKitLibrary(void)"];
+    [dateCopy handleFailureInFunction:descriptorCopy file:@"WFImage+Icons.m" lineNumber:22 description:{@"%s", v28}];
 
     __break(1u);
   }
@@ -1707,12 +1707,12 @@ LABEL_5:
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v8 = objc_alloc(getISIconClass());
-    v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v10 = [v8 initWithDate:v5 calendar:v9 format:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v10 = [v8 initWithDate:dateCopy calendar:currentCalendar format:0];
     v11 = *(v23 + 40);
     *(v23 + 40) = v10;
 
-    v12 = WFImageForIconAndDescriptor(*(v23 + 40), v6);
+    v12 = WFImageForIconAndDescriptor(*(v23 + 40), descriptorCopy);
     v13 = *(*(&v29 + 1) + 40);
     *(*(&v29 + 1) + 40) = v12;
   }
@@ -1724,9 +1724,9 @@ LABEL_5:
     block[2] = __65__WFImage_Icons__applicationIconImageForCalendarDate_descriptor___block_invoke;
     block[3] = &unk_1E7B00CE8;
     v20 = &v22;
-    v18 = v5;
+    v18 = dateCopy;
     v21 = &v29;
-    v19 = v6;
+    v19 = descriptorCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
 
     v13 = v18;
@@ -1759,15 +1759,15 @@ uint64_t __65__WFImage_Icons__applicationIconImageForCalendarDate_descriptor___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)documentIconImageForFileType:(id)a3
++ (id)documentIconImageForFileType:(id)type
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typeCopy = type;
   v4 = MEMORY[0x1E6963658];
-  v5 = [v3 utType];
-  v6 = [v5 identifier];
-  v7 = [v3 MIMEType];
-  v8 = [v4 documentProxyForName:0 type:v6 MIMEType:v7];
+  utType = [typeCopy utType];
+  identifier = [utType identifier];
+  mIMEType = [typeCopy MIMEType];
+  v8 = [v4 documentProxyForName:0 type:identifier MIMEType:mIMEType];
 
   v9 = [objc_alloc(getISIconClass()) initWithResourceProxy:v8];
   v42 = 0;
@@ -1786,9 +1786,9 @@ uint64_t __65__WFImage_Icons__applicationIconImageForCalendarDate_descriptor___b
   _Block_object_dispose(&v42, 8);
   if (!v10)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ISImageDescriptorName getkISImageDescriptorCustomDocumentSize(void)"];
-    [v34 handleFailureInFunction:v35 file:@"WFImage+Icons.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v35 file:@"WFImage+Icons.m" lineNumber:30 description:{@"%s", dlerror()}];
 
     goto LABEL_23;
   }
@@ -1811,9 +1811,9 @@ uint64_t __65__WFImage_Icons__applicationIconImageForCalendarDate_descriptor___b
   _Block_object_dispose(&v42, 8);
   if (!v13)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ISImageDescriptorName getkISImageDescriptorBadgedDocumentSize(void)"];
-    [v36 handleFailureInFunction:v37 file:@"WFImage+Icons.m" lineNumber:31 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v37 file:@"WFImage+Icons.m" lineNumber:31 description:{@"%s", dlerror()}];
 
     goto LABEL_23;
   }
@@ -1836,9 +1836,9 @@ uint64_t __65__WFImage_Icons__applicationIconImageForCalendarDate_descriptor___b
   _Block_object_dispose(&v42, 8);
   if (!v16)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ISImageDescriptorName getkISImageDescriptorCustomDocumentScalableSize(void)"];
-    [v38 handleFailureInFunction:v39 file:@"WFImage+Icons.m" lineNumber:32 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v39 file:@"WFImage+Icons.m" lineNumber:32 description:{@"%s", dlerror()}];
 
     goto LABEL_23;
   }
@@ -1861,9 +1861,9 @@ uint64_t __65__WFImage_Icons__applicationIconImageForCalendarDate_descriptor___b
   _Block_object_dispose(&v42, 8);
   if (!v19)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ISImageDescriptorName getkISImageDescriptorBadgedDocumentScalableSize(void)"];
-    [v40 handleFailureInFunction:v41 file:@"WFImage+Icons.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v41 file:@"WFImage+Icons.m" lineNumber:33 description:{@"%s", dlerror()}];
 
 LABEL_23:
     __break(1u);
@@ -1880,18 +1880,18 @@ LABEL_23:
   v27 = v26;
   if (v26)
   {
-    v28 = v26;
+    firstObject = v26;
   }
 
   else
   {
-    v28 = [v25 firstObject];
+    firstObject = [v25 firstObject];
   }
 
-  v29 = v28;
-  v30 = [v28 CGImage];
+  v29 = firstObject;
+  cGImage = [firstObject CGImage];
   [v29 scale];
-  v31 = [WFImage imageWithCGImage:v30 scale:1 orientation:?];
+  v31 = [WFImage imageWithCGImage:cGImage scale:1 orientation:?];
 
   v32 = *MEMORY[0x1E69E9840];
 
@@ -1906,32 +1906,32 @@ id __47__WFImage_Icons__documentIconImageForFileType___block_invoke(uint64_t a1,
   return v3;
 }
 
-+ (void)applicationIconImageForBundleIdentifier:(id)a3 length:(double)a4 scale:(double)a5 completionHandler:(id)a6
++ (void)applicationIconImageForBundleIdentifier:(id)identifier length:(double)length scale:(double)scale completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v12 = [WFImage applicationIconImageForBundleIdentifier:v10 length:a4 scale:a5];
+  v12 = [WFImage applicationIconImageForBundleIdentifier:identifierCopy length:length scale:scale];
   if (v12)
   {
-    v11[2](v11, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
   else
   {
-    v13 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:a4 scale:{a4, a5}];
-    v14 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:v10];
-    v15 = [a1 _applicationIconImageLoadingQueue];
+    v13 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:length scale:{length, scale}];
+    v14 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:identifierCopy];
+    _applicationIconImageLoadingQueue = [self _applicationIconImageLoadingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __89__WFImage_Icons__applicationIconImageForBundleIdentifier_length_scale_completionHandler___block_invoke;
     block[3] = &unk_1E7B01F90;
     v19 = v14;
     v20 = v13;
-    v21 = v11;
+    v21 = handlerCopy;
     v16 = v13;
     v17 = v14;
-    dispatch_async(v15, block);
+    dispatch_async(_applicationIconImageLoadingQueue, block);
   }
 }
 
@@ -2038,34 +2038,34 @@ void __89__WFImage_Icons__applicationIconImageForBundleIdentifier_length_scale_c
   (*(v2 + 16))(v2, v4);
 }
 
-+ (id)applicationIconImageForBundleIdentifier:(id)a3 length:(double)a4 scale:(double)a5
++ (id)applicationIconImageForBundleIdentifier:(id)identifier length:(double)length scale:(double)scale
 {
-  v8 = a3;
-  v9 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:a4 scale:{a4, a5}];
+  identifierCopy = identifier;
+  v9 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:length scale:{length, scale}];
   [v9 setAppearance:0];
-  if ([v8 isEqualToString:@"com.apple.mobilecal"] && (objc_msgSend(MEMORY[0x1E695DF00], "date"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "applicationIconImageForCalendarDate:descriptor:", v10, v9), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  if ([identifierCopy isEqualToString:@"com.apple.mobilecal"] && (objc_msgSend(MEMORY[0x1E695DF00], "date"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "applicationIconImageForCalendarDate:descriptor:", v10, v9), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
-    v12 = [MEMORY[0x1E695DF00] date];
-    v13 = [a1 applicationIconImageForCalendarDate:v12 descriptor:v9];
+    date = [MEMORY[0x1E695DF00] date];
+    v13 = [self applicationIconImageForCalendarDate:date descriptor:v9];
   }
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:v8];
+    v11 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:identifierCopy];
     if (![v11 isInstalled])
     {
       v13 = 0;
       goto LABEL_12;
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v8];
-    v14 = [v12 imageForDescriptor:v9];
+    date = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:identifierCopy];
+    v14 = [date imageForDescriptor:v9];
     v15 = v14;
     if (v14 && ([v14 placeholder] & 1) == 0)
     {
-      v16 = [v15 CGImage];
+      cGImage = [v15 CGImage];
       [v15 scale];
-      v13 = [WFImage imageWithCGImage:v16 scale:1 orientation:?];
+      v13 = [WFImage imageWithCGImage:cGImage scale:1 orientation:?];
     }
 
     else
@@ -2099,12 +2099,12 @@ void __51__WFImage_Icons___applicationIconImageLoadingQueue__block_invoke()
   _applicationIconImageLoadingQueue_queue = v0;
 }
 
-+ (id)applicationIconImageForBundleIdentifier:(id)a3 format:(unint64_t)a4
++ (id)applicationIconImageForBundleIdentifier:(id)identifier format:(unint64_t)format
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = WFImageApplicationIconCache();
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%lu", v6, a4];
-  v9 = [v7 objectForKey:v8];
+  format = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%lu", identifierCopy, format];
+  v9 = [v7 objectForKey:format];
 
   if (v9)
   {
@@ -2125,33 +2125,33 @@ void __51__WFImage_Icons___applicationIconImageLoadingQueue__block_invoke()
 
   else
   {
-    if (![v6 isEqualToString:@"com.apple.mobilecal"])
+    if (![identifierCopy isEqualToString:@"com.apple.mobilecal"])
     {
       goto LABEL_8;
     }
 
-    v14 = WFISImageDescriptorNameFromWFImageApplicationIconFormat(a4, v13);
+    v14 = WFISImageDescriptorNameFromWFImageApplicationIconFormat(format, v13);
     v15 = [getISImageDescriptorClass() imageDescriptorNamed:v14];
     [v15 setAppearance:0];
-    v16 = [MEMORY[0x1E695DF00] date];
-    v12 = [a1 applicationIconImageForCalendarDate:v16 descriptor:v15];
+    date = [MEMORY[0x1E695DF00] date];
+    v12 = [self applicationIconImageForCalendarDate:date descriptor:v15];
 
     if (!v12)
     {
 LABEL_8:
-      v17 = [objc_alloc(getISIconClass()) initWithBundleIdentifier:v6];
-      v12 = WFImageForIconAndFormat(v17, a4);
+      v17 = [objc_alloc(getISIconClass()) initWithBundleIdentifier:identifierCopy];
+      v12 = WFImageForIconAndFormat(v17, format);
     }
 
     v10 = WFImageApplicationIconCache();
-    v18 = v12;
+    null = v12;
     if (!v12)
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%lu", v6, a4];
-    [v10 setObject:v18 forKey:v19];
+    format2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%lu", identifierCopy, format];
+    [v10 setObject:null forKey:format2];
 
     if (!v12)
     {
@@ -2161,26 +2161,26 @@ LABEL_8:
   return v12;
 }
 
-+ (id)systemImageNamed:(id)a3 configuration:(id)a4 renderingMode:(unint64_t)a5
++ (id)systemImageNamed:(id)named configuration:(id)configuration renderingMode:(unint64_t)mode
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[WFImage alloc] initWithSymbolName:v8 configuration:v7 renderingMode:a5];
+  configurationCopy = configuration;
+  namedCopy = named;
+  v9 = [[WFImage alloc] initWithSymbolName:namedCopy configuration:configurationCopy renderingMode:mode];
 
   return v9;
 }
 
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolSize:(unint64_t)a5 symbolWeight:(int64_t)a6 scaleFactor:(double)a7 rightToLeft:(BOOL)a8 appearanceName:(id)a9 inCatalogs:(id)a10
++ (id)glyphNamed:(id)named pointSize:(double)size symbolSize:(unint64_t)symbolSize symbolWeight:(int64_t)weight scaleFactor:(double)factor rightToLeft:(BOOL)left appearanceName:(id)name inCatalogs:(id)self0
 {
-  v12 = a8;
+  leftCopy = left;
   v41 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a9;
-  v21 = a10;
-  v22 = v21;
-  if (v19)
+  namedCopy = named;
+  nameCopy = name;
+  catalogsCopy = catalogs;
+  v22 = catalogsCopy;
+  if (namedCopy)
   {
-    if (v21)
+    if (catalogsCopy)
     {
       goto LABEL_4;
     }
@@ -2188,8 +2188,8 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:a1 file:@"WFImage+Glyphs.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WFImage+Glyphs.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
   if (!v22)
   {
@@ -2209,7 +2209,7 @@ LABEL_4:
   {
     v25 = v24;
     v26 = *v37;
-    if (v12)
+    if (leftCopy)
     {
       v27 = 4;
     }
@@ -2219,9 +2219,9 @@ LABEL_4:
       v27 = 5;
     }
 
-    if (a5 < 3)
+    if (symbolSize < 3)
     {
-      v28 = a5 + 1;
+      v28 = symbolSize + 1;
     }
 
     else
@@ -2238,11 +2238,11 @@ LABEL_4:
           objc_enumerationMutation(v23);
         }
 
-        v30 = [*(*(&v36 + 1) + 8 * i) namedVectorGlyphWithName:v19 scaleFactor:0 deviceIdiom:v27 layoutDirection:v28 glyphSize:a6 glyphWeight:v20 glyphPointSize:a7 appearanceName:a4];
+        v30 = [*(*(&v36 + 1) + 8 * i) namedVectorGlyphWithName:namedCopy scaleFactor:0 deviceIdiom:v27 layoutDirection:v28 glyphSize:weight glyphWeight:nameCopy glyphPointSize:factor appearanceName:size];
         if (v30)
         {
           v32 = v30;
-          v31 = -[WFImage initWithCGImage:scale:orientation:renderingMode:]([WFImage alloc], "initWithCGImage:scale:orientation:renderingMode:", [v30 image], 1, 2, a7);
+          v31 = -[WFImage initWithCGImage:scale:orientation:renderingMode:]([WFImage alloc], "initWithCGImage:scale:orientation:renderingMode:", [v30 image], 1, 2, factor);
 
           goto LABEL_19;
         }
@@ -2266,76 +2266,76 @@ LABEL_19:
   return v31;
 }
 
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolSize:(unint64_t)a5 scaleFactor:(double)a6
++ (id)glyphNamed:(id)named pointSize:(double)size symbolSize:(unint64_t)symbolSize scaleFactor:(double)factor
 {
-  v10 = a3;
-  v11 = [a1 glyphNamed:v10 pointSize:a5 symbolSize:4 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:0 appearanceName:a4 inCatalogs:a6];
+  namedCopy = named;
+  v11 = [self glyphNamed:namedCopy pointSize:symbolSize symbolSize:4 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:0 appearanceName:size inCatalogs:factor];
 
   return v11;
 }
 
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolWeight:(int64_t)a5 scaleFactor:(double)a6 inCatalogs:(id)a7
++ (id)glyphNamed:(id)named pointSize:(double)size symbolWeight:(int64_t)weight scaleFactor:(double)factor inCatalogs:(id)catalogs
 {
-  v13 = a3;
-  v14 = a7;
-  if (!v13)
+  namedCopy = named;
+  catalogsCopy = catalogs;
+  if (!namedCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"WFImage+Glyphs.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImage+Glyphs.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
-  v15 = [a1 glyphNamed:v13 pointSize:1 symbolSize:a5 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:v14 appearanceName:a4 inCatalogs:a6];
+  v15 = [self glyphNamed:namedCopy pointSize:1 symbolSize:weight symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:catalogsCopy appearanceName:size inCatalogs:factor];
 
   return v15;
 }
 
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 inCatalogs:(id)a5
++ (id)glyphNamed:(id)named pointSize:(double)size inCatalogs:(id)catalogs
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  namedCopy = named;
+  catalogsCopy = catalogs;
+  if (!namedCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"WFImage+Glyphs.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImage+Glyphs.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v11 = +[WFDevice currentDevice];
   [v11 screenScale];
   v13 = v12;
 
-  v14 = [a1 glyphNamed:v9 pointSize:1 symbolSize:4 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:v10 appearanceName:a4 inCatalogs:v13];
+  v14 = [self glyphNamed:namedCopy pointSize:1 symbolSize:4 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:catalogsCopy appearanceName:size inCatalogs:v13];
 
   return v14;
 }
 
-+ (id)glyphNamed:(id)a3 pointSize:(double)a4 symbolSize:(unint64_t)a5
++ (id)glyphNamed:(id)named pointSize:(double)size symbolSize:(unint64_t)symbolSize
 {
-  v9 = a3;
-  if (!v9)
+  namedCopy = named;
+  if (!namedCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFImage+Glyphs.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImage+Glyphs.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v10 = +[WFDevice currentDevice];
   [v10 screenScale];
   v12 = v11;
 
-  v13 = [a1 glyphNamed:v9 pointSize:a5 symbolSize:4 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:0 appearanceName:a4 inCatalogs:v12];
+  v13 = [self glyphNamed:namedCopy pointSize:symbolSize symbolSize:4 symbolWeight:WFShouldReverseLayoutDirection() scaleFactor:@"UIAppearanceLight" rightToLeft:0 appearanceName:size inCatalogs:v12];
 
   return v13;
 }
 
-- (id)resizedImageWithSizeInPoints:(CGSize)a3 scale:(double)a4
+- (id)resizedImageWithSizeInPoints:(CGSize)points scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [WFBitmapContext HDRCapableContextWithSize:a3.width scale:a3.height, a4];
-  if (v7)
+  height = points.height;
+  width = points.width;
+  scale = [WFBitmapContext HDRCapableContextWithSize:points.width scale:points.height, scale];
+  if (scale)
   {
-    [(WFImage *)self drawInContext:v7 inRect:0.0, 0.0, width, height];
-    v8 = [v7 image];
-    v9 = [v8 imageWithRenderingMode:{-[WFImage renderingMode](self, "renderingMode")}];
+    [(WFImage *)self drawInContext:scale inRect:0.0, 0.0, width, height];
+    image = [scale image];
+    v9 = [image imageWithRenderingMode:{-[WFImage renderingMode](self, "renderingMode")}];
   }
 
   else
@@ -2346,10 +2346,10 @@ LABEL_19:
   return v9;
 }
 
-- (id)resizedImageWithSizeInPoints:(CGSize)a3
+- (id)resizedImageWithSizeInPoints:(CGSize)points
 {
-  height = a3.height;
-  width = a3.width;
+  height = points.height;
+  width = points.width;
   [(WFImage *)self scale];
 
   return [(WFImage *)self resizedImageWithSizeInPoints:width scale:height, v6];

@@ -1,11 +1,11 @@
 @interface CarFocusableButton
-+ (CarFocusableButton)buttonWithConfiguration:(id)a3 primaryAction:(id)a4;
-+ (CarFocusableButton)buttonWithType:(int64_t)a3;
++ (CarFocusableButton)buttonWithConfiguration:(id)configuration primaryAction:(id)action;
++ (CarFocusableButton)buttonWithType:(int64_t)type;
 + (id)backButton;
 + (id)cardHeaderButton;
 + (id)closeButton;
 - (BOOL)canBecomeFocused;
-- (CarFocusableButton)initWithFrame:(CGRect)a3;
+- (CarFocusableButton)initWithFrame:(CGRect)frame;
 - (id)_backgroundShapeLayer;
 - (id)_focusShapeLayer;
 - (void)_commonInit;
@@ -13,22 +13,22 @@
 - (void)_updateAppearance;
 - (void)_updateColorSettings;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setAdjustsImageWhenDisabled:(BOOL)a3;
-- (void)setAdjustsImageWhenHighlighted:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFocusedBackgroundColor:(id)a3;
-- (void)setFocusedTintColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setModifiesBackgroundColor:(BOOL)a3;
-- (void)setNonFocusedBackgroundColor:(id)a3;
-- (void)setNonFocusedTintColor:(id)a3;
-- (void)setTitleColor:(id)a3 forState:(unint64_t)a4;
-- (void)tappedButton:(id)a3;
+- (void)setAdjustsImageWhenDisabled:(BOOL)disabled;
+- (void)setAdjustsImageWhenHighlighted:(BOOL)highlighted;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFocusedBackgroundColor:(id)color;
+- (void)setFocusedTintColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setModifiesBackgroundColor:(BOOL)color;
+- (void)setNonFocusedBackgroundColor:(id)color;
+- (void)setNonFocusedTintColor:(id)color;
+- (void)setTitleColor:(id)color forState:(unint64_t)state;
+- (void)tappedButton:(id)button;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation CarFocusableButton
@@ -49,9 +49,9 @@
       backgroundShapeLayer = self->_backgroundShapeLayer;
       self->_backgroundShapeLayer = 0;
 
-      v7 = [(CarFocusableButton *)self layer];
-      v8 = [(CarFocusableButton *)self _backgroundShapeLayer];
-      [v7 insertSublayer:v8 atIndex:0];
+      layer = [(CarFocusableButton *)self layer];
+      _backgroundShapeLayer = [(CarFocusableButton *)self _backgroundShapeLayer];
+      [layer insertSublayer:_backgroundShapeLayer atIndex:0];
     }
 
     [(CarFocusableButton *)self bounds];
@@ -92,7 +92,7 @@
 
   if ([(CarFocusableButton *)self isFocused])
   {
-    v11 = [(CarFocusableButton *)self focusedBackgroundColor];
+    focusedBackgroundColor = [(CarFocusableButton *)self focusedBackgroundColor];
   }
 
   else
@@ -104,24 +104,24 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    v11 = +[UIColor labelColor];
+    focusedBackgroundColor = +[UIColor labelColor];
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = focusedBackgroundColor;
+  if (!focusedBackgroundColor)
   {
     goto LABEL_15;
   }
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v13 = [(CarFocusableButton *)self _focusShapeLayer];
-  [v13 setStrokeColor:{objc_msgSend(v12, "CGColor")}];
+  _focusShapeLayer = [(CarFocusableButton *)self _focusShapeLayer];
+  [_focusShapeLayer setStrokeColor:{objc_msgSend(v12, "CGColor")}];
 
   +[CATransaction commit];
-  v14 = [(CarFocusableButton *)self layer];
-  v15 = [(CarFocusableButton *)self _focusShapeLayer];
-  [v14 insertSublayer:v15 atIndex:0];
+  layer = [(CarFocusableButton *)self layer];
+  _focusShapeLayer2 = [(CarFocusableButton *)self _focusShapeLayer];
+  [layer insertSublayer:_focusShapeLayer2 atIndex:0];
 
 LABEL_18:
 LABEL_19:
@@ -176,23 +176,23 @@ LABEL_19:
 
 + (id)cardHeaderButton
 {
-  v2 = [a1 button];
-  [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [v2 imageView];
-  [v3 setContentMode:1];
+  button = [self button];
+  [button setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [button imageView];
+  [imageView setContentMode:1];
 
   LODWORD(v4) = 1148846080;
-  [v2 setContentHuggingPriority:0 forAxis:v4];
+  [button setContentHuggingPriority:0 forAxis:v4];
   LODWORD(v5) = 1148846080;
-  [v2 setContentCompressionResistancePriority:0 forAxis:v5];
+  [button setContentCompressionResistancePriority:0 forAxis:v5];
   LODWORD(v6) = 1148846080;
-  [v2 setContentCompressionResistancePriority:1 forAxis:v6];
-  [v2 setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
-  [v2 setModifiesBackgroundColor:0];
-  [v2 setEllipticalFocusIndicatorisFilled:1];
-  v2[93] = 1;
+  [button setContentCompressionResistancePriority:1 forAxis:v6];
+  [button setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
+  [button setModifiesBackgroundColor:0];
+  [button setEllipticalFocusIndicatorisFilled:1];
+  button[93] = 1;
 
-  return v2;
+  return button;
 }
 
 - (void)_commonInit
@@ -238,15 +238,15 @@ LABEL_19:
 
 - (void)_updateColorSettings
 {
-  v3 = [(CarFocusableButton *)self tintColor];
+  tintColor = [(CarFocusableButton *)self tintColor];
   v18.receiver = self;
   v18.super_class = CarFocusableButton;
-  [(CarFocusableButton *)&v18 setTitleColor:v3 forState:0];
+  [(CarFocusableButton *)&v18 setTitleColor:tintColor forState:0];
 
   v16 = 0.0;
   v17 = 0.0;
-  v4 = [(CarFocusableButton *)self tintColor];
-  [v4 getWhite:&v17 alpha:&v16];
+  tintColor2 = [(CarFocusableButton *)self tintColor];
+  [tintColor2 getWhite:&v17 alpha:&v16];
 
   v5 = [(CarFocusableButton *)self titleColorForState:2];
   if (!self->_customDisabledColor && !self->_generatedDisabledColor)
@@ -264,8 +264,8 @@ LABEL_19:
   if (!self->_customHighlightedColor && !self->_generatedHighlightedColor)
   {
     self->_generatedHighlightedColor = 1;
-    v8 = [(CarFocusableButton *)self tintColor];
-    v9 = [v8 colorWithAlphaComponent:0.200000003];
+    tintColor3 = [(CarFocusableButton *)self tintColor];
+    v9 = [tintColor3 colorWithAlphaComponent:0.200000003];
 
     v14.receiver = self;
     v14.super_class = CarFocusableButton;
@@ -275,25 +275,25 @@ LABEL_19:
 
   if ([(CarFocusableButton *)self isHighlighted])
   {
-    v10 = [(CarFocusableButton *)self imageView];
-    v11 = v10;
+    imageView = [(CarFocusableButton *)self imageView];
+    tintColor4 = imageView;
     v12 = v7;
 LABEL_12:
-    [v10 setTintColor:v12];
+    [imageView setTintColor:v12];
     goto LABEL_13;
   }
 
   if (([(CarFocusableButton *)self isEnabled]& 1) == 0)
   {
-    v10 = [(CarFocusableButton *)self imageView];
-    v11 = v10;
+    imageView = [(CarFocusableButton *)self imageView];
+    tintColor4 = imageView;
     v12 = v5;
     goto LABEL_12;
   }
 
-  v11 = [(CarFocusableButton *)self tintColor];
-  v13 = [(CarFocusableButton *)self imageView];
-  [v13 setTintColor:v11];
+  tintColor4 = [(CarFocusableButton *)self tintColor];
+  imageView2 = [(CarFocusableButton *)self imageView];
+  [imageView2 setTintColor:tintColor4];
 
 LABEL_13:
 }
@@ -303,9 +303,9 @@ LABEL_13:
   v4.receiver = self;
   v4.super_class = CarFocusableButton;
   [(CarFocusableButton *)&v4 didMoveToWindow];
-  v3 = [(CarFocusableButton *)self window];
+  window = [(CarFocusableButton *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
   }
@@ -315,23 +315,23 @@ LABEL_13:
 {
   v5.receiver = self;
   v5.super_class = CarFocusableButton;
-  v3 = [(CarFocusableButton *)&v5 canBecomeFocused];
-  if (v3)
+  canBecomeFocused = [(CarFocusableButton *)&v5 canBecomeFocused];
+  if (canBecomeFocused)
   {
-    v3 = [(CarFocusableButton *)self isEnabled];
-    if (v3)
+    canBecomeFocused = [(CarFocusableButton *)self isEnabled];
+    if (canBecomeFocused)
     {
-      LOBYTE(v3) = [(CarFocusableButton *)self isHidden]^ 1;
+      LOBYTE(canBecomeFocused) = [(CarFocusableButton *)self isHidden]^ 1;
     }
   }
 
-  return v3;
+  return canBecomeFocused;
 }
 
 + (id)closeButton
 {
-  v2 = [a1 cardHeaderButton];
-  [v2 setAccessibilityIdentifier:@"CloseButton"];
+  cardHeaderButton = [self cardHeaderButton];
+  [cardHeaderButton setAccessibilityIdentifier:@"CloseButton"];
   v3 = +[UIColor _carSystemFocusLabelColor];
   v18[0] = v3;
   v4 = +[UIColor secondarySystemFillColor];
@@ -339,7 +339,7 @@ LABEL_13:
   v5 = [NSArray arrayWithObjects:v18 count:2];
   v16 = [UIImage _mapsCar_systemImageNamed:@"multiply" pointSize:5 weight:v5 paletteColors:16.0];
 
-  [v2 setImage:v16 forState:0];
+  [cardHeaderButton setImage:v16 forState:0];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"CarPlay_Close" value:@"localized string not found" table:0];
   v17[0] = v7;
@@ -353,26 +353,26 @@ LABEL_13:
   v13 = [v12 localizedStringForKey:@"CarPlay_X" value:@"localized string not found" table:0];
   v17[3] = v13;
   v14 = [NSArray arrayWithObjects:v17 count:4];
-  [v2 setAccessibilityUserInputLabels:v14];
+  [cardHeaderButton setAccessibilityUserInputLabels:v14];
 
-  return v2;
+  return cardHeaderButton;
 }
 
-+ (CarFocusableButton)buttonWithConfiguration:(id)a3 primaryAction:(id)a4
++ (CarFocusableButton)buttonWithConfiguration:(id)configuration primaryAction:(id)action
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CarFocusableButton;
-  v4 = objc_msgSendSuper2(&v6, "buttonWithConfiguration:primaryAction:", a3, a4);
+  v4 = objc_msgSendSuper2(&v6, "buttonWithConfiguration:primaryAction:", configuration, action);
   [v4 _commonInit];
 
   return v4;
 }
 
-+ (CarFocusableButton)buttonWithType:(int64_t)a3
++ (CarFocusableButton)buttonWithType:(int64_t)type
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CarFocusableButton;
-  v3 = objc_msgSendSuper2(&v5, "buttonWithType:", a3);
+  v3 = objc_msgSendSuper2(&v5, "buttonWithType:", type);
   [v3 _commonInit];
 
   return v3;
@@ -380,15 +380,15 @@ LABEL_13:
 
 + (id)backButton
 {
-  v2 = [a1 cardHeaderButton];
-  [v2 setAccessibilityIdentifier:@"BackButton"];
+  cardHeaderButton = [self cardHeaderButton];
+  [cardHeaderButton setAccessibilityIdentifier:@"BackButton"];
   v3 = +[UIColor _carSystemFocusLabelColor];
   v18[0] = v3;
   v4 = +[UIColor secondarySystemFillColor];
   v18[1] = v4;
   v5 = [NSArray arrayWithObjects:v18 count:2];
   v6 = [UIImage _mapsCar_systemImageNamed:@"chevron.backward" pointSize:5 weight:v5 paletteColors:16.0];
-  [v2 setImage:v6 forState:0];
+  [cardHeaderButton setImage:v6 forState:0];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"CarPlay_Close" value:@"localized string not found" table:0];
@@ -403,32 +403,32 @@ LABEL_13:
   v14 = [v13 localizedStringForKey:@"CarPlay_X" value:@"localized string not found" table:0];
   v17[3] = v14;
   v15 = [NSArray arrayWithObjects:v17 count:4];
-  [v2 setAccessibilityUserInputLabels:v15];
+  [cardHeaderButton setAccessibilityUserInputLabels:v15];
 
-  return v2;
+  return cardHeaderButton;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CarFocusableButton;
-  [(CarFocusableButton *)&v11 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
-  v8 = v7;
-  if (v7 == self)
+  [(CarFocusableButton *)&v11 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v8 = nextFocusedItem;
+  if (nextFocusedItem == self)
   {
 
 LABEL_5:
-    v10 = [v6 nextFocusedItem];
-    [(CarFocusableButton *)self focusDidChange:v10 == self];
+    nextFocusedItem2 = [contextCopy nextFocusedItem];
+    [(CarFocusableButton *)self focusDidChange:nextFocusedItem2 == self];
 
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v9 == self)
+  if (previouslyFocusedItem == self)
   {
     goto LABEL_5;
   }
@@ -436,21 +436,21 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)tappedButton:(id)a3
+- (void)tappedButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   if ([(CarFocusableButton *)self isEnabled])
   {
-    if ([v5 state] == 1)
+    if ([buttonCopy state] == 1)
     {
       [(CarFocusableButton *)self setHighlighted:1];
     }
 
     else
     {
-      v4 = [v5 state];
+      state = [buttonCopy state];
       [(CarFocusableButton *)self setHighlighted:0];
-      if (v4 == 3)
+      if (state == 3)
       {
         [(CarFocusableButton *)self sendActionsForControlEvents:64];
       }
@@ -458,21 +458,21 @@ LABEL_6:
   }
 }
 
-- (void)setTitleColor:(id)a3 forState:(unint64_t)a4
+- (void)setTitleColor:(id)color forState:(unint64_t)state
 {
-  if (a4 == 1)
+  if (state == 1)
   {
     v5 = &OBJC_IVAR___CarFocusableButton__generatedHighlightedColor;
     v6 = &OBJC_IVAR___CarFocusableButton__customHighlightedColor;
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
     v5 = &OBJC_IVAR___CarFocusableButton__generatedDisabledColor;
     v6 = &OBJC_IVAR___CarFocusableButton__customDisabledColor;
 LABEL_5:
-    *(&self->super.super.super.super.super.super.isa + *v6) = a3 != 0;
+    *(&self->super.super.super.super.super.super.isa + *v6) = color != 0;
     *(&self->super.super.super.super.super.super.isa + *v5) = 0;
   }
 
@@ -532,9 +532,9 @@ LABEL_5:
     v12 = CGPathCreateWithEllipseInRect(v26, 0);
     [(CAShapeLayer *)self->_focusShapeLayer setPath:v12];
     CGPathRelease(v12);
-    v13 = [(CarFocusableButton *)self ellipticalFocusIndicatorisFilled];
+    ellipticalFocusIndicatorisFilled = [(CarFocusableButton *)self ellipticalFocusIndicatorisFilled];
     v14 = self->_focusShapeLayer;
-    if (v13)
+    if (ellipticalFocusIndicatorisFilled)
     {
       [(CAShapeLayer *)v14 setLineWidth:0.0];
       v15 = +[UIColor clearColor];
@@ -546,8 +546,8 @@ LABEL_5:
     else
     {
       [(CAShapeLayer *)v14 setLineWidth:1.5];
-      v16 = [(CarFocusableButton *)self focusedBackgroundColor];
-      -[CAShapeLayer setStrokeColor:](self->_focusShapeLayer, "setStrokeColor:", [v16 CGColor]);
+      focusedBackgroundColor = [(CarFocusableButton *)self focusedBackgroundColor];
+      -[CAShapeLayer setStrokeColor:](self->_focusShapeLayer, "setStrokeColor:", [focusedBackgroundColor CGColor]);
 
       +[UIColor clearColor];
     }
@@ -560,126 +560,126 @@ LABEL_5:
   return focusShapeLayer;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CarFocusableButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CarFocusableButton *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = CarFocusableButton;
-  [(CarFocusableButton *)&v6 setHighlighted:v3];
-  if (v5 != [(CarFocusableButton *)self isHighlighted])
+  [(CarFocusableButton *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(CarFocusableButton *)self isHighlighted])
   {
     [(CarFocusableButton *)self _updateColorSettings];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CarFocusableButton *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(CarFocusableButton *)self isEnabled];
   v6.receiver = self;
   v6.super_class = CarFocusableButton;
-  [(CarFocusableButton *)&v6 setEnabled:v3];
-  if (v5 != [(CarFocusableButton *)self isEnabled])
+  [(CarFocusableButton *)&v6 setEnabled:enabledCopy];
+  if (isEnabled != [(CarFocusableButton *)self isEnabled])
   {
     [(CarFocusableButton *)self setNeedsFocusUpdate];
     [(CarFocusableButton *)self _updateColorSettings];
   }
 }
 
-- (void)setModifiesBackgroundColor:(BOOL)a3
+- (void)setModifiesBackgroundColor:(BOOL)color
 {
-  if (self->_modifiesBackgroundColor != a3)
+  if (self->_modifiesBackgroundColor != color)
   {
-    self->_modifiesBackgroundColor = a3;
+    self->_modifiesBackgroundColor = color;
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
   }
 }
 
-- (void)setNonFocusedBackgroundColor:(id)a3
+- (void)setNonFocusedBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_nonFocusedBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_nonFocusedBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_nonFocusedBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_nonFocusedBackgroundColor, color);
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setFocusedBackgroundColor:(id)a3
+- (void)setFocusedBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_focusedBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_focusedBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_focusedBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_focusedBackgroundColor, color);
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setNonFocusedTintColor:(id)a3
+- (void)setNonFocusedTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_nonFocusedTintColor != v5)
+  colorCopy = color;
+  if (self->_nonFocusedTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_nonFocusedTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_nonFocusedTintColor, color);
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setFocusedTintColor:(id)a3
+- (void)setFocusedTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_focusedTintColor != v5)
+  colorCopy = color;
+  if (self->_focusedTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_focusedTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_focusedTintColor, color);
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setAdjustsImageWhenHighlighted:(BOOL)a3
+- (void)setAdjustsImageWhenHighlighted:(BOOL)highlighted
 {
   v3.receiver = self;
   v3.super_class = CarFocusableButton;
   [(CarFocusableButton *)&v3 setAdjustsImageWhenHighlighted:0];
 }
 
-- (void)setAdjustsImageWhenDisabled:(BOOL)a3
+- (void)setAdjustsImageWhenDisabled:(BOOL)disabled
 {
   v3.receiver = self;
   v3.super_class = CarFocusableButton;
   [(CarFocusableButton *)&v3 setAdjustsImageWhenDisabled:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CarFocusableButton;
-  v4 = a3;
-  [(CarFocusableButton *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(CarFocusableButton *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(CarFocusableButton *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(CarFocusableButton *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CarFocusableButton *)self _setNeedsUpdateAppearance];
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = CarFocusableButton;
-  [(CarFocusableButton *)&v5 willMoveToSuperview:a3];
+  [(CarFocusableButton *)&v5 willMoveToSuperview:superview];
   [(CAShapeLayer *)self->_focusShapeLayer removeFromSuperlayer];
   focusShapeLayer = self->_focusShapeLayer;
   self->_focusShapeLayer = 0;
@@ -707,11 +707,11 @@ LABEL_5:
   return backgroundShapeLayer;
 }
 
-- (CarFocusableButton)initWithFrame:(CGRect)a3
+- (CarFocusableButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarFocusableButton;
-  v3 = [(CarFocusableButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarFocusableButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

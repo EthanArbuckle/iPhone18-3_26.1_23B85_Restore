@@ -1,37 +1,37 @@
 @interface EXCellFormatTable
-+ (void)readCellFormatsFrom:(_xmlNode *)a3 isStyle:(BOOL)a4 state:(id)a5;
-+ (void)readFromCellStylesElement:(_xmlNode *)a3 state:(id)a4;
-+ (void)readFromCellXfsElement:(_xmlNode *)a3 state:(id)a4;
-+ (void)setDefaultWithState:(id)a3;
++ (void)readCellFormatsFrom:(_xmlNode *)from isStyle:(BOOL)style state:(id)state;
++ (void)readFromCellStylesElement:(_xmlNode *)element state:(id)state;
++ (void)readFromCellXfsElement:(_xmlNode *)element state:(id)state;
++ (void)setDefaultWithState:(id)state;
 @end
 
 @implementation EXCellFormatTable
 
-+ (void)readFromCellXfsElement:(_xmlNode *)a3 state:(id)a4
++ (void)readFromCellXfsElement:(_xmlNode *)element state:(id)state
 {
-  v8 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
-    v6 = [v8 EXSpreadsheetMLNamespace];
-    v7 = CXCountChildren(a3, v6, "xf");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v7 = CXCountChildren(element, eXSpreadsheetMLNamespace, "xf");
 
-    [v8 setCellStyleXfsOffset:v7];
-    [a1 readCellFormatsFrom:a3 isStyle:0 state:v8];
+    [stateCopy setCellStyleXfsOffset:v7];
+    [self readCellFormatsFrom:element isStyle:0 state:stateCopy];
   }
 }
 
-+ (void)readFromCellStylesElement:(_xmlNode *)a3 state:(id)a4
++ (void)readFromCellStylesElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (element)
   {
-    v7 = [v5 cellStyleXfsOffset];
-    v8 = [v6 resources];
-    v9 = [v8 styles];
+    cellStyleXfsOffset = [stateCopy cellStyleXfsOffset];
+    resources = [v6 resources];
+    styles = [resources styles];
 
-    v10 = [v6 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v10, "cellStyle");
+    eXSpreadsheetMLNamespace = [v6 EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(element, eXSpreadsheetMLNamespace, "cellStyle");
 
     while (Child)
     {
@@ -42,67 +42,67 @@
       {
         v15 = 0;
         CXOptionalLongAttribute(Child, CXNoNamespace, "xfId", &v15);
-        v13 = [v9 objectAtIndex:v15 + v7];
+        v13 = [styles objectAtIndex:v15 + cellStyleXfsOffset];
         [v13 setName:v12];
       }
 
-      v14 = [v6 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v14, "cellStyle");
+      eXSpreadsheetMLNamespace2 = [v6 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "cellStyle");
     }
   }
 }
 
-+ (void)setDefaultWithState:(id)a3
++ (void)setDefaultWithState:(id)state
 {
-  v9 = a3;
-  v3 = [v9 resources];
-  v4 = [v3 styles];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  styles = [resources styles];
 
-  [v4 setDefaultWorkbookStyleIndex:0];
-  v5 = [v9 resources];
-  v6 = [EDStyle styleWithResources:v5];
+  [styles setDefaultWorkbookStyleIndex:0];
+  resources2 = [stateCopy resources];
+  v6 = [EDStyle styleWithResources:resources2];
 
   [v6 setContentFormatId:0];
   [v6 setFontIndex:0];
   [v6 setFillIndex:0];
   [v6 setBordersIndex:0];
   [v6 setParentIndex:0];
-  [v4 addObject:v6];
-  v7 = [v9 resources];
-  v8 = [(EDStyle *)EDNamedStyle styleWithResources:v7];
+  [styles addObject:v6];
+  resources3 = [stateCopy resources];
+  v8 = [(EDStyle *)EDNamedStyle styleWithResources:resources3];
 
   [v8 setContentFormatId:0];
   [v8 setFontIndex:0];
   [v8 setFillIndex:0];
   [v8 setBordersIndex:0];
   [v8 setName:@"Normal"];
-  [v4 addObject:v8];
+  [styles addObject:v8];
 }
 
-+ (void)readCellFormatsFrom:(_xmlNode *)a3 isStyle:(BOOL)a4 state:(id)a5
++ (void)readCellFormatsFrom:(_xmlNode *)from isStyle:(BOOL)style state:(id)state
 {
-  v5 = a4;
-  v7 = a5;
-  if (a3)
+  styleCopy = style;
+  stateCopy = state;
+  if (from)
   {
-    v14 = v7;
-    v8 = [v7 resources];
-    v9 = [v8 styles];
+    v14 = stateCopy;
+    resources = [stateCopy resources];
+    styles = [resources styles];
 
-    [v9 setDefaultWorkbookStyleIndex:0];
-    v10 = [v14 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v10, "xf");
+    [styles setDefaultWorkbookStyleIndex:0];
+    eXSpreadsheetMLNamespace = [v14 EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "xf");
 
     while (Child)
     {
-      v12 = [EXCellFormat edCellFormatFromXmlCellFormatElement:Child isStyle:v5 state:v14];
-      [v9 addObject:v12];
+      v12 = [EXCellFormat edCellFormatFromXmlCellFormatElement:Child isStyle:styleCopy state:v14];
+      [styles addObject:v12];
 
-      v13 = [v14 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v13, "xf");
+      eXSpreadsheetMLNamespace2 = [v14 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "xf");
     }
 
-    v7 = v14;
+    stateCopy = v14;
   }
 }
 

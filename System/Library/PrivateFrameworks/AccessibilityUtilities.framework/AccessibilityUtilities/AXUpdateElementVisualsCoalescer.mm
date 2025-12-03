@@ -1,6 +1,6 @@
 @interface AXUpdateElementVisualsCoalescer
 - (AXUpdateElementVisualsCoalescer)init;
-- (void)_timerDidFire:(id)a3;
+- (void)_timerDidFire:(id)fire;
 - (void)dealloc;
 - (void)notifyUpdateElementVisualsEventDidOccur;
 @end
@@ -23,8 +23,8 @@
 
 - (void)dealloc
 {
-  v3 = [(AXUpdateElementVisualsCoalescer *)self timer];
-  [v3 invalidate];
+  timer = [(AXUpdateElementVisualsCoalescer *)self timer];
+  [timer invalidate];
 
   v4.receiver = self;
   v4.super_class = AXUpdateElementVisualsCoalescer;
@@ -33,32 +33,32 @@
 
 - (void)notifyUpdateElementVisualsEventDidOccur
 {
-  v3 = [(AXUpdateElementVisualsCoalescer *)self timer];
+  timer = [(AXUpdateElementVisualsCoalescer *)self timer];
 
-  if (v3)
+  if (timer)
   {
-    v4 = [(AXUpdateElementVisualsCoalescer *)self timer];
-    [v4 invalidate];
+    timer2 = [(AXUpdateElementVisualsCoalescer *)self timer];
+    [timer2 invalidate];
 
     [(AXUpdateElementVisualsCoalescer *)self setTimer:0];
   }
 
   else
   {
-    v5 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidBeginHandler];
+    updateVisualsSequenceDidBeginHandler = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidBeginHandler];
 
-    if (v5)
+    if (updateVisualsSequenceDidBeginHandler)
     {
-      v6 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidBeginHandler];
-      v6[2]();
+      updateVisualsSequenceDidBeginHandler2 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidBeginHandler];
+      updateVisualsSequenceDidBeginHandler2[2]();
     }
   }
 
   v7 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__timerDidFire_ selector:0 userInfo:0 repeats:self->_threshold];
   [(AXUpdateElementVisualsCoalescer *)self setTimer:v7];
 
-  v8 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceInProgressHandler];
-  if (v8)
+  updateVisualsSequenceInProgressHandler = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceInProgressHandler];
+  if (updateVisualsSequenceInProgressHandler)
   {
     progressInterval = self->_progressInterval;
 
@@ -74,8 +74,8 @@
           return;
         }
 
-        v13 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceInProgressHandler];
-        v13[2]();
+        updateVisualsSequenceInProgressHandler2 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceInProgressHandler];
+        updateVisualsSequenceInProgressHandler2[2]();
       }
 
       self->_lastProgressTime = v11;
@@ -83,18 +83,18 @@
   }
 }
 
-- (void)_timerDidFire:(id)a3
+- (void)_timerDidFire:(id)fire
 {
-  v4 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidFinishHandler];
+  updateVisualsSequenceDidFinishHandler = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidFinishHandler];
 
-  if (v4)
+  if (updateVisualsSequenceDidFinishHandler)
   {
-    v5 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidFinishHandler];
-    v5[2]();
+    updateVisualsSequenceDidFinishHandler2 = [(AXUpdateElementVisualsCoalescer *)self updateVisualsSequenceDidFinishHandler];
+    updateVisualsSequenceDidFinishHandler2[2]();
   }
 
-  v6 = [(AXUpdateElementVisualsCoalescer *)self timer];
-  [v6 invalidate];
+  timer = [(AXUpdateElementVisualsCoalescer *)self timer];
+  [timer invalidate];
 
   [(AXUpdateElementVisualsCoalescer *)self setTimer:0];
 }

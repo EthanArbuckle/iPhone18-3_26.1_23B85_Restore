@@ -1,37 +1,37 @@
 @interface _SFPBRFShowMoreOnTap
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFShowMoreOnTap)initWithDictionary:(id)a3;
-- (_SFPBRFShowMoreOnTap)initWithFacade:(id)a3;
-- (_SFPBRFShowMoreOnTap)initWithJSON:(id)a3;
+- (_SFPBRFShowMoreOnTap)initWithDictionary:(id)dictionary;
+- (_SFPBRFShowMoreOnTap)initWithFacade:(id)facade;
+- (_SFPBRFShowMoreOnTap)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setAffordanceLabel:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAffordanceLabel:(id)label;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFShowMoreOnTap
 
-- (_SFPBRFShowMoreOnTap)initWithFacade:(id)a3
+- (_SFPBRFShowMoreOnTap)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFShowMoreOnTap *)self init];
   if (v5)
   {
-    v6 = [v4 affordanceLabel];
+    affordanceLabel = [facadeCopy affordanceLabel];
 
-    if (v6)
+    if (affordanceLabel)
     {
-      v7 = [v4 affordanceLabel];
-      [(_SFPBRFShowMoreOnTap *)v5 setAffordanceLabel:v7];
+      affordanceLabel2 = [facadeCopy affordanceLabel];
+      [(_SFPBRFShowMoreOnTap *)v5 setAffordanceLabel:affordanceLabel2];
     }
 
-    v8 = [v4 shows_without_truncation];
+    shows_without_truncation = [facadeCopy shows_without_truncation];
 
-    if (v8)
+    if (shows_without_truncation)
     {
       v9 = [_SFPBRFOptionalBool alloc];
-      v10 = [v4 shows_without_truncation];
-      v11 = [(_SFPBRFOptionalBool *)v9 initWithFacade:v10];
+      shows_without_truncation2 = [facadeCopy shows_without_truncation];
+      v11 = [(_SFPBRFOptionalBool *)v9 initWithFacade:shows_without_truncation2];
       [(_SFPBRFShowMoreOnTap *)v5 setShows_without_truncation:v11];
     }
 
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBRFShowMoreOnTap)initWithDictionary:(id)a3
+- (_SFPBRFShowMoreOnTap)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRFShowMoreOnTap;
   v5 = [(_SFPBRFShowMoreOnTap *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"affordanceLabel"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"affordanceLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(_SFPBRFShowMoreOnTap *)v5 setAffordanceLabel:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"showsWithoutTruncation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"showsWithoutTruncation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (_SFPBRFShowMoreOnTap)initWithJSON:(id)a3
+- (_SFPBRFShowMoreOnTap)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFShowMoreOnTap *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFShowMoreOnTap *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFShowMoreOnTap *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -107,55 +107,55 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_affordanceLabel)
   {
-    v4 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"affordanceLabel"];
+    affordanceLabel = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
+    v5 = [affordanceLabel copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"affordanceLabel"];
   }
 
   if (self->_shows_without_truncation)
   {
-    v6 = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    shows_without_truncation = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
+    dictionaryRepresentation = [shows_without_truncation dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"showsWithoutTruncation"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"showsWithoutTruncation"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"showsWithoutTruncation"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"showsWithoutTruncation"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
-  v6 = [v4 affordanceLabel];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceLabel = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
+  affordanceLabel2 = [equalCopy affordanceLabel];
+  if ((affordanceLabel != 0) == (affordanceLabel2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
-  if (v7)
+  affordanceLabel3 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
+  if (affordanceLabel3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
-    v10 = [v4 affordanceLabel];
-    v11 = [v9 isEqual:v10];
+    v8 = affordanceLabel3;
+    affordanceLabel4 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
+    affordanceLabel5 = [equalCopy affordanceLabel];
+    v11 = [affordanceLabel4 isEqual:affordanceLabel5];
 
     if (!v11)
     {
@@ -167,12 +167,12 @@
   {
   }
 
-  v5 = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
-  v6 = [v4 shows_without_truncation];
-  if ((v5 != 0) != (v6 == 0))
+  affordanceLabel = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
+  affordanceLabel2 = [equalCopy shows_without_truncation];
+  if ((affordanceLabel != 0) != (affordanceLabel2 == 0))
   {
-    v12 = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
-    if (!v12)
+    shows_without_truncation = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
+    if (!shows_without_truncation)
     {
 
 LABEL_15:
@@ -180,10 +180,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
-    v15 = [v4 shows_without_truncation];
-    v16 = [v14 isEqual:v15];
+    v13 = shows_without_truncation;
+    shows_without_truncation2 = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
+    shows_without_truncation3 = [equalCopy shows_without_truncation];
+    v16 = [shows_without_truncation2 isEqual:shows_without_truncation3];
 
     if (v16)
     {
@@ -203,25 +203,25 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
-  if (v4)
+  toCopy = to;
+  affordanceLabel = [(_SFPBRFShowMoreOnTap *)self affordanceLabel];
+  if (affordanceLabel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
-  if (v5)
+  shows_without_truncation = [(_SFPBRFShowMoreOnTap *)self shows_without_truncation];
+  if (shows_without_truncation)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setAffordanceLabel:(id)a3
+- (void)setAffordanceLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   affordanceLabel = self->_affordanceLabel;
   self->_affordanceLabel = v4;
 

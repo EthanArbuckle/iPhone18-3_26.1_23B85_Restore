@@ -1,16 +1,16 @@
 @interface IDSManager
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation IDSManager
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  if (a5)
+  if (message)
   {
     sub_249E7A9D8();
-    if (!a6)
+    if (!d)
     {
       goto LABEL_5;
     }
@@ -18,31 +18,31 @@
     goto LABEL_3;
   }
 
-  if (a6)
+  if (d)
   {
 LABEL_3:
     sub_249E7AAA8();
   }
 
 LABEL_5:
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = self;
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
   sub_249E59B90();
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  if (a5)
+  if (identifier)
   {
     sub_249E7AAA8();
   }
 
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = self;
+  serviceCopy = service;
+  accountCopy = account;
+  errorCopy = error;
+  selfCopy = self;
   sub_249E5C678();
 }
 

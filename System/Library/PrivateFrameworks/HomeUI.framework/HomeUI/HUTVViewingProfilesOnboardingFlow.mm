@@ -1,24 +1,24 @@
 @interface HUTVViewingProfilesOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUTVViewingProfilesOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUTVViewingProfilesOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HUTVViewingProfilesOnboardingFlow
 
-- (HUTVViewingProfilesOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUTVViewingProfilesOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v17.receiver = self;
   v17.super_class = HUTVViewingProfilesOnboardingFlow;
   v8 = [(HUTVViewingProfilesOnboardingFlow *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     objc_initWeak(&location, v9);
-    v10 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v10 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __63__HUTVViewingProfilesOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -71,48 +71,48 @@ void __63__HUTVViewingProfilesOnboardingFlow_initWithUsageOptions_home___block_i
   }
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUTVViewingProfilesOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUTVViewingProfilesOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
     v26 = v8;
     v27 = 2112;
-    v28 = v5;
+    v28 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] != 1 && objc_msgSend(v6, "integerValue") != 2 && objc_msgSend(v6, "integerValue") != 3 && objc_msgSend(v6, "integerValue"))
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HUTVViewingProfilesOnboardingFlow.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_Customize) || (userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_Continue) || (userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_DontSetup) || (userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_SetupAll)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUTVViewingProfilesOnboardingFlow.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_Customize) || (userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_Continue) || (userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_DontSetup) || (userInputValue.integerValue == HUTVViewingProfilesOnboardingValue_SetupAll)"}];
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"HUMultiUserKey_SetIsEnabled"];
+  v9 = [inputCopy objectForKeyedSubscript:@"HUMultiUserKey_SetIsEnabled"];
   if ([v9 BOOLValue])
   {
-    v10 = [(HUTVViewingProfilesOnboardingFlow *)self home];
+    home = [(HUTVViewingProfilesOnboardingFlow *)self home];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __54__HUTVViewingProfilesOnboardingFlow_processUserInput___block_invoke;
     v22[3] = &unk_277DB8E70;
     v22[4] = self;
     v22[5] = a2;
-    [v10 enableMultiUserWithCompletionHandler:v22];
+    [home enableMultiUserWithCompletionHandler:v22];
   }
 
   if ([v6 integerValue] == 1)
   {
     v11 = [HUTVViewingProfilesCustomizeViewController alloc];
-    v12 = [(HUTVViewingProfilesOnboardingFlow *)self home];
-    v13 = [(HUTVViewingProfilesCustomizeViewController *)v11 initWithHome:v12];
+    home2 = [(HUTVViewingProfilesOnboardingFlow *)self home];
+    v13 = [(HUTVViewingProfilesCustomizeViewController *)v11 initWithHome:home2];
   }
 
   else
@@ -124,12 +124,12 @@ void __63__HUTVViewingProfilesOnboardingFlow_initWithUsageOptions_home___block_i
     }
 
     v14 = objc_alloc(MEMORY[0x277D14C98]);
-    v15 = [(HUTVViewingProfilesOnboardingFlow *)self home];
-    v16 = [(HUTVViewingProfilesOnboardingFlow *)self home];
-    v17 = [v16 currentUser];
-    v12 = [v14 initWithHome:v15 user:v17 nameStyle:0];
+    home3 = [(HUTVViewingProfilesOnboardingFlow *)self home];
+    home4 = [(HUTVViewingProfilesOnboardingFlow *)self home];
+    currentUser = [home4 currentUser];
+    home2 = [v14 initWithHome:home3 user:currentUser nameStyle:0];
 
-    if ([v12 hasDismissedTVViewingProfilesOnboarding])
+    if ([home2 hasDismissedTVViewingProfilesOnboarding])
     {
       [MEMORY[0x277CCABB0] numberWithBool:1];
     }
@@ -139,11 +139,11 @@ void __63__HUTVViewingProfilesOnboardingFlow_initWithUsageOptions_home___block_i
       [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "integerValue") != 3}];
     }
     v18 = ;
-    [v5 setObject:v18 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_DismissReminderBanner"];
+    [inputCopy setObject:v18 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_DismissReminderBanner"];
 
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_FinishedOnboarding"];
-    v19 = [(HUTVViewingProfilesOnboardingFlow *)self onboardingFuture];
-    [v19 finishWithNoResult];
+    [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_TVViewingProfiles_FinishedOnboarding"];
+    onboardingFuture = [(HUTVViewingProfilesOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
 
     v13 = 0;
   }
@@ -172,24 +172,24 @@ void __54__HUTVViewingProfilesOnboardingFlow_processUserInput___block_invoke(uin
   }
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 hf_tvViewingProfilesAccessories];
-  v10 = [v9 count];
+  homeCopy = home;
+  optionsCopy = options;
+  hf_tvViewingProfilesAccessories = [homeCopy hf_tvViewingProfilesAccessories];
+  v10 = [hf_tvViewingProfilesAccessories count];
 
   if (v10)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v11 = MEMORY[0x277D2C900];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__HUTVViewingProfilesOnboardingFlow_needsOnboardingForHome_options___block_invoke;
     v14[3] = &unk_277DBCAB8;
     objc_copyWeak(v17, &location);
-    v15 = v7;
-    v16 = v8;
+    v15 = homeCopy;
+    v16 = optionsCopy;
     v17[1] = a2;
     v12 = [v11 futureWithBlock:v14];
 

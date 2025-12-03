@@ -10,18 +10,18 @@
 {
   v3 = MEMORY[0x277D0AD08];
   v4 = a3;
-  v5 = [v3 serviceIdentifier];
-  v6 = [MEMORY[0x277CF3288] endpointForMachName:@"com.apple.CarPlayApp.non-launching-service" service:v5 instance:v4];
+  serviceIdentifier = [v3 serviceIdentifier];
+  v6 = [MEMORY[0x277CF3288] endpointForMachName:@"com.apple.CarPlayApp.non-launching-service" service:serviceIdentifier instance:v4];
 
   return v6;
 }
 
 + (id)configurationForCarDisplayMonitor
 {
-  v0 = [MEMORY[0x277D0AD20] crs_endpointForCarDisplayMonitor];
-  if (v0)
+  crs_endpointForCarDisplayMonitor = [MEMORY[0x277D0AD20] crs_endpointForCarDisplayMonitor];
+  if (crs_endpointForCarDisplayMonitor)
   {
-    v1 = [MEMORY[0x277D0AD20] configurationWithEndpoint:v0];
+    v1 = [MEMORY[0x277D0AD20] configurationWithEndpoint:crs_endpointForCarDisplayMonitor];
   }
 
   else
@@ -34,10 +34,10 @@
 
 + (id)configurationForCarInstrumentsDisplayMonitor
 {
-  v0 = [MEMORY[0x277D0AD20] crs_endpointForCarInstrumentsDisplayMonitor];
-  if (v0)
+  crs_endpointForCarInstrumentsDisplayMonitor = [MEMORY[0x277D0AD20] crs_endpointForCarInstrumentsDisplayMonitor];
+  if (crs_endpointForCarInstrumentsDisplayMonitor)
   {
-    v1 = [MEMORY[0x277D0AD20] configurationWithEndpoint:v0];
+    v1 = [MEMORY[0x277D0AD20] configurationWithEndpoint:crs_endpointForCarInstrumentsDisplayMonitor];
   }
 
   else

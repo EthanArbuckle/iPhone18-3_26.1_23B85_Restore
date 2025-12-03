@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BKSHIDUISensorCharacteristics)sensorCharacteristics;
 - (BKSHIDUISensorService)init;
-- (id)requestUISensorMode:(id)a3;
+- (id)requestUISensorMode:(id)mode;
 - (void)_lock_pushCurrentModeToServer;
 - (void)proximityDidUnoccludeAfterWake;
 @end
@@ -23,9 +23,9 @@ void __29__BKSHIDUISensorService_init__block_invoke_2(uint64_t a1)
   v23 = *MEMORY[0x1E69E9840];
   if (([(BSCompoundAssertion *)self->_suppressionAssertion isActive]& 1) == 0)
   {
-    v3 = [(BSCompoundAssertion *)self->_modeAssertion orderedContext];
-    v4 = [v3 array];
-    v5 = [BKSHIDUISensorMode _prevailingMode:v4];
+    orderedContext = [(BSCompoundAssertion *)self->_modeAssertion orderedContext];
+    array = [orderedContext array];
+    v5 = [BKSHIDUISensorMode _prevailingMode:array];
 
     lock_prevailingMode = self->_lock_prevailingMode;
     p_lock_prevailingMode = &self->_lock_prevailingMode;
@@ -36,7 +36,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if ([v3 count] < 2)
+    if ([orderedContext count] < 2)
     {
       v8 = BKLogUISensor();
       v10 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -75,7 +75,7 @@ LABEL_19:
       v8 = BKLogUISensor();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [MEMORY[0x1E698E688] descriptionForRootObject:v3];
+        v9 = [MEMORY[0x1E698E688] descriptionForRootObject:orderedContext];
         *buf = 138543618;
         v20 = v5;
         v21 = 2114;
@@ -211,12 +211,12 @@ void __46__BKSHIDUISensorService_sensorCharacteristics__block_invoke()
   _BKSHIDProximityDidUnoccludeAfterScreenWake(v2);
 }
 
-- (id)requestUISensorMode:(id)a3
+- (id)requestUISensorMode:(id)mode
 {
   modeAssertion = self->_modeAssertion;
-  v4 = a3;
-  v5 = [v4 reason];
-  v6 = [(BSCompoundAssertion *)modeAssertion acquireForReason:v5 withContext:v4];
+  modeCopy = mode;
+  reason = [modeCopy reason];
+  v6 = [(BSCompoundAssertion *)modeAssertion acquireForReason:reason withContext:modeCopy];
 
   return v6;
 }

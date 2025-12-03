@@ -1,6 +1,6 @@
 @interface PHASESubband
 - (PHASESubband)init;
-- (PHASESubband)initWithFrequency:(float)a3 value:(float)a4;
+- (PHASESubband)initWithFrequency:(float)frequency value:(float)value;
 @end
 
 @implementation PHASESubband
@@ -12,11 +12,11 @@
   return 0;
 }
 
-- (PHASESubband)initWithFrequency:(float)a3 value:(float)a4
+- (PHASESubband)initWithFrequency:(float)frequency value:(float)value
 {
-  v5 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (frequency <= 0.0)
   {
     v9 = **(Phase::Logger::GetInstance(self) + 448);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@
       v14 = 1024;
       v15 = 102;
       v16 = 2048;
-      v17 = a3;
+      frequencyCopy = frequency;
       _os_log_impl(&dword_23A302000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASESubband:initWithFrequency:value]: Invalid frequency: %2.2f. Values must be positive.", buf, 0x1Cu);
     }
 
@@ -40,12 +40,12 @@
     v7 = [(PHASESubband *)&v11 init];
     if (v7)
     {
-      v7->_frequency = a3;
-      v7->_value = a4;
+      v7->_frequency = frequency;
+      v7->_value = value;
     }
 
-    v5 = v7;
-    v8 = v5;
+    selfCopy = v7;
+    v8 = selfCopy;
   }
 
   return v8;

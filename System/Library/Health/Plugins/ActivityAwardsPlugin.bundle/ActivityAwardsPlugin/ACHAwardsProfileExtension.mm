@@ -1,18 +1,18 @@
 @interface ACHAwardsProfileExtension
-- (ACHAwardsProfileExtension)initWithProfile:(id)a3;
-- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)a3 provenance:(int64_t)a4;
+- (ACHAwardsProfileExtension)initWithProfile:(id)profile;
+- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)instances provenance:(int64_t)provenance;
 - (HDProfile)profile;
-- (void)daemonReady:(id)a3;
-- (void)earnedInstanceEntityDidApplyJournalEntriesInsertedEarnedInstances:(id)a3 removedEarnedInstances:(id)a4;
-- (void)keyValuePairsDidUpdate:(id)a3;
-- (void)templateEntityDidReceiveSyncedTemplates:(id)a3 provenance:(int64_t)a4;
+- (void)daemonReady:(id)ready;
+- (void)earnedInstanceEntityDidApplyJournalEntriesInsertedEarnedInstances:(id)instances removedEarnedInstances:(id)earnedInstances;
+- (void)keyValuePairsDidUpdate:(id)update;
+- (void)templateEntityDidReceiveSyncedTemplates:(id)templates provenance:(int64_t)provenance;
 @end
 
 @implementation ACHAwardsProfileExtension
 
-- (ACHAwardsProfileExtension)initWithProfile:(id)a3
+- (ACHAwardsProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = ACHAwardsProfileExtension;
   v5 = [(ACHAwardsProfileExtension *)&v18 init];
@@ -25,14 +25,14 @@
       _os_log_impl(&dword_29E9F4000, v6, OS_LOG_TYPE_DEFAULT, "Starting Activity Awards Plugin", v17, 2u);
     }
 
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [objc_alloc(MEMORY[0x29EDBE0A8]) initWithProfile:v4];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    v7 = [objc_alloc(MEMORY[0x29EDBE0A8]) initWithProfile:profileCopy];
     earnedInstanceEntityWrapper = v5->_earnedInstanceEntityWrapper;
     v5->_earnedInstanceEntityWrapper = v7;
 
     [(ACHEarnedInstanceEntityWrapper *)v5->_earnedInstanceEntityWrapper setSyncedEarnedInstancesObserver:v5];
     [MEMORY[0x29EDBE0A0] setJournalEntryAppliedObserver:v5];
-    v9 = [objc_alloc(MEMORY[0x29EDBE0C0]) initWithProfile:v4];
+    v9 = [objc_alloc(MEMORY[0x29EDBE0C0]) initWithProfile:profileCopy];
     templateEntityWrapper = v5->_templateEntityWrapper;
     v5->_templateEntityWrapper = v9;
 
@@ -41,21 +41,21 @@
     databaseQueue = v5->_databaseQueue;
     v5->_databaseQueue = v11;
 
-    v13 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v13 addObserver:v5 selector:sel_keyValuePairsDidUpdate_ name:*MEMORY[0x29EDBE040] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_keyValuePairsDidUpdate_ name:*MEMORY[0x29EDBE040] object:0];
 
     WeakRetained = objc_loadWeakRetained(&v5->_profile);
-    v15 = [WeakRetained daemon];
-    [v15 registerDaemonReadyObserver:v5 queue:v5->_databaseQueue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v5 queue:v5->_databaseQueue];
   }
 
   return v5;
 }
 
-- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)a3 provenance:(int64_t)a4
+- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)instances provenance:(int64_t)provenance
 {
   v32 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  instancesCopy = instances;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -66,18 +66,18 @@
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v7 = [(ACHAwardsProfileExtension *)self databaseQueue];
+  databaseQueue = [(ACHAwardsProfileExtension *)self databaseQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = sub_29E9F58BC;
   block[3] = &unk_29F376C60;
   v17 = &v20;
-  v8 = v6;
+  v8 = instancesCopy;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v18 = &v24;
-  v19 = a4;
-  dispatch_sync(v7, block);
+  provenanceCopy = provenance;
+  dispatch_sync(databaseQueue, block);
 
   if (v25[5] || (v21[3] & 1) == 0)
   {
@@ -101,17 +101,17 @@
   return v11 & 1;
 }
 
-- (void)earnedInstanceEntityDidApplyJournalEntriesInsertedEarnedInstances:(id)a3 removedEarnedInstances:(id)a4
+- (void)earnedInstanceEntityDidApplyJournalEntriesInsertedEarnedInstances:(id)instances removedEarnedInstances:(id)earnedInstances
 {
-  v4 = [*MEMORY[0x29EDBE010] UTF8String];
+  uTF8String = [*MEMORY[0x29EDBE010] UTF8String];
 
-  notify_post(v4);
+  notify_post(uTF8String);
 }
 
-- (void)templateEntityDidReceiveSyncedTemplates:(id)a3 provenance:(int64_t)a4
+- (void)templateEntityDidReceiveSyncedTemplates:(id)templates provenance:(int64_t)provenance
 {
   v30 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  templatesCopy = templates;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -122,18 +122,18 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v7 = [(ACHAwardsProfileExtension *)self databaseQueue];
+  databaseQueue = [(ACHAwardsProfileExtension *)self databaseQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = sub_29E9F5BE4;
   block[3] = &unk_29F376C60;
   v15 = &v18;
-  v8 = v6;
+  v8 = templatesCopy;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v16 = &v22;
-  v17 = a4;
-  dispatch_sync(v7, block);
+  provenanceCopy = provenance;
+  dispatch_sync(databaseQueue, block);
 
   if (v23[5] || (v19[3] & 1) == 0)
   {
@@ -155,31 +155,31 @@
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)keyValuePairsDidUpdate:(id)a3
+- (void)keyValuePairsDidUpdate:(id)update
 {
-  v3 = [*MEMORY[0x29EDBE018] UTF8String];
+  uTF8String = [*MEMORY[0x29EDBE018] UTF8String];
 
-  notify_post(v3);
+  notify_post(uTF8String);
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 addProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self];
 
-  v5 = [WeakRetained daemon];
-  v6 = [v5 behavior];
-  if ([v6 isAppleWatch])
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  if ([behavior isAppleWatch])
   {
   }
 
   else
   {
-    v7 = [MEMORY[0x29EDBAEC0] sharedBehavior];
-    v8 = [v7 isStandalonePhoneFitnessMode];
+    mEMORY[0x29EDBAEC0] = [MEMORY[0x29EDBAEC0] sharedBehavior];
+    isStandalonePhoneFitnessMode = [mEMORY[0x29EDBAEC0] isStandalonePhoneFitnessMode];
 
-    if (!v8)
+    if (!isStandalonePhoneFitnessMode)
     {
       goto LABEL_5;
     }

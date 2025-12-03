@@ -1,11 +1,11 @@
 @interface NWPBParameters
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NWPBParameters
@@ -234,16 +234,16 @@ LABEL_32:
   return v32 ^ [(NSData *)self->_metadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_130;
   }
 
   account = self->_account;
-  if (account | *(v4 + 7))
+  if (account | *(equalCopy + 7))
   {
     if (![(NSString *)account isEqual:?])
     {
@@ -252,7 +252,7 @@ LABEL_32:
   }
 
   effectiveBundleID = self->_effectiveBundleID;
-  if (effectiveBundleID | *(v4 + 9))
+  if (effectiveBundleID | *(equalCopy + 9))
   {
     if (![(NSString *)effectiveBundleID isEqual:?])
     {
@@ -261,7 +261,7 @@ LABEL_32:
   }
 
   effectiveProcessUUID = self->_effectiveProcessUUID;
-  if (effectiveProcessUUID | *(v4 + 10))
+  if (effectiveProcessUUID | *(equalCopy + 10))
   {
     if (![(NSString *)effectiveProcessUUID isEqual:?])
     {
@@ -270,7 +270,7 @@ LABEL_32:
   }
 
   realProcessUUID = self->_realProcessUUID;
-  if (realProcessUUID | *(v4 + 18))
+  if (realProcessUUID | *(equalCopy + 18))
   {
     if (![(NSString *)realProcessUUID isEqual:?])
     {
@@ -279,7 +279,7 @@ LABEL_32:
   }
 
   url = self->_url;
-  if (url | *(v4 + 22))
+  if (url | *(equalCopy + 22))
   {
     if (![(NSString *)url isEqual:?])
     {
@@ -288,10 +288,10 @@ LABEL_32:
   }
 
   has = self->_has;
-  v11 = *(v4 + 98);
+  v11 = *(equalCopy + 98);
   if ((has & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_ipProtocol != *(v4 + 22))
+    if ((v11 & 4) == 0 || self->_ipProtocol != *(equalCopy + 22))
     {
       goto LABEL_130;
     }
@@ -304,7 +304,7 @@ LABEL_32:
 
   if (has)
   {
-    if ((v11 & 1) == 0 || self->_addressFamily != *(v4 + 16))
+    if ((v11 & 1) == 0 || self->_addressFamily != *(equalCopy + 16))
     {
       goto LABEL_130;
     }
@@ -317,7 +317,7 @@ LABEL_32:
 
   if ((has & 0x20) != 0)
   {
-    if ((v11 & 0x20) == 0 || self->_trafficClass != *(v4 + 43))
+    if ((v11 & 0x20) == 0 || self->_trafficClass != *(equalCopy + 43))
     {
       goto LABEL_130;
     }
@@ -330,7 +330,7 @@ LABEL_32:
 
   if ((has & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_dataMode != *(v4 + 17))
+    if ((v11 & 2) == 0 || self->_dataMode != *(equalCopy + 17))
     {
       goto LABEL_130;
     }
@@ -343,7 +343,7 @@ LABEL_32:
 
   if ((has & 0x10) != 0)
   {
-    if ((v11 & 0x10) == 0 || self->_requiredInterfaceType != *(v4 + 42))
+    if ((v11 & 0x10) == 0 || self->_requiredInterfaceType != *(equalCopy + 42))
     {
       goto LABEL_130;
     }
@@ -356,26 +356,26 @@ LABEL_32:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 98) & 0x400) == 0)
+    if ((*(equalCopy + 98) & 0x400) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_prohibitExpensive)
     {
-      if ((*(v4 + 188) & 1) == 0)
+      if ((*(equalCopy + 188) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 188))
+    else if (*(equalCopy + 188))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x400) != 0)
+  else if ((*(equalCopy + 98) & 0x400) != 0)
   {
     goto LABEL_130;
   }
@@ -389,13 +389,13 @@ LABEL_32:
 
     if (self->_fastOpen)
     {
-      if ((*(v4 + 184) & 1) == 0)
+      if ((*(equalCopy + 184) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 184))
+    else if (*(equalCopy + 184))
     {
       goto LABEL_130;
     }
@@ -408,163 +408,163 @@ LABEL_32:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 98) & 0x800) == 0)
+    if ((*(equalCopy + 98) & 0x800) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_reduceBuffering)
     {
-      if ((*(v4 + 189) & 1) == 0)
+      if ((*(equalCopy + 189) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 189))
+    else if (*(equalCopy + 189))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x800) != 0)
+  else if ((*(equalCopy + 98) & 0x800) != 0)
   {
     goto LABEL_130;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 98) & 0x100) == 0)
+    if ((*(equalCopy + 98) & 0x100) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_longOutstandingQueries)
     {
-      if ((*(v4 + 186) & 1) == 0)
+      if ((*(equalCopy + 186) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 186))
+    else if (*(equalCopy + 186))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x100) != 0)
+  else if ((*(equalCopy + 98) & 0x100) != 0)
   {
     goto LABEL_130;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 98) & 0x2000) == 0)
+    if ((*(equalCopy + 98) & 0x2000) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_useAWDL)
     {
-      if ((*(v4 + 191) & 1) == 0)
+      if ((*(equalCopy + 191) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 191))
+    else if (*(equalCopy + 191))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x2000) != 0)
+  else if ((*(equalCopy + 98) & 0x2000) != 0)
   {
     goto LABEL_130;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 98) & 0x4000) == 0)
+    if ((*(equalCopy + 98) & 0x4000) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_useP2P)
     {
-      if ((*(v4 + 192) & 1) == 0)
+      if ((*(equalCopy + 192) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 192))
+    else if (*(equalCopy + 192))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x4000) != 0)
+  else if ((*(equalCopy + 98) & 0x4000) != 0)
   {
     goto LABEL_130;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 98) & 0x1000) == 0)
+    if ((*(equalCopy + 98) & 0x1000) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_reuseLocalAddress)
     {
-      if ((*(v4 + 190) & 1) == 0)
+      if ((*(equalCopy + 190) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 190))
+    else if (*(equalCopy + 190))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x1000) != 0)
+  else if ((*(equalCopy + 98) & 0x1000) != 0)
   {
     goto LABEL_130;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 98) & 0x200) == 0)
+    if ((*(equalCopy + 98) & 0x200) == 0)
     {
       goto LABEL_130;
     }
 
     if (self->_noFallback)
     {
-      if ((*(v4 + 187) & 1) == 0)
+      if ((*(equalCopy + 187) & 1) == 0)
       {
         goto LABEL_130;
       }
     }
 
-    else if (*(v4 + 187))
+    else if (*(equalCopy + 187))
     {
       goto LABEL_130;
     }
   }
 
-  else if ((*(v4 + 98) & 0x200) != 0)
+  else if ((*(equalCopy + 98) & 0x200) != 0)
   {
     goto LABEL_130;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_multipathService != *(v4 + 28))
+    if ((v11 & 8) == 0 || self->_multipathService != *(equalCopy + 28))
     {
       goto LABEL_130;
     }
@@ -594,7 +594,7 @@ LABEL_130:
 
   if (!self->_keepalive)
   {
-    if ((*(v4 + 185) & 1) == 0)
+    if ((*(equalCopy + 185) & 1) == 0)
     {
       goto LABEL_114;
     }
@@ -602,20 +602,20 @@ LABEL_130:
     goto LABEL_130;
   }
 
-  if ((*(v4 + 185) & 1) == 0)
+  if ((*(equalCopy + 185) & 1) == 0)
   {
     goto LABEL_130;
   }
 
 LABEL_114:
   localEndpoint = self->_localEndpoint;
-  if (localEndpoint | *(v4 + 12) && ![(NWPBEndpoint *)localEndpoint isEqual:?])
+  if (localEndpoint | *(equalCopy + 12) && ![(NWPBEndpoint *)localEndpoint isEqual:?])
   {
     goto LABEL_130;
   }
 
   requiredInterface = self->_requiredInterface;
-  if (requiredInterface | *(v4 + 20))
+  if (requiredInterface | *(equalCopy + 20))
   {
     if (![(NWPBInterface *)requiredInterface isEqual:?])
     {
@@ -634,7 +634,7 @@ LABEL_114:
   }
 
   prohibitedInterfaces = self->_prohibitedInterfaces;
-  if (prohibitedInterfaces | *(v4 + 17))
+  if (prohibitedInterfaces | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)prohibitedInterfaces isEqual:?])
     {
@@ -643,7 +643,7 @@ LABEL_114:
   }
 
   prohibitedAgents = self->_prohibitedAgents;
-  if (prohibitedAgents | *(v4 + 16))
+  if (prohibitedAgents | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)prohibitedAgents isEqual:?])
     {
@@ -652,7 +652,7 @@ LABEL_114:
   }
 
   requiredAgents = self->_requiredAgents;
-  if (requiredAgents | *(v4 + 19))
+  if (requiredAgents | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)requiredAgents isEqual:?])
     {
@@ -661,7 +661,7 @@ LABEL_114:
   }
 
   preferredAgents = self->_preferredAgents;
-  if (preferredAgents | *(v4 + 15))
+  if (preferredAgents | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)preferredAgents isEqual:?])
     {
@@ -670,7 +670,7 @@ LABEL_114:
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 13))
+  if (metadata | *(equalCopy + 13))
   {
     v19 = [(NSData *)metadata isEqual:?];
   }
@@ -685,27 +685,27 @@ LABEL_131:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v80 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_account copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_account copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_effectiveBundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_effectiveBundleID copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
-  v10 = [(NSString *)self->_effectiveProcessUUID copyWithZone:a3];
+  v10 = [(NSString *)self->_effectiveProcessUUID copyWithZone:zone];
   v11 = *(v5 + 80);
   *(v5 + 80) = v10;
 
-  v12 = [(NSString *)self->_realProcessUUID copyWithZone:a3];
+  v12 = [(NSString *)self->_realProcessUUID copyWithZone:zone];
   v13 = *(v5 + 144);
   *(v5 + 144) = v12;
 
-  v14 = [(NSString *)self->_url copyWithZone:a3];
+  v14 = [(NSString *)self->_url copyWithZone:zone];
   v15 = *(v5 + 176);
   *(v5 + 176) = v14;
 
@@ -922,11 +922,11 @@ LABEL_16:
   }
 
 LABEL_17:
-  v17 = [(NWPBEndpoint *)self->_localEndpoint copyWithZone:a3];
+  v17 = [(NWPBEndpoint *)self->_localEndpoint copyWithZone:zone];
   v18 = *(v5 + 96);
   *(v5 + 96) = v17;
 
-  v19 = [(NWPBInterface *)self->_requiredInterface copyWithZone:a3];
+  v19 = [(NWPBInterface *)self->_requiredInterface copyWithZone:zone];
   v20 = *(v5 + 160);
   *(v5 + 160) = v19;
 
@@ -951,7 +951,7 @@ LABEL_17:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v72 + 1) + 8 * i) copyWithZone:a3];
+        v26 = [*(*(&v72 + 1) + 8 * i) copyWithZone:zone];
         v27 = *(v5 + 136);
         if (!v27)
         {
@@ -990,7 +990,7 @@ LABEL_17:
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v68 + 1) + 8 * j) copyWithZone:a3];
+        v35 = [*(*(&v68 + 1) + 8 * j) copyWithZone:zone];
         v36 = *(v5 + 128);
         if (!v36)
         {
@@ -1029,7 +1029,7 @@ LABEL_17:
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v64 + 1) + 8 * k) copyWithZone:a3];
+        v44 = [*(*(&v64 + 1) + 8 * k) copyWithZone:zone];
         v45 = *(v5 + 152);
         if (!v45)
         {
@@ -1068,7 +1068,7 @@ LABEL_17:
           objc_enumerationMutation(v48);
         }
 
-        v53 = [*(*(&v60 + 1) + 8 * m) copyWithZone:{a3, v60}];
+        v53 = [*(*(&v60 + 1) + 8 * m) copyWithZone:{zone, v60}];
         v54 = *(v5 + 120);
         if (!v54)
         {
@@ -1088,17 +1088,17 @@ LABEL_17:
     while (v50);
   }
 
-  v57 = [(NSData *)self->_metadata copyWithZone:a3];
+  v57 = [(NSData *)self->_metadata copyWithZone:zone];
   v58 = *(v5 + 104);
   *(v5 + 104) = v57;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_account)
   {
     PBDataWriterWriteStringField();
@@ -1477,12 +1477,12 @@ LABEL_27:
 - (id)dictionaryRepresentation
 {
   v93 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   account = self->_account;
   if (account)
   {
-    [v3 setObject:account forKey:@"account"];
+    [dictionary setObject:account forKey:@"account"];
   }
 
   effectiveBundleID = self->_effectiveBundleID;
@@ -1759,15 +1759,15 @@ LABEL_27:
   localEndpoint = self->_localEndpoint;
   if (localEndpoint)
   {
-    v13 = [(NWPBEndpoint *)localEndpoint dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"localEndpoint"];
+    dictionaryRepresentation = [(NWPBEndpoint *)localEndpoint dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"localEndpoint"];
   }
 
   requiredInterface = self->_requiredInterface;
   if (requiredInterface)
   {
-    v15 = [(NWPBInterface *)requiredInterface dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"requiredInterface"];
+    dictionaryRepresentation2 = [(NWPBInterface *)requiredInterface dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"requiredInterface"];
   }
 
   p_prohibitedInterfaceTypes = &self->_prohibitedInterfaceTypes;
@@ -1854,8 +1854,8 @@ LABEL_27:
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v85 + 1) + 8 * i) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation3 = [*(*(&v85 + 1) + 8 * i) dictionaryRepresentation];
+          [v26 addObject:dictionaryRepresentation3];
         }
 
         v29 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v85 objects:v92 count:16];
@@ -1889,8 +1889,8 @@ LABEL_27:
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v81 + 1) + 8 * j) dictionaryRepresentation];
-          [v33 addObject:v39];
+          dictionaryRepresentation4 = [*(*(&v81 + 1) + 8 * j) dictionaryRepresentation];
+          [v33 addObject:dictionaryRepresentation4];
         }
 
         v36 = [(NSMutableArray *)v34 countByEnumeratingWithState:&v81 objects:v91 count:16];
@@ -1924,8 +1924,8 @@ LABEL_27:
             objc_enumerationMutation(v41);
           }
 
-          v46 = [*(*(&v77 + 1) + 8 * k) dictionaryRepresentation];
-          [v40 addObject:v46];
+          dictionaryRepresentation5 = [*(*(&v77 + 1) + 8 * k) dictionaryRepresentation];
+          [v40 addObject:dictionaryRepresentation5];
         }
 
         v43 = [(NSMutableArray *)v41 countByEnumeratingWithState:&v77 objects:v90 count:16];
@@ -1959,8 +1959,8 @@ LABEL_27:
             objc_enumerationMutation(v48);
           }
 
-          v53 = [*(*(&v73 + 1) + 8 * m) dictionaryRepresentation];
-          [v47 addObject:v53];
+          dictionaryRepresentation6 = [*(*(&v73 + 1) + 8 * m) dictionaryRepresentation];
+          [v47 addObject:dictionaryRepresentation6];
         }
 
         v50 = [(NSMutableArray *)v48 countByEnumeratingWithState:&v73 objects:v89 count:16];
@@ -1989,8 +1989,8 @@ LABEL_27:
   v8.receiver = self;
   v8.super_class = NWPBParameters;
   v4 = [(NWPBParameters *)&v8 description];
-  v5 = [(NWPBParameters *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NWPBParameters *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

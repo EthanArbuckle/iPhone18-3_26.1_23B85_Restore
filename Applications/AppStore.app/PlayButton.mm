@@ -1,6 +1,6 @@
 @interface PlayButton
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC8AppStore10PlayButton)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore10PlayButton)initWithFrame:(CGRect)frame;
 - (void)didTap;
 - (void)layoutSubviews;
 @end
@@ -31,7 +31,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005F5330();
 }
 
@@ -40,7 +40,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore10PlayButton_tapActionBlock);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10000827C(v2);
     v2(v4);
 
@@ -48,7 +48,7 @@
   }
 }
 
-- (_TtC8AppStore10PlayButton)initWithFrame:(CGRect)a3
+- (_TtC8AppStore10PlayButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

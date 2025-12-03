@@ -1,14 +1,14 @@
 @interface UILayoutGuide
-- (BOOL)nsli_defaultResolvedValue:(double *)a3 forSymbolicConstant:(id)a4 inConstraint:(id)a5 error:(id *)a6;
+- (BOOL)nsli_defaultResolvedValue:(double *)value forSymbolicConstant:(id)constant inConstraint:(id)constraint error:(id *)error;
 - (BOOL)nsli_isRTL;
-- (BOOL)nsli_lowerAttribute:(int)a3 intoExpression:(id)a4 withCoefficient:(double)a5 container:(id)a6;
-- (BOOL)nsli_lowerAttribute:(int)a3 intoExpression:(id)a4 withCoefficient:(double)a5 forConstraint:(id)a6;
-- (BOOL)nsli_removeConstraint:(id)a3;
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4;
-- (CGRect)frameInView:(id)a3;
+- (BOOL)nsli_lowerAttribute:(int)attribute intoExpression:(id)expression withCoefficient:(double)coefficient container:(id)container;
+- (BOOL)nsli_lowerAttribute:(int)attribute intoExpression:(id)expression withCoefficient:(double)coefficient forConstraint:(id)constraint;
+- (BOOL)nsli_removeConstraint:(id)constraint;
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window;
+- (CGRect)frameInView:(id)view;
 - (CGRect)layoutFrame;
-- (CGSize)nsli_convertSizeFromEngineSpace:(CGSize)a3;
-- (CGSize)nsli_convertSizeToEngineSpace:(CGSize)a3;
+- (CGSize)nsli_convertSizeFromEngineSpace:(CGSize)space;
+- (CGSize)nsli_convertSizeToEngineSpace:(CGSize)space;
 - (CGSize)nsli_engineToUserScalingCoefficients;
 - (NSArray)constraintsAffectingLayoutForAxis:(UILayoutConstraintAxis)axis;
 - (NSLayoutDimension)heightAnchor;
@@ -23,43 +23,43 @@
 - (NSLayoutYAxisAnchor)topAnchor;
 - (NSString)description;
 - (UILayoutGuide)init;
-- (UILayoutGuide)initWithCoder:(id)a3;
+- (UILayoutGuide)initWithCoder:(id)coder;
 - (UITraitCollection)traitCollection;
 - (UIView)owningView;
-- (id)_autolayoutTraceAtLevel:(int64_t)a3 recursively:(BOOL)a4;
-- (id)_createAnchorWithClass:(Class)a3 attribute:(int64_t)a4;
+- (id)_autolayoutTraceAtLevel:(int64_t)level recursively:(BOOL)recursively;
+- (id)_createAnchorWithClass:(Class)class attribute:(int64_t)attribute;
 - (id)_layoutRect;
 - (id)_uili_existingBaseFrameVariables;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)nsis_descriptionOfVariable:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)nsis_descriptionOfVariable:(id)variable;
 - (id)nsli_boundsHeightVariable;
 - (id)nsli_boundsWidthVariable;
-- (id)nsli_constraintWithAnchor:(id)a3 relatedBy:(int64_t)a4 toAnchor:(id)a5 withSystemSpacingMultipliedBy:(double)a6;
+- (id)nsli_constraintWithAnchor:(id)anchor relatedBy:(int64_t)by toAnchor:(id)toAnchor withSystemSpacingMultipliedBy:(double)multipliedBy;
 - (id)nsli_description;
 - (id)nsli_layoutEngine;
 - (id)nsli_minXVariable;
 - (id)nsli_minYVariable;
 - (id)nsli_superitem;
-- (int)nsis_orientationHintForVariable:(id)a3;
-- (void)_addConstraintToBeProcessedAfterDecoding:(id)a3;
+- (int)nsis_orientationHintForVariable:(id)variable;
+- (void)_addConstraintToBeProcessedAfterDecoding:(id)decoding;
 - (void)_invalidateLayoutFrame;
 - (void)_owningViewIsDeallocating;
 - (void)_referenceView;
-- (void)_setLockedToOwningView:(BOOL)a3;
-- (void)_setManualLayoutFrame:(CGRect)a3;
-- (void)_setOwningView:(id)a3;
-- (void)_setSystemConstraints:(id)a3;
+- (void)_setLockedToOwningView:(BOOL)view;
+- (void)_setManualLayoutFrame:(CGRect)frame;
+- (void)_setOwningView:(id)view;
+- (void)_setSystemConstraints:(id)constraints;
 - (void)_snipReferencingConstraints;
-- (void)_ui_addSubLayoutItem:(id)a3;
-- (void)_ui_insertSubLayoutItem:(id)a3 atIndex:(int64_t)a4;
+- (void)_ui_addSubLayoutItem:(id)item;
+- (void)_ui_insertSubLayoutItem:(id)item atIndex:(int64_t)index;
 - (void)_ui_removeFromParentLayoutItem;
-- (void)_uili_stashLayoutVariableObservation:(id)a3 forVariable:(id)a4;
-- (void)_updateLayoutFrameInOwningView:(id)a3 fromEngine:(id)a4;
+- (void)_uili_stashLayoutVariableObservation:(id)observation forVariable:(id)variable;
+- (void)_updateLayoutFrameInOwningView:(id)view fromEngine:(id)engine;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)nsis_valueOfVariable:(id)a3 didChangeInEngine:(id)a4;
-- (void)nsli_addConstraint:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardInvocation:(id)invocation;
+- (void)nsis_valueOfVariable:(id)variable didChangeInEngine:(id)engine;
+- (void)nsli_addConstraint:(id)constraint;
 - (void)setOwningView:(UIView *)owningView;
 @end
 
@@ -268,9 +268,9 @@
 - (id)nsli_layoutEngine
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v3 = [WeakRetained nsli_layoutEngine];
+  nsli_layoutEngine = [WeakRetained nsli_layoutEngine];
 
-  return v3;
+  return nsli_layoutEngine;
 }
 
 - (id)nsli_superitem
@@ -284,11 +284,11 @@
 {
   if (self->_minXVariable || self->_minYVariable || self->_boundsWidthVariable || self->_boundsHeightVariable)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = v3;
+    array = [MEMORY[0x1E695DF70] array];
+    v4 = array;
     if (self->_minXVariable)
     {
-      [v3 addObject:?];
+      [array addObject:?];
     }
 
     if (self->_minYVariable)
@@ -392,8 +392,8 @@
     v5 = 0;
     do
     {
-      v6 = [v4 nsli_installedConstraints];
-      if ([v6 count])
+      nsli_installedConstraints = [v4 nsli_installedConstraints];
+      if ([nsli_installedConstraints count])
       {
         if (!v5)
         {
@@ -404,7 +404,7 @@
         v17 = 0u;
         v14 = 0u;
         v15 = 0u;
-        v7 = v6;
+        v7 = nsli_installedConstraints;
         v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
@@ -433,12 +433,12 @@
         }
       }
 
-      v13 = [v4 nsli_superitem];
+      nsli_superitem = [v4 nsli_superitem];
 
-      v4 = v13;
+      v4 = nsli_superitem;
     }
 
-    while (v13);
+    while (nsli_superitem);
   }
 
   else
@@ -471,31 +471,31 @@
 
   else
   {
-    v7 = [(UILayoutGuide *)self nsli_layoutEngine];
-    v8 = [v7 delegate];
-    if ([(UIView *)v8 _usesLayoutEngineHostingConstraints])
+    nsli_layoutEngine = [(UILayoutGuide *)self nsli_layoutEngine];
+    delegate = [nsli_layoutEngine delegate];
+    if ([(UIView *)delegate _usesLayoutEngineHostingConstraints])
     {
-      [(UIView *)v8 _resetLayoutEngineHostConstraints];
+      [(UIView *)delegate _resetLayoutEngineHostConstraints];
     }
 
-    v9 = [(UILayoutGuide *)self nsli_layoutEngine];
-    [(NSISEngine *)v9 _UIKitPerformPendingChangeNotifications];
+    nsli_layoutEngine2 = [(UILayoutGuide *)self nsli_layoutEngine];
+    [(NSISEngine *)nsli_layoutEngine2 _UIKitPerformPendingChangeNotifications];
 
     if (!self->_isLayoutFrameValid)
     {
       v10 = *(MEMORY[0x1E695F058] + 16);
       self->_layoutFrame.origin = *MEMORY[0x1E695F058];
       self->_layoutFrame.size = v10;
-      if (v7)
+      if (nsli_layoutEngine)
       {
         WeakRetained = objc_loadWeakRetained(&self->_owningView);
         v12 = WeakRetained;
-        if ((WeakRetained[96] & 4) == 0 && (!v8 || (v8[96] & 0x20) == 0))
+        if ((WeakRetained[96] & 4) == 0 && (!delegate || (delegate[96] & 0x20) == 0))
         {
           [(UIView *)WeakRetained _updateConstraintsAtEngineLevelIfNeededWithViewForVariableChangeNotifications:?];
         }
 
-        [(UILayoutGuide *)self _updateLayoutFrameInOwningView:v12 fromEngine:v7];
+        [(UILayoutGuide *)self _updateLayoutFrameInOwningView:v12 fromEngine:nsli_layoutEngine];
       }
     }
 
@@ -518,32 +518,32 @@
   return result;
 }
 
-- (void)_ui_addSubLayoutItem:(id)a3
+- (void)_ui_addSubLayoutItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UILayoutGuide *)self owningView];
-  [v4 _ui_addToView:v5 atIndex:-1];
+  itemCopy = item;
+  owningView = [(UILayoutGuide *)self owningView];
+  [itemCopy _ui_addToView:owningView atIndex:-1];
 }
 
-- (void)_ui_insertSubLayoutItem:(id)a3 atIndex:(int64_t)a4
+- (void)_ui_insertSubLayoutItem:(id)item atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(UILayoutGuide *)self owningView];
-  [v6 _ui_addToView:v7 atIndex:a4];
+  itemCopy = item;
+  owningView = [(UILayoutGuide *)self owningView];
+  [itemCopy _ui_addToView:owningView atIndex:index];
 }
 
 - (void)_ui_removeFromParentLayoutItem
 {
-  v3 = [(UILayoutGuide *)self owningView];
-  [v3 removeLayoutGuide:self];
+  owningView = [(UILayoutGuide *)self owningView];
+  [owningView removeLayoutGuide:self];
 }
 
 - (UITraitCollection)traitCollection
 {
-  v2 = [(UILayoutGuide *)self _ui_view];
-  v3 = [v2 traitCollection];
+  _ui_view = [(UILayoutGuide *)self _ui_view];
+  traitCollection = [_ui_view traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
 - (NSArray)constraintsAffectingLayoutForAxis:(UILayoutConstraintAxis)axis
@@ -559,25 +559,25 @@
   return result;
 }
 
-- (id)_autolayoutTraceAtLevel:(int64_t)a3 recursively:(BOOL)a4
+- (id)_autolayoutTraceAtLevel:(int64_t)level recursively:(BOOL)recursively
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"\n", a4];
-  if (a3 >= 1)
+  recursively = [MEMORY[0x1E696AD60] stringWithFormat:@"\n", recursively];
+  if (level >= 1)
   {
     do
     {
-      [v6 appendString:@"|   "];
-      --a3;
+      [recursively appendString:@"|   "];
+      --level;
     }
 
-    while (a3);
+    while (level);
   }
 
   v7 = _layoutVariablesWithAmbiguousValueForLayoutItem(self);
   if ([v7 count])
   {
-    v8 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -597,8 +597,8 @@
             objc_enumerationMutation(v7);
           }
 
-          [v8 appendString:{objc_msgSend(*(*(&v16 + 1) + 8 * v12), "description")}];
-          [v8 appendString:{@", "}];
+          [string appendString:{objc_msgSend(*(*(&v16 + 1) + 8 * v12), "description")}];
+          [string appendString:{@", "}];
           ++v12;
         }
 
@@ -609,11 +609,11 @@
       while (v10);
     }
 
-    [v8 deleteCharactersInRange:{objc_msgSend(v8, "length") - 2, 2}];
-    v13 = [(UILayoutGuide *)self _descriptionForLayoutTrace];
-    if (v8)
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+    _descriptionForLayoutTrace = [(UILayoutGuide *)self _descriptionForLayoutTrace];
+    if (string)
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"- AMBIGUOUS LAYOUT for %@", v8];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"- AMBIGUOUS LAYOUT for %@", string];
     }
 
     else
@@ -624,12 +624,12 @@
 
   else
   {
-    v13 = [(UILayoutGuide *)self _descriptionForLayoutTrace];
+    _descriptionForLayoutTrace = [(UILayoutGuide *)self _descriptionForLayoutTrace];
     v14 = &stru_1EFB14550;
   }
 
-  [v6 appendFormat:@"*%@%@", v13, v14];
-  return v6;
+  [recursively appendFormat:@"*%@%@", _descriptionForLayoutTrace, v14];
+  return recursively;
 }
 
 - (void)setOwningView:(UIView *)owningView
@@ -647,9 +647,9 @@
   }
 }
 
-- (void)_setOwningView:(id)a3
+- (void)_setOwningView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
   if (WeakRetained != obj)
   {
@@ -664,10 +664,10 @@
   }
 }
 
-- (void)_setLockedToOwningView:(BOOL)a3
+- (void)_setLockedToOwningView:(BOOL)view
 {
   isLockedToOwningView = self->_isLockedToOwningView;
-  if (isLockedToOwningView != a3)
+  if (isLockedToOwningView != view)
   {
     if (!isLockedToOwningView)
     {
@@ -675,39 +675,39 @@
       self->_systemConstraints = 0;
     }
 
-    self->_isLockedToOwningView = a3;
+    self->_isLockedToOwningView = view;
   }
 }
 
-- (void)_setSystemConstraints:(id)a3
+- (void)_setSystemConstraints:(id)constraints
 {
-  v6 = a3;
-  v12 = v6;
-  if (self->_isLockedToOwningView || ([MEMORY[0x1E696AAA8] currentHandler], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"UILayoutGuide.m", 79, @"The layout guide must be locked to its owning view before retaining system constraints"), v11, v6 = v12, self->_isLockedToOwningView))
+  constraintsCopy = constraints;
+  v12 = constraintsCopy;
+  if (self->_isLockedToOwningView || ([MEMORY[0x1E696AAA8] currentHandler], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"UILayoutGuide.m", 79, @"The layout guide must be locked to its owning view before retaining system constraints"), v11, constraintsCopy = v12, self->_isLockedToOwningView))
   {
-    if ((systemConstraints = self->_systemConstraints, p_systemConstraints = &self->_systemConstraints, v7 = systemConstraints, !v6) && v7 || (v10 = [v6 isEqualToArray:v7], v6 = v12, (v10 & 1) == 0))
+    if ((systemConstraints = self->_systemConstraints, p_systemConstraints = &self->_systemConstraints, v7 = systemConstraints, !constraintsCopy) && v7 || (v10 = [constraintsCopy isEqualToArray:v7], constraintsCopy = v12, (v10 & 1) == 0))
     {
-      objc_storeStrong(p_systemConstraints, a3);
-      v6 = v12;
+      objc_storeStrong(p_systemConstraints, constraints);
+      constraintsCopy = v12;
     }
   }
 }
 
-- (void)_setManualLayoutFrame:(CGRect)a3
+- (void)_setManualLayoutFrame:(CGRect)frame
 {
   self->_useManualLayoutFrame = 1;
   self->_isLayoutFrameValid = 1;
-  self->_layoutFrame = a3;
+  self->_layoutFrame = frame;
 }
 
-- (void)_updateLayoutFrameInOwningView:(id)a3 fromEngine:(id)a4
+- (void)_updateLayoutFrameInOwningView:(id)view fromEngine:(id)engine
 {
   if (!self->_useManualLayoutFrame)
   {
     v13 = 0uLL;
     v11 = 0u;
     v12 = 0u;
-    [(UIView *)a3 _nsis_center:&v11 bounds:a4 inEngine:self forLayoutGuide:?];
+    [(UIView *)view _nsis_center:&v11 bounds:engine inEngine:self forLayoutGuide:?];
     v5 = v12;
     __asm { FMOV            V3.2D, #-0.5 }
 
@@ -723,11 +723,11 @@
   if (!layoutRect)
   {
     v4 = MEMORY[0x1E69977B8];
-    v5 = [(UILayoutGuide *)self leadingAnchor];
-    v6 = [(UILayoutGuide *)self topAnchor];
-    v7 = [(UILayoutGuide *)self widthAnchor];
-    v8 = [(UILayoutGuide *)self heightAnchor];
-    v9 = [v4 layoutRectWithLeadingAnchor:v5 topAnchor:v6 widthAnchor:v7 heightAnchor:v8];
+    leadingAnchor = [(UILayoutGuide *)self leadingAnchor];
+    topAnchor = [(UILayoutGuide *)self topAnchor];
+    widthAnchor = [(UILayoutGuide *)self widthAnchor];
+    heightAnchor = [(UILayoutGuide *)self heightAnchor];
+    v9 = [v4 layoutRectWithLeadingAnchor:leadingAnchor topAnchor:topAnchor widthAnchor:widthAnchor heightAnchor:heightAnchor];
     v10 = self->_layoutRect;
     self->_layoutRect = v9;
 
@@ -737,44 +737,44 @@
   return layoutRect;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  [v5 encodeObject:WeakRetained forKey:@"UILayoutGuideOwningView"];
+  [coderCopy encodeObject:WeakRetained forKey:@"UILayoutGuideOwningView"];
 
-  [v5 encodeObject:self->_identifier forKey:@"UILayoutGuideIdentifier"];
-  [v5 encodeBool:self->_isLockedToOwningView forKey:@"UILayoutGuideOwningViewIsLocked"];
-  [v5 encodeBool:self->__shouldBeArchived forKey:@"UILayoutGuideShouldBeArchived"];
-  [v5 encodeBool:self->__allowsNegativeDimensions forKey:@"UILayoutGuideAllowsNegativeDimensions"];
+  [coderCopy encodeObject:self->_identifier forKey:@"UILayoutGuideIdentifier"];
+  [coderCopy encodeBool:self->_isLockedToOwningView forKey:@"UILayoutGuideOwningViewIsLocked"];
+  [coderCopy encodeBool:self->__shouldBeArchived forKey:@"UILayoutGuideShouldBeArchived"];
+  [coderCopy encodeBool:self->__allowsNegativeDimensions forKey:@"UILayoutGuideAllowsNegativeDimensions"];
   if (self->_isLockedToOwningView)
   {
-    [v5 encodeObject:self->_systemConstraints forKey:@"UILayoutGuideSystemConstraints"];
+    [coderCopy encodeObject:self->_systemConstraints forKey:@"UILayoutGuideSystemConstraints"];
   }
 }
 
-- (UILayoutGuide)initWithCoder:(id)a3
+- (UILayoutGuide)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = UILayoutGuide;
   v5 = [(UILayoutGuide *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UILayoutGuideOwningView"];
+    v6 = [coderCopy decodeObjectForKey:@"UILayoutGuideOwningView"];
     objc_storeWeak(&v5->_owningView, v6);
 
-    v7 = [v4 decodeObjectForKey:@"UILayoutGuideIdentifier"];
+    v7 = [coderCopy decodeObjectForKey:@"UILayoutGuideIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v5->_isLockedToOwningView = [v4 decodeBoolForKey:@"UILayoutGuideOwningViewIsLocked"];
-    v5->__shouldBeArchived = [v4 decodeBoolForKey:@"UILayoutGuideShouldBeArchived"];
-    v5->__allowsNegativeDimensions = [v4 decodeBoolForKey:@"UILayoutGuideAllowsNegativeDimensions"];
+    v5->_isLockedToOwningView = [coderCopy decodeBoolForKey:@"UILayoutGuideOwningViewIsLocked"];
+    v5->__shouldBeArchived = [coderCopy decodeBoolForKey:@"UILayoutGuideShouldBeArchived"];
+    v5->__allowsNegativeDimensions = [coderCopy decodeBoolForKey:@"UILayoutGuideAllowsNegativeDimensions"];
     if (v5->_isLockedToOwningView)
     {
-      v9 = [v4 decodeObjectForKey:@"UILayoutGuideSystemConstraints"];
+      v9 = [coderCopy decodeObjectForKey:@"UILayoutGuideSystemConstraints"];
       systemConstraints = v5->_systemConstraints;
       v5->_systemConstraints = v9;
     }
@@ -802,8 +802,8 @@
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
-          v18 = [v17 container];
-          [v18 _faultInGuidesForConstraint:v17];
+          container = [v17 container];
+          [container _faultInGuidesForConstraint:v17];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -824,22 +824,22 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UILayoutGuide *)self identifier];
+  identifier = [(UILayoutGuide *)self identifier];
   [(UILayoutGuide *)self layoutFrame];
   v7 = NSStringFromCGRect(v12);
-  v8 = [(UILayoutGuide *)self owningView];
-  v9 = [v3 stringWithFormat:@"<%@: %p - %@, layoutFrame = %@, owningView = %@>", v5, self, v6, v7, v8];
+  owningView = [(UILayoutGuide *)self owningView];
+  v9 = [v3 stringWithFormat:@"<%@: %p - %@, layoutFrame = %@, owningView = %@>", v5, self, identifier, v7, owningView];
 
   return v9;
 }
 
-- (void)_addConstraintToBeProcessedAfterDecoding:(id)a3
+- (void)_addConstraintToBeProcessedAfterDecoding:(id)decoding
 {
-  v4 = a3;
-  if (v4)
+  decodingCopy = decoding;
+  if (decodingCopy)
   {
     constraintsToBeProcessedAfterDecoding = self->_constraintsToBeProcessedAfterDecoding;
-    v8 = v4;
+    v8 = decodingCopy;
     if (!constraintsToBeProcessedAfterDecoding)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -850,14 +850,14 @@
     }
 
     [(NSMutableArray *)constraintsToBeProcessedAfterDecoding addObject:v8];
-    v4 = v8;
+    decodingCopy = v8;
   }
 }
 
-- (CGSize)nsli_convertSizeToEngineSpace:(CGSize)a3
+- (CGSize)nsli_convertSizeToEngineSpace:(CGSize)space
 {
-  height = a3.height;
-  width = a3.width;
+  height = space.height;
+  width = space.width;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
   [WeakRetained nsli_convertSizeToEngineSpace:{width, height}];
   v7 = v6;
@@ -870,10 +870,10 @@
   return result;
 }
 
-- (CGSize)nsli_convertSizeFromEngineSpace:(CGSize)a3
+- (CGSize)nsli_convertSizeFromEngineSpace:(CGSize)space
 {
-  height = a3.height;
-  width = a3.width;
+  height = space.height;
+  width = space.width;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
   [WeakRetained nsli_convertSizeFromEngineSpace:{width, height}];
   v7 = v6;
@@ -886,14 +886,14 @@
   return result;
 }
 
-- (BOOL)nsli_defaultResolvedValue:(double *)a3 forSymbolicConstant:(id)a4 inConstraint:(id)a5 error:(id *)a6
+- (BOOL)nsli_defaultResolvedValue:(double *)value forSymbolicConstant:(id)constant inConstraint:(id)constraint error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(UILayoutGuide *)self owningView];
-  LOBYTE(a6) = [v12 nsli_defaultResolvedValue:a3 forSymbolicConstant:v11 inConstraint:v10 error:a6];
+  constraintCopy = constraint;
+  constantCopy = constant;
+  owningView = [(UILayoutGuide *)self owningView];
+  LOBYTE(error) = [owningView nsli_defaultResolvedValue:value forSymbolicConstant:constantCopy inConstraint:constraintCopy error:error];
 
-  return a6;
+  return error;
 }
 
 - (id)nsli_description
@@ -901,23 +901,23 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UILayoutGuide *)self identifier];
-  v7 = [v3 stringWithFormat:@"%@:%p'%@'", v5, self, v6];
+  identifier = [(UILayoutGuide *)self identifier];
+  v7 = [v3 stringWithFormat:@"%@:%p'%@'", v5, self, identifier];
 
   return v7;
 }
 
-- (id)nsli_constraintWithAnchor:(id)a3 relatedBy:(int64_t)a4 toAnchor:(id)a5 withSystemSpacingMultipliedBy:(double)a6
+- (id)nsli_constraintWithAnchor:(id)anchor relatedBy:(int64_t)by toAnchor:(id)toAnchor withSystemSpacingMultipliedBy:(double)multipliedBy
 {
   v9 = _MergedGlobals_1377;
-  v10 = a5;
-  v11 = a3;
+  toAnchorCopy = toAnchor;
+  anchorCopy = anchor;
   if (v9 != -1)
   {
     dispatch_once(&_MergedGlobals_1377, &__block_literal_global_683);
   }
 
-  v12 = [qword_1ED4A2A68 nsli_constraintWithAnchor:v11 relatedBy:a4 toAnchor:v10 withSystemSpacingMultipliedBy:a6];
+  v12 = [qword_1ED4A2A68 nsli_constraintWithAnchor:anchorCopy relatedBy:by toAnchor:toAnchorCopy withSystemSpacingMultipliedBy:multipliedBy];
 
   return v12;
 }
@@ -929,33 +929,33 @@ void __92__UILayoutGuide_nsli_constraintWithAnchor_relatedBy_toAnchor_withSystem
   qword_1ED4A2A68 = v0;
 }
 
-- (void)nsli_addConstraint:(id)a3
+- (void)nsli_addConstraint:(id)constraint
 {
-  v4 = a3;
+  constraintCopy = constraint;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  [WeakRetained nsli_addConstraint:v4];
+  [WeakRetained nsli_addConstraint:constraintCopy];
 }
 
-- (BOOL)nsli_removeConstraint:(id)a3
+- (BOOL)nsli_removeConstraint:(id)constraint
 {
-  v4 = a3;
+  constraintCopy = constraint;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v6 = [WeakRetained nsli_removeConstraint:v4];
+  v6 = [WeakRetained nsli_removeConstraint:constraintCopy];
 
   return v6;
 }
 
-- (BOOL)nsli_lowerAttribute:(int)a3 intoExpression:(id)a4 withCoefficient:(double)a5 forConstraint:(id)a6
+- (BOOL)nsli_lowerAttribute:(int)attribute intoExpression:(id)expression withCoefficient:(double)coefficient forConstraint:(id)constraint
 {
-  v8 = *&a3;
+  v8 = *&attribute;
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  expressionCopy = expression;
+  constraintCopy = constraint;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v13 = [v11 container];
-  if (!v13 || WeakRetained && ([WeakRetained isDescendantOfView:v13] & 1) != 0)
+  container = [constraintCopy container];
+  if (!container || WeakRetained && ([WeakRetained isDescendantOfView:container] & 1) != 0)
   {
-    v14 = [WeakRetained nsli_lowerAttribute:v8 intoExpression:v10 withCoefficient:v11 forConstraint:self onBehalfOfLayoutGuide:a5];
+    v14 = [WeakRetained nsli_lowerAttribute:v8 intoExpression:expressionCopy withCoefficient:constraintCopy forConstraint:self onBehalfOfLayoutGuide:coefficient];
   }
 
   else
@@ -964,20 +964,20 @@ void __92__UILayoutGuide_nsli_constraintWithAnchor_relatedBy_toAnchor_withSystem
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = v15;
-      v17 = [v13 performSelector:sel_recursiveDescription];
+      v17 = [container performSelector:sel_recursiveDescription];
       v18 = v17;
-      v19 = [WeakRetained superview];
-      v20 = v19;
+      superview = [WeakRetained superview];
+      v20 = superview;
       v23 = 138413314;
       v21 = @"NO SUPERVIEW";
-      v24 = self;
-      if (v19)
+      selfCopy = self;
+      if (superview)
       {
-        v21 = v19;
+        v21 = superview;
       }
 
       v25 = 2112;
-      v26 = v11;
+      v26 = constraintCopy;
       v27 = 2112;
       v28 = v17;
       v29 = 2112;
@@ -993,7 +993,7 @@ void __92__UILayoutGuide_nsli_constraintWithAnchor_relatedBy_toAnchor_withSystem
   return v14;
 }
 
-- (BOOL)nsli_lowerAttribute:(int)a3 intoExpression:(id)a4 withCoefficient:(double)a5 container:(id)a6
+- (BOOL)nsli_lowerAttribute:(int)attribute intoExpression:(id)expression withCoefficient:(double)coefficient container:(id)container
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = *(__UILogGetCategoryCachedImpl("LayoutConstraints", &nsli_lowerAttribute_intoExpression_withCoefficient_container____s_category_0) + 8);
@@ -1010,9 +1010,9 @@ void __92__UILayoutGuide_nsli_constraintWithAnchor_relatedBy_toAnchor_withSystem
 - (BOOL)nsli_isRTL
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v3 = [WeakRetained nsli_isRTL];
+  nsli_isRTL = [WeakRetained nsli_isRTL];
 
-  return v3;
+  return nsli_isRTL;
 }
 
 - (CGSize)nsli_engineToUserScalingCoefficients
@@ -1067,10 +1067,10 @@ void __92__UILayoutGuide_nsli_constraintWithAnchor_relatedBy_toAnchor_withSystem
   return result;
 }
 
-- (void)_uili_stashLayoutVariableObservation:(id)a3 forVariable:(id)a4
+- (void)_uili_stashLayoutVariableObservation:(id)observation forVariable:(id)variable
 {
-  v10 = a3;
-  v6 = a4;
+  observationCopy = observation;
+  variableCopy = variable;
   stashedLayoutVariableObservations = self->_stashedLayoutVariableObservations;
   if (!stashedLayoutVariableObservations)
   {
@@ -1081,29 +1081,29 @@ void __92__UILayoutGuide_nsli_constraintWithAnchor_relatedBy_toAnchor_withSystem
     stashedLayoutVariableObservations = self->_stashedLayoutVariableObservations;
   }
 
-  [(NSMapTable *)stashedLayoutVariableObservations setObject:v10 forKey:v6];
+  [(NSMapTable *)stashedLayoutVariableObservations setObject:observationCopy forKey:variableCopy];
 }
 
-- (void)nsis_valueOfVariable:(id)a3 didChangeInEngine:(id)a4
+- (void)nsis_valueOfVariable:(id)variable didChangeInEngine:(id)engine
 {
-  v5 = a4;
-  v6 = [(UILayoutGuide *)self nsli_layoutEngine];
+  engineCopy = engine;
+  nsli_layoutEngine = [(UILayoutGuide *)self nsli_layoutEngine];
 
-  if (v6 == v5)
+  if (nsli_layoutEngine == engineCopy)
   {
 
     [(UILayoutGuide *)self _invalidateLayoutFrame];
   }
 }
 
-- (id)nsis_descriptionOfVariable:(id)a3
+- (id)nsis_descriptionOfVariable:(id)variable
 {
-  v4 = a3;
+  variableCopy = variable;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_owningView);
-    v7 = [v6 nsis_descriptionOfVariable:v4];
+    v7 = [v6 nsis_descriptionOfVariable:variableCopy];
 LABEL_5:
     v9 = v7;
 
@@ -1124,17 +1124,17 @@ LABEL_6:
   return v9;
 }
 
-- (int)nsis_orientationHintForVariable:(id)a3
+- (int)nsis_orientationHintForVariable:(id)variable
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_minXVariable == v4 || self->_boundsWidthVariable == v4)
+  variableCopy = variable;
+  v5 = variableCopy;
+  if (self->_minXVariable == variableCopy || self->_boundsWidthVariable == variableCopy)
   {
     goto LABEL_10;
   }
 
-  if (self->_minYVariable == v4 || self->_boundsHeightVariable == v4)
+  if (self->_minYVariable == variableCopy || self->_boundsHeightVariable == variableCopy)
   {
     v9 = 1;
     goto LABEL_12;
@@ -1148,13 +1148,13 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v8 = [(NSISVariable *)v5 delegate];
+    delegate = [(NSISVariable *)v5 delegate];
     v11 = 138412802;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
     v14 = v5;
     v15 = 2112;
-    v16 = v8;
+    v16 = delegate;
     _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "%@ got asked for the orientationHint of a variable it doesn't know about: %@, which is owned by:%@", &v11, 0x20u);
 LABEL_8:
 
@@ -1166,13 +1166,13 @@ LABEL_9:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v7 = v6;
-    v8 = [(NSISVariable *)v5 delegate];
+    delegate = [(NSISVariable *)v5 delegate];
     v11 = 138412802;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
     v14 = v5;
     v15 = 2112;
-    v16 = v8;
+    v16 = delegate;
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "%@ got asked for the orientationHint of a variable it doesn't know about: %@, which is owned by:%@", &v11, 0x20u);
     goto LABEL_8;
   }
@@ -1184,15 +1184,15 @@ LABEL_12:
   return v9;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invocationCopy = invocation;
   if (dyld_program_sdk_at_least())
   {
     v9.receiver = self;
     v9.super_class = UILayoutGuide;
-    [(UILayoutGuide *)&v9 forwardInvocation:v4];
+    [(UILayoutGuide *)&v9 forwardInvocation:invocationCopy];
   }
 
   else
@@ -1201,26 +1201,26 @@ LABEL_12:
 
     if (WeakRetained)
     {
-      v6 = objc_loadWeakRetained(&self->_owningView);
-      [v4 invokeWithTarget:v6];
+      methodSignature = objc_loadWeakRetained(&self->_owningView);
+      [invocationCopy invokeWithTarget:methodSignature];
     }
 
     else
     {
-      v6 = [v4 methodSignature];
-      v7 = [v6 methodReturnLength];
-      if (v7)
+      methodSignature = [invocationCopy methodSignature];
+      methodReturnLength = [methodSignature methodReturnLength];
+      if (methodReturnLength)
       {
         memset(v10, 0, sizeof(v10));
-        if (v7 <= 0x20)
+        if (methodReturnLength <= 0x20)
         {
-          [v4 setReturnValue:v10];
+          [invocationCopy setReturnValue:v10];
         }
 
         else
         {
-          v8 = malloc_type_calloc(v7, 1uLL, 0x100004077774924uLL);
-          [v4 setReturnValue:v8];
+          v8 = malloc_type_calloc(methodReturnLength, 1uLL, 0x100004077774924uLL);
+          [invocationCopy setReturnValue:v8];
           free(v8);
         }
       }
@@ -1228,13 +1228,13 @@ LABEL_12:
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   if (dyld_program_sdk_at_least())
   {
     v10.receiver = self;
     v10.super_class = UILayoutGuide;
-    v5 = [(UILayoutGuide *)&v10 methodSignatureForSelector:a3];
+    v5 = [(UILayoutGuide *)&v10 methodSignatureForSelector:selector];
   }
 
   else
@@ -1244,12 +1244,12 @@ LABEL_12:
     if (WeakRetained)
     {
       v7 = objc_loadWeakRetained(&self->_owningView);
-      v8 = [v7 methodSignatureForSelector:a3];
+      v8 = [v7 methodSignatureForSelector:selector];
 
       goto LABEL_7;
     }
 
-    v5 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v5 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v8 = v5;
@@ -1258,16 +1258,16 @@ LABEL_7:
   return v8;
 }
 
-- (id)_createAnchorWithClass:(Class)a3 attribute:(int64_t)a4
+- (id)_createAnchorWithClass:(Class)class attribute:(int64_t)attribute
 {
-  v4 = [[a3 alloc] initWithItem:self attribute:a4];
+  v4 = [[class alloc] initWithItem:self attribute:attribute];
 
   return v4;
 }
 
-- (CGRect)frameInView:(id)a3
+- (CGRect)frameInView:(id)view
 {
-  [(UILayoutGuide *)self _frameInCoordinateSpace:a3 window:0];
+  [(UILayoutGuide *)self _frameInCoordinateSpace:view window:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1275,12 +1275,12 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window
 {
-  v5 = a3;
-  v6 = [(UILayoutGuide *)self owningView];
+  spaceCopy = space;
+  owningView = [(UILayoutGuide *)self owningView];
   [(UILayoutGuide *)self layoutFrame];
-  [v6 convertRect:v5 toCoordinateSpace:?];
+  [owningView convertRect:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;

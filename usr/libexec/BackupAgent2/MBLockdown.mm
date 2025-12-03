@@ -2,12 +2,12 @@
 + (id)buddySetupState;
 + (id)connect;
 + (id)dateOfLastBackupFromLockdownPlist;
-+ (void)setDeviceName:(id)a3;
++ (void)setDeviceName:(id)name;
 - (BOOL)connect;
-- (BOOL)removeObjectWithDomain:(id)a3 andKey:(id)a4 withError:(id *)a5;
-- (BOOL)setObject:(id)a3 forDomain:(id)a4 andKey:(id)a5 withError:(id *)a6;
+- (BOOL)removeObjectWithDomain:(id)domain andKey:(id)key withError:(id *)error;
+- (BOOL)setObject:(id)object forDomain:(id)domain andKey:(id)key withError:(id *)error;
 - (MBLockdown)init;
-- (id)objectForDomain:(id)a3 andKey:(id)a4;
+- (id)objectForDomain:(id)domain andKey:(id)key;
 - (void)dealloc;
 - (void)disconnect;
 @end
@@ -79,7 +79,7 @@
   dispatch_sync(qword_10011E480, block);
 }
 
-- (id)objectForDomain:(id)a3 andKey:(id)a4
+- (id)objectForDomain:(id)domain andKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -92,8 +92,8 @@
   v6[2] = sub_100069EE4;
   v6[3] = &unk_1000FE360;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
+  v6[5] = domain;
+  v6[6] = key;
   v6[7] = &v7;
   dispatch_sync(qword_10011E480, v6);
   v4 = v8[5];
@@ -101,7 +101,7 @@
   return v4;
 }
 
-- (BOOL)setObject:(id)a3 forDomain:(id)a4 andKey:(id)a5 withError:(id *)a6
+- (BOOL)setObject:(id)object forDomain:(id)domain andKey:(id)key withError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -112,18 +112,18 @@
   v8[2] = sub_100069FE0;
   v8[3] = &unk_1000FE388;
   v8[4] = self;
-  v8[5] = a4;
-  v8[6] = a5;
-  v8[7] = a3;
+  v8[5] = domain;
+  v8[6] = key;
+  v8[7] = object;
   v8[8] = &v9;
-  v8[9] = a6;
+  v8[9] = error;
   dispatch_sync(qword_10011E480, v8);
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (BOOL)removeObjectWithDomain:(id)a3 andKey:(id)a4 withError:(id *)a5
+- (BOOL)removeObjectWithDomain:(id)domain andKey:(id)key withError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -133,10 +133,10 @@
   block[1] = 3221225472;
   block[2] = sub_10006A1D0;
   block[3] = &unk_1000FE3B0;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = domain;
+  block[5] = key;
   block[7] = &v8;
-  block[8] = a5;
+  block[8] = error;
   block[6] = self;
   dispatch_sync(qword_10011E480, block);
   v5 = *(v9 + 24);
@@ -208,25 +208,25 @@
   return v3;
 }
 
-+ (void)setDeviceName:(id)a3
++ (void)setDeviceName:(id)name
 {
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = a3;
+    nameCopy2 = name;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Updating the device name to %@", buf, 0xCu);
     _MBLog();
   }
 
-  if (a3)
+  if (name)
   {
     v5 = +[MBLockdown connect];
     if (v5)
     {
       v6 = v5;
       v11 = 0;
-      v7 = [v5 setObject:a3 forDomain:0 andKey:kLockdownDeviceNameKey withError:&v11];
+      v7 = [v5 setObject:name forDomain:0 andKey:kLockdownDeviceNameKey withError:&v11];
       [v6 disconnect];
       v8 = MBGetDefaultLog();
       v9 = v8;
@@ -238,7 +238,7 @@
         }
 
         *buf = 138412290;
-        v13 = a3;
+        nameCopy2 = name;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updated the device name to %@", buf, 0xCu);
       }
 
@@ -250,7 +250,7 @@
         }
 
         *buf = 138412290;
-        v13 = v11;
+        nameCopy2 = v11;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to update the device name: %@", buf, 0xCu);
       }
     }

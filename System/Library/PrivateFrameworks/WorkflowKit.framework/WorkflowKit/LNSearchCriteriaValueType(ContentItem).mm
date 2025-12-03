@@ -6,7 +6,7 @@
 
 - (id)wf_contentItemClassWithAppBundleIdentifier:()ContentItem
 {
-  if ([a1 typeIdentifier])
+  if ([self typeIdentifier])
   {
     v1 = 0;
   }

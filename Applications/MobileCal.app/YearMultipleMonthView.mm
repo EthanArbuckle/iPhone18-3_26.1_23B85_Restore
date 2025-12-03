@@ -1,56 +1,56 @@
 @interface YearMultipleMonthView
-+ (BOOL)_headerEligibleForCalendarDate:(id)a3;
++ (BOOL)_headerEligibleForCalendarDate:(id)date;
 + (Class)headerClass;
 + (Class)monthClass;
-+ (double)_heightForViewWithVisibleHeader:(BOOL)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5 orientation:(int64_t)a6;
-+ (double)heightForViewWithCalendarDate:(id)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5 orientation:(int64_t)a6;
++ (double)_heightForViewWithVisibleHeader:(BOOL)header windowSize:(CGSize)size heightSizeClass:(int64_t)class orientation:(int64_t)orientation;
++ (double)heightForViewWithCalendarDate:(id)date windowSize:(CGSize)size heightSizeClass:(int64_t)class orientation:(int64_t)orientation;
 - (BOOL)eligibleToShowYearNumber;
-- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)a3;
+- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)baseline;
 - (CGRect)insetBounds;
 - (CGSize)monthViewSubviewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (EKCalendarDate)endCalendarDate;
 - (UIEdgeInsets)_yearLayoutMargins;
-- (double)_leftMarginWithOriginalValue:(double)a3;
-- (double)_rightMarginWithOriginalValue:(double)a3;
+- (double)_leftMarginWithOriginalValue:(double)value;
+- (double)_rightMarginWithOriginalValue:(double)value;
 - (double)topInset;
 - (id)description;
-- (id)initCalendarDate:(id)a3 calendar:(id)a4 maximumNumberOfMonths:(unint64_t)a5;
-- (id)monthViewForCalendarDate:(id)a3;
-- (id)startOfMonthForPoint:(CGPoint)a3;
+- (id)initCalendarDate:(id)date calendar:(id)calendar maximumNumberOfMonths:(unint64_t)months;
+- (id)monthViewForCalendarDate:(id)date;
+- (id)startOfMonthForPoint:(CGPoint)point;
 - (void)_initializeHeaderView;
 - (void)_initializeMonthViews;
 - (void)_reloadHeaderView;
 - (void)_reloadMonthViews;
 - (void)didMoveToWindow;
-- (void)hideYearNumberAnimated:(BOOL)a3;
+- (void)hideYearNumberAnimated:(BOOL)animated;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)localeChanged;
-- (void)overlaySignificantDatesChangedInRange:(id)a3;
+- (void)overlaySignificantDatesChangedInRange:(id)range;
 - (void)pulseTodayCircle;
-- (void)setCalendarDate:(id)a3;
-- (void)setOverlaySignificantDatesProvider:(id)a3;
-- (void)showYearNumberAnimated:(BOOL)a3;
+- (void)setCalendarDate:(id)date;
+- (void)setOverlaySignificantDatesProvider:(id)provider;
+- (void)showYearNumberAnimated:(BOOL)animated;
 @end
 
 @implementation YearMultipleMonthView
 
-- (id)initCalendarDate:(id)a3 calendar:(id)a4 maximumNumberOfMonths:(unint64_t)a5
+- (id)initCalendarDate:(id)date calendar:(id)calendar maximumNumberOfMonths:(unint64_t)months
 {
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   v14.receiver = self;
   v14.super_class = YearMultipleMonthView;
   v10 = [(YearMultipleMonthView *)&v14 init];
   if (v10)
   {
-    v11 = [v8 calendarDateForMonth];
+    calendarDateForMonth = [dateCopy calendarDateForMonth];
     calendarDate = v10->_calendarDate;
-    v10->_calendarDate = v11;
+    v10->_calendarDate = calendarDateForMonth;
 
-    objc_storeStrong(&v10->_calendar, a4);
-    v10->_maximumNumberOfMonths = a5;
+    objc_storeStrong(&v10->_calendar, calendar);
+    v10->_maximumNumberOfMonths = months;
     v10->_needToCalculateEligibleToShowYearNumber = 1;
     if ([objc_opt_class() useUIKitLayoutMargins])
     {
@@ -69,21 +69,21 @@
   v8.receiver = self;
   v8.super_class = YearMultipleMonthView;
   v3 = [(YearMultipleMonthView *)&v8 description];
-  v4 = [(YearMultipleMonthView *)self calendarDate];
-  v5 = [(YearMultipleMonthView *)self endCalendarDate];
-  v6 = [NSString stringWithFormat:@"%@ calendarDate: [%@]; endCalendarDate: [%@]", v3, v4, v5];;
+  calendarDate = [(YearMultipleMonthView *)self calendarDate];
+  endCalendarDate = [(YearMultipleMonthView *)self endCalendarDate];
+  v6 = [NSString stringWithFormat:@"%@ calendarDate: [%@]; endCalendarDate: [%@]", v3, calendarDate, endCalendarDate];;
 
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(YearMultipleMonthView *)self window:a3.width];
+  width = fits.width;
+  v5 = [(YearMultipleMonthView *)self window:fits.width];
   if (v5)
   {
-    v6 = [(YearMultipleMonthView *)self window];
-    [v6 mainContentSize];
+    window = [(YearMultipleMonthView *)self window];
+    [window mainContentSize];
     v8 = v7;
     v10 = v9;
   }
@@ -95,10 +95,10 @@
     v10 = v12;
   }
 
-  v13 = [(YearMultipleMonthView *)self eligibleToShowYearNumber];
+  eligibleToShowYearNumber = [(YearMultipleMonthView *)self eligibleToShowYearNumber];
   v14 = objc_opt_class();
   v15 = EKUIHeightSizeClassForViewHierarchy();
-  [v14 _heightForViewWithVisibleHeader:v13 windowSize:v15 heightSizeClass:EKUIInterfaceOrientationForViewHierarchy() orientation:{v8, v10}];
+  [v14 _heightForViewWithVisibleHeader:eligibleToShowYearNumber windowSize:v15 heightSizeClass:EKUIInterfaceOrientationForViewHierarchy() orientation:{v8, v10}];
   v17 = v16;
   if ([(YearMultipleMonthView *)self containsLastMonthOfYear])
   {
@@ -116,7 +116,7 @@
   return result;
 }
 
-- (double)_leftMarginWithOriginalValue:(double)a3
+- (double)_leftMarginWithOriginalValue:(double)value
 {
   v5 = objc_opt_class();
   EKUICurrentWindowSize();
@@ -124,13 +124,13 @@
   if (result < 0.0)
   {
     [(YearMultipleMonthView *)self leftMarginAdjustment];
-    return v7 + a3;
+    return v7 + value;
   }
 
   return result;
 }
 
-- (double)_rightMarginWithOriginalValue:(double)a3
+- (double)_rightMarginWithOriginalValue:(double)value
 {
   v5 = objc_opt_class();
   EKUICurrentWindowSize();
@@ -138,7 +138,7 @@
   if (result < 0.0)
   {
     [(YearMultipleMonthView *)self rightMarginAdjustment];
-    return v7 + a3;
+    return v7 + value;
   }
 
   return result;
@@ -191,9 +191,9 @@
 {
   if (self->_layoutWhenJoiningViewHierarchy)
   {
-    v3 = [(YearMultipleMonthView *)self window];
+    window = [(YearMultipleMonthView *)self window];
 
-    if (v3)
+    if (window)
     {
       [(YearMultipleMonthView *)self layoutSubviews];
       self->_layoutWhenJoiningViewHierarchy = 0;
@@ -206,9 +206,9 @@
   v44.receiver = self;
   v44.super_class = YearMultipleMonthView;
   [(YearMultipleMonthView *)&v44 layoutSubviews];
-  v4 = [(YearMultipleMonthView *)self window];
+  window = [(YearMultipleMonthView *)self window];
 
-  if (!v4)
+  if (!window)
   {
     self->_layoutWhenJoiningViewHierarchy = 1;
     return;
@@ -229,7 +229,7 @@
     v10 = v10 + v16;
   }
 
-  v17 = [(YearMultipleMonthView *)self maximumNumberOfMonths];
+  maximumNumberOfMonths = [(YearMultipleMonthView *)self maximumNumberOfMonths];
   v18 = EKUICurrentWindowSizeParadigmForViewHierarchy();
   if (EKUICurrentWindowInterfaceParadigm() != 8)
   {
@@ -248,7 +248,7 @@
   else if (v18 != 0x2000000 && v18 != 0x8000000 && v18 != 0x20000000)
   {
 LABEL_13:
-    v2 = [(YearMultipleMonthView *)self traitCollection];
+    traitCollection = [(YearMultipleMonthView *)self traitCollection];
     v19 = EKUIUsesLargeTextYearView() ^ 1;
   }
 
@@ -334,7 +334,7 @@ LABEL_27:
 
   v35[4] = &v37;
   v35[5] = v36;
-  v35[6] = v17;
+  v35[6] = maximumNumberOfMonths;
   *&v35[7] = v20;
   [(NSArray *)monthViews enumerateObjectsWithOptions:v34 usingBlock:v35];
   _Block_object_dispose(v36, 8);
@@ -357,11 +357,11 @@ LABEL_27:
   endCalendarDate = self->_endCalendarDate;
   if (!endCalendarDate)
   {
-    v4 = [(NSArray *)self->_monthViews lastObject];
-    v5 = [v4 calendarDate];
-    v6 = [v5 calendarDateForEndOfMonth];
+    lastObject = [(NSArray *)self->_monthViews lastObject];
+    calendarDate = [lastObject calendarDate];
+    calendarDateForEndOfMonth = [calendarDate calendarDateForEndOfMonth];
     v7 = self->_endCalendarDate;
-    self->_endCalendarDate = v6;
+    self->_endCalendarDate = calendarDateForEndOfMonth;
 
     endCalendarDate = self->_endCalendarDate;
   }
@@ -380,36 +380,36 @@ LABEL_27:
 - (void)pulseTodayCircle
 {
   v6 = CUIKTodayDate();
-  v3 = [(NSCalendar *)self->_calendar timeZone];
-  v4 = [EKCalendarDate calendarDateWithDate:v6 timeZone:v3];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v4 = [EKCalendarDate calendarDateWithDate:v6 timeZone:timeZone];
   v5 = [(YearMultipleMonthView *)self monthViewForCalendarDate:v4];
   [v5 pulseTodayCircle];
 }
 
-- (void)setOverlaySignificantDatesProvider:(id)a3
+- (void)setOverlaySignificantDatesProvider:(id)provider
 {
-  v5 = a3;
-  objc_storeStrong(&self->_overlaySignificantDatesProvider, a3);
+  providerCopy = provider;
+  objc_storeStrong(&self->_overlaySignificantDatesProvider, provider);
   monthViews = self->_monthViews;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000AE870;
   v8[3] = &unk_1002107C8;
-  v9 = v5;
-  v7 = v5;
+  v9 = providerCopy;
+  v7 = providerCopy;
   [(NSArray *)monthViews enumerateObjectsUsingBlock:v8];
 }
 
-- (void)overlaySignificantDatesChangedInRange:(id)a3
+- (void)overlaySignificantDatesChangedInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   monthViews = self->_monthViews;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AE91C;
   v7[3] = &unk_1002107C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = rangeCopy;
+  v6 = rangeCopy;
   [(NSArray *)monthViews enumerateObjectsUsingBlock:v7];
 }
 
@@ -448,67 +448,67 @@ LABEL_27:
   }
 }
 
-+ (double)heightForViewWithCalendarDate:(id)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5 orientation:(int64_t)a6
++ (double)heightForViewWithCalendarDate:(id)date windowSize:(CGSize)size heightSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = [objc_opt_class() _headerEligibleForCalendarDate:v10];
+  height = size.height;
+  width = size.width;
+  dateCopy = date;
+  v11 = [objc_opt_class() _headerEligibleForCalendarDate:dateCopy];
 
   v12 = objc_opt_class();
 
-  [v12 _heightForViewWithVisibleHeader:v11 windowSize:a5 heightSizeClass:a6 orientation:{width, height}];
+  [v12 _heightForViewWithVisibleHeader:v11 windowSize:class heightSizeClass:orientation orientation:{width, height}];
   return result;
 }
 
-- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)a3
+- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)baseline
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(NSArray *)self->_monthViews firstObject];
-  [v6 convertPoint:v5 fromView:{x, y}];
-  LOBYTE(v5) = [v6 pointIsAboveMonthNameBaseline:?];
+  y = baseline.y;
+  x = baseline.x;
+  selfCopy = self;
+  firstObject = [(NSArray *)self->_monthViews firstObject];
+  [firstObject convertPoint:selfCopy fromView:{x, y}];
+  LOBYTE(selfCopy) = [firstObject pointIsAboveMonthNameBaseline:?];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setCalendarDate:(id)a3
+- (void)setCalendarDate:(id)date
 {
-  v4 = [a3 calendarDateForMonth];
-  v5 = v4;
-  if (self->_calendarDate != v4)
+  calendarDateForMonth = [date calendarDateForMonth];
+  v5 = calendarDateForMonth;
+  if (self->_calendarDate != calendarDateForMonth)
   {
-    v7 = v4;
-    objc_storeStrong(&self->_calendarDate, v4);
+    v7 = calendarDateForMonth;
+    objc_storeStrong(&self->_calendarDate, calendarDateForMonth);
     endCalendarDate = self->_endCalendarDate;
     self->_endCalendarDate = 0;
 
     self->_needToCalculateEligibleToShowYearNumber = 1;
     [(YearMultipleMonthView *)self _reloadHeaderView];
-    v4 = [(YearMultipleMonthView *)self _reloadMonthViews];
+    calendarDateForMonth = [(YearMultipleMonthView *)self _reloadMonthViews];
     v5 = v7;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(calendarDateForMonth, v5);
 }
 
-- (id)startOfMonthForPoint:(CGPoint)a3
+- (id)startOfMonthForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v5 = self->_monthViews;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v6)
+  calendarDate = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (calendarDate)
   {
     v7 = *v12;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != calendarDate; i = i + 1)
       {
         if (*v12 != v7)
         {
@@ -521,13 +521,13 @@ LABEL_27:
         v17.y = y;
         if (CGRectContainsPoint(v18, v17))
         {
-          v6 = [v9 calendarDate];
+          calendarDate = [v9 calendarDate];
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v6)
+      calendarDate = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (calendarDate)
       {
         continue;
       }
@@ -538,12 +538,12 @@ LABEL_27:
 
 LABEL_11:
 
-  return v6;
+  return calendarDate;
 }
 
-- (id)monthViewForCalendarDate:(id)a3
+- (id)monthViewForCalendarDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -563,7 +563,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 containsCalendarDate:{v4, v11}])
+        if ([v9 containsCalendarDate:{dateCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -590,8 +590,8 @@ LABEL_11:
   if (self->_needToCalculateEligibleToShowYearNumber)
   {
     v3 = objc_opt_class();
-    v4 = [(YearMultipleMonthView *)self calendarDate];
-    self->_eligibleToShowYearNumber = [v3 _headerEligibleForCalendarDate:v4];
+    calendarDate = [(YearMultipleMonthView *)self calendarDate];
+    self->_eligibleToShowYearNumber = [v3 _headerEligibleForCalendarDate:calendarDate];
 
     self->_needToCalculateEligibleToShowYearNumber = 0;
   }
@@ -599,9 +599,9 @@ LABEL_11:
   return self->_eligibleToShowYearNumber;
 }
 
-- (void)hideYearNumberAnimated:(BOOL)a3
+- (void)hideYearNumberAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(YearMultipleMonthView *)self eligibleToShowYearNumber])
   {
     v5 = kCalUILogHandle;
@@ -609,13 +609,13 @@ LABEL_11:
     {
       header = self->_header;
       v7 = v5;
-      v8 = [(YearViewYearHeader *)header calendarDate];
+      calendarDate = [(YearViewYearHeader *)header calendarDate];
       *buf = 134217984;
-      v11 = [v8 year];
+      year = [calendarDate year];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Hiding year number: [%lu]", buf, 0xCu);
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
@@ -632,9 +632,9 @@ LABEL_11:
   }
 }
 
-- (void)showYearNumberAnimated:(BOOL)a3
+- (void)showYearNumberAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(YearMultipleMonthView *)self eligibleToShowYearNumber])
   {
     v5 = kCalUILogHandle;
@@ -642,13 +642,13 @@ LABEL_11:
     {
       header = self->_header;
       v7 = v5;
-      v8 = [(YearViewYearHeader *)header calendarDate];
+      calendarDate = [(YearViewYearHeader *)header calendarDate];
       *buf = 134217984;
-      v11 = [v8 year];
+      year = [calendarDate year];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Showing year number: [%lu]", buf, 0xCu);
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
@@ -665,14 +665,14 @@ LABEL_11:
   }
 }
 
-+ (double)_heightForViewWithVisibleHeader:(BOOL)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5 orientation:(int64_t)a6
++ (double)_heightForViewWithVisibleHeader:(BOOL)header windowSize:(CGSize)size heightSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  headerCopy = header;
   [objc_msgSend(objc_opt_class() "monthClass")];
   v10 = v9;
-  if (v8)
+  if (headerCopy)
   {
     [objc_msgSend(objc_opt_class() "headerClass")];
     return v10 + v11;
@@ -681,21 +681,21 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)_headerEligibleForCalendarDate:(id)a3
++ (BOOL)_headerEligibleForCalendarDate:(id)date
 {
-  v3 = a3;
-  v4 = [v3 year];
-  v5 = [v3 calendarDateByAddingMonths:-1];
+  dateCopy = date;
+  year = [dateCopy year];
+  v5 = [dateCopy calendarDateByAddingMonths:-1];
 
-  LOBYTE(v3) = [v5 year] != v4;
-  return v3;
+  LOBYTE(dateCopy) = [v5 year] != year;
+  return dateCopy;
 }
 
 - (CGSize)monthViewSubviewSize
 {
-  v3 = [(NSArray *)self->_monthViews lastObject];
+  lastObject = [(NSArray *)self->_monthViews lastObject];
   [(YearMultipleMonthView *)self insetBounds];
-  [v3 sizeThatFits:{v4, v5}];
+  [lastObject sizeThatFits:{v4, v5}];
   v7 = v6;
   v9 = v8;
 
@@ -721,8 +721,8 @@ LABEL_11:
   else
   {
     v4 = objc_alloc([objc_opt_class() headerClass]);
-    v5 = [(YearMultipleMonthView *)self calendarDate];
-    v6 = [v4 initWithCalendarDate:v5];
+    calendarDate = [(YearMultipleMonthView *)self calendarDate];
+    v6 = [v4 initWithCalendarDate:calendarDate];
     header = self->_header;
     self->_header = v6;
 
@@ -747,18 +747,18 @@ LABEL_11:
   else
   {
     v4 = objc_alloc_init(NSMutableArray);
-    v11 = [(YearMultipleMonthView *)self calendarDate];
-    v5 = [objc_opt_class() monthClass];
-    if (v5)
+    calendarDate = [(YearMultipleMonthView *)self calendarDate];
+    monthClass = [objc_opt_class() monthClass];
+    if (monthClass)
     {
-      v6 = v5;
-      v7 = [(YearMultipleMonthView *)self maximumNumberOfMonths];
-      if (v7)
+      v6 = monthClass;
+      maximumNumberOfMonths = [(YearMultipleMonthView *)self maximumNumberOfMonths];
+      if (maximumNumberOfMonths)
       {
-        v8 = v7;
+        v8 = maximumNumberOfMonths;
         do
         {
-          v9 = [[v6 alloc] initWithCalendarDate:v11 calendar:self->_calendar];
+          v9 = [[v6 alloc] initWithCalendarDate:calendarDate calendar:self->_calendar];
           [(YearMultipleMonthView *)self addSubview:v9];
           [(NSArray *)v4 addObject:v9];
 
@@ -780,8 +780,8 @@ LABEL_11:
 {
   if ([(YearMultipleMonthView *)self eligibleToShowYearNumber])
   {
-    v3 = [(YearMultipleMonthView *)self calendarDate];
-    [(YearViewYearHeader *)self->_header setCalendarDate:v3];
+    calendarDate = [(YearMultipleMonthView *)self calendarDate];
+    [(YearViewYearHeader *)self->_header setCalendarDate:calendarDate];
 
     [(YearViewYearHeader *)self->_header setHidden:0];
     if (self->_headerIsInViewHierarchy)
@@ -805,8 +805,8 @@ LABEL_11:
 
 - (void)_reloadMonthViews
 {
-  v3 = [(YearMultipleMonthView *)self calendarDate];
-  v4 = [v3 year];
+  calendarDate = [(YearMultipleMonthView *)self calendarDate];
+  year = [calendarDate year];
   self->_containsLastMonthOfYear = 0;
   v14 = 0u;
   v15 = 0u;
@@ -839,16 +839,16 @@ LABEL_11:
         else
         {
           [*(*(&v14 + 1) + 8 * v10) setHidden:{0, v14}];
-          [v11 setCalendarDate:v3];
-          v12 = [v3 calendarDateByAddingMonths:1];
-          v13 = [v12 year];
-          v8 = v13 != v4;
-          if (v13 != v4)
+          [v11 setCalendarDate:calendarDate];
+          v12 = [calendarDate calendarDateByAddingMonths:1];
+          year2 = [v12 year];
+          v8 = year2 != year;
+          if (year2 != year)
           {
             self->_containsLastMonthOfYear = 1;
           }
 
-          v3 = v12;
+          calendarDate = v12;
         }
 
         v10 = v10 + 1;

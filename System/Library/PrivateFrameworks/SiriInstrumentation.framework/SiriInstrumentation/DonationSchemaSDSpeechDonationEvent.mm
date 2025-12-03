@@ -1,32 +1,32 @@
 @interface DonationSchemaSDSpeechDonationEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (DonationSchemaSDSpeechDonationEvent)initWithDictionary:(id)a3;
-- (DonationSchemaSDSpeechDonationEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (DonationSchemaSDSpeechDonationEvent)initWithDictionary:(id)dictionary;
+- (DonationSchemaSDSpeechDonationEvent)initWithJSON:(id)n;
 - (DonationSchemaSDSpeechSampleDonation)speechSampleDonation;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (int)clockIsolationLevel;
 - (void)deleteSpeechSampleDonation;
-- (void)setSpeechSampleDonation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSpeechSampleDonation:(id)donation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DonationSchemaSDSpeechDonationEvent
 
-- (DonationSchemaSDSpeechDonationEvent)initWithDictionary:(id)a3
+- (DonationSchemaSDSpeechDonationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = DonationSchemaSDSpeechDonationEvent;
   v5 = [(DonationSchemaSDSpeechDonationEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetaData"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetaData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(DonationSchemaSDSpeechDonationEvent *)v5 setEventMetaData:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"speechSampleDonation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"speechSampleDonation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (DonationSchemaSDSpeechDonationEvent)initWithJSON:(id)a3
+- (DonationSchemaSDSpeechDonationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DonationSchemaSDSpeechDonationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DonationSchemaSDSpeechDonationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DonationSchemaSDSpeechDonationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,72 +84,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetaData)
   {
-    v4 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetaData = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+    dictionaryRepresentation = [eventMetaData dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetaData"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetaData"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetaData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetaData"];
     }
   }
 
   if (self->_speechSampleDonation)
   {
-    v7 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    speechSampleDonation = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+    dictionaryRepresentation2 = [speechSampleDonation dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"speechSampleDonation"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"speechSampleDonation"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"speechSampleDonation"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"speechSampleDonation"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_13;
   }
 
-  v6 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
-  v7 = [v4 eventMetaData];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetaData = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+  eventMetaData2 = [equalCopy eventMetaData];
+  if ((eventMetaData != 0) == (eventMetaData2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
-  if (v8)
+  eventMetaData3 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+  if (eventMetaData3)
   {
-    v9 = v8;
-    v10 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
-    v11 = [v4 eventMetaData];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetaData3;
+    eventMetaData4 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+    eventMetaData5 = [equalCopy eventMetaData];
+    v12 = [eventMetaData4 isEqual:eventMetaData5];
 
     if (!v12)
     {
@@ -161,12 +161,12 @@
   {
   }
 
-  v6 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
-  v7 = [v4 speechSampleDonation];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetaData = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+  eventMetaData2 = [equalCopy speechSampleDonation];
+  if ((eventMetaData != 0) != (eventMetaData2 == 0))
   {
-    v13 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
-    if (!v13)
+    speechSampleDonation = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+    if (!speechSampleDonation)
     {
 
 LABEL_16:
@@ -174,10 +174,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
-    v16 = [v4 speechSampleDonation];
-    v17 = [v15 isEqual:v16];
+    v14 = speechSampleDonation;
+    speechSampleDonation2 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+    speechSampleDonation3 = [equalCopy speechSampleDonation];
+    v17 = [speechSampleDonation2 isEqual:speechSampleDonation3];
 
     if (v17)
     {
@@ -197,22 +197,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+  toCopy = to;
+  eventMetaData = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
 
-  if (v4)
+  if (eventMetaData)
   {
-    v5 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+    eventMetaData2 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+  speechSampleDonation = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
 
-  if (v6)
+  if (speechSampleDonation)
   {
-    v7 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+    speechSampleDonation2 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -242,16 +242,16 @@ LABEL_14:
   return v3;
 }
 
-- (void)setSpeechSampleDonation:(id)a3
+- (void)setSpeechSampleDonation:(id)donation
 {
   v3 = 101;
-  if (!a3)
+  if (!donation)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_speechSampleDonation, a3);
+  objc_storeStrong(&self->_speechSampleDonation, donation);
 }
 
 - (id)qualifiedMessageName
@@ -267,26 +267,26 @@ LABEL_14:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = DonationSchemaSDSpeechDonationEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  eventMetaData = [(DonationSchemaSDSpeechDonationEvent *)self eventMetaData];
+  v7 = [eventMetaData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DonationSchemaSDSpeechDonationEvent *)self deleteEventMetaData];
   }
 
-  v9 = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  speechSampleDonation = [(DonationSchemaSDSpeechDonationEvent *)self speechSampleDonation];
+  v10 = [speechSampleDonation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DonationSchemaSDSpeechDonationEvent *)self deleteSpeechSampleDonation];
   }
@@ -317,9 +317,9 @@ LABEL_14:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"speechSampleDonation";
   }

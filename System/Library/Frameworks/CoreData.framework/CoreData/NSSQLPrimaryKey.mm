@@ -1,6 +1,6 @@
 @interface NSSQLPrimaryKey
-- (NSSQLPrimaryKey)initWithEntity:(id)a3 propertyDescription:(id)a4;
-- (void)copyValuesForReadOnlyFetch:(id)a3;
+- (NSSQLPrimaryKey)initWithEntity:(id)entity propertyDescription:(id)description;
+- (void)copyValuesForReadOnlyFetch:(id)fetch;
 - (void)dealloc;
 @end
 
@@ -13,11 +13,11 @@
   [(NSSQLColumn *)&v3 dealloc];
 }
 
-- (NSSQLPrimaryKey)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLPrimaryKey)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v9.receiver = self;
   v9.super_class = NSSQLPrimaryKey;
-  v4 = [(NSSQLColumn *)&v9 initWithEntity:a3 propertyDescription:0];
+  v4 = [(NSSQLColumn *)&v9 initWithEntity:entity propertyDescription:0];
   v5 = v4;
   if (v4)
   {
@@ -42,12 +42,12 @@
   return v5;
 }
 
-- (void)copyValuesForReadOnlyFetch:(id)a3
+- (void)copyValuesForReadOnlyFetch:(id)fetch
 {
   v5.receiver = self;
   v5.super_class = NSSQLPrimaryKey;
   [(NSSQLColumn *)&v5 copyValuesForReadOnlyFetch:?];
-  self->_name = [objc_msgSend(a3 "name")];
+  self->_name = [objc_msgSend(fetch "name")];
 }
 
 @end

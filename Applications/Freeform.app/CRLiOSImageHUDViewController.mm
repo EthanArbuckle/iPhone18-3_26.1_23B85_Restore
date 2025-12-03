@@ -1,18 +1,18 @@
 @interface CRLiOSImageHUDViewController
 - (BOOL)accessibilityPerformEscape;
-- (CGRect)p_viewPositionAtTop:(BOOL)a3 inside:(BOOL)a4 ofUnscaledRect:(CGRect)a5;
+- (CGRect)p_viewPositionAtTop:(BOOL)top inside:(BOOL)inside ofUnscaledRect:(CGRect)rect;
 - (CRLiOSImageHUDViewController)init;
-- (double)p_overlapOfViewRectWithKnobs:(CGRect)a3;
-- (void)buttonPressed:(id)a3;
-- (void)closeHUDWithAnimation:(BOOL)a3;
+- (double)p_overlapOfViewRectWithKnobs:(CGRect)knobs;
+- (void)buttonPressed:(id)pressed;
+- (void)closeHUDWithAnimation:(BOOL)animation;
 - (void)dealloc;
 - (void)didEndDynamicOperation;
 - (void)didEndScrollingOperation;
 - (void)didEndZoomingOperation;
-- (void)hideHUDForRep:(id)a3;
+- (void)hideHUDForRep:(id)rep;
 - (void)i_observedTraitsDidUpdate;
 - (void)loadView;
-- (void)p_didEndDynamicOperation:(id)a3;
+- (void)p_didEndDynamicOperation:(id)operation;
 - (void)p_resumeCollaborationIfNeeded;
 - (void)p_startIgnoringKeyboardIfNeeded;
 - (void)p_stopIgnoringKeyboardIfNeeded;
@@ -20,12 +20,12 @@
 - (void)p_updateHUDAppearance;
 - (void)p_updateHUDSize;
 - (void)p_updateViewPosition;
-- (void)setView:(id)a3;
-- (void)showHUDForRep:(id)a3;
-- (void)sliderChanged:(id)a3;
-- (void)sliderEnd:(id)a3;
-- (void)sliderStart:(id)a3;
-- (void)updateControlsForRep:(id)a3;
+- (void)setView:(id)view;
+- (void)showHUDForRep:(id)rep;
+- (void)sliderChanged:(id)changed;
+- (void)sliderEnd:(id)end;
+- (void)sliderStart:(id)start;
+- (void)updateControlsForRep:(id)rep;
 - (void)viewDidLoad;
 - (void)willBeginDynamicOperation;
 - (void)willBeginZoomingOperation;
@@ -51,13 +51,13 @@
   [(UIButton *)self->_doneButton addTarget:self action:"buttonPressed:" forControlEvents:64];
   LODWORD(v5) = 1148846080;
   [(UIButton *)self->_doneButton setContentCompressionResistancePriority:0 forAxis:v5];
-  v6 = [(UIButton *)self->_doneButton topAnchor];
-  v7 = [(UIView *)self->_backgroundView topAnchor];
-  v53 = [v6 constraintEqualToAnchor:v7 constant:8.0];
+  topAnchor = [(UIButton *)self->_doneButton topAnchor];
+  topAnchor2 = [(UIView *)self->_backgroundView topAnchor];
+  v53 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
 
-  v8 = [(UIButton *)self->_doneButton bottomAnchor];
-  v9 = [(UIView *)self->_backgroundView bottomAnchor];
-  v52 = [v8 constraintEqualToAnchor:v9 constant:-8.0];
+  bottomAnchor = [(UIButton *)self->_doneButton bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_backgroundView bottomAnchor];
+  v52 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
 
   v10 = objc_alloc_init(CRLiOSImageHUDSlider);
   slider = self->_slider;
@@ -73,8 +73,8 @@
   [(CRLiOSImageHUDSlider *)self->_slider addTarget:self action:"sliderChanged:" forControlEvents:4096];
   [(CRLiOSImageHUDSlider *)self->_slider addTarget:self action:"sliderEnd:" forControlEvents:448];
   [(CRLiOSImageHUDSlider *)self->_slider setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(CRLiOSImageHUDSlider *)self->_slider widthAnchor];
-  v15 = [v14 constraintEqualToConstant:150.0];
+  widthAnchor = [(CRLiOSImageHUDSlider *)self->_slider widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:150.0];
 
   LODWORD(v16) = 1144766464;
   [v15 setPriority:v16];
@@ -105,38 +105,38 @@
   }
 
   [v21 setLayoutMargins:{0.0, v23, 0.0, v23}];
-  v49 = [v17 topAnchor];
-  v48 = [(CRLiOSImageHUDSlider *)self->_slider topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  topAnchor3 = [v17 topAnchor];
+  topAnchor4 = [(CRLiOSImageHUDSlider *)self->_slider topAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v55[0] = v47;
-  v46 = [v17 bottomAnchor];
-  v45 = [(CRLiOSImageHUDSlider *)self->_slider bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor3 = [v17 bottomAnchor];
+  bottomAnchor4 = [(CRLiOSImageHUDSlider *)self->_slider bottomAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v55[1] = v44;
-  v43 = [v17 leftAnchor];
-  v42 = [(CRLiOSImageHUDSlider *)self->_slider leftAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:-9.0];
+  leftAnchor = [v17 leftAnchor];
+  leftAnchor2 = [(CRLiOSImageHUDSlider *)self->_slider leftAnchor];
+  v41 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:-9.0];
   v55[2] = v41;
   v50 = v17;
-  v40 = [v17 rightAnchor];
-  v39 = [(CRLiOSImageHUDSlider *)self->_slider rightAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:0.0];
+  rightAnchor = [v17 rightAnchor];
+  rightAnchor2 = [(CRLiOSImageHUDSlider *)self->_slider rightAnchor];
+  v38 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
   v55[3] = v38;
-  v37 = [v21 topAnchor];
-  v36 = [(UIView *)self->_backgroundView topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  topAnchor5 = [v21 topAnchor];
+  topAnchor6 = [(UIView *)self->_backgroundView topAnchor];
+  v35 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v55[4] = v35;
-  v34 = [v21 bottomAnchor];
-  v33 = [(UIView *)self->_backgroundView bottomAnchor];
-  v24 = [v34 constraintEqualToAnchor:v33];
+  bottomAnchor5 = [v21 bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_backgroundView bottomAnchor];
+  v24 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v55[5] = v24;
-  v25 = [v21 leftAnchor];
-  v26 = [(UIView *)self->_backgroundView leftAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  leftAnchor3 = [v21 leftAnchor];
+  leftAnchor4 = [(UIView *)self->_backgroundView leftAnchor];
+  v27 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v55[6] = v27;
-  v28 = [v21 rightAnchor];
-  v29 = [(UIView *)self->_backgroundView rightAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  rightAnchor3 = [v21 rightAnchor];
+  rightAnchor4 = [(UIView *)self->_backgroundView rightAnchor];
+  v30 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v55[7] = v30;
   v31 = [NSArray arrayWithObjects:v55 count:8];
   [NSLayoutConstraint activateConstraints:v31];
@@ -201,10 +201,10 @@
   [(CRLiOSImageHUDViewController *)&v6 dealloc];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
     slider = self->_slider;
     self->_slider = 0;
@@ -215,7 +215,7 @@
 
   v7.receiver = self;
   v7.super_class = CRLiOSImageHUDViewController;
-  [(CRLiOSImageHUDViewController *)&v7 setView:v4];
+  [(CRLiOSImageHUDViewController *)&v7 setView:viewCopy];
 }
 
 - (void)i_observedTraitsDidUpdate
@@ -225,7 +225,7 @@
   [(CRLiOSImageHUDViewController *)self p_updateHUDAppearance];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_rep);
   [WeakRetained endEditingMask];
@@ -253,9 +253,9 @@
   {
     self->_didSuspendCollaboration = 1;
     WeakRetained = objc_loadWeakRetained(&self->_rep);
-    v3 = [WeakRetained interactiveCanvasController];
-    v4 = [v3 editingCoordinator];
-    [v4 suspendCollaborationWithReason:@"CRLImageHUDSliderDrag"];
+    interactiveCanvasController = [WeakRetained interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    [editingCoordinator suspendCollaborationWithReason:@"CRLImageHUDSliderDrag"];
   }
 }
 
@@ -264,24 +264,24 @@
   if (self->_didSuspendCollaboration)
   {
     WeakRetained = objc_loadWeakRetained(&self->_rep);
-    v4 = [WeakRetained interactiveCanvasController];
-    v5 = [v4 editingCoordinator];
-    [v5 resumeCollaborationWithReason:@"CRLImageHUDSliderDrag"];
+    interactiveCanvasController = [WeakRetained interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    [editingCoordinator resumeCollaborationWithReason:@"CRLImageHUDSliderDrag"];
 
     self->_didSuspendCollaboration = 0;
   }
 }
 
-- (void)sliderStart:(id)a3
+- (void)sliderStart:(id)start
 {
   [(CRLiOSImageHUDViewController *)self p_startIgnoringKeyboardIfNeeded];
   [(CRLiOSImageHUDViewController *)self p_suspendCollaborationIfNeeded];
   if (!self->_maskResizer)
   {
     WeakRetained = objc_loadWeakRetained(&self->_rep);
-    v5 = [WeakRetained newMaskResizer];
+    newMaskResizer = [WeakRetained newMaskResizer];
     maskResizer = self->_maskResizer;
-    self->_maskResizer = v5;
+    self->_maskResizer = newMaskResizer;
 
     v7 = self->_maskResizer;
     v8 = objc_loadWeakRetained(&self->_rep);
@@ -293,7 +293,7 @@
   }
 }
 
-- (void)sliderChanged:(id)a3
+- (void)sliderChanged:(id)changed
 {
   maskResizer = self->_maskResizer;
   if (maskResizer)
@@ -305,12 +305,12 @@
   }
 }
 
-- (void)sliderEnd:(id)a3
+- (void)sliderEnd:(id)end
 {
   maskResizer = self->_maskResizer;
   if (maskResizer)
   {
-    [(CRLMaskResizing *)maskResizer endResizingRepAtScale:a3, self->_lastValue];
+    [(CRLMaskResizing *)maskResizer endResizingRepAtScale:end, self->_lastValue];
     self->_animateNextTransition = 1;
     v5 = self->_maskResizer;
     self->_maskResizer = 0;
@@ -321,30 +321,30 @@
   [(CRLiOSImageHUDViewController *)self p_resumeCollaborationIfNeeded];
 }
 
-- (void)updateControlsForRep:(id)a3
+- (void)updateControlsForRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v6 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v7 = objc_loadWeakRetained(&self->_rep);
-  if (v7 == v4 && !self->_maskResizer)
+  maskScaleDetents = objc_loadWeakRetained(&self->_rep);
+  if (maskScaleDetents == repCopy && !self->_maskResizer)
   {
-    v8 = [v6 isInDynamicOperation];
+    isInDynamicOperation = [interactiveCanvasController isInDynamicOperation];
 
-    if (v8)
+    if (isInDynamicOperation)
     {
       goto LABEL_4;
     }
 
     v22 = 0;
     v21 = 0;
-    [v4 maskScaleLimitsReturningMin:&v22 max:&v21];
-    v7 = [v4 maskScaleDetents];
+    [repCopy maskScaleLimitsReturningMin:&v22 max:&v21];
+    maskScaleDetents = [repCopy maskScaleDetents];
     v9 = 0;
-    if ([v4 isMaskScaleFromLayout])
+    if ([repCopy isMaskScaleFromLayout])
     {
-      [v4 maskScale];
+      [repCopy maskScale];
       v9 = v10;
     }
 
@@ -353,8 +353,8 @@
     v14 = &unk_10184DF70;
     v17 = v22;
     v18 = v21;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = maskScaleDetents;
     v19 = v9;
     v20 = v11;
     if ([NSThread isMainThread:_NSConcreteStackBlock])
@@ -371,10 +371,10 @@
 LABEL_4:
 }
 
-- (void)showHUDForRep:(id)a3
+- (void)showHUDForRep:(id)rep
 {
-  v4 = a3;
-  if (!v4)
+  repCopy = rep;
+  if (!repCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -434,49 +434,49 @@ LABEL_4:
 
   WeakRetained = objc_loadWeakRetained(&self->_rep);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != repCopy)
   {
-    objc_storeWeak(&self->_rep, v4);
+    objc_storeWeak(&self->_rep, repCopy);
     self->_pinnedToTopOfImage = 0;
-    v12 = [v4 interactiveCanvasController];
-    [v12 addDecorator:self];
-    v13 = [(CRLiOSImageHUDViewController *)self view];
-    v14 = [v12 canvasView];
-    [v13 setHidden:0];
-    v15 = [v13 superview];
+    interactiveCanvasController = [repCopy interactiveCanvasController];
+    [interactiveCanvasController addDecorator:self];
+    view = [(CRLiOSImageHUDViewController *)self view];
+    canvasView = [interactiveCanvasController canvasView];
+    [view setHidden:0];
+    superview = [view superview];
 
-    if (v15 != v14)
+    if (superview != canvasView)
     {
-      [v13 removeFromSuperview];
-      [v14 addSubview:v13];
+      [view removeFromSuperview];
+      [canvasView addSubview:view];
     }
 
-    [(CRLiOSImageHUDViewController *)self updateControlsForRep:v4];
-    if ([v12 isInDynamicOperation])
+    [(CRLiOSImageHUDViewController *)self updateControlsForRep:repCopy];
+    if ([interactiveCanvasController isInDynamicOperation])
     {
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1002717CC;
       v18[3] = &unk_10183AB38;
-      v18[4] = v13;
+      v18[4] = view;
       [UIView animateWithDuration:0 delay:v18 options:0 animations:*&qword_1019F08B8 completion:*&qword_1019F08C0];
     }
 
     else
     {
       [(CRLiOSImageHUDViewController *)self p_updateViewPosition];
-      [v13 setAlpha:1.0];
+      [view setAlpha:1.0];
     }
 
     v16 = UIAccessibilityLayoutChangedNotification;
-    v17 = [(CRLiOSImageHUDViewController *)self view];
-    UIAccessibilityPostNotification(v16, v17);
+    view2 = [(CRLiOSImageHUDViewController *)self view];
+    UIAccessibilityPostNotification(v16, view2);
   }
 }
 
-- (void)hideHUDForRep:(id)a3
+- (void)hideHUDForRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -507,48 +507,48 @@ LABEL_4:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  if (WeakRetained != v4 || ![(CRLiOSImageHUDViewController *)self isViewLoaded])
+  if (WeakRetained != repCopy || ![(CRLiOSImageHUDViewController *)self isViewLoaded])
   {
     goto LABEL_15;
   }
 
-  v9 = [(CRLiOSImageHUDViewController *)self notAllowedToHideHUD];
+  notAllowedToHideHUD = [(CRLiOSImageHUDViewController *)self notAllowedToHideHUD];
 
-  if ((v9 & 1) == 0)
+  if ((notAllowedToHideHUD & 1) == 0)
   {
     [(CRLiOSImageHUDViewController *)self p_stopIgnoringKeyboardIfNeeded];
     [(CRLiOSImageHUDViewController *)self p_resumeCollaborationIfNeeded];
     objc_storeWeak(&self->_rep, 0);
-    WeakRetained = [v4 interactiveCanvasController];
+    WeakRetained = [repCopy interactiveCanvasController];
     [WeakRetained removeDecorator:self];
-    v10 = [(CRLiOSImageHUDViewController *)self view];
-    v11 = [v10 superview];
+    view = [(CRLiOSImageHUDViewController *)self view];
+    superview = [view superview];
     v12 = *&qword_1019F08B0;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100271AD4;
     v14[3] = &unk_10183AB38;
-    v15 = v10;
-    v13 = v10;
-    [UIView transitionWithView:v11 duration:5242880 options:v14 animations:0 completion:v12];
+    v15 = view;
+    v13 = view;
+    [UIView transitionWithView:superview duration:5242880 options:v14 animations:0 completion:v12];
 
 LABEL_15:
   }
 }
 
-- (void)closeHUDWithAnimation:(BOOL)a3
+- (void)closeHUDWithAnimation:(BOOL)animation
 {
   if (![(CRLiOSImageHUDViewController *)self notAllowedToHideHUD])
   {
     WeakRetained = objc_loadWeakRetained(&self->_rep);
     [(CRLiOSImageHUDViewController *)self hideHUDForRep:WeakRetained];
 
-    if (!a3)
+    if (!animation)
     {
       if ([(CRLiOSImageHUDViewController *)self isViewLoaded])
       {
-        v6 = [(CRLiOSImageHUDViewController *)self view];
-        [v6 removeFromSuperview];
+        view = [(CRLiOSImageHUDViewController *)self view];
+        [view removeFromSuperview];
       }
     }
   }
@@ -585,14 +585,14 @@ LABEL_15:
 
 - (void)willBeginZoomingOperation
 {
-  v2 = [(CRLiOSImageHUDViewController *)self view];
-  [v2 setHidden:1];
+  view = [(CRLiOSImageHUDViewController *)self view];
+  [view setHidden:1];
 }
 
 - (void)didEndZoomingOperation
 {
-  v3 = [(CRLiOSImageHUDViewController *)self view];
-  [v3 setHidden:0];
+  view = [(CRLiOSImageHUDViewController *)self view];
+  [view setHidden:0];
 
   [(CRLiOSImageHUDViewController *)self p_updateViewPosition];
 }
@@ -600,13 +600,13 @@ LABEL_15:
 - (void)p_updateHUDSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  [v4 visibleScaledRectForCanvasUI];
+  [interactiveCanvasController visibleScaledRectForCanvasUI];
   v6 = v5;
   doneStringWidth = self->_doneStringWidth;
-  v8 = [(CRLiOSImageHUDViewController *)self view];
-  [v8 frame];
+  view = [(CRLiOSImageHUDViewController *)self view];
+  [view frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -671,24 +671,24 @@ LABEL_15:
     v21 = v19 + 75.0 - v20;
   }
 
-  v22 = [(CRLiOSImageHUDViewController *)self view];
-  [v22 setFrame:{v10, v12, v21, v14}];
+  view2 = [(CRLiOSImageHUDViewController *)self view];
+  [view2 setFrame:{v10, v12, v21, v14}];
 }
 
-- (CGRect)p_viewPositionAtTop:(BOOL)a3 inside:(BOOL)a4 ofUnscaledRect:(CGRect)a5
+- (CGRect)p_viewPositionAtTop:(BOOL)top inside:(BOOL)inside ofUnscaledRect:(CGRect)rect
 {
-  height = a5.size.height;
-  rect = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v8 = a4;
-  v9 = a3;
+  height = rect.size.height;
+  rect = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  insideCopy = inside;
+  topCopy = top;
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v12 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v13 = [v12 canvasView];
-  v14 = [(CRLiOSImageHUDViewController *)self view];
-  [v14 frame];
+  canvasView = [interactiveCanvasController canvasView];
+  view = [(CRLiOSImageHUDViewController *)self view];
+  [view frame];
   v90 = v16;
   v91 = v15;
   v17 = objc_loadWeakRetained(&self->_rep);
@@ -725,7 +725,7 @@ LABEL_15:
   v95.size.width = v24;
   v95.size.height = v26;
   MinY = CGRectGetMinY(v95);
-  [v12 viewScale];
+  [interactiveCanvasController viewScale];
   v33 = v32;
   v96.origin.x = x;
   v96.origin.y = y;
@@ -734,9 +734,9 @@ LABEL_15:
   MidX = CGRectGetMidX(v96);
   v35 = x;
   v36 = y;
-  v37 = rect;
+  rectCopy = rect;
   v38 = height;
-  if (v9)
+  if (topCopy)
   {
     v39 = CGRectGetMinY(*&v35);
   }
@@ -747,12 +747,12 @@ LABEL_15:
   }
 
   v40 = fmax(fmax(fmax(MaxX - v29, v29 - MinX), fmax(MaxY - v88, v88 - MinY)) * v33 + 1.0, 16.0);
-  v41 = v9 ^ v8;
-  [v12 convertUnscaledToBoundsPoint:{MidX, v39}];
+  v41 = topCopy ^ insideCopy;
+  [interactiveCanvasController convertUnscaledToBoundsPoint:{MidX, v39}];
   v43 = v42;
   v45 = v44;
-  v46 = [v12 canvasView];
-  [v46 convertPoint:v13 toView:{v43, v45}];
+  canvasView2 = [interactiveCanvasController canvasView];
+  [canvasView2 convertPoint:canvasView toView:{v43, v45}];
   v48 = v47;
   v50 = v49;
 
@@ -763,13 +763,13 @@ LABEL_15:
   }
 
   v52 = v51 + v50;
-  [v12 visibleScaledRectForCanvasUI];
+  [interactiveCanvasController visibleScaledRectForCanvasUI];
   v54 = v53;
   v56 = v55;
   v58 = v57;
   v60 = v59;
-  v61 = [v12 canvasView];
-  [v61 convertRect:v13 toView:{v54, v56, v58, v60}];
+  canvasView3 = [interactiveCanvasController canvasView];
+  [canvasView3 convertRect:canvasView toView:{v54, v56, v58, v60}];
   v63 = v62;
   v65 = v64;
   v67 = v66;
@@ -800,9 +800,9 @@ LABEL_15:
 - (void)p_updateViewPosition
 {
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [(CRLiOSImageHUDViewController *)self view];
+  view = [(CRLiOSImageHUDViewController *)self view];
   v6 = objc_loadWeakRetained(&self->_rep);
   if ([v6 isInDynamicOperation])
   {
@@ -810,9 +810,9 @@ LABEL_15:
 
   else
   {
-    [v5 frame];
+    [view frame];
     v8 = v7;
-    [v4 visibleScaledRectForCanvasUI];
+    [interactiveCanvasController visibleScaledRectForCanvasUI];
     v10 = v9;
 
     if (v8 <= v10)
@@ -824,8 +824,8 @@ LABEL_15:
       v15 = v14;
 
       v16 = objc_loadWeakRetained(&self->_rep);
-      v17 = [v16 layout];
-      [v17 frameInRoot];
+      layout = [v16 layout];
+      [layout frameInRoot];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -877,8 +877,8 @@ LABEL_15:
         }
       }
 
-      v54 = [v4 canvasView];
-      if (!v54)
+      canvasView = [interactiveCanvasController canvasView];
+      if (!canvasView)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -907,29 +907,29 @@ LABEL_15:
         [CRLAssertionHandler handleFailureInFunction:v56 file:v57 lineNumber:609 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasView"];
       }
 
-      v58 = [v4 layerHost];
-      v59 = [v58 asiOSCVC];
-      v60 = [v59 view];
-      v61 = [v60 window];
-      v62 = [v61 rootViewController];
-      v63 = [v62 view];
+      layerHost = [interactiveCanvasController layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
+      view2 = [asiOSCVC view];
+      window = [view2 window];
+      rootViewController = [window rootViewController];
+      view3 = [rootViewController view];
 
-      if (v63)
+      if (view3)
       {
-        if (v54)
+        if (canvasView)
         {
-          [v63 safeAreaInsets];
+          [view3 safeAreaInsets];
           v65 = v64;
           v67 = v66;
           v69 = v68;
           v71 = v70;
-          [v63 convertRect:v54 fromCoordinateSpace:{v27, v29, v31, v33}];
+          [view3 convertRect:canvasView fromCoordinateSpace:{v27, v29, v31, v33}];
           v73 = v72;
           v75 = v74;
           v77 = v76;
           v79 = v78;
-          [v63 bounds];
-          [v54 convertRect:v63 fromCoordinateSpace:{sub_100120B08(v73, v75, v77, v79, v67 + v80, v65 + v81, v82 - (v67 + v71), v83 - (v65 + v69))}];
+          [view3 bounds];
+          [canvasView convertRect:view3 fromCoordinateSpace:{sub_100120B08(v73, v75, v77, v79, v67 + v80, v65 + v81, v82 - (v67 + v71), v83 - (v65 + v69))}];
           v27 = v84;
           v29 = v85;
           v31 = v86;
@@ -995,29 +995,29 @@ LABEL_15:
         [CRLAssertionHandler handleFailureInFunction:v92 file:v93 lineNumber:620 isFatal:0 description:"This operation must only be performed on the main thread."];
       }
 
-      [v5 setFrame:{v27, v29, v31, v33}];
+      [view setFrame:{v27, v29, v31, v33}];
     }
   }
 }
 
-- (double)p_overlapOfViewRectWithKnobs:(CGRect)a3
+- (double)p_overlapOfViewRectWithKnobs:(CGRect)knobs
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = knobs.size.height;
+  width = knobs.size.width;
+  y = knobs.origin.y;
+  x = knobs.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v9 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v10 = [v9 canvasView];
-  v11 = [v9 canvasView];
-  [v10 convertRect:v11 toView:{x, y, width, height}];
+  canvasView = [interactiveCanvasController canvasView];
+  canvasView2 = [interactiveCanvasController canvasView];
+  [canvasView convertRect:canvasView2 toView:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  [v9 convertBoundsToUnscaledRect:{v13, v15, v17, v19}];
+  [interactiveCanvasController convertBoundsToUnscaledRect:{v13, v15, v17, v19}];
   v83 = v21;
   v84 = v20;
   v81 = v23;
@@ -1055,10 +1055,10 @@ LABEL_15:
   r1_24 = v53;
 
   v55 = objc_loadWeakRetained(&self->_rep);
-  v56 = [v55 info];
+  info = [v55 info];
 
-  v57 = [v56 geometry];
-  [v57 angle];
+  geometry = [info geometry];
+  [geometry angle];
   sub_1001208E0(v58);
   v60 = v59;
 
@@ -1141,7 +1141,7 @@ LABEL_11:
   return v69;
 }
 
-- (void)p_didEndDynamicOperation:(id)a3
+- (void)p_didEndDynamicOperation:(id)operation
 {
   [(CRLiOSImageHUDViewController *)self p_updateViewPosition];
   v4[0] = _NSConcreteStackBlock;
@@ -1160,11 +1160,11 @@ LABEL_11:
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
     [(UIView *)self->_backgroundView crl_setGlassBackground];
-    v5 = [(UIView *)self->_backgroundView layer];
-    [v5 setCornerRadius:22.0];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:22.0];
 
-    v6 = [(UIView *)self->_backgroundView layer];
-    [v6 setCornerCurve:kCACornerCurveContinuous];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setCornerCurve:kCACornerCurveContinuous];
 
     v7 = [UIImageSymbolConfiguration configurationWithPointSize:UIFontWeightMedium weight:24.0];
     v8 = [UIImage systemImageNamed:@"checkmark.circle.fill" withConfiguration:v7];
@@ -1187,14 +1187,14 @@ LABEL_11:
     v14 = +[UIColor systemBackgroundColor];
     [(UIView *)self->_backgroundView setBackgroundColor:v14];
 
-    v15 = [(UIView *)self->_backgroundView layer];
-    [v15 crl_applyDefaultCanvasOverlayUIShadowSettings];
+    layer3 = [(UIView *)self->_backgroundView layer];
+    [layer3 crl_applyDefaultCanvasOverlayUIShadowSettings];
 
-    v16 = [(UIView *)self->_backgroundView layer];
-    [v16 setCornerRadius:22.0];
+    layer4 = [(UIView *)self->_backgroundView layer];
+    [layer4 setCornerRadius:22.0];
 
-    v17 = [(UIView *)self->_backgroundView layer];
-    [v17 setCornerCurve:kCACornerCurveContinuous];
+    layer5 = [(UIView *)self->_backgroundView layer];
+    [layer5 setCornerCurve:kCACornerCurveContinuous];
 
     v33 = [UIFont systemFontOfSize:18.0];
     v18 = +[UIColor labelColor];

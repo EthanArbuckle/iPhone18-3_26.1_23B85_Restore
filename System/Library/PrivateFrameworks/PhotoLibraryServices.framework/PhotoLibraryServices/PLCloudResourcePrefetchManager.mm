@@ -1,73 +1,73 @@
 @interface PLCloudResourcePrefetchManager
-+ (BOOL)_hasAssetsNeedingOneTimeThumbRebuildInContext:(id)a3;
-+ (BOOL)_prefetchIsEnabledForPhase:(unint64_t)a3 givenMode:(int64_t)a4 andInitialSyncDate:(id)a5;
-+ (BOOL)shouldGenerateThumbnailFromResource:(id)a3 forAsset:(id)a4;
-+ (id)_fetchThumbnailResourcesForAssets:(id)a3 version:(unsigned int)a4 maxRetry:(unint64_t)a5 inContext:(id)a6 error:(id *)a7;
-+ (id)_identifierForResourceDownload:(id)a3;
-+ (id)_resourcesWithPredicate:(id)a3 limit:(unint64_t)a4 context:(id)a5;
-+ (id)descriptionForPrefetchMode:(int64_t)a3;
-+ (id)descriptionForPrefetchPhase:(unint64_t)a3;
-+ (id)thumbnailResourcesNeedingPrefetchInContext:(id)a3 maxRetry:(unint64_t)a4 limit:(int64_t)a5;
-+ (void)resourcesToPrefetchWithPrefetchPhase:(unint64_t)a3 prefetchMode:(int64_t)a4 prefetchOptimizeMode:(int64_t)a5 initialSyncDate:(id)a6 lastCompletePrefetchDate:(id)a7 initialBudget:(int64_t)a8 excludeDynamicCPLResources:(BOOL)a9 prefetchConfiguration:(id)a10 photoLibrary:(id)a11 applyPerPrefetchLimit:(BOOL)a12 resultHandler:(id)a13;
-- (BOOL)_canPrefetchInLibrary:(id)a3;
-- (BOOL)_isInflightResourceIdentifier:(id)a3;
++ (BOOL)_hasAssetsNeedingOneTimeThumbRebuildInContext:(id)context;
++ (BOOL)_prefetchIsEnabledForPhase:(unint64_t)phase givenMode:(int64_t)mode andInitialSyncDate:(id)date;
++ (BOOL)shouldGenerateThumbnailFromResource:(id)resource forAsset:(id)asset;
++ (id)_fetchThumbnailResourcesForAssets:(id)assets version:(unsigned int)version maxRetry:(unint64_t)retry inContext:(id)context error:(id *)error;
++ (id)_identifierForResourceDownload:(id)download;
++ (id)_resourcesWithPredicate:(id)predicate limit:(unint64_t)limit context:(id)context;
++ (id)descriptionForPrefetchMode:(int64_t)mode;
++ (id)descriptionForPrefetchPhase:(unint64_t)phase;
++ (id)thumbnailResourcesNeedingPrefetchInContext:(id)context maxRetry:(unint64_t)retry limit:(int64_t)limit;
++ (void)resourcesToPrefetchWithPrefetchPhase:(unint64_t)phase prefetchMode:(int64_t)mode prefetchOptimizeMode:(int64_t)optimizeMode initialSyncDate:(id)date lastCompletePrefetchDate:(id)prefetchDate initialBudget:(int64_t)budget excludeDynamicCPLResources:(BOOL)resources prefetchConfiguration:(id)self0 photoLibrary:(id)self1 applyPerPrefetchLimit:(BOOL)self2 resultHandler:(id)self3;
+- (BOOL)_canPrefetchInLibrary:(id)library;
+- (BOOL)_isInflightResourceIdentifier:(id)identifier;
 - (BOOL)_isPrefetchDisabled;
-- (BOOL)_prefetchIsEnabledForPhase:(unint64_t)a3;
+- (BOOL)_prefetchIsEnabledForPhase:(unint64_t)phase;
 - (PLCloudResourcePrefetchManager)init;
-- (PLCloudResourcePrefetchManager)initWithCPLManager:(id)a3 pruneManager:(id)a4 libraryServicesManager:(id)a5;
+- (PLCloudResourcePrefetchManager)initWithCPLManager:(id)manager pruneManager:(id)pruneManager libraryServicesManager:(id)servicesManager;
 - (id)_allInflightResourceIdentifiers;
-- (id)_inflightResourceIdentifiersForPrefetchPhase:(unint64_t)a3;
-- (id)_lastCompletePrefetchDateInLibrary:(id)a3;
-- (id)_prefetchStatusForDebug:(BOOL)a3;
-- (id)_resourcesToPrefetchWithPrefetchPhase:(unint64_t)a3 photoLibrary:(id)a4 applyPerPrefetchLimit:(BOOL)a5 initialBudget:(int64_t *)a6;
+- (id)_inflightResourceIdentifiersForPrefetchPhase:(unint64_t)phase;
+- (id)_lastCompletePrefetchDateInLibrary:(id)library;
+- (id)_prefetchStatusForDebug:(BOOL)debug;
+- (id)_resourcesToPrefetchWithPrefetchPhase:(unint64_t)phase photoLibrary:(id)library applyPerPrefetchLimit:(BOOL)limit initialBudget:(int64_t *)budget;
 - (id)_volumeInfo;
-- (id)prefetchStatusForDebug:(BOOL)a3;
-- (int64_t)_diskSpaceBudgetForPrefetchPhase:(unint64_t)a3 prefetchOptimizeMode:(int64_t)a4;
+- (id)prefetchStatusForDebug:(BOOL)debug;
+- (int64_t)_diskSpaceBudgetForPrefetchPhase:(unint64_t)phase prefetchOptimizeMode:(int64_t)mode;
 - (int64_t)_prefetchOptimizeModeBasedOnLibrarySize;
 - (int64_t)_totalSizeOfLocallyAvailableOriginalResources;
 - (int64_t)_totalSizeOfOriginalResources;
-- (int64_t)_totalSizeOfOriginalResourcesForPrefetchWithPredicate:(id)a3;
+- (int64_t)_totalSizeOfOriginalResourcesForPrefetchWithPredicate:(id)predicate;
 - (unint64_t)_countOfAllInflightResources;
-- (unint64_t)_countOfInflightResourcesForPrefetchPhase:(unint64_t)a3;
-- (unint64_t)_intentForPrefetchPhase:(unint64_t)a3;
-- (unint64_t)_smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)a3;
-- (void)_addInflightResourceIdentifier:(id)a3 prefetchPhase:(unint64_t)a4;
+- (unint64_t)_countOfInflightResourcesForPrefetchPhase:(unint64_t)phase;
+- (unint64_t)_intentForPrefetchPhase:(unint64_t)phase;
+- (unint64_t)_smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)resources;
+- (void)_addInflightResourceIdentifier:(id)identifier prefetchPhase:(unint64_t)phase;
 - (void)_checkCPLBackgroundDownloadOperations;
-- (void)_cleanupInflightResourcesInLibrary:(id)a3;
-- (void)_enqueueCheckCPLBGDownloadFromNow:(id)a3 withReason:(id)a4;
-- (void)_handlePrefetchError:(id)a3 forPLCloudResourceWithObjectID:(id)a4;
-- (void)_incrementPrefetchCountForPrefetchPhase:(unint64_t)a3 resources:(id)a4 photoLibrary:(id)a5;
-- (void)_prefetchComputeSyncResources:(id)a3 photoLibrary:(id)a4 prefetchPhase:(unint64_t)a5 shouldAutoPrefetchNextBatch:(BOOL)a6;
-- (void)_prefetchResources:(id)a3 photoLibrary:(id)a4 prefetchPhase:(unint64_t)a5 shouldAutoPrefetchNextBatch:(BOOL)a6;
-- (void)_removeInflightResourceIdentifier:(id)a3 prefetchPhase:(unint64_t)a4;
-- (void)_runOnWorkQueueWithTransaction:(id)a3 block:(id)a4;
-- (void)_setLastCompletePrefetchDate:(id)a3 inLibrary:(id)a4;
+- (void)_cleanupInflightResourcesInLibrary:(id)library;
+- (void)_enqueueCheckCPLBGDownloadFromNow:(id)now withReason:(id)reason;
+- (void)_handlePrefetchError:(id)error forPLCloudResourceWithObjectID:(id)d;
+- (void)_incrementPrefetchCountForPrefetchPhase:(unint64_t)phase resources:(id)resources photoLibrary:(id)library;
+- (void)_prefetchComputeSyncResources:(id)resources photoLibrary:(id)library prefetchPhase:(unint64_t)phase shouldAutoPrefetchNextBatch:(BOOL)batch;
+- (void)_prefetchResources:(id)resources photoLibrary:(id)library prefetchPhase:(unint64_t)phase shouldAutoPrefetchNextBatch:(BOOL)batch;
+- (void)_removeInflightResourceIdentifier:(id)identifier prefetchPhase:(unint64_t)phase;
+- (void)_runOnWorkQueueWithTransaction:(id)transaction block:(id)block;
+- (void)_setLastCompletePrefetchDate:(id)date inLibrary:(id)library;
 - (void)_startAutomaticPrefetch;
 - (void)_startPrefetchNextBatch;
-- (void)_writeDownloadFinishedMarkerIfNeededWithLibrary:(id)a3;
+- (void)_writeDownloadFinishedMarkerIfNeededWithLibrary:(id)library;
 - (void)clearPrefetchState;
 - (void)handleCPLConfigurationChange;
 - (void)handleCPLStatusChange;
 - (void)handleOptimizeModeChange;
 - (void)invalidate;
-- (void)prefetchResourcesWithPredicates:(id)a3 photoLibrary:(id)a4 prefetchPhase:(unint64_t)a5 completionHandler:(id)a6;
+- (void)prefetchResourcesWithPredicates:(id)predicates photoLibrary:(id)library prefetchPhase:(unint64_t)phase completionHandler:(id)handler;
 - (void)startAutomaticPrefetch;
 - (void)stop;
 @end
 
 @implementation PLCloudResourcePrefetchManager
 
-- (id)_resourcesToPrefetchWithPrefetchPhase:(unint64_t)a3 photoLibrary:(id)a4 applyPerPrefetchLimit:(BOOL)a5 initialBudget:(int64_t *)a6
+- (id)_resourcesToPrefetchWithPrefetchPhase:(unint64_t)phase photoLibrary:(id)library applyPerPrefetchLimit:(BOOL)limit initialBudget:(int64_t *)budget
 {
-  v10 = a4;
-  v11 = [(PLCloudResourcePrefetchManager *)self _diskSpaceBudgetForPrefetchPhase:a3];
+  libraryCopy = library;
+  v11 = [(PLCloudResourcePrefetchManager *)self _diskSpaceBudgetForPrefetchPhase:phase];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__82652;
   v28 = __Block_byref_object_dispose__82653;
   v29 = 0;
-  v12 = [(PLCloudResourcePrefetchManager *)self _lastCompletePrefetchDateInLibrary:v10];
+  v12 = [(PLCloudResourcePrefetchManager *)self _lastCompletePrefetchDateInLibrary:libraryCopy];
   v13 = objc_opt_class();
   prefetchMode = self->_prefetchMode;
   prefetchOptimizeMode = self->_prefetchOptimizeMode;
@@ -79,12 +79,12 @@
   v23[2] = __121__PLCloudResourcePrefetchManager__resourcesToPrefetchWithPrefetchPhase_photoLibrary_applyPerPrefetchLimit_initialBudget___block_invoke;
   v23[3] = &unk_1E7572E78;
   v23[4] = &v24;
-  LOBYTE(v22) = a5;
+  LOBYTE(v22) = limit;
   LOBYTE(v21) = isWalrusEnabled;
-  [v13 resourcesToPrefetchWithPrefetchPhase:a3 prefetchMode:prefetchMode prefetchOptimizeMode:prefetchOptimizeMode initialSyncDate:initialSyncDate lastCompletePrefetchDate:v12 initialBudget:v11 excludeDynamicCPLResources:v21 prefetchConfiguration:prefetchConfiguration photoLibrary:v10 applyPerPrefetchLimit:v22 resultHandler:v23];
-  if (a6)
+  [v13 resourcesToPrefetchWithPrefetchPhase:phase prefetchMode:prefetchMode prefetchOptimizeMode:prefetchOptimizeMode initialSyncDate:initialSyncDate lastCompletePrefetchDate:v12 initialBudget:v11 excludeDynamicCPLResources:v21 prefetchConfiguration:prefetchConfiguration photoLibrary:libraryCopy applyPerPrefetchLimit:v22 resultHandler:v23];
+  if (budget)
   {
-    *a6 = v11;
+    *budget = v11;
   }
 
   v19 = v25[5];
@@ -94,39 +94,39 @@
   return v19;
 }
 
-- (BOOL)_prefetchIsEnabledForPhase:(unint64_t)a3
+- (BOOL)_prefetchIsEnabledForPhase:(unint64_t)phase
 {
   v5 = objc_opt_class();
   prefetchMode = self->_prefetchMode;
   initialSyncDate = self->_initialSyncDate;
 
-  return [v5 _prefetchIsEnabledForPhase:a3 givenMode:prefetchMode andInitialSyncDate:initialSyncDate];
+  return [v5 _prefetchIsEnabledForPhase:phase givenMode:prefetchMode andInitialSyncDate:initialSyncDate];
 }
 
-- (void)_setLastCompletePrefetchDate:(id)a3 inLibrary:(id)a4
+- (void)_setLastCompletePrefetchDate:(id)date inLibrary:(id)library
 {
-  v6 = a3;
+  dateCopy = date;
   workQueue = self->_workQueue;
-  v8 = a4;
+  libraryCopy = library;
   dispatch_assert_queue_V2(workQueue);
-  v9 = [v8 globalValues];
+  globalValues = [libraryCopy globalValues];
 
-  [v9 setLastCompletePrefetchDate:v6];
+  [globalValues setLastCompletePrefetchDate:dateCopy];
   lastCompletePrefetchDate = self->_lastCompletePrefetchDate;
-  self->_lastCompletePrefetchDate = v6;
+  self->_lastCompletePrefetchDate = dateCopy;
 }
 
-- (id)_lastCompletePrefetchDateInLibrary:(id)a3
+- (id)_lastCompletePrefetchDateInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_workQueue);
   lastCompletePrefetchDate = self->_lastCompletePrefetchDate;
   if (!lastCompletePrefetchDate)
   {
-    v6 = [v4 globalValues];
-    v7 = [v6 lastCompletePrefetchDate];
+    globalValues = [libraryCopy globalValues];
+    lastCompletePrefetchDate = [globalValues lastCompletePrefetchDate];
     v8 = self->_lastCompletePrefetchDate;
-    self->_lastCompletePrefetchDate = v7;
+    self->_lastCompletePrefetchDate = lastCompletePrefetchDate;
 
     lastCompletePrefetchDate = self->_lastCompletePrefetchDate;
   }
@@ -142,7 +142,7 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -151,8 +151,8 @@
     {
       if (MEMORY[0x19EAEE230]())
       {
-        v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-        v7 = [v6 integerForKey:@"PLPrefetchMaximumSmallLibraryThresholdGB"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        v7 = [standardUserDefaults integerForKey:@"PLPrefetchMaximumSmallLibraryThresholdGB"];
       }
 
       else
@@ -162,28 +162,28 @@
 
       if ([(PLPrefetchConfiguration *)self->_prefetchConfiguration cloudResourceMaximumSmallLibraryThreshold]| v7)
       {
-        v10 = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
-        v8 = -[PLPrefetchConfiguration prefetchOptimizeModeForTotalSizeOfOriginalResources:totalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumSmallLibraryThresholdGB:nonThumbnailsBudget:](self->_prefetchConfiguration, "prefetchOptimizeModeForTotalSizeOfOriginalResources:totalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumSmallLibraryThresholdGB:nonThumbnailsBudget:", -[PLCloudResourcePrefetchManager _totalSizeOfOriginalResources](self, "_totalSizeOfOriginalResources"), -[PLCloudResourcePrefetchManager _totalSizeOfLocallyAvailableOriginalResources](self, "_totalSizeOfLocallyAvailableOriginalResources"), [v10 availableSpace], v7, -[PLCloudResourcePrefetchManager _diskSpaceBudgetForPrefetchPhase:prefetchOptimizeMode:](self, "_diskSpaceBudgetForPrefetchPhase:prefetchOptimizeMode:", 4, 2));
+        _volumeInfo = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
+        v8 = -[PLPrefetchConfiguration prefetchOptimizeModeForTotalSizeOfOriginalResources:totalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumSmallLibraryThresholdGB:nonThumbnailsBudget:](self->_prefetchConfiguration, "prefetchOptimizeModeForTotalSizeOfOriginalResources:totalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumSmallLibraryThresholdGB:nonThumbnailsBudget:", -[PLCloudResourcePrefetchManager _totalSizeOfOriginalResources](self, "_totalSizeOfOriginalResources"), -[PLCloudResourcePrefetchManager _totalSizeOfLocallyAvailableOriginalResources](self, "_totalSizeOfLocallyAvailableOriginalResources"), [_volumeInfo availableSpace], v7, -[PLCloudResourcePrefetchManager _diskSpaceBudgetForPrefetchPhase:prefetchOptimizeMode:](self, "_diskSpaceBudgetForPrefetchPhase:prefetchOptimizeMode:", 4, 2));
 
         goto LABEL_10;
       }
     }
 
-    v5 = +[PLPrefetchConfiguration defaultPrefetchOptimizeMode];
+    integerValue = +[PLPrefetchConfiguration defaultPrefetchOptimizeMode];
   }
 
-  v8 = v5;
+  v8 = integerValue;
 LABEL_10:
 
   return v8;
 }
 
-- (unint64_t)_smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)a3
+- (unint64_t)_smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:(int64_t)resources
 {
   if (MEMORY[0x19EAEE230](self, a2))
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 integerForKey:@"PLPrefetchMaximumSmallLibraryThresholdGB"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults integerForKey:@"PLPrefetchMaximumSmallLibraryThresholdGB"];
   }
 
   else
@@ -191,8 +191,8 @@ LABEL_10:
     v6 = 0;
   }
 
-  v7 = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
-  v8 = -[PLPrefetchConfiguration smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumThresholdGB:](self->_prefetchConfiguration, "smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumThresholdGB:", a3, [v7 availableSpace], v6);
+  _volumeInfo = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
+  v8 = -[PLPrefetchConfiguration smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumThresholdGB:](self->_prefetchConfiguration, "smallLibrarySizeThresholdForTotalSizeOfLocallyAvailableOriginalResources:availableSpace:overrideMaximumThresholdGB:", resources, [_volumeInfo availableSpace], v6);
 
   return v8;
 }
@@ -213,10 +213,10 @@ LABEL_10:
   return v4;
 }
 
-- (int64_t)_totalSizeOfOriginalResourcesForPrefetchWithPredicate:(id)a3
+- (int64_t)_totalSizeOfOriginalResourcesForPrefetchWithPredicate:(id)predicate
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  predicateCopy = predicate;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -226,7 +226,7 @@ LABEL_10:
   v8 = [v6 fetchRequestWithEntityName:v7];
 
   [v8 setResultType:2];
-  [v8 setPredicate:v5];
+  [v8 setPredicate:predicateCopy];
   v9 = objc_alloc_init(MEMORY[0x1E695D5C8]);
   v10 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"dataLength"];
   [v9 setName:@"dataLength"];
@@ -241,8 +241,8 @@ LABEL_10:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
   [v8 setPropertiesToFetch:v14];
 
-  v15 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v16 = [v15 newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _totalSizeOfOriginalResourcesForPrefetchWithPredicate:]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v16 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _totalSizeOfOriginalResourcesForPrefetchWithPredicate:]"];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -296,35 +296,35 @@ LABEL_6:
   }
 }
 
-- (int64_t)_diskSpaceBudgetForPrefetchPhase:(unint64_t)a3 prefetchOptimizeMode:(int64_t)a4
+- (int64_t)_diskSpaceBudgetForPrefetchPhase:(unint64_t)phase prefetchOptimizeMode:(int64_t)mode
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v7 = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
-  v8 = [v7 nearLowDiskThreshold];
-  if (a3 > 6)
+  _volumeInfo = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
+  nearLowDiskThreshold = [_volumeInfo nearLowDiskThreshold];
+  if (phase > 6)
   {
     v9 = 0;
     goto LABEL_5;
   }
 
-  v9 = v8;
-  if (((1 << a3) & 0x6E) == 0)
+  v9 = nearLowDiskThreshold;
+  if (((1 << phase) & 0x6E) == 0)
   {
-    if (!a3)
+    if (!phase)
     {
       goto LABEL_5;
     }
 
     v9 = 0x40000000;
-    if (self->_prefetchMode != 1 && a4 != 2 && !self->_lastCompletePrefetchDate)
+    if (self->_prefetchMode != 1 && mode != 2 && !self->_lastCompletePrefetchDate)
     {
       [(PLPrefetchConfiguration *)self->_prefetchConfiguration cloudResourceInitialMinimumFreeDiskSpaceForOptimizeRatio];
-      v9 = (v15 * [v7 volumeSize]);
+      v9 = (v15 * [_volumeInfo volumeSize]);
     }
   }
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v11 = [v10 integerForKey:@"PLPrefetchMinimumFreeDiskGB"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v11 = [standardUserDefaults integerForKey:@"PLPrefetchMinimumFreeDiskGB"];
 
   if (v11 > 0)
   {
@@ -332,8 +332,8 @@ LABEL_6:
   }
 
 LABEL_5:
-  v12 = [v7 availableSpace];
-  v13 = (v12 - v9) & ~((v12 - v9) >> 63);
+  availableSpace = [_volumeInfo availableSpace];
+  v13 = (availableSpace - v9) & ~((availableSpace - v9) >> 63);
 
   return v13;
 }
@@ -344,8 +344,8 @@ LABEL_5:
   if (!volumeInfo)
   {
     v4 = objc_alloc(MEMORY[0x1E69BF330]);
-    v5 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-    v6 = [v5 photoDirectoryWithType:1];
+    pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+    v6 = [pathManager photoDirectoryWithType:1];
     v7 = [v4 initWithPath:v6];
     v8 = self->_volumeInfo;
     self->_volumeInfo = v7;
@@ -356,26 +356,26 @@ LABEL_5:
   return volumeInfo;
 }
 
-- (void)_handlePrefetchError:(id)a3 forPLCloudResourceWithObjectID:(id)a4
+- (void)_handlePrefetchError:(id)error forPLCloudResourceWithObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 domain];
-  if ([v8 isEqualToString:*MEMORY[0x1E6994990]])
+  errorCopy = error;
+  dCopy = d;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E6994990]])
   {
-    v9 = [v6 code];
+    code = [errorCopy code];
 
-    if (v9 == 27)
+    if (code == 27)
     {
-      v10 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-      v11 = [v10 newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _handlePrefetchError:forPLCloudResourceWithObjectID:]"];
+      databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+      v11 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _handlePrefetchError:forPLCloudResourceWithObjectID:]"];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __86__PLCloudResourcePrefetchManager__handlePrefetchError_forPLCloudResourceWithObjectID___block_invoke;
       v13[3] = &unk_1E7578848;
       v14 = v11;
-      v15 = v7;
+      v15 = dCopy;
       v12 = v11;
       [v12 performTransactionAndWait:v13];
     }
@@ -406,18 +406,18 @@ void __86__PLCloudResourcePrefetchManager__handlePrefetchError_forPLCloudResourc
   }
 }
 
-- (void)_incrementPrefetchCountForPrefetchPhase:(unint64_t)a3 resources:(id)a4 photoLibrary:(id)a5
+- (void)_incrementPrefetchCountForPrefetchPhase:(unint64_t)phase resources:(id)resources photoLibrary:(id)library
 {
-  v8 = a4;
+  resourcesCopy = resources;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__PLCloudResourcePrefetchManager__incrementPrefetchCountForPrefetchPhase_resources_photoLibrary___block_invoke;
   v10[3] = &unk_1E75782F8;
-  v12 = self;
-  v13 = a3;
-  v11 = v8;
-  v9 = v8;
-  [a5 performTransactionAndWait:v10];
+  selfCopy = self;
+  phaseCopy = phase;
+  v11 = resourcesCopy;
+  v9 = resourcesCopy;
+  [library performTransactionAndWait:v10];
 }
 
 void __97__PLCloudResourcePrefetchManager__incrementPrefetchCountForPrefetchPhase_resources_photoLibrary___block_invoke(uint64_t a1)
@@ -475,34 +475,34 @@ void __97__PLCloudResourcePrefetchManager__incrementPrefetchCountForPrefetchPhas
   }
 }
 
-- (void)_prefetchComputeSyncResources:(id)a3 photoLibrary:(id)a4 prefetchPhase:(unint64_t)a5 shouldAutoPrefetchNextBatch:(BOOL)a6
+- (void)_prefetchComputeSyncResources:(id)resources photoLibrary:(id)library prefetchPhase:(unint64_t)phase shouldAutoPrefetchNextBatch:(BOOL)batch
 {
-  v10 = a3;
-  v11 = a4;
+  resourcesCopy = resources;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_workQueue);
-  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __119__PLCloudResourcePrefetchManager__prefetchComputeSyncResources_photoLibrary_prefetchPhase_shouldAutoPrefetchNextBatch___block_invoke;
   v29[3] = &unk_1E7573520;
-  v13 = v10;
+  v13 = resourcesCopy;
   v30 = v13;
   v14 = v12;
   v31 = v14;
-  v32 = self;
-  v34 = a5;
-  v15 = v11;
+  selfCopy = self;
+  phaseCopy = phase;
+  v15 = libraryCopy;
   v33 = v15;
   [v15 performBlockAndWait:v29];
   v16 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePrefetchManager _prefetchComputeSyncResources:photoLibrary:prefetchPhase:shouldAutoPrefetchNextBatch:]"];
-  v17 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [objc_opt_class() descriptionForPrefetchPhase:a5];
+  v19 = [objc_opt_class() descriptionForPrefetchPhase:phase];
   v20 = [v18 stringWithFormat:@"start prefetching for phase: %@", v19];
-  [(PLCloudResourcePrefetchManager *)self _enqueueCheckCPLBGDownloadFromNow:v17 withReason:v20];
+  [(PLCloudResourcePrefetchManager *)self _enqueueCheckCPLBGDownloadFromNow:date withReason:v20];
 
-  v21 = [v14 allKeys];
-  if ([v21 count])
+  allKeys = [v14 allKeys];
+  if ([allKeys count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_cplManager);
     v23[0] = MEMORY[0x1E69E9820];
@@ -511,10 +511,10 @@ void __97__PLCloudResourcePrefetchManager__incrementPrefetchCountForPrefetchPhas
     v23[3] = &unk_1E7572E28;
     v23[4] = self;
     v24 = v16;
-    v27 = a5;
+    phaseCopy2 = phase;
     v25 = v14;
-    v26 = v21;
-    v28 = a6;
+    v26 = allKeys;
+    batchCopy = batch;
     [WeakRetained fetchComputeStatesForRecordsWithScopedIdentifiers:v26 onDemand:0 completionHandler:v23];
   }
 }
@@ -867,34 +867,34 @@ LABEL_18:
 LABEL_26:
 }
 
-- (void)_prefetchResources:(id)a3 photoLibrary:(id)a4 prefetchPhase:(unint64_t)a5 shouldAutoPrefetchNextBatch:(BOOL)a6
+- (void)_prefetchResources:(id)resources photoLibrary:(id)library prefetchPhase:(unint64_t)phase shouldAutoPrefetchNextBatch:(BOOL)batch
 {
-  v9 = a3;
-  v10 = a4;
+  resourcesCopy = resources;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_workQueue);
-  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
+  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __108__PLCloudResourcePrefetchManager__prefetchResources_photoLibrary_prefetchPhase_shouldAutoPrefetchNextBatch___block_invoke;
   v30[3] = &unk_1E7577BE0;
-  v31 = v9;
-  v32 = self;
+  v31 = resourcesCopy;
+  selfCopy = self;
   v33 = v11;
   v13 = v12;
-  v35 = v10;
-  v36 = a5;
+  v35 = libraryCopy;
+  phaseCopy = phase;
   v34 = v13;
-  v14 = v10;
+  v14 = libraryCopy;
   v15 = v11;
-  v16 = v9;
+  v16 = resourcesCopy;
   [v14 performBlockAndWait:v30];
   v17 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePrefetchManager _prefetchResources:photoLibrary:prefetchPhase:shouldAutoPrefetchNextBatch:]"];
-  v18 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [objc_opt_class() descriptionForPrefetchPhase:a5];
+  v20 = [objc_opt_class() descriptionForPrefetchPhase:phase];
   v21 = [v19 stringWithFormat:@"start prefetching for phase: %@", v20];
-  [(PLCloudResourcePrefetchManager *)self _enqueueCheckCPLBGDownloadFromNow:v18 withReason:v21];
+  [(PLCloudResourcePrefetchManager *)self _enqueueCheckCPLBGDownloadFromNow:date withReason:v21];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -903,8 +903,8 @@ LABEL_26:
   v25[4] = self;
   v26 = v17;
   v27 = v13;
-  v28 = a5;
-  v29 = a6;
+  phaseCopy2 = phase;
+  batchCopy = batch;
   v22 = v13;
   v23 = v17;
   [v15 enumerateKeysAndObjectsUsingBlock:v25];
@@ -1191,24 +1191,24 @@ void __108__PLCloudResourcePrefetchManager__prefetchResources_photoLibrary_prefe
   }
 }
 
-- (unint64_t)_intentForPrefetchPhase:(unint64_t)a3
+- (unint64_t)_intentForPrefetchPhase:(unint64_t)phase
 {
   if (self->_prefetchMode == 1)
   {
     return 2;
   }
 
-  if (a3 <= 2)
+  if (phase <= 2)
   {
-    if (a3)
+    if (phase)
     {
-      if (a3 == 1)
+      if (phase == 1)
       {
-        v6 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v6 handleFailureInMethod:a2 object:self file:@"PLCloudResourcePrefetchManager.m" lineNumber:762 description:{@"%s should not be invoked for compute sync prefetch phase", "-[PLCloudResourcePrefetchManager _intentForPrefetchPhase:]"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudResourcePrefetchManager.m" lineNumber:762 description:{@"%s should not be invoked for compute sync prefetch phase", "-[PLCloudResourcePrefetchManager _intentForPrefetchPhase:]"}];
       }
 
-      else if (a3 == 2)
+      else if (phase == 2)
       {
         return 3;
       }
@@ -1217,9 +1217,9 @@ void __108__PLCloudResourcePrefetchManager__prefetchResources_photoLibrary_prefe
     }
   }
 
-  else if (a3 - 4 >= 3)
+  else if (phase - 4 >= 3)
   {
-    if (a3 == 3)
+    if (phase == 3)
     {
       return 6;
     }
@@ -1242,8 +1242,8 @@ void __108__PLCloudResourcePrefetchManager__prefetchResources_photoLibrary_prefe
 {
   v39 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v4 = [v3 newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _startPrefetchNextBatch]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v4 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _startPrefetchNextBatch]"];
 
   if ([(PLCloudResourcePrefetchManager *)self _canPrefetchInLibrary:v4])
   {
@@ -1411,15 +1411,15 @@ void __108__PLCloudResourcePrefetchManager__prefetchResources_photoLibrary_prefe
   }
 
   v4 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePrefetchManager clearPrefetchState]"];
-  v5 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v6 = [v5 newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager clearPrefetchState]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v6 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager clearPrefetchState]"];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__PLCloudResourcePrefetchManager_clearPrefetchState__block_invoke;
   v9[3] = &unk_1E75761B8;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = v4;
   v7 = v4;
   v8 = v6;
@@ -1467,14 +1467,14 @@ uint64_t __52__PLCloudResourcePrefetchManager_clearPrefetchState__block_invoke_2
   return [*(a1 + 40) _setLastCompletePrefetchDate:0 inLibrary:*(a1 + 32)];
 }
 
-- (void)_writeDownloadFinishedMarkerIfNeededWithLibrary:(id)a3
+- (void)_writeDownloadFinishedMarkerIfNeededWithLibrary:(id)library
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
+  libraryCopy = library;
+  date = [MEMORY[0x1E695DF00] date];
   if (self->_lastCompletePrefetchDate)
   {
-    [(PLCloudResourcePrefetchManager *)self _setLastCompletePrefetchDate:v5 inLibrary:v4];
+    [(PLCloudResourcePrefetchManager *)self _setLastCompletePrefetchDate:date inLibrary:libraryCopy];
   }
 
   else if (self->_initialSyncDate)
@@ -1491,12 +1491,12 @@ uint64_t __52__PLCloudResourcePrefetchManager_clearPrefetchState__block_invoke_2
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Writing out cpl_download_finished_marker", &v13, 2u);
     }
 
-    v9 = [v6 stringFromDate:v5];
-    v10 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-    v11 = [v10 cplDownloadFinishedMarkerFilePath];
-    [v9 writeToFile:v11 atomically:1 encoding:4 error:0];
+    v9 = [v6 stringFromDate:date];
+    pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+    cplDownloadFinishedMarkerFilePath = [pathManager cplDownloadFinishedMarkerFilePath];
+    [v9 writeToFile:cplDownloadFinishedMarkerFilePath atomically:1 encoding:4 error:0];
 
-    [(PLCloudResourcePrefetchManager *)self _setLastCompletePrefetchDate:v5 inLibrary:v4];
+    [(PLCloudResourcePrefetchManager *)self _setLastCompletePrefetchDate:date inLibrary:libraryCopy];
   }
 
   else
@@ -1505,38 +1505,38 @@ uint64_t __52__PLCloudResourcePrefetchManager_clearPrefetchState__block_invoke_2
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = date;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "No initial sync date at %@", &v13, 0xCu);
     }
   }
 }
 
-- (BOOL)_canPrefetchInLibrary:(id)a3
+- (BOOL)_canPrefetchInLibrary:(id)library
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   if ([(PLCloudResourcePrefetchManager *)self _isPrefetchDisabled])
   {
-    v5 = PLResourceCachingGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    indicatorFileCoordinator = PLResourceCachingGetLog();
+    if (os_log_type_enabled(indicatorFileCoordinator, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
       v21 = @"PLPrefetchDisabled";
-      _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Prefetch disabled because %@ user default is set", &v20, 0xCu);
+      _os_log_impl(&dword_19BF1F000, indicatorFileCoordinator, OS_LOG_TYPE_DEFAULT, "Prefetch disabled because %@ user default is set", &v20, 0xCu);
     }
 
     goto LABEL_18;
   }
 
-  v6 = [(PLLibraryServicesManager *)self->_lsm libraryBundle];
-  v5 = [v6 indicatorFileCoordinator];
+  libraryBundle = [(PLLibraryServicesManager *)self->_lsm libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if (![v5 isICloudPhotosPaused])
+  if (![indicatorFileCoordinator isICloudPhotosPaused])
   {
-    v13 = [v4 thumbnailManager];
-    v14 = [v13 isRebuildingThumbnails];
+    thumbnailManager = [libraryCopy thumbnailManager];
+    isRebuildingThumbnails = [thumbnailManager isRebuildingThumbnails];
 
-    if (v14)
+    if (isRebuildingThumbnails)
     {
       v7 = PLResourceCachingGetLog();
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1551,9 +1551,9 @@ uint64_t __52__PLCloudResourcePrefetchManager_clearPrefetchState__block_invoke_2
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_cplManager);
-      v16 = [WeakRetained currentResetSyncType];
+      currentResetSyncType = [WeakRetained currentResetSyncType];
 
-      if (v16)
+      if (currentResetSyncType)
       {
         v7 = PLResourceCachingGetLog();
         if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1567,9 +1567,9 @@ uint64_t __52__PLCloudResourcePrefetchManager_clearPrefetchState__block_invoke_2
 
       else
       {
-        v19 = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
+        _volumeInfo = [(PLCloudResourcePrefetchManager *)self _volumeInfo];
 
-        if (v19)
+        if (_volumeInfo)
         {
           v17 = 1;
           goto LABEL_19;
@@ -1596,9 +1596,9 @@ LABEL_16:
   v7 = PLResourceCachingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 isUserPause];
+    isUserPause = [indicatorFileCoordinator isUserPause];
     v9 = &stru_1F0F06D80;
-    if (v8)
+    if (isUserPause)
     {
       v9 = @"(user)";
     }
@@ -1625,8 +1625,8 @@ LABEL_19:
   v2 = MEMORY[0x19EAEE230](self, a2);
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"PLPrefetchDisabled"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"PLPrefetchDisabled"];
 
     LOBYTE(v2) = v4;
   }
@@ -1634,29 +1634,29 @@ LABEL_19:
   return v2;
 }
 
-- (void)_removeInflightResourceIdentifier:(id)a3 prefetchPhase:(unint64_t)a4
+- (void)_removeInflightResourceIdentifier:(id)identifier prefetchPhase:(unint64_t)phase
 {
   inflightResources = self->_inflightResources;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v9 = [v6 numberWithUnsignedInteger:a4];
+  identifierCopy = identifier;
+  v9 = [v6 numberWithUnsignedInteger:phase];
   v8 = [(NSDictionary *)inflightResources objectForKeyedSubscript:v9];
-  [v8 removeObject:v7];
+  [v8 removeObject:identifierCopy];
 }
 
-- (void)_addInflightResourceIdentifier:(id)a3 prefetchPhase:(unint64_t)a4
+- (void)_addInflightResourceIdentifier:(id)identifier prefetchPhase:(unint64_t)phase
 {
   inflightResources = self->_inflightResources;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v9 = [v6 numberWithUnsignedInteger:a4];
+  identifierCopy = identifier;
+  v9 = [v6 numberWithUnsignedInteger:phase];
   v8 = [(NSDictionary *)inflightResources objectForKeyedSubscript:v9];
-  [v8 addObject:v7];
+  [v8 addObject:identifierCopy];
 }
 
-- (BOOL)_isInflightResourceIdentifier:(id)a3
+- (BOOL)_isInflightResourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1667,7 +1667,7 @@ LABEL_19:
   v8[2] = __64__PLCloudResourcePrefetchManager__isInflightResourceIdentifier___block_invoke;
   v8[3] = &unk_1E7572D18;
   v10 = &v11;
-  v6 = v4;
+  v6 = identifierCopy;
   v9 = v6;
   [(NSDictionary *)inflightResources enumerateKeysAndObjectsUsingBlock:v8];
   LOBYTE(inflightResources) = *(v12 + 24);
@@ -1688,10 +1688,10 @@ uint64_t __64__PLCloudResourcePrefetchManager__isInflightResourceIdentifier___bl
   return result;
 }
 
-- (id)_inflightResourceIdentifiersForPrefetchPhase:(unint64_t)a3
+- (id)_inflightResourceIdentifiersForPrefetchPhase:(unint64_t)phase
 {
   inflightResources = self->_inflightResources;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:phase];
   v5 = [(NSDictionary *)inflightResources objectForKeyedSubscript:v4];
 
   return v5;
@@ -1712,10 +1712,10 @@ uint64_t __64__PLCloudResourcePrefetchManager__isInflightResourceIdentifier___bl
   return v5;
 }
 
-- (unint64_t)_countOfInflightResourcesForPrefetchPhase:(unint64_t)a3
+- (unint64_t)_countOfInflightResourcesForPrefetchPhase:(unint64_t)phase
 {
   inflightResources = self->_inflightResources;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:phase];
   v5 = [(NSDictionary *)inflightResources objectForKeyedSubscript:v4];
   v6 = [v5 count];
 
@@ -1747,12 +1747,12 @@ uint64_t __62__PLCloudResourcePrefetchManager__countOfAllInflightResources__bloc
   return result;
 }
 
-- (void)_runOnWorkQueueWithTransaction:(id)a3 block:(id)a4
+- (void)_runOnWorkQueueWithTransaction:(id)transaction block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
-  v6 = v8;
+  transactionCopy = transaction;
+  blockCopy = block;
+  v5 = transactionCopy;
+  v6 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -1764,18 +1764,18 @@ uint64_t __71__PLCloudResourcePrefetchManager__runOnWorkQueueWithTransaction_blo
   return [v2 stillAlive];
 }
 
-- (void)prefetchResourcesWithPredicates:(id)a3 photoLibrary:(id)a4 prefetchPhase:(unint64_t)a5 completionHandler:(id)a6
+- (void)prefetchResourcesWithPredicates:(id)predicates photoLibrary:(id)library prefetchPhase:(unint64_t)phase completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v20 = a4;
-  v18 = a6;
+  predicatesCopy = predicates;
+  libraryCopy = library;
+  handlerCopy = handler;
   v11 = dispatch_group_create();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v10;
+  obj = predicatesCopy;
   v12 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
@@ -1792,7 +1792,7 @@ uint64_t __71__PLCloudResourcePrefetchManager__runOnWorkQueueWithTransaction_blo
 
         v15 = *(*(&v31 + 1) + 8 * v14);
         dispatch_group_enter(v11);
-        v16 = [MEMORY[0x1E69BF360] transaction:{"-[PLCloudResourcePrefetchManager prefetchResourcesWithPredicates:photoLibrary:prefetchPhase:completionHandler:]", v18}];
+        v16 = [MEMORY[0x1E69BF360] transaction:{"-[PLCloudResourcePrefetchManager prefetchResourcesWithPredicates:photoLibrary:prefetchPhase:completionHandler:]", handlerCopy}];
         v29[0] = 0;
         v29[1] = v29;
         v29[2] = 0x3032000000;
@@ -1806,7 +1806,7 @@ uint64_t __71__PLCloudResourcePrefetchManager__runOnWorkQueueWithTransaction_blo
         v28 = v29;
         v26[4] = self;
         v26[5] = v15;
-        v17 = v20;
+        v17 = libraryCopy;
         v27 = v17;
         [v17 performBlockAndWait:v26];
         v21[0] = MEMORY[0x1E69E9820];
@@ -1816,7 +1816,7 @@ uint64_t __71__PLCloudResourcePrefetchManager__runOnWorkQueueWithTransaction_blo
         v21[4] = self;
         v24 = v29;
         v22 = v17;
-        v25 = a5;
+        phaseCopy = phase;
         v23 = v11;
         [(PLCloudResourcePrefetchManager *)self _runOnWorkQueueWithTransaction:v16 block:v21];
 
@@ -1851,19 +1851,19 @@ void __111__PLCloudResourcePrefetchManager_prefetchResourcesWithPredicates_photo
   dispatch_group_leave(v2);
 }
 
-- (id)_prefetchStatusForDebug:(BOOL)a3
+- (id)_prefetchStatusForDebug:(BOOL)debug
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v5 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v6 = [v5 newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _prefetchStatusForDebug:]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v6 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager _prefetchStatusForDebug:]"];
 
-  v7 = [v6 libraryBundle];
-  v8 = [v7 indicatorFileCoordinator];
+  libraryBundle = [v6 libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if ([v8 isICloudPhotosPaused])
+  if ([indicatorFileCoordinator isICloudPhotosPaused])
   {
     [v4 appendFormat:@"iCPL Paused"];
-    if ([v8 isUserPause])
+    if ([indicatorFileCoordinator isUserPause])
     {
       [v4 appendFormat:@" (user)"];
     }
@@ -1871,19 +1871,19 @@ void __111__PLCloudResourcePrefetchManager_prefetchResourcesWithPredicates_photo
     [v4 appendFormat:@"\n"];
   }
 
-  v33 = v8;
-  v9 = [v6 thumbnailManager];
-  v10 = [v9 isRebuildingThumbnails];
+  v33 = indicatorFileCoordinator;
+  thumbnailManager = [v6 thumbnailManager];
+  isRebuildingThumbnails = [thumbnailManager isRebuildingThumbnails];
 
-  if (v10)
+  if (isRebuildingThumbnails)
   {
     [v4 appendFormat:@"Rebuilding thumbnails\n"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_cplManager);
-  v12 = [WeakRetained currentResetSyncType];
+  currentResetSyncType = [WeakRetained currentResetSyncType];
 
-  if (v12)
+  if (currentResetSyncType)
   {
     [v4 appendFormat:@"In reset sync\n"];
   }
@@ -1915,10 +1915,10 @@ void __111__PLCloudResourcePrefetchManager_prefetchResourcesWithPredicates_photo
   v50 = v54;
   v51 = v53;
   v35 = v19;
-  v36 = self;
+  selfCopy = self;
   v37 = v6;
   v38 = v30;
-  v52 = a3;
+  debugCopy = debug;
   v39 = v13;
   v40 = v14;
   v41 = v15;
@@ -2377,7 +2377,7 @@ void __58__PLCloudResourcePrefetchManager__prefetchStatusForDebug___block_invoke
   }
 }
 
-- (id)prefetchStatusForDebug:(BOOL)a3
+- (id)prefetchStatusForDebug:(BOOL)debug
 {
   v5 = 0;
   v6 = &v5;
@@ -2403,8 +2403,8 @@ void __57__PLCloudResourcePrefetchManager_prefetchStatusForDebug___block_invoke(
 - (void)stop
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePrefetchManager stop]"];
-  v4 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v5 = [v4 newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager stop]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v5 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePrefetchManager stop]"];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -2432,18 +2432,18 @@ uint64_t __38__PLCloudResourcePrefetchManager_stop__block_invoke(uint64_t a1)
   return [*(a1 + 32) _setLastCompletePrefetchDate:0 inLibrary:*(a1 + 40)];
 }
 
-- (void)_cleanupInflightResourcesInLibrary:(id)a3
+- (void)_cleanupInflightResourcesInLibrary:(id)library
 {
   v29 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_workQueue);
-  v19 = self;
-  v4 = [(PLCloudResourcePrefetchManager *)self _allInflightResourceIdentifiers];
+  selfCopy = self;
+  _allInflightResourceIdentifiers = [(PLCloudResourcePrefetchManager *)self _allInflightResourceIdentifiers];
   v5 = PLResourceCachingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = _allInflightResourceIdentifiers;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Cleaning up inflight resources: %@", buf, 0xCu);
   }
 
@@ -2452,7 +2452,7 @@ uint64_t __38__PLCloudResourcePrefetchManager_stop__block_invoke(uint64_t a1)
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = _allInflightResourceIdentifiers;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -2468,9 +2468,9 @@ uint64_t __38__PLCloudResourcePrefetchManager_stop__block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 assetUuid];
+        assetUuid = [v12 assetUuid];
 
-        if (v13)
+        if (assetUuid)
         {
           v14 = -[PLPrefetchResourceIdentifier initWithAssetUuid:version:cplType:recipeID:]([PLPrefetchResourceIdentifier alloc], "initWithAssetUuid:version:cplType:recipeID:", 0, [v12 version], objc_msgSend(v12, "cplType"), objc_msgSend(v12, "recipeID"));
           v15 = [v6 objectForKey:v14];
@@ -2480,8 +2480,8 @@ uint64_t __38__PLCloudResourcePrefetchManager_stop__block_invoke(uint64_t a1)
             [v6 setObject:v15 forKey:v14];
           }
 
-          v16 = [v12 assetUuid];
-          [v15 addObject:v16];
+          assetUuid2 = [v12 assetUuid];
+          [v15 addObject:assetUuid2];
         }
 
         else
@@ -2511,10 +2511,10 @@ uint64_t __38__PLCloudResourcePrefetchManager_stop__block_invoke(uint64_t a1)
   v20[1] = 3221225472;
   v20[2] = __69__PLCloudResourcePrefetchManager__cleanupInflightResourcesInLibrary___block_invoke;
   v20[3] = &unk_1E7572C78;
-  v21 = v18;
-  v17 = v18;
+  v21 = libraryCopy;
+  v17 = libraryCopy;
   [v6 enumerateKeysAndObjectsUsingBlock:v20];
-  [(PLCloudResourcePrefetchManager *)v19 _removeAllInflightResourceIdentifiers];
+  [(PLCloudResourcePrefetchManager *)selfCopy _removeAllInflightResourceIdentifiers];
 }
 
 void __69__PLCloudResourcePrefetchManager__cleanupInflightResourcesInLibrary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2527,11 +2527,11 @@ void __69__PLCloudResourcePrefetchManager__cleanupInflightResourcesInLibrary___b
   }
 }
 
-- (void)_enqueueCheckCPLBGDownloadFromNow:(id)a3 withReason:(id)a4
+- (void)_enqueueCheckCPLBGDownloadFromNow:(id)now withReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nowCopy = now;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_workQueue);
   if (self->_enqueuedCheckCPLBGDownload)
   {
@@ -2539,7 +2539,7 @@ void __69__PLCloudResourcePrefetchManager__cleanupInflightResourcesInLibrary___b
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v13 = v7;
+      v13 = reasonCopy;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEBUG, "CPL background download check (reason: %@) already enqueued", buf, 0xCu);
     }
   }
@@ -2550,16 +2550,16 @@ void __69__PLCloudResourcePrefetchManager__cleanupInflightResourcesInLibrary___b
     v9 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 dateByAddingTimeInterval:{-[PLPrefetchConfiguration cloudResourceIntervalBetweenCheckCPLBGDownload](self->_prefetchConfiguration, "cloudResourceIntervalBetweenCheckCPLBGDownload")}];
+      v10 = [nowCopy dateByAddingTimeInterval:{-[PLPrefetchConfiguration cloudResourceIntervalBetweenCheckCPLBGDownload](self->_prefetchConfiguration, "cloudResourceIntervalBetweenCheckCPLBGDownload")}];
       *buf = 138412546;
-      v13 = v7;
+      v13 = reasonCopy;
       v14 = 2112;
       v15 = v10;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Enqueuing CPL background download check (reason: %@) at %@", buf, 0x16u);
     }
 
     dispatch_time(0, 1000000000 * [(PLPrefetchConfiguration *)self->_prefetchConfiguration cloudResourceIntervalBetweenCheckCPLBGDownload]);
-    v11 = v7;
+    v11 = reasonCopy;
     pl_dispatch_after();
     v8 = v11;
   }
@@ -2586,18 +2586,18 @@ uint64_t __79__PLCloudResourcePrefetchManager__enqueueCheckCPLBGDownloadFromNow_
   dispatch_assert_queue_V2(self->_workQueue);
   if ([(PLCloudResourcePrefetchManager *)self _countOfAllInflightResources])
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceDate:self->_lastCheckCPLBGDownloadDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:self->_lastCheckCPLBGDownloadDate];
     if (v4 <= [(PLPrefetchConfiguration *)self->_prefetchConfiguration cloudResourceIntervalBetweenCheckCPLBGDownload])
     {
-      [(PLCloudResourcePrefetchManager *)self _enqueueCheckCPLBGDownloadFromNow:v3 withReason:@"throttled"];
+      [(PLCloudResourcePrefetchManager *)self _enqueueCheckCPLBGDownloadFromNow:date withReason:@"throttled"];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DF00] date];
+      date2 = [MEMORY[0x1E695DF00] date];
       lastCheckCPLBGDownloadDate = self->_lastCheckCPLBGDownloadDate;
-      self->_lastCheckCPLBGDownloadDate = v5;
+      self->_lastCheckCPLBGDownloadDate = date2;
 
       v7 = PLResourceCachingGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2724,15 +2724,15 @@ uint64_t __58__PLCloudResourcePrefetchManager_handleOptimizeModeChange__block_in
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePrefetchManager handleCPLConfigurationChange]"];
   WeakRetained = objc_loadWeakRetained(&self->_cplManager);
-  v5 = [WeakRetained cplConfiguration];
+  cplConfiguration = [WeakRetained cplConfiguration];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__PLCloudResourcePrefetchManager_handleCPLConfigurationChange__block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = cplConfiguration;
+  v6 = cplConfiguration;
   [(PLCloudResourcePrefetchManager *)self _runOnWorkQueueWithTransaction:v3 block:v7];
 }
 
@@ -2750,15 +2750,15 @@ void __62__PLCloudResourcePrefetchManager_handleCPLConfigurationChange__block_in
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePrefetchManager handleCPLStatusChange]"];
   WeakRetained = objc_loadWeakRetained(&self->_cplManager);
-  v5 = [WeakRetained cplStatus];
+  cplStatus = [WeakRetained cplStatus];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PLCloudResourcePrefetchManager_handleCPLStatusChange__block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = cplStatus;
+  v6 = cplStatus;
   [(PLCloudResourcePrefetchManager *)self _runOnWorkQueueWithTransaction:v3 block:v7];
 }
 
@@ -2840,30 +2840,30 @@ uint64_t __55__PLCloudResourcePrefetchManager_handleCPLStatusChange__block_invok
   }
 }
 
-- (PLCloudResourcePrefetchManager)initWithCPLManager:(id)a3 pruneManager:(id)a4 libraryServicesManager:(id)a5
+- (PLCloudResourcePrefetchManager)initWithCPLManager:(id)manager pruneManager:(id)pruneManager libraryServicesManager:(id)servicesManager
 {
   v43[7] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  pruneManagerCopy = pruneManager;
+  servicesManagerCopy = servicesManager;
   v41.receiver = self;
   v41.super_class = PLCloudResourcePrefetchManager;
   v12 = [(PLCloudResourcePrefetchManager *)&v41 init];
   if (v12)
   {
-    if (!v11)
+    if (!servicesManagerCopy)
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v39 handleFailureInMethod:a2 object:v12 file:@"PLCloudResourcePrefetchManager.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"PLCloudResourcePrefetchManager.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
     }
 
-    objc_storeStrong(&v12->_lsm, a5);
-    objc_storeWeak(&v12->_cplManager, v9);
-    v40 = v10;
-    objc_storeWeak(&v12->_pruneManager, v10);
+    objc_storeStrong(&v12->_lsm, servicesManager);
+    objc_storeWeak(&v12->_cplManager, managerCopy);
+    v40 = pruneManagerCopy;
+    objc_storeWeak(&v12->_pruneManager, pruneManagerCopy);
     v13 = [PLPrefetchConfiguration alloc];
-    v14 = [v9 cplConfiguration];
-    v15 = [v14 valueForKey:*MEMORY[0x1E6994968]];
+    cplConfiguration = [managerCopy cplConfiguration];
+    v15 = [cplConfiguration valueForKey:*MEMORY[0x1E6994968]];
     v16 = [(PLPrefetchConfiguration *)v13 initWithPrefetchDictionary:v15];
     prefetchConfiguration = v12->_prefetchConfiguration;
     v12->_prefetchConfiguration = v16;
@@ -2899,31 +2899,31 @@ uint64_t __55__PLCloudResourcePrefetchManager_handleCPLStatusChange__block_invok
     v12->_workQueue = v28;
 
     v12->_enqueuedCheckCPLBGDownload = 0;
-    v30 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     lastCheckCPLBGDownloadDate = v12->_lastCheckCPLBGDownloadDate;
-    v12->_lastCheckCPLBGDownloadDate = v30;
+    v12->_lastCheckCPLBGDownloadDate = distantPast;
 
     if (PLIsEDUMode())
     {
       v12->_prefetchMode = 2;
     }
 
-    v32 = [v11 cplSettings];
-    v12->_prefetchMode = [v32 prefetchMode];
+    cplSettings = [servicesManagerCopy cplSettings];
+    v12->_prefetchMode = [cplSettings prefetchMode];
 
     v12->_prefetchOptimizeMode = +[PLPrefetchConfiguration defaultPrefetchOptimizeMode];
     WeakRetained = objc_loadWeakRetained(&v12->_cplManager);
-    v34 = [WeakRetained cplStatus];
+    cplStatus = [WeakRetained cplStatus];
 
-    v35 = [v34 initialSyncDate];
+    initialSyncDate = [cplStatus initialSyncDate];
     initialSyncDate = v12->_initialSyncDate;
-    v12->_initialSyncDate = v35;
+    v12->_initialSyncDate = initialSyncDate;
 
     lastCompletePrefetchDate = v12->_lastCompletePrefetchDate;
     v12->_lastCompletePrefetchDate = 0;
 
-    v12->_isWalrusEnabled = [v34 isWalrusEnabled];
-    v10 = v40;
+    v12->_isWalrusEnabled = [cplStatus isWalrusEnabled];
+    pruneManagerCopy = v40;
   }
 
   return v12;
@@ -2936,19 +2936,19 @@ uint64_t __55__PLCloudResourcePrefetchManager_handleCPLStatusChange__block_invok
   return [(PLCloudResourcePrefetchManager *)self initWithCPLManager:0 pruneManager:0 libraryServicesManager:0];
 }
 
-+ (BOOL)shouldGenerateThumbnailFromResource:(id)a3 forAsset:(id)a4
++ (BOOL)shouldGenerateThumbnailFromResource:(id)resource forAsset:(id)asset
 {
-  v5 = a3;
-  if ([a4 hasMasterThumb])
+  resourceCopy = resource;
+  if ([asset hasMasterThumb])
   {
     v6 = 0;
   }
 
-  else if ([v5 resourceType] == 1)
+  else if ([resourceCopy resourceType] == 1)
   {
-    v7 = [v5 identity];
-    v8 = [v7 fileUTI];
-    v9 = [PLUniformTypeIdentifier utiWithIdentifier:v8];
+    identity = [resourceCopy identity];
+    fileUTI = [identity fileUTI];
+    v9 = [PLUniformTypeIdentifier utiWithIdentifier:fileUTI];
 
     if (v9)
     {
@@ -2962,8 +2962,8 @@ uint64_t __55__PLCloudResourcePrefetchManager_handleCPLStatusChange__block_invok
         LOBYTE(v10) = 0;
       }
 
-      v11 = [v5 identity];
-      [v11 imageDimensions];
+      identity2 = [resourceCopy identity];
+      [identity2 imageDimensions];
       v13 = v12;
       v15 = v14;
 
@@ -2992,109 +2992,109 @@ uint64_t __55__PLCloudResourcePrefetchManager_handleCPLStatusChange__block_invok
   return v6;
 }
 
-+ (void)resourcesToPrefetchWithPrefetchPhase:(unint64_t)a3 prefetchMode:(int64_t)a4 prefetchOptimizeMode:(int64_t)a5 initialSyncDate:(id)a6 lastCompletePrefetchDate:(id)a7 initialBudget:(int64_t)a8 excludeDynamicCPLResources:(BOOL)a9 prefetchConfiguration:(id)a10 photoLibrary:(id)a11 applyPerPrefetchLimit:(BOOL)a12 resultHandler:(id)a13
++ (void)resourcesToPrefetchWithPrefetchPhase:(unint64_t)phase prefetchMode:(int64_t)mode prefetchOptimizeMode:(int64_t)optimizeMode initialSyncDate:(id)date lastCompletePrefetchDate:(id)prefetchDate initialBudget:(int64_t)budget excludeDynamicCPLResources:(BOOL)resources prefetchConfiguration:(id)self0 photoLibrary:(id)self1 applyPerPrefetchLimit:(BOOL)self2 resultHandler:(id)self3
 {
-  v18 = a6;
-  v19 = a7;
-  v20 = a10;
-  v21 = a11;
-  v22 = a13;
-  v37 = a1;
-  v36 = v18;
-  if ([objc_opt_class() _prefetchIsEnabledForPhase:a3 givenMode:a4 andInitialSyncDate:v18])
+  dateCopy = date;
+  prefetchDateCopy = prefetchDate;
+  configurationCopy = configuration;
+  libraryCopy = library;
+  handlerCopy = handler;
+  selfCopy = self;
+  v36 = dateCopy;
+  if ([objc_opt_class() _prefetchIsEnabledForPhase:phase givenMode:mode andInitialSyncDate:dateCopy])
   {
-    v23 = [[PLCloudResourcePrefetchPredicateOptions alloc] initWithPrefetchMode:a4 prefetchOptimizeMode:+[PLPrefetchConfiguration excludeDynamicResources:"defaultPrefetchOptimizeMode"]prefetchConfiguration:a9, v20];
+    configurationCopy = [[PLCloudResourcePrefetchPredicateOptions alloc] initWithPrefetchMode:mode prefetchOptimizeMode:+[PLPrefetchConfiguration excludeDynamicResources:"defaultPrefetchOptimizeMode"]prefetchConfiguration:resources, configurationCopy];
     v24 = 0;
-    v25 = 0;
-    if (a3 <= 2)
+    cloudResourceThumbnailsMaxResourcesPerFetch = 0;
+    if (phase <= 2)
     {
-      v26 = v19;
-      if (!a3)
+      v26 = prefetchDateCopy;
+      if (!phase)
       {
-        v25 = [v20 cloudResourceThumbnailsMaxResourcesPerFetch];
+        cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceThumbnailsMaxResourcesPerFetch];
         v24 = 0;
-        v27 = a8;
+        budgetCopy5 = budget;
         goto LABEL_20;
       }
 
-      v27 = a8;
-      if (a3 == 1)
+      budgetCopy5 = budget;
+      if (phase == 1)
       {
-        v24 = [PLCloudResourcePrefetchPredicates predicatesForComputeSync:v23 photoLibrary:v21];
-        v25 = [v20 cloudResourceComputeSyncMaxResourcesPerFetch];
+        v24 = [PLCloudResourcePrefetchPredicates predicatesForComputeSync:configurationCopy photoLibrary:libraryCopy];
+        cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceComputeSyncMaxResourcesPerFetch];
         goto LABEL_20;
       }
 
-      v28 = a12;
-      if (a3 == 2)
+      limitCopy4 = limit;
+      if (phase == 2)
       {
-        v24 = [PLCloudResourcePrefetchPredicates predicatesForMemories:v23 photoLibrary:v21];
-        v25 = [v20 cloudResourceMemoriesMaxResourcesPerFetch];
+        v24 = [PLCloudResourcePrefetchPredicates predicatesForMemories:configurationCopy photoLibrary:libraryCopy];
+        cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceMemoriesMaxResourcesPerFetch];
       }
     }
 
     else
     {
-      v26 = v19;
-      if (a3 <= 4)
+      v26 = prefetchDateCopy;
+      if (phase <= 4)
       {
-        v27 = a8;
-        if (a3 != 3)
+        budgetCopy5 = budget;
+        if (phase != 3)
         {
-          v28 = a12;
-          [(PLCloudResourcePrefetchPredicateOptions *)v23 setPrefetchOptimizeMode:a5];
-          v24 = [PLCloudResourcePrefetchPredicates predicatesForNonThumbnails:v23 lastCompletePrefetchDate:v26];
-          v25 = [v20 cloudResourceNonThumbnailsMaxResourcesPerFetch];
+          limitCopy4 = limit;
+          [(PLCloudResourcePrefetchPredicateOptions *)configurationCopy setPrefetchOptimizeMode:optimizeMode];
+          v24 = [PLCloudResourcePrefetchPredicates predicatesForNonThumbnails:configurationCopy lastCompletePrefetchDate:v26];
+          cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceNonThumbnailsMaxResourcesPerFetch];
           goto LABEL_21;
         }
 
-        v24 = [PLCloudResourcePrefetchPredicates predicatesForWidget:v23 photoLibrary:v21];
-        v25 = [v20 cloudResourceWidgetMaxResourcesPerFetch];
+        v24 = [PLCloudResourcePrefetchPredicates predicatesForWidget:configurationCopy photoLibrary:libraryCopy];
+        cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceWidgetMaxResourcesPerFetch];
 LABEL_20:
-        v28 = a12;
+        limitCopy4 = limit;
         goto LABEL_21;
       }
 
-      v27 = a8;
-      if (a3 == 5)
+      budgetCopy5 = budget;
+      if (phase == 5)
       {
-        v24 = [PLCloudResourcePrefetchPredicates predicateToPrefetchMediaMetadataResourcesWithOptions:v23 photoLibrary:v21];
-        v25 = [v20 cloudResourceMediaMetadataOverflowMaxResourcesPerFetch];
+        v24 = [PLCloudResourcePrefetchPredicates predicateToPrefetchMediaMetadataResourcesWithOptions:configurationCopy photoLibrary:libraryCopy];
+        cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceMediaMetadataOverflowMaxResourcesPerFetch];
         goto LABEL_20;
       }
 
-      v28 = a12;
-      if (a3 == 6)
+      limitCopy4 = limit;
+      if (phase == 6)
       {
-        v24 = [PLCloudResourcePrefetchPredicates predicateToPrefetchAdjustedMediaMetadataResourcesWithOptions:v23 photoLibrary:v21];
-        v25 = [v20 cloudResourceMediaMetadataOverflowMaxResourcesPerFetch];
+        v24 = [PLCloudResourcePrefetchPredicates predicateToPrefetchAdjustedMediaMetadataResourcesWithOptions:configurationCopy photoLibrary:libraryCopy];
+        cloudResourceThumbnailsMaxResourcesPerFetch = [configurationCopy cloudResourceMediaMetadataOverflowMaxResourcesPerFetch];
       }
     }
 
 LABEL_21:
-    v29 = v25;
+    v29 = cloudResourceThumbnailsMaxResourcesPerFetch;
 
-    if (v28)
+    if (limitCopy4)
     {
       goto LABEL_22;
     }
 
 LABEL_8:
-    LODWORD(v29) = [v20 cloudResourceThumbnailsMaxResourcesPerFetch];
+    LODWORD(v29) = [configurationCopy cloudResourceThumbnailsMaxResourcesPerFetch];
     v47 = 0;
     v48 = &v47;
     v49 = 0x2020000000;
-    v50 = v27;
-    v30 = [MEMORY[0x1E695DF70] array];
+    v50 = budgetCopy5;
+    array = [MEMORY[0x1E695DF70] array];
     v29 = v29;
     goto LABEL_23;
   }
 
   v29 = 0;
   v24 = 0;
-  v26 = v19;
-  v27 = a8;
-  if (!a12)
+  v26 = prefetchDateCopy;
+  budgetCopy5 = budget;
+  if (!limit)
   {
     goto LABEL_8;
   }
@@ -3103,29 +3103,29 @@ LABEL_22:
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
-  v50 = v27;
-  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:v29];
+  v50 = budgetCopy5;
+  array = [MEMORY[0x1E695DF70] arrayWithCapacity:v29];
 LABEL_23:
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __258__PLCloudResourcePrefetchManager_resourcesToPrefetchWithPrefetchPhase_prefetchMode_prefetchOptimizeMode_initialSyncDate_lastCompletePrefetchDate_initialBudget_excludeDynamicCPLResources_prefetchConfiguration_photoLibrary_applyPerPrefetchLimit_resultHandler___block_invoke;
   v38[3] = &unk_1E7574D98;
   v43 = &v47;
-  v31 = v30;
+  v31 = array;
   v39 = v31;
-  v44 = a3;
-  v45 = v37;
-  v32 = v21;
+  phaseCopy = phase;
+  v45 = selfCopy;
+  v32 = libraryCopy;
   v40 = v32;
-  v33 = v20;
+  v33 = configurationCopy;
   v41 = v33;
   v46 = v29;
   v34 = v24;
   v42 = v34;
   [v32 performBlockAndWait:v38];
-  if (v22)
+  if (handlerCopy)
   {
-    v22[2](v22, v31, v27);
+    handlerCopy[2](handlerCopy, v31, budgetCopy5);
   }
 
   _Block_object_dispose(&v47, 8);
@@ -3245,32 +3245,32 @@ LABEL_3:
   }
 }
 
-+ (id)thumbnailResourcesNeedingPrefetchInContext:(id)a3 maxRetry:(unint64_t)a4 limit:(int64_t)a5
++ (id)thumbnailResourcesNeedingPrefetchInContext:(id)context maxRetry:(unint64_t)retry limit:(int64_t)limit
 {
   v120[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (a5 < 1)
+  contextCopy = context;
+  if (limit < 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v85 = a4;
-    v96 = a5;
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:a5];
+    retryCopy = retry;
+    limitCopy = limit;
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:limit];
     v82 = objc_autoreleasePoolPush();
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v84 = a1;
-    v11 = [a1 _hasAssetsNeedingOneTimeThumbRebuildInContext:v8];
+    selfCopy = self;
+    v11 = [self _hasAssetsNeedingOneTimeThumbRebuildInContext:contextCopy];
     v12 = MEMORY[0x1E695DF70];
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"thumbnailIndex", 0xFFFFFFFFLL];
-    v14 = [v12 arrayWithObject:v13];
+    0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"thumbnailIndex", 0xFFFFFFFFLL];
+    v14 = [v12 arrayWithObject:0xFFFFFFFFLL];
 
     if (v11)
     {
-      v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"thumbnailIndex", 4294967293];
-      [v14 addObject:v15];
+      4294967293 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"thumbnailIndex", 4294967293];
+      [v14 addObject:4294967293];
     }
 
     v16 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v14];
@@ -3303,8 +3303,8 @@ LABEL_3:
     [v22 setAllocationType:1];
     v26 = objc_alloc_init(MEMORY[0x1E695D5C8]);
     [v26 setName:@"assetID"];
-    v27 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-    [v26 setExpression:v27];
+    expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+    [v26 setExpression:expressionForEvaluatedObject];
 
     [v26 setExpressionResultType:2000];
     v28 = objc_alloc_init(MEMORY[0x1E695D5C8]);
@@ -3322,12 +3322,12 @@ LABEL_3:
 
     v111 = 0;
     v80 = v22;
-    v31 = [v8 executeFetchRequest:v22 error:&v111];
+    v31 = [contextCopy executeFetchRequest:v22 error:&v111];
     v77 = v111;
     v32 = 0;
     v86 = v9;
-    v87 = v8;
-    v33 = v96;
+    v87 = contextCopy;
+    v33 = limitCopy;
     v92 = v31;
     do
     {
@@ -3345,14 +3345,14 @@ LABEL_3:
       v94 = v35;
       if ([v35 count] + v36 >= v33)
       {
-        v38 = v84;
-        v37 = v85;
+        v38 = selfCopy;
+        v37 = retryCopy;
       }
 
       else
       {
-        v38 = v84;
-        v37 = v85;
+        v38 = selfCopy;
+        v37 = retryCopy;
         do
         {
           if (v32 >= [v31 count])
@@ -3363,10 +3363,10 @@ LABEL_3:
           v39 = [v31 objectAtIndexedSubscript:v32];
           v40 = [v39 objectForKeyedSubscript:@"assetID"];
           v41 = [v39 objectForKeyedSubscript:@"adjustmentsState"];
-          v42 = [v41 unsignedShortValue];
+          unsignedShortValue = [v41 unsignedShortValue];
 
           [v93 addObject:v40];
-          v43 = v42 ? v94 : v95;
+          v43 = unsignedShortValue ? v94 : v95;
           [v43 addObject:v40];
           ++v32;
 
@@ -3377,13 +3377,13 @@ LABEL_3:
         while ([v94 count] + v44 < v33);
       }
 
-      v45 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v110 = 0;
-      v46 = [v38 _fetchThumbnailResourcesForAssets:v95 version:0 maxRetry:v37 inContext:v8 error:&v110];
+      v46 = [v38 _fetchThumbnailResourcesForAssets:v95 version:0 maxRetry:v37 inContext:contextCopy error:&v110];
       v47 = v110;
       if (v46)
       {
-        [v45 addObjectsFromArray:v46];
+        [array addObjectsFromArray:v46];
       }
 
       else
@@ -3401,13 +3401,13 @@ LABEL_3:
       }
 
       v109 = v47;
-      v50 = [v38 _fetchThumbnailResourcesForAssets:v94 version:2 maxRetry:v37 inContext:v8 error:&v109];
+      v50 = [v38 _fetchThumbnailResourcesForAssets:v94 version:2 maxRetry:v37 inContext:contextCopy error:&v109];
       v51 = v109;
 
       v88 = v50;
       if (v50)
       {
-        [v45 addObjectsFromArray:v50];
+        [array addObjectsFromArray:v50];
       }
 
       else
@@ -3426,12 +3426,12 @@ LABEL_3:
 
       v89 = v51;
       v90 = v46;
-      v54 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v45, "count")}];
+      v54 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(array, "count")}];
       v105 = 0u;
       v106 = 0u;
       v107 = 0u;
       v108 = 0u;
-      v55 = v45;
+      v55 = array;
       v56 = [v55 countByEnumeratingWithState:&v105 objects:v114 count:16];
       if (v56)
       {
@@ -3448,9 +3448,9 @@ LABEL_3:
 
             v60 = *(*(&v105 + 1) + 8 * i);
             v61 = [v60 objectIDsForRelationshipNamed:@"asset"];
-            v62 = [v61 firstObject];
+            firstObject = [v61 firstObject];
 
-            [v54 setObject:v60 forKeyedSubscript:v62];
+            [v54 setObject:v60 forKeyedSubscript:firstObject];
           }
 
           v57 = [v55 countByEnumeratingWithState:&v105 objects:v114 count:16];
@@ -3513,7 +3513,7 @@ LABEL_46:
           }
 
           [v86 addObject:*(*(&v97 + 1) + 8 * v74)];
-          if ([v86 count] == v96)
+          if ([v86 count] == limitCopy)
           {
             break;
           }
@@ -3533,12 +3533,12 @@ LABEL_46:
 
       v75 = [v86 count];
       objc_autoreleasePoolPop(context);
-      v33 = v96;
-      v8 = v87;
+      v33 = limitCopy;
+      contextCopy = v87;
       v31 = v92;
     }
 
-    while (v75 != v96);
+    while (v75 != limitCopy);
 
     objc_autoreleasePoolPop(v82);
   }
@@ -3546,20 +3546,20 @@ LABEL_46:
   return v9;
 }
 
-+ (id)_fetchThumbnailResourcesForAssets:(id)a3 version:(unsigned int)a4 maxRetry:(unint64_t)a5 inContext:(id)a6 error:(id *)a7
++ (id)_fetchThumbnailResourcesForAssets:(id)assets version:(unsigned int)version maxRetry:(unint64_t)retry inContext:(id)context error:(id *)error
 {
-  v10 = *&a4;
+  v10 = *&version;
   v27[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if ([v11 count])
+  assetsCopy = assets;
+  contextCopy = context;
+  if ([assetsCopy count])
   {
     v13 = MEMORY[0x1E695D5E0];
     v14 = +[PLInternalResource entityName];
     v15 = [v13 fetchRequestWithEntityName:v14];
 
-    v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K == %d", @"asset", v11, @"version", v10];
-    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K == %d AND %K <= %d AND %K != nil", @"dataStoreClassID", 0, @"dataStoreSubtype", 5, @"cloudPrefetchCount", a5, @"fingerprint"];
+    v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K == %d", @"asset", assetsCopy, @"version", v10];
+    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K == %d AND %K <= %d AND %K != nil", @"dataStoreClassID", 0, @"dataStoreSubtype", 5, @"cloudPrefetchCount", retry, @"fingerprint"];
     v18 = MEMORY[0x1E696AB28];
     v27[0] = v16;
     v27[1] = v17;
@@ -3568,13 +3568,13 @@ LABEL_46:
     [v15 setPredicate:v20];
 
     v26 = 0;
-    v21 = [v12 executeFetchRequest:v15 error:&v26];
+    v21 = [contextCopy executeFetchRequest:v15 error:&v26];
     v22 = v26;
     v23 = v22;
-    if (!v21 && a7)
+    if (!v21 && error)
     {
       v24 = v22;
-      *a7 = v23;
+      *error = v23;
     }
   }
 
@@ -3586,34 +3586,34 @@ LABEL_46:
   return v21;
 }
 
-+ (BOOL)_hasAssetsNeedingOneTimeThumbRebuildInContext:(id)a3
++ (BOOL)_hasAssetsNeedingOneTimeThumbRebuildInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[PLManagedAsset fetchRequest];
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"thumbnailIndex", 4294967293];
-  [v4 setPredicate:v5];
+  4294967293 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"thumbnailIndex", 4294967293];
+  [v4 setPredicate:4294967293];
 
-  v6 = [v3 countForFetchRequest:v4 error:0];
+  v6 = [contextCopy countForFetchRequest:v4 error:0];
   v8 = v6 != 0x7FFFFFFFFFFFFFFFLL && v6 != 0;
 
   return v8;
 }
 
-+ (BOOL)_prefetchIsEnabledForPhase:(unint64_t)a3 givenMode:(int64_t)a4 andInitialSyncDate:(id)a5
++ (BOOL)_prefetchIsEnabledForPhase:(unint64_t)phase givenMode:(int64_t)mode andInitialSyncDate:(id)date
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 < 2)
+  dateCopy = date;
+  v8 = dateCopy;
+  if (mode < 2)
   {
-    if (v7 && a3 <= 6)
+    if (dateCopy && phase <= 6)
     {
-      if (((1 << a3) & 0x63) != 0)
+      if (((1 << phase) & 0x63) != 0)
       {
         v11 = 1;
         goto LABEL_17;
       }
 
-      if (((1 << a3) & 0x14) != 0)
+      if (((1 << phase) & 0x14) != 0)
       {
         v11 = PLPlatformShouldPrefetchThumbnailsForComputeSyncUnprocessedAssetsOnly() ^ 1;
         goto LABEL_17;
@@ -3625,19 +3625,19 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     goto LABEL_16;
   }
 
-  if (a3)
+  if (phase)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v7 == 0;
+    v9 = dateCopy == 0;
   }
 
   v10 = !v9;
@@ -3647,11 +3647,11 @@ LABEL_17:
   return v11 & 1;
 }
 
-+ (id)_resourcesWithPredicate:(id)a3 limit:(unint64_t)a4 context:(id)a5
++ (id)_resourcesWithPredicate:(id)predicate limit:(unint64_t)limit context:(id)context
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  predicateCopy = predicate;
+  contextCopy = context;
   v9 = +[PLInternalResource entityName];
   v10 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v9];
   v26[0] = @"asset";
@@ -3664,10 +3664,10 @@ LABEL_17:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
   [v10 setSortDescriptors:v13];
 
-  [v10 setPredicate:v7];
-  [v10 setFetchLimit:a4];
+  [v10 setPredicate:predicateCopy];
+  [v10 setFetchLimit:limit];
   v18 = 0;
-  v14 = [v8 executeFetchRequest:v10 error:&v18];
+  v14 = [contextCopy executeFetchRequest:v10 error:&v18];
 
   v15 = v18;
   if (v15)
@@ -3676,9 +3676,9 @@ LABEL_17:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v20 = v7;
+      v20 = predicateCopy;
       v21 = 2048;
-      v22 = a4;
+      limitCopy = limit;
       v23 = 2112;
       v24 = v15;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Failed to fetch resources with predicate %@ limit %ld : %@", buf, 0x20u);
@@ -3688,44 +3688,44 @@ LABEL_17:
   return v14;
 }
 
-+ (id)descriptionForPrefetchMode:(int64_t)a3
++ (id)descriptionForPrefetchMode:(int64_t)mode
 {
-  if ((a3 - 1) > 2)
+  if ((mode - 1) > 2)
   {
     return @"optimize";
   }
 
   else
   {
-    return off_1E7572EC8[a3 - 1];
+    return off_1E7572EC8[mode - 1];
   }
 }
 
-+ (id)_identifierForResourceDownload:(id)a3
++ (id)_identifierForResourceDownload:(id)download
 {
-  v3 = a3;
+  downloadCopy = download;
   v4 = [PLPrefetchResourceIdentifier alloc];
-  v5 = [v3 asset];
-  v6 = [v5 uuid];
-  v7 = [v3 version];
-  v8 = [v3 cplType];
-  v9 = [v3 recipeID];
+  asset = [downloadCopy asset];
+  uuid = [asset uuid];
+  version = [downloadCopy version];
+  cplType = [downloadCopy cplType];
+  recipeID = [downloadCopy recipeID];
 
-  v10 = [(PLPrefetchResourceIdentifier *)v4 initWithAssetUuid:v6 version:v7 cplType:v8 recipeID:v9];
+  v10 = [(PLPrefetchResourceIdentifier *)v4 initWithAssetUuid:uuid version:version cplType:cplType recipeID:recipeID];
 
   return v10;
 }
 
-+ (id)descriptionForPrefetchPhase:(unint64_t)a3
++ (id)descriptionForPrefetchPhase:(unint64_t)phase
 {
-  if (a3 - 1 > 5)
+  if (phase - 1 > 5)
   {
     return @"thumbnails";
   }
 
   else
   {
-    return off_1E7572E98[a3 - 1];
+    return off_1E7572E98[phase - 1];
   }
 }
 

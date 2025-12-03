@@ -1,27 +1,27 @@
 @interface SafariImportViewController
-- (SafariImportViewController)initWithLocationToScanForExports:(int64_t)a3 folderURLToScanForExports:(id)a4;
+- (SafariImportViewController)initWithLocationToScanForExports:(int64_t)exports folderURLToScanForExports:(id)forExports;
 - (SafariImportViewControllerDelegate)delegate;
 - (void)_cancelButtonTapped;
 - (void)_computeNumberOfItemsToBeImported;
-- (void)_presentImportFailedAlertWithPresentingViewController:(id)a3 message:(id)a4;
-- (void)_searchForExportWithCompletionHandler:(id)a3;
+- (void)_presentImportFailedAlertWithPresentingViewController:(id)controller message:(id)message;
+- (void)_searchForExportWithCompletionHandler:(id)handler;
 - (void)_showChooseFileUI;
 - (void)_showDocumentPicker;
 - (void)_showImportFromDocumentPickerUI;
 - (void)_showImportFromLastExportUI;
 - (void)_showSearchingForExportUI;
 - (void)_startImporting;
-- (void)_updateUIAndLayoutStackViewIfNeeded:(BOOL)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)importSuccessViewControllerDidDismiss:(id)a3;
+- (void)_updateUIAndLayoutStackViewIfNeeded:(BOOL)needed;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)importSuccessViewControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation SafariImportViewController
 
-- (SafariImportViewController)initWithLocationToScanForExports:(int64_t)a3 folderURLToScanForExports:(id)a4
+- (SafariImportViewController)initWithLocationToScanForExports:(int64_t)exports folderURLToScanForExports:(id)forExports
 {
-  v7 = a4;
+  forExportsCopy = forExports;
   v8 = _WBSLocalizedString();
   v9 = _WBSLocalizedString();
   v10 = _WBSLocalizedString();
@@ -38,8 +38,8 @@
   v13 = v12;
   if (v12)
   {
-    v12->_locationToScanForExports = a3;
-    objc_storeStrong(&v12->_folderURLToScanForExports, a4);
+    v12->_locationToScanForExports = exports;
+    objc_storeStrong(&v12->_folderURLToScanForExports, forExports);
     v14 = objc_alloc_init(SafariSettingsBrowsingDataImportController);
     importController = v13->_importController;
     v13->_importController = v14;
@@ -98,15 +98,15 @@ void __89__SafariImportViewController_initWithLocationToScanForExports_folderURL
   }
 }
 
-- (void)_searchForExportWithCompletionHandler:(id)a3
+- (void)_searchForExportWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[_SFDownloadManager alloc] initAsReadonly:1];
   v6 = [NSString stringWithFormat:@"com.apple.MobileSafari.SafariImportViewController.%@.%p.searchForExportQueue", objc_opt_class(), self];
-  v7 = [v6 UTF8String];
+  uTF8String = [v6 UTF8String];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INITIATED, 0);
-  v10 = dispatch_queue_create(v7, v9);
+  v10 = dispatch_queue_create(uTF8String, v9);
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -114,9 +114,9 @@ void __89__SafariImportViewController_initWithLocationToScanForExports_folderURL
   v14[3] = &unk_8A2B0;
   v15 = v10;
   v16 = v5;
-  v17 = self;
-  v18 = v4;
-  v11 = v4;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v5;
   v13 = v10;
   [v12 getDownloadsWithCompletionHandler:v14];
@@ -405,8 +405,8 @@ void __68__SafariImportViewController__searchForExportWithCompletionHandler___bl
 
 - (void)_cancelButtonTapped
 {
-  v2 = [(SafariImportViewController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(SafariImportViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_startImporting
@@ -632,19 +632,19 @@ void __45__SafariImportViewController__startImporting__block_invoke_2_33(uint64_
   }
 }
 
-- (void)_presentImportFailedAlertWithPresentingViewController:(id)a3 message:(id)a4
+- (void)_presentImportFailedAlertWithPresentingViewController:(id)controller message:(id)message
 {
   importController = self->_importController;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SafariSettingsBrowsingDataImportController *)importController importErrorAlertTitle];
-  v11 = [UIAlertController alertControllerWithTitle:v8 message:v6 preferredStyle:1];
+  messageCopy = message;
+  controllerCopy = controller;
+  importErrorAlertTitle = [(SafariSettingsBrowsingDataImportController *)importController importErrorAlertTitle];
+  v11 = [UIAlertController alertControllerWithTitle:importErrorAlertTitle message:messageCopy preferredStyle:1];
 
   v9 = _WBSLocalizedString();
   v10 = [UIAlertAction actionWithTitle:v9 style:0 handler:0];
 
   [v11 addAction:v10];
-  [v7 presentViewController:v11 animated:1 completion:0];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 }
 
 - (void)_computeNumberOfItemsToBeImported
@@ -708,29 +708,29 @@ LABEL_8:
   importDetailsStackView = self->_importDetailsStackView;
   self->_importDetailsStackView = v3;
 
-  v5 = [(SafariImportExportSheetController *)self stackView];
-  [v5 addArrangedSubview:self->_importDetailsStackView];
+  stackView = [(SafariImportExportSheetController *)self stackView];
+  [stackView addArrangedSubview:self->_importDetailsStackView];
 
-  v6 = [(ImportDetailsStackView *)self->_importDetailsStackView widthAnchor];
-  v7 = [(SafariImportExportSheetController *)self stackView];
-  v8 = [v7 layoutMarginsGuide];
-  v9 = [v8 widthAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  widthAnchor = [(ImportDetailsStackView *)self->_importDetailsStackView widthAnchor];
+  stackView2 = [(SafariImportExportSheetController *)self stackView];
+  layoutMarginsGuide = [stackView2 layoutMarginsGuide];
+  widthAnchor2 = [layoutMarginsGuide widthAnchor];
+  v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v10 setActive:1];
 
   v11 = [UIBarButtonItem alloc];
   v12 = _WBSLocalizedString();
   v13 = [v11 initWithTitle:v12 style:0 target:self action:"_cancelButtonTapped"];
-  v14 = [(SafariImportViewController *)self navigationItem];
-  [v14 setLeftBarButtonItem:v13];
+  navigationItem = [(SafariImportViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v13];
 
-  v15 = [(SafariImportViewController *)self navigationItem];
-  v16 = [v15 leftBarButtonItem];
-  [v16 setAccessibilityIdentifier:@"CancelButton"];
+  navigationItem2 = [(SafariImportViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"CancelButton"];
 
-  v17 = [(SafariImportExportSheetController *)self stackView];
-  v18 = [(SafariImportExportSheetController *)self detailLabel];
-  [v17 setCustomSpacing:v18 afterView:60.0];
+  stackView3 = [(SafariImportExportSheetController *)self stackView];
+  detailLabel = [(SafariImportExportSheetController *)self detailLabel];
+  [stackView3 setCustomSpacing:detailLabel afterView:60.0];
 
   v64[0] = _NSConcreteStackBlock;
   v64[1] = 3221225472;
@@ -756,25 +756,25 @@ LABEL_8:
   v27 = [v22 initWithString:v23 attributes:v26];
 
   v28 = +[UIButtonConfiguration borderedProminentButtonConfiguration];
-  v29 = [v28 background];
-  [v29 setCornerRadius:8.0];
+  background = [v28 background];
+  [background setCornerRadius:8.0];
 
   v30 = +[UIColor systemGray5Color];
-  v31 = [v28 background];
-  [v31 setBackgroundColor:v30];
+  background2 = [v28 background];
+  [background2 setBackgroundColor:v30];
 
   [v28 setContentInsets:{20.0, 0.0, 20.0, 0.0}];
   [v28 setAttributedTitle:v27];
   [(UIButton *)self->_chooseFileButton setConfiguration:v28];
   [(UIButton *)self->_chooseFileButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(SafariImportExportSheetController *)self stackView];
-  [v32 addArrangedSubview:self->_chooseFileButton];
+  stackView4 = [(SafariImportExportSheetController *)self stackView];
+  [stackView4 addArrangedSubview:self->_chooseFileButton];
 
-  v33 = [(UIButton *)self->_chooseFileButton widthAnchor];
-  v34 = [(SafariImportExportSheetController *)self stackView];
-  v35 = [v34 layoutMarginsGuide];
-  v36 = [v35 widthAnchor];
-  v37 = [v33 constraintEqualToAnchor:v36];
+  widthAnchor3 = [(UIButton *)self->_chooseFileButton widthAnchor];
+  stackView5 = [(SafariImportExportSheetController *)self stackView];
+  layoutMarginsGuide2 = [stackView5 layoutMarginsGuide];
+  widthAnchor4 = [layoutMarginsGuide2 widthAnchor];
+  v37 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   [v37 setActive:1];
 
   v38 = objc_alloc_init(UIView);
@@ -783,18 +783,18 @@ LABEL_8:
 
   [(UIView *)self->_searchingForExportSpinner setHidden:1];
   [(UIView *)self->_searchingForExportSpinner setBackgroundColor:v60];
-  v40 = [(UIView *)self->_searchingForExportSpinner layer];
-  [v40 setCornerRadius:8.0];
+  layer = [(UIView *)self->_searchingForExportSpinner layer];
+  [layer setCornerRadius:8.0];
 
   [(UIView *)self->_searchingForExportSpinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  v41 = [(SafariImportExportSheetController *)self stackView];
-  [v41 addArrangedSubview:self->_searchingForExportSpinner];
+  stackView6 = [(SafariImportExportSheetController *)self stackView];
+  [stackView6 addArrangedSubview:self->_searchingForExportSpinner];
 
-  v42 = [(UIView *)self->_searchingForExportSpinner widthAnchor];
-  v43 = [(SafariImportExportSheetController *)self stackView];
-  v44 = [v43 layoutMarginsGuide];
-  v45 = [v44 widthAnchor];
-  v46 = [v42 constraintEqualToAnchor:v45];
+  widthAnchor5 = [(UIView *)self->_searchingForExportSpinner widthAnchor];
+  stackView7 = [(SafariImportExportSheetController *)self stackView];
+  layoutMarginsGuide3 = [stackView7 layoutMarginsGuide];
+  widthAnchor6 = [layoutMarginsGuide3 widthAnchor];
+  v46 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
   [v46 setActive:1];
 
   v47 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -817,18 +817,18 @@ LABEL_8:
   self->_importCaptionStackView = v51;
 
   [(ImportCaptionStackView *)self->_importCaptionStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v53 = [(SafariImportExportSheetController *)self stackView];
-  [v53 addArrangedSubview:self->_importCaptionStackView];
+  stackView8 = [(SafariImportExportSheetController *)self stackView];
+  [stackView8 addArrangedSubview:self->_importCaptionStackView];
 
-  v54 = [(ImportCaptionStackView *)self->_importCaptionStackView widthAnchor];
-  v55 = [(SafariImportExportSheetController *)self stackView];
-  v56 = [v55 layoutMarginsGuide];
-  v57 = [v56 widthAnchor];
-  v58 = [v54 constraintEqualToAnchor:v57 multiplier:0.7];
+  widthAnchor7 = [(ImportCaptionStackView *)self->_importCaptionStackView widthAnchor];
+  stackView9 = [(SafariImportExportSheetController *)self stackView];
+  layoutMarginsGuide4 = [stackView9 layoutMarginsGuide];
+  widthAnchor8 = [layoutMarginsGuide4 widthAnchor];
+  v58 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:0.7];
   [v58 setActive:1];
 
-  v59 = [(SafariImportExportSheetController *)self button];
-  [v59 setAccessibilityIdentifier:@"ImportBrowsingDataButton"];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setAccessibilityIdentifier:@"ImportBrowsingDataButton"];
 
   [(SafariImportViewController *)self _updateUIAndLayoutStackViewIfNeeded:0];
   objc_destroyWeak(&v62);
@@ -846,9 +846,9 @@ void __41__SafariImportViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_updateUIAndLayoutStackViewIfNeeded:(BOOL)a3
+- (void)_updateUIAndLayoutStackViewIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   importLocation = self->_importLocation;
   switch(importLocation)
   {
@@ -856,7 +856,7 @@ void __41__SafariImportViewController_viewDidLoad__block_invoke_2(uint64_t a1)
       if (!self->_searchingForExport)
       {
         [(SafariImportViewController *)self _showChooseFileUI];
-        if (!v3)
+        if (!neededCopy)
         {
           return;
         }
@@ -868,7 +868,7 @@ void __41__SafariImportViewController_viewDidLoad__block_invoke_2(uint64_t a1)
       break;
     case 1:
       [(SafariImportViewController *)self _showImportFromDocumentPickerUI];
-      if (!v3)
+      if (!neededCopy)
       {
         return;
       }
@@ -876,7 +876,7 @@ void __41__SafariImportViewController_viewDidLoad__block_invoke_2(uint64_t a1)
       goto LABEL_11;
     case 0:
       [(SafariImportViewController *)self _showImportFromLastExportUI];
-      if (!v3)
+      if (!neededCopy)
       {
         return;
       }
@@ -884,20 +884,20 @@ void __41__SafariImportViewController_viewDidLoad__block_invoke_2(uint64_t a1)
       goto LABEL_11;
   }
 
-  if (!v3)
+  if (!neededCopy)
   {
     return;
   }
 
 LABEL_11:
-  v6 = [(SafariImportExportSheetController *)self stackView];
-  [v6 layoutIfNeeded];
+  stackView = [(SafariImportExportSheetController *)self stackView];
+  [stackView layoutIfNeeded];
 }
 
 - (void)_showImportFromLastExportUI
 {
-  v3 = [(SafariImportExportSheetController *)self button];
-  [v3 setEnabled:1];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setEnabled:1];
 
   [(UIButton *)self->_chooseFileButton setHidden:1];
   [(UIView *)self->_searchingForExportSpinner setHidden:1];
@@ -921,8 +921,8 @@ LABEL_11:
 
 - (void)_showImportFromDocumentPickerUI
 {
-  v3 = [(SafariImportExportSheetController *)self button];
-  [v3 setEnabled:1];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setEnabled:1];
 
   [(UIButton *)self->_chooseFileButton setHidden:1];
   [(UIView *)self->_searchingForExportSpinner setHidden:1];
@@ -938,8 +938,8 @@ LABEL_11:
 
 - (void)_showSearchingForExportUI
 {
-  v3 = [(SafariImportExportSheetController *)self button];
-  [v3 setEnabled:0];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setEnabled:0];
 
   [(UIButton *)self->_chooseFileButton setHidden:1];
   [(ImportDetailsStackView *)self->_importDetailsStackView setHidden:1];
@@ -960,8 +960,8 @@ LABEL_11:
 
 - (void)_showChooseFileUI
 {
-  v3 = [(SafariImportExportSheetController *)self button];
-  [v3 setEnabled:0];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setEnabled:0];
 
   [(UIButton *)self->_chooseFileButton setHidden:0];
   [(ImportDetailsStackView *)self->_importDetailsStackView setHidden:1];
@@ -983,16 +983,16 @@ LABEL_11:
   [(SafariImportViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __68__SafariImportViewController_documentPicker_didPickDocumentsAtURLs___block_invoke;
   v5[3] = &unk_8A350;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [_SFSettingsAuthentication authenticateForSettings:v6 allowAuthenticationReuse:0 completionHandler:v5];
+  selfCopy = self;
+  lsCopy = ls;
+  v4 = lsCopy;
+  [_SFSettingsAuthentication authenticateForSettings:selfCopy allowAuthenticationReuse:0 completionHandler:v5];
 }
 
 void __68__SafariImportViewController_documentPicker_didPickDocumentsAtURLs___block_invoke(uint64_t a1, char a2, uint64_t a3, void *a4)
@@ -1024,7 +1024,7 @@ void __68__SafariImportViewController_documentPicker_didPickDocumentsAtURLs___bl
   }
 }
 
-- (void)importSuccessViewControllerDidDismiss:(id)a3
+- (void)importSuccessViewControllerDidDismiss:(id)dismiss
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())

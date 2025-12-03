@@ -1,21 +1,21 @@
 @interface CNContactPolicyValidator
-+ (BOOL)shouldIgnoreValidationCheckForProperty:(id)a3;
-+ (id)contactFromContact:(id)a3 conformingToPolicy:(id)a4 options:(unint64_t)a5 valueToStringTransform:(id)a6;
++ (BOOL)shouldIgnoreValidationCheckForProperty:(id)property;
++ (id)contactFromContact:(id)contact conformingToPolicy:(id)policy options:(unint64_t)options valueToStringTransform:(id)transform;
 @end
 
 @implementation CNContactPolicyValidator
 
-+ (BOOL)shouldIgnoreValidationCheckForProperty:(id)a3
++ (BOOL)shouldIgnoreValidationCheckForProperty:(id)property
 {
   v3 = shouldIgnoreValidationCheckForProperty__cn_once_token_0;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     +[CNContactPolicyValidator shouldIgnoreValidationCheckForProperty:];
   }
 
   v5 = shouldIgnoreValidationCheckForProperty__cn_once_object_0;
-  v6 = [v4 key];
+  v6 = [propertyCopy key];
 
   v7 = [v5 containsObject:v6];
   return v7;
@@ -32,15 +32,15 @@ void __67__CNContactPolicyValidator_shouldIgnoreValidationCheckForProperty___blo
   shouldIgnoreValidationCheckForProperty__cn_once_object_0 = v3;
 }
 
-+ (id)contactFromContact:(id)a3 conformingToPolicy:(id)a4 options:(unint64_t)a5 valueToStringTransform:(id)a6
++ (id)contactFromContact:(id)contact conformingToPolicy:(id)policy options:(unint64_t)options valueToStringTransform:(id)transform
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ((v7 & 8) != 0)
+  optionsCopy = options;
+  contactCopy = contact;
+  policyCopy = policy;
+  transformCopy = transform;
+  if ((optionsCopy & 8) != 0)
   {
-    [v10 identifier];
+    [contactCopy identifier];
   }
 
   else
@@ -54,11 +54,11 @@ void __67__CNContactPolicyValidator_shouldIgnoreValidationCheckForProperty___blo
   v49 = __Block_byref_object_copy__35;
   v50 = __Block_byref_object_dispose__35;
   v51 = 0;
-  if ((v7 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     v16 = +[CNContactKeyVector keyVector];
-    v17 = [v10 keyVector];
-    v15 = [v16 keyVectorByAddingKeysFromKeyVector:v17];
+    keyVector = [contactCopy keyVector];
+    v15 = [v16 keyVectorByAddingKeysFromKeyVector:keyVector];
 
     v18 = [(CNContact *)[CNMutableContact alloc] initWithIdentifier:v13 availableKeyDescriptor:v15];
     v19 = v47[5];
@@ -77,24 +77,24 @@ void __67__CNContactPolicyValidator_shouldIgnoreValidationCheckForProperty___blo
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__35;
   v44 = __Block_byref_object_dispose__35;
-  v45 = [MEMORY[0x1E696AD60] string];
-  v20 = [v47[5] keyVector];
+  string = [MEMORY[0x1E696AD60] string];
+  keyVector2 = [v47[5] keyVector];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __97__CNContactPolicyValidator_contactFromContact_conformingToPolicy_options_valueToStringTransform___block_invoke;
   v31[3] = &unk_1E74176C0;
-  v21 = v10;
+  v21 = contactCopy;
   v32 = v21;
-  v37 = a1;
-  v22 = v11;
+  selfCopy = self;
+  v22 = policyCopy;
   v33 = v22;
   v35 = &v46;
-  v38 = v7 & 1;
-  v39 = (v7 & 2) != 0;
-  v23 = v12;
+  v38 = optionsCopy & 1;
+  v39 = (optionsCopy & 2) != 0;
+  v23 = transformCopy;
   v34 = v23;
   v36 = &v40;
-  [v20 enumeratePropertiesUsingBlock:v31];
+  [keyVector2 enumeratePropertiesUsingBlock:v31];
 
   v24 = (*(*MEMORY[0x1E6996570] + 16))();
   v25 = v47;

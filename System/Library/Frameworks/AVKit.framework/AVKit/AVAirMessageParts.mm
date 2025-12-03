@@ -1,7 +1,7 @@
 @interface AVAirMessageParts
-+ (id)messagePartsWithData:(id)a3 lineSeparator:(id)a4 data:(id)a5 headerBodySeparator:(id)a6 data:(id)a7 bodyLengthKey:(id)a8;
-+ (void)registerClass:(Class)a3 forMessageVersion:(id)a4;
-- (AVAirMessageParts)initWithVersion:(id)a3 headers:(id)a4 expectedBodyLength:(int64_t)a5 body:(id)a6 extra:(id)a7;
++ (id)messagePartsWithData:(id)data lineSeparator:(id)separator data:(id)a5 headerBodySeparator:(id)bodySeparator data:(id)a7 bodyLengthKey:(id)key;
++ (void)registerClass:(Class)class forMessageVersion:(id)version;
+- (AVAirMessageParts)initWithVersion:(id)version headers:(id)headers expectedBodyLength:(int64_t)length body:(id)body extra:(id)extra;
 - (BOOL)shouldCallReverseTransformerAgain;
 - (Class)_matchingClass;
 - (NSArray)repeatedHeaders;
@@ -10,8 +10,8 @@
 - (NSString)bodyAsUTF8Text;
 - (id)airMessage;
 - (id)bodyAsJSON;
-- (id)decompressBodyUsingAlgorithm:(int64_t)a3;
-- (id)decompressBodyUsingNamedAlgorithm:(id)a3;
+- (id)decompressBodyUsingAlgorithm:(int64_t)algorithm;
+- (id)decompressBodyUsingNamedAlgorithm:(id)algorithm;
 - (void)_identifyUniqueAndRepeatedHeadersIfNecessary;
 @end
 
@@ -24,43 +24,43 @@
     return 0;
   }
 
-  v4 = [(AVAirMessageParts *)self extraData];
-  v3 = [v4 length] != 0;
+  extraData = [(AVAirMessageParts *)self extraData];
+  v3 = [extraData length] != 0;
 
   return v3;
 }
 
-- (id)decompressBodyUsingNamedAlgorithm:(id)a3
+- (id)decompressBodyUsingNamedAlgorithm:(id)algorithm
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  algorithmCopy = algorithm;
   if ([(AVAirMessageParts *)self isIncomplete])
   {
     v5 = 0;
     goto LABEL_17;
   }
 
-  v6 = [v4 lowercaseString];
-  if ([v4 length] && !objc_msgSend(v6, "isEqualToString:", @"none"))
+  lowercaseString = [algorithmCopy lowercaseString];
+  if ([algorithmCopy length] && !objc_msgSend(lowercaseString, "isEqualToString:", @"none"))
   {
-    if ([v6 isEqualToString:@"lzfse"])
+    if ([lowercaseString isEqualToString:@"lzfse"])
     {
       v8 = 0;
     }
 
-    else if ([v6 isEqualToString:@"lz4"])
+    else if ([lowercaseString isEqualToString:@"lz4"])
     {
       v8 = 1;
     }
 
-    else if ([v6 isEqualToString:@"zlib"])
+    else if ([lowercaseString isEqualToString:@"zlib"])
     {
       v8 = 3;
     }
 
     else
     {
-      if (([v6 isEqualToString:@"lzma"] & 1) == 0)
+      if (([lowercaseString isEqualToString:@"lzma"] & 1) == 0)
       {
         v10 = _avairlog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -68,7 +68,7 @@
           v11 = 136315394;
           v12 = "[AVAirMessageParts decompressBodyUsingNamedAlgorithm:]";
           v13 = 2114;
-          v14 = v4;
+          v14 = algorithmCopy;
           _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s failed to decompress data; algorithm name '%{public}@' is not recognized", &v11, 0x16u);
         }
 
@@ -79,15 +79,15 @@
       v8 = 2;
     }
 
-    v7 = [(AVAirMessageParts *)self decompressBodyUsingAlgorithm:v8];
+    rawBodyData = [(AVAirMessageParts *)self decompressBodyUsingAlgorithm:v8];
   }
 
   else
   {
-    v7 = [(AVAirMessageParts *)self rawBodyData];
+    rawBodyData = [(AVAirMessageParts *)self rawBodyData];
   }
 
-  v5 = v7;
+  v5 = rawBodyData;
 LABEL_16:
 
 LABEL_17:
@@ -95,7 +95,7 @@ LABEL_17:
   return v5;
 }
 
-- (id)decompressBodyUsingAlgorithm:(int64_t)a3
+- (id)decompressBodyUsingAlgorithm:(int64_t)algorithm
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(AVAirMessageParts *)self isIncomplete])
@@ -105,12 +105,12 @@ LABEL_17:
 
   else
   {
-    v6 = [(AVAirMessageParts *)self rawBodyData];
-    v5 = v6;
-    if ((a3 & 0x8000000000000000) == 0)
+    rawBodyData = [(AVAirMessageParts *)self rawBodyData];
+    v5 = rawBodyData;
+    if ((algorithm & 0x8000000000000000) == 0)
     {
       v11 = 0;
-      v7 = [v6 decompressedDataUsingAlgorithm:a3 error:&v11];
+      v7 = [rawBodyData decompressedDataUsingAlgorithm:algorithm error:&v11];
       v8 = v11;
 
       if (!v7)
@@ -135,11 +135,11 @@ LABEL_17:
 
 - (NSDictionary)bodyAsJSONDictionary
 {
-  v2 = [(AVAirMessageParts *)self bodyAsJSON];
+  bodyAsJSON = [(AVAirMessageParts *)self bodyAsJSON];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = bodyAsJSON;
   }
 
   else
@@ -160,19 +160,19 @@ LABEL_17:
 
   else
   {
-    v4 = [(AVAirMessageParts *)self uncompressedBodyData];
-    v5 = v4;
-    if (v4)
+    uncompressedBodyData = [(AVAirMessageParts *)self uncompressedBodyData];
+    v5 = uncompressedBodyData;
+    if (uncompressedBodyData)
     {
-      v6 = v4;
+      rawBodyData = uncompressedBodyData;
     }
 
     else
     {
-      v6 = [(AVAirMessageParts *)self rawBodyData];
+      rawBodyData = [(AVAirMessageParts *)self rawBodyData];
     }
 
-    v7 = v6;
+    v7 = rawBodyData;
 
     v11 = 0;
     v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:4 error:&v11];
@@ -198,42 +198,42 @@ LABEL_17:
 {
   if ([(AVAirMessageParts *)self isIncomplete])
   {
-    v3 = [(AVAirMessageParts *)self rawBodyData];
+    rawBodyData = [(AVAirMessageParts *)self rawBodyData];
 
-    if (!v3)
+    if (!rawBodyData)
     {
       goto LABEL_9;
     }
 
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [(AVAirMessageParts *)self rawBodyData];
+    rawBodyData2 = [(AVAirMessageParts *)self rawBodyData];
     v6 = v4;
   }
 
   else
   {
-    v7 = [(AVAirMessageParts *)self uncompressedBodyData];
-    v8 = v7;
-    if (v7)
+    uncompressedBodyData = [(AVAirMessageParts *)self uncompressedBodyData];
+    v8 = uncompressedBodyData;
+    if (uncompressedBodyData)
     {
-      v9 = v7;
+      rawBodyData3 = uncompressedBodyData;
     }
 
     else
     {
-      v9 = [(AVAirMessageParts *)self rawBodyData];
+      rawBodyData3 = [(AVAirMessageParts *)self rawBodyData];
     }
 
-    v5 = v9;
+    rawBodyData2 = rawBodyData3;
 
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   }
 
-  v3 = [v6 initWithData:v5 encoding:4];
+  rawBodyData = [v6 initWithData:rawBodyData2 encoding:4];
 
 LABEL_9:
 
-  return v3;
+  return rawBodyData;
 }
 
 - (NSArray)repeatedHeaders
@@ -263,8 +263,8 @@ LABEL_9:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(AVAirMessageParts *)self headers];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    headers = [(AVAirMessageParts *)self headers];
+    v6 = [headers countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -275,14 +275,14 @@ LABEL_9:
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(headers);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
           v11 = [v10 key];
-          v12 = [v11 lowercaseString];
+          lowercaseString = [v11 lowercaseString];
 
-          v13 = [(NSDictionary *)v3 objectForKeyedSubscript:v12];
+          v13 = [(NSDictionary *)v3 objectForKeyedSubscript:lowercaseString];
 
           if (v13)
           {
@@ -291,12 +291,12 @@ LABEL_9:
 
           else
           {
-            v14 = [v10 value];
-            [(NSDictionary *)v3 setObject:v14 forKeyedSubscript:v12];
+            value = [v10 value];
+            [(NSDictionary *)v3 setObject:value forKeyedSubscript:lowercaseString];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [headers countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
@@ -311,22 +311,22 @@ LABEL_9:
   }
 }
 
-- (AVAirMessageParts)initWithVersion:(id)a3 headers:(id)a4 expectedBodyLength:(int64_t)a5 body:(id)a6 extra:(id)a7
+- (AVAirMessageParts)initWithVersion:(id)version headers:(id)headers expectedBodyLength:(int64_t)length body:(id)body extra:(id)extra
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  versionCopy = version;
+  headersCopy = headers;
+  bodyCopy = body;
+  extraCopy = extra;
   v27.receiver = self;
   v27.super_class = AVAirMessageParts;
   v16 = [(AVAirMessageParts *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [versionCopy copy];
     version = v16->_version;
     v16->_version = v17;
 
-    v19 = [v13 copy];
+    v19 = [headersCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -340,30 +340,30 @@ LABEL_9:
 
     objc_storeStrong(&v16->_headers, v21);
 
-    v22 = [v14 copy];
+    v22 = [bodyCopy copy];
     rawBodyData = v16->_rawBodyData;
     v16->_rawBodyData = v22;
 
-    v24 = [v15 copy];
+    v24 = [extraCopy copy];
     extraData = v16->_extraData;
     v16->_extraData = v24;
 
-    v16->_isIncomplete = v14 == 0;
-    v16->_expectedBodyLength = a5;
+    v16->_isIncomplete = bodyCopy == 0;
+    v16->_expectedBodyLength = length;
   }
 
   return v16;
 }
 
-+ (id)messagePartsWithData:(id)a3 lineSeparator:(id)a4 data:(id)a5 headerBodySeparator:(id)a6 data:(id)a7 bodyLengthKey:(id)a8
++ (id)messagePartsWithData:(id)data lineSeparator:(id)separator data:(id)a5 headerBodySeparator:(id)bodySeparator data:(id)a7 bodyLengthKey:(id)key
 {
   v65 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
+  dataCopy = data;
+  separatorCopy = separator;
   v15 = a5;
   v16 = a7;
-  v17 = a8;
-  v18 = [v13 length];
+  keyCopy = key;
+  v18 = [dataCopy length];
   if (v18 >= 0x400)
   {
     v19 = 1024;
@@ -374,17 +374,17 @@ LABEL_9:
     v19 = v18;
   }
 
-  v20 = [v13 rangeOfData:v15 options:0 range:{0, v19}];
+  v20 = [dataCopy rangeOfData:v15 options:0 range:{0, v19}];
   if (v21)
   {
     v22 = v20;
     v23 = v21;
-    v57 = a1;
-    v24 = [v13 subdataWithRange:{0, v20}];
+    selfCopy = self;
+    v24 = [dataCopy subdataWithRange:{0, v20}];
     v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v24 encoding:4];
     if ([v58 length])
     {
-      v25 = [v13 rangeOfData:v16 options:0 range:{v22, objc_msgSend(v13, "length") - v22}];
+      v25 = [dataCopy rangeOfData:v16 options:0 range:{v22, objc_msgSend(dataCopy, "length") - v22}];
       if (v26)
       {
         v54 = v26;
@@ -396,15 +396,15 @@ LABEL_9:
 
         else
         {
-          v27 = [v13 subdataWithRange:{v22 + v23, v25 - (v22 + v23)}];
+          v27 = [dataCopy subdataWithRange:{v22 + v23, v25 - (v22 + v23)}];
         }
 
         v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v27 encoding:4];
         if (v29 || ![v27 length])
         {
-          v56 = v13;
-          v53 = v14;
-          v30 = [v29 componentsSeparatedByString:{v14, v29, v27, v24, v16, v15}];
+          v56 = dataCopy;
+          v53 = separatorCopy;
+          v30 = [v29 componentsSeparatedByString:{separatorCopy, v29, v27, v24, v16, v15}];
           v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v60 = 0u;
           v61 = 0u;
@@ -416,7 +416,7 @@ LABEL_9:
           {
             v33 = v32;
             v34 = *v61;
-            v35 = -1;
+            integerValue = -1;
             do
             {
               for (i = 0; i != v33; ++i)
@@ -428,10 +428,10 @@ LABEL_9:
 
                 v37 = [[AVStringPair alloc] initWithString:*(*(&v60 + 1) + 8 * i) separatedByString:@":"];
                 [v31 addObject:v37];
-                if ([(AVStringPair *)v37 keyEquals:v17])
+                if ([(AVStringPair *)v37 keyEquals:keyCopy])
                 {
-                  v38 = [(AVStringPair *)v37 value];
-                  v35 = [v38 integerValue];
+                  value = [(AVStringPair *)v37 value];
+                  integerValue = [value integerValue];
                 }
               }
 
@@ -443,15 +443,15 @@ LABEL_9:
 
           else
           {
-            v35 = -1;
+            integerValue = -1;
           }
 
           v39 = v55 + v54;
           v40 = [v56 length];
           v41 = v40 - (v55 + v54);
-          if (v35 >= 0)
+          if (integerValue >= 0)
           {
-            v42 = v35;
+            v42 = integerValue;
           }
 
           else
@@ -480,15 +480,15 @@ LABEL_9:
             v45 = [v56 subdataWithRange:{v43 + v39, v41 - v43}];
           }
 
-          v46 = [[v57 alloc] initWithVersion:v58 headers:v31 expectedBodyLength:v35 body:v44 extra:v45];
+          v46 = [[selfCopy alloc] initWithVersion:v58 headers:v31 expectedBodyLength:integerValue body:v44 extra:v45];
           v28 = v46;
-          v14 = v53;
+          separatorCopy = v53;
           if (v41 < v42)
           {
             [v46 _setIncomplete];
           }
 
-          v13 = v56;
+          dataCopy = v56;
           v16 = v51;
           v15 = v52;
           v27 = v49;
@@ -504,7 +504,7 @@ LABEL_9:
 
       else
       {
-        v28 = [[a1 alloc] initWithVersion:v58 headers:0 expectedBodyLength:-1 body:0 extra:0];
+        v28 = [[self alloc] initWithVersion:v58 headers:0 expectedBodyLength:-1 body:0 extra:0];
       }
     }
 
@@ -514,9 +514,9 @@ LABEL_9:
     }
   }
 
-  else if ([v13 length] <= 0x400)
+  else if ([dataCopy length] <= 0x400)
   {
-    v28 = [[a1 alloc] initWithVersion:0 headers:0 expectedBodyLength:-1 body:0 extra:0];
+    v28 = [[self alloc] initWithVersion:0 headers:0 expectedBodyLength:-1 body:0 extra:0];
   }
 
   else
@@ -530,10 +530,10 @@ LABEL_9:
 - (id)airMessage
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAirMessageParts *)self _matchingClass];
-  if (v3)
+  _matchingClass = [(AVAirMessageParts *)self _matchingClass];
+  if (_matchingClass)
   {
-    v4 = v3;
+    v4 = _matchingClass;
     if (objc_opt_respondsToSelector())
     {
       v5 = [(objc_class *)v4 messageWithParts:self];
@@ -543,11 +543,11 @@ LABEL_9:
     v6 = _avairlog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = NSStringFromClass(v4);
+      version = NSStringFromClass(v4);
       v10 = 136315394;
       v11 = "[AVAirMessageParts(AVAirMessages) airMessage]";
       v12 = 2114;
-      v13 = v7;
+      v13 = version;
       v8 = "%s class %{public}@ does not implement messageWithParts:";
       goto LABEL_8;
     }
@@ -558,11 +558,11 @@ LABEL_9:
     v6 = _avairlog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(AVAirMessageParts *)self version];
+      version = [(AVAirMessageParts *)self version];
       v10 = 136315394;
       v11 = "[AVAirMessageParts(AVAirMessages) airMessage]";
       v12 = 2114;
-      v13 = v7;
+      v13 = version;
       v8 = "%s no class registered for version '%{public}@'";
 LABEL_8:
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, v8, &v10, 0x16u);
@@ -577,10 +577,10 @@ LABEL_10:
 
 - (Class)_matchingClass
 {
-  v2 = [(AVAirMessageParts *)self version];
-  if (v2)
+  version = [(AVAirMessageParts *)self version];
+  if (version)
   {
-    v3 = [_registeredMessageClasses objectForKeyedSubscript:v2];
+    v3 = [_registeredMessageClasses objectForKeyedSubscript:version];
     v4 = v3;
     if (v3)
     {
@@ -601,17 +601,17 @@ LABEL_10:
   return v5;
 }
 
-+ (void)registerClass:(Class)a3 forMessageVersion:(id)a4
++ (void)registerClass:(Class)class forMessageVersion:(id)version
 {
   v5 = registerClass_forMessageVersion__onceToken;
-  v6 = a4;
+  versionCopy = version;
   if (v5 != -1)
   {
     dispatch_once(&registerClass_forMessageVersion__onceToken, &__block_literal_global_190);
   }
 
-  v7 = NSStringFromClass(a3);
-  [_registeredMessageClasses setObject:v7 forKeyedSubscript:v6];
+  v7 = NSStringFromClass(class);
+  [_registeredMessageClasses setObject:v7 forKeyedSubscript:versionCopy];
 }
 
 uint64_t __68__AVAirMessageParts_AVAirMessages__registerClass_forMessageVersion___block_invoke()

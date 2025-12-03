@@ -1,29 +1,29 @@
 @interface NPKFakePaymentSession
 - (BOOL)inServiceMode;
-- (NPKFakePaymentSession)initWithQueue:(id)a3;
+- (NPKFakePaymentSession)initWithQueue:(id)queue;
 - (id)currentPass;
 - (id)vasPasses;
-- (void)_handleSessionHasCredentialIfNecessaryWithCurrentPass:(id)a3;
+- (void)_handleSessionHasCredentialIfNecessaryWithCurrentPass:(id)pass;
 - (void)_handleTimeoutTimer;
 - (void)_handleTransactionCompleteDarwinNotification;
-- (void)_scheduleDidActivateEventForPass:(id)a3;
+- (void)_scheduleDidActivateEventForPass:(id)pass;
 - (void)_sendTransactionCompleteToDelegate;
 - (void)_setTimeoutTimer;
-- (void)deactivateSessionWithCompletion:(id)a3;
+- (void)deactivateSessionWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fieldDetectorDidEnterField:(id)a3 withProperties:(id)a4;
-- (void)fieldDetectorDidExitField:(id)a3;
-- (void)setCredential:(id)a3;
-- (void)setCurrentPass:(id)a3;
-- (void)setInServiceMode:(BOOL)a3;
-- (void)setVasPasses:(id)a3;
+- (void)fieldDetectorDidEnterField:(id)field withProperties:(id)properties;
+- (void)fieldDetectorDidExitField:(id)field;
+- (void)setCredential:(id)credential;
+- (void)setCurrentPass:(id)pass;
+- (void)setInServiceMode:(BOOL)mode;
+- (void)setVasPasses:(id)passes;
 @end
 
 @implementation NPKFakePaymentSession
 
-- (NPKFakePaymentSession)initWithQueue:(id)a3
+- (NPKFakePaymentSession)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = NPKFakePaymentSession;
   v5 = [(NPKFakePaymentSession *)&v13 init];
@@ -39,7 +39,7 @@
     v10[2] = __39__NPKFakePaymentSession_initWithQueue___block_invoke;
     v10[3] = &unk_2799454E0;
     v11 = v5;
-    v12 = v4;
+    v12 = queueCopy;
     dispatch_sync(v8, v10);
   }
 
@@ -140,10 +140,10 @@ void __39__NPKFakePaymentSession_initWithQueue___block_invoke_4(uint64_t a1)
   [(NPKQuickPaymentSession *)&v3 dealloc];
 }
 
-- (void)setCurrentPass:(id)a3
+- (void)setCurrentPass:(id)pass
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -153,20 +153,20 @@ void __39__NPKFakePaymentSession_initWithQueue___block_invoke_4(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = passCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Fake payment session: setting current pass %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__NPKFakePaymentSession_setCurrentPass___block_invoke;
   v11[3] = &unk_2799454E0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v11);
+  v12 = passCopy;
+  v9 = passCopy;
+  dispatch_sync(ourInternalQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -219,14 +219,14 @@ void __40__NPKFakePaymentSession_setCurrentPass___block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
-  v3 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__NPKFakePaymentSession_currentPass__block_invoke;
   v6[3] = &unk_279944FE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(ourInternalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -242,10 +242,10 @@ void __36__NPKFakePaymentSession_currentPass__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setVasPasses:(id)a3
+- (void)setVasPasses:(id)passes
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passesCopy = passes;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -255,33 +255,33 @@ void __36__NPKFakePaymentSession_currentPass__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = passesCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Fake payment session: setting VAS passes %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__NPKFakePaymentSession_setVasPasses___block_invoke;
   v11[3] = &unk_2799454E0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v11);
+  v12 = passesCopy;
+  v9 = passesCopy;
+  dispatch_sync(ourInternalQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCredential:(id)a3
+- (void)setCredential:(id)credential
 {
-  v4 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__NPKFakePaymentSession_setCredential___block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(ourInternalQueue, block);
 }
 
 void __39__NPKFakePaymentSession_setCredential___block_invoke(uint64_t a1)
@@ -319,14 +319,14 @@ void __39__NPKFakePaymentSession_setCredential___block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
-  v3 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__NPKFakePaymentSession_vasPasses__block_invoke;
   v6[3] = &unk_279944FE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(ourInternalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -342,16 +342,16 @@ void __34__NPKFakePaymentSession_vasPasses__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setInServiceMode:(BOOL)a3
+- (void)setInServiceMode:(BOOL)mode
 {
-  v5 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__NPKFakePaymentSession_setInServiceMode___block_invoke;
   v6[3] = &unk_279944FC0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  modeCopy = mode;
+  dispatch_sync(ourInternalQueue, v6);
 }
 
 void __42__NPKFakePaymentSession_setInServiceMode___block_invoke(uint64_t a1)
@@ -400,23 +400,23 @@ void __42__NPKFakePaymentSession_setInServiceMode___block_invoke_2(uint64_t a1)
 
 - (BOOL)inServiceMode
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__NPKFakePaymentSession_inServiceMode__block_invoke;
   v5[3] = &unk_279944FE8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(ourInternalQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __38__NPKFakePaymentSession_inServiceMode__block_invoke(uint64_t a1)
@@ -426,7 +426,7 @@ uint64_t __38__NPKFakePaymentSession_inServiceMode__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)fieldDetectorDidEnterField:(id)a3 withProperties:(id)a4
+- (void)fieldDetectorDidEnterField:(id)field withProperties:(id)properties
 {
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -441,21 +441,21 @@ uint64_t __38__NPKFakePaymentSession_inServiceMode__block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [(NPKFakePaymentSession *)self ourCallbackQueue];
+  ourCallbackQueue = [(NPKFakePaymentSession *)self ourCallbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__NPKFakePaymentSession_fieldDetectorDidEnterField_withProperties___block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_sync(v8, block);
+  dispatch_sync(ourCallbackQueue, block);
 
-  v9 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__NPKFakePaymentSession_fieldDetectorDidEnterField_withProperties___block_invoke_2;
   v10[3] = &unk_279944F98;
   v10[4] = self;
-  dispatch_sync(v9, v10);
+  dispatch_sync(ourInternalQueue, v10);
 }
 
 void __67__NPKFakePaymentSession_fieldDetectorDidEnterField_withProperties___block_invoke(uint64_t a1)
@@ -483,7 +483,7 @@ uint64_t __67__NPKFakePaymentSession_fieldDetectorDidEnterField_withProperties__
   return result;
 }
 
-- (void)fieldDetectorDidExitField:(id)a3
+- (void)fieldDetectorDidExitField:(id)field
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -498,13 +498,13 @@ uint64_t __67__NPKFakePaymentSession_fieldDetectorDidEnterField_withProperties__
     }
   }
 
-  v7 = [(NPKFakePaymentSession *)self ourCallbackQueue];
+  ourCallbackQueue = [(NPKFakePaymentSession *)self ourCallbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__NPKFakePaymentSession_fieldDetectorDidExitField___block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(ourCallbackQueue, block);
 }
 
 void __51__NPKFakePaymentSession_fieldDetectorDidExitField___block_invoke(uint64_t a1)
@@ -548,9 +548,9 @@ void __59__NPKFakePaymentSession_confirmSessionExpectingCredential___block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateSessionWithCompletion:(id)a3
+- (void)deactivateSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -564,15 +564,15 @@ void __59__NPKFakePaymentSession_confirmSessionExpectingCredential___block_invok
     }
   }
 
-  v8 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__NPKFakePaymentSession_deactivateSessionWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(ourInternalQueue, v10);
 }
 
 void __57__NPKFakePaymentSession_deactivateSessionWithCompletion___block_invoke(uint64_t a1)
@@ -616,25 +616,25 @@ uint64_t __57__NPKFakePaymentSession_deactivateSessionWithCompletion___block_inv
   return result;
 }
 
-- (void)_scheduleDidActivateEventForPass:(id)a3
+- (void)_scheduleDidActivateEventForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(NPKFakePaymentSession *)self ourInternalQueue];
-  dispatch_assert_queue_V2(v5);
+  passCopy = pass;
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
+  dispatch_assert_queue_V2(ourInternalQueue);
 
   [(NPKFakePaymentSession *)self setChangeCardToken:[(NPKFakePaymentSession *)self changeCardToken]+ 1];
-  v6 = [(NPKFakePaymentSession *)self changeCardToken];
+  changeCardToken = [(NPKFakePaymentSession *)self changeCardToken];
   v7 = dispatch_time(0, 500000000);
-  v8 = [(NPKFakePaymentSession *)self ourInternalQueue];
+  ourInternalQueue2 = [(NPKFakePaymentSession *)self ourInternalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__NPKFakePaymentSession__scheduleDidActivateEventForPass___block_invoke;
   block[3] = &unk_279945F18;
-  v11 = v4;
-  v12 = v6;
+  v11 = passCopy;
+  v12 = changeCardToken;
   block[4] = self;
-  v9 = v4;
-  dispatch_after(v7, v8, block);
+  v9 = passCopy;
+  dispatch_after(v7, ourInternalQueue2, block);
 }
 
 void __58__NPKFakePaymentSession__scheduleDidActivateEventForPass___block_invoke(uint64_t a1)
@@ -681,12 +681,12 @@ void __58__NPKFakePaymentSession__scheduleDidActivateEventForPass___block_invoke
     }
   }
 
-  v6 = [(NPKFakePaymentSession *)self ourInternalQueue];
-  dispatch_assert_queue_V2(v6);
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
+  dispatch_assert_queue_V2(ourInternalQueue);
 
-  v7 = [(NPKFakePaymentSession *)self timeoutTimer];
+  timeoutTimer = [(NPKFakePaymentSession *)self timeoutTimer];
   v8 = dispatch_time(0, 60000000000);
-  dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
+  dispatch_source_set_timer(timeoutTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
 - (void)_handleTimeoutTimer
@@ -704,18 +704,18 @@ void __58__NPKFakePaymentSession__scheduleDidActivateEventForPass___block_invoke
     }
   }
 
-  v6 = [(NPKFakePaymentSession *)self ourInternalQueue];
-  dispatch_assert_queue_V2(v6);
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
+  dispatch_assert_queue_V2(ourInternalQueue);
 
   if (![(NPKFakePaymentSession *)self invalidated])
   {
-    v7 = [(NPKFakePaymentSession *)self ourCallbackQueue];
+    ourCallbackQueue = [(NPKFakePaymentSession *)self ourCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__NPKFakePaymentSession__handleTimeoutTimer__block_invoke;
     block[3] = &unk_279944F98;
     block[4] = self;
-    dispatch_async(v7, block);
+    dispatch_async(ourCallbackQueue, block);
   }
 }
 
@@ -746,8 +746,8 @@ void __44__NPKFakePaymentSession__handleTimeoutTimer__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(NPKFakePaymentSession *)self ourInternalQueue];
-  dispatch_assert_queue_V2(v6);
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
+  dispatch_assert_queue_V2(ourInternalQueue);
 
   if (![(NPKFakePaymentSession *)self invalidated])
   {
@@ -755,11 +755,11 @@ void __44__NPKFakePaymentSession__handleTimeoutTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleSessionHasCredentialIfNecessaryWithCurrentPass:(id)a3
+- (void)_handleSessionHasCredentialIfNecessaryWithCurrentPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(NPKFakePaymentSession *)self ourInternalQueue];
-  dispatch_assert_queue_V2(v5);
+  passCopy = pass;
+  ourInternalQueue = [(NPKFakePaymentSession *)self ourInternalQueue];
+  dispatch_assert_queue_V2(ourInternalQueue);
 
   if (![(NPKFakePaymentSession *)self ourPerformedFirstActivation])
   {
@@ -767,17 +767,17 @@ void __44__NPKFakePaymentSession__handleTimeoutTimer__block_invoke(uint64_t a1)
     if (![(NPKFakePaymentSession *)self invalidated])
     {
       [(NPKFakePaymentSession *)self _setTimeoutTimer];
-      v6 = [(NPKFakePaymentSession *)self ourCallbackQueue];
+      ourCallbackQueue = [(NPKFakePaymentSession *)self ourCallbackQueue];
       v8 = MEMORY[0x277D85DD0];
       v9 = 3221225472;
       v10 = __79__NPKFakePaymentSession__handleSessionHasCredentialIfNecessaryWithCurrentPass___block_invoke;
       v11 = &unk_2799454E0;
-      v12 = self;
-      v7 = v4;
+      selfCopy = self;
+      v7 = passCopy;
       v13 = v7;
-      dispatch_async(v6, &v8);
+      dispatch_async(ourCallbackQueue, &v8);
 
-      [(NPKFakePaymentSession *)self _scheduleDidActivateEventForPass:v7, v8, v9, v10, v11, v12];
+      [(NPKFakePaymentSession *)self _scheduleDidActivateEventForPass:v7, v8, v9, v10, v11, selfCopy];
     }
   }
 }
@@ -797,33 +797,33 @@ void __79__NPKFakePaymentSession__handleSessionHasCredentialIfNecessaryWithCurre
 - (void)_sendTransactionCompleteToDelegate
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NPKFakePaymentSession *)self ourCurrentPass];
-  v4 = v3;
-  if (v3)
+  ourCurrentPass = [(NPKFakePaymentSession *)self ourCurrentPass];
+  v4 = ourCurrentPass;
+  if (ourCurrentPass)
   {
-    v5 = [v3 paymentPass];
+    paymentPass = [ourCurrentPass paymentPass];
 
     v6 = objc_alloc(MEMORY[0x277D37E38]);
     v7 = v6;
-    if (v5)
+    if (paymentPass)
     {
-      v8 = [v4 paymentPass];
-      v9 = [v4 paymentPass];
-      v10 = [v9 npkPreferredContactlessPaymentApplications];
-      v11 = [v7 initWithPaymentPass:v8 activatedPaymentApplications:v10];
+      paymentPass2 = [v4 paymentPass];
+      paymentPass3 = [v4 paymentPass];
+      npkPreferredContactlessPaymentApplications = [paymentPass3 npkPreferredContactlessPaymentApplications];
+      v11 = [v7 initWithPaymentPass:paymentPass2 activatedPaymentApplications:npkPreferredContactlessPaymentApplications];
 
-      v12 = [v4 paymentPass];
-      v13 = [v12 npkPreferredContactlessPaymentApplications];
-      v14 = [v13 firstObject];
-      [v11 setPaymentApplication:v14];
+      paymentPass4 = [v4 paymentPass];
+      npkPreferredContactlessPaymentApplications2 = [paymentPass4 npkPreferredContactlessPaymentApplications];
+      firstObject = [npkPreferredContactlessPaymentApplications2 firstObject];
+      [v11 setPaymentApplication:firstObject];
     }
 
     else
     {
       v11 = [v6 initWithPaymentPass:0 activatedPaymentApplications:0];
       v20[0] = v4;
-      v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-      [v11 setValueAddedServicePasses:v12];
+      paymentPass4 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
+      [v11 setValueAddedServicePasses:paymentPass4];
     }
   }
 
@@ -832,7 +832,7 @@ void __79__NPKFakePaymentSession__handleSessionHasCredentialIfNecessaryWithCurre
     v11 = 0;
   }
 
-  v15 = [(NPKFakePaymentSession *)self ourCallbackQueue];
+  ourCallbackQueue = [(NPKFakePaymentSession *)self ourCallbackQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __59__NPKFakePaymentSession__sendTransactionCompleteToDelegate__block_invoke;
@@ -840,7 +840,7 @@ void __79__NPKFakePaymentSession__handleSessionHasCredentialIfNecessaryWithCurre
   v18[4] = self;
   v19 = v11;
   v16 = v11;
-  dispatch_async(v15, v18);
+  dispatch_async(ourCallbackQueue, v18);
 
   v17 = *MEMORY[0x277D85DE8];
 }

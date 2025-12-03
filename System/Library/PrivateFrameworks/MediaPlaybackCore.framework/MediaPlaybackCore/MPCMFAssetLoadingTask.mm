@@ -1,17 +1,17 @@
 @interface MPCMFAssetLoadingTask
-+ (id)wrap:(id)a3;
++ (id)wrap:(id)wrap;
 @end
 
 @implementation MPCMFAssetLoadingTask
 
-+ (id)wrap:(id)a3
++ (id)wrap:(id)wrap
 {
-  v4 = a3;
+  wrapCopy = wrap;
   v5 = objc_alloc_init(MPCMFAssetLoadingTask);
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_mfTask, a3);
+    objc_storeStrong(&v5->_mfTask, wrap);
   }
 
   return v6;

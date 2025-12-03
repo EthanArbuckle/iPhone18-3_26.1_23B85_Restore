@@ -6,7 +6,7 @@
 
 - (void)clearQueue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3EF5F6C();
 }
 

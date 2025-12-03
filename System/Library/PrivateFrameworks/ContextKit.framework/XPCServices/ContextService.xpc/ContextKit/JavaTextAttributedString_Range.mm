@@ -1,15 +1,15 @@
 @interface JavaTextAttributedString_Range
-- (JavaTextAttributedString_Range)initWithInt:(int)a3 withInt:(int)a4 withId:(id)a5;
+- (JavaTextAttributedString_Range)initWithInt:(int)int withInt:(int)withInt withId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaTextAttributedString_Range
 
-- (JavaTextAttributedString_Range)initWithInt:(int)a3 withInt:(int)a4 withId:(id)a5
+- (JavaTextAttributedString_Range)initWithInt:(int)int withInt:(int)withInt withId:(id)id
 {
-  self->start_ = a3;
-  self->end_ = a4;
-  JreStrongAssign(&self->value_, a5);
+  self->start_ = int;
+  self->end_ = withInt;
+  JreStrongAssign(&self->value_, id);
   return self;
 }
 

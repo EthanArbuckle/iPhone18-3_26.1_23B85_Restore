@@ -1,21 +1,21 @@
 @interface _TVStackCommonTemplateControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateViewSupplementaryViews;
 @end
 
 @implementation _TVStackCommonTemplateControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVLabel"];
-  [v3 validateClass:@"_TVStackWrappingView"];
-  [v3 validateClass:@"_TVStackWrappingView" hasInstanceMethod:@"headerSupplementaryViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVStackCommonTemplateController" hasInstanceMethod:@"stackWrappingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVStackCommonTemplateController" hasInstanceMethod:@"_updateViewSupplementaryViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_TVStackCommonTemplateController" hasInstanceMethod:@"viewControllerWithElement:layout:existingController:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"IKViewElement" hasInstanceMethod:@"elementName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVLabel"];
+  [validationsCopy validateClass:@"_TVStackWrappingView"];
+  [validationsCopy validateClass:@"_TVStackWrappingView" hasInstanceMethod:@"headerSupplementaryViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVStackCommonTemplateController" hasInstanceMethod:@"stackWrappingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVStackCommonTemplateController" hasInstanceMethod:@"_updateViewSupplementaryViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_TVStackCommonTemplateController" hasInstanceMethod:@"viewControllerWithElement:layout:existingController:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceMethod:@"elementName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

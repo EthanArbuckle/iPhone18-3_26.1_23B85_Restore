@@ -1,7 +1,7 @@
 @interface HMMTRFabricDataCreator
-+ (id)fabricDataForRootKeyPair:(id)a3 opKeyPair:(id)a4 fabricID:(id)a5 residentNodeID:(id)a6 overridingRCAC:(id)a7 ipk:(id)a8;
++ (id)fabricDataForRootKeyPair:(id)pair opKeyPair:(id)keyPair fabricID:(id)d residentNodeID:(id)iD overridingRCAC:(id)c ipk:(id)ipk;
 + (id)logCategory;
-- (HMMTRFabricDataCreator)initWithCHIPStorageDelegate:(id)a3 keychainDelegate:(id)a4;
+- (HMMTRFabricDataCreator)initWithCHIPStorageDelegate:(id)delegate keychainDelegate:(id)keychainDelegate;
 - (HMMTRMultiFabricDataStoreQueryCHIPStorageDelegate)chipStorageDelegate;
 - (HMMTRMultiFabricDataStoreQueryKeychainDelegate)keychainDelegate;
 - (id)generateIPK;
@@ -27,10 +27,10 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMMTRFabricDataCreator *)self chipStorageDelegate];
-  v3 = [v2 identifier];
+  chipStorageDelegate = [(HMMTRFabricDataCreator *)self chipStorageDelegate];
+  identifier = [chipStorageDelegate identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)generateIPK
@@ -54,40 +54,40 @@
 - (id)newFabricData
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRFabricDataCreator *)self keychainDelegate];
-  v4 = [v3 nocSigner];
+  keychainDelegate = [(HMMTRFabricDataCreator *)self keychainDelegate];
+  nocSigner = [keychainDelegate nocSigner];
 
-  v5 = v4;
-  if (!v4)
+  initUnassociated = nocSigner;
+  if (!nocSigner)
   {
-    v5 = [[HMMTRMatterKeypair alloc] initUnassociated];
+    initUnassociated = [[HMMTRMatterKeypair alloc] initUnassociated];
   }
 
-  v6 = [(HMMTRFabricDataCreator *)self keychainDelegate];
-  v7 = [v6 ownerSharedOperationalKeyPair];
+  keychainDelegate2 = [(HMMTRFabricDataCreator *)self keychainDelegate];
+  ownerSharedOperationalKeyPair = [keychainDelegate2 ownerSharedOperationalKeyPair];
 
-  v8 = v7;
-  if (!v7)
+  initUnassociated2 = ownerSharedOperationalKeyPair;
+  if (!ownerSharedOperationalKeyPair)
   {
-    v8 = [[HMMTRMatterKeypair alloc] initUnassociated];
+    initUnassociated2 = [[HMMTRMatterKeypair alloc] initUnassociated];
   }
 
-  v9 = [(HMMTRFabricDataCreator *)self chipStorageDelegate];
-  v10 = [v9 fabricID];
+  chipStorageDelegate = [(HMMTRFabricDataCreator *)self chipStorageDelegate];
+  fabricID = [chipStorageDelegate fabricID];
 
-  if (!v10 || [v10 isEqual:&unk_283EE7E30])
+  if (!fabricID || [fabricID isEqual:&unk_283EE7E30])
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[HMMTRUtilities randomNodeID](HMMTRUtilities, "randomNodeID")}];
 
-    v10 = v11;
+    fabricID = v11;
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[HMMTRUtilities randomNodeID](HMMTRUtilities, "randomNodeID")}];
-  v13 = [(HMMTRFabricDataCreator *)self generateIPK];
-  if (!v13)
+  generateIPK = [(HMMTRFabricDataCreator *)self generateIPK];
+  if (!generateIPK)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -106,13 +106,13 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v14 = [objc_opt_class() fabricDataForRootKeyPair:v5 opKeyPair:v8 fabricID:v10 residentNodeID:v12 overridingRCAC:0 ipk:v13];
+  v14 = [objc_opt_class() fabricDataForRootKeyPair:initUnassociated opKeyPair:initUnassociated2 fabricID:fabricID residentNodeID:v12 overridingRCAC:0 ipk:generateIPK];
   if (!v14)
   {
-    if (v4 | v7)
+    if (nocSigner | ownerSharedOperationalKeyPair)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -123,24 +123,24 @@ LABEL_22:
       }
 
       objc_autoreleasePoolPop(v21);
-      v25 = [[HMMTRMatterKeypair alloc] initUnassociated];
+      initUnassociated3 = [[HMMTRMatterKeypair alloc] initUnassociated];
 
-      v26 = [[HMMTRMatterKeypair alloc] initUnassociated];
-      v27 = [objc_opt_class() fabricDataForRootKeyPair:v25 opKeyPair:v26 fabricID:v10 residentNodeID:v12 overridingRCAC:0 ipk:v13];
+      initUnassociated4 = [[HMMTRMatterKeypair alloc] initUnassociated];
+      v27 = [objc_opt_class() fabricDataForRootKeyPair:initUnassociated3 opKeyPair:initUnassociated4 fabricID:fabricID residentNodeID:v12 overridingRCAC:0 ipk:generateIPK];
       if (v27)
       {
         v15 = v27;
-        v8 = v26;
-        v5 = v25;
+        initUnassociated2 = initUnassociated4;
+        initUnassociated = initUnassociated3;
         goto LABEL_23;
       }
 
-      v5 = v25;
-      v8 = v26;
+      initUnassociated = initUnassociated3;
+      initUnassociated2 = initUnassociated4;
     }
 
     v16 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -161,18 +161,18 @@ LABEL_23:
   return v15;
 }
 
-- (HMMTRFabricDataCreator)initWithCHIPStorageDelegate:(id)a3 keychainDelegate:(id)a4
+- (HMMTRFabricDataCreator)initWithCHIPStorageDelegate:(id)delegate keychainDelegate:(id)keychainDelegate
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  keychainDelegateCopy = keychainDelegate;
   v11.receiver = self;
   v11.super_class = HMMTRFabricDataCreator;
   v8 = [(HMMTRFabricDataCreator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_chipStorageDelegate, v6);
-    objc_storeWeak(&v9->_keychainDelegate, v7);
+    objc_storeWeak(&v8->_chipStorageDelegate, delegateCopy);
+    objc_storeWeak(&v9->_keychainDelegate, keychainDelegateCopy);
   }
 
   return v9;
@@ -198,23 +198,23 @@ uint64_t __37__HMMTRFabricDataCreator_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)fabricDataForRootKeyPair:(id)a3 opKeyPair:(id)a4 fabricID:(id)a5 residentNodeID:(id)a6 overridingRCAC:(id)a7 ipk:(id)a8
++ (id)fabricDataForRootKeyPair:(id)pair opKeyPair:(id)keyPair fabricID:(id)d residentNodeID:(id)iD overridingRCAC:(id)c ipk:(id)ipk
 {
   v55 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v48 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = SecKeyCopyExternalRepresentation([v14 publicKey], 0);
+  pairCopy = pair;
+  keyPairCopy = keyPair;
+  dCopy = d;
+  iDCopy = iD;
+  cCopy = c;
+  ipkCopy = ipk;
+  v19 = SecKeyCopyExternalRepresentation([pairCopy publicKey], 0);
   v20 = v19;
   if (v19)
   {
-    v46 = v15;
-    if (v17)
+    v46 = keyPairCopy;
+    if (cCopy)
     {
-      v21 = v17;
+      v21 = cCopy;
     }
 
     else
@@ -223,26 +223,26 @@ uint64_t __37__HMMTRFabricDataCreator_logCategory__block_invoke()
     }
 
     v44 = v21;
-    v45 = v18;
+    v45 = ipkCopy;
     v50 = 0;
-    v30 = [MEMORY[0x277CD5230] createRootCertificate:v14 issuerID:v21 fabricID:v16 error:&v50];
+    v30 = [MEMORY[0x277CD5230] createRootCertificate:pairCopy issuerID:v21 fabricID:dCopy error:&v50];
     v31 = v50;
     if (v30)
     {
       v49 = v31;
-      v29 = v48;
-      v32 = [MEMORY[0x277CD5230] createOperationalCertificate:v14 signingCertificate:v30 operationalPublicKey:objc_msgSend(v46 fabricID:"publicKey") nodeID:v16 caseAuthenticatedTags:v48 error:{0, &v49}];
+      v29 = iDCopy;
+      v32 = [MEMORY[0x277CD5230] createOperationalCertificate:pairCopy signingCertificate:v30 operationalPublicKey:objc_msgSend(v46 fabricID:"publicKey") nodeID:dCopy caseAuthenticatedTags:iDCopy error:{0, &v49}];
       v43 = v49;
 
       if (v32)
       {
-        v28 = [[HMMTRFabricData alloc] initWithRootPublicKey:v20 fabricID:v16 ipk:v18 residentNodeID:v48 rootKeyPair:v14 rootCert:v30 residentOperationalKeyPair:v46 residentOperationalCert:v32];
+        v28 = [[HMMTRFabricData alloc] initWithRootPublicKey:v20 fabricID:dCopy ipk:ipkCopy residentNodeID:iDCopy rootKeyPair:pairCopy rootCert:v30 residentOperationalKeyPair:v46 residentOperationalCert:v32];
       }
 
       else
       {
         v37 = objc_autoreleasePoolPush();
-        v38 = a1;
+        selfCopy = self;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
@@ -256,8 +256,8 @@ uint64_t __37__HMMTRFabricDataCreator_logCategory__block_invoke()
 
         objc_autoreleasePoolPop(v37);
         v28 = 0;
-        v29 = v48;
-        v18 = v45;
+        v29 = iDCopy;
+        ipkCopy = v45;
       }
 
       v31 = v43;
@@ -266,7 +266,7 @@ uint64_t __37__HMMTRFabricDataCreator_logCategory__block_invoke()
     else
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = a1;
+      selfCopy2 = self;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -280,20 +280,20 @@ uint64_t __37__HMMTRFabricDataCreator_logCategory__block_invoke()
 
       objc_autoreleasePoolPop(v33);
       v28 = 0;
-      v29 = v48;
-      v18 = v45;
+      v29 = iDCopy;
+      ipkCopy = v45;
     }
 
-    v15 = v46;
+    keyPairCopy = v46;
   }
 
   else
   {
-    v47 = v16;
-    v22 = v17;
-    v23 = v18;
+    v47 = dCopy;
+    v22 = cCopy;
+    v23 = ipkCopy;
     v24 = objc_autoreleasePoolPush();
-    v25 = a1;
+    selfCopy3 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -305,10 +305,10 @@ uint64_t __37__HMMTRFabricDataCreator_logCategory__block_invoke()
 
     objc_autoreleasePoolPop(v24);
     v28 = 0;
-    v18 = v23;
-    v17 = v22;
-    v16 = v47;
-    v29 = v48;
+    ipkCopy = v23;
+    cCopy = v22;
+    dCopy = v47;
+    v29 = iDCopy;
   }
 
   v41 = *MEMORY[0x277D85DE8];

@@ -6,9 +6,9 @@
 
 - (id)normalizeForType:()MedicationVision
 {
-  v4 = [a1 lowercaseString];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v4 stringByFoldingWithOptions:128 locale:v5];
+  lowercaseString = [self lowercaseString];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v6 = [lowercaseString stringByFoldingWithOptions:128 locale:currentLocale];
 
   v7 = @"abcdefghijklmnopqrstuvwxyz0123456789";
   if (a3 == 2)
@@ -27,8 +27,8 @@
   }
 
   v9 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:v8];
-  v10 = [v9 invertedSet];
-  v11 = [v6 componentsSeparatedByCharactersInSet:v10];
+  invertedSet = [v9 invertedSet];
+  v11 = [v6 componentsSeparatedByCharactersInSet:invertedSet];
   v12 = [v11 componentsJoinedByString:&stru_2863C3358];
 
   return v12;

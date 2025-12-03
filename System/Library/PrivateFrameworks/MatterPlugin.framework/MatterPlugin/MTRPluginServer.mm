@@ -1,22 +1,22 @@
 @interface MTRPluginServer
 + (id)serverWorkQueue;
 + (id)sharedInstance;
-- (BOOL)_deliverMessageToDelegate:(id)a3 homeUUID:(id)a4 timeout:(double)a5;
-- (BOOL)addClientConnection:(id)a3;
-- (BOOL)handleIncomingMessage:(id)a3;
-- (BOOL)removeClientConnection:(id)a3;
-- (BOOL)startWithDelegate:(id)a3 queue:(id)a4;
+- (BOOL)_deliverMessageToDelegate:(id)delegate homeUUID:(id)d timeout:(double)timeout;
+- (BOOL)addClientConnection:(id)connection;
+- (BOOL)handleIncomingMessage:(id)message;
+- (BOOL)removeClientConnection:(id)connection;
+- (BOOL)startWithDelegate:(id)delegate queue:(id)queue;
 - (BOOL)stop;
 - (MTRPluginServer)init;
 - (NSSet)clientConnections;
-- (int64_t)_safeQueryRunningModeFromDelegateForHomeUUID:(id)a3;
-- (int64_t)_unsafeQueryRunningModeFromDelegateForHomeUUID:(id)a3;
-- (void)_processStateUpdated:(id)a3;
+- (int64_t)_safeQueryRunningModeFromDelegateForHomeUUID:(id)d;
+- (int64_t)_unsafeQueryRunningModeFromDelegateForHomeUUID:(id)d;
+- (void)_processStateUpdated:(id)updated;
 - (void)_registerForResidentChangedNotifications;
 - (void)_updateProcessMonitor;
 - (void)dealloc;
-- (void)handlePrimaryResidentUpdateNotification:(id)a3;
-- (void)runningModeForHomeUUID:(id)a3 runningModeChanged:(int64_t)a4;
+- (void)handlePrimaryResidentUpdateNotification:(id)notification;
+- (void)runningModeForHomeUUID:(id)d runningModeChanged:(int64_t)changed;
 @end
 
 @implementation MTRPluginServer
@@ -67,11 +67,11 @@ void __34__MTRPluginServer_serverWorkQueue__block_invoke()
   v2 = [(MTRPluginServer *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D46F80] monitor];
-    [(MTRPluginServer *)v2 setProcessMonitor:v3];
+    monitor = [MEMORY[0x277D46F80] monitor];
+    [(MTRPluginServer *)v2 setProcessMonitor:monitor];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(MTRPluginServer *)v2 setPidToStatusMap:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(MTRPluginServer *)v2 setPidToStatusMap:dictionary];
 
     v5 = [MEMORY[0x277CBEB58] set];
     [(MTRPluginServer *)v2 set_clientConnections:v5];
@@ -88,12 +88,12 @@ void __34__MTRPluginServer_serverWorkQueue__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(MTRPluginServer *)self primaryResidentUpdatedSource];
+  primaryResidentUpdatedSource = [(MTRPluginServer *)self primaryResidentUpdatedSource];
 
-  if (v3)
+  if (primaryResidentUpdatedSource)
   {
-    v4 = [(MTRPluginServer *)self primaryResidentUpdatedSource];
-    dispatch_source_cancel(v4);
+    primaryResidentUpdatedSource2 = [(MTRPluginServer *)self primaryResidentUpdatedSource];
+    dispatch_source_cancel(primaryResidentUpdatedSource2);
 
     [(MTRPluginServer *)self setPrimaryResidentUpdatedSource:0];
   }
@@ -105,42 +105,42 @@ void __34__MTRPluginServer_serverWorkQueue__block_invoke()
 
 - (void)_registerForResidentChangedNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
 }
 
-- (BOOL)startWithDelegate:(id)a3 queue:(id)a4
+- (BOOL)startWithDelegate:(id)delegate queue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134217984;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "Starting MTRPluginServer: %p", &v15, 0xCu);
   }
 
-  [(MTRPluginServer *)self setDelegate:v6];
-  [(MTRPluginServer *)self setDelegateQueue:v7];
+  [(MTRPluginServer *)self setDelegate:delegateCopy];
+  [(MTRPluginServer *)self setDelegateQueue:queueCopy];
   [(MTRPluginServer *)self setRunning:1];
-  v9 = [(MTRPluginServer *)self delegate];
-  if (v9)
+  delegate = [(MTRPluginServer *)self delegate];
+  if (delegate)
   {
-    v10 = v9;
-    v11 = [(MTRPluginServer *)self delegateQueue];
+    v10 = delegate;
+    delegateQueue = [(MTRPluginServer *)self delegateQueue];
 
-    if (v11)
+    if (delegateQueue)
     {
-      v12 = [(MTRPluginServer *)self delegateQueue];
-      dispatch_async(v12, &__block_literal_global_38);
+      delegateQueue2 = [(MTRPluginServer *)self delegateQueue];
+      dispatch_async(delegateQueue2, &__block_literal_global_38);
     }
   }
 
@@ -161,7 +161,7 @@ void __43__MTRPluginServer_startWithDelegate_queue___block_invoke()
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v3, OS_LOG_TYPE_DEFAULT, "Stopping MTRPluginServer: %p", buf, 0xCu);
   }
 
@@ -169,8 +169,8 @@ void __43__MTRPluginServer_startWithDelegate_queue___block_invoke()
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MTRPluginServer *)self _clientConnections];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _clientConnections = [(MTRPluginServer *)self _clientConnections];
+  v5 = [_clientConnections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -182,14 +182,14 @@ void __43__MTRPluginServer_startWithDelegate_queue___block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_clientConnections);
         }
 
         [*(*(&v12 + 1) + 8 * v8++) invalidate];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_clientConnections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -209,31 +209,31 @@ void __43__MTRPluginServer_startWithDelegate_queue___block_invoke()
 - (NSSet)clientConnections
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(MTRPluginServer *)self _clientConnections];
-  v4 = [v2 setWithSet:v3];
+  _clientConnections = [(MTRPluginServer *)self _clientConnections];
+  v4 = [v2 setWithSet:_clientConnections];
 
   return v4;
 }
 
-- (void)runningModeForHomeUUID:(id)a3 runningModeChanged:(int64_t)a4
+- (void)runningModeForHomeUUID:(id)d runningModeChanged:(int64_t)changed
 {
-  v6 = a3;
-  v7 = [(MTRPluginServer *)self delegate];
-  if (v7)
+  dCopy = d;
+  delegate = [(MTRPluginServer *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(MTRPluginServer *)self delegateQueue];
+    v8 = delegate;
+    delegateQueue = [(MTRPluginServer *)self delegateQueue];
 
-    if (v9)
+    if (delegateQueue)
     {
-      v10 = [(MTRPluginServer *)self delegateQueue];
+      delegateQueue2 = [(MTRPluginServer *)self delegateQueue];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __61__MTRPluginServer_runningModeForHomeUUID_runningModeChanged___block_invoke;
       v11[3] = &unk_279893DC8;
-      v13 = a4;
-      v12 = v6;
-      dispatch_async(v10, v11);
+      changedCopy = changed;
+      v12 = dCopy;
+      dispatch_async(delegateQueue2, v11);
     }
   }
 }
@@ -244,10 +244,10 @@ void __61__MTRPluginServer_runningModeForHomeUUID_runningModeChanged___block_inv
   [v2 _updateRunningMode:*(a1 + 40) forceUpdateControllerConfiguration:0 forHomeUUID:*(a1 + 32)];
 }
 
-- (int64_t)_unsafeQueryRunningModeFromDelegateForHomeUUID:(id)a3
+- (int64_t)_unsafeQueryRunningModeFromDelegateForHomeUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if ([(MTRPluginServer *)self isRunning])
   {
     v5 = MTRIsPotentiallyPairing();
@@ -258,9 +258,9 @@ void __61__MTRPluginServer_runningModeForHomeUUID_runningModeChanged___block_inv
       if (v7)
       {
         v18 = 138412546;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2112;
-        v21 = v4;
+        v21 = dCopy;
         _os_log_impl(&dword_25830F000, v6, OS_LOG_TYPE_DEFAULT, "%@ Overriding running mode for home %@ to local since we are in potentially pairing window", &v18, 0x16u);
       }
 
@@ -272,18 +272,18 @@ void __61__MTRPluginServer_runningModeForHomeUUID_runningModeChanged___block_inv
       if (v7)
       {
         v12 = v6;
-        v13 = [(MTRPluginServer *)self delegate];
+        delegate = [(MTRPluginServer *)self delegate];
         v18 = 138412802;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2112;
-        v21 = v13;
+        v21 = delegate;
         v22 = 2112;
-        v23 = v4;
+        v23 = dCopy;
         _os_log_impl(&dword_25830F000, v12, OS_LOG_TYPE_DEFAULT, "%@ => Querying delegate: %@ running mode for homeUUID: %@", &v18, 0x20u);
       }
 
-      v14 = [(MTRPluginServer *)self delegate];
-      v8 = [v14 runningModeForHomeUUID:v4];
+      delegate2 = [(MTRPluginServer *)self delegate];
+      v8 = [delegate2 runningModeForHomeUUID:dCopy];
 
       v15 = matterPluginLog_default;
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
@@ -291,7 +291,7 @@ void __61__MTRPluginServer_runningModeForHomeUUID_runningModeChanged___block_inv
         v16 = v15;
         v17 = MTRPluginHomeRunnningModeAsString(v8);
         v18 = 138412802;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2048;
         v21 = v8;
         v22 = 2112;
@@ -316,25 +316,25 @@ void __61__MTRPluginServer_runningModeForHomeUUID_runningModeChanged___block_inv
   return v8;
 }
 
-- (int64_t)_safeQueryRunningModeFromDelegateForHomeUUID:(id)a3
+- (int64_t)_safeQueryRunningModeFromDelegateForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(MTRPluginServer *)self delegate];
-  if (v5 && ([(MTRPluginServer *)self delegateQueue], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  delegate = [(MTRPluginServer *)self delegate];
+  if (delegate && ([(MTRPluginServer *)self delegateQueue], v6 = objc_claimAutoreleasedReturnValue(), v6, delegate, v6))
   {
-    v7 = [(MTRPluginServer *)self delegateQueue];
+    delegateQueue = [(MTRPluginServer *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__MTRPluginServer__safeQueryRunningModeFromDelegateForHomeUUID___block_invoke;
     block[3] = &unk_279893DF0;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v7, block);
+    v11 = dCopy;
+    dispatch_sync(delegateQueue, block);
 
     v8 = v14[3];
   }
@@ -356,22 +356,22 @@ uint64_t __64__MTRPluginServer__safeQueryRunningModeFromDelegateForHomeUUID___bl
   return result;
 }
 
-- (BOOL)addClientConnection:(id)a3
+- (BOOL)addClientConnection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v5 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = connectionCopy;
       _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "Adding client connection: %@", &v12, 0xCu);
     }
 
-    v6 = [(MTRPluginServer *)self _clientConnections];
-    v7 = [v6 containsObject:v4];
+    _clientConnections = [(MTRPluginServer *)self _clientConnections];
+    v7 = [_clientConnections containsObject:connectionCopy];
 
     if (v7)
     {
@@ -385,38 +385,38 @@ uint64_t __64__MTRPluginServer__safeQueryRunningModeFromDelegateForHomeUUID___bl
 
     else
     {
-      v9 = [(MTRPluginServer *)self _clientConnections];
-      [v9 addObject:v4];
+      _clientConnections2 = [(MTRPluginServer *)self _clientConnections];
+      [_clientConnections2 addObject:connectionCopy];
     }
 
     [(MTRPluginServer *)self _updateProcessMonitor];
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v4 != 0;
+  return connectionCopy != 0;
 }
 
-- (BOOL)removeClientConnection:(id)a3
+- (BOOL)removeClientConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v5 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = connectionCopy;
       _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "Removing client connection: %@", &v15, 0xCu);
     }
 
-    v6 = [(MTRPluginServer *)self _clientConnections];
-    v7 = [v6 containsObject:v4];
+    _clientConnections = [(MTRPluginServer *)self _clientConnections];
+    v7 = [_clientConnections containsObject:connectionCopy];
 
     if (v7)
     {
-      v8 = [(MTRPluginServer *)self _clientConnections];
-      [v8 removeObject:v4];
+      _clientConnections2 = [(MTRPluginServer *)self _clientConnections];
+      [_clientConnections2 removeObject:connectionCopy];
     }
 
     else
@@ -429,11 +429,11 @@ uint64_t __64__MTRPluginServer__safeQueryRunningModeFromDelegateForHomeUUID___bl
       }
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "pid")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "pid")}];
     if (v10)
     {
-      v11 = [(MTRPluginServer *)self pidToStatusMap];
-      [v11 removeObjectForKey:v10];
+      pidToStatusMap = [(MTRPluginServer *)self pidToStatusMap];
+      [pidToStatusMap removeObjectForKey:v10];
     }
 
     else
@@ -450,38 +450,38 @@ uint64_t __64__MTRPluginServer__safeQueryRunningModeFromDelegateForHomeUUID___bl
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v4 != 0;
+  return connectionCopy != 0;
 }
 
-- (BOOL)_deliverMessageToDelegate:(id)a3 homeUUID:(id)a4 timeout:(double)a5
+- (BOOL)_deliverMessageToDelegate:(id)delegate homeUUID:(id)d timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   if (![(MTRPluginServer *)self isRunning])
   {
     goto LABEL_7;
   }
 
-  v10 = [(MTRPluginServer *)self delegate];
+  delegate = [(MTRPluginServer *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if ((v11 & 1) == 0)
   {
-    v16 = [(MTRPluginServer *)self delegate];
+    delegate2 = [(MTRPluginServer *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v12 = [(MTRPluginServer *)self delegateQueue];
+      delegateQueue = [(MTRPluginServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __62__MTRPluginServer__deliverMessageToDelegate_homeUUID_timeout___block_invoke_46;
       block[3] = &unk_279893D48;
       block[4] = self;
       v13 = &v21;
-      v21 = v8;
+      v21 = delegateCopy;
       v14 = &v22;
-      v22 = v9;
+      v22 = dCopy;
       v15 = block;
       goto LABEL_6;
     }
@@ -491,20 +491,20 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [(MTRPluginServer *)self delegateQueue];
+  delegateQueue = [(MTRPluginServer *)self delegateQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __62__MTRPluginServer__deliverMessageToDelegate_homeUUID_timeout___block_invoke;
   v23[3] = &unk_279893E18;
   v23[4] = self;
   v13 = &v24;
-  v24 = v8;
-  *&v25[1] = a5;
+  v24 = delegateCopy;
+  *&v25[1] = timeout;
   v14 = v25;
-  v25[0] = v9;
+  v25[0] = dCopy;
   v15 = v23;
 LABEL_6:
-  dispatch_async(v12, v15);
+  dispatch_async(delegateQueue, v15);
 
   v18 = 1;
 LABEL_8:
@@ -616,45 +616,45 @@ void __62__MTRPluginServer__deliverMessageToDelegate_homeUUID_timeout___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleIncomingMessage:(id)a3
+- (BOOL)handleIncomingMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
   v6 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = messageCopy;
     _os_log_impl(&dword_25830F000, v6, OS_LOG_TYPE_DEFAULT, "%@ => Received incoming HMFMessage %@", &v10, 0x16u);
   }
 
   v7 = +[MTRPluginProtobufOverModernTransport sharedInstance];
-  [v7 dispatchIncomingMessage:v4];
+  [v7 dispatchIncomingMessage:messageCopy];
 
   objc_autoreleasePoolPop(v5);
   v8 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)handlePrimaryResidentUpdateNotification:(id)a3
+- (void)handlePrimaryResidentUpdateNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = self;
+    selfCopy3 = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = notificationCopy;
     _os_log_impl(&dword_25830F000, v5, OS_LOG_TYPE_DEFAULT, "%@ Received resident update notification %@", buf, 0x16u);
   }
 
-  v6 = [(MTRPluginServer *)self delegate];
-  if (!v6 || (v7 = v6, [(MTRPluginServer *)self delegateQueue], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  delegate = [(MTRPluginServer *)self delegate];
+  if (!delegate || (v7 = delegate, [(MTRPluginServer *)self delegateQueue], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
     v15 = matterPluginLog_default;
     if (!os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
@@ -663,17 +663,17 @@ void __62__MTRPluginServer__deliverMessageToDelegate_homeUUID_timeout___block_in
     }
 
     *buf = 138412546;
-    v22 = self;
+    selfCopy3 = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = notificationCopy;
     v16 = "%@ Ignoring notification %@ since delegate / delegateQueue is nil";
 LABEL_13:
     _os_log_impl(&dword_25830F000, v15, OS_LOG_TYPE_DEFAULT, v16, buf, 0x16u);
     goto LABEL_14;
   }
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
+  userInfo = [notificationCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -681,8 +681,8 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
+  userInfo2 = [notificationCopy userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:@"HMDResidentDeviceHomeUUIDNotificationKey"];
 
   if (!v12)
   {
@@ -694,23 +694,23 @@ LABEL_11:
     }
 
     *buf = 138412546;
-    v22 = self;
+    selfCopy3 = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = notificationCopy;
     v16 = "%@ Ignoring notification %@ since homeUUID is nil";
     goto LABEL_13;
   }
 
-  v13 = [(MTRPluginServer *)self delegateQueue];
+  delegateQueue = [(MTRPluginServer *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__MTRPluginServer_handlePrimaryResidentUpdateNotification___block_invoke;
   block[3] = &unk_279893D48;
   block[4] = self;
   v19 = v12;
-  v20 = v4;
+  v20 = notificationCopy;
   v14 = v12;
-  dispatch_async(v13, block);
+  dispatch_async(delegateQueue, block);
 
 LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
@@ -792,14 +792,14 @@ void __59__MTRPluginServer_handlePrimaryResidentUpdateNotification___block_invok
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processStateUpdated:(id)a3
+- (void)_processStateUpdated:(id)updated
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 process];
-  v6 = [v4 previousState];
-  v7 = [v4 state];
-  v8 = [v5 pid];
+  updatedCopy = updated;
+  process = [updatedCopy process];
+  previousState = [updatedCopy previousState];
+  state = [updatedCopy state];
+  v8 = [process pid];
   v9 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -807,34 +807,34 @@ void __59__MTRPluginServer_handlePrimaryResidentUpdateNotification___block_invok
     v20 = 67109632;
     v21 = v8;
     v22 = 1024;
-    v23 = [v6 taskState];
+    taskState = [previousState taskState];
     v24 = 1024;
-    v25 = [v7 taskState];
+    taskState2 = [state taskState];
     _os_log_impl(&dword_25830F000, v10, OS_LOG_TYPE_DEFAULT, "Updating process state updated: %d   from: %d  to: %d", &v20, 0x14u);
   }
 
-  v11 = [(MTRPluginServer *)self pidToStatusMap];
+  pidToStatusMap = [(MTRPluginServer *)self pidToStatusMap];
   v12 = [MEMORY[0x277CCABB0] numberWithInt:v8];
-  [v11 setObject:v4 forKey:v12];
+  [pidToStatusMap setObject:updatedCopy forKey:v12];
 
-  v13 = [v7 taskState];
+  taskState3 = [state taskState];
   v14 = matterPluginLog_default;
   v15 = os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT);
-  if (v13 <= 1)
+  if (taskState3 <= 1)
   {
-    if (v13)
+    if (taskState3)
     {
-      if (v13 != 1)
+      if (taskState3 != 1)
       {
 LABEL_22:
         if (v15)
         {
           v17 = v14;
-          v18 = [v7 taskState];
+          taskState4 = [state taskState];
           v20 = 67109376;
           v21 = v8;
           v22 = 1024;
-          v23 = v18;
+          taskState = taskState4;
           _os_log_impl(&dword_25830F000, v17, OS_LOG_TYPE_DEFAULT, " => pid %d unhandled state: %d", &v20, 0xEu);
         }
 
@@ -868,7 +868,7 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  if (v13 == 2)
+  if (taskState3 == 2)
   {
     if (!v15)
     {
@@ -881,9 +881,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (v13 != 3)
+  if (taskState3 != 3)
   {
-    if (v13 == 4)
+    if (taskState3 == 4)
     {
       if (v15)
       {
@@ -1082,9 +1082,9 @@ LABEL_34:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = self;
-  v4 = [(MTRPluginServer *)self clientConnections];
-  v5 = [v4 copy];
+  selfCopy = self;
+  clientConnections = [(MTRPluginServer *)self clientConnections];
+  v5 = [clientConnections copy];
 
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v6)
@@ -1101,9 +1101,9 @@ LABEL_34:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * v9) connection];
+        connection = [*(*(&v22 + 1) + 8 * v9) connection];
         v11 = MEMORY[0x277D46F50];
-        v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "processIdentifier")}];
+        v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connection, "processIdentifier")}];
         v13 = [v11 identifierForIdentifier:v12];
         [v3 addObject:v13];
 
@@ -1125,15 +1125,15 @@ LABEL_34:
     _os_log_impl(&dword_25830F000, v14, OS_LOG_TYPE_DEFAULT, "Updating process monitor, with pids to monitor: %@", buf, 0xCu);
   }
 
-  v15 = [(MTRPluginServer *)v18 processMonitor];
+  processMonitor = [(MTRPluginServer *)selfCopy processMonitor];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __40__MTRPluginServer__updateProcessMonitor__block_invoke;
   v19[3] = &unk_279893E90;
   v20 = v3;
-  v21 = v18;
+  v21 = selfCopy;
   v16 = v3;
-  [v15 updateConfiguration:v19];
+  [processMonitor updateConfiguration:v19];
 
   v17 = *MEMORY[0x277D85DE8];
 }

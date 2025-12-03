@@ -1,8 +1,8 @@
 @interface PHSearchQueryOptions
-+ (id)queryOptionsForSyndicationLibraryWithOptions:(id)a3;
++ (id)queryOptionsForSyndicationLibraryWithOptions:(id)options;
 - (PHSearchQueryOptions)init;
 - (id)_rankingModeDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)jsonDictionary;
 @end
@@ -14,8 +14,8 @@
   v50[26] = *MEMORY[0x1E69E9840];
   v37 = objc_alloc(MEMORY[0x1E695DF90]);
   v49[0] = @"rankingMode_humanReadable";
-  v48 = [(PHSearchQueryOptions *)self _rankingModeDescription];
-  v50[0] = v48;
+  _rankingModeDescription = [(PHSearchQueryOptions *)self _rankingModeDescription];
+  v50[0] = _rankingModeDescription;
   v49[1] = @"disableSemanticSearch";
   v47 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHSearchQueryOptions disableSemanticSearch](self, "disableSemanticSearch")}];
   v50[1] = v47;
@@ -44,15 +44,15 @@
   v39 = PHSearchQueryResultTypesDescription([(PHSearchQueryOptions *)self searchQueryResultTypes]);
   v50[9] = v39;
   v49[10] = @"scopedIdentifiers";
-  v36 = [(PHSearchQueryOptions *)self scopedIdentifiers];
-  v3 = [v36 allObjects];
-  v4 = v3;
-  if (!v3)
+  scopedIdentifiers = [(PHSearchQueryOptions *)self scopedIdentifiers];
+  allObjects = [scopedIdentifiers allObjects];
+  v4 = allObjects;
+  if (!allObjects)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    allObjects = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[10] = v3;
+  v50[10] = allObjects;
   v49[11] = @"locationInQueryStringForSuggestionGeneration";
   v35 = v4;
   if ([(PHSearchQueryOptions *)self locationInQueryStringForSuggestionGeneration]== 0x7FFFFFFFFFFFFFFFLL)
@@ -114,20 +114,20 @@
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHSearchQueryOptions enableNextTokenSuggestions](self, "enableNextTokenSuggestions")}];
   v50[21] = v24;
   v49[22] = @"sortDescriptors";
-  v10 = [(PHSearchQueryOptions *)self sortDescriptors];
-  if (v10)
+  sortDescriptors = [(PHSearchQueryOptions *)self sortDescriptors];
+  if (sortDescriptors)
   {
-    v23 = [(PHSearchQueryOptions *)self sortDescriptors];
-    v11 = [v23 description];
+    sortDescriptors2 = [(PHSearchQueryOptions *)self sortDescriptors];
+    null = [sortDescriptors2 description];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
-    v23 = v11;
+    null = [MEMORY[0x1E695DFB0] null];
+    sortDescriptors2 = null;
   }
 
-  v50[22] = v11;
+  v50[22] = null;
   v49[23] = @"SpotlightQUTypes";
   v12 = PHSearchQuerySpotlightQUTypesDescription([(PHSearchQueryOptions *)self spotlightQUTypes]);
   v13 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"|"];
@@ -135,16 +135,16 @@
   v50[23] = v14;
   v49[24] = @"fetchContextualThumbnails";
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHSearchQueryOptions fetchContextualThumbnails](self, "fetchContextualThumbnails")}];
-  v16 = v15;
+  null2 = v15;
   if (!v15)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50[24] = v16;
+  v50[24] = null2;
   v49[25] = @"SubstringMatchedCategories";
-  v17 = [(PHSearchQueryOptions *)self substringMatchedCategories];
-  v18 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(v17);
+  substringMatchedCategories = [(PHSearchQueryOptions *)self substringMatchedCategories];
+  v18 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(substringMatchedCategories);
   v50[25] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:26];
   v38 = [v37 initWithDictionary:v19];
@@ -153,7 +153,7 @@
   {
   }
 
-  if (v10)
+  if (sortDescriptors)
   {
   }
 
@@ -171,17 +171,17 @@
   locationInQueryStringForSuggestionGeneration = self->_locationInQueryStringForSuggestionGeneration;
   if (locationInQueryStringForSuggestionGeneration == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = @"NSNotFound";
+    locationInQueryStringForSuggestionGeneration = @"NSNotFound";
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tu", locationInQueryStringForSuggestionGeneration];
+    locationInQueryStringForSuggestionGeneration = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tu", locationInQueryStringForSuggestionGeneration];
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [(PHSearchQueryOptions *)self _rankingModeDescription];
-  [v5 appendFormat:@"Ranking: %@, ", v6];
+  _rankingModeDescription = [(PHSearchQueryOptions *)self _rankingModeDescription];
+  [v5 appendFormat:@"Ranking: %@, ", _rankingModeDescription];
 
   if (self->_disableSemanticSearch)
   {
@@ -224,7 +224,7 @@
   [v5 appendFormat:@"Max Results: %tu, ", self->_maxSearchResults];
   [v5 appendFormat:@"Max Top Assets: %tu, ", self->_maxRankedAssetSearchResults];
   [v5 appendFormat:@"Max Top Collections: %tu, ", self->_maxRankedCollectionSearchResults];
-  [v5 appendFormat:@"Query text position for suggestions: %@, ", v4];
+  [v5 appendFormat:@"Query text position for suggestions: %@, ", locationInQueryStringForSuggestionGeneration];
   if (self->_disableSafetyCheck)
   {
     v11 = @"NO";
@@ -303,8 +303,8 @@
   }
 
   [v5 appendFormat:@"FetchContextualThumbnails: %@, ", v19];
-  v20 = [(PHSearchQueryOptions *)self substringMatchedCategories];
-  v21 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(v20);
+  substringMatchedCategories = [(PHSearchQueryOptions *)self substringMatchedCategories];
+  v21 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(substringMatchedCategories);
   [v5 appendFormat:@"SubstringMatchedCategories: %@", v21];
 
   v22 = [v5 copy];
@@ -325,7 +325,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHSearchQueryOptions);
   [(PHSearchQueryOptions *)v4 setSearchQueryResultTypes:self->_searchQueryResultTypes];
@@ -392,20 +392,20 @@
   return v3;
 }
 
-+ (id)queryOptionsForSyndicationLibraryWithOptions:(id)a3
++ (id)queryOptionsForSyndicationLibraryWithOptions:(id)options
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(PHSearchQueryOptions);
-  -[PHSearchQueryOptions setMaxRankedAssetSearchResults:](v4, "setMaxRankedAssetSearchResults:", [v3 maxRankedAssetSearchResults]);
-  -[PHSearchQueryOptions setDisableSemanticSearch:](v4, "setDisableSemanticSearch:", [v3 disableSemanticSearch]);
-  v5 = [v3 resultsHandlerQueue];
-  [(PHSearchQueryOptions *)v4 setResultsHandlerQueue:v5];
+  -[PHSearchQueryOptions setMaxRankedAssetSearchResults:](v4, "setMaxRankedAssetSearchResults:", [optionsCopy maxRankedAssetSearchResults]);
+  -[PHSearchQueryOptions setDisableSemanticSearch:](v4, "setDisableSemanticSearch:", [optionsCopy disableSemanticSearch]);
+  resultsHandlerQueue = [optionsCopy resultsHandlerQueue];
+  [(PHSearchQueryOptions *)v4 setResultsHandlerQueue:resultsHandlerQueue];
 
-  -[PHSearchQueryOptions setDisableMetadataSearch:](v4, "setDisableMetadataSearch:", [v3 disableMetadataSearch]);
-  v6 = [v3 maxSearchResults];
+  -[PHSearchQueryOptions setDisableMetadataSearch:](v4, "setDisableMetadataSearch:", [optionsCopy disableMetadataSearch]);
+  maxSearchResults = [optionsCopy maxSearchResults];
 
-  [(PHSearchQueryOptions *)v4 setMaxSearchResults:v6];
+  [(PHSearchQueryOptions *)v4 setMaxSearchResults:maxSearchResults];
   [(PHSearchQueryOptions *)v4 setCollectionThreshold:0.0];
   v7 = +[PHSearchUtility syndicationLibraryBundleIdentifiers];
   [(PHSearchQueryOptions *)v4 setBundleIdentifiers:v7];

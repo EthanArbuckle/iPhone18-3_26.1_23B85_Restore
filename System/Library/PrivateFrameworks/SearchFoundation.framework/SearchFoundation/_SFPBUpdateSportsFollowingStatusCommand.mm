@@ -1,35 +1,35 @@
 @interface _SFPBUpdateSportsFollowingStatusCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBUpdateSportsFollowingStatusCommand)initWithDictionary:(id)a3;
-- (_SFPBUpdateSportsFollowingStatusCommand)initWithFacade:(id)a3;
-- (_SFPBUpdateSportsFollowingStatusCommand)initWithJSON:(id)a3;
+- (_SFPBUpdateSportsFollowingStatusCommand)initWithDictionary:(id)dictionary;
+- (_SFPBUpdateSportsFollowingStatusCommand)initWithFacade:(id)facade;
+- (_SFPBUpdateSportsFollowingStatusCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBUpdateSportsFollowingStatusCommand
 
-- (_SFPBUpdateSportsFollowingStatusCommand)initWithFacade:(id)a3
+- (_SFPBUpdateSportsFollowingStatusCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBUpdateSportsFollowingStatusCommand *)self init];
   if (v5)
   {
-    v6 = [v4 sportsItem];
+    sportsItem = [facadeCopy sportsItem];
 
-    if (v6)
+    if (sportsItem)
     {
       v7 = [_SFPBSportsItem alloc];
-      v8 = [v4 sportsItem];
-      v9 = [(_SFPBSportsItem *)v7 initWithFacade:v8];
+      sportsItem2 = [facadeCopy sportsItem];
+      v9 = [(_SFPBSportsItem *)v7 initWithFacade:sportsItem2];
       [(_SFPBUpdateSportsFollowingStatusCommand *)v5 setSportsItem:v9];
     }
 
-    if ([v4 hasFollow])
+    if ([facadeCopy hasFollow])
     {
-      -[_SFPBUpdateSportsFollowingStatusCommand setFollow:](v5, "setFollow:", [v4 follow]);
+      -[_SFPBUpdateSportsFollowingStatusCommand setFollow:](v5, "setFollow:", [facadeCopy follow]);
     }
 
     v10 = v5;
@@ -38,15 +38,15 @@
   return v5;
 }
 
-- (_SFPBUpdateSportsFollowingStatusCommand)initWithDictionary:(id)a3
+- (_SFPBUpdateSportsFollowingStatusCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBUpdateSportsFollowingStatusCommand;
   v5 = [(_SFPBUpdateSportsFollowingStatusCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sportsItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sportsItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(_SFPBUpdateSportsFollowingStatusCommand *)v5 setSportsItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"follow"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"follow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (_SFPBUpdateSportsFollowingStatusCommand)initWithJSON:(id)a3
+- (_SFPBUpdateSportsFollowingStatusCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBUpdateSportsFollowingStatusCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBUpdateSportsFollowingStatusCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBUpdateSportsFollowingStatusCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -103,30 +103,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_follow)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBUpdateSportsFollowingStatusCommand follow](self, "follow")}];
-    [v3 setObject:v4 forKeyedSubscript:@"follow"];
+    [dictionary setObject:v4 forKeyedSubscript:@"follow"];
   }
 
   if (self->_sportsItem)
   {
-    v5 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    sportsItem = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
+    dictionaryRepresentation = [sportsItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"sportsItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sportsItem"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"sportsItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sportsItem"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -141,30 +141,30 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
-    v6 = [v4 sportsItem];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    sportsItem = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
+    sportsItem2 = [equalCopy sportsItem];
+    v7 = sportsItem2;
+    if ((sportsItem != 0) != (sportsItem2 == 0))
     {
-      v8 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
-      if (!v8)
+      sportsItem3 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
+      if (!sportsItem3)
       {
 
 LABEL_10:
         follow = self->_follow;
-        v13 = follow == [v4 follow];
+        v13 = follow == [equalCopy follow];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
-      v11 = [v4 sportsItem];
-      v12 = [v10 isEqual:v11];
+      v9 = sportsItem3;
+      sportsItem4 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
+      sportsItem5 = [equalCopy sportsItem];
+      v12 = [sportsItem4 isEqual:sportsItem5];
 
       if (v12)
       {
@@ -183,11 +183,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
-  if (v4)
+  toCopy = to;
+  sportsItem = [(_SFPBUpdateSportsFollowingStatusCommand *)self sportsItem];
+  if (sportsItem)
   {
     PBDataWriterWriteSubmessage();
   }

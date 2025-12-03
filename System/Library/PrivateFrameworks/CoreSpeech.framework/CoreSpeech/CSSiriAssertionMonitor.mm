@@ -1,8 +1,8 @@
 @interface CSSiriAssertionMonitor
 + (CSSiriAssertionMonitor)sharedInstance;
 - (CSSiriAssertionMonitor)init;
-- (void)_notifyObserver:(BOOL)a3;
-- (void)_notifyObserverBacklightOn:(BOOL)a3 atHostTime:(unint64_t)a4;
+- (void)_notifyObserver:(BOOL)observer;
+- (void)_notifyObserverBacklightOn:(BOOL)on atHostTime:(unint64_t)time;
 - (void)_stopMonitoring;
 - (void)dealloc;
 - (void)disableAssertionReceived;
@@ -11,26 +11,26 @@
 
 @implementation CSSiriAssertionMonitor
 
-- (void)_notifyObserverBacklightOn:(BOOL)a3 atHostTime:(unint64_t)a4
+- (void)_notifyObserverBacklightOn:(BOOL)on atHostTime:(unint64_t)time
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100147204;
   v4[3] = &unk_100252B98;
-  v5 = a3;
+  onCopy = on;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = time;
   [(CSSiriAssertionMonitor *)self enumerateObserversInQueue:v4];
 }
 
-- (void)_notifyObserver:(BOOL)a3
+- (void)_notifyObserver:(BOOL)observer
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001472D8;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  observerCopy = observer;
   [(CSSiriAssertionMonitor *)self enumerateObserversInQueue:v3];
 }
 

@@ -1,34 +1,34 @@
 @interface WFTriggerNotificationScheduler
 + (BOOL)shortenTimeIntervalsForTesting;
-- (WFTriggerNotificationScheduler)initWithUserNotificationManager:(id)a3 databaseProvider:(id)a4;
-- (id)initialRunDateForConfiguredTrigger:(id)a3;
-- (int)updateTriggerNotificationLevels:(id)a3 database:(id)a4;
-- (void)cancelActivitiesFromTrigger:(id)a3;
-- (void)cancelActivitiesFromTriggerIdentifier:(id)a3;
-- (void)cancelAllActivitiesFromTriggers:(id)a3;
-- (void)migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:(id)a3;
-- (void)postBackgroundRunningNotificationForTrigger:(id)a3;
-- (void)registerConfiguredTrigger:(id)a3 delay:(id)a4;
-- (void)registerWithDatabaseProvider:(id)a3;
-- (void)scheduleTriggerForNotifications:(id)a3;
+- (WFTriggerNotificationScheduler)initWithUserNotificationManager:(id)manager databaseProvider:(id)provider;
+- (id)initialRunDateForConfiguredTrigger:(id)trigger;
+- (int)updateTriggerNotificationLevels:(id)levels database:(id)database;
+- (void)cancelActivitiesFromTrigger:(id)trigger;
+- (void)cancelActivitiesFromTriggerIdentifier:(id)identifier;
+- (void)cancelAllActivitiesFromTriggers:(id)triggers;
+- (void)migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:(id)database;
+- (void)postBackgroundRunningNotificationForTrigger:(id)trigger;
+- (void)registerConfiguredTrigger:(id)trigger delay:(id)delay;
+- (void)registerWithDatabaseProvider:(id)provider;
+- (void)scheduleTriggerForNotifications:(id)notifications;
 @end
 
 @implementation WFTriggerNotificationScheduler
 
-- (void)migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:(id)a3
+- (void)migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:(id)database
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  databaseCopy = database;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
-  v7 = v6;
-  if (v6)
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  v7 = systemShortcutsUserDefaults;
+  if (systemShortcutsUserDefaults)
   {
-    v8 = [v6 BOOLForKey:@"WFTriggerNotificationLevelMigrationPerformed"];
-    v9 = getWFTriggerNotificationsLogObject();
-    v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+    v8 = [systemShortcutsUserDefaults BOOLForKey:@"WFTriggerNotificationLevelMigrationPerformed"];
+    descriptors = getWFTriggerNotificationsLogObject();
+    v10 = os_log_type_enabled(descriptors, OS_LOG_TYPE_DEFAULT);
     if (v8)
     {
       if (v10)
@@ -36,7 +36,7 @@
         *buf = 136315138;
         v21 = "[WFTriggerNotificationScheduler migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:]";
         v11 = "%s Migration has already occured not doing anything.";
-        v12 = v9;
+        v12 = descriptors;
         v13 = OS_LOG_TYPE_DEFAULT;
 LABEL_7:
         _os_log_impl(&dword_23103C000, v12, v13, v11, buf, 0xCu);
@@ -49,33 +49,33 @@ LABEL_7:
       {
         *buf = 136315138;
         v21 = "[WFTriggerNotificationScheduler migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:]";
-        _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s Migrating old triggers.", buf, 0xCu);
+        _os_log_impl(&dword_23103C000, descriptors, OS_LOG_TYPE_DEFAULT, "%s Migrating old triggers.", buf, 0xCu);
       }
 
-      v14 = [v4 allConfiguredTriggers];
-      v9 = [v14 descriptors];
+      allConfiguredTriggers = [databaseCopy allConfiguredTriggers];
+      descriptors = [allConfiguredTriggers descriptors];
 
-      v15 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:v4];
+      v15 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:databaseCopy];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __95__WFTriggerNotificationScheduler_migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase___block_invoke;
       v18[3] = &unk_2788FE198;
       v19 = v15;
       v16 = v15;
-      [v9 enumerateObjectsUsingBlock:v18];
+      [descriptors enumerateObjectsUsingBlock:v18];
       [v7 setBool:1 forKey:@"WFTriggerNotificationLevelMigrationPerformed"];
     }
   }
 
   else
   {
-    v9 = getWFTriggerNotificationsLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    descriptors = getWFTriggerNotificationsLogObject();
+    if (os_log_type_enabled(descriptors, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
       v21 = "[WFTriggerNotificationScheduler migrateAllTriggersCreatedBeforeBackgroundRunningWithDatabase:]";
       v11 = "%s Could not get system shortcut user defaults not migrating.";
-      v12 = v9;
+      v12 = descriptors;
       v13 = OS_LOG_TYPE_ERROR;
       goto LABEL_7;
     }
@@ -107,90 +107,90 @@ void __95__WFTriggerNotificationScheduler_migrateAllTriggersCreatedBeforeBackgro
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initialRunDateForConfiguredTrigger:(id)a3
+- (id)initialRunDateForConfiguredTrigger:(id)trigger
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  triggerCopy = trigger;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFTriggerNotificationScheduler *)self databaseProvider];
+  databaseProvider = [(WFTriggerNotificationScheduler *)self databaseProvider];
   v21 = 0;
-  v7 = [v6 databaseWithError:&v21];
+  v7 = [databaseProvider databaseWithError:&v21];
   v8 = v21;
 
   if (!v7)
   {
-    v12 = getWFTriggerNotificationsLogObject();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    lastObject = getWFTriggerNotificationsLogObject();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v23 = "[WFTriggerNotificationScheduler initialRunDateForConfiguredTrigger:]";
       v24 = 2114;
       v25 = v8;
-      _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_ERROR, "%s Failed to get initial run date for configured trigger because database is not available: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_23103C000, lastObject, OS_LOG_TYPE_ERROR, "%s Failed to get initial run date for configured trigger because database is not available: %{public}@", buf, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v4 identifier];
-  v10 = [v7 sortedRunEventsForTriggerID:v9];
-  v11 = [v10 descriptors];
-  v12 = [v11 lastObject];
+  identifier = [triggerCopy identifier];
+  v10 = [v7 sortedRunEventsForTriggerID:identifier];
+  descriptors = [v10 descriptors];
+  lastObject = [descriptors lastObject];
 
   v13 = getWFTriggerNotificationsLogObject();
   v14 = v13;
-  if (!v12)
+  if (!lastObject)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 identifier];
+      identifier2 = [triggerCopy identifier];
       *buf = 136315394;
       v23 = "[WFTriggerNotificationScheduler initialRunDateForConfiguredTrigger:]";
       v24 = 2112;
-      v25 = v18;
+      v25 = identifier2;
       _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_ERROR, "%s No run events found for trigger with id: %@", buf, 0x16u);
     }
 
-    v12 = 0;
+    lastObject = 0;
 LABEL_11:
-    v17 = 0;
+    date2 = 0;
     goto LABEL_12;
   }
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v4 identifier];
-    v16 = [v12 date];
+    identifier3 = [triggerCopy identifier];
+    date = [lastObject date];
     *buf = 136315650;
     v23 = "[WFTriggerNotificationScheduler initialRunDateForConfiguredTrigger:]";
     v24 = 2112;
-    v25 = v15;
+    v25 = identifier3;
     v26 = 2112;
-    v27 = v16;
+    v27 = date;
     _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_DEFAULT, "%s initial run event date for trigger: %@ - %@", buf, 0x20u);
   }
 
-  v17 = [v12 date];
+  date2 = [lastObject date];
 LABEL_12:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return date2;
 }
 
-- (void)cancelActivitiesFromTriggerIdentifier:(id)a3
+- (void)cancelActivitiesFromTriggerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
+  identifierCopy = identifier;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__WFTriggerNotificationScheduler_cancelActivitiesFromTriggerIdentifier___block_invoke;
   block[3] = &unk_278900148;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__WFTriggerNotificationScheduler_cancelActivitiesFromTriggerIdentifier___block_invoke(uint64_t a1)
@@ -211,41 +211,41 @@ void __72__WFTriggerNotificationScheduler_cancelActivitiesFromTriggerIdentifier_
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelActivitiesFromTrigger:(id)a3
+- (void)cancelActivitiesFromTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  triggerCopy = trigger;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 identifier];
+  identifier = [triggerCopy identifier];
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.siriactionsd.TriggerNotification.%@", v6];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.siriactionsd.TriggerNotification.%@", identifier];
 
   v7 = v8;
   xpc_activity_unregister([v8 UTF8String]);
 }
 
-- (void)cancelAllActivitiesFromTriggers:(id)a3
+- (void)cancelAllActivitiesFromTriggers:(id)triggers
 {
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  triggersCopy = triggers;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__WFTriggerNotificationScheduler_cancelAllActivitiesFromTriggers___block_invoke;
   v6[3] = &unk_2788FE198;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [triggersCopy enumerateObjectsUsingBlock:v6];
 }
 
-- (int)updateTriggerNotificationLevels:(id)a3 database:(id)a4
+- (int)updateTriggerNotificationLevels:(id)levels database:(id)database
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v8);
+  levelsCopy = levels;
+  databaseCopy = database;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v21 = 0;
   v22 = &v21;
@@ -256,7 +256,7 @@ void __72__WFTriggerNotificationScheduler_cancelActivitiesFromTriggerIdentifier_
   v20[2] = __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_database___block_invoke;
   v20[3] = &unk_2788FE820;
   v20[4] = &v21;
-  [v6 enumerateObjectsUsingBlock:v20];
+  [levelsCopy enumerateObjectsUsingBlock:v20];
   v9 = getWFTriggerNotificationsLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -269,7 +269,7 @@ void __72__WFTriggerNotificationScheduler_cancelActivitiesFromTriggerIdentifier_
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s Updating scheduled trigger notifications for runs in the last 7 days to level: %@", buf, 0x16u);
   }
 
-  v12 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:v7];
+  v12 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:databaseCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_database___block_invoke_190;
@@ -277,7 +277,7 @@ void __72__WFTriggerNotificationScheduler_cancelActivitiesFromTriggerIdentifier_
   v13 = v12;
   v18 = v13;
   v19 = &v21;
-  [v6 enumerateObjectsUsingBlock:v17];
+  [levelsCopy enumerateObjectsUsingBlock:v17];
   v14 = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
@@ -339,12 +339,12 @@ void __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_databa
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postBackgroundRunningNotificationForTrigger:(id)a3
+- (void)postBackgroundRunningNotificationForTrigger:(id)trigger
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  triggerCopy = trigger;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = getWFTriggerNotificationsLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -354,22 +354,22 @@ void __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_databa
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s Posting background notification", buf, 0xCu);
   }
 
-  v7 = [(WFTriggerNotificationScheduler *)self databaseProvider];
+  databaseProvider = [(WFTriggerNotificationScheduler *)self databaseProvider];
   v39 = 0;
-  v8 = [v7 databaseWithError:&v39];
+  v8 = [databaseProvider databaseWithError:&v39];
   v9 = v39;
 
   if (v8)
   {
-    if ([v4 notificationLevel] < 3)
+    if ([triggerCopy notificationLevel] < 3)
     {
       v12 = MEMORY[0x277CBEB98];
-      v13 = [v8 triggerRunEventsInTheLastWeek];
-      v14 = [v13 descriptors];
-      v15 = [v14 if_compactMap:&__block_literal_global_78];
+      triggerRunEventsInTheLastWeek = [v8 triggerRunEventsInTheLastWeek];
+      descriptors = [triggerRunEventsInTheLastWeek descriptors];
+      v15 = [descriptors if_compactMap:&__block_literal_global_78];
       v16 = [v12 setWithArray:v15];
-      v17 = [v4 identifier];
-      v18 = [v16 setByAddingObject:v17];
+      identifier = [triggerCopy identifier];
+      v18 = [v16 setByAddingObject:identifier];
 
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
@@ -378,25 +378,25 @@ void __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_databa
       v19 = v8;
       v38 = v19;
       v20 = [v18 if_compactMap:v37];
-      v21 = [v20 allObjects];
+      allObjects = [v20 allObjects];
 
-      if ([v21 count])
+      if ([allObjects count])
       {
-        [(WFTriggerNotificationScheduler *)self cancelAllActivitiesFromTriggers:v21];
+        [(WFTriggerNotificationScheduler *)self cancelAllActivitiesFromTriggers:allObjects];
         v22 = os_transaction_create();
         v23 = WFTriggerIDsToDisableNotificationUserInfoFromTriggers();
-        v24 = [(WFTriggerNotificationScheduler *)self userNotificationManager];
+        userNotificationManager = [(WFTriggerNotificationScheduler *)self userNotificationManager];
         v36 = v9;
-        [v24 postBackgroundRunningNotificationWithConfiguredTriggers:v21 userInfo:v23 error:&v36];
+        [userNotificationManager postBackgroundRunningNotificationWithConfiguredTriggers:allObjects userInfo:v23 error:&v36];
         v31 = v36;
 
-        v25 = [(WFTriggerNotificationScheduler *)self updateTriggerNotificationLevels:v21 database:v19];
+        v25 = [(WFTriggerNotificationScheduler *)self updateTriggerNotificationLevels:allObjects database:v19];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __78__WFTriggerNotificationScheduler_postBackgroundRunningNotificationForTrigger___block_invoke_186;
         v34[3] = &unk_2788FE250;
         v35 = v19;
-        v26 = [v21 if_compactMap:v34];
+        v26 = [allObjects if_compactMap:v34];
 
         v27 = getWFTriggerNotificationsLogObject();
         v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
@@ -444,7 +444,7 @@ void __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_databa
           _os_log_impl(&dword_23103C000, v22, OS_LOG_TYPE_ERROR, "%s Failed to post background running notification due to no configured triggers being recently ran", buf, 0xCu);
         }
 
-        v26 = v21;
+        v26 = allObjects;
       }
     }
 
@@ -458,7 +458,7 @@ void __75__WFTriggerNotificationScheduler_updateTriggerNotificationLevels_databa
         _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_ERROR, "%s Attempted to post background running notification but trigger was in WFTriggerNotificationLevelNever, cancelling all activities", buf, 0xCu);
       }
 
-      [(WFTriggerNotificationScheduler *)self cancelActivitiesFromTrigger:v4];
+      [(WFTriggerNotificationScheduler *)self cancelActivitiesFromTrigger:triggerCopy];
     }
   }
 
@@ -512,16 +512,16 @@ void __78__WFTriggerNotificationScheduler_postBackgroundRunningNotificationForTr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerConfiguredTrigger:(id)a3 delay:(id)a4
+- (void)registerConfiguredTrigger:(id)trigger delay:(id)delay
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFTriggerNotificationScheduler *)self queue];
-  dispatch_assert_queue_V2(v8);
+  triggerCopy = trigger;
+  delayCopy = delay;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [v6 identifier];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.siriactionsd.TriggerNotification.%@", v9];
+  identifier = [triggerCopy identifier];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.siriactionsd.TriggerNotification.%@", identifier];
 
   v11 = getWFTriggerNotificationsLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -529,7 +529,7 @@ void __78__WFTriggerNotificationScheduler_postBackgroundRunningNotificationForTr
     *buf = 136315650;
     v21 = "[WFTriggerNotificationScheduler registerConfiguredTrigger:delay:]";
     v22 = 1024;
-    v23 = [v7 intValue];
+    intValue = [delayCopy intValue];
     v24 = 2114;
     v25 = v10;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Registering trigger - creating activity with delay: %i for identifier: %{public}@", buf, 0x1Cu);
@@ -540,15 +540,15 @@ void __78__WFTriggerNotificationScheduler_postBackgroundRunningNotificationForTr
   v18[1] = 3221225472;
   v18[2] = __66__WFTriggerNotificationScheduler_registerConfiguredTrigger_delay___block_invoke;
   v18[3] = &unk_2788FE1E0;
-  v19 = v7;
+  v19 = delayCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __66__WFTriggerNotificationScheduler_registerConfiguredTrigger_delay___block_invoke_180;
   v16[3] = &unk_2788FEE68;
   v16[4] = self;
-  v17 = v6;
-  v13 = v6;
-  v14 = v7;
+  v17 = triggerCopy;
+  v13 = triggerCopy;
+  v14 = delayCopy;
   [(WFXPCActivityScheduler *)v12 scheduleWithCheckInHandler:v18 runHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -706,18 +706,18 @@ void __66__WFTriggerNotificationScheduler_registerConfiguredTrigger_delay___bloc
   }
 }
 
-- (void)registerWithDatabaseProvider:(id)a3
+- (void)registerWithDatabaseProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
+  providerCopy = provider;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__WFTriggerNotificationScheduler_registerWithDatabaseProvider___block_invoke;
   v7[3] = &unk_2788FFFC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __63__WFTriggerNotificationScheduler_registerWithDatabaseProvider___block_invoke(uint64_t a1)
@@ -799,18 +799,18 @@ void __63__WFTriggerNotificationScheduler_registerWithDatabaseProvider___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleTriggerForNotifications:(id)a3
+- (void)scheduleTriggerForNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(WFTriggerNotificationScheduler *)self queue];
+  notificationsCopy = notifications;
+  queue = [(WFTriggerNotificationScheduler *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__WFTriggerNotificationScheduler_scheduleTriggerForNotifications___block_invoke;
   v7[3] = &unk_2788FFFC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationsCopy;
+  selfCopy = self;
+  v6 = notificationsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __66__WFTriggerNotificationScheduler_scheduleTriggerForNotifications___block_invoke(uint64_t a1)
@@ -858,18 +858,18 @@ void __66__WFTriggerNotificationScheduler_scheduleTriggerForNotifications___bloc
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (WFTriggerNotificationScheduler)initWithUserNotificationManager:(id)a3 databaseProvider:(id)a4
+- (WFTriggerNotificationScheduler)initWithUserNotificationManager:(id)manager databaseProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = WFTriggerNotificationScheduler;
   v9 = [(WFTriggerNotificationScheduler *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userNotificationManager, a3);
-    objc_storeStrong(&v10->_databaseProvider, a4);
+    objc_storeStrong(&v9->_userNotificationManager, manager);
+    objc_storeStrong(&v10->_databaseProvider, provider);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_BACKGROUND, 0);
 
@@ -885,8 +885,8 @@ void __66__WFTriggerNotificationScheduler_scheduleTriggerForNotifications___bloc
 
 + (BOOL)shortenTimeIntervalsForTesting
 {
-  v2 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
-  if ([v2 BOOLForKey:*MEMORY[0x277D7CF90]])
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  if ([systemShortcutsUserDefaults BOOLForKey:*MEMORY[0x277D7CF90]])
   {
     v3 = VCIsInternalBuild();
   }

@@ -1,28 +1,28 @@
 @interface BrightnessSequenceQueue
-- (BrightnessSequenceQueue)initWithArrayOfUpdates:(id)a3;
+- (BrightnessSequenceQueue)initWithArrayOfUpdates:(id)updates;
 - (id)nextUpdate;
-- (unint64_t)absoluteTimestampForUpdate:(id)a3;
+- (unint64_t)absoluteTimestampForUpdate:(id)update;
 @end
 
 @implementation BrightnessSequenceQueue
 
-- (BrightnessSequenceQueue)initWithArrayOfUpdates:(id)a3
+- (BrightnessSequenceQueue)initWithArrayOfUpdates:(id)updates
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  updatesCopy = updates;
   v18.receiver = self;
   v18.super_class = BrightnessSequenceQueue;
-  v21 = [(BrightnessSequenceQueue *)&v18 init];
-  if (v21)
+  selfCopy = [(BrightnessSequenceQueue *)&v18 init];
+  if (selfCopy)
   {
-    v21->_sequenceStartTime = dispatch_time(0, 0);
-    v21->_currentUpdateID = 0;
+    selfCopy->_sequenceStartTime = dispatch_time(0, 0);
+    selfCopy->_currentUpdateID = 0;
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     memset(__b, 0, sizeof(__b));
-    obj = v19;
-    v13 = [v19 countByEnumeratingWithState:__b objects:v22 count:16];
+    obj = updatesCopy;
+    v13 = [updatesCopy countByEnumeratingWithState:__b objects:v22 count:16];
     if (v13)
     {
       v9 = *__b[2];
@@ -57,12 +57,12 @@
 
     v5 = objc_alloc(MEMORY[0x1E695DEC8]);
     v6 = [v5 initWithArray:v17];
-    v21->_flipbook = v6;
+    selfCopy->_flipbook = v6;
     MEMORY[0x1E69E5920](v17);
   }
 
   *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
 - (id)nextUpdate
@@ -77,10 +77,10 @@
   return [(NSArray *)flipbook objectAtIndexedSubscript:?];
 }
 
-- (unint64_t)absoluteTimestampForUpdate:(id)a3
+- (unint64_t)absoluteTimestampForUpdate:(id)update
 {
   when = self->_sequenceStartTime;
-  [a3 timestampOffset];
+  [update timestampOffset];
   return dispatch_time(when, (v3 * 1000000.0));
 }
 

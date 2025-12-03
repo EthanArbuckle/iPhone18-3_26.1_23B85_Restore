@@ -1,16 +1,16 @@
 @interface SBContinuitySessionServiceConnectionListenerFactory
-- (id)newContinuitySessionServiceListenerForDelegate:(id)a3 serviceQueue:(id)a4;
+- (id)newContinuitySessionServiceListenerForDelegate:(id)delegate serviceQueue:(id)queue;
 @end
 
 @implementation SBContinuitySessionServiceConnectionListenerFactory
 
-- (id)newContinuitySessionServiceListenerForDelegate:(id)a3 serviceQueue:(id)a4
+- (id)newContinuitySessionServiceListenerForDelegate:(id)delegate serviceQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_SBContinuitySessionServiceConnectionListener alloc] initWithServiceQueue:v5];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v7 = [[_SBContinuitySessionServiceConnectionListener alloc] initWithServiceQueue:queueCopy];
 
-  [(_SBContinuitySessionServiceConnectionListener *)v7 setDelegate:v6];
+  [(_SBContinuitySessionServiceConnectionListener *)v7 setDelegate:delegateCopy];
   return v7;
 }
 

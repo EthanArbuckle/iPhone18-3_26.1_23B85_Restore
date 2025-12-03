@@ -1,89 +1,89 @@
 @interface _UICollectionViewDragSourceControllerDragState
 - (_UICollectionViewDragSourceControllerDragState)init;
-- (id)dataSourceIndexPathForDragItem:(void *)a3 forCollectionView:;
+- (id)dataSourceIndexPathForDragItem:(void *)item forCollectionView:;
 - (id)description;
 - (id)dragFromDataSourceIndexPath;
 - (id)draggingDataSourceIndexPaths;
-- (void)rebaseForUpdates:(void *)a1;
+- (void)rebaseForUpdates:(void *)updates;
 @end
 
 @implementation _UICollectionViewDragSourceControllerDragState
 
 - (id)draggingDataSourceIndexPaths
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 dataSourceIndexPathsOfDraggingItems];
-    v2 = [v1 array];
+    dataSourceIndexPathsOfDraggingItems = [self dataSourceIndexPathsOfDraggingItems];
+    array = [dataSourceIndexPathsOfDraggingItems array];
   }
 
   else
   {
-    v2 = 0;
+    array = 0;
   }
 
-  return v2;
+  return array;
 }
 
 - (id)dragFromDataSourceIndexPath
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 dataSourceIndexPathsOfDraggingItems];
-    v2 = [v1 firstObject];
+    dataSourceIndexPathsOfDraggingItems = [self dataSourceIndexPathsOfDraggingItems];
+    firstObject = [dataSourceIndexPathsOfDraggingItems firstObject];
   }
 
   else
   {
-    v2 = 0;
+    firstObject = 0;
   }
 
-  return v2;
+  return firstObject;
 }
 
-- (id)dataSourceIndexPathForDragItem:(void *)a3 forCollectionView:
+- (id)dataSourceIndexPathForDragItem:(void *)item forCollectionView:
 {
-  v5 = a3;
-  if (a1)
+  itemCopy = item;
+  if (self)
   {
-    v6 = [a2 _privateLocalContext];
+    _privateLocalContext = [a2 _privateLocalContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 collectionView];
-      if (v7 == v5)
+      collectionView = [_privateLocalContext collectionView];
+      if (collectionView == itemCopy)
       {
-        a1 = [v6 indexPath];
+        self = [_privateLocalContext indexPath];
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)rebaseForUpdates:(void *)a1
+- (void)rebaseForUpdates:(void *)updates
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (updates)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v5 = [a1 dataSourceIndexPathsOfDraggingItems];
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    dataSourceIndexPathsOfDraggingItems = [updates dataSourceIndexPathsOfDraggingItems];
+    v6 = [dataSourceIndexPathsOfDraggingItems countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v6)
     {
       v7 = v6;
@@ -94,7 +94,7 @@
         {
           if (*v33 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(dataSourceIndexPathsOfDraggingItems);
           }
 
           v10 = v3[2](v3, *(*(&v32 + 1) + 8 * i));
@@ -104,28 +104,28 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v7 = [dataSourceIndexPathsOfDraggingItems countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v7);
     }
 
-    v11 = [a1 dataSourceIndexPathsOfDraggingItems];
-    [v11 removeAllObjects];
+    dataSourceIndexPathsOfDraggingItems2 = [updates dataSourceIndexPathsOfDraggingItems];
+    [dataSourceIndexPathsOfDraggingItems2 removeAllObjects];
 
-    v12 = [a1 dataSourceIndexPathsOfDraggingItems];
+    dataSourceIndexPathsOfDraggingItems3 = [updates dataSourceIndexPathsOfDraggingItems];
     v26 = v4;
-    v13 = [v4 array];
-    [v12 addObjectsFromArray:v13];
+    array = [v4 array];
+    [dataSourceIndexPathsOfDraggingItems3 addObjectsFromArray:array];
 
-    v14 = [a1 dragItemsWithRebasableIndexPaths];
-    [v14 compact];
+    dragItemsWithRebasableIndexPaths = [updates dragItemsWithRebasableIndexPaths];
+    [dragItemsWithRebasableIndexPaths compact];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = [a1 dragItemsWithRebasableIndexPaths];
+    obj = [updates dragItemsWithRebasableIndexPaths];
     v15 = [obj countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v15)
     {
@@ -141,16 +141,16 @@
           }
 
           v19 = *(*(&v28 + 1) + 8 * j);
-          v20 = [v19 _privateLocalContext];
+          _privateLocalContext = [v19 _privateLocalContext];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [v20 indexPath];
-            v22 = (v3)[2](v3, v21);
+            indexPath = [_privateLocalContext indexPath];
+            v22 = (v3)[2](v3, indexPath);
 
             v23 = [_UICollectionViewSourcePrivateLocalObject alloc];
-            v24 = [v20 collectionView];
-            v25 = [(_UICollectionViewSourcePrivateLocalObject *)v23 initWithIndexPath:v22 collectionView:v24];
+            collectionView = [_privateLocalContext collectionView];
+            v25 = [(_UICollectionViewSourcePrivateLocalObject *)v23 initWithIndexPath:v22 collectionView:collectionView];
             [v19 _setPrivateLocalContext:v25];
           }
         }
@@ -174,9 +174,9 @@
     dataSourceIndexPathsOfDraggingItems = v2->_dataSourceIndexPathsOfDraggingItems;
     v2->_dataSourceIndexPathsOfDraggingItems = v3;
 
-    v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     dragItemsWithRebasableIndexPaths = v2->_dragItemsWithRebasableIndexPaths;
-    v2->_dragItemsWithRebasableIndexPaths = v5;
+    v2->_dragItemsWithRebasableIndexPaths = weakObjectsPointerArray;
   }
 
   return v2;
@@ -187,11 +187,11 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UICollectionViewDragSourceControllerDragState *)self dragFromDataSourceIndexPath];
-  v7 = __UICVIndexPathDescription(v6);
-  v8 = [(_UICollectionViewDragSourceControllerDragState *)self dataSourceIndexPathsOfDraggingItems];
-  v9 = [v8 array];
-  v10 = __UICVIndexPathsDescription(v9);
+  dragFromDataSourceIndexPath = [(_UICollectionViewDragSourceControllerDragState *)self dragFromDataSourceIndexPath];
+  v7 = __UICVIndexPathDescription(dragFromDataSourceIndexPath);
+  dataSourceIndexPathsOfDraggingItems = [(_UICollectionViewDragSourceControllerDragState *)self dataSourceIndexPathsOfDraggingItems];
+  array = [dataSourceIndexPathsOfDraggingItems array];
+  v10 = __UICVIndexPathsDescription(array);
   v11 = [v3 stringWithFormat:@"<%@:%p dragFrom=%@ draggingItems=%@>", v5, self, v7, v10];
 
   return v11;

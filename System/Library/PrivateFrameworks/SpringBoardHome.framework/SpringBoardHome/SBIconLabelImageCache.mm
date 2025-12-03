@@ -1,15 +1,15 @@
 @interface SBIconLabelImageCache
-- (BOOL)containsLabelContentForText:(id)a3;
+- (BOOL)containsLabelContentForText:(id)text;
 - (CGSize)maxLabelSize;
 - (SBIconLabelImageCache)init;
-- (SBIconLabelImageCache)initWithMaxLabelSize:(CGSize)a3 scale:(double)a4 cacheIdentifier:(id)a5;
-- (id)_generateAndStoreLabelImageForParameters:(uint64_t)a1;
-- (id)cachedLabelContentForParameters:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)labelContentWithParameters:(id)a3;
-- (id)labelContentWithParameters:(id)a3 legibilitySettings:(id)a4;
-- (id)labelImageWithParameters:(id)a3;
+- (SBIconLabelImageCache)initWithMaxLabelSize:(CGSize)size scale:(double)scale cacheIdentifier:(id)identifier;
+- (id)_generateAndStoreLabelImageForParameters:(uint64_t)parameters;
+- (id)cachedLabelContentForParameters:(id)parameters;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)labelContentWithParameters:(id)parameters;
+- (id)labelContentWithParameters:(id)parameters legibilitySettings:(id)settings;
+- (id)labelImageWithParameters:(id)parameters;
 - (id)succinctDescription;
 - (unint64_t)numberOfCachedLabelHits;
 - (unint64_t)numberOfCachedLabelImages;
@@ -20,24 +20,24 @@
 - (void)_incrementCacheLabelHits;
 - (void)_incrementCacheLabelMisses;
 - (void)_incrementCacheLegibilityMisses;
-- (void)cacheLabelContentForParameters:(id)a3;
+- (void)cacheLabelContentForParameters:(id)parameters;
 - (void)dealloc;
-- (void)ensureLabelImagesAreCached:(id)a3;
+- (void)ensureLabelImagesAreCached:(id)cached;
 - (void)invalidate;
-- (void)prewarmLabelImages:(id)a3;
+- (void)prewarmLabelImages:(id)images;
 - (void)removeAllObjects;
-- (void)removeLabelContentForParameters:(id)a3;
-- (void)removeLabelContentForText:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)removeLabelContentForParameters:(id)parameters;
+- (void)removeLabelContentForText:(id)text;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation SBIconLabelImageCache
 
 - (void)_incrementCacheLegibilityMisses
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_4(a1);
+    OUTLINED_FUNCTION_0_4(self);
     ++*(v1 + 104);
 
     os_unfair_lock_unlock((v1 + 48));
@@ -46,9 +46,9 @@
 
 - (void)_incrementCacheLabelMisses
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_4(a1);
+    OUTLINED_FUNCTION_0_4(self);
     ++*(v1 + 88);
 
     os_unfair_lock_unlock((v1 + 48));
@@ -57,32 +57,32 @@
 
 - (void)_incrementCacheLabelHits
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_4(a1);
+    OUTLINED_FUNCTION_0_4(self);
     ++*(v1 + 80);
 
     os_unfair_lock_unlock((v1 + 48));
   }
 }
 
-- (SBIconLabelImageCache)initWithMaxLabelSize:(CGSize)a3 scale:(double)a4 cacheIdentifier:(id)a5
+- (SBIconLabelImageCache)initWithMaxLabelSize:(CGSize)size scale:(double)scale cacheIdentifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v75.receiver = self;
   v75.super_class = SBIconLabelImageCache;
   v10 = [(SBIconLabelImageCache *)&v75 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [identifierCopy copy];
     cacheIdentifier = v10->_cacheIdentifier;
     v10->_cacheIdentifier = v11;
 
     v10->_maxLabelSize.width = width;
     v10->_maxLabelSize.height = height;
-    v10->_scale = a4;
+    v10->_scale = scale;
     v13 = objc_opt_new();
     invalidationSignal = v10->_invalidationSignal;
     v10->_invalidationSignal = v13;
@@ -90,14 +90,14 @@
     v10->_metricsLock._os_unfair_lock_opaque = 0;
     if (SBHFeatureEnabled(0))
     {
-      v15 = [MEMORY[0x1E695DF58] currentLocale];
-      v16 = [v15 localeIdentifier];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ContentCache_%@_%@", v16, v10->_cacheIdentifier];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      localeIdentifier = [currentLocale localeIdentifier];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ContentCache_%@_%@", localeIdentifier, v10->_cacheIdentifier];
       v18 = __mappedImageCacheForIdentifier(v17);
       contentCache = v10->_contentCache;
       v10->_contentCache = v18;
 
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"LegibilityCache_%@_%@", v16, v10->_cacheIdentifier];
+      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"LegibilityCache_%@_%@", localeIdentifier, v10->_cacheIdentifier];
       v21 = __mappedImageCacheForIdentifier(v20);
       legibilityCache = v10->_legibilityCache;
       v10->_legibilityCache = v21;
@@ -109,7 +109,7 @@
       v72[1] = 3221225472;
       v72[2] = __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___block_invoke;
       v72[3] = &unk_1E808B078;
-      v25 = v15;
+      v25 = currentLocale;
       v73 = v25;
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
@@ -182,8 +182,8 @@
       objc_destroyWeak(&location);
     }
 
-    v48 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:4 scale:width withContextType:{height, a4}];
-    v49 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:0 scale:width withContextType:{height, a4}];
+    v48 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:4 scale:width withContextType:{height, scale}];
+    v49 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:0 scale:width withContextType:{height, scale}];
     v50 = [objc_alloc(MEMORY[0x1E698B698]) initWithLabel:"iconLabels_gray" slotLength:v48];
     grayPool = v10->_grayPool;
     v10->_grayPool = v50;
@@ -265,7 +265,7 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[_invalidationSignal hasBeenSignalled]"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -312,15 +312,15 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
-    v4 = +[SBHLegibilitySettings defaultLegibilitySettings];
+    settingsCopy = +[SBHLegibilitySettings defaultLegibilitySettings];
   }
 
-  v7 = v4;
+  v7 = settingsCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v5 = [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:v7];
@@ -329,35 +329,35 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   }
 }
 
-- (void)prewarmLabelImages:(id)a3
+- (void)prewarmLabelImages:(id)images
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imagesCopy = images;
   if (self->_legibilitySettings)
   {
     if (SBHFeatureEnabled(0))
     {
-      v5 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
-      if (v5)
+      legibilityDescriptor = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+      if (legibilityDescriptor)
       {
-        v6 = [MEMORY[0x1E695DFD8] setWithObject:v5];
-        [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource prewarmContentForObjects:v4 legibilityDescriptors:v6];
+        v6 = [MEMORY[0x1E695DFD8] setWithObject:legibilityDescriptor];
+        [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource prewarmContentForObjects:imagesCopy legibilityDescriptors:v6];
       }
     }
 
-    v7 = [(SBHLegibilitySettings *)self->_legibilitySettings _UILegibilitySettings];
-    if (v7)
+    _UILegibilitySettings = [(SBHLegibilitySettings *)self->_legibilitySettings _UILegibilitySettings];
+    if (_UILegibilitySettings)
     {
-      v8 = v7;
-      v9 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+      v8 = _UILegibilitySettings;
+      legibilityDescriptor2 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
 
-      if (!v9)
+      if (!legibilityDescriptor2)
       {
         v20 = 0u;
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v10 = v4;
+        v10 = imagesCopy;
         v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
@@ -391,14 +391,14 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   }
 }
 
-- (void)ensureLabelImagesAreCached:(id)a3
+- (void)ensureLabelImagesAreCached:(id)cached
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cachedCopy = cached;
   if (SBHFeatureEnabled(0) && ([(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v4 bs_map:&__block_literal_global_22];
+    v7 = [cachedCopy bs_map:&__block_literal_global_22];
     v8 = SBIconLabelImageCachePredicateForAppTitles(v7);
     v9 = [(PLKCachedImageGenerator *)self->_legibilityGenerator removeImagesForPredicate:v8];
     v10 = [(PLKCachedImageGenerator *)self->_contentGenerator removeImagesForPredicate:v8];
@@ -407,15 +407,15 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   else
   {
     v11 = MEMORY[0x1E695DFD8];
-    v12 = [(NSMutableDictionary *)self->_labelImages allKeys];
-    v6 = [v11 setWithArray:v12];
+    allKeys = [(NSMutableDictionary *)self->_labelImages allKeys];
+    v6 = [v11 setWithArray:allKeys];
 
     v13 = objc_autoreleasePoolPush();
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = v4;
+    v14 = cachedCopy;
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
@@ -448,37 +448,37 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   }
 }
 
-- (void)cacheLabelContentForParameters:(id)a3
+- (void)cacheLabelContentForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (SBHFeatureEnabled(0) && ([(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     legibilityDataSource = self->_legibilityDataSource;
-    v7 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
-    v8 = [(PLKCachedLegibilityContentDataSource *)legibilityDataSource legibilityContentForObject:v4 legibilityDescriptor:v7];
+    legibilityDescriptor = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+    v8 = [(PLKCachedLegibilityContentDataSource *)legibilityDataSource legibilityContentForObject:parametersCopy legibilityDescriptor:legibilityDescriptor];
   }
 
   else
   {
-    v9 = [(NSMutableDictionary *)self->_labelImages objectForKey:v4];
+    v9 = [(NSMutableDictionary *)self->_labelImages objectForKey:parametersCopy];
 
     if (!v9)
     {
       v10 = SBLogIconLabelImageCache();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [(SBIconLabelImageCache *)v4 cacheLabelContentForParameters:v10];
+        [(SBIconLabelImageCache *)parametersCopy cacheLabelContentForParameters:v10];
       }
 
-      v11 = [(SBIconLabelImageCache *)self _generateAndStoreLabelImageForParameters:v4];
+      v11 = [(SBIconLabelImageCache *)self _generateAndStoreLabelImageForParameters:parametersCopy];
     }
   }
 }
 
-- (id)labelImageWithParameters:(id)a3
+- (id)labelImageWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_labelImages objectForKey:v4];
+  parametersCopy = parameters;
+  v5 = [(NSMutableDictionary *)self->_labelImages objectForKey:parametersCopy];
   if (v5)
   {
     v6 = v5;
@@ -488,66 +488,66 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
   else
   {
     [(SBIconLabelImageCache *)self _incrementCacheLabelMisses];
-    v6 = [(SBIconLabelImageCache *)self _generateAndStoreLabelImageForParameters:v4];
+    v6 = [(SBIconLabelImageCache *)self _generateAndStoreLabelImageForParameters:parametersCopy];
   }
 
   return v6;
 }
 
-- (id)labelContentWithParameters:(id)a3
+- (id)labelContentWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (SBHFeatureEnabled(0) && ([(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource legibilityContentForObject:v4 legibilityDescriptor:v5];
+    v7 = [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource legibilityContentForObject:parametersCopy legibilityDescriptor:v5];
   }
 
   else
   {
-    v7 = [(SBIconLabelImageCache *)self labelImageWithParameters:v4];
+    v7 = [(SBIconLabelImageCache *)self labelImageWithParameters:parametersCopy];
   }
 
   return v7;
 }
 
-- (id)labelContentWithParameters:(id)a3 legibilitySettings:(id)a4
+- (id)labelContentWithParameters:(id)parameters legibilitySettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  if (SBHFeatureEnabled(0) && ([v7 legibilityDescriptor], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  parametersCopy = parameters;
+  settingsCopy = settings;
+  if (SBHFeatureEnabled(0) && ([settingsCopy legibilityDescriptor], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    v10 = [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource legibilityContentForObject:v6 legibilityDescriptor:v8];
+    v10 = [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource legibilityContentForObject:parametersCopy legibilityDescriptor:v8];
   }
 
   else
   {
-    v10 = [(SBIconLabelImageCache *)self labelImageWithParameters:v6];
+    v10 = [(SBIconLabelImageCache *)self labelImageWithParameters:parametersCopy];
   }
 
   return v10;
 }
 
-- (id)cachedLabelContentForParameters:(id)a3
+- (id)cachedLabelContentForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = 0;
-  if (v4 && self->_legibilitySettings)
+  if (parametersCopy && self->_legibilitySettings)
   {
     if (SBHFeatureEnabled(0))
     {
-      v6 = [MEMORY[0x1E695DF58] currentLocale];
-      v7 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
-      v8 = [v4 metrics];
-      v9 = __generateCacheKeyForMetricsAndLegibilityDescriptor(v8, 0, v6, 0);
-      v10 = __generateCacheKeyForMetricsAndLegibilityDescriptor(v8, v7, v6, 1);
-      v11 = [(BSUIMappedImageCache *)self->_contentCache allKeys];
-      v12 = [v11 containsObject:v9];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      legibilityDescriptor = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+      metrics = [parametersCopy metrics];
+      v9 = __generateCacheKeyForMetricsAndLegibilityDescriptor(metrics, 0, currentLocale, 0);
+      v10 = __generateCacheKeyForMetricsAndLegibilityDescriptor(metrics, legibilityDescriptor, currentLocale, 1);
+      allKeys = [(BSUIMappedImageCache *)self->_contentCache allKeys];
+      v12 = [allKeys containsObject:v9];
 
       if (v12 && (-[BSUIMappedImageCache allKeys](self->_legibilityCache, "allKeys"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsObject:v10], v13, v14))
       {
-        v5 = [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource legibilityContentForObject:v4 legibilityDescriptor:v7];
+        v5 = [(PLKCachedLegibilityContentDataSource *)self->_legibilityDataSource legibilityContentForObject:parametersCopy legibilityDescriptor:legibilityDescriptor];
       }
 
       else
@@ -558,28 +558,28 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
 
     else
     {
-      v5 = [(NSMutableDictionary *)self->_labelImages objectForKey:v4];
+      v5 = [(NSMutableDictionary *)self->_labelImages objectForKey:parametersCopy];
     }
   }
 
   return v5;
 }
 
-- (BOOL)containsLabelContentForText:(id)a3
+- (BOOL)containsLabelContentForText:(id)text
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_legibilitySettings && [v4 length])
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_legibilitySettings && [textCopy length])
   {
     if (SBHFeatureEnabled(0))
     {
-      v6 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
-      if (v6)
+      legibilityDescriptor = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+      if (legibilityDescriptor)
       {
         v7 = MEMORY[0x1E695DFD8];
-        v8 = [(BSUIMappedImageCache *)self->_contentCache allKeys];
-        v9 = [v7 setWithArray:v8];
+        allKeys = [(BSUIMappedImageCache *)self->_contentCache allKeys];
+        v9 = [v7 setWithArray:allKeys];
 
         v10 = [MEMORY[0x1E695DFD8] setWithObject:v5];
         v11 = SBIconLabelImageCachePredicateForAppTitles(v10);
@@ -626,8 +626,8 @@ id __68__SBIconLabelImageCache_initWithMaxLabelSize_scale_cacheIdentifier___bloc
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(NSMutableDictionary *)self->_labelImages allKeys];
-    v17 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    legibilityDescriptor = [(NSMutableDictionary *)self->_labelImages allKeys];
+    v17 = [legibilityDescriptor countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v17)
     {
       v18 = *v24;
@@ -637,11 +637,11 @@ LABEL_17:
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(legibilityDescriptor);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * v19) text];
-        v21 = [v20 isEqualToString:v5];
+        text = [*(*(&v23 + 1) + 8 * v19) text];
+        v21 = [text isEqualToString:v5];
 
         if (v21)
         {
@@ -650,7 +650,7 @@ LABEL_17:
 
         if (v17 == ++v19)
         {
-          v17 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v17 = [legibilityDescriptor countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v17)
           {
             goto LABEL_17;
@@ -675,19 +675,19 @@ LABEL_27:
   return v17;
 }
 
-- (void)removeLabelContentForText:(id)a3
+- (void)removeLabelContentForText:(id)text
 {
-  v4 = a3;
-  if ([v4 count])
+  textCopy = text;
+  if ([textCopy count])
   {
     if (SBHFeatureEnabled(0) && ([(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
       legibilityGenerator = self->_legibilityGenerator;
-      v7 = SBIconLabelImageCachePredicateForAppTitles(v4);
+      v7 = SBIconLabelImageCachePredicateForAppTitles(textCopy);
       v8 = [(PLKCachedImageGenerator *)legibilityGenerator removeImagesForPredicate:v7];
 
       contentGenerator = self->_contentGenerator;
-      v10 = SBIconLabelImageCachePredicateForAppTitles(v4);
+      v10 = SBIconLabelImageCachePredicateForAppTitles(textCopy);
       v11 = [(PLKCachedImageGenerator *)contentGenerator removeImagesForPredicate:v10];
     }
 
@@ -699,13 +699,13 @@ LABEL_27:
       v17 = 3221225472;
       v18 = __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke;
       v19 = &unk_1E808B138;
-      v20 = v4;
+      v20 = textCopy;
       v21 = v12;
       v10 = v12;
       [(NSMutableDictionary *)labelImages enumerateKeysAndObjectsWithOptions:1 usingBlock:&v16];
       v14 = self->_labelImages;
-      v15 = [v10 bs_array];
-      [(NSMutableDictionary *)v14 removeObjectsForKeys:v15];
+      bs_array = [v10 bs_array];
+      [(NSMutableDictionary *)v14 removeObjectsForKeys:bs_array];
     }
   }
 }
@@ -724,25 +724,25 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
   }
 }
 
-- (void)removeLabelContentForParameters:(id)a3
+- (void)removeLabelContentForParameters:(id)parameters
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  parametersCopy = parameters;
+  if (parametersCopy)
   {
     if (SBHFeatureEnabled(0))
     {
       v5 = MEMORY[0x1E695DFD8];
-      v6 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
-      v7 = [v5 setWithObject:v6];
+      legibilityDescriptor = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+      v7 = [v5 setWithObject:legibilityDescriptor];
 
       legibilityDataSource = self->_legibilityDataSource;
-      v10[0] = v4;
+      v10[0] = parametersCopy;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
       [(PLKCachedLegibilityContentDataSource *)legibilityDataSource removeContentForObjects:v9 legibilityDescriptors:v7];
     }
 
-    [(NSMutableDictionary *)self->_labelImages removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_labelImages removeObjectForKey:parametersCopy];
   }
 }
 
@@ -765,8 +765,8 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
 {
   if (SBHFeatureEnabled(0) && ([(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(BSUIMappedImageCache *)self->_contentCache allKeys];
-    v5 = [v4 count];
+    allKeys = [(BSUIMappedImageCache *)self->_contentCache allKeys];
+    v5 = [allKeys count];
 
     return v5;
   }
@@ -786,15 +786,15 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
     return 0;
   }
 
-  v3 = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
+  legibilityDescriptor = [(SBHLegibilitySettings *)self->_legibilitySettings legibilityDescriptor];
 
-  if (!v3)
+  if (!legibilityDescriptor)
   {
     return 0;
   }
 
-  v4 = [(BSUIMappedImageCache *)self->_legibilityCache allKeys];
-  v5 = [v4 count];
+  allKeys = [(BSUIMappedImageCache *)self->_legibilityCache allKeys];
+  v5 = [allKeys count];
 
   return v5;
 }
@@ -833,32 +833,32 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconLabelImageCache *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconLabelImageCache *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconLabelImageCache *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconLabelImageCache *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconLabelImageCache *)self succinctDescriptionBuilder];
-  v5 = [(SBIconLabelImageCache *)self cacheIdentifier];
-  [v4 appendString:v5 withName:@"cacheIdentifier"];
+  succinctDescriptionBuilder = [(SBIconLabelImageCache *)self succinctDescriptionBuilder];
+  cacheIdentifier = [(SBIconLabelImageCache *)self cacheIdentifier];
+  [succinctDescriptionBuilder appendString:cacheIdentifier withName:@"cacheIdentifier"];
 
   [(SBIconLabelImageCache *)self maxLabelSize];
-  v6 = [v4 appendSize:@"maxLabelSize" withName:?];
+  v6 = [succinctDescriptionBuilder appendSize:@"maxLabelSize" withName:?];
   [(SBIconLabelImageCache *)self scale];
-  v7 = [v4 appendFloat:@"scale" withName:?];
+  v7 = [succinctDescriptionBuilder appendFloat:@"scale" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)maxLabelSize
@@ -870,16 +870,16 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
   return result;
 }
 
-- (id)_generateAndStoreLabelImageForParameters:(uint64_t)a1
+- (id)_generateAndStoreLabelImageForParameters:(uint64_t)parameters
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (parameters)
   {
     [v3 scale];
     v6 = v5;
-    [a1 scale];
+    [parameters scale];
     if (v6 != v7)
     {
       v8 = v7;
@@ -902,16 +902,16 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
 
     v11 = [v4 copy];
     [v4 maxSize];
-    if (v13 <= *(a1 + 144) && v12 <= *(a1 + 152))
+    if (v13 <= *(parameters + 144) && v12 <= *(parameters + 152))
     {
-      v15 = [v4 isColorspaceGrayscale];
+      isColorspaceGrayscale = [v4 isColorspaceGrayscale];
       v16 = 136;
-      if (v15)
+      if (isColorspaceGrayscale)
       {
         v16 = 128;
       }
 
-      v14 = *(a1 + v16);
+      v14 = *(parameters + v16);
     }
 
     else
@@ -922,7 +922,7 @@ void __51__SBIconLabelImageCache_removeLabelContentForText___block_invoke(uint64
     v17 = [SBIconLabelImage imageWithParameters:v11 pool:v14];
     if (v17)
     {
-      [*(a1 + 56) setObject:v17 forKey:v11];
+      [*(parameters + 56) setObject:v17 forKey:v11];
     }
   }
 

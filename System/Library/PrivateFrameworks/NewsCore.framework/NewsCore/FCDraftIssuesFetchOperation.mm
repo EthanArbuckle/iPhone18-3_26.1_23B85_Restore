@@ -1,8 +1,8 @@
 @interface FCDraftIssuesFetchOperation
 - (BOOL)validateOperation;
 - (FCDraftIssuesFetchOperation)init;
-- (FCDraftIssuesFetchOperation)initWithContext:(id)a3 issueListID:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCDraftIssuesFetchOperation)initWithContext:(id)context issueListID:(id)d;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -34,18 +34,18 @@
   objc_exception_throw(v6);
 }
 
-- (FCDraftIssuesFetchOperation)initWithContext:(id)a3 issueListID:(id)a4
+- (FCDraftIssuesFetchOperation)initWithContext:(id)context issueListID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = FCDraftIssuesFetchOperation;
   v9 = [(FCOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_issueListID, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_issueListID, d);
   }
 
   return v10;
@@ -54,9 +54,9 @@
 - (BOOL)validateOperation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(FCDraftIssuesFetchOperation *)self context];
+  context = [(FCDraftIssuesFetchOperation *)self context];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"issues fetch operation requires a context"];
     v10 = 136315906;
@@ -70,9 +70,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  v4 = [(FCDraftIssuesFetchOperation *)self issueListID];
+  issueListID = [(FCDraftIssuesFetchOperation *)self issueListID];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!issueListID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"fetch operation requires issue list ID"];
     v10 = 136315906;
@@ -86,9 +86,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  if (v3)
+  if (context)
   {
-    v5 = v4 == 0;
+    v5 = issueListID == 0;
   }
 
   else
@@ -104,14 +104,14 @@
 - (void)performOperation
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCDraftIssuesFetchOperation *)self context];
-  v4 = [v3 internalContentContext];
-  v5 = [v4 issueListRecordSource];
+  context = [(FCDraftIssuesFetchOperation *)self context];
+  internalContentContext = [context internalContentContext];
+  issueListRecordSource = [internalContentContext issueListRecordSource];
 
-  v6 = [(FCDraftIssuesFetchOperation *)self issueListID];
-  v11[0] = v6;
+  issueListID = [(FCDraftIssuesFetchOperation *)self issueListID];
+  v11[0] = issueListID;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v8 = [v5 fetchOperationForRecordsWithIDs:v7];
+  v8 = [issueListRecordSource fetchOperationForRecordsWithIDs:v7];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -187,16 +187,16 @@ void __47__FCDraftIssuesFetchOperation_performOperation__block_invoke_3(uint64_t
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCDraftIssuesFetchOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCDraftIssuesFetchOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCDraftIssuesFetchOperation *)self fetchCompletionHandler];
-    v6 = [(FCDraftIssuesFetchOperation *)self resultIssues];
-    (v5)[2](v5, v6, v7);
+    fetchCompletionHandler2 = [(FCDraftIssuesFetchOperation *)self fetchCompletionHandler];
+    resultIssues = [(FCDraftIssuesFetchOperation *)self resultIssues];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, resultIssues, errorCopy);
   }
 }
 

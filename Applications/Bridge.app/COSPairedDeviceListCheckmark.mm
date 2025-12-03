@@ -1,8 +1,8 @@
 @interface COSPairedDeviceListCheckmark
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setChecked:(BOOL)a3;
-- (void)setLoading:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setLoading:(BOOL)loading;
 @end
 
 @implementation COSPairedDeviceListCheckmark
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (a3)
+  if (checked)
   {
     [(COSPairedDeviceListCheckmark *)self setLoading:0];
     v4 = [UIImage systemImageNamed:@"checkmark"];
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
     [(COSPairedDeviceListCheckmark *)self setChecked:0];
     loadingView = self->_loadingView;

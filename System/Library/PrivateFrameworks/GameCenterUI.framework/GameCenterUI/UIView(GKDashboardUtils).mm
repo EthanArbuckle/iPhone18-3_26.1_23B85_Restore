@@ -7,8 +7,8 @@
 + (id)_gkViewFromNib
 {
   v16 = *MEMORY[0x277D85DE8];
-  v1 = [a1 _gkNib];
-  v2 = [v1 instantiateWithOwner:0 options:0];
+  _gkNib = [self _gkNib];
+  v2 = [_gkNib instantiateWithOwner:0 options:0];
 
   v13 = 0u;
   v14 = 0u;

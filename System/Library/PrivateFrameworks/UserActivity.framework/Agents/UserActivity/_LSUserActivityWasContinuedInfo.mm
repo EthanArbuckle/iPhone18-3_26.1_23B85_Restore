@@ -30,8 +30,8 @@
   v21.receiver = self;
   v21.super_class = _LSUserActivityWasContinuedInfo;
   v20 = [(_LSUserActivityWasContinuedInfo *)&v21 description];
-  v19 = [(_LSUserActivityWasContinuedInfo *)self bundleIdentifier];
-  v3 = [(_LSUserActivityWasContinuedInfo *)self activityType];
+  bundleIdentifier = [(_LSUserActivityWasContinuedInfo *)self bundleIdentifier];
+  activityType = [(_LSUserActivityWasContinuedInfo *)self activityType];
   if ([(_LSUserActivityWasContinuedInfo *)self isBrowserFallback])
   {
     v4 = @"YES";
@@ -42,12 +42,12 @@
     v4 = @"NO";
   }
 
-  v5 = [(_LSUserActivityWasContinuedInfo *)self payloadSize];
+  payloadSize = [(_LSUserActivityWasContinuedInfo *)self payloadSize];
   [(_LSUserActivityWasContinuedInfo *)self transferSpeed];
   v7 = v6;
   [(_LSUserActivityWasContinuedInfo *)self transferDuration];
   v9 = v8;
-  v10 = [(_LSUserActivityWasContinuedInfo *)self error];
+  error = [(_LSUserActivityWasContinuedInfo *)self error];
   if ([(_LSUserActivityWasContinuedInfo *)self isCancelled])
   {
     v11 = @"YES";
@@ -58,10 +58,10 @@
     v11 = @"NO";
   }
 
-  v12 = [(_LSUserActivityWasContinuedInfo *)self interactionType];
-  v13 = [(_LSUserActivityWasContinuedInfo *)self webToNative];
-  v14 = [(_LSUserActivityWasContinuedInfo *)self supportsContinuityStreams];
-  if (v13)
+  interactionType = [(_LSUserActivityWasContinuedInfo *)self interactionType];
+  webToNative = [(_LSUserActivityWasContinuedInfo *)self webToNative];
+  supportsContinuityStreams = [(_LSUserActivityWasContinuedInfo *)self supportsContinuityStreams];
+  if (webToNative)
   {
     v15 = @"YES";
   }
@@ -71,7 +71,7 @@
     v15 = @"NO";
   }
 
-  if (v14)
+  if (supportsContinuityStreams)
   {
     v16 = @"YES";
   }
@@ -81,7 +81,7 @@
     v16 = @"NO";
   }
 
-  v17 = [NSString stringWithFormat:@"%@(%@ %@ browserFallback=%@ %ld/%.2fk/%.4f sec %@ %@ %lx w2n=%@ scs=%@)", v20, v19, v3, v4, v5, v7 * 0.0009765625, v9, v10, v11, v12, v15, v16];
+  v17 = [NSString stringWithFormat:@"%@(%@ %@ browserFallback=%@ %ld/%.2fk/%.4f sec %@ %@ %lx w2n=%@ scs=%@)", v20, bundleIdentifier, activityType, v4, payloadSize, v7 * 0.0009765625, v9, error, v11, interactionType, v15, v16];
 
   return v17;
 }

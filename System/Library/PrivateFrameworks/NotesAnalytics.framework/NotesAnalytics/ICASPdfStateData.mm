@@ -1,30 +1,30 @@
 @interface ICASPdfStateData
-- (ICASPdfStateData)initWithPdfStartState:(id)a3 pdfEndState:(id)a4 hasSmallStateUsage:(id)a5 hasMediumStateUsage:(id)a6 hasLargeStateUsage:(id)a7 hasFullScreenStateUsage:(id)a8;
+- (ICASPdfStateData)initWithPdfStartState:(id)state pdfEndState:(id)endState hasSmallStateUsage:(id)usage hasMediumStateUsage:(id)stateUsage hasLargeStateUsage:(id)largeStateUsage hasFullScreenStateUsage:(id)screenStateUsage;
 - (id)toDict;
 @end
 
 @implementation ICASPdfStateData
 
-- (ICASPdfStateData)initWithPdfStartState:(id)a3 pdfEndState:(id)a4 hasSmallStateUsage:(id)a5 hasMediumStateUsage:(id)a6 hasLargeStateUsage:(id)a7 hasFullScreenStateUsage:(id)a8
+- (ICASPdfStateData)initWithPdfStartState:(id)state pdfEndState:(id)endState hasSmallStateUsage:(id)usage hasMediumStateUsage:(id)stateUsage hasLargeStateUsage:(id)largeStateUsage hasFullScreenStateUsage:(id)screenStateUsage
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  stateCopy = state;
+  endStateCopy = endState;
+  usageCopy = usage;
+  stateUsageCopy = stateUsage;
+  largeStateUsageCopy = largeStateUsage;
+  screenStateUsageCopy = screenStateUsage;
   v24.receiver = self;
   v24.super_class = ICASPdfStateData;
   v18 = [(ICASPdfStateData *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pdfStartState, a3);
-    objc_storeStrong(&v19->_pdfEndState, a4);
-    objc_storeStrong(&v19->_hasSmallStateUsage, a5);
-    objc_storeStrong(&v19->_hasMediumStateUsage, a6);
-    objc_storeStrong(&v19->_hasLargeStateUsage, a7);
-    objc_storeStrong(&v19->_hasFullScreenStateUsage, a8);
+    objc_storeStrong(&v18->_pdfStartState, state);
+    objc_storeStrong(&v19->_pdfEndState, endState);
+    objc_storeStrong(&v19->_hasSmallStateUsage, usage);
+    objc_storeStrong(&v19->_hasMediumStateUsage, stateUsage);
+    objc_storeStrong(&v19->_hasLargeStateUsage, largeStateUsage);
+    objc_storeStrong(&v19->_hasFullScreenStateUsage, screenStateUsage);
   }
 
   return v19;
@@ -34,89 +34,89 @@
 {
   v26[6] = *MEMORY[0x277D85DE8];
   v25[0] = @"pdfStartState";
-  v24 = [(ICASPdfStateData *)self pdfStartState];
-  if (v24)
+  pdfStartState = [(ICASPdfStateData *)self pdfStartState];
+  if (pdfStartState)
   {
-    v3 = [(ICASPdfStateData *)self pdfStartState];
+    pdfStartState2 = [(ICASPdfStateData *)self pdfStartState];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    pdfStartState2 = objc_opt_new();
   }
 
-  v23 = v3;
-  v26[0] = v3;
+  v23 = pdfStartState2;
+  v26[0] = pdfStartState2;
   v25[1] = @"pdfEndState";
-  v21 = [(ICASPdfStateData *)self pdfEndState];
-  if (v21)
+  pdfEndState = [(ICASPdfStateData *)self pdfEndState];
+  if (pdfEndState)
   {
-    v4 = [(ICASPdfStateData *)self pdfEndState];
+    pdfEndState2 = [(ICASPdfStateData *)self pdfEndState];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    pdfEndState2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v26[1] = v4;
+  v5 = pdfEndState2;
+  v26[1] = pdfEndState2;
   v25[2] = @"hasSmallStateUsage";
-  v6 = [(ICASPdfStateData *)self hasSmallStateUsage];
-  if (v6)
+  hasSmallStateUsage = [(ICASPdfStateData *)self hasSmallStateUsage];
+  if (hasSmallStateUsage)
   {
-    v7 = [(ICASPdfStateData *)self hasSmallStateUsage];
+    hasSmallStateUsage2 = [(ICASPdfStateData *)self hasSmallStateUsage];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    hasSmallStateUsage2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v26[2] = v7;
+  v8 = hasSmallStateUsage2;
+  v26[2] = hasSmallStateUsage2;
   v25[3] = @"hasMediumStateUsage";
-  v9 = [(ICASPdfStateData *)self hasMediumStateUsage];
-  if (v9)
+  hasMediumStateUsage = [(ICASPdfStateData *)self hasMediumStateUsage];
+  if (hasMediumStateUsage)
   {
-    v10 = [(ICASPdfStateData *)self hasMediumStateUsage];
+    hasMediumStateUsage2 = [(ICASPdfStateData *)self hasMediumStateUsage];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    hasMediumStateUsage2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v26[3] = v10;
+  v11 = hasMediumStateUsage2;
+  v26[3] = hasMediumStateUsage2;
   v25[4] = @"hasLargeStateUsage";
-  v12 = [(ICASPdfStateData *)self hasLargeStateUsage];
-  if (v12)
+  hasLargeStateUsage = [(ICASPdfStateData *)self hasLargeStateUsage];
+  if (hasLargeStateUsage)
   {
-    v13 = [(ICASPdfStateData *)self hasLargeStateUsage];
+    hasLargeStateUsage2 = [(ICASPdfStateData *)self hasLargeStateUsage];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    hasLargeStateUsage2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v26[4] = v13;
+  v14 = hasLargeStateUsage2;
+  v26[4] = hasLargeStateUsage2;
   v25[5] = @"hasFullScreenStateUsage";
-  v15 = [(ICASPdfStateData *)self hasFullScreenStateUsage];
-  if (v15)
+  hasFullScreenStateUsage = [(ICASPdfStateData *)self hasFullScreenStateUsage];
+  if (hasFullScreenStateUsage)
   {
-    v16 = [(ICASPdfStateData *)self hasFullScreenStateUsage];
+    hasFullScreenStateUsage2 = [(ICASPdfStateData *)self hasFullScreenStateUsage];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    hasFullScreenStateUsage2 = objc_opt_new();
   }
 
-  v17 = v16;
-  v26[5] = v16;
+  v17 = hasFullScreenStateUsage2;
+  v26[5] = hasFullScreenStateUsage2;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:6];
 
   v19 = *MEMORY[0x277D85DE8];

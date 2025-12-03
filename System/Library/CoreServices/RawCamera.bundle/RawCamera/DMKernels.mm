@@ -1,14 +1,14 @@
 @interface DMKernels
-+ (id)kernelWithName:(id)a3;
++ (id)kernelWithName:(id)name;
 @end
 
 @implementation DMKernels
 
-+ (id)kernelWithName:(id)a3
++ (id)kernelWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_sharedKernels(RAWKernels, v4, v5, v6, v7);
-  v11 = objc_msgSend_kernelWithName_group_(v8, v9, v3, @"DM", v10);
+  v11 = objc_msgSend_kernelWithName_group_(v8, v9, nameCopy, @"DM", v10);
 
   return v11;
 }

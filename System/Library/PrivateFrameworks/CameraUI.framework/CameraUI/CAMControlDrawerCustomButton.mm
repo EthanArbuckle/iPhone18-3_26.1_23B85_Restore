@@ -1,17 +1,17 @@
 @interface CAMControlDrawerCustomButton
-- (BOOL)_shouldRejectAccessibilityGestureForHUDManager:(id)a3;
-- (BOOL)_shouldTrackView:(id)a3 forTouchAtLocation:(CGPoint)a4;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_shouldRejectAccessibilityGestureForHUDManager:(id)manager;
+- (BOOL)_shouldTrackView:(id)view forTouchAtLocation:(CGPoint)location;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CAMControlDrawerExpandableButtonDelegate)delegate;
 - (UIEdgeInsets)expansionInsets;
-- (void)_setExpanded:(BOOL)a3 animated:(BOOL)a4 shouldNotify:(BOOL)a5;
+- (void)_setExpanded:(BOOL)expanded animated:(BOOL)animated shouldNotify:(BOOL)notify;
 - (void)_updateHighlightedView;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setExpansionInsets:(UIEdgeInsets)a3;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setExpansionInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation CAMControlDrawerCustomButton
@@ -23,37 +23,37 @@
   [(CAMControlDrawerButton *)&v7 layoutSubviews];
   if ([(CAMControlDrawerCustomButton *)self isExpanded])
   {
-    v3 = [(CAMControlDrawerButton *)self _backgroundView];
-    [v3 center];
+    _backgroundView = [(CAMControlDrawerButton *)self _backgroundView];
+    [_backgroundView center];
 
     [(CAMControlDrawerCustomButton *)self expansionInsets];
-    v4 = [(CAMControlDrawerButton *)self _imageView];
-    v5 = [(CAMControlDrawerButton *)self _backgroundView];
-    v6 = [(CAMControlDrawerButton *)self _slashView];
-    [v4 bounds];
+    _imageView = [(CAMControlDrawerButton *)self _imageView];
+    _backgroundView2 = [(CAMControlDrawerButton *)self _backgroundView];
+    _slashView = [(CAMControlDrawerButton *)self _slashView];
+    [_imageView bounds];
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
-    [v4 setCenter:?];
-    [v5 bounds];
+    [_imageView setCenter:?];
+    [_backgroundView2 bounds];
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
-    [v5 setCenter:?];
-    [v6 bounds];
+    [_backgroundView2 setCenter:?];
+    [_slashView bounds];
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
-    [v6 setCenter:?];
+    [_slashView setCenter:?];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if ([(CAMControlDrawerCustomButton *)self isExpanded])
   {
-    v8 = [(CAMControlDrawerButton *)self _backgroundView];
-    [v8 frame];
+    _backgroundView = [(CAMControlDrawerButton *)self _backgroundView];
+    [_backgroundView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -72,7 +72,7 @@
   {
     v20.receiver = self;
     v20.super_class = CAMControlDrawerCustomButton;
-    v17 = [(CAMControlDrawerCustomButton *)&v20 pointInside:v7 withEvent:x, y];
+    v17 = [(CAMControlDrawerCustomButton *)&v20 pointInside:eventCopy withEvent:x, y];
   }
 
   v18 = v17;
@@ -80,17 +80,17 @@
   return v18;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if ([(CAMControlDrawerCustomButton *)self isExpanded])
   {
-    [v6 locationInView:self];
+    [touchCopy locationInView:self];
     v9 = v8;
     v11 = v10;
-    v12 = [(CAMControlDrawerButton *)self _backgroundView];
-    [(CAMControlDrawerCustomButton *)self _setTouchInTrackedView:[(CAMControlDrawerCustomButton *)self _shouldTrackView:v12 forTouchAtLocation:v9, v11]];
+    _backgroundView = [(CAMControlDrawerButton *)self _backgroundView];
+    [(CAMControlDrawerCustomButton *)self _setTouchInTrackedView:[(CAMControlDrawerCustomButton *)self _shouldTrackView:_backgroundView forTouchAtLocation:v9, v11]];
   }
 
   else
@@ -101,32 +101,32 @@
   [(CAMControlDrawerCustomButton *)self _updateHighlightedView];
   v15.receiver = self;
   v15.super_class = CAMControlDrawerCustomButton;
-  v13 = [(CAMControlDrawerCustomButton *)&v15 beginTrackingWithTouch:v6 withEvent:v7];
+  v13 = [(CAMControlDrawerCustomButton *)&v15 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v13;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 locationInView:self];
+  eventCopy = event;
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
-  v12 = [(CAMControlDrawerButton *)self _backgroundView];
-  [(CAMControlDrawerCustomButton *)self _setTouchInTrackedView:[(CAMControlDrawerCustomButton *)self _shouldTrackView:v12 forTouchAtLocation:v9, v11]];
+  _backgroundView = [(CAMControlDrawerButton *)self _backgroundView];
+  [(CAMControlDrawerCustomButton *)self _setTouchInTrackedView:[(CAMControlDrawerCustomButton *)self _shouldTrackView:_backgroundView forTouchAtLocation:v9, v11]];
 
   [(CAMControlDrawerCustomButton *)self _updateHighlightedView];
   v14.receiver = self;
   v14.super_class = CAMControlDrawerCustomButton;
-  LOBYTE(self) = [(CAMControlDrawerCustomButton *)&v14 continueTrackingWithTouch:v7 withEvent:v6];
+  LOBYTE(self) = [(CAMControlDrawerCustomButton *)&v14 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return self;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  if ([(CAMControlDrawerCustomButton *)self _isTouchInTrackedView:a3]&& [(CAMControlDrawerCustomButton *)self isSelfExpanding])
+  if ([(CAMControlDrawerCustomButton *)self _isTouchInTrackedView:touch]&& [(CAMControlDrawerCustomButton *)self isSelfExpanding])
   {
     [(CAMControlDrawerCustomButton *)self _setExpanded:[(CAMControlDrawerCustomButton *)self isExpanded]^ 1 animated:1 shouldNotify:1];
   }
@@ -136,17 +136,17 @@
   [(CAMControlDrawerCustomButton *)self _updateHighlightedView];
 }
 
-- (BOOL)_shouldTrackView:(id)a3 forTouchAtLocation:(CGPoint)a4
+- (BOOL)_shouldTrackView:(id)view forTouchAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
-  [v6 frame];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  [viewCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 frame];
+  [viewCopy frame];
   v16 = v15;
 
   v21.origin.x = v8;
@@ -160,16 +160,16 @@
   return CGRectContainsPoint(v22, *&v17);
 }
 
-- (BOOL)_shouldRejectAccessibilityGestureForHUDManager:(id)a3
+- (BOOL)_shouldRejectAccessibilityGestureForHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if ([(CAMControlDrawerCustomButton *)self isExpanded])
   {
-    [v4 locationOfAccessibilityGestureInView:self];
+    [managerCopy locationOfAccessibilityGestureInView:self];
     v6 = v5;
     v8 = v7;
-    v9 = [(CAMControlDrawerButton *)self _backgroundView];
-    v10 = [(CAMControlDrawerCustomButton *)self _shouldTrackView:v9 forTouchAtLocation:v6, v8];
+    _backgroundView = [(CAMControlDrawerButton *)self _backgroundView];
+    v10 = [(CAMControlDrawerCustomButton *)self _shouldTrackView:_backgroundView forTouchAtLocation:v6, v8];
 
     v11 = !v10;
   }
@@ -182,9 +182,9 @@
   return v11;
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  if (![(CAMControlDrawerCustomButton *)self _shouldRejectAccessibilityGestureForHUDManager:a3])
+  if (![(CAMControlDrawerCustomButton *)self _shouldRejectAccessibilityGestureForHUDManager:manager])
   {
     [(CAMControlDrawerCustomButton *)self cancelTouchTracking];
     [(CAMControlDrawerCustomButton *)self sendActionsForControlEvents:64];
@@ -199,45 +199,45 @@
 
 - (void)_updateHighlightedView
 {
-  v3 = [(CAMControlDrawerCustomButton *)self _isTouchInTrackedView];
+  _isTouchInTrackedView = [(CAMControlDrawerCustomButton *)self _isTouchInTrackedView];
 
-  [(CAMControlDrawerButton *)self setHighlighted:v3];
+  [(CAMControlDrawerButton *)self setHighlighted:_isTouchInTrackedView];
 }
 
-- (void)setExpansionInsets:(UIEdgeInsets)a3
+- (void)setExpansionInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_expansionInsets.top), vceqq_f64(v4, *&self->_expansionInsets.bottom)))) & 1) == 0)
   {
-    self->_expansionInsets = a3;
+    self->_expansionInsets = insets;
     [(CAMControlDrawerCustomButton *)self setNeedsLayout];
   }
 }
 
-- (void)_setExpanded:(BOOL)a3 animated:(BOOL)a4 shouldNotify:(BOOL)a5
+- (void)_setExpanded:(BOOL)expanded animated:(BOOL)animated shouldNotify:(BOOL)notify
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v5 = a5;
-    v6 = a4;
-    v7 = a3;
-    if (a4)
+    notifyCopy = notify;
+    animatedCopy = animated;
+    expandedCopy = expanded;
+    if (animated)
     {
       [(CAMControlDrawerCustomButton *)self layoutIfNeeded];
     }
 
-    if (v5)
+    if (notifyCopy)
     {
-      v9 = [(CAMControlDrawerCustomButton *)self delegate];
-      [v9 expandableButton:self willChangeExpanded:v7];
+      delegate = [(CAMControlDrawerCustomButton *)self delegate];
+      [delegate expandableButton:self willChangeExpanded:expandedCopy];
     }
 
-    self->_expanded = v7;
+    self->_expanded = expandedCopy;
     [(CAMControlDrawerCustomButton *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;

@@ -1,5 +1,5 @@
 @interface NSSQLRowCache
-- (NSSQLRowCache)initWithPersistentStore:(id)a3;
+- (NSSQLRowCache)initWithPersistentStore:(id)store;
 - (void)dealloc;
 @end
 
@@ -66,7 +66,7 @@
   }
 }
 
-- (NSSQLRowCache)initWithPersistentStore:(id)a3
+- (NSSQLRowCache)initWithPersistentStore:(id)store
 {
   v6[0] = 0;
   v6[1] = _PFfastRowRetain;
@@ -77,7 +77,7 @@
   result = [(NSPersistentStoreCache *)&v5 initWithValueCallbacks:v6 preserveToManyRelationships:1];
   if (result)
   {
-    result->_sqlCore = a3;
+    result->_sqlCore = store;
   }
 
   return result;

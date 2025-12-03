@@ -4,7 +4,7 @@
 - (NSManagedObjectModel)objectModel;
 - (id)initClientXPCProxy;
 - (void)dealloc;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
 @end
 
 @implementation BCCloudAssetManager
@@ -51,8 +51,8 @@
     objc_storeStrong(&v2->_assetReviewManager, v2->_serviceProxy);
     objc_storeStrong(&v2->_storeAssetManager, v2->_serviceProxy);
     v6 = [BCCloudDataSource alloc];
-    v7 = [(BCCloudAssetManager *)v2 objectModel];
-    v8 = [(BCCloudDataSource *)v6 initWithManagedObjectModel:v7 nameOnDisk:@"BCAssetData"];
+    objectModel = [(BCCloudAssetManager *)v2 objectModel];
+    v8 = [(BCCloudDataSource *)v6 initWithManagedObjectModel:objectModel nameOnDisk:@"BCAssetData"];
     assetDataSource = v2->_assetDataSource;
     v2->_assetDataSource = v8;
 
@@ -65,8 +65,8 @@
 
     v15 = +[BCCloudKitController sharedInstance];
     v16 = [BCCloudChangeTokenController alloc];
-    v17 = [(BCCloudDataSource *)v2->_assetDataSource managedObjectContext];
-    v18 = [(BCCloudChangeTokenController *)v16 initWithMOC:v17 zoneName:@"AssetZone" cloudKitController:v15];
+    managedObjectContext = [(BCCloudDataSource *)v2->_assetDataSource managedObjectContext];
+    v18 = [(BCCloudChangeTokenController *)v16 initWithMOC:managedObjectContext zoneName:@"AssetZone" cloudKitController:v15];
     changeTokenController = v2->_changeTokenController;
     v2->_changeTokenController = v18;
 
@@ -109,10 +109,10 @@
   [(BCCloudAssetManager *)&v4 dealloc];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,14 +120,14 @@
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_DEFAULT, "BCCloudAssetManager dissociateCloudDataFromSyncWithCompletion - Proxy modee", v11, 2u);
   }
 
-  v6 = [(BCCloudAssetManager *)self serviceProxy];
-  v12[0] = v6;
-  v7 = [(BCCloudAssetManager *)self assetAnnotationManager];
-  v12[1] = v7;
-  v8 = [(BCCloudAssetManager *)self changeTokenController];
-  v12[2] = v8;
+  serviceProxy = [(BCCloudAssetManager *)self serviceProxy];
+  v12[0] = serviceProxy;
+  assetAnnotationManager = [(BCCloudAssetManager *)self assetAnnotationManager];
+  v12[1] = assetAnnotationManager;
+  changeTokenController = [(BCCloudAssetManager *)self changeTokenController];
+  v12[2] = changeTokenController;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
-  [v9 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:sel_dissociateCloudDataFromSyncWithCompletion_ completion:v4];
+  [v9 bds_chainSuccessAndErrorCompletionSelectorCallsForSelector:sel_dissociateCloudDataFromSyncWithCompletion_ completion:completionCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }

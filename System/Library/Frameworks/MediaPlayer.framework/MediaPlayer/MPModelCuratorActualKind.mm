@@ -1,27 +1,27 @@
 @interface MPModelCuratorActualKind
 + (id)identityKind;
-+ (id)kindWithVariants:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPModelCuratorActualKind)initWithCoder:(id)a3;
++ (id)kindWithVariants:(unint64_t)variants;
+- (BOOL)isEqual:(id)equal;
+- (MPModelCuratorActualKind)initWithCoder:(id)coder;
 - (id)humanDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelCuratorActualKind
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelCuratorActualKind;
-  v4 = a3;
-  [(MPModelKind *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MPModelKind *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
 }
 
-- (MPModelCuratorActualKind)initWithCoder:(id)a3
+- (MPModelCuratorActualKind)initWithCoder:(id)coder
 {
-  v4 = +[MPModelCuratorActualKind kindWithVariants:](MPModelCuratorActualKind, "kindWithVariants:", [a3 decodeIntegerForKey:@"variants"]);
+  v4 = +[MPModelCuratorActualKind kindWithVariants:](MPModelCuratorActualKind, "kindWithVariants:", [coder decodeIntegerForKey:@"variants"]);
 
   return v4;
 }
@@ -109,14 +109,14 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MPModelCuratorActualKind;
-  if ([(MPModelKind *)&v7 isEqual:v4])
+  if ([(MPModelKind *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_variants == v4[2];
+    v5 = self->_variants == equalCopy[2];
   }
 
   else
@@ -135,16 +135,16 @@ LABEL_8:
   return [(MPModelCuratorActualKind *)self variants]^ v3;
 }
 
-+ (id)kindWithVariants:(unint64_t)a3
++ (id)kindWithVariants:(unint64_t)variants
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Curator:v%lu", a3];
+  variants = [MEMORY[0x1E696AEC0] stringWithFormat:@"Curator:v%lu", variants];
   v6 = objc_opt_class();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__MPModelCuratorActualKind_kindWithVariants___block_invoke;
   v9[3] = &__block_descriptor_40_e34_v16__0__MPModelCuratorActualKind_8l;
-  v9[4] = a3;
-  v7 = [a1 kindWithModelClass:v6 cacheKey:v5 block:v9];
+  v9[4] = variants;
+  v7 = [self kindWithModelClass:v6 cacheKey:variants block:v9];
 
   return v7;
 }

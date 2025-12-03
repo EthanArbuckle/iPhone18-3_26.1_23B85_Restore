@@ -1,13 +1,13 @@
 @interface QuickActionsContainerView
-- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithFrame:(CGRect)a3;
-- (id)viewForActionType:(id)a3;
-- (void)handleAction:(id)a3;
+- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithFrame:(CGRect)frame;
+- (id)viewForActionType:(id)type;
+- (void)handleAction:(id)action;
 @end
 
 @implementation QuickActionsContainerView
 
-- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (id)viewForActionType:(id)a3
+- (id)viewForActionType:(id)type
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -40,13 +40,13 @@
 
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = QuickActionsContainerView.view(forActionType:)(v4, v6);
 
   return v8;
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -56,12 +56,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  QuickActionsContainerView.handleAction(_:)(v5);
+  actionCopy = action;
+  selfCopy = self;
+  QuickActionsContainerView.handleAction(_:)(actionCopy);
 }
 
-- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithFrame:(CGRect)a3
+- (_TtC20CommunicationDetails25QuickActionsContainerView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

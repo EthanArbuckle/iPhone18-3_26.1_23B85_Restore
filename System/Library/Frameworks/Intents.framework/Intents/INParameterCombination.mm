@@ -1,17 +1,17 @@
 @interface INParameterCombination
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INParameterCombination)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INParameterCombination)initWithCoder:(id)coder;
 - (NSString)localizedSubtitleFormatString;
 - (NSString)localizedTitleFormatString;
 - (id)_dictionaryRepresentation;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedSubtitleFormatStringWithLocalizer:(id)a3;
-- (id)localizedTitleFormatStringWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedSubtitleFormatStringWithLocalizer:(id)localizer;
+- (id)localizedTitleFormatStringWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INParameterCombination
@@ -44,75 +44,75 @@
 
   v27[1] = v4;
   v26[2] = @"titleFormatString";
-  v5 = [(INParameterCombination *)self titleFormatString];
-  v6 = v5;
-  if (!v5)
+  titleFormatString = [(INParameterCombination *)self titleFormatString];
+  v6 = titleFormatString;
+  if (!titleFormatString)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    titleFormatString = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v5;
-  v27[2] = v5;
+  v23 = titleFormatString;
+  v27[2] = titleFormatString;
   v26[3] = @"titleFormatStringLocID";
-  v7 = [(INParameterCombination *)self titleFormatStringLocID];
-  v8 = v7;
-  if (!v7)
+  titleFormatStringLocID = [(INParameterCombination *)self titleFormatStringLocID];
+  v8 = titleFormatStringLocID;
+  if (!titleFormatStringLocID)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    titleFormatStringLocID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v7;
-  v27[3] = v7;
+  v22 = titleFormatStringLocID;
+  v27[3] = titleFormatStringLocID;
   v26[4] = @"subtitleFormatString";
-  v9 = [(INParameterCombination *)self subtitleFormatString];
-  v10 = v9;
-  if (!v9)
+  subtitleFormatString = [(INParameterCombination *)self subtitleFormatString];
+  v10 = subtitleFormatString;
+  if (!subtitleFormatString)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    subtitleFormatString = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v9;
-  v27[4] = v9;
+  v21 = subtitleFormatString;
+  v27[4] = subtitleFormatString;
   v26[5] = @"subtitleFormatStringLocID";
-  v11 = [(INParameterCombination *)self subtitleFormatStringLocID];
-  v12 = v11;
-  if (!v11)
+  subtitleFormatStringLocID = [(INParameterCombination *)self subtitleFormatStringLocID];
+  null = subtitleFormatStringLocID;
+  if (!subtitleFormatStringLocID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v25 = v6;
-  v27[5] = v12;
+  v27[5] = null;
   v26[6] = @"_localizationTable.tableName";
-  v13 = [(INParameterCombination *)self _localizationTable];
-  v14 = [v13 tableName];
-  v15 = v14;
-  if (!v14)
+  _localizationTable = [(INParameterCombination *)self _localizationTable];
+  tableName = [_localizationTable tableName];
+  null2 = tableName;
+  if (!tableName)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[6] = v15;
+  v27[6] = null2;
   v26[7] = @"_localizationTable.bundleIdentifier";
-  v16 = [(INParameterCombination *)self _localizationTable];
-  v17 = [v16 bundleIdentifier];
-  v18 = v17;
-  if (!v17)
+  _localizationTable2 = [(INParameterCombination *)self _localizationTable];
+  bundleIdentifier = [_localizationTable2 bundleIdentifier];
+  null3 = bundleIdentifier;
+  if (!bundleIdentifier)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[7] = v18;
+  v27[7] = null3;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:8];
-  if (!v17)
+  if (!bundleIdentifier)
   {
   }
 
-  if (!v14)
+  if (!tableName)
   {
   }
 
-  if (!v11)
+  if (!subtitleFormatStringLocID)
   {
   }
 
@@ -133,56 +133,56 @@
   return v24;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INParameterCombination;
   v6 = [(INParameterCombination *)&v11 description];
-  v7 = [(INParameterCombination *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INParameterCombination *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (INParameterCombination)initWithCoder:(id)a3
+- (INParameterCombination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = INParameterCombination;
   v5 = [(INParameterCombination *)&v21 init];
   if (v5)
   {
-    -[INParameterCombination setSupportsBackgroundExecution:](v5, "setSupportsBackgroundExecution:", [v4 decodeBoolForKey:@"supportsBackgroundExecution"]);
-    -[INParameterCombination setPrimary:](v5, "setPrimary:", [v4 decodeBoolForKey:@"primary"]);
+    -[INParameterCombination setSupportsBackgroundExecution:](v5, "setSupportsBackgroundExecution:", [coderCopy decodeBoolForKey:@"supportsBackgroundExecution"]);
+    -[INParameterCombination setPrimary:](v5, "setPrimary:", [coderCopy decodeBoolForKey:@"primary"]);
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"titleFormatString"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"titleFormatString"];
     [(INParameterCombination *)v5 setTitleFormatString:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleFormatStringLocID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleFormatStringLocID"];
     [(INParameterCombination *)v5 setTitleFormatStringLocID:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"subtitleFormatString"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"subtitleFormatString"];
     [(INParameterCombination *)v5 setSubtitleFormatString:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitleFormatStringLocID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitleFormatStringLocID"];
     [(INParameterCombination *)v5 setSubtitleFormatStringLocID:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizationTable"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizationTable"];
     [(INParameterCombination *)v5 _setLocalizationTable:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizationTable"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizationTable"];
 
     if (v17)
     {
       v18 = objc_alloc_init(INCodableLocalizationTable);
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizationTable"];
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizationTable"];
       [(INCodableLocalizationTable *)v18 setTableName:v19];
 
       [(INParameterCombination *)v5 _setLocalizationTable:v18];
@@ -192,46 +192,46 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportsBackgroundExecution = self->_supportsBackgroundExecution;
-  v5 = a3;
-  [v5 encodeBool:supportsBackgroundExecution forKey:@"supportsBackgroundExecution"];
-  [v5 encodeBool:self->_primary forKey:@"primary"];
-  [v5 encodeObject:self->_titleFormatString forKey:@"titleFormatString"];
-  [v5 encodeObject:self->_titleFormatStringLocID forKey:@"titleFormatStringLocID"];
-  [v5 encodeObject:self->_subtitleFormatString forKey:@"subtitleFormatString"];
-  [v5 encodeObject:self->_subtitleFormatStringLocID forKey:@"subtitleFormatStringLocID"];
-  [v5 encodeObject:self->_localizationTable forKey:@"_localizationTable"];
+  coderCopy = coder;
+  [coderCopy encodeBool:supportsBackgroundExecution forKey:@"supportsBackgroundExecution"];
+  [coderCopy encodeBool:self->_primary forKey:@"primary"];
+  [coderCopy encodeObject:self->_titleFormatString forKey:@"titleFormatString"];
+  [coderCopy encodeObject:self->_titleFormatStringLocID forKey:@"titleFormatStringLocID"];
+  [coderCopy encodeObject:self->_subtitleFormatString forKey:@"subtitleFormatString"];
+  [coderCopy encodeObject:self->_subtitleFormatStringLocID forKey:@"subtitleFormatStringLocID"];
+  [coderCopy encodeObject:self->_localizationTable forKey:@"_localizationTable"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
-  [v8 intents_setBoolIfTrue:self->_supportsBackgroundExecution forKey:@"supportsBackgroundExecution"];
-  [v8 intents_setBoolIfTrue:self->_primary forKey:@"primary"];
-  v9 = [(NSString *)self->_titleFormatString intents_encodeForPlistRepresentationWithParameters:v7];
-  [v8 intents_setPlistSafeObject:v9 forKey:@"titleFormatString"];
+  parametersCopy = parameters;
+  dictionary = [v6 dictionary];
+  [dictionary intents_setBoolIfTrue:self->_supportsBackgroundExecution forKey:@"supportsBackgroundExecution"];
+  [dictionary intents_setBoolIfTrue:self->_primary forKey:@"primary"];
+  v9 = [(NSString *)self->_titleFormatString intents_encodeForPlistRepresentationWithParameters:parametersCopy];
+  [dictionary intents_setPlistSafeObject:v9 forKey:@"titleFormatString"];
 
-  [v8 intents_setPlistSafeObject:self->_titleFormatStringLocID forKey:@"titleFormatStringLocID"];
-  v10 = [(NSString *)self->_subtitleFormatString intents_encodeForPlistRepresentationWithParameters:v7];
+  [dictionary intents_setPlistSafeObject:self->_titleFormatStringLocID forKey:@"titleFormatStringLocID"];
+  v10 = [(NSString *)self->_subtitleFormatString intents_encodeForPlistRepresentationWithParameters:parametersCopy];
 
-  [v8 intents_setPlistSafeObject:v10 forKey:@"subtitleFormatString"];
-  [v8 intents_setPlistSafeObject:self->_subtitleFormatStringLocID forKey:@"subtitleFormatStringLocID"];
+  [dictionary intents_setPlistSafeObject:v10 forKey:@"subtitleFormatString"];
+  [dictionary intents_setPlistSafeObject:self->_subtitleFormatStringLocID forKey:@"subtitleFormatStringLocID"];
   localizationTable = self->_localizationTable;
   v17 = 0;
-  [v8 intents_setWidgetPlistRepresentable:localizationTable forKey:@"_localizationTable" error:&v17];
+  [dictionary intents_setWidgetPlistRepresentable:localizationTable forKey:@"_localizationTable" error:&v17];
   v12 = v17;
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -242,90 +242,90 @@
 
   else
   {
-    v15 = [v8 copy];
+    v15 = [dictionary copy];
   }
 
   return v15;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v66[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INParameterCombination *)self titleFormatStringLocID];
-  v6 = [(INParameterCombination *)self titleFormatString];
-  v7 = [(INParameterCombination *)self _localizationTable];
+  localizerCopy = localizer;
+  titleFormatStringLocID = [(INParameterCombination *)self titleFormatStringLocID];
+  titleFormatString = [(INParameterCombination *)self titleFormatString];
+  _localizationTable = [(INParameterCombination *)self _localizationTable];
   v60 = 0;
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, &v60);
+  v8 = INLocalizedStringFromCodable(titleFormatStringLocID, titleFormatString, _localizationTable, localizerCopy, &v60);
   v52 = v60;
 
-  v9 = [(INParameterCombination *)self subtitleFormatStringLocID];
-  v10 = [(INParameterCombination *)self subtitleFormatString];
-  v11 = [(INParameterCombination *)self _localizationTable];
+  subtitleFormatStringLocID = [(INParameterCombination *)self subtitleFormatStringLocID];
+  subtitleFormatString = [(INParameterCombination *)self subtitleFormatString];
+  _localizationTable2 = [(INParameterCombination *)self _localizationTable];
   v59 = 0;
-  v54 = INLocalizedStringFromCodable(v9, v10, v11, v4, &v59);
+  v54 = INLocalizedStringFromCodable(subtitleFormatStringLocID, subtitleFormatString, _localizationTable2, localizerCopy, &v59);
   v50 = v59;
 
   v65[0] = @"INIntentParameterCombinationSupportsBackgroundExecution";
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INParameterCombination supportsBackgroundExecution](self, "supportsBackgroundExecution")}];
-  v13 = v12;
-  if (!v12)
+  null = [MEMORY[0x1E696AD98] numberWithBool:{-[INParameterCombination supportsBackgroundExecution](self, "supportsBackgroundExecution")}];
+  v13 = null;
+  if (!null)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v12;
-  v66[0] = v12;
+  v49 = null;
+  v66[0] = null;
   v65[1] = @"INIntentParameterCombinationIsPrimary";
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[INParameterCombination isPrimary](self, "isPrimary")}];
-  v15 = v14;
-  if (!v14)
+  null2 = [MEMORY[0x1E696AD98] numberWithBool:{-[INParameterCombination isPrimary](self, "isPrimary")}];
+  v15 = null2;
+  if (!null2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48 = v14;
-  v66[1] = v14;
+  v48 = null2;
+  v66[1] = null2;
   v65[2] = @"INIntentParameterCombinationTitle";
-  v16 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66[2] = v16;
+  v66[2] = null3;
   v65[3] = @"INIntentParameterCombinationTitleID";
-  v17 = [(INParameterCombination *)self titleFormatStringLocID];
-  v18 = v17;
-  if (!v17)
+  titleFormatStringLocID2 = [(INParameterCombination *)self titleFormatStringLocID];
+  null4 = titleFormatStringLocID2;
+  if (!titleFormatStringLocID2)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v51 = v8;
-  v66[3] = v18;
+  v66[3] = null4;
   v65[4] = @"INIntentParameterCombinationSubtitle";
-  v19 = v54;
+  null5 = v54;
   if (!v54)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v4;
-  v66[4] = v19;
+  v20 = localizerCopy;
+  v66[4] = null5;
   v65[5] = @"INIntentParameterCombinationSubtitleID";
-  v21 = [(INParameterCombination *)self subtitleFormatStringLocID];
-  v22 = v21;
-  if (!v21)
+  subtitleFormatStringLocID2 = [(INParameterCombination *)self subtitleFormatStringLocID];
+  null6 = subtitleFormatStringLocID2;
+  if (!subtitleFormatStringLocID2)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66[5] = v22;
+  v66[5] = null6;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:6];
   v53 = [v23 mutableCopy];
 
-  if (!v21)
+  if (!subtitleFormatStringLocID2)
   {
   }
 
@@ -334,7 +334,7 @@
   {
   }
 
-  if (!v17)
+  if (!titleFormatStringLocID2)
   {
   }
 
@@ -363,33 +363,33 @@ LABEL_21:
   v25 = v52;
   [v53 setObject:v52 forKeyedSubscript:@"INIntentParameterCombinationTitleLanguageCode"];
   [v53 setObject:v50 forKeyedSubscript:@"INIntentParameterCombinationSubtitleLanguageCode"];
-  v26 = [v20 languageCode];
-  v27 = [v26 length];
+  languageCode = [v20 languageCode];
+  v27 = [languageCode length];
 
   if (v27)
   {
     if ([v51 length])
     {
-      v28 = [(INParameterCombination *)self titleFormatString];
-      v29 = [(INParameterCombination *)self titleFormatStringLocID];
-      v58 = v28;
-      v30 = [(INParameterCombination *)self _localizationTable];
+      titleFormatString2 = [(INParameterCombination *)self titleFormatString];
+      titleFormatStringLocID3 = [(INParameterCombination *)self titleFormatStringLocID];
+      v58 = titleFormatString2;
+      _localizationTable3 = [(INParameterCombination *)self _localizationTable];
       v57 = 0;
-      v31 = INStringsDictEntryForKeyInTable(v29, &v58, v30, v24, &v57);
+      v31 = INStringsDictEntryForKeyInTable(titleFormatStringLocID3, &v58, _localizationTable3, v24, &v57);
       v32 = v58;
 
       v33 = v57;
       if (v31)
       {
         v63[0] = @"INIntentParameterCombinationTitle";
-        v34 = v32;
+        null7 = v32;
         if (!v32)
         {
-          v34 = [MEMORY[0x1E695DFB0] null];
+          null7 = [MEMORY[0x1E695DFB0] null];
         }
 
         v63[1] = @"INIntentParameterCombinationTitleDictionary";
-        v64[0] = v34;
+        v64[0] = null7;
         v64[1] = v31;
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:2];
         [v53 addEntriesFromDictionary:v35];
@@ -405,26 +405,26 @@ LABEL_21:
 
     if ([v54 length])
     {
-      v36 = [(INParameterCombination *)self subtitleFormatString];
-      v37 = [(INParameterCombination *)self subtitleFormatStringLocID];
-      v56 = v36;
-      v38 = [(INParameterCombination *)self _localizationTable];
+      subtitleFormatString2 = [(INParameterCombination *)self subtitleFormatString];
+      subtitleFormatStringLocID3 = [(INParameterCombination *)self subtitleFormatStringLocID];
+      v56 = subtitleFormatString2;
+      _localizationTable4 = [(INParameterCombination *)self _localizationTable];
       v55 = 0;
-      v39 = INStringsDictEntryForKeyInTable(v37, &v56, v38, v24, &v55);
+      v39 = INStringsDictEntryForKeyInTable(subtitleFormatStringLocID3, &v56, _localizationTable4, v24, &v55);
       v40 = v56;
 
       v41 = v55;
       if (v39)
       {
         v61[0] = @"INIntentParameterCombinationSubtitle";
-        v42 = v40;
+        null8 = v40;
         if (!v40)
         {
-          v42 = [MEMORY[0x1E695DFB0] null];
+          null8 = [MEMORY[0x1E695DFB0] null];
         }
 
         v61[1] = @"INIntentParameterCombinationSubtitleDictionary";
-        v62[0] = v42;
+        v62[0] = null8;
         v62[1] = v39;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:2];
         [v53 addEntriesFromDictionary:v43];
@@ -438,11 +438,11 @@ LABEL_21:
     }
   }
 
-  v44 = [v53 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v53 if_dictionaryWithNonEmptyValues];
 
   v45 = *MEMORY[0x1E69E9840];
 
-  return v44;
+  return if_dictionaryWithNonEmptyValues;
 }
 
 - (id)dictionaryRepresentation
@@ -453,36 +453,36 @@ LABEL_21:
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"INIntentParameterCombinationSupportsBackgroundExecution"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"INIntentParameterCombinationSupportsBackgroundExecution"];
   -[INParameterCombination setSupportsBackgroundExecution:](self, "setSupportsBackgroundExecution:", [v5 BOOLValue]);
 
-  v6 = [v4 objectForKeyedSubscript:@"INIntentParameterCombinationIsPrimary"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"INIntentParameterCombinationIsPrimary"];
   -[INParameterCombination setPrimary:](self, "setPrimary:", [v6 BOOLValue]);
 
-  v7 = [v4 objectForKeyedSubscript:@"INIntentParameterCombinationTitle"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"INIntentParameterCombinationTitle"];
   [(INParameterCombination *)self setTitleFormatString:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"INIntentParameterCombinationTitleID"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"INIntentParameterCombinationTitleID"];
   [(INParameterCombination *)self setTitleFormatStringLocID:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"INIntentParameterCombinationSubtitle"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"INIntentParameterCombinationSubtitle"];
   [(INParameterCombination *)self setSubtitleFormatString:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"INIntentParameterCombinationSubtitleID"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"INIntentParameterCombinationSubtitleID"];
 
   [(INParameterCombination *)self setSubtitleFormatStringLocID:v10];
 }
 
-- (id)localizedSubtitleFormatStringWithLocalizer:(id)a3
+- (id)localizedSubtitleFormatStringWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INParameterCombination *)self subtitleFormatStringLocID];
-  v6 = [(INParameterCombination *)self subtitleFormatString];
-  v7 = [(INParameterCombination *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  subtitleFormatStringLocID = [(INParameterCombination *)self subtitleFormatStringLocID];
+  subtitleFormatString = [(INParameterCombination *)self subtitleFormatString];
+  _localizationTable = [(INParameterCombination *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(subtitleFormatStringLocID, subtitleFormatString, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -495,13 +495,13 @@ LABEL_21:
   return v4;
 }
 
-- (id)localizedTitleFormatStringWithLocalizer:(id)a3
+- (id)localizedTitleFormatStringWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INParameterCombination *)self titleFormatStringLocID];
-  v6 = [(INParameterCombination *)self titleFormatString];
-  v7 = [(INParameterCombination *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  titleFormatStringLocID = [(INParameterCombination *)self titleFormatStringLocID];
+  titleFormatString = [(INParameterCombination *)self titleFormatString];
+  _localizationTable = [(INParameterCombination *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(titleFormatStringLocID, titleFormatString, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -514,36 +514,36 @@ LABEL_21:
   return v4;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_alloc_init(INParameterCombination);
-  -[INParameterCombination setSupportsBackgroundExecution:](v6, "setSupportsBackgroundExecution:", [v5 intents_BOOLForKey:@"supportsBackgroundExecution"]);
-  -[INParameterCombination setPrimary:](v6, "setPrimary:", [v5 intents_BOOLForKey:@"primary"]);
-  v7 = [v5 intents_stringForKey:@"titleFormatString"];
+  -[INParameterCombination setSupportsBackgroundExecution:](v6, "setSupportsBackgroundExecution:", [representationCopy intents_BOOLForKey:@"supportsBackgroundExecution"]);
+  -[INParameterCombination setPrimary:](v6, "setPrimary:", [representationCopy intents_BOOLForKey:@"primary"]);
+  v7 = [representationCopy intents_stringForKey:@"titleFormatString"];
   [(INParameterCombination *)v6 setTitleFormatString:v7];
 
-  v8 = [v5 intents_stringForKey:@"titleFormatStringLocID"];
+  v8 = [representationCopy intents_stringForKey:@"titleFormatStringLocID"];
   [(INParameterCombination *)v6 setTitleFormatStringLocID:v8];
 
-  v9 = [v5 intents_stringForKey:@"subtitleFormatString"];
+  v9 = [representationCopy intents_stringForKey:@"subtitleFormatString"];
   [(INParameterCombination *)v6 setSubtitleFormatString:v9];
 
-  v10 = [v5 intents_stringForKey:@"subtitleFormatStringLocID"];
+  v10 = [representationCopy intents_stringForKey:@"subtitleFormatStringLocID"];
   [(INParameterCombination *)v6 setSubtitleFormatStringLocID:v10];
 
   v17 = 0;
-  v11 = [INCodableLocalizationTable intents_widgetPlistRepresentableInDict:v5 key:@"_localizationTable" error:&v17];
+  v11 = [INCodableLocalizationTable intents_widgetPlistRepresentableInDict:representationCopy key:@"_localizationTable" error:&v17];
 
   v12 = v17;
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else

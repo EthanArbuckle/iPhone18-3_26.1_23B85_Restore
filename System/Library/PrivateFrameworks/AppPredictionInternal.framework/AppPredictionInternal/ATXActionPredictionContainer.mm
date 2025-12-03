@@ -1,31 +1,31 @@
 @interface ATXActionPredictionContainer
-- (ATXActionPredictionContainer)initWithMinimalSlotResolutionParameters:(id)a3 score:(float)a4 actionKey:(id)a5;
-- (ATXActionPredictionContainer)initWithScoredAction:(id)a3 slotSet:(id)a4 actionKey:(id)a5;
-- (ATXActionPredictionContainer)initWithScoredAction:(id)a3 slotSet:(id)a4 minimalSlotResolutionParameters:(id)a5 score:(float)a6 actionKey:(id)a7 predictionItem:(ATXPredictionItem *)a8;
+- (ATXActionPredictionContainer)initWithMinimalSlotResolutionParameters:(id)parameters score:(float)score actionKey:(id)key;
+- (ATXActionPredictionContainer)initWithScoredAction:(id)action slotSet:(id)set actionKey:(id)key;
+- (ATXActionPredictionContainer)initWithScoredAction:(id)action slotSet:(id)set minimalSlotResolutionParameters:(id)parameters score:(float)score actionKey:(id)key predictionItem:(ATXPredictionItem *)item;
 - (ATXPredictionItem)predictionItem;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionPredictionContainer:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionPredictionContainer:(id)container;
 - (float)score;
 - (id).cxx_construct;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)scoredAction;
 - (id)slotSet;
 - (unint64_t)hash;
 - (void)initializeScoredActionAndSlotSet;
-- (void)setPredictionItem:(ATXPredictionItem *)a3;
-- (void)setScore:(float)a3;
+- (void)setPredictionItem:(ATXPredictionItem *)item;
+- (void)setScore:(float)score;
 @end
 
 @implementation ATXActionPredictionContainer
 
-- (ATXActionPredictionContainer)initWithScoredAction:(id)a3 slotSet:(id)a4 minimalSlotResolutionParameters:(id)a5 score:(float)a6 actionKey:(id)a7 predictionItem:(ATXPredictionItem *)a8
+- (ATXActionPredictionContainer)initWithScoredAction:(id)action slotSet:(id)set minimalSlotResolutionParameters:(id)parameters score:(float)score actionKey:(id)key predictionItem:(ATXPredictionItem *)item
 {
-  v14 = a3;
-  v15 = a4;
-  v25 = a5;
-  v16 = a7;
+  actionCopy = action;
+  setCopy = set;
+  parametersCopy = parameters;
+  keyCopy = key;
   v26.receiver = self;
   v26.super_class = ATXActionPredictionContainer;
   v17 = [(ATXActionPredictionContainer *)&v26 init];
@@ -33,27 +33,27 @@
   {
     v18 = objc_alloc(MEMORY[0x277D425F8]);
     v19 = [ATXGuardedActionPredictionContainerData alloc];
-    *&v20 = a6;
-    v21 = [(ATXGuardedActionPredictionContainerData *)v19 initWithScoredAction:v14 slotSet:v15 score:v20];
+    *&v20 = score;
+    v21 = [(ATXGuardedActionPredictionContainerData *)v19 initWithScoredAction:actionCopy slotSet:setCopy score:v20];
     v22 = [v18 initWithGuardedData:v21];
     lock = v17->_lock;
     v17->_lock = v22;
 
-    objc_storeStrong(&v17->_parameters, a5);
-    objc_storeStrong(&v17->_actionKey, a7);
-    objc_storeStrong(&v17->_predictionItem.key, a8->key);
-    memcpy(&v17->_predictionItem.actionHash, &a8->actionHash, 0xCFEuLL);
+    objc_storeStrong(&v17->_parameters, parameters);
+    objc_storeStrong(&v17->_actionKey, key);
+    objc_storeStrong(&v17->_predictionItem.key, item->key);
+    memcpy(&v17->_predictionItem.actionHash, &item->actionHash, 0xCFEuLL);
   }
 
   return v17;
 }
 
-- (ATXActionPredictionContainer)initWithScoredAction:(id)a3 slotSet:(id)a4 actionKey:(id)a5
+- (ATXActionPredictionContainer)initWithScoredAction:(id)action slotSet:(id)set actionKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 score];
+  actionCopy = action;
+  setCopy = set;
+  keyCopy = key;
+  [actionCopy score];
   v11.i32[1] = -1059153344;
   *v11.i32 = -31337.0;
   v16[0] = 0;
@@ -67,7 +67,7 @@
 
   if (self)
   {
-    v14 = [(ATXActionPredictionContainer *)self initWithScoredAction:v8 slotSet:v9 minimalSlotResolutionParameters:0 score:v10 actionKey:v16 predictionItem:?];
+    v14 = [(ATXActionPredictionContainer *)self initWithScoredAction:actionCopy slotSet:setCopy minimalSlotResolutionParameters:0 score:keyCopy actionKey:v16 predictionItem:?];
   }
 
   else
@@ -79,10 +79,10 @@
   return v14;
 }
 
-- (ATXActionPredictionContainer)initWithMinimalSlotResolutionParameters:(id)a3 score:(float)a4 actionKey:(id)a5
+- (ATXActionPredictionContainer)initWithMinimalSlotResolutionParameters:(id)parameters score:(float)score actionKey:(id)key
 {
-  v8 = a3;
-  v9 = a5;
+  parametersCopy = parameters;
+  keyCopy = key;
   v10.i32[1] = -1059153344;
   *v10.i32 = -31337.0;
   v14[0] = 0;
@@ -96,8 +96,8 @@
 
   if (self)
   {
-    *v11.i32 = a4;
-    self = [(ATXActionPredictionContainer *)self initWithScoredAction:0 slotSet:0 minimalSlotResolutionParameters:v8 score:v9 actionKey:v14 predictionItem:*v11.i64];
+    *v11.i32 = score;
+    self = [(ATXActionPredictionContainer *)self initWithScoredAction:0 slotSet:0 minimalSlotResolutionParameters:parametersCopy score:keyCopy actionKey:v14 predictionItem:*v11.i64];
   }
 
   else
@@ -107,14 +107,14 @@
   return self;
 }
 
-- (void)setScore:(float)a3
+- (void)setScore:(float)score
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__ATXActionPredictionContainer_setScore___block_invoke;
   v4[3] = &__block_descriptor_36_e49_v16__0__ATXGuardedActionPredictionContainerData_8l;
-  v5 = a3;
+  scoreCopy = score;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
@@ -173,14 +173,14 @@ uint64_t __37__ATXActionPredictionContainer_score__block_invoke(uint64_t a1, voi
 - (void)initializeScoredActionAndSlotSet
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(ATXMinimalSlotResolutionParameters *)self->_parameters actionAndSlotSet];
-  v5 = [v4 first];
-  v6 = [v4 second];
-  v7 = v6;
-  if (v6)
+  actionAndSlotSet = [(ATXMinimalSlotResolutionParameters *)self->_parameters actionAndSlotSet];
+  first = [actionAndSlotSet first];
+  second = [actionAndSlotSet second];
+  v7 = second;
+  if (second)
   {
-    v8 = [v6 parameters];
-    v9 = [v5 copyWithParameterWhitelist:v8];
+    parameters = [second parameters];
+    v9 = [first copyWithParameterWhitelist:parameters];
 
     if (!v9)
     {
@@ -190,8 +190,8 @@ uint64_t __37__ATXActionPredictionContainer_score__block_invoke(uint64_t a1, voi
     goto LABEL_5;
   }
 
-  v9 = v5;
-  if (v5)
+  v9 = first;
+  if (first)
   {
 LABEL_5:
     lock = self->_lock;
@@ -293,9 +293,9 @@ void __39__ATXActionPredictionContainer_slotSet__block_invoke(uint64_t a1, void 
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXActionPredictionContainer allocWithZone:a3];
+  v4 = [ATXActionPredictionContainer allocWithZone:zone];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -504,26 +504,26 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActionPredictionContainer *)self isEqualToActionPredictionContainer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActionPredictionContainer *)self isEqualToActionPredictionContainer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToActionPredictionContainer:(id)a3
+- (BOOL)isEqualToActionPredictionContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -546,7 +546,7 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
   v38 = __Block_byref_object_copy__37;
   v39 = __Block_byref_object_dispose__37;
   v40 = 0;
-  v7 = *(v4 + 1);
+  v7 = *(containerCopy + 1);
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __67__ATXActionPredictionContainer_isEqualToActionPredictionContainer___block_invoke_2;
@@ -580,7 +580,7 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
     v38 = __Block_byref_object_copy__37;
     v39 = __Block_byref_object_dispose__37;
     v40 = 0;
-    v11 = *(v4 + 1);
+    v11 = *(containerCopy + 1);
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __67__ATXActionPredictionContainer_isEqualToActionPredictionContainer___block_invoke_4;
@@ -596,7 +596,7 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
     }
 
     v13 = self->_parameters;
-    v14 = *(v4 + 419);
+    v14 = *(containerCopy + 419);
     v15 = v14;
     if (v13 == v14)
     {
@@ -629,7 +629,7 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
     v36 = &v35;
     v37 = 0x2020000000;
     LODWORD(v38) = 0;
-    v20 = *(v4 + 1);
+    v20 = *(containerCopy + 1);
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __67__ATXActionPredictionContainer_isEqualToActionPredictionContainer___block_invoke_6;
@@ -641,7 +641,7 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
     if (v19 == v21)
     {
       v22 = self->_actionKey;
-      v23 = *(v4 + 420);
+      v23 = *(containerCopy + 420);
       v24 = v23;
       if (v22 == v23)
       {
@@ -657,11 +657,11 @@ float __36__ATXActionPredictionContainer_hash__block_invoke_3(uint64_t a1, uint6
         }
       }
 
-      if (!memcmp(self->_predictionItem.inputSignals, v4 + 32, 0xCF0uLL))
+      if (!memcmp(self->_predictionItem.inputSignals, containerCopy + 32, 0xCF0uLL))
       {
         key = self->_predictionItem.key;
-        v28 = *(v4 + 2);
-        if ((!(key | v28) || key && v28 && [(NSString *)key isEqualToString:?]) && self->_predictionItem.score == *(v4 + 836))
+        v28 = *(containerCopy + 2);
+        if ((!(key | v28) || key && v28 && [(NSString *)key isEqualToString:?]) && self->_predictionItem.score == *(containerCopy + 836))
         {
           v17 = 1;
           goto LABEL_17;
@@ -703,19 +703,19 @@ float __67__ATXActionPredictionContainer_isEqualToActionPredictionContainer___bl
   return memcpy(&retstr->actionHash, &self->_predictionItem.actionHash, 0xCFEuLL);
 }
 
-- (void)setPredictionItem:(ATXPredictionItem *)a3
+- (void)setPredictionItem:(ATXPredictionItem *)item
 {
-  objc_storeStrong(&self->_predictionItem.key, a3->key);
-  memcpy(&self->_predictionItem.actionHash, &a3->actionHash, 0xCFEuLL);
-  key = a3->key;
+  objc_storeStrong(&self->_predictionItem.key, item->key);
+  memcpy(&self->_predictionItem.actionHash, &item->actionHash, 0xCFEuLL);
+  key = item->key;
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(ATXActionPredictionContainer *)self actionKey];
-  v5 = [(ATXActionPredictionContainer *)self scoredAction];
-  v6 = [v3 initWithFormat:@"ATXPredictionContainer Action Key: %@; Scored Action: %@", v4, v5];
+  actionKey = [(ATXActionPredictionContainer *)self actionKey];
+  scoredAction = [(ATXActionPredictionContainer *)self scoredAction];
+  v6 = [v3 initWithFormat:@"ATXPredictionContainer Action Key: %@; Scored Action: %@", actionKey, scoredAction];
 
   return v6;
 }

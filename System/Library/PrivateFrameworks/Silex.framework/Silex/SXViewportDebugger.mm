@@ -1,6 +1,6 @@
 @interface SXViewportDebugger
-- (id)colorForAppearState:(unint64_t)a3;
-- (id)initWithViewport:(id *)a1;
+- (id)colorForAppearState:(unint64_t)state;
+- (id)initWithViewport:(id *)viewport;
 - (uint64_t)presentOnView:(uint64_t)result;
 - (void)dealloc;
 - (void)update;
@@ -10,11 +10,11 @@
 
 - (void)dealloc
 {
-  v3 = [(SXViewportDebugger *)self dynamicBoundsView];
-  [v3 removeFromSuperview];
+  dynamicBoundsView = [(SXViewportDebugger *)self dynamicBoundsView];
+  [dynamicBoundsView removeFromSuperview];
 
-  v4 = [(SXViewportDebugger *)self appearStateIndicator];
-  [v4 removeFromSuperview];
+  appearStateIndicator = [(SXViewportDebugger *)self appearStateIndicator];
+  [appearStateIndicator removeFromSuperview];
 
   v5.receiver = self;
   v5.super_class = SXViewportDebugger;
@@ -23,105 +23,105 @@
 
 - (void)update
 {
-  v3 = [(SXViewportDebugger *)self viewport];
-  v4 = [(SXViewportDebugger *)self viewport];
-  [v4 dynamicBounds];
+  viewport = [(SXViewportDebugger *)self viewport];
+  viewport2 = [(SXViewportDebugger *)self viewport];
+  [viewport2 dynamicBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SXViewportDebugger *)self dynamicBoundsView];
-  v14 = [v13 superview];
-  [v3 convertRect:v14 toView:{v6, v8, v10, v12}];
+  dynamicBoundsView = [(SXViewportDebugger *)self dynamicBoundsView];
+  superview = [dynamicBoundsView superview];
+  [viewport convertRect:superview toView:{v6, v8, v10, v12}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(SXViewportDebugger *)self dynamicBoundsView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  dynamicBoundsView2 = [(SXViewportDebugger *)self dynamicBoundsView];
+  [dynamicBoundsView2 setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(SXViewportDebugger *)self appearStateIndicator];
-  v25 = [(SXViewportDebugger *)self viewport];
-  v26 = -[SXViewportDebugger colorForAppearState:](self, "colorForAppearState:", [v25 appearState]);
-  [v24 setBackgroundColor:v26];
+  appearStateIndicator = [(SXViewportDebugger *)self appearStateIndicator];
+  viewport3 = [(SXViewportDebugger *)self viewport];
+  v26 = -[SXViewportDebugger colorForAppearState:](self, "colorForAppearState:", [viewport3 appearState]);
+  [appearStateIndicator setBackgroundColor:v26];
 
-  v30 = [(SXViewportDebugger *)self appearStateIndicator];
-  v27 = [(SXViewportDebugger *)self viewport];
-  [v27 bounds];
+  appearStateIndicator2 = [(SXViewportDebugger *)self appearStateIndicator];
+  viewport4 = [(SXViewportDebugger *)self viewport];
+  [viewport4 bounds];
   v28 = CGRectGetHeight(v32) + -100.0;
-  v29 = [(SXViewportDebugger *)self viewport];
-  [v29 bounds];
-  [v30 setFrame:{10.0, v28, CGRectGetWidth(v33) + -20.0, 10.0}];
+  viewport5 = [(SXViewportDebugger *)self viewport];
+  [viewport5 bounds];
+  [appearStateIndicator2 setFrame:{10.0, v28, CGRectGetWidth(v33) + -20.0, 10.0}];
 }
 
-- (id)colorForAppearState:(unint64_t)a3
+- (id)colorForAppearState:(unint64_t)state
 {
-  v3 = 0;
-  if (a3 > 1)
+  greenColor = 0;
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      v3 = [MEMORY[0x1E69DC888] greenColor];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
     }
 
-    else if (a3 == 3)
+    else if (state == 3)
     {
-      v3 = [MEMORY[0x1E69DC888] orangeColor];
+      greenColor = [MEMORY[0x1E69DC888] orangeColor];
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v3 = [MEMORY[0x1E69DC888] yellowColor];
+      greenColor = [MEMORY[0x1E69DC888] yellowColor];
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] redColor];
+    greenColor = [MEMORY[0x1E69DC888] redColor];
   }
 
-  return v3;
+  return greenColor;
 }
 
-- (id)initWithViewport:(id *)a1
+- (id)initWithViewport:(id *)viewport
 {
   v4 = a2;
-  if (a1)
+  if (viewport)
   {
-    v19.receiver = a1;
+    v19.receiver = viewport;
     v19.super_class = SXViewportDebugger;
     v5 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v5;
+    viewport = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = [SXViewportDebuggerOverlayView alloc];
       v8 = OUTLINED_FUNCTION_0_1(v6, v7);
-      v9 = a1[2];
-      a1[2] = v8;
+      v9 = viewport[2];
+      viewport[2] = v8;
 
-      v10 = a1[2];
+      v10 = viewport[2];
       v11 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.5];
       [v10 setBackgroundColor:v11];
 
-      v12 = a1[2];
-      v13 = [MEMORY[0x1E69DC888] blueColor];
-      [(SXViewportDebuggerOverlayView *)v12 setBorderColor:v13];
+      v12 = viewport[2];
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
+      [(SXViewportDebuggerOverlayView *)v12 setBorderColor:blueColor];
 
       v14 = [SXViewportDebuggerOverlayView alloc];
       v16 = OUTLINED_FUNCTION_0_1(v14, v15);
-      v17 = a1[3];
-      a1[3] = v16;
+      v17 = viewport[3];
+      viewport[3] = v16;
 
-      [a1[1] addViewportChangeListener:a1 forOptions:14];
+      [viewport[1] addViewportChangeListener:viewport forOptions:14];
     }
   }
 
-  return a1;
+  return viewport;
 }
 
 - (uint64_t)presentOnView:(uint64_t)result
@@ -130,11 +130,11 @@
   {
     v2 = result;
     v3 = a2;
-    v4 = [v2 dynamicBoundsView];
-    [v3 addSubview:v4];
+    dynamicBoundsView = [v2 dynamicBoundsView];
+    [v3 addSubview:dynamicBoundsView];
 
-    v5 = [v2 appearStateIndicator];
-    [v3 addSubview:v5];
+    appearStateIndicator = [v2 appearStateIndicator];
+    [v3 addSubview:appearStateIndicator];
 
     return [v2 update];
   }

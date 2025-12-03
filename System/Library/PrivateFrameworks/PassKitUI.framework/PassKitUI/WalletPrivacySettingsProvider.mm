@@ -2,8 +2,8 @@
 - (NSArray)specifiers;
 - (_TtC9PassKitUI29WalletPrivacySettingsProvider)init;
 - (_TtP9PassKitUI33PKPrivacySettingsProviderDelegate_)delegate;
-- (id)backgroundAddAuthorizationWithSpecifier:(id)a3;
-- (void)setBackgroundAddAuthorization:(id)a3 :(id)a4;
+- (id)backgroundAddAuthorizationWithSpecifier:(id)specifier;
+- (void)setBackgroundAddAuthorization:(id)authorization :(id)a4;
 @end
 
 @implementation WalletPrivacySettingsProvider
@@ -18,7 +18,7 @@
 
 - (NSArray)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA7B434();
 
   sub_1BD0E5E8C(0, &qword_1EBD46B20);
@@ -27,19 +27,19 @@
   return v3;
 }
 
-- (void)setBackgroundAddAuthorization:(id)a3 :(id)a4
+- (void)setBackgroundAddAuthorization:(id)authorization :(id)a4
 {
-  v6 = a3;
+  authorizationCopy = authorization;
   v7 = a4;
-  v8 = self;
-  sub_1BDA7BAC8(v6, v7);
+  selfCopy = self;
+  sub_1BDA7BAC8(authorizationCopy, v7);
 }
 
-- (id)backgroundAddAuthorizationWithSpecifier:(id)a3
+- (id)backgroundAddAuthorizationWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1BDA7EBDC(v4);
+  specifierCopy = specifier;
+  selfCopy = self;
+  v6 = sub_1BDA7EBDC(specifierCopy);
 
   return v6;
 }

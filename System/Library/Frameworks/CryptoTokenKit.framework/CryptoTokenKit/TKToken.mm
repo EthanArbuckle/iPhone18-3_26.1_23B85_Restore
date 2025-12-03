@@ -13,9 +13,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TKToken *)self tokenID];
-  v7 = [v6 stringRepresentation];
-  v8 = [v3 stringWithFormat:@"<%@ %@ %p>", v5, v7, self];
+  tokenID = [(TKToken *)self tokenID];
+  stringRepresentation = [tokenID stringRepresentation];
+  v8 = [v3 stringWithFormat:@"<%@ %@ %p>", v5, stringRepresentation, self];
 
   return v8;
 }
@@ -37,8 +37,8 @@
     }
 
     v11 = [TKTokenID alloc];
-    v12 = [(TKTokenDriver *)v7 classID];
-    v13 = [(TKTokenID *)v11 initWithClassID:v12 instanceID:v8];
+    classID = [(TKTokenDriver *)v7 classID];
+    v13 = [(TKTokenID *)v11 initWithClassID:classID instanceID:v8];
     tokenID = v10->_tokenID;
     v10->_tokenID = v13;
   }
@@ -48,40 +48,40 @@
 
 - (TKTokenConfiguration)configuration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  configuration = v2->_configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = selfCopy->_configuration;
   if (!configuration)
   {
     v4 = [TKTokenConfiguration alloc];
-    tokenID = v2->_tokenID;
-    v6 = [(TKTokenDriver *)v2->_tokenDriver context];
-    v7 = [v6 configurationConnection];
-    v8 = [(TKTokenConfiguration *)v4 initWithTokenID:tokenID configurationConnection:v7];
-    v9 = v2->_configuration;
-    v2->_configuration = v8;
+    tokenID = selfCopy->_tokenID;
+    context = [(TKTokenDriver *)selfCopy->_tokenDriver context];
+    configurationConnection = [context configurationConnection];
+    v8 = [(TKTokenConfiguration *)v4 initWithTokenID:tokenID configurationConnection:configurationConnection];
+    v9 = selfCopy->_configuration;
+    selfCopy->_configuration = v8;
 
-    configuration = v2->_configuration;
+    configuration = selfCopy->_configuration;
   }
 
   v10 = configuration;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
 - (void)terminate
 {
-  v3 = [(TKToken *)self tokenDriver];
-  v4 = [v3 delegate];
+  tokenDriver = [(TKToken *)self tokenDriver];
+  delegate = [tokenDriver delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(TKToken *)self tokenDriver];
-    v6 = [v8 delegate];
-    v7 = [(TKToken *)self tokenDriver];
-    [v6 tokenDriver:v7 terminateToken:self];
+    tokenDriver2 = [(TKToken *)self tokenDriver];
+    delegate2 = [tokenDriver2 delegate];
+    tokenDriver3 = [(TKToken *)self tokenDriver];
+    [delegate2 tokenDriver:tokenDriver3 terminateToken:self];
   }
 }
 

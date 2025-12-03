@@ -1,18 +1,18 @@
 @interface AVParameterEvent
-- (AVParameterEvent)initWithParameterEvent:(ParameterEvent *)a3;
+- (AVParameterEvent)initWithParameterEvent:(ParameterEvent *)event;
 - (AVParameterEvent)initWithParameterID:(UInt32)parameterID scope:(UInt32)scope element:(UInt32)element value:(float)value;
 @end
 
 @implementation AVParameterEvent
 
-- (AVParameterEvent)initWithParameterEvent:(ParameterEvent *)a3
+- (AVParameterEvent)initWithParameterEvent:(ParameterEvent *)event
 {
   v5.receiver = self;
   v5.super_class = AVParameterEvent;
   result = [(AVParameterEvent *)&v5 init];
   if (result)
   {
-    result->_event = *a3;
+    result->_event = *event;
   }
 
   return result;

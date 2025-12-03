@@ -1,6 +1,6 @@
 @interface GTTelemetryConfiguration
 - (GTTelemetryConfiguration)init;
-- (GTTelemetryConfiguration)initWithCoder:(id)a3;
+- (GTTelemetryConfiguration)initWithCoder:(id)coder;
 @end
 
 @implementation GTTelemetryConfiguration
@@ -20,15 +20,15 @@
   return v3;
 }
 
-- (GTTelemetryConfiguration)initWithCoder:(id)a3
+- (GTTelemetryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GTTelemetryConfiguration;
   v5 = [(GTTelemetryConfiguration *)&v9 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"reportFrequencyInSeconds"];
+    [coderCopy decodeFloatForKey:@"reportFrequencyInSeconds"];
     v5->_reportFrequencyInSeconds = v6;
     v7 = v5;
   }

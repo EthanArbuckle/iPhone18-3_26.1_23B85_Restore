@@ -1,7 +1,7 @@
 @interface UITabBarButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityElementHasImage;
-- (BOOL)_axIsSelected:(void *)a1;
+- (BOOL)_axIsSelected:(void *)selected;
 - (BOOL)isAccessibilityElement;
 - (_NSRange)accessibilityRowRange;
 - (id)accessibilityHint;
@@ -13,14 +13,14 @@
 
 @implementation UITabBarButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UITabBarButton";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   [location[0] validateClass:@"UITabBarButton" hasInstanceVariable:@"_imageView" withType:"UITabBarSwappableImageView"];
@@ -33,16 +33,16 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v5 = [(UITabBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  isAccessibilityUserDefinedElement = [(UITabBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(UITabBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  isAccessibilityUserDefinedElement2 = [(UITabBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
+  v7 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   return v7;
 }
 
@@ -56,48 +56,48 @@
 
 - (id)accessibilityValue
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
-  v12 = [(UITabBarButtonAccessibility *)self accessibilityUserDefinedValue];
-  *&v2 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-  if (v12)
+  accessibilityUserDefinedValue = [(UITabBarButtonAccessibility *)self accessibilityUserDefinedValue];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedValue).n128_u64[0];
+  if (accessibilityUserDefinedValue)
   {
-    v20 = [(UITabBarButtonAccessibility *)v19 accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue2 = [(UITabBarButtonAccessibility *)selfCopy accessibilityUserDefinedValue];
   }
 
   else
   {
-    v11 = [(UITabBarButtonAccessibility *)v19 safeValueForKey:@"_badge", v2];
-    v10 = [v11 accessibilityLabel];
-    v9 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v18[0] = [v10 stringByTrimmingCharactersInSet:?];
-    MEMORY[0x29EDC9740](v9);
-    MEMORY[0x29EDC9740](v10);
+    v11 = [(UITabBarButtonAccessibility *)selfCopy safeValueForKey:@"_badge", v2];
+    accessibilityLabel = [v11 accessibilityLabel];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v18[0] = [accessibilityLabel stringByTrimmingCharactersInSet:?];
+    MEMORY[0x29EDC9740](whitespaceAndNewlineCharacterSet);
+    MEMORY[0x29EDC9740](accessibilityLabel);
     if ([v18[0] length])
     {
       v17 = objc_opt_new();
       [v17 setUsesGroupingSeparator:1];
       if ([v18[0] isAXAttributedString])
       {
-        v3 = [v18[0] string];
+        string = [v18[0] string];
         v4 = v18[0];
-        v18[0] = v3;
+        v18[0] = string;
         MEMORY[0x29EDC9740](v4);
       }
 
       location = [v17 numberFromString:v18[0]];
       if (location)
       {
-        v15 = [location intValue];
+        intValue = [location intValue];
         v7 = MEMORY[0x29EDBA0F8];
         v8 = accessibilityLocalizedString(@"badge.count");
-        v20 = [v7 localizedStringWithFormat:v15];
+        accessibilityUserDefinedValue2 = [v7 localizedStringWithFormat:intValue];
         MEMORY[0x29EDC9740](v8);
       }
 
       else
       {
-        v20 = MEMORY[0x29EDC9748](v18[0]);
+        accessibilityUserDefinedValue2 = MEMORY[0x29EDC9748](v18[0]);
       }
 
       v14 = 1;
@@ -107,23 +107,23 @@
 
     else
     {
-      v13.receiver = v19;
+      v13.receiver = selfCopy;
       v13.super_class = UITabBarButtonAccessibility;
-      v20 = [(UITabBarButtonAccessibility *)&v13 accessibilityValue];
+      accessibilityUserDefinedValue2 = [(UITabBarButtonAccessibility *)&v13 accessibilityValue];
       v14 = 1;
     }
 
     objc_storeStrong(v18, 0);
   }
 
-  v5 = v20;
+  v5 = accessibilityUserDefinedValue2;
 
   return v5;
 }
 
 - (id)accessibilityLabel
 {
-  v46 = self;
+  selfCopy = self;
   v45[1] = a2;
   v44.receiver = self;
   v44.super_class = UITabBarButtonAccessibility;
@@ -136,21 +136,21 @@
 
   else
   {
-    v40 = [(UITabBarButtonAccessibility *)v46 safeValueForKey:@"_label"];
-    v2 = [v40 accessibilityLabel];
+    v40 = [(UITabBarButtonAccessibility *)selfCopy safeValueForKey:@"_label"];
+    accessibilityLabel = [v40 accessibilityLabel];
     v3 = v45[0];
-    v45[0] = v2;
+    v45[0] = accessibilityLabel;
     MEMORY[0x29EDC9740](v3);
     *&v4 = MEMORY[0x29EDC9740](v40).n128_u64[0];
     if (![v45[0] length])
     {
-      location = [(UITabBarButtonAccessibility *)v46 accessibilityIdentification];
+      location = [(UITabBarButtonAccessibility *)selfCopy accessibilityIdentification];
       if (location)
       {
-        v39 = [location integerValue];
-        if (v39)
+        integerValue = [location integerValue];
+        if (integerValue)
         {
-          switch(v39)
+          switch(integerValue)
           {
             case 1:
               v7 = accessibilityLocalizedString(@"favorites.button");
@@ -235,10 +235,10 @@
 
     if (![v45[0] length])
     {
-      v38 = [(UITabBarButtonAccessibility *)v46 _accessibilityAncestorIsKindOf:objc_opt_class()];
+      v38 = [(UITabBarButtonAccessibility *)selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
       v41 = [v38 safeValueForKey:@"delegate"];
       *&v29 = MEMORY[0x29EDC9740](v38).n128_u64[0];
-      v30 = [v41 _accessibililtyLabelForTabBarButton:{v46, v29}];
+      v30 = [v41 _accessibililtyLabelForTabBarButton:{selfCopy, v29}];
       v31 = v45[0];
       v45[0] = v30;
       MEMORY[0x29EDC9740](v31);
@@ -247,11 +247,11 @@
 
     if (![v45[0] length])
     {
-      v37 = [(UITabBarButtonAccessibility *)v46 safeValueForKey:@"_imageView"];
+      v37 = [(UITabBarButtonAccessibility *)selfCopy safeValueForKey:@"_imageView"];
       v36 = [v37 safeValueForKey:@"image"];
-      v32 = [v36 accessibilityLabel];
+      accessibilityLabel2 = [v36 accessibilityLabel];
       v33 = v45[0];
-      v45[0] = v32;
+      v45[0] = accessibilityLabel2;
       MEMORY[0x29EDC9740](v33);
       MEMORY[0x29EDC9740](v36);
       MEMORY[0x29EDC9740](v37);
@@ -269,25 +269,25 @@
 
 - (id)accessibilityHint
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v10.receiver = self;
   v10.super_class = UITabBarButtonAccessibility;
   v11[0] = [(UITabBarButtonAccessibility *)&v10 accessibilityHint];
   if ([v11[0] length])
   {
-    v13 = MEMORY[0x29EDC9748](v11[0]);
+    accessibilityHint = MEMORY[0x29EDC9748](v11[0]);
     v9 = 1;
   }
 
   else
   {
-    location = [(UITabBarButtonAccessibility *)v12 _accessibilityAncestorIsKindOf:objc_opt_class()];
+    location = [(UITabBarButtonAccessibility *)selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
     v6 = 0;
     LOBYTE(v4) = 0;
     if ([location isCustomizing])
     {
-      v7 = [(UITabBarButtonAccessibility *)v12 superview];
+      superview = [(UITabBarButtonAccessibility *)selfCopy superview];
       v6 = 1;
       NSClassFromString(&cfstr_Uitabbarcustom.isa);
       v4 = objc_opt_isKindOfClass() ^ 1;
@@ -295,19 +295,19 @@
 
     if (v6)
     {
-      MEMORY[0x29EDC9740](v7);
+      MEMORY[0x29EDC9740](superview);
     }
 
     if (v4)
     {
-      v13 = accessibilityLocalizedString(@"non.editing.tab.bar.item.hint");
+      accessibilityHint = accessibilityLocalizedString(@"non.editing.tab.bar.item.hint");
     }
 
     else
     {
-      v5.receiver = v12;
+      v5.receiver = selfCopy;
       v5.super_class = UITabBarButtonAccessibility;
-      v13 = [(UITabBarButtonAccessibility *)&v5 accessibilityHint];
+      accessibilityHint = [(UITabBarButtonAccessibility *)&v5 accessibilityHint];
     }
 
     v9 = 1;
@@ -315,21 +315,21 @@
   }
 
   objc_storeStrong(v11, 0);
-  v2 = v13;
+  v2 = accessibilityHint;
 
   return v2;
 }
 
-- (BOOL)_axIsSelected:(void *)a1
+- (BOOL)_axIsSelected:(void *)selected
 {
-  v6 = a1;
+  selectedCopy = selected;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v6)
+  if (selectedCopy)
   {
     v4 = [location safeValueForKey:@"selectedItem"];
     v2 = [v4 safeValueForKey:@"_view"];
-    v7 = v2 == v6;
+    v7 = v2 == selectedCopy;
     MEMORY[0x29EDC9740](v2);
     MEMORY[0x29EDC9740](v4);
   }
@@ -345,7 +345,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = *MEMORY[0x29EDC7F70];
   v4 = [(UITabBarButtonAccessibility *)self safeValueForKey:@"superview"];
@@ -354,7 +354,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(UITabBarButtonAccessibility *)v8 _axIsSelected:?])
+    if ([(UITabBarButtonAccessibility *)selfCopy _axIsSelected:?])
     {
       v6 |= *MEMORY[0x29EDC7FC0];
     }
@@ -382,7 +382,7 @@
 
 - (_NSRange)accessibilityRowRange
 {
-  v29 = self;
+  selfCopy = self;
   v28[1] = a2;
   v28[0] = [(UITabBarButtonAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   v21 = 0;
@@ -402,9 +402,9 @@
   v16 = 0;
   v17 = __52__UITabBarButtonAccessibility_accessibilityRowRange__block_invoke;
   v18 = &unk_29F30D240;
-  v19 = MEMORY[0x29EDC9748](v29);
+  v19 = MEMORY[0x29EDC9748](selfCopy);
   v20 = [v7 _accessibilityFindSubviewDescendantsPassingTest:&v14];
-  v2 = [(UITabBarButtonAccessibility *)v29 _accessibilityGeometrySortedElements:v20];
+  v2 = [(UITabBarButtonAccessibility *)selfCopy _accessibilityGeometrySortedElements:v20];
   v3 = v20;
   v20 = v2;
   MEMORY[0x29EDC9740](v3);
@@ -414,7 +414,7 @@
   v10 = 0;
   v11 = __52__UITabBarButtonAccessibility_accessibilityRowRange__block_invoke_2;
   v12 = &unk_29F30D828;
-  v13[0] = MEMORY[0x29EDC9748](v29);
+  v13[0] = MEMORY[0x29EDC9748](selfCopy);
   v13[1] = &v21;
   [v6 enumerateObjectsUsingBlock:&v8];
   v30 = *(v22 + 2);
@@ -462,17 +462,17 @@ void __52__UITabBarButtonAccessibility_accessibilityRowRange__block_invoke_2(uin
 
 - (int64_t)_currentItemState
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UITabBarButtonAccessibility;
-  v4 = [(UITabBarButtonAccessibility *)&v3 _currentItemState];
-  if (([(UITabBarButtonAccessibility *)v6 _accessibilityIsFKARunningForFocusItem]& 1) != 0 && v4 == 4 && ([(UITabBarButtonAccessibility *)v6 safeBoolForKey:@"_isSelected"]& 1) != 0)
+  _currentItemState = [(UITabBarButtonAccessibility *)&v3 _currentItemState];
+  if (([(UITabBarButtonAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0 && _currentItemState == 4 && ([(UITabBarButtonAccessibility *)selfCopy safeBoolForKey:@"_isSelected"]& 1) != 0)
   {
     return 2;
   }
 
-  return v4;
+  return _currentItemState;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface SFDownloadsUnifiedBarItem
-- (SFDownloadsUnifiedBarItem)initWithAction:(id)a3;
+- (SFDownloadsUnifiedBarItem)initWithAction:(id)action;
 @end
 
 @implementation SFDownloadsUnifiedBarItem
 
-- (SFDownloadsUnifiedBarItem)initWithAction:(id)a3
+- (SFDownloadsUnifiedBarItem)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v17.receiver = self;
   v17.super_class = SFDownloadsUnifiedBarItem;
   v5 = [(SFDownloadsUnifiedBarItem *)&v17 init];
@@ -24,7 +24,7 @@
     v13[2] = __44__SFDownloadsUnifiedBarItem_initWithAction___block_invoke;
     v13[3] = &unk_1E84966A0;
     objc_copyWeak(&v15, &location);
-    v14 = v4;
+    v14 = actionCopy;
     v10 = [v9 actionWithHandler:v13];
     [(SFDownloadsUnifiedBarItemView *)v8 addAction:v10 forControlEvents:0x2000];
 

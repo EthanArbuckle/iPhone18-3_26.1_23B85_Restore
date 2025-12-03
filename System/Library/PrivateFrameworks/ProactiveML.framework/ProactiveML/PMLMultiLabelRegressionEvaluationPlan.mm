@@ -1,54 +1,54 @@
 @interface PMLMultiLabelRegressionEvaluationPlan
-- (PMLMultiLabelRegressionEvaluationPlan)initWithPlanId:(id)a3 store:(id)a4 sessionDescriptor:(id)a5 maxSessionsLimit:(unint64_t)a6 sessionsInBatch:(unint64_t)a7 labelAndWeights:(id)a8 modelClassName:(id)a9 intercept:(BOOL)a10 evaluationPoints:(id)a11 tracker:(id)a12 evaluationLevel:(unint64_t)a13;
-- (PMLMultiLabelRegressionEvaluationPlan)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)_precisionAtEvaluationPointsForSessions:(id)a3;
-- (id)_rankedLabelsForSession:(id)a3;
-- (id)runWithError:(id *)a3;
-- (id)toPlistWithChunks:(id)a3;
+- (PMLMultiLabelRegressionEvaluationPlan)initWithPlanId:(id)id store:(id)store sessionDescriptor:(id)descriptor maxSessionsLimit:(unint64_t)limit sessionsInBatch:(unint64_t)batch labelAndWeights:(id)weights modelClassName:(id)name intercept:(BOOL)self0 evaluationPoints:(id)self1 tracker:(id)self2 evaluationLevel:(unint64_t)self3;
+- (PMLMultiLabelRegressionEvaluationPlan)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)_precisionAtEvaluationPointsForSessions:(id)sessions;
+- (id)_rankedLabelsForSession:(id)session;
+- (id)runWithError:(id *)error;
+- (id)toPlistWithChunks:(id)chunks;
 @end
 
 @implementation PMLMultiLabelRegressionEvaluationPlan
 
-- (PMLMultiLabelRegressionEvaluationPlan)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLMultiLabelRegressionEvaluationPlan)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKeyedSubscript:@"TRAINING_STORE"];
+  plistCopy = plist;
+  chunksCopy = chunks;
+  contextCopy = context;
+  v11 = [contextCopy objectForKeyedSubscript:@"TRAINING_STORE"];
 
   if (!v11)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v44 = objc_opt_class();
     v45 = NSStringFromClass(v44);
-    [v43 handleFailureInMethod:a2 object:self file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:211 description:{@"Can't instantiate %@. Missing store dependency.", v45}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:211 description:{@"Can't instantiate %@. Missing store dependency.", v45}];
   }
 
-  v61 = [v8 objectForKeyedSubscript:@"PLAN_ID"];
-  v60 = [v10 objectForKeyedSubscript:@"TRAINING_STORE"];
+  v61 = [plistCopy objectForKeyedSubscript:@"PLAN_ID"];
+  v60 = [contextCopy objectForKeyedSubscript:@"TRAINING_STORE"];
   v12 = [PMLSessionDescriptor alloc];
-  v13 = [v8 objectForKeyedSubscript:@"SESSIONS_MODEL_HANDLE"];
-  v14 = [(PMLSessionDescriptor *)v12 initWithPlist:v13 chunks:v9 context:v10];
+  v13 = [plistCopy objectForKeyedSubscript:@"SESSIONS_MODEL_HANDLE"];
+  v14 = [(PMLSessionDescriptor *)v12 initWithPlist:v13 chunks:chunksCopy context:contextCopy];
 
   if (v14)
   {
     v15 = a2;
-    v16 = [v8 objectForKeyedSubscript:@"SESSIONS_LIMIT"];
-    v51 = [v16 unsignedIntegerValue];
+    v16 = [plistCopy objectForKeyedSubscript:@"SESSIONS_LIMIT"];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"SESSIONS_IN_BATCH"];
-    v50 = [v17 unsignedIntegerValue];
+    v17 = [plistCopy objectForKeyedSubscript:@"SESSIONS_IN_BATCH"];
+    unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-    v18 = [v8 objectForKeyedSubscript:@"POSITIVE_LABELS"];
-    v19 = [v8 objectForKeyedSubscript:@"WEIGHTS_ARRAY"];
+    v18 = [plistCopy objectForKeyedSubscript:@"POSITIVE_LABELS"];
+    v19 = [plistCopy objectForKeyedSubscript:@"WEIGHTS_ARRAY"];
     v20 = objc_opt_new();
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __70__PMLMultiLabelRegressionEvaluationPlan_initWithPlist_chunks_context___block_invoke;
     v63[3] = &unk_279ABFAB8;
-    v57 = v9;
-    v21 = v9;
+    v57 = chunksCopy;
+    v21 = chunksCopy;
     v64 = v21;
     v22 = v20;
     v65 = v22;
@@ -57,24 +57,24 @@
     v52 = v22;
     v56 = v18;
     v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v18];
-    v53 = [v8 objectForKeyedSubscript:@"MULTI_LABEL_REGRESSION_MODEL_TYPE"];
-    v23 = [v8 objectForKeyedSubscript:@"INTERCEPT"];
-    v24 = [v23 BOOLValue];
+    v53 = [plistCopy objectForKeyedSubscript:@"MULTI_LABEL_REGRESSION_MODEL_TYPE"];
+    v23 = [plistCopy objectForKeyedSubscript:@"INTERCEPT"];
+    bOOLValue = [v23 BOOLValue];
 
-    v25 = [v8 objectForKeyedSubscript:@"EVALUATION_POINTS"];
-    v26 = [v8 objectForKeyedSubscript:@"TRACKER_TYPE"];
+    v25 = [plistCopy objectForKeyedSubscript:@"EVALUATION_POINTS"];
+    v26 = [plistCopy objectForKeyedSubscript:@"TRACKER_TYPE"];
     v27 = NSClassFromString(v26);
     if (!v27)
     {
-      v46 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v47 = objc_opt_class();
       v59 = NSStringFromClass(v47);
-      [v46 handleFailureInMethod:v15 object:self file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:248 description:{@"Can't instantiate %@. Unknown tracker class: %@", v59, v26}];
+      [currentHandler2 handleFailureInMethod:v15 object:self file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:248 description:{@"Can't instantiate %@. Unknown tracker class: %@", v59, v26}];
     }
 
     v58 = v14;
     v28 = [v27 alloc];
-    v29 = [v8 objectForKeyedSubscript:@"TRACKER"];
+    v29 = [plistCopy objectForKeyedSubscript:@"TRACKER"];
     v30 = v61;
     v66 = @"planId";
     v67[0] = v61;
@@ -83,30 +83,30 @@
 
     if (v32)
     {
-      v33 = [v8 objectForKeyedSubscript:@"EVALUATION_LEVEL"];
-      v34 = [v33 unsignedIntegerValue];
+      v33 = [plistCopy objectForKeyedSubscript:@"EVALUATION_LEVEL"];
+      unsignedIntegerValue3 = [v33 unsignedIntegerValue];
 
       v49 = v25;
-      LOBYTE(v48) = v24;
+      LOBYTE(v48) = bOOLValue;
       v35 = v53;
       v36 = v60;
       v37 = v25;
       v38 = v54;
-      v39 = [(PMLMultiLabelRegressionEvaluationPlan *)self initWithPlanId:v61 store:v60 sessionDescriptor:v58 maxSessionsLimit:v51 sessionsInBatch:v50 labelAndWeights:v54 modelClassName:v53 intercept:v48 evaluationPoints:v49 tracker:v32 evaluationLevel:v34];
-      v40 = v39;
+      selfCopy2 = [(PMLMultiLabelRegressionEvaluationPlan *)self initWithPlanId:v61 store:v60 sessionDescriptor:v58 maxSessionsLimit:unsignedIntegerValue sessionsInBatch:unsignedIntegerValue2 labelAndWeights:v54 modelClassName:v53 intercept:v48 evaluationPoints:v49 tracker:v32 evaluationLevel:unsignedIntegerValue3];
+      v40 = selfCopy2;
     }
 
     else
     {
       v40 = 0;
-      v39 = self;
+      selfCopy2 = self;
       v36 = v60;
       v37 = v25;
       v35 = v53;
       v38 = v54;
     }
 
-    v9 = v57;
+    chunksCopy = v57;
     v14 = v58;
   }
 
@@ -114,7 +114,7 @@
   {
     v40 = 0;
     v30 = v61;
-    v39 = self;
+    selfCopy2 = self;
     v36 = v60;
   }
 
@@ -136,10 +136,10 @@ void __70__PMLMultiLabelRegressionEvaluationPlan_initWithPlist_chunks_context___
   }
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v31[12] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chunksCopy = chunks;
   v5 = objc_opt_new();
   weightsArray = self->_weightsArray;
   v27[0] = MEMORY[0x277D85DD0];
@@ -147,8 +147,8 @@ void __70__PMLMultiLabelRegressionEvaluationPlan_initWithPlist_chunks_context___
   v27[2] = __59__PMLMultiLabelRegressionEvaluationPlan_toPlistWithChunks___block_invoke;
   v27[3] = &unk_279ABFA90;
   v28 = v5;
-  v29 = v4;
-  v7 = v4;
+  v29 = chunksCopy;
+  v7 = chunksCopy;
   v26 = v5;
   [(NSArray *)weightsArray enumerateObjectsUsingBlock:v27];
   v31[0] = self->_planId;
@@ -204,7 +204,7 @@ void __59__PMLMultiLabelRegressionEvaluationPlan_toPlistWithChunks___block_invok
   [v2 addObject:v3];
 }
 
-- (id)runWithError:(id *)a3
+- (id)runWithError:(id *)error
 {
   v17[0] = 0;
   v17[1] = v17;
@@ -278,17 +278,17 @@ void __54__PMLMultiLabelRegressionEvaluationPlan_runWithError___block_invoke(uin
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_precisionAtEvaluationPointsForSessions:(id)a3
+- (id)_precisionAtEvaluationPointsForSessions:(id)sessions
 {
   v84 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 outcomes];
+  sessionsCopy = sessions;
+  outcomes = [sessionsCopy outcomes];
   v6 = objc_opt_new();
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v57 = self;
+  selfCopy = self;
   v7 = self->_evaluationPoints;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v74 objects:v83 count:16];
   if (v8)
@@ -313,19 +313,19 @@ void __54__PMLMultiLabelRegressionEvaluationPlan_runWithError___block_invoke(uin
     while (v9);
   }
 
-  v12 = [v4 covariates];
-  v13 = [v12 matrix];
+  covariates = [sessionsCopy covariates];
+  matrix = [covariates matrix];
 
-  matrix_number_of_columns = sparse_get_matrix_number_of_columns(v13);
-  v52 = v4;
-  v15 = [v4 count];
+  matrix_number_of_columns = sparse_get_matrix_number_of_columns(matrix);
+  v52 = sessionsCopy;
+  v15 = [sessionsCopy count];
   v59 = malloc_type_malloc(4 * matrix_number_of_columns, 0x100004052888210uLL);
   nz = matrix_number_of_columns;
   v58 = malloc_type_malloc(8 * matrix_number_of_columns, 0x100004000313F17uLL);
   if (v15 < 1)
   {
     v18 = v15;
-    p_isa = &v57->super.isa;
+    p_isa = &selfCopy->super.isa;
     goto LABEL_32;
   }
 
@@ -333,14 +333,14 @@ void __54__PMLMultiLabelRegressionEvaluationPlan_runWithError___block_invoke(uin
   *&v16 = 134217984;
   v51 = v16;
   v18 = v15;
-  p_isa = &v57->super.isa;
-  v54 = v13;
-  v55 = v5;
+  p_isa = &selfCopy->super.isa;
+  v54 = matrix;
+  v55 = outcomes;
   v53 = v15;
   while (1)
   {
     v20 = MEMORY[0x277CCABB0];
-    LODWORD(v21) = *([v5 values] + 4 * v17);
+    LODWORD(v21) = *([outcomes values] + 4 * v17);
     v22 = [v20 numberWithFloat:v21];
     if (([p_isa[6] containsObject:v22] & 1) == 0)
     {
@@ -357,7 +357,7 @@ void __54__PMLMultiLabelRegressionEvaluationPlan_runWithError___block_invoke(uin
       goto LABEL_27;
     }
 
-    if (sparse_get_matrix_nonzero_count_for_row(v13, v17))
+    if (sparse_get_matrix_nonzero_count_for_row(matrix, v17))
     {
       break;
     }
@@ -381,7 +381,7 @@ LABEL_28:
 
   v65 = v22;
   *column_end = 0;
-  sparse_extract_sparse_row_float(v13, v17, 0, column_end, nz, v59, v58);
+  sparse_extract_sparse_row_float(matrix, v17, 0, column_end, nz, v59, v58);
   v23 = [PMLDenseVector alloc];
   v24 = [(PMLDenseVector *)v23 initWithFloatsNoCopy:v59 count:*column_end freeWhenDone:0];
   v64 = [PMLSparseVector sparseVectorFromDense:v24];
@@ -428,9 +428,9 @@ LABEL_28:
       while (v29);
     }
 
-    v13 = v54;
-    v5 = v55;
-    p_isa = &v57->super.isa;
+    matrix = v54;
+    outcomes = v55;
+    p_isa = &selfCopy->super.isa;
     v17 = v62;
     v18 = v63;
     v15 = v53;
@@ -485,11 +485,11 @@ LABEL_32:
   return v6;
 }
 
-- (id)_rankedLabelsForSession:(id)a3
+- (id)_rankedLabelsForSession:(id)session
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PMLMultiLabelClassifierModelProtocol *)self->_multiLabelRegressionModel predict:v4];
+  sessionCopy = session;
+  v5 = [(PMLMultiLabelClassifierModelProtocol *)self->_multiLabelRegressionModel predict:sessionCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjects:v5 forKeys:self->_positiveLabels];
@@ -502,10 +502,10 @@ LABEL_32:
     v17 = v8;
     v9 = [v7 sortDescriptorWithKey:0 ascending:0 comparator:v16];
     v10 = objc_autoreleasePoolPush();
-    v11 = [v8 allKeys];
+    allKeys = [v8 allKeys];
     v18[0] = v9;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-    v13 = [v11 sortedArrayUsingDescriptors:v12];
+    v13 = [allKeys sortedArrayUsingDescriptors:v12];
 
     objc_autoreleasePoolPop(v10);
   }
@@ -531,20 +531,20 @@ uint64_t __65__PMLMultiLabelRegressionEvaluationPlan__rankedLabelsForSession___b
   return v9;
 }
 
-- (PMLMultiLabelRegressionEvaluationPlan)initWithPlanId:(id)a3 store:(id)a4 sessionDescriptor:(id)a5 maxSessionsLimit:(unint64_t)a6 sessionsInBatch:(unint64_t)a7 labelAndWeights:(id)a8 modelClassName:(id)a9 intercept:(BOOL)a10 evaluationPoints:(id)a11 tracker:(id)a12 evaluationLevel:(unint64_t)a13
+- (PMLMultiLabelRegressionEvaluationPlan)initWithPlanId:(id)id store:(id)store sessionDescriptor:(id)descriptor maxSessionsLimit:(unint64_t)limit sessionsInBatch:(unint64_t)batch labelAndWeights:(id)weights modelClassName:(id)name intercept:(BOOL)self0 evaluationPoints:(id)self1 tracker:(id)self2 evaluationLevel:(unint64_t)self3
 {
-  v19 = a3;
-  v45 = a4;
-  v44 = a5;
-  v20 = a8;
-  v21 = a9;
-  v22 = v19;
-  v23 = a11;
-  v43 = a12;
+  idCopy = id;
+  storeCopy = store;
+  descriptorCopy = descriptor;
+  weightsCopy = weights;
+  nameCopy = name;
+  v22 = idCopy;
+  pointsCopy = points;
+  trackerCopy = tracker;
   if (![PMLPlanDescriptor isValidPlanId:v22])
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:53 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", v22}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:53 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", v22}];
   }
 
   v46.receiver = self;
@@ -553,42 +553,42 @@ uint64_t __65__PMLMultiLabelRegressionEvaluationPlan__rankedLabelsForSession___b
   v25 = v24;
   if (v24)
   {
-    v41 = v23;
-    objc_storeStrong(&v24->_planId, a3);
-    objc_storeStrong(&v25->_store, a4);
-    objc_storeStrong(&v25->_sessionDescriptor, a5);
-    v25->_maxSessionsLimit = a6;
-    v25->_sessionsInBatch = a7;
-    v25->_intercept = a10;
+    v41 = pointsCopy;
+    objc_storeStrong(&v24->_planId, id);
+    objc_storeStrong(&v25->_store, store);
+    objc_storeStrong(&v25->_sessionDescriptor, descriptor);
+    v25->_maxSessionsLimit = limit;
+    v25->_sessionsInBatch = batch;
+    v25->_intercept = intercept;
     v26 = objc_autoreleasePoolPush();
-    v27 = [v20 allKeys];
+    allKeys = [weightsCopy allKeys];
     objc_autoreleasePoolPop(v26);
     positiveLabels = v25->_positiveLabels;
-    v25->_positiveLabels = v27;
+    v25->_positiveLabels = allKeys;
 
     v29 = objc_autoreleasePoolPush();
-    v30 = [v20 allValues];
+    allValues = [weightsCopy allValues];
     objc_autoreleasePoolPop(v29);
     weightsArray = v25->_weightsArray;
-    v25->_weightsArray = v30;
+    v25->_weightsArray = allValues;
 
-    v32 = NSClassFromString(v21);
+    v32 = NSClassFromString(nameCopy);
     if (!v32)
     {
-      v37 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v38 = objc_opt_class();
       v39 = NSStringFromClass(v38);
-      [v37 handleFailureInMethod:a2 object:v25 file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:66 description:{@"Can't instantiate %@. Unknown model class: %@", v39, v21}];
+      [currentHandler2 handleFailureInMethod:a2 object:v25 file:@"PMLMultiLabelRegressionEvaluationPlan.m" lineNumber:66 description:{@"Can't instantiate %@. Unknown model class: %@", v39, nameCopy}];
     }
 
-    v33 = [[v32 alloc] initWithWeightsArray:v25->_weightsArray andIntercept:a10];
+    v33 = [[v32 alloc] initWithWeightsArray:v25->_weightsArray andIntercept:intercept];
     multiLabelRegressionModel = v25->_multiLabelRegressionModel;
     v25->_multiLabelRegressionModel = v33;
 
-    objc_storeStrong(&v25->_evaluationPoints, a11);
-    objc_storeStrong(&v25->_tracker, a12);
-    v23 = v41;
-    v25->_evaluationLevel = a13;
+    objc_storeStrong(&v25->_evaluationPoints, points);
+    objc_storeStrong(&v25->_tracker, tracker);
+    pointsCopy = v41;
+    v25->_evaluationLevel = level;
   }
 
   return v25;

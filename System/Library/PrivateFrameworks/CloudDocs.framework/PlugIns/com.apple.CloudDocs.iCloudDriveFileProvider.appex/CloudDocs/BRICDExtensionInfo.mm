@@ -1,30 +1,30 @@
 @interface BRICDExtensionInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExtensionInfo:(id)a3;
-- (BRICDExtensionInfo)initWithDomainIdentifier:(id)a3 databaseID:(id)a4 delegate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExtensionInfo:(id)info;
+- (BRICDExtensionInfo)initWithDomainIdentifier:(id)identifier databaseID:(id)d delegate:(id)delegate;
 - (void)refreshDatabaseID;
 @end
 
 @implementation BRICDExtensionInfo
 
-- (BRICDExtensionInfo)initWithDomainIdentifier:(id)a3 databaseID:(id)a4 delegate:(id)a5
+- (BRICDExtensionInfo)initWithDomainIdentifier:(id)identifier databaseID:(id)d delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = BRICDExtensionInfo;
   v12 = [(BRICDExtensionInfo *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_domainIdentifier, a3);
-    objc_storeStrong(&v13->_databaseID, a4);
+    objc_storeStrong(&v12->_domainIdentifier, identifier);
+    objc_storeStrong(&v13->_databaseID, d);
     v14 = +[NSHashTable weakObjectsHashTable];
     delegates = v13->_delegates;
     v13->_delegates = v14;
 
-    [(NSHashTable *)v13->_delegates addObject:v11];
+    [(NSHashTable *)v13->_delegates addObject:delegateCopy];
   }
 
   return v13;
@@ -52,9 +52,9 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v9 = [*(*(&v14 + 1) + 8 * v8) refreshDatabaseID];
+      refreshDatabaseID = [*(*(&v14 + 1) + 8 * v8) refreshDatabaseID];
       databaseID = self->_databaseID;
-      self->_databaseID = v9;
+      self->_databaseID = refreshDatabaseID;
 
       if (self->_databaseID)
       {
@@ -89,10 +89,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -102,7 +102,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BRICDExtensionInfo *)self isEqualToExtensionInfo:v4];
+      v5 = [(BRICDExtensionInfo *)self isEqualToExtensionInfo:equalCopy];
     }
 
     else
@@ -114,11 +114,11 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)isEqualToExtensionInfo:(id)a3
+- (BOOL)isEqualToExtensionInfo:(id)info
 {
   domainIdentifier = self->_domainIdentifier;
-  v4 = [a3 domainIdentifier];
-  LOBYTE(domainIdentifier) = [(NSString *)domainIdentifier isEqualToString:v4];
+  domainIdentifier = [info domainIdentifier];
+  LOBYTE(domainIdentifier) = [(NSString *)domainIdentifier isEqualToString:domainIdentifier];
 
   return domainIdentifier;
 }

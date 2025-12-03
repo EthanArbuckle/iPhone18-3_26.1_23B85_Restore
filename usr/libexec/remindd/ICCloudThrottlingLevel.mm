@@ -1,10 +1,10 @@
 @interface ICCloudThrottlingLevel
-- (ICCloudThrottlingLevel)initWithBatchInterval:(double)a3 numberOfBatches:(unint64_t)a4;
+- (ICCloudThrottlingLevel)initWithBatchInterval:(double)interval numberOfBatches:(unint64_t)batches;
 @end
 
 @implementation ICCloudThrottlingLevel
 
-- (ICCloudThrottlingLevel)initWithBatchInterval:(double)a3 numberOfBatches:(unint64_t)a4
+- (ICCloudThrottlingLevel)initWithBatchInterval:(double)interval numberOfBatches:(unint64_t)batches
 {
   v9.receiver = self;
   v9.super_class = ICCloudThrottlingLevel;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    [(ICCloudThrottlingLevel *)v6 setBatchInterval:a3];
-    [(ICCloudThrottlingLevel *)v7 setNumberOfBatches:a4];
+    [(ICCloudThrottlingLevel *)v6 setBatchInterval:interval];
+    [(ICCloudThrottlingLevel *)v7 setNumberOfBatches:batches];
   }
 
   return v7;

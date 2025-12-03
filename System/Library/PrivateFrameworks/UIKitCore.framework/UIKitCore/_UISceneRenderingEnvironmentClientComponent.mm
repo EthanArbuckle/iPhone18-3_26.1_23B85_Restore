@@ -5,14 +5,14 @@
 - (_UIWindowSceneTraitProvider)_traitProvider;
 - (id)clientSettings;
 - (id)settings;
-- (id)traitOverridesForTraitProvider:(id)a3;
-- (void)_setupTraitProviderWithUIScene:(id)a3;
-- (void)_uiSceneDidInitializeSceneComponents:(id)a3;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneWillInvalidate:(id)a3;
-- (void)setPrefersContentProtection:(BOOL)a3;
-- (void)setScene:(id)a3;
-- (void)updateClientSettings:(id)a3;
+- (id)traitOverridesForTraitProvider:(id)provider;
+- (void)_setupTraitProviderWithUIScene:(id)scene;
+- (void)_uiSceneDidInitializeSceneComponents:(id)components;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneWillInvalidate:(id)invalidate;
+- (void)setPrefersContentProtection:(BOOL)protection;
+- (void)setScene:(id)scene;
+- (void)updateClientSettings:(id)settings;
 @end
 
 @implementation _UISceneRenderingEnvironmentClientComponent
@@ -26,52 +26,52 @@
 
 - (BOOL)isCapturingContentForAdditionalRenderingDestination
 {
-  v2 = [(_UISceneRenderingEnvironmentClientComponent *)self settings];
-  v3 = [v2 modern_isCapturingContentForAdditionalRenderingDestination];
+  settings = [(_UISceneRenderingEnvironmentClientComponent *)self settings];
+  modern_isCapturingContentForAdditionalRenderingDestination = [settings modern_isCapturingContentForAdditionalRenderingDestination];
 
-  return v3;
+  return modern_isCapturingContentForAdditionalRenderingDestination;
 }
 
 - (id)settings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
 
-  return v3;
+  return settings;
 }
 
 - (NSString)systemDisplayIdentifier
 {
-  v2 = [(_UISceneRenderingEnvironmentClientComponent *)self settings];
-  v3 = [v2 systemDisplayIdentifier];
+  settings = [(_UISceneRenderingEnvironmentClientComponent *)self settings];
+  systemDisplayIdentifier = [settings systemDisplayIdentifier];
 
-  return v3;
+  return systemDisplayIdentifier;
 }
 
 - (id)clientSettings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 clientSettings];
+  scene = [(FBSSceneComponent *)self scene];
+  clientSettings = [scene clientSettings];
 
-  return v3;
+  return clientSettings;
 }
 
-- (void)updateClientSettings:(id)a3
+- (void)updateClientSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self clientScene];
-  [v5 updateClientSettings:v4];
+  settingsCopy = settings;
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  [clientScene updateClientSettings:settingsCopy];
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = _UISceneRenderingEnvironmentClientComponent;
-  [(FBSSceneComponent *)&v7 setScene:a3];
-  v4 = [(FBSSceneComponent *)self clientScene];
-  if (v4)
+  [(FBSSceneComponent *)&v7 setScene:scene];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  if (clientScene)
   {
-    v5 = [UIScene _sceneForFBSScene:v4];
+    v5 = [UIScene _sceneForFBSScene:clientScene];
     if (v5)
     {
       [(_UISceneRenderingEnvironmentClientComponent *)self _setupTraitProviderWithUIScene:v5];
@@ -79,62 +79,62 @@
 
     else
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:self selector:sel__uiSceneDidInitializeSceneComponents_ name:@"_UISceneDidInitializeSceneComponentsNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__uiSceneDidInitializeSceneComponents_ name:@"_UISceneDidInitializeSceneComponentsNotification" object:0];
     }
   }
 }
 
 - (BOOL)prefersContentProtection
 {
-  v2 = [(_UISceneRenderingEnvironmentClientComponent *)self clientSettings];
-  v3 = [v2 prefersContentProtection];
+  clientSettings = [(_UISceneRenderingEnvironmentClientComponent *)self clientSettings];
+  prefersContentProtection = [clientSettings prefersContentProtection];
 
-  return v3;
+  return prefersContentProtection;
 }
 
-- (void)setPrefersContentProtection:(BOOL)a3
+- (void)setPrefersContentProtection:(BOOL)protection
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __75___UISceneRenderingEnvironmentClientComponent_setPrefersContentProtection___block_invoke;
   v3[3] = &__block_descriptor_33_e113_v24__0__FBSMutableSceneClientSettings__UISceneRenderingEnvironmentClientSettings__8__FBSSceneTransitionContext_16l;
-  v4 = a3;
+  protectionCopy = protection;
   [(_UISceneRenderingEnvironmentClientComponent *)self updateClientSettings:v3];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v8 containsProperty:sel_modern_isCapturingContentForAdditionalRenderingDestination];
-  v10 = [v8 containsProperty:sel_displayConfiguration];
-  if ([v8 containsProperty:sel_foreground])
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v9 = [settingsDiff containsProperty:sel_modern_isCapturingContentForAdditionalRenderingDestination];
+  v10 = [settingsDiff containsProperty:sel_displayConfiguration];
+  if ([settingsDiff containsProperty:sel_foreground])
   {
-    v11 = [v6 settings];
-    v12 = [v11 isForeground];
+    settings = [sceneCopy settings];
+    isForeground = [settings isForeground];
 
-    v13 = [(_UISceneRenderingEnvironmentClientComponent *)self isCapturingContentForAdditionalRenderingDestination];
-    v14 = v13;
-    if (((v9 | v10 & v13) & 1) == 0)
+    isCapturingContentForAdditionalRenderingDestination = [(_UISceneRenderingEnvironmentClientComponent *)self isCapturingContentForAdditionalRenderingDestination];
+    v14 = isCapturingContentForAdditionalRenderingDestination;
+    if (((v9 | v10 & isCapturingContentForAdditionalRenderingDestination) & 1) == 0)
     {
-      if (!v12)
+      if (!isForeground)
       {
         goto LABEL_22;
       }
 
-      v15 = [v7 settings];
-      v16 = [v15 displayConfiguration];
-      v17 = [v16 identity];
-      v18 = [UIScreen _screenWithFBSDisplayIdentity:v17];
+      settings2 = [settingsCopy settings];
+      displayConfiguration = [settings2 displayConfiguration];
+      identity = [displayConfiguration identity];
+      v18 = [UIScreen _screenWithFBSDisplayIdentity:identity];
 
       if (v14 != [v18 isCaptured])
       {
         v19 = MEMORY[0x1E696AEC0];
-        v20 = [(FBSSceneComponent *)self clientScene];
-        v21 = [v20 identityToken];
-        v22 = [v19 stringWithFormat:@"moving to foreground: %@", v21];
+        clientScene = [(FBSSceneComponent *)self clientScene];
+        identityToken = [clientScene identityToken];
+        v22 = [v19 stringWithFormat:@"moving to foreground: %@", identityToken];
 
         v23 = dispatch_time(0, 100000000);
         block[0] = MEMORY[0x1E69E9820];
@@ -153,52 +153,52 @@
 
   else
   {
-    v25 = [(_UISceneRenderingEnvironmentClientComponent *)self isCapturingContentForAdditionalRenderingDestination];
-    if (((v9 | v10 & v25) & 1) == 0)
+    isCapturingContentForAdditionalRenderingDestination2 = [(_UISceneRenderingEnvironmentClientComponent *)self isCapturingContentForAdditionalRenderingDestination];
+    if (((v9 | v10 & isCapturingContentForAdditionalRenderingDestination2) & 1) == 0)
     {
       goto LABEL_22;
     }
 
-    v14 = v25;
+    v14 = isCapturingContentForAdditionalRenderingDestination2;
   }
 
-  v49 = v6;
-  v26 = [v7 settings];
-  v27 = [v26 displayConfiguration];
-  v28 = [v27 identity];
-  v18 = [UIScreen _screenWithFBSDisplayIdentity:v28];
+  v49 = sceneCopy;
+  settings3 = [settingsCopy settings];
+  displayConfiguration2 = [settings3 displayConfiguration];
+  identity2 = [displayConfiguration2 identity];
+  v18 = [UIScreen _screenWithFBSDisplayIdentity:identity2];
 
   if (v14 != [v18 isCaptured])
   {
     v29 = MEMORY[0x1E696AEC0];
-    v30 = [(FBSSceneComponent *)self clientScene];
-    v31 = [v30 identityToken];
+    clientScene2 = [(FBSSceneComponent *)self clientScene];
+    identityToken2 = [clientScene2 identityToken];
     v32 = NSStringFromBOOL();
-    v33 = [v29 stringWithFormat:@"update for %@, capturing:%@", v31, v32];
+    v33 = [v29 stringWithFormat:@"update for %@, capturing:%@", identityToken2, v32];
     [(UIScreen *)v18 _evaluateCapturedStateForReason:v33];
   }
 
-  v6 = v49;
+  sceneCopy = v49;
   if (v10)
   {
-    v34 = [v7 previousSettings];
-    v35 = [v34 displayConfiguration];
-    v36 = [v35 identity];
-    v37 = [UIScreen _screenWithFBSDisplayIdentity:v36];
+    previousSettings = [settingsCopy previousSettings];
+    displayConfiguration3 = [previousSettings displayConfiguration];
+    identity3 = [displayConfiguration3 identity];
+    v37 = [UIScreen _screenWithFBSDisplayIdentity:identity3];
 
-    v38 = v18;
+    clientScene3 = v18;
     v39 = v37;
     v40 = v39;
-    if (v38 == v39)
+    if (clientScene3 == v39)
     {
-      v42 = v39;
+      identityToken3 = v39;
     }
 
     else
     {
-      if (v38 && v39)
+      if (clientScene3 && v39)
       {
-        v41 = [v38 isEqual:v39];
+        v41 = [clientScene3 isEqual:v39];
 
         if (v41)
         {
@@ -211,10 +211,10 @@
       }
 
       v43 = MEMORY[0x1E696AEC0];
-      v38 = [(FBSSceneComponent *)self clientScene];
-      v42 = [v38 identityToken];
+      clientScene3 = [(FBSSceneComponent *)self clientScene];
+      identityToken3 = [clientScene3 identityToken];
       v44 = NSStringFromBOOL();
-      v45 = [v43 stringWithFormat:@"old display for %@, capturing:%@", v42, v44];
+      v45 = [v43 stringWithFormat:@"old display for %@, capturing:%@", identityToken3, v44];
       [(UIScreen *)v40 _evaluateCapturedStateForReason:v45];
     }
 
@@ -224,44 +224,44 @@ LABEL_20:
 LABEL_21:
 
 LABEL_22:
-  v46 = [v7 settingsDiff];
-  v47 = [v46 containsProperty:sel_activeAppearance];
+  settingsDiff2 = [settingsCopy settingsDiff];
+  v47 = [settingsDiff2 containsProperty:sel_activeAppearance];
 
   if (v47)
   {
-    v48 = [(_UISceneRenderingEnvironmentClientComponent *)self _traitProvider];
-    [v48 invalidateTraitOverrides];
+    _traitProvider = [(_UISceneRenderingEnvironmentClientComponent *)self _traitProvider];
+    [_traitProvider invalidateTraitOverrides];
   }
 }
 
-- (void)sceneWillInvalidate:(id)a3
+- (void)sceneWillInvalidate:(id)invalidate
 {
   if ([(_UISceneRenderingEnvironmentClientComponent *)self isCapturingContentForAdditionalRenderingDestination])
   {
     self->_isInvalidating = 1;
-    v4 = [(FBSSceneComponent *)self scene];
-    v5 = [v4 settings];
-    v6 = [v5 displayConfiguration];
-    v7 = [v6 identity];
-    v12 = [UIScreen _screenWithFBSDisplayIdentity:v7];
+    scene = [(FBSSceneComponent *)self scene];
+    settings = [scene settings];
+    displayConfiguration = [settings displayConfiguration];
+    identity = [displayConfiguration identity];
+    v12 = [UIScreen _screenWithFBSDisplayIdentity:identity];
 
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(FBSSceneComponent *)self clientScene];
-    v10 = [v9 identityToken];
-    v11 = [v8 stringWithFormat:@"scene invalidating: %@", v10];
+    clientScene = [(FBSSceneComponent *)self clientScene];
+    identityToken = [clientScene identityToken];
+    v11 = [v8 stringWithFormat:@"scene invalidating: %@", identityToken];
     [(UIScreen *)v12 _evaluateCapturedStateForReason:v11];
   }
 }
 
-- (id)traitOverridesForTraitProvider:(id)a3
+- (id)traitOverridesForTraitProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   if (dyld_program_sdk_at_least())
   {
-    v4 = [v3 _scene];
-    v5 = [v4 _effectiveSettings];
+    _scene = [providerCopy _scene];
+    _effectiveSettings = [_scene _effectiveSettings];
 
-    if ([v5 activeAppearance] < 2)
+    if ([_effectiveSettings activeAppearance] < 2)
     {
       [UITraitCollection traitCollectionWithActiveAppearance:?];
     }
@@ -281,44 +281,44 @@ LABEL_22:
   return v6;
 }
 
-- (void)_setupTraitProviderWithUIScene:(id)a3
+- (void)_setupTraitProviderWithUIScene:(id)scene
 {
-  v6 = a3;
-  v4 = [(_UISceneRenderingEnvironmentClientComponent *)self _traitProvider];
+  sceneCopy = scene;
+  _traitProvider = [(_UISceneRenderingEnvironmentClientComponent *)self _traitProvider];
 
-  if (!v4)
+  if (!_traitProvider)
   {
-    v5 = [[_UIWindowSceneTraitProvider alloc] initWithScene:v6];
+    v5 = [[_UIWindowSceneTraitProvider alloc] initWithScene:sceneCopy];
     [(_UIWindowSceneTraitProvider *)v5 setSource:self];
-    [v6 _registerSceneComponent:v5 forKey:@"RenderingEnvironmentTraitProviderKey"];
+    [sceneCopy _registerSceneComponent:v5 forKey:@"RenderingEnvironmentTraitProviderKey"];
     [(_UISceneRenderingEnvironmentClientComponent *)self set_traitProvider:v5];
   }
 }
 
-- (void)_uiSceneDidInitializeSceneComponents:(id)a3
+- (void)_uiSceneDidInitializeSceneComponents:(id)components
 {
-  v12 = a3;
-  v4 = [v12 object];
+  componentsCopy = components;
+  object = [componentsCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v12;
+  v6 = componentsCopy;
   if (isKindOfClass)
   {
-    v7 = [v12 object];
-    v8 = [(FBSSceneComponent *)self clientScene];
-    v9 = [v7 _FBSScene];
-    v10 = [v8 isEqual:v9];
+    object2 = [componentsCopy object];
+    clientScene = [(FBSSceneComponent *)self clientScene];
+    _FBSScene = [object2 _FBSScene];
+    v10 = [clientScene isEqual:_FBSScene];
 
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 removeObserver:self name:@"_UISceneDidInitializeSceneComponentsNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"_UISceneDidInitializeSceneComponentsNotification" object:0];
 
-      [(_UISceneRenderingEnvironmentClientComponent *)self _setupTraitProviderWithUIScene:v7];
+      [(_UISceneRenderingEnvironmentClientComponent *)self _setupTraitProviderWithUIScene:object2];
     }
 
-    v6 = v12;
+    v6 = componentsCopy;
   }
 }
 

@@ -1,6 +1,6 @@
 @interface PMSettingsController
-- (PMSettingsController)initWithCoder:(id)a3;
-- (PMSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PMSettingsController)initWithCoder:(id)coder;
+- (PMSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)openAutoFillSettings;
 - (id)specifiers;
 - (void)accountStoreDidChange;
@@ -8,14 +8,14 @@
 - (void)presentNeverSavedSheetView;
 - (void)presentPasskeysLearnMoreView;
 - (void)showPasswordsPrivacySheet;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PMSettingsController
 
-- (PMSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (PMSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_12808();
     v7 = v6;
@@ -27,11 +27,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_26C4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_26C4(v5, v7, bundle);
 }
 
-- (PMSettingsController)initWithCoder:(id)a3
+- (PMSettingsController)initWithCoder:(id)coder
 {
   v3 = &self->PSListController_opaque[OBJC_IVAR___PMSettingsController_passwordsPrivacySplashIdentifier];
   *v3 = 0xD00000000000001ELL;
@@ -45,15 +45,15 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2998(a3);
+  selfCopy = self;
+  sub_2998(appear);
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2C3C();
 
   v3.super.isa = sub_12858().super.isa;
@@ -65,13 +65,13 @@
 {
   v2 = *&self->PSListController_opaque[OBJC_IVAR___PMSettingsController_passwordsPrivacySplashIdentifier];
   v3 = *&self->passwordsPrivacySplashIdentifier[OBJC_IVAR___PMSettingsController_passwordsPrivacySplashIdentifier];
-  v6 = self;
+  selfCopy = self;
   v4 = sub_127F8();
   v5 = [objc_opt_self() presenterForPrivacySplashWithIdentifier:v4];
 
   if (v5)
   {
-    [v5 setPresentingViewController:v6];
+    [v5 setPresentingViewController:selfCopy];
     [v5 present];
   }
 }
@@ -84,24 +84,24 @@
   v6 = sub_128E8();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   sub_128C8();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_128B8();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_5B50(0, 0, v5, &unk_13840, v9);
 }
 
 - (void)accountStoreDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_5F2C();
 }
 
 - (void)presentPasskeysLearnMoreView
 {
-  v2 = self;
+  selfCopy = self;
   sub_6098();
 }
 
@@ -112,11 +112,11 @@
   v2 = *(v1 + 64);
   __chkstk_darwin();
   v4 = &v12 - ((v3 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v5 = [objc_opt_self() defaultWorkspace];
-  if (v5)
+  defaultWorkspace = [objc_opt_self() defaultWorkspace];
+  if (defaultWorkspace)
   {
-    v6 = v5;
-    v7 = [objc_opt_self() passwordManagerURL];
+    v6 = defaultWorkspace;
+    passwordManagerURL = [objc_opt_self() passwordManagerURL];
     sub_123F8();
 
     sub_123E8(v8);

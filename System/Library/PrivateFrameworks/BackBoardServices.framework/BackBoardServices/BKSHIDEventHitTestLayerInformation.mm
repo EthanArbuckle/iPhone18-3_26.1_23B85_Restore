@@ -1,8 +1,8 @@
 @interface BKSHIDEventHitTestLayerInformation
 + (BKSHIDEventHitTestLayerInformation)new;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 - (BKSHIDEventHitTestLayerInformation)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CATransform3D)cumulativeContentsTransform;
 - (CATransform3D)cumulativeLayerTransform;
 - (CATransform3D)cumulativeTransform;
@@ -11,12 +11,12 @@
 - (float)backgroundStandardDeviation;
 - (float)cumulativeOpacity;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_initWithCopyOf:(void *)a1;
-- (void)_updateCCHmacContext:(id *)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_initWithCopyOf:(void *)of;
+- (void)_updateCCHmacContext:(id *)context;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKSHIDEventHitTestLayerInformation
@@ -35,18 +35,18 @@ void __52__BKSHIDEventHitTestLayerInformation_protobufSchema__block_invoke(uint6
   [v2 addField:"_backgroundAverageContrastThreshold"];
 }
 
-- (void)_updateCCHmacContext:(id *)a3
+- (void)_updateCCHmacContext:(id *)context
 {
-  CCHmacUpdate(a3, &self->_validMask, 8uLL);
-  CCHmacUpdate(a3, &self->_cumulativeOpacity, 4uLL);
-  CCHmacUpdate(a3, &self->_cumulativeLayerTransform, 0x80uLL);
-  CCHmacUpdate(a3, &self->_cumulativeContentsTransform, 0x80uLL);
-  CCHmacUpdate(a3, &self->_hasInsecureFilter, 1uLL);
-  CCHmacUpdate(a3, &self->_detectedOcclusion, 1uLL);
-  CCHmacUpdate(a3, &self->_backgroundAverage, 4uLL);
-  CCHmacUpdate(a3, &self->_backgroundStandardDeviation, 4uLL);
+  CCHmacUpdate(context, &self->_validMask, 8uLL);
+  CCHmacUpdate(context, &self->_cumulativeOpacity, 4uLL);
+  CCHmacUpdate(context, &self->_cumulativeLayerTransform, 0x80uLL);
+  CCHmacUpdate(context, &self->_cumulativeContentsTransform, 0x80uLL);
+  CCHmacUpdate(context, &self->_hasInsecureFilter, 1uLL);
+  CCHmacUpdate(context, &self->_detectedOcclusion, 1uLL);
+  CCHmacUpdate(context, &self->_backgroundAverage, 4uLL);
+  CCHmacUpdate(context, &self->_backgroundStandardDeviation, 4uLL);
 
-  CCHmacUpdate(a3, &self->_backgroundAverageContrastThreshold, 4uLL);
+  CCHmacUpdate(context, &self->_backgroundAverageContrastThreshold, 4uLL);
 }
 
 - (float)backgroundAverageContrastThreshold
@@ -230,16 +230,16 @@ void __52__BKSHIDEventHitTestLayerInformation_protobufSchema__block_invoke(uint6
   return result;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__BKSHIDEventHitTestLayerInformation_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -347,75 +347,75 @@ LABEL_6:
   v9 = [*(a1 + 32) appendFloat:@"backgroundAverageContrastThreshold" withName:*(*(a1 + 40) + 28)];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventHitTestLayerInformation alloc];
 
   return [(BKSHIDEventHitTestLayerInformation *)v4 _initWithCopyOf:?];
 }
 
-- (void)_initWithCopyOf:(void *)a1
+- (void)_initWithCopyOf:(void *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSHIDEventHitTestLayerInformation *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSHIDEventHitTestLayerInformation *)of _init];
+    of = _init;
+    if (_init)
     {
-      *(v4 + 1) = v3[1];
+      *(_init + 1) = v3[1];
       v5 = *(v3 + 2);
       v6 = *(v3 + 3);
       v7 = *(v3 + 5);
-      *(v4 + 4) = *(v3 + 4);
-      *(v4 + 5) = v7;
-      *(v4 + 2) = v5;
-      *(v4 + 3) = v6;
+      *(_init + 4) = *(v3 + 4);
+      *(_init + 5) = v7;
+      *(_init + 2) = v5;
+      *(_init + 3) = v6;
       v8 = *(v3 + 6);
       v9 = *(v3 + 7);
       v10 = *(v3 + 9);
-      *(v4 + 8) = *(v3 + 8);
-      *(v4 + 9) = v10;
-      *(v4 + 6) = v8;
-      *(v4 + 7) = v9;
+      *(_init + 8) = *(v3 + 8);
+      *(_init + 9) = v10;
+      *(_init + 6) = v8;
+      *(_init + 7) = v9;
       v11 = *(v3 + 17);
       v13 = *(v3 + 14);
       v12 = *(v3 + 15);
-      *(v4 + 16) = *(v3 + 16);
-      *(v4 + 17) = v11;
-      *(v4 + 14) = v13;
-      *(v4 + 15) = v12;
+      *(_init + 16) = *(v3 + 16);
+      *(_init + 17) = v11;
+      *(_init + 14) = v13;
+      *(_init + 15) = v12;
       v14 = *(v3 + 10);
       v15 = *(v3 + 11);
       v16 = *(v3 + 13);
-      *(v4 + 12) = *(v3 + 12);
-      *(v4 + 13) = v16;
-      *(v4 + 10) = v14;
-      *(v4 + 11) = v15;
-      *(v4 + 4) = *(v3 + 4);
-      *(v4 + 288) = *(v3 + 288);
-      *(v4 + 289) = *(v3 + 289);
-      *(v4 + 5) = *(v3 + 5);
-      *(v4 + 6) = *(v3 + 6);
-      *(v4 + 7) = *(v3 + 7);
+      *(_init + 12) = *(v3 + 12);
+      *(_init + 13) = v16;
+      *(_init + 10) = v14;
+      *(_init + 11) = v15;
+      *(_init + 4) = *(v3 + 4);
+      *(_init + 288) = *(v3 + 288);
+      *(_init + 289) = *(v3 + 289);
+      *(_init + 5) = *(v3 + 5);
+      *(_init + 6) = *(v3 + 6);
+      *(_init + 7) = *(v3 + 7);
     }
   }
 
-  return a1;
+  return of;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSHIDEventHitTestLayerInformation alloc];
 
   return [(BKSHIDEventHitTestLayerInformation *)v4 _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && *(v4 + 1) == self->_validMask && (vminvq_u8(vuzp1q_s8(vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(v4 + 2), *&self->_cumulativeLayerTransform.m11), vceqq_f64(*(v4 + 3), *&self->_cumulativeLayerTransform.m13)), vuzp1q_s32(vceqq_f64(*(v4 + 4), *&self->_cumulativeLayerTransform.m21), vceqq_f64(*(v4 + 5), *&self->_cumulativeLayerTransform.m23))), vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(v4 + 6), *&self->_cumulativeLayerTransform.m31), vceqq_f64(*(v4 + 7), *&self->_cumulativeLayerTransform.m33)), vuzp1q_s32(vceqq_f64(*(v4 + 8), *&self->_cumulativeLayerTransform.m41), vceqq_f64(*(v4 + 9), *&self->_cumulativeLayerTransform.m43))))) & 1) != 0 && (vminvq_u8(vuzp1q_s8(vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(v4 + 10), *&self->_cumulativeContentsTransform.m11), vceqq_f64(*(v4 + 11), *&self->_cumulativeContentsTransform.m13)), vuzp1q_s32(vceqq_f64(*(v4 + 12), *&self->_cumulativeContentsTransform.m21), vceqq_f64(*(v4 + 13), *&self->_cumulativeContentsTransform.m23))), vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(v4 + 14), *&self->_cumulativeContentsTransform.m31), vceqq_f64(*(v4 + 15), *&self->_cumulativeContentsTransform.m33)), vuzp1q_s32(vceqq_f64(*(v4 + 16), *&self->_cumulativeContentsTransform.m41), vceqq_f64(*(v4 + 17), *&self->_cumulativeContentsTransform.m43))))) & 1) != 0 && *(v4 + 4) == self->_cumulativeOpacity && v4[288] == self->_hasInsecureFilter && v4[289] == self->_detectedOcclusion && *(v4 + 5) == self->_backgroundAverage && *(v4 + 6) == self->_backgroundStandardDeviation && *(v4 + 7) == self->_backgroundAverageContrastThreshold;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && *(equalCopy + 1) == self->_validMask && (vminvq_u8(vuzp1q_s8(vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(equalCopy + 2), *&self->_cumulativeLayerTransform.m11), vceqq_f64(*(equalCopy + 3), *&self->_cumulativeLayerTransform.m13)), vuzp1q_s32(vceqq_f64(*(equalCopy + 4), *&self->_cumulativeLayerTransform.m21), vceqq_f64(*(equalCopy + 5), *&self->_cumulativeLayerTransform.m23))), vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(equalCopy + 6), *&self->_cumulativeLayerTransform.m31), vceqq_f64(*(equalCopy + 7), *&self->_cumulativeLayerTransform.m33)), vuzp1q_s32(vceqq_f64(*(equalCopy + 8), *&self->_cumulativeLayerTransform.m41), vceqq_f64(*(equalCopy + 9), *&self->_cumulativeLayerTransform.m43))))) & 1) != 0 && (vminvq_u8(vuzp1q_s8(vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(equalCopy + 10), *&self->_cumulativeContentsTransform.m11), vceqq_f64(*(equalCopy + 11), *&self->_cumulativeContentsTransform.m13)), vuzp1q_s32(vceqq_f64(*(equalCopy + 12), *&self->_cumulativeContentsTransform.m21), vceqq_f64(*(equalCopy + 13), *&self->_cumulativeContentsTransform.m23))), vuzp1q_s16(vuzp1q_s32(vceqq_f64(*(equalCopy + 14), *&self->_cumulativeContentsTransform.m31), vceqq_f64(*(equalCopy + 15), *&self->_cumulativeContentsTransform.m33)), vuzp1q_s32(vceqq_f64(*(equalCopy + 16), *&self->_cumulativeContentsTransform.m41), vceqq_f64(*(equalCopy + 17), *&self->_cumulativeContentsTransform.m43))))) & 1) != 0 && *(equalCopy + 4) == self->_cumulativeOpacity && equalCopy[288] == self->_hasInsecureFilter && equalCopy[289] == self->_detectedOcclusion && *(equalCopy + 5) == self->_backgroundAverage && *(equalCopy + 6) == self->_backgroundStandardDeviation && *(equalCopy + 7) == self->_backgroundAverageContrastThreshold;
 
   return v5;
 }
@@ -493,7 +493,7 @@ LABEL_6:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventHitTestLayerInformation.m";
     v17 = 1024;
@@ -522,7 +522,7 @@ LABEL_6:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventHitTestLayerInformation.m";
     v17 = 1024;
@@ -538,13 +538,13 @@ LABEL_6:
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventHitTestLayerInformation *)[BKSMutableHIDEventHitTestLayerInformation alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventHitTestLayerInformation *)[BKSMutableHIDEventHitTestLayerInformation alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

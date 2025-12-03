@@ -7,12 +7,12 @@
 + (id)userAgent
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKey:@"CFBundleShortVersionString"];
+  infoDictionary = [v2 infoDictionary];
+  v4 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   v5 = +[NSBundle mainBundle];
-  v6 = [v5 infoDictionary];
-  v7 = [v6 objectForKey:kCFBundleNameKey];
+  infoDictionary2 = [v5 infoDictionary];
+  v7 = [infoDictionary2 objectForKey:kCFBundleNameKey];
 
   v8 = [NSString stringWithFormat:@"%@/%@", v7, v4];
 

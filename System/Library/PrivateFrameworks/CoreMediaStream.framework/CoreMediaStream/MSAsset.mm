@@ -1,42 +1,42 @@
 @interface MSAsset
-+ (id)MSASPAssetFromProtocolDictionary:(id)a3;
++ (id)MSASPAssetFromProtocolDictionary:(id)dictionary;
 + (id)asset;
-+ (id)assetWithAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)assetWithAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPhoto;
 - (BOOL)isVideo;
 - (MSAsset)init;
-- (MSAsset)initWithCoder:(id)a3;
-- (MSAsset)initWithGUID:(id)a3;
+- (MSAsset)initWithCoder:(id)coder;
+- (MSAsset)initWithGUID:(id)d;
 - (NSData)fileHash;
 - (NSError)MMCSError;
 - (NSString)description;
 - (NSString)type;
 - (id)MMCSItemType;
 - (id)MSASPProtocolDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)metadataValueForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)metadataValueForKey:(id)key;
 - (int)MMCSOpenNewFileDescriptor;
 - (unint64_t)MMCSItemID;
 - (unint64_t)_fileSize;
 - (unint64_t)_fileSizeOnDisk;
 - (unint64_t)hash;
 - (unint64_t)protocolFileSize;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFileHash:(id)a3;
-- (void)setMMCSAccessHeader:(id)a3;
-- (void)setMMCSAccessHeader:(id)a3 andTimeStamp:(id)a4;
-- (void)setMMCSError:(id)a3;
-- (void)setMMCSItemFlags:(unsigned int)a3;
-- (void)setMMCSItemID:(unint64_t)a3;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4;
-- (void)setProtocolFileSize:(unint64_t)a3;
-- (void)setType:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFileHash:(id)hash;
+- (void)setMMCSAccessHeader:(id)header;
+- (void)setMMCSAccessHeader:(id)header andTimeStamp:(id)stamp;
+- (void)setMMCSError:(id)error;
+- (void)setMMCSItemFlags:(unsigned int)flags;
+- (void)setMMCSItemID:(unint64_t)d;
+- (void)setMetadataValue:(id)value forKey:(id)key;
+- (void)setProtocolFileSize:(unint64_t)size;
+- (void)setType:(id)type;
 @end
 
 @implementation MSAsset
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -46,8 +46,8 @@
   if (!v3)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v4 userInfo];
-    v8 = [v6 stringWithFormat:@"Failed to archive an MSAsset object. Error: %@ Info: %@", v5, v7];
+    userInfo = [v4 userInfo];
+    v8 = [v6 stringWithFormat:@"Failed to archive an MSAsset object. Error: %@ Info: %@", v5, userInfo];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -63,24 +63,24 @@
   return v9;
 }
 
-- (id)metadataValueForKey:(id)a3
+- (id)metadataValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSDictionary *)v5->_metadata objectForKey:v4];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSDictionary *)selfCopy->_metadata objectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4
+- (void)setMetadataValue:(id)value forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  metadata = v7->_metadata;
+  valueCopy = value;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metadata = selfCopy->_metadata;
   if (metadata)
   {
     v9 = [(NSDictionary *)metadata mutableCopy];
@@ -92,31 +92,31 @@
   }
 
   v10 = v9;
-  if (v12)
+  if (valueCopy)
   {
-    [(NSDictionary *)v9 setObject:v12 forKey:v6];
+    [(NSDictionary *)v9 setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSDictionary *)v9 removeObjectForKey:v6];
+    [(NSDictionary *)v9 removeObjectForKey:keyCopy];
   }
 
-  v11 = v7->_metadata;
-  v7->_metadata = v10;
+  v11 = selfCopy->_metadata;
+  selfCopy->_metadata = v10;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (MSAsset)initWithCoder:(id)a3
+- (MSAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v45.receiver = self;
   v45.super_class = MSAsset;
   v5 = [(MSAsset *)&v45 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"masterAssetHash"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"masterAssetHash"];
     masterAssetHash = v5->_masterAssetHash;
     v5->_masterAssetHash = v6;
 
@@ -128,39 +128,39 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v8 setWithObjects:{v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"metadata"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileHash"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileHash"];
     fileHash = v5->_fileHash;
     v5->_fileHash = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileData"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileData"];
     fileData = v5->_fileData;
     v5->_fileData = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MMCSAccessHeader"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MMCSAccessHeader"];
     MMCSAccessHeader = v5->_MMCSAccessHeader;
     v5->_MMCSAccessHeader = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MMCSAccessHeaderTimeStamp"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MMCSAccessHeaderTimeStamp"];
     MMCSAccessHeaderTimeStamp = v5->_MMCSAccessHeaderTimeStamp;
     v5->_MMCSAccessHeaderTimeStamp = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MMCSReceipt"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MMCSReceipt"];
     MMCSReceipt = v5->_MMCSReceipt;
     v5->_MMCSReceipt = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MMCSURL"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MMCSURL"];
     if (v32)
     {
       v33 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v32];
@@ -168,142 +168,142 @@
       v5->_MMCSURL = v33;
     }
 
-    v5->_protocolFileSize = [v4 decodeInt64ForKey:@"protocolFileSize"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
+    v5->_protocolFileSize = [coderCopy decodeInt64ForKey:@"protocolFileSize"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
     GUID = v5->_GUID;
     v5->_GUID = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetCollectionGUID"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetCollectionGUID"];
     assetCollectionGUID = v5->_assetCollectionGUID;
     v5->_assetCollectionGUID = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batchCreationDate"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batchCreationDate"];
     batchCreationDate = v5->_batchCreationDate;
     v5->_batchCreationDate = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoCreationDate"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoCreationDate"];
     photoCreationDate = v5->_photoCreationDate;
     v5->_photoCreationDate = v41;
 
-    v43 = [v4 decodePropertyListForKey:@"userInfo"];
+    v43 = [coderCopy decodePropertyListForKey:@"userInfo"];
     [(MSAsset *)v5 setUserInfo:v43];
 
-    v5->_mediaAssetType = [v4 decodeIntegerForKey:@"mediaAssetType"];
-    v5->_assetDataAvailableOnServer = [v4 decodeBoolForKey:@"assetDataAvailableOnServer"];
+    v5->_mediaAssetType = [coderCopy decodeIntegerForKey:@"mediaAssetType"];
+    v5->_assetDataAvailableOnServer = [coderCopy decodeBoolForKey:@"assetDataAvailableOnServer"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v22 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  masterAssetHash = v4->_masterAssetHash;
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  masterAssetHash = selfCopy->_masterAssetHash;
   if (masterAssetHash)
   {
-    [v22 encodeObject:masterAssetHash forKey:@"masterAssetHash"];
+    [coderCopy encodeObject:masterAssetHash forKey:@"masterAssetHash"];
   }
 
-  metadata = v4->_metadata;
+  metadata = selfCopy->_metadata;
   if (metadata)
   {
-    [v22 encodeObject:metadata forKey:@"metadata"];
+    [coderCopy encodeObject:metadata forKey:@"metadata"];
   }
 
-  fileHash = v4->_fileHash;
+  fileHash = selfCopy->_fileHash;
   if (fileHash)
   {
-    [v22 encodeObject:fileHash forKey:@"fileHash"];
+    [coderCopy encodeObject:fileHash forKey:@"fileHash"];
   }
 
-  type = v4->_type;
+  type = selfCopy->_type;
   if (type)
   {
-    [v22 encodeObject:type forKey:@"type"];
+    [coderCopy encodeObject:type forKey:@"type"];
   }
 
-  [v22 encodeInt64:v4->_protocolFileSize forKey:@"protocolFileSize"];
-  MMCSAccessHeader = v4->_MMCSAccessHeader;
+  [coderCopy encodeInt64:selfCopy->_protocolFileSize forKey:@"protocolFileSize"];
+  MMCSAccessHeader = selfCopy->_MMCSAccessHeader;
   if (MMCSAccessHeader)
   {
-    [v22 encodeObject:MMCSAccessHeader forKey:@"MMCSAccessHeader"];
+    [coderCopy encodeObject:MMCSAccessHeader forKey:@"MMCSAccessHeader"];
   }
 
-  MMCSAccessHeaderTimeStamp = v4->_MMCSAccessHeaderTimeStamp;
+  MMCSAccessHeaderTimeStamp = selfCopy->_MMCSAccessHeaderTimeStamp;
   if (MMCSAccessHeaderTimeStamp)
   {
-    [v22 encodeObject:MMCSAccessHeaderTimeStamp forKey:@"MMCSAccessHeaderTimeStamp"];
+    [coderCopy encodeObject:MMCSAccessHeaderTimeStamp forKey:@"MMCSAccessHeaderTimeStamp"];
   }
 
-  path = v4->_path;
+  path = selfCopy->_path;
   if (path)
   {
-    [v22 encodeObject:path forKey:@"path"];
+    [coderCopy encodeObject:path forKey:@"path"];
   }
 
-  fileData = v4->_fileData;
+  fileData = selfCopy->_fileData;
   if (fileData)
   {
-    [v22 encodeObject:fileData forKey:@"fileData"];
+    [coderCopy encodeObject:fileData forKey:@"fileData"];
   }
 
-  MMCSURL = v4->_MMCSURL;
+  MMCSURL = selfCopy->_MMCSURL;
   if (MMCSURL)
   {
-    v14 = [(NSURL *)MMCSURL absoluteString];
-    [v22 encodeObject:v14 forKey:@"MMCSURL"];
+    absoluteString = [(NSURL *)MMCSURL absoluteString];
+    [coderCopy encodeObject:absoluteString forKey:@"MMCSURL"];
   }
 
-  MMCSReceipt = v4->_MMCSReceipt;
+  MMCSReceipt = selfCopy->_MMCSReceipt;
   if (MMCSReceipt)
   {
-    [v22 encodeObject:MMCSReceipt forKey:@"MMCSReceipt"];
+    [coderCopy encodeObject:MMCSReceipt forKey:@"MMCSReceipt"];
   }
 
-  GUID = v4->_GUID;
+  GUID = selfCopy->_GUID;
   if (GUID)
   {
-    [v22 encodeObject:GUID forKey:@"GUID"];
+    [coderCopy encodeObject:GUID forKey:@"GUID"];
   }
 
-  assetCollectionGUID = v4->_assetCollectionGUID;
+  assetCollectionGUID = selfCopy->_assetCollectionGUID;
   if (assetCollectionGUID)
   {
-    [v22 encodeObject:assetCollectionGUID forKey:@"assetCollectionGUID"];
+    [coderCopy encodeObject:assetCollectionGUID forKey:@"assetCollectionGUID"];
   }
 
-  batchCreationDate = v4->_batchCreationDate;
+  batchCreationDate = selfCopy->_batchCreationDate;
   if (batchCreationDate)
   {
-    [v22 encodeObject:batchCreationDate forKey:@"batchCreationDate"];
+    [coderCopy encodeObject:batchCreationDate forKey:@"batchCreationDate"];
   }
 
-  photoCreationDate = v4->_photoCreationDate;
+  photoCreationDate = selfCopy->_photoCreationDate;
   if (photoCreationDate)
   {
-    [v22 encodeObject:photoCreationDate forKey:@"photoCreationDate"];
+    [coderCopy encodeObject:photoCreationDate forKey:@"photoCreationDate"];
   }
 
-  v20 = [(MSAsset *)v4 userInfo];
+  userInfo = [(MSAsset *)selfCopy userInfo];
 
-  if (v20)
+  if (userInfo)
   {
-    v21 = [(MSAsset *)v4 userInfo];
-    [v22 encodeObject:v21 forKey:@"userInfo"];
+    userInfo2 = [(MSAsset *)selfCopy userInfo];
+    [coderCopy encodeObject:userInfo2 forKey:@"userInfo"];
   }
 
-  [v22 encodeInteger:-[MSAsset mediaAssetType](v4 forKey:{"mediaAssetType"), @"mediaAssetType"}];
-  [v22 encodeBool:-[MSAsset assetDataAvailableOnServer](v4 forKey:{"assetDataAvailableOnServer"), @"assetDataAvailableOnServer"}];
-  objc_sync_exit(v4);
+  [coderCopy encodeInteger:-[MSAsset mediaAssetType](selfCopy forKey:{"mediaAssetType"), @"mediaAssetType"}];
+  [coderCopy encodeBool:-[MSAsset assetDataAvailableOnServer](selfCopy forKey:{"assetDataAvailableOnServer"), @"assetDataAvailableOnServer"}];
+  objc_sync_exit(selfCopy);
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  GUID = v2->_GUID;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  GUID = selfCopy->_GUID;
   if (GUID)
   {
     v4 = [(NSString *)GUID hash];
@@ -311,23 +311,23 @@
 
   else
   {
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = MSAsset;
     v4 = [(MSAsset *)&v7 hash];
   }
 
   v5 = v4;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 == v4)
+  equalCopy = equal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy == equalCopy)
   {
     v9 = 1;
   }
@@ -337,10 +337,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      GUID = v5->_GUID;
-      v8 = [(MSAsset *)v6 GUID];
-      LOBYTE(GUID) = [(NSString *)GUID isEqualToString:v8];
+      v6 = equalCopy;
+      GUID = selfCopy->_GUID;
+      gUID = [(MSAsset *)v6 GUID];
+      LOBYTE(GUID) = [(NSString *)GUID isEqualToString:gUID];
 
       if (GUID)
       {
@@ -349,35 +349,35 @@
 
       else
       {
-        v10 = [(MSAsset *)v5 assetCollectionGUID];
-        if (v10)
+        assetCollectionGUID = [(MSAsset *)selfCopy assetCollectionGUID];
+        if (assetCollectionGUID)
         {
           v9 = 0;
         }
 
         else
         {
-          v11 = [(MSAsset *)v6 assetCollectionGUID];
+          assetCollectionGUID2 = [(MSAsset *)v6 assetCollectionGUID];
 
-          if (v11)
+          if (assetCollectionGUID2)
           {
             v9 = 0;
             goto LABEL_12;
           }
 
-          v10 = [(NSDictionary *)v5->_metadata objectForKey:@"MSAssetMetadataAssetFileTransferUUID"];
+          assetCollectionGUID = [(NSDictionary *)selfCopy->_metadata objectForKey:@"MSAssetMetadataAssetFileTransferUUID"];
           v13 = [(MSAsset *)v6 metadataValueForKey:@"MSAssetMetadataAssetFileTransferUUID"];
           v14 = v13;
-          if (v10 && v13)
+          if (assetCollectionGUID && v13)
           {
-            v9 = [v10 isEqualToString:v13];
+            v9 = [assetCollectionGUID isEqualToString:v13];
           }
 
           else
           {
-            fileHash = v5->_fileHash;
-            v16 = [(MSAsset *)v6 fileHash];
-            v9 = [(NSData *)fileHash isEqual:v16];
+            fileHash = selfCopy->_fileHash;
+            fileHash = [(MSAsset *)v6 fileHash];
+            v9 = [(NSData *)fileHash isEqual:fileHash];
           }
         }
       }
@@ -387,13 +387,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v17.receiver = v5;
+    v17.receiver = selfCopy;
     v17.super_class = MSAsset;
-    v9 = [(MSAsset *)&v17 isEqual:v4];
+    v9 = [(MSAsset *)&v17 isEqual:equalCopy];
   }
 
 LABEL_13:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -401,13 +401,13 @@ LABEL_13:
 - (unint64_t)_fileSizeOnDisk
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = v3;
-  if (v2->_path && [v3 fileExistsAtPath:?])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = defaultManager;
+  if (selfCopy->_path && [defaultManager fileExistsAtPath:?])
   {
-    path = v2->_path;
+    path = selfCopy->_path;
     v14 = 0;
     v6 = [v4 attributesOfItemAtPath:path error:&v14];
     v7 = v14;
@@ -415,7 +415,7 @@ LABEL_13:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v13 = v2->_path;
+        v13 = selfCopy->_path;
         *buf = 138412546;
         v16 = v13;
         v17 = 2114;
@@ -423,89 +423,89 @@ LABEL_13:
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Can't query for file size at path %@. Error: %{public}@", buf, 0x16u);
       }
 
-      v8 = [(NSDictionary *)v2->_metadata objectForKey:@"MSAssetMetadataFileSize"];
-      v9 = [v8 unsignedLongLongValue];
+      v8 = [(NSDictionary *)selfCopy->_metadata objectForKey:@"MSAssetMetadataFileSize"];
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
     }
 
     else
     {
-      v9 = [v6 fileSize];
+      unsignedLongLongValue = [v6 fileSize];
     }
   }
 
   else
   {
-    v10 = [(NSDictionary *)v2->_metadata objectForKey:@"MSAssetMetadataFileSize"];
-    v9 = [v10 unsignedLongLongValue];
+    v10 = [(NSDictionary *)selfCopy->_metadata objectForKey:@"MSAssetMetadataFileSize"];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return unsignedLongLongValue;
 }
 
-- (void)setMMCSAccessHeader:(id)a3 andTimeStamp:(id)a4
+- (void)setMMCSAccessHeader:(id)header andTimeStamp:(id)stamp
 {
-  v6 = a3;
-  v7 = a4;
+  headerCopy = header;
+  stampCopy = stamp;
   obj = self;
   objc_sync_enter(obj);
   MMCSAccessHeader = obj->_MMCSAccessHeader;
-  obj->_MMCSAccessHeader = v6;
-  v9 = v6;
+  obj->_MMCSAccessHeader = headerCopy;
+  v9 = headerCopy;
 
   MMCSAccessHeaderTimeStamp = obj->_MMCSAccessHeaderTimeStamp;
-  obj->_MMCSAccessHeaderTimeStamp = v7;
+  obj->_MMCSAccessHeaderTimeStamp = stampCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setMMCSAccessHeader:(id)a3
+- (void)setMMCSAccessHeader:(id)header
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [(MSAsset *)self setMMCSAccessHeader:v5 andTimeStamp:v6];
+  headerCopy = header;
+  date = [v4 date];
+  [(MSAsset *)self setMMCSAccessHeader:headerCopy andTimeStamp:date];
 }
 
 - (id)MMCSItemType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSAsset *)v2 path];
-  v4 = [v3 pathExtension];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  path = [(MSAsset *)selfCopy path];
+  pathExtension = [path pathExtension];
 
-  if (!v4 || ![v4 length])
+  if (!pathExtension || ![pathExtension length])
   {
-    v5 = [(MSAsset *)v2 MMCSUTI];
-    if (v5)
+    mMCSUTI = [(MSAsset *)selfCopy MMCSUTI];
+    if (mMCSUTI)
     {
-      v6 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v5];
+      v6 = [MEMORY[0x277CE1CB8] typeWithIdentifier:mMCSUTI];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 preferredFilenameExtension];
+        preferredFilenameExtension = [v6 preferredFilenameExtension];
 
-        v4 = v8;
+        pathExtension = preferredFilenameExtension;
       }
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return pathExtension;
 }
 
 - (int)MMCSOpenNewFileDescriptor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSAsset *)v2 path];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  path = [(MSAsset *)selfCopy path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [(MSAsset *)v2 path];
-    v5 = open([v4 fileSystemRepresentation], 0);
+    path2 = [(MSAsset *)selfCopy path];
+    v5 = open([path2 fileSystemRepresentation], 0);
   }
 
   else
@@ -513,24 +513,24 @@ LABEL_13:
     v5 = -1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setMMCSItemID:(unint64_t)a3
+- (void)setMMCSItemID:(unint64_t)d
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v7 = 134218242;
-    v8 = a3;
+    dCopy = d;
     v9 = 2114;
-    v10 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Setting MMCS Item ID to %lld for %{public}@", &v7, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   [(MSAsset *)self addMetadataValue:v5 forKey:@"MSAssetMetadataItemID"];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -539,12 +539,12 @@ LABEL_13:
 - (unint64_t)MMCSItemID
 {
   v2 = [(MSAsset *)self metadataValueForKey:@"MSAssetMetadataItemID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (void)setMMCSItemFlags:(unsigned int)a3
+- (void)setMMCSItemFlags:(unsigned int)flags
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -555,55 +555,55 @@ LABEL_13:
 
 - (unint64_t)_fileSize
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_metadata objectForKey:@"MSAssetMetadataFileSize"];
-  v4 = [v3 unsignedLongLongValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_metadata objectForKey:@"MSAssetMetadataFileSize"];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return unsignedLongLongValue;
 }
 
 - (BOOL)isVideo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (v2->_mediaAssetType & 0xFFFFFFFFFFFFFFFCLL) == 4;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (selfCopy->_mediaAssetType & 0xFFFFFFFFFFFFFFFCLL) == 4;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isPhoto
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_mediaAssetType - 1 < 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_mediaAssetType - 1 < 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v8.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = MSAsset;
   v3 = [(MSAsset *)&v8 description];
   v4 = [v3 mutableCopy];
 
-  if (v2->_GUID)
+  if (selfCopy->_GUID)
   {
-    [v4 appendFormat:@" GUID: %@ ", v2->_GUID];
+    [v4 appendFormat:@" GUID: %@ ", selfCopy->_GUID];
   }
 
-  if (v2->_assetCollectionGUID)
+  if (selfCopy->_assetCollectionGUID)
   {
-    [v4 appendFormat:@"Asset collection GUID: %@ ", v2->_assetCollectionGUID];
+    [v4 appendFormat:@"Asset collection GUID: %@ ", selfCopy->_assetCollectionGUID];
   }
 
-  v5 = v2->_path;
+  v5 = selfCopy->_path;
   if (v5 && (os_trace_get_mode() & 0x1000000) != 0)
   {
     [v4 appendFormat:@"Path: %@ ", v5];
@@ -611,74 +611,74 @@ LABEL_13:
 
   if (_thePlatform && [_thePlatform shouldLogAtLevel:7])
   {
-    if ([(NSDictionary *)v2->_metadata count])
+    if ([(NSDictionary *)selfCopy->_metadata count])
     {
-      [v4 appendFormat:@"\nmetadata: %@", v2->_metadata];
+      [v4 appendFormat:@"\nmetadata: %@", selfCopy->_metadata];
     }
 
-    if (v2->_type)
+    if (selfCopy->_type)
     {
-      [v4 appendFormat:@"  type: %@\n", v2->_type];
+      [v4 appendFormat:@"  type: %@\n", selfCopy->_type];
     }
 
-    if (v2->_masterAssetHash)
+    if (selfCopy->_masterAssetHash)
     {
-      [v4 appendFormat:@"  master asset hash: %@\n", v2->_masterAssetHash];
+      [v4 appendFormat:@"  master asset hash: %@\n", selfCopy->_masterAssetHash];
     }
 
-    if (v2->_fileHash)
+    if (selfCopy->_fileHash)
     {
-      [v4 appendFormat:@"  file hash: %@\n", v2->_fileHash];
+      [v4 appendFormat:@"  file hash: %@\n", selfCopy->_fileHash];
     }
 
-    if (v2->_MMCSAccessHeader)
+    if (selfCopy->_MMCSAccessHeader)
     {
-      [v4 appendFormat:@"  MMCS header:%@\n", v2->_MMCSAccessHeader];
+      [v4 appendFormat:@"  MMCS header:%@\n", selfCopy->_MMCSAccessHeader];
     }
 
-    if (v2->_MMCSAccessHeaderTimeStamp)
+    if (selfCopy->_MMCSAccessHeaderTimeStamp)
     {
-      [v4 appendFormat:@"  MMCS Header set on: %@", v2->_MMCSAccessHeaderTimeStamp];
+      [v4 appendFormat:@"  MMCS Header set on: %@", selfCopy->_MMCSAccessHeaderTimeStamp];
     }
 
-    if (v2->_MMCSURL)
+    if (selfCopy->_MMCSURL)
     {
-      [v4 appendFormat:@"  MMCS URL: %@\n", v2->_MMCSURL];
+      [v4 appendFormat:@"  MMCS URL: %@\n", selfCopy->_MMCSURL];
     }
 
-    if (v2->_MMCSReceipt)
+    if (selfCopy->_MMCSReceipt)
     {
-      [v4 appendFormat:@"  MMCS Receipt: %@\n", v2->_MMCSReceipt];
+      [v4 appendFormat:@"  MMCS Receipt: %@\n", selfCopy->_MMCSReceipt];
     }
 
-    if (v2->_fileData)
+    if (selfCopy->_fileData)
     {
       [v4 appendFormat:@"  File data present.\n"];
     }
 
-    if (v2->_batchCreationDate)
+    if (selfCopy->_batchCreationDate)
     {
-      [v4 appendFormat:@"  Batch creation date: %@\n", v2->_batchCreationDate];
+      [v4 appendFormat:@"  Batch creation date: %@\n", selfCopy->_batchCreationDate];
     }
 
-    if (v2->_photoCreationDate)
+    if (selfCopy->_photoCreationDate)
     {
-      [v4 appendFormat:@"  Asset creation date: %@\n", v2->_photoCreationDate];
+      [v4 appendFormat:@"  Asset creation date: %@\n", selfCopy->_photoCreationDate];
     }
 
-    if ([(MSAsset *)v2 isPhoto])
+    if ([(MSAsset *)selfCopy isPhoto])
     {
       [v4 appendFormat:@"  Asset is photo\n"];
-      [v4 appendFormat:@"  Media Asset Type %ld\n", -[MSAsset mediaAssetType](v2, "mediaAssetType")];
+      [v4 appendFormat:@"  Media Asset Type %ld\n", -[MSAsset mediaAssetType](selfCopy, "mediaAssetType")];
     }
 
-    if ([(MSAsset *)v2 isVideo])
+    if ([(MSAsset *)selfCopy isVideo])
     {
       [v4 appendFormat:@"  Asset is video\n"];
-      [v4 appendFormat:@"  Media Asset Type %ld\n", -[MSAsset mediaAssetType](v2, "mediaAssetType")];
+      [v4 appendFormat:@"  Media Asset Type %ld\n", -[MSAsset mediaAssetType](selfCopy, "mediaAssetType")];
     }
 
-    if (v2->_assetDataAvailableOnServer)
+    if (selfCopy->_assetDataAvailableOnServer)
     {
       v6 = &stru_2858BC598;
     }
@@ -689,32 +689,32 @@ LABEL_13:
     }
 
     [v4 appendFormat:@"  Asset data is %@ available on server\n", v6];
-    [v4 appendFormat:@"  protocol file size:%lld\n", v2->_protocolFileSize];
+    [v4 appendFormat:@"  protocol file size:%lld\n", selfCopy->_protocolFileSize];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (MSAsset)init
 {
-  v3 = [MEMORY[0x277CCACA8] MSMakeUUID];
-  v4 = [(MSAsset *)self initWithGUID:v3];
+  mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+  v4 = [(MSAsset *)self initWithGUID:mSMakeUUID];
 
   return v4;
 }
 
-- (MSAsset)initWithGUID:(id)a3
+- (MSAsset)initWithGUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MSAsset;
   v6 = [(MSAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_GUID, a3);
+    objc_storeStrong(&v6->_GUID, d);
     v7->_mediaAssetType = 0;
     v7->_assetDataAvailableOnServer = 1;
   }
@@ -722,147 +722,147 @@ LABEL_13:
   return v7;
 }
 
-- (void)setMMCSError:(id)a3
+- (void)setMMCSError:(id)error
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MSAsset *)v4 setError:v5];
-  objc_sync_exit(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MSAsset *)selfCopy setError:errorCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSError)MMCSError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSAsset *)v2 error];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  error = [(MSAsset *)selfCopy error];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return error;
 }
 
-- (void)setProtocolFileSize:(unint64_t)a3
+- (void)setProtocolFileSize:(unint64_t)size
 {
   obj = self;
   objc_sync_enter(obj);
-  [(MSAsset *)obj setMMCSItemSize:a3];
+  [(MSAsset *)obj setMMCSItemSize:size];
   objc_sync_exit(obj);
 }
 
 - (unint64_t)protocolFileSize
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSAsset *)v2 MMCSItemSize];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mMCSItemSize = [(MSAsset *)selfCopy MMCSItemSize];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return mMCSItemSize;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MSAsset *)v4 setMMCSUTI:v5];
-  objc_sync_exit(v4);
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MSAsset *)selfCopy setMMCSUTI:typeCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)type
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSAsset *)v2 MMCSUTI];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mMCSUTI = [(MSAsset *)selfCopy MMCSUTI];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return mMCSUTI;
 }
 
-- (void)setFileHash:(id)a3
+- (void)setFileHash:(id)hash
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MSAsset *)v4 setMMCSHash:v5];
-  objc_sync_exit(v4);
+  hashCopy = hash;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MSAsset *)selfCopy setMMCSHash:hashCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSData)fileHash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSAsset *)v2 MMCSHash];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mMCSHash = [(MSAsset *)selfCopy MMCSHash];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return mMCSHash;
 }
 
-+ (id)assetWithAsset:(id)a3
++ (id)assetWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 GUID];
-  v7 = [v5 initWithGUID:v6];
+  assetCopy = asset;
+  v5 = [self alloc];
+  gUID = [assetCopy GUID];
+  v7 = [v5 initWithGUID:gUID];
 
-  v8 = [v4 masterAssetHash];
-  [v7 setMasterAssetHash:v8];
+  masterAssetHash = [assetCopy masterAssetHash];
+  [v7 setMasterAssetHash:masterAssetHash];
 
-  v9 = [v4 metadata];
-  [v7 setMetadata:v9];
+  metadata = [assetCopy metadata];
+  [v7 setMetadata:metadata];
 
-  v10 = [v4 path];
-  [v7 setPath:v10];
+  path = [assetCopy path];
+  [v7 setPath:path];
 
-  v11 = [v4 MMCSURL];
-  [v7 setMMCSURL:v11];
+  mMCSURL = [assetCopy MMCSURL];
+  [v7 setMMCSURL:mMCSURL];
 
-  v12 = [v4 fileData];
-  [v7 setFileData:v12];
+  fileData = [assetCopy fileData];
+  [v7 setFileData:fileData];
 
-  v13 = [v4 error];
-  [v7 setError:v13];
+  error = [assetCopy error];
+  [v7 setError:error];
 
-  v14 = [v4 MMCSUTI];
-  [v7 setMMCSUTI:v14];
+  mMCSUTI = [assetCopy MMCSUTI];
+  [v7 setMMCSUTI:mMCSUTI];
 
-  v15 = [v4 MMCSHash];
-  [v7 setMMCSHash:v15];
+  mMCSHash = [assetCopy MMCSHash];
+  [v7 setMMCSHash:mMCSHash];
 
-  v16 = [v4 MMCSURL];
-  [v7 setMMCSURL:v16];
+  mMCSURL2 = [assetCopy MMCSURL];
+  [v7 setMMCSURL:mMCSURL2];
 
-  [v7 setMMCSItemSize:{objc_msgSend(v4, "MMCSItemSize")}];
-  v17 = [v4 MMCSAccessHeader];
-  v18 = [v4 MMCSAccessHeaderTimeStamp];
-  [v7 setMMCSAccessHeader:v17 andTimeStamp:v18];
+  [v7 setMMCSItemSize:{objc_msgSend(assetCopy, "MMCSItemSize")}];
+  mMCSAccessHeader = [assetCopy MMCSAccessHeader];
+  mMCSAccessHeaderTimeStamp = [assetCopy MMCSAccessHeaderTimeStamp];
+  [v7 setMMCSAccessHeader:mMCSAccessHeader andTimeStamp:mMCSAccessHeaderTimeStamp];
 
-  v19 = [v4 MMCSReceipt];
-  [v7 setMMCSReceipt:v19];
+  mMCSReceipt = [assetCopy MMCSReceipt];
+  [v7 setMMCSReceipt:mMCSReceipt];
 
-  v20 = [v4 assetCollectionGUID];
-  [v7 setAssetCollectionGUID:v20];
+  assetCollectionGUID = [assetCopy assetCollectionGUID];
+  [v7 setAssetCollectionGUID:assetCollectionGUID];
 
-  v21 = [v4 batchCreationDate];
-  [v7 setBatchCreationDate:v21];
+  batchCreationDate = [assetCopy batchCreationDate];
+  [v7 setBatchCreationDate:batchCreationDate];
 
-  v22 = [v4 photoCreationDate];
-  [v7 setPhotoCreationDate:v22];
+  photoCreationDate = [assetCopy photoCreationDate];
+  [v7 setPhotoCreationDate:photoCreationDate];
 
-  v23 = [v4 userInfo];
-  v24 = [v23 copy];
+  userInfo = [assetCopy userInfo];
+  v24 = [userInfo copy];
   [v7 setUserInfo:v24];
 
-  [v7 setMediaAssetType:{objc_msgSend(v4, "mediaAssetType")}];
-  v25 = [v4 assetDataAvailableOnServer];
+  [v7 setMediaAssetType:{objc_msgSend(assetCopy, "mediaAssetType")}];
+  assetDataAvailableOnServer = [assetCopy assetDataAvailableOnServer];
 
-  [v7 setAssetDataAvailableOnServer:v25];
+  [v7 setAssetDataAvailableOnServer:assetDataAvailableOnServer];
 
   return v7;
 }
 
 + (id)asset
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -870,16 +870,16 @@ LABEL_13:
 - (id)MSASPProtocolDictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(MSAsset *)self metadata];
-  v5 = [v4 mutableCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  metadata = [(MSAsset *)self metadata];
+  v5 = [metadata mutableCopy];
 
-  v6 = [(MSAsset *)self type];
+  type = [(MSAsset *)self type];
 
-  if (v6)
+  if (type)
   {
-    v7 = [(MSAsset *)self type];
-    [v3 setObject:v7 forKey:@"type"];
+    type2 = [(MSAsset *)self type];
+    [dictionary setObject:type2 forKey:@"type"];
   }
 
   if ([(MSAsset *)self isVideo])
@@ -890,24 +890,24 @@ LABEL_13:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v24 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Found an unknown video asset type", buf, 0xCu);
       }
     }
 
     else
     {
-      [v3 setObject:off_278E92530[v8] forKey:@"videoType"];
+      [dictionary setObject:off_278E92530[v8] forKey:@"videoType"];
     }
   }
 
-  v9 = [(MSAsset *)self MMCSHash];
+  mMCSHash = [(MSAsset *)self MMCSHash];
 
-  if (v9)
+  if (mMCSHash)
   {
-    v10 = [(MSAsset *)self MMCSHash];
-    v11 = [v10 MSHexString];
-    [v3 setObject:v11 forKey:@"checksum"];
+    mMCSHash2 = [(MSAsset *)self MMCSHash];
+    mSHexString = [mMCSHash2 MSHexString];
+    [dictionary setObject:mSHexString forKey:@"checksum"];
   }
 
   v12 = [v5 objectForKey:@"MSAssetMetadataFileSize"];
@@ -915,7 +915,7 @@ LABEL_13:
   if (v12)
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(v12, "unsignedLongLongValue")];
-    [v3 setObject:v14 forKey:@"size"];
+    [dictionary setObject:v14 forKey:@"size"];
 
     [v5 removeObjectForKey:@"MSAssetMetadataFileSize"];
   }
@@ -925,7 +925,7 @@ LABEL_13:
   if (v15)
   {
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v15, "unsignedLongValue")];
-    [v3 setObject:v17 forKey:@"width"];
+    [dictionary setObject:v17 forKey:@"width"];
 
     [v5 removeObjectForKey:@"MSAssetMetadataPixelWidth"];
   }
@@ -935,7 +935,7 @@ LABEL_13:
   if (v18)
   {
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v18, "unsignedLongValue")];
-    [v3 setObject:v20 forKey:@"height"];
+    [dictionary setObject:v20 forKey:@"height"];
 
     [v5 removeObjectForKey:@"MSAssetMetadataPixelHeight"];
   }
@@ -943,32 +943,32 @@ LABEL_13:
   [v5 removeObjectForKey:@"MSAssetMetadataItemID"];
   if ([v5 count])
   {
-    [v3 setObject:v5 forKey:@"metadata"];
+    [dictionary setObject:v5 forKey:@"metadata"];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)MSASPAssetFromProtocolDictionary:(id)a3
++ (id)MSASPAssetFromProtocolDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[MSAsset asset];
-  v5 = [v3 mutableCopy];
+  v5 = [dictionaryCopy mutableCopy];
 
   v6 = [v5 objectForKey:@"metadata"];
-  v7 = [v6 mutableCopy];
+  dictionary = [v6 mutableCopy];
 
-  if (v7)
+  if (dictionary)
   {
     [v5 removeObjectForKey:@"metadata"];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v8 = [v5 objectForKey:@"height"];
@@ -979,7 +979,7 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{strtoul(objc_msgSend(v8, "UTF8String"), 0, 10)}];
-      [v7 setObject:v9 forKey:@"MSAssetMetadataPixelHeight"];
+      [dictionary setObject:v9 forKey:@"MSAssetMetadataPixelHeight"];
     }
   }
 
@@ -991,7 +991,7 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{strtoul(objc_msgSend(v10, "UTF8String"), 0, 10)}];
-      [v7 setObject:v11 forKey:@"MSAssetMetadataPixelWidth"];
+      [dictionary setObject:v11 forKey:@"MSAssetMetadataPixelWidth"];
     }
   }
 
@@ -1003,7 +1003,7 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{strtoull(objc_msgSend(v12, "UTF8String"), 0, 10)}];
-      [v7 setObject:v13 forKey:@"MSAssetMetadataFileSize"];
+      [dictionary setObject:v13 forKey:@"MSAssetMetadataFileSize"];
     }
   }
 
@@ -1014,8 +1014,8 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v14 MSHexData];
-      [v4 setMMCSHash:v15];
+      mSHexData = [v14 MSHexData];
+      [v4 setMMCSHash:mSHexData];
     }
   }
 
@@ -1033,7 +1033,7 @@ LABEL_13:
   v17 = [v5 objectForKey:@"videoType"];
   if (!v17)
   {
-    v20 = [v7 objectForKey:@"MSAssetMetadataAssetType"];
+    v20 = [dictionary objectForKey:@"MSAssetMetadataAssetType"];
     v21 = v20;
     if (v20)
     {
@@ -1050,7 +1050,7 @@ LABEL_13:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v29 = a1;
+            selfCopy3 = self;
             v30 = 2114;
             v31 = v21;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Found an unsupported photoType %{public}@", buf, 0x16u);
@@ -1104,7 +1104,7 @@ LABEL_33:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v29 = a1;
+    selfCopy3 = self;
     v30 = 2114;
     v31 = v17;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Found an unsupported videoType %{public}@", buf, 0x16u);
@@ -1118,7 +1118,7 @@ LABEL_37:
     if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v29 = a1;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Found uploadpending flag for non-video asset", buf, 0xCu);
     }
 
@@ -1129,7 +1129,7 @@ LABEL_37:
     }
   }
 
-  [v4 setMetadata:v7];
+  [v4 setMetadata:dictionary];
 
   v25 = *MEMORY[0x277D85DE8];
 

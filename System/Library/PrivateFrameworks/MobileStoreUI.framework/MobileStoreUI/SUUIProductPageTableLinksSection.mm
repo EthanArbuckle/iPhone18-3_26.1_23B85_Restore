@@ -1,15 +1,15 @@
 @interface SUUIProductPageTableLinksSection
-- (SUUIProductPageTableLinksSection)initWithItem:(id)a3 clientContext:(id)a4 askPermission:(BOOL)a5;
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (SUUIProductPageTableLinksSection)initWithItem:(id)item clientContext:(id)context askPermission:(BOOL)permission;
+- (id)selectionActionForTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
 @end
 
 @implementation SUUIProductPageTableLinksSection
 
-- (SUUIProductPageTableLinksSection)initWithItem:(id)a3 clientContext:(id)a4 askPermission:(BOOL)a5
+- (SUUIProductPageTableLinksSection)initWithItem:(id)item clientContext:(id)context askPermission:(BOOL)permission
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v74.receiver = self;
   v74.super_class = SUUIProductPageTableLinksSection;
   v11 = [(SUUIProductPageTableLinksSection *)&v74 init];
@@ -19,7 +19,7 @@
     goto LABEL_42;
   }
 
-  objc_storeStrong(&v11->_item, a3);
+  objc_storeStrong(&v11->_item, item);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   actions = v12->_actions;
   v55 = 48;
@@ -29,9 +29,9 @@
   titles = v12->_titles;
   v12->_titles = v15;
 
-  if (SUUIUserInterfaceIdiom(v10))
+  if (SUUIUserInterfaceIdiom(contextCopy))
   {
-    if (a5)
+    if (permission)
     {
       goto LABEL_42;
     }
@@ -39,16 +39,16 @@
     goto LABEL_16;
   }
 
-  v17 = [(SUUIProductPageItem *)v12->_item inAppPurchases];
-  if ([v17 count])
+  inAppPurchases = [(SUUIProductPageItem *)v12->_item inAppPurchases];
+  if ([inAppPurchases count])
   {
     v18 = [SUUIProductPageAction actionWithType:3];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __77__SUUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke;
     v71[3] = &unk_2798F5958;
-    v72 = v17;
-    v19 = v10;
+    v72 = inAppPurchases;
+    v19 = contextCopy;
     v73 = v19;
     [v18 setViewControllerBlock:v71];
     [(NSMutableArray *)v12->_actions addObject:v18];
@@ -66,17 +66,17 @@
     [(NSMutableArray *)v20 addObject:v21, 48];
   }
 
-  v22 = [(SUUIProductPageItem *)v12->_item releaseNotes];
+  releaseNotes = [(SUUIProductPageItem *)v12->_item releaseNotes];
 
-  if ([v22 count])
+  if ([releaseNotes count])
   {
     v23 = [SUUIProductPageAction actionWithType:3];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __77__SUUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke_2;
     v68[3] = &unk_2798F5958;
-    v69 = v22;
-    v24 = v10;
+    v69 = releaseNotes;
+    v24 = contextCopy;
     v70 = v24;
     [v23 setViewControllerBlock:v68];
     [*(&v12->super.super.super.isa + v55) addObject:v23];
@@ -94,21 +94,21 @@
     [(NSMutableArray *)v25 addObject:v26];
   }
 
-  if (!a5)
+  if (!permission)
   {
 LABEL_16:
-    v27 = [v9 supportURLString];
-    if (v27)
+    supportURLString = [itemCopy supportURLString];
+    if (supportURLString)
     {
       v28 = [SUUIProductPageAction actionWithType:1];
-      v29 = [MEMORY[0x277CBEBC0] URLWithString:v27];
+      v29 = [MEMORY[0x277CBEBC0] URLWithString:supportURLString];
       [v28 setURL:v29];
 
       [*(&v12->super.super.super.isa + v56) addObject:v28];
       v30 = v12->_titles;
-      if (v10)
+      if (contextCopy)
       {
-        [v10 localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_WEBSITE" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_WEBSITE" inTable:@"ProductPage"];
       }
 
       else
@@ -119,11 +119,11 @@ LABEL_16:
       [(NSMutableArray *)v30 addObject:v31];
     }
 
-    v32 = [v9 licenseAgreementURLString];
+    licenseAgreementURLString = [itemCopy licenseAgreementURLString];
 
-    if (v32)
+    if (licenseAgreementURLString)
     {
-      v33 = [MEMORY[0x277CBEBC0] URLWithString:v32];
+      v33 = [MEMORY[0x277CBEBC0] URLWithString:licenseAgreementURLString];
       v34 = [v33 URLByAppendingQueryParameter:@"mt" value:@"8"];
 
       v35 = [SUUIProductPageAction actionWithType:2];
@@ -134,7 +134,7 @@ LABEL_16:
       v65[3] = &unk_2798F5980;
       v36 = v34;
       v66 = v36;
-      v37 = v10;
+      v37 = contextCopy;
       v67 = v37;
       [v35 setViewControllerBlock:v65];
       [*(&v12->super.super.super.isa + v56) addObject:v35];
@@ -152,19 +152,19 @@ LABEL_16:
       [(NSMutableArray *)v38 addObject:v39];
     }
 
-    v40 = [v9 privacyPolicyURLString];
+    privacyPolicyURLString = [itemCopy privacyPolicyURLString];
 
-    if (v40)
+    if (privacyPolicyURLString)
     {
       v41 = [SUUIProductPageAction actionWithType:1];
-      v42 = [MEMORY[0x277CBEBC0] URLWithString:v40];
+      v42 = [MEMORY[0x277CBEBC0] URLWithString:privacyPolicyURLString];
       [v41 setURL:v42];
 
       [*(&v12->super.super.super.isa + v56) addObject:v41];
       v43 = v12->_titles;
-      if (v10)
+      if (contextCopy)
       {
-        [v10 localizedStringForKey:@"PRODUCT_PAGE_PRIVACY_POLICY" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"PRODUCT_PAGE_PRIVACY_POLICY" inTable:@"ProductPage"];
       }
 
       else
@@ -175,19 +175,19 @@ LABEL_16:
       [(NSMutableArray *)v43 addObject:v44];
     }
 
-    v45 = [v9 artistPageURL];
-    if (v45)
+    artistPageURL = [itemCopy artistPageURL];
+    if (artistPageURL)
     {
       v46 = [SUUIProductPageAction actionWithType:2];
-      [v46 setURL:v45];
+      [v46 setURL:artistPageURL];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __77__SUUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke_4;
       v61[3] = &unk_2798F59A8;
-      v47 = v10;
+      v47 = contextCopy;
       v62 = v47;
-      v63 = v9;
-      v64 = v45;
+      v63 = itemCopy;
+      v64 = artistPageURL;
       [v46 setViewControllerBlock:v61];
       [*(&v12->super.super.super.isa + v56) addObject:v46];
       v48 = v12->_titles;
@@ -204,13 +204,13 @@ LABEL_16:
       [(NSMutableArray *)v48 addObject:v49];
     }
 
-    v50 = [v9 developerInfo];
-    if (v50)
+    developerInfo = [itemCopy developerInfo];
+    if (developerInfo)
     {
       v51 = [SUUIProductPageAction actionWithType:3];
-      if (v10)
+      if (contextCopy)
       {
-        [v10 localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_INFO" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_INFO" inTable:@"ProductPage"];
       }
 
       else
@@ -222,8 +222,8 @@ LABEL_16:
       v57[1] = 3221225472;
       v57[2] = __77__SUUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke_5;
       v57[3] = &unk_2798F59D0;
-      v58 = v50;
-      v59 = v10;
+      v58 = developerInfo;
+      v59 = contextCopy;
       v60 = v52;
       v53 = v52;
       [v51 setViewControllerBlock:v57];
@@ -310,26 +310,26 @@ SUUIDeveloperInfoViewController *__77__SUUIProductPageTableLinksSection_initWith
   return v2;
 }
 
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4
+- (id)selectionActionForTableView:(id)view indexPath:(id)path
 {
   actions = self->_actions;
-  v5 = [a4 row];
+  v5 = [path row];
 
   return [(NSMutableArray *)actions objectAtIndex:v5];
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"LK"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"LK"];
   if (!v7)
   {
     v7 = [[SUUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"LK"];
     [(SUUITableViewCell *)v7 setAccessoryType:1];
-    v8 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v8)
+    primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(SUUITableViewCell *)v7 setBottomBorderColor:v8];
+      [(SUUITableViewCell *)v7 setBottomBorderColor:primaryTextColor];
     }
 
     else
@@ -338,29 +338,29 @@ SUUIDeveloperInfoViewController *__77__SUUIProductPageTableLinksSection_initWith
       [(SUUITableViewCell *)v7 setBottomBorderColor:v9];
     }
 
-    v10 = [(SUUITableViewCell *)v7 textLabel];
+    textLabel = [(SUUITableViewCell *)v7 textLabel];
     v11 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v10 setFont:v11];
+    [textLabel setFont:v11];
 
-    v12 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v12)
+    secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [v10 setTextColor:v12];
+      [textLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75348] blackColor];
-      [v10 setTextColor:v13];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [textLabel setTextColor:blackColor];
     }
   }
 
-  v14 = [(SUUITableViewCell *)v7 textLabel];
+  textLabel2 = [(SUUITableViewCell *)v7 textLabel];
   titles = self->_titles;
-  v16 = [v6 row];
+  v16 = [pathCopy row];
 
   v17 = [(NSMutableArray *)titles objectAtIndex:v16];
-  [v14 setText:v17];
+  [textLabel2 setText:v17];
 
   return v7;
 }

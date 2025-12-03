@@ -1,65 +1,65 @@
 @interface W5Client
 + (id)sharedClient;
-- (BOOL)registerRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (BOOL)setDebugConfiguration:(id)a3 peer:(id)a4 error:(id *)a5;
-- (BOOL)startMonitoringFaultEventsForPeer:(id)a3 eventHandler:(id)a4 error:(id *)a5;
-- (BOOL)stopMonitoringFaultEventsForPeer:(id)a3 error:(id *)a4;
-- (BOOL)submitFaultEvent:(id)a3 error:(id *)a4;
-- (BOOL)unregisterRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (BOOL)registerRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration error:(id *)error;
+- (BOOL)setDebugConfiguration:(id)configuration peer:(id)peer error:(id *)error;
+- (BOOL)startMonitoringFaultEventsForPeer:(id)peer eventHandler:(id)handler error:(id *)error;
+- (BOOL)stopMonitoringFaultEventsForPeer:(id)peer error:(id *)error;
+- (BOOL)submitFaultEvent:(id)event error:(id *)error;
+- (BOOL)unregisterRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration error:(id *)error;
 - (W5Client)init;
-- (id)__collectBusyFallbackLogsWithReason:(id)a3 compress:(BOOL)a4;
-- (id)__collectJetsamFallbackLogsWithReason:(id)a3 compress:(BOOL)a4;
-- (id)__mostRecentInDirectories:(id)a3 include:(id)a4 exclude:(id)a5 maxAge:(double)a6;
-- (id)collectLogs:(id)a3 configuration:(id)a4 update:(id)a5 receipts:(id *)a6 error:(id *)a7;
-- (id)collectLogs:(id)a3 configuration:(id)a4 update:(id)a5 reply:(id)a6;
-- (id)collectLogsDiagnosticMode:(id)a3 update:(id)a4 receipts:(id *)a5 error:(id *)a6;
-- (id)collectLogsDiagnosticMode:(id)a3 update:(id)a4 reply:(id)a5;
-- (id)faultEventCacheForPeer:(id)a3 error:(id *)a4;
+- (id)__collectBusyFallbackLogsWithReason:(id)reason compress:(BOOL)compress;
+- (id)__collectJetsamFallbackLogsWithReason:(id)reason compress:(BOOL)compress;
+- (id)__mostRecentInDirectories:(id)directories include:(id)include exclude:(id)exclude maxAge:(double)age;
+- (id)collectLogs:(id)logs configuration:(id)configuration update:(id)update receipts:(id *)receipts error:(id *)error;
+- (id)collectLogs:(id)logs configuration:(id)configuration update:(id)update reply:(id)reply;
+- (id)collectLogsDiagnosticMode:(id)mode update:(id)update receipts:(id *)receipts error:(id *)error;
+- (id)collectLogsDiagnosticMode:(id)mode update:(id)update reply:(id)reply;
+- (id)faultEventCacheForPeer:(id)peer error:(id *)error;
 - (id)localPeer;
-- (id)queryDebugConfigurationForPeer:(id)a3 error:(id *)a4;
-- (id)queryDiagnosticsModeForPeer:(id)a3 info:(id)a4 reply:(id)a5;
-- (id)queryStatusForPeer:(id)a3 error:(id *)a4;
-- (id)runDiagnostics:(id)a3 configuration:(id)a4 update:(id)a5 error:(id *)a6;
-- (id)runDiagnostics:(id)a3 configuration:(id)a4 update:(id)a5 reply:(id)a6;
-- (id)runDiagnosticsForPeer:(id)a3 diagnostics:(id)a4 configuration:(id)a5 reply:(id)a6;
-- (id)runWiFiPerformanceLoggingWithConfiguration:(id)a3 error:(id *)a4;
-- (id)runWiFiPerformanceLoggingWithConfiguration:(id)a3 reply:(id)a4;
-- (id)runWiFiSnifferOnChannel:(id)a3 duration:(double)a4 peer:(id)a5 error:(id *)a6;
-- (id)runWiFiSnifferOnChannel:(id)a3 duration:(double)a4 peer:(id)a5 reply:(id)a6;
-- (id)runWiFiSnifferOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 reply:(id)a6;
-- (id)runWiFiSnifferOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 snifferErrors:(id *)a6 error:(id *)a7;
-- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 error:(id *)a6;
-- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 reply:(id)a6;
-- (id)startDiagnosticsModeWithConfiguration:(id)a3 reply:(id)a4;
-- (id)startPeerDiscoveryWithConfiguration:(id)a3 reply:(id)a4;
-- (id)stopDiagnosticsModeWithUUID:(id)a3 info:(id)a4 reply:(id)a5;
-- (void)__cancelAllRequestsAndReply:(id)a3;
-- (void)__cancelRequestWithUUID:(id)a3 reply:(id)a4;
-- (void)__log:(id)a3 timestamp:(BOOL)a4 reply:(id)a5;
-- (void)__logsCollectedWithTemporaryURL:(id)a3 outputURL:(id)a4 keepParent:(BOOL)a5 compress:(BOOL)a6 reply:(id)a7;
-- (void)__purgeFilesInDirectory:(id)a3 matching:(id)a4 maxAge:(unint64_t)a5 maxCount:(unint64_t)a6;
-- (void)__queryLocalPeerAndReply:(id)a3;
-- (void)__startMonitoringEvents:(id)a3 reply:(id)a4;
-- (void)__stopMonitoringEvents:(id)a3 reply:(id)a4;
-- (void)associateToNetworkOnPeer:(id)a3 scanResult:(id)a4 configuration:(id)a5 reply:(id)a6;
+- (id)queryDebugConfigurationForPeer:(id)peer error:(id *)error;
+- (id)queryDiagnosticsModeForPeer:(id)peer info:(id)info reply:(id)reply;
+- (id)queryStatusForPeer:(id)peer error:(id *)error;
+- (id)runDiagnostics:(id)diagnostics configuration:(id)configuration update:(id)update error:(id *)error;
+- (id)runDiagnostics:(id)diagnostics configuration:(id)configuration update:(id)update reply:(id)reply;
+- (id)runDiagnosticsForPeer:(id)peer diagnostics:(id)diagnostics configuration:(id)configuration reply:(id)reply;
+- (id)runWiFiPerformanceLoggingWithConfiguration:(id)configuration error:(id *)error;
+- (id)runWiFiPerformanceLoggingWithConfiguration:(id)configuration reply:(id)reply;
+- (id)runWiFiSnifferOnChannel:(id)channel duration:(double)duration peer:(id)peer error:(id *)error;
+- (id)runWiFiSnifferOnChannel:(id)channel duration:(double)duration peer:(id)peer reply:(id)reply;
+- (id)runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer reply:(id)reply;
+- (id)runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer snifferErrors:(id *)errors error:(id *)error;
+- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer error:(id *)error;
+- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer reply:(id)reply;
+- (id)startDiagnosticsModeWithConfiguration:(id)configuration reply:(id)reply;
+- (id)startPeerDiscoveryWithConfiguration:(id)configuration reply:(id)reply;
+- (id)stopDiagnosticsModeWithUUID:(id)d info:(id)info reply:(id)reply;
+- (void)__cancelAllRequestsAndReply:(id)reply;
+- (void)__cancelRequestWithUUID:(id)d reply:(id)reply;
+- (void)__log:(id)__log timestamp:(BOOL)timestamp reply:(id)reply;
+- (void)__logsCollectedWithTemporaryURL:(id)l outputURL:(id)rL keepParent:(BOOL)parent compress:(BOOL)compress reply:(id)reply;
+- (void)__purgeFilesInDirectory:(id)directory matching:(id)matching maxAge:(unint64_t)age maxCount:(unint64_t)count;
+- (void)__queryLocalPeerAndReply:(id)reply;
+- (void)__startMonitoringEvents:(id)events reply:(id)reply;
+- (void)__stopMonitoringEvents:(id)events reply:(id)reply;
+- (void)associateToNetworkOnPeer:(id)peer scanResult:(id)result configuration:(id)configuration reply:(id)reply;
 - (void)cancelAllRequests;
-- (void)cancelRequestWithUUID:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 peer:(id)a4 type:(int64_t)a5 reply:(id)a6;
+- (void)cancelRequestWithUUID:(id)d;
+- (void)cancelRequestWithUUID:(id)d peer:(id)peer type:(int64_t)type reply:(id)reply;
 - (void)dealloc;
-- (void)listFilesFromPeer:(id)a3 remoteDirPath:(id)a4 reply:(id)a5;
-- (void)queryDatabaseForPeer:(id)a3 fetch:(id)a4 reply:(id)a5;
-- (void)queryDebugConfigurationForPeer:(id)a3 reply:(id)a4;
-- (void)queryRegisteredDiagnosticsPeersWithReply:(id)a3;
-- (void)queryStatusForPeer:(id)a3 reply:(id)a4;
-- (void)receivedEvent:(id)a3;
-- (void)receivedPeerDiscoveryEvent:(id)a3;
-- (void)requestFileFromPeer:(id)a3 remoteFilePath:(id)a4 reply:(id)a5;
-- (void)setDebugConfiguration:(id)a3 peer:(id)a4 reply:(id)a5;
-- (void)setEventCallback:(id)a3;
-- (void)startMonitoringEvents:(id)a3;
-- (void)startNetworkDiscoveryOnPeer:(id)a3 configuration:(id)a4 reply:(id)a5;
-- (void)stopMonitoringEvents:(id)a3;
-- (void)stopPeerDiscoveryWithUUID:(id)a3;
+- (void)listFilesFromPeer:(id)peer remoteDirPath:(id)path reply:(id)reply;
+- (void)queryDatabaseForPeer:(id)peer fetch:(id)fetch reply:(id)reply;
+- (void)queryDebugConfigurationForPeer:(id)peer reply:(id)reply;
+- (void)queryRegisteredDiagnosticsPeersWithReply:(id)reply;
+- (void)queryStatusForPeer:(id)peer reply:(id)reply;
+- (void)receivedEvent:(id)event;
+- (void)receivedPeerDiscoveryEvent:(id)event;
+- (void)requestFileFromPeer:(id)peer remoteFilePath:(id)path reply:(id)reply;
+- (void)setDebugConfiguration:(id)configuration peer:(id)peer reply:(id)reply;
+- (void)setEventCallback:(id)callback;
+- (void)startMonitoringEvents:(id)events;
+- (void)startNetworkDiscoveryOnPeer:(id)peer configuration:(id)configuration reply:(id)reply;
+- (void)stopMonitoringEvents:(id)events;
+- (void)stopPeerDiscoveryWithUUID:(id)d;
 @end
 
 @implementation W5Client
@@ -300,12 +300,12 @@ void __19__W5Client_dealloc__block_invoke_3(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setEventCallback:(id)a3
+- (void)setEventCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_eventCallback = [a3 copy];
+    self->_eventCallback = [callback copy];
   }
 
   else
@@ -316,7 +316,7 @@ void __19__W5Client_dealloc__block_invoke_3(uint64_t a1)
     v6[2] = __29__W5Client_setEventCallback___block_invoke;
     v6[3] = &unk_279ECE208;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
@@ -330,16 +330,16 @@ void __29__W5Client_setEventCallback___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)__startMonitoringEvents:(id)a3 reply:(id)a4
+- (void)__startMonitoringEvents:(id)events reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__W5Client___startMonitoringEvents_reply___block_invoke;
   block[3] = &unk_279ECE2A8;
-  block[4] = a3;
+  block[4] = events;
   block[5] = self;
-  block[6] = a4;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
@@ -548,7 +548,7 @@ void __42__W5Client___startMonitoringEvents_reply___block_invoke_20(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)startMonitoringEvents:(id)a3
+- (void)startMonitoringEvents:(id)events
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = dispatch_semaphore_create(0);
@@ -557,7 +557,7 @@ void __42__W5Client___startMonitoringEvents_reply___block_invoke_20(uint64_t a1)
   v8[2] = __34__W5Client_startMonitoringEvents___block_invoke;
   v8[3] = &unk_279ECE258;
   v8[4] = v5;
-  [(W5Client *)self __startMonitoringEvents:a3 reply:v8];
+  [(W5Client *)self __startMonitoringEvents:events reply:v8];
   v6 = dispatch_time(0, 4000000000);
   if (dispatch_semaphore_wait(v5, v6) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -569,15 +569,15 @@ void __42__W5Client___startMonitoringEvents_reply___block_invoke_20(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__stopMonitoringEvents:(id)a3 reply:(id)a4
+- (void)__stopMonitoringEvents:(id)events reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__W5Client___stopMonitoringEvents_reply___block_invoke;
   block[3] = &unk_279ECE2A8;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = events;
+  block[6] = reply;
   block[4] = self;
   dispatch_async(queue, block);
 }
@@ -674,7 +674,7 @@ void __41__W5Client___stopMonitoringEvents_reply___block_invoke_6(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)stopMonitoringEvents:(id)a3
+- (void)stopMonitoringEvents:(id)events
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = dispatch_semaphore_create(0);
@@ -683,7 +683,7 @@ void __41__W5Client___stopMonitoringEvents_reply___block_invoke_6(uint64_t a1)
   v8[2] = __33__W5Client_stopMonitoringEvents___block_invoke;
   v8[3] = &unk_279ECE258;
   v8[4] = v5;
-  [(W5Client *)self __stopMonitoringEvents:a3 reply:v8];
+  [(W5Client *)self __stopMonitoringEvents:events reply:v8];
   v6 = dispatch_time(0, 4000000000);
   if (dispatch_semaphore_wait(v5, v6) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -695,7 +695,7 @@ void __41__W5Client___stopMonitoringEvents_reply___block_invoke_6(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__queryLocalPeerAndReply:(id)a3
+- (void)__queryLocalPeerAndReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -703,7 +703,7 @@ void __41__W5Client___stopMonitoringEvents_reply___block_invoke_6(uint64_t a1)
   v4[2] = __37__W5Client___queryLocalPeerAndReply___block_invoke;
   v4[3] = &unk_279ECE208;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
@@ -817,15 +817,15 @@ intptr_t __21__W5Client_localPeer__block_invoke(uint64_t a1, uint64_t a2, void *
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)queryStatusForPeer:(id)a3 reply:(id)a4
+- (void)queryStatusForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__W5Client_queryStatusForPeer_reply___block_invoke;
   block[3] = &unk_279ECE2A8;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = reply;
   block[4] = self;
   dispatch_async(queue, block);
 }
@@ -952,7 +952,7 @@ void __37__W5Client_queryStatusForPeer_reply___block_invoke_7(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)queryStatusForPeer:(id)a3 error:(id *)a4
+- (id)queryStatusForPeer:(id)peer error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -981,7 +981,7 @@ void __37__W5Client_queryStatusForPeer_reply___block_invoke_7(void *a1)
   v15[8] = &v26;
   v15[4] = self;
   v15[5] = v7;
-  [(W5Client *)self queryStatusForPeer:a3 reply:v15];
+  [(W5Client *)self queryStatusForPeer:peer reply:v15];
   v8 = dispatch_time(0, 4000000000);
   if (dispatch_semaphore_wait(v7, v8) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -1003,12 +1003,12 @@ void __37__W5Client_queryStatusForPeer_reply___block_invoke_7(void *a1)
   }
 
   objc_sync_exit(self);
-  if (a4)
+  if (error)
   {
     v11 = v21[5];
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -1037,17 +1037,17 @@ intptr_t __37__W5Client_queryStatusForPeer_error___block_invoke(void *a1, void *
   return dispatch_semaphore_signal(v7);
 }
 
-- (void)queryDatabaseForPeer:(id)a3 fetch:(id)a4 reply:(id)a5
+- (void)queryDatabaseForPeer:(id)peer fetch:(id)fetch reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__W5Client_queryDatabaseForPeer_fetch_reply___block_invoke;
   v6[3] = &unk_279ECE348;
-  v6[4] = a4;
+  v6[4] = fetch;
   v6[5] = self;
-  v6[6] = a3;
-  v6[7] = a5;
+  v6[6] = peer;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
@@ -1124,7 +1124,7 @@ void __45__W5Client_queryDatabaseForPeer_fetch_reply___block_invoke_5(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)requestFileFromPeer:(id)a3 remoteFilePath:(id)a4 reply:(id)a5
+- (void)requestFileFromPeer:(id)peer remoteFilePath:(id)path reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1132,9 +1132,9 @@ void __45__W5Client_queryDatabaseForPeer_fetch_reply___block_invoke_5(void *a1)
   v6[2] = __53__W5Client_requestFileFromPeer_remoteFilePath_reply___block_invoke;
   v6[3] = &unk_279ECE348;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = path;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
@@ -1261,7 +1261,7 @@ void __53__W5Client_requestFileFromPeer_remoteFilePath_reply___block_invoke_7(vo
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)listFilesFromPeer:(id)a3 remoteDirPath:(id)a4 reply:(id)a5
+- (void)listFilesFromPeer:(id)peer remoteDirPath:(id)path reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1269,9 +1269,9 @@ void __53__W5Client_requestFileFromPeer_remoteFilePath_reply___block_invoke_7(vo
   v6[2] = __50__W5Client_listFilesFromPeer_remoteDirPath_reply___block_invoke;
   v6[3] = &unk_279ECE348;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = path;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
@@ -1398,15 +1398,15 @@ void __50__W5Client_listFilesFromPeer_remoteDirPath_reply___block_invoke_7(void 
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)queryDebugConfigurationForPeer:(id)a3 reply:(id)a4
+- (void)queryDebugConfigurationForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__W5Client_queryDebugConfigurationForPeer_reply___block_invoke;
   block[3] = &unk_279ECE2A8;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = reply;
   block[4] = self;
   dispatch_async(queue, block);
 }
@@ -1482,7 +1482,7 @@ void __49__W5Client_queryDebugConfigurationForPeer_reply___block_invoke_5(void *
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)queryDebugConfigurationForPeer:(id)a3 error:(id *)a4
+- (id)queryDebugConfigurationForPeer:(id)peer error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v22 = 0;
@@ -1505,7 +1505,7 @@ void __49__W5Client_queryDebugConfigurationForPeer_reply___block_invoke_5(void *
   v15[5] = &v16;
   v15[6] = &v22;
   v15[4] = v7;
-  [(W5Client *)self queryDebugConfigurationForPeer:a3 reply:v15];
+  [(W5Client *)self queryDebugConfigurationForPeer:peer reply:v15];
   v8 = dispatch_time(0, 4000000000);
   if (dispatch_semaphore_wait(v7, v8) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -1516,12 +1516,12 @@ void __49__W5Client_queryDebugConfigurationForPeer_reply___block_invoke_5(void *
 
   v9 = v17[5];
   v10 = v23[5];
-  if (a4)
+  if (error)
   {
     v11 = v17[5];
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -1541,7 +1541,7 @@ intptr_t __49__W5Client_queryDebugConfigurationForPeer_error___block_invoke(void
   return dispatch_semaphore_signal(v5);
 }
 
-- (void)setDebugConfiguration:(id)a3 peer:(id)a4 reply:(id)a5
+- (void)setDebugConfiguration:(id)configuration peer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1549,9 +1549,9 @@ intptr_t __49__W5Client_queryDebugConfigurationForPeer_error___block_invoke(void
   v6[2] = __45__W5Client_setDebugConfiguration_peer_reply___block_invoke;
   v6[3] = &unk_279ECE348;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = configuration;
+  v6[6] = peer;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
@@ -1626,7 +1626,7 @@ void __45__W5Client_setDebugConfiguration_peer_reply___block_invoke_5(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)setDebugConfiguration:(id)a3 peer:(id)a4 error:(id *)a5
+- (BOOL)setDebugConfiguration:(id)configuration peer:(id)peer error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -1642,7 +1642,7 @@ void __45__W5Client_setDebugConfiguration_peer_reply___block_invoke_5(uint64_t a
   v17[3] = &unk_279ECE460;
   v17[4] = v9;
   v17[5] = &v18;
-  [(W5Client *)self setDebugConfiguration:a3 peer:a4 reply:v17];
+  [(W5Client *)self setDebugConfiguration:configuration peer:peer reply:v17];
   v10 = dispatch_time(0, 4000000000);
   if (dispatch_semaphore_wait(v9, v10) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -1654,9 +1654,9 @@ void __45__W5Client_setDebugConfiguration_peer_reply___block_invoke_5(uint64_t a
   v11 = v19[5];
   v12 = v19;
   v13 = v19[5];
-  if (a5 && v13)
+  if (error && v13)
   {
-    *a5 = v13;
+    *error = v13;
     v13 = v12[5];
   }
 
@@ -1674,22 +1674,22 @@ intptr_t __45__W5Client_setDebugConfiguration_peer_error___block_invoke(uint64_t
   return dispatch_semaphore_signal(v3);
 }
 
-- (id)runDiagnostics:(id)a3 configuration:(id)a4 update:(id)a5 reply:(id)a6
+- (id)runDiagnostics:(id)diagnostics configuration:(id)configuration update:(id)update reply:(id)reply
 {
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__W5Client_runDiagnostics_configuration_update_reply___block_invoke;
   v14[3] = &unk_279ECE6B0;
   v14[4] = self;
-  v14[5] = v11;
-  v14[8] = a5;
-  v14[9] = a6;
-  v14[6] = a4;
-  v14[7] = a3;
+  v14[5] = uUID;
+  v14[8] = update;
+  v14[9] = reply;
+  v14[6] = configuration;
+  v14[7] = diagnostics;
   dispatch_async(queue, v14);
-  return v11;
+  return uUID;
 }
 
 void __54__W5Client_runDiagnostics_configuration_update_reply___block_invoke(uint64_t a1)
@@ -1836,7 +1836,7 @@ void __54__W5Client_runDiagnostics_configuration_update_reply___block_invoke_7(v
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)runDiagnostics:(id)a3 configuration:(id)a4 update:(id)a5 error:(id *)a6
+- (id)runDiagnostics:(id)diagnostics configuration:(id)configuration update:(id)update error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -1859,7 +1859,7 @@ void __54__W5Client_runDiagnostics_configuration_update_reply___block_invoke_7(v
   v19[5] = &v20;
   v19[6] = &v26;
   v19[4] = v11;
-  [(W5Client *)self runDiagnostics:a3 configuration:a4 update:a5 reply:v19];
+  [(W5Client *)self runDiagnostics:diagnostics configuration:configuration update:update reply:v19];
   v12 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v11, v12) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -1870,12 +1870,12 @@ void __54__W5Client_runDiagnostics_configuration_update_reply___block_invoke_7(v
 
   v13 = v21[5];
   v14 = v27[5];
-  if (a6)
+  if (error)
   {
     v15 = v21[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -1895,22 +1895,22 @@ intptr_t __54__W5Client_runDiagnostics_configuration_update_error___block_invoke
   return dispatch_semaphore_signal(v5);
 }
 
-- (id)runDiagnosticsForPeer:(id)a3 diagnostics:(id)a4 configuration:(id)a5 reply:(id)a6
+- (id)runDiagnosticsForPeer:(id)peer diagnostics:(id)diagnostics configuration:(id)configuration reply:(id)reply
 {
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__W5Client_runDiagnosticsForPeer_diagnostics_configuration_reply___block_invoke;
   v14[3] = &unk_279ECE4D8;
   v14[4] = self;
-  v14[5] = v11;
-  v14[6] = a3;
-  v14[7] = a4;
-  v14[8] = a5;
-  v14[9] = a6;
+  v14[5] = uUID;
+  v14[6] = peer;
+  v14[7] = diagnostics;
+  v14[8] = configuration;
+  v14[9] = reply;
   dispatch_async(queue, v14);
-  return v11;
+  return uUID;
 }
 
 void __66__W5Client_runDiagnosticsForPeer_diagnostics_configuration_reply___block_invoke(uint64_t a1)
@@ -2033,7 +2033,7 @@ void __66__W5Client_runDiagnosticsForPeer_diagnostics_configuration_reply___bloc
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)registerRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 error:(id *)a5
+- (BOOL)registerRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -2060,7 +2060,7 @@ void __66__W5Client_runDiagnosticsForPeer_diagnostics_configuration_reply___bloc
   v18[2] = __70__W5Client_registerRemoteDiagnosticEventsForPeer_configuration_error___block_invoke_3;
   v18[3] = &unk_279ECE500;
   v18[4] = &v21;
-  [v11 registerRemoteDiagnosticEventsForPeer:a3 configuration:a4 reply:v18];
+  [v11 registerRemoteDiagnosticEventsForPeer:peer configuration:configuration reply:v18];
   v12 = v22[5];
   v13 = v22[5];
   if (v13)
@@ -2073,9 +2073,9 @@ void __66__W5Client_runDiagnosticsForPeer_diagnostics_configuration_reply___bloc
     v17[4] = self;
     dispatch_async(v14, v17);
     v13 = v22[5];
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -2120,7 +2120,7 @@ void __70__W5Client_registerRemoteDiagnosticEventsForPeer_configuration_error___
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)unregisterRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 error:(id *)a5
+- (BOOL)unregisterRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -2147,7 +2147,7 @@ void __70__W5Client_registerRemoteDiagnosticEventsForPeer_configuration_error___
   v18[2] = __72__W5Client_unregisterRemoteDiagnosticEventsForPeer_configuration_error___block_invoke_3;
   v18[3] = &unk_279ECE500;
   v18[4] = &v21;
-  [v11 unregisterRemoteDiagnosticEventsForPeer:a3 configuration:a4 reply:v18];
+  [v11 unregisterRemoteDiagnosticEventsForPeer:peer configuration:configuration reply:v18];
   v12 = v22[5];
   v13 = v22[5];
   if (v13)
@@ -2160,9 +2160,9 @@ void __70__W5Client_registerRemoteDiagnosticEventsForPeer_configuration_error___
     v17[4] = self;
     dispatch_async(v14, v17);
     v13 = v22[5];
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -2207,7 +2207,7 @@ void __72__W5Client_unregisterRemoteDiagnosticEventsForPeer_configuration_error_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)queryRegisteredDiagnosticsPeersWithReply:(id)a3
+- (void)queryRegisteredDiagnosticsPeersWithReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2215,7 +2215,7 @@ void __72__W5Client_unregisterRemoteDiagnosticEventsForPeer_configuration_error_
   v4[2] = __53__W5Client_queryRegisteredDiagnosticsPeersWithReply___block_invoke;
   v4[3] = &unk_279ECE208;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
@@ -2289,20 +2289,20 @@ void __53__W5Client_queryRegisteredDiagnosticsPeersWithReply___block_invoke_5(vo
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)startDiagnosticsModeWithConfiguration:(id)a3 reply:(id)a4
+- (id)startDiagnosticsModeWithConfiguration:(id)configuration reply:(id)reply
 {
-  v7 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__W5Client_startDiagnosticsModeWithConfiguration_reply___block_invoke;
   v10[3] = &unk_279ECE348;
   v10[4] = self;
-  v10[5] = v7;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[5] = uUID;
+  v10[6] = configuration;
+  v10[7] = reply;
   dispatch_async(queue, v10);
-  return v7;
+  return uUID;
 }
 
 void __56__W5Client_startDiagnosticsModeWithConfiguration_reply___block_invoke(uint64_t a1)
@@ -2430,21 +2430,21 @@ void __56__W5Client_startDiagnosticsModeWithConfiguration_reply___block_invoke_7
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)stopDiagnosticsModeWithUUID:(id)a3 info:(id)a4 reply:(id)a5
+- (id)stopDiagnosticsModeWithUUID:(id)d info:(id)info reply:(id)reply
 {
-  v9 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__W5Client_stopDiagnosticsModeWithUUID_info_reply___block_invoke;
   block[3] = &unk_279ECE7C0;
   block[4] = self;
-  block[5] = v9;
-  block[7] = a4;
-  block[8] = a5;
-  block[6] = a3;
+  block[5] = uUID;
+  block[7] = info;
+  block[8] = reply;
+  block[6] = d;
   dispatch_async(queue, block);
-  return a3;
+  return d;
 }
 
 void __51__W5Client_stopDiagnosticsModeWithUUID_info_reply___block_invoke(uint64_t a1)
@@ -2571,21 +2571,21 @@ void __51__W5Client_stopDiagnosticsModeWithUUID_info_reply___block_invoke_7(uint
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)queryDiagnosticsModeForPeer:(id)a3 info:(id)a4 reply:(id)a5
+- (id)queryDiagnosticsModeForPeer:(id)peer info:(id)info reply:(id)reply
 {
-  v9 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke;
   block[3] = &unk_279ECE7C0;
   block[4] = self;
-  block[5] = v9;
-  block[7] = a4;
-  block[8] = a5;
-  block[6] = a3;
+  block[5] = uUID;
+  block[7] = info;
+  block[8] = reply;
+  block[6] = peer;
   dispatch_async(queue, block);
-  return v9;
+  return uUID;
 }
 
 void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke(uint64_t a1)
@@ -2714,13 +2714,13 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)__purgeFilesInDirectory:(id)a3 matching:(id)a4 maxAge:(unint64_t)a5 maxCount:(unint64_t)a6
+- (void)__purgeFilesInDirectory:(id)directory matching:(id)matching maxAge:(unint64_t)age maxCount:(unint64_t)count
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v11 = v10;
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
   v39 = 0u;
   v40 = 0u;
@@ -2731,7 +2731,7 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
   {
     v14 = v13;
     v15 = *v40;
-    v16 = a5;
+    ageCopy = age;
     do
     {
       for (i = 0; i != v14; ++i)
@@ -2744,17 +2744,17 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
         v18 = *(*(&v39 + 1) + 8 * i);
         [objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
         v20 = v19;
-        if (!a4 || [a4 numberOfMatchesInString:v18 options:0 range:{0, objc_msgSend(v18, "length")}])
+        if (!matching || [matching numberOfMatchesInString:v18 options:0 range:{0, objc_msgSend(v18, "length")}])
         {
-          v21 = [a3 stringByAppendingPathComponent:v18];
-          if (v11 - v20 <= v16)
+          v21 = [directory stringByAppendingPathComponent:v18];
+          if (v11 - v20 <= ageCopy)
           {
-            [v34 setObject:v21 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v20)}];
+            [dictionary setObject:v21 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v20)}];
           }
 
           else
           {
-            [v9 addObject:v21];
+            [array addObject:v21];
           }
         }
       }
@@ -2765,24 +2765,24 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
     while (v14);
   }
 
-  v22 = [objc_msgSend(v34 "allKeys")];
+  v22 = [objc_msgSend(dictionary "allKeys")];
   [v22 sortUsingComparator:&__block_literal_global_34];
-  if ([v22 count] > a6 && objc_msgSend(v22, "count") != a6)
+  if ([v22 count] > count && objc_msgSend(v22, "count") != count)
   {
     v23 = 0;
     do
     {
-      [v9 addObject:{objc_msgSend(v34, "objectForKeyedSubscript:", objc_msgSend(v22, "objectAtIndexedSubscript:", v23++))}];
+      [array addObject:{objc_msgSend(dictionary, "objectForKeyedSubscript:", objc_msgSend(v22, "objectAtIndexedSubscript:", v23++))}];
     }
 
-    while (v23 < [v22 count] - a6);
+    while (v23 < [v22 count] - count);
   }
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = [v9 countByEnumeratingWithState:&v35 objects:v45 count:16];
+  v24 = [array countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v24)
   {
     v25 = v24;
@@ -2793,7 +2793,7 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
       {
         if (*v36 != v26)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(array);
         }
 
         v28 = *(*(&v35 + 1) + 8 * j);
@@ -2810,7 +2810,7 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
         [objc_msgSend(MEMORY[0x277CCAA00] defaultManager];
       }
 
-      v25 = [v9 countByEnumeratingWithState:&v35 objects:v45 count:16];
+      v25 = [array countByEnumeratingWithState:&v35 objects:v45 count:16];
     }
 
     while (v25);
@@ -2819,20 +2819,20 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)__mostRecentInDirectories:(id)a3 include:(id)a4 exclude:(id)a5 maxAge:(double)a6
+- (id)__mostRecentInDirectories:(id)directories include:(id)include exclude:(id)exclude maxAge:(double)age
 {
   v50 = *MEMORY[0x277D85DE8];
-  v32 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v11 = v10;
-  v38 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v39 = [MEMORY[0x277CBEB58] set];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = a3;
-  v35 = [a3 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  obj = directories;
+  v35 = [directories countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v35)
   {
     v34 = *v45;
@@ -2877,8 +2877,8 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
               v25 = v24;
               v26 = v11 - v23;
               v27 = v11 - v25;
-              v28 = v11 - v23 > a6 && v27 > a6;
-              if (!v28 && (!a4 || [a4 numberOfMatchesInString:v19 options:0 range:{0, objc_msgSend(v19, "length", v26, v27)}]) && (!a5 || !objc_msgSend(a5, "numberOfMatchesInString:options:range:", v19, 0, 0, objc_msgSend(v19, "length", v26, v27))) && (objc_msgSend(v39, "containsObject:", v19, v26, v27) & 1) == 0)
+              v28 = v11 - v23 > age && v27 > age;
+              if (!v28 && (!include || [include numberOfMatchesInString:v19 options:0 range:{0, objc_msgSend(v19, "length", v26, v27)}]) && (!exclude || !objc_msgSend(exclude, "numberOfMatchesInString:options:range:", v19, 0, 0, objc_msgSend(v19, "length", v26, v27))) && (objc_msgSend(v39, "containsObject:", v19, v26, v27) & 1) == 0)
               {
                 if (v23 <= v25)
                 {
@@ -2890,7 +2890,7 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
                   v29 = v23;
                 }
 
-                [v38 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithDouble:", v29), objc_msgSend(v13, "stringByAppendingPathComponent:", v19)}];
+                [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithDouble:", v29), objc_msgSend(v13, "stringByAppendingPathComponent:", v19)}];
                 [v39 addObject:v19];
               }
 
@@ -2914,29 +2914,29 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
     while (v35);
   }
 
-  [v32 addObjectsFromArray:{objc_msgSend(v38, "keysSortedByValueUsingComparator:", &__block_literal_global_36)}];
-  result = [v32 copy];
+  [array addObjectsFromArray:{objc_msgSend(dictionary, "keysSortedByValueUsingComparator:", &__block_literal_global_36)}];
+  result = [array copy];
   v31 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)__collectJetsamFallbackLogsWithReason:(id)a3 compress:(BOOL)a4
+- (id)__collectJetsamFallbackLogsWithReason:(id)reason compress:(BOOL)compress
 {
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v7 setDateFormat:@"yyyy-MM-dd_HH.mm.ss.SSS"];
   v8 = [v7 stringFromDate:{objc_msgSend(MEMORY[0x277CBEAA8], "date")}];
-  if (!a3)
+  if (!reason)
   {
-    a3 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleWithIdentifier:{@"com.apple.WiFiVelocity", "localizedStringForKey:value:table:", @"kW5LocWiFiDiagnosticsName", @"WiFiDiagnostics", 0}];
+    reason = [objc_msgSend(MEMORY[0x277CCA8D8] bundleWithIdentifier:{@"com.apple.WiFiVelocity", "localizedStringForKey:value:table:", @"kW5LocWiFiDiagnosticsName", @"WiFiDiagnostics", 0}];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", a3, v8];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", reason, v8];
   v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSString stringByAppendingPathComponent:](-[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", @"com.apple.wifivelocity", "stringByAppendingPathComponent:", v9)}];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 0;
-  if ([v11 createDirectoryAtPath:objc_msgSend(v10 withIntermediateDirectories:"path") attributes:1 error:{0, 0}])
+  if ([defaultManager createDirectoryAtPath:objc_msgSend(v10 withIntermediateDirectories:"path") attributes:1 error:{0, 0}])
   {
-    [v11 createFileAtPath:objc_msgSend(objc_msgSend(v10 contents:"path") attributes:{"stringByAppendingPathComponent:", @"__CRASH__", objc_msgSend(@"This file was generated because the XPC call to collect WiFi diagnostics/logs was interrupted or invalidated (most likely jetsam'd). When we detect this condition, we will collect basic WiFi logs inline and try to capture the corresponding crash report for wifivelocityd.", "dataUsingEncoding:", 4), 0}];
+    [defaultManager createFileAtPath:objc_msgSend(objc_msgSend(v10 contents:"path") attributes:{"stringByAppendingPathComponent:", @"__CRASH__", objc_msgSend(@"This file was generated because the XPC call to collect WiFi diagnostics/logs was interrupted or invalidated (most likely jetsam'd). When we detect this condition, we will collect basic WiFi logs inline and try to capture the corresponding crash report for wifivelocityd.", "dataUsingEncoding:", 4), 0}];
     -[W5Client __tarballWithSource:destination:error:](self, "__tarballWithSource:destination:error:", [MEMORY[0x277CBEBC0] fileURLWithPath:@"/Library/Logs/wifi.log"], objc_msgSend(objc_msgSend(v10, "URLByAppendingPathComponent:", @"wifi.log"), "URLByAppendingPathExtension:", @"tgz"), 0);
     v13 = [(W5Client *)self __mostRecentInDirectories:&unk_288342270 include:0 exclude:0 maxAge:86400.0];
     for (i = 0; ; ++i)
@@ -2964,10 +2964,10 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
       -[W5Client __tarballWithSource:destination:error:](self, "__tarballWithSource:destination:error:", [MEMORY[0x277CBEBC0] fileURLWithPath:v20], objc_msgSend(objc_msgSend(v10, "URLByAppendingPathComponent:", objc_msgSend(v20, "lastPathComponent")), "URLByAppendingPathExtension:", @"tgz"), 0);
     }
 
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.plist", 0}];
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"LEGACY_com.apple.wifi-networks.plist", 0}];
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-private-mac-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi-private-mac-networks.plist", 0}];
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/com.apple.wifi.known-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.known-networks.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"LEGACY_com.apple.wifi-networks.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-private-mac-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi-private-mac-networks.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/com.apple.wifi.known-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.known-networks.plist", 0}];
     v21 = -[W5Client __mostRecentInDirectories:include:exclude:maxAge:](self, "__mostRecentInDirectories:include:exclude:maxAge:", &unk_2883422A0, [MEMORY[0x277CCAC68] regularExpressionWithPattern:objc_msgSend(MEMORY[0x277CCAC68] options:"escapedPatternForString:" error:{@"wifivelocityd", 0, 0}], 0, 86400.0);
     for (k = 0; ; ++k)
     {
@@ -2978,10 +2978,10 @@ void __51__W5Client_queryDiagnosticsModeForPeer_info_reply___block_invoke_7(void
       }
 
       v24 = [v21 objectAtIndexedSubscript:k];
-      [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{v24), objc_msgSend(v10, "URLByAppendingPathComponent:", objc_msgSend(v24, "lastPathComponent")), 0}];
+      [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{v24), objc_msgSend(v10, "URLByAppendingPathComponent:", objc_msgSend(v24, "lastPathComponent")), 0}];
     }
 
-    if (a4)
+    if (compress)
     {
       v25 = [v10 URLByAppendingPathExtension:@"tgz"];
       [(W5Client *)self __tarballWithSource:v10 destination:v25 error:0];
@@ -3026,23 +3026,23 @@ void __59__W5Client___collectJetsamFallbackLogsWithReason_compress___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)__collectBusyFallbackLogsWithReason:(id)a3 compress:(BOOL)a4
+- (id)__collectBusyFallbackLogsWithReason:(id)reason compress:(BOOL)compress
 {
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v7 setDateFormat:@"yyyy-MM-dd_HH.mm.ss.SSS"];
   v8 = [v7 stringFromDate:{objc_msgSend(MEMORY[0x277CBEAA8], "date")}];
-  if (!a3)
+  if (!reason)
   {
-    a3 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleWithIdentifier:{@"com.apple.WiFiVelocity", "localizedStringForKey:value:table:", @"kW5LocWiFiDiagnosticsName", @"WiFiDiagnostics", 0}];
+    reason = [objc_msgSend(MEMORY[0x277CCA8D8] bundleWithIdentifier:{@"com.apple.WiFiVelocity", "localizedStringForKey:value:table:", @"kW5LocWiFiDiagnosticsName", @"WiFiDiagnostics", 0}];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", a3, v8];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", reason, v8];
   v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSString stringByAppendingPathComponent:](-[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", @"com.apple.wifivelocity", "stringByAppendingPathComponent:", v9)}];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 0;
-  if ([v11 createDirectoryAtPath:objc_msgSend(v10 withIntermediateDirectories:"path") attributes:1 error:{0, 0}])
+  if ([defaultManager createDirectoryAtPath:objc_msgSend(v10 withIntermediateDirectories:"path") attributes:1 error:{0, 0}])
   {
-    [v11 createFileAtPath:objc_msgSend(objc_msgSend(v10 contents:"path") attributes:{"stringByAppendingPathComponent:", @"__BUSY__", objc_msgSend(@"This file was generated because a log collection request is already in progress. When we detect this condition, we will attempt to collect basic WiFi logs inline.", "dataUsingEncoding:", 4), 0}];
+    [defaultManager createFileAtPath:objc_msgSend(objc_msgSend(v10 contents:"path") attributes:{"stringByAppendingPathComponent:", @"__BUSY__", objc_msgSend(@"This file was generated because a log collection request is already in progress. When we detect this condition, we will attempt to collect basic WiFi logs inline.", "dataUsingEncoding:", 4), 0}];
     -[W5Client __tarballWithSource:destination:error:](self, "__tarballWithSource:destination:error:", [MEMORY[0x277CBEBC0] fileURLWithPath:@"/Library/Logs/wifi.log"], objc_msgSend(objc_msgSend(v10, "URLByAppendingPathComponent:", @"wifi.log"), "URLByAppendingPathExtension:", @"tgz"), 0);
     v13 = [(W5Client *)self __mostRecentInDirectories:&unk_2883422B8 include:0 exclude:0 maxAge:86400.0];
     for (i = 0; ; ++i)
@@ -3070,11 +3070,11 @@ void __59__W5Client___collectJetsamFallbackLogsWithReason_compress___block_invok
       -[W5Client __tarballWithSource:destination:error:](self, "__tarballWithSource:destination:error:", [MEMORY[0x277CBEBC0] fileURLWithPath:v20], objc_msgSend(objc_msgSend(v10, "URLByAppendingPathComponent:", objc_msgSend(v20, "lastPathComponent")), "URLByAppendingPathExtension:", @"tgz"), 0);
     }
 
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.plist", 0}];
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"LEGACY_com.apple.wifi-networks.plist", 0}];
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-private-mac-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi-private-mac-networks.plist", 0}];
-    [v11 copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/com.apple.wifi.known-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.known-networks.plist", 0}];
-    if (a4)
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"LEGACY_com.apple.wifi-networks.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/SystemConfiguration/com.apple.wifi-private-mac-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi-private-mac-networks.plist", 0}];
+    [defaultManager copyItemAtURL:objc_msgSend(MEMORY[0x277CBEBC0] toURL:"fileURLWithPath:" error:{@"/Library/Preferences/com.apple.wifi.known-networks.plist", objc_msgSend(v10, "URLByAppendingPathComponent:", @"com.apple.wifi.known-networks.plist", 0}];
+    if (compress)
     {
       v21 = [v10 URLByAppendingPathExtension:@"tgz"];
       [(W5Client *)self __tarballWithSource:v10 destination:v21 error:0];
@@ -3119,19 +3119,19 @@ void __57__W5Client___collectBusyFallbackLogsWithReason_compress___block_invoke(
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__logsCollectedWithTemporaryURL:(id)a3 outputURL:(id)a4 keepParent:(BOOL)a5 compress:(BOOL)a6 reply:(id)a7
+- (void)__logsCollectedWithTemporaryURL:(id)l outputURL:(id)rL keepParent:(BOOL)parent compress:(BOOL)compress reply:(id)reply
 {
-  v8 = a6;
+  compressCopy = compress;
   v51 = *MEMORY[0x277D85DE8];
   v41 = 0;
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v40 = 0;
-  if (([v12 fileExistsAtPath:objc_msgSend(a4 isDirectory:{"path"), &v40}] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:objc_msgSend(rL isDirectory:{"path"), &v40}] & 1) == 0)
   {
-    [v12 createDirectoryAtURL:a4 withIntermediateDirectories:1 attributes:0 error:&v41];
-    if (![v12 fileExistsAtPath:objc_msgSend(a4 isDirectory:{"path"), &v40}])
+    [defaultManager createDirectoryAtURL:rL withIntermediateDirectories:1 attributes:0 error:&v41];
+    if (![defaultManager fileExistsAtPath:objc_msgSend(rL isDirectory:{"path"), &v40}])
     {
-      if (!a7)
+      if (!reply)
       {
         goto LABEL_32;
       }
@@ -3143,7 +3143,7 @@ void __57__W5Client___collectBusyFallbackLogsWithReason_compress___block_invoke(
 
   if (v40 != 1)
   {
-    if (!a7)
+    if (!reply)
     {
       goto LABEL_32;
     }
@@ -3153,25 +3153,25 @@ void __57__W5Client___collectBusyFallbackLogsWithReason_compress___block_invoke(
     v43 = @"ENOENT";
     v25 = [MEMORY[0x277CCA9B8] errorWithDomain:v24 code:2 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v43, &v42, 1)}];
 LABEL_22:
-    (*(a7 + 2))(a7, v25, 0);
+    (*(reply + 2))(reply, v25, 0);
     goto LABEL_32;
   }
 
-  if (a5 || v8)
+  if (parent || compressCopy)
   {
-    a4 = [a4 URLByAppendingPathComponent:{objc_msgSend(a3, "lastPathComponent")}];
-    v15 = [v12 copyItemAtURL:a3 toURL:a4 error:&v41];
+    rL = [rL URLByAppendingPathComponent:{objc_msgSend(l, "lastPathComponent")}];
+    v15 = [defaultManager copyItemAtURL:l toURL:rL error:&v41];
     if (v41)
     {
       OSLog = W5GetOSLog();
       if (os_log_type_enabled(OSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [a3 path];
-        v28 = [a4 path];
+        path = [l path];
+        path2 = [rL path];
         v45 = 138543874;
-        v46 = v27;
+        v46 = path;
         v47 = 2114;
-        v48 = v28;
+        v48 = path2;
         v49 = 2114;
         v50 = v41;
         _os_log_send_and_compose_impl();
@@ -3185,12 +3185,12 @@ LABEL_22:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = [v12 contentsOfDirectoryAtPath:objc_msgSend(a3 error:{"path"), &v41}];
+    obj = [defaultManager contentsOfDirectoryAtPath:objc_msgSend(l error:{"path"), &v41}];
     v13 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v13)
     {
       v14 = v13;
-      v34 = a7;
+      replyCopy = reply;
       v15 = 0;
       v16 = *v37;
       do
@@ -3204,15 +3204,15 @@ LABEL_22:
           }
 
           v18 = *(*(&v36 + 1) + 8 * v17);
-          v19 = a4;
-          v20 = [v12 copyItemAtURL:objc_msgSend(a3 toURL:"URLByAppendingPathComponent:" error:{v18, v31, v32), objc_msgSend(a4, "URLByAppendingPathComponent:", v18), &v41}];
+          rLCopy = rL;
+          v20 = [defaultManager copyItemAtURL:objc_msgSend(l toURL:"URLByAppendingPathComponent:" error:{v18, v31, v32), objc_msgSend(rL, "URLByAppendingPathComponent:", v18), &v41}];
           if (v41)
           {
             v21 = W5GetOSLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = [objc_msgSend(a3 URLByAppendingPathComponent:{v18), "path"}];
-              v22 = [objc_msgSend(v19 URLByAppendingPathComponent:{v18), "path"}];
+              v33 = [objc_msgSend(l URLByAppendingPathComponent:{v18), "path"}];
+              v22 = [objc_msgSend(rLCopy URLByAppendingPathComponent:{v18), "path"}];
               v45 = 138543874;
               v46 = v33;
               v47 = 2114;
@@ -3227,7 +3227,7 @@ LABEL_22:
 
           v15 |= v20;
           ++v17;
-          a4 = v19;
+          rL = rLCopy;
         }
 
         while (v14 != v17);
@@ -3236,7 +3236,7 @@ LABEL_22:
       }
 
       while (v23);
-      a7 = v34;
+      reply = replyCopy;
     }
 
     else
@@ -3245,29 +3245,29 @@ LABEL_22:
     }
   }
 
-  if (a7)
+  if (reply)
   {
     if (v15)
     {
-      v29 = a4;
+      rLCopy2 = rL;
     }
 
     else
     {
-      v29 = 0;
+      rLCopy2 = 0;
     }
 
-    (*(a7 + 2))(a7, v41, v29);
+    (*(reply + 2))(reply, v41, rLCopy2);
   }
 
 LABEL_32:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)collectLogs:(id)a3 configuration:(id)a4 update:(id)a5 reply:(id)a6
+- (id)collectLogs:(id)logs configuration:(id)configuration update:(id)update reply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   OSLog = W5GetOSLog();
   if (os_log_type_enabled(OSLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -3282,7 +3282,7 @@ LABEL_32:
     v25 = 1024;
     v26 = [objc_msgSend(MEMORY[0x277CCAC38] "processInfo")];
     v27 = 2114;
-    v28 = [objc_msgSend(v11 "UUIDString")];
+    v28 = [objc_msgSend(uUID "UUIDString")];
     _os_log_send_and_compose_impl();
   }
 
@@ -3292,14 +3292,14 @@ LABEL_32:
   block[2] = __51__W5Client_collectLogs_configuration_update_reply___block_invoke;
   block[3] = &unk_279ECE6B0;
   block[4] = self;
-  block[5] = v11;
-  block[6] = a4;
-  block[7] = a3;
-  block[8] = a5;
-  block[9] = a6;
+  block[5] = uUID;
+  block[6] = configuration;
+  block[7] = logs;
+  block[8] = update;
+  block[9] = reply;
   dispatch_async(queue, block);
   v14 = *MEMORY[0x277D85DE8];
-  return v11;
+  return uUID;
 }
 
 void __51__W5Client_collectLogs_configuration_update_reply___block_invoke(uint64_t a1)
@@ -3579,7 +3579,7 @@ uint64_t __51__W5Client_collectLogs_configuration_update_reply___block_invoke_9(
   return result;
 }
 
-- (id)collectLogs:(id)a3 configuration:(id)a4 update:(id)a5 receipts:(id *)a6 error:(id *)a7
+- (id)collectLogs:(id)logs configuration:(id)configuration update:(id)update receipts:(id *)receipts error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
   v36 = 0;
@@ -3609,7 +3609,7 @@ uint64_t __51__W5Client_collectLogs_configuration_update_reply___block_invoke_9(
   v23[7] = &v36;
   v23[4] = v13;
   v23[5] = &v24;
-  [(W5Client *)self collectLogs:a3 configuration:a4 update:a5 reply:v23];
+  [(W5Client *)self collectLogs:logs configuration:configuration update:update reply:v23];
   v14 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v13, v14) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -3621,21 +3621,21 @@ uint64_t __51__W5Client_collectLogs_configuration_update_reply___block_invoke_9(
   v15 = v25[5];
   v16 = v31[5];
   v17 = v37[5];
-  if (a7)
+  if (error)
   {
     v18 = v25[5];
     if (v18)
     {
-      *a7 = v18;
+      *error = v18;
     }
   }
 
-  if (a6)
+  if (receipts)
   {
     v19 = v31[5];
     if (v19)
     {
-      *a6 = v19;
+      *receipts = v19;
     }
   }
 
@@ -3657,10 +3657,10 @@ intptr_t __60__W5Client_collectLogs_configuration_update_receipts_error___block_
   return dispatch_semaphore_signal(v7);
 }
 
-- (id)collectLogsDiagnosticMode:(id)a3 update:(id)a4 reply:(id)a5
+- (id)collectLogsDiagnosticMode:(id)mode update:(id)update reply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   OSLog = W5GetOSLog();
   if (os_log_type_enabled(OSLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -3675,7 +3675,7 @@ intptr_t __60__W5Client_collectLogs_configuration_update_receipts_error___block_
     v23 = 1024;
     v24 = [objc_msgSend(MEMORY[0x277CCAC38] "processInfo")];
     v25 = 2114;
-    v26 = [objc_msgSend(v9 "UUIDString")];
+    v26 = [objc_msgSend(uUID "UUIDString")];
     _os_log_send_and_compose_impl();
   }
 
@@ -3685,13 +3685,13 @@ intptr_t __60__W5Client_collectLogs_configuration_update_receipts_error___block_
   block[2] = __51__W5Client_collectLogsDiagnosticMode_update_reply___block_invoke;
   block[3] = &unk_279ECE700;
   block[4] = self;
-  block[5] = v9;
-  block[6] = a3;
-  block[7] = a4;
-  block[8] = a5;
+  block[5] = uUID;
+  block[6] = mode;
+  block[7] = update;
+  block[8] = reply;
   dispatch_async(queue, block);
   v12 = *MEMORY[0x277D85DE8];
-  return v9;
+  return uUID;
 }
 
 void __51__W5Client_collectLogsDiagnosticMode_update_reply___block_invoke(uint64_t a1)
@@ -3941,7 +3941,7 @@ uint64_t __51__W5Client_collectLogsDiagnosticMode_update_reply___block_invoke_9(
   return result;
 }
 
-- (id)collectLogsDiagnosticMode:(id)a3 update:(id)a4 receipts:(id *)a5 error:(id *)a6
+- (id)collectLogsDiagnosticMode:(id)mode update:(id)update receipts:(id *)receipts error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v34 = 0;
@@ -3971,7 +3971,7 @@ uint64_t __51__W5Client_collectLogsDiagnosticMode_update_reply___block_invoke_9(
   v21[7] = &v34;
   v21[4] = v11;
   v21[5] = &v22;
-  [(W5Client *)self collectLogsDiagnosticMode:a3 update:a4 reply:v21];
+  [(W5Client *)self collectLogsDiagnosticMode:mode update:update reply:v21];
   v12 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v11, v12) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -3983,21 +3983,21 @@ uint64_t __51__W5Client_collectLogsDiagnosticMode_update_reply___block_invoke_9(
   v13 = v23[5];
   v14 = v29[5];
   v15 = v35[5];
-  if (a6)
+  if (error)
   {
     v16 = v23[5];
     if (v16)
     {
-      *a6 = v16;
+      *error = v16;
     }
   }
 
-  if (a5)
+  if (receipts)
   {
     v17 = v29[5];
     if (v17)
     {
-      *a5 = v17;
+      *receipts = v17;
     }
   }
 
@@ -4019,20 +4019,20 @@ intptr_t __60__W5Client_collectLogsDiagnosticMode_update_receipts_error___block_
   return dispatch_semaphore_signal(v7);
 }
 
-- (id)startPeerDiscoveryWithConfiguration:(id)a3 reply:(id)a4
+- (id)startPeerDiscoveryWithConfiguration:(id)configuration reply:(id)reply
 {
-  v7 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__W5Client_startPeerDiscoveryWithConfiguration_reply___block_invoke;
   v10[3] = &unk_279ECE348;
   v10[4] = self;
-  v10[5] = v7;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[5] = uUID;
+  v10[6] = configuration;
+  v10[7] = reply;
   dispatch_async(queue, v10);
-  return v7;
+  return uUID;
 }
 
 void __54__W5Client_startPeerDiscoveryWithConfiguration_reply___block_invoke(uint64_t a1)
@@ -4159,9 +4159,9 @@ void __54__W5Client_startPeerDiscoveryWithConfiguration_reply___block_invoke_7(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)stopPeerDiscoveryWithUUID:(id)a3
+- (void)stopPeerDiscoveryWithUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v5 = [(NSXPCConnection *)self->_conn remoteObjectProxyWithErrorHandler:&__block_literal_global_169];
     v6[0] = MEMORY[0x277D85DD0];
@@ -4169,8 +4169,8 @@ void __54__W5Client_startPeerDiscoveryWithConfiguration_reply___block_invoke_7(u
     v6[2] = __38__W5Client_stopPeerDiscoveryWithUUID___block_invoke_2;
     v6[3] = &unk_279ECE770;
     v6[4] = self;
-    v6[5] = a3;
-    [v5 stopPeerDiscoveryWithUUID:a3 reply:v6];
+    v6[5] = d;
+    [v5 stopPeerDiscoveryWithUUID:d reply:v6];
   }
 }
 
@@ -4199,7 +4199,7 @@ void __38__W5Client_stopPeerDiscoveryWithUUID___block_invoke_3(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)startNetworkDiscoveryOnPeer:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)startNetworkDiscoveryOnPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -4207,9 +4207,9 @@ void __38__W5Client_stopPeerDiscoveryWithUUID___block_invoke_3(uint64_t a1)
   v6[2] = __60__W5Client_startNetworkDiscoveryOnPeer_configuration_reply___block_invoke;
   v6[3] = &unk_279ECE348;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = configuration;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
@@ -4336,18 +4336,18 @@ void __60__W5Client_startNetworkDiscoveryOnPeer_configuration_reply___block_invo
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)associateToNetworkOnPeer:(id)a3 scanResult:(id)a4 configuration:(id)a5 reply:(id)a6
+- (void)associateToNetworkOnPeer:(id)peer scanResult:(id)result configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__W5Client_associateToNetworkOnPeer_scanResult_configuration_reply___block_invoke;
   block[3] = &unk_279ECE7C0;
-  block[7] = a5;
-  block[8] = a6;
+  block[7] = configuration;
+  block[8] = reply;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = result;
   dispatch_async(queue, block);
 }
 
@@ -4473,18 +4473,18 @@ void __68__W5Client_associateToNetworkOnPeer_scanResult_configuration_reply___bl
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)runWiFiSnifferOnChannel:(id)a3 duration:(double)a4 peer:(id)a5 reply:(id)a6
+- (id)runWiFiSnifferOnChannel:(id)channel duration:(double)duration peer:(id)peer reply:(id)reply
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v15[0] = a3;
+  v15[0] = channel;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__W5Client_runWiFiSnifferOnChannel_duration_peer_reply___block_invoke;
   v14[3] = &unk_279ECE798;
-  v14[4] = a3;
-  v14[5] = a6;
-  result = [(W5Client *)self runWiFiSnifferOnChannels:v11 duration:a5 peer:v14 reply:a4];
+  v14[4] = channel;
+  v14[5] = reply;
+  result = [(W5Client *)self runWiFiSnifferOnChannels:v11 duration:peer peer:v14 reply:duration];
   v13 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -4522,22 +4522,22 @@ uint64_t __56__W5Client_runWiFiSnifferOnChannel_duration_peer_reply___block_invo
   return v5(v6, a2, v7);
 }
 
-- (id)runWiFiSnifferOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 reply:(id)a6
+- (id)runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer reply:(id)reply
 {
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__W5Client_runWiFiSnifferOnChannels_duration_peer_reply___block_invoke;
   v14[3] = &unk_279ECE838;
   v14[4] = self;
-  v14[5] = v11;
-  v14[7] = a5;
-  v14[8] = a6;
-  *&v14[9] = a4;
-  v14[6] = a3;
+  v14[5] = uUID;
+  v14[7] = peer;
+  v14[8] = reply;
+  *&v14[9] = duration;
+  v14[6] = channels;
   dispatch_async(queue, v14);
-  return v11;
+  return uUID;
 }
 
 void __57__W5Client_runWiFiSnifferOnChannels_duration_peer_reply___block_invoke(uint64_t a1)
@@ -4662,17 +4662,17 @@ void __57__W5Client_runWiFiSnifferOnChannels_duration_peer_reply___block_invoke_
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)runWiFiSnifferOnChannel:(id)a3 duration:(double)a4 peer:(id)a5 error:(id *)a6
+- (id)runWiFiSnifferOnChannel:(id)channel duration:(double)duration peer:(id)peer error:(id *)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = 0;
-  v9[0] = a3;
-  result = [-[W5Client runWiFiSnifferOnChannels:duration:peer:snifferErrors:error:](self runWiFiSnifferOnChannels:objc_msgSend(MEMORY[0x277CBEA60] duration:"arrayWithObjects:count:" peer:v9 snifferErrors:1) error:{a5, &v8, a6, a4), "objectForKey:", a3}];
+  v9[0] = channel;
+  result = [-[W5Client runWiFiSnifferOnChannels:duration:peer:snifferErrors:error:](self runWiFiSnifferOnChannels:objc_msgSend(MEMORY[0x277CBEA60] duration:"arrayWithObjects:count:" peer:v9 snifferErrors:1) error:{peer, &v8, error, duration), "objectForKey:", channel}];
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)runWiFiSnifferOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 snifferErrors:(id *)a6 error:(id *)a7
+- (id)runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer snifferErrors:(id *)errors error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v34 = 0;
@@ -4702,7 +4702,7 @@ void __57__W5Client_runWiFiSnifferOnChannels_duration_peer_reply___block_invoke_
   v21[7] = &v22;
   v21[4] = v12;
   v21[5] = &v28;
-  [(W5Client *)self runWiFiSnifferOnChannels:a3 duration:a5 peer:v21 reply:a4];
+  [(W5Client *)self runWiFiSnifferOnChannels:channels duration:peer peer:v21 reply:duration];
   v13 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v12, v13) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -4714,12 +4714,12 @@ void __57__W5Client_runWiFiSnifferOnChannels_duration_peer_reply___block_invoke_
   v14 = v29[5];
   v15 = v35[5];
   v16 = v23[5];
-  if (a7)
+  if (error)
   {
     v17 = v29[5];
     if (v17)
     {
-      *a7 = v17;
+      *error = v17;
     }
   }
 
@@ -4741,22 +4741,22 @@ intptr_t __71__W5Client_runWiFiSnifferOnChannels_duration_peer_snifferErrors_err
   return dispatch_semaphore_signal(v7);
 }
 
-- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 reply:(id)a6
+- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer reply:(id)reply
 {
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__W5Client_runWiFiSnifferWithTCPDumpOnChannels_duration_peer_reply___block_invoke;
   v14[3] = &unk_279ECE838;
   v14[4] = self;
-  v14[5] = v11;
-  v14[7] = a5;
-  v14[8] = a6;
-  *&v14[9] = a4;
-  v14[6] = a3;
+  v14[5] = uUID;
+  v14[7] = peer;
+  v14[8] = reply;
+  *&v14[9] = duration;
+  v14[6] = channels;
   dispatch_async(queue, v14);
-  return v11;
+  return uUID;
 }
 
 void __68__W5Client_runWiFiSnifferWithTCPDumpOnChannels_duration_peer_reply___block_invoke(uint64_t a1)
@@ -4877,7 +4877,7 @@ void __68__W5Client_runWiFiSnifferWithTCPDumpOnChannels_duration_peer_reply___bl
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 error:(id *)a6
+- (id)runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -4900,7 +4900,7 @@ void __68__W5Client_runWiFiSnifferWithTCPDumpOnChannels_duration_peer_reply___bl
   v19[5] = &v20;
   v19[6] = &v26;
   v19[4] = v11;
-  [(W5Client *)self runWiFiSnifferWithTCPDumpOnChannels:a3 duration:a5 peer:v19 reply:a4];
+  [(W5Client *)self runWiFiSnifferWithTCPDumpOnChannels:channels duration:peer peer:v19 reply:duration];
   v12 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v11, v12) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -4911,12 +4911,12 @@ void __68__W5Client_runWiFiSnifferWithTCPDumpOnChannels_duration_peer_reply___bl
 
   v13 = v21[5];
   v14 = v27[5];
-  if (a6)
+  if (error)
   {
     v15 = v21[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -4936,20 +4936,20 @@ intptr_t __68__W5Client_runWiFiSnifferWithTCPDumpOnChannels_duration_peer_error_
   return dispatch_semaphore_signal(v5);
 }
 
-- (id)runWiFiPerformanceLoggingWithConfiguration:(id)a3 reply:(id)a4
+- (id)runWiFiPerformanceLoggingWithConfiguration:(id)configuration reply:(id)reply
 {
-  v7 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_reply___block_invoke;
   v10[3] = &unk_279ECE348;
   v10[4] = self;
-  v10[5] = v7;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[5] = uUID;
+  v10[6] = configuration;
+  v10[7] = reply;
   dispatch_async(queue, v10);
-  return v7;
+  return uUID;
 }
 
 void __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_reply___block_invoke(uint64_t a1)
@@ -5068,7 +5068,7 @@ void __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_reply___block_inv
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)runWiFiPerformanceLoggingWithConfiguration:(id)a3 error:(id *)a4
+- (id)runWiFiPerformanceLoggingWithConfiguration:(id)configuration error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -5084,7 +5084,7 @@ void __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_reply___block_inv
   v17[3] = &unk_279ECE460;
   v17[4] = v7;
   v17[5] = &v18;
-  v8 = [(W5Client *)self runWiFiPerformanceLoggingWithConfiguration:a3 reply:v17];
+  v8 = [(W5Client *)self runWiFiPerformanceLoggingWithConfiguration:configuration reply:v17];
   v9 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v7, v9) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -5097,9 +5097,9 @@ void __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_reply___block_inv
   v11 = v8;
   v12 = v19;
   v13 = v19[5];
-  if (a4 && v13)
+  if (error && v13)
   {
-    *a4 = v13;
+    *error = v13;
     v13 = v12[5];
   }
 
@@ -5126,7 +5126,7 @@ intptr_t __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_error___block
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)__cancelRequestWithUUID:(id)a3 reply:(id)a4
+- (void)__cancelRequestWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -5134,8 +5134,8 @@ intptr_t __61__W5Client_runWiFiPerformanceLoggingWithConfiguration_error___block
   block[2] = __42__W5Client___cancelRequestWithUUID_reply___block_invoke;
   block[3] = &unk_279ECE2A8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
@@ -5240,7 +5240,7 @@ void __42__W5Client___cancelRequestWithUUID_reply___block_invoke_6(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelRequestWithUUID:(id)a3
+- (void)cancelRequestWithUUID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = dispatch_semaphore_create(0);
@@ -5249,7 +5249,7 @@ void __42__W5Client___cancelRequestWithUUID_reply___block_invoke_6(uint64_t a1)
   v8[2] = __34__W5Client_cancelRequestWithUUID___block_invoke;
   v8[3] = &unk_279ECE258;
   v8[4] = v5;
-  [(W5Client *)self __cancelRequestWithUUID:a3 reply:v8];
+  [(W5Client *)self __cancelRequestWithUUID:d reply:v8];
   v6 = dispatch_time(0, 4000000000);
   if (dispatch_semaphore_wait(v5, v6) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -5261,7 +5261,7 @@ void __42__W5Client___cancelRequestWithUUID_reply___block_invoke_6(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__cancelAllRequestsAndReply:(id)a3
+- (void)__cancelAllRequestsAndReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -5269,7 +5269,7 @@ void __42__W5Client___cancelRequestWithUUID_reply___block_invoke_6(uint64_t a1)
   v4[2] = __40__W5Client___cancelAllRequestsAndReply___block_invoke;
   v4[3] = &unk_279ECE208;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
@@ -5363,7 +5363,7 @@ void __40__W5Client___cancelAllRequestsAndReply___block_invoke_5(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelRequestWithUUID:(id)a3 peer:(id)a4 type:(int64_t)a5 reply:(id)a6
+- (void)cancelRequestWithUUID:(id)d peer:(id)peer type:(int64_t)type reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -5371,10 +5371,10 @@ void __40__W5Client___cancelAllRequestsAndReply___block_invoke_5(uint64_t a1)
   block[2] = __50__W5Client_cancelRequestWithUUID_peer_type_reply___block_invoke;
   block[3] = &unk_279ECE8B0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a6;
-  block[8] = a5;
+  block[5] = d;
+  block[6] = peer;
+  block[7] = reply;
+  block[8] = type;
   dispatch_async(queue, block);
 }
 
@@ -5450,17 +5450,17 @@ void __50__W5Client_cancelRequestWithUUID_peer_type_reply___block_invoke_5(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)__log:(id)a3 timestamp:(BOOL)a4 reply:(id)a5
+- (void)__log:(id)__log timestamp:(BOOL)timestamp reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__W5Client___log_timestamp_reply___block_invoke;
   v6[3] = &unk_279ECE8D8;
-  v6[5] = a3;
-  v6[6] = a5;
+  v6[5] = __log;
+  v6[6] = reply;
   v6[4] = self;
-  v7 = a4;
+  timestampCopy = timestamp;
   dispatch_async(queue, v6);
 }
 
@@ -5535,7 +5535,7 @@ void __34__W5Client___log_timestamp_reply___block_invoke_5(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)startMonitoringFaultEventsForPeer:(id)a3 eventHandler:(id)a4 error:(id *)a5
+- (BOOL)startMonitoringFaultEventsForPeer:(id)peer eventHandler:(id)handler error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -5549,8 +5549,8 @@ void __34__W5Client___log_timestamp_reply___block_invoke_5(uint64_t a1)
   block[2] = __65__W5Client_startMonitoringFaultEventsForPeer_eventHandler_error___block_invoke;
   block[3] = &unk_279ECE2A8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = handler;
   dispatch_async(queue, block);
   conn = self->_conn;
   v18[0] = MEMORY[0x277D85DD0];
@@ -5564,7 +5564,7 @@ void __34__W5Client___log_timestamp_reply___block_invoke_5(uint64_t a1)
   v17[2] = __65__W5Client_startMonitoringFaultEventsForPeer_eventHandler_error___block_invoke_2;
   v17[3] = &unk_279ECE500;
   v17[4] = &v20;
-  [v10 startMonitoringFaultEventsForPeer:a3 reply:v17];
+  [v10 startMonitoringFaultEventsForPeer:peer reply:v17];
   v11 = v21[5];
   v12 = v21[5];
   if (v12)
@@ -5574,13 +5574,13 @@ void __34__W5Client___log_timestamp_reply___block_invoke_5(uint64_t a1)
     v16[1] = 3221225472;
     v16[2] = __65__W5Client_startMonitoringFaultEventsForPeer_eventHandler_error___block_invoke_3;
     v16[3] = &unk_279ECE748;
-    v16[4] = a3;
+    v16[4] = peer;
     v16[5] = self;
     dispatch_async(v13, v16);
     v12 = v21[5];
-    if (a5)
+    if (error)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -5652,7 +5652,7 @@ void __65__W5Client_startMonitoringFaultEventsForPeer_eventHandler_error___block
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)stopMonitoringFaultEventsForPeer:(id)a3 error:(id *)a4
+- (BOOL)stopMonitoringFaultEventsForPeer:(id)peer error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -5672,21 +5672,21 @@ void __65__W5Client_startMonitoringFaultEventsForPeer_eventHandler_error___block
   v16[2] = __51__W5Client_stopMonitoringFaultEventsForPeer_error___block_invoke_2;
   v16[3] = &unk_279ECE500;
   v16[4] = &v18;
-  [v8 stopMonitoringFaultEventsForPeer:a3 reply:v16];
+  [v8 stopMonitoringFaultEventsForPeer:peer reply:v16];
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__W5Client_stopMonitoringFaultEventsForPeer_error___block_invoke_3;
   v15[3] = &unk_279ECE748;
-  v15[4] = a3;
+  v15[4] = peer;
   v15[5] = self;
   dispatch_async(queue, v15);
   v10 = v19[5];
   v11 = v19;
   v12 = v19[5];
-  if (a4 && v12)
+  if (error && v12)
   {
-    *a4 = v12;
+    *error = v12;
     v12 = v11[5];
   }
 
@@ -5733,7 +5733,7 @@ void __51__W5Client_stopMonitoringFaultEventsForPeer_error___block_invoke_3(uint
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)submitFaultEvent:(id)a3 error:(id *)a4
+- (BOOL)submitFaultEvent:(id)event error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -5753,13 +5753,13 @@ void __51__W5Client_stopMonitoringFaultEventsForPeer_error___block_invoke_3(uint
   v13[2] = __35__W5Client_submitFaultEvent_error___block_invoke_2;
   v13[3] = &unk_279ECE500;
   v13[4] = &v15;
-  [v7 submitFaultEvent:a3 reply:v13];
+  [v7 submitFaultEvent:event reply:v13];
   v8 = v16[5];
   v9 = v16;
   v10 = v16[5];
-  if (a4 && v10)
+  if (error && v10)
   {
-    *a4 = v10;
+    *error = v10;
     v10 = v9[5];
   }
 
@@ -5782,7 +5782,7 @@ uint64_t __35__W5Client_submitFaultEvent_error___block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (id)faultEventCacheForPeer:(id)a3 error:(id *)a4
+- (id)faultEventCacheForPeer:(id)peer error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -5809,14 +5809,14 @@ uint64_t __35__W5Client_submitFaultEvent_error___block_invoke_2(uint64_t a1, voi
   v14[3] = &unk_279ECE900;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v7 queryFaultEventCacheForPeer:a3 reply:v14];
+  [v7 queryFaultEventCacheForPeer:peer reply:v14];
   v8 = v17[5];
   v9 = v23[5];
   v10 = v17;
   v11 = v17[5];
-  if (a4 && v11)
+  if (error && v11)
   {
-    *a4 = v11;
+    *error = v11;
     v11 = v10[5];
   }
 
@@ -5850,14 +5850,14 @@ uint64_t __41__W5Client_faultEventCacheForPeer_error___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)receivedEvent:(id)a3
+- (void)receivedEvent:(id)event
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __26__W5Client_receivedEvent___block_invoke;
   v4[3] = &unk_279ECE748;
-  v4[4] = a3;
+  v4[4] = event;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
@@ -5881,14 +5881,14 @@ void __26__W5Client_receivedEvent___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)receivedPeerDiscoveryEvent:(id)a3
+- (void)receivedPeerDiscoveryEvent:(id)event
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__W5Client_receivedPeerDiscoveryEvent___block_invoke;
   v4[3] = &unk_279ECE748;
-  v4[4] = a3;
+  v4[4] = event;
   v4[5] = self;
   dispatch_async(queue, v4);
 }

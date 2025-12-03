@@ -3,7 +3,7 @@
 - (BOOL)isOptedIn;
 - (_TtC25CloudSubscriptionFeatures7GMOptIn)init;
 - (int64_t)state;
-- (void)setIsOptedIn:(BOOL)a3;
+- (void)setIsOptedIn:(BOOL)in;
 @end
 
 @implementation GMOptIn
@@ -17,21 +17,21 @@
 
 - (BOOL)isOptedIn
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1DF4BFA44();
 
   return v3 & 1;
 }
 
-- (void)setIsOptedIn:(BOOL)a3
+- (void)setIsOptedIn:(BOOL)in
 {
-  v4 = self;
-  sub_1DF4BFD90(a3);
+  selfCopy = self;
+  sub_1DF4BFD90(in);
 }
 
 - (int64_t)state
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_1DF4C1694())
   {
     v3 = sub_1DF4BFA44();

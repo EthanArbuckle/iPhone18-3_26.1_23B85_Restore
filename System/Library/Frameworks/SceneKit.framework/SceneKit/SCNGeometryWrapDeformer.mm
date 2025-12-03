@@ -1,20 +1,20 @@
 @interface SCNGeometryWrapDeformer
-- (BOOL)_getDeformedMeshBoundingBox:(id *)a3;
-- (SCNGeometryWrapDeformer)initWithCoder:(id)a3;
-- (SCNGeometryWrapDeformer)initWithDrivingNode:(id)a3 parameters:(id)a4;
-- (SCNGeometryWrapDeformer)initWithInnerLayerNode:(id)a3 outerLayerNode:(id)a4 parameters:(id)a5;
+- (BOOL)_getDeformedMeshBoundingBox:(id *)box;
+- (SCNGeometryWrapDeformer)initWithCoder:(id)coder;
+- (SCNGeometryWrapDeformer)initWithDrivingNode:(id)node parameters:(id)parameters;
+- (SCNGeometryWrapDeformer)initWithInnerLayerNode:(id)node outerLayerNode:(id)layerNode parameters:(id)parameters;
 - (SCNNode)drivingNode;
-- (id)dependencyNodeAtIndex:(unint64_t)a3;
-- (id)newDeformerInstanceForNode:(id)a3 outputs:(unint64_t)a4 computeVertexCount:(unint64_t)a5 context:(id)a6;
+- (id)dependencyNodeAtIndex:(unint64_t)index;
+- (id)newDeformerInstanceForNode:(id)node outputs:(unint64_t)outputs computeVertexCount:(unint64_t)count context:(id)context;
 - (unint64_t)requiredInputs;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)initParametersIfNeededForDeformedNode:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)initParametersIfNeededForDeformedNode:(id)node;
 @end
 
 @implementation SCNGeometryWrapDeformer
 
-- (SCNGeometryWrapDeformer)initWithDrivingNode:(id)a3 parameters:(id)a4
+- (SCNGeometryWrapDeformer)initWithDrivingNode:(id)node parameters:(id)parameters
 {
   v9.receiver = self;
   v9.super_class = SCNGeometryWrapDeformer;
@@ -23,14 +23,14 @@
   if (v6)
   {
     v6->_isLegacySingleLayerDeformer = 1;
-    objc_storeWeak(&v6->_legacyDrivingNode, a3);
-    v7->_parameters = a4;
+    objc_storeWeak(&v6->_legacyDrivingNode, node);
+    v7->_parameters = parameters;
   }
 
   return v7;
 }
 
-- (SCNGeometryWrapDeformer)initWithInnerLayerNode:(id)a3 outerLayerNode:(id)a4 parameters:(id)a5
+- (SCNGeometryWrapDeformer)initWithInnerLayerNode:(id)node outerLayerNode:(id)layerNode parameters:(id)parameters
 {
   v11.receiver = self;
   v11.super_class = SCNGeometryWrapDeformer;
@@ -38,24 +38,24 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_innerLayerNode, a3);
-    objc_storeWeak(&v9->_outerLayerNode, a4);
-    v9->_parameters = a5;
+    objc_storeWeak(&v8->_innerLayerNode, node);
+    objc_storeWeak(&v9->_outerLayerNode, layerNode);
+    v9->_parameters = parameters;
   }
 
   return v9;
 }
 
-- (void)initParametersIfNeededForDeformedNode:(id)a3
+- (void)initParametersIfNeededForDeformedNode:(id)node
 {
   Weak = objc_loadWeak(&self->_innerLayerNode);
   v6 = objc_loadWeak(&self->_outerLayerNode);
   parameters = self->_parameters;
-  v8 = [Weak nodeRef];
-  v9 = [v6 nodeRef];
-  v10 = [a3 nodeRef];
+  nodeRef = [Weak nodeRef];
+  nodeRef2 = [v6 nodeRef];
+  nodeRef3 = [node nodeRef];
 
-  [(SCNGeometryWrapDeformerParameters *)parameters initParametersIfNeededWithInnerLayerNodeRef:v8 outerLayerNodeRef:v9 deformedNodeRef:v10];
+  [(SCNGeometryWrapDeformerParameters *)parameters initParametersIfNeededWithInnerLayerNodeRef:nodeRef outerLayerNodeRef:nodeRef2 deformedNodeRef:nodeRef3];
 }
 
 - (void)dealloc
@@ -69,28 +69,28 @@
   [(SCNGeometryWrapDeformer *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNGeometryWrapDeformer;
   [(SCNGeometryDeformer *)&v5 encodeWithCoder:?];
   [(SCNGeometryWrapDeformer *)self initParametersIfNeededForDeformedNode:0];
-  [a3 encodeObject:self->_parameters forKey:@"parameters"];
-  [a3 encodeObject:objc_loadWeak(&self->_innerLayerNode) forKey:@"innerLayerNode"];
-  [a3 encodeObject:objc_loadWeak(&self->_outerLayerNode) forKey:@"outerLayerNode"];
+  [coder encodeObject:self->_parameters forKey:@"parameters"];
+  [coder encodeObject:objc_loadWeak(&self->_innerLayerNode) forKey:@"innerLayerNode"];
+  [coder encodeObject:objc_loadWeak(&self->_outerLayerNode) forKey:@"outerLayerNode"];
 }
 
-- (SCNGeometryWrapDeformer)initWithCoder:(id)a3
+- (SCNGeometryWrapDeformer)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SCNGeometryWrapDeformer;
   v4 = [(SCNGeometryDeformer *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_parameters = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"innerLayerNode"];
+    v4->_parameters = [coder decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"innerLayerNode"];
     objc_storeWeak(&v4->_innerLayerNode, v5);
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"outerLayerNode"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"outerLayerNode"];
     objc_storeWeak(&v4->_outerLayerNode, v6);
   }
 
@@ -121,25 +121,25 @@
   }
 }
 
-- (BOOL)_getDeformedMeshBoundingBox:(id *)a3
+- (BOOL)_getDeformedMeshBoundingBox:(id *)box
 {
   if (self->_isLegacySingleLayerDeformer)
   {
-    v5 = [objc_loadWeak(&self->_legacyDrivingNode) nodeRef];
+    nodeRef = [objc_loadWeak(&self->_legacyDrivingNode) nodeRef];
 
-    LOBYTE(LocalBoundingBox) = C3DNodeGetLocalBoundingBox(v5, a3);
+    LOBYTE(LocalBoundingBox) = C3DNodeGetLocalBoundingBox(nodeRef, box);
   }
 
   else
   {
     Weak = objc_loadWeak(&self->_innerLayerNode);
     v8 = objc_loadWeak(&self->_outerLayerNode);
-    v9 = [Weak nodeRef];
-    v10 = [v8 nodeRef];
-    LocalBoundingBox = C3DNodeGetLocalBoundingBox(v9, &v23);
+    nodeRef2 = [Weak nodeRef];
+    nodeRef3 = [v8 nodeRef];
+    LocalBoundingBox = C3DNodeGetLocalBoundingBox(nodeRef2, &v23);
     if (LocalBoundingBox)
     {
-      LOBYTE(LocalBoundingBox) = C3DNodeGetLocalBoundingBox(v10, v22);
+      LOBYTE(LocalBoundingBox) = C3DNodeGetLocalBoundingBox(nodeRef3, v22);
       v12 = v22[0];
       v11 = v22[1];
     }
@@ -160,22 +160,22 @@
     v19.i32[3] = 1.0;
     v20 = vmulq_f32(vsubq_f32(v18, v16), v15);
     v20.i32[3] = 0;
-    *a3 = v19;
-    *(a3 + 1) = v20;
+    *box = v19;
+    *(box + 1) = v20;
   }
 
   return LocalBoundingBox;
 }
 
-- (id)dependencyNodeAtIndex:(unint64_t)a3
+- (id)dependencyNodeAtIndex:(unint64_t)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = &OBJC_IVAR___SCNGeometryWrapDeformer__outerLayerNode;
     return objc_loadWeak((&self->super.super.isa + *v3));
   }
 
-  if (!a3)
+  if (!index)
   {
     if (self->_isLegacySingleLayerDeformer)
     {
@@ -193,14 +193,14 @@
   return 0;
 }
 
-- (id)newDeformerInstanceForNode:(id)a3 outputs:(unint64_t)a4 computeVertexCount:(unint64_t)a5 context:(id)a6
+- (id)newDeformerInstanceForNode:(id)node outputs:(unint64_t)outputs computeVertexCount:(unint64_t)count context:(id)context
 {
   if (self->_isLegacySingleLayerDeformer)
   {
     Weak = objc_loadWeak(&self->_legacyDrivingNode);
     v11 = [SCNGeometryWrapDeformerInstance alloc];
 
-    return [(SCNGeometryWrapDeformerInstance *)v11 initWithNode:a3 drivingNode:Weak deformer:self outputs:v12 computeVertexCount:a5 context:a6];
+    return [(SCNGeometryWrapDeformerInstance *)v11 initWithNode:node drivingNode:Weak deformer:self outputs:v12 computeVertexCount:count context:context];
   }
 
   else
@@ -209,7 +209,7 @@
     v15 = objc_loadWeak(&self->_outerLayerNode);
     v16 = [SCNGeometryWrapDeformerInstance alloc];
 
-    return [(SCNGeometryWrapDeformerInstance *)v16 initWithNode:a3 innerLayerNode:v14 outerLayerNode:v15 deformer:self outputs:v17 computeVertexCount:a5 context:a6];
+    return [(SCNGeometryWrapDeformerInstance *)v16 initWithNode:node innerLayerNode:v14 outerLayerNode:v15 deformer:self outputs:v17 computeVertexCount:count context:context];
   }
 }
 

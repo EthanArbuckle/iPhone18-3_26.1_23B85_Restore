@@ -1,7 +1,7 @@
 @interface UITabBarControllerSidebar
 - (BOOL)_isEditable;
 - (BOOL)_isEditing;
-- (BOOL)_makeFirstResponderForTab:(id)a3;
+- (BOOL)_makeFirstResponderForTab:(id)tab;
 - (BOOL)_resignFirstResponder;
 - (UIContentConfiguration)footerContentConfiguration;
 - (UIContentConfiguration)headerContentConfiguration;
@@ -9,48 +9,48 @@
 - (UIView)bottomBarView;
 - (_UITabGroup)_displayedGroup;
 - (id)_actualHeaderContentConfiguration;
-- (id)_contextMenuConfigurationForTab:(uint64_t)a1;
+- (id)_contextMenuConfigurationForTab:(uint64_t)tab;
 - (id)_customizationIdentifier;
 - (id)_isSidebarSupportedAndVisible;
-- (id)_itemsForAddingToDragSession:(void *)a3 tab:;
-- (id)_itemsForBeginningDragSession:(void *)a3 tab:;
-- (id)_leadingSwipeActionsConfigurationForTab:(uint64_t)a1;
-- (id)_sessionPropertiesForDragSession:(uint64_t)a1;
-- (id)_sidebarItemForRequest:(uint64_t)a1;
-- (id)_sidebarViewForEditing:(id *)a1;
-- (id)_trailingSwipeActionsConfigurationForTab:(uint64_t)a1;
-- (id)_updatedSidebarItem:(id)a1;
+- (id)_itemsForAddingToDragSession:(void *)session tab:;
+- (id)_itemsForBeginningDragSession:(void *)session tab:;
+- (id)_leadingSwipeActionsConfigurationForTab:(uint64_t)tab;
+- (id)_sessionPropertiesForDragSession:(uint64_t)session;
+- (id)_sidebarItemForRequest:(uint64_t)request;
+- (id)_sidebarViewForEditing:(id *)editing;
+- (id)_trailingSwipeActionsConfigurationForTab:(uint64_t)tab;
+- (id)_updatedSidebarItem:(id)item;
 - (id)_visualStyle;
-- (uint64_t)_operationForInsertingItemsFromSession:(void *)a3 intoTabGroup:(uint64_t)a4 atIndex:;
+- (uint64_t)_operationForInsertingItemsFromSession:(void *)session intoTabGroup:(uint64_t)group atIndex:;
 - (uint64_t)_resolvedLayout;
-- (uint64_t)_sidebarAction:(void *)a3 group:(void *)a4 operationForAcceptingItemsFromDropSession:;
-- (void)_didEndDisplayingTab:(uint64_t)a1;
-- (void)_editingStateDidChange:(uint64_t)a1;
-- (void)_initWithTabBarController:(void *)a1;
-- (void)_insertItemsFromSession:(void *)a3 intoTabGroup:(uint64_t)a4 atIndex:;
-- (void)_scrollToHeaderAnimated:(BOOL)a3;
-- (void)_scrollToTab:(id)a3 atPosition:(unint64_t)a4 animated:(BOOL)a5;
-- (void)_setCustomizationIdentifier:(id)a3;
-- (void)_setDisplayedGroup:(id)a3;
-- (void)_setEditable:(BOOL)a3;
-- (void)_setEditing:(BOOL)a3;
-- (void)_setHidden:(uint64_t)a3 source:;
-- (void)_setSidebarViewDelegate:(uint64_t)a1;
-- (void)_setToolbarItems:(id)a3;
-- (void)_sidebarAction:(void *)a3 group:(void *)a4 acceptItemsFromDropSession:;
+- (uint64_t)_sidebarAction:(void *)action group:(void *)group operationForAcceptingItemsFromDropSession:;
+- (void)_didEndDisplayingTab:(uint64_t)tab;
+- (void)_editingStateDidChange:(uint64_t)change;
+- (void)_initWithTabBarController:(void *)controller;
+- (void)_insertItemsFromSession:(void *)session intoTabGroup:(uint64_t)group atIndex:;
+- (void)_scrollToHeaderAnimated:(BOOL)animated;
+- (void)_scrollToTab:(id)tab atPosition:(unint64_t)position animated:(BOOL)animated;
+- (void)_setCustomizationIdentifier:(id)identifier;
+- (void)_setDisplayedGroup:(id)group;
+- (void)_setEditable:(BOOL)editable;
+- (void)_setEditing:(BOOL)editing;
+- (void)_setHidden:(uint64_t)hidden source:;
+- (void)_setSidebarViewDelegate:(uint64_t)delegate;
+- (void)_setToolbarItems:(id)items;
+- (void)_sidebarAction:(void *)action group:(void *)group acceptItemsFromDropSession:;
 - (void)_tabModel;
 - (void)_updateInitialSidebarVisibilityIfPossible;
-- (void)_visibilityDidChangeForTabs:(uint64_t)a1;
-- (void)_willDisplayTab:(uint64_t)a1;
-- (void)reconfigureItemForTab:(id)a3;
-- (void)scrollToTarget:(id)a3 animated:(BOOL)a4;
-- (void)setBottomBarView:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFooterContentConfiguration:(id)a3;
-- (void)setHeaderContentConfiguration:(id)a3;
-- (void)setNavigationOverflowItems:(id)a3;
-- (void)setPreferredLayout:(int64_t)a3;
-- (void)set_activeTransaction:(uint64_t)a1;
+- (void)_visibilityDidChangeForTabs:(uint64_t)tabs;
+- (void)_willDisplayTab:(uint64_t)tab;
+- (void)reconfigureItemForTab:(id)tab;
+- (void)scrollToTarget:(id)target animated:(BOOL)animated;
+- (void)setBottomBarView:(id)view;
+- (void)setDelegate:(id)delegate;
+- (void)setFooterContentConfiguration:(id)configuration;
+- (void)setHeaderContentConfiguration:(id)configuration;
+- (void)setNavigationOverflowItems:(id)items;
+- (void)setPreferredLayout:(int64_t)layout;
+- (void)set_activeTransaction:(uint64_t)transaction;
 @end
 
 @implementation UITabBarControllerSidebar
@@ -71,15 +71,15 @@
 
     else
     {
-      v2 = [*(v1 + 40) traitCollection];
-      v3 = [v2 userInterfaceIdiom];
+      traitCollection = [*(v1 + 40) traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v3 == 6)
+      if (userInterfaceIdiom == 6)
       {
         return 2;
       }
 
-      else if (v3 == 5)
+      else if (userInterfaceIdiom == 5)
       {
         if (_UISolariumEnabled())
         {
@@ -104,29 +104,29 @@
 
 - (void)_tabModel
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[5];
+    v2 = self[5];
     if (v2)
     {
       v2 = v2[150];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_initWithTabBarController:(void *)a1
+- (void)_initWithTabBarController:(void *)controller
 {
-  if (!a1)
+  if (!controller)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = controller;
   v6.super_class = UITabBarControllerSidebar;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -139,11 +139,11 @@
   return v4;
 }
 
-- (id)_sidebarViewForEditing:(id *)a1
+- (id)_sidebarViewForEditing:(id *)editing
 {
-  if (a1)
+  if (editing)
   {
-    v3 = a1;
+    editingCopy = editing;
     if (a2)
     {
       v4 = 0;
@@ -151,62 +151,62 @@
 
     else
     {
-      v5 = [(UITabBarControllerSidebar *)a1 _visualStyle];
-      v6 = [v5 canDisplaySidebar];
+      _visualStyle = [(UITabBarControllerSidebar *)editing _visualStyle];
+      canDisplaySidebar = [_visualStyle canDisplaySidebar];
 
-      v4 = v6 ^ 1;
+      v4 = canDisplaySidebar ^ 1;
     }
 
-    if (!v3[6] && (v4 & 1) == 0 && _UITabBarControllerWantsFloatingTabBar())
+    if (!editingCopy[6] && (v4 & 1) == 0 && _UITabBarControllerWantsFloatingTabBar())
     {
-      v7 = [[_UITabOutlineView alloc] initWithSidebar:v3];
-      v8 = v3[6];
-      v3[6] = v7;
+      v7 = [[_UITabOutlineView alloc] initWithSidebar:editingCopy];
+      v8 = editingCopy[6];
+      editingCopy[6] = v7;
 
-      WeakRetained = objc_loadWeakRetained(v3 + 14);
-      v10 = v3[6];
+      WeakRetained = objc_loadWeakRetained(editingCopy + 14);
+      v10 = editingCopy[6];
       if (v10)
       {
         objc_storeWeak(v10 + 58, WeakRetained);
       }
 
-      -[_UITabOutlineView setPreferredStyle:](v3[6], [v3 _sidebarViewStyle]);
-      v11 = [v3[5] title];
-      [(_UITabOutlineView *)v3[6] setTitle:v11];
+      -[_UITabOutlineView setPreferredStyle:](editingCopy[6], [editingCopy _sidebarViewStyle]);
+      title = [editingCopy[5] title];
+      [(_UITabOutlineView *)editingCopy[6] setTitle:title];
 
-      if (v3[9])
+      if (editingCopy[9])
       {
-        [(_UITabOutlineView *)v3[6] updateBottomBarView];
+        [(_UITabOutlineView *)editingCopy[6] updateBottomBarView];
       }
 
-      if (v3[15])
+      if (editingCopy[15])
       {
-        v12 = [v3 _outlineView];
-        [(_UITabOutlineView *)v12 setOverrideBackgroundEffect:?];
+        _outlineView = [editingCopy _outlineView];
+        [(_UITabOutlineView *)_outlineView setOverrideBackgroundEffect:?];
       }
     }
 
-    a1 = v3[6];
+    editing = editingCopy[6];
     v2 = vars8;
   }
 
-  return a1;
+  return editing;
 }
 
 - (id)_visualStyle
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(UITabBarController *)a1[5] _visualStyle];
+    self = [(UITabBarController *)self[5] _visualStyle];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -514,16 +514,16 @@
   }
 }
 
-- (void)_setHidden:(uint64_t)a3 source:
+- (void)_setHidden:(uint64_t)hidden source:
 {
-  if (a1 && *(a1 + 32) != a2)
+  if (self && *(self + 32) != a2)
   {
-    *(a1 + 32) = a2;
-    *(a1 + 16) = *(a1 + 16) & 0xFD | (2 * (a3 != 0));
-    if (a3 != 5)
+    *(self + 32) = a2;
+    *(self + 16) = *(self + 16) & 0xFD | (2 * (hidden != 0));
+    if (hidden != 5)
     {
-      v6 = [(UITabBarControllerSidebar *)a1 _tabModel];
-      v7 = [v6 customizationStore];
+      _tabModel = [(UITabBarControllerSidebar *)self _tabModel];
+      customizationStore = [_tabModel customizationStore];
 
       v8 = 1;
       if (!a2)
@@ -531,7 +531,7 @@
         v8 = 2;
       }
 
-      if (a3)
+      if (hidden)
       {
         v9 = v8;
       }
@@ -541,42 +541,42 @@
         v9 = 0;
       }
 
-      [v7 setPreferredSidebarVisibility:v9];
+      [customizationStore setPreferredSidebarVisibility:v9];
     }
 
-    v10 = [(UITabBarControllerSidebar *)a1 _visualStyle];
-    v11 = [v10 canDisplaySidebar];
+    _visualStyle = [(UITabBarControllerSidebar *)self _visualStyle];
+    canDisplaySidebar = [_visualStyle canDisplaySidebar];
 
-    if (v11)
+    if (canDisplaySidebar)
     {
-      if (a3 == 5)
+      if (hidden == 5)
       {
-        v16 = [(UITabBarControllerSidebar *)a1 _visualStyle];
-        [v16 sidebarVisibilityDidChangeWithAnimator:0];
+        _visualStyle2 = [(UITabBarControllerSidebar *)self _visualStyle];
+        [_visualStyle2 sidebarVisibilityDidChangeWithAnimator:0];
       }
 
       else
       {
-        v16 = objc_opt_new();
-        if (*(a1 + 8))
+        _visualStyle2 = objc_opt_new();
+        if (*(self + 8))
         {
-          v12 = [a1 delegate];
-          [v12 tabBarController:*(a1 + 40) sidebarVisibilityWillChange:a1 animator:v16];
+          delegate = [self delegate];
+          [delegate tabBarController:*(self + 40) sidebarVisibilityWillChange:self animator:_visualStyle2];
         }
 
-        v13 = [(UITabBarControllerSidebar *)a1 _visualStyle];
-        [v13 sidebarVisibilityDidChangeWithAnimator:v16];
+        _visualStyle3 = [(UITabBarControllerSidebar *)self _visualStyle];
+        [_visualStyle3 sidebarVisibilityDidChangeWithAnimator:_visualStyle2];
 
-        if (*(a1 + 8) & 1) == 0 && (*(a1 + 12))
+        if (*(self + 8) & 1) == 0 && (*(self + 12))
         {
-          v14 = [a1 _delegate];
-          [v14 _tabBarController:*(a1 + 40) sidebarVisibilityDidChange:a1];
+          _delegate = [self _delegate];
+          [_delegate _tabBarController:*(self + 40) sidebarVisibilityDidChange:self];
         }
 
-        if (a3)
+        if (hidden)
         {
           v15 = +[_UITabAnalytics sharedInstance];
-          [(_UITabAnalytics *)v15 userDidToggleSidebar:a3 source:?];
+          [(_UITabAnalytics *)v15 userDidToggleSidebar:hidden source:?];
         }
       }
     }
@@ -587,25 +587,25 @@
 {
   if (![(UIViewController *)self->_tabBarController _hasAppeared])
   {
-    v3 = [(UITabBarControllerSidebar *)self _tabModel];
-    v4 = [v3 customizationStore];
+    _tabModel = [(UITabBarControllerSidebar *)self _tabModel];
+    customizationStore = [_tabModel customizationStore];
 
-    if ([v4 preferredSidebarVisibility] == 1)
+    if ([customizationStore preferredSidebarVisibility] == 1)
     {
       [(UITabBarControllerSidebar *)self _setHidden:5 source:?];
     }
   }
 }
 
-- (void)setPreferredLayout:(int64_t)a3
+- (void)setPreferredLayout:(int64_t)layout
 {
-  v5 = [(UITabBarControllerSidebar *)self _resolvedLayout];
-  self->_preferredLayout = a3;
-  if (v5 != [(UITabBarControllerSidebar *)self _resolvedLayout])
+  _resolvedLayout = [(UITabBarControllerSidebar *)self _resolvedLayout];
+  self->_preferredLayout = layout;
+  if (_resolvedLayout != [(UITabBarControllerSidebar *)self _resolvedLayout])
   {
     [(_UITabOutlineView *)&self->_outlineView->super.super.super.isa setPreferredStyle:?];
-    v6 = [(UITabBarControllerSidebar *)self _visualStyle];
-    [v6 sidebarLayoutDidChange];
+    _visualStyle = [(UITabBarControllerSidebar *)self _visualStyle];
+    [_visualStyle sidebarLayoutDidChange];
   }
 }
 
@@ -616,15 +616,15 @@
   return v2;
 }
 
-- (void)setHeaderContentConfiguration:(id)a3
+- (void)setHeaderContentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   headerContentConfiguration = self->_headerContentConfiguration;
-  v12 = v4;
+  v12 = configurationCopy;
   v6 = headerContentConfiguration;
   if (v6 == v12)
   {
-    v9 = v12;
+    _outlineView = v12;
 LABEL_9:
 
     v8 = v12;
@@ -648,8 +648,8 @@ LABEL_8:
     v11 = self->_headerContentConfiguration;
     self->_headerContentConfiguration = v10;
 
-    v9 = [(UITabBarControllerSidebar *)self _outlineView];
-    [(_UITabOutlineView *)v9 headerContentConfigurationDidChange:v6];
+    _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+    [(_UITabOutlineView *)_outlineView headerContentConfigurationDidChange:v6];
     goto LABEL_9;
   }
 
@@ -663,15 +663,15 @@ LABEL_10:
   return v2;
 }
 
-- (void)setFooterContentConfiguration:(id)a3
+- (void)setFooterContentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   footerContentConfiguration = self->_footerContentConfiguration;
-  v12 = v4;
+  v12 = configurationCopy;
   v6 = footerContentConfiguration;
   if (v6 == v12)
   {
-    v9 = v12;
+    _outlineView = v12;
 LABEL_9:
 
     v8 = v12;
@@ -695,8 +695,8 @@ LABEL_8:
     v11 = self->_footerContentConfiguration;
     self->_footerContentConfiguration = v10;
 
-    v9 = [(UITabBarControllerSidebar *)self _outlineView];
-    [(_UITabOutlineView *)v9 footerContentConfigurationDidChange:v6];
+    _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+    [(_UITabOutlineView *)_outlineView footerContentConfigurationDidChange:v6];
     goto LABEL_9;
   }
 
@@ -718,108 +718,108 @@ LABEL_10:
   return v3;
 }
 
-- (void)setBottomBarView:(id)a3
+- (void)setBottomBarView:(id)view
 {
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  viewCopy = view;
+  v11 = viewCopy;
+  if (viewCopy)
   {
     v7 = [(NSArray *)self->_toolbarItems count];
-    v6 = v11;
+    viewCopy = v11;
     if (v7)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"UITabBarControllerSidebar.m" lineNumber:332 description:@"Setting a bottomBarView alongside _toolbarItems is not supported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarControllerSidebar.m" lineNumber:332 description:@"Setting a bottomBarView alongside _toolbarItems is not supported"];
 
-      v6 = v11;
+      viewCopy = v11;
     }
   }
 
-  if (self->_bottomBarView != v6)
+  if (self->_bottomBarView != viewCopy)
   {
     v8 = *&self->_sidebarFlags & 0xFE;
-    if (v6)
+    if (viewCopy)
     {
       ++v8;
     }
 
     *&self->_sidebarFlags = v8;
-    objc_storeStrong(&self->_bottomBarView, a3);
-    v9 = [(UITabBarControllerSidebar *)self _outlineView];
-    [(_UITabOutlineView *)v9 updateBottomBarView];
+    objc_storeStrong(&self->_bottomBarView, view);
+    _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+    [(_UITabOutlineView *)_outlineView updateBottomBarView];
 
-    v6 = v11;
+    viewCopy = v11;
   }
 }
 
 - (id)_actualHeaderContentConfiguration
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[7];
+    self = self[7];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)reconfigureItemForTab:(id)a3
+- (void)reconfigureItemForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(UITabBarControllerSidebar *)self _outlineView];
-  [(_UITabOutlineView *)v5 reconfigureItemForTab:v4];
+  tabCopy = tab;
+  _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+  [(_UITabOutlineView *)_outlineView reconfigureItemForTab:tabCopy];
 }
 
-- (void)scrollToTarget:(id)a3 animated:(BOOL)a4
+- (void)scrollToTarget:(id)target animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UITabBarControllerSidebar *)self _outlineView];
-  [(_UITabOutlineView *)v7 scrollToTarget:v6 animated:v4];
+  animatedCopy = animated;
+  targetCopy = target;
+  _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+  [(_UITabOutlineView *)_outlineView scrollToTarget:targetCopy animated:animatedCopy];
 }
 
-- (void)setNavigationOverflowItems:(id)a3
+- (void)setNavigationOverflowItems:(id)items
 {
-  v5 = a3;
-  if (self->_navigationOverflowItems != v5)
+  itemsCopy = items;
+  if (self->_navigationOverflowItems != itemsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_navigationOverflowItems, a3);
-    v6 = [(UITabBarControllerSidebar *)self _outlineView];
-    v7 = v6;
-    if (v6)
+    v8 = itemsCopy;
+    objc_storeStrong(&self->_navigationOverflowItems, items);
+    _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+    v7 = _outlineView;
+    if (_outlineView)
     {
-      [v6 _updateEditBarButtonItem];
+      [_outlineView _updateEditBarButtonItem];
     }
 
-    v5 = v8;
+    itemsCopy = v8;
   }
 }
 
-- (BOOL)_makeFirstResponderForTab:(id)a3
+- (BOOL)_makeFirstResponderForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(UITabBarControllerSidebar *)self _outlineView];
-  v6 = [(_UITabOutlineView *)v5 makeFirstResponderForTab:v4];
+  tabCopy = tab;
+  _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+  v6 = [(_UITabOutlineView *)_outlineView makeFirstResponderForTab:tabCopy];
 
   return v6;
 }
 
 - (BOOL)_resignFirstResponder
 {
-  v2 = [(UITabBarControllerSidebar *)self _outlineView];
-  v3 = [v2 resignFirstResponder];
+  _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+  resignFirstResponder = [_outlineView resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)_setSidebarViewDelegate:(uint64_t)a1
+- (void)_setSidebarViewDelegate:(uint64_t)delegate
 {
-  if (a1)
+  if (delegate)
   {
     obj = a2;
-    objc_storeWeak((a1 + 112), obj);
-    v3 = *(a1 + 48);
+    objc_storeWeak((delegate + 112), obj);
+    v3 = *(delegate + 48);
     if (v3)
     {
       objc_storeWeak((v3 + 464), obj);
@@ -831,89 +831,89 @@ LABEL_10:
 {
   if (result)
   {
-    v1 = [(UITabBarControllerSidebar *)result _visualStyle];
-    v2 = [v1 isDisplayingSidebar];
+    _visualStyle = [(UITabBarControllerSidebar *)result _visualStyle];
+    isDisplayingSidebar = [_visualStyle isDisplayingSidebar];
 
-    return v2;
+    return isDisplayingSidebar;
   }
 
   return result;
 }
 
-- (void)_willDisplayTab:(uint64_t)a1
+- (void)_willDisplayTab:(uint64_t)tab
 {
   v4 = a2;
-  if (a1)
+  if (tab)
   {
-    if ((*(a1 + 8) & 0x40) != 0)
+    if ((*(tab + 8) & 0x40) != 0)
     {
-      v3 = [a1 delegate];
-      [v3 tabBarController:*(a1 + 40) sidebar:a1 willBeginDisplayingTab:v4];
+      delegate = [tab delegate];
+      [delegate tabBarController:*(tab + 40) sidebar:tab willBeginDisplayingTab:v4];
     }
 
     else
     {
-      if ((*(a1 + 13) & 0x20) == 0)
+      if ((*(tab + 13) & 0x20) == 0)
       {
         goto LABEL_7;
       }
 
-      v3 = [a1 _delegate];
-      [v3 _tabBarController:*(a1 + 40) sidebar:a1 willBeginDisplayingTab:v4];
+      delegate = [tab _delegate];
+      [delegate _tabBarController:*(tab + 40) sidebar:tab willBeginDisplayingTab:v4];
     }
   }
 
 LABEL_7:
 }
 
-- (void)_didEndDisplayingTab:(uint64_t)a1
+- (void)_didEndDisplayingTab:(uint64_t)tab
 {
   v4 = a2;
-  if (a1)
+  if (tab)
   {
-    if ((*(a1 + 8) & 0x80) != 0)
+    if ((*(tab + 8) & 0x80) != 0)
     {
-      v3 = [a1 delegate];
-      [v3 tabBarController:*(a1 + 40) sidebar:a1 didEndDisplayingTab:v4];
+      delegate = [tab delegate];
+      [delegate tabBarController:*(tab + 40) sidebar:tab didEndDisplayingTab:v4];
     }
 
     else
     {
-      if ((*(a1 + 13) & 0x40) == 0)
+      if ((*(tab + 13) & 0x40) == 0)
       {
         goto LABEL_7;
       }
 
-      v3 = [a1 _delegate];
-      [v3 _tabBarController:*(a1 + 40) sidebar:a1 didEndDisplayingTab:v4];
+      delegate = [tab _delegate];
+      [delegate _tabBarController:*(tab + 40) sidebar:tab didEndDisplayingTab:v4];
     }
   }
 
 LABEL_7:
 }
 
-- (id)_sidebarItemForRequest:(uint64_t)a1
+- (id)_sidebarItemForRequest:(uint64_t)request
 {
   v3 = a2;
-  if (a1)
+  if (request)
   {
-    if ((*(a1 + 8) & 2) != 0)
+    if ((*(request + 8) & 2) != 0)
     {
-      v5 = [a1 delegate];
-      v4 = [v5 tabBarController:*(a1 + 40) sidebar:a1 itemForRequest:v3];
+      delegate = [request delegate];
+      v4 = [delegate tabBarController:*(request + 40) sidebar:request itemForRequest:v3];
     }
 
     else
     {
-      if ((*(a1 + 12) & 8) == 0)
+      if ((*(request + 12) & 8) == 0)
       {
         v4 = [UITabSidebarItem itemFromRequest:v3];
         goto LABEL_8;
       }
 
       v4 = [_UITabSidebarItem itemFromRequest:v3];
-      v5 = [a1 _delegate];
-      [v5 _tabBarController:*(a1 + 40) sidebar:a1 configureItem:v4];
+      delegate = [request _delegate];
+      [delegate _tabBarController:*(request + 40) sidebar:request configureItem:v4];
     }
   }
 
@@ -927,22 +927,22 @@ LABEL_8:
   return v4;
 }
 
-- (id)_updatedSidebarItem:(id)a1
+- (id)_updatedSidebarItem:(id)item
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (item)
   {
-    if ((*(a1 + 4) & 4) != 0)
+    if ((*(item + 4) & 4) != 0)
     {
       v5 = [v3 copy];
-      v6 = [a1 delegate];
-      [v6 tabBarController:*(a1 + 5) sidebar:a1 updateItem:v5];
+      delegate = [item delegate];
+      [delegate tabBarController:*(item + 5) sidebar:item updateItem:v5];
     }
 
     else
     {
-      if ((*(a1 + 12) & 0x10) == 0)
+      if ((*(item + 12) & 0x10) == 0)
       {
         v5 = 0;
 LABEL_8:
@@ -956,14 +956,14 @@ LABEL_8:
           v7 = v4;
         }
 
-        a1 = v7;
+        item = v7;
 
         goto LABEL_12;
       }
 
       v5 = [v3 copy];
-      v6 = [a1 _delegate];
-      [v6 _tabBarController:*(a1 + 5) sidebar:a1 updateItem:v5];
+      delegate = [item _delegate];
+      [delegate _tabBarController:*(item + 5) sidebar:item updateItem:v5];
     }
 
     goto LABEL_8;
@@ -971,302 +971,302 @@ LABEL_8:
 
 LABEL_12:
 
-  return a1;
+  return item;
 }
 
-- (id)_leadingSwipeActionsConfigurationForTab:(uint64_t)a1
+- (id)_leadingSwipeActionsConfigurationForTab:(uint64_t)tab
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (tab)
   {
     if (!v3)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel__leadingSwipeActionsConfigurationForTab_ object:a1 file:@"UITabBarControllerSidebar.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"tab != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__leadingSwipeActionsConfigurationForTab_ object:tab file:@"UITabBarControllerSidebar.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"tab != nil"}];
     }
 
-    if ((*(a1 + 8) & 8) != 0)
+    if ((*(tab + 8) & 8) != 0)
     {
-      v5 = [a1 _delegate];
-      v6 = [v5 tabBarController:*(a1 + 40) sidebar:a1 leadingSwipeActionsConfigurationForTab:v4];
+      _delegate = [tab _delegate];
+      v6 = [_delegate tabBarController:*(tab + 40) sidebar:tab leadingSwipeActionsConfigurationForTab:v4];
     }
 
     else
     {
-      if ((*(a1 + 12) & 0x20) == 0)
+      if ((*(tab + 12) & 0x20) == 0)
       {
-        a1 = 0;
+        tab = 0;
         goto LABEL_10;
       }
 
-      v5 = [a1 _delegate];
-      v6 = [v5 _tabBarController:*(a1 + 40) sidebar:a1 leadingSwipeActionsConfigurationForTab:v4];
+      _delegate = [tab _delegate];
+      v6 = [_delegate _tabBarController:*(tab + 40) sidebar:tab leadingSwipeActionsConfigurationForTab:v4];
     }
 
-    a1 = v6;
+    tab = v6;
   }
 
 LABEL_10:
 
-  return a1;
+  return tab;
 }
 
-- (id)_trailingSwipeActionsConfigurationForTab:(uint64_t)a1
+- (id)_trailingSwipeActionsConfigurationForTab:(uint64_t)tab
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (tab)
   {
     if (!v3)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel__trailingSwipeActionsConfigurationForTab_ object:a1 file:@"UITabBarControllerSidebar.m" lineNumber:493 description:{@"Invalid parameter not satisfying: %@", @"tab != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__trailingSwipeActionsConfigurationForTab_ object:tab file:@"UITabBarControllerSidebar.m" lineNumber:493 description:{@"Invalid parameter not satisfying: %@", @"tab != nil"}];
     }
 
-    if ((*(a1 + 8) & 0x10) != 0)
+    if ((*(tab + 8) & 0x10) != 0)
     {
-      v5 = [a1 _delegate];
-      v6 = [v5 tabBarController:*(a1 + 40) sidebar:a1 trailingSwipeActionsConfigurationForTab:v4];
+      _delegate = [tab _delegate];
+      v6 = [_delegate tabBarController:*(tab + 40) sidebar:tab trailingSwipeActionsConfigurationForTab:v4];
     }
 
     else
     {
-      if ((*(a1 + 12) & 0x40) == 0)
+      if ((*(tab + 12) & 0x40) == 0)
       {
-        a1 = 0;
+        tab = 0;
         goto LABEL_10;
       }
 
-      v5 = [a1 _delegate];
-      v6 = [v5 _tabBarController:*(a1 + 40) sidebar:a1 trailingSwipeActionsConfigurationForTab:v4];
+      _delegate = [tab _delegate];
+      v6 = [_delegate _tabBarController:*(tab + 40) sidebar:tab trailingSwipeActionsConfigurationForTab:v4];
     }
 
-    a1 = v6;
+    tab = v6;
   }
 
 LABEL_10:
 
-  return a1;
+  return tab;
 }
 
-- (id)_contextMenuConfigurationForTab:(uint64_t)a1
+- (id)_contextMenuConfigurationForTab:(uint64_t)tab
 {
   v3 = a2;
-  if (a1)
+  if (tab)
   {
-    if ((*(a1 + 8) & 0x20) != 0)
+    if ((*(tab + 8) & 0x20) != 0)
     {
-      v4 = [a1 delegate];
-      v5 = [v4 tabBarController:*(a1 + 40) sidebar:a1 contextMenuConfigurationForTab:v3];
+      delegate = [tab delegate];
+      v5 = [delegate tabBarController:*(tab + 40) sidebar:tab contextMenuConfigurationForTab:v3];
     }
 
     else
     {
-      if ((*(a1 + 12) & 0x80) == 0)
+      if ((*(tab + 12) & 0x80) == 0)
       {
-        a1 = 0;
+        tab = 0;
         goto LABEL_8;
       }
 
-      v4 = [a1 _delegate];
-      v5 = [v4 _tabBarController:*(a1 + 40) sidebar:a1 contextMenuConfigurationForTab:v3];
+      delegate = [tab _delegate];
+      v5 = [delegate _tabBarController:*(tab + 40) sidebar:tab contextMenuConfigurationForTab:v3];
     }
 
-    a1 = v5;
+    tab = v5;
   }
 
 LABEL_8:
 
-  return a1;
+  return tab;
 }
 
-- (id)_itemsForBeginningDragSession:(void *)a3 tab:
+- (id)_itemsForBeginningDragSession:(void *)session tab:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sessionCopy = session;
+  if (self)
   {
-    if ((*(a1 + 8) & 0x100) != 0)
+    if ((*(self + 8) & 0x100) != 0)
     {
-      v7 = [a1 delegate];
-      v8 = [v7 tabBarController:*(a1 + 40) sidebar:a1 itemsForBeginningDragSession:v5 tab:v6];
+      delegate = [self delegate];
+      v8 = [delegate tabBarController:*(self + 40) sidebar:self itemsForBeginningDragSession:v5 tab:sessionCopy];
     }
 
     else
     {
-      if ((*(a1 + 13) & 1) == 0)
+      if ((*(self + 13) & 1) == 0)
       {
-        a1 = MEMORY[0x1E695E0F0];
+        self = MEMORY[0x1E695E0F0];
         goto LABEL_8;
       }
 
-      v7 = [a1 _delegate];
-      v8 = [v7 _tabBarController:*(a1 + 40) sidebar:a1 itemsForBeginningDragSession:v5 tab:v6];
+      delegate = [self _delegate];
+      v8 = [delegate _tabBarController:*(self + 40) sidebar:self itemsForBeginningDragSession:v5 tab:sessionCopy];
     }
 
-    a1 = v8;
+    self = v8;
   }
 
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
-- (id)_itemsForAddingToDragSession:(void *)a3 tab:
+- (id)_itemsForAddingToDragSession:(void *)session tab:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sessionCopy = session;
+  if (self)
   {
-    if ((*(a1 + 8) & 0x200) != 0)
+    if ((*(self + 8) & 0x200) != 0)
     {
-      v7 = [a1 delegate];
-      v8 = [v7 tabBarController:*(a1 + 40) sidebar:a1 itemsForAddingToDragSession:v5 tab:v6];
+      delegate = [self delegate];
+      v8 = [delegate tabBarController:*(self + 40) sidebar:self itemsForAddingToDragSession:v5 tab:sessionCopy];
     }
 
     else
     {
-      if ((*(a1 + 13) & 2) == 0)
+      if ((*(self + 13) & 2) == 0)
       {
-        a1 = MEMORY[0x1E695E0F0];
+        self = MEMORY[0x1E695E0F0];
         goto LABEL_8;
       }
 
-      v7 = [a1 _delegate];
-      v8 = [v7 _tabBarController:*(a1 + 40) sidebar:a1 itemsForAddingToDragSession:v5 tab:v6];
+      delegate = [self _delegate];
+      v8 = [delegate _tabBarController:*(self + 40) sidebar:self itemsForAddingToDragSession:v5 tab:sessionCopy];
     }
 
-    a1 = v8;
+    self = v8;
   }
 
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
-- (id)_sessionPropertiesForDragSession:(uint64_t)a1
+- (id)_sessionPropertiesForDragSession:(uint64_t)session
 {
   v3 = a2;
-  if (a1)
+  if (session)
   {
-    if ((*(a1 + 13) & 4) != 0)
+    if ((*(session + 13) & 4) != 0)
     {
-      v4 = [a1 _delegate];
-      a1 = [v4 _tabBarController:*(a1 + 40) sidebar:a1 sessionPropertiesForDragSession:v3];
+      _delegate = [session _delegate];
+      session = [_delegate _tabBarController:*(session + 40) sidebar:session sessionPropertiesForDragSession:v3];
     }
 
     else
     {
-      a1 = 0;
+      session = 0;
     }
   }
 
-  return a1;
+  return session;
 }
 
-- (uint64_t)_sidebarAction:(void *)a3 group:(void *)a4 operationForAcceptingItemsFromDropSession:
+- (uint64_t)_sidebarAction:(void *)action group:(void *)group operationForAcceptingItemsFromDropSession:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  actionCopy = action;
+  groupCopy = group;
+  if (self)
   {
-    if ((*(a1 + 8) & 0x400) != 0)
+    if ((*(self + 8) & 0x400) != 0)
     {
-      v10 = [a1 delegate];
-      v11 = [v10 tabBarController:*(a1 + 40) sidebar:a1 sidebarAction:v7 group:v8 operationForAcceptingItemsFromDropSession:v9];
+      delegate = [self delegate];
+      v11 = [delegate tabBarController:*(self + 40) sidebar:self sidebarAction:v7 group:actionCopy operationForAcceptingItemsFromDropSession:groupCopy];
     }
 
     else
     {
-      if ((*(a1 + 13) & 8) == 0)
+      if ((*(self + 13) & 8) == 0)
       {
-        a1 = 0;
+        self = 0;
         goto LABEL_8;
       }
 
-      v10 = [a1 _delegate];
-      v11 = [v10 _tabBarController:*(a1 + 40) sidebar:a1 sidebarAction:v7 group:v8 operationForAcceptingItemsFromDropSession:v9];
+      delegate = [self _delegate];
+      v11 = [delegate _tabBarController:*(self + 40) sidebar:self sidebarAction:v7 group:actionCopy operationForAcceptingItemsFromDropSession:groupCopy];
     }
 
-    a1 = v11;
+    self = v11;
   }
 
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
-- (void)_sidebarAction:(void *)a3 group:(void *)a4 acceptItemsFromDropSession:
+- (void)_sidebarAction:(void *)action group:(void *)group acceptItemsFromDropSession:
 {
   v10 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  actionCopy = action;
+  groupCopy = group;
+  if (self)
   {
-    if ((*(a1 + 8) & 0x800) != 0)
+    if ((*(self + 8) & 0x800) != 0)
     {
-      v9 = [a1 delegate];
-      [v9 tabBarController:*(a1 + 40) sidebar:a1 sidebarAction:v10 group:v7 acceptItemsFromDropSession:v8];
+      delegate = [self delegate];
+      [delegate tabBarController:*(self + 40) sidebar:self sidebarAction:v10 group:actionCopy acceptItemsFromDropSession:groupCopy];
     }
 
     else
     {
-      if ((*(a1 + 13) & 0x10) == 0)
+      if ((*(self + 13) & 0x10) == 0)
       {
         goto LABEL_7;
       }
 
-      v9 = [a1 _delegate];
-      [v9 _tabBarController:*(a1 + 40) sidebar:a1 sidebarAction:v10 group:v7 acceptItemsFromDropSession:v8];
+      delegate = [self _delegate];
+      [delegate _tabBarController:*(self + 40) sidebar:self sidebarAction:v10 group:actionCopy acceptItemsFromDropSession:groupCopy];
     }
   }
 
 LABEL_7:
 }
 
-- (uint64_t)_operationForInsertingItemsFromSession:(void *)a3 intoTabGroup:(uint64_t)a4 atIndex:
+- (uint64_t)_operationForInsertingItemsFromSession:(void *)session intoTabGroup:(uint64_t)group atIndex:
 {
   v7 = a2;
-  v8 = a3;
-  if (!a1 || (~*(a1 + 12) & 0x18000) != 0)
+  sessionCopy = session;
+  if (!self || (~*(self + 12) & 0x18000) != 0)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [a1 _delegate];
-    v10 = [v9 _tabBarController:*(a1 + 40) sidebar:a1 operationForInsertingItemsFromDropSession:v7 intoTabGroup:v8 atDisplayIndex:a4];
+    _delegate = [self _delegate];
+    v10 = [_delegate _tabBarController:*(self + 40) sidebar:self operationForInsertingItemsFromDropSession:v7 intoTabGroup:sessionCopy atDisplayIndex:group];
   }
 
   return v10;
 }
 
-- (void)_insertItemsFromSession:(void *)a3 intoTabGroup:(uint64_t)a4 atIndex:
+- (void)_insertItemsFromSession:(void *)session intoTabGroup:(uint64_t)group atIndex:
 {
   v9 = a2;
-  v7 = a3;
-  if (a1 && (~*(a1 + 12) & 0x18000) == 0)
+  sessionCopy = session;
+  if (self && (~*(self + 12) & 0x18000) == 0)
   {
-    v8 = [a1 _delegate];
-    [v8 _tabBarController:*(a1 + 40) sidebar:a1 insertItemsFromDropSession:v9 intoTabGroup:v7 atDisplayIndex:a4];
+    _delegate = [self _delegate];
+    [_delegate _tabBarController:*(self + 40) sidebar:self insertItemsFromDropSession:v9 intoTabGroup:sessionCopy atDisplayIndex:group];
   }
 }
 
-- (void)_scrollToHeaderAnimated:(BOOL)a3
+- (void)_scrollToHeaderAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[UITabSidebarScrollTarget targetForHeader];
-  [(UITabBarControllerSidebar *)self scrollToTarget:v5 animated:v3];
+  [(UITabBarControllerSidebar *)self scrollToTarget:v5 animated:animatedCopy];
 }
 
-- (void)_scrollToTab:(id)a3 atPosition:(unint64_t)a4 animated:(BOOL)a5
+- (void)_scrollToTab:(id)tab atPosition:(unint64_t)position animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = [UITabSidebarScrollTarget targetForTab:a3, a4];
-  [(UITabBarControllerSidebar *)self scrollToTarget:v7 animated:v5];
+  animatedCopy = animated;
+  position = [UITabSidebarScrollTarget targetForTab:tab, position];
+  [(UITabBarControllerSidebar *)self scrollToTarget:position animated:animatedCopy];
 }
 
 - (id)_customizationIdentifier
@@ -1279,14 +1279,14 @@ LABEL_7:
   return [(UITabBarControllerSidebar *)self customizationIdentifier];
 }
 
-- (void)_setCustomizationIdentifier:(id)a3
+- (void)_setCustomizationIdentifier:(id)identifier
 {
   if (self)
   {
     self = self->_tabBarController;
   }
 
-  [(UITabBarControllerSidebar *)self setCustomizationIdentifier:a3];
+  [(UITabBarControllerSidebar *)self setCustomizationIdentifier:identifier];
 }
 
 - (BOOL)_isEditing
@@ -1299,48 +1299,48 @@ LABEL_7:
   return [(UITabBarControllerSidebar *)self isEditing];
 }
 
-- (void)_setEditing:(BOOL)a3
+- (void)_setEditing:(BOOL)editing
 {
   if (self)
   {
     self = self->_tabBarController;
   }
 
-  [(UITabBarControllerSidebar *)self setEditing:a3];
+  [(UITabBarControllerSidebar *)self setEditing:editing];
 }
 
-- (void)_editingStateDidChange:(uint64_t)a1
+- (void)_editingStateDidChange:(uint64_t)change
 {
-  if (a1 && (*(a1 + 12) & 2) != 0)
+  if (change && (*(change + 12) & 2) != 0)
   {
-    v4 = [a1 _delegate];
-    [v4 _tabbarController:*(a1 + 40) sidebar:a1 editingStateDidChange:a2];
+    _delegate = [change _delegate];
+    [_delegate _tabbarController:*(change + 40) sidebar:change editingStateDidChange:a2];
   }
 }
 
-- (void)_visibilityDidChangeForTabs:(uint64_t)a1
+- (void)_visibilityDidChangeForTabs:(uint64_t)tabs
 {
   v3 = a2;
-  if (a1 && (*(a1 + 12) & 4) != 0)
+  if (tabs && (*(tabs + 12) & 4) != 0)
   {
     v5 = v3;
-    v4 = [a1 _delegate];
-    [v4 _tabBarController:*(a1 + 40) sidebar:a1 visibilityDidChangeForTabs:v5];
+    _delegate = [tabs _delegate];
+    [_delegate _tabBarController:*(tabs + 40) sidebar:tabs visibilityDidChangeForTabs:v5];
 
     v3 = v5;
   }
 }
 
-- (void)_setToolbarItems:(id)a3
+- (void)_setToolbarItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   toolbarItems = self->_toolbarItems;
-  v19 = v5;
+  v19 = itemsCopy;
   v7 = toolbarItems;
   if (v7 == v19)
   {
 
-    v10 = v19;
+    _outlineView2 = v19;
 LABEL_18:
 
     v9 = v19;
@@ -1358,8 +1358,8 @@ LABEL_8:
 
     if ([(NSArray *)v19 count]&& (*&self->_sidebarFlags & 1) != 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"UITabBarControllerSidebar.m" lineNumber:701 description:@"Setting _toolbarItems alongside a _bottomBarView is not supported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarControllerSidebar.m" lineNumber:701 description:@"Setting _toolbarItems alongside a _bottomBarView is not supported"];
     }
 
     if ([(NSArray *)v19 count])
@@ -1373,8 +1373,8 @@ LABEL_8:
       else
       {
         v14 = [UIToolbar alloc];
-        v15 = [(UITabBarControllerSidebar *)self _outlineView];
-        [v15 frame];
+        _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+        [_outlineView frame];
         v13 = [(UIToolbar *)v14 initWithFrame:0.0, 0.0];
       }
 
@@ -1390,9 +1390,9 @@ LABEL_8:
     self->_bottomBarView = v13;
     v17 = v13;
 
-    v10 = [(UITabBarControllerSidebar *)self _outlineView];
+    _outlineView2 = [(UITabBarControllerSidebar *)self _outlineView];
 
-    [(_UITabOutlineView *)v10 updateBottomBarView];
+    [(_UITabOutlineView *)_outlineView2 updateBottomBarView];
     goto LABEL_18;
   }
 
@@ -1409,26 +1409,26 @@ LABEL_19:
 
 - (BOOL)_isEditable
 {
-  v2 = [(UITabBarControllerSidebar *)self _tabModel];
-  v3 = [v2 isEditable];
+  _tabModel = [(UITabBarControllerSidebar *)self _tabModel];
+  isEditable = [_tabModel isEditable];
 
-  return v3;
+  return isEditable;
 }
 
-- (void)_setEditable:(BOOL)a3
+- (void)_setEditable:(BOOL)editable
 {
-  v3 = a3;
-  v4 = [(UITabBarControllerSidebar *)self _tabModel];
-  [v4 setEditable:v3];
+  editableCopy = editable;
+  _tabModel = [(UITabBarControllerSidebar *)self _tabModel];
+  [_tabModel setEditable:editableCopy];
 }
 
 - (_UITabGroup)_displayedGroup
 {
-  v2 = [(UITabBarControllerSidebar *)self _outlineView];
-  v3 = v2;
-  if (v2)
+  _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+  v3 = _outlineView;
+  if (_outlineView)
   {
-    v4 = *(v2 + 480);
+    v4 = *(_outlineView + 480);
   }
 
   else
@@ -1441,11 +1441,11 @@ LABEL_19:
   return v4;
 }
 
-- (void)_setDisplayedGroup:(id)a3
+- (void)_setDisplayedGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(UITabBarControllerSidebar *)self _outlineView];
-  [(_UITabOutlineView *)v5 setDisplayedGroup:v4];
+  groupCopy = group;
+  _outlineView = [(UITabBarControllerSidebar *)self _outlineView];
+  [(_UITabOutlineView *)_outlineView setDisplayedGroup:groupCopy];
 }
 
 - (UITabBarControllerSidebarDelegate)delegate
@@ -1455,11 +1455,11 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (void)set_activeTransaction:(uint64_t)a1
+- (void)set_activeTransaction:(uint64_t)transaction
 {
-  if (a1)
+  if (transaction)
   {
-    objc_storeStrong((a1 + 104), a2);
+    objc_storeStrong((transaction + 104), a2);
   }
 }
 

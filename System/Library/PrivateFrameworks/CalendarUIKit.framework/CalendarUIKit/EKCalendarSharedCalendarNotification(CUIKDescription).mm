@@ -9,7 +9,7 @@
 
 - (id)titleStringWithOptions:()CUIKDescription
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_1F4AEE0E8;
   v1 = objc_msgSendSuper2(&v3, sel_titleStringWithOptions_);
 
@@ -18,9 +18,9 @@
 
 - (id)_actionStringWithOptions:()CUIKDescription
 {
-  v5 = [a1 allowedEntityTypes];
-  v6 = [a1 _identityStringWithOptions:a3];
-  if ((v5 & 2) != 0)
+  allowedEntityTypes = [self allowedEntityTypes];
+  v6 = [self _identityStringWithOptions:a3];
+  if ((allowedEntityTypes & 2) != 0)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = CUIKBundle();
@@ -53,7 +53,7 @@
 - (id)allDescriptionStringsWithOptions:()CUIKDescription
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 _actionStringWithOptions:?];
+  v1 = [self _actionStringWithOptions:?];
   v4[0] = v1;
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
 
@@ -66,7 +66,7 @@
   if ((a3 & 0x20) != 0)
   {
     v11 = @"Person";
-    v3 = [a1 _actionStringWithOptions:?];
+    v3 = [self _actionStringWithOptions:?];
     v12[0] = v3;
     v4 = MEMORY[0x1E695DF20];
     v5 = v12;
@@ -76,7 +76,7 @@
   else
   {
     v9 = @"Action";
-    v3 = [a1 _actionStringWithOptions:?];
+    v3 = [self _actionStringWithOptions:?];
     v10 = v3;
     v4 = MEMORY[0x1E695DF20];
     v5 = &v10;

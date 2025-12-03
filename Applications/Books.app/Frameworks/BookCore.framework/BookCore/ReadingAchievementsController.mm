@@ -1,10 +1,10 @@
 @interface ReadingAchievementsController
-- (void)_handleSignificantDateChangeNotification:(id)a3;
+- (void)_handleSignificantDateChangeNotification:(id)notification;
 @end
 
 @implementation ReadingAchievementsController
 
-- (void)_handleSignificantDateChangeNotification:(id)a3
+- (void)_handleSignificantDateChangeNotification:(id)notification
 {
   v3 = sub_1EDD64();
   v4 = *(v3 - 8);

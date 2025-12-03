@@ -1,13 +1,13 @@
 @interface HSSetupNetworkRouterConfigurator
-- (HSSetupNetworkRouterConfigurator)initWithCoordinator:(id)a3;
+- (HSSetupNetworkRouterConfigurator)initWithCoordinator:(id)coordinator;
 @end
 
 @implementation HSSetupNetworkRouterConfigurator
 
-- (HSSetupNetworkRouterConfigurator)initWithCoordinator:(id)a3
+- (HSSetupNetworkRouterConfigurator)initWithCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [[HSPCRouterProtectionAutoViewController alloc] initWithCoordinator:v4 configurationDelegate:self];
+  coordinatorCopy = coordinator;
+  v5 = [[HSPCRouterProtectionAutoViewController alloc] initWithCoordinator:coordinatorCopy configurationDelegate:self];
 
   v8.receiver = self;
   v8.super_class = HSSetupNetworkRouterConfigurator;

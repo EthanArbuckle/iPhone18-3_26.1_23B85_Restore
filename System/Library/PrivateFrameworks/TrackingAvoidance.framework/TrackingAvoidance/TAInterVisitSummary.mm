@@ -1,14 +1,14 @@
 @interface TAInterVisitSummary
-- (TAInterVisitSummary)initWithObservationInterval:(id)a3 andLocationHistory:(id)a4 andLastObservation:(id)a5;
+- (TAInterVisitSummary)initWithObservationInterval:(id)interval andLocationHistory:(id)history andLastObservation:(id)observation;
 @end
 
 @implementation TAInterVisitSummary
 
-- (TAInterVisitSummary)initWithObservationInterval:(id)a3 andLocationHistory:(id)a4 andLastObservation:(id)a5
+- (TAInterVisitSummary)initWithObservationInterval:(id)interval andLocationHistory:(id)history andLastObservation:(id)observation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intervalCopy = interval;
+  historyCopy = history;
+  observationCopy = observation;
   v20.receiver = self;
   v20.super_class = TAInterVisitSummary;
   v11 = [(TAInterVisitSummary *)&v20 init];
@@ -18,17 +18,17 @@
   }
 
   v12 = 0;
-  if (v8 && v9 && v10)
+  if (intervalCopy && historyCopy && observationCopy)
   {
-    v13 = [v8 copy];
+    v13 = [intervalCopy copy];
     deviceObservationInterval = v11->_deviceObservationInterval;
     v11->_deviceObservationInterval = v13;
 
-    v15 = [v9 copy];
+    v15 = [historyCopy copy];
     deviceLocationHistory = v11->_deviceLocationHistory;
     v11->_deviceLocationHistory = v15;
 
-    v17 = [v10 copy];
+    v17 = [observationCopy copy];
     latestObservation = v11->_latestObservation;
     v11->_latestObservation = v17;
 

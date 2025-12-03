@@ -1,18 +1,18 @@
 @interface HKClinicalSharingStatus
-- (HKClinicalSharingStatus)clinicalSharingStatusWithFeatureStatus:(int64_t)a3;
+- (HKClinicalSharingStatus)clinicalSharingStatusWithFeatureStatus:(int64_t)status;
 @end
 
 @implementation HKClinicalSharingStatus
 
-- (HKClinicalSharingStatus)clinicalSharingStatusWithFeatureStatus:(int64_t)a3
+- (HKClinicalSharingStatus)clinicalSharingStatusWithFeatureStatus:(int64_t)status
 {
   v5 = [HKClinicalSharingStatus alloc];
-  v6 = [(HKClinicalSharingStatus *)self firstSharedDate];
-  v7 = [(HKClinicalSharingStatus *)self lastSharedDate];
-  v8 = [(HKClinicalSharingStatus *)self userStatus];
-  v9 = [(HKClinicalSharingStatus *)self multiDeviceStatus];
-  v10 = [(HKClinicalSharingStatus *)self primaryDeviceName];
-  v11 = [v5 initWithFirstSharedDate:v6 lastSharedDate:v7 featureStatus:a3 userStatus:v8 multiDeviceStatus:v9 primaryDeviceName:v10];
+  firstSharedDate = [(HKClinicalSharingStatus *)self firstSharedDate];
+  lastSharedDate = [(HKClinicalSharingStatus *)self lastSharedDate];
+  userStatus = [(HKClinicalSharingStatus *)self userStatus];
+  multiDeviceStatus = [(HKClinicalSharingStatus *)self multiDeviceStatus];
+  primaryDeviceName = [(HKClinicalSharingStatus *)self primaryDeviceName];
+  v11 = [v5 initWithFirstSharedDate:firstSharedDate lastSharedDate:lastSharedDate featureStatus:status userStatus:userStatus multiDeviceStatus:multiDeviceStatus primaryDeviceName:primaryDeviceName];
 
   return v11;
 }

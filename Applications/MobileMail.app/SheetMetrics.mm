@@ -1,14 +1,14 @@
 @interface SheetMetrics
-+ (CGRect)frameForPresentedSheetIn:(id)a3;
++ (CGRect)frameForPresentedSheetIn:(id)in;
 + (double)cornerRadius;
 @end
 
 @implementation SheetMetrics
 
-+ (CGRect)frameForPresentedSheetIn:(id)a3
++ (CGRect)frameForPresentedSheetIn:(id)in
 {
-  v3 = a3;
-  [v3 bounds];
+  inCopy = in;
+  [inCopy bounds];
   v5 = v4;
   v7 = v6;
   _UISheetPageSize();

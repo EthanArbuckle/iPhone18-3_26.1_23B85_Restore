@@ -18,20 +18,20 @@
     objc_opt_isKindOfClass();
     objc_opt_class();
     objc_opt_isKindOfClass();
-    v4 = [v3 traitCollection];
+    traitCollection = [v3 traitCollection];
   }
 
   else
   {
-    v4 = 0;
+    traitCollection = 0;
   }
 
-  return v4;
+  return traitCollection;
 }
 
 - (double)_mapkit_scaledValueForValue:()MKCrossPlatformExtras scalingForMacIdiom:respectingTraitEnvironment:
 {
-  v7 = [a1 traitCollectionFromTraitEnvironment:a5];
+  v7 = [self traitCollectionFromTraitEnvironment:a5];
   [v7 userInterfaceIdiom];
   [v7 displayScale];
   if (!v7)
@@ -41,11 +41,11 @@
       dispatch_once(&_mapkit_scaledValueForValue_scalingForMacIdiom_respectingTraitEnvironment__onceToken, &__block_literal_global_7495);
     }
 
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
   }
 
-  [a1 _scaledValueForValue:a2];
+  [self _scaledValueForValue:a2];
   UICeilToScale();
   v10 = v9;
 
@@ -54,8 +54,8 @@
 
 - (id)_mapkit_fontWithSymbolicTraits:()MKCrossPlatformExtras
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:a3];
+  fontDescriptor = [self fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:a3];
 
   v6 = [MEMORY[0x1E69DB878] fontWithDescriptor:v5 size:0.0];
 
@@ -73,11 +73,11 @@
   v13[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 fontDescriptorByAddingAttributes:v4];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v4];
 
   v7 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v8 = [v7 fontWithDescriptor:v6 size:?];
 
   return v8;
@@ -85,23 +85,23 @@
 
 - (id)_mapkit_fontByAddingFeaturesForTabularFigures
 {
-  v2 = [a1 fontDescriptor];
-  v3 = [v2 _mapkit_fontDescriptorByAddingFeaturesForTabularFigures];
+  fontDescriptor = [self fontDescriptor];
+  _mapkit_fontDescriptorByAddingFeaturesForTabularFigures = [fontDescriptor _mapkit_fontDescriptorByAddingFeaturesForTabularFigures];
 
   v4 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
-  v5 = [v4 fontWithDescriptor:v3 size:?];
+  [self pointSize];
+  v5 = [v4 fontWithDescriptor:_mapkit_fontDescriptorByAddingFeaturesForTabularFigures size:?];
 
   return v5;
 }
 
 - (id)_mapkit_fontByAddingFeaturesForTimeDisplayUseMonospace:()MKCrossPlatformExtras
 {
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:a3];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:a3];
 
   v7 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v8 = [v7 fontWithDescriptor:v6 size:?];
 
   return v8;

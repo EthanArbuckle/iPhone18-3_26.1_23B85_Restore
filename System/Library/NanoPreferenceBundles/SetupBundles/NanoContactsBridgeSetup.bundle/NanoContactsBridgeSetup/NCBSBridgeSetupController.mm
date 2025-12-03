@@ -1,31 +1,31 @@
 @interface NCBSBridgeSetupController
-+ (id)_controllerClassFlowForContactsManagementState:(int)a3 priorFlow:(id)a4;
++ (id)_controllerClassFlowForContactsManagementState:(int)state priorFlow:(id)flow;
 - (BOOL)_contactsSyncEnabledWithNetworkAccess;
 - (BOOL)_setupGuardianHasContacts;
 - (BOOL)_shouldPromptForiCloudSync;
 - (BOOL)activePairingDeviceSupportsContactsApp;
 - (BOOL)holdBeforeDisplaying;
 - (NCBSBridgeSetupController)init;
-- (id)_iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:(BOOL)a3 needToEnableiCloudSync:(BOOL)a4 needToMergeContacts:(BOOL)a5;
-- (id)_iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:(BOOL)a3 needToEnableiCloudSync:(BOOL)a4 needToMergeContacts:(BOOL)a5;
-- (id)_nextControllerToRunAtOrAfterIndex:(unint64_t)a3;
+- (id)_iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:(BOOL)access needToEnableiCloudSync:(BOOL)sync needToMergeContacts:(BOOL)contacts;
+- (id)_iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:(BOOL)access needToEnableiCloudSync:(BOOL)sync needToMergeContacts:(BOOL)contacts;
+- (id)_nextControllerToRunAtOrAfterIndex:(unint64_t)index;
 - (id)contactsManagementStateManager;
 - (id)familyMember;
 - (id)familyMemberFirstName;
 - (id)setupGuardian;
 - (id)viewController;
-- (int)_familyMemberContactsStatusForContactsCountStatus:(int)a3;
+- (int)_familyMemberContactsStatusForContactsCountStatus:(int)status;
 - (void)_checkContactsManagementAndEnqueueReleaseHold;
-- (void)_enqueueReleaseHoldWithSkip:(BOOL)a3;
-- (void)_familyMemberSetNotification:(id)a3;
-- (void)_fetchContactsManagementStateWithHoldWaitUIAndCompletionHandler:(id)a3;
-- (void)_promptForiCloudSyncFollowingController:(id)a3;
-- (void)_updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:(id)a3;
+- (void)_enqueueReleaseHoldWithSkip:(BOOL)skip;
+- (void)_familyMemberSetNotification:(id)notification;
+- (void)_fetchContactsManagementStateWithHoldWaitUIAndCompletionHandler:(id)handler;
+- (void)_promptForiCloudSyncFollowingController:(id)controller;
+- (void)_updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:(id)controller;
 - (void)dealloc;
-- (void)miniFlowStepComplete:(id)a3;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
-- (void)requestContactsManagementWithCompletionHandler:(id)a3;
-- (void)setShowingHoldWait:(BOOL)a3;
+- (void)miniFlowStepComplete:(id)complete;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
+- (void)requestContactsManagementWithCompletionHandler:(id)handler;
+- (void)setShowingHoldWait:(BOOL)wait;
 @end
 
 @implementation NCBSBridgeSetupController
@@ -61,57 +61,57 @@
 
 - (id)viewController
 {
-  v3 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
+  firstViewControllerForCurrentFlow = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
 
-  if (v3)
+  if (firstViewControllerForCurrentFlow)
   {
-    v4 = NCBS_Tinker_log();
-    if (!os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    contactsManagementStateManager = NCBS_Tinker_log();
+    if (!os_log_type_enabled(contactsManagementStateManager, OS_LOG_TYPE_INFO))
     {
       goto LABEL_7;
     }
 
-    v5 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
+    firstViewControllerForCurrentFlow2 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
     v10 = 136446978;
     v11 = "[NCBSBridgeSetupController viewController]";
     v12 = 2114;
-    v13 = v5;
+    v13 = firstViewControllerForCurrentFlow2;
     v14 = 1024;
-    v15 = [(NCBSBridgeSetupController *)self cmsForRunningFlow];
+    cmsForRunningFlow = [(NCBSBridgeSetupController *)self cmsForRunningFlow];
     v16 = 1024;
-    v17 = [(NCBSBridgeSetupController *)self familyMemberContactsStatusAtStartOfFlow];
-    _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "%{public}s - re-vending firstViewControllerForCurrentFlow: %{public}@ for cmsForRunningFlow: %d familyMemberContactsStatusAtStartOfFlow: %d", &v10, 0x22u);
+    familyMemberContactsStatusAtStartOfFlow = [(NCBSBridgeSetupController *)self familyMemberContactsStatusAtStartOfFlow];
+    _os_log_impl(&dword_0, contactsManagementStateManager, OS_LOG_TYPE_INFO, "%{public}s - re-vending firstViewControllerForCurrentFlow: %{public}@ for cmsForRunningFlow: %d familyMemberContactsStatusAtStartOfFlow: %d", &v10, 0x22u);
   }
 
   else
   {
-    v4 = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
-    [(NCBSBridgeSetupController *)self _updateForContactsManagementState:[v4 lastKnownContactsManagementState] contactsCountStatus:[v4 contactsCountStatus]];
+    contactsManagementStateManager = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
+    [(NCBSBridgeSetupController *)self _updateForContactsManagementState:[contactsManagementStateManager lastKnownContactsManagementState] contactsCountStatus:[contactsManagementStateManager contactsCountStatus]];
     v6 = [(NCBSBridgeSetupController *)self _nextControllerToRunAtOrAfterIndex:0];
     [(NCBSBridgeSetupController *)self setFirstViewControllerForCurrentFlow:v6];
 
-    v5 = NCBS_Tinker_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    firstViewControllerForCurrentFlow2 = NCBS_Tinker_log();
+    if (os_log_type_enabled(firstViewControllerForCurrentFlow2, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
+      firstViewControllerForCurrentFlow3 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
       v10 = 136447234;
       v11 = "[NCBSBridgeSetupController viewController]";
       v12 = 2114;
-      v13 = v7;
+      v13 = firstViewControllerForCurrentFlow3;
       v14 = 1024;
-      v15 = [(NCBSBridgeSetupController *)self cmsForRunningFlow];
+      cmsForRunningFlow = [(NCBSBridgeSetupController *)self cmsForRunningFlow];
       v16 = 1024;
-      v17 = [(NCBSBridgeSetupController *)self familyMemberContactsStatusAtStartOfFlow];
+      familyMemberContactsStatusAtStartOfFlow = [(NCBSBridgeSetupController *)self familyMemberContactsStatusAtStartOfFlow];
       v18 = 1024;
-      v19 = [v4 contactsSyncAndNetworkAccessEnabled];
-      _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s - vending firstViewControllerForCurrentFlow: %{public}@ for cmsForRunningFlow: %d familyMemberContactsStatusAtStartOfFlow: %d contactsSyncAndNetworkAccessEnabled: %d", &v10, 0x28u);
+      contactsSyncAndNetworkAccessEnabled = [contactsManagementStateManager contactsSyncAndNetworkAccessEnabled];
+      _os_log_impl(&dword_0, firstViewControllerForCurrentFlow2, OS_LOG_TYPE_DEFAULT, "%{public}s - vending firstViewControllerForCurrentFlow: %{public}@ for cmsForRunningFlow: %d familyMemberContactsStatusAtStartOfFlow: %d contactsSyncAndNetworkAccessEnabled: %d", &v10, 0x28u);
     }
   }
 
 LABEL_7:
-  v8 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
+  firstViewControllerForCurrentFlow4 = [(NCBSBridgeSetupController *)self firstViewControllerForCurrentFlow];
 
-  return v8;
+  return firstViewControllerForCurrentFlow4;
 }
 
 - (BOOL)_shouldPromptForiCloudSync
@@ -127,17 +127,17 @@ LABEL_7:
   }
 }
 
-- (id)_iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:(BOOL)a3 needToEnableiCloudSync:(BOOL)a4 needToMergeContacts:(BOOL)a5
+- (id)_iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:(BOOL)access needToEnableiCloudSync:(BOOL)sync needToMergeContacts:(BOOL)contacts
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (a3)
+  contactsCopy = contacts;
+  syncCopy = sync;
+  accessCopy = access;
+  if (access)
   {
     v8 = NanoContactsBridgeSetupBundle();
-    if (v6)
+    if (syncCopy)
     {
-      if (v5)
+      if (contactsCopy)
       {
         v9 = @"TK_CONTACTS_ENABLE_SYNC_REQUEST_TITLE_DATAACCESS_ICLOUDSYNC_MERGECONTACTS";
       }
@@ -156,13 +156,13 @@ LABEL_7:
 
   else
   {
-    if (!a4)
+    if (!sync)
     {
       goto LABEL_14;
     }
 
     v8 = NanoContactsBridgeSetupBundle();
-    if (v5)
+    if (contactsCopy)
     {
       v9 = @"TK_CONTACTS_ENABLE_SYNC_REQUEST_TITLE_ICLOUDSYNC_MERGECONTACTS";
     }
@@ -183,11 +183,11 @@ LABEL_7:
       v13 = 136447234;
       v14 = "[NCBSBridgeSetupController _iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:needToEnableiCloudSync:needToMergeContacts:]";
       v15 = 1024;
-      v16 = v7;
+      v16 = accessCopy;
       v17 = 1024;
-      v18 = v6;
+      v18 = syncCopy;
       v19 = 1024;
-      v20 = v5;
+      v20 = contactsCopy;
       v21 = 2112;
       v22 = v10;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%{public}s :%d:%d:%d => %@", &v13, 0x28u);
@@ -203,11 +203,11 @@ LABEL_14:
     v13 = 136446978;
     v14 = "[NCBSBridgeSetupController _iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:needToEnableiCloudSync:needToMergeContacts:]";
     v15 = 1024;
-    v16 = v7;
+    v16 = accessCopy;
     v17 = 1024;
-    v18 = v6;
+    v18 = syncCopy;
     v19 = 1024;
-    v20 = v5;
+    v20 = contactsCopy;
     _os_log_error_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "%{public}s :%d:%d:%d - no format string", &v13, 0x1Eu);
   }
 
@@ -217,17 +217,17 @@ LABEL_17:
   return v10;
 }
 
-- (id)_iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:(BOOL)a3 needToEnableiCloudSync:(BOOL)a4 needToMergeContacts:(BOOL)a5
+- (id)_iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:(BOOL)access needToEnableiCloudSync:(BOOL)sync needToMergeContacts:(BOOL)contacts
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (a3)
+  contactsCopy = contacts;
+  syncCopy = sync;
+  accessCopy = access;
+  if (access)
   {
     v9 = NanoContactsBridgeSetupBundle();
-    if (v6)
+    if (syncCopy)
     {
-      if (v5)
+      if (contactsCopy)
       {
         v10 = @"TK_CONTACTS_ENABLE_SYNC_REQUEST_MESSAGE_DATAACCESS_ICLOUDSYNC_MERGECONTACTS_%@";
       }
@@ -246,13 +246,13 @@ LABEL_17:
 
   else
   {
-    if (!a4)
+    if (!sync)
     {
       goto LABEL_14;
     }
 
     v9 = NanoContactsBridgeSetupBundle();
-    if (v5)
+    if (contactsCopy)
     {
       v10 = @"TK_CONTACTS_ENABLE_SYNC_REQUEST_MESSAGE_ICLOUDSYNC_MERGECONTACTS_%@";
     }
@@ -264,8 +264,8 @@ LABEL_17:
   }
 
   v11 = [v9 localizedStringForKey:v10 value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v12 = [(NCBSBridgeSetupController *)self familyMemberFirstName];
-  v13 = [NSString stringWithFormat:v11, v12];
+  familyMemberFirstName = [(NCBSBridgeSetupController *)self familyMemberFirstName];
+  v13 = [NSString stringWithFormat:v11, familyMemberFirstName];
 
   if (v13)
   {
@@ -275,11 +275,11 @@ LABEL_17:
       *buf = 136447234;
       v17 = "[NCBSBridgeSetupController _iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:needToEnableiCloudSync:needToMergeContacts:]";
       v18 = 1024;
-      v19 = v7;
+      v19 = accessCopy;
       v20 = 1024;
-      v21 = v6;
+      v21 = syncCopy;
       v22 = 1024;
-      v23 = v5;
+      v23 = contactsCopy;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "%{public}s :%d:%d:%d => %@", buf, 0x28u);
@@ -295,11 +295,11 @@ LABEL_14:
     *buf = 136446978;
     v17 = "[NCBSBridgeSetupController _iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:needToEnableiCloudSync:needToMergeContacts:]";
     v18 = 1024;
-    v19 = v7;
+    v19 = accessCopy;
     v20 = 1024;
-    v21 = v6;
+    v21 = syncCopy;
     v22 = 1024;
-    v23 = v5;
+    v23 = contactsCopy;
     _os_log_error_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "%{public}s :%d:%d:%d - no format string", buf, 0x1Eu);
   }
 
@@ -309,15 +309,15 @@ LABEL_17:
   return v13;
 }
 
-- (void)_promptForiCloudSyncFollowingController:(id)a3
+- (void)_promptForiCloudSyncFollowingController:(id)controller
 {
-  v4 = a3;
-  v5 = [(NCContactsSyncDataAccessHelper *)self->_contactsSyncDataAccessHelper networkAccessEnabledForContacts];
-  v6 = [(NCContactsiCloudSyncHelper *)self->_iCloudSyncHelper primaryiCloudAccountCardDAVEnabled];
-  v7 = (v6 & 1) == 0 && [(NCContactsiCloudSyncHelper *)self->_iCloudSyncHelper enablingPrimaryiCloudAccountRequiresMergeFromLocal];
-  v8 = v6 ^ 1;
-  v20 = [(NCBSBridgeSetupController *)self _iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:v5 ^ 1 needToEnableiCloudSync:v6 ^ 1 needToMergeContacts:v7];
-  v19 = [(NCBSBridgeSetupController *)self _iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:v5 ^ 1 needToEnableiCloudSync:v6 ^ 1 needToMergeContacts:v7];
+  controllerCopy = controller;
+  networkAccessEnabledForContacts = [(NCContactsSyncDataAccessHelper *)self->_contactsSyncDataAccessHelper networkAccessEnabledForContacts];
+  primaryiCloudAccountCardDAVEnabled = [(NCContactsiCloudSyncHelper *)self->_iCloudSyncHelper primaryiCloudAccountCardDAVEnabled];
+  v7 = (primaryiCloudAccountCardDAVEnabled & 1) == 0 && [(NCContactsiCloudSyncHelper *)self->_iCloudSyncHelper enablingPrimaryiCloudAccountRequiresMergeFromLocal];
+  v8 = primaryiCloudAccountCardDAVEnabled ^ 1;
+  v20 = [(NCBSBridgeSetupController *)self _iCloudSyncPromptAlertTitleStringForNeedToEnableDataAccess:networkAccessEnabledForContacts ^ 1 needToEnableiCloudSync:primaryiCloudAccountCardDAVEnabled ^ 1 needToMergeContacts:v7];
+  v19 = [(NCBSBridgeSetupController *)self _iCloudSyncPromptAlertMessageStringForNeedToEnableDataAccess:networkAccessEnabledForContacts ^ 1 needToEnableiCloudSync:primaryiCloudAccountCardDAVEnabled ^ 1 needToMergeContacts:v7];
   v9 = [UIAlertController alertControllerWithTitle:v20 message:v19 preferredStyle:1];
   v10 = NanoContactsBridgeSetupBundle();
   v11 = [v10 localizedStringForKey:@"TK_CONTACTS_ENABLE_SYNC_REQUEST_BUTTON_ENABLE" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
@@ -325,10 +325,10 @@ LABEL_17:
   v23[1] = 3221225472;
   v23[2] = sub_99C4;
   v23[3] = &unk_1C768;
-  v25 = v5 ^ 1;
+  v25 = networkAccessEnabledForContacts ^ 1;
   v23[4] = self;
   v26 = v8;
-  v12 = v4;
+  v12 = controllerCopy;
   v24 = v12;
   v13 = [UIAlertAction actionWithTitle:v11 style:0 handler:v23];
   [v9 addAction:v13];
@@ -346,22 +346,22 @@ LABEL_17:
   [v9 addAction:v17];
 
   [(NCBSBridgeSetupController *)self setPromptedForiCloudSync:1];
-  v18 = [(NCBSBridgeSetupController *)self viewController];
-  [v18 presentViewController:v9 animated:1 completion:0];
+  viewController = [(NCBSBridgeSetupController *)self viewController];
+  [viewController presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_fetchContactsManagementStateWithHoldWaitUIAndCompletionHandler:(id)a3
+- (void)_fetchContactsManagementStateWithHoldWaitUIAndCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(NCBSBridgeSetupController *)self setShowingHoldWait:1];
-  v5 = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
+  contactsManagementStateManager = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
   v6 = NCBS_Tinker_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v13 = "[NCBSBridgeSetupController _fetchContactsManagementStateWithHoldWaitUIAndCompletionHandler:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = contactsManagementStateManager;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}s - querying contactsManagementStateManager (this may take a while): %@", buf, 0x16u);
   }
 
@@ -370,23 +370,23 @@ LABEL_17:
   v9[2] = sub_9D7C;
   v9[3] = &unk_1C7E0;
   v9[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = contactsManagementStateManager;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = contactsManagementStateManager;
   [v8 fetchContactsManagementStateWithCompletionHandler:v9];
 }
 
-- (void)_updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:(id)a3
+- (void)_updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = NCBS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v10 = "[NCBSBridgeSetupController _updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = controllerCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %@", buf, 0x16u);
   }
 
@@ -395,33 +395,33 @@ LABEL_17:
   v7[2] = sub_A0A8;
   v7[3] = &unk_1C808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   [(NCBSBridgeSetupController *)self _fetchContactsManagementStateWithHoldWaitUIAndCompletionHandler:v7];
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = NCBS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136446466;
     v17 = "[NCBSBridgeSetupController miniFlowStepComplete:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = completeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %@", &v16, 0x16u);
   }
 
   if ([(NCBSBridgeSetupController *)self _shouldPromptForiCloudSync])
   {
-    v6 = [(NCBSBridgeSetupController *)self _contactsSyncEnabledWithNetworkAccess];
-    v7 = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
-    [v7 setContactsSyncAndNetworkAccessEnabled:v6];
+    _contactsSyncEnabledWithNetworkAccess = [(NCBSBridgeSetupController *)self _contactsSyncEnabledWithNetworkAccess];
+    contactsManagementStateManager = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
+    [contactsManagementStateManager setContactsSyncAndNetworkAccessEnabled:_contactsSyncEnabledWithNetworkAccess];
 
-    if (v6)
+    if (_contactsSyncEnabledWithNetworkAccess)
     {
-      [(NCBSBridgeSetupController *)self _updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:v4];
+      [(NCBSBridgeSetupController *)self _updateContactsManagementStateWithHoldWaitUIThenStepCompleteController:completeCopy];
     }
 
     else
@@ -434,28 +434,28 @@ LABEL_17:
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}s - prompting for iCloud sync", &v16, 0xCu);
       }
 
-      [(NCBSBridgeSetupController *)self _promptForiCloudSyncFollowingController:v4];
+      [(NCBSBridgeSetupController *)self _promptForiCloudSyncFollowingController:completeCopy];
     }
   }
 
   else
   {
-    v8 = [(NCBSBridgeSetupController *)self runningFlow];
-    v9 = [v8 indexOfObject:objc_opt_class()];
+    runningFlow = [(NCBSBridgeSetupController *)self runningFlow];
+    v9 = [runningFlow indexOfObject:objc_opt_class()];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = NCBS_Tinker_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(NCBSBridgeSetupController *)self cmsForRunningFlow];
+        cmsForRunningFlow = [(NCBSBridgeSetupController *)self cmsForRunningFlow];
         v16 = 136446978;
         v17 = "[NCBSBridgeSetupController miniFlowStepComplete:]";
         v18 = 2112;
-        v19 = v4;
+        v19 = completeCopy;
         v20 = 1024;
-        v21 = v11;
+        v21 = cmsForRunningFlow;
         v22 = 2112;
-        v23 = v8;
+        v23 = runningFlow;
         _os_log_error_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "%{public}s - completedController %@ not found in flow[%d] %@", &v16, 0x26u);
       }
     }
@@ -476,8 +476,8 @@ LABEL_17:
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}s - pushing %@", &v16, 0x16u);
         }
 
-        v15 = [v4 navigationController];
-        [v15 pushViewController:v10 animated:1];
+        navigationController = [completeCopy navigationController];
+        [navigationController pushViewController:v10 animated:1];
       }
 
       else
@@ -489,48 +489,48 @@ LABEL_17:
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}s - no next controller -> buddyControllerDone", &v16, 0xCu);
         }
 
-        v15 = [(NCBSBridgeSetupController *)self delegate];
-        [v15 buddyControllerDone:self];
+        navigationController = [(NCBSBridgeSetupController *)self delegate];
+        [navigationController buddyControllerDone:self];
       }
     }
   }
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   [v5 setMiniFlowDelegate:self];
   [(NCBSBridgeSetupController *)self pushController:v5 animated:1];
 }
 
 - (id)familyMember
 {
-  v2 = [(NCBSBridgeSetupController *)self delegate];
-  v3 = [v2 setupFlowUserInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+  delegate = [(NCBSBridgeSetupController *)self delegate];
+  setupFlowUserInfo = [delegate setupFlowUserInfo];
+  v4 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
   return v4;
 }
 
 - (id)familyMemberFirstName
 {
-  v2 = [(NCBSBridgeSetupController *)self familyMember];
-  v3 = [v2 firstName];
+  familyMember = [(NCBSBridgeSetupController *)self familyMember];
+  firstName = [familyMember firstName];
 
-  return v3;
+  return firstName;
 }
 
 - (id)setupGuardian
 {
-  v3 = [(NCBSBridgeSetupController *)self delegate];
-  v4 = [v3 setupFlowUserInfo];
-  v5 = [v4 objectForKeyedSubscript:BPSPairingFlowFamilyPairingParent];
+  delegate = [(NCBSBridgeSetupController *)self delegate];
+  setupFlowUserInfo = [delegate setupFlowUserInfo];
+  v5 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyPairingParent];
 
   if (!v5)
   {
-    v6 = [(NCBSBridgeSetupController *)self delegate];
-    v7 = [v6 setupFlowUserInfo];
-    v5 = [v7 objectForKeyedSubscript:BPSPairingFlowFamilyOrganizer];
+    delegate2 = [(NCBSBridgeSetupController *)self delegate];
+    setupFlowUserInfo2 = [delegate2 setupFlowUserInfo];
+    v5 = [setupFlowUserInfo2 objectForKeyedSubscript:BPSPairingFlowFamilyOrganizer];
 
     v8 = NCBS_Tinker_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -544,33 +544,33 @@ LABEL_17:
   return v5;
 }
 
-- (void)requestContactsManagementWithCompletionHandler:(id)a3
+- (void)requestContactsManagementWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
-  v6 = [v5 familyMember];
+  handlerCopy = handler;
+  contactsManagementStateManager = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
+  familyMember = [contactsManagementStateManager familyMember];
   v7 = NCBS_Tinker_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136446466;
     v9 = "[NCBSBridgeSetupController requestContactsManagementWithCompletionHandler:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = familyMember;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}s - requestContactsManagementForFamilyMember: %@", &v8, 0x16u);
   }
 
-  [v5 requestContactsManagementForFamilyMember:v6 completionHandler:v4];
+  [contactsManagementStateManager requestContactsManagementForFamilyMember:familyMember completionHandler:handlerCopy];
 }
 
 - (BOOL)activePairingDeviceSupportsContactsApp
 {
-  v2 = [(NCBSBridgeSetupController *)self delegate];
-  v3 = [v2 activePairingDevice];
+  delegate = [(NCBSBridgeSetupController *)self delegate];
+  activePairingDevice = [delegate activePairingDevice];
 
-  if (v3)
+  if (activePairingDevice)
   {
     v4 = [[NSUUID alloc] initWithUUIDString:@"CBF3763A-5F42-4463-B714-39903987FE90"];
-    v5 = [v3 supportsCapability:v4];
+    v5 = [activePairingDevice supportsCapability:v4];
 
     v6 = NCBS_Tinker_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -600,9 +600,9 @@ LABEL_17:
 
 - (BOOL)holdBeforeDisplaying
 {
-  v3 = [(NCBSBridgeSetupController *)self familyMember];
+  familyMember = [(NCBSBridgeSetupController *)self familyMember];
 
-  if (v3)
+  if (familyMember)
   {
     [(NCBSBridgeSetupController *)self _checkContactsManagementAndEnqueueReleaseHold];
   }
@@ -634,22 +634,22 @@ LABEL_17:
   return 1;
 }
 
-- (void)_familyMemberSetNotification:(id)a3
+- (void)_familyMemberSetNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = NCBS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
     v10 = "[NCBSBridgeSetupController _familyMemberSetNotification:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = notificationCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %@", &v9, 0x16u);
   }
 
-  v6 = [(NCBSBridgeSetupController *)self familyMember];
+  familyMember = [(NCBSBridgeSetupController *)self familyMember];
 
-  if (!v6)
+  if (!familyMember)
   {
     v7 = NCBS_Tinker_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -666,17 +666,17 @@ LABEL_17:
 
 - (void)_checkContactsManagementAndEnqueueReleaseHold
 {
-  v3 = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
+  contactsManagementStateManager = [(NCBSBridgeSetupController *)self contactsManagementStateManager];
   v4 = NCBS_Tinker_log();
   v5 = v4;
-  if (v3)
+  if (contactsManagementStateManager)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446466;
       v8 = "[NCBSBridgeSetupController _checkContactsManagementAndEnqueueReleaseHold]";
       v9 = 2112;
-      v10 = v3;
+      v10 = contactsManagementStateManager;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s - querying contactsManagementStateManager (this may take a while): %@", buf, 0x16u);
     }
 
@@ -685,7 +685,7 @@ LABEL_17:
     v6[2] = sub_ADF8;
     v6[3] = &unk_1C830;
     v6[4] = self;
-    [v3 fetchContactsManagementStateWithCompletionHandler:v6];
+    [contactsManagementStateManager fetchContactsManagementStateWithCompletionHandler:v6];
   }
 
   else
@@ -699,16 +699,16 @@ LABEL_17:
   }
 }
 
-- (void)_enqueueReleaseHoldWithSkip:(BOOL)a3
+- (void)_enqueueReleaseHoldWithSkip:(BOOL)skip
 {
-  v3 = a3;
+  skipCopy = skip;
   v5 = NCBS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v9 = "[NCBSBridgeSetupController _enqueueReleaseHoldWithSkip:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = skipCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %d [dispatch]", buf, 0x12u);
   }
 
@@ -716,22 +716,22 @@ LABEL_17:
   v6[1] = 3221225472;
   v6[2] = sub_B050;
   v6[3] = &unk_1C858;
-  v7 = v3;
+  v7 = skipCopy;
   v6[4] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-+ (id)_controllerClassFlowForContactsManagementState:(int)a3 priorFlow:(id)a4
++ (id)_controllerClassFlowForContactsManagementState:(int)state priorFlow:(id)flow
 {
-  v6 = a4;
+  flowCopy = flow;
   v7 = 0;
-  if (a3 > 3)
+  if (state > 3)
   {
-    if ((a3 - 100) >= 3)
+    if ((state - 100) >= 3)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
-        if (a3 != 5)
+        if (state != 5)
         {
           goto LABEL_24;
         }
@@ -760,9 +760,9 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       v11 = NCBS_Tinker_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -770,7 +770,7 @@ LABEL_17:
         sub_F48C();
       }
 
-      v12 = [a1 _controllerClassFlowForContactsManagementState:3 priorFlow:v6];
+      v12 = [self _controllerClassFlowForContactsManagementState:3 priorFlow:flowCopy];
       goto LABEL_23;
     }
 
@@ -780,14 +780,14 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_24;
     }
 
-    if (![v6 containsObject:objc_opt_class()])
+    if (![flowCopy containsObject:objc_opt_class()])
     {
       v31 = objc_opt_class();
       v8 = &v31;
@@ -821,26 +821,26 @@ LABEL_24:
     v19 = 136446978;
     v20 = "+[NCBSBridgeSetupController _controllerClassFlowForContactsManagementState:priorFlow:]";
     v21 = 1024;
-    v22 = a3;
+    stateCopy2 = state;
     v23 = 2114;
     v24 = v7;
     v25 = 2114;
-    v26 = v6;
+    v26 = flowCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}s: %d -> %{public}@ (priorFlow: %{public}@)", &v19, 0x26u);
   }
 
-  v14 = [v6 count];
+  v14 = [flowCopy count];
   if (v14 > [v7 count])
   {
     v15 = NCBS_Tinker_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v6 count];
+      v17 = [flowCopy count];
       v18 = [v7 count];
       v19 = 136446978;
       v20 = "+[NCBSBridgeSetupController _controllerClassFlowForContactsManagementState:priorFlow:]";
       v21 = 1024;
-      v22 = a3;
+      stateCopy2 = state;
       v23 = 2048;
       v24 = v17;
       v25 = 2048;
@@ -857,8 +857,8 @@ LABEL_24:
   contactsManagementStateManager = self->_contactsManagementStateManager;
   if (!contactsManagementStateManager)
   {
-    v4 = [(NCBSBridgeSetupController *)self delegate];
-    v5 = [NCABTinkerContactsManagementStateManager managerForBuddyControllerDelegate:v4];
+    delegate = [(NCBSBridgeSetupController *)self delegate];
+    v5 = [NCABTinkerContactsManagementStateManager managerForBuddyControllerDelegate:delegate];
     v6 = self->_contactsManagementStateManager;
     self->_contactsManagementStateManager = v5;
 
@@ -869,10 +869,10 @@ LABEL_24:
   return contactsManagementStateManager;
 }
 
-- (id)_nextControllerToRunAtOrAfterIndex:(unint64_t)a3
+- (id)_nextControllerToRunAtOrAfterIndex:(unint64_t)index
 {
-  v5 = [(NCBSBridgeSetupController *)self runningFlow];
-  if ([v5 count] <= a3)
+  runningFlow = [(NCBSBridgeSetupController *)self runningFlow];
+  if ([runningFlow count] <= index)
   {
     v10 = 0;
   }
@@ -883,7 +883,7 @@ LABEL_24:
     v14 = v6;
     do
     {
-      v7 = [v5 objectAtIndexedSubscript:{a3, v14}];
+      v7 = [runningFlow objectAtIndexedSubscript:{index, v14}];
       if (objc_opt_respondsToSelector())
       {
         v8 = [v7 controllerNeedsToRunWithMiniFlowDelegate:self];
@@ -900,7 +900,7 @@ LABEL_24:
         *buf = 136446978;
         v16 = "[NCBSBridgeSetupController _nextControllerToRunAtOrAfterIndex:]";
         v17 = 2048;
-        v18 = a3;
+        indexCopy = index;
         v19 = 1024;
         v20 = v8;
         v21 = 2112;
@@ -922,17 +922,17 @@ LABEL_24:
           *buf = v14;
           v16 = "[NCBSBridgeSetupController _nextControllerToRunAtOrAfterIndex:]";
           v17 = 2112;
-          v18 = v7;
+          indexCopy = v7;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}s - skipping controllerClass: %@", buf, 0x16u);
         }
 
         v10 = 0;
       }
 
-      ++a3;
+      ++index;
     }
 
-    while (a3 < [v5 count] && !v10);
+    while (index < [runningFlow count] && !v10);
   }
 
   v12 = NCBS_Tinker_log();
@@ -941,16 +941,16 @@ LABEL_24:
     *buf = 136446466;
     v16 = "[NCBSBridgeSetupController _nextControllerToRunAtOrAfterIndex:]";
     v17 = 2112;
-    v18 = v10;
+    indexCopy = v10;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}s - returning %@", buf, 0x16u);
   }
 
   return v10;
 }
 
-- (int)_familyMemberContactsStatusForContactsCountStatus:(int)a3
+- (int)_familyMemberContactsStatusForContactsCountStatus:(int)status
 {
-  if (a3 == 4)
+  if (status == 4)
   {
     v3 = 2;
   }
@@ -960,7 +960,7 @@ LABEL_24:
     v3 = 1;
   }
 
-  if (a3 == 5)
+  if (status == 5)
   {
     return 3;
   }
@@ -973,27 +973,27 @@ LABEL_24:
 
 - (BOOL)_contactsSyncEnabledWithNetworkAccess
 {
-  v3 = [(NCContactsiCloudSyncHelper *)self->_iCloudSyncHelper primaryiCloudAccountCardDAVEnabled];
-  v4 = [(NCContactsSyncDataAccessHelper *)self->_contactsSyncDataAccessHelper networkAccessEnabledForContacts];
+  primaryiCloudAccountCardDAVEnabled = [(NCContactsiCloudSyncHelper *)self->_iCloudSyncHelper primaryiCloudAccountCardDAVEnabled];
+  networkAccessEnabledForContacts = [(NCContactsSyncDataAccessHelper *)self->_contactsSyncDataAccessHelper networkAccessEnabledForContacts];
   v5 = NCBS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136446722;
     v8 = "[NCBSBridgeSetupController _contactsSyncEnabledWithNetworkAccess]";
     v9 = 1024;
-    v10 = v3;
+    v10 = primaryiCloudAccountCardDAVEnabled;
     v11 = 1024;
-    v12 = v4;
+    v12 = networkAccessEnabledForContacts;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%{public}s - primaryiCloudAccountCardDAVEnabled: %d, networkAccessEnabledForContacts: %d", &v7, 0x18u);
   }
 
-  return v3 & v4;
+  return primaryiCloudAccountCardDAVEnabled & networkAccessEnabledForContacts;
 }
 
 - (BOOL)_setupGuardianHasContacts
 {
   v2 = +[NCABContactsSyncHelper localDeviceContactsCount];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
   v4 = NCBS_Tinker_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1002,62 +1002,62 @@ LABEL_24:
     v8 = 2114;
     v9 = v2;
     v10 = 1024;
-    v11 = v3 != 0;
+    v11 = unsignedIntegerValue != 0;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s - contactCountNumber: %{public}@ -> hasContacts: %d", &v6, 0x1Cu);
   }
 
-  return v3 != 0;
+  return unsignedIntegerValue != 0;
 }
 
-- (void)setShowingHoldWait:(BOOL)a3
+- (void)setShowingHoldWait:(BOOL)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   v5 = NCBS_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 136446466;
     v21 = "[NCBSBridgeSetupController setShowingHoldWait:]";
     v22 = 1024;
-    v23 = v3;
+    v23 = waitCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %d", &v20, 0x12u);
   }
 
-  v6 = [(NCBSBridgeSetupController *)self navigationController];
-  v7 = v6;
-  if (v3)
+  navigationController = [(NCBSBridgeSetupController *)self navigationController];
+  v7 = navigationController;
+  if (waitCopy)
   {
-    v8 = [v6 topViewController];
-    v9 = [v8 view];
-    [v9 setUserInteractionEnabled:0];
+    topViewController = [navigationController topViewController];
+    view = [topViewController view];
+    [view setUserInteractionEnabled:0];
 
-    v10 = [(NCBSBridgeSetupController *)self navigationController];
-    v11 = [v10 navigationBar];
-    [v11 setUserInteractionEnabled:0];
+    navigationController2 = [(NCBSBridgeSetupController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar setUserInteractionEnabled:0];
 
-    v12 = [[UIActivityIndicatorView alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-    v13 = [[UIBarButtonItem alloc] initWithCustomView:v12];
-    v14 = [(NCBSBridgeSetupController *)self navigationController];
-    v15 = [v14 navigationBar];
+    navigationBar3 = [[UIActivityIndicatorView alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
+    topItem2 = [[UIBarButtonItem alloc] initWithCustomView:navigationBar3];
+    navigationController3 = [(NCBSBridgeSetupController *)self navigationController];
+    navigationBar2 = [navigationController3 navigationBar];
 
-    v16 = [v15 topItem];
-    [v16 setRightBarButtonItem:v13 animated:1];
-    [v12 startAnimating];
+    topItem = [navigationBar2 topItem];
+    [topItem setRightBarButtonItem:topItem2 animated:1];
+    [navigationBar3 startAnimating];
   }
 
   else
   {
-    v12 = [v6 navigationBar];
+    navigationBar3 = [navigationController navigationBar];
 
-    v13 = [v12 topItem];
-    [v13 setRightBarButtonItem:0 animated:1];
-    v17 = [(NCBSBridgeSetupController *)self navigationController];
-    v18 = [v17 topViewController];
-    v19 = [v18 view];
-    [v19 setUserInteractionEnabled:1];
+    topItem2 = [navigationBar3 topItem];
+    [topItem2 setRightBarButtonItem:0 animated:1];
+    navigationController4 = [(NCBSBridgeSetupController *)self navigationController];
+    topViewController2 = [navigationController4 topViewController];
+    view2 = [topViewController2 view];
+    [view2 setUserInteractionEnabled:1];
 
-    v15 = [(NCBSBridgeSetupController *)self navigationController];
-    v16 = [v15 navigationBar];
-    [v16 setUserInteractionEnabled:1];
+    navigationBar2 = [(NCBSBridgeSetupController *)self navigationController];
+    topItem = [navigationBar2 navigationBar];
+    [topItem setUserInteractionEnabled:1];
   }
 }
 

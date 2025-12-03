@@ -24,11 +24,11 @@
         v8 = nr_framework_log();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v10 = [v5 nr_safeDescription];
+          nr_safeDescription = [v5 nr_safeDescription];
           v11 = objc_opt_class();
           v12 = NSStringFromClass(v11);
           *buf = 138543618;
-          v17 = v10;
+          v17 = nr_safeDescription;
           v18 = 2112;
           v19 = v12;
           _os_log_error_impl(&dword_1E0ADF000, v8, OS_LOG_TYPE_ERROR, "Got error (%{public}@) archiving (%@)", buf, 0x16u);
@@ -54,12 +54,12 @@
   v46 = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [a1 nr_secureArchivedDataWithRootObject:v8];
+  v10 = [self nr_secureArchivedDataWithRootObject:v8];
   if (v10)
   {
-    v11 = [v9 stringByDeletingLastPathComponent];
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 fileExistsAtPath:v11];
+    stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
     if (v13)
     {
@@ -68,9 +68,9 @@
 
     else
     {
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v39 = 0;
-      [v21 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v39];
+      [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v39];
       v14 = v39;
 
       if (v14)
@@ -83,13 +83,13 @@
           v24 = nr_framework_log();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v33 = [v14 nr_safeDescription];
+            nr_safeDescription = [v14 nr_safeDescription];
             v34 = objc_opt_class();
             v35 = NSStringFromClass(v34);
             *buf = 138543874;
-            v41 = v33;
+            v41 = nr_safeDescription;
             v42 = 2114;
-            v43 = v11;
+            v43 = stringByDeletingLastPathComponent;
             v44 = 2112;
             v45 = v35;
             _os_log_error_impl(&dword_1E0ADF000, v24, OS_LOG_TYPE_ERROR, "Error (%{public}@) creating directory (%{public}@) for (%@)", buf, 0x20u);
@@ -111,11 +111,11 @@
         v27 = nr_framework_log();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v30 = [v20 nr_safeDescription];
+          nr_safeDescription2 = [v20 nr_safeDescription];
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
           *buf = 138543618;
-          v41 = v30;
+          v41 = nr_safeDescription2;
           v42 = 2112;
           v43 = v32;
           _os_log_error_impl(&dword_1E0ADF000, v27, OS_LOG_TYPE_ERROR, "Error (%{public}@) writing encoded data for (%@)", buf, 0x16u);
@@ -128,8 +128,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [v15 fileExistsAtPath:v9];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v16 = [defaultManager3 fileExistsAtPath:v9];
 
   if (!v16)
   {
@@ -137,12 +137,12 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
   v37 = 0;
-  [v17 removeItemAtPath:v9 error:&v37];
-  v11 = v37;
+  [defaultManager4 removeItemAtPath:v9 error:&v37];
+  stringByDeletingLastPathComponent = v37;
 
-  if (!v11)
+  if (!stringByDeletingLastPathComponent)
   {
     v19 = 1;
     goto LABEL_21;
@@ -156,9 +156,9 @@ LABEL_20:
     v20 = nr_framework_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v36 = [v11 nr_safeDescription];
+      nr_safeDescription3 = [stringByDeletingLastPathComponent nr_safeDescription];
       *buf = 138543618;
-      v41 = v36;
+      v41 = nr_safeDescription3;
       v42 = 2114;
       v43 = v9;
       _os_log_error_impl(&dword_1E0ADF000, v20, OS_LOG_TYPE_ERROR, "Error (%{public}@) deleting file (%{public}@)", buf, 0x16u);

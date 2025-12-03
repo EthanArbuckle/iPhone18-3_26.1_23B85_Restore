@@ -20,10 +20,10 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   v0 = +[ISDeviceInfo sharedInstance];
-  v1 = [v0 deviceClass];
+  deviceClass = [v0 deviceClass];
 
-  v2 = v1 - 1;
-  if (v1 - 1) < 0xB && ((0x52Fu >> v2))
+  v2 = deviceClass - 1;
+  if (deviceClass - 1) < 0xB && ((0x52Fu >> v2))
   {
     result = qword_1A782D168[v2];
   }
@@ -34,7 +34,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v1;
+      v6[1] = deviceClass;
       _os_log_impl(&dword_1A77B8000, v4, OS_LOG_TYPE_DEFAULT, "Unknown device class: %d", v6, 8u);
     }
 
@@ -116,7 +116,7 @@
 {
   v54 = *MEMORY[0x1E69E9840];
   v6 = +[ISPlatformInfo sharedInstance];
-  v7 = [v6 nativePlatform];
+  nativePlatform = [v6 nativePlatform];
 
   if (a4)
   {
@@ -125,7 +125,7 @@
 
   else
   {
-    v8 = v7 == 1;
+    v8 = nativePlatform == 1;
   }
 
   v9 = v8;
@@ -142,7 +142,7 @@
   {
     v11 = a4 == 1;
     v12 = (a4 & 0x3C) != 0;
-    if (a4 || (v7 & 0x3C) == 0)
+    if (a4 || (nativePlatform & 0x3C) == 0)
     {
       goto LABEL_16;
     }
@@ -298,9 +298,9 @@ LABEL_44:
 {
   v70 = *MEMORY[0x1E69E9840];
   v39 = a6;
-  v16 = [a1 subtypeForPlatform:a8];
-  v38 = a1;
-  v17 = [a1 idiomsForPlatform:a8];
+  v16 = [self subtypeForPlatform:a8];
+  selfCopy = self;
+  v17 = [self idiomsForPlatform:a8];
   v35 = [MEMORY[0x1E6999368] _IS_appearanceNameFromAppearance:a9 platform:a8];
   v44 = 0u;
   v45 = 0u;
@@ -326,7 +326,7 @@ LABEL_3:
         break;
       }
 
-      v20 = [*(*(&v44 + 1) + 8 * v19) integerValue];
+      integerValue = [*(*(&v44 + 1) + 8 * v19) integerValue];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
@@ -348,28 +348,28 @@ LABEL_3:
             }
 
             v25 = *(*(&v40 + 1) + 8 * i);
-            v26 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
 
-            if (v25 == v26)
+            if (v25 == null)
             {
 
               v25 = 0;
             }
 
-            v18 = [v38 iconImageWithName:v39 scaleFactor:v20 deviceIdiom:v16 deviceSubtype:1 displayGamut:a7 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:a2 desiredSize:a3 appearanceName:{0, v25}];
+            v18 = [selfCopy iconImageWithName:v39 scaleFactor:integerValue deviceIdiom:v16 deviceSubtype:1 displayGamut:a7 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:a2 desiredSize:a3 appearanceName:{0, v25}];
             v27 = _ISDefaultLog();
             v28 = v27;
             if (v18)
             {
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
-                v29 = [v18 appearance];
+                appearance = [v18 appearance];
                 *buf = 138414594;
                 v49 = v39;
                 v50 = 2048;
                 v51 = a4;
                 v52 = 1024;
-                v53 = v20;
+                v53 = integerValue;
                 v54 = 1024;
                 v55 = v16;
                 v56 = 1024;
@@ -383,7 +383,7 @@ LABEL_3:
                 v64 = 2112;
                 v65 = v25;
                 v66 = 2112;
-                v67 = v29;
+                v67 = appearance;
                 _os_log_debug_impl(&dword_1A77B8000, v28, OS_LOG_TYPE_DEBUG, "Found catalog image with query info name:%@ scaleFactor:%f deviceIdiom:%d deviceSubtype:%d displayGamut:%d layoutDirection:%d desiredSize:%f,%f appearanceName:%@]. Resolved appearance: %@", buf, 0x56u);
               }
 
@@ -397,7 +397,7 @@ LABEL_3:
               v50 = 2048;
               v51 = a4;
               v52 = 1024;
-              v53 = v20;
+              v53 = integerValue;
               v54 = 1024;
               v55 = v16;
               v56 = 1024;
@@ -455,12 +455,12 @@ LABEL_23:
 {
   v45 = *MEMORY[0x1E69E9840];
   v12 = a4;
-  v13 = [a1 subtypeForPlatform:a7];
+  v13 = [self subtypeForPlatform:a7];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [a1 idiomsForPlatform:a7];
+  obj = [self idiomsForPlatform:a7];
   v14 = [obj countByEnumeratingWithState:&v28 objects:v44 count:16];
   if (v14)
   {
@@ -486,9 +486,9 @@ LABEL_5:
         objc_enumerationMutation(obj);
       }
 
-      v18 = [*(*(&v28 + 1) + 8 * v17) integerValue];
-      v19 = a6 ? 0 : v18;
-      v20 = [a1 namedLookupWithName:v12 scaleFactor:v19 deviceIdiom:v16 deviceSubtype:1 displayGamut:a5 layoutDirection:0 sizeClassHorizontal:a2 sizeClassVertical:0];
+      integerValue = [*(*(&v28 + 1) + 8 * v17) integerValue];
+      v19 = a6 ? 0 : integerValue;
+      v20 = [self namedLookupWithName:v12 scaleFactor:v19 deviceIdiom:v16 deviceSubtype:1 displayGamut:a5 layoutDirection:0 sizeClassHorizontal:a2 sizeClassVertical:0];
       if (v20)
       {
         objc_opt_class();
@@ -554,8 +554,8 @@ LABEL_18:
   v54 = *MEMORY[0x1E69E9840];
   v41 = a4;
   v40 = a5;
-  v12 = [a1 idiomsForPlatform:a6];
-  v13 = [a1 subtypeForPlatform:a6];
+  v12 = [self idiomsForPlatform:a6];
+  v13 = [self subtypeForPlatform:a6];
   v14 = [MEMORY[0x1E6999368] _IS_appearanceNameFromAppearance:a7 platform:a6];
   v46 = 0u;
   v47 = 0u;
@@ -580,7 +580,7 @@ LABEL_18:
         }
 
         v36 = v17;
-        v18 = [*(*(&v46 + 1) + 8 * v17) integerValue];
+        integerValue = [*(*(&v46 + 1) + 8 * v17) integerValue];
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
@@ -601,8 +601,8 @@ LABEL_18:
               }
 
               v23 = *(*(&v42 + 1) + 8 * i);
-              v24 = [MEMORY[0x1E695DFB0] null];
-              if (v23 == v24)
+              null = [MEMORY[0x1E695DFB0] null];
+              if (v23 == null)
               {
                 v25 = 0;
               }
@@ -614,14 +614,14 @@ LABEL_18:
 
               v26 = v25;
 
-              v27 = [a1 iconLayerStackWithName:v41 scaleFactor:v18 deviceIdiom:v13 deviceSubtype:1 displayGamut:v26 appearanceName:v40 locale:a2];
+              v27 = [self iconLayerStackWithName:v41 scaleFactor:integerValue deviceIdiom:v13 deviceSubtype:1 displayGamut:v26 appearanceName:v40 locale:a2];
               v28 = _ISDefaultLog();
               v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
               if (v27)
               {
                 if (v29)
                 {
-                  v33 = __92__CUICatalog_IconServicesAdditions___IS_iconStackWithName_scale_locale_platform_appearance___block_invoke(a2, v29, @"Found icon stack with query info", v41, v18, v13, 1, v40, v26, v27);
+                  v33 = __92__CUICatalog_IconServicesAdditions___IS_iconStackWithName_scale_locale_platform_appearance___block_invoke(a2, v29, @"Found icon stack with query info", v41, integerValue, v13, 1, v40, v26, v27);
                   *buf = 138412290;
                   v51 = v33;
                   _os_log_debug_impl(&dword_1A77B8000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -634,7 +634,7 @@ LABEL_18:
 
               if (v29)
               {
-                v30 = __92__CUICatalog_IconServicesAdditions___IS_iconStackWithName_scale_locale_platform_appearance___block_invoke(a2, v29, @"Failed to find icon stack for", v41, v18, v13, 1, v40, v26, 0);
+                v30 = __92__CUICatalog_IconServicesAdditions___IS_iconStackWithName_scale_locale_platform_appearance___block_invoke(a2, v29, @"Failed to find icon stack for", v41, integerValue, v13, 1, v40, v26, 0);
                 *buf = 138412290;
                 v51 = v30;
                 _os_log_debug_impl(&dword_1A77B8000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -679,7 +679,7 @@ LABEL_26:
 
 - (BOOL)_IS_possibleLayerStackExistsWithName:()IconServicesAdditions platform:
 {
-  v4 = [a1 _IS_layerStackWithName:a3 scale:5 layoutDirection:1 softCheck:a4 platform:0.0];
+  v4 = [self _IS_layerStackWithName:a3 scale:5 layoutDirection:1 softCheck:a4 platform:0.0];
   v5 = v4 != 0;
 
   return v5;
@@ -688,9 +688,9 @@ LABEL_26:
 - (BOOL)_IS_possibleMultisizedImageExistsWithName:()IconServicesAdditions platform:
 {
   v6 = a3;
-  if ([a1 imageExistsWithName:v6])
+  if ([self imageExistsWithName:v6])
   {
-    v7 = [a1 _IS_multisizedImageWithName:v6 size:4 scale:a4 layoutDirection:*MEMORY[0x1E695F060] platform:{*(MEMORY[0x1E695F060] + 8), 0.0}];
+    v7 = [self _IS_multisizedImageWithName:v6 size:4 scale:a4 layoutDirection:*MEMORY[0x1E695F060] platform:{*(MEMORY[0x1E695F060] + 8), 0.0}];
     v8 = v7 != 0;
   }
 
@@ -704,7 +704,7 @@ LABEL_26:
 
 - (BOOL)_IS_possibleIconStackExistsWithName:()IconServicesAdditions platform:
 {
-  v4 = [a1 _IS_iconStackWithName:a3 scale:0 locale:a4 platform:0 appearance:0.0];
+  v4 = [self _IS_iconStackWithName:a3 scale:0 locale:a4 platform:0 appearance:0.0];
   v5 = v4 != 0;
 
   return v5;
@@ -716,7 +716,7 @@ LABEL_26:
   v11[1] = 3221225472;
   v11[2] = __55__CUICatalog_IconServicesAdditions__idiomsForPlatform___block_invoke;
   v11[3] = &unk_1E77C6E58;
-  v11[4] = a1;
+  v11[4] = self;
   v4 = MEMORY[0x1AC55B6D0](v11);
   v5 = v4[2](v4, a3);
   if (![v5 count])
@@ -759,10 +759,10 @@ LABEL_26:
 - (uint64_t)subtypeForPlatform:()IconServicesAdditions
 {
   v4 = +[ISDeviceInfo sharedInstance];
-  v5 = [v4 deviceSubtype];
+  deviceSubtype = [v4 deviceSubtype];
 
   v6 = +[ISPlatformInfo sharedInstance];
-  v7 = [v6 nativePlatform];
+  nativePlatform = [v6 nativePlatform];
 
   v8 = __ROR8__(a3 - 4, 2);
   v9 = 484;
@@ -779,22 +779,22 @@ LABEL_26:
 
   if (((1 << v8) & 0x8B) == 0)
   {
-    v10 = v5;
+    v10 = deviceSubtype;
   }
 
   if (v8 > 7)
   {
-    v10 = v5;
+    v10 = deviceSubtype;
   }
 
-  if (v7 == 1)
+  if (nativePlatform == 1)
   {
     return v10;
   }
 
   else
   {
-    return v5;
+    return deviceSubtype;
   }
 }
 

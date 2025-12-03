@@ -1,17 +1,17 @@
 @interface FlexSongMetadataReaderUtils
-+ (id)addAnalysisMetadataToDictionary:(id)a3 pathToRoot:(id)a4;
++ (id)addAnalysisMetadataToDictionary:(id)dictionary pathToRoot:(id)root;
 @end
 
 @implementation FlexSongMetadataReaderUtils
 
-+ (id)addAnalysisMetadataToDictionary:(id)a3 pathToRoot:(id)a4
++ (id)addAnalysisMetadataToDictionary:(id)dictionary pathToRoot:(id)root
 {
   v86 = *MEMORY[0x277D85DE8];
-  v75 = a3;
-  v5 = a4;
+  dictionaryCopy = dictionary;
+  rootCopy = root;
   v73 = objc_opt_new();
-  v74 = v5;
-  v72 = objc_msgSend_stringByAppendingPathComponent_(v5, v6, @"ANALYSIS", v7, v8);
+  v74 = rootCopy;
+  v72 = objc_msgSend_stringByAppendingPathComponent_(rootCopy, v6, @"ANALYSIS", v7, v8);
   v12 = objc_msgSend_stringByAppendingPathComponent_(v72, v9, @"ONSET", v10, v11);
   v17 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v13, v14, v15, v16);
   v20 = objc_msgSend_contentsOfDirectoryAtPath_error_(v17, v18, v12, 0, v19);
@@ -86,7 +86,7 @@
   }
 
   objc_msgSend_setObject_forKey_(v73, v62, v76, @"onsets", v63);
-  v67 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v64, v75, v65, v66);
+  v67 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v64, dictionaryCopy, v65, v66);
   objc_msgSend_setObject_forKey_(v67, v68, v73, @"analysis", v69);
 
   v70 = *MEMORY[0x277D85DE8];

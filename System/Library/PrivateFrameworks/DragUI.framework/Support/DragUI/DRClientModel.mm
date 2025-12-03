@@ -1,20 +1,20 @@
 @interface DRClientModel
-- (DRClientModel)initWithClient:(id)a3 isSource:(BOOL)a4;
+- (DRClientModel)initWithClient:(id)client isSource:(BOOL)source;
 @end
 
 @implementation DRClientModel
 
-- (DRClientModel)initWithClient:(id)a3 isSource:(BOOL)a4
+- (DRClientModel)initWithClient:(id)client isSource:(BOOL)source
 {
-  v7 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = DRClientModel;
   v8 = [(DRClientModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_client, a3);
-    v9->_isSource = a4;
+    objc_storeStrong(&v8->_client, client);
+    v9->_isSource = source;
   }
 
   return v9;

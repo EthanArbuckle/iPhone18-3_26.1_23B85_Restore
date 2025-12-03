@@ -4,42 +4,42 @@
 - (BOOL)serialNumberMismatch;
 - (id)authenticityStatus;
 - (id)serialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentStrobeFrontSLP
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentCameraBase *)self IORegClassName];
-  v3 = v2 != 0;
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  v3 = iORegClassName != 0;
 
   return v3 & MGGetBoolAnswer();
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v8.receiver = self;
   v8.super_class = ComponentStrobeFrontSLP;
-  [(ComponentCameraBase *)&v8 populateAttributes:v4];
+  [(ComponentCameraBase *)&v8 populateAttributes:attributesCopy];
   v5 = [NSNumber numberWithBool:[(ComponentStrobeFrontSLP *)self flexDisconnected]];
-  [v4 setObject:v5 forKeyedSubscript:@"flexDisconnected"];
+  [attributesCopy setObject:v5 forKeyedSubscript:@"flexDisconnected"];
 
   v6 = [NSNumber numberWithBool:[(ComponentStrobeFrontSLP *)self serialNumberMismatch]];
-  [v4 setObject:v6 forKeyedSubscript:@"serialNumberMismatch"];
+  [attributesCopy setObject:v6 forKeyedSubscript:@"serialNumberMismatch"];
 
-  v7 = [(ComponentStrobeFrontSLP *)self authenticityStatus];
-  if (v7)
+  authenticityStatus = [(ComponentStrobeFrontSLP *)self authenticityStatus];
+  if (authenticityStatus)
   {
-    [v4 setObject:v7 forKeyedSubscript:@"authenticityStatus"];
+    [attributesCopy setObject:authenticityStatus forKeyedSubscript:@"authenticityStatus"];
   }
 }
 
 - (id)serialNumber
 {
-  v2 = [(ComponentCameraBase *)self IORegClassName];
-  v3 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [v2 UTF8String], @"FrontIRStructuredLightProjectorSerialNumString", 17, 0);
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  v3 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [iORegClassName UTF8String], @"FrontIRStructuredLightProjectorSerialNumString", 17, 0);
 
   v4 = [[NSString alloc] initWithData:v3 encoding:4];
 
@@ -75,8 +75,8 @@
 
 - (id)authenticityStatus
 {
-  v2 = [(ComponentCameraBase *)self IORegClassName];
-  v3 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [v2 UTF8String], @"RomeoStatus", 8, 0);
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  v3 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [iORegClassName UTF8String], @"RomeoStatus", 8, 0);
 
   if (v3)
   {

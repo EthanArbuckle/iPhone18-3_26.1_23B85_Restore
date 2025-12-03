@@ -1,6 +1,6 @@
 @interface VUWStreamingGalleryConfiguration
 - (VUWStreamingGalleryConfiguration)init;
-- (VUWStreamingGalleryConfiguration)initWithMaxIdentities:(id)a3 maxObservationsPerIdentity:(id)a4 minObservationsPerEntity:(id)a5 maxKeyObservationsPerEntity:(id)a6 autoUpdate:(id)a7 isSteamingEnabled:(id)a8 clusteringThreshold:(id)a9;
+- (VUWStreamingGalleryConfiguration)initWithMaxIdentities:(id)identities maxObservationsPerIdentity:(id)identity minObservationsPerEntity:(id)entity maxKeyObservationsPerEntity:(id)perEntity autoUpdate:(id)update isSteamingEnabled:(id)enabled clusteringThreshold:(id)threshold;
 @end
 
 @implementation VUWStreamingGalleryConfiguration
@@ -19,16 +19,16 @@
   return [(VUWStreamingGalleryConfiguration *)&v4 init];
 }
 
-- (VUWStreamingGalleryConfiguration)initWithMaxIdentities:(id)a3 maxObservationsPerIdentity:(id)a4 minObservationsPerEntity:(id)a5 maxKeyObservationsPerEntity:(id)a6 autoUpdate:(id)a7 isSteamingEnabled:(id)a8 clusteringThreshold:(id)a9
+- (VUWStreamingGalleryConfiguration)initWithMaxIdentities:(id)identities maxObservationsPerIdentity:(id)identity minObservationsPerEntity:(id)entity maxKeyObservationsPerEntity:(id)perEntity autoUpdate:(id)update isSteamingEnabled:(id)enabled clusteringThreshold:(id)threshold
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = sub_1D21C70F8(a3, a4, a5, a7, a8, a9);
+  identitiesCopy = identities;
+  identityCopy = identity;
+  entityCopy = entity;
+  perEntityCopy = perEntity;
+  updateCopy = update;
+  enabledCopy = enabled;
+  thresholdCopy = threshold;
+  v19 = sub_1D21C70F8(identities, identity, entity, update, enabled, threshold);
 
   return v19;
 }

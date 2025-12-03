@@ -1,25 +1,25 @@
 @interface NTKKaleidoscopeFaceBundle
 + (id)identifier;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)heroLegacyDefaultFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)heroLegacyDefaultFacesForDevice:(id)device;
 @end
 
 @implementation NTKKaleidoscopeFaceBundle
 
 + (id)identifier
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NTKKaleidoscopeFaceBundle;
   v3 = objc_msgSendSuper2(&v7, "identifier");
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [NSString stringWithFormat:@"%@.%@", v3, v4];
 
   return v5;
 }
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 223;
@@ -30,21 +30,21 @@
     v4 = 23;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)heroLegacyDefaultFacesForDevice:(id)a3
+- (id)heroLegacyDefaultFacesForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [NTKFace defaultFaceOfStyle:23 forDevice:v3];
+  deviceCopy = device;
+  v4 = [NTKFace defaultFaceOfStyle:23 forDevice:deviceCopy];
   if (v4)
   {
-    v5 = [NTKKaleidoscopeStyleOption optionWithStyle:3 forDevice:v3];
+    v5 = [NTKKaleidoscopeStyleOption optionWithStyle:3 forDevice:deviceCopy];
     [v4 selectOption:v5 forCustomEditMode:15 slot:0];
 
-    v6 = [NTKKaleidoscopeAssetOption optionWithAsset:13 forDevice:v3];
+    v6 = [NTKKaleidoscopeAssetOption optionWithAsset:13 forDevice:deviceCopy];
     [v4 selectOption:v6 forCustomEditMode:12 slot:0];
 
     v7 = +[NTKKaleidoscopeFacesGalleryCollection complicationTypesBySlot];

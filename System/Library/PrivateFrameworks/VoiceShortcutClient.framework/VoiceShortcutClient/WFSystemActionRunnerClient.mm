@@ -1,9 +1,9 @@
 @interface WFSystemActionRunnerClient
 + (id)defaultContextualActionContext;
-- (WFSystemActionRunnerClient)initWithSystemAction:(id)a3;
-- (WFSystemActionRunnerClient)initWithSystemContextualAction:(id)a3;
-- (WFSystemActionRunnerClient)initWithSystemIntentAction:(id)a3;
-- (WFSystemActionRunnerClient)initWithSystemWorkflowAction:(id)a3;
+- (WFSystemActionRunnerClient)initWithSystemAction:(id)action;
+- (WFSystemActionRunnerClient)initWithSystemContextualAction:(id)action;
+- (WFSystemActionRunnerClient)initWithSystemIntentAction:(id)action;
+- (WFSystemActionRunnerClient)initWithSystemWorkflowAction:(id)action;
 - (void)start;
 @end
 
@@ -17,20 +17,20 @@
     goto LABEL_18;
   }
 
-  v4 = [(WFSystemActionRunnerClient *)self action];
+  action = [(WFSystemActionRunnerClient *)self action];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_19:
-    v29 = [(WFWorkflowRunnerClient *)self runRequest];
-    if (v29)
+    runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+    if (runRequest)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v30 = v29;
+        v30 = runRequest;
       }
 
       else
@@ -46,13 +46,13 @@ LABEL_19:
 
     v3 = v30;
 
-    v31 = [v3 action];
-    if (v31)
+    action2 = [v3 action];
+    if (action2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = v31;
+        v32 = action2;
       }
 
       else
@@ -68,8 +68,8 @@ LABEL_19:
 
     v33 = v32;
 
-    v34 = [v3 actionContext];
-    [v33 wf_launchAppIfNeededUsingSurface:{objc_msgSend(v34, "surface")}];
+    actionContext = [v3 actionContext];
+    [v33 wf_launchAppIfNeededUsingSurface:{objc_msgSend(actionContext, "surface")}];
 
     v37.receiver = self;
     v37.super_class = WFSystemActionRunnerClient;
@@ -100,9 +100,9 @@ LABEL_19:
   v3 = [v8 initWithTargetQueue:v9];
 
   v10 = objc_alloc(MEMORY[0x1E69635F8]);
-  v11 = [(WFSystemActionRunnerClient *)self action];
-  v12 = [v11 associatedBundleIdentifier];
-  v13 = [v10 initWithBundleIdentifier:v12 allowPlaceholder:0 error:0];
+  action3 = [(WFSystemActionRunnerClient *)self action];
+  associatedBundleIdentifier = [action3 associatedBundleIdentifier];
+  v13 = [v10 initWithBundleIdentifier:associatedBundleIdentifier allowPlaceholder:0 error:0];
 
   if (([v3 requiresPreflightForApplicationRecord:v13] & 1) == 0)
   {
@@ -129,7 +129,7 @@ LABEL_18:
 
   v15 = v14;
   _Block_object_dispose(&v43, 8);
-  v16 = [v14 serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [v14 serviceWithDefaultShellEndpoint];
   v17 = MEMORY[0x1E695DF20];
   v43 = 0;
   v44 = &v43;
@@ -194,144 +194,144 @@ LABEL_18:
       v25 = v24;
       _Block_object_dispose(&v43, 8);
       v26 = [v24 optionsWithDictionary:v23];
-      v27 = [(WFSystemActionRunnerClient *)self action];
-      v28 = [v27 associatedBundleIdentifier];
-      [v16 openApplication:v28 withOptions:v26 completion:0];
+      action4 = [(WFSystemActionRunnerClient *)self action];
+      associatedBundleIdentifier2 = [action4 associatedBundleIdentifier];
+      [serviceWithDefaultShellEndpoint openApplication:associatedBundleIdentifier2 withOptions:v26 completion:0];
 
 LABEL_30:
       return;
     }
 
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getFBSOpenApplicationOptionKeyLaunchOrigin(void)"];
-    [v35 handleFailureInFunction:v36 file:@"WFSystemActionRunnerClient.m" lineNumber:29 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v36 file:@"WFSystemActionRunnerClient.m" lineNumber:29 description:{@"%s", dlerror()}];
   }
 
   else
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBSOpenApplicationLaunchOriginActionButton(void)"];
-    [v35 handleFailureInFunction:v36 file:@"WFSystemActionRunnerClient.m" lineNumber:32 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v36 file:@"WFSystemActionRunnerClient.m" lineNumber:32 description:{@"%s", dlerror()}];
   }
 
   __break(1u);
 }
 
-- (WFSystemActionRunnerClient)initWithSystemWorkflowAction:(id)a3
+- (WFSystemActionRunnerClient)initWithSystemWorkflowAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [WFWorkflowDatabaseRunDescriptor alloc];
-  v6 = [v4 workflowIdentifier];
+  workflowIdentifier = [actionCopy workflowIdentifier];
 
-  v7 = [(WFWorkflowDatabaseRunDescriptor *)v5 initWithIdentifier:v6];
+  v7 = [(WFWorkflowDatabaseRunDescriptor *)v5 initWithIdentifier:workflowIdentifier];
   v8 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:1];
   v9 = [(WFWorkflowRunnerClient *)self initWithDescriptor:v7 runRequest:v8];
 
   return v9;
 }
 
-- (WFSystemActionRunnerClient)initWithSystemContextualAction:(id)a3
+- (WFSystemActionRunnerClient)initWithSystemContextualAction:(id)action
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultContextualActionContext];
+  actionCopy = action;
+  defaultContextualActionContext = [objc_opt_class() defaultContextualActionContext];
   v6 = [WFContextualActionRunDescriptor alloc];
-  v7 = [v4 contextualAction];
-  v8 = [(WFContextualActionRunDescriptor *)v6 initWithAction:v7 context:v5];
+  contextualAction = [actionCopy contextualAction];
+  v8 = [(WFContextualActionRunDescriptor *)v6 initWithAction:contextualAction context:defaultContextualActionContext];
 
   v9 = [WFContextualActionRunRequest alloc];
-  v10 = [v4 contextualAction];
+  contextualAction2 = [actionCopy contextualAction];
 
-  v11 = [(WFContextualActionRunRequest *)v9 initWithAction:v10 actionContext:v5];
+  v11 = [(WFContextualActionRunRequest *)v9 initWithAction:contextualAction2 actionContext:defaultContextualActionContext];
   [(WFWorkflowRunRequest *)v11 setPresentationMode:1];
   v12 = [(WFWorkflowRunnerClient *)self initWithDescriptor:v8 runRequest:v11];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionContext, v5);
+    objc_storeStrong(&v12->_actionContext, defaultContextualActionContext);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (WFSystemActionRunnerClient)initWithSystemIntentAction:(id)a3
+- (WFSystemActionRunnerClient)initWithSystemIntentAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 intent];
-  v6 = [v5 linkAction];
+  actionCopy = action;
+  intent = [actionCopy intent];
+  linkAction = [intent linkAction];
 
-  v7 = [v4 previewIcon];
-  if (v7)
+  previewIcon = [actionCopy previewIcon];
+  if (previewIcon)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 symbolName];
-      v9 = [WFContextualActionIcon iconWithSystemName:v8];
+      symbolName = [previewIcon symbolName];
+      v9 = [WFContextualActionIcon iconWithSystemName:symbolName];
     }
 
     else
     {
       v9 = 0;
-      v8 = v7;
-      v7 = 0;
+      symbolName = previewIcon;
+      previewIcon = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    symbolName = 0;
     v9 = 0;
   }
 
-  v10 = [v4 intent];
-  v11 = [v10 launchId];
-  v12 = v11;
-  if (v11)
+  intent2 = [actionCopy intent];
+  launchId = [intent2 launchId];
+  v12 = launchId;
+  if (launchId)
   {
-    v13 = v11;
+    associatedBundleIdentifier = launchId;
   }
 
   else
   {
-    v13 = [v4 associatedBundleIdentifier];
+    associatedBundleIdentifier = [actionCopy associatedBundleIdentifier];
   }
 
-  v14 = v13;
+  v14 = associatedBundleIdentifier;
 
   v15 = [WFLinkContextualAction alloc];
-  v16 = [v4 contextualParameters];
-  v17 = [(WFLinkContextualAction *)v15 initWithAction:v6 appBundleIdentifier:v14 extensionBundleIdentifier:0 contextualParameters:v16 authenticationPolicy:0 icon:v9];
+  contextualParameters = [actionCopy contextualParameters];
+  v17 = [(WFLinkContextualAction *)v15 initWithAction:linkAction appBundleIdentifier:v14 extensionBundleIdentifier:0 contextualParameters:contextualParameters authenticationPolicy:0 icon:v9];
 
-  v18 = [objc_opt_class() defaultContextualActionContext];
-  v19 = [[WFContextualActionRunDescriptor alloc] initWithAction:v17 context:v18];
-  v20 = [[WFContextualActionRunRequest alloc] initWithAction:v17 actionContext:v18];
+  defaultContextualActionContext = [objc_opt_class() defaultContextualActionContext];
+  v19 = [[WFContextualActionRunDescriptor alloc] initWithAction:v17 context:defaultContextualActionContext];
+  v20 = [[WFContextualActionRunRequest alloc] initWithAction:v17 actionContext:defaultContextualActionContext];
   [(WFWorkflowRunRequest *)v20 setPresentationMode:1];
   v21 = [(WFWorkflowRunnerClient *)self initWithDescriptor:v19 runRequest:v20];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_actionContext, v18);
+    objc_storeStrong(&v21->_actionContext, defaultContextualActionContext);
     v23 = v22;
   }
 
   return v22;
 }
 
-- (WFSystemActionRunnerClient)initWithSystemAction:(id)a3
+- (WFSystemActionRunnerClient)initWithSystemAction:(id)action
 {
-  v6 = a3;
-  if (!v6)
+  actionCopy = action;
+  if (!actionCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFSystemActionRunnerClient.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSystemActionRunnerClient.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    if (v6)
+    v7 = actionCopy;
+    if (actionCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -358,8 +358,8 @@ LABEL_30:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
-    if (v6)
+    v10 = actionCopy;
+    if (actionCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -386,8 +386,8 @@ LABEL_30:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v6;
-    if (v6)
+    v13 = actionCopy;
+    if (actionCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -414,8 +414,8 @@ LABEL_30:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v6;
-    if (v6)
+    v16 = actionCopy;
+    if (actionCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -441,8 +441,8 @@ LABEL_30:
 
   if (self)
   {
-    objc_storeStrong(&self->_action, a3);
-    v19 = self;
+    objc_storeStrong(&self->_action, action);
+    selfCopy = self;
   }
 
   return self;

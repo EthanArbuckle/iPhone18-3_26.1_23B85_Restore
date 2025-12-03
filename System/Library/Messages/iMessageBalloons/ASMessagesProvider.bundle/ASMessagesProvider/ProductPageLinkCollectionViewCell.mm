@@ -2,7 +2,7 @@
 - (void)layoutSubviews;
 - (void)preferredContentSizeCategoryDidChange;
 - (void)prepareForReuse;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ProductPageLinkCollectionViewCell
@@ -21,20 +21,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A7CA4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_5A8090(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_5A8090(change);
 }
 
 - (void)preferredContentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_5A8230();
 }
 

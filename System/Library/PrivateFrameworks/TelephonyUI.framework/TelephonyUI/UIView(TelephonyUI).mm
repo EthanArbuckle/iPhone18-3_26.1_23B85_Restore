@@ -8,21 +8,21 @@
 - (uint64_t)tp_userInterfaceLayoutDirection
 {
   v2 = objc_opt_class();
-  v3 = [a1 semanticContentAttribute];
+  semanticContentAttribute = [self semanticContentAttribute];
 
-  return [v2 userInterfaceLayoutDirectionForSemanticContentAttribute:v3];
+  return [v2 userInterfaceLayoutDirectionForSemanticContentAttribute:semanticContentAttribute];
 }
 
 - (uint64_t)tp_setCHCRPriority:()TelephonyUI
 {
-  [a1 setContentCompressionResistancePriority:1 forAxis:?];
+  [self setContentCompressionResistancePriority:1 forAxis:?];
   *&v4 = a2;
-  [a1 setContentCompressionResistancePriority:0 forAxis:v4];
+  [self setContentCompressionResistancePriority:0 forAxis:v4];
   *&v5 = a2;
-  [a1 setContentHuggingPriority:1 forAxis:v5];
+  [self setContentHuggingPriority:1 forAxis:v5];
   *&v6 = a2;
 
-  return [a1 setContentHuggingPriority:0 forAxis:v6];
+  return [self setContentHuggingPriority:0 forAxis:v6];
 }
 
 @end

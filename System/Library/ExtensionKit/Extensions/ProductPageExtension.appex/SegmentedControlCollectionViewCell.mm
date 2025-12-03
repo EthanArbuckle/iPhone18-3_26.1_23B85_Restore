@@ -1,11 +1,11 @@
 @interface SegmentedControlCollectionViewCell
-- (_TtC20ProductPageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SegmentedControlCollectionViewCell
 
-- (_TtC20ProductPageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension34SegmentedControlCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();

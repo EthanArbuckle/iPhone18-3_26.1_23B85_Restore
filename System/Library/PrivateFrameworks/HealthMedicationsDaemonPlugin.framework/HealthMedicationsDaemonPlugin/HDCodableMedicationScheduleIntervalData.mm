@@ -1,22 +1,22 @@
 @interface HDCodableMedicationScheduleIntervalData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCycleIntervalDays:(BOOL)a3;
-- (void)setHasDayOfWeek:(BOOL)a3;
-- (void)setHasDose:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCycleIntervalDays:(BOOL)days;
+- (void)setHasDayOfWeek:(BOOL)week;
+- (void)setHasDose:(BOOL)dose;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMedicationScheduleIntervalData
 
-- (void)setHasDayOfWeek:(BOOL)a3
+- (void)setHasDayOfWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCycleIntervalDays:(BOOL)a3
+- (void)setHasCycleIntervalDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDose:(BOOL)a3
+- (void)setHasDose:(BOOL)dose
 {
-  if (a3)
+  if (dose)
   {
     v3 = 8;
   }
@@ -65,27 +65,27 @@
   v8.receiver = self;
   v8.super_class = HDCodableMedicationScheduleIntervalData;
   v4 = [(HDCodableMedicationScheduleIntervalData *)&v8 description];
-  v5 = [(HDCodableMedicationScheduleIntervalData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMedicationScheduleIntervalData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   startTimeComponents = self->_startTimeComponents;
   if (startTimeComponents)
   {
-    v5 = [(HDCodableDateComponents *)startTimeComponents dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"startTimeComponents"];
+    dictionaryRepresentation = [(HDCodableDateComponents *)startTimeComponents dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"startTimeComponents"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dayOfWeek];
-    [v3 setObject:v9 forKey:@"dayOfWeek"];
+    [dictionary setObject:v9 forKey:@"dayOfWeek"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -106,7 +106,7 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cycleIndex];
-  [v3 setObject:v10 forKey:@"cycleIndex"];
+  [dictionary setObject:v10 forKey:@"cycleIndex"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -122,28 +122,28 @@ LABEL_6:
 
 LABEL_13:
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cycleIntervalDays];
-  [v3 setObject:v11 forKey:@"cycleIntervalDays"];
+  [dictionary setObject:v11 forKey:@"cycleIntervalDays"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_dose];
-    [v3 setObject:v7 forKey:@"dose"];
+    [dictionary setObject:v7 forKey:@"dose"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_startTimeComponents)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_8:
   {
     dayOfWeek = self->_dayOfWeek;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -172,7 +172,7 @@ LABEL_5:
 
   cycleIndex = self->_cycleIndex;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_6:
 LABEL_13:
   cycleIntervalDays = self->_cycleIntervalDays;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     dose = self->_dose;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_startTimeComponents)
   {
-    v6 = v4;
-    [v4 setStartTimeComponents:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setStartTimeComponents:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_dayOfWeek;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 3) = self->_dayOfWeek;
+    *(toCopy + 48) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -233,8 +233,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_cycleIndex;
-  *(v4 + 48) |= 1u;
+  *(toCopy + 1) = self->_cycleIndex;
+  *(toCopy + 48) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -248,22 +248,22 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 2) = self->_cycleIntervalDays;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 2) = self->_cycleIntervalDays;
+  *(toCopy + 48) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 4) = *&self->_dose;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 4) = *&self->_dose;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableDateComponents *)self->_startTimeComponents copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableDateComponents *)self->_startTimeComponents copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -317,16 +317,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   startTimeComponents = self->_startTimeComponents;
-  if (startTimeComponents | *(v4 + 5))
+  if (startTimeComponents | *(equalCopy + 5))
   {
     if (![(HDCodableDateComponents *)startTimeComponents isEqual:?])
     {
@@ -336,13 +336,13 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_dayOfWeek != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_dayOfWeek != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
 LABEL_23:
     v6 = 0;
@@ -351,34 +351,34 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_cycleIndex != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_cycleIndex != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_cycleIntervalDays != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_cycleIntervalDays != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 48) & 8) == 0;
+  v6 = (*(equalCopy + 48) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_dose != *(v4 + 4))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_dose != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
@@ -470,11 +470,11 @@ LABEL_5:
   return v6 ^ v3 ^ v7 ^ v8 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   startTimeComponents = self->_startTimeComponents;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (startTimeComponents)
   {
     if (!v6)
@@ -482,7 +482,7 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     startTimeComponents = [(HDCodableDateComponents *)startTimeComponents mergeFrom:?];
   }
 
@@ -493,18 +493,18 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     startTimeComponents = [(HDCodableMedicationScheduleIntervalData *)self setStartTimeComponents:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 4) != 0)
   {
-    self->_dayOfWeek = *(v4 + 3);
+    self->_dayOfWeek = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
     if ((v7 & 1) == 0)
     {
 LABEL_9:
@@ -517,14 +517,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 48) & 1) == 0)
+  else if ((*(fromCopy + 48) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_cycleIndex = *(v4 + 1);
+  self->_cycleIndex = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 2) == 0)
   {
 LABEL_10:
@@ -537,18 +537,18 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_cycleIntervalDays = *(v4 + 2);
+  self->_cycleIntervalDays = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 48) & 8) != 0)
+  if ((*(fromCopy + 48) & 8) != 0)
   {
 LABEL_11:
-    self->_dose = *(v4 + 4);
+    self->_dose = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
 
-  MEMORY[0x2821F96F8](startTimeComponents, v4);
+  MEMORY[0x2821F96F8](startTimeComponents, fromCopy);
 }
 
 @end

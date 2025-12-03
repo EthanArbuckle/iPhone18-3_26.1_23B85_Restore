@@ -1,19 +1,19 @@
 @interface BasicMOVReader
-- (BasicMOVReader)initWithFileURL:(id)a3 error:(id *)a4;
-- (__CVBuffer)getNextFrameTimestamp:(id *)a3 error:(id *)a4;
+- (BasicMOVReader)initWithFileURL:(id)l error:(id *)error;
+- (__CVBuffer)getNextFrameTimestamp:(id *)timestamp error:(id *)error;
 @end
 
 @implementation BasicMOVReader
 
-- (BasicMOVReader)initWithFileURL:(id)a3 error:(id *)a4
+- (BasicMOVReader)initWithFileURL:(id)l error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = BasicMOVReader;
   v6 = [(BasicMOVReader *)&v12 init];
   if (v6)
   {
-    v7 = [AVAsset assetWithURL:a3];
-    v8 = [AVAssetReader assetReaderWithAsset:v7 error:a4];
+    v7 = [AVAsset assetWithURL:l];
+    v8 = [AVAssetReader assetReaderWithAsset:v7 error:error];
     v6->_reader = v8;
     if (v8)
     {
@@ -39,10 +39,10 @@
   return v6;
 }
 
-- (__CVBuffer)getNextFrameTimestamp:(id *)a3 error:(id *)a4
+- (__CVBuffer)getNextFrameTimestamp:(id *)timestamp error:(id *)error
 {
-  v7 = [(AVAssetReaderTrackOutput *)self->_output copyNextSampleBuffer];
-  if (!v7)
+  copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_output copyNextSampleBuffer];
+  if (!copyNextSampleBuffer)
   {
     if ([(AVAssetReader *)self->_reader status]!= 3)
     {
@@ -51,23 +51,23 @@
       return v10;
     }
 
-    if (a4)
+    if (error)
     {
       v11 = [(NSError *)[(AVAssetReader *)self->_reader error] copy];
 LABEL_11:
       v10 = 0;
-      *a4 = v11;
+      *error = v11;
       return v10;
     }
 
     return 0;
   }
 
-  v8 = v7;
-  ImageBuffer = CMSampleBufferGetImageBuffer(v7);
+  v8 = copyNextSampleBuffer;
+  ImageBuffer = CMSampleBufferGetImageBuffer(copyNextSampleBuffer);
   if (!ImageBuffer)
   {
-    if (a4)
+    if (error)
     {
       v14 = NSLocalizedDescriptionKey;
       v15 = @"Sample buffer does not contain pixel data.";
@@ -79,10 +79,10 @@ LABEL_11:
   }
 
   v10 = ImageBuffer;
-  if (a3)
+  if (timestamp)
   {
     CMSampleBufferGetPresentationTimeStamp(&v13, v8);
-    *a3 = v13;
+    *timestamp = v13;
   }
 
   CVPixelBufferRetain(v10);

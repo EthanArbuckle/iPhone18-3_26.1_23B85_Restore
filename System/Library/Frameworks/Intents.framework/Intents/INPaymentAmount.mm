@@ -1,14 +1,14 @@
 @interface INPaymentAmount
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INPaymentAmount)initWithAmountType:(INAmountType)amountType amount:(INCurrencyAmount *)amount;
-- (INPaymentAmount)initWithCoder:(id)a3;
+- (INPaymentAmount)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INPaymentAmount
@@ -18,14 +18,14 @@
   v10[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"amount";
   amount = self->_amount;
-  v4 = amount;
+  null = amount;
   if (!amount)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v9[1] = @"amountType";
-  v10[0] = v4;
+  v10[0] = null;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_amountType];
   v10[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
@@ -39,27 +39,27 @@
   return v6;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPaymentAmount;
   v6 = [(INPaymentAmount *)&v11 description];
-  v7 = [(INPaymentAmount *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPaymentAmount *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_amount];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_amount];
 
-  [v7 if_setObjectIfNonNil:v8 forKey:@"amount"];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"amount"];
   v9 = self->_amountType - 1;
   if (v9 > 5)
   {
@@ -72,33 +72,33 @@
   }
 
   v11 = v10;
-  [v7 if_setObjectIfNonNil:v11 forKey:@"amountType"];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"amountType"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeInteger:self->_amountType forKey:@"amountType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeInteger:self->_amountType forKey:@"amountType"];
 }
 
-- (INPaymentAmount)initWithCoder:(id)a3
+- (INPaymentAmount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
-  v6 = [v4 decodeIntegerForKey:@"amountType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+  v6 = [coderCopy decodeIntegerForKey:@"amountType"];
 
   v7 = [(INPaymentAmount *)self initWithAmountType:v6 amount:v5];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -108,7 +108,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       amount = self->_amount;
       v7 = (amount == v5->_amount || [(INCurrencyAmount *)amount isEqual:?]) && self->_amountType == v5->_amountType;
     }
@@ -149,21 +149,21 @@
   return v7;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"amount"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"amount"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"amountType"];
+    v12 = [fromCopy objectForKeyedSubscript:@"amountType"];
     v13 = INAmountTypeWithString(v12);
 
-    v14 = [[a1 alloc] initWithAmountType:v13 amount:v11];
+    v14 = [[self alloc] initWithAmountType:v13 amount:v11];
   }
 
   else
@@ -174,22 +174,22 @@
   return v14;
 }
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INPaymentAmount *)self amount];
+  localizerCopy = localizer;
+  amount = [(INPaymentAmount *)self amount];
 
-  if (v6)
+  if (amount)
   {
-    v7 = [(INPaymentAmount *)self amount];
-    v8 = [v7 _intents_readableTitleWithLocalizer:v5];
+    amount2 = [(INPaymentAmount *)self amount];
+    v8 = [amount2 _intents_readableTitleWithLocalizer:localizerCopy];
 
-    v5 = v7;
+    localizerCopy = amount2;
   }
 
   else
   {
-    v8 = INAmountTypeGetLocalizedName([(INPaymentAmount *)self amountType], v5);
+    v8 = INAmountTypeGetLocalizedName([(INPaymentAmount *)self amountType], localizerCopy);
   }
 
   return v8;

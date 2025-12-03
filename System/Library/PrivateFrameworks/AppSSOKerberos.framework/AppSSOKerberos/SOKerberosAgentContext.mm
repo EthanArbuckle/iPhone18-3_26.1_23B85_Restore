@@ -1,14 +1,14 @@
 @interface SOKerberosAgentContext
 - (BOOL)authRequestPending;
-- (SOKerberosAgentContext)initWithProfile:(id)a3;
-- (void)setAuthRequestPending:(BOOL)a3;
+- (SOKerberosAgentContext)initWithProfile:(id)profile;
+- (void)setAuthRequestPending:(BOOL)pending;
 @end
 
 @implementation SOKerberosAgentContext
 
-- (SOKerberosAgentContext)initWithProfile:(id)a3
+- (SOKerberosAgentContext)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v42.receiver = self;
   v42.super_class = SOKerberosAgentContext;
   v6 = [(SOKerberosAgentContext *)&v42 init];
@@ -19,8 +19,8 @@
     v6->_contextNetworkWorkQueue = v7;
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v5 realm];
-    v11 = [v9 stringWithFormat:@"com.apple.kerberosextension.%@.network", v10];
+    realm = [profileCopy realm];
+    v11 = [v9 stringWithFormat:@"com.apple.kerberosextension.%@.network", realm];
     [(NSOperationQueue *)v6->_contextNetworkWorkQueue setName:v11];
 
     [(NSOperationQueue *)v6->_contextNetworkWorkQueue setSuspended:1];
@@ -29,33 +29,33 @@
     v6->_contextKerberosWorkQueue = v12;
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v5 realm];
-    v16 = [v14 stringWithFormat:@"com.apple.kerberosextension.%@.kerberos", v15];
+    realm2 = [profileCopy realm];
+    v16 = [v14 stringWithFormat:@"com.apple.kerberosextension.%@.kerberos", realm2];
     [(NSOperationQueue *)v6->_contextKerberosWorkQueue setName:v16];
 
     [(NSOperationQueue *)v6->_contextKerberosWorkQueue setSuspended:1];
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v17 = [SOKerberosRealmSettings alloc];
-    v18 = [v5 realm];
-    v19 = [(SOKerberosRealmSettings *)v17 initWithRealm:v18];
+    realm3 = [profileCopy realm];
+    v19 = [(SOKerberosRealmSettings *)v17 initWithRealm:realm3];
     settings = v6->_settings;
     v6->_settings = v19;
 
     v21 = [SOKerberosExtensionData alloc];
-    v22 = [v5 extensionData];
-    v23 = [(SOKerberosExtensionData *)v21 initWithDictionary:v22];
+    extensionData = [profileCopy extensionData];
+    v23 = [(SOKerberosExtensionData *)v21 initWithDictionary:extensionData];
     extensionData = v6->_extensionData;
     v6->_extensionData = v23;
 
     v25 = [SONetworkIdentity alloc];
-    v26 = [v5 realm];
-    v27 = [(SONetworkIdentity *)v25 initForRealm:v26 bundleIdentifier:0 auditToken:0];
+    realm4 = [profileCopy realm];
+    v27 = [(SONetworkIdentity *)v25 initForRealm:realm4 bundleIdentifier:0 auditToken:0];
     identity = v6->_identity;
     v6->_identity = v27;
 
     v29 = [SOADSiteDiscovery alloc];
-    v30 = [(SOFullProfile *)v6->_profile realm];
-    v31 = [(SOADSiteDiscovery *)v29 initWithRealm:v30];
+    realm5 = [(SOFullProfile *)v6->_profile realm];
+    v31 = [(SOADSiteDiscovery *)v29 initWithRealm:realm5];
     siteDiscovery = v6->_siteDiscovery;
     v6->_siteDiscovery = v31;
 
@@ -83,19 +83,19 @@
 
 - (BOOL)authRequestPending
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  authRequestPending = v2->_authRequestPending;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  authRequestPending = selfCopy->_authRequestPending;
+  objc_sync_exit(selfCopy);
 
   return authRequestPending;
 }
 
-- (void)setAuthRequestPending:(BOOL)a3
+- (void)setAuthRequestPending:(BOOL)pending
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_authRequestPending = a3;
+  obj->_authRequestPending = pending;
   objc_sync_exit(obj);
 }
 

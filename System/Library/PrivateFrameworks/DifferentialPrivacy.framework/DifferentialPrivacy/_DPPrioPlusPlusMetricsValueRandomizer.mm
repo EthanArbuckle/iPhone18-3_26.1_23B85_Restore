@@ -1,18 +1,18 @@
 @interface _DPPrioPlusPlusMetricsValueRandomizer
-+ (id)randomizerWithEpsilon:(double)a3 delta:(double)a4 maxLength:(unint64_t)a5;
-- (_DPPrioPlusPlusMetricsValueRandomizer)initWithEpsilon:(double)a3 delta:(double)a4 maxLength:(unint64_t)a5;
-- (id)randomizeFloatVector:(id)a3 metadata:(id)a4;
-- (id)randomizeFloatVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
++ (id)randomizerWithEpsilon:(double)epsilon delta:(double)delta maxLength:(unint64_t)length;
+- (_DPPrioPlusPlusMetricsValueRandomizer)initWithEpsilon:(double)epsilon delta:(double)delta maxLength:(unint64_t)length;
+- (id)randomizeFloatVector:(id)vector metadata:(id)metadata;
+- (id)randomizeFloatVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
 @end
 
 @implementation _DPPrioPlusPlusMetricsValueRandomizer
 
-- (_DPPrioPlusPlusMetricsValueRandomizer)initWithEpsilon:(double)a3 delta:(double)a4 maxLength:(unint64_t)a5
+- (_DPPrioPlusPlusMetricsValueRandomizer)initWithEpsilon:(double)epsilon delta:(double)delta maxLength:(unint64_t)length
 {
-  v6 = a3 < 0.0 || a3 > 16.0;
-  if (v6 || (a4 > 0.0 ? (v9 = a5 == 0) : (v9 = 1), v9))
+  v6 = epsilon < 0.0 || epsilon > 16.0;
+  if (v6 || (delta > 0.0 ? (v9 = length == 0) : (v9 = 1), v9))
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -22,29 +22,29 @@
     v11 = [(_DPPrioPlusPlusMetricsValueRandomizer *)&v13 init];
     if (v11)
     {
-      v11->_epsilon = a3;
-      v11->_delta = a4;
-      v11->_n = a5;
+      v11->_epsilon = epsilon;
+      v11->_delta = delta;
+      v11->_n = length;
     }
 
     self = v11;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)randomizerWithEpsilon:(double)a3 delta:(double)a4 maxLength:(unint64_t)a5
++ (id)randomizerWithEpsilon:(double)epsilon delta:(double)delta maxLength:(unint64_t)length
 {
-  v5 = [[a1 alloc] initWithEpsilon:a5 delta:a3 maxLength:a4];
+  v5 = [[self alloc] initWithEpsilon:length delta:epsilon maxLength:delta];
 
   return v5;
 }
 
-- (id)randomizeFloatVector:(id)a3 metadata:(id)a4
+- (id)randomizeFloatVector:(id)vector metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [v5 length] >> 2;
+  vectorCopy = vector;
+  v6 = [vectorCopy length] >> 2;
   n = self->_n;
   p_n = &self->_n;
   if (v6 <= n)
@@ -53,7 +53,7 @@
     v9 = v10;
     if (v10)
     {
-      v11 = [v10 randomize:v5];
+      v11 = [v10 randomize:vectorCopy];
       goto LABEL_10;
     }
 
@@ -79,12 +79,12 @@ LABEL_10:
   return v11;
 }
 
-- (id)randomizeFloatVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (id)randomizeFloatVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v26 = a5;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
   [v9 timeIntervalSinceReferenceDate];
   v11 = v10;
@@ -94,7 +94,7 @@ LABEL_10:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v7;
+  obj = vectorsCopy;
   v12 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
@@ -109,14 +109,14 @@ LABEL_10:
           objc_enumerationMutation(obj);
         }
 
-        v16 = [(_DPPrioPlusPlusMetricsValueRandomizer *)self randomizeFloatVector:*(*(&v28 + 1) + 8 * i) metadata:v8];
+        v16 = [(_DPPrioPlusPlusMetricsValueRandomizer *)self randomizeFloatVector:*(*(&v28 + 1) + 8 * i) metadata:metadataCopy];
         if ([v16 count])
         {
           v17 = [v16 objectForKeyedSubscript:@"share1"];
           v18 = [v16 objectForKeyedSubscript:@"share2"];
           v19 = [v16 objectForKeyedSubscript:@"dimensionality"];
-          v20 = v8;
-          v21 = -[_DPPrioRecord initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:]([_DPPrioRecord alloc], "initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:", v26, v17, v18, [v19 longLongValue], v20, 0, v11, 0);
+          v20 = metadataCopy;
+          v21 = -[_DPPrioRecord initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:]([_DPPrioRecord alloc], "initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:", keyCopy, v17, v18, [v19 longLongValue], v20, 0, v11, 0);
           if (v21)
           {
             [v24 addObject:v21];

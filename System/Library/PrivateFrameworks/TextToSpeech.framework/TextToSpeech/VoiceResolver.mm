@@ -1,14 +1,14 @@
 @interface VoiceResolver
 + (_TtC12TextToSpeech13VoiceResolver)shared;
-+ (void)setShared:(id)a3;
-- (void)currentLocaleIdentifiersWithCompletionHandler:(id)a3;
-- (void)currentSystemLocaleIdentifierWithCompletionHandler:(id)a3;
-- (void)currentSystemLocaleWithCompletionHandler:(id)a3;
-- (void)fallbackForVoice:(TTSSpeechVoice *)a3 completionHandler:(id)a4;
-- (void)voiceForIdentifier:(NSString *)a3 completionHandler:(id)a4;
-- (void)voiceForIdentifier:(id)a3 preferringLanguage:(id)a4 completionHandler:(id)a5;
-- (void)voiceForLocale:(NSLocale *)a3 completionHandler:(id)a4;
-- (void)voiceForLocaleIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)setShared:(id)shared;
+- (void)currentLocaleIdentifiersWithCompletionHandler:(id)handler;
+- (void)currentSystemLocaleIdentifierWithCompletionHandler:(id)handler;
+- (void)currentSystemLocaleWithCompletionHandler:(id)handler;
+- (void)fallbackForVoice:(TTSSpeechVoice *)voice completionHandler:(id)handler;
+- (void)voiceForIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)voiceForIdentifier:(id)identifier preferringLanguage:(id)language completionHandler:(id)handler;
+- (void)voiceForLocale:(NSLocale *)locale completionHandler:(id)handler;
+- (void)voiceForLocaleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation VoiceResolver
@@ -25,7 +25,7 @@
   return v2;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v4 = qword_1EB390CF0;
 
@@ -35,16 +35,16 @@
   }
 
   swift_beginAccess();
-  qword_1EB390CF8 = a3;
+  qword_1EB390CF8 = shared;
 }
 
-- (void)currentSystemLocaleWithCompletionHandler:(id)a3
+- (void)currentSystemLocaleWithCompletionHandler:(id)handler
 {
   v5 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -64,13 +64,13 @@
   sub_1A93CC8FC(0, 0, v9, &unk_1A958C730, v14);
 }
 
-- (void)currentLocaleIdentifiersWithCompletionHandler:(id)a3
+- (void)currentLocaleIdentifiersWithCompletionHandler:(id)handler
 {
   v5 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = *self->executor;
@@ -85,13 +85,13 @@
   sub_1A942E63C(0, 0, v12, v13, v9, &unk_1A958C710, v15);
 }
 
-- (void)currentSystemLocaleIdentifierWithCompletionHandler:(id)a3
+- (void)currentSystemLocaleIdentifierWithCompletionHandler:(id)handler
 {
   v5 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -111,15 +111,15 @@
   sub_1A93CC8FC(0, 0, v9, &unk_1A958C708, v14);
 }
 
-- (void)voiceForIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)voiceForIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
   v7 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = identifier;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_1A957C688();
@@ -134,20 +134,20 @@
   v16[3] = 0;
   v16[4] = &unk_1A958C6E0;
   v16[5] = v15;
-  v17 = a3;
+  identifierCopy = identifier;
 
   sub_1A93CC8FC(0, 0, v11, &unk_1A958C6E8, v16);
 }
 
-- (void)voiceForLocale:(NSLocale *)a3 completionHandler:(id)a4
+- (void)voiceForLocale:(NSLocale *)locale completionHandler:(id)handler
 {
   v7 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = locale;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_1A957C688();
@@ -162,18 +162,18 @@
   v16[3] = 0;
   v16[4] = &unk_1A958C6C0;
   v16[5] = v15;
-  v17 = a3;
+  localeCopy = locale;
 
   sub_1A93CC8FC(0, 0, v11, &unk_1A958C6C8, v16);
 }
 
-- (void)voiceForLocaleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)voiceForLocaleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v6 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8, v8);
   v10 = &v20 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = sub_1A957C0F8();
   v14 = v13;
   v15 = swift_allocObject();
@@ -192,17 +192,17 @@
   sub_1A942E63C(0, 0, v16, v17, v10, &unk_1A958C6A8, v19);
 }
 
-- (void)voiceForIdentifier:(id)a3 preferringLanguage:(id)a4 completionHandler:(id)a5
+- (void)voiceForIdentifier:(id)identifier preferringLanguage:(id)language completionHandler:(id)handler
 {
   v9 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8, v11);
   v13 = &v24 - v12;
-  v14 = _Block_copy(a5);
-  if (!a3)
+  v14 = _Block_copy(handler);
+  if (!identifier)
   {
     v16 = 0;
-    if (a4)
+    if (language)
     {
       goto LABEL_3;
     }
@@ -212,15 +212,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a3 = sub_1A957C0F8();
+  identifier = sub_1A957C0F8();
   v16 = v15;
-  if (!a4)
+  if (!language)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  a4 = sub_1A957C0F8();
+  language = sub_1A957C0F8();
   v18 = v17;
 LABEL_6:
   v19 = swift_allocObject();
@@ -233,23 +233,23 @@ LABEL_6:
   v23[2] = sub_1A9431740;
   v23[3] = v19;
   v23[4] = self;
-  v23[5] = a3;
+  v23[5] = identifier;
   v23[6] = v16;
-  v23[7] = a4;
+  v23[7] = language;
   v23[8] = v18;
 
   sub_1A942E63C(0, 0, v20, v21, v13, &unk_1A958C690, v23);
 }
 
-- (void)fallbackForVoice:(TTSSpeechVoice *)a3 completionHandler:(id)a4
+- (void)fallbackForVoice:(TTSSpeechVoice *)voice completionHandler:(id)handler
 {
   v7 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = voice;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_1A957C688();
@@ -264,7 +264,7 @@ LABEL_6:
   v16[3] = 0;
   v16[4] = &unk_1A958C670;
   v16[5] = v15;
-  v17 = a3;
+  voiceCopy = voice;
 
   sub_1A93CC8FC(0, 0, v11, &unk_1A958C680, v16);
 }

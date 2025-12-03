@@ -1,6 +1,6 @@
 @interface NTKParmesanImageEditorItem
 + (id)_newLocalIdentifier;
-- (NTKParmesanImageEditorItem)initWithImage:(id)a3 layout:(id)a4;
+- (NTKParmesanImageEditorItem)initWithImage:(id)image layout:(id)layout;
 - (id)description;
 @end
 
@@ -16,10 +16,10 @@
   return v12;
 }
 
-- (NTKParmesanImageEditorItem)initWithImage:(id)a3 layout:(id)a4
+- (NTKParmesanImageEditorItem)initWithImage:(id)image layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = NTKParmesanImageEditorItem;
   v9 = [(NTKParmesanImageEditorItem *)&v17 init];
@@ -30,8 +30,8 @@
     identifier = v9->_identifier;
     v9->_identifier = v14;
 
-    objc_storeStrong(&v9->_image, a3);
-    objc_storeStrong(&v9->_layout, a4);
+    objc_storeStrong(&v9->_image, image);
+    objc_storeStrong(&v9->_layout, layout);
     v9->_canRevert = 0;
   }
 

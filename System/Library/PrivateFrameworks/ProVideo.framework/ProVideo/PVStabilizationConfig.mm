@@ -1,37 +1,37 @@
 @interface PVStabilizationConfig
-+ (id)configWithHomography:(double)a3 cleanAperture:(double)a4 cropRect:(double)a5 fillMode:(double)a6;
-- (BOOL)isValidWithReason:(id *)a3;
++ (id)configWithHomography:(double)homography cleanAperture:(double)aperture cropRect:(double)rect fillMode:(double)mode;
+- (BOOL)isValidWithReason:(id *)reason;
 - (CGRect)cleanAperture;
 - (CGRect)cropRect;
 - (CGRect)normalizedCleanAperture;
-- (PVStabilizationConfig)initWithCoder:(id)a3;
-- (PVStabilizationConfig)initWithHomography:(double)a3 cleanAperture:(double)a4 cropRect:(double)a5 fillMode:(double)a6;
-- (__n128)setHomography:(__n128)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PVStabilizationConfig)initWithCoder:(id)coder;
+- (PVStabilizationConfig)initWithHomography:(double)homography cleanAperture:(double)aperture cropRect:(double)rect fillMode:(double)mode;
+- (__n128)setHomography:(__n128)homography;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFillMode:(int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFillMode:(int)mode;
 @end
 
 @implementation PVStabilizationConfig
 
-+ (id)configWithHomography:(double)a3 cleanAperture:(double)a4 cropRect:(double)a5 fillMode:(double)a6
++ (id)configWithHomography:(double)homography cleanAperture:(double)aperture cropRect:(double)rect fillMode:(double)mode
 {
-  v18 = [[a1 alloc] initWithHomography:a10 cleanAperture:a2 cropRect:a3 fillMode:{a4, a5, a6, a7, a8, a16, a17, a18}];
+  v18 = [[self alloc] initWithHomography:a10 cleanAperture:a2 cropRect:homography fillMode:{aperture, rect, mode, a7, a8, a16, a17, a18}];
 
   return v18;
 }
 
-- (PVStabilizationConfig)initWithHomography:(double)a3 cleanAperture:(double)a4 cropRect:(double)a5 fillMode:(double)a6
+- (PVStabilizationConfig)initWithHomography:(double)homography cleanAperture:(double)aperture cropRect:(double)rect fillMode:(double)mode
 {
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = PVStabilizationConfig;
   v24 = [(PVStabilizationConfig *)&v30 init];
   v25 = v24;
   if (v24)
   {
-    [(PVStabilizationConfig *)v24 setHomography:a2, a3, a4];
-    [(PVStabilizationConfig *)v25 setCleanAperture:a5, a6, a7, a8];
+    [(PVStabilizationConfig *)v24 setHomography:a2, homography, aperture];
+    [(PVStabilizationConfig *)v25 setCleanAperture:rect, mode, a7, a8];
     [(PVStabilizationConfig *)v25 setCropRect:a12, a13, a14, a15];
     [(PVStabilizationConfig *)v25 setFillMode:a10];
   }
@@ -55,17 +55,17 @@
   return result;
 }
 
-- (BOOL)isValidWithReason:(id *)a3
+- (BOOL)isValidWithReason:(id *)reason
 {
   width = self->_cleanAperture.size.width;
   if (fabs(width) < 0.0000001 || (height = self->_cleanAperture.size.height, fabs(height) < 0.0000001))
   {
-    if (a3)
+    if (reason)
     {
       v5 = @"Clean aperture has zero area";
 LABEL_5:
       result = 0;
-      *a3 = v5;
+      *reason = v5;
       return result;
     }
 
@@ -74,7 +74,7 @@ LABEL_5:
 
   if (width < 2.0 || height < 2.0)
   {
-    if (a3)
+    if (reason)
     {
       v5 = @"Clean aperture has side shorter than 2. Only pixel based clean aperture is supported.";
       goto LABEL_5;
@@ -86,7 +86,7 @@ LABEL_5:
   v8 = self->_cropRect.size.width;
   if (fabs(v8) < 0.0000001 || (v9 = self->_cropRect.size.height, fabs(v9) < 0.0000001))
   {
-    if (a3)
+    if (reason)
     {
       v5 = @"Crop rect has zero area";
       goto LABEL_5;
@@ -97,7 +97,7 @@ LABEL_5:
 
   if (v8 > 1.5 || v9 > 1.5)
   {
-    if (a3)
+    if (reason)
     {
       v5 = @"Crop rect has side longer than 1.5. Only normalized crop rect is supported.";
       goto LABEL_5;
@@ -109,72 +109,72 @@ LABEL_5:
   return 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCAE60];
-  v10 = a3;
+  coderCopy = coder;
   [(PVStabilizationConfig *)self homography];
   v5 = [v4 valueWithSIMDFloat3x3:?];
-  [v10 encodeObject:v5 forKey:@"homography"];
+  [coderCopy encodeObject:v5 forKey:@"homography"];
 
   v6 = MEMORY[0x277CCAE60];
   [(PVStabilizationConfig *)self cleanAperture];
   v7 = [v6 valueWithCGRect:?];
-  [v10 encodeObject:v7 forKey:@"cleanAperture"];
+  [coderCopy encodeObject:v7 forKey:@"cleanAperture"];
 
   v8 = MEMORY[0x277CCAE60];
   [(PVStabilizationConfig *)self cropRect];
   v9 = [v8 valueWithCGRect:?];
-  [v10 encodeObject:v9 forKey:@"cropRect"];
+  [coderCopy encodeObject:v9 forKey:@"cropRect"];
 
-  [v10 encodeInteger:-[PVStabilizationConfig fillMode](self forKey:{"fillMode"), @"fillMode"}];
+  [coderCopy encodeInteger:-[PVStabilizationConfig fillMode](self forKey:{"fillMode"), @"fillMode"}];
 }
 
-- (PVStabilizationConfig)initWithCoder:(id)a3
+- (PVStabilizationConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homography"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homography"];
   [v5 SIMDFloat3x3Value];
   v31 = v7;
   v32 = v6;
   v30 = v8;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cleanAperture"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cleanAperture"];
   [v9 CGRectValue];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cropRect"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cropRect"];
   [v18 CGRectValue];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [v4 decodeIntegerForKey:@"fillMode"];
+  v27 = [coderCopy decodeIntegerForKey:@"fillMode"];
 
   v28 = [(PVStabilizationConfig *)self initWithHomography:v27 cleanAperture:v32 cropRect:v31 fillMode:v30, v11, v13, v15, v17, v20, v22, v24, v26];
   return v28;
 }
 
-- (void)setFillMode:(int)a3
+- (void)setFillMode:(int)mode
 {
-  if (self->_fillMode != a3)
+  if (self->_fillMode != mode)
   {
-    if (a3 >= 0xF)
+    if (mode >= 0xF)
     {
-      v3 = 0;
+      modeCopy = 0;
     }
 
     else
     {
-      v3 = a3;
+      modeCopy = mode;
     }
 
-    self->_fillMode = v3;
+    self->_fillMode = modeCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PVStabilizationConfig alloc];
   [(PVStabilizationConfig *)self homography];
@@ -219,15 +219,15 @@ LABEL_5:
   v30 = v19;
   v31 = v21;
   v22 = NSStringFromSIMDDouble4(&v30, 3);
-  v23 = [(PVStabilizationConfig *)self fillMode];
-  if (v23 >= 0xF)
+  fillMode = [(PVStabilizationConfig *)self fillMode];
+  if (fillMode >= 0xF)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v23;
+    v24 = fillMode;
   }
 
   v25 = PVViewContentModeNames[v24];
@@ -248,10 +248,10 @@ LABEL_5:
   return v28;
 }
 
-- (__n128)setHomography:(__n128)a3
+- (__n128)setHomography:(__n128)homography
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = homography;
   result[7] = a4;
   return result;
 }

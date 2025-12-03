@@ -1,24 +1,24 @@
 @interface ATXMLInferenceMultiArrayFeatureProvider
-- (ATXMLInferenceMultiArrayFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)a3 featuresToConcatenate:(id)a4;
+- (ATXMLInferenceMultiArrayFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)item featuresToConcatenate:(id)concatenate;
 - (NSSet)featureNames;
 - (id).cxx_construct;
-- (id)featureValueForName:(id)a3;
-- (void)setPredictionItem:(ATXPredictionItem *)a3;
+- (id)featureValueForName:(id)name;
+- (void)setPredictionItem:(ATXPredictionItem *)item;
 @end
 
 @implementation ATXMLInferenceMultiArrayFeatureProvider
 
-- (ATXMLInferenceMultiArrayFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)a3 featuresToConcatenate:(id)a4
+- (ATXMLInferenceMultiArrayFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)item featuresToConcatenate:(id)concatenate
 {
-  v6 = a4;
+  concatenateCopy = concatenate;
   v10.receiver = self;
   v10.super_class = ATXMLInferenceMultiArrayFeatureProvider;
   v7 = [(ATXMLInferenceMultiArrayFeatureProvider *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ATXMLInferenceMultiArrayFeatureProvider *)v7 setPredictionItem:a3];
-    [(ATXMLInferenceMultiArrayFeatureProvider *)v8 setFeaturesToConcatenate:v6];
+    [(ATXMLInferenceMultiArrayFeatureProvider *)v7 setPredictionItem:item];
+    [(ATXMLInferenceMultiArrayFeatureProvider *)v8 setFeaturesToConcatenate:concatenateCopy];
   }
 
   return v8;
@@ -40,16 +40,16 @@
   return featureNames;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:@"input_feature_vector"])
+  if ([name isEqualToString:@"input_feature_vector"])
   {
     v4 = objc_alloc(MEMORY[0x277CBFF48]);
     v25[0] = &unk_283A56D08;
     v5 = MEMORY[0x277CCABB0];
-    v6 = [(ATXMLInferenceMultiArrayFeatureProvider *)self featuresToConcatenate];
-    v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+    featuresToConcatenate = [(ATXMLInferenceMultiArrayFeatureProvider *)self featuresToConcatenate];
+    v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(featuresToConcatenate, "count")}];
     v25[1] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     v24 = 0;
@@ -70,7 +70,7 @@
     else
     {
       v13 = [[ATXMLInferenceFeatureProvider alloc] initWithPredictionItem:[(ATXMLInferenceMultiArrayFeatureProvider *)self predictionItem]];
-      v14 = [(ATXMLInferenceMultiArrayFeatureProvider *)self featuresToConcatenate];
+      featuresToConcatenate2 = [(ATXMLInferenceMultiArrayFeatureProvider *)self featuresToConcatenate];
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __63__ATXMLInferenceMultiArrayFeatureProvider_featureValueForName___block_invoke;
@@ -79,7 +79,7 @@
       v22 = v15;
       v11 = v13;
       v23 = v11;
-      [v14 enumerateObjectsUsingBlock:&v18];
+      [featuresToConcatenate2 enumerateObjectsUsingBlock:&v18];
 
       v12 = [MEMORY[0x277CBFEF8] featureValueWithMultiArray:{v15, v18, v19, v20, v21}];
     }
@@ -110,10 +110,10 @@ void __63__ATXMLInferenceMultiArrayFeatureProvider_featureValueForName___block_i
   [*(a1 + 32) setObject:v6 atIndexedSubscript:a3];
 }
 
-- (void)setPredictionItem:(ATXPredictionItem *)a3
+- (void)setPredictionItem:(ATXPredictionItem *)item
 {
-  p_actionHash = &a3->actionHash;
-  objc_storeStrong(&self->_predictionItem.key, a3->key);
+  p_actionHash = &item->actionHash;
+  objc_storeStrong(&self->_predictionItem.key, item->key);
 
   memcpy(&self->_predictionItem.actionHash, p_actionHash, 0xCFEuLL);
 }

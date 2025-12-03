@@ -1,21 +1,21 @@
 @interface TRActivationOperationHandler
-- (TRActivationOperationHandler)initWithActivationHandler:(id)a3;
-- (TRActivationOperationHandler)initWithActivationHandlerWithError:(id)a3;
-- (void)_handleActivationRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)registerMessageHandlersForSession:(id)a3;
+- (TRActivationOperationHandler)initWithActivationHandler:(id)handler;
+- (TRActivationOperationHandler)initWithActivationHandlerWithError:(id)error;
+- (void)_handleActivationRequest:(id)request withResponseHandler:(id)handler;
+- (void)registerMessageHandlersForSession:(id)session;
 @end
 
 @implementation TRActivationOperationHandler
 
-- (TRActivationOperationHandler)initWithActivationHandler:(id)a3
+- (TRActivationOperationHandler)initWithActivationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = TRActivationOperationHandler;
   v5 = [(TRActivationOperationHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     activationHandler = v5->_activationHandler;
     v5->_activationHandler = v6;
   }
@@ -23,15 +23,15 @@
   return v5;
 }
 
-- (TRActivationOperationHandler)initWithActivationHandlerWithError:(id)a3
+- (TRActivationOperationHandler)initWithActivationHandlerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = TRActivationOperationHandler;
   v5 = [(TRActivationOperationHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [errorCopy copy];
     activationHandlerWithError = v5->_activationHandlerWithError;
     v5->_activationHandlerWithError = v6;
   }
@@ -39,16 +39,16 @@
   return v5;
 }
 
-- (void)registerMessageHandlersForSession:(id)a3
+- (void)registerMessageHandlersForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__TRActivationOperationHandler_registerMessageHandlersForSession___block_invoke;
   v5[3] = &unk_279DCF1B0;
   objc_copyWeak(&v6, &location);
-  [v4 setRequestHandler:v5 forRequestClass:objc_opt_class()];
+  [sessionCopy setRequestHandler:v5 forRequestClass:objc_opt_class()];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -61,11 +61,11 @@ void __66__TRActivationOperationHandler_registerMessageHandlersForSession___bloc
   [WeakRetained _handleActivationRequest:v7 withResponseHandler:v5];
 }
 
-- (void)_handleActivationRequest:(id)a3 withResponseHandler:(id)a4
+- (void)_handleActivationRequest:(id)request withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   activationHandler = self->_activationHandler;
   activationHandlerWithError = self->_activationHandlerWithError;
   if (activationHandler)
@@ -88,7 +88,7 @@ void __66__TRActivationOperationHandler_registerMessageHandlersForSession___bloc
   v14[1] = 3221225472;
   v14[2] = __77__TRActivationOperationHandler__handleActivationRequest_withResponseHandler___block_invoke;
   v14[3] = &unk_279DCEEC8;
-  v15 = v7;
+  v15 = handlerCopy;
   activationHandlerWithError[2](activationHandlerWithError, v14);
 
   activationHandler = self->_activationHandler;

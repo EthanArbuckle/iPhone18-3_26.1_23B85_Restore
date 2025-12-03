@@ -1,23 +1,23 @@
 @interface SUSplitView
-- (SUSplitView)initWithFrame:(CGRect)a3;
+- (SUSplitView)initWithFrame:(CGRect)frame;
 - (double)_minimumPaneSizeForLayout;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFirstView:(id)a3;
-- (void)setLayoutType:(int64_t)a3;
-- (void)setMinimumPaneSize:(double)a3;
-- (void)setSecondView:(id)a3;
-- (void)setSplitPosition:(double)a3;
-- (void)setVertical:(BOOL)a3;
+- (void)setFirstView:(id)view;
+- (void)setLayoutType:(int64_t)type;
+- (void)setMinimumPaneSize:(double)size;
+- (void)setSecondView:(id)view;
+- (void)setSplitPosition:(double)position;
+- (void)setVertical:(BOOL)vertical;
 @end
 
 @implementation SUSplitView
 
-- (SUSplitView)initWithFrame:(CGRect)a3
+- (SUSplitView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUSplitView;
-  result = [(SUSplitView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SUSplitView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_minimumPaneSize = 30.0;
@@ -158,10 +158,10 @@
   CGPathRelease(v20);
 }
 
-- (void)setFirstView:(id)a3
+- (void)setFirstView:(id)view
 {
   firstView = self->_firstView;
-  if (firstView != a3)
+  if (firstView != view)
   {
     if (firstView)
     {
@@ -174,39 +174,39 @@
       v6 = 0;
     }
 
-    v7 = a3;
-    self->_firstView = v7;
-    if (v7)
+    viewCopy = view;
+    self->_firstView = viewCopy;
+    if (viewCopy)
     {
-      [(SUSplitView *)self addSubview:v7];
+      [(SUSplitView *)self addSubview:viewCopy];
     }
 
     [(SUSplitView *)self setNeedsLayout];
   }
 }
 
-- (void)setLayoutType:(int64_t)a3
+- (void)setLayoutType:(int64_t)type
 {
-  if (self->_layoutType != a3)
+  if (self->_layoutType != type)
   {
-    self->_layoutType = a3;
+    self->_layoutType = type;
     [(SUSplitView *)self setNeedsLayout];
   }
 }
 
-- (void)setMinimumPaneSize:(double)a3
+- (void)setMinimumPaneSize:(double)size
 {
-  if (self->_minimumPaneSize != a3)
+  if (self->_minimumPaneSize != size)
   {
-    self->_minimumPaneSize = a3;
+    self->_minimumPaneSize = size;
     [(SUSplitView *)self setNeedsLayout];
   }
 }
 
-- (void)setSecondView:(id)a3
+- (void)setSecondView:(id)view
 {
   secondView = self->_secondView;
-  if (secondView != a3)
+  if (secondView != view)
   {
     if (secondView)
     {
@@ -219,31 +219,31 @@
       v6 = 0;
     }
 
-    v7 = a3;
-    self->_secondView = v7;
-    if (v7)
+    viewCopy = view;
+    self->_secondView = viewCopy;
+    if (viewCopy)
     {
-      [(SUSplitView *)self addSubview:v7];
+      [(SUSplitView *)self addSubview:viewCopy];
     }
 
     [(SUSplitView *)self setNeedsLayout];
   }
 }
 
-- (void)setSplitPosition:(double)a3
+- (void)setSplitPosition:(double)position
 {
-  if (self->_splitPosition != a3)
+  if (self->_splitPosition != position)
   {
-    self->_splitPosition = a3;
+    self->_splitPosition = position;
     [(SUSplitView *)self setNeedsLayout];
   }
 }
 
-- (void)setVertical:(BOOL)a3
+- (void)setVertical:(BOOL)vertical
 {
-  if (self->_vertical != a3)
+  if (self->_vertical != vertical)
   {
-    self->_vertical = a3;
+    self->_vertical = vertical;
     [(SUSplitView *)self setNeedsLayout];
   }
 }

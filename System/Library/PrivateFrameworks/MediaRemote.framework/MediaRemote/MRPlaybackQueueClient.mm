@@ -1,11 +1,11 @@
 @interface MRPlaybackQueueClient
-- (MRPlaybackQueueClient)initWithQueue:(id)a3;
+- (MRPlaybackQueueClient)initWithQueue:(id)queue;
 - (id)debugDescription;
-- (id)existingSubscriptionControllerForPlayerPath:(id)a3;
-- (id)subscriptionControllerForPlayerPath:(id)a3;
-- (void)_handleApplicationRemovedNotification:(id)a3;
-- (void)_handleOriginRemovedNotification:(id)a3;
-- (void)_handlePlayerPathRemovedNotification:(id)a3;
+- (id)existingSubscriptionControllerForPlayerPath:(id)path;
+- (id)subscriptionControllerForPlayerPath:(id)path;
+- (void)_handleApplicationRemovedNotification:(id)notification;
+- (void)_handleOriginRemovedNotification:(id)notification;
+- (void)_handlePlayerPathRemovedNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -13,18 +13,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MRPlaybackQueueClient;
   [(MRPlaybackQueueClient *)&v4 dealloc];
 }
 
-- (MRPlaybackQueueClient)initWithQueue:(id)a3
+- (MRPlaybackQueueClient)initWithQueue:(id)queue
 {
-  v6 = a3;
-  if (!v6)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     [(MRPlaybackQueueClient *)a2 initWithQueue:?];
   }
@@ -38,15 +38,15 @@
     controllers = v7->_controllers;
     v7->_controllers = v8;
 
-    objc_storeStrong(&v7->_queue, a3);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__handlePlayerPathRemovedNotification_ name:@"kMRMediaRemoteNowPlayingPlayerDidUnregister" object:0];
+    objc_storeStrong(&v7->_queue, queue);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handlePlayerPathRemovedNotification_ name:@"kMRMediaRemoteNowPlayingPlayerDidUnregister" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel__handleApplicationRemovedNotification_ name:@"kMRMediaRemoteNowPlayingApplicationDidUnregister" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleApplicationRemovedNotification_ name:@"kMRMediaRemoteNowPlayingApplicationDidUnregister" object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel__handleOriginRemovedNotification_ name:@"kMRMediaRemoteOriginDidUnregisterNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__handleOriginRemovedNotification_ name:@"kMRMediaRemoteOriginDidUnregisterNotification" object:0];
   }
 
   return v7;
@@ -56,23 +56,23 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(NSMutableDictionary *)self->_controllers allValues];
-  v6 = MRCreateIndentedDebugDescriptionFromArray(v5);
+  allValues = [(NSMutableDictionary *)self->_controllers allValues];
+  v6 = MRCreateIndentedDebugDescriptionFromArray(allValues);
   v7 = [v3 initWithFormat:@"<%@:%p {\n %@ \n}", v4, self, v6];
 
   return v7;
 }
 
-- (id)subscriptionControllerForPlayerPath:(id)a3
+- (id)subscriptionControllerForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__38;
   v15 = __Block_byref_object_dispose__38;
   v16 = 0;
-  if ([v4 isResolved])
+  if ([pathCopy isResolved])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -81,7 +81,7 @@
     block[3] = &unk_1E769BBB8;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = pathCopy;
     dispatch_sync(queue, block);
   }
 
@@ -113,16 +113,16 @@ void __61__MRPlaybackQueueClient_subscriptionControllerForPlayerPath___block_inv
   }
 }
 
-- (id)existingSubscriptionControllerForPlayerPath:(id)a3
+- (id)existingSubscriptionControllerForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__38;
   v15 = __Block_byref_object_dispose__38;
   v16 = 0;
-  if ([v4 isResolved])
+  if ([pathCopy isResolved])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -131,7 +131,7 @@ void __61__MRPlaybackQueueClient_subscriptionControllerForPlayerPath___block_inv
     block[3] = &unk_1E769BBB8;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = pathCopy;
     dispatch_sync(queue, block);
   }
 
@@ -149,10 +149,10 @@ void __69__MRPlaybackQueueClient_existingSubscriptionControllerForPlayerPath___b
   *(v3 + 40) = v2;
 }
 
-- (void)_handlePlayerPathRemovedNotification:(id)a3
+- (void)_handlePlayerPathRemovedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v6 = MRGetPlayerPathFromUserInfo(v4, v5);
+  userInfo = [notification userInfo];
+  v6 = MRGetPlayerPathFromUserInfo(userInfo, v5);
 
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -165,15 +165,15 @@ void __69__MRPlaybackQueueClient_existingSubscriptionControllerForPlayerPath___b
   dispatch_sync(queue, v9);
 }
 
-- (void)_handleApplicationRemovedNotification:(id)a3
+- (void)_handleApplicationRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = MRGetOriginFromUserInfo(v5);
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = MRGetOriginFromUserInfo(userInfo);
 
-  v7 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v8 = MRGetClientFromUserInfo(v7);
+  v8 = MRGetClientFromUserInfo(userInfo2);
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -244,10 +244,10 @@ void __63__MRPlaybackQueueClient__handleApplicationRemovedNotification___block_i
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleOriginRemovedNotification:(id)a3
+- (void)_handleOriginRemovedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = MRGetOriginFromUserInfo(v4);
+  userInfo = [notification userInfo];
+  v5 = MRGetOriginFromUserInfo(userInfo);
 
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];

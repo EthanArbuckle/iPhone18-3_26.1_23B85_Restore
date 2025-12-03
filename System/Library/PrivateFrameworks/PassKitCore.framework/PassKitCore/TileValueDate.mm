@@ -1,48 +1,48 @@
 @interface TileValueDate
-+ (id)_predicateForBaseValue:(id)a3;
-+ (id)insertValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5;
-+ (void)deleteEntitiesForBaseValue:(id)a3 inDatabase:(id)a4;
-+ (void)inflateValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5;
-- (TileValueDate)initWithValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5;
++ (id)_predicateForBaseValue:(id)value;
++ (id)insertValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database;
++ (void)deleteEntitiesForBaseValue:(id)value inDatabase:(id)database;
++ (void)inflateValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database;
+- (TileValueDate)initWithValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database;
 @end
 
 @implementation TileValueDate
 
-- (TileValueDate)initWithValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5
+- (TileValueDate)initWithValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  databaseCopy = database;
+  baseValueCopy = baseValue;
+  valueCopy = value;
   v10 = objc_alloc_init(NSMutableDictionary);
-  [v10 setEntityPIDOrNull:v8 forKey:@"value_pid"];
+  [v10 setEntityPIDOrNull:baseValueCopy forKey:@"value_pid"];
 
-  v11 = [v9 content];
-  [v10 setObjectOrNull:v11 forKey:@"content"];
+  content = [valueCopy content];
+  [v10 setObjectOrNull:content forKey:@"content"];
 
-  [v9 dateStyle];
+  [valueCopy dateStyle];
   v12 = _PKEnumValueToString();
   [v10 setObjectOrNull:v12 forKey:{@"date_style", 0, 0, 1, 1, 2, 2, 3, 3, 4, 4}];
 
-  [v9 timeStyle];
+  [valueCopy timeStyle];
   v13 = _PKEnumValueToString();
   [v10 setObjectOrNull:v13 forKey:{@"time_style", 0, 0, 1, 1, 2, 2, 3, 3, 4, 4}];
 
-  [v10 setBool:objc_msgSend(v9 forKey:{"ignoresTimeZone"), @"ignores_time_zone"}];
-  v14 = [v9 isRelative];
+  [v10 setBool:objc_msgSend(valueCopy forKey:{"ignoresTimeZone"), @"ignores_time_zone"}];
+  isRelative = [valueCopy isRelative];
 
-  [v10 setBool:v14 forKey:@"is_relative"];
-  v15 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v7];
+  [v10 setBool:isRelative forKey:@"is_relative"];
+  v15 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
 
   return v15;
 }
 
-+ (id)insertValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5
++ (id)insertValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  baseValueCopy = baseValue;
+  databaseCopy = database;
   v11 = 0;
-  if (v8 && v9)
+  if (valueCopy && baseValueCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -55,10 +55,10 @@
     v13[2] = sub_100099D9C;
     v13[3] = &unk_10083F200;
     v17 = &v19;
-    v18 = a1;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    selfCopy = self;
+    v14 = valueCopy;
+    v15 = baseValueCopy;
+    v16 = databaseCopy;
     sub_1005D4424(v16, v13);
     v11 = v20[5];
 
@@ -68,14 +68,14 @@
   return v11;
 }
 
-+ (void)inflateValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5
++ (void)inflateValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database
 {
-  v8 = a3;
-  if (v8)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v9 = a5;
-    v10 = [a1 _predicateForBaseValue:a4];
-    v11 = [(SQLiteEntity *)TileValueDate queryWithDatabase:v9 predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
+    databaseCopy = database;
+    v10 = [self _predicateForBaseValue:baseValue];
+    v11 = [(SQLiteEntity *)TileValueDate queryWithDatabase:databaseCopy predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
 
     v15[0] = @"content";
     v15[1] = @"date_style";
@@ -87,23 +87,23 @@
     v13[1] = 3221225472;
     v13[2] = sub_100099F80;
     v13[3] = &unk_100840B08;
-    v14 = v8;
+    v14 = valueCopy;
     [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:v13];
   }
 }
 
-+ (void)deleteEntitiesForBaseValue:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForBaseValue:(id)value inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForBaseValue:a3];
-  v7 = [(SQLiteEntity *)TileValueDate queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForBaseValue:value];
+  v7 = [(SQLiteEntity *)TileValueDate queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForBaseValue:(id)a3
++ (id)_predicateForBaseValue:(id)value
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [value persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"value_pid" equalToValue:v3];
 
   return v4;

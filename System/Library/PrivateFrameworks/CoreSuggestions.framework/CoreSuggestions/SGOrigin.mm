@@ -1,17 +1,17 @@
 @interface SGOrigin
-+ (id)originForMailSearchableItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOrigin:(id)a3;
++ (id)originForMailSearchableItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOrigin:(id)origin;
 - (NSString)contextSnippet;
 - (NSURL)url;
 - (SGOrigin)init;
-- (SGOrigin)initWithCoder:(id)a3;
-- (SGOrigin)initWithType:(unint64_t)a3 sourceKey:(id)a4 externalKey:(id)a5 bundleId:(id)a6 fromForwardedMessage:(BOOL)a7;
+- (SGOrigin)initWithCoder:(id)coder;
+- (SGOrigin)initWithType:(unint64_t)type sourceKey:(id)key externalKey:(id)externalKey bundleId:(id)id fromForwardedMessage:(BOOL)message;
 - (_NSRange)contextSnippetRange;
 - (id)universalURL;
 - (unint64_t)hash;
 - (void)_resolveAppName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGOrigin
@@ -31,8 +31,8 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SGOrigin.m" lineNumber:287 description:{@"Unknown origin type: %lu", self->_type}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGOrigin.m" lineNumber:287 description:{@"Unknown origin type: %lu", self->_type}];
 
     v4 = 0;
   }
@@ -44,8 +44,8 @@
 {
   if (self->_shouldShowOperatingSystemVersion)
   {
-    v3 = [(SGOrigin *)self contextSnippet];
-    v4 = [v3 length];
+    contextSnippet = [(SGOrigin *)self contextSnippet];
+    v4 = [contextSnippet length];
     v5 = v4 - [(NSString *)self->_contextSnippet length];
 
     location = v5 + self->_contextSnippetRange.location;
@@ -95,17 +95,17 @@
   return [(NSString *)self->_externalKey hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqualToOrigin:(id)a3
+- (BOOL)isEqualToOrigin:(id)origin
 {
-  v4 = a3;
-  if (self->_type != v4[1])
+  originCopy = origin;
+  if (self->_type != originCopy[1])
   {
     goto LABEL_59;
   }
 
   v5 = self->_sourceKey;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == originCopy[2])
   {
   }
 
@@ -121,7 +121,7 @@
 
   v8 = self->_externalKey;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == originCopy[3])
   {
   }
 
@@ -137,7 +137,7 @@
 
   v11 = self->_contextSnippet;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == originCopy[4])
   {
   }
 
@@ -152,11 +152,11 @@
   }
 
   v14 = 0;
-  if (self->_contextSnippetRange.location == v4[5] && self->_contextSnippetRange.length == v4[6])
+  if (self->_contextSnippetRange.location == originCopy[5] && self->_contextSnippetRange.length == originCopy[6])
   {
     v15 = self->_fromPerson;
     v16 = v15;
-    if (v15 == v4[7])
+    if (v15 == originCopy[7])
     {
     }
 
@@ -172,7 +172,7 @@
 
     v18 = self->_toPeople;
     v19 = v18;
-    if (v18 == v4[8])
+    if (v18 == originCopy[8])
     {
     }
 
@@ -188,7 +188,7 @@
 
     v21 = self->_bundleId;
     v22 = v21;
-    if (v21 == v4[9])
+    if (v21 == originCopy[9])
     {
     }
 
@@ -204,7 +204,7 @@
 
     v24 = self->_localizedApplicationName;
     v25 = v24;
-    if (v24 == v4[17])
+    if (v24 == originCopy[17])
     {
     }
 
@@ -220,7 +220,7 @@
 
     v27 = self->_teamId;
     v28 = v27;
-    if (v27 == v4[18])
+    if (v27 == originCopy[18])
     {
     }
 
@@ -236,7 +236,7 @@
 
     v30 = self->_to;
     v31 = v30;
-    if (v30 == v4[10])
+    if (v30 == originCopy[10])
     {
     }
 
@@ -252,7 +252,7 @@
 
     v33 = self->_cc;
     v34 = v33;
-    if (v33 == v4[11])
+    if (v33 == originCopy[11])
     {
     }
 
@@ -268,7 +268,7 @@
 
     v36 = self->_bcc;
     v37 = v36;
-    if (v36 == v4[12])
+    if (v36 == originCopy[12])
     {
     }
 
@@ -284,7 +284,7 @@
 
     v39 = self->_date;
     v40 = v39;
-    if (v39 == v4[13])
+    if (v39 == originCopy[13])
     {
     }
 
@@ -300,7 +300,7 @@
 
     v42 = self->_title;
     v43 = v42;
-    if (v42 == v4[14])
+    if (v42 == originCopy[14])
     {
     }
 
@@ -314,11 +314,11 @@
       }
     }
 
-    if (self->_fromForwardedMessage == *(v4 + 130))
+    if (self->_fromForwardedMessage == *(originCopy + 130))
     {
       v45 = self->_operatingSystemVersion;
       v46 = v45;
-      if (v45 == v4[15])
+      if (v45 == originCopy[15])
       {
       }
 
@@ -332,7 +332,7 @@
         }
       }
 
-      v14 = self->_isSent == *(v4 + 128);
+      v14 = self->_isSent == *(originCopy + 128);
       goto LABEL_60;
     }
 
@@ -345,18 +345,18 @@ LABEL_60:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGOrigin *)self isEqualToOrigin:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGOrigin *)self isEqualToOrigin:v5];
   }
 
   return v6;
@@ -367,8 +367,8 @@ LABEL_60:
   type = self->_type;
   if (type > 7)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SGOrigin.m" lineNumber:191 description:{@"Unknown origin type: %lu", self->_type}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGOrigin.m" lineNumber:191 description:{@"Unknown origin type: %lu", self->_type}];
     v4 = 0;
   }
 
@@ -385,8 +385,8 @@ LABEL_60:
     {
       v6 = objc_alloc(MEMORY[0x1E696AEC0]);
       externalKey = self->_externalKey;
-      v8 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-      v9 = [(NSString *)externalKey stringByAddingPercentEncodingWithAllowedCharacters:v8];
+      currentHandler = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+      v9 = [(NSString *)externalKey stringByAddingPercentEncodingWithAllowedCharacters:currentHandler];
       v10 = [v6 initWithFormat:@"message:%@", v9];
     }
 
@@ -394,8 +394,8 @@ LABEL_60:
     {
       v11 = objc_alloc(MEMORY[0x1E696AEC0]);
       v12 = self->_externalKey;
-      v8 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-      v9 = [(NSString *)v12 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+      currentHandler = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+      v9 = [(NSString *)v12 stringByAddingPercentEncodingWithAllowedCharacters:currentHandler];
       v10 = [v11 initWithFormat:@"messages:openchat?guid=%@", v9];
     }
 
@@ -408,126 +408,126 @@ LABEL_10:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt64:type forKey:@"type"];
-  [v5 encodeObject:self->_sourceKey forKey:@"sourceKey"];
-  [v5 encodeObject:self->_externalKey forKey:@"externalKey"];
-  [v5 encodeObject:self->_contextSnippet forKey:@"contextSnippet"];
-  [v5 encodeInteger:self->_contextSnippetRange.location forKey:@"contextSnippetRange_location"];
-  [v5 encodeInteger:self->_contextSnippetRange.length forKey:@"contextSnippetRange_length"];
-  [v5 encodeObject:self->_fromPerson forKey:@"fromPerson"];
-  [v5 encodeObject:self->_toPeople forKey:@"toPeople"];
-  [v5 encodeObject:self->_bundleId forKey:@"bundleId"];
-  [v5 encodeObject:self->_localizedApplicationName forKey:@"localizedApplicationName"];
-  [v5 encodeObject:self->_teamId forKey:@"teamId"];
-  [v5 encodeObject:self->_to forKey:@"to"];
-  [v5 encodeObject:self->_cc forKey:@"cc"];
-  [v5 encodeObject:self->_bcc forKey:@"bcc"];
-  [v5 encodeObject:self->_date forKey:@"date"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeBool:self->_fromForwardedMessage forKey:@"fromForwardedMessage"];
-  [v5 encodeObject:self->_operatingSystemVersion forKey:@"operatingSystemVersion"];
-  [v5 encodeBool:self->_shouldShowOperatingSystemVersion forKey:@"shouldShowOperatingSystemVersion"];
-  [v5 encodeBool:self->_isSent forKey:@"isSent"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:type forKey:@"type"];
+  [coderCopy encodeObject:self->_sourceKey forKey:@"sourceKey"];
+  [coderCopy encodeObject:self->_externalKey forKey:@"externalKey"];
+  [coderCopy encodeObject:self->_contextSnippet forKey:@"contextSnippet"];
+  [coderCopy encodeInteger:self->_contextSnippetRange.location forKey:@"contextSnippetRange_location"];
+  [coderCopy encodeInteger:self->_contextSnippetRange.length forKey:@"contextSnippetRange_length"];
+  [coderCopy encodeObject:self->_fromPerson forKey:@"fromPerson"];
+  [coderCopy encodeObject:self->_toPeople forKey:@"toPeople"];
+  [coderCopy encodeObject:self->_bundleId forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_localizedApplicationName forKey:@"localizedApplicationName"];
+  [coderCopy encodeObject:self->_teamId forKey:@"teamId"];
+  [coderCopy encodeObject:self->_to forKey:@"to"];
+  [coderCopy encodeObject:self->_cc forKey:@"cc"];
+  [coderCopy encodeObject:self->_bcc forKey:@"bcc"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeBool:self->_fromForwardedMessage forKey:@"fromForwardedMessage"];
+  [coderCopy encodeObject:self->_operatingSystemVersion forKey:@"operatingSystemVersion"];
+  [coderCopy encodeBool:self->_shouldShowOperatingSystemVersion forKey:@"shouldShowOperatingSystemVersion"];
+  [coderCopy encodeBool:self->_isSent forKey:@"isSent"];
 }
 
-- (SGOrigin)initWithCoder:(id)a3
+- (SGOrigin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v59.receiver = self;
   v59.super_class = SGOrigin;
   v5 = [(SGOrigin *)&v59 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt64ForKey:@"type"];
+    v5->_type = [coderCopy decodeInt64ForKey:@"type"];
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"sourceKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"sourceKey"];
     sourceKey = v5->_sourceKey;
     v5->_sourceKey = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"externalKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"externalKey"];
     externalKey = v5->_externalKey;
     v5->_externalKey = v10;
 
     v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"contextSnippet"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"contextSnippet"];
     contextSnippet = v5->_contextSnippet;
     v5->_contextSnippet = v13;
 
-    v15 = [v4 decodeIntegerForKey:@"contextSnippetRange_location"];
-    v16 = [v4 decodeIntegerForKey:@"contextSnippetRange_length"];
+    v15 = [coderCopy decodeIntegerForKey:@"contextSnippetRange_location"];
+    v16 = [coderCopy decodeIntegerForKey:@"contextSnippetRange_length"];
     v5->_contextSnippetRange.location = v15;
     v5->_contextSnippetRange.length = v16;
     v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"fromPerson"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"fromPerson"];
     fromPerson = v5->_fromPerson;
     v5->_fromPerson = v18;
 
     v20 = objc_alloc(MEMORY[0x1E695DFD8]);
     v21 = objc_opt_class();
     v22 = [v20 initWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"toPeople"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"toPeople"];
     toPeople = v5->_toPeople;
     v5->_toPeople = v23;
 
     v25 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"bundleId"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"bundleId"];
     bundleId = v5->_bundleId;
     v5->_bundleId = v26;
 
     v28 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"localizedApplicationName"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"localizedApplicationName"];
     localizedApplicationName = v5->_localizedApplicationName;
     v5->_localizedApplicationName = v29;
 
     v31 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"teamId"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"teamId"];
     teamId = v5->_teamId;
     v5->_teamId = v32;
 
     v34 = objc_alloc(MEMORY[0x1E695DFD8]);
     v35 = objc_opt_class();
     v36 = [v34 initWithObjects:{v35, objc_opt_class(), 0}];
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"to"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"to"];
     to = v5->_to;
     v5->_to = v37;
 
     v39 = objc_alloc(MEMORY[0x1E695DFD8]);
     v40 = objc_opt_class();
     v41 = [v39 initWithObjects:{v40, objc_opt_class(), 0}];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"cc"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"cc"];
     cc = v5->_cc;
     v5->_cc = v42;
 
     v44 = objc_alloc(MEMORY[0x1E695DFD8]);
     v45 = objc_opt_class();
     v46 = [v44 initWithObjects:{v45, objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"bcc"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"bcc"];
     bcc = v5->_bcc;
     v5->_bcc = v47;
 
     v49 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v50 = [v4 decodeObjectOfClasses:v49 forKey:@"date"];
+    v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"date"];
     date = v5->_date;
     v5->_date = v50;
 
     v52 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v53 = [v4 decodeObjectOfClasses:v52 forKey:@"title"];
+    v53 = [coderCopy decodeObjectOfClasses:v52 forKey:@"title"];
     title = v5->_title;
     v5->_title = v53;
 
-    v5->_fromForwardedMessage = [v4 decodeBoolForKey:@"fromForwardedMessage"];
+    v5->_fromForwardedMessage = [coderCopy decodeBoolForKey:@"fromForwardedMessage"];
     v55 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v56 = [v4 decodeObjectOfClasses:v55 forKey:@"operatingSystemVersion"];
+    v56 = [coderCopy decodeObjectOfClasses:v55 forKey:@"operatingSystemVersion"];
     operatingSystemVersion = v5->_operatingSystemVersion;
     v5->_operatingSystemVersion = v56;
 
-    v5->_shouldShowOperatingSystemVersion = [v4 decodeBoolForKey:@"shouldShowOperatingSystemVersion"];
-    v5->_isSent = [v4 decodeBoolForKey:@"isSent"];
+    v5->_shouldShowOperatingSystemVersion = [coderCopy decodeBoolForKey:@"shouldShowOperatingSystemVersion"];
+    v5->_isSent = [coderCopy decodeBoolForKey:@"isSent"];
   }
 
   return v5;
@@ -617,11 +617,11 @@ void __27__SGOrigin__resolveAppName__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (SGOrigin)initWithType:(unint64_t)a3 sourceKey:(id)a4 externalKey:(id)a5 bundleId:(id)a6 fromForwardedMessage:(BOOL)a7
+- (SGOrigin)initWithType:(unint64_t)type sourceKey:(id)key externalKey:(id)externalKey bundleId:(id)id fromForwardedMessage:(BOOL)message
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  keyCopy = key;
+  externalKeyCopy = externalKey;
+  idCopy = id;
   v15 = [(SGOrigin *)self init];
   v16 = v15;
   if (!v15)
@@ -629,27 +629,27 @@ void __27__SGOrigin__resolveAppName__block_invoke()
     goto LABEL_17;
   }
 
-  v15->_type = a3;
-  v17 = [v12 copy];
+  v15->_type = type;
+  v17 = [keyCopy copy];
   sourceKey = v16->_sourceKey;
   v16->_sourceKey = v17;
 
-  v19 = [v13 copy];
+  v19 = [externalKeyCopy copy];
   externalKey = v16->_externalKey;
   v16->_externalKey = v19;
 
-  v16->_fromForwardedMessage = a7;
-  if (!v14)
+  v16->_fromForwardedMessage = message;
+  if (!idCopy)
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         v21 = v16->_sourceKey;
         goto LABEL_4;
       }
 
-      if (a3 != 7)
+      if (type != 7)
       {
         goto LABEL_15;
       }
@@ -657,14 +657,14 @@ void __27__SGOrigin__resolveAppName__block_invoke()
       v23 = @"com.apple.mobilesafari";
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
       v23 = @"com.apple.mobilemail";
     }
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_15;
       }
@@ -678,7 +678,7 @@ void __27__SGOrigin__resolveAppName__block_invoke()
     goto LABEL_14;
   }
 
-  v21 = [v14 copy];
+  v21 = [idCopy copy];
 LABEL_4:
   bundleId = v16->_bundleId;
   v16->_bundleId = v21;
@@ -708,18 +708,18 @@ LABEL_17:
   return result;
 }
 
-+ (id)originForMailSearchableItem:(id)a3
++ (id)originForMailSearchableItem:(id)item
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 attributeSet];
-  v5 = [v4 emailHeaders];
+  attributeSet = [itemCopy attributeSet];
+  emailHeaders = [attributeSet emailHeaders];
 
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  v6 = [emailHeaders countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -730,7 +730,7 @@ LABEL_3:
     {
       if (*v22 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(emailHeaders);
       }
 
       v10 = *(*(&v21 + 1) + 8 * v9);
@@ -741,7 +741,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v7 = [emailHeaders countByEnumeratingWithState:&v21 objects:v27 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -751,19 +751,19 @@ LABEL_3:
       }
     }
 
-    v11 = [v3 attributeSet];
-    v12 = [v11 emailHeaders];
-    v13 = [v12 objectForKeyedSubscript:v10];
-    v14 = [v13 firstObject];
+    attributeSet2 = [itemCopy attributeSet];
+    emailHeaders2 = [attributeSet2 emailHeaders];
+    v13 = [emailHeaders2 objectForKeyedSubscript:v10];
+    firstObject = [v13 firstObject];
 
-    if (!v14)
+    if (!firstObject)
     {
       goto LABEL_12;
     }
 
-    v15 = [v3 attributeSet];
-    v16 = [v15 accountIdentifier];
-    v17 = [SGOrigin originWithType:1 sourceKey:v16 externalKey:v14 fromForwardedMessage:0];
+    attributeSet3 = [itemCopy attributeSet];
+    accountIdentifier = [attributeSet3 accountIdentifier];
+    v17 = [SGOrigin originWithType:1 sourceKey:accountIdentifier externalKey:firstObject fromForwardedMessage:0];
   }
 
   else
@@ -771,13 +771,13 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    v14 = sgEventsLogHandle();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    firstObject = sgEventsLogHandle();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v3 uniqueIdentifier];
+      uniqueIdentifier = [itemCopy uniqueIdentifier];
       *buf = 138543362;
-      v26 = v20;
-      _os_log_error_impl(&dword_1BA729000, v14, OS_LOG_TYPE_ERROR, "SGOrigin: Unable to construct origin from searchableItem: %{public}@", buf, 0xCu);
+      v26 = uniqueIdentifier;
+      _os_log_error_impl(&dword_1BA729000, firstObject, OS_LOG_TYPE_ERROR, "SGOrigin: Unable to construct origin from searchableItem: %{public}@", buf, 0xCu);
     }
 
     v17 = 0;

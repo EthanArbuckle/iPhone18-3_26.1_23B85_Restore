@@ -1,25 +1,25 @@
 @interface ATXNotificationRankingFeature
-- (ATXNotificationRankingFeature)initWithCoder:(id)a3;
-- (ATXNotificationRankingFeature)initWithWeight:(id)a3 value:(id)a4;
+- (ATXNotificationRankingFeature)initWithCoder:(id)coder;
+- (ATXNotificationRankingFeature)initWithWeight:(id)weight value:(id)value;
 - (double)score;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNotificationRankingFeature
 
-- (ATXNotificationRankingFeature)initWithWeight:(id)a3 value:(id)a4
+- (ATXNotificationRankingFeature)initWithWeight:(id)weight value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  weightCopy = weight;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = ATXNotificationRankingFeature;
   v9 = [(ATXNotificationRankingFeature *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_weight, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_weight, weight);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;
@@ -33,7 +33,7 @@
   return v4 * v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ATXNotificationRankingFeature alloc];
   v5 = [(NSNumber *)self->_weight copy];
@@ -43,29 +43,29 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   weight = self->_weight;
-  v5 = a3;
-  [v5 encodeObject:weight forKey:@"weight"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:weight forKey:@"weight"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
-- (ATXNotificationRankingFeature)initWithCoder:(id)a3
+- (ATXNotificationRankingFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weight"];
-  if (v5 && ([v4 error], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weight"];
+  if (v5 && ([coderCopy error], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     if (v7)
     {
-      v17 = [v4 error];
+      error = [coderCopy error];
 
-      if (!v17)
+      if (!error)
       {
         self = [(ATXNotificationRankingFeature *)self initWithWeight:v5 value:v7];
-        v15 = self;
+        selfCopy = self;
         goto LABEL_6;
       }
     }
@@ -86,10 +86,10 @@
     }
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_6:
 
-  return v15;
+  return selfCopy;
 }
 
 @end

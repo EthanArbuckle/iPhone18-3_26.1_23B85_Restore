@@ -1,22 +1,22 @@
 @interface CryptoKitWrapper
-+ (id)decryptKnoxKeyWithEncData:(id)a3 encapsulatedKey:(id)a4 recipientPrivateKey:(__SecKey *)a5 error:(id *)a6;
++ (id)decryptKnoxKeyWithEncData:(id)data encapsulatedKey:(id)key recipientPrivateKey:(__SecKey *)privateKey error:(id *)error;
 - (_TtC21MobileAssetKeyManager16CryptoKitWrapper)init;
 @end
 
 @implementation CryptoKitWrapper
 
-+ (id)decryptKnoxKeyWithEncData:(id)a3 encapsulatedKey:(id)a4 recipientPrivateKey:(__SecKey *)a5 error:(id *)a6
++ (id)decryptKnoxKeyWithEncData:(id)data encapsulatedKey:(id)key recipientPrivateKey:(__SecKey *)privateKey error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  privateKeyCopy = privateKey;
   v11 = sub_303598();
   v13 = v12;
 
   v14 = sub_303598();
   v16 = v15;
 
-  v17 = sub_25674C(v11, v13, v14, v16, v10);
+  v17 = sub_25674C(v11, v13, v14, v16, privateKeyCopy);
   v19 = v18;
   v20 = v17;
 

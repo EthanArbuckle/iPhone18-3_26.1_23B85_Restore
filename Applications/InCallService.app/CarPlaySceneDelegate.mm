@@ -1,22 +1,22 @@
 @interface CarPlaySceneDelegate
-- (void)sceneDidDisconnect:(void *)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)sceneDidDisconnect:(void *)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation CarPlaySceneDelegate
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000288FC(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_1000288FC(foregroundCopy);
 }
 
-- (void)sceneDidDisconnect:(void *)a3
+- (void)sceneDidDisconnect:(void *)disconnect
 {
-  v4 = a3;
-  v5 = a1;
-  sub_1000374E8(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1000374E8(disconnectCopy);
 }
 
 @end

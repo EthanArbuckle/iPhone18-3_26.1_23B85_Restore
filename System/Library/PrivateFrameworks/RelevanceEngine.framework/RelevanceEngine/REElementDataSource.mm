@@ -6,10 +6,10 @@
 - (REElementDataSource)init;
 - (REElementDataSourceDelegate)delegate;
 - (id)activityDelegate;
-- (void)beginActivity:(id)a3;
-- (void)collectLoggableState:(id)a3;
-- (void)finishActivity:(id)a3;
-- (void)getElementsDuringDateInterval:(id)a3 inSection:(unint64_t)a4 withHandler:(id)a5;
+- (void)beginActivity:(id)activity;
+- (void)collectLoggableState:(id)state;
+- (void)finishActivity:(id)activity;
+- (void)getElementsDuringDateInterval:(id)interval inSection:(unint64_t)section withHandler:(id)handler;
 - (void)loadLoggingHeader;
 @end
 
@@ -71,18 +71,18 @@ void __40__REElementDataSource_contentAttributes__block_invoke()
   return WeakRetained;
 }
 
-- (void)beginActivity:(id)a3
+- (void)beginActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_activityDelegate);
-  [WeakRetained dataSource:self didBeginActivity:v4];
+  [WeakRetained dataSource:self didBeginActivity:activityCopy];
 }
 
-- (void)finishActivity:(id)a3
+- (void)finishActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_activityDelegate);
-  [WeakRetained dataSource:self didFinishActivity:v4];
+  [WeakRetained dataSource:self didFinishActivity:activityCopy];
 }
 
 - (void)loadLoggingHeader
@@ -95,8 +95,8 @@ void __40__REElementDataSource_contentAttributes__block_invoke()
   [v9 replaceOccurrencesOfString:@"DataSource" withString:&stru_283B97458 options:1 range:{0, objc_msgSend(v9, "length")}];
   [v9 replaceOccurrencesOfString:@"Watch" withString:&stru_283B97458 options:1 range:{0, objc_msgSend(v9, "length")}];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v9 lowercaseString];
-  v7 = [v5 stringWithFormat:@"[DS: %@]", v6];
+  lowercaseString = [v9 lowercaseString];
+  v7 = [v5 stringWithFormat:@"[DS: %@]", lowercaseString];
   logHeader = self->_logHeader;
   self->_logHeader = v7;
 }
@@ -115,11 +115,11 @@ void __40__REElementDataSource_contentAttributes__block_invoke()
   return WeakRetained;
 }
 
-- (void)collectLoggableState:(id)a3
+- (void)collectLoggableState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    (*(a3 + 2))(a3, &stru_283B97458);
+    (*(state + 2))(state, &stru_283B97458);
   }
 }
 
@@ -130,7 +130,7 @@ void __40__REElementDataSource_contentAttributes__block_invoke()
   return 0;
 }
 
-- (void)getElementsDuringDateInterval:(id)a3 inSection:(unint64_t)a4 withHandler:(id)a5
+- (void)getElementsDuringDateInterval:(id)interval inSection:(unint64_t)section withHandler:(id)handler
 {
   objc_opt_class();
 

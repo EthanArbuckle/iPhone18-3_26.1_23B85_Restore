@@ -1,45 +1,45 @@
 @interface DataStreamPendingRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesResponseHeader:(id)a3;
-- (DataStreamPendingRequest)initWithIdentifier:(id)a3 protocol:(id)a4 topic:(id)a5 payload:(id)a6 callback:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesResponseHeader:(id)header;
+- (DataStreamPendingRequest)initWithIdentifier:(id)identifier protocol:(id)protocol topic:(id)topic payload:(id)payload callback:(id)callback;
 - (unint64_t)hash;
 @end
 
 @implementation DataStreamPendingRequest
 
-- (DataStreamPendingRequest)initWithIdentifier:(id)a3 protocol:(id)a4 topic:(id)a5 payload:(id)a6 callback:(id)a7
+- (DataStreamPendingRequest)initWithIdentifier:(id)identifier protocol:(id)protocol topic:(id)topic payload:(id)payload callback:(id)callback
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  protocolCopy = protocol;
+  topicCopy = topic;
+  payloadCopy = payload;
+  callbackCopy = callback;
   v23.receiver = self;
   v23.super_class = DataStreamPendingRequest;
   v17 = [(DataStreamPendingRequest *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_protocol, a4);
-    objc_storeStrong(&v18->_topic, a5);
-    objc_storeStrong(&v18->_identifier, a3);
-    v19 = objc_retainBlock(v16);
+    objc_storeStrong(&v17->_protocol, protocol);
+    objc_storeStrong(&v18->_topic, topic);
+    objc_storeStrong(&v18->_identifier, identifier);
+    v19 = objc_retainBlock(callbackCopy);
     callback = v18->_callback;
     v18->_callback = v19;
 
-    objc_storeStrong(&v18->_payload, a6);
+    objc_storeStrong(&v18->_payload, payload);
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self == v5)
     {
       v8 = 1;
@@ -47,9 +47,9 @@
 
     else
     {
-      v6 = [(DataStreamPendingRequest *)self identifier];
-      v7 = [(DataStreamPendingRequest *)v5 identifier];
-      v8 = [v6 isEqual:v7];
+      identifier = [(DataStreamPendingRequest *)self identifier];
+      identifier2 = [(DataStreamPendingRequest *)v5 identifier];
+      v8 = [identifier isEqual:identifier2];
     }
   }
 
@@ -61,20 +61,20 @@
   return v8;
 }
 
-- (BOOL)matchesResponseHeader:(id)a3
+- (BOOL)matchesResponseHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(DataStreamPendingRequest *)self topic];
-  v6 = [v4 objectForKeyedSubscript:@"response"];
-  if ([v5 isEqual:v6])
+  headerCopy = header;
+  topic = [(DataStreamPendingRequest *)self topic];
+  v6 = [headerCopy objectForKeyedSubscript:@"response"];
+  if ([topic isEqual:v6])
   {
-    v7 = [(DataStreamPendingRequest *)self identifier];
-    v8 = [v4 objectForKeyedSubscript:@"id"];
-    if ([v7 isEqual:v8])
+    identifier = [(DataStreamPendingRequest *)self identifier];
+    v8 = [headerCopy objectForKeyedSubscript:@"id"];
+    if ([identifier isEqual:v8])
     {
-      v9 = [(DataStreamPendingRequest *)self protocol];
-      v10 = [v4 objectForKeyedSubscript:@"protocol"];
-      v11 = [v9 isEqual:v10];
+      protocol = [(DataStreamPendingRequest *)self protocol];
+      v10 = [headerCopy objectForKeyedSubscript:@"protocol"];
+      v11 = [protocol isEqual:v10];
     }
 
     else
@@ -93,8 +93,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DataStreamPendingRequest *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(DataStreamPendingRequest *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

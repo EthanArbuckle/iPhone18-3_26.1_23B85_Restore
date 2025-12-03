@@ -2,22 +2,22 @@
 + (NSString)kStatusContactsHashesChanged;
 + (NSString)kStatusContactsHashesChangedUpdatesOccurredKey;
 + (NSString)kStatusMeCardChanged;
-+ (id)btleAdvertisementDataForStrings:(id)a3;
++ (id)btleAdvertisementDataForStrings:(id)strings;
 + (id)shared;
-- (BOOL)contactsContainsShortHashes:(id)a3;
-- (BOOL)dumpDBAtFileURL:(id)a3;
+- (BOOL)contactsContainsShortHashes:(id)hashes;
+- (BOOL)dumpDBAtFileURL:(id)l;
 - (NSString)detailedDescription;
 - (_TtC16DaemoniOSLibrary27SDAirDropContactHashManager)init;
-- (id)contactForCombinedHash:(id)a3;
-- (id)contactHandlesForShortHashes:(id)a3;
-- (id)contactIdentifierForMediumHashes:(id)a3;
-- (id)contactsForCombinedHash:(id)a3;
-- (id)emailOrPhoneForCombinedHash:(id)a3;
+- (id)contactForCombinedHash:(id)hash;
+- (id)contactHandlesForShortHashes:(id)hashes;
+- (id)contactIdentifierForMediumHashes:(id)hashes;
+- (id)contactsForCombinedHash:(id)hash;
+- (id)emailOrPhoneForCombinedHash:(id)hash;
 - (void)cmfSyncAgentBlockListDidChange;
 - (void)contactStoreDidChange;
 - (void)meCardDidChange;
 - (void)rebuildDB;
-- (void)setMeCard:(id)a3;
+- (void)setMeCard:(id)card;
 @end
 
 @implementation SDAirDropContactHashManager
@@ -37,19 +37,19 @@
 
 - (void)cmfSyncAgentBlockListDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10054D8F4("CMFSyncAgentBlockList change handler called", &unk_1008E6ED8, sub_10055A5CC, &unk_1008E6EF0);
 }
 
 - (void)contactStoreDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10054D8F4("Contact Store change handler called", &unk_1008E6E88, sub_10055A4D0, &unk_1008E6EA0);
 }
 
 - (void)meCardDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10054D8F4("MeCard change handler called", &unk_1008E6E38, sub_10055A4B4, &unk_1008E6E50);
 }
 
@@ -89,7 +89,7 @@
 - (NSString)detailedDescription
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
-  v3 = self;
+  selfCopy = self;
   OS_dispatch_queue.sync<A>(execute:)();
 
   v4 = String._bridgeToObjectiveC()();
@@ -97,29 +97,29 @@
   return v4;
 }
 
-- (void)setMeCard:(id)a3
+- (void)setMeCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
-  sub_100555C2C(v4);
+  cardCopy = card;
+  selfCopy = self;
+  sub_100555C2C(cardCopy);
 }
 
-- (id)contactForCombinedHash:(id)a3
+- (id)contactForCombinedHash:(id)hash
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
-  v5 = self;
+  selfCopy = self;
   sub_10028088C(&qword_1009832E8, &unk_100809A60);
   OS_dispatch_queue.sync<A>(execute:)();
 
   return v7;
 }
 
-- (id)contactsForCombinedHash:(id)a3
+- (id)contactsForCombinedHash:(id)hash
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
-  v5 = self;
+  selfCopy = self;
   sub_10028088C(&qword_1009832E0, &qword_100809A58);
   OS_dispatch_queue.sync<A>(execute:)();
 
@@ -130,11 +130,11 @@
   return v6.super.isa;
 }
 
-- (id)emailOrPhoneForCombinedHash:(id)a3
+- (id)emailOrPhoneForCombinedHash:(id)hash
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
-  v5 = self;
+  selfCopy = self;
   sub_10028088C(&qword_100975100, &qword_1007FBA10);
   OS_dispatch_queue.sync<A>(execute:)();
 
@@ -151,14 +151,14 @@
   return v6;
 }
 
-- (id)contactIdentifierForMediumHashes:(id)a3
+- (id)contactIdentifierForMediumHashes:(id)hashes
 {
-  v4 = a3;
-  v5 = self;
+  hashesCopy = hashes;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *(&v5->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
+  v9 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
   sub_10028088C(&qword_100975100, &qword_1007FBA10);
   OS_dispatch_queue.sync<A>(execute:)();
   sub_100026AC0(v6, v8);
@@ -176,14 +176,14 @@
   return v10;
 }
 
-- (id)contactHandlesForShortHashes:(id)a3
+- (id)contactHandlesForShortHashes:(id)hashes
 {
-  v4 = a3;
-  v5 = self;
+  hashesCopy = hashes;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *(&v5->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
+  v9 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
   sub_10028088C(&unk_1009832D0, &unk_100809A48);
   OS_dispatch_queue.sync<A>(execute:)();
   sub_100026AC0(v6, v8);
@@ -193,21 +193,21 @@
   return v10.super.isa;
 }
 
-- (BOOL)contactsContainsShortHashes:(id)a3
+- (BOOL)contactsContainsShortHashes:(id)hashes
 {
-  v4 = a3;
-  v5 = self;
+  hashesCopy = hashes;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *(&v5->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
+  v9 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
   OS_dispatch_queue.sync<A>(execute:)();
   sub_100026AC0(v6, v8);
 
   return v11;
 }
 
-- (BOOL)dumpDBAtFileURL:(id)a3
+- (BOOL)dumpDBAtFileURL:(id)l
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -216,9 +216,9 @@
   v8 = &v12[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = *(&self->super.isa + OBJC_IVAR____TtC16DaemoniOSLibrary27SDAirDropContactHashManager_hashManagerQ);
-  v13 = self;
+  selfCopy = self;
   v14 = v8;
-  v10 = self;
+  selfCopy2 = self;
   OS_dispatch_queue.sync<A>(execute:)();
 
   LOBYTE(v9) = v15;
@@ -228,11 +228,11 @@
 
 - (void)rebuildDB
 {
-  v2 = self;
+  selfCopy = self;
   sub_100557BC8();
 }
 
-+ (id)btleAdvertisementDataForStrings:(id)a3
++ (id)btleAdvertisementDataForStrings:(id)strings
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = sub_1005581A0(v3, 2, 4);

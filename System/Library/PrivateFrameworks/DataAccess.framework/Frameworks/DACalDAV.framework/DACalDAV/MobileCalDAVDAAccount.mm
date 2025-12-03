@@ -1,19 +1,19 @@
 @interface MobileCalDAVDAAccount
 - (BOOL)_reallySearchQueriesRunning;
-- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)a3;
+- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)info;
 - (BOOL)backingAccountShouldDoInitialAutodiscovery;
 - (BOOL)isDelegateAccount;
-- (BOOL)isEqualToAccount:(id)a3;
+- (BOOL)isEqualToAccount:(id)account;
 - (BOOL)isICloudAccount;
 - (BOOL)needsToVerifyTerms;
 - (BOOL)pushDisabled;
-- (BOOL)retryDiscoveryTask:(id)a3;
+- (BOOL)retryDiscoveryTask:(id)task;
 - (BOOL)saveModifiedPropertiesOnBackingAccount;
 - (BOOL)shouldDoInitialAutodiscovery;
 - (BOOL)upgradeAccount;
 - (CalDAVPrincipal)mainPrincipal;
 - (DACoreDAVTaskManager)taskManager;
-- (MobileCalDAVDAAccount)initWithBackingAccountInfo:(id)a3;
+- (MobileCalDAVDAAccount)initWithBackingAccountInfo:(id)info;
 - (NSDictionary)subscribedCalendars;
 - (NSString)accountDescription;
 - (NSString)accountIdentifier;
@@ -23,10 +23,10 @@
 - (NSString)username;
 - (double)refreshInterval;
 - (id)additionalHeaderValues;
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4;
-- (id)childAccountWithIdentifier:(id)a3;
-- (id)childAccountsWithAccountTypeIdentifier:(id)a3;
-- (id)createChildAccountWithAccountTypeIdentifier:(id)a3;
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer;
+- (id)childAccountWithIdentifier:(id)identifier;
+- (id)childAccountsWithAccountTypeIdentifier:(id)identifier;
+- (id)createChildAccountWithAccountTypeIdentifier:(id)identifier;
 - (id)customConnectionProperties;
 - (id)emailAddresses;
 - (id)httpPorts;
@@ -34,42 +34,42 @@
 - (id)localizedIdenticalAccountFailureMessage;
 - (id)localizedInvalidPasswordMessage;
 - (id)oauth2Token;
-- (id)portListByInsertingUserEnteredPort:(id)a3;
+- (id)portListByInsertingUserEnteredPort:(id)port;
 - (id)preferredAddress;
 - (id)principalPath;
 - (id)spinnerIdentifiers;
 - (id)wellKnownPaths;
-- (void)_discoverInitialPropertiesWithConsumer:(id)a3;
+- (void)_discoverInitialPropertiesWithConsumer:(id)consumer;
 - (void)_reallyCancelAllSearchQueries;
-- (void)_reallyCancelPendingSearchQuery:(id)a3;
-- (void)_reallyCancelSearchQuery:(id)a3;
-- (void)_reallyPerformSearchQuery:(id)a3;
+- (void)_reallyCancelPendingSearchQuery:(id)query;
+- (void)_reallyCancelSearchQuery:(id)query;
+- (void)_reallyPerformSearchQuery:(id)query;
 - (void)addToCoreDAVLoggingDelegates;
 - (void)calendarsDataclassModified;
-- (void)coreDAVLogTransmittedDataPartial:(id)a3;
+- (void)coreDAVLogTransmittedDataPartial:(id)partial;
 - (void)dealloc;
-- (void)discoverInitialPropertiesWithConsumer:(id)a3;
-- (void)discoveryTask:(id)a3 gotAccountInfo:(id)a4 error:(id)a5;
-- (void)dropAssertionsAndRenewCredentialsInQueue:(id)a3 withHandler:(id)a4;
+- (void)discoverInitialPropertiesWithConsumer:(id)consumer;
+- (void)discoveryTask:(id)task gotAccountInfo:(id)info error:(id)error;
+- (void)dropAssertionsAndRenewCredentialsInQueue:(id)queue withHandler:(id)handler;
 - (void)ingestBackingAccountInfoProperties;
-- (void)performDiscoveryWithHostname:(id)a3 username:(id)a4 consumer:(id)a5;
-- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)a3;
-- (void)removeAccount:(id)a3;
+- (void)performDiscoveryWithHostname:(id)hostname username:(id)username consumer:(id)consumer;
+- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)block;
+- (void)removeAccount:(id)account;
 - (void)removeFromCoreDAVLoggingDelegates;
-- (void)setAccountDescription:(id)a3;
-- (void)setPrincipalPath:(id)a3;
-- (void)setRefreshInterval:(double)a3;
-- (void)setSubscribedCalendars:(id)a3;
-- (void)webLoginRequestedAtURL:(id)a3 reasonString:(id)a4 inQueue:(id)a5 completionBlock:(id)a6;
+- (void)setAccountDescription:(id)description;
+- (void)setPrincipalPath:(id)path;
+- (void)setRefreshInterval:(double)interval;
+- (void)setSubscribedCalendars:(id)calendars;
+- (void)webLoginRequestedAtURL:(id)l reasonString:(id)string inQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation MobileCalDAVDAAccount
 
-- (MobileCalDAVDAAccount)initWithBackingAccountInfo:(id)a3
+- (MobileCalDAVDAAccount)initWithBackingAccountInfo:(id)info
 {
   v12.receiver = self;
   v12.super_class = MobileCalDAVDAAccount;
-  v3 = [(MobileCalDAVDAAccount *)&v12 initWithBackingAccountInfo:a3];
+  v3 = [(MobileCalDAVDAAccount *)&v12 initWithBackingAccountInfo:info];
   if (v3)
   {
     v4 = [objc_alloc(objc_msgSend(objc_opt_class() "mobileCalDAVAccountClass"))];
@@ -81,10 +81,10 @@
       [MobileCalDAVDAAccount initWithBackingAccountInfo:];
     }
 
-    v6 = [MEMORY[0x277D03888] registerDefaultLoggerWithCoreDAV];
+    registerDefaultLoggerWithCoreDAV = [MEMORY[0x277D03888] registerDefaultLoggerWithCoreDAV];
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(MobileCalDAVDAAccount *)v3 accountIdentifier];
-    v9 = [v7 stringWithFormat:@"%@.%@", @"CalDAVHTTPTraffic", v8];
+    accountIdentifier = [(MobileCalDAVDAAccount *)v3 accountIdentifier];
+    v9 = [v7 stringWithFormat:@"%@.%@", @"CalDAVHTTPTraffic", accountIdentifier];
 
     v10 = [objc_alloc(MEMORY[0x277D03888]) initWithFilename:v9];
     [(MobileCalDAVDAAccount *)v3 setCoreDAVLogger:v10];
@@ -125,133 +125,133 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
   return v4;
 }
 
-- (void)setAccountDescription:(id)a3
+- (void)setAccountDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = MobileCalDAVDAAccount;
-  [(MobileCalDAVDAAccount *)&v5 setAccountDescription:a3];
-  v4 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v4 didSetAccountDescription];
+  [(MobileCalDAVDAAccount *)&v5 setAccountDescription:description];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount didSetAccountDescription];
 }
 
 - (NSString)accountDescription
 {
-  v3 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v4 = [v3 isDelegateAccount];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  isDelegateAccount = [mobileCalDAVAccount isDelegateAccount];
 
-  if (v4)
+  if (isDelegateAccount)
   {
-    v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-    v6 = [v5 accountDescription];
+    mobileCalDAVAccount2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+    accountDescription = [mobileCalDAVAccount2 accountDescription];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MobileCalDAVDAAccount;
-    v6 = [(MobileCalDAVDAAccount *)&v8 accountDescription];
+    accountDescription = [(MobileCalDAVDAAccount *)&v8 accountDescription];
   }
 
-  return v6;
+  return accountDescription;
 }
 
 - (NSString)accountIdentifier
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 identifier];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  identifier = [backingAccountInfo identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)parentAccountIdentifier
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 parentAccount];
-  v4 = [v3 identifier];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
+  identifier = [parentAccount identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSString)topLevelAccountTypeIdentifier
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 parentAccount];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
 
-  if (v3)
+  if (parentAccount)
   {
     do
     {
-      v4 = [v2 parentAccount];
+      parentAccount2 = [backingAccountInfo parentAccount];
 
-      v5 = [v4 parentAccount];
+      v4ParentAccount = [parentAccount2 parentAccount];
 
-      v2 = v4;
+      backingAccountInfo = parentAccount2;
     }
 
-    while (v5);
+    while (v4ParentAccount);
   }
 
   else
   {
-    v4 = v2;
+    parentAccount2 = backingAccountInfo;
   }
 
-  v6 = [v4 accountType];
-  v7 = [v6 identifier];
+  accountType = [parentAccount2 accountType];
+  identifier = [accountType identifier];
 
-  return v7;
+  return identifier;
 }
 
 - (CalDAVPrincipal)mainPrincipal
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 mainPrincipal];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-  return v3;
+  return mainPrincipal;
 }
 
 - (NSDictionary)subscribedCalendars
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 subscribedCalendars];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  subscribedCalendars = [mobileCalDAVAccount subscribedCalendars];
 
-  return v3;
+  return subscribedCalendars;
 }
 
-- (void)setSubscribedCalendars:(id)a3
+- (void)setSubscribedCalendars:(id)calendars
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v5 setSubscribedCalendars:v4];
+  calendarsCopy = calendars;
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount setSubscribedCalendars:calendarsCopy];
 }
 
 - (id)principalPath
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 principalPath];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  principalPath = [mobileCalDAVAccount principalPath];
 
-  return v3;
+  return principalPath;
 }
 
-- (void)setPrincipalPath:(id)a3
+- (void)setPrincipalPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v5 setPrincipalPath:v4];
+  pathCopy = path;
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount setPrincipalPath:pathCopy];
 }
 
 - (void)ingestBackingAccountInfoProperties
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v2 ingestBackingAccountInfoProperties];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount ingestBackingAccountInfoProperties];
 }
 
 - (BOOL)shouldDoInitialAutodiscovery
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 shouldDoInitialAutodiscovery];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  shouldDoInitialAutodiscovery = [mobileCalDAVAccount shouldDoInitialAutodiscovery];
 
-  return v3;
+  return shouldDoInitialAutodiscovery;
 }
 
 - (BOOL)backingAccountShouldDoInitialAutodiscovery
@@ -263,77 +263,77 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
 
 - (id)emailAddresses
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 emailAddresses];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  emailAddresses = [mobileCalDAVAccount emailAddresses];
 
-  return v3;
+  return emailAddresses;
 }
 
 - (id)preferredAddress
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 preferredAddress];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  preferredAddress = [mobileCalDAVAccount preferredAddress];
 
-  return v3;
+  return preferredAddress;
 }
 
 - (double)refreshInterval
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 calRefreshInterval];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  calRefreshInterval = [backingAccountInfo calRefreshInterval];
 
-  return v3;
+  return calRefreshInterval;
 }
 
-- (void)setRefreshInterval:(double)a3
+- (void)setRefreshInterval:(double)interval
 {
-  v4 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  [v4 setCalRefreshInterval:a3];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  [backingAccountInfo setCalRefreshInterval:interval];
 }
 
 - (BOOL)pushDisabled
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 calPushDisabled];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  calPushDisabled = [backingAccountInfo calPushDisabled];
 
-  return v3;
+  return calPushDisabled;
 }
 
 - (BOOL)isICloudAccount
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 calIsiCloudCalDAVAccount];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  calIsiCloudCalDAVAccount = [backingAccountInfo calIsiCloudCalDAVAccount];
 
-  return v3;
+  return calIsiCloudCalDAVAccount;
 }
 
 - (id)spinnerIdentifiers
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 spinnerIdentifiers];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  spinnerIdentifiers = [mobileCalDAVAccount spinnerIdentifiers];
 
-  return v3;
+  return spinnerIdentifiers;
 }
 
-- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)a3
+- (BOOL)accountHasSignificantPropertyChangesWithChangeInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = MobileCalDAVDAAccount;
-  if ([(MobileCalDAVDAAccount *)&v15 accountHasSignificantPropertyChangesWithChangeInfo:v4])
+  if ([(MobileCalDAVDAAccount *)&v15 accountHasSignificantPropertyChangesWithChangeInfo:infoCopy])
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v6 = [v4 oldAccountProperties];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF78C8]];
+    oldAccountProperties = [infoCopy oldAccountProperties];
+    v7 = [oldAccountProperties objectForKeyedSubscript:*MEMORY[0x277CF78C8]];
 
     if (v7)
     {
-      v8 = [v4 oldAccountProperties];
-      v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CF78D8]];
+      oldAccountProperties2 = [infoCopy oldAccountProperties];
+      v9 = [oldAccountProperties2 objectForKeyedSubscript:*MEMORY[0x277CF78D8]];
 
       v10 = [v9 objectForKeyedSubscript:v7];
       v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CF7A10]];
@@ -344,11 +344,11 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
       v11 = 0;
     }
 
-    v12 = [(MobileCalDAVDAAccount *)self principalPath];
-    if ([v12 length] || objc_msgSend(v11, "length"))
+    principalPath = [(MobileCalDAVDAAccount *)self principalPath];
+    if ([principalPath length] || objc_msgSend(v11, "length"))
     {
-      v13 = [(MobileCalDAVDAAccount *)self principalPath];
-      v5 = [v13 isEqualToString:v11] ^ 1;
+      principalPath2 = [(MobileCalDAVDAAccount *)self principalPath];
+      v5 = [principalPath2 isEqualToString:v11] ^ 1;
     }
 
     else
@@ -362,8 +362,8 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
 
 - (void)calendarsDataclassModified
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v2 calendarsDataclassModified];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount calendarsDataclassModified];
 }
 
 - (id)localizedIdenticalAccountFailureMessage
@@ -379,22 +379,22 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"INVALID_PASSWORD_BODY_CALDAV" value:&stru_285AB0D40 table:@"DataAccess"];
-  v6 = [(MobileCalDAVDAAccount *)self accountDescription];
-  v7 = [v3 stringWithFormat:v5, v6];
+  accountDescription = [(MobileCalDAVDAAccount *)self accountDescription];
+  v7 = [v3 stringWithFormat:v5, accountDescription];
 
   return v7;
 }
 
-- (BOOL)isEqualToAccount:(id)a3
+- (BOOL)isEqualToAccount:(id)account
 {
-  v6 = a3;
-  v7 = [v6 username];
-  v8 = [v7 length];
+  accountCopy = account;
+  username = [accountCopy username];
+  v8 = [username length];
   if (v8 || (-[MobileCalDAVDAAccount username](self, "username"), v35 = objc_claimAutoreleasedReturnValue(), [v35 length]))
   {
-    v3 = [v6 username];
-    v4 = [(MobileCalDAVDAAccount *)self username];
-    if (([v3 isEqualToString:v4] & 1) == 0)
+    username2 = [accountCopy username];
+    username3 = [(MobileCalDAVDAAccount *)self username];
+    if (([username2 isEqualToString:username3] & 1) == 0)
     {
 
       v9 = 0;
@@ -409,13 +409,13 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
     v36 = 0;
   }
 
-  v10 = [v6 host];
-  v11 = [v10 length];
+  host = [accountCopy host];
+  v11 = [host length];
   if (v11 || (-[MobileCalDAVDAAccount host](self, "host"), v27 = objc_claimAutoreleasedReturnValue(), [v27 length]))
   {
-    v12 = [v6 host];
-    v13 = [(MobileCalDAVDAAccount *)self host];
-    if (([v12 isEqualToString:v13] & 1) == 0)
+    host2 = [accountCopy host];
+    host3 = [(MobileCalDAVDAAccount *)self host];
+    if (([host2 isEqualToString:host3] & 1) == 0)
     {
 
       if (!v11)
@@ -431,39 +431,39 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
       goto LABEL_25;
     }
 
-    v31 = v13;
-    v26 = v12;
+    v31 = host3;
+    v26 = host2;
     v33 = v11;
-    v34 = v10;
+    v34 = host;
     v14 = 1;
   }
 
   else
   {
     v33 = 0;
-    v34 = v10;
+    v34 = host;
     v14 = 0;
   }
 
-  v32 = [v6 principalURL];
-  v15 = [v32 absoluteString];
-  v16 = [v15 length];
+  principalURL = [accountCopy principalURL];
+  absoluteString = [principalURL absoluteString];
+  v16 = [absoluteString length];
   if (v16 || (-[MobileCalDAVDAAccount principalURL](self, "principalURL"), v25 = objc_claimAutoreleasedReturnValue(), [v25 absoluteString], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "length")))
   {
     v28 = v14;
-    v29 = v3;
-    v30 = v7;
-    v17 = [v6 principalURL];
-    v18 = [v17 absoluteString];
-    v19 = [(MobileCalDAVDAAccount *)self principalURL];
-    v20 = [v19 absoluteString];
-    v9 = [v18 isEqualToString:v20];
+    v29 = username2;
+    v30 = username;
+    principalURL2 = [accountCopy principalURL];
+    absoluteString2 = [principalURL2 absoluteString];
+    principalURL3 = [(MobileCalDAVDAAccount *)self principalURL];
+    absoluteString3 = [principalURL3 absoluteString];
+    v9 = [absoluteString2 isEqualToString:absoluteString3];
 
     if (v16)
     {
 
-      v3 = v29;
-      v7 = v30;
+      username2 = v29;
+      username = v30;
       v21 = v33;
       v22 = v31;
       if (!v28)
@@ -474,8 +474,8 @@ void __52__MobileCalDAVDAAccount_initWithBackingAccountInfo___block_invoke()
       goto LABEL_20;
     }
 
-    v3 = v29;
-    v7 = v30;
+    username2 = v29;
+    username = v30;
     v22 = v31;
     LOBYTE(v14) = v28;
   }
@@ -512,69 +512,69 @@ LABEL_25:
 
 - (BOOL)isDelegateAccount
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 isDelegateAccount];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  isDelegateAccount = [mobileCalDAVAccount isDelegateAccount];
 
-  return v3;
+  return isDelegateAccount;
 }
 
 - (NSString)host
 {
-  v3 = self->_hostForDiscovery;
-  if (!v3)
+  host = self->_hostForDiscovery;
+  if (!host)
   {
     v5.receiver = self;
     v5.super_class = MobileCalDAVDAAccount;
-    v3 = [(MobileCalDAVDAAccount *)&v5 host];
+    host = [(MobileCalDAVDAAccount *)&v5 host];
   }
 
-  return v3;
+  return host;
 }
 
 - (NSString)username
 {
-  v3 = self->_usernameForDiscovery;
-  if (!v3)
+  username = self->_usernameForDiscovery;
+  if (!username)
   {
     v5.receiver = self;
     v5.super_class = MobileCalDAVDAAccount;
-    v3 = [(MobileCalDAVDAAccount *)&v5 username];
+    username = [(MobileCalDAVDAAccount *)&v5 username];
   }
 
-  return v3;
+  return username;
 }
 
-- (void)discoveryTask:(id)a3 gotAccountInfo:(id)a4 error:(id)a5
+- (void)discoveryTask:(id)task gotAccountInfo:(id)info error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  infoCopy = info;
+  errorCopy = error;
   v11 = DALoggingwithCategory();
   v12 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v11, v12))
   {
     v31 = 138412802;
-    v32 = v8;
+    v32 = taskCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = infoCopy;
     v35 = 2112;
-    v36 = v10;
+    v36 = errorCopy;
     _os_log_impl(&dword_2484B2000, v11, v12, "DiscoveryTaskGroup %@ got account info %@ with error %@", &v31, 0x20u);
   }
 
-  v13 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+  checkValidityTaskGroup = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
 
-  if (v13 == v8)
+  if (checkValidityTaskGroup == taskCopy)
   {
-    if (v10)
+    if (errorCopy)
     {
 LABEL_17:
-      v24 = [(MobileCalDAVDAAccount *)self consumerForTask:v8];
-      v25 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
-      [(MobileCalDAVDAAccount *)self removeConsumerForTask:v25];
+      v24 = [(MobileCalDAVDAAccount *)self consumerForTask:taskCopy];
+      checkValidityTaskGroup2 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+      [(MobileCalDAVDAAccount *)self removeConsumerForTask:checkValidityTaskGroup2];
 
-      if (!v10 || ![(MobileCalDAVDAAccount *)self retryDiscoveryTask:v24])
+      if (!errorCopy || ![(MobileCalDAVDAAccount *)self retryDiscoveryTask:v24])
       {
         hostForDiscovery = self->_hostForDiscovery;
         self->_hostForDiscovery = 0;
@@ -583,7 +583,7 @@ LABEL_17:
         self->_usernameForDiscovery = 0;
 
         v28 = coreDAVValidationErrorFromRawError();
-        [v24 account:self isValid:v10 == 0 validationError:v28];
+        [v24 account:self isValid:errorCopy == 0 validationError:v28];
 
         [(MobileCalDAVDAAccount *)self setCheckValidityTaskGroup:0];
       }
@@ -596,48 +596,48 @@ LABEL_17:
       goto LABEL_6;
     }
 
-    v15 = [(MobileCalDAVDAAccount *)self principalPath];
-    if ([v15 length])
+    principalPath = [(MobileCalDAVDAAccount *)self principalPath];
+    if ([principalPath length])
     {
-      v16 = [(MobileCalDAVDAAccount *)self principalPath];
-      if (![v16 isEqualToString:@"/"])
+      principalPath2 = [(MobileCalDAVDAAccount *)self principalPath];
+      if (![principalPath2 isEqualToString:@"/"])
       {
-        v30 = [(MobileCalDAVDAAccount *)self shouldDoInitialAutodiscovery];
+        shouldDoInitialAutodiscovery = [(MobileCalDAVDAAccount *)self shouldDoInitialAutodiscovery];
 
-        if (!v30)
+        if (!shouldDoInitialAutodiscovery)
         {
 LABEL_6:
           v14 = 0;
 LABEL_12:
-          v18 = [v9 scheme];
-          -[MobileCalDAVDAAccount setUseSSL:](self, "setUseSSL:", [v18 isEqualToString:@"http"] ^ 1);
+          scheme = [infoCopy scheme];
+          -[MobileCalDAVDAAccount setUseSSL:](self, "setUseSSL:", [scheme isEqualToString:@"http"] ^ 1);
 
-          v19 = [v9 host];
-          [(MobileCalDAVDAAccount *)self setHost:v19];
+          host = [infoCopy host];
+          [(MobileCalDAVDAAccount *)self setHost:host];
 
           if (self->_usernameForDiscovery)
           {
             [(MobileCalDAVDAAccount *)self setUsername:?];
           }
 
-          -[MobileCalDAVDAAccount setPort:](self, "setPort:", [v9 port]);
+          -[MobileCalDAVDAAccount setPort:](self, "setPort:", [infoCopy port]);
           if (v14)
           {
             [(MobileCalDAVDAAccount *)self saveModifiedPropertiesOnBackingAccount];
           }
 
           v20 = MEMORY[0x277CF7040];
-          v21 = [v9 serverHeaders];
-          v22 = [v20 versionWithHTTPHeaders:v21];
-          v23 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-          [v23 setServerVersion:v22];
+          serverHeaders = [infoCopy serverHeaders];
+          v22 = [v20 versionWithHTTPHeaders:serverHeaders];
+          mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+          [mobileCalDAVAccount setServerVersion:v22];
 
           goto LABEL_17;
         }
 
 LABEL_11:
-        v17 = [v9 principalURL];
-        [(MobileCalDAVDAAccount *)self setPrincipalURL:v17];
+        principalURL = [infoCopy principalURL];
+        [(MobileCalDAVDAAccount *)self setPrincipalURL:principalURL];
 
         v14 = 1;
         goto LABEL_12;
@@ -654,30 +654,30 @@ LABEL_21:
 
 - (BOOL)saveModifiedPropertiesOnBackingAccount
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 saveModifiedPropertiesOnBackingAccount];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  saveModifiedPropertiesOnBackingAccount = [mobileCalDAVAccount saveModifiedPropertiesOnBackingAccount];
 
-  return v3;
+  return saveModifiedPropertiesOnBackingAccount;
 }
 
 - (id)wellKnownPaths
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MobileCalDAVDAAccount *)self username];
-  v5 = [v3 stringWithFormat:@"/calendar/dav/%@/user/", v4];
+  username = [(MobileCalDAVDAAccount *)self username];
+  v5 = [v3 stringWithFormat:@"/calendar/dav/%@/user/", username];
 
   v6 = [MEMORY[0x277CBEB18] arrayWithObjects:{@"/.well-known/caldav", @"/", @"/principals/", v5, 0}];
-  v7 = [(MobileCalDAVDAAccount *)self principalPath];
-  v8 = [v7 da_appendSlashIfNeeded];
+  principalPath = [(MobileCalDAVDAAccount *)self principalPath];
+  da_appendSlashIfNeeded = [principalPath da_appendSlashIfNeeded];
 
-  if ([v8 length] && (objc_msgSend(v6, "containsObject:", v8) & 1) == 0)
+  if ([da_appendSlashIfNeeded length] && (objc_msgSend(v6, "containsObject:", da_appendSlashIfNeeded) & 1) == 0)
   {
     if (![(MobileCalDAVDAAccount *)self shouldDoInitialAutodiscovery])
     {
       [v6 removeAllObjects];
     }
 
-    [v6 insertObject:v8 atIndex:0];
+    [v6 insertObject:da_appendSlashIfNeeded atIndex:0];
   }
 
   return v6;
@@ -709,19 +709,19 @@ LABEL_21:
   return v3;
 }
 
-- (id)portListByInsertingUserEnteredPort:(id)a3
+- (id)portListByInsertingUserEnteredPort:(id)port
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self port];
-  if (v5 < 1)
+  portCopy = port;
+  port = [(MobileCalDAVDAAccount *)self port];
+  if (port < 1)
   {
-    v7 = v4;
+    v7 = portCopy;
   }
 
   else
   {
-    v6 = v5;
-    v7 = [v4 mutableCopy];
+    v6 = port;
+    v7 = [portCopy mutableCopy];
     if (![(MobileCalDAVDAAccount *)self shouldDoInitialAutodiscovery])
     {
       [v7 removeAllObjects];
@@ -734,52 +734,52 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)retryDiscoveryTask:(id)a3
+- (BOOL)retryDiscoveryTask:(id)task
 {
   usernameForDiscovery = self->_usernameForDiscovery;
   if (usernameForDiscovery)
   {
-    [(MobileCalDAVDAAccount *)self performDiscoveryWithHostname:self->_hostForDiscovery username:0 consumer:a3];
+    [(MobileCalDAVDAAccount *)self performDiscoveryWithHostname:self->_hostForDiscovery username:0 consumer:task];
   }
 
   return usernameForDiscovery != 0;
 }
 
-- (void)discoverInitialPropertiesWithConsumer:(id)a3
+- (void)discoverInitialPropertiesWithConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v5 discoverInitialPropertiesWithConsumer:v4];
+  consumerCopy = consumer;
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount discoverInitialPropertiesWithConsumer:consumerCopy];
 }
 
-- (void)_discoverInitialPropertiesWithConsumer:(id)a3
+- (void)_discoverInitialPropertiesWithConsumer:(id)consumer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self host];
-  if (v5 && (v6 = v5, -[MobileCalDAVDAAccount host](self, "host"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, v8))
+  consumerCopy = consumer;
+  host = [(MobileCalDAVDAAccount *)self host];
+  if (host && (v6 = host, -[MobileCalDAVDAAccount host](self, "host"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, v8))
   {
-    [(MobileCalDAVDAAccount *)self performDiscoveryWithHostname:0 username:0 consumer:v4];
+    [(MobileCalDAVDAAccount *)self performDiscoveryWithHostname:0 username:0 consumer:consumerCopy];
   }
 
   else
   {
-    v9 = [(MobileCalDAVDAAccount *)self username];
-    if ([v9 resemblesEmailAddress])
+    username = [(MobileCalDAVDAAccount *)self username];
+    if ([username resemblesEmailAddress])
     {
-      v10 = [v9 hostFromEmail];
-      v11 = [v9 userFromEmail];
+      hostFromEmail = [username hostFromEmail];
+      userFromEmail = [username userFromEmail];
     }
 
     else
     {
-      v10 = 0;
-      v11 = 0;
+      hostFromEmail = 0;
+      userFromEmail = 0;
     }
 
-    if ([v10 length] && objc_msgSend(v11, "length"))
+    if ([hostFromEmail length] && objc_msgSend(userFromEmail, "length"))
     {
-      [(MobileCalDAVDAAccount *)self performDiscoveryWithHostname:v10 username:v11 consumer:v4];
+      [(MobileCalDAVDAAccount *)self performDiscoveryWithHostname:hostFromEmail username:userFromEmail consumer:consumerCopy];
     }
 
     else
@@ -789,38 +789,38 @@ LABEL_21:
       if (os_log_type_enabled(v12, v13))
       {
         v15 = 138412290;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2484B2000, v12, v13, "Autodiscover called on account %@, but that account does not have a host set, and one could not be inferred from the username. Ignoring autodiscovery request", &v15, 0xCu);
       }
 
-      [v4 account:self isValid:0 validationError:0];
+      [consumerCopy account:self isValid:0 validationError:0];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDiscoveryWithHostname:(id)a3 username:(id)a4 consumer:(id)a5
+- (void)performDiscoveryWithHostname:(id)hostname username:(id)username consumer:(id)consumer
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_hostForDiscovery, a3);
-  objc_storeStrong(&self->_usernameForDiscovery, a4);
+  hostnameCopy = hostname;
+  usernameCopy = username;
+  consumerCopy = consumer;
+  objc_storeStrong(&self->_hostForDiscovery, hostname);
+  objc_storeStrong(&self->_usernameForDiscovery, username);
   [(MobileCalDAVDAAccount *)self setShouldUseOpportunisticSockets:0];
-  v12 = [(MobileCalDAVDAAccount *)self host];
-  if (v12 && (v13 = v12, -[MobileCalDAVDAAccount host](self, "host"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 length], v14, v13, v15))
+  host = [(MobileCalDAVDAAccount *)self host];
+  if (host && (v13 = host, -[MobileCalDAVDAAccount host](self, "host"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 length], v14, v13, v15))
   {
-    v36 = v10;
-    v37 = v9;
-    v16 = [(MobileCalDAVDAAccount *)self wellKnownPaths];
-    v17 = [(MobileCalDAVDAAccount *)self httpPorts];
-    v18 = [(MobileCalDAVDAAccount *)self httpsPorts];
+    v36 = usernameCopy;
+    v37 = hostnameCopy;
+    wellKnownPaths = [(MobileCalDAVDAAccount *)self wellKnownPaths];
+    httpPorts = [(MobileCalDAVDAAccount *)self httpPorts];
+    httpsPorts = [(MobileCalDAVDAAccount *)self httpsPorts];
     v19 = objc_alloc(MEMORY[0x277CFDBB0]);
-    v20 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-    v21 = [v20 mainPrincipal];
-    v22 = [(MobileCalDAVDAAccount *)self taskManager];
+    mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+    mainPrincipal = [mobileCalDAVAccount mainPrincipal];
+    taskManager = [(MobileCalDAVDAAccount *)self taskManager];
     if ([(MobileCalDAVDAAccount *)self useSSL])
     {
       v23 = 0;
@@ -841,37 +841,37 @@ LABEL_21:
       v24 = 0;
     }
 
-    v25 = [v19 initWithAccountInfoProvider:v21 taskManager:v22 httpPorts:v17 httpsPorts:v18 httpServiceString:v23 httpsServiceString:v24 wellKnownPaths:v16 requiredComplianceClass:@"calendar-access"];
+    v25 = [v19 initWithAccountInfoProvider:mainPrincipal taskManager:taskManager httpPorts:httpPorts httpsPorts:httpsPorts httpServiceString:v23 httpsServiceString:v24 wellKnownPaths:wellKnownPaths requiredComplianceClass:@"calendar-access"];
     [(MobileCalDAVDAAccount *)self setCheckValidityTaskGroup:v25];
 
-    v26 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
-    [v26 setTimeoutInterval:15.0];
+    checkValidityTaskGroup = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+    [checkValidityTaskGroup setTimeoutInterval:15.0];
 
-    v27 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
-    [v27 setDelegate:self];
+    checkValidityTaskGroup2 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+    [checkValidityTaskGroup2 setDelegate:self];
 
     v28 = DALoggingwithCategory();
     v29 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v28, v29))
     {
-      v30 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+      checkValidityTaskGroup3 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
       *buf = 138412802;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2112;
-      v41 = v30;
+      v41 = checkValidityTaskGroup3;
       v42 = 2112;
-      v43 = v11;
+      v43 = consumerCopy;
       _os_log_impl(&dword_2484B2000, v28, v29, "account %@ is checking validity with group %@ on behalf of %@", buf, 0x20u);
     }
 
-    v31 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
-    [(MobileCalDAVDAAccount *)self setConsumer:v11 forTask:v31];
+    checkValidityTaskGroup4 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+    [(MobileCalDAVDAAccount *)self setConsumer:consumerCopy forTask:checkValidityTaskGroup4];
 
-    v32 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
-    [v32 startTaskGroup];
+    checkValidityTaskGroup5 = [(MobileCalDAVDAAccount *)self checkValidityTaskGroup];
+    [checkValidityTaskGroup5 startTaskGroup];
 
-    v10 = v36;
-    v9 = v37;
+    usernameCopy = v36;
+    hostnameCopy = v37;
   }
 
   else
@@ -881,11 +881,11 @@ LABEL_21:
     if (os_log_type_enabled(v33, v34))
     {
       *buf = 138412290;
-      v39 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_2484B2000, v33, v34, "Autodiscover called on account %@, but that account does not have a host. Ignoring autodiscovery request", buf, 0xCu);
     }
 
-    [v11 account:self isValid:0 validationError:0];
+    [consumerCopy account:self isValid:0 validationError:0];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -893,10 +893,10 @@ LABEL_21:
 
 - (BOOL)upgradeAccount
 {
-  v2 = self;
+  selfCopy = self;
   v88 = *MEMORY[0x277D85DE8];
-  v3 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v4 = [(MobileCalDAVDAAccount *)v2 accountIntPropertyForKey:@"CalDAVAccountVersion"];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  v4 = [(MobileCalDAVDAAccount *)selfCopy accountIntPropertyForKey:@"CalDAVAccountVersion"];
   if (v4 > 16000)
   {
     goto LABEL_53;
@@ -905,8 +905,8 @@ LABEL_21:
   v5 = MEMORY[0x277D03988];
   v6 = 0x277CBE000uLL;
   v7 = &off_2484F1000;
-  v59 = v3;
-  v62 = v2;
+  v59 = mobileCalDAVAccount;
+  v62 = selfCopy;
   v58 = v4;
   if (v4 > 1)
   {
@@ -918,32 +918,32 @@ LABEL_21:
 
   else
   {
-    v8 = [v3 mainPrincipal];
-    v9 = [v8 legacy_principalURL];
+    mainPrincipal = [mobileCalDAVAccount mainPrincipal];
+    legacy_principalURL = [mainPrincipal legacy_principalURL];
 
-    if (v9)
+    if (legacy_principalURL)
     {
       v10 = DALoggingwithCategory();
       v11 = *(v5 + 6);
       if (os_log_type_enabled(v10, v11))
       {
-        v12 = [v3 mainPrincipal];
-        v13 = [v12 legacy_principalURL];
+        mainPrincipal2 = [mobileCalDAVAccount mainPrincipal];
+        legacy_principalURL2 = [mainPrincipal2 legacy_principalURL];
         *buf = 138412290;
-        v83 = v13;
+        v83 = legacy_principalURL2;
         _os_log_impl(&dword_2484B2000, v10, v11, "Upgrading principal URL from %@", buf, 0xCu);
       }
 
-      v14 = [v3 mainPrincipal];
-      v15 = [v14 legacy_principalURL];
-      [(MobileCalDAVDAAccount *)v2 setPrincipalURL:v15];
+      mainPrincipal3 = [mobileCalDAVAccount mainPrincipal];
+      legacy_principalURL3 = [mainPrincipal3 legacy_principalURL];
+      [(MobileCalDAVDAAccount *)selfCopy setPrincipalURL:legacy_principalURL3];
 
       v16 = DALoggingwithCategory();
       if (os_log_type_enabled(v16, v11))
       {
-        v17 = [(MobileCalDAVDAAccount *)v2 principalURL];
+        principalURL = [(MobileCalDAVDAAccount *)selfCopy principalURL];
         *buf = 138412290;
-        v83 = v17;
+        v83 = principalURL;
         _os_log_impl(&dword_2484B2000, v16, v11, "New principal URL is %@", buf, 0xCu);
       }
 
@@ -951,29 +951,29 @@ LABEL_21:
     }
   }
 
-  v67 = [(MobileCalDAVDAAccount *)v2 username];
+  username = [(MobileCalDAVDAAccount *)selfCopy username];
   v18 = DALoggingwithCategory();
   type = *(v5 + 6);
   if (os_log_type_enabled(v18, type))
   {
-    v19 = [(MobileCalDAVDAAccount *)v2 accountDescription];
-    v20 = [(MobileCalDAVDAAccount *)v2 publicDescription];
+    accountDescription = [(MobileCalDAVDAAccount *)selfCopy accountDescription];
+    publicDescription = [(MobileCalDAVDAAccount *)selfCopy publicDescription];
     *buf = 138412802;
-    v83 = v19;
+    v83 = accountDescription;
     v84 = 2114;
-    v85 = v20;
+    v85 = publicDescription;
     v86 = 2112;
-    v87 = v67;
+    v87 = username;
     _os_log_impl(&dword_2484B2000, v18, type, "Upgrading account %@ (%{public}@); stripping username %@ from subcal URLs.", buf, 0x20u);
   }
 
-  v21 = [v3 subscribedCalendars];
-  v69 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v21, "count")}];
+  subscribedCalendars = [mobileCalDAVAccount subscribedCalendars];
+  v69 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(subscribedCalendars, "count")}];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v22 = v21;
+  v22 = subscribedCalendars;
   v23 = [v22 countByEnumeratingWithState:&v76 objects:v81 count:16];
   if (!v23)
   {
@@ -997,28 +997,28 @@ LABEL_21:
       v28 = [v22 objectForKeyedSubscript:v27];
       v29 = [v28 mutableCopy];
 
-      v30 = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
-      v31 = [v29 objectForKeyedSubscript:v30];
+      subCalSubscriptionURLKey = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
+      v31 = [v29 objectForKeyedSubscript:subCalSubscriptionURLKey];
 
       v32 = [*(v6 + 3008) URLWithString:v31];
-      v33 = [v32 password];
-      if (v33)
+      password = [v32 password];
+      if (password)
       {
-        v34 = v33;
+        absoluteString = password;
       }
 
       else
       {
-        v35 = [v32 user];
-        v36 = [v35 isEqualToString:v67];
+        user = [v32 user];
+        v36 = [user isEqualToString:username];
 
         if (!v36)
         {
           goto LABEL_24;
         }
 
-        v37 = [v32 da_urlByRemovingUsername];
-        v34 = [v37 absoluteString];
+        da_urlByRemovingUsername = [v32 da_urlByRemovingUsername];
+        absoluteString = [da_urlByRemovingUsername absoluteString];
 
         v38 = DALoggingwithCategory();
         if (os_log_type_enabled(v38, type))
@@ -1026,12 +1026,12 @@ LABEL_21:
           *buf = 138412546;
           v83 = v31;
           v84 = 2112;
-          v85 = v34;
+          v85 = absoluteString;
           _os_log_impl(&dword_2484B2000, v38, type, "Stripping url: %@ -> %@", buf, 0x16u);
         }
 
-        v39 = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
-        [v29 setObject:v34 forKeyedSubscript:v39];
+        subCalSubscriptionURLKey2 = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
+        [v29 setObject:absoluteString forKeyedSubscript:subCalSubscriptionURLKey2];
 
         v63 = 1;
       }
@@ -1047,8 +1047,8 @@ LABEL_24:
 
   while (v24);
 
-  v3 = v59;
-  v2 = v62;
+  mobileCalDAVAccount = v59;
+  selfCopy = v62;
   v7 = &off_2484F1000;
   v5 = MEMORY[0x277D03988];
   if (v63)
@@ -1059,15 +1059,15 @@ LABEL_24:
 LABEL_29:
 
 LABEL_30:
-  v40 = [v3 subscribedCalendars];
-  v41 = [v3 subscribedCalendars];
-  v42 = [v41 mutableCopy];
+  subscribedCalendars2 = [mobileCalDAVAccount subscribedCalendars];
+  subscribedCalendars3 = [mobileCalDAVAccount subscribedCalendars];
+  v42 = [subscribedCalendars3 mutableCopy];
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v43 = v40;
+  v43 = subscribedCalendars2;
   v70 = [v43 countByEnumeratingWithState:&v72 objects:v80 count:16];
   if (!v70)
   {
@@ -1097,20 +1097,20 @@ LABEL_30:
       if (v48)
       {
         v49 = [v42 objectForKeyedSubscript:v47];
-        v50 = [v48 path];
-        v51 = [v50 da_appendSlashIfNeeded];
+        path = [v48 path];
+        da_appendSlashIfNeeded = [path da_appendSlashIfNeeded];
 
-        if (v51)
+        if (da_appendSlashIfNeeded)
         {
           [v42 removeObjectForKey:v47];
-          [v42 setObject:v49 forKeyedSubscript:v51];
+          [v42 setObject:v49 forKeyedSubscript:da_appendSlashIfNeeded];
           v52 = DALoggingwithCategory();
           if (os_log_type_enabled(v52, v44))
           {
             *buf = v60;
             v83 = v47;
             v84 = 2112;
-            v85 = v51;
+            v85 = da_appendSlashIfNeeded;
             _os_log_impl(&dword_2484B2000, v52, v44, "Updated CalDAV subscribed calendar key: %@ -> %@", buf, 0x16u);
           }
 
@@ -1122,9 +1122,9 @@ LABEL_30:
           v52 = DALoggingwithCategory();
           if (os_log_type_enabled(v52, v45))
           {
-            v53 = [(MobileCalDAVDAAccount *)v62 accountID];
+            accountID = [(MobileCalDAVDAAccount *)v62 accountID];
             *buf = 138543618;
-            v83 = v53;
+            v83 = accountID;
             v84 = 2112;
             v85 = v47;
             _os_log_impl(&dword_2484B2000, v52, v45, "Couldn't get path from URL on account %{public}@: %@", buf, 0x16u);
@@ -1143,9 +1143,9 @@ LABEL_46:
         v49 = DALoggingwithCategory();
         if (os_log_type_enabled(v49, v45))
         {
-          v51 = [(MobileCalDAVDAAccount *)v62 accountID];
+          da_appendSlashIfNeeded = [(MobileCalDAVDAAccount *)v62 accountID];
           *buf = 138543618;
-          v83 = v51;
+          v83 = da_appendSlashIfNeeded;
           v84 = 2112;
           v85 = v47;
           _os_log_impl(&dword_2484B2000, v49, v45, "CalDAV URL in subscribed calendars for account %{public}@ wasn't actually a URL: %@", buf, 0x16u);
@@ -1172,8 +1172,8 @@ LABEL_46:
 
   v43 = typea;
 
-  v3 = v59;
-  v2 = v62;
+  mobileCalDAVAccount = v59;
+  selfCopy = v62;
   if (v64)
   {
     [v59 setSubscribedCalendars:v42];
@@ -1181,33 +1181,33 @@ LABEL_46:
 
 LABEL_52:
 
-  [(MobileCalDAVDAAccount *)v2 setAccountIntProperty:16001 forKey:@"CalDAVAccountVersion"];
-  [(MobileCalDAVDAAccount *)v2 saveModifiedPropertiesOnBackingAccount];
+  [(MobileCalDAVDAAccount *)selfCopy setAccountIntProperty:16001 forKey:@"CalDAVAccountVersion"];
+  [(MobileCalDAVDAAccount *)selfCopy saveModifiedPropertiesOnBackingAccount];
   v4 = v58;
 LABEL_53:
   v54 = v4 < 16001;
-  v71.receiver = v2;
+  v71.receiver = selfCopy;
   v71.super_class = MobileCalDAVDAAccount;
-  v55 = [(MobileCalDAVDAAccount *)&v71 upgradeAccount];
+  upgradeAccount = [(MobileCalDAVDAAccount *)&v71 upgradeAccount];
 
   v56 = *MEMORY[0x277D85DE8];
-  return (v54 | v55) & 1;
+  return (v54 | upgradeAccount) & 1;
 }
 
 - (id)additionalHeaderValues
 {
   v4.receiver = self;
   v4.super_class = MobileCalDAVDAAccount;
-  v2 = [(MobileCalDAVDAAccount *)&v4 additionalHeaderValues];
+  additionalHeaderValues = [(MobileCalDAVDAAccount *)&v4 additionalHeaderValues];
 
-  return v2;
+  return additionalHeaderValues;
 }
 
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer
 {
   v6.receiver = self;
   v6.super_class = MobileCalDAVDAAccount;
-  v4 = [(MobileCalDAVDAAccount *)&v6 beginDownloadingAttachmentWithUUID:a3 consumer:a4];
+  v4 = [(MobileCalDAVDAAccount *)&v6 beginDownloadingAttachmentWithUUID:d consumer:consumer];
 
   return v4;
 }
@@ -1216,43 +1216,43 @@ LABEL_53:
 {
   v4.receiver = self;
   v4.super_class = MobileCalDAVDAAccount;
-  v2 = [(MobileCalDAVDAAccount *)&v4 customConnectionProperties];
+  customConnectionProperties = [(MobileCalDAVDAAccount *)&v4 customConnectionProperties];
 
-  return v2;
+  return customConnectionProperties;
 }
 
-- (void)dropAssertionsAndRenewCredentialsInQueue:(id)a3 withHandler:(id)a4
+- (void)dropAssertionsAndRenewCredentialsInQueue:(id)queue withHandler:(id)handler
 {
   v4.receiver = self;
   v4.super_class = MobileCalDAVDAAccount;
-  [(MobileCalDAVDAAccount *)&v4 dropAssertionsAndRenewCredentialsInQueue:a3 withHandler:a4];
+  [(MobileCalDAVDAAccount *)&v4 dropAssertionsAndRenewCredentialsInQueue:queue withHandler:handler];
 }
 
 - (id)oauth2Token
 {
   v4.receiver = self;
   v4.super_class = MobileCalDAVDAAccount;
-  v2 = [(MobileCalDAVDAAccount *)&v4 oauth2Token];
+  oauth2Token = [(MobileCalDAVDAAccount *)&v4 oauth2Token];
 
-  return v2;
+  return oauth2Token;
 }
 
-- (void)webLoginRequestedAtURL:(id)a3 reasonString:(id)a4 inQueue:(id)a5 completionBlock:(id)a6
+- (void)webLoginRequestedAtURL:(id)l reasonString:(id)string inQueue:(id)queue completionBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = MobileCalDAVDAAccount;
-  [(MobileCalDAVDAAccount *)&v6 webLoginRequestedAtURL:a3 reasonString:a4 inQueue:a5 completionBlock:a6];
+  [(MobileCalDAVDAAccount *)&v6 webLoginRequestedAtURL:l reasonString:string inQueue:queue completionBlock:block];
 }
 
-- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)a3
+- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__MobileCalDAVDAAccount_promptUserForNewCoreDAVPasswordWithCompletionBlock___block_invoke;
   v8[3] = &unk_278F17500;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x24C1D0520](v8);
   if ([(MobileCalDAVDAAccount *)self isValidating])
   {
@@ -1274,89 +1274,81 @@ void __76__MobileCalDAVDAAccount_promptUserForNewCoreDAVPasswordWithCompletionBl
 
 - (BOOL)needsToVerifyTerms
 {
-  v2 = [(MobileCalDAVDAAccount *)self backingAccountInfo];
-  v3 = [v2 aa_needsToVerifyTerms];
+  backingAccountInfo = [(MobileCalDAVDAAccount *)self backingAccountInfo];
+  aa_needsToVerifyTerms = [backingAccountInfo aa_needsToVerifyTerms];
 
-  return v3;
+  return aa_needsToVerifyTerms;
 }
 
-- (void)_reallyPerformSearchQuery:(id)a3
+- (void)_reallyPerformSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v5 _reallyPerformSearchQuery:v4];
+  queryCopy = query;
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount _reallyPerformSearchQuery:queryCopy];
 }
 
-- (void)_reallyCancelSearchQuery:(id)a3
+- (void)_reallyCancelSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v5 _reallyCancelSearchQuery:v4];
+  queryCopy = query;
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount _reallyCancelSearchQuery:queryCopy];
 }
 
-- (void)_reallyCancelPendingSearchQuery:(id)a3
+- (void)_reallyCancelPendingSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v5 _reallyCancelPendingSearchQuery:v4];
+  queryCopy = query;
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount _reallyCancelPendingSearchQuery:queryCopy];
 }
 
 - (void)_reallyCancelAllSearchQueries
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  [v2 _reallyCancelAllSearchQueries];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount _reallyCancelAllSearchQueries];
 }
 
 - (BOOL)_reallySearchQueriesRunning
 {
-  v2 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-  v3 = [v2 _reallySearchQueriesRunning];
+  mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+  _reallySearchQueriesRunning = [mobileCalDAVAccount _reallySearchQueriesRunning];
 
-  return v3;
+  return _reallySearchQueriesRunning;
 }
 
 - (void)addToCoreDAVLoggingDelegates
 {
-  v3 = [(MobileCalDAVDAAccount *)self mainPrincipal];
+  mainPrincipal = [(MobileCalDAVDAAccount *)self mainPrincipal];
 
-  if (v3)
+  if (mainPrincipal)
   {
-    v6 = [MEMORY[0x277CFDC18] sharedLogging];
-    v4 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-    v5 = [v4 mainPrincipal];
-    [v6 addLogDelegate:self forAccountInfoProvider:v5];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+    mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+    mainPrincipal2 = [mobileCalDAVAccount mainPrincipal];
+    [mEMORY[0x277CFDC18] addLogDelegate:self forAccountInfoProvider:mainPrincipal2];
   }
 }
 
 - (void)removeFromCoreDAVLoggingDelegates
 {
-  v3 = [(MobileCalDAVDAAccount *)self mainPrincipal];
+  mainPrincipal = [(MobileCalDAVDAAccount *)self mainPrincipal];
 
-  if (v3)
+  if (mainPrincipal)
   {
-    v6 = [MEMORY[0x277CFDC18] sharedLogging];
-    v4 = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
-    v5 = [v4 mainPrincipal];
-    [v6 removeLogDelegate:self forAccountInfoProvider:v5];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+    mobileCalDAVAccount = [(MobileCalDAVDAAccount *)self mobileCalDAVAccount];
+    mainPrincipal2 = [mobileCalDAVAccount mainPrincipal];
+    [mEMORY[0x277CFDC18] removeLogDelegate:self forAccountInfoProvider:mainPrincipal2];
   }
 }
 
-- (void)coreDAVLogTransmittedDataPartial:(id)a3
+- (void)coreDAVLogTransmittedDataPartial:(id)partial
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDAAccount *)self coreDAVLogger];
-  [v5 logSnippet:v4];
+  partialCopy = partial;
+  coreDAVLogger = [(MobileCalDAVDAAccount *)self coreDAVLogger];
+  [coreDAVLogger logSnippet:partialCopy];
 }
 
-- (id)childAccountsWithAccountTypeIdentifier:(id)a3
-{
-  OUTLINED_FUNCTION_1();
-  OUTLINED_FUNCTION_0();
-  NSRequestConcreteImplementation();
-  return 0;
-}
-
-- (id)childAccountWithIdentifier:(id)a3
+- (id)childAccountsWithAccountTypeIdentifier:(id)identifier
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -1364,7 +1356,7 @@ void __76__MobileCalDAVDAAccount_promptUserForNewCoreDAVPasswordWithCompletionBl
   return 0;
 }
 
-- (id)createChildAccountWithAccountTypeIdentifier:(id)a3
+- (id)childAccountWithIdentifier:(id)identifier
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -1372,7 +1364,15 @@ void __76__MobileCalDAVDAAccount_promptUserForNewCoreDAVPasswordWithCompletionBl
   return 0;
 }
 
-- (void)removeAccount:(id)a3
+- (id)createChildAccountWithAccountTypeIdentifier:(id)identifier
+{
+  OUTLINED_FUNCTION_1();
+  OUTLINED_FUNCTION_0();
+  NSRequestConcreteImplementation();
+  return 0;
+}
+
+- (void)removeAccount:(id)account
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();

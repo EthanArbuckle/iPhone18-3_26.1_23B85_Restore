@@ -1,15 +1,15 @@
 @interface ICRadarUtilities
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4;
-+ (void)promptUserToFileBugWithAlertMessage:(id)a3 bugTitle:(id)a4 bugDescription:(id)a5;
++ (void)createRadarWithTitle:(id)title description:(id)description;
++ (void)promptUserToFileBugWithAlertMessage:(id)message bugTitle:(id)title bugDescription:(id)description;
 @end
 
 @implementation ICRadarUtilities
 
-+ (void)promptUserToFileBugWithAlertMessage:(id)a3 bugTitle:(id)a4 bugDescription:(id)a5
++ (void)promptUserToFileBugWithAlertMessage:(id)message bugTitle:(id)title bugDescription:(id)description
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  titleCopy = title;
+  descriptionCopy = description;
   if (promptUserToFileBugWithAlertMessage_bugTitle_bugDescription__onceToken != -1)
   {
     +[ICRadarUtilities promptUserToFileBugWithAlertMessage:bugTitle:bugDescription:];
@@ -19,12 +19,12 @@
   block[1] = 3221225472;
   block[2] = __80__ICRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDescription___block_invoke_2;
   block[3] = &unk_1E8484908;
-  v14 = v7;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v14 = messageCopy;
+  v15 = titleCopy;
+  v16 = descriptionCopy;
+  v10 = descriptionCopy;
+  v11 = titleCopy;
+  v12 = messageCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -121,43 +121,43 @@ void __80__ICRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDesc
   }
 }
 
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4
++ (void)createRadarWithTitle:(id)title description:(id)description
 {
-  v18 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E696AF20];
-  v6 = a4;
+  descriptionCopy = description;
   v7 = objc_alloc_init(v5);
   [v7 setScheme:@"tap-to-radar"];
   [v7 setHost:@"new"];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentName" value:@"Notes"];
-  [v8 addObject:v9];
+  [array addObject:v9];
 
   v10 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentVersion" value:@"iOS"];
-  [v8 addObject:v10];
+  [array addObject:v10];
 
   v11 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentID" value:@"568784"];
-  [v8 addObject:v11];
+  [array addObject:v11];
 
   v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Classification" value:@"Serious Bug"];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
   v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Reproducibility" value:@"Not Applicable"];
-  [v8 addObject:v13];
+  [array addObject:v13];
 
-  if ([v18 length])
+  if ([titleCopy length])
   {
-    v14 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:v18];
-    [v8 addObject:v14];
+    v14 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:titleCopy];
+    [array addObject:v14];
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Description" value:v6];
+  v15 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Description" value:descriptionCopy];
 
-  [v8 addObject:v15];
-  [v7 setQueryItems:v8];
-  v16 = [MEMORY[0x1E6963608] defaultWorkspace];
+  [array addObject:v15];
+  [v7 setQueryItems:array];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v17 = [v7 URL];
-  [v16 openURL:v17 configuration:0 completionHandler:0];
+  [defaultWorkspace openURL:v17 configuration:0 completionHandler:0];
 }
 
 void __80__ICRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDescription___block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

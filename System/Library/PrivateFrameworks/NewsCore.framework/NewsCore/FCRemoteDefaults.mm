@@ -2,14 +2,14 @@
 - (BOOL)isAvailable;
 - (FCBackgroundTaskable)backgroundTaskable;
 - (FCRemoteDefaults)init;
-- (FCRemoteDefaults)initWithBackgroundTaskable:(id)a3;
-- (id)URLForKey:(id)a3;
+- (FCRemoteDefaults)initWithBackgroundTaskable:(id)taskable;
+- (id)URLForKey:(id)key;
 - (id)URLRequest;
-- (id)dictionaryForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
+- (id)dictionaryForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
 - (void)checkForUpdate;
-- (void)processResponse:(id)a3 data:(id)a4 error:(id)a5;
+- (void)processResponse:(id)response data:(id)data error:(id)error;
 - (void)updateRemoteDefaults;
 @end
 
@@ -23,22 +23,22 @@
   return v3;
 }
 
-- (FCRemoteDefaults)initWithBackgroundTaskable:(id)a3
+- (FCRemoteDefaults)initWithBackgroundTaskable:(id)taskable
 {
-  v4 = a3;
+  taskableCopy = taskable;
   v12.receiver = self;
   v12.super_class = FCRemoteDefaults;
   v5 = [(FCRemoteDefaults *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_backgroundTaskable, v4);
+    objc_storeWeak(&v5->_backgroundTaskable, taskableCopy);
     v7 = objc_alloc_init(FCThreadSafeMutableDictionary);
     remoteDefaults = v6->_remoteDefaults;
     v6->_remoteDefaults = v7;
 
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10 = [v9 objectForKey:@"FCRemoteDefaults"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10 = [standardUserDefaults objectForKey:@"FCRemoteDefaults"];
 
     if (v10)
     {
@@ -76,13 +76,13 @@
   return result;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
   remoteDefaults = self->_remoteDefaults;
-  v4 = a3;
+  keyCopy = key;
   v5 = [(FCThreadSafeMutableDictionary *)remoteDefaults objectForKey:@"FCRemoteDefaults"];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -103,11 +103,11 @@
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(FCRemoteDefaults *)self objectForKey:v4];
+  v5 = [(FCRemoteDefaults *)self objectForKey:keyCopy];
 
   if (v5)
   {
@@ -132,9 +132,9 @@
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v3 = [(FCRemoteDefaults *)self objectForKey:a3];
+  v3 = [(FCRemoteDefaults *)self objectForKey:key];
   objc_opt_class();
   if (v3)
   {
@@ -183,11 +183,11 @@
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(FCRemoteDefaults *)self objectForKey:v4];
+  v5 = [(FCRemoteDefaults *)self objectForKey:keyCopy];
 
   if (v5)
   {
@@ -214,11 +214,11 @@
 
 - (void)checkForUpdate
 {
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v6 objectForKey:@"FCRemoteDefaultsLastUpdate"];
-  v4 = [MEMORY[0x1E695DF00] date];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"FCRemoteDefaultsLastUpdate"];
+  date = [MEMORY[0x1E695DF00] date];
   v5 = [v3 dateByAddingTimeInterval:86400.0];
-  if (!v3 || [v4 fc_isLaterThan:v5])
+  if (!v3 || [date fc_isLaterThan:v5])
   {
     [(FCRemoteDefaults *)self updateRemoteDefaults];
   }
@@ -226,8 +226,8 @@
 
 - (void)updateRemoteDefaults
 {
-  v3 = [(FCRemoteDefaults *)self URLRequest];
-  v4 = [(FCRemoteDefaults *)self backgroundTaskable];
+  uRLRequest = [(FCRemoteDefaults *)self URLRequest];
+  backgroundTaskable = [(FCRemoteDefaults *)self backgroundTaskable];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -236,12 +236,12 @@
   v13[1] = 3221225472;
   v13[2] = __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke;
   v13[3] = &unk_1E7C3A3A0;
-  v5 = v4;
+  v5 = backgroundTaskable;
   v14 = v5;
   v15 = &v16;
   v6 = [v5 fc_beginBackgroundTaskWithName:@"Remote Defaults Update" expirationHandler:v13];
   v17[3] = v6;
-  v7 = [MEMORY[0x1E695AC78] sharedSession];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke_2;
@@ -250,7 +250,7 @@
   v8 = v5;
   v11 = v8;
   v12 = &v16;
-  v9 = [v7 dataTaskWithRequest:v3 completionHandler:v10];
+  v9 = [mEMORY[0x1E695AC78] dataTaskWithRequest:uRLRequest completionHandler:v10];
   [v9 resume];
 
   _Block_object_dispose(&v16, 8);
@@ -278,8 +278,8 @@ void __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke_2(uint64_t a1, vo
 
 - (id)URLRequest
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"FCRemoteDefaultsDownloadURL"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"FCRemoteDefaultsDownloadURL"];
   if (![v3 length] || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v3), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:@"https://configuration.apple.com/configurations/internetservices/tectosilicate/RemoteDefaults.plist"];
@@ -288,7 +288,7 @@ void __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke_2(uint64_t a1, vo
   v5 = [MEMORY[0x1E695AC18] requestWithURL:v4];
   [v5 setTimeoutInterval:20.0];
   [v5 setCachePolicy:1];
-  v6 = [v2 stringForKey:@"FCRemoteDefaultsETag"];
+  v6 = [standardUserDefaults stringForKey:@"FCRemoteDefaultsETag"];
   if ([v6 length])
   {
     [v5 setValue:v6 forHTTPHeaderField:@"If-None-Match"];
@@ -297,30 +297,30 @@ void __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke_2(uint64_t a1, vo
   return v5;
 }
 
-- (void)processResponse:(id)a3 data:(id)a4 error:(id)a5
+- (void)processResponse:(id)response data:(id)data error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 statusCode];
-  v12 = v11;
-  if (v11 == 304 || v11 == 200)
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  statusCode = [responseCopy statusCode];
+  v12 = statusCode;
+  if (statusCode == 304 || statusCode == 200)
   {
-    v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v14 = [MEMORY[0x1E695DF00] date];
-    [v13 setObject:v14 forKey:@"FCRemoteDefaultsLastUpdate"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    date = [MEMORY[0x1E695DF00] date];
+    [standardUserDefaults setObject:date forKey:@"FCRemoteDefaultsLastUpdate"];
 
-    if (v12 == 200 && [v9 length])
+    if (v12 == 200 && [dataCopy length])
     {
       v22 = 0;
-      v15 = [MEMORY[0x1E696AE40] propertyListWithData:v9 options:0 format:0 error:&v22];
+      v15 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v22];
       v16 = v22;
 
       if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [(FCThreadSafeMutableDictionary *)self->_remoteDefaults setObject:v15 forKey:@"FCRemoteDefaults"];
-        [v13 setObject:v15 forKey:@"FCRemoteDefaults"];
+        [standardUserDefaults setObject:v15 forKey:@"FCRemoteDefaults"];
         v17 = FCAppConfigurationLog;
         if (os_log_type_enabled(FCAppConfigurationLog, OS_LOG_TYPE_INFO))
         {
@@ -329,10 +329,10 @@ void __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke_2(uint64_t a1, vo
           _os_log_impl(&dword_1B63EF000, v17, OS_LOG_TYPE_INFO, "Received configuration file: %@", buf, 0xCu);
         }
 
-        v18 = [v8 allHeaderFields];
-        v19 = [v18 objectForKey:@"Etag"];
+        allHeaderFields = [responseCopy allHeaderFields];
+        v19 = [allHeaderFields objectForKey:@"Etag"];
 
-        [v13 setObject:v19 forKey:@"FCRemoteDefaultsETag"];
+        [standardUserDefaults setObject:v19 forKey:@"FCRemoteDefaultsETag"];
       }
 
       else
@@ -349,10 +349,10 @@ void __40__FCRemoteDefaults_updateRemoteDefaults__block_invoke_2(uint64_t a1, vo
 
     else
     {
-      v16 = v10;
+      v16 = errorCopy;
     }
 
-    v10 = v16;
+    errorCopy = v16;
   }
 
   v21 = *MEMORY[0x1E69E9840];

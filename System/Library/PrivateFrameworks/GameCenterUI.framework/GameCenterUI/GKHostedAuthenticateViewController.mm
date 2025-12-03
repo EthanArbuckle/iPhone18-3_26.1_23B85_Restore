@@ -2,17 +2,17 @@
 - (GKHostedAuthenticateViewController)init;
 - (void)_setupChildViewController;
 - (void)_setupExtensionHostViewController;
-- (void)continueWithMode:(int64_t)a3;
+- (void)continueWithMode:(int64_t)mode;
 - (void)dealloc;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)extensionDidFinishWithError:(id)a3;
-- (void)finishAuthenticationWithError:(id)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)extensionDidFinishWithError:(id)error;
+- (void)finishAuthenticationWithError:(id)error;
 - (void)onboardingFlowDidSignOut;
-- (void)setExtensionHostViewController:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)setRotationLocked:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setExtensionHostViewController:(id)controller;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)setRotationLocked:(BOOL)locked;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKHostedAuthenticateViewController
@@ -39,39 +39,39 @@
   [(GKHostedAuthenticateViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
-  v6 = [(GKHostedAuthenticateViewController *)self extensionHostViewController];
+  extensionHostViewController = [(GKHostedAuthenticateViewController *)self extensionHostViewController];
 
-  if (!v6)
+  if (!extensionHostViewController)
   {
     [(GKHostedAuthenticateViewController *)self _setupExtensionHostViewController];
   }
 
   v7.receiver = self;
   v7.super_class = GKHostedAuthenticateViewController;
-  [(GKHostedAuthenticateViewController *)&v7 viewWillAppear:v3];
+  [(GKHostedAuthenticateViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = GKHostedAuthenticateViewController;
-  [(GKHostedAuthenticateViewController *)&v4 viewDidDisappear:a3];
-  v3 = [MEMORY[0x277D0C138] local];
-  [v3 showAccessPoint];
+  [(GKHostedAuthenticateViewController *)&v4 viewDidDisappear:disappear];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = 16;
   }
@@ -86,9 +86,9 @@
   [(GKHostedAuthenticateViewController *)&v7 setModalPresentationStyle:v6];
 }
 
-- (void)continueWithMode:(int64_t)a3
+- (void)continueWithMode:(int64_t)mode
 {
-  self->_mode = a3;
+  self->_mode = mode;
   if ([(GKHostedAuthenticateViewController *)self mode]== 2)
   {
     [(GKHostedAuthenticateViewController *)self setRotationLocked:0];
@@ -99,19 +99,19 @@
 
 - (void)_setupChildViewController
 {
-  v3 = [(GKHostedAuthenticateViewController *)self view];
-  [v3 setAlpha:1.0];
+  view = [(GKHostedAuthenticateViewController *)self view];
+  [view setAlpha:1.0];
 
   [(GKHostedAuthenticateViewController *)self setWantsFullScreenLayout:1];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(GKHostedAuthenticateViewController *)self setModalInPresentation:1];
     [(GKHostedAuthenticateViewController *)self setModalPresentationStyle:16];
-    v6 = [MEMORY[0x277D0C8C8] sharedTheme];
-    [v6 authenticateExtensionFormSheetSize];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    [mEMORY[0x277D0C8C8] authenticateExtensionFormSheetSize];
     [(GKHostedAuthenticateViewController *)self setPreferredContentSize:?];
   }
 
@@ -233,12 +233,12 @@ void __71__GKHostedAuthenticateViewController__setupExtensionHostViewController_
   objc_destroyWeak(&v34);
 }
 
-- (void)setExtensionHostViewController:(id)a3
+- (void)setExtensionHostViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_extensionHostViewController != v5)
+  controllerCopy = controller;
+  if (self->_extensionHostViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_extensionHostViewController, a3);
+    objc_storeStrong(&self->_extensionHostViewController, controller);
     v6 = MEMORY[0x277CBEB38];
     v7 = +[GKExtensionRemoteViewController initialItemsForExtension];
     v8 = [v6 dictionaryWithDictionary:v7];
@@ -278,24 +278,24 @@ void __69__GKHostedAuthenticateViewController_setExtensionHostViewController___b
   [WeakRetained _endDelayingPresentation];
 }
 
-- (void)extensionDidFinishWithError:(id)a3
+- (void)extensionDidFinishWithError:(id)error
 {
-  [(GKHostedAuthenticateViewController *)self finishAuthenticationWithError:a3];
+  [(GKHostedAuthenticateViewController *)self finishAuthenticationWithError:error];
   [(GKAuthenticateHostViewController *)self->_extensionHostViewController willMoveToParentViewController:0];
-  v4 = [(GKAuthenticateHostViewController *)self->_extensionHostViewController view];
-  [v4 removeFromSuperview];
+  view = [(GKAuthenticateHostViewController *)self->_extensionHostViewController view];
+  [view removeFromSuperview];
 
   [(GKAuthenticateHostViewController *)self->_extensionHostViewController removeFromParentViewController];
 
   [(GKHostedAuthenticateViewController *)self setExtensionHostViewController:0];
 }
 
-- (void)finishAuthenticationWithError:(id)a3
+- (void)finishAuthenticationWithError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3);
+    completionHandler[2](completionHandler, error);
     [(GKHostedAuthenticateViewController *)self setCompletionHandler:0];
   }
 
@@ -304,9 +304,9 @@ void __69__GKHostedAuthenticateViewController_setExtensionHostViewController___b
   [(GKHostedAuthenticateViewController *)&v5 dismissViewControllerAnimated:1 completion:&__block_literal_global_22];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = [(GKHostedAuthenticateViewController *)self error:a3];
+  v5 = [(GKHostedAuthenticateViewController *)self error:animated];
   if ([v5 code] == 2 || -[GKHostedAuthenticateViewController mode](self, "mode") == 2)
   {
     [(GKHostedAuthenticateViewController *)self finishAuthenticationWithError:v5];
@@ -314,26 +314,26 @@ void __69__GKHostedAuthenticateViewController_setExtensionHostViewController___b
 
   else
   {
-    v6 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v7 = [v6 accountService];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    accountService = [proxyForLocalPlayer accountService];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __79__GKHostedAuthenticateViewController_dismissViewControllerAnimated_completion___block_invoke;
     v8[3] = &unk_27966BBE0;
     v8[4] = self;
-    [v7 authenticatePlayerWithExistingCredentialsWithHandler:v8];
+    [accountService authenticatePlayerWithExistingCredentialsWithHandler:v8];
   }
 }
 
-- (void)setRotationLocked:(BOOL)a3
+- (void)setRotationLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (self->_rotationLocked != v3)
+    if (self->_rotationLocked != lockedCopy)
     {
-      self->_rotationLocked = v3;
-      if (!v3)
+      self->_rotationLocked = lockedCopy;
+      if (!lockedCopy)
       {
         v5 = objc_opt_class();
 
@@ -349,7 +349,7 @@ void __69__GKHostedAuthenticateViewController_setExtensionHostViewController___b
     v6[2] = __56__GKHostedAuthenticateViewController_setRotationLocked___block_invoke;
     v6[3] = &unk_27966A890;
     v6[4] = self;
-    v7 = v3;
+    v7 = lockedCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }

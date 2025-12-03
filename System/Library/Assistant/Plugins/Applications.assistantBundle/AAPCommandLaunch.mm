@@ -1,27 +1,27 @@
 @interface AAPCommandLaunch
 - (id)_siriDismissalOpenApplicationOptions;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4 executionInfo:(id)a5;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper executionInfo:(id)info;
 @end
 
 @implementation AAPCommandLaunch
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4 executionInfo:(id)a5
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper executionInfo:(id)info
 {
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v24 = sub_1FFC;
   v25 = &unk_20748;
-  v26 = self;
-  v27 = a3;
-  v7 = [(AAPCommandLaunch *)self launchId:a3];
-  v8 = [a5 turnId];
+  selfCopy = self;
+  completionCopy = completion;
+  v7 = [(AAPCommandLaunch *)self launchId:completion];
+  turnId = [info turnId];
   v9 = AFSiriLogContextPlugin;
   if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v29 = "[AAPCommandLaunch performWithCompletion:serviceHelper:executionInfo:]";
     v30 = 2112;
-    v31 = a5;
+    infoCopy = info;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: ExecutionInfo: %@", buf, 0x16u);
   }
 
@@ -35,8 +35,8 @@
     goto LABEL_17;
   }
 
-  v10 = [(AAPCommandLaunch *)self executionEnvironment];
-  if ([v10 isEqualToString:SAAppsLaunchAppSTARK_EXECUTION_ENVValue])
+  executionEnvironment = [(AAPCommandLaunch *)self executionEnvironment];
+  if ([executionEnvironment isEqualToString:SAAppsLaunchAppSTARK_EXECUTION_ENVValue])
   {
     v11 = +[FBSOpenApplicationService dashboardService];
     v12 = [FBSOpenApplicationOptions optionsWithDictionary:&__NSDictionary0__struct];
@@ -73,15 +73,15 @@ LABEL_17:
     *buf = 136315906;
     v29 = "[AAPCommandLaunch performWithCompletion:serviceHelper:executionInfo:]";
     v30 = 2114;
-    v31 = v15;
+    infoCopy = v15;
     v32 = 2048;
-    v33 = self;
+    selfCopy3 = self;
     v34 = 2112;
     v35 = v7;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> processing command for app (%@)", buf, 0x2Au);
   }
 
-  if (v8)
+  if (turnId)
   {
     v16 = objc_alloc_init(SISchemaUEIUUFRReady);
     [+[AFAnalytics sharedAnalytics](AFAnalytics "sharedAnalytics")];
@@ -109,9 +109,9 @@ LABEL_17:
     *buf = 136315906;
     v29 = "[AAPCommandLaunch performWithCompletion:serviceHelper:executionInfo:]";
     v30 = 2114;
-    v31 = v21;
+    infoCopy = v21;
     v32 = 2048;
-    v33 = self;
+    selfCopy3 = self;
     v34 = 2112;
     v35 = v12;
     _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> launchOptions (%@)", buf, 0x2Au);

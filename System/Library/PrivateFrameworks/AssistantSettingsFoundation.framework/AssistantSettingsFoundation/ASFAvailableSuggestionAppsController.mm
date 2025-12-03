@@ -1,7 +1,7 @@
 @interface ASFAvailableSuggestionAppsController
 + (id)sharedController;
 - (ASFAvailableSuggestionAppsController)init;
-- (ASFAvailableSuggestionAppsController)initWithApplicationSupplier:(id)a3;
+- (ASFAvailableSuggestionAppsController)initWithApplicationSupplier:(id)supplier;
 - (id)_allVisibleAppBundleIds;
 - (id)visibleApps;
 - (id)visibleBundleIds;
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __56__ASFAvailableSuggestionAppsController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -52,16 +52,16 @@ uint64_t __56__ASFAvailableSuggestionAppsController_sharedController__block_invo
   return v4;
 }
 
-- (ASFAvailableSuggestionAppsController)initWithApplicationSupplier:(id)a3
+- (ASFAvailableSuggestionAppsController)initWithApplicationSupplier:(id)supplier
 {
-  v5 = a3;
+  supplierCopy = supplier;
   v9.receiver = self;
   v9.super_class = ASFAvailableSuggestionAppsController;
   v6 = [(ASFAvailableSuggestionAppsController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationSupplier, a3);
+    objc_storeStrong(&v6->_applicationSupplier, supplier);
   }
 
   return v7;
@@ -70,13 +70,13 @@ uint64_t __56__ASFAvailableSuggestionAppsController_sharedController__block_invo
 - (id)visibleApps
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(ASFAvailableSuggestionAppsController *)self visibleBundleIds];
+  visibleBundleIds = [(ASFAvailableSuggestionAppsController *)self visibleBundleIds];
   v4 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = visibleBundleIds;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -111,8 +111,8 @@ uint64_t __56__ASFAvailableSuggestionAppsController_sharedController__block_invo
 
 - (id)visibleBundleIds
 {
-  v2 = [(ASFAvailableSuggestionAppsController *)self _allVisibleAppBundleIds];
-  v3 = [v2 mutableCopy];
+  _allVisibleAppBundleIds = [(ASFAvailableSuggestionAppsController *)self _allVisibleAppBundleIds];
+  v3 = [_allVisibleAppBundleIds mutableCopy];
   [v3 addObject:@"com.apple.iCloudDriveApp"];
 
   return v3;
@@ -139,9 +139,9 @@ uint64_t __56__ASFAvailableSuggestionAppsController_sharedController__block_invo
   _Block_object_dispose(&v7, 8);
   if (!v2)
   {
-    v5 = [ASFAvailableSuggestionAppsController _allVisibleAppBundleIds];
+    _allVisibleAppBundleIds = [ASFAvailableSuggestionAppsController _allVisibleAppBundleIds];
     _Block_object_dispose(&v7, 8);
-    _Unwind_Resume(v5);
+    _Unwind_Resume(_allVisibleAppBundleIds);
   }
 
   v3 = v2();

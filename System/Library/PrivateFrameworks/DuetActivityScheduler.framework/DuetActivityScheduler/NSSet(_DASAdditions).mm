@@ -112,9 +112,9 @@ LABEL_5:
 - (uint64_t)enumerateObjectsInChunksOfSize:()_DASAdditions block:
 {
   v6 = a4;
-  [a1 allObjects];
-  v21 = v20 = a1;
-  v7 = vcvtpd_u64_f64([a1 count] / a3);
+  [self allObjects];
+  v21 = v20 = self;
+  v7 = vcvtpd_u64_f64([self count] / a3);
   v22 = 0;
   if (v7)
   {

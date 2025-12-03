@@ -1,33 +1,33 @@
 @interface PKRewardsSummaryChartBarConfiguration
-- (PKRewardsSummaryChartBarConfiguration)initWithSummary:(id)a3;
+- (PKRewardsSummaryChartBarConfiguration)initWithSummary:(id)summary;
 - (double)totalValue;
-- (double)valueForSegmentAtIndex:(int64_t)a3;
-- (id)_valueAtIndex:(int64_t)a3;
-- (id)colorForSegmentAtIndex:(int64_t)a3;
-- (unint64_t)_rewardsTierForIndex:(int64_t)a3;
+- (double)valueForSegmentAtIndex:(int64_t)index;
+- (id)_valueAtIndex:(int64_t)index;
+- (id)colorForSegmentAtIndex:(int64_t)index;
+- (unint64_t)_rewardsTierForIndex:(int64_t)index;
 @end
 
 @implementation PKRewardsSummaryChartBarConfiguration
 
-- (PKRewardsSummaryChartBarConfiguration)initWithSummary:(id)a3
+- (PKRewardsSummaryChartBarConfiguration)initWithSummary:(id)summary
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  summaryCopy = summary;
   v15.receiver = self;
   v15.super_class = PKRewardsSummaryChartBarConfiguration;
   v6 = [(PKRewardsSummaryChartBarConfiguration *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_summary, a3);
-    v8 = [v5 onePercentTotal];
-    v16[0] = v8;
-    v9 = [v5 twoPercentTotal];
-    v16[1] = v9;
-    v10 = [v5 threePercentTotal];
-    v16[2] = v10;
-    v11 = [v5 specialTotal];
-    v16[3] = v11;
+    objc_storeStrong(&v6->_summary, summary);
+    onePercentTotal = [summaryCopy onePercentTotal];
+    v16[0] = onePercentTotal;
+    twoPercentTotal = [summaryCopy twoPercentTotal];
+    v16[1] = twoPercentTotal;
+    threePercentTotal = [summaryCopy threePercentTotal];
+    v16[2] = threePercentTotal;
+    specialTotal = [summaryCopy specialTotal];
+    v16[3] = specialTotal;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
     tierAmounts = v7->_tierAmounts;
     v7->_tierAmounts = v12;
@@ -38,16 +38,16 @@
 
 - (double)totalValue
 {
-  v2 = [(PKAccountRewardsTierSummary *)self->_summary totalAmount];
-  [v2 doubleValue];
+  totalAmount = [(PKAccountRewardsTierSummary *)self->_summary totalAmount];
+  [totalAmount doubleValue];
   v4 = v3;
 
   return v4;
 }
 
-- (double)valueForSegmentAtIndex:(int64_t)a3
+- (double)valueForSegmentAtIndex:(int64_t)index
 {
-  v3 = [(PKRewardsSummaryChartBarConfiguration *)self _valueAtIndex:a3];
+  v3 = [(PKRewardsSummaryChartBarConfiguration *)self _valueAtIndex:index];
   [v3 doubleValue];
   v4 = 0.0;
   if (v5 >= 0.0)
@@ -59,33 +59,33 @@
   return v4;
 }
 
-- (id)colorForSegmentAtIndex:(int64_t)a3
+- (id)colorForSegmentAtIndex:(int64_t)index
 {
-  v3 = [(PKRewardsSummaryChartBarConfiguration *)self _rewardsTierForIndex:a3];
+  v3 = [(PKRewardsSummaryChartBarConfiguration *)self _rewardsTierForIndex:index];
 
   return PKColorForRewardsTier(v3);
 }
 
-- (id)_valueAtIndex:(int64_t)a3
+- (id)_valueAtIndex:(int64_t)index
 {
-  if ([(PKRewardsSummaryChartBarConfiguration *)self numberOfSegments]<= a3)
+  if ([(PKRewardsSummaryChartBarConfiguration *)self numberOfSegments]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_tierAmounts objectAtIndex:a3];
+    v5 = [(NSArray *)self->_tierAmounts objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (unint64_t)_rewardsTierForIndex:(int64_t)a3
+- (unint64_t)_rewardsTierForIndex:(int64_t)index
 {
-  if (a3 < 4)
+  if (index < 4)
   {
-    return a3 + 1;
+    return index + 1;
   }
 
   else

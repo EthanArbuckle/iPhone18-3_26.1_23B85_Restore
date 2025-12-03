@@ -1,24 +1,24 @@
 @interface SBPowerDownViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SBPowerDownViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SBPowerDownViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBPowerDownViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIPowerDownView" hasInstanceVariable:@"_actionSlider" withType:"_UIActionSlider"];
-  [v3 validateClass:@"SBUIPowerDownView" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
-  [v3 validateClass:@"SBUIPowerDownView" hasInstanceVariable:@"_findMyButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIPowerDownView" hasInstanceVariable:@"_actionSlider" withType:"_UIActionSlider"];
+  [validationsCopy validateClass:@"SBUIPowerDownView" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBUIPowerDownView" hasInstanceVariable:@"_findMyButton" withType:"UIButton"];
 }
 
-- (SBPowerDownViewAccessibility)initWithFrame:(CGRect)a3
+- (SBPowerDownViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SBPowerDownViewAccessibility;
-  v3 = [(SBPowerDownViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBPowerDownViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SBPowerDownViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

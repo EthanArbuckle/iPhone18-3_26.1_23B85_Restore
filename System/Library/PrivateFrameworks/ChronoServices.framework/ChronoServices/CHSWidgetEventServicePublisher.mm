@@ -1,10 +1,10 @@
 @interface CHSWidgetEventServicePublisher
-- (CHSWidgetEventServicePublisher)initWithMachServiceName:(id)a3;
+- (CHSWidgetEventServicePublisher)initWithMachServiceName:(id)name;
 - (id)_activeConnection;
 - (void)_invalidateConnection;
 - (void)dealloc;
-- (void)publishOpenEventWithURL:(id)a3;
-- (void)publishOpenEventWithUserActivity:(id)a3;
+- (void)publishOpenEventWithURL:(id)l;
+- (void)publishOpenEventWithUserActivity:(id)activity;
 @end
 
 @implementation CHSWidgetEventServicePublisher
@@ -17,14 +17,14 @@
   [(CHSWidgetEventServicePublisher *)&v3 dealloc];
 }
 
-- (CHSWidgetEventServicePublisher)initWithMachServiceName:(id)a3
+- (CHSWidgetEventServicePublisher)initWithMachServiceName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"CHSWidgetEventServicePublisher.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"machServiceName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidgetEventServicePublisher.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"machServiceName"}];
   }
 
   v18.receiver = self;
@@ -32,7 +32,7 @@
   v6 = [(CHSWidgetEventServicePublisher *)&v18 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     machServiceName = v6->_machServiceName;
     v6->_machServiceName = v7;
 
@@ -58,26 +58,26 @@
   return v6;
 }
 
-- (void)publishOpenEventWithURL:(id)a3
+- (void)publishOpenEventWithURL:(id)l
 {
-  v6 = a3;
-  v4 = [(CHSWidgetEventServicePublisher *)self _activeConnection];
-  v5 = [v4 remoteTarget];
+  lCopy = l;
+  _activeConnection = [(CHSWidgetEventServicePublisher *)self _activeConnection];
+  remoteTarget = [_activeConnection remoteTarget];
 
-  if (v5)
+  if (remoteTarget)
   {
-    [v5 handleOpenEventWithURL:v6];
+    [remoteTarget handleOpenEventWithURL:lCopy];
   }
 }
 
-- (void)publishOpenEventWithUserActivity:(id)a3
+- (void)publishOpenEventWithUserActivity:(id)activity
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CHSWidgetEventServicePublisher *)self _activeConnection];
-  v6 = [v5 remoteTarget];
+  activityCopy = activity;
+  _activeConnection = [(CHSWidgetEventServicePublisher *)self _activeConnection];
+  remoteTarget = [_activeConnection remoteTarget];
 
-  if (v6)
+  if (remoteTarget)
   {
     v18 = 0;
     v19 = &v18;
@@ -91,14 +91,14 @@
     v15 = __Block_byref_object_copy__1;
     v16 = __Block_byref_object_dispose__1;
     v17 = 0;
-    [v4 setNeedsSave:0];
+    [activityCopy setNeedsSave:0];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__CHSWidgetEventServicePublisher_publishOpenEventWithUserActivity___block_invoke;
     v11[3] = &unk_1E7453520;
     v11[4] = &v18;
     v11[5] = &v12;
-    [v4 _createUserActivityDataWithOptions:0 completionHandler:v11];
+    [activityCopy _createUserActivityDataWithOptions:0 completionHandler:v11];
     if (v13[5])
     {
       v7 = CHSLogChronoServices();
@@ -109,14 +109,14 @@
         *buf = 138543618;
         v25 = v9;
         v26 = 2114;
-        v27 = v4;
+        v27 = activityCopy;
         _os_log_impl(&dword_195EB2000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Error serializing User Activity %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      [v6 handleOpenEventWithUserActivityData:v19[5]];
+      [remoteTarget handleOpenEventWithUserActivityData:v19[5]];
     }
 
     _Block_object_dispose(&v12, 8);
@@ -143,12 +143,12 @@ void __67__CHSWidgetEventServicePublisher_publishOpenEventWithUserActivity___blo
 
 - (id)_activeConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_connection)
   {
     v3 = MEMORY[0x1E698F498];
-    machServiceName = v2->_machServiceName;
+    machServiceName = selfCopy->_machServiceName;
     v5 = +[CHSWidgetEventServiceSpecification identifier];
     v6 = [v3 endpointForMachName:machServiceName service:v5 instance:0];
 
@@ -157,15 +157,15 @@ void __67__CHSWidgetEventServicePublisher_publishOpenEventWithUserActivity___blo
     v10[1] = 3221225472;
     v10[2] = __51__CHSWidgetEventServicePublisher__activeConnection__block_invoke;
     v10[3] = &unk_1E7453570;
-    v10[4] = v2;
+    v10[4] = selfCopy;
     [v7 configureConnection:v10];
-    objc_storeStrong(&v2->_connection, v7);
-    [(BSServiceConnection *)v2->_connection activate];
+    objc_storeStrong(&selfCopy->_connection, v7);
+    [(BSServiceConnection *)selfCopy->_connection activate];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  connection = v2->_connection;
+  connection = selfCopy->_connection;
 
   return connection;
 }

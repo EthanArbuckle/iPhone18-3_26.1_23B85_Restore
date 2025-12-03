@@ -3,27 +3,27 @@
 - (NSString)bonjourServiceDomain;
 - (NSString)bonjourServiceName;
 - (NSString)bonjourServiceType;
-- (NWAdvertiseDescriptor)initWithDescriptor:(id)a3;
-- (NWAdvertiseDescriptor)initWithName:(id)a3 type:(id)a4 domain:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
-- (void)setTxtRecord:(id)a3;
+- (NWAdvertiseDescriptor)initWithDescriptor:(id)descriptor;
+- (NWAdvertiseDescriptor)initWithName:(id)name type:(id)type domain:(id)domain;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
+- (void)setTxtRecord:(id)record;
 @end
 
 @implementation NWAdvertiseDescriptor
 
-- (void)setTxtRecord:(id)a3
+- (void)setTxtRecord:(id)record
 {
-  v5 = a3;
-  v4 = [(NWAdvertiseDescriptor *)self internalDescriptor];
-  nw_advertise_descriptor_set_txt_record(v4, [v5 bytes], objc_msgSend(v5, "length"));
+  recordCopy = record;
+  internalDescriptor = [(NWAdvertiseDescriptor *)self internalDescriptor];
+  nw_advertise_descriptor_set_txt_record(internalDescriptor, [recordCopy bytes], objc_msgSend(recordCopy, "length"));
 }
 
 - (NSData)txtRecord
 {
   v7 = 0;
-  v2 = [(NWAdvertiseDescriptor *)self internalDescriptor];
-  txt_record = nw_advertise_descriptor_get_txt_record(v2, &v7);
+  internalDescriptor = [(NWAdvertiseDescriptor *)self internalDescriptor];
+  txt_record = nw_advertise_descriptor_get_txt_record(internalDescriptor, &v7);
 
   if (txt_record)
   {
@@ -39,29 +39,29 @@
   return v5;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NWAdvertiseDescriptor *)self internalDescriptor:*&a3];
+  v5 = [(NWAdvertiseDescriptor *)self internalDescriptor:*&indent];
   v6 = [v4 stringWithFormat:@"%@", v5];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NWAdvertiseDescriptor *)self internalDescriptor];
-  v6 = [v4 initWithDescriptor:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  internalDescriptor = [(NWAdvertiseDescriptor *)self internalDescriptor];
+  v6 = [v4 initWithDescriptor:internalDescriptor];
 
   return v6;
 }
 
-- (NWAdvertiseDescriptor)initWithDescriptor:(id)a3
+- (NWAdvertiseDescriptor)initWithDescriptor:(id)descriptor
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
     v23.receiver = self;
     v23.super_class = NWAdvertiseDescriptor;
@@ -69,7 +69,7 @@
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalDescriptor, a3);
+      objc_storeStrong(&v6->_internalDescriptor, descriptor);
       goto LABEL_4;
     }
 
@@ -237,8 +237,8 @@ LABEL_4:
 
 - (NSString)bonjourServiceName
 {
-  v2 = [(NWAdvertiseDescriptor *)self internalDescriptor];
-  bonjour_name = nw_advertise_descriptor_get_bonjour_name(v2);
+  internalDescriptor = [(NWAdvertiseDescriptor *)self internalDescriptor];
+  bonjour_name = nw_advertise_descriptor_get_bonjour_name(internalDescriptor);
 
   if (bonjour_name)
   {
@@ -255,8 +255,8 @@ LABEL_4:
 
 - (NSString)bonjourServiceType
 {
-  v2 = [(NWAdvertiseDescriptor *)self internalDescriptor];
-  bonjour_type = nw_advertise_descriptor_get_bonjour_type(v2);
+  internalDescriptor = [(NWAdvertiseDescriptor *)self internalDescriptor];
+  bonjour_type = nw_advertise_descriptor_get_bonjour_type(internalDescriptor);
 
   if (bonjour_type)
   {
@@ -273,8 +273,8 @@ LABEL_4:
 
 - (NSString)bonjourServiceDomain
 {
-  v2 = [(NWAdvertiseDescriptor *)self internalDescriptor];
-  bonjour_domain = nw_advertise_descriptor_get_bonjour_domain(v2);
+  internalDescriptor = [(NWAdvertiseDescriptor *)self internalDescriptor];
+  bonjour_domain = nw_advertise_descriptor_get_bonjour_domain(internalDescriptor);
 
   if (bonjour_domain)
   {
@@ -289,13 +289,13 @@ LABEL_4:
   return v4;
 }
 
-- (NWAdvertiseDescriptor)initWithName:(id)a3 type:(id)a4 domain:(id)a5
+- (NWAdvertiseDescriptor)initWithName:(id)name type:(id)type domain:(id)domain
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
+  if (typeCopy)
   {
     v30.receiver = self;
     v30.super_class = NWAdvertiseDescriptor;
@@ -303,7 +303,7 @@ LABEL_4:
     if (v11)
     {
       v12 = v11;
-      bonjour_service = nw_advertise_descriptor_create_bonjour_service([v8 UTF8String], objc_msgSend(v9, "UTF8String"), objc_msgSend(v10, "UTF8String"));
+      bonjour_service = nw_advertise_descriptor_create_bonjour_service([nameCopy UTF8String], objc_msgSend(typeCopy, "UTF8String"), objc_msgSend(domainCopy, "UTF8String"));
       internalDescriptor = v12->_internalDescriptor;
       v12->_internalDescriptor = bonjour_service;
 
@@ -325,14 +325,14 @@ LABEL_4:
     if (type == OS_LOG_TYPE_FAULT)
     {
       v23 = __nwlog_obj();
-      v24 = type;
+      typeCopy4 = type;
       if (os_log_type_enabled(v23, type))
       {
         *buf = 136446210;
         v34 = "[NWAdvertiseDescriptor initWithName:type:domain:]";
         v25 = "%{public}s [super init] failed";
 LABEL_36:
-        _os_log_impl(&dword_181A37000, v23, v24, v25, buf, 0xCu);
+        _os_log_impl(&dword_181A37000, v23, typeCopy4, v25, buf, 0xCu);
       }
     }
 
@@ -340,7 +340,7 @@ LABEL_36:
     {
       backtrace_string = __nw_create_backtrace_string();
       v23 = __nwlog_obj();
-      v24 = type;
+      typeCopy4 = type;
       v29 = os_log_type_enabled(v23, type);
       if (backtrace_string)
       {
@@ -350,7 +350,7 @@ LABEL_36:
           v34 = "[NWAdvertiseDescriptor initWithName:type:domain:]";
           v35 = 2082;
           v36 = backtrace_string;
-          _os_log_impl(&dword_181A37000, v23, v24, "%{public}s [super init] failed, dumping backtrace:%{public}s", buf, 0x16u);
+          _os_log_impl(&dword_181A37000, v23, typeCopy4, "%{public}s [super init] failed, dumping backtrace:%{public}s", buf, 0x16u);
         }
 
         free(backtrace_string);
@@ -369,7 +369,7 @@ LABEL_36:
     else
     {
       v23 = __nwlog_obj();
-      v24 = type;
+      typeCopy4 = type;
       if (os_log_type_enabled(v23, type))
       {
         *buf = 136446210;
@@ -401,14 +401,14 @@ LABEL_38:
     if (type == OS_LOG_TYPE_FAULT)
     {
       v18 = __nwlog_obj();
-      v19 = type;
+      typeCopy7 = type;
       if (os_log_type_enabled(v18, type))
       {
         *buf = 136446210;
         v34 = "[NWAdvertiseDescriptor initWithName:type:domain:]";
         v20 = "%{public}s called with null type";
 LABEL_29:
-        _os_log_impl(&dword_181A37000, v18, v19, v20, buf, 0xCu);
+        _os_log_impl(&dword_181A37000, v18, typeCopy7, v20, buf, 0xCu);
       }
     }
 
@@ -418,7 +418,7 @@ LABEL_29:
       {
         v26 = __nw_create_backtrace_string();
         v18 = __nwlog_obj();
-        v19 = type;
+        typeCopy7 = type;
         v27 = os_log_type_enabled(v18, type);
         if (v26)
         {
@@ -428,7 +428,7 @@ LABEL_29:
             v34 = "[NWAdvertiseDescriptor initWithName:type:domain:]";
             v35 = 2082;
             v36 = v26;
-            _os_log_impl(&dword_181A37000, v18, v19, "%{public}s called with null type, dumping backtrace:%{public}s", buf, 0x16u);
+            _os_log_impl(&dword_181A37000, v18, typeCopy7, "%{public}s called with null type, dumping backtrace:%{public}s", buf, 0x16u);
           }
 
           free(v26);
@@ -447,7 +447,7 @@ LABEL_29:
       }
 
       v18 = __nwlog_obj();
-      v19 = type;
+      typeCopy7 = type;
       if (os_log_type_enabled(v18, type))
       {
         *buf = 136446210;

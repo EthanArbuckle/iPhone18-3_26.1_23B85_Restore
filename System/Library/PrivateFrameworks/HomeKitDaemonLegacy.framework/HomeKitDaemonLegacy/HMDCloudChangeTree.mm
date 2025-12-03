@@ -1,33 +1,33 @@
 @interface HMDCloudChangeTree
-+ (BOOL)modelTypeCanBeOrphaned:(id)a3;
++ (BOOL)modelTypeCanBeOrphaned:(id)orphaned;
 + (id)logCategory;
 + (id)shortDescription;
 - (BOOL)hasValidChanges;
 - (HMDCloudChangeTree)init;
-- (HMDCloudChangeTree)initWithRootUUIDs:(id)a3;
+- (HMDCloudChangeTree)initWithRootUUIDs:(id)ds;
 - (NSArray)allTransactionStoreRowIDs;
 - (NSArray)objectsWithPotentialChanges;
 - (NSArray)orphans;
 - (NSMutableArray)cloudChanges;
 - (NSMutableArray)invalidCloudChanges;
-- (id)_findNodeWithRecordMapping:(id)a3;
-- (id)_objectForRecordName:(id)a3;
-- (id)_objectForUUID:(id)a3;
+- (id)_findNodeWithRecordMapping:(id)mapping;
+- (id)_objectForRecordName:(id)name;
+- (id)_objectForUUID:(id)d;
 - (id)description;
-- (id)objectForRecordName:(id)a3;
-- (id)objectForUUID:(id)a3;
-- (id)recordMapWithFilter:(id)a3;
+- (id)objectForRecordName:(id)name;
+- (id)objectForUUID:(id)d;
+- (id)recordMapWithFilter:(id)filter;
 - (id)shortDescription;
-- (void)_addNode:(id)a3;
-- (void)_updateNode:(id)a3 oldRecordName:(id)a4;
+- (void)_addNode:(id)node;
+- (void)_updateNode:(id)node oldRecordName:(id)name;
 - (void)findAndDeletedChildren;
 - (void)findAndMarkOrphanedBranches;
-- (void)logChangeTreeWithIndent:(id)a3;
-- (void)removeNode:(id)a3;
-- (void)updateChange:(id)a3;
-- (void)updateModel:(id)a3;
-- (void)updateNode:(id)a3 withCloudRecord:(id)a4;
-- (void)updateRecordMapping:(id)a3;
+- (void)logChangeTreeWithIndent:(id)indent;
+- (void)removeNode:(id)node;
+- (void)updateChange:(id)change;
+- (void)updateModel:(id)model;
+- (void)updateNode:(id)node withCloudRecord:(id)record;
+- (void)updateRecordMapping:(id)mapping;
 @end
 
 @implementation HMDCloudChangeTree
@@ -35,30 +35,30 @@
 - (BOOL)hasValidChanges
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDCloudChangeTree *)self objectMap];
-  v4 = [v3 objectEnumerator];
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
 
   v5 = 0;
   while (1)
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v7 = [v6 change];
+    change = [nextObject change];
 
-    v5 = v6;
-    if (v7)
+    v5 = nextObject;
+    if (change)
     {
-      v8 = [v6 change];
-      v9 = [v8 isInvalid];
+      change2 = [nextObject change];
+      isInvalid = [change2 isInvalid];
 
-      v5 = v6;
-      v10 = v6;
-      if ((v9 & 1) == 0)
+      v5 = nextObject;
+      v10 = nextObject;
+      if ((isInvalid & 1) == 0)
       {
         goto LABEL_7;
       }
@@ -69,55 +69,55 @@
 LABEL_7:
 
   os_unfair_lock_unlock(&self->_lock);
-  return v6 != 0;
+  return nextObject != 0;
 }
 
-- (id)recordMapWithFilter:(id)a3
+- (id)recordMapWithFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = MEMORY[0x277CBEB38];
-  v6 = [(HMDCloudChangeTree *)self objectMap];
-  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(objectMap, "count")}];
 
   os_unfair_lock_lock_with_options();
-  v8 = [(HMDCloudChangeTree *)self objectMap];
-  v9 = [v8 objectEnumerator];
-  v10 = 0;
+  objectMap2 = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap2 objectEnumerator];
+  nextObject = 0;
 LABEL_2:
 
-  v11 = v10;
+  v11 = nextObject;
   while (1)
   {
-    v10 = [v9 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v10)
+    if (!nextObject)
     {
       break;
     }
 
-    v12 = [v10 change];
-    if (v12)
+    change = [nextObject change];
+    if (change)
     {
-      v13 = [v10 change];
-      v14 = [v13 isDeleted];
+      change2 = [nextObject change];
+      isDeleted = [change2 isDeleted];
 
-      v11 = v10;
-      if (v14)
+      v11 = nextObject;
+      if (isDeleted)
       {
         continue;
       }
     }
 
-    v15 = [v10 uuid];
-    v8 = [v15 UUIDString];
+    uuid = [nextObject uuid];
+    objectMap2 = [uuid UUIDString];
 
-    v16 = [v10 recordName];
-    v17 = v16;
-    if (v8)
+    recordName = [nextObject recordName];
+    v17 = recordName;
+    if (objectMap2)
     {
-      if (v16)
+      if (recordName)
       {
-        [v7 setObject:v16 forKeyedSubscript:v8];
+        [v7 setObject:recordName forKeyedSubscript:objectMap2];
       }
     }
 
@@ -132,36 +132,36 @@ LABEL_2:
 
 - (NSMutableArray)invalidCloudChanges
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCloudChangeTree *)self objectMap];
-  v5 = [v4 objectEnumerator];
-  v6 = 0;
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
+  nextObject = 0;
 LABEL_2:
 
-  v7 = v6;
+  v7 = nextObject;
   while (1)
   {
-    v6 = [v5 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v6 change];
+    change = [nextObject change];
 
-    v7 = v6;
-    if (v8)
+    v7 = nextObject;
+    if (change)
     {
-      v9 = [v6 change];
-      v10 = [v9 isInvalid];
+      change2 = [nextObject change];
+      isInvalid = [change2 isInvalid];
 
-      v7 = v6;
-      if (v10)
+      v7 = nextObject;
+      if (isInvalid)
       {
-        v4 = [v6 change];
-        [v3 addObject:v4];
+        objectMap = [nextObject change];
+        [array addObject:objectMap];
         goto LABEL_2;
       }
     }
@@ -169,41 +169,41 @@ LABEL_2:
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return array;
 }
 
 - (NSMutableArray)cloudChanges
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCloudChangeTree *)self objectMap];
-  v5 = [v4 objectEnumerator];
-  v6 = 0;
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
+  nextObject = 0;
 LABEL_2:
 
-  v7 = v6;
+  v7 = nextObject;
   while (1)
   {
-    v6 = [v5 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v6 change];
+    change = [nextObject change];
 
-    v7 = v6;
-    if (v8)
+    v7 = nextObject;
+    if (change)
     {
-      v9 = [v6 change];
-      v10 = [v9 isInvalid];
+      change2 = [nextObject change];
+      isInvalid = [change2 isInvalid];
 
-      v7 = v6;
-      if ((v10 & 1) == 0)
+      v7 = nextObject;
+      if ((isInvalid & 1) == 0)
       {
-        v4 = [v6 change];
-        [v3 addObject:v4];
+        objectMap = [nextObject change];
+        [array addObject:objectMap];
         goto LABEL_2;
       }
     }
@@ -211,36 +211,36 @@ LABEL_2:
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return array;
 }
 
 - (NSArray)orphans
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCloudChangeTree *)self objectMap];
-  v5 = [v4 objectEnumerator];
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
 
   v6 = 0;
   while (1)
   {
-    v7 = [v5 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v7)
+    if (!nextObject)
     {
       break;
     }
 
-    v6 = v7;
-    if ([v7 orphaned])
+    v6 = nextObject;
+    if ([nextObject orphaned])
     {
-      [v3 addObject:v7];
-      v6 = v7;
+      [array addObject:nextObject];
+      v6 = nextObject;
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [v3 copy];
+  v8 = [array copy];
 
   return v8;
 }
@@ -249,94 +249,94 @@ LABEL_2:
 {
   v3 = [MEMORY[0x277CBEB58] set];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCloudChangeTree *)self objectMap];
-  v5 = [v4 objectEnumerator];
-  v6 = 0;
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
+  nextObject = 0;
 LABEL_2:
 
-  v7 = v6;
+  v7 = nextObject;
   while (1)
   {
-    v6 = [v5 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v6 change];
+    change = [nextObject change];
 
-    v7 = v6;
-    if (v8)
+    v7 = nextObject;
+    if (change)
     {
-      v4 = [v6 change];
-      v9 = [v4 rowIDs];
-      [v3 addObjectsFromArray:v9];
+      objectMap = [nextObject change];
+      rowIDs = [objectMap rowIDs];
+      [v3 addObjectsFromArray:rowIDs];
 
       goto LABEL_2;
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
 - (NSArray)objectsWithPotentialChanges
 {
   v3 = [MEMORY[0x277CBEB58] set];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCloudChangeTree *)self objectMap];
-  v5 = [v4 objectEnumerator];
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
 
-  v6 = 0;
+  nextObject = 0;
   while (1)
   {
-    v7 = v6;
-    v6 = [v5 nextObject];
+    v7 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
     v8 = objc_autoreleasePoolPush();
-    if ([v6 forceDelete] || (objc_msgSend(v6, "change"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9) && (objc_msgSend(v6, "change"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isInvalid"), v10, (v11 & 1) == 0))
+    if ([nextObject forceDelete] || (objc_msgSend(nextObject, "change"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9) && (objc_msgSend(nextObject, "change"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isInvalid"), v10, (v11 & 1) == 0))
     {
-      v12 = [v6 uuid];
-      [v3 addObject:v12];
+      uuid = [nextObject uuid];
+      [v3 addObject:uuid];
     }
 
     objc_autoreleasePoolPop(v8);
   }
 
-  v13 = [(HMDCloudChangeTree *)self branchMap];
-  v14 = [v13 objectEnumerator];
+  branchMap = [(HMDCloudChangeTree *)self branchMap];
+  objectEnumerator2 = [branchMap objectEnumerator];
 
-  v15 = 0;
+  nextObject2 = 0;
   while (1)
   {
-    v16 = v15;
-    v15 = [v14 nextObject];
+    v16 = nextObject2;
+    nextObject2 = [objectEnumerator2 nextObject];
 
-    if (!v15)
+    if (!nextObject2)
     {
       break;
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = [v15 parentUuid];
-    if (v18)
+    parentUuid = [nextObject2 parentUuid];
+    if (parentUuid)
     {
-      v19 = [(HMDCloudChangeTree *)self validRootUUIDs];
-      v20 = [v15 parentUuid];
-      v21 = [v19 containsObject:v20];
+      validRootUUIDs = [(HMDCloudChangeTree *)self validRootUUIDs];
+      parentUuid2 = [nextObject2 parentUuid];
+      v21 = [validRootUUIDs containsObject:parentUuid2];
 
       if ((v21 & 1) == 0)
       {
-        v22 = [v15 _allNodesInBranch];
-        [v3 addObjectsFromArray:v22];
+        _allNodesInBranch = [nextObject2 _allNodesInBranch];
+        [v3 addObjectsFromArray:_allNodesInBranch];
       }
     }
 
@@ -344,46 +344,46 @@ LABEL_2:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v23 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v23;
+  return allObjects;
 }
 
 - (void)findAndMarkOrphanedBranches
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDCloudChangeTree *)self branchMap];
-  v4 = [v3 objectEnumerator];
+  branchMap = [(HMDCloudChangeTree *)self branchMap];
+  objectEnumerator = [branchMap objectEnumerator];
 
   v5 = 0;
   while (1)
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v7 = [v6 parentUuid];
-    v5 = v6;
-    if (v7)
+    parentUuid = [nextObject parentUuid];
+    v5 = nextObject;
+    if (parentUuid)
     {
-      v8 = [(HMDCloudChangeTree *)self validRootUUIDs];
-      v9 = [v6 parentUuid];
-      v10 = [v8 containsObject:v9];
+      validRootUUIDs = [(HMDCloudChangeTree *)self validRootUUIDs];
+      parentUuid2 = [nextObject parentUuid];
+      v10 = [validRootUUIDs containsObject:parentUuid2];
 
-      v5 = v6;
+      v5 = nextObject;
       if ((v10 & 1) == 0)
       {
         v11 = objc_autoreleasePoolPush();
-        v12 = self;
+        selfCopy = self;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v14 = HMFGetLogIdentifier();
-          v15 = [v6 description];
+          v15 = [nextObject description];
           *buf = 138543618;
           v18 = v14;
           v19 = 2112;
@@ -392,8 +392,8 @@ LABEL_2:
         }
 
         objc_autoreleasePoolPop(v11);
-        [v6 _markBranchOrphaned];
-        v5 = v6;
+        [nextObject _markBranchOrphaned];
+        v5 = nextObject;
       }
     }
   }
@@ -407,7 +407,7 @@ LABEL_2:
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -418,32 +418,32 @@ LABEL_2:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCloudChangeTree *)v4 objectMap];
-  v8 = [v7 objectEnumerator];
+  objectMap = [(HMDCloudChangeTree *)selfCopy objectMap];
+  objectEnumerator = [objectMap objectEnumerator];
 
   v9 = 0;
   while (1)
   {
-    v10 = [v8 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v10)
+    if (!nextObject)
     {
       break;
     }
 
-    v11 = [v10 change];
+    change = [nextObject change];
 
-    v9 = v10;
-    if (v11)
+    v9 = nextObject;
+    if (change)
     {
-      v12 = [v10 change];
-      v13 = [v12 isDeleted];
+      change2 = [nextObject change];
+      isDeleted = [change2 isDeleted];
 
-      v9 = v10;
-      if (v13)
+      v9 = nextObject;
+      if (isDeleted)
       {
-        [v10 deleteChildren];
-        v9 = v10;
+        [nextObject deleteChildren];
+        v9 = nextObject;
       }
     }
   }
@@ -452,44 +452,44 @@ LABEL_2:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateNode:(id)a3 withCloudRecord:(id)a4
+- (void)updateNode:(id)node withCloudRecord:(id)record
 {
-  v8 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  recordCopy = record;
   os_unfair_lock_lock_with_options();
-  v7 = [v8 recordName];
-  [v8 _updateWithCloudRecord:v6];
-  [(HMDCloudChangeTree *)self _updateNode:v8 oldRecordName:v7];
+  recordName = [nodeCopy recordName];
+  [nodeCopy _updateWithCloudRecord:recordCopy];
+  [(HMDCloudChangeTree *)self _updateNode:nodeCopy oldRecordName:recordName];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateChange:(id)a3
+- (void)updateChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCloudChangeTree *)self _findNodeWithRecordMapping:v4];
+  v5 = [(HMDCloudChangeTree *)self _findNodeWithRecordMapping:changeCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(HMDCloudChangeNode *)v5 recordName];
-    [(HMDCloudChangeNode *)v6 _updateWithChange:v4];
+    recordName = [(HMDCloudChangeNode *)v5 recordName];
+    [(HMDCloudChangeNode *)v6 _updateWithChange:changeCopy];
 LABEL_5:
-    [(HMDCloudChangeTree *)self _updateNode:v6 oldRecordName:v7];
+    [(HMDCloudChangeTree *)self _updateNode:v6 oldRecordName:recordName];
     goto LABEL_6;
   }
 
-  v6 = [[HMDCloudChangeNode alloc] initWithChange:v4];
+  v6 = [[HMDCloudChangeNode alloc] initWithChange:changeCopy];
   if (v6)
   {
     [(HMDCloudChangeTree *)self _addNode:v6];
-    v7 = 0;
+    recordName = 0;
     goto LABEL_5;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -497,12 +497,12 @@ LABEL_5:
     v13 = 138543618;
     v14 = v12;
     v15 = 2112;
-    v16 = v4;
+    v16 = changeCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Could not create object change node for change %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v7 = 0;
+  recordName = 0;
   v6 = 0;
 LABEL_6:
 
@@ -510,23 +510,23 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 uuid];
-  v6 = [(HMDCloudChangeTree *)self _objectForUUID:v5];
+  uuid = [modelCopy uuid];
+  v6 = [(HMDCloudChangeTree *)self _objectForUUID:uuid];
 
   if (v6)
   {
-    [(HMDCloudChangeNode *)v6 _updateWithModel:v4];
+    [(HMDCloudChangeNode *)v6 _updateWithModel:modelCopy];
 LABEL_5:
     [(HMDCloudChangeTree *)self _updateNode:v6 oldRecordName:0];
     goto LABEL_6;
   }
 
-  v6 = [[HMDCloudChangeNode alloc] initWithModel:v4];
+  v6 = [[HMDCloudChangeNode alloc] initWithModel:modelCopy];
   if (v6)
   {
     [(HMDCloudChangeTree *)self _addNode:v6];
@@ -534,7 +534,7 @@ LABEL_5:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -542,7 +542,7 @@ LABEL_5:
     v12 = 138543618;
     v13 = v11;
     v14 = 2112;
-    v15 = v4;
+    v15 = modelCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not create object change node for model %@", &v12, 0x16u);
   }
 
@@ -554,22 +554,22 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRecordMapping:(id)a3
+- (void)updateRecordMapping:(id)mapping
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mappingCopy = mapping;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCloudChangeTree *)self _findNodeWithRecordMapping:v4];
+  v5 = [(HMDCloudChangeTree *)self _findNodeWithRecordMapping:mappingCopy];
   v6 = v5;
   if (v5)
   {
-    [(HMDCloudChangeNode *)v5 updateRecordMapping:v4];
+    [(HMDCloudChangeNode *)v5 updateRecordMapping:mappingCopy];
 LABEL_5:
     [(HMDCloudChangeTree *)self _updateNode:v6 oldRecordName:0];
     goto LABEL_6;
   }
 
-  v6 = [[HMDCloudChangeNode alloc] initWithRecordMapping:v4];
+  v6 = [[HMDCloudChangeNode alloc] initWithRecordMapping:mappingCopy];
   if (v6)
   {
     [(HMDCloudChangeTree *)self _addNode:v6];
@@ -577,19 +577,19 @@ LABEL_5:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v4 uuid];
-    v13 = [v4 recordName];
+    uuid = [mappingCopy uuid];
+    recordName = [mappingCopy recordName];
     v14 = 138543874;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = uuid;
     v18 = 2112;
-    v19 = v13;
+    v19 = recordName;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not create object change node for record mapping %@/%@", &v14, 0x20u);
   }
 
@@ -601,122 +601,122 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v18 = a3;
+  nodeCopy = node;
   os_unfair_lock_lock_with_options();
-  v4 = [v18 parent];
-  [v4 removeChild:v18];
-  v5 = [v18 children];
-  v6 = [v5 objectEnumerator];
-  for (i = 0; ; i = v8)
+  parent = [nodeCopy parent];
+  [parent removeChild:nodeCopy];
+  children = [nodeCopy children];
+  objectEnumerator = [children objectEnumerator];
+  for (i = 0; ; i = nextObject)
   {
 
-    v8 = [v6 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v5 = [(HMDCloudChangeTree *)self branchMap];
-    v9 = [v8 uuid];
-    [v5 setObject:v8 forKey:v9];
+    children = [(HMDCloudChangeTree *)self branchMap];
+    uuid = [nextObject uuid];
+    [children setObject:nextObject forKey:uuid];
   }
 
-  v10 = [v18 children];
-  [v10 removeAllObjects];
+  children2 = [nodeCopy children];
+  [children2 removeAllObjects];
 
-  v11 = [v18 recordName];
+  recordName = [nodeCopy recordName];
 
-  if (v11)
+  if (recordName)
   {
-    v12 = [(HMDCloudChangeTree *)self recordMap];
-    v13 = [v18 recordName];
-    [v12 removeObjectForKey:v13];
+    recordMap = [(HMDCloudChangeTree *)self recordMap];
+    recordName2 = [nodeCopy recordName];
+    [recordMap removeObjectForKey:recordName2];
   }
 
-  v14 = [v18 uuid];
+  uuid2 = [nodeCopy uuid];
 
-  if (v14)
+  if (uuid2)
   {
-    v15 = [(HMDCloudChangeTree *)self objectMap];
-    v16 = [v18 uuid];
-    [v15 removeObjectForKey:v16];
+    objectMap = [(HMDCloudChangeTree *)self objectMap];
+    uuid3 = [nodeCopy uuid];
+    [objectMap removeObjectForKey:uuid3];
   }
 
-  v17 = [(HMDCloudChangeTree *)self objects];
-  [v17 removeObject:v18];
+  objects = [(HMDCloudChangeTree *)self objects];
+  [objects removeObject:nodeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addNode:(id)a3
+- (void)_addNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   os_unfair_lock_assert_owner(&self->_lock);
-  v4 = [(HMDCloudChangeTree *)self objects];
-  [v4 addObject:v5];
+  objects = [(HMDCloudChangeTree *)self objects];
+  [objects addObject:nodeCopy];
 
-  [(HMDCloudChangeTree *)self _updateNode:v5 oldRecordName:0];
+  [(HMDCloudChangeTree *)self _updateNode:nodeCopy oldRecordName:0];
 }
 
-- (void)_updateNode:(id)a3 oldRecordName:(id)a4
+- (void)_updateNode:(id)node oldRecordName:(id)name
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = [v6 uuid];
-  if (v8)
+  uuid = [nodeCopy uuid];
+  if (uuid)
   {
-    v9 = v8;
-    v10 = [(HMDCloudChangeTree *)self objectMap];
-    v11 = [v6 uuid];
-    v12 = [v10 objectForKey:v11];
+    v9 = uuid;
+    objectMap = [(HMDCloudChangeTree *)self objectMap];
+    uuid2 = [nodeCopy uuid];
+    v12 = [objectMap objectForKey:uuid2];
 
     if (!v12)
     {
-      v13 = [MEMORY[0x277CBEB18] array];
-      v14 = [(HMDCloudChangeTree *)self branchMap];
-      v15 = [v14 objectEnumerator];
+      array = [MEMORY[0x277CBEB18] array];
+      branchMap = [(HMDCloudChangeTree *)self branchMap];
+      objectEnumerator = [branchMap objectEnumerator];
 
-      v16 = [v15 nextObject];
-      if (v16)
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v17 = v16;
+        v17 = nextObject;
         do
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = [v17 parentUuid];
-          v20 = [v6 uuid];
-          v21 = [v19 isEqual:v20];
+          parentUuid = [v17 parentUuid];
+          uuid3 = [nodeCopy uuid];
+          v21 = [parentUuid isEqual:uuid3];
 
           if (v21)
           {
-            [v13 addObject:v17];
-            [v6 addChild:v17];
-            [v17 setParent:v6];
+            [array addObject:v17];
+            [nodeCopy addChild:v17];
+            [v17 setParent:nodeCopy];
           }
 
           objc_autoreleasePoolPop(v18);
-          v22 = [v15 nextObject];
+          nextObject2 = [objectEnumerator nextObject];
 
-          v17 = v22;
+          v17 = nextObject2;
         }
 
-        while (v22);
+        while (nextObject2);
       }
 
-      if ([v13 count])
+      if ([array count])
       {
-        v48 = v13;
-        v49 = v7;
+        v48 = array;
+        v49 = nameCopy;
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v23 = v13;
+        v23 = array;
         v24 = [v23 countByEnumeratingWithState:&v50 objects:v54 count:16];
         if (v24)
         {
@@ -733,9 +733,9 @@ LABEL_6:
 
               v28 = *(*(&v50 + 1) + 8 * i);
               v29 = objc_autoreleasePoolPush();
-              v30 = [(HMDCloudChangeTree *)self branchMap];
-              v31 = [v28 uuid];
-              [v30 removeObjectForKey:v31];
+              branchMap2 = [(HMDCloudChangeTree *)self branchMap];
+              uuid4 = [v28 uuid];
+              [branchMap2 removeObjectForKey:uuid4];
 
               objc_autoreleasePoolPop(v29);
             }
@@ -746,93 +746,93 @@ LABEL_6:
           while (v25);
         }
 
-        v13 = v48;
-        v7 = v49;
+        array = v48;
+        nameCopy = v49;
       }
 
-      v32 = [v6 parentUuid];
+      parentUuid2 = [nodeCopy parentUuid];
 
-      if (v32)
+      if (parentUuid2)
       {
-        v33 = [(HMDCloudChangeTree *)self objectMap];
-        v34 = [v6 parentUuid];
-        v35 = [v33 objectForKey:v34];
+        objectMap2 = [(HMDCloudChangeTree *)self objectMap];
+        parentUuid3 = [nodeCopy parentUuid];
+        branchMap4 = [objectMap2 objectForKey:parentUuid3];
 
-        if (v35)
+        if (branchMap4)
         {
-          [v35 addChild:v6];
-          [v6 setParent:v35];
+          [branchMap4 addChild:nodeCopy];
+          [nodeCopy setParent:branchMap4];
         }
 
         else
         {
-          v37 = [(HMDCloudChangeTree *)self branchMap];
-          v38 = [v6 uuid];
-          [v37 setObject:v6 forKey:v38];
+          branchMap3 = [(HMDCloudChangeTree *)self branchMap];
+          uuid5 = [nodeCopy uuid];
+          [branchMap3 setObject:nodeCopy forKey:uuid5];
 
-          v35 = 0;
+          branchMap4 = 0;
         }
       }
 
       else
       {
-        v35 = [(HMDCloudChangeTree *)self branchMap];
-        v36 = [v6 uuid];
-        [v35 setObject:v6 forKey:v36];
+        branchMap4 = [(HMDCloudChangeTree *)self branchMap];
+        uuid6 = [nodeCopy uuid];
+        [branchMap4 setObject:nodeCopy forKey:uuid6];
       }
 
-      v39 = [(HMDCloudChangeTree *)self objectMap];
-      v40 = [v6 uuid];
-      [v39 setObject:v6 forKey:v40];
+      objectMap3 = [(HMDCloudChangeTree *)self objectMap];
+      uuid7 = [nodeCopy uuid];
+      [objectMap3 setObject:nodeCopy forKey:uuid7];
     }
   }
 
-  v41 = [v6 recordName];
+  recordName = [nodeCopy recordName];
 
-  if (v41)
+  if (recordName)
   {
-    if (v7)
+    if (nameCopy)
     {
-      v42 = [v6 recordName];
-      v43 = [v7 isEqualToString:v42];
+      recordName2 = [nodeCopy recordName];
+      v43 = [nameCopy isEqualToString:recordName2];
 
       if ((v43 & 1) == 0)
       {
-        v44 = [(HMDCloudChangeTree *)self recordMap];
-        [v44 removeObjectForKey:v7];
+        recordMap = [(HMDCloudChangeTree *)self recordMap];
+        [recordMap removeObjectForKey:nameCopy];
       }
     }
 
-    v45 = [(HMDCloudChangeTree *)self recordMap];
-    v46 = [v6 recordName];
-    [v45 setObject:v6 forKey:v46];
+    recordMap2 = [(HMDCloudChangeTree *)self recordMap];
+    recordName3 = [nodeCopy recordName];
+    [recordMap2 setObject:nodeCopy forKey:recordName3];
   }
 
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_findNodeWithRecordMapping:(id)a3
+- (id)_findNodeWithRecordMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 uuid];
+  uuid = [mappingCopy uuid];
 
-  if (v5)
+  if (uuid)
   {
-    v6 = [v4 uuid];
-    v7 = [(HMDCloudChangeTree *)self _objectForUUID:v6];
+    uuid2 = [mappingCopy uuid];
+    v7 = [(HMDCloudChangeTree *)self _objectForUUID:uuid2];
 LABEL_5:
     v9 = v7;
 
     goto LABEL_6;
   }
 
-  v8 = [v4 recordName];
+  recordName = [mappingCopy recordName];
 
-  if (v8)
+  if (recordName)
   {
-    v6 = [v4 recordName];
-    v7 = [(HMDCloudChangeTree *)self _objectForRecordName:v6];
+    uuid2 = [mappingCopy recordName];
+    v7 = [(HMDCloudChangeTree *)self _objectForRecordName:uuid2];
     goto LABEL_5;
   }
 
@@ -842,87 +842,87 @@ LABEL_6:
   return v9;
 }
 
-- (id)objectForRecordName:(id)a3
+- (id)objectForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCloudChangeTree *)self _objectForRecordName:v4];
+  v5 = [(HMDCloudChangeTree *)self _objectForRecordName:nameCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_objectForRecordName:(id)a3
+- (id)_objectForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(HMDCloudChangeTree *)self recordMap];
-  v6 = [v5 objectForKey:v4];
+  recordMap = [(HMDCloudChangeTree *)self recordMap];
+  v6 = [recordMap objectForKey:nameCopy];
 
   return v6;
 }
 
-- (id)objectForUUID:(id)a3
+- (id)objectForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCloudChangeTree *)self _objectForUUID:v4];
+  v5 = [(HMDCloudChangeTree *)self _objectForUUID:dCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_objectForUUID:(id)a3
+- (id)_objectForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(HMDCloudChangeTree *)self objectMap];
-  v6 = [v5 objectForKey:v4];
+  objectMap = [(HMDCloudChangeTree *)self objectMap];
+  v6 = [objectMap objectForKey:dCopy];
 
   return v6;
 }
 
-- (void)logChangeTreeWithIndent:(id)a3
+- (void)logChangeTreeWithIndent:(id)indent
 {
   v27 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  indentCopy = indent;
   os_unfair_lock_lock_with_options();
   v4 = objc_autoreleasePoolPush();
-  v19 = self;
-  v5 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HMDCloudChangeTree *)v5 shortDescription];
+    shortDescription = [(HMDCloudChangeTree *)selfCopy2 shortDescription];
     *buf = 138543874;
     v22 = v7;
     v23 = 2112;
-    v24 = v20;
+    v24 = indentCopy;
     v25 = 2112;
-    v26 = v8;
+    v26 = shortDescription;
     _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@%@HMDCloudChangeNode<%@>:", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@  ", v20];
-  v10 = [(HMDCloudChangeTree *)v5 branchMap];
-  v11 = [v10 objectEnumerator];
+  indentCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@  ", indentCopy];
+  branchMap = [(HMDCloudChangeTree *)selfCopy2 branchMap];
+  objectEnumerator = [branchMap objectEnumerator];
 
-  for (i = 0; ; [i logChangeTreeWithIndent:v9])
+  for (i = 0; ; [i logChangeTreeWithIndent:indentCopy])
   {
-    v13 = [v11 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v13)
+    if (!nextObject)
     {
       break;
     }
 
-    i = v13;
-    if ([v13 orphaned])
+    i = nextObject;
+    if ([nextObject orphaned])
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = v5;
+      v15 = selfCopy2;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -930,7 +930,7 @@ LABEL_6:
         *buf = 138543618;
         v22 = v17;
         v23 = 2112;
-        v24 = v9;
+        v24 = indentCopy;
         _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@%@Orphaned Branch", buf, 0x16u);
       }
 
@@ -938,15 +938,15 @@ LABEL_6:
     }
   }
 
-  os_unfair_lock_unlock(&v19->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v18 = *MEMORY[0x277D85DE8];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCloudChangeTree *)self shortDescription];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  shortDescription = [(HMDCloudChangeTree *)self shortDescription];
+  v4 = [v2 stringWithFormat:@"<%@>", shortDescription];
 
   return v4;
 }
@@ -954,15 +954,15 @@ LABEL_6:
 - (id)shortDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [objc_opt_class() shortDescription];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  shortDescription = [objc_opt_class() shortDescription];
+  v4 = [v2 stringWithFormat:@"%@", shortDescription];
 
   return v4;
 }
 
-- (HMDCloudChangeTree)initWithRootUUIDs:(id)a3
+- (HMDCloudChangeTree)initWithRootUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v20.receiver = self;
   v20.super_class = HMDCloudChangeTree;
   v5 = [(HMDCloudChangeTree *)&v20 init];
@@ -970,25 +970,25 @@ LABEL_6:
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     objects = v6->_objects;
-    v6->_objects = v7;
+    v6->_objects = array;
 
-    v9 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     objectMap = v6->_objectMap;
-    v6->_objectMap = v9;
+    v6->_objectMap = strongToWeakObjectsMapTable;
 
-    v11 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     recordMap = v6->_recordMap;
-    v6->_recordMap = v11;
+    v6->_recordMap = strongToWeakObjectsMapTable2;
 
-    v13 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     branchMap = v6->_branchMap;
-    v6->_branchMap = v13;
+    v6->_branchMap = strongToWeakObjectsMapTable3;
 
-    v15 = [MEMORY[0x277CBEB58] setWithArray:v4];
-    v16 = [MEMORY[0x277CCAD78] zeroUUID];
-    [v15 addObject:v16];
+    v15 = [MEMORY[0x277CBEB58] setWithArray:dsCopy];
+    zeroUUID = [MEMORY[0x277CCAD78] zeroUUID];
+    [v15 addObject:zeroUUID];
 
     v17 = [v15 copy];
     validRootUUIDs = v6->_validRootUUIDs;
@@ -1011,9 +1011,9 @@ LABEL_6:
   objc_exception_throw(v7);
 }
 
-+ (BOOL)modelTypeCanBeOrphaned:(id)a3
++ (BOOL)modelTypeCanBeOrphaned:(id)orphaned
 {
-  v3 = a3;
+  orphanedCopy = orphaned;
   if (isInternalBuild())
   {
     if (modelTypeCanBeOrphaned__pred != -1)
@@ -1021,7 +1021,7 @@ LABEL_6:
       dispatch_once(&modelTypeCanBeOrphaned__pred, &__block_literal_global_100);
     }
 
-    v4 = [modelTypeCanBeOrphaned___models containsObject:v3];
+    v4 = [modelTypeCanBeOrphaned___models containsObject:orphanedCopy];
   }
 
   else

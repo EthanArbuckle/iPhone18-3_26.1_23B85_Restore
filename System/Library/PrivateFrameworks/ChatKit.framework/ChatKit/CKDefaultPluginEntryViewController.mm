@@ -1,17 +1,17 @@
 @interface CKDefaultPluginEntryViewController
 - (BOOL)loadedContentView;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDefaultPluginEntryViewController)initWithDataSource:(id)a3 entryViewDelegate:(id)a4 andPlugin:(id)a5 customizationPickerDelegate:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDefaultPluginEntryViewController)initWithDataSource:(id)source entryViewDelegate:(id)delegate andPlugin:(id)plugin customizationPickerDelegate:(id)pickerDelegate;
 - (id)_copyActionForImageBalloonView;
 - (id)_saveActionForImageBalloonView;
 - (id)_transcriptPluginBalloon;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)_loadBalloonView;
 - (void)dealloc;
-- (void)didChangeBackgroundLuminance:(double)a3;
+- (void)didChangeBackgroundLuminance:(double)luminance;
 - (void)didFinishAnimatedBoundsChange;
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4;
-- (void)liveViewControllerDidUpdateMessageTintColor:(id)a3;
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion;
+- (void)liveViewControllerDidUpdateMessageTintColor:(id)color;
 - (void)loadView;
 - (void)payloadWillClear;
 - (void)payloadWillSend;
@@ -19,41 +19,41 @@
 - (void)performHostAppSuspend;
 - (void)pluginTintColorDidUpdate;
 - (void)setShouldPerformSendAnimationOnAppear;
-- (void)setShowsBalloonTail:(BOOL)a3;
-- (void)updateBalloonViewFillColor:(id)a3;
-- (void)updateConversationIDAndRecipientsForViewController:(id)a3;
+- (void)setShowsBalloonTail:(BOOL)tail;
+- (void)updateBalloonViewFillColor:(id)color;
+- (void)updateConversationIDAndRecipientsForViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKDefaultPluginEntryViewController
 
 - (void)payloadWillClear
 {
-  v3 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+  pluginBubbleViewController = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-    [v5 clearShelfPayload];
+    pluginBubbleViewController2 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+    [pluginBubbleViewController2 clearShelfPayload];
   }
 }
 
-- (CKDefaultPluginEntryViewController)initWithDataSource:(id)a3 entryViewDelegate:(id)a4 andPlugin:(id)a5 customizationPickerDelegate:(id)a6
+- (CKDefaultPluginEntryViewController)initWithDataSource:(id)source entryViewDelegate:(id)delegate andPlugin:(id)plugin customizationPickerDelegate:(id)pickerDelegate
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  pluginCopy = plugin;
+  pickerDelegateCopy = pickerDelegate;
   v21.receiver = self;
   v21.super_class = CKDefaultPluginEntryViewController;
   v12 = [(CKDefaultPluginEntryViewController *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    [(CKDefaultPluginEntryViewController *)v12 setDatasource:v9];
-    [(CKDefaultPluginEntryViewController *)v13 setPlugin:v10];
+    [(CKDefaultPluginEntryViewController *)v12 setDatasource:sourceCopy];
+    [(CKDefaultPluginEntryViewController *)v13 setPlugin:pluginCopy];
     if (CKIsRunningInMacCatalyst())
     {
       v14 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:v13];
@@ -64,14 +64,14 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = [(CKDefaultPluginEntryViewController *)v13 plugin];
-      v17 = objc_alloc([v16 bubbleClass]);
-      v18 = [(CKDefaultPluginEntryViewController *)v13 datasource];
-      v19 = [v17 initWithDataSource:v18 isFromMe:1];
+      plugin = [(CKDefaultPluginEntryViewController *)v13 plugin];
+      v17 = objc_alloc([plugin bubbleClass]);
+      datasource = [(CKDefaultPluginEntryViewController *)v13 datasource];
+      v19 = [v17 initWithDataSource:datasource isFromMe:1];
 
       if (objc_opt_respondsToSelector())
       {
-        [v19 setCustomizationPickerDelegate:v11];
+        [v19 setCustomizationPickerDelegate:pickerDelegateCopy];
       }
 
       [(CKDefaultPluginEntryViewController *)v13 setPluginBubbleViewController:v19];
@@ -83,20 +83,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKDefaultPluginEntryViewController;
   [(CKDefaultPluginEntryViewController *)&v4 dealloc];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [a3 view];
-  v6 = [(CKDefaultPluginEntryViewController *)self balloonView];
-  v7 = v6;
-  if (v5 != v6)
+  view = [interaction view];
+  balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
+  v7 = balloonView;
+  if (view != balloonView)
   {
 
 LABEL_10:
@@ -112,30 +112,30 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [(CKDefaultPluginEntryViewController *)self _copyActionForImageBalloonView];
-  v11 = [(CKDefaultPluginEntryViewController *)self _saveActionForImageBalloonView];
-  if (v10)
+  array = [MEMORY[0x1E695DF70] array];
+  _copyActionForImageBalloonView = [(CKDefaultPluginEntryViewController *)self _copyActionForImageBalloonView];
+  _saveActionForImageBalloonView = [(CKDefaultPluginEntryViewController *)self _saveActionForImageBalloonView];
+  if (_copyActionForImageBalloonView)
   {
-    [v9 addObject:v10];
+    [array addObject:_copyActionForImageBalloonView];
   }
 
-  if (v11)
+  if (_saveActionForImageBalloonView)
   {
-    [v9 addObject:v11];
+    [array addObject:_saveActionForImageBalloonView];
   }
 
-  if ([v9 count])
+  if ([array count])
   {
     v12 = MEMORY[0x1E69DC8D8];
-    v13 = [(CKDefaultPluginEntryViewController *)self plugin];
-    v14 = [v13 identifier];
+    plugin = [(CKDefaultPluginEntryViewController *)self plugin];
+    identifier = [plugin identifier];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __92__CKDefaultPluginEntryViewController_contextMenuInteraction_configurationForMenuAtLocation___block_invoke;
     v17[3] = &unk_1E72EC178;
-    v18 = v9;
-    v15 = [v12 configurationWithIdentifier:v14 previewProvider:0 actionProvider:v17];
+    v18 = array;
+    v15 = [v12 configurationWithIdentifier:identifier previewProvider:0 actionProvider:v17];
   }
 
   else
@@ -191,17 +191,17 @@ void __68__CKDefaultPluginEntryViewController__copyActionForImageBalloonView__bl
 
 - (id)_saveActionForImageBalloonView
 {
-  v3 = [(CKDefaultPluginEntryViewController *)self balloonView];
-  if (v3)
+  balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
+  if (balloonView)
   {
-    v4 = [(CKDefaultPluginEntryViewController *)self balloonView];
+    balloonView2 = [(CKDefaultPluginEntryViewController *)self balloonView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CKDefaultPluginEntryViewController *)self balloonView];
-      v6 = [v5 image];
+      balloonView3 = [(CKDefaultPluginEntryViewController *)self balloonView];
+      image = [balloonView3 image];
 
-      if (v6)
+      if (image)
       {
         objc_initWeak(&location, self);
         v7 = MEMORY[0x1E69DC628];
@@ -212,7 +212,7 @@ void __68__CKDefaultPluginEntryViewController__copyActionForImageBalloonView__bl
         v11[2] = __68__CKDefaultPluginEntryViewController__saveActionForImageBalloonView__block_invoke;
         v11[3] = &unk_1E72EBCD8;
         objc_copyWeak(&v12, &location);
-        v3 = [v7 actionWithTitle:v9 image:0 identifier:0 handler:v11];
+        balloonView = [v7 actionWithTitle:v9 image:0 identifier:0 handler:v11];
 
         objc_destroyWeak(&v12);
         objc_destroyWeak(&location);
@@ -224,12 +224,12 @@ void __68__CKDefaultPluginEntryViewController__copyActionForImageBalloonView__bl
     {
     }
 
-    v3 = 0;
+    balloonView = 0;
   }
 
 LABEL_7:
 
-  return v3;
+  return balloonView;
 }
 
 void __68__CKDefaultPluginEntryViewController__saveActionForImageBalloonView__block_invoke(uint64_t a1)
@@ -270,22 +270,22 @@ LABEL_6:
   [(CKDefaultPluginEntryViewController *)self setView:v4];
 }
 
-- (void)updateConversationIDAndRecipientsForViewController:(id)a3
+- (void)updateConversationIDAndRecipientsForViewController:(id)controller
 {
-  v16 = a3;
-  v4 = [(CKDefaultPluginEntryViewController *)self datasource];
-  v5 = [v4 pluginPayload];
-  v6 = [v5 pluginBundleID];
+  controllerCopy = controller;
+  datasource = [(CKDefaultPluginEntryViewController *)self datasource];
+  pluginPayload = [datasource pluginPayload];
+  pluginBundleID = [pluginPayload pluginBundleID];
 
   v7 = IMBalloonExtensionIDWithSuffix();
-  if ([v6 isEqualToString:v7])
+  if ([pluginBundleID isEqualToString:v7])
   {
   }
 
   else
   {
     v8 = IMBalloonExtensionIDWithSuffix();
-    v9 = [v6 isEqualToString:v8];
+    v9 = [pluginBundleID isEqualToString:v8];
 
     if (!v9)
     {
@@ -293,24 +293,24 @@ LABEL_6:
     }
   }
 
-  v10 = [(CKDefaultPluginEntryViewController *)self datasource];
-  v11 = [v10 chat];
+  datasource2 = [(CKDefaultPluginEntryViewController *)self datasource];
+  chat = [datasource2 chat];
 
-  if (v11)
+  if (chat)
   {
-    v12 = [[CKConversation alloc] initWithChat:v11];
+    v12 = [[CKConversation alloc] initWithChat:chat];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CKConversation *)v12 recipientStrings];
-      [v16 performSelector:sel_setRecipients_ withObject:v13];
+      recipientStrings = [(CKConversation *)v12 recipientStrings];
+      [controllerCopy performSelector:sel_setRecipients_ withObject:recipientStrings];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(CKConversation *)v12 chat];
-      v15 = [v14 guid];
+      chat2 = [(CKConversation *)v12 chat];
+      guid = [chat2 guid];
 
-      [v16 performSelector:sel_setConversationID_ withObject:v15];
+      [controllerCopy performSelector:sel_setConversationID_ withObject:guid];
     }
   }
 
@@ -325,25 +325,25 @@ LABEL_11:
   [(CKDefaultPluginEntryViewController *)self _loadBalloonView];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentViewController];
-    if (v3)
+    pluginContentViewController = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentViewController];
+    if (pluginContentViewController)
     {
-      [(CKDefaultPluginEntryViewController *)self updateConversationIDAndRecipientsForViewController:v3];
-      [(CKDefaultPluginEntryViewController *)self addChildViewController:v3];
-      [v3 didMoveToParentViewController:self];
+      [(CKDefaultPluginEntryViewController *)self updateConversationIDAndRecipientsForViewController:pluginContentViewController];
+      [(CKDefaultPluginEntryViewController *)self addChildViewController:pluginContentViewController];
+      [pluginContentViewController didMoveToParentViewController:self];
       if (objc_opt_respondsToSelector())
       {
-        [v3 setTintColorDelegate:self];
+        [pluginContentViewController setTintColorDelegate:self];
       }
     }
   }
 
-  v4 = [(CKDefaultPluginEntryViewController *)self view];
-  v5 = [(CKDefaultPluginEntryViewController *)self balloonView];
-  [v4 addSubview:v5];
+  view = [(CKDefaultPluginEntryViewController *)self view];
+  balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
+  [view addSubview:balloonView];
 
-  v6 = [(CKDefaultPluginEntryViewController *)self view];
-  [v6 setNeedsLayout];
+  view2 = [(CKDefaultPluginEntryViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -351,21 +351,21 @@ LABEL_11:
   v13.receiver = self;
   v13.super_class = CKDefaultPluginEntryViewController;
   [(CKDefaultPluginEntryViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(CKDefaultPluginEntryViewController *)self view];
-  [v3 bounds];
+  view = [(CKDefaultPluginEntryViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CKDefaultPluginEntryViewController *)self balloonView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
+  [balloonView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CKDefaultPluginEntryViewController;
-  [(CKDefaultPluginEntryViewController *)&v4 viewWillDisappear:a3];
+  [(CKDefaultPluginEntryViewController *)&v4 viewWillDisappear:disappear];
   if (objc_opt_respondsToSelector())
   {
     [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentViewWillDisappear];
@@ -402,13 +402,13 @@ LABEL_11:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CKDefaultPluginEntryViewController *)self plugin];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69A69E0]];
+  height = fits.height;
+  width = fits.width;
+  plugin = [(CKDefaultPluginEntryViewController *)self plugin];
+  identifier = [plugin identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x1E69A69E0]];
 
   if (v8)
   {
@@ -421,8 +421,8 @@ LABEL_11:
 
   else
   {
-    v13 = [(CKDefaultPluginEntryViewController *)self datasource];
-    [v13 sizeThatFits:{width, height}];
+    datasource = [(CKDefaultPluginEntryViewController *)self datasource];
+    [datasource sizeThatFits:{width, height}];
     v12 = v14;
     v11 = v15;
   }
@@ -436,11 +436,11 @@ LABEL_11:
 
 - (void)payloadWillSend
 {
-  v3 = [(CKDefaultPluginEntryViewController *)self datasource];
-  [v3 setStagingContext:0];
+  datasource = [(CKDefaultPluginEntryViewController *)self datasource];
+  [datasource setStagingContext:0];
 
-  v4 = [(CKDefaultPluginEntryViewController *)self datasource];
-  [v4 setPayloadInShelf:0];
+  datasource2 = [(CKDefaultPluginEntryViewController *)self datasource];
+  [datasource2 setPayloadInShelf:0];
 }
 
 - (BOOL)loadedContentView
@@ -455,75 +455,75 @@ LABEL_11:
   return [(CKTranscriptBalloonPluginController *)pluginBubbleViewController hasSizingInfo];
 }
 
-- (void)setShowsBalloonTail:(BOOL)a3
+- (void)setShowsBalloonTail:(BOOL)tail
 {
-  if (self->_showsBalloonTail != a3)
+  if (self->_showsBalloonTail != tail)
   {
-    v4 = a3;
-    self->_showsBalloonTail = a3;
-    v6 = [(CKDefaultPluginEntryViewController *)self balloonView];
-    [v6 setHasTail:v4];
+    tailCopy = tail;
+    self->_showsBalloonTail = tail;
+    balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
+    [balloonView setHasTail:tailCopy];
 
-    v7 = [(CKDefaultPluginEntryViewController *)self balloonView];
-    [v7 prepareForDisplay];
+    balloonView2 = [(CKDefaultPluginEntryViewController *)self balloonView];
+    [balloonView2 prepareForDisplay];
   }
 }
 
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion
 {
-  v4 = a3;
-  v11 = a4;
-  v6 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-  v7 = [v6 pluginContentViewController];
+  draftCopy = draft;
+  completionCopy = completion;
+  pluginBubbleViewController = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+  pluginContentViewController = [pluginBubbleViewController pluginContentViewController];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-    v10 = [v9 pluginContentViewController];
-    [v10 fetchInternalMessageStateForDraft:v4 completion:v11];
+    pluginBubbleViewController2 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+    pluginContentViewController2 = [pluginBubbleViewController2 pluginContentViewController];
+    [pluginContentViewController2 fetchInternalMessageStateForDraft:draftCopy completion:completionCopy];
   }
 }
 
 - (void)setShouldPerformSendAnimationOnAppear
 {
-  v3 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-  v4 = [v3 pluginContentViewController];
+  pluginBubbleViewController = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+  pluginContentViewController = [pluginBubbleViewController pluginContentViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-    v6 = [v7 pluginContentViewController];
-    [v6 setShouldPerformSendAnimationOnAppear];
+    pluginBubbleViewController2 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+    pluginContentViewController2 = [pluginBubbleViewController2 pluginContentViewController];
+    [pluginContentViewController2 setShouldPerformSendAnimationOnAppear];
   }
 }
 
-- (void)didChangeBackgroundLuminance:(double)a3
+- (void)didChangeBackgroundLuminance:(double)luminance
 {
-  v5 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-  v6 = [v5 pluginContentViewController];
+  pluginBubbleViewController = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+  pluginContentViewController = [pluginBubbleViewController pluginContentViewController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
-    v8 = [v9 pluginContentViewController];
-    [v8 didChangeBackgroundLuminance:a3];
+    pluginBubbleViewController2 = [(CKDefaultPluginEntryViewController *)self pluginBubbleViewController];
+    pluginContentViewController2 = [pluginBubbleViewController2 pluginContentViewController];
+    [pluginContentViewController2 didChangeBackgroundLuminance:luminance];
   }
 }
 
 - (void)pluginTintColorDidUpdate
 {
-  v3 = [(CKDefaultPluginEntryViewController *)self balloonView];
+  balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
 
-  if (v3)
+  if (balloonView)
   {
-    v4 = [(CKDefaultPluginEntryViewController *)self balloonView];
-    [(CKDefaultPluginEntryViewController *)self updateBalloonViewFillColor:v4];
+    balloonView2 = [(CKDefaultPluginEntryViewController *)self balloonView];
+    [(CKDefaultPluginEntryViewController *)self updateBalloonViewFillColor:balloonView2];
 
-    v5 = [(CKDefaultPluginEntryViewController *)self balloonView];
-    [v5 prepareForDisplay];
+    balloonView3 = [(CKDefaultPluginEntryViewController *)self balloonView];
+    [balloonView3 prepareForDisplay];
   }
 }
 
@@ -534,51 +534,51 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [(CKDefaultPluginEntryViewController *)self _imageBalloon];
+      _imageBalloon = [(CKDefaultPluginEntryViewController *)self _imageBalloon];
       balloonView = self->_balloonView;
-      self->_balloonView = v3;
+      self->_balloonView = _imageBalloon;
 
       if (!CKIsRunningInMacCatalyst())
       {
         return;
       }
 
-      v5 = [(CKDefaultPluginEntryViewController *)self contextMenuInteraction];
+      contextMenuInteraction = [(CKDefaultPluginEntryViewController *)self contextMenuInteraction];
 
-      if (!v5)
+      if (!contextMenuInteraction)
       {
         return;
       }
 
       v6 = self->_balloonView;
-      v9 = [(CKDefaultPluginEntryViewController *)self contextMenuInteraction];
-      [(CKBalloonView *)v6 addInteraction:v9];
-      v7 = v9;
+      contextMenuInteraction2 = [(CKDefaultPluginEntryViewController *)self contextMenuInteraction];
+      [(CKBalloonView *)v6 addInteraction:contextMenuInteraction2];
+      v7 = contextMenuInteraction2;
     }
 
     else
     {
-      v8 = [(CKDefaultPluginEntryViewController *)self _transcriptPluginBalloon];
+      _transcriptPluginBalloon = [(CKDefaultPluginEntryViewController *)self _transcriptPluginBalloon];
       v7 = self->_balloonView;
-      self->_balloonView = v8;
+      self->_balloonView = _transcriptPluginBalloon;
     }
   }
 }
 
-- (void)updateBalloonViewFillColor:(id)a3
+- (void)updateBalloonViewFillColor:(id)color
 {
   v4 = *MEMORY[0x1E69A6E08];
   v5 = *(MEMORY[0x1E69A6E08] + 8);
   v6 = *(MEMORY[0x1E69A6E08] + 16);
   v7 = *(MEMORY[0x1E69A6E08] + 24);
-  v14 = a3;
+  colorCopy = color;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController messageTintColor];
-    v9 = v8;
-    if (v8)
+    messageTintColor = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController messageTintColor];
+    v9 = messageTintColor;
+    if (messageTintColor)
     {
-      [v8 ck_imColorComponents];
+      [messageTintColor ck_imColorComponents];
       v4 = v10;
       v5 = v11;
       v6 = v12;
@@ -586,8 +586,8 @@ LABEL_11:
     }
   }
 
-  [v14 setDynamicFillColor:{v4, v5, v6, v7}];
-  [v14 setColor:0xFFFFFFFFLL];
+  [colorCopy setDynamicFillColor:{v4, v5, v6, v7}];
+  [colorCopy setColor:0xFFFFFFFFLL];
 }
 
 - (id)_transcriptPluginBalloon
@@ -609,8 +609,8 @@ LABEL_11:
     v10 = v9;
 
     [v4 setCornerRadius:v7 - v10];
-    v11 = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentView];
-    [v4 setPluginView:v11 pluginController:self];
+    pluginContentView = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentView];
+    [v4 setPluginView:pluginContentView pluginController:self];
 
     [(CKDefaultPluginEntryViewController *)self updateBalloonViewFillColor:v4];
     [v4 setDataSource:self->_datasource];
@@ -626,15 +626,15 @@ LABEL_11:
   return v4;
 }
 
-- (void)liveViewControllerDidUpdateMessageTintColor:(id)a3
+- (void)liveViewControllerDidUpdateMessageTintColor:(id)color
 {
-  v9 = a3;
+  colorCopy = color;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentViewController];
-    if (v4)
+    pluginContentViewController = [(CKTranscriptBalloonPluginController *)self->_pluginBubbleViewController pluginContentViewController];
+    if (pluginContentViewController)
     {
-      v5 = v4 == v9;
+      v5 = pluginContentViewController == colorCopy;
     }
 
     else
@@ -644,22 +644,22 @@ LABEL_11:
 
     if (v5)
     {
-      v6 = [(CKDefaultPluginEntryViewController *)self balloonView];
+      balloonView = [(CKDefaultPluginEntryViewController *)self balloonView];
 
-      if (v6)
+      if (balloonView)
       {
-        v7 = [(CKDefaultPluginEntryViewController *)self balloonView];
-        [(CKDefaultPluginEntryViewController *)self updateBalloonViewFillColor:v7];
+        balloonView2 = [(CKDefaultPluginEntryViewController *)self balloonView];
+        [(CKDefaultPluginEntryViewController *)self updateBalloonViewFillColor:balloonView2];
 
-        v8 = [(CKDefaultPluginEntryViewController *)self balloonView];
-        [v8 prepareForDisplay];
+        balloonView3 = [(CKDefaultPluginEntryViewController *)self balloonView];
+        [balloonView3 prepareForDisplay];
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    pluginContentViewController = 0;
   }
 }
 

@@ -5,11 +5,11 @@
 - (BOOL)trackModeEnabledLocal;
 - (NSNumber)trackId;
 - (void)dealloc;
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 - (void)reset;
-- (void)setCanShowTrackPrompt:(BOOL)a3;
-- (void)setDidShowTrackPrompt:(BOOL)a3;
-- (void)setTrackId:(id)a3;
+- (void)setCanShowTrackPrompt:(BOOL)prompt;
+- (void)setDidShowTrackPrompt:(BOOL)prompt;
+- (void)setTrackId:(id)id;
 @end
 
 @implementation WOCoreTrackRunningCoordinator
@@ -21,11 +21,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCanShowTrackPrompt:(BOOL)a3
+- (void)setCanShowTrackPrompt:(BOOL)prompt
 {
   v5 = OBJC_IVAR___WOCoreTrackRunningCoordinator_canShowTrackPrompt;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = prompt;
 }
 
 - (BOOL)didShowTrackPrompt
@@ -35,18 +35,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDidShowTrackPrompt:(BOOL)a3
+- (void)setDidShowTrackPrompt:(BOOL)prompt
 {
   v5 = OBJC_IVAR___WOCoreTrackRunningCoordinator_didShowTrackPrompt;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = prompt;
 }
 
 - (BOOL)trackModeEnabledLocal
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
@@ -59,13 +59,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTrackId:(id)a3
+- (void)setTrackId:(id)id
 {
   v5 = OBJC_IVAR___WOCoreTrackRunningCoordinator_trackId;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = id;
+  idCopy = id;
 }
 
 + (WOCoreTrackRunningCoordinator)shared
@@ -83,23 +83,23 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOCoreTrackRunningCoordinator_domain);
-  v3 = self;
+  selfCopy = self;
   [v2 stopObservation_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for TrackRunningCoordinator();
   [(WOCoreTrackRunningCoordinator *)&v4 dealloc];
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   TrackRunningCoordinator.reset()();
 }
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v4 = a3;
-  v5 = self;
+  domainCopy = domain;
+  selfCopy = self;
   specialized TrackRunningCoordinator.keyValueDomain(didUpdate:)();
 }
 

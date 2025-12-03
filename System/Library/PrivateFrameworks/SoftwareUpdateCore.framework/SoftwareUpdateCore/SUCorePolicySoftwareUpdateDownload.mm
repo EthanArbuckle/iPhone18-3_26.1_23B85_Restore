@@ -1,16 +1,16 @@
 @interface SUCorePolicySoftwareUpdateDownload
-- (BOOL)isEqual:(id)a3;
-- (SUCorePolicySoftwareUpdateDownload)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUCorePolicySoftwareUpdateDownload)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)backToDefaultsWithSkipPhaseSet:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)backToDefaultsWithSkipPhaseSet:(BOOL)set;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCorePolicySoftwareUpdateDownload
 
-- (void)backToDefaultsWithSkipPhaseSet:(BOOL)a3
+- (void)backToDefaultsWithSkipPhaseSet:(BOOL)set
 {
   *&self->_allowsCellular = 0;
   self->_disableUI = 0;
@@ -18,29 +18,29 @@
   self->_downloadTimeoutSecs = 120;
   self->_specifiedFields = 0;
   self->_maxPreSUStagingOptionalSize = -1;
-  self->_skipPhase = a3;
+  self->_skipPhase = set;
   additionalOptions = self->_additionalOptions;
   self->_additionalOptions = 0;
   MEMORY[0x2821F96F8]();
 }
 
-- (SUCorePolicySoftwareUpdateDownload)initWithCoder:(id)a3
+- (SUCorePolicySoftwareUpdateDownload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SUCorePolicySoftwareUpdateDownload;
   v5 = [(SUCorePolicySoftwareUpdateDownload *)&v8 init];
   if (v5)
   {
-    v5->_specifiedFields = [v4 decodeInt64ForKey:@"SpecifiedFields"];
-    v5->_allowsCellular = [v4 decodeBoolForKey:@"AllowsCellular"];
-    v5->_discretionary = [v4 decodeBoolForKey:@"Discretionary"];
-    v5->_disableUI = [v4 decodeBoolForKey:@"DisableUI"];
-    v5->_requiresPowerPluggedIn = [v4 decodeBoolForKey:@"RequiresPowerPluggedIn"];
-    v5->_downloadTimeoutSecs = [v4 decodeIntForKey:@"SoftwareUpdateAssetDownloadTimeoutSecs"];
-    v5->_requiresInexpensiveAccess = [v4 decodeBoolForKey:@"RequiresInexpensiveAccess"];
-    v5->_maxPreSUStagingOptionalSize = [v4 decodeInt64ForKey:@"MaxPSUSOptionalSize"];
-    v5->_skipPhase = [v4 decodeBoolForKey:@"SkipPhase"];
+    v5->_specifiedFields = [coderCopy decodeInt64ForKey:@"SpecifiedFields"];
+    v5->_allowsCellular = [coderCopy decodeBoolForKey:@"AllowsCellular"];
+    v5->_discretionary = [coderCopy decodeBoolForKey:@"Discretionary"];
+    v5->_disableUI = [coderCopy decodeBoolForKey:@"DisableUI"];
+    v5->_requiresPowerPluggedIn = [coderCopy decodeBoolForKey:@"RequiresPowerPluggedIn"];
+    v5->_downloadTimeoutSecs = [coderCopy decodeIntForKey:@"SoftwareUpdateAssetDownloadTimeoutSecs"];
+    v5->_requiresInexpensiveAccess = [coderCopy decodeBoolForKey:@"RequiresInexpensiveAccess"];
+    v5->_maxPreSUStagingOptionalSize = [coderCopy decodeInt64ForKey:@"MaxPSUSOptionalSize"];
+    v5->_skipPhase = [coderCopy decodeBoolForKey:@"SkipPhase"];
     additionalOptions = v5->_additionalOptions;
     v5->_additionalOptions = 0;
   }
@@ -48,31 +48,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SUCorePolicySoftwareUpdateDownload specifiedFields](self forKey:{"specifiedFields"), @"SpecifiedFields"}];
-  [v4 encodeBool:-[SUCorePolicySoftwareUpdateDownload allowsCellular](self forKey:{"allowsCellular"), @"AllowsCellular"}];
-  [v4 encodeBool:-[SUCorePolicySoftwareUpdateDownload discretionary](self forKey:{"discretionary"), @"Discretionary"}];
-  [v4 encodeBool:-[SUCorePolicySoftwareUpdateDownload disableUI](self forKey:{"disableUI"), @"DisableUI"}];
-  [v4 encodeBool:-[SUCorePolicySoftwareUpdateDownload requiresPowerPluggedIn](self forKey:{"requiresPowerPluggedIn"), @"RequiresPowerPluggedIn"}];
-  [v4 encodeInt:-[SUCorePolicySoftwareUpdateDownload downloadTimeoutSecs](self forKey:{"downloadTimeoutSecs"), @"SoftwareUpdateAssetDownloadTimeoutSecs"}];
-  [v4 encodeBool:-[SUCorePolicySoftwareUpdateDownload requiresInexpensiveAccess](self forKey:{"requiresInexpensiveAccess"), @"RequiresInexpensiveAccess"}];
-  [v4 encodeInt64:-[SUCorePolicySoftwareUpdateDownload maxPreSUStagingOptionalSize](self forKey:{"maxPreSUStagingOptionalSize"), @"MaxPSUSOptionalSize"}];
-  [v4 encodeBool:-[SUCorePolicySoftwareUpdateDownload skipPhase](self forKey:{"skipPhase"), @"SkipPhase"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SUCorePolicySoftwareUpdateDownload specifiedFields](self forKey:{"specifiedFields"), @"SpecifiedFields"}];
+  [coderCopy encodeBool:-[SUCorePolicySoftwareUpdateDownload allowsCellular](self forKey:{"allowsCellular"), @"AllowsCellular"}];
+  [coderCopy encodeBool:-[SUCorePolicySoftwareUpdateDownload discretionary](self forKey:{"discretionary"), @"Discretionary"}];
+  [coderCopy encodeBool:-[SUCorePolicySoftwareUpdateDownload disableUI](self forKey:{"disableUI"), @"DisableUI"}];
+  [coderCopy encodeBool:-[SUCorePolicySoftwareUpdateDownload requiresPowerPluggedIn](self forKey:{"requiresPowerPluggedIn"), @"RequiresPowerPluggedIn"}];
+  [coderCopy encodeInt:-[SUCorePolicySoftwareUpdateDownload downloadTimeoutSecs](self forKey:{"downloadTimeoutSecs"), @"SoftwareUpdateAssetDownloadTimeoutSecs"}];
+  [coderCopy encodeBool:-[SUCorePolicySoftwareUpdateDownload requiresInexpensiveAccess](self forKey:{"requiresInexpensiveAccess"), @"RequiresInexpensiveAccess"}];
+  [coderCopy encodeInt64:-[SUCorePolicySoftwareUpdateDownload maxPreSUStagingOptionalSize](self forKey:{"maxPreSUStagingOptionalSize"), @"MaxPSUSOptionalSize"}];
+  [coderCopy encodeBool:-[SUCorePolicySoftwareUpdateDownload skipPhase](self forKey:{"skipPhase"), @"SkipPhase"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAllowsCellular:{-[SUCorePolicySoftwareUpdateDownload allowsCellular](self, "allowsCellular")}];
   [v5 setDiscretionary:{-[SUCorePolicySoftwareUpdateDownload discretionary](self, "discretionary")}];
   [v5 setDisableUI:{-[SUCorePolicySoftwareUpdateDownload disableUI](self, "disableUI")}];
   [v5 setSkipPhase:{-[SUCorePolicySoftwareUpdateDownload requiresPowerPluggedIn](self, "requiresPowerPluggedIn")}];
   [v5 setRequiresPowerPluggedIn:{-[SUCorePolicySoftwareUpdateDownload requiresPowerPluggedIn](self, "requiresPowerPluggedIn")}];
   [v5 setDownloadTimeoutSecs:{-[SUCorePolicySoftwareUpdateDownload downloadTimeoutSecs](self, "downloadTimeoutSecs")}];
-  v6 = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
-  v7 = [v6 copyWithZone:a3];
+  additionalOptions = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
+  v7 = [additionalOptions copyWithZone:zone];
   [v5 setAdditionalOptions:v7];
 
   [v5 setRequiresInexpensiveAccess:{-[SUCorePolicySoftwareUpdateDownload requiresInexpensiveAccess](self, "requiresInexpensiveAccess")}];
@@ -81,10 +81,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -94,12 +94,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCorePolicySoftwareUpdateDownload *)v5 allowsCellular];
-      if (v6 == [(SUCorePolicySoftwareUpdateDownload *)self allowsCellular]&& (v7 = [(SUCorePolicySoftwareUpdateDownload *)v5 discretionary], v7 == [(SUCorePolicySoftwareUpdateDownload *)self discretionary]) && (v8 = [(SUCorePolicySoftwareUpdateDownload *)v5 disableUI], v8 == [(SUCorePolicySoftwareUpdateDownload *)self disableUI]) && (v9 = [(SUCorePolicySoftwareUpdateDownload *)v5 skipPhase], v9 == [(SUCorePolicySoftwareUpdateDownload *)self skipPhase]) && (v10 = [(SUCorePolicySoftwareUpdateDownload *)v5 requiresPowerPluggedIn], v10 == [(SUCorePolicySoftwareUpdateDownload *)self requiresPowerPluggedIn]) && (v11 = [(SUCorePolicySoftwareUpdateDownload *)v5 downloadTimeoutSecs], v11 == [(SUCorePolicySoftwareUpdateDownload *)self downloadTimeoutSecs]) && (v12 = [(SUCorePolicySoftwareUpdateDownload *)v5 requiresInexpensiveAccess], v12 == [(SUCorePolicySoftwareUpdateDownload *)self requiresInexpensiveAccess]) && (v13 = [(SUCorePolicySoftwareUpdateDownload *)v5 specifiedFields], v13 == [(SUCorePolicySoftwareUpdateDownload *)self specifiedFields]))
+      v5 = equalCopy;
+      allowsCellular = [(SUCorePolicySoftwareUpdateDownload *)v5 allowsCellular];
+      if (allowsCellular == [(SUCorePolicySoftwareUpdateDownload *)self allowsCellular]&& (v7 = [(SUCorePolicySoftwareUpdateDownload *)v5 discretionary], v7 == [(SUCorePolicySoftwareUpdateDownload *)self discretionary]) && (v8 = [(SUCorePolicySoftwareUpdateDownload *)v5 disableUI], v8 == [(SUCorePolicySoftwareUpdateDownload *)self disableUI]) && (v9 = [(SUCorePolicySoftwareUpdateDownload *)v5 skipPhase], v9 == [(SUCorePolicySoftwareUpdateDownload *)self skipPhase]) && (v10 = [(SUCorePolicySoftwareUpdateDownload *)v5 requiresPowerPluggedIn], v10 == [(SUCorePolicySoftwareUpdateDownload *)self requiresPowerPluggedIn]) && (v11 = [(SUCorePolicySoftwareUpdateDownload *)v5 downloadTimeoutSecs], v11 == [(SUCorePolicySoftwareUpdateDownload *)self downloadTimeoutSecs]) && (v12 = [(SUCorePolicySoftwareUpdateDownload *)v5 requiresInexpensiveAccess], v12 == [(SUCorePolicySoftwareUpdateDownload *)self requiresInexpensiveAccess]) && (v13 = [(SUCorePolicySoftwareUpdateDownload *)v5 specifiedFields], v13 == [(SUCorePolicySoftwareUpdateDownload *)self specifiedFields]))
       {
-        v14 = [(SUCorePolicySoftwareUpdateDownload *)v5 maxPreSUStagingOptionalSize];
-        v15 = v14 == [(SUCorePolicySoftwareUpdateDownload *)self maxPreSUStagingOptionalSize];
+        maxPreSUStagingOptionalSize = [(SUCorePolicySoftwareUpdateDownload *)v5 maxPreSUStagingOptionalSize];
+        v15 = maxPreSUStagingOptionalSize == [(SUCorePolicySoftwareUpdateDownload *)self maxPreSUStagingOptionalSize];
       }
 
       else
@@ -120,7 +120,7 @@
 - (id)description
 {
   v16 = MEMORY[0x277CCACA8];
-  v15 = [(SUCorePolicySoftwareUpdateDownload *)self specifiedFields];
+  specifiedFields = [(SUCorePolicySoftwareUpdateDownload *)self specifiedFields];
   v3 = @"NO";
   if ([(SUCorePolicySoftwareUpdateDownload *)self skipPhase])
   {
@@ -172,23 +172,23 @@
     v8 = @"NO";
   }
 
-  v9 = [(SUCorePolicySoftwareUpdateDownload *)self downloadTimeoutSecs];
+  downloadTimeoutSecs = [(SUCorePolicySoftwareUpdateDownload *)self downloadTimeoutSecs];
   if ([(SUCorePolicySoftwareUpdateDownload *)self requiresInexpensiveAccess])
   {
     v3 = @"YES";
   }
 
-  v10 = [(SUCorePolicySoftwareUpdateDownload *)self maxPreSUStagingOptionalSize];
-  v11 = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
-  if (v11)
+  maxPreSUStagingOptionalSize = [(SUCorePolicySoftwareUpdateDownload *)self maxPreSUStagingOptionalSize];
+  additionalOptions = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
+  if (additionalOptions)
   {
-    v12 = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
-    v13 = [v16 stringWithFormat:@"SUCorePolicySoftwareUpdateDownload(specifiedFields:0x%llX|skipPhase:%@|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|requiresInexpensiveAccess:%@|maxPreSUStagingOptionalSize:%lld|additionalOptions:%@)", v15, v4, v5, v6, v7, v8, v9, v3, v10, v12];
+    additionalOptions2 = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
+    v13 = [v16 stringWithFormat:@"SUCorePolicySoftwareUpdateDownload(specifiedFields:0x%llX|skipPhase:%@|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|requiresInexpensiveAccess:%@|maxPreSUStagingOptionalSize:%lld|additionalOptions:%@)", specifiedFields, v4, v5, v6, v7, v8, downloadTimeoutSecs, v3, maxPreSUStagingOptionalSize, additionalOptions2];
   }
 
   else
   {
-    v13 = [v16 stringWithFormat:@"SUCorePolicySoftwareUpdateDownload(specifiedFields:0x%llX|skipPhase:%@|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|requiresInexpensiveAccess:%@|maxPreSUStagingOptionalSize:%lld|additionalOptions:%@)", v15, v4, v5, v6, v7, v8, v9, v3, v10, @"none"];
+    v13 = [v16 stringWithFormat:@"SUCorePolicySoftwareUpdateDownload(specifiedFields:0x%llX|skipPhase:%@|allowsCellular:%@|discretionary:%@|disableUI:%@|requiresPowerPluggedIn:%@|downloadTimeoutSecs:%d|requiresInexpensiveAccess:%@|maxPreSUStagingOptionalSize:%lld|additionalOptions:%@)", specifiedFields, v4, v5, v6, v7, v8, downloadTimeoutSecs, v3, maxPreSUStagingOptionalSize, @"none"];
   }
 
   return v13;
@@ -269,8 +269,8 @@
 
   v15 = [v9 stringByAppendingFormat:@"|maxPSUSOptSize=%lld", -[SUCorePolicySoftwareUpdateDownload maxPreSUStagingOptionalSize](self, "maxPreSUStagingOptionalSize")];
 
-  v16 = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
-  if (v16)
+  additionalOptions = [(SUCorePolicySoftwareUpdateDownload *)self additionalOptions];
+  if (additionalOptions)
   {
     v17 = @"|withAdditionalOptions";
   }

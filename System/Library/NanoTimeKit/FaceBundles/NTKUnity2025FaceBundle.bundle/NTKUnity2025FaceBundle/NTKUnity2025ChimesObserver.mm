@@ -2,7 +2,7 @@
 + (NTKUnity2025ChimesObserver)sharedInstance;
 - (NTKUnity2025ChimesObserver)init;
 - (void)dealloc;
-- (void)faceCollection:(id)a3 didSelectFace:(id)a4 atIndex:(unint64_t)a5;
+- (void)faceCollection:(id)collection didSelectFace:(id)face atIndex:(unint64_t)index;
 @end
 
 @implementation NTKUnity2025ChimesObserver
@@ -59,10 +59,10 @@
   [(NTKUnity2025ChimesObserver *)&v4 dealloc];
 }
 
-- (void)faceCollection:(id)a3 didSelectFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didSelectFace:(id)face atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  faceCopy = face;
   v6 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -70,13 +70,13 @@
     _os_log_impl(&dword_23C099000, v6, OS_LOG_TYPE_DEFAULT, "Unity2025: Face collection changed selected face", &v15, 2u);
   }
 
-  v7 = [v5 bundleIdentifier];
+  bundleIdentifier = [faceCopy bundleIdentifier];
 
   v8 = +[(NTKFaceBundle *)NTKUnity2025FaceBundle];
-  v9 = [v7 isEqual:v8];
+  v9 = [bundleIdentifier isEqual:v8];
 
-  v10 = [MEMORY[0x277CE6FA8] sharedInstance];
-  LODWORD(v8) = [v10 voiceOverTapticChimesUnity25Active];
+  mEMORY[0x277CE6FA8] = [MEMORY[0x277CE6FA8] sharedInstance];
+  LODWORD(v8) = [mEMORY[0x277CE6FA8] voiceOverTapticChimesUnity25Active];
 
   if (v9 != v8)
   {
@@ -89,8 +89,8 @@
       _os_log_impl(&dword_23C099000, v11, OS_LOG_TYPE_DEFAULT, "Unity2025: Set Unity chimes active preference to %@", &v15, 0xCu);
     }
 
-    v13 = [MEMORY[0x277CE6FA8] sharedInstance];
-    [v13 setVoiceOverTapticChimesUnity25Active:v9];
+    mEMORY[0x277CE6FA8]2 = [MEMORY[0x277CE6FA8] sharedInstance];
+    [mEMORY[0x277CE6FA8]2 setVoiceOverTapticChimesUnity25Active:v9];
   }
 
   v14 = *MEMORY[0x277D85DE8];

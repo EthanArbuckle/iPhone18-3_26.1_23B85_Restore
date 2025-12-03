@@ -1,18 +1,18 @@
 @interface NPKDoublePressDelegationAssertion
-- (NPKDoublePressDelegationAssertion)initWithQueue:(id)a3;
+- (NPKDoublePressDelegationAssertion)initWithQueue:(id)queue;
 - (NPKDoublePressDelegationAssertionDelegate)delegate;
 - (void)_resyncState;
-- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)a3;
-- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)a3;
+- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)source;
+- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)d;
 @end
 
 @implementation NPKDoublePressDelegationAssertion
 
-- (NPKDoublePressDelegationAssertion)initWithQueue:(id)a3
+- (NPKDoublePressDelegationAssertion)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = NPKDoublePressDelegationAssertion;
-  v3 = [(NPKTransientAssertion *)&v6 initWithQueue:a3];
+  v3 = [(NPKTransientAssertion *)&v6 initWithQueue:queue];
   v4 = v3;
   if (v3)
   {
@@ -22,7 +22,7 @@
   return v4;
 }
 
-- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)a3
+- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)source
 {
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -37,13 +37,13 @@
     }
   }
 
-  v8 = [(NPKDoublePressDelegationAssertion *)self delegate];
-  [v8 doublePressDelegationAssertionDidReceiveDelegatedDoublePressEvent:self authIntentSource:a3];
+  delegate = [(NPKDoublePressDelegationAssertion *)self delegate];
+  [delegate doublePressDelegationAssertionDidReceiveDelegatedDoublePressEvent:self authIntentSource:source];
 }
 
-- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)a3
+- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -57,8 +57,8 @@
     }
   }
 
-  v8 = [(NPKDoublePressDelegationAssertion *)self delegate];
-  [v8 doublePressDelegationAssertion:self didReceiveTerminalAuthenticationRequestForPassWithUniqueID:v4];
+  delegate = [(NPKDoublePressDelegationAssertion *)self delegate];
+  [delegate doublePressDelegationAssertion:self didReceiveTerminalAuthenticationRequestForPassWithUniqueID:dCopy];
 }
 
 - (void)_resyncState
@@ -76,8 +76,8 @@
     }
   }
 
-  v6 = [(NPKTransientAssertion *)self _remoteObjectProxy];
-  [v6 setDoublePressDelegationRequested:1];
+  _remoteObjectProxy = [(NPKTransientAssertion *)self _remoteObjectProxy];
+  [_remoteObjectProxy setDoublePressDelegationRequested:1];
 }
 
 - (NPKDoublePressDelegationAssertionDelegate)delegate

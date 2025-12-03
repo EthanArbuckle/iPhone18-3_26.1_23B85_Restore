@@ -1,11 +1,11 @@
 @interface ULEventMonitor
 - (ULEventMonitor)init;
-- (unint64_t)getNumberOfObserversForEventName:(id)a3;
-- (void)addObserver:(const void *)a3 eventName:(id)a4 handler:(id)a5;
+- (unint64_t)getNumberOfObserversForEventName:(id)name;
+- (void)addObserver:(const void *)observer eventName:(id)name handler:(id)handler;
 - (void)dealloc;
-- (void)postEvent:(id)a3;
-- (void)removeObserver:(const void *)a3;
-- (void)removeObserver:(const void *)a3 fromEventName:(id)a4;
+- (void)postEvent:(id)event;
+- (void)removeObserver:(const void *)observer;
+- (void)removeObserver:(const void *)observer fromEventName:(id)name;
 @end
 
 @implementation ULEventMonitor
@@ -21,8 +21,8 @@
     v4 = dispatch_queue_create("com.apple.milod.ULEventMonitor", v3);
     [(ULEventMonitor *)v2 setQueue:v4];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [(ULEventMonitor *)v2 setObserversMap:v5];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ULEventMonitor *)v2 setObserversMap:dictionary];
   }
 
   return v2;
@@ -35,10 +35,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(ULEventMonitor *)self observersMap];
-  v4 = [v3 allKeys];
+  observersMap = [(ULEventMonitor *)self observersMap];
+  allKeys = [observersMap allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -50,14 +50,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         [(ULEventMonitor *)self stopMonitoring:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -69,25 +69,25 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(const void *)a3 eventName:(id)a4 handler:(id)a5
+- (void)addObserver:(const void *)observer eventName:(id)name handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_not_V2(v10);
+  nameCopy = name;
+  handlerCopy = handler;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v11 = [(ULEventMonitor *)self queue];
+  queue2 = [(ULEventMonitor *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__ULEventMonitor_addObserver_eventName_handler___block_invoke;
   v14[3] = &unk_2798DA5A0;
-  v16 = v9;
-  v17 = a3;
+  v16 = handlerCopy;
+  observerCopy = observer;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  dispatch_sync(v11, v14);
+  v15 = nameCopy;
+  v12 = nameCopy;
+  v13 = handlerCopy;
+  dispatch_sync(queue2, v14);
 }
 
 void __48__ULEventMonitor_addObserver_eventName_handler___block_invoke(uint64_t a1)
@@ -151,19 +151,19 @@ uint64_t __48__ULEventMonitor_addObserver_eventName_handler___block_invoke_2(uin
   return result;
 }
 
-- (void)removeObserver:(const void *)a3
+- (void)removeObserver:(const void *)observer
 {
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULEventMonitor *)self queue];
+  queue2 = [(ULEventMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ULEventMonitor_removeObserver___block_invoke;
   v7[3] = &unk_2798DA618;
   v7[4] = self;
-  v7[5] = a3;
-  dispatch_sync(v6, v7);
+  v7[5] = observer;
+  dispatch_sync(queue2, v7);
 }
 
 void __33__ULEventMonitor_removeObserver___block_invoke(uint64_t a1)
@@ -218,22 +218,22 @@ uint64_t __33__ULEventMonitor_removeObserver___block_invoke_3(uint64_t a1, void 
   return MEMORY[0x2821F9730]();
 }
 
-- (void)removeObserver:(const void *)a3 fromEventName:(id)a4
+- (void)removeObserver:(const void *)observer fromEventName:(id)name
 {
-  v6 = a4;
-  v7 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v8 = [(ULEventMonitor *)self queue];
+  queue2 = [(ULEventMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__ULEventMonitor_removeObserver_fromEventName___block_invoke;
   block[3] = &unk_2798DA668;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v11 = nameCopy;
+  observerCopy = observer;
+  v9 = nameCopy;
+  dispatch_sync(queue2, block);
 }
 
 void __47__ULEventMonitor_removeObserver_fromEventName___block_invoke(uint64_t a1)
@@ -284,22 +284,22 @@ uint64_t __47__ULEventMonitor_removeObserver_fromEventName___block_invoke_26(voi
   return result;
 }
 
-- (void)postEvent:(id)a3
+- (void)postEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ULEventMonitor *)self observersMap];
-  v7 = [v4 name];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  observersMap = [(ULEventMonitor *)self observersMap];
+  name = [eventCopy name];
+  v8 = [observersMap objectForKeyedSubscript:name];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __28__ULEventMonitor_postEvent___block_invoke;
   v10[3] = &unk_2798DA690;
-  v11 = v4;
-  v9 = v4;
+  v11 = eventCopy;
+  v9 = eventCopy;
   [v8 enumerateObjectsUsingBlock:v10];
 }
 
@@ -315,14 +315,14 @@ void __28__ULEventMonitor_postEvent___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (unint64_t)getNumberOfObserversForEventName:(id)a3
+- (unint64_t)getNumberOfObserversForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ULEventMonitor *)self observersMap];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  observersMap = [(ULEventMonitor *)self observersMap];
+  v7 = [observersMap objectForKeyedSubscript:nameCopy];
 
   v8 = [v7 count];
   return v8;

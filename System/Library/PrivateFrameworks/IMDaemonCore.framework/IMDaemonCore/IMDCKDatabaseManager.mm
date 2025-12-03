@@ -9,7 +9,7 @@
 - (id)nickNamePublicDatabase;
 - (id)truthDatabase;
 - (id)truthPublicDatabase;
-- (void)fetchCurrentUserForNicknameContainer:(id)a3;
+- (void)fetchCurrentUserForNicknameContainer:(id)container;
 @end
 
 @implementation IMDCKDatabaseManager
@@ -52,10 +52,10 @@
   if (v2 && (IMIsRunningInUnitTesting() & 1) == 0)
   {
     v3 = +[IMDCKUtilities sharedInstance];
-    v4 = [v3 shouldUseDevContainer];
+    shouldUseDevContainer = [v3 shouldUseDevContainer];
 
     v5 = IMOSLoggingEnabled();
-    if (v4)
+    if (shouldUseDevContainer)
     {
       if (v5)
       {
@@ -118,8 +118,8 @@
   v2 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v3 = [v2 objectForKey:@"use-old-nickname-container"];
   v4 = [v3 unsignedIntegerValue] != 0;
-  v5 = [MEMORY[0x277D1A990] sharedInstance];
-  v6 = [v5 getBoolFromDomain:*MEMORY[0x277D1A3C0] forKey:@"UseOldProfilesContainer"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v6 = [mEMORY[0x277D1A990] getBoolFromDomain:*MEMORY[0x277D1A3C0] forKey:@"UseOldProfilesContainer"];
 
   v7 = v6 | v4;
   if (IMOSLoggingEnabled())
@@ -168,12 +168,12 @@
   nickNameContainer = self->_nickNameContainer;
   if (!nickNameContainer)
   {
-    v4 = [(IMDCKDatabaseManager *)self _nickNameContainerIdentifier];
+    _nickNameContainerIdentifier = [(IMDCKDatabaseManager *)self _nickNameContainerIdentifier];
     v5 = +[IMDCKUtilities sharedInstance];
-    v6 = [v5 shouldUseDevNickNameContainer];
+    shouldUseDevNickNameContainer = [v5 shouldUseDevNickNameContainer];
 
     v7 = IMOSLoggingEnabled();
-    if (v6)
+    if (shouldUseDevNickNameContainer)
     {
       if (v7)
       {
@@ -181,7 +181,7 @@
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v18 = 138412290;
-          v19 = v4;
+          v19 = _nickNameContainerIdentifier;
           _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "**** Initializing dev nick name container with ID %@", &v18, 0xCu);
         }
       }
@@ -197,7 +197,7 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v18 = 138412290;
-          v19 = v4;
+          v19 = _nickNameContainerIdentifier;
           _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Initializing production container %@", &v18, 0xCu);
         }
       }
@@ -205,7 +205,7 @@
       v9 = 1;
     }
 
-    v11 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:v4 environment:v9];
+    v11 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:_nickNameContainerIdentifier environment:v9];
     v12 = objc_alloc_init(MEMORY[0x277CBC230]);
     [v12 setUseZoneWidePCS:1];
     v13 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v11 options:v12];
@@ -223,34 +223,34 @@
 
 - (id)truthDatabase
 {
-  v2 = [(IMDCKDatabaseManager *)self truthContainer];
-  v3 = [v2 privateCloudDatabase];
+  truthContainer = [(IMDCKDatabaseManager *)self truthContainer];
+  privateCloudDatabase = [truthContainer privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (id)truthPublicDatabase
 {
-  v2 = [(IMDCKDatabaseManager *)self truthContainer];
-  v3 = [v2 publicCloudDatabase];
+  truthContainer = [(IMDCKDatabaseManager *)self truthContainer];
+  publicCloudDatabase = [truthContainer publicCloudDatabase];
 
-  return v3;
+  return publicCloudDatabase;
 }
 
 - (id)manateeDataBase
 {
-  v2 = [(IMDCKDatabaseManager *)self manateeContainer];
-  v3 = [v2 privateCloudDatabase];
+  manateeContainer = [(IMDCKDatabaseManager *)self manateeContainer];
+  privateCloudDatabase = [manateeContainer privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (id)nickNamePublicDatabase
 {
   if (IMSharedHelperNickNameEnabled())
   {
-    v3 = [(IMDCKDatabaseManager *)self _nickNameContainer];
-    v4 = [v3 publicCloudDatabase];
+    _nickNameContainer = [(IMDCKDatabaseManager *)self _nickNameContainer];
+    publicCloudDatabase = [_nickNameContainer publicCloudDatabase];
   }
 
   else
@@ -265,23 +265,23 @@
       }
     }
 
-    v4 = 0;
+    publicCloudDatabase = 0;
   }
 
-  return v4;
+  return publicCloudDatabase;
 }
 
-- (void)fetchCurrentUserForNicknameContainer:(id)a3
+- (void)fetchCurrentUserForNicknameContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(IMDCKDatabaseManager *)self _nickNameContainer];
+  containerCopy = container;
+  _nickNameContainer = [(IMDCKDatabaseManager *)self _nickNameContainer];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22B61B180;
   v7[3] = &unk_278706678;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchUserRecordIDWithCompletionHandler:v7];
+  v8 = containerCopy;
+  v6 = containerCopy;
+  [_nickNameContainer fetchUserRecordIDWithCompletionHandler:v7];
 }
 
 @end

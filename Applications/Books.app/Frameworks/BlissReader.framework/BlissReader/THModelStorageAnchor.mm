@@ -1,33 +1,33 @@
 @interface THModelStorageAnchor
-+ (THModelStorageAnchor)storageAnchorWithContentNode:(id)a3 pageLocation:(id)a4;
-+ (THModelStorageAnchor)storageAnchorWithContentNode:(id)a3 storage:(id)a4 range:(_NSRange)a5;
-+ (THModelStorageAnchor)storageAnchorWithContentNode:(id)a3 storageUID:(id)a4 range:(_NSRange)a5;
-+ (THModelStorageAnchor)storageAnchorWithGlossaryEntry:(id)a3 storageUID:(id)a4 range:(_NSRange)a5;
-- (THModelStorageAnchor)initWithContentNode:(id)a3 pageLocation:(id)a4;
-- (THModelStorageAnchor)initWithContentNode:(id)a3 storage:(id)a4 range:(_NSRange)a5;
-- (THModelStorageAnchor)initWithContentNode:(id)a3 storageUID:(id)a4 range:(_NSRange)a5;
-- (THModelStorageAnchor)initWithGlossaryEntry:(id)a3 storageUID:(id)a4 range:(_NSRange)a5;
++ (THModelStorageAnchor)storageAnchorWithContentNode:(id)node pageLocation:(id)location;
++ (THModelStorageAnchor)storageAnchorWithContentNode:(id)node storage:(id)storage range:(_NSRange)range;
++ (THModelStorageAnchor)storageAnchorWithContentNode:(id)node storageUID:(id)d range:(_NSRange)range;
++ (THModelStorageAnchor)storageAnchorWithGlossaryEntry:(id)entry storageUID:(id)d range:(_NSRange)range;
+- (THModelStorageAnchor)initWithContentNode:(id)node pageLocation:(id)location;
+- (THModelStorageAnchor)initWithContentNode:(id)node storage:(id)storage range:(_NSRange)range;
+- (THModelStorageAnchor)initWithContentNode:(id)node storageUID:(id)d range:(_NSRange)range;
+- (THModelStorageAnchor)initWithGlossaryEntry:(id)entry storageUID:(id)d range:(_NSRange)range;
 - (THWPStorage)storage;
 - (_NSRange)range;
 - (id)description;
 - (unint64_t)absolutePageIndex;
 - (void)dealloc;
-- (void)setAbsolutePageIndex:(unint64_t)a3;
+- (void)setAbsolutePageIndex:(unint64_t)index;
 @end
 
 @implementation THModelStorageAnchor
 
-- (THModelStorageAnchor)initWithContentNode:(id)a3 storageUID:(id)a4 range:(_NSRange)a5
+- (THModelStorageAnchor)initWithContentNode:(id)node storageUID:(id)d range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v11.receiver = self;
   v11.super_class = THModelStorageAnchor;
-  v8 = [(THModelBoundAnchor *)&v11 initWithContentNode:a3];
+  v8 = [(THModelBoundAnchor *)&v11 initWithContentNode:node];
   v9 = v8;
   if (v8)
   {
-    [(THModelStorageAnchor *)v8 setStorageUID:a4];
+    [(THModelStorageAnchor *)v8 setStorageUID:d];
     [(THModelStorageAnchor *)v9 setRange:location, length];
     [(THModelStorageAnchor *)v9 setNodeRelativePageIndex:0x7FFFFFFFFFFFFFFFLL];
   }
@@ -35,17 +35,17 @@
   return v9;
 }
 
-- (THModelStorageAnchor)initWithGlossaryEntry:(id)a3 storageUID:(id)a4 range:(_NSRange)a5
+- (THModelStorageAnchor)initWithGlossaryEntry:(id)entry storageUID:(id)d range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v11.receiver = self;
   v11.super_class = THModelStorageAnchor;
-  v8 = [(THModelBoundAnchor *)&v11 initWithGlossaryEntry:a3];
+  v8 = [(THModelBoundAnchor *)&v11 initWithGlossaryEntry:entry];
   v9 = v8;
   if (v8)
   {
-    [(THModelStorageAnchor *)v8 setStorageUID:a4];
+    [(THModelStorageAnchor *)v8 setStorageUID:d];
     [(THModelStorageAnchor *)v9 setRange:location, length];
     [(THModelStorageAnchor *)v9 setNodeRelativePageIndex:0x7FFFFFFFFFFFFFFFLL];
   }
@@ -53,17 +53,17 @@
   return v9;
 }
 
-- (THModelStorageAnchor)initWithContentNode:(id)a3 storage:(id)a4 range:(_NSRange)a5
+- (THModelStorageAnchor)initWithContentNode:(id)node storage:(id)storage range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = [a3 nodeUniqueIDForInfo:a4];
+  length = range.length;
+  location = range.location;
+  v8 = [node nodeUniqueIDForInfo:storage];
   if (v8)
   {
     v9 = v8;
     v10 = objc_alloc(objc_opt_class());
 
-    return [v10 initWithContentNode:a3 storageUID:v9 range:{location, length}];
+    return [v10 initWithContentNode:node storageUID:v9 range:{location, length}];
   }
 
   else
@@ -73,24 +73,24 @@
   }
 }
 
-+ (THModelStorageAnchor)storageAnchorWithContentNode:(id)a3 storage:(id)a4 range:(_NSRange)a5
++ (THModelStorageAnchor)storageAnchorWithContentNode:(id)node storage:(id)storage range:(_NSRange)range
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithContentNode:a3 storage:a4 range:{a5.location, a5.length}];
+  v5 = [objc_alloc(objc_opt_class()) initWithContentNode:node storage:storage range:{range.location, range.length}];
 
   return v5;
 }
 
-- (THModelStorageAnchor)initWithContentNode:(id)a3 pageLocation:(id)a4
+- (THModelStorageAnchor)initWithContentNode:(id)node pageLocation:(id)location
 {
-  v7 = [a4 storageUID];
-  v9 = [a4 range];
+  storageUID = [location storageUID];
+  range = [location range];
 
-  return [(THModelStorageAnchor *)self initWithContentNode:a3 storageUID:v7 range:v9, v8];
+  return [(THModelStorageAnchor *)self initWithContentNode:node storageUID:storageUID range:range, v8];
 }
 
-+ (THModelStorageAnchor)storageAnchorWithContentNode:(id)a3 pageLocation:(id)a4
++ (THModelStorageAnchor)storageAnchorWithContentNode:(id)node pageLocation:(id)location
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithContentNode:a3 pageLocation:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithContentNode:node pageLocation:location];
 
   return v4;
 }
@@ -103,26 +103,26 @@
   [(THModelBoundAnchor *)&v3 dealloc];
 }
 
-+ (THModelStorageAnchor)storageAnchorWithContentNode:(id)a3 storageUID:(id)a4 range:(_NSRange)a5
++ (THModelStorageAnchor)storageAnchorWithContentNode:(id)node storageUID:(id)d range:(_NSRange)range
 {
-  v5 = [[THModelStorageAnchor alloc] initWithContentNode:a3 storageUID:a4 range:a5.location, a5.length];
+  v5 = [[THModelStorageAnchor alloc] initWithContentNode:node storageUID:d range:range.location, range.length];
 
   return v5;
 }
 
-+ (THModelStorageAnchor)storageAnchorWithGlossaryEntry:(id)a3 storageUID:(id)a4 range:(_NSRange)a5
++ (THModelStorageAnchor)storageAnchorWithGlossaryEntry:(id)entry storageUID:(id)d range:(_NSRange)range
 {
-  v5 = [[THModelStorageAnchor alloc] initWithGlossaryEntry:a3 storageUID:a4 range:a5.location, a5.length];
+  v5 = [[THModelStorageAnchor alloc] initWithGlossaryEntry:entry storageUID:d range:range.location, range.length];
 
   return v5;
 }
 
-- (void)setAbsolutePageIndex:(unint64_t)a3
+- (void)setAbsolutePageIndex:(unint64_t)index
 {
-  v5 = [(THModelBoundAnchor *)self contentNode];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && v5)
+  contentNode = [(THModelBoundAnchor *)self contentNode];
+  if (index != 0x7FFFFFFFFFFFFFFFLL && contentNode)
   {
-    [(THModelNode *)[(THModelBoundAnchor *)self contentNode] relativePageIndexForAbsolutePageIndex:a3 forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)[(THModelBoundAnchor *)self contentNode] context]]];
+    [(THModelNode *)[(THModelBoundAnchor *)self contentNode] relativePageIndexForAbsolutePageIndex:index forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)[(THModelBoundAnchor *)self contentNode] context]]];
   }
 
   [(THModelStorageAnchor *)self setNodeRelativePageIndex:?];
@@ -135,11 +135,11 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(THModelBoundAnchor *)self contentNode];
-  v5 = [(THModelStorageAnchor *)self nodeRelativePageIndex];
+  contentNode = [(THModelBoundAnchor *)self contentNode];
+  nodeRelativePageIndex = [(THModelStorageAnchor *)self nodeRelativePageIndex];
   v6 = [THPresentationType paginatedPresentationTypeInContext:[(THModelContentNode *)[(THModelBoundAnchor *)self contentNode] context]];
 
-  return [(THModelNode *)v4 absolutePageIndexForRelativePageIndex:v5 forPresentationType:v6];
+  return [(THModelNode *)contentNode absolutePageIndexForRelativePageIndex:nodeRelativePageIndex forPresentationType:v6];
 }
 
 - (THWPStorage)storage
@@ -152,15 +152,15 @@
 
 - (id)description
 {
-  v3 = [(THModelStorageAnchor *)self absolutePageIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  absolutePageIndex = [(THModelStorageAnchor *)self absolutePageIndex];
+  if (absolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = @"?";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"%lu", v3];
+    v4 = [NSString stringWithFormat:@"%lu", absolutePageIndex];
   }
 
   if ([(THModelBoundAnchor *)self glossaryEntry])

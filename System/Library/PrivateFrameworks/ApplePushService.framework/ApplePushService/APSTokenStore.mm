@@ -1,32 +1,32 @@
 @interface APSTokenStore
-- (APSTokenStore)initWithEnvironment:(id)a3 allowInMemoryCache:(BOOL)a4;
-- (BOOL)isAppSpecificTokenValidWithDomain:(id)a3 token:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6 error:(id *)a7;
-- (BOOL)isAppSpecificTokenValidWithDomain:(id)a3 token:(id)a4 user:(id)a5 error:(id *)a6;
-- (BOOL)isMatchingTokenInKeychain:(id)a3 user:(id)a4 error:(id *)a5;
-- (id)_cachedTokensForUser:(id)a3 andService:(id)a4;
-- (id)_copyTokenForDomain:(id)a3 appSpecificIdentifier:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6;
-- (id)copyAppSpecificIdentifierWithTopic:(id)a3 identifier:(id)a4 user:(id)a5;
-- (id)copyAppSpecificTokensWithDomain:(id)a3 forTopic:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6 returnRef:(BOOL)a7 error:(id *)a8;
-- (id)copyTokenForDomain:(id)a3 appSpecificIdentifier:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6;
+- (APSTokenStore)initWithEnvironment:(id)environment allowInMemoryCache:(BOOL)cache;
+- (BOOL)isAppSpecificTokenValidWithDomain:(id)domain token:(id)token tokenServiceSuffix:(id)suffix user:(id)user error:(id *)error;
+- (BOOL)isAppSpecificTokenValidWithDomain:(id)domain token:(id)token user:(id)user error:(id *)error;
+- (BOOL)isMatchingTokenInKeychain:(id)keychain user:(id)user error:(id *)error;
+- (id)_cachedTokensForUser:(id)user andService:(id)service;
+- (id)_copyTokenForDomain:(id)domain appSpecificIdentifier:(id)identifier tokenServiceSuffix:(id)suffix user:(id)user;
+- (id)copyAppSpecificIdentifierWithTopic:(id)topic identifier:(id)identifier user:(id)user;
+- (id)copyAppSpecificTokensWithDomain:(id)domain forTopic:(id)topic tokenServiceSuffix:(id)suffix user:(id)user returnRef:(BOOL)ref error:(id *)error;
+- (id)copyTokenForDomain:(id)domain appSpecificIdentifier:(id)identifier tokenServiceSuffix:(id)suffix user:(id)user;
 - (id)description;
-- (id)deserializedPersistedData:(id)a3 forInfo:(id)a4 outPersistedInfo:(id *)a5;
-- (id)deserializedPersistedData:(id)a3 withType:(int64_t)a4 outPersistedInfo:(id *)a5;
-- (id)serializeInfo:(id)a3 withToken:(id)a4;
-- (id)suffixForInfo:(id)a3;
-- (id)systemTokenInfoForUser:(id)a3;
-- (id)tokenForInfo:(id)a3 user:(id)a4 persistedInfo:(id *)a5;
-- (id)tokenInfoArrayForTopic:(id)a3 user:(id)a4;
-- (id)tokensForTopic:(id)a3 user:(id)a4 error:(id *)a5;
-- (void)_cacheTokens:(id)a3 forUser:(id)a4 andService:(id)a5;
-- (void)_clearCacheForUser:(id)a3 andService:(id)a4;
-- (void)deleteAppSpecificTokensWithDomain:(id)a3 forTopic:(id)a4 user:(id)a5;
-- (void)deleteAppSpecificTokensWithDomain:(id)a3 tokenServiceSuffix:(id)a4 user:(id)a5;
-- (void)deleteAppSpecificTokensWithRefArray:(id)a3;
-- (void)deleteAppTokensForUser:(id)a3;
-- (void)setSystemToken:(id)a3 forUser:(id)a4;
-- (void)setSystemTokenInfo:(id)a3 forUser:(id)a4;
-- (void)setToken:(id)a3 forInfo:(id)a4 user:(id)a5;
-- (void)setTokenData:(__CFData *)a3 withDomain:(id)a4 appSpecificIdentifier:(id)a5 tokenServiceSuffix:(id)a6 user:(id)a7 topic:(id)a8;
+- (id)deserializedPersistedData:(id)data forInfo:(id)info outPersistedInfo:(id *)persistedInfo;
+- (id)deserializedPersistedData:(id)data withType:(int64_t)type outPersistedInfo:(id *)info;
+- (id)serializeInfo:(id)info withToken:(id)token;
+- (id)suffixForInfo:(id)info;
+- (id)systemTokenInfoForUser:(id)user;
+- (id)tokenForInfo:(id)info user:(id)user persistedInfo:(id *)persistedInfo;
+- (id)tokenInfoArrayForTopic:(id)topic user:(id)user;
+- (id)tokensForTopic:(id)topic user:(id)user error:(id *)error;
+- (void)_cacheTokens:(id)tokens forUser:(id)user andService:(id)service;
+- (void)_clearCacheForUser:(id)user andService:(id)service;
+- (void)deleteAppSpecificTokensWithDomain:(id)domain forTopic:(id)topic user:(id)user;
+- (void)deleteAppSpecificTokensWithDomain:(id)domain tokenServiceSuffix:(id)suffix user:(id)user;
+- (void)deleteAppSpecificTokensWithRefArray:(id)array;
+- (void)deleteAppTokensForUser:(id)user;
+- (void)setSystemToken:(id)token forUser:(id)user;
+- (void)setSystemTokenInfo:(id)info forUser:(id)user;
+- (void)setToken:(id)token forInfo:(id)info user:(id)user;
+- (void)setTokenData:(__CFData *)data withDomain:(id)domain appSpecificIdentifier:(id)identifier tokenServiceSuffix:(id)suffix user:(id)user topic:(id)topic;
 @end
 
 @implementation APSTokenStore
@@ -34,25 +34,25 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(APSTokenStore *)self environment];
-  v5 = [v4 name];
-  v6 = [NSString stringWithFormat:@"<%@:%p %@>", v3, self, v5];;
+  environment = [(APSTokenStore *)self environment];
+  name = [environment name];
+  v6 = [NSString stringWithFormat:@"<%@:%p %@>", v3, self, name];;
 
   return v6;
 }
 
-- (APSTokenStore)initWithEnvironment:(id)a3 allowInMemoryCache:(BOOL)a4
+- (APSTokenStore)initWithEnvironment:(id)environment allowInMemoryCache:(BOOL)cache
 {
-  v4 = a4;
-  v7 = a3;
+  cacheCopy = cache;
+  environmentCopy = environment;
   v13.receiver = self;
   v13.super_class = APSTokenStore;
   v8 = [(APSTokenStore *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_environment, a3);
-    if (v4)
+    objc_storeStrong(&v8->_environment, environment);
+    if (cacheCopy)
     {
       v10 = objc_alloc_init(NSMutableDictionary);
       perAppTokensByUserThenService = v9->_perAppTokensByUserThenService;
@@ -63,37 +63,37 @@
   return v9;
 }
 
-- (void)setSystemToken:(id)a3 forUser:(id)a4
+- (void)setSystemToken:(id)token forUser:(id)user
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(APSTokenStore *)self environment];
-  v8 = [v9 domain];
-  [(APSTokenStore *)self setTokenData:v7 withDomain:v8 appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:v6 topic:0];
+  userCopy = user;
+  tokenCopy = token;
+  environment = [(APSTokenStore *)self environment];
+  domain = [environment domain];
+  [(APSTokenStore *)self setTokenData:tokenCopy withDomain:domain appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:userCopy topic:0];
 }
 
-- (void)setSystemTokenInfo:(id)a3 forUser:(id)a4
+- (void)setSystemTokenInfo:(id)info forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  userCopy = user;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(APSTokenStore *)self environment];
-    v10 = [v9 name];
-    v11 = [v6 systemToken];
+    environment = [(APSTokenStore *)self environment];
+    name = [environment name];
+    systemToken = [infoCopy systemToken];
     v16 = 138412802;
-    v17 = v10;
+    v17 = name;
     v18 = 2112;
-    v19 = v11;
+    v19 = systemToken;
     v20 = 2048;
-    v21 = [v6 tokenType];
+    tokenType = [infoCopy tokenType];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "APSTokenStore setting system token in keychain for environment %@, token: %@, type: %ld", &v16, 0x20u);
   }
 
-  if (v6)
+  if (infoCopy)
   {
-    v12 = [v6 serializeSystemTokenInfo];
+    serializeSystemTokenInfo = [infoCopy serializeSystemTokenInfo];
   }
 
   else
@@ -105,30 +105,30 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "APSTokenStore storing no token in keychain", &v16, 2u);
     }
 
-    v12 = 0;
+    serializeSystemTokenInfo = 0;
   }
 
-  v14 = [(APSTokenStore *)self environment];
-  v15 = [v14 domain];
-  [(APSTokenStore *)self setTokenData:v12 withDomain:v15 appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:v7 topic:0];
+  environment2 = [(APSTokenStore *)self environment];
+  domain = [environment2 domain];
+  [(APSTokenStore *)self setTokenData:serializeSystemTokenInfo withDomain:domain appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:userCopy topic:0];
 }
 
-- (id)systemTokenInfoForUser:(id)a3
+- (id)systemTokenInfoForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[APSLog courier];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(APSTokenStore *)self environment];
-    v7 = [v6 name];
+    environment = [(APSTokenStore *)self environment];
+    name = [environment name];
     v15 = 138412290;
-    v16 = v7;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "APSTokenStore fetching system token from keychain, environment: %@", &v15, 0xCu);
   }
 
-  v8 = [(APSTokenStore *)self environment];
-  v9 = [v8 domain];
-  v10 = [(APSTokenStore *)self copyTokenForDomain:v9 appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:v4];
+  environment2 = [(APSTokenStore *)self environment];
+  domain = [environment2 domain];
+  v10 = [(APSTokenStore *)self copyTokenForDomain:domain appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:userCopy];
 
   v11 = [APSSystemTokenInfo systemTokenInfoFromData:v10];
   if ([v11 tokenType] == 2)
@@ -148,57 +148,57 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "APSTokenStore migrating token to new token info!", &v15, 2u);
     }
 
-    [(APSTokenStore *)self setSystemTokenInfo:v11 forUser:v4];
+    [(APSTokenStore *)self setSystemTokenInfo:v11 forUser:userCopy];
   }
 
   return v11;
 }
 
-- (void)deleteAppTokensForUser:(id)a3
+- (void)deleteAppTokensForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(APSTokenStore *)self environment];
-  v6 = [v5 domain];
-  [(APSTokenStore *)self deleteAppSpecificTokensWithDomain:v6 tokenServiceSuffix:@" user:PerAppToken.v0", v4];
+  userCopy = user;
+  environment = [(APSTokenStore *)self environment];
+  domain = [environment domain];
+  [(APSTokenStore *)self deleteAppSpecificTokensWithDomain:domain tokenServiceSuffix:@" user:PerAppToken.v0", userCopy];
 
-  v8 = [(APSTokenStore *)self environment];
-  v7 = [v8 domain];
-  [(APSTokenStore *)self deleteAppSpecificTokensWithDomain:v7 tokenServiceSuffix:@" user:ExtendedAppToken.v1", v4];
+  environment2 = [(APSTokenStore *)self environment];
+  domain2 = [environment2 domain];
+  [(APSTokenStore *)self deleteAppSpecificTokensWithDomain:domain2 tokenServiceSuffix:@" user:ExtendedAppToken.v1", userCopy];
 }
 
-- (void)setToken:(id)a3 forInfo:(id)a4 user:(id)a5
+- (void)setToken:(id)token forInfo:(id)info user:(id)user
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && ![v9 type])
+  tokenCopy = token;
+  infoCopy = info;
+  userCopy = user;
+  if (tokenCopy && ![infoCopy type])
   {
-    v11 = [(APSTokenStore *)self environment];
-    v12 = [v11 domain];
-    v13 = [v9 topic];
-    [(APSTokenStore *)self deleteAppSpecificTokensWithDomain:v12 forTopic:v13 user:v10];
+    environment = [(APSTokenStore *)self environment];
+    domain = [environment domain];
+    topic = [infoCopy topic];
+    [(APSTokenStore *)self deleteAppSpecificTokensWithDomain:domain forTopic:topic user:userCopy];
   }
 
-  v14 = [v9 topic];
-  v15 = [v9 identifier];
-  v16 = [(APSTokenStore *)self copyAppSpecificIdentifierWithTopic:v14 identifier:v15 user:v10];
+  topic2 = [infoCopy topic];
+  identifier = [infoCopy identifier];
+  v16 = [(APSTokenStore *)self copyAppSpecificIdentifierWithTopic:topic2 identifier:identifier user:userCopy];
 
-  if (!v8)
+  if (!tokenCopy)
   {
     v19 = 0;
 LABEL_12:
-    v20 = [(APSTokenStore *)self environment];
-    v21 = [v20 domain];
-    v22 = [(APSTokenStore *)self suffixForInfo:v9];
-    v23 = [v9 topic];
-    [(APSTokenStore *)self setTokenData:v19 withDomain:v21 appSpecificIdentifier:v16 tokenServiceSuffix:v22 user:v10 topic:v23];
+    environment2 = [(APSTokenStore *)self environment];
+    domain2 = [environment2 domain];
+    v22 = [(APSTokenStore *)self suffixForInfo:infoCopy];
+    topic3 = [infoCopy topic];
+    [(APSTokenStore *)self setTokenData:v19 withDomain:domain2 appSpecificIdentifier:v16 tokenServiceSuffix:v22 user:userCopy topic:topic3];
 
     goto LABEL_13;
   }
 
-  v17 = [v9 baseToken];
+  baseToken = [infoCopy baseToken];
 
-  if (!v17)
+  if (!baseToken)
   {
     v18 = +[APSLog courier];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -207,7 +207,7 @@ LABEL_12:
     }
   }
 
-  v19 = [(APSTokenStore *)self serializeInfo:v9 withToken:v8];
+  v19 = [(APSTokenStore *)self serializeInfo:infoCopy withToken:tokenCopy];
   if (v19)
   {
     goto LABEL_12;
@@ -216,29 +216,29 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)tokenForInfo:(id)a3 user:(id)a4 persistedInfo:(id *)a5
+- (id)tokenForInfo:(id)info user:(id)user persistedInfo:(id *)persistedInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 topic];
-  v11 = [v8 identifier];
-  v12 = [(APSTokenStore *)self copyAppSpecificIdentifierWithTopic:v10 identifier:v11 user:v9];
+  infoCopy = info;
+  userCopy = user;
+  topic = [infoCopy topic];
+  identifier = [infoCopy identifier];
+  v12 = [(APSTokenStore *)self copyAppSpecificIdentifierWithTopic:topic identifier:identifier user:userCopy];
 
-  v13 = [(APSTokenStore *)self environment];
-  v14 = [v13 domain];
-  v15 = [(APSTokenStore *)self suffixForInfo:v8];
-  v16 = [(APSTokenStore *)self copyTokenForDomain:v14 appSpecificIdentifier:v12 tokenServiceSuffix:v15 user:v9];
+  environment = [(APSTokenStore *)self environment];
+  domain = [environment domain];
+  v15 = [(APSTokenStore *)self suffixForInfo:infoCopy];
+  v16 = [(APSTokenStore *)self copyTokenForDomain:domain appSpecificIdentifier:v12 tokenServiceSuffix:v15 user:userCopy];
 
   if (v16)
   {
-    v17 = [(APSTokenStore *)self deserializedPersistedData:v16 forInfo:v8 outPersistedInfo:a5];
+    v17 = [(APSTokenStore *)self deserializedPersistedData:v16 forInfo:infoCopy outPersistedInfo:persistedInfo];
   }
 
-  else if (a5)
+  else if (persistedInfo)
   {
-    v18 = v8;
+    v18 = infoCopy;
     v17 = 0;
-    *a5 = v8;
+    *persistedInfo = infoCopy;
   }
 
   else
@@ -249,13 +249,13 @@ LABEL_13:
   return v17;
 }
 
-- (id)tokensForTopic:(id)a3 user:(id)a4 error:(id *)a5
+- (id)tokensForTopic:(id)topic user:(id)user error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(APSEnvironment *)self->_environment domain];
+  topicCopy = topic;
+  userCopy = user;
+  domain = [(APSEnvironment *)self->_environment domain];
   v44 = 0;
-  v10 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:v9 forTopic:v7 user:v8 returnRef:0 error:&v44];
+  v10 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:domain forTopic:topicCopy user:userCopy returnRef:0 error:&v44];
   v11 = v44;
 
   v12 = &__NSArray0__struct;
@@ -266,10 +266,10 @@ LABEL_13:
 
   v13 = v12;
 
-  v14 = [(APSEnvironment *)self->_environment domain];
+  domain2 = [(APSEnvironment *)self->_environment domain];
   v43 = 0;
-  v34 = v7;
-  v15 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:v14 forTopic:v7 tokenServiceSuffix:@" user:ExtendedAppToken.v1" returnRef:v8 error:0, &v43];
+  v34 = topicCopy;
+  v15 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:domain2 forTopic:topicCopy tokenServiceSuffix:@" user:ExtendedAppToken.v1" returnRef:userCopy error:0, &v43];
   v32 = v43;
 
   v16 = [v13 mutableCopy];
@@ -337,10 +337,10 @@ LABEL_13:
     while (v25);
   }
 
-  if (a5 && v11 && v32)
+  if (error && v11 && v32)
   {
     v29 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   v30 = [v16 copy];
@@ -348,12 +348,12 @@ LABEL_13:
   return v30;
 }
 
-- (id)tokenInfoArrayForTopic:(id)a3 user:(id)a4
+- (id)tokenInfoArrayForTopic:(id)topic user:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSEnvironment *)self->_environment domain];
-  v9 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:v8 forTopic:v6 tokenServiceSuffix:@" user:ExtendedAppToken.v1" returnRef:v7 error:0, 0];
+  topicCopy = topic;
+  userCopy = user;
+  domain = [(APSEnvironment *)self->_environment domain];
+  v9 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:domain forTopic:topicCopy tokenServiceSuffix:@" user:ExtendedAppToken.v1" returnRef:userCopy error:0, 0];
 
   v10 = objc_alloc_init(NSMutableArray);
   v22 = 0u;
@@ -396,42 +396,42 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)isMatchingTokenInKeychain:(id)a3 user:(id)a4 error:(id *)a5
+- (BOOL)isMatchingTokenInKeychain:(id)keychain user:(id)user error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(APSTokenStore *)self environment];
-  v11 = [v10 domain];
-  LOBYTE(a5) = [(APSTokenStore *)self isAppSpecificTokenValidWithDomain:v11 token:v9 user:v8 error:a5];
+  userCopy = user;
+  keychainCopy = keychain;
+  environment = [(APSTokenStore *)self environment];
+  domain = [environment domain];
+  LOBYTE(error) = [(APSTokenStore *)self isAppSpecificTokenValidWithDomain:domain token:keychainCopy user:userCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)suffixForInfo:(id)a3
+- (id)suffixForInfo:(id)info
 {
-  v3 = [a3 type];
-  if (v3 > 2)
+  type = [info type];
+  if (type > 2)
   {
     return &stru_10018F6A0;
   }
 
   else
   {
-    return off_100186860[v3];
+    return off_100186860[type];
   }
 }
 
-- (id)serializeInfo:(id)a3 withToken:(id)a4
+- (id)serializeInfo:(id)info withToken:(id)token
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 dictionaryRepresentation];
-  v8 = [v7 mutableCopy];
+  tokenCopy = token;
+  infoCopy = info;
+  dictionaryRepresentation = [infoCopy dictionaryRepresentation];
+  v8 = [dictionaryRepresentation mutableCopy];
 
-  [v8 setObject:v5 forKeyedSubscript:@"APSTokenPersistenceKey"];
-  v9 = [v6 type];
+  [v8 setObject:tokenCopy forKeyedSubscript:@"APSTokenPersistenceKey"];
+  type = [infoCopy type];
 
-  v10 = [NSNumber numberWithInteger:v9];
+  v10 = [NSNumber numberWithInteger:type];
   [v8 setObject:v10 forKeyedSubscript:@"APSTypePersistenceKey"];
 
   v11 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
@@ -439,43 +439,43 @@ LABEL_13:
   return v11;
 }
 
-- (id)deserializedPersistedData:(id)a3 forInfo:(id)a4 outPersistedInfo:(id *)a5
+- (id)deserializedPersistedData:(id)data forInfo:(id)info outPersistedInfo:(id *)persistedInfo
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = -[APSTokenStore deserializedPersistedData:withType:outPersistedInfo:](self, "deserializedPersistedData:withType:outPersistedInfo:", v9, [v8 type], a5);
+  infoCopy = info;
+  dataCopy = data;
+  v10 = -[APSTokenStore deserializedPersistedData:withType:outPersistedInfo:](self, "deserializedPersistedData:withType:outPersistedInfo:", dataCopy, [infoCopy type], persistedInfo);
 
-  if (![v8 type] && !*a5)
+  if (![infoCopy type] && !*persistedInfo)
   {
     v11 = [APSAppTokenInfo alloc];
-    v12 = [v8 dictionaryRepresentation];
-    *a5 = [v11 initWithDictionary:v12];
+    dictionaryRepresentation = [infoCopy dictionaryRepresentation];
+    *persistedInfo = [v11 initWithDictionary:dictionaryRepresentation];
   }
 
   return v10;
 }
 
-- (id)deserializedPersistedData:(id)a3 withType:(int64_t)a4 outPersistedInfo:(id *)a5
+- (id)deserializedPersistedData:(id)data withType:(int64_t)type outPersistedInfo:(id *)info
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [NSSet setWithObjects:v8, v9, v10, objc_opt_class(), 0];
   v24 = 0;
-  v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v11 fromData:v7 error:&v24];
+  v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v11 fromData:dataCopy error:&v24];
   v13 = v24;
 
   if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (type || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = v7;
+      v22 = dataCopy;
     }
 
     goto LABEL_20;
@@ -506,18 +506,18 @@ LABEL_13:
   {
 LABEL_17:
     v22 = 0;
-    if (a5)
+    if (info)
     {
-      *a5 = 0;
+      *info = 0;
     }
 
     goto LABEL_19;
   }
 
-  if (a5)
+  if (info)
   {
     v21 = v18;
-    *a5 = v19;
+    *info = v19;
   }
 
   v22 = v14;
@@ -528,38 +528,38 @@ LABEL_20:
   return v22;
 }
 
-- (BOOL)isAppSpecificTokenValidWithDomain:(id)a3 token:(id)a4 user:(id)a5 error:(id *)a6
+- (BOOL)isAppSpecificTokenValidWithDomain:(id)domain token:(id)token user:(id)user error:(id *)error
 {
   v21 = 0;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(APSTokenStore *)self isAppSpecificTokenValidWithDomain:v12 token:v11 tokenServiceSuffix:@" user:PerAppToken.v0" error:v10, &v21];
+  userCopy = user;
+  tokenCopy = token;
+  domainCopy = domain;
+  v13 = [(APSTokenStore *)self isAppSpecificTokenValidWithDomain:domainCopy token:tokenCopy tokenServiceSuffix:@" user:PerAppToken.v0" error:userCopy, &v21];
   v14 = v21;
   v20 = 0;
-  v15 = [(APSTokenStore *)self isAppSpecificTokenValidWithDomain:v12 token:v11 tokenServiceSuffix:@" user:ExtendedAppToken.v1" error:v10, &v20];
+  v15 = [(APSTokenStore *)self isAppSpecificTokenValidWithDomain:domainCopy token:tokenCopy tokenServiceSuffix:@" user:ExtendedAppToken.v1" error:userCopy, &v20];
 
   v16 = v20;
   v17 = v16;
-  if (a6 && v14 && v16)
+  if (error && v14 && v16)
   {
     v18 = v14;
-    *a6 = v14;
+    *error = v14;
   }
 
   return (v13 | v15) & 1;
 }
 
-- (BOOL)isAppSpecificTokenValidWithDomain:(id)a3 token:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6 error:(id *)a7
+- (BOOL)isAppSpecificTokenValidWithDomain:(id)domain token:(id)token tokenServiceSuffix:(id)suffix user:(id)user error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v13)
+  domainCopy = domain;
+  tokenCopy = token;
+  suffixCopy = suffix;
+  userCopy = user;
+  if (tokenCopy)
   {
-    v16 = [[NSString alloc] initWithFormat:@"%@%@", v12, v14];
-    v17 = [(APSTokenStore *)self _cachedTokensForUser:v15 andService:v16];
+    suffixCopy = [[NSString alloc] initWithFormat:@"%@%@", domainCopy, suffixCopy];
+    v17 = [(APSTokenStore *)self _cachedTokensForUser:userCopy andService:suffixCopy];
     v18 = +[APSLog courier];
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -567,50 +567,50 @@ LABEL_20:
       if (v19)
       {
         *buf = 138413314;
-        v50 = self;
+        selfCopy4 = self;
         v51 = 2112;
-        v52 = v12;
+        v52 = domainCopy;
         v53 = 2112;
-        v54 = v13;
+        v54 = tokenCopy;
         v55 = 2112;
-        v56 = v14;
+        v56 = suffixCopy;
         v57 = 2048;
         v58 = [v17 count];
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: isAppSpecificTokenValid %@ %@ %@ - using cache {count: %llu}", buf, 0x34u);
       }
 
-      LOBYTE(v18) = [v17 containsObject:v13];
+      LOBYTE(v18) = [v17 containsObject:tokenCopy];
 LABEL_42:
 
       goto LABEL_43;
     }
 
-    v41 = a7;
+    errorCopy = error;
     if (v19)
     {
       *buf = 138413058;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 2112;
-      v52 = v12;
+      v52 = domainCopy;
       v53 = 2112;
-      v54 = v13;
+      v54 = tokenCopy;
       v55 = 2112;
-      v56 = v14;
+      v56 = suffixCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: isAppSpecificTokenValid %@ %@ %@", buf, 0x2Au);
     }
 
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
     CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-    CFDictionaryAddValue(Mutable, kSecAttrService, v16);
+    CFDictionaryAddValue(Mutable, kSecAttrService, suffixCopy);
     CFDictionaryAddValue(Mutable, kSecMatchLimit, kSecMatchLimitAll);
     CFDictionaryAddValue(Mutable, kSecReturnData, kCFBooleanTrue);
-    if ([v15 isDefaultUser])
+    if ([userCopy isDefaultUser])
     {
       v21 = +[APSMultiUserMode sharedInstance];
-      v22 = [v21 isMultiUser];
+      isMultiUser = [v21 isMultiUser];
 
-      if (v22)
+      if (isMultiUser)
       {
         CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
       }
@@ -624,11 +624,11 @@ LABEL_42:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v50 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@: SecItemCopyMatching() returned no items found.", buf, 0xCu);
       }
 
-      if (!v41)
+      if (!errorCopy)
       {
         goto LABEL_23;
       }
@@ -652,7 +652,7 @@ LABEL_42:
       }
 
       result = 0;
-      if (!v41)
+      if (!errorCopy)
       {
         goto LABEL_23;
       }
@@ -661,7 +661,7 @@ LABEL_42:
       v27 = v24;
     }
 
-    *v41 = [NSError errorWithDomain:v26 code:v27 userInfo:0];
+    *errorCopy = [NSError errorWithDomain:v26 code:v27 userInfo:0];
 LABEL_23:
     CFRelease(Mutable);
     v43 = 0u;
@@ -673,9 +673,9 @@ LABEL_23:
     if (v30)
     {
       v31 = v30;
-      v39 = v16;
-      v40 = v15;
-      v42 = v12;
+      v39 = suffixCopy;
+      v40 = userCopy;
+      v42 = domainCopy;
       v32 = *v44;
       while (2)
       {
@@ -687,7 +687,7 @@ LABEL_23:
           }
 
           v34 = -[APSTokenStore deserializedPersistedData:withType:outPersistedInfo:](self, "deserializedPersistedData:withType:outPersistedInfo:", *(*(&v43 + 1) + 8 * i), [@" ExtendedAppToken.v1"], 0);
-          v35 = [v34 isEqualToData:v13];
+          v35 = [v34 isEqualToData:tokenCopy];
 
           if (v35)
           {
@@ -707,9 +707,9 @@ LABEL_23:
 
       LODWORD(v18) = 0;
 LABEL_33:
-      v12 = v42;
-      v16 = v39;
-      v15 = v40;
+      domainCopy = v42;
+      suffixCopy = v39;
+      userCopy = v40;
     }
 
     else
@@ -722,14 +722,14 @@ LABEL_33:
     {
       v37 = @"NO";
       *buf = 138412802;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 2112;
       if (v18)
       {
         v37 = @"YES";
       }
 
-      v52 = v13;
+      v52 = tokenCopy;
       v53 = 2112;
       v54 = v37;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%@: isAppSpecificTokenValid? %@ found cached token %@", buf, 0x20u);
@@ -750,43 +750,43 @@ LABEL_43:
   return v18;
 }
 
-- (id)copyAppSpecificTokensWithDomain:(id)a3 forTopic:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6 returnRef:(BOOL)a7 error:(id *)a8
+- (id)copyAppSpecificTokensWithDomain:(id)domain forTopic:(id)topic tokenServiceSuffix:(id)suffix user:(id)user returnRef:(BOOL)ref error:(id *)error
 {
-  v54 = a7;
-  v12 = a3;
-  v51 = a4;
-  v13 = a5;
-  v14 = a6;
+  refCopy = ref;
+  domainCopy = domain;
+  topicCopy = topic;
+  suffixCopy = suffix;
+  userCopy = user;
   v15 = +[APSLog courier];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v63 = self;
+    selfCopy5 = self;
     v64 = 2112;
-    v65 = v12;
+    v65 = domainCopy;
     v66 = 2112;
-    v67 = v51;
+    v67 = topicCopy;
     v68 = 2112;
-    v69 = v13;
+    v69 = suffixCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: copyAppSpecificTokensWithDomain %@ %@ %@", buf, 0x2Au);
   }
 
-  v48 = v13;
-  v16 = [[NSString alloc] initWithFormat:@"%@%@", v12, v13];
+  v48 = suffixCopy;
+  suffixCopy = [[NSString alloc] initWithFormat:@"%@%@", domainCopy, suffixCopy];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-  v46 = v16;
-  CFDictionaryAddValue(Mutable, kSecAttrService, v16);
+  v46 = suffixCopy;
+  CFDictionaryAddValue(Mutable, kSecAttrService, suffixCopy);
   CFDictionaryAddValue(Mutable, kSecMatchLimit, kSecMatchLimitAll);
   CFDictionaryAddValue(Mutable, kSecReturnAttributes, kCFBooleanTrue);
   CFDictionaryAddValue(Mutable, kSecReturnPersistentRef, kCFBooleanTrue);
-  if ([v14 isDefaultUser])
+  if ([userCopy isDefaultUser])
   {
     v18 = +[APSMultiUserMode sharedInstance];
-    v19 = [v18 isMultiUser];
+    isMultiUser = [v18 isMultiUser];
 
-    if (v19)
+    if (isMultiUser)
     {
       CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
     }
@@ -800,11 +800,11 @@ LABEL_43:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v63 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@: SecItemCopyMatching() returned no items found.", buf, 0xCu);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -825,16 +825,16 @@ LABEL_43:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v63 = self;
+      selfCopy5 = self;
       v64 = 2048;
       v65 = v21;
       v66 = 2112;
-      v67 = v12;
+      v67 = domainCopy;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@: SecItemCopyMatching() failed: %ld - copyAppSpecificTokensWithDomain %@", buf, 0x20u);
     }
 
     result = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -843,12 +843,12 @@ LABEL_43:
     v24 = v21;
   }
 
-  *a8 = [NSError errorWithDomain:v23 code:v24 userInfo:0];
+  *error = [NSError errorWithDomain:v23 code:v24 userInfo:0];
 LABEL_17:
   cf = Mutable;
-  v47 = v14;
+  v47 = userCopy;
   v26 = result;
-  v27 = [(APSTokenStore *)self _copyHashForString:v51];
+  v27 = [(APSTokenStore *)self _copyHashForString:topicCopy];
   v28 = +[NSMutableArray array];
   v56 = 0u;
   v57 = 0u;
@@ -890,18 +890,18 @@ LABEL_17:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v63 = self;
+          selfCopy5 = self;
           v64 = 2112;
-          v65 = v12;
+          v65 = domainCopy;
           v66 = 2112;
-          v67 = v51;
+          v67 = topicCopy;
           v68 = 2112;
           v69 = v36;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%@: copyAppSpecificTokensWithDomain - %@ for topic %@ account %@", buf, 0x2Au);
         }
 
         v39 = [v35 objectForKeyedSubscript:kSecValuePersistentRef];
-        if (v54)
+        if (refCopy)
         {
           [v28 addObject:v39];
 LABEL_37:
@@ -924,13 +924,13 @@ LABEL_37:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
             *buf = 138413058;
-            v63 = self;
+            selfCopy5 = self;
             v64 = 2112;
             v65 = v39;
             v66 = 2048;
             v67 = v42;
             v68 = 2112;
-            v69 = v12;
+            v69 = domainCopy;
             _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%@: SecItemCopyMatching() failed for persistenRef %@ with error: %ld - copyAppSpecificTokensWithDomain %@", buf, 0x2Au);
           }
 
@@ -974,23 +974,23 @@ LABEL_40:
   return v28;
 }
 
-- (id)copyAppSpecificIdentifierWithTopic:(id)a3 identifier:(id)a4 user:(id)a5
+- (id)copyAppSpecificIdentifierWithTopic:(id)topic identifier:(id)identifier user:(id)user
 {
-  v7 = a4;
-  v8 = [(APSTokenStore *)self _copyHashForString:a3];
-  v9 = [[NSString alloc] initWithFormat:@"%@, %@", v7, v8];
+  identifierCopy = identifier;
+  v8 = [(APSTokenStore *)self _copyHashForString:topic];
+  v9 = [[NSString alloc] initWithFormat:@"%@, %@", identifierCopy, v8];
 
   return v9;
 }
 
-- (void)deleteAppSpecificTokensWithRefArray:(id)a3
+- (void)deleteAppSpecificTokensWithRefArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v27 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v15 objects:v27 count:16];
   if (v4)
   {
     v6 = v4;
@@ -1004,7 +1004,7 @@ LABEL_40:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
@@ -1019,7 +1019,7 @@ LABEL_40:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
             *buf = v13;
-            v20 = self;
+            selfCopy = self;
             v21 = 2048;
             v22 = v11;
             v23 = 2112;
@@ -1032,113 +1032,113 @@ LABEL_40:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v27 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v15 objects:v27 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)deleteAppSpecificTokensWithDomain:(id)a3 forTopic:(id)a4 user:(id)a5
+- (void)deleteAppSpecificTokensWithDomain:(id)domain forTopic:(id)topic user:(id)user
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  topicCopy = topic;
+  userCopy = user;
   v11 = +[APSLog courier];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v8;
+    v17 = domainCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = topicCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: deleteAppSpecificTokens - %@ for topic %@", buf, 0x20u);
   }
 
-  v12 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:v8 forTopic:v9 user:v10 returnRef:1 error:0];
-  v13 = [[NSString alloc] initWithFormat:@"%@%@", v8, @", PerAppToken.v0"];
-  [(APSTokenStore *)self _clearCacheForUser:v10 andService:v13];
+  v12 = [(APSTokenStore *)self copyAppSpecificTokensWithDomain:domainCopy forTopic:topicCopy user:userCopy returnRef:1 error:0];
+  v13 = [[NSString alloc] initWithFormat:@"%@%@", domainCopy, @", PerAppToken.v0"];
+  [(APSTokenStore *)self _clearCacheForUser:userCopy andService:v13];
 
   [(APSTokenStore *)self deleteAppSpecificTokensWithRefArray:v12];
 }
 
-- (void)setTokenData:(__CFData *)a3 withDomain:(id)a4 appSpecificIdentifier:(id)a5 tokenServiceSuffix:(id)a6 user:(id)a7 topic:(id)a8
+- (void)setTokenData:(__CFData *)data withDomain:(id)domain appSpecificIdentifier:(id)identifier tokenServiceSuffix:(id)suffix user:(id)user topic:(id)topic
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  suffixCopy = suffix;
+  userCopy = user;
   v17 = +[APSLog courier];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2112;
-    v31 = v13;
+    v31 = domainCopy;
     v32 = 2112;
-    v33 = a3;
+    dataCopy = data;
     v34 = 2112;
-    v35 = v14;
+    dataCopy2 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: setTokenForDomain %@ tokenData %@ appSpecificIdentifier %@", buf, 0x2Au);
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-  if ([v16 isDefaultUser])
+  if ([userCopy isDefaultUser])
   {
     v19 = +[APSMultiUserMode sharedInstance];
-    v20 = [v19 isMultiUser];
+    isMultiUser = [v19 isMultiUser];
 
-    if (v20)
+    if (isMultiUser)
     {
       CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
     }
   }
 
-  if (v14)
+  if (identifierCopy)
   {
-    CFDictionaryAddValue(Mutable, kSecAttrAccount, v14);
-    v21 = [[NSString alloc] initWithFormat:@"%@%@", v13, v15];
+    CFDictionaryAddValue(Mutable, kSecAttrAccount, identifierCopy);
+    suffixCopy = [[NSString alloc] initWithFormat:@"%@%@", domainCopy, suffixCopy];
   }
 
   else
   {
-    v21 = [[NSString alloc] initWithFormat:@"%@%@", v13, &stru_10018F6A0];
+    suffixCopy = [[NSString alloc] initWithFormat:@"%@%@", domainCopy, &stru_10018F6A0];
   }
 
-  v22 = v21;
-  [(APSTokenStore *)self _clearCacheForUser:v16 andService:v21];
+  v22 = suffixCopy;
+  [(APSTokenStore *)self _clearCacheForUser:userCopy andService:suffixCopy];
   CFDictionaryAddValue(Mutable, kSecAttrService, v22);
-  if (a3)
+  if (data)
   {
     CFDictionaryAddValue(Mutable, kSecAttrAccessible, kSecAttrAccessibleAlwaysThisDeviceOnly);
-    CFDictionaryAddValue(Mutable, kSecValueData, a3);
+    CFDictionaryAddValue(Mutable, kSecValueData, data);
     v23 = SecItemAdd(Mutable, 0);
     if (v23 == -25299)
     {
-      v27 = v15;
+      v27 = suffixCopy;
       v24 = +[APSLog courier];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2112;
-        v31 = v13;
+        v31 = domainCopy;
         v32 = 2112;
-        v33 = v14;
+        dataCopy = identifierCopy;
         v34 = 2112;
-        v35 = a3;
+        dataCopy2 = data;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@: SecResult shows duplicate item, trying to update it. setTokenForDomain %@ appSpecificIdentifier %@  tokenData %@", buf, 0x2Au);
       }
 
       CFDictionaryRemoveValue(Mutable, kSecValueData);
       v25 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-      CFDictionaryAddValue(v25, kSecValueData, a3);
+      CFDictionaryAddValue(v25, kSecValueData, data);
       v23 = SecItemUpdate(Mutable, v25);
       CFRelease(v25);
-      v15 = v27;
+      suffixCopy = v27;
     }
 
     if (v23)
@@ -1167,37 +1167,37 @@ LABEL_20:
   CFRelease(Mutable);
 }
 
-- (void)deleteAppSpecificTokensWithDomain:(id)a3 tokenServiceSuffix:(id)a4 user:(id)a5
+- (void)deleteAppSpecificTokensWithDomain:(id)domain tokenServiceSuffix:(id)suffix user:(id)user
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  suffixCopy = suffix;
+  userCopy = user;
   v11 = +[APSLog courier];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v8;
+    v21 = domainCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = suffixCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: deleteAppSpecificTokens - domain %@ tokenServiceSuffix %@", buf, 0x20u);
   }
 
-  v12 = [[NSString alloc] initWithFormat:@"%@%@", v8, v9];
-  [(APSTokenStore *)self _clearCacheForUser:v10 andService:v12];
+  suffixCopy = [[NSString alloc] initWithFormat:@"%@%@", domainCopy, suffixCopy];
+  [(APSTokenStore *)self _clearCacheForUser:userCopy andService:suffixCopy];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-  CFDictionaryAddValue(Mutable, kSecAttrService, v12);
-  v14 = [v10 isDefaultUser];
+  CFDictionaryAddValue(Mutable, kSecAttrService, suffixCopy);
+  isDefaultUser = [userCopy isDefaultUser];
 
-  if (v14)
+  if (isDefaultUser)
   {
     v15 = +[APSMultiUserMode sharedInstance];
-    v16 = [v15 isMultiUser];
+    isMultiUser = [v15 isMultiUser];
 
-    if (v16)
+    if (isMultiUser)
     {
       CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
     }
@@ -1215,60 +1215,60 @@ LABEL_20:
   CFRelease(Mutable);
 }
 
-- (id)copyTokenForDomain:(id)a3 appSpecificIdentifier:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6
+- (id)copyTokenForDomain:(id)domain appSpecificIdentifier:(id)identifier tokenServiceSuffix:(id)suffix user:(id)user
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(APSTokenStore *)self _copyTokenForDomain:v10 appSpecificIdentifier:v11 tokenServiceSuffix:v12 user:v13];
+  domainCopy = domain;
+  identifierCopy = identifier;
+  suffixCopy = suffix;
+  userCopy = user;
+  v14 = [(APSTokenStore *)self _copyTokenForDomain:domainCopy appSpecificIdentifier:identifierCopy tokenServiceSuffix:suffixCopy user:userCopy];
   if (!v14)
   {
-    v14 = [(APSTokenStore *)self _copyTokenForDomain:v10 appSpecificIdentifier:v11 tokenServiceSuffix:v12 user:v13];
+    v14 = [(APSTokenStore *)self _copyTokenForDomain:domainCopy appSpecificIdentifier:identifierCopy tokenServiceSuffix:suffixCopy user:userCopy];
   }
 
   return v14;
 }
 
-- (id)_copyTokenForDomain:(id)a3 appSpecificIdentifier:(id)a4 tokenServiceSuffix:(id)a5 user:(id)a6
+- (id)_copyTokenForDomain:(id)domain appSpecificIdentifier:(id)identifier tokenServiceSuffix:(id)suffix user:(id)user
 {
-  v41 = a3;
-  v10 = a4;
-  v11 = a5;
-  v42 = a6;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  suffixCopy = suffix;
+  userCopy = user;
   v12 = +[APSLog courier];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v50 = self;
+    selfCopy2 = self;
     v51 = 2112;
-    v52 = v41;
+    v52 = domainCopy;
     v53 = 2112;
-    v54 = v10;
+    v54 = identifierCopy;
     v55 = 2112;
-    v56 = v11;
+    v56 = suffixCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: copyTokenForDomain %@ %@ %@", buf, 0x2Au);
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-  if ([v42 isDefaultUser])
+  if ([userCopy isDefaultUser])
   {
     v14 = +[APSMultiUserMode sharedInstance];
-    v15 = [v14 isMultiUser];
+    isMultiUser = [v14 isMultiUser];
 
-    if (v15)
+    if (isMultiUser)
     {
       CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
     }
   }
 
-  if (v10)
+  if (identifierCopy)
   {
-    CFDictionaryAddValue(Mutable, kSecAttrAccount, v10);
+    CFDictionaryAddValue(Mutable, kSecAttrAccount, identifierCopy);
     v16 = [NSString alloc];
-    v36 = v11;
+    v36 = suffixCopy;
   }
 
   else
@@ -1277,7 +1277,7 @@ LABEL_20:
     v36 = &stru_10018F6A0;
   }
 
-  v17 = [v16 initWithFormat:@"%@%@", v41, v36];
+  v17 = [v16 initWithFormat:@"%@%@", domainCopy, v36];
   CFDictionaryAddValue(Mutable, kSecAttrService, v17);
   CFDictionaryAddValue(Mutable, kSecReturnData, kCFBooleanTrue);
   result = 0;
@@ -1292,9 +1292,9 @@ LABEL_20:
   }
 
   CFRelease(Mutable);
-  if (!(v10 | result))
+  if (!(identifierCopy | result))
   {
-    v20 = sub_100004328(@"APSPublicTokens", [v42 isDefaultUser]);
+    v20 = sub_100004328(@"APSPublicTokens", [userCopy isDefaultUser]);
     if (v20)
     {
       v21 = v20;
@@ -1302,13 +1302,13 @@ LABEL_20:
       if (v22 == CFDictionaryGetTypeID())
       {
         v38 = v17;
-        v39 = v11;
-        v40 = v10;
+        v39 = suffixCopy;
+        v40 = identifierCopy;
         v23 = +[APSLog courier];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v50 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%@: Migrating tokens to the keychain", buf, 0xCu);
         }
 
@@ -1335,11 +1335,11 @@ LABEL_20:
               v29 = *(*(&v43 + 1) + 8 * i);
               Value = CFDictionaryGetValue(v24, v29);
               v31 = result;
-              v32 = [(APSTokenStore *)self environment];
-              v33 = [v32 domain];
-              [(APSTokenStore *)self setTokenData:v31 withDomain:v33 appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:v42 topic:0];
+              environment = [(APSTokenStore *)self environment];
+              domain = [environment domain];
+              [(APSTokenStore *)self setTokenData:v31 withDomain:domain appSpecificIdentifier:0 tokenServiceSuffix:&stru_10018F6A0 user:userCopy topic:0];
 
-              if (!result && Value && [v41 isEqualToString:v29])
+              if (!result && Value && [domainCopy isEqualToString:v29])
               {
                 result = CFRetain(Value);
               }
@@ -1351,10 +1351,10 @@ LABEL_20:
           while (v26);
         }
 
-        sub_100005394(@"APSPublicTokens", 0, [v42 isDefaultUser]);
-        sub_1000054B8([v42 isDefaultUser]);
-        v11 = v39;
-        v10 = v40;
+        sub_100005394(@"APSPublicTokens", 0, [userCopy isDefaultUser]);
+        sub_1000054B8([userCopy isDefaultUser]);
+        suffixCopy = v39;
+        identifierCopy = v40;
         v21 = v37;
         v17 = v38;
       }
@@ -1368,80 +1368,80 @@ LABEL_20:
   return v34;
 }
 
-- (void)_clearCacheForUser:(id)a3 andService:(id)a4
+- (void)_clearCacheForUser:(id)user andService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  serviceCopy = service;
   if (self->_perAppTokensByUserThenService)
   {
     v8 = +[APSLog courier];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v6;
+      v15 = userCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: dropping cache {user: %@, service: %@}", &v12, 0x20u);
     }
 
     perAppTokensByUserThenService = self->_perAppTokensByUserThenService;
-    v10 = [v6 name];
-    v11 = [(NSMutableDictionary *)perAppTokensByUserThenService objectForKeyedSubscript:v10];
-    [v11 removeObjectForKey:v7];
+    name = [userCopy name];
+    v11 = [(NSMutableDictionary *)perAppTokensByUserThenService objectForKeyedSubscript:name];
+    [v11 removeObjectForKey:serviceCopy];
   }
 }
 
-- (id)_cachedTokensForUser:(id)a3 andService:(id)a4
+- (id)_cachedTokensForUser:(id)user andService:(id)service
 {
   perAppTokensByUserThenService = self->_perAppTokensByUserThenService;
   if (perAppTokensByUserThenService)
   {
-    v6 = a4;
-    v7 = [a3 name];
-    v8 = [perAppTokensByUserThenService objectForKeyedSubscript:v7];
+    serviceCopy = service;
+    name = [user name];
+    v8 = [perAppTokensByUserThenService objectForKeyedSubscript:name];
 
-    perAppTokensByUserThenService = [v8 objectForKeyedSubscript:v6];
+    perAppTokensByUserThenService = [v8 objectForKeyedSubscript:serviceCopy];
   }
 
   return perAppTokensByUserThenService;
 }
 
-- (void)_cacheTokens:(id)a3 forUser:(id)a4 andService:(id)a5
+- (void)_cacheTokens:(id)tokens forUser:(id)user andService:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokensCopy = tokens;
+  userCopy = user;
+  serviceCopy = service;
   perAppTokensByUserThenService = self->_perAppTokensByUserThenService;
   if (perAppTokensByUserThenService)
   {
-    v12 = [v9 name];
-    v13 = [(NSMutableDictionary *)perAppTokensByUserThenService objectForKeyedSubscript:v12];
+    name = [userCopy name];
+    v13 = [(NSMutableDictionary *)perAppTokensByUserThenService objectForKeyedSubscript:name];
 
     if (!v13)
     {
       v13 = objc_alloc_init(NSMutableDictionary);
       v14 = self->_perAppTokensByUserThenService;
-      v15 = [v9 name];
-      [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
+      name2 = [userCopy name];
+      [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:name2];
     }
 
     v16 = +[APSLog courier];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138413058;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = v9;
+      v20 = userCopy;
       v21 = 2112;
-      v22 = v10;
+      v22 = serviceCopy;
       v23 = 2048;
-      v24 = [v8 count];
+      v24 = [tokensCopy count];
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@: storing cache {user: %@, service: %@, count: %llu}", &v17, 0x2Au);
     }
 
-    [v13 setObject:v8 forKeyedSubscript:v10];
+    [v13 setObject:tokensCopy forKeyedSubscript:serviceCopy];
   }
 }
 

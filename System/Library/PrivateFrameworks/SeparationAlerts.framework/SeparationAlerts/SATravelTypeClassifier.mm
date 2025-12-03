@@ -1,21 +1,21 @@
 @interface SATravelTypeClassifier
-+ (id)convertSATravelTypeToString:(unint64_t)a3;
-- (BOOL)_setNewTravelType:(unint64_t)a3 hints:(unint64_t)a4;
-- (SATravelTypeClassifier)initWithClock:(id)a3;
-- (id)_vehicularHintsToString:(unint64_t)a3;
-- (void)_handleUserActivityEvent:(id)a3;
-- (void)_handleVehicleStateEvent:(id)a3;
-- (void)_notifyAllClientsOfTravelTypeChangeFrom:(unint64_t)a3 to:(unint64_t)a4 hints:(unint64_t)a5;
-- (void)addClient:(id)a3;
-- (void)ingestTAEvent:(id)a3;
-- (void)removeClient:(id)a3;
++ (id)convertSATravelTypeToString:(unint64_t)string;
+- (BOOL)_setNewTravelType:(unint64_t)type hints:(unint64_t)hints;
+- (SATravelTypeClassifier)initWithClock:(id)clock;
+- (id)_vehicularHintsToString:(unint64_t)string;
+- (void)_handleUserActivityEvent:(id)event;
+- (void)_handleVehicleStateEvent:(id)event;
+- (void)_notifyAllClientsOfTravelTypeChangeFrom:(unint64_t)from to:(unint64_t)to hints:(unint64_t)hints;
+- (void)addClient:(id)client;
+- (void)ingestTAEvent:(id)event;
+- (void)removeClient:(id)client;
 @end
 
 @implementation SATravelTypeClassifier
 
-- (SATravelTypeClassifier)initWithClock:(id)a3
+- (SATravelTypeClassifier)initWithClock:(id)clock
 {
-  v5 = a3;
+  clockCopy = clock;
   v12.receiver = self;
   v12.super_class = SATravelTypeClassifier;
   v6 = [(SATravelTypeClassifier *)&v12 init];
@@ -26,24 +26,24 @@
     v6->_clients = v7;
 
     v6->_currentTravelType = 0;
-    objc_storeStrong(&v6->_clock, a3);
-    v9 = [(SATimeServiceProtocol *)v6->_clock getCurrentTime];
+    objc_storeStrong(&v6->_clock, clock);
+    getCurrentTime = [(SATimeServiceProtocol *)v6->_clock getCurrentTime];
     currentTravelTypeChangeDate = v6->_currentTravelTypeChangeDate;
-    v6->_currentTravelTypeChangeDate = v9;
+    v6->_currentTravelTypeChangeDate = getCurrentTime;
   }
 
   return v6;
 }
 
-+ (id)convertSATravelTypeToString:(unint64_t)a3
++ (id)convertSATravelTypeToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Vehicular";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"NonVehicular";
   }
@@ -54,12 +54,12 @@
   }
 }
 
-- (id)_vehicularHintsToString:(unint64_t)a3
+- (id)_vehicularHintsToString:(unint64_t)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x277CCACA8]);
   v5 = v4;
-  if (v3)
+  if (stringCopy)
   {
     v6 = @"M";
   }
@@ -70,7 +70,7 @@
   }
 
   v7 = [v4 stringByAppendingString:v6];
-  if ((v3 & 2) != 0)
+  if ((stringCopy & 2) != 0)
   {
     v8 = @"G";
   }
@@ -81,7 +81,7 @@
   }
 
   v9 = [v5 stringByAppendingString:v8];
-  if ((v3 & 4) != 0)
+  if ((stringCopy & 4) != 0)
   {
     v10 = @"C";
   }
@@ -92,7 +92,7 @@
   }
 
   v11 = [v5 stringByAppendingString:v10];
-  if ((v3 & 8) != 0)
+  if ((stringCopy & 8) != 0)
   {
     v12 = @"W";
   }
@@ -103,7 +103,7 @@
   }
 
   v13 = [v5 stringByAppendingString:v12];
-  if ((v3 & 0x10) != 0)
+  if ((stringCopy & 0x10) != 0)
   {
     v14 = @"B";
   }
@@ -118,30 +118,30 @@
   return v5;
 }
 
-- (BOOL)_setNewTravelType:(unint64_t)a3 hints:(unint64_t)a4
+- (BOOL)_setNewTravelType:(unint64_t)type hints:(unint64_t)hints
 {
-  v7 = [(SATravelTypeClassifier *)self currentTravelType];
-  [(SATravelTypeClassifier *)self setCurrentTravelType:a3];
-  v8 = [(SATravelTypeClassifier *)self currentTravelType];
-  if (v8 != v7)
+  currentTravelType = [(SATravelTypeClassifier *)self currentTravelType];
+  [(SATravelTypeClassifier *)self setCurrentTravelType:type];
+  currentTravelType2 = [(SATravelTypeClassifier *)self currentTravelType];
+  if (currentTravelType2 != currentTravelType)
   {
-    v9 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-    [(SATravelTypeClassifier *)self setCurrentTravelTypeChangeDate:v9];
+    getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+    [(SATravelTypeClassifier *)self setCurrentTravelTypeChangeDate:getCurrentTime];
 
-    [(SATravelTypeClassifier *)self _notifyAllClientsOfTravelTypeChangeFrom:v7 to:[(SATravelTypeClassifier *)self currentTravelType] hints:a4];
+    [(SATravelTypeClassifier *)self _notifyAllClientsOfTravelTypeChangeFrom:currentTravelType to:[(SATravelTypeClassifier *)self currentTravelType] hints:hints];
   }
 
-  return v8 != v7;
+  return currentTravelType2 != currentTravelType;
 }
 
-- (void)_handleVehicleStateEvent:(id)a3
+- (void)_handleVehicleStateEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 vehicularState];
-  v6 = [v4 vehicularHints];
+  eventCopy = event;
+  vehicularState = [eventCopy vehicularState];
+  vehicularHints = [eventCopy vehicularHints];
 
-  switch(v5)
+  switch(vehicularState)
   {
     case 2:
       v19 = TASALog;
@@ -149,21 +149,21 @@
       {
         v20 = v19;
         v21 = [SATravelTypeClassifier convertSATravelTypeToString:[(SATravelTypeClassifier *)self currentTravelType]];
-        v22 = [v21 UTF8String];
-        v23 = [(SATravelTypeClassifier *)self _vehicularHintsToString:v6];
+        uTF8String = [v21 UTF8String];
+        v23 = [(SATravelTypeClassifier *)self _vehicularHintsToString:vehicularHints];
         v25 = 68289795;
         v26 = 2082;
         v27 = "";
         v28 = 2081;
-        v29 = v22;
+        v29 = uTF8String;
         v30 = 2081;
         v31 = "Vehicular";
         v32 = 2081;
-        v33 = [v23 UTF8String];
+        uTF8String2 = [v23 UTF8String];
         _os_log_impl(&dword_2656EA000, v20, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SATravelTypeClassifier handleVehicleState, curr:%{private}s, new:%{private}s, hints:%{private}s}", &v25, 0x30u);
       }
 
-      v17 = self;
+      selfCopy2 = self;
       v18 = 1;
       goto LABEL_12;
     case 1:
@@ -172,24 +172,24 @@
       {
         v13 = v12;
         v14 = [SATravelTypeClassifier convertSATravelTypeToString:[(SATravelTypeClassifier *)self currentTravelType]];
-        v15 = [v14 UTF8String];
-        v16 = [(SATravelTypeClassifier *)self _vehicularHintsToString:v6];
+        uTF8String3 = [v14 UTF8String];
+        v16 = [(SATravelTypeClassifier *)self _vehicularHintsToString:vehicularHints];
         v25 = 68289795;
         v26 = 2082;
         v27 = "";
         v28 = 2081;
-        v29 = v15;
+        v29 = uTF8String3;
         v30 = 2081;
         v31 = "NonVehicular";
         v32 = 2081;
-        v33 = [v16 UTF8String];
+        uTF8String2 = [v16 UTF8String];
         _os_log_impl(&dword_2656EA000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SATravelTypeClassifier handleVehicleState, curr:%{private}s, new:%{private}s, hints:%{private}s}", &v25, 0x30u);
       }
 
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2;
 LABEL_12:
-      [(SATravelTypeClassifier *)v17 _setNewTravelType:v18 hints:v6];
+      [(SATravelTypeClassifier *)selfCopy2 _setNewTravelType:v18 hints:vehicularHints];
       break;
     case 0:
       v7 = TASALog;
@@ -197,17 +197,17 @@ LABEL_12:
       {
         v8 = v7;
         v9 = [SATravelTypeClassifier convertSATravelTypeToString:[(SATravelTypeClassifier *)self currentTravelType]];
-        v10 = [v9 UTF8String];
-        v11 = [(SATravelTypeClassifier *)self _vehicularHintsToString:v6];
+        uTF8String4 = [v9 UTF8String];
+        v11 = [(SATravelTypeClassifier *)self _vehicularHintsToString:vehicularHints];
         v25 = 68289795;
         v26 = 2082;
         v27 = "";
         v28 = 2081;
-        v29 = v10;
+        v29 = uTF8String4;
         v30 = 2081;
         v31 = "Unknown";
         v32 = 2081;
-        v33 = [v11 UTF8String];
+        uTF8String2 = [v11 UTF8String];
         _os_log_impl(&dword_2656EA000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SATravelTypeClassifier handleVehicleState, curr:%{private}s, new:%{private}s, hints:%{private}s}", &v25, 0x30u);
       }
 
@@ -217,15 +217,15 @@ LABEL_12:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUserActivityEvent:(id)a3
+- (void)_handleUserActivityEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 activityType];
-  if (v4 <= 1)
+  activityType = [event activityType];
+  if (activityType <= 1)
   {
-    if (v4)
+    if (activityType)
     {
-      if (v4 == 1)
+      if (activityType == 1)
       {
         v8 = TASALog;
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
@@ -237,7 +237,7 @@ LABEL_12:
           v15 = 2082;
           v16 = "";
           v17 = 2081;
-          v18 = [v7 UTF8String];
+          uTF8String = [v7 UTF8String];
           v19 = 2081;
           v20 = "NonVehicular - Static";
           goto LABEL_17;
@@ -257,7 +257,7 @@ LABEL_12:
         v15 = 2082;
         v16 = "";
         v17 = 2081;
-        v18 = [v7 UTF8String];
+        uTF8String = [v7 UTF8String];
         v19 = 2081;
         v20 = "Unknown";
         goto LABEL_17;
@@ -267,7 +267,7 @@ LABEL_12:
 
   else
   {
-    switch(v4)
+    switch(activityType)
     {
       case 2:
         v9 = TASALog;
@@ -280,7 +280,7 @@ LABEL_12:
           v15 = 2082;
           v16 = "";
           v17 = 2081;
-          v18 = [v7 UTF8String];
+          uTF8String = [v7 UTF8String];
           v19 = 2081;
           v20 = "NonVehicular - Pedestrian";
           goto LABEL_17;
@@ -298,7 +298,7 @@ LABEL_12:
           v15 = 2082;
           v16 = "";
           v17 = 2081;
-          v18 = [v7 UTF8String];
+          uTF8String = [v7 UTF8String];
           v19 = 2081;
           v20 = "Vehicular";
           goto LABEL_17;
@@ -316,7 +316,7 @@ LABEL_12:
           v15 = 2082;
           v16 = "";
           v17 = 2081;
-          v18 = [v7 UTF8String];
+          uTF8String = [v7 UTF8String];
           v19 = 2081;
           v20 = "NonVehicular - Cycling";
 LABEL_17:
@@ -330,23 +330,23 @@ LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyAllClientsOfTravelTypeChangeFrom:(unint64_t)a3 to:(unint64_t)a4 hints:(unint64_t)a5
+- (void)_notifyAllClientsOfTravelTypeChangeFrom:(unint64_t)from to:(unint64_t)to hints:(unint64_t)hints
 {
   v32 = *MEMORY[0x277D85DE8];
   v9 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [SATravelTypeClassifier convertSATravelTypeToString:a3];
-    v12 = [v11 UTF8String];
-    v13 = [SATravelTypeClassifier convertSATravelTypeToString:a4];
+    v11 = [SATravelTypeClassifier convertSATravelTypeToString:from];
+    uTF8String = [v11 UTF8String];
+    v13 = [SATravelTypeClassifier convertSATravelTypeToString:to];
     buf = 68289539;
     v26 = 2082;
     v27 = "";
     v28 = 2081;
-    v29 = v12;
+    v29 = uTF8String;
     v30 = 2081;
-    v31 = [v13 UTF8String];
+    uTF8String2 = [v13 UTF8String];
     _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SATravelTypeClassifier notifyTravelTypeChange, from:%{private}s, to:%{private}s}", &buf, 0x26u);
   }
 
@@ -354,8 +354,8 @@ LABEL_17:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(SATravelTypeClassifier *)self clients];
-  v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  clients = [(SATravelTypeClassifier *)self clients];
+  v15 = [clients countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v15)
   {
     v16 = v15;
@@ -367,14 +367,14 @@ LABEL_17:
       {
         if (*v21 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(clients);
         }
 
-        [*(*(&v20 + 1) + 8 * v18++) didChangeTravelTypeFrom:a3 to:a4 hints:a5];
+        [*(*(&v20 + 1) + 8 * v18++) didChangeTravelTypeFrom:from to:to hints:hints];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v16 = [clients countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v16);
@@ -383,27 +383,27 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SATravelTypeClassifier *)self clients];
-  [v5 addObject:v4];
+  clientCopy = client;
+  clients = [(SATravelTypeClassifier *)self clients];
+  [clients addObject:clientCopy];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SATravelTypeClassifier *)self clients];
-  [v5 removeObject:v4];
+  clientCopy = client;
+  clients = [(SATravelTypeClassifier *)self clients];
+  [clients removeObject:clientCopy];
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SATravelTypeClassifier *)self _handleVehicleStateEvent:v4];
+    [(SATravelTypeClassifier *)self _handleVehicleStateEvent:eventCopy];
   }
 
   else
@@ -411,7 +411,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SATravelTypeClassifier *)self _handleUserActivityEvent:v4];
+      [(SATravelTypeClassifier *)self _handleUserActivityEvent:eventCopy];
     }
   }
 }

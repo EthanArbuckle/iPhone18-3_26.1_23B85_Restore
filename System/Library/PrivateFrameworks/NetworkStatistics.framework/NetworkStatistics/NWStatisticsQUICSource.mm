@@ -1,7 +1,7 @@
 @interface NWStatisticsQUICSource
 - (id)_currentSnapshot;
 - (id)description;
-- (int)handleDescriptor:(void *)a3 length:(unint64_t)a4 events:(unint64_t)a5;
+- (int)handleDescriptor:(void *)descriptor length:(unint64_t)length events:(unint64_t)events;
 @end
 
 @implementation NWStatisticsQUICSource
@@ -13,32 +13,32 @@
   return v2;
 }
 
-- (int)handleDescriptor:(void *)a3 length:(unint64_t)a4 events:(unint64_t)a5
+- (int)handleDescriptor:(void *)descriptor length:(unint64_t)length events:(unint64_t)events
 {
-  if (a4 < 0x158)
+  if (length < 0x158)
   {
     return 1;
   }
 
-  if (self->_eventFlags != a5)
+  if (self->_eventFlags != events)
   {
-    self->_eventFlags = a5;
+    self->_eventFlags = events;
     p_descriptor = &self->_descriptor;
     goto LABEL_7;
   }
 
-  if (memcmp(&self->_descriptor, a3, 0x158uLL))
+  if (memcmp(&self->_descriptor, descriptor, 0x158uLL))
   {
     p_descriptor = &self->_descriptor;
 LABEL_7:
-    memcpy(p_descriptor, a3, sizeof(nstat_tcp_descriptor));
+    memcpy(p_descriptor, descriptor, sizeof(nstat_tcp_descriptor));
     return 3;
   }
 
-  v9 = [(NWStatisticsSource *)self manager];
-  v10 = [v9 mgrflags];
+  manager = [(NWStatisticsSource *)self manager];
+  mgrflags = [manager mgrflags];
 
-  if ((v10 & 4) != 0)
+  if ((mgrflags & 4) != 0)
   {
     return 1;
   }

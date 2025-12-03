@@ -1,11 +1,11 @@
 @interface CRLSEImportItemFactory
-- (BOOL)p_file:(id)a3 conformsTo:(id)a4;
-- (BOOL)p_stringIsConsideredEmpty:(id)a3;
-- (BOOL)p_urlIsValidImage:(id)a3;
+- (BOOL)p_file:(id)p_file conformsTo:(id)to;
+- (BOOL)p_stringIsConsideredEmpty:(id)empty;
+- (BOOL)p_urlIsValidImage:(id)image;
 - (CRLSEImportItemFactory)init;
 - (id)p_makeEmptyStringCharacterSet;
-- (void)createImportItems:(id)a3 skipTextAttachments:(BOOL)a4 completion:(id)a5;
-- (void)p_logItemProviderError:(id)a3 error:(id)a4;
+- (void)createImportItems:(id)items skipTextAttachments:(BOOL)attachments completion:(id)completion;
+- (void)p_logItemProviderError:(id)error error:(id)a4;
 @end
 
 @implementation CRLSEImportItemFactory
@@ -18,25 +18,25 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CRLSEImportItemFactory *)v2 p_makeEmptyStringCharacterSet];
+    p_makeEmptyStringCharacterSet = [(CRLSEImportItemFactory *)v2 p_makeEmptyStringCharacterSet];
     emptyStringCharacterSet = v3->_emptyStringCharacterSet;
-    v3->_emptyStringCharacterSet = v4;
+    v3->_emptyStringCharacterSet = p_makeEmptyStringCharacterSet;
   }
 
   return v3;
 }
 
-- (void)createImportItems:(id)a3 skipTextAttachments:(BOOL)a4 completion:(id)a5
+- (void)createImportItems:(id)items skipTextAttachments:(BOOL)attachments completion:(id)completion
 {
-  v6 = a3;
-  v35 = a5;
+  itemsCopy = items;
+  completionCopy = completion;
   v39 = objc_alloc_init(NSMutableArray);
   v7 = dispatch_group_create();
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v8)
   {
@@ -64,13 +64,13 @@
           sub_10007C218(v65, v13, v12, &v66);
         }
 
-        v14 = [UTTypeURL identifier];
-        v15 = [v12 hasItemConformingToTypeIdentifier:v14];
+        identifier = [UTTypeURL identifier];
+        v15 = [v12 hasItemConformingToTypeIdentifier:identifier];
 
         if (v15)
         {
           dispatch_group_enter(v7);
-          v16 = [UTTypeURL identifier];
+          identifier2 = [UTTypeURL identifier];
           v58[0] = _NSConcreteStackBlock;
           v58[1] = 3221225472;
           v58[2] = sub_10000E644;
@@ -78,7 +78,7 @@
           v58[4] = self;
           v59 = v39;
           v60 = v7;
-          [v12 loadItemForTypeIdentifier:v16 options:0 completionHandler:v58];
+          [v12 loadItemForTypeIdentifier:identifier2 options:0 completionHandler:v58];
 
           v17 = v59;
 LABEL_17:
@@ -86,18 +86,18 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v18 = [UTTypePlainText identifier];
-        v19 = [v12 hasItemConformingToTypeIdentifier:v18];
+        identifier3 = [UTTypePlainText identifier];
+        v19 = [v12 hasItemConformingToTypeIdentifier:identifier3];
 
         if (v19)
         {
-          if (a4)
+          if (attachments)
           {
             goto LABEL_18;
           }
 
           dispatch_group_enter(v7);
-          v20 = [UTTypePlainText identifier];
+          identifier4 = [UTTypePlainText identifier];
           v55[0] = _NSConcreteStackBlock;
           v55[1] = 3221225472;
           v55[2] = sub_10000E6DC;
@@ -105,19 +105,19 @@ LABEL_17:
           v55[4] = self;
           v56 = v39;
           v57 = v7;
-          [v12 loadItemForTypeIdentifier:v20 options:0 completionHandler:v55];
+          [v12 loadItemForTypeIdentifier:identifier4 options:0 completionHandler:v55];
 
           v17 = v56;
           goto LABEL_17;
         }
 
-        v21 = [UTTypeRAWImage identifier];
-        v22 = [v12 hasItemConformingToTypeIdentifier:v21];
+        identifier5 = [UTTypeRAWImage identifier];
+        v22 = [v12 hasItemConformingToTypeIdentifier:identifier5];
 
         if (v22)
         {
           dispatch_group_enter(v7);
-          v23 = [UTTypeRAWImage identifier];
+          identifier6 = [UTTypeRAWImage identifier];
           v52[0] = _NSConcreteStackBlock;
           v52[1] = 3221225472;
           v52[2] = sub_10000E7C0;
@@ -126,14 +126,14 @@ LABEL_17:
           v52[5] = v12;
           v53 = v39;
           v54 = v7;
-          [v12 loadItemForTypeIdentifier:v23 options:0 completionHandler:v52];
+          [v12 loadItemForTypeIdentifier:identifier6 options:0 completionHandler:v52];
 
           v17 = v53;
           goto LABEL_17;
         }
 
-        v24 = [UTTypeImage identifier];
-        v25 = [v12 hasItemConformingToTypeIdentifier:v24];
+        identifier7 = [UTTypeImage identifier];
+        v25 = [v12 hasItemConformingToTypeIdentifier:identifier7];
 
         if (v25)
         {
@@ -154,13 +154,13 @@ LABEL_17:
 
         if (([v12 hasItemConformingToTypeIdentifier:@"com.apple.mapkit.map-item"] & 1) == 0)
         {
-          v27 = [UTTypePDF identifier];
-          v28 = [v12 hasItemConformingToTypeIdentifier:v27];
+          identifier8 = [UTTypePDF identifier];
+          v28 = [v12 hasItemConformingToTypeIdentifier:identifier8];
 
           dispatch_group_enter(v7);
           if (v28)
           {
-            v29 = [UTTypePDF identifier];
+            identifier9 = [UTTypePDF identifier];
             v46[0] = _NSConcreteStackBlock;
             v46[1] = 3221225472;
             v46[2] = sub_10000F3D4;
@@ -169,14 +169,14 @@ LABEL_17:
             v46[5] = v12;
             v47 = v39;
             v48 = v7;
-            [v12 loadItemForTypeIdentifier:v29 options:0 completionHandler:v46];
+            [v12 loadItemForTypeIdentifier:identifier9 options:0 completionHandler:v46];
 
             v17 = v47;
           }
 
           else
           {
-            v30 = [UTTypeData identifier];
+            identifier10 = [UTTypeData identifier];
             v43[0] = _NSConcreteStackBlock;
             v43[1] = 3221225472;
             v43[2] = sub_10000F750;
@@ -185,7 +185,7 @@ LABEL_17:
             v43[5] = v12;
             v44 = v39;
             v45 = v7;
-            [v12 loadItemForTypeIdentifier:v30 options:0 completionHandler:v43];
+            [v12 loadItemForTypeIdentifier:identifier10 options:0 completionHandler:v43];
 
             v17 = v44;
           }
@@ -211,15 +211,15 @@ LABEL_18:
   block[2] = sub_10000F888;
   block[3] = &unk_1000A68C8;
   v41 = v39;
-  v42 = v35;
+  v42 = completionCopy;
   v33 = v39;
-  v34 = v35;
+  v34 = completionCopy;
   dispatch_group_notify(v7, v32, block);
 }
 
-- (void)p_logItemProviderError:(id)a3 error:(id)a4
+- (void)p_logItemProviderError:(id)error error:(id)a4
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = a4;
   if (CRLSharingExtensionCat_init_token != -1)
   {
@@ -229,17 +229,17 @@ LABEL_18:
   v7 = CRLSharingExtensionCat_log_t;
   if (os_log_type_enabled(CRLSharingExtensionCat_log_t, OS_LOG_TYPE_ERROR))
   {
-    sub_10007C76C(v7, v5, v6);
+    sub_10007C76C(v7, errorCopy, v6);
   }
 }
 
-- (BOOL)p_urlIsValidImage:(id)a3
+- (BOOL)p_urlIsValidImage:(id)image
 {
   v8 = kCGImageSourceShouldCache;
   v9 = &__kCFBooleanFalse;
-  v3 = a3;
+  imageCopy = image;
   v4 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v5 = CGImageSourceCreateWithURL(v3, v4);
+  v5 = CGImageSourceCreateWithURL(imageCopy, v4);
 
   Count = CGImageSourceGetCount(v5);
   if (v5)
@@ -263,28 +263,28 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)p_stringIsConsideredEmpty:(id)a3
+- (BOOL)p_stringIsConsideredEmpty:(id)empty
 {
-  v3 = [a3 stringByTrimmingCharactersInSet:self->_emptyStringCharacterSet];
+  v3 = [empty stringByTrimmingCharactersInSet:self->_emptyStringCharacterSet];
   v4 = [v3 length] == 0;
 
   return v4;
 }
 
-- (BOOL)p_file:(id)a3 conformsTo:(id)a4
+- (BOOL)p_file:(id)p_file conformsTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isFileURL])
+  p_fileCopy = p_file;
+  toCopy = to;
+  if ([p_fileCopy isFileURL])
   {
     v13 = 0;
     v12 = 0;
-    [v5 getResourceValue:&v13 forKey:NSURLContentTypeKey error:&v12];
+    [p_fileCopy getResourceValue:&v13 forKey:NSURLContentTypeKey error:&v12];
     v7 = v13;
     v8 = v12;
     if (v7)
     {
-      v9 = [v7 conformsToType:v6];
+      v9 = [v7 conformsToType:toCopy];
     }
 
     else
@@ -297,7 +297,7 @@ LABEL_18:
       v10 = CRLSharingExtensionCat_log_t;
       if (os_log_type_enabled(CRLSharingExtensionCat_log_t, OS_LOG_TYPE_ERROR))
       {
-        sub_10007C868(v5, v10, v8);
+        sub_10007C868(p_fileCopy, v10, v8);
       }
 
       v9 = 0;

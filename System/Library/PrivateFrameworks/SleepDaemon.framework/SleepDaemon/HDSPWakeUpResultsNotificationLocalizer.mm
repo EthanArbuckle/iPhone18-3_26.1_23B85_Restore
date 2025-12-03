@@ -1,11 +1,11 @@
 @interface HDSPWakeUpResultsNotificationLocalizer
-- (HDSPWakeUpResultsNotificationLocalizer)initWithNotification:(id)a3 healthStore:(id)a4;
+- (HDSPWakeUpResultsNotificationLocalizer)initWithNotification:(id)notification healthStore:(id)store;
 - (double)dailySleepDurationGoal;
 - (id)_embeddedNameLocalizedStringKey;
 - (id)_embeddedNameSubstitutionStringKey;
-- (id)_localizedBodyForOneDayNotificationWithError:(id *)a3;
-- (id)_localizedBodyForOneWeekDayNotificationWithError:(id *)a3;
-- (id)_localizedBodyForTwoWeekNotificationWithError:(id *)a3;
+- (id)_localizedBodyForOneDayNotificationWithError:(id *)error;
+- (id)_localizedBodyForOneWeekDayNotificationWithError:(id *)error;
+- (id)_localizedBodyForTwoWeekNotificationWithError:(id *)error;
 - (id)_localizedStringKeyBase;
 - (id)_regularLocalizedStringKey;
 - (id)_regularSubstitutionStringKey;
@@ -18,18 +18,18 @@
 
 @implementation HDSPWakeUpResultsNotificationLocalizer
 
-- (HDSPWakeUpResultsNotificationLocalizer)initWithNotification:(id)a3 healthStore:(id)a4
+- (HDSPWakeUpResultsNotificationLocalizer)initWithNotification:(id)notification healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  notificationCopy = notification;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HDSPWakeUpResultsNotificationLocalizer;
   v9 = [(HDSPWakeUpResultsNotificationLocalizer *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_notification, a3);
-    objc_storeStrong(&v10->_healthStore, a4);
+    objc_storeStrong(&v9->_notification, notification);
+    objc_storeStrong(&v10->_healthStore, store);
     v11 = v10;
   }
 
@@ -39,17 +39,17 @@
 - (id)localizedBody
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v4 = [v3 category];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  category = [notification category];
 
-  if (v4 == 2)
+  if (category == 2)
   {
     v14 = 0;
     v5 = &v14;
     v6 = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedBodyForTwoWeekNotificationWithError:&v14];
   }
 
-  else if (v4 == 1)
+  else if (category == 1)
   {
     v15 = 0;
     v5 = &v15;
@@ -58,7 +58,7 @@
 
   else
   {
-    if (v4)
+    if (category)
     {
       v9 = &stru_287A83178;
       goto LABEL_14;
@@ -99,14 +99,14 @@ LABEL_14:
   return v9;
 }
 
-- (id)_localizedBodyForOneDayNotificationWithError:(id *)a3
+- (id)_localizedBodyForOneDayNotificationWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
   if ([(HDSPWakeUpResultsNotificationLocalizer *)self category])
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HDSPWakeUpResultsNotificationLocalizer category](self, "category")}];
-    [v39 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:81 description:{@"This method can only localized content for One Day Wake Up Results; received category %@", v40}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:81 description:{@"This method can only localized content for One Day Wake Up Results; received category %@", v40}];
   }
 
   [(HDSPWakeUpResultsNotificationLocalizer *)self dailySleepDurationGoal];
@@ -115,17 +115,17 @@ LABEL_14:
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   v9 = [v7 localizedStringFromNumber:v8 numberStyle:1];
 
-  v10 = [(HDSPWakeUpResultsNotificationLocalizer *)self userFirstName];
-  v11 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
-  v12 = HDSPLocalizedCoachingString(v11);
+  userFirstName = [(HDSPWakeUpResultsNotificationLocalizer *)self userFirstName];
+  _embeddedNameLocalizedStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
+  v12 = HDSPLocalizedCoachingString(_embeddedNameLocalizedStringKey);
 
-  if ([v10 length] && v12)
+  if ([userFirstName length] && v12)
   {
-    v13 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
-    v14 = HDSPLocalizedCoachingString(v13);
+    _embeddedNameLocalizedStringKey2 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
+    v14 = HDSPLocalizedCoachingString(_embeddedNameLocalizedStringKey2);
 
-    v15 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameSubstitutionStringKey];
-    v16 = HDSPLocalizedCoachingSubstitutionString(v15);
+    _embeddedNameSubstitutionStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameSubstitutionStringKey];
+    v16 = HDSPLocalizedCoachingSubstitutionString(_embeddedNameSubstitutionStringKey);
 
     if (v16)
     {
@@ -139,7 +139,7 @@ LABEL_14:
       v22 = v47;
 
       v46 = v22;
-      v23 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@%@" error:&v46, v10, v20];
+      v23 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@%@" error:&v46, userFirstName, v20];
       v24 = v46;
 
       v12 = v21;
@@ -149,18 +149,18 @@ LABEL_14:
     {
       v19 = v9;
       v45 = 0;
-      v23 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:&v45, v10];
+      v23 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:&v45, userFirstName];
       v24 = v45;
     }
   }
 
   else
   {
-    v25 = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularLocalizedStringKey];
-    v14 = HDSPLocalizedCoachingString(v25);
+    _regularLocalizedStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularLocalizedStringKey];
+    v14 = HDSPLocalizedCoachingString(_regularLocalizedStringKey);
 
-    v26 = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularSubstitutionStringKey];
-    v16 = HDSPLocalizedCoachingSubstitutionString(v26);
+    _regularSubstitutionStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularSubstitutionStringKey];
+    v16 = HDSPLocalizedCoachingSubstitutionString(_regularSubstitutionStringKey);
 
     if (v16)
     {
@@ -200,10 +200,10 @@ LABEL_14:
     v34 = v33;
     if (v33)
     {
-      if (a3)
+      if (error)
       {
         v35 = v33;
-        *a3 = v34;
+        *error = v34;
       }
 
       else
@@ -224,33 +224,33 @@ LABEL_14:
   return v23;
 }
 
-- (id)_localizedBodyForOneWeekDayNotificationWithError:(id *)a3
+- (id)_localizedBodyForOneWeekDayNotificationWithError:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   if ([(HDSPWakeUpResultsNotificationLocalizer *)self category]!= 1)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HDSPWakeUpResultsNotificationLocalizer category](self, "category")}];
-    [v19 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:139 description:{@"This method can only localized content for One Week Wake Up Results; received category %@", v20}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:139 description:{@"This method can only localized content for One Week Wake Up Results; received category %@", v20}];
   }
 
-  v6 = [(HDSPWakeUpResultsNotificationLocalizer *)self weeklyGoalAchieved];
-  if ((v6 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
+  weeklyGoalAchieved = [(HDSPWakeUpResultsNotificationLocalizer *)self weeklyGoalAchieved];
+  if ((weeklyGoalAchieved - 5) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v21 = v6;
-    v22 = [MEMORY[0x277CCA890] currentHandler];
+    v21 = weeklyGoalAchieved;
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v23 = [MEMORY[0x277CCABB0] numberWithInteger:v21];
-    [v22 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:145 description:{@"One Week goal achieved count must be 3 or 4; received %@", v23}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:145 description:{@"One Week goal achieved count must be 3 or 4; received %@", v23}];
   }
 
-  v7 = [(HDSPWakeUpResultsNotificationLocalizer *)self userFirstName];
-  v8 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
-  v9 = HDSPLocalizedCoachingString(v8);
+  userFirstName = [(HDSPWakeUpResultsNotificationLocalizer *)self userFirstName];
+  _embeddedNameLocalizedStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
+  v9 = HDSPLocalizedCoachingString(_embeddedNameLocalizedStringKey);
 
-  if ([v7 length] && v9)
+  if ([userFirstName length] && v9)
   {
     v24 = 0;
-    v10 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:&v24, v7];
+    v10 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:&v24, userFirstName];
     v11 = v24;
     v12 = v11;
     if (v10)
@@ -262,10 +262,10 @@ LABEL_14:
     v12 = v13;
     if (v13)
     {
-      if (a3)
+      if (error)
       {
         v14 = v13;
-        *a3 = v12;
+        *error = v12;
       }
 
       else
@@ -283,8 +283,8 @@ LABEL_14:
 
   else
   {
-    v15 = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularLocalizedStringKey];
-    v10 = HDSPLocalizedCoachingString(v15);
+    _regularLocalizedStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularLocalizedStringKey];
+    v10 = HDSPLocalizedCoachingString(_regularLocalizedStringKey);
 
     v12 = 0;
     if (v10)
@@ -301,27 +301,27 @@ LABEL_18:
   return v10;
 }
 
-- (id)_localizedBodyForTwoWeekNotificationWithError:(id *)a3
+- (id)_localizedBodyForTwoWeekNotificationWithError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   if ([(HDSPWakeUpResultsNotificationLocalizer *)self category]!= 2)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HDSPWakeUpResultsNotificationLocalizer category](self, "category")}];
-    [v27 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:170 description:{@"This method can only localized content for Two Week Wake Up Results; received category %@", v28}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:170 description:{@"This method can only localized content for Two Week Wake Up Results; received category %@", v28}];
   }
 
-  v6 = [(HDSPWakeUpResultsNotificationLocalizer *)self userFirstName];
-  v7 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
-  v8 = HDSPLocalizedCoachingString(v7);
+  userFirstName = [(HDSPWakeUpResultsNotificationLocalizer *)self userFirstName];
+  _embeddedNameLocalizedStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
+  v8 = HDSPLocalizedCoachingString(_embeddedNameLocalizedStringKey);
 
-  if ([v6 length] && v8)
+  if ([userFirstName length] && v8)
   {
-    v9 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
-    v10 = HDSPLocalizedCoachingString(v9);
+    _embeddedNameLocalizedStringKey2 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameLocalizedStringKey];
+    v10 = HDSPLocalizedCoachingString(_embeddedNameLocalizedStringKey2);
 
-    v11 = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameSubstitutionStringKey];
-    v12 = HDSPLocalizedCoachingSubstitutionString(v11);
+    _embeddedNameSubstitutionStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _embeddedNameSubstitutionStringKey];
+    v12 = HDSPLocalizedCoachingSubstitutionString(_embeddedNameSubstitutionStringKey);
 
     if (v12)
     {
@@ -329,7 +329,7 @@ LABEL_18:
       v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v12 validFormatSpecifiers:@"%ld" error:&v33, -[HDSPWakeUpResultsNotificationLocalizer weeklyGoalAchieved](self, "weeklyGoalAchieved")];
       v14 = v33;
       v32 = v14;
-      v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@%@" error:&v32, v6, v13];
+      v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@%@" error:&v32, userFirstName, v13];
       v16 = v32;
 LABEL_9:
       v19 = v16;
@@ -338,17 +338,17 @@ LABEL_9:
     }
 
     v31 = 0;
-    v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:&v31, v6];
+    v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:&v31, userFirstName];
     v19 = v31;
   }
 
   else
   {
-    v17 = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularLocalizedStringKey];
-    v10 = HDSPLocalizedCoachingString(v17);
+    _regularLocalizedStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularLocalizedStringKey];
+    v10 = HDSPLocalizedCoachingString(_regularLocalizedStringKey);
 
-    v18 = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularSubstitutionStringKey];
-    v12 = HDSPLocalizedCoachingSubstitutionString(v18);
+    _regularSubstitutionStringKey = [(HDSPWakeUpResultsNotificationLocalizer *)self _regularSubstitutionStringKey];
+    v12 = HDSPLocalizedCoachingSubstitutionString(_regularSubstitutionStringKey);
 
     if (v12)
     {
@@ -379,10 +379,10 @@ LABEL_12:
     v22 = v21;
     if (v21)
     {
-      if (a3)
+      if (error)
       {
         v23 = v21;
-        *a3 = v22;
+        *error = v22;
       }
 
       else
@@ -405,32 +405,32 @@ LABEL_12:
 
 - (unint64_t)category
 {
-  v2 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v3 = [v2 category];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  category = [notification category];
 
-  return v3;
+  return category;
 }
 
 - (int64_t)notificationVariant
 {
-  v2 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v3 = [v2 notificationVariant];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  notificationVariant = [notification notificationVariant];
 
-  return v3;
+  return notificationVariant;
 }
 
 - (double)dailySleepDurationGoal
 {
   if ([(HDSPWakeUpResultsNotificationLocalizer *)self category])
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:224 description:@"Daily sleep duration goal requires OneDay category"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:224 description:@"Daily sleep duration goal requires OneDay category"];
   }
 
-  v4 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v5 = [v4 goalAchieved];
-  v6 = [MEMORY[0x277CCDAB0] secondUnit];
-  [v5 doubleValueForUnit:v6];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  goalAchieved = [notification goalAchieved];
+  secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+  [goalAchieved doubleValueForUnit:secondUnit];
   v8 = v7;
 
   return v8;
@@ -440,14 +440,14 @@ LABEL_12:
 {
   if (![(HDSPWakeUpResultsNotificationLocalizer *)self category])
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:233 description:@"Weekly goal achieved requires OneWeek or TwoWeek category"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationLocalizer.m" lineNumber:233 description:@"Weekly goal achieved requires OneWeek or TwoWeek category"];
   }
 
-  v4 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v5 = [v4 goalAchieved];
-  v6 = [MEMORY[0x277CCDAB0] dayUnit];
-  [v5 doubleValueForUnit:v6];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  goalAchieved = [notification goalAchieved];
+  dayUnit = [MEMORY[0x277CCDAB0] dayUnit];
+  [goalAchieved doubleValueForUnit:dayUnit];
   v8 = v7;
 
   return v8;
@@ -455,29 +455,29 @@ LABEL_12:
 
 - (id)userFirstName
 {
-  v2 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v3 = [v2 userFirstName];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  userFirstName = [notification userFirstName];
 
-  return v3;
+  return userFirstName;
 }
 
 - (id)_localizedStringKeyBase
 {
-  v3 = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
-  v4 = [v3 category];
+  notification = [(HDSPWakeUpResultsNotificationLocalizer *)self notification];
+  category = [notification category];
 
-  if (v4)
+  if (category)
   {
-    if (v4 == 2)
+    if (category == 2)
     {
       v7 = @"WAKE_UP_RESULT_TWO_WEEK_GOAL_ACHIEVED";
     }
 
-    else if (v4 == 1)
+    else if (category == 1)
     {
-      v5 = [(HDSPWakeUpResultsNotificationLocalizer *)self weeklyGoalAchieved];
+      weeklyGoalAchieved = [(HDSPWakeUpResultsNotificationLocalizer *)self weeklyGoalAchieved];
       v6 = @"WAKE_UP_RESULT_FOUR_DAY_GOAL_ACHIEVED";
-      if (v5 == 3)
+      if (weeklyGoalAchieved == 3)
       {
         v6 = @"WAKE_UP_RESULT_THREE_DAY_GOAL_ACHIEVED";
       }
@@ -502,8 +502,8 @@ LABEL_12:
 - (id)_regularLocalizedStringKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
-  v5 = [v3 stringWithFormat:@"%@_%ld", v4, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
+  _localizedStringKeyBase = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
+  v5 = [v3 stringWithFormat:@"%@_%ld", _localizedStringKeyBase, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
 
   return v5;
 }
@@ -511,8 +511,8 @@ LABEL_12:
 - (id)_regularSubstitutionStringKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
-  v5 = [v3 stringWithFormat:@"%@_%ld_SUBSTITUTION", v4, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
+  _localizedStringKeyBase = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
+  v5 = [v3 stringWithFormat:@"%@_%ld_SUBSTITUTION", _localizedStringKeyBase, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
 
   return v5;
 }
@@ -520,8 +520,8 @@ LABEL_12:
 - (id)_embeddedNameLocalizedStringKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
-  v5 = [v3 stringWithFormat:@"%@_NAME_%ld", v4, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
+  _localizedStringKeyBase = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
+  v5 = [v3 stringWithFormat:@"%@_NAME_%ld", _localizedStringKeyBase, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
 
   return v5;
 }
@@ -529,8 +529,8 @@ LABEL_12:
 - (id)_embeddedNameSubstitutionStringKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
-  v5 = [v3 stringWithFormat:@"%@_NAME_%ld_SUBSTITUTION", v4, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
+  _localizedStringKeyBase = [(HDSPWakeUpResultsNotificationLocalizer *)self _localizedStringKeyBase];
+  v5 = [v3 stringWithFormat:@"%@_NAME_%ld_SUBSTITUTION", _localizedStringKeyBase, -[HDSPWakeUpResultsNotificationLocalizer notificationVariant](self, "notificationVariant")];
 
   return v5;
 }

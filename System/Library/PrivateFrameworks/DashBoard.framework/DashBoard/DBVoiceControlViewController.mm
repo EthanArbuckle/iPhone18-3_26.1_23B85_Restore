@@ -1,6 +1,6 @@
 @interface DBVoiceControlViewController
-- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5;
-- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6;
+- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)scene application:(id)application environment:(id)environment;
+- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment;
 - (unint64_t)deactivationPolicy;
 - (void)dealloc;
 - (void)viewDidLoad;
@@ -10,29 +10,29 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for DBVoiceControlViewController();
   [(DBVoiceControlViewController *)&v4 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DBVoiceControlViewController.viewDidLoad()();
 }
 
-- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5
+- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)scene application:(id)application environment:(id)environment
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6
+- (_TtC9DashBoard28DBVoiceControlViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

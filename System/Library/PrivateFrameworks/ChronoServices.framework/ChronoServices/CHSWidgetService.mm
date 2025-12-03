@@ -1,7 +1,7 @@
 @interface CHSWidgetService
 + (CHSWidgetService)sharedWidgetService;
 - (CHSWidgetService)init;
-- (void)invalidateRelevancesOfKind:(id)a3 inBundle:(id)a4 completion:(id)a5;
+- (void)invalidateRelevancesOfKind:(id)kind inBundle:(id)bundle completion:(id)completion;
 @end
 
 @implementation CHSWidgetService
@@ -18,9 +18,9 @@
   return v3;
 }
 
-- (void)invalidateRelevancesOfKind:(id)a3 inBundle:(id)a4 completion:(id)a5
+- (void)invalidateRelevancesOfKind:(id)kind inBundle:(id)bundle completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = *(&self->super.isa + OBJC_IVAR___CHSWidgetService_connection);
@@ -31,11 +31,11 @@
   v15[2] = sub_195F9B590;
   v15[3] = &block_descriptor_13;
   v11 = _Block_copy(v15);
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  kindCopy = kind;
+  bundleCopy = bundle;
+  selfCopy = self;
 
-  [v10 invalidateRelevancesOfKind:v12 inBundle:v13 completion:v11];
+  [v10 invalidateRelevancesOfKind:kindCopy inBundle:bundleCopy completion:v11];
 
   _Block_release(v11);
 }

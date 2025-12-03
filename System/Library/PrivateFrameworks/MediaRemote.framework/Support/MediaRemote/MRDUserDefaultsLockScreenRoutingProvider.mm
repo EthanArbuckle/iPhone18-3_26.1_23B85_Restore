@@ -1,7 +1,7 @@
 @interface MRDUserDefaultsLockScreenRoutingProvider
 - (MRDUserDefaultsLockScreenRoutingProvider)init;
 - (NSArray)nearbyDeviceIdentifiers;
-- (void)setNearbyDeviceIdentifiers:(id)a3;
+- (void)setNearbyDeviceIdentifiers:(id)identifiers;
 - (void)update;
 @end
 
@@ -18,7 +18,7 @@
   return v5.super.isa;
 }
 
-- (void)setNearbyDeviceIdentifiers:(id)a3
+- (void)setNearbyDeviceIdentifiers:(id)identifiers
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___MRDUserDefaultsLockScreenRoutingProvider_nearbyDeviceIdentifiers;
@@ -29,7 +29,7 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_10034C150();
 }
 

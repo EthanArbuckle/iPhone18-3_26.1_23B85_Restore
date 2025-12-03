@@ -1,44 +1,44 @@
 @interface PBUIScrollableIrisWallpaperView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (NSURL)videoFileURL;
 - (PBUIIrisWallpaperPlayerDelegate)irisDelegate;
-- (PBUIScrollableIrisWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 wallpaperVideo:(id)a5 variant:(int64_t)a6;
+- (PBUIScrollableIrisWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration wallpaperVideo:(id)video variant:(int64_t)variant;
 - (id)_newImageView;
 - (void)dealloc;
-- (void)playerViewIsInteractingDidChange:(id)a3;
-- (void)playerViewPlaybackStateDidChange:(id)a3;
+- (void)playerViewIsInteractingDidChange:(id)change;
+- (void)playerViewPlaybackStateDidChange:(id)change;
 @end
 
 @implementation PBUIScrollableIrisWallpaperView
 
-- (PBUIScrollableIrisWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 wallpaperVideo:(id)a5 variant:(int64_t)a6
+- (PBUIScrollableIrisWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration wallpaperVideo:(id)video variant:(int64_t)variant
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
+  videoCopy = video;
   v25.receiver = self;
   v25.super_class = PBUIScrollableIrisWallpaperView;
-  v15 = [(PBUIScrollableStaticWallpaperView *)&v25 initWithFrame:v13 configuration:a6 variant:0 cacheGroup:0 delegate:0 options:x, y, width, height];
-  v16 = v15;
-  if (v15)
+  height = [(PBUIScrollableStaticWallpaperView *)&v25 initWithFrame:configurationCopy configuration:variant variant:0 cacheGroup:0 delegate:0 options:x, y, width, height];
+  v16 = height;
+  if (height)
   {
-    objc_storeStrong(&v15->_video, a5);
+    objc_storeStrong(&height->_video, video);
     [(PBUILivePhotoPlayerView *)v16->_playerView setContentMode:1];
-    v17 = [v13 wallpaperImage];
-    v18 = [v13 wallpaperOptions];
-    [v18 stillTimeInVideo];
+    wallpaperImage = [configurationCopy wallpaperImage];
+    wallpaperOptions = [configurationCopy wallpaperOptions];
+    [wallpaperOptions stillTimeInVideo];
     v20 = v19;
 
-    -[PBUILivePhotoPlayerView prepareWithPhoto:videoAsset:photoTime:photoEXIFOrientation:](v16->_playerView, "prepareWithPhoto:videoAsset:photoTime:photoEXIFOrientation:", [v17 CGImage], v16->_video, objc_msgSend(v17, "pbui_EXIFOrientation"), v20);
-    v21 = [(PBUILivePhotoPlayerView *)v16->_playerView gestureRecognizer];
-    [v21 setDelegate:v16];
+    -[PBUILivePhotoPlayerView prepareWithPhoto:videoAsset:photoTime:photoEXIFOrientation:](v16->_playerView, "prepareWithPhoto:videoAsset:photoTime:photoEXIFOrientation:", [wallpaperImage CGImage], v16->_video, objc_msgSend(wallpaperImage, "pbui_EXIFOrientation"), v20);
+    gestureRecognizer = [(PBUILivePhotoPlayerView *)v16->_playerView gestureRecognizer];
+    [gestureRecognizer setDelegate:v16];
 
-    v22 = [(PBUIScrollableStaticWallpaperView *)v16 _scrollView];
-    v23 = [(PBUILivePhotoPlayerView *)v16->_playerView gestureRecognizer];
-    [v22 addGestureRecognizer:v23];
+    _scrollView = [(PBUIScrollableStaticWallpaperView *)v16 _scrollView];
+    gestureRecognizer2 = [(PBUILivePhotoPlayerView *)v16->_playerView gestureRecognizer];
+    [_scrollView addGestureRecognizer:gestureRecognizer2];
   }
 
   return v16;
@@ -54,8 +54,8 @@
 
 - (id)_newImageView
 {
-  v3 = [(PBUIStaticWallpaperView *)self wallpaperImage];
-  [v3 size];
+  wallpaperImage = [(PBUIStaticWallpaperView *)self wallpaperImage];
+  [wallpaperImage size];
   v5 = v4;
   v7 = v6;
 
@@ -87,32 +87,32 @@
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [(PBUIScrollableStaticWallpaperView *)self _scrollView];
-  v7 = [v6 panGestureRecognizer];
-  if (v7 == v5)
+  gestureRecognizerCopy = gestureRecognizer;
+  _scrollView = [(PBUIScrollableStaticWallpaperView *)self _scrollView];
+  panGestureRecognizer = [_scrollView panGestureRecognizer];
+  if (panGestureRecognizer == gestureRecognizerCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v8 = [(PBUIScrollableStaticWallpaperView *)self _scrollView];
-    v9 = [v8 pinchGestureRecognizer];
-    v10 = v9 == v5;
+    _scrollView2 = [(PBUIScrollableStaticWallpaperView *)self _scrollView];
+    pinchGestureRecognizer = [_scrollView2 pinchGestureRecognizer];
+    v10 = pinchGestureRecognizer == gestureRecognizerCopy;
   }
 
   return v10;
 }
 
-- (void)playerViewPlaybackStateDidChange:(id)a3
+- (void)playerViewPlaybackStateDidChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_playerView == a3)
+  if (self->_playerView == change)
   {
-    v4 = PBUIIrisWallpaperPlaybackStateForISPlaybackState([a3 playbackState]);
+    v4 = PBUIIrisWallpaperPlaybackStateForISPlaybackState([change playbackState]);
     v5 = PBUILogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -128,23 +128,23 @@
     if (v4 != -1 && v4 != self->_playbackState)
     {
       self->_playbackState = v4;
-      v8 = [(PBUIScrollableIrisWallpaperView *)self irisDelegate];
+      irisDelegate = [(PBUIScrollableIrisWallpaperView *)self irisDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v8 irisWallpaperPlayerPlaybackStateDidChange:self];
+        [irisDelegate irisWallpaperPlayerPlaybackStateDidChange:self];
       }
     }
   }
 }
 
-- (void)playerViewIsInteractingDidChange:(id)a3
+- (void)playerViewIsInteractingDidChange:(id)change
 {
-  if (self->_playerView == a3)
+  if (self->_playerView == change)
   {
-    v5 = [(PBUIScrollableIrisWallpaperView *)self irisDelegate];
+    irisDelegate = [(PBUIScrollableIrisWallpaperView *)self irisDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 irisWallpaperPlayerIsInteractingDidChange:self];
+      [irisDelegate irisWallpaperPlayerIsInteractingDidChange:self];
     }
   }
 }

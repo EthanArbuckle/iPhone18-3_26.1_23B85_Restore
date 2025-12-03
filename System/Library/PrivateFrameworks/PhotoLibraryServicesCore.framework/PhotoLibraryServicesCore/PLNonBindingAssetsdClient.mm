@@ -5,12 +5,12 @@
 - (PLAssetsdPrivacySupportClient)privacySupportClient;
 - (PLAssetsdSystemLibraryURLReadOnlyClient)systemLibraryURLReadOnlyClient;
 - (PLNonBindingAssetsdClient)init;
-- (void)_updateLibraryStateConnectionInterrupted:(id)a3;
+- (void)_updateLibraryStateConnectionInterrupted:(id)interrupted;
 @end
 
 @implementation PLNonBindingAssetsdClient
 
-- (void)_updateLibraryStateConnectionInterrupted:(id)a3
+- (void)_updateLibraryStateConnectionInterrupted:(id)interrupted
 {
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -259,8 +259,8 @@ void __59__PLNonBindingAssetsdClient_systemLibraryURLReadOnlyClient__block_invok
     isolationQueue = v2->_isolationQueue;
     v2->_isolationQueue = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__updateLibraryStateConnectionInterrupted_ name:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:v2->_connection];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateLibraryStateConnectionInterrupted_ name:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:v2->_connection];
 
     v10 = v2;
   }

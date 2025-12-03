@@ -1,14 +1,14 @@
 @interface _UIStatusBarVisualProvider_Fallback
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
 - (_UIStatusBar)statusBar;
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3;
-- (id)setupInContainerView:(id)a3;
-- (id)styleAttributesForStyle:(int64_t)a3;
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier;
+- (id)setupInContainerView:(id)view;
+- (id)styleAttributesForStyle:(int64_t)style;
 @end
 
 @implementation _UIStatusBarVisualProvider_Fallback
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = 40.0;
   v4 = -1.0;
@@ -17,12 +17,12 @@
   return result;
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  viewCopy = view;
+  array = [v3 array];
   v6 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"main"];
   v7 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
   v8 = objc_alloc_init(_UIStatusBarRegionAxisStackingLayout);
@@ -41,41 +41,41 @@
   [(UIView *)v11 setBackgroundColor:v13];
 
   [(_UIStatusBarRegion *)v6 setContentView:v11];
-  v14 = [(_UIStatusBarRegion *)v6 layoutItem];
-  v15 = [v14 topAnchor];
-  v16 = [v4 topAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
-  [v5 addObject:v17];
+  layoutItem = [(_UIStatusBarRegion *)v6 layoutItem];
+  topAnchor = [layoutItem topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v17];
 
-  v18 = [(_UIStatusBarRegion *)v6 layoutItem];
-  v19 = [v18 bottomAnchor];
-  v20 = [v4 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
-  [v5 addObject:v21];
+  layoutItem2 = [(_UIStatusBarRegion *)v6 layoutItem];
+  bottomAnchor = [layoutItem2 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v21];
 
-  v22 = [(_UIStatusBarRegion *)v6 layoutItem];
-  v23 = [v22 leadingAnchor];
-  v24 = [v4 leadingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
-  [v5 addObject:v25];
+  layoutItem3 = [(_UIStatusBarRegion *)v6 layoutItem];
+  leadingAnchor = [layoutItem3 leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v25];
 
-  v26 = [(_UIStatusBarRegion *)v6 layoutItem];
-  v27 = [v26 trailingAnchor];
-  v28 = [v4 trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  [v5 addObject:v29];
+  layoutItem4 = [(_UIStatusBarRegion *)v6 layoutItem];
+  trailingAnchor = [layoutItem4 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v29];
 
-  v30 = [(_UIStatusBarRegion *)v6 layoutItem];
-  [v4 _ui_addSubLayoutItem:v30];
+  layoutItem5 = [(_UIStatusBarRegion *)v6 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem5];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v5];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
   v33[0] = v6;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
 
   return v31;
 }
 
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier
 {
   v11[2] = *MEMORY[0x1E69E9840];
   placements = self->_placements;
@@ -96,10 +96,10 @@
   return placements;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
-  v4 = [(_UIStatusBarVisualProvider_Fallback *)self statusBar];
-  v5 = [_UIStatusBarStyleAttributes styleAttributesForStatusBar:v4 style:a3];
+  statusBar = [(_UIStatusBarVisualProvider_Fallback *)self statusBar];
+  v5 = [_UIStatusBarStyleAttributes styleAttributesForStatusBar:statusBar style:style];
 
   v6 = [off_1E70ECC18 systemFontOfSize:8.0];
   [v5 setFont:v6];

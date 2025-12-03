@@ -1,20 +1,20 @@
 @interface PassbookUISSApplicationDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)inAppPaymentInterfaceWillPresentWithSceneSession:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)inAppPaymentInterfaceWillPresentWithSceneSession:(id)session;
 @end
 
 @implementation PassbookUISSApplicationDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v6 = a4;
+  sessionCopy = session;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [a5 userActivities];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  userActivities = [options userActivities];
+  v8 = [userActivities countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -28,16 +28,16 @@ LABEL_3:
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(userActivities);
       }
 
-      v15 = [*(*(&v22 + 1) + 8 * v14) activityType];
-      if ([v15 isEqualToString:v11])
+      activityType = [*(*(&v22 + 1) + 8 * v14) activityType];
+      if ([activityType isEqualToString:v11])
       {
         break;
       }
 
-      if ([v15 isEqualToString:v12])
+      if ([activityType isEqualToString:v12])
       {
         v13 = @"PeerPaymentRegistrationConfiguration";
         break;
@@ -45,7 +45,7 @@ LABEL_3:
 
       if (v9 == ++v14)
       {
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [userActivities countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -56,8 +56,8 @@ LABEL_3:
     }
 
     v16 = [UISceneConfiguration alloc];
-    v17 = [v6 role];
-    v18 = [v16 initWithName:v13 sessionRole:v17];
+    role = [sessionCopy role];
+    v18 = [v16 initWithName:v13 sessionRole:role];
 
     if (v18)
     {
@@ -71,19 +71,19 @@ LABEL_10:
   }
 
   v19 = [UISceneConfiguration alloc];
-  v20 = [v6 role];
-  v18 = [v19 initWithName:@"Default Configuration" sessionRole:v20];
+  role2 = [sessionCopy role];
+  v18 = [v19 initWithName:@"Default Configuration" sessionRole:role2];
 
 LABEL_14:
 
   return v18;
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
-  v6 = a4;
+  sessionsCopy = sessions;
   WeakRetained = objc_loadWeakRetained(&self->_inAppSceneSession);
-  if (WeakRetained && [v6 containsObject:WeakRetained])
+  if (WeakRetained && [sessionsCopy containsObject:WeakRetained])
   {
     objc_storeWeak(&self->_inAppSceneSession, 0);
 
@@ -91,14 +91,14 @@ LABEL_14:
   }
 }
 
-- (void)inAppPaymentInterfaceWillPresentWithSceneSession:(id)a3
+- (void)inAppPaymentInterfaceWillPresentWithSceneSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_inAppSceneSession);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = WeakRetained == v4;
+    v7 = WeakRetained == sessionCopy;
   }
 
   else
@@ -117,7 +117,7 @@ LABEL_14:
     [v8 requestSceneSessionDestruction:v10 options:0 errorHandler:v9];
   }
 
-  objc_storeWeak(&self->_inAppSceneSession, v4);
+  objc_storeWeak(&self->_inAppSceneSession, sessionCopy);
 }
 
 @end

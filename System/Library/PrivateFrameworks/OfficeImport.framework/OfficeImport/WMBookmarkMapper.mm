@@ -1,39 +1,39 @@
 @interface WMBookmarkMapper
-- (WMBookmarkMapper)initWithWDBookmark:(id)a3 parent:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (WMBookmarkMapper)initWithWDBookmark:(id)bookmark parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation WMBookmarkMapper
 
-- (WMBookmarkMapper)initWithWDBookmark:(id)a3 parent:(id)a4
+- (WMBookmarkMapper)initWithWDBookmark:(id)bookmark parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = WMBookmarkMapper;
-  v8 = [(CMMapper *)&v12 initWithParent:v7];
+  v8 = [(CMMapper *)&v12 initWithParent:parentCopy];
   if (v8)
   {
-    v8->mBookmarkType = [v6 bookmarkType];
-    v9 = [v6 name];
+    v8->mBookmarkType = [bookmarkCopy bookmarkType];
+    name = [bookmarkCopy name];
     mName = v8->mName;
-    v8->mName = v9;
+    v8->mName = name;
   }
 
   return v8;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v5 = a3;
+  atCopy = at;
   if (!self->mBookmarkType)
   {
-    v7 = v5;
+    v7 = atCopy;
     v6 = [OIXMLElement elementWithType:0];
     [v7 addChild:v6];
     [(CMMapper *)self addAttribute:0x286EF0590 toNode:v6 value:self->mName];
 
-    v5 = v7;
+    atCopy = v7;
   }
 }
 

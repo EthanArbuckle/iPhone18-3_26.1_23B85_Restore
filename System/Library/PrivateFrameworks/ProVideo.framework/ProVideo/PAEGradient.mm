@@ -1,20 +1,20 @@
 @interface PAEGradient
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (BOOL)initPAEGradientWithHeight:(id)a3;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (PAEGradient)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)initPAEGradientWithHeight:(id)height;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (PAEGradient)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEGradient
 
-- (PAEGradient)initWithAPIManager:(id)a3
+- (PAEGradient)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGradient;
-  result = [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  result = [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
   if (result)
   {
     *(&result->super.super._hostIsVertigo + 2) = 0;
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (BOOL)initPAEGradientWithHeight:(id)a3
+- (BOOL)initPAEGradientWithHeight:(id)height
 {
   v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E548];
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735BE50];
@@ -49,9 +49,9 @@
     v13 = *MEMORY[0x277CC08F0];
     v14 = *(MEMORY[0x277CC08F0] + 16);
     [v5 getGradientStartEnd:&v19 startY:&v18 endX:&v17 endY:&v16 type:&v15 fromParm:310 atFxTime:&v13];
-    [a3 doubleValue];
+    [height doubleValue];
     v18 = v10 * 0.5;
-    [a3 doubleValue];
+    [height doubleValue];
     v16 = v11 * -0.5;
     [v9 setGradientStartEnd:310 startY:&v13 endX:v19 endY:v18 toParm:v17 atTime:?];
   }
@@ -126,7 +126,7 @@
   return v8;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
   v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
   if (v5)
@@ -156,7 +156,7 @@ LABEL_20:
       v11 = v8;
       v20 = *MEMORY[0x277CC08F0];
       v21 = *(MEMORY[0x277CC08F0] + 16);
-      if (a3 == 3)
+      if (changed == 3)
       {
         LOBYTE(v18) = 0;
         [v6 getBoolValue:&v18 fromParm:3 atFxTime:&v20];
@@ -176,7 +176,7 @@ LABEL_20:
         [v11 setGradientFlags:(v18 & 1) == 0 toParam:310];
       }
 
-      else if (a3 == 310)
+      else if (changed == 310)
       {
         v18 = 0;
         v19 = 0;
@@ -203,7 +203,7 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E548];
@@ -225,12 +225,12 @@ LABEL_20:
   }
 
   v13 = v10;
-  if ([a3 imageType] != 3)
+  if ([output imageType] != 3)
   {
     return 0;
   }
 
-  v14 = [v13 versionAtCreation];
+  versionAtCreation = [v13 versionAtCreation];
   v98 = 1.0;
   v95 = 0x3FF0000000000000;
   v92 = 1.0;
@@ -258,7 +258,7 @@ LABEL_20:
   v21 = HGObject::operator new(0x80uLL);
   *&v22 = HGBitmap::HGBitmap(v21, v18, v20, 24).n128_u64[0];
   v23 = *(v21 + 10);
-  [v8 getGradientSamples:v23 numSamples:1024 depth:8 fromParm:310 atFxTime:{a4->var0.var1, v22}];
+  [v8 getGradientSamples:v23 numSamples:1024 depth:8 fromParm:310 atFxTime:{info->var0.var1, v22}];
   v24 = 0;
   v25 = (v23 + 1);
   do
@@ -286,22 +286,22 @@ LABEL_20:
   v85 = 0.0;
   v86 = 0.0;
   v84 = 0;
-  [v8 getGradientStartEnd:v88 startY:&v87 endX:&v86 endY:&v85 type:&v84 fromParm:310 atFxTime:a4->var0.var1];
+  [v8 getGradientStartEnd:v88 startY:&v87 endX:&v86 endY:&v85 type:&v84 fromParm:310 atFxTime:info->var0.var1];
   v83 = 0;
-  if (v14)
+  if (versionAtCreation)
   {
-    [v7 getIntValue:&v83 fromParm:2 atFxTime:a4->var0.var1];
+    [v7 getIntValue:&v83 fromParm:2 atFxTime:info->var0.var1];
   }
 
   v82 = 0;
-  [v7 getBoolValue:&v82 fromParm:3 atFxTime:a4->var0.var1];
+  [v7 getBoolValue:&v82 fromParm:3 atFxTime:info->var0.var1];
   if (v82 == 1)
   {
     v84 = 0;
-    v30 = [a3 height];
-    v31 = [a3 height];
-    v32 = vcvtd_n_f64_u64(v30, 1uLL);
-    v33 = v31 * -0.5;
+    height = [output height];
+    height2 = [output height];
+    v32 = vcvtd_n_f64_u64(height, 1uLL);
+    v33 = height2 * -0.5;
     v34 = v98 + *(&v96 + 1) * 0.0 + v32 * *&v97;
     v35 = v98 + *(&v96 + 1) * 0.0 + v33 * *&v97;
     v87 = (*(&v93 + 1) + *(&v91 + 1) * 0.0 + v32 * v92) / v34;
@@ -310,7 +310,7 @@ LABEL_20:
     v86 = (*&v91 + v89 * 0.0 + v33 * *&v90) / v35;
   }
 
-  [a3 pixelAspect];
+  [output pixelAspect];
   v37 = v36;
   v81 = 0;
   v38 = sqrt(v37 * (v86 - v88[0]) * (v37 * (v86 - v88[0])) + (v85 - v87) * (v85 - v87));
@@ -325,10 +325,10 @@ LABEL_20:
         v81 = v39;
       }
 
-      v40 = [a3 width];
-      v88[0] = vcvtd_n_f64_u64(v40, 1uLL) + v88[0];
-      v41 = [a3 height];
-      v87 = vcvtd_n_f64_u64(v41, 1uLL) + v87;
+      width = [output width];
+      v88[0] = vcvtd_n_f64_u64(width, 1uLL) + v88[0];
+      height3 = [output height];
+      v87 = vcvtd_n_f64_u64(height3, 1uLL) + v87;
       v42 = v88[0];
       v43 = v87;
       (*(*v39 + 96))(v39, 0, v42, v43, 0.0, 0.0);
@@ -336,7 +336,7 @@ LABEL_20:
       (*(*v39 + 96))(v39, 1, 0.0, v44, 1024.0, 1023.0);
       v45 = v37;
       (*(*v39 + 96))(v39, 2, v45, 1.0, 1.0, 1.0);
-      if (!v14 || v83 == 1)
+      if (!versionAtCreation || v83 == 1)
       {
         v46 = HGObject::operator new(0x1A0uLL);
         HgcRadialMask::HgcRadialMask(v46);
@@ -402,7 +402,7 @@ LABEL_20:
     if (v84)
     {
       HGGradient::SetGradientMode(v39, 1);
-      v60 = v83 == 1 || v14 == 0;
+      v60 = v83 == 1 || versionAtCreation == 0;
       v59.n128_u32[0] = 1.0;
       if (!v60)
       {
@@ -444,7 +444,7 @@ LABEL_20:
   v80 = HGObject::operator new(0x1F0uLL);
   HGBitmapLoader::HGBitmapLoader(v80, v21);
   (*(*v39 + 120))(v39, 0, v80);
-  [a3 setHeliumRef:&v81];
+  [output setHeliumRef:&v81];
   if (v80)
   {
     (*(*v80 + 24))(v80);
@@ -463,14 +463,14 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 1;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 1;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

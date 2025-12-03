@@ -2,10 +2,10 @@
 - (BOOL)supportsPronunciationSessions;
 - (float)audioLevel;
 - (id)_assetUpdaterClient;
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6;
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error;
 - (void)cancelPronunciationSession;
 - (void)dealloc;
-- (void)startPronunciationSession:(id)a3 resultCallback:(id)a4;
+- (void)startPronunciationSession:(id)session resultCallback:(id)callback;
 - (void)stopPronunciationSession;
 @end
 
@@ -32,8 +32,8 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
-  [v3 setDelegate:0];
+  _assetUpdaterClient = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
+  [_assetUpdaterClient setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = AXSpeechPronunciationHelper;
@@ -45,25 +45,25 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
   v2 = MGGetBoolAnswer();
   if (v2)
   {
-    v3 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v3 dictationIsEnabled];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    dictationIsEnabled = [mEMORY[0x277CEF368] dictationIsEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = dictationIsEnabled;
   }
 
   return v2;
 }
 
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [MEMORY[0x277CE6980] sharedInstance];
-  v10 = [v9 ignoreLogging];
+  serverCopy = server;
+  mEMORY[0x277CE6980] = [MEMORY[0x277CE6980] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6980] ignoreLogging];
 
-  if ((v10 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v11 = [MEMORY[0x277CE6980] identifier];
+    identifier = [MEMORY[0x277CE6980] identifier];
     v12 = AXLoggerForFacility();
 
     v13 = AXOSLogLevelFromAXLogLevel();
@@ -80,15 +80,15 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
     }
   }
 
-  if (a5 == 4)
+  if (identifier == 4)
   {
-    v16 = [v8 objectForKeyedSubscript:@"results"];
-    v17 = [v8 objectForKeyedSubscript:@"error"];
+    v16 = [serverCopy objectForKeyedSubscript:@"results"];
+    v17 = [serverCopy objectForKeyedSubscript:@"error"];
 
     if (v17)
     {
       v18 = MEMORY[0x277CCA9B8];
-      v19 = [v8 objectForKeyedSubscript:@"error"];
+      v19 = [serverCopy objectForKeyedSubscript:@"error"];
       v17 = [v18 errorWithDomain:v19 code:0 userInfo:0];
     }
 
@@ -107,8 +107,8 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
     return 0.0;
   }
 
-  v2 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
-  v3 = [v2 sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:7 error:0];
+  _assetUpdaterClient = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
+  v3 = [_assetUpdaterClient sendSynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:7 error:0];
 
   v4 = [v3 objectForKeyedSubscript:@"audioLevel"];
   [v4 floatValue];
@@ -117,20 +117,20 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
   return v6;
 }
 
-- (void)startPronunciationSession:(id)a3 resultCallback:(id)a4
+- (void)startPronunciationSession:(id)session resultCallback:(id)callback
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
-  [v8 setDelegate:self];
+  sessionCopy = session;
+  callbackCopy = callback;
+  _assetUpdaterClient = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
+  [_assetUpdaterClient setDelegate:self];
 
-  v9 = [MEMORY[0x277CE6980] sharedInstance];
-  v10 = [v9 ignoreLogging];
+  mEMORY[0x277CE6980] = [MEMORY[0x277CE6980] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6980] ignoreLogging];
 
-  if ((v10 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v11 = [MEMORY[0x277CE6980] identifier];
+    identifier = [MEMORY[0x277CE6980] identifier];
     v12 = AXLoggerForFacility();
 
     v13 = AXOSLogLevelFromAXLogLevel();
@@ -150,24 +150,24 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 
   if (!self->_inSession)
   {
-    v16 = [v7 copy];
+    v16 = [callbackCopy copy];
     resultCallback = self->_resultCallback;
     self->_resultCallback = v16;
 
     self->_inSession = 1;
-    v18 = [MEMORY[0x277CE6980] sharedInstance];
-    v19 = [v18 ignoreLogging];
+    mEMORY[0x277CE6980]2 = [MEMORY[0x277CE6980] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x277CE6980]2 ignoreLogging];
 
-    if ((v19 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v20 = [MEMORY[0x277CE6980] identifier];
+      identifier2 = [MEMORY[0x277CE6980] identifier];
       v21 = AXLoggerForFacility();
 
       v22 = AXOSLogLevelFromAXLogLevel();
       if (os_log_type_enabled(v21, v22))
       {
         v23 = AXColorizeFormatLog();
-        inSession = v6;
+        inSession = sessionCopy;
         v24 = _AXStringForArgs();
         if (os_log_type_enabled(v21, v22))
         {
@@ -179,16 +179,16 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
     }
 
     v39 = 0;
-    v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:{&v39, inSession}];
+    v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:sessionCopy requiringSecureCoding:1 error:{&v39, inSession}];
     v26 = v39;
     if (v26)
     {
-      v27 = [MEMORY[0x277CE6980] sharedInstance];
-      v28 = [v27 ignoreLogging];
+      mEMORY[0x277CE6980]3 = [MEMORY[0x277CE6980] sharedInstance];
+      ignoreLogging3 = [mEMORY[0x277CE6980]3 ignoreLogging];
 
-      if ((v28 & 1) == 0)
+      if ((ignoreLogging3 & 1) == 0)
       {
-        v29 = [MEMORY[0x277CE6980] identifier];
+        identifier3 = [MEMORY[0x277CE6980] identifier];
         v30 = AXLoggerForFacility();
 
         v31 = AXOSLogLevelFromAXLogLevel();
@@ -208,12 +208,12 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 
     if (v25)
     {
-      v34 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
+      _assetUpdaterClient2 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
       v40 = @"options";
       v41 = v25;
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-      v36 = [MEMORY[0x277CE6948] mainAccessQueue];
-      [v34 sendAsynchronousMessage:v35 withIdentifier:4 targetAccessQueue:v36 completion:0];
+      mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
+      [_assetUpdaterClient2 sendAsynchronousMessage:v35 withIdentifier:4 targetAccessQueue:mainAccessQueue completion:0];
     }
   }
 
@@ -223,12 +223,12 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 - (void)stopPronunciationSession
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6980] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6980] = [MEMORY[0x277CE6980] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6980] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6980] identifier];
+    identifier = [MEMORY[0x277CE6980] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -248,9 +248,9 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 
   if (self->_inSession)
   {
-    v10 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
-    v11 = [MEMORY[0x277CE6948] mainAccessQueue];
-    [v10 sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:5 targetAccessQueue:v11 completion:0];
+    _assetUpdaterClient = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
+    mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
+    [_assetUpdaterClient sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:5 targetAccessQueue:mainAccessQueue completion:0];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -259,12 +259,12 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 - (void)cancelPronunciationSession
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6980] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6980] = [MEMORY[0x277CE6980] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6980] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6980] identifier];
+    identifier = [MEMORY[0x277CE6980] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -284,9 +284,9 @@ uint64_t __50__AXSpeechPronunciationHelper__assetUpdaterClient__block_invoke()
 
   if (self->_inSession)
   {
-    v10 = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
-    v11 = [MEMORY[0x277CE6948] mainAccessQueue];
-    [v10 sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:6 targetAccessQueue:v11 completion:&__block_literal_global_368];
+    _assetUpdaterClient = [(AXSpeechPronunciationHelper *)self _assetUpdaterClient];
+    mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
+    [_assetUpdaterClient sendAsynchronousMessage:MEMORY[0x277CBEC10] withIdentifier:6 targetAccessQueue:mainAccessQueue completion:&__block_literal_global_368];
   }
 
   v12 = *MEMORY[0x277D85DE8];

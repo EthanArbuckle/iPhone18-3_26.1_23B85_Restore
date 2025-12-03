@@ -1,18 +1,18 @@
 @interface _SWHighlightMentionEvent
-- (_SWHighlightMentionEvent)initWithHighlight:(id)a3 mentionedPerson:(id)a4;
+- (_SWHighlightMentionEvent)initWithHighlight:(id)highlight mentionedPerson:(id)person;
 @end
 
 @implementation _SWHighlightMentionEvent
 
-- (_SWHighlightMentionEvent)initWithHighlight:(id)a3 mentionedPerson:(id)a4
+- (_SWHighlightMentionEvent)initWithHighlight:(id)highlight mentionedPerson:(id)person
 {
-  v6 = a4;
-  v7 = [a3 URL];
-  v8 = [v6 handle];
+  personCopy = person;
+  v7 = [highlight URL];
+  handle = [personCopy handle];
 
   v11.receiver = self;
   v11.super_class = _SWHighlightMentionEvent;
-  v9 = [(SWHighlightMentionEvent *)&v11 initWithHighlightURL:v7 mentionedPersonHandle:v8 mentionedPersonIdentity:0];
+  v9 = [(SWHighlightMentionEvent *)&v11 initWithHighlightURL:v7 mentionedPersonHandle:handle mentionedPersonIdentity:0];
 
   return v9;
 }

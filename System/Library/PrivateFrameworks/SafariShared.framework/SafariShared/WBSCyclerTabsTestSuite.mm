@@ -1,7 +1,7 @@
 @interface WBSCyclerTabsTestSuite
 - (id)_relativeProbabilitiesForOperationsWithNoTabGroups;
 - (id)operations;
-- (id)relativeProbabilitiesForOperationsWithTopLevelItem:(id)a3;
+- (id)relativeProbabilitiesForOperationsWithTopLevelItem:(id)item;
 @end
 
 @implementation WBSCyclerTabsTestSuite
@@ -44,16 +44,16 @@ void __36__WBSCyclerTabsTestSuite_operations__block_invoke()
   operations_operations_0 = v9;
 }
 
-- (id)relativeProbabilitiesForOperationsWithTopLevelItem:(id)a3
+- (id)relativeProbabilitiesForOperationsWithTopLevelItem:(id)item
 {
   v13[9] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 numberOfChildren])
+  itemCopy = item;
+  if ([itemCopy numberOfChildren])
   {
     v5 = &unk_1F3A9AC88;
-    if ([v4 containsChildPassingTest:&__block_literal_global_12])
+    if ([itemCopy containsChildPassingTest:&__block_literal_global_12])
     {
-      if ([v4 numberOfChildren] < 2)
+      if ([itemCopy numberOfChildren] < 2)
       {
         v6 = &unk_1F3A9ACB8;
       }
@@ -70,8 +70,8 @@ void __36__WBSCyclerTabsTestSuite_operations__block_invoke()
       v6 = &unk_1F3A9ACB8;
     }
 
-    v8 = [v4 uniqueIdentifier];
-    v9 = [v8 isEqualToString:*MEMORY[0x1E69C8B58]];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    v9 = [uniqueIdentifier isEqualToString:*MEMORY[0x1E69C8B58]];
 
     if (v9)
     {
@@ -92,15 +92,15 @@ void __36__WBSCyclerTabsTestSuite_operations__block_invoke()
     v13[6] = v10;
     v13[7] = &unk_1F3A9ACE8;
     v13[8] = &unk_1F3A9ACD0;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:9];
+    _relativeProbabilitiesForOperationsWithNoTabGroups = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:9];
   }
 
   else
   {
-    v7 = [(WBSCyclerTabsTestSuite *)self _relativeProbabilitiesForOperationsWithNoTabGroups];
+    _relativeProbabilitiesForOperationsWithNoTabGroups = [(WBSCyclerTabsTestSuite *)self _relativeProbabilitiesForOperationsWithNoTabGroups];
   }
 
-  v11 = v7;
+  v11 = _relativeProbabilitiesForOperationsWithNoTabGroups;
 
   return v11;
 }

@@ -1,5 +1,5 @@
 @interface PDTimestampedImage
-- (PDTimestampedImage)initWithImage:(__CVBuffer *)a3 metadataDictionary:(id)a4 andTimestamp:(id *)a5;
+- (PDTimestampedImage)initWithImage:(__CVBuffer *)image metadataDictionary:(id)dictionary andTimestamp:(id *)timestamp;
 - (void)dealloc;
 @end
 
@@ -19,20 +19,20 @@
   [(PDTimestampedImage *)&v4 dealloc];
 }
 
-- (PDTimestampedImage)initWithImage:(__CVBuffer *)a3 metadataDictionary:(id)a4 andTimestamp:(id *)a5
+- (PDTimestampedImage)initWithImage:(__CVBuffer *)image metadataDictionary:(id)dictionary andTimestamp:(id *)timestamp
 {
-  v9 = a4;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PDTimestampedImage;
   v10 = [(PDTimestampedImage *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_image = a3;
-    CVPixelBufferRetain(a3);
-    objc_storeStrong(&v11->_metadataDictionary, a4);
-    v12 = *&a5->var0;
-    v11->_timestamp.epoch = a5->var3;
+    v10->_image = image;
+    CVPixelBufferRetain(image);
+    objc_storeStrong(&v11->_metadataDictionary, dictionary);
+    v12 = *&timestamp->var0;
+    v11->_timestamp.epoch = timestamp->var3;
     *&v11->_timestamp.value = v12;
   }
 

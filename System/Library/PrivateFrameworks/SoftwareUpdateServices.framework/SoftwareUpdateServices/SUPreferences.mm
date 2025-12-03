@@ -2,8 +2,8 @@
 + (SUPreferences)sharedInstance;
 - (BOOL)_autoInstallDefaultValue;
 - (BOOL)_autoInstallSecurityResponseDefaultValue;
-- (BOOL)_cachedBoolValueForKey:(id)a3 withDefaultValue:(BOOL)a4;
-- (BOOL)_getBooleanPreferenceForKey:(id)a3 withDefaultValue:(BOOL)a4;
+- (BOOL)_cachedBoolValueForKey:(id)key withDefaultValue:(BOOL)value;
+- (BOOL)_getBooleanPreferenceForKey:(id)key withDefaultValue:(BOOL)value;
 - (BOOL)autoInstallSecurityResponse;
 - (BOOL)autoInstallSecurityResponseForceOff;
 - (BOOL)autoInstallSecurityResponseForceOn;
@@ -16,38 +16,38 @@
 - (BOOL)disableSplombo;
 - (BOOL)isAutomaticUpdateV2Enabled;
 - (BOOL)isChinaDevice;
-- (BOOL)isKeySetInPreferences:(id)a3;
+- (BOOL)isKeySetInPreferences:(id)preferences;
 - (BOOL)previousUserSpecifiedAutoInstallSecurityResponse;
 - (BOOL)previousUserSpecifiedAutomaticUpdateV2Enabled;
 - (SUPreferences)init;
-- (id)_cachedDictValueForKey:(id)a3;
-- (id)_cachedNumberValueForKey:(id)a3;
-- (id)_cachedObjectForKey:(id)a3 ofClass:(Class)a4 log:(BOOL)a5;
-- (id)_cachedStringValueForKey:(id)a3;
-- (id)_copyDictPreferenceForKey:(id)a3;
-- (id)_copyNumberPreferenceForKey:(id)a3;
-- (id)_copyStringPreferenceForKey:(id)a3;
-- (id)_copyValueOfKey:(id)a3 withType:(int64_t)a4;
+- (id)_cachedDictValueForKey:(id)key;
+- (id)_cachedNumberValueForKey:(id)key;
+- (id)_cachedObjectForKey:(id)key ofClass:(Class)class log:(BOOL)log;
+- (id)_cachedStringValueForKey:(id)key;
+- (id)_copyDictPreferenceForKey:(id)key;
+- (id)_copyNumberPreferenceForKey:(id)key;
+- (id)_copyStringPreferenceForKey:(id)key;
+- (id)_copyValueOfKey:(id)key withType:(int64_t)type;
 - (id)_mandatorySUFlagsForPreferences;
 - (int)spaceOverrideCleanupTime;
 - (int)testGetOffSampleRate;
 - (unint64_t)spaceOverrideMaxPSUSOptionalSize;
-- (void)_copyPreferenceForKey:(__CFString *)a3 ofType:(unint64_t)a4;
-- (void)_loadPreferences:(BOOL)a3;
-- (void)_setBooleanPreferenceForKey:(id)a3 value:(BOOL)a4;
-- (void)_setCachedBooleanPreferenceForKey:(id)a3 value:(BOOL)a4;
-- (void)_setCachedObjectPreferenceForKey:(id)a3 value:(id)a4;
-- (void)_setObjectPreferenceForKey:(id)a3 value:(id)a4;
+- (void)_copyPreferenceForKey:(__CFString *)key ofType:(unint64_t)type;
+- (void)_loadPreferences:(BOOL)preferences;
+- (void)_setBooleanPreferenceForKey:(id)key value:(BOOL)value;
+- (void)_setCachedBooleanPreferenceForKey:(id)key value:(BOOL)value;
+- (void)_setCachedObjectPreferenceForKey:(id)key value:(id)value;
+- (void)_setObjectPreferenceForKey:(id)key value:(id)value;
 - (void)_setupAutomaticUpdateV2Enabled;
 - (void)_setupSoftwareUpdateReserveDisabled;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)enableAutomaticDownload:(BOOL)a3;
-- (void)preference:(id)a3 didChangeTo:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setSoftwareUpdateReserveSize:(id)a3;
-- (void)setSplatFollowUpDelayOverride:(id)a3;
-- (void)setSystemGrowthMarginSize:(id)a3;
+- (void)enableAutomaticDownload:(BOOL)download;
+- (void)preference:(id)preference didChangeTo:(id)to;
+- (void)removeObserver:(id)observer;
+- (void)setSoftwareUpdateReserveSize:(id)size;
+- (void)setSplatFollowUpDelayOverride:(id)override;
+- (void)setSystemGrowthMarginSize:(id)size;
 @end
 
 @implementation SUPreferences
@@ -71,9 +71,9 @@
     preferencesDefinitions = v2->_preferencesDefinitions;
     v2->_preferencesDefinitions = v7;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v9;
+    v2->_observers = weakObjectsHashTable;
 
     v11 = [[SUPreferenceEntry alloc] initWithKey:@"SUUpdateRequiredFromFactory" type:0 description:@"Sets mandatory update dictionary value SUMandatoryUpdateRequiredFromFactory"];
     [(NSMutableDictionary *)v2->_preferencesDefinitions setValue:v11 forKey:@"SUUpdateRequiredFromFactory"];
@@ -410,17 +410,17 @@ uint64_t __31__SUPreferences_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   preferencesWorkloop = self->_preferencesWorkloop;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__SUPreferences_addObserver___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async_and_wait(preferencesWorkloop, v7);
 }
 
@@ -430,17 +430,17 @@ void __29__SUPreferences_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   preferencesWorkloop = self->_preferencesWorkloop;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__SUPreferences_removeObserver___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async_and_wait(preferencesWorkloop, v7);
 }
 
@@ -450,20 +450,20 @@ void __32__SUPreferences_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)preference:(id)a3 didChangeTo:(id)a4
+- (void)preference:(id)preference didChangeTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  toCopy = to;
   preferencesWorkloop = self->_preferencesWorkloop;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__SUPreferences_preference_didChangeTo___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = preferenceCopy;
+  v13 = toCopy;
+  v9 = toCopy;
+  v10 = preferenceCopy;
   dispatch_async(preferencesWorkloop, block);
 }
 
@@ -511,9 +511,9 @@ void __40__SUPreferences_preference_didChangeTo___block_invoke(uint64_t a1)
 
 - (BOOL)disableAutoDownload
 {
-  v3 = [(SUPreferences *)self _autoDownloadDisableDefaultValue];
+  _autoDownloadDisableDefaultValue = [(SUPreferences *)self _autoDownloadDisableDefaultValue];
 
-  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUDisableAutoDownload" withDefaultValue:v3];
+  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUDisableAutoDownload" withDefaultValue:_autoDownloadDisableDefaultValue];
 }
 
 - (BOOL)autoInstallSystemDataFilesForceOn
@@ -540,9 +540,9 @@ void __40__SUPreferences_preference_didChangeTo___block_invoke(uint64_t a1)
 
 - (BOOL)autoInstallSystemAndDataFiles
 {
-  v3 = [(SUPreferences *)self _autoInstallSystemDataFilesDefaultValue];
+  _autoInstallSystemDataFilesDefaultValue = [(SUPreferences *)self _autoInstallSystemDataFilesDefaultValue];
 
-  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutoInstallSystemDataFiles" withDefaultValue:v3];
+  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutoInstallSystemDataFiles" withDefaultValue:_autoInstallSystemDataFilesDefaultValue];
 }
 
 - (BOOL)autoInstallSecurityResponseForceOn
@@ -569,16 +569,16 @@ void __40__SUPreferences_preference_didChangeTo___block_invoke(uint64_t a1)
 
 - (BOOL)autoInstallSecurityResponse
 {
-  v3 = [(SUPreferences *)self _autoInstallSecurityResponseDefaultValue];
+  _autoInstallSecurityResponseDefaultValue = [(SUPreferences *)self _autoInstallSecurityResponseDefaultValue];
 
-  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutoInstallSecurityResponse" withDefaultValue:v3];
+  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutoInstallSecurityResponse" withDefaultValue:_autoInstallSecurityResponseDefaultValue];
 }
 
 - (BOOL)previousUserSpecifiedAutoInstallSecurityResponse
 {
-  v3 = [(SUPreferences *)self _autoInstallSecurityResponseDefaultValue];
+  _autoInstallSecurityResponseDefaultValue = [(SUPreferences *)self _autoInstallSecurityResponseDefaultValue];
 
-  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutoInstallSecurityResponse_prev" withDefaultValue:v3];
+  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutoInstallSecurityResponse_prev" withDefaultValue:_autoInstallSecurityResponseDefaultValue];
 }
 
 - (BOOL)autoUpdateForceOn
@@ -605,19 +605,19 @@ void __40__SUPreferences_preference_didChangeTo___block_invoke(uint64_t a1)
 
 - (BOOL)isAutomaticUpdateV2Enabled
 {
-  v3 = [(SUPreferences *)self _autoInstallDefaultValue];
+  _autoInstallDefaultValue = [(SUPreferences *)self _autoInstallDefaultValue];
 
-  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutomaticUpdateV2Enabled" withDefaultValue:v3];
+  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutomaticUpdateV2Enabled" withDefaultValue:_autoInstallDefaultValue];
 }
 
 - (BOOL)previousUserSpecifiedAutomaticUpdateV2Enabled
 {
-  v3 = [(SUPreferences *)self _autoInstallDefaultValue];
+  _autoInstallDefaultValue = [(SUPreferences *)self _autoInstallDefaultValue];
 
-  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutomaticUpdateV2Enabled_prev" withDefaultValue:v3];
+  return [(SUPreferences *)self _cachedBoolValueForKey:@"SUAutomaticUpdateV2Enabled_prev" withDefaultValue:_autoInstallDefaultValue];
 }
 
-- (void)_loadPreferences:(BOOL)a3
+- (void)_loadPreferences:(BOOL)preferences
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -632,7 +632,7 @@ void __40__SUPreferences_preference_didChangeTo___block_invoke(uint64_t a1)
   block[3] = &unk_279CAD070;
   block[4] = self;
   block[5] = v8;
-  v7 = a3;
+  preferencesCopy = preferences;
   dispatch_async_and_wait(preferencesWorkloop, block);
   _Block_object_dispose(v8, 8);
 }
@@ -808,8 +808,8 @@ LABEL_13:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [v7 allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -821,7 +821,7 @@ LABEL_13:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
@@ -832,7 +832,7 @@ LABEL_13:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -850,76 +850,76 @@ LABEL_13:
   return v16;
 }
 
-- (id)_copyValueOfKey:(id)a3 withType:(int64_t)a4
+- (id)_copyValueOfKey:(id)key withType:(int64_t)type
 {
-  v6 = a3;
-  v14 = v6;
-  if (a4 > 1)
+  keyCopy = key;
+  v14 = keyCopy;
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      v15 = [(SUPreferences *)self _copyNumberPreferenceForKey:v6];
+      v15 = [(SUPreferences *)self _copyNumberPreferenceForKey:keyCopy];
       goto LABEL_11;
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
-      v15 = [(SUPreferences *)self _copyDictPreferenceForKey:v6];
+      v15 = [(SUPreferences *)self _copyDictPreferenceForKey:keyCopy];
       goto LABEL_11;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!type)
     {
-      v17 = [(SUPreferences *)self _getBooleanPreferenceForKey:v6 withDefaultValue:0];
+      v17 = [(SUPreferences *)self _getBooleanPreferenceForKey:keyCopy withDefaultValue:0];
       v15 = [MEMORY[0x277CCABB0] numberWithBool:v17];
       goto LABEL_11;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
-      v15 = [(SUPreferences *)self _copyStringPreferenceForKey:v6];
+      v15 = [(SUPreferences *)self _copyStringPreferenceForKey:keyCopy];
 LABEL_11:
       v16 = v15;
       goto LABEL_12;
     }
   }
 
-  SULogInfo(@"Unknown SUPreferenceType for key: %@ type:%ld", v7, v8, v9, v10, v11, v12, v13, v6);
+  SULogInfo(@"Unknown SUPreferenceType for key: %@ type:%ld", v7, v8, v9, v10, v11, v12, v13, keyCopy);
   v16 = 0;
 LABEL_12:
 
   return v16;
 }
 
-- (BOOL)_getBooleanPreferenceForKey:(id)a3 withDefaultValue:(BOOL)a4
+- (BOOL)_getBooleanPreferenceForKey:(id)key withDefaultValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = [(SUPreferences *)self _copyPreferenceForKey:v6 ofType:CFBooleanGetTypeID()];
+  keyCopy = key;
+  v7 = [(SUPreferences *)self _copyPreferenceForKey:keyCopy ofType:CFBooleanGetTypeID()];
 
   if (v7)
   {
-    a4 = CFBooleanGetValue(v7) != 0;
+    value = CFBooleanGetValue(v7) != 0;
     CFRelease(v7);
   }
 
-  return a4;
+  return value;
 }
 
-- (void)_setCachedBooleanPreferenceForKey:(id)a3 value:(BOOL)a4
+- (void)_setCachedBooleanPreferenceForKey:(id)key value:(BOOL)value
 {
-  v6 = a3;
+  keyCopy = key;
   preferencesWorkloop = self->_preferencesWorkloop;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SUPreferences__setCachedBooleanPreferenceForKey_value___block_invoke;
   block[3] = &unk_279CAAE40;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = keyCopy;
+  valueCopy = value;
+  v8 = keyCopy;
   dispatch_async(preferencesWorkloop, block);
 }
 
@@ -929,27 +929,27 @@ void __57__SUPreferences__setCachedBooleanPreferenceForKey_value___block_invoke(
   [*(*(a1 + 32) + 24) setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)_setCachedObjectPreferenceForKey:(id)a3 value:(id)a4
+- (void)_setCachedObjectPreferenceForKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   preferencesWorkloop = self->_preferencesWorkloop;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SUPreferences__setCachedObjectPreferenceForKey_value___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = keyCopy;
   dispatch_async(preferencesWorkloop, block);
 }
 
-- (id)_cachedObjectForKey:(id)a3 ofClass:(Class)a4 log:(BOOL)a5
+- (id)_cachedObjectForKey:(id)key ofClass:(Class)class log:(BOOL)log
 {
-  v5 = a5;
-  v8 = a3;
+  logCopy = log;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -962,13 +962,13 @@ void __57__SUPreferences__setCachedBooleanPreferenceForKey_value___block_invoke(
   block[2] = __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke;
   block[3] = &unk_279CAD098;
   block[4] = self;
-  v10 = v8;
+  v10 = keyCopy;
   v24 = &v26;
-  v25 = a4;
+  classCopy = class;
   v23 = v10;
   dispatch_async_and_wait(preferencesWorkloop, block);
   v18 = v27[5];
-  if (v18 && v5)
+  if (v18 && logCopy)
   {
     v21 = v27[5];
     SULogDebug(@"[SUPreferences] %@ is set to %@", v11, v12, v13, v14, v15, v16, v17, v10);
@@ -998,57 +998,57 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
   return MEMORY[0x2821F9730]();
 }
 
-- (BOOL)_cachedBoolValueForKey:(id)a3 withDefaultValue:(BOOL)a4
+- (BOOL)_cachedBoolValueForKey:(id)key withDefaultValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SUPreferences *)self _cachedObjectForKey:v6 ofClass:objc_opt_class() log:0];
+  valueCopy = value;
+  keyCopy = key;
+  v7 = [(SUPreferences *)self _cachedObjectForKey:keyCopy ofClass:objc_opt_class() log:0];
   v15 = v7;
   if (v7)
   {
-    v16 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v16 = v4;
+    bOOLValue = valueCopy;
   }
 
-  if (v16 != v4)
+  if (bOOLValue != valueCopy)
   {
-    SULogDebug(@"[SUPreferences] %@ is set to %@", v8, v9, v10, v11, v12, v13, v14, v6);
+    SULogDebug(@"[SUPreferences] %@ is set to %@", v8, v9, v10, v11, v12, v13, v14, keyCopy);
   }
 
-  return v16;
+  return bOOLValue;
 }
 
-- (id)_cachedStringValueForKey:(id)a3
+- (id)_cachedStringValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUPreferences *)self _cachedObjectForKey:v4 ofClass:objc_opt_class() log:1];
+  keyCopy = key;
+  v5 = [(SUPreferences *)self _cachedObjectForKey:keyCopy ofClass:objc_opt_class() log:1];
 
   return v5;
 }
 
-- (id)_cachedNumberValueForKey:(id)a3
+- (id)_cachedNumberValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUPreferences *)self _cachedObjectForKey:v4 ofClass:objc_opt_class() log:1];
+  keyCopy = key;
+  v5 = [(SUPreferences *)self _cachedObjectForKey:keyCopy ofClass:objc_opt_class() log:1];
 
   return v5;
 }
 
-- (id)_cachedDictValueForKey:(id)a3
+- (id)_cachedDictValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUPreferences *)self _cachedObjectForKey:v4 ofClass:objc_opt_class() log:1];
+  keyCopy = key;
+  v5 = [(SUPreferences *)self _cachedObjectForKey:keyCopy ofClass:objc_opt_class() log:1];
 
   return v5;
 }
 
-- (void)_setBooleanPreferenceForKey:(id)a3 value:(BOOL)a4
+- (void)_setBooleanPreferenceForKey:(id)key value:(BOOL)value
 {
-  if (a4)
+  if (value)
   {
     v4 = MEMORY[0x277CBED28];
   }
@@ -1060,59 +1060,59 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
 
   v5 = *v4;
   v6 = *MEMORY[0x277CBF010];
-  v7 = a3;
-  CFPreferencesSetValue(v7, v5, @"com.apple.softwareupdateservicesd", @"mobile", v6);
+  keyCopy = key;
+  CFPreferencesSetValue(keyCopy, v5, @"com.apple.softwareupdateservicesd", @"mobile", v6);
   CFPreferencesSynchronize(@"com.apple.softwareupdateservicesd", @"mobile", v6);
   SULogDebug(@"%s: posting change notification... Key: %@ enabled: %@", v8, v9, v10, v11, v12, v13, v14, "[SUPreferences _setBooleanPreferenceForKey:value:]");
 
-  v15 = [@"SUPreferencesChangedNotification" UTF8String];
+  uTF8String = [@"SUPreferencesChangedNotification" UTF8String];
 
-  notify_post(v15);
+  notify_post(uTF8String);
 }
 
-- (void)_setObjectPreferenceForKey:(id)a3 value:(id)a4
+- (void)_setObjectPreferenceForKey:(id)key value:(id)value
 {
   v5 = *MEMORY[0x277CBF010];
-  v6 = a4;
-  v7 = a3;
-  CFPreferencesSetValue(v7, v6, @"com.apple.softwareupdateservicesd", @"mobile", v5);
+  valueCopy = value;
+  keyCopy = key;
+  CFPreferencesSetValue(keyCopy, valueCopy, @"com.apple.softwareupdateservicesd", @"mobile", v5);
   CFPreferencesSynchronize(@"com.apple.softwareupdateservicesd", @"mobile", v5);
   SULogDebug(@"%s: posting change notification... Key: %@: Value: %@", v8, v9, v10, v11, v12, v13, v14, "[SUPreferences _setObjectPreferenceForKey:value:]");
 
-  v15 = [@"SUPreferencesChangedNotification" UTF8String];
+  uTF8String = [@"SUPreferencesChangedNotification" UTF8String];
 
-  notify_post(v15);
+  notify_post(uTF8String);
 }
 
-- (id)_copyStringPreferenceForKey:(id)a3
+- (id)_copyStringPreferenceForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUPreferences *)self _copyPreferenceForKey:v4 ofType:CFStringGetTypeID()];
+  keyCopy = key;
+  v5 = [(SUPreferences *)self _copyPreferenceForKey:keyCopy ofType:CFStringGetTypeID()];
 
   return v5;
 }
 
-- (id)_copyNumberPreferenceForKey:(id)a3
+- (id)_copyNumberPreferenceForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUPreferences *)self _copyPreferenceForKey:v4 ofType:CFNumberGetTypeID()];
+  keyCopy = key;
+  v5 = [(SUPreferences *)self _copyPreferenceForKey:keyCopy ofType:CFNumberGetTypeID()];
 
   return v5;
 }
 
-- (id)_copyDictPreferenceForKey:(id)a3
+- (id)_copyDictPreferenceForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUPreferences *)self _copyPreferenceForKey:v4 ofType:CFDictionaryGetTypeID()];
+  keyCopy = key;
+  v5 = [(SUPreferences *)self _copyPreferenceForKey:keyCopy ofType:CFDictionaryGetTypeID()];
 
   return v5;
 }
 
-- (void)_copyPreferenceForKey:(__CFString *)a3 ofType:(unint64_t)a4
+- (void)_copyPreferenceForKey:(__CFString *)key ofType:(unint64_t)type
 {
-  v5 = CFPreferencesCopyValue(a3, @"com.apple.softwareupdateservicesd", @"mobile", *MEMORY[0x277CBF010]);
+  v5 = CFPreferencesCopyValue(key, @"com.apple.softwareupdateservicesd", @"mobile", *MEMORY[0x277CBF010]);
   v6 = v5;
-  if (v5 && CFGetTypeID(v5) != a4)
+  if (v5 && CFGetTypeID(v5) != type)
   {
     CFRelease(v6);
     return 0;
@@ -1121,20 +1121,20 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
   return v6;
 }
 
-- (void)enableAutomaticDownload:(BOOL)a3
+- (void)enableAutomaticDownload:(BOOL)download
 {
-  v3 = a3;
-  if ([(SUPreferences *)self isAutomaticDownloadEnabled]!= a3)
+  downloadCopy = download;
+  if ([(SUPreferences *)self isAutomaticDownloadEnabled]!= download)
   {
-    [(SUPreferences *)self _setCachedBooleanPreferenceForKey:@"SUDisableAutoDownload" value:!v3];
-    [(SUPreferences *)self _setBooleanPreferenceForKey:@"SUDisableAutoDownload" value:!v3];
-    if (!v3)
+    [(SUPreferences *)self _setCachedBooleanPreferenceForKey:@"SUDisableAutoDownload" value:!downloadCopy];
+    [(SUPreferences *)self _setBooleanPreferenceForKey:@"SUDisableAutoDownload" value:!downloadCopy];
+    if (!downloadCopy)
     {
       [(SUPreferences *)self _setCachedBooleanPreferenceForKey:@"SUAutomaticUpdateV2Enabled" value:0];
       [(SUPreferences *)self _setBooleanPreferenceForKey:@"SUAutomaticUpdateV2Enabled" value:0];
-      v5 = [@"SUPreferencesChangedNotificationAutoUpdate" UTF8String];
+      uTF8String = [@"SUPreferencesChangedNotificationAutoUpdate" UTF8String];
 
-      notify_post(v5);
+      notify_post(uTF8String);
     }
   }
 }
@@ -1175,18 +1175,18 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
 
 - (BOOL)_autoInstallSecurityResponseDefaultValue
 {
-  v3 = [(SUPreferences *)self autoInstallSystemAndDataFiles];
+  autoInstallSystemAndDataFiles = [(SUPreferences *)self autoInstallSystemAndDataFiles];
   if (![(SUPreferences *)self isChinaDevice])
   {
-    return v3;
+    return autoInstallSystemAndDataFiles;
   }
 
   return [(SUPreferences *)self isAutomaticUpdateV2Enabled];
 }
 
-- (BOOL)isKeySetInPreferences:(id)a3
+- (BOOL)isKeySetInPreferences:(id)preferences
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.softwareupdateservicesd", @"mobile", *MEMORY[0x277CBF010]);
+  v3 = CFPreferencesCopyValue(preferences, @"com.apple.softwareupdateservicesd", @"mobile", *MEMORY[0x277CBF010]);
   v4 = v3;
   if (v3)
   {
@@ -1213,17 +1213,17 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
 - (int)spaceOverrideCleanupTime
 {
   v2 = [(SUPreferences *)self _cachedNumberValueForKey:@"SUSpaceOverrideCleanupTime"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (unint64_t)spaceOverrideMaxPSUSOptionalSize
 {
   v2 = [(SUPreferences *)self _cachedNumberValueForKey:@"SUSpaceOverrideMaxPSUSOptionalSize"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)disableSplombo
@@ -1237,20 +1237,20 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
   return v3 & 1;
 }
 
-- (void)setSoftwareUpdateReserveSize:(id)a3
+- (void)setSoftwareUpdateReserveSize:(id)size
 {
-  v11 = a3;
-  SULogInfo(@"Setting software update reserve size to %@", v4, v5, v6, v7, v8, v9, v10, v11);
-  [(SUPreferences *)self _setCachedObjectPreferenceForKey:@"SUSoftwareUpdateReserveSize" value:v11];
-  [(SUPreferences *)self _setObjectPreferenceForKey:@"SUSoftwareUpdateReserveSize" value:v11];
+  sizeCopy = size;
+  SULogInfo(@"Setting software update reserve size to %@", v4, v5, v6, v7, v8, v9, v10, sizeCopy);
+  [(SUPreferences *)self _setCachedObjectPreferenceForKey:@"SUSoftwareUpdateReserveSize" value:sizeCopy];
+  [(SUPreferences *)self _setObjectPreferenceForKey:@"SUSoftwareUpdateReserveSize" value:sizeCopy];
 }
 
-- (void)setSystemGrowthMarginSize:(id)a3
+- (void)setSystemGrowthMarginSize:(id)size
 {
-  v11 = a3;
-  SULogInfo(@"Setting systemGrowthMarginSize to %@", v4, v5, v6, v7, v8, v9, v10, v11);
-  [(SUPreferences *)self _setCachedObjectPreferenceForKey:@"SUSystemGrowthMarginSize" value:v11];
-  [(SUPreferences *)self _setObjectPreferenceForKey:@"SUSystemGrowthMarginSize" value:v11];
+  sizeCopy = size;
+  SULogInfo(@"Setting systemGrowthMarginSize to %@", v4, v5, v6, v7, v8, v9, v10, sizeCopy);
+  [(SUPreferences *)self _setCachedObjectPreferenceForKey:@"SUSystemGrowthMarginSize" value:sizeCopy];
+  [(SUPreferences *)self _setObjectPreferenceForKey:@"SUSystemGrowthMarginSize" value:sizeCopy];
 }
 
 - (int)testGetOffSampleRate
@@ -1259,23 +1259,23 @@ uint64_t __49__SUPreferences__cachedObjectForKey_ofClass_log___block_invoke(void
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setSplatFollowUpDelayOverride:(id)a3
+- (void)setSplatFollowUpDelayOverride:(id)override
 {
-  v11 = a3;
-  SULogInfo(@"Override splat follow up delay: %@", v4, v5, v6, v7, v8, v9, v10, v11);
-  [(SUPreferences *)self _setCachedObjectPreferenceForKey:@"SUSplatFollowUpDelayOverride" value:v11];
-  [(SUPreferences *)self _setObjectPreferenceForKey:@"SUSplatFollowUpDelayOverride" value:v11];
+  overrideCopy = override;
+  SULogInfo(@"Override splat follow up delay: %@", v4, v5, v6, v7, v8, v9, v10, overrideCopy);
+  [(SUPreferences *)self _setCachedObjectPreferenceForKey:@"SUSplatFollowUpDelayOverride" value:overrideCopy];
+  [(SUPreferences *)self _setObjectPreferenceForKey:@"SUSplatFollowUpDelayOverride" value:overrideCopy];
 }
 
 @end

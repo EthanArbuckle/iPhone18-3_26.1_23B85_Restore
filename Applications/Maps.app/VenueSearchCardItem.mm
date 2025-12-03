@@ -1,5 +1,5 @@
 @interface VenueSearchCardItem
-- (VenueSearchCardItem)initWithMapItem:(id)a3 searchCategory:(id)a4;
+- (VenueSearchCardItem)initWithMapItem:(id)item searchCategory:(id)category;
 - (unint64_t)venueID;
 @end
 
@@ -7,25 +7,25 @@
 
 - (unint64_t)venueID
 {
-  v2 = [(MKMapItem *)self->_venueMapItem _venueInfo];
-  v3 = [v2 venueIdentifier];
-  v4 = [v3 venueID];
+  _venueInfo = [(MKMapItem *)self->_venueMapItem _venueInfo];
+  venueIdentifier = [_venueInfo venueIdentifier];
+  venueID = [venueIdentifier venueID];
 
-  return v4;
+  return venueID;
 }
 
-- (VenueSearchCardItem)initWithMapItem:(id)a3 searchCategory:(id)a4
+- (VenueSearchCardItem)initWithMapItem:(id)item searchCategory:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  categoryCopy = category;
   v12.receiver = self;
   v12.super_class = VenueSearchCardItem;
   v9 = [(VenueSearchCardItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_venueMapItem, a3);
-    objc_storeStrong(&v10->_venueSearchCategory, a4);
+    objc_storeStrong(&v9->_venueMapItem, item);
+    objc_storeStrong(&v10->_venueSearchCategory, category);
   }
 
   return v10;

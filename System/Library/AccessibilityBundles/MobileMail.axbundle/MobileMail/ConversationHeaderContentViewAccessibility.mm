@@ -1,18 +1,18 @@
 @interface ConversationHeaderContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_createPrimaryViews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation ConversationHeaderContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"_createPrimaryViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"setText:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"_createPrimaryViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"setText:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,14 +24,14 @@
   v3 = [(ConversationHeaderContentViewAccessibility *)self safeValueForKey:@"textLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
   v6 = accessibilityLocalizedString(@"subject");
-  if (v5)
+  if (text)
   {
-    v7 = [v4 text];
+    text2 = [v4 text];
     v8 = __AXStringForVariables();
-    [v4 setAccessibilityLabel:{v8, v7, @"__AXStringForVariablesSentinel"}];
+    [v4 setAccessibilityLabel:{v8, text2, @"__AXStringForVariablesSentinel"}];
   }
 
   else
@@ -48,11 +48,11 @@
   [(ConversationHeaderContentViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = ConversationHeaderContentViewAccessibility;
-  [(ConversationHeaderContentViewAccessibility *)&v4 setText:a3];
+  [(ConversationHeaderContentViewAccessibility *)&v4 setText:text];
   [(ConversationHeaderContentViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

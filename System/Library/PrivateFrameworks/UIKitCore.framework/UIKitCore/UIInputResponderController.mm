@@ -1,6 +1,6 @@
 @interface UIInputResponderController
-- (CGRect)visibleFrameInView:(id)a3;
-- (CGRect)visibleInputViewFrameInView:(id)a3;
+- (CGRect)visibleFrameInView:(id)view;
+- (CGRect)visibleInputViewFrameInView:(id)view;
 - (void)assertNo;
 @end
 
@@ -29,7 +29,7 @@
   }
 }
 
-- (CGRect)visibleFrameInView:(id)a3
+- (CGRect)visibleFrameInView:(id)view
 {
   [(UIInputResponderController *)self assertNo];
   v3 = *MEMORY[0x1E695F058];
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (CGRect)visibleInputViewFrameInView:(id)a3
+- (CGRect)visibleInputViewFrameInView:(id)view
 {
   [(UIInputResponderController *)self assertNo];
   v3 = *MEMORY[0x1E695F058];

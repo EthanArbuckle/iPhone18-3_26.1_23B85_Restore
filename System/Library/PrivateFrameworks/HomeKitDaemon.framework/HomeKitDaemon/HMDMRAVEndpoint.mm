@@ -1,6 +1,6 @@
 @interface HMDMRAVEndpoint
-- (BOOL)isEqual:(id)a3;
-- (HMDMRAVEndpoint)initWithMRAVEndpoint:(void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDMRAVEndpoint)initWithMRAVEndpoint:(void *)endpoint;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -22,15 +22,15 @@
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(HMDMRAVEndpoint *)v2 mravEndpoint];
+  return [(HMDMRAVEndpoint *)selfCopy mravEndpoint];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -52,8 +52,8 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMDMRAVEndpoint *)v6 mravEndpoint];
-      v9 = v8 == [(HMDMRAVEndpoint *)self mravEndpoint];
+      mravEndpoint = [(HMDMRAVEndpoint *)v6 mravEndpoint];
+      v9 = mravEndpoint == [(HMDMRAVEndpoint *)self mravEndpoint];
     }
 
     else
@@ -73,16 +73,16 @@
   [(HMDMRAVEndpoint *)&v3 dealloc];
 }
 
-- (HMDMRAVEndpoint)initWithMRAVEndpoint:(void *)a3
+- (HMDMRAVEndpoint)initWithMRAVEndpoint:(void *)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
     v8.receiver = self;
     v8.super_class = HMDMRAVEndpoint;
     v4 = [(HMDMRAVEndpoint *)&v8 init];
     if (v4)
     {
-      v4->_mravEndpoint = CFRetain(a3);
+      v4->_mravEndpoint = CFRetain(endpoint);
     }
 
     return v4;

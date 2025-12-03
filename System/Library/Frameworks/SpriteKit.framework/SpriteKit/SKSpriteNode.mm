@@ -6,9 +6,9 @@
 + (SKSpriteNode)spriteNodeWithTexture:(SKTexture *)texture normalMap:(SKTexture *)normalMap;
 + (SKSpriteNode)spriteNodeWithTexture:(SKTexture *)texture size:(CGSize)size;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable;
-- (BOOL)_pathFromTextureToPoints:(SKSpriteNode *)self outSize:(SEL)a2 accuracy:;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable;
+- (BOOL)_pathFromTextureToPoints:(SKSpriteNode *)self outSize:(SEL)size accuracy:;
+- (BOOL)isEqualToNode:(id)node;
 - (CGPoint)anchorPoint;
 - (CGRect)centerRect;
 - (CGSize)repeatTextureSize;
@@ -24,12 +24,12 @@
 - (SKTexture)texture;
 - (UIColor)color;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_didMakeBackingNode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)scaleToSize:(CGSize)size;
 - (void)setAnchorPoint:(CGPoint)anchorPoint;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCenterRect:(CGRect)centerRect;
 - (void)setColor:(UIColor *)color;
 - (void)setColorBlendFactor:(CGFloat)colorBlendFactor;
@@ -92,14 +92,14 @@
 - (SKSpriteNode)initWithCoder:(NSCoder *)aDecoder
 {
   v4 = aDecoder;
-  v5 = self;
-  v43.receiver = v5;
+  selfCopy = self;
+  v43.receiver = selfCopy;
   v43.super_class = SKSpriteNode;
   v6 = [(SKNode *)&v43 initWithCoder:v4];
   v7 = v6;
   if (v6)
   {
-    v8 = v6 == v5;
+    v8 = v6 == selfCopy;
   }
 
   else
@@ -195,73 +195,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = SKSpriteNode;
-  [(SKNode *)&v25 encodeWithCoder:v4];
+  [(SKNode *)&v25 encodeWithCoder:coderCopy];
   skcSpriteNode = self->_skcSpriteNode;
   v23 = skcSpriteNode[21];
   v6 = vmlsq_f32(SKCNode::getTranslation(skcSpriteNode), skcSpriteNode[22], v23).u64[0];
   v7 = [MEMORY[0x277CCAE60] valueWithCGRect:{*&v6, *(&v6 + 1), v23.f32[0], v23.f32[1]}];
-  [v4 encodeObject:v7 forKey:@"_bounds"];
+  [coderCopy encodeObject:v7 forKey:@"_bounds"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithLong:{-[SKSpriteNode blendMode](self, "blendMode")}];
-  [v4 encodeObject:v8 forKey:@"_blendMode"];
+  [coderCopy encodeObject:v8 forKey:@"_blendMode"];
 
-  v9 = [(SKSpriteNode *)self shader];
-  [v4 encodeObject:v9 forKey:@"_shader"];
+  shader = [(SKSpriteNode *)self shader];
+  [coderCopy encodeObject:shader forKey:@"_shader"];
 
-  v10 = [(SKSpriteNode *)self normalTexture];
-  [v4 encodeObject:v10 forKey:@"_normalTexture"];
+  normalTexture = [(SKSpriteNode *)self normalTexture];
+  [coderCopy encodeObject:normalTexture forKey:@"_normalTexture"];
 
-  [v4 encodeInt32:-[SKSpriteNode lightingBitMask](self forKey:{"lightingBitMask"), @"_lightingBitMask"}];
-  [v4 encodeInt32:-[SKSpriteNode shadowCastBitMask](self forKey:{"shadowCastBitMask"), @"_shadowCastBitMask"}];
-  [v4 encodeInt32:-[SKSpriteNode shadowedBitMask](self forKey:{"shadowedBitMask"), @"_shadowedBitMask"}];
-  v11 = [(SKSpriteNode *)self texture];
-  [v4 encodeObject:v11 forKey:@"_texture"];
+  [coderCopy encodeInt32:-[SKSpriteNode lightingBitMask](self forKey:{"lightingBitMask"), @"_lightingBitMask"}];
+  [coderCopy encodeInt32:-[SKSpriteNode shadowCastBitMask](self forKey:{"shadowCastBitMask"), @"_shadowCastBitMask"}];
+  [coderCopy encodeInt32:-[SKSpriteNode shadowedBitMask](self forKey:{"shadowedBitMask"), @"_shadowedBitMask"}];
+  texture = [(SKSpriteNode *)self texture];
+  [coderCopy encodeObject:texture forKey:@"_texture"];
 
   v12 = MEMORY[0x277CCABB0];
   [(SKSpriteNode *)self colorBlendFactor];
   v13 = [v12 numberWithDouble:?];
-  [v4 encodeObject:v13 forKey:@"_colorMix"];
+  [coderCopy encodeObject:v13 forKey:@"_colorMix"];
 
   v14 = MEMORY[0x277CCAE60];
   [(SKSpriteNode *)self anchorPoint];
   v15 = [v14 valueWithCGPoint:?];
-  [v4 encodeObject:v15 forKey:@"_anchorPoint"];
+  [coderCopy encodeObject:v15 forKey:@"_anchorPoint"];
 
   v24 = *(self->_skcSpriteNode + 19);
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:{*&v24, v24}];
-  [v4 encodeObject:v16 forKey:@"_baseColorR"];
+  [coderCopy encodeObject:v16 forKey:@"_baseColorR"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v24 + 1)];
-  [v4 encodeObject:v17 forKey:@"_baseColorG"];
+  [coderCopy encodeObject:v17 forKey:@"_baseColorG"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v24 + 2)];
-  [v4 encodeObject:v18 forKey:@"_baseColorB"];
+  [coderCopy encodeObject:v18 forKey:@"_baseColorB"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v24 + 3)];
-  [v4 encodeObject:v19 forKey:@"_baseColorA"];
+  [coderCopy encodeObject:v19 forKey:@"_baseColorA"];
 
   v20 = MEMORY[0x277CCAE60];
   [(SKSpriteNode *)self centerRect];
   v21 = [v20 valueWithCGRect:?];
-  [v4 encodeObject:v21 forKey:@"_centerRect"];
+  [coderCopy encodeObject:v21 forKey:@"_centerRect"];
 
-  v22 = [(SKSpriteNode *)self warpGeometry];
-  [v4 encodeObject:v22 forKey:@"_warpGeometry"];
+  warpGeometry = [(SKSpriteNode *)self warpGeometry];
+  [coderCopy encodeObject:warpGeometry forKey:@"_warpGeometry"];
 
-  [v4 encodeInteger:-[SKSpriteNode subdivisionLevels](self forKey:{"subdivisionLevels"), @"_subdivisionLevels"}];
+  [coderCopy encodeInteger:-[SKSpriteNode subdivisionLevels](self forKey:{"subdivisionLevels"), @"_subdivisionLevels"}];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SKSpriteNode *)self anchorPoint];
   v9 = v8;
   v11 = v10;
@@ -297,8 +297,8 @@
   v6 = [objc_opt_class() spriteNodeWithTexture:v5];
   if (v4)
   {
-    v7 = [v5 textureByGeneratingNormalMap];
-    [v6 setNormalTexture:v7];
+    textureByGeneratingNormalMap = [v5 textureByGeneratingNormalMap];
+    [v6 setNormalTexture:textureByGeneratingNormalMap];
   }
 
   return v6;
@@ -355,12 +355,12 @@
 - (NSString)description
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(SKNode *)self name];
-  v6 = [(SKSpriteNode *)self texture];
-  if (v6)
+  name = [(SKNode *)self name];
+  texture = [(SKSpriteNode *)self texture];
+  if (texture)
   {
-    v2 = [(SKSpriteNode *)self texture];
-    v7 = [v2 description];
+    texture2 = [(SKSpriteNode *)self texture];
+    v7 = [texture2 description];
   }
 
   else
@@ -379,9 +379,9 @@
   [(SKSpriteNode *)self anchorPoint];
   v14 = NSStringFromCGPoint(v21);
   [(SKNode *)self zRotation];
-  v16 = [v4 stringWithFormat:@"<SKSpriteNode> name:'%@' texture:[%@] position:%@ scale:{%.2f, %.2f} size:%@ anchor:%@ rotation:%.2f", v5, v7, v8, v10, v12, v13, v14, v15];
+  v16 = [v4 stringWithFormat:@"<SKSpriteNode> name:'%@' texture:[%@] position:%@ scale:{%.2f, %.2f} size:%@ anchor:%@ rotation:%.2f", name, v7, v8, v10, v12, v13, v14, v15];
 
-  if (v6)
+  if (texture)
   {
   }
 
@@ -556,18 +556,18 @@
   return [(SKSpriteNode *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SKSpriteNode;
-  v4 = [(SKNode *)&v10 copyWithZone:a3];
-  v5 = [(SKSpriteNode *)self texture];
-  [v4 setTexture:v5];
+  v4 = [(SKNode *)&v10 copyWithZone:zone];
+  texture = [(SKSpriteNode *)self texture];
+  [v4 setTexture:texture];
 
   [(SKSpriteNode *)self size];
   [v4 setSize:?];
-  v6 = [(SKSpriteNode *)self color];
-  [v4 setColor:v6];
+  color = [(SKSpriteNode *)self color];
+  [v4 setColor:color];
 
   [(SKSpriteNode *)self colorBlendFactor];
   [v4 setColorBlendFactor:?];
@@ -575,23 +575,23 @@
   [v4 setLightingBitMask:{-[SKSpriteNode lightingBitMask](self, "lightingBitMask")}];
   [v4 setShadowCastBitMask:{-[SKSpriteNode shadowCastBitMask](self, "shadowCastBitMask")}];
   [v4 setShadowedBitMask:{-[SKSpriteNode shadowedBitMask](self, "shadowedBitMask")}];
-  v7 = [(SKSpriteNode *)self normalTexture];
-  [v4 setNormalTexture:v7];
+  normalTexture = [(SKSpriteNode *)self normalTexture];
+  [v4 setNormalTexture:normalTexture];
 
-  v8 = [(SKSpriteNode *)self shader];
-  [v4 setShader:v8];
+  shader = [(SKSpriteNode *)self shader];
+  [v4 setShader:shader];
 
   [(SKSpriteNode *)self centerRect];
   [v4 setCenterRect:?];
   return v4;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v8 = a3;
-  if (self == v8)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
-    LOBYTE(v15) = 1;
+    LOBYTE(blendMode) = 1;
   }
 
   else
@@ -599,7 +599,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = nodeCopy;
       v48.receiver = self;
       v48.super_class = SKSpriteNode;
       if ([(SKNode *)&v48 isEqualToNode:v9])
@@ -608,28 +608,28 @@
         v11 = v10;
         v13 = v12;
         [(SKSpriteNode *)v9 size];
-        LOBYTE(v15) = 0;
+        LOBYTE(blendMode) = 0;
         if (v11 == v16 && v13 == v14)
         {
           [(SKSpriteNode *)self anchorPoint];
           v18 = v17;
           v20 = v19;
           [(SKSpriteNode *)v9 anchorPoint];
-          v15 = SKBlendModeAlpha;
+          blendMode = SKBlendModeAlpha;
           if (v18 == v22 && v20 == v21)
           {
-            v23 = [(SKSpriteNode *)self texture];
-            v24 = [v23 imageNameOrPath];
-            if (v24 || (-[SKSpriteNode texture](v9, "texture"), v45 = objc_claimAutoreleasedReturnValue(), [v45 imageNameOrPath], (v15 = objc_claimAutoreleasedReturnValue()) != SKBlendModeAlpha))
+            texture = [(SKSpriteNode *)self texture];
+            imageNameOrPath = [texture imageNameOrPath];
+            if (imageNameOrPath || (-[SKSpriteNode texture](v9, "texture"), v45 = objc_claimAutoreleasedReturnValue(), [v45 imageNameOrPath], (blendMode = objc_claimAutoreleasedReturnValue()) != SKBlendModeAlpha))
             {
-              v4 = [(SKSpriteNode *)self texture];
-              v5 = [v4 imageNameOrPath];
-              v6 = [(SKSpriteNode *)v9 texture];
-              v3 = [v6 imageNameOrPath];
-              if (![v5 isEqualToString:v3])
+              texture2 = [(SKSpriteNode *)self texture];
+              imageNameOrPath2 = [texture2 imageNameOrPath];
+              texture3 = [(SKSpriteNode *)v9 texture];
+              imageNameOrPath3 = [texture3 imageNameOrPath];
+              if (![imageNameOrPath2 isEqualToString:imageNameOrPath3])
               {
-                v47 = v15;
-                LOBYTE(v15) = 0;
+                v47 = blendMode;
+                LOBYTE(blendMode) = 0;
                 goto LABEL_23;
               }
 
@@ -641,7 +641,7 @@
               v46 = 0;
             }
 
-            v47 = v15;
+            v47 = blendMode;
             [(SKSpriteNode *)self centerRect];
             v27 = v26;
             v29 = v28;
@@ -658,13 +658,13 @@
             v49.size.height = v33;
             if (CGRectEqualToRect(v49, v50) && ([(SKSpriteNode *)self colorBlendFactor], v39 = v38, [(SKSpriteNode *)v9 colorBlendFactor], v40 = v39, *&v41 = v41, (COERCE_UNSIGNED_INT(v40 - *&v41) & 0x60000000) == 0))
             {
-              v44 = [(SKSpriteNode *)self color];
-              v42 = [v44 CGColor];
-              v43 = [(SKSpriteNode *)v9 color];
-              if (!CGColorEqualToColor(v42, [v43 CGColor]))
+              color = [(SKSpriteNode *)self color];
+              cGColor = [color CGColor];
+              color2 = [(SKSpriteNode *)v9 color];
+              if (!CGColorEqualToColor(cGColor, [color2 CGColor]))
               {
 
-                LOBYTE(v15) = 0;
+                LOBYTE(blendMode) = 0;
                 if (!v46)
                 {
                   goto LABEL_24;
@@ -673,19 +673,19 @@
                 goto LABEL_23;
               }
 
-              v15 = [(SKSpriteNode *)self blendMode];
-              LOBYTE(v15) = v15 == [(SKSpriteNode *)v9 blendMode];
+              blendMode = [(SKSpriteNode *)self blendMode];
+              LOBYTE(blendMode) = blendMode == [(SKSpriteNode *)v9 blendMode];
             }
 
             else
             {
-              LOBYTE(v15) = 0;
+              LOBYTE(blendMode) = 0;
             }
 
             if ((v46 & 1) == 0)
             {
 LABEL_24:
-              if (!v24)
+              if (!imageNameOrPath)
               {
               }
 
@@ -701,7 +701,7 @@ LABEL_23:
 
       else
       {
-        LOBYTE(v15) = 0;
+        LOBYTE(blendMode) = 0;
       }
 
 LABEL_15:
@@ -709,15 +709,15 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    LOBYTE(v15) = 0;
+    LOBYTE(blendMode) = 0;
   }
 
 LABEL_16:
 
-  return v15;
+  return blendMode;
 }
 
-- (BOOL)_pathFromTextureToPoints:(SKSpriteNode *)self outSize:(SEL)a2 accuracy:
+- (BOOL)_pathFromTextureToPoints:(SKSpriteNode *)self outSize:(SEL)size accuracy:
 {
   v5 = 0;
   if (v2)
@@ -727,7 +727,7 @@ LABEL_16:
     {
       v7 = v4;
       v8 = v2;
-      v10 = [(SKSpriteNode *)self texture];
+      texture = [(SKSpriteNode *)self texture];
       [(SKSpriteNode *)self size];
       v12 = v11;
       v14 = v13;
@@ -735,14 +735,14 @@ LABEL_16:
       v15 = v12;
       v16 = v14;
       LODWORD(v14) = v7;
-      v17 = [SKPhysicsBody bodyWithTexture:v10 alphaThreshold:v11 size:v15 accuracy:v16, v14];
+      v17 = [SKPhysicsBody bodyWithTexture:texture alphaThreshold:v11 size:v15 accuracy:v16, v14];
 
-      v18 = [v17 volume];
-      v19 = v18;
-      v5 = v18 != 0;
-      if (v18)
+      volume = [v17 volume];
+      v19 = volume;
+      v5 = volume != 0;
+      if (volume)
       {
-        v20 = *(v18 + 16) - *(v18 + 8);
+        v20 = *(volume + 16) - *(volume + 8);
         *v6 = v20 >> 3;
         *v8 = malloc_type_malloc(v20, 0x100004000313F17uLL);
         v21 = *(v19 + 8);
@@ -889,45 +889,45 @@ LABEL_16:
   return v21;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable
 {
   keys[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v84 = a4;
-  if ([v8 isEqualToString:@"texture"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"texture"])
   {
-    Mutable = [v84 texture];
+    Mutable = [objectCopy texture];
 
     if (!Mutable)
     {
       goto LABEL_76;
     }
 
-    v9 = [v84 texture];
-    v10 = [v9 CGImage];
+    texture = [objectCopy texture];
+    cGImage = [texture CGImage];
 
-    if (v10)
+    if (cGImage)
     {
       v11 = *MEMORY[0x277CE1E10];
-      v12 = [*MEMORY[0x277CE1E10] identifier];
+      identifier = [*MEMORY[0x277CE1E10] identifier];
       valuePtr = 1065353216;
       Mutable = CFDataCreateMutable(0, 0);
-      v13 = CGImageDestinationCreateWithData(Mutable, v12, 1uLL, 0);
+      v13 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
       v14 = *MEMORY[0x277CBECE8];
       v15 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberFloatType, &valuePtr);
       keys[0] = *MEMORY[0x277CD2D48];
       values[0] = v15;
       v16 = CFDictionaryCreate(v14, keys, values, 1, 0, 0);
-      CGImageDestinationAddImage(v13, v10, v16);
+      CGImageDestinationAddImage(v13, cGImage, v16);
       CGImageDestinationFinalize(v13);
       CFRelease(v16);
       CFRelease(v15);
       CFRelease(v13);
 
       v92 = @"propertyFormat";
-      v17 = [v11 identifier];
-      v93 = v17;
-      *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
+      identifier2 = [v11 identifier];
+      v93 = identifier2;
+      *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
     }
 
     else
@@ -936,44 +936,44 @@ LABEL_16:
     }
 
 LABEL_23:
-    CGImageRelease(v10);
+    CGImageRelease(cGImage);
     goto LABEL_76;
   }
 
-  if ([v8 isEqualToString:@"normalTexture"])
+  if ([nameCopy isEqualToString:@"normalTexture"])
   {
-    Mutable = [v84 normalTexture];
+    Mutable = [objectCopy normalTexture];
 
     if (!Mutable)
     {
       goto LABEL_76;
     }
 
-    v18 = [v84 normalTexture];
-    v10 = [v18 CGImage];
+    normalTexture = [objectCopy normalTexture];
+    cGImage = [normalTexture CGImage];
 
-    if (v10)
+    if (cGImage)
     {
       v19 = *MEMORY[0x277CE1E10];
-      v20 = [*MEMORY[0x277CE1E10] identifier];
+      identifier3 = [*MEMORY[0x277CE1E10] identifier];
       valuePtr = 1065353216;
       Mutable = CFDataCreateMutable(0, 0);
-      v21 = CGImageDestinationCreateWithData(Mutable, v20, 1uLL, 0);
+      v21 = CGImageDestinationCreateWithData(Mutable, identifier3, 1uLL, 0);
       v22 = *MEMORY[0x277CBECE8];
       v23 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberFloatType, &valuePtr);
       keys[0] = *MEMORY[0x277CD2D48];
       values[0] = v23;
       v24 = CFDictionaryCreate(v22, keys, values, 1, 0, 0);
-      CGImageDestinationAddImage(v21, v10, v24);
+      CGImageDestinationAddImage(v21, cGImage, v24);
       CGImageDestinationFinalize(v21);
       CFRelease(v24);
       CFRelease(v23);
       CFRelease(v21);
 
       v90 = @"propertyFormat";
-      v25 = [v19 identifier];
-      v91 = v25;
-      *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
+      identifier4 = [v19 identifier];
+      v91 = identifier4;
+      *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
     }
 
     else
@@ -984,16 +984,16 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if ([v8 isEqualToString:@"color"])
+  if ([nameCopy isEqualToString:@"color"])
   {
-    v26 = [v84 color];
-    v27 = [v26 CGColor];
-    if (v27)
+    color = [objectCopy color];
+    cGColor = [color CGColor];
+    if (cGColor)
     {
       Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      space = CGColorGetColorSpace(v27);
+      space = CGColorGetColorSpace(cGColor);
       valuea = CGColorSpaceCopyName(space);
-      NumberOfComponents = CGColorGetNumberOfComponents(v27);
+      NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
       v29 = NumberOfComponents << 32;
       v30 = NumberOfComponents;
       if (NumberOfComponents << 32)
@@ -1030,7 +1030,7 @@ LABEL_23:
         v31 = &stru_282E190D8;
       }
 
-      Components = CGColorGetComponents(v27);
+      Components = CGColorGetComponents(cGColor);
       v39 = malloc_type_malloc(v29 >> 29, 0x6004044C4A2DFuLL);
       v40 = v39;
       if (v29)
@@ -1119,10 +1119,10 @@ LABEL_23:
     goto LABEL_76;
   }
 
-  if (![v8 isEqualToString:@"visualRepresentation"])
+  if (![nameCopy isEqualToString:@"visualRepresentation"])
   {
-    v35 = v84;
-    v36 = v8;
+    v35 = objectCopy;
+    v36 = nameCopy;
     if (![v36 length])
     {
       goto LABEL_66;
@@ -1138,18 +1138,18 @@ LABEL_23:
     {
       if ([v36 length] < 2)
       {
-        v51 = [v36 uppercaseString];
+        uppercaseString = [v36 uppercaseString];
       }
 
       else
       {
         v48 = [v36 substringToIndex:1];
-        v49 = [v48 uppercaseString];
+        uppercaseString2 = [v48 uppercaseString];
         v50 = [v36 substringFromIndex:1];
-        v51 = [v49 stringByAppendingString:v50];
+        uppercaseString = [uppercaseString2 stringByAppendingString:v50];
       }
 
-      v52 = [@"is" stringByAppendingString:v51];
+      v52 = [@"is" stringByAppendingString:uppercaseString];
       NSSelectorFromString(v52);
       v37 = (objc_opt_respondsToSelector() & 1) != 0 ? v52 : 0;
     }
@@ -1212,39 +1212,39 @@ LABEL_66:
     goto LABEL_76;
   }
 
-  v34 = [v84 texture];
-  if (v34)
+  texture2 = [objectCopy texture];
+  if (texture2)
   {
 
 LABEL_56:
-    Mutable = [v84 createDebugHierarchyVisualRepresentation];
+    Mutable = [objectCopy createDebugHierarchyVisualRepresentation];
     v89[0] = @"SKTexture";
     v88[0] = @"propertyRuntimeType";
     v88[1] = @"propertyFormat";
-    v47 = [*MEMORY[0x277CE1E10] identifier];
+    identifier5 = [*MEMORY[0x277CE1E10] identifier];
     v88[2] = @"propertyLogicalType";
-    v89[1] = v47;
+    v89[1] = identifier5;
     v89[2] = @"DebugHierarchyLogicalPropertyTypeImage";
-    *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:v88 count:3];
+    *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:v88 count:3];
 
     goto LABEL_76;
   }
 
-  v46 = [v84 shader];
+  shader = [objectCopy shader];
 
-  if (v46)
+  if (shader)
   {
     goto LABEL_56;
   }
 
-  v62 = [v84 color];
-  v63 = [v62 CGColor];
-  if (v63)
+  color2 = [objectCopy color];
+  cGColor2 = [color2 CGColor];
+  if (cGColor2)
   {
     v64 = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-    ColorSpace = CGColorGetColorSpace(v63);
+    ColorSpace = CGColorGetColorSpace(cGColor2);
     spacea = CGColorSpaceCopyName(ColorSpace);
-    v65 = CGColorGetNumberOfComponents(v63);
+    v65 = CGColorGetNumberOfComponents(cGColor2);
     v66 = v65;
     v79 = v65 << 32;
     if (v65 << 32)
@@ -1281,7 +1281,7 @@ LABEL_56:
       v67 = &stru_282E190D8;
     }
 
-    v70 = CGColorGetComponents(v63);
+    v70 = CGColorGetComponents(cGColor2);
     v71 = malloc_type_malloc(v79 >> 29, 0x6004044C4A2DFuLL);
     v72 = v71;
     if (v79)
@@ -1373,7 +1373,7 @@ LABEL_56:
   v87[1] = @"color";
   v86[2] = @"propertyLogicalType";
   v87[2] = @"DebugHierarchyLogicalPropertyTypeColor";
-  *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:3];
+  *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:3];
   Mutable = v64;
 LABEL_76:
 

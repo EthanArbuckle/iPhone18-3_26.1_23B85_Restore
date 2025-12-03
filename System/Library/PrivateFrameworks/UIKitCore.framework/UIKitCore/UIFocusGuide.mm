@@ -1,12 +1,12 @@
 @interface UIFocusGuide
 - (NSString)description;
 - (UIFocusGuide)init;
-- (UIFocusGuide)initWithCoder:(id)a3;
+- (UIFocusGuide)initWithCoder:(id)coder;
 - (UIView)preferredFocusedView;
 - (id)_encodablePreferredFocusEnvironments;
-- (void)_setAutomaticallyDisableWhenIntersectingFocus:(BOOL)a3;
-- (void)_setOwningView:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAutomaticallyDisableWhenIntersectingFocus:(BOOL)focus;
+- (void)_setOwningView:(id)view;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPreferredFocusedView:(UIView *)preferredFocusedView;
 @end
 
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (UIFocusGuide)initWithCoder:(id)a3
+- (UIFocusGuide)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = UIFocusGuide;
   v5 = [(UILayoutGuide *)&v24 init];
@@ -37,17 +37,17 @@
   if (v5)
   {
     _UIFocusGuideCommonInit(v5);
-    if ([v4 containsValueForKey:@"_UIFocusGuideEnabledKey"])
+    if ([coderCopy containsValueForKey:@"_UIFocusGuideEnabledKey"])
     {
-      -[_UIFocusGuideImpl setEnabled:](v6->_impl, "setEnabled:", [v4 decodeBoolForKey:@"_UIFocusGuideEnabledKey"]);
+      -[_UIFocusGuideImpl setEnabled:](v6->_impl, "setEnabled:", [coderCopy decodeBoolForKey:@"_UIFocusGuideEnabledKey"]);
     }
 
-    if ([v4 containsValueForKey:@"_UIFocusGuideAutomaticallyPreferOwningViewKey"])
+    if ([coderCopy containsValueForKey:@"_UIFocusGuideAutomaticallyPreferOwningViewKey"])
     {
-      -[_UIFocusGuideImpl _setAutomaticallyPreferOwningItem:](v6->_impl, "_setAutomaticallyPreferOwningItem:", [v4 decodeBoolForKey:@"_UIFocusGuideAutomaticallyPreferOwningViewKey"]);
+      -[_UIFocusGuideImpl _setAutomaticallyPreferOwningItem:](v6->_impl, "_setAutomaticallyPreferOwningItem:", [coderCopy decodeBoolForKey:@"_UIFocusGuideAutomaticallyPreferOwningViewKey"]);
     }
 
-    v7 = [v4 decodeObjectForKey:@"_UIFocusGuidePreferredFocusedViewKey"];
+    v7 = [coderCopy decodeObjectForKey:@"_UIFocusGuidePreferredFocusedViewKey"];
     v8 = v7;
     if (v7)
     {
@@ -58,7 +58,7 @@
 
     else
     {
-      v10 = [v4 decodeObjectForKey:@"_UIFocusGuidePreferredFocusEnvironmentsKey"];
+      v10 = [coderCopy decodeObjectForKey:@"_UIFocusGuidePreferredFocusEnvironmentsKey"];
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v20 = 0u;
       v21 = 0u;
@@ -98,25 +98,25 @@
       [(_UIFocusGuideImpl *)v6->_impl setPreferredFocusEnvironments:v18];
     }
 
-    if ([v4 containsValueForKey:@"_UIFocusGuideDidSetPreferredFocusedViewKey"])
+    if ([coderCopy containsValueForKey:@"_UIFocusGuideDidSetPreferredFocusedViewKey"])
     {
-      -[_UIFocusGuideImpl _setDidSetPreferredFocusedEnvironments:](v6->_impl, "_setDidSetPreferredFocusedEnvironments:", [v4 decodeBoolForKey:@"_UIFocusGuideDidSetPreferredFocusedViewKey"]);
+      -[_UIFocusGuideImpl _setDidSetPreferredFocusedEnvironments:](v6->_impl, "_setDidSetPreferredFocusedEnvironments:", [coderCopy decodeBoolForKey:@"_UIFocusGuideDidSetPreferredFocusedViewKey"]);
     }
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[_UIFocusGuideImpl isEnabled](self->_impl forKey:{"isEnabled"), @"_UIFocusGuideEnabledKey"}];
-  [v5 encodeBool:-[_UIFocusGuideImpl _didSetPreferredFocusedEnvironments](self->_impl forKey:{"_didSetPreferredFocusedEnvironments"), @"_UIFocusGuideDidSetPreferredFocusedViewKey"}];
-  [v5 encodeBool:-[_UIFocusGuideImpl _automaticallyPreferOwningItem](self->_impl forKey:{"_automaticallyPreferOwningItem"), @"_UIFocusGuideAutomaticallyPreferOwningViewKey"}];
-  v4 = [(UIFocusGuide *)self _encodablePreferredFocusEnvironments];
-  if ([v4 count])
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UIFocusGuideImpl isEnabled](self->_impl forKey:{"isEnabled"), @"_UIFocusGuideEnabledKey"}];
+  [coderCopy encodeBool:-[_UIFocusGuideImpl _didSetPreferredFocusedEnvironments](self->_impl forKey:{"_didSetPreferredFocusedEnvironments"), @"_UIFocusGuideDidSetPreferredFocusedViewKey"}];
+  [coderCopy encodeBool:-[_UIFocusGuideImpl _automaticallyPreferOwningItem](self->_impl forKey:{"_automaticallyPreferOwningItem"), @"_UIFocusGuideAutomaticallyPreferOwningViewKey"}];
+  _encodablePreferredFocusEnvironments = [(UIFocusGuide *)self _encodablePreferredFocusEnvironments];
+  if ([_encodablePreferredFocusEnvironments count])
   {
-    [v5 encodeConditionalObject:v4 forKey:@"_UIFocusGuidePreferredFocusEnvironmentsKey"];
+    [coderCopy encodeConditionalObject:_encodablePreferredFocusEnvironments forKey:@"_UIFocusGuidePreferredFocusEnvironmentsKey"];
   }
 }
 
@@ -128,8 +128,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(_UIFocusGuideImpl *)self->_impl preferredFocusEnvironments];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  preferredFocusEnvironments = [(_UIFocusGuideImpl *)self->_impl preferredFocusEnvironments];
+  v5 = [preferredFocusEnvironments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -140,7 +140,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(preferredFocusEnvironments);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -150,7 +150,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [preferredFocusEnvironments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -159,15 +159,15 @@
   return v3;
 }
 
-- (void)_setAutomaticallyDisableWhenIntersectingFocus:(BOOL)a3
+- (void)_setAutomaticallyDisableWhenIntersectingFocus:(BOOL)focus
 {
   if (os_variant_has_internal_diagnostics())
   {
     _UIIsPrivateMainBundle();
     if (dyld_program_sdk_at_least())
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"UIFocusGuide.m" lineNumber:116 description:{@"Hey GameCenter and AppStore, please stop calling this method, it doesn't do anything and we would like to remove it. You have a radar about this (139002488 & 139002492)."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusGuide.m" lineNumber:116 description:{@"Hey GameCenter and AppStore, please stop calling this method, it doesn't do anything and we would like to remove it. You have a radar about this (139002488 & 139002492)."}];
     }
 
     else if (os_variant_has_internal_diagnostics())
@@ -194,12 +194,12 @@
 
 - (UIView)preferredFocusedView
 {
-  v2 = [(UIFocusGuide *)self preferredFocusEnvironments];
-  v3 = [v2 firstObject];
+  preferredFocusEnvironments = [(UIFocusGuide *)self preferredFocusEnvironments];
+  firstObject = [preferredFocusEnvironments firstObject];
 
-  if (v3 && _IsKindOfUIView(v3))
+  if (firstObject && _IsKindOfUIView(firstObject))
   {
-    v4 = v3;
+    v4 = firstObject;
   }
 
   else
@@ -228,14 +228,14 @@
   }
 }
 
-- (void)_setOwningView:(id)a3
+- (void)_setOwningView:(id)view
 {
   v6.receiver = self;
   v6.super_class = UIFocusGuide;
-  v4 = a3;
-  [(UILayoutGuide *)&v6 _setOwningView:v4];
+  viewCopy = view;
+  [(UILayoutGuide *)&v6 _setOwningView:viewCopy];
   v5 = [(UIFocusGuide *)self _impl:v6.receiver];
-  [v5 setOwningItem:v4];
+  [v5 setOwningItem:viewCopy];
 }
 
 - (NSString)description
@@ -244,9 +244,9 @@
   v9.receiver = self;
   v9.super_class = UIFocusGuide;
   v4 = [(UILayoutGuide *)&v9 description];
-  v5 = [(UIFocusGuide *)self isEnabled];
+  isEnabled = [(UIFocusGuide *)self isEnabled];
   v6 = @"NO";
-  if (v5)
+  if (isEnabled)
   {
     v6 = @"YES";
   }

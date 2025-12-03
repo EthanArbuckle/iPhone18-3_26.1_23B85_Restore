@@ -2,35 +2,35 @@
 - (int64_t)userInterfaceOrientation;
 - (int64_t)userInterfaceStyle;
 - (void)orientationDidChange;
-- (void)wallpaperDidUpdate:(id)a3;
-- (void)wallpaperDidUpdateWithTexture:(id)a3;
-- (void)wallpaperFailedToLoadWithError:(id)a3;
+- (void)wallpaperDidUpdate:(id)update;
+- (void)wallpaperDidUpdateWithTexture:(id)texture;
+- (void)wallpaperFailedToLoadWithError:(id)error;
 @end
 
 @implementation BookendViewWrapper
 
-- (void)wallpaperDidUpdateWithTexture:(id)a3
+- (void)wallpaperDidUpdateWithTexture:(id)texture
 {
   swift_unknownObjectRetain();
 
-  sub_265A61EEC(a3);
+  sub_265A61EEC(texture);
   swift_unknownObjectRelease();
 }
 
-- (void)wallpaperDidUpdate:(id)a3
+- (void)wallpaperDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
 
   v5 = objc_autoreleasePoolPush();
-  sub_265A62110(v4, self);
+  sub_265A62110(updateCopy, self);
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)wallpaperFailedToLoadWithError:(id)a3
+- (void)wallpaperFailedToLoadWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
 
-  sub_265A62368(v3);
+  sub_265A62368(errorCopy);
 }
 
 - (int64_t)userInterfaceOrientation
@@ -39,9 +39,9 @@
   v2 = sub_265A5BDC0();
   if (v2 && (v3 = v2, v4 = [v2 window], v3, v4) && (v5 = objc_msgSend(v4, sel_windowScene), v4, v5))
   {
-    v6 = [v5 interfaceOrientation];
+    interfaceOrientation = [v5 interfaceOrientation];
 
-    return v6;
+    return interfaceOrientation;
   }
 
   else
@@ -58,17 +58,17 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [v2 traitCollection];
+    traitCollection = [v2 traitCollection];
 
-    v5 = [v4 userInterfaceStyle];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
   else
   {
-    v5 = 1;
+    userInterfaceStyle = 1;
   }
 
-  return v5;
+  return userInterfaceStyle;
 }
 
 - (void)orientationDidChange

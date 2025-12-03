@@ -1,51 +1,51 @@
 @interface HMDCloudZoneInformation
-+ (id)cloudZoneInformationWithCloudZones:(id)a3;
-+ (id)cloudZonesArrayWithCloudZones:(id)a3;
-+ (id)cloudZonesWithDictionary:(id)a3;
++ (id)cloudZoneInformationWithCloudZones:(id)zones;
++ (id)cloudZonesArrayWithCloudZones:(id)zones;
++ (id)cloudZonesWithDictionary:(id)dictionary;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDCloudZoneInformation)init;
-- (HMDCloudZoneInformation)initWithCoder:(id)a3;
-- (HMDCloudZoneInformation)initWithOwnerName:(id)a3 uuid:(id)a4;
-- (id)descriptionWithPointer:(BOOL)a3;
-- (id)emptyModelObjectWithChangeType:(unint64_t)a3 parent:(id)a4;
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4 parent:(id)a5;
+- (HMDCloudZoneInformation)initWithCoder:(id)coder;
+- (HMDCloudZoneInformation)initWithOwnerName:(id)name uuid:(id)uuid;
+- (id)descriptionWithPointer:(BOOL)pointer;
+- (id)emptyModelObjectWithChangeType:(unint64_t)type parent:(id)parent;
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version parent:(id)parent;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)updateCloudZoneInformationWithModel:(id)a3 message:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)updateCloudZoneInformationWithModel:(id)model message:(id)message;
 @end
 
 @implementation HMDCloudZoneInformation
 
-- (id)emptyModelObjectWithChangeType:(unint64_t)a3 parent:(id)a4
+- (id)emptyModelObjectWithChangeType:(unint64_t)type parent:(id)parent
 {
-  v6 = a4;
+  parentCopy = parent;
   v7 = [HMDCloudZoneInformationModel alloc];
-  v8 = [(HMDCloudZoneInformation *)self uuid];
-  v9 = [(HMDBackingStoreModelObject *)v7 initWithObjectChangeType:a3 uuid:v8 parentUUID:v6];
+  uuid = [(HMDCloudZoneInformation *)self uuid];
+  v9 = [(HMDBackingStoreModelObject *)v7 initWithObjectChangeType:type uuid:uuid parentUUID:parentCopy];
 
   return v9;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4 parent:(id)a5
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version parent:(id)parent
 {
-  v6 = [(HMDCloudZoneInformation *)self emptyModelObjectWithChangeType:a3 parent:a5];
-  v7 = [(HMDCloudZoneInformation *)self ownerName];
-  [v6 setOwnerName:v7];
+  v6 = [(HMDCloudZoneInformation *)self emptyModelObjectWithChangeType:type parent:parent];
+  ownerName = [(HMDCloudZoneInformation *)self ownerName];
+  [v6 setOwnerName:ownerName];
 
   return v6;
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
-  v11 = a4;
-  v7 = a5;
+  valuesCopy = values;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v11;
+    v8 = valuesCopy;
   }
 
   else
@@ -56,59 +56,59 @@
   v9 = v8;
   if (v9)
   {
-    [(HMDCloudZoneInformation *)self updateCloudZoneInformationWithModel:v9 message:v7];
-    v10 = [v7 transactionResult];
-    [v10 markChanged];
-    [v7 respondWithPayload:0];
+    [(HMDCloudZoneInformation *)self updateCloudZoneInformationWithModel:v9 message:messageCopy];
+    transactionResult = [messageCopy transactionResult];
+    [transactionResult markChanged];
+    [messageCopy respondWithPayload:0];
   }
 }
 
-- (void)updateCloudZoneInformationWithModel:(id)a3 message:(id)a4
+- (void)updateCloudZoneInformationWithModel:(id)model message:(id)message
 {
-  v8 = a3;
+  modelCopy = model;
   [(HMDCloudZoneInformation *)self setZoneCreated:1];
-  v5 = [v8 setProperties];
-  v6 = [v5 containsObject:@"ownerName"];
+  setProperties = [modelCopy setProperties];
+  v6 = [setProperties containsObject:@"ownerName"];
 
   if (v6)
   {
-    v7 = [v8 ownerName];
-    [(HMDCloudZoneInformation *)self setOwnerName:v7];
+    ownerName = [modelCopy ownerName];
+    [(HMDCloudZoneInformation *)self setOwnerName:ownerName];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(HMDCloudZoneInformation *)self uuid];
-  v5 = [v4 UUIDString];
-  [v7 encodeObject:v5 forKey:@"HM.zoneUUID"];
+  coderCopy = coder;
+  uuid = [(HMDCloudZoneInformation *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"HM.zoneUUID"];
 
-  v6 = [(HMDCloudZoneInformation *)self ownerName];
-  [v7 encodeObject:v6 forKey:@"HM.zoneOwner"];
+  ownerName = [(HMDCloudZoneInformation *)self ownerName];
+  [coderCopy encodeObject:ownerName forKey:@"HM.zoneOwner"];
 
-  [v7 encodeBool:-[HMDCloudZoneInformation didFetchFailed](self forKey:{"didFetchFailed"), @"HM.zoneFetchFailed"}];
-  [v7 encodeBool:-[HMDCloudZoneInformation isZoneCreated](self forKey:{"isZoneCreated"), @"HM.zoneZoneCreated"}];
-  [v7 encodeInteger:-[HMDCloudZoneInformation schemaVersion](self forKey:{"schemaVersion"), @"HM.zoneSchemaVersion"}];
+  [coderCopy encodeBool:-[HMDCloudZoneInformation didFetchFailed](self forKey:{"didFetchFailed"), @"HM.zoneFetchFailed"}];
+  [coderCopy encodeBool:-[HMDCloudZoneInformation isZoneCreated](self forKey:{"isZoneCreated"), @"HM.zoneZoneCreated"}];
+  [coderCopy encodeInteger:-[HMDCloudZoneInformation schemaVersion](self forKey:{"schemaVersion"), @"HM.zoneSchemaVersion"}];
 }
 
-- (HMDCloudZoneInformation)initWithCoder:(id)a3
+- (HMDCloudZoneInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.zoneUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.zoneUUID"];
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.zoneOwner"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.zoneOwner"];
   v8 = [(HMDCloudZoneInformation *)self initWithOwnerName:v7 uuid:v6];
   if (v8)
   {
-    if ([v4 containsValueForKey:@"HM.zoneFetchFailed"])
+    if ([coderCopy containsValueForKey:@"HM.zoneFetchFailed"])
     {
-      v8->_fetchFailed = [v4 decodeBoolForKey:@"HM.zoneFetchFailed"];
+      v8->_fetchFailed = [coderCopy decodeBoolForKey:@"HM.zoneFetchFailed"];
     }
 
-    if ([v4 containsValueForKey:@"HM.zoneZoneCreated"])
+    if ([coderCopy containsValueForKey:@"HM.zoneZoneCreated"])
     {
-      v8->_zoneCreated = [v4 decodeBoolForKey:@"HM.zoneZoneCreated"];
+      v8->_zoneCreated = [coderCopy decodeBoolForKey:@"HM.zoneZoneCreated"];
     }
 
     else
@@ -116,19 +116,19 @@
       v8->_zoneCreated = 1;
     }
 
-    if ([v4 containsValueForKey:@"HM.zoneSchemaVersion"])
+    if ([coderCopy containsValueForKey:@"HM.zoneSchemaVersion"])
     {
-      v8->_schemaVersion = [v4 decodeIntegerForKey:@"HM.zoneSchemaVersion"];
+      v8->_schemaVersion = [coderCopy decodeIntegerForKey:@"HM.zoneSchemaVersion"];
     }
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -138,9 +138,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDCloudZoneInformation *)v4 uuid];
-      v6 = [(HMDCloudZoneInformation *)self uuid];
-      v7 = [v5 isEqual:v6];
+      uuid = [(HMDCloudZoneInformation *)equalCopy uuid];
+      uuid2 = [(HMDCloudZoneInformation *)self uuid];
+      v7 = [uuid isEqual:uuid2];
     }
 
     else
@@ -154,18 +154,18 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDCloudZoneInformation *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(HMDCloudZoneInformation *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HMDCloudZoneInformation *)self shortDescription];
-  if (v3)
+  shortDescription = [(HMDCloudZoneInformation *)self shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -175,10 +175,10 @@
     v7 = &stru_283CF9D50;
   }
 
-  v8 = [(HMDCloudZoneInformation *)self ownerName];
-  v9 = [v5 stringWithFormat:@"<%@%@, Owner = %@>", v6, v7, v8];
+  ownerName = [(HMDCloudZoneInformation *)self ownerName];
+  v9 = [v5 stringWithFormat:@"<%@%@, Owner = %@>", shortDescription, v7, ownerName];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -188,39 +188,39 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDCloudZoneInformation *)self uuid];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  uuid = [(HMDCloudZoneInformation *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (HMDCloudZoneInformation)initWithOwnerName:(id)a3 uuid:(id)a4
+- (HMDCloudZoneInformation)initWithOwnerName:(id)name uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  uuidCopy = uuid;
   v16.receiver = self;
   v16.super_class = HMDCloudZoneInformation;
   v8 = [(HMDCloudZoneInformation *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     ownerName = v8->_ownerName;
     v8->_ownerName = v9;
 
-    if (v7)
+    if (uuidCopy)
     {
-      v11 = [v7 copy];
+      uUID = [uuidCopy copy];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
-    v12 = v11;
-    v13 = [MEMORY[0x277D0F890] hmf_cachedInstanceForNSUUID:v11];
+    v12 = uUID;
+    v13 = [MEMORY[0x277D0F890] hmf_cachedInstanceForNSUUID:uUID];
     uuid = v8->_uuid;
     v8->_uuid = v13;
 
@@ -251,16 +251,16 @@
   return NSStringFromClass(v2);
 }
 
-+ (id)cloudZonesArrayWithCloudZones:(id)a3
++ (id)cloudZonesArrayWithCloudZones:(id)zones
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  zonesCopy = zones;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(zonesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = zonesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -275,10 +275,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) uuid];
-        v11 = [v10 UUIDString];
+        uuid = [*(*(&v14 + 1) + 8 * i) uuid];
+        uUIDString = [uuid UUIDString];
 
-        [v4 addObject:v11];
+        [v4 addObject:uUIDString];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -292,16 +292,16 @@
   return v4;
 }
 
-+ (id)cloudZoneInformationWithCloudZones:(id)a3
++ (id)cloudZoneInformationWithCloudZones:(id)zones
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  zonesCopy = zones;
+  v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(zonesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = v3;
+  v4 = zonesCopy;
   v5 = [v4 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v5)
   {
@@ -320,14 +320,14 @@
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 UUIDString];
+        uuid = [v10 uuid];
+        uUIDString = [uuid UUIDString];
 
-        v13 = [v10 ownerName];
-        v14 = v13;
-        if (v12)
+        ownerName = [v10 ownerName];
+        v14 = ownerName;
+        if (uUIDString)
         {
-          v15 = v13 == 0;
+          v15 = ownerName == 0;
         }
 
         else
@@ -339,7 +339,7 @@
         {
           v16 = v8;
           v17 = objc_autoreleasePoolPush();
-          v18 = a1;
+          selfCopy = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -361,13 +361,13 @@
         {
           v37[0] = @"HM.zoneOwner";
           v37[1] = @"HM.zoneHandlesRecord";
-          v38[0] = v13;
+          v38[0] = ownerName;
           v38[1] = MEMORY[0x277CBEC38];
           v37[2] = @"HM.zoneSchemaVersion";
           v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "schemaVersion")}];
           v38[2] = v21;
           v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
-          [v28 setObject:v22 forKeyedSubscript:v12];
+          [v28 setObject:v22 forKeyedSubscript:uUIDString];
         }
       }
 
@@ -382,16 +382,16 @@
   return v28;
 }
 
-+ (id)cloudZonesWithDictionary:(id)a3
++ (id)cloudZonesWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionaryCopy = dictionary;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v3 allKeys];
+  obj = [dictionaryCopy allKeys];
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -407,7 +407,7 @@
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
+        v10 = [dictionaryCopy objectForKeyedSubscript:v9];
         v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
         v12 = [v10 objectForKeyedSubscript:@"HM.zoneOwner"];
         v13 = [[HMDCloudZoneInformation alloc] initWithOwnerName:v12 uuid:v11];
@@ -429,15 +429,15 @@
         v17 = v16;
         if (v16)
         {
-          v18 = [v16 integerValue];
+          integerValue = [v16 integerValue];
         }
 
         else
         {
-          v18 = 1;
+          integerValue = 1;
         }
 
-        [(HMDCloudZoneInformation *)v13 setSchemaVersion:v18];
+        [(HMDCloudZoneInformation *)v13 setSchemaVersion:integerValue];
         [v4 addObject:v13];
       }
 

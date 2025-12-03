@@ -1,7 +1,7 @@
 @interface BalanceWidgetSchedulingManager
 - (_TtC19HealthBalanceDaemon30BalanceWidgetSchedulingManager)init;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation BalanceWidgetSchedulingManager
@@ -13,21 +13,21 @@
   v5 = *&self->widgetReloader[OBJC_IVAR____TtC19HealthBalanceDaemon30BalanceWidgetSchedulingManager_changeProvider];
   v6 = swift_getObjectType();
   v7 = *(v5 + 16);
-  v8 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v7(v8, &off_283BD4620, v6, v5);
+  v7(selfCopy, &off_283BD4620, v6, v5);
   swift_unknownObjectRelease();
 
-  v9.receiver = v8;
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
   [(BalanceWidgetSchedulingManager *)&v9 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
-  v5 = self;
-  sub_2288F37AC(v4);
+  readyCopy = ready;
+  selfCopy = self;
+  sub_2288F37AC(readyCopy);
 }
 
 - (_TtC19HealthBalanceDaemon30BalanceWidgetSchedulingManager)init

@@ -18,9 +18,9 @@
 - (BOOL)isScreenTimePasscodeSet
 {
   v2 = objc_alloc_init(sub_100004D24());
-  v3 = [v2 isRestrictionsPasscodeSet];
+  isRestrictionsPasscodeSet = [v2 isRestrictionsPasscodeSet];
 
-  return v3;
+  return isRestrictionsPasscodeSet;
 }
 
 - (id)agePresetKeySTCustomRestrictionWebFilterState

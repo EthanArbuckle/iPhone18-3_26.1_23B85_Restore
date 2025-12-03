@@ -2,7 +2,7 @@
 + (id)_accountStore;
 + (id)identityProviderDisplayName;
 + (int64_t)cellStyle;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSVideoSubscriberPrivacyCell
@@ -46,21 +46,21 @@ void __45__PSVideoSubscriberPrivacyCell__accountStore__block_invoke()
 
 + (id)identityProviderDisplayName
 {
-  v2 = [a1 _accountStore];
-  v3 = [v2 firstAccount];
-  v4 = [v3 identityProviderDisplayName];
+  _accountStore = [self _accountStore];
+  firstAccount = [_accountStore firstAccount];
+  identityProviderDisplayName = [firstAccount identityProviderDisplayName];
 
-  return v4;
+  return identityProviderDisplayName;
 }
 
 + (int64_t)cellStyle
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___PSVideoSubscriberPrivacyCell;
   v3 = objc_msgSendSuper2(&v6, sel_cellStyle);
-  v4 = [a1 identityProviderDisplayName];
+  identityProviderDisplayName = [self identityProviderDisplayName];
 
-  if (v4)
+  if (identityProviderDisplayName)
   {
     return 3;
   }
@@ -71,14 +71,14 @@ void __45__PSVideoSubscriberPrivacyCell__accountStore__block_invoke()
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PSVideoSubscriberPrivacyCell;
-  [(PSSwitchTableCell *)&v6 refreshCellContentsWithSpecifier:a3];
-  v4 = [objc_opt_class() identityProviderDisplayName];
-  v5 = [(PSVideoSubscriberPrivacyCell *)self detailTextLabel];
-  [v5 setText:v4];
+  [(PSSwitchTableCell *)&v6 refreshCellContentsWithSpecifier:specifier];
+  identityProviderDisplayName = [objc_opt_class() identityProviderDisplayName];
+  detailTextLabel = [(PSVideoSubscriberPrivacyCell *)self detailTextLabel];
+  [detailTextLabel setText:identityProviderDisplayName];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface SIRINLUINTERNALInternalSpanData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALInternalSpanData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   siriVocabularySpanData = self->_siriVocabularySpanData;
-  v15 = v4;
-  v6 = v4[5];
+  v15 = fromCopy;
+  v6 = fromCopy[5];
   if (siriVocabularySpanData)
   {
     if (v6)
@@ -100,13 +100,13 @@
   return v6 ^ [(SIRINLUINTERNALMentionResolverSpanData *)self->_mentionResolverSpanData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((siriVocabularySpanData = self->_siriVocabularySpanData, !(siriVocabularySpanData | v4[5])) || -[SIRINLUINTERNALSiriVocabularySpanData isEqual:](siriVocabularySpanData, "isEqual:")) && ((plumSpanData = self->_plumSpanData, !(plumSpanData | v4[4])) || -[SIRINLUINTERNALPLUMSpanData isEqual:](plumSpanData, "isEqual:")) && ((overtonKgSpanData = self->_overtonKgSpanData, !(overtonKgSpanData | v4[3])) || -[SIRINLUINTERNALOvertonKGSpanData isEqual:](overtonKgSpanData, "isEqual:")) && ((mentionDetectorSpanData = self->_mentionDetectorSpanData, !(mentionDetectorSpanData | v4[1])) || -[SIRINLUINTERNALMentionDetectorSpanData isEqual:](mentionDetectorSpanData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((siriVocabularySpanData = self->_siriVocabularySpanData, !(siriVocabularySpanData | equalCopy[5])) || -[SIRINLUINTERNALSiriVocabularySpanData isEqual:](siriVocabularySpanData, "isEqual:")) && ((plumSpanData = self->_plumSpanData, !(plumSpanData | equalCopy[4])) || -[SIRINLUINTERNALPLUMSpanData isEqual:](plumSpanData, "isEqual:")) && ((overtonKgSpanData = self->_overtonKgSpanData, !(overtonKgSpanData | equalCopy[3])) || -[SIRINLUINTERNALOvertonKGSpanData isEqual:](overtonKgSpanData, "isEqual:")) && ((mentionDetectorSpanData = self->_mentionDetectorSpanData, !(mentionDetectorSpanData | equalCopy[1])) || -[SIRINLUINTERNALMentionDetectorSpanData isEqual:](mentionDetectorSpanData, "isEqual:")))
   {
     mentionResolverSpanData = self->_mentionResolverSpanData;
-    if (mentionResolverSpanData | v4[2])
+    if (mentionResolverSpanData | equalCopy[2])
     {
       v10 = [(SIRINLUINTERNALMentionResolverSpanData *)mentionResolverSpanData isEqual:?];
     }
@@ -125,141 +125,141 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUINTERNALSiriVocabularySpanData *)self->_siriVocabularySpanData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUINTERNALSiriVocabularySpanData *)self->_siriVocabularySpanData copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(SIRINLUINTERNALPLUMSpanData *)self->_plumSpanData copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALPLUMSpanData *)self->_plumSpanData copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(SIRINLUINTERNALOvertonKGSpanData *)self->_overtonKgSpanData copyWithZone:a3];
+  v10 = [(SIRINLUINTERNALOvertonKGSpanData *)self->_overtonKgSpanData copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(SIRINLUINTERNALMentionDetectorSpanData *)self->_mentionDetectorSpanData copyWithZone:a3];
+  v12 = [(SIRINLUINTERNALMentionDetectorSpanData *)self->_mentionDetectorSpanData copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
-  v14 = [(SIRINLUINTERNALMentionResolverSpanData *)self->_mentionResolverSpanData copyWithZone:a3];
+  v14 = [(SIRINLUINTERNALMentionResolverSpanData *)self->_mentionResolverSpanData copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_siriVocabularySpanData)
   {
-    [v4 setSiriVocabularySpanData:?];
-    v4 = v5;
+    [toCopy setSiriVocabularySpanData:?];
+    toCopy = v5;
   }
 
   if (self->_plumSpanData)
   {
     [v5 setPlumSpanData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_overtonKgSpanData)
   {
     [v5 setOvertonKgSpanData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mentionDetectorSpanData)
   {
     [v5 setMentionDetectorSpanData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mentionResolverSpanData)
   {
     [v5 setMentionResolverSpanData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_siriVocabularySpanData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plumSpanData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_overtonKgSpanData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mentionDetectorSpanData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mentionResolverSpanData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   siriVocabularySpanData = self->_siriVocabularySpanData;
   if (siriVocabularySpanData)
   {
-    v5 = [(SIRINLUINTERNALSiriVocabularySpanData *)siriVocabularySpanData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"siri_vocabulary_span_data"];
+    dictionaryRepresentation = [(SIRINLUINTERNALSiriVocabularySpanData *)siriVocabularySpanData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"siri_vocabulary_span_data"];
   }
 
   plumSpanData = self->_plumSpanData;
   if (plumSpanData)
   {
-    v7 = [(SIRINLUINTERNALPLUMSpanData *)plumSpanData dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"plum_span_data"];
+    dictionaryRepresentation2 = [(SIRINLUINTERNALPLUMSpanData *)plumSpanData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"plum_span_data"];
   }
 
   overtonKgSpanData = self->_overtonKgSpanData;
   if (overtonKgSpanData)
   {
-    v9 = [(SIRINLUINTERNALOvertonKGSpanData *)overtonKgSpanData dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"overton_kg_span_data"];
+    dictionaryRepresentation3 = [(SIRINLUINTERNALOvertonKGSpanData *)overtonKgSpanData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"overton_kg_span_data"];
   }
 
   mentionDetectorSpanData = self->_mentionDetectorSpanData;
   if (mentionDetectorSpanData)
   {
-    v11 = [(SIRINLUINTERNALMentionDetectorSpanData *)mentionDetectorSpanData dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"mention_detector_span_data"];
+    dictionaryRepresentation4 = [(SIRINLUINTERNALMentionDetectorSpanData *)mentionDetectorSpanData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"mention_detector_span_data"];
   }
 
   mentionResolverSpanData = self->_mentionResolverSpanData;
   if (mentionResolverSpanData)
   {
-    v13 = [(SIRINLUINTERNALMentionResolverSpanData *)mentionResolverSpanData dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"mention_resolver_span_data"];
+    dictionaryRepresentation5 = [(SIRINLUINTERNALMentionResolverSpanData *)mentionResolverSpanData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"mention_resolver_span_data"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -268,8 +268,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALInternalSpanData;
   v4 = [(SIRINLUINTERNALInternalSpanData *)&v8 description];
-  v5 = [(SIRINLUINTERNALInternalSpanData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALInternalSpanData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

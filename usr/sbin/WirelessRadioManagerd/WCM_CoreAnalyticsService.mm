@@ -1,5 +1,5 @@
 @interface WCM_CoreAnalyticsService
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)singleton;
 - (WCM_CoreAnalyticsService)init;
 - (void)dealloc;
@@ -12,7 +12,7 @@
   result = qword_1002B8280;
   if (!qword_1002B8280)
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___WCM_CoreAnalyticsService;
     result = [objc_msgSendSuper2(&v4 allocWithZone:{0), "init"}];
     qword_1002B8280 = result;
@@ -21,11 +21,11 @@
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 singleton];
+  singleton = [self singleton];
 
-  return v3;
+  return singleton;
 }
 
 - (WCM_CoreAnalyticsService)init

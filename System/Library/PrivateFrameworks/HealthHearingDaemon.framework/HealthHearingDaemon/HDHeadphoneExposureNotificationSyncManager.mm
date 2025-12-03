@@ -1,49 +1,49 @@
 @interface HDHeadphoneExposureNotificationSyncManager
-- (BOOL)notifyHAENotificationAddedWithSample:(id)a3 error:(id *)a4;
-- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)a3;
-- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)a3 notificationSyncClient:(id)a4 notificationManager:(id)a5;
-- (id)_computeFireDateFromResetDosageCategoryIdentifier:(id)a3;
-- (id)_extractLatestFireDateFromResetDosageEvents:(id)a3;
-- (id)_generateResetDosageCategoryIdentifierWithDate:(id)a3;
-- (id)_resetDosageEventIdentifiersFromNotificationCategoryIdentifiers:(id)a3;
+- (BOOL)notifyHAENotificationAddedWithSample:(id)sample error:(id *)error;
+- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)profile;
+- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)profile notificationSyncClient:(id)client notificationManager:(id)manager;
+- (id)_computeFireDateFromResetDosageCategoryIdentifier:(id)identifier;
+- (id)_extractLatestFireDateFromResetDosageEvents:(id)events;
+- (id)_generateResetDosageCategoryIdentifierWithDate:(id)date;
+- (id)_resetDosageEventIdentifiersFromNotificationCategoryIdentifiers:(id)identifiers;
 - (void)_handleDismissNotification;
-- (void)_handleResetDosageEventsWithIdentifiers:(id)a3;
-- (void)_notifyObserversResetDosageForFireDate:(id)a3;
-- (void)addObserver:(id)a3 queue:(id)a4;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
+- (void)_handleResetDosageEventsWithIdentifiers:(id)identifiers;
+- (void)_notifyObserversResetDosageForFireDate:(id)date;
+- (void)addObserver:(id)observer queue:(id)queue;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
 @end
 
 @implementation HDHeadphoneExposureNotificationSyncManager
 
-- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)a3
+- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)profile
 {
   v4 = MEMORY[0x277D107B8];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 alloc];
   v7 = HKCreateSerialDispatchQueue();
-  v8 = [v6 initWithProfile:v5 clientIdentifier:@"com.apple.Health.Hearing.HAE.Notification.SyncManager" queue:v7];
+  v8 = [v6 initWithProfile:profileCopy clientIdentifier:@"com.apple.Health.Hearing.HAE.Notification.SyncManager" queue:v7];
 
-  v9 = [v5 notificationManager];
-  v10 = [(HDHeadphoneExposureNotificationSyncManager *)self initWithProfile:v5 notificationSyncClient:v8 notificationManager:v9];
+  notificationManager = [profileCopy notificationManager];
+  v10 = [(HDHeadphoneExposureNotificationSyncManager *)self initWithProfile:profileCopy notificationSyncClient:v8 notificationManager:notificationManager];
 
   return v10;
 }
 
-- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)a3 notificationSyncClient:(id)a4 notificationManager:(id)a5
+- (HDHeadphoneExposureNotificationSyncManager)initWithProfile:(id)profile notificationSyncClient:(id)client notificationManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  clientCopy = client;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HDHeadphoneExposureNotificationSyncManager;
   v11 = [(HDHeadphoneExposureNotificationSyncManager *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    objc_storeStrong(&v12->_notificationSyncClient, a4);
+    objc_storeWeak(&v11->_profile, profileCopy);
+    objc_storeStrong(&v12->_notificationSyncClient, client);
     [(HDNotificationSyncClient *)v12->_notificationSyncClient setDelegate:v12];
-    objc_storeStrong(&v12->_notificationManager, a5);
+    objc_storeStrong(&v12->_notificationManager, manager);
     v13 = objc_alloc(MEMORY[0x277CCD738]);
     v14 = [v13 initWithName:@"Headphone Exposure Notification Sync Observers" loggingCategory:*MEMORY[0x277CCC2C8]];
     observers = v12->_observers;
@@ -53,10 +53,10 @@
   return v12;
 }
 
-- (BOOL)notifyHAENotificationAddedWithSample:(id)a3 error:(id *)a4
+- (BOOL)notifyHAENotificationAddedWithSample:(id)sample error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sampleCopy = sample;
   _HKInitializeLogging();
   v7 = MEMORY[0x277CCC2C8];
   v8 = *MEMORY[0x277CCC2C8];
@@ -69,12 +69,12 @@
     _os_log_impl(&dword_251764000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notify HAE Notification added with sample requested.", buf, 0xCu);
   }
 
-  v11 = [v6 endDate];
-  v12 = [v11 dateByAddingTimeInterval:691200.0];
+  endDate = [sampleCopy endDate];
+  v12 = [endDate dateByAddingTimeInterval:691200.0];
 
-  v13 = [v6 endDate];
+  endDate2 = [sampleCopy endDate];
 
-  v14 = [(HDHeadphoneExposureNotificationSyncManager *)self _generateResetDosageCategoryIdentifierWithDate:v13];
+  v14 = [(HDHeadphoneExposureNotificationSyncManager *)self _generateResetDosageCategoryIdentifierWithDate:endDate2];
 
   v15 = [objc_alloc(MEMORY[0x277CCD6C0]) initWithAction:1 categoryIdentifier:v14 expirationDate:v12];
   notificationSyncClient = self->_notificationSyncClient;
@@ -89,10 +89,10 @@
       [HDHeadphoneExposureNotificationSyncManager notifyHAENotificationAddedWithSample:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     else
@@ -105,15 +105,15 @@
   return v17 == 0;
 }
 
-- (id)_generateResetDosageCategoryIdentifierWithDate:(id)a3
+- (id)_generateResetDosageCategoryIdentifierWithDate:(id)date
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = [v3 numberWithDouble:?];
   v10[0] = @"HDHAENSyncCategoryResetDosageEvent";
-  v5 = [v4 stringValue];
-  v10[1] = v5;
+  stringValue = [v4 stringValue];
+  v10[1] = stringValue;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
   v7 = [v6 componentsJoinedByString:@"_"];
@@ -123,9 +123,9 @@
   return v7;
 }
 
-- (id)_computeFireDateFromResetDosageCategoryIdentifier:(id)a3
+- (id)_computeFireDateFromResetDosageCategoryIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"_"];
+  v3 = [identifier componentsSeparatedByString:@"_"];
   if ([v3 count] == 2)
   {
     v4 = [v3 objectAtIndexedSubscript:1];
@@ -149,11 +149,11 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  observerCopy = observer;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -165,28 +165,28 @@
     _os_log_impl(&dword_251764000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] added observer", v12, 0xCu);
   }
 
-  [(HKObserverSet *)self->_observers registerObserver:v7 queue:v6, *v12];
+  [(HKObserverSet *)self->_observers registerObserver:observerCopy queue:queueCopy, *v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversResetDosageForFireDate:(id)a3
+- (void)_notifyObserversResetDosageForFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__HDHeadphoneExposureNotificationSyncManager__notifyObserversResetDosageForFireDate___block_invoke;
   v7[3] = &unk_2796C6898;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
-  v6 = a3;
-  switch(a4)
+  clientCopy = client;
+  switch(action)
   {
     case 3:
       _HKInitializeLogging();
@@ -224,10 +224,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_resetDosageEventIdentifiersFromNotificationCategoryIdentifiers:(id)a3
+- (id)_resetDosageEventIdentifiersFromNotificationCategoryIdentifiers:(id)identifiers
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v3 = [a3 allObjects];
+  allObjects = [identifiers allObjects];
   v10[0] = @"SELF beginswith[c] '";
   v10[1] = @"HDHAENSyncCategoryResetDosageEvent";
   v10[2] = @"'";
@@ -235,17 +235,17 @@
   v5 = [v4 componentsJoinedByString:&stru_2863A5B20];
 
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:v5];
-  v7 = [v3 filteredArrayUsingPredicate:v6];
+  v7 = [allObjects filteredArrayUsingPredicate:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (void)_handleResetDosageEventsWithIdentifiers:(id)a3
+- (void)_handleResetDosageEventsWithIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   _HKInitializeLogging();
   v5 = MEMORY[0x277CCC2C8];
   v6 = *MEMORY[0x277CCC2C8];
@@ -258,7 +258,7 @@
     _os_log_impl(&dword_251764000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handling reset dosage events from identifiers", v15, 0xCu);
   }
 
-  v9 = [(HDHeadphoneExposureNotificationSyncManager *)self _extractLatestFireDateFromResetDosageEvents:v4, *v15];
+  v9 = [(HDHeadphoneExposureNotificationSyncManager *)self _extractLatestFireDateFromResetDosageEvents:identifiersCopy, *v15];
 
   if (v9)
   {
@@ -283,15 +283,15 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_extractLatestFireDateFromResetDosageEvents:(id)a3
+- (id)_extractLatestFireDateFromResetDosageEvents:(id)events
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v5)
   {
     v7 = v5;
@@ -306,7 +306,7 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
@@ -339,7 +339,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v7 = [eventsCopy countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v7);

@@ -1,25 +1,25 @@
 @interface ATXUserNotification
-- (ATXUserNotification)initWithCoder:(id)a3;
-- (ATXUserNotification)initWithProto:(id)a3;
-- (ATXUserNotification)initWithProtoData:(id)a3;
-- (ATXUserNotification)initWithUUID:(id)a3 timestamp:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUserNotification:(id)a3;
-- (double)finalDigestScoreForMode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXUserNotification)initWithCoder:(id)coder;
+- (ATXUserNotification)initWithProto:(id)proto;
+- (ATXUserNotification)initWithProtoData:(id)data;
+- (ATXUserNotification)initWithUUID:(id)d timestamp:(double)timestamp;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUserNotification:(id)notification;
+- (double)finalDigestScoreForMode:(id)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
 - (id)groupId;
-- (id)initFromJSON:(id)a3;
-- (id)initFromNotificationData:(id)a3 date:(id)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 bundleID:(id)a8 threadID:(id)a9 categoryID:(id)a10;
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 categoryID:(id)a12 sectionID:(id)a13 contactIDs:(id)a14 isGroupMessage:(BOOL)a15 derivedData:(id)a16;
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 categoryID:(id)a12 sectionID:(id)a13 contactIDs:(id)a14 isGroupMessage:(BOOL)a15 derivedData:(id)a16 urgency:(int64_t)a17;
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 categoryID:(id)a12 sectionID:(id)a13 contactIDs:(id)a14 rawIdentifiers:(id)a15 isGroupMessage:(BOOL)a16 derivedData:(id)a17 urgency:(int64_t)a18;
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 sectionID:(id)a12 contactIDs:(id)a13 isGroupMessage:(BOOL)a14 derivedData:(id)a15 urgency:(int64_t)a16;
+- (id)initFromJSON:(id)n;
+- (id)initFromNotificationData:(id)data date:(id)date title:(id)title subtitle:(id)subtitle body:(id)body bundleID:(id)d threadID:(id)iD categoryID:(id)self0;
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 categoryID:(id)self2 sectionID:(id)self3 contactIDs:(id)self4 isGroupMessage:(BOOL)self5 derivedData:(id)self6;
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 categoryID:(id)self2 sectionID:(id)self3 contactIDs:(id)self4 isGroupMessage:(BOOL)self5 derivedData:(id)self6 urgency:(int64_t)self7;
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 categoryID:(id)self2 sectionID:(id)self3 contactIDs:(id)self4 rawIdentifiers:(id)self5 isGroupMessage:(BOOL)self6 derivedData:(id)self7 urgency:(int64_t)self8;
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 sectionID:(id)self2 contactIDs:(id)self3 isGroupMessage:(BOOL)self4 derivedData:(id)self5 urgency:(int64_t)self6;
 - (id)jsonRepresentation;
 - (id)proto;
-- (int64_t)compareForDigestRanking:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compareForDigestRanking:(id)ranking;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUserNotification
@@ -27,8 +27,8 @@
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 setUuid:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 setUuid:uUIDString];
 
   [v3 setTimestamp:self->_timestamp];
   [v3 setTitle:self->_title];
@@ -58,16 +58,16 @@
   [v3 setIsPriorityNotificationEnabled:self->_isPriorityNotificationEnabled];
   [v3 setIsNotificationSummaryEnabled:self->_isNotificationSummaryEnabled];
   [v3 setIsGroupMessage:self->_isGroupMessage];
-  v7 = [(ATXUserNotificationDerivedData *)self->_derivedData proto];
-  [v3 setDerivedData:v7];
+  proto = [(ATXUserNotificationDerivedData *)self->_derivedData proto];
+  [v3 setDerivedData:proto];
 
   [v3 setUrgency:LODWORD(self->_urgency)];
   [v3 setAttachmentType:LODWORD(self->_attachmentType)];
   [(ATXUserNotification *)self appSpecifiedScore];
   [v3 setAppSpecifiedScore:?];
-  v8 = [(ATXUserNotification *)self digestEngagementTrackingMetrics];
-  v9 = [v8 proto];
-  [v3 setSharedEngagementTracker:v9];
+  digestEngagementTrackingMetrics = [(ATXUserNotification *)self digestEngagementTrackingMetrics];
+  proto2 = [digestEngagementTrackingMetrics proto];
+  [v3 setSharedEngagementTracker:proto2];
 
   recordDate = self->_recordDate;
   if (recordDate)
@@ -83,25 +83,25 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUserNotification *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUserNotification *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUserNotification)initWithUUID:(id)a3 timestamp:(double)a4
+- (ATXUserNotification)initWithUUID:(id)d timestamp:(double)timestamp
 {
-  v6 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = ATXUserNotification;
   v7 = [(ATXUserNotification *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     uuid = v7->_uuid;
     v7->_uuid = v8;
 
-    v7->_timestamp = a4;
+    v7->_timestamp = timestamp;
     v10 = objc_opt_new();
     derivedData = v7->_derivedData;
     v7->_derivedData = v10;
@@ -110,76 +110,76 @@
   return v7;
 }
 
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 categoryID:(id)a12 sectionID:(id)a13 contactIDs:(id)a14 rawIdentifiers:(id)a15 isGroupMessage:(BOOL)a16 derivedData:(id)a17 urgency:(int64_t)a18
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 categoryID:(id)self2 sectionID:(id)self3 contactIDs:(id)self4 rawIdentifiers:(id)self5 isGroupMessage:(BOOL)self6 derivedData:(id)self7 urgency:(int64_t)self8
 {
-  v62 = a3;
-  v61 = a5;
-  v60 = a6;
-  v23 = a7;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a17;
+  dataCopy = data;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  bodyCopy = body;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  categoryIDCopy = categoryID;
+  sectionIDCopy = sectionID;
+  dsCopy = ds;
+  identifiersCopy = identifiers;
+  derivedDataCopy = derivedData;
   v63.receiver = self;
   v63.super_class = ATXUserNotification;
   v32 = [(ATXUserNotification *)&v63 init];
   if (v32)
   {
-    v33 = [v62 copy];
+    v33 = [dataCopy copy];
     uuid = v32->_uuid;
     v32->_uuid = v33;
 
-    v32->_timestamp = a4;
-    v35 = [v61 copy];
+    v32->_timestamp = timestamp;
+    v35 = [titleCopy copy];
     title = v32->_title;
     v32->_title = v35;
 
-    v37 = [v60 copy];
+    v37 = [subtitleCopy copy];
     subtitle = v32->_subtitle;
     v32->_subtitle = v37;
 
-    v39 = [v23 copy];
+    v39 = [bodyCopy copy];
     body = v32->_body;
     v32->_body = v39;
 
-    v32->_badge = a8;
-    v41 = [v24 copy];
+    v32->_badge = badge;
+    v41 = [infoCopy copy];
     userInfo = v32->_userInfo;
     v32->_userInfo = v41;
 
-    v43 = [v25 copy];
+    v43 = [dCopy copy];
     bundleID = v32->_bundleID;
     v32->_bundleID = v43;
 
-    v45 = [v26 copy];
+    v45 = [iDCopy copy];
     threadID = v32->_threadID;
     v32->_threadID = v45;
 
-    v47 = [v27 copy];
+    v47 = [categoryIDCopy copy];
     categoryID = v32->_categoryID;
     v32->_categoryID = v47;
 
-    v49 = [v28 copy];
+    v49 = [sectionIDCopy copy];
     sectionID = v32->_sectionID;
     v32->_sectionID = v49;
 
-    v51 = [v29 copy];
+    v51 = [dsCopy copy];
     contactIDs = v32->_contactIDs;
     v32->_contactIDs = v51;
 
-    v53 = [v30 copy];
+    v53 = [identifiersCopy copy];
     rawIdentifiers = v32->_rawIdentifiers;
     v32->_rawIdentifiers = v53;
 
-    v32->_isGroupMessage = a16;
-    v32->_urgency = a18;
-    if (v31)
+    v32->_isGroupMessage = message;
+    v32->_urgency = urgency;
+    if (derivedDataCopy)
     {
-      v55 = [v31 copy];
+      v55 = [derivedDataCopy copy];
     }
 
     else
@@ -194,43 +194,43 @@
   return v32;
 }
 
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 categoryID:(id)a12 sectionID:(id)a13 contactIDs:(id)a14 isGroupMessage:(BOOL)a15 derivedData:(id)a16 urgency:(int64_t)a17
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 categoryID:(id)self2 sectionID:(id)self3 contactIDs:(id)self4 isGroupMessage:(BOOL)self5 derivedData:(id)self6 urgency:(int64_t)self7
 {
-  if (a4 == 0.0)
+  if (timestamp == 0.0)
   {
     v45 = MEMORY[0x1E695DF00];
-    v43 = a16;
-    v22 = a14;
-    v42 = a13;
-    v41 = a11;
-    v23 = a10;
-    v24 = a9;
-    v25 = a7;
-    v26 = a6;
-    v27 = a5;
-    v28 = a3;
+    derivedDataCopy = derivedData;
+    dsCopy = ds;
+    sectionIDCopy = sectionID;
+    iDCopy = iD;
+    dCopy = d;
+    infoCopy = info;
+    bodyCopy = body;
+    subtitleCopy = subtitle;
+    titleCopy = title;
+    dataCopy = data;
     v46 = [v45 now];
     [v46 timeIntervalSinceReferenceDate];
-    LOBYTE(v40) = a15;
-    v50 = [(ATXUserNotification *)self initFromNotificationData:v28 timestamp:v27 title:v26 subtitle:v25 body:a8 badge:v24 userInfo:v23 bundleID:v41 threadID:0 categoryID:v42 sectionID:v22 contactIDs:0 rawIdentifiers:v40 isGroupMessage:v43 derivedData:a17 urgency:?];
+    LOBYTE(v40) = message;
+    v50 = [(ATXUserNotification *)self initFromNotificationData:dataCopy timestamp:titleCopy title:subtitleCopy subtitle:bodyCopy body:badge badge:infoCopy userInfo:dCopy bundleID:iDCopy threadID:0 categoryID:sectionIDCopy sectionID:dsCopy contactIDs:0 rawIdentifiers:v40 isGroupMessage:derivedDataCopy derivedData:urgency urgency:?];
 
     v29 = v50;
   }
 
   else
   {
-    v47 = a16;
-    v31 = a14;
-    v44 = a13;
-    v32 = a11;
-    v33 = a10;
-    v34 = a9;
-    v35 = a7;
-    v36 = a6;
-    v37 = a5;
-    v38 = a3;
-    LOBYTE(v40) = a15;
-    v51 = [(ATXUserNotification *)self initFromNotificationData:v38 timestamp:v37 title:v36 subtitle:v35 body:a8 badge:v34 userInfo:a4 bundleID:v33 threadID:v32 categoryID:0 sectionID:v44 contactIDs:v31 rawIdentifiers:0 isGroupMessage:v40 derivedData:v47 urgency:a17];
+    derivedDataCopy2 = derivedData;
+    dsCopy2 = ds;
+    sectionIDCopy2 = sectionID;
+    iDCopy2 = iD;
+    dCopy2 = d;
+    infoCopy2 = info;
+    bodyCopy2 = body;
+    subtitleCopy2 = subtitle;
+    titleCopy2 = title;
+    dataCopy2 = data;
+    LOBYTE(v40) = message;
+    v51 = [(ATXUserNotification *)self initFromNotificationData:dataCopy2 timestamp:titleCopy2 title:subtitleCopy2 subtitle:bodyCopy2 body:badge badge:infoCopy2 userInfo:timestamp bundleID:dCopy2 threadID:iDCopy2 categoryID:0 sectionID:sectionIDCopy2 contactIDs:dsCopy2 rawIdentifiers:0 isGroupMessage:v40 derivedData:derivedDataCopy2 urgency:urgency];
 
     v29 = v51;
   }
@@ -238,43 +238,43 @@
   return v29;
 }
 
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 sectionID:(id)a12 contactIDs:(id)a13 isGroupMessage:(BOOL)a14 derivedData:(id)a15 urgency:(int64_t)a16
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 sectionID:(id)self2 contactIDs:(id)self3 isGroupMessage:(BOOL)self4 derivedData:(id)self5 urgency:(int64_t)self6
 {
-  if (a4 == 0.0)
+  if (timestamp == 0.0)
   {
     v44 = MEMORY[0x1E695DF00];
-    v42 = a15;
-    v21 = a13;
-    v41 = a12;
-    v40 = a11;
-    v22 = a10;
-    v23 = a9;
-    v24 = a7;
-    v25 = a6;
-    v26 = a5;
-    v27 = a3;
+    derivedDataCopy = derivedData;
+    dsCopy = ds;
+    sectionIDCopy = sectionID;
+    iDCopy = iD;
+    dCopy = d;
+    infoCopy = info;
+    bodyCopy = body;
+    subtitleCopy = subtitle;
+    titleCopy = title;
+    dataCopy = data;
     v45 = [v44 now];
     [v45 timeIntervalSinceReferenceDate];
-    LOBYTE(v39) = a14;
-    v49 = [(ATXUserNotification *)self initFromNotificationData:v27 timestamp:v26 title:v25 subtitle:v24 body:a8 badge:v23 userInfo:v22 bundleID:v40 threadID:0 categoryID:v41 sectionID:v21 contactIDs:v39 isGroupMessage:v42 derivedData:a16 urgency:?];
+    LOBYTE(v39) = message;
+    v49 = [(ATXUserNotification *)self initFromNotificationData:dataCopy timestamp:titleCopy title:subtitleCopy subtitle:bodyCopy body:badge badge:infoCopy userInfo:dCopy bundleID:iDCopy threadID:0 categoryID:sectionIDCopy sectionID:dsCopy contactIDs:v39 isGroupMessage:derivedDataCopy derivedData:urgency urgency:?];
 
     v28 = v49;
   }
 
   else
   {
-    v46 = a15;
-    v30 = a13;
-    v43 = a12;
-    v31 = a11;
-    v32 = a10;
-    v33 = a9;
-    v34 = a7;
-    v35 = a6;
-    v36 = a5;
-    v37 = a3;
-    LOBYTE(v39) = a14;
-    v50 = [(ATXUserNotification *)self initFromNotificationData:v37 timestamp:v36 title:v35 subtitle:v34 body:a8 badge:v33 userInfo:a4 bundleID:v32 threadID:v31 categoryID:0 sectionID:v43 contactIDs:v30 isGroupMessage:v39 derivedData:v46 urgency:a16];
+    derivedDataCopy2 = derivedData;
+    dsCopy2 = ds;
+    sectionIDCopy2 = sectionID;
+    iDCopy2 = iD;
+    dCopy2 = d;
+    infoCopy2 = info;
+    bodyCopy2 = body;
+    subtitleCopy2 = subtitle;
+    titleCopy2 = title;
+    dataCopy2 = data;
+    LOBYTE(v39) = message;
+    v50 = [(ATXUserNotification *)self initFromNotificationData:dataCopy2 timestamp:titleCopy2 title:subtitleCopy2 subtitle:bodyCopy2 body:badge badge:infoCopy2 userInfo:timestamp bundleID:dCopy2 threadID:iDCopy2 categoryID:0 sectionID:sectionIDCopy2 contactIDs:dsCopy2 isGroupMessage:v39 derivedData:derivedDataCopy2 urgency:urgency];
 
     v28 = v50;
   }
@@ -282,46 +282,46 @@
   return v28;
 }
 
-- (id)initFromNotificationData:(id)a3 timestamp:(double)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 badge:(unint64_t)a8 userInfo:(id)a9 bundleID:(id)a10 threadID:(id)a11 categoryID:(id)a12 sectionID:(id)a13 contactIDs:(id)a14 isGroupMessage:(BOOL)a15 derivedData:(id)a16
+- (id)initFromNotificationData:(id)data timestamp:(double)timestamp title:(id)title subtitle:(id)subtitle body:(id)body badge:(unint64_t)badge userInfo:(id)info bundleID:(id)self0 threadID:(id)self1 categoryID:(id)self2 sectionID:(id)self3 contactIDs:(id)self4 isGroupMessage:(BOOL)self5 derivedData:(id)self6
 {
-  if (a4 == 0.0)
+  if (timestamp == 0.0)
   {
     v41 = MEMORY[0x1E695DF00];
-    v43 = a16;
-    v19 = a14;
-    v20 = a13;
-    v39 = a12;
-    v21 = a5;
-    v22 = a11;
-    v23 = a10;
-    v37 = a9;
-    v24 = a7;
-    v25 = a6;
-    v46 = v21;
-    v26 = a3;
+    derivedDataCopy = derivedData;
+    dsCopy = ds;
+    sectionIDCopy = sectionID;
+    categoryIDCopy = categoryID;
+    titleCopy = title;
+    iDCopy = iD;
+    dCopy = d;
+    infoCopy = info;
+    bodyCopy = body;
+    subtitleCopy = subtitle;
+    v46 = titleCopy;
+    dataCopy = data;
     v49 = [v41 now];
     [v49 timeIntervalSinceReferenceDate];
-    LOBYTE(v36) = a15;
-    v52 = [(ATXUserNotification *)self initFromNotificationData:v26 timestamp:v46 title:v25 subtitle:v24 body:a8 badge:v37 userInfo:v23 bundleID:v22 threadID:v39 categoryID:v20 sectionID:v19 contactIDs:v36 isGroupMessage:v43 derivedData:4 urgency:?];
+    LOBYTE(v36) = message;
+    v52 = [(ATXUserNotification *)self initFromNotificationData:dataCopy timestamp:v46 title:subtitleCopy subtitle:bodyCopy body:badge badge:infoCopy userInfo:dCopy bundleID:iDCopy threadID:categoryIDCopy categoryID:sectionIDCopy sectionID:dsCopy contactIDs:v36 isGroupMessage:derivedDataCopy derivedData:4 urgency:?];
 
     v27 = v52;
   }
 
   else
   {
-    v44 = a16;
-    v29 = a14;
-    v30 = a13;
-    v42 = a12;
-    v40 = a11;
-    v31 = a10;
-    v38 = a9;
-    v32 = a7;
-    v47 = a6;
-    v33 = a5;
-    v34 = a3;
-    LOBYTE(v36) = a15;
-    v53 = [(ATXUserNotification *)self initFromNotificationData:v34 timestamp:v33 title:v47 subtitle:v32 body:a8 badge:v38 userInfo:a4 bundleID:v31 threadID:v40 categoryID:v42 sectionID:v30 contactIDs:v29 isGroupMessage:v36 derivedData:v44 urgency:4];
+    derivedDataCopy2 = derivedData;
+    dsCopy2 = ds;
+    sectionIDCopy2 = sectionID;
+    categoryIDCopy2 = categoryID;
+    iDCopy2 = iD;
+    dCopy2 = d;
+    infoCopy2 = info;
+    bodyCopy2 = body;
+    subtitleCopy2 = subtitle;
+    titleCopy2 = title;
+    dataCopy2 = data;
+    LOBYTE(v36) = message;
+    v53 = [(ATXUserNotification *)self initFromNotificationData:dataCopy2 timestamp:titleCopy2 title:subtitleCopy2 subtitle:bodyCopy2 body:badge badge:infoCopy2 userInfo:timestamp bundleID:dCopy2 threadID:iDCopy2 categoryID:categoryIDCopy2 sectionID:sectionIDCopy2 contactIDs:dsCopy2 isGroupMessage:v36 derivedData:derivedDataCopy2 urgency:4];
 
     v27 = v53;
   }
@@ -329,25 +329,25 @@
   return v27;
 }
 
-- (id)initFromNotificationData:(id)a3 date:(id)a4 title:(id)a5 subtitle:(id)a6 body:(id)a7 bundleID:(id)a8 threadID:(id)a9 categoryID:(id)a10
+- (id)initFromNotificationData:(id)data date:(id)date title:(id)title subtitle:(id)subtitle body:(id)body bundleID:(id)d threadID:(id)iD categoryID:(id)self0
 {
-  v15 = a4;
+  dateCopy = date;
   v16 = MEMORY[0x1E696AFB0];
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a3;
-  v24 = [[v16 alloc] initWithUUIDString:v23];
+  categoryIDCopy = categoryID;
+  iDCopy = iD;
+  dCopy = d;
+  bodyCopy = body;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  dataCopy = data;
+  v24 = [[v16 alloc] initWithUUIDString:dataCopy];
 
-  v25 = v15;
-  if (v15)
+  v25 = dateCopy;
+  if (dateCopy)
   {
-    [v15 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     LOBYTE(v31) = 0;
-    v26 = [(ATXUserNotification *)self initFromNotificationData:v24 timestamp:v22 title:v21 subtitle:v20 body:0 badge:0 userInfo:v19 bundleID:v18 threadID:v17 categoryID:0 sectionID:0 contactIDs:v31 isGroupMessage:0 derivedData:?];
+    v26 = [(ATXUserNotification *)self initFromNotificationData:v24 timestamp:titleCopy title:subtitleCopy subtitle:bodyCopy body:0 badge:0 userInfo:dCopy bundleID:iDCopy threadID:categoryIDCopy categoryID:0 sectionID:0 contactIDs:v31 isGroupMessage:0 derivedData:?];
 
     v27 = v26;
   }
@@ -357,7 +357,7 @@
     v28 = [MEMORY[0x1E695DF00] now];
     [v28 timeIntervalSinceReferenceDate];
     LOBYTE(v31) = 0;
-    v29 = [(ATXUserNotification *)self initFromNotificationData:v24 timestamp:v22 title:v21 subtitle:v20 body:0 badge:0 userInfo:v19 bundleID:v18 threadID:v17 categoryID:0 sectionID:0 contactIDs:v31 isGroupMessage:0 derivedData:?];
+    v29 = [(ATXUserNotification *)self initFromNotificationData:v24 timestamp:titleCopy title:subtitleCopy subtitle:bodyCopy body:0 badge:0 userInfo:dCopy bundleID:iDCopy threadID:categoryIDCopy categoryID:0 sectionID:0 contactIDs:v31 isGroupMessage:0 derivedData:?];
 
     v27 = v29;
   }
@@ -365,12 +365,12 @@
   return v27;
 }
 
-- (int64_t)compareForDigestRanking:(id)a3
+- (int64_t)compareForDigestRanking:(id)ranking
 {
-  v4 = a3;
-  v5 = [(ATXUserNotification *)self digestRankingHardcodedComparisonValue];
-  v6 = [v4 digestRankingHardcodedComparisonValue];
-  v7 = [v5 compare:v6];
+  rankingCopy = ranking;
+  digestRankingHardcodedComparisonValue = [(ATXUserNotification *)self digestRankingHardcodedComparisonValue];
+  digestRankingHardcodedComparisonValue2 = [rankingCopy digestRankingHardcodedComparisonValue];
+  v7 = [digestRankingHardcodedComparisonValue compare:digestRankingHardcodedComparisonValue2];
 
   if (!v7)
   {
@@ -378,7 +378,7 @@
     [(ATXUserNotification *)self appSpecifiedScore];
     v9 = [v8 numberWithDouble:?];
     v10 = MEMORY[0x1E696AD98];
-    [v4 appSpecifiedScore];
+    [rankingCopy appSpecifiedScore];
     v11 = [v10 numberWithDouble:?];
     v7 = [v9 compare:v11];
 
@@ -388,7 +388,7 @@
       [(ATXUserNotification *)self timestamp];
       v13 = [v12 numberWithDouble:?];
       v14 = MEMORY[0x1E696AD98];
-      [v4 timestamp];
+      [rankingCopy timestamp];
       v15 = [v14 numberWithDouble:?];
       v7 = [v13 compare:v15];
     }
@@ -397,29 +397,29 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUserNotification *)self isEqualToATXUserNotification:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUserNotification *)self isEqualToATXUserNotification:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUserNotification:(id)a3
+- (BOOL)isEqualToATXUserNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = self->_uuid;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == notificationCopy[3])
   {
   }
 
@@ -435,7 +435,7 @@
 
   v8 = self->_title;
   v9 = v8;
-  if (v8 == v4[6])
+  if (v8 == notificationCopy[6])
   {
   }
 
@@ -451,7 +451,7 @@
 
   v11 = self->_subtitle;
   v12 = v11;
-  if (v11 == v4[7])
+  if (v11 == notificationCopy[7])
   {
   }
 
@@ -467,7 +467,7 @@
 
   v14 = self->_body;
   v15 = v14;
-  if (v14 == v4[8])
+  if (v14 == notificationCopy[8])
   {
   }
 
@@ -481,14 +481,14 @@
     }
   }
 
-  if (self->_badge != v4[9])
+  if (self->_badge != notificationCopy[9])
   {
     goto LABEL_53;
   }
 
   v17 = self->_userInfo;
   v18 = v17;
-  if (v17 == v4[10])
+  if (v17 == notificationCopy[10])
   {
   }
 
@@ -504,7 +504,7 @@
 
   v20 = self->_bundleID;
   v21 = v20;
-  if (v20 == v4[11])
+  if (v20 == notificationCopy[11])
   {
   }
 
@@ -520,7 +520,7 @@
 
   v23 = self->_threadID;
   v24 = v23;
-  if (v23 == v4[12])
+  if (v23 == notificationCopy[12])
   {
   }
 
@@ -536,7 +536,7 @@
 
   v26 = self->_categoryID;
   v27 = v26;
-  if (v26 == v4[13])
+  if (v26 == notificationCopy[13])
   {
   }
 
@@ -552,7 +552,7 @@
 
   v29 = self->_sectionID;
   v30 = v29;
-  if (v29 == v4[14])
+  if (v29 == notificationCopy[14])
   {
   }
 
@@ -568,7 +568,7 @@
 
   v32 = self->_contactIDs;
   v33 = v32;
-  if (v32 == v4[15])
+  if (v32 == notificationCopy[15])
   {
   }
 
@@ -584,7 +584,7 @@
 
   v35 = self->_rawIdentifiers;
   v36 = v35;
-  if (v35 == v4[16])
+  if (v35 == notificationCopy[16])
   {
   }
 
@@ -598,7 +598,7 @@
     }
   }
 
-  if (self->_isGroupMessage != *(v4 + 9))
+  if (self->_isGroupMessage != *(notificationCopy + 9))
   {
 LABEL_53:
     v44 = 0;
@@ -607,7 +607,7 @@ LABEL_53:
 
   v38 = self->_derivedData;
   v39 = v38;
-  if (v38 == v4[20])
+  if (v38 == notificationCopy[20])
   {
   }
 
@@ -623,7 +623,7 @@ LABEL_53:
 
   v41 = self->_recordDate;
   v42 = v41;
-  if (v41 == v4[4])
+  if (v41 == notificationCopy[4])
   {
   }
 
@@ -639,7 +639,7 @@ LABEL_53:
 
   v46 = self->_notificationID;
   v47 = v46;
-  if (v46 == v4[5])
+  if (v46 == notificationCopy[5])
   {
     v44 = 1;
   }
@@ -660,14 +660,14 @@ LABEL_54:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXUserNotification allocWithZone:a3];
+  v4 = [ATXUserNotification allocWithZone:zone];
   LOBYTE(v12) = self->_isGroupMessage;
   v5 = [(ATXUserNotification *)v4 initFromNotificationData:self->_uuid timestamp:self->_title title:self->_subtitle subtitle:self->_body body:self->_badge badge:self->_userInfo userInfo:self->_timestamp bundleID:self->_bundleID threadID:self->_threadID categoryID:self->_categoryID sectionID:self->_sectionID contactIDs:self->_contactIDs rawIdentifiers:self->_rawIdentifiers isGroupMessage:v12 derivedData:self->_derivedData urgency:self->_urgency];
   [v5 setIsMessage:{-[ATXUserNotification isMessage](self, "isMessage")}];
-  v6 = [(ATXUserNotification *)self summary];
-  [v5 setSummary:v6];
+  summary = [(ATXUserNotification *)self summary];
+  [v5 setSummary:summary];
 
   [v5 setIsSummarized:{-[ATXUserNotification isSummarized](self, "isSummarized")}];
   [v5 setIsPartOfStack:{-[ATXUserNotification isPartOfStack](self, "isPartOfStack")}];
@@ -677,15 +677,15 @@ LABEL_54:
   [v5 setAttachmentType:{-[ATXUserNotification attachmentType](self, "attachmentType")}];
   [(ATXUserNotification *)self appSpecifiedScore];
   [v5 setAppSpecifiedScore:?];
-  v7 = [(ATXUserNotification *)self digestEngagementTrackingMetrics];
-  v8 = [v7 copy];
+  digestEngagementTrackingMetrics = [(ATXUserNotification *)self digestEngagementTrackingMetrics];
+  v8 = [digestEngagementTrackingMetrics copy];
   [v5 setDigestEngagementTrackingMetrics:v8];
 
-  v9 = [(ATXUserNotification *)self recordDate];
-  [v5 setRecordDate:v9];
+  recordDate = [(ATXUserNotification *)self recordDate];
+  [v5 setRecordDate:recordDate];
 
-  v10 = [(ATXUserNotification *)self notificationID];
-  [v5 setNotificationID:v10];
+  notificationID = [(ATXUserNotification *)self notificationID];
+  [v5 setNotificationID:notificationID];
 
   [v5 setPriorityStatus:{-[ATXUserNotification priorityStatus](self, "priorityStatus")}];
   [v5 setSummaryStatus:{-[ATXUserNotification summaryStatus](self, "summaryStatus")}];
@@ -694,11 +694,11 @@ LABEL_54:
   return v5;
 }
 
-- (double)finalDigestScoreForMode:(id)a3
+- (double)finalDigestScoreForMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = objc_opt_new();
-  [v5 getDigestScoreForNotification:self modeId:v4];
+  [v5 getDigestScoreForNotification:self modeId:modeCopy];
   v7 = v6;
 
   return v7;
@@ -709,21 +709,21 @@ LABEL_54:
   threadID = self->_threadID;
   if (threadID || (threadID = self->_bundleID) != 0)
   {
-    v3 = threadID;
+    uUIDString = threadID;
   }
 
   else
   {
-    v3 = [(NSUUID *)self->_uuid UUIDString];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
   }
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUserNotification alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUserNotification alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUserNotification *)self initWithProto:v5];
   return v6;
@@ -731,35 +731,35 @@ LABEL_54:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUserNotification *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUserNotification *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
-- (ATXUserNotification)initWithProtoData:(id)a3
+- (ATXUserNotification)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUserNotification alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUserNotification alloc] initWithData:dataCopy];
 
     self = [(ATXUserNotification *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXUserNotification)initWithProto:(id)a3
+- (ATXUserNotification)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -770,49 +770,49 @@ LABEL_54:
         [ATXMissedNotificationRanking initWithProto:];
       }
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_25;
     }
 
-    v43 = v4;
-    v5 = v4;
-    v6 = [v5 derivedData];
+    v43 = protoCopy;
+    v5 = protoCopy;
+    derivedData = [v5 derivedData];
 
-    if (v6)
+    if (derivedData)
     {
-      v7 = [v5 derivedData];
+      derivedData2 = [v5 derivedData];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
         v9 = [ATXUserNotificationDerivedData alloc];
-        v10 = [v5 derivedData];
-        v11 = [(ATXUserNotificationDerivedData *)v9 initWithProto:v10];
+        derivedData3 = [v5 derivedData];
+        v11 = [(ATXUserNotificationDerivedData *)v9 initWithProto:derivedData3];
 
 LABEL_14:
         v14 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v42 = [v5 uuid];
-        v41 = [v14 initWithUUIDString:v42];
+        uuid = [v5 uuid];
+        v41 = [v14 initWithUUIDString:uuid];
         [v5 timestamp];
         v16 = v15;
-        v38 = [v5 title];
-        v40 = [v5 subtitle];
-        v39 = [v5 body];
-        v37 = [v5 badge];
-        v36 = [v5 userInfo];
-        v35 = [v5 bundleID];
-        v34 = [v5 threadID];
-        v33 = [v5 categoryID];
-        v17 = [v5 sectionID];
-        v18 = [v5 contactIDs];
-        v19 = [v5 rawIdentifiers];
+        title = [v5 title];
+        subtitle = [v5 subtitle];
+        body = [v5 body];
+        badge = [v5 badge];
+        userInfo = [v5 userInfo];
+        bundleID = [v5 bundleID];
+        threadID = [v5 threadID];
+        categoryID = [v5 categoryID];
+        sectionID = [v5 sectionID];
+        contactIDs = [v5 contactIDs];
+        rawIdentifiers = [v5 rawIdentifiers];
         LOBYTE(v32) = [v5 isGroupMessage];
-        v20 = [(ATXUserNotification *)self initFromNotificationData:v41 timestamp:v38 title:v40 subtitle:v39 body:v37 badge:v36 userInfo:v16 bundleID:v35 threadID:v34 categoryID:v33 sectionID:v17 contactIDs:v18 rawIdentifiers:v19 isGroupMessage:v32 derivedData:v11 urgency:[v5 urgency]];
+        v20 = [(ATXUserNotification *)self initFromNotificationData:v41 timestamp:title title:subtitle subtitle:body body:badge badge:userInfo userInfo:v16 bundleID:bundleID threadID:threadID categoryID:categoryID sectionID:sectionID contactIDs:contactIDs rawIdentifiers:rawIdentifiers isGroupMessage:v32 derivedData:v11 urgency:[v5 urgency]];
 
         [v20 setIsMessage:{-[NSObject isMessage](v5, "isMessage")}];
-        v21 = [v5 summary];
-        [v20 setSummary:v21];
+        summary = [v5 summary];
+        [v20 setSummary:summary];
 
         [v20 setIsSummarized:{-[NSObject isSummarized](v5, "isSummarized")}];
         [v20 setIsPartOfStack:{-[NSObject isPartOfStack](v5, "isPartOfStack")}];
@@ -826,26 +826,26 @@ LABEL_14:
         [v20 setSummaryStatus:{-[NSObject summaryStatus](v5, "summaryStatus")}];
         [v20 setIsPriorityNotificationEnabled:{-[NSObject isPriorityNotificationEnabled](v5, "isPriorityNotificationEnabled")}];
         [v20 setIsNotificationSummaryEnabled:{-[NSObject isNotificationSummaryEnabled](v5, "isNotificationSummaryEnabled")}];
-        v22 = [v5 sharedEngagementTracker];
+        sharedEngagementTracker = [v5 sharedEngagementTracker];
 
-        if (v22)
+        if (sharedEngagementTracker)
         {
-          v23 = [v5 sharedEngagementTracker];
+          sharedEngagementTracker2 = [v5 sharedEngagementTracker];
           objc_opt_class();
           v24 = objc_opt_isKindOfClass();
 
           if (v24)
           {
             v25 = [ATXSharedDigestEngagementTrackingMetrics alloc];
-            v26 = [v5 sharedEngagementTracker];
-            v27 = [(ATXSharedDigestEngagementTrackingMetrics *)v25 initWithProto:v26];
+            sharedEngagementTracker3 = [v5 sharedEngagementTracker];
+            v27 = [(ATXSharedDigestEngagementTrackingMetrics *)v25 initWithProto:sharedEngagementTracker3];
             [v20 setDigestEngagementTrackingMetrics:v27];
           }
 
           else
           {
-            v26 = __atxlog_handle_notification_management();
-            if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+            sharedEngagementTracker3 = __atxlog_handle_notification_management();
+            if (os_log_type_enabled(sharedEngagementTracker3, OS_LOG_TYPE_FAULT))
             {
               [ATXMissedNotificationRanking initWithProto:];
             }
@@ -860,16 +860,16 @@ LABEL_14:
           [v20 setRecordDate:v29];
         }
 
-        v4 = v43;
+        protoCopy = v43;
         if ([v5 hasNotificationID])
         {
-          v30 = [v5 notificationID];
-          [v20 setNotificationID:v30];
+          notificationID = [v5 notificationID];
+          [v20 setNotificationID:notificationID];
         }
 
         self = v20;
 
-        v12 = self;
+        selfCopy = self;
 LABEL_25:
 
         goto LABEL_26;
@@ -886,36 +886,36 @@ LABEL_25:
     goto LABEL_14;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_26:
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUserNotification *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUserNotification *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUserNotification)initWithCoder:(id)a3
+- (ATXUserNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXUserNotification *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface FMDEventLoggerEventError
-- (FMDEventLoggerEventError)initWithCoder:(id)a3;
-- (FMDEventLoggerEventError)initWithEventName:(id)a3;
-- (id)dictionaryForError:(id)a3;
+- (FMDEventLoggerEventError)initWithCoder:(id)coder;
+- (FMDEventLoggerEventError)initWithEventName:(id)name;
+- (id)dictionaryForError:(id)error;
 - (id)userInfo;
 - (void)_populateInfo;
-- (void)encodeWithCoder:(id)a3;
-- (void)setError:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setError:(id)error;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation FMDEventLoggerEventError
 
-- (FMDEventLoggerEventError)initWithEventName:(id)a3
+- (FMDEventLoggerEventError)initWithEventName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = FMDEventLoggerEventError;
   v5 = [(FMDEventLoggerEventError *)&v8 init];
@@ -22,15 +22,15 @@
     v6 = +[NSMutableDictionary dictionary];
     [(FMDEventLoggerEventError *)v5 setMutableDictionary:v6];
 
-    [(FMDEventLoggerEventError *)v5 setEventName:v4];
+    [(FMDEventLoggerEventError *)v5 setEventName:nameCopy];
   }
 
   return v5;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  objc_storeStrong(&self->_error, a3);
+  objc_storeStrong(&self->_error, error);
 
   [(FMDEventLoggerEventError *)self _populateInfo];
 }
@@ -38,48 +38,48 @@
 - (void)_populateInfo
 {
   v3 = +[NSMutableArray array];
-  v4 = [(FMDEventLoggerEventError *)self error];
-  v5 = [(FMDEventLoggerEventError *)self dictionaryForError:v4];
+  error = [(FMDEventLoggerEventError *)self error];
+  v5 = [(FMDEventLoggerEventError *)self dictionaryForError:error];
   [v3 addObject:v5];
 
-  v6 = [(FMDEventLoggerEventError *)self error];
-  v7 = [v6 userInfo];
+  error2 = [(FMDEventLoggerEventError *)self error];
+  userInfo = [error2 userInfo];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10015FD28;
   v12[3] = &unk_1002CDDC0;
   v13 = v3;
-  v14 = self;
+  selfCopy = self;
   v8 = v3;
-  [v7 enumerateKeysAndObjectsUsingBlock:v12];
+  [userInfo enumerateKeysAndObjectsUsingBlock:v12];
 
   v15 = @"errors";
   v16 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v10 = [(FMDEventLoggerEventError *)self mutableDictionary];
-  v11 = [(FMDEventLoggerEventError *)self eventName];
-  [v10 fm_safelySetObject:v9 forKey:v11];
+  mutableDictionary = [(FMDEventLoggerEventError *)self mutableDictionary];
+  eventName = [(FMDEventLoggerEventError *)self eventName];
+  [mutableDictionary fm_safelySetObject:v9 forKey:eventName];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 || !v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy || !keyCopy)
   {
-    if (!v6)
+    if (!keyCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = [(FMDEventLoggerEventError *)self mutableDictionary];
-    [v7 fm_safelySetObject:v8 forKey:v6];
+    mutableDictionary = [(FMDEventLoggerEventError *)self mutableDictionary];
+    [mutableDictionary fm_safelySetObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    v7 = [(FMDEventLoggerEventError *)self mutableDictionary];
-    [v7 removeObjectForKey:v6];
+    mutableDictionary = [(FMDEventLoggerEventError *)self mutableDictionary];
+    [mutableDictionary removeObjectForKey:keyCopy];
   }
 
 LABEL_7:
@@ -87,52 +87,52 @@ LABEL_7:
 
 - (id)userInfo
 {
-  v2 = [(FMDEventLoggerEventError *)self mutableDictionary];
-  v3 = [v2 copy];
+  mutableDictionary = [(FMDEventLoggerEventError *)self mutableDictionary];
+  v3 = [mutableDictionary copy];
 
   return v3;
 }
 
-- (id)dictionaryForError:(id)a3
+- (id)dictionaryForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 domain];
-  [v4 fm_safelyMapKey:@"domain" toObject:v5];
+  domain = [errorCopy domain];
+  [v4 fm_safelyMapKey:@"domain" toObject:domain];
 
-  v6 = [v3 code];
-  v7 = [NSNumber numberWithInteger:v6];
+  code = [errorCopy code];
+  v7 = [NSNumber numberWithInteger:code];
   [v4 fm_safelyMapKey:@"code" toObject:v7];
 
   return v4;
 }
 
-- (FMDEventLoggerEventError)initWithCoder:(id)a3
+- (FMDEventLoggerEventError)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FMDEventLoggerEventError;
   v5 = [(FMDEventLoggerEventError *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mutableDictionary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mutableDictionary"];
     [(FMDEventLoggerEventError *)v5 setMutableDictionary:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventName"];
     [(FMDEventLoggerEventError *)v5 setEventName:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDEventLoggerEventError *)self eventName];
-  [v4 encodeObject:v5 forKey:@"eventName"];
+  coderCopy = coder;
+  eventName = [(FMDEventLoggerEventError *)self eventName];
+  [coderCopy encodeObject:eventName forKey:@"eventName"];
 
-  v6 = [(FMDEventLoggerEventError *)self mutableDictionary];
-  [v4 encodeObject:v6 forKey:@"mutableDictionary"];
+  mutableDictionary = [(FMDEventLoggerEventError *)self mutableDictionary];
+  [coderCopy encodeObject:mutableDictionary forKey:@"mutableDictionary"];
 }
 
 @end

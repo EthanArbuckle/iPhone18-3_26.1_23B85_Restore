@@ -6,7 +6,7 @@
 
 - (id)_pl_prettyDescriptionWithIndent:()PhotoLibraryServices
 {
-  if ([a1 count])
+  if ([self count])
   {
     pl_result_with_autoreleasepool();
   }

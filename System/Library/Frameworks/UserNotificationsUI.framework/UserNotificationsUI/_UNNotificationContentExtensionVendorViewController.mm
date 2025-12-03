@@ -1,38 +1,38 @@
 @interface _UNNotificationContentExtensionVendorViewController
 - (BOOL)canBecomeFirstResponder;
-- (_UNNotificationContentExtensionVendorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_UNNotificationContentExtensionVendorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_extensionBundleIdentifier;
 - (id)notificationExtensionVendorContext;
 - (void)_invalidateExtensionContext;
-- (void)_setupExtensionViewController:(id)a3;
-- (void)_willAppearInRemoteViewController:(id)a3;
-- (void)addChildViewController:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)_setupExtensionViewController:(id)controller;
+- (void)_willAppearInRemoteViewController:(id)controller;
+- (void)addChildViewController:(id)controller;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)dealloc;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)preserveInputViews;
 - (void)restoreInputViews;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation _UNNotificationContentExtensionVendorViewController
 
-- (_UNNotificationContentExtensionVendorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_UNNotificationContentExtensionVendorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = _UNNotificationContentExtensionVendorViewController;
-  v4 = [(_UNNotificationContentExtensionVendorViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(_UNNotificationContentExtensionVendorViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -46,30 +46,30 @@
 - (void)dealloc
 {
   [(_UNNotificationContentExtensionVendorViewController *)self _invalidateExtensionContext];
-  v3 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  [v3 removeObserver:self forKeyPath:@"title"];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  [extensionViewController removeObserver:self forKeyPath:@"title"];
 
   v4.receiver = self;
   v4.super_class = _UNNotificationContentExtensionVendorViewController;
   [(_UNNotificationContentExtensionVendorViewController *)&v4 dealloc];
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
-  v5 = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
-  v4 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  [v5 _extensionWantsToBecomeFirstResponder:{objc_msgSend(v4, "canBecomeFirstResponder")}];
+  notificationExtensionVendorContext = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  [notificationExtensionVendorContext _extensionWantsToBecomeFirstResponder:{objc_msgSend(extensionViewController, "canBecomeFirstResponder")}];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6.receiver = self;
   v6.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v6 addChildViewController:v4];
-  if ([v4 conformsToProtocol:&unk_284DE4938])
+  [(_UNNotificationContentExtensionVendorViewController *)&v6 addChildViewController:controllerCopy];
+  if ([controllerCopy conformsToProtocol:&unk_284DE4938])
   {
-    [(_UNNotificationContentExtensionVendorViewController *)self _setupExtensionViewController:v4];
+    [(_UNNotificationContentExtensionVendorViewController *)self _setupExtensionViewController:controllerCopy];
   }
 
   else
@@ -77,25 +77,25 @@
     v5 = UNLogExtensionsService;
     if (os_log_type_enabled(UNLogExtensionsService, OS_LOG_TYPE_ERROR))
     {
-      [(_UNNotificationContentExtensionVendorViewController *)v5 addChildViewController:v4, self];
+      [(_UNNotificationContentExtensionVendorViewController *)v5 addChildViewController:controllerCopy, self];
     }
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = _UNNotificationContentExtensionVendorViewController;
-  v4 = a3;
-  [(_UNNotificationContentExtensionVendorViewController *)&v5 willMoveToParentViewController:v4];
-  [v4 preferredContentSizeDidChangeForChildContentContainer:{self, v5.receiver, v5.super_class}];
+  controllerCopy = controller;
+  [(_UNNotificationContentExtensionVendorViewController *)&v5 willMoveToParentViewController:controllerCopy];
+  [controllerCopy preferredContentSizeDidChangeForChildContentContainer:{self, v5.receiver, v5.super_class}];
 }
 
 - (void)loadView
 {
   v3 = [_UNNotificationContentExtensionVendorViewControllerView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [(_UNNotificationContentExtensionVendorViewControllerView *)v3 initWithFrame:?];
 
   [(_UNNotificationContentExtensionVendorViewController *)self setView:v5];
@@ -111,8 +111,8 @@
   self->_touchDelayGestureRecognizer = v3;
 
   [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self->_touchDelayGestureRecognizer setDelaysTouchesBegan:1];
-  v5 = [(_UNNotificationContentExtensionVendorViewController *)self view];
-  [v5 addGestureRecognizer:self->_touchDelayGestureRecognizer];
+  view = [(_UNNotificationContentExtensionVendorViewController *)self view];
+  [view addGestureRecognizer:self->_touchDelayGestureRecognizer];
 }
 
 - (void)viewWillLayoutSubviews
@@ -120,13 +120,13 @@
   v4.receiver = self;
   v4.super_class = _UNNotificationContentExtensionVendorViewController;
   [(_UNNotificationContentExtensionVendorViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
-  [v3 _extensionWantsToUpdateMediaPlayPauseButton];
+  notificationExtensionVendorContext = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
+  [notificationExtensionVendorContext _extensionWantsToUpdateMediaPlayPauseButton];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10 = *MEMORY[0x277D85DE8];
   v5 = UNLogExtensionsService;
   if (os_log_type_enabled(UNLogExtensionsService, OS_LOG_TYPE_DEFAULT))
@@ -138,14 +138,14 @@
 
   v7.receiver = self;
   v7.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v7 viewWillAppear:v3];
-  v6 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  [v6 bs_beginAppearanceTransition:1 animated:v3];
+  [(_UNNotificationContentExtensionVendorViewController *)&v7 viewWillAppear:appearCopy];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  [extensionViewController bs_beginAppearanceTransition:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v11 = *MEMORY[0x277D85DE8];
   v5 = UNLogExtensionsService;
   if (os_log_type_enabled(UNLogExtensionsService, OS_LOG_TYPE_DEFAULT))
@@ -157,17 +157,17 @@
 
   v8.receiver = self;
   v8.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v8 viewDidAppear:v3];
-  v6 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  [v6 bs_endAppearanceTransition:1];
+  [(_UNNotificationContentExtensionVendorViewController *)&v8 viewDidAppear:appearCopy];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  [extensionViewController bs_endAppearanceTransition:1];
 
-  v7 = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
-  [v7 _extensionWantsMessagesFromHostDelivered];
+  notificationExtensionVendorContext = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
+  [notificationExtensionVendorContext _extensionWantsMessagesFromHostDelivered];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v11 = *MEMORY[0x277D85DE8];
   v5 = UNLogExtensionsService;
   if (os_log_type_enabled(UNLogExtensionsService, OS_LOG_TYPE_DEFAULT))
@@ -179,17 +179,17 @@
 
   v8.receiver = self;
   v8.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v8 viewWillDisappear:v3];
-  v6 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  [v6 bs_beginAppearanceTransition:0 animated:v3];
+  [(_UNNotificationContentExtensionVendorViewController *)&v8 viewWillDisappear:disappearCopy];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  [extensionViewController bs_beginAppearanceTransition:0 animated:disappearCopy];
 
-  v7 = [(_UNNotificationContentExtensionVendorViewController *)self firstResponder];
-  [v7 resignFirstResponder];
+  firstResponder = [(_UNNotificationContentExtensionVendorViewController *)self firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v10 = *MEMORY[0x277D85DE8];
   v5 = UNLogExtensionsService;
   if (os_log_type_enabled(UNLogExtensionsService, OS_LOG_TYPE_DEFAULT))
@@ -201,66 +201,66 @@
 
   v7.receiver = self;
   v7.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v7 viewDidDisappear:v3];
-  v6 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  [v6 bs_endAppearanceTransition:0];
+  [(_UNNotificationContentExtensionVendorViewController *)&v7 viewDidDisappear:disappearCopy];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  [extensionViewController bs_endAppearanceTransition:0];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(_UNNotificationContentExtensionVendorViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   [(_UNNotificationContentExtensionVendorViewController *)self preferredContentSize];
   v6 = v5;
   v8 = v7;
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   if (v6 != v10 || v8 != v9)
   {
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     [(_UNNotificationContentExtensionVendorViewController *)self setPreferredContentSize:?];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = _UNNotificationContentExtensionVendorViewController;
-  v7 = a4;
-  [(_UNNotificationContentExtensionVendorViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(_UNNotificationContentExtensionVendorViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __106___UNNotificationContentExtensionVendorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_278B71988;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container
 {
   v17.receiver = self;
   v17.super_class = _UNNotificationContentExtensionVendorViewController;
-  v4 = a3;
-  [(_UNNotificationContentExtensionVendorViewController *)&v17 systemLayoutFittingSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(_UNNotificationContentExtensionVendorViewController *)&v17 systemLayoutFittingSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   if (v6 == *MEMORY[0x277CBF3A8] && v8 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v10 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-    v11 = [v10 view];
+    extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+    view = [extensionViewController view];
 
-    v12 = [(_UNNotificationContentExtensionVendorViewController *)self view];
-    [v12 bounds];
+    view2 = [(_UNNotificationContentExtensionVendorViewController *)self view];
+    [view2 bounds];
     Width = CGRectGetWidth(v18);
 
     LODWORD(v14) = 1148846080;
     LODWORD(v15) = 1112014848;
-    [v11 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
+    [view systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
     if (v16 > 0.0)
     {
       [(_UNNotificationContentExtensionVendorViewController *)self setPreferredContentSize:Width];
@@ -268,16 +268,16 @@
   }
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6.receiver = self;
   v6.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v6 beginRequestWithExtensionContext:v4];
+  [(_UNNotificationContentExtensionVendorViewController *)&v6 beginRequestWithExtensionContext:contextCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setNotificationExtensionContainer:self];
+    [contextCopy setNotificationExtensionContainer:self];
   }
 
   else
@@ -290,50 +290,50 @@
   }
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
   v3.receiver = self;
   v3.super_class = _UNNotificationContentExtensionVendorViewController;
-  [(_UNNotificationContentExtensionVendorViewController *)&v3 setPreferredContentSize:a3.width, a3.height];
+  [(_UNNotificationContentExtensionVendorViewController *)&v3 setPreferredContentSize:size.width, size.height];
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  canBecomeFirstResponder = [extensionViewController canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (void)preserveInputViews
 {
-  v4 = [MEMORY[0x277D75830] sharedInstance];
+  mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
   v3 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-  [v4 _preserveInputViewsWithId:v3 animated:1];
+  [mEMORY[0x277D75830] _preserveInputViewsWithId:v3 animated:1];
 }
 
 - (void)restoreInputViews
 {
-  v4 = [MEMORY[0x277D75830] sharedInstance];
+  mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
   v3 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-  [v4 _restoreInputViewsWithId:v3 animated:1];
+  [mEMORY[0x277D75830] _restoreInputViewsWithId:v3 animated:1];
 }
 
 - (id)_extensionBundleIdentifier
 {
   v2 = MEMORY[0x277CCA8D8];
-  v3 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
   v4 = [v2 bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (id)notificationExtensionVendorContext
 {
-  v2 = [(_UNNotificationContentExtensionVendorViewController *)self extensionContext];
+  extensionContext = [(_UNNotificationContentExtensionVendorViewController *)self extensionContext];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = extensionContext;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -352,19 +352,19 @@
   return v3;
 }
 
-- (void)_setupExtensionViewController:(id)a3
+- (void)_setupExtensionViewController:(id)controller
 {
-  objc_storeStrong(&self->_extensionViewController, a3);
-  v5 = a3;
-  v7 = [(_UNNotificationContentExtensionVendorViewController *)self view];
-  v6 = [v5 view];
-  [v7 bounds];
-  [v6 setFrame:?];
-  [v6 setAutoresizingMask:18];
-  [v7 addSubview:v6];
-  [v5 preferredContentSize];
+  objc_storeStrong(&self->_extensionViewController, controller);
+  controllerCopy = controller;
+  view = [(_UNNotificationContentExtensionVendorViewController *)self view];
+  view2 = [controllerCopy view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
+  [controllerCopy preferredContentSize];
   [(_UNNotificationContentExtensionVendorViewController *)self setPreferredContentSize:?];
-  [v5 addObserver:self forKeyPath:@"title" options:1 context:0];
+  [controllerCopy addObserver:self forKeyPath:@"title" options:1 context:0];
 }
 
 - (void)_invalidateExtensionContext
@@ -380,30 +380,30 @@
       _os_log_impl(&dword_23AB78000, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", &v5, 0xCu);
     }
 
-    v4 = [(_UNNotificationContentExtensionVendorViewController *)self extensionContext];
-    [v4 completeRequestReturningItems:0 completionHandler:0];
+    extensionContext = [(_UNNotificationContentExtensionVendorViewController *)self extensionContext];
+    [extensionContext completeRequestReturningItems:0 completionHandler:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v14 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  extensionViewController = [(_UNNotificationContentExtensionVendorViewController *)self extensionViewController];
 
-  if (v11 == v10)
+  if (extensionViewController == objectCopy)
   {
-    v12 = [v14 isEqualToString:@"title"];
+    v12 = [pathCopy isEqualToString:@"title"];
 
     if (!v12)
     {
       goto LABEL_5;
     }
 
-    v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v13 = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
-    [v13 _extensionDidUpdateTitle:v11];
+    extensionViewController = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    notificationExtensionVendorContext = [(_UNNotificationContentExtensionVendorViewController *)self notificationExtensionVendorContext];
+    [notificationExtensionVendorContext _extensionDidUpdateTitle:extensionViewController];
   }
 
 LABEL_5:

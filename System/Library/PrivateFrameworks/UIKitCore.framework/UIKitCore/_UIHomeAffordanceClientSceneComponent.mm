@@ -1,73 +1,73 @@
 @interface _UIHomeAffordanceClientSceneComponent
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (void)_cachedHomeAffordanceSceneNotifier;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UIHomeAffordanceClientSceneComponent
 
 - (void)_cachedHomeAffordanceSceneNotifier
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (!v3)
     {
-      v4 = [a1 clientScene];
-      v5 = [UIScene _sceneForFBSScene:v4];
+      clientScene = [self clientScene];
+      v5 = [UIScene _sceneForFBSScene:clientScene];
 
-      v6 = [v5 _homeAffordanceSceneNotifier];
-      v7 = v2[3];
-      v2[3] = v6;
+      _homeAffordanceSceneNotifier = [v5 _homeAffordanceSceneNotifier];
+      v7 = selfCopy[3];
+      selfCopy[3] = _homeAffordanceSceneNotifier;
 
-      v3 = v2[3];
+      v3 = selfCopy[3];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v19 = a4;
-  v5 = [v19 settingsDiff];
-  v6 = [v5 containsProperty:sel_homeAffordanceSceneReferenceFrame];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_homeAffordanceSceneReferenceFrame];
 
-  v7 = v19;
+  v7 = settingsCopy;
   if (v6)
   {
-    v8 = [v19 settings];
-    [v8 homeAffordanceSceneReferenceFrame];
+    settings = [settingsCopy settings];
+    [settings homeAffordanceSceneReferenceFrame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [(_UIHomeAffordanceClientSceneComponent *)self _cachedHomeAffordanceSceneNotifier];
-    v18 = v17;
-    if (v17)
+    _cachedHomeAffordanceSceneNotifier = [(_UIHomeAffordanceClientSceneComponent *)self _cachedHomeAffordanceSceneNotifier];
+    v18 = _cachedHomeAffordanceSceneNotifier;
+    if (_cachedHomeAffordanceSceneNotifier)
     {
-      [(_UIHomeAffordanceSceneNotifier *)v17 _homeAffordanceSceneUpdateSource:v10 frameDidChange:v12, v14, v16];
+      [(_UIHomeAffordanceSceneNotifier *)_cachedHomeAffordanceSceneNotifier _homeAffordanceSceneUpdateSource:v10 frameDidChange:v12, v14, v16];
     }
 
-    v7 = v19;
+    v7 = settingsCopy;
   }
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  actionsCopy = actions;
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -105,9 +105,9 @@
 
         v16 = v15;
 
-        v17 = [(_UIHomeAffordanceClientSceneComponent *)self _cachedHomeAffordanceSceneNotifier];
-        v18 = v17;
-        if (v16 && v17)
+        _cachedHomeAffordanceSceneNotifier = [(_UIHomeAffordanceClientSceneComponent *)self _cachedHomeAffordanceSceneNotifier];
+        v18 = _cachedHomeAffordanceSceneNotifier;
+        if (v16 && _cachedHomeAffordanceSceneNotifier)
         {
           if (![v16 actionType])
           {

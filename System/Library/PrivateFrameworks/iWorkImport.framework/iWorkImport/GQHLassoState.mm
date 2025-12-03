@@ -1,26 +1,26 @@
 @interface GQHLassoState
 - (BOOL)finishMainHtml;
-- (BOOL)writeIndexPageWithIFrame:(id)a3;
+- (BOOL)writeIndexPageWithIFrame:(id)frame;
 - (CGPoint)maxCanvasPoint;
-- (GQHLassoState)initWithState:(id)a3;
-- (__CFString)cssZOrderClassForDrawableUid:(const char *)a3;
-- (__CFString)makeInlineStyle:(__CFString *)a3;
+- (GQHLassoState)initWithState:(id)state;
+- (__CFString)cssZOrderClassForDrawableUid:(const char *)uid;
+- (__CFString)makeInlineStyle:(__CFString *)style;
 - (__CFString)writeTabsJS;
 - (int)endSheet;
 - (unsigned)currentDrawableZOrder;
-- (void)addCachedStyle:(__CFString *)a3;
-- (void)addStyle:(__CFString *)a3 className:(__CFString *)a4 srcStyle:(id)a5;
-- (void)beginNewSheet:(const char *)a3 processorState:(id)a4;
-- (void)cacheAnchorForIndexPage:(char *)a3;
+- (void)addCachedStyle:(__CFString *)style;
+- (void)addStyle:(__CFString *)style className:(__CFString *)name srcStyle:(id)srcStyle;
+- (void)beginNewSheet:(const char *)sheet processorState:(id)state;
+- (void)cacheAnchorForIndexPage:(char *)page;
 - (void)dealloc;
-- (void)writeAnchorInNavigationPage:(char *)a3;
-- (void)writeIndexPageWithDocumentSize:(CGSize)a3;
-- (void)writeNavigationPage:(id)a3;
+- (void)writeAnchorInNavigationPage:(char *)page;
+- (void)writeIndexPageWithDocumentSize:(CGSize)size;
+- (void)writeNavigationPage:(id)page;
 @end
 
 @implementation GQHLassoState
 
-- (GQHLassoState)initWithState:(id)a3
+- (GQHLassoState)initWithState:(id)state
 {
   v8.receiver = self;
   v8.super_class = GQHLassoState;
@@ -35,15 +35,15 @@
     v5->mSheetUriList = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
     v5->mSheetOneCss = CFStringCreateMutable(0, 0);
     v5->mSheetOneLastCSS = CFStringCreateMutable(0, 0);
-    if ([a3 isGeneratingThumbnail])
+    if ([state isGeneratingThumbnail])
     {
       v5->mIsProgressiveMode = 0;
 LABEL_5:
-      [(GQHLassoState *)v5 writeNavigationPage:a3];
+      [(GQHLassoState *)v5 writeNavigationPage:state];
       return v5;
     }
 
-    [a3 outputBundle];
+    [state outputBundle];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v5->mIsProgressiveMode = isKindOfClass & 1;
@@ -146,7 +146,7 @@ LABEL_5:
   [(GQHState *)&v17 dealloc];
 }
 
-- (void)beginNewSheet:(const char *)a3 processorState:(id)a4
+- (void)beginNewSheet:(const char *)sheet processorState:(id)state
 {
   ++self->mSheetCount;
   self->mTableCount = 0;
@@ -181,7 +181,7 @@ LABEL_5:
 
     self->mSheetOneCss = CFStringCreateMutable(0, 0);
     self->mSheetOneLastCSS = CFStringCreateMutable(0, 0);
-    [objc_msgSend(a4 "outputBundle")];
+    [objc_msgSend(state "outputBundle")];
   }
 
   v11 = [[GQHXML alloc] initEmptyWithFilename:self->mCurrentSheetFilename useExternalCss:1];
@@ -203,8 +203,8 @@ LABEL_5:
 
     self->mSheetCssFilename = CFStringCreateWithFormat(kCFAllocatorDefault, 0, off_9D1D0, self->mSheetCount);
     self->mSheetCssLastFilename = CFStringCreateWithFormat(kCFAllocatorDefault, 0, off_9D1D8, self->mSheetCount);
-    v14 = [objc_msgSend(a4 "outputBundle")];
-    v15 = [objc_msgSend(a4 "outputBundle")];
+    v14 = [objc_msgSend(state "outputBundle")];
+    v15 = [objc_msgSend(state "outputBundle")];
     CFArrayAppendValue(self->mSheetCssUriList, v14);
     mSheetCssUriList = self->mSheetCssUriList;
     v21.length = CFArrayGetCount(mSheetCssUriList);
@@ -243,16 +243,16 @@ LABEL_5:
   if (self->mIsProgressiveMode)
   {
     mSheetCount = self->mSheetCount;
-    [(GQHLassoState *)self cacheAnchorForIndexPage:a3];
+    [(GQHLassoState *)self cacheAnchorForIndexPage:sheet];
     if (mSheetCount == 1)
     {
-      self->mFirstWorkspaceName = xmlStrdup(a3);
+      self->mFirstWorkspaceName = xmlStrdup(sheet);
     }
   }
 
   else
   {
-    [(GQHLassoState *)self writeAnchorInNavigationPage:a3];
+    [(GQHLassoState *)self writeAnchorInNavigationPage:sheet];
   }
 
   mDrawableUidToCssZOrderClassMap = self->mDrawableUidToCssZOrderClassMap;
@@ -265,14 +265,14 @@ LABEL_5:
   self->mCurrentDrawableZOrder = 0;
 }
 
-- (void)writeAnchorInNavigationPage:(char *)a3
+- (void)writeAnchorInNavigationPage:(char *)page
 {
   [(GQHXML *)self->mNavigation startElement:"a"];
   v5 = CFStringCreateWithFormat(0, 0, @"javascript:gotoSheet('%@'); return false;", self->mCurrentSheetUri);
   [(GQHXML *)self->mNavigation setAttribute:"onclick" cfStringValue:v5];
   CFRelease(v5);
   [(GQHXML *)self->mNavigation setAttribute:"href" value:"#"];
-  [(GQHXML *)self->mNavigation setAttribute:"title" value:a3];
+  [(GQHXML *)self->mNavigation setAttribute:"title" value:page];
   [(GQHXML *)self->mNavigation setAttribute:"class" value:"navpane-sheet"];
   [(GQHXML *)self->mNavigation startElement:"div"];
   [(GQHXML *)self->mNavigation setAttribute:"id" cfStringValue:self->mCurrentSheetUri];
@@ -286,16 +286,16 @@ LABEL_5:
   [(GQHXML *)self->mNavigation setAttribute:"width" cfStringValue:@"35"];
   [(GQHXML *)self->mNavigation endElement];
   [(GQHXML *)self->mNavigation addCharRef:"&ensp;"];
-  [(GQHXML *)self->mNavigation addXmlCharContent:a3];
+  [(GQHXML *)self->mNavigation addXmlCharContent:page];
   [(GQHXML *)self->mNavigation endElement];
   mNavigation = self->mNavigation;
 
   [(GQHXML *)mNavigation endElement];
 }
 
-- (void)cacheAnchorForIndexPage:(char *)a3
+- (void)cacheAnchorForIndexPage:(char *)page
 {
-  v4 = CFStringCreateWithCString(0, a3, 0x8000100u);
+  v4 = CFStringCreateWithCString(0, page, 0x8000100u);
   CFArrayAppendValue(self->mSheetUriList, self->mCurrentSheetUri);
   CFArrayAppendValue(self->mSheetFilenameList, v4);
   if (v4)
@@ -338,16 +338,16 @@ LABEL_5:
   return self->mSheetCount;
 }
 
-- (void)addStyle:(__CFString *)a3 className:(__CFString *)a4 srcStyle:(id)a5
+- (void)addStyle:(__CFString *)style className:(__CFString *)name srcStyle:(id)srcStyle
 {
-  if (a5)
+  if (srcStyle)
   {
-    if ([(GQHState *)self className:a5])
+    if ([(GQHState *)self className:srcStyle])
     {
       return;
     }
 
-    CFDictionarySetValue(self->super.mStyleNameMap, a5, a4);
+    CFDictionarySetValue(self->super.mStyleNameMap, srcStyle, name);
   }
 
   if (self->mIsProgressiveMode)
@@ -364,18 +364,18 @@ LABEL_5:
   if (v10)
   {
 
-    [v10 addStyleClass:{a3, a4}];
+    [v10 addStyleClass:{style, name}];
   }
 
   else
   {
     mSheetOneCss = self->mSheetOneCss;
 
-    CFStringAppend(mSheetOneCss, a3);
+    CFStringAppend(mSheetOneCss, style);
   }
 }
 
-- (__CFString)makeInlineStyle:(__CFString *)a3
+- (__CFString)makeInlineStyle:(__CFString *)style
 {
   if (self->mIsProgressiveMode)
   {
@@ -395,7 +395,7 @@ LABEL_5:
 
   else
   {
-    Value = CFDictionaryGetValue(self->super.mInlineStyles, a3);
+    Value = CFDictionaryGetValue(self->super.mInlineStyles, style);
     if (Value)
     {
       return Value;
@@ -404,16 +404,16 @@ LABEL_5:
     v8 = (self->super.mInlineStyleIndex + 1);
     self->super.mInlineStyleIndex = v8;
     v7 = CFStringCreateWithFormat(0, 0, @"i%d", v8);
-    CFDictionarySetValue(self->super.mInlineStyles, a3, v7);
+    CFDictionarySetValue(self->super.mInlineStyles, style, v7);
     CFRelease(v7);
-    v9 = CFStringCreateWithFormat(0, 0, @".%@ { %@ }\n", v7, a3);
+    v9 = CFStringCreateWithFormat(0, 0, @".%@ { %@ }\n", v7, style);
     CFStringAppend(self->mSheetOneLastCSS, v9);
     CFRelease(v9);
     return v7;
   }
 }
 
-- (void)addCachedStyle:(__CFString *)a3
+- (void)addCachedStyle:(__CFString *)style
 {
   if (self->mIsProgressiveMode)
   {
@@ -428,12 +428,12 @@ LABEL_5:
   v4 = *(&self->super.super.isa + v3);
   if (v4)
   {
-    [v4 addStyleClass:a3];
+    [v4 addStyleClass:style];
   }
 
   else
   {
-    CFStringAppend(self->mSheetOneCss, a3);
+    CFStringAppend(self->mSheetOneCss, style);
   }
 }
 
@@ -443,17 +443,17 @@ LABEL_5:
   [(GQHXML *)self->mNavigation endElement];
   if ([(GQHXML *)self->mNavigation isProgressive])
   {
-    v3 = [(GQHXML *)self->mNavigation createProgressiveHtml];
-    v4 = [(GQSDocument *)self->super.mProcessorState outputBundle];
-    [v4 appendData:v3 mimeType:@"text/html" resourceName:off_9D1E0];
-    CFRelease(v3);
+    createProgressiveHtml = [(GQHXML *)self->mNavigation createProgressiveHtml];
+    outputBundle = [(GQSDocument *)self->super.mProcessorState outputBundle];
+    [outputBundle appendData:createProgressiveHtml mimeType:@"text/html" resourceName:off_9D1E0];
+    CFRelease(createProgressiveHtml);
   }
 
   v5 = [(GQHXML *)self->mNavigation writeToOutputBundle:[(GQSDocument *)self->super.mProcessorState outputBundle] isThumbnail:[(GQSDocument *)self->super.mProcessorState isGeneratingThumbnail]];
   if (v5 && [(GQHXML *)self->mNavigation isProgressive])
   {
-    v6 = [(GQSDocument *)self->super.mProcessorState outputBundle];
-    [v6 closeAttachment:off_9D1E0];
+    outputBundle2 = [(GQSDocument *)self->super.mProcessorState outputBundle];
+    [outputBundle2 closeAttachment:off_9D1E0];
   }
 
   return v5;
@@ -468,16 +468,16 @@ LABEL_5:
   return result;
 }
 
-- (__CFString)cssZOrderClassForDrawableUid:(const char *)a3
+- (__CFString)cssZOrderClassForDrawableUid:(const char *)uid
 {
-  Value = CFDictionaryGetValue(self->mDrawableUidToCssZOrderClassMap, a3);
+  Value = CFDictionaryGetValue(self->mDrawableUidToCssZOrderClassMap, uid);
   if (!Value)
   {
     v6 = self->mZOrderedDrawableCount + 1;
     self->mZOrderedDrawableCount = v6;
     Value = CFStringCreateWithFormat(0, 0, @"drawableZOrder_%u", v6);
     mDrawableUidToCssZOrderClassMap = self->mDrawableUidToCssZOrderClassMap;
-    v8 = xmlStrdup(a3);
+    v8 = xmlStrdup(uid);
     CFDictionarySetValue(mDrawableUidToCssZOrderClassMap, v8, Value);
     CFRelease(Value);
   }
@@ -492,7 +492,7 @@ LABEL_5:
   return v2;
 }
 
-- (void)writeIndexPageWithDocumentSize:(CGSize)a3
+- (void)writeIndexPageWithDocumentSize:(CGSize)size
 {
   v9 = [[GQHXML alloc] initEmptyWithFilename:@"index.html" useExternalCss:1];
   [v9 startElement:"head"];
@@ -501,10 +501,10 @@ LABEL_5:
   [v9 setAttribute:"type" value:"text/css"];
   [v9 setAttribute:"href" cfStringValue:self->mCssUri];
   [v9 endElement];
-  v4 = [(GQSDocument *)self->super.mProcessorState filename];
-  if (v4)
+  filename = [(GQSDocument *)self->super.mProcessorState filename];
+  if (filename)
   {
-    v5 = v4;
+    v5 = filename;
     [v9 startElement:"title"];
     [v9 addContent:v5];
     [v9 endElement];
@@ -516,8 +516,8 @@ LABEL_5:
   [v9 setAttribute:"cols" cfStringValue:v6];
   CFRelease(v6);
   [v9 startElement:"frame"];
-  v7 = [(GQSDocument *)self->super.mProcessorState outputBundle];
-  v8 = [v7 createUriForResource:off_9D1E0];
+  outputBundle = [(GQSDocument *)self->super.mProcessorState outputBundle];
+  v8 = [outputBundle createUriForResource:off_9D1E0];
   [v9 setAttribute:"src" cfStringValue:v8];
   CFRelease(v8);
   [v9 setAttribute:"name" value:"navPane"];
@@ -530,7 +530,7 @@ LABEL_5:
   [v9 writeToOutputBundle:-[GQSDocument outputBundle](self->super.mProcessorState isThumbnail:{"outputBundle"), -[GQSDocument isGeneratingThumbnail](self->super.mProcessorState, "isGeneratingThumbnail")}];
 }
 
-- (BOOL)writeIndexPageWithIFrame:(id)a3
+- (BOOL)writeIndexPageWithIFrame:(id)frame
 {
   v4 = [[GQHXML alloc] initEmptyWithFilename:@"index.html" useExternalCss:1];
   self->mIndex = v4;
@@ -541,10 +541,10 @@ LABEL_5:
   mCssUri = self->mCssUri;
   [GQHXML setAttribute:"setAttribute:cfStringValue:" cfStringValue:?];
   [(GQHXML *)self->mIndex endElement];
-  v6 = [(GQSDocument *)self->super.mProcessorState filename];
-  if (v6)
+  filename = [(GQSDocument *)self->super.mProcessorState filename];
+  if (filename)
   {
-    v7 = v6;
+    v7 = filename;
     [(GQHXML *)self->mIndex startElement:"title"];
     [(GQHXML *)self->mIndex addContent:v7];
     [(GQHXML *)self->mIndex endElement];
@@ -700,27 +700,27 @@ LABEL_5:
 
   [(GQHXML *)self->mIndex endElement];
   mIndex = self->mIndex;
-  v30 = [(GQSDocument *)self->super.mProcessorState outputBundle];
-  v31 = [(GQSDocument *)self->super.mProcessorState isGeneratingThumbnail];
+  outputBundle = [(GQSDocument *)self->super.mProcessorState outputBundle];
+  isGeneratingThumbnail = [(GQSDocument *)self->super.mProcessorState isGeneratingThumbnail];
 
-  return [(GQHXML *)mIndex writeToOutputBundle:v30 isThumbnail:v31];
+  return [(GQHXML *)mIndex writeToOutputBundle:outputBundle isThumbnail:isGeneratingThumbnail];
 }
 
-- (void)writeNavigationPage:(id)a3
+- (void)writeNavigationPage:(id)page
 {
   v5 = [GQHXML alloc];
-  self->mNavigation = -[GQHXML initWithFilename:documentSize:outputBundle:useExternalCss:](v5, "initWithFilename:documentSize:outputBundle:useExternalCss:", off_9D1E0, 0, [a3 outputBundle], 1);
+  self->mNavigation = -[GQHXML initWithFilename:documentSize:outputBundle:useExternalCss:](v5, "initWithFilename:documentSize:outputBundle:useExternalCss:", off_9D1E0, 0, [page outputBundle], 1);
   mIsProgressiveMode = self->mIsProgressiveMode;
-  v7 = [a3 outputBundle];
-  v8 = [(GQHXML *)self->mNavigation cssFilename];
+  outputBundle = [page outputBundle];
+  cssFilename = [(GQHXML *)self->mNavigation cssFilename];
   if (mIsProgressiveMode)
   {
-    [v7 setData:0 mimeType:@"text/css" forNamedResource:v8];
+    [outputBundle setData:0 mimeType:@"text/css" forNamedResource:cssFilename];
   }
 
   else
   {
-    self->mCssUri = [v7 createUriForResource:v8];
+    self->mCssUri = [outputBundle createUriForResource:cssFilename];
   }
 
   [(GQHXML *)self->mNavigation startElement:"script"];
@@ -734,7 +734,7 @@ LABEL_5:
 
   else
   {
-    v10 = [objc_msgSend(a3 "outputBundle")];
+    v10 = [objc_msgSend(page "outputBundle")];
   }
 
   v11 = CFStringCreateWithFormat(0, 0, @"var currentSheetUri = '%@';\nfunction gotoSheet(sheet)\n{\n    if (sheet != currentSheetUri)\n    {\n        parent.frames['sheetPane'].location = sheet;\n        document.getElementById(currentSheetUri).className = '';\n        document.getElementById(sheet).className = 'navpane-activesheet';\n        currentSheetUri = sheet;\n    }\n}\n", v10);
@@ -756,11 +756,11 @@ LABEL_5:
   if (self->mIsProgressiveMode)
   {
     [(GQHLassoState *)self writeAnchorInNavigationPage:self->mFirstWorkspaceName];
-    v12 = [(GQHXML *)self->mNavigation createProgressiveHtml];
-    v13 = [(GQSDocument *)self->super.mProcessorState outputBundle];
-    [v13 appendData:v12 mimeType:@"text/html" resourceName:off_9D1E0];
+    createProgressiveHtml = [(GQHXML *)self->mNavigation createProgressiveHtml];
+    outputBundle2 = [(GQSDocument *)self->super.mProcessorState outputBundle];
+    [outputBundle2 appendData:createProgressiveHtml mimeType:@"text/html" resourceName:off_9D1E0];
 
-    CFRelease(v12);
+    CFRelease(createProgressiveHtml);
   }
 }
 

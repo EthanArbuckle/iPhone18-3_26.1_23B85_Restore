@@ -1,12 +1,12 @@
 @interface PAGetAutoBrightness
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PAGetAutoBrightness
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (+[PSBrightnessSettingsDetail deviceSupportsAutoBrightness])
   {
     v4 = +[PSBrightnessSettingsDetail autoBrightnessEnabled];
@@ -36,8 +36,8 @@
     [v6 setReason:@"Device does not support ALS"];
   }
 
-  v9 = [v6 dictionary];
-  v3[2](v3, v9);
+  dictionary = [v6 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

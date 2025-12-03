@@ -1,8 +1,8 @@
 @interface MBAssetMetadata
-+ (id)assetMetadataForEmptyFileWithEncryptionKey:(id)a3;
-+ (id)assetMetadataForFilePendingUploadWithEncryptionKey:(id)a3 size:(int64_t)a4;
++ (id)assetMetadataForEmptyFileWithEncryptionKey:(id)key;
++ (id)assetMetadataForFilePendingUploadWithEncryptionKey:(id)key size:(int64_t)size;
 - (BOOL)isPendingUpload;
-- (MBAssetMetadata)initWithRecordIDSuffix:(id)a3 signature:(id)a4 size:(int64_t)a5 type:(unint64_t)a6 compressionMethod:(char)a7 encryptionKey:(id)a8;
+- (MBAssetMetadata)initWithRecordIDSuffix:(id)suffix signature:(id)signature size:(int64_t)size type:(unint64_t)type compressionMethod:(char)method encryptionKey:(id)key;
 - (id)_keybagUUIDData;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -13,7 +13,7 @@
 
 - (id)_keybagUUIDData
 {
-  v3 = [(MBAssetMetadata *)self encryptionKey];
+  encryptionKey = [(MBAssetMetadata *)self encryptionKey];
   v4 = MKBBackupCopyBackupKeyUUID();
 
   if (v4)
@@ -22,7 +22,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "Failed to get UUID from encryption key for file %@", buf, 0xCu);
       _MBLog();
     }
@@ -31,39 +31,39 @@
   return 0;
 }
 
-+ (id)assetMetadataForFilePendingUploadWithEncryptionKey:(id)a3 size:(int64_t)a4
++ (id)assetMetadataForFilePendingUploadWithEncryptionKey:(id)key size:(int64_t)size
 {
-  v5 = a3;
-  v6 = [[MBAssetMetadata alloc] initWithRecordIDSuffix:0 signature:0 size:a4 type:1 compressionMethod:0 encryptionKey:v5];
+  keyCopy = key;
+  v6 = [[MBAssetMetadata alloc] initWithRecordIDSuffix:0 signature:0 size:size type:1 compressionMethod:0 encryptionKey:keyCopy];
 
   return v6;
 }
 
-+ (id)assetMetadataForEmptyFileWithEncryptionKey:(id)a3
++ (id)assetMetadataForEmptyFileWithEncryptionKey:(id)key
 {
-  v3 = a3;
-  v4 = [[MBAssetMetadata alloc] initWithRecordIDSuffix:@"EMPTY_FILE" signature:0 size:0 type:4 compressionMethod:0 encryptionKey:v3];
+  keyCopy = key;
+  v4 = [[MBAssetMetadata alloc] initWithRecordIDSuffix:@"EMPTY_FILE" signature:0 size:0 type:4 compressionMethod:0 encryptionKey:keyCopy];
 
   return v4;
 }
 
-- (MBAssetMetadata)initWithRecordIDSuffix:(id)a3 signature:(id)a4 size:(int64_t)a5 type:(unint64_t)a6 compressionMethod:(char)a7 encryptionKey:(id)a8
+- (MBAssetMetadata)initWithRecordIDSuffix:(id)suffix signature:(id)signature size:(int64_t)size type:(unint64_t)type compressionMethod:(char)method encryptionKey:(id)key
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  suffixCopy = suffix;
+  signatureCopy = signature;
+  keyCopy = key;
   v21.receiver = self;
   v21.super_class = MBAssetMetadata;
   v18 = [(MBAssetMetadata *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_recordIDSuffix, a3);
-    objc_storeStrong(&v19->_assetSignature, a4);
-    v19->_assetSize = a5;
-    v19->_assetType = a6;
-    v19->_compressionMethod = a7;
-    objc_storeStrong(&v19->_encryptionKey, a8);
+    objc_storeStrong(&v18->_recordIDSuffix, suffix);
+    objc_storeStrong(&v19->_assetSignature, signature);
+    v19->_assetSize = size;
+    v19->_assetType = type;
+    v19->_compressionMethod = method;
+    objc_storeStrong(&v19->_encryptionKey, key);
   }
 
   return v19;
@@ -165,11 +165,11 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(MBAssetMetadata *)self recordIDSuffix];
-  if (v4)
+  recordIDSuffix = [(MBAssetMetadata *)self recordIDSuffix];
+  if (recordIDSuffix)
   {
-    v5 = [(MBAssetMetadata *)self assetSignature];
-    v3 = v5 == 0;
+    assetSignature = [(MBAssetMetadata *)self assetSignature];
+    v3 = assetSignature == 0;
   }
 
   else
@@ -184,8 +184,8 @@ LABEL_12:
 {
   v3 = objc_opt_class();
   Name = class_getName(v3);
-  v5 = [(MBAssetMetadata *)self stringRepresentation];
-  v6 = [NSString stringWithFormat:@"<%s: %p, %@>", Name, self, v5];
+  stringRepresentation = [(MBAssetMetadata *)self stringRepresentation];
+  v6 = [NSString stringWithFormat:@"<%s: %p, %@>", Name, self, stringRepresentation];
 
   return v6;
 }

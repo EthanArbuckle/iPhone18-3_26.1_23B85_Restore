@@ -1,10 +1,10 @@
 @interface SOSMessageKVS
-- (BOOL)SOSTransportMessageCleanupAfterPeerMessages:(id)a3 peers:(__CFDictionary *)a4 err:(__CFError *)a5;
-- (BOOL)SOSTransportMessageKVSAppendKeyInterest:(id)a3 ak:(__CFArray *)a4 firstUnlock:(__CFArray *)a5 unlocked:(__CFArray *)a6 err:(__CFError *)a7;
-- (BOOL)SOSTransportMessageSendMessages:(id)a3 pm:(__CFDictionary *)a4 err:(__CFError *)a5;
-- (BOOL)SOSTransportMessageSyncWithPeers:(id)a3 p:(__CFSet *)a4 err:(__CFError *)a5;
-- (SOSMessageKVS)initWithAccount:(id)a3 andName:(id)a4;
-- (__CFDictionary)SOSTransportMessageHandlePeerMessageReturnsHandledCopy:(id)a3 peerMessages:(__CFDictionary *)a4 err:(__CFError *)a5;
+- (BOOL)SOSTransportMessageCleanupAfterPeerMessages:(id)messages peers:(__CFDictionary *)peers err:(__CFError *)err;
+- (BOOL)SOSTransportMessageKVSAppendKeyInterest:(id)interest ak:(__CFArray *)ak firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err;
+- (BOOL)SOSTransportMessageSendMessages:(id)messages pm:(__CFDictionary *)pm err:(__CFError *)err;
+- (BOOL)SOSTransportMessageSyncWithPeers:(id)peers p:(__CFSet *)p err:(__CFError *)err;
+- (SOSMessageKVS)initWithAccount:(id)account andName:(id)name;
+- (__CFDictionary)SOSTransportMessageHandlePeerMessageReturnsHandledCopy:(id)copy peerMessages:(__CFDictionary *)messages err:(__CFError *)err;
 - (__CFString)SOSTransportMessageGetCircleName;
 - (void)SOSTransportMessageGetEngine;
 - (void)dealloc;
@@ -12,7 +12,7 @@
 
 @implementation SOSMessageKVS
 
-- (BOOL)SOSTransportMessageSendMessages:(id)a3 pm:(__CFDictionary *)a4 err:(__CFError *)a5
+- (BOOL)SOSTransportMessageSendMessages:(id)messages pm:(__CFDictionary *)pm err:(__CFError *)err
 {
   v13 = 0;
   v14 = &v13;
@@ -22,18 +22,18 @@
   context[1] = 3221225472;
   context[2] = sub_10025B674;
   context[3] = &unk_100347740;
-  v7 = a3;
+  messagesCopy = messages;
   v11 = &v13;
-  v12 = a5;
-  v10 = v7;
-  CFDictionaryApplyFunction(a4, sub_10025B7F4, context);
-  LOBYTE(a5) = *(v14 + 24);
+  errCopy = err;
+  v10 = messagesCopy;
+  CFDictionaryApplyFunction(pm, sub_10025B7F4, context);
+  LOBYTE(err) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return a5;
+  return err;
 }
 
-- (BOOL)SOSTransportMessageSyncWithPeers:(id)a3 p:(__CFSet *)a4 err:(__CFError *)a5
+- (BOOL)SOSTransportMessageSyncWithPeers:(id)peers p:(__CFSet *)p err:(__CFError *)err
 {
   v13 = 0;
   v14 = &v13;
@@ -44,22 +44,22 @@
   context[2] = sub_10025B9C4;
   context[3] = &unk_100347718;
   v11 = &v13;
-  v7 = a3;
-  v10 = v7;
-  v12 = a5;
-  CFSetApplyFunction(a4, sub_10025BAA4, context);
-  LOBYTE(a5) = *(v14 + 24);
+  peersCopy = peers;
+  v10 = peersCopy;
+  errCopy = err;
+  CFSetApplyFunction(p, sub_10025BAA4, context);
+  LOBYTE(err) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return a5;
+  return err;
 }
 
-- (__CFDictionary)SOSTransportMessageHandlePeerMessageReturnsHandledCopy:(id)a3 peerMessages:(__CFDictionary *)a4 err:(__CFError *)a5
+- (__CFDictionary)SOSTransportMessageHandlePeerMessageReturnsHandledCopy:(id)copy peerMessages:(__CFDictionary *)messages err:(__CFError *)err
 {
-  v6 = a3;
+  copyCopy = copy;
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v8 = [v6 circleName];
-  Value = CFDictionaryGetValue(a4, v8);
+  circleName = [copyCopy circleName];
+  Value = CFDictionaryGetValue(messages, circleName);
 
   v10 = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
   if (Value)
@@ -68,13 +68,13 @@
     v14 = 3221225472;
     v15 = sub_10025BC10;
     v16 = &unk_1003476F0;
-    v17 = v6;
+    v17 = copyCopy;
     v18 = v10;
     CFDictionaryApplyFunction(Value, sub_10025B7F4, &v13);
   }
 
-  v11 = [v6 circleName];
-  CFDictionaryAddValue(Mutable, v11, v10);
+  circleName2 = [copyCopy circleName];
+  CFDictionaryAddValue(Mutable, circleName2, v10);
 
   if (v10)
   {
@@ -84,39 +84,39 @@
   return Mutable;
 }
 
-- (BOOL)SOSTransportMessageCleanupAfterPeerMessages:(id)a3 peers:(__CFDictionary *)a4 err:(__CFError *)a5
+- (BOOL)SOSTransportMessageCleanupAfterPeerMessages:(id)messages peers:(__CFDictionary *)peers err:(__CFError *)err
 {
-  v7 = a3;
-  v8 = [v7 SOSTransportMessageGetEngine];
+  messagesCopy = messages;
+  sOSTransportMessageGetEngine = [messagesCopy SOSTransportMessageGetEngine];
   v9 = [OTSOSActualAdapter sosEnabled]_0();
   v10 = 0;
-  if (v8 && v9)
+  if (sOSTransportMessageGetEngine && v9)
   {
-    v10 = v8[10];
+    v10 = sOSTransportMessageGetEngine[10];
   }
 
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10025BE5C;
   v17 = &unk_1003476F0;
-  v18 = v7;
+  v18 = messagesCopy;
   v19 = v10;
-  v11 = v7;
-  CFDictionaryApplyFunction(a4, sub_10025B7F4, &v14);
-  v12 = [v11 SOSTransportMessageFlushChanges:v11 err:{a5, v14, v15, v16, v17}];
+  v11 = messagesCopy;
+  CFDictionaryApplyFunction(peers, sub_10025B7F4, &v14);
+  v12 = [v11 SOSTransportMessageFlushChanges:v11 err:{err, v14, v15, v16, v17}];
 
   return v12;
 }
 
-- (BOOL)SOSTransportMessageKVSAppendKeyInterest:(id)a3 ak:(__CFArray *)a4 firstUnlock:(__CFArray *)a5 unlocked:(__CFArray *)a6 err:(__CFError *)a7
+- (BOOL)SOSTransportMessageKVSAppendKeyInterest:(id)interest ak:(__CFArray *)ak firstUnlock:(__CFArray *)unlock unlocked:(__CFArray *)unlocked err:(__CFError *)err
 {
-  v10 = a3;
-  v11 = [(SOSMessage *)self engine];
-  if (v11)
+  interestCopy = interest;
+  engine = [(SOSMessage *)self engine];
+  if (engine)
   {
-    v12 = [(SOSMessageKVS *)self SOSTransportMessageGetAccount];
-    v13 = [v12 trust];
-    [v13 fullPeerInfo];
+    sOSTransportMessageGetAccount = [(SOSMessageKVS *)self SOSTransportMessageGetAccount];
+    trust = [sOSTransportMessageGetAccount trust];
+    [trust fullPeerInfo];
     PeerInfo = SOSFullPeerInfoGetPeerInfo();
     if (PeerInfo)
     {
@@ -127,24 +127,24 @@
     v25[1] = 3221225472;
     v25[2] = sub_10021AB70;
     v25[3] = &unk_1003457A0;
-    v26 = v12;
+    v26 = sOSTransportMessageGetAccount;
     v27 = PeerInfo;
-    v15 = v12;
-    v16 = sub_10021A908(v15, a7, v25);
+    v15 = sOSTransportMessageGetAccount;
+    v16 = sub_10021A908(v15, err, v25);
 
     if (v16)
     {
-      v17 = [(SOSMessage *)self account];
-      v18 = [v17 peerID];
+      account = [(SOSMessage *)self account];
+      peerID = [account peerID];
 
       context[0] = _NSConcreteStackBlock;
       context[1] = 3221225472;
       context[2] = sub_10025C378;
       context[3] = &unk_1003476C8;
-      v22 = v10;
-      v23 = v18;
-      v24 = a6;
-      v19 = v18;
+      v22 = interestCopy;
+      v23 = peerID;
+      unlockedCopy = unlocked;
+      v19 = peerID;
       v28.length = CFArrayGetCount(v16);
       v28.location = 0;
       CFArrayApplyFunction(v16, v28, sub_10025BAA4, context);
@@ -152,17 +152,17 @@
     }
   }
 
-  return v11 != 0;
+  return engine != 0;
 }
 
 - (void)SOSTransportMessageGetEngine
 {
   if (![(SOSMessage *)self engine])
   {
-    v3 = [(SOSMessage *)self account];
-    v4 = [v3 factory];
-    v5 = [(SOSMessage *)self circleName];
-    if (v4 && (v6 = v4[1](v4, v5, 0)) != 0)
+    account = [(SOSMessage *)self account];
+    factory = [account factory];
+    circleName = [(SOSMessage *)self circleName];
+    if (factory && (v6 = factory[1](factory, circleName, 0)) != 0)
     {
       v7 = *v6;
       (*(v6 + 72))(v6, 0);
@@ -187,9 +187,9 @@
 
 - (__CFString)SOSTransportMessageGetCircleName
 {
-  v2 = [(SOSMessage *)self circleName];
+  circleName = [(SOSMessage *)self circleName];
 
-  return v2;
+  return circleName;
 }
 
 - (void)dealloc
@@ -206,23 +206,23 @@
   [(SOSMessage *)&v4 dealloc];
 }
 
-- (SOSMessageKVS)initWithAccount:(id)a3 andName:(id)a4
+- (SOSMessageKVS)initWithAccount:(id)account andName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = SOSMessageKVS;
   v8 = [(SOSMessageKVS *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    [(SOSMessage *)v8 setAccount:v6];
-    v10 = [[NSString alloc] initWithString:v7];
+    [(SOSMessage *)v8 setAccount:accountCopy];
+    v10 = [[NSString alloc] initWithString:nameCopy];
     [(SOSMessage *)v9 setCircleName:v10];
 
-    v11 = [v6 factory];
-    v12 = [(SOSMessage *)v9 circleName];
-    if (v11 && (v13 = v11[1](v11, v12, 0)) != 0)
+    factory = [accountCopy factory];
+    circleName = [(SOSMessage *)v9 circleName];
+    if (factory && (v13 = factory[1](factory, circleName, 0)) != 0)
     {
       v14 = *v13;
       (*(v13 + 72))(v13, 0);

@@ -1,76 +1,76 @@
 @interface SBPeekSplitViewRoutingSwitcherModifier
-+ (id)modifierForEvent:(id)a3;
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4;
++ (id)modifierForEvent:(id)event;
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier;
 - (BOOL)isContainerStatusBarVisible;
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleSelectable:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)routingModifier:(id)a3 containerViewBoundsForModifier:(id)a4;
-- (CGRect)routingModifier:(id)a3 switcherViewBoundsForModifier:(id)a4;
-- (SBPeekSplitViewRoutingSwitcherModifier)initWithPeekConfiguration:(int64_t)a3 spaceConfiguration:(int64_t)a4 peekingAppLayout:(id)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleSelectable:(int64_t)selectable inAppLayout:(id)layout;
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)routingModifier:(id)modifier containerViewBoundsForModifier:(id)forModifier;
+- (CGRect)routingModifier:(id)modifier switcherViewBoundsForModifier:(id)forModifier;
+- (SBPeekSplitViewRoutingSwitcherModifier)initWithPeekConfiguration:(int64_t)configuration spaceConfiguration:(int64_t)spaceConfiguration peekingAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)homeScreenDimmingAlpha;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (id)_combinedResultingAppLayoutWithAppLayout:(id)a3;
-- (id)_handleEvent:(id)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutContainingAppLayout:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (id)_combinedResultingAppLayoutWithAppLayout:(id)layout;
+- (id)_handleEvent:(id)event;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutContainingAppLayout:(id)layout;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugPotentialChildModifiers;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)homeScreenModifierForRoutingModifier:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)handleEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)homeScreenModifierForRoutingModifier:(id)modifier;
 - (id)keyboardSuppressionMode;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
-- (id)routingModifier:(id)a3 animationAttributesModifierForLayoutElement:(id)a4;
-- (id)routingModifier:(id)a3 event:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 filteredAppLayouts:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 filteredContinuousExposeIdentifiers:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 modifierForAppLayout:(id)a4;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
+- (id)routingModifier:(id)modifier animationAttributesModifierForLayoutElement:(id)element;
+- (id)routingModifier:(id)modifier event:(id)event forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier filteredAppLayouts:(id)layouts forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier filteredContinuousExposeIdentifiers:(id)identifiers forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier modifierForAppLayout:(id)layout;
 - (id)topMostLayoutElements;
 - (id)visibleHomeAffordanceLayoutElements;
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (unint64_t)hiddenContainerStatusBarParts;
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3;
+- (unint64_t)maskedCornersForIndex:(unint64_t)index;
 - (unint64_t)transactionCompletionOptions;
-- (void)_temporarilyAllowUnconditionaryAppLayoutContainmentWithBlock:(id)a3;
+- (void)_temporarilyAllowUnconditionaryAppLayoutContainmentWithBlock:(id)block;
 @end
 
 @implementation SBPeekSplitViewRoutingSwitcherModifier
 
-- (SBPeekSplitViewRoutingSwitcherModifier)initWithPeekConfiguration:(int64_t)a3 spaceConfiguration:(int64_t)a4 peekingAppLayout:(id)a5
+- (SBPeekSplitViewRoutingSwitcherModifier)initWithPeekConfiguration:(int64_t)configuration spaceConfiguration:(int64_t)spaceConfiguration peekingAppLayout:(id)layout
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  layoutCopy = layout;
   v24.receiver = self;
   v24.super_class = SBPeekSplitViewRoutingSwitcherModifier;
   v11 = [(SBSwitcherModifier *)&v24 init];
   if (v11)
   {
-    if (!SBPeekConfigurationIsValid(a3))
+    if (!SBPeekConfigurationIsValid(configuration))
     {
       [SBPeekSplitViewRoutingSwitcherModifier initWithPeekConfiguration:a2 spaceConfiguration:v11 peekingAppLayout:?];
     }
 
-    if (SBSpaceConfigurationIsValid(a4))
+    if (SBSpaceConfigurationIsValid(spaceConfiguration))
     {
-      if (v10)
+      if (layoutCopy)
       {
 LABEL_6:
-        v11->_peekConfiguration = a3;
-        v11->_spaceConfiguration = a4;
-        objc_storeStrong(&v11->_peekingAppLayout, a5);
+        v11->_peekConfiguration = configuration;
+        v11->_spaceConfiguration = spaceConfiguration;
+        objc_storeStrong(&v11->_peekingAppLayout, layout);
         v12 = +[SBAppSwitcherDomain rootSettings];
         switcherSettings = v11->_switcherSettings;
         v11->_switcherSettings = v12;
@@ -101,7 +101,7 @@ LABEL_6:
     else
     {
       [SBPeekSplitViewRoutingSwitcherModifier initWithPeekConfiguration:a2 spaceConfiguration:v11 peekingAppLayout:?];
-      if (v10)
+      if (layoutCopy)
       {
         goto LABEL_6;
       }
@@ -116,7 +116,7 @@ LABEL_7:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   peekConfiguration = self->_peekConfiguration;
@@ -137,19 +137,19 @@ LABEL_7:
   return v3;
 }
 
-+ (id)modifierForEvent:(id)a3
++ (id)modifierForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_class();
-  v5 = SBSafeCast(v4, v3);
+  v5 = SBSafeCast(v4, eventCopy);
 
   if (v5 && [v5 isEnteringSplitViewPeekEvent] && (objc_msgSend(v5, "phase") == 1 || (objc_msgSend(v5, "isAnimated") & 1) == 0))
   {
     v7 = [SBPeekSplitViewRoutingSwitcherModifier alloc];
-    v8 = [v5 toPeekConfiguration];
-    v9 = [v5 toSpaceConfiguration];
-    v10 = [v5 toAppLayout];
-    v6 = [(SBPeekSplitViewRoutingSwitcherModifier *)v7 initWithPeekConfiguration:v8 spaceConfiguration:v9 peekingAppLayout:v10];
+    toPeekConfiguration = [v5 toPeekConfiguration];
+    toSpaceConfiguration = [v5 toSpaceConfiguration];
+    toAppLayout = [v5 toAppLayout];
+    v6 = [(SBPeekSplitViewRoutingSwitcherModifier *)v7 initWithPeekConfiguration:toPeekConfiguration spaceConfiguration:toSpaceConfiguration peekingAppLayout:toAppLayout];
   }
 
   else
@@ -160,22 +160,22 @@ LABEL_7:
   return v6;
 }
 
-- (id)appLayoutContainingAppLayout:(id)a3
+- (id)appLayoutContainingAppLayout:(id)layout
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v27.receiver = self;
   v27.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v27 appLayoutContainingAppLayout:v4];
+  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v27 appLayoutContainingAppLayout:layoutCopy];
   v6 = v5;
   if (!self->_uncondtionallyAllowAppLayoutContainment)
   {
     peekingAppLayout = self->_peekingAppLayout;
-    v6 = v4;
-    if (peekingAppLayout == v4)
+    v6 = layoutCopy;
+    if (peekingAppLayout == layoutCopy)
     {
       v6 = v5;
-      if (v5 == v4)
+      if (v5 == layoutCopy)
       {
         v6 = v5;
         if ((self->_peekState - 1) <= 1)
@@ -227,7 +227,7 @@ LABEL_7:
           v30[1] = v17;
           v31[1] = v26;
           v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-          v19 = [(SBAppLayout *)v23 initWithItemsForLayoutRoles:v18 configuration:SBAppLayoutConfigurationFromMainDisplayLayoutStateSpaceConfiguration(self->_spaceConfiguration) centerConfiguration:[(SBAppLayout *)v4 centerConfiguration] environment:[(SBAppLayout *)v4 environment] hidden:0 preferredDisplayOrdinal:[(SBPeekSplitViewRoutingSwitcherModifier *)self displayOrdinal]];
+          v19 = [(SBAppLayout *)v23 initWithItemsForLayoutRoles:v18 configuration:SBAppLayoutConfigurationFromMainDisplayLayoutStateSpaceConfiguration(self->_spaceConfiguration) centerConfiguration:[(SBAppLayout *)layoutCopy centerConfiguration] environment:[(SBAppLayout *)layoutCopy environment] hidden:0 preferredDisplayOrdinal:[(SBPeekSplitViewRoutingSwitcherModifier *)self displayOrdinal]];
 
           v28[0] = v12;
           v28[1] = v26;
@@ -247,14 +247,14 @@ LABEL_7:
   return v6;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__SBPeekSplitViewRoutingSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_invoke;
   v8[3] = &unk_2783A8CB8;
   v8[4] = self;
-  v4 = [a3 bs_filter:v8];
+  v4 = [layouts bs_filter:v8];
   v7.receiver = self;
   v7.super_class = SBPeekSplitViewRoutingSwitcherModifier;
   v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v7 adjustedAppLayoutsForAppLayouts:v4];
@@ -271,10 +271,10 @@ uint64_t __74__SBPeekSplitViewRoutingSwitcherModifier_adjustedAppLayoutsForAppLa
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_peekingAppLayout && (self->_peekState - 1) <= 1)
   {
@@ -285,7 +285,7 @@ uint64_t __74__SBPeekSplitViewRoutingSwitcherModifier_adjustedAppLayoutsForAppLa
   {
     v19.receiver = self;
     v19.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-    [(SBPeekSplitViewRoutingSwitcherModifier *)&v19 frameForIndex:a3];
+    [(SBPeekSplitViewRoutingSwitcherModifier *)&v19 frameForIndex:index];
   }
 
   v11 = v7;
@@ -304,17 +304,17 @@ uint64_t __74__SBPeekSplitViewRoutingSwitcherModifier_adjustedAppLayoutsForAppLa
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = v11;
-  if (self->_peekingAppLayout == v11 && (self->_peekState - 1) <= 1)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = layoutCopy;
+  if (self->_peekingAppLayout == layoutCopy && (self->_peekState - 1) <= 1)
   {
-    v13 = [(SBAppLayout *)v11 itemForLayoutRole:a3];
+    v13 = [(SBAppLayout *)layoutCopy itemForLayoutRole:role];
     v14 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayoutContainingAppLayout:v12];
     v41.receiver = self;
     v41.super_class = SBPeekSplitViewRoutingSwitcherModifier;
@@ -330,17 +330,17 @@ LABEL_13:
       goto LABEL_8;
     }
 
-    v22 = [(SBPeekSplitViewRoutingSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBPeekSplitViewRoutingSwitcherModifier *)self isRTLEnabled];
     peekConfiguration = self->_peekConfiguration;
-    if (v22)
+    if (isRTLEnabled)
     {
       if (peekConfiguration != 3)
       {
 LABEL_6:
         [(SBPeekSplitViewRoutingSwitcherModifier *)self containerViewBounds];
         v26 = v24 + v25;
-        v27 = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
-        [v27 peekInsetWidth];
+        switcherSettings = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
+        [switcherSettings peekInsetWidth];
 LABEL_12:
         v30 = v26 - v28;
 
@@ -355,15 +355,15 @@ LABEL_12:
 
     [(SBPeekSplitViewRoutingSwitcherModifier *)self containerViewBounds];
     v26 = v38;
-    v27 = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
-    [v27 peekInsetWidth];
+    switcherSettings = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
+    [switcherSettings peekInsetWidth];
     v28 = v19 - v39;
     goto LABEL_12;
   }
 
   v40.receiver = self;
   v40.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  [(SBPeekSplitViewRoutingSwitcherModifier *)&v40 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  [(SBPeekSplitViewRoutingSwitcherModifier *)&v40 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v30 = v29;
   v17 = v31;
   v19 = v32;
@@ -381,13 +381,13 @@ LABEL_8:
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v17.receiver = self;
   v17.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v17 animationAttributesForLayoutElement:v4];
-  if (*&self->_peekingAppLayout == __PAIR128__(3, v4) && [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:?])
+  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v17 animationAttributesForLayoutElement:elementCopy];
+  if (*&self->_peekingAppLayout == __PAIR128__(3, elementCopy) && [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:?])
   {
     toAppLayout = self->_toAppLayout;
     v16[0] = MEMORY[0x277D85DD0];
@@ -401,19 +401,19 @@ LABEL_8:
       v15.receiver = self;
       v15.super_class = SBPeekSplitViewRoutingSwitcherModifier;
       v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v15 animationAttributesForLayoutElement:v7];
-      v9 = [v8 positionSettings];
-      v10 = v9;
-      if (v9)
+      positionSettings = [v8 positionSettings];
+      v10 = positionSettings;
+      if (positionSettings)
       {
-        v11 = v9;
+        layoutSettings = positionSettings;
       }
 
       else
       {
-        v11 = [v8 layoutSettings];
+        layoutSettings = [v8 layoutSettings];
       }
 
-      v12 = v11;
+      v12 = layoutSettings;
 
       v13 = [v5 mutableCopy];
       [v13 setOpacitySettings:v12];
@@ -425,10 +425,10 @@ LABEL_8:
   return v5;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_peekingAppLayout && (self->_peekState - 1) <= 1)
   {
@@ -453,7 +453,7 @@ LABEL_8:
     v19[2] = __62__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForIndex___block_invoke;
     v19[3] = &unk_2783AA618;
     v19[5] = &v20;
-    v19[6] = a3;
+    v19[6] = index;
     v19[4] = self;
     [(SBPeekSplitViewRoutingSwitcherModifier *)self _temporarilyAllowUnconditionaryAppLayoutContainmentWithBlock:v19];
     v8 = v21[4];
@@ -488,13 +488,13 @@ id __62__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForIndex___block_invo
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
   v30 = 0;
   v31 = &v30;
   v32 = 0x4010000000;
@@ -506,14 +506,14 @@ id __62__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForIndex___block_invo
   v21[2] = __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLayout_withCornerRadii___block_invoke;
   v21[3] = &unk_2783AA640;
   v24 = &v30;
-  v25 = a3;
-  v12 = v11;
+  roleCopy = role;
+  v12 = layoutCopy;
   v26 = topLeft;
   v27 = bottomLeft;
   v28 = bottomRight;
   v29 = topRight;
   v22 = v12;
-  v23 = self;
+  selfCopy = self;
   [(SBPeekSplitViewRoutingSwitcherModifier *)self _temporarilyAllowUnconditionaryAppLayoutContainmentWithBlock:v21];
   v13 = v31[4];
   v14 = v31[5];
@@ -547,10 +547,10 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   return result;
 }
 
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3
+- (unint64_t)maskedCornersForIndex:(unint64_t)index
 {
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_peekingAppLayout)
   {
@@ -561,28 +561,28 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   {
     v9.receiver = self;
     v9.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-    v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v9 maskedCornersForIndex:a3];
+    v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v9 maskedCornersForIndex:index];
   }
 
   return v7;
 }
 
-- (BOOL)isLayoutRoleSelectable:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleSelectable:(int64_t)selectable inAppLayout:(id)layout
 {
-  v5 = self;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v6 = a4;
-  LOBYTE(a3) = [(SBPeekSplitViewRoutingSwitcherModifier *)&v8 isLayoutRoleSelectable:a3 inAppLayout:v6];
-  LOBYTE(v5) = [v6 isEqual:{v5->_peekingAppLayout, v8.receiver, v8.super_class}];
+  layoutCopy = layout;
+  LOBYTE(selectable) = [(SBPeekSplitViewRoutingSwitcherModifier *)&v8 isLayoutRoleSelectable:selectable inAppLayout:layoutCopy];
+  LOBYTE(selfCopy) = [layoutCopy isEqual:{selfCopy->_peekingAppLayout, v8.receiver, v8.super_class}];
 
-  return (v5 | a3) & 1;
+  return (selfCopy | selectable) & 1;
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_peekingAppLayout)
   {
@@ -604,7 +604,7 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   {
     v11.receiver = self;
     v11.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-    v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v11 isContentStatusBarVisibleForIndex:a3];
+    v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v11 isContentStatusBarVisibleForIndex:index];
   }
 
   return v7;
@@ -613,8 +613,8 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
 - (id)keyboardSuppressionMode
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v4 = [v2 setWithArray:v3];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v4 = [v2 setWithArray:appLayouts];
   v5 = [SBSwitcherKeyboardSuppressionMode newSuppressionModeForSwitcherScenesFromAppLayouts:v4];
 
   [v5 setApplyAssertionEvenIfAppIsHostingTheKeyboard:1];
@@ -622,10 +622,10 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   return v5;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  v6 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v7 = [v6 objectAtIndex:a4];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts objectAtIndex:index];
 
   v8 = 0.0;
   if (v7 == self->_peekingAppLayout)
@@ -644,9 +644,9 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   return v8;
 }
 
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  if (self->_peekingAppLayout == a4)
+  if (self->_peekingAppLayout == layout)
   {
     return 4;
   }
@@ -655,16 +655,16 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   v9 = v5;
   v7.receiver = self;
   v7.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  return [(SBPeekSplitViewRoutingSwitcherModifier *)&v7 shadowStyleForLayoutRole:a3 inAppLayout:?];
+  return [(SBPeekSplitViewRoutingSwitcherModifier *)&v7 shadowStyleForLayoutRole:role inAppLayout:?];
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v6 = a4;
-  v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v10 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)self _isAppLayoutBeingResized:v6, v10.receiver, v10.super_class];
+  layoutCopy = layout;
+  v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v10 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)self _isAppLayoutBeingResized:layoutCopy, v10.receiver, v10.super_class];
 
   if (v8)
   {
@@ -674,34 +674,34 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   return v7 & 1;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  LOBYTE(v7) = [(SBPeekSplitViewRoutingSwitcherModifier *)&v9 isLayoutRoleBlurred:a3 inAppLayout:v6];
-  if ([(SBPeekSplitViewRoutingSwitcherModifier *)self _isAppLayoutBeingResized:v6]&& !self->_isRotating)
+  LOBYTE(v7) = [(SBPeekSplitViewRoutingSwitcherModifier *)&v9 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
+  if ([(SBPeekSplitViewRoutingSwitcherModifier *)self _isAppLayoutBeingResized:layoutCopy]&& !self->_isRotating)
   {
-    v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+    v7 = [(SBPeekSplitViewRoutingSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
   }
 
   return v7;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v13.receiver = self;
   v13.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v6 = a4;
-  [(SBPeekSplitViewRoutingSwitcherModifier *)&v13 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBPeekSplitViewRoutingSwitcherModifier *)&v13 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  LODWORD(a3) = [(SBPeekSplitViewRoutingSwitcherModifier *)self isLayoutRoleBlurred:a3 inAppLayout:v6, v13.receiver, v13.super_class];
+  LODWORD(role) = [(SBPeekSplitViewRoutingSwitcherModifier *)self isLayoutRoleBlurred:role inAppLayout:layoutCopy, v13.receiver, v13.super_class];
 
-  if (a3)
+  if (role)
   {
-    v9 = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
-    v10 = [v9 animationSettings];
-    [v10 resizeBlurDelay];
+    switcherSettings = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v11;
   }
 
@@ -740,8 +740,8 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v3 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v16 visibleHomeAffordanceLayoutElements];
-  v4 = [v3 mutableCopy];
+  visibleHomeAffordanceLayoutElements = [(SBPeekSplitViewRoutingSwitcherModifier *)&v16 visibleHomeAffordanceLayoutElements];
+  v4 = [visibleHomeAffordanceLayoutElements mutableCopy];
 
   splitViewAppLayout = self->_splitViewAppLayout;
   if (splitViewAppLayout)
@@ -750,8 +750,8 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(SBAppLayout *)splitViewAppLayout leafAppLayouts];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    leafAppLayouts = [(SBAppLayout *)splitViewAppLayout leafAppLayouts];
+    v7 = [leafAppLayouts countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -762,13 +762,13 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(leafAppLayouts);
           }
 
           [v4 removeObject:*(*(&v12 + 1) + 8 * i)];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v8 = [leafAppLayouts countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v8);
@@ -785,7 +785,7 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   return v4;
 }
 
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout
 {
   if (self->_peekState != 3)
   {
@@ -796,7 +796,7 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   v8 = v4;
   v6.receiver = self;
   v6.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  return [(SBPeekSplitViewRoutingSwitcherModifier *)&v6 isResizeGrabberVisibleForAppLayout:a3];
+  return [(SBPeekSplitViewRoutingSwitcherModifier *)&v6 isResizeGrabberVisibleForAppLayout:layout];
 }
 
 - (double)homeScreenDimmingAlpha
@@ -814,14 +814,14 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   return result;
 }
 
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = SBPeekSplitViewRoutingSwitcherModifier;
   v7 = [SBPeekSplitViewRoutingSwitcherModifier canPerformKeyboardShortcutAction:sel_canPerformKeyboardShortcutAction_forBundleIdentifier_ forBundleIdentifier:?];
-  if (a3 <= 0x12 && ((1 << a3) & 0x46808) != 0 && v7)
+  if (action <= 0x12 && ((1 << action) & 0x46808) != 0 && v7)
   {
-    if (a4)
+    if (identifier)
     {
       LOBYTE(v7) = !SBPeekConfigurationIsValid(self->_peekConfiguration);
     }
@@ -839,8 +839,8 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
 {
   v6.receiver = self;
   v6.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v3 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v6 topMostLayoutElements];
-  v4 = [v3 sb_arrayByInsertingOrMovingObject:self->_peekingAppLayout toIndex:0];
+  topMostLayoutElements = [(SBPeekSplitViewRoutingSwitcherModifier *)&v6 topMostLayoutElements];
+  v4 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_peekingAppLayout toIndex:0];
 
   return v4;
 }
@@ -858,45 +858,45 @@ id __95__SBPeekSplitViewRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLa
   }
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPeekSplitViewRoutingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   v7 = v6 != self->_peekingAppLayout || (self->_peekState - 1) >= 2;
   return v7;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  if (![v4 isTransitionEvent])
+  eventCopy = event;
+  if (![eventCopy isTransitionEvent])
   {
     v12 = 0;
     goto LABEL_44;
   }
 
-  v5 = v4;
-  v6 = [v5 isEnteringSplitViewPeekEvent];
-  v7 = [v5 isExitingSplitViewPeekEvent];
-  v8 = [v5 fromEnvironmentMode];
-  v9 = [v5 phase];
-  if (v6 && v9 == 1)
+  v5 = eventCopy;
+  isEnteringSplitViewPeekEvent = [v5 isEnteringSplitViewPeekEvent];
+  isExitingSplitViewPeekEvent = [v5 isExitingSplitViewPeekEvent];
+  fromEnvironmentMode = [v5 fromEnvironmentMode];
+  phase = [v5 phase];
+  if (isEnteringSplitViewPeekEvent && phase == 1)
   {
-    if (v8 == 1)
+    if (fromEnvironmentMode == 1)
     {
 LABEL_5:
-      v10 = 0;
+      fromAppLayout2 = 0;
       peekState = 4;
       goto LABEL_33;
     }
 
-    v17 = [v5 fromAppLayout];
-    v18 = [v17 itemForLayoutRole:2];
+    fromAppLayout = [v5 fromAppLayout];
+    v18 = [fromAppLayout itemForLayoutRole:2];
 
     if (v18)
     {
-      v10 = [v5 fromAppLayout];
+      fromAppLayout2 = [v5 fromAppLayout];
 LABEL_21:
       peekState = 3;
       goto LABEL_33;
@@ -905,9 +905,9 @@ LABEL_21:
     goto LABEL_31;
   }
 
-  if (v9 > 1)
+  if (phase > 1)
   {
-    v13 = v6;
+    v13 = isEnteringSplitViewPeekEvent;
   }
 
   else
@@ -920,9 +920,9 @@ LABEL_21:
     goto LABEL_11;
   }
 
-  if (v9 == 1)
+  if (phase == 1)
   {
-    v14 = v7;
+    v14 = isExitingSplitViewPeekEvent;
   }
 
   else
@@ -932,25 +932,25 @@ LABEL_21:
 
   if (v14 == 1)
   {
-    v15 = [v5 toAppLayout];
-    v16 = [v15 itemForLayoutRole:2];
+    toAppLayout = [v5 toAppLayout];
+    v16 = [toAppLayout itemForLayoutRole:2];
 
     if (v16)
     {
-      v10 = [v5 toAppLayout];
+      fromAppLayout2 = [v5 toAppLayout];
       goto LABEL_18;
     }
 
 LABEL_11:
-    v10 = 0;
+    fromAppLayout2 = 0;
 LABEL_18:
     peekState = 1;
     goto LABEL_33;
   }
 
-  if (v9 > 1)
+  if (phase > 1)
   {
-    v19 = v7;
+    v19 = isExitingSplitViewPeekEvent;
   }
 
   else
@@ -963,39 +963,39 @@ LABEL_18:
     goto LABEL_29;
   }
 
-  v20 = [v5 toAppLayout];
-  v21 = [v20 itemForLayoutRole:2];
+  toAppLayout2 = [v5 toAppLayout];
+  v21 = [toAppLayout2 itemForLayoutRole:2];
 
-  v22 = [v5 toAppLayout];
-  v10 = v22;
+  toAppLayout3 = [v5 toAppLayout];
+  fromAppLayout2 = toAppLayout3;
   if (v21)
   {
     goto LABEL_21;
   }
 
-  v23 = [(SBAppLayout *)v22 itemForLayoutRole:1];
+  v23 = [(SBAppLayout *)toAppLayout3 itemForLayoutRole:1];
 
   if (!v23)
   {
     goto LABEL_5;
   }
 
-  v24 = [v5 toAppLayout];
-  v25 = [v24 itemForLayoutRole:2];
+  toAppLayout4 = [v5 toAppLayout];
+  v25 = [toAppLayout4 itemForLayoutRole:2];
 
   if (v25)
   {
 LABEL_29:
     if ([v5 toEnvironmentMode] == 2)
     {
-      v10 = 0;
+      fromAppLayout2 = 0;
       peekState = 2;
     }
 
     else
     {
       peekState = self->_peekState;
-      v10 = self->_splitViewAppLayout;
+      fromAppLayout2 = self->_splitViewAppLayout;
     }
 
     goto LABEL_33;
@@ -1003,9 +1003,9 @@ LABEL_29:
 
 LABEL_31:
   peekState = 0;
-  v10 = 0;
+  fromAppLayout2 = 0;
 LABEL_33:
-  if (peekState == self->_peekState && self->_splitViewAppLayout == v10 && (toAppLayout = self->_toAppLayout, [v5 toAppLayout], v27 = objc_claimAutoreleasedReturnValue(), v27, toAppLayout == v27))
+  if (peekState == self->_peekState && self->_splitViewAppLayout == fromAppLayout2 && (toAppLayout = self->_toAppLayout, [v5 toAppLayout], v27 = objc_claimAutoreleasedReturnValue(), v27, toAppLayout == v27))
   {
     v12 = 0;
   }
@@ -1015,7 +1015,7 @@ LABEL_33:
     v12 = [[SBInvalidateSnapshotCacheSwitcherEventResponse alloc] initWithDisplayItems:0];
   }
 
-  if (self->_splitViewAppLayout != v10)
+  if (self->_splitViewAppLayout != fromAppLayout2)
   {
     v28 = [(SBChainableModifier *)self childModifierByKey:@"SplitZoomingItemModifierKey"];
     if (v28)
@@ -1023,7 +1023,7 @@ LABEL_33:
       [(SBChainableModifier *)self removeChildModifier:v28];
     }
 
-    objc_storeStrong(&self->_splitViewAppLayout, v10);
+    objc_storeStrong(&self->_splitViewAppLayout, fromAppLayout2);
     splitViewAppLayout = self->_splitViewAppLayout;
     if (splitViewAppLayout)
     {
@@ -1034,48 +1034,48 @@ LABEL_33:
       v42[4] = self;
       v30 = [(SBAppLayout *)splitViewAppLayout appLayoutWithItemsPassingTest:v42];
       [v30 allItems];
-      v31 = v10;
+      v31 = fromAppLayout2;
       v33 = v32 = peekState;
-      v40 = [v33 firstObject];
+      firstObject = [v33 firstObject];
 
       peekState = v32;
-      v10 = v31;
+      fromAppLayout2 = v31;
 
-      v34 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:v40];
+      v34 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:firstObject];
       [(SBChainableModifier *)self addChildModifier:v34 atLevel:0 key:@"SplitZoomingItemModifierKey"];
     }
   }
 
   self->_peekState = peekState;
-  v35 = [v5 toAppLayout];
+  toAppLayout5 = [v5 toAppLayout];
   v36 = self->_toAppLayout;
-  self->_toAppLayout = v35;
+  self->_toAppLayout = toAppLayout5;
 
 LABEL_44:
   v41.receiver = self;
   v41.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v37 = [(SBChainableModifier *)&v41 handleEvent:v4];
+  v37 = [(SBChainableModifier *)&v41 handleEvent:eventCopy];
   v38 = SBAppendSwitcherModifierResponse(v12, v37);
 
   return v38;
 }
 
-- (id)_handleEvent:(id)a3
+- (id)_handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v25.receiver = self;
   v25.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v25 _handleEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v25 _handleEvent:eventCopy];
   v6 = objc_opt_class();
-  v7 = SBSafeCast(v6, v4);
+  v7 = SBSafeCast(v6, eventCopy);
   v8 = v7;
   if (v7 && [v7 isExitingSplitViewPeekEvent])
   {
     if ([v8 isAnimated] && objc_msgSend(v8, "phase") == 1)
     {
       v9 = [SBTransitionSwitcherModifier alloc];
-      v10 = [v8 transitionID];
-      v11 = [(SBTransitionSwitcherModifier *)v9 initWithTransitionID:v10];
+      transitionID = [v8 transitionID];
+      v11 = [(SBTransitionSwitcherModifier *)v9 initWithTransitionID:transitionID];
       exitingTransitionTrackingModifier = self->_exitingTransitionTrackingModifier;
       self->_exitingTransitionTrackingModifier = v11;
     }
@@ -1098,7 +1098,7 @@ LABEL_44:
     v18[2] = __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invoke;
     v18[3] = &unk_2783AEA70;
     v18[4] = self;
-    v19 = v4;
+    v19 = eventCopy;
     v20 = &v21;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v13 usingBlock:v18];
     [(SBChainableModifier *)self->_exitingTransitionTrackingModifier setState:v22[3]];
@@ -1127,16 +1127,16 @@ uint64_t __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invok
   return result;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v15 handleTransitionEvent:v4];
-  v6 = [v4 isEnteringSplitViewPeekEvent];
-  v7 = [v4 isExitingSplitViewPeekEvent];
-  v8 = [v4 phase];
-  if (v6 && (v8 == 1 || ([v4 isAnimated] & 1) == 0))
+  v5 = [(SBSwitcherModifier *)&v15 handleTransitionEvent:eventCopy];
+  isEnteringSplitViewPeekEvent = [eventCopy isEnteringSplitViewPeekEvent];
+  isExitingSplitViewPeekEvent = [eventCopy isExitingSplitViewPeekEvent];
+  phase = [eventCopy phase];
+  if (isEnteringSplitViewPeekEvent && (phase == 1 || ([eventCopy isAnimated] & 1) == 0))
   {
     v9 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
     v10 = SBAppendSwitcherModifierResponse(v9, v5);
@@ -1144,7 +1144,7 @@ uint64_t __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invok
     v5 = v10;
   }
 
-  if (v7 && self->_peekState == 3 && [v4 phase] == 3 && objc_msgSend(v4, "isAnimated"))
+  if (isExitingSplitViewPeekEvent && self->_peekState == 3 && [eventCopy phase] == 3 && objc_msgSend(eventCopy, "isAnimated"))
   {
     v11 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:16 updateMode:3];
     v12 = SBAppendSwitcherModifierResponse(v11, v5);
@@ -1152,45 +1152,45 @@ uint64_t __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invok
     v5 = v12;
   }
 
-  if ([v4 phase] == 3 || !objc_msgSend(v4, "isAnimated"))
+  if ([eventCopy phase] == 3 || !objc_msgSend(eventCopy, "isAnimated"))
   {
     self->_isRotating = 0;
   }
 
   else
   {
-    v13 = [v4 fromInterfaceOrientation];
-    self->_isRotating = v13 != [v4 toInterfaceOrientation];
+    fromInterfaceOrientation = [eventCopy fromInterfaceOrientation];
+    self->_isRotating = fromInterfaceOrientation != [eventCopy toInterfaceOrientation];
   }
 
-  self->_spaceConfiguration = [v4 toSpaceConfiguration];
+  self->_spaceConfiguration = [eventCopy toSpaceConfiguration];
 
   return v5;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v12 handleTapAppLayoutEvent:v4];
-  v6 = [v4 appLayout];
-  v7 = [v6 isEqual:self->_peekingAppLayout];
+  v5 = [(SBSwitcherModifier *)&v12 handleTapAppLayoutEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
+  v7 = [appLayout isEqual:self->_peekingAppLayout];
 
   if (v7)
   {
-    v8 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v4];
+    v8 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:eventCopy];
     [v8 setPeekConfiguration:1];
     [v8 setRetainsSiri:{-[SBPeekSplitViewRoutingSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
     v9 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v8 gestureInitiated:0];
@@ -1202,28 +1202,28 @@ uint64_t __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invok
   return v5;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  modifierCopy = modifier;
+  eventCopy = event;
   v49.receiver = self;
   v49.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v41 = v8;
-  v11 = [(SBChainableModifier *)&v49 responseForProposedChildResponse:v8 childModifier:v9 event:v10];
+  v41 = responseCopy;
+  v11 = [(SBChainableModifier *)&v49 responseForProposedChildResponse:responseCopy childModifier:modifierCopy event:eventCopy];
   v12 = objc_opt_class();
-  v13 = SBSafeCast(v12, v10);
+  v13 = SBSafeCast(v12, eventCopy);
   v42 = v13;
   if (v13)
   {
     v14 = v13;
     v15 = [v11 responseByTransformingResponseWithTransformer:&__block_literal_global_92];
 
-    v16 = [v14 appLayout];
-    v17 = [v16 itemForLayoutRole:{objc_msgSend(v14, "layoutRole")}];
+    appLayout = [v14 appLayout];
+    v17 = [appLayout itemForLayoutRole:{objc_msgSend(v14, "layoutRole")}];
     v18 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
     [(SBSwitcherTransitionRequest *)v18 setPeekConfiguration:1];
-    v19 = [(SBPeekSplitViewRoutingSwitcherModifier *)self _combinedResultingAppLayoutWithAppLayout:v16];
+    v19 = [(SBPeekSplitViewRoutingSwitcherModifier *)self _combinedResultingAppLayoutWithAppLayout:appLayout];
     [(SBSwitcherTransitionRequest *)v18 setAppLayout:v19];
 
     [(SBSwitcherTransitionRequest *)v18 setActivatingDisplayItem:v17];
@@ -1233,7 +1233,7 @@ uint64_t __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invok
   }
 
   v21 = objc_opt_class();
-  v39 = SBSafeCast(v21, v10);
+  v39 = SBSafeCast(v21, eventCopy);
   if (v39)
   {
     v22 = [v11 responseByTransformingResponseWithTransformer:{&__block_literal_global_101_0, v39}];
@@ -1278,7 +1278,7 @@ uint64_t __55__SBPeekSplitViewRoutingSwitcherModifier__handleEvent___block_invok
   }
 
   v34 = objc_opt_class();
-  v35 = SBSafeCast(v34, v10);
+  v35 = SBSafeCast(v34, eventCopy);
   v36 = v35;
   if (v35 && [v35 gestureType] == 1 && objc_msgSend(v36, "phase") == 3)
   {
@@ -1413,11 +1413,11 @@ LABEL_10:
   return v3;
 }
 
-- (id)routingModifier:(id)a3 event:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier event:(id)event forModifier:(id)forModifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v7;
+  eventCopy = event;
+  forModifierCopy = forModifier;
+  v9 = eventCopy;
   v10 = objc_opt_class();
   v11 = SBSafeCast(v10, v9);
   v12 = v11;
@@ -1425,9 +1425,9 @@ LABEL_10:
   {
     v13 = [v11 copy];
     v14 = [(SBAppLayout *)self->_peekingAppLayout itemForLayoutRole:1];
-    if (self->_peekingModifier == v8)
+    if (self->_peekingModifier == forModifierCopy)
     {
-      v23 = [v12 fromAppLayout];
+      fromAppLayout = [v12 fromAppLayout];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __76__SBPeekSplitViewRoutingSwitcherModifier_routingModifier_event_forModifier___block_invoke;
@@ -1436,10 +1436,10 @@ LABEL_10:
       v37 = v14;
       v24 = v14;
       v45 = v24;
-      v25 = [v23 appLayoutWithItemsPassingTest:v44];
+      v25 = [fromAppLayout appLayoutWithItemsPassingTest:v44];
       [v13 setFromAppLayout:v25];
 
-      v18 = [v12 toAppLayout];
+      toAppLayout = [v12 toAppLayout];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __76__SBPeekSplitViewRoutingSwitcherModifier_routingModifier_event_forModifier___block_invoke_2;
@@ -1451,7 +1451,7 @@ LABEL_10:
 
     else
     {
-      if (self->_nonPeekingModifier != v8)
+      if (self->_nonPeekingModifier != forModifierCopy)
       {
 LABEL_11:
         if ([v12 fromEnvironmentMode] == 3 && (objc_msgSend(v13, "fromAppLayout"), v27 = objc_claimAutoreleasedReturnValue(), v27, !v27))
@@ -1476,9 +1476,9 @@ LABEL_21:
                 goto LABEL_28;
               }
 
-              v31 = [v13 toAppLayout];
+              toAppLayout2 = [v13 toAppLayout];
 
-              if (!v31)
+              if (!toAppLayout2)
               {
                 goto LABEL_28;
               }
@@ -1488,17 +1488,17 @@ LABEL_21:
 
             [v13 setToEnvironmentMode:v32];
 LABEL_28:
-            if (self->_peekingModifier == v8 && [v12 fromEnvironmentMode] == 2)
+            if (self->_peekingModifier == forModifierCopy && [v12 fromEnvironmentMode] == 2)
             {
               [v13 setFromEnvironmentMode:3];
             }
 
-            if (self->_peekingModifier == v8 && [v12 toEnvironmentMode] == 2)
+            if (self->_peekingModifier == forModifierCopy && [v12 toEnvironmentMode] == 2)
             {
               [v13 setToEnvironmentMode:3];
             }
 
-            if (self->_peekingModifier == v8)
+            if (self->_peekingModifier == forModifierCopy)
             {
               [v13 setFromWindowPickerRole:0];
               [v13 setToWindowPickerRole:0];
@@ -1514,7 +1514,7 @@ LABEL_28:
         goto LABEL_21;
       }
 
-      v15 = [v12 fromAppLayout];
+      fromAppLayout2 = [v12 fromAppLayout];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __76__SBPeekSplitViewRoutingSwitcherModifier_routingModifier_event_forModifier___block_invoke_3;
@@ -1523,10 +1523,10 @@ LABEL_28:
       v37 = v14;
       v16 = v14;
       v41 = v16;
-      v17 = [v15 appLayoutWithItemsPassingTest:v40];
+      v17 = [fromAppLayout2 appLayoutWithItemsPassingTest:v40];
       [v13 setFromAppLayout:v17];
 
-      v18 = [v12 toAppLayout];
+      toAppLayout = [v12 toAppLayout];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __76__SBPeekSplitViewRoutingSwitcherModifier_routingModifier_event_forModifier___block_invoke_4;
@@ -1536,7 +1536,7 @@ LABEL_28:
       v20 = v38;
     }
 
-    v26 = [v18 appLayoutWithItemsPassingTest:v20];
+    v26 = [toAppLayout appLayoutWithItemsPassingTest:v20];
     [v13 setToAppLayout:v26];
 
     v14 = v37;
@@ -1545,16 +1545,16 @@ LABEL_28:
 
   if ([v9 type] == 17)
   {
-    v21 = [v9 appLayout];
-    v22 = v21;
+    appLayout = [v9 appLayout];
+    v22 = appLayout;
     v13 = v9;
-    if (!v21)
+    if (!appLayout)
     {
       goto LABEL_44;
     }
 
     v13 = v9;
-    if (![v21 isEqual:self->_peekingAppLayout])
+    if (![appLayout isEqual:self->_peekingAppLayout])
     {
       goto LABEL_44;
     }
@@ -1585,7 +1585,7 @@ LABEL_28:
       }
 
       v13 = v9;
-      if (self->_peekingModifier != v8)
+      if (self->_peekingModifier != forModifierCopy)
       {
         goto LABEL_44;
       }
@@ -1606,7 +1606,7 @@ LABEL_44:
   }
 
   v13 = v9;
-  if (self->_peekingModifier == v8)
+  if (self->_peekingModifier == forModifierCopy)
   {
 
     v13 = 0;
@@ -1617,15 +1617,15 @@ LABEL_45:
   return v13;
 }
 
-- (id)routingModifier:(id)a3 filteredAppLayouts:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier filteredAppLayouts:(id)layouts forModifier:(id)forModifier
 {
   peekingAppLayout = self->_peekingAppLayout;
-  v8 = a5;
-  v9 = a4;
+  forModifierCopy = forModifier;
+  layoutsCopy = layouts;
   v10 = [(SBAppLayout *)peekingAppLayout itemForLayoutRole:1];
   peekingModifier = self->_peekingModifier;
 
-  if (peekingModifier == v8)
+  if (peekingModifier == forModifierCopy)
   {
     v12 = v18;
     v18[0] = MEMORY[0x277D85DD0];
@@ -1645,20 +1645,20 @@ LABEL_45:
   v12[3] = &unk_2783A8CB8;
   v14 = v10;
   v12[4] = v14;
-  v15 = [v9 bs_filter:v12];
+  v15 = [layoutsCopy bs_filter:v12];
 
   return v15;
 }
 
-- (id)routingModifier:(id)a3 filteredContinuousExposeIdentifiers:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier filteredContinuousExposeIdentifiers:(id)identifiers forModifier:(id)forModifier
 {
   peekingAppLayout = self->_peekingAppLayout;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(SBAppLayout *)peekingAppLayout continuousExposeIdentifier];
+  forModifierCopy = forModifier;
+  identifiersCopy = identifiers;
+  continuousExposeIdentifier = [(SBAppLayout *)peekingAppLayout continuousExposeIdentifier];
   peekingModifier = self->_peekingModifier;
 
-  if (peekingModifier == v8)
+  if (peekingModifier == forModifierCopy)
   {
     v12 = v18;
     v18[0] = MEMORY[0x277D85DD0];
@@ -1676,19 +1676,19 @@ LABEL_45:
 
   v12[2] = v13;
   v12[3] = &unk_2783A8B78;
-  v14 = v10;
+  v14 = continuousExposeIdentifier;
   v12[4] = v14;
-  v15 = [v9 bs_filter:v12];
+  v15 = [identifiersCopy bs_filter:v12];
 
   return v15;
 }
 
-- (id)routingModifier:(id)a3 modifierForAppLayout:(id)a4
+- (id)routingModifier:(id)modifier modifierForAppLayout:(id)layout
 {
   peekingAppLayout = self->_peekingAppLayout;
-  v6 = a4;
+  layoutCopy = layout;
   v7 = [(SBAppLayout *)peekingAppLayout itemForLayoutRole:1];
-  v8 = [v6 containsItem:v7];
+  v8 = [layoutCopy containsItem:v7];
 
   v9 = &OBJC_IVAR___SBPeekSplitViewRoutingSwitcherModifier__nonPeekingModifier;
   if (v8)
@@ -1702,12 +1702,12 @@ LABEL_45:
   return v10;
 }
 
-- (CGRect)routingModifier:(id)a3 containerViewBoundsForModifier:(id)a4
+- (CGRect)routingModifier:(id)modifier containerViewBoundsForModifier:(id)forModifier
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_peekingModifier == v7)
+  modifierCopy = modifier;
+  forModifierCopy = forModifier;
+  if (self->_peekingModifier == forModifierCopy)
   {
     v47.receiver = self;
     v47.super_class = SBPeekSplitViewRoutingSwitcherModifier;
@@ -1817,11 +1817,11 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)routingModifier:(id)a3 switcherViewBoundsForModifier:(id)a4
+- (CGRect)routingModifier:(id)modifier switcherViewBoundsForModifier:(id)forModifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_peekingModifier == v7)
+  modifierCopy = modifier;
+  forModifierCopy = forModifier;
+  if (self->_peekingModifier == forModifierCopy)
   {
     v32.receiver = self;
     v32.super_class = SBPeekSplitViewRoutingSwitcherModifier;
@@ -1836,9 +1836,9 @@ LABEL_21:
   {
     v31.receiver = self;
     v31.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-    v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)&v31 isRTLEnabled];
-    v9 = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
-    [v9 peekInsetWidth];
+    isRTLEnabled = [(SBPeekSplitViewRoutingSwitcherModifier *)&v31 isRTLEnabled];
+    switcherSettings = [(SBPeekSplitViewRoutingSwitcherModifier *)self switcherSettings];
+    [switcherSettings peekInsetWidth];
     v11 = v10;
 
     [(SBPeekSplitViewRoutingSwitcherModifier *)self containerViewBounds];
@@ -1846,9 +1846,9 @@ LABEL_21:
     v16 = v15;
     v18 = v17;
     peekConfiguration = self->_peekConfiguration;
-    v20 = (peekConfiguration != 2) | v8;
+    v20 = (peekConfiguration != 2) | isRTLEnabled;
     v21 = peekConfiguration == 3;
-    if ((v20 & 1) == 0 || (v21 & v8) != 0)
+    if ((v20 & 1) == 0 || (v21 & isRTLEnabled) != 0)
     {
       v14 = v11 + v12;
     }
@@ -1867,9 +1867,9 @@ LABEL_21:
   return result;
 }
 
-- (id)homeScreenModifierForRoutingModifier:(id)a3
+- (id)homeScreenModifierForRoutingModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   peekState = self->_peekState;
   if (peekState == 4 || !peekState && [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:self->_peekingAppLayout])
   {
@@ -1887,10 +1887,10 @@ LABEL_21:
   return v7;
 }
 
-- (id)routingModifier:(id)a3 animationAttributesModifierForLayoutElement:(id)a4
+- (id)routingModifier:(id)modifier animationAttributesModifierForLayoutElement:(id)element
 {
-  v5 = a4;
-  if ([v5 switcherLayoutElementType])
+  elementCopy = element;
+  if ([elementCopy switcherLayoutElementType])
   {
     peekState = self->_peekState;
     if (peekState == 4 || !peekState && [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:self->_peekingAppLayout])
@@ -1906,7 +1906,7 @@ LABEL_21:
 
   else
   {
-    v8 = [v5 isEqual:self->_peekingAppLayout];
+    v8 = [elementCopy isEqual:self->_peekingAppLayout];
     v7 = &OBJC_IVAR___SBPeekSplitViewRoutingSwitcherModifier__nonPeekingModifier;
     if (v8)
     {
@@ -1920,11 +1920,11 @@ LABEL_21:
   return v9;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v18.receiver = self;
   v18.super_class = SBPeekSplitViewRoutingSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v18 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifier *)&v18 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = SBStringForPeekConfiguration(self->_peekConfiguration);
   v6 = [v4 appendObject:v5 withName:@"peekConfiguration"];
 
@@ -1944,57 +1944,57 @@ LABEL_21:
 
   v11 = [v4 appendObject:v10 withName:@"peekState"];
   v12 = [v4 appendBool:self->_uncondtionallyAllowAppLayoutContainment withName:@"uncondtionallyAllowAppLayoutContainment"];
-  v13 = [(SBChainableModifier *)self->_peekingModifier succinctDescription];
-  v14 = [v4 appendObject:v13 withName:@"peekingAppLayout"];
+  succinctDescription = [(SBChainableModifier *)self->_peekingModifier succinctDescription];
+  v14 = [v4 appendObject:succinctDescription withName:@"peekingAppLayout"];
 
-  v15 = [(SBAppLayout *)self->_splitViewAppLayout succinctDescription];
-  v16 = [v4 appendObject:v15 withName:@"splitViewAppLayout"];
+  succinctDescription2 = [(SBAppLayout *)self->_splitViewAppLayout succinctDescription];
+  v16 = [v4 appendObject:succinctDescription2 withName:@"splitViewAppLayout"];
 
   return v4;
 }
 
-- (id)_combinedResultingAppLayoutWithAppLayout:(id)a3
+- (id)_combinedResultingAppLayoutWithAppLayout:(id)layout
 {
   v24[2] = *MEMORY[0x277D85DE8];
   if (self->_peekConfiguration == 2)
   {
     peekingAppLayout = self->_peekingAppLayout;
-    v5 = a3;
-    v6 = [(SBAppLayout *)peekingAppLayout allItems];
-    v7 = [v6 firstObject];
+    layoutCopy = layout;
+    allItems = [(SBAppLayout *)peekingAppLayout allItems];
+    firstObject = [allItems firstObject];
 
-    v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:v7 inAppLayout:self->_peekingAppLayout];
-    v9 = [v5 allItems];
-    v10 = [v9 firstObject];
+    v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:firstObject inAppLayout:self->_peekingAppLayout];
+    allItems2 = [layoutCopy allItems];
+    firstObject2 = [allItems2 firstObject];
 
-    v11 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:v10 inAppLayout:v5];
+    v11 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:firstObject2 inAppLayout:layoutCopy];
   }
 
   else
   {
-    v12 = a3;
-    v13 = [v12 allItems];
-    v7 = [v13 firstObject];
+    layoutCopy2 = layout;
+    allItems3 = [layoutCopy2 allItems];
+    firstObject = [allItems3 firstObject];
 
-    v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:v7 inAppLayout:v12];
+    v8 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:firstObject inAppLayout:layoutCopy2];
 
-    v14 = [(SBAppLayout *)self->_peekingAppLayout allItems];
-    v10 = [v14 firstObject];
+    allItems4 = [(SBAppLayout *)self->_peekingAppLayout allItems];
+    firstObject2 = [allItems4 firstObject];
 
-    v11 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:v10 inAppLayout:self->_peekingAppLayout];
+    v11 = [(SBPeekSplitViewRoutingSwitcherModifier *)self layoutAttributesForDisplayItem:firstObject2 inAppLayout:self->_peekingAppLayout];
   }
 
-  v23[0] = v7;
-  v23[1] = v10;
+  v23[0] = firstObject;
+  v23[1] = firstObject2;
   v24[0] = v8;
   v24[1] = v11;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:1];
   v21[0] = v16;
-  v22[0] = v7;
+  v22[0] = firstObject;
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:2];
   v21[1] = v17;
-  v22[1] = v10;
+  v22[1] = firstObject2;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
   v19 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v18 configuration:SBAppLayoutConfigurationFromMainDisplayLayoutStateSpaceConfiguration(self->_spaceConfiguration) centerConfiguration:0 environment:1 hidden:0 preferredDisplayOrdinal:[(SBPeekSplitViewRoutingSwitcherModifier *)self displayOrdinal]];
@@ -2003,11 +2003,11 @@ LABEL_21:
   return v19;
 }
 
-- (void)_temporarilyAllowUnconditionaryAppLayoutContainmentWithBlock:(id)a3
+- (void)_temporarilyAllowUnconditionaryAppLayoutContainmentWithBlock:(id)block
 {
   uncondtionallyAllowAppLayoutContainment = self->_uncondtionallyAllowAppLayoutContainment;
   self->_uncondtionallyAllowAppLayoutContainment = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(block + 2))(block, a2);
   self->_uncondtionallyAllowAppLayoutContainment = uncondtionallyAllowAppLayoutContainment;
 }
 

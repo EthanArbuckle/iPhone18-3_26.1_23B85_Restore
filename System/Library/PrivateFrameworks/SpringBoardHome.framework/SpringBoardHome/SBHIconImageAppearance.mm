@@ -1,30 +1,30 @@
 @interface SBHIconImageAppearance
-+ (SBHIconImageAppearance)allocWithZone:(_NSZone *)a3;
++ (SBHIconImageAppearance)allocWithZone:(_NSZone *)zone;
 + (SBHIconImageAppearance)clearDarkAppearance;
 + (SBHIconImageAppearance)clearLightAppearance;
 + (SBHIconImageAppearance)darkAppearance;
 + (SBHIconImageAppearance)lightAppearance;
 + (SBHIconImageAppearance)tintableAppearance;
-+ (id)clearAppearanceForUserInterfaceStyle:(int64_t)a3;
-+ (id)colorAppearanceForUserInterfaceStyle:(int64_t)a3;
-+ (id)sharedInstanceForAppearanceType:(int64_t)a3;
-+ (id)tintedDarkAppearanceWithTintColor:(id)a3;
-+ (id)tintedLightAppearanceWithTintColor:(id)a3;
++ (id)clearAppearanceForUserInterfaceStyle:(int64_t)style;
++ (id)colorAppearanceForUserInterfaceStyle:(int64_t)style;
++ (id)sharedInstanceForAppearanceType:(int64_t)type;
++ (id)tintedDarkAppearanceWithTintColor:(id)color;
++ (id)tintedLightAppearanceWithTintColor:(id)color;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (SBHIconImageAppearance)appearanceWithTintColor:(id)a3;
-- (SBHIconImageAppearance)initWithAppearanceType:(int64_t)a3 tintColor:(id)a4;
-- (SBHIconImageAppearance)initWithBSXPCCoder:(id)a3;
-- (SBHIconImageAppearance)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBHIconImageAppearance)appearanceWithTintColor:(id)color;
+- (SBHIconImageAppearance)initWithAppearanceType:(int64_t)type tintColor:(id)color;
+- (SBHIconImageAppearance)initWithBSXPCCoder:(id)coder;
+- (SBHIconImageAppearance)initWithCoder:(id)coder;
 - (UIColor)opaqueTintColor;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)iconGlassUserInterfaceStyle;
 - (int64_t)userInterfaceStyle;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBHIconImageAppearance
@@ -45,7 +45,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     reusablePlaceholderImageAppearance = [SBHPlaceholderIconImageAppearance alloc];
 
@@ -81,16 +81,16 @@ uint64_t __40__SBHIconImageAppearance_darkAppearance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)colorAppearanceForUserInterfaceStyle:(int64_t)a3
++ (id)colorAppearanceForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    [a1 darkAppearance];
+    [self darkAppearance];
   }
 
   else
   {
-    [a1 lightAppearance];
+    [self lightAppearance];
   }
   v3 = ;
 
@@ -139,34 +139,34 @@ uint64_t __45__SBHIconImageAppearance_clearDarkAppearance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)clearAppearanceForUserInterfaceStyle:(int64_t)a3
++ (id)clearAppearanceForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    [a1 clearDarkAppearance];
+    [self clearDarkAppearance];
   }
 
   else
   {
-    [a1 clearLightAppearance];
+    [self clearLightAppearance];
   }
   v3 = ;
 
   return v3;
 }
 
-+ (id)tintedLightAppearanceWithTintColor:(id)a3
++ (id)tintedLightAppearanceWithTintColor:(id)color
 {
-  v3 = a3;
-  v4 = [(SBHTintedIconImageAppearance *)[SBHTintedLightIconImageAppearance alloc] initWithAppearanceType:4 tintColor:v3];
+  colorCopy = color;
+  v4 = [(SBHTintedIconImageAppearance *)[SBHTintedLightIconImageAppearance alloc] initWithAppearanceType:4 tintColor:colorCopy];
 
   return v4;
 }
 
-+ (id)tintedDarkAppearanceWithTintColor:(id)a3
++ (id)tintedDarkAppearanceWithTintColor:(id)color
 {
-  v3 = a3;
-  v4 = [(SBHTintedIconImageAppearance *)[SBHTintedDarkIconImageAppearance alloc] initWithAppearanceType:5 tintColor:v3];
+  colorCopy = color;
+  v4 = [(SBHTintedIconImageAppearance *)[SBHTintedDarkIconImageAppearance alloc] initWithAppearanceType:5 tintColor:colorCopy];
 
   return v4;
 }
@@ -192,49 +192,49 @@ uint64_t __44__SBHIconImageAppearance_tintableAppearance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)sharedInstanceForAppearanceType:(int64_t)a3
++ (id)sharedInstanceForAppearanceType:(int64_t)type
 {
-  v4 = 0;
-  if (a3 <= 1)
+  darkAppearance = 0;
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
-        v4 = [a1 darkAppearance];
+        darkAppearance = [self darkAppearance];
       }
     }
 
     else
     {
-      v4 = [a1 lightAppearance];
+      darkAppearance = [self lightAppearance];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
-        v4 = [a1 clearLightAppearance];
+        darkAppearance = [self clearLightAppearance];
         break;
       case 3:
-        v4 = [a1 clearDarkAppearance];
+        darkAppearance = [self clearDarkAppearance];
         break;
       case 6:
-        v4 = [a1 tintableAppearance];
+        darkAppearance = [self tintableAppearance];
         break;
     }
   }
 
-  return v4;
+  return darkAppearance;
 }
 
-+ (SBHIconImageAppearance)allocWithZone:(_NSZone *)a3
++ (SBHIconImageAppearance)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
     v7 = reusablePlaceholderImageAppearance;
 
@@ -243,15 +243,15 @@ uint64_t __44__SBHIconImageAppearance_tintableAppearance__block_invoke()
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SBHIconImageAppearance;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 }
 
-- (SBHIconImageAppearance)initWithAppearanceType:(int64_t)a3 tintColor:(id)a4
+- (SBHIconImageAppearance)initWithAppearanceType:(int64_t)type tintColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v7 = objc_opt_self();
   if ([(SBHIconImageAppearance *)self isMemberOfClass:v7])
   {
@@ -272,18 +272,18 @@ uint64_t __44__SBHIconImageAppearance_tintableAppearance__block_invoke()
     }
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v12 = +[SBHIconImageAppearance darkAppearance];
       }
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           goto LABEL_23;
         }
@@ -300,11 +300,11 @@ uint64_t __44__SBHIconImageAppearance_tintableAppearance__block_invoke()
 
   else
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
-        if (a3 != 6)
+        if (type != 6)
         {
           goto LABEL_23;
         }
@@ -318,12 +318,12 @@ uint64_t __44__SBHIconImageAppearance_tintableAppearance__block_invoke()
       goto LABEL_20;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       v10 = [SBHTintedLightIconImageAppearance alloc];
       v11 = 4;
 LABEL_20:
-      v12 = [(SBHTintedIconImageAppearance *)v10 initWithAppearanceType:v11 tintColor:v6];
+      v12 = [(SBHTintedIconImageAppearance *)v10 initWithAppearanceType:v11 tintColor:colorCopy];
       goto LABEL_22;
     }
 
@@ -331,19 +331,19 @@ LABEL_20:
   }
 
 LABEL_22:
-  a3 = v12;
+  type = v12;
 LABEL_23:
 
-  return a3;
+  return type;
 }
 
 - (UIColor)opaqueTintColor
 {
-  v2 = [(SBHIconImageAppearance *)self tintColor];
-  v3 = v2;
-  if (v2)
+  tintColor = [(SBHIconImageAppearance *)self tintColor];
+  v3 = tintColor;
+  if (tintColor)
   {
-    v4 = SBHOpaqueTintColorFromTintColor(v2);
+    v4 = SBHOpaqueTintColorFromTintColor(tintColor);
   }
 
   else
@@ -380,13 +380,13 @@ LABEL_23:
   }
 }
 
-- (SBHIconImageAppearance)appearanceWithTintColor:(id)a3
+- (SBHIconImageAppearance)appearanceWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SBHIconImageAppearance *)self appearanceType];
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  colorCopy = color;
+  appearanceType = [(SBHIconImageAppearance *)self appearanceType];
+  if ((appearanceType & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v6 = [objc_alloc(objc_opt_class()) initWithAppearanceType:v5 tintColor:v4];
+    v6 = [objc_alloc(objc_opt_class()) initWithAppearanceType:appearanceType tintColor:colorCopy];
   }
 
   else
@@ -399,17 +399,17 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(SBHIconImageAppearance *)self appearanceType];
-  v4 = [(SBHIconImageAppearance *)self tintColor];
-  v5 = [v4 hash];
+  appearanceType = [(SBHIconImageAppearance *)self appearanceType];
+  tintColor = [(SBHIconImageAppearance *)self tintColor];
+  v5 = [tintColor hash];
 
-  return v5 + v3;
+  return v5 + appearanceType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -421,12 +421,12 @@ LABEL_23:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBHIconImageAppearance *)self appearanceType];
-      if (v8 == [(SBHIconImageAppearance *)v7 appearanceType])
+      v7 = equalCopy;
+      appearanceType = [(SBHIconImageAppearance *)self appearanceType];
+      if (appearanceType == [(SBHIconImageAppearance *)v7 appearanceType])
       {
-        v9 = [(SBHIconImageAppearance *)self tintColor];
-        v10 = [(SBHIconImageAppearance *)v7 tintColor];
+        tintColor = [(SBHIconImageAppearance *)self tintColor];
+        tintColor2 = [(SBHIconImageAppearance *)v7 tintColor];
         v11 = BSEqualObjects();
       }
 
@@ -445,50 +445,50 @@ LABEL_23:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SBHIconImageAppearance appearanceType](self forKey:{"appearanceType"), @"appearanceType"}];
-  v5 = [(SBHIconImageAppearance *)self tintColor];
-  [v4 encodeObject:v5 forKey:@"tintColor"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SBHIconImageAppearance appearanceType](self forKey:{"appearanceType"), @"appearanceType"}];
+  tintColor = [(SBHIconImageAppearance *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (SBHIconImageAppearance)initWithCoder:(id)a3
+- (SBHIconImageAppearance)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"appearanceType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"appearanceType"];
   if (v5 > 6)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v6 = v5;
     v7 = objc_opt_self();
-    v8 = [v4 decodeObjectOfClass:v7 forKey:@"tintColor"];
+    v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"tintColor"];
 
     self = [(SBHIconImageAppearance *)self initWithAppearanceType:v6 tintColor:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SBHIconImageAppearance appearanceType](self forKey:{"appearanceType"), @"appearanceType"}];
-  v5 = [(SBHIconImageAppearance *)self tintColor];
-  [v4 encodeObject:v5 forKey:@"tintColor"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SBHIconImageAppearance appearanceType](self forKey:{"appearanceType"), @"appearanceType"}];
+  tintColor = [(SBHIconImageAppearance *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (SBHIconImageAppearance)initWithBSXPCCoder:(id)a3
+- (SBHIconImageAppearance)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"appearanceType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"appearanceType"];
   v6 = objc_opt_self();
-  v7 = [v4 decodeObjectOfClass:v6 forKey:@"tintColor"];
+  v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"tintColor"];
 
   v8 = [(SBHIconImageAppearance *)self initWithAppearanceType:v5 tintColor:v7];
   return v8;
@@ -496,27 +496,27 @@ LABEL_23:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconImageAppearance *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconImageAppearance *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconImageAppearance *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconImageAppearance *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconImageAppearance *)self succinctDescriptionBuilder];
-  v5 = [(SBHIconImageAppearance *)self tintColor];
-  v6 = [v4 appendObject:v5 withName:@"tintColor" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBHIconImageAppearance *)self succinctDescriptionBuilder];
+  tintColor = [(SBHIconImageAppearance *)self tintColor];
+  v6 = [succinctDescriptionBuilder appendObject:tintColor withName:@"tintColor" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

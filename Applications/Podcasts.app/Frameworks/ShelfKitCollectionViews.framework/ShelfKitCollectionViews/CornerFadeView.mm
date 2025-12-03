@@ -1,17 +1,17 @@
 @interface CornerFadeView
-- (_TtC23ShelfKitCollectionViews14CornerFadeView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews14CornerFadeView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CornerFadeView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_22EF90();
 }
 
-- (_TtC23ShelfKitCollectionViews14CornerFadeView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews14CornerFadeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14CornerFadeView_alignment) = 1;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14CornerFadeView_safetyCutoutSize);

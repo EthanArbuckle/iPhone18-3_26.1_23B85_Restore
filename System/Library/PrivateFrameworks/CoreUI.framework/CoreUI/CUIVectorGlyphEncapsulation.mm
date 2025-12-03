@@ -1,7 +1,7 @@
 @interface CUIVectorGlyphEncapsulation
-+ (id)newEncapsulationWithShape:(id)a3 rect:(CGRect)a4 canvasSize:(CGSize)a5 representativePointSize:(double)a6;
++ (id)newEncapsulationWithShape:(id)shape rect:(CGRect)rect canvasSize:(CGSize)size representativePointSize:(double)pointSize;
 - (CUIVectorGlyphEncapsulation)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation CUIVectorGlyphEncapsulation
@@ -26,24 +26,24 @@
   return [(CUIVectorGlyphEncapsulation *)&v8 init];
 }
 
-+ (id)newEncapsulationWithShape:(id)a3 rect:(CGRect)a4 canvasSize:(CGSize)a5 representativePointSize:(double)a6
++ (id)newEncapsulationWithShape:(id)shape rect:(CGRect)rect canvasSize:(CGSize)size representativePointSize:(double)pointSize
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   swift_getObjCClassMetadata();
-  v14 = a3;
-  v15 = sub_18DFF9FAC(v14, x, y, v10, v9, width, height, a6);
+  shapeCopy = shape;
+  v15 = sub_18DFF9FAC(shapeCopy, x, y, v10, v9, width, height, pointSize);
 
   return v15;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_18DFFA168(v5);
 
   __swift_project_boxed_opaque_existential_0(v5, v5[3]);

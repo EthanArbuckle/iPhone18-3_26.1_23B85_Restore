@@ -1,9 +1,9 @@
 @interface SKAPresenceAssertion
 + (id)logger;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPresenceAssertion:(id)a3;
-- (SKAPresenceAssertion)initWithCoreDataPresenceAssertion:(id)a3;
-- (SKAPresenceAssertion)initWithPresenceIdentifier:(id)a3 presenceOptions:(id)a4 assertionOptions:(id)a5 payload:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPresenceAssertion:(id)assertion;
+- (SKAPresenceAssertion)initWithCoreDataPresenceAssertion:(id)assertion;
+- (SKAPresenceAssertion)initWithPresenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -11,45 +11,45 @@
 
 @implementation SKAPresenceAssertion
 
-- (SKAPresenceAssertion)initWithCoreDataPresenceAssertion:(id)a3
+- (SKAPresenceAssertion)initWithCoreDataPresenceAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 options];
+  assertionCopy = assertion;
+  options = [assertionCopy options];
   v6 = objc_alloc(MEMORY[0x277D68100]);
-  v7 = [v5 serviceIdentifier];
-  v8 = [v6 initWithServiceIdentifier:v7];
+  serviceIdentifier = [options serviceIdentifier];
+  v8 = [v6 initWithServiceIdentifier:serviceIdentifier];
 
-  [v8 setIsPersonal:{objc_msgSend(v5, "isPersonal")}];
+  [v8 setIsPersonal:{objc_msgSend(options, "isPersonal")}];
   [v8 setIsDaemonIdleExitEnabled:1];
-  v9 = [v5 clientSpecifiedURI];
+  clientSpecifiedURI = [options clientSpecifiedURI];
 
-  if (v9)
+  if (clientSpecifiedURI)
   {
     v10 = objc_alloc(MEMORY[0x277D18A48]);
-    v11 = [v5 clientSpecifiedURI];
-    v12 = [v10 initWithUnprefixedURI:v11];
+    clientSpecifiedURI2 = [options clientSpecifiedURI];
+    v12 = [v10 initWithUnprefixedURI:clientSpecifiedURI2];
     [v8 setClientSpecifiedURI:v12];
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D680E8]) initWithPriority:{objc_msgSend(v4, "pushPriority")}];
+  v13 = [objc_alloc(MEMORY[0x277D680E8]) initWithPriority:{objc_msgSend(assertionCopy, "pushPriority")}];
   v14 = objc_alloc(MEMORY[0x277D68108]);
-  v15 = [v4 payload];
-  v16 = [v14 initWithData:v15];
+  payload = [assertionCopy payload];
+  v16 = [v14 initWithData:payload];
 
   v17 = [SKAPresenceAssertion alloc];
-  v18 = [v4 presenceIdentifier];
+  presenceIdentifier = [assertionCopy presenceIdentifier];
 
-  v19 = [(SKAPresenceAssertion *)v17 initWithPresenceIdentifier:v18 presenceOptions:v8 assertionOptions:v13 payload:v16];
+  v19 = [(SKAPresenceAssertion *)v17 initWithPresenceIdentifier:presenceIdentifier presenceOptions:v8 assertionOptions:v13 payload:v16];
   return v19;
 }
 
-- (SKAPresenceAssertion)initWithPresenceIdentifier:(id)a3 presenceOptions:(id)a4 assertionOptions:(id)a5 payload:(id)a6
+- (SKAPresenceAssertion)initWithPresenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  assertionOptionsCopy = assertionOptions;
+  payloadCopy = payload;
   v22.receiver = self;
   v22.super_class = SKAPresenceAssertion;
   v14 = [(SKAPresenceAssertion *)&v22 init];
@@ -59,17 +59,17 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v10;
+      v24 = identifierCopy;
       _os_log_impl(&dword_220099000, v15, OS_LOG_TYPE_DEFAULT, "Creating PresenceAssertion for identifier %@", buf, 0xCu);
     }
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     presenceIdentifier = v14->_presenceIdentifier;
     v14->_presenceIdentifier = v16;
 
-    objc_storeStrong(&v14->_payload, a6);
-    objc_storeStrong(&v14->_presenceOptions, a4);
-    objc_storeStrong(&v14->_assertionOptions, a5);
+    objc_storeStrong(&v14->_payload, payload);
+    objc_storeStrong(&v14->_presenceOptions, options);
+    objc_storeStrong(&v14->_assertionOptions, assertionOptions);
     v18 = _os_activity_create(&dword_220099000, "PresenceAssertion", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
     osActivity = v14->_osActivity;
     v14->_osActivity = v18;
@@ -83,39 +83,39 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKAPresenceAssertion *)self presenceIdentifier];
-  v6 = [(SKAPresenceAssertion *)self presenceOptions];
-  v7 = [(SKAPresenceAssertion *)self assertionOptions];
-  v8 = [v3 stringWithFormat:@"<%@: %p presenceIdentifier = %@ presenceOptions = %@ assertionOptions = %@", v4, self, v5, v6, v7];;
+  presenceIdentifier = [(SKAPresenceAssertion *)self presenceIdentifier];
+  presenceOptions = [(SKAPresenceAssertion *)self presenceOptions];
+  assertionOptions = [(SKAPresenceAssertion *)self assertionOptions];
+  v8 = [v3 stringWithFormat:@"<%@: %p presenceIdentifier = %@ presenceOptions = %@ assertionOptions = %@", v4, self, presenceIdentifier, presenceOptions, assertionOptions];;
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKAPresenceAssertion *)self isEqualToPresenceAssertion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKAPresenceAssertion *)self isEqualToPresenceAssertion:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPresenceAssertion:(id)a3
+- (BOOL)isEqualToPresenceAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  assertionCopy = assertion;
+  v5 = assertionCopy;
+  if (assertionCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(SKAPresenceAssertion *)v4 presenceIdentifier];
-    if (v6 || self->_presenceIdentifier)
+    presenceIdentifier = [(SKAPresenceAssertion *)assertionCopy presenceIdentifier];
+    if (presenceIdentifier || self->_presenceIdentifier)
     {
-      v7 = [(SKAPresenceAssertion *)v5 presenceIdentifier];
-      v8 = [v7 isEqualToString:self->_presenceIdentifier];
+      presenceIdentifier2 = [(SKAPresenceAssertion *)v5 presenceIdentifier];
+      v8 = [presenceIdentifier2 isEqualToString:self->_presenceIdentifier];
     }
 
     else
@@ -129,8 +129,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKAPresenceAssertion *)self presenceIdentifier];
-  v3 = [v2 hash];
+  presenceIdentifier = [(SKAPresenceAssertion *)self presenceIdentifier];
+  v3 = [presenceIdentifier hash];
 
   return v3;
 }

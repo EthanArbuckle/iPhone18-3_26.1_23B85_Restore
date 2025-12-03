@@ -1,11 +1,11 @@
 @interface FMPFSKBTRangeDiskNode
 - (_TtC11FMFindingUI21FMPFSKBTRangeDiskNode)init;
-- (_TtC11FMFindingUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)a3;
+- (_TtC11FMFindingUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKBTRangeDiskNode
 
-- (_TtC11FMFindingUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)a3
+- (_TtC11FMFindingUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11FMFindingUI21FMPFSKBTRangeDiskNode_sizeSpring;
   *(&self->super.super.super.super.super.isa + v4) = sub_24A5B1B2C(0, 0, 0x3F50624DD2F1A9FCLL, 0);

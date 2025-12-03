@@ -1,29 +1,29 @@
 @interface RERankingTierComparator
-+ (id)comparatorWithFilteringRules:(id)a3;
-- (BOOL)shouldHideElement:(id)a3;
-- (RERankingTierComparator)initWithFilteringRules:(id)a3;
++ (id)comparatorWithFilteringRules:(id)rules;
+- (BOOL)shouldHideElement:(id)element;
+- (RERankingTierComparator)initWithFilteringRules:(id)rules;
 @end
 
 @implementation RERankingTierComparator
 
-+ (id)comparatorWithFilteringRules:(id)a3
++ (id)comparatorWithFilteringRules:(id)rules
 {
-  v3 = a3;
-  v4 = [[RERankingTierComparator alloc] initWithFilteringRules:v3];
+  rulesCopy = rules;
+  v4 = [[RERankingTierComparator alloc] initWithFilteringRules:rulesCopy];
 
   return v4;
 }
 
-- (RERankingTierComparator)initWithFilteringRules:(id)a3
+- (RERankingTierComparator)initWithFilteringRules:(id)rules
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rulesCopy = rules;
   v23.receiver = self;
   v23.super_class = RERankingTierComparator;
   v5 = [(REMLElementComparator *)&v23 initWithModel:0];
   if (v5)
   {
-    v6 = [v4 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_82];
+    v6 = [rulesCopy sortedArrayWithOptions:16 usingComparator:&__block_literal_global_82];
     v7 = _filteringRules;
     _filteringRules = v6;
 
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * v13) conditionEvaluator];
-          [v8 addObject:v14];
+          conditionEvaluator = [*(*(&v19 + 1) + 8 * v13) conditionEvaluator];
+          [v8 addObject:conditionEvaluator];
 
           ++v13;
         }
@@ -87,18 +87,18 @@ uint64_t __50__RERankingTierComparator_initWithFilteringRules___block_invoke(uin
   return v12;
 }
 
-- (BOOL)shouldHideElement:(id)a3
+- (BOOL)shouldHideElement:(id)element
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementCopy = element;
   v4 = RELogForDomain(22);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(RERankingTierComparator *)v3 shouldHideElement:v4];
+    [(RERankingTierComparator *)elementCopy shouldHideElement:v4];
   }
 
   v5 = &unk_27D850000;
-  v30 = v3;
+  v30 = elementCopy;
   if (![_filteringRules count])
   {
 LABEL_24:
@@ -113,9 +113,9 @@ LABEL_24:
   {
     v8 = [_filteringEvaluators objectAtIndexedSubscript:{v7, v28}];
     v9 = [v5[295] objectAtIndexedSubscript:v7];
-    v10 = [v3 featureMap];
+    featureMap = [elementCopy featureMap];
     v32 = 0;
-    v11 = [v8 acceptsFeatureMap:v10 predictionSet:0 explanation:&v32];
+    v11 = [v8 acceptsFeatureMap:featureMap predictionSet:0 explanation:&v32];
     v12 = v32;
 
     if (!v11)
@@ -129,24 +129,24 @@ LABEL_24:
       goto LABEL_23;
     }
 
-    v13 = [v3 identifier];
+    identifier = [elementCopy identifier];
     v14 = v9;
-    v15 = v13;
+    v15 = identifier;
     v16 = v12;
     if (v16 && REMLExplanationsEnabled())
     {
       v31 = objc_alloc_init(REMLExplanationFormatter);
-      v17 = [v14 type];
+      type = [v14 type];
       v18 = RELogForDomain(4);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v19 = @"Including";
-        if (v17 != 1)
+        if (type != 1)
         {
           v19 = 0;
         }
 
-        if (!v17)
+        if (!type)
         {
           v19 = @"Filtering";
         }
@@ -162,7 +162,7 @@ LABEL_24:
         v40 = v21;
         _os_log_impl(&dword_22859F000, v18, OS_LOG_TYPE_DEFAULT, "%@ %@ because %@", buf, 0x20u);
 
-        v3 = v30;
+        elementCopy = v30;
       }
     }
 
@@ -172,16 +172,16 @@ LABEL_24:
       [(RERankingTierComparator *)v34 shouldHideElement:v8];
     }
 
-    v23 = [v14 type];
+    type2 = [v14 type];
     v5 = &unk_27D850000;
-    if (!v23)
+    if (!type2)
     {
       break;
     }
 
-    if (v23 == 1)
+    if (type2 == 1)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(elementCopy) = 0;
       goto LABEL_26;
     }
 
@@ -193,14 +193,14 @@ LABEL_23:
     }
   }
 
-  LOBYTE(v3) = 1;
+  LOBYTE(elementCopy) = 1;
 LABEL_26:
 
   v25 = 0;
 LABEL_27:
 
   v26 = *MEMORY[0x277D85DE8];
-  return (v25 | v3) & 1;
+  return (v25 | elementCopy) & 1;
 }
 
 - (void)shouldHideElement:(void *)a1 .cold.1(void *a1, NSObject *a2)

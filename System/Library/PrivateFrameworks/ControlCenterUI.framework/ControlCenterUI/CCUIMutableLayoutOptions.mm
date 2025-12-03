@@ -1,10 +1,10 @@
 @interface CCUIMutableLayoutOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CCUIMutableLayoutOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CCUILayoutOptions alloc];
 

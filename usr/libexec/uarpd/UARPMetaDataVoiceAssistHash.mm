@@ -1,7 +1,7 @@
 @interface UARPMetaDataVoiceAssistHash
 - (UARPMetaDataVoiceAssistHash)init;
-- (UARPMetaDataVoiceAssistHash)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataVoiceAssistHash)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataVoiceAssistHash)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataVoiceAssistHash)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataVoiceAssistHash)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataVoiceAssistHash)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataVoiceAssistHash *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataVoiceAssistHash;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     modelHash = v7->_modelHash;
     v7->_modelHash = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataVoiceAssistHash)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataVoiceAssistHash)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataVoiceAssistHash *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     modelHash = v6->_modelHash;
     v6->_modelHash = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataVoiceAssistHash *)self modelHash];
+  modelHash = [(UARPMetaDataVoiceAssistHash *)self modelHash];
   v6.receiver = self;
   v6.super_class = UARPMetaDataVoiceAssistHash;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:modelHash];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataVoiceAssistHash *)self modelHash];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  modelHash = [(UARPMetaDataVoiceAssistHash *)self modelHash];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, modelHash];
 
   return v5;
 }

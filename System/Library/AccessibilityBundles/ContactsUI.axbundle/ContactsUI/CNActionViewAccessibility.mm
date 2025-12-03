@@ -1,31 +1,31 @@
 @interface CNActionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityCustomActions;
 - (id)_axActionItem;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityLongPressActionView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_accessibilityLongPressActionView:(id)view;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CNActionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNActionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNActionView" hasInstanceMethod:@"platterBoxView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNActionView" hasInstanceMethod:@"disabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNActionView" hasInstanceMethod:@"type" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNActionView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CNActionView" hasProperty:@"style" withType:"q"];
-  [v3 validateClass:@"CNActionsView"];
-  [v3 validateClass:@"CNFaceTimeCell"];
-  [v3 validateClass:@"CNActionView" hasInstanceMethod:@"actionDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNActionsView" hasInstanceMethod:@"actionsDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNContactInlineActionsViewController" hasInstanceMethod:@"defaultActionPerType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNActionsView" hasInstanceMethod:@"didPressActionView: longPress:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNActionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNActionView" hasInstanceMethod:@"platterBoxView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNActionView" hasInstanceMethod:@"disabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNActionView" hasInstanceMethod:@"type" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNActionView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CNActionView" hasProperty:@"style" withType:"q"];
+  [validationsCopy validateClass:@"CNActionsView"];
+  [validationsCopy validateClass:@"CNFaceTimeCell"];
+  [validationsCopy validateClass:@"CNActionView" hasInstanceMethod:@"actionDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNActionsView" hasInstanceMethod:@"actionsDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNContactInlineActionsViewController" hasInstanceMethod:@"defaultActionPerType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNActionsView" hasInstanceMethod:@"didPressActionView: longPress:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 - (id)_axActionItem
@@ -53,7 +53,7 @@
   v6 = [(CNActionViewAccessibility *)self safeValueForKey:@"type"];
   v7 = labelForActionType(v6, v3 != 0);
 
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
   if (!v5 || ![v5 _accessibilityViewIsVisible])
   {
     v13 = [(CNActionViewAccessibility *)self safeValueForKey:@"type"];
@@ -63,24 +63,24 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [(CNActionViewAccessibility *)self _axActionItem];
-  if (v9)
+  _axActionItem = [(CNActionViewAccessibility *)self _axActionItem];
+  if (_axActionItem)
   {
-    v10 = v9;
-    v11 = [v8 localizedCaseInsensitiveCompare:v7];
+    v10 = _axActionItem;
+    v11 = [accessibilityLabel localizedCaseInsensitiveCompare:v7];
 
     if (v11)
     {
       v12 = [(CNActionViewAccessibility *)self safeValueForKey:@"type"];
       v13 = labelForActionType(v12, v3 != 0);
 
-      v14 = [v5 accessibilityLabel];
-      v15 = v14;
+      accessibilityLabel2 = [v5 accessibilityLabel];
+      v15 = accessibilityLabel2;
       if (v13)
       {
-        v16 = [v14 lowercaseString];
-        v17 = [v13 lowercaseString];
-        v18 = [v16 containsString:v17];
+        lowercaseString = [accessibilityLabel2 lowercaseString];
+        lowercaseString2 = [v13 lowercaseString];
+        v18 = [lowercaseString containsString:lowercaseString2];
 
         if (v18)
         {
@@ -95,7 +95,7 @@ LABEL_10:
     }
   }
 
-  v19 = v8;
+  v19 = accessibilityLabel;
 LABEL_11:
 
   return v19;
@@ -110,18 +110,18 @@ LABEL_11:
 
   if (v4 && [v4 _accessibilityViewIsVisible])
   {
-    v5 = [v4 accessibilityLabel];
-    v6 = MEMORY[0x29C2D1D70]();
+    accessibilityLabel = [v4 accessibilityLabel];
+    accessibilityUserInputLabels = MEMORY[0x29C2D1D70]();
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CNActionViewAccessibility;
-    v6 = [(CNActionViewAccessibility *)&v8 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(CNActionViewAccessibility *)&v8 accessibilityUserInputLabels];
   }
 
-  return v6;
+  return accessibilityUserInputLabels;
 }
 
 - (unint64_t)accessibilityTraits
@@ -137,7 +137,7 @@ LABEL_11:
   return v4 | v2;
 }
 
-- (void)_accessibilityLongPressActionView:(id)a3
+- (void)_accessibilityLongPressActionView:(id)view
 {
   v4 = [(CNActionViewAccessibility *)self safeValueForKey:@"actionDelegate"];
   v3 = v4;
@@ -158,26 +158,26 @@ void __63__CNActionViewAccessibility__accessibilityLongPressActionView___block_i
 
 - (id)_accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(CNActionViewAccessibility *)self _axActionItem];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axActionItem = [(CNActionViewAccessibility *)self _axActionItem];
 
-  if (v4)
+  if (_axActionItem)
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
     v6 = accessibilityLocalizedString(@"modify.selection");
     v7 = [v5 initWithName:v6 target:self selector:sel__accessibilityLongPressActionView_];
 
-    [v3 axSafelyAddObject:v7];
+    [array axSafelyAddObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v3.receiver = self;
   v3.super_class = CNActionViewAccessibility;
-  [(CNActionViewAccessibility *)&v3 setTitle:a3];
+  [(CNActionViewAccessibility *)&v3 setTitle:title];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

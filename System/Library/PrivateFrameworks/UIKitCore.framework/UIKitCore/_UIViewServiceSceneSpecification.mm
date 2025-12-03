@@ -11,8 +11,8 @@
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v7.receiver = self;
   v7.super_class = _UIViewServiceSceneSpecification;
-  v4 = [(_UISceneHostingSceneSpecification *)&v7 defaultExtensions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  defaultExtensions = [(_UISceneHostingSceneSpecification *)&v7 defaultExtensions];
+  v5 = [v3 arrayByAddingObjectsFromArray:defaultExtensions];
 
   return v5;
 }

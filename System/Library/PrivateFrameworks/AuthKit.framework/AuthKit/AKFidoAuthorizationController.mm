@@ -1,66 +1,66 @@
 @interface AKFidoAuthorizationController
-+ (BOOL)isFidoUserCancelError:(id)a3;
-- (id)_authRequestFromContext:(id)a3;
-- (id)_requestFromContext:(id)a3;
-- (void)_populateCustomStringsFromContext:(id)a3;
-- (void)_startAuthControllerWithRequest:(id)a3 context:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4;
-- (void)performAuthenticationRequestWithContext:(id)a3 completion:(id)a4;
-- (void)performRegistrationRequestWithContext:(id)a3 completion:(id)a4;
++ (BOOL)isFidoUserCancelError:(id)error;
+- (id)_authRequestFromContext:(id)context;
+- (id)_requestFromContext:(id)context;
+- (void)_populateCustomStringsFromContext:(id)context;
+- (void)_startAuthControllerWithRequest:(id)request context:(id)context;
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization;
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error;
+- (void)performAuthenticationRequestWithContext:(id)context completion:(id)completion;
+- (void)performRegistrationRequestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKFidoAuthorizationController
 
-- (void)performRegistrationRequestWithContext:(id)a3 completion:(id)a4
+- (void)performRegistrationRequestWithContext:(id)context completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  [(AKFidoAuthorizationController *)v10 setContext:location[0]];
-  v7 = [(AKFidoAuthorizationController *)v10 _requestFromContext:location[0]];
+  objc_storeStrong(&v8, completion);
+  [(AKFidoAuthorizationController *)selfCopy setContext:location[0]];
+  v7 = [(AKFidoAuthorizationController *)selfCopy _requestFromContext:location[0]];
   v4 = MEMORY[0x193B165F0](v8);
-  registrationCompletion = v10->_registrationCompletion;
-  v10->_registrationCompletion = v4;
+  registrationCompletion = selfCopy->_registrationCompletion;
+  selfCopy->_registrationCompletion = v4;
   MEMORY[0x1E69E5920](registrationCompletion);
-  [(AKFidoAuthorizationController *)v10 _startAuthControllerWithRequest:v7 context:location[0]];
+  [(AKFidoAuthorizationController *)selfCopy _startAuthControllerWithRequest:v7 context:location[0]];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)performAuthenticationRequestWithContext:(id)a3 completion:(id)a4
+- (void)performAuthenticationRequestWithContext:(id)context completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  [(AKFidoAuthorizationController *)v10 setContext:location[0]];
-  v7 = [(AKFidoAuthorizationController *)v10 _authRequestFromContext:location[0]];
+  objc_storeStrong(&v8, completion);
+  [(AKFidoAuthorizationController *)selfCopy setContext:location[0]];
+  v7 = [(AKFidoAuthorizationController *)selfCopy _authRequestFromContext:location[0]];
   v4 = MEMORY[0x193B165F0](v8);
-  authCompletion = v10->_authCompletion;
-  v10->_authCompletion = v4;
+  authCompletion = selfCopy->_authCompletion;
+  selfCopy->_authCompletion = v4;
   MEMORY[0x1E69E5920](authCompletion);
-  [(AKFidoAuthorizationController *)v10 _startAuthControllerWithRequest:v7 context:location[0]];
+  [(AKFidoAuthorizationController *)selfCopy _startAuthControllerWithRequest:v7 context:location[0]];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_startAuthControllerWithRequest:(id)a3 context:(id)a4
+- (void)_startAuthControllerWithRequest:(id)request context:(id)context
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, context);
   if (AuthenticationServicesLibraryCore(0))
   {
     v4 = objc_alloc(getASAuthorizationControllerClass());
@@ -75,41 +75,41 @@
   v19[0] = location[0];
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v9 = [v8 initWithAuthorizationRequests:?];
-  [(AKFidoAuthorizationController *)v18 set_authController:?];
+  [(AKFidoAuthorizationController *)selfCopy set_authController:?];
   MEMORY[0x1E69E5920](v9);
   MEMORY[0x1E69E5920](v10);
-  v11 = v18;
-  v12 = [(AKFidoAuthorizationController *)v18 _authController];
-  [(ASAuthorizationController *)v12 setDelegate:v11];
-  MEMORY[0x1E69E5920](v12);
-  [(AKFidoAuthorizationController *)v18 _populateCustomStringsFromContext:v16];
-  v13 = [(AKFidoAuthorizationController *)v18 uiProvider];
+  v11 = selfCopy;
+  _authController = [(AKFidoAuthorizationController *)selfCopy _authController];
+  [(ASAuthorizationController *)_authController setDelegate:v11];
+  MEMORY[0x1E69E5920](_authController);
+  [(AKFidoAuthorizationController *)selfCopy _populateCustomStringsFromContext:v16];
+  uiProvider = [(AKFidoAuthorizationController *)selfCopy uiProvider];
   v14 = objc_opt_respondsToSelector();
-  MEMORY[0x1E69E5920](v13);
+  MEMORY[0x1E69E5920](uiProvider);
   if (v14)
   {
-    v7 = [(AKFidoAuthorizationController *)v18 uiProvider];
-    v6 = [(AKFidoAuthorizationController *)v18 _authController];
-    [(ASAuthorizationController *)v6 setPresentationContextProvider:v7];
-    MEMORY[0x1E69E5920](v6);
-    MEMORY[0x1E69E5920](v7);
+    uiProvider2 = [(AKFidoAuthorizationController *)selfCopy uiProvider];
+    _authController2 = [(AKFidoAuthorizationController *)selfCopy _authController];
+    [(ASAuthorizationController *)_authController2 setPresentationContextProvider:uiProvider2];
+    MEMORY[0x1E69E5920](_authController2);
+    MEMORY[0x1E69E5920](uiProvider2);
   }
 
-  v5 = [(AKFidoAuthorizationController *)v18 _authController];
-  [(ASAuthorizationController *)v5 performRequests];
-  MEMORY[0x1E69E5920](v5);
+  _authController3 = [(AKFidoAuthorizationController *)selfCopy _authController];
+  [(ASAuthorizationController *)_authController3 performRequests];
+  MEMORY[0x1E69E5920](_authController3);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_requestFromContext:(id)a3
+- (id)_requestFromContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if (AuthenticationServicesLibraryCore(0))
   {
     v3 = objc_alloc(getASAuthorizationSecurityKeyPublicKeyCredentialProviderClass());
@@ -121,58 +121,58 @@
   }
 
   v12 = v3;
-  v13 = [location[0] relyingPartyIdentifier];
+  relyingPartyIdentifier = [location[0] relyingPartyIdentifier];
   v33 = [v12 initWithRelyingPartyIdentifier:?];
-  MEMORY[0x1E69E5920](v13);
-  v17 = [location[0] challenge];
-  v16 = [location[0] displayName];
-  v15 = [location[0] credentialName];
-  v14 = [location[0] userIdentifier];
-  v32 = [v33 createCredentialRegistrationRequestWithChallenge:v17 displayName:v16 name:v15 userID:?];
-  MEMORY[0x1E69E5920](v14);
-  MEMORY[0x1E69E5920](v15);
-  MEMORY[0x1E69E5920](v16);
-  MEMORY[0x1E69E5920](v17);
-  v18 = [location[0] credentials];
+  MEMORY[0x1E69E5920](relyingPartyIdentifier);
+  challenge = [location[0] challenge];
+  displayName = [location[0] displayName];
+  credentialName = [location[0] credentialName];
+  userIdentifier = [location[0] userIdentifier];
+  v32 = [v33 createCredentialRegistrationRequestWithChallenge:challenge displayName:displayName name:credentialName userID:?];
+  MEMORY[0x1E69E5920](userIdentifier);
+  MEMORY[0x1E69E5920](credentialName);
+  MEMORY[0x1E69E5920](displayName);
+  MEMORY[0x1E69E5920](challenge);
+  credentials = [location[0] credentials];
   v30 = 0;
   v28 = 0;
   v19 = 0;
-  if ([v18 count])
+  if ([credentials count])
   {
-    v31 = [location[0] credentials];
+    credentials2 = [location[0] credentials];
     v30 = 1;
-    v29 = [v31 firstObject];
+    firstObject = [credentials2 firstObject];
     v28 = 1;
-    v19 = [v29 length] != 0;
+    v19 = [firstObject length] != 0;
   }
 
   if (v28)
   {
-    MEMORY[0x1E69E5920](v29);
+    MEMORY[0x1E69E5920](firstObject);
   }
 
   if (v30)
   {
-    MEMORY[0x1E69E5920](v31);
+    MEMORY[0x1E69E5920](credentials2);
   }
 
-  MEMORY[0x1E69E5920](v18);
+  MEMORY[0x1E69E5920](credentials);
   if (v19)
   {
     v27 = _AKLogFido();
     v26 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [location[0] credentials];
-      __os_log_helper_16_0_1_8_0(v36, [v11 count]);
+      credentials3 = [location[0] credentials];
+      __os_log_helper_16_0_1_8_0(v36, [credentials3 count]);
       _os_log_debug_impl(&dword_193225000, v27, v26, "Adding %lu credentials to the excluded credentials list.", v36, 0xCu);
-      MEMORY[0x1E69E5920](v11);
+      MEMORY[0x1E69E5920](credentials3);
     }
 
     objc_storeStrong(&v27, 0);
-    v10 = [location[0] credentials];
-    v25 = [v10 aaf_map:&__block_literal_global_6];
-    MEMORY[0x1E69E5920](v10);
+    credentials4 = [location[0] credentials];
+    v25 = [credentials4 aaf_map:&__block_literal_global_6];
+    MEMORY[0x1E69E5920](credentials4);
     [v32 setExcludedCredentials:v25];
     objc_storeStrong(&v25, 0);
   }
@@ -311,12 +311,12 @@ id __53__AKFidoAuthorizationController__requestFromContext___block_invoke(void *
   return v9;
 }
 
-- (id)_authRequestFromContext:(id)a3
+- (id)_authRequestFromContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if (AuthenticationServicesLibraryCore(0))
   {
     v3 = objc_alloc(getASAuthorizationSecurityKeyPublicKeyCredentialProviderClass());
@@ -328,41 +328,41 @@ id __53__AKFidoAuthorizationController__requestFromContext___block_invoke(void *
   }
 
   v7 = v3;
-  v8 = [location[0] relyingPartyIdentifier];
+  relyingPartyIdentifier = [location[0] relyingPartyIdentifier];
   v18 = [v7 initWithRelyingPartyIdentifier:?];
-  MEMORY[0x1E69E5920](v8);
-  v9 = [location[0] challenge];
+  MEMORY[0x1E69E5920](relyingPartyIdentifier);
+  challenge = [location[0] challenge];
   v17 = [v18 createCredentialAssertionRequestWithChallenge:?];
-  MEMORY[0x1E69E5920](v9);
-  v10 = [location[0] credentials];
+  MEMORY[0x1E69E5920](challenge);
+  credentials = [location[0] credentials];
   v15 = 0;
   v13 = 0;
   v11 = 0;
-  if ([v10 count])
+  if ([credentials count])
   {
-    v16 = [location[0] credentials];
+    credentials2 = [location[0] credentials];
     v15 = 1;
-    v14 = [v16 firstObject];
+    firstObject = [credentials2 firstObject];
     v13 = 1;
-    v11 = [v14 length] != 0;
+    v11 = [firstObject length] != 0;
   }
 
   if (v13)
   {
-    MEMORY[0x1E69E5920](v14);
+    MEMORY[0x1E69E5920](firstObject);
   }
 
   if (v15)
   {
-    MEMORY[0x1E69E5920](v16);
+    MEMORY[0x1E69E5920](credentials2);
   }
 
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](credentials);
   if (v11)
   {
-    v6 = [location[0] credentials];
-    v12 = [v6 aaf_map:&__block_literal_global_22];
-    MEMORY[0x1E69E5920](v6);
+    credentials3 = [location[0] credentials];
+    v12 = [credentials3 aaf_map:&__block_literal_global_22];
+    MEMORY[0x1E69E5920](credentials3);
     [v17 setAllowedCredentials:v12];
     objc_storeStrong(&v12, 0);
   }
@@ -446,23 +446,23 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
   return v9;
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization
 {
   v64 = *MEMORY[0x1E69E9840];
-  v61 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v59 = 0;
-  objc_storeStrong(&v59, a4);
-  v44 = [v59 credential];
+  objc_storeStrong(&v59, authorization);
+  credential = [v59 credential];
   if (AuthenticationServicesLibraryCore(0))
   {
     getASAuthorizationSecurityKeyPublicKeyCredentialRegistrationClass();
   }
 
   isKindOfClass = objc_opt_isKindOfClass();
-  MEMORY[0x1E69E5920](v44);
+  MEMORY[0x1E69E5920](credential);
   if (isKindOfClass)
   {
     v58 = _AKLogFido();
@@ -476,71 +476,71 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
     }
 
     objc_storeStrong(&v58, 0);
-    v55 = [v59 credential];
+    credential2 = [v59 credential];
     v54 = _AKLogFido();
     v53 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [v55 credentialID];
-      v38 = [v55 rawAttestationObject];
-      v37 = [v55 rawClientDataJSON];
-      __os_log_helper_16_2_3_8_64_8_64_8_64(v63, v39, v38, v37);
+      credentialID = [credential2 credentialID];
+      rawAttestationObject = [credential2 rawAttestationObject];
+      rawClientDataJSON = [credential2 rawClientDataJSON];
+      __os_log_helper_16_2_3_8_64_8_64_8_64(v63, credentialID, rawAttestationObject, rawClientDataJSON);
       _os_log_debug_impl(&dword_193225000, v54, v53, "Fido registration CredentialID: %@\nAttestation Data: %@\nClientData: %@", v63, 0x20u);
-      MEMORY[0x1E69E5920](v37);
-      MEMORY[0x1E69E5920](v38);
-      MEMORY[0x1E69E5920](v39);
+      MEMORY[0x1E69E5920](rawClientDataJSON);
+      MEMORY[0x1E69E5920](rawAttestationObject);
+      MEMORY[0x1E69E5920](credentialID);
     }
 
     objc_storeStrong(&v54, 0);
-    v36 = [(AKFidoAuthorizationController *)v61 registrationCompletion];
-    MEMORY[0x1E69E5920](v36);
-    if (v36)
+    registrationCompletion = [(AKFidoAuthorizationController *)selfCopy registrationCompletion];
+    MEMORY[0x1E69E5920](registrationCompletion);
+    if (registrationCompletion)
     {
       v23 = [AKFidoRegistrationResponse alloc];
-      v34 = [(AKFidoAuthorizationController *)v61 context];
-      v33 = [(AKFidoContext *)v34 originalChallenge];
-      v32 = [v55 rawAttestationObject];
-      v31 = [v55 credentialID];
-      v30 = [v55 rawClientDataJSON];
-      v29 = [(AKFidoAuthorizationController *)v61 context];
-      v28 = [(AKFidoContext *)v29 relyingPartyIdentifier];
-      v27 = [(AKFidoAuthorizationController *)v61 context];
-      v26 = [(AKFidoContext *)v27 credentialName];
-      v25 = [(AKFidoAuthorizationController *)v61 context];
-      v24 = [(AKFidoContext *)v25 userIdentifier];
-      v52 = [(AKFidoRegistrationResponse *)v23 initWithChallengeString:v33 attestationsData:v32 credentialID:v31 clientData:v30 relyingPartyIdentifier:v28 credentialName:v26 userIdentifier:v24];
-      MEMORY[0x1E69E5920](v24);
-      MEMORY[0x1E69E5920](v25);
-      MEMORY[0x1E69E5920](v26);
-      MEMORY[0x1E69E5920](v27);
-      MEMORY[0x1E69E5920](v28);
-      MEMORY[0x1E69E5920](v29);
-      MEMORY[0x1E69E5920](v30);
-      MEMORY[0x1E69E5920](v31);
-      MEMORY[0x1E69E5920](v32);
-      MEMORY[0x1E69E5920](v33);
-      MEMORY[0x1E69E5920](v34);
-      v35 = [(AKFidoAuthorizationController *)v61 registrationCompletion];
-      v35[2](v35, v52);
-      MEMORY[0x1E69E5920](v35);
-      [(AKFidoAuthorizationController *)v61 setRegistrationCompletion:0];
+      context = [(AKFidoAuthorizationController *)selfCopy context];
+      originalChallenge = [(AKFidoContext *)context originalChallenge];
+      rawAttestationObject2 = [credential2 rawAttestationObject];
+      credentialID2 = [credential2 credentialID];
+      rawClientDataJSON2 = [credential2 rawClientDataJSON];
+      context2 = [(AKFidoAuthorizationController *)selfCopy context];
+      relyingPartyIdentifier = [(AKFidoContext *)context2 relyingPartyIdentifier];
+      context3 = [(AKFidoAuthorizationController *)selfCopy context];
+      credentialName = [(AKFidoContext *)context3 credentialName];
+      context4 = [(AKFidoAuthorizationController *)selfCopy context];
+      userIdentifier = [(AKFidoContext *)context4 userIdentifier];
+      v52 = [(AKFidoRegistrationResponse *)v23 initWithChallengeString:originalChallenge attestationsData:rawAttestationObject2 credentialID:credentialID2 clientData:rawClientDataJSON2 relyingPartyIdentifier:relyingPartyIdentifier credentialName:credentialName userIdentifier:userIdentifier];
+      MEMORY[0x1E69E5920](userIdentifier);
+      MEMORY[0x1E69E5920](context4);
+      MEMORY[0x1E69E5920](credentialName);
+      MEMORY[0x1E69E5920](context3);
+      MEMORY[0x1E69E5920](relyingPartyIdentifier);
+      MEMORY[0x1E69E5920](context2);
+      MEMORY[0x1E69E5920](rawClientDataJSON2);
+      MEMORY[0x1E69E5920](credentialID2);
+      MEMORY[0x1E69E5920](rawAttestationObject2);
+      MEMORY[0x1E69E5920](originalChallenge);
+      MEMORY[0x1E69E5920](context);
+      registrationCompletion2 = [(AKFidoAuthorizationController *)selfCopy registrationCompletion];
+      registrationCompletion2[2](registrationCompletion2, v52);
+      MEMORY[0x1E69E5920](registrationCompletion2);
+      [(AKFidoAuthorizationController *)selfCopy setRegistrationCompletion:0];
       objc_storeStrong(&v52, 0);
     }
 
-    objc_storeStrong(&v61->_context, 0);
-    objc_storeStrong(&v55, 0);
+    objc_storeStrong(&selfCopy->_context, 0);
+    objc_storeStrong(&credential2, 0);
   }
 
   else
   {
-    v22 = [v59 credential];
+    credential3 = [v59 credential];
     if (AuthenticationServicesLibraryCore(0))
     {
       getASAuthorizationSecurityKeyPublicKeyCredentialAssertionClass();
     }
 
     v21 = objc_opt_isKindOfClass();
-    MEMORY[0x1E69E5920](v22);
+    MEMORY[0x1E69E5920](credential3);
     if (v21)
     {
       v51 = _AKLogFido();
@@ -554,55 +554,55 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
       }
 
       objc_storeStrong(&v51, 0);
-      v48 = [v59 credential];
+      credential4 = [v59 credential];
       v47 = _AKLogFido();
       v46 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v48 signature];
-        v17 = [v48 rawAuthenticatorData];
-        v16 = [v48 userID];
-        __os_log_helper_16_2_3_8_64_8_64_8_64(v62, v18, v17, v16);
+        signature = [credential4 signature];
+        rawAuthenticatorData = [credential4 rawAuthenticatorData];
+        userID = [credential4 userID];
+        __os_log_helper_16_2_3_8_64_8_64_8_64(v62, signature, rawAuthenticatorData, userID);
         _os_log_debug_impl(&dword_193225000, v47, v46, "Fido authentication Signature: %@\nAuthenticator Data: %@\nUserID: %@", v62, 0x20u);
-        MEMORY[0x1E69E5920](v16);
-        MEMORY[0x1E69E5920](v17);
-        MEMORY[0x1E69E5920](v18);
+        MEMORY[0x1E69E5920](userID);
+        MEMORY[0x1E69E5920](rawAuthenticatorData);
+        MEMORY[0x1E69E5920](signature);
       }
 
       objc_storeStrong(&v47, 0);
-      v15 = [(AKFidoAuthorizationController *)v61 authCompletion];
-      MEMORY[0x1E69E5920](v15);
-      if (v15)
+      authCompletion = [(AKFidoAuthorizationController *)selfCopy authCompletion];
+      MEMORY[0x1E69E5920](authCompletion);
+      if (authCompletion)
       {
         v4 = [AKFidoAuthenticationResponse alloc];
-        v13 = [v48 rawAuthenticatorData];
-        v12 = [(AKFidoAuthorizationController *)v61 context];
-        v11 = [(AKFidoContext *)v12 originalChallenge];
-        v10 = [(AKFidoAuthorizationController *)v61 context];
-        v9 = [(AKFidoContext *)v10 relyingPartyIdentifier];
-        v8 = [v48 signature];
-        v7 = [v48 rawClientDataJSON];
-        v6 = [v48 credentialID];
-        v5 = [v48 userID];
-        v45 = [(AKFidoAuthenticationResponse *)v4 initWithAuthenticatorData:v13 challengeString:v11 relyingPartyIdentifier:v9 signature:v8 clientData:v7 credentialID:v6 userIdentifier:v5];
-        MEMORY[0x1E69E5920](v5);
-        MEMORY[0x1E69E5920](v6);
-        MEMORY[0x1E69E5920](v7);
-        MEMORY[0x1E69E5920](v8);
-        MEMORY[0x1E69E5920](v9);
-        MEMORY[0x1E69E5920](v10);
-        MEMORY[0x1E69E5920](v11);
-        MEMORY[0x1E69E5920](v12);
-        MEMORY[0x1E69E5920](v13);
-        v14 = [(AKFidoAuthorizationController *)v61 authCompletion];
-        v14[2](v14, v45);
-        MEMORY[0x1E69E5920](v14);
-        [(AKFidoAuthorizationController *)v61 setAuthCompletion:0];
+        rawAuthenticatorData2 = [credential4 rawAuthenticatorData];
+        context5 = [(AKFidoAuthorizationController *)selfCopy context];
+        originalChallenge2 = [(AKFidoContext *)context5 originalChallenge];
+        context6 = [(AKFidoAuthorizationController *)selfCopy context];
+        relyingPartyIdentifier2 = [(AKFidoContext *)context6 relyingPartyIdentifier];
+        signature2 = [credential4 signature];
+        rawClientDataJSON3 = [credential4 rawClientDataJSON];
+        credentialID3 = [credential4 credentialID];
+        userID2 = [credential4 userID];
+        v45 = [(AKFidoAuthenticationResponse *)v4 initWithAuthenticatorData:rawAuthenticatorData2 challengeString:originalChallenge2 relyingPartyIdentifier:relyingPartyIdentifier2 signature:signature2 clientData:rawClientDataJSON3 credentialID:credentialID3 userIdentifier:userID2];
+        MEMORY[0x1E69E5920](userID2);
+        MEMORY[0x1E69E5920](credentialID3);
+        MEMORY[0x1E69E5920](rawClientDataJSON3);
+        MEMORY[0x1E69E5920](signature2);
+        MEMORY[0x1E69E5920](relyingPartyIdentifier2);
+        MEMORY[0x1E69E5920](context6);
+        MEMORY[0x1E69E5920](originalChallenge2);
+        MEMORY[0x1E69E5920](context5);
+        MEMORY[0x1E69E5920](rawAuthenticatorData2);
+        authCompletion2 = [(AKFidoAuthorizationController *)selfCopy authCompletion];
+        authCompletion2[2](authCompletion2, v45);
+        MEMORY[0x1E69E5920](authCompletion2);
+        [(AKFidoAuthorizationController *)selfCopy setAuthCompletion:0];
         objc_storeStrong(&v45, 0);
       }
 
-      objc_storeStrong(&v61->_context, 0);
-      objc_storeStrong(&v48, 0);
+      objc_storeStrong(&selfCopy->_context, 0);
+      objc_storeStrong(&credential4, 0);
     }
   }
 
@@ -611,15 +611,15 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, error);
   v9 = _AKLogFido();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -628,40 +628,40 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
   }
 
   objc_storeStrong(&v9, 0);
-  v7 = [(AKFidoAuthorizationController *)v12 registrationCompletion];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  registrationCompletion = [(AKFidoAuthorizationController *)selfCopy registrationCompletion];
+  MEMORY[0x1E69E5920](registrationCompletion);
+  if (registrationCompletion)
   {
-    v6 = [(AKFidoAuthorizationController *)v12 registrationCompletion];
-    v6[2]();
-    MEMORY[0x1E69E5920](v6);
-    [(AKFidoAuthorizationController *)v12 setRegistrationCompletion:0];
+    registrationCompletion2 = [(AKFidoAuthorizationController *)selfCopy registrationCompletion];
+    registrationCompletion2[2]();
+    MEMORY[0x1E69E5920](registrationCompletion2);
+    [(AKFidoAuthorizationController *)selfCopy setRegistrationCompletion:0];
   }
 
-  v5 = [(AKFidoAuthorizationController *)v12 authCompletion];
-  MEMORY[0x1E69E5920](v5);
-  if (v5)
+  authCompletion = [(AKFidoAuthorizationController *)selfCopy authCompletion];
+  MEMORY[0x1E69E5920](authCompletion);
+  if (authCompletion)
   {
-    v4 = [(AKFidoAuthorizationController *)v12 authCompletion];
-    v4[2]();
-    MEMORY[0x1E69E5920](v4);
-    [(AKFidoAuthorizationController *)v12 setAuthCompletion:0];
+    authCompletion2 = [(AKFidoAuthorizationController *)selfCopy authCompletion];
+    authCompletion2[2]();
+    MEMORY[0x1E69E5920](authCompletion2);
+    [(AKFidoAuthorizationController *)selfCopy setAuthCompletion:0];
   }
 
-  objc_storeStrong(&v12->_context, 0);
+  objc_storeStrong(&selfCopy->_context, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isFidoUserCancelError:(id)a3
++ (BOOL)isFidoUserCancelError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] domain];
+  objc_storeStrong(location, error);
+  domain = [location[0] domain];
   v10 = 0;
   if (AuthenticationServicesLibraryCore(0))
   {
@@ -676,7 +676,7 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
   }
 
   v6 = 0;
-  if ([v8 isEqualToString:v7])
+  if ([domain isEqualToString:v7])
   {
     v6 = [location[0] code] == 1001;
   }
@@ -686,7 +686,7 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
     MEMORY[0x1E69E5920](v11);
   }
 
-  MEMORY[0x1E69E5920](v8);
+  MEMORY[0x1E69E5920](domain);
   v12 = v6;
   oslog = _AKLogFido();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -712,13 +712,13 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
   return v5;
 }
 
-- (void)_populateCustomStringsFromContext:(id)a3
+- (void)_populateCustomStringsFromContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = _AKLogFido();
   v26 = 2;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -734,59 +734,59 @@ id __57__AKFidoAuthorizationController__authRequestFromContext___block_invoke(vo
   }
 
   objc_storeStrong(&v27, 0);
-  v20 = [location[0] promptHeader];
-  v21 = [v20 length];
-  MEMORY[0x1E69E5920](v20);
+  promptHeader = [location[0] promptHeader];
+  v21 = [promptHeader length];
+  MEMORY[0x1E69E5920](promptHeader);
   if (v21)
   {
-    v19 = [location[0] promptHeader];
-    v18 = [(AKFidoAuthorizationController *)v29 _authController];
-    [(ASAuthorizationController *)v18 setProxySheetHeaderOverride:v19];
-    MEMORY[0x1E69E5920](v18);
-    MEMORY[0x1E69E5920](v19);
+    promptHeader2 = [location[0] promptHeader];
+    _authController = [(AKFidoAuthorizationController *)selfCopy _authController];
+    [(ASAuthorizationController *)_authController setProxySheetHeaderOverride:promptHeader2];
+    MEMORY[0x1E69E5920](_authController);
+    MEMORY[0x1E69E5920](promptHeader2);
   }
 
-  v16 = [location[0] promptTitle];
-  v17 = [v16 length];
-  MEMORY[0x1E69E5920](v16);
+  promptTitle = [location[0] promptTitle];
+  v17 = [promptTitle length];
+  MEMORY[0x1E69E5920](promptTitle);
   if (v17)
   {
-    v15 = [location[0] promptTitle];
-    v14 = [(AKFidoAuthorizationController *)v29 _authController];
-    [(ASAuthorizationController *)v14 setProxySheetTitleOverride:v15];
-    MEMORY[0x1E69E5920](v14);
-    MEMORY[0x1E69E5920](v15);
+    promptTitle2 = [location[0] promptTitle];
+    _authController2 = [(AKFidoAuthorizationController *)selfCopy _authController];
+    [(ASAuthorizationController *)_authController2 setProxySheetTitleOverride:promptTitle2];
+    MEMORY[0x1E69E5920](_authController2);
+    MEMORY[0x1E69E5920](promptTitle2);
   }
 
-  v12 = [location[0] promptBody];
-  v13 = [v12 length];
-  MEMORY[0x1E69E5920](v12);
+  promptBody = [location[0] promptBody];
+  v13 = [promptBody length];
+  MEMORY[0x1E69E5920](promptBody);
   if (v13)
   {
-    v11 = [location[0] promptBody];
-    v10 = [(AKFidoAuthorizationController *)v29 _authController];
-    [(ASAuthorizationController *)v10 setProxySheetSubtitleOverride:v11];
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
+    promptBody2 = [location[0] promptBody];
+    _authController3 = [(AKFidoAuthorizationController *)selfCopy _authController];
+    [(ASAuthorizationController *)_authController3 setProxySheetSubtitleOverride:promptBody2];
+    MEMORY[0x1E69E5920](_authController3);
+    MEMORY[0x1E69E5920](promptBody2);
   }
 
-  v3 = [location[0] useAlternativeKeysIcon];
-  v4 = [(AKFidoAuthorizationController *)v29 _authController];
-  [(ASAuthorizationController *)v4 setUseAlternativeSecurityKeysIcon:v3];
-  MEMORY[0x1E69E5920](v4);
-  v7 = [location[0] relyingPartyIdentifier];
-  v30 = v7;
+  useAlternativeKeysIcon = [location[0] useAlternativeKeysIcon];
+  _authController4 = [(AKFidoAuthorizationController *)selfCopy _authController];
+  [(ASAuthorizationController *)_authController4 setUseAlternativeSecurityKeysIcon:useAlternativeKeysIcon];
+  MEMORY[0x1E69E5920](_authController4);
+  relyingPartyIdentifier = [location[0] relyingPartyIdentifier];
+  v30 = relyingPartyIdentifier;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-  v5 = [(AKFidoAuthorizationController *)v29 _authController];
-  [(ASAuthorizationController *)v5 setProxiedAssociatedDomains:v6];
-  MEMORY[0x1E69E5920](v5);
+  _authController5 = [(AKFidoAuthorizationController *)selfCopy _authController];
+  [(ASAuthorizationController *)_authController5 setProxiedAssociatedDomains:v6];
+  MEMORY[0x1E69E5920](_authController5);
   MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
-  v9 = [location[0] incorrectKeyPresentedMessage];
-  v8 = [(AKFidoAuthorizationController *)v29 _authController];
-  [(ASAuthorizationController *)v8 setProxySheetNoCredentialsErrorMessageOverride:v9];
-  MEMORY[0x1E69E5920](v8);
-  MEMORY[0x1E69E5920](v9);
+  MEMORY[0x1E69E5920](relyingPartyIdentifier);
+  incorrectKeyPresentedMessage = [location[0] incorrectKeyPresentedMessage];
+  _authController6 = [(AKFidoAuthorizationController *)selfCopy _authController];
+  [(ASAuthorizationController *)_authController6 setProxySheetNoCredentialsErrorMessageOverride:incorrectKeyPresentedMessage];
+  MEMORY[0x1E69E5920](_authController6);
+  MEMORY[0x1E69E5920](incorrectKeyPresentedMessage);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }

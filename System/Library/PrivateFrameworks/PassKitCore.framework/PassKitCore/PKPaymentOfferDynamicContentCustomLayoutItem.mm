@@ -1,25 +1,25 @@
 @interface PKPaymentOfferDynamicContentCustomLayoutItem
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithCoder:(id)a3;
-- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithCoder:(id)coder;
+- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferDynamicContentCustomLayoutItem
 
-- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithDictionary:(id)a3
+- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (![v4 count])
+  dictionaryCopy = dictionary;
+  if (![dictionaryCopy count])
   {
     goto LABEL_14;
   }
 
-  v5 = [v4 PKStringForKey:@"type"];
+  v5 = [dictionaryCopy PKStringForKey:@"type"];
   v6 = v5;
   if (v5 != @"text")
   {
@@ -49,15 +49,15 @@
 
 LABEL_5:
 
-  v8 = [v4 PKDictionaryForKey:@"leadingText"];
-  v9 = [v4 PKDictionaryForKey:@"trailingText"];
+  v8 = [dictionaryCopy PKDictionaryForKey:@"leadingText"];
+  v9 = [dictionaryCopy PKDictionaryForKey:@"trailingText"];
   v10 = [[PKPaymentOfferDynamicContentCustomLayoutItemTextDetails alloc] initWithDictionary:v8];
   v11 = [[PKPaymentOfferDynamicContentCustomLayoutItemTextDetails alloc] initWithDictionary:v9];
 
   if (!(v10 | v11))
   {
 LABEL_14:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -76,10 +76,10 @@ LABEL_10:
 
   self = p_isa;
 
-  v18 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -104,29 +104,29 @@ LABEL_15:
   }
 
   [v3 setObject:v7 forKeyedSubscript:@"type"];
-  v8 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_leadingText dictionaryRepresentation];
-  [v4 setObject:v8 forKeyedSubscript:@"leadingText"];
+  dictionaryRepresentation = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_leadingText dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"leadingText"];
 
-  v9 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_trailingText dictionaryRepresentation];
-  [v4 setObject:v9 forKeyedSubscript:@"trailingText"];
+  dictionaryRepresentation2 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_trailingText dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation2 forKeyedSubscript:@"trailingText"];
 
   v10 = [v4 copy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -228,20 +228,20 @@ LABEL_18:
   return v3;
 }
 
-- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithCoder:(id)a3
+- (PKPaymentOfferDynamicContentCustomLayoutItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferDynamicContentCustomLayoutItem;
   v5 = [(PKPaymentOfferDynamicContentCustomLayoutItem *)&v11 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leadingText"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leadingText"];
     leadingText = v5->_leadingText;
     v5->_leadingText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingText"];
     trailingText = v5->_trailingText;
     v5->_trailingText = v8;
   }
@@ -249,23 +249,23 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_leadingText forKey:@"leadingText"];
-  [v5 encodeObject:self->_trailingText forKey:@"trailingText"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_leadingText forKey:@"leadingText"];
+  [coderCopy encodeObject:self->_trailingText forKey:@"trailingText"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferDynamicContentCustomLayoutItem allocWithZone:](PKPaymentOfferDynamicContentCustomLayoutItem init];
-  v6 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_leadingText copyWithZone:a3];
+  v6 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_leadingText copyWithZone:zone];
   leadingText = v5->_leadingText;
   v5->_leadingText = v6;
 
-  v8 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_trailingText copyWithZone:a3];
+  v8 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)self->_trailingText copyWithZone:zone];
   trailingText = v5->_trailingText;
   v5->_trailingText = v8;
 

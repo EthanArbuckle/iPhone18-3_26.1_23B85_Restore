@@ -1,16 +1,16 @@
 @interface PREditingColorSlider
 - (CGColor)trackBorderColor;
-- (PREditingColorSlider)initWithVariationStore:(id)a3 contextIdentifier:(id)a4 pickerContext:(unint64_t)a5;
+- (PREditingColorSlider)initWithVariationStore:(id)store contextIdentifier:(id)identifier pickerContext:(unint64_t)context;
 - (id)createThumbView;
-- (void)_setSliderValue:(double)a3;
+- (void)_setSliderValue:(double)value;
 - (void)commonInit;
 - (void)createTrackLayer;
-- (void)didTapTrackView:(id)a3;
+- (void)didTapTrackView:(id)view;
 - (void)layoutSubviews;
 - (void)layoutThumbView;
-- (void)setPickerColor:(id)a3;
-- (void)thumbViewDidPan:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPickerColor:(id)color;
+- (void)thumbViewDidPan:(id)pan;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCurrentColorForCurrentValue;
 - (void)updateThumbForCurrentColor;
 - (void)updateTrackLayerColors;
@@ -18,19 +18,19 @@
 
 @implementation PREditingColorSlider
 
-- (PREditingColorSlider)initWithVariationStore:(id)a3 contextIdentifier:(id)a4 pickerContext:(unint64_t)a5
+- (PREditingColorSlider)initWithVariationStore:(id)store contextIdentifier:(id)identifier pickerContext:(unint64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  storeCopy = store;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = PREditingColorSlider;
   v11 = [(PREditingColorSlider *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_variationStore, a3);
-    objc_storeStrong(&v12->_contextIdentifier, a4);
-    v12->_pickerContext = a5;
+    objc_storeStrong(&v11->_variationStore, store);
+    objc_storeStrong(&v12->_contextIdentifier, identifier);
+    v12->_pickerContext = context;
     [(PREditingColorSlider *)v12 commonInit];
   }
 
@@ -39,7 +39,7 @@
 
 - (void)commonInit
 {
-  v3 = [(PREditingColorSlider *)self createThumbView];
+  createThumbView = [(PREditingColorSlider *)self createThumbView];
   [(PREditingColorSlider *)self createTrackLayer];
   v4 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_thumbViewDidPan_];
   panGesture = self->_panGesture;
@@ -47,8 +47,8 @@
 
   [(UIView *)self->_thumbView addGestureRecognizer:self->_panGesture];
   [(PREditingColorSlider *)self addSubview:self->_thumbView];
-  v6 = [(PREditingColorSlider *)self layer];
-  [v6 insertSublayer:self->_trackLayer atIndex:0];
+  layer = [(PREditingColorSlider *)self layer];
+  [layer insertSublayer:self->_trackLayer atIndex:0];
 
   v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapTrackView_];
   tapGesture = self->_tapGesture;
@@ -69,49 +69,49 @@
     self->_thumbView = v4;
 
     v6 = self->_thumbView;
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v6 setBackgroundColor:clearColor];
 
     [(UIView *)self->_thumbView setContentMode:2];
     [(UIView *)self->_thumbView setClipsToBounds:0];
-    v8 = [(UIView *)self->_thumbView layer];
+    layer = [(UIView *)self->_thumbView layer];
     LODWORD(v9) = 1042536202;
-    [v8 setShadowOpacity:v9];
-    [v8 setShadowOffset:{1.0, 5.5}];
-    [v8 setShadowRadius:3.5];
-    v10 = [MEMORY[0x1E6979398] layer];
+    [layer setShadowOpacity:v9];
+    [layer setShadowOffset:{1.0, 5.5}];
+    [layer setShadowRadius:3.5];
+    layer2 = [MEMORY[0x1E6979398] layer];
     thumbSoftShadowLayer = self->_thumbSoftShadowLayer;
-    self->_thumbSoftShadowLayer = v10;
+    self->_thumbSoftShadowLayer = layer2;
 
     LODWORD(v12) = 1042536202;
     [(CALayer *)self->_thumbSoftShadowLayer setShadowOpacity:v12];
     [(CALayer *)self->_thumbSoftShadowLayer setShadowOffset:0.0, 0.0];
     [(CALayer *)self->_thumbSoftShadowLayer setShadowRadius:6.5];
-    v13 = [(UIView *)self->_thumbView layer];
-    [v13 addSublayer:self->_thumbSoftShadowLayer];
+    layer3 = [(UIView *)self->_thumbView layer];
+    [layer3 addSublayer:self->_thumbSoftShadowLayer];
 
-    v14 = [MEMORY[0x1E6979398] layer];
+    layer4 = [MEMORY[0x1E6979398] layer];
     thumbContentLayer = self->_thumbContentLayer;
-    self->_thumbContentLayer = v14;
+    self->_thumbContentLayer = layer4;
 
-    v16 = [(UIView *)self->_thumbView layer];
-    [v16 addSublayer:self->_thumbContentLayer];
+    layer5 = [(UIView *)self->_thumbView layer];
+    [layer5 addSublayer:self->_thumbContentLayer];
 
     v17 = objc_alloc_init(MEMORY[0x1E69794A0]);
     thumbBorderLayer = self->_thumbBorderLayer;
     self->_thumbBorderLayer = v17;
 
     v19 = self->_thumbBorderLayer;
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v19, "setFillColor:", [v20 CGColor]);
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v19, "setFillColor:", [clearColor2 CGColor]);
 
     v21 = self->_thumbBorderLayer;
-    v22 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CAShapeLayer setStrokeColor:](v21, "setStrokeColor:", [v22 CGColor]);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    -[CAShapeLayer setStrokeColor:](v21, "setStrokeColor:", [whiteColor CGColor]);
 
     [(CAShapeLayer *)self->_thumbBorderLayer setLineWidth:2.0];
-    v23 = [(UIView *)self->_thumbView layer];
-    [v23 addSublayer:self->_thumbBorderLayer];
+    layer6 = [(UIView *)self->_thumbView layer];
+    [layer6 addSublayer:self->_thumbBorderLayer];
 
     v24 = objc_alloc_init(MEMORY[0x1E69794A0]);
     thumbClippingLayer = self->_thumbClippingLayer;
@@ -130,12 +130,12 @@
 {
   if (!self->_trackLayer)
   {
-    v3 = [MEMORY[0x1E6979380] layer];
-    [(CAGradientLayer *)v3 setStartPoint:0.0, 0.5];
-    [(CAGradientLayer *)v3 setEndPoint:1.0, 0.5];
-    [(CAGradientLayer *)v3 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [MEMORY[0x1E6979380] layer];
+    [(CAGradientLayer *)layer setStartPoint:0.0, 0.5];
+    [(CAGradientLayer *)layer setEndPoint:1.0, 0.5];
+    [(CAGradientLayer *)layer setCornerCurve:*MEMORY[0x1E69796E8]];
     trackLayer = self->_trackLayer;
-    self->_trackLayer = v3;
+    self->_trackLayer = layer;
 
     [(PREditingColorSlider *)self updateTrackLayerColors];
   }
@@ -176,8 +176,8 @@
   [(PREditingColorSlider *)&v47 layoutSubviews];
   [(PREditingColorSlider *)self layoutThumbView];
   thumbContentLayer = self->_thumbContentLayer;
-  v4 = [(UIView *)self->_thumbView layer];
-  [v4 bounds];
+  layer = [(UIView *)self->_thumbView layer];
+  [layer bounds];
   [(CALayer *)thumbContentLayer setFrame:?];
 
   [(CAShapeLayer *)self->_thumbClippingLayer frame];
@@ -197,20 +197,20 @@
   if (!CGRectEqualToRect(v48, v53))
   {
     thumbClippingLayer = self->_thumbClippingLayer;
-    v18 = [(UIView *)self->_thumbView layer];
-    [v18 bounds];
+    layer2 = [(UIView *)self->_thumbView layer];
+    [layer2 bounds];
     [(CAShapeLayer *)thumbClippingLayer setFrame:?];
 
     v19 = self->_thumbClippingLayer;
     v20 = MEMORY[0x1E69DC728];
-    v21 = [(UIView *)self->_thumbView layer];
-    [v21 bounds];
+    layer3 = [(UIView *)self->_thumbView layer];
+    [layer3 bounds];
     v50 = CGRectInset(v49, 1.0, 1.0);
     v22 = [v20 bezierPathWithOvalInRect:{v50.origin.x, v50.origin.y, v50.size.width, v50.size.height}];
     -[CAShapeLayer setPath:](v19, "setPath:", [v22 CGPath]);
 
-    v23 = [(UIView *)self->_thumbView layer];
-    [v23 bounds];
+    layer4 = [(UIView *)self->_thumbView layer];
+    [layer4 bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -234,12 +234,12 @@
     -[CAShapeLayer setPath:](thumbBorderLayer, "setPath:", [v41 CGPath]);
 
     v42 = self->_thumbBorderLayer;
-    v43 = [(UIView *)self->_thumbView layer];
-    [v43 bounds];
+    layer5 = [(UIView *)self->_thumbView layer];
+    [layer5 bounds];
     [(CAShapeLayer *)v42 setFrame:?];
 
-    v44 = [(UIView *)self->_thumbView layer];
-    [v44 setShadowPath:{-[CAShapeLayer path](self->_thumbBorderLayer, "path")}];
+    layer6 = [(UIView *)self->_thumbView layer];
+    [layer6 setShadowPath:{-[CAShapeLayer path](self->_thumbBorderLayer, "path")}];
 
     [(CALayer *)self->_thumbSoftShadowLayer setShadowPath:[(CAShapeLayer *)self->_thumbBorderLayer path]];
   }
@@ -259,40 +259,40 @@
 - (CGColor)trackBorderColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
-  v3 = [v2 CGColor];
+  cGColor = [v2 CGColor];
 
-  return v3;
+  return cGColor;
 }
 
-- (void)setPickerColor:(id)a3
+- (void)setPickerColor:(id)color
 {
-  v5 = a3;
-  if (v5 && self->_pickerColor != v5)
+  colorCopy = color;
+  if (colorCopy && self->_pickerColor != colorCopy)
   {
-    v17 = v5;
-    objc_storeStrong(&self->_pickerColor, a3);
+    v17 = colorCopy;
+    objc_storeStrong(&self->_pickerColor, color);
     v6 = [(PREditorColorPickerColor *)v17 displayColorWithVariation:-1.0];
-    v7 = [v6 color];
+    color = [v6 color];
 
     v8 = [(PREditorColorPickerColor *)v17 displayColorWithVariation:0.0];
-    v9 = [v8 color];
+    color2 = [v8 color];
 
     v10 = [(PREditorColorPickerColor *)v17 displayColorWithVariation:1.0];
-    v11 = [v10 color];
+    color3 = [v10 color];
 
-    if (self->_color1 != v7)
+    if (self->_color1 != color)
     {
-      objc_storeStrong(&self->_color1, v7);
+      objc_storeStrong(&self->_color1, color);
     }
 
-    if (self->_color2 != v9)
+    if (self->_color2 != color2)
     {
-      objc_storeStrong(&self->_color2, v9);
+      objc_storeStrong(&self->_color2, color2);
     }
 
-    if (self->_color3 != v11)
+    if (self->_color3 != color3)
     {
-      objc_storeStrong(&self->_color3, v11);
+      objc_storeStrong(&self->_color3, color3);
     }
 
     [(PREditorColorPickerColor *)v17 initialVariation];
@@ -308,18 +308,18 @@
     [(PREditingColorSlider *)self updateTrackLayerColors];
     [(PREditingColorSlider *)self _setSliderValue:v13];
 
-    v5 = v17;
+    colorCopy = v17;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PREditingColorSlider *)self traitCollection];
-  v6 = [v5 layoutDirection];
-  v7 = [v4 layoutDirection];
+  changeCopy = change;
+  traitCollection = [(PREditingColorSlider *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
+  layoutDirection2 = [changeCopy layoutDirection];
 
-  if (v6 != v7)
+  if (layoutDirection != layoutDirection2)
   {
     v8 = *(MEMORY[0x1E69792E8] + 80);
     *&v16.m31 = *(MEMORY[0x1E69792E8] + 64);
@@ -333,10 +333,10 @@
     v11 = *(MEMORY[0x1E69792E8] + 48);
     *&v16.m21 = *(MEMORY[0x1E69792E8] + 32);
     *&v16.m23 = v11;
-    v12 = [(PREditingColorSlider *)self traitCollection];
-    v13 = [v12 layoutDirection];
+    traitCollection2 = [(PREditingColorSlider *)self traitCollection];
+    layoutDirection3 = [traitCollection2 layoutDirection];
 
-    if (v13 == 1)
+    if (layoutDirection3 == 1)
     {
       CATransform3DMakeRotation(&v16, 3.14159265, 0.0, 1.0, 0.0);
     }
@@ -347,23 +347,23 @@
   }
 }
 
-- (void)thumbViewDidPan:(id)a3
+- (void)thumbViewDidPan:(id)pan
 {
-  v17 = a3;
-  if ([v17 state] == 1)
+  panCopy = pan;
+  if ([panCopy state] == 1)
   {
     [(UIView *)self->_thumbView center];
     self->_startPanOffset = v4;
     [(PREditingColorSlider *)self bringSubviewToFront:self->_thumbView];
   }
 
-  else if ([v17 state] == 2 || objc_msgSend(v17, "state") == 3)
+  else if ([panCopy state] == 2 || objc_msgSend(panCopy, "state") == 3)
   {
     [(PREditingColorSlider *)self bounds];
     v6 = v5;
     [(UIView *)self->_thumbView bounds];
     v8 = v7;
-    [v17 translationInView:self];
+    [panCopy translationInView:self];
     v10 = v9 + self->_startPanOffset;
     [(UIView *)self->_thumbView bounds];
     MidX = CGRectGetMidX(v19);
@@ -395,7 +395,7 @@
     self->_value = v16 / (v6 - v8) - (1.0 - v16 / (v6 - v8));
     [(PREditingColorSlider *)self updateCurrentColorForCurrentValue];
     [(PREditingColorSlider *)self updateThumbForCurrentColor];
-    if ([v17 state] == 3)
+    if ([panCopy state] == 3)
     {
       [(PREditingColorSlider *)self updateVariationInStore];
     }
@@ -404,14 +404,14 @@
   }
 }
 
-- (void)didTapTrackView:(id)a3
+- (void)didTapTrackView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PREditingColorSlider *)self bounds];
   v6 = v5;
   [(UIView *)self->_thumbView bounds];
   v8 = v7;
-  [v4 locationInView:self];
+  [viewCopy locationInView:self];
   v10 = v9;
 
   [(UIView *)self->_thumbView bounds];
@@ -474,9 +474,9 @@ uint64_t __40__PREditingColorSlider_didTapTrackView___block_invoke(uint64_t a1)
   return [v1 setCenter:v2];
 }
 
-- (void)_setSliderValue:(double)a3
+- (void)_setSliderValue:(double)value
 {
-  self->_value = a3;
+  self->_value = value;
   [(PREditingColorSlider *)self layoutThumbView];
   [(PREditingColorSlider *)self updateCurrentColorForCurrentValue];
 
@@ -485,9 +485,9 @@ uint64_t __40__PREditingColorSlider_didTapTrackView___block_invoke(uint64_t a1)
 
 - (void)updateCurrentColorForCurrentValue
 {
-  v8 = [(PREditingColorSlider *)self pickerColor];
-  v3 = [v8 colorWithVariation:self->_value];
-  v4 = [v8 displayColorWithVariation:self->_value];
+  pickerColor = [(PREditingColorSlider *)self pickerColor];
+  v3 = [pickerColor colorWithVariation:self->_value];
+  v4 = [pickerColor displayColorWithVariation:self->_value];
   displayCurrentColor = self->_displayCurrentColor;
   self->_displayCurrentColor = v4;
   v6 = v4;
@@ -501,8 +501,8 @@ uint64_t __40__PREditingColorSlider_didTapTrackView___block_invoke(uint64_t a1)
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   thumbContentLayer = self->_thumbContentLayer;
-  v4 = [(PRPosterColor *)self->_displayCurrentColor color];
-  -[CALayer setBackgroundColor:](thumbContentLayer, "setBackgroundColor:", [v4 CGColor]);
+  color = [(PRPosterColor *)self->_displayCurrentColor color];
+  -[CALayer setBackgroundColor:](thumbContentLayer, "setBackgroundColor:", [color CGColor]);
 
   v5 = MEMORY[0x1E6979518];
 

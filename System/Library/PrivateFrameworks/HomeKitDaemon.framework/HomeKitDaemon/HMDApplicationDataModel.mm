@@ -1,11 +1,11 @@
 @interface HMDApplicationDataModel
-+ (id)cd_modelWithMKFHomeManager:(id)a3;
-+ (id)modelWithAppDataPayload:(id)a3 existingAppData:(id)a4 parentUUID:(id)a5;
++ (id)cd_modelWithMKFHomeManager:(id)manager;
++ (id)modelWithAppDataPayload:(id)payload existingAppData:(id)data parentUUID:(id)d;
 + (id)properties;
-- (BOOL)cd_updateManagedObjectInContext:(id)a3 error:(id *)a4;
-- (id)cd_currentManagedObjectInContext:(id)a3 error:(id *)a4;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (BOOL)cd_updateManagedObjectInContext:(id)context error:(id *)error;
+- (id)cd_currentManagedObjectInContext:(id)context error:(id *)error;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDApplicationDataModel
@@ -35,24 +35,24 @@ void __37__HMDApplicationDataModel_properties__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)modelWithAppDataPayload:(id)a3 existingAppData:(id)a4 parentUUID:(id)a5
++ (id)modelWithAppDataPayload:(id)payload existingAppData:(id)data parentUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  payloadCopy = payload;
+  dataCopy = data;
+  dCopy = d;
+  if ([payloadCopy count])
   {
-    if (!v8)
+    if (!dataCopy)
     {
-      v10 = [[HMDApplicationData alloc] initWithParentUUID:v9];
-      [(HMDApplicationData *)v10 setApplicationData:v7 forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
+      v10 = [[HMDApplicationData alloc] initWithParentUUID:dCopy];
+      [(HMDApplicationData *)v10 setApplicationData:payloadCopy forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
       v11 = v10;
       v12 = 1;
       goto LABEL_8;
     }
 
-    v10 = [v8 copy];
-    [(HMDApplicationData *)v10 setApplicationData:v7 forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
+    v10 = [dataCopy copy];
+    [(HMDApplicationData *)v10 setApplicationData:payloadCopy forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
 LABEL_6:
     v11 = v10;
     v12 = 2;
@@ -62,9 +62,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    v10 = [v8 copy];
+    v10 = [dataCopy copy];
     [(HMDApplicationData *)v10 removeApplicationDataForIdentifier:@"com.apple.homekit-entitledclient.identifer"];
     goto LABEL_6;
   }
@@ -75,16 +75,16 @@ LABEL_9:
   return v13;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"appDataDictionary"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"appDataDictionary"])
   {
-    v11 = [v10 appDataDictionary];
+    appDataDictionary = [objectCopy appDataDictionary];
 
-    v12 = wrapAppDataDictionary(v11);
+    v12 = wrapAppDataDictionary(appDataDictionary);
     v13 = v12;
     v14 = *MEMORY[0x277CBEEE8];
     if (v12)
@@ -99,17 +99,17 @@ LABEL_9:
   {
     v17.receiver = self;
     v17.super_class = HMDApplicationDataModel;
-    v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
   return v15;
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -121,20 +121,20 @@ LABEL_9:
   objc_exception_throw(v16);
 }
 
-- (BOOL)cd_updateManagedObjectInContext:(id)a3 error:(id *)a4
+- (BOOL)cd_updateManagedObjectInContext:(id)context error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc(MEMORY[0x277CCAD78]);
   v8 = [v7 initWithUUIDString:*MEMORY[0x277CD23C8]];
-  v9 = [(HMDBackingStoreModelObject *)self parentUUID];
-  v10 = [v9 isEqual:v8];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+  v10 = [parentUUID isEqual:v8];
 
   if (v10)
   {
-    v11 = [(_MKFModel *)_MKFHomeManager modelWithModelID:v8 context:v6];
-    v12 = [(HMDApplicationDataModel *)self appDataDictionary];
-    v13 = [v12 objectForKeyedSubscript:@"com.apple.homekit-entitledclient.identifer"];
+    v11 = [(_MKFModel *)_MKFHomeManager modelWithModelID:v8 context:contextCopy];
+    appDataDictionary = [(HMDApplicationDataModel *)self appDataDictionary];
+    v13 = [appDataDictionary objectForKeyedSubscript:@"com.apple.homekit-entitledclient.identifer"];
     [v11 setAppDataDictionary:v13];
 
     v14 = 1;
@@ -144,16 +144,16 @@ LABEL_9:
   {
     v47.receiver = self;
     v47.super_class = HMDApplicationDataModel;
-    v15 = [(HMDBackingStoreModelObject *)&v47 cd_currentManagedObjectInContext:v6 error:a4];
+    v15 = [(HMDBackingStoreModelObject *)&v47 cd_currentManagedObjectInContext:contextCopy error:error];
     v14 = v15 != 0;
     if (v15)
     {
-      v42 = a4;
-      v16 = [(HMDApplicationDataModel *)self appDataDictionary];
-      v17 = [v16 objectForKeyedSubscript:@"com.apple.homekit-entitledclient.identifer"];
+      errorCopy = error;
+      appDataDictionary2 = [(HMDApplicationDataModel *)self appDataDictionary];
+      v17 = [appDataDictionary2 objectForKeyedSubscript:@"com.apple.homekit-entitledclient.identifer"];
       [v15 setAppDataDictionary:v17];
 
-      v18 = [(HMDBackingStoreModelObject *)self parentUUID];
+      parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
@@ -165,7 +165,7 @@ LABEL_9:
         v20 = v19;
         v21 = *v44;
         v39 = v8;
-        v40 = v6;
+        v40 = contextCopy;
         while (2)
         {
           for (i = 0; i != v20; ++i)
@@ -183,14 +183,14 @@ LABEL_9:
 LABEL_22:
 
               v8 = v39;
-              v6 = v40;
+              contextCopy = v40;
               v14 = v15 != 0;
               goto LABEL_23;
             }
 
-            v25 = [v15 entity];
-            v26 = [v25 relationshipsByName];
-            v27 = [v26 objectForKeyedSubscript:v23];
+            entity = [v15 entity];
+            relationshipsByName = [entity relationshipsByName];
+            v27 = [relationshipsByName objectForKeyedSubscript:v23];
 
             if (!v27)
             {
@@ -199,16 +199,16 @@ LABEL_27:
               _HMFPreconditionFailure();
             }
 
-            v28 = [v27 destinationEntity];
-            v29 = [v28 managedObjectClassName];
-            v30 = NSClassFromString(v29);
+            destinationEntity = [v27 destinationEntity];
+            managedObjectClassName = [destinationEntity managedObjectClassName];
+            v30 = NSClassFromString(managedObjectClassName);
 
             if (!v30)
             {
               goto LABEL_27;
             }
 
-            v31 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v18 ofManagedObjectType:v30 error:v42];
+            v31 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:parentUUID2 ofManagedObjectType:v30 error:errorCopy];
             if (v31)
             {
               v36 = v31;
@@ -220,7 +220,7 @@ LABEL_27:
 
           v20 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
           v8 = v39;
-          v6 = v40;
+          contextCopy = v40;
           v14 = v15 != 0;
           if (v20)
           {
@@ -234,10 +234,10 @@ LABEL_27:
 LABEL_23:
     }
 
-    else if (!a4)
+    else if (!error)
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = self;
+      selfCopy = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -255,13 +255,13 @@ LABEL_23:
   return v14;
 }
 
-- (id)cd_currentManagedObjectInContext:(id)a3 error:(id *)a4
+- (id)cd_currentManagedObjectInContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDBackingStoreModelObject *)self parentUUID];
+  contextCopy = context;
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
   v8 = objc_alloc(MEMORY[0x277CCAD78]);
   v9 = [v8 initWithUUIDString:*MEMORY[0x277CD23C8]];
-  v10 = [v7 isEqual:v9];
+  v10 = [parentUUID isEqual:v9];
 
   if (v10)
   {
@@ -272,22 +272,22 @@ LABEL_23:
   {
     v13.receiver = self;
     v13.super_class = HMDApplicationDataModel;
-    v11 = [(HMDBackingStoreModelObject *)&v13 cd_currentManagedObjectInContext:v6 error:a4];
+    v11 = [(HMDBackingStoreModelObject *)&v13 cd_currentManagedObjectInContext:contextCopy error:error];
   }
 
   return v11;
 }
 
-+ (id)cd_modelWithMKFHomeManager:(id)a3
++ (id)cd_modelWithMKFHomeManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 appDataDictionary];
-  if ([v4 count])
+  managerCopy = manager;
+  appDataDictionary = [managerCopy appDataDictionary];
+  if ([appDataDictionary count])
   {
-    v5 = [v3 modelID];
-    v6 = [_MKFApplicationData modelIDForContainerUUID:v5];
-    v7 = [(HMDBackingStoreModelObject *)[HMDApplicationDataModel alloc] initWithUUID:v6 parentUUID:v5];
-    v8 = wrapAppDataDictionary(v4);
+    modelID = [managerCopy modelID];
+    v6 = [_MKFApplicationData modelIDForContainerUUID:modelID];
+    v7 = [(HMDBackingStoreModelObject *)[HMDApplicationDataModel alloc] initWithUUID:v6 parentUUID:modelID];
+    v8 = wrapAppDataDictionary(appDataDictionary);
     [(HMDApplicationDataModel *)v7 setAppDataDictionary:v8];
   }
 

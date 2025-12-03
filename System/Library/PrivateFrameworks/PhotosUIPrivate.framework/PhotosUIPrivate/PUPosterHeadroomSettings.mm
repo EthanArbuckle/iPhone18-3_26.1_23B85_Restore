@@ -1,252 +1,252 @@
 @interface PUPosterHeadroomSettings
 + (id)settingsControllerModule;
 + (id)sharedInstance;
-- (void)setAperture:(double)a3;
-- (void)setBlurMaskTopLocation:(double)a3;
-- (void)setBlurRadius:(double)a3;
-- (void)setBottomGradientAlpha:(double)a3;
-- (void)setBottomGradientBottomLocation:(double)a3;
-- (void)setBottomGradientTopLocation:(double)a3;
-- (void)setCenter:(double)a3;
+- (void)setAperture:(double)aperture;
+- (void)setBlurMaskTopLocation:(double)location;
+- (void)setBlurRadius:(double)radius;
+- (void)setBottomGradientAlpha:(double)alpha;
+- (void)setBottomGradientBottomLocation:(double)location;
+- (void)setBottomGradientTopLocation:(double)location;
+- (void)setCenter:(double)center;
 - (void)setDefaultValues;
-- (void)setDepthBottom:(double)a3;
-- (void)setDepthTop:(double)a3;
-- (void)setFalloffHeight:(double)a3;
-- (void)setGradientHeight:(double)a3;
-- (void)setGradientWhite:(double)a3;
-- (void)setHighKeyGradientWhite:(double)a3;
-- (void)setNoise:(double)a3;
-- (void)setTopGradientAlpha:(double)a3;
-- (void)setTopGradientBottomLocation:(double)a3;
-- (void)setTopGradientTopLocation:(double)a3;
-- (void)setUseLinearBlur:(BOOL)a3;
-- (void)setUseSoftLightBlendingModeForTopGradient:(BOOL)a3;
-- (void)setVignetteFalloff:(double)a3;
-- (void)setVignetteIntensity:(double)a3;
-- (void)setVignetteRad:(double)a3;
+- (void)setDepthBottom:(double)bottom;
+- (void)setDepthTop:(double)top;
+- (void)setFalloffHeight:(double)height;
+- (void)setGradientHeight:(double)height;
+- (void)setGradientWhite:(double)white;
+- (void)setHighKeyGradientWhite:(double)white;
+- (void)setNoise:(double)noise;
+- (void)setTopGradientAlpha:(double)alpha;
+- (void)setTopGradientBottomLocation:(double)location;
+- (void)setTopGradientTopLocation:(double)location;
+- (void)setUseLinearBlur:(BOOL)blur;
+- (void)setUseSoftLightBlendingModeForTopGradient:(BOOL)gradient;
+- (void)setVignetteFalloff:(double)falloff;
+- (void)setVignetteIntensity:(double)intensity;
+- (void)setVignetteRad:(double)rad;
 @end
 
 @implementation PUPosterHeadroomSettings
 
-- (void)setUseLinearBlur:(BOOL)a3
+- (void)setUseLinearBlur:(BOOL)blur
 {
-  if (self->_useLinearBlur != a3)
+  if (self->_useLinearBlur != blur)
   {
-    v4 = a3;
-    self->_useLinearBlur = a3;
-    v5 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v5 setUseLinearBlur:v4];
+    blurCopy = blur;
+    self->_useLinearBlur = blur;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setUseLinearBlur:blurCopy];
   }
 }
 
-- (void)setCenter:(double)a3
+- (void)setCenter:(double)center
 {
-  if (vabdd_f64(self->_center, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_center, center) > 0.00000999999975)
   {
-    self->_center = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setCenter:a3];
+    self->_center = center;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setCenter:center];
   }
 }
 
-- (void)setNoise:(double)a3
+- (void)setNoise:(double)noise
 {
-  if (vabdd_f64(self->_noise, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_noise, noise) > 0.00000999999975)
   {
-    self->_noise = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setNoise:a3];
+    self->_noise = noise;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setNoise:noise];
   }
 }
 
-- (void)setAperture:(double)a3
+- (void)setAperture:(double)aperture
 {
-  if (vabdd_f64(self->_aperture, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_aperture, aperture) > 0.00000999999975)
   {
-    self->_aperture = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setAperture:a3];
+    self->_aperture = aperture;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setAperture:aperture];
   }
 }
 
-- (void)setVignetteFalloff:(double)a3
+- (void)setVignetteFalloff:(double)falloff
 {
-  if (vabdd_f64(self->_vignetteFalloff, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_vignetteFalloff, falloff) > 0.00000999999975)
   {
-    self->_vignetteFalloff = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setVignetteFalloff:a3];
+    self->_vignetteFalloff = falloff;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setVignetteFalloff:falloff];
   }
 }
 
-- (void)setVignetteIntensity:(double)a3
+- (void)setVignetteIntensity:(double)intensity
 {
-  if (vabdd_f64(self->_vignetteIntensity, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_vignetteIntensity, intensity) > 0.00000999999975)
   {
-    self->_vignetteIntensity = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setVignetteIntensity:a3];
+    self->_vignetteIntensity = intensity;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setVignetteIntensity:intensity];
   }
 }
 
-- (void)setVignetteRad:(double)a3
+- (void)setVignetteRad:(double)rad
 {
-  if (vabdd_f64(self->_vignetteRad, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_vignetteRad, rad) > 0.00000999999975)
   {
-    self->_vignetteRad = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setVignetteRad:a3];
+    self->_vignetteRad = rad;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setVignetteRad:rad];
   }
 }
 
-- (void)setDepthBottom:(double)a3
+- (void)setDepthBottom:(double)bottom
 {
-  if (vabdd_f64(self->_depthBottom, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_depthBottom, bottom) > 0.00000999999975)
   {
-    self->_depthBottom = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setDepthBottom:a3];
+    self->_depthBottom = bottom;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setDepthBottom:bottom];
   }
 }
 
-- (void)setDepthTop:(double)a3
+- (void)setDepthTop:(double)top
 {
-  if (vabdd_f64(self->_depthTop, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_depthTop, top) > 0.00000999999975)
   {
-    self->_depthTop = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setDepthTop:a3];
+    self->_depthTop = top;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setDepthTop:top];
   }
 }
 
-- (void)setUseSoftLightBlendingModeForTopGradient:(BOOL)a3
+- (void)setUseSoftLightBlendingModeForTopGradient:(BOOL)gradient
 {
-  if (self->_useSoftLightBlendingModeForTopGradient != a3)
+  if (self->_useSoftLightBlendingModeForTopGradient != gradient)
   {
-    v4 = a3;
-    self->_useSoftLightBlendingModeForTopGradient = a3;
-    v5 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v5 setUseSoftLightBlendingModeForTopGradient:v4];
+    gradientCopy = gradient;
+    self->_useSoftLightBlendingModeForTopGradient = gradient;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setUseSoftLightBlendingModeForTopGradient:gradientCopy];
   }
 }
 
-- (void)setTopGradientBottomLocation:(double)a3
+- (void)setTopGradientBottomLocation:(double)location
 {
-  if (vabdd_f64(self->_topGradientBottomLocation, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_topGradientBottomLocation, location) > 0.00000999999975)
   {
-    self->_topGradientBottomLocation = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setTopGradientBottomLocation:a3];
+    self->_topGradientBottomLocation = location;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setTopGradientBottomLocation:location];
   }
 }
 
-- (void)setTopGradientTopLocation:(double)a3
+- (void)setTopGradientTopLocation:(double)location
 {
-  if (vabdd_f64(self->_topGradientTopLocation, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_topGradientTopLocation, location) > 0.00000999999975)
   {
-    self->_topGradientTopLocation = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setTopGradientTopLocation:a3];
+    self->_topGradientTopLocation = location;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setTopGradientTopLocation:location];
   }
 }
 
-- (void)setTopGradientAlpha:(double)a3
+- (void)setTopGradientAlpha:(double)alpha
 {
-  if (vabdd_f64(self->_topGradientAlpha, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_topGradientAlpha, alpha) > 0.00000999999975)
   {
-    self->_topGradientAlpha = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setTopGradientAlpha:a3];
+    self->_topGradientAlpha = alpha;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setTopGradientAlpha:alpha];
   }
 }
 
-- (void)setBottomGradientBottomLocation:(double)a3
+- (void)setBottomGradientBottomLocation:(double)location
 {
-  if (vabdd_f64(self->_bottomGradientBottomLocation, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_bottomGradientBottomLocation, location) > 0.00000999999975)
   {
-    self->_bottomGradientBottomLocation = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setBottomGradientBottomLocation:a3];
+    self->_bottomGradientBottomLocation = location;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setBottomGradientBottomLocation:location];
   }
 }
 
-- (void)setBottomGradientTopLocation:(double)a3
+- (void)setBottomGradientTopLocation:(double)location
 {
-  if (vabdd_f64(self->_bottomGradientTopLocation, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_bottomGradientTopLocation, location) > 0.00000999999975)
   {
-    self->_bottomGradientTopLocation = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setBottomGradientTopLocation:a3];
+    self->_bottomGradientTopLocation = location;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setBottomGradientTopLocation:location];
   }
 }
 
-- (void)setBottomGradientAlpha:(double)a3
+- (void)setBottomGradientAlpha:(double)alpha
 {
-  if (vabdd_f64(self->_bottomGradientAlpha, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_bottomGradientAlpha, alpha) > 0.00000999999975)
   {
-    self->_bottomGradientAlpha = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setBottomGradientAlpha:a3];
+    self->_bottomGradientAlpha = alpha;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setBottomGradientAlpha:alpha];
   }
 }
 
-- (void)setHighKeyGradientWhite:(double)a3
+- (void)setHighKeyGradientWhite:(double)white
 {
-  if (vabdd_f64(self->_highKeyGradientWhite, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_highKeyGradientWhite, white) > 0.00000999999975)
   {
-    self->_highKeyGradientWhite = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setHighKeyGradientWhite:a3];
+    self->_highKeyGradientWhite = white;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setHighKeyGradientWhite:white];
   }
 }
 
-- (void)setGradientWhite:(double)a3
+- (void)setGradientWhite:(double)white
 {
-  if (vabdd_f64(self->_gradientWhite, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_gradientWhite, white) > 0.00000999999975)
   {
-    self->_gradientWhite = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setGradientWhite:a3];
+    self->_gradientWhite = white;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setGradientWhite:white];
   }
 }
 
-- (void)setGradientHeight:(double)a3
+- (void)setGradientHeight:(double)height
 {
-  if (vabdd_f64(self->_gradientHeight, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_gradientHeight, height) > 0.00000999999975)
   {
-    self->_gradientHeight = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setGradientHeight:a3];
+    self->_gradientHeight = height;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setGradientHeight:height];
   }
 }
 
-- (void)setFalloffHeight:(double)a3
+- (void)setFalloffHeight:(double)height
 {
-  if (vabdd_f64(self->_falloffHeight, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_falloffHeight, height) > 0.00000999999975)
   {
-    self->_falloffHeight = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setFalloffHeight:a3];
+    self->_falloffHeight = height;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setFalloffHeight:height];
   }
 }
 
-- (void)setBlurMaskTopLocation:(double)a3
+- (void)setBlurMaskTopLocation:(double)location
 {
-  if (vabdd_f64(self->_blurMaskTopLocation, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_blurMaskTopLocation, location) > 0.00000999999975)
   {
-    self->_blurMaskTopLocation = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setBlurMaskTopLocation:a3];
+    self->_blurMaskTopLocation = location;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setBlurMaskTopLocation:location];
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  if (vabdd_f64(self->_blurRadius, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_blurRadius, radius) > 0.00000999999975)
   {
-    self->_blurRadius = a3;
-    v4 = [MEMORY[0x1E69BDE48] sharedInstance];
-    [v4 setBlurRadius:a3];
+    self->_blurRadius = radius;
+    mEMORY[0x1E69BDE48] = [MEMORY[0x1E69BDE48] sharedInstance];
+    [mEMORY[0x1E69BDE48] setBlurRadius:radius];
   }
 }
 

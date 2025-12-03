@@ -1,45 +1,45 @@
 @interface HDDataCollectorMultiplexer
 - (id)diagnosticDescription;
-- (id)identifierForAggregator:(id)a3;
-- (id)initForCollector:(id)a3 identifier:(id)a4 profile:(id)a5 types:(id)a6;
-- (id)lastDatumForType:(id)a3;
+- (id)identifierForAggregator:(id)aggregator;
+- (id)initForCollector:(id)collector identifier:(id)identifier profile:(id)profile types:(id)types;
+- (id)lastDatumForType:(id)type;
 - (id)mergedConfiguration;
-- (void)registerForCollectionWithState:(id)a3;
-- (void)setConfiguration:(id)a3 forAggregator:(id)a4;
-- (void)setLastSensorDatum:(id)a3 forAggregator:(id)a4;
+- (void)registerForCollectionWithState:(id)state;
+- (void)setConfiguration:(id)configuration forAggregator:(id)aggregator;
+- (void)setLastSensorDatum:(id)datum forAggregator:(id)aggregator;
 - (void)unregisterForCollection;
 @end
 
 @implementation HDDataCollectorMultiplexer
 
-- (id)initForCollector:(id)a3 identifier:(id)a4 profile:(id)a5 types:(id)a6
+- (id)initForCollector:(id)collector identifier:(id)identifier profile:(id)profile types:(id)types
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v46 = a4;
-  v11 = a5;
-  v12 = a6;
+  collectorCopy = collector;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  typesCopy = types;
   v51.receiver = self;
   v51.super_class = HDDataCollectorMultiplexer;
   v13 = [(HDDataCollectorMultiplexer *)&v51 init];
   v14 = v13;
   if (v13)
   {
-    v43 = v11;
-    objc_storeWeak(&v13->_profile, v11);
-    v44 = v10;
-    objc_storeWeak(&v14->_collector, v10);
-    v15 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    v43 = profileCopy;
+    objc_storeWeak(&v13->_profile, profileCopy);
+    v44 = collectorCopy;
+    objc_storeWeak(&v14->_collector, collectorCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     recordsByAggregator = v14->_recordsByAggregator;
-    v14->_recordsByAggregator = v15;
+    v14->_recordsByAggregator = weakToStrongObjectsMapTable;
 
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v42 = v12;
-    obj = v12;
+    v42 = typesCopy;
+    obj = typesCopy;
     v18 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
     if (v18)
     {
@@ -56,12 +56,12 @@
 
           v22 = *(*(&v47 + 1) + 8 * i);
           v23 = MEMORY[0x277CCACA8];
-          v24 = [v22 identifier];
-          v25 = [v23 stringWithFormat:@"%@.%@", v46, v24];
+          identifier = [v22 identifier];
+          v25 = [v23 stringWithFormat:@"%@.%@", identifierCopy, identifier];
 
           WeakRetained = objc_loadWeakRetained(&v14->_profile);
-          v27 = [WeakRetained dataCollectionManager];
-          v28 = [v27 aggregatorForType:v22];
+          dataCollectionManager = [WeakRetained dataCollectionManager];
+          v28 = [dataCollectionManager aggregatorForType:v22];
 
           [v17 setObject:v28 forKeyedSubscript:v22];
           v29 = [HDDataCollectorAggregatorRecord alloc];
@@ -104,18 +104,18 @@
     aggregatorsByType = v14->_aggregatorsByType;
     v14->_aggregatorsByType = v38;
 
-    v11 = v43;
-    v10 = v44;
-    v12 = v42;
+    profileCopy = v43;
+    collectorCopy = v44;
+    typesCopy = v42;
   }
 
   v40 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (void)registerForCollectionWithState:(id)a3
+- (void)registerForCollectionWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_collector);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -126,7 +126,7 @@
     v8[2] = __61__HDDataCollectorMultiplexer_registerForCollectionWithState___block_invoke;
     v8[3] = &unk_278623A58;
     v9 = WeakRetained;
-    v10 = v4;
+    v10 = stateCopy;
     [(NSDictionary *)aggregatorsByType enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
@@ -147,9 +147,9 @@
   }
 }
 
-- (id)identifierForAggregator:(id)a3
+- (id)identifierForAggregator:(id)aggregator
 {
-  v3 = [(NSMapTable *)self->_recordsByAggregator objectForKey:a3];
+  v3 = [(NSMapTable *)self->_recordsByAggregator objectForKey:aggregator];
   v4 = v3;
   if (v3)
   {
@@ -166,9 +166,9 @@
   return v5;
 }
 
-- (id)lastDatumForType:(id)a3
+- (id)lastDatumForType:(id)type
 {
-  v4 = [(NSDictionary *)self->_aggregatorsByType objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_aggregatorsByType objectForKeyedSubscript:type];
   if (v4)
   {
     v5 = [(NSMapTable *)self->_recordsByAggregator objectForKey:v4];
@@ -194,15 +194,15 @@
   return v8;
 }
 
-- (void)setLastSensorDatum:(id)a3 forAggregator:(id)a4
+- (void)setLastSensorDatum:(id)datum forAggregator:(id)aggregator
 {
   recordsByAggregator = self->_recordsByAggregator;
-  v7 = a3;
-  v9 = [(NSMapTable *)recordsByAggregator objectForKey:a4];
-  v8 = v7;
+  datumCopy = datum;
+  v9 = [(NSMapTable *)recordsByAggregator objectForKey:aggregator];
+  v8 = datumCopy;
   if (v9)
   {
-    objc_storeStrong(v9 + 5, a3);
+    objc_storeStrong(v9 + 5, datum);
     *(v9 + 8) = 1;
   }
 }
@@ -215,8 +215,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(NSMapTable *)self->_recordsByAggregator objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  objectEnumerator = [(NSMapTable *)self->_recordsByAggregator objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v5)
   {
     v7 = v5;
@@ -232,7 +232,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v10);
@@ -243,7 +243,7 @@
           if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v18;
-            v24 = self;
+            selfCopy2 = self;
             v25 = 2114;
             v26 = v12;
             _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: last sensor dataum has not been set for %{public}@", buf, 0x16u);
@@ -259,7 +259,7 @@
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_INFO))
         {
           *buf = v18;
-          v24 = self;
+          selfCopy2 = self;
           v25 = 2114;
           v26 = v12;
           _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_INFO, "%{public}@: merging configuration for record %{public}@", buf, 0x16u);
@@ -272,7 +272,7 @@
       }
 
       while (v7 != v10);
-      v7 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -291,14 +291,14 @@ LABEL_16:
   return v14;
 }
 
-- (void)setConfiguration:(id)a3 forAggregator:(id)a4
+- (void)setConfiguration:(id)configuration forAggregator:(id)aggregator
 {
   recordsByAggregator = self->_recordsByAggregator;
-  v7 = a3;
-  v8 = [(NSMapTable *)recordsByAggregator objectForKey:a4];
+  configurationCopy = configuration;
+  v8 = [(NSMapTable *)recordsByAggregator objectForKey:aggregator];
   if (v8)
   {
-    objc_storeStrong(v8 + 4, a3);
+    objc_storeStrong(v8 + 4, configuration);
   }
 }
 

@@ -1,31 +1,31 @@
 @interface CKAssetReuploadExpectedProperties
-- (CKAssetReuploadExpectedProperties)initWithCoder:(id)a3;
-- (CKAssetReuploadExpectedProperties)initWithFileSignature:(id)a3 referenceSignature:(id)a4 assetKey:(id)a5;
+- (CKAssetReuploadExpectedProperties)initWithCoder:(id)coder;
+- (CKAssetReuploadExpectedProperties)initWithFileSignature:(id)signature referenceSignature:(id)referenceSignature assetKey:(id)key;
 - (id)CKPropertiesDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKAssetReuploadExpectedProperties
 
-- (CKAssetReuploadExpectedProperties)initWithFileSignature:(id)a3 referenceSignature:(id)a4 assetKey:(id)a5
+- (CKAssetReuploadExpectedProperties)initWithFileSignature:(id)signature referenceSignature:(id)referenceSignature assetKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  signatureCopy = signature;
+  referenceSignatureCopy = referenceSignature;
+  keyCopy = key;
   v25.receiver = self;
   v25.super_class = CKAssetReuploadExpectedProperties;
   v13 = [(CKAssetReuploadExpectedProperties *)&v25 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(signatureCopy, v11, v12);
     fileSignature = v13->_fileSignature;
     v13->_fileSignature = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(referenceSignatureCopy, v16, v17);
     referenceSignature = v13->_referenceSignature;
     v13->_referenceSignature = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(keyCopy, v20, v21);
     assetKey = v13->_assetKey;
     v13->_assetKey = v22;
   }
@@ -33,28 +33,28 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_fileSignature(self, v5, v6);
   v8 = NSStringFromSelector(sel_fileSignature);
-  objc_msgSend_encodeObject_forKey_(v20, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_referenceSignature(self, v10, v11);
   v13 = NSStringFromSelector(sel_referenceSignature);
-  objc_msgSend_encodeObject_forKey_(v20, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   v17 = objc_msgSend_assetKey(self, v15, v16);
   v18 = NSStringFromSelector(sel_assetKey);
-  objc_msgSend_encodeObject_forKey_(v20, v19, v17, v18);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v17, v18);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKAssetReuploadExpectedProperties)initWithCoder:(id)a3
+- (CKAssetReuploadExpectedProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CKAssetReuploadExpectedProperties;
   v5 = [(CKAssetReuploadExpectedProperties *)&v23 init];
@@ -63,19 +63,19 @@
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_fileSignature);
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v7, v8);
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v7, v8);
     fileSignature = v5->_fileSignature;
     v5->_fileSignature = v10;
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_referenceSignature);
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v12, v13);
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v12, v13);
     referenceSignature = v5->_referenceSignature;
     v5->_referenceSignature = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector(sel_assetKey);
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v17, v18);
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v17, v18);
     assetKey = v5->_assetKey;
     v5->_assetKey = v20;
 

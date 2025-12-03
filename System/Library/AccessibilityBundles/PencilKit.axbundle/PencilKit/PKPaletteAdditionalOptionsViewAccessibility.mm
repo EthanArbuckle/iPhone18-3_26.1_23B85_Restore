@@ -1,16 +1,16 @@
 @interface PKPaletteAdditionalOptionsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPaletteAdditionalOptionsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteAdditionalOptionsView" hasInstanceMethod:@"plusButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaletteAdditionalOptionsView" hasInstanceMethod:@"ellipsisButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteAdditionalOptionsView" hasInstanceMethod:@"plusButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaletteAdditionalOptionsView" hasInstanceMethod:@"ellipsisButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

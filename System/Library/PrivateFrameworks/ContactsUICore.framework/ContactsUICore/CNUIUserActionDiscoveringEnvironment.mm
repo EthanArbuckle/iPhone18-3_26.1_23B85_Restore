@@ -1,9 +1,9 @@
 @interface CNUIUserActionDiscoveringEnvironment
 - (CNContactStore)contactStore;
 - (CNUIUserActionDiscoveringEnvironment)init;
-- (CNUIUserActionDiscoveringEnvironment)initWithApplicationWorkspace:(id)a3 callProviderManager:(id)a4 idsContactPropertyResolver:(id)a5 profileConnection:(id)a6 contactStore:(id)a7 schedulerProvider:(id)a8 highLatencySchedulerProvider:(id)a9 capabilities:(id)a10 defaultUserActionFetcher:(id)a11 ttyUtilities:(id)a12;
-- (CNUIUserActionDiscoveringEnvironment)initWithIDSAvailabilityProvider:(id)a3 schedulerProvider:(id)a4 capabilities:(id)a5 defaultUserActionFetcher:(id)a6 applicationWorkspace:(id)a7;
-- (id)copyWithContactStore:(id)a3 schedulerProvider:(id)a4;
+- (CNUIUserActionDiscoveringEnvironment)initWithApplicationWorkspace:(id)workspace callProviderManager:(id)manager idsContactPropertyResolver:(id)resolver profileConnection:(id)connection contactStore:(id)store schedulerProvider:(id)provider highLatencySchedulerProvider:(id)schedulerProvider capabilities:(id)self0 defaultUserActionFetcher:(id)self1 ttyUtilities:(id)self2;
+- (CNUIUserActionDiscoveringEnvironment)initWithIDSAvailabilityProvider:(id)provider schedulerProvider:(id)schedulerProvider capabilities:(id)capabilities defaultUserActionFetcher:(id)fetcher applicationWorkspace:(id)workspace;
+- (id)copyWithContactStore:(id)store schedulerProvider:(id)provider;
 - (id)nts_lazyContactStore;
 @end
 
@@ -12,31 +12,31 @@
 - (CNUIUserActionDiscoveringEnvironment)init
 {
   v3 = objc_alloc_init(CNUIIDSAvailabilityProvider);
-  v4 = [MEMORY[0x1E6996820] defaultProvider];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
   v5 = objc_alloc_init(CNCapabilities);
   v6 = objc_alloc_init(CNUIDefaultUserActionFetcher);
   v7 = objc_alloc_init(CNLSApplicationWorkspace);
-  v8 = [(CNUIUserActionDiscoveringEnvironment *)self initWithIDSAvailabilityProvider:v3 schedulerProvider:v4 capabilities:v5 defaultUserActionFetcher:v6 applicationWorkspace:v7];
+  v8 = [(CNUIUserActionDiscoveringEnvironment *)self initWithIDSAvailabilityProvider:v3 schedulerProvider:defaultProvider capabilities:v5 defaultUserActionFetcher:v6 applicationWorkspace:v7];
 
   return v8;
 }
 
-- (CNUIUserActionDiscoveringEnvironment)initWithIDSAvailabilityProvider:(id)a3 schedulerProvider:(id)a4 capabilities:(id)a5 defaultUserActionFetcher:(id)a6 applicationWorkspace:(id)a7
+- (CNUIUserActionDiscoveringEnvironment)initWithIDSAvailabilityProvider:(id)provider schedulerProvider:(id)schedulerProvider capabilities:(id)capabilities defaultUserActionFetcher:(id)fetcher applicationWorkspace:(id)workspace
 {
-  v11 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v27 = [v11 newSerialSchedulerWithName:@"com.apple.contacts.ContactsUICore.CNUIUserActionDiscoveringHighLatencyScheduler"];
+  schedulerProviderCopy = schedulerProvider;
+  workspaceCopy = workspace;
+  fetcherCopy = fetcher;
+  capabilitiesCopy = capabilities;
+  providerCopy = provider;
+  v27 = [schedulerProviderCopy newSerialSchedulerWithName:@"com.apple.contacts.ContactsUICore.CNUIUserActionDiscoveringHighLatencyScheduler"];
   v16 = objc_alloc(MEMORY[0x1E6996820]);
-  v17 = [v11 mainThreadScheduler];
-  v18 = [v11 immediateScheduler];
+  mainThreadScheduler = [schedulerProviderCopy mainThreadScheduler];
+  immediateScheduler = [schedulerProviderCopy immediateScheduler];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __149__CNUIUserActionDiscoveringEnvironment_initWithIDSAvailabilityProvider_schedulerProvider_capabilities_defaultUserActionFetcher_applicationWorkspace___block_invoke;
   v33[3] = &unk_1E76E89B0;
-  v34 = v11;
+  v34 = schedulerProviderCopy;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __149__CNUIUserActionDiscoveringEnvironment_initWithIDSAvailabilityProvider_schedulerProvider_capabilities_defaultUserActionFetcher_applicationWorkspace___block_invoke_2;
@@ -48,14 +48,14 @@
   v29[3] = &unk_1E76E92A0;
   v30 = v32;
   v19 = v32;
-  v20 = [v16 initWithBackgroundScheduler:v27 mainThreadScheduler:v17 immediateScheduler:v18 serialSchedulerProvider:v33 synchronousSerialSchedulerProvider:v31 readerWriterSchedulerProvider:v29];
+  v20 = [v16 initWithBackgroundScheduler:v27 mainThreadScheduler:mainThreadScheduler immediateScheduler:immediateScheduler serialSchedulerProvider:v33 synchronousSerialSchedulerProvider:v31 readerWriterSchedulerProvider:v29];
 
   v21 = objc_alloc_init(CNTUCallProviderManager);
-  v22 = [[CNUIIDSContactPropertyResolver alloc] initWithIDSAvailabilityProvider:v15];
+  v22 = [[CNUIIDSContactPropertyResolver alloc] initWithIDSAvailabilityProvider:providerCopy];
 
   v23 = objc_alloc_init(CNMCProfileConnection);
   v24 = +[CNUIRTTUtilities defaultUtilities];
-  v25 = [(CNUIUserActionDiscoveringEnvironment *)self initWithApplicationWorkspace:v12 callProviderManager:v21 idsContactPropertyResolver:v22 profileConnection:v23 contactStore:0 schedulerProvider:v19 highLatencySchedulerProvider:v20 capabilities:v14 defaultUserActionFetcher:v13 ttyUtilities:v24];
+  v25 = [(CNUIUserActionDiscoveringEnvironment *)self initWithApplicationWorkspace:workspaceCopy callProviderManager:v21 idsContactPropertyResolver:v22 profileConnection:v23 contactStore:0 schedulerProvider:v19 highLatencySchedulerProvider:v20 capabilities:capabilitiesCopy defaultUserActionFetcher:fetcherCopy ttyUtilities:v24];
 
   return v25;
 }
@@ -81,37 +81,37 @@ id __149__CNUIUserActionDiscoveringEnvironment_initWithIDSAvailabilityProvider_s
   return v2;
 }
 
-- (CNUIUserActionDiscoveringEnvironment)initWithApplicationWorkspace:(id)a3 callProviderManager:(id)a4 idsContactPropertyResolver:(id)a5 profileConnection:(id)a6 contactStore:(id)a7 schedulerProvider:(id)a8 highLatencySchedulerProvider:(id)a9 capabilities:(id)a10 defaultUserActionFetcher:(id)a11 ttyUtilities:(id)a12
+- (CNUIUserActionDiscoveringEnvironment)initWithApplicationWorkspace:(id)workspace callProviderManager:(id)manager idsContactPropertyResolver:(id)resolver profileConnection:(id)connection contactStore:(id)store schedulerProvider:(id)provider highLatencySchedulerProvider:(id)schedulerProvider capabilities:(id)self0 defaultUserActionFetcher:(id)self1 ttyUtilities:(id)self2
 {
-  v36 = a3;
-  obj = a4;
-  v35 = a4;
-  v31 = a5;
-  v34 = a6;
-  v30 = a7;
-  v28 = a8;
-  v33 = a8;
-  v32 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a12;
+  workspaceCopy = workspace;
+  obj = manager;
+  managerCopy = manager;
+  resolverCopy = resolver;
+  connectionCopy = connection;
+  storeCopy = store;
+  providerCopy = provider;
+  providerCopy2 = provider;
+  schedulerProviderCopy = schedulerProvider;
+  capabilitiesCopy = capabilities;
+  fetcherCopy = fetcher;
+  utilitiesCopy = utilities;
   v37.receiver = self;
   v37.super_class = CNUIUserActionDiscoveringEnvironment;
   v21 = [(CNUIUserActionDiscoveringEnvironment *)&v37 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_applicationWorkspace, a3);
+    objc_storeStrong(&v21->_applicationWorkspace, workspace);
     objc_storeStrong(&v22->_callProviderManager, obj);
-    objc_storeStrong(&v22->_idsContactPropertyResolver, a5);
-    objc_storeStrong(&v22->_profileConnection, a6);
-    objc_storeStrong(&v22->_contactStore, a7);
-    objc_storeStrong(&v22->_capabilities, a10);
-    objc_storeStrong(&v22->_schedulerProvider, v28);
-    objc_storeStrong(&v22->_highLatencySchedulerProvider, a9);
-    objc_storeStrong(&v22->_defaultUserActionFetcher, a11);
-    objc_storeStrong(&v22->_ttyUtilities, a12);
-    v23 = [[CNUIUserActionTargetDiscovering alloc] initWithApplicationWorkspace:v36 callProviderManager:v35 profileConnection:v34 schedulerProvider:v33 highLatencySchedulerProvider:v32 capabilities:v18];
+    objc_storeStrong(&v22->_idsContactPropertyResolver, resolver);
+    objc_storeStrong(&v22->_profileConnection, connection);
+    objc_storeStrong(&v22->_contactStore, store);
+    objc_storeStrong(&v22->_capabilities, capabilities);
+    objc_storeStrong(&v22->_schedulerProvider, providerCopy);
+    objc_storeStrong(&v22->_highLatencySchedulerProvider, schedulerProvider);
+    objc_storeStrong(&v22->_defaultUserActionFetcher, fetcher);
+    objc_storeStrong(&v22->_ttyUtilities, utilities);
+    v23 = [[CNUIUserActionTargetDiscovering alloc] initWithApplicationWorkspace:workspaceCopy callProviderManager:managerCopy profileConnection:connectionCopy schedulerProvider:providerCopy2 highLatencySchedulerProvider:schedulerProviderCopy capabilities:capabilitiesCopy];
     targetDiscoveringHelper = v22->_targetDiscoveringHelper;
     v22->_targetDiscoveringHelper = v23;
 
@@ -121,20 +121,20 @@ id __149__CNUIUserActionDiscoveringEnvironment_initWithIDSAvailabilityProvider_s
   return v22;
 }
 
-- (id)copyWithContactStore:(id)a3 schedulerProvider:(id)a4
+- (id)copyWithContactStore:(id)store schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  storeCopy = store;
   v18 = [CNUIUserActionDiscoveringEnvironment alloc];
-  v17 = [(CNUIUserActionDiscoveringEnvironment *)self applicationWorkspace];
-  v8 = [(CNUIUserActionDiscoveringEnvironment *)self callProviderManager];
-  v9 = [(CNUIUserActionDiscoveringEnvironment *)self idsContactPropertyResolver];
-  v10 = [(CNUIUserActionDiscoveringEnvironment *)self profileConnection];
-  v11 = [(CNUIUserActionDiscoveringEnvironment *)self highLatencySchedulerProvider];
-  v12 = [(CNUIUserActionDiscoveringEnvironment *)self capabilities];
-  v13 = [(CNUIUserActionDiscoveringEnvironment *)self defaultUserActionFetcher];
-  v14 = [(CNUIUserActionDiscoveringEnvironment *)self ttyUtilities];
-  v15 = [(CNUIUserActionDiscoveringEnvironment *)v18 initWithApplicationWorkspace:v17 callProviderManager:v8 idsContactPropertyResolver:v9 profileConnection:v10 contactStore:v7 schedulerProvider:v6 highLatencySchedulerProvider:v11 capabilities:v12 defaultUserActionFetcher:v13 ttyUtilities:v14];
+  applicationWorkspace = [(CNUIUserActionDiscoveringEnvironment *)self applicationWorkspace];
+  callProviderManager = [(CNUIUserActionDiscoveringEnvironment *)self callProviderManager];
+  idsContactPropertyResolver = [(CNUIUserActionDiscoveringEnvironment *)self idsContactPropertyResolver];
+  profileConnection = [(CNUIUserActionDiscoveringEnvironment *)self profileConnection];
+  highLatencySchedulerProvider = [(CNUIUserActionDiscoveringEnvironment *)self highLatencySchedulerProvider];
+  capabilities = [(CNUIUserActionDiscoveringEnvironment *)self capabilities];
+  defaultUserActionFetcher = [(CNUIUserActionDiscoveringEnvironment *)self defaultUserActionFetcher];
+  ttyUtilities = [(CNUIUserActionDiscoveringEnvironment *)self ttyUtilities];
+  v15 = [(CNUIUserActionDiscoveringEnvironment *)v18 initWithApplicationWorkspace:applicationWorkspace callProviderManager:callProviderManager idsContactPropertyResolver:idsContactPropertyResolver profileConnection:profileConnection contactStore:storeCopy schedulerProvider:providerCopy highLatencySchedulerProvider:highLatencySchedulerProvider capabilities:capabilities defaultUserActionFetcher:defaultUserActionFetcher ttyUtilities:ttyUtilities];
 
   return v15;
 }

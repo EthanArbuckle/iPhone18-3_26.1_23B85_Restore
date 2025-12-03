@@ -1,16 +1,16 @@
 @interface AWDCoreRoutineLMPScoreBoardInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIncorrects:(BOOL)a3;
-- (void)setHasInvalids:(BOOL)a3;
-- (void)setHasUnknowns:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIncorrects:(BOOL)incorrects;
+- (void)setHasInvalids:(BOOL)invalids;
+- (void)setHasUnknowns:(BOOL)unknowns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLMPScoreBoardInstance
@@ -23,9 +23,9 @@
   [(AWDCoreRoutineLMPScoreBoardInstance *)&v3 dealloc];
 }
 
-- (void)setHasIncorrects:(BOOL)a3
+- (void)setHasIncorrects:(BOOL)incorrects
 {
-  if (a3)
+  if (incorrects)
   {
     v3 = 2;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUnknowns:(BOOL)a3
+- (void)setHasUnknowns:(BOOL)unknowns
 {
-  if (a3)
+  if (unknowns)
   {
     v3 = 8;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasInvalids:(BOOL)a3
+- (void)setHasInvalids:(BOOL)invalids
 {
-  if (a3)
+  if (invalids)
   {
     v3 = 4;
   }
@@ -77,12 +77,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   keyword = self->_keyword;
   if (keyword)
   {
-    [v3 setObject:keyword forKey:@"keyword"];
+    [dictionary setObject:keyword forKey:@"keyword"];
   }
 
   has = self->_has;
@@ -131,7 +131,7 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_keyword)
   {
@@ -189,18 +189,18 @@ LABEL_11:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_keyword)
   {
-    [a3 setKeyword:?];
+    [to setKeyword:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_corrects;
-    *(a3 + 36) |= 1u;
+    *(to + 2) = self->_corrects;
+    *(to + 36) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -219,8 +219,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 3) = self->_incorrects;
-  *(a3 + 36) |= 2u;
+  *(to + 3) = self->_incorrects;
+  *(to + 36) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -234,23 +234,23 @@ LABEL_6:
   }
 
 LABEL_11:
-  *(a3 + 8) = self->_unknowns;
-  *(a3 + 36) |= 8u;
+  *(to + 8) = self->_unknowns;
+  *(to + 36) |= 8u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_7:
-  *(a3 + 4) = self->_invalids;
-  *(a3 + 36) |= 4u;
+  *(to + 4) = self->_invalids;
+  *(to + 36) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 24) = [(NSString *)self->_keyword copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_keyword copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -301,23 +301,23 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     keyword = self->_keyword;
-    if (!(keyword | *(a3 + 3)) || (v5 = [(NSString *)keyword isEqual:?]) != 0)
+    if (!(keyword | *(equal + 3)) || (v5 = [(NSString *)keyword isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 36) & 1) == 0 || self->_corrects != *(a3 + 2))
+        if ((*(equal + 36) & 1) == 0 || self->_corrects != *(equal + 2))
         {
           goto LABEL_23;
         }
       }
 
-      else if (*(a3 + 36))
+      else if (*(equal + 36))
       {
 LABEL_23:
         LOBYTE(v5) = 0;
@@ -326,34 +326,34 @@ LABEL_23:
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 36) & 2) == 0 || self->_incorrects != *(a3 + 3))
+        if ((*(equal + 36) & 2) == 0 || self->_incorrects != *(equal + 3))
         {
           goto LABEL_23;
         }
       }
 
-      else if ((*(a3 + 36) & 2) != 0)
+      else if ((*(equal + 36) & 2) != 0)
       {
         goto LABEL_23;
       }
 
       if ((*&self->_has & 8) != 0)
       {
-        if ((*(a3 + 36) & 8) == 0 || self->_unknowns != *(a3 + 8))
+        if ((*(equal + 36) & 8) == 0 || self->_unknowns != *(equal + 8))
         {
           goto LABEL_23;
         }
       }
 
-      else if ((*(a3 + 36) & 8) != 0)
+      else if ((*(equal + 36) & 8) != 0)
       {
         goto LABEL_23;
       }
 
-      LOBYTE(v5) = (*(a3 + 36) & 4) == 0;
+      LOBYTE(v5) = (*(equal + 36) & 4) == 0;
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 36) & 4) == 0 || self->_invalids != *(a3 + 4))
+        if ((*(equal + 36) & 4) == 0 || self->_invalids != *(equal + 4))
         {
           goto LABEL_23;
         }
@@ -421,19 +421,19 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineLMPScoreBoardInstance *)self setKeyword:?];
   }
 
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if (v5)
   {
-    self->_corrects = *(a3 + 2);
+    self->_corrects = *(from + 2);
     *&self->_has |= 1u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -446,14 +446,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 36) & 2) == 0)
+  else if ((*(from + 36) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_incorrects = *(a3 + 3);
+  self->_incorrects = *(from + 3);
   *&self->_has |= 2u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -466,15 +466,15 @@ LABEL_6:
   }
 
 LABEL_11:
-  self->_unknowns = *(a3 + 8);
+  self->_unknowns = *(from + 8);
   *&self->_has |= 8u;
-  if ((*(a3 + 36) & 4) == 0)
+  if ((*(from + 36) & 4) == 0)
   {
     return;
   }
 
 LABEL_7:
-  self->_invalids = *(a3 + 4);
+  self->_invalids = *(from + 4);
   *&self->_has |= 4u;
 }
 

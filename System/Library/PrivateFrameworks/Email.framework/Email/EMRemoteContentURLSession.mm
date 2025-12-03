@@ -1,16 +1,16 @@
 @interface EMRemoteContentURLSession
 + (NSDictionary)genericHTTPHeaderFields;
-- (EMRemoteContentURLSession)initWithCache:(id)a3 sourceBundleIdentifier:(id)a4;
-- (id)_configurationWithCache:(void *)a3 sourceBundleIdentifier:;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (EMRemoteContentURLSession)initWithCache:(id)cache sourceBundleIdentifier:(id)identifier;
+- (id)_configurationWithCache:(void *)cache sourceBundleIdentifier:;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 - (void)_createURLSession;
-- (void)abortTask:(id)a3;
-- (void)invalidateAndCancel:(BOOL)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)abortTask:(id)task;
+- (void)invalidateAndCancel:(BOOL)cancel;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation EMRemoteContentURLSession
@@ -40,27 +40,27 @@ void __52__EMRemoteContentURLSession_genericHTTPHeaderFields__block_invoke()
   genericHTTPHeaderFields_sHeaderFields = &unk_1F461CF10;
 }
 
-- (EMRemoteContentURLSession)initWithCache:(id)a3 sourceBundleIdentifier:(id)a4
+- (EMRemoteContentURLSession)initWithCache:(id)cache sourceBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = EMRemoteContentURLSession;
   v9 = [(EMRemoteContentURLSession *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cache, a3);
-    objc_storeStrong(&v10->_sourceBundleIdentifier, a4);
+    objc_storeStrong(&v9->_cache, cache);
+    objc_storeStrong(&v10->_sourceBundleIdentifier, identifier);
     v11 = objc_alloc(MEMORY[0x1E699B7F0]);
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    v13 = [v11 initWithObject:v12];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v13 = [v11 initWithObject:dictionary];
     activeTasks = v10->_activeTasks;
     v10->_activeTasks = v13;
 
     v15 = objc_alloc(MEMORY[0x1E699B7F0]);
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v17 = [v15 initWithObject:v16];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v17 = [v15 initWithObject:weakObjectsHashTable];
     observers = v10->_observers;
     v10->_observers = v17;
 
@@ -76,27 +76,27 @@ void __52__EMRemoteContentURLSession_genericHTTPHeaderFields__block_invoke()
   return v10;
 }
 
-- (id)_configurationWithCache:(void *)a3 sourceBundleIdentifier:
+- (id)_configurationWithCache:(void *)cache sourceBundleIdentifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  cacheCopy = cache;
+  if (self)
   {
-    v7 = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
-    a1 = v7;
+    ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
+    self = ephemeralSessionConfiguration;
     if (v5)
     {
-      [v7 setRequestCachePolicy:2];
-      [a1 setURLCache:v5];
+      [ephemeralSessionConfiguration setRequestCachePolicy:2];
+      [self setURLCache:v5];
     }
 
-    [a1 set_sourceApplicationBundleIdentifier:v6];
-    [a1 setHTTPShouldSetCookies:0];
-    [a1 setHTTPCookieAcceptPolicy:1];
-    [a1 setHTTPCookieStorage:0];
+    [self set_sourceApplicationBundleIdentifier:cacheCopy];
+    [self setHTTPShouldSetCookies:0];
+    [self setHTTPCookieAcceptPolicy:1];
+    [self setHTTPCookieStorage:0];
   }
 
-  return a1;
+  return self;
 }
 
 __CFString *__113__EMRemoteContentURLSession_dataTaskWithRequest_isSynthetic_allowProxying_failOpen_background_completionHandler___block_invoke(uint64_t a1)
@@ -122,15 +122,15 @@ void __113__EMRemoteContentURLSession_dataTaskWithRequest_isSynthetic_allowProxy
   [v5 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (void)abortTask:(id)a3
+- (void)abortTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   activeTasks = self->_activeTasks;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__EMRemoteContentURLSession_abortTask___block_invoke;
   v7[3] = &unk_1E826CA58;
-  v6 = v4;
+  v6 = taskCopy;
   v8 = v6;
   [(EFLocked *)activeTasks performWhileLocked:v7];
   [v6 cancel];
@@ -138,24 +138,24 @@ void __113__EMRemoteContentURLSession_dataTaskWithRequest_isSynthetic_allowProxy
 
 - (void)_createURLSession
 {
-  v3 = [(EMRemoteContentURLSession *)self cache];
-  v4 = [(EMRemoteContentURLSession *)self sourceBundleIdentifier];
-  v9 = [(EMRemoteContentURLSession *)self _configurationWithCache:v3 sourceBundleIdentifier:v4];
+  cache = [(EMRemoteContentURLSession *)self cache];
+  sourceBundleIdentifier = [(EMRemoteContentURLSession *)self sourceBundleIdentifier];
+  v9 = [(EMRemoteContentURLSession *)self _configurationWithCache:cache sourceBundleIdentifier:sourceBundleIdentifier];
 
   v5 = MEMORY[0x1E695AC78];
-  v6 = [(EMRemoteContentURLSession *)self delegateQueue];
-  v7 = [v5 sessionWithConfiguration:v9 delegate:self delegateQueue:v6];
+  delegateQueue = [(EMRemoteContentURLSession *)self delegateQueue];
+  v7 = [v5 sessionWithConfiguration:v9 delegate:self delegateQueue:delegateQueue];
   session = self->_session;
   self->_session = v7;
 }
 
-- (void)invalidateAndCancel:(BOOL)a3
+- (void)invalidateAndCancel:(BOOL)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   os_unfair_lock_lock(&self->_sessionLock);
   v5 = self->_session;
   os_unfair_lock_unlock(&self->_sessionLock);
-  if (v3)
+  if (cancelCopy)
   {
     [(NSURLSession *)v5 invalidateAndCancel];
   }
@@ -166,20 +166,20 @@ void __113__EMRemoteContentURLSession_dataTaskWithRequest_isSynthetic_allowProxy
   }
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  errorCopy = error;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_sessionLock);
   session = self->_session;
 
-  if (session != v8)
+  if (session != sessionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EMRemoteContentURLSession.m" lineNumber:267 description:{@"NSURLSession was invalidated, but was not our NSURLSession!"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMRemoteContentURLSession.m" lineNumber:267 description:{@"NSURLSession was invalidated, but was not our NSURLSession!"}];
 
-    if (v7)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -191,7 +191,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
     goto LABEL_7;
   }
@@ -200,8 +200,8 @@ LABEL_3:
   v10 = _ef_log_EMRemoteContentURLSession();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v7 ef_publicDescription];
-    [(EMRemoteContentURLSession *)self URLSession:v11 didBecomeInvalidWithError:v15, v10];
+    ef_publicDescription = [errorCopy ef_publicDescription];
+    [(EMRemoteContentURLSession *)self URLSession:ef_publicDescription didBecomeInvalidWithError:v15, v10];
   }
 
   [(EMRemoteContentURLSession *)self _createURLSession];
@@ -211,10 +211,10 @@ LABEL_8:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  dataCopy = data;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -227,10 +227,10 @@ LABEL_8:
   v13 = __64__EMRemoteContentURLSession_URLSession_dataTask_didReceiveData___block_invoke;
   v14 = &unk_1E826DD58;
   v16 = &v17;
-  v10 = v7;
+  v10 = taskCopy;
   v15 = v10;
   [(EFLocked *)activeTasks performWhileLocked:&v11];
-  [v18[5] receiveData:{v8, v11, v12, v13, v14}];
+  [v18[5] receiveData:{dataCopy, v11, v12, v13, v14}];
 
   _Block_object_dispose(&v17, 8);
 }
@@ -244,10 +244,10 @@ void __64__EMRemoteContentURLSession_URLSession_dataTask_didReceiveData___block_
   *(v4 + 40) = v3;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  metricsCopy = metrics;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -260,19 +260,19 @@ void __64__EMRemoteContentURLSession_URLSession_dataTask_didReceiveData___block_
   v24[2] = __72__EMRemoteContentURLSession_URLSession_task_didFinishCollectingMetrics___block_invoke;
   v24[3] = &unk_1E826DD58;
   v26 = &v27;
-  v10 = v7;
+  v10 = taskCopy;
   v25 = v10;
   [(EFLocked *)activeTasks performWhileLocked:v24];
   if (v28[5])
   {
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v12 = [v11 calendarIdentifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x1E695D850]];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    calendarIdentifier = [currentCalendar calendarIdentifier];
+    v13 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
-    v14 = [MEMORY[0x1E695DF00] date];
-    v15 = [v11 components:8760 fromDate:v14];
+    date = [MEMORY[0x1E695DF00] date];
+    v15 = [currentCalendar components:8760 fromDate:date];
 
-    v16 = [v8 transactionMetrics];
+    transactionMetrics = [metricsCopy transactionMetrics];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72__EMRemoteContentURLSession_URLSession_task_didFinishCollectingMetrics___block_invoke_2;
@@ -282,8 +282,8 @@ void __64__EMRemoteContentURLSession_URLSession_dataTask_didReceiveData___block_
     v17 = v15;
     v19 = v17;
     v20 = v10;
-    v21 = self;
-    [v16 enumerateObjectsUsingBlock:v18];
+    selfCopy = self;
+    [transactionMetrics enumerateObjectsUsingBlock:v18];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -510,11 +510,11 @@ LABEL_36:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -527,7 +527,7 @@ LABEL_36:
   v38[2] = __66__EMRemoteContentURLSession_URLSession_task_didCompleteWithError___block_invoke;
   v38[3] = &unk_1E826DD58;
   v40 = &v41;
-  v10 = v7;
+  v10 = taskCopy;
   v39 = v10;
   [(EFLocked *)activeTasks performWhileLocked:v38];
   if (!v42[5])
@@ -535,33 +535,33 @@ LABEL_36:
     goto LABEL_25;
   }
 
-  v11 = [v10 originalRequest];
-  v12 = [v11 URL];
+  originalRequest = [v10 originalRequest];
+  v12 = [originalRequest URL];
   if ([EMInternalPreferences preferenceEnabled:10])
   {
-    v13 = [v12 absoluteString];
+    absoluteString = [v12 absoluteString];
   }
 
   else
   {
     v14 = MEMORY[0x1E699B858];
-    v15 = [v12 absoluteString];
-    v13 = [v14 fullyRedactedStringForString:v15];
+    absoluteString2 = [v12 absoluteString];
+    absoluteString = [v14 fullyRedactedStringForString:absoluteString2];
   }
 
-  v16 = [v10 response];
-  if (v8)
+  response = [v10 response];
+  if (errorCopy)
   {
     v17 = _ef_log_EMRemoteContentURLSession();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v8 ef_publicDescription];
+      ef_publicDescription = [errorCopy ef_publicDescription];
       *buf = 134218498;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2114;
-      v50 = v13;
+      v50 = absoluteString;
       v51 = 2114;
-      v52 = v18;
+      v52 = ef_publicDescription;
       _os_log_impl(&dword_1C6655000, v17, OS_LOG_TYPE_INFO, "[%p][Error] URL: %{public}@\nError: %{public}@", buf, 0x20u);
     }
   }
@@ -576,9 +576,9 @@ LABEL_36:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 134218242;
-        v48 = self;
+        selfCopy3 = self;
         v49 = 2114;
-        v50 = v13;
+        v50 = absoluteString;
         _os_log_impl(&dword_1C6655000, v17, OS_LOG_TYPE_INFO, "[%p][Response] URL: %{public}@", buf, 0x16u);
       }
 
@@ -588,16 +588,16 @@ LABEL_36:
     v17 = v20;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v21 = [v16 statusCode];
-      v22 = [v16 _allHTTPHeaderFieldsAsArrays];
+      statusCode = [response statusCode];
+      _allHTTPHeaderFieldsAsArrays = [response _allHTTPHeaderFieldsAsArrays];
       *buf = 134218754;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2114;
-      v50 = v13;
+      v50 = absoluteString;
       v51 = 2048;
-      v52 = v21;
+      v52 = statusCode;
       v53 = 2114;
-      v54 = v22;
+      v54 = _allHTTPHeaderFieldsAsArrays;
       _os_log_impl(&dword_1C6655000, v17, OS_LOG_TYPE_INFO, "[%p][Response] URL: %{public}@\nStatus Code: %ld\nHeaders: %{public}@", buf, 0x2Au);
     }
   }
@@ -607,23 +607,23 @@ LABEL_15:
   if (objc_opt_isKindOfClass())
   {
     v23 = v10;
-    if (v8 || !v16)
+    if (errorCopy || !response)
     {
-      v26 = [v8 domain];
-      if ([v26 isEqualToString:*MEMORY[0x1E696A978]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A978]])
       {
-        v27 = [v8 code] == -999;
+        v27 = [errorCopy code] == -999;
 
         if (v27)
         {
-          v28 = [(EMRemoteContentURLSession *)self cache];
+          cache = [(EMRemoteContentURLSession *)self cache];
           v30 = MEMORY[0x1E69E9820];
           v31 = 3221225472;
           v32 = __66__EMRemoteContentURLSession_URLSession_task_didCompleteWithError___block_invoke_208;
           v33 = &unk_1E826F778;
-          v34 = self;
-          v35 = v13;
-          [v28 storeCancelationIfNeededForDataTask:v23 completionHandler:&v30];
+          selfCopy4 = self;
+          v35 = absoluteString;
+          [cache storeCancelationIfNeededForDataTask:v23 completionHandler:&v30];
         }
       }
 
@@ -634,19 +634,19 @@ LABEL_15:
 
     else
     {
-      v24 = [(EMRemoteContentURLSession *)self cache];
-      v25 = [v42[5] data];
+      cache2 = [(EMRemoteContentURLSession *)self cache];
+      data = [v42[5] data];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __66__EMRemoteContentURLSession_URLSession_task_didCompleteWithError___block_invoke_206;
       v36[3] = &unk_1E826F778;
       v36[4] = self;
-      v37 = v13;
-      [v24 storeResponseIfNeeded:v16 withData:v25 forDataTask:v23 completionHandler:v36];
+      v37 = absoluteString;
+      [cache2 storeResponseIfNeeded:response withData:data forDataTask:v23 completionHandler:v36];
     }
   }
 
-  [v42[5] finishWithError:{v8, v30, v31, v32, v33, v34}];
+  [v42[5] finishWithError:{errorCopy, v30, v31, v32, v33, selfCopy4}];
 
 LABEL_25:
   _Block_object_dispose(&v41, 8);
@@ -711,29 +711,29 @@ void __66__EMRemoteContentURLSession_URLSession_task_didCompleteWithError___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__EMRemoteContentURLSession_registerObserver___block_invoke;
   v7[3] = &unk_1E826CE90;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(EFLocked *)observers performWhileLocked:v7];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__EMRemoteContentURLSession_unregisterObserver___block_invoke;
   v7[3] = &unk_1E826CE90;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(EFLocked *)observers performWhileLocked:v7];
 }
 

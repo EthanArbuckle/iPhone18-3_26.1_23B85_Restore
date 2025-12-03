@@ -1,18 +1,18 @@
 @interface PXDaysViewKeyAssetHackService
 - (BOOL)canPerformAction;
-- (BOOL)shouldSetKeyAssetForHighlight:(id)a3;
+- (BOOL)shouldSetKeyAssetForHighlight:(id)highlight;
 @end
 
 @implementation PXDaysViewKeyAssetHackService
 
-- (BOOL)shouldSetKeyAssetForHighlight:(id)a3
+- (BOOL)shouldSetKeyAssetForHighlight:(id)highlight
 {
-  v4 = a3;
-  if ([v4 kind] && objc_msgSend(v4, "type") != 3)
+  highlightCopy = highlight;
+  if ([highlightCopy kind] && objc_msgSend(highlightCopy, "type") != 3)
   {
     v7.receiver = self;
     v7.super_class = PXDaysViewKeyAssetHackService;
-    v5 = [(PXKeyAssetHackService *)&v7 shouldSetKeyAssetForHighlight:v4];
+    v5 = [(PXKeyAssetHackService *)&v7 shouldSetKeyAssetForHighlight:highlightCopy];
   }
 
   else
@@ -30,8 +30,8 @@
     return 0;
   }
 
-  v3 = [(PXKeyAssetHackService *)self asset];
-  v4 = v3 != 0;
+  asset = [(PXKeyAssetHackService *)self asset];
+  v4 = asset != 0;
 
   return v4;
 }

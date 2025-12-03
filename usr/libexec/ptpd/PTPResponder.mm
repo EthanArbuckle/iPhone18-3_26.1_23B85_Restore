@@ -1,60 +1,60 @@
 @interface PTPResponder
-+ (void)catalogPath:(char *)a3 dirs:(int *)a4 media:(int *)a5 nonMedia:(int *)a6;
-+ (void)getFilesystemMediaCountForDirectories:(int *)a3 media:(int *)a4 nonMedia:(int *)a5;
-- (BOOL)handleSetHostMediaCapabilities:(id)a3;
-- (BOOL)handleSetHostSupportedFormats:(id)a3;
-- (BOOL)handleSetHostSupportsGroups:(id)a3;
++ (void)catalogPath:(char *)path dirs:(int *)dirs media:(int *)media nonMedia:(int *)nonMedia;
++ (void)getFilesystemMediaCountForDirectories:(int *)directories media:(int *)media nonMedia:(int *)nonMedia;
+- (BOOL)handleSetHostMediaCapabilities:(id)capabilities;
+- (BOOL)handleSetHostSupportedFormats:(id)formats;
+- (BOOL)handleSetHostSupportsGroups:(id)groups;
 - (BOOL)start;
-- (PTPResponder)initWithName:(id)a3 path:(id)a4 andTransportType:(unsigned __int16)a5;
+- (PTPResponder)initWithName:(id)name path:(id)path andTransportType:(unsigned __int16)type;
 - (id)delegate;
-- (id)handleRequest:(id)a3;
-- (void)allowKeepAwake:(id)a3;
-- (void)closeSession:(id)a3;
+- (id)handleRequest:(id)request;
+- (void)allowKeepAwake:(id)awake;
+- (void)closeSession:(id)session;
 - (void)dealloc;
-- (void)deleteObject:(id)a3;
-- (void)getDeviceInfo:(id)a3;
-- (void)getDevicePropDesc:(id)a3;
-- (void)getDevicePropValue:(id)a3;
-- (void)getNumDownloadableObjects:(id)a3;
-- (void)getNumObjects:(id)a3;
-- (void)getObject:(id)a3;
-- (void)getObjectCompressedSize64:(id)a3;
-- (void)getObjectHandles:(id)a3;
-- (void)getObjectInfo:(id)a3;
-- (void)getObjectInfoForNextObjectGroupInStorage:(id)a3;
-- (void)getObjectInfoForObjectsInStorage:(id)a3;
-- (void)getObjectMetadata:(id)a3;
-- (void)getObjectPropDesc:(id)a3;
-- (void)getObjectPropList:(id)a3;
-- (void)getObjectPropValue:(id)a3;
-- (void)getObjectPropsSupported:(id)a3;
-- (void)getPartialObject64:(id)a3;
-- (void)getPartialObject:(id)a3;
-- (void)getStorageIDs:(id)a3;
-- (void)getStorageInfo:(id)a3;
-- (void)getThumb:(id)a3;
-- (void)getUserAssignedDeviceName:(id)a3;
-- (void)handleData:(id)a3;
+- (void)deleteObject:(id)object;
+- (void)getDeviceInfo:(id)info;
+- (void)getDevicePropDesc:(id)desc;
+- (void)getDevicePropValue:(id)value;
+- (void)getNumDownloadableObjects:(id)objects;
+- (void)getNumObjects:(id)objects;
+- (void)getObject:(id)object;
+- (void)getObjectCompressedSize64:(id)size64;
+- (void)getObjectHandles:(id)handles;
+- (void)getObjectInfo:(id)info;
+- (void)getObjectInfoForNextObjectGroupInStorage:(id)storage;
+- (void)getObjectInfoForObjectsInStorage:(id)storage;
+- (void)getObjectMetadata:(id)metadata;
+- (void)getObjectPropDesc:(id)desc;
+- (void)getObjectPropList:(id)list;
+- (void)getObjectPropValue:(id)value;
+- (void)getObjectPropsSupported:(id)supported;
+- (void)getPartialObject64:(id)object64;
+- (void)getPartialObject:(id)object;
+- (void)getStorageIDs:(id)ds;
+- (void)getStorageInfo:(id)info;
+- (void)getThumb:(id)thumb;
+- (void)getUserAssignedDeviceName:(id)name;
+- (void)handleData:(id)data;
 - (void)handleDeviceRemoval;
-- (void)handleResetDevice:(id)a3;
-- (void)handleUnsupportedRequest:(id)a3;
+- (void)handleResetDevice:(id)device;
+- (void)handleUnsupportedRequest:(id)request;
 - (void)holdPowerAssertion;
-- (void)openSession:(id)a3;
+- (void)openSession:(id)session;
 - (void)releasePowerAssertion;
 - (void)removeVirtualCamera;
-- (void)reportGroupAddedInStorage:(id)a3;
-- (void)reportObjectAdded:(id)a3;
-- (void)reportObjectDeleted:(id)a3;
-- (void)reportStorageAdded:(id)a3;
-- (void)reportStorageDeleted:(id)a3;
+- (void)reportGroupAddedInStorage:(id)storage;
+- (void)reportObjectAdded:(id)added;
+- (void)reportObjectDeleted:(id)deleted;
+- (void)reportStorageAdded:(id)added;
+- (void)reportStorageDeleted:(id)deleted;
 - (void)reportUserAssignedNameChange;
 - (void)runRunLoop;
 - (void)sendEventDeviceUnlocked;
 - (void)sendRestartSessionEvent;
-- (void)sentData:(id)a3 responseCode:(id)a4;
-- (void)setUsingLegacyOS:(BOOL)a3;
-- (void)setUsingMTP:(id)a3;
-- (void)setUsingMacOS:(BOOL)a3;
+- (void)sentData:(id)data responseCode:(id)code;
+- (void)setUsingLegacyOS:(BOOL)s;
+- (void)setUsingMTP:(id)p;
+- (void)setUsingMacOS:(BOOL)s;
 - (void)setUsingWindows;
 - (void)stopRunLoop;
 - (void)transportActivated;
@@ -84,7 +84,7 @@
         v7 = v3;
         v8 = v6;
         v9 = 136446466;
-        v10 = [(__CFString *)v3 UTF8String];
+        uTF8String = [(__CFString *)v3 UTF8String];
         v11 = 2114;
         v12 = v5;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v9, 0x16u);
@@ -105,11 +105,11 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (PTPResponder)initWithName:(id)a3 path:(id)a4 andTransportType:(unsigned __int16)a5
+- (PTPResponder)initWithName:(id)name path:(id)path andTransportType:(unsigned __int16)type
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  nameCopy = name;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = PTPResponder;
   v10 = [(PTPResponder *)&v30 init];
@@ -121,17 +121,17 @@
     v10->_guid = &v12->isa;
 
     CFRelease(v11);
-    v14 = [[NSString alloc] initWithString:v8];
+    v14 = [[NSString alloc] initWithString:nameCopy];
     name = v10->_name;
     v10->_name = v14;
 
-    v16 = [[NSString alloc] initWithString:v9];
+    v16 = [[NSString alloc] initWithString:pathCopy];
     path = v10->_path;
     v10->_path = v16;
 
     v10->_allowKeepAwake = 0;
     v10->_powerAssertionReleaseDelay = 1200.0;
-    if (v5 == 1)
+    if (typeCopy == 1)
     {
       v18 = [[PTPDeviceUSBTransport alloc] initWithDelegate:v10];
       transport = v10->_transport;
@@ -166,9 +166,9 @@
   {
     v26 = v22;
     v27 = v25;
-    v28 = [(__CFString *)v22 UTF8String];
+    uTF8String = [(__CFString *)v22 UTF8String];
     *buf = 136446466;
-    v32 = v28;
+    v32 = uTF8String;
     v33 = 2114;
     v34 = v24;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -189,15 +189,15 @@
   [(PTPResponder *)&v4 dealloc];
 }
 
-- (void)openSession:(id)a3
+- (void)openSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = [v4 parameter1];
+  sessionCopy = session;
+  transactionID = [sessionCopy transactionID];
+  parameter1 = [sessionCopy parameter1];
 
-  if (v5 || !v6)
+  if (transactionID || !parameter1)
   {
-    v7 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8221 transactionID:v5];
+    v7 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8221 transactionID:transactionID];
   }
 
   else
@@ -209,7 +209,7 @@
 
     else
     {
-      self->_sessionID = v6;
+      self->_sessionID = parameter1;
       v7 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8193 transactionID:0];
       [(PTPVirtualCamera *)self->_virtualCamera openSession];
     }
@@ -220,9 +220,9 @@
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v7];
   if (![(PTPResponder *)self usingPeerMediaCapabilities])
   {
-    v8 = [(PTPResponder *)self usingMTP];
+    usingMTP = [(PTPResponder *)self usingMTP];
 
-    if (!v8)
+    if (!usingMTP)
     {
       v9 = sub_10000C470();
       v11[0] = PLPTPHostCharacteristicsKeyMake;
@@ -237,16 +237,16 @@
   }
 }
 
-- (void)closeSession:(id)a3
+- (void)closeSession:(id)session
 {
-  v4 = [a3 transactionID];
-  v5 = v4;
+  transactionID = [session transactionID];
+  v5 = transactionID;
   if (!self->_sessionID)
   {
     goto LABEL_4;
   }
 
-  if (v4 > self->_lastTransactionID)
+  if (transactionID > self->_lastTransactionID)
   {
     [(PTPVirtualCamera *)self->_virtualCamera closeSession];
     self->_lastTransactionID = 0;
@@ -262,12 +262,12 @@ LABEL_6:
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v7];
 }
 
-- (void)getDeviceInfo:(id)a3
+- (void)getDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
-  if (self->_sessionID && v5 <= self->_lastTransactionID)
+  infoCopy = info;
+  transactionID = [infoCopy transactionID];
+  v6 = transactionID;
+  if (self->_sessionID && transactionID <= self->_lastTransactionID)
   {
     __ICOSLogCreate();
     v13 = @"getDeviceInfo";
@@ -284,7 +284,7 @@ LABEL_6:
       v17 = v13;
       v18 = v16;
       *buf = 136446466;
-      v21 = [(__CFString *)v13 UTF8String];
+      uTF8String = [(__CFString *)v13 UTF8String];
       v22 = 2114;
       v23 = v15;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -295,13 +295,13 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v7 = [(PTPVirtualCamera *)self->_virtualCamera deviceInfoDataset];
-  if (v7)
+  deviceInfoDataset = [(PTPVirtualCamera *)self->_virtualCamera deviceInfoDataset];
+  if (deviceInfoDataset)
   {
     v8 = [PTPDataPacket alloc];
-    v9 = [v4 operationCode];
-    v10 = [v7 content];
-    v11 = [v8 initWithOperationCode:v9 transactionID:v6 andData:v10];
+    operationCode = [infoCopy operationCode];
+    content = [deviceInfoDataset content];
+    v11 = [v8 initWithOperationCode:operationCode transactionID:v6 andData:content];
 
     [(PTPDeviceUSBTransport *)self->_transport sendData:v11];
   }
@@ -311,7 +311,7 @@ LABEL_6:
     self->_lastTransactionID = v6;
   }
 
-  if (!v7)
+  if (!deviceInfoDataset)
   {
     v12 = 8198;
 LABEL_14:
@@ -320,61 +320,61 @@ LABEL_14:
   }
 }
 
-- (void)getStorageIDs:(id)a3
+- (void)getStorageIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  dsCopy = ds;
+  transactionID = [dsCopy transactionID];
+  v6 = transactionID;
   if (!self->_sessionID)
   {
     v10 = 8195;
 LABEL_6:
-    v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v10 transactionID:v5];
+    v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v10 transactionID:transactionID];
     [(PTPDeviceUSBTransport *)self->_transport sendResponse:v11];
 
     goto LABEL_7;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v10 = 8196;
     goto LABEL_6;
   }
 
-  self->_lastTransactionID = v5;
-  v7 = [(PTPVirtualCamera *)self->_virtualCamera allStorageIDs];
-  v8 = [[NSMutableData alloc] initWithLength:{4 * objc_msgSend(v7, "count") + 4}];
+  self->_lastTransactionID = transactionID;
+  allStorageIDs = [(PTPVirtualCamera *)self->_virtualCamera allStorageIDs];
+  v8 = [[NSMutableData alloc] initWithLength:{4 * objc_msgSend(allStorageIDs, "count") + 4}];
   [v8 mutableBytes];
   WriteArrayOfHandlesToBuffer();
-  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v6, v8}];
+  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(dsCopy transactionID:"operationCode") andData:{v6, v8}];
   [(PTPDeviceUSBTransport *)self->_transport sendData:v9];
 
 LABEL_7:
 }
 
-- (void)getStorageInfo:(id)a3
+- (void)getStorageInfo:(id)info
 {
-  v13 = a3;
-  v4 = [v13 transactionID];
-  v5 = v4;
+  infoCopy = info;
+  transactionID = [infoCopy transactionID];
+  v5 = transactionID;
   if (self->_sessionID)
   {
-    if (v4 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v12 = 8196;
     }
 
     else
     {
-      self->_lastTransactionID = v4;
-      v6 = -[PTPVirtualCamera storageInfoDatasetForStorageID:](self->_virtualCamera, "storageInfoDatasetForStorageID:", [v13 parameter1]);
+      self->_lastTransactionID = transactionID;
+      v6 = -[PTPVirtualCamera storageInfoDatasetForStorageID:](self->_virtualCamera, "storageInfoDatasetForStorageID:", [infoCopy parameter1]);
       if (v6)
       {
         v7 = v6;
         v8 = [PTPDataPacket alloc];
-        v9 = [v13 operationCode];
-        v10 = [v7 content];
-        v11 = [v8 initWithOperationCode:v9 transactionID:v5 andData:v10];
+        operationCode = [infoCopy operationCode];
+        content = [v7 content];
+        v11 = [v8 initWithOperationCode:operationCode transactionID:v5 andData:content];
 
         [(PTPDeviceUSBTransport *)self->_transport sendData:v11];
         goto LABEL_9;
@@ -394,11 +394,11 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)getNumObjects:(id)a3
+- (void)getNumObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  objectsCopy = objects;
+  transactionID = [objectsCopy transactionID];
+  v6 = transactionID;
   if (!self->_sessionID)
   {
     v15 = [PTPOperationResponsePacket alloc];
@@ -408,19 +408,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v15 = [PTPOperationResponsePacket alloc];
     v16 = 8196;
     goto LABEL_8;
   }
 
-  v7 = [v4 parameter1];
-  v8 = [v4 parameter2];
-  v9 = [v4 parameter3];
+  parameter1 = [objectsCopy parameter1];
+  parameter2 = [objectsCopy parameter2];
+  parameter3 = [objectsCopy parameter3];
   v17 = 0;
   self->_lastTransactionID = v6;
-  v10 = [(PTPVirtualCamera *)self->_virtualCamera objectHandlesInStorage:v7 forObjectFormatCode:v8 inAssociation:v9 responseCode:&v17];
+  v10 = [(PTPVirtualCamera *)self->_virtualCamera objectHandlesInStorage:parameter1 forObjectFormatCode:parameter2 inAssociation:parameter3 responseCode:&v17];
   v11 = v10;
   v12 = 0;
   if (v17 == 8193)
@@ -435,12 +435,12 @@ LABEL_9:
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v14];
 }
 
-+ (void)getFilesystemMediaCountForDirectories:(int *)a3 media:(int *)a4 nonMedia:(int *)a5
++ (void)getFilesystemMediaCountForDirectories:(int *)directories media:(int *)media nonMedia:(int *)nonMedia
 {
   v38 = 0;
   v37 = 0;
-  [a1 catalogPath:"/var/mobile/Media/DCIM/" dirs:&v38 + 4 media:&v38 nonMedia:&v37];
-  [a1 catalogPath:"/var/mobile/Media/PhotoData/CPLAssets/" dirs:&v38 + 4 media:&v38 nonMedia:&v37];
+  [self catalogPath:"/var/mobile/Media/DCIM/" dirs:&v38 + 4 media:&v38 nonMedia:&v37];
+  [self catalogPath:"/var/mobile/Media/PhotoData/CPLAssets/" dirs:&v38 + 4 media:&v38 nonMedia:&v37];
   __ICOSLogCreate();
   v9 = &stru_100038B48;
   if ([&stru_100038B48 length] >= 0x15)
@@ -455,9 +455,9 @@ LABEL_9:
   {
     v13 = v9;
     v14 = v12;
-    v15 = [(__CFString *)v9 UTF8String];
+    uTF8String = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    v40 = v15;
+    v40 = uTF8String;
     v41 = 2114;
     v42 = v11;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -477,9 +477,9 @@ LABEL_9:
   {
     v20 = v16;
     v21 = v19;
-    v22 = [(__CFString *)v16 UTF8String];
+    uTF8String2 = [(__CFString *)v16 UTF8String];
     *buf = 136446466;
-    v40 = v22;
+    v40 = uTF8String2;
     v41 = 2114;
     v42 = v18;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -499,9 +499,9 @@ LABEL_9:
   {
     v27 = v23;
     v28 = v26;
-    v29 = [(__CFString *)v23 UTF8String];
+    uTF8String3 = [(__CFString *)v23 UTF8String];
     *buf = 136446466;
-    v40 = v29;
+    v40 = uTF8String3;
     v41 = 2114;
     v42 = v25;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -521,49 +521,49 @@ LABEL_9:
   {
     v34 = v30;
     v35 = v33;
-    v36 = [(__CFString *)v30 UTF8String];
+    uTF8String4 = [(__CFString *)v30 UTF8String];
     *buf = 136446466;
-    v40 = v36;
+    v40 = uTF8String4;
     v41 = 2114;
     v42 = v32;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  if (a3)
+  if (directories)
   {
-    *a3 = HIDWORD(v38);
+    *directories = HIDWORD(v38);
   }
 
-  if (a4)
+  if (media)
   {
-    *a4 = v38;
+    *media = v38;
   }
 
-  if (a5)
+  if (nonMedia)
   {
-    *a5 = v37;
+    *nonMedia = v37;
   }
 }
 
-- (void)getNumDownloadableObjects:(id)a3
+- (void)getNumDownloadableObjects:(id)objects
 {
   v18 = 0;
   HIDWORD(v17) = 0;
-  v4 = a3;
+  objectsCopy = objects;
   [PTPResponder getFilesystemMediaCountForDirectories:&v18 + 4 media:&v18 nonMedia:&v17 + 4];
   [(PTPResponder *)self setUsingLegacyOS:1];
-  v5 = [v4 transactionID];
+  transactionID = [objectsCopy transactionID];
 
   if (!self->_sessionID)
   {
     v14 = [PTPOperationResponsePacket alloc];
     v15 = 8195;
 LABEL_6:
-    v13 = [v14 initWithResponseCode:v15 transactionID:v5];
+    v13 = [v14 initWithResponseCode:v15 transactionID:transactionID];
     goto LABEL_7;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v14 = [PTPOperationResponsePacket alloc];
     v15 = 8196;
@@ -572,33 +572,33 @@ LABEL_6:
 
   v6 = v18;
   v7 = HIDWORD(v18);
-  v8 = [(PTPVirtualCamera *)self->_virtualCamera ptpSecurityModel];
-  v9 = [v8 shouldRemovePlaceholderStorage];
+  ptpSecurityModel = [(PTPVirtualCamera *)self->_virtualCamera ptpSecurityModel];
+  shouldRemovePlaceholderStorage = [ptpSecurityModel shouldRemovePlaceholderStorage];
 
-  v10 = [(PTPVirtualCamera *)self->_virtualCamera ptpSecurityModel];
-  v11 = [v10 hostIsTrusted];
+  ptpSecurityModel2 = [(PTPVirtualCamera *)self->_virtualCamera ptpSecurityModel];
+  hostIsTrusted = [ptpSecurityModel2 hostIsTrusted];
 
-  self->_lastTransactionID = v5;
+  self->_lastTransactionID = transactionID;
   v12 = [PTPOperationResponsePacket alloc];
   LODWORD(v17) = 0;
-  v13 = [v12 initWithResponseCode:8193 transactionID:v5 parameter1:v6 parameter2:v7 parameter3:v9 ^ 1 parameter4:v11 parameter5:v17];
+  v13 = [v12 initWithResponseCode:8193 transactionID:transactionID parameter1:v6 parameter2:v7 parameter3:shouldRemovePlaceholderStorage ^ 1 parameter4:hostIsTrusted parameter5:v17];
 LABEL_7:
   v16 = v13;
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v13];
 }
 
-- (void)getObjectHandles:(id)a3
+- (void)getObjectHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  handlesCopy = handles;
+  transactionID = [handlesCopy transactionID];
+  v6 = transactionID;
   v16 = 8195;
   if (!self->_sessionID)
   {
     goto LABEL_7;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v16 = 8196;
 LABEL_7:
@@ -608,11 +608,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v4 parameter1];
-  v8 = [v4 parameter2];
-  v9 = [v4 parameter3];
+  parameter1 = [handlesCopy parameter1];
+  parameter2 = [handlesCopy parameter2];
+  parameter3 = [handlesCopy parameter3];
   self->_lastTransactionID = v6;
-  v10 = [(PTPVirtualCamera *)self->_virtualCamera objectHandlesInStorage:v7 forObjectFormatCode:v8 inAssociation:v9 responseCode:&v16];
+  v10 = [(PTPVirtualCamera *)self->_virtualCamera objectHandlesInStorage:parameter1 forObjectFormatCode:parameter2 inAssociation:parameter3 responseCode:&v16];
   v11 = v10;
   if (v16 != 8193)
   {
@@ -621,37 +621,37 @@ LABEL_7:
   }
 
   v12 = [[NSMutableData alloc] initWithLength:{4 * objc_msgSend(v10, "count") + 4}];
-  v15 = [v12 mutableBytes];
+  mutableBytes = [v12 mutableBytes];
   WriteArrayOfHandlesToBuffer();
-  v13 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode" andData:{v15), v6, v12}];
+  v13 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(handlesCopy transactionID:"operationCode" andData:{mutableBytes), v6, v12}];
   [(PTPDeviceUSBTransport *)self->_transport sendData:v13];
 
 LABEL_8:
 }
 
-- (void)getObjectInfo:(id)a3
+- (void)getObjectInfo:(id)info
 {
-  v13 = a3;
-  v4 = [v13 transactionID];
-  v5 = v4;
+  infoCopy = info;
+  transactionID = [infoCopy transactionID];
+  v5 = transactionID;
   if (self->_sessionID)
   {
-    if (v4 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v12 = 8196;
     }
 
     else
     {
-      self->_lastTransactionID = v4;
-      v6 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [v13 parameter1]);
+      self->_lastTransactionID = transactionID;
+      v6 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [infoCopy parameter1]);
       if (v6)
       {
         v7 = v6;
         v8 = [PTPDataPacket alloc];
-        v9 = [v13 operationCode];
-        v10 = [v7 content];
-        v11 = [v8 initWithOperationCode:v9 transactionID:v5 andData:v10];
+        operationCode = [infoCopy operationCode];
+        content = [v7 content];
+        v11 = [v8 initWithOperationCode:operationCode transactionID:v5 andData:content];
 
         [(PTPDeviceUSBTransport *)self->_transport sendData:v11];
         goto LABEL_9;
@@ -671,18 +671,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)getObject:(id)a3
+- (void)getObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  objectCopy = object;
+  transactionID = [objectCopy transactionID];
+  v6 = transactionID;
   v22 = 8195;
   if (!self->_sessionID)
   {
     goto LABEL_15;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v22 = 8196;
 LABEL_15:
@@ -693,8 +693,8 @@ LABEL_15:
   }
 
   v21 = 0;
-  self->_lastTransactionID = v5;
-  v7 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [v4 parameter1]);
+  self->_lastTransactionID = transactionID;
+  v7 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [objectCopy parameter1]);
   __ICOSLogCreate();
   v8 = &stru_100038B48;
   if ([&stru_100038B48 length] >= 0x15)
@@ -703,8 +703,8 @@ LABEL_15:
     v8 = [v9 stringByAppendingString:@".."];
   }
 
-  v10 = [v7 filename];
-  v11 = [NSString stringWithFormat:@"--- >getObject: %@", v10];
+  filename = [v7 filename];
+  v11 = [NSString stringWithFormat:@"--- >getObject: %@", filename];
 
   v12 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -712,13 +712,13 @@ LABEL_15:
     v13 = v8;
     v14 = v12;
     *buf = 136446466;
-    v24 = [(__CFString *)v8 UTF8String];
+    uTF8String = [(__CFString *)v8 UTF8String];
     v25 = 2114;
     v26 = v11;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v15 = -[PTPVirtualCamera dataSourceForObjectHandle:responseCode:size:](self->_virtualCamera, "dataSourceForObjectHandle:responseCode:size:", [v4 parameter1], &v22, &v21);
+  v15 = -[PTPVirtualCamera dataSourceForObjectHandle:responseCode:size:](self->_virtualCamera, "dataSourceForObjectHandle:responseCode:size:", [objectCopy parameter1], &v22, &v21);
   v16 = v15;
   if (v22 != 8193 || !v15)
   {
@@ -729,7 +729,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v17 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andDataSource:{v6, v15}];
+  v17 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(objectCopy transactionID:"operationCode") andDataSource:{v6, v15}];
   if (!v17)
   {
     v19 = 8221;
@@ -742,18 +742,18 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)getThumb:(id)a3
+- (void)getThumb:(id)thumb
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  thumbCopy = thumb;
+  transactionID = [thumbCopy transactionID];
+  v6 = transactionID;
   v19 = 8195;
   if (!self->_sessionID)
   {
     goto LABEL_11;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v19 = 8196;
 LABEL_11:
@@ -768,18 +768,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 numParameters] == 2)
+  if ([thumbCopy numParameters] == 2)
   {
-    v7 = [v4 parameter2];
+    parameter2 = [thumbCopy parameter2];
   }
 
   else
   {
-    v7 = 0;
+    parameter2 = 0;
   }
 
   self->_lastTransactionID = v6;
-  v8 = -[PTPVirtualCamera thumbnailForObjectHandle:maxPixelSize:responseCode:](self->_virtualCamera, "thumbnailForObjectHandle:maxPixelSize:responseCode:", [v4 parameter1], v7, &v19);
+  v8 = -[PTPVirtualCamera thumbnailForObjectHandle:maxPixelSize:responseCode:](self->_virtualCamera, "thumbnailForObjectHandle:maxPixelSize:responseCode:", [thumbCopy parameter1], parameter2, &v19);
   v9 = v8;
   if (v19 != 8193 || !v8)
   {
@@ -793,27 +793,27 @@ LABEL_11:
   block[2] = sub_10001ACF8;
   block[3] = &unk_100038A48;
   v18 = v6;
-  v15 = v4;
+  v15 = thumbCopy;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v10 = v9;
   dispatch_async(&_dispatch_main_q, block);
 
 LABEL_12:
 }
 
-- (void)getObjectMetadata:(id)a3
+- (void)getObjectMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  metadataCopy = metadata;
+  transactionID = [metadataCopy transactionID];
+  v6 = transactionID;
   v18 = 8195;
   if (!self->_sessionID)
   {
     goto LABEL_8;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v18 = 8196;
 LABEL_8:
@@ -828,8 +828,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  self->_lastTransactionID = v5;
-  v7 = -[PTPVirtualCamera embeddedMetadataForObjectHandle:responseCode:](self->_virtualCamera, "embeddedMetadataForObjectHandle:responseCode:", [v4 parameter1], &v18);
+  self->_lastTransactionID = transactionID;
+  v7 = -[PTPVirtualCamera embeddedMetadataForObjectHandle:responseCode:](self->_virtualCamera, "embeddedMetadataForObjectHandle:responseCode:", [metadataCopy parameter1], &v18);
   v8 = v7;
   if (v18 != 8193 || !v7)
   {
@@ -843,27 +843,27 @@ LABEL_8:
   block[2] = sub_10001AF90;
   block[3] = &unk_100038A48;
   v17 = v6;
-  v14 = v4;
+  v14 = metadataCopy;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v9 = v8;
   dispatch_async(&_dispatch_main_q, block);
 
 LABEL_9:
 }
 
-- (void)getPartialObject:(id)a3
+- (void)getPartialObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  objectCopy = object;
+  transactionID = [objectCopy transactionID];
+  v6 = transactionID;
   v14 = 8195;
   if (!self->_sessionID)
   {
     goto LABEL_15;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v14 = 8196;
 LABEL_15:
@@ -874,8 +874,8 @@ LABEL_15:
   }
 
   v13 = 0;
-  self->_lastTransactionID = v5;
-  v7 = -[PTPVirtualCamera dataSourceForObjectHandle:responseCode:size:](self->_virtualCamera, "dataSourceForObjectHandle:responseCode:size:", [v4 parameter1], &v14, &v13);
+  self->_lastTransactionID = transactionID;
+  v7 = -[PTPVirtualCamera dataSourceForObjectHandle:responseCode:size:](self->_virtualCamera, "dataSourceForObjectHandle:responseCode:size:", [objectCopy parameter1], &v14, &v13);
   v8 = v7;
   if (v14 != 8193 || !v7)
   {
@@ -885,11 +885,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andDataSource:{v6, v7}];
-  if ([v4 parameter3] == -1)
+  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(objectCopy transactionID:"operationCode") andDataSource:{v6, v7}];
+  if ([objectCopy parameter3] == -1)
   {
-    v11 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [v4 parameter1]);
-    v10 = [v9 setRange:{objc_msgSend(v4, "parameter2"), objc_msgSend(v11, "objectCompressedSize64") - objc_msgSend(v4, "parameter2")}];
+    v11 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [objectCopy parameter1]);
+    v10 = [v9 setRange:{objc_msgSend(objectCopy, "parameter2"), objc_msgSend(v11, "objectCompressedSize64") - objc_msgSend(objectCopy, "parameter2")}];
 
     if (!v9)
     {
@@ -902,7 +902,7 @@ LABEL_13:
 
   else
   {
-    v10 = [v9 setRange:{objc_msgSend(v4, "parameter2"), objc_msgSend(v4, "parameter3")}];
+    v10 = [v9 setRange:{objc_msgSend(objectCopy, "parameter2"), objc_msgSend(objectCopy, "parameter3")}];
     if (!v9)
     {
       goto LABEL_13;
@@ -919,16 +919,16 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)getObjectInfoForObjectsInStorage:(id)a3
+- (void)getObjectInfoForObjectsInStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   info = 0;
   mach_timebase_info(&info);
   _gPTPBenchmarkStartMachTime = 0;
   _gPTPBenchmarkStartMachTime = mach_absolute_time();
-  v5 = [v4 transactionID];
+  transactionID = [storageCopy transactionID];
   v22 = 8195;
-  v6 = [v4 parameter1];
+  parameter1 = [storageCopy parameter1];
   if (!self->_sessionID)
   {
     goto LABEL_6;
@@ -936,29 +936,29 @@ LABEL_16:
 
   v7 = dword_1000401D0;
   sub_1000041E8(1);
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v22 = 8196;
 LABEL_6:
     v11 = [PTPOperationResponsePacket alloc];
-    v12 = [v11 initWithResponseCode:v22 transactionID:v5];
+    v12 = [v11 initWithResponseCode:v22 transactionID:transactionID];
     [(PTPDeviceUSBTransport *)self->_transport sendResponse:v12];
     goto LABEL_22;
   }
 
-  v8 = [v4 parameter2];
-  v9 = [v4 parameter3];
-  if ([v4 operationCode] == 36866)
+  parameter2 = [storageCopy parameter2];
+  parameter3 = [storageCopy parameter3];
+  if ([storageCopy operationCode] == 36866)
   {
     v10 = 1;
   }
 
-  else if ([v4 operationCode] == 36869)
+  else if ([storageCopy operationCode] == 36869)
   {
     v10 = 2;
   }
 
-  else if ([v4 operationCode] == 4131)
+  else if ([storageCopy operationCode] == 4131)
   {
     v10 = 3;
   }
@@ -968,8 +968,8 @@ LABEL_6:
     v10 = 0xFFFFFFFFLL;
   }
 
-  self->_lastTransactionID = v5;
-  if (v6 == v7)
+  self->_lastTransactionID = transactionID;
+  if (parameter1 == v7)
   {
     v22 = 8193;
     *buf = 0;
@@ -977,13 +977,13 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v14 = [(PTPVirtualCamera *)self->_virtualCamera pathObjectInfoForObjectsInStorage:v6 forObjectFormatCode:v8 inAssociation:v9 withContentType:v10 responseCode:&v22];
+  v14 = [(PTPVirtualCamera *)self->_virtualCamera pathObjectInfoForObjectsInStorage:parameter1 forObjectFormatCode:parameter2 inAssociation:parameter3 withContentType:v10 responseCode:&v22];
   if (v14)
   {
     if (v22 == 8193)
     {
 LABEL_20:
-      v12 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andFilepath:{v5, v14}];
+      v12 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(storageCopy transactionID:"operationCode") andFilepath:{transactionID, v14}];
       [v12 setUnlinkWhenDone:1];
       v13 = v14;
       goto LABEL_21;
@@ -993,7 +993,7 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  v13 = [(PTPVirtualCamera *)self->_virtualCamera objectInfoForObjectsInStorage:v6 forObjectFormatCode:v8 inAssociation:v9 withContentType:v10 responseCode:&v22];
+  v13 = [(PTPVirtualCamera *)self->_virtualCamera objectInfoForObjectsInStorage:parameter1 forObjectFormatCode:parameter2 inAssociation:parameter3 withContentType:v10 responseCode:&v22];
   if (v22 != 8193)
   {
 LABEL_28:
@@ -1009,7 +1009,7 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  v12 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v13}];
+  v12 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(storageCopy transactionID:"operationCode") andData:{transactionID, v13}];
 LABEL_21:
 
   [(PTPDeviceUSBTransport *)self->_transport sendData:v12];
@@ -1024,68 +1024,68 @@ LABEL_22:
     v15 = [v16 stringByAppendingString:@".."];
   }
 
-  v17 = [NSString stringWithFormat:@"[PTPResponder getObjectInfoForObjectsInStorage] spent %5.2fms building assets for ptpd storageID: 0x%x", _gPTPLastBenchmarkElapsedMilliseconds, v6];
+  v17 = [NSString stringWithFormat:@"[PTPResponder getObjectInfoForObjectsInStorage] spent %5.2fms building assets for ptpd storageID: 0x%x", _gPTPLastBenchmarkElapsedMilliseconds, parameter1];
   v18 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v15;
     v20 = v18;
-    v21 = [(__CFString *)v15 UTF8String];
+    uTF8String = [(__CFString *)v15 UTF8String];
     *buf = 136446466;
-    v25 = v21;
+    v25 = uTF8String;
     v26 = 2114;
     v27 = v17;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 }
 
-- (void)getObjectCompressedSize64:(id)a3
+- (void)getObjectCompressedSize64:(id)size64
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  size64Copy = size64;
+  transactionID = [size64Copy transactionID];
   v6 = objc_alloc_init(NSMutableData);
   if (!self->_sessionID)
   {
     goto LABEL_5;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v10 = 8196;
     goto LABEL_7;
   }
 
-  self->_lastTransactionID = v5;
-  v7 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [v4 parameter1]);
+  self->_lastTransactionID = transactionID;
+  v7 = -[PTPVirtualCamera objectInfoDatasetForObjectHandle:](self->_virtualCamera, "objectInfoDatasetForObjectHandle:", [size64Copy parameter1]);
   if (!v7)
   {
 LABEL_5:
     v10 = 8195;
 LABEL_7:
-    v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v10 transactionID:v5];
+    v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v10 transactionID:transactionID];
     [(PTPDeviceUSBTransport *)self->_transport sendResponse:v11];
 
     goto LABEL_8;
   }
 
   v8 = v7;
-  v12 = [v7 objectCompressedSize64];
-  [v6 appendBytes:&v12 length:8];
-  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v6}];
+  objectCompressedSize64 = [v7 objectCompressedSize64];
+  [v6 appendBytes:&objectCompressedSize64 length:8];
+  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(size64Copy transactionID:"operationCode") andData:{transactionID, v6}];
   [(PTPDeviceUSBTransport *)self->_transport sendData:v9];
 
 LABEL_8:
 }
 
-- (void)getPartialObject64:(id)a3
+- (void)getPartialObject64:(id)object64
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  object64Copy = object64;
+  transactionID = [object64Copy transactionID];
+  v6 = transactionID;
   v22 = 8195;
   if (self->_sessionID)
   {
-    if (v5 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v22 = 8196;
     }
@@ -1093,10 +1093,10 @@ LABEL_8:
     else
     {
       v21 = 0;
-      v7 = [v4 parameter3];
-      v8 = [v4 parameter2] | (v7 << 32);
-      v9 = [v4 parameter5];
-      v10 = [v4 parameter4] | (v9 << 32);
+      parameter3 = [object64Copy parameter3];
+      v8 = [object64Copy parameter2] | (parameter3 << 32);
+      parameter5 = [object64Copy parameter5];
+      v10 = [object64Copy parameter4] | (parameter5 << 32);
       __ICOSLogCreate();
       v11 = &stru_100038B48;
       if ([&stru_100038B48 length] >= 0x15)
@@ -1112,18 +1112,18 @@ LABEL_8:
         v15 = v11;
         v16 = v14;
         *buf = 136446466;
-        v24 = [(__CFString *)v11 UTF8String];
+        uTF8String = [(__CFString *)v11 UTF8String];
         v25 = 2114;
         v26 = v13;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
 
       self->_lastTransactionID = v6;
-      v17 = -[PTPVirtualCamera dataSourceForObjectHandle:responseCode:size:](self->_virtualCamera, "dataSourceForObjectHandle:responseCode:size:", [v4 parameter1], &v22, &v21);
+      v17 = -[PTPVirtualCamera dataSourceForObjectHandle:responseCode:size:](self->_virtualCamera, "dataSourceForObjectHandle:responseCode:size:", [object64Copy parameter1], &v22, &v21);
       [v17 setToggleHeaderOffset:1];
       if (v22 == 8193 && v17)
       {
-        v18 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andDataSource:{v6, v17}];
+        v18 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(object64Copy transactionID:"operationCode") andDataSource:{v6, v17}];
         v19 = v18;
         if (v18 && ![v18 setRange:{v8, v10}])
         {
@@ -1148,36 +1148,36 @@ LABEL_8:
 LABEL_16:
 }
 
-- (void)getObjectInfoForNextObjectGroupInStorage:(id)a3
+- (void)getObjectInfoForNextObjectGroupInStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   info = 0;
   mach_timebase_info(&info);
   _gPTPBenchmarkStartMachTime = 0;
   _gPTPBenchmarkStartMachTime = mach_absolute_time();
-  v5 = [v4 transactionID];
+  transactionID = [storageCopy transactionID];
   v14 = 8195;
-  v6 = [v4 parameter1];
+  parameter1 = [storageCopy parameter1];
   if (self->_sessionID)
   {
-    v7 = v6;
+    v7 = parameter1;
     v8 = dword_1000401D0;
     sub_1000041E8(1);
-    if (v5 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v14 = 8196;
     }
 
     else
     {
-      self->_lastTransactionID = v5;
+      self->_lastTransactionID = transactionID;
       if (v7 == v8)
       {
         v14 = 8193;
         v13 = 0;
         v9 = [NSData dataWithBytes:&v13 length:8];
 LABEL_8:
-        v12 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v9}];
+        v12 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(storageCopy transactionID:"operationCode") andData:{transactionID, v9}];
         [(PTPDeviceUSBTransport *)self->_transport sendData:v12];
 
         goto LABEL_9;
@@ -1195,18 +1195,18 @@ LABEL_8:
   }
 
   v10 = [PTPOperationResponsePacket alloc];
-  v9 = [v10 initWithResponseCode:v14 transactionID:v5];
+  v9 = [v10 initWithResponseCode:v14 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v9];
 LABEL_9:
 
   _gPTPLastBenchmarkElapsedMilliseconds = (((mach_absolute_time() - _gPTPBenchmarkStartMachTime) * info.numer) / info.denom) / 1000000.0;
 }
 
-- (void)getUserAssignedDeviceName:(id)a3
+- (void)getUserAssignedDeviceName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  nameCopy = name;
+  transactionID = [nameCopy transactionID];
+  v6 = transactionID;
   if (!self->_sessionID)
   {
     v12 = 8195;
@@ -1217,15 +1217,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v12 = 8196;
     goto LABEL_9;
   }
 
-  self->_lastTransactionID = v5;
-  v7 = [(PTPVirtualCamera *)self->_virtualCamera userAssignedName];
-  v8 = [v7 length];
+  self->_lastTransactionID = transactionID;
+  userAssignedName = [(PTPVirtualCamera *)self->_virtualCamera userAssignedName];
+  v8 = [userAssignedName length];
   if (!v8 || (v9 = [[NSMutableData alloc] initWithLength:2 * v8 + 3]) == 0)
   {
 
@@ -1236,32 +1236,32 @@ LABEL_9:
   v10 = v9;
   [v9 mutableBytes];
   WriteUnicodeStringWithLengthByteToBuffer();
-  v11 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v6, v10}];
+  v11 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(nameCopy transactionID:"operationCode") andData:{v6, v10}];
   [(PTPDeviceUSBTransport *)self->_transport sendData:v11];
 
 LABEL_10:
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  objectCopy = object;
+  transactionID = [objectCopy transactionID];
+  v6 = transactionID;
   v11 = 8195;
   if (self->_sessionID)
   {
-    if (v5 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v8 = 8196;
     }
 
     else
     {
-      v7 = [v4 parameter1];
+      parameter1 = [objectCopy parameter1];
       self->_lastTransactionID = v6;
-      if (v7 != -1)
+      if (parameter1 != -1)
       {
-        [(PTPVirtualCamera *)self->_virtualCamera deleteObjectWithObjectHandle:v7 responseCode:&v11];
+        [(PTPVirtualCamera *)self->_virtualCamera deleteObjectWithObjectHandle:parameter1 responseCode:&v11];
         goto LABEL_8;
       }
 
@@ -1277,9 +1277,9 @@ LABEL_8:
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v10];
 }
 
-+ (void)catalogPath:(char *)a3 dirs:(int *)a4 media:(int *)a5 nonMedia:(int *)a6
++ (void)catalogPath:(char *)path dirs:(int *)dirs media:(int *)media nonMedia:(int *)nonMedia
 {
-  v11 = opendir(a3);
+  v11 = opendir(path);
   if (v11)
   {
     v12 = v11;
@@ -1289,9 +1289,9 @@ LABEL_8:
       {
         if (i->d_name[0] != 46 || i->d_name[1] && (i->d_name[1] != 46 || i->d_name[2]))
         {
-          ++*a4;
-          snprintf(__str, 0x400uLL, "%s/%s", a3, i->d_name);
-          [a1 catalogPath:__str dirs:a4 media:a5 nonMedia:a6];
+          ++*dirs;
+          snprintf(__str, 0x400uLL, "%s/%s", path, i->d_name);
+          [self catalogPath:__str dirs:dirs media:media nonMedia:nonMedia];
         }
       }
 
@@ -1300,12 +1300,12 @@ LABEL_8:
         v14 = strrchr(i->d_name, 46);
         if (v14 && ((v15 = v14, !strcmp(v14, ".AAE")) || !strcmp(v15, ".DBG")))
         {
-          ++*a6;
+          ++*nonMedia;
         }
 
         else
         {
-          ++*a5;
+          ++*media;
         }
       }
     }
@@ -1314,35 +1314,35 @@ LABEL_8:
   }
 }
 
-- (BOOL)handleSetHostMediaCapabilities:(id)a3
+- (BOOL)handleSetHostMediaCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   [(PTPResponder *)self setUsingMacOS:1];
-  v5 = [v4 transactionID];
+  transactionID = [capabilitiesCopy transactionID];
 
-  if (self->_sessionID && v5 <= self->_lastTransactionID)
+  if (self->_sessionID && transactionID <= self->_lastTransactionID)
   {
     v7 = 8196;
     goto LABEL_7;
   }
 
-  v6 = [(PTPDeviceUSBTransport *)self->_transport readBulkData];
+  readBulkData = [(PTPDeviceUSBTransport *)self->_transport readBulkData];
   if (self->_sessionID)
   {
-    self->_lastTransactionID = v5;
-    if (v6)
+    self->_lastTransactionID = transactionID;
+    if (readBulkData)
     {
 LABEL_5:
       v7 = 8194;
 LABEL_7:
-      v8 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v7 transactionID:v5];
+      v8 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v7 transactionID:transactionID];
       [(PTPDeviceUSBTransport *)self->_transport sendResponse:v8];
 
       return 0;
     }
   }
 
-  else if (v6)
+  else if (readBulkData)
   {
     goto LABEL_5;
   }
@@ -1350,9 +1350,9 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)handleSetHostSupportsGroups:(id)a3
+- (BOOL)handleSetHostSupportsGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   __ICOSLogCreate();
   v5 = @"Group";
   if ([@"Group" length] >= 0x15)
@@ -1368,14 +1368,14 @@ LABEL_7:
     v9 = v5;
     v10 = v8;
     v15 = 136446466;
-    v16 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v15, 0x16u);
   }
 
-  v11 = [v4 transactionID];
-  if (self->_sessionID && v11 <= self->_lastTransactionID)
+  transactionID = [groupsCopy transactionID];
+  if (self->_sessionID && transactionID <= self->_lastTransactionID)
   {
     v12 = 8196;
   }
@@ -1385,47 +1385,47 @@ LABEL_7:
     [(PTPVirtualCamera *)self->_virtualCamera setHostSupportsGroups:1];
     if (self->_sessionID)
     {
-      self->_lastTransactionID = v11;
+      self->_lastTransactionID = transactionID;
     }
 
     v12 = 8193;
   }
 
-  v13 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v12 transactionID:v11];
+  v13 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v12 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v13];
 
   return 0;
 }
 
-- (BOOL)handleSetHostSupportedFormats:(id)a3
+- (BOOL)handleSetHostSupportedFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   [(PTPResponder *)self setUsingWindows];
-  v5 = [v4 transactionID];
+  transactionID = [formatsCopy transactionID];
 
-  if (self->_sessionID && v5 <= self->_lastTransactionID)
+  if (self->_sessionID && transactionID <= self->_lastTransactionID)
   {
     v7 = 8196;
     goto LABEL_7;
   }
 
-  v6 = [(PTPDeviceUSBTransport *)self->_transport readBulkData];
+  readBulkData = [(PTPDeviceUSBTransport *)self->_transport readBulkData];
   if (self->_sessionID)
   {
-    self->_lastTransactionID = v5;
-    if (v6)
+    self->_lastTransactionID = transactionID;
+    if (readBulkData)
     {
 LABEL_5:
       v7 = 8194;
 LABEL_7:
-      v8 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v7 transactionID:v5];
+      v8 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v7 transactionID:transactionID];
       [(PTPDeviceUSBTransport *)self->_transport sendResponse:v8];
 
       return 0;
     }
   }
 
-  else if (v6)
+  else if (readBulkData)
   {
     goto LABEL_5;
   }
@@ -1433,9 +1433,9 @@ LABEL_7:
   return 1;
 }
 
-- (void)handleUnsupportedRequest:(id)a3
+- (void)handleUnsupportedRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   __ICOSLogCreate();
   v5 = &stru_100038B48;
   if ([&stru_100038B48 length] >= 0x15)
@@ -1444,27 +1444,27 @@ LABEL_7:
     v5 = [v6 stringByAppendingString:@".."];
   }
 
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[%x] -> Unsupported PTP Command Received", [v4 operationCode]);
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[%x] -> Unsupported PTP Command Received", [requestCopy operationCode]);
   v8 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v5;
     v10 = v8;
     *buf = 136446466;
-    v13 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8197 transactionID:{objc_msgSend(v4, "transactionID")}];
+  v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8197 transactionID:{objc_msgSend(requestCopy, "transactionID")}];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v11];
 }
 
-- (id)handleRequest:(id)a3
+- (id)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[0x%x]", [v4 operationCode]);
+  requestCopy = request;
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[0x%x]", [requestCopy operationCode]);
   __ICOSLogCreate();
   v6 = v5;
   v7 = v6;
@@ -1474,7 +1474,7 @@ LABEL_7:
     v7 = [v8 stringByAppendingString:@".."];
   }
 
-  [v4 operationCode];
+  [requestCopy operationCode];
   v9 = stringForOperationCode();
   v10 = [NSString stringWithFormat:@"<op> %@", v9];
 
@@ -1484,25 +1484,25 @@ LABEL_7:
     v12 = v7;
     v13 = v11;
     *buf = 136446466;
-    v28 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v29 = 2114;
     v30 = v10;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v14 = [v4 operationCode];
-  if (v14 <= 36864)
+  operationCode = [requestCopy operationCode];
+  if (operationCode <= 36864)
   {
-    switch(v14)
+    switch(operationCode)
     {
       case 4097:
-        [(PTPResponder *)self getDeviceInfo:v4];
+        [(PTPResponder *)self getDeviceInfo:requestCopy];
         break;
       case 4098:
-        [(PTPResponder *)self openSession:v4];
+        [(PTPResponder *)self openSession:requestCopy];
         break;
       case 4099:
-        [(PTPResponder *)self closeSession:v4];
+        [(PTPResponder *)self closeSession:requestCopy];
         if ([(PTPDeviceUSBTransport *)self->_transport type]== 3)
         {
           [(PTPResponder *)self performSelectorOnMainThread:"stop" withObject:0 waitUntilDone:0];
@@ -1511,22 +1511,22 @@ LABEL_7:
 
         break;
       case 4100:
-        [(PTPResponder *)self getStorageIDs:v4];
+        [(PTPResponder *)self getStorageIDs:requestCopy];
         break;
       case 4101:
-        [(PTPResponder *)self getStorageInfo:v4];
+        [(PTPResponder *)self getStorageInfo:requestCopy];
         break;
       case 4102:
-        [(PTPResponder *)self getNumObjects:v4];
+        [(PTPResponder *)self getNumObjects:requestCopy];
         break;
       case 4103:
-        [(PTPResponder *)self getObjectHandles:v4];
+        [(PTPResponder *)self getObjectHandles:requestCopy];
         break;
       case 4104:
-        [(PTPResponder *)self getObjectInfo:v4];
+        [(PTPResponder *)self getObjectInfo:requestCopy];
         break;
       case 4105:
-        [(PTPResponder *)self getObject:v4];
+        [(PTPResponder *)self getObject:requestCopy];
         break;
       case 4106:
 LABEL_18:
@@ -1536,35 +1536,35 @@ LABEL_18:
         block[2] = sub_10001CA90;
         block[3] = &unk_100038830;
         block[4] = self;
-        v26 = v4;
+        v26 = requestCopy;
         dispatch_async(photoLibraryMediaQueryQueue, block);
         v16 = v26;
 LABEL_44:
 
         break;
       case 4107:
-        [(PTPResponder *)self deleteObject:v4];
+        [(PTPResponder *)self deleteObject:requestCopy];
         break;
       case 4112:
-        [(PTPResponder *)self handleResetDevice:v4];
+        [(PTPResponder *)self handleResetDevice:requestCopy];
         break;
       case 4116:
-        [(PTPResponder *)self getDevicePropDesc:v4];
+        [(PTPResponder *)self getDevicePropDesc:requestCopy];
         break;
       case 4117:
-        [(PTPResponder *)self getDevicePropValue:v4];
+        [(PTPResponder *)self getDevicePropValue:requestCopy];
         break;
       case 4118:
-        v17 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8193 transactionID:{objc_msgSend(v4, "transactionID")}];
+        v17 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8193 transactionID:{objc_msgSend(requestCopy, "transactionID")}];
         [(PTPDeviceUSBTransport *)self->_transport sendResponse:v17];
 
         break;
       case 4123:
-        [(PTPResponder *)self getPartialObject:v4];
+        [(PTPResponder *)self getPartialObject:requestCopy];
         break;
       case 4131:
 LABEL_14:
-        [(PTPResponder *)self getObjectInfoForObjectsInStorage:v4];
+        [(PTPResponder *)self getObjectInfoForObjectsInStorage:requestCopy];
         break;
       default:
         goto LABEL_48;
@@ -1573,35 +1573,35 @@ LABEL_14:
     goto LABEL_49;
   }
 
-  if (v14 > 38912)
+  if (operationCode > 38912)
   {
-    if (v14 > 38914)
+    if (operationCode > 38914)
     {
-      if (v14 == 38915)
+      if (operationCode == 38915)
       {
-        [(PTPResponder *)self getObjectPropValue:v4];
+        [(PTPResponder *)self getObjectPropValue:requestCopy];
       }
 
-      else if (v14 == 38917)
+      else if (operationCode == 38917)
       {
-        [(PTPResponder *)self getObjectPropList:v4];
+        [(PTPResponder *)self getObjectPropList:requestCopy];
       }
 
       else
       {
 LABEL_48:
-        [(PTPResponder *)self handleUnsupportedRequest:v4];
+        [(PTPResponder *)self handleUnsupportedRequest:requestCopy];
       }
     }
 
-    else if (v14 == 38913)
+    else if (operationCode == 38913)
     {
-      [(PTPResponder *)self getObjectPropsSupported:v4];
+      [(PTPResponder *)self getObjectPropsSupported:requestCopy];
     }
 
     else
     {
-      [(PTPResponder *)self getObjectPropDesc:v4];
+      [(PTPResponder *)self getObjectPropDesc:requestCopy];
     }
 
 LABEL_49:
@@ -1609,28 +1609,28 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v14)
+  switch(operationCode)
   {
     case 36865:
-      [(PTPResponder *)self getNumDownloadableObjects:v4];
+      [(PTPResponder *)self getNumDownloadableObjects:requestCopy];
       goto LABEL_49;
     case 36866:
     case 36869:
       goto LABEL_14;
     case 36867:
-      [(PTPResponder *)self getUserAssignedDeviceName:v4];
+      [(PTPResponder *)self getUserAssignedDeviceName:requestCopy];
       goto LABEL_49;
     case 36868:
-      [(PTPResponder *)self allowKeepAwake:v4];
+      [(PTPResponder *)self allowKeepAwake:requestCopy];
       goto LABEL_49;
     case 36870:
-      [(PTPResponder *)self getObjectCompressedSize64:v4];
+      [(PTPResponder *)self getObjectCompressedSize64:requestCopy];
       goto LABEL_49;
     case 36871:
-      [(PTPResponder *)self getPartialObject64:v4];
+      [(PTPResponder *)self getPartialObject64:requestCopy];
       goto LABEL_49;
     case 36872:
-      [(PTPResponder *)self setUsingMTP:v4];
+      [(PTPResponder *)self setUsingMTP:requestCopy];
       goto LABEL_49;
     case 36873:
       v20 = self->_photoLibraryMediaQueryQueue;
@@ -1639,23 +1639,23 @@ LABEL_49:
       v23[2] = sub_10001CA9C;
       v23[3] = &unk_100038830;
       v23[4] = self;
-      v24 = v4;
+      v24 = requestCopy;
       dispatch_async(v20, v23);
       v16 = v24;
       goto LABEL_44;
     case 36875:
-      v18 = [(PTPResponder *)self handleSetHostMediaCapabilities:v4];
+      v18 = [(PTPResponder *)self handleSetHostMediaCapabilities:requestCopy];
       break;
     case 36876:
       goto LABEL_18;
     case 36878:
-      v18 = [(PTPResponder *)self handleSetHostSupportedFormats:v4];
+      v18 = [(PTPResponder *)self handleSetHostSupportedFormats:requestCopy];
       break;
     case 36879:
-      [(PTPResponder *)self getObjectInfoForNextObjectGroupInStorage:v4];
+      [(PTPResponder *)self getObjectInfoForNextObjectGroupInStorage:requestCopy];
       goto LABEL_49;
     case 36880:
-      [(PTPResponder *)self handleSetHostSupportsGroups:v4];
+      [(PTPResponder *)self handleSetHostSupportsGroups:requestCopy];
       goto LABEL_49;
     default:
       goto LABEL_48;
@@ -1668,15 +1668,15 @@ LABEL_50:
   return v21;
 }
 
-- (void)handleData:(id)a3
+- (void)handleData:(id)data
 {
-  v14 = a3;
-  v4 = [v14 operationCode];
-  if (v4 == 36878)
+  dataCopy = data;
+  operationCode = [dataCopy operationCode];
+  if (operationCode == 36878)
   {
     virtualCamera = self->_virtualCamera;
-    v9 = [v14 data];
-    [(PTPVirtualCamera *)virtualCamera assignHostSupportedFormats:v9];
+    data = [dataCopy data];
+    [(PTPVirtualCamera *)virtualCamera assignHostSupportedFormats:data];
 
     v10 = [PTPOperationResponsePacket alloc];
     lastTransactionID = self->_lastTransactionID;
@@ -1685,12 +1685,12 @@ LABEL_50:
 
   else
   {
-    if (v4 == 36875)
+    if (operationCode == 36875)
     {
       [(PTPResponder *)self setUsingPeerMediaCapabilities:1];
       v5 = self->_virtualCamera;
-      v6 = [v14 data];
-      [(PTPVirtualCamera *)v5 assignHostMediaCapabilities:v6];
+      data2 = [dataCopy data];
+      [(PTPVirtualCamera *)v5 assignHostMediaCapabilities:data2];
 
       v7 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8193 transactionID:self->_lastTransactionID parameter1:MGGetBoolAnswer()];
       goto LABEL_7;
@@ -1707,9 +1707,9 @@ LABEL_7:
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v7];
 }
 
-- (void)handleResetDevice:(id)a3
+- (void)handleResetDevice:(id)device
 {
-  v4 = [a3 transactionID];
+  transactionID = [device transactionID];
   __ICOSLogCreate();
   v5 = @"Device Reset";
   if ([@"Device Reset" length] >= 0x15)
@@ -1718,21 +1718,21 @@ LABEL_7:
     v5 = [v6 stringByAppendingString:@".."];
   }
 
-  v7 = [NSString stringWithFormat:@"responder[session: %d, : transaction: %d], request[transaction: %d]", self->_sessionID, self->_lastTransactionID, v4];
+  v7 = [NSString stringWithFormat:@"responder[session: %d, : transaction: %d], request[transaction: %d]", self->_sessionID, self->_lastTransactionID, transactionID];
   v8 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v5;
     v10 = v8;
     *buf = 136446466;
-    v13 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
   [(PTPResponder *)self resetResponderSession];
-  v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8193 transactionID:v4];
+  v11 = [[PTPOperationResponsePacket alloc] initWithResponseCode:8193 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v11];
 }
 
@@ -1753,7 +1753,7 @@ LABEL_7:
     v7 = v3;
     v8 = v6;
     v9 = 136446466;
-    v10 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v11 = 2114;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v9, 0x16u);
@@ -1763,76 +1763,76 @@ LABEL_7:
   [(PTPResponder *)self performSelectorOnMainThread:"stopRunLoop" withObject:0 waitUntilDone:0];
 }
 
-- (void)sentData:(id)a3 responseCode:(id)a4
+- (void)sentData:(id)data responseCode:(id)code
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 operationCode];
-  v8 = [v13 transactionID];
+  dataCopy = data;
+  codeCopy = code;
+  operationCode = [dataCopy operationCode];
+  transactionID = [dataCopy transactionID];
   v9 = [PTPOperationResponsePacket alloc];
-  v10 = [v6 unsignedShortValue];
+  unsignedShortValue = [codeCopy unsignedShortValue];
 
-  if (v7 == 4123)
+  if (operationCode == 4123)
   {
-    v11 = [v9 initWithResponseCode:v10 transactionID:v8 parameter1:{objc_msgSend(v13, "bytesTransferred")}];
+    v11 = [v9 initWithResponseCode:unsignedShortValue transactionID:transactionID parameter1:{objc_msgSend(dataCopy, "bytesTransferred")}];
   }
 
   else
   {
-    v11 = [v9 initWithResponseCode:v10 transactionID:v8];
+    v11 = [v9 initWithResponseCode:unsignedShortValue transactionID:transactionID];
   }
 
   v12 = v11;
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v11];
 }
 
-- (void)reportObjectAdded:(id)a3
+- (void)reportObjectAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = [PTPEventPacket alloc];
-  v6 = [v4 unsignedIntValue];
+  unsignedIntValue = [addedCopy unsignedIntValue];
 
-  v7 = [v5 initWithEventCode:16386 transactionID:0xFFFFFFFFLL parameter1:v6];
+  v7 = [v5 initWithEventCode:16386 transactionID:0xFFFFFFFFLL parameter1:unsignedIntValue];
   [(PTPResponder *)self sendEvent:v7];
 }
 
-- (void)reportObjectDeleted:(id)a3
+- (void)reportObjectDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = [PTPEventPacket alloc];
-  v6 = [v4 unsignedIntValue];
+  unsignedIntValue = [deletedCopy unsignedIntValue];
 
-  v7 = [v5 initWithEventCode:16387 transactionID:0xFFFFFFFFLL parameter1:v6];
+  v7 = [v5 initWithEventCode:16387 transactionID:0xFFFFFFFFLL parameter1:unsignedIntValue];
   [(PTPResponder *)self sendEvent:v7];
 }
 
-- (void)reportStorageAdded:(id)a3
+- (void)reportStorageAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = [PTPEventPacket alloc];
-  v6 = [v4 unsignedIntValue];
+  unsignedIntValue = [addedCopy unsignedIntValue];
 
-  v7 = [v5 initWithEventCode:16388 transactionID:0xFFFFFFFFLL parameter1:v6];
+  v7 = [v5 initWithEventCode:16388 transactionID:0xFFFFFFFFLL parameter1:unsignedIntValue];
   [(PTPResponder *)self sendEvent:v7];
 }
 
-- (void)reportStorageDeleted:(id)a3
+- (void)reportStorageDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = [PTPEventPacket alloc];
-  v6 = [v4 unsignedIntValue];
+  unsignedIntValue = [deletedCopy unsignedIntValue];
 
-  v7 = [v5 initWithEventCode:16389 transactionID:0xFFFFFFFFLL parameter1:v6];
+  v7 = [v5 initWithEventCode:16389 transactionID:0xFFFFFFFFLL parameter1:unsignedIntValue];
   [(PTPResponder *)self sendEvent:v7];
 }
 
-- (void)reportGroupAddedInStorage:(id)a3
+- (void)reportGroupAddedInStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = [PTPEventPacket alloc];
-  v6 = [v4 unsignedIntValue];
+  unsignedIntValue = [storageCopy unsignedIntValue];
 
-  v7 = [v5 initWithEventCode:49156 transactionID:0xFFFFFFFFLL parameter1:v6];
+  v7 = [v5 initWithEventCode:49156 transactionID:0xFFFFFFFFLL parameter1:unsignedIntValue];
   [(PTPResponder *)self sendEvent:v7];
 }
 
@@ -1859,7 +1859,7 @@ LABEL_7:
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v18 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v19 = 2114;
     v20 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1873,17 +1873,17 @@ LABEL_7:
     v9 = [v10 stringByAppendingString:@".."];
   }
 
-  v11 = [NSString stringWithFormat:@"Built: %s %s\n", aOct222025, a221245];
+  a221245 = [NSString stringWithFormat:@"Built: %s %s\n", aOct222025, a221245];
   v12 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v9;
     v14 = v12;
-    v15 = [(__CFString *)v9 UTF8String];
+    uTF8String2 = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    v18 = v15;
+    uTF8String = uTF8String2;
     v19 = 2114;
-    v20 = v11;
+    v20 = a221245;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
@@ -1922,29 +1922,29 @@ LABEL_7:
   [(PTPResponder *)self sendEvent:v3];
 }
 
-- (void)getDevicePropDesc:(id)a3
+- (void)getDevicePropDesc:(id)desc
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v6 = v5;
+  descCopy = desc;
+  transactionID = [descCopy transactionID];
+  v6 = transactionID;
   if (self->_sessionID)
   {
-    if (v5 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v13 = 8196;
     }
 
     else
     {
-      self->_lastTransactionID = v5;
-      v7 = -[PTPVirtualCamera devicePropDescDatasetForProperty:](self->_virtualCamera, "devicePropDescDatasetForProperty:", [v4 parameter1]);
+      self->_lastTransactionID = transactionID;
+      v7 = -[PTPVirtualCamera devicePropDescDatasetForProperty:](self->_virtualCamera, "devicePropDescDatasetForProperty:", [descCopy parameter1]);
       if (v7)
       {
         v8 = v7;
         v9 = [PTPDataPacket alloc];
-        v10 = [v4 operationCode];
-        v11 = [v8 content];
-        v12 = [v9 initWithOperationCode:v10 transactionID:v6 andData:v11];
+        operationCode = [descCopy operationCode];
+        content = [v8 content];
+        v12 = [v9 initWithOperationCode:operationCode transactionID:v6 andData:content];
 
         [(PTPDeviceUSBTransport *)self->_transport sendData:v12];
         goto LABEL_13;
@@ -1976,7 +1976,7 @@ LABEL_7:
     v19 = v15;
     v20 = v18;
     *buf = 136446466;
-    v22 = [(__CFString *)v15 UTF8String];
+    uTF8String = [(__CFString *)v15 UTF8String];
     v23 = 2114;
     v24 = v17;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1985,26 +1985,26 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)getDevicePropValue:(id)a3
+- (void)getDevicePropValue:(id)value
 {
-  v10 = a3;
-  v4 = [v10 transactionID];
-  v5 = v4;
+  valueCopy = value;
+  transactionID = [valueCopy transactionID];
+  v5 = transactionID;
   if (self->_sessionID)
   {
-    if (v4 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v9 = 8196;
     }
 
     else
     {
-      self->_lastTransactionID = v4;
-      v6 = -[PTPVirtualCamera devicePropValueForProperty:](self->_virtualCamera, "devicePropValueForProperty:", [v10 parameter1]);
+      self->_lastTransactionID = transactionID;
+      v6 = -[PTPVirtualCamera devicePropValueForProperty:](self->_virtualCamera, "devicePropValueForProperty:", [valueCopy parameter1]);
       if (v6)
       {
         v7 = v6;
-        v8 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v10 transactionID:"operationCode") andData:{v5, v6}];
+        v8 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(valueCopy transactionID:"operationCode") andData:{v5, v6}];
         [(PTPDeviceUSBTransport *)self->_transport sendData:v8];
 
         goto LABEL_9;
@@ -2024,28 +2024,28 @@ LABEL_13:
 LABEL_9:
 }
 
-- (void)getObjectPropsSupported:(id)a3
+- (void)getObjectPropsSupported:(id)supported
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  supportedCopy = supported;
+  transactionID = [supportedCopy transactionID];
   v18 = 8193;
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v18 = 8196;
   }
 
   else
   {
-    v6 = [v4 parameter1];
-    self->_lastTransactionID = v5;
-    v7 = [(PTPVirtualCamera *)self->_virtualCamera objectPropertiesSupportedForObjectFormatCode:v6 responseCode:&v18];
+    parameter1 = [supportedCopy parameter1];
+    self->_lastTransactionID = transactionID;
+    v7 = [(PTPVirtualCamera *)self->_virtualCamera objectPropertiesSupportedForObjectFormatCode:parameter1 responseCode:&v18];
     v8 = v7;
     if (v18 == 8193)
     {
       v9 = [[NSMutableData alloc] initWithLength:{2 * objc_msgSend(v7, "count") + 4}];
       *buf = [(__CFString *)v9 mutableBytes];
       WriteArrayOfUnsignedShortsToBuffer();
-      v10 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v9}];
+      v10 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(supportedCopy transactionID:"operationCode") andData:{transactionID, v9}];
       [(PTPDeviceUSBTransport *)self->_transport sendData:v10];
 
       goto LABEL_11;
@@ -2053,7 +2053,7 @@ LABEL_9:
   }
 
   v11 = [PTPOperationResponsePacket alloc];
-  v8 = [v11 initWithResponseCode:v18 transactionID:v5];
+  v8 = [v11 initWithResponseCode:v18 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v8];
   __ICOSLogCreate();
   v9 = &stru_100038B48;
@@ -2069,9 +2069,9 @@ LABEL_9:
   {
     v15 = v9;
     v16 = v14;
-    v17 = [(__CFString *)v9 UTF8String];
+    uTF8String = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    *&buf[4] = v17;
+    *&buf[4] = uTF8String;
     v20 = 2114;
     v21 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2080,33 +2080,33 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)getObjectPropValue:(id)a3
+- (void)getObjectPropValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  valueCopy = value;
+  transactionID = [valueCopy transactionID];
   v18 = 8193;
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v18 = 8196;
   }
 
   else
   {
-    v6 = [v4 parameter1];
-    v7 = [v4 parameter2];
-    self->_lastTransactionID = v5;
-    v8 = [(PTPVirtualCamera *)self->_virtualCamera objectPropValueForHandle:v6 withObjectPropertyCode:v7 responseCode:&v18];
+    parameter1 = [valueCopy parameter1];
+    parameter2 = [valueCopy parameter2];
+    self->_lastTransactionID = transactionID;
+    v8 = [(PTPVirtualCamera *)self->_virtualCamera objectPropValueForHandle:parameter1 withObjectPropertyCode:parameter2 responseCode:&v18];
     v9 = v8;
     if (v18 == 8193)
     {
-      v10 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v8}];
+      v10 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(valueCopy transactionID:"operationCode") andData:{transactionID, v8}];
       [(PTPDeviceUSBTransport *)self->_transport sendData:v10];
       goto LABEL_11;
     }
   }
 
   v11 = [PTPOperationResponsePacket alloc];
-  v9 = [v11 initWithResponseCode:v18 transactionID:v5];
+  v9 = [v11 initWithResponseCode:v18 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v9];
   __ICOSLogCreate();
   v10 = &stru_100038B48;
@@ -2122,9 +2122,9 @@ LABEL_11:
   {
     v15 = v10;
     v16 = v14;
-    v17 = [(__CFString *)v10 UTF8String];
+    uTF8String = [(__CFString *)v10 UTF8String];
     *buf = 136446466;
-    v20 = v17;
+    v20 = uTF8String;
     v21 = 2114;
     v22 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2133,36 +2133,36 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)getObjectPropList:(id)a3
+- (void)getObjectPropList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  listCopy = list;
+  transactionID = [listCopy transactionID];
   v21 = 8193;
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v21 = 8196;
   }
 
   else
   {
-    v6 = [v4 parameter1];
-    v7 = [v4 parameter2];
-    v8 = [v4 parameter3];
-    v9 = [v4 parameter4];
-    v10 = [v4 parameter5];
-    self->_lastTransactionID = v5;
-    v11 = [(PTPVirtualCamera *)self->_virtualCamera objectPropListForHandle:v6 withObjectFormatCode:v7 andPropertyCode:v8 andPropertyGroup:v9 andDepth:v10 responseCode:&v21];
+    parameter1 = [listCopy parameter1];
+    parameter2 = [listCopy parameter2];
+    parameter3 = [listCopy parameter3];
+    parameter4 = [listCopy parameter4];
+    parameter5 = [listCopy parameter5];
+    self->_lastTransactionID = transactionID;
+    v11 = [(PTPVirtualCamera *)self->_virtualCamera objectPropListForHandle:parameter1 withObjectFormatCode:parameter2 andPropertyCode:parameter3 andPropertyGroup:parameter4 andDepth:parameter5 responseCode:&v21];
     v12 = v11;
     if (v21 == 8193)
     {
-      v13 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v11}];
+      v13 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(listCopy transactionID:"operationCode") andData:{transactionID, v11}];
       [(PTPDeviceUSBTransport *)self->_transport sendData:v13];
       goto LABEL_11;
     }
   }
 
   v14 = [PTPOperationResponsePacket alloc];
-  v12 = [v14 initWithResponseCode:v21 transactionID:v5];
+  v12 = [v14 initWithResponseCode:v21 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v12];
   __ICOSLogCreate();
   v13 = &stru_100038B48;
@@ -2178,9 +2178,9 @@ LABEL_11:
   {
     v18 = v13;
     v19 = v17;
-    v20 = [(__CFString *)v13 UTF8String];
+    uTF8String = [(__CFString *)v13 UTF8String];
     *buf = 136446466;
-    v23 = v20;
+    v23 = uTF8String;
     v24 = 2114;
     v25 = v16;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2189,24 +2189,24 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)getObjectPropDesc:(id)a3
+- (void)getObjectPropDesc:(id)desc
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  descCopy = desc;
+  transactionID = [descCopy transactionID];
   v11 = 8193;
-  if (v5 <= self->_lastTransactionID)
+  if (transactionID <= self->_lastTransactionID)
   {
     v11 = 8196;
 LABEL_6:
     v10 = [PTPOperationResponsePacket alloc];
-    v8 = [v10 initWithResponseCode:v11 transactionID:v5];
+    v8 = [v10 initWithResponseCode:v11 transactionID:transactionID];
     [(PTPDeviceUSBTransport *)self->_transport sendResponse:v8];
     goto LABEL_7;
   }
 
-  v6 = [v4 parameter1];
-  self->_lastTransactionID = v5;
-  v7 = [(PTPVirtualCamera *)self->_virtualCamera objectPropDescForObjectPropertyCode:v6 responseCode:&v11];
+  parameter1 = [descCopy parameter1];
+  self->_lastTransactionID = transactionID;
+  v7 = [(PTPVirtualCamera *)self->_virtualCamera objectPropDescForObjectPropertyCode:parameter1 responseCode:&v11];
   v8 = v7;
   if (v11 != 8193)
   {
@@ -2214,15 +2214,15 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v4 transactionID:"operationCode") andData:{v5, v7}];
+  v9 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(descCopy transactionID:"operationCode") andData:{transactionID, v7}];
   [(PTPDeviceUSBTransport *)self->_transport sendData:v9];
 
 LABEL_7:
 }
 
-- (void)setUsingMacOS:(BOOL)a3
+- (void)setUsingMacOS:(BOOL)s
 {
-  self->_usingMacOS = a3;
+  self->_usingMacOS = s;
   v3 = sub_10000C470();
   v5[0] = PLPTPHostCharacteristicsKeyMake;
   v5[1] = PLPTPHostCharacteristicsKeyOS;
@@ -2234,17 +2234,17 @@ LABEL_7:
   [v3 setHostCharacteristics:v4];
 }
 
-- (void)setUsingLegacyOS:(BOOL)a3
+- (void)setUsingLegacyOS:(BOOL)s
 {
   if (!self->_usingMacOS)
   {
-    self->_usingLegacyOS = a3;
+    self->_usingLegacyOS = s;
   }
 }
 
-- (void)setUsingMTP:(id)a3
+- (void)setUsingMTP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   sub_1000041E8(1);
   __ICOSLogCreate();
   v5 = &stru_100038B48;
@@ -2261,17 +2261,17 @@ LABEL_7:
     v9 = v5;
     v10 = v8;
     *buf = 136446466;
-    v19 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v20 = 2114;
     v21 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  self->_usingMTP = [v4 parameter1] != 0;
+  self->_usingMTP = [pCopy parameter1] != 0;
   v11 = [PTPOperationResponsePacket alloc];
-  v12 = [v4 transactionID];
+  transactionID = [pCopy transactionID];
 
-  v13 = [v11 initWithResponseCode:8193 transactionID:v12];
+  v13 = [v11 initWithResponseCode:8193 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v13];
   v14 = sub_10000C470();
   v16[0] = PLPTPHostCharacteristicsKeyMake;
@@ -2299,12 +2299,12 @@ LABEL_7:
   [v3 setHostCharacteristics:v4];
 }
 
-- (void)allowKeepAwake:(id)a3
+- (void)allowKeepAwake:(id)awake
 {
-  v4 = [a3 transactionID];
+  transactionID = [awake transactionID];
   if (self->_sessionID)
   {
-    if (v4 <= self->_lastTransactionID)
+    if (transactionID <= self->_lastTransactionID)
     {
       v5 = 8196;
     }
@@ -2321,7 +2321,7 @@ LABEL_7:
     v5 = 8195;
   }
 
-  v6 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v5 transactionID:v4];
+  v6 = [[PTPOperationResponsePacket alloc] initWithResponseCode:v5 transactionID:transactionID];
   [(PTPDeviceUSBTransport *)self->_transport sendResponse:v6];
   __ICOSLogCreate();
   v7 = &stru_100038B48;
@@ -2338,7 +2338,7 @@ LABEL_7:
     v11 = v7;
     v12 = v10;
     *buf = 136446466;
-    v14 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     v15 = 2114;
     v16 = v9;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);

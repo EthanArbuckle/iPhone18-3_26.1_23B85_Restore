@@ -1,29 +1,29 @@
 @interface MCStateOperationExpression
-+ (id)stateOperationForTargetPlugObjectID:(id)a3 withStateKey:(id)a4 andExpression:(id)a5;
-- (MCStateOperationExpression)initWithImprint:(id)a3;
++ (id)stateOperationForTargetPlugObjectID:(id)d withStateKey:(id)key andExpression:(id)expression;
+- (MCStateOperationExpression)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCStateOperationExpression
 
-+ (id)stateOperationForTargetPlugObjectID:(id)a3 withStateKey:(id)a4 andExpression:(id)a5
++ (id)stateOperationForTargetPlugObjectID:(id)d withStateKey:(id)key andExpression:(id)expression
 {
-  v6 = [MCStateOperationExpression stateOperationForTargetPlugObjectID:a3 withStateKey:a4];
-  v6[4] = [a5 copy];
+  v6 = [MCStateOperationExpression stateOperationForTargetPlugObjectID:d withStateKey:key];
+  v6[4] = [expression copy];
   return v6;
 }
 
-- (MCStateOperationExpression)initWithImprint:(id)a3
+- (MCStateOperationExpression)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCStateOperationExpression;
   v4 = [(MCStateOperation *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_expression = [a3 objectForKey:@"expression"];
+    v4->_expression = [imprint objectForKey:@"expression"];
   }
 
   return v4;
@@ -41,18 +41,18 @@
 {
   v7.receiver = self;
   v7.super_class = MCStateOperationExpression;
-  v3 = [(MCStateOperation *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCStateOperation *)&v7 imprint];
+  v4 = imprint;
   expression = self->_expression;
   if (expression)
   {
-    [v3 setObject:expression forKey:@"expression"];
+    [imprint setObject:expression forKey:@"expression"];
   }
 
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCStateOperationExpression;
@@ -60,7 +60,7 @@
   expression = self->_expression;
   if (expression)
   {
-    *(a3 + 4) = [(NSString *)expression copy];
+    *(snapshot + 4) = [(NSString *)expression copy];
   }
 }
 

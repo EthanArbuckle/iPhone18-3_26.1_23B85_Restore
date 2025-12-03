@@ -1,18 +1,18 @@
 @interface INQueryHealthSampleIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INQueryHealthSampleIntentResponse)initWithBackingStore:(id)a3;
-- (INQueryHealthSampleIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (INQueryHealthSampleIntentResponse)initWithCoder:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INQueryHealthSampleIntentResponse)initWithBackingStore:(id)store;
+- (INQueryHealthSampleIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (INQueryHealthSampleIntentResponse)initWithCoder:(id)coder;
 - (NSArray)resultValues;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)code;
-- (void)encodeWithCoder:(id)a3;
-- (void)setResultValues:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setResultValues:(id)values;
 @end
 
 @implementation INQueryHealthSampleIntentResponse
@@ -21,32 +21,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INQueryHealthSampleIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < 7)
+  code = [(INQueryHealthSampleIntentResponse *)self code];
+  v4 = code;
+  if (code < 7)
   {
-    v5 = off_1E7280460[v3];
-    v6 = v5;
+    null = off_1E7280460[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"resultValues";
-  v13[0] = v5;
-  v7 = [(INQueryHealthSampleIntentResponse *)self resultValues];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  resultValues = [(INQueryHealthSampleIntentResponse *)self resultValues];
+  null2 = resultValues;
+  if (!resultValues)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!resultValues)
   {
   }
 
@@ -59,48 +59,48 @@
   return v9;
 }
 
-- (void)setResultValues:(id)a3
+- (void)setResultValues:(id)values
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToWellnessObjectResultValues(v4);
+  valuesCopy = values;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToWellnessObjectResultValues(valuesCopy);
 
-  [v5 setResultValues:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setResultValues:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSArray)resultValues
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 resultValues];
-  v4 = INIntentSlotValueTransformFromWellnessObjectResultValues(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  resultValues = [_responseMessagePBRepresentation resultValues];
+  v4 = INIntentSlotValueTransformFromWellnessObjectResultValues(resultValues);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 5;
   }
@@ -110,7 +110,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INQueryHealthSampleIntentResponseCodeFailureUnsupportedObjectType"];
+  v6 = [nameCopy isEqualToString:@"INQueryHealthSampleIntentResponseCodeFailureUnsupportedObjectType"];
 
   if (v6)
   {
@@ -125,30 +125,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INQueryHealthSampleIntentResponse *)self code];
-  if ((v2 - 1) > 5)
+  code = [(INQueryHealthSampleIntentResponse *)self code];
+  if ((code - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F580[v2 - 1];
+    return qword_18EE5F580[code - 1];
   }
 }
 
-- (INQueryHealthSampleIntentResponse)initWithCoder:(id)a3
+- (INQueryHealthSampleIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INQueryHealthSampleIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INQueryHealthSampleIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (int64_t)code
@@ -158,61 +158,61 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INQueryHealthSampleIntentResponse)initWithBackingStore:(id)a3
+- (INQueryHealthSampleIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INQueryHealthSampleIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INQueryHealthSampleIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
-- (INQueryHealthSampleIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (INQueryHealthSampleIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  activityCopy = activity;
   v7 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 6)
+    if (code > 6)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_1E7280460[a3];
+      v9 = off_1E7280460[code];
     }
 
     v10 = v9;
     *buf = 136315906;
     v16 = "[INQueryHealthSampleIntentResponse initWithCode:userActivity:]";
     v17 = 2048;
-    v18 = a3;
+    codeCopy = code;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v6;
+    v22 = activityCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s code = %zd (%@), userActivity = %@", buf, 0x2Au);
   }
 
   v14.receiver = self;
   v14.super_class = INQueryHealthSampleIntentResponse;
-  v11 = [(INIntentResponse *)&v14 _initWithCode:a3 userActivity:v6];
+  v11 = [(INIntentResponse *)&v14 _initWithCode:code userActivity:activityCopy];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 6)
+  if (code == 6)
   {
     return 1;
   }
@@ -223,50 +223,50 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 5)
+  if ((code - 1) > 5)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F568[a3 - 1];
+    return dword_18EE5F568[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v7 = 6;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

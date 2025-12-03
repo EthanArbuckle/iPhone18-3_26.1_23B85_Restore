@@ -9,11 +9,11 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(SSSDismissalContext *)self dismissalString];
-  [v3 appendFormat:@"\n\tdismissalType: %@", v4];
+  dismissalString = [(SSSDismissalContext *)self dismissalString];
+  [v3 appendFormat:@"\n\tdismissalType: %@", dismissalString];
 
-  v5 = [(SSSDismissalContext *)self animationStyleString];
-  [v3 appendFormat:@"\n\tanimationStyle: %@", v5];
+  animationStyleString = [(SSSDismissalContext *)self animationStyleString];
+  [v3 appendFormat:@"\n\tanimationStyle: %@", animationStyleString];
 
   [v3 appendFormat:@"\n\tcropUsed: %d", -[SSSDismissalContext cropUsed](self, "cropUsed")];
   [v3 appendFormat:@"\n\tmarkupUsed: %d", -[SSSDismissalContext markupUsed](self, "markupUsed")];
@@ -28,29 +28,29 @@
 
 - (id)animationStyleString
 {
-  v2 = [(SSSDismissalContext *)self dismissAnimationStyle];
-  if (v2 > 2)
+  dismissAnimationStyle = [(SSSDismissalContext *)self dismissAnimationStyle];
+  if (dismissAnimationStyle > 2)
   {
     return @"UnknownValue";
   }
 
   else
   {
-    return off_1E8590770[v2];
+    return off_1E8590770[dismissAnimationStyle];
   }
 }
 
 - (id)dismissalString
 {
-  v2 = [(SSSDismissalContext *)self dismissalType];
-  if (v2 > 0xA)
+  dismissalType = [(SSSDismissalContext *)self dismissalType];
+  if (dismissalType > 0xA)
   {
     return @"UnknownValue";
   }
 
   else
   {
-    return off_1E8590788[v2];
+    return off_1E8590788[dismissalType];
   }
 }
 

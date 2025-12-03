@@ -1,32 +1,32 @@
 @interface AIDAServiceOperationResult
-- (AIDAServiceOperationResult)initWithCoder:(id)a3;
-- (AIDAServiceOperationResult)initWithSuccess:(BOOL)a3 error:(id)a4 type:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AIDAServiceOperationResult)initWithCoder:(id)coder;
+- (AIDAServiceOperationResult)initWithSuccess:(BOOL)success error:(id)error type:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AIDAServiceOperationResult
 
-- (AIDAServiceOperationResult)initWithSuccess:(BOOL)a3 error:(id)a4 type:(id)a5
+- (AIDAServiceOperationResult)initWithSuccess:(BOOL)success error:(id)error type:(id)type
 {
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = AIDAServiceOperationResult;
   v11 = [(AIDAServiceOperationResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_error, a4);
-    v12->_success = a3;
-    objc_storeStrong(&v12->_type, a5);
+    objc_storeStrong(&v11->_error, error);
+    v12->_success = success;
+    objc_storeStrong(&v12->_type, type);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(NSError *)self->_error copy];
@@ -41,27 +41,27 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   success = self->_success;
-  v5 = a3;
-  [v5 encodeBool:success forKey:@"_success"];
-  [v5 encodeObject:self->_error forKey:@"_error"];
-  [v5 encodeObject:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeBool:success forKey:@"_success"];
+  [coderCopy encodeObject:self->_error forKey:@"_error"];
+  [coderCopy encodeObject:self->_type forKey:@"_type"];
 }
 
-- (AIDAServiceOperationResult)initWithCoder:(id)a3
+- (AIDAServiceOperationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AIDAServiceOperationResult *)self init];
   if (v5)
   {
-    v5->_success = [v4 decodeBoolForKey:@"_success"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_error"];
+    v5->_success = [coderCopy decodeBoolForKey:@"_success"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_error"];
     error = v5->_error;
     v5->_error = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
     type = v5->_type;
     v5->_type = v8;
   }
@@ -72,7 +72,7 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AIDAServiceOperationResult *)self type];
+  type = [(AIDAServiceOperationResult *)self type];
   if ([(AIDAServiceOperationResult *)self success])
   {
     v5 = @"YES";
@@ -83,8 +83,8 @@
     v5 = @"NO";
   }
 
-  v6 = [(AIDAServiceOperationResult *)self error];
-  v7 = [v3 stringWithFormat:@"TYPE: %@, SUCCESS: %@, ERROR: %@", v4, v5, v6];
+  error = [(AIDAServiceOperationResult *)self error];
+  v7 = [v3 stringWithFormat:@"TYPE: %@, SUCCESS: %@, ERROR: %@", type, v5, error];
 
   return v7;
 }

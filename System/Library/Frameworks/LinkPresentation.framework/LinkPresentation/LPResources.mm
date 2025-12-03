@@ -181,9 +181,9 @@ id __25__LPResources_safariIcon__block_invoke()
 
 + (id)passwordsInviteIcon
 {
-  v2 = [MEMORY[0x1E69DC888] tintColor];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
   v3 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:*MEMORY[0x1E69DB978] weight:60.0];
-  v4 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v2];
+  v4 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:tintColor];
   v5 = [v3 configurationByApplyingConfiguration:v4];
 
   v6 = [LPImage _systemImageNamed:@"person.2.badge.key.fill" withSymbolConfiguration:v5];
@@ -196,10 +196,10 @@ id __25__LPResources_safariIcon__block_invoke()
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v9[0] = v3;
-  v4 = [MEMORY[0x1E69DC888] systemRedColor];
-  v9[1] = v4;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v9[0] = whiteColor;
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  v9[1] = systemRedColor;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v2 configurationWithPaletteColors:v5];
 
@@ -538,9 +538,9 @@ id __25__LPResources_safariIcon__block_invoke()
 
 + (id)faceTimeBackgroundColor
 {
-  v2 = [objc_opt_self() systemGreenColor];
+  systemGreenColor = [objc_opt_self() systemGreenColor];
 
-  return v2;
+  return systemGreenColor;
 }
 
 @end

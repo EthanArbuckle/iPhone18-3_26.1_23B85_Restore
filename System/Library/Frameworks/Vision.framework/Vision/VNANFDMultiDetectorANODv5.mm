@@ -3,8 +3,8 @@
 + (NSDictionary)recognizedAnimalFaceObjectClassToAnimalFaceCategoryName;
 + (id)detectedObjectClassToRequestKey;
 + (id)detectedObjectRequestKeyToRequestInfo;
-- (BOOL)processDetectedObject:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 imageBuffer:(id)a7 qosClass:(unsigned int)a8 session:(id)a9 warningRecorder:(id)a10 detectedObjectResults:(id)a11 error:(id *)a12;
-- (id)splitDetectedClassResultsIntoSubclasses:(id)a3;
+- (BOOL)processDetectedObject:(id)object originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)self0 detectedObjectResults:(id)self1 error:(id *)self2;
+- (id)splitDetectedClassResultsIntoSubclasses:(id)subclasses;
 @end
 
 @implementation VNANFDMultiDetectorANODv5
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __55__VNANFDMultiDetectorANODv5_knownAnimalFaceIdentifiers__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv5 knownAnimalFaceIdentifiers]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv5 knownAnimalFaceIdentifiers]::onceToken, block);
@@ -65,7 +65,7 @@ void __84__VNANFDMultiDetectorANODv5_recognizedAnimalFaceObjectClassToAnimalFace
   block[1] = 3221225472;
   block[2] = __66__VNANFDMultiDetectorANODv5_detectedObjectRequestKeyToRequestInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv5 detectedObjectRequestKeyToRequestInfo]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv5 detectedObjectRequestKeyToRequestInfo]::onceToken, block);
@@ -99,7 +99,7 @@ void __66__VNANFDMultiDetectorANODv5_detectedObjectRequestKeyToRequestInfo__bloc
   block[1] = 3221225472;
   block[2] = __60__VNANFDMultiDetectorANODv5_detectedObjectClassToRequestKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv5 detectedObjectClassToRequestKey]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv5 detectedObjectClassToRequestKey]::onceToken, block);
@@ -130,20 +130,20 @@ void __60__VNANFDMultiDetectorANODv5_detectedObjectClassToRequestKey__block_invo
   +[VNANFDMultiDetectorANODv5 detectedObjectClassToRequestKey]::detectedObjectClassToRequestKey = v7;
 }
 
-- (id)splitDetectedClassResultsIntoSubclasses:(id)a3
+- (id)splitDetectedClassResultsIntoSubclasses:(id)subclasses
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  subclassesCopy = subclasses;
+  if ([subclassesCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v17 = v4;
+    v17 = subclassesCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = subclassesCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v8)
     {
@@ -170,7 +170,7 @@ void __60__VNANFDMultiDetectorANODv5_detectedObjectClassToRequestKey__block_invo
               v18.super_class = VNANFDMultiDetectorANODv5;
               v15 = [(VNANFDMultiDetectorANODv4 *)&v18 splitDetectedClassResultsIntoSubclasses:v7];
 
-              v4 = v17;
+              subclassesCopy = v17;
               goto LABEL_14;
             }
           }
@@ -188,7 +188,7 @@ void __60__VNANFDMultiDetectorANODv5_detectedObjectClassToRequestKey__block_invo
       }
     }
 
-    v4 = v17;
+    subclassesCopy = v17;
     v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, v6, 0}];
 LABEL_14:
   }
@@ -197,47 +197,47 @@ LABEL_14:
   {
     v23.receiver = self;
     v23.super_class = VNANFDMultiDetectorANODv5;
-    v15 = [(VNANFDMultiDetectorANODv4 *)&v23 splitDetectedClassResultsIntoSubclasses:v4];
+    v15 = [(VNANFDMultiDetectorANODv4 *)&v23 splitDetectedClassResultsIntoSubclasses:subclassesCopy];
   }
 
   return v15;
 }
 
-- (BOOL)processDetectedObject:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 imageBuffer:(id)a7 qosClass:(unsigned int)a8 session:(id)a9 warningRecorder:(id)a10 detectedObjectResults:(id)a11 error:(id *)a12
+- (BOOL)processDetectedObject:(id)object originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)self0 detectedObjectResults:(id)self1 error:(id *)self2
 {
-  v13 = *&a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v22 = a3;
-  v23 = a4;
-  v24 = a6;
-  v35 = a7;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = [objc_opt_class() recognizedAnimalFaceObjectClassToAnimalFaceCategoryName];
-  if ([v22 labelKey] - 13 >= 2)
+  v13 = *&class;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  objectCopy = object;
+  specifierCopy = specifier;
+  idCopy = id;
+  bufferCopy = buffer;
+  sessionCopy = session;
+  recorderCopy = recorder;
+  resultsCopy = results;
+  recognizedAnimalFaceObjectClassToAnimalFaceCategoryName = [objc_opt_class() recognizedAnimalFaceObjectClassToAnimalFaceCategoryName];
+  if ([objectCopy labelKey] - 13 >= 2)
   {
     v36.receiver = self;
     v36.super_class = VNANFDMultiDetectorANODv5;
-    v33 = [(VNANFDMultiDetectorANODv4 *)&v36 processDetectedObject:v22 originatingRequestSpecifier:v23 objectBoundingBox:v24 objectGroupId:v35 imageBuffer:v13 qosClass:v25 session:x warningRecorder:y detectedObjectResults:width error:height, v26, v27, a12];
+    error = [(VNANFDMultiDetectorANODv4 *)&v36 processDetectedObject:objectCopy originatingRequestSpecifier:specifierCopy objectBoundingBox:idCopy objectGroupId:bufferCopy imageBuffer:v13 qosClass:sessionCopy session:x warningRecorder:y detectedObjectResults:width error:height, recorderCopy, resultsCopy, error];
   }
 
   else
   {
-    v29 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v22, "labelKey")}];
-    v30 = [v28 objectForKey:v29];
+    v29 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objectCopy, "labelKey")}];
+    v30 = [recognizedAnimalFaceObjectClassToAnimalFaceCategoryName objectForKey:v29];
 
-    [v22 confidence];
+    [objectCopy confidence];
     LODWORD(v32) = v31;
-    [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v30 originatingRequestSpecifier:v23 objectBoundingBox:v24 objectGroupId:v27 objectConfidence:x detectedObjectResults:y, width, height, v32];
+    [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v30 originatingRequestSpecifier:specifierCopy objectBoundingBox:idCopy objectGroupId:resultsCopy objectConfidence:x detectedObjectResults:y, width, height, v32];
 
-    v33 = 1;
+    error = 1;
   }
 
-  return v33;
+  return error;
 }
 
 @end

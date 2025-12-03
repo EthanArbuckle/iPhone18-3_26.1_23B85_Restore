@@ -8,33 +8,33 @@
 
 - (id)_pas_distilledString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     goto LABEL_4;
   }
 
   v3 = v2;
-  v4 = [a1 UTF8String];
-  if (!v4)
+  uTF8String = [self UTF8String];
+  if (!uTF8String)
   {
     goto LABEL_4;
   }
 
-  v5 = v4;
-  v6 = v4 + v3;
-  if (*(v4 + v3))
+  v5 = uTF8String;
+  v6 = uTF8String + v3;
+  if (*(uTF8String + v3))
   {
     goto LABEL_4;
   }
 
-  if ([a1 isEqualToString:@"0"])
+  if ([self isEqualToString:@"0"])
   {
     v8 = &unk_1F1B2FF10;
     goto LABEL_6;
   }
 
-  if ([a1 hasPrefix:@" "] & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"+") & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"-"))
+  if ([self hasPrefix:@" "] & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"+") & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"-"))
   {
     goto LABEL_60;
   }
@@ -119,7 +119,7 @@ LABEL_27:
     ++v14;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:a1];
+  v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self];
   if (v7)
   {
     goto LABEL_5;
@@ -166,7 +166,7 @@ LABEL_37:
         }
       }
 
-      v7 = [MEMORY[0x1E696AC88] _pas_fromVersionStringIfPossible:a1];
+      v7 = [MEMORY[0x1E696AC88] _pas_fromVersionStringIfPossible:self];
       if (v7)
       {
         goto LABEL_5;
@@ -178,13 +178,13 @@ LABEL_60:
   if (v3 < 0xC || (v3 & 3) != 0)
   {
 LABEL_4:
-    v7 = [a1 copy];
+    v7 = [self copy];
 LABEL_5:
     v8 = v7;
     goto LABEL_6;
   }
 
-  v23 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:a1 options:0];
+  v23 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:self options:0];
   v8 = v23;
   if (!v23)
   {
@@ -238,7 +238,7 @@ LABEL_6:
 
 - (id)_pas_revivedString
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
 
   return v1;
 }

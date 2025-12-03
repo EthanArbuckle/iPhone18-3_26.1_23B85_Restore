@@ -7,32 +7,32 @@
 - (_UIFeedbackDiscretePlayable)animatingThresholdFeedback;
 - (_UIFeedbackDiscretePlayable)userInteractingReleaseFeedback;
 - (_UIFeedbackDiscretePlayable)userInteractingThresholdFeedback;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
 - (id)animatingMaximumExtentFeedbackUpdateBlock;
 - (id)animatingThresholdFeedbackUpdateBlock;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)feedbackKeyPaths;
 - (id)hidFeedbackPatternNameKeyPaths;
 - (id)userInteractingBeyondEdgeFeedbackUpdateBlock;
 - (id)userInteractingReleaseFeedbackUpdateBlock;
 - (id)userInteractingThresholdFeedbackUpdateBlock;
-- (void)setAnimatingMaximumExtentFeedback:(id)a3;
-- (void)setAnimatingMaximumExtentFeedbackUpdateBlock:(id)a3;
-- (void)setAnimatingThresholdFeedback:(id)a3;
-- (void)setAnimatingThresholdFeedbackUpdateBlock:(id)a3;
-- (void)setUserInteractingBeyondEdgeFeedback:(id)a3;
-- (void)setUserInteractingBeyondEdgeFeedbackUpdateBlock:(id)a3;
-- (void)setUserInteractingReleaseFeedback:(id)a3;
-- (void)setUserInteractingReleaseFeedbackUpdateBlock:(id)a3;
-- (void)setUserInteractingThresholdFeedback:(id)a3;
-- (void)setUserInteractingThresholdFeedbackUpdateBlock:(id)a3;
+- (void)setAnimatingMaximumExtentFeedback:(id)feedback;
+- (void)setAnimatingMaximumExtentFeedbackUpdateBlock:(id)block;
+- (void)setAnimatingThresholdFeedback:(id)feedback;
+- (void)setAnimatingThresholdFeedbackUpdateBlock:(id)block;
+- (void)setUserInteractingBeyondEdgeFeedback:(id)feedback;
+- (void)setUserInteractingBeyondEdgeFeedbackUpdateBlock:(id)block;
+- (void)setUserInteractingReleaseFeedback:(id)feedback;
+- (void)setUserInteractingReleaseFeedbackUpdateBlock:(id)block;
+- (void)setUserInteractingThresholdFeedback:(id)feedback;
+- (void)setUserInteractingThresholdFeedbackUpdateBlock:(id)block;
 @end
 
 @implementation _UIEdgeFeedbackGeneratorConfiguration
 
 + (id)_zoomConfiguration
 {
-  v2 = [a1 _configurationWithKey:@"zoom" preparationBlock:&__block_literal_global_174_0];
+  v2 = [self _configurationWithKey:@"zoom" preparationBlock:&__block_literal_global_174_0];
   [v2 setRequiredPeripheralSupportLevel:1];
 
   return v2;
@@ -40,7 +40,7 @@
 
 + (id)sliderConfiguration
 {
-  v2 = [a1 _configurationWithKey:@"slider" preparationBlock:&__block_literal_global_206];
+  v2 = [self _configurationWithKey:@"slider" preparationBlock:&__block_literal_global_206];
   [v2 _setDefaultAxis:1];
   [v2 setMinDistanceFromEdge:20.0];
   [v2 setRequiredPeripheralSupportLevel:1];
@@ -50,18 +50,18 @@
 
 + (id)swipePresentationConfiguration
 {
-  v2 = [a1 _configurationWithKey:@"swipePresentation" preparationBlock:&__block_literal_global_165];
+  v2 = [self _configurationWithKey:@"swipePresentation" preparationBlock:&__block_literal_global_165];
   [v2 _setDefaultAxis:2];
   [v2 setMinDistanceFromEdge:100.0];
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = _UIEdgeFeedbackGeneratorConfiguration;
-  v4 = [(_UIFeedbackGeneratorConfiguration *)&v16 copyWithZone:a3];
+  v4 = [(_UIFeedbackGeneratorConfiguration *)&v16 copyWithZone:zone];
   v5 = [self->_userInteractingThresholdFeedbackUpdateBlock copy];
   v6 = v4[15];
   v4[15] = v5;
@@ -90,7 +90,7 @@
   v12[5] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = _UIEdgeFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v11 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v11 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_userInteractingThresholdFeedback);
   v12[0] = v3;
   v4 = NSStringFromSelector(sel_userInteractingBeyondEdgeFeedback);
@@ -102,7 +102,7 @@
   v7 = NSStringFromSelector(sel_animatingMaximumExtentFeedback);
   v12[4] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:5];
-  v9 = [v2 arrayByAddingObjectsFromArray:v8];
+  v9 = [feedbackKeyPaths arrayByAddingObjectsFromArray:v8];
 
   return v9;
 }
@@ -111,38 +111,38 @@
 {
   v6.receiver = self;
   v6.super_class = _UIEdgeFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorConfiguration *)&v6 hidFeedbackPatternNameKeyPaths];
+  hidFeedbackPatternNameKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v6 hidFeedbackPatternNameKeyPaths];
   v3 = NSStringFromSelector(sel_hidFeedbackPatternName);
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [hidFeedbackPatternNameKeyPaths arrayByAddingObject:v3];
 
   return v4;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v8 = a3;
-  if (v8 && ([(_UIEdgeFeedbackGeneratorConfiguration *)self hidFeedbackPatternName], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  feedbackCopy = feedback;
+  if (feedbackCopy && ([(_UIEdgeFeedbackGeneratorConfiguration *)self hidFeedbackPatternName], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
-    v11 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v9 deviceType:a4 senderID:a5];
+    v11 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v9 deviceType:device senderID:d];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = _UIEdgeFeedbackGeneratorConfiguration;
-    v11 = [(_UIFeedbackGeneratorConfiguration *)&v13 _alternateFeedback:v8 forDevice:a4 senderID:a5];
+    v11 = [(_UIFeedbackGeneratorConfiguration *)&v13 _alternateFeedback:feedbackCopy forDevice:device senderID:d];
   }
 
   return v11;
 }
 
-- (void)setUserInteractingThresholdFeedback:(id)a3
+- (void)setUserInteractingThresholdFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   userInteractingThresholdFeedback = self->_userInteractingThresholdFeedback;
-  self->_userInteractingThresholdFeedback = v4;
+  self->_userInteractingThresholdFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)userInteractingThresholdFeedback
@@ -153,11 +153,11 @@
   return userInteractingThresholdFeedback;
 }
 
-- (void)setUserInteractingThresholdFeedbackUpdateBlock:(id)a3
+- (void)setUserInteractingThresholdFeedbackUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   userInteractingThresholdFeedbackUpdateBlock = self->_userInteractingThresholdFeedbackUpdateBlock;
   self->_userInteractingThresholdFeedbackUpdateBlock = v5;
@@ -171,12 +171,12 @@
   return v3;
 }
 
-- (void)setUserInteractingBeyondEdgeFeedback:(id)a3
+- (void)setUserInteractingBeyondEdgeFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   userInteractingBeyondEdgeFeedback = self->_userInteractingBeyondEdgeFeedback;
-  self->_userInteractingBeyondEdgeFeedback = v4;
+  self->_userInteractingBeyondEdgeFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackContinuousPlayable)userInteractingBeyondEdgeFeedback
@@ -187,11 +187,11 @@
   return userInteractingBeyondEdgeFeedback;
 }
 
-- (void)setUserInteractingBeyondEdgeFeedbackUpdateBlock:(id)a3
+- (void)setUserInteractingBeyondEdgeFeedbackUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   userInteractingBeyondEdgeFeedbackUpdateBlock = self->_userInteractingBeyondEdgeFeedbackUpdateBlock;
   self->_userInteractingBeyondEdgeFeedbackUpdateBlock = v5;
@@ -205,12 +205,12 @@
   return v3;
 }
 
-- (void)setUserInteractingReleaseFeedback:(id)a3
+- (void)setUserInteractingReleaseFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   userInteractingReleaseFeedback = self->_userInteractingReleaseFeedback;
-  self->_userInteractingReleaseFeedback = v4;
+  self->_userInteractingReleaseFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)userInteractingReleaseFeedback
@@ -221,11 +221,11 @@
   return userInteractingReleaseFeedback;
 }
 
-- (void)setUserInteractingReleaseFeedbackUpdateBlock:(id)a3
+- (void)setUserInteractingReleaseFeedbackUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   userInteractingReleaseFeedbackUpdateBlock = self->_userInteractingReleaseFeedbackUpdateBlock;
   self->_userInteractingReleaseFeedbackUpdateBlock = v5;
@@ -239,12 +239,12 @@
   return v3;
 }
 
-- (void)setAnimatingThresholdFeedback:(id)a3
+- (void)setAnimatingThresholdFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   animatingThresholdFeedback = self->_animatingThresholdFeedback;
-  self->_animatingThresholdFeedback = v4;
+  self->_animatingThresholdFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)animatingThresholdFeedback
@@ -255,11 +255,11 @@
   return animatingThresholdFeedback;
 }
 
-- (void)setAnimatingThresholdFeedbackUpdateBlock:(id)a3
+- (void)setAnimatingThresholdFeedbackUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   animatingThresholdFeedbackUpdateBlock = self->_animatingThresholdFeedbackUpdateBlock;
   self->_animatingThresholdFeedbackUpdateBlock = v5;
@@ -273,12 +273,12 @@
   return v3;
 }
 
-- (void)setAnimatingMaximumExtentFeedback:(id)a3
+- (void)setAnimatingMaximumExtentFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   animatingMaximumExtentFeedback = self->_animatingMaximumExtentFeedback;
-  self->_animatingMaximumExtentFeedback = v4;
+  self->_animatingMaximumExtentFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)animatingMaximumExtentFeedback
@@ -289,11 +289,11 @@
   return animatingMaximumExtentFeedback;
 }
 
-- (void)setAnimatingMaximumExtentFeedbackUpdateBlock:(id)a3
+- (void)setAnimatingMaximumExtentFeedbackUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   animatingMaximumExtentFeedbackUpdateBlock = self->_animatingMaximumExtentFeedbackUpdateBlock;
   self->_animatingMaximumExtentFeedbackUpdateBlock = v5;

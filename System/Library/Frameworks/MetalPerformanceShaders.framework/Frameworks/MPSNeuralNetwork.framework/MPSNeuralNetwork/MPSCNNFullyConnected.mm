@@ -1,14 +1,14 @@
 @interface MPSCNNFullyConnected
 - (MPSCNNFullyConnected)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8;
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8 convolutionTranspose:(BOOL)a9;
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5;
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5 convolutionTranspose:(BOOL)a6;
 - (MPSCNNFullyConnected)initWithDevice:(id)device;
 - (MPSCNNFullyConnected)initWithDevice:(id)device convolutionDescriptor:(const MPSCNNConvolutionDescriptor *)convolutionDescriptor kernelWeights:(const float *)kernelWeights biasTerms:(const float *)biasTerms flags:(MPSCNNConvolutionFlags)flags;
+- (MPSCNNFullyConnected)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected;
+- (MPSCNNFullyConnected)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose;
 - (MPSCNNFullyConnected)initWithDevice:(id)device weights:(id)weights;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6 kernelOffset:(id *)a7;
+- (MPSCNNFullyConnected)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected;
+- (MPSCNNFullyConnected)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset kernelOffset:(id *)kernelOffset;
 - (void)dealloc;
 @end
 
@@ -26,7 +26,7 @@
   return 0;
 }
 
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8 convolutionTranspose:(BOOL)a9
+- (MPSCNNFullyConnected)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -38,7 +38,7 @@
   return 0;
 }
 
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5 convolutionTranspose:(BOOL)a6
+- (MPSCNNFullyConnected)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected convolutionTranspose:(BOOL)transpose
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -54,45 +54,45 @@
 {
   if (convolutionDescriptor->_groups != 1)
   {
-    v22 = self;
+    selfCopy = self;
     v23 = convolutionDescriptor;
     v24 = MTLReportFailureTypeEnabled();
     convolutionDescriptor = v23;
     v25 = v24;
-    self = v22;
+    self = selfCopy;
     if (v25)
     {
       MTLReportFailure();
-      self = v22;
+      self = selfCopy;
       convolutionDescriptor = v23;
     }
   }
 
   if (convolutionDescriptor->_strideInPixelsX != 1)
   {
-    v26 = self;
+    selfCopy2 = self;
     v27 = convolutionDescriptor;
     v28 = MTLReportFailureTypeEnabled();
     convolutionDescriptor = v27;
     v29 = v28;
-    self = v26;
+    self = selfCopy2;
     if (v29)
     {
       MTLReportFailure();
-      self = v26;
+      self = selfCopy2;
       convolutionDescriptor = v27;
     }
   }
 
   if (convolutionDescriptor->_strideInPixelsY != 1)
   {
-    v30 = self;
+    selfCopy3 = self;
     v31 = MTLReportFailureTypeEnabled();
-    self = v30;
+    self = selfCopy3;
     if (v31)
     {
       MTLReportFailure();
-      self = v30;
+      self = selfCopy3;
     }
   }
 
@@ -164,7 +164,7 @@
   return v12;
 }
 
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8
+- (MPSCNNFullyConnected)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -176,7 +176,7 @@
   return 0;
 }
 
-- (MPSCNNFullyConnected)initWithDevice:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5
+- (MPSCNNFullyConnected)initWithDevice:(id)device weights:(id)weights fullyConnected:(BOOL)connected
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -188,11 +188,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSCNNFullyConnected;
-  result = [(MPSCNNConvolution *)&v5 copyWithZone:a3 device:a4];
+  result = [(MPSCNNConvolution *)&v5 copyWithZone:zone device:device];
   *(result + 36) = sub_239D4F434;
   return result;
 }
@@ -204,27 +204,27 @@
   [(MPSCNNConvolution *)&v2 dealloc];
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6 kernelOffset:(id *)a7
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset kernelOffset:(id *)kernelOffset
 {
-  v9 = a5;
+  methodCopy = method;
   v59.receiver = self;
   v59.super_class = MPSCNNFullyConnected;
-  v12 = [MPSCNNConvolution destinationImageDescriptorForSourceImages:sel_destinationImageDescriptorForSourceImages_sourceStates_paddingMethod_sourceOffset_kernelOffset_ sourceStates:a3 paddingMethod:a4 sourceOffset:? kernelOffset:?];
+  v12 = [MPSCNNConvolution destinationImageDescriptorForSourceImages:sel_destinationImageDescriptorForSourceImages_sourceStates_paddingMethod_sourceOffset_kernelOffset_ sourceStates:images paddingMethod:states sourceOffset:? kernelOffset:?];
   kernelWidth = self->super.super._kernelWidth;
   kernelHeight = self->super.super._kernelHeight;
-  v21 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v15, 0, v16, v17, v18, v19, v20) + *MEMORY[0x277CD7330]);
-  v28 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v22, 0, v23, v24, v25, v26, v27) + *MEMORY[0x277CD7308]);
-  v41 = *(objc_msgSend_objectAtIndexedSubscript_(a3, v29, 0, v30, v31, v32, v33, v34) + *MEMORY[0x277CD7310]);
-  if (a6)
+  v21 = *(objc_msgSend_objectAtIndexedSubscript_(images, v15, 0, v16, v17, v18, v19, v20) + *MEMORY[0x277CD7330]);
+  v28 = *(objc_msgSend_objectAtIndexedSubscript_(images, v22, 0, v23, v24, v25, v26, v27) + *MEMORY[0x277CD7308]);
+  v41 = *(objc_msgSend_objectAtIndexedSubscript_(images, v29, 0, v30, v31, v32, v33, v34) + *MEMORY[0x277CD7310]);
+  if (offset)
   {
-    v42 = v9 & 3;
+    v42 = methodCopy & 3;
     v43 = kernelWidth >> 1;
     if (v42 > 1)
     {
       if (v42 == 2)
       {
         v43 = v43 - kernelWidth + v21;
-        if (!a7)
+        if (!kernelOffset)
         {
           goto LABEL_12;
         }
@@ -233,7 +233,7 @@
       else
       {
         v43 = 0;
-        if (!a7)
+        if (!kernelOffset)
         {
           goto LABEL_12;
         }
@@ -242,22 +242,22 @@
 
     else
     {
-      if ((v9 & 3) == 0)
+      if ((methodCopy & 3) == 0)
       {
-        v43 -= (kernelWidth + ((v9 & 4) == 0) - v21) >> 1;
+        v43 -= (kernelWidth + ((methodCopy & 4) == 0) - v21) >> 1;
       }
 
-      if (!a7)
+      if (!kernelOffset)
       {
 LABEL_12:
-        a6->var0 = v43;
+        offset->var0 = v43;
         v44 = kernelHeight >> 1;
-        if ((v9 & 3u) > 1)
+        if ((methodCopy & 3u) > 1)
         {
           if (v42 == 2)
           {
             v45 = v44 - kernelHeight + v28;
-            if (!a7)
+            if (!kernelOffset)
             {
               goto LABEL_23;
             }
@@ -266,11 +266,11 @@ LABEL_12:
           else
           {
             v45 = 0;
-            if (!a7)
+            if (!kernelOffset)
             {
 LABEL_23:
-              a6->var1 = v45;
-              a6->var2 = 0;
+              offset->var1 = v45;
+              offset->var2 = 0;
               goto LABEL_24;
             }
           }
@@ -278,28 +278,28 @@ LABEL_23:
 
         else
         {
-          if ((v9 & 3) != 0)
+          if ((methodCopy & 3) != 0)
           {
             v45 = kernelHeight >> 1;
           }
 
           else
           {
-            v45 = v44 - ((kernelHeight + ((v9 & 8) == 0) - v28) >> 1);
+            v45 = v44 - ((kernelHeight + ((methodCopy & 8) == 0) - v28) >> 1);
           }
 
-          if (!a7)
+          if (!kernelOffset)
           {
             goto LABEL_23;
           }
         }
 
-        a7->var1 = 0;
+        kernelOffset->var1 = 0;
         goto LABEL_23;
       }
     }
 
-    a7->var0 = 0;
+    kernelOffset->var0 = 0;
     goto LABEL_12;
   }
 

@@ -1,8 +1,8 @@
 @interface HKSPSleepStoreCache
 + (id)strongCache;
 + (id)weakCache;
-- (HKSPSleepStoreCache)initWithSleepStoreProvider:(id)a3 useWeakReferences:(BOOL)a4;
-- (id)sleepStoreForIdentifier:(id)a3 healthStore:(id)a4;
+- (HKSPSleepStoreCache)initWithSleepStoreProvider:(id)provider useWeakReferences:(BOOL)references;
+- (id)sleepStoreForIdentifier:(id)identifier healthStore:(id)store;
 @end
 
 @implementation HKSPSleepStoreCache
@@ -18,14 +18,14 @@ HKSPSleepStore *__32__HKSPSleepStoreCache_weakCache__block_invoke(uint64_t a1, v
 
 + (id)weakCache
 {
-  v2 = [[a1 alloc] initWithSleepStoreProvider:&__block_literal_global useWeakReferences:1];
+  v2 = [[self alloc] initWithSleepStoreProvider:&__block_literal_global useWeakReferences:1];
 
   return v2;
 }
 
 + (id)strongCache
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -39,10 +39,10 @@ HKSPSleepStore *__27__HKSPSleepStoreCache_init__block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (HKSPSleepStoreCache)initWithSleepStoreProvider:(id)a3 useWeakReferences:(BOOL)a4
+- (HKSPSleepStoreCache)initWithSleepStoreProvider:(id)provider useWeakReferences:(BOOL)references
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = HKSPSleepStoreCache;
   v7 = [(HKSPSleepStoreCache *)&v15 init];
@@ -56,7 +56,7 @@ HKSPSleepStore *__27__HKSPSleepStoreCache_init__block_invoke(uint64_t a1, void *
       _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ initializing...", buf, 0xCu);
     }
 
-    if (a4)
+    if (references)
     {
       [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     }
@@ -69,7 +69,7 @@ HKSPSleepStore *__27__HKSPSleepStoreCache_init__block_invoke(uint64_t a1, void *
     sleepStoresByIdentifier = v7->_sleepStoresByIdentifier;
     v7->_sleepStoresByIdentifier = v9;
 
-    v11 = [v6 copy];
+    v11 = [providerCopy copy];
     sleepStoreProvider = v7->_sleepStoreProvider;
     v7->_sleepStoreProvider = v11;
 
@@ -80,25 +80,25 @@ HKSPSleepStore *__27__HKSPSleepStoreCache_init__block_invoke(uint64_t a1, void *
   return v7;
 }
 
-- (id)sleepStoreForIdentifier:(id)a3 healthStore:(id)a4
+- (id)sleepStoreForIdentifier:(id)identifier healthStore:(id)store
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  storeCopy = store;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HKSPSleepStoreCache.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPSleepStoreCache.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
   }
 
-  if (v8)
+  if (storeCopy)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %p", v7, v8];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %p", identifierCopy, storeCopy];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v7, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@", identifierCopy, v15];
   }
   v9 = ;
   os_unfair_lock_lock(&self->_lock);
@@ -109,7 +109,7 @@ HKSPSleepStore *__27__HKSPSleepStoreCache_init__block_invoke(uint64_t a1, void *
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v9;
       _os_log_impl(&dword_269A84000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ caching a new sleep store with identifier %@", buf, 0x16u);

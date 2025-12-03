@@ -1,13 +1,13 @@
 @interface JavaUtilLoggingLogManager_$1
-- (JavaUtilLoggingLogManager_$1)initWithJavaUtilLoggingLogManager:(id)a3;
+- (JavaUtilLoggingLogManager_$1)initWithJavaUtilLoggingLogManager:(id)manager;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilLoggingLogManager_$1
 
-- (JavaUtilLoggingLogManager_$1)initWithJavaUtilLoggingLogManager:(id)a3
+- (JavaUtilLoggingLogManager_$1)initWithJavaUtilLoggingLogManager:(id)manager
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, manager);
   JavaLangThread_init(self);
   return self;
 }

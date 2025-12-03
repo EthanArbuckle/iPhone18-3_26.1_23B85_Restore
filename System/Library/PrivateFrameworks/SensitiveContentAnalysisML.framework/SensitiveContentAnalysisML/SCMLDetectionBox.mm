@@ -1,25 +1,25 @@
 @interface SCMLDetectionBox
 - (CGRect)rect;
-- (SCMLDetectionBox)initWithScore:(float)a3 label:(id)a4 rect:(CGRect)a5;
+- (SCMLDetectionBox)initWithScore:(float)score label:(id)label rect:(CGRect)rect;
 @end
 
 @implementation SCMLDetectionBox
 
-- (SCMLDetectionBox)initWithScore:(float)a3 label:(id)a4 rect:(CGRect)a5
+- (SCMLDetectionBox)initWithScore:(float)score label:(id)label rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  labelCopy = label;
   v16.receiver = self;
   v16.super_class = SCMLDetectionBox;
   v13 = [(SCMLDetectionBox *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_score = a3;
-    objc_storeStrong(&v13->_label, a4);
+    v13->_score = score;
+    objc_storeStrong(&v13->_label, label);
     v14->_rect.origin.x = x;
     v14->_rect.origin.y = y;
     v14->_rect.size.width = width;

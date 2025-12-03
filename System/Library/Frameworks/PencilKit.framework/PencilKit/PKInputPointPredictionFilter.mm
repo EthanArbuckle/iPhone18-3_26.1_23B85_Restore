@@ -1,11 +1,11 @@
 @interface PKInputPointPredictionFilter
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 - (void)resetFilter;
 @end
 
 @implementation PKInputPointPredictionFilter
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (self)
   {
@@ -14,13 +14,13 @@
     {
       p_filteredPoint = &self->super._filteredPoint;
 
-      memmove(p_filteredPoint, a3, 0x88uLL);
+      memmove(p_filteredPoint, point, 0x88uLL);
     }
 
     else
     {
       ++self->super._numInputPoints;
-      var7 = a3->var7;
+      var7 = point->var7;
       v8 = predictionTimeInterval * 0.5 + var7;
       v9 = predictionTimeInterval + var7;
       predictor = self->_predictor;
@@ -33,18 +33,18 @@
         predictor = self->_predictor;
       }
 
-      v13 = *&a3->var13;
-      v37 = *&a3->var11;
+      v13 = *&point->var13;
+      v37 = *&point->var11;
       v38 = v13;
-      var15 = a3->var15;
-      v14 = *&a3->var5;
-      v33 = *&a3->var3;
+      var15 = point->var15;
+      v14 = *&point->var5;
+      v33 = *&point->var3;
       v34 = v14;
-      v15 = *&a3->var9;
-      v35 = *&a3->var7;
+      v15 = *&point->var9;
+      v35 = *&point->var7;
       v36 = v15;
-      v16 = *&a3->var1;
-      var0 = a3->var0;
+      v16 = *&point->var1;
+      var0 = point->var0;
       v32 = v16;
       [(PKInputPointPredictor *)predictor predictedPointForPoint:&v40 timestamp:v8];
       v17 = v47;
@@ -61,18 +61,18 @@
       self->_halfPredictionTimeIntervalPoint.var0 = v40;
       *&self->_halfPredictionTimeIntervalPoint.force = v20;
       v21 = self->_predictor;
-      v22 = *&a3->var13;
-      v37 = *&a3->var11;
+      v22 = *&point->var13;
+      v37 = *&point->var11;
       v38 = v22;
-      var15 = a3->var15;
-      v23 = *&a3->var5;
-      v33 = *&a3->var3;
+      var15 = point->var15;
+      v23 = *&point->var5;
+      v33 = *&point->var3;
       v34 = v23;
-      v24 = *&a3->var9;
-      v35 = *&a3->var7;
+      v24 = *&point->var9;
+      v35 = *&point->var7;
       v36 = v24;
-      v25 = *&a3->var1;
-      var0 = a3->var0;
+      v25 = *&point->var1;
+      var0 = point->var0;
       v32 = v25;
       [(PKInputPointPredictor *)v21 predictedPointAtTimestamp:&v40 defaultPoint:v9];
       v26 = v47;

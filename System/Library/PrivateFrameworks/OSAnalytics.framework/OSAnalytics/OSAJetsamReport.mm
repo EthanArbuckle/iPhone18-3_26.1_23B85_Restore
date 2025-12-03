@@ -1,19 +1,19 @@
 @interface OSAJetsamReport
 + (int64_t)_daysSince1970;
-+ (jetsam_snapshot)fetchSnapshotWithFlags:(unsigned int)a3 error:(id *)a4;
++ (jetsam_snapshot)fetchSnapshotWithFlags:(unsigned int)flags error:(id *)error;
 - (BOOL)alreadyDumpedSuspendedJetsamLogToday;
 - (BOOL)isActionable;
-- (BOOL)saveWithOptions:(id)a3;
-- (OSAJetsamReport)initWithIncidentID:(id)a3 visibilityEndowmentState:(id)a4 audioAssertionState:(id)a5;
+- (BOOL)saveWithOptions:(id)options;
+- (OSAJetsamReport)initWithIncidentID:(id)d visibilityEndowmentState:(id)state audioAssertionState:(id)assertionState;
 - (id)additionalIPSMetadata;
 - (id)appleCareDetails;
-- (unint64_t)getEventPriority:(id)a3 terminationReason:(unint64_t)a4 priority:(int64_t)a5;
+- (unint64_t)getEventPriority:(id)priority terminationReason:(unint64_t)reason priority:(int64_t)a5;
 - (void)_setDumpedSuspendedJetsamLog;
 - (void)dealloc;
 - (void)fetchWiredMemoryInfo;
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4;
-- (void)instrumentEvents:(BOOL)a3;
-- (void)updateLogLimitFor:(unint64_t)a3;
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block;
+- (void)instrumentEvents:(BOOL)events;
+- (void)updateLogLimitFor:(unint64_t)for;
 @end
 
 @implementation OSAJetsamReport
@@ -21,32 +21,32 @@
 - (void)fetchWiredMemoryInfo
 {
   v7 = *MEMORY[0x1E69E9840];
-  [a1 unsignedIntValue];
+  [self unsignedIntValue];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xEu);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (OSAJetsamReport)initWithIncidentID:(id)a3 visibilityEndowmentState:(id)a4 audioAssertionState:(id)a5
+- (OSAJetsamReport)initWithIncidentID:(id)d visibilityEndowmentState:(id)state audioAssertionState:(id)assertionState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  stateCopy = state;
+  assertionStateCopy = assertionState;
   v22.receiver = self;
   v22.super_class = OSAJetsamReport;
   v12 = [(OSAReport *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    if (v9)
+    if (dCopy)
     {
-      objc_storeStrong(&v12->super._incidentID, a3);
+      objc_storeStrong(&v12->super._incidentID, d);
     }
 
-    if (v10)
+    if (stateCopy)
     {
-      v14 = v10;
+      v14 = stateCopy;
     }
 
     else
@@ -57,9 +57,9 @@
     visibilityEndowmentState = v13->_visibilityEndowmentState;
     v13->_visibilityEndowmentState = v14;
 
-    if (v11)
+    if (assertionStateCopy)
     {
-      v16 = v11;
+      v16 = assertionStateCopy;
     }
 
     else
@@ -115,8 +115,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"incident_id";
-  v3 = [(OSAReport *)self incidentID];
-  v9[0] = v3;
+  incidentID = [(OSAReport *)self incidentID];
+  v9[0] = incidentID;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v5 = [v4 mutableCopy];
 
@@ -130,16 +130,16 @@
   return v5;
 }
 
-- (BOOL)saveWithOptions:(id)a3
+- (BOOL)saveWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = OSAJetsamReport;
-  v4 = [(OSAReport *)&v6 saveWithOptions:a3];
+  v4 = [(OSAReport *)&v6 saveWithOptions:options];
   [(OSAJetsamReport *)self instrumentEvents:v4];
   return v4;
 }
 
-+ (jetsam_snapshot)fetchSnapshotWithFlags:(unsigned int)a3 error:(id *)a4
++ (jetsam_snapshot)fetchSnapshotWithFlags:(unsigned int)flags error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = memorystatus_control();
@@ -162,7 +162,7 @@
   if (v5 >= 0xC9 && __ROR8__(0x8E38E38E38E38E39 * (v5 - 200), 5) >= 0xE38E38E38E38E4uLL)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"memorystatus_control gave snapshot size (%lu) not multiple of jetsam entry type (%lu)", v5 - 200, 288];
-    v14 = LABEL_13:;
+    var4 = LABEL_13:;
     goto LABEL_14;
   }
 
@@ -175,11 +175,11 @@
       v18 = v11;
       v19 = MEMORY[0x1E696AEC0];
       v20 = __error();
-      v14 = [v19 stringWithFormat:@"memorystatus_control returned unexpected value - %d: %s", v18, strerror(*v20)];
+      var4 = [v19 stringWithFormat:@"memorystatus_control returned unexpected value - %d: %s", v18, strerror(*v20)];
       free(v10);
 LABEL_14:
       v10 = 0;
-      if (!v14)
+      if (!var4)
       {
         goto LABEL_19;
       }
@@ -191,13 +191,13 @@ LABEL_14:
     var4 = v10->var4;
     if (v12 >= var4)
     {
-      v14 = 0;
+      var4 = 0;
       goto LABEL_19;
     }
 
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got fewer jetsam entries from the kernel received %zu, expected %zu", (v7 - 200) / 0x120uLL, var4];;
+    var4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got fewer jetsam entries from the kernel received %zu, expected %zu", (v7 - 200) / 0x120uLL, var4];;
     v10->var4 = v12;
-    if (!v14)
+    if (!var4)
     {
       goto LABEL_19;
     }
@@ -205,8 +205,8 @@ LABEL_14:
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to allocate %d bytes for jetsam snapshot", v6];
-    if (!v14)
+    var4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to allocate %d bytes for jetsam snapshot", v6];
+    if (!var4)
     {
       goto LABEL_19;
     }
@@ -216,14 +216,14 @@ LABEL_15:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v14;
+    v24 = var4;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    v15 = v14;
-    *a4 = v14;
+    v15 = var4;
+    *error = var4;
   }
 
 LABEL_19:
@@ -232,15 +232,15 @@ LABEL_19:
   return v10;
 }
 
-- (unint64_t)getEventPriority:(id)a3 terminationReason:(unint64_t)a4 priority:(int64_t)a5
+- (unint64_t)getEventPriority:(id)priority terminationReason:(unint64_t)reason priority:(int64_t)a5
 {
-  if ([&unk_1F241F188 containsObject:a3])
+  if ([&unk_1F241F188 containsObject:priority])
   {
     self->_aleFlag = 1;
     return 3;
   }
 
-  else if (a4 <= 0x11 && ((1 << a4) & 0x20284) != 0)
+  else if (reason <= 0x11 && ((1 << reason) & 0x20284) != 0)
   {
     return 0;
   }
@@ -256,11 +256,11 @@ LABEL_19:
   }
 }
 
-- (void)updateLogLimitFor:(unint64_t)a3
+- (void)updateLogLimitFor:(unint64_t)for
 {
-  if (a3 > 1)
+  if (for > 1)
   {
-    if (a3 == 2)
+    if (for == 2)
     {
       v5 = 0;
       v4 = &unk_1F241E7E8;
@@ -269,7 +269,7 @@ LABEL_19:
 
     else
     {
-      if (a3 != 3)
+      if (for != 3)
       {
         return;
       }
@@ -289,7 +289,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!for)
   {
     v5 = 0;
     v4 = &unk_1F241E7D0;
@@ -297,7 +297,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (for != 1)
   {
     return;
   }
@@ -309,7 +309,7 @@ LABEL_12:
   [(NSMutableDictionary *)logWritingOptions setObject:v4 forKeyedSubscript:@"set-log-limit"];
 }
 
-- (void)instrumentEvents:(BOOL)a3
+- (void)instrumentEvents:(BOOL)events
 {
   v52 = *MEMORY[0x1E69E9840];
   snapshot = self->_snapshot;
@@ -317,11 +317,11 @@ LABEL_12:
   {
     if (snapshot->var4)
     {
-      v4 = self;
+      selfCopy2 = self;
       v5 = 0;
       v6 = 0;
       v7 = &unk_1F241E800;
-      if (a3)
+      if (events)
       {
         v7 = &unk_1F241E7D0;
       }
@@ -342,11 +342,11 @@ LABEL_12:
             v10 = (((snapshot->var5[v5].var23 - snapshot->var5[v5].var22) * info.numer / info.denom / 0xF4240) / 1000.0);
           }
 
-          audioAssertionState = v4->_audioAssertionState;
+          audioAssertionState = selfCopy2->_audioAssertionState;
           v12 = [MEMORY[0x1E696AD98] numberWithInt:*(v8 + 50)];
           v13 = [(NSSet *)audioAssertionState containsObject:v12];
 
-          visibilityEndowmentState = v4->_visibilityEndowmentState;
+          visibilityEndowmentState = selfCopy2->_visibilityEndowmentState;
           v15 = [MEMORY[0x1E696AD98] numberWithInt:*(v8 + 50)];
           v16 = [(NSSet *)visibilityEndowmentState containsObject:v15];
 
@@ -407,8 +407,8 @@ LABEL_12:
           {
             v47[0] = @"crk";
             v27 = +[OSASystemConfiguration sharedInstance];
-            v28 = [v27 crashReporterKey];
-            v48[0] = v28;
+            crashReporterKey = [v27 crashReporterKey];
+            v48[0] = crashReporterKey;
             v47[1] = @"dirty";
             v29 = [MEMORY[0x1E696AD98] numberWithBool:(*(v17 + 61) >> 5) & 1];
             v30 = v29;
@@ -441,7 +441,7 @@ LABEL_12:
             rtcsc_send(2004, 2004, v33);
           }
 
-          v4 = self;
+          selfCopy2 = self;
           snapshot = self->_snapshot;
           v6 = v44;
         }
@@ -464,13 +464,13 @@ LABEL_12:
 
 - (BOOL)alreadyDumpedSuspendedJetsamLogToday
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"lastSuspendedLogDumpedDaySince1970"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"lastSuspendedLogDumpedDaySince1970"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
-    v5 = v4 == +[OSAJetsamReport _daysSince1970];
+    integerValue = [v3 integerValue];
+    v5 = integerValue == +[OSAJetsamReport _daysSince1970];
   }
 
   else
@@ -483,8 +483,8 @@ LABEL_12:
 
 - (void)_setDumpedSuspendedJetsamLog
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 setInteger:+[OSAJetsamReport _daysSince1970](OSAJetsamReport forKey:{"_daysSince1970"), @"lastSuspendedLogDumpedDaySince1970"}];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:+[OSAJetsamReport _daysSince1970](OSAJetsamReport forKey:{"_daysSince1970"), @"lastSuspendedLogDumpedDaySince1970"}];
 }
 
 - (BOOL)isActionable
@@ -516,28 +516,28 @@ LABEL_12:
   return 0;
 }
 
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block
 {
   v146[7] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   v145[0] = @"incident";
-  v119 = [(OSAReport *)self incidentID];
-  v146[0] = v119;
+  incidentID = [(OSAReport *)self incidentID];
+  v146[0] = incidentID;
   v145[1] = @"crashReporterKey";
   v118 = +[OSASystemConfiguration sharedInstance];
-  v115 = [v118 crashReporterKey];
-  v146[1] = v115;
+  crashReporterKey = [v118 crashReporterKey];
+  v146[1] = crashReporterKey;
   v145[2] = @"product";
   v112 = +[OSASystemConfiguration sharedInstance];
-  v6 = [v112 modelCode];
-  v146[2] = v6;
+  modelCode = [v112 modelCode];
+  v146[2] = modelCode;
   v145[3] = @"build";
   v7 = +[OSASystemConfiguration sharedInstance];
-  v8 = [v7 productNameVersionBuildString];
-  v146[3] = v8;
+  productNameVersionBuildString = [v7 productNameVersionBuildString];
+  v146[3] = productNameVersionBuildString;
   v145[4] = @"kernel";
-  v9 = [objc_opt_class() kernelVersionDescription];
-  v146[4] = v9;
+  kernelVersionDescription = [objc_opt_class() kernelVersionDescription];
+  v146[4] = kernelVersionDescription;
   v145[5] = @"date";
   v10 = OSADateFormat(1u, self->super._capture_time);
   v146[5] = v10;
@@ -545,16 +545,16 @@ LABEL_12:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(objc_opt_class(), "codeSigningMonitor")}];
   v146[6] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v146 forKeys:v145 count:7];
-  v5[2](v5, v12);
+  blockCopy[2](blockCopy, v12);
 
-  v13 = v5;
-  v14 = [(OSAJetsamReport *)self problemType];
-  v15 = [OSALog commonFieldsForBody:v14];
-  v5[2](v5, v15);
+  v13 = blockCopy;
+  problemType = [(OSAJetsamReport *)self problemType];
+  v15 = [OSALog commonFieldsForBody:problemType];
+  blockCopy[2](blockCopy, v15);
 
   if ([objc_opt_class() isDeveloperMode])
   {
-    v5[2](v5, &unk_1F241EDB0);
+    blockCopy[2](blockCopy, &unk_1F241EDB0);
   }
 
   if ([(NSString *)self->_event_reason length]| self->_event_code)
@@ -573,14 +573,14 @@ LABEL_12:
     v144[1] = v17;
     v144[2] = &unk_1F241E7D0;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:v143 count:3];
-    v5[2](v5, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_snapshot)
   {
     info = 0;
     mach_timebase_info(&info);
-    v96 = v5;
+    v96 = blockCopy;
     if (info.denom)
     {
       v19 = ((self->_snapshot->var1 - self->_snapshot->var0) * info.numer / info.denom + 500000) / 0xF4240;
@@ -667,9 +667,9 @@ LABEL_12:
     v96[2](v96, v30);
 
     self = v101;
-    v100 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = +[OSASystemConfiguration sharedInstance];
-    v98 = [v31 appleInternal];
+    appleInternal = [v31 appleInternal];
 
     snapshot = v101->_snapshot;
     if (snapshot->var4)
@@ -682,12 +682,12 @@ LABEL_12:
         v35 = snapshot + v33;
         memset(out, 0, 37);
         uuid_unparse_lower(&snapshot->var5[0].var6[v33], out);
-        v36 = [MEMORY[0x1E695DF70] array];
-        v37 = v36;
+        array2 = [MEMORY[0x1E695DF70] array];
+        v37 = array2;
         v38 = *(&snapshot->var5[0].var3 + v33);
         if (v38)
         {
-          [v36 addObject:@"suspended"];
+          [array2 addObject:@"suspended"];
           v38 = *(v35 + 61);
         }
 
@@ -875,7 +875,7 @@ LABEL_30:
           [v55 setObject:v61 forKeyedSubscript:@"reason"];
         }
 
-        v62 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         if (*(&v111->var5[0].var12 + v117) || *(&v111->var5[0].var13 + v117))
         {
           v63 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
@@ -883,19 +883,19 @@ LABEL_30:
           v64 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(&v111->var5[0].var13 + v117)];
           v133[1] = v64;
           v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v133 count:2];
-          [v62 setObject:v65 forKeyedSubscript:@"internal"];
+          [dictionary setObject:v65 forKeyedSubscript:@"internal"];
         }
 
         if (*(&v111->var5[0].var28 + v117))
         {
           v66 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-          [v62 setObject:v66 forKeyedSubscript:@"frozen_to_swap_pages"];
+          [dictionary setObject:v66 forKeyedSubscript:@"frozen_to_swap_pages"];
         }
 
         v67 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(&v111->var5[0].var20 + v117)];
         [v55 setObject:v67 forKeyedSubscript:@"mem_regions"];
 
-        if (v98)
+        if (appleInternal)
         {
           v68 = v111 + v117;
           if (*(&v111->var5[0].var14 + v117) || *(v68 + 336))
@@ -905,7 +905,7 @@ LABEL_30:
             v70 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v68 + 336)];
             v132[1] = v70;
             v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:v132 count:2];
-            [v62 setObject:v71 forKeyedSubscript:@"purgeable_nv"];
+            [dictionary setObject:v71 forKeyedSubscript:@"purgeable_nv"];
           }
 
           v72 = v111 + v117;
@@ -916,19 +916,19 @@ LABEL_30:
             v74 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v72 + 352)];
             v131[1] = v74;
             v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:2];
-            [v62 setObject:v75 forKeyedSubscript:@"alternate"];
+            [dictionary setObject:v75 forKeyedSubscript:@"alternate"];
           }
 
           if (*(&v111->var5[0].var18 + v117))
           {
             v76 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-            [v62 setObject:v76 forKeyedSubscript:@"iokit"];
+            [dictionary setObject:v76 forKeyedSubscript:@"iokit"];
           }
 
           if (*(&v111->var5[0].var19 + v117))
           {
             v77 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-            [v62 setObject:v77 forKeyedSubscript:@"table"];
+            [dictionary setObject:v77 forKeyedSubscript:@"table"];
           }
 
           if (*(&v111->var5[0].var31 + v117))
@@ -938,9 +938,9 @@ LABEL_30:
           }
         }
 
-        if ([v62 count])
+        if ([dictionary count])
         {
-          [v55 setObject:v62 forKeyedSubscript:@"physicalPages"];
+          [v55 setObject:dictionary forKeyedSubscript:@"physicalPages"];
         }
 
         v79 = v111 + v117;
@@ -956,7 +956,7 @@ LABEL_30:
         v82 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v79 + 464)];
         [v55 setObject:v82 forKeyedSubscript:@"csTrustLevel"];
 
-        [v100 addObject:v55];
+        [array addObject:v55];
         v34 = v114 + 1;
         snapshot = v101->_snapshot;
         v33 = v117 + 288;
@@ -967,7 +967,7 @@ LABEL_30:
 
     v129[0] = @"processes";
     v129[1] = &unk_1F241E860;
-    v130[0] = v100;
+    v130[0] = array;
     v130[1] = &unk_1F241E7D0;
     v83 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:v129 count:2];
     v13 = v96;
@@ -975,9 +975,9 @@ LABEL_30:
   }
 
   v84 = +[OSASystemConfiguration sharedInstance];
-  v85 = [v84 appleInternal];
+  appleInternal2 = [v84 appleInternal];
 
-  if (v85)
+  if (appleInternal2)
   {
     if ([(NSMutableArray *)self->_zones count])
     {

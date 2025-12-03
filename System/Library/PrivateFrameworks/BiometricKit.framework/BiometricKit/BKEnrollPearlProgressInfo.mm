@@ -1,13 +1,13 @@
 @interface BKEnrollPearlProgressInfo
-- (BKEnrollPearlProgressInfo)initWithPercents:(int64_t)a3;
+- (BKEnrollPearlProgressInfo)initWithPercents:(int64_t)percents;
 - (id)dictionary;
-- (id)initFromDictionary:(id)a3;
-- (id)initFromEnrollInfo:(id *)a3;
+- (id)initFromDictionary:(id)dictionary;
+- (id)initFromEnrollInfo:(id *)info;
 @end
 
 @implementation BKEnrollPearlProgressInfo
 
-- (BKEnrollPearlProgressInfo)initWithPercents:(int64_t)a3
+- (BKEnrollPearlProgressInfo)initWithPercents:(int64_t)percents
 {
   v9.receiver = self;
   v9.super_class = BKEnrollPearlProgressInfo;
@@ -15,18 +15,18 @@
   v5 = v4;
   if (v4)
   {
-    v4->_percentageCompleted = a3;
-    v6 = [MEMORY[0x1E695DEC8] array];
+    v4->_percentageCompleted = percents;
+    array = [MEMORY[0x1E695DEC8] array];
     enrolledPoses = v5->_enrolledPoses;
-    v5->_enrolledPoses = v6;
+    v5->_enrolledPoses = array;
   }
 
   return v5;
 }
 
-- (id)initFromEnrollInfo:(id *)a3
+- (id)initFromEnrollInfo:(id *)info
 {
-  if (a3)
+  if (info)
   {
     v18.receiver = self;
     v18.super_class = BKEnrollPearlProgressInfo;
@@ -35,24 +35,24 @@
     {
       v17 = v4;
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (*(&a3->var2.var12 + 1))
+      if (*(&info->var2.var12 + 1))
       {
         v6 = 0;
         do
         {
           v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          var13_low = LOWORD(a3->var2.var13);
-          if (LOWORD(a3->var2.var13))
+          var13_low = LOWORD(info->var2.var13);
+          if (LOWORD(info->var2.var13))
           {
             v9 = 0;
-            v10 = &a3->var2.var13 + 2;
+            v10 = &info->var2.var13 + 2;
             do
             {
               v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{v10[v6 * var13_low], v17}];
               [v7 addObject:v11];
 
               ++v9;
-              var13_low = LOWORD(a3->var2.var13);
+              var13_low = LOWORD(info->var2.var13);
               ++v10;
             }
 
@@ -65,11 +65,11 @@
           ++v6;
         }
 
-        while (v6 < *(&a3->var2.var12 + 1));
+        while (v6 < *(&info->var2.var12 + 1));
       }
 
       v13 = v17;
-      v17->_percentageCompleted = a3->var1;
+      v17->_percentageCompleted = info->var1;
       v14 = [v5 copy];
       enrolledPoses = v13->_enrolledPoses;
       v13->_enrolledPoses = v14;
@@ -90,18 +90,18 @@
   return v13;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = BKEnrollPearlProgressInfo;
   v5 = [(BKEnrollPearlProgressInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"percentageCompleted"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"percentageCompleted"];
     v5->_percentageCompleted = [v6 integerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"enrollPoses"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"enrollPoses"];
     enrolledPoses = v5->_enrolledPoses;
     v5->_enrolledPoses = v7;
   }

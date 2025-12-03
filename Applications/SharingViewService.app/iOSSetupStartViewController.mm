@@ -1,18 +1,18 @@
 @interface iOSSetupStartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (void)handleDeviceSetupNotification:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)handleStartButton:(id)a3;
-- (void)handleTapOutsideView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (void)handleDeviceSetupNotification:(id)notification;
+- (void)handleDismissButton:(id)button;
+- (void)handleStartButton:(id)button;
+- (void)handleTapOutsideView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation iOSSetupStartViewController
 
-- (void)handleTapOutsideView:(id)a3
+- (void)handleTapOutsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -21,9 +21,9 @@
   [self->super.super._mainController dismiss:1];
 }
 
-- (void)handleStartButton:(id)a3
+- (void)handleStartButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (BYTE2(self->_startButton))
   {
     goto LABEL_13;
@@ -66,10 +66,10 @@ LABEL_13:
         LogPrintF();
       }
 
-      v10 = [(SVSBaseViewController *)self containerView];
-      [v10 setSwipeDismissible:0];
+      containerView = [(SVSBaseViewController *)self containerView];
+      [containerView setSwipeDismissible:0];
 
-      if (v4 && MKBGetDeviceLockState() - 1 <= 1)
+      if (buttonCopy && MKBGetDeviceLockState() - 1 <= 1)
       {
         if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
         {
@@ -80,7 +80,7 @@ LABEL_13:
         v20 = 3221225472;
         v21 = sub_1000F36C0;
         v22 = &unk_100194E40;
-        v23 = self;
+        selfCopy = self;
         v24 = [UIApp beginBackgroundTaskWithExpirationHandler:&stru_100194DF0];
         SBSRequestPasscodeUnlockUI();
       }
@@ -98,7 +98,7 @@ LABEL_13:
           handler[2] = sub_1000F385C;
           handler[3] = &unk_100195A70;
           v17 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-          v18 = self;
+          selfCopy2 = self;
           v11 = v17;
           dispatch_source_set_event_handler(v11, handler);
           SFDispatchTimerSet();
@@ -108,11 +108,11 @@ LABEL_13:
         else
         {
           v12 = objc_alloc_init(SFDevice);
-          v13 = [self->super.super._mainController userInfo];
+          userInfo = [self->super.super._mainController userInfo];
           [v12 setOsVersion:CFDictionaryGetInt64Ranged()];
 
-          v14 = [self->super.super._mainController deviceIdentifier];
-          [v12 setIdentifier:v14];
+          deviceIdentifier = [self->super.super._mainController deviceIdentifier];
+          [v12 setIdentifier:deviceIdentifier];
 
           [self->super.super._mainController _sessionStart:v12];
         }
@@ -126,33 +126,33 @@ LABEL_13:
   }
 }
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ((BYTE1(self->_startButton) & 1) == 0)
   {
-    v15 = v4;
-    v5 = [v4 name];
-    v6 = [v15 userInfo];
+    v15 = notificationCopy;
+    name = [notificationCopy name];
+    userInfo = [v15 userInfo];
     if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
     {
       v7 = &stru_100195CA8;
-      if (v6)
+      if (userInfo)
       {
-        v7 = v6;
+        v7 = userInfo;
       }
 
-      v13 = v5;
+      v13 = name;
       v14 = v7;
       LogPrintF();
     }
 
-    v8 = [v15 name];
-    v9 = [v8 isEqual:@"com.apple.sharing.DeviceSetup"];
+    name2 = [v15 name];
+    v9 = [name2 isEqual:@"com.apple.sharing.DeviceSetup"];
 
     if (v9 && !CFDictionaryGetInt64())
     {
-      v10 = [self->super.super._mainController userInfo];
+      userInfo2 = [self->super.super._mainController userInfo];
       CFStringGetTypeID();
       v11 = CFDictionaryGetTypedValue();
 
@@ -169,13 +169,13 @@ LABEL_13:
       }
     }
 
-    v4 = v15;
+    notificationCopy = v15;
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -184,24 +184,24 @@ LABEL_13:
   [self->super.super._mainController dismiss:5];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (BYTE1(self->_startButton))
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [a4 view];
-  v8 = [v6 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  v4 = v7 == v8;
+  v4 = view == view2;
   return v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -209,14 +209,14 @@ LABEL_13:
 
   v6.receiver = self;
   v6.super_class = iOSSetupStartViewController;
-  [(iOSSetupStartViewController *)&v6 viewDidDisappear:v3];
+  [(iOSSetupStartViewController *)&v6 viewDidDisappear:disappearCopy];
   v5 = +[NSDistributedNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -224,16 +224,16 @@ LABEL_13:
 
   v60.receiver = self;
   v60.super_class = iOSSetupStartViewController;
-  [(SVSBaseViewController *)&v60 viewWillAppear:v3];
-  v5 = [self->super.super._mainController _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.0];
+  [(SVSBaseViewController *)&v60 viewWillAppear:appearCopy];
+  _remoteViewControllerProxy = [self->super.super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTapOutsideView:"];
   [v6 setDelegate:self];
   [v6 setNumberOfTapsRequired:1];
   [v6 setCancelsTouchesInView:0];
-  v7 = [(iOSSetupStartViewController *)self view];
-  [v7 addGestureRecognizer:v6];
+  view = [(iOSSetupStartViewController *)self view];
+  [view addGestureRecognizer:v6];
 
   v8 = [self->super.super._mainController otherDeviceClassCode] - 1;
   if (v8 > 6)
@@ -250,10 +250,10 @@ LABEL_13:
   v11 = sub_10012794C(@"Localizable", v10);
   [*(&self->_dismissButton + 1) setText:v11];
 
-  v12 = [*(&self->_progressLabel + 1) titleLabel];
-  [v12 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [*(&self->_progressLabel + 1) titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-  v13 = [self->super.super._mainController otherDeviceClassCode];
+  otherDeviceClassCode = [self->super.super._mainController otherDeviceClassCode];
   v14 = [self->super.super._mainController otherDeviceModelCode] - 1;
   if (v14 < 3)
   {
@@ -263,8 +263,8 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  LOBYTE(v14) = v13 - 2;
-  if ((v13 - 2) < 4u)
+  LOBYTE(v14) = otherDeviceClassCode - 2;
+  if ((otherDeviceClassCode - 2) < 4u)
   {
     v15 = off_100195868;
     goto LABEL_12;
@@ -302,9 +302,9 @@ LABEL_14:
   }
 
   v24 = objc_alloc_init(ACAccountStore);
-  v25 = [v24 aa_primaryAppleAccount];
-  v26 = [v25 username];
-  if (![v26 length])
+  aa_primaryAppleAccount = [v24 aa_primaryAppleAccount];
+  username = [aa_primaryAppleAccount username];
+  if (![username length])
   {
 
 LABEL_24:
@@ -320,25 +320,25 @@ LABEL_24:
     }
 
     v24 = [@"IOS_SETUP_START_INFO" stringByAppendingString:v29];
-    v25 = sub_10012794C(@"Localizable", v24);
-    [*(&self->_titleLabel + 1) setText:v25];
+    aa_primaryAppleAccount = sub_10012794C(@"Localizable", v24);
+    [*(&self->_titleLabel + 1) setText:aa_primaryAppleAccount];
     goto LABEL_35;
   }
 
-  if ([v26 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([username rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v27 = SFLocalizePhoneNumber();
   }
 
   else
   {
-    v27 = v26;
+    v27 = username;
   }
 
   v30 = v27;
   v31 = [self->super.super._mainController otherDeviceClassCode] - 1;
   v58 = v17;
-  v57 = v26;
+  v57 = username;
   if (v31 > 6)
   {
     v32 = @"_IPHONE";
@@ -389,8 +389,8 @@ LABEL_35:
     [v53 addObserver:self selector:"handleDeviceSetupNotification:" name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];
   }
 
-  v54 = [(SVSBaseViewController *)self containerView];
-  [v54 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 
   if (BYTE2(self->_startButton) == 1)
   {

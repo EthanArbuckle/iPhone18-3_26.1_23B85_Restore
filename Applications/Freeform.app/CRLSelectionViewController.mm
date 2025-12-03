@@ -16,7 +16,7 @@
 
 - (NSArray)decoratorOverlayViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100912174();
 
   sub_100006370(0, &qword_1019F6D00);

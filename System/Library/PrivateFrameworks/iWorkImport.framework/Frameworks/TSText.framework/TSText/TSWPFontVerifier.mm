@@ -1,7 +1,7 @@
 @interface TSWPFontVerifier
 + (id)sharedInstance;
-- (BOOL)isCoreTextDownloadableFontName:(id)a3;
-- (BOOL)isFontWithPostscriptNameInstalled:(id)a3;
+- (BOOL)isCoreTextDownloadableFontName:(id)name;
+- (BOOL)isFontWithPostscriptNameInstalled:(id)installed;
 @end
 
 @implementation TSWPFontVerifier
@@ -18,20 +18,20 @@
   return v3;
 }
 
-- (BOOL)isFontWithPostscriptNameInstalled:(id)a3
+- (BOOL)isFontWithPostscriptNameInstalled:(id)installed
 {
-  v3 = a3;
+  installedCopy = installed;
   v6 = objc_msgSend_missingFontName(TSWPFontVerifier, v4, v5);
-  v8 = objc_msgSend_containsString_(v3, v7, v6);
+  v8 = objc_msgSend_containsString_(installedCopy, v7, v6);
 
-  if (v8 & 1) != 0 || objc_msgSend_uiFontTypeForFontName_(TSWPFont, v9, v3) != -1 || (objc_msgSend_isSystemFontName_(TSWPFont, v10, v3))
+  if (v8 & 1) != 0 || objc_msgSend_uiFontTypeForFontName_(TSWPFont, v9, installedCopy) != -1 || (objc_msgSend_isSystemFontName_(TSWPFont, v10, installedCopy))
   {
     v11 = 1;
   }
 
   else
   {
-    v13 = CTFontCreateWithNameAndOptions(v3, 0.0, 0, 1uLL);
+    v13 = CTFontCreateWithNameAndOptions(installedCopy, 0.0, 0, 1uLL);
     if (v13)
     {
       v14 = v13;
@@ -52,16 +52,16 @@
   return v11;
 }
 
-- (BOOL)isCoreTextDownloadableFontName:(id)a3
+- (BOOL)isCoreTextDownloadableFontName:(id)name
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CC48A0];
   v15[0] = *MEMORY[0x277CC4908];
   v15[1] = v3;
-  v16[0] = a3;
+  v16[0] = name;
   v16[1] = MEMORY[0x277CBEC38];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v4, v6, v16, v15, 2);
 
   v8 = CTFontDescriptorCreateWithAttributes(v7);

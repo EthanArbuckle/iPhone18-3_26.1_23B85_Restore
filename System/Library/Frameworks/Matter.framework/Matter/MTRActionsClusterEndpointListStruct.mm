@@ -1,6 +1,6 @@
 @interface MTRActionsClusterEndpointListStruct
 - (MTRActionsClusterEndpointListStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,28 +23,28 @@
     type = v3->_type;
     v3->_type = &unk_284C3E588;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     endpoints = v3->_endpoints;
-    v3->_endpoints = v7;
+    v3->_endpoints = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRActionsClusterEndpointListStruct);
-  v5 = [(MTRActionsClusterEndpointListStruct *)self endpointListID];
-  [(MTRActionsClusterEndpointListStruct *)v4 setEndpointListID:v5];
+  endpointListID = [(MTRActionsClusterEndpointListStruct *)self endpointListID];
+  [(MTRActionsClusterEndpointListStruct *)v4 setEndpointListID:endpointListID];
 
-  v6 = [(MTRActionsClusterEndpointListStruct *)self name];
-  [(MTRActionsClusterEndpointListStruct *)v4 setName:v6];
+  name = [(MTRActionsClusterEndpointListStruct *)self name];
+  [(MTRActionsClusterEndpointListStruct *)v4 setName:name];
 
-  v7 = [(MTRActionsClusterEndpointListStruct *)self type];
-  [(MTRActionsClusterEndpointListStruct *)v4 setType:v7];
+  type = [(MTRActionsClusterEndpointListStruct *)self type];
+  [(MTRActionsClusterEndpointListStruct *)v4 setType:type];
 
-  v8 = [(MTRActionsClusterEndpointListStruct *)self endpoints];
-  [(MTRActionsClusterEndpointListStruct *)v4 setEndpoints:v8];
+  endpoints = [(MTRActionsClusterEndpointListStruct *)self endpoints];
+  [(MTRActionsClusterEndpointListStruct *)v4 setEndpoints:endpoints];
 
   return v4;
 }

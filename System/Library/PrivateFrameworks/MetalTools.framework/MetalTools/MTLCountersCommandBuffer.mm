@@ -1,46 +1,46 @@
 @interface MTLCountersCommandBuffer
-- (MTLCountersCommandBuffer)initWithCommandBuffer:(id)a3 commandQueue:(id)a4 descriptor:(id)a5;
+- (MTLCountersCommandBuffer)initWithCommandBuffer:(id)buffer commandQueue:(id)queue descriptor:(id)descriptor;
 - (id)blitCommandEncoder;
-- (id)blitCommandEncoderWithDescriptor:(id)a3;
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor;
 - (id)computeCommandEncoder;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
 - (id)resourceStateCommandEncoder;
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3;
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (void)addPurgedHeap:(id)a3;
-- (void)addPurgedResource:(id)a3;
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor;
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (void)addPurgedHeap:(id)heap;
+- (void)addPurgedResource:(id)resource;
 - (void)dealloc;
-- (void)presentDrawable:(id)a3;
-- (void)presentDrawable:(id)a3 atTime:(double)a4;
+- (void)presentDrawable:(id)drawable;
+- (void)presentDrawable:(id)drawable atTime:(double)time;
 - (void)waitUntilCompleted;
 - (void)waitUntilScheduled;
 @end
 
 @implementation MTLCountersCommandBuffer
 
-- (MTLCountersCommandBuffer)initWithCommandBuffer:(id)a3 commandQueue:(id)a4 descriptor:(id)a5
+- (MTLCountersCommandBuffer)initWithCommandBuffer:(id)buffer commandQueue:(id)queue descriptor:(id)descriptor
 {
   if ((atomic_load_explicit(&qword_27DA61180, memory_order_acquire) & 1) == 0)
   {
-    v10 = a4;
-    v9 = self;
+    queueCopy = queue;
+    selfCopy = self;
     [MTLCountersCommandBuffer initWithCommandBuffer:commandQueue:descriptor:];
-    self = v9;
-    a4 = v10;
+    self = selfCopy;
+    queue = queueCopy;
   }
 
   v11.receiver = self;
   v11.super_class = MTLCountersCommandBuffer;
-  v7 = [(MTLToolsCommandBuffer *)&v11 initWithCommandBuffer:a3 parent:a4 descriptor:a5];
+  v7 = [(MTLToolsCommandBuffer *)&v11 initWithCommandBuffer:buffer parent:queue descriptor:descriptor];
   if (v7)
   {
-    v7->_traceBuffer = -[MTLCountersTraceCommandBuffer init:]([MTLCountersTraceCommandBuffer alloc], "init:", [a3 retainedReferences]);
+    v7->_traceBuffer = -[MTLCountersTraceCommandBuffer init:]([MTLCountersTraceCommandBuffer alloc], "init:", [buffer retainedReferences]);
     if (_MergedGlobals == 1)
     {
       [(MTLToolsCommandBuffer *)v7 setProfilingEnabled:1];
@@ -102,13 +102,13 @@
   }
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLCountersRenderCommandEncoder alloc] initWithRenderCommandEncoder:v6 parent:self descriptor:a3];
+    v7 = [[MTLCountersRenderCommandEncoder alloc] initWithRenderCommandEncoder:v6 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v7;
@@ -140,13 +140,13 @@
   }
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLCountersComputeCommandEncoder alloc] initWithComputeCommandEncoder:v6 commandBuffer:self descriptor:a3];
+    v7 = [[MTLCountersComputeCommandEncoder alloc] initWithComputeCommandEncoder:v6 commandBuffer:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v7;
@@ -159,13 +159,13 @@
   }
 }
 
-- (id)blitCommandEncoderWithDescriptor:(id)a3
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLCountersBlitCommandEncoder alloc] initWithBlitCommandEncoder:v6 commandBuffer:self descriptor:a3];
+    v7 = [[MTLCountersBlitCommandEncoder alloc] initWithBlitCommandEncoder:v6 commandBuffer:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v7;
@@ -178,7 +178,7 @@
   }
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -197,13 +197,13 @@
   }
 }
 
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLCountersParallelRenderCommandEncoder alloc] initWithBaseRenderPass:v6 commandBuffer:self descriptor:a3];
+    v7 = [[MTLCountersParallelRenderCommandEncoder alloc] initWithBaseRenderPass:v6 commandBuffer:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v7;
@@ -216,13 +216,13 @@
   }
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = objc_autoreleasePoolPush();
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v10)
   {
-    v11 = [[MTLCountersRenderCommandEncoder alloc] initWithRenderCommandEncoder:v10 parent:self descriptor:a3];
+    v11 = [[MTLCountersRenderCommandEncoder alloc] initWithRenderCommandEncoder:v10 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v9);
 
     return v11;
@@ -235,7 +235,7 @@
   }
 }
 
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -254,7 +254,7 @@
   }
 }
 
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = objc_autoreleasePoolPush();
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -273,13 +273,13 @@
   }
 }
 
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = objc_autoreleasePoolPush();
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v10)
   {
-    v11 = [[MTLCountersComputeCommandEncoder alloc] initWithComputeCommandEncoder:v10 commandBuffer:self descriptor:a3];
+    v11 = [[MTLCountersComputeCommandEncoder alloc] initWithComputeCommandEncoder:v10 commandBuffer:self descriptor:descriptor];
     objc_autoreleasePoolPop(v9);
 
     return v11;
@@ -292,13 +292,13 @@
   }
 }
 
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLCountersResourceStateCommandEncoder alloc] initWithResourceStateCommandEncoder:v6 commandBuffer:self descriptor:a3];
+    v7 = [[MTLCountersResourceStateCommandEncoder alloc] initWithResourceStateCommandEncoder:v6 commandBuffer:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v7;
@@ -330,50 +330,50 @@
   }
 }
 
-- (void)addPurgedResource:(id)a3
+- (void)addPurgedResource:(id)resource
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 addPurgedResource:a3];
+  [baseObject addPurgedResource:resource];
 }
 
-- (void)addPurgedHeap:(id)a3
+- (void)addPurgedHeap:(id)heap
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 addPurgedHeap:a3];
+  [baseObject addPurgedHeap:heap];
 }
 
 - (void)waitUntilScheduled
 {
   [(MTLCountersTraceCommandBuffer *)self->_traceBuffer waitUntilScheduled];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 waitUntilScheduled];
+  [baseObject waitUntilScheduled];
 }
 
 - (void)waitUntilCompleted
 {
   [(MTLCountersTraceCommandBuffer *)self->_traceBuffer waitUntilCompleted];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 waitUntilCompleted];
+  [baseObject waitUntilCompleted];
 }
 
-- (void)presentDrawable:(id)a3
+- (void)presentDrawable:(id)drawable
 {
   [(MTLCountersTraceCommandBuffer *)self->_traceBuffer presentDrawable:?];
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 presentDrawable:a3];
+  [baseObject presentDrawable:drawable];
 }
 
-- (void)presentDrawable:(id)a3 atTime:(double)a4
+- (void)presentDrawable:(id)drawable atTime:(double)time
 {
   [MTLCountersTraceCommandBuffer presentDrawable:"presentDrawable:atTime:" atTime:?];
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 presentDrawable:a3 atTime:a4];
+  [baseObject presentDrawable:drawable atTime:time];
 }
 
 - (void)initWithCommandBuffer:commandQueue:descriptor:.cold.1()

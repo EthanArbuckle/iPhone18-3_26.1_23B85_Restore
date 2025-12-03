@@ -1,70 +1,70 @@
 @interface MLABOutput
-- (MLABOutput)initWithIdentity:(id)a3 LTM_output_E:(id)a4 Identity_10:(id)a5 Identity_11:(id)a6 Identity_12:(id)a7 Identity_13:(id)a8 Identity_14:(id)a9 LTM_output_L:(id)a10 LTM_output_S:(id)a11 Identity_4:(id)a12 Identity_5:(id)a13 STM_output_E:(id)a14 STM_output_L:(id)a15 STM_output_S:(id)a16 Identity_9:(id)a17;
-- (id)featureValueForName:(id)a3;
+- (MLABOutput)initWithIdentity:(id)identity LTM_output_E:(id)e Identity_10:(id)identity_10 Identity_11:(id)identity_11 Identity_12:(id)identity_12 Identity_13:(id)identity_13 Identity_14:(id)identity_14 LTM_output_L:(id)self0 LTM_output_S:(id)self1 Identity_4:(id)self2 Identity_5:(id)self3 STM_output_E:(id)self4 STM_output_L:(id)self5 STM_output_S:(id)self6 Identity_9:(id)self7;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation MLABOutput
 
-- (MLABOutput)initWithIdentity:(id)a3 LTM_output_E:(id)a4 Identity_10:(id)a5 Identity_11:(id)a6 Identity_12:(id)a7 Identity_13:(id)a8 Identity_14:(id)a9 LTM_output_L:(id)a10 LTM_output_S:(id)a11 Identity_4:(id)a12 Identity_5:(id)a13 STM_output_E:(id)a14 STM_output_L:(id)a15 STM_output_S:(id)a16 Identity_9:(id)a17
+- (MLABOutput)initWithIdentity:(id)identity LTM_output_E:(id)e Identity_10:(id)identity_10 Identity_11:(id)identity_11 Identity_12:(id)identity_12 Identity_13:(id)identity_13 Identity_14:(id)identity_14 LTM_output_L:(id)self0 LTM_output_S:(id)self1 Identity_4:(id)self2 Identity_5:(id)self3 STM_output_E:(id)self4 STM_output_L:(id)self5 STM_output_S:(id)self6 Identity_9:(id)self7
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identity);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, e);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
+  objc_storeStrong(&v38, identity_10);
   v37 = 0;
-  objc_storeStrong(&v37, a6);
+  objc_storeStrong(&v37, identity_11);
   v36 = 0;
-  objc_storeStrong(&v36, a7);
+  objc_storeStrong(&v36, identity_12);
   v35 = 0;
-  objc_storeStrong(&v35, a8);
+  objc_storeStrong(&v35, identity_13);
   v34 = 0;
-  objc_storeStrong(&v34, a9);
+  objc_storeStrong(&v34, identity_14);
   v33 = 0;
-  objc_storeStrong(&v33, a10);
+  objc_storeStrong(&v33, l);
   v32 = 0;
-  objc_storeStrong(&v32, a11);
+  objc_storeStrong(&v32, s);
   v31 = 0;
-  objc_storeStrong(&v31, a12);
+  objc_storeStrong(&v31, identity_4);
   v30 = 0;
-  objc_storeStrong(&v30, a13);
+  objc_storeStrong(&v30, identity_5);
   v29 = 0;
-  objc_storeStrong(&v29, a14);
+  objc_storeStrong(&v29, m_output_E);
   v28 = 0;
-  objc_storeStrong(&v28, a15);
+  objc_storeStrong(&v28, m_output_L);
   v27 = 0;
-  objc_storeStrong(&v27, a16);
+  objc_storeStrong(&v27, m_output_S);
   v26 = 0;
-  objc_storeStrong(&v26, a17);
-  v17 = v41;
-  v41 = 0;
+  objc_storeStrong(&v26, identity_9);
+  v17 = selfCopy;
+  selfCopy = 0;
   v25.receiver = v17;
   v25.super_class = MLABOutput;
-  v41 = [(MLABOutput *)&v25 init];
-  objc_storeStrong(&v41, v41);
-  if (v41)
+  selfCopy = [(MLABOutput *)&v25 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v41->_Identity, location[0]);
-    objc_storeStrong(&v41->_LTM_output_E, v39);
-    objc_storeStrong(&v41->_Identity_10, v38);
-    objc_storeStrong(&v41->_Identity_11, v37);
-    objc_storeStrong(&v41->_Identity_12, v36);
-    objc_storeStrong(&v41->_Identity_13, v35);
-    objc_storeStrong(&v41->_Identity_14, v34);
-    objc_storeStrong(&v41->_LTM_output_L, v33);
-    objc_storeStrong(&v41->_LTM_output_S, v32);
-    objc_storeStrong(&v41->_Identity_4, v31);
-    objc_storeStrong(&v41->_Identity_5, v30);
-    objc_storeStrong(&v41->_STM_output_E, v29);
-    objc_storeStrong(&v41->_STM_output_L, v28);
-    objc_storeStrong(&v41->_STM_output_S, v27);
-    objc_storeStrong(&v41->_Identity_9, v26);
+    objc_storeStrong(&selfCopy->_Identity, location[0]);
+    objc_storeStrong(&selfCopy->_LTM_output_E, v39);
+    objc_storeStrong(&selfCopy->_Identity_10, v38);
+    objc_storeStrong(&selfCopy->_Identity_11, v37);
+    objc_storeStrong(&selfCopy->_Identity_12, v36);
+    objc_storeStrong(&selfCopy->_Identity_13, v35);
+    objc_storeStrong(&selfCopy->_Identity_14, v34);
+    objc_storeStrong(&selfCopy->_LTM_output_L, v33);
+    objc_storeStrong(&selfCopy->_LTM_output_S, v32);
+    objc_storeStrong(&selfCopy->_Identity_4, v31);
+    objc_storeStrong(&selfCopy->_Identity_5, v30);
+    objc_storeStrong(&selfCopy->_STM_output_E, v29);
+    objc_storeStrong(&selfCopy->_STM_output_L, v28);
+    objc_storeStrong(&selfCopy->_STM_output_S, v27);
+    objc_storeStrong(&selfCopy->_Identity_9, v26);
   }
 
-  v19 = MEMORY[0x1E69E5928](v41);
+  v19 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
@@ -80,134 +80,134 @@
   objc_storeStrong(&v38, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v19;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   if ([location[0] isEqualToString:@"Identity"])
   {
     MLFeatureValueClass_1 = getMLFeatureValueClass_1();
-    v34 = [(MLABOutput *)v36 Identity];
+    identity = [(MLABOutput *)selfCopy Identity];
     v37 = [MLFeatureValueClass_1 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v34);
+    MEMORY[0x1E69E5920](identity);
   }
 
   else if ([location[0] isEqualToString:@"LTM_output_E"])
   {
     v31 = getMLFeatureValueClass_1();
-    v32 = [(MLABOutput *)v36 LTM_output_E];
+    lTM_output_E = [(MLABOutput *)selfCopy LTM_output_E];
     v37 = [v31 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v32);
+    MEMORY[0x1E69E5920](lTM_output_E);
   }
 
   else if ([location[0] isEqualToString:@"Identity_10"])
   {
     v29 = getMLFeatureValueClass_1();
-    v30 = [(MLABOutput *)v36 Identity];
+    identity2 = [(MLABOutput *)selfCopy Identity];
     v37 = [v29 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v30);
+    MEMORY[0x1E69E5920](identity2);
   }
 
   else if ([location[0] isEqualToString:@"Identity_11"])
   {
     v27 = getMLFeatureValueClass_1();
-    v28 = [(MLABOutput *)v36 Identity];
+    identity3 = [(MLABOutput *)selfCopy Identity];
     v37 = [v27 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v28);
+    MEMORY[0x1E69E5920](identity3);
   }
 
   else if ([location[0] isEqualToString:@"Identity_12"])
   {
     v25 = getMLFeatureValueClass_1();
-    v26 = [(MLABOutput *)v36 Identity];
+    identity4 = [(MLABOutput *)selfCopy Identity];
     v37 = [v25 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v26);
+    MEMORY[0x1E69E5920](identity4);
   }
 
   else if ([location[0] isEqualToString:@"Identity_13"])
   {
     v23 = getMLFeatureValueClass_1();
-    v24 = [(MLABOutput *)v36 Identity];
+    identity5 = [(MLABOutput *)selfCopy Identity];
     v37 = [v23 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v24);
+    MEMORY[0x1E69E5920](identity5);
   }
 
   else if ([location[0] isEqualToString:@"Identity_14"])
   {
     v21 = getMLFeatureValueClass_1();
-    v22 = [(MLABOutput *)v36 Identity];
+    identity6 = [(MLABOutput *)selfCopy Identity];
     v37 = [v21 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v22);
+    MEMORY[0x1E69E5920](identity6);
   }
 
   else if ([location[0] isEqualToString:@"LTM_output_L"])
   {
     v19 = getMLFeatureValueClass_1();
-    v20 = [(MLABOutput *)v36 LTM_output_L];
+    lTM_output_L = [(MLABOutput *)selfCopy LTM_output_L];
     v37 = [v19 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v20);
+    MEMORY[0x1E69E5920](lTM_output_L);
   }
 
   else if ([location[0] isEqualToString:@"LTM_output_S"])
   {
     v17 = getMLFeatureValueClass_1();
-    v18 = [(MLABOutput *)v36 LTM_output_S];
+    lTM_output_S = [(MLABOutput *)selfCopy LTM_output_S];
     v37 = [v17 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v18);
+    MEMORY[0x1E69E5920](lTM_output_S);
   }
 
   else if ([location[0] isEqualToString:@"Identity_4"])
   {
     v15 = getMLFeatureValueClass_1();
-    v16 = [(MLABOutput *)v36 Identity];
+    identity7 = [(MLABOutput *)selfCopy Identity];
     v37 = [v15 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v16);
+    MEMORY[0x1E69E5920](identity7);
   }
 
   else if ([location[0] isEqualToString:@"Identity_5"])
   {
     v13 = getMLFeatureValueClass_1();
-    v14 = [(MLABOutput *)v36 Identity];
+    identity8 = [(MLABOutput *)selfCopy Identity];
     v37 = [v13 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v14);
+    MEMORY[0x1E69E5920](identity8);
   }
 
   else if ([location[0] isEqualToString:@"STM_output_E"])
   {
     v11 = getMLFeatureValueClass_1();
-    v12 = [(MLABOutput *)v36 STM_output_E];
+    sTM_output_E = [(MLABOutput *)selfCopy STM_output_E];
     v37 = [v11 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v12);
+    MEMORY[0x1E69E5920](sTM_output_E);
   }
 
   else if ([location[0] isEqualToString:@"STM_output_L"])
   {
     v9 = getMLFeatureValueClass_1();
-    v10 = [(MLABOutput *)v36 STM_output_L];
+    sTM_output_L = [(MLABOutput *)selfCopy STM_output_L];
     v37 = [v9 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v10);
+    MEMORY[0x1E69E5920](sTM_output_L);
   }
 
   else if ([location[0] isEqualToString:@"STM_output_S"])
   {
     v7 = getMLFeatureValueClass_1();
-    v8 = [(MLABOutput *)v36 STM_output_S];
+    sTM_output_S = [(MLABOutput *)selfCopy STM_output_S];
     v37 = [v7 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](sTM_output_S);
   }
 
   else if ([location[0] isEqualToString:@"Identity_9"])
   {
     v5 = getMLFeatureValueClass_1();
-    v6 = [(MLABOutput *)v36 Identity];
+    identity9 = [(MLABOutput *)selfCopy Identity];
     v37 = [v5 featureValueWithMultiArray:?];
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](identity9);
   }
 
   else

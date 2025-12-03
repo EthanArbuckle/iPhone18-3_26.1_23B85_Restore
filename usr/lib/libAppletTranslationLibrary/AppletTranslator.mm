@@ -1,27 +1,27 @@
 @interface AppletTranslator
-+ (BOOL)appletCacheUpdated:(id)a3 serialNumber:(id)a4 isdSequenceCounter:(id)a5 transceiver:(id)a6 error:(id *)a7;
-+ (BOOL)getCurrentInMetroStatus:(id *)a3;
-+ (BOOL)isLegacyApplet:(id)a3 withPackage:(id)a4 withModule:(id)a5;
-+ (BOOL)setPlasticCardMode:(BOOL)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 serialNumber:(id)a7 transceiver:(id)a8 error:(id *)a9;
++ (BOOL)appletCacheUpdated:(id)updated serialNumber:(id)number isdSequenceCounter:(id)counter transceiver:(id)transceiver error:(id *)error;
++ (BOOL)getCurrentInMetroStatus:(id *)status;
++ (BOOL)isLegacyApplet:(id)applet withPackage:(id)package withModule:(id)module;
++ (BOOL)setPlasticCardMode:(BOOL)mode withApplet:(id)applet withPackage:(id)package withModule:(id)module serialNumber:(id)number transceiver:(id)transceiver error:(id *)error;
 + (_DWORD)dumpState;
-+ (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
++ (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
 + (id)getATLDelegate;
-+ (id)getAppletStateAndHistory:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-+ (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-+ (id)processEndOfTransaction:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
++ (id)getAppletStateAndHistory:(id)history withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
++ (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
++ (id)processEndOfTransaction:(id)transaction withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
 + (id)userDefaults;
 + (uint64_t)isInternalBuild;
 + (void)cleanup;
-+ (void)deregisterForCleanup:(uint64_t)a1;
-+ (void)initLibrary:(id)a3;
-+ (void)initLibraryWithDelegate:(id)a3;
-+ (void)registerForCleanup:(uint64_t)a1;
++ (void)deregisterForCleanup:(uint64_t)cleanup;
++ (void)initLibrary:(id)library;
++ (void)initLibraryWithDelegate:(id)delegate;
++ (void)registerForCleanup:(uint64_t)cleanup;
 @end
 
 @implementation AppletTranslator
 
-+ (void)initLibrary:(id)a3
++ (void)initLibrary:(id)library
 {
   +[AppletConfigurationData init];
   if (initLibrary__onceToken != -1)
@@ -102,10 +102,10 @@
   return v11;
 }
 
-+ (void)initLibraryWithDelegate:(id)a3
++ (void)initLibraryWithDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeStrong(&delegate, a3);
+  delegateCopy = delegate;
+  objc_storeStrong(&delegate, delegate);
   +[AppletConfigurationData init];
   if (initLibraryWithDelegate__onceToken != -1)
   {
@@ -113,14 +113,14 @@
   }
 }
 
-+ (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
++ (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  eventCopy = event;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
   if (parseHCIEvent_withApplet_withPackage_withModule_withTransceiver_withError__onceToken != -1)
   {
     +[AppletTranslator parseHCIEvent:withApplet:withPackage:withModule:withTransceiver:withError:];
@@ -128,17 +128,17 @@
 
   if (parseHCIEvent_withApplet_withPackage_withModule_withTransceiver_withError__debugHCIPrint == 1)
   {
-    v18 = [v13 bytes];
-    v19 = [v13 length];
-    LogBinary(OS_LOG_TYPE_DEFAULT, "+[AppletTranslator parseHCIEvent:withApplet:withPackage:withModule:withTransceiver:withError:]", 85, v18, v19, @"AID: %@ HCI:", v20, v21, v14);
+    bytes = [eventCopy bytes];
+    v19 = [eventCopy length];
+    LogBinary(OS_LOG_TYPE_DEFAULT, "+[AppletTranslator parseHCIEvent:withApplet:withPackage:withModule:withTransceiver:withError:]", 85, bytes, v19, @"AID: %@ HCI:", v20, v21, appletCopy);
   }
 
-  v22 = [ATLGetDecoder getDecoderForApplet:v14 withPackage:v15 withModule:v16];
+  v22 = [ATLGetDecoder getDecoderForApplet:appletCopy withPackage:packageCopy withModule:moduleCopy];
   if (v22)
   {
-    if (v17)
+    if (transceiverCopy)
     {
-      v23 = [TransceiverWrapper withTransceiver:v17];
+      v23 = [TransceiverWrapper withTransceiver:transceiverCopy];
     }
 
     else
@@ -146,9 +146,9 @@
       v23 = 0;
     }
 
-    v35 = [v22 parseHCIEvent:v13 withApplet:v14 withPackage:v15 withModule:v16 withTransceiver:v23 withError:a8];
+    v35 = [v22 parseHCIEvent:eventCopy withApplet:appletCopy withPackage:packageCopy withModule:moduleCopy withTransceiver:v23 withError:error];
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -160,23 +160,23 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v54 = v14;
+      v54 = appletCopy;
       v55 = 2112;
-      v56 = v15;
+      v56 = packageCopy;
       v57 = 2112;
-      v58 = v16;
+      v58 = moduleCopy;
       _os_log_impl(&dword_22EEF5000, v24, OS_LOG_TYPE_ERROR, "No suitable decoder for AID %@ PID %@ MID %@", buf, 0x20u);
     }
 
-    v48 = v14;
+    v48 = appletCopy;
     v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@"];
     v26 = v25;
-    if (a8)
+    if (error)
     {
-      v27 = *a8;
+      v27 = *error;
       v28 = MEMORY[0x277CCA9B8];
       v29 = *MEMORY[0x277CCA450];
-      if (*a8)
+      if (*error)
       {
         v30 = *MEMORY[0x277CCA7E8];
         v49[0] = *MEMORY[0x277CCA450];
@@ -200,21 +200,21 @@
       }
 
       v36 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:v34];
-      *a8 = [v28 errorWithDomain:@"ATL" code:2 userInfo:v36];
+      *error = [v28 errorWithDomain:@"ATL" code:2 userInfo:v36];
     }
 
     v35 = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_21;
     }
   }
 
-  if (*a8)
+  if (*error)
   {
-    v37 = [v13 bytes];
-    v38 = [v13 length];
-    LogBinary(OS_LOG_TYPE_ERROR, "+[AppletTranslator parseHCIEvent:withApplet:withPackage:withModule:withTransceiver:withError:]", 108, v37, v38, @"Failed to parse HCI event:", v39, v40, v48);
+    bytes2 = [eventCopy bytes];
+    v38 = [eventCopy length];
+    LogBinary(OS_LOG_TYPE_ERROR, "+[AppletTranslator parseHCIEvent:withApplet:withPackage:withModule:withTransceiver:withError:]", 108, bytes2, v38, @"Failed to parse HCI event:", v39, v40, v48);
     goto LABEL_30;
   }
 
@@ -298,17 +298,17 @@ void __94__AppletTranslator_parseHCIEvent_withApplet_withPackage_withModule_with
   return v0;
 }
 
-+ (id)getAppletStateAndHistory:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
++ (id)getAppletStateAndHistory:(id)history withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [ATLGetDecoder getDecoderForApplet:v11 withPackage:v12 withModule:v13];
+  historyCopy = history;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
+  v15 = [ATLGetDecoder getDecoderForApplet:historyCopy withPackage:packageCopy withModule:moduleCopy];
   if (v15)
   {
-    [TransceiverWrapper withTransceiver:v14];
+    [TransceiverWrapper withTransceiver:transceiverCopy];
     v45 = v50 = 0;
     v16 = [v15 getAppletStateAndHistory:? withApplet:? withPackage:? withModule:? withError:?];
     v17 = 0;
@@ -318,21 +318,21 @@ void __94__AppletTranslator_parseHCIEvent_withApplet_withPackage_withModule_with
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v57 = v11;
+        v57 = historyCopy;
         v58 = 2112;
-        v59 = v12;
+        v59 = packageCopy;
         v60 = 2112;
-        v61 = v13;
+        v61 = moduleCopy;
         _os_log_impl(&dword_22EEF5000, v37, OS_LOG_TYPE_ERROR, "Failed to query AID %@ PID %@ MID %@", buf, 0x20u);
       }
 
       v28 = v45;
       [v45 dumpAPDUs:&__block_literal_global_892];
-      if (a7)
+      if (error)
       {
         v38 = v17;
         v39 = 0;
-        *a7 = v17;
+        *error = v17;
       }
 
       else
@@ -365,7 +365,7 @@ void __94__AppletTranslator_parseHCIEvent_withApplet_withPackage_withModule_with
       if (v23)
       {
         v43 = v15;
-        v44 = v14;
+        v44 = transceiverCopy;
         v24 = *v47;
         while (2)
         {
@@ -394,11 +394,11 @@ void __94__AppletTranslator_parseHCIEvent_withApplet_withPackage_withModule_with
 
 LABEL_25:
         v15 = v43;
-        v14 = v44;
+        transceiverCopy = v44;
       }
 
       v40 = +[_TtC24AppletTranslationLibrary17MetroStateMonitor shared];
-      [v40 consumeStateWithAid:v11 newState:v23];
+      [v40 consumeStateWithAid:historyCopy newState:v23];
 
       v16 = v16;
       v39 = v16;
@@ -412,31 +412,31 @@ LABEL_25:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v57 = v11;
+      v57 = historyCopy;
       v58 = 2112;
-      v59 = v12;
+      v59 = packageCopy;
       v60 = 2112;
-      v61 = v13;
+      v61 = moduleCopy;
       _os_log_impl(&dword_22EEF5000, v26, OS_LOG_TYPE_ERROR, "No suitable decoder for AID %@ PID %@ MID %@", buf, 0x20u);
     }
 
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@", v11, v12, v13];
-    v28 = v27;
-    if (!a7)
+    moduleCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@", historyCopy, packageCopy, moduleCopy];
+    v28 = moduleCopy;
+    if (!error)
     {
       v39 = 0;
       goto LABEL_33;
     }
 
-    v29 = *a7;
+    v29 = *error;
     v30 = MEMORY[0x277CCA9B8];
     v31 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v32 = *MEMORY[0x277CCA7E8];
       v52[0] = *MEMORY[0x277CCA450];
       v52[1] = v32;
-      v53[0] = v27;
+      v53[0] = moduleCopy;
       v53[1] = v29;
       v33 = MEMORY[0x277CBEAC0];
       v34 = v53;
@@ -447,7 +447,7 @@ LABEL_25:
     else
     {
       v54 = *MEMORY[0x277CCA450];
-      v55 = v27;
+      v55 = moduleCopy;
       v33 = MEMORY[0x277CBEAC0];
       v34 = &v55;
       v35 = &v54;
@@ -456,7 +456,7 @@ LABEL_25:
 
     v17 = [v33 dictionaryWithObjects:v34 forKeys:v35 count:v36];
     [v30 errorWithDomain:@"ATL" code:2 userInfo:v17];
-    *a7 = v39 = 0;
+    *error = v39 = 0;
   }
 
 LABEL_33:
@@ -465,19 +465,19 @@ LABEL_33:
   return v39;
 }
 
-+ (BOOL)appletCacheUpdated:(id)a3 serialNumber:(id)a4 isdSequenceCounter:(id)a5 transceiver:(id)a6 error:(id *)a7
++ (BOOL)appletCacheUpdated:(id)updated serialNumber:(id)number isdSequenceCounter:(id)counter transceiver:(id)transceiver error:(id *)error
 {
   v120 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v87 = a4;
-  v86 = a5;
-  v93 = a6;
-  v90 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  updatedCopy = updated;
+  numberCopy = number;
+  counterCopy = counter;
+  transceiverCopy = transceiver;
+  v90 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(updatedCopy, "count")}];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v11 = v10;
+  v11 = updatedCopy;
   v12 = [v11 countByEnumeratingWithState:&v105 objects:v119 count:16];
   if (v12)
   {
@@ -534,15 +534,15 @@ LABEL_33:
                 }
 
                 v43 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Applet %@ missing prop %@", v18, v24];
-                v29 = v86;
-                if (a7)
+                v29 = counterCopy;
+                if (error)
                 {
-                  v44 = *a7;
+                  v44 = *error;
                   v45 = MEMORY[0x277CCA9B8];
                   v46 = *MEMORY[0x277CCA450];
-                  v37 = v87;
+                  v37 = numberCopy;
                   v35 = v84;
-                  if (*a7)
+                  if (*error)
                   {
                     v47 = *MEMORY[0x277CCA7E8];
                     v110[0] = *MEMORY[0x277CCA450];
@@ -568,7 +568,7 @@ LABEL_33:
                   }
 
                   v78 = [v49 dictionaryWithObjects:v50 forKeys:v51 count:v52];
-                  *a7 = [v45 errorWithDomain:@"ATL" code:6 userInfo:v78];
+                  *error = [v45 errorWithDomain:@"ATL" code:6 userInfo:v78];
 
                   v41 = 0;
                   v27 = v84;
@@ -580,7 +580,7 @@ LABEL_33:
                   v41 = 0;
                   v35 = v84;
                   v27 = v84;
-                  v37 = v87;
+                  v37 = numberCopy;
                 }
 
                 goto LABEL_62;
@@ -618,22 +618,22 @@ LABEL_33:
 
   v27 = v90;
   v28 = +[HashHelper hashHelper];
-  v29 = v86;
-  v30 = [(HashHelper *)v28 addData:v86];
+  v29 = counterCopy;
+  v30 = [(HashHelper *)v28 addData:counterCopy];
   v31 = +[AppletConfigurationData dataHash];
   v32 = [(HashHelper *)v30 addData:v31];
   v33 = [(HashHelper *)v32 addArray:v27];
-  v34 = [(HashHelper *)v33 getHash];
+  getHash = [(HashHelper *)v33 getHash];
 
-  v35 = v34;
+  v35 = getHash;
   v36 = +[AppletTranslator userDefaults];
-  v37 = v87;
-  v38 = [v87 asHexString];
+  v37 = numberCopy;
+  asHexString = [numberCopy asHexString];
   v96 = v36;
-  v39 = [v36 objectForKey:v38];
+  v39 = [v36 objectForKey:asHexString];
 
   v82 = v39;
-  if ([v34 isEqual:v39])
+  if ([getHash isEqual:v39])
   {
     v40 = ATLLogObject();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -647,7 +647,7 @@ LABEL_33:
 
   else
   {
-    v85 = v34;
+    v85 = getHash;
     v99 = 0u;
     v100 = 0u;
     v97 = 0u;
@@ -682,7 +682,7 @@ LABEL_33:
             v62 = [v59 objectForKeyedSubscript:@"identifier"];
             v63 = [v59 objectForKeyedSubscript:@"moduleIdentifier"];
             v64 = [v59 objectForKeyedSubscript:@"packageIdentifier"];
-            v95 = [TransceiverWrapper withTransceiver:v93];
+            v95 = [TransceiverWrapper withTransceiver:transceiverCopy];
             v65 = [ATLGetDecoder getDecoderForApplet:v62 withPackage:v64 withModule:v63];
             v66 = v65;
             if (v65 && [v65 conformsToProtocol:&unk_2843CC850] && (objc_msgSend(v66, "supportsPlasticCardMode:withApplet:withPackage:withModule:", v95, v62, v64, v63) & 1) == 0)
@@ -706,9 +706,9 @@ LABEL_33:
                 v69 = v55;
                 v70 = [MEMORY[0x277CBEA90] dataWithHexString:v62];
                 v71 = SelectByNameCmd(v70);
-                v72 = [v95 transceiveAndCheckSW:v71 error:a7];
+                v72 = [v95 transceiveAndCheckSW:v71 error:error];
 
-                if (!v72 || ![v95 applyScript:v67 error:a7] || a7 && *a7)
+                if (!v72 || ![v95 applyScript:v67 error:error] || error && *error)
                 {
                   v79 = ATLLogObject();
                   if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
@@ -722,8 +722,8 @@ LABEL_33:
                   v27 = v83;
 
                   v41 = 0;
-                  v29 = v86;
-                  v37 = v87;
+                  v29 = counterCopy;
+                  v37 = numberCopy;
                   v35 = v85;
                   goto LABEL_61;
                 }
@@ -786,14 +786,14 @@ LABEL_33:
       }
     }
 
-    v37 = v87;
-    v77 = [v87 asHexString];
+    v37 = numberCopy;
+    asHexString2 = [numberCopy asHexString];
     v35 = v85;
-    [v96 setObject:v85 forKey:v77];
+    [v96 setObject:v85 forKey:asHexString2];
 
     [v96 synchronize];
     v41 = 1;
-    v29 = v86;
+    v29 = counterCopy;
   }
 
 LABEL_61:
@@ -804,23 +804,23 @@ LABEL_62:
   return v41;
 }
 
-+ (BOOL)setPlasticCardMode:(BOOL)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 serialNumber:(id)a7 transceiver:(id)a8 error:(id *)a9
++ (BOOL)setPlasticCardMode:(BOOL)mode withApplet:(id)applet withPackage:(id)package withModule:(id)module serialNumber:(id)number transceiver:(id)transceiver error:(id *)error
 {
-  v13 = a3;
+  modeCopy = mode;
   v79[1] = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v13)
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  numberCopy = number;
+  transceiverCopy = transceiver;
+  if (modeCopy)
   {
-    [AppletConfigurationData plasticCardScriptForModule:v16];
+    [AppletConfigurationData plasticCardScriptForModule:moduleCopy];
   }
 
   else
   {
-    [AppletConfigurationData scriptForModule:v16];
+    [AppletConfigurationData scriptForModule:moduleCopy];
   }
   v19 = ;
   v20 = v19;
@@ -828,43 +828,43 @@ LABEL_62:
   {
     v66 = v19;
     v21 = +[AppletTranslator userDefaults];
-    v65 = v17;
-    v22 = [v17 asHexString];
-    [v21 removeObjectForKey:v22];
+    v65 = numberCopy;
+    asHexString = [numberCopy asHexString];
+    [v21 removeObjectForKey:asHexString];
 
     [v21 synchronize];
-    v67 = v18;
-    v23 = [TransceiverWrapper withTransceiver:v18];
-    v24 = [ATLGetDecoder getDecoderForApplet:v14 withPackage:v15 withModule:v16];
+    v67 = transceiverCopy;
+    v23 = [TransceiverWrapper withTransceiver:transceiverCopy];
+    v24 = [ATLGetDecoder getDecoderForApplet:appletCopy withPackage:packageCopy withModule:moduleCopy];
     v25 = v24;
-    if (v24 && [v24 conformsToProtocol:&unk_2843CC850] && (objc_msgSend(v25, "supportsPlasticCardMode:withApplet:withPackage:withModule:", v23, v14, v15, v16) & 1) == 0)
+    if (v24 && [v24 conformsToProtocol:&unk_2843CC850] && (objc_msgSend(v25, "supportsPlasticCardMode:withApplet:withPackage:withModule:", v23, appletCopy, packageCopy, moduleCopy) & 1) == 0)
     {
       v51 = ATLLogObject();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v69 = v14;
+        v69 = appletCopy;
         _os_log_impl(&dword_22EEF5000, v51, OS_LOG_TYPE_ERROR, "Plastic card mode not supported for %@", buf, 0xCu);
       }
 
-      v52 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Plastic card mode not supported for %@", v14];
-      v33 = v52;
+      appletCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Plastic card mode not supported for %@", appletCopy];
+      v33 = appletCopy;
       v20 = v66;
-      if (!a9)
+      if (!error)
       {
         v38 = 0;
         goto LABEL_32;
       }
 
-      v53 = *a9;
+      v53 = *error;
       v54 = MEMORY[0x277CCA9B8];
       v55 = *MEMORY[0x277CCA450];
-      if (*a9)
+      if (*error)
       {
         v56 = *MEMORY[0x277CCA7E8];
         v72[0] = *MEMORY[0x277CCA450];
         v72[1] = v56;
-        v73[0] = v52;
+        v73[0] = appletCopy;
         v73[1] = v53;
         v57 = MEMORY[0x277CBEAC0];
         v58 = v73;
@@ -875,7 +875,7 @@ LABEL_62:
       else
       {
         v74 = *MEMORY[0x277CCA450];
-        v75 = v52;
+        v75 = appletCopy;
         v57 = MEMORY[0x277CBEAC0];
         v58 = &v75;
         v59 = &v74;
@@ -883,29 +883,29 @@ LABEL_62:
       }
 
       v63 = [v57 dictionaryWithObjects:v58 forKeys:v59 count:v60];
-      *a9 = [v54 errorWithDomain:@"ATL" code:2 userInfo:v63];
+      *error = [v54 errorWithDomain:@"ATL" code:2 userInfo:v63];
     }
 
     else
     {
-      v26 = v14;
-      v27 = v15;
+      v26 = appletCopy;
+      v27 = packageCopy;
       v64 = v26;
       v28 = [MEMORY[0x277CBEA90] dataWithHexString:?];
       v29 = SelectByNameCmd(v28);
-      v30 = [v23 transceiveAndCheckSW:v29 error:a9];
+      v30 = [v23 transceiveAndCheckSW:v29 error:error];
 
       if (v30)
       {
-        v31 = [v23 applyScript:v66 error:a9];
+        v31 = [v23 applyScript:v66 error:error];
         v32 = @"disabling";
-        if (v13)
+        if (modeCopy)
         {
           v32 = @"enabling";
         }
 
         v33 = v32;
-        if (v31 && (!a9 || !*a9))
+        if (v31 && (!error || !*error))
         {
           v34 = ATLLogObject();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -930,8 +930,8 @@ LABEL_62:
             _os_log_impl(&dword_22EEF5000, v39, OS_LOG_TYPE_INFO, "Selected CRS: %d", buf, 8u);
           }
 
-          v15 = v27;
-          v14 = v64;
+          packageCopy = v27;
+          appletCopy = v64;
           goto LABEL_31;
         }
       }
@@ -939,7 +939,7 @@ LABEL_62:
       else
       {
         v49 = @"disabling";
-        if (v13)
+        if (modeCopy)
         {
           v49 = @"enabling";
         }
@@ -947,9 +947,9 @@ LABEL_62:
         v33 = v49;
       }
 
-      v15 = v27;
+      packageCopy = v27;
       v50 = ATLLogObject();
-      v14 = v64;
+      appletCopy = v64;
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
@@ -967,10 +967,10 @@ LABEL_31:
     v20 = v66;
 LABEL_32:
 
-    v17 = v65;
+    numberCopy = v65;
 LABEL_41:
 
-    v18 = v67;
+    transceiverCopy = v67;
     goto LABEL_42;
   }
 
@@ -978,23 +978,23 @@ LABEL_41:
   if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v69 = v16;
+    v69 = moduleCopy;
     _os_log_impl(&dword_22EEF5000, v40, OS_LOG_TYPE_ERROR, "No plastic card configuration for %@", buf, 0xCu);
   }
 
-  v41 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No plastic card configuration for %@", v16];
-  v21 = v41;
-  if (a9)
+  moduleCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No plastic card configuration for %@", moduleCopy];
+  v21 = moduleCopy;
+  if (error)
   {
-    v67 = v18;
-    v42 = *a9;
+    v67 = transceiverCopy;
+    v42 = *error;
     v43 = MEMORY[0x277CCA9B8];
-    if (*a9)
+    if (*error)
     {
       v44 = *MEMORY[0x277CCA7E8];
       v76[0] = *MEMORY[0x277CCA450];
       v76[1] = v44;
-      v77[0] = v41;
+      v77[0] = moduleCopy;
       v77[1] = v42;
       v45 = MEMORY[0x277CBEAC0];
       v46 = v77;
@@ -1005,7 +1005,7 @@ LABEL_41:
     else
     {
       v78 = *MEMORY[0x277CCA450];
-      v79[0] = v41;
+      v79[0] = moduleCopy;
       v45 = MEMORY[0x277CBEAC0];
       v46 = v79;
       v47 = &v78;
@@ -1014,7 +1014,7 @@ LABEL_41:
 
     v23 = [v45 dictionaryWithObjects:v46 forKeys:v47 count:v48];
     [v43 errorWithDomain:@"ATL" code:2 userInfo:v23];
-    *a9 = v38 = 0;
+    *error = v38 = 0;
     goto LABEL_41;
   }
 
@@ -1025,18 +1025,18 @@ LABEL_42:
   return v38;
 }
 
-+ (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
++ (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [ATLGetDecoder getDecoderForApplet:v11 withPackage:v12 withModule:v13];
+  propertiesCopy = properties;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
+  v15 = [ATLGetDecoder getDecoderForApplet:propertiesCopy withPackage:packageCopy withModule:moduleCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 GetAppletProperties:v11 withPackage:v12 withModule:v13 withTransceiver:v14 withError:a7];
+    v17 = [v15 GetAppletProperties:propertiesCopy withPackage:packageCopy withModule:moduleCopy withTransceiver:transceiverCopy withError:error];
   }
 
   else
@@ -1053,18 +1053,18 @@ LABEL_42:
   return v18;
 }
 
-+ (id)processEndOfTransaction:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
++ (id)processEndOfTransaction:(id)transaction withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [ATLGetDecoder getDecoderForApplet:v11 withPackage:v12 withModule:v13];
+  transactionCopy = transaction;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
+  v15 = [ATLGetDecoder getDecoderForApplet:transactionCopy withPackage:packageCopy withModule:moduleCopy];
   if (v15)
   {
-    v16 = [TransceiverWrapper withTransceiver:v14];
-    v17 = [v15 processEndOfTransaction:v16 withApplet:v11 withPackage:v12 withModule:v13 withError:a7];
+    v16 = [TransceiverWrapper withTransceiver:transceiverCopy];
+    v17 = [v15 processEndOfTransaction:v16 withApplet:transactionCopy withPackage:packageCopy withModule:moduleCopy withError:error];
 
     if (v17)
     {
@@ -1078,27 +1078,27 @@ LABEL_42:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = v11;
+      v38 = transactionCopy;
       v39 = 2112;
-      v40 = v12;
+      v40 = packageCopy;
       v41 = 2112;
-      v42 = v13;
+      v42 = moduleCopy;
       _os_log_impl(&dword_22EEF5000, v18, OS_LOG_TYPE_ERROR, "No suitable decoder for AID %@ PID %@ MID %@", buf, 0x20u);
     }
 
-    v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@", v11, v12, v13];
-    v20 = v19;
-    if (a7)
+    moduleCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@", transactionCopy, packageCopy, moduleCopy];
+    v20 = moduleCopy;
+    if (error)
     {
-      v21 = *a7;
+      v21 = *error;
       v22 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v24 = *MEMORY[0x277CCA7E8];
         v33[0] = *MEMORY[0x277CCA450];
         v33[1] = v24;
-        v34[0] = v19;
+        v34[0] = moduleCopy;
         v34[1] = v21;
         v25 = MEMORY[0x277CBEAC0];
         v26 = v34;
@@ -1109,7 +1109,7 @@ LABEL_42:
       else
       {
         v35 = *MEMORY[0x277CCA450];
-        v36 = v19;
+        v36 = moduleCopy;
         v25 = MEMORY[0x277CBEAC0];
         v26 = &v36;
         v27 = &v35;
@@ -1117,7 +1117,7 @@ LABEL_42:
       }
 
       v29 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:v28];
-      *a7 = [v22 errorWithDomain:@"ATL" code:2 userInfo:v29];
+      *error = [v22 errorWithDomain:@"ATL" code:2 userInfo:v29];
     }
   }
 
@@ -1125,7 +1125,7 @@ LABEL_42:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v38 = v11;
+    v38 = transactionCopy;
     _os_log_impl(&dword_22EEF5000, v30, OS_LOG_TYPE_ERROR, "Failed to process End of Transaction: %@", buf, 0xCu);
   }
 
@@ -1137,13 +1137,13 @@ LABEL_15:
   return v17;
 }
 
-+ (BOOL)isLegacyApplet:(id)a3 withPackage:(id)a4 withModule:(id)a5
++ (BOOL)isLegacyApplet:(id)applet withPackage:(id)package withModule:(id)module
 {
-  v5 = a4;
-  if ([v5 hasPrefix:@"A00000068001"])
+  packageCopy = package;
+  if ([packageCopy hasPrefix:@"A00000068001"])
   {
     v6 = MEMORY[0x277CBEA90];
-    v7 = [v5 substringFromIndex:{objc_msgSend(v5, "length") - 4}];
+    v7 = [packageCopy substringFromIndex:{objc_msgSend(packageCopy, "length") - 4}];
     v8 = [v6 dataWithHexString:v7];
 
     v9 = ReadU16BE([v8 bytes]) < 0x621;
@@ -1164,8 +1164,8 @@ LABEL_15:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [statefulDecoders allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [statefulDecoders allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1177,14 +1177,14 @@ LABEL_15:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cleanup];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -1193,21 +1193,21 @@ LABEL_15:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [ATLGetDecoder getDecoderForApplet:v14 withPackage:v15 withModule:v16];
+  dataCopy = data;
+  packageCopy = package;
+  moduleCopy = module;
+  keyCopy = key;
+  schemeCopy = scheme;
+  transceiverCopy = transceiver;
+  v20 = [ATLGetDecoder getDecoderForApplet:dataCopy withPackage:packageCopy withModule:moduleCopy];
   v21 = v20;
   if (v20 && [v20 conformsToProtocol:&unk_2843CADF8])
   {
-    v22 = [TransceiverWrapper withTransceiver:v19];
-    v23 = [v21 getServiceProviderData:v14 withPackage:v15 withModule:v16 withPublicKey:v17 withEncryptionScheme:v18 withTransceiver:v22 withError:a9];
+    v22 = [TransceiverWrapper withTransceiver:transceiverCopy];
+    v23 = [v21 getServiceProviderData:dataCopy withPackage:packageCopy withModule:moduleCopy withPublicKey:keyCopy withEncryptionScheme:schemeCopy withTransceiver:v22 withError:error];
   }
 
   else
@@ -1216,23 +1216,23 @@ LABEL_15:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v43 = v14;
+      v43 = dataCopy;
       _os_log_impl(&dword_22EEF5000, v24, OS_LOG_TYPE_ERROR, "Service Provider Opaque Data is not supported for %@", buf, 0xCu);
     }
 
-    v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Service Provider Opaque Data is not supported for %@", v14];
-    v26 = v25;
-    if (a9)
+    dataCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Service Provider Opaque Data is not supported for %@", dataCopy];
+    v26 = dataCopy;
+    if (error)
     {
-      v27 = *a9;
+      v27 = *error;
       v28 = MEMORY[0x277CCA9B8];
       v29 = *MEMORY[0x277CCA450];
-      if (*a9)
+      if (*error)
       {
         v30 = *MEMORY[0x277CCA7E8];
         v38[0] = *MEMORY[0x277CCA450];
         v38[1] = v30;
-        v39[0] = v25;
+        v39[0] = dataCopy;
         v39[1] = v27;
         v31 = MEMORY[0x277CBEAC0];
         v32 = v39;
@@ -1243,7 +1243,7 @@ LABEL_15:
       else
       {
         v40 = *MEMORY[0x277CCA450];
-        v41 = v25;
+        v41 = dataCopy;
         v31 = MEMORY[0x277CBEAC0];
         v32 = &v41;
         v33 = &v40;
@@ -1251,7 +1251,7 @@ LABEL_15:
       }
 
       v35 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:v34];
-      *a9 = [v28 errorWithDomain:@"ATL" code:2 userInfo:v35];
+      *error = [v28 errorWithDomain:@"ATL" code:2 userInfo:v35];
     }
 
     v23 = 0;
@@ -1262,12 +1262,12 @@ LABEL_15:
   return v23;
 }
 
-+ (BOOL)getCurrentInMetroStatus:(id *)a3
++ (BOOL)getCurrentInMetroStatus:(id *)status
 {
   v3 = +[_TtC24AppletTranslationLibrary17MetroStateMonitor shared];
-  v4 = [v3 inMetro];
+  inMetro = [v3 inMetro];
 
-  return v4;
+  return inMetro;
 }
 
 + (id)getATLDelegate
@@ -1300,7 +1300,7 @@ void __44__AppletTranslator_Private__isInternalBuild__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerForCleanup:(uint64_t)a1
++ (void)registerForCleanup:(uint64_t)cleanup
 {
   v5 = a2;
   objc_opt_self();
@@ -1317,7 +1317,7 @@ void __44__AppletTranslator_Private__isInternalBuild__block_invoke()
   [v2 addObject:v5];
 }
 
-+ (void)deregisterForCleanup:(uint64_t)a1
++ (void)deregisterForCleanup:(uint64_t)cleanup
 {
   v2 = a2;
   objc_opt_self();

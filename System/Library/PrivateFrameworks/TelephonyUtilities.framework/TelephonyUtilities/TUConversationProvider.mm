@@ -1,28 +1,28 @@
 @interface TUConversationProvider
-+ (BOOL)matchesDefaultProviderIdentifier:(id)a3;
++ (BOOL)matchesDefaultProviderIdentifier:(id)identifier;
 + (TUConversationProvider)expanseProvider;
 + (TUConversationProvider)faceTimeProvider;
 + (TUConversationProvider)telephonyWithSharePlayProvider;
 + (TUConversationProvider)unknownProvider;
-+ (id)providerForIdentifier:(id)a3;
++ (id)providerForIdentifier:(id)identifier;
 - (BOOL)isDefaultProvider;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationProvider:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationProvider:(id)provider;
 - (BOOL)isTelephonyWithSharePlayProvider;
 - (BOOL)supportsLinks;
-- (BOOL)supportsMediaType:(int64_t)a3;
+- (BOOL)supportsMediaType:(int64_t)type;
 - (BOOL)supportsSharePlay;
 - (OS_tcc_identity)assumedIdentity;
-- (TUConversationProvider)initWithCoder:(id)a3;
-- (TUConversationProvider)initWithConfiguration:(id)a3;
-- (TUConversationProvider)initWithConversationProvider:(id)a3;
+- (TUConversationProvider)initWithCoder:(id)coder;
+- (TUConversationProvider)initWithConfiguration:(id)configuration;
+- (TUConversationProvider)initWithConversationProvider:(id)provider;
 - (id)bundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)pseudonymFeatureID;
 - (unint64_t)defaultAVMode;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationProvider
@@ -41,10 +41,10 @@
 
 - (OS_tcc_identity)assumedIdentity
 {
-  v2 = [(TUConversationProvider *)self bundleIdentifier];
-  if ([v2 length])
+  bundleIdentifier = [(TUConversationProvider *)self bundleIdentifier];
+  if ([bundleIdentifier length])
   {
-    v3 = [MEMORY[0x1E696AAE8] tu_assumedIdentityForBundleIdentifier:v2];
+    v3 = [MEMORY[0x1E696AAE8] tu_assumedIdentityForBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -191,12 +191,12 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   return self;
 }
 
-+ (BOOL)matchesDefaultProviderIdentifier:(id)a3
++ (BOOL)matchesDefaultProviderIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[TUConversationProvider expanseProvider];
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:v3])
+  identifier = [v4 identifier];
+  if ([identifier isEqualToString:identifierCopy])
   {
     v6 = 1;
   }
@@ -204,8 +204,8 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   else
   {
     v7 = +[TUConversationProvider faceTimeProvider];
-    v8 = [v7 identifier];
-    if ([v8 isEqualToString:v3])
+    identifier2 = [v7 identifier];
+    if ([identifier2 isEqualToString:identifierCopy])
     {
       v6 = 1;
     }
@@ -213,50 +213,50 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
     else
     {
       v9 = +[TUConversationProvider unknownProvider];
-      v10 = [v9 identifier];
-      v6 = [v10 isEqualToString:v3];
+      identifier3 = [v9 identifier];
+      v6 = [identifier3 isEqualToString:identifierCopy];
     }
   }
 
   return v6;
 }
 
-- (TUConversationProvider)initWithConfiguration:(id)a3
+- (TUConversationProvider)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = TUConversationProvider;
   v6 = [(TUConversationProvider *)&v14 init];
   if (v6)
   {
-    v7 = [v5 serviceName];
-    v8 = [v7 copy];
+    serviceName = [configurationCopy serviceName];
+    v8 = [serviceName copy];
     identifier = v6->_identifier;
     v6->_identifier = v8;
 
-    v10 = [v5 supportedMediaTypes];
-    v11 = [v10 allObjects];
+    supportedMediaTypes = [configurationCopy supportedMediaTypes];
+    allObjects = [supportedMediaTypes allObjects];
     supportedMediaTypes = v6->_supportedMediaTypes;
-    v6->_supportedMediaTypes = v11;
+    v6->_supportedMediaTypes = allObjects;
 
-    objc_storeStrong(&v6->_providerConfiguration, a3);
+    objc_storeStrong(&v6->_providerConfiguration, configuration);
   }
 
   return v6;
 }
 
-- (TUConversationProvider)initWithConversationProvider:(id)a3
+- (TUConversationProvider)initWithConversationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = TUConversationProvider;
   v5 = [(TUConversationProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_identifier, v4[1]);
-    objc_storeStrong(&v6->_supportedMediaTypes, v4[2]);
-    objc_storeStrong(&v6->_providerConfiguration, v4[3]);
+    objc_storeStrong(&v5->_identifier, providerCopy[1]);
+    objc_storeStrong(&v6->_supportedMediaTypes, providerCopy[2]);
+    objc_storeStrong(&v6->_providerConfiguration, providerCopy[3]);
   }
 
   return v6;
@@ -275,37 +275,37 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
 
 - (BOOL)supportsSharePlay
 {
-  v2 = [(TUConversationProvider *)self providerConfiguration];
-  v3 = [v2 supportsSharePlay];
+  providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
+  supportsSharePlay = [providerConfiguration supportsSharePlay];
 
-  return v3;
+  return supportsSharePlay;
 }
 
 - (BOOL)supportsLinks
 {
-  v2 = [(TUConversationProvider *)self providerConfiguration];
-  v3 = [v2 supportsLinks];
+  providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
+  supportsLinks = [providerConfiguration supportsLinks];
 
-  return v3;
+  return supportsLinks;
 }
 
 - (id)bundleIdentifier
 {
-  v2 = [(TUConversationProvider *)self providerConfiguration];
-  v3 = [v2 bundleID];
+  providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
+  bundleID = [providerConfiguration bundleID];
 
-  return v3;
+  return bundleID;
 }
 
 - (id)pseudonymFeatureID
 {
-  v2 = [(TUConversationProvider *)self providerConfiguration];
-  v3 = [v2 pseudonymFeatureID];
+  providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
+  pseudonymFeatureID = [providerConfiguration pseudonymFeatureID];
 
-  return v3;
+  return pseudonymFeatureID;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TUConversationProvider alloc];
 
@@ -317,17 +317,17 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TUConversationProvider *)self identifier];
-  v7 = [(TUConversationProvider *)self providerConfiguration];
-  v8 = [v3 stringWithFormat:@"<%@ %p identifier: %@ providerConfiguration: %@>", v5, self, v6, v7];
+  identifier = [(TUConversationProvider *)self identifier];
+  providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
+  v8 = [v3 stringWithFormat:@"<%@ %p identifier: %@ providerConfiguration: %@>", v5, self, identifier, providerConfiguration];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -335,7 +335,7 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationProvider *)self isEqualToConversationProvider:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationProvider *)self isEqualToConversationProvider:equalCopy];
   }
 
   return v5;
@@ -343,30 +343,30 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationProvider *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(TUConversationProvider *)self identifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUConversationProvider *)self pseudonymFeatureID];
-  v8 = [v7 hash];
+  bundleIdentifier = [(TUConversationProvider *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  identifier = [(TUConversationProvider *)self identifier];
+  v6 = [identifier hash] ^ v4;
+  pseudonymFeatureID = [(TUConversationProvider *)self pseudonymFeatureID];
+  v8 = [pseudonymFeatureID hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqualToConversationProvider:(id)a3
+- (BOOL)isEqualToConversationProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(TUConversationProvider *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  providerCopy = provider;
+  identifier = [(TUConversationProvider *)self identifier];
+  identifier2 = [providerCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(TUConversationProvider *)self supportedMediaTypes];
-    v8 = [v4 supportedMediaTypes];
-    if (TUObjectsAreEqualOrNil(v7, v8))
+    supportedMediaTypes = [(TUConversationProvider *)self supportedMediaTypes];
+    supportedMediaTypes2 = [providerCopy supportedMediaTypes];
+    if (TUObjectsAreEqualOrNil(supportedMediaTypes, supportedMediaTypes2))
     {
-      v9 = [(TUConversationProvider *)self providerConfiguration];
-      v10 = [v4 providerConfiguration];
-      v11 = TUObjectsAreEqualOrNil(v9, v10);
+      providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
+      providerConfiguration2 = [providerCopy providerConfiguration];
+      v11 = TUObjectsAreEqualOrNil(providerConfiguration, providerConfiguration2);
     }
 
     else
@@ -383,9 +383,9 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   return v11;
 }
 
-- (TUConversationProvider)initWithCoder:(id)a3
+- (TUConversationProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = TUConversationProvider;
   v5 = [(TUConversationProvider *)&v21 init];
@@ -393,7 +393,7 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_identifier);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
@@ -401,13 +401,13 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
     v13 = NSStringFromSelector(sel_supportedMediaTypes);
-    v14 = [v4 decodeObjectOfClasses:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClasses:v12 forKey:v13];
     supportedMediaTypes = v5->_supportedMediaTypes;
     v5->_supportedMediaTypes = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_providerConfiguration);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     providerConfiguration = v5->_providerConfiguration;
     v5->_providerConfiguration = v18;
   }
@@ -415,28 +415,28 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationProvider *)self identifier];
+  coderCopy = coder;
+  identifier = [(TUConversationProvider *)self identifier];
   v6 = NSStringFromSelector(sel_identifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:identifier forKey:v6];
 
-  v7 = [(TUConversationProvider *)self supportedMediaTypes];
+  supportedMediaTypes = [(TUConversationProvider *)self supportedMediaTypes];
   v8 = NSStringFromSelector(sel_supportedMediaTypes);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:supportedMediaTypes forKey:v8];
 
-  v10 = [(TUConversationProvider *)self providerConfiguration];
+  providerConfiguration = [(TUConversationProvider *)self providerConfiguration];
   v9 = NSStringFromSelector(sel_providerConfiguration);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:providerConfiguration forKey:v9];
 }
 
-+ (id)providerForIdentifier:(id)a3
++ (id)providerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[TUConversationProvider faceTimeProvider];
-  v6 = [v5 identifier];
-  v7 = [v4 isEqualToString:v6];
+  identifier = [v5 identifier];
+  v7 = [identifierCopy isEqualToString:identifier];
 
   if (v7)
   {
@@ -446,8 +446,8 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   else
   {
     v9 = +[TUConversationProvider expanseProvider];
-    v10 = [v9 identifier];
-    v11 = [v4 isEqualToString:v10];
+    identifier2 = [v9 identifier];
+    v11 = [identifierCopy isEqualToString:identifier2];
 
     if (v11)
     {
@@ -456,9 +456,9 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
 
     else
     {
-      v12 = [a1 telephonyWithSharePlayProvider];
-      v13 = [v12 identifier];
-      v14 = [v4 isEqualToString:v13];
+      telephonyWithSharePlayProvider = [self telephonyWithSharePlayProvider];
+      identifier3 = [telephonyWithSharePlayProvider identifier];
+      v14 = [identifierCopy isEqualToString:identifier3];
 
       if (v14)
       {
@@ -478,11 +478,11 @@ void __56__TUConversationProvider_telephonyWithSharePlayProvider__block_invoke()
   return v15;
 }
 
-- (BOOL)supportsMediaType:(int64_t)a3
+- (BOOL)supportsMediaType:(int64_t)type
 {
-  v4 = [(TUConversationProvider *)self supportedMediaTypes];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  supportedMediaTypes = [(TUConversationProvider *)self supportedMediaTypes];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [supportedMediaTypes containsObject:v5];
 
   return v6;
 }

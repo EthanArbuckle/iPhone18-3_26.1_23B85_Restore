@@ -1,7 +1,7 @@
 @interface SSPasteboardResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSPasteboardResultBuilder)initWithResult:(id)a3;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSPasteboardResultBuilder)initWithResult:(id)result;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildButtonItems;
 - (id)buildCopyButtonItem;
 - (id)buildCopyItem;
@@ -19,29 +19,29 @@
 
 @implementation SSPasteboardResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
   v3 = *MEMORY[0x1E6963E60];
-  v4 = a3;
-  v5 = [v4 valueForAttribute:v3 withType:objc_opt_class()];
+  resultCopy = result;
+  v5 = [resultCopy valueForAttribute:v3 withType:objc_opt_class()];
 
   v6 = [v5 hasPrefix:@"com.apple.spotlight.pasteboard"];
   return v6;
 }
 
-- (SSPasteboardResultBuilder)initWithResult:(id)a3
+- (SSPasteboardResultBuilder)initWithResult:(id)result
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v22.receiver = self;
   v22.super_class = SSPasteboardResultBuilder;
-  v5 = [(SSResultBuilder *)&v22 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v22 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
     [(SSPasteboardResultBuilder *)v5 setCopiedText:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6964548] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6964548] withType:objc_opt_class()];
     if (v7)
     {
       [(SSPasteboardResultBuilder *)v5 setDateCopied:v7];
@@ -49,7 +49,7 @@
 
     else
     {
-      v8 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+      v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
       [(SSPasteboardResultBuilder *)v5 setDateCopied:v8];
     }
 
@@ -57,8 +57,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v4 contentTypeTree];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    contentTypeTree = [resultCopy contentTypeTree];
+    v10 = [contentTypeTree countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -69,7 +69,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(contentTypeTree);
           }
 
           v14 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v18 + 1) + 8 * i)];
@@ -82,7 +82,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v11 = [contentTypeTree countByEnumeratingWithState:&v18 objects:v23 count:16];
         if (v11)
         {
           continue;
@@ -102,44 +102,44 @@ LABEL_15:
 - (id)buildTitle
 {
   v3 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\s+" options:0 error:0];
-  v4 = [(SSPasteboardResultBuilder *)self copiedText];
-  v5 = v4;
-  if (v4)
+  copiedText = [(SSPasteboardResultBuilder *)self copiedText];
+  v5 = copiedText;
+  if (copiedText)
   {
     v6 = MEMORY[0x1E69CA3A0];
-    v7 = [v3 stringByReplacingMatchesInString:v4 options:0 range:0 withTemplate:{objc_msgSend(v4, "length"), @" "}];
-    v8 = [v6 textWithString:v7];
+    v7 = [v3 stringByReplacingMatchesInString:copiedText options:0 range:0 withTemplate:{objc_msgSend(copiedText, "length"), @" "}];
+    buildTitle = [v6 textWithString:v7];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SSPasteboardResultBuilder;
-    v8 = [(SSResultBuilder *)&v10 buildTitle];
+    buildTitle = [(SSResultBuilder *)&v10 buildTitle];
   }
 
-  return v8;
+  return buildTitle;
 }
 
 - (id)buildDescriptions
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SSPasteboardResultBuilder *)self pasteboardDescription];
-  if ([v4 length])
+  pasteboardDescription = [(SSPasteboardResultBuilder *)self pasteboardDescription];
+  if ([pasteboardDescription length])
   {
-    [v3 addObject:v4];
+    [v3 addObject:pasteboardDescription];
   }
 
-  v5 = [(SSPasteboardResultBuilder *)self dateCopied];
+  dateCopied = [(SSPasteboardResultBuilder *)self dateCopied];
 
-  if (v5)
+  if (dateCopied)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"Copied %@" value:0 table:0];
-    v9 = [(SSPasteboardResultBuilder *)self dateCopied];
-    v10 = [SSDateFormatManager dynamicCompactStringFromDate:v9];
+    dateCopied2 = [(SSPasteboardResultBuilder *)self dateCopied];
+    v10 = [SSDateFormatManager dynamicCompactStringFromDate:dateCopied2];
     v11 = [v6 stringWithFormat:v8, v10];
     [v3 addObject:v11];
   }
@@ -165,40 +165,40 @@ LABEL_15:
 
 - (id)pasteboardDescription
 {
-  v2 = [(SSPasteboardResultBuilder *)self contentType];
-  v3 = [v2 localizedDescription];
-  v4 = [v3 localizedCapitalizedString];
+  contentType = [(SSPasteboardResultBuilder *)self contentType];
+  localizedDescription = [contentType localizedDescription];
+  localizedCapitalizedString = [localizedDescription localizedCapitalizedString];
 
-  return v4;
+  return localizedCapitalizedString;
 }
 
 - (id)buildThumbnail
 {
-  v3 = [(SSPasteboardResultBuilder *)self contentType];
-  v4 = [v3 conformsToType:*MEMORY[0x1E6983020]];
+  contentType = [(SSPasteboardResultBuilder *)self contentType];
+  v4 = [contentType conformsToType:*MEMORY[0x1E6983020]];
 
   if (v4)
   {
-    v5 = objc_opt_new();
-    v6 = [*MEMORY[0x1E6982F40] identifier];
-    [v5 setContentType:v6];
+    buildThumbnail = objc_opt_new();
+    identifier = [*MEMORY[0x1E6982F40] identifier];
+    [buildThumbnail setContentType:identifier];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SSPasteboardResultBuilder;
-    v5 = [(SSResultBuilder *)&v8 buildThumbnail];
+    buildThumbnail = [(SSResultBuilder *)&v8 buildThumbnail];
   }
 
-  return v5;
+  return buildThumbnail;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
   v4 = objc_opt_new();
-  v5 = [(SSResultBuilder *)self relatedAppBundleIdentifier];
-  [v4 setBundleIdentifier:v5];
+  relatedAppBundleIdentifier = [(SSResultBuilder *)self relatedAppBundleIdentifier];
+  [v4 setBundleIdentifier:relatedAppBundleIdentifier];
 
   return v4;
 }
@@ -206,8 +206,8 @@ LABEL_15:
 - (id)buildCopyItem
 {
   v3 = objc_opt_new();
-  v4 = [(SSPasteboardResultBuilder *)self copiedText];
-  [v3 setCopyableString:v4];
+  copiedText = [(SSPasteboardResultBuilder *)self copiedText];
+  [v3 setCopyableString:copiedText];
 
   return v3;
 }
@@ -215,11 +215,11 @@ LABEL_15:
 - (id)buildCopyItems
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SSPasteboardResultBuilder *)self buildCopyItem];
-  v3 = v2;
-  if (v2)
+  buildCopyItem = [(SSPasteboardResultBuilder *)self buildCopyItem];
+  v3 = buildCopyItem;
+  if (buildCopyItem)
   {
-    v7[0] = v2;
+    v7[0] = buildCopyItem;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -236,11 +236,11 @@ LABEL_15:
 - (id)buildButtonItems
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SSPasteboardResultBuilder *)self buildCopyButtonItem];
-  v3 = v2;
-  if (v2)
+  buildCopyButtonItem = [(SSPasteboardResultBuilder *)self buildCopyButtonItem];
+  v3 = buildCopyButtonItem;
+  if (buildCopyButtonItem)
   {
-    v7[0] = v2;
+    v7[0] = buildCopyButtonItem;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -257,8 +257,8 @@ LABEL_15:
 - (id)buildPasteCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSPasteboardResultBuilder *)self buildCopyItems];
-  [v3 setCopyableItems:v4];
+  buildCopyItems = [(SSPasteboardResultBuilder *)self buildCopyItems];
+  [v3 setCopyableItems:buildCopyItems];
 
   [v3 setCommandDetail:@"SSPasteboardHistoryCommandDetail"];
 
@@ -267,12 +267,12 @@ LABEL_15:
 
 - (id)buildPasteButtonItem
 {
-  v2 = [(SSPasteboardResultBuilder *)self buildPasteCommand];
+  buildPasteCommand = [(SSPasteboardResultBuilder *)self buildPasteCommand];
   v3 = objc_opt_new();
   [v3 setSymbolName:@"document.on.clipboard"];
   [v3 setIsTemplate:1];
   v4 = objc_opt_new();
-  [v4 setCommand:v2];
+  [v4 setCommand:buildPasteCommand];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"Paste" value:0 table:0];
   [v4 setTitle:v6];
@@ -285,11 +285,11 @@ LABEL_15:
 - (id)buildCopyButtonItem
 {
   v3 = objc_opt_new();
-  v4 = [(SSPasteboardResultBuilder *)self buildCopyItem];
-  [v3 setCopyableItem:v4];
+  buildCopyItem = [(SSPasteboardResultBuilder *)self buildCopyItem];
+  [v3 setCopyableItem:buildCopyItem];
 
-  v5 = [(SSPasteboardResultBuilder *)self buildCopyItems];
-  [v3 setCopyableItems:v5];
+  buildCopyItems = [(SSPasteboardResultBuilder *)self buildCopyItems];
+  [v3 setCopyableItems:buildCopyItems];
 
   [v3 setCommandDetail:@"SSPasteboardHistoryCommandDetail"];
   v6 = objc_opt_new();
@@ -301,8 +301,8 @@ LABEL_15:
 - (id)buildDeleteCommand
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SSResultBuilder *)self result];
-  v3 = [v2 valueForAttribute:*MEMORY[0x1E6964C48] withType:objc_opt_class()];
+  result = [(SSResultBuilder *)self result];
+  v3 = [result valueForAttribute:*MEMORY[0x1E6964C48] withType:objc_opt_class()];
 
   if (v3)
   {
@@ -324,14 +324,14 @@ LABEL_15:
 
 - (id)buildDeleteButtonItem
 {
-  v2 = [(SSPasteboardResultBuilder *)self buildDeleteCommand];
-  if (v2)
+  buildDeleteCommand = [(SSPasteboardResultBuilder *)self buildDeleteCommand];
+  if (buildDeleteCommand)
   {
     v3 = objc_opt_new();
     [v3 setSymbolName:@"minus.circle"];
     [v3 setIsTemplate:1];
     v4 = objc_opt_new();
-    [v4 setCommand:v2];
+    [v4 setCommand:buildDeleteCommand];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"Remove" value:0 table:0];
     [v4 setTitle:v6];
@@ -351,32 +351,32 @@ LABEL_15:
 - (id)buildPreviewButtonItems
 {
   v3 = objc_opt_new();
-  v4 = [(SSPasteboardResultBuilder *)self buildCopyButtonItem];
-  if (v4)
+  buildCopyButtonItem = [(SSPasteboardResultBuilder *)self buildCopyButtonItem];
+  if (buildCopyButtonItem)
   {
-    [v3 addObject:v4];
+    [v3 addObject:buildCopyButtonItem];
   }
 
-  v5 = [(SSPasteboardResultBuilder *)self buildPasteButtonItem];
-  if (v5)
+  buildPasteButtonItem = [(SSPasteboardResultBuilder *)self buildPasteButtonItem];
+  if (buildPasteButtonItem)
   {
-    [v3 addObject:v5];
+    [v3 addObject:buildPasteButtonItem];
   }
 
-  v6 = [(SSPasteboardResultBuilder *)self buildShareItems];
-  if ([v6 count])
+  buildShareItems = [(SSPasteboardResultBuilder *)self buildShareItems];
+  if ([buildShareItems count])
   {
     v7 = objc_opt_new();
-    [v7 setShareItems:v6];
+    [v7 setShareItems:buildShareItems];
     v8 = objc_opt_new();
     [v8 setCommand:v7];
     [v3 addObject:v8];
   }
 
-  v9 = [(SSPasteboardResultBuilder *)self buildDeleteButtonItem];
-  if (v9)
+  buildDeleteButtonItem = [(SSPasteboardResultBuilder *)self buildDeleteButtonItem];
+  if (buildDeleteButtonItem)
   {
-    [v3 addObject:v9];
+    [v3 addObject:buildDeleteButtonItem];
   }
 
   if ([v3 count])

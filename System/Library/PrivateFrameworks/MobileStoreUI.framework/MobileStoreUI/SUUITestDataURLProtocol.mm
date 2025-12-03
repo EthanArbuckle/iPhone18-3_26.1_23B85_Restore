@@ -1,18 +1,18 @@
 @interface SUUITestDataURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 - (void)startLoading;
 @end
 
 @implementation SUUITestDataURLProtocol
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 URL];
-  v6 = [v5 scheme];
+  v5 = [requestCopy URL];
+  scheme = [v5 scheme];
 
-  LOBYTE(v5) = [v6 isEqualToString:@"x-apple-storeui-test-data"];
+  LOBYTE(v5) = [scheme isEqualToString:@"x-apple-storeui-test-data"];
   objc_autoreleasePoolPop(v4);
 
   return v5;
@@ -21,35 +21,35 @@
 - (void)startLoading
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSURLProtocol *)self request];
-  v5 = [v4 URL];
+  request = [(NSURLProtocol *)self request];
+  v5 = [request URL];
 
-  v6 = [v5 resourceSpecifier];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 resourcePath];
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  resourceSpecifier = [v5 resourceSpecifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  resourcePath = [mainBundle resourcePath];
+  v9 = [resourcePath stringByAppendingPathComponent:resourceSpecifier];
 
   v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v9];
   if (v10)
   {
-    v11 = v10;
+    client2 = v10;
     goto LABEL_5;
   }
 
   v12 = SUUIBundle();
-  v13 = [v12 resourcePath];
-  v14 = [v13 stringByAppendingPathComponent:v6];
+  resourcePath2 = [v12 resourcePath];
+  v14 = [resourcePath2 stringByAppendingPathComponent:resourceSpecifier];
 
   v15 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v14];
   if (v15)
   {
-    v11 = v15;
+    client2 = v15;
     v9 = v14;
 LABEL_5:
-    v16 = [v6 pathExtension];
-    if (v16)
+    pathExtension = [resourceSpecifier pathExtension];
+    if (pathExtension)
     {
-      v17 = v16;
+      v17 = pathExtension;
       v18 = SUUIMobileCoreServicesFramework();
       v19 = *SUUIWeakLinkedSymbolForString("kUTTagClassFilenameExtension", v18);
       v20 = SUUIMobileCoreServicesFramework();
@@ -87,18 +87,18 @@ LABEL_5:
 
     v28 = @"text/xml+itml";
 LABEL_12:
-    v29 = [(NSURLProtocol *)self client];
-    v30 = [objc_alloc(MEMORY[0x277CBABA8]) initWithURL:v5 MIMEType:v28 expectedContentLength:objc_msgSend(v11 textEncodingName:{"length"), 0}];
-    [v29 URLProtocol:self didReceiveResponse:v30 cacheStoragePolicy:2];
-    [v29 URLProtocol:self didLoadData:v11];
-    [v29 URLProtocolDidFinishLoading:self];
+    client = [(NSURLProtocol *)self client];
+    v30 = [objc_alloc(MEMORY[0x277CBABA8]) initWithURL:v5 MIMEType:v28 expectedContentLength:objc_msgSend(client2 textEncodingName:{"length"), 0}];
+    [client URLProtocol:self didReceiveResponse:v30 cacheStoragePolicy:2];
+    [client URLProtocol:self didLoadData:client2];
+    [client URLProtocolDidFinishLoading:self];
 
     goto LABEL_13;
   }
 
-  v11 = [(NSURLProtocol *)self client];
+  client2 = [(NSURLProtocol *)self client];
   v28 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SUUIErrorDomain" code:0 userInfo:0];
-  [v11 URLProtocol:self didFailWithError:v28];
+  [client2 URLProtocol:self didFailWithError:v28];
   v9 = v14;
 LABEL_13:
 

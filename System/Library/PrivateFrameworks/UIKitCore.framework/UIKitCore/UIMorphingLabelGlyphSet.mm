@@ -1,7 +1,7 @@
 @interface UIMorphingLabelGlyphSet
 - (CGPoint)lineOrigin;
-- (CGRect)boundingRectForGlyphsInRange:(_NSRange)a3;
-- (UIMorphingLabelGlyphSet)initWithLabel:(id)a3 attributedString:(id)a4;
+- (CGRect)boundingRectForGlyphsInRange:(_NSRange)range;
+- (UIMorphingLabelGlyphSet)initWithLabel:(id)label attributedString:(id)string;
 - (void)buildGlyphViews;
 - (void)dealloc;
 - (void)placeGlyphs;
@@ -29,21 +29,21 @@
     MEMORY[0x1EEE9AC00](v10);
     v126 = &v118 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
     WeakRetained = objc_loadWeakRetained(&self->_label);
-    v13 = [WeakRetained window];
-    v14 = [v13 screen];
-    v15 = v14;
-    if (v14)
+    window = [WeakRetained window];
+    screen = [window screen];
+    v15 = screen;
+    if (screen)
     {
-      v16 = v14;
+      mainScreen = screen;
     }
 
     else
     {
-      v16 = [objc_opt_self() mainScreen];
+      mainScreen = [objc_opt_self() mainScreen];
     }
 
-    v21 = v16;
-    v120 = v16;
+    v21 = mainScreen;
+    v120 = mainScreen;
 
     [v21 scale];
     v23 = v22;
@@ -353,8 +353,8 @@ LABEL_20:
         v108 = &self->_glyphFrames[v95];
         v109 = v108->size.width;
         v110 = v108->size.height;
-        v111 = [v107 layer];
-        [v111 setBounds:{0.0, 0.0, v109, v110}];
+        layer = [v107 layer];
+        [layer setBounds:{0.0, 0.0, v109, v110}];
 
         v112 = (&self->_glyphPositions->x + v97);
         v149.origin.x = v103;
@@ -418,10 +418,10 @@ LABEL_20:
       v6 = &self->_glyphPositions[v3];
       x = v6->x;
       y = v6->y;
-      v9 = [v5 layer];
-      [v9 setPosition:{x, y}];
+      layer = [v5 layer];
+      [layer setPosition:{x, y}];
 
-      v10 = [v5 layer];
+      layer2 = [v5 layer];
       v21[4] = v20;
       v21[5] = v19;
       v21[6] = v18;
@@ -430,11 +430,11 @@ LABEL_20:
       v21[1] = v15;
       v21[2] = v14;
       v21[3] = v13;
-      [v10 setTransform:v21];
+      [layer2 setTransform:v21];
 
-      v11 = [v5 layer];
+      layer3 = [v5 layer];
       LODWORD(v12) = 1.0;
-      [v11 setOpacity:v12];
+      [layer3 setOpacity:v12];
 
       [v5 setHidden:0];
       ++v4;
@@ -445,30 +445,30 @@ LABEL_20:
   }
 }
 
-- (UIMorphingLabelGlyphSet)initWithLabel:(id)a3 attributedString:(id)a4
+- (UIMorphingLabelGlyphSet)initWithLabel:(id)label attributedString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  stringCopy = string;
   v22.receiver = self;
   v22.super_class = UIMorphingLabelGlyphSet;
   v8 = [(UIMorphingLabelGlyphSet *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    v10 = objc_storeWeak(&v8->_label, v6);
-    [v6 bounds];
+    v10 = objc_storeWeak(&v8->_label, labelCopy);
+    [labelCopy bounds];
     v12 = v11;
 
-    v13 = [(_NSAttributedStringIntentResolver *)_UIAttributedStringIntentResolver attributedStringByResolvingString:v7];
+    v13 = [(_NSAttributedStringIntentResolver *)_UIAttributedStringIntentResolver attributedStringByResolvingString:stringCopy];
     v14 = [v13 copy];
     attributedString = v9->_attributedString;
     v9->_attributedString = v14;
 
-    v9->_line = CTLineCreateWithAttributedString(v7);
-    if ([(__CFAttributedString *)v7 length])
+    v9->_line = CTLineCreateWithAttributedString(stringCopy);
+    if ([(__CFAttributedString *)stringCopy length])
     {
       v16 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v17 = [(__CFAttributedString *)v7 attributesAtIndex:[(__CFAttributedString *)v7 length]- 1 effectiveRange:0];
+      v17 = [(__CFAttributedString *)stringCopy attributesAtIndex:[(__CFAttributedString *)stringCopy length]- 1 effectiveRange:0];
       v18 = [v16 initWithString:@"…" attributes:v17];
 
       v19 = CTLineCreateWithAttributedString(v18);
@@ -556,19 +556,19 @@ LABEL_20:
   }
 }
 
-- (CGRect)boundingRectForGlyphsInRange:(_NSRange)a3
+- (CGRect)boundingRectForGlyphsInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    v4 = &self->_glyphFrames[a3.location];
+    v4 = &self->_glyphFrames[range.location];
     x = v4->origin.x;
     y = v4->origin.y;
     width = v4->size.width;
     height = v4->size.height;
-    if (a3.location + 1 < a3.location + a3.length)
+    if (range.location + 1 < range.location + range.length)
     {
-      v9 = a3.length - 1;
-      location = a3.location;
+      v9 = range.length - 1;
+      location = range.location;
       do
       {
         *&x = CGRectUnion(*&x, self->_glyphFrames[++location]);

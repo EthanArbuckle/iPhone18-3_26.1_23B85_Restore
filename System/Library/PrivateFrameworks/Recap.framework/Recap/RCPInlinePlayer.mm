@@ -1,17 +1,17 @@
 @interface RCPInlinePlayer
 + (id)sharedInstance;
-+ (void)playCommandString:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)playEventActions:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)playEventStream:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)setIgnoresCompletionDelay:(BOOL)a3;
++ (void)playCommandString:(id)string options:(id)options completion:(id)completion;
++ (void)playEventActions:(id)actions options:(id)options completion:(id)completion;
++ (void)playEventStream:(id)stream options:(id)options completion:(id)completion;
++ (void)setIgnoresCompletionDelay:(BOOL)delay;
 + (void)setNeedsInitialDelay;
 - (RCPInlinePlayer)init;
-- (void)_callBlock:(id)a3;
+- (void)_callBlock:(id)block;
 - (void)_doInitialDelayIfNeeded;
-- (void)playCommandString:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)playEventActions:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)playEventStream:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)prewarmForEventStream:(id)a3 completion:(id)a4;
+- (void)playCommandString:(id)string options:(id)options completion:(id)completion;
+- (void)playEventActions:(id)actions options:(id)options completion:(id)completion;
+- (void)playEventStream:(id)stream options:(id)options completion:(id)completion;
+- (void)prewarmForEventStream:(id)stream completion:(id)completion;
 - (void)tearDown;
 @end
 
@@ -68,8 +68,8 @@ void __27__RCPInlinePlayer_tearDown__block_invoke(uint64_t a1)
 {
   if (self->_needsInitialDelay)
   {
-    v3 = [(RCPInlinePlayer *)self replayQueue];
-    dispatch_async(v3, &__block_literal_global_9);
+    replayQueue = [(RCPInlinePlayer *)self replayQueue];
+    dispatch_async(replayQueue, &__block_literal_global_9);
 
     self->_needsInitialDelay = 0;
   }
@@ -77,13 +77,13 @@ void __27__RCPInlinePlayer_tearDown__block_invoke(uint64_t a1)
 
 - (void)tearDown
 {
-  v3 = [(RCPInlinePlayer *)self replayQueue];
+  replayQueue = [(RCPInlinePlayer *)self replayQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__RCPInlinePlayer_tearDown__block_invoke;
   block[3] = &unk_279AF0D10;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(replayQueue, block);
 }
 
 + (void)setNeedsInitialDelay
@@ -98,11 +98,11 @@ void __27__RCPInlinePlayer_tearDown__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)playCommandString:(id)a3 options:(id)a4 completion:(id)a5
++ (void)playCommandString:(id)string options:(id)options completion:(id)completion
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = [a3 componentsSeparatedByString:@" "];
+  optionsCopy = options;
+  completionCopy = completion;
+  v8 = [string componentsSeparatedByString:@" "];
   v9 = [RCPSyntheticEventStream eventStreamWithCLIArguments:v8];
 
   if (v9)
@@ -111,7 +111,7 @@ void __27__RCPInlinePlayer_tearDown__block_invoke(uint64_t a1)
     [v10 prewarmForEventStream:v9 completion:0];
 
     v11 = +[RCPInlinePlayer sharedInstance];
-    [v11 playEventStream:v9 options:v13 completion:v7];
+    [v11 playEventStream:v9 options:optionsCopy completion:completionCopy];
 
     v12 = +[RCPInlinePlayer sharedInstance];
     [v12 tearDown];
@@ -123,65 +123,65 @@ void __27__RCPInlinePlayer_tearDown__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)playEventStream:(id)a3 options:(id)a4 completion:(id)a5
++ (void)playEventStream:(id)stream options:(id)options completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  streamCopy = stream;
   v10 = +[RCPInlinePlayer sharedInstance];
-  [v10 prewarmForEventStream:v9 completion:0];
+  [v10 prewarmForEventStream:streamCopy completion:0];
 
   v11 = +[RCPInlinePlayer sharedInstance];
-  [v11 playEventStream:v9 options:v8 completion:v7];
+  [v11 playEventStream:streamCopy options:optionsCopy completion:completionCopy];
 
   v12 = +[RCPInlinePlayer sharedInstance];
   [v12 tearDown];
 }
 
-+ (void)playEventActions:(id)a3 options:(id)a4 completion:(id)a5
++ (void)playEventActions:(id)actions options:(id)options completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v12 = [RCPSyntheticEventStream eventStreamWithEventActions:a3];
+  completionCopy = completion;
+  optionsCopy = options;
+  v12 = [RCPSyntheticEventStream eventStreamWithEventActions:actions];
   v9 = +[RCPInlinePlayer sharedInstance];
   [v9 prewarmForEventStream:v12 completion:0];
 
   v10 = +[RCPInlinePlayer sharedInstance];
-  [v10 playEventStream:v12 options:v8 completion:v7];
+  [v10 playEventStream:v12 options:optionsCopy completion:completionCopy];
 
   v11 = +[RCPInlinePlayer sharedInstance];
   [v11 tearDown];
 }
 
-+ (void)setIgnoresCompletionDelay:(BOOL)a3
++ (void)setIgnoresCompletionDelay:(BOOL)delay
 {
   if (instance)
   {
-    [instance setIgnoresCompletionDelay:a3];
+    [instance setIgnoresCompletionDelay:delay];
   }
 
   else
   {
-    __ignoresCompletionDelay = a3;
+    __ignoresCompletionDelay = delay;
   }
 }
 
-- (void)prewarmForEventStream:(id)a3 completion:(id)a4
+- (void)prewarmForEventStream:(id)stream completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  completionCopy = completion;
   [(RCPInlinePlayer *)self _doInitialDelayIfNeeded];
-  v8 = [(RCPInlinePlayer *)self replayQueue];
+  replayQueue = [(RCPInlinePlayer *)self replayQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__RCPInlinePlayer_prewarmForEventStream_completion___block_invoke;
   block[3] = &unk_279AF0E08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = streamCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = streamCopy;
+  dispatch_async(replayQueue, block);
 }
 
 void __52__RCPInlinePlayer_prewarmForEventStream_completion___block_invoke(uint64_t a1)
@@ -204,16 +204,16 @@ void __52__RCPInlinePlayer_prewarmForEventStream_completion___block_invoke(uint6
   }
 }
 
-- (void)playCommandString:(id)a3 options:(id)a4 completion:(id)a5
+- (void)playCommandString:(id)string options:(id)options completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = [a3 componentsSeparatedByString:@" "];
+  optionsCopy = options;
+  completionCopy = completion;
+  v9 = [string componentsSeparatedByString:@" "];
   v10 = [RCPSyntheticEventStream eventStreamWithCLIArguments:v9];
 
   if (v10)
   {
-    [(RCPInlinePlayer *)self playEventStream:v10 options:v11 completion:v8];
+    [(RCPInlinePlayer *)self playEventStream:v10 options:optionsCopy completion:completionCopy];
   }
 
   else
@@ -222,38 +222,38 @@ void __52__RCPInlinePlayer_prewarmForEventStream_completion___block_invoke(uint6
   }
 }
 
-- (void)playEventActions:(id)a3 options:(id)a4 completion:(id)a5
+- (void)playEventActions:(id)actions options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [RCPSyntheticEventStream eventStreamWithEventActions:a3];
-  [(RCPInlinePlayer *)self playEventStream:v10 options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  v10 = [RCPSyntheticEventStream eventStreamWithEventActions:actions];
+  [(RCPInlinePlayer *)self playEventStream:v10 options:optionsCopy completion:completionCopy];
 }
 
-- (void)playEventStream:(id)a3 options:(id)a4 completion:(id)a5
+- (void)playEventStream:(id)stream options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  streamCopy = stream;
+  optionsCopy = options;
+  completionCopy = completion;
   [(RCPInlinePlayer *)self _doInitialDelayIfNeeded];
-  if (!v9)
+  if (!optionsCopy)
   {
-    v9 = objc_opt_new();
+    optionsCopy = objc_opt_new();
   }
 
-  v11 = [(RCPInlinePlayer *)self replayQueue];
+  replayQueue = [(RCPInlinePlayer *)self replayQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__RCPInlinePlayer_playEventStream_options_completion___block_invoke;
   v15[3] = &unk_279AF0E58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = streamCopy;
+  v17 = optionsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = optionsCopy;
+  v14 = streamCopy;
+  dispatch_async(replayQueue, v15);
 }
 
 void __54__RCPInlinePlayer_playEventStream_options_completion___block_invoke(uint64_t a1)
@@ -306,11 +306,11 @@ void __54__RCPInlinePlayer_playEventStream_options_completion___block_invoke_3(u
   [v1 performSelectorOnMainThread:sel__callBlock_ withObject:v2 waitUntilDone:0];
 }
 
-- (void)_callBlock:(id)a3
+- (void)_callBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 

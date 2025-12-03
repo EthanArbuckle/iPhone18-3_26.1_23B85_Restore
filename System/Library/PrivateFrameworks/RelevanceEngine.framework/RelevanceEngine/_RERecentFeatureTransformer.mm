@@ -1,12 +1,12 @@
 @interface _RERecentFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
 - (_RERecentFeatureTransformer)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)_updateConfigurationForCount:(unint64_t)a3;
-- (void)configureWithInvocation:(id)a3;
+- (void)_updateConfigurationForCount:(unint64_t)count;
+- (void)configureWithInvocation:(id)invocation;
 @end
 
 @implementation _RERecentFeatureTransformer
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (void)configureWithInvocation:(id)a3
+- (void)configureWithInvocation:(id)invocation
 {
-  v21 = a3;
-  if ([v21 numberOfArguments] == 1)
+  invocationCopy = invocation;
+  if ([invocationCopy numberOfArguments] == 1)
   {
-    v10 = [v21 getArgumentAtIndex:0];
+    v10 = [invocationCopy getArgumentAtIndex:0];
     v11 = v10;
     if (v10 && REFeatureValueTypeForTaggedPointer(v10) == 1)
     {
@@ -54,11 +54,11 @@
   }
 }
 
-- (void)_updateConfigurationForCount:(unint64_t)a3
+- (void)_updateConfigurationForCount:(unint64_t)count
 {
-  if (a3 >= 2 || (RERaiseInternalException(*MEMORY[0x277CBE660], @"%s Count is too low. Must be 2 or greater.", a3, v3, v4, v5, v6, v7, "[_RERecentFeatureTransformer _updateConfigurationForCount:]"), a3))
+  if (count >= 2 || (RERaiseInternalException(*MEMORY[0x277CBE660], @"%s Count is too low. Must be 2 or greater.", count, v3, v4, v5, v6, v7, "[_RERecentFeatureTransformer _updateConfigurationForCount:]"), count))
   {
-    v10 = 64 - __clz(a3);
+    v10 = 64 - __clz(count);
   }
 
   else
@@ -67,26 +67,26 @@
   }
 
   self->_bitCount = v10;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Recent%lu", a3];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Recent%lu", count];
   [(REFeatureTransformer *)self setName:v11];
 
   counter = self->_counter;
 
-  [(REFeatureValueCounter *)counter setCount:a3];
+  [(REFeatureValueCounter *)counter setCount:count];
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
-  v5 = REFeatureValueForTaggedPointer(*a3);
+  v5 = REFeatureValueForTaggedPointer(*values);
   v6 = RECreateIntegerFeatureValueTaggedPointer([(REFeatureValueCounter *)self->_counter trackedValueForValue:v5]);
 
   return v6;
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = v3 != 0;
+  firstObject = [features firstObject];
+  v4 = firstObject != 0;
 
   return v4;
 }
@@ -99,10 +99,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -113,7 +113,7 @@
     if (objc_opt_isKindOfClass())
     {
       counter = self->_counter;
-      v6 = v4;
+      v6 = equalCopy;
       v7 = [(REFeatureValueCounter *)counter count];
       v8 = v6->_counter;
 
@@ -129,7 +129,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_RERecentFeatureTransformer);
   [(_RERecentFeatureTransformer *)v4 _updateConfigurationForCount:[(REFeatureValueCounter *)self->_counter count]];

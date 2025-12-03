@@ -1,12 +1,12 @@
 @interface DIXPCManager
 - (DIClientContext)clientContext;
-- (DIXPCManager)initWithClientContext:(id)a3 dispatcher:(id)a4 clientQueue:(id)a5;
+- (DIXPCManager)initWithClientContext:(id)context dispatcher:(id)dispatcher clientQueue:(id)queue;
 - (DIXPCManagerDelegate)delegate;
 - (NSXPCConnection)connection;
 - (OS_dispatch_queue)clientQueue;
-- (void)addCheckInObserver:(id)a3;
-- (void)setClientQueue:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)addCheckInObserver:(id)observer;
+- (void)setClientQueue:(id)queue;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation DIXPCManager
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)setClientQueue:(id)a3
+- (void)setClientQueue:(id)queue
 {
-  v5 = a3;
-  v6 = self;
-  sub_249DC0688(a3);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_249DC0688(queue);
 }
 
 - (DIXPCManagerDelegate)delegate
@@ -39,32 +39,32 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_249DC07E8();
 }
 
-- (DIXPCManager)initWithClientContext:(id)a3 dispatcher:(id)a4 clientQueue:(id)a5
+- (DIXPCManager)initWithClientContext:(id)context dispatcher:(id)dispatcher clientQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  return XPCManager.init(clientContext:dispatcher:clientQueue:)(v7, v8, a5);
+  contextCopy = context;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  return XPCManager.init(clientContext:dispatcher:clientQueue:)(contextCopy, dispatcherCopy, queue);
 }
 
-- (void)addCheckInObserver:(id)a3
+- (void)addCheckInObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_249DC0EFC(a3);
+  selfCopy = self;
+  sub_249DC0EFC(observer);
   swift_unknownObjectRelease();
 }
 
 - (NSXPCConnection)connection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_249DC11D8();
 
   return v3;

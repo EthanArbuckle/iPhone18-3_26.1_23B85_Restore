@@ -1,42 +1,42 @@
 @interface SOAuthorizationCredentialCore
-- (SOAuthorizationCredentialCore)initWithAuthorizationCredential:(id)a3;
-- (SOAuthorizationCredentialCore)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SOAuthorizationCredentialCore)initWithAuthorizationCredential:(id)credential;
+- (SOAuthorizationCredentialCore)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOAuthorizationCredentialCore
 
-- (SOAuthorizationCredentialCore)initWithAuthorizationCredential:(id)a3
+- (SOAuthorizationCredentialCore)initWithAuthorizationCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v15.receiver = self;
   v15.super_class = SOAuthorizationCredentialCore;
   v5 = [(SOAuthorizationCredentialCore *)&v15 init];
   if (v5)
   {
-    v6 = [v4 httpAuthorizationHeaders];
+    httpAuthorizationHeaders = [credentialCopy httpAuthorizationHeaders];
     httpAuthorizationHeaders = v5->_httpAuthorizationHeaders;
-    v5->_httpAuthorizationHeaders = v6;
+    v5->_httpAuthorizationHeaders = httpAuthorizationHeaders;
 
-    v8 = [v4 httpResponse];
+    httpResponse = [credentialCopy httpResponse];
     httpResponse = v5->_httpResponse;
-    v5->_httpResponse = v8;
+    v5->_httpResponse = httpResponse;
 
-    v10 = [v4 httpBody];
+    httpBody = [credentialCopy httpBody];
     httpBody = v5->_httpBody;
-    v5->_httpBody = v10;
+    v5->_httpBody = httpBody;
 
-    v12 = [v4 secKeyProxyEndpoints];
+    secKeyProxyEndpoints = [credentialCopy secKeyProxyEndpoints];
     secKeyProxyEndpoints = v5->_secKeyProxyEndpoints;
-    v5->_secKeyProxyEndpoints = v12;
+    v5->_secKeyProxyEndpoints = secKeyProxyEndpoints;
   }
 
   return v5;
 }
 
-- (SOAuthorizationCredentialCore)initWithCoder:(id)a3
+- (SOAuthorizationCredentialCore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SOAuthorizationCredentialCore;
   v5 = [(SOAuthorizationCredentialCore *)&v27 init];
@@ -46,19 +46,19 @@
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = NSStringFromSelector(sel_httpAuthorizationHeaders);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     httpAuthorizationHeaders = v5->_httpAuthorizationHeaders;
     v5->_httpAuthorizationHeaders = v10;
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_httpResponse);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     httpResponse = v5->_httpResponse;
     v5->_httpResponse = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_httpBody);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     httpBody = v5->_httpBody;
     v5->_httpBody = v18;
 
@@ -66,7 +66,7 @@
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
     v23 = NSStringFromSelector(sel_secKeyProxyEndpoints);
-    v24 = [v4 decodeObjectOfClasses:v22 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClasses:v22 forKey:v23];
     secKeyProxyEndpoints = v5->_secKeyProxyEndpoints;
     v5->_secKeyProxyEndpoints = v24;
   }
@@ -74,24 +74,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   httpAuthorizationHeaders = self->_httpAuthorizationHeaders;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_httpAuthorizationHeaders);
-  [v5 encodeObject:httpAuthorizationHeaders forKey:v6];
+  [coderCopy encodeObject:httpAuthorizationHeaders forKey:v6];
 
   httpResponse = self->_httpResponse;
   v8 = NSStringFromSelector(sel_httpResponse);
-  [v5 encodeObject:httpResponse forKey:v8];
+  [coderCopy encodeObject:httpResponse forKey:v8];
 
   httpBody = self->_httpBody;
   v10 = NSStringFromSelector(sel_httpBody);
-  [v5 encodeObject:httpBody forKey:v10];
+  [coderCopy encodeObject:httpBody forKey:v10];
 
   secKeyProxyEndpoints = self->_secKeyProxyEndpoints;
   v12 = NSStringFromSelector(sel_secKeyProxyEndpoints);
-  [v5 encodeObject:secKeyProxyEndpoints forKey:v12];
+  [coderCopy encodeObject:secKeyProxyEndpoints forKey:v12];
 }
 
 @end

@@ -4,7 +4,7 @@
 - (BOOL)markedAsDeleted;
 - (BOOL)renewsOfflineKeysAutomatically;
 - (VUIMediaEntityAssetController)assetController;
-- (VUISidebandMediaItem)initWithMediaLibrary:(id)a3 videoManagedObject:(id)a4 requestedProperties:(id)a5;
+- (VUISidebandMediaItem)initWithMediaLibrary:(id)library videoManagedObject:(id)object requestedProperties:(id)properties;
 - (id)addedDate;
 - (id)assetType;
 - (id)availabilityEndDate;
@@ -17,7 +17,7 @@
 - (id)episodeNumber;
 - (id)fractionalEpisodeNumber;
 - (id)genreTitle;
-- (id)imageLoadParamsWithImageType:(unint64_t)a3;
+- (id)imageLoadParamsWithImageType:(unint64_t)type;
 - (id)isLocal;
 - (id)releaseDate;
 - (id)seasonCanonicalID;
@@ -34,21 +34,21 @@
 
 @implementation VUISidebandMediaItem
 
-- (VUISidebandMediaItem)initWithMediaLibrary:(id)a3 videoManagedObject:(id)a4 requestedProperties:(id)a5
+- (VUISidebandMediaItem)initWithMediaLibrary:(id)library videoManagedObject:(id)object requestedProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  libraryCopy = library;
+  objectCopy = object;
+  propertiesCopy = properties;
+  if (libraryCopy)
   {
-    if (v9)
+    if (objectCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"videoManagedObject"}];
-    if (v10)
+    if (propertiesCopy)
     {
       goto LABEL_4;
     }
@@ -57,13 +57,13 @@ LABEL_13:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
-  if (!v9)
+  if (!objectCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  if (v10)
+  if (propertiesCopy)
   {
     goto LABEL_4;
   }
@@ -94,20 +94,20 @@ LABEL_4:
   v11 = v13;
 LABEL_9:
   v14 = [VUISidebandMediaEntityIdentifier alloc];
-  v15 = [v9 objectID];
-  v16 = [(VUISidebandMediaEntityIdentifier *)v14 initWithManagedObjectID:v15 mediaEntityType:v11];
+  objectID = [objectCopy objectID];
+  v16 = [(VUISidebandMediaEntityIdentifier *)v14 initWithManagedObjectID:objectID mediaEntityType:v11];
 
   v17 = VUISidebandMediaItemKind();
   v22.receiver = self;
   v22.super_class = VUISidebandMediaItem;
-  v18 = [(VUIMediaEntity *)&v22 initWithMediaLibrary:v8 identifier:v16 requestedProperties:v10 kind:v17];
+  v18 = [(VUIMediaEntity *)&v22 initWithMediaLibrary:libraryCopy identifier:v16 requestedProperties:propertiesCopy kind:v17];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_videoManagedObject, a4);
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    v20 = [(VUIVideoManagedObject *)v18->_videoManagedObject objectID];
-    [v19 addObserver:v18 selector:sel__videoManagedObjectPlaybackExpirationWillChange_ name:@"VUIVideoManagedObjectPlaybackExpirationWillChangeNotification" object:v20];
+    objc_storeStrong(&v18->_videoManagedObject, object);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    objectID2 = [(VUIVideoManagedObject *)v18->_videoManagedObject objectID];
+    [defaultCenter addObserver:v18 selector:sel__videoManagedObjectPlaybackExpirationWillChange_ name:@"VUIVideoManagedObjectPlaybackExpirationWillChangeNotification" object:objectID2];
   }
 
   return v18;
@@ -115,8 +115,8 @@ LABEL_9:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUISidebandMediaItem;
@@ -125,22 +125,22 @@ LABEL_9:
 
 - (id)assetType
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__29;
   v19 = __Block_byref_object_dispose__29;
   v20 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __33__VUISidebandMediaItem_assetType__block_invoke;
   v12 = &unk_1E872E5B0;
   v14 = &v15;
-  v4 = v2;
+  v4 = videoManagedObject;
   v13 = v4;
-  [v3 performBlockAndWait:&v9];
+  [managedObjectContext performBlockAndWait:&v9];
 
   v5 = v16[5];
   if (v5)
@@ -178,22 +178,22 @@ void __33__VUISidebandMediaItem_assetType__block_invoke(uint64_t a1)
 
 - (BOOL)isFamilySharingContent
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__29;
   v18 = __Block_byref_object_dispose__29;
   v19 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __46__VUISidebandMediaItem_isFamilySharingContent__block_invoke;
   v11 = &unk_1E872E5B0;
   v13 = &v14;
-  v4 = v2;
+  v4 = videoManagedObject;
   v12 = v4;
-  [v3 performBlockAndWait:&v8];
+  [managedObjectContext performBlockAndWait:&v8];
 
   v5 = v15[5];
   if (v5)
@@ -220,22 +220,22 @@ void __46__VUISidebandMediaItem_isFamilySharingContent__block_invoke(uint64_t a1
 
 - (id)canonicalID
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__VUISidebandMediaItem_canonicalID__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -253,25 +253,25 @@ void __35__VUISidebandMediaItem_canonicalID__block_invoke(uint64_t a1)
 
 - (BOOL)markedAsDeleted
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__VUISidebandMediaItem_markedAsDeleted__block_invoke;
   v6[3] = &unk_1E872E5B0;
   v8 = &v9;
-  v4 = v2;
+  v4 = videoManagedObject;
   v7 = v4;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(managedObjectContext) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return v3;
+  return managedObjectContext;
 }
 
 uint64_t __39__VUISidebandMediaItem_markedAsDeleted__block_invoke(uint64_t a1)
@@ -283,22 +283,22 @@ uint64_t __39__VUISidebandMediaItem_markedAsDeleted__block_invoke(uint64_t a1)
 
 - (id)title
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__29;
   v15 = __Block_byref_object_dispose__29;
   v16 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__VUISidebandMediaItem_title__block_invoke;
   v8[3] = &unk_1E872E5B0;
   v10 = &v11;
-  v4 = v2;
+  v4 = videoManagedObject;
   v9 = v4;
-  [v3 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
   v5 = v12[5];
   if (!v5)
@@ -325,22 +325,22 @@ void __29__VUISidebandMediaItem_title__block_invoke(uint64_t a1)
 
 - (id)duration
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__VUISidebandMediaItem_duration__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -358,22 +358,22 @@ void __32__VUISidebandMediaItem_duration__block_invoke(uint64_t a1)
 
 - (id)genreTitle
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = &stru_1F5DB25C0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__VUISidebandMediaItem_genreTitle__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -391,22 +391,22 @@ void __34__VUISidebandMediaItem_genreTitle__block_invoke(uint64_t a1)
 
 - (id)addedDate
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__VUISidebandMediaItem_addedDate__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -424,22 +424,22 @@ void __33__VUISidebandMediaItem_addedDate__block_invoke(uint64_t a1)
 
 - (id)releaseDate
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__VUISidebandMediaItem_releaseDate__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -457,22 +457,22 @@ void __35__VUISidebandMediaItem_releaseDate__block_invoke(uint64_t a1)
 
 - (id)storeID
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__VUISidebandMediaItem_storeID__block_invoke;
   v7[3] = &unk_1E872DB58;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
   v9 = &v10;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -491,22 +491,22 @@ void __31__VUISidebandMediaItem_storeID__block_invoke(uint64_t a1)
 
 - (id)isLocal
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = MEMORY[0x1E695E110];
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__VUISidebandMediaItem_isLocal__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -530,22 +530,22 @@ void __31__VUISidebandMediaItem_isLocal__block_invoke(uint64_t a1)
   v17 = __Block_byref_object_copy__29;
   v18 = __Block_byref_object_dispose__29;
   v19 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __33__VUISidebandMediaItem_showTitle__block_invoke;
     v11[3] = &unk_1E872E5B0;
     v13 = &v14;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v12 = v7;
-    [v6 performBlockAndWait:v11];
+    [managedObjectContext performBlockAndWait:v11];
   }
 
   v8 = v15[5];
@@ -579,22 +579,22 @@ void __33__VUISidebandMediaItem_showTitle__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __38__VUISidebandMediaItem_showIdentifier__block_invoke;
     v10[3] = &unk_1E872DB58;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
     v12 = &v13;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -627,22 +627,22 @@ void __38__VUISidebandMediaItem_showIdentifier__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __36__VUISidebandMediaItem_seasonNumber__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -668,22 +668,22 @@ void __36__VUISidebandMediaItem_seasonNumber__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __35__VUISidebandMediaItem_seasonTitle__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -709,22 +709,22 @@ void __35__VUISidebandMediaItem_seasonTitle__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __40__VUISidebandMediaItem_seasonIdentifier__block_invoke;
     v10[3] = &unk_1E872DB58;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
     v12 = &v13;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -761,22 +761,22 @@ void __40__VUISidebandMediaItem_seasonIdentifier__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __41__VUISidebandMediaItem_seasonCanonicalID__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -802,22 +802,22 @@ void __41__VUISidebandMediaItem_seasonCanonicalID__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __39__VUISidebandMediaItem_showCanonicalID__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -843,22 +843,22 @@ void __39__VUISidebandMediaItem_showCanonicalID__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __37__VUISidebandMediaItem_episodeNumber__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -883,22 +883,22 @@ void __37__VUISidebandMediaItem_episodeNumber__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __47__VUISidebandMediaItem_fractionalEpisodeNumber__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -923,22 +923,22 @@ void __47__VUISidebandMediaItem_fractionalEpisodeNumber__block_invoke(uint64_t a
   v16 = __Block_byref_object_copy__29;
   v17 = __Block_byref_object_dispose__29;
   v18 = 0;
-  v3 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [v5 managedObjectContext];
+    videoManagedObject2 = [(VUISidebandMediaItem *)self videoManagedObject];
+    managedObjectContext = [videoManagedObject2 managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __44__VUISidebandMediaItem_episodeIndexInSeries__block_invoke;
     v10[3] = &unk_1E872E5B0;
     v12 = &v13;
-    v7 = v5;
+    v7 = videoManagedObject2;
     v11 = v7;
-    [v6 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -957,22 +957,22 @@ void __44__VUISidebandMediaItem_episodeIndexInSeries__block_invoke(uint64_t a1)
 
 - (id)downloadExpirationDate
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__VUISidebandMediaItem_downloadExpirationDate__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -990,22 +990,22 @@ void __46__VUISidebandMediaItem_downloadExpirationDate__block_invoke(uint64_t a1
 
 - (id)availabilityEndDate
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__VUISidebandMediaItem_availabilityEndDate__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1023,25 +1023,25 @@ void __43__VUISidebandMediaItem_availabilityEndDate__block_invoke(uint64_t a1)
 
 - (BOOL)allowsManualDownloadRenewal
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__VUISidebandMediaItem_allowsManualDownloadRenewal__block_invoke;
   v6[3] = &unk_1E872E5B0;
   v8 = &v9;
-  v4 = v2;
+  v4 = videoManagedObject;
   v7 = v4;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(managedObjectContext) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return v3;
+  return managedObjectContext;
 }
 
 uint64_t __51__VUISidebandMediaItem_allowsManualDownloadRenewal__block_invoke(uint64_t a1)
@@ -1053,25 +1053,25 @@ uint64_t __51__VUISidebandMediaItem_allowsManualDownloadRenewal__block_invoke(ui
 
 - (BOOL)renewsOfflineKeysAutomatically
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__VUISidebandMediaItem_renewsOfflineKeysAutomatically__block_invoke;
   v6[3] = &unk_1E872E5B0;
   v8 = &v9;
-  v4 = v2;
+  v4 = videoManagedObject;
   v7 = v4;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(managedObjectContext) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return v3;
+  return managedObjectContext;
 }
 
 void __54__VUISidebandMediaItem_renewsOfflineKeysAutomatically__block_invoke(uint64_t a1)
@@ -1082,22 +1082,22 @@ void __54__VUISidebandMediaItem_renewsOfflineKeysAutomatically__block_invoke(uin
 
 - (id)brandID
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__VUISidebandMediaItem_brandID__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1115,22 +1115,22 @@ void __31__VUISidebandMediaItem_brandID__block_invoke(uint64_t a1)
 
 - (id)brandName
 {
-  v2 = [(VUISidebandMediaItem *)self videoManagedObject];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [videoManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__VUISidebandMediaItem_brandName__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = videoManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1152,8 +1152,8 @@ void __33__VUISidebandMediaItem_brandName__block_invoke(uint64_t a1)
   if (!assetController)
   {
     v4 = [VUIUniversalAssetController alloc];
-    v5 = [(VUISidebandMediaItem *)self videoManagedObject];
-    v6 = [(VUIUniversalAssetController *)v4 initWithVideoManagedObject:v5];
+    videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
+    v6 = [(VUIUniversalAssetController *)v4 initWithVideoManagedObject:videoManagedObject];
     v7 = self->_assetController;
     self->_assetController = v6;
 
@@ -1163,11 +1163,11 @@ void __33__VUISidebandMediaItem_brandName__block_invoke(uint64_t a1)
   return assetController;
 }
 
-- (id)imageLoadParamsWithImageType:(unint64_t)a3
+- (id)imageLoadParamsWithImageType:(unint64_t)type
 {
   v5 = [VUISidebandMediaEntityImageLoadParams alloc];
-  v6 = [(VUISidebandMediaItem *)self videoManagedObject];
-  v7 = [(VUISidebandMediaEntityImageLoadParams *)v5 initWithVideoManagedObject:v6 imageType:a3];
+  videoManagedObject = [(VUISidebandMediaItem *)self videoManagedObject];
+  v7 = [(VUISidebandMediaEntityImageLoadParams *)v5 initWithVideoManagedObject:videoManagedObject imageType:type];
 
   return v7;
 }

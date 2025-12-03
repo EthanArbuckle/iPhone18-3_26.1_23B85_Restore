@@ -1,41 +1,41 @@
 @interface POUserLoginConfiguration
-- (BOOL)setCustomAssertionRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomAssertionRequestHeaderClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomLoginRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomLoginRequestHeaderClaims:(id)a3 returningError:(id *)a4;
-- (POUserLoginConfiguration)initWithCoder:(id)a3;
-- (POUserLoginConfiguration)initWithData:(id)a3;
-- (POUserLoginConfiguration)initWithDictionary:(id)a3;
-- (POUserLoginConfiguration)initWithLoginUserName:(id)a3;
+- (BOOL)setCustomAssertionRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomAssertionRequestHeaderClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomLoginRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomLoginRequestHeaderClaims:(id)claims returningError:(id *)error;
+- (POUserLoginConfiguration)initWithCoder:(id)coder;
+- (POUserLoginConfiguration)initWithData:(id)data;
+- (POUserLoginConfiguration)initWithDictionary:(id)dictionary;
+- (POUserLoginConfiguration)initWithLoginUserName:(id)name;
 - (id)description;
-- (id)dictionaryRepresentationForDisplay:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)dictionaryRepresentationForDisplay:(BOOL)display;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation POUserLoginConfiguration
 
-- (POUserLoginConfiguration)initWithLoginUserName:(id)a3
+- (POUserLoginConfiguration)initWithLoginUserName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = POUserLoginConfiguration;
   v6 = [(POUserLoginConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_loginUserName, a3);
+    objc_storeStrong(&v6->_loginUserName, name);
   }
 
   return v7;
 }
 
-- (BOOL)setCustomAssertionRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomAssertionRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POUserLoginConfiguration *)self setCustomAssertionRequestHeaderClaims:v8];
   }
 
@@ -43,10 +43,10 @@
   {
     v9 = __81__POUserLoginConfiguration_setCustomAssertionRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -65,13 +65,13 @@ id __81__POUserLoginConfiguration_setCustomAssertionRequestHeaderClaims_returnin
   return v0;
 }
 
-- (BOOL)setCustomAssertionRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomAssertionRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POUserLoginConfiguration *)self setCustomAssertionRequestBodyClaims:v8];
   }
 
@@ -79,10 +79,10 @@ id __81__POUserLoginConfiguration_setCustomAssertionRequestHeaderClaims_returnin
   {
     v9 = __79__POUserLoginConfiguration_setCustomAssertionRequestBodyClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -101,13 +101,13 @@ id __79__POUserLoginConfiguration_setCustomAssertionRequestBodyClaims_returningE
   return v0;
 }
 
-- (BOOL)setCustomLoginRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomLoginRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POUserLoginConfiguration *)self setCustomLoginRequestHeaderClaims:v8];
   }
 
@@ -115,10 +115,10 @@ id __79__POUserLoginConfiguration_setCustomAssertionRequestBodyClaims_returningE
   {
     v9 = __77__POUserLoginConfiguration_setCustomLoginRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -137,13 +137,13 @@ id __77__POUserLoginConfiguration_setCustomLoginRequestHeaderClaims_returningErr
   return v0;
 }
 
-- (BOOL)setCustomLoginRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomLoginRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POUserLoginConfiguration *)self setCustomLoginRequestBodyClaims:v8];
   }
 
@@ -151,21 +151,21 @@ id __77__POUserLoginConfiguration_setCustomLoginRequestHeaderClaims_returningErr
   {
     v9 = __77__POUserLoginConfiguration_setCustomLoginRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v7;
 }
 
-- (id)dictionaryRepresentationForDisplay:(BOOL)a3
+- (id)dictionaryRepresentationForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (v3)
+  if (displayCopy)
   {
     loginUserName = [POCredentialUtil maskName:self->_loginUserName];
   }
@@ -178,7 +178,7 @@ id __77__POUserLoginConfiguration_setCustomLoginRequestHeaderClaims_returningErr
   v7 = NSStringFromSelector(sel_loginUserName);
   [v5 setObject:loginUserName forKeyedSubscript:v7];
 
-  if (v3)
+  if (displayCopy)
   {
   }
 
@@ -200,8 +200,8 @@ id __77__POUserLoginConfiguration_setCustomLoginRequestHeaderClaims_returningErr
 
   v16 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v16 setFormatOptions:1907];
-  v17 = [MEMORY[0x277CBEAA8] date];
-  v18 = [v16 stringFromDate:v17];
+  date = [MEMORY[0x277CBEAA8] date];
+  v18 = [v16 stringFromDate:date];
   [v5 setObject:v18 forKeyedSubscript:@"created"];
 
   return v5;
@@ -219,32 +219,32 @@ id __57__POUserLoginConfiguration_dataRepresentationForDisplay___block_invoke(ui
   return v1;
 }
 
-- (POUserLoginConfiguration)initWithDictionary:(id)a3
+- (POUserLoginConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = NSStringFromSelector(sel_loginUserName);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [dictionaryCopy objectForKeyedSubscript:v5];
 
   v7 = [(POUserLoginConfiguration *)self initWithLoginUserName:v6];
   if (v7)
   {
     v8 = NSStringFromSelector(sel_customAssertionRequestHeaderClaims);
-    v9 = [v4 objectForKeyedSubscript:v8];
+    v9 = [dictionaryCopy objectForKeyedSubscript:v8];
     customAssertionRequestHeaderClaims = v7->_customAssertionRequestHeaderClaims;
     v7->_customAssertionRequestHeaderClaims = v9;
 
     v11 = NSStringFromSelector(sel_customAssertionRequestBodyClaims);
-    v12 = [v4 objectForKeyedSubscript:v11];
+    v12 = [dictionaryCopy objectForKeyedSubscript:v11];
     customAssertionRequestBodyClaims = v7->_customAssertionRequestBodyClaims;
     v7->_customAssertionRequestBodyClaims = v12;
 
     v14 = NSStringFromSelector(sel_customLoginRequestHeaderClaims);
-    v15 = [v4 objectForKeyedSubscript:v14];
+    v15 = [dictionaryCopy objectForKeyedSubscript:v14];
     customLoginRequestHeaderClaims = v7->_customLoginRequestHeaderClaims;
     v7->_customLoginRequestHeaderClaims = v15;
 
     v17 = NSStringFromSelector(sel_customLoginRequestBodyClaims);
-    v18 = [v4 objectForKeyedSubscript:v17];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v17];
     customLoginRequestBodyClaims = v7->_customLoginRequestBodyClaims;
     v7->_customLoginRequestBodyClaims = v18;
   }
@@ -252,23 +252,23 @@ id __57__POUserLoginConfiguration_dataRepresentationForDisplay___block_invoke(ui
   return v7;
 }
 
-- (POUserLoginConfiguration)initWithData:(id)a3
+- (POUserLoginConfiguration)initWithData:(id)data
 {
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v8];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v8];
   if (v8)
   {
     v5 = __41__POUserLoginConfiguration_initWithData___block_invoke();
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POUserLoginConfiguration *)self initWithDictionary:v4];
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 id __41__POUserLoginConfiguration_initWithData___block_invoke()
@@ -286,29 +286,29 @@ id __41__POUserLoginConfiguration_initWithData___block_invoke()
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(POUserLoginConfiguration *)self dataRepresentation];
-  v5 = [v3 initWithData:v4 encoding:4];
+  dataRepresentation = [(POUserLoginConfiguration *)self dataRepresentation];
+  v5 = [v3 initWithData:dataRepresentation encoding:4];
 
   return v5;
 }
 
-- (POUserLoginConfiguration)initWithCoder:(id)a3
+- (POUserLoginConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(POUserLoginConfiguration *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(POUserLoginConfiguration *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(POUserLoginConfiguration *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 - (void)dataRepresentationForDisplay:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

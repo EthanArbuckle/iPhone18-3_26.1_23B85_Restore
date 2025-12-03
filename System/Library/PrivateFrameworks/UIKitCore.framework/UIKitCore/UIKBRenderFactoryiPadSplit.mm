@@ -6,14 +6,14 @@
 - (CGPoint)variantAnnotationTextOffset;
 - (UIEdgeInsets)dynamicInsets;
 - (double)keyInsetBottom;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
-- (id)backgroundTraitsForKeyplane:(id)a3;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
+- (id)backgroundTraitsForKeyplane:(id)keyplane;
 - (id)multitapCompleteKeyImageName;
 - (id)muttitapReverseKeyImageName;
-- (id)variantGeometriesForGeometry:(id)a3 variantCount:(unint64_t)a4 rowLimit:(int64_t)a5 annotationIndex:(unint64_t)a6;
-- (void)_customizeGeometry:(id)a3 forKey:(id)a4 contents:(id)a5;
-- (void)_customizeSymbolStyle:(id)a3 forKey:(id)a4 contents:(id)a5;
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7;
+- (id)variantGeometriesForGeometry:(id)geometry variantCount:(unint64_t)count rowLimit:(int64_t)limit annotationIndex:(unint64_t)index;
+- (void)_customizeGeometry:(id)geometry forKey:(id)key contents:(id)contents;
+- (void)_customizeSymbolStyle:(id)style forKey:(id)key contents:(id)contents;
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName;
 @end
 
 @implementation UIKBRenderFactoryiPadSplit
@@ -134,28 +134,28 @@
   return result;
 }
 
-- (id)backgroundTraitsForKeyplane:(id)a3
+- (id)backgroundTraitsForKeyplane:(id)keyplane
 {
   v20.receiver = self;
   v20.super_class = UIKBRenderFactoryiPadSplit;
-  v3 = a3;
-  v4 = [(UIKBRenderFactory *)&v20 backgroundTraitsForKeyplane:v3];
+  keyplaneCopy = keyplane;
+  v4 = [(UIKBRenderFactory *)&v20 backgroundTraitsForKeyplane:keyplaneCopy];
   v5 = MEMORY[0x1E696B098];
-  [v3 frameForKeylayoutName:{@"split-left", v20.receiver, v20.super_class}];
+  [keyplaneCopy frameForKeylayoutName:{@"split-left", v20.receiver, v20.super_class}];
   v6 = [v5 valueWithCGRect:?];
-  v7 = [v4 geometry];
-  [v7 setSplitLeftRect:v6];
+  geometry = [v4 geometry];
+  [geometry setSplitLeftRect:v6];
 
   v8 = MEMORY[0x1E696B098];
-  [v3 frameForKeylayoutName:@"split-right"];
+  [keyplaneCopy frameForKeylayoutName:@"split-right"];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
   v17 = [v8 valueWithCGRect:{v10, v12, v14, v16}];
-  v18 = [v4 geometry];
-  [v18 setSplitRightRect:v17];
+  geometry2 = [v4 geometry];
+  [geometry2 setSplitRightRect:v17];
 
   return v4;
 }
@@ -169,38 +169,38 @@
   return result;
 }
 
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName
 {
-  v12 = a3;
-  v13 = a4;
+  traitsCopy = traits;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = UIKBRenderFactoryiPadSplit;
-  [(UIKBRenderFactoryiPad *)&v19 _customizeTraits:v12 forPopupForKey:v13 withRenderingContext:a5 keycapsFontName:a6 fallbackFontName:a7];
-  if ([v13 displayType] == 13)
+  [(UIKBRenderFactoryiPad *)&v19 _customizeTraits:traitsCopy forPopupForKey:keyCopy withRenderingContext:context keycapsFontName:name fallbackFontName:fontName];
+  if ([keyCopy displayType] == 13)
   {
     [(UIKBRenderFactoryiPadSplit *)self internationalKeyOffset];
 LABEL_10:
     v16 = v14;
     v17 = v15;
-    v18 = [v12 symbolStyle];
-    [v18 setTextOffset:{v16, v17}];
+    symbolStyle = [traitsCopy symbolStyle];
+    [symbolStyle setTextOffset:{v16, v17}];
 
     goto LABEL_11;
   }
 
-  if ([v13 displayType] == 5)
+  if ([keyCopy displayType] == 5)
   {
     [(UIKBRenderFactoryiPadSplit *)self dismissKeyOffset];
     goto LABEL_10;
   }
 
-  if ([v13 displayType] == 3)
+  if ([keyCopy displayType] == 3)
   {
     [(UIKBRenderFactoryiPadSplit *)self deleteKeyOffset];
     goto LABEL_10;
   }
 
-  if ([v13 displayType] == 23 || objc_msgSend(v13, "interactionType") == 14)
+  if ([keyCopy displayType] == 23 || objc_msgSend(keyCopy, "interactionType") == 14)
   {
     [(UIKBRenderFactoryiPadSplit *)self shiftKeyOffset];
     goto LABEL_10;
@@ -209,18 +209,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_customizeGeometry:(id)a3 forKey:(id)a4 contents:(id)a5
+- (void)_customizeGeometry:(id)geometry forKey:(id)key contents:(id)contents
 {
-  v8 = a3;
+  geometryCopy = geometry;
   v20.receiver = self;
   v20.super_class = UIKBRenderFactoryiPadSplit;
-  v9 = a4;
-  [(UIKBRenderFactoryiPad *)&v20 _customizeGeometry:v8 forKey:v9 contents:a5];
-  LODWORD(a5) = [v9 displayType];
+  keyCopy = key;
+  [(UIKBRenderFactoryiPad *)&v20 _customizeGeometry:geometryCopy forKey:keyCopy contents:contents];
+  LODWORD(contents) = [keyCopy displayType];
 
-  if (a5 == 2)
+  if (contents == 2)
   {
-    [v8 symbolFrame];
+    [geometryCopy symbolFrame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -232,13 +232,13 @@ LABEL_11:
     v21.size.width = v15;
     v21.size.height = v17;
     v22 = CGRectInset(v21, v19, 0.0);
-    [v8 setSymbolFrame:{v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
+    [geometryCopy setSymbolFrame:{v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
   }
 }
 
-- (id)variantGeometriesForGeometry:(id)a3 variantCount:(unint64_t)a4 rowLimit:(int64_t)a5 annotationIndex:(unint64_t)a6
+- (id)variantGeometriesForGeometry:(id)geometry variantCount:(unint64_t)count rowLimit:(int64_t)limit annotationIndex:(unint64_t)index
 {
-  v9 = [a3 copy];
+  v9 = [geometry copy];
   [v9 paddedInsets];
   v43 = v10;
   v44 = v11;
@@ -266,56 +266,56 @@ LABEL_11:
   [v9 setPaddedFrame:{v41 + v32, v43 + v34, v36 - (v41 + v42), v38 - (v43 + v44)}];
   [v9 paddedFrame];
   [v9 setSymbolFrame:?];
-  v39 = [v9 iPadVariantGeometries:a4 rowLimit:a5];
+  v39 = [v9 iPadVariantGeometries:count rowLimit:limit];
 
   return v39;
 }
 
-- (void)_customizeSymbolStyle:(id)a3 forKey:(id)a4 contents:(id)a5
+- (void)_customizeSymbolStyle:(id)style forKey:(id)key contents:(id)contents
 {
-  v8 = a3;
-  v9 = a4;
+  styleCopy = style;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = UIKBRenderFactoryiPadSplit;
-  [(UIKBRenderFactoryiPad *)&v11 _customizeSymbolStyle:v8 forKey:v9 contents:a5];
-  [v8 setFontSize:18.0];
-  if ([v9 displayType] == 23)
+  [(UIKBRenderFactoryiPad *)&v11 _customizeSymbolStyle:styleCopy forKey:keyCopy contents:contents];
+  [styleCopy setFontSize:18.0];
+  if ([keyCopy displayType] == 23)
   {
     [(UIKBRenderFactory *)self RivenFactor:1.0];
 LABEL_3:
     v10 = 16.0;
 LABEL_6:
-    [v8 setFontSize:v10];
+    [styleCopy setFontSize:v10];
     goto LABEL_14;
   }
 
-  if ([v9 displayType] == 3)
+  if ([keyCopy displayType] == 3)
   {
     v10 = 15.0;
     goto LABEL_6;
   }
 
-  if ([v9 displayType] == 13)
+  if ([keyCopy displayType] == 13)
   {
     [(UIKBRenderFactoryiPadSplit *)self internationalKeyOffset];
 LABEL_13:
-    [v8 setTextOffset:?];
+    [styleCopy setTextOffset:?];
     goto LABEL_14;
   }
 
-  if ([v9 displayType] == 4)
+  if ([keyCopy displayType] == 4)
   {
     [(UIKBRenderFactoryiPad *)self dictationKeyOffset];
     goto LABEL_13;
   }
 
-  if ([v9 displayType] == 5)
+  if ([keyCopy displayType] == 5)
   {
     [(UIKBRenderFactoryiPadSplit *)self dismissKeyOffset];
     goto LABEL_13;
   }
 
-  if ([v9 displayType] == 21 || objc_msgSend(v9, "displayType") == 18)
+  if ([keyCopy displayType] == 21 || objc_msgSend(keyCopy, "displayType") == 18)
   {
     goto LABEL_3;
   }
@@ -323,34 +323,34 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = UIKBRenderFactoryiPadSplit;
-  v7 = [(UIKBRenderFactoryiPad *)&v19 _traitsForKey:v6 onKeyplane:a4];
-  v8 = [v6 displayString];
-  v9 = [v8 isEqualToString:{@", !"}];
+  v7 = [(UIKBRenderFactoryiPad *)&v19 _traitsForKey:keyCopy onKeyplane:keyplane];
+  displayString = [keyCopy displayString];
+  v9 = [displayString isEqualToString:{@", !"}];
 
   if (v9)
   {
-    v10 = [v7 symbolStyle];
-    [v10 textOffset];
+    symbolStyle = [v7 symbolStyle];
+    [symbolStyle textOffset];
     v12 = v11;
     v14 = v13;
 
-    v15 = [v7 symbolStyle];
-    [v15 setTextOffset:{v12 + 1.0, v14}];
+    symbolStyle2 = [v7 symbolStyle];
+    [symbolStyle2 setTextOffset:{v12 + 1.0, v14}];
   }
 
   [(UIKBRenderFactory *)self scaleTraits:v7];
-  if ([(UIKBRenderFactoryiPhone *)self _shouldConfigureSecondarySymbolStyleForSpaceKey:v6])
+  if ([(UIKBRenderFactoryiPhone *)self _shouldConfigureSecondarySymbolStyleForSpaceKey:keyCopy])
   {
-    v16 = [v7 secondarySymbolStyles];
-    v17 = [v16 firstObject];
+    secondarySymbolStyles = [v7 secondarySymbolStyles];
+    firstObject = [secondarySymbolStyles firstObject];
 
-    [v17 setFontSize:11.0];
-    [v17 setTextOffset:{8.0, 8.0}];
+    [firstObject setFontSize:11.0];
+    [firstObject setTextOffset:{8.0, 8.0}];
   }
 
   return v7;

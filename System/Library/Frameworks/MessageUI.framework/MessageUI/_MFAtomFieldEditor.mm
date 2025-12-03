@@ -1,39 +1,39 @@
 @interface _MFAtomFieldEditor
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CGRect)_rectForScrollToVisible:(_NSRange)a3;
-- (CGRect)convertGlyphRect:(CGRect)a3;
-- (_MFAtomFieldEditor)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CGRect)_rectForScrollToVisible:(_NSRange)visible;
+- (CGRect)convertGlyphRect:(CGRect)rect;
+- (_MFAtomFieldEditor)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)_enclosingScrollView;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
 - (id)textInputTraits;
 - (id)undoManager;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
-- (void)paste:(id)a3;
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
+- (void)paste:(id)paste;
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated;
 @end
 
 @implementation _MFAtomFieldEditor
 
-- (_MFAtomFieldEditor)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_MFAtomFieldEditor)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = _MFAtomFieldEditor;
-  v10 = [(_MFAtomFieldEditor *)&v15 initWithFrame:v9 textContainer:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(_MFAtomFieldEditor *)&v15 initWithFrame:containerCopy textContainer:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(_MFAtomFieldEditor *)v10 setClipsToBounds:0];
-    v12 = [(_MFAtomFieldEditor *)v11 textContainer];
-    [v12 setLineFragmentPadding:3.0];
+    [(_MFAtomFieldEditor *)height setClipsToBounds:0];
+    textContainer = [(_MFAtomFieldEditor *)v11 textContainer];
+    [textContainer setLineFragmentPadding:3.0];
 
-    v13 = [(_MFAtomFieldEditor *)v11 textContainer];
-    [v13 setMaximumNumberOfLines:1];
+    textContainer2 = [(_MFAtomFieldEditor *)v11 textContainer];
+    [textContainer2 setMaximumNumberOfLines:1];
 
     [(_MFAtomFieldEditor *)v11 setTextContainerInset:3.0, 0.0, 3.0, 0.0];
   }
@@ -43,8 +43,8 @@
 
 - (id)_enclosingScrollView
 {
-  v2 = [(_MFAtomFieldEditor *)self superview];
-  if (v2)
+  superview = [(_MFAtomFieldEditor *)self superview];
+  if (superview)
   {
     do
     {
@@ -54,31 +54,31 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (id)textInputTraits
 {
-  v2 = [(_MFAtomFieldEditor *)self _hostView];
-  v3 = [v2 textInputTraits];
+  _hostView = [(_MFAtomFieldEditor *)self _hostView];
+  textInputTraits = [_hostView textInputTraits];
 
-  return v3;
+  return textInputTraits;
 }
 
-- (CGRect)convertGlyphRect:(CGRect)a3
+- (CGRect)convertGlyphRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_MFAtomFieldEditor *)self textContainerInset];
   v9 = x + v8;
   [(_MFAtomFieldEditor *)self textContainerInset];
@@ -95,25 +95,25 @@
 
 - (id)undoManager
 {
-  v2 = [(_MFAtomFieldEditor *)self _hostView];
-  v3 = [v2 undoManager];
+  _hostView = [(_MFAtomFieldEditor *)self _hostView];
+  undoManager = [_hostView undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_paste_ == a3)
+  senderCopy = sender;
+  if (sel_paste_ == action)
   {
-    v9 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v10 = [(_MFAtomFieldEditor *)self _hostView];
-    v11 = [v10 _supportedPasteboardTypes];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    _hostView = [(_MFAtomFieldEditor *)self _hostView];
+    _supportedPasteboardTypes = [_hostView _supportedPasteboardTypes];
 
-    v12 = [v9 containsPasteboardTypes:v11 inItemSet:0];
+    v12 = [generalPasteboard containsPasteboardTypes:_supportedPasteboardTypes inItemSet:0];
   }
 
-  else if (sel__define_ == a3 || sel__share_ == a3 || sel__lookup_ == a3)
+  else if (sel__define_ == action || sel__share_ == action || sel__lookup_ == action)
   {
     v12 = 0;
   }
@@ -122,63 +122,63 @@
   {
     v14.receiver = self;
     v14.super_class = _MFAtomFieldEditor;
-    v12 = [(_MFAtomFieldEditor *)&v14 canPerformAction:a3 withSender:v6];
+    v12 = [(_MFAtomFieldEditor *)&v14 canPerformAction:action withSender:senderCopy];
   }
 
   return v12;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v7 = a3;
+  cutCopy = cut;
   [(_MFAtomFieldEditor *)self copy:?];
-  v4 = [(_MFAtomFieldEditor *)self _hostView];
-  v5 = [(_MFAtomFieldEditor *)self selectedRange];
-  [v4 _removeRepresentedObjectsInCharacterRange:{v5, v6}];
+  _hostView = [(_MFAtomFieldEditor *)self _hostView];
+  selectedRange = [(_MFAtomFieldEditor *)self selectedRange];
+  [_hostView _removeRepresentedObjectsInCharacterRange:{selectedRange, v6}];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = [(_MFAtomFieldEditor *)self _hostView];
-  v3 = [v5 selectedRepresentedObjects];
-  if ([v3 count])
+  _hostView = [(_MFAtomFieldEditor *)self _hostView];
+  selectedRepresentedObjects = [_hostView selectedRepresentedObjects];
+  if ([selectedRepresentedObjects count])
   {
-    v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    [v5 _storeRepresentedObjects:v3 onPasteboard:v4];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    [_hostView _storeRepresentedObjects:selectedRepresentedObjects onPasteboard:generalPasteboard];
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v8 = [(_MFAtomFieldEditor *)self _hostView];
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v5 = [v8 _representedObjectsFromPasteboard:v4];
+  _hostView = [(_MFAtomFieldEditor *)self _hostView];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  v5 = [_hostView _representedObjectsFromPasteboard:generalPasteboard];
   if ([v5 count])
   {
-    v6 = [(_MFAtomFieldEditor *)self selectedRange];
-    [v8 _insertRepresentedObjects:v5 atCharacterRange:{v6, v7}];
+    selectedRange = [(_MFAtomFieldEditor *)self selectedRange];
+    [_hostView _insertRepresentedObjects:v5 atCharacterRange:{selectedRange, v7}];
   }
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(_MFAtomFieldEditor *)self beginningOfDocument];
-  v7 = [v4 start];
-  v8 = [(_MFAtomFieldEditor *)self offsetFromPosition:v6 toPosition:v7];
-  v9 = [v4 start];
-  v10 = [v4 end];
-  v11 = [(_MFAtomFieldEditor *)self offsetFromPosition:v9 toPosition:v10];
+  rangeCopy = range;
+  array = [MEMORY[0x1E695DF70] array];
+  beginningOfDocument = [(_MFAtomFieldEditor *)self beginningOfDocument];
+  start = [rangeCopy start];
+  v8 = [(_MFAtomFieldEditor *)self offsetFromPosition:beginningOfDocument toPosition:start];
+  start2 = [rangeCopy start];
+  v10 = [rangeCopy end];
+  v11 = [(_MFAtomFieldEditor *)self offsetFromPosition:start2 toPosition:v10];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45___MFAtomFieldEditor_selectionRectsForRange___block_invoke;
   aBlock[3] = &unk_1E806C8D8;
-  v12 = v5;
+  v12 = array;
   v27 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [(_MFAtomFieldEditor *)self textStorage];
+  textStorage = [(_MFAtomFieldEditor *)self textStorage];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __45___MFAtomFieldEditor_selectionRectsForRange___block_invoke_2;
@@ -190,7 +190,7 @@
   v23 = v15;
   v16 = v12;
   v22 = v16;
-  [v14 enumerateAttributesInRange:v8 options:v11 usingBlock:{0, v21}];
+  [textStorage enumerateAttributesInRange:v8 options:v11 usingBlock:{0, v21}];
 
   if ([v16 count])
   {
@@ -201,7 +201,7 @@
   {
     v20.receiver = self;
     v20.super_class = _MFAtomFieldEditor;
-    v17 = [(_MFAtomFieldEditor *)&v20 selectionRectsForRange:v4];
+    v17 = [(_MFAtomFieldEditor *)&v20 selectionRectsForRange:rangeCopy];
   }
 
   v18 = v17;
@@ -209,36 +209,36 @@
   return v18;
 }
 
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(_MFAtomFieldEditor *)self _enclosingScrollView];
-  [v10 convertRect:self fromView:{x, y, width, height}];
-  [v10 scrollRectToVisible:v4 animated:?];
+  animatedCopy = animated;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  _enclosingScrollView = [(_MFAtomFieldEditor *)self _enclosingScrollView];
+  [_enclosingScrollView convertRect:self fromView:{x, y, width, height}];
+  [_enclosingScrollView scrollRectToVisible:animatedCopy animated:?];
 }
 
-- (CGRect)_rectForScrollToVisible:(_NSRange)a3
+- (CGRect)_rectForScrollToVisible:(_NSRange)visible
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(_MFAtomFieldEditor *)self layoutManager];
-  v7 = [(_MFAtomFieldEditor *)self textContainer];
-  v8 = [(_MFAtomFieldEditor *)self textStorage];
-  v9 = [v8 length];
+  length = visible.length;
+  location = visible.location;
+  layoutManager = [(_MFAtomFieldEditor *)self layoutManager];
+  textContainer = [(_MFAtomFieldEditor *)self textContainer];
+  textStorage = [(_MFAtomFieldEditor *)self textStorage];
+  v9 = [textStorage length];
 
   if (location + length > v9)
   {
-    v10 = [(_MFAtomFieldEditor *)self textStorage];
-    location = [v10 length] - 1;
+    textStorage2 = [(_MFAtomFieldEditor *)self textStorage];
+    location = [textStorage2 length] - 1;
     length = 1;
   }
 
-  v11 = [v6 glyphRangeForCharacterRange:location actualCharacterRange:{length, 0}];
-  [v6 boundingRectForGlyphRange:v11 inTextContainer:{v12, v7}];
+  v11 = [layoutManager glyphRangeForCharacterRange:location actualCharacterRange:{length, 0}];
+  [layoutManager boundingRectForGlyphRange:v11 inTextContainer:{v12, textContainer}];
   [(_MFAtomFieldEditor *)self textContainerInset];
   [(UIView *)self mf_currentScreenScale];
   UIRectIntegralWithScale();

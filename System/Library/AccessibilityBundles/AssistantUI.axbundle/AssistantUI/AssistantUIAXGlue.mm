@@ -40,12 +40,12 @@ void __50__AssistantUIAXGlue_accessibilityInitializeBundle__block_invoke_4(uint6
 + (void)initialize
 {
   v3 = objc_opt_new();
-  v4 = [v3 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v3 isClarityBoardEnabled];
 
-  if (v4)
+  if (isClarityBoardEnabled)
   {
 
-    [a1 accessibilityInitializeBundle];
+    [self accessibilityInitializeBundle];
   }
 }
 

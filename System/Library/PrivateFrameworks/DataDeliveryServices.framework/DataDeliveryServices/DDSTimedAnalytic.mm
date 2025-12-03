@@ -1,60 +1,60 @@
 @interface DDSTimedAnalytic
-- (DDSTimedAnalytic)initWithIdentifier:(id)a3;
+- (DDSTimedAnalytic)initWithIdentifier:(id)identifier;
 - (unint64_t)durationInSec;
-- (void)updateWithAction:(int)a3;
+- (void)updateWithAction:(int)action;
 @end
 
 @implementation DDSTimedAnalytic
 
-- (DDSTimedAnalytic)initWithIdentifier:(id)a3
+- (DDSTimedAnalytic)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DDSTimedAnalytic;
   v6 = [(DDSTimedAnalytic *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_lastAction = 0;
   }
 
   return v7;
 }
 
-- (void)updateWithAction:(int)a3
+- (void)updateWithAction:(int)action
 {
   [(DDSTimedAnalytic *)self setLastAction:?];
-  if (a3 > 2)
+  if (action > 2)
   {
-    if (a3 == 3)
+    if (action == 3)
     {
-      v6 = self;
+      selfCopy2 = self;
       v7 = 1;
     }
 
     else
     {
-      if (a3 != 4)
+      if (action != 4)
       {
         return;
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 0;
     }
 
-    [(DDSTimedAnalytic *)v6 setSuccess:v7];
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSince1970];
+    [(DDSTimedAnalytic *)selfCopy2 setSuccess:v7];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [(DDSTimedAnalytic *)self setEndTime:?];
   }
 
   else
   {
-    if (a3 != 1)
+    if (action != 1)
     {
-      if (a3 == 2)
+      if (action == 2)
       {
         v5 = [(DDSTimedAnalytic *)self retries]+ 1;
 
@@ -70,8 +70,8 @@
       return;
     }
 
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [(DDSTimedAnalytic *)self setStartTime:?];
   }
 }

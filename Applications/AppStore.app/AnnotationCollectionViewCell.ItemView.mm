@@ -1,12 +1,12 @@
 @interface AnnotationCollectionViewCell.ItemView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtCC8AppStore28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtCC8AppStore28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation AnnotationCollectionViewCell.ItemView
 
-- (_TtCC8AppStore28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)a3
+- (_TtCC8AppStore28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC8AppStore28AnnotationCollectionViewCell8ItemView_leadingPairLabels) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC8AppStore28AnnotationCollectionViewCell8ItemView_trailingPairLabels) = _swiftEmptyArrayStorage;
@@ -28,7 +28,7 @@
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v12 = self;
+  selfCopy = self;
   [(AnnotationCollectionViewCell.ItemView *)&v13 layoutSubviews];
   sub_10015B8D4();
   LayoutMarginsAware<>.layoutFrame.getter();
@@ -38,14 +38,14 @@
   (*(v9 + 8))(v11, v8);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   v5 = type metadata accessor for ProductAnnotationLayout.ItemLayout();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v22 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   sub_10015B8D4();
   ProductAnnotationLayout.ItemLayout.measurements(fitting:in:)();
   v11 = v10;

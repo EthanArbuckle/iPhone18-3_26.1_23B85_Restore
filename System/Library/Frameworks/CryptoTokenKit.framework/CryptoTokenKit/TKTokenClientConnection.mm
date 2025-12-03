@@ -1,29 +1,29 @@
 @interface TKTokenClientConnection
-- (BOOL)isCaller:(id)a3 allowedForToken:(id)a4 error:(id *)a5;
+- (BOOL)isCaller:(id)caller allowedForToken:(id)token error:(id *)error;
 - (NSXPCConnection)connection;
-- (TKTokenClientConnection)initWithConnection:(id)a3 server:(id)a4;
+- (TKTokenClientConnection)initWithConnection:(id)connection server:(id)server;
 - (id)accessRegistry;
-- (void)ensureSlotWatcherRunningWithReply:(id)a3;
-- (void)getConfigurationEndpoint:(id)a3;
-- (void)getEndpoint:(id)a3;
-- (void)notifyOperation:(int64_t)a3 forToken:(id)a4 withStatus:(int64_t)a5;
+- (void)ensureSlotWatcherRunningWithReply:(id)reply;
+- (void)getConfigurationEndpoint:(id)endpoint;
+- (void)getEndpoint:(id)endpoint;
+- (void)notifyOperation:(int64_t)operation forToken:(id)token withStatus:(int64_t)status;
 - (void)terminate;
 @end
 
 @implementation TKTokenClientConnection
 
-- (TKTokenClientConnection)initWithConnection:(id)a3 server:(id)a4
+- (TKTokenClientConnection)initWithConnection:(id)connection server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v14.receiver = self;
   v14.super_class = TKTokenClientConnection;
   v8 = [(TKTokenClientConnection *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_connection, v6);
-    objc_storeStrong(&v9->_server, a4);
+    objc_storeWeak(&v8->_connection, connectionCopy);
+    objc_storeStrong(&v9->_server, server);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100016240;
@@ -36,37 +36,37 @@
   return v9;
 }
 
-- (void)getEndpoint:(id)a3
+- (void)getEndpoint:(id)endpoint
 {
-  v7 = a3;
+  endpointCopy = endpoint;
   v4 = self->_server;
   objc_sync_enter(v4);
-  v5 = [(TKTokenServer *)self->_server tokenServerListener];
-  v6 = [v5 endpoint];
-  v7[2](v7, v6);
+  tokenServerListener = [(TKTokenServer *)self->_server tokenServerListener];
+  endpoint = [tokenServerListener endpoint];
+  endpointCopy[2](endpointCopy, endpoint);
 
   objc_sync_exit(v4);
 }
 
-- (BOOL)isCaller:(id)a3 allowedForToken:(id)a4 error:(id *)a5
+- (BOOL)isCaller:(id)caller allowedForToken:(id)token error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  tokenCopy = token;
+  callerCopy = caller;
   v10 = [TKTokenAccessRequest alloc];
-  v11 = [v8 tokenID];
-  v12 = [v8 driver];
-  v13 = [v12 extension];
-  v14 = [v10 initWithCaller:v9 tokenID:v11 extension:v13];
+  tokenID = [tokenCopy tokenID];
+  driver = [tokenCopy driver];
+  extension = [driver extension];
+  v14 = [v10 initWithCaller:callerCopy tokenID:tokenID extension:extension];
 
-  v15 = [(TKTokenClientConnection *)self accessRegistry];
-  v16 = [v15 evaluateRequest:v14 error:a5];
+  accessRegistry = [(TKTokenClientConnection *)self accessRegistry];
+  v16 = [accessRegistry evaluateRequest:v14 error:error];
 
   v17 = sub_1000164FC();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v14 clientBundleID];
-    v20 = [v8 tokenID];
-    v21 = [v20 stringRepresentation];
+    clientBundleID = [v14 clientBundleID];
+    tokenID2 = [tokenCopy tokenID];
+    stringRepresentation = [tokenID2 stringRepresentation];
     if (v16)
     {
       v22 = @"granted";
@@ -74,13 +74,13 @@
 
     else
     {
-      v22 = [NSString stringWithFormat:@"denied with error: %@", *a5];
+      v22 = [NSString stringWithFormat:@"denied with error: %@", *error];
     }
 
     *buf = 138412802;
-    v24 = v19;
+    v24 = clientBundleID;
     v25 = 2112;
-    v26 = v21;
+    v26 = stringRepresentation;
     v27 = 2112;
     v28 = v22;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Request from: '%@' to access '%@' was %@", buf, 0x20u);
@@ -107,10 +107,10 @@
   return accessRegistry;
 }
 
-- (void)notifyOperation:(int64_t)a3 forToken:(id)a4 withStatus:(int64_t)a5
+- (void)notifyOperation:(int64_t)operation forToken:(id)token withStatus:(int64_t)status
 {
-  v8 = a4;
-  v9 = [[TKTokenID alloc] initWithTokenID:v8];
+  tokenCopy = token;
+  v9 = [[TKTokenID alloc] initWithTokenID:tokenCopy];
 
   v10 = sub_1000164FC();
   v11 = v10;
@@ -119,25 +119,25 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v17 = 134218498;
-      v18 = a3;
+      operationCopy = operation;
       v19 = 2114;
       v20 = v9;
       v21 = 2048;
-      v22 = a5;
+      statusCopy = status;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "got notification for operation: %ld tokenID: %{public}@ status: %ld", &v17, 0x20u);
     }
 
-    v12 = [(TKTokenClientConnection *)self server];
-    v13 = [v12 tokenRegistry];
-    v11 = [v13 tokenWithTokenID:v9];
+    server = [(TKTokenClientConnection *)self server];
+    tokenRegistry = [server tokenRegistry];
+    v11 = [tokenRegistry tokenWithTokenID:v9];
 
     if ([v11 isRegistered])
     {
-      v14 = [v11 driver];
-      v15 = [v14 context];
-      v16 = [v15 smartCardRegistrationRegistry];
+      driver = [v11 driver];
+      context = [driver context];
+      smartCardRegistrationRegistry = [context smartCardRegistrationRegistry];
 
-      [v16 notifyTokenOperationInProgressForToken:v9];
+      [smartCardRegistrationRegistry notifyTokenOperationInProgressForToken:v9];
     }
   }
 
@@ -147,39 +147,39 @@
   }
 }
 
-- (void)getConfigurationEndpoint:(id)a3
+- (void)getConfigurationEndpoint:(id)endpoint
 {
-  v8 = a3;
+  endpointCopy = endpoint;
   if ([(TKTokenServer *)self->_server waitForRegistry])
   {
     v4 = self->_server;
     objc_sync_enter(v4);
-    v5 = [(TKTokenServer *)self->_server tokenRegistry];
-    v6 = [v5 listener];
-    v7 = [v6 endpoint];
-    v8[2](v8, v7);
+    tokenRegistry = [(TKTokenServer *)self->_server tokenRegistry];
+    listener = [tokenRegistry listener];
+    endpoint = [listener endpoint];
+    endpointCopy[2](endpointCopy, endpoint);
 
     objc_sync_exit(v4);
   }
 
   else
   {
-    v8[2](v8, 0);
+    endpointCopy[2](endpointCopy, 0);
   }
 }
 
-- (void)ensureSlotWatcherRunningWithReply:(id)a3
+- (void)ensureSlotWatcherRunningWithReply:(id)reply
 {
-  v6 = a3;
-  v4 = [(TKTokenServer *)self->_server ensureSlotWatcherIsRunning];
+  replyCopy = reply;
+  ensureSlotWatcherIsRunning = [(TKTokenServer *)self->_server ensureSlotWatcherIsRunning];
 
-  if (v4)
+  if (ensureSlotWatcherIsRunning)
   {
-    v5 = [(TKTokenServer *)self->_server ensureSlotWatcherIsRunning];
-    v5[2]();
+    ensureSlotWatcherIsRunning2 = [(TKTokenServer *)self->_server ensureSlotWatcherIsRunning];
+    ensureSlotWatcherIsRunning2[2]();
   }
 
-  v6[2]();
+  replyCopy[2]();
 }
 
 - (void)terminate

@@ -30,14 +30,14 @@ void __38__PBFWallpaperKitBridge_defaultBridge__block_invoke()
 
 - (NSString)defaultWallpaperIdentifier
 {
-  v2 = [getWKDefaultWallpaperManagerClass() defaultWallpaperManager];
-  v3 = v2;
-  if (v2)
+  defaultWallpaperManager = [getWKDefaultWallpaperManagerClass() defaultWallpaperManager];
+  v3 = defaultWallpaperManager;
+  if (defaultWallpaperManager)
   {
-    v4 = [v2 defaultWallpaperBundle];
-    v5 = [v4 identifier];
+    defaultWallpaperBundle = [defaultWallpaperManager defaultWallpaperBundle];
+    identifier = [defaultWallpaperBundle identifier];
 
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v5];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", identifier];
   }
 
   else
@@ -50,17 +50,17 @@ void __38__PBFWallpaperKitBridge_defaultBridge__block_invoke()
 
 - (BOOL)shouldInstallHeroPosterAsDefaultLockScreenWallpaper
 {
-  v2 = [(PBFWallpaperKitBridge *)self defaultWallpaperIdentifier];
-  v3 = [v2 length];
+  defaultWallpaperIdentifier = [(PBFWallpaperKitBridge *)self defaultWallpaperIdentifier];
+  v3 = [defaultWallpaperIdentifier length];
 
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D37C70]);
     v5 = [v4 lockScreenWallpaperConfigurationIncludingValuesForTypes:0];
-    v6 = [v5 wallpaperType];
+    wallpaperType = [v5 wallpaperType];
     v7 = PBFLogMigration();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    v9 = v6 == 4;
+    v9 = wallpaperType == 4;
     if (v9)
     {
       if (v8)
@@ -118,7 +118,7 @@ LABEL_13:
 
   if (v4 && (objc_opt_self(), v6 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
   {
-    v8 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
@@ -131,10 +131,10 @@ LABEL_13:
       _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "(dataMigratorDeterminedLegacyWallpaperMigrationRequired) springBoardIndicatedDataStoreMigrationNeeded was invalid (%{public}@); nothing to do.", &v11, 0xCu);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (void)clearLegacyWallpaperMigrationKeys
@@ -145,20 +145,20 @@ LABEL_13:
 
 - (BOOL)shouldDefaultWallpaperDisableModifyingLegibilityBlur
 {
-  v2 = [getWKDefaultWallpaperManagerClass() defaultWallpaperManager];
-  v3 = v2;
-  if (v2)
+  defaultWallpaperManager = [getWKDefaultWallpaperManagerClass() defaultWallpaperManager];
+  v3 = defaultWallpaperManager;
+  if (defaultWallpaperManager)
   {
-    v4 = [v2 defaultWallpaperBundle];
-    v5 = [v4 disableModifyingLegibilityBlur];
+    defaultWallpaperBundle = [defaultWallpaperManager defaultWallpaperBundle];
+    disableModifyingLegibilityBlur = [defaultWallpaperBundle disableModifyingLegibilityBlur];
   }
 
   else
   {
-    v5 = 0;
+    disableModifyingLegibilityBlur = 0;
   }
 
-  return v5;
+  return disableModifyingLegibilityBlur;
 }
 
 @end

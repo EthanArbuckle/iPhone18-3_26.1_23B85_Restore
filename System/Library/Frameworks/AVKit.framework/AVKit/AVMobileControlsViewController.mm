@@ -3,11 +3,11 @@
 - (AVMobileControlsViewControllerDelegate)delegate;
 - (UIEdgeInsets)legibleContentInsetsAvoidingControlsUI;
 - (id)eventManager;
-- (void)addAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5;
-- (void)addAction:(id)a3 forEvent:(id)a4;
-- (void)removeAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5;
-- (void)setControlItems:(id)a3;
-- (void)setTransportBarCustomMenuItems:(id)a3;
+- (void)addAction:(SEL)action withTarget:(id)target forEvent:(id)event;
+- (void)addAction:(id)action forEvent:(id)event;
+- (void)removeAction:(SEL)action withTarget:(id)target forEvent:(id)event;
+- (void)setControlItems:(id)items;
+- (void)setTransportBarCustomMenuItems:(id)items;
 @end
 
 @implementation AVMobileControlsViewController
@@ -19,28 +19,28 @@
   return WeakRetained;
 }
 
-- (void)removeAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5
+- (void)removeAction:(SEL)action withTarget:(id)target forEvent:(id)event
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(AVMobileControlsViewController *)self eventManager];
-  [v10 removeAction:a3 withTarget:v9 forEvent:v8];
+  eventCopy = event;
+  targetCopy = target;
+  eventManager = [(AVMobileControlsViewController *)self eventManager];
+  [eventManager removeAction:action withTarget:targetCopy forEvent:eventCopy];
 }
 
-- (void)addAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5
+- (void)addAction:(SEL)action withTarget:(id)target forEvent:(id)event
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(AVMobileControlsViewController *)self eventManager];
-  [v10 addAction:a3 withTarget:v9 forEvent:v8];
+  eventCopy = event;
+  targetCopy = target;
+  eventManager = [(AVMobileControlsViewController *)self eventManager];
+  [eventManager addAction:action withTarget:targetCopy forEvent:eventCopy];
 }
 
-- (void)addAction:(id)a3 forEvent:(id)a4
+- (void)addAction:(id)action forEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVMobileControlsViewController *)self eventManager];
-  [v8 addAction:v7 forEvent:v6];
+  eventCopy = event;
+  actionCopy = action;
+  eventManager = [(AVMobileControlsViewController *)self eventManager];
+  [eventManager addAction:actionCopy forEvent:eventCopy];
 }
 
 - (UIEdgeInsets)legibleContentInsetsAvoidingControlsUI
@@ -56,9 +56,9 @@
   return result;
 }
 
-- (void)setTransportBarCustomMenuItems:(id)a3
+- (void)setTransportBarCustomMenuItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   transportBarCustomMenuItems = self->_transportBarCustomMenuItems;
   self->_transportBarCustomMenuItems = v4;
 
@@ -80,11 +80,11 @@
   return eventManager;
 }
 
-- (void)setControlItems:(id)a3
+- (void)setControlItems:(id)items
 {
-  if (self->_controlItems != a3)
+  if (self->_controlItems != items)
   {
-    v4 = [a3 copy];
+    v4 = [items copy];
     controlItems = self->_controlItems;
     self->_controlItems = v4;
 

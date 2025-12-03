@@ -1,33 +1,33 @@
 @interface TranscriptViewController
-- (_TtC7Journal24TranscriptViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleTap:(id)a3;
+- (_TtC7Journal24TranscriptViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleTap:(id)tap;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation TranscriptViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100596528();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005969E0(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1005969E0(scrollCopy);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_100598698(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_100598698(tapCopy);
 }
 
-- (_TtC7Journal24TranscriptViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal24TranscriptViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

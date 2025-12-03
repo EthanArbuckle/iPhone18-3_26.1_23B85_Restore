@@ -1,8 +1,8 @@
 @interface NUTimeTransformTrim
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)time;
+- (BOOL)isEqual:(id)equal;
 - (NUTimeTransformTrim)init;
-- (NUTimeTransformTrim)initWithTrimBeginTime:(id *)a3;
+- (NUTimeTransformTrim)initWithTrimBeginTime:(id *)time;
 - (id)description;
 - (id)inverseTransform;
 - (unint64_t)hash;
@@ -10,10 +10,10 @@
 
 @implementation NUTimeTransformTrim
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -24,9 +24,9 @@
     if (objc_opt_isKindOfClass())
     {
       p_beginTime = &self->_beginTime;
-      if (v4)
+      if (equalCopy)
       {
-        [(NUTimeTransformTrim *)v4 beginTime];
+        [(NUTimeTransformTrim *)equalCopy beginTime];
       }
 
       else
@@ -64,7 +64,7 @@
   return v2;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)time
 {
   lhs = *a4;
   beginTime = self->_beginTime;
@@ -76,9 +76,9 @@
   memset(&v7, 0, sizeof(v7));
   beginTime = self->_beginTime;
   CMTimeMultiply(&v7, &beginTime, -1);
-  v3 = self;
+  selfCopy = self;
   beginTime = v7;
-  v4 = [(NUTimeTransformTrim *)v3 initWithTrimBeginTime:&beginTime];
+  v4 = [(NUTimeTransformTrim *)selfCopy initWithTrimBeginTime:&beginTime];
 
   return v4;
 }
@@ -129,8 +129,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -146,8 +146,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -163,15 +163,15 @@ LABEL_14:
   _NUAssertFailHandler("[NUTimeTransformTrim init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 629, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-- (NUTimeTransformTrim)initWithTrimBeginTime:(id *)a3
+- (NUTimeTransformTrim)initWithTrimBeginTime:(id *)time
 {
   v6.receiver = self;
   v6.super_class = NUTimeTransformTrim;
   result = [(NUTimeTransformTrim *)&v6 init];
   if (result)
   {
-    var3 = a3->var3;
-    *&result->_beginTime.value = *&a3->var0;
+    var3 = time->var3;
+    *&result->_beginTime.value = *&time->var0;
     result->_beginTime.epoch = var3;
   }
 

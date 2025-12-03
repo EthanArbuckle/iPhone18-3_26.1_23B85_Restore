@@ -1,79 +1,79 @@
 @interface TUIWPBuilder
-- (TUIWPBuilder)initWithFontSpec:(id)a3 style:(unint64_t)a4 color:(id)a5 alignment:(int64_t)a6 writingDirection:(int64_t)a7 language:(id)a8 shouldHyphenate:(BOOL)a9 service:(id)a10;
-- (_NSRange)appendWithBlock:(id)a3;
-- (id)finalizeModelsWithParent:(id)a3 box:(id)a4 context:(id)a5;
-- (id)finalizeTextModelWithContext:(id)a3;
-- (void)_applyParagraphStyleWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5;
-- (void)_configurePropertyMap:(id)a3 withFontSpec:(id)a4 style:(unint64_t)a5 color:(id)a6;
-- (void)_createCharacterStyleWithParentStyle:(id)a3 style:(unint64_t)a4 color:(id)a5 fontSpec:(id)a6;
-- (void)addBox:(id)a3;
-- (void)appendHyperlinkWithURL:(id)a3 block:(id)a4;
-- (void)appendString:(id)a3;
-- (void)appendWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5 block:(id)a6;
-- (void)configureDropCapWithCount:(unint64_t)a3 lines:(unint64_t)a4 raised:(unint64_t)a5 style:(unint64_t)a6 color:(id)a7 fontSpec:(id)a8 backgroundColor:(id)a9 padding:(double)a10;
-- (void)configureLineStylingForLines:(int64_t)a3 relativeToDropCapLines:(BOOL)a4 style:(unint64_t)a5 color:(id)a6 fontSpec:(id)a7;
-- (void)configureParagraphStyle:(id)a3;
+- (TUIWPBuilder)initWithFontSpec:(id)spec style:(unint64_t)style color:(id)color alignment:(int64_t)alignment writingDirection:(int64_t)direction language:(id)language shouldHyphenate:(BOOL)hyphenate service:(id)self0;
+- (_NSRange)appendWithBlock:(id)block;
+- (id)finalizeModelsWithParent:(id)parent box:(id)box context:(id)context;
+- (id)finalizeTextModelWithContext:(id)context;
+- (void)_applyParagraphStyleWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec;
+- (void)_configurePropertyMap:(id)map withFontSpec:(id)spec style:(unint64_t)style color:(id)color;
+- (void)_createCharacterStyleWithParentStyle:(id)style style:(unint64_t)a4 color:(id)color fontSpec:(id)spec;
+- (void)addBox:(id)box;
+- (void)appendHyperlinkWithURL:(id)l block:(id)block;
+- (void)appendString:(id)string;
+- (void)appendWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec block:(id)block;
+- (void)configureDropCapWithCount:(unint64_t)count lines:(unint64_t)lines raised:(unint64_t)raised style:(unint64_t)style color:(id)color fontSpec:(id)spec backgroundColor:(id)backgroundColor padding:(double)self0;
+- (void)configureLineStylingForLines:(int64_t)lines relativeToDropCapLines:(BOOL)capLines style:(unint64_t)style color:(id)color fontSpec:(id)spec;
+- (void)configureParagraphStyle:(id)style;
 - (void)ensureParagraphBoundary;
 @end
 
 @implementation TUIWPBuilder
 
-- (TUIWPBuilder)initWithFontSpec:(id)a3 style:(unint64_t)a4 color:(id)a5 alignment:(int64_t)a6 writingDirection:(int64_t)a7 language:(id)a8 shouldHyphenate:(BOOL)a9 service:(id)a10
+- (TUIWPBuilder)initWithFontSpec:(id)spec style:(unint64_t)style color:(id)color alignment:(int64_t)alignment writingDirection:(int64_t)direction language:(id)language shouldHyphenate:(BOOL)hyphenate service:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a8;
-  v19 = a10;
+  specCopy = spec;
+  colorCopy = color;
+  languageCopy = language;
+  serviceCopy = service;
   v34.receiver = self;
   v34.super_class = TUIWPBuilder;
   v20 = [(TUIWPBuilder *)&v34 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_fontSpec, a3);
-    objc_storeStrong(&v21->_color, a5);
-    v21->_alignment = a6;
-    v21->_writingDirection = a7;
-    v22 = [v18 copy];
+    objc_storeStrong(&v20->_fontSpec, spec);
+    objc_storeStrong(&v21->_color, color);
+    v21->_alignment = alignment;
+    v21->_writingDirection = direction;
+    v22 = [languageCopy copy];
     language = v21->_language;
     v21->_language = v22;
 
-    v21->_shouldHyphenate = a9;
+    v21->_shouldHyphenate = hyphenate;
     v24 = [TUIWPStorage alloc];
-    v25 = [v19 context];
-    v26 = [v19 stylesheet];
-    v27 = [(TUIWPStorage *)v24 initWithContext:v25 string:&stru_264550 stylesheet:v26 kind:3];
+    context = [serviceCopy context];
+    stylesheet = [serviceCopy stylesheet];
+    v27 = [(TUIWPStorage *)v24 initWithContext:context string:&stru_264550 stylesheet:stylesheet kind:3];
     wpStorage = v21->_wpStorage;
     v21->_wpStorage = v27;
 
-    v29 = [(TUIWPStorage *)v21->_wpStorage stylesheet];
-    v30 = [v29 defaultCharacterStyle];
+    stylesheet2 = [(TUIWPStorage *)v21->_wpStorage stylesheet];
+    defaultCharacterStyle = [stylesheet2 defaultCharacterStyle];
     characterStyle = v21->_characterStyle;
-    v21->_characterStyle = v30;
+    v21->_characterStyle = defaultCharacterStyle;
 
     v21->_usedDynamicColor = 0;
-    [(TUIWPBuilder *)v21 _applyParagraphStyleWithStyle:a4 color:v17 fontSpec:v16];
+    [(TUIWPBuilder *)v21 _applyParagraphStyleWithStyle:style color:colorCopy fontSpec:specCopy];
   }
 
   return v21;
 }
 
-- (void)_applyParagraphStyleWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5
+- (void)_applyParagraphStyleWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec
 {
-  v20 = a4;
-  v8 = a5;
+  colorCopy = color;
+  specCopy = spec;
   v9 = +[TSSPropertyMap propertyMap];
-  [(TUIWPBuilder *)self _configurePropertyMap:v9 withFontSpec:v8 style:a3 color:v20];
-  [v8 leading];
+  [(TUIWPBuilder *)self _configurePropertyMap:v9 withFontSpec:specCopy style:style color:colorCopy];
+  [specCopy leading];
   if (v10 != 0.0)
   {
     v11 = [TSWPLineSpacing alloc];
-    [v8 leading];
+    [specCopy leading];
     v12 = [v11 initWithMode:2 amount:?];
     [v9 setObject:v12 forProperty:85];
   }
 
-  [v9 setBoolValue:(a3 >> 2) & 1 forProperty:51];
+  [v9 setBoolValue:(style >> 2) & 1 forProperty:51];
   alignment = self->_alignment;
   if (alignment < 5)
   {
@@ -88,37 +88,37 @@
   [v9 setBoolValue:self->_shouldHyphenate forProperty:93];
   [v9 setObject:self->_language forProperty:39];
   v14 = [(TUIWPStorage *)self->_wpStorage paragraphStyleAtCharIndex:0 effectiveRange:0];
-  v15 = [(TUIWPStorage *)self->_wpStorage stylesheet];
-  v16 = [v15 variationOfStyle:v14 propertyMap:v9];
+  stylesheet = [(TUIWPStorage *)self->_wpStorage stylesheet];
+  v16 = [stylesheet variationOfStyle:v14 propertyMap:v9];
 
   wpStorage = self->_wpStorage;
-  v18 = [(TUIWPStorage *)wpStorage range];
-  [(TUIWPStorage *)wpStorage setParagraphStyle:v16 forCharRange:v18 undoTransaction:v19, 0];
+  range = [(TUIWPStorage *)wpStorage range];
+  [(TUIWPStorage *)wpStorage setParagraphStyle:v16 forCharRange:range undoTransaction:v19, 0];
 }
 
-- (void)_createCharacterStyleWithParentStyle:(id)a3 style:(unint64_t)a4 color:(id)a5 fontSpec:(id)a6
+- (void)_createCharacterStyleWithParentStyle:(id)style style:(unint64_t)a4 color:(id)color fontSpec:(id)spec
 {
-  v16 = a3;
-  v10 = a5;
-  v11 = a6;
+  styleCopy = style;
+  colorCopy = color;
+  specCopy = spec;
   v12 = +[TSSPropertyMap propertyMap];
-  [(TUIWPBuilder *)self _configurePropertyMap:v12 withFontSpec:v11 style:a4 color:v10];
-  v13 = [(TUIWPStorage *)self->_wpStorage stylesheet];
-  v14 = [v13 variationOfStyle:v16 propertyMap:v12];
+  [(TUIWPBuilder *)self _configurePropertyMap:v12 withFontSpec:specCopy style:a4 color:colorCopy];
+  stylesheet = [(TUIWPStorage *)self->_wpStorage stylesheet];
+  v14 = [stylesheet variationOfStyle:styleCopy propertyMap:v12];
   characterStyle = self->_characterStyle;
   self->_characterStyle = v14;
 }
 
-- (void)appendHyperlinkWithURL:(id)a3 block:(id)a4
+- (void)appendHyperlinkWithURL:(id)l block:(id)block
 {
-  v12 = a3;
-  v6 = a4;
+  lCopy = l;
+  blockCopy = block;
   v7 = [TSWPHyperlinkField alloc];
-  v8 = [(TUIWPStorage *)self->_wpStorage context];
-  v9 = [v7 initWithContext:v8 url:v12];
+  context = [(TUIWPStorage *)self->_wpStorage context];
+  v9 = [v7 initWithContext:context url:lCopy];
 
   v10 = [(TUIWPStorage *)self->_wpStorage length];
-  v6[2](v6);
+  blockCopy[2](blockCopy);
   v11 = [(TUIWPStorage *)self->_wpStorage length];
   if (v11 > v10)
   {
@@ -126,11 +126,11 @@
   }
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   v4 = [(TUIWPStorage *)self->_wpStorage length];
-  [(TUIWPStorage *)self->_wpStorage replaceCharactersInRange:[(TUIWPStorage *)self->_wpStorage length] withString:0 notifyObservers:v6 undoTransaction:0, 0];
+  [(TUIWPStorage *)self->_wpStorage replaceCharactersInRange:[(TUIWPStorage *)self->_wpStorage length] withString:0 notifyObservers:stringCopy undoTransaction:0, 0];
   v5 = [(TUIWPStorage *)self->_wpStorage length];
   if (v5 > v4)
   {
@@ -138,42 +138,42 @@
   }
 }
 
-- (void)appendWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5 block:(id)a6
+- (void)appendWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec block:(id)block
 {
-  v21 = a4;
-  v11 = a5;
-  v12 = a6;
+  colorCopy = color;
+  specCopy = spec;
+  blockCopy = block;
   v13 = self->_characterStyle;
   v14 = self->_color;
   v20 = self->_fontSpec;
-  if (v11)
+  if (specCopy)
   {
-    objc_storeStrong(&self->_fontSpec, a5);
+    objc_storeStrong(&self->_fontSpec, spec);
     goto LABEL_4;
   }
 
-  if (a3)
+  if (style)
   {
 LABEL_4:
-    if (!v21)
+    if (!colorCopy)
     {
 LABEL_6:
-      [(TUIWPBuilder *)self _createCharacterStyleWithParentStyle:v13 style:a3 color:v21 fontSpec:v11, v20];
+      [(TUIWPBuilder *)self _createCharacterStyleWithParentStyle:v13 style:style color:colorCopy fontSpec:specCopy, v20];
       goto LABEL_7;
     }
 
 LABEL_5:
-    objc_storeStrong(&self->_color, a4);
+    objc_storeStrong(&self->_color, color);
     goto LABEL_6;
   }
 
-  if (v21 && ([(UIColor *)self->_color isEqual:v21]& 1) == 0)
+  if (colorCopy && ([(UIColor *)self->_color isEqual:colorCopy]& 1) == 0)
   {
     goto LABEL_5;
   }
 
 LABEL_7:
-  v12[2](v12);
+  blockCopy[2](blockCopy);
   characterStyle = self->_characterStyle;
   self->_characterStyle = v13;
   v16 = v13;
@@ -186,13 +186,13 @@ LABEL_7:
   self->_fontSpec = v20;
 }
 
-- (_NSRange)appendWithBlock:(id)a3
+- (_NSRange)appendWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(TUIWPStorage *)self->_wpStorage length];
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v6 = ([(TUIWPStorage *)self->_wpStorage length]- v5);
@@ -204,13 +204,13 @@ LABEL_7:
   return result;
 }
 
-- (id)finalizeTextModelWithContext:(id)a3
+- (id)finalizeTextModelWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (self->_usedDynamicColor)
   {
-    [v4 usedDynamicColor];
+    [contextCopy usedDynamicColor];
   }
 
   wpStorage = self->_wpStorage;
@@ -230,89 +230,89 @@ LABEL_7:
   }
 }
 
-- (void)_configurePropertyMap:(id)a3 withFontSpec:(id)a4 style:(unint64_t)a5 color:(id)a6
+- (void)_configurePropertyMap:(id)map withFontSpec:(id)spec style:(unint64_t)style color:(id)color
 {
-  v7 = a5;
-  v31 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v10)
+  styleCopy = style;
+  mapCopy = map;
+  specCopy = spec;
+  colorCopy = color;
+  if (!specCopy)
   {
     goto LABEL_17;
   }
 
   v12 = +[TUIFontSpec defaultFontSpec];
-  v13 = [v10 isEqual:v12];
+  v13 = [specCopy isEqual:v12];
 
   if (v13)
   {
     goto LABEL_17;
   }
 
-  v14 = [v10 postscriptName];
+  postscriptName = [specCopy postscriptName];
 
-  if (!v14)
+  if (!postscriptName)
   {
-    if ([v10 isWeightSpecified])
+    if ([specCopy isWeightSpecified])
     {
-      [v10 weight];
+      [specCopy weight];
       *&v16 = v16;
-      [v31 setFloatValue:50 forProperty:v16];
+      [mapCopy setFloatValue:50 forProperty:v16];
     }
 
-    v17 = [v10 fontDesignTrait];
+    fontDesignTrait = [specCopy fontDesignTrait];
 
-    if (v17)
+    if (fontDesignTrait)
     {
-      v18 = [v10 fontDesignTrait];
-      [v31 setObject:v18 forProperty:54];
+      fontDesignTrait2 = [specCopy fontDesignTrait];
+      [mapCopy setObject:fontDesignTrait2 forProperty:54];
     }
 
     else
     {
-      v19 = [v10 fontFamilyName];
+      fontFamilyName = [specCopy fontFamilyName];
 
-      if (!v19)
+      if (!fontFamilyName)
       {
         goto LABEL_12;
       }
 
       v20 = +[NSNull null];
-      [v31 setObject:v20 forProperty:54];
+      [mapCopy setObject:v20 forProperty:54];
 
-      v18 = [v10 fontFamilyName];
-      [v31 setObject:v18 forProperty:55];
+      fontDesignTrait2 = [specCopy fontFamilyName];
+      [mapCopy setObject:fontDesignTrait2 forProperty:55];
     }
 
 LABEL_12:
-    if ([v10 isMonospacedDigitsSpecified])
+    if ([specCopy isMonospacedDigitsSpecified])
     {
-      [v31 setBoolValue:objc_msgSend(v10 forProperty:{"monospacedDigits"), 56}];
+      [mapCopy setBoolValue:objc_msgSend(specCopy forProperty:{"monospacedDigits"), 56}];
     }
 
     goto LABEL_14;
   }
 
-  v15 = [v10 postscriptName];
-  [v31 setObject:v15 forProperty:16];
+  postscriptName2 = [specCopy postscriptName];
+  [mapCopy setObject:postscriptName2 forProperty:16];
 
 LABEL_14:
-  if ([v10 isPointSizeSpecified])
+  if ([specCopy isPointSizeSpecified])
   {
-    [v10 pointSize];
+    [specCopy pointSize];
     *&v21 = v21;
-    [v31 setFloatValue:17 forProperty:v21];
+    [mapCopy setFloatValue:17 forProperty:v21];
   }
 
-  [v10 tracking];
-  [v10 tracking];
+  [specCopy tracking];
+  [specCopy tracking];
   v23 = v22 / 1000.0;
   *&v23 = v23;
-  [v31 setFloatValue:35 forProperty:v23];
+  [mapCopy setFloatValue:35 forProperty:v23];
 LABEL_17:
-  if (v7)
+  if (styleCopy)
   {
-    [v31 floatValueForProperty:50];
+    [mapCopy floatValueForProperty:50];
     if (v24 == -1000.0 || v24 == INFINITY)
     {
       [(TSWPCharacterStyle *)self->_characterStyle floatValueForProperty:50];
@@ -322,21 +322,21 @@ LABEL_17:
     {
       HIDWORD(v25) = HIDWORD(UIFontWeightBold);
       *&v25 = UIFontWeightBold;
-      [v31 setFloatValue:50 forProperty:v25];
+      [mapCopy setFloatValue:50 forProperty:v25];
     }
   }
 
-  if ((v7 & 2) != 0)
+  if ((styleCopy & 2) != 0)
   {
-    [v31 setBoolValue:1 forProperty:20];
+    [mapCopy setBoolValue:1 forProperty:20];
   }
 
-  if ((v7 & 8) != 0)
+  if ((styleCopy & 8) != 0)
   {
-    [v31 setIntValue:1 forProperty:26];
+    [mapCopy setIntValue:1 forProperty:26];
   }
 
-  if (v11)
+  if (colorCopy)
   {
     if (self->_usedDynamicColor)
     {
@@ -346,25 +346,25 @@ LABEL_17:
     else
     {
       v26 = +[UITraitCollection currentTraitCollection];
-      v27 = [v11 resolvedColorWithTraitCollection:v26];
-      self->_usedDynamicColor = v27 != v11;
+      v27 = [colorCopy resolvedColorWithTraitCollection:v26];
+      self->_usedDynamicColor = v27 != colorCopy;
     }
 
-    v28 = [TSUColor colorWithPlatformColor:v11];
-    [v31 setObject:v28 forProperty:18];
+    v28 = [TSUColor colorWithPlatformColor:colorCopy];
+    [mapCopy setObject:v28 forProperty:18];
   }
 
-  v29 = [v10 caps];
-  if (v29 <= 2)
+  caps = [specCopy caps];
+  if (caps <= 2)
   {
-    if (v29 == (&dword_0 + 1))
+    if (caps == (&dword_0 + 1))
     {
       v30 = 0;
     }
 
     else
     {
-      if (v29 != (&dword_0 + 2))
+      if (caps != (&dword_0 + 2))
       {
         goto LABEL_44;
       }
@@ -375,65 +375,65 @@ LABEL_17:
     goto LABEL_43;
   }
 
-  if (v29 == &dword_4)
+  if (caps == &dword_4)
   {
     v30 = 3;
 LABEL_43:
-    [v31 setIntValue:v30 forProperty:21];
+    [mapCopy setIntValue:v30 forProperty:21];
     goto LABEL_44;
   }
 
-  if (v29 == (&dword_0 + 3))
+  if (caps == (&dword_0 + 3))
   {
-    [v31 setIntValue:2 forProperty:21];
-    [v31 setBoolValue:1 forProperty:48];
+    [mapCopy setIntValue:2 forProperty:21];
+    [mapCopy setBoolValue:1 forProperty:48];
   }
 
 LABEL_44:
 }
 
-- (void)configureDropCapWithCount:(unint64_t)a3 lines:(unint64_t)a4 raised:(unint64_t)a5 style:(unint64_t)a6 color:(id)a7 fontSpec:(id)a8 backgroundColor:(id)a9 padding:(double)a10
+- (void)configureDropCapWithCount:(unint64_t)count lines:(unint64_t)lines raised:(unint64_t)raised style:(unint64_t)style color:(id)color fontSpec:(id)spec backgroundColor:(id)backgroundColor padding:(double)self0
 {
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  colorCopy = color;
+  specCopy = spec;
+  backgroundColorCopy = backgroundColor;
   v29 = xmmword_24CA10;
   v20 = [(TUIWPStorage *)self->_wpStorage paragraphStyleAtCharIndex:[(TUIWPStorage *)self->_wpStorage length] effectiveRange:&v29];
-  if (a3)
+  if (count)
   {
-    v28 = v17;
-    v21 = [TSWPDropCapSpacing dropCapSpacingWithLineCount:a4 elevatedLineCount:a5];
-    [v21 setPadding:a10];
+    v28 = colorCopy;
+    v21 = [TSWPDropCapSpacing dropCapSpacingWithLineCount:lines elevatedLineCount:raised];
+    [v21 setPadding:padding];
     [v21 setFollowingLineCount:0];
     v22 = +[TSSPropertyMap propertyMap];
-    [(TUIWPBuilder *)self _configurePropertyMap:v22 withFontSpec:v18 style:a6 color:v17];
-    if (v19)
+    [(TUIWPBuilder *)self _configurePropertyMap:v22 withFontSpec:specCopy style:style color:colorCopy];
+    if (backgroundColorCopy)
     {
-      v23 = [TSUColor colorWithPlatformColor:v19];
+      v23 = [TSUColor colorWithPlatformColor:backgroundColorCopy];
       [v22 setObject:v23 forProperty:38];
     }
 
-    v24 = [TSWPDropCap dropCapWithCharCount:a3 characterStyleOverridePropertyMap:v22 spacing:v21];
+    v24 = [TSWPDropCap dropCapWithCharCount:count characterStyleOverridePropertyMap:v22 spacing:v21];
     v25 = +[TSSPropertyMap propertyMap];
     [v25 setObject:v24 forProperty:109];
-    v26 = [(TUIWPStorage *)self->_wpStorage stylesheet];
-    v27 = [v26 variationOfStyle:v20 propertyMap:v25];
+    stylesheet = [(TUIWPStorage *)self->_wpStorage stylesheet];
+    v27 = [stylesheet variationOfStyle:v20 propertyMap:v25];
 
     [(TUIWPStorage *)self->_wpStorage setParagraphStyle:v27 forCharRange:v29 undoTransaction:0];
-    v17 = v28;
+    colorCopy = v28;
   }
 }
 
-- (void)configureLineStylingForLines:(int64_t)a3 relativeToDropCapLines:(BOOL)a4 style:(unint64_t)a5 color:(id)a6 fontSpec:(id)a7
+- (void)configureLineStylingForLines:(int64_t)lines relativeToDropCapLines:(BOOL)capLines style:(unint64_t)style color:(id)color fontSpec:(id)spec
 {
-  v9 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (a3 >= 1)
+  capLinesCopy = capLines;
+  colorCopy = color;
+  specCopy = spec;
+  if (lines >= 1)
   {
     v21 = xmmword_24CA10;
     v14 = [(TUIWPStorage *)self->_wpStorage paragraphStyleAtCharIndex:[(TUIWPStorage *)self->_wpStorage length] effectiveRange:&v21];
-    if (v9)
+    if (capLinesCopy)
     {
       v15 = 2;
     }
@@ -444,48 +444,48 @@ LABEL_44:
     }
 
     v16 = +[TSSPropertyMap propertyMap];
-    [(TUIWPBuilder *)self _configurePropertyMap:v16 withFontSpec:v13 style:a5 color:v12];
-    v17 = [TSWPLineStyling lineStylingWithLineCount:a3 options:v15 additionalCharacterStylePropertyMap:0 overrideCharacterStylePropertyMap:v16];
+    [(TUIWPBuilder *)self _configurePropertyMap:v16 withFontSpec:specCopy style:style color:colorCopy];
+    v17 = [TSWPLineStyling lineStylingWithLineCount:lines options:v15 additionalCharacterStylePropertyMap:0 overrideCharacterStylePropertyMap:v16];
     v18 = +[TSSPropertyMap propertyMap];
     [v18 setObject:v17 forProperty:111];
-    v19 = [(TUIWPStorage *)self->_wpStorage stylesheet];
-    v20 = [v19 variationOfStyle:v14 propertyMap:v18];
+    stylesheet = [(TUIWPStorage *)self->_wpStorage stylesheet];
+    v20 = [stylesheet variationOfStyle:v14 propertyMap:v18];
 
     [(TUIWPStorage *)self->_wpStorage setParagraphStyle:v20 forCharRange:v21 undoTransaction:0];
   }
 }
 
-- (void)configureParagraphStyle:(id)a3
+- (void)configureParagraphStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v15 = xmmword_24CA10;
   v5 = [(TUIWPStorage *)self->_wpStorage paragraphStyleAtCharIndex:[(TUIWPStorage *)self->_wpStorage length] effectiveRange:&v15];
   v6 = +[TSSPropertyMap propertyMap];
-  v7 = [v4 fontSpec];
-  v8 = [v4 style];
-  v9 = [v4 color];
-  [(TUIWPBuilder *)self _configurePropertyMap:v6 withFontSpec:v7 style:v8 color:v9];
+  fontSpec = [styleCopy fontSpec];
+  style = [styleCopy style];
+  color = [styleCopy color];
+  [(TUIWPBuilder *)self _configurePropertyMap:v6 withFontSpec:fontSpec style:style color:color];
 
-  [v4 indentFirstLine];
+  [styleCopy indentFirstLine];
   *&v10 = v10;
   [v6 setFloatValue:80 forProperty:v10];
-  [v4 indentLeading];
+  [styleCopy indentLeading];
   *&v11 = v11;
   [v6 setFloatValue:81 forProperty:v11];
-  [v4 indentTrailing];
+  [styleCopy indentTrailing];
   *&v12 = v12;
   [v6 setFloatValue:82 forProperty:v12];
-  v13 = [(TUIWPStorage *)self->_wpStorage stylesheet];
-  v14 = [v13 variationOfStyle:v5 propertyMap:v6];
+  stylesheet = [(TUIWPStorage *)self->_wpStorage stylesheet];
+  v14 = [stylesheet variationOfStyle:v5 propertyMap:v6];
 
   [(TUIWPStorage *)self->_wpStorage setParagraphStyle:v14 forCharRange:v15 undoTransaction:0];
 }
 
-- (void)addBox:(id)a3
+- (void)addBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   childBoxes = self->_childBoxes;
-  v23 = v4;
+  v23 = boxCopy;
   if (!childBoxes)
   {
     v6 = objc_opt_new();
@@ -493,39 +493,39 @@ LABEL_44:
     self->_childBoxes = v6;
 
     childBoxes = self->_childBoxes;
-    v4 = v23;
+    boxCopy = v23;
   }
 
-  [(NSMutableArray *)childBoxes addObject:v4];
+  [(NSMutableArray *)childBoxes addObject:boxCopy];
   v8 = [_TUIWPInlineDrawable alloc];
-  v9 = [(TUIWPStorage *)self->_wpStorage context];
-  v10 = [(_TUIWPInlineDrawable *)v8 initWithContext:v9 box:v23 baselineOffset:self->_baselineOffset];
+  context = [(TUIWPStorage *)self->_wpStorage context];
+  v10 = [(_TUIWPInlineDrawable *)v8 initWithContext:context box:v23 baselineOffset:self->_baselineOffset];
 
   v11 = [TSWPDrawableAttachment alloc];
-  v12 = [(TUIWPStorage *)self->_wpStorage context];
-  v13 = [v11 initWithContext:v12 drawable:v10];
+  context2 = [(TUIWPStorage *)self->_wpStorage context];
+  v13 = [v11 initWithContext:context2 drawable:v10];
 
   v14 = [(TUIWPStorage *)self->_wpStorage length];
   [(TUIWPStorage *)self->_wpStorage insertAttachmentOrFootnote:v13 range:[(TUIWPStorage *)self->_wpStorage length], 0];
   v15 = [(TUIWPStorage *)self->_wpStorage length];
   v16 = self->_characterStyle;
-  v17 = [v23 layoutDirection];
-  if (v17)
+  layoutDirection = [v23 layoutDirection];
+  if (layoutDirection)
   {
     v18 = +[TSSPropertyMap propertyMap];
     v19 = v18;
-    if (v17 == &dword_0 + 2)
+    if (layoutDirection == &dword_0 + 2)
     {
       v20 = 1;
     }
 
     else
     {
-      if (v17 != &dword_0 + 1)
+      if (layoutDirection != &dword_0 + 1)
       {
 LABEL_9:
-        v21 = [(TUIWPStorage *)self->_wpStorage stylesheet];
-        v22 = [v21 variationOfStyle:self->_characterStyle propertyMap:v19];
+        stylesheet = [(TUIWPStorage *)self->_wpStorage stylesheet];
+        v22 = [stylesheet variationOfStyle:self->_characterStyle propertyMap:v19];
 
         v16 = v22;
         goto LABEL_10;
@@ -545,9 +545,9 @@ LABEL_10:
   }
 }
 
-- (id)finalizeModelsWithParent:(id)a3 box:(id)a4 context:(id)a5
+- (id)finalizeModelsWithParent:(id)parent box:(id)box context:(id)context
 {
-  [a3 updateModelChildren:{self->_childBoxes, a4, a5}];
+  [parent updateModelChildren:{self->_childBoxes, box, context}];
   childBoxes = self->_childBoxes;
 
   return childBoxes;

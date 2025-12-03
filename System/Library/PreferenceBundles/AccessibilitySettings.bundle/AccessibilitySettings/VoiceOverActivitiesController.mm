@@ -1,16 +1,16 @@
 @interface VoiceOverActivitiesController
 - (BOOL)canEditTable;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
 - (int64_t)_nonBuiltInActivityCount;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_activityChanged:(id)a3;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_activityChanged:(id)changed;
 - (void)dealloc;
-- (void)removeDataForSpecifier:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)removeDataForSpecifier:(id)specifier;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
@@ -24,7 +24,7 @@
   {
     v5 = +[NSMutableArray array];
     v6 = *&self->AXUISettingsEditableViewController_opaque[v3];
-    v7 = self;
+    selfCopy = self;
     v31 = v3;
     *&self->AXUISettingsEditableViewController_opaque[v3] = v5;
 
@@ -41,10 +41,10 @@
     v34 = 0u;
     v35 = 0u;
     v12 = +[AXSettings sharedInstance];
-    v13 = [v12 voiceOverActivities];
+    voiceOverActivities = [v12 voiceOverActivities];
 
-    obj = v13;
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    obj = voiceOverActivities;
+    v14 = [voiceOverActivities countByEnumeratingWithState:&v34 objects:v38 count:16];
     v32 = PSIDKey;
     if (v14)
     {
@@ -60,13 +60,13 @@
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
-          v19 = [v18 name];
-          v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v7 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+          name = [v18 name];
+          v20 = [PSSpecifier preferenceSpecifierNamed:name target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           [v20 setProperty:v18 forKey:@"activity"];
-          v21 = [v18 name];
+          name2 = [v18 name];
           v22 = AXParameterizedLocalizedString();
-          v23 = [v21 isEqualToString:v22];
+          v23 = [name2 isEqualToString:v22];
 
           if (v23)
           {
@@ -86,15 +86,15 @@
     [v11 addObject:v24];
 
     v25 = settingsLocString(@"ACTIVITY_ADD_ACTIVITY", @"VoiceOverSettings");
-    v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:v7 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+    v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     [v26 setProperty:@"New" forKey:v32];
     [v11 addObject:v26];
     v27 = [v11 copy];
-    v28 = *&v7->AXUISettingsEditableViewController_opaque[v31];
-    *&v7->AXUISettingsEditableViewController_opaque[v31] = v27;
+    v28 = *&selfCopy->AXUISettingsEditableViewController_opaque[v31];
+    *&selfCopy->AXUISettingsEditableViewController_opaque[v31] = v27;
 
-    v4 = *&v7->AXUISettingsEditableViewController_opaque[v31];
+    v4 = *&selfCopy->AXUISettingsEditableViewController_opaque[v31];
   }
 
   return v4;
@@ -103,8 +103,8 @@
 - (int64_t)_nonBuiltInActivityCount
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverActivities];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_35];
+  voiceOverActivities = [v2 voiceOverActivities];
+  v4 = [voiceOverActivities ax_filteredArrayUsingBlock:&__block_literal_global_35];
   v5 = [v4 count];
 
   return v5;
@@ -148,23 +148,23 @@ void __44__VoiceOverActivitiesController_viewDidLoad__block_invoke(uint64_t a1)
   [WeakRetained _activityChanged:0];
 }
 
-- (void)_activityChanged:(id)a3
+- (void)_activityChanged:(id)changed
 {
   if ([(VoiceOverActivitiesController *)self _nonBuiltInActivityCount]>= 1 && !self->_cachedActivityCount)
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 voiceOverRotorItems];
-    v6 = [v5 mutableCopy];
+    voiceOverRotorItems = [v4 voiceOverRotorItems];
+    v6 = [voiceOverRotorItems mutableCopy];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 voiceOverRotorItems];
+    voiceOverRotorItems2 = [v7 voiceOverRotorItems];
 
-    obj = v8;
-    v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    obj = voiceOverRotorItems2;
+    v9 = [voiceOverRotorItems2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
       v10 = v9;
@@ -219,9 +219,9 @@ LABEL_13:
   }
 
   cachedActivityCount = self->_cachedActivityCount;
-  v20 = [(VoiceOverActivitiesController *)self _nonBuiltInActivityCount];
-  self->_cachedActivityCount = v20;
-  if (v20 > cachedActivityCount)
+  _nonBuiltInActivityCount = [(VoiceOverActivitiesController *)self _nonBuiltInActivityCount];
+  self->_cachedActivityCount = _nonBuiltInActivityCount;
+  if (_nonBuiltInActivityCount > cachedActivityCount)
   {
     AXPerformBlockAsynchronouslyOnMainThread();
   }
@@ -237,43 +237,43 @@ LABEL_13:
   [(VoiceOverActivitiesController *)&v4 dealloc];
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:a4];
+  v4 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"activity"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:a4];
+  v4 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"activity"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:a4];
+  v4 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"activity"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:v7];
-  v10 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:v8];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v9 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:pathCopy];
+  v10 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:indexPathCopy];
   v11 = [v9 propertyForKey:@"activity"];
-  if (!v11 || (v12 = v11, [v10 propertyForKey:@"activity"], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v14 = v8, !v13))
+  if (!v11 || (v12 = v11, [v10 propertyForKey:@"activity"], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v14 = indexPathCopy, !v13))
   {
-    v14 = v7;
+    v14 = pathCopy;
   }
 
   v15 = v14;
@@ -281,14 +281,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v26 = a4;
-  v7 = a5;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v8 = OBJC_IVAR___PSListController__specifiers;
   v9 = [*&self->AXUISettingsEditableViewController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
-  v10 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:v26];
-  v11 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:v7];
+  v10 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:pathCopy];
+  v11 = [(VoiceOverActivitiesController *)self specifierAtIndexPath:indexPathCopy];
   v12 = v11;
   if (v10 && v11 && v10 != v11)
   {
@@ -298,18 +298,18 @@ LABEL_13:
     if (!v15 && v13 != v14)
     {
       v17 = +[AXSettings sharedInstance];
-      v18 = [v17 voiceOverActivities];
-      v19 = [v18 mutableCopy];
+      voiceOverActivities = [v17 voiceOverActivities];
+      v19 = [voiceOverActivities mutableCopy];
 
-      v20 = [v26 row];
+      v20 = [pathCopy row];
       if (v20 < [v19 count])
       {
-        v21 = [v7 row];
+        v21 = [indexPathCopy row];
         if (v21 < [v19 count])
         {
-          v22 = [v19 objectAtIndexedSubscript:{objc_msgSend(v26, "row")}];
-          [v19 removeObjectAtIndex:{objc_msgSend(v26, "row")}];
-          [v19 insertObject:v22 atIndex:{objc_msgSend(v7, "row")}];
+          v22 = [v19 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+          [v19 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+          [v19 insertObject:v22 atIndex:{objc_msgSend(indexPathCopy, "row")}];
           v23 = +[AXSettings sharedInstance];
           [v23 setVoiceOverActivities:v19];
         }
@@ -333,26 +333,26 @@ LABEL_13:
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v9.receiver = self;
   v9.super_class = VoiceOverActivitiesController;
   [VoiceOverActivitiesController setEditing:"setEditing:animated:" animated:?];
   [(VoiceOverActivitiesController *)self beginUpdates];
   v7 = [(VoiceOverActivitiesController *)self specifierForID:@"New"];
-  v8 = [NSNumber numberWithInt:!v5];
+  v8 = [NSNumber numberWithInt:!editingCopy];
   [v7 setProperty:v8 forKey:PSEnabledKey];
 
-  [(VoiceOverActivitiesController *)self reloadSpecifier:v7 animated:v4];
+  [(VoiceOverActivitiesController *)self reloadSpecifier:v7 animated:animatedCopy];
   [(VoiceOverActivitiesController *)self endUpdates];
 }
 
 - (BOOL)canEditTable
 {
-  v2 = [(VoiceOverActivitiesController *)self specifiers];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_330];
+  specifiers = [(VoiceOverActivitiesController *)self specifiers];
+  v3 = [specifiers ax_filteredArrayUsingBlock:&__block_literal_global_330];
   v4 = [v3 count];
 
   return v4 > 0;
@@ -366,12 +366,12 @@ BOOL __45__VoiceOverActivitiesController_canEditTable__block_invoke(id a1, PSSpe
   return v5;
 }
 
-- (void)removeDataForSpecifier:(id)a3
+- (void)removeDataForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"activity"];
+  v3 = [specifier propertyForKey:@"activity"];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 voiceOverActivities];
-  v6 = [v5 mutableCopy];
+  voiceOverActivities = [v4 voiceOverActivities];
+  v6 = [voiceOverActivities mutableCopy];
 
   [v6 removeObject:v3];
   v7 = +[AXSettings sharedInstance];
@@ -388,9 +388,9 @@ BOOL __45__VoiceOverActivitiesController_canEditTable__block_invoke(id a1, PSSpe
   if (v3)
   {
     v16 = @"delete";
-    v9 = [v3 uuid];
-    v10 = [v9 UUIDString];
-    v15 = v10;
+    uuid = [v3 uuid];
+    uUIDString = [uuid UUIDString];
+    v15 = uUIDString;
     v11 = [NSArray arrayWithObjects:&v15 count:1];
     v17 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];

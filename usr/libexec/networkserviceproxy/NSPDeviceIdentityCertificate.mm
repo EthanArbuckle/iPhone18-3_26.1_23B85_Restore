@@ -1,13 +1,13 @@
 @interface NSPDeviceIdentityCertificate
 + (id)sharedDeviceIdentity;
 + (void)removeFromPreferences;
-- (NSPDeviceIdentityCertificate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPDeviceIdentityCertificate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)deviceIdentityAuthenticationFailed;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetDeviceIdentityInfo;
-- (void)signData:(id)a3 andFetchDeviceIdentityCertificate:(id)a4;
+- (void)signData:(id)data andFetchDeviceIdentityCertificate:(id)certificate;
 @end
 
 @implementation NSPDeviceIdentityCertificate
@@ -31,7 +31,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPDeviceIdentityCertificate allocWithZone:?]];
   p_isa = &v4->super.isa;
@@ -62,20 +62,20 @@
   return p_isa;
 }
 
-- (NSPDeviceIdentityCertificate)initWithCoder:(id)a3
+- (NSPDeviceIdentityCertificate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NSPDeviceIdentityCertificate;
   v5 = [(NSPDeviceIdentityCertificate *)&v14 init];
   if (v5)
   {
-    v5->_diskVersion = [v4 decodeIntegerForKey:@"DiskVersion"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentityFetchDate"];
+    v5->_diskVersion = [coderCopy decodeIntegerForKey:@"DiskVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentityFetchDate"];
     deviceIdentityFetchDate = v5->_deviceIdentityFetchDate;
     v5->_deviceIdentityFetchDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentityRetryCount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceIdentityRetryCount"];
     deviceIdentityRetryCount = v5->_deviceIdentityRetryCount;
     v5->_deviceIdentityRetryCount = v8;
 
@@ -95,23 +95,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:1 forKey:@"DiskVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"DiskVersion"];
   if (self)
   {
-    [v5 encodeObject:self->_deviceIdentityFetchDate forKey:@"DeviceIdentityFetchDate"];
+    [coderCopy encodeObject:self->_deviceIdentityFetchDate forKey:@"DeviceIdentityFetchDate"];
     deviceIdentityRetryCount = self->_deviceIdentityRetryCount;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"DeviceIdentityFetchDate"];
+    [coderCopy encodeObject:0 forKey:@"DeviceIdentityFetchDate"];
     deviceIdentityRetryCount = 0;
   }
 
-  [v5 encodeObject:deviceIdentityRetryCount forKey:@"DeviceIdentityRetryCount"];
+  [coderCopy encodeObject:deviceIdentityRetryCount forKey:@"DeviceIdentityRetryCount"];
 }
 
 + (void)removeFromPreferences
@@ -194,10 +194,10 @@ LABEL_6:
   }
 }
 
-- (void)signData:(id)a3 andFetchDeviceIdentityCertificate:(id)a4
+- (void)signData:(id)data andFetchDeviceIdentityCertificate:(id)certificate
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  certificateCopy = certificate;
   if (!self || (v8 = self->_deviceIdentityFetchDate) == 0 || (v9 = v8, [(NSDate *)self->_deviceIdentityFetchDate timeIntervalSinceNow], v11 = v10, v9, v11 <= 0.0))
   {
 LABEL_12:
@@ -235,7 +235,7 @@ LABEL_12:
       v31[3] = sub_10004AB88;
       v31[4] = &unk_100109D38;
       objc_copyWeak(&v33, buf);
-      v32 = v7;
+      v32 = certificateCopy;
       DeviceIdentityCreateHostSignatureWithCompletion();
 
       objc_destroyWeak(&v33);
@@ -254,8 +254,8 @@ LABEL_12:
       objc_initWeak(buf, self);
       v24 = NPGetInternalQueue();
       objc_copyWeak(v31, buf);
-      v29 = v6;
-      v30 = v7;
+      v29 = dataCopy;
+      v30 = certificateCopy;
       DeviceIdentityIssueClientCertificateWithCompletion();
 
       objc_destroyWeak(v31);
@@ -271,9 +271,9 @@ LABEL_12:
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(NSNumber *)self->_deviceIdentityRetryCount unsignedIntValue];
+      unsignedIntValue = [(NSNumber *)self->_deviceIdentityRetryCount unsignedIntValue];
       *buf = 67109120;
-      LODWORD(v38) = v16 + 1;
+      LODWORD(v38) = unsignedIntValue + 1;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "previously failed to fetch device identity, allowing retry %u", buf, 8u);
     }
 
@@ -304,7 +304,7 @@ LABEL_12:
     _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "deferring fetching device identity until %@", buf, 0xCu);
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(certificateCopy + 2))(certificateCopy, 0, 0);
 LABEL_21:
 }
 

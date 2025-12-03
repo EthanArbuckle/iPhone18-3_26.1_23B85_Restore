@@ -1,5 +1,5 @@
 @interface OKMaterial
-- (OKMaterial)initWithMaterial:(id)a3;
+- (OKMaterial)initWithMaterial:(id)material;
 - (void)applySettings;
 - (void)applySettingsIfNeeded;
 - (void)dealloc;
@@ -9,14 +9,14 @@
 
 @implementation OKMaterial
 
-- (OKMaterial)initWithMaterial:(id)a3
+- (OKMaterial)initWithMaterial:(id)material
 {
   v6.receiver = self;
   v6.super_class = OKMaterial;
   v4 = [(OKMaterial *)&v6 init];
   if (v4)
   {
-    v4->_material = a3;
+    v4->_material = material;
     *&v4->_needsApplySettings = 0;
   }
 

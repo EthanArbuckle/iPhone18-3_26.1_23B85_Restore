@@ -3,25 +3,25 @@
 - (BOOL)isDestinationEntryPoint;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)title;
-- (RAPEntryPoint)initWithAccessPoint:(id)a3;
-- (RAPEntryPoint)initWithAccessPoint:(id)a3 type:(int64_t)a4;
+- (RAPEntryPoint)initWithAccessPoint:(id)point;
+- (RAPEntryPoint)initWithAccessPoint:(id)point type:(int64_t)type;
 - (id)markerText;
 - (int64_t)entryPointType;
-- (void)_setType:(int64_t)a3;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
+- (void)_setType:(int64_t)type;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation RAPEntryPoint
 
 - (BOOL)isDestinationEntryPoint
 {
-  v3 = [(RAPEntryPoint *)self accessPoint];
-  v4 = [v3 hasWalkingDirection];
+  accessPoint = [(RAPEntryPoint *)self accessPoint];
+  hasWalkingDirection = [accessPoint hasWalkingDirection];
 
-  if (v4)
+  if (hasWalkingDirection)
   {
-    v5 = [(RAPEntryPoint *)self accessPoint];
-    v6 = [v5 walkingDirection] == 4;
+    accessPoint2 = [(RAPEntryPoint *)self accessPoint];
+    v6 = [accessPoint2 walkingDirection] == 4;
   }
 
   else
@@ -29,13 +29,13 @@
     v6 = 0;
   }
 
-  v7 = [(RAPEntryPoint *)self accessPoint];
-  v8 = [v7 hasDrivingDirection];
+  accessPoint3 = [(RAPEntryPoint *)self accessPoint];
+  hasDrivingDirection = [accessPoint3 hasDrivingDirection];
 
-  if (v8)
+  if (hasDrivingDirection)
   {
-    v9 = [(RAPEntryPoint *)self accessPoint];
-    v10 = [v9 drivingDirection] == 4;
+    accessPoint4 = [(RAPEntryPoint *)self accessPoint];
+    v10 = [accessPoint4 drivingDirection] == 4;
   }
 
   else
@@ -43,13 +43,13 @@
     v10 = 0;
   }
 
-  v11 = [(RAPEntryPoint *)self accessPoint];
-  v12 = [v11 hasTransitDirection];
+  accessPoint5 = [(RAPEntryPoint *)self accessPoint];
+  hasTransitDirection = [accessPoint5 hasTransitDirection];
 
-  if (v12)
+  if (hasTransitDirection)
   {
-    v13 = [(RAPEntryPoint *)self accessPoint];
-    v14 = [v13 transitDirection] == 4;
+    accessPoint6 = [(RAPEntryPoint *)self accessPoint];
+    v14 = [accessPoint6 transitDirection] == 4;
   }
 
   else
@@ -61,89 +61,89 @@
   return v15 & 1;
 }
 
-- (void)_setType:(int64_t)a3
+- (void)_setType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v16 = [(RAPEntryPoint *)self accessPoint];
-      [v16 setDrivingDirection:0];
+      accessPoint = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint setDrivingDirection:0];
 
-      v17 = [(RAPEntryPoint *)self accessPoint];
-      [v17 setWalkingDirection:3];
+      accessPoint2 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint2 setWalkingDirection:3];
 
-      v18 = [(RAPEntryPoint *)self accessPoint];
-      [v18 setTransitDirection:0];
+      accessPoint3 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint3 setTransitDirection:0];
 
-      v6 = [(RAPEntryPoint *)self accessPoint];
-      [v6 setHasDrivingDirection:0];
+      accessPoint4 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint4 setHasDrivingDirection:0];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         return;
       }
 
-      v7 = [(RAPEntryPoint *)self accessPoint];
-      [v7 setDrivingDirection:3];
+      accessPoint5 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint5 setDrivingDirection:3];
 
-      v8 = [(RAPEntryPoint *)self accessPoint];
-      [v8 setWalkingDirection:0];
+      accessPoint6 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint6 setWalkingDirection:0];
 
-      v9 = [(RAPEntryPoint *)self accessPoint];
-      [v9 setTransitDirection:0];
+      accessPoint7 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint7 setTransitDirection:0];
 
-      v6 = [(RAPEntryPoint *)self accessPoint];
-      [v6 setHasWalkingDirection:0];
+      accessPoint4 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint4 setHasWalkingDirection:0];
     }
 
     goto LABEL_12;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 5:
-      v10 = [(RAPEntryPoint *)self accessPoint];
-      [v10 setDrivingDirection:3];
+      accessPoint8 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint8 setDrivingDirection:3];
 
-      v11 = [(RAPEntryPoint *)self accessPoint];
-      [v11 setWalkingDirection:3];
+      accessPoint9 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint9 setWalkingDirection:3];
 
-      v19 = [(RAPEntryPoint *)self accessPoint];
-      [v19 setTransitDirection:3];
+      accessPoint10 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint10 setTransitDirection:3];
       break;
     case 4:
-      v12 = [(RAPEntryPoint *)self accessPoint];
-      [v12 setDrivingDirection:0];
+      accessPoint11 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint11 setDrivingDirection:0];
 
-      v13 = [(RAPEntryPoint *)self accessPoint];
-      [v13 setWalkingDirection:0];
+      accessPoint12 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint12 setWalkingDirection:0];
 
-      v14 = [(RAPEntryPoint *)self accessPoint];
-      [v14 setTransitDirection:3];
+      accessPoint13 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint13 setTransitDirection:3];
 
-      v15 = [(RAPEntryPoint *)self accessPoint];
-      [v15 setHasWalkingDirection:0];
+      accessPoint14 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint14 setHasWalkingDirection:0];
 
-      v19 = [(RAPEntryPoint *)self accessPoint];
-      [v19 setHasDrivingDirection:0];
+      accessPoint10 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint10 setHasDrivingDirection:0];
       break;
     case 3:
-      v4 = [(RAPEntryPoint *)self accessPoint];
-      [v4 setDrivingDirection:3];
+      accessPoint15 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint15 setDrivingDirection:3];
 
-      v5 = [(RAPEntryPoint *)self accessPoint];
-      [v5 setWalkingDirection:3];
+      accessPoint16 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint16 setWalkingDirection:3];
 
-      v6 = [(RAPEntryPoint *)self accessPoint];
-      [v6 setTransitDirection:0];
+      accessPoint4 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint4 setTransitDirection:0];
 LABEL_12:
 
-      v19 = [(RAPEntryPoint *)self accessPoint];
-      [v19 setHasTransitDirection:0];
+      accessPoint10 = [(RAPEntryPoint *)self accessPoint];
+      [accessPoint10 setHasTransitDirection:0];
       break;
     default:
       return;
@@ -152,13 +152,13 @@ LABEL_12:
 
 - (int64_t)entryPointType
 {
-  v3 = [(RAPEntryPoint *)self accessPoint];
-  if ([v3 hasWalkingDirection])
+  accessPoint = [(RAPEntryPoint *)self accessPoint];
+  if ([accessPoint hasWalkingDirection])
   {
-    v4 = [(RAPEntryPoint *)self accessPoint];
-    v5 = [v4 hasDrivingDirection];
+    accessPoint2 = [(RAPEntryPoint *)self accessPoint];
+    hasDrivingDirection = [accessPoint2 hasDrivingDirection];
 
-    if (v5)
+    if (hasDrivingDirection)
     {
       return 3;
     }
@@ -168,12 +168,12 @@ LABEL_12:
   {
   }
 
-  v7 = [(RAPEntryPoint *)self accessPoint];
-  LODWORD(v8) = [v7 hasWalkingDirection];
+  accessPoint3 = [(RAPEntryPoint *)self accessPoint];
+  LODWORD(v8) = [accessPoint3 hasWalkingDirection];
 
   v9 = v8;
-  v10 = [(RAPEntryPoint *)self accessPoint];
-  v11 = [v10 hasDrivingDirection];
+  accessPoint4 = [(RAPEntryPoint *)self accessPoint];
+  hasDrivingDirection2 = [accessPoint4 hasDrivingDirection];
 
   v12 = 1;
   if (v8)
@@ -181,7 +181,7 @@ LABEL_12:
     v12 = 2;
   }
 
-  if (v11)
+  if (hasDrivingDirection2)
   {
     v8 = v12;
   }
@@ -191,7 +191,7 @@ LABEL_12:
     v8 = v8;
   }
 
-  if (v11)
+  if (hasDrivingDirection2)
   {
     v13 = 2;
   }
@@ -201,16 +201,16 @@ LABEL_12:
     v13 = v9;
   }
 
-  v14 = [(RAPEntryPoint *)self accessPoint];
-  v15 = [v14 hasTransitDirection];
+  accessPoint5 = [(RAPEntryPoint *)self accessPoint];
+  hasTransitDirection = [accessPoint5 hasTransitDirection];
 
   v16 = 4;
-  if (!v15)
+  if (!hasTransitDirection)
   {
     v16 = v13;
   }
 
-  if (v8 + v15 <= 1)
+  if (v8 + hasTransitDirection <= 1)
   {
     return v16;
   }
@@ -232,11 +232,11 @@ LABEL_12:
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Drive / Walk [RAP][Entry Points]" value:@"localized string not found" table:0];
 
-  v9 = [(RAPEntryPoint *)self entryPointType];
+  entryPointType = [(RAPEntryPoint *)self entryPointType];
   v10 = v6;
-  if (v9 != 1)
+  if (entryPointType != 1)
   {
-    if (v9 == 3)
+    if (entryPointType == 3)
     {
       v10 = v8;
     }
@@ -245,7 +245,7 @@ LABEL_12:
     {
       v11 = 0;
       v10 = v4;
-      if (v9 != 2)
+      if (entryPointType != 2)
       {
         goto LABEL_7;
       }
@@ -261,13 +261,13 @@ LABEL_7:
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(RAPEntryPoint *)self accessPoint];
-  v4 = [v3 location];
-  [v4 lat];
+  accessPoint = [(RAPEntryPoint *)self accessPoint];
+  location = [accessPoint location];
+  [location lat];
   v6 = v5;
-  v7 = [(RAPEntryPoint *)self accessPoint];
-  v8 = [v7 location];
-  [v8 lng];
+  accessPoint2 = [(RAPEntryPoint *)self accessPoint];
+  location2 = [accessPoint2 location];
+  [location2 lng];
   v10 = CLLocationCoordinate2DMake(v6, v9);
 
   latitude = v10.latitude;
@@ -277,15 +277,15 @@ LABEL_7:
   return result;
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v7 = objc_alloc_init(GEOLatLng);
   [v7 setLat:latitude];
   [v7 setLng:longitude];
-  v6 = [(RAPEntryPoint *)self accessPoint];
-  [v6 setLocation:v7];
+  accessPoint = [(RAPEntryPoint *)self accessPoint];
+  [accessPoint setLocation:v7];
 }
 
 - (NSString)title
@@ -296,28 +296,28 @@ LABEL_7:
   return v3;
 }
 
-- (RAPEntryPoint)initWithAccessPoint:(id)a3 type:(int64_t)a4
+- (RAPEntryPoint)initWithAccessPoint:(id)point type:(int64_t)type
 {
-  v5 = [(RAPEntryPoint *)self initWithAccessPoint:a3];
+  v5 = [(RAPEntryPoint *)self initWithAccessPoint:point];
   v6 = v5;
   if (v5)
   {
-    [(RAPEntryPoint *)v5 _setType:a4];
+    [(RAPEntryPoint *)v5 _setType:type];
   }
 
   return v6;
 }
 
-- (RAPEntryPoint)initWithAccessPoint:(id)a3
+- (RAPEntryPoint)initWithAccessPoint:(id)point
 {
-  v5 = a3;
+  pointCopy = point;
   v9.receiver = self;
   v9.super_class = RAPEntryPoint;
   v6 = [(RAPEntryPoint *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessPoint, a3);
+    objc_storeStrong(&v6->_accessPoint, point);
   }
 
   return v7;

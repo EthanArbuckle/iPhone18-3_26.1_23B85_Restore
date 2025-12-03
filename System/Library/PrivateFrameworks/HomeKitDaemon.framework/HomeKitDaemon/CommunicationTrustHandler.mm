@@ -1,19 +1,19 @@
 @interface CommunicationTrustHandler
 - (_TtC13HomeKitDaemon25CommunicationTrustHandler)init;
-- (void)isTrustedPersonWithAccountHandles:(NSArray *)a3 completionHandler:(id)a4;
+- (void)isTrustedPersonWithAccountHandles:(NSArray *)handles completionHandler:(id)handler;
 @end
 
 @implementation CommunicationTrustHandler
 
-- (void)isTrustedPersonWithAccountHandles:(NSArray *)a3 completionHandler:(id)a4
+- (void)isTrustedPersonWithAccountHandles:(NSArray *)handles completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = handles;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -28,8 +28,8 @@
   v15[3] = 0;
   v15[4] = &unk_22A57B590;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  handlesCopy = handles;
+  selfCopy = self;
   sub_229859F70(0, 0, v10, &unk_22A581CC0, v15);
 }
 

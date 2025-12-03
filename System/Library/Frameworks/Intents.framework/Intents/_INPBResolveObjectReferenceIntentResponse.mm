@@ -1,40 +1,40 @@
 @interface _INPBResolveObjectReferenceIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBResolveObjectReferenceIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBResolveObjectReferenceIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setResolvedReferences:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setResolvedReferences:(id)references;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBResolveObjectReferenceIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_resolvedReferences)
   {
-    v4 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"resolvedReferences"];
+    resolvedReferences = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
+    v5 = [resolvedReferences copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"resolvedReferences"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
-    v6 = [v4 resolvedReferences];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    resolvedReferences = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
+    resolvedReferences2 = [equalCopy resolvedReferences];
+    v7 = resolvedReferences2;
+    if ((resolvedReferences != 0) != (resolvedReferences2 == 0))
     {
-      v8 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
-      if (!v8)
+      resolvedReferences3 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
+      if (!resolvedReferences3)
       {
 
 LABEL_10:
@@ -42,10 +42,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
-      v11 = [v4 resolvedReferences];
-      v12 = [v10 isEqual:v11];
+      v9 = resolvedReferences3;
+      resolvedReferences4 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
+      resolvedReferences5 = [equalCopy resolvedReferences];
+      v12 = [resolvedReferences4 isEqual:resolvedReferences5];
 
       if (v12)
       {
@@ -64,54 +64,54 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBResolveObjectReferenceIntentResponse allocWithZone:](_INPBResolveObjectReferenceIntentResponse init];
-  v6 = [(NSData *)self->_resolvedReferences copyWithZone:a3];
+  v6 = [(NSData *)self->_resolvedReferences copyWithZone:zone];
   [(_INPBResolveObjectReferenceIntentResponse *)v5 setResolvedReferences:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBResolveObjectReferenceIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBResolveObjectReferenceIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBResolveObjectReferenceIntentResponse)initWithCoder:(id)a3
+- (_INPBResolveObjectReferenceIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBResolveObjectReferenceIntentResponse *)self initWithData:v6];
+    self = [(_INPBResolveObjectReferenceIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
+  toCopy = to;
+  resolvedReferences = [(_INPBResolveObjectReferenceIntentResponse *)self resolvedReferences];
 
-  if (v4)
+  if (resolvedReferences)
   {
     resolvedReferences = self->_resolvedReferences;
     PBDataWriterWriteDataField();
   }
 }
 
-- (void)setResolvedReferences:(id)a3
+- (void)setResolvedReferences:(id)references
 {
-  v4 = [a3 copy];
+  v4 = [references copy];
   resolvedReferences = self->_resolvedReferences;
   self->_resolvedReferences = v4;
 

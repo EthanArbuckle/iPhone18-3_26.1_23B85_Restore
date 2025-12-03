@@ -1,48 +1,48 @@
 @interface SUWebViewRotationController
-- (void)finishRotationFromInterfaceOrientation:(int64_t)a3;
-- (void)prepareToRotateToInterfaceOrientation:(int64_t)a3;
+- (void)finishRotationFromInterfaceOrientation:(int64_t)orientation;
+- (void)prepareToRotateToInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation SUWebViewRotationController
 
-- (void)finishRotationFromInterfaceOrientation:(int64_t)a3
+- (void)finishRotationFromInterfaceOrientation:(int64_t)orientation
 {
   if (![(SUViewController *)self->super._viewController _isEnteringForeground])
   {
-    v4 = [(SUViewController *)self->super._viewController webView];
-    if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] || (objc_msgSend(v4, "frame"), !CGRectEqualToRect(v8, *MEMORY[0x1E695F058])))
+    webView = [(SUViewController *)self->super._viewController webView];
+    if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] || (objc_msgSend(webView, "frame"), !CGRectEqualToRect(v8, *MEMORY[0x1E695F058])))
     {
-      [v4 endSynchronousLayout];
+      [webView endSynchronousLayout];
     }
 
-    if ([v4 superview])
+    if ([webView superview])
     {
-      [objc_msgSend(v4 "superview")];
-      [v4 setFrame:?];
+      [objc_msgSend(webView "superview")];
+      [webView setFrame:?];
     }
 
     viewController = self->super._viewController;
-    v6 = [(SUViewController *)viewController interfaceOrientation];
+    interfaceOrientation = [(SUViewController *)viewController interfaceOrientation];
 
-    [(SUViewController *)viewController _setLastKnownOrientation:v6];
+    [(SUViewController *)viewController _setLastKnownOrientation:interfaceOrientation];
   }
 }
 
-- (void)prepareToRotateToInterfaceOrientation:(int64_t)a3
+- (void)prepareToRotateToInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(SUViewController *)self->super._viewController _isEnteringForeground];
+  _isEnteringForeground = [(SUViewController *)self->super._viewController _isEnteringForeground];
   viewController = self->super._viewController;
-  v7 = [(SUViewController *)viewController webView];
-  v8 = v7;
-  if (v5)
+  webView = [(SUViewController *)viewController webView];
+  v8 = webView;
+  if (_isEnteringForeground)
   {
-    [v7 setHidden:1];
+    [webView setHidden:1];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__SUWebViewRotationController_prepareToRotateToInterfaceOrientation___block_invoke;
     v10[3] = &unk_1E8164CB8;
     v10[4] = viewController;
-    v10[5] = a3;
+    v10[5] = orientation;
     dispatch_after(0, MEMORY[0x1E69E96A0], v10);
   }
 
@@ -51,7 +51,7 @@
     [v8 beginSynchronousLayout];
     v9 = self->super._viewController;
 
-    [(SUViewController *)v9 _sendOrientationWillChangeToInterfaceOrientation:a3];
+    [(SUViewController *)v9 _sendOrientationWillChangeToInterfaceOrientation:orientation];
   }
 }
 

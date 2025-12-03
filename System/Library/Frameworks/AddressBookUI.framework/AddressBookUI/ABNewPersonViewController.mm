@@ -1,13 +1,13 @@
 @interface ABNewPersonViewController
 - (ABAddressBookRef)addressBook;
 - (CGSize)preferredContentSize;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)dealloc;
 - (void)loadContactViewController;
 - (void)loadView;
 - (void)setAddressBook:(ABAddressBookRef)addressBook;
 - (void)setDisplayedPerson:(ABRecordRef)displayedPerson;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 @end
 
 @implementation ABNewPersonViewController
@@ -112,7 +112,7 @@ LABEL_9:
   [(ABNewPersonViewController *)self loadContactViewController];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = ABNewPersonViewController;
@@ -128,42 +128,42 @@ LABEL_9:
   return result;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   newPersonViewDelegate = self->_newPersonViewDelegate;
   if (objc_opt_respondsToSelector())
   {
-    if (a4)
+    if (contact)
     {
       if ([(ABNewPersonViewController *)self displayedPerson])
       {
         if ([objc_msgSend(MEMORY[0x277CFBDB8] "sharedInstance")])
         {
-          v7 = [(ABNewPersonViewController *)self addressBook];
+          addressBook = [(ABNewPersonViewController *)self addressBook];
         }
 
         else
         {
-          v7 = 0;
+          addressBook = 0;
         }
 
-        [a4 updateNewPublicABPerson:-[ABNewPersonViewController displayedPerson](self inAddressBook:{"displayedPerson"), v7}];
+        [contact updateNewPublicABPerson:-[ABNewPersonViewController displayedPerson](self inAddressBook:{"displayedPerson"), addressBook}];
       }
 
       v11 = self->_newPersonViewDelegate;
-      v10 = [(ABNewPersonViewController *)self displayedPerson];
+      displayedPerson = [(ABNewPersonViewController *)self displayedPerson];
       v8 = v11;
-      v9 = self;
+      selfCopy2 = self;
     }
 
     else
     {
       v8 = self->_newPersonViewDelegate;
-      v9 = self;
-      v10 = 0;
+      selfCopy2 = self;
+      displayedPerson = 0;
     }
 
-    [(ABNewPersonViewControllerDelegate *)v8 newPersonViewController:v9 didCompleteWithNewPerson:v10];
+    [(ABNewPersonViewControllerDelegate *)v8 newPersonViewController:selfCopy2 didCompleteWithNewPerson:displayedPerson];
   }
 }
 
@@ -219,7 +219,7 @@ LABEL_12:
     {
       v15 = 0;
       v10 = [objc_msgSend(MEMORY[0x277CBDAB8] contactStoreForPublicAddressBook:{-[ABNewPersonViewController addressBook](self, "addressBook")), "groupsMatchingPredicate:error:", objc_msgSend(MEMORY[0x277CBDB10], "predicateForiOSLegacyIdentifier:", MEMORY[0x2383B6570](-[ABNewPersonViewController parentGroup](self, "parentGroup"))), &v15}];
-      v11 = v10;
+      firstObject = v10;
       if (!v10)
       {
         NSLog(&cfstr_CanTRetrieveGr.isa, v15);
@@ -228,11 +228,11 @@ LABEL_12:
 
       if ([v10 count] == 1)
       {
-        v11 = [v11 firstObject];
+        firstObject = [firstObject firstObject];
         goto LABEL_21;
       }
 
-      NSLog(&cfstr_CanTRetrieveAS.isa, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}]);
+      NSLog(&cfstr_CanTRetrieveAS.isa, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(firstObject, "count")}]);
     }
 
     else
@@ -241,12 +241,12 @@ LABEL_12:
     }
   }
 
-  v11 = 0;
+  firstObject = 0;
 LABEL_21:
   if ([(ABNewPersonViewController *)self mergeContact])
   {
-    v12 = [MEMORY[0x277CBDC40] allCardProperties];
-    [v9 addProperties:v12 excludingProperties:objc_msgSend(MEMORY[0x277CBDC40] fromContact:{"nameProperties"), -[ABNewPersonViewController mergeContact](self, "mergeContact")}];
+    allCardProperties = [MEMORY[0x277CBDC40] allCardProperties];
+    [v9 addProperties:allCardProperties excludingProperties:objc_msgSend(MEMORY[0x277CBDC40] fromContact:{"nameProperties"), -[ABNewPersonViewController mergeContact](self, "mergeContact")}];
   }
 
   [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] willMoveToParentViewController:0];
@@ -269,16 +269,16 @@ LABEL_21:
     [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] setDelegate:self];
   }
 
-  if (v11)
+  if (firstObject)
   {
-    [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] setParentGroup:v11];
+    [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] setParentGroup:firstObject];
   }
 
   [(ABNewPersonViewController *)self addChildViewController:[(ABNewPersonViewController *)self cnContactViewController]];
-  v13 = [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] view];
+  view = [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] view];
   [-[ABNewPersonViewController view](self "view")];
-  [v13 setFrame:?];
-  [v13 setAutoresizingMask:18];
+  [view setFrame:?];
+  [view setAutoresizingMask:18];
   [-[ABNewPersonViewController view](self "view")];
   [(CNContactViewController *)[(ABNewPersonViewController *)self cnContactViewController] didMoveToParentViewController:self];
   [(ABNewPersonViewController *)self setEditing:1 animated:0];

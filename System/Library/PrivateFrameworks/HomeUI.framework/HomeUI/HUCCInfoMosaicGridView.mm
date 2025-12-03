@@ -1,7 +1,7 @@
 @interface HUCCInfoMosaicGridView
 - (HUCCFakeMosaicGridView)backgroundGridView;
-- (HUCCInfoMosaicGridView)initWithCoder:(id)a3;
-- (HUCCInfoMosaicGridView)initWithFrame:(CGRect)a3;
+- (HUCCInfoMosaicGridView)initWithCoder:(id)coder;
+- (HUCCInfoMosaicGridView)initWithFrame:(CGRect)frame;
 - (HUMosaicLayoutGeometry)mosaicLayoutGeometry;
 - (HUProvidesMosaicFrames)frameDelegate;
 - (UIImageView)iconView;
@@ -10,19 +10,19 @@
 - (void)_invalidateConstraints;
 - (void)_setupInfoMosaicView;
 - (void)resetView;
-- (void)setFrameDelegate:(id)a3;
-- (void)setMosaicLayoutGeometry:(id)a3;
+- (void)setFrameDelegate:(id)delegate;
+- (void)setMosaicLayoutGeometry:(id)geometry;
 - (void)updateConstraints;
-- (void)updateUIWithInfoText:(id)a3 andActionText:(id)a4;
+- (void)updateUIWithInfoText:(id)text andActionText:(id)actionText;
 @end
 
 @implementation HUCCInfoMosaicGridView
 
-- (HUCCInfoMosaicGridView)initWithFrame:(CGRect)a3
+- (HUCCInfoMosaicGridView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUCCInfoMosaicGridView;
-  v3 = [(HUCCInfoMosaicGridView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCCInfoMosaicGridView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (HUCCInfoMosaicGridView)initWithCoder:(id)a3
+- (HUCCInfoMosaicGridView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HUCCInfoMosaicGridView;
-  v3 = [(HUCCInfoMosaicGridView *)&v6 initWithCoder:a3];
+  v3 = [(HUCCInfoMosaicGridView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -48,94 +48,94 @@
 
 - (void)resetView
 {
-  v3 = [(HUCCInfoMosaicGridView *)self infoLabel];
-  [v3 setText:&stru_2823E0EE8];
+  infoLabel = [(HUCCInfoMosaicGridView *)self infoLabel];
+  [infoLabel setText:&stru_2823E0EE8];
 
-  v4 = [(HUCCInfoMosaicGridView *)self actionLabel];
-  [v4 setText:&stru_2823E0EE8];
+  actionLabel = [(HUCCInfoMosaicGridView *)self actionLabel];
+  [actionLabel setText:&stru_2823E0EE8];
 }
 
-- (void)updateUIWithInfoText:(id)a3 andActionText:(id)a4
+- (void)updateUIWithInfoText:(id)text andActionText:(id)actionText
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUCCInfoMosaicGridView *)self infoLabel];
-  [v8 setText:v7];
+  actionTextCopy = actionText;
+  textCopy = text;
+  infoLabel = [(HUCCInfoMosaicGridView *)self infoLabel];
+  [infoLabel setText:textCopy];
 
-  v9 = [(HUCCInfoMosaicGridView *)self actionLabel];
-  [v9 setText:v6];
+  actionLabel = [(HUCCInfoMosaicGridView *)self actionLabel];
+  [actionLabel setText:actionTextCopy];
 
   [(HUCCInfoMosaicGridView *)self setNeedsLayout];
 }
 
-- (void)setFrameDelegate:(id)a3
+- (void)setFrameDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-  [v5 setFrameDelegate:v4];
+  delegateCopy = delegate;
+  backgroundGridView = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+  [backgroundGridView setFrameDelegate:delegateCopy];
 }
 
 - (HUMosaicLayoutGeometry)mosaicLayoutGeometry
 {
-  v2 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-  v3 = [v2 mosaicLayoutGeometry];
+  backgroundGridView = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+  mosaicLayoutGeometry = [backgroundGridView mosaicLayoutGeometry];
 
-  return v3;
+  return mosaicLayoutGeometry;
 }
 
-- (void)setMosaicLayoutGeometry:(id)a3
+- (void)setMosaicLayoutGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-  [v5 setMosaicLayoutGeometry:v4];
+  geometryCopy = geometry;
+  backgroundGridView = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+  [backgroundGridView setMosaicLayoutGeometry:geometryCopy];
 }
 
 - (void)_setupInfoMosaicView
 {
   v17[3] = *MEMORY[0x277D85DE8];
   [(HUCCInfoMosaicGridView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-  [(HUCCInfoMosaicGridView *)self addSubview:v3];
+  backgroundGridView = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+  [(HUCCInfoMosaicGridView *)self addSubview:backgroundGridView];
 
   v4 = objc_alloc(MEMORY[0x277D75A68]);
-  v5 = [(HUCCInfoMosaicGridView *)self iconView];
-  v6 = [(HUCCInfoMosaicGridView *)self infoLabel];
-  v17[1] = v6;
-  v7 = [(HUCCInfoMosaicGridView *)self actionLabel];
-  v17[2] = v7;
+  iconView = [(HUCCInfoMosaicGridView *)self iconView];
+  infoLabel = [(HUCCInfoMosaicGridView *)self infoLabel];
+  v17[1] = infoLabel;
+  actionLabel = [(HUCCInfoMosaicGridView *)self actionLabel];
+  v17[2] = actionLabel;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
   v9 = [v4 initWithArrangedSubviews:v8];
   [(HUCCInfoMosaicGridView *)self setStackView:v9];
 
-  v10 = [(HUCCInfoMosaicGridView *)self stackView];
-  v11 = [(HUCCInfoMosaicGridView *)self iconView];
-  [v10 setCustomSpacing:v11 afterView:16.0];
+  stackView = [(HUCCInfoMosaicGridView *)self stackView];
+  iconView2 = [(HUCCInfoMosaicGridView *)self iconView];
+  [stackView setCustomSpacing:iconView2 afterView:16.0];
 
-  v12 = [(HUCCInfoMosaicGridView *)self stackView];
-  v13 = [(HUCCInfoMosaicGridView *)self infoLabel];
-  [v12 setCustomSpacing:v13 afterView:8.0];
+  stackView2 = [(HUCCInfoMosaicGridView *)self stackView];
+  infoLabel2 = [(HUCCInfoMosaicGridView *)self infoLabel];
+  [stackView2 setCustomSpacing:infoLabel2 afterView:8.0];
 
-  v14 = [(HUCCInfoMosaicGridView *)self stackView];
-  [v14 setAxis:1];
+  stackView3 = [(HUCCInfoMosaicGridView *)self stackView];
+  [stackView3 setAxis:1];
 
-  v15 = [(HUCCInfoMosaicGridView *)self stackView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView4 = [(HUCCInfoMosaicGridView *)self stackView];
+  [stackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(HUCCInfoMosaicGridView *)self stackView];
-  [(HUCCInfoMosaicGridView *)self addSubview:v16];
+  stackView5 = [(HUCCInfoMosaicGridView *)self stackView];
+  [(HUCCInfoMosaicGridView *)self addSubview:stackView5];
 
   [(HUCCInfoMosaicGridView *)self setNeedsUpdateConstraints];
 }
 
 - (void)_invalidateConstraints
 {
-  v3 = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
+  infoMosaicConstraints = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
 
-  if (v3)
+  if (infoMosaicConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
-    [v4 deactivateConstraints:v5];
+    infoMosaicConstraints2 = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
+    [v4 deactivateConstraints:infoMosaicConstraints2];
   }
 
   [(HUCCInfoMosaicGridView *)self setInfoMosaicConstraints:0];
@@ -145,89 +145,89 @@
 
 - (void)updateConstraints
 {
-  v3 = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
+  infoMosaicConstraints = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
 
-  if (!v3)
+  if (!infoMosaicConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-    v6 = [v5 leadingAnchor];
-    v7 = [(HUCCInfoMosaicGridView *)self leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
-    [v4 addObject:v8];
+    array = [MEMORY[0x277CBEB18] array];
+    backgroundGridView = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+    leadingAnchor = [backgroundGridView leadingAnchor];
+    leadingAnchor2 = [(HUCCInfoMosaicGridView *)self leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v8];
 
-    v9 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-    v10 = [v9 trailingAnchor];
-    v11 = [(HUCCInfoMosaicGridView *)self trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
-    [v4 addObject:v12];
+    backgroundGridView2 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+    trailingAnchor = [backgroundGridView2 trailingAnchor];
+    trailingAnchor2 = [(HUCCInfoMosaicGridView *)self trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v12];
 
-    v13 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-    v14 = [v13 topAnchor];
-    v15 = [(HUCCInfoMosaicGridView *)self topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
-    [v4 addObject:v16];
+    backgroundGridView3 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+    topAnchor = [backgroundGridView3 topAnchor];
+    topAnchor2 = [(HUCCInfoMosaicGridView *)self topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v16];
 
-    v17 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
-    v18 = [v17 bottomAnchor];
-    v19 = [(HUCCInfoMosaicGridView *)self bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
-    [v4 addObject:v20];
+    backgroundGridView4 = [(HUCCInfoMosaicGridView *)self backgroundGridView];
+    bottomAnchor = [backgroundGridView4 bottomAnchor];
+    bottomAnchor2 = [(HUCCInfoMosaicGridView *)self bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v20];
 
-    v21 = [(HUCCInfoMosaicGridView *)self iconView];
-    v22 = [v21 heightAnchor];
-    v23 = [v22 constraintEqualToConstant:38.0];
-    [v4 addObject:v23];
+    iconView = [(HUCCInfoMosaicGridView *)self iconView];
+    heightAnchor = [iconView heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:38.0];
+    [array addObject:v23];
 
-    v24 = [(HUCCInfoMosaicGridView *)self stackView];
-    v25 = [v24 leadingAnchor];
-    v26 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
-    v27 = [v26 leadingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27 constant:16.0];
+    stackView = [(HUCCInfoMosaicGridView *)self stackView];
+    leadingAnchor3 = [stackView leadingAnchor];
+    layoutMarginsGuide = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
 
     LODWORD(v29) = 1144750080;
     [v28 setPriority:v29];
-    [v4 addObject:v28];
-    v30 = [(HUCCInfoMosaicGridView *)self stackView];
-    v31 = [v30 trailingAnchor];
-    v32 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
-    v33 = [v32 trailingAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33 constant:-16.0];
+    [array addObject:v28];
+    stackView2 = [(HUCCInfoMosaicGridView *)self stackView];
+    trailingAnchor3 = [stackView2 trailingAnchor];
+    layoutMarginsGuide2 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
 
     LODWORD(v35) = 1144750080;
     [v34 setPriority:v35];
-    [v4 addObject:v34];
-    v36 = [(HUCCInfoMosaicGridView *)self stackView];
-    v37 = [v36 leadingAnchor];
-    v38 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
-    v39 = [v38 leadingAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39 constant:8.0];
-    [v4 addObject:v40];
+    [array addObject:v34];
+    stackView3 = [(HUCCInfoMosaicGridView *)self stackView];
+    leadingAnchor5 = [stackView3 leadingAnchor];
+    layoutMarginsGuide3 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
+    leadingAnchor6 = [layoutMarginsGuide3 leadingAnchor];
+    v40 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:8.0];
+    [array addObject:v40];
 
-    v41 = [(HUCCInfoMosaicGridView *)self stackView];
-    v42 = [v41 trailingAnchor];
-    v43 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
-    v44 = [v43 trailingAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44 constant:-8.0];
-    [v4 addObject:v45];
+    stackView4 = [(HUCCInfoMosaicGridView *)self stackView];
+    trailingAnchor5 = [stackView4 trailingAnchor];
+    layoutMarginsGuide4 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
+    trailingAnchor6 = [layoutMarginsGuide4 trailingAnchor];
+    v45 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-8.0];
+    [array addObject:v45];
 
-    v46 = [(HUCCInfoMosaicGridView *)self stackView];
-    v47 = [v46 centerYAnchor];
-    v48 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
-    v49 = [v48 centerYAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49];
-    [v4 addObject:v50];
+    stackView5 = [(HUCCInfoMosaicGridView *)self stackView];
+    centerYAnchor = [stackView5 centerYAnchor];
+    layoutMarginsGuide5 = [(HUCCInfoMosaicGridView *)self layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide5 centerYAnchor];
+    v50 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v50];
 
-    v51 = [(HUCCInfoMosaicGridView *)self stackView];
-    v52 = [v51 heightAnchor];
-    v53 = [(HUCCInfoMosaicGridView *)self heightAnchor];
-    v54 = [v52 constraintLessThanOrEqualToAnchor:v53];
-    [v4 addObject:v54];
+    stackView6 = [(HUCCInfoMosaicGridView *)self stackView];
+    heightAnchor2 = [stackView6 heightAnchor];
+    heightAnchor3 = [(HUCCInfoMosaicGridView *)self heightAnchor];
+    v54 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3];
+    [array addObject:v54];
 
-    [(HUCCInfoMosaicGridView *)self setInfoMosaicConstraints:v4];
+    [(HUCCInfoMosaicGridView *)self setInfoMosaicConstraints:array];
     v55 = MEMORY[0x277CCAAD0];
-    v56 = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
-    [v55 activateConstraints:v56];
+    infoMosaicConstraints2 = [(HUCCInfoMosaicGridView *)self infoMosaicConstraints];
+    [v55 activateConstraints:infoMosaicConstraints2];
   }
 
   v57.receiver = self;
@@ -245,8 +245,8 @@
     v6 = self->_infoLabel;
     self->_infoLabel = v5;
 
-    v7 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)self->_infoLabel setTextColor:v7];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)self->_infoLabel setTextColor:systemWhiteColor];
 
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)self->_infoLabel setFont:v8];
@@ -269,8 +269,8 @@
     v6 = self->_actionLabel;
     self->_actionLabel = v5;
 
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UILabel *)self->_actionLabel setTextColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UILabel *)self->_actionLabel setTextColor:systemBlueColor];
 
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)self->_actionLabel setFont:v8];
@@ -293,8 +293,8 @@
 
     [(UIImageView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)self->_iconView setContentMode:1];
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIImageView *)self->_iconView setTintColor:v6];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIImageView *)self->_iconView setTintColor:systemWhiteColor];
 
     v7 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:38.0];
     v8 = [MEMORY[0x277D755B8] systemImageNamed:@"homekit"];

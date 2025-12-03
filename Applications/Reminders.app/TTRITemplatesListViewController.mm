@@ -1,19 +1,19 @@
 @interface TTRITemplatesListViewController
-- (_TtC9Reminders31TTRITemplatesListViewController)initWithCoder:(id)a3;
-- (_TtC9Reminders31TTRITemplatesListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9Reminders31TTRITemplatesListViewController)initWithCoder:(id)coder;
+- (_TtC9Reminders31TTRITemplatesListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TTRITemplatesListViewController
 
-- (_TtC9Reminders31TTRITemplatesListViewController)initWithCoder:(id)a3
+- (_TtC9Reminders31TTRITemplatesListViewController)initWithCoder:(id)coder
 {
   *&self->presenter[OBJC_IVAR____TtC9Reminders31TTRITemplatesListViewController_dataSource] = 0;
   *&self->presenter[OBJC_IVAR____TtC9Reminders31TTRITemplatesListViewController_collectionView] = 0;
@@ -23,7 +23,7 @@
   *&self->presenter[OBJC_IVAR____TtC9Reminders31TTRITemplatesListViewController____lazy_storage___cancelButton] = 0;
   *&self->presenter[OBJC_IVAR____TtC9Reminders31TTRITemplatesListViewController____lazy_storage___doneButton] = 0;
   v7 = qword_100767208;
-  v8 = a3;
+  coderCopy = coder;
   if (v7 != -1)
   {
     swift_once();
@@ -40,27 +40,27 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10033A2DC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10033DBD4(a3);
+  selfCopy = self;
+  sub_10033DBD4(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(TTRITemplatesListViewController *)&v8 viewDidAppear:v3];
-  v5 = [v4 view];
-  if (v5)
+  [(TTRITemplatesListViewController *)&v8 viewDidAppear:appearCopy];
+  view = [v4 view];
+  if (view)
   {
-    v6 = v5;
+    v6 = view;
     v7 = UIView.firstResponderDescendant.getter();
 
     if (v7)
@@ -81,60 +81,60 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRITemplatesListViewController *)&v5 viewWillDisappear:v3];
+  [(TTRITemplatesListViewController *)&v5 viewWillDisappear:disappearCopy];
   UIViewController.endFirstResponderEditing()();
   [v4 resignFirstResponder];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_10033DED0(a3, a4);
+  selfCopy = self;
+  sub_10033DED0(editing, animated);
 }
 
-- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   sub_10033FE28();
 }
 
-- (_TtC9Reminders31TTRITemplatesListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders31TTRITemplatesListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10033F6E8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10033F6E8(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100340354();
   v14 = v13;
 

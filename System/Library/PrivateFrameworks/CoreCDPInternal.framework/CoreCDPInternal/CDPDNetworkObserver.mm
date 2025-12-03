@@ -1,9 +1,9 @@
 @interface CDPDNetworkObserver
 + (id)sharedInstance;
 - (CDPDNetworkObserver)init;
-- (id)addNetworkObserverWithEventHandler:(id)a3;
-- (void)_networkReachabilityDidChangeWithFlags:(unsigned int)a3;
-- (void)removeObserverWithToken:(id)a3;
+- (id)addNetworkObserverWithEventHandler:(id)handler;
+- (void)_networkReachabilityDidChangeWithFlags:(unsigned int)flags;
+- (void)removeObserverWithToken:(id)token;
 - (void)startObservingNetwork;
 @end
 
@@ -39,9 +39,9 @@ uint64_t __37__CDPDNetworkObserver_sharedInstance__block_invoke()
     clientsLock = v2->_clientsLock;
     v2->_clientsLock = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     clientsByUUID = v2->_clientsByUUID;
-    v2->_clientsByUUID = v5;
+    v2->_clientsByUUID = dictionary;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("CDPDNetworkObserver Event Queue", v7);
@@ -79,7 +79,7 @@ uint64_t __44__CDPDNetworkObserver_startObservingNetwork__block_invoke(uint64_t 
   return result;
 }
 
-- (void)_networkReachabilityDidChangeWithFlags:(unsigned int)a3
+- (void)_networkReachabilityDidChangeWithFlags:(unsigned int)flags
 {
   eventQueue = self->_eventQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@ uint64_t __44__CDPDNetworkObserver_startObservingNetwork__block_invoke(uint64_t 
   v4[2] = __62__CDPDNetworkObserver__networkReachabilityDidChangeWithFlags___block_invoke;
   v4[3] = &unk_278E264D0;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(eventQueue, v4);
 }
 
@@ -117,16 +117,16 @@ void __62__CDPDNetworkObserver__networkReachabilityDidChangeWithFlags___block_in
   }
 }
 
-- (id)addNetworkObserverWithEventHandler:(id)a3
+- (id)addNetworkObserverWithEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  handlerCopy = handler;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v7 = objc_alloc_init(CDPDNetworkObserverClient);
-  [(CDPDNetworkObserverClient *)v7 setEventHandler:v4];
+  [(CDPDNetworkObserverClient *)v7 setEventHandler:handlerCopy];
   [(NSLock *)self->_clientsLock lock];
-  [(NSMutableDictionary *)self->_clientsByUUID setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_clientsByUUID setObject:v7 forKey:uUIDString];
   [(NSLock *)self->_clientsLock unlock];
   eventQueue = self->_eventQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -134,11 +134,11 @@ void __62__CDPDNetworkObserver__networkReachabilityDidChangeWithFlags___block_in
   v11[2] = __58__CDPDNetworkObserver_addNetworkObserverWithEventHandler___block_invoke;
   v11[3] = &unk_278E25B50;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(eventQueue, v11);
 
-  return v6;
+  return uUIDString;
 }
 
 uint64_t __58__CDPDNetworkObserver_addNetworkObserverWithEventHandler___block_invoke(uint64_t a1)
@@ -152,12 +152,12 @@ uint64_t __58__CDPDNetworkObserver_addNetworkObserverWithEventHandler___block_in
   return result;
 }
 
-- (void)removeObserverWithToken:(id)a3
+- (void)removeObserverWithToken:(id)token
 {
   clientsLock = self->_clientsLock;
-  v5 = a3;
+  tokenCopy = token;
   [(NSLock *)clientsLock lock];
-  [(NSMutableDictionary *)self->_clientsByUUID removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_clientsByUUID removeObjectForKey:tokenCopy];
 
   v6 = self->_clientsLock;
 

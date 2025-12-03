@@ -1,28 +1,28 @@
 @interface PUPeopleTileCollectionViewCell
-+ (CGSize)itemSizeForTraitCollection:(id)a3;
++ (CGSize)itemSizeForTraitCollection:(id)collection;
 + (OS_dispatch_queue)sharedContactFetchQueue;
-+ (void)_fetchContactInfoForPerson:(id)a3 completion:(id)a4;
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5;
++ (void)_fetchContactInfoForPerson:(id)person completion:(id)completion;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type;
 - (CGSize)previousContentViewSize;
-- (PUPeopleTileCollectionViewCell)initWithFrame:(CGRect)a3;
+- (PUPeopleTileCollectionViewCell)initWithFrame:(CGRect)frame;
 - (PUPeopleTileDelegate)peopleDelegate;
 - (UIGraphicsImageRenderer)renderer;
-- (id)_reviewActionForPerson:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_customizeAlbumActionTapped:(id)a3;
-- (void)_displayAvatarImageRequestResult:(id)a3 faceRect:(CGRect)a4 person:(id)a5 error:(id)a6;
-- (void)_fetchAvatarImageForPerson:(id)a3;
-- (void)_fetchContactImageForPerson:(id)a3 contact:(id)a4;
-- (void)_makeKeyPhotoActionTapped:(id)a3 asset:(id)a4;
-- (void)_nameActionTapped:(id)a3;
-- (void)_reloadAvatarImageViewForPerson:(id)a3;
-- (void)_setPerson:(id)a3 asset:(id)a4 reloadAvatar:(BOOL)a5;
-- (void)_setupActionsForPerson:(id)a3 asset:(id)a4;
-- (void)_showAlbumActionTapped:(id)a3;
-- (void)_unnameActionTapped:(id)a3 asset:(id)a4;
-- (void)accessibilityInvertColorsStatusDidChange:(id)a3;
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4;
+- (id)_reviewActionForPerson:(id)person;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_customizeAlbumActionTapped:(id)tapped;
+- (void)_displayAvatarImageRequestResult:(id)result faceRect:(CGRect)rect person:(id)person error:(id)error;
+- (void)_fetchAvatarImageForPerson:(id)person;
+- (void)_fetchContactImageForPerson:(id)person contact:(id)contact;
+- (void)_makeKeyPhotoActionTapped:(id)tapped asset:(id)asset;
+- (void)_nameActionTapped:(id)tapped;
+- (void)_reloadAvatarImageViewForPerson:(id)person;
+- (void)_setPerson:(id)person asset:(id)asset reloadAvatar:(BOOL)avatar;
+- (void)_setupActionsForPerson:(id)person asset:(id)asset;
+- (void)_showAlbumActionTapped:(id)tapped;
+- (void)_unnameActionTapped:(id)tapped asset:(id)asset;
+- (void)accessibilityInvertColorsStatusDidChange:(id)change;
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state;
 - (void)layoutSubviews;
 - (void)refreshPerson;
 @end
@@ -46,12 +46,12 @@
   return WeakRetained;
 }
 
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  v5 = [a3 actionType];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69C4848]];
+  actionType = [performer actionType];
+  v6 = [actionType isEqualToString:*MEMORY[0x1E69C4848]];
 
-  if (a4 == 30)
+  if (state == 30)
   {
     if (v6)
     {
@@ -61,35 +61,35 @@
   }
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [a4 presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:v6];
+  handlerCopy = handler;
+  presentingViewController = [controller presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:handlerCopy];
 
   return 1;
 }
 
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 2)
+  performerCopy = performer;
+  controllerCopy = controller;
+  if (type == 2)
   {
-    v10 = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
-    [v10 presentPeopleViewController:v9];
+    peopleDelegate = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
+    [peopleDelegate presentPeopleViewController:controllerCopy];
   }
 
   else
   {
-    if (a5 != 1)
+    if (type != 1)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
-    [v10 pushPeopleViewController:v9];
+    peopleDelegate = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
+    [peopleDelegate pushPeopleViewController:controllerCopy];
   }
 
   v11 = 1;
@@ -98,12 +98,12 @@ LABEL_7:
   return v11;
 }
 
-- (void)_makeKeyPhotoActionTapped:(id)a3 asset:(id)a4
+- (void)_makeKeyPhotoActionTapped:(id)tapped asset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  tappedCopy = tapped;
+  assetCopy = asset;
+  v7 = assetCopy;
+  if (!tappedCopy || !assetCopy)
   {
     v8 = PXAssertGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -113,15 +113,15 @@ LABEL_7:
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E69C33B0]) initWithPerson:v5 asset:v7];
+  v9 = [objc_alloc(MEMORY[0x1E69C33B0]) initWithPerson:tappedCopy asset:v7];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__PUPeopleTileCollectionViewCell__makeKeyPhotoActionTapped_asset___block_invoke;
   v12[3] = &unk_1E7B7FB70;
-  v13 = v5;
+  v13 = tappedCopy;
   v14 = v7;
   v10 = v7;
-  v11 = v5;
+  v11 = tappedCopy;
   [v9 executeWithUndoManager:0 completionHandler:v12];
 }
 
@@ -168,32 +168,32 @@ LABEL_6:
   }
 }
 
-- (void)_nameActionTapped:(id)a3
+- (void)_nameActionTapped:(id)tapped
 {
   v4 = MEMORY[0x1E69C3778];
-  v5 = a3;
-  v14 = [v4 contextWithPerson:v5 type:1];
-  v6 = [MEMORY[0x1E69C3790] isPersonHiddenFromPeopleHome:v5];
+  tappedCopy = tapped;
+  v14 = [v4 contextWithPerson:tappedCopy type:1];
+  v6 = [MEMORY[0x1E69C3790] isPersonHiddenFromPeopleHome:tappedCopy];
 
   [v14 setWantsToBeAddedToPeopleAlbum:v6];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E696AE30] processInfo];
-  v9 = [v8 processName];
-  v10 = [@"/Library/Caches/com.apple.xbs/Sources/Photos_UIPrivate/Projects/PhotosUI/PhotosUI/iOS/People Tile/PUPeopleTileCollectionViewCell.m" lastPathComponent];
-  v11 = [v7 stringWithFormat:@"%@:%@:%s:%d", v9, v10, "-[PUPeopleTileCollectionViewCell _nameActionTapped:]", 472];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  lastPathComponent = [@"/Library/Caches/com.apple.xbs/Sources/Photos_UIPrivate/Projects/PhotosUI/PhotosUI/iOS/People Tile/PUPeopleTileCollectionViewCell.m" lastPathComponent];
+  v11 = [v7 stringWithFormat:@"%@:%@:%s:%d", processName, lastPathComponent, "-[PUPeopleTileCollectionViewCell _nameActionTapped:]", 472];
   [v14 setCallerInfo:v11];
 
   v12 = [MEMORY[0x1E69C3790] bootstrapViewControllerForContext:v14 delegate:0];
-  v13 = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
-  [v13 presentPeopleViewController:v12];
+  peopleDelegate = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
+  [peopleDelegate presentPeopleViewController:v12];
 
   [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.tilingView.nameTapped" withPayload:MEMORY[0x1E695E0F8]];
 }
 
-- (void)_unnameActionTapped:(id)a3 asset:(id)a4
+- (void)_unnameActionTapped:(id)tapped asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  tappedCopy = tapped;
+  assetCopy = asset;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69C3790];
   v12 = MEMORY[0x1E69E9820];
@@ -201,14 +201,14 @@ LABEL_6:
   v14 = __60__PUPeopleTileCollectionViewCell__unnameActionTapped_asset___block_invoke;
   v15 = &unk_1E7B7F540;
   objc_copyWeak(&v16, &location);
-  v9 = [v8 alertControllerForUntaggingPerson:v6 asset:v7 completion:&v12];
+  v9 = [v8 alertControllerForUntaggingPerson:tappedCopy asset:assetCopy completion:&v12];
   [v9 setModalPresentationStyle:{7, v12, v13, v14, v15}];
-  v10 = [v9 popoverPresentationController];
-  [v10 setSourceView:self];
+  popoverPresentationController = [v9 popoverPresentationController];
+  [popoverPresentationController setSourceView:self];
   [(PUPeopleTileCollectionViewCell *)self bounds];
-  [v10 setSourceRect:?];
-  v11 = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
-  [v11 presentPeopleViewController:v9];
+  [popoverPresentationController setSourceRect:?];
+  peopleDelegate = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
+  [peopleDelegate presentPeopleViewController:v9];
 
   [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.tilingView.untagTapped" withPayload:MEMORY[0x1E695E0F8]];
   objc_destroyWeak(&v16);
@@ -231,13 +231,13 @@ void __60__PUPeopleTileCollectionViewCell__unnameActionTapped_asset___block_invo
   }
 }
 
-- (void)_customizeAlbumActionTapped:(id)a3
+- (void)_customizeAlbumActionTapped:(id)tapped
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69C3838];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = [v3 alloc];
-  v10[0] = v4;
+  v10[0] = tappedCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
   v7 = [v5 initWithPeople:v6];
@@ -248,35 +248,35 @@ void __60__PUPeopleTileCollectionViewCell__unnameActionTapped_asset___block_invo
   [v8 performActionWithCompletionHandler:0];
 }
 
-- (void)_showAlbumActionTapped:(id)a3
+- (void)_showAlbumActionTapped:(id)tapped
 {
-  v10 = a3;
-  v4 = [(PUPeopleTileCollectionViewCell *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  tappedCopy = tapped;
+  traitCollection = [(PUPeopleTileCollectionViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v6 = [v10 px_navigationURL];
-    v7 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v7 openSensitiveURL:v6 withOptions:0];
+    px_navigationURL = [tappedCopy px_navigationURL];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:px_navigationURL withOptions:0];
   }
 
   else
   {
-    v6 = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
+    px_navigationURL = [(PUPeopleTileCollectionViewCell *)self peopleDelegate];
     v8 = MEMORY[0x1E69C3790];
-    v9 = [v6 allPeople];
-    v7 = [v8 makeLemonadeDetailViewControllerForPerson:v10 allPeople:v9];
+    allPeople = [px_navigationURL allPeople];
+    defaultWorkspace = [v8 makeLemonadeDetailViewControllerForPerson:tappedCopy allPeople:allPeople];
 
-    [v6 presentPeopleViewController:v7];
+    [px_navigationURL presentPeopleViewController:defaultWorkspace];
   }
 
   [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.tilingView.showAlbumTapped" withPayload:MEMORY[0x1E695E0F8]];
 }
 
-- (id)_reviewActionForPerson:(id)a3
+- (id)_reviewActionForPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC628];
   v6 = PXLemonadeLocalizedString();
@@ -286,7 +286,7 @@ void __60__PUPeopleTileCollectionViewCell__unnameActionTapped_asset___block_invo
   v11[2] = __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke;
   v11[3] = &unk_1E7B7F4F0;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = personCopy;
   v12 = v8;
   v9 = [v5 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
 
@@ -302,27 +302,27 @@ void __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke(
   [WeakRetained _customizeAlbumActionTapped:*(a1 + 32)];
 }
 
-- (void)_setupActionsForPerson:(id)a3 asset:(id)a4
+- (void)_setupActionsForPerson:(id)person asset:(id)asset
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  assetCopy = asset;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PUPeopleTileCollectionViewCell.m" lineNumber:346 description:{@"%s must be called on the main thread", "-[PUPeopleTileCollectionViewCell _setupActionsForPerson:asset:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPeopleTileCollectionViewCell.m" lineNumber:346 description:{@"%s must be called on the main thread", "-[PUPeopleTileCollectionViewCell _setupActionsForPerson:asset:]"}];
   }
 
   objc_initWeak(location, self);
-  v9 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
-  v50 = [v9 standardActionForActionType:*MEMORY[0x1E69C4848]];
+  personActionManager = [(PUPeopleTileCollectionViewCell *)self personActionManager];
+  v50 = [personActionManager standardActionForActionType:*MEMORY[0x1E69C4848]];
 
-  v10 = [v7 px_localizedName];
-  v45 = v10;
-  if ([v10 length])
+  px_localizedName = [personCopy px_localizedName];
+  v45 = px_localizedName;
+  if ([px_localizedName length])
   {
     v11 = PXLocalizedStringForPersonOrPetAndVisibility();
-    v43 = v10;
+    v43 = px_localizedName;
     v53 = PXStringWithValidatedFormat();
   }
 
@@ -338,7 +338,7 @@ void __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke(
   v62[2] = __63__PUPeopleTileCollectionViewCell__setupActionsForPerson_asset___block_invoke;
   v62[3] = &unk_1E7B7F4F0;
   objc_copyWeak(&v64, location);
-  v14 = v7;
+  v14 = personCopy;
   v63 = v14;
   v48 = [v12 actionWithTitle:v53 image:v13 identifier:0 handler:v62];
 
@@ -352,11 +352,11 @@ void __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke(
   objc_copyWeak(&v61, location);
   v16 = v14;
   v59 = v16;
-  v44 = v8;
+  v44 = assetCopy;
   v60 = v44;
   v49 = [v15 actionWithTitle:v52 image:v51 identifier:0 handler:v58];
-  v17 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
-  v18 = [v17 standardActionForActionType:*MEMORY[0x1E69C4868]];
+  personActionManager2 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
+  v18 = [personActionManager2 standardActionForActionType:*MEMORY[0x1E69C4868]];
 
   if (v18)
   {
@@ -372,9 +372,9 @@ void __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke(
   }
 
   v47 = [(PUPeopleTileCollectionViewCell *)self _reviewActionForPerson:v16];
-  v22 = [v16 name];
+  name = [v16 name];
   v46 = v21;
-  if ([v22 length] && objc_msgSend(v16, "px_fetchCanHaveFacesRejectedWithRigor:", 0))
+  if ([name length] && objc_msgSend(v16, "px_fetchCanHaveFacesRejectedWithRigor:", 0))
   {
     v23 = MEMORY[0x1E69DC628];
     v24 = PXLocalizedString();
@@ -390,7 +390,7 @@ void __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke(
     v27 = [v23 actionWithTitle:v25 image:v26 identifier:0 handler:v54];
 
     [v27 setAttributes:2];
-    v28 = v22;
+    v28 = name;
     v29 = MEMORY[0x1E69DCC60];
     v72[0] = v50;
     v72[1] = v27;
@@ -459,8 +459,8 @@ void __57__PUPeopleTileCollectionViewCell__reviewActionForPerson___block_invoke(
     [MEMORY[0x1E69DCC60] menuWithTitle:v28 children:v35];
   }
   v40 = ;
-  v41 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-  [v41 setMenu:v40];
+  menuButton = [(PUPeopleTileCollectionViewCell *)self menuButton];
+  [menuButton setMenu:v40];
 
   objc_destroyWeak(&v61);
   objc_destroyWeak(&v64);
@@ -491,8 +491,8 @@ void __63__PUPeopleTileCollectionViewCell__setupActionsForPerson_asset___block_i
   renderer = self->_renderer;
   if (!renderer)
   {
-    v4 = [(PUPeopleTileCollectionViewCell *)self traitCollection];
-    [PUPeopleTileCollectionViewCell itemSizeForTraitCollection:v4];
+    traitCollection = [(PUPeopleTileCollectionViewCell *)self traitCollection];
+    [PUPeopleTileCollectionViewCell itemSizeForTraitCollection:traitCollection];
     v6 = v5;
     v8 = v7;
 
@@ -506,33 +506,33 @@ void __63__PUPeopleTileCollectionViewCell__setupActionsForPerson_asset___block_i
   return renderer;
 }
 
-- (void)_displayAvatarImageRequestResult:(id)a3 faceRect:(CGRect)a4 person:(id)a5 error:(id)a6
+- (void)_displayAvatarImageRequestResult:(id)result faceRect:(CGRect)rect person:(id)person error:(id)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(PUPeopleTileCollectionViewCell *)self person];
+  resultCopy = result;
+  personCopy = person;
+  errorCopy = error;
+  person = [(PUPeopleTileCollectionViewCell *)self person];
 
-  if (v16 == v14)
+  if (person == personCopy)
   {
-    if (v13)
+    if (resultCopy)
     {
-      v17 = [(PUPeopleTileCollectionViewCell *)self avatarImageView];
-      [v17 frame];
+      avatarImageView = [(PUPeopleTileCollectionViewCell *)self avatarImageView];
+      [avatarImageView frame];
       v19 = v18;
-      v20 = [v17 layer];
+      layer = [avatarImageView layer];
       v40.origin.x = x;
       v40.origin.y = y;
       v40.size.width = width;
       v40.size.height = height;
       v21 = CGRectEqualToRect(v40, *MEMORY[0x1E69C48E0]);
       v22 = !v21;
-      [v20 setMasksToBounds:v22];
+      [layer setMasksToBounds:v22];
       v23 = v19 * 0.5;
       v24 = !v21;
       if (v21)
@@ -560,46 +560,46 @@ void __63__PUPeopleTileCollectionViewCell__setupActionsForPerson_asset___block_i
         v23 = 0.0;
       }
 
-      [v20 setCornerRadius:v23];
-      [v20 setBorderWidth:v26];
-      [v20 setContentsRect:{x, y, width, height}];
-      [v17 setContentMode:v25];
-      [v17 setBackgroundColor:0];
+      [layer setCornerRadius:v23];
+      [layer setBorderWidth:v26];
+      [layer setContentsRect:{x, y, width, height}];
+      [avatarImageView setContentMode:v25];
+      [avatarImageView setBackgroundColor:0];
       if (v22)
       {
-        [v17 setImage:v13];
+        [avatarImageView setImage:resultCopy];
       }
 
       else
       {
-        v27 = [(PUPeopleTileCollectionViewCell *)self renderer];
+        renderer = [(PUPeopleTileCollectionViewCell *)self renderer];
         v29 = MEMORY[0x1E69E9820];
         v30 = 3221225472;
         v31 = __89__PUPeopleTileCollectionViewCell__displayAvatarImageRequestResult_faceRect_person_error___block_invoke;
         v32 = &unk_1E7B7F4C8;
         v34 = v19;
-        v33 = v13;
-        v28 = [v27 imageWithActions:&v29];
-        [v17 setImage:v28, v29, v30, v31, v32];
+        v33 = resultCopy;
+        v28 = [renderer imageWithActions:&v29];
+        [avatarImageView setImage:v28, v29, v30, v31, v32];
       }
     }
 
     else
     {
-      v17 = PLUIGetLog();
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      avatarImageView = PLUIGetLog();
+      if (!os_log_type_enabled(avatarImageView, OS_LOG_TYPE_ERROR))
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v20 = [v15 localizedDescription];
+      layer = [errorCopy localizedDescription];
       *buf = 138412546;
-      v36 = v14;
+      v36 = personCopy;
       v37 = 2112;
-      v38 = v20;
-      _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_ERROR, "No face image returned from face crop manager. Person: %@ - Error: %@", buf, 0x16u);
+      v38 = layer;
+      _os_log_impl(&dword_1B36F3000, avatarImageView, OS_LOG_TYPE_ERROR, "No face image returned from face crop manager. Person: %@ - Error: %@", buf, 0x16u);
     }
 
     goto LABEL_17;
@@ -632,27 +632,27 @@ uint64_t __89__PUPeopleTileCollectionViewCell__displayAvatarImageRequestResult_f
   return [v9 drawInRect:{1.0, 1.0, v4, v4}];
 }
 
-- (void)_fetchAvatarImageForPerson:(id)a3
+- (void)_fetchAvatarImageForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(PUPeopleTileCollectionViewCell *)self traitCollection];
-  [PUPeopleTileCollectionViewCell itemSizeForTraitCollection:v5];
+  personCopy = person;
+  traitCollection = [(PUPeopleTileCollectionViewCell *)self traitCollection];
+  [PUPeopleTileCollectionViewCell itemSizeForTraitCollection:traitCollection];
   v7 = v6;
   v9 = v8;
   v10 = objc_alloc(MEMORY[0x1E69C3780]);
-  [v5 displayScale];
-  v12 = [v10 initWithPerson:v4 targetSize:v7 displayScale:{v9, v11}];
+  [traitCollection displayScale];
+  v12 = [v10 initWithPerson:personCopy targetSize:v7 displayScale:{v9, v11}];
   [v12 setCornerStyle:2];
   objc_initWeak(&location, self);
-  v13 = [MEMORY[0x1E69C3788] sharedManager];
+  mEMORY[0x1E69C3788] = [MEMORY[0x1E69C3788] sharedManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__PUPeopleTileCollectionViewCell__fetchAvatarImageForPerson___block_invoke;
   v15[3] = &unk_1E7B7F4A0;
   objc_copyWeak(&v17, &location);
-  v14 = v4;
+  v14 = personCopy;
   v16 = v14;
-  [v13 requestFaceCropForOptions:v12 resultHandler:v15];
+  [mEMORY[0x1E69C3788] requestFaceCropForOptions:v12 resultHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -680,27 +680,27 @@ void __61__PUPeopleTileCollectionViewCell__fetchAvatarImageForPerson___block_inv
   [WeakRetained _displayAvatarImageRequestResult:v4 faceRect:*(a1 + 48) person:v2 error:?];
 }
 
-- (void)_fetchContactImageForPerson:(id)a3 contact:(id)a4
+- (void)_fetchContactImageForPerson:(id)person contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUPeopleTileCollectionViewCell *)self traitCollection];
-  [PUPeopleTileCollectionViewCell itemSizeForTraitCollection:v8];
+  personCopy = person;
+  contactCopy = contact;
+  traitCollection = [(PUPeopleTileCollectionViewCell *)self traitCollection];
+  [PUPeopleTileCollectionViewCell itemSizeForTraitCollection:traitCollection];
   v10 = v9;
   v12 = v11;
-  v13 = [v8 layoutDirection];
+  layoutDirection = [traitCollection layoutDirection];
   objc_initWeak(&location, self);
   v14 = MEMORY[0x1E69C3310];
-  [v8 displayScale];
+  [traitCollection displayScale];
   v16 = v15;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__PUPeopleTileCollectionViewCell__fetchContactImageForPerson_contact___block_invoke;
   v18[3] = &unk_1E7B7F450;
   objc_copyWeak(&v20, &location);
-  v17 = v6;
+  v17 = personCopy;
   v19 = v17;
-  [v14 requestImageForContact:v7 targetSize:v13 == 1 displayScale:0 isRTL:v18 deliverOnce:v10 completion:{v12, v16}];
+  [v14 requestImageForContact:contactCopy targetSize:layoutDirection == 1 displayScale:0 isRTL:v18 deliverOnce:v10 completion:{v12, v16}];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -724,20 +724,20 @@ void __70__PUPeopleTileCollectionViewCell__fetchContactImageForPerson_contact___
   [WeakRetained _displayAvatarImageRequestResult:*(a1 + 32) faceRect:*(a1 + 40) person:0 error:{*MEMORY[0x1E69C48E0], *(MEMORY[0x1E69C48E0] + 8), *(MEMORY[0x1E69C48E0] + 16), *(MEMORY[0x1E69C48E0] + 24)}];
 }
 
-- (void)_reloadAvatarImageViewForPerson:(id)a3
+- (void)_reloadAvatarImageViewForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(PUPeopleTileCollectionViewCell *)self avatarImageView];
-  v6 = [v5 layer];
-  [v5 frame];
+  personCopy = person;
+  avatarImageView = [(PUPeopleTileCollectionViewCell *)self avatarImageView];
+  layer = [avatarImageView layer];
+  [avatarImageView frame];
   v8 = v7;
-  [v5 setImage:0];
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  [v5 setBackgroundColor:v9];
+  [avatarImageView setImage:0];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [avatarImageView setBackgroundColor:blackColor];
 
-  [v6 setMasksToBounds:1];
-  [v6 setCornerRadius:v8 * 0.5];
-  [v6 setBorderWidth:1.0];
+  [layer setMasksToBounds:1];
+  [layer setCornerRadius:v8 * 0.5];
+  [layer setBorderWidth:1.0];
   objc_initWeak(&location, self);
   v10 = objc_opt_class();
   v12[0] = MEMORY[0x1E69E9820];
@@ -745,7 +745,7 @@ void __70__PUPeopleTileCollectionViewCell__fetchContactImageForPerson_contact___
   v12[2] = __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___block_invoke;
   v12[3] = &unk_1E7B7F428;
   objc_copyWeak(&v14, &location);
-  v11 = v4;
+  v11 = personCopy;
   v13 = v11;
   [v10 _fetchContactInfoForPerson:v11 completion:v12];
 
@@ -774,105 +774,105 @@ void __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___bloc
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69C3790];
-  v4 = [(PUPeopleTileCollectionViewCell *)self person];
-  v5 = [v4 localIdentifier];
+  person = [(PUPeopleTileCollectionViewCell *)self person];
+  localIdentifier = [person localIdentifier];
   v11[0] = *MEMORY[0x1E6978F38];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v7 = [(PUPeopleTileCollectionViewCell *)self person];
-  v8 = [v7 photoLibrary];
-  v9 = [v3 personWithLocalIdentifier:v5 propertySets:v6 photoLibrary:v8];
+  person2 = [(PUPeopleTileCollectionViewCell *)self person];
+  photoLibrary = [person2 photoLibrary];
+  v9 = [v3 personWithLocalIdentifier:localIdentifier propertySets:v6 photoLibrary:photoLibrary];
 
-  v10 = [(PUPeopleTileCollectionViewCell *)self asset];
-  [(PUPeopleTileCollectionViewCell *)self _setPerson:v9 asset:v10 reloadAvatar:0];
+  asset = [(PUPeopleTileCollectionViewCell *)self asset];
+  [(PUPeopleTileCollectionViewCell *)self _setPerson:v9 asset:asset reloadAvatar:0];
 }
 
-- (void)_setPerson:(id)a3 asset:(id)a4 reloadAvatar:(BOOL)a5
+- (void)_setPerson:(id)person asset:(id)asset reloadAvatar:(BOOL)avatar
 {
-  v5 = a5;
+  avatarCopy = avatar;
   v34[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_person, a3);
-  objc_storeStrong(&self->_asset, a4);
-  if (v5)
+  personCopy = person;
+  assetCopy = asset;
+  objc_storeStrong(&self->_person, person);
+  objc_storeStrong(&self->_asset, asset);
+  if (avatarCopy)
   {
-    [(PUPeopleTileCollectionViewCell *)self _reloadAvatarImageViewForPerson:v9];
+    [(PUPeopleTileCollectionViewCell *)self _reloadAvatarImageViewForPerson:personCopy];
   }
 
-  v11 = [(PUPeopleTileCollectionViewCell *)self questionView];
-  v12 = [v9 name];
-  v13 = [v12 length];
+  questionView = [(PUPeopleTileCollectionViewCell *)self questionView];
+  name = [personCopy name];
+  v13 = [name length];
 
   if (v13)
   {
-    v14 = v11;
+    v14 = questionView;
     v15 = 1;
   }
 
   else
   {
-    if (!v11)
+    if (!questionView)
     {
       v16 = MEMORY[0x1E69DD250];
-      v17 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v11 = [v16 px_circularGlyphViewWithName:@"questionmark.circle" backgroundColor:v17];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      questionView = [v16 px_circularGlyphViewWithName:@"questionmark.circle" backgroundColor:systemBlueColor];
 
-      [(PUPeopleTileCollectionViewCell *)self setQuestionView:v11];
-      v18 = [(PUPeopleTileCollectionViewCell *)self contentView];
-      [v18 addSubview:v11];
+      [(PUPeopleTileCollectionViewCell *)self setQuestionView:questionView];
+      contentView = [(PUPeopleTileCollectionViewCell *)self contentView];
+      [contentView addSubview:questionView];
     }
 
-    v14 = v11;
+    v14 = questionView;
     v15 = 0;
   }
 
   [v14 setHidden:v15];
-  if (v9)
+  if (personCopy)
   {
-    v19 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
+    personActionManager = [(PUPeopleTileCollectionViewCell *)self personActionManager];
 
-    if (!v19)
+    if (!personActionManager)
     {
       v20 = MEMORY[0x1E6978650];
-      v21 = [v9 photoLibrary];
-      v22 = [v20 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:0 photoLibrary:v21];
+      photoLibrary = [personCopy photoLibrary];
+      v22 = [v20 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:0 photoLibrary:photoLibrary];
 
       v23 = [objc_alloc(MEMORY[0x1E69C37A0]) initWithAssetCollection:v22 displayTitleInfo:0];
       [(PUPeopleTileCollectionViewCell *)self setPersonActionManager:v23];
 
-      v24 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
-      [v24 setPerformerDelegate:self];
+      personActionManager2 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
+      [personActionManager2 setPerformerDelegate:self];
     }
   }
 
   v25 = objc_alloc(MEMORY[0x1E69788E0]);
-  v34[0] = v9;
+  v34[0] = personCopy;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-  v27 = [v9 photoLibrary];
-  v28 = [MEMORY[0x1E6978980] fetchType];
-  v29 = [v25 initWithObjects:v26 photoLibrary:v27 fetchType:v28 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
-  v30 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
-  [v30 setPeople:v29];
+  photoLibrary2 = [personCopy photoLibrary];
+  fetchType = [MEMORY[0x1E6978980] fetchType];
+  v29 = [v25 initWithObjects:v26 photoLibrary:photoLibrary2 fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  personActionManager3 = [(PUPeopleTileCollectionViewCell *)self personActionManager];
+  [personActionManager3 setPeople:v29];
 
-  v31 = [v9 px_localizedName];
-  if ([v31 length])
+  px_localizedName = [personCopy px_localizedName];
+  if ([px_localizedName length])
   {
-    v32 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-    [v32 setAccessibilityLabel:v31];
+    menuButton = [(PUPeopleTileCollectionViewCell *)self menuButton];
+    [menuButton setAccessibilityLabel:px_localizedName];
   }
 
   else
   {
-    v32 = PXLocalizedStringForPersonOrPetAndVisibility();
-    v33 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-    [v33 setAccessibilityLabel:v32];
+    menuButton = PXLocalizedStringForPersonOrPetAndVisibility();
+    menuButton2 = [(PUPeopleTileCollectionViewCell *)self menuButton];
+    [menuButton2 setAccessibilityLabel:menuButton];
   }
 
-  [(PUPeopleTileCollectionViewCell *)self _setupActionsForPerson:v9 asset:v10];
+  [(PUPeopleTileCollectionViewCell *)self _setupActionsForPerson:personCopy asset:assetCopy];
   [(PUPeopleTileCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)accessibilityInvertColorsStatusDidChange:(id)a3
+- (void)accessibilityInvertColorsStatusDidChange:(id)change
 {
   if (UIAccessibilityIsInvertColorsEnabled())
   {
@@ -885,24 +885,24 @@ void __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___bloc
   }
   v8 = ;
   v4 = v8;
-  v5 = [v8 CGColor];
-  v6 = [(PUPeopleTileCollectionViewCell *)self shadowView];
-  v7 = [v6 layer];
-  [v7 setShadowColor:v5];
+  cGColor = [v8 CGColor];
+  shadowView = [(PUPeopleTileCollectionViewCell *)self shadowView];
+  layer = [shadowView layer];
+  [layer setShadowColor:cGColor];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-  [v8 convertPoint:self fromView:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  menuButton = [(PUPeopleTileCollectionViewCell *)self menuButton];
+  [menuButton convertPoint:self fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-  v14 = [v13 hitTest:v7 withEvent:{v10, v12}];
+  menuButton2 = [(PUPeopleTileCollectionViewCell *)self menuButton];
+  v14 = [menuButton2 hitTest:eventCopy withEvent:{v10, v12}];
 
   return v14;
 }
@@ -912,39 +912,39 @@ void __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___bloc
   v32.receiver = self;
   v32.super_class = PUPeopleTileCollectionViewCell;
   [(PUPeopleTileCollectionViewCell *)&v32 layoutSubviews];
-  v3 = [(PUPeopleTileCollectionViewCell *)self contentView];
-  v4 = [v3 effectiveUserInterfaceLayoutDirection];
+  contentView = [(PUPeopleTileCollectionViewCell *)self contentView];
+  effectiveUserInterfaceLayoutDirection = [contentView effectiveUserInterfaceLayoutDirection];
 
-  v5 = [(PUPeopleTileCollectionViewCell *)self contentView];
-  [v5 bounds];
+  contentView2 = [(PUPeopleTileCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PUPeopleTileCollectionViewCell *)self avatarImageView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  avatarImageView = [(PUPeopleTileCollectionViewCell *)self avatarImageView];
+  [avatarImageView setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-  [v15 setFrame:{v7, v9, v11, v13}];
+  menuButton = [(PUPeopleTileCollectionViewCell *)self menuButton];
+  [menuButton setFrame:{v7, v9, v11, v13}];
 
-  v16 = [(PUPeopleTileCollectionViewCell *)self shadowView];
-  [v16 setFrame:{v7, v9, v11, v13}];
+  shadowView = [(PUPeopleTileCollectionViewCell *)self shadowView];
+  [shadowView setFrame:{v7, v9, v11, v13}];
 
-  v17 = [(PUPeopleTileCollectionViewCell *)self traitCollection];
-  v18 = [v17 userInterfaceIdiom];
+  traitCollection = [(PUPeopleTileCollectionViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v18 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v19 = [(PUPeopleTileCollectionViewCell *)self menuButton];
-    v20 = [v19 layer];
-    [v19 frame];
+    menuButton2 = [(PUPeopleTileCollectionViewCell *)self menuButton];
+    layer = [menuButton2 layer];
+    [menuButton2 frame];
     v22 = v21;
-    [v20 setMasksToBounds:1];
-    [v20 setCornerRadius:v22 * 0.5];
+    [layer setMasksToBounds:1];
+    [layer setCornerRadius:v22 * 0.5];
   }
 
-  if (v4 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v23 = 0.0;
   }
@@ -954,37 +954,37 @@ void __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___bloc
     v23 = v11 - v11 * 0.400000006;
   }
 
-  v24 = [(PUPeopleTileCollectionViewCell *)self questionView];
-  [v24 setFrame:{v23, v13 - v11 * 0.400000006, v11 * 0.400000006, v11 * 0.400000006}];
+  questionView = [(PUPeopleTileCollectionViewCell *)self questionView];
+  [questionView setFrame:{v23, v13 - v11 * 0.400000006, v11 * 0.400000006, v11 * 0.400000006}];
 
   [(PUPeopleTileCollectionViewCell *)self previousContentViewSize];
   if (v11 != v26 || v13 != v25)
   {
     v27 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, v11, v11, v11 * 0.5}];
-    v28 = [v27 CGPath];
-    v29 = [(PUPeopleTileCollectionViewCell *)self shadowView];
-    v30 = [v29 layer];
-    [v30 setShadowPath:v28];
+    cGPath = [v27 CGPath];
+    shadowView2 = [(PUPeopleTileCollectionViewCell *)self shadowView];
+    layer2 = [shadowView2 layer];
+    [layer2 setShadowPath:cGPath];
 
     [(PUPeopleTileCollectionViewCell *)self setRenderer:0];
-    v31 = [(PUPeopleTileCollectionViewCell *)self person];
-    [(PUPeopleTileCollectionViewCell *)self _reloadAvatarImageViewForPerson:v31];
+    person = [(PUPeopleTileCollectionViewCell *)self person];
+    [(PUPeopleTileCollectionViewCell *)self _reloadAvatarImageViewForPerson:person];
   }
 
   [(PUPeopleTileCollectionViewCell *)self setPreviousContentViewSize:v11, v13];
 }
 
-- (PUPeopleTileCollectionViewCell)initWithFrame:(CGRect)a3
+- (PUPeopleTileCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = PUPeopleTileCollectionViewCell;
-  v3 = [(PUPeopleTileCollectionViewCell *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPeopleTileCollectionViewCell *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUPeopleTileCollectionViewCell *)v3 contentView];
+    contentView = [(PUPeopleTileCollectionViewCell *)v3 contentView];
     v6 = objc_opt_new();
-    v7 = [(UIView *)v6 layer];
+    layer = [(UIView *)v6 layer];
     if (UIAccessibilityIsInvertColorsEnabled())
     {
       [MEMORY[0x1E69DC888] whiteColor];
@@ -995,31 +995,31 @@ void __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___bloc
       [MEMORY[0x1E69DC888] blackColor];
     }
     v8 = ;
-    [v7 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v8, "CGColor")}];
 
     LODWORD(v9) = 1051931443;
-    [v7 setShadowOpacity:v9];
-    [v7 setShadowOffset:{0.0, 1.0}];
-    [v7 setShadowRadius:4.0];
+    [layer setShadowOpacity:v9];
+    [layer setShadowOffset:{0.0, 1.0}];
+    [layer setShadowRadius:4.0];
     shadowView = v4->_shadowView;
     v4->_shadowView = v6;
     v11 = v6;
 
-    [v5 addSubview:v11];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v4 selector:sel_accessibilityInvertColorsStatusDidChange_ name:*MEMORY[0x1E69DD8D8] object:0];
+    [contentView addSubview:v11];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_accessibilityInvertColorsStatusDidChange_ name:*MEMORY[0x1E69DD8D8] object:0];
 
     v13 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v14 = [v13 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v15 = [(UIImageView *)v14 layer];
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    [v15 setBorderColor:{objc_msgSend(v16, "CGColor")}];
+    layer2 = [(UIImageView *)v14 layer];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [layer2 setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
     avatarImageView = v4->_avatarImageView;
     v4->_avatarImageView = v14;
     v18 = v14;
 
-    [v5 addSubview:v18];
+    [contentView addSubview:v18];
     v19 = objc_alloc_init(MEMORY[0x1E69DC738]);
     [(UIButton *)v19 setShowsMenuAsPrimaryAction:1];
     [(UIButton *)v19 _setTouchInsets:-10.0, -10.0, -10.0, -10.0];
@@ -1027,26 +1027,26 @@ void __66__PUPeopleTileCollectionViewCell__reloadAvatarImageViewForPerson___bloc
     v4->_menuButton = v19;
     v21 = v19;
 
-    [v5 addSubview:v21];
+    [contentView addSubview:v21];
   }
 
   return v4;
 }
 
-+ (void)_fetchContactInfoForPerson:(id)a3 completion:(id)a4
++ (void)_fetchContactInfoForPerson:(id)person completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() sharedContactFetchQueue];
+  personCopy = person;
+  completionCopy = completion;
+  sharedContactFetchQueue = [objc_opt_class() sharedContactFetchQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__PUPeopleTileCollectionViewCell__fetchContactInfoForPerson_completion___block_invoke;
   v10[3] = &unk_1E7B80B48;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
-  dispatch_async(v7, v10);
+  v11 = personCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = personCopy;
+  dispatch_async(sharedContactFetchQueue, v10);
 }
 
 void __72__PUPeopleTileCollectionViewCell__fetchContactInfoForPerson_completion___block_invoke(uint64_t a1)
@@ -1088,7 +1088,7 @@ void __57__PUPeopleTileCollectionViewCell_sharedContactFetchQueue__block_invoke(
   sharedContactFetchQueue_contactFetchQueue = v0;
 }
 
-+ (CGSize)itemSizeForTraitCollection:(id)a3
++ (CGSize)itemSizeForTraitCollection:(id)collection
 {
   v3 = PXUserInterfaceSizeClassFromUITraitCollection();
   v4 = 32.0;

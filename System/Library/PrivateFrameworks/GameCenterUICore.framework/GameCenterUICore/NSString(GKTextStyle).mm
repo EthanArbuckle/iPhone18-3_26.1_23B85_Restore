@@ -10,9 +10,9 @@
   v4 = MEMORY[0x277CCA898];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [v5 attributes];
+  attributes = [v5 attributes];
 
-  v8 = [v6 initWithString:a1 attributes:v7];
+  v8 = [v6 initWithString:self attributes:attributes];
 
   return v8;
 }
@@ -22,12 +22,12 @@
   v88 = *MEMORY[0x277D85DE8];
   v46 = a3;
   v45 = a4;
-  v43 = [v45 attributes];
+  attributes = [v45 attributes];
   v77 = 0;
   v78 = &v77;
   v79 = 0x2020000000;
   v80 = 0;
-  v48 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:a1 attributes:v43];
+  v48 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:self attributes:attributes];
   v61 = 0;
   v62 = &v61;
   v63 = 0xD810000000;
@@ -44,12 +44,12 @@
   v75 = 0u;
   v64 = &unk_24E4EABD3;
   v76 = 0;
-  v5 = [(__CFString *)a1 length];
+  v5 = [(__CFString *)self length];
   v6 = v62;
-  v62[20] = a1;
+  v62[20] = self;
   v6[23] = 0;
   v6[24] = v5;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   v6[21] = CharactersPtr;
   if (CharactersPtr)
   {
@@ -58,7 +58,7 @@
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v6[22] = CStringPtr;
@@ -90,7 +90,7 @@
   v53 = &v57;
   v54 = &v61;
   v11 = v9;
-  v51[4] = a1;
+  v51[4] = self;
   v52 = v11;
   v12 = MEMORY[0x253041B30](v51);
   v13 = 0;
@@ -131,7 +131,7 @@
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v82 = a1;
+          selfCopy4 = self;
           _os_log_debug_impl(&dword_24E4A8000, v19, OS_LOG_TYPE_DEBUG, "no closing tag in string:%@", buf, 0xCu);
         }
 
@@ -171,8 +171,8 @@ LABEL_31:
           v33 = v32;
           if (v32 && v32 != v45)
           {
-            v34 = [v32 attributes];
-            [v48 setAttributes:v34 range:{v47, v21 - v47}];
+            attributes2 = [v32 attributes];
+            [v48 setAttributes:attributes2 range:{v47, v21 - v47}];
           }
 
           if (v24)
@@ -185,11 +185,11 @@ LABEL_31:
         }
 
         *buf = v42;
-        v82 = v23;
+        selfCopy4 = v23;
         v83 = 2112;
         v84 = v14;
         v85 = 2112;
-        v86 = a1;
+        selfCopy2 = self;
         v27 = v25;
         v28 = "wrong closing tag name (got %@, expected %@) in string:%@";
         v29 = 32;
@@ -210,7 +210,7 @@ LABEL_31:
         }
 
         *buf = 138412290;
-        v82 = a1;
+        selfCopy4 = self;
         v27 = v30;
         v28 = "malformed closing tag in string:%@";
         v29 = 12;
@@ -255,7 +255,7 @@ LABEL_36:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v82 = a1;
+    selfCopy4 = self;
     _os_log_debug_impl(&dword_24E4A8000, v36, OS_LOG_TYPE_DEBUG, "malformed tag in string:%@", buf, 0xCu);
   }
 

@@ -1,30 +1,30 @@
 @interface MSDKCacheManager
-+ (id)getBundleFilePathFromHash:(id)a3;
-+ (id)getDeviceContentPlistCachePath:(id)a3;
-+ (id)getDeviceFileCachePath:(id)a3;
-+ (id)getDeviceManifestCachePath:(id)a3;
++ (id)getBundleFilePathFromHash:(id)hash;
++ (id)getDeviceContentPlistCachePath:(id)path;
++ (id)getDeviceFileCachePath:(id)path;
++ (id)getDeviceManifestCachePath:(id)path;
 @end
 
 @implementation MSDKCacheManager
 
-+ (id)getDeviceFileCachePath:(id)a3
++ (id)getDeviceFileCachePath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v4 = [v3 fileHash];
-      if (v4)
+      fileHash = [pathCopy fileHash];
+      if (fileHash)
       {
-        v5 = v4;
-        v6 = [v4 hexStringRepresentation];
-        v7 = [v6 lowercaseString];
+        v5 = fileHash;
+        hexStringRepresentation = [fileHash hexStringRepresentation];
+        lowercaseString = [hexStringRepresentation lowercaseString];
 
-        if (v7)
+        if (lowercaseString)
         {
-          v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", @"/var/MSDWorkContainer/.MSD_cache", v7];
+          v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", @"/var/MSDWorkContainer/.MSD_cache", lowercaseString];
 
           goto LABEL_10;
         }
@@ -67,25 +67,25 @@ LABEL_10:
   return v8;
 }
 
-+ (id)getDeviceManifestCachePath:(id)a3
++ (id)getDeviceManifestCachePath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    v5 = [v3 filePath];
+    filePath = [pathCopy filePath];
 
-    if (v5)
+    if (filePath)
     {
-      v6 = [v4 filePath];
-      v7 = [v6 lastPathComponent];
+      filePath2 = [v4 filePath];
+      lastPathComponent = [filePath2 lastPathComponent];
 
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", @"/var/MSDWorkContainer/.MSD_cache_manifest", v7];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", @"/var/MSDWorkContainer/.MSD_cache_manifest", lastPathComponent];
       goto LABEL_4;
     }
 
-    v7 = defaultLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    lastPathComponent = defaultLogHandle();
+    if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
     {
       +[MSDKCacheManager getDeviceManifestCachePath:];
     }
@@ -93,8 +93,8 @@ LABEL_10:
 
   else
   {
-    v7 = defaultLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    lastPathComponent = defaultLogHandle();
+    if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
     {
       +[MSDKCacheManager getDeviceManifestCachePath:];
     }
@@ -106,24 +106,24 @@ LABEL_4:
   return v8;
 }
 
-+ (id)getDeviceContentPlistCachePath:(id)a3
++ (id)getDeviceContentPlistCachePath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    v5 = [v3 partNumber];
+    partNumber = [pathCopy partNumber];
 
-    if (v5)
+    if (partNumber)
     {
-      v5 = [v4 revision];
+      partNumber = [v4 revision];
 
-      if (v5)
+      if (partNumber)
       {
         v6 = MEMORY[0x277CCACA8];
-        v7 = [v4 partNumber];
-        v8 = [v4 revision];
-        v5 = [v6 stringWithFormat:@"%@/%@_%d.plist", @"/var/MSDWorkContainer/.MSD_cache_content_plist", v7, objc_msgSend(v8, "intValue")];
+        partNumber2 = [v4 partNumber];
+        revision = [v4 revision];
+        partNumber = [v6 stringWithFormat:@"%@/%@_%d.plist", @"/var/MSDWorkContainer/.MSD_cache_content_plist", partNumber2, objc_msgSend(revision, "intValue")];
       }
 
       else
@@ -141,28 +141,28 @@ LABEL_4:
   else
   {
     +[MSDKCacheManager getDeviceContentPlistCachePath:];
-    v5 = 0;
+    partNumber = 0;
   }
 
-  return v5;
+  return partNumber;
 }
 
-+ (id)getBundleFilePathFromHash:(id)a3
++ (id)getBundleFilePathFromHash:(id)hash
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  hashCopy = hash;
+  v4 = hashCopy;
+  if (hashCopy)
   {
-    v5 = [v3 hexStringRepresentation];
-    v6 = [v5 lowercaseString];
+    hexStringRepresentation = [hashCopy hexStringRepresentation];
+    lowercaseString = [hexStringRepresentation lowercaseString];
 
-    if (v6)
+    if (lowercaseString)
     {
-      if ([v6 length]> 1)
+      if ([lowercaseString length]> 1)
       {
         v7 = MEMORY[0x277CCACA8];
-        v8 = [v6 substringToIndex:2];
-        v9 = [v7 stringWithFormat:@"%@/%@", v8, v6];
+        v8 = [lowercaseString substringToIndex:2];
+        v9 = [v7 stringWithFormat:@"%@/%@", v8, lowercaseString];
 
         goto LABEL_5;
       }
@@ -172,8 +172,8 @@ LABEL_4:
 
     else
     {
-      v6 = defaultLogHandle();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      lowercaseString = defaultLogHandle();
+      if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_ERROR))
       {
         +[MSDKCacheManager getBundleFilePathFromHash:];
       }
@@ -182,8 +182,8 @@ LABEL_4:
 
   else
   {
-    v6 = defaultLogHandle();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    lowercaseString = defaultLogHandle();
+    if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_ERROR))
     {
       +[MSDKCacheManager getBundleFilePathFromHash:];
     }

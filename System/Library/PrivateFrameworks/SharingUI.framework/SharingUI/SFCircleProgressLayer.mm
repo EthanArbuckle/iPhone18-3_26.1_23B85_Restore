@@ -1,8 +1,8 @@
 @interface SFCircleProgressLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (SFCircleProgressLayer)init;
-- (SFCircleProgressLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (SFCircleProgressLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation SFCircleProgressLayer
@@ -19,13 +19,13 @@
     [(SFCircleProgressLayer *)v2 setNeedsDisplayOnBoundsChange:1];
     [(SFCircleProgressLayer *)v3 setAllowsEdgeAntialiasing:1];
     [(SFCircleProgressLayer *)v3 setProgressStartPoint:0];
-    v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(SFCircleProgressLayer *)v3 setProgressColor:v4];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(SFCircleProgressLayer *)v3 setProgressColor:systemBlueColor];
 
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 == 6)
+    if (userInterfaceIdiom == 6)
     {
       [MEMORY[0x1E69DC888] secondarySystemFillColor];
     }
@@ -44,27 +44,27 @@
   return v3;
 }
 
-- (SFCircleProgressLayer)initWithLayer:(id)a3
+- (SFCircleProgressLayer)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v12.receiver = self;
   v12.super_class = SFCircleProgressLayer;
-  v5 = [(SFCircleProgressLayer *)&v12 initWithLayer:v4];
+  v5 = [(SFCircleProgressLayer *)&v12 initWithLayer:layerCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5->_oneFullRotation = 6.28318531;
-      v6 = v4;
+      v6 = layerCopy;
       -[SFCircleProgressLayer setNeedsDisplayOnBoundsChange:](v5, "setNeedsDisplayOnBoundsChange:", [v6 needsDisplayOnBoundsChange]);
       -[SFCircleProgressLayer setAllowsEdgeAntialiasing:](v5, "setAllowsEdgeAntialiasing:", [v6 allowsEdgeAntialiasing]);
       -[SFCircleProgressLayer setProgressStartPoint:](v5, "setProgressStartPoint:", [v6 progressStartPoint]);
-      v7 = [v6 progressColor];
-      [(SFCircleProgressLayer *)v5 setProgressColor:v7];
+      progressColor = [v6 progressColor];
+      [(SFCircleProgressLayer *)v5 setProgressColor:progressColor];
 
-      v8 = [v6 progressBackgroundColor];
-      [(SFCircleProgressLayer *)v5 setProgressBackgroundColor:v8];
+      progressBackgroundColor = [v6 progressBackgroundColor];
+      [(SFCircleProgressLayer *)v5 setProgressBackgroundColor:progressBackgroundColor];
 
       [v6 progressLineWidth];
       [(SFCircleProgressLayer *)v5 setProgressLineWidth:?];
@@ -80,25 +80,25 @@
   return v5;
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"progress"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"progressLineWidth") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"showProgressTray") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"usesRoundedLineCap"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"progress"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"progressLineWidth") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"showProgressTray") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"usesRoundedLineCap"))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SFCircleProgressLayer;
-    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(SFCircleProgressLayer *)self bounds];
   v22 = CGRectInset(v21, self->_progressLineWidth, self->_progressLineWidth);
@@ -137,24 +137,24 @@
 
   oneFullRotation = self->_oneFullRotation;
   usesRoundedLineCap = self->_usesRoundedLineCap;
-  CGContextSetLineCap(a3, usesRoundedLineCap);
-  CGContextSetLineJoin(a3, usesRoundedLineCap);
-  CGContextSetLineWidth(a3, self->_progressLineWidth);
+  CGContextSetLineCap(context, usesRoundedLineCap);
+  CGContextSetLineJoin(context, usesRoundedLineCap);
+  CGContextSetLineWidth(context, self->_progressLineWidth);
   if (self->_showProgressTray)
   {
-    CGContextBeginPath(a3);
-    CGContextAddArc(a3, MidX, MidY, v10 * 0.5, v15, v15 + oneFullRotation, 0);
-    CGContextSetStrokeColorWithColor(a3, [(UIColor *)self->_progressBackgroundColor CGColor]);
-    CGContextStrokePath(a3);
+    CGContextBeginPath(context);
+    CGContextAddArc(context, MidX, MidY, v10 * 0.5, v15, v15 + oneFullRotation, 0);
+    CGContextSetStrokeColorWithColor(context, [(UIColor *)self->_progressBackgroundColor CGColor]);
+    CGContextStrokePath(context);
   }
 
-  CGContextBeginPath(a3);
+  CGContextBeginPath(context);
   v18 = self->_oneFullRotation;
   [(SFCircleProgressLayer *)self progress];
-  CGContextAddArc(a3, MidX, MidY, v10 * 0.5, v15, v15 + v18 * v19, 0);
-  CGContextSetStrokeColorWithColor(a3, [(UIColor *)self->_progressColor CGColor]);
+  CGContextAddArc(context, MidX, MidY, v10 * 0.5, v15, v15 + v18 * v19, 0);
+  CGContextSetStrokeColorWithColor(context, [(UIColor *)self->_progressColor CGColor]);
 
-  CGContextStrokePath(a3);
+  CGContextStrokePath(context);
 }
 
 @end

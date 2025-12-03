@@ -1,46 +1,46 @@
 @interface TSCH3DTSPImageData
-+ (id)dataWithTSPImageData:(id)a3;
-- (BOOL)canLoadCachedDataForDataCache:(id)a3;
++ (id)dataWithTSPImageData:(id)data;
+- (BOOL)canLoadCachedDataForDataCache:(id)cache;
 - (BOOL)hasCompleteData;
 - (CGImage)newCGImage;
-- (TSCH3DTSPImageData)initWithTSPImageData:(id)a3;
-- (id)databufferForDataCache:(id)a3;
-- (id)p_decodeCachedData:(id)a3 imageSize:(void *)a4;
-- (id)p_encodeImageSize:(void *)a3 andMipmapData:(id)a4;
+- (TSCH3DTSPImageData)initWithTSPImageData:(id)data;
+- (id)databufferForDataCache:(id)cache;
+- (id)p_decodeCachedData:(id)data imageSize:(void *)size;
+- (id)p_encodeImageSize:(void *)size andMipmapData:(id)data;
 - (id)p_generateMipmapsBuffer;
 - (id)uniqueFilename;
-- (void)setParent:(id)a3;
+- (void)setParent:(id)parent;
 @end
 
 @implementation TSCH3DTSPImageData
 
-+ (id)dataWithTSPImageData:(id)a3
++ (id)dataWithTSPImageData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithTSPImageData_(v5, v6, v7, v8, v9, v4);
+  dataCopy = data;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithTSPImageData_(v5, v6, v7, v8, v9, dataCopy);
 
   return v10;
 }
 
-- (TSCH3DTSPImageData)initWithTSPImageData:(id)a3
+- (TSCH3DTSPImageData)initWithTSPImageData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = TSCH3DTSPImageData;
   v6 = [(TSCH3DTSPImageData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  obj = a3;
+  obj = parent;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
 
   if (WeakRetained)
@@ -188,24 +188,24 @@
   return v25;
 }
 
-- (id)p_encodeImageSize:(void *)a3 andMipmapData:(id)a4
+- (id)p_encodeImageSize:(void *)size andMipmapData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   v6 = MEMORY[0x277CBEB28];
-  v11 = objc_msgSend_length(v5, v7, v8, v9, v10);
+  v11 = objc_msgSend_length(dataCopy, v7, v8, v9, v10);
   v16 = objc_msgSend_dataWithCapacity_(v6, v12, v13, v14, v15, v11 + 16);
-  objc_msgSend_appendData_(v16, v17, v18, v19, v20, v5);
-  objc_msgSend_appendBytes_length_(v16, v21, v22, v23, v24, a3, 16);
+  objc_msgSend_appendData_(v16, v17, v18, v19, v20, dataCopy);
+  objc_msgSend_appendBytes_length_(v16, v21, v22, v23, v24, size, 16);
 
   return v16;
 }
 
-- (id)p_decodeCachedData:(id)a3 imageSize:(void *)a4
+- (id)p_decodeCachedData:(id)data imageSize:(void *)size
 {
-  v5 = a3;
-  v6 = v5;
+  dataCopy = data;
+  v6 = dataCopy;
   v11 = objc_msgSend_bytes(v6, v7, v8, v9, v10);
-  v17 = objc_msgSend_length(v5, v12, v13, v14, v15);
+  v17 = objc_msgSend_length(dataCopy, v12, v13, v14, v15);
   if (v17 <= 0xF)
   {
     v21 = MEMORY[0x277D81150];
@@ -216,9 +216,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
   }
 
-  *a4 = *(v11 + v17 - 16);
+  *size = *(v11 + v17 - 16);
 
-  return v5;
+  return dataCopy;
 }
 
 - (id)p_generateMipmapsBuffer
@@ -276,13 +276,13 @@
   return v34;
 }
 
-- (BOOL)canLoadCachedDataForDataCache:(id)a3
+- (BOOL)canLoadCachedDataForDataCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v10 = objc_msgSend_uniqueFilename(self, v5, v6, v7, v8);
   if (v10)
   {
-    v14 = objc_msgSend_dataFromCache_forFile_group_generateBlock_(TSCH3DDocumentDataCache, v9, v11, v12, v13, v4, v10, @"TSCH3DMipmapsBackHeader", &unk_28851D188);
+    v14 = objc_msgSend_dataFromCache_forFile_group_generateBlock_(TSCH3DDocumentDataCache, v9, v11, v12, v13, cacheCopy, v10, @"TSCH3DMipmapsBackHeader", &unk_28851D188);
     v15 = v14 != 0;
   }
 
@@ -294,9 +294,9 @@
   return v15;
 }
 
-- (id)databufferForDataCache:(id)a3
+- (id)databufferForDataCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v9 = objc_msgSend_uniqueFilename(self, v5, v6, v7, v8);
   if (!v9)
   {
@@ -309,7 +309,7 @@
   v110[2] = sub_2761D4A8C;
   v110[3] = &unk_27A6B68D0;
   v110[4] = self;
-  v15 = objc_msgSend_dataFromCache_forFile_group_generateBlock_(TSCH3DDocumentDataCache, v11, COERCE_DOUBLE(3221225472), v12, v13, v4, v9, @"TSCH3DMipmapsBackHeader", v110);
+  v15 = objc_msgSend_dataFromCache_forFile_group_generateBlock_(TSCH3DDocumentDataCache, v11, COERCE_DOUBLE(3221225472), v12, v13, cacheCopy, v9, @"TSCH3DMipmapsBackHeader", v110);
   if (v15)
   {
     v108 = 0;

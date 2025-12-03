@@ -1,23 +1,23 @@
 @interface CKBrowserSwitcherViewController
 - (BOOL)_currentPluginIsJellyfish;
 - (BOOL)_hasLandscapeGutters;
-- (BOOL)_pluginHasLiveBrowserViewInSwitcher:(id)a3;
+- (BOOL)_pluginHasLiveBrowserViewInSwitcher:(id)switcher;
 - (BOOL)_shouldLimitExpandGestureToGrabber;
-- (BOOL)_switchToVisiblePluginWithIdentifier:(id)a3;
-- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_switchToVisiblePluginWithIdentifier:(id)identifier;
+- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)success;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isBrowserSwitcherFirstLaunch;
 - (BOOL)shouldAlwaysShowAppTitle;
-- (CGRect)cachedCompactFrameInWindowCoordsForBrowserTransitionCoordinator:(id)a3;
+- (CGRect)cachedCompactFrameInWindowCoordsForBrowserTransitionCoordinator:(id)coordinator;
 - (CGRect)restingGrabberFrame;
 - (CGSize)_browserSize;
-- (CGSize)browserTransitionCoordinator:(id)a3 preferredSizeForBrowser:(id)a4;
+- (CGSize)browserTransitionCoordinator:(id)coordinator preferredSizeForBrowser:(id)browser;
 - (CKAppGrabberView)grabberView;
-- (CKBrowserSwitcherViewController)initWithConversation:(id)a3 sendDelegate:(id)a4 presentingViewController:(id)a5;
+- (CKBrowserSwitcherViewController)initWithConversation:(id)conversation sendDelegate:(id)delegate presentingViewController:(id)controller;
 - (CKBrowserSwitcherViewControllerDelegate)delegate;
-- (double)_rubberBandOffsetWithoutDecorationForOffset:(double)result maxOffset:(double)a4 minOffset:(double)a5 range:(double)a6 outside:(BOOL *)a7;
-- (double)browserTransitionCoordinatorCollapsedContentHeight:(id)a3;
+- (double)_rubberBandOffsetWithoutDecorationForOffset:(double)result maxOffset:(double)offset minOffset:(double)minOffset range:(double)range outside:(BOOL *)outside;
+- (double)browserTransitionCoordinatorCollapsedContentHeight:(id)height;
 - (double)restingContainerViewOriginY;
 - (id)activeBrowserView;
 - (id)appIconOverride;
@@ -25,65 +25,65 @@
 - (id)traitCollection;
 - (id)transitionsPresentationViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_handleRemoteViewControllerConnectionInterrupted:(id)a3;
-- (void)_handleVisibleSwitcherPluginsChanged:(id)a3;
+- (void)_handleRemoteViewControllerConnectionInterrupted:(id)interrupted;
+- (void)_handleVisibleSwitcherPluginsChanged:(id)changed;
 - (void)_insertCurrentBrowserAndRemoveOldBrowsersIfNeeded;
-- (void)_loadBrowserForBalloonPlugin:(id)a3 datasource:(id)a4;
-- (void)_performAfterFirstLayout:(id)a3;
-- (void)_removeBrowserFromViewHierarchy:(id)a3;
-- (void)_removeBrowserWithPluginIdentifierFromViewHierarchy:(id)a3;
+- (void)_loadBrowserForBalloonPlugin:(id)plugin datasource:(id)datasource;
+- (void)_performAfterFirstLayout:(id)layout;
+- (void)_removeBrowserFromViewHierarchy:(id)hierarchy;
+- (void)_removeBrowserWithPluginIdentifierFromViewHierarchy:(id)hierarchy;
 - (void)_snapshotCurrentViewController;
 - (void)_transitionSnapshotViewToBrowserView;
-- (void)_transitionSnapshotViewToBrowserViewAfterViewDidPrepareForDisplay:(id)a3;
-- (void)_updateActiveBrowserAlphaStateOnInsertForCurrentController:(id)a3 currentView:(id)a4;
+- (void)_transitionSnapshotViewToBrowserViewAfterViewDidPrepareForDisplay:(id)display;
+- (void)_updateActiveBrowserAlphaStateOnInsertForCurrentController:(id)controller currentView:(id)view;
 - (void)_updateActiveBrowserTimestampForCurrentBalloonPlugin;
-- (void)_updateBrowserViewPositionForPluginAndInsertIfNecessary:(id)a3;
+- (void)_updateBrowserViewPositionForPluginAndInsertIfNecessary:(id)necessary;
 - (void)_updateCurrentBrowserSnapshotIfPossible;
 - (void)_updateVisibleBrowserView;
-- (void)animateInCompactWithCompletion:(id)a3;
-- (void)animateOutCompactWithCompletion:(id)a3;
-- (void)appGrabberViewCloseButtonTapped:(id)a3;
-- (void)browserTransitionCoordinator:(id)a3 didSwitchToPlugin:(id)a4;
-- (void)browserTransitionCoordinator:(id)a3 didTransitionFromOrientation:(int64_t)a4 toOrientation:(int64_t)a5;
-- (void)browserTransitionCoordinator:(id)a3 expandedStateDidChange:(BOOL)a4 withReason:(int64_t)a5;
-- (void)browserTransitionCoordinator:(id)a3 hasUpdatedLastTouchDate:(id)a4;
-- (void)browserTransitionCoordinator:(id)a3 willPresentBrowserModally:(id)a4;
-- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorWantsPresentationOfAppManager:(id)a3;
-- (void)browserTransitionCoordinatorWantsPresentationOfAppStore:(id)a3;
-- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4;
+- (void)animateInCompactWithCompletion:(id)completion;
+- (void)animateOutCompactWithCompletion:(id)completion;
+- (void)appGrabberViewCloseButtonTapped:(id)tapped;
+- (void)browserTransitionCoordinator:(id)coordinator didSwitchToPlugin:(id)plugin;
+- (void)browserTransitionCoordinator:(id)coordinator didTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
+- (void)browserTransitionCoordinator:(id)coordinator expandedStateDidChange:(BOOL)change withReason:(int64_t)reason;
+- (void)browserTransitionCoordinator:(id)coordinator hasUpdatedLastTouchDate:(id)date;
+- (void)browserTransitionCoordinator:(id)coordinator willPresentBrowserModally:(id)modally;
+- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorWantsPresentationOfAppManager:(id)manager;
+- (void)browserTransitionCoordinatorWantsPresentationOfAppStore:(id)store;
+- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason;
 - (void)cleanupExpandAnimatorState;
 - (void)dealloc;
-- (void)dragManagerDidEndDragging:(id)a3;
-- (void)dragManagerDidStartDrag:(id)a3;
-- (void)dragManagerWillStartDrag:(id)a3;
-- (void)expandGestureTouchMoved:(id)a3;
-- (void)handleExpandButton:(id)a3;
+- (void)dragManagerDidEndDragging:(id)dragging;
+- (void)dragManagerDidStartDrag:(id)drag;
+- (void)dragManagerWillStartDrag:(id)drag;
+- (void)expandGestureTouchMoved:(id)moved;
+- (void)handleExpandButton:(id)button;
 - (void)layoutMarginsDidChange;
 - (void)loadView;
-- (void)reinsertAppGrabberViewForBrowserTransitionCoordinator:(id)a3;
+- (void)reinsertAppGrabberViewForBrowserTransitionCoordinator:(id)coordinator;
 - (void)reverseAndCleanupExpandAnimator;
 - (void)saveSnapshotForCurrentBrowserViewControllerIfPossible;
-- (void)setBalloonPlugin:(id)a3;
-- (void)setBrowserViewReadyForUserInteraction:(BOOL)a3;
-- (void)setCurrentViewController:(id)a3;
-- (void)setCurrentVisiblePlugin:(id)a3;
+- (void)setBalloonPlugin:(id)plugin;
+- (void)setBrowserViewReadyForUserInteraction:(BOOL)interaction;
+- (void)setCurrentViewController:(id)controller;
+- (void)setCurrentVisiblePlugin:(id)plugin;
 - (void)setupPausedExpandAnimatorIfNeeded;
-- (void)showBrowserFullscreenModalForPlugin:(id)a3 datasource:(id)a4 preferredContentSize:(CGSize)a5;
-- (void)showBrowserInSwitcherForPlugin:(id)a3 datasource:(id)a4 reloadData:(BOOL)a5;
+- (void)showBrowserFullscreenModalForPlugin:(id)plugin datasource:(id)datasource preferredContentSize:(CGSize)size;
+- (void)showBrowserInSwitcherForPlugin:(id)plugin datasource:(id)datasource reloadData:(BOOL)data;
 - (void)stopExpandAnimatorAndCleanupState;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unloadRemoteViewControllers;
-- (void)updateGrabberTitleAndIconForPlugin:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateGrabberTitleAndIconForPlugin:(id)plugin;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKBrowserSwitcherViewController
@@ -91,14 +91,14 @@
 - (void)dealloc
 {
   [(CKBrowserSwitcherViewController *)self unloadRemoteViewControllers];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  [v4 setDelegate:0];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  [transitionCoordinator setDelegate:0];
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 setIdleTimerDisabled:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 
   [(UIViewPropertyAnimator *)self->_expandPropertyAnimator stopAnimation:1];
   v6.receiver = self;
@@ -106,20 +106,20 @@
   [(CKBrowserSwitcherViewController *)&v6 dealloc];
 }
 
-- (CKBrowserSwitcherViewController)initWithConversation:(id)a3 sendDelegate:(id)a4 presentingViewController:(id)a5
+- (CKBrowserSwitcherViewController)initWithConversation:(id)conversation sendDelegate:(id)delegate presentingViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  conversationCopy = conversation;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = CKBrowserSwitcherViewController;
   v11 = [(CKBrowserSwitcherViewController *)&v22 init];
   if (v11)
   {
     v12 = objc_alloc_init(CKBrowserTransitionCoordinator);
-    [(CKBrowserTransitionCoordinator *)v12 setConversation:v8];
-    [(CKBrowserTransitionCoordinator *)v12 setSendDelegate:v9];
-    [(CKBrowserTransitionCoordinator *)v12 setPresentingViewController:v10];
+    [(CKBrowserTransitionCoordinator *)v12 setConversation:conversationCopy];
+    [(CKBrowserTransitionCoordinator *)v12 setSendDelegate:delegateCopy];
+    [(CKBrowserTransitionCoordinator *)v12 setPresentingViewController:controllerCopy];
     [(CKBrowserSwitcherViewController *)v11 setTransitionCoordinator:v12];
     [(CKBrowserTransitionCoordinator *)v12 setDelegate:v11];
     [(CKBrowserSwitcherViewController *)v11 setBrowserViewReadyForUserInteraction:0];
@@ -134,14 +134,14 @@
     [(CKBrowserSwitcherViewController *)v11 setTransitioningFromSnapshotToLiveView:0];
     [(CKBrowserSwitcherViewController *)v11 setAllowPluginLaunchNotifications:1];
     objc_initWeak(&location, v11);
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    v16 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_presentingViewController___block_invoke;
     v19[3] = &unk_1E72F3B70;
     objc_copyWeak(&v20, &location);
-    v17 = [v15 addObserverForName:@"com.apple.messages.CKScreenTimeDidEnterCurrentAppRestrictionNotification" object:0 queue:v16 usingBlock:v19];
+    v17 = [defaultCenter addObserverForName:@"com.apple.messages.CKScreenTimeDidEnterCurrentAppRestrictionNotification" object:0 queue:mainQueue usingBlock:v19];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -179,19 +179,19 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
   v40.super_class = CKBrowserSwitcherViewController;
   [(CKBrowserSwitcherViewController *)&v40 loadView];
   v3 = [_CKBrowserSwitcherView alloc];
-  v4 = [(CKBrowserSwitcherViewController *)self view];
-  [v4 frame];
+  view = [(CKBrowserSwitcherViewController *)self view];
+  [view frame];
   v5 = [(_CKBrowserSwitcherView *)v3 initWithFrame:?];
 
-  v6 = [(CKBrowserSwitcherViewController *)self view];
-  -[_CKBrowserSwitcherView setAutoresizingMask:](v5, "setAutoresizingMask:", [v6 autoresizingMask]);
+  view2 = [(CKBrowserSwitcherViewController *)self view];
+  -[_CKBrowserSwitcherView setAutoresizingMask:](v5, "setAutoresizingMask:", [view2 autoresizingMask]);
 
   [(CKBrowserSwitcherViewController *)self setView:v5];
   [(_CKBrowserSwitcherView *)v5 bounds];
   v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v8, v9, v10}];
   [(CKBrowserSwitcherViewController *)self setContentView:v11];
-  v12 = [(CKBrowserSwitcherViewController *)self view];
-  [v12 addSubview:v11];
+  view3 = [(CKBrowserSwitcherViewController *)self view];
+  [view3 addSubview:v11];
 
   [v11 bounds];
   v14 = v13;
@@ -206,16 +206,16 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
 
   v25 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v14, v20, v16, v24}];
   v26 = +[CKUIBehavior sharedBehaviors];
-  v27 = [v26 theme];
-  v28 = [v27 browserSwitcherGutterColor];
-  [v25 setBackgroundColor:v28];
+  theme = [v26 theme];
+  browserSwitcherGutterColor = [theme browserSwitcherGutterColor];
+  [v25 setBackgroundColor:browserSwitcherGutterColor];
 
   [v25 setAccessibilityIdentifier:@"appBrowserSwitcherIdentifier"];
   [v25 setSemanticContentAttribute:3];
   [(CKBrowserSwitcherViewController *)self setBrowserContainer:v25];
   [v11 addSubview:v25];
-  v29 = [(CKBrowserSwitcherViewController *)self grabberView];
-  [v11 addSubview:v29];
+  grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+  [v11 addSubview:grabberView];
 
   v30 = [[CKImmediatePanGestureRecognizer alloc] initWithTarget:self action:sel_expandGestureTouchMoved_];
   expandGestureTracker = self->_expandGestureTracker;
@@ -239,26 +239,26 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
     v33 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(CKBrowserSwitcherViewController *)self setShadowView:v33];
 
-    v34 = [(CKBrowserSwitcherViewController *)self shadowView];
-    v35 = [v34 layer];
-    [v35 setShadowRadius:4.0];
+    shadowView = [(CKBrowserSwitcherViewController *)self shadowView];
+    layer = [shadowView layer];
+    [layer setShadowRadius:4.0];
 
-    v36 = [(CKBrowserSwitcherViewController *)self shadowView];
-    v37 = [v36 layer];
-    [v37 setShadowOffset:{0.0, -6.0}];
+    shadowView2 = [(CKBrowserSwitcherViewController *)self shadowView];
+    layer2 = [shadowView2 layer];
+    [layer2 setShadowOffset:{0.0, -6.0}];
 
-    v38 = [(CKBrowserSwitcherViewController *)self view];
-    v39 = [(CKBrowserSwitcherViewController *)self shadowView];
-    [v38 insertSubview:v39 atIndex:0];
+    view4 = [(CKBrowserSwitcherViewController *)self view];
+    shadowView3 = [(CKBrowserSwitcherViewController *)self shadowView];
+    [view4 insertSubview:shadowView3 atIndex:0];
   }
 }
 
 - (id)activeBrowserView
 {
-  v2 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  v3 = [v2 view];
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  view = [currentViewController view];
 
-  return v3;
+  return view;
 }
 
 - (void)viewDidLayoutSubviews
@@ -266,28 +266,28 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
   v99.receiver = self;
   v99.super_class = CKBrowserSwitcherViewController;
   [(CKBrowserSwitcherViewController *)&v99 viewDidLayoutSubviews];
-  v3 = [(CKBrowserSwitcherViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(CKBrowserSwitcherViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CKBrowserSwitcherViewController *)self view];
-  [v8 bounds];
+  view2 = [(CKBrowserSwitcherViewController *)self view];
+  [view2 bounds];
   v10 = v9;
   v12 = v11;
 
   v13 = v7 + v5;
   if ([(CKBrowserSwitcherViewController *)self _hasLandscapeGutters])
   {
-    v14 = [(CKBrowserSwitcherViewController *)self view];
-    [v14 setBackgroundColor:0];
+    view3 = [(CKBrowserSwitcherViewController *)self view];
+    [view3 setBackgroundColor:0];
   }
 
   v15 = v5 + v10;
   v16 = v12 - v13;
-  v17 = [(CKBrowserSwitcherViewController *)self grabberView];
-  v18 = [(CKBrowserSwitcherViewController *)self contentView];
-  v19 = [v17 isDescendantOfView:v18];
+  grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+  contentView = [(CKBrowserSwitcherViewController *)self contentView];
+  v19 = [grabberView isDescendantOfView:contentView];
 
   if (v19)
   {
@@ -296,29 +296,29 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(CKBrowserSwitcherViewController *)self grabberView];
-    [v28 setFrame:{v21, v23, v25, v27}];
+    grabberView2 = [(CKBrowserSwitcherViewController *)self grabberView];
+    [grabberView2 setFrame:{v21, v23, v25, v27}];
 
-    v29 = [(CKBrowserSwitcherViewController *)self grabberView];
-    [v29 frame];
+    grabberView3 = [(CKBrowserSwitcherViewController *)self grabberView];
+    [grabberView3 frame];
     v31 = v30;
-    v32 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    [v32 frame];
+    browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+    [browserContainer frame];
     v34 = v31 + v33;
 
-    v35 = [(CKBrowserSwitcherViewController *)self grabberView];
-    [v35 frame];
+    grabberView4 = [(CKBrowserSwitcherViewController *)self grabberView];
+    [grabberView4 frame];
     v37 = v36;
     v39 = v38;
-    v40 = [(CKBrowserSwitcherViewController *)self grabberView];
-    [v40 frame];
+    grabberView5 = [(CKBrowserSwitcherViewController *)self grabberView];
+    [grabberView5 frame];
     v42 = v41;
-    v43 = [(CKBrowserSwitcherViewController *)self shadowView];
-    [v43 setFrame:{v37, v39, v42, v34}];
+    shadowView = [(CKBrowserSwitcherViewController *)self shadowView];
+    [shadowView setFrame:{v37, v39, v42, v34}];
 
     v44 = MEMORY[0x1E69DC728];
-    v45 = [(CKBrowserSwitcherViewController *)self shadowView];
-    [v45 frame];
+    shadowView2 = [(CKBrowserSwitcherViewController *)self shadowView];
+    [shadowView2 frame];
     v47 = v46;
     v49 = v48;
     v51 = v50;
@@ -327,23 +327,23 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
     [(CKAppGrabberView *)self->_grabberView _cornerRadius];
     v56 = v55;
     [(CKAppGrabberView *)self->_grabberView _cornerRadius];
-    v58 = [v44 bezierPathWithRoundedRect:v54 byRoundingCorners:v47 cornerRadii:{v49, v51, v53, v56, v57}];
-    v59 = [v58 CGPath];
-    v60 = [(CKBrowserSwitcherViewController *)self shadowView];
-    v61 = [v60 layer];
-    [v61 setShadowPath:v59];
+    shadowView4 = [v44 bezierPathWithRoundedRect:v54 byRoundingCorners:v47 cornerRadii:{v49, v51, v53, v56, v57}];
+    cGPath = [shadowView4 CGPath];
+    shadowView3 = [(CKBrowserSwitcherViewController *)self shadowView];
+    layer = [shadowView3 layer];
+    [layer setShadowPath:cGPath];
   }
 
   else
   {
-    v45 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    [(CKBrowserSwitcherViewController *)self cachedCompactFrameInWindowCoordsForBrowserTransitionCoordinator:v45];
+    shadowView2 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    [(CKBrowserSwitcherViewController *)self cachedCompactFrameInWindowCoordsForBrowserTransitionCoordinator:shadowView2];
     v63 = v62;
     v65 = v64;
     v67 = v66;
     v69 = v68;
-    v58 = [(CKBrowserSwitcherViewController *)self shadowView];
-    [v58 setFrame:{v63, v65, v67, v69}];
+    shadowView4 = [(CKBrowserSwitcherViewController *)self shadowView];
+    [shadowView4 setFrame:{v63, v65, v67, v69}];
   }
 
   +[CKAppGrabberView compactRoundedCornerRadius];
@@ -355,18 +355,18 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
   }
 
   v73 = v72;
-  v74 = [(CKBrowserSwitcherViewController *)self shadowView];
-  v75 = [v74 layer];
+  shadowView5 = [(CKBrowserSwitcherViewController *)self shadowView];
+  layer2 = [shadowView5 layer];
   *&v76 = v73;
-  [v75 setShadowOpacity:v76];
+  [layer2 setShadowOpacity:v76];
 
-  v77 = [(CKBrowserSwitcherViewController *)self contentView];
-  v78 = [(CKBrowserSwitcherViewController *)self view];
-  [v78 bounds];
-  [v77 setFrame:?];
+  contentView2 = [(CKBrowserSwitcherViewController *)self contentView];
+  view4 = [(CKBrowserSwitcherViewController *)self view];
+  [view4 bounds];
+  [contentView2 setFrame:?];
 
-  v79 = [(CKBrowserSwitcherViewController *)self contentView];
-  [v79 bounds];
+  contentView3 = [(CKBrowserSwitcherViewController *)self contentView];
+  [contentView3 bounds];
   v81 = v80;
 
   [(CKBrowserSwitcherViewController *)self restingContainerViewOriginY];
@@ -376,37 +376,37 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
   [v85 browserSwitcherExpandThreshold];
   v87 = v84 + v86;
 
-  v88 = [(CKBrowserSwitcherViewController *)self browserContainer];
-  [v88 setFrame:{v15, v83, v16, v87}];
+  browserContainer2 = [(CKBrowserSwitcherViewController *)self browserContainer];
+  [browserContainer2 setFrame:{v15, v83, v16, v87}];
 
-  v89 = [(CKBrowserSwitcherViewController *)self cell];
-  v90 = [(CKBrowserSwitcherViewController *)self browserContainer];
-  [v90 bounds];
-  [v89 setFrame:?];
+  cell = [(CKBrowserSwitcherViewController *)self cell];
+  browserContainer3 = [(CKBrowserSwitcherViewController *)self browserContainer];
+  [browserContainer3 bounds];
+  [cell setFrame:?];
 
-  v91 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  if (v91)
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  if (currentViewController)
   {
-    v92 = v91;
-    v93 = [(CKBrowserSwitcherViewController *)self activeBrowserView];
-    [v93 frame];
+    v92 = currentViewController;
+    activeBrowserView = [(CKBrowserSwitcherViewController *)self activeBrowserView];
+    [activeBrowserView frame];
     v94 = CGRectEqualToRect(v100, *MEMORY[0x1E695F058]);
 
     if (v94)
     {
-      v95 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      v96 = [v95 balloonPlugin];
-      [(CKBrowserSwitcherViewController *)self _updateBrowserViewPositionForPluginAndInsertIfNecessary:v96];
+      currentViewController2 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      balloonPlugin = [currentViewController2 balloonPlugin];
+      [(CKBrowserSwitcherViewController *)self _updateBrowserViewPositionForPluginAndInsertIfNecessary:balloonPlugin];
     }
   }
 
   [(CKBrowserSwitcherViewController *)self setViewHasLaidOutSubviews:1];
-  v97 = [(CKBrowserSwitcherViewController *)self performAfterFirstLayoutBlock];
+  performAfterFirstLayoutBlock = [(CKBrowserSwitcherViewController *)self performAfterFirstLayoutBlock];
 
-  if (v97)
+  if (performAfterFirstLayoutBlock)
   {
-    v98 = [(CKBrowserSwitcherViewController *)self performAfterFirstLayoutBlock];
-    v98[2]();
+    performAfterFirstLayoutBlock2 = [(CKBrowserSwitcherViewController *)self performAfterFirstLayoutBlock];
+    performAfterFirstLayoutBlock2[2]();
 
     [(CKBrowserSwitcherViewController *)self setPerformAfterFirstLayoutBlock:0];
   }
@@ -414,13 +414,13 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
 
 - (BOOL)isBrowserSwitcherFirstLaunch
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"BrowserSwitcherFirstLaunch"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"BrowserSwitcherFirstLaunch"];
 
   if ((v3 & 1) == 0)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v4 setBool:1 forKey:@"BrowserSwitcherFirstLaunch"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setBool:1 forKey:@"BrowserSwitcherFirstLaunch"];
   }
 
   return v3 ^ 1;
@@ -438,8 +438,8 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
     }
   }
 
-  v4 = [(CKBrowserSwitcherViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(CKBrowserSwitcherViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLoad
@@ -447,58 +447,58 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
   v11.receiver = self;
   v11.super_class = CKBrowserSwitcherViewController;
   [(CKBrowserSwitcherViewController *)&v11 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_dragManagerWillStartDrag_ name:@"CKBrowserDragManagerWillStartDraggingNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_dragManagerWillStartDrag_ name:@"CKBrowserDragManagerWillStartDraggingNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_dragManagerDidStartDrag_ name:@"CKBrowserDragManagerDidStartDraggingNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_dragManagerDidStartDrag_ name:@"CKBrowserDragManagerDidStartDraggingNotification" object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_dragManagerDidEndDragging_ name:@"CKBrowserDragManagerDidEndDraggingNotification" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_dragManagerDidEndDragging_ name:@"CKBrowserDragManagerDidEndDraggingNotification" object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__transitionSnapshotViewToBrowserViewAfterViewDidPrepareForDisplay_ name:@"CKMessageExtensionBrowserViewControllerDidPrepareForDisplay" object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__transitionSnapshotViewToBrowserViewAfterViewDidPrepareForDisplay_ name:@"CKMessageExtensionBrowserViewControllerDidPrepareForDisplay" object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__handleRemoteViewControllerConnectionInterrupted_ name:*MEMORY[0x1E69A6F28] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__handleRemoteViewControllerConnectionInterrupted_ name:*MEMORY[0x1E69A6F28] object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__handleRemoteViewControllerConnectionInterrupted_ name:@"CKRemoteViewFailedInstantiationNotification" object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel__handleRemoteViewControllerConnectionInterrupted_ name:@"CKRemoteViewFailedInstantiationNotification" object:0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel_saveSnapshotForCurrentBrowserViewControllerIfPossible name:*MEMORY[0x1E69DDBC8] object:0];
+  defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter7 addObserver:self selector:sel_saveSnapshotForCurrentBrowserViewControllerIfPossible name:*MEMORY[0x1E69DDBC8] object:0];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel__handleVisibleSwitcherPluginsChanged_ name:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0];
+  defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter8 addObserver:self selector:sel__handleVisibleSwitcherPluginsChanged_ name:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CKBrowserSwitcherViewController;
-  [(CKBrowserSwitcherViewController *)&v7 viewWillAppear:a3];
-  v4 = [(CKBrowserSwitcherViewController *)self delegate];
+  [(CKBrowserSwitcherViewController *)&v7 viewWillAppear:appear];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v6 switcherViewControllerWillAppear:self];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 switcherViewControllerWillAppear:self];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = CKBrowserSwitcherViewController;
-  [(CKBrowserSwitcherViewController *)&v10 viewWillDisappear:a3];
-  v4 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  if ([v4 currentConsumer] == 1)
+  [(CKBrowserSwitcherViewController *)&v10 viewWillDisappear:disappear];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  if ([transitionCoordinator currentConsumer] == 1)
   {
-    v5 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    v6 = [v5 isPresentingFullScreenModal];
+    transitionCoordinator2 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    isPresentingFullScreenModal = [transitionCoordinator2 isPresentingFullScreenModal];
 
-    if ((v6 & 1) == 0)
+    if ((isPresentingFullScreenModal & 1) == 0)
     {
       [(CKBrowserSwitcherViewController *)self _updateCurrentBrowserSnapshotIfPossible];
     }
@@ -508,39 +508,39 @@ void __94__CKBrowserSwitcherViewController_initWithConversation_sendDelegate_pre
   {
   }
 
-  v7 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v9 switcherViewControllerWillDisappear:self];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 switcherViewControllerWillDisappear:self];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CKBrowserSwitcherViewController;
-  [(CKBrowserSwitcherViewController *)&v10 viewDidAppear:a3];
-  v4 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  if ([v4 currentConsumer] != 1)
+  [(CKBrowserSwitcherViewController *)&v10 viewDidAppear:appear];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  if ([transitionCoordinator currentConsumer] != 1)
   {
     goto LABEL_4;
   }
 
-  v5 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  if ([v5 isPresentingFullScreenModal])
+  transitionCoordinator2 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  if ([transitionCoordinator2 isPresentingFullScreenModal])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  v8 = [v7 isLoaded];
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  isLoaded = [currentViewController isLoaded];
 
-  if (v8)
+  if (isLoaded)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -556,35 +556,35 @@ LABEL_5:
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 postNotificationName:@"PPTDidShowBrowserSwitcherViewController" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PPTDidShowBrowserSwitcherViewController" object:self userInfo:0];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CKBrowserSwitcherViewController;
-  [(CKBrowserSwitcherViewController *)&v4 viewDidDisappear:a3];
+  [(CKBrowserSwitcherViewController *)&v4 viewDidDisappear:disappear];
   [(CKBrowserSwitcherViewController *)self setAllowFooterLabelUpdates:0];
   [(CKBrowserSwitcherViewController *)self stopExpandAnimatorAndCleanupState];
 }
 
-- (CGSize)browserTransitionCoordinator:(id)a3 preferredSizeForBrowser:(id)a4
+- (CGSize)browserTransitionCoordinator:(id)coordinator preferredSizeForBrowser:(id)browser
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  browserCopy = browser;
   v9 = *MEMORY[0x1E695F060];
   v8 = *(MEMORY[0x1E695F060] + 8);
   if ([(CKBrowserSwitcherViewController *)self viewHasLaidOutSubviews]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [(CKBrowserSwitcherViewController *)self delegate];
+    delegate = [(CKBrowserSwitcherViewController *)self delegate];
     v11 = v8;
     v12 = v9;
     if (objc_opt_respondsToSelector())
     {
-      [v10 browserTransitionCoordinator:v6 preferredSizeForBrowser:v7];
+      [delegate browserTransitionCoordinator:coordinatorCopy preferredSizeForBrowser:browserCopy];
       v12 = v13;
       v11 = v14;
     }
@@ -592,8 +592,8 @@ LABEL_5:
     v15 = v12 == v9 && v11 == v8;
     if (v15 && [(CKBrowserSwitcherViewController *)self browserIsLoadingCompact])
     {
-      v16 = [(CKBrowserSwitcherViewController *)self browserContainer];
-      [v16 bounds];
+      browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+      [browserContainer bounds];
       v12 = v17;
       v11 = v18;
     }
@@ -609,31 +609,31 @@ LABEL_5:
   return result;
 }
 
-- (void)browserTransitionCoordinator:(id)a3 willPresentBrowserModally:(id)a4
+- (void)browserTransitionCoordinator:(id)coordinator willPresentBrowserModally:(id)modally
 {
-  v8 = a4;
-  v5 = [(CKBrowserSwitcherViewController *)self delegate];
+  modallyCopy = modally;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v7 switcherViewController:self willPresentBrowserModally:v8];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 switcherViewController:self willPresentBrowserModally:modallyCopy];
   }
 }
 
-- (void)browserTransitionCoordinator:(id)a3 didTransitionFromOrientation:(int64_t)a4 toOrientation:(int64_t)a5
+- (void)browserTransitionCoordinator:(id)coordinator didTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-  v7 = [v6 allKeys];
+  livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+  allKeys = [livePluginIdentifierToTimestampMap allKeys];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  obj = allKeys;
+  v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -654,12 +654,12 @@ LABEL_5:
 
         if (objc_opt_respondsToSelector())
         {
-          [v14 didTransitionFromOrientation:a4 toOrientation:a5];
+          [v14 didTransitionFromOrientation:orientation toOrientation:toOrientation];
         }
 
-        v15 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-        v16 = [v15 identifier];
-        v17 = [v16 isEqualToString:v12];
+        balloonPlugin = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+        identifier = [balloonPlugin identifier];
+        v17 = [identifier isEqualToString:v12];
 
         if ((v17 & 1) == 0)
         {
@@ -677,20 +677,20 @@ LABEL_5:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  [v8 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  [currentViewController viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__CKBrowserSwitcherViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_1E72EC3E8;
   v9[4] = self;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
 }
 
 void __86__CKBrowserSwitcherViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -714,37 +714,37 @@ void __86__CKBrowserSwitcherViewController_viewWillTransitionToSize_withTransiti
   }
 }
 
-- (void)reinsertAppGrabberViewForBrowserTransitionCoordinator:(id)a3
+- (void)reinsertAppGrabberViewForBrowserTransitionCoordinator:(id)coordinator
 {
-  v9 = [(CKBrowserSwitcherViewController *)self grabberView];
-  v4 = [(CKBrowserSwitcherViewController *)self contentView];
-  v5 = [v9 isDescendantOfView:v4];
+  grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+  contentView = [(CKBrowserSwitcherViewController *)self contentView];
+  v5 = [grabberView isDescendantOfView:contentView];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CKBrowserSwitcherViewController *)self contentView];
-    [v6 addSubview:v9];
+    contentView2 = [(CKBrowserSwitcherViewController *)self contentView];
+    [contentView2 addSubview:grabberView];
 
-    [v9 setDelegate:self];
-    v7 = [(CKBrowserSwitcherViewController *)self view];
-    [v7 setNeedsLayout];
+    [grabberView setDelegate:self];
+    view = [(CKBrowserSwitcherViewController *)self view];
+    [view setNeedsLayout];
 
-    v8 = [(CKBrowserSwitcherViewController *)self view];
-    [v8 layoutIfNeeded];
+    view2 = [(CKBrowserSwitcherViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
-- (CGRect)cachedCompactFrameInWindowCoordsForBrowserTransitionCoordinator:(id)a3
+- (CGRect)cachedCompactFrameInWindowCoordsForBrowserTransitionCoordinator:(id)coordinator
 {
-  v4 = [(CKBrowserSwitcherViewController *)self browserContainer];
-  [v4 frame];
+  browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+  [browserContainer frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   [(CKBrowserSwitcherViewController *)self restingContainerViewOriginY];
   v12 = v11;
-  v13 = [v4 superview];
-  [v13 convertRect:0 toView:{v6, v12, v8, v10}];
+  superview = [browserContainer superview];
+  [superview convertRect:0 toView:{v6, v12, v8, v10}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -763,27 +763,27 @@ void __86__CKBrowserSwitcherViewController_viewWillTransitionToSize_withTransiti
 
 - (CGRect)restingGrabberFrame
 {
-  v3 = [(CKBrowserSwitcherViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(CKBrowserSwitcherViewController *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CKBrowserSwitcherViewController *)self view];
-  [v8 safeAreaInsets];
+  view = [(CKBrowserSwitcherViewController *)self view];
+  [view safeAreaInsets];
   v10 = v9;
   v12 = v11;
 
   v13 = +[CKUIBehavior sharedBehaviors];
-  v14 = [v13 isAppStripInKeyboard];
+  isAppStripInKeyboard = [v13 isAppStripInKeyboard];
 
   v15 = 0.0;
-  if (v14)
+  if (isAppStripInKeyboard)
   {
     [MEMORY[0x1E69DCBB8] __ck_appStripVerticalPadding];
     v15 = v16;
   }
 
-  v17 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18 & 1) != 0 && (-[CKBrowserSwitcherViewController delegate](self, "delegate"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 switcherViewControllerShouldShowIconAndTitleWhenCompact:self], v19, (v20))
@@ -817,10 +817,10 @@ void __86__CKBrowserSwitcherViewController_viewWillTransitionToSize_withTransiti
   v3 = v2;
   v5 = v4;
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 isAppStripInKeyboard];
+  isAppStripInKeyboard = [v6 isAppStripInKeyboard];
 
   result = v3 + v5;
-  if (!v7)
+  if (!isAppStripInKeyboard)
   {
     return v5;
   }
@@ -828,32 +828,32 @@ void __86__CKBrowserSwitcherViewController_viewWillTransitionToSize_withTransiti
   return result;
 }
 
-- (double)_rubberBandOffsetWithoutDecorationForOffset:(double)result maxOffset:(double)a4 minOffset:(double)a5 range:(double)a6 outside:(BOOL *)a7
+- (double)_rubberBandOffsetWithoutDecorationForOffset:(double)result maxOffset:(double)offset minOffset:(double)minOffset range:(double)range outside:(BOOL *)outside
 {
-  if (a5 >= a4)
+  if (minOffset >= offset)
   {
-    a4 = a5;
+    offset = minOffset;
   }
 
-  if (fabs(a6) >= 2.22044605e-16)
+  if (fabs(range) >= 2.22044605e-16)
   {
-    if (a4 < result)
+    if (offset < result)
     {
-      result = a4 + (1.0 - 1.0 / ((result - a4) / a6 * 0.55 + 1.0)) * a6;
-      if (!a7)
+      result = offset + (1.0 - 1.0 / ((result - offset) / range * 0.55 + 1.0)) * range;
+      if (!outside)
       {
         return result;
       }
 
 LABEL_9:
-      *a7 = 1;
+      *outside = 1;
       return result;
     }
 
-    if (result < a5)
+    if (result < minOffset)
     {
-      result = a5 - (1.0 - 1.0 / ((a5 - result) / a6 * 0.55 + 1.0)) * a6;
-      if (a7)
+      result = minOffset - (1.0 - 1.0 / ((minOffset - result) / range * 0.55 + 1.0)) * range;
+      if (outside)
       {
         goto LABEL_9;
       }
@@ -871,19 +871,19 @@ LABEL_9:
     [v3 browserSwitcherExpandThreshold];
     v5 = -v4;
 
-    v6 = [(CKBrowserSwitcherViewController *)self grabberView];
-    v7 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    v8 = [v6 roundsTopCorners];
+    grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+    browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+    roundsTopCorners = [grabberView roundsTopCorners];
     v9 = objc_alloc(MEMORY[0x1E69DD278]);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __68__CKBrowserSwitcherViewController_setupPausedExpandAnimatorIfNeeded__block_invoke;
     v24[3] = &unk_1E72F0388;
-    v10 = v6;
+    v10 = grabberView;
     v28 = v5;
     v25 = v10;
-    v26 = self;
-    v11 = v7;
+    selfCopy = self;
+    v11 = browserContainer;
     v27 = v11;
     v12 = [v9 initWithDuration:v24 dampingRatio:0.25 animations:1.0];
     expandPropertyAnimator = self->_expandPropertyAnimator;
@@ -898,7 +898,7 @@ LABEL_9:
     objc_copyWeak(&v21, &location);
     v15 = v10;
     v20 = v15;
-    v22 = v8;
+    v22 = roundsTopCorners;
     [(UIViewPropertyAnimator *)v14 addCompletion:&v16];
     [(UIViewPropertyAnimator *)self->_expandPropertyAnimator pauseAnimation:v16];
 
@@ -973,11 +973,11 @@ void __68__CKBrowserSwitcherViewController_setupPausedExpandAnimatorIfNeeded__bl
   [(UIViewPropertyAnimator *)expandPropertyAnimator startAnimation];
 }
 
-- (void)expandGestureTouchMoved:(id)a3
+- (void)expandGestureTouchMoved:(id)moved
 {
-  v4 = a3;
-  v5 = [v4 state];
-  switch(v5)
+  movedCopy = moved;
+  state = [movedCopy state];
+  switch(state)
   {
     case 3:
       self->_isDoingExpandInteraction = 0;
@@ -998,8 +998,8 @@ void __68__CKBrowserSwitcherViewController_setupPausedExpandAnimatorIfNeeded__bl
       if (![(CKBrowserSwitcherViewController *)self isDragging]&& ![(CKBrowserSwitcherViewController *)self isInDragAndDrop])
       {
         expandGestureTracker = self->_expandGestureTracker;
-        v17 = [(CKBrowserSwitcherViewController *)self view];
-        [(CKImmediatePanGestureRecognizer *)expandGestureTracker translationInView:v17];
+        view = [(CKBrowserSwitcherViewController *)self view];
+        [(CKImmediatePanGestureRecognizer *)expandGestureTracker translationInView:view];
         v41 = v18;
         v20 = v19;
 
@@ -1007,8 +1007,8 @@ void __68__CKBrowserSwitcherViewController_setupPausedExpandAnimatorIfNeeded__bl
         [v21 browserSwitcherExpandThreshold];
         v23 = v22;
 
-        v24 = [(CKBrowserSwitcherViewController *)self contentView];
-        [v24 bounds];
+        contentView = [(CKBrowserSwitcherViewController *)self contentView];
+        [contentView bounds];
         v26 = v25;
         v28 = v27;
         v30 = v29;
@@ -1071,11 +1071,11 @@ void __68__CKBrowserSwitcherViewController_setupPausedExpandAnimatorIfNeeded__bl
       {
         self->_expandInteractionDidMove = 0;
         self->_expandGestureStartedOnGrabber = 0;
-        v6 = [(CKBrowserSwitcherViewController *)self grabberView];
-        [(CKImmediatePanGestureRecognizer *)self->_expandGestureTracker locationInView:v6];
+        grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+        [(CKImmediatePanGestureRecognizer *)self->_expandGestureTracker locationInView:grabberView];
         v8 = v7;
         v10 = v9;
-        [v6 bounds];
+        [grabberView bounds];
         x = v46.origin.x;
         y = v46.origin.y;
         width = v46.size.width;
@@ -1120,12 +1120,12 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
   [WeakRetained cleanupExpandAnimatorState];
 }
 
-- (void)setBrowserViewReadyForUserInteraction:(BOOL)a3
+- (void)setBrowserViewReadyForUserInteraction:(BOOL)interaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_browserViewReadyForUserInteraction != a3)
+  if (self->_browserViewReadyForUserInteraction != interaction)
   {
-    v3 = a3;
+    interactionCopy = interaction;
     if (IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
@@ -1142,7 +1142,7 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
           v7 = @"NO";
         }
 
-        if (v3)
+        if (interactionCopy)
         {
           v6 = @"YES";
         }
@@ -1155,27 +1155,27 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
       }
     }
 
-    self->_browserViewReadyForUserInteraction = v3;
-    v8 = [(CKBrowserSwitcherViewController *)self currentViewController];
+    self->_browserViewReadyForUserInteraction = interactionCopy;
+    currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      [v10 endDisablingUserInteraction];
+      currentViewController2 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      [currentViewController2 endDisablingUserInteraction];
     }
   }
 }
 
-- (void)browserTransitionCoordinator:(id)a3 expandedStateDidChange:(BOOL)a4 withReason:(int64_t)a5
+- (void)browserTransitionCoordinator:(id)coordinator expandedStateDidChange:(BOOL)change withReason:(int64_t)reason
 {
-  v6 = a4;
-  v8 = a3;
+  changeCopy = change;
+  coordinatorCopy = coordinator;
   [(CKBrowserSwitcherViewController *)self setInteractiveExpandStarted:0];
-  if (a5 != 1 || v6)
+  if (reason != 1 || changeCopy)
   {
     v16 = IMOSLoggingEnabled();
-    if (v6)
+    if (changeCopy)
     {
       if (v16)
       {
@@ -1203,18 +1203,18 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
 
   else
   {
-    v9 = [v8 requestOwnershipOfBrowserForConsumer:1];
+    v9 = [coordinatorCopy requestOwnershipOfBrowserForConsumer:1];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 balloonPlugin];
+      balloonPlugin = [v9 balloonPlugin];
       v12 = +[CKBalloonPluginManager sharedInstance];
-      v13 = [v12 visibleSwitcherPlugins];
-      v14 = [v13 indexOfObject:v11];
+      visibleSwitcherPlugins = [v12 visibleSwitcherPlugins];
+      v14 = [visibleSwitcherPlugins indexOfObject:balloonPlugin];
 
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v8 releaseOwnershipOfBrowserForConsumer:1];
+        [coordinatorCopy releaseOwnershipOfBrowserForConsumer:1];
         if (IMOSLoggingEnabled())
         {
           v15 = OSLogHandleForIMFoundationCategory();
@@ -1241,124 +1241,124 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
       }
     }
 
-    v19 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v19 switcherViewControllerDidCollapse:self];
+    delegate = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate switcherViewControllerDidCollapse:self];
   }
 }
 
-- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason
 {
-  v9 = a3;
-  v6 = [(CKBrowserSwitcherViewController *)self delegate];
+  fullscreenCopy = fullscreen;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v8 browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:v9 withReason:a4];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:fullscreenCopy withReason:reason];
   }
 }
 
-- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason
 {
-  v9 = a3;
-  v6 = [(CKBrowserSwitcherViewController *)self delegate];
+  fullscreenCopy = fullscreen;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v8 browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:v9 withReason:a4];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:fullscreenCopy withReason:reason];
   }
 }
 
-- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason
 {
-  v9 = a3;
+  dismissCopy = dismiss;
   [(CKBrowserSwitcherViewController *)self setBrowserIsCollapsingFromFullscreen:1];
-  if (a4 == 1)
+  if (reason == 1)
   {
     [(CKBrowserSwitcherViewController *)self setInsertedViaCollapse:1];
   }
 
-  v6 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v8 browserTransitionCoordinatorWillCollapseOrDismiss:v9 withReason:a4];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 browserTransitionCoordinatorWillCollapseOrDismiss:dismissCopy withReason:reason];
   }
 }
 
-- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason
 {
-  v9 = a3;
-  v6 = [(CKBrowserSwitcherViewController *)self delegate];
+  dismissCopy = dismiss;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v8 browserTransitionCoordinatorDidCollapseOrDismiss:v9 withReason:a4];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 browserTransitionCoordinatorDidCollapseOrDismiss:dismissCopy withReason:reason];
   }
 
   [(CKBrowserSwitcherViewController *)self setBrowserIsCollapsingFromFullscreen:0];
 }
 
-- (void)browserTransitionCoordinatorWantsPresentationOfAppStore:(id)a3
+- (void)browserTransitionCoordinatorWantsPresentationOfAppStore:(id)store
 {
-  v4 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v6 switcherViewControllerDidSelectAppStore:self shouldRestoreAppSwitcher:0];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 switcherViewControllerDidSelectAppStore:self shouldRestoreAppSwitcher:0];
   }
 }
 
-- (void)browserTransitionCoordinatorWantsPresentationOfAppManager:(id)a3
+- (void)browserTransitionCoordinatorWantsPresentationOfAppManager:(id)manager
 {
-  v4 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v6 switcherViewControllerDidSelectAppManager:self shouldRestoreAppSwitcher:0];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 switcherViewControllerDidSelectAppManager:self shouldRestoreAppSwitcher:0];
   }
 }
 
-- (void)browserTransitionCoordinator:(id)a3 didSwitchToPlugin:(id)a4
+- (void)browserTransitionCoordinator:(id)coordinator didSwitchToPlugin:(id)plugin
 {
-  v5 = a4;
-  [(CKBrowserSwitcherViewController *)self setBalloonPlugin:v5];
-  [(CKBrowserSwitcherViewController *)self setCurrentVisiblePlugin:v5];
+  pluginCopy = plugin;
+  [(CKBrowserSwitcherViewController *)self setBalloonPlugin:pluginCopy];
+  [(CKBrowserSwitcherViewController *)self setCurrentVisiblePlugin:pluginCopy];
 
   [(CKBrowserSwitcherViewController *)self setBrowserViewReadyForUserInteraction:1];
 }
 
-- (void)browserTransitionCoordinator:(id)a3 hasUpdatedLastTouchDate:(id)a4
+- (void)browserTransitionCoordinator:(id)coordinator hasUpdatedLastTouchDate:(id)date
 {
-  v8 = a4;
-  v5 = [(CKBrowserSwitcherViewController *)self delegate];
+  dateCopy = date;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v7 switcherViewController:self hasUpdatedLastTouchDate:v8];
+    delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate2 switcherViewController:self hasUpdatedLastTouchDate:dateCopy];
   }
 }
 
-- (double)browserTransitionCoordinatorCollapsedContentHeight:(id)a3
+- (double)browserTransitionCoordinatorCollapsedContentHeight:(id)height
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self delegate];
+  heightCopy = height;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 browserTransitionCoordinatorCollapsedContentHeight:v4];
+    [delegate browserTransitionCoordinatorCollapsedContentHeight:heightCopy];
     v7 = v6;
   }
 
@@ -1371,13 +1371,13 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
   return v7;
 }
 
-- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)a3
+- (BOOL)browserTransitionCoordinatorShouldDismissOnDragSuccess:(id)success
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self delegate];
+  successCopy = success;
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 browserTransitionCoordinatorShouldDismissOnDragSuccess:v4];
+    v6 = [delegate browserTransitionCoordinatorShouldDismissOnDragSuccess:successCopy];
   }
 
   else
@@ -1390,96 +1390,96 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
 
 - (BOOL)shouldAlwaysShowAppTitle
 {
-  v2 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldAlwaysShowAppTitle];
+    shouldAlwaysShowAppTitle = [delegate shouldAlwaysShowAppTitle];
   }
 
   else
   {
-    v3 = 0;
+    shouldAlwaysShowAppTitle = 0;
   }
 
-  return v3;
+  return shouldAlwaysShowAppTitle;
 }
 
 - (id)transitionsPresentationViewController
 {
-  v2 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 transitionsPresentationViewController];
+    transitionsPresentationViewController = [delegate transitionsPresentationViewController];
   }
 
   else
   {
-    v3 = 0;
+    transitionsPresentationViewController = 0;
   }
 
-  return v3;
+  return transitionsPresentationViewController;
 }
 
 - (id)appTitleOverride
 {
-  v2 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 appTitleOverride];
+    appTitleOverride = [delegate appTitleOverride];
   }
 
   else
   {
-    v3 = 0;
+    appTitleOverride = 0;
   }
 
-  return v3;
+  return appTitleOverride;
 }
 
 - (id)appIconOverride
 {
-  v2 = [(CKBrowserSwitcherViewController *)self delegate];
+  delegate = [(CKBrowserSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 appIconOverride];
+    appIconOverride = [delegate appIconOverride];
   }
 
   else
   {
-    v3 = 0;
+    appIconOverride = 0;
   }
 
-  return v3;
+  return appIconOverride;
 }
 
-- (void)_performAfterFirstLayout:(id)a3
+- (void)_performAfterFirstLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if ([(CKBrowserSwitcherViewController *)self viewHasLaidOutSubviews])
   {
-    v4[2]();
+    layoutCopy[2]();
   }
 
   else
   {
-    [(CKBrowserSwitcherViewController *)self setPerformAfterFirstLayoutBlock:v4];
+    [(CKBrowserSwitcherViewController *)self setPerformAfterFirstLayoutBlock:layoutCopy];
   }
 }
 
 - (void)unloadRemoteViewControllers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  [(CKBrowserSwitcherViewController *)self _removeBrowserFromViewHierarchy:v3];
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  [(CKBrowserSwitcherViewController *)self _removeBrowserFromViewHierarchy:currentViewController];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-  v5 = [v4 allKeys];
+  livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+  allKeys = [livePluginIdentifierToTimestampMap allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1491,69 +1491,69 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         [(CKBrowserSwitcherViewController *)self _removeBrowserWithPluginIdentifierFromViewHierarchy:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setBalloonPlugin:(id)a3
+- (void)setBalloonPlugin:(id)plugin
 {
-  v21 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self view];
-  v6 = v21;
-  if (self->_balloonPlugin != v21)
+  pluginCopy = plugin;
+  view = [(CKBrowserSwitcherViewController *)self view];
+  v6 = pluginCopy;
+  if (self->_balloonPlugin != pluginCopy)
   {
-    objc_storeStrong(&self->_balloonPlugin, a3);
-    v7 = [(CKBrowserSwitcherViewController *)self cell];
+    objc_storeStrong(&self->_balloonPlugin, plugin);
+    cell = [(CKBrowserSwitcherViewController *)self cell];
 
-    if (v7)
+    if (cell)
     {
-      v8 = [(CKBrowserSwitcherViewController *)self cell];
-      [v8 removeFromSuperview];
+      cell2 = [(CKBrowserSwitcherViewController *)self cell];
+      [cell2 removeFromSuperview];
     }
 
     v9 = [CKBrowserSwitcherCell alloc];
-    v10 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    [v10 bounds];
+    browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+    [browserContainer bounds];
     v11 = [(CKBrowserSwitcherCell *)v9 initWithFrame:?];
 
-    v12 = [(IMBalloonPlugin *)v21 identifier];
-    v13 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    v14 = [v13 traitCollection];
-    v15 = [v14 userInterfaceStyle];
-    v16 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    [v16 frame];
-    v17 = [CKSnapshotCacheKey keyWithIdentifier:v12 interfaceStyle:v15 bounds:?];
+    identifier = [(IMBalloonPlugin *)pluginCopy identifier];
+    browserContainer2 = [(CKBrowserSwitcherViewController *)self browserContainer];
+    traitCollection = [browserContainer2 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    browserContainer3 = [(CKBrowserSwitcherViewController *)self browserContainer];
+    [browserContainer3 frame];
+    v17 = [CKSnapshotCacheKey keyWithIdentifier:identifier interfaceStyle:userInterfaceStyle bounds:?];
 
-    [(CKBrowserSwitcherCell *)v11 setPlugin:v21 withSnapshotCacheKey:v17];
-    v18 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    [v18 addSubview:v11];
+    [(CKBrowserSwitcherCell *)v11 setPlugin:pluginCopy withSnapshotCacheKey:v17];
+    browserContainer4 = [(CKBrowserSwitcherViewController *)self browserContainer];
+    [browserContainer4 addSubview:v11];
 
     [(CKBrowserSwitcherViewController *)self setCell:v11];
-    v19 = [(CKBrowserSwitcherViewController *)self view];
-    [v19 setNeedsLayout];
+    view2 = [(CKBrowserSwitcherViewController *)self view];
+    [view2 setNeedsLayout];
 
-    v20 = [(CKBrowserSwitcherViewController *)self view];
-    [v20 layoutIfNeeded];
+    view3 = [(CKBrowserSwitcherViewController *)self view];
+    [view3 layoutIfNeeded];
 
     [(CKBrowserSwitcherViewController *)self _updateVisibleBrowserView];
-    v6 = v21;
+    v6 = pluginCopy;
   }
 }
 
-- (void)showBrowserInSwitcherForPlugin:(id)a3 datasource:(id)a4 reloadData:(BOOL)a5
+- (void)showBrowserInSwitcherForPlugin:(id)plugin datasource:(id)datasource reloadData:(BOOL)data
 {
-  v7 = a3;
-  v8 = a4;
+  pluginCopy = plugin;
+  datasourceCopy = datasource;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -1564,15 +1564,15 @@ void __59__CKBrowserSwitcherViewController_expandGestureTouchMoved___block_invok
     }
   }
 
-  if (v7)
+  if (pluginCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __88__CKBrowserSwitcherViewController_showBrowserInSwitcherForPlugin_datasource_reloadData___block_invoke;
     v11[3] = &unk_1E72EB880;
     v11[4] = self;
-    v12 = v7;
-    v13 = v8;
+    v12 = pluginCopy;
+    v13 = datasourceCopy;
     [(CKBrowserSwitcherViewController *)self _performAfterFirstLayout:v11];
   }
 
@@ -1597,32 +1597,32 @@ uint64_t __88__CKBrowserSwitcherViewController_showBrowserInSwitcherForPlugin_da
   return [v2 _loadBrowserForBalloonPlugin:v3 datasource:v4];
 }
 
-- (void)showBrowserFullscreenModalForPlugin:(id)a3 datasource:(id)a4 preferredContentSize:(CGSize)a5
+- (void)showBrowserFullscreenModalForPlugin:(id)plugin datasource:(id)datasource preferredContentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  [v11 presentPluginFullScreenModal:v10 datasource:v9 preferredContentSize:1 animated:0 completion:{width, height}];
+  height = size.height;
+  width = size.width;
+  datasourceCopy = datasource;
+  pluginCopy = plugin;
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  [transitionCoordinator presentPluginFullScreenModal:pluginCopy datasource:datasourceCopy preferredContentSize:1 animated:0 completion:{width, height}];
 }
 
-- (void)animateInCompactWithCompletion:(id)a3
+- (void)animateInCompactWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self contentView];
-  [v5 frame];
+  completionCopy = completion;
+  contentView = [(CKBrowserSwitcherViewController *)self contentView];
+  [contentView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CKBrowserSwitcherViewController *)self contentView];
-  [v14 bounds];
+  contentView2 = [(CKBrowserSwitcherViewController *)self contentView];
+  [contentView2 bounds];
   MaxY = CGRectGetMaxY(v28);
 
-  v16 = [(CKBrowserSwitcherViewController *)self contentView];
-  [v16 setFrame:{v7, MaxY, v11, v13}];
+  contentView3 = [(CKBrowserSwitcherViewController *)self contentView];
+  [contentView3 setFrame:{v7, MaxY, v11, v13}];
 
   v17 = MEMORY[0x1E69DD250];
   v27[0] = MEMORY[0x1E69E9820];
@@ -1639,18 +1639,18 @@ uint64_t __88__CKBrowserSwitcherViewController_showBrowserInSwitcherForPlugin_da
   v25[2] = __66__CKBrowserSwitcherViewController_animateInCompactWithCompletion___block_invoke_2;
   v25[3] = &unk_1E72ED638;
   v25[4] = self;
-  v26 = v4;
-  v18 = v4;
+  v26 = completionCopy;
+  v18 = completionCopy;
   [v17 _animateUsingSpringWithDuration:0 delay:v27 options:v25 mass:0.5 stiffness:0.0 damping:1.0 initialVelocity:410.0 animations:32.0 completion:0.0];
-  v19 = [(CKBrowserSwitcherViewController *)self view];
-  [v19 safeAreaInsets];
+  view = [(CKBrowserSwitcherViewController *)self view];
+  [view safeAreaInsets];
   v21 = v20;
   v23 = v22;
 
   if (v21 == 0.0 && v23 == 0.0)
   {
-    v24 = [(CKBrowserSwitcherViewController *)self view];
-    [v24 setBackgroundColor:0];
+    view2 = [(CKBrowserSwitcherViewController *)self view];
+    [view2 setBackgroundColor:0];
   }
 }
 
@@ -1678,11 +1678,11 @@ uint64_t __66__CKBrowserSwitcherViewController_animateInCompactWithCompletion___
   return result;
 }
 
-- (void)animateOutCompactWithCompletion:(id)a3
+- (void)animateOutCompactWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self contentView];
-  [v5 frame];
+  completionCopy = completion;
+  contentView = [(CKBrowserSwitcherViewController *)self contentView];
+  [contentView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1695,18 +1695,18 @@ uint64_t __66__CKBrowserSwitcherViewController_animateInCompactWithCompletion___
   Height = CGRectGetHeight(v29);
   if (![(CKBrowserSwitcherViewController *)self _hasLandscapeGutters])
   {
-    v15 = [(CKBrowserSwitcherViewController *)self view];
-    [v15 setBackgroundColor:0];
+    view = [(CKBrowserSwitcherViewController *)self view];
+    [view setBackgroundColor:0];
   }
 
   v16 = v9 + Height;
-  v17 = [MEMORY[0x1E6979318] animation];
-  [v17 setKeyPath:@"position.y"];
+  animation = [MEMORY[0x1E6979318] animation];
+  [animation setKeyPath:@"position.y"];
   v18 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-  [v17 setTimingFunction:v18];
+  [animation setTimingFunction:v18];
 
-  [v17 setBeginTime:CACurrentMediaTime()];
-  [v17 setDuration:0.200000003];
+  [animation setBeginTime:CACurrentMediaTime()];
+  [animation setDuration:0.200000003];
   v19 = MEMORY[0x1E696AD98];
   v30.origin.x = v7;
   v30.origin.y = v9;
@@ -1718,7 +1718,7 @@ uint64_t __66__CKBrowserSwitcherViewController_animateInCompactWithCompletion___
   v31.size.width = v11;
   v31.size.height = v13;
   v20 = [v19 numberWithDouble:CGRectGetMidY(v31)];
-  [v17 setFromValue:v20];
+  [animation setFromValue:v20];
 
   v21 = MEMORY[0x1E696AD98];
   v32.origin.x = v7;
@@ -1731,13 +1731,13 @@ uint64_t __66__CKBrowserSwitcherViewController_animateInCompactWithCompletion___
   v33.size.width = v11;
   v33.size.height = v13;
   v22 = [v21 numberWithDouble:CGRectGetMidY(v33)];
-  [v17 setToValue:v22];
+  [animation setToValue:v22];
 
-  [v17 setFillMode:*MEMORY[0x1E69797E0]];
-  [v17 setRemovedOnCompletion:0];
-  v23 = [(CKBrowserSwitcherViewController *)self contentView];
-  v24 = [v23 layer];
-  [v24 addAnimation:v17 forKey:@"SlideOutPresentation"];
+  [animation setFillMode:*MEMORY[0x1E69797E0]];
+  [animation setRemovedOnCompletion:0];
+  contentView2 = [(CKBrowserSwitcherViewController *)self contentView];
+  layer = [contentView2 layer];
+  [layer addAnimation:animation forKey:@"SlideOutPresentation"];
 
   v25 = dispatch_time(0, 200000002);
   v27[0] = MEMORY[0x1E69E9820];
@@ -1745,8 +1745,8 @@ uint64_t __66__CKBrowserSwitcherViewController_animateInCompactWithCompletion___
   v27[2] = __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion___block_invoke;
   v27[3] = &unk_1E72ED1C8;
   v27[4] = self;
-  v28 = v4;
-  v26 = v4;
+  v28 = completionCopy;
+  v26 = completionCopy;
   dispatch_after(v25, MEMORY[0x1E69E96A0], v27);
 }
 
@@ -1771,8 +1771,8 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
 
 - (BOOL)_hasLandscapeGutters
 {
-  v2 = [(CKBrowserSwitcherViewController *)self view];
-  [v2 safeAreaInsets];
+  view = [(CKBrowserSwitcherViewController *)self view];
+  [view safeAreaInsets];
   v4 = v3;
   v6 = v5;
 
@@ -1791,8 +1791,8 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
     [(CKAppGrabberView *)self->_grabberView setDelegate:self];
     [(CKAppGrabberView *)self->_grabberView setAutoresizingMask:34];
     v6 = self->_grabberView;
-    v7 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    -[CKAppGrabberView setShowsAppTitle:](v6, "setShowsAppTitle:", [v7 shouldAlwaysShowAppTitle]);
+    transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    -[CKAppGrabberView setShowsAppTitle:](v6, "setShowsAppTitle:", [transitionCoordinator shouldAlwaysShowAppTitle]);
 
     grabberView = self->_grabberView;
   }
@@ -1804,10 +1804,10 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
 {
   if ([(CKBrowserSwitcherViewController *)self isBrowserReadyForUserInteraction])
   {
-    v5 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    if ([v5 currentConsumer] == 1)
+    transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    if ([transitionCoordinator currentConsumer] == 1)
     {
-      v3 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
       v4 = objc_opt_respondsToSelector();
 
       if ((v4 & 1) == 0)
@@ -1815,32 +1815,32 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
         return;
       }
 
-      v5 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      [v5 saveSnapshotForBrowserViewController];
+      transitionCoordinator = [(CKBrowserSwitcherViewController *)self currentViewController];
+      [transitionCoordinator saveSnapshotForBrowserViewController];
     }
   }
 }
 
-- (void)_handleVisibleSwitcherPluginsChanged:(id)a3
+- (void)_handleVisibleSwitcherPluginsChanged:(id)changed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  v6 = [v5 currentConsumer];
+  changedCopy = changed;
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  currentConsumer = [transitionCoordinator currentConsumer];
 
-  if (v6 != 2)
+  if (currentConsumer != 2)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:@"CKBrowserSelectionControllerUninstalledPluginsKey"];
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKey:@"CKBrowserSelectionControllerUninstalledPluginsKey"];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-    v10 = [v9 allKeys];
+    livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+    allKeys = [livePluginIdentifierToTimestampMap allKeys];
 
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v11 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1851,7 +1851,7 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
@@ -1861,24 +1861,24 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
     }
 
-    v16 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-    v17 = [v16 identifier];
-    v18 = [(CKBrowserSwitcherViewController *)self _switchToVisiblePluginWithIdentifier:v17];
+    balloonPlugin = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+    identifier = [balloonPlugin identifier];
+    v18 = [(CKBrowserSwitcherViewController *)self _switchToVisiblePluginWithIdentifier:identifier];
 
     if (!v18)
     {
       [(CKBrowserSwitcherViewController *)self setAllowPluginLaunchNotifications:0];
       v19 = +[CKBalloonPluginManager sharedInstance];
-      v20 = [v19 visibleSwitcherPlugins];
-      v21 = [v20 firstObject];
+      visibleSwitcherPlugins = [v19 visibleSwitcherPlugins];
+      firstObject = [visibleSwitcherPlugins firstObject];
 
-      [(CKBrowserSwitcherViewController *)self showBrowserInSwitcherForPlugin:v21 datasource:0 reloadData:0];
+      [(CKBrowserSwitcherViewController *)self showBrowserInSwitcherForPlugin:firstObject datasource:0 reloadData:0];
       [(CKBrowserSwitcherViewController *)self setAllowPluginLaunchNotifications:1];
     }
   }
@@ -1889,16 +1889,16 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
   currentViewController = self->_currentViewController;
   if (currentViewController)
   {
-    v4 = [(CKBrowserViewControllerProtocol *)currentViewController view];
-    [v4 alpha];
+    view = [(CKBrowserViewControllerProtocol *)currentViewController view];
+    [view alpha];
     v6 = v5;
 
-    v7 = [(CKBrowserViewControllerProtocol *)self->_currentViewController viewIfLoaded];
-    v8 = [v7 window];
+    viewIfLoaded = [(CKBrowserViewControllerProtocol *)self->_currentViewController viewIfLoaded];
+    window = [viewIfLoaded window];
 
     if ([(CKBrowserSwitcherViewController *)self isBrowserReadyForUserInteraction])
     {
-      if (v6 > 0.0 && v8 != 0)
+      if (v6 > 0.0 && window != 0)
       {
         [(CKBrowserSwitcherViewController *)self _snapshotCurrentViewController];
 
@@ -1908,28 +1908,28 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
   }
 }
 
-- (BOOL)_pluginHasLiveBrowserViewInSwitcher:(id)a3
+- (BOOL)_pluginHasLiveBrowserViewInSwitcher:(id)switcher
 {
-  v4 = a3;
+  switcherCopy = switcher;
   v5 = +[CKBalloonPluginManager sharedInstance];
-  v6 = [v4 identifier];
+  identifier = [switcherCopy identifier];
 
-  v7 = [v5 existingViewControllerForPluginIdentifier:v6];
+  v7 = [v5 existingViewControllerForPluginIdentifier:identifier];
 
-  v8 = [v7 parentViewController];
-  LOBYTE(self) = v8 == self;
+  parentViewController = [v7 parentViewController];
+  LOBYTE(self) = parentViewController == self;
 
   return self;
 }
 
 - (BOOL)_shouldLimitExpandGestureToGrabber
 {
-  v2 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-  if (v2)
+  balloonPlugin = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+  if (balloonPlugin)
   {
     v3 = IMBalloonExtensionIDWithSuffix();
-    v4 = [v2 identifier];
-    v5 = [v4 isEqualToString:v3];
+    identifier = [balloonPlugin identifier];
+    v5 = [identifier isEqualToString:v3];
   }
 
   else
@@ -1940,10 +1940,10 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  if (self->_expandGestureTracker != a3)
+  touchCopy = touch;
+  if (self->_expandGestureTracker != recognizer)
   {
     goto LABEL_8;
   }
@@ -1953,18 +1953,18 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
     goto LABEL_8;
   }
 
-  v7 = [(CKBrowserSwitcherViewController *)self grabberView];
-  v8 = [v7 showsAppTitle];
+  grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+  showsAppTitle = [grabberView showsAppTitle];
 
-  if (v8)
+  if (showsAppTitle)
   {
-    v9 = [(CKBrowserSwitcherViewController *)self grabberView];
-    v10 = [v9 closeButton];
+    grabberView2 = [(CKBrowserSwitcherViewController *)self grabberView];
+    closeButton = [grabberView2 closeButton];
 
-    [v6 locationInView:v10];
-    LOBYTE(v9) = [v10 pointInside:0 withEvent:?];
+    [touchCopy locationInView:closeButton];
+    LOBYTE(grabberView2) = [closeButton pointInside:0 withEvent:?];
 
-    if (v9)
+    if (grabberView2)
     {
       goto LABEL_8;
     }
@@ -1976,12 +1976,12 @@ uint64_t __67__CKBrowserSwitcherViewController_animateOutCompactWithCompletion__
     goto LABEL_9;
   }
 
-  v11 = [v6 view];
+  view = [touchCopy view];
 
-  if (v11)
+  if (view)
   {
-    v12 = [v6 view];
-    v13 = [v12 isDescendantOfView:self->_grabberView];
+    view2 = [touchCopy view];
+    v13 = [view2 isDescendantOfView:self->_grabberView];
   }
 
   else
@@ -1995,21 +1995,21 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherViewController *)self touchTracker];
-  if (v5 == v4)
+  beginCopy = begin;
+  touchTracker = [(CKBrowserSwitcherViewController *)self touchTracker];
+  if (touchTracker == beginCopy)
   {
-    v21 = [(CKBrowserSwitcherViewController *)self currentViewController];
-    v22 = [v21 balloonPlugin];
+    currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+    balloonPlugin = [currentViewController balloonPlugin];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v6 = [MEMORY[0x1E695DF00] date];
-      v24 = [(CKBrowserSwitcherViewController *)self delegate];
+      date = [MEMORY[0x1E695DF00] date];
+      delegate = [(CKBrowserSwitcherViewController *)self delegate];
       v25 = objc_opt_respondsToSelector();
 
       if ((v25 & 1) == 0)
@@ -2018,25 +2018,25 @@ LABEL_9:
         goto LABEL_13;
       }
 
-      v26 = [(CKBrowserSwitcherViewController *)self delegate];
-      [v26 switcherViewController:self hasUpdatedLastTouchDate:v6];
+      delegate2 = [(CKBrowserSwitcherViewController *)self delegate];
+      [delegate2 switcherViewController:self hasUpdatedLastTouchDate:date];
       v20 = 1;
       goto LABEL_11;
     }
   }
 
-  else if (self->_expandGestureTracker == v4)
+  else if (self->_expandGestureTracker == beginCopy)
   {
-    v6 = [(CKBrowserSwitcherViewController *)self currentViewController];
+    date = [(CKBrowserSwitcherViewController *)self currentViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v6 horizontalSwipeExclusionRect];
+      [date horizontalSwipeExclusionRect];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [v6 view];
-      [(CKImmediatePanGestureRecognizer *)v4 locationInView:v15];
+      view = [date view];
+      [(CKImmediatePanGestureRecognizer *)beginCopy locationInView:view];
       v17 = v16;
       v19 = v18;
 
@@ -2055,11 +2055,11 @@ LABEL_13:
       }
     }
 
-    v26 = [(CKBrowserSwitcherViewController *)self view];
-    [(CKImmediatePanGestureRecognizer *)self->_expandGestureTracker locationInView:v26];
+    delegate2 = [(CKBrowserSwitcherViewController *)self view];
+    [(CKImmediatePanGestureRecognizer *)self->_expandGestureTracker locationInView:delegate2];
     v28 = v27;
     v30 = v29;
-    [v26 bounds];
+    [delegate2 bounds];
     v33.x = v28;
     v33.y = v30;
     v20 = CGRectContainsPoint(v35, v33);
@@ -2074,46 +2074,46 @@ LABEL_14:
   return v20;
 }
 
-- (void)setCurrentVisiblePlugin:(id)a3
+- (void)setCurrentVisiblePlugin:(id)plugin
 {
-  v7 = a3;
-  if (self->_currentVisiblePlugin != v7)
+  pluginCopy = plugin;
+  if (self->_currentVisiblePlugin != pluginCopy)
   {
-    objc_storeStrong(&self->_currentVisiblePlugin, a3);
+    objc_storeStrong(&self->_currentVisiblePlugin, plugin);
     [(CKBrowserSwitcherViewController *)self setBrowserViewReadyForUserInteraction:0];
     [(CKBrowserSwitcherViewController *)self updateGrabberTitleAndIconForPlugin:self->_currentVisiblePlugin];
     if (CKIsRunningInMessages())
     {
-      v5 = [(CKBrowserSwitcherViewController *)self _currentPluginIsJellyfish];
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v6 setIdleTimerDisabled:v5];
+      _currentPluginIsJellyfish = [(CKBrowserSwitcherViewController *)self _currentPluginIsJellyfish];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] setIdleTimerDisabled:_currentPluginIsJellyfish];
     }
   }
 }
 
-- (void)updateGrabberTitleAndIconForPlugin:(id)a3
+- (void)updateGrabberTitleAndIconForPlugin:(id)plugin
 {
-  v10 = a3;
-  if ([v10 showInBrowser])
+  pluginCopy = plugin;
+  if ([pluginCopy showInBrowser])
   {
-    v4 = [v10 browserDisplayName];
-    v5 = [(CKBrowserSwitcherViewController *)self traitCollection];
-    [v10 __ck_browserImageForInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+    browserDisplayName = [pluginCopy browserDisplayName];
+    traitCollection = [(CKBrowserSwitcherViewController *)self traitCollection];
+    [pluginCopy __ck_browserImageForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   }
 
   else
   {
-    v6 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    v4 = [v6 appTitleOverride];
+    transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    browserDisplayName = [transitionCoordinator appTitleOverride];
 
-    v5 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    [v5 appIconOverride];
+    traitCollection = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    [traitCollection appIconOverride];
   }
   v7 = ;
 
-  v8 = [(CKBrowserSwitcherViewController *)self grabberView];
-  v9 = [v10 identifier];
-  [v8 updateAppTitle:v4 icon:v7 appIdentifier:v9];
+  grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+  identifier = [pluginCopy identifier];
+  [grabberView updateAppTitle:browserDisplayName icon:v7 appIdentifier:identifier];
 }
 
 - (id)traitCollection
@@ -2121,33 +2121,33 @@ LABEL_14:
   v9[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = CKBrowserSwitcherViewController;
-  v2 = [(CKBrowserSwitcherViewController *)&v8 traitCollection];
+  traitCollection = [(CKBrowserSwitcherViewController *)&v8 traitCollection];
   if (CKIsRunningInCameraAppsClient())
   {
     v3 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
     v4 = MEMORY[0x1E69DD1B8];
-    v9[0] = v2;
+    v9[0] = traitCollection;
     v9[1] = v3;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
     v6 = [v4 traitCollectionWithTraitsFromCollections:v5];
 
-    v2 = v6;
+    traitCollection = v6;
   }
 
-  return v2;
+  return traitCollection;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CKBrowserSwitcherViewController;
-  v4 = a3;
-  [(CKBrowserSwitcherViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CKBrowserSwitcherViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CKBrowserSwitcherViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CKBrowserSwitcherViewController *)self updateGrabberTitleAndIconForPlugin:self->_currentVisiblePlugin];
   }
@@ -2173,18 +2173,18 @@ LABEL_14:
       v4 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [(CKBrowserViewControllerProtocol *)self->_currentViewController balloonPlugin];
-        v6 = [v5 identifier];
+        balloonPlugin = [(CKBrowserViewControllerProtocol *)self->_currentViewController balloonPlugin];
+        identifier = [balloonPlugin identifier];
         v10 = 138412290;
-        v11 = v6;
+        v11 = identifier;
         _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "===> snapshotting current view controller (%@) since we're moving away", &v10, 0xCu);
       }
     }
 
     v7 = +[CKBalloonPluginManager sharedInstance];
     currentViewController = self->_currentViewController;
-    v9 = [(CKBrowserSwitcherViewController *)self browserContainer];
-    [v9 frame];
+    browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+    [browserContainer frame];
     [v7 updateSnapshotForBrowserViewController:currentViewController currentBounds:?];
   }
 }
@@ -2192,11 +2192,11 @@ LABEL_14:
 - (void)_updateVisibleBrowserView
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  v4 = [v3 balloonPlugin];
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  balloonPlugin = [currentViewController balloonPlugin];
 
-  v5 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-  if (-[CKBrowserSwitcherViewController _pluginHasLiveBrowserViewInSwitcher:](self, "_pluginHasLiveBrowserViewInSwitcher:", v4) && [v4 isEqual:v5])
+  balloonPlugin2 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+  if (-[CKBrowserSwitcherViewController _pluginHasLiveBrowserViewInSwitcher:](self, "_pluginHasLiveBrowserViewInSwitcher:", balloonPlugin) && [balloonPlugin isEqual:balloonPlugin2])
   {
     [(CKBrowserSwitcherViewController *)self _updateActiveBrowserTimestampForCurrentBalloonPlugin];
     [(CKBrowserSwitcherViewController *)self setBrowserViewReadyForUserInteraction:1];
@@ -2209,23 +2209,23 @@ LABEL_14:
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v5 identifier];
+        identifier = [balloonPlugin2 identifier];
         v15 = 138412290;
-        v16 = v7;
+        v16 = identifier;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Requesting load of browser VC for %@", &v15, 0xCu);
       }
     }
 
-    v8 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    [v8 releaseOwnershipOfBrowserForConsumer:1];
+    transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    [transitionCoordinator releaseOwnershipOfBrowserForConsumer:1];
 
-    v9 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    v10 = [v9 updateBrowserSessionForPlugin:v5 datasource:0];
+    transitionCoordinator2 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    v10 = [transitionCoordinator2 updateBrowserSessionForPlugin:balloonPlugin2 datasource:0];
 
     if (v10)
     {
-      v11 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-      v12 = [v11 requestOwnershipOfBrowserForConsumer:1];
+      transitionCoordinator3 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+      v12 = [transitionCoordinator3 requestOwnershipOfBrowserForConsumer:1];
 
       if (v12)
       {
@@ -2240,9 +2240,9 @@ LABEL_14:
         v13 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v5 identifier];
+          identifier2 = [balloonPlugin2 identifier];
           v15 = 138412290;
-          v16 = v14;
+          v16 = identifier2;
           _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Transition coordinator failed to update browser session for %@", &v15, 0xCu);
         }
       }
@@ -2253,29 +2253,29 @@ LABEL_14:
   }
 }
 
-- (void)_transitionSnapshotViewToBrowserViewAfterViewDidPrepareForDisplay:(id)a3
+- (void)_transitionSnapshotViewToBrowserViewAfterViewDidPrepareForDisplay:(id)display
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  displayCopy = display;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = displayCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "===> _transitionSnapshotViewToBrowserViewAfterRemoteViewDidLoad: called with notification: %@", buf, 0xCu);
     }
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:@"CKRemoteViewPluginKey"];
+  userInfo = [displayCopy userInfo];
+  v7 = [userInfo objectForKey:@"CKRemoteViewPluginKey"];
 
-  v8 = [v7 identifier];
-  v9 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  v10 = [v9 balloonPlugin];
-  v11 = [v10 identifier];
-  v12 = [v8 isEqualToString:v11];
+  identifier = [v7 identifier];
+  currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+  balloonPlugin = [currentViewController balloonPlugin];
+  identifier2 = [balloonPlugin identifier];
+  v12 = [identifier isEqualToString:identifier2];
 
   if (v12)
   {
@@ -2288,8 +2288,8 @@ LABEL_14:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+    v14 = [livePluginIdentifierToTimestampMap countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = *v24;
@@ -2300,19 +2300,19 @@ LABEL_14:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(livePluginIdentifierToTimestampMap);
           }
 
           v17 = *(*(&v23 + 1) + 8 * v16);
-          v18 = [v7 identifier];
-          v19 = [v18 isEqualToString:v17];
+          identifier3 = [v7 identifier];
+          v19 = [identifier3 isEqualToString:v17];
 
           if (v19)
           {
             v20 = +[CKBalloonPluginManager sharedInstance];
             v21 = [v20 existingViewControllerForPluginIdentifier:v17];
-            v22 = [v21 view];
-            [v22 setAlpha:1.0];
+            view = [v21 view];
+            [view setAlpha:1.0];
 
             goto LABEL_17;
           }
@@ -2321,7 +2321,7 @@ LABEL_14:
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v14 = [livePluginIdentifierToTimestampMap countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v14)
         {
           continue;
@@ -2335,40 +2335,40 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)_handleRemoteViewControllerConnectionInterrupted:(id)a3
+- (void)_handleRemoteViewControllerConnectionInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
-  v12 = [v4 objectForKey:*MEMORY[0x1E69A6F20]];
+  userInfo = [interrupted userInfo];
+  v12 = [userInfo objectForKey:*MEMORY[0x1E69A6F20]];
 
-  v5 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-  v6 = [v5 identifier];
-  if ([v6 isEqualToString:v12])
+  balloonPlugin = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
+  if ([identifier isEqualToString:v12])
   {
-    v7 = [(CKBrowserSwitcherViewController *)self isBrowserReadyForUserInteraction];
+    isBrowserReadyForUserInteraction = [(CKBrowserSwitcherViewController *)self isBrowserReadyForUserInteraction];
 
-    if (!v7)
+    if (!isBrowserReadyForUserInteraction)
     {
       goto LABEL_5;
     }
 
-    v8 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-    v5 = [v8 browserDisplayName];
+    balloonPlugin2 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+    balloonPlugin = [balloonPlugin2 browserDisplayName];
 
     [(CKBrowserSwitcherViewController *)self setBrowserViewReadyForUserInteraction:0];
     [(CKBrowserSwitcherViewController *)self setBalloonPlugin:0];
     [(CKBrowserSwitcherViewController *)self setCurrentVisiblePlugin:0];
-    v9 = [(CKBrowserSwitcherViewController *)self activeBrowserView];
-    [v9 removeFromSuperview];
+    activeBrowserView = [(CKBrowserSwitcherViewController *)self activeBrowserView];
+    [activeBrowserView removeFromSuperview];
 
-    v10 = [(CKBrowserSwitcherViewController *)self currentViewController];
-    [v10 removeFromParentViewController];
+    currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+    [currentViewController removeFromParentViewController];
 
     [(CKBrowserSwitcherViewController *)self setCurrentViewController:0];
-    v11 = [(CKBrowserSwitcherViewController *)self cell];
-    [v11 showExtensionInterruptedViewWithDisplayName:v5];
+    cell = [(CKBrowserSwitcherViewController *)self cell];
+    [cell showExtensionInterruptedViewWithDisplayName:balloonPlugin];
 
-    v6 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-    [v6 removeObjectForKey:v12];
+    identifier = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+    [identifier removeObjectForKey:v12];
   }
 
 LABEL_5:
@@ -2379,19 +2379,19 @@ LABEL_5:
   if (![(CKBrowserSwitcherViewController *)self isTransitioningFromSnapshotToLiveView])
   {
     [(CKBrowserSwitcherViewController *)self setTransitioningFromSnapshotToLiveView:1];
-    v3 = [(CKBrowserSwitcherViewController *)self currentVisiblePlugin];
+    currentVisiblePlugin = [(CKBrowserSwitcherViewController *)self currentVisiblePlugin];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __71__CKBrowserSwitcherViewController__transitionSnapshotViewToBrowserView__block_invoke;
     aBlock[3] = &unk_1E72ECCA8;
     aBlock[4] = self;
-    v4 = v3;
+    v4 = currentVisiblePlugin;
     v12 = v4;
     v5 = _Block_copy(aBlock);
-    v6 = [(CKBrowserSwitcherViewController *)self cell];
-    v7 = [v6 isUsingFallbackSnapshot];
+    cell = [(CKBrowserSwitcherViewController *)self cell];
+    isUsingFallbackSnapshot = [cell isUsingFallbackSnapshot];
 
-    if (v7)
+    if (isUsingFallbackSnapshot)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -2404,8 +2404,8 @@ LABEL_5:
 
     else
     {
-      v9 = [(CKBrowserSwitcherViewController *)self activeBrowserView];
-      [v9 setAlpha:1.0];
+      activeBrowserView = [(CKBrowserSwitcherViewController *)self activeBrowserView];
+      [activeBrowserView setAlpha:1.0];
 
       v5[2](v5, 1);
     }
@@ -2452,26 +2452,26 @@ void __71__CKBrowserSwitcherViewController__transitionSnapshotViewToBrowserView_
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-  v4 = [v3 identifier];
-  if ([v4 isEqualToString:*MEMORY[0x1E69A6988]])
+  balloonPlugin = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
+  if ([identifier isEqualToString:*MEMORY[0x1E69A6988]])
   {
 
-    v5 = 2;
+    supportedInterfaceOrientations = 2;
 LABEL_9:
 
-    return v5;
+    return supportedInterfaceOrientations;
   }
 
-  v6 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69A69A8]];
+  balloonPlugin2 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+  identifier2 = [balloonPlugin2 identifier];
+  v8 = [identifier2 isEqualToString:*MEMORY[0x1E69A69A8]];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(CKBrowserSwitcherViewController *)self currentViewController];
+    currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
 
-    if (v9)
+    if (currentViewController)
     {
       [(CKBrowserSwitcherViewController *)self currentViewController];
     }
@@ -2480,8 +2480,8 @@ LABEL_9:
     {
       +[CKUIBehavior sharedBehaviors];
     }
-    v3 = ;
-    v5 = [v3 supportedInterfaceOrientations];
+    balloonPlugin = ;
+    supportedInterfaceOrientations = [balloonPlugin supportedInterfaceOrientations];
     goto LABEL_9;
   }
 
@@ -2490,10 +2490,10 @@ LABEL_9:
 
 - (BOOL)_currentPluginIsJellyfish
 {
-  v2 = [(CKBrowserSwitcherViewController *)self currentVisiblePlugin];
-  v3 = [v2 identifier];
+  currentVisiblePlugin = [(CKBrowserSwitcherViewController *)self currentVisiblePlugin];
+  identifier = [currentVisiblePlugin identifier];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifier isEqualToString:v4];
 
   return v5;
 }
@@ -2505,10 +2505,10 @@ LABEL_9:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v3 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-  v4 = [v3 allKeys];
+  livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+  allKeys = [livePluginIdentifierToTimestampMap allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v49 objects:v56 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v5)
   {
     v6 = *v50;
@@ -2518,7 +2518,7 @@ LABEL_9:
       {
         if (*v50 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v49 + 1) + 8 * i);
@@ -2527,8 +2527,8 @@ LABEL_9:
 
         if (v10)
         {
-          v11 = [(CKBrowserSwitcherViewController *)self currentViewController];
-          v12 = v10 == v11;
+          currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
+          v12 = v10 == currentViewController;
 
           if (!v12 && ([v10 mayBeKeptInViewHierarchy] & 1) == 0)
           {
@@ -2537,7 +2537,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v49 objects:v56 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v49 objects:v56 count:16];
     }
 
     while (v5);
@@ -2548,8 +2548,8 @@ LABEL_9:
   v43 = v13;
   while (1)
   {
-    v14 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-    v15 = [v14 count];
+    livePluginIdentifierToTimestampMap2 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+    v15 = [livePluginIdentifierToTimestampMap2 count];
     v16 = +[CKUIBehavior sharedBehaviors];
     v17 = v15 > [v16 maxNumLiveBrowserViewsToKeepInViewHierarchy];
 
@@ -2562,8 +2562,8 @@ LABEL_9:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v18 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-    v19 = [v18 countByEnumeratingWithState:&v45 objects:v55 count:16];
+    livePluginIdentifierToTimestampMap3 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+    v19 = [livePluginIdentifierToTimestampMap3 countByEnumeratingWithState:&v45 objects:v55 count:16];
     if (v19)
     {
       v20 = 0;
@@ -2575,12 +2575,12 @@ LABEL_9:
         {
           if (*v46 != v22)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(livePluginIdentifierToTimestampMap3);
           }
 
           v24 = *(*(&v45 + 1) + 8 * j);
-          v25 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-          v26 = [v25 objectForKey:v24];
+          livePluginIdentifierToTimestampMap4 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+          v26 = [livePluginIdentifierToTimestampMap4 objectForKey:v24];
 
           if (!v20 || [v26 compare:v20] == -1)
           {
@@ -2592,7 +2592,7 @@ LABEL_9:
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v45 objects:v55 count:16];
+        v19 = [livePluginIdentifierToTimestampMap3 countByEnumeratingWithState:&v45 objects:v55 count:16];
       }
 
       while (v19);
@@ -2622,44 +2622,44 @@ LABEL_9:
     }
   }
 
-  v30 = [(CKBrowserSwitcherViewController *)self currentViewController];
-  if (v30)
+  currentViewController2 = [(CKBrowserSwitcherViewController *)self currentViewController];
+  if (currentViewController2)
   {
-    v31 = [(CKBrowserSwitcherViewController *)self childViewControllers];
-    v32 = [(CKBrowserSwitcherViewController *)self currentViewController];
-    v33 = [v31 containsObject:v32];
+    childViewControllers = [(CKBrowserSwitcherViewController *)self childViewControllers];
+    currentViewController3 = [(CKBrowserSwitcherViewController *)self currentViewController];
+    v33 = [childViewControllers containsObject:currentViewController3];
 
     if ((v33 & 1) == 0)
     {
-      v34 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      [(CKBrowserSwitcherViewController *)self addChildViewController:v34];
+      currentViewController4 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      [(CKBrowserSwitcherViewController *)self addChildViewController:currentViewController4];
 
-      v35 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      v36 = [v35 balloonPlugin];
-      v37 = [v36 identifier];
+      currentViewController5 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      balloonPlugin = [currentViewController5 balloonPlugin];
+      identifier = [balloonPlugin identifier];
 
-      if (([v37 isEqualToString:*MEMORY[0x1E69A69A8]] & 1) == 0 && (objc_msgSend(v37, "isEqualToString:", *MEMORY[0x1E69A6988]) & 1) == 0)
+      if (([identifier isEqualToString:*MEMORY[0x1E69A69A8]] & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", *MEMORY[0x1E69A6988]) & 1) == 0)
       {
-        v38 = [(CKBrowserSwitcherViewController *)self currentViewController];
-        v39 = [(CKBrowserSwitcherViewController *)self activeBrowserView];
-        [(CKBrowserSwitcherViewController *)self _updateActiveBrowserAlphaStateOnInsertForCurrentController:v38 currentView:v39];
+        currentViewController6 = [(CKBrowserSwitcherViewController *)self currentViewController];
+        activeBrowserView = [(CKBrowserSwitcherViewController *)self activeBrowserView];
+        [(CKBrowserSwitcherViewController *)self _updateActiveBrowserAlphaStateOnInsertForCurrentController:currentViewController6 currentView:activeBrowserView];
       }
 
-      v40 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      v41 = [v40 balloonPlugin];
-      [(CKBrowserSwitcherViewController *)self _updateBrowserViewPositionForPluginAndInsertIfNecessary:v41];
+      currentViewController7 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      balloonPlugin2 = [currentViewController7 balloonPlugin];
+      [(CKBrowserSwitcherViewController *)self _updateBrowserViewPositionForPluginAndInsertIfNecessary:balloonPlugin2];
 
-      v42 = [(CKBrowserSwitcherViewController *)self currentViewController];
-      [v42 didMoveToParentViewController:self];
+      currentViewController8 = [(CKBrowserSwitcherViewController *)self currentViewController];
+      [currentViewController8 didMoveToParentViewController:self];
     }
   }
 }
 
-- (void)_updateActiveBrowserAlphaStateOnInsertForCurrentController:(id)a3 currentView:(id)a4
+- (void)_updateActiveBrowserAlphaStateOnInsertForCurrentController:(id)controller currentView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 isLoaded] & 1) == 0)
+  controllerCopy = controller;
+  viewCopy = view;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([controllerCopy isLoaded] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2671,24 +2671,24 @@ LABEL_9:
       }
     }
 
-    [v6 setAlpha:0.0];
+    [viewCopy setAlpha:0.0];
   }
 }
 
-- (void)_updateBrowserViewPositionForPluginAndInsertIfNecessary:(id)a3
+- (void)_updateBrowserViewPositionForPluginAndInsertIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (![(CKBrowserSwitcherViewController *)self isTransitioningExpandedState]|| [(CKBrowserSwitcherViewController *)self browserIsCollapsingFromFullscreen])
   {
     v5 = +[CKBalloonPluginManager sharedInstance];
-    v6 = [v5 visibleSwitcherPlugins];
+    visibleSwitcherPlugins = [v5 visibleSwitcherPlugins];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __91__CKBrowserSwitcherViewController__updateBrowserViewPositionForPluginAndInsertIfNecessary___block_invoke;
     v7[3] = &unk_1E72F6CB8;
-    v8 = v4;
-    v9 = self;
-    [v6 enumerateObjectsUsingBlock:v7];
+    v8 = necessaryCopy;
+    selfCopy = self;
+    [visibleSwitcherPlugins enumerateObjectsUsingBlock:v7];
   }
 }
 
@@ -2730,35 +2730,35 @@ void __91__CKBrowserSwitcherViewController__updateBrowserViewPositionForPluginAn
   }
 }
 
-- (void)_removeBrowserWithPluginIdentifierFromViewHierarchy:(id)a3
+- (void)_removeBrowserWithPluginIdentifierFromViewHierarchy:(id)hierarchy
 {
-  v7 = a3;
+  hierarchyCopy = hierarchy;
   v4 = +[CKBalloonPluginManager sharedInstance];
-  v5 = [v4 existingViewControllerForPluginIdentifier:v7];
+  v5 = [v4 existingViewControllerForPluginIdentifier:hierarchyCopy];
 
   if (v5)
   {
     [(CKBrowserSwitcherViewController *)self _removeBrowserFromViewHierarchy:v5];
   }
 
-  v6 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-  [v6 removeObjectForKey:v7];
+  livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+  [livePluginIdentifierToTimestampMap removeObjectForKey:hierarchyCopy];
 }
 
-- (void)_removeBrowserFromViewHierarchy:(id)a3
+- (void)_removeBrowserFromViewHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  v5 = [v4 parentViewController];
-  v6 = v5;
-  if (v5 == self)
+  hierarchyCopy = hierarchy;
+  parentViewController = [hierarchyCopy parentViewController];
+  v6 = parentViewController;
+  if (parentViewController == self)
   {
   }
 
   else
   {
-    v7 = [v4 parentViewController];
+    parentViewController2 = [hierarchyCopy parentViewController];
 
-    if (v7)
+    if (parentViewController2)
     {
       goto LABEL_14;
     }
@@ -2766,20 +2766,20 @@ void __91__CKBrowserSwitcherViewController__updateBrowserViewPositionForPluginAn
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 deferredForceTearDownRemoteView];
+    [hierarchyCopy deferredForceTearDownRemoteView];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v4 forceTearDownRemoteView];
+    [hierarchyCopy forceTearDownRemoteView];
   }
 
-  [v4 willMoveToParentViewController:0];
-  v8 = [v4 view];
-  [v8 removeFromSuperview];
+  [hierarchyCopy willMoveToParentViewController:0];
+  view = [hierarchyCopy view];
+  [view removeFromSuperview];
 
-  [v4 removeFromParentViewController];
-  [(CKBrowserSwitcherViewController *)self removeChildViewController:v4];
+  [hierarchyCopy removeFromParentViewController];
+  [(CKBrowserSwitcherViewController *)self removeChildViewController:hierarchyCopy];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -2790,8 +2790,8 @@ void __91__CKBrowserSwitcherViewController__updateBrowserViewPositionForPluginAn
     }
   }
 
-  v10 = [v4 view];
-  [v10 setAlpha:1.0];
+  view2 = [hierarchyCopy view];
+  [view2 setAlpha:1.0];
 
 LABEL_14:
 }
@@ -2805,22 +2805,22 @@ LABEL_14:
     self->_livePluginIdentifierToTimestampMap = Mutable;
   }
 
-  v5 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-  v6 = [v5 identifier];
+  balloonPlugin = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v10 = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
-    v7 = [MEMORY[0x1E695DF00] date];
-    v8 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
-    v9 = [v8 identifier];
-    [v10 setObject:v7 forKey:v9];
+    livePluginIdentifierToTimestampMap = [(CKBrowserSwitcherViewController *)self livePluginIdentifierToTimestampMap];
+    date = [MEMORY[0x1E695DF00] date];
+    balloonPlugin2 = [(CKBrowserSwitcherViewController *)self balloonPlugin];
+    identifier2 = [balloonPlugin2 identifier];
+    [livePluginIdentifierToTimestampMap setObject:date forKey:identifier2];
   }
 }
 
-- (void)setCurrentViewController:(id)a3
+- (void)setCurrentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -2831,7 +2831,7 @@ LABEL_14:
     }
   }
 
-  if (self->_currentViewController != v5)
+  if (self->_currentViewController != controllerCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2843,25 +2843,25 @@ LABEL_14:
       }
     }
 
-    objc_storeStrong(&self->_currentViewController, a3);
-    if (v5)
+    objc_storeStrong(&self->_currentViewController, controller);
+    if (controllerCopy)
     {
       [(CKBrowserSwitcherViewController *)self _updateActiveBrowserTimestampForCurrentBalloonPlugin];
       [(CKBrowserSwitcherViewController *)self _insertCurrentBrowserAndRemoveOldBrowsersIfNeeded];
       if (objc_opt_respondsToSelector())
       {
-        if ([(CKBrowserViewControllerProtocol *)v5 isLoaded])
+        if ([(CKBrowserViewControllerProtocol *)controllerCopy isLoaded])
         {
           [(CKBrowserSwitcherViewController *)self setBrowserViewReadyForUserInteraction:1];
         }
       }
     }
 
-    v8 = [(CKBrowserViewControllerProtocol *)v5 balloonPlugin];
-    if (v8)
+    balloonPlugin = [(CKBrowserViewControllerProtocol *)controllerCopy balloonPlugin];
+    if (balloonPlugin)
     {
       v9 = +[CKBalloonPluginManager sharedInstance];
-      [v9 updateLaunchStatus:1 forPlugin:v8 withNotification:0];
+      [v9 updateLaunchStatus:1 forPlugin:balloonPlugin withNotification:0];
     }
 
     else
@@ -2890,44 +2890,44 @@ LABEL_17:
       }
     }
 
-    v11 = [(CKBrowserSwitcherViewController *)self delegate];
-    [v11 switcherViewControllerDidFinishSwitching:self toViewController:self->_currentViewController];
+    delegate = [(CKBrowserSwitcherViewController *)self delegate];
+    [delegate switcherViewControllerDidFinishSwitching:self toViewController:self->_currentViewController];
 
-    v12 = [(CKBrowserSwitcherViewController *)self contentView];
-    v13 = [(CKBrowserSwitcherViewController *)self grabberView];
-    [v12 bringSubviewToFront:v13];
+    contentView = [(CKBrowserSwitcherViewController *)self contentView];
+    grabberView = [(CKBrowserSwitcherViewController *)self grabberView];
+    [contentView bringSubviewToFront:grabberView];
   }
 
-  v14 = [(CKBrowserViewControllerProtocol *)v5 balloonPlugin];
-  v15 = [v14 identifier];
-  v16 = [v15 isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
+  balloonPlugin2 = [(CKBrowserViewControllerProtocol *)controllerCopy balloonPlugin];
+  identifier = [balloonPlugin2 identifier];
+  v16 = [identifier isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
 
   if (v16)
   {
     currentViewController = self->_currentViewController;
-    v18 = [(CKBrowserSwitcherViewController *)self contentView];
-    [(CKBrowserViewControllerProtocol *)currentViewController setDragTargetView:v18];
+    contentView2 = [(CKBrowserSwitcherViewController *)self contentView];
+    [(CKBrowserViewControllerProtocol *)currentViewController setDragTargetView:contentView2];
   }
 
   else
   {
-    v19 = [(CKBrowserViewControllerProtocol *)v5 balloonPlugin];
-    v20 = [v19 identifier];
-    v21 = [v20 isEqualToString:@"com.apple.appstore.MessagesProvider"];
+    balloonPlugin3 = [(CKBrowserViewControllerProtocol *)controllerCopy balloonPlugin];
+    identifier2 = [balloonPlugin3 identifier];
+    v21 = [identifier2 isEqualToString:@"com.apple.appstore.MessagesProvider"];
 
     if (v21)
     {
-      [(CKBrowserViewControllerProtocol *)v5 setAdditionalSafeAreaInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
+      [(CKBrowserViewControllerProtocol *)controllerCopy setAdditionalSafeAreaInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     }
   }
 
-  v22 = [(CKBrowserSwitcherViewController *)self childViewControllers];
+  childViewControllers = [(CKBrowserSwitcherViewController *)self childViewControllers];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __60__CKBrowserSwitcherViewController_setCurrentViewController___block_invoke;
   v23[3] = &unk_1E72F6C68;
   v23[4] = self;
-  [v22 enumerateObjectsUsingBlock:v23];
+  [childViewControllers enumerateObjectsUsingBlock:v23];
 }
 
 void __60__CKBrowserSwitcherViewController_setCurrentViewController___block_invoke(uint64_t a1, void *a2)
@@ -2958,9 +2958,9 @@ void __60__CKBrowserSwitcherViewController_setCurrentViewController___block_invo
   }
 }
 
-- (void)handleExpandButton:(id)a3
+- (void)handleExpandButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (![(CKBrowserSwitcherViewController *)self isDragging]&& [(CKBrowserSwitcherViewController *)self isBrowserReadyForUserInteraction]&& IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -2972,26 +2972,26 @@ void __60__CKBrowserSwitcherViewController_setCurrentViewController___block_invo
   }
 }
 
-- (void)_loadBrowserForBalloonPlugin:(id)a3 datasource:(id)a4
+- (void)_loadBrowserForBalloonPlugin:(id)plugin datasource:(id)datasource
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  datasourceCopy = datasource;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 identifier];
+      identifier = [pluginCopy identifier];
       *buf = 138412290;
-      v28 = v9;
+      v28 = identifier;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Loading browser for plugin: %@", buf, 0xCu);
     }
   }
 
   v10 = +[CKBalloonPluginManager sharedInstance];
-  v11 = [v10 visibleSwitcherPlugins];
-  v12 = [v11 indexOfObject:v6];
+  visibleSwitcherPlugins = [v10 visibleSwitcherPlugins];
+  v12 = [visibleSwitcherPlugins indexOfObject:pluginCopy];
 
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3000,9 +3000,9 @@ void __60__CKBrowserSwitcherViewController_setCurrentViewController___block_invo
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v6 identifier];
+        identifier2 = [pluginCopy identifier];
         *buf = 138412290;
-        v28 = v14;
+        v28 = identifier2;
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Browser was not found for plugin: %@", buf, 0xCu);
       }
 
@@ -3012,17 +3012,17 @@ LABEL_9:
 
   else
   {
-    v15 = [(CKBrowserSwitcherViewController *)self currentViewController];
+    currentViewController = [(CKBrowserSwitcherViewController *)self currentViewController];
 
-    if (v15)
+    if (currentViewController)
     {
-      v16 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-      [v16 releaseOwnershipOfBrowserForConsumer:1];
+      transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+      [transitionCoordinator releaseOwnershipOfBrowserForConsumer:1];
     }
 
     [(CKBrowserSwitcherViewController *)self setBrowserIsLoadingCompact:1];
-    v17 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    v18 = [v17 updateBrowserSessionForPlugin:v6 datasource:v7];
+    transitionCoordinator2 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    v18 = [transitionCoordinator2 updateBrowserSessionForPlugin:pluginCopy datasource:datasourceCopy];
 
     if (!v18)
     {
@@ -3042,28 +3042,28 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v19 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    v20 = [v19 wasCurrentBrowserExpanded];
+    transitionCoordinator3 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    wasCurrentBrowserExpanded = [transitionCoordinator3 wasCurrentBrowserExpanded];
 
-    v21 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-    v22 = [v21 requestOwnershipOfBrowserForConsumer:1];
+    transitionCoordinator4 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+    v22 = [transitionCoordinator4 requestOwnershipOfBrowserForConsumer:1];
 
     [(CKBrowserSwitcherViewController *)self setBrowserIsLoadingCompact:0];
-    if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (wasCurrentBrowserExpanded && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v22 viewWillTransitionToCompactPresentation];
     }
 
     if (v22)
     {
-      v23 = [v6 identifier];
-      [(CKBrowserSwitcherViewController *)self _switchToVisiblePluginWithIdentifier:v23];
+      identifier3 = [pluginCopy identifier];
+      [(CKBrowserSwitcherViewController *)self _switchToVisiblePluginWithIdentifier:identifier3];
 
       [(CKBrowserSwitcherViewController *)self setCurrentViewController:v22];
-      v24 = [v22 balloonPlugin];
-      [(CKBrowserSwitcherViewController *)self setCurrentVisiblePlugin:v24];
+      balloonPlugin = [v22 balloonPlugin];
+      [(CKBrowserSwitcherViewController *)self setCurrentVisiblePlugin:balloonPlugin];
 
-      if (v20)
+      if (wasCurrentBrowserExpanded)
       {
         if (objc_opt_respondsToSelector())
         {
@@ -3099,24 +3099,24 @@ LABEL_9:
 LABEL_30:
 }
 
-- (BOOL)_switchToVisiblePluginWithIdentifier:(id)a3
+- (BOOL)_switchToVisiblePluginWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v5 = +[CKBalloonPluginManager sharedInstance];
-  v6 = [v5 visibleSwitcherPlugins];
+  visibleSwitcherPlugins = [v5 visibleSwitcherPlugins];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__CKBrowserSwitcherViewController__switchToVisiblePluginWithIdentifier___block_invoke;
   v9[3] = &unk_1E72F6CE0;
-  v7 = v4;
+  v7 = identifierCopy;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [visibleSwitcherPlugins enumerateObjectsUsingBlock:v9];
 
   LOBYTE(self) = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
@@ -3140,9 +3140,9 @@ void __72__CKBrowserSwitcherViewController__switchToVisiblePluginWithIdentifier_
   }
 }
 
-- (void)dragManagerWillStartDrag:(id)a3
+- (void)dragManagerWillStartDrag:(id)drag
 {
-  v4 = a3;
+  dragCopy = drag;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -3160,9 +3160,9 @@ void __72__CKBrowserSwitcherViewController__switchToVisiblePluginWithIdentifier_
   self->_expandPropertyAnimator = 0;
 }
 
-- (void)dragManagerDidStartDrag:(id)a3
+- (void)dragManagerDidStartDrag:(id)drag
 {
-  v4 = a3;
+  dragCopy = drag;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -3176,7 +3176,7 @@ void __72__CKBrowserSwitcherViewController__switchToVisiblePluginWithIdentifier_
   [(CKBrowserSwitcherViewController *)self setInDragAndDrop:1];
 }
 
-- (void)dragManagerDidEndDragging:(id)a3
+- (void)dragManagerDidEndDragging:(id)dragging
 {
   v4 = dispatch_time(0, 400000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -3205,8 +3205,8 @@ uint64_t __61__CKBrowserSwitcherViewController_dragManagerDidEndDragging___block
 
 - (CGSize)_browserSize
 {
-  v3 = [(CKBrowserSwitcherViewController *)self browserContainer];
-  if (v3)
+  browserContainer = [(CKBrowserSwitcherViewController *)self browserContainer];
+  if (browserContainer)
   {
     [(CKBrowserSwitcherViewController *)self browserContainer];
   }
@@ -3227,11 +3227,11 @@ uint64_t __61__CKBrowserSwitcherViewController_dragManagerDidEndDragging___block
   return result;
 }
 
-- (void)appGrabberViewCloseButtonTapped:(id)a3
+- (void)appGrabberViewCloseButtonTapped:(id)tapped
 {
-  v4 = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
-  v3 = [v4 sendDelegate];
-  [v3 dismissAndReloadInputViews:0];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self transitionCoordinator];
+  sendDelegate = [transitionCoordinator sendDelegate];
+  [sendDelegate dismissAndReloadInputViews:0];
 }
 
 - (CKBrowserSwitcherViewControllerDelegate)delegate

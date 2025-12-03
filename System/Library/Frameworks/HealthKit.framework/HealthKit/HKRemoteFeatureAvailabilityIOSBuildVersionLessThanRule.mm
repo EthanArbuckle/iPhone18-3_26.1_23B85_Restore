@@ -1,37 +1,37 @@
 @interface HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"BuildVersion"];
+  v4 = [info objectForKeyedSubscript:@"BuildVersion"];
   [(HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule *)self setBuildVersion:v4];
 }
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule *)self buildVersion];
+  buildVersion = [(HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule *)self buildVersion];
 
-  if (!v3)
+  if (!buildVersion)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v5 = [v4 iOSBuildVersion];
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  iOSBuildVersion = [dataSource iOSBuildVersion];
 
-  if (!v5)
+  if (!iOSBuildVersion)
   {
     return 0;
   }
 
-  v6 = [(HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule *)self buildVersion];
-  v7 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v8 = [v7 iOSBuildVersion];
-  v9 = [v6 hk_compareBuildVersionWithString:v8] == 1;
+  buildVersion2 = [(HKRemoteFeatureAvailabilityIOSBuildVersionLessThanRule *)self buildVersion];
+  dataSource2 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  iOSBuildVersion2 = [dataSource2 iOSBuildVersion];
+  v9 = [buildVersion2 hk_compareBuildVersionWithString:iOSBuildVersion2] == 1;
 
   return v9;
 }

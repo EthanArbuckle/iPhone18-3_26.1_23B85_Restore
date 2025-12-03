@@ -1,11 +1,11 @@
 @interface DebugFormatBezelView
-- (_TtC8NewsFeed20DebugFormatBezelView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed20DebugFormatBezelView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatBezelView
 
-- (_TtC8NewsFeed20DebugFormatBezelView)initWithCoder:(id)a3
+- (_TtC8NewsFeed20DebugFormatBezelView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed20DebugFormatBezelView_scale) = 0x3FF0000000000000;
   v4 = OBJC_IVAR____TtC8NewsFeed20DebugFormatBezelView_bezelLayer;
@@ -19,7 +19,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D68225D8();
 }
 

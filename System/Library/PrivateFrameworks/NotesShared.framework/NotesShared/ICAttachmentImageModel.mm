@@ -7,9 +7,9 @@
 - (BOOL)supportsImageClassification;
 - (BOOL)supportsOCR;
 - (CGAffineTransform)previewImageOrientationTransform;
-- (CGSize)sizeByCroppingSize:(CGSize)a3;
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4;
-- (id)generateHardLinkURLIfNecessaryForURL:(id)a3;
+- (CGSize)sizeByCroppingSize:(CGSize)size;
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content;
+- (id)generateHardLinkURLIfNecessaryForURL:(id)l;
 - (id)previewImageTypeUTI;
 - (id)previewItemTitle;
 - (id)saveURL;
@@ -23,16 +23,16 @@
 
 - (BOOL)shouldCropImage
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  [v2 croppingQuadBottomLeftX];
-  if (fabs(v3) >= 0.00999999978 || ([v2 croppingQuadBottomLeftY], fabs(v4) >= 0.00999999978) || (objc_msgSend(v2, "croppingQuadBottomRightX"), fabs(v5 + -1.0) >= 0.00999999978) || (objc_msgSend(v2, "croppingQuadBottomRightY"), fabs(v6) >= 0.00999999978) || (objc_msgSend(v2, "croppingQuadTopLeftX"), fabs(v7) >= 0.00999999978) || (objc_msgSend(v2, "croppingQuadTopLeftY"), fabs(v8 + -1.0) >= 0.00999999978) || (objc_msgSend(v2, "croppingQuadTopRightX"), fabs(v9 + -1.0) >= 0.00999999978))
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment croppingQuadBottomLeftX];
+  if (fabs(v3) >= 0.00999999978 || ([attachment croppingQuadBottomLeftY], fabs(v4) >= 0.00999999978) || (objc_msgSend(attachment, "croppingQuadBottomRightX"), fabs(v5 + -1.0) >= 0.00999999978) || (objc_msgSend(attachment, "croppingQuadBottomRightY"), fabs(v6) >= 0.00999999978) || (objc_msgSend(attachment, "croppingQuadTopLeftX"), fabs(v7) >= 0.00999999978) || (objc_msgSend(attachment, "croppingQuadTopLeftY"), fabs(v8 + -1.0) >= 0.00999999978) || (objc_msgSend(attachment, "croppingQuadTopRightX"), fabs(v9 + -1.0) >= 0.00999999978))
   {
     v11 = 1;
   }
 
   else
   {
-    [v2 croppingQuadTopRightY];
+    [attachment croppingQuadTopRightY];
     v11 = fabs(v10 + -1.0) >= 0.00999999978;
   }
 
@@ -41,88 +41,88 @@
 
 - (BOOL)needsFullSizePreview
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  if ([v3 imageFilterType])
+  attachment = [(ICAttachmentModel *)self attachment];
+  if ([attachment imageFilterType])
   {
-    v4 = 1;
+    shouldCropImage = 1;
   }
 
   else
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 markupModelData];
-    if ([v6 length])
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    markupModelData = [attachment2 markupModelData];
+    if ([markupModelData length])
     {
-      v4 = 1;
+      shouldCropImage = 1;
     }
 
     else
     {
-      v7 = [(ICAttachmentModel *)self attachment];
-      if ([v7 orientation])
+      attachment3 = [(ICAttachmentModel *)self attachment];
+      if ([attachment3 orientation])
       {
-        v4 = 1;
+        shouldCropImage = 1;
       }
 
       else
       {
-        v4 = [(ICAttachmentImageModel *)self shouldCropImage];
+        shouldCropImage = [(ICAttachmentImageModel *)self shouldCropImage];
       }
     }
   }
 
-  return v4;
+  return shouldCropImage;
 }
 
 - (id)previewImageTypeUTI
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 isChildOfDocumentGallery];
+  attachment = [(ICAttachmentModel *)self attachment];
+  isChildOfDocumentGallery = [attachment isChildOfDocumentGallery];
 
-  if (v4)
+  if (isChildOfDocumentGallery)
   {
-    v5 = [*MEMORY[0x277CE1DC0] identifier];
+    identifier = [*MEMORY[0x277CE1DC0] identifier];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICAttachmentImageModel;
-    v5 = [(ICAttachmentModel *)&v7 previewImageTypeUTI];
+    identifier = [(ICAttachmentModel *)&v7 previewImageTypeUTI];
   }
 
-  return v5;
+  return identifier;
 }
 
 - (id)previewItemTitle
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 isChildOfDocumentGallery];
+  attachment = [(ICAttachmentModel *)self attachment];
+  isChildOfDocumentGallery = [attachment isChildOfDocumentGallery];
 
-  if (v4)
+  if (isChildOfDocumentGallery)
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 parentAttachment];
-    v7 = [v6 attachmentModel];
-    v8 = [(ICAttachmentModel *)self attachment];
-    v9 = [v7 titleForSubAttachment:v8];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    parentAttachment = [attachment2 parentAttachment];
+    attachmentModel = [parentAttachment attachmentModel];
+    attachment3 = [(ICAttachmentModel *)self attachment];
+    v9 = [attachmentModel titleForSubAttachment:attachment3];
 
     if (v9)
     {
       goto LABEL_6;
     }
 
-    v10 = __ICLocalizedFrameworkString_impl(@"Scan", @"Scan", 0, 1);
+    previewItemTitle = __ICLocalizedFrameworkString_impl(@"Scan", @"Scan", 0, 1);
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = ICAttachmentImageModel;
-    v10 = [(ICAttachmentModel *)&v12 previewItemTitle];
+    previewItemTitle = [(ICAttachmentModel *)&v12 previewItemTitle];
   }
 
-  v9 = v10;
+  v9 = previewItemTitle;
 LABEL_6:
 
   return v9;
@@ -137,12 +137,12 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(ICAttachmentModel *)self attachment];
-  [v3 sizeWidth];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment sizeWidth];
   if (v4 >= 50.0)
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    [v6 sizeHeight];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    [attachment2 sizeHeight];
     v5 = v7 >= 50.0;
   }
 
@@ -162,15 +162,15 @@ LABEL_6:
   v11 = __Block_byref_object_copy__54;
   v12 = __Block_byref_object_dispose__54;
   v13 = 0;
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ICAttachmentImageModel_saveURL__block_invoke;
   v7[3] = &unk_278194D68;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -218,19 +218,19 @@ void __33__ICAttachmentImageModel_saveURL__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__ICAttachmentImageModel_canSaveURL__block_invoke;
   v6[3] = &unk_278194D68;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(attachment) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return attachment;
 }
 
 void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
@@ -251,20 +251,20 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
   }
 }
 
-- (id)generateHardLinkURLIfNecessaryForURL:(id)a3
+- (id)generateHardLinkURLIfNecessaryForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 isChildOfDocumentGallery];
+  lCopy = l;
+  attachment = [(ICAttachmentModel *)self attachment];
+  isChildOfDocumentGallery = [attachment isChildOfDocumentGallery];
 
-  if (v6)
+  if (isChildOfDocumentGallery)
   {
-    v7 = [(ICAttachmentImageModel *)self previewItemTitle];
-    if (v7)
+    previewItemTitle = [(ICAttachmentImageModel *)self previewItemTitle];
+    if (previewItemTitle)
     {
       v10.receiver = self;
       v10.super_class = ICAttachmentImageModel;
-      v8 = [(ICAttachmentModel *)&v10 generateHardLinkURLIfNecessaryForURL:v4 withFileName:v7];
+      v8 = [(ICAttachmentModel *)&v10 generateHardLinkURLIfNecessaryForURL:lCopy withFileName:previewItemTitle];
     }
 
     else
@@ -277,7 +277,7 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
   {
     v11.receiver = self;
     v11.super_class = ICAttachmentImageModel;
-    v8 = [(ICAttachmentModel *)&v11 generateHardLinkURLIfNecessaryForURL:v4];
+    v8 = [(ICAttachmentModel *)&v11 generateHardLinkURLIfNecessaryForURL:lCopy];
   }
 
   return v8;
@@ -285,24 +285,24 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
 
 - (BOOL)supportsOCR
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 isPasswordProtected];
+  attachment = [(ICAttachmentModel *)self attachment];
+  isPasswordProtected = [attachment isPasswordProtected];
 
-  return v3 ^ 1;
+  return isPasswordProtected ^ 1;
 }
 
 - (BOOL)supportsImageClassification
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  if ([v3 isPasswordProtected])
+  attachment = [(ICAttachmentModel *)self attachment];
+  if ([attachment isPasswordProtected])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v4 = [v5 attachmentType] == 3;
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    v4 = [attachment2 attachmentType] == 3;
   }
 
   return v4;
@@ -318,16 +318,16 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
 
 - (void)addLocation
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 media];
-  v5 = [v4 isValid];
+  attachment = [(ICAttachmentModel *)self attachment];
+  media = [attachment media];
+  isValid = [media isValid];
 
-  if (v5)
+  if (isValid)
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    v7 = [v6 media];
-    v8 = [v7 mediaURL];
-    v9 = CGImageSourceCreateWithURL(v8, 0);
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    media2 = [attachment2 media];
+    mediaURL = [media2 mediaURL];
+    v9 = CGImageSourceCreateWithURL(mediaURL, 0);
 
     if (v9)
     {
@@ -357,8 +357,8 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
             v20 = -v20;
           }
 
-          v21 = [(ICAttachmentModel *)self attachment];
-          v22 = [v21 addLocationWithLatitude:v18 longitude:v20];
+          attachment3 = [(ICAttachmentModel *)self attachment];
+          v22 = [attachment3 addLocationWithLatitude:v18 longitude:v20];
         }
       }
 
@@ -369,28 +369,28 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
 
 - (void)updateAttachmentSize
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 isPasswordProtected];
+  attachment = [(ICAttachmentModel *)self attachment];
+  isPasswordProtected = [attachment isPasswordProtected];
 
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 media];
-  v7 = v6;
-  if (v4)
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  media = [attachment2 media];
+  v7 = media;
+  if (isPasswordProtected)
   {
-    v8 = [v6 isAuthenticated];
+    isAuthenticated = [media isAuthenticated];
 
-    if (!v8)
+    if (!isAuthenticated)
     {
       return;
     }
 
-    v9 = [(ICAttachmentModel *)self attachment];
-    v10 = [v9 media];
-    v11 = [v10 decryptedData];
+    attachment3 = [(ICAttachmentModel *)self attachment];
+    media2 = [attachment3 media];
+    decryptedData = [media2 decryptedData];
 
-    if (v11)
+    if (decryptedData)
     {
-      v12 = CGImageSourceCreateWithData(v11, 0);
+      v12 = CGImageSourceCreateWithData(decryptedData, 0);
     }
 
     else
@@ -401,17 +401,17 @@ void __36__ICAttachmentImageModel_canSaveURL__block_invoke(uint64_t a1)
 
   else
   {
-    v13 = [v6 mediaURL];
+    mediaURL = [media mediaURL];
 
-    if (!v13)
+    if (!mediaURL)
     {
       return;
     }
 
-    v11 = [(ICAttachmentModel *)self attachment];
-    v14 = [(__CFData *)v11 media];
-    v15 = [v14 mediaURL];
-    v12 = CGImageSourceCreateWithURL(v15, 0);
+    decryptedData = [(ICAttachmentModel *)self attachment];
+    media3 = [(__CFData *)decryptedData media];
+    mediaURL2 = [media3 mediaURL];
+    v12 = CGImageSourceCreateWithURL(mediaURL2, 0);
   }
 
   if (v12)
@@ -480,8 +480,8 @@ LABEL_40:
     v34 = v33;
     if (v33)
     {
-      v35 = [v33 integerValue];
-      if (v35 <= 4)
+      integerValue = [v33 integerValue];
+      if (integerValue <= 4)
       {
         v36 = v24;
       }
@@ -491,7 +491,7 @@ LABEL_40:
         v36 = v22;
       }
 
-      if (v35 > 4)
+      if (integerValue > 4)
       {
         v22 = v24;
       }
@@ -499,10 +499,10 @@ LABEL_40:
       v24 = v36;
     }
 
-    v37 = [(ICAttachmentModel *)self attachment];
-    v38 = [v37 orientation];
+    attachment4 = [(ICAttachmentModel *)self attachment];
+    orientation = [attachment4 orientation];
 
-    if (v38 <= 7 && ((1 << v38) & 0xCC) != 0)
+    if (orientation <= 7 && ((1 << orientation) & 0xCC) != 0)
     {
       v39 = v22;
     }
@@ -513,18 +513,18 @@ LABEL_40:
       v24 = v22;
     }
 
-    v40 = [(ICAttachmentModel *)self attachment];
-    [v40 sizeWidth];
+    attachment5 = [(ICAttachmentModel *)self attachment];
+    [attachment5 sizeWidth];
     v42 = v41;
 
     if (v42 != v24)
     {
-      v43 = [(ICAttachmentModel *)self attachment];
-      [v43 setSizeWidth:v24];
+      attachment6 = [(ICAttachmentModel *)self attachment];
+      [attachment6 setSizeWidth:v24];
     }
 
-    v44 = [(ICAttachmentModel *)self attachment];
-    [v44 sizeHeight];
+    attachment7 = [(ICAttachmentModel *)self attachment];
+    [attachment7 sizeHeight];
     v46 = v45;
 
     if (v46 == v39)
@@ -539,51 +539,51 @@ LABEL_39:
 
     else
     {
-      v47 = [(ICAttachmentModel *)self attachment];
-      [v47 setSizeHeight:v39];
+      attachment8 = [(ICAttachmentModel *)self attachment];
+      [attachment8 setSizeHeight:v39];
     }
 
-    v48 = [(ICAttachmentModel *)self attachment];
-    [v48 updateChangeCountWithReason:@"Updated attachment size"];
+    attachment9 = [(ICAttachmentModel *)self attachment];
+    [attachment9 updateChangeCountWithReason:@"Updated attachment size"];
 
     goto LABEL_39;
   }
 }
 
-- (CGSize)sizeByCroppingSize:(CGSize)a3
+- (CGSize)sizeByCroppingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ICAttachmentModel *)self attachment];
-  [v6 croppingQuadBottomLeftX];
+  height = size.height;
+  width = size.width;
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment croppingQuadBottomLeftX];
   v8 = width * v7;
 
-  v9 = [(ICAttachmentModel *)self attachment];
-  [v9 croppingQuadBottomLeftY];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  [attachment2 croppingQuadBottomLeftY];
   v11 = height * v10;
 
-  v12 = [(ICAttachmentModel *)self attachment];
-  [v12 croppingQuadBottomRightX];
+  attachment3 = [(ICAttachmentModel *)self attachment];
+  [attachment3 croppingQuadBottomRightX];
   v14 = width * v13;
 
-  v15 = [(ICAttachmentModel *)self attachment];
-  [v15 croppingQuadBottomRightY];
+  attachment4 = [(ICAttachmentModel *)self attachment];
+  [attachment4 croppingQuadBottomRightY];
   v17 = height * v16;
 
-  v18 = [(ICAttachmentModel *)self attachment];
-  [v18 croppingQuadTopLeftX];
+  attachment5 = [(ICAttachmentModel *)self attachment];
+  [attachment5 croppingQuadTopLeftX];
   v20 = width * v19;
 
-  v21 = [(ICAttachmentModel *)self attachment];
-  [v21 croppingQuadTopLeftY];
+  attachment6 = [(ICAttachmentModel *)self attachment];
+  [attachment6 croppingQuadTopLeftY];
   v23 = height * v22;
 
-  v24 = [(ICAttachmentModel *)self attachment];
-  [v24 croppingQuadTopRightX];
+  attachment7 = [(ICAttachmentModel *)self attachment];
+  [attachment7 croppingQuadTopRightX];
   v26 = width * v25;
 
-  v27 = [(ICAttachmentModel *)self attachment];
-  [v27 croppingQuadTopRightY];
+  attachment8 = [(ICAttachmentModel *)self attachment];
+  [attachment8 croppingQuadTopRightY];
   v29 = height * v28;
 
   v30 = sqrt((v23 - v29) * (v23 - v29) + (v20 - v26) * (v20 - v26));
@@ -639,14 +639,14 @@ LABEL_39:
 - (CGAffineTransform)previewImageOrientationTransform
 {
   memset(&v14, 0, sizeof(v14));
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 orientation];
-  v7 = [(ICAttachmentModel *)self attachment];
-  [v7 sizeWidth];
+  attachment = [(ICAttachmentModel *)self attachment];
+  orientation = [attachment orientation];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  [attachment2 sizeWidth];
   v9 = v8;
-  v10 = [(ICAttachmentModel *)self attachment];
-  [v10 sizeHeight];
-  ICTransformFromImageOrientation(v6, &v14, v9, v11);
+  attachment3 = [(ICAttachmentModel *)self attachment];
+  [attachment3 sizeHeight];
+  ICTransformFromImageOrientation(orientation, &v14, v9, v11);
 
   v13 = v14;
   return CGAffineTransformInvert(retstr, &v13);
@@ -654,41 +654,41 @@ LABEL_39:
 
 - (int64_t)previewImageOrientation
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 orientation];
+  attachment = [(ICAttachmentModel *)self attachment];
+  orientation = [attachment orientation];
 
-  return v3;
+  return orientation;
 }
 
 - (BOOL)shouldUsePlaceholderBoundsIfNecessary
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  if ([v3 fileSize])
+  attachment = [(ICAttachmentModel *)self attachment];
+  if ([attachment fileSize])
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 typeUTI];
-    v4 = [v6 isEqual:@"public.image"] ^ 1;
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    typeUTI = [attachment2 typeUTI];
+    v4 = [typeUTI isEqual:@"public.image"] ^ 1;
   }
 
   return v4;
 }
 
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content
 {
-  *a3 = @"img";
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 media];
-  v7 = [v6 data];
+  *name = @"img";
+  attachment = [(ICAttachmentModel *)self attachment];
+  media = [attachment media];
+  data = [media data];
 
-  v8 = [v7 base64EncodedStringWithOptions:0];
-  v9 = [(ICAttachmentModel *)self attachment];
-  v10 = [v9 typeUTI];
-  v11 = [ICAttachment mimeTypeFromUTI:v10];
+  v8 = [data base64EncodedStringWithOptions:0];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  typeUTI = [attachment2 typeUTI];
+  v11 = [ICAttachment mimeTypeFromUTI:typeUTI];
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"style=max-width: 100%% max-height: 100%%; src=data:%@;base64, %@", v11, v8];;
 

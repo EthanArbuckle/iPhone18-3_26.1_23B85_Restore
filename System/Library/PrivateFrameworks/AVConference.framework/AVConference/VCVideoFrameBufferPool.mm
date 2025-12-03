@@ -1,13 +1,13 @@
 @interface VCVideoFrameBufferPool
-- (BOOL)addFrame:(__CVBuffer *)a3 time:(int64_t)a4;
-- (BOOL)releaseFrameWithTime:(int64_t)a3;
-- (VCVideoFrameBufferPool)initWithCapacity:(int)a3;
+- (BOOL)addFrame:(__CVBuffer *)frame time:(int64_t)time;
+- (BOOL)releaseFrameWithTime:(int64_t)time;
+- (VCVideoFrameBufferPool)initWithCapacity:(int)capacity;
 - (void)dealloc;
 @end
 
 @implementation VCVideoFrameBufferPool
 
-- (VCVideoFrameBufferPool)initWithCapacity:(int)a3
+- (VCVideoFrameBufferPool)initWithCapacity:(int)capacity
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -16,8 +16,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxBufferCount = a3;
-    v4->_bufferPool = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+    v4->_maxBufferCount = capacity;
+    v4->_bufferPool = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
   }
 
   return v5;
@@ -32,7 +32,7 @@
   [(VCVideoFrameBufferPool *)&v3 dealloc];
 }
 
-- (BOOL)addFrame:(__CVBuffer *)a3 time:(int64_t)a4
+- (BOOL)addFrame:(__CVBuffer *)frame time:(int64_t)time
 {
   v7 = [(NSMutableDictionary *)self->_bufferPool count];
   maxBufferCount = self->_maxBufferCount;
@@ -51,18 +51,18 @@
 
   else
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_bufferPool, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithLongLong:a4]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_bufferPool, "setObject:forKeyedSubscript:", frame, [MEMORY[0x1E696AD98] numberWithLongLong:time]);
   }
 
   return maxBufferCount != v7;
 }
 
-- (BOOL)releaseFrameWithTime:(int64_t)a3
+- (BOOL)releaseFrameWithTime:(int64_t)time
 {
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_bufferPool, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithLongLong:?]);
   if (v5)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_bufferPool, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithLongLong:a3]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_bufferPool, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithLongLong:time]);
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -71,7 +71,7 @@
     v7 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCVideoFrameBufferPool *)v6 releaseFrameWithTime:a3, v7];
+      [(VCVideoFrameBufferPool *)v6 releaseFrameWithTime:time, v7];
     }
   }
 

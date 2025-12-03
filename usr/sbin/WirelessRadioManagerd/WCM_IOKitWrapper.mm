@@ -1,6 +1,6 @@
 @interface WCM_IOKitWrapper
 - (WCM_IOKitWrapper)init;
-- (WCM_IOKitWrapper)initWithPlatformId:(unint64_t)a3;
+- (WCM_IOKitWrapper)initWithPlatformId:(unint64_t)id;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)registerIOkitStateEvent;
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (WCM_IOKitWrapper)initWithPlatformId:(unint64_t)a3
+- (WCM_IOKitWrapper)initWithPlatformId:(unint64_t)id
 {
   v7.receiver = self;
   v7.super_class = WCM_IOKitWrapper;
@@ -38,7 +38,7 @@
     sub_100004250(cntrl);
   }
 
-  v4->mPlatformId = a3;
+  v4->mPlatformId = id;
   return v4;
 }
 

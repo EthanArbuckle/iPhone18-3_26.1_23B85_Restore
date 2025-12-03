@@ -1,28 +1,28 @@
 @interface CKKSSOSPeer
-- (BOOL)matchesPeer:(id)a3;
-- (BOOL)shouldHaveView:(id)a3;
-- (CKKSSOSPeer)initWithCoder:(id)a3;
-- (CKKSSOSPeer)initWithSOSPeerID:(id)a3 encryptionPublicKey:(id)a4 signingPublicKey:(id)a5 viewList:(id)a6;
+- (BOOL)matchesPeer:(id)peer;
+- (BOOL)shouldHaveView:(id)view;
+- (CKKSSOSPeer)initWithCoder:(id)coder;
+- (CKKSSOSPeer)initWithSOSPeerID:(id)d encryptionPublicKey:(id)key signingPublicKey:(id)publicKey viewList:(id)list;
 - (NSString)description;
 - (NSString)peerID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKKSSOSPeer
 
-- (CKKSSOSPeer)initWithCoder:(id)a3
+- (CKKSSOSPeer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CKKSSOSPeer;
   v5 = [(CKKSSOSPeer *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spid"];
     spid = v5->_spid;
     v5->_spid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptionKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptionKey"];
     if (v8)
     {
       v9 = [_SFECPublicKey keyWithSubjectPublicKeyInfo:v8];
@@ -30,7 +30,7 @@
       v5->_publicEncryptionKey = v9;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signingKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signingKey"];
     if (v11)
     {
       v12 = [_SFECPublicKey keyWithSubjectPublicKeyInfo:v11];
@@ -42,38 +42,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKKSSOSPeer *)self spid];
-  [v4 encodeObject:v5 forKey:@"spid"];
+  coderCopy = coder;
+  spid = [(CKKSSOSPeer *)self spid];
+  [coderCopy encodeObject:spid forKey:@"spid"];
 
-  v6 = [(CKKSSOSPeer *)self publicEncryptionKey];
-  v7 = [v6 encodeSubjectPublicKeyInfo];
-  [v4 encodeObject:v7 forKey:@"encryptionKey"];
+  publicEncryptionKey = [(CKKSSOSPeer *)self publicEncryptionKey];
+  encodeSubjectPublicKeyInfo = [publicEncryptionKey encodeSubjectPublicKeyInfo];
+  [coderCopy encodeObject:encodeSubjectPublicKeyInfo forKey:@"encryptionKey"];
 
-  v9 = [(CKKSSOSPeer *)self publicSigningKey];
-  v8 = [v9 encodeSubjectPublicKeyInfo];
-  [v4 encodeObject:v8 forKey:@"signingKey"];
+  publicSigningKey = [(CKKSSOSPeer *)self publicSigningKey];
+  encodeSubjectPublicKeyInfo2 = [publicSigningKey encodeSubjectPublicKeyInfo];
+  [coderCopy encodeObject:encodeSubjectPublicKeyInfo2 forKey:@"signingKey"];
 }
 
-- (BOOL)shouldHaveView:(id)a3
+- (BOOL)shouldHaveView:(id)view
 {
-  v4 = a3;
-  v5 = [(CKKSSOSPeer *)self viewList];
-  v6 = [v5 containsObject:v4];
+  viewCopy = view;
+  viewList = [(CKKSSOSPeer *)self viewList];
+  v6 = [viewList containsObject:viewCopy];
 
   return v6;
 }
 
-- (BOOL)matchesPeer:(id)a3
+- (BOOL)matchesPeer:(id)peer
 {
-  v5 = a3;
-  v6 = [(CKKSSOSPeer *)self peerID];
-  if (!v6)
+  peerCopy = peer;
+  peerID = [(CKKSSOSPeer *)self peerID];
+  if (!peerID)
   {
-    v3 = [v5 peerID];
-    if (!v3)
+    peerID2 = [peerCopy peerID];
+    if (!peerID2)
     {
       v9 = 1;
 LABEL_6:
@@ -82,11 +82,11 @@ LABEL_6:
     }
   }
 
-  v7 = [(CKKSSOSPeer *)self peerID];
-  v8 = [v5 peerID];
-  v9 = [v7 isEqualToString:v8];
+  peerID3 = [(CKKSSOSPeer *)self peerID];
+  peerID4 = [peerCopy peerID];
+  v9 = [peerID3 isEqualToString:peerID4];
 
-  if (!v6)
+  if (!peerID)
   {
     goto LABEL_6;
   }
@@ -98,39 +98,39 @@ LABEL_7:
 
 - (NSString)peerID
 {
-  v2 = [(CKKSSOSPeer *)self spid];
-  v3 = [NSString stringWithFormat:@"%@%@", @"spid-", v2];
+  spid = [(CKKSSOSPeer *)self spid];
+  v3 = [NSString stringWithFormat:@"%@%@", @"spid-", spid];
 
   return v3;
 }
 
-- (CKKSSOSPeer)initWithSOSPeerID:(id)a3 encryptionPublicKey:(id)a4 signingPublicKey:(id)a5 viewList:(id)a6
+- (CKKSSOSPeer)initWithSOSPeerID:(id)d encryptionPublicKey:(id)key signingPublicKey:(id)publicKey viewList:(id)list
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  listCopy = list;
   v18.receiver = self;
   v18.super_class = CKKSSOSPeer;
   v14 = [(CKKSSOSPeer *)&v18 init];
   if (v14)
   {
-    if ([v10 hasPrefix:@"spid-"])
+    if ([dCopy hasPrefix:@"spid-"])
     {
-      v15 = [v10 substringFromIndex:{objc_msgSend(@"spid-", "length")}];
+      v15 = [dCopy substringFromIndex:{objc_msgSend(@"spid-", "length")}];
     }
 
     else
     {
-      v15 = v10;
+      v15 = dCopy;
     }
 
     spid = v14->_spid;
     v14->_spid = v15;
 
-    objc_storeStrong(&v14->_publicEncryptionKey, a4);
-    objc_storeStrong(&v14->_publicSigningKey, a5);
-    objc_storeStrong(&v14->_viewList, a6);
+    objc_storeStrong(&v14->_publicEncryptionKey, key);
+    objc_storeStrong(&v14->_publicSigningKey, publicKey);
+    objc_storeStrong(&v14->_viewList, list);
   }
 
   return v14;
@@ -138,12 +138,12 @@ LABEL_7:
 
 - (NSString)description
 {
-  v20 = [(CKKSSOSPeer *)self peerID];
-  v3 = [(CKKSSOSPeer *)self publicEncryptionKey];
-  v4 = [v3 keyData];
-  v5 = [(CKKSSOSPeer *)self publicEncryptionKey];
-  v6 = [v5 keyData];
-  v7 = [v6 length];
+  peerID = [(CKKSSOSPeer *)self peerID];
+  publicEncryptionKey = [(CKKSSOSPeer *)self publicEncryptionKey];
+  keyData = [publicEncryptionKey keyData];
+  publicEncryptionKey2 = [(CKKSSOSPeer *)self publicEncryptionKey];
+  keyData2 = [publicEncryptionKey2 keyData];
+  v7 = [keyData2 length];
 
   if (v7 >= 0x10)
   {
@@ -155,12 +155,12 @@ LABEL_7:
     v8 = v7;
   }
 
-  v9 = [v4 subdataWithRange:{0, v8}];
-  v10 = [(CKKSSOSPeer *)self publicSigningKey];
-  v11 = [v10 keyData];
-  v12 = [(CKKSSOSPeer *)self publicSigningKey];
-  v13 = [v12 keyData];
-  v14 = [v13 length];
+  v9 = [keyData subdataWithRange:{0, v8}];
+  publicSigningKey = [(CKKSSOSPeer *)self publicSigningKey];
+  keyData3 = [publicSigningKey keyData];
+  publicSigningKey2 = [(CKKSSOSPeer *)self publicSigningKey];
+  keyData4 = [publicSigningKey2 keyData];
+  v14 = [keyData4 length];
 
   if (v14 >= 0x10)
   {
@@ -172,9 +172,9 @@ LABEL_7:
     v15 = v14;
   }
 
-  v16 = [v11 subdataWithRange:{0, v15}];
-  v17 = [(CKKSSOSPeer *)self viewList];
-  v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<CKKSSOSPeer(%@): pubEnc:%@ pubSign:%@ views:%d>", v20, v9, v16, [v17 count]);
+  v16 = [keyData3 subdataWithRange:{0, v15}];
+  viewList = [(CKKSSOSPeer *)self viewList];
+  v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<CKKSSOSPeer(%@): pubEnc:%@ pubSign:%@ views:%d>", peerID, v9, v16, [viewList count]);
 
   return v18;
 }

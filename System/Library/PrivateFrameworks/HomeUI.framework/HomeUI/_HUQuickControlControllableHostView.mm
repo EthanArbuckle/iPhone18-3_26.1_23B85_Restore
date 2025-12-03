@@ -1,20 +1,20 @@
 @interface _HUQuickControlControllableHostView
 - (HUQuickControlViewInteractionDelegate)interactionDelegate;
-- (_HUQuickControlControllableHostView)initWithProfile:(id)a3;
+- (_HUQuickControlControllableHostView)initWithProfile:(id)profile;
 @end
 
 @implementation _HUQuickControlControllableHostView
 
-- (_HUQuickControlControllableHostView)initWithProfile:(id)a3
+- (_HUQuickControlControllableHostView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = _HUQuickControlControllableHostView;
   v6 = [(_HUQuickControlControllableHostView *)&v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v8 = [MEMORY[0x277D26718] materialViewWithRecipe:4 configuration:1];
     backgroundView = v7->_backgroundView;
     v7->_backgroundView = v8;

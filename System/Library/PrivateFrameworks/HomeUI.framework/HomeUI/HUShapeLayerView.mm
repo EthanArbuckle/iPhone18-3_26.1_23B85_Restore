@@ -1,26 +1,26 @@
 @interface HUShapeLayerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (HUShapeLayerView)initWithPathLayoutBlock:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (HUShapeLayerView)initWithPathLayoutBlock:(id)block;
 - (UIColor)fillColor;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setFillColor:(id)a3;
-- (void)setFillColorMatchesTintColor:(BOOL)a3;
+- (void)setFillColor:(id)color;
+- (void)setFillColorMatchesTintColor:(BOOL)color;
 - (void)tintColorDidChange;
 @end
 
 @implementation HUShapeLayerView
 
-- (HUShapeLayerView)initWithPathLayoutBlock:(id)a3
+- (HUShapeLayerView)initWithPathLayoutBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = HUShapeLayerView;
   v5 = [(HUShapeLayerView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HUShapeLayerView *)v5 setPathLayoutBlock:v4];
+    [(HUShapeLayerView *)v5 setPathLayoutBlock:blockCopy];
   }
 
   return v6;
@@ -31,45 +31,45 @@
   v7.receiver = self;
   v7.super_class = HUShapeLayerView;
   [(HUShapeLayerView *)&v7 layoutSubviews];
-  v3 = [(HUShapeLayerView *)self pathLayoutBlock];
+  pathLayoutBlock = [(HUShapeLayerView *)self pathLayoutBlock];
   [(HUShapeLayerView *)self bounds];
-  v4 = v3[2](v3);
-  v5 = [v4 CGPath];
-  v6 = [(HUShapeLayerView *)self layer];
-  [v6 setPath:v5];
+  v4 = pathLayoutBlock[2](pathLayoutBlock);
+  cGPath = [v4 CGPath];
+  layer = [(HUShapeLayerView *)self layer];
+  [layer setPath:cGPath];
 }
 
 - (UIColor)fillColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(HUShapeLayerView *)self layer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "fillColor")}];
+  layer = [(HUShapeLayerView *)self layer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(layer, "fillColor")}];
 
   return v4;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(HUShapeLayerView *)self setFillColorMatchesTintColor:0];
-  v5 = [v4 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  v6 = [(HUShapeLayerView *)self layer];
-  [v6 setFillColor:v5];
+  layer = [(HUShapeLayerView *)self layer];
+  [layer setFillColor:cGColor];
 }
 
-- (void)setFillColorMatchesTintColor:(BOOL)a3
+- (void)setFillColorMatchesTintColor:(BOOL)color
 {
-  if (self->_fillColorMatchesTintColor != a3)
+  if (self->_fillColorMatchesTintColor != color)
   {
-    self->_fillColorMatchesTintColor = a3;
-    if (a3)
+    self->_fillColorMatchesTintColor = color;
+    if (color)
     {
-      v7 = [(HUShapeLayerView *)self tintColor];
-      v4 = v7;
-      v5 = [v7 CGColor];
-      v6 = [(HUShapeLayerView *)self layer];
-      [v6 setFillColor:v5];
+      tintColor = [(HUShapeLayerView *)self tintColor];
+      v4 = tintColor;
+      cGColor = [tintColor CGColor];
+      layer = [(HUShapeLayerView *)self layer];
+      [layer setFillColor:cGColor];
     }
   }
 }
@@ -89,17 +89,17 @@
   [(HUShapeLayerView *)&v6 tintColorDidChange];
   if ([(HUShapeLayerView *)self fillColorMatchesTintColor])
   {
-    v3 = [(HUShapeLayerView *)self tintColor];
-    v4 = [v3 CGColor];
-    v5 = [(HUShapeLayerView *)self layer];
-    [v5 setFillColor:v4];
+    tintColor = [(HUShapeLayerView *)self tintColor];
+    cGColor = [tintColor CGColor];
+    layer = [(HUShapeLayerView *)self layer];
+    [layer setFillColor:cGColor];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = 1;
   }
@@ -108,7 +108,7 @@
   {
     v7.receiver = self;
     v7.super_class = HUShapeLayerView;
-    v5 = [(HUShapeLayerView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(HUShapeLayerView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

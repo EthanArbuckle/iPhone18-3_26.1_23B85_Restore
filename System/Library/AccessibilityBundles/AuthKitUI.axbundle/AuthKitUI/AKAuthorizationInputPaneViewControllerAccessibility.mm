@@ -10,10 +10,10 @@
 {
   v4.receiver = self;
   v4.super_class = AKAuthorizationInputPaneViewControllerAccessibility;
-  v2 = [(AKAuthorizationInputPaneViewControllerAccessibility *)&v4 _clearButton];
-  [v2 _setAccessibilityLabelBlock:&__block_literal_global];
+  _clearButton = [(AKAuthorizationInputPaneViewControllerAccessibility *)&v4 _clearButton];
+  [_clearButton _setAccessibilityLabelBlock:&__block_literal_global];
 
-  return v2;
+  return _clearButton;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,13 +25,13 @@
   v7 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __97__AKAuthorizationInputPaneViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v5[3] = &unk_29F2A3150;
   objc_copyWeak(&v6, &location);
-  [v4 _setAccessibilityElementsBlock:v5];
+  [view _setAccessibilityElementsBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

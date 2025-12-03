@@ -1,26 +1,26 @@
 @interface MRDFastSyncGroupSessionParticipant
-- (BOOL)isEqual:(id)a3;
-- (MRDFastSyncGroupSessionParticipant)initWithIdentifier:(id)a3 identity:(id)a4 connected:(BOOL)a5 guest:(BOOL)a6 hidden:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (MRDFastSyncGroupSessionParticipant)initWithIdentifier:(id)identifier identity:(id)identity connected:(BOOL)connected guest:(BOOL)guest hidden:(BOOL)hidden;
 - (NSString)description;
 @end
 
 @implementation MRDFastSyncGroupSessionParticipant
 
-- (MRDFastSyncGroupSessionParticipant)initWithIdentifier:(id)a3 identity:(id)a4 connected:(BOOL)a5 guest:(BOOL)a6 hidden:(BOOL)a7
+- (MRDFastSyncGroupSessionParticipant)initWithIdentifier:(id)identifier identity:(id)identity connected:(BOOL)connected guest:(BOOL)guest hidden:(BOOL)hidden
 {
-  v13 = a3;
-  v14 = a4;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v18.receiver = self;
   v18.super_class = MRDFastSyncGroupSessionParticipant;
   v15 = [(MRDFastSyncGroupSessionParticipant *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_identity, a4);
-    v16->_connected = a5;
-    v16->_guest = a6;
-    v16->_hidden = a7;
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_identity, identity);
+    v16->_connected = connected;
+    v16->_guest = guest;
+    v16->_hidden = hidden;
   }
 
   return v16;
@@ -30,23 +30,23 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MRDFastSyncGroupSessionParticipant *)self identifier];
-  v6 = [(MRDFastSyncGroupSessionParticipant *)self identity];
+  identifier = [(MRDFastSyncGroupSessionParticipant *)self identifier];
+  identity = [(MRDFastSyncGroupSessionParticipant *)self identity];
   v7 = [NSNumber numberWithBool:[(MRDFastSyncGroupSessionParticipant *)self connected]];
-  v8 = [v7 stringValue];
+  stringValue = [v7 stringValue];
   v9 = [NSNumber numberWithBool:[(MRDFastSyncGroupSessionParticipant *)self guest]];
-  v10 = [v9 stringValue];
+  stringValue2 = [v9 stringValue];
   v11 = [NSNumber numberWithBool:[(MRDFastSyncGroupSessionParticipant *)self hidden]];
-  v12 = [v11 stringValue];
-  v13 = [v3 initWithFormat:@"<%@: identifier=%@, identity=%@, connected=%@, guest=%@, hidden=%@>", v4, v5, v6, v8, v10, v12];
+  stringValue3 = [v11 stringValue];
+  v13 = [v3 initWithFormat:@"<%@: identifier=%@, identity=%@, connected=%@, guest=%@, hidden=%@>", v4, identifier, identity, stringValue, stringValue2, stringValue3];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -57,7 +57,7 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = v4->_identifier;
+      v6 = equalCopy->_identifier;
       v7 = identifier;
       v8 = v7;
       if (v7 == v6)

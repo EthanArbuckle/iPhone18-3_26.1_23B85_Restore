@@ -1,23 +1,23 @@
 @interface HKFeatureAvailabilityOnboardingEligibilityObservingRemoteDeviceRequirement
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityOnboardingEligibilityObservingRemoteDeviceRequirement
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
-  v8 = [v7 devicePairingAndSwitchingNotificationDataSource];
+  observerCopy = observer;
+  sourceCopy = source;
+  objc_initWeak(&location, sourceCopy);
+  devicePairingAndSwitchingNotificationDataSource = [sourceCopy devicePairingAndSwitchingNotificationDataSource];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __109__HKFeatureAvailabilityOnboardingEligibilityObservingRemoteDeviceRequirement_registerObserver_forDataSource___block_invoke;
   v9[3] = &unk_1E7379DC8;
   objc_copyWeak(&v10, &location);
   v9[4] = self;
-  [v8 registerObserverForDevicePairingChanges:v6 block:v9];
+  [devicePairingAndSwitchingNotificationDataSource registerObserverForDevicePairingChanges:observerCopy block:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -51,11 +51,11 @@ void __109__HKFeatureAvailabilityOnboardingEligibilityObservingRemoteDeviceRequi
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v5 = a3;
-  v6 = [a4 devicePairingAndSwitchingNotificationDataSource];
-  [v6 unregisterObserverForDevicePairingChanges:v5];
+  observerCopy = observer;
+  devicePairingAndSwitchingNotificationDataSource = [source devicePairingAndSwitchingNotificationDataSource];
+  [devicePairingAndSwitchingNotificationDataSource unregisterObserverForDevicePairingChanges:observerCopy];
 }
 
 void __109__HKFeatureAvailabilityOnboardingEligibilityObservingRemoteDeviceRequirement_registerObserver_forDataSource___block_invoke_cold_1(uint64_t *a1, uint64_t a2, NSObject *a3)

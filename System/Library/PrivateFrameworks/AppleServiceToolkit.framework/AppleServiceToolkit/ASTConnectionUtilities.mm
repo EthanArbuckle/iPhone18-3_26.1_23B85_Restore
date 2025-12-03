@@ -1,24 +1,24 @@
 @interface ASTConnectionUtilities
-+ (BOOL)didEncounterNetworkDisconnectionError:(id)a3;
++ (BOOL)didEncounterNetworkDisconnectionError:(id)error;
 + (BOOL)isGzipEnabled;
-+ (BOOL)isValidResponse:(id)a3;
++ (BOOL)isValidResponse:(id)response;
 + (BOOL)relaxTimeouts;
-+ (BOOL)trustIsValidWithProtectionSpace:(id)a3 rootOfTrust:(unint64_t)a4;
++ (BOOL)trustIsValidWithProtectionSpace:(id)space rootOfTrust:(unint64_t)trust;
 + (BOOL)useChunkedTransferEncoding;
-+ (id)MD5HeaderValueForTask:(id)a3;
++ (id)MD5HeaderValueForTask:(id)task;
 + (id)getServerLoggingSelection;
 + (unint64_t)allowCellularSizeThreshold;
 @end
 
 @implementation ASTConnectionUtilities
 
-+ (BOOL)didEncounterNetworkDisconnectionError:(id)a3
++ (BOOL)didEncounterNetworkDisconnectionError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 code] == -1009 || objc_msgSend(v4, "code") == -1005 || objc_msgSend(v4, "code") == -1004 || objc_msgSend(v4, "code") == -1001;
+    v5 = [errorCopy code] == -1009 || objc_msgSend(v4, "code") == -1005 || objc_msgSend(v4, "code") == -1004 || objc_msgSend(v4, "code") == -1001;
   }
 
   else
@@ -29,10 +29,10 @@
   return v5;
 }
 
-+ (BOOL)isValidResponse:(id)a3
++ (BOOL)isValidResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"status"];
+  responseCopy = response;
+  v4 = [responseCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,7 +53,7 @@
     isKindOfClass = 0;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"response"];
+  v7 = [responseCopy objectForKeyedSubscript:@"response"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -61,25 +61,25 @@
     isKindOfClass = [v8 containsObject:v7];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"suites"];
+  v9 = [responseCopy objectForKeyedSubscript:@"suites"];
   if (v9)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"diagnosticEventId"];
+  v10 = [responseCopy objectForKeyedSubscript:@"diagnosticEventId"];
   if (v10)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v21 = [v3 objectForKeyedSubscript:@"archived"];
+  v21 = [responseCopy objectForKeyedSubscript:@"archived"];
   v11 = (v21 != 0) | isKindOfClass;
-  v12 = [v3 objectForKeyedSubscript:@"messages"];
-  v13 = [v3 objectForKeyedSubscript:@"options"];
-  v14 = [v3 objectForKeyedSubscript:@"images"];
+  v12 = [responseCopy objectForKeyedSubscript:@"messages"];
+  v13 = [responseCopy objectForKeyedSubscript:@"options"];
+  v14 = [responseCopy objectForKeyedSubscript:@"images"];
   v15 = v14;
   if (v12 && v13 && v14)
   {
@@ -98,8 +98,8 @@
 
   v16 = v9;
   v23 = v4;
-  v17 = [v3 objectForKeyedSubscript:{@"suiteName", v21}];
-  v18 = [v3 objectForKeyedSubscript:@"components"];
+  v17 = [responseCopy objectForKeyedSubscript:{@"suiteName", v21}];
+  v18 = [responseCopy objectForKeyedSubscript:@"components"];
   v19 = v18;
   if (v17 && v18)
   {
@@ -123,9 +123,9 @@
 {
   CFPreferencesAppSynchronize(@"com.apple.AppleServiceToolkit");
   v2 = CFPreferencesCopyAppValue(@"RelaxTimeouts", @"com.apple.AppleServiceToolkit");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (id)getServerLoggingSelection
@@ -156,25 +156,25 @@ uint64_t __51__ASTConnectionUtilities_getServerLoggingSelection__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)MD5HeaderValueForTask:(id)a3
++ (id)MD5HeaderValueForTask:(id)task
 {
-  v3 = [a3 response];
-  v4 = [v3 allHeaderFields];
-  v5 = [v4 objectForKeyedSubscript:@"AST-file-MD5"];
+  response = [task response];
+  allHeaderFields = [response allHeaderFields];
+  v5 = [allHeaderFields objectForKeyedSubscript:@"AST-file-MD5"];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AST-file-MD5"];
+    v6 = [allHeaderFields objectForKeyedSubscript:@"AST-file-MD5"];
   }
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"Etag"];
+    v7 = [allHeaderFields objectForKeyedSubscript:@"Etag"];
 
     if (v7)
     {
       v8 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@""];
-      v9 = [v4 objectForKeyedSubscript:@"Etag"];
+      v9 = [allHeaderFields objectForKeyedSubscript:@"Etag"];
       v6 = [v9 stringByTrimmingCharactersInSet:v8];
     }
 
@@ -274,11 +274,11 @@ CFIndex __52__ASTConnectionUtilities_allowCellularSizeThreshold__block_invoke()
   return result;
 }
 
-+ (BOOL)trustIsValidWithProtectionSpace:(id)a3 rootOfTrust:(unint64_t)a4
++ (BOOL)trustIsValidWithProtectionSpace:(id)space rootOfTrust:(unint64_t)trust
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  spaceCopy = space;
+  v6 = spaceCopy;
+  if (!spaceCopy)
   {
     v12 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -289,8 +289,8 @@ CFIndex __52__ASTConnectionUtilities_allowCellularSizeThreshold__block_invoke()
     goto LABEL_9;
   }
 
-  v7 = [v5 serverTrust];
-  if (!v7)
+  serverTrust = [spaceCopy serverTrust];
+  if (!serverTrust)
   {
 LABEL_9:
     v13 = ASTLogHandleForCategory(1);
@@ -317,8 +317,8 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v8 = v7;
-  if (a4 - 4 > 0xFFFFFFFFFFFFFFFDLL || ([v6 host], v9 = objc_claimAutoreleasedReturnValue(), AppleAST2Service = SecPolicyCreateAppleAST2Service(), v9, !AppleAST2Service))
+  v8 = serverTrust;
+  if (trust - 4 > 0xFFFFFFFFFFFFFFFDLL || ([v6 host], v9 = objc_claimAutoreleasedReturnValue(), AppleAST2Service = SecPolicyCreateAppleAST2Service(), v9, !AppleAST2Service))
   {
     v14 = 1;
     goto LABEL_13;

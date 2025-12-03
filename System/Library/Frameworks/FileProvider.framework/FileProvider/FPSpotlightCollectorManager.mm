@@ -1,18 +1,18 @@
 @interface FPSpotlightCollectorManager
 + (FPSpotlightCollectorManager)sharedInstance;
-+ (id)_mountPointsFromProviderDomains:(id)a3;
++ (id)_mountPointsFromProviderDomains:(id)domains;
 - (FPSpotlightCollectorManager)init;
 - (NSSet)effectiveCurrentMountPoints;
 - (id)_recursiveDescription;
 - (void)_observeFileProviderDomains;
-- (void)collectorDidFinish:(id)a3;
+- (void)collectorDidFinish:(id)finish;
 - (void)dealloc;
 - (void)disableMountPointQueries;
 - (void)enableMountPointQueries;
-- (void)registerDataSource:(id)a3;
+- (void)registerDataSource:(id)source;
 - (void)resumeCollectors;
 - (void)suspendCollectors;
-- (void)unregisterDataSource:(id)a3;
+- (void)unregisterDataSource:(id)source;
 @end
 
 @implementation FPSpotlightCollectorManager
@@ -31,7 +31,7 @@ uint64_t __45__FPSpotlightCollectorManager_sharedInstance__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __45__FPSpotlightCollectorManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_1 != -1)
   {
     dispatch_once(&sharedInstance_once_1, block);
@@ -91,9 +91,9 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
 
 - (void)_observeFileProviderDomains
 {
-  v3 = [(FPSpotlightCollectorManager *)self providerDomainChangesToken];
+  providerDomainChangesToken = [(FPSpotlightCollectorManager *)self providerDomainChangesToken];
 
-  if (!v3)
+  if (!providerDomainChangesToken)
   {
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E69E9820];
@@ -125,8 +125,8 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(FPSpotlightCollectorManager *)self collectors];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    collectors = [(FPSpotlightCollectorManager *)self collectors];
+    v5 = [collectors countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -138,18 +138,18 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(collectors);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
-          v10 = [(FPSpotlightCollectorManager *)self effectiveCurrentMountPoints];
-          [v9 mountPointsDidChange:v10];
+          effectiveCurrentMountPoints = [(FPSpotlightCollectorManager *)self effectiveCurrentMountPoints];
+          [v9 mountPointsDidChange:effectiveCurrentMountPoints];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [collectors countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -163,8 +163,8 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
 {
   if ([(FPSpotlightCollectorManager *)self areMountQueriesEnabled])
   {
-    v3 = [(FPSpotlightCollectorManager *)self currentMountPoints];
-    v4 = [v3 copy];
+    currentMountPoints = [(FPSpotlightCollectorManager *)self currentMountPoints];
+    v4 = [currentMountPoints copy];
   }
 
   else
@@ -177,12 +177,12 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
 
 - (void)dealloc
 {
-  v3 = [(FPSpotlightCollectorManager *)self providerDomainChangesToken];
+  providerDomainChangesToken = [(FPSpotlightCollectorManager *)self providerDomainChangesToken];
 
-  if (v3)
+  if (providerDomainChangesToken)
   {
-    v4 = [(FPSpotlightCollectorManager *)self providerDomainChangesToken];
-    [FPProviderDomain endMonitoringProviderDomainChanges:v4];
+    providerDomainChangesToken2 = [(FPSpotlightCollectorManager *)self providerDomainChangesToken];
+    [FPProviderDomain endMonitoringProviderDomainChanges:providerDomainChangesToken2];
 
     [(FPSpotlightCollectorManager *)self setProviderDomainChangesToken:0];
   }
@@ -192,59 +192,59 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
   [(FPSpotlightCollectorManager *)&v5 dealloc];
 }
 
-- (void)registerDataSource:(id)a3
+- (void)registerDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 queryDescriptor];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)v6->_collectorByDescriptor objectForKeyedSubscript:v5];
+  sourceCopy = source;
+  queryDescriptor = [sourceCopy queryDescriptor];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableDictionary *)selfCopy->_collectorByDescriptor objectForKeyedSubscript:queryDescriptor];
   if (!v7)
   {
-    v7 = [[FPSpotlightCollector alloc] initWithDescriptor:v5];
-    [(FPSpotlightCollector *)v7 setDelegate:v6];
-    [(NSMutableDictionary *)v6->_collectorByDescriptor setObject:v7 forKeyedSubscript:v5];
+    v7 = [[FPSpotlightCollector alloc] initWithDescriptor:queryDescriptor];
+    [(FPSpotlightCollector *)v7 setDelegate:selfCopy];
+    [(NSMutableDictionary *)selfCopy->_collectorByDescriptor setObject:v7 forKeyedSubscript:queryDescriptor];
   }
 
-  [(FPSpotlightCollector *)v7 addObserver:v4];
+  [(FPSpotlightCollector *)v7 addObserver:sourceCopy];
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [FPSpotlightCollectorManager registerDataSource:];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterDataSource:(id)a3
+- (void)unregisterDataSource:(id)source
 {
-  v5 = a3;
-  v6 = [v5 queryDescriptor];
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_collectorByDescriptor objectForKeyedSubscript:v6];
+  sourceCopy = source;
+  queryDescriptor = [sourceCopy queryDescriptor];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_collectorByDescriptor objectForKeyedSubscript:queryDescriptor];
   if (!v8)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:v7 file:@"FPSpotlightCollectorManager.m" lineNumber:106 description:@"Data source was unregistered but not previously registered"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"FPSpotlightCollectorManager.m" lineNumber:106 description:@"Data source was unregistered but not previously registered"];
   }
 
-  [v8 removeObserver:v5];
+  [v8 removeObserver:sourceCopy];
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [FPSpotlightCollectorManager unregisterDataSource:];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)suspendCollectors
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(FPSpotlightCollectorManager *)v2 collectors];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FPSpotlightCollectorManager *)selfCopy collectors];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -281,16 +281,16 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69E9840];
 }
 
 - (void)resumeCollectors
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(FPSpotlightCollectorManager *)v2 collectors];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FPSpotlightCollectorManager *)selfCopy collectors];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -327,7 +327,7 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -347,8 +347,8 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(FPSpotlightCollectorManager *)self collectors];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    collectors = [(FPSpotlightCollectorManager *)self collectors];
+    v5 = [collectors countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -360,18 +360,18 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(collectors);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
-          v10 = [(FPSpotlightCollectorManager *)self effectiveCurrentMountPoints];
-          [v9 mountPointsDidChange:v10];
+          effectiveCurrentMountPoints = [(FPSpotlightCollectorManager *)self effectiveCurrentMountPoints];
+          [v9 mountPointsDidChange:effectiveCurrentMountPoints];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [collectors countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -381,20 +381,20 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collectorDidFinish:(id)a3
+- (void)collectorDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 queryDescriptor];
-  [(NSMutableDictionary *)v5->_collectorByDescriptor removeObjectForKey:v6];
+  finishCopy = finish;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queryDescriptor = [finishCopy queryDescriptor];
+  [(NSMutableDictionary *)selfCopy->_collectorByDescriptor removeObjectForKey:queryDescriptor];
   v7 = fp_current_or_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [FPSpotlightCollectorManager collectorDidFinish:];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke_12(uint64_t a1)
@@ -440,10 +440,10 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_mountPointsFromProviderDomains:(id)a3
++ (id)_mountPointsFromProviderDomains:(id)domains
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 fp_map:&__block_literal_global_50];
+  v3 = [domains fp_map:&__block_literal_global_50];
   v9[0] = @"FPQueryCollectionDefaultMountPointIdentifier";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v5 = [v4 arrayByAddingObjectsFromArray:v3];
@@ -460,8 +460,8 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
   v43 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(FPSpotlightCollectorManager *)self collectors];
-  v6 = [v4 stringWithFormat:@"Collector Manager: %@ (%ld collectors)\n", self, objc_msgSend(v5, "count")];
+  collectors = [(FPSpotlightCollectorManager *)self collectors];
+  v6 = [v4 stringWithFormat:@"Collector Manager: %@ (%ld collectors)\n", self, objc_msgSend(collectors, "count")];
   [v3 appendString:v6];
 
   v7 = 0x1E696A000uLL;
@@ -486,15 +486,15 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
 
         v32 = v8;
         v9 = *(*(&v37 + 1) + 8 * v8);
-        v10 = [v9 allObservers];
-        v11 = [*(v7 + 3776) stringWithFormat:@"\t\\ Collector: %@ (%ld observers)\n", v9, objc_msgSend(v10, "count")];
+        allObservers = [v9 allObservers];
+        v11 = [*(v7 + 3776) stringWithFormat:@"\t\\ Collector: %@ (%ld observers)\n", v9, objc_msgSend(allObservers, "count")];
         [v3 appendString:v11];
 
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v12 = v10;
+        v12 = allObservers;
         v13 = [v12 countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v13)
         {
@@ -517,17 +517,17 @@ void __58__FPSpotlightCollectorManager__observeFileProviderDomains__block_invoke
                 v19 = [*(v7 + 3776) stringWithFormat:@"\t\t\\ Observer %@\n", v18];
                 [v3 appendString:v19];
 
-                v20 = [v18 delegate];
+                delegate = [v18 delegate];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v22 = [v18 delegate];
+                  delegate2 = [v18 delegate];
                   v23 = *(v7 + 3776);
-                  [v22 items];
+                  [delegate2 items];
                   v25 = v24 = v7;
-                  v26 = [v23 stringWithFormat:@"\t\t\t\\ Collection %@ (%ld items)\n", v22, objc_msgSend(v25, "count")];
+                  v26 = [v23 stringWithFormat:@"\t\t\t\\ Collection %@ (%ld items)\n", delegate2, objc_msgSend(v25, "count")];
                   [v3 appendString:v26];
 
                   v7 = v24;

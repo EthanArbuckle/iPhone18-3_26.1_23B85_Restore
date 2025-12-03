@@ -1,34 +1,34 @@
 @interface LNResolvableInputMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNResolvableInputMetadata)initWithCoder:(id)a3;
-- (LNResolvableInputMetadata)initWithQueryType:(id)a3;
-- (LNResolvableInputMetadata)initWithValueType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNResolvableInputMetadata)initWithCoder:(id)coder;
+- (LNResolvableInputMetadata)initWithQueryType:(id)type;
+- (LNResolvableInputMetadata)initWithValueType:(id)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNResolvableInputMetadata
 
 - (id)description
 {
-  v4 = [(LNResolvableInputMetadata *)self kind];
-  if (v4)
+  kind = [(LNResolvableInputMetadata *)self kind];
+  if (kind)
   {
-    if (v4 != 1)
+    if (kind != 1)
     {
       goto LABEL_6;
     }
 
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(LNResolvableInputMetadata *)self queryType];
-    v7 = [v5 stringWithFormat:@"Query:%@", v6];
+    queryType = [(LNResolvableInputMetadata *)self queryType];
+    v7 = [v5 stringWithFormat:@"Query:%@", queryType];
   }
 
   else
   {
-    v6 = [(LNResolvableInputMetadata *)self valueType];
-    v7 = [v6 description];
+    queryType = [(LNResolvableInputMetadata *)self valueType];
+    v7 = [queryType description];
   }
 
   v2 = v7;
@@ -38,20 +38,20 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNResolvableInputMetadata *)self kind];
-        if (v7 != [(LNResolvableInputMetadata *)v6 kind])
+        kind = [(LNResolvableInputMetadata *)self kind];
+        if (kind != [(LNResolvableInputMetadata *)v6 kind])
         {
           LOBYTE(v13) = 0;
 LABEL_24:
@@ -59,10 +59,10 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v8 = [(LNResolvableInputMetadata *)self queryType];
-        v9 = [(LNResolvableInputMetadata *)v6 queryType];
-        v10 = v8;
-        v11 = v9;
+        queryType = [(LNResolvableInputMetadata *)self queryType];
+        queryType2 = [(LNResolvableInputMetadata *)v6 queryType];
+        v10 = queryType;
+        v11 = queryType2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -89,10 +89,10 @@ LABEL_22:
           }
         }
 
-        v16 = [(LNResolvableInputMetadata *)self valueType];
-        v17 = [(LNResolvableInputMetadata *)v6 valueType];
-        v15 = v16;
-        v18 = v17;
+        valueType = [(LNResolvableInputMetadata *)self valueType];
+        valueType2 = [(LNResolvableInputMetadata *)v6 valueType];
+        v15 = valueType;
+        v18 = valueType2;
         v14 = v18;
         if (v15 == v18)
         {
@@ -135,21 +135,21 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(LNResolvableInputMetadata *)self kind];
-  v4 = [(LNResolvableInputMetadata *)self queryType];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(LNResolvableInputMetadata *)self valueType];
-  v7 = [v6 hash];
+  kind = [(LNResolvableInputMetadata *)self kind];
+  queryType = [(LNResolvableInputMetadata *)self queryType];
+  v5 = [queryType hash] ^ kind;
+  valueType = [(LNResolvableInputMetadata *)self valueType];
+  v7 = [valueType hash];
 
   return v5 ^ v7;
 }
 
-- (LNResolvableInputMetadata)initWithCoder:(id)a3
+- (LNResolvableInputMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"kind"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"kind"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
 
   if (v5 != 1)
   {
@@ -160,7 +160,7 @@ LABEL_25:
     }
 
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -172,30 +172,30 @@ LABEL_7:
   v8 = [(LNResolvableInputMetadata *)self initWithQueryType:v6];
 LABEL_6:
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNResolvableInputMetadata kind](self forKey:{"kind"), @"kind"}];
-  v5 = [(LNResolvableInputMetadata *)self queryType];
-  [v4 encodeObject:v5 forKey:@"queryType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNResolvableInputMetadata kind](self forKey:{"kind"), @"kind"}];
+  queryType = [(LNResolvableInputMetadata *)self queryType];
+  [coderCopy encodeObject:queryType forKey:@"queryType"];
 
-  v6 = [(LNResolvableInputMetadata *)self valueType];
-  [v4 encodeObject:v6 forKey:@"valueType"];
+  valueType = [(LNResolvableInputMetadata *)self valueType];
+  [coderCopy encodeObject:valueType forKey:@"valueType"];
 }
 
-- (LNResolvableInputMetadata)initWithValueType:(id)a3
+- (LNResolvableInputMetadata)initWithValueType:(id)type
 {
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"LNResolvableInputMetadata.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNResolvableInputMetadata.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
   }
 
   v13.receiver = self;
@@ -205,7 +205,7 @@ LABEL_8:
   if (v6)
   {
     v6->_kind = 0;
-    v8 = [v5 copy];
+    v8 = [typeCopy copy];
     valueType = v7->_valueType;
     v7->_valueType = v8;
 
@@ -215,13 +215,13 @@ LABEL_8:
   return v7;
 }
 
-- (LNResolvableInputMetadata)initWithQueryType:(id)a3
+- (LNResolvableInputMetadata)initWithQueryType:(id)type
 {
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"LNResolvableInputMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"queryType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNResolvableInputMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"queryType"}];
   }
 
   v13.receiver = self;
@@ -231,7 +231,7 @@ LABEL_8:
   if (v6)
   {
     v6->_kind = 1;
-    v8 = [v5 copy];
+    v8 = [typeCopy copy];
     queryType = v7->_queryType;
     v7->_queryType = v8;
 

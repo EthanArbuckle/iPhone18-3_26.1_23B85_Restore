@@ -1,8 +1,8 @@
 @interface UNCPushRegistration
-+ (id)pushRegistrationWithEnvironment:(id)a3 tokenIdentifier:(id)a4 token:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (UNCPushRegistration)initWithDictionaryRepresentation:(id)a3;
-- (UNCPushRegistration)initWithEnvironment:(id)a3 tokenIdentifier:(id)a4 token:(id)a5;
++ (id)pushRegistrationWithEnvironment:(id)environment tokenIdentifier:(id)identifier token:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (UNCPushRegistration)initWithDictionaryRepresentation:(id)representation;
+- (UNCPushRegistration)initWithEnvironment:(id)environment tokenIdentifier:(id)identifier token:(id)token;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -12,48 +12,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(UNCPushRegistration *)self environment];
-  [v3 bs_setSafeObject:v4 forKey:@"Environment"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  environment = [(UNCPushRegistration *)self environment];
+  [dictionary bs_setSafeObject:environment forKey:@"Environment"];
 
-  v5 = [(UNCPushRegistration *)self token];
-  [v3 bs_setSafeObject:v5 forKey:@"Token"];
+  token = [(UNCPushRegistration *)self token];
+  [dictionary bs_setSafeObject:token forKey:@"Token"];
 
-  v6 = [(UNCPushRegistration *)self tokenIdentifier];
-  [v3 bs_setSafeObject:v6 forKey:@"TokenIdentifier"];
+  tokenIdentifier = [(UNCPushRegistration *)self tokenIdentifier];
+  [dictionary bs_setSafeObject:tokenIdentifier forKey:@"TokenIdentifier"];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)pushRegistrationWithEnvironment:(id)a3 tokenIdentifier:(id)a4 token:(id)a5
++ (id)pushRegistrationWithEnvironment:(id)environment tokenIdentifier:(id)identifier token:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithEnvironment:v10 tokenIdentifier:v9 token:v8];
+  tokenCopy = token;
+  identifierCopy = identifier;
+  environmentCopy = environment;
+  v11 = [[self alloc] initWithEnvironment:environmentCopy tokenIdentifier:identifierCopy token:tokenCopy];
 
   return v11;
 }
 
-- (UNCPushRegistration)initWithEnvironment:(id)a3 tokenIdentifier:(id)a4 token:(id)a5
+- (UNCPushRegistration)initWithEnvironment:(id)environment tokenIdentifier:(id)identifier token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v19.receiver = self;
   v19.super_class = UNCPushRegistration;
   v11 = [(UNCPushRegistration *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [environmentCopy copy];
     environment = v11->_environment;
     v11->_environment = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     tokenIdentifier = v11->_tokenIdentifier;
     v11->_tokenIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [tokenCopy copy];
     token = v11->_token;
     v11->_token = v16;
   }
@@ -61,12 +61,12 @@
   return v11;
 }
 
-- (UNCPushRegistration)initWithDictionaryRepresentation:(id)a3
+- (UNCPushRegistration)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Environment"];
-  v6 = [v4 objectForKey:@"TokenIdentifier"];
-  v7 = [v4 objectForKey:@"Token"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"Environment"];
+  v6 = [representationCopy objectForKey:@"TokenIdentifier"];
+  v7 = [representationCopy objectForKey:@"Token"];
 
   v8 = [(UNCPushRegistration *)self initWithEnvironment:v5 tokenIdentifier:v6 token:v7];
   return v8;
@@ -75,25 +75,25 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(UNCPushRegistration *)self environment];
-  v5 = [v3 appendObject:v4 withName:@"Environment"];
+  environment = [(UNCPushRegistration *)self environment];
+  v5 = [v3 appendObject:environment withName:@"Environment"];
 
-  v6 = [(UNCPushRegistration *)self tokenIdentifier];
-  v7 = [v3 appendObject:v6 withName:@"TokenIdentifier"];
+  tokenIdentifier = [(UNCPushRegistration *)self tokenIdentifier];
+  v7 = [v3 appendObject:tokenIdentifier withName:@"TokenIdentifier"];
 
-  v8 = [(UNCPushRegistration *)self token];
-  v9 = [v8 debugDescription];
+  token = [(UNCPushRegistration *)self token];
+  v9 = [token debugDescription];
   v10 = [v3 appendObject:v9 withName:@"Token"];
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (!v4)
+  equalCopy = equal;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
@@ -104,8 +104,8 @@
     goto LABEL_6;
   }
 
-  v6 = [(UNCPushRegistration *)self environment];
-  v7 = [v4 environment];
+  environment = [(UNCPushRegistration *)self environment];
+  environment2 = [equalCopy environment];
   v8 = UNEqualObjects();
 
   if (!v8)
@@ -113,14 +113,14 @@
     goto LABEL_6;
   }
 
-  v9 = [(UNCPushRegistration *)self token];
-  v10 = [v4 environment];
+  token = [(UNCPushRegistration *)self token];
+  environment3 = [equalCopy environment];
   v11 = UNEqualObjects();
 
   if (v11)
   {
-    v12 = [(UNCPushRegistration *)self tokenIdentifier];
-    v13 = [v4 environment];
+    tokenIdentifier = [(UNCPushRegistration *)self tokenIdentifier];
+    environment4 = [equalCopy environment];
     v14 = UNEqualObjects();
   }
 
@@ -135,17 +135,17 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(UNCPushRegistration *)self environment];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  environment = [(UNCPushRegistration *)self environment];
+  v5 = [builder appendObject:environment];
 
-  v6 = [(UNCPushRegistration *)self token];
-  v7 = [v3 appendObject:v6];
+  token = [(UNCPushRegistration *)self token];
+  v7 = [builder appendObject:token];
 
-  v8 = [(UNCPushRegistration *)self tokenIdentifier];
-  v9 = [v3 appendObject:v8];
+  tokenIdentifier = [(UNCPushRegistration *)self tokenIdentifier];
+  v9 = [builder appendObject:tokenIdentifier];
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   return v10;
 }
 

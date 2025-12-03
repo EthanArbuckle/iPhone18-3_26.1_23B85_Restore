@@ -5,19 +5,19 @@
 - (NSArray)commands;
 - (NSString)actionString;
 - (_TtC8Freeform15CRLCommandGroup)init;
-- (_TtC8Freeform15CRLCommandGroup)initWithCommands:(id)a3;
-- (void)addCommand:(id)a3;
-- (void)addCommandIfNotNil:(id)a3;
-- (void)addCommands:(id)a3;
-- (void)setActionString:(id)a3;
-- (void)setCommands:(id)a3;
+- (_TtC8Freeform15CRLCommandGroup)initWithCommands:(id)commands;
+- (void)addCommand:(id)command;
+- (void)addCommandIfNotNil:(id)nil;
+- (void)addCommands:(id)commands;
+- (void)setActionString:(id)string;
+- (void)setCommands:(id)commands;
 @end
 
 @implementation CRLCommandGroup
 
 - (BOOL)committed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10097D344();
 
   return v3 & 1;
@@ -33,7 +33,7 @@
   return v2.super.isa;
 }
 
-- (void)setCommands:(id)a3
+- (void)setCommands:(id)commands
 {
   type metadata accessor for CRLCommand();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -42,7 +42,7 @@
   *(self + v5) = v4;
 }
 
-- (_TtC8Freeform15CRLCommandGroup)initWithCommands:(id)a3
+- (_TtC8Freeform15CRLCommandGroup)initWithCommands:(id)commands
 {
   type metadata accessor for CRLCommand();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -56,7 +56,7 @@
 
 - (NSString)actionString
 {
-  v2 = self;
+  selfCopy = self;
   sub_10097D1AC();
 
   v3 = String._bridgeToObjectiveC()();
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC8Freeform15CRLCommandGroup__actionString);
@@ -74,7 +74,7 @@
 
 - (BOOL)supportsSimultaneousExecutionWithOtherCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10097DB74();
 
   return v3;
@@ -82,25 +82,25 @@
 
 - (BOOL)isEmpty
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10097DCE4();
 
   return v3 & 1;
 }
 
-- (void)addCommandIfNotNil:(id)a3
+- (void)addCommandIfNotNil:(id)nil
 {
-  v5 = a3;
-  v6 = self;
-  sub_10097DE1C(a3);
+  nilCopy = nil;
+  selfCopy = self;
+  sub_10097DE1C(nil);
 }
 
-- (void)addCommand:(id)a3
+- (void)addCommand:(id)command
 {
   v5 = OBJC_IVAR____TtC8Freeform15CRLCommandGroup_commands;
   swift_beginAccess();
-  v6 = a3;
-  v7 = self;
+  commandCopy = command;
+  selfCopy = self;
   specialized Array._makeUniqueAndReserveCapacityIfNotUnique()();
   if (*((*(self + v5) & 0xFFFFFFFFFFFFFF8) + 0x10) >= *((*(self + v5) & 0xFFFFFFFFFFFFFF8) + 0x18) >> 1)
   {
@@ -111,12 +111,12 @@
   swift_endAccess();
 }
 
-- (void)addCommands:(id)a3
+- (void)addCommands:(id)commands
 {
   type metadata accessor for CRLCommand();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_beginAccess();
-  v5 = self;
+  selfCopy = self;
   sub_100799F10(v4);
   swift_endAccess();
 }

@@ -1,7 +1,7 @@
 @interface PXPhotosResultTuple
-- (PXPhotosResultTuple)initWithFetchResult:(id)a3 fetchedWithReverseSortOrder:(BOOL)a4 curatedFetchResult:(id)a5 curatedRefetchCondition:(id)a6 keyAssetsFetchResult:(id)a7 filterPredicate:(id)a8;
+- (PXPhotosResultTuple)initWithFetchResult:(id)result fetchedWithReverseSortOrder:(BOOL)order curatedFetchResult:(id)fetchResult curatedRefetchCondition:(id)condition keyAssetsFetchResult:(id)assetsFetchResult filterPredicate:(id)predicate;
 - (id)description;
-- (id)resultTupleUpdatedWithChange:(id)a3;
+- (id)resultTupleUpdatedWithChange:(id)change;
 @end
 
 @implementation PXPhotosResultTuple
@@ -12,20 +12,20 @@
   v9.receiver = self;
   v9.super_class = PXPhotosResultTuple;
   v4 = [(PXPhotosResultTuple *)&v9 description];
-  v5 = [(PXPhotosResultTuple *)self fetchResult];
-  v6 = [(PXPhotosResultTuple *)self curatedFetchResult];
-  v7 = [v3 stringWithFormat:@"<%@ fetchResult:%@ curatedFetchResult:%@>", v4, v5, v6];
+  fetchResult = [(PXPhotosResultTuple *)self fetchResult];
+  curatedFetchResult = [(PXPhotosResultTuple *)self curatedFetchResult];
+  v7 = [v3 stringWithFormat:@"<%@ fetchResult:%@ curatedFetchResult:%@>", v4, fetchResult, curatedFetchResult];
 
   return v7;
 }
 
-- (id)resultTupleUpdatedWithChange:(id)a3
+- (id)resultTupleUpdatedWithChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (self->_fetchResult)
   {
-    v6 = [v4 changeDetailsForFetchResult:?];
+    v6 = [changeCopy changeDetailsForFetchResult:?];
   }
 
   else
@@ -39,7 +39,7 @@
     if (v6)
     {
 LABEL_6:
-      v8 = [v6 fetchResultAfterChanges];
+      fetchResultAfterChanges = [v6 fetchResultAfterChanges];
       goto LABEL_9;
     }
   }
@@ -53,31 +53,31 @@ LABEL_6:
     }
   }
 
-  v8 = self->_fetchResult;
+  fetchResultAfterChanges = self->_fetchResult;
 LABEL_9:
-  v9 = v8;
+  v9 = fetchResultAfterChanges;
   if (v7)
   {
-    v10 = [v7 fetchResultAfterChanges];
+    fetchResultAfterChanges2 = [v7 fetchResultAfterChanges];
   }
 
   else
   {
-    v10 = self->_keyAssetsFetchResult;
+    fetchResultAfterChanges2 = self->_keyAssetsFetchResult;
   }
 
-  v11 = v10;
+  v11 = fetchResultAfterChanges2;
   v30 = 0;
-  v12 = [(PXPhotosResultTuple *)self curatedRefetchCondition];
-  if (v12)
+  curatedRefetchCondition = [(PXPhotosResultTuple *)self curatedRefetchCondition];
+  if (curatedRefetchCondition)
   {
-    v13 = [(PXPhotosResultTuple *)self curatedRefetchCondition];
-    v14 = (v13)[2](v13, v5, &v30);
+    curatedRefetchCondition2 = [(PXPhotosResultTuple *)self curatedRefetchCondition];
+    fetchResultAfterChanges3 = (curatedRefetchCondition2)[2](curatedRefetchCondition2, v5, &v30);
   }
 
   else
   {
-    v14 = 0;
+    fetchResultAfterChanges3 = 0;
   }
 
   if (v30 == 1)
@@ -86,7 +86,7 @@ LABEL_9:
     self->_curatedRefetchCondition = 0;
   }
 
-  if (!v14)
+  if (!fetchResultAfterChanges3)
   {
     if (self->_curatedFetchResult)
     {
@@ -94,7 +94,7 @@ LABEL_9:
       if (v16)
       {
         v17 = v16;
-        v14 = [v16 fetchResultAfterChanges];
+        fetchResultAfterChanges3 = [v16 fetchResultAfterChanges];
 
         goto LABEL_24;
       }
@@ -107,13 +107,13 @@ LABEL_9:
       curatedFetchResult = 0;
     }
 
-    v14 = curatedFetchResult;
+    fetchResultAfterChanges3 = curatedFetchResult;
   }
 
 LABEL_24:
-  if (v9 == self->_fetchResult && v14 == self->_curatedFetchResult && v11 == self->_keyAssetsFetchResult)
+  if (v9 == self->_fetchResult && fetchResultAfterChanges3 == self->_curatedFetchResult && v11 == self->_keyAssetsFetchResult)
   {
-    v28 = self;
+    selfCopy = self;
   }
 
   else
@@ -128,38 +128,38 @@ LABEL_24:
     v26 = v25 = v6;
     v27 = v22;
     v11 = v21;
-    v28 = [(PXPhotosResultTuple *)v19 initWithFetchResult:v9 fetchedWithReverseSortOrder:fetchedWithReverseSortOrder curatedFetchResult:v14 curatedRefetchCondition:v27 keyAssetsFetchResult:v21 filterPredicate:v26];
+    selfCopy = [(PXPhotosResultTuple *)v19 initWithFetchResult:v9 fetchedWithReverseSortOrder:fetchedWithReverseSortOrder curatedFetchResult:fetchResultAfterChanges3 curatedRefetchCondition:v27 keyAssetsFetchResult:v21 filterPredicate:v26];
 
     v6 = v25;
     v5 = v24;
     v7 = v23;
   }
 
-  return v28;
+  return selfCopy;
 }
 
-- (PXPhotosResultTuple)initWithFetchResult:(id)a3 fetchedWithReverseSortOrder:(BOOL)a4 curatedFetchResult:(id)a5 curatedRefetchCondition:(id)a6 keyAssetsFetchResult:(id)a7 filterPredicate:(id)a8
+- (PXPhotosResultTuple)initWithFetchResult:(id)result fetchedWithReverseSortOrder:(BOOL)order curatedFetchResult:(id)fetchResult curatedRefetchCondition:(id)condition keyAssetsFetchResult:(id)assetsFetchResult filterPredicate:(id)predicate
 {
-  v24 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  resultCopy = result;
+  fetchResultCopy = fetchResult;
+  conditionCopy = condition;
+  assetsFetchResultCopy = assetsFetchResult;
+  predicateCopy = predicate;
   v25.receiver = self;
   v25.super_class = PXPhotosResultTuple;
   v19 = [(PXPhotosResultTuple *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_fetchResult, a3);
-    v20->_fetchedWithReverseSortOrder = a4;
-    objc_storeStrong(&v20->_curatedFetchResult, a5);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_fetchResult, result);
+    v20->_fetchedWithReverseSortOrder = order;
+    objc_storeStrong(&v20->_curatedFetchResult, fetchResult);
+    v21 = [conditionCopy copy];
     curatedRefetchCondition = v20->_curatedRefetchCondition;
     v20->_curatedRefetchCondition = v21;
 
-    objc_storeStrong(&v20->_keyAssetsFetchResult, a7);
-    objc_storeStrong(&v20->_filterPredicate, a8);
+    objc_storeStrong(&v20->_keyAssetsFetchResult, assetsFetchResult);
+    objc_storeStrong(&v20->_filterPredicate, predicate);
   }
 
   return v20;

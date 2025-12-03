@@ -1,17 +1,17 @@
 @interface IATextInputActionsServer
 - (IASServerAnalyticsDelegate)serverDelegate;
-- (IATextInputActionsServer)initWithQueue:(id)a3 eventHandler:(id)a4;
-- (void)consumeAction:(id)a3;
+- (IATextInputActionsServer)initWithQueue:(id)queue eventHandler:(id)handler;
+- (void)consumeAction:(id)action;
 - (void)dispatchEventToCoreAnalytics;
 - (void)enumerateTextInputActionsAnalytics;
-- (void)setKeyboardTrialParameters:(id)a3;
+- (void)setKeyboardTrialParameters:(id)parameters;
 @end
 
 @implementation IATextInputActionsServer
 
-- (IATextInputActionsServer)initWithQueue:(id)a3 eventHandler:(id)a4
+- (IATextInputActionsServer)initWithQueue:(id)queue eventHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = IATextInputActionsServer;
   v6 = [(IATextInputActionsServer *)&v23 init];
@@ -30,7 +30,7 @@
     v14 = [IASTextInputActionsAnalyzer alloc];
     v15 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     v18 = objc_msgSend_queue(v6, v16, v17);
-    v20 = objc_msgSend_initWithAnalyzerSessionId_sessionManagerDelegate_queue_eventHandler_(v14, v19, v15, 0, v18, v5);
+    v20 = objc_msgSend_initWithAnalyzerSessionId_sessionManagerDelegate_queue_eventHandler_(v14, v19, v15, 0, v18, handlerCopy);
     analyzer = v6->_analyzer;
     v6->_analyzer = v20;
   }
@@ -38,13 +38,13 @@
   return v6;
 }
 
-- (void)consumeAction:(id)a3
+- (void)consumeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v7 = objc_msgSend_analyzer(self, v5, v6);
-  objc_msgSend_consumeAction_(v7, v8, v4);
+  objc_msgSend_consumeAction_(v7, v8, actionCopy);
 
-  v11 = objc_msgSend_asEnd(v4, v9, v10);
+  v11 = objc_msgSend_asEnd(actionCopy, v9, v10);
 
   if (v11)
   {
@@ -70,17 +70,17 @@
   objc_msgSend_enumerateAnalytics(v5, v3, v4);
 }
 
-- (void)setKeyboardTrialParameters:(id)a3
+- (void)setKeyboardTrialParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1D4612A0C;
   v7[3] = &unk_1E84897C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = parametersCopy;
+  v6 = parametersCopy;
   dispatch_async(queue, v7);
 }
 

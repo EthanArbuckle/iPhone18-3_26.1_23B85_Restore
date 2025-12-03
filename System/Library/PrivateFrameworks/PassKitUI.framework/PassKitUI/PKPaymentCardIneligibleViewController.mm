@@ -1,27 +1,27 @@
 @interface PKPaymentCardIneligibleViewController
-- (PKPaymentCardIneligibleViewController)initWithReason:(int64_t)a3 context:(int64_t)a4;
-- (id)_alertWithReason:(int64_t)a3 learnMoreURL:(id)a4 isPreloaded:(BOOL)a5;
+- (PKPaymentCardIneligibleViewController)initWithReason:(int64_t)reason context:(int64_t)context;
+- (id)_alertWithReason:(int64_t)reason learnMoreURL:(id)l isPreloaded:(BOOL)preloaded;
 - (id)webView;
-- (void)_webViewDidLoad:(BOOL)a3 withError:(id)a4;
+- (void)_webViewDidLoad:(BOOL)load withError:(id)error;
 - (void)dealloc;
-- (void)preflightWithCompletion:(id)a3;
+- (void)preflightWithCompletion:(id)completion;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation PKPaymentCardIneligibleViewController
 
-- (PKPaymentCardIneligibleViewController)initWithReason:(int64_t)a3 context:(int64_t)a4
+- (PKPaymentCardIneligibleViewController)initWithReason:(int64_t)reason context:(int64_t)context
 {
   v7.receiver = self;
   v7.super_class = PKPaymentCardIneligibleViewController;
   result = [(PKPaymentCardIneligibleViewController *)&v7 init];
   if (result)
   {
-    result->_reason = a3;
-    result->_context = a4;
+    result->_reason = reason;
+    result->_context = context;
     result->_preloadLearnMoreWebView = 1;
   }
 
@@ -33,25 +33,25 @@
   v11.receiver = self;
   v11.super_class = PKPaymentCardIneligibleViewController;
   [(PKPaymentCardIneligibleViewController *)&v11 viewDidLoad];
-  v3 = [(PKPaymentCardIneligibleViewController *)self view];
-  v4 = [(PKPaymentCardIneligibleViewController *)self webView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v4];
-  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:3 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v5];
+  view = [(PKPaymentCardIneligibleViewController *)self view];
+  webView = [(PKPaymentCardIneligibleViewController *)self webView];
+  [webView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:webView];
+  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:webView attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
+  [view addConstraint:v5];
 
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:4 relatedBy:0 toItem:v3 attribute:4 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v6];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:webView attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:0.0];
+  [view addConstraint:v6];
 
-  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v7];
+  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:webView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [view addConstraint:v7];
 
-  v8 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v8];
+  v8 = [MEMORY[0x1E696ACD8] constraintWithItem:webView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [view addConstraint:v8];
 
   v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_handleDone_];
-  v10 = [(PKPaymentCardIneligibleViewController *)self navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [(PKPaymentCardIneligibleViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 }
 
 - (void)dealloc
@@ -78,12 +78,12 @@
   return webView;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentCardIneligibleViewController *)self learnMoreURL];
-  if (!v5)
+  completionCopy = completion;
+  learnMoreURL = [(PKPaymentCardIneligibleViewController *)self learnMoreURL];
+  if (!learnMoreURL)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -98,17 +98,17 @@ LABEL_10:
 
 LABEL_11:
 
-    v17 = [(PKPaymentCardIneligibleViewController *)self _alertWithReason:self->_reason learnMoreURL:v5 isPreloaded:0];
+    v17 = [(PKPaymentCardIneligibleViewController *)self _alertWithReason:self->_reason learnMoreURL:learnMoreURL isPreloaded:0];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__PKPaymentCardIneligibleViewController_preflightWithCompletion___block_invoke;
     v18[3] = &unk_1E8010E20;
     v19 = v17;
-    v20 = v4;
+    v20 = completionCopy;
     v11 = v17;
     dispatch_async(MEMORY[0x1E69E96A0], v18);
 
-    v12 = v20;
+    webView = v20;
     goto LABEL_12;
   }
 
@@ -120,7 +120,7 @@ LABEL_11:
     if (v8)
     {
       *buf = 138412290;
-      v22 = v5;
+      v22 = learnMoreURL;
       v14 = "Skipped pre-load of the Learn More URL %@";
       v15 = v7;
       v16 = 12;
@@ -133,32 +133,32 @@ LABEL_11:
   if (v8)
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = learnMoreURL;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Pre-loading the learn more URL %@", buf, 0xCu);
   }
 
-  v9 = [v4 copy];
+  v9 = [completionCopy copy];
   preflightCompletion = self->_preflightCompletion;
   self->_preflightCompletion = v9;
 
-  v11 = [MEMORY[0x1E696AF68] requestWithURL:v5];
-  v12 = [(PKPaymentCardIneligibleViewController *)self webView];
-  v13 = [v12 loadRequest:v11];
+  v11 = [MEMORY[0x1E696AF68] requestWithURL:learnMoreURL];
+  webView = [(PKPaymentCardIneligibleViewController *)self webView];
+  v13 = [webView loadRequest:v11];
 LABEL_12:
 }
 
-- (id)_alertWithReason:(int64_t)a3 learnMoreURL:(id)a4 isPreloaded:(BOOL)a5
+- (id)_alertWithReason:(int64_t)reason learnMoreURL:(id)l isPreloaded:(BOOL)preloaded
 {
-  v8 = a4;
-  v9 = v8;
+  lCopy = l;
+  v9 = lCopy;
   if (!self->_learnMorePresentationHandler)
   {
     goto LABEL_4;
   }
 
-  if (v8)
+  if (lCopy)
   {
-    if (a3 == 5)
+    if (reason == 5)
     {
 LABEL_4:
       v10 = 0;
@@ -169,28 +169,28 @@ LABEL_4:
   }
 
   v10 = 0;
-  if (a3 != 5 && a5)
+  if (reason != 5 && preloaded)
   {
 LABEL_7:
-    v10 = a3 != 6;
+    v10 = reason != 6;
   }
 
 LABEL_8:
   IsBridge = PKPaymentSetupContextIsBridge();
   if (PKPaymentSetupContextIsIssuerApp())
   {
-    v12 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-    v13 = [v12 targetDevice];
+    webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+    targetDevice = [webService targetDevice];
 
-    v14 = [v13 deviceClass];
+    deviceClass = [targetDevice deviceClass];
     IsBridge = PKDeviceClassIsWatch();
   }
 
   v40 = v9;
-  v39 = a5;
-  if (a3 <= 3)
+  preloadedCopy = preloaded;
+  if (reason <= 3)
   {
-    switch(a3)
+    switch(reason)
     {
       case 1:
         v15 = PKLocalizedPaymentString(&cfstr_EligibilityUnk.isa);
@@ -234,9 +234,9 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  if (a3 > 5)
+  if (reason > 5)
   {
-    if (a3 == 6)
+    if (reason == 6)
     {
       MEMORY[0x1BFB41980](*MEMORY[0x1E69BA058], 0);
       v15 = PKLocalizedPaymentString(&cfstr_EligibilityHar.isa);
@@ -244,7 +244,7 @@ LABEL_23:
       goto LABEL_26;
     }
 
-    if (a3 == 7)
+    if (reason == 7)
     {
       v15 = PKLocalizedAppleBalanceString(&cfstr_EligibilityErr.isa);
       v18 = PKLocalizedAppleBalanceString(&cfstr_EligibilityErr_0.isa);
@@ -256,7 +256,7 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if (a3 != 4)
+  if (reason != 4)
   {
     MEMORY[0x1BFB41980](*MEMORY[0x1E69BA070], 0);
     v15 = PKLocalizedPaymentString(&cfstr_EligibilityNew.isa);
@@ -288,7 +288,7 @@ LABEL_33:
     v27 = @"COULD_NOT_ADD_CARD_TRY_ANOTHER_CARD";
   }
 
-  else if (a3 == 5)
+  else if (reason == 5)
   {
     v27 = @"ELIGIBILITY_CANCEL_BUTTON_TITLE";
   }
@@ -313,9 +313,9 @@ LABEL_33:
     v43[1] = 3221225472;
     v43[2] = __83__PKPaymentCardIneligibleViewController__alertWithReason_learnMoreURL_isPreloaded___block_invoke_3;
     v43[3] = &unk_1E8017CF8;
-    v47 = v39;
+    v47 = preloadedCopy;
     v44 = v40;
-    v45 = self;
+    selfCopy = self;
     v46 = v29;
     v32 = [v30 actionWithTitle:v31 style:0 handler:v43];
     [v21 addAction:v32];
@@ -325,7 +325,7 @@ LABEL_33:
   [v21 addAction:v33];
 
   IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
-  if (a3 == 5 && (IsSetupAssistant & 1) == 0)
+  if (reason == 5 && (IsSetupAssistant & 1) == 0)
   {
     v35 = MEMORY[0x1E69DC648];
     v36 = PKLocalizedPaymentString(&cfstr_EligibilitySof.isa);
@@ -401,14 +401,14 @@ void __83__PKPaymentCardIneligibleViewController__alertWithReason_learnMoreURL_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_webViewDidLoad:(BOOL)a3 withError:(id)a4
+- (void)_webViewDidLoad:(BOOL)load withError:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  loadCopy = load;
+  errorCopy = error;
+  v7 = errorCopy;
   if (self->_preflightCompletion)
   {
-    v8 = [(PKPaymentCardIneligibleViewController *)self _alertWithReason:self->_reason learnMoreURL:0 isPreloaded:v4];
+    v8 = [(PKPaymentCardIneligibleViewController *)self _alertWithReason:self->_reason learnMoreURL:0 isPreloaded:loadCopy];
     v9 = _Block_copy(self->_preflightCompletion);
     preflightCompletion = self->_preflightCompletion;
     self->_preflightCompletion = 0;
@@ -428,7 +428,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6 && !v4)
+  if (errorCopy && !loadCopy)
   {
     v13 = MEMORY[0x1E69DC650];
     v14 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
@@ -453,7 +453,7 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -465,46 +465,46 @@ LABEL_7:
   [(PKPaymentCardIneligibleViewController *)self _webViewDidLoad:1 withError:0];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  errorCopy = error;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v6;
+    v9 = errorCopy;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Learn More webview failed to load with error %@", &v8, 0xCu);
   }
 
-  [(PKPaymentCardIneligibleViewController *)self _webViewDidLoad:0 withError:v6];
+  [(PKPaymentCardIneligibleViewController *)self _webViewDidLoad:0 withError:errorCopy];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v12 = a4;
-  v6 = a5;
-  v7 = [v12 navigationType];
-  if (v7 == -1)
+  actionCopy = action;
+  handlerCopy = handler;
+  navigationType = [actionCopy navigationType];
+  if (navigationType == -1)
   {
     v11 = 1;
   }
 
   else
   {
-    if (!v7 && (PKPaymentSetupContextIsSetupAssistant() & 1) == 0)
+    if (!navigationType && (PKPaymentSetupContextIsSetupAssistant() & 1) == 0)
     {
-      v8 = [v12 request];
-      v9 = [v8 URL];
+      request = [actionCopy request];
+      v9 = [request URL];
 
-      v10 = [MEMORY[0x1E6963608] defaultWorkspace];
-      [v10 openURL:v9 configuration:0 completionHandler:0];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      [defaultWorkspace openURL:v9 configuration:0 completionHandler:0];
     }
 
     v11 = 0;
   }
 
-  v6[2](v6, v11);
+  handlerCopy[2](handlerCopy, v11);
 }
 
 @end

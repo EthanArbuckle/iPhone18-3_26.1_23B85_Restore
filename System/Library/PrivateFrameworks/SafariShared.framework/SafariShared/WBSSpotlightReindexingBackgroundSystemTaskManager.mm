@@ -1,6 +1,6 @@
 @interface WBSSpotlightReindexingBackgroundSystemTaskManager
 - (WBSSpotlightReindexingBackgroundSystemTaskManager)init;
-- (void)registerAndSubmitRequestForTask:(id)a3;
+- (void)registerAndSubmitRequestForTask:(id)task;
 @end
 
 @implementation WBSSpotlightReindexingBackgroundSystemTaskManager
@@ -16,9 +16,9 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     v6 = [v3 stringWithFormat:@"com.apple.SafariShared.%@.%p", v5, v2];
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v9;
 
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (void)registerAndSubmitRequestForTask:(id)a3
+- (void)registerAndSubmitRequestForTask:(id)task
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"WBSReindexAllHistoryItemsImmediately"];
+  taskCopy = task;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"WBSReindexAllHistoryItemsImmediately"];
 
   if (v6)
   {
-    v4[2](v4);
+    taskCopy[2](taskCopy);
   }
 
   else
@@ -45,10 +45,10 @@
     v22[1] = 3221225472;
     v22[2] = __85__WBSSpotlightReindexingBackgroundSystemTaskManager_registerAndSubmitRequestForTask___block_invoke;
     v22[3] = &unk_1E7FC9118;
-    v23 = v4;
+    v23 = taskCopy;
     v7 = MEMORY[0x1BFB13CE0](v22);
-    v8 = [MEMORY[0x1E698E4B8] sharedScheduler];
-    v9 = [v8 registerForTaskWithIdentifier:@"com.apple.SafariShared.SpotlightReindexing" usingQueue:self->_internalQueue launchHandler:v7];
+    mEMORY[0x1E698E4B8] = [MEMORY[0x1E698E4B8] sharedScheduler];
+    v9 = [mEMORY[0x1E698E4B8] registerForTaskWithIdentifier:@"com.apple.SafariShared.SpotlightReindexing" usingQueue:self->_internalQueue launchHandler:v7];
 
     v10 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
@@ -60,8 +60,8 @@
         _os_log_impl(&dword_1BB6F3000, v10, OS_LOG_TYPE_INFO, "Successfully registered background system task to reindex all items to Spotlight.", buf, 2u);
       }
 
-      v12 = [MEMORY[0x1E698E4B8] sharedScheduler];
-      v13 = [v12 taskRequestForIdentifier:@"com.apple.SafariShared.SpotlightReindexing"];
+      mEMORY[0x1E698E4B8]2 = [MEMORY[0x1E698E4B8] sharedScheduler];
+      v13 = [mEMORY[0x1E698E4B8]2 taskRequestForIdentifier:@"com.apple.SafariShared.SpotlightReindexing"];
 
       if (v13)
       {
@@ -79,9 +79,9 @@
         [v13 setPriority:2];
         [v13 setRequiresExternalPower:1];
         [v13 setResourceIntensive:1];
-        v15 = [MEMORY[0x1E698E4B8] sharedScheduler];
+        mEMORY[0x1E698E4B8]3 = [MEMORY[0x1E698E4B8] sharedScheduler];
         v20 = 0;
-        v16 = [v15 submitTaskRequest:v13 error:&v20];
+        v16 = [mEMORY[0x1E698E4B8]3 submitTaskRequest:v13 error:&v20];
         v17 = v20;
 
         v18 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();

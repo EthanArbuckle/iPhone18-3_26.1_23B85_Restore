@@ -1,15 +1,15 @@
 @interface CKEncryptedLocation
-- (CKEncryptedLocation)initWithLocation:(id)a3;
+- (CKEncryptedLocation)initWithLocation:(id)location;
 - (CLLocation)location;
 @end
 
 @implementation CKEncryptedLocation
 
-- (CKEncryptedLocation)initWithLocation:(id)a3
+- (CKEncryptedLocation)initWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v28 = 0;
-  v5 = _CKCheckArgument("location", v4, 0, 0, 0, &v28);
+  v5 = _CKCheckArgument("location", locationCopy, 0, 0, 0, &v28);
   v6 = v28;
   if ((v5 & 1) == 0)
   {
@@ -24,7 +24,7 @@
   }
 
   v7 = objc_opt_new();
-  v9 = objc_msgSend_CKDPLocationCoordinateFromCLLocation_(MEMORY[0x1E6985C40], v8, v4);
+  v9 = objc_msgSend_CKDPLocationCoordinateFromCLLocation_(MEMORY[0x1E6985C40], v8, locationCopy);
   objc_msgSend_setLocationValue_(v7, v10, v9);
 
   v13 = objc_msgSend_data(v7, v11, v12);

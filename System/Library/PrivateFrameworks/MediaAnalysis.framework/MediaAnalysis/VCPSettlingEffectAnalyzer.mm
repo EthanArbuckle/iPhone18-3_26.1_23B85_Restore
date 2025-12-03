@@ -1,38 +1,38 @@
 @interface VCPSettlingEffectAnalyzer
-+ ($AFC8CF76A46F37F9FB23C20884F4FD99)getSettlingEffectTimeRange:(SEL)a3 withOptions:(id)a4;
-+ (id)getFramePTSList:(id)a3 before:(id *)a4 withOptions:(id)a5;
++ ($AFC8CF76A46F37F9FB23C20884F4FD99)getSettlingEffectTimeRange:(SEL)range withOptions:(id)options;
++ (id)getFramePTSList:(id)list before:(id *)before withOptions:(id)options;
 + (id)getRetimingCurve;
-- (CGSize)getCleanApertureFrameSize:(id)a3;
-- (CGSize)getFrameSize:(id)a3;
-- (VCPSettlingEffectAnalyzer)initWithTimestamps:(id)a3 andTrack:(id)a4 andRecipe:(id)a5 withOptions:(id)a6;
-- (__CVBuffer)resamplePixelBuffer:(__CVBuffer *)a3 cleanApertureRect:(CGRect)a4 cropRect:(CGRect)a5 homographyArray:(id)a6;
-- (__CVBuffer)scaleStillImage:(__CVBuffer *)a3;
-- (id)findLivePhotoInfoOutput:(id)a3;
-- (id)getPixelBasedHomographies:(id)a3 withCleanApertureSize:(CGSize)a4;
+- (CGSize)getCleanApertureFrameSize:(id)size;
+- (CGSize)getFrameSize:(id)size;
+- (VCPSettlingEffectAnalyzer)initWithTimestamps:(id)timestamps andTrack:(id)track andRecipe:(id)recipe withOptions:(id)options;
+- (__CVBuffer)resamplePixelBuffer:(__CVBuffer *)buffer cleanApertureRect:(CGRect)rect cropRect:(CGRect)cropRect homographyArray:(id)array;
+- (__CVBuffer)scaleStillImage:(__CVBuffer *)image;
+- (id)findLivePhotoInfoOutput:(id)output;
+- (id)getPixelBasedHomographies:(id)homographies withCleanApertureSize:(CGSize)size;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)createLivePhotoInfoSample:(opaqueCMSampleBuffer *)a3 withTimestamp:(id *)a4 isInterpolated:(BOOL)a5 updatedSample:(opaqueCMSampleBuffer *)a6;
-- (int)finishAnalysisPass:(id *)a3 withStillImageBuffer:(__CVBuffer *)a4;
-- (int)setupLivePhotoInfoOutput:(id)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)createLivePhotoInfoSample:(opaqueCMSampleBuffer *)sample withTimestamp:(id *)timestamp isInterpolated:(BOOL)interpolated updatedSample:(opaqueCMSampleBuffer *)updatedSample;
+- (int)finishAnalysisPass:(id *)pass withStillImageBuffer:(__CVBuffer *)buffer;
+- (int)setupLivePhotoInfoOutput:(id)output;
 - (void)dealloc;
 @end
 
 @implementation VCPSettlingEffectAnalyzer
 
-- (VCPSettlingEffectAnalyzer)initWithTimestamps:(id)a3 andTrack:(id)a4 andRecipe:(id)a5 withOptions:(id)a6
+- (VCPSettlingEffectAnalyzer)initWithTimestamps:(id)timestamps andTrack:(id)track andRecipe:(id)recipe withOptions:(id)options
 {
   v130 = *MEMORY[0x1E69E9840];
-  v111 = a3;
-  v10 = a4;
-  v112 = a5;
-  v113 = a6;
+  timestampsCopy = timestamps;
+  trackCopy = track;
+  recipeCopy = recipe;
+  optionsCopy = options;
   v123.receiver = self;
   v123.super_class = VCPSettlingEffectAnalyzer;
   v11 = [(VCPSettlingEffectAnalyzer *)&v123 init];
   if (v11)
   {
-    v110 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v110 fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
     {
       v109 = 0;
     }
@@ -40,7 +40,7 @@
     else
     {
       v122 = 0;
-      v13 = [v110 createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v122];
+      v13 = [defaultManager createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v122];
       v109 = v122;
       if ((v13 & 1) == 0)
       {
@@ -58,15 +58,15 @@
     }
 
     v108 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v107 = [v111 objectForKeyedSubscript:@"MetaAdjusterResults"];
-    [v11 getFrameSize:v10];
+    v107 = [timestampsCopy objectForKeyedSubscript:@"MetaAdjusterResults"];
+    [v11 getFrameSize:trackCopy];
     v15 = v14;
     v17 = v16;
-    [v11 getCleanApertureFrameSize:v10];
+    [v11 getCleanApertureFrameSize:trackCopy];
     v19 = v18;
     v21 = v20;
     v22 = [MEMORY[0x1E699BE48] getUsageFromSizeWidth:v15 height:v17];
-    if (!v112)
+    if (!recipeCopy)
     {
       goto LABEL_42;
     }
@@ -84,7 +84,7 @@
     }
 
     v11[360] = 0;
-    v24 = [v113 objectForKeyedSubscript:@"UserInitiatedMode"];
+    v24 = [optionsCopy objectForKeyedSubscript:@"UserInitiatedMode"];
     v11[320] = [v24 BOOLValue];
 
     v11[321] = 0;
@@ -92,11 +92,11 @@
     v11[323] = 0;
     v11[324] = 0;
     *(v11 + 82) = 0;
-    v25 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     v26 = *(v11 + 42);
-    *(v11 + 42) = v25;
+    *(v11 + 42) = dictionary;
 
-    [v10 nominalFrameRate];
+    [trackCopy nominalFrameRate];
     if (v27 >= 20.0)
     {
       goto LABEL_14;
@@ -113,27 +113,27 @@
     {
 LABEL_14:
       v11[361] = 0;
-      objc_storeStrong(v11 + 21, a4);
+      objc_storeStrong(v11 + 21, track);
       v28 = *(v11 + 2);
       *(v11 + 2) = 0;
 
       v29 = MEMORY[0x1E696AEC0];
-      v30 = [MEMORY[0x1E696AFB0] UUID];
-      v31 = [v30 UUIDString];
-      v32 = [v29 stringWithFormat:@"%@frc-tmp-%@.MOV", @"/tmp/com.apple.mediaanalysisd/", v31];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v32 = [v29 stringWithFormat:@"%@frc-tmp-%@.MOV", @"/tmp/com.apple.mediaanalysisd/", uUIDString];
       v33 = *(v11 + 18);
       *(v11 + 18) = v32;
 
-      v34 = [v113 objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
+      v34 = [optionsCopy objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
       v35 = v34 == 0;
 
       if (v35)
       {
-        v39 = [v10 asset];
-        v40 = v39;
-        if (v39)
+        asset = [trackCopy asset];
+        v40 = asset;
+        if (asset)
         {
-          [v39 vcp_livePhotoStillDisplayTime];
+          [asset vcp_livePhotoStillDisplayTime];
         }
 
         else
@@ -148,7 +148,7 @@ LABEL_14:
 
       else
       {
-        v36 = [v113 objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
+        v36 = [optionsCopy objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
         CMTimeMakeFromDictionary(&buf.start, v36);
         v37 = buf.start.epoch;
         *(v11 + 6) = *&buf.start.value;
@@ -158,7 +158,7 @@ LABEL_14:
       v42 = *(v11 + 6);
       buf.start.epoch = *(v11 + 14);
       *&buf.start.value = v42;
-      v43 = [VCPSettlingEffectAnalyzer getFramePTSList:v10 before:&buf withOptions:v113];
+      v43 = [VCPSettlingEffectAnalyzer getFramePTSList:trackCopy before:&buf withOptions:optionsCopy];
       v44 = *(v11 + 23);
       *(v11 + 23) = v43;
 
@@ -167,10 +167,10 @@ LABEL_14:
         goto LABEL_42;
       }
 
-      v45 = [v113 objectForKeyedSubscript:@"CustomRetimingCurve"];
+      v45 = [optionsCopy objectForKeyedSubscript:@"CustomRetimingCurve"];
       if (v45)
       {
-        [v113 objectForKeyedSubscript:@"CustomRetimingCurve"];
+        [optionsCopy objectForKeyedSubscript:@"CustomRetimingCurve"];
       }
 
       else
@@ -191,7 +191,7 @@ LABEL_14:
         *(v11 + 3) = *&buf.start.value;
         *(v11 + 8) = v50;
 
-        CMTimeMakeWithSeconds(&buf.start, 0.0333333333, [v10 naturalTimeScale]);
+        CMTimeMakeWithSeconds(&buf.start, 0.0333333333, [trackCopy naturalTimeScale]);
         v51 = buf.start.epoch;
         *(v11 + 120) = *&buf.start.value;
         *(v11 + 17) = v51;
@@ -202,9 +202,9 @@ LABEL_14:
         if (*(v11 + 1))
         {
           [*(v11 + 1) setQualityMode:{+[VCPSettlingEffectAnalyzer getFRCQualityMode](VCPSettlingEffectAnalyzer, "getFRCQualityMode")}];
-          if (v10)
+          if (trackCopy)
           {
-            [v10 preferredTransform];
+            [trackCopy preferredTransform];
           }
 
           else
@@ -237,8 +237,8 @@ LABEL_14:
             *(v11 + 380) = v60;
             *(v11 + 396) = v59;
             v61 = objc_alloc(MEMORY[0x1E6987E78]);
-            v62 = [v10 asset];
-            v63 = [v61 initWithAsset:v62 error:0];
+            asset2 = [trackCopy asset];
+            v63 = [v61 initWithAsset:asset2 error:0];
             v64 = *(v11 + 19);
             *(v11 + 19) = v63;
 
@@ -249,13 +249,13 @@ LABEL_14:
             *&buf.duration.timescale = v67;
             *&buf.start.value = v66;
             [v65 setTimeRange:&buf];
-            v68 = [v10 asset];
-            LODWORD(v62) = [v11 setupLivePhotoInfoOutput:v68];
+            asset3 = [trackCopy asset];
+            LODWORD(asset2) = [v11 setupLivePhotoInfoOutput:asset3];
 
-            if (!v62)
+            if (!asset2)
             {
               *(v11 + 22) = 0;
-              v71 = [v11 getPixelBasedHomographies:v112 withCleanApertureSize:{v19, v21}];
+              v71 = [v11 getPixelBasedHomographies:recipeCopy withCleanApertureSize:{v19, v21}];
               v72 = *(v11 + 25);
               *(v11 + 25) = v71;
 
@@ -268,8 +268,8 @@ LABEL_14:
               *(v11 + 15) = vcvtq_f64_s64(v75);
               *(v11 + 16) = *(v11 + 15);
               v76 = [MEMORY[0x1E695DFF8] fileURLWithPath:*(v11 + 18)];
-              [v10 estimatedDataRate];
-              v78 = [VCPMovieAssetWriter assetWriterWithURL:v76 andTrack:v10 andBitrate:v77 withOutputSize:0 enableAudio:*(v11 + 32), *(v11 + 33)];
+              [trackCopy estimatedDataRate];
+              v78 = [VCPMovieAssetWriter assetWriterWithURL:v76 andTrack:trackCopy andBitrate:v77 withOutputSize:0 enableAudio:*(v11 + 32), *(v11 + 33)];
               v79 = *(v11 + 3);
               *(v11 + 3) = v78;
 
@@ -280,9 +280,9 @@ LABEL_14:
                 {
                   v81 = MEMORY[0x1E695F620];
                   v127[0] = *MEMORY[0x1E695F868];
-                  v82 = [MEMORY[0x1E695DFB0] null];
+                  null = [MEMORY[0x1E695DFB0] null];
                   v127[1] = *MEMORY[0x1E695F800];
-                  v128[0] = v82;
+                  v128[0] = null;
                   v128[1] = MEMORY[0x1E695E118];
                   v83 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v128 forKeys:v127 count:2];
                   v84 = [v81 contextWithOptions:v83];
@@ -425,10 +425,10 @@ LABEL_45:
   return v12;
 }
 
-- (id)findLivePhotoInfoOutput:(id)a3
+- (id)findLivePhotoInfoOutput:(id)output
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
+  [output vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -448,12 +448,12 @@ LABEL_45:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 formatDescriptions];
-        v10 = [v9 firstObject];
+        formatDescriptions = [v8 formatDescriptions];
+        firstObject = [formatDescriptions firstObject];
 
-        if (v10)
+        if (firstObject)
         {
-          v11 = CMMetadataFormatDescriptionGetIdentifiers(v10);
+          v11 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
           if ([v11 containsObject:v6])
           {
             v12 = v8;
@@ -479,10 +479,10 @@ LABEL_13:
   return v12;
 }
 
-- (int)setupLivePhotoInfoOutput:(id)a3
+- (int)setupLivePhotoInfoOutput:(id)output
 {
-  v4 = a3;
-  v5 = [(VCPSettlingEffectAnalyzer *)self findLivePhotoInfoOutput:v4];
+  outputCopy = output;
+  v5 = [(VCPSettlingEffectAnalyzer *)self findLivePhotoInfoOutput:outputCopy];
   v6 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v5 outputSettings:0];
   livePhotoInfoOutput = self->_livePhotoInfoOutput;
   self->_livePhotoInfoOutput = v6;
@@ -541,7 +541,7 @@ LABEL_13:
   [(VCPSettlingEffectAnalyzer *)&v5 dealloc];
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
   v129 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
@@ -554,15 +554,15 @@ LABEL_2:
 
   if (self->_previousFrame)
   {
-    v10 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
-    if (v10)
+    copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
+    if (copyNextSampleBuffer)
     {
-      v11 = v10;
-      while (!CMSampleBufferGetNumSamples(v11))
+      copyNextSampleBuffer2 = copyNextSampleBuffer;
+      while (!CMSampleBufferGetNumSamples(copyNextSampleBuffer2))
       {
-        CFRelease(v11);
-        v11 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
-        if (!v11)
+        CFRelease(copyNextSampleBuffer2);
+        copyNextSampleBuffer2 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
+        if (!copyNextSampleBuffer2)
         {
           goto LABEL_8;
         }
@@ -577,14 +577,14 @@ LABEL_2:
       v35 = [v34 objectForKeyedSubscript:*MEMORY[0x1E69A8B78]];
       CMTimeMakeFromDictionary(&v122, v35);
 
-      buf = *a4;
+      buf = *timestamp;
       time2 = v122;
       if (CMTimeCompare(&buf, &time2))
       {
         self->_metadataIntegrityFailure = 1;
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
-          var0 = a4->var0;
+          var0 = timestamp->var0;
           LODWORD(buf.value) = 134218240;
           *(&buf.value + 4) = var0;
           LOWORD(buf.flags) = 2048;
@@ -592,9 +592,9 @@ LABEL_2:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Inconsistent live photo info and video frame timestamp: %lld vs. %lld", &buf, 0x16u);
         }
 
-        buf = *a4;
+        buf = *timestamp;
         time2 = v122;
-        if (CMTimeCompare(&buf, &time2) >= 1 && (buf = *a4, time2 = v122, CMTimeSubtract(&rhs, &buf, &time2), CMTimeMake(&v121, 2, 600), buf = rhs, time2 = v121, CMTimeCompare(&buf, &time2) > 0) || (buf = *a4, time2 = v122, CMTimeCompare(&buf, &time2) < 0) && (buf = v122, time2 = *a4, CMTimeSubtract(&v120, &buf, &time2), CMTimeMake(&v119, 2, 600), buf = v120, time2 = v119, CMTimeCompare(&buf, &time2) > 0) || !+[VCPSettlingEffectAnalyzer disableMetadataIntegrityCheck])
+        if (CMTimeCompare(&buf, &time2) >= 1 && (buf = *timestamp, time2 = v122, CMTimeSubtract(&rhs, &buf, &time2), CMTimeMake(&v121, 2, 600), buf = rhs, time2 = v121, CMTimeCompare(&buf, &time2) > 0) || (buf = *timestamp, time2 = v122, CMTimeCompare(&buf, &time2) < 0) && (buf = v122, time2 = *timestamp, CMTimeSubtract(&v120, &buf, &time2), CMTimeMake(&v119, 2, 600), buf = v120, time2 = v119, CMTimeCompare(&buf, &time2) > 0) || !+[VCPSettlingEffectAnalyzer disableMetadataIntegrityCheck])
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
@@ -602,7 +602,7 @@ LABEL_2:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Live photo info and video frame timestamp difference exceeds threshold", &buf, 2u);
           }
 
-          CFRelease(v11);
+          CFRelease(copyNextSampleBuffer2);
           self->_processAborted = 1;
           [(FRCFrameInterpolator *)self->_frameInterpolator endSession];
           [(VCPMovieAssetWriter *)self->_assetWriter cancel];
@@ -617,7 +617,7 @@ LABEL_2:
         }
       }
 
-      buf = *a4;
+      buf = *timestamp;
       time2 = self->_settlingStartPTS;
       if (CMTimeCompare(&buf, &time2) <= 0)
       {
@@ -633,7 +633,7 @@ LABEL_2:
         v52 = [(NSDictionary *)self->_pixelBasedHomogrphies objectForKeyedSubscript:*v32];
         v53 = [v52 objectAtIndexedSubscript:self->_frameIdx];
         v54 = [v53 objectForKeyedSubscript:*MEMORY[0x1E69A8B70]];
-        value = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:a3 cleanApertureRect:v54 cropRect:x homographyArray:y, width, height, v48, v49, v51, v50];
+        value = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:frame cleanApertureRect:v54 cropRect:x homographyArray:y, width, height, v48, v49, v51, v50];
         buf.value = value;
         if (time2.value)
         {
@@ -660,7 +660,7 @@ LABEL_2:
 
         rhs.value = 0;
         assetWriter = self->_assetWriter;
-        v57 = [(FRCFrame *)self->_previousFrame buffer];
+        buffer = [(FRCFrame *)self->_previousFrame buffer];
         previousFrame = self->_previousFrame;
         if (previousFrame)
         {
@@ -672,7 +672,7 @@ LABEL_2:
           memset(&buf, 0, sizeof(buf));
         }
 
-        v9 = [(VCPMovieAssetWriter *)assetWriter addPixelBuffer:v57 withTime:&buf withAttachment:0];
+        v9 = [(VCPMovieAssetWriter *)assetWriter addPixelBuffer:buffer withTime:&buf withAttachment:0];
         if (!v9)
         {
           previousMetadata = self->_previousMetadata;
@@ -694,13 +694,13 @@ LABEL_2:
             if (!v9)
             {
               v94 = objc_alloc(MEMORY[0x1E699BE38]);
-              buf = *a4;
+              buf = *timestamp;
               v95 = [v94 initWithBuffer:time2.value presentationTimeStamp:&buf];
               v96 = self->_previousFrame;
               self->_previousFrame = v95;
 
-              var3 = a4->var3;
-              *&self->_anchorPTS.value = *&a4->var0;
+              var3 = timestamp->var3;
+              *&self->_anchorPTS.value = *&timestamp->var0;
               self->_anchorPTS.epoch = var3;
               ++self->_anchorIndex;
               CF<__CVBuffer *>::~CF(&time2);
@@ -722,7 +722,7 @@ LABEL_2:
         buf = v121;
         time2 = v120;
         CMTimeAdd(&rhs, &buf, &time2);
-        buf = *a4;
+        buf = *timestamp;
         time2 = rhs;
         v38 = CMTimeCompare(&buf, &time2) < 1;
 
@@ -750,7 +750,7 @@ LABEL_99:
         v67 = [(NSDictionary *)self->_pixelBasedHomogrphies objectForKeyedSubscript:*v32];
         v68 = [v67 objectAtIndexedSubscript:self->_frameIdx];
         v69 = [v68 objectForKeyedSubscript:*MEMORY[0x1E69A8B70]];
-        v70 = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:a3 cleanApertureRect:v69 cropRect:v59 homographyArray:v60, v61, v62, v63, v64, v66, v65];
+        v70 = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:frame cleanApertureRect:v69 cropRect:v59 homographyArray:v60, v61, v62, v63, v64, v66, v65];
         buf.value = v70;
         if (v119.value)
         {
@@ -808,20 +808,20 @@ LABEL_75:
           self->_processAborted = 1;
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
-            v89 = [v39 localizedDescription];
+            localizedDescription = [v39 localizedDescription];
             LODWORD(buf.value) = 138412290;
-            *(&buf.value + 4) = v89;
+            *(&buf.value + 4) = localizedDescription;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "FRC gating not passed: %@", &buf, 0xCu);
           }
 
-          CFRelease(v11);
+          CFRelease(copyNextSampleBuffer2);
           [(FRCFrameInterpolator *)self->_frameInterpolator endSession];
           self->_FRCRecommendation = [(FRCFrameInterpolator *)self->_frameInterpolator recommendation];
           [(FRCFrameInterpolator *)self->_frameInterpolator sessionConfidence];
           self->_FRCConfidence = v90;
-          v91 = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
+          sessionStatistics = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
           FRCStatistics = self->_FRCStatistics;
-          self->_FRCStatistics = v91;
+          self->_FRCStatistics = sessionStatistics;
 
           self->_FRCGatingFailure = 1;
           [(VCPMovieAssetWriter *)self->_assetWriter cancel];
@@ -832,7 +832,7 @@ LABEL_75:
 
         v83 = [v115 count];
         v84 = self->_assetWriter;
-        v85 = [(FRCFrame *)self->_previousFrame buffer];
+        buffer2 = [(FRCFrame *)self->_previousFrame buffer];
         v86 = self->_previousFrame;
         if (v86)
         {
@@ -844,7 +844,7 @@ LABEL_75:
           memset(&buf, 0, sizeof(buf));
         }
 
-        v9 = [(VCPMovieAssetWriter *)v84 addPixelBuffer:v85 withTime:&buf withAttachment:0];
+        v9 = [(VCPMovieAssetWriter *)v84 addPixelBuffer:buffer2 withTime:&buf withAttachment:0];
         if (v9)
         {
           goto LABEL_109;
@@ -883,7 +883,7 @@ LABEL_109:
             v101 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v127 forKeys:&v126 count:{1, v110}];
             v102 = self->_assetWriter;
             v103 = [v115 objectAtIndexedSubscript:v100];
-            v104 = [v103 buffer];
+            buffer3 = [v103 buffer];
             *&buf.value = *&p_outputFrameDuration->value;
             buf.epoch = self->_outputFrameDuration.epoch;
             CMTimeMultiply(&v120, &buf, ++v100);
@@ -891,7 +891,7 @@ LABEL_109:
             buf.epoch = self->_anchorPTS.epoch;
             time2 = v120;
             CMTimeAdd(&rhs, &buf, &time2);
-            v9 = [(VCPMovieAssetWriter *)v102 addPixelBuffer:v104 withTime:&rhs withAttachment:v101];
+            v9 = [(VCPMovieAssetWriter *)v102 addPixelBuffer:buffer3 withTime:&rhs withAttachment:v101];
 
             if (v9)
             {
@@ -968,7 +968,7 @@ LABEL_116:
           }
 
           v9 = 0;
-          self->_previousMetadata = v11;
+          self->_previousMetadata = copyNextSampleBuffer2;
           ++self->_anchorIndex;
           ++self->_timingCurveIdx;
         }
@@ -987,7 +987,7 @@ LABEL_116:
 
 LABEL_98:
       self->_processAborted = 1;
-      CFRelease(v11);
+      CFRelease(copyNextSampleBuffer2);
       [(VCPMovieAssetWriter *)self->_assetWriter cancel];
       goto LABEL_99;
     }
@@ -1006,7 +1006,7 @@ LABEL_8:
   {
     CMTimeMake(&buf, 0, 600);
     self->_anchorPTS = buf;
-    CleanRect = CVImageBufferGetCleanRect(a3);
+    CleanRect = CVImageBufferGetCleanRect(frame);
     v12 = CleanRect.origin.x;
     v13 = CleanRect.origin.y;
     v14 = CleanRect.size.width;
@@ -1021,7 +1021,7 @@ LABEL_8:
     v21 = [(NSDictionary *)self->_pixelBasedHomogrphies objectForKeyedSubscript:*MEMORY[0x1E69A8B68]];
     v22 = [v21 objectAtIndexedSubscript:self->_frameIdx];
     v23 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69A8B70]];
-    cf = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:a3 cleanApertureRect:v23 cropRect:v12 homographyArray:v13, v14, v15, v16, v17, v19, v18];
+    cf = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:frame cleanApertureRect:v23 cropRect:v12 homographyArray:v13, v14, v15, v16, v17, v19, v18];
     buf.value = 0;
     CF<__CVBuffer *>::~CF(&buf);
 
@@ -1040,14 +1040,14 @@ LABEL_8:
       self->_anchorIndex = 0;
       while (1)
       {
-        v29 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
-        self->_previousMetadata = v29;
-        if (!v29)
+        copyNextSampleBuffer3 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
+        self->_previousMetadata = copyNextSampleBuffer3;
+        if (!copyNextSampleBuffer3)
         {
           break;
         }
 
-        NumSamples = CMSampleBufferGetNumSamples(v29);
+        NumSamples = CMSampleBufferGetNumSamples(copyNextSampleBuffer3);
         v31 = self->_previousMetadata;
         if (NumSamples)
         {
@@ -1057,14 +1057,14 @@ LABEL_8:
             v42 = [v25 objectForKeyedSubscript:*MEMORY[0x1E69A8B78]];
             CMTimeMakeFromDictionary(&rhs, v42);
 
-            buf = *a4;
+            buf = *timestamp;
             time2 = rhs;
             if (CMTimeCompare(&buf, &time2))
             {
               self->_metadataIntegrityFailure = 1;
               if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
               {
-                v43 = a4->var0;
+                v43 = timestamp->var0;
                 LODWORD(buf.value) = 134218240;
                 *(&buf.value + 4) = v43;
                 LOWORD(buf.flags) = 2048;
@@ -1072,9 +1072,9 @@ LABEL_8:
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Inconsistent live photo info and video frame timestamp: %lld vs. %lld", &buf, 0x16u);
               }
 
-              buf = *a4;
+              buf = *timestamp;
               time2 = rhs;
-              if (CMTimeCompare(&buf, &time2) >= 1 && (buf = *a4, time2 = rhs, CMTimeSubtract(&v122, &buf, &time2), CMTimeMake(&v121, 2, 600), buf = v122, time2 = v121, CMTimeCompare(&buf, &time2) > 0) || (buf = *a4, time2 = rhs, CMTimeCompare(&buf, &time2) < 0) && (buf = rhs, time2 = *a4, CMTimeSubtract(&v120, &buf, &time2), CMTimeMake(&v119, 2, 600), buf = v120, time2 = v119, CMTimeCompare(&buf, &time2) > 0) || !+[VCPSettlingEffectAnalyzer disableMetadataIntegrityCheck])
+              if (CMTimeCompare(&buf, &time2) >= 1 && (buf = *timestamp, time2 = rhs, CMTimeSubtract(&v122, &buf, &time2), CMTimeMake(&v121, 2, 600), buf = v122, time2 = v121, CMTimeCompare(&buf, &time2) > 0) || (buf = *timestamp, time2 = rhs, CMTimeCompare(&buf, &time2) < 0) && (buf = rhs, time2 = *timestamp, CMTimeSubtract(&v120, &buf, &time2), CMTimeMake(&v119, 2, 600), buf = v120, time2 = v119, CMTimeCompare(&buf, &time2) > 0) || !+[VCPSettlingEffectAnalyzer disableMetadataIntegrityCheck])
               {
                 if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
                 {
@@ -1137,10 +1137,10 @@ LABEL_100:
   return v9;
 }
 
-- (int)createLivePhotoInfoSample:(opaqueCMSampleBuffer *)a3 withTimestamp:(id *)a4 isInterpolated:(BOOL)a5 updatedSample:(opaqueCMSampleBuffer *)a6
+- (int)createLivePhotoInfoSample:(opaqueCMSampleBuffer *)sample withTimestamp:(id *)timestamp isInterpolated:(BOOL)interpolated updatedSample:(opaqueCMSampleBuffer *)updatedSample
 {
-  DataBuffer = CMSampleBufferGetDataBuffer(a3);
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  DataBuffer = CMSampleBufferGetDataBuffer(sample);
+  FormatDescription = CMSampleBufferGetFormatDescription(sample);
   totalLengthOut = 0;
   lengthAtOffsetOut = 0;
   dataPointerOut = 0;
@@ -1179,7 +1179,7 @@ LABEL_8:
   v20[1] = v21;
   v20[2] = 3;
   *(v20 + 36) = 32;
-  *(v20 + 130) = a5;
+  *(v20 + 130) = interpolated;
   theBuffer = 0;
   v22 = *MEMORY[0x1E695E480];
   v18 = CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x1E695E480], v20, v19 + 8, *MEMORY[0x1E695E480], 0, 0, v19 + 8, 0, &theBuffer);
@@ -1203,12 +1203,12 @@ LABEL_8:
     v27 = *(MEMORY[0x1E6960CF0] + 16);
     *&sampleTimingArray.duration.value = *MEMORY[0x1E6960CF0];
     *&sampleTimingArray.duration.epoch = v27;
-    *&sampleTimingArray.presentationTimeStamp.value = *&a4->var0;
-    var3 = a4->var3;
+    *&sampleTimingArray.presentationTimeStamp.value = *&timestamp->var0;
+    var3 = timestamp->var3;
     sampleTimingArray.decodeTimeStamp.epoch = v26;
     sampleTimingArray.presentationTimeStamp.epoch = var3;
     sampleSizeArray = CMBlockBufferGetDataLength(theBuffer);
-    v18 = CMSampleBufferCreate(v22, theBuffer, 1u, 0, 0, FormatDescription, 1, 1, &sampleTimingArray, 1, &sampleSizeArray, a6);
+    v18 = CMSampleBufferCreate(v22, theBuffer, 1u, 0, 0, FormatDescription, 1, 1, &sampleTimingArray, 1, &sampleSizeArray, updatedSample);
     v23 = theBuffer;
   }
 
@@ -1235,7 +1235,7 @@ LABEL_8:
   return v18;
 }
 
-- (int)finishAnalysisPass:(id *)a3 withStillImageBuffer:(__CVBuffer *)a4
+- (int)finishAnalysisPass:(id *)pass withStillImageBuffer:(__CVBuffer *)buffer
 {
   v64 = *MEMORY[0x1E69E9840];
   target = 0;
@@ -1260,7 +1260,7 @@ LABEL_14:
     if (v8)
     {
       self->_processAborted = 1;
-      if ([(VCPMovieAssetWriter *)self->_assetWriter status:a3]== 1)
+      if ([(VCPMovieAssetWriter *)self->_assetWriter status:pass]== 1)
       {
         [(VCPMovieAssetWriter *)self->_assetWriter cancel];
       }
@@ -1285,7 +1285,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  cf = [(VCPSettlingEffectAnalyzer *)self scaleStillImage:a4];
+  cf = [(VCPSettlingEffectAnalyzer *)self scaleStillImage:buffer];
   time.value = 0;
   CF<__CVBuffer *>::~CF(&time);
   target = [(VCPSettlingEffectAnalyzer *)self resamplePixelBuffer:cf cleanApertureRect:&unk_1F49BE680 cropRect:self->_cleanApertureRect.origin.x homographyArray:self->_cleanApertureRect.origin.y, self->_cleanApertureRect.size.width, self->_cleanApertureRect.size.height, self->_cropRect.origin.x, self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height];
@@ -1332,7 +1332,7 @@ LABEL_14:
     if (v23)
     {
       assetWriter = self->_assetWriter;
-      v25 = [(FRCFrame *)self->_previousFrame buffer];
+      buffer = [(FRCFrame *)self->_previousFrame buffer];
       v26 = self->_previousFrame;
       if (v26)
       {
@@ -1344,7 +1344,7 @@ LABEL_14:
         memset(&time, 0, sizeof(time));
       }
 
-      v8 = [(VCPMovieAssetWriter *)assetWriter addPixelBuffer:v25 withTime:&time withAttachment:0];
+      v8 = [(VCPMovieAssetWriter *)assetWriter addPixelBuffer:buffer withTime:&time withAttachment:0];
       if (v8)
       {
         goto LABEL_14;
@@ -1383,7 +1383,7 @@ LABEL_14:
         v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
         v36 = self->_assetWriter;
         v37 = [v7 objectAtIndexedSubscript:v35];
-        v38 = [v37 buffer];
+        buffer2 = [v37 buffer];
         *&time.value = *&p_outputFrameDuration->value;
         time.epoch = self->_outputFrameDuration.epoch;
         CMTimeMultiply(&v51, &time, v35 + 1);
@@ -1391,7 +1391,7 @@ LABEL_14:
         time.epoch = self->_anchorPTS.epoch;
         rhs = v51;
         CMTimeAdd(&v53, &time, &rhs);
-        v8 = [(VCPMovieAssetWriter *)v36 addPixelBuffer:v38 withTime:&v53 withAttachment:v47];
+        v8 = [(VCPMovieAssetWriter *)v36 addPixelBuffer:buffer2 withTime:&v53 withAttachment:v47];
 
         if (v8 || (v39 = self->_previousMetadata, *&time.value = *&p_outputFrameDuration->value, time.epoch = self->_outputFrameDuration.epoch, CMTimeMultiply(&v51, &time, v35 + 1), *&time.value = *&p_anchorPTS->value, time.epoch = self->_anchorPTS.epoch, rhs = v51, CMTimeAdd(&v53, &time, &rhs), (v8 = [(VCPSettlingEffectAnalyzer *)self createLivePhotoInfoSample:v39 withTimestamp:&v53 isInterpolated:1 updatedSample:&v57]) != 0))
         {
@@ -1409,7 +1409,7 @@ LABEL_14:
       }
 
       v40 = self->_assetWriter;
-      v41 = [v6 buffer];
+      buffer3 = [v6 buffer];
       if (v6)
       {
         [v6 presentationTimeStamp];
@@ -1420,7 +1420,7 @@ LABEL_14:
         memset(&time, 0, sizeof(time));
       }
 
-      v8 = [(VCPMovieAssetWriter *)v40 addPixelBuffer:v41 withTime:&time withAttachment:0];
+      v8 = [(VCPMovieAssetWriter *)v40 addPixelBuffer:buffer3 withTime:&time withAttachment:0];
       if (v8)
       {
         goto LABEL_14;
@@ -1455,9 +1455,9 @@ LABEL_14:
         self->_FRCGatingFailure = [(FRCFrameInterpolator *)self->_frameInterpolator gated];
         [(FRCFrameInterpolator *)self->_frameInterpolator sessionConfidence];
         self->_FRCConfidence = v43;
-        v44 = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
+        sessionStatistics = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
         FRCStatistics = self->_FRCStatistics;
-        self->_FRCStatistics = v44;
+        self->_FRCStatistics = sessionStatistics;
 
         goto LABEL_3;
       }
@@ -1471,9 +1471,9 @@ LABEL_13:
   self->_processAborted = 1;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v28 = [v5 localizedDescription];
+    localizedDescription = [v5 localizedDescription];
     LODWORD(time.value) = 138412290;
-    *(&time.value + 4) = v28;
+    *(&time.value + 4) = localizedDescription;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "FRC gating not passed: %@", &time, 0xCu);
   }
 
@@ -1481,9 +1481,9 @@ LABEL_13:
   self->_FRCRecommendation = [(FRCFrameInterpolator *)self->_frameInterpolator recommendation];
   [(FRCFrameInterpolator *)self->_frameInterpolator sessionConfidence];
   self->_FRCConfidence = v29;
-  v30 = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
+  sessionStatistics2 = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
   v31 = self->_FRCStatistics;
-  self->_FRCStatistics = v30;
+  self->_FRCStatistics = sessionStatistics2;
 
   self->_FRCGatingFailure = 1;
   [(VCPMovieAssetWriter *)self->_assetWriter cancel];
@@ -1516,11 +1516,11 @@ LABEL_23:
   v25[4] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:5];
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = v9;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v10 = dictionary;
   if (!self->_processAborted)
   {
-    [v9 setObject:self->_filePath forKeyedSubscript:@"settlingEffectURL"];
+    [dictionary setObject:self->_filePath forKeyedSubscript:@"settlingEffectURL"];
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:self->_FRCRecommendation];
@@ -1551,26 +1551,26 @@ LABEL_23:
   return v17;
 }
 
-- (id)getPixelBasedHomographies:(id)a3 withCleanApertureSize:(CGSize)a4
+- (id)getPixelBasedHomographies:(id)homographies withCleanApertureSize:(CGSize)size
 {
-  v4 = a3;
-  v5 = [[VCPProtoMovieStabilizationRecipe alloc] initWithData:v4];
-  v6 = [(VCPProtoMovieStabilizationRecipe *)v5 exportToLegacyDictionary];
+  homographiesCopy = homographies;
+  v5 = [[VCPProtoMovieStabilizationRecipe alloc] initWithData:homographiesCopy];
+  exportToLegacyDictionary = [(VCPProtoMovieStabilizationRecipe *)v5 exportToLegacyDictionary];
   v7 = ICCreateCorrectionHomographiesWithNewImageCoordinates();
 
   return v7;
 }
 
-+ (id)getFramePTSList:(id)a3 before:(id *)a4 withOptions:(id)a5
++ (id)getFramePTSList:(id)list before:(id *)before withOptions:(id)options
 {
-  v26 = a3;
-  v7 = a5;
-  v25 = [MEMORY[0x1E695DF70] array];
+  listCopy = list;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v8 = objc_alloc(MEMORY[0x1E6987E78]);
-  v9 = [v26 asset];
-  v10 = [v8 initWithAsset:v9 error:0];
+  asset = [listCopy asset];
+  v10 = [v8 initWithAsset:asset error:0];
 
-  v11 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:v26];
+  v11 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:listCopy];
   if (([v10 canAddOutput:v11] & 1) == 0 || (objc_msgSend(v10, "addOutput:", v11), !objc_msgSend(v10, "startReading")))
   {
     v19 = 0;
@@ -1583,14 +1583,14 @@ LABEL_14:
   v13 = MEMORY[0x1E6960CC0];
   while (1)
   {
-    v14 = [v11 copyNextSampleBuffer];
-    v15 = v14;
-    if (!v14)
+    copyNextSampleBuffer = [v11 copyNextSampleBuffer];
+    v15 = copyNextSampleBuffer;
+    if (!copyNextSampleBuffer)
     {
       break;
     }
 
-    if (CMSampleBufferGetNumSamples(v14))
+    if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
     {
       memset(&v29, 0, sizeof(v29));
       CMSampleBufferGetOutputPresentationTimeStamp(&v29, v15);
@@ -1599,7 +1599,7 @@ LABEL_14:
       if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
       {
         time1 = v29;
-        time2 = *a4;
+        time2 = *before;
         if (CMTimeCompare(&time1, &time2) < 0)
         {
           CMTimeMake(&v27, 2, 600);
@@ -1607,21 +1607,21 @@ LABEL_14:
           time2 = v27;
           CMTimeAdd(&v28, &time1, &time2);
           time1 = v28;
-          time2 = *a4;
+          time2 = *before;
           if (CMTimeCompare(&time1, &time2) < 0)
           {
             time1 = v29;
             v16 = CMTimeCopyAsDictionary(&time1, 0);
-            [v25 addObject:v16];
+            [array addObject:v16];
           }
         }
       }
 
-      v17 = [v7 objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
+      v17 = [optionsCopy objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
       if (v17)
       {
         time1 = v29;
-        time2 = *a4;
+        time2 = *before;
         v18 = CMTimeCompare(&time1, &time2) == 0;
 
         v12 |= v18;
@@ -1631,13 +1631,13 @@ LABEL_14:
     CFRelease(v15);
   }
 
-  v19 = [v25 sortedArrayUsingComparator:&__block_literal_global_2];
+  v19 = [array sortedArrayUsingComparator:&__block_literal_global_2];
   if (![v19 count])
   {
     goto LABEL_14;
   }
 
-  v23 = [v7 objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
+  v23 = [optionsCopy objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
   v24 = (v23 == 0) | v12;
 
   if (v24)
@@ -1678,12 +1678,12 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   return v5;
 }
 
-- (CGSize)getFrameSize:(id)a3
+- (CGSize)getFrameSize:(id)size
 {
-  v3 = [a3 formatDescriptions];
-  if ([v3 count])
+  formatDescriptions = [size formatDescriptions];
+  if ([formatDescriptions count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [formatDescriptions objectAtIndexedSubscript:0];
 
     PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions(v4, 0, 0);
     width = PresentationDimensions.width;
@@ -1703,12 +1703,12 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   return result;
 }
 
-- (CGSize)getCleanApertureFrameSize:(id)a3
+- (CGSize)getCleanApertureFrameSize:(id)size
 {
-  v3 = [a3 formatDescriptions];
-  if ([v3 count])
+  formatDescriptions = [size formatDescriptions];
+  if ([formatDescriptions count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [formatDescriptions objectAtIndexedSubscript:0];
 
     PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions(v4, 0, 1u);
     width = PresentationDimensions.width;
@@ -1728,43 +1728,43 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   return result;
 }
 
-- (__CVBuffer)resamplePixelBuffer:(__CVBuffer *)a3 cleanApertureRect:(CGRect)a4 cropRect:(CGRect)a5 homographyArray:(id)a6
+- (__CVBuffer)resamplePixelBuffer:(__CVBuffer *)buffer cleanApertureRect:(CGRect)rect cropRect:(CGRect)cropRect homographyArray:(id)array
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  x = a5.origin.x;
-  y = a5.origin.y;
-  v6 = a4.size.height;
-  v7 = a4.size.width;
-  v8 = a4.origin.y;
-  v9 = a4.origin.x;
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  x = cropRect.origin.x;
+  y = cropRect.origin.y;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
   v104[4] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [v10 objectAtIndexedSubscript:0];
+  arrayCopy = array;
+  v11 = [arrayCopy objectAtIndexedSubscript:0];
   [v11 floatValue];
   v98 = v12;
-  v13 = [v10 objectAtIndexedSubscript:1];
+  v13 = [arrayCopy objectAtIndexedSubscript:1];
   [v13 floatValue];
   v95 = v14;
-  v15 = [v10 objectAtIndexedSubscript:2];
+  v15 = [arrayCopy objectAtIndexedSubscript:2];
   [v15 floatValue];
   v92 = v16;
-  v17 = [v10 objectAtIndexedSubscript:3];
+  v17 = [arrayCopy objectAtIndexedSubscript:3];
   [v17 floatValue];
   v85 = v18;
-  v19 = [v10 objectAtIndexedSubscript:4];
+  v19 = [arrayCopy objectAtIndexedSubscript:4];
   [v19 floatValue];
   v84 = v20;
-  v21 = [v10 objectAtIndexedSubscript:5];
+  v21 = [arrayCopy objectAtIndexedSubscript:5];
   [v21 floatValue];
   v83 = v22;
-  v23 = [v10 objectAtIndexedSubscript:6];
+  v23 = [arrayCopy objectAtIndexedSubscript:6];
   [v23 floatValue];
   v82 = v24;
-  v25 = [v10 objectAtIndexedSubscript:7];
+  v25 = [arrayCopy objectAtIndexedSubscript:7];
   [v25 floatValue];
   v81 = v26;
-  v27 = [v10 objectAtIndexedSubscript:8];
+  v27 = [arrayCopy objectAtIndexedSubscript:8];
   [v27 floatValue];
   v28 = v98;
   v28.i32[1] = v85;
@@ -1808,7 +1808,7 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   v100 = *&v102.c;
   v94 = *&v102.a;
   v97 = *&v102.tx;
-  v37 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a3];
+  v37 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:buffer];
   v38 = [v37 imageByCroppingToRect:{v9, v8, v7, v6}];
   CGAffineTransformMakeTranslation(&v102, -v9, -v8);
   v39 = [v38 imageByApplyingTransform:&v102];
@@ -1882,7 +1882,7 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   bufferCreator = self->_bufferCreator;
   if (!bufferCreator)
   {
-    v77 = [[VCPPoolBasedPixelBufferCreator alloc] initWithBufferWidth:width bufferHeight:height andPixelFormat:CVPixelBufferGetPixelFormatType(a3)];
+    v77 = [[VCPPoolBasedPixelBufferCreator alloc] initWithBufferWidth:width bufferHeight:height andPixelFormat:CVPixelBufferGetPixelFormatType(buffer)];
     v78 = self->_bufferCreator;
     self->_bufferCreator = v77;
 
@@ -1893,7 +1893,7 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   if (![(VCPPoolBasedPixelBufferCreator *)bufferCreator createPixelBuffer:&v102])
   {
     [(CIContext *)self->_context render:v75 toCVPixelBuffer:*&v102.a];
-    CVBufferPropagateAttachments(a3, *&v102.a);
+    CVBufferPropagateAttachments(buffer, *&v102.a);
     CVBufferRemoveAttachment(*&v102.a, *MEMORY[0x1E6965D70]);
   }
 
@@ -1902,7 +1902,7 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   return *&a;
 }
 
-- (__CVBuffer)scaleStillImage:(__CVBuffer *)a3
+- (__CVBuffer)scaleStillImage:(__CVBuffer *)image
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:?];
@@ -1919,10 +1919,10 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   v18 = *MEMORY[0x1E69660D8];
   v19[0] = MEMORY[0x1E695E0F8];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   CVPixelBufferCreate(*MEMORY[0x1E695E480], v7, v9, PixelFormatType, v13, &v17);
   [(CIContext *)self->_context render:v12 toCVPixelBuffer:*&v17.a];
-  CVBufferPropagateAttachments(a3, *&v17.a);
+  CVBufferPropagateAttachments(image, *&v17.a);
   CVBufferRemoveAttachment(*&v17.a, *MEMORY[0x1E6965D70]);
   a = v17.a;
 
@@ -1949,9 +1949,9 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   return v2;
 }
 
-+ ($AFC8CF76A46F37F9FB23C20884F4FD99)getSettlingEffectTimeRange:(SEL)a3 withOptions:(id)a4
++ ($AFC8CF76A46F37F9FB23C20884F4FD99)getSettlingEffectTimeRange:(SEL)range withOptions:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   v8 = a5;
   v9 = [v8 objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
 
@@ -1963,11 +1963,11 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
 
   else
   {
-    v11 = [v7 asset];
-    v10 = v11;
-    if (v11)
+    asset = [optionsCopy asset];
+    v10 = asset;
+    if (asset)
     {
-      [(__CFDictionary *)v11 vcp_livePhotoStillDisplayTime];
+      [(__CFDictionary *)asset vcp_livePhotoStillDisplayTime];
     }
 
     else
@@ -1979,7 +1979,7 @@ uint64_t __64__VCPSettlingEffectAnalyzer_getFramePTSList_before_withOptions___bl
   v22 = lhs;
 
   lhs = v22;
-  v12 = [VCPSettlingEffectAnalyzer getFramePTSList:v7 before:&lhs withOptions:v8];
+  v12 = [VCPSettlingEffectAnalyzer getFramePTSList:optionsCopy before:&lhs withOptions:v8];
   v13 = [v8 objectForKeyedSubscript:@"CustomRetimingCurve"];
   if (v13)
   {

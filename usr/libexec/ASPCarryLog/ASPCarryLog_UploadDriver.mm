@@ -1,44 +1,44 @@
 @interface ASPCarryLog_UploadDriver
-- (int)_DRResponseConversion:(unsigned __int8)a3;
-- (int)allowToParticipateTaskingId:(id)a3 DeviceId:(id)a4;
-- (int)uploadFile:(id)a3 TaskingId:(id)a4 DeviceId:(id)a5 LogType:(id)a6;
+- (int)_DRResponseConversion:(unsigned __int8)conversion;
+- (int)allowToParticipateTaskingId:(id)id DeviceId:(id)deviceId;
+- (int)uploadFile:(id)file TaskingId:(id)id DeviceId:(id)deviceId LogType:(id)type;
 @end
 
 @implementation ASPCarryLog_UploadDriver
 
-- (int)_DRResponseConversion:(unsigned __int8)a3
+- (int)_DRResponseConversion:(unsigned __int8)conversion
 {
-  if (a3 == 2)
+  if (conversion == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return conversion == 1;
   }
 }
 
-- (int)uploadFile:(id)a3 TaskingId:(id)a4 DeviceId:(id)a5 LogType:(id)a6
+- (int)uploadFile:(id)file TaskingId:(id)id DeviceId:(id)deviceId LogType:(id)type
 {
   v15 = @"DeviceID";
-  v16 = a5;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+  deviceIdCopy = deviceId;
+  typeCopy = type;
+  deviceIdCopy2 = deviceId;
+  idCopy = id;
+  fileCopy = file;
+  v13 = [NSDictionary dictionaryWithObjects:&deviceIdCopy forKeys:&v15 count:1];
 
-  ASPCarryLog_UploadFileToDP(v12, @"com.apple.coreos.nand", v11, @"com.apple.nand.iolog", v13, v9);
+  ASPCarryLog_UploadFileToDP(fileCopy, @"com.apple.coreos.nand", idCopy, @"com.apple.nand.iolog", v13, typeCopy);
   return 1;
 }
 
-- (int)allowToParticipateTaskingId:(id)a3 DeviceId:(id)a4
+- (int)allowToParticipateTaskingId:(id)id DeviceId:(id)deviceId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  deviceIdCopy = deviceId;
   v18 = @"DeviceID";
-  v19 = v7;
+  v19 = deviceIdCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   if (&_DRShouldEnableLogGathering)
   {
@@ -51,13 +51,13 @@
     }
 
     v11 = v10;
-    v12 = [v10 localizedDescription];
-    v13 = [v12 UTF8String];
+    localizedDescription = [v10 localizedDescription];
+    uTF8String = [localizedDescription UTF8String];
 
     v14 = oslog;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_10004919C(v13, v14);
+      sub_10004919C(uTF8String, v14);
     }
   }
 

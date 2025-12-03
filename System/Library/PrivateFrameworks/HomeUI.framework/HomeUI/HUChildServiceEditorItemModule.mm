@@ -1,21 +1,21 @@
 @interface HUChildServiceEditorItemModule
 + (id)supportedServiceTypes;
-- (BOOL)canToggleConfigurationStateForItem:(id)a3;
+- (BOOL)canToggleConfigurationStateForItem:(id)item;
 - (HMAccessory)accessory;
-- (HUChildServiceEditorItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5 mode:(unint64_t)a6;
+- (HUChildServiceEditorItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item mode:(unint64_t)mode;
 - (id)_createItemProviders;
-- (id)_isConfiguredControlItemForItem:(id)a3;
+- (id)_isConfiguredControlItemForItem:(id)item;
 - (id)itemProviders;
-- (id)toggleConfigurationStateForItem:(id)a3;
-- (int64_t)configurationStateForItem:(id)a3;
+- (id)toggleConfigurationStateForItem:(id)item;
+- (int64_t)configurationStateForItem:(id)item;
 @end
 
 @implementation HUChildServiceEditorItemModule
 
 + (id)supportedServiceTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HUChildServiceEditorItemModule.m" lineNumber:22 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HUChildServiceEditorItemModule supportedServiceTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUChildServiceEditorItemModule.m" lineNumber:22 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HUChildServiceEditorItemModule supportedServiceTypes]", objc_opt_class()}];
 
   return 0;
 }
@@ -83,27 +83,27 @@ uint64_t __53__HUChildServiceEditorItemModule_childItemComparator__block_invoke(
   return v18;
 }
 
-- (HUChildServiceEditorItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5 mode:(unint64_t)a6
+- (HUChildServiceEditorItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item mode:(unint64_t)mode
 {
-  v12 = a4;
-  v13 = a5;
+  homeCopy = home;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = HUChildServiceEditorItemModule;
-  v14 = [(HFItemModule *)&v19 initWithItemUpdater:a3];
+  v14 = [(HFItemModule *)&v19 initWithItemUpdater:updater];
   if (v14)
   {
-    if (!v13)
+    if (!itemCopy)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v14 file:@"HUChildServiceEditorItemModule.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sourceItem"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v14 file:@"HUChildServiceEditorItemModule.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sourceItem"}];
     }
 
-    objc_storeStrong(&v14->_home, a4);
-    objc_storeStrong(&v14->_sourceItem, a5);
-    v14->_editingMode = a6;
-    v15 = [(HUChildServiceEditorItemModule *)v14 _createItemProviders];
+    objc_storeStrong(&v14->_home, home);
+    objc_storeStrong(&v14->_sourceItem, item);
+    v14->_editingMode = mode;
+    _createItemProviders = [(HUChildServiceEditorItemModule *)v14 _createItemProviders];
     itemProviders = v14->_itemProviders;
-    v14->_itemProviders = v15;
+    v14->_itemProviders = _createItemProviders;
   }
 
   return v14;
@@ -111,11 +111,11 @@ uint64_t __53__HUChildServiceEditorItemModule_childItemComparator__block_invoke(
 
 - (HMAccessory)accessory
 {
-  v2 = [(HUChildServiceEditorItemModule *)self sourceItem];
-  v3 = [v2 accessories];
-  v4 = [v3 anyObject];
+  sourceItem = [(HUChildServiceEditorItemModule *)self sourceItem];
+  accessories = [sourceItem accessories];
+  anyObject = [accessories anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 - (id)itemProviders
@@ -123,9 +123,9 @@ uint64_t __53__HUChildServiceEditorItemModule_childItemComparator__block_invoke(
   itemProviders = self->_itemProviders;
   if (!itemProviders)
   {
-    v4 = [(HUChildServiceEditorItemModule *)self _createItemProviders];
+    _createItemProviders = [(HUChildServiceEditorItemModule *)self _createItemProviders];
     v5 = self->_itemProviders;
-    self->_itemProviders = v4;
+    self->_itemProviders = _createItemProviders;
 
     itemProviders = self->_itemProviders;
   }
@@ -135,20 +135,20 @@ uint64_t __53__HUChildServiceEditorItemModule_childItemComparator__block_invoke(
 
 - (id)_createItemProviders
 {
-  v3 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
+  childServiceItemProvider = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
 
-  if (!v3)
+  if (!childServiceItemProvider)
   {
     v4 = objc_alloc(MEMORY[0x277D14AD0]);
-    v5 = [(HUChildServiceEditorItemModule *)self home];
-    v6 = [objc_opt_class() supportedServiceTypes];
-    v7 = [v4 initWithHome:v5 serviceTypes:v6];
+    home = [(HUChildServiceEditorItemModule *)self home];
+    supportedServiceTypes = [objc_opt_class() supportedServiceTypes];
+    v7 = [v4 initWithHome:home serviceTypes:supportedServiceTypes];
     [(HUChildServiceEditorItemModule *)self setChildServiceItemProvider:v7];
 
     objc_initWeak(&location, self);
     v8 = MEMORY[0x277CBEB98];
-    v9 = [objc_opt_class() supportedServiceTypes];
-    v10 = [v8 setWithArray:v9];
+    supportedServiceTypes2 = [objc_opt_class() supportedServiceTypes];
+    v10 = [v8 setWithArray:supportedServiceTypes2];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -157,16 +157,16 @@ uint64_t __53__HUChildServiceEditorItemModule_childItemComparator__block_invoke(
     objc_copyWeak(&v19, &location);
     v11 = v10;
     v18 = v11;
-    v12 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
-    [v12 setSourceServiceGenerator:v17];
+    childServiceItemProvider2 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
+    [childServiceItemProvider2 setSourceServiceGenerator:v17];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
   }
 
   v13 = MEMORY[0x277CBEB98];
-  v14 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
-  v15 = [v13 setWithObject:v14];
+  childServiceItemProvider3 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
+  v15 = [v13 setWithObject:childServiceItemProvider3];
 
   return v15;
 }
@@ -320,11 +320,11 @@ uint64_t __54__HUChildServiceEditorItemModule__createItemProviders__block_invoke
   return v4;
 }
 
-- (id)_isConfiguredControlItemForItem:(id)a3
+- (id)_isConfiguredControlItemForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HFItemModule *)self itemUpdater];
-  v6 = [v5 childItemsForItem:v4];
+  itemCopy = item;
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v6 = [itemUpdater childItemsForItem:itemCopy];
 
   v7 = [v6 na_firstObjectPassingTest:&__block_literal_global_22_2];
 
@@ -369,14 +369,14 @@ void __66__HUChildServiceEditorItemModule__isConfiguredControlItemForItem___bloc
   qword_27C8380B8 = v3;
 }
 
-- (int64_t)configurationStateForItem:(id)a3
+- (int64_t)configurationStateForItem:(id)item
 {
-  v3 = [(HUChildServiceEditorItemModule *)self _isConfiguredControlItemForItem:a3];
+  v3 = [(HUChildServiceEditorItemModule *)self _isConfiguredControlItemForItem:item];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 latestResults];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+    latestResults = [v3 latestResults];
+    v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
     if (v6)
     {
@@ -405,14 +405,14 @@ void __66__HUChildServiceEditorItemModule__isConfiguredControlItemForItem___bloc
   return v7;
 }
 
-- (BOOL)canToggleConfigurationStateForItem:(id)a3
+- (BOOL)canToggleConfigurationStateForItem:(id)item
 {
-  v4 = [(HUChildServiceEditorItemModule *)self configurationStateForItem:a3];
-  v5 = [(HUChildServiceEditorItemModule *)self home];
-  v6 = [v5 hf_currentUserIsAdministrator];
+  v4 = [(HUChildServiceEditorItemModule *)self configurationStateForItem:item];
+  home = [(HUChildServiceEditorItemModule *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
   if (v4 > 1)
   {
-    v7 = v6;
+    v7 = hf_currentUserIsAdministrator;
   }
 
   else
@@ -423,18 +423,18 @@ void __66__HUChildServiceEditorItemModule__isConfiguredControlItemForItem___bloc
   return v7;
 }
 
-- (id)toggleConfigurationStateForItem:(id)a3
+- (id)toggleConfigurationStateForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUChildServiceEditorItemModule *)self _isConfiguredControlItemForItem:v4];
+  itemCopy = item;
+  v5 = [(HUChildServiceEditorItemModule *)self _isConfiguredControlItemForItem:itemCopy];
   if (!v5)
   {
-    NSLog(&cfstr_NoControlItemF.isa, v4);
+    NSLog(&cfstr_NoControlItemF.isa, itemCopy);
   }
 
-  v6 = [v5 toggleValue];
+  toggleValue = [v5 toggleValue];
 
-  return v6;
+  return toggleValue;
 }
 
 @end

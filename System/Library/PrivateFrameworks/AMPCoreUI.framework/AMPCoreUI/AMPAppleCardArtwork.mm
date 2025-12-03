@@ -13,25 +13,25 @@
     +[AMPAppleCardArtwork cardIcon];
   }
 
-  v2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v2)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v2 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v3 = [v2 shouldLog];
-  if ([v2 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v4 &= 2u;
   }
@@ -80,29 +80,29 @@
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 cardIcon];
+    cardIcon = [v11 cardIcon];
     goto LABEL_30;
   }
 
-  v14 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v14)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v14 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v15 = [v14 shouldLog];
-  if ([v14 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v16 = v15 | 2;
+    v16 = shouldLog2 | 2;
   }
 
   else
   {
-    v16 = v15;
+    v16 = shouldLog2;
   }
 
-  v17 = [v14 OSLogObject];
-  if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v16 &= 2u;
   }
@@ -121,18 +121,18 @@
 
   if (v20)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithCString:v20 encoding:{4, &v29, v24, v25}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v20 encoding:{4, &v29, v24, v25}];
     free(v20);
     SSFileLog();
 LABEL_28:
   }
 
-  v13 = 0;
+  cardIcon = 0;
 LABEL_30:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return cardIcon;
 }
 
 void __31__AMPAppleCardArtwork_cardIcon__block_invoke()
@@ -173,8 +173,8 @@ LABEL_4:
 + (id)cardIconString
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [a1 cardIcon];
-  v3 = UIImagePNGRepresentation(v2);
+  cardIcon = [self cardIcon];
+  v3 = UIImagePNGRepresentation(cardIcon);
   v4 = v3;
   if (v3)
   {
@@ -184,25 +184,25 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v7)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v9 &= 2u;
   }
@@ -220,7 +220,7 @@ LABEL_4:
 
   if (v12)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, &v16, v15, v16}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, &v16, v15, v16}];
     free(v12);
     SSFileLog();
 LABEL_13:

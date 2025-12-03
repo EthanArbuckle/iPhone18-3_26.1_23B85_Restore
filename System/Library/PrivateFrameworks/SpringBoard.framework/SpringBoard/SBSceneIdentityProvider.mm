@@ -1,61 +1,61 @@
 @interface SBSceneIdentityProvider
-- (SBSceneIdentityProvider)initWithDisplayIdentity:(id)a3;
-- (id)newSceneIdentityForApplication:(id)a3;
-- (id)sceneIdentityForApplication:(id)a3;
-- (id)sceneIdentityForApplication:(id)a3 createPrimaryIfRequired:(BOOL)a4 sceneSessionRole:(id)a5;
-- (id)sceneIdentityForApplication:(id)a3 excludingIdentifiers:(id)a4;
-- (id)sceneIdentityForApplication:(id)a3 targetContentIdentifier:(id)a4;
-- (id)sceneIdentityForApplication:(id)a3 uniqueIdentifier:(id)a4;
+- (SBSceneIdentityProvider)initWithDisplayIdentity:(id)identity;
+- (id)newSceneIdentityForApplication:(id)application;
+- (id)sceneIdentityForApplication:(id)application;
+- (id)sceneIdentityForApplication:(id)application createPrimaryIfRequired:(BOOL)required sceneSessionRole:(id)role;
+- (id)sceneIdentityForApplication:(id)application excludingIdentifiers:(id)identifiers;
+- (id)sceneIdentityForApplication:(id)application targetContentIdentifier:(id)identifier;
+- (id)sceneIdentityForApplication:(id)application uniqueIdentifier:(id)identifier;
 @end
 
 @implementation SBSceneIdentityProvider
 
-- (SBSceneIdentityProvider)initWithDisplayIdentity:(id)a3
+- (SBSceneIdentityProvider)initWithDisplayIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = SBSceneIdentityProvider;
   v6 = [(SBSceneIdentityProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayIdentity, a3);
+    objc_storeStrong(&v6->_displayIdentity, identity);
   }
 
   return v7;
 }
 
-- (id)newSceneIdentityForApplication:(id)a3
+- (id)newSceneIdentityForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [(SBSceneIdentityProvider *)self _sceneIdentifierForBundleIdentifier:v5];
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v6 = [(SBSceneIdentityProvider *)self _sceneIdentifierForBundleIdentifier:bundleIdentifier];
 
-  v7 = [(SBSceneIdentityProvider *)self sceneIdentityForApplication:v4 uniqueIdentifier:v6];
+  v7 = [(SBSceneIdentityProvider *)self sceneIdentityForApplication:applicationCopy uniqueIdentifier:v6];
 
   return v7;
 }
 
-- (id)sceneIdentityForApplication:(id)a3
+- (id)sceneIdentityForApplication:(id)application
 {
-  v3 = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:a3];
+  v3 = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:application];
 
   return v3;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 uniqueIdentifier:(id)a4
+- (id)sceneIdentityForApplication:(id)application uniqueIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
-    v8 = v6;
+    v8 = identifierCopy;
   }
 
   else
   {
-    v9 = [a3 bundleIdentifier];
-    v8 = [(SBSceneIdentityProvider *)self _sceneIdentifierForBundleIdentifier:v9];
+    bundleIdentifier = [application bundleIdentifier];
+    v8 = [(SBSceneIdentityProvider *)self _sceneIdentifierForBundleIdentifier:bundleIdentifier];
   }
 
   v10 = [MEMORY[0x277D0ADC0] identityForIdentifier:v8];
@@ -63,28 +63,28 @@
   return v10;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 targetContentIdentifier:(id)a4
+- (id)sceneIdentityForApplication:(id)application targetContentIdentifier:(id)identifier
 {
-  v4 = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:a3, a4];
+  identifier = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:application, identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 excludingIdentifiers:(id)a4
+- (id)sceneIdentityForApplication:(id)application excludingIdentifiers:(id)identifiers
 {
-  v4 = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:a3, a4];
+  identifiers = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:application, identifiers];
 
-  return v4;
+  return identifiers;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 createPrimaryIfRequired:(BOOL)a4 sceneSessionRole:(id)a5
+- (id)sceneIdentityForApplication:(id)application createPrimaryIfRequired:(BOOL)required sceneSessionRole:(id)role
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(SBSceneIdentityProvider *)self sceneIdentityForApplication:v7];
-  if (!v8 && v5)
+  requiredCopy = required;
+  applicationCopy = application;
+  v8 = [(SBSceneIdentityProvider *)self sceneIdentityForApplication:applicationCopy];
+  if (!v8 && requiredCopy)
   {
-    v8 = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:v7];
+    v8 = [(SBSceneIdentityProvider *)self newSceneIdentityForApplication:applicationCopy];
   }
 
   return v8;

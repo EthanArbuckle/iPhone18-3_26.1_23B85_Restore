@@ -1,17 +1,17 @@
 @interface TDPhotoshopAsset
 - (BOOL)hasCursorProduction;
-- (id)_activeProductionWithRenditionsInProductions:(id)a3;
-- (id)_productionWithRenditionsInProductions:(id)a3;
+- (id)_activeProductionWithRenditionsInProductions:(id)productions;
+- (id)_productionWithRenditionsInProductions:(id)productions;
 - (id)copyDataFromAttributes;
 - (id)production;
-- (void)setAttributesFromCopyData:(id)a3;
+- (void)setAttributesFromCopyData:(id)data;
 @end
 
 @implementation TDPhotoshopAsset
 
-- (id)_activeProductionWithRenditionsInProductions:(id)a3
+- (id)_activeProductionWithRenditionsInProductions:(id)productions
 {
-  v4 = [a3 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"renditions != nil AND isActive == 1"}];
+  v4 = [productions filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"renditions != nil AND isActive == 1"}];
   v5 = [v4 count];
   if (!v5)
   {
@@ -28,9 +28,9 @@
   return v7;
 }
 
-- (id)_productionWithRenditionsInProductions:(id)a3
+- (id)_productionWithRenditionsInProductions:(id)productions
 {
-  v4 = [a3 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"renditions != nil"}];
+  v4 = [productions filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"renditions != nil"}];
   v5 = [v4 count];
   if (!v5)
   {
@@ -53,15 +53,15 @@ LABEL_5:
 
 - (BOOL)hasCursorProduction
 {
-  v3 = [(TDPhotoshopAsset *)self hasProduction];
-  if (v3)
+  hasProduction = [(TDPhotoshopAsset *)self hasProduction];
+  if (hasProduction)
   {
     [(TDPhotoshopAsset *)self production];
     objc_opt_class();
-    LOBYTE(v3) = objc_opt_isKindOfClass();
+    LOBYTE(hasProduction) = objc_opt_isKindOfClass();
   }
 
-  return v3 & 1;
+  return hasProduction & 1;
 }
 
 - (id)production
@@ -119,9 +119,9 @@ LABEL_5:
   return [v7 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"category"];
   if (v5)
   {

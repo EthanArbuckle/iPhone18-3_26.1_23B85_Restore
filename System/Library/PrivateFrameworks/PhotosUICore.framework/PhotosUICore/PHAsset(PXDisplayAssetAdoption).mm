@@ -23,16 +23,16 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v2 = [MEMORY[0x1E6978AB0] isContentPreviewableForAsset:a1 outError:&v7];
+  v2 = [MEMORY[0x1E6978AB0] isContentPreviewableForAsset:self outError:&v7];
   v3 = v7;
   if (v3)
   {
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       *buf = 138412546;
-      v9 = v5;
+      v9 = localIdentifier;
       v10 = 2112;
       v11 = v3;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_ERROR, "Error determining isContentPreviewableForAsset localIdentifier: %@ error: %@", buf, 0x16u);
@@ -44,66 +44,66 @@
 
 - (id)focalLengthIn35mm
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 photosInfoPanelExtendedProperties];
-  v3 = [v2 focalLengthIn35mm];
+  [self fetchPropertySetsIfNeeded];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  focalLengthIn35mm = [photosInfoPanelExtendedProperties focalLengthIn35mm];
 
-  return v3;
+  return focalLengthIn35mm;
 }
 
 - (id)focalLength
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 photosInfoPanelExtendedProperties];
-  v3 = [v2 focalLength];
+  [self fetchPropertySetsIfNeeded];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  focalLength = [photosInfoPanelExtendedProperties focalLength];
 
-  return v3;
+  return focalLength;
 }
 
 - (id)fetchColorNormalizationData
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 mediaAnalysisProperties];
-  v3 = [v2 colorNormalizationData];
+  [self fetchPropertySetsIfNeeded];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  colorNormalizationData = [mediaAnalysisProperties colorNormalizationData];
 
-  return v3;
+  return colorNormalizationData;
 }
 
 - (void)livePhotoStillDisplayTime
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v4 = [a1 photoIrisProperties];
+  [self fetchPropertySetsIfNeeded];
+  photoIrisProperties = [self photoIrisProperties];
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  if (v4)
+  if (photoIrisProperties)
   {
-    v5 = v4;
-    [v4 photoIrisStillDisplayTime];
-    v4 = v5;
+    v5 = photoIrisProperties;
+    [photoIrisProperties photoIrisStillDisplayTime];
+    photoIrisProperties = v5;
   }
 }
 
 - (void)livePhotoVideoDuration
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v4 = [a1 photoIrisProperties];
+  [self fetchPropertySetsIfNeeded];
+  photoIrisProperties = [self photoIrisProperties];
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  if (v4)
+  if (photoIrisProperties)
   {
-    v5 = v4;
-    [v4 photoIrisVideoDuration];
-    v4 = v5;
+    v5 = photoIrisProperties;
+    [photoIrisProperties photoIrisVideoDuration];
+    photoIrisProperties = v5;
   }
 }
 
 - (float)audioScore
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 mediaAnalysisProperties];
-  [v2 audioScore];
+  [self fetchPropertySetsIfNeeded];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  [mediaAnalysisProperties audioScore];
   v4 = v3;
 
   return v4;
@@ -111,38 +111,38 @@
 
 - (uint64_t)isEligibleForAutoPlayback
 {
-  if (![a1 isAutoPlaybackEligibilityEstimated])
+  if (![self isAutoPlaybackEligibilityEstimated])
   {
-    [a1 highlightVisibilityScore];
+    [self highlightVisibilityScore];
     v5 = 0.769230769;
     return v4 >= v5;
   }
 
-  v2 = [a1 playbackStyle];
-  if (v2 == 5)
+  playbackStyle = [self playbackStyle];
+  if (playbackStyle == 5)
   {
     return 1;
   }
 
-  if (v2 == 4)
+  if (playbackStyle == 4)
   {
-    [a1 duration];
+    [self duration];
     v5 = 2.0;
     return v4 >= v5;
   }
 
-  if (v2 != 3 || ([MEMORY[0x1E696AF00] isMainThread] & 1) != 0)
+  if (playbackStyle != 3 || ([MEMORY[0x1E696AF00] isMainThread] & 1) != 0)
   {
     return 0;
   }
 
-  [a1 fetchPropertySetsIfNeeded];
-  v7 = [off_1E7721810 sharedInstance];
-  [v7 minAutoplaySuggestionScore];
+  [self fetchPropertySetsIfNeeded];
+  sharedInstance = [off_1E7721810 sharedInstance];
+  [sharedInstance minAutoplaySuggestionScore];
   v9 = v8;
 
-  v10 = [a1 mediaAnalysisProperties];
-  [v10 autoplaySuggestionScore];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  [mediaAnalysisProperties autoplaySuggestionScore];
   v3 = v9 < v11;
 
   return v3;
@@ -150,41 +150,41 @@
 
 - (id)importDate
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 curationProperties];
-  v3 = [v2 addedDate];
+  [self fetchPropertySetsIfNeeded];
+  curationProperties = [self curationProperties];
+  addedDate = [curationProperties addedDate];
 
-  return v3;
+  return addedDate;
 }
 
 - (double)bestCropRectForAspectRatioV2:()PXDisplayAssetAdoption verticalContentMode:cropMode:
 {
-  v4 = [a1 pixelWidth];
-  v5 = [a1 pixelHeight];
-  if (!v4)
+  pixelWidth = [self pixelWidth];
+  pixelHeight = [self pixelHeight];
+  if (!pixelWidth)
   {
     return *off_1E77221F8;
   }
 
-  v6 = v5;
-  if (!v5)
+  v6 = pixelHeight;
+  if (!pixelHeight)
   {
     return *off_1E77221F8;
   }
 
   v7 = MEMORY[0x1E69C06A0];
-  [a1 preferredCropRect];
+  [self preferredCropRect];
   v32 = v8;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [a1 acceptableCropRect];
+  [self acceptableCropRect];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [a1 normalizedFaceAreaRect];
-  [v7 bestCropRectV2ForAspectRatio:v4 withFocusRegion:v6 sourcePixelWidth:a2 sourcePixelHeight:*MEMORY[0x1E695F050] sourcePreferredCropRectNormalized:*(MEMORY[0x1E695F050] + 8) sourceAcceptableCropRectNormalized:*(MEMORY[0x1E695F050] + 16) sourceFaceAreaRectNormalized:{*(MEMORY[0x1E695F050] + 24), v32, v10, v12, v14, v16, v18, v20, v22, v23, v24, v25, v26}];
+  [self normalizedFaceAreaRect];
+  [v7 bestCropRectV2ForAspectRatio:pixelWidth withFocusRegion:v6 sourcePixelWidth:a2 sourcePixelHeight:*MEMORY[0x1E695F050] sourcePreferredCropRectNormalized:*(MEMORY[0x1E695F050] + 8) sourceAcceptableCropRectNormalized:*(MEMORY[0x1E695F050] + 16) sourceFaceAreaRectNormalized:{*(MEMORY[0x1E695F050] + 24), v32, v10, v12, v14, v16, v18, v20, v22, v23, v24, v25, v26}];
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
@@ -213,20 +213,20 @@
 - (double)bestCropRectForAspectRatio:()PXDisplayAssetAdoption verticalContentMode:cropMode:
 {
   v8 = MEMORY[0x1E69C06A0];
-  v9 = [a1 pixelWidth];
-  v10 = [a1 pixelHeight];
-  [a1 preferredCropRect];
+  pixelWidth = [self pixelWidth];
+  pixelHeight = [self pixelHeight];
+  [self preferredCropRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [a1 acceptableCropRect];
+  [self acceptableCropRect];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [a1 normalizedFaceAreaRect];
-  [v8 bestCropRectForAspectRatio:a4 verticalContentMode:a5 cropMode:v9 sourcePixelWidth:v10 sourcePixelHeight:a2 sourcePreferredCropRectNormalized:v12 sourceAcceptableCropRectNormalized:v14 sourceFaceAreaRectNormalized:{v16, v18, v20, v22, v24, v26, v27, v28, v29, v30}];
+  [self normalizedFaceAreaRect];
+  [v8 bestCropRectForAspectRatio:a4 verticalContentMode:a5 cropMode:pixelWidth sourcePixelWidth:pixelHeight sourcePixelHeight:a2 sourcePreferredCropRectNormalized:v12 sourceAcceptableCropRectNormalized:v14 sourceFaceAreaRectNormalized:{v16, v18, v20, v22, v24, v26, v27, v28, v29, v30}];
   x = v37.origin.x;
   y = v37.origin.y;
   width = v37.size.width;
@@ -254,10 +254,10 @@
 
 - (uint64_t)thumbnailVersion
 {
-  v2 = [a1 modificationDate];
-  v3 = [v2 hash];
-  v4 = [a1 pixelWidth] ^ v3;
-  v5 = v4 ^ ([a1 pixelHeight] << 32);
+  modificationDate = [self modificationDate];
+  v3 = [modificationDate hash];
+  v4 = [self pixelWidth] ^ v3;
+  v5 = v4 ^ ([self pixelHeight] << 32);
 
   return v5;
 }
@@ -268,7 +268,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a1 hasContentEqualTo:v4])
+    if ([self hasContentEqualTo:v4])
     {
       v5 = 2;
     }
@@ -290,9 +290,9 @@
 - (__CFString)localizedDetailedGeoDescriptionForRTL:()PXDisplayAssetAdoption
 {
   v15 = 0;
-  [a1 fetchPropertySetsIfNeeded];
-  v5 = [a1 photosOneUpProperties];
-  v6 = [v5 placeNamesForLocalizedDetailedDescriptionIsHome:&v15];
+  [self fetchPropertySetsIfNeeded];
+  photosOneUpProperties = [self photosOneUpProperties];
+  v6 = [photosOneUpProperties placeNamesForLocalizedDetailedDescriptionIsHome:&v15];
 
   if (v15 == 1)
   {
@@ -314,8 +314,8 @@
       v11 = @"\u200E";
     }
 
-    v12 = [v6 array];
-    v13 = [v12 componentsJoinedByString:v9];
+    array = [v6 array];
+    v13 = [array componentsJoinedByString:v9];
     v7 = [v10 stringWithFormat:@"%@%@%@%@", v11, @"⁨", v13, @"⁩"];
   }
 
@@ -330,9 +330,9 @@
 - (id)localizedGeoDescription
 {
   v6 = 0;
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 photosOneUpProperties];
-  v3 = [v2 localizedGeoDescriptionIsHome:&v6];
+  [self fetchPropertySetsIfNeeded];
+  photosOneUpProperties = [self photosOneUpProperties];
+  v3 = [photosOneUpProperties localizedGeoDescriptionIsHome:&v6];
 
   if (v6 == 1)
   {
@@ -346,11 +346,11 @@
 
 - (uint64_t)originalFileSize
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 originalMetadataProperties];
-  v3 = [v2 originalFilesize];
+  [self fetchPropertySetsIfNeeded];
+  originalMetadataProperties = [self originalMetadataProperties];
+  originalFilesize = [originalMetadataProperties originalFilesize];
 
-  return v3;
+  return originalFilesize;
 }
 
 @end

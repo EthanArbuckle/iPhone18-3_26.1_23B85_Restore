@@ -1,7 +1,7 @@
 @interface ADSessionLocalConnection
 - (ADSessionLocalConnectionDelegate)delegate;
-- (id)initOnQueue:(id)a3;
-- (void)cancelWithCompletion:(id)a3;
+- (id)initOnQueue:(id)queue;
+- (void)cancelWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)start;
 @end
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-- (void)cancelWithCompletion:(id)a3
+- (void)cancelWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
@@ -40,16 +40,16 @@
   [(ADSessionLocalConnection *)&v2 dealloc];
 }
 
-- (id)initOnQueue:(id)a3
+- (id)initOnQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = ADSessionLocalConnection;
   v6 = [(ADSessionLocalConnection *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = v7;
   }
 

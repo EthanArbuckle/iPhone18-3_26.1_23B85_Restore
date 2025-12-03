@@ -11,8 +11,8 @@
 
 - (id)mf_enclosingScrollView
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
@@ -22,58 +22,58 @@
         break;
       }
 
-      v2 = [v1 superview];
+      superview = [selfCopy superview];
 
-      v1 = v2;
+      selfCopy = superview;
     }
 
-    while (v2);
+    while (superview);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)mf_frontSibling
 {
-  v2 = [a1 superview];
-  v3 = [v2 subviews];
-  v4 = [v3 objectEnumerator];
+  superview = [self superview];
+  subviews = [superview subviews];
+  objectEnumerator = [subviews objectEnumerator];
 
   v5 = 0;
   while (1)
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v5 = v6;
-    if (v6 == a1)
+    v5 = nextObject;
+    if (nextObject == self)
     {
-      v7 = [v4 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
       goto LABEL_6;
     }
   }
 
-  v7 = 0;
+  nextObject2 = 0;
 LABEL_6:
 
-  return v7;
+  return nextObject2;
 }
 
 - (double)mf_currentScreenScale
 {
-  v1 = [a1 window];
-  v2 = [v1 screen];
+  window = [self window];
+  screen = [window screen];
 
-  if (!v2)
+  if (!screen)
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    screen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  [v2 scale];
+  [screen scale];
   v4 = v3;
 
   return v4;
@@ -91,7 +91,7 @@ LABEL_6:
     v4 = 0;
   }
 
-  return [a1 mf_pinToView:a3 layoutMarginEdges:v4 flexibleEdges:0];
+  return [self mf_pinToView:a3 layoutMarginEdges:v4 flexibleEdges:0];
 }
 
 - (void)mf_pinToView:()MFUtilities layoutMarginEdges:flexibleEdges:
@@ -103,7 +103,7 @@ LABEL_6:
   aBlock[2] = __68__UIView_MFUtilities__mf_pinToView_layoutMarginEdges_flexibleEdges___block_invoke;
   aBlock[3] = &unk_1E8070AD0;
   v19 = a5;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v9 = v8;
   v18 = v9;
   v20 = a4;
@@ -127,14 +127,14 @@ LABEL_6:
   {
     if (!a4)
     {
-      v7 = [a1 topAnchor];
+      topAnchor = [self topAnchor];
       goto LABEL_19;
     }
 
-    v5 = [a1 layoutMarginsGuide];
-    v6 = [v5 topAnchor];
+    layoutMarginsGuide = [self layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
 LABEL_16:
-    v4 = v6;
+    v4 = topAnchor2;
 
     goto LABEL_20;
   }
@@ -143,12 +143,12 @@ LABEL_16:
   {
     if (!a4)
     {
-      v7 = [a1 bottomAnchor];
+      topAnchor = [self bottomAnchor];
       goto LABEL_19;
     }
 
-    v5 = [a1 layoutMarginsGuide];
-    v6 = [v5 bottomAnchor];
+    layoutMarginsGuide = [self layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide bottomAnchor];
     goto LABEL_16;
   }
 
@@ -156,12 +156,12 @@ LABEL_16:
   {
     if (!a4)
     {
-      v7 = [a1 leadingAnchor];
+      topAnchor = [self leadingAnchor];
       goto LABEL_19;
     }
 
-    v5 = [a1 layoutMarginsGuide];
-    v6 = [v5 leadingAnchor];
+    layoutMarginsGuide = [self layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide leadingAnchor];
     goto LABEL_16;
   }
 
@@ -173,14 +173,14 @@ LABEL_16:
 
   if (a4)
   {
-    v5 = [a1 layoutMarginsGuide];
-    v6 = [v5 trailingAnchor];
+    layoutMarginsGuide = [self layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide trailingAnchor];
     goto LABEL_16;
   }
 
-  v7 = [a1 trailingAnchor];
+  topAnchor = [self trailingAnchor];
 LABEL_19:
-  v4 = v7;
+  v4 = topAnchor;
 LABEL_20:
 
   return v4;

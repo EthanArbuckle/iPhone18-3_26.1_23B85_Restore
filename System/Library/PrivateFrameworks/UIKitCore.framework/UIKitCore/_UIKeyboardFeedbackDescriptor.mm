@@ -1,20 +1,20 @@
 @interface _UIKeyboardFeedbackDescriptor
-+ (id)descriptorWithIntensity:(float)a3 sharpness:(float)a4 audio:(id)a5 volume:(float)a6;
++ (id)descriptorWithIntensity:(float)intensity sharpness:(float)sharpness audio:(id)audio volume:(float)volume;
 @end
 
 @implementation _UIKeyboardFeedbackDescriptor
 
-+ (id)descriptorWithIntensity:(float)a3 sharpness:(float)a4 audio:(id)a5 volume:(float)a6
++ (id)descriptorWithIntensity:(float)intensity sharpness:(float)sharpness audio:(id)audio volume:(float)volume
 {
-  v9 = a5;
+  audioCopy = audio;
   v10 = objc_alloc_init(_UIKeyboardFeedbackDescriptor);
-  *&v11 = a3;
+  *&v11 = intensity;
   [(_UIKeyboardFeedbackDescriptor *)v10 setHapticIntensity:v11];
-  *&v12 = a4;
+  *&v12 = sharpness;
   [(_UIKeyboardFeedbackDescriptor *)v10 setHapticSharpness:v12];
-  [(_UIKeyboardFeedbackDescriptor *)v10 setAudioFile:v9];
+  [(_UIKeyboardFeedbackDescriptor *)v10 setAudioFile:audioCopy];
 
-  *&v13 = a6;
+  *&v13 = volume;
   [(_UIKeyboardFeedbackDescriptor *)v10 setAudioVolume:v13];
 
   return v10;

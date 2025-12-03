@@ -1,16 +1,16 @@
 @interface PLStateTrackingComposition
 + (id)sharedInstance;
-+ (void)registerState:(Class)a3;
++ (void)registerState:(Class)state;
 - (PLStateTrackingComposition)init;
-- (id)getCurrState:(unint64_t)a3;
-- (id)getLastState:(unint64_t)a3;
-- (id)getState:(unint64_t)a3 beforeDate:(id)a4;
-- (id)getStateBeforeSystemStateChange:(unint64_t)a3;
-- (id)getStateChangeTime:(unint64_t)a3;
-- (void)handleStateChange:(id)a3;
+- (id)getCurrState:(unint64_t)state;
+- (id)getLastState:(unint64_t)state;
+- (id)getState:(unint64_t)state beforeDate:(id)date;
+- (id)getStateBeforeSystemStateChange:(unint64_t)change;
+- (id)getStateChangeTime:(unint64_t)time;
+- (void)handleStateChange:(id)change;
 - (void)initializeState;
 - (void)registerForListeners;
-- (void)registerForStates:(unint64_t)a3 withOperator:(id)a4 withBlock:(id)a5;
+- (void)registerForStates:(unint64_t)states withOperator:(id)operator withBlock:(id)block;
 - (void)triggerBlocks;
 @end
 
@@ -19,15 +19,15 @@
 - (void)triggerBlocks
 {
   v3 = dispatch_group_create();
-  v4 = [(NSMutableDictionary *)self->_executeBlockCache allKeys];
+  allKeys = [(NSMutableDictionary *)self->_executeBlockCache allKeys];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __43__PLStateTrackingComposition_triggerBlocks__block_invoke;
   v11 = &unk_1E851B130;
-  v12 = self;
+  selfCopy = self;
   v5 = v3;
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [allKeys enumerateObjectsUsingBlock:&v8];
 
   v6 = PLLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -42,7 +42,7 @@
     [(PLStateTrackingComposition *)v7 triggerBlocks];
   }
 
-  [(PLStateTrackingComposition *)self setStateChangeMask:0, v8, v9, v10, v11, v12];
+  [(PLStateTrackingComposition *)self setStateChangeMask:0, v8, v9, v10, v11, selfCopy];
 }
 
 void __43__PLStateTrackingComposition_triggerBlocks__block_invoke(uint64_t a1, void *a2)
@@ -130,17 +130,17 @@ uint64_t __44__PLStateTrackingComposition_sharedInstance__block_invoke()
     v2->_entryKeyToStateMap = v11;
 
     v2->_stateChangeMask = 0;
-    v13 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     systemStateChangeTime = v2->_systemStateChangeTime;
-    v2->_systemStateChangeTime = v13;
+    v2->_systemStateChangeTime = distantPast;
 
-    v15 = [(PLStateTrackingComposition *)v2 workQueue];
+    workQueue = [(PLStateTrackingComposition *)v2 workQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __34__PLStateTrackingComposition_init__block_invoke;
     block[3] = &unk_1E85190B8;
     v18 = v2;
-    dispatch_async_and_wait(v15, block);
+    dispatch_async_and_wait(workQueue, block);
   }
 
   return v2;
@@ -154,7 +154,7 @@ uint64_t __34__PLStateTrackingComposition_init__block_invoke(uint64_t a1)
   return [v2 registerForListeners];
 }
 
-+ (void)registerState:(Class)a3
++ (void)registerState:(Class)state
 {
   v4 = _registeredStates;
   if (!_registeredStates)
@@ -166,7 +166,7 @@ uint64_t __34__PLStateTrackingComposition_init__block_invoke(uint64_t a1)
     v4 = _registeredStates;
   }
 
-  [v4 addObject:a3];
+  [v4 addObject:state];
 }
 
 - (void)initializeState
@@ -209,14 +209,14 @@ void __45__PLStateTrackingComposition_initializeState__block_invoke(uint64_t a1,
 
 - (void)registerForListeners
 {
-  v3 = [(PLStateTrackingComposition *)self entryKeyToStateMap];
-  v4 = [v3 allKeys];
+  entryKeyToStateMap = [(PLStateTrackingComposition *)self entryKeyToStateMap];
+  allKeys = [entryKeyToStateMap allKeys];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__PLStateTrackingComposition_registerForListeners__block_invoke;
   v5[3] = &unk_1E851B108;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [allKeys enumerateObjectsUsingBlock:v5];
 }
 
 void __50__PLStateTrackingComposition_registerForListeners__block_invoke(uint64_t a1, void *a2)
@@ -235,22 +235,22 @@ void __50__PLStateTrackingComposition_registerForListeners__block_invoke(uint64_
   [v7 addObject:v6];
 }
 
-- (void)registerForStates:(unint64_t)a3 withOperator:(id)a4 withBlock:(id)a5
+- (void)registerForStates:(unint64_t)states withOperator:(id)operator withBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  if ((a3 & 0x80) == 0)
+  operatorCopy = operator;
+  blockCopy = block;
+  if ((states & 0x80) == 0)
   {
-    v10 = [(PLStateTrackingComposition *)self workQueue];
+    workQueue = [(PLStateTrackingComposition *)self workQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __71__PLStateTrackingComposition_registerForStates_withOperator_withBlock___block_invoke;
     v11[3] = &unk_1E851B3A0;
     v11[4] = self;
-    v14 = a3;
-    v12 = v8;
-    v13 = v9;
-    dispatch_async_and_wait(v10, v11);
+    statesCopy = states;
+    v12 = operatorCopy;
+    v13 = blockCopy;
+    dispatch_async_and_wait(workQueue, v11);
   }
 }
 
@@ -278,30 +278,30 @@ void __71__PLStateTrackingComposition_registerForStates_withOperator_withBlock__
   [v12 addObject:v13];
 }
 
-- (void)handleStateChange:(id)a3
+- (void)handleStateChange:(id)change
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [change objectForKey:@"entry"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 entryKey];
-    if (v6)
+    entryKey = [v4 entryKey];
+    if (entryKey)
     {
-      v7 = v6;
-      v8 = [v5 entryDate];
+      v7 = entryKey;
+      entryDate = [v5 entryDate];
 
-      if (v8)
+      if (entryDate)
       {
         [(PLStateTrackingComposition *)self setStateChangeMask:0];
-        v9 = [(PLStateTrackingComposition *)self entryKeyToStateMap];
-        v10 = [v5 entryKey];
-        v11 = [v9 objectForKeyedSubscript:v10];
+        entryKeyToStateMap = [(PLStateTrackingComposition *)self entryKeyToStateMap];
+        entryKey2 = [v5 entryKey];
+        v11 = [entryKeyToStateMap objectForKeyedSubscript:entryKey2];
         v12 = MEMORY[0x1E69E9820];
         v13 = 3221225472;
         v14 = __48__PLStateTrackingComposition_handleStateChange___block_invoke;
         v15 = &unk_1E851B3F0;
         v16 = v5;
-        v17 = self;
+        selfCopy = self;
         [v11 enumerateObjectsUsingBlock:&v12];
 
         if ([(PLStateTrackingComposition *)self stateChangeMask:v12])
@@ -326,72 +326,72 @@ void __48__PLStateTrackingComposition_handleStateChange___block_invoke(uint64_t 
   }
 }
 
-- (id)getStateChangeTime:(unint64_t)a3
+- (id)getStateChangeTime:(unint64_t)time
 {
-  v4 = [(PLStateTrackingComposition *)self stateIDToStateMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  stateIDToStateMap = [(PLStateTrackingComposition *)self stateIDToStateMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:time];
+  v6 = [stateIDToStateMap objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 stateChangeTime];
+    stateChangeTime = [v6 stateChangeTime];
   }
 
   else
   {
-    v7 = 0;
+    stateChangeTime = 0;
   }
 
-  return v7;
+  return stateChangeTime;
 }
 
-- (id)getLastState:(unint64_t)a3
+- (id)getLastState:(unint64_t)state
 {
-  v4 = [(PLStateTrackingComposition *)self stateIDToStateMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  stateIDToStateMap = [(PLStateTrackingComposition *)self stateIDToStateMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  v6 = [stateIDToStateMap objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 lastValue];
+    lastValue = [v6 lastValue];
   }
 
   else
   {
-    v7 = 0;
+    lastValue = 0;
   }
 
-  return v7;
+  return lastValue;
 }
 
-- (id)getCurrState:(unint64_t)a3
+- (id)getCurrState:(unint64_t)state
 {
-  v4 = [(PLStateTrackingComposition *)self stateIDToStateMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  stateIDToStateMap = [(PLStateTrackingComposition *)self stateIDToStateMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  v6 = [stateIDToStateMap objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 currValue];
+    currValue = [v6 currValue];
   }
 
   else
   {
-    v7 = 0;
+    currValue = 0;
   }
 
-  return v7;
+  return currValue;
 }
 
-- (id)getStateBeforeSystemStateChange:(unint64_t)a3
+- (id)getStateBeforeSystemStateChange:(unint64_t)change
 {
-  v5 = [(PLStateTrackingComposition *)self stateIDToStateMap];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  stateIDToStateMap = [(PLStateTrackingComposition *)self stateIDToStateMap];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:change];
+  v7 = [stateIDToStateMap objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    if ([(PLStateTrackingComposition *)self stateChanged:a3])
+    if ([(PLStateTrackingComposition *)self stateChanged:change])
     {
       [v7 lastValue];
     }
@@ -411,21 +411,21 @@ void __48__PLStateTrackingComposition_handleStateChange___block_invoke(uint64_t 
   return v8;
 }
 
-- (id)getState:(unint64_t)a3 beforeDate:(id)a4
+- (id)getState:(unint64_t)state beforeDate:(id)date
 {
-  v6 = a4;
-  v7 = [(PLStateTrackingComposition *)self stateIDToStateMap];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  dateCopy = date;
+  stateIDToStateMap = [(PLStateTrackingComposition *)self stateIDToStateMap];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  v9 = [stateIDToStateMap objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [v9 stateChangeTime];
+    stateChangeTime = [v9 stateChangeTime];
 
-    if (v10)
+    if (stateChangeTime)
     {
-      v11 = [v9 stateChangeTime];
-      [v6 timeIntervalSinceDate:v11];
+      stateChangeTime2 = [v9 stateChangeTime];
+      [dateCopy timeIntervalSinceDate:stateChangeTime2];
       v13 = v12;
 
       v14 = PLLogCommon();
@@ -437,7 +437,7 @@ void __48__PLStateTrackingComposition_handleStateChange___block_invoke(uint64_t 
           [PLStateTrackingComposition getState:v9 beforeDate:?];
         }
 
-        v16 = [v9 lastValue];
+        lastValue = [v9 lastValue];
       }
 
       else
@@ -447,19 +447,19 @@ void __48__PLStateTrackingComposition_handleStateChange___block_invoke(uint64_t 
           [PLStateTrackingComposition getState:v9 beforeDate:?];
         }
 
-        v16 = [v9 currValue];
+        lastValue = [v9 currValue];
       }
 
-      v10 = v16;
+      stateChangeTime = lastValue;
     }
   }
 
   else
   {
-    v10 = 0;
+    stateChangeTime = 0;
   }
 
-  return v10;
+  return stateChangeTime;
 }
 
 - (void)getState:(void *)a1 beforeDate:.cold.1(void *a1)

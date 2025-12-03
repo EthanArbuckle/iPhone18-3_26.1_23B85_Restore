@@ -1,14 +1,14 @@
 @interface TVPSecureKeyStandardLoader
 + (void)initialize;
 - (TVPSecureKeyStandardLoader)init;
-- (TVPSecureKeyStandardLoader)initWithCertificateDataURL:(id)a3 keyDataURL:(id)a4;
-- (id)_assetIdentifierForKeyRequest:(id)a3;
-- (id)_bodyJSONDataForRequest:(id)a3 forceStop:(BOOL)a4;
+- (TVPSecureKeyStandardLoader)initWithCertificateDataURL:(id)l keyDataURL:(id)rL;
+- (id)_assetIdentifierForKeyRequest:(id)request;
+- (id)_bodyJSONDataForRequest:(id)request forceStop:(BOOL)stop;
 - (void)sendStopRequest;
-- (void)setHoldKeyResponses:(BOOL)a3;
-- (void)startLoadingCertificateDataForRequest:(id)a3;
-- (void)startLoadingContentIdentifierDataForRequest:(id)a3;
-- (void)startLoadingKeyResponseDataForRequest:(id)a3;
+- (void)setHoldKeyResponses:(BOOL)responses;
+- (void)startLoadingCertificateDataForRequest:(id)request;
+- (void)startLoadingContentIdentifierDataForRequest:(id)request;
+- (void)startLoadingKeyResponseDataForRequest:(id)request;
 @end
 
 @implementation TVPSecureKeyStandardLoader
@@ -32,18 +32,18 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (TVPSecureKeyStandardLoader)initWithCertificateDataURL:(id)a3 keyDataURL:(id)a4
+- (TVPSecureKeyStandardLoader)initWithCertificateDataURL:(id)l keyDataURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = TVPSecureKeyStandardLoader;
   v9 = [(TVPSecureKeyStandardLoader *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_certificateDataURL, a3);
-    objc_storeStrong(&v10->_keyDataURL, a4);
+    objc_storeStrong(&v9->_certificateDataURL, l);
+    objc_storeStrong(&v10->_keyDataURL, rL);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingKeyResponses = v10->_pendingKeyResponses;
     v10->_pendingKeyResponses = v11;
@@ -52,16 +52,16 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
   return v10;
 }
 
-- (void)setHoldKeyResponses:(BOOL)a3
+- (void)setHoldKeyResponses:(BOOL)responses
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (self->_holdKeyResponses != a3)
+  if (self->_holdKeyResponses != responses)
   {
-    v3 = a3;
-    self->_holdKeyResponses = a3;
+    responsesCopy = responses;
+    self->_holdKeyResponses = responses;
     v5 = sStandardLoaderLogObject;
     v6 = os_log_type_enabled(sStandardLoaderLogObject, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (responsesCopy)
     {
       if (v6)
       {
@@ -75,17 +75,17 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
       if (v6)
       {
         v7 = v5;
-        v8 = [(TVPSecureKeyStandardLoader *)self pendingKeyResponses];
+        pendingKeyResponses = [(TVPSecureKeyStandardLoader *)self pendingKeyResponses];
         *buf = 134217984;
-        v29 = [v8 count];
+        v29 = [pendingKeyResponses count];
         _os_log_impl(&dword_26CEDD000, v7, OS_LOG_TYPE_DEFAULT, "No longer holding key responses.  Sending responses for %lu pending responses", buf, 0xCu);
       }
 
-      v9 = [(TVPSecureKeyStandardLoader *)self pendingKeyResponses];
-      v10 = [v9 copy];
+      pendingKeyResponses2 = [(TVPSecureKeyStandardLoader *)self pendingKeyResponses];
+      v10 = [pendingKeyResponses2 copy];
 
-      v11 = [(TVPSecureKeyStandardLoader *)self pendingKeyResponses];
-      [v11 removeAllObjects];
+      pendingKeyResponses3 = [(TVPSecureKeyStandardLoader *)self pendingKeyResponses];
+      [pendingKeyResponses3 removeAllObjects];
 
       v25 = 0u;
       v26 = 0u;
@@ -108,11 +108,11 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
             }
 
             v17 = *(*(&v23 + 1) + 8 * v16);
-            v18 = [(TVPSecureKeyLoader *)self delegate];
-            v19 = [v17 keyData];
-            v20 = [v17 renewalDate];
-            v21 = [v17 request];
-            [v18 secureKeyLoader:self didLoadKeyResponseData:v19 renewalDate:v20 forRequest:v21];
+            delegate = [(TVPSecureKeyLoader *)self delegate];
+            keyData = [v17 keyData];
+            renewalDate = [v17 renewalDate];
+            request = [v17 request];
+            [delegate secureKeyLoader:self didLoadKeyResponseData:keyData renewalDate:renewalDate forRequest:request];
 
             ++v16;
           }
@@ -129,73 +129,73 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_assetIdentifierForKeyRequest:(id)a3
+- (id)_assetIdentifierForKeyRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [v3 host];
+  v3 = [request URL];
+  host = [v3 host];
 
-  return v4;
+  return host;
 }
 
-- (id)_bodyJSONDataForRequest:(id)a3 forceStop:(BOOL)a4
+- (id)_bodyJSONDataForRequest:(id)request forceStop:(BOOL)stop
 {
-  v6 = a3;
-  v7 = [v6 keyRequestData];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  requestCopy = request;
+  keyRequestData = [requestCopy keyRequestData];
+  v8 = [keyRequestData base64EncodedStringWithOptions:0];
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "requestID")}];
-  [v9 setObject:v10 forKey:@"id"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "requestID")}];
+  [dictionary setObject:v10 forKey:@"id"];
 
   if (v8)
   {
-    [v9 setObject:v8 forKey:@"spc"];
+    [dictionary setObject:v8 forKey:@"spc"];
   }
 
-  v11 = [v6 URL];
-  v12 = [v11 absoluteString];
+  v11 = [requestCopy URL];
+  absoluteString = [v11 absoluteString];
 
-  if (v12)
+  if (absoluteString)
   {
-    [v9 setObject:v12 forKey:@"uri"];
+    [dictionary setObject:absoluteString forKey:@"uri"];
   }
 
   if ([(TVPSecureKeyStandardLoader *)self includeGUID])
   {
-    v13 = [MEMORY[0x277CEE470] deviceGUID];
-    if (v13)
+    deviceGUID = [MEMORY[0x277CEE470] deviceGUID];
+    if (deviceGUID)
     {
-      [v9 setObject:v13 forKey:@"guid"];
+      [dictionary setObject:deviceGUID forKey:@"guid"];
     }
   }
 
-  v14 = [(TVPSecureKeyStandardLoader *)self rentalID];
-  if (v14 || ([v6 rentalID], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  rentalID = [(TVPSecureKeyStandardLoader *)self rentalID];
+  if (rentalID || ([requestCopy rentalID], (rentalID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v15 = v14;
-    [v9 setObject:v14 forKey:@"rental-id"];
+    v15 = rentalID;
+    [dictionary setObject:rentalID forKey:@"rental-id"];
   }
 
   if ([(TVPSecureKeyStandardLoader *)self requiresExternalEntitlementCheck])
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKey:@"isExternal"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"isExternal"];
   }
 
-  v16 = [(TVPSecureKeyStandardLoader *)self serviceProviderID];
-  v17 = [v16 length];
+  serviceProviderID = [(TVPSecureKeyStandardLoader *)self serviceProviderID];
+  v17 = [serviceProviderID length];
 
   if (v17)
   {
-    v18 = [(TVPSecureKeyStandardLoader *)self serviceProviderID];
-    [v9 setObject:v18 forKey:@"svcId"];
+    serviceProviderID2 = [(TVPSecureKeyStandardLoader *)self serviceProviderID];
+    [dictionary setObject:serviceProviderID2 forKey:@"svcId"];
   }
 
-  if (a4)
+  if (stop)
   {
     v19 = @"stop";
   }
 
-  else if ([v6 isRenewal])
+  else if ([requestCopy isRenewal])
   {
     v19 = @"renew";
   }
@@ -205,25 +205,25 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
     v19 = @"start";
   }
 
-  [v9 setObject:v19 forKey:@"lease-action"];
+  [dictionary setObject:v19 forKey:@"lease-action"];
   if ([(TVPSecureKeyStandardLoader *)self didSkipRentalCheckout])
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKey:@"skipped-rental-checkout"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"skipped-rental-checkout"];
   }
 
-  if ([v6 retrievesOfflineKeys])
+  if ([requestCopy retrievesOfflineKeys])
   {
-    [v9 setObject:MEMORY[0x277CBEC38] forKey:@"offline"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"offline"];
   }
 
-  v20 = [MEMORY[0x277CBEB18] array];
-  [v20 addObject:v9];
-  v21 = [MEMORY[0x277CBEB38] dictionary];
-  [v21 setObject:&unk_287E596A8 forKey:@"version"];
-  [v21 setObject:v20 forKey:@"streaming-keys"];
-  v22 = [MEMORY[0x277CBEB38] dictionary];
-  [v22 setObject:v21 forKey:@"fairplay-streaming-request"];
-  v23 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v22 options:0 error:0];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary2 setObject:&unk_287E596A8 forKey:@"version"];
+  [dictionary2 setObject:array forKey:@"streaming-keys"];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary3 setObject:dictionary2 forKey:@"fairplay-streaming-request"];
+  v23 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary3 options:0 error:0];
 
   return v23;
 }
@@ -235,21 +235,21 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
   return 0;
 }
 
-- (void)startLoadingCertificateDataForRequest:(id)a3
+- (void)startLoadingCertificateDataForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TVPSecureKeyStandardLoader *)self certificateDataURL];
-  v6 = [sCachedCertData objectForKey:v5];
+  requestCopy = request;
+  certificateDataURL = [(TVPSecureKeyStandardLoader *)self certificateDataURL];
+  v6 = [sCachedCertData objectForKey:certificateDataURL];
   objc_initWeak(&location, self);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __68__TVPSecureKeyStandardLoader_startLoadingCertificateDataForRequest___block_invoke;
   v23[3] = &unk_279D7BC48;
-  v7 = v4;
+  v7 = requestCopy;
   v24 = v7;
   objc_copyWeak(&v25, &location);
   v8 = MEMORY[0x26D6B0400](v23);
-  if (v5)
+  if (certificateDataURL)
   {
     v9 = [v6 length];
     if (v9)
@@ -261,16 +261,16 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
         _os_log_impl(&dword_26CEDD000, v10, OS_LOG_TYPE_DEFAULT, "Returning cached cert data.  Refreshing cert data, but not waiting for response", buf, 2u);
       }
 
-      v11 = [(TVPSecureKeyLoader *)self eventCollection];
-      [v11 addSingleShotEventWithName:TVPPlaybackReportingEventFPSUsingCachedCertData value:MEMORY[0x277CBEC38]];
+      eventCollection = [(TVPSecureKeyLoader *)self eventCollection];
+      [eventCollection addSingleShotEventWithName:TVPPlaybackReportingEventFPSUsingCachedCertData value:MEMORY[0x277CBEC38]];
 
       (v8)[2](v8, v6, 0);
     }
 
     else
     {
-      v13 = [(TVPSecureKeyLoader *)self eventCollection];
-      [v13 addSingleShotEventWithName:TVPPlaybackReportingEventFPSUsingCachedCertData value:MEMORY[0x277CBEC28]];
+      eventCollection2 = [(TVPSecureKeyLoader *)self eventCollection];
+      [eventCollection2 addSingleShotEventWithName:TVPPlaybackReportingEventFPSUsingCachedCertData value:MEMORY[0x277CBEC28]];
 
       v14 = sStandardLoaderLogObject;
       if (os_log_type_enabled(sStandardLoaderLogObject, OS_LOG_TYPE_DEFAULT))
@@ -280,19 +280,19 @@ uint64_t __40__TVPSecureKeyStandardLoader_initialize__block_invoke()
       }
     }
 
-    v15 = [(TVPSecureKeyStandardLoader *)self requestGenerator];
-    v16 = [(TVPSecureKeyStandardLoader *)self certificateDataURL];
-    v12 = [v15 secureKeyStandardLoader:self requestForFetchingDataFromURL:v16];
+    requestGenerator = [(TVPSecureKeyStandardLoader *)self requestGenerator];
+    certificateDataURL2 = [(TVPSecureKeyStandardLoader *)self certificateDataURL];
+    v12 = [requestGenerator secureKeyStandardLoader:self requestForFetchingDataFromURL:certificateDataURL2];
 
-    v17 = [(TVPSecureKeyStandardLoader *)self connectionHandler];
+    connectionHandler = [(TVPSecureKeyStandardLoader *)self connectionHandler];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __68__TVPSecureKeyStandardLoader_startLoadingCertificateDataForRequest___block_invoke_77;
     v18[3] = &unk_279D7BC70;
-    v19 = v5;
+    v19 = certificateDataURL;
     v21 = v9 == 0;
     v20 = v8;
-    [v17 secureKeyStandardLoader:self sendAsynchronousRequest:v12 completionHandler:v18];
+    [connectionHandler secureKeyStandardLoader:self sendAsynchronousRequest:v12 completionHandler:v18];
   }
 
   else
@@ -356,52 +356,52 @@ void __68__TVPSecureKeyStandardLoader_startLoadingCertificateDataForRequest___bl
   }
 }
 
-- (void)startLoadingContentIdentifierDataForRequest:(id)a3
+- (void)startLoadingContentIdentifierDataForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TVPSecureKeyStandardLoader *)self _assetIdentifierForKeyRequest:v4];
+  requestCopy = request;
+  v5 = [(TVPSecureKeyStandardLoader *)self _assetIdentifierForKeyRequest:requestCopy];
   v8 = v5;
   if (v5)
   {
     v6 = [v5 dataUsingEncoding:4];
-    v7 = [(TVPSecureKeyLoader *)self delegate];
-    [v7 secureKeyLoader:self didLoadContentIdentifierData:v6 forRequest:v4];
+    delegate = [(TVPSecureKeyLoader *)self delegate];
+    [delegate secureKeyLoader:self didLoadContentIdentifierData:v6 forRequest:requestCopy];
   }
 
   else
   {
     v6 = TVPSKDErrorWithCode(-345005);
-    v7 = [(TVPSecureKeyLoader *)self delegate];
-    [v7 secureKeyLoader:self didFailWithError:v6 forRequest:v4];
+    delegate = [(TVPSecureKeyLoader *)self delegate];
+    [delegate secureKeyLoader:self didFailWithError:v6 forRequest:requestCopy];
   }
 }
 
-- (void)startLoadingKeyResponseDataForRequest:(id)a3
+- (void)startLoadingKeyResponseDataForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TVPSecureKeyStandardLoader *)self savedRequestToUseForStopping];
+  requestCopy = request;
+  savedRequestToUseForStopping = [(TVPSecureKeyStandardLoader *)self savedRequestToUseForStopping];
 
-  if (!v5)
+  if (!savedRequestToUseForStopping)
   {
-    [(TVPSecureKeyStandardLoader *)self setSavedRequestToUseForStopping:v4];
+    [(TVPSecureKeyStandardLoader *)self setSavedRequestToUseForStopping:requestCopy];
   }
 
-  v6 = [(TVPSecureKeyStandardLoader *)self keyDataURL];
-  if (v6)
+  keyDataURL = [(TVPSecureKeyStandardLoader *)self keyDataURL];
+  if (keyDataURL)
   {
-    v7 = [(TVPSecureKeyStandardLoader *)self _bodyJSONDataForRequest:v4 forceStop:0];
-    v8 = [(TVPSecureKeyStandardLoader *)self requestGenerator];
-    v9 = [v8 secureKeyStandardLoader:self requestForPostingData:v7 toURL:v6];
+    delegate = [(TVPSecureKeyStandardLoader *)self _bodyJSONDataForRequest:requestCopy forceStop:0];
+    requestGenerator = [(TVPSecureKeyStandardLoader *)self requestGenerator];
+    v9 = [requestGenerator secureKeyStandardLoader:self requestForPostingData:delegate toURL:keyDataURL];
 
     objc_initWeak(&location, self);
-    v10 = [(TVPSecureKeyStandardLoader *)self connectionHandler];
+    connectionHandler = [(TVPSecureKeyStandardLoader *)self connectionHandler];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __68__TVPSecureKeyStandardLoader_startLoadingKeyResponseDataForRequest___block_invoke;
     v11[3] = &unk_279D7BC98;
-    v12 = v4;
+    v12 = requestCopy;
     objc_copyWeak(&v13, &location);
-    [v10 secureKeyStandardLoader:self sendAsynchronousRequest:v9 completionHandler:v11];
+    [connectionHandler secureKeyStandardLoader:self sendAsynchronousRequest:v9 completionHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -409,9 +409,9 @@ void __68__TVPSecureKeyStandardLoader_startLoadingCertificateDataForRequest___bl
 
   else
   {
-    v7 = [(TVPSecureKeyLoader *)self delegate];
+    delegate = [(TVPSecureKeyLoader *)self delegate];
     v9 = TVPSKDErrorWithCode(-345022);
-    [v7 secureKeyLoader:self didFailWithError:v9 forRequest:v4];
+    [delegate secureKeyLoader:self didFailWithError:v9 forRequest:requestCopy];
   }
 }
 
@@ -868,21 +868,21 @@ LABEL_66:
 
 - (void)sendStopRequest
 {
-  v3 = [(TVPSecureKeyStandardLoader *)self savedRequestToUseForStopping];
+  savedRequestToUseForStopping = [(TVPSecureKeyStandardLoader *)self savedRequestToUseForStopping];
 
-  if (v3)
+  if (savedRequestToUseForStopping)
   {
-    v9 = [(TVPSecureKeyStandardLoader *)self keyDataURL];
-    if (v9)
+    keyDataURL = [(TVPSecureKeyStandardLoader *)self keyDataURL];
+    if (keyDataURL)
     {
-      v4 = [(TVPSecureKeyStandardLoader *)self savedRequestToUseForStopping];
-      v5 = [(TVPSecureKeyStandardLoader *)self _bodyJSONDataForRequest:v4 forceStop:1];
+      savedRequestToUseForStopping2 = [(TVPSecureKeyStandardLoader *)self savedRequestToUseForStopping];
+      v5 = [(TVPSecureKeyStandardLoader *)self _bodyJSONDataForRequest:savedRequestToUseForStopping2 forceStop:1];
 
-      v6 = [(TVPSecureKeyStandardLoader *)self requestGenerator];
-      v7 = [v6 secureKeyStandardLoader:self requestForPostingData:v5 toURL:v9];
+      requestGenerator = [(TVPSecureKeyStandardLoader *)self requestGenerator];
+      v7 = [requestGenerator secureKeyStandardLoader:self requestForPostingData:v5 toURL:keyDataURL];
 
-      v8 = [(TVPSecureKeyStandardLoader *)self connectionHandler];
-      [v8 secureKeyStandardLoader:self sendAsynchronousRequest:v7 completionHandler:&__block_literal_global_87];
+      connectionHandler = [(TVPSecureKeyStandardLoader *)self connectionHandler];
+      [connectionHandler secureKeyStandardLoader:self sendAsynchronousRequest:v7 completionHandler:&__block_literal_global_87];
     }
 
     [(TVPSecureKeyStandardLoader *)self setSavedRequestToUseForStopping:0];

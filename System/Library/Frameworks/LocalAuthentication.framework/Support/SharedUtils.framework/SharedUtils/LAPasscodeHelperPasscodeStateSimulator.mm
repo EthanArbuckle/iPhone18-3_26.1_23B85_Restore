@@ -7,9 +7,9 @@
 - (int64_t)passcodeType
 {
   v2 = __54__LAPasscodeHelperPasscodeStateSimulator_passcodeType__block_invoke(self, @"LA.simulator.passcodeType", &unk_1F5A79338);
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 id __54__LAPasscodeHelperPasscodeStateSimulator_passcodeType__block_invoke(uint64_t a1, void *a2, void *a3)

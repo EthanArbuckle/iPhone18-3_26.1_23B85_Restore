@@ -1,7 +1,7 @@
 @interface AppleUSBCLightningAdapterAnalytics
 - (AppleUSBCLightningAdapterAnalytics)init;
 - (BOOL)_startEventMonitoring;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_stopEventMonitoring;
 - (void)start;
 - (void)stop;
@@ -46,13 +46,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(AppleUSBCLightningAdapterAnalytics *)self queue];
+  queue = [(AppleUSBCLightningAdapterAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __43__AppleUSBCLightningAdapterAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __43__AppleUSBCLightningAdapterAnalytics_start__block_invoke(uint64_t a1)
@@ -89,13 +89,13 @@ void __43__AppleUSBCLightningAdapterAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(AppleUSBCLightningAdapterAnalytics *)self queue];
+  queue = [(AppleUSBCLightningAdapterAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke(uint64_t a1)
@@ -146,14 +146,14 @@ void __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke(uint64_t a1)
 
     [(AppleUSBCLightningAdapterAnalytics *)self setMonitoring:1];
     [(AppleUSBCLightningAdapterAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(AppleUSBCLightningAdapterAnalytics *)self ioNotificationPort];
-    v6 = [(AppleUSBCLightningAdapterAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(AppleUSBCLightningAdapterAnalytics *)self ioNotificationPort];
+    queue = [(AppleUSBCLightningAdapterAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("AppleUSBLightningAdapter");
-    v8 = [(AppleUSBCLightningAdapterAnalytics *)self ioNotificationPort];
+    ioNotificationPort2 = [(AppleUSBCLightningAdapterAnalytics *)self ioNotificationPort];
     v9 = v7;
-    v10 = IOServiceAddMatchingNotification(v8, "IOServiceTerminate", v9, _serviceMatched_0, self, &self->_ioServiceMatchingIterator);
+    v10 = IOServiceAddMatchingNotification(ioNotificationPort2, "IOServiceTerminate", v9, _serviceMatched_0, self, &self->_ioServiceMatchingIterator);
     if (v10)
     {
       [(AUVDMAnalytics *)self _startEventMonitoring];
@@ -193,7 +193,7 @@ void __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
   v5 = [(AppleUSBCLightningAdapterAnalytics *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -202,7 +202,7 @@ void __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Service matched!", buf, 2u);
   }
 
-  if (!a3)
+  if (!matched)
   {
     return;
   }
@@ -220,24 +220,24 @@ void __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke(uint64_t a1)
     goto LABEL_89;
   }
 
-  v168 = self;
+  selfCopy = self;
   v169 = objc_opt_new();
-  IOObjectRetain(a3);
+  IOObjectRetain(matched);
   v6 = kCFAllocatorDefault;
-  HIDWORD(v167) = a3;
+  HIDWORD(v167) = matched;
   while (1)
   {
-    v7 = IOObjectConformsTo(a3, "IOPortTransportProtocolAppleUVDM");
+    v7 = IOObjectConformsTo(matched, "IOPortTransportProtocolAppleUVDM");
     if (v7)
     {
-      v8 = OUTLINED_FUNCTION_1_4(a3, @"Firmware Version");
+      v8 = OUTLINED_FUNCTION_1_4(matched, @"Firmware Version");
       if (v8)
       {
         [(__CFString *)v169 setObject:v8 forKey:@"AUVDM_FirmwareVersion"];
       }
 
       v9 = v6;
-      v10 = OUTLINED_FUNCTION_1_4(a3, @"Hardware Version");
+      v10 = OUTLINED_FUNCTION_1_4(matched, @"Hardware Version");
 
       if (v10)
       {
@@ -248,9 +248,9 @@ void __42__AppleUSBCLightningAdapterAnalytics_stop__block_invoke(uint64_t a1)
     }
 
     *buf = 0;
-    IORegistryEntryGetParentEntry(a3, "IOService", buf);
-    IOObjectRelease(a3);
-    a3 = *buf;
+    IORegistryEntryGetParentEntry(matched, "IOService", buf);
+    IOObjectRelease(matched);
+    matched = *buf;
     if (v7)
     {
       break;
@@ -278,7 +278,7 @@ LABEL_19:
   iterator = 0;
   IORegistryEntryGetParentIterator(HIDWORD(v167), "IOPort", &iterator);
   v14 = IOIteratorNext(iterator);
-  v15 = v168;
+  v15 = selfCopy;
   if (!v14)
   {
     goto LABEL_39;
@@ -364,7 +364,7 @@ LABEL_39:
         v29 = [v23 objectForKeyedSubscript:@"Accessory Firmware Version Minor"];
         v30 = [v23 objectForKeyedSubscript:@"Accessory Firmware Version Rev"];
         v31 = [NSString stringWithFormat:@"%@.%@.%@"];
-        OUTLINED_FUNCTION_0_3(v31, v32, v33, @"AUXP_AID_AccessoryFirmwareVersion", v34, v35, v36, v37, v25, v29, v30, v167, v168, v169);
+        OUTLINED_FUNCTION_0_3(v31, v32, v33, @"AUXP_AID_AccessoryFirmwareVersion", v34, v35, v36, v37, v25, v29, v30, v167, selfCopy, v169);
 
 LABEL_44:
       }
@@ -389,7 +389,7 @@ LABEL_44:
         v43 = [v23 objectForKeyedSubscript:@"Accessory Hardware Version Minor"];
         v44 = [v23 objectForKeyedSubscript:@"Accessory Hardware Version Rev"];
         v45 = [NSString stringWithFormat:@"%@.%@.%@"];
-        OUTLINED_FUNCTION_0_3(v45, v46, v47, @"AUXP_AID_AccessoryHardwareVersion", v48, v49, v50, v51, v39, v43, v44, v167, v168, v169);
+        OUTLINED_FUNCTION_0_3(v45, v46, v47, @"AUXP_AID_AccessoryHardwareVersion", v48, v49, v50, v51, v39, v43, v44, v167, selfCopy, v169);
 
 LABEL_49:
       }
@@ -400,7 +400,7 @@ LABEL_49:
     if (v52)
     {
       v53 = [v23 objectForKeyedSubscript:@"Accessory Manufacturer"];
-      OUTLINED_FUNCTION_0_3(v53, v54, v55, @"AUXP_AID_AccessoryManufacturer", v56, v57, v58, v59, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v53, v54, v55, @"AUXP_AID_AccessoryManufacturer", v56, v57, v58, v59, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v60 = [v23 objectForKeyedSubscript:@"Accessory Model"];
@@ -408,7 +408,7 @@ LABEL_49:
     if (v60)
     {
       v61 = [v23 objectForKeyedSubscript:@"Accessory Model"];
-      OUTLINED_FUNCTION_0_3(v61, v62, v63, @"AUXP_AID_AccessoryModel", v64, v65, v66, v67, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v61, v62, v63, @"AUXP_AID_AccessoryModel", v64, v65, v66, v67, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v68 = [v23 objectForKeyedSubscript:@"Accessory Name"];
@@ -416,7 +416,7 @@ LABEL_49:
     if (v68)
     {
       v69 = [v23 objectForKeyedSubscript:@"Accessory Name"];
-      OUTLINED_FUNCTION_0_3(v69, v70, v71, @"AUXP_AID_AccessoryName", v72, v73, v74, v75, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v69, v70, v71, @"AUXP_AID_AccessoryName", v72, v73, v74, v75, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v76 = [v23 objectForKeyedSubscript:@"Digital ID"];
@@ -425,8 +425,8 @@ LABEL_49:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v76 length] == &dword_4 + 2)
       {
-        v77 = [v76 bytes];
-        v78 = [NSNumber numberWithUnsignedLongLong:*v77 | (*(v77 + 2) << 32)];
+        bytes = [v76 bytes];
+        v78 = [NSNumber numberWithUnsignedLongLong:*bytes | (*(bytes + 2) << 32)];
         [(__CFString *)v169 setObject:v78 forKey:@"AUXP_AID_DigitalID"];
         v79 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", *([v76 bytes] + 2) & 1);
         OUTLINED_FUNCTION_2_2();
@@ -459,7 +459,7 @@ LABEL_49:
     if (v87)
     {
       v88 = [v23 objectForKeyedSubscript:@"Accessory HID VID"];
-      OUTLINED_FUNCTION_0_3(v88, v89, v90, @"AUXP_AID_HID_PID", v91, v92, v93, v94, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v88, v89, v90, @"AUXP_AID_HID_PID", v91, v92, v93, v94, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v95 = [v23 objectForKeyedSubscript:@"Accessory HID PID"];
@@ -467,7 +467,7 @@ LABEL_49:
     if (v95)
     {
       v96 = [v23 objectForKeyedSubscript:@"Accessory HID PID"];
-      OUTLINED_FUNCTION_0_3(v96, v97, v98, @"AUXP_AID_HID_VID", v99, v100, v101, v102, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v96, v97, v98, @"AUXP_AID_HID_VID", v99, v100, v101, v102, v164, v165, v166, v167, selfCopy, v169);
     }
   }
 
@@ -480,7 +480,7 @@ LABEL_49:
     if (v105)
     {
       v106 = [v104 objectForKeyedSubscript:@"Product Firmware Revision"];
-      OUTLINED_FUNCTION_0_3(v106, v107, v108, @"AUXP_MikeyBus_FirmwareRevision", v109, v110, v111, v112, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v106, v107, v108, @"AUXP_MikeyBus_FirmwareRevision", v109, v110, v111, v112, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v113 = [v104 objectForKeyedSubscript:@"Product Hardware Revision"];
@@ -488,7 +488,7 @@ LABEL_49:
     if (v113)
     {
       v114 = [v104 objectForKeyedSubscript:@"Product Hardware Revision"];
-      OUTLINED_FUNCTION_0_3(v114, v115, v116, @"AUXP_MikeyBus_HardwareRevision", v117, v118, v119, v120, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v114, v115, v116, @"AUXP_MikeyBus_HardwareRevision", v117, v118, v119, v120, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v121 = [v104 objectForKeyedSubscript:@"Product ID"];
@@ -496,7 +496,7 @@ LABEL_49:
     if (v121)
     {
       v122 = [v104 objectForKeyedSubscript:@"Product ID"];
-      OUTLINED_FUNCTION_0_3(v122, v123, v124, @"AUXP_MikeyBus_PID", v125, v126, v127, v128, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v122, v123, v124, @"AUXP_MikeyBus_PID", v125, v126, v127, v128, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v129 = [v104 objectForKeyedSubscript:@"Product Model Number"];
@@ -504,7 +504,7 @@ LABEL_49:
     if (v129)
     {
       v130 = [v104 objectForKeyedSubscript:@"Product Model Number"];
-      OUTLINED_FUNCTION_0_3(v130, v131, v132, @"AUXP_MikeyBus_ProductModelNumber", v133, v134, v135, v136, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v130, v131, v132, @"AUXP_MikeyBus_ProductModelNumber", v133, v134, v135, v136, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v137 = [v104 objectForKeyedSubscript:@"Product Name"];
@@ -512,7 +512,7 @@ LABEL_49:
     if (v137)
     {
       v138 = [v104 objectForKeyedSubscript:@"Product Name"];
-      OUTLINED_FUNCTION_0_3(v138, v139, v140, @"AUXP_MikeyBus_ProductName", v141, v142, v143, v144, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v138, v139, v140, @"AUXP_MikeyBus_ProductName", v141, v142, v143, v144, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v145 = [v104 objectForKeyedSubscript:@"Product Vendor Name"];
@@ -520,7 +520,7 @@ LABEL_49:
     if (v145)
     {
       v146 = [v104 objectForKeyedSubscript:@"Product Vendor Name"];
-      OUTLINED_FUNCTION_0_3(v146, v147, v148, @"AUXP_MikeyBus_ProductVendorName", v149, v150, v151, v152, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v146, v147, v148, @"AUXP_MikeyBus_ProductVendorName", v149, v150, v151, v152, v164, v165, v166, v167, selfCopy, v169);
     }
 
     v153 = [v104 objectForKeyedSubscript:@"Product Vendor ID"];
@@ -528,7 +528,7 @@ LABEL_49:
     if (v153)
     {
       v154 = [v104 objectForKeyedSubscript:@"Product Vendor ID"];
-      OUTLINED_FUNCTION_0_3(v154, v155, v156, @"AUXP_MikeyBus_VID", v157, v158, v159, v160, v164, v165, v166, v167, v168, v169);
+      OUTLINED_FUNCTION_0_3(v154, v155, v156, @"AUXP_MikeyBus_VID", v157, v158, v159, v160, v164, v165, v166, v167, selfCopy, v169);
     }
   }
 

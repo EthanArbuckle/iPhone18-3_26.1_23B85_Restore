@@ -1,20 +1,20 @@
 @interface HIDVirtualEventService
-- (BOOL)dispatchEvent:(id)a3;
+- (BOOL)dispatchEvent:(id)event;
 - (HIDVirtualEventService)init;
 - (HIDVirtualEventServiceDelegate)delegate;
 - (unint64_t)serviceID;
 - (void)activate;
 - (void)cancel;
 - (void)dealloc;
-- (void)setCancelHandler:(id)a3;
-- (void)setDispatchQueue:(id)a3;
+- (void)setCancelHandler:(id)handler;
+- (void)setDispatchQueue:(id)queue;
 @end
 
 @implementation HIDVirtualEventService
 
 - (void)cancel
 {
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -22,14 +22,14 @@
   *a2 = 0u;
   os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0();
-  v3 = *a1;
+  v3 = *self;
   _os_crash_msg();
   __break(1u);
 }
 
 - (void)dealloc
 {
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -37,7 +37,7 @@
   *a2 = 0u;
   os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
   _os_log_send_and_compose_impl();
-  v3 = *a1;
+  v3 = *self;
   _os_crash_msg();
   __break(1u);
 }
@@ -60,35 +60,35 @@
     v3 = [[HIDEventSystemClient alloc] initWithType:4];
     [(HIDVirtualEventService *)v2 setClient:v3];
 
-    v4 = [(HIDVirtualEventService *)v2 client];
+    client = [(HIDVirtualEventService *)v2 client];
 
-    if (v4)
+    if (client)
     {
-      v5 = [(HIDVirtualEventService *)v2 client];
+      client2 = [(HIDVirtualEventService *)v2 client];
       v10[0] = @"PrimaryUsagePage";
       v10[1] = @"PrimaryUsage";
       v11[0] = &unk_284199F58;
       v11[1] = &unk_284199F58;
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-      [v5 setMatching:v6];
+      [client2 setMatching:v6];
 
-      v4 = v2;
+      client = v2;
     }
   }
 
   else
   {
-    v4 = 0;
+    client = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v4;
+  return client;
 }
 
 - (void)activate
 {
   v4 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -96,25 +96,25 @@
   *a2 = 0u;
   os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0();
-  v3 = *a1;
+  v3 = *self;
   _os_crash_msg();
   __break(1u);
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HIDVirtualEventService *)self client];
-  [v5 setCancelHandler:v4];
+  handlerCopy = handler;
+  client = [(HIDVirtualEventService *)self client];
+  [client setCancelHandler:handlerCopy];
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v5 = a3;
-  v4 = [(HIDVirtualEventService *)self client];
-  [v4 setDispatchQueue:v5];
+  queueCopy = queue;
+  client = [(HIDVirtualEventService *)self client];
+  [client setDispatchQueue:queueCopy];
 
-  [(HIDVirtualEventService *)self setQueue:v5];
+  [(HIDVirtualEventService *)self setQueue:queueCopy];
 }
 
 void __34__HIDVirtualEventService_activate__block_invoke(uint64_t a1)
@@ -130,14 +130,14 @@ void __34__HIDVirtualEventService_activate__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)dispatchEvent:(id)a3
+- (BOOL)dispatchEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HIDVirtualEventService *)self serviceClient];
+  eventCopy = event;
+  serviceClient = [(HIDVirtualEventService *)self serviceClient];
 
-  if (v5)
+  if (serviceClient)
   {
-    v6 = [(HIDVirtualEventService *)self serviceClient];
+    serviceClient2 = [(HIDVirtualEventService *)self serviceClient];
     v7 = IOHIDVirtualServiceClientDispatchEvent() != 0;
   }
 
@@ -151,18 +151,18 @@ void __34__HIDVirtualEventService_activate__block_invoke(uint64_t a1)
 
 - (unint64_t)serviceID
 {
-  v3 = [(HIDVirtualEventService *)self serviceClient];
+  serviceClient = [(HIDVirtualEventService *)self serviceClient];
 
-  if (!v3)
+  if (!serviceClient)
   {
     return 0;
   }
 
-  v4 = [(HIDVirtualEventService *)self serviceClient];
-  v5 = IOHIDServiceClientGetRegistryID(v4);
+  serviceClient2 = [(HIDVirtualEventService *)self serviceClient];
+  v5 = IOHIDServiceClientGetRegistryID(serviceClient2);
 
-  v6 = [v5 unsignedLongLongValue];
-  return v6;
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
 @end

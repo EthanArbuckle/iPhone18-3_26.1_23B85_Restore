@@ -1,14 +1,14 @@
 @interface CAMVideoHDRSuspensionCommand
-- (CAMVideoHDRSuspensionCommand)initWithCoder:(id)a3;
-- (CAMVideoHDRSuspensionCommand)initWithVideoHDRSuspended:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMVideoHDRSuspensionCommand)initWithCoder:(id)coder;
+- (CAMVideoHDRSuspensionCommand)initWithVideoHDRSuspended:(BOOL)suspended;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMVideoHDRSuspensionCommand
 
-- (CAMVideoHDRSuspensionCommand)initWithVideoHDRSuspended:(BOOL)a3
+- (CAMVideoHDRSuspensionCommand)initWithVideoHDRSuspended:(BOOL)suspended
 {
   v8.receiver = self;
   v8.super_class = CAMVideoHDRSuspensionCommand;
@@ -16,54 +16,54 @@
   v5 = v4;
   if (v4)
   {
-    v4->_videoHDRSuspended = a3;
+    v4->_videoHDRSuspended = suspended;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMVideoHDRSuspensionCommand)initWithCoder:(id)a3
+- (CAMVideoHDRSuspensionCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMVideoHDRSuspensionCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMVideoHDRSuspensionCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMVideoHDRSuspensionCommand *)self isVideoHDRSuspended];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
-  v6 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
-  if ([v5 isVideoHDREnabled] && objc_msgSend(v6, "isVideoHDRSuspensionSupported"))
+  if ([currentVideoDevice isVideoHDREnabled] && objc_msgSend(currentVideoDeviceFormat, "isVideoHDRSuspensionSupported"))
   {
-    v7 = [(CAMVideoHDRSuspensionCommand *)self isVideoHDRSuspended];
-    if (v7 || [v5 isVideoHDRSuspended])
+    isVideoHDRSuspended = [(CAMVideoHDRSuspensionCommand *)self isVideoHDRSuspended];
+    if (isVideoHDRSuspended || [currentVideoDevice isVideoHDRSuspended])
     {
       v8 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = @"NO";
-        if (v7)
+        if (isVideoHDRSuspended)
         {
           v9 = @"YES";
         }
@@ -75,9 +75,9 @@
       }
     }
 
-    if (v7 != [v5 isVideoHDRSuspended])
+    if (isVideoHDRSuspended != [currentVideoDevice isVideoHDRSuspended])
     {
-      [v5 setVideoHDRSuspended:v7];
+      [currentVideoDevice setVideoHDRSuspended:isVideoHDRSuspended];
     }
   }
 }

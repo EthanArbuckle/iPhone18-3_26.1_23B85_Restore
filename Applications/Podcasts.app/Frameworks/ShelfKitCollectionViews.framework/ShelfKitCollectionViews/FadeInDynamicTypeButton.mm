@@ -1,16 +1,16 @@
 @interface FadeInDynamicTypeButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIColor)backgroundColor;
-- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FadeInDynamicTypeButton
 
-- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton_maximumFadeWidth) = 0x4059000000000000;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton_fadeInPosition) = 0;
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_23F034();
 }
 
@@ -33,46 +33,46 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for FadeInDynamicTypeButton();
-  v2 = [(FadeInDynamicTypeButton *)&v4 backgroundColor];
+  backgroundColor = [(FadeInDynamicTypeButton *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FadeInDynamicTypeButton();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(FadeInDynamicTypeButton *)&v6 setBackgroundColor:v4];
+  [(FadeInDynamicTypeButton *)&v6 setBackgroundColor:colorCopy];
   sub_23F034();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23F294();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v7 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton_touchInsets);
   if (self->super.fontUseCase[OBJC_IVAR____TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton_touchInsets + 24])
   {
     v19.receiver = self;
     v19.super_class = type metadata accessor for FadeInDynamicTypeButton();
-    return [(FadeInDynamicTypeButton *)&v19 pointInside:a4 withEvent:x, y];
+    return [(FadeInDynamicTypeButton *)&v19 pointInside:event withEvent:x, y];
   }
 
   else
   {
     v11 = *v7;
     v10 = v7[1];
-    v12 = a4;
-    v13 = self;
-    [(FadeInDynamicTypeButton *)v13 bounds];
+    eventCopy = event;
+    selfCopy = self;
+    [(FadeInDynamicTypeButton *)selfCopy bounds];
     v21.origin.x = UIEdgeInsetsInsetRect(v14, v15, v16, v17, v11, v10);
     v20.x = x;
     v20.y = y;
@@ -82,7 +82,7 @@
   }
 }
 
-- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews23FadeInDynamicTypeButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

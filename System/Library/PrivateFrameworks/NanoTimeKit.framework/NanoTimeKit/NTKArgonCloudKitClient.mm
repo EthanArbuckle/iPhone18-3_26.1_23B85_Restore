@@ -1,15 +1,15 @@
 @interface NTKArgonCloudKitClient
 + (id)sharedClientQueue;
 - (NSString)debugDescription;
-- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)a3 temporaryStorageURL:(id)a4 zoneName:(id)a5;
-- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)a3 zoneName:(id)a4;
-- (void)_fetchNewRecordsSinceChangeToken:(id)a3 forReason:(int64_t)a4 attemptNumber:(unint64_t)a5 completion:(id)a6;
-- (void)_publishRecord:(id)a3 completion:(id)a4;
-- (void)_unpublishRecordsOfType:(id)a3 matchingPredicate:(id)a4 completion:(id)a5;
-- (void)_unpublishRecordsWithPartialQueryOperation:(id)a3 accumulatedRecords:(id)a4 completion:(id)a5;
-- (void)publishKeyDescriptor:(id)a3 completion:(id)a4;
-- (void)requestIdentifierTokenForCurrentUserWithCompletion:(id)a3;
-- (void)unpublishKeyDescriptor:(id)a3 completion:(id)a4;
+- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)database temporaryStorageURL:(id)l zoneName:(id)name;
+- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)database zoneName:(id)name;
+- (void)_fetchNewRecordsSinceChangeToken:(id)token forReason:(int64_t)reason attemptNumber:(unint64_t)number completion:(id)completion;
+- (void)_publishRecord:(id)record completion:(id)completion;
+- (void)_unpublishRecordsOfType:(id)type matchingPredicate:(id)predicate completion:(id)completion;
+- (void)_unpublishRecordsWithPartialQueryOperation:(id)operation accumulatedRecords:(id)records completion:(id)completion;
+- (void)publishKeyDescriptor:(id)descriptor completion:(id)completion;
+- (void)requestIdentifierTokenForCurrentUserWithCompletion:(id)completion;
+- (void)unpublishKeyDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation NTKArgonCloudKitClient
@@ -34,42 +34,42 @@ void __43__NTKArgonCloudKitClient_sharedClientQueue__block_invoke()
   sharedClientQueue_queue = v0;
 }
 
-- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)a3 zoneName:(id)a4
+- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)database zoneName:(id)name
 {
   v6 = MEMORY[0x277CCACA8];
   v7 = MEMORY[0x277CCAD78];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v6 stringWithFormat:@"ArgonCloudKitClient-%@", v11];
+  nameCopy = name;
+  databaseCopy = database;
+  uUID = [v7 UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v6 stringWithFormat:@"ArgonCloudKitClient-%@", uUIDString];
 
   v13 = MEMORY[0x277CBEBC0];
   v14 = NSTemporaryDirectory();
   v15 = [v13 fileURLWithPath:v14];
   v16 = [v15 URLByAppendingPathComponent:v12];
 
-  v17 = [(NTKArgonCloudKitClient *)self initWithCloudKitDatabase:v9 temporaryStorageURL:v16 zoneName:v8];
+  v17 = [(NTKArgonCloudKitClient *)self initWithCloudKitDatabase:databaseCopy temporaryStorageURL:v16 zoneName:nameCopy];
   return v17;
 }
 
-- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)a3 temporaryStorageURL:(id)a4 zoneName:(id)a5
+- (NTKArgonCloudKitClient)initWithCloudKitDatabase:(id)database temporaryStorageURL:(id)l zoneName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  lCopy = l;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = NTKArgonCloudKitClient;
   v12 = [(NTKArgonCloudKitClient *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_database, database);
+    v14 = [nameCopy copy];
     zoneName = v13->_zoneName;
     v13->_zoneName = v14;
 
-    v16 = [v10 copy];
+    v16 = [lCopy copy];
     temporaryStorageURL = v13->_temporaryStorageURL;
     v13->_temporaryStorageURL = v16;
 
@@ -90,21 +90,21 @@ void __43__NTKArgonCloudKitClient_sharedClientQueue__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NTKArgonCloudKitClient *)self zoneName];
-  v7 = [v3 stringWithFormat:@"<%@: %p, zoneName=%@>", v5, self, v6];
+  zoneName = [(NTKArgonCloudKitClient *)self zoneName];
+  v7 = [v3 stringWithFormat:@"<%@: %p, zoneName=%@>", v5, self, zoneName];
 
   return v7;
 }
 
-- (void)requestIdentifierTokenForCurrentUserWithCompletion:(id)a3
+- (void)requestIdentifierTokenForCurrentUserWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "CloudKit Client %{public}p: Fetching user identifier token.", buf, 0xCu);
   }
 
@@ -113,20 +113,20 @@ void __43__NTKArgonCloudKitClient_sharedClientQueue__block_invoke()
   aBlock[2] = __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithCompletion___block_invoke;
   aBlock[3] = &unk_2787878C0;
   aBlock[4] = self;
-  v14 = v4;
-  v6 = v4;
+  v14 = completionCopy;
+  v6 = completionCopy;
   v7 = _Block_copy(aBlock);
-  v8 = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
-  [v8 setPerRecordCompletionBlock:&__block_literal_global_30];
+  fetchCurrentUserRecordOperation = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
+  [fetchCurrentUserRecordOperation setPerRecordCompletionBlock:&__block_literal_global_30];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithCompletion___block_invoke_4;
   v11[3] = &unk_278787908;
   v12 = v7;
   v9 = v7;
-  [v8 setFetchRecordsCompletionBlock:v11];
-  v10 = [(NTKArgonCloudKitClient *)self database];
-  [v10 addOperation:v8];
+  [fetchCurrentUserRecordOperation setFetchRecordsCompletionBlock:v11];
+  database = [(NTKArgonCloudKitClient *)self database];
+  [database addOperation:fetchCurrentUserRecordOperation];
 }
 
 void __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -174,21 +174,21 @@ void __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithComple
   }
 }
 
-- (void)_fetchNewRecordsSinceChangeToken:(id)a3 forReason:(int64_t)a4 attemptNumber:(unint64_t)a5 completion:(id)a6
+- (void)_fetchNewRecordsSinceChangeToken:(id)token forReason:(int64_t)reason attemptNumber:(unint64_t)number completion:(id)completion
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  tokenCopy = token;
+  completionCopy = completion;
   v12 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = NTKArgonStringForFetchReason(a4, v13);
+    v14 = NTKArgonStringForFetchReason(reason, v13);
     *buf = 134349570;
     *&buf[4] = self;
     *&buf[12] = 2114;
     *&buf[14] = v14;
     *&buf[22] = 2114;
-    v54 = v10;
+    v54 = tokenCopy;
     _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "CloudKit Client %{public}p: Requesting new records for reason %{public}@ starting with change %{public}@.", buf, 0x20u);
   }
 
@@ -196,23 +196,23 @@ void __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithComple
   aBlock[1] = 3221225472;
   aBlock[2] = __94__NTKArgonCloudKitClient__fetchNewRecordsSinceChangeToken_forReason_attemptNumber_completion___block_invoke;
   aBlock[3] = &unk_278787958;
-  v51 = a5;
-  v52 = a4;
+  numberCopy = number;
+  reasonCopy = reason;
   aBlock[4] = self;
-  v37 = v11;
+  v37 = completionCopy;
   v50 = v37;
   v15 = _Block_copy(aBlock);
   v16 = objc_alloc_init(MEMORY[0x277CBC4F8]);
-  v18 = NTKArgonStringForFetchReason(a4, v17);
+  v18 = NTKArgonStringForFetchReason(reason, v17);
   [v16 setName:v18];
 
-  v19 = [v16 defaultConfiguration];
-  [v19 setPreferAnonymousRequests:1];
+  defaultConfiguration = [v16 defaultConfiguration];
+  [defaultConfiguration setPreferAnonymousRequests:1];
 
-  v20 = [(NTKArgonCloudKitClient *)self recordZoneID];
-  LODWORD(v19) = v20 == 0;
+  recordZoneID = [(NTKArgonCloudKitClient *)self recordZoneID];
+  LODWORD(defaultConfiguration) = recordZoneID == 0;
 
-  if (v19)
+  if (defaultConfiguration)
   {
     v24 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -220,21 +220,21 @@ void __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithComple
       [NTKArgonCloudKitClient _fetchNewRecordsSinceChangeToken:v24 forReason:? attemptNumber:? completion:?];
     }
 
-    v21 = [(NTKArgonCloudKitClient *)self recordZoneError];
-    (*(v15 + 2))(v15, 0, 0, v21);
+    recordZoneError = [(NTKArgonCloudKitClient *)self recordZoneError];
+    (*(v15 + 2))(v15, 0, 0, recordZoneError);
   }
 
   else
   {
-    v21 = objc_alloc_init(MEMORY[0x277CBC3A0]);
-    if (v10)
+    recordZoneError = objc_alloc_init(MEMORY[0x277CBC3A0]);
+    if (tokenCopy)
     {
       v48 = 0;
-      v22 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:{&v48, v37}];
+      v22 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:tokenCopy error:{&v48, v37}];
       v23 = v48;
       if (v22)
       {
-        [v21 setPreviousServerChangeToken:v22];
+        [recordZoneError setPreviousServerChangeToken:v22];
       }
 
       else
@@ -248,18 +248,18 @@ void __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithComple
     }
 
     v26 = objc_alloc(MEMORY[0x277CBC3B8]);
-    v27 = [(NTKArgonCloudKitClient *)self recordZoneID];
-    v59[0] = v27;
+    recordZoneID2 = [(NTKArgonCloudKitClient *)self recordZoneID];
+    v59[0] = recordZoneID2;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
-    v29 = [(NTKArgonCloudKitClient *)self recordZoneID];
-    v57 = v29;
-    v58 = v21;
+    recordZoneID3 = [(NTKArgonCloudKitClient *)self recordZoneID];
+    v57 = recordZoneID3;
+    v58 = recordZoneError;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
     v31 = [v26 initWithRecordZoneIDs:v28 configurationsByRecordZoneID:v30];
 
     [v31 setGroup:v16];
-    v32 = [v31 configuration];
-    [v32 setPreferAnonymousRequests:1];
+    configuration = [v31 configuration];
+    [configuration setPreferAnonymousRequests:1];
 
     v33 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v46[0] = MEMORY[0x277D85DD0];
@@ -301,8 +301,8 @@ void __77__NTKArgonCloudKitClient_requestIdentifierTokenForCurrentUserWithComple
     v39 = v35;
     v42 = v44;
     [v31 setFetchRecordZoneChangesCompletionBlock:v38];
-    v36 = [(NTKArgonCloudKitClient *)self database];
-    [v36 addOperation:v31];
+    database = [(NTKArgonCloudKitClient *)self database];
+    [database addOperation:v31];
 
     _Block_object_dispose(v44, 8);
     _Block_object_dispose(buf, 8);
@@ -504,36 +504,36 @@ LABEL_7:
   v7();
 }
 
-- (void)_unpublishRecordsWithPartialQueryOperation:(id)a3 accumulatedRecords:(id)a4 completion:(id)a5
+- (void)_unpublishRecordsWithPartialQueryOperation:(id)operation accumulatedRecords:(id)records completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 group];
-  v12 = [v10 zoneID];
+  recordsCopy = records;
+  completionCopy = completion;
+  operationCopy = operation;
+  group = [operationCopy group];
+  zoneID = [operationCopy zoneID];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_accumulatedRecords_completion___block_invoke;
   v28[3] = &unk_2787879F8;
-  v13 = v8;
+  v13 = recordsCopy;
   v29 = v13;
-  [v10 setRecordFetchedBlock:v28];
+  [operationCopy setRecordFetchedBlock:v28];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_accumulatedRecords_completion___block_invoke_2;
   v22 = &unk_278787A70;
-  v23 = v11;
-  v24 = v12;
-  v25 = self;
+  v23 = group;
+  v24 = zoneID;
+  selfCopy = self;
   v26 = v13;
-  v27 = v9;
-  v14 = v9;
+  v27 = completionCopy;
+  v14 = completionCopy;
   v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  [v10 setQueryCompletionBlock:&v19];
+  v16 = zoneID;
+  v17 = group;
+  [operationCopy setQueryCompletionBlock:&v19];
   v18 = [(NTKArgonCloudKitClient *)self database:v19];
-  [v18 addOperation:v10];
+  [v18 addOperation:operationCopy];
 }
 
 void __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_accumulatedRecords_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -668,26 +668,26 @@ void __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_acc
   }
 }
 
-- (void)_unpublishRecordsOfType:(id)a3 matchingPredicate:(id)a4 completion:(id)a5
+- (void)_unpublishRecordsOfType:(id)type matchingPredicate:(id)predicate completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  predicateCopy = predicate;
   v10 = MEMORY[0x277CBC4F8];
-  v11 = a5;
+  completionCopy = completion;
   v12 = objc_alloc_init(v10);
   [v12 setName:@"UserActionExplicit"];
-  v13 = [(NTKArgonCloudKitClient *)self recordZoneID];
+  recordZoneID = [(NTKArgonCloudKitClient *)self recordZoneID];
 
-  if (v13)
+  if (recordZoneID)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:v8 predicate:v9];
+    v15 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:typeCopy predicate:predicateCopy];
     v16 = [objc_alloc(MEMORY[0x277CBC590]) initWithQuery:v15];
     [v16 setGroup:v12];
-    v17 = [(NTKArgonCloudKitClient *)self recordZoneID];
-    [v16 setZoneID:v17];
+    recordZoneID2 = [(NTKArgonCloudKitClient *)self recordZoneID];
+    [v16 setZoneID:recordZoneID2];
 
-    [(NTKArgonCloudKitClient *)self _unpublishRecordsWithPartialQueryOperation:v16 accumulatedRecords:v14 completion:v11];
+    [(NTKArgonCloudKitClient *)self _unpublishRecordsWithPartialQueryOperation:v16 accumulatedRecords:v14 completion:completionCopy];
   }
 
   else
@@ -698,25 +698,25 @@ void __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_acc
       [NTKArgonCloudKitClient _unpublishRecordsOfType:matchingPredicate:completion:];
     }
 
-    (*(v11 + 2))(v11, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
-- (void)_publishRecord:(id)a3 completion:(id)a4
+- (void)_publishRecord:(id)record completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NTKArgonCloudKitClient *)self zoneName];
+    zoneName = [(NTKArgonCloudKitClient *)self zoneName];
     *buf = 134349570;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = recordCopy;
     v28 = 2114;
-    v29 = v9;
+    v29 = zoneName;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "CloudKit Client %{public}p: Publishing record %{public}@ in zone %{public}@.", buf, 0x20u);
   }
 
@@ -725,10 +725,10 @@ void __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_acc
   aBlock[2] = __52__NTKArgonCloudKitClient__publishRecord_completion___block_invoke;
   aBlock[3] = &unk_278787AC0;
   aBlock[4] = self;
-  v24 = v6;
-  v25 = v7;
-  v10 = v7;
-  v11 = v6;
+  v24 = recordCopy;
+  v25 = completionCopy;
+  v10 = completionCopy;
+  v11 = recordCopy;
   v12 = _Block_copy(aBlock);
   v13 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   [v13 setName:@"UserActionExplicit"];
@@ -740,8 +740,8 @@ void __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_acc
   [v16 setGroup:v13];
   *buf = 0;
   *&buf[8] = 0;
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  [v17 getUUIDBytes:buf];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [uUID getUUIDBytes:buf];
 
   v18 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:16];
   [v16 setClientChangeTokenData:v18];
@@ -753,8 +753,8 @@ void __99__NTKArgonCloudKitClient__unpublishRecordsWithPartialQueryOperation_acc
   v22 = v12;
   v19 = v12;
   [v16 setModifyRecordsCompletionBlock:v21];
-  v20 = [(NTKArgonCloudKitClient *)self database];
-  [v20 addOperation:v16];
+  database = [(NTKArgonCloudKitClient *)self database];
+  [database addOperation:v16];
 }
 
 void __52__NTKArgonCloudKitClient__publishRecord_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -806,21 +806,21 @@ void __52__NTKArgonCloudKitClient__publishRecord_completion___block_invoke(uint6
   dispatch_async(v11, v14);
 }
 
-- (void)publishKeyDescriptor:(id)a3 completion:(id)a4
+- (void)publishKeyDescriptor:(id)descriptor completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NTKArgonCloudKitClient *)self zoneName];
+    zoneName = [(NTKArgonCloudKitClient *)self zoneName];
     *buf = 134349570;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = descriptorCopy;
     v29 = 2114;
-    v30 = v9;
+    v30 = zoneName;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "CloudKit Client %{public}p: Publishing key descriptor %{public}@ in zone %{public}@.", buf, 0x20u);
   }
 
@@ -829,29 +829,29 @@ void __52__NTKArgonCloudKitClient__publishRecord_completion___block_invoke(uint6
   aBlock[2] = __58__NTKArgonCloudKitClient_publishKeyDescriptor_completion___block_invoke;
   aBlock[3] = &unk_278787AC0;
   aBlock[4] = self;
-  v10 = v6;
+  v10 = descriptorCopy;
   v23 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v24 = v11;
   v12 = _Block_copy(aBlock);
   v13 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   [v13 setName:@"UserActionExplicit"];
-  v14 = [(NTKArgonCloudKitClient *)self recordZoneID];
+  recordZoneID = [(NTKArgonCloudKitClient *)self recordZoneID];
 
-  if (v14)
+  if (recordZoneID)
   {
     v15 = objc_alloc(MEMORY[0x277CBC5A0]);
     v16 = NTKArgonCloudKitRecordTypeBundleDescriptor;
-    v17 = [(NTKArgonCloudKitClient *)self recordZoneID];
-    v18 = [v15 initWithRecordType:v16 zoneID:v17];
+    recordZoneID2 = [(NTKArgonCloudKitClient *)self recordZoneID];
+    recordZoneError = [v15 initWithRecordType:v16 zoneID:recordZoneID2];
 
-    v19 = [v10 fileName];
-    [v18 setObject:v19 forKeyedSubscript:@"fileName"];
+    fileName = [v10 fileName];
+    [recordZoneError setObject:fileName forKeyedSubscript:@"fileName"];
 
     v20 = [v10 key];
-    [v18 setObject:v20 forKeyedSubscript:@"key"];
+    [recordZoneError setObject:v20 forKeyedSubscript:@"key"];
 
-    [(NTKArgonCloudKitClient *)self _publishRecord:v18 completion:v12];
+    [(NTKArgonCloudKitClient *)self _publishRecord:recordZoneError completion:v12];
   }
 
   else
@@ -862,8 +862,8 @@ void __52__NTKArgonCloudKitClient__publishRecord_completion___block_invoke(uint6
       [NTKArgonCloudKitClient publishKeyDescriptor:completion:];
     }
 
-    v18 = [(NTKArgonCloudKitClient *)self recordZoneError];
-    v12[2](v12, 0, v18);
+    recordZoneError = [(NTKArgonCloudKitClient *)self recordZoneError];
+    v12[2](v12, 0, recordZoneError);
   }
 }
 
@@ -916,21 +916,21 @@ void __58__NTKArgonCloudKitClient_publishKeyDescriptor_completion___block_invoke
   dispatch_async(v11, v14);
 }
 
-- (void)unpublishKeyDescriptor:(id)a3 completion:(id)a4
+- (void)unpublishKeyDescriptor:(id)descriptor completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NTKArgonCloudKitClient *)self zoneName];
+    zoneName = [(NTKArgonCloudKitClient *)self zoneName];
     *buf = 134349570;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v6;
+    v24 = descriptorCopy;
     v25 = 2114;
-    v26 = v9;
+    v26 = zoneName;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "CloudKit Client %{public}p: Unpublishing key descriptor %{public}@ in zone %{public}@.", buf, 0x20u);
   }
 
@@ -939,17 +939,17 @@ void __58__NTKArgonCloudKitClient_publishKeyDescriptor_completion___block_invoke
   aBlock[2] = __60__NTKArgonCloudKitClient_unpublishKeyDescriptor_completion___block_invoke;
   aBlock[3] = &unk_278787AC0;
   aBlock[4] = self;
-  v19 = v6;
-  v20 = v7;
-  v10 = v7;
-  v11 = v6;
+  v19 = descriptorCopy;
+  v20 = completionCopy;
+  v10 = completionCopy;
+  v11 = descriptorCopy;
   v12 = _Block_copy(aBlock);
   v13 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   [v13 setName:@"UserActionExplicit"];
   v14 = MEMORY[0x277CCAC30];
   v15 = [v11 key];
-  v16 = [v11 fileName];
-  v17 = [v14 predicateWithFormat:@"%K = %@ AND %K = %@", @"key", v15, @"fileName", v16];
+  fileName = [v11 fileName];
+  v17 = [v14 predicateWithFormat:@"%K = %@ AND %K = %@", @"key", v15, @"fileName", fileName];
 
   [(NTKArgonCloudKitClient *)self _unpublishRecordsOfType:NTKArgonCloudKitRecordTypeBundleDescriptor matchingPredicate:v17 completion:v12];
 }

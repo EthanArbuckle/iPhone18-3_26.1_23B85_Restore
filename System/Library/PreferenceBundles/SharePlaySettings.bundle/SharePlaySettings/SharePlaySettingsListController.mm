@@ -1,18 +1,18 @@
 @interface SharePlaySettingsListController
 - (PSSpecifier)mainSwitchSpecifier;
-- (id)iconImageForBundleIdentifier:(id)a3;
-- (id)mainSwitchOn:(id)a3;
-- (id)providerForSpecifier:(id)a3;
+- (id)iconImageForBundleIdentifier:(id)identifier;
+- (id)mainSwitchOn:(id)on;
+- (id)providerForSpecifier:(id)specifier;
 - (id)providerSpecifiers;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (id)specifiers;
 - (void)emitNavigationEvent;
 - (void)refreshView;
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)sharePlayController:(id)a3 didChangeProvider:(id)a4;
-- (void)sharePlayController:(id)a3 didRemoveProvider:(id)a4;
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)sharePlayController:(id)controller didChangeProvider:(id)provider;
+- (void)sharePlayController:(id)controller didRemoveProvider:(id)provider;
 @end
 
 @implementation SharePlaySettingsListController
@@ -20,12 +20,12 @@
 - (id)providerSpecifiers
 {
   v27 = +[NSMutableArray array];
-  v3 = [(SharePlaySettingsListController *)self providerController];
-  v4 = [v3 providers];
+  providerController = [(SharePlaySettingsListController *)self providerController];
+  providers = [providerController providers];
 
-  if ([v4 count])
+  if ([providers count])
   {
-    v24 = v4;
+    v24 = providers;
     v5 = [SharePlaySettingsStrings localizedStringForKey:@"LIST_CONTROLLER_PROVIDERS_GROUP_SPECIFIER_TITLE"];
     v6 = [PSSpecifier groupSpecifierWithName:v5];
 
@@ -38,11 +38,11 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [(SharePlaySettingsListController *)self providerController];
-    v9 = [v8 providers];
+    providerController2 = [(SharePlaySettingsListController *)self providerController];
+    providers2 = [providerController2 providers];
 
-    obj = v9;
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    obj = providers2;
+    v10 = [providers2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -58,14 +58,14 @@
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
-          v15 = [v14 localizedName];
-          v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+          localizedName = [v14 localizedName];
+          v16 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
-          v17 = [v14 bundleIdentifier];
-          [v16 setIdentifier:v17];
+          bundleIdentifier = [v14 bundleIdentifier];
+          [v16 setIdentifier:bundleIdentifier];
 
-          v18 = [v14 bundleIdentifier];
-          v19 = [(SharePlaySettingsListController *)self iconImageForBundleIdentifier:v18];
+          bundleIdentifier2 = [v14 bundleIdentifier];
+          v19 = [(SharePlaySettingsListController *)self iconImageForBundleIdentifier:bundleIdentifier2];
           [v16 setProperty:v19 forKey:v12];
 
           v20 = objc_opt_class();
@@ -81,7 +81,7 @@
       while (v11);
     }
 
-    v4 = v24;
+    providers = v24;
   }
 
   return v27;
@@ -103,22 +103,22 @@
   return mainSwitchSpecifier;
 }
 
-- (id)mainSwitchOn:(id)a3
+- (id)mainSwitchOn:(id)on
 {
-  v3 = [(SharePlaySettingsListController *)self providerController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabled]);
+  providerController = [(SharePlaySettingsListController *)self providerController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [providerController isEnabled]);
 
   return v4;
 }
 
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [on BOOLValue];
   v6 = SharePlaySettingsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"DISABLED";
-    if (v5)
+    if (bOOLValue)
     {
       v7 = @"ENABLED";
     }
@@ -128,36 +128,36 @@
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Setting SharePlay service to %@.", &v9, 0xCu);
   }
 
-  v8 = [(SharePlaySettingsListController *)self providerController];
-  [v8 setEnabled:v5];
+  providerController = [(SharePlaySettingsListController *)self providerController];
+  [providerController setEnabled:bOOLValue];
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
-  v3 = [(SharePlaySettingsListController *)self providerForSpecifier:a3];
+  v3 = [(SharePlaySettingsListController *)self providerForSpecifier:value];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 isEnabled];
+    isEnabled = [v3 isEnabled];
     v6 = SharePlaySettingsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 localizedName];
-      v8 = v7;
+      localizedName = [v4 localizedName];
+      v8 = localizedName;
       v9 = @"DISABLED";
-      if (v5)
+      if (isEnabled)
       {
         v9 = @"ENABLED";
       }
 
       v12 = 138412546;
-      v13 = v7;
+      v13 = localizedName;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Getting SharePlay provider %@ as %@", &v12, 0x16u);
     }
 
-    v10 = [NSNumber numberWithBool:v5];
+    v10 = [NSNumber numberWithBool:isEnabled];
   }
 
   else
@@ -168,54 +168,54 @@
   return v10;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [(SharePlaySettingsListController *)self providerForSpecifier:a4];
+  valueCopy = value;
+  v7 = [(SharePlaySettingsListController *)self providerForSpecifier:specifier];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [valueCopy BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
 
     v9 = SharePlaySettingsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 bundleIdentifier];
-      v11 = v10;
+      bundleIdentifier = [v7 bundleIdentifier];
+      v11 = bundleIdentifier;
       v12 = @"DISABLED";
-      if (v8)
+      if (bOOLValue)
       {
         v12 = @"ENABLED";
       }
 
       v14 = 138412546;
-      v15 = v10;
+      v15 = bundleIdentifier;
       v16 = 2112;
       v17 = v12;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Setting SharePlay provider %@ to %@", &v14, 0x16u);
     }
 
-    v13 = [(SharePlaySettingsListController *)self providerController];
-    [v13 setSharePlayEnabled:v8 forProvider:v7];
+    providerController = [(SharePlaySettingsListController *)self providerController];
+    [providerController setSharePlayEnabled:bOOLValue forProvider:v7];
   }
 }
 
 - (void)emitNavigationEvent
 {
-  v3 = [(SharePlaySettingsListController *)self specifier];
-  v4 = [v3 target];
-  v5 = [v4 parentListController];
-  v6 = [v5 specifierID];
+  specifier = [(SharePlaySettingsListController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
 
-  if ([v6 isEqualToString:@"com.apple.preferences.facetime"])
+  if ([specifierID isEqualToString:@"com.apple.preferences.facetime"])
   {
     v24 = TUBundleIdentifierFaceTimeApplication;
     v25 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Apps/%@/%@", TUBundleIdentifierFaceTimeApplication, @"SHAREPLAY_SETTINGS_GROUP"];
@@ -223,20 +223,20 @@
     v7 = [_NSLocalizedStringResource alloc];
     v8 = +[NSLocale currentLocale];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v9 bundleURL];
-    v11 = [v7 initWithKey:@"SharePlay" table:0 locale:v8 bundleURL:v10];
+    bundleURL = [v9 bundleURL];
+    v11 = [v7 initWithKey:@"SharePlay" table:0 locale:v8 bundleURL:bundleURL];
 
     v12 = [_NSLocalizedStringResource alloc];
     v13 = +[NSLocale currentLocale];
     v14 = [NSBundle bundleForClass:objc_opt_class()];
-    v15 = [v14 bundleURL];
-    v16 = [v12 initWithKey:@"Apps" table:0 locale:v13 bundleURL:v15];
+    bundleURL2 = [v14 bundleURL];
+    v16 = [v12 initWithKey:@"Apps" table:0 locale:v13 bundleURL:bundleURL2];
 
     v17 = [_NSLocalizedStringResource alloc];
     v18 = +[NSLocale currentLocale];
     v19 = [NSBundle bundleForClass:objc_opt_class()];
-    v20 = [v19 bundleURL];
-    v21 = [v17 initWithKey:@"FaceTime" table:0 locale:v18 bundleURL:v20];
+    bundleURL3 = [v19 bundleURL];
+    v21 = [v17 initWithKey:@"FaceTime" table:0 locale:v18 bundleURL:bundleURL3];
 
     v26[0] = v16;
     v26[1] = v21;
@@ -245,23 +245,23 @@
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = SharePlaySettingsListController;
-  v5 = [(SharePlaySettingsListController *)&v15 specifier];
+  specifier = [(SharePlaySettingsListController *)&v15 specifier];
 
-  if (v5 != v4)
+  if (specifier != specifierCopy)
   {
     v14.receiver = self;
     v14.super_class = SharePlaySettingsListController;
-    [(SharePlaySettingsListController *)&v14 setSpecifier:v4];
-    v6 = [v4 sharePlayProviderController];
-    v7 = v6;
-    if (v6)
+    [(SharePlaySettingsListController *)&v14 setSpecifier:specifierCopy];
+    sharePlayProviderController = [specifierCopy sharePlayProviderController];
+    v7 = sharePlayProviderController;
+    if (sharePlayProviderController)
     {
-      v8 = v6;
+      v8 = sharePlayProviderController;
     }
 
     else
@@ -272,11 +272,11 @@
     v9 = v8;
 
     [(SharePlayProviderController *)v9 addDelegate:self queue:&_dispatch_main_q];
-    v10 = [v4 sharePlay_userConfiguration];
-    v11 = v10;
-    if (v10)
+    sharePlay_userConfiguration = [specifierCopy sharePlay_userConfiguration];
+    v11 = sharePlay_userConfiguration;
+    if (sharePlay_userConfiguration)
     {
-      v12 = v10;
+      v12 = sharePlay_userConfiguration;
     }
 
     else
@@ -299,16 +299,16 @@
   if (!v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(SharePlaySettingsListController *)self mainSwitchSpecifier];
-    [v5 addObject:v6];
+    mainSwitchSpecifier = [(SharePlaySettingsListController *)self mainSwitchSpecifier];
+    [v5 addObject:mainSwitchSpecifier];
 
-    v7 = [(SharePlaySettingsListController *)self providerController];
-    v8 = [v7 isEnabled];
+    providerController = [(SharePlaySettingsListController *)self providerController];
+    isEnabled = [providerController isEnabled];
 
-    if (v8)
+    if (isEnabled)
     {
-      v9 = [(SharePlaySettingsListController *)self providerSpecifiers];
-      [v5 addObjectsFromArray:v9];
+      providerSpecifiers = [(SharePlaySettingsListController *)self providerSpecifiers];
+      [v5 addObjectsFromArray:providerSpecifiers];
     }
 
     v10 = [v5 copy];
@@ -330,12 +330,12 @@
   }
 }
 
-- (id)providerForSpecifier:(id)a3
+- (id)providerForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 propertyForKey:v5];
+  v6 = [specifierCopy propertyForKey:v5];
 
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -350,21 +350,21 @@
   return v7;
 }
 
-- (void)sharePlayController:(id)a3 didChangeProvider:(id)a4
+- (void)sharePlayController:(id)controller didChangeProvider:(id)provider
 {
-  v11 = a4;
-  v5 = [v11 bundleIdentifier];
-  v6 = [(SharePlaySettingsListController *)self specifierForID:v5];
+  providerCopy = provider;
+  bundleIdentifier = [providerCopy bundleIdentifier];
+  v6 = [(SharePlaySettingsListController *)self specifierForID:bundleIdentifier];
 
   if (v6)
   {
-    v7 = [v11 bundleIdentifier];
-    v8 = [(SharePlaySettingsListController *)self iconImageForBundleIdentifier:v7];
+    bundleIdentifier2 = [providerCopy bundleIdentifier];
+    v8 = [(SharePlaySettingsListController *)self iconImageForBundleIdentifier:bundleIdentifier2];
     [v6 setProperty:v8 forKey:PSIconImageKey];
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v6 setProperty:v11 forKey:v10];
+    [v6 setProperty:providerCopy forKey:v10];
 
     [(SharePlaySettingsListController *)self reloadSpecifier:v6];
   }
@@ -375,10 +375,10 @@
   }
 }
 
-- (void)sharePlayController:(id)a3 didRemoveProvider:(id)a4
+- (void)sharePlayController:(id)controller didRemoveProvider:(id)provider
 {
-  v5 = [a4 bundleIdentifier];
-  v7 = [(SharePlaySettingsListController *)self specifierForID:v5];
+  bundleIdentifier = [provider bundleIdentifier];
+  v7 = [(SharePlaySettingsListController *)self specifierForID:bundleIdentifier];
 
   v6 = v7;
   if (v7)
@@ -388,9 +388,9 @@
   }
 }
 
-- (id)iconImageForBundleIdentifier:(id)a3
+- (id)iconImageForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   cachedIconsByBundleIdentifier = self->_cachedIconsByBundleIdentifier;
   if (!cachedIconsByBundleIdentifier)
   {
@@ -401,14 +401,14 @@
     cachedIconsByBundleIdentifier = self->_cachedIconsByBundleIdentifier;
   }
 
-  v8 = [(NSMutableDictionary *)cachedIconsByBundleIdentifier objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)cachedIconsByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v8)
   {
     v9 = +[UIScreen mainScreen];
     [v9 scale];
-    v8 = [UIImage _applicationIconImageForBundleIdentifier:v4 format:0 scale:?];
+    v8 = [UIImage _applicationIconImageForBundleIdentifier:identifierCopy format:0 scale:?];
 
-    [(NSMutableDictionary *)self->_cachedIconsByBundleIdentifier setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_cachedIconsByBundleIdentifier setObject:v8 forKeyedSubscript:identifierCopy];
   }
 
   return v8;

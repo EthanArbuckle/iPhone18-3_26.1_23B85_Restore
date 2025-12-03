@@ -1,13 +1,13 @@
 @interface TPRootLayout
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)setChildren:(id)a3;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)setChildren:(id)children;
 @end
 
 @implementation TPRootLayout
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v6 = a3;
+  childCopy = child;
   objc_opt_class();
   v7 = TSUCheckedDynamicCast();
 
@@ -15,7 +15,7 @@
   {
     v8.receiver = self;
     v8.super_class = TPRootLayout;
-    [(TPRootLayout *)&v8 insertChild:v7 atIndex:a4];
+    [(TPRootLayout *)&v8 insertChild:v7 atIndex:index];
   }
 
   else
@@ -24,15 +24,15 @@
   }
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = a3;
-  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, v6, v7, v8, v9, &v21, v25, 16);
+  childrenCopy = children;
+  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(childrenCopy, v5, v6, v7, v8, v9, &v21, v25, 16);
   if (v10)
   {
     v11 = v10;
@@ -44,7 +44,7 @@
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childrenCopy);
         }
 
         objc_opt_class();
@@ -60,7 +60,7 @@
       }
 
       while (v11 != v13);
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v15, v16, v17, v18, v19, &v21, v25, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(childrenCopy, v15, v16, v17, v18, v19, &v21, v25, 16);
       if (v11)
       {
         continue;
@@ -72,7 +72,7 @@
 
   v20.receiver = self;
   v20.super_class = TPRootLayout;
-  [(TPRootLayout *)&v20 setChildren:v4];
+  [(TPRootLayout *)&v20 setChildren:childrenCopy];
 LABEL_11:
 }
 

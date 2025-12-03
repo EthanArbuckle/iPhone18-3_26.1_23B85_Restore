@@ -99,10 +99,10 @@ id __35__CIFaceMaskCalculator_metalKernel__block_invoke()
     v57[11] = v24;
     v57[12] = v34;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:13];
-    v43 = [(CIFaceMaskCalculator *)self metalKernel];
+    metalKernel = [(CIFaceMaskCalculator *)self metalKernel];
     v55 = @"kCIKernelOutputFormat";
     v56 = [MEMORY[0x1E696AD98] numberWithInt:{2056, MEMORY[0x1E69E9820], 3221225472, __38__CIFaceMaskCalculator_outputImage_V4__block_invoke, &unk_1E75C2528, &v47}];
-    v44 = [v43 applyWithExtent:&v46 roiCallback:v42 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v56, &v55, 1), 0.0, 0.0, 5.0, 1.0}];
+    v44 = [metalKernel applyWithExtent:&v46 roiCallback:v42 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v56, &v55, 1), 0.0, 0.0, 5.0, 1.0}];
     _Block_object_dispose(&v47, 8);
     return v44;
   }
@@ -235,7 +235,7 @@ id __35__CIFaceMaskCalculator_metalKernel__block_invoke()
       v65[12] = v52;
       v65[13] = v44;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:14];
-      v50 = [(CIFaceMaskCalculator *)self _kernel];
+      _kernel = [(CIFaceMaskCalculator *)self _kernel];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
       v54[2] = __35__CIFaceMaskCalculator_outputImage__block_invoke;
@@ -243,7 +243,7 @@ id __35__CIFaceMaskCalculator_metalKernel__block_invoke()
       v54[4] = &v55;
       v63 = @"kCIKernelOutputFormat";
       v64 = [MEMORY[0x1E696AD98] numberWithInt:2056];
-      v51 = [v50 applyWithExtent:v54 roiCallback:v49 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v64, &v63, 1), 0.0, 0.0, 5.0, 1.0}];
+      v51 = [_kernel applyWithExtent:v54 roiCallback:v49 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v64, &v63, 1), 0.0, 0.0, 5.0, 1.0}];
       _Block_object_dispose(&v55, 8);
       return v51;
     }

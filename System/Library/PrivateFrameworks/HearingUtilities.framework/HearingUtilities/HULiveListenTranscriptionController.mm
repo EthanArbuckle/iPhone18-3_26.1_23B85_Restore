@@ -1,6 +1,6 @@
 @interface HULiveListenTranscriptionController
 - (HULiveListenTranscriptionController)init;
-- (HULiveListenTranscriptionController)initWithDelegate:(id)a3;
+- (HULiveListenTranscriptionController)initWithDelegate:(id)delegate;
 - (HULiveListenTranscriptionControllerDelegate)delegate;
 - (void)startTranscribing;
 - (void)stopTranscribing;
@@ -25,14 +25,14 @@
   }
 }
 
-- (HULiveListenTranscriptionController)initWithDelegate:(id)a3
+- (HULiveListenTranscriptionController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(HULiveListenTranscriptionController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(HULiveListenTranscriptionController *)v5 setDelegate:v4];
+    [(HULiveListenTranscriptionController *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -63,8 +63,8 @@
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [v3 sharedInstance];
-    [(HULiveListenTranscriptionController *)v2 setTranscriber:v5];
+    sharedInstance = [v3 sharedInstance];
+    [(HULiveListenTranscriptionController *)v2 setTranscriber:sharedInstance];
   }
 
   return v2;

@@ -1,49 +1,49 @@
 @interface FamilyRootViewController
-- (void)_presentAsChildViewController:(id)a3;
+- (void)_presentAsChildViewController:(id)controller;
 @end
 
 @implementation FamilyRootViewController
 
-- (void)_presentAsChildViewController:(id)a3
+- (void)_presentAsChildViewController:(id)controller
 {
-  v27 = a3;
-  [(FamilyRootViewController *)self addChildViewController:v27];
-  v4 = [(FamilyRootViewController *)self view];
-  v5 = [v27 view];
-  [v4 addSubview:v5];
+  controllerCopy = controller;
+  [(FamilyRootViewController *)self addChildViewController:controllerCopy];
+  view = [(FamilyRootViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  v6 = [v27 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [controllerCopy view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [v27 view];
-  v8 = [v7 topAnchor];
-  v9 = [(FamilyRootViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  view4 = [controllerCopy view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(FamilyRootViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [v27 view];
-  v13 = [v12 bottomAnchor];
-  v14 = [(FamilyRootViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  view6 = [controllerCopy view];
+  bottomAnchor = [view6 bottomAnchor];
+  view7 = [(FamilyRootViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v16 setActive:1];
 
-  v17 = [v27 view];
-  v18 = [v17 leftAnchor];
-  v19 = [(FamilyRootViewController *)self view];
-  v20 = [v19 leftAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  view8 = [controllerCopy view];
+  leftAnchor = [view8 leftAnchor];
+  view9 = [(FamilyRootViewController *)self view];
+  leftAnchor2 = [view9 leftAnchor];
+  v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v21 setActive:1];
 
-  v22 = [v27 view];
-  v23 = [v22 rightAnchor];
-  v24 = [(FamilyRootViewController *)self view];
-  v25 = [v24 rightAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  view10 = [controllerCopy view];
+  rightAnchor = [view10 rightAnchor];
+  view11 = [(FamilyRootViewController *)self view];
+  rightAnchor2 = [view11 rightAnchor];
+  v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v26 setActive:1];
 
-  [v27 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface _LSPlistHint
-- (id)cachedValueForKey:(uint64_t)a1;
+- (id)cachedValueForKey:(uint64_t)key;
 - (id)completeDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (uint64_t)setCachedValue:(uint64_t)a3 forKey:;
-- (void)initWithKeys:(char)a3 compacted:;
-- (void)setCompleteDictionary:(uint64_t)a1;
+- (uint64_t)setCachedValue:(uint64_t)value forKey:;
+- (void)initWithKeys:(char)keys compacted:;
+- (void)setCompleteDictionary:(uint64_t)dictionary;
 @end
 
 @implementation _LSPlistHint
 
 - (id)completeDictionary
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24) != 1)
+    if (*(self + 24) != 1)
     {
       return OUTLINED_FUNCTION_0_16();
     }
 
-    a1 = *(a1 + 2);
+    self = *(self + 2);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)initWithKeys:(char)a3 compacted:
+- (void)initWithKeys:(char)keys compacted:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = _LSPlistHint;
   v5 = objc_msgSendSuper2(&v10, sel_init);
   if (v5)
@@ -45,29 +45,29 @@
     v5[2] = 0;
 
     *(v5 + 24) = 0;
-    *(v5 + 25) = a3;
+    *(v5 + 25) = keys;
   }
 
   return v5;
 }
 
-- (void)setCompleteDictionary:(uint64_t)a1
+- (void)setCompleteDictionary:(uint64_t)dictionary
 {
-  if (a1 && a2 && (*(a1 + 24) & 1) == 0)
+  if (dictionary && a2 && (*(dictionary + 24) & 1) == 0)
   {
     v3 = [a2 copy];
-    v4 = *(a1 + 16);
-    *(a1 + 16) = v3;
+    v4 = *(dictionary + 16);
+    *(dictionary + 16) = v3;
 
-    *(a1 + 24) = 1;
+    *(dictionary + 24) = 1;
   }
 }
 
-- (uint64_t)setCachedValue:(uint64_t)a3 forKey:
+- (uint64_t)setCachedValue:(uint64_t)value forKey:
 {
   if (result)
   {
-    if (a3)
+    if (value)
     {
       v4 = result;
       if ((*(result + 24) & 1) == 0)
@@ -82,7 +82,7 @@
           v6 = *(v4 + 16);
         }
 
-        return [v6 setObject:a2 forKeyedSubscript:a3];
+        return [v6 setObject:a2 forKeyedSubscript:value];
       }
     }
   }
@@ -90,7 +90,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
@@ -127,19 +127,19 @@
   return v2;
 }
 
-- (id)cachedValueForKey:(uint64_t)a1
+- (id)cachedValueForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
-    if (*(a1 + 24))
+    if (*(key + 24))
     {
       return OUTLINED_FUNCTION_0_16();
     }
 
-    a1 = [*(a1 + 16) objectForKeyedSubscript:{a2, v2}];
+    key = [*(key + 16) objectForKeyedSubscript:{a2, v2}];
   }
 
-  return a1;
+  return key;
 }
 
 @end

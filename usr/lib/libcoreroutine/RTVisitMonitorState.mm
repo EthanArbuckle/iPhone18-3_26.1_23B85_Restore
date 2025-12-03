@@ -1,22 +1,22 @@
 @interface RTVisitMonitorState
-- (RTVisitMonitorState)initWithLastVisit:(id)a3 lastLowConfidenceVisit:(id)a4;
+- (RTVisitMonitorState)initWithLastVisit:(id)visit lastLowConfidenceVisit:(id)confidenceVisit;
 - (void)dump;
 @end
 
 @implementation RTVisitMonitorState
 
-- (RTVisitMonitorState)initWithLastVisit:(id)a3 lastLowConfidenceVisit:(id)a4
+- (RTVisitMonitorState)initWithLastVisit:(id)visit lastLowConfidenceVisit:(id)confidenceVisit
 {
-  v7 = a3;
-  v8 = a4;
+  visitCopy = visit;
+  confidenceVisitCopy = confidenceVisit;
   v12.receiver = self;
   v12.super_class = RTVisitMonitorState;
   v9 = [(RTVisitMonitorState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lastVisitIncident, a3);
-    objc_storeStrong(&v10->_lastLowConfidenceVisitIncident, a4);
+    objc_storeStrong(&v9->_lastVisitIncident, visit);
+    objc_storeStrong(&v10->_lastLowConfidenceVisitIncident, confidenceVisit);
   }
 
   return v10;
@@ -32,14 +32,14 @@
     {
       v4 = objc_opt_class();
       v5 = NSStringFromClass(v4);
-      v6 = [(RTVisitMonitorState *)self lastVisitIncident];
-      v7 = [(RTVisitMonitorState *)self lastLowConfidenceVisitIncident];
+      lastVisitIncident = [(RTVisitMonitorState *)self lastVisitIncident];
+      lastLowConfidenceVisitIncident = [(RTVisitMonitorState *)self lastLowConfidenceVisitIncident];
       v8 = 138412803;
       v9 = v5;
       v10 = 2117;
-      v11 = v6;
+      v11 = lastVisitIncident;
       v12 = 2117;
-      v13 = v7;
+      v13 = lastLowConfidenceVisitIncident;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%@, lastVisit, %{sensitive}@, lastLowConfidenceVisit, %{sensitive}@", &v8, 0x20u);
     }
   }

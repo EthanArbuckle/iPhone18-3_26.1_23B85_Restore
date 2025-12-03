@@ -1,25 +1,25 @@
 @interface VoidConductor
 - (_TtC11MobileTimer13VoidConductor)init;
-- (void)registerReplyPublisherWithTimeOut:(double)a3 completion:(id)a4;
+- (void)registerReplyPublisherWithTimeOut:(double)out completion:(id)completion;
 - (void)send;
 @end
 
 @implementation VoidConductor
 
-- (void)registerReplyPublisherWithTimeOut:(double)a3 completion:(id)a4
+- (void)registerReplyPublisherWithTimeOut:(double)out completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = *(&self->super.isa + OBJC_IVAR____TtC11MobileTimer13VoidConductor_conductor);
-  v8 = self;
+  selfCopy = self;
   sub_1B209E14C(sub_1B20A062C, v6);
 }
 
 - (void)send
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR____TtC11MobileTimer13VoidConductor_conductor) + 136);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

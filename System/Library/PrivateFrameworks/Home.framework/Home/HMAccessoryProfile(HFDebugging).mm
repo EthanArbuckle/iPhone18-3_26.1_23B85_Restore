@@ -7,19 +7,19 @@
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
   v4 = a3;
-  v5 = [HFStateDumpBuilder builderWithObject:a1 context:v4];
-  v6 = [a1 uniqueIdentifier];
-  [v5 appendObject:v6 withName:@"UUID" options:2];
+  v5 = [HFStateDumpBuilder builderWithObject:self context:v4];
+  uniqueIdentifier = [self uniqueIdentifier];
+  [v5 appendObject:uniqueIdentifier withName:@"UUID" options:2];
 
   if ([v4 detailLevel] == 2)
   {
-    v7 = [a1 accessory];
+    accessory = [self accessory];
     v8 = [v4 copyWithDetailLevel:0];
-    [v5 appendObject:v7 withName:@"accessory" context:v8];
+    [v5 appendObject:accessory withName:@"accessory" context:v8];
 
-    v9 = [a1 services];
+    services = [self services];
     v10 = [v4 copyWithDetailLevel:0];
-    [v5 appendObject:v9 withName:@"services" context:v10 options:1];
+    [v5 appendObject:services withName:@"services" context:v10 options:1];
   }
 
   return v5;

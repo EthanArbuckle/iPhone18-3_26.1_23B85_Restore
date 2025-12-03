@@ -1,8 +1,8 @@
 @interface TSUCustomFormatCondition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSUCustomFormatCondition)init;
-- (TSUCustomFormatCondition)initWithType:(int)a3 value:(double)a4 data:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSUCustomFormatCondition)initWithType:(int)type value:(double)value data:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSUCustomFormatCondition
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (TSUCustomFormatCondition)initWithType:(int)a3 value:(double)a4 data:(id)a5
+- (TSUCustomFormatCondition)initWithType:(int)type value:(double)value data:(id)data
 {
-  v8 = a5;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = TSUCustomFormatCondition;
   v9 = [(TSUCustomFormatCondition *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    v9->_conditionType = a3;
-    v9->_conditionValue = a4;
-    if (!v8)
+    v9->_conditionType = type;
+    v9->_conditionValue = value;
+    if (!dataCopy)
     {
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUCustomFormatCondition initWithType:value:data:]"];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUCustomFormat.m"];
@@ -37,7 +37,7 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v13 = [v8 copy];
+    v13 = [dataCopy copy];
     data = v10->_data;
     v10->_data = v13;
 
@@ -47,29 +47,29 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSUCustomFormatCondition allocWithZone:a3];
-  v5 = [(TSUCustomFormatCondition *)self conditionType];
+  v4 = [TSUCustomFormatCondition allocWithZone:zone];
+  conditionType = [(TSUCustomFormatCondition *)self conditionType];
   [(TSUCustomFormatCondition *)self conditionValue];
   v7 = v6;
-  v8 = [(TSUCustomFormatCondition *)self data];
-  v9 = [(TSUCustomFormatCondition *)v4 initWithType:v5 value:v8 data:v7];
+  data = [(TSUCustomFormatCondition *)self data];
+  v9 = [(TSUCustomFormatCondition *)v4 initWithType:conditionType value:data data:v7];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
 
   if (v6 && (-[TSUCustomFormatCondition conditionValue](self, "conditionValue"), v8 = v7, [v6 conditionValue], v8 == v9) && (v10 = -[TSUCustomFormatCondition conditionType](self, "conditionType"), v10 == objc_msgSend(v6, "conditionType")))
   {
-    v11 = [(TSUCustomFormatCondition *)self data];
-    v12 = [v6 data];
-    v13 = [v11 isEqual:v12];
+    data = [(TSUCustomFormatCondition *)self data];
+    data2 = [v6 data];
+    v13 = [data isEqual:data2];
   }
 
   else

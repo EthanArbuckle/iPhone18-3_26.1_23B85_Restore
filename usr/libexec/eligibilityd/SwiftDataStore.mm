@@ -1,9 +1,9 @@
 @interface SwiftDataStore
-- (BOOL)hasGracePeriod:(id)a3;
-- (id)getGracePeriodStartDate:(id)a3;
-- (void)createGracePeriod:(id)a3;
+- (BOOL)hasGracePeriod:(id)period;
+- (id)getGracePeriodStartDate:(id)date;
+- (void)createGracePeriod:(id)period;
 - (void)purge;
-- (void)startGracePeriod:(id)a3;
+- (void)startGracePeriod:(id)period;
 @end
 
 @implementation SwiftDataStore
@@ -14,7 +14,7 @@
   sub_100014BD4();
 }
 
-- (BOOL)hasGracePeriod:(id)a3
+- (BOOL)hasGracePeriod:(id)period
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -28,7 +28,7 @@
   return v6 != 0;
 }
 
-- (void)createGracePeriod:(id)a3
+- (void)createGracePeriod:(id)period
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -52,7 +52,7 @@
   }
 }
 
-- (void)startGracePeriod:(id)a3
+- (void)startGracePeriod:(id)period
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -60,7 +60,7 @@
   sub_10001520C(v3, v5);
 }
 
-- (id)getGracePeriodStartDate:(id)a3
+- (id)getGracePeriodStartDate:(id)date
 {
   v3 = sub_100001EB0(&qword_10005BD00, "^/");
   v4 = *(*(v3 - 8) + 64);

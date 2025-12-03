@@ -1,31 +1,31 @@
 @interface GKViceroyVoiceChat
 - (BOOL)isActive;
-- (GKViceroyVoiceChat)initWithName:(id)a3 connection:(id)a4 gkSession:(id)a5;
+- (GKViceroyVoiceChat)initWithName:(id)name connection:(id)connection gkSession:(id)session;
 - (GKViceroyVoiceChatStateUpdateDelegate)stateUpdateDelegate;
 - (NSString)name;
 - (float)volume;
 - (void)dealloc;
-- (void)gkVoiceChatSession:(id)a3 stateUpdate:(unint64_t)a4 forPeer:(id)a5;
-- (void)setVolume:(float)a3;
+- (void)gkVoiceChatSession:(id)session stateUpdate:(unint64_t)update forPeer:(id)peer;
+- (void)setVolume:(float)volume;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation GKViceroyVoiceChat
 
-- (GKViceroyVoiceChat)initWithName:(id)a3 connection:(id)a4 gkSession:(id)a5
+- (GKViceroyVoiceChat)initWithName:(id)name connection:(id)connection gkSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  connectionCopy = connection;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = GKViceroyVoiceChat;
   v11 = [(GKViceroyVoiceChat *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_connection, a4);
-    v13 = [objc_alloc(MEMORY[0x277D0C948]) initWithGKSession:v10 sessionName:v8];
+    objc_storeStrong(&v11->_connection, connection);
+    v13 = [objc_alloc(MEMORY[0x277D0C948]) initWithGKSession:sessionCopy sessionName:nameCopy];
     voiceChatSession = v12->_voiceChatSession;
     v12->_voiceChatSession = v13;
 
@@ -37,8 +37,8 @@
 
 - (void)dealloc
 {
-  v3 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  [v3 setDelegate:0];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  [voiceChatSession setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = GKViceroyVoiceChat;
@@ -47,31 +47,31 @@
 
 - (NSString)name
 {
-  v2 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  v3 = [v2 sessionName];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  sessionName = [voiceChatSession sessionName];
 
-  return v3;
+  return sessionName;
 }
 
 - (BOOL)isActive
 {
-  v2 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  v3 = [v2 isActiveSession];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  isActiveSession = [voiceChatSession isActiveSession];
 
-  return v3;
+  return isActiveSession;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v5 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  *&v4 = a3;
-  [v5 setSessionVolume:v4];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  *&v4 = volume;
+  [voiceChatSession setSessionVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  [v2 sessionVolume];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  [voiceChatSession sessionVolume];
   v4 = v3;
 
   return v4;
@@ -79,32 +79,32 @@
 
 - (void)start
 {
-  v2 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  [v2 startSession];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  [voiceChatSession startSession];
 }
 
 - (void)stop
 {
-  v2 = [(GKViceroyVoiceChat *)self voiceChatSession];
-  [v2 stopSession];
+  voiceChatSession = [(GKViceroyVoiceChat *)self voiceChatSession];
+  [voiceChatSession stopSession];
 }
 
-- (void)gkVoiceChatSession:(id)a3 stateUpdate:(unint64_t)a4 forPeer:(id)a5
+- (void)gkVoiceChatSession:(id)session stateUpdate:(unint64_t)update forPeer:(id)peer
 {
-  v7 = a5;
-  v8 = [(GKViceroyVoiceChat *)self stateUpdateDelegate];
+  peerCopy = peer;
+  stateUpdateDelegate = [(GKViceroyVoiceChat *)self stateUpdateDelegate];
 
-  if (v8)
+  if (stateUpdateDelegate)
   {
-    v9 = [(GKViceroyVoiceChat *)self connection];
+    connection = [(GKViceroyVoiceChat *)self connection];
     v13 = 0;
-    v10 = [v9 convertPeerID:v7 toParticipantID:&v13];
+    v10 = [connection convertPeerID:peerCopy toParticipantID:&v13];
     v11 = v13;
 
     if (v10)
     {
-      v12 = [(GKViceroyVoiceChat *)self stateUpdateDelegate];
-      [v12 stateUpdate:a4 forPlayerID:v11];
+      stateUpdateDelegate2 = [(GKViceroyVoiceChat *)self stateUpdateDelegate];
+      [stateUpdateDelegate2 stateUpdate:update forPlayerID:v11];
     }
   }
 }

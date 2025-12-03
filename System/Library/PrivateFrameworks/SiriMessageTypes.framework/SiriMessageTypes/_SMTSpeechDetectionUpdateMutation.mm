@@ -1,6 +1,6 @@
 @interface _SMTSpeechDetectionUpdateMutation
 - (BOOL)getSpeechDetected;
-- (_SMTSpeechDetectionUpdateMutation)initWithBase:(id)a3;
+- (_SMTSpeechDetectionUpdateMutation)initWithBase:(id)base;
 - (id)getLastTRPCandidateId;
 - (int64_t)getProcessedAudioDurationMs;
 - (int64_t)getTrailingSilenceDurationMs;
@@ -52,15 +52,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_lastTRPCandidateId;
+    lastTRPCandidateId = self->_lastTRPCandidateId;
   }
 
   else
   {
-    v2 = [(SMTSpeechDetectionUpdate *)self->_base lastTRPCandidateId];
+    lastTRPCandidateId = [(SMTSpeechDetectionUpdate *)self->_base lastTRPCandidateId];
   }
 
-  return v2;
+  return lastTRPCandidateId;
 }
 
 - (BOOL)getSpeechDetected
@@ -76,16 +76,16 @@
   }
 }
 
-- (_SMTSpeechDetectionUpdateMutation)initWithBase:(id)a3
+- (_SMTSpeechDetectionUpdateMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SMTSpeechDetectionUpdateMutation;
   v6 = [(_SMTSpeechDetectionUpdateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

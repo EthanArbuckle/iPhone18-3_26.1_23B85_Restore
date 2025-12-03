@@ -1,17 +1,17 @@
 @interface TNPageRepContainer
-- (TNPageRepContainer)initWithLayout:(id)a3 canvas:(id)a4;
+- (TNPageRepContainer)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)accessibilityLabel;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation TNPageRepContainer
 
-- (TNPageRepContainer)initWithLayout:(id)a3 canvas:(id)a4
+- (TNPageRepContainer)initWithLayout:(id)layout canvas:(id)canvas
 {
   v6.receiver = self;
   v6.super_class = TNPageRepContainer;
-  result = [(TSDRep *)&v6 initWithLayout:a3 canvas:a4];
+  result = [(TSDRep *)&v6 initWithLayout:layout canvas:canvas];
   if (result)
   {
     v5 = *(MEMORY[0x277CBF3A0] + 16);
@@ -32,18 +32,18 @@
   [(TSDRep *)&v6 dealloc];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v17 = objc_msgSend_layout(self, a2, a3);
-  CGContextSaveGState(a3);
+  v17 = objc_msgSend_layout(self, a2, context);
+  CGContextSaveGState(context);
   objc_msgSend_pageBounds(v17, v4, v5);
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v16 = objc_msgSend_backgroundColor(v17, v14, v15);
-  sub_275F2FF6C(a3, v16, 0, v7, v9, v11, v13);
-  CGContextRestoreGState(a3);
+  sub_275F2FF6C(context, v16, 0, v7, v9, v11, v13);
+  CGContextRestoreGState(context);
 }
 
 - (id)accessibilityLabel

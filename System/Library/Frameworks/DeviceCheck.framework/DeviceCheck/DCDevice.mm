@@ -1,6 +1,6 @@
 @interface DCDevice
 + (DCDevice)currentDevice;
-- (BOOL)_isSupportedReturningError:(id *)a3;
+- (BOOL)_isSupportedReturningError:(id *)error;
 - (BOOL)isSupported;
 - (void)generateTokenWithCompletionHandler:(void *)completion;
 @end
@@ -82,7 +82,7 @@ void __47__DCDevice_generateTokenWithCompletionHandler___block_invoke_2(uint64_t
   [v8 invalidate];
 }
 
-- (BOOL)_isSupportedReturningError:(id *)a3
+- (BOOL)_isSupportedReturningError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -112,9 +112,9 @@ void __47__DCDevice_generateTokenWithCompletionHandler___block_invoke_2(uint64_t
   v9[4] = &v17;
   v9[5] = &v11;
   [v5 isSupportedDeviceWithCompletion:v9];
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v7 = *(v18 + 24);
@@ -192,13 +192,13 @@ void __39__DCDevice__isSupportedReturningError___block_invoke_23(uint64_t a1, ch
     if (os_log_type_enabled(DCLogSystem_log_2, OS_LOG_TYPE_ERROR))
     {
       v5 = v4;
-      v6 = [v3 localizedDescription];
+      localizedDescription = [v3 localizedDescription];
       *buf = 136315650;
       v11 = "DCDevice.m";
       v12 = 1024;
       v13 = 97;
       v14 = 2112;
-      v15 = v6;
+      v15 = localizedDescription;
       _os_log_impl(&dword_238044000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to check if client is supported. { error=%@ }", buf, 0x1Cu);
     }
   }

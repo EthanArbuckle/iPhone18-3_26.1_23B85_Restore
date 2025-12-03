@@ -1,23 +1,23 @@
 @interface WADayForecast
-+ (id)dayForecastForLocation:(id)a3 conditions:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareDayNumberToDayForecast:(id)a3;
++ (id)dayForecastForLocation:(id)location conditions:(id)conditions;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareDayNumberToDayForecast:(id)forecast;
 - (unint64_t)hash;
-- (void)setHigh:(id)a3;
-- (void)setLow:(id)a3;
+- (void)setHigh:(id)high;
+- (void)setLow:(id)low;
 @end
 
 @implementation WADayForecast
 
-+ (id)dayForecastForLocation:(id)a3 conditions:(id)a4
++ (id)dayForecastForLocation:(id)location conditions:(id)conditions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  locationCopy = location;
+  conditionsCopy = conditions;
+  v9 = conditionsCopy;
+  if (locationCopy)
   {
-    if (v8)
+    if (conditionsCopy)
     {
       goto LABEL_3;
     }
@@ -25,14 +25,14 @@
 
   else
   {
-    [WADayForecast(WFAdditions) dayForecastForLocation:a2 conditions:a1];
+    [WADayForecast(WFAdditions) dayForecastForLocation:a2 conditions:self];
     if (v9)
     {
       goto LABEL_3;
     }
   }
 
-  [WADayForecast(WFAdditions) dayForecastForLocation:a2 conditions:a1];
+  [WADayForecast(WFAdditions) dayForecastForLocation:a2 conditions:self];
 LABEL_3:
   v10 = objc_alloc_init(WADayForecast);
   v11 = [v9 valueForComponent:*MEMORY[0x277D7B318]];
@@ -54,20 +54,20 @@ LABEL_3:
 
   v18 = v17;
 
-  v19 = [v18 unsignedIntegerValue];
-  [(WADayForecast *)v10 setIcon:v19];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
+  [(WADayForecast *)v10 setIcon:unsignedIntegerValue];
   v20 = [v9 valueForComponent:*MEMORY[0x277D7B310]];
-  v21 = [v20 date];
+  date = [v20 date];
 
   v22 = objc_alloc(MEMORY[0x277CBEA80]);
   v23 = [v22 initWithCalendarIdentifier:*MEMORY[0x277CBE5D0]];
-  v24 = [v7 timeZone];
-  [v23 setTimeZone:v24];
+  timeZone = [locationCopy timeZone];
+  [v23 setTimeZone:timeZone];
 
-  v25 = [v23 components:512 fromDate:v21];
+  v25 = [v23 components:512 fromDate:date];
   -[WADayForecast setDayOfWeek:](v10, "setDayOfWeek:", [v25 weekday]);
-  v26 = [v7 timeZone];
-  [(WADayForecast *)v10 setIsYesterday:DateIsYesterdayInTimezone(v21, v26)];
+  timeZone2 = [locationCopy timeZone];
+  [(WADayForecast *)v10 setIsYesterday:DateIsYesterdayInTimezone(date, timeZone2)];
 
   v27 = [v9 valueForComponent:*MEMORY[0x277D7B3A8]];
   -[WADayForecast setDayNumber:](v10, "setDayNumber:", [v27 integerValue] - 1);
@@ -75,11 +75,11 @@ LABEL_3:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WADayForecast allocWithZone:?]];
-  v5 = [(WADayForecast *)self high];
-  [(WADayForecast *)v4 setHigh:v5];
+  high = [(WADayForecast *)self high];
+  [(WADayForecast *)v4 setHigh:high];
 
   v6 = [(WADayForecast *)self low];
   [(WADayForecast *)v4 setLow:v6];
@@ -93,10 +93,10 @@ LABEL_3:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v19) = 1;
   }
@@ -104,7 +104,7 @@ LABEL_3:
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -117,16 +117,16 @@ LABEL_3:
 
     v7 = v6;
 
-    v8 = [(WADayForecast *)self high];
-    v9 = [(WADayForecast *)v7 high];
-    if (WAObjectIsEqual(v8, v9))
+    high = [(WADayForecast *)self high];
+    high2 = [(WADayForecast *)v7 high];
+    if (WAObjectIsEqual(high, high2))
     {
       v10 = [(WADayForecast *)self low];
       v11 = [(WADayForecast *)v7 low];
       if (WAObjectIsEqual(v10, v11) && ([(WADayForecast *)self percentPrecipitation], v13 = v12, [(WADayForecast *)v7 percentPrecipitation], v13 == v14) && (v15 = [(WADayForecast *)self icon], v15 == [(WADayForecast *)v7 icon]) && (v16 = [(WADayForecast *)self dayNumber], v16 == [(WADayForecast *)v7 dayNumber]) && (v17 = [(WADayForecast *)self dayOfWeek], v17 == [(WADayForecast *)v7 dayOfWeek]))
       {
-        v18 = [(WADayForecast *)self isYesterday];
-        v19 = v18 ^ [(WADayForecast *)v7 isYesterday]^ 1;
+        isYesterday = [(WADayForecast *)self isYesterday];
+        v19 = isYesterday ^ [(WADayForecast *)v7 isYesterday]^ 1;
       }
 
       else
@@ -152,33 +152,33 @@ LABEL_3:
   return v3;
 }
 
-- (void)setHigh:(id)a3
+- (void)setHigh:(id)high
 {
-  v5 = a3;
+  highCopy = high;
   high = self->_high;
   p_high = &self->_high;
-  v8 = v5;
+  v8 = highCopy;
   if (([(WFTemperature *)high isEqualToTemperature:?]& 1) == 0)
   {
-    objc_storeStrong(p_high, a3);
+    objc_storeStrong(p_high, high);
   }
 }
 
-- (void)setLow:(id)a3
+- (void)setLow:(id)low
 {
-  v5 = a3;
+  lowCopy = low;
   low = self->_low;
   p_low = &self->_low;
-  v8 = v5;
+  v8 = lowCopy;
   if (([(WFTemperature *)low isEqualToTemperature:?]& 1) == 0)
   {
-    objc_storeStrong(p_low, a3);
+    objc_storeStrong(p_low, low);
   }
 }
 
-- (int64_t)compareDayNumberToDayForecast:(id)a3
+- (int64_t)compareDayNumberToDayForecast:(id)forecast
 {
-  if ([a3 dayNumber] > self->_dayNumber)
+  if ([forecast dayNumber] > self->_dayNumber)
   {
     return -1;
   }

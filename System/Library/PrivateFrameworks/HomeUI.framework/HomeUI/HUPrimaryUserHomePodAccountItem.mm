@@ -1,28 +1,28 @@
 @interface HUPrimaryUserHomePodAccountItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUPrimaryUserHomePodAccountItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HUPrimaryUserHomePodAccountItem *)self valueSource];
-  v6 = [(HUPrimaryUserHomePodAccountItem *)self mediaProfileContainer];
-  v7 = [v4 initWithValueSource:v5 mediaProfileContainer:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  valueSource = [(HUPrimaryUserHomePodAccountItem *)self valueSource];
+  mediaProfileContainer = [(HUPrimaryUserHomePodAccountItem *)self mediaProfileContainer];
+  v7 = [v4 initWithValueSource:valueSource mediaProfileContainer:mediaProfileContainer];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HUPrimaryUserHomePodAccountItem;
-  v5 = [(HUPrimaryUserHomePodAccountItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HUPrimaryUserHomePodAccountItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__HUPrimaryUserHomePodAccountItem__subclass_updateWithOptions___block_invoke;

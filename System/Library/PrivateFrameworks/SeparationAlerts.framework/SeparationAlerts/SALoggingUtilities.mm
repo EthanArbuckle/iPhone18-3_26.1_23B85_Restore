@@ -1,21 +1,21 @@
 @interface SALoggingUtilities
-+ (id)computeMessagesForEvent:(id)a3;
-+ (id)extractEventFromMessages:(id)a3;
-+ (id)extractUniqueIdentifierFromMessage:(id)a3;
-+ (id)stringToSplit:(id)a3 maxSplitSize:(unint64_t)a4;
-+ (void)logTAEvent:(id)a3;
++ (id)computeMessagesForEvent:(id)event;
++ (id)extractEventFromMessages:(id)messages;
++ (id)extractUniqueIdentifierFromMessage:(id)message;
++ (id)stringToSplit:(id)split maxSplitSize:(unint64_t)size;
++ (void)logTAEvent:(id)event;
 @end
 
 @implementation SALoggingUtilities
 
-+ (void)logTAEvent:(id)a3
++ (void)logTAEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [SALoggingUtilities computeMessagesForEvent:a3];
+  v3 = [SALoggingUtilities computeMessagesForEvent:event];
   v4 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v4)
   {
@@ -53,12 +53,12 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)computeMessagesForEvent:(id)a3
++ (id)computeMessagesForEvent:(id)event
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (!v3)
+  if (!eventCopy)
   {
 LABEL_15:
     v21 = v4;
@@ -67,7 +67,7 @@ LABEL_15:
 
   v5 = objc_autoreleasePoolPush();
   v30 = 0;
-  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v30];
+  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:eventCopy requiringSecureCoding:1 error:&v30];
   v7 = v30;
   v8 = [v6 base64EncodedStringWithOptions:32];
   v9 = v8;
@@ -139,13 +139,13 @@ LABEL_16:
   return v4;
 }
 
-+ (id)stringToSplit:(id)a3 maxSplitSize:(unint64_t)a4
++ (id)stringToSplit:(id)split maxSplitSize:(unint64_t)size
 {
-  v5 = a3;
+  splitCopy = split;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v5 && a4 && ([v5 isEqual:&stru_287709218] & 1) == 0)
+  if (splitCopy && size && ([splitCopy isEqual:&stru_287709218] & 1) == 0)
   {
-    if ([v5 length] <= a4)
+    if ([splitCopy length] <= size)
     {
       v7 = 0;
     }
@@ -155,27 +155,27 @@ LABEL_16:
       v7 = 0;
       do
       {
-        v8 = [v5 substringWithRange:{v7, a4}];
+        v8 = [splitCopy substringWithRange:{v7, size}];
         [v6 addObject:v8];
 
-        v7 += a4;
+        v7 += size;
       }
 
-      while (a4 + v7 < [v5 length]);
+      while (size + v7 < [splitCopy length]);
     }
 
-    v9 = [v5 substringWithRange:{v7, objc_msgSend(v5, "length") - objc_msgSend(v6, "count") * a4}];
+    v9 = [splitCopy substringWithRange:{v7, objc_msgSend(splitCopy, "length") - objc_msgSend(v6, "count") * size}];
     [v6 addObject:v9];
   }
 
   return v6;
 }
 
-+ (id)extractUniqueIdentifierFromMessage:(id)a3
++ (id)extractUniqueIdentifierFromMessage:(id)message
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] < 0x19)
+  messageCopy = message;
+  if ([messageCopy length] < 0x19)
   {
     v6 = 0;
   }
@@ -184,7 +184,7 @@ LABEL_16:
   {
     v9[0] = 0;
     v9[1] = 0;
-    v4 = [v3 substringWithRange:{0, 24}];
+    v4 = [messageCopy substringWithRange:{0, 24}];
     v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v4 options:1];
     [v5 getBytes:v9 length:16];
     v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v9];
@@ -195,16 +195,16 @@ LABEL_16:
   return v6;
 }
 
-+ (id)extractEventFromMessages:(id)a3
++ (id)extractEventFromMessages:(id)messages
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v28 count:16];
   if (v6)
   {

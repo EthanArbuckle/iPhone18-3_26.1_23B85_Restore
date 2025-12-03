@@ -1,43 +1,43 @@
 @interface HDCodableOriginalSignedClinicalDataRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addType:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasLastModifiedDate:(BOOL)a3;
-- (void)setHasReceivedDate:(BOOL)a3;
-- (void)setHasSignatureStatus:(BOOL)a3;
-- (void)setHasSourceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addType:(id)type;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasLastModifiedDate:(BOOL)date;
+- (void)setHasReceivedDate:(BOOL)date;
+- (void)setHasSignatureStatus:(BOOL)status;
+- (void)setHasSourceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableOriginalSignedClinicalDataRecord
 
-- (void)addType:(id)a3
+- (void)addType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   types = self->_types;
-  v8 = v4;
+  v8 = typeCopy;
   if (!types)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_types;
     self->_types = v6;
 
-    v4 = v8;
+    typeCopy = v8;
     types = self->_types;
   }
 
-  [(NSMutableArray *)types addObject:v4];
+  [(NSMutableArray *)types addObject:typeCopy];
 }
 
-- (void)setHasReceivedDate:(BOOL)a3
+- (void)setHasReceivedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSignatureStatus:(BOOL)a3
+- (void)setHasSignatureStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLastModifiedDate:(BOOL)a3
+- (void)setHasLastModifiedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 32;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSourceType:(BOOL)a3
+- (void)setHasSourceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -116,106 +116,106 @@
   v8.receiver = self;
   v8.super_class = HDCodableOriginalSignedClinicalDataRecord;
   v4 = [(HDCodableOriginalSignedClinicalDataRecord *)&v8 description];
-  v5 = [(HDCodableOriginalSignedClinicalDataRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableOriginalSignedClinicalDataRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   messageVersion = self->_messageVersion;
   if (messageVersion)
   {
-    v5 = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"messageVersion"];
+    dictionaryRepresentation = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"messageVersion"];
   }
 
   syncIdentifier = self->_syncIdentifier;
   if (syncIdentifier)
   {
-    [v3 setObject:syncIdentifier forKey:@"syncIdentifier"];
+    [dictionary setObject:syncIdentifier forKey:@"syncIdentifier"];
   }
 
   gatewayExternalID = self->_gatewayExternalID;
   if (gatewayExternalID)
   {
-    [v3 setObject:gatewayExternalID forKey:@"gatewayExternalID"];
+    [dictionary setObject:gatewayExternalID forKey:@"gatewayExternalID"];
   }
 
   issuerIdentifier = self->_issuerIdentifier;
   if (issuerIdentifier)
   {
-    [v3 setObject:issuerIdentifier forKey:@"issuerIdentifier"];
+    [dictionary setObject:issuerIdentifier forKey:@"issuerIdentifier"];
   }
 
   sourceURL = self->_sourceURL;
   if (sourceURL)
   {
-    [v3 setObject:sourceURL forKey:@"sourceURL"];
+    [dictionary setObject:sourceURL forKey:@"sourceURL"];
   }
 
   rawContent = self->_rawContent;
   if (rawContent)
   {
-    [v3 setObject:rawContent forKey:@"rawContent"];
+    [dictionary setObject:rawContent forKey:@"rawContent"];
   }
 
   types = self->_types;
   if (types)
   {
-    [v3 setObject:types forKey:@"type"];
+    [dictionary setObject:types forKey:@"type"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v13 = [(HDCodableMetadataDictionary *)metadata dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"metadata"];
+    dictionaryRepresentation2 = [(HDCodableMetadataDictionary *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"metadata"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_receivedDate];
-    [v3 setObject:v14 forKey:@"receivedDate"];
+    [dictionary setObject:v14 forKey:@"receivedDate"];
   }
 
   receivedDateTimeZoneName = self->_receivedDateTimeZoneName;
   if (receivedDateTimeZoneName)
   {
-    [v3 setObject:receivedDateTimeZoneName forKey:@"receivedDateTimeZoneName"];
+    [dictionary setObject:receivedDateTimeZoneName forKey:@"receivedDateTimeZoneName"];
   }
 
   if (*&self->_has)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_firstSeenDate];
-    [v3 setObject:v16 forKey:@"firstSeenDate"];
+    [dictionary setObject:v16 forKey:@"firstSeenDate"];
   }
 
   firstSeenDateTimeZoneName = self->_firstSeenDateTimeZoneName;
   if (firstSeenDateTimeZoneName)
   {
-    [v3 setObject:firstSeenDateTimeZoneName forKey:@"firstSeenDateTimeZoneName"];
+    [dictionary setObject:firstSeenDateTimeZoneName forKey:@"firstSeenDateTimeZoneName"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_signatureStatus];
-    [v3 setObject:v18 forKey:@"signatureStatus"];
+    [dictionary setObject:v18 forKey:@"signatureStatus"];
   }
 
   uniquenessChecksum = self->_uniquenessChecksum;
   if (uniquenessChecksum)
   {
-    [v3 setObject:uniquenessChecksum forKey:@"uniquenessChecksum"];
+    [dictionary setObject:uniquenessChecksum forKey:@"uniquenessChecksum"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v25 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastModifiedDate];
-    [v3 setObject:v25 forKey:@"lastModifiedDate"];
+    [dictionary setObject:v25 forKey:@"lastModifiedDate"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -236,30 +236,30 @@ LABEL_31:
   }
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:self->_deleted];
-  [v3 setObject:v26 forKey:@"deleted"];
+  [dictionary setObject:v26 forKey:@"deleted"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_32:
     v21 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sourceType];
-    [v3 setObject:v21 forKey:@"sourceType"];
+    [dictionary setObject:v21 forKey:@"sourceType"];
   }
 
 LABEL_33:
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v23 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"syncIdentity"];
+    dictionaryRepresentation3 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"syncIdentity"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_messageVersion)
   {
     PBDataWriterWriteSubmessage();
@@ -398,70 +398,70 @@ LABEL_38:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_messageVersion)
   {
-    [v10 setMessageVersion:?];
+    [toCopy setMessageVersion:?];
   }
 
   if (self->_syncIdentifier)
   {
-    [v10 setSyncIdentifier:?];
+    [toCopy setSyncIdentifier:?];
   }
 
   if (self->_gatewayExternalID)
   {
-    [v10 setGatewayExternalID:?];
+    [toCopy setGatewayExternalID:?];
   }
 
   if (self->_issuerIdentifier)
   {
-    [v10 setIssuerIdentifier:?];
+    [toCopy setIssuerIdentifier:?];
   }
 
   if (self->_sourceURL)
   {
-    [v10 setSourceURL:?];
+    [toCopy setSourceURL:?];
   }
 
   if (self->_rawContent)
   {
-    [v10 setRawContent:?];
+    [toCopy setRawContent:?];
   }
 
   if ([(HDCodableOriginalSignedClinicalDataRecord *)self typesCount])
   {
-    [v10 clearTypes];
-    v4 = [(HDCodableOriginalSignedClinicalDataRecord *)self typesCount];
-    if (v4)
+    [toCopy clearTypes];
+    typesCount = [(HDCodableOriginalSignedClinicalDataRecord *)self typesCount];
+    if (typesCount)
     {
-      v5 = v4;
+      v5 = typesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableOriginalSignedClinicalDataRecord *)self typeAtIndex:i];
-        [v10 addType:v7];
+        [toCopy addType:v7];
       }
     }
   }
 
   if (self->_metadata)
   {
-    [v10 setMetadata:?];
+    [toCopy setMetadata:?];
   }
 
-  v8 = v10;
+  v8 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
-    *(v10 + 3) = *&self->_receivedDate;
-    *(v10 + 148) |= 4u;
+    *(toCopy + 3) = *&self->_receivedDate;
+    *(toCopy + 148) |= 4u;
   }
 
   if (self->_receivedDateTimeZoneName)
   {
-    [v10 setReceivedDateTimeZoneName:?];
-    v8 = v10;
+    [toCopy setReceivedDateTimeZoneName:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -472,8 +472,8 @@ LABEL_38:
 
   if (self->_firstSeenDateTimeZoneName)
   {
-    [v10 setFirstSeenDateTimeZoneName:?];
-    v8 = v10;
+    [toCopy setFirstSeenDateTimeZoneName:?];
+    v8 = toCopy;
   }
 
   if ((*&self->_has & 8) != 0)
@@ -484,8 +484,8 @@ LABEL_38:
 
   if (self->_uniquenessChecksum)
   {
-    [v10 setUniquenessChecksum:?];
-    v8 = v10;
+    [toCopy setUniquenessChecksum:?];
+    v8 = toCopy;
   }
 
   has = self->_has;
@@ -523,36 +523,36 @@ LABEL_34:
 LABEL_35:
   if (self->_syncIdentity)
   {
-    [v10 setSyncIdentity:?];
-    v8 = v10;
+    [toCopy setSyncIdentity:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
-  v8 = [(NSData *)self->_syncIdentifier copyWithZone:a3];
+  v8 = [(NSData *)self->_syncIdentifier copyWithZone:zone];
   v9 = *(v5 + 112);
   *(v5 + 112) = v8;
 
-  v10 = [(NSString *)self->_gatewayExternalID copyWithZone:a3];
+  v10 = [(NSString *)self->_gatewayExternalID copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_issuerIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_issuerIdentifier copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(NSString *)self->_sourceURL copyWithZone:a3];
+  v14 = [(NSString *)self->_sourceURL copyWithZone:zone];
   v15 = *(v5 + 104);
   *(v5 + 104) = v14;
 
-  v16 = [(NSData *)self->_rawContent copyWithZone:a3];
+  v16 = [(NSData *)self->_rawContent copyWithZone:zone];
   v17 = *(v5 + 88);
   *(v5 + 88) = v16;
 
@@ -575,7 +575,7 @@ LABEL_35:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v37 + 1) + 8 * i) copyWithZone:{a3, v37}];
+        v23 = [*(*(&v37 + 1) + 8 * i) copyWithZone:{zone, v37}];
         [v5 addType:v23];
       }
 
@@ -585,7 +585,7 @@ LABEL_35:
     while (v20);
   }
 
-  v24 = [(HDCodableMetadataDictionary *)self->_metadata copyWithZone:a3];
+  v24 = [(HDCodableMetadataDictionary *)self->_metadata copyWithZone:zone];
   v25 = *(v5 + 80);
   *(v5 + 80) = v24;
 
@@ -595,7 +595,7 @@ LABEL_35:
     *(v5 + 148) |= 4u;
   }
 
-  v26 = [(NSString *)self->_receivedDateTimeZoneName copyWithZone:a3, v37];
+  v26 = [(NSString *)self->_receivedDateTimeZoneName copyWithZone:zone, v37];
   v27 = *(v5 + 96);
   *(v5 + 96) = v26;
 
@@ -605,7 +605,7 @@ LABEL_35:
     *(v5 + 148) |= 1u;
   }
 
-  v28 = [(NSString *)self->_firstSeenDateTimeZoneName copyWithZone:a3];
+  v28 = [(NSString *)self->_firstSeenDateTimeZoneName copyWithZone:zone];
   v29 = *(v5 + 48);
   *(v5 + 48) = v28;
 
@@ -615,7 +615,7 @@ LABEL_35:
     *(v5 + 148) |= 8u;
   }
 
-  v30 = [(NSData *)self->_uniquenessChecksum copyWithZone:a3];
+  v30 = [(NSData *)self->_uniquenessChecksum copyWithZone:zone];
   v31 = *(v5 + 136);
   *(v5 + 136) = v30;
 
@@ -655,7 +655,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  v33 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v33 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v34 = *(v5 + 120);
   *(v5 + 120) = v33;
 
@@ -663,16 +663,16 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
   messageVersion = self->_messageVersion;
-  if (messageVersion | *(v4 + 9))
+  if (messageVersion | *(equalCopy + 9))
   {
     if (![(HDCodableMessageVersion *)messageVersion isEqual:?])
     {
@@ -681,7 +681,7 @@ LABEL_18:
   }
 
   syncIdentifier = self->_syncIdentifier;
-  if (syncIdentifier | *(v4 + 14))
+  if (syncIdentifier | *(equalCopy + 14))
   {
     if (![(NSData *)syncIdentifier isEqual:?])
     {
@@ -690,7 +690,7 @@ LABEL_18:
   }
 
   gatewayExternalID = self->_gatewayExternalID;
-  if (gatewayExternalID | *(v4 + 7))
+  if (gatewayExternalID | *(equalCopy + 7))
   {
     if (![(NSString *)gatewayExternalID isEqual:?])
     {
@@ -699,7 +699,7 @@ LABEL_18:
   }
 
   issuerIdentifier = self->_issuerIdentifier;
-  if (issuerIdentifier | *(v4 + 8))
+  if (issuerIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)issuerIdentifier isEqual:?])
     {
@@ -708,7 +708,7 @@ LABEL_18:
   }
 
   sourceURL = self->_sourceURL;
-  if (sourceURL | *(v4 + 13))
+  if (sourceURL | *(equalCopy + 13))
   {
     if (![(NSString *)sourceURL isEqual:?])
     {
@@ -717,7 +717,7 @@ LABEL_18:
   }
 
   rawContent = self->_rawContent;
-  if (rawContent | *(v4 + 11))
+  if (rawContent | *(equalCopy + 11))
   {
     if (![(NSData *)rawContent isEqual:?])
     {
@@ -726,7 +726,7 @@ LABEL_18:
   }
 
   types = self->_types;
-  if (types | *(v4 + 16))
+  if (types | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)types isEqual:?])
     {
@@ -735,7 +735,7 @@ LABEL_18:
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 10))
+  if (metadata | *(equalCopy + 10))
   {
     if (![(HDCodableMetadataDictionary *)metadata isEqual:?])
     {
@@ -744,22 +744,22 @@ LABEL_18:
   }
 
   has = self->_has;
-  v14 = *(v4 + 148);
+  v14 = *(equalCopy + 148);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 148) & 4) == 0 || self->_receivedDate != *(v4 + 3))
+    if ((*(equalCopy + 148) & 4) == 0 || self->_receivedDate != *(equalCopy + 3))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 148) & 4) != 0)
+  else if ((*(equalCopy + 148) & 4) != 0)
   {
     goto LABEL_61;
   }
 
   receivedDateTimeZoneName = self->_receivedDateTimeZoneName;
-  if (receivedDateTimeZoneName | *(v4 + 12))
+  if (receivedDateTimeZoneName | *(equalCopy + 12))
   {
     if (![(NSString *)receivedDateTimeZoneName isEqual:?])
     {
@@ -767,12 +767,12 @@ LABEL_18:
     }
 
     has = self->_has;
-    v14 = *(v4 + 148);
+    v14 = *(equalCopy + 148);
   }
 
   if (has)
   {
-    if ((v14 & 1) == 0 || self->_firstSeenDate != *(v4 + 1))
+    if ((v14 & 1) == 0 || self->_firstSeenDate != *(equalCopy + 1))
     {
       goto LABEL_61;
     }
@@ -784,7 +784,7 @@ LABEL_18:
   }
 
   firstSeenDateTimeZoneName = self->_firstSeenDateTimeZoneName;
-  if (firstSeenDateTimeZoneName | *(v4 + 6))
+  if (firstSeenDateTimeZoneName | *(equalCopy + 6))
   {
     if (![(NSString *)firstSeenDateTimeZoneName isEqual:?])
     {
@@ -792,12 +792,12 @@ LABEL_18:
     }
 
     has = self->_has;
-    v14 = *(v4 + 148);
+    v14 = *(equalCopy + 148);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_signatureStatus != *(v4 + 4))
+    if ((v14 & 8) == 0 || self->_signatureStatus != *(equalCopy + 4))
     {
       goto LABEL_61;
     }
@@ -809,7 +809,7 @@ LABEL_18:
   }
 
   uniquenessChecksum = self->_uniquenessChecksum;
-  if (uniquenessChecksum | *(v4 + 17))
+  if (uniquenessChecksum | *(equalCopy + 17))
   {
     if (![(NSData *)uniquenessChecksum isEqual:?])
     {
@@ -817,12 +817,12 @@ LABEL_18:
     }
 
     has = self->_has;
-    v14 = *(v4 + 148);
+    v14 = *(equalCopy + 148);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v14 & 2) == 0 || self->_lastModifiedDate != *(v4 + 2))
+    if ((v14 & 2) == 0 || self->_lastModifiedDate != *(equalCopy + 2))
     {
       goto LABEL_61;
     }
@@ -850,16 +850,16 @@ LABEL_61:
     goto LABEL_61;
   }
 
-  v18 = *(v4 + 144);
+  v18 = *(equalCopy + 144);
   if (self->_deleted)
   {
-    if ((*(v4 + 144) & 1) == 0)
+    if ((*(equalCopy + 144) & 1) == 0)
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 144))
+  else if (*(equalCopy + 144))
   {
     goto LABEL_61;
   }
@@ -867,7 +867,7 @@ LABEL_61:
 LABEL_49:
   if ((has & 0x10) != 0)
   {
-    if ((v14 & 0x10) == 0 || self->_sourceType != *(v4 + 5))
+    if ((v14 & 0x10) == 0 || self->_sourceType != *(equalCopy + 5))
     {
       goto LABEL_61;
     }
@@ -879,7 +879,7 @@ LABEL_49:
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 15))
+  if (syncIdentity | *(equalCopy + 15))
   {
     v20 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -1040,12 +1040,12 @@ LABEL_30:
   return v34 ^ v35 ^ v33 ^ v32 ^ v31 ^ v30 ^ v3 ^ v4 ^ v7 ^ v11 ^ v14 ^ v18 ^ v19 ^ v20 ^ v23 ^ v27 ^ v28 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   messageVersion = self->_messageVersion;
-  v6 = *(v4 + 9);
+  v6 = *(fromCopy + 9);
   if (messageVersion)
   {
     if (v6)
@@ -1059,27 +1059,27 @@ LABEL_30:
     [(HDCodableOriginalSignedClinicalDataRecord *)self setMessageVersion:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setSyncIdentifier:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setGatewayExternalID:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setIssuerIdentifier:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setSourceURL:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setRawContent:?];
   }
@@ -1088,7 +1088,7 @@ LABEL_30:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = *(v4 + 16);
+  v7 = *(fromCopy + 16);
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -1113,7 +1113,7 @@ LABEL_30:
   }
 
   metadata = self->_metadata;
-  v13 = *(v4 + 10);
+  v13 = *(fromCopy + 10);
   if (metadata)
   {
     if (v13)
@@ -1127,45 +1127,45 @@ LABEL_30:
     [(HDCodableOriginalSignedClinicalDataRecord *)self setMetadata:?];
   }
 
-  if ((*(v4 + 148) & 4) != 0)
+  if ((*(fromCopy + 148) & 4) != 0)
   {
-    self->_receivedDate = *(v4 + 3);
+    self->_receivedDate = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setReceivedDateTimeZoneName:?];
   }
 
-  if (*(v4 + 148))
+  if (*(fromCopy + 148))
   {
-    self->_firstSeenDate = *(v4 + 1);
+    self->_firstSeenDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setFirstSeenDateTimeZoneName:?];
   }
 
-  if ((*(v4 + 148) & 8) != 0)
+  if ((*(fromCopy + 148) & 8) != 0)
   {
-    self->_signatureStatus = *(v4 + 4);
+    self->_signatureStatus = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(HDCodableOriginalSignedClinicalDataRecord *)self setUniquenessChecksum:?];
   }
 
-  v14 = *(v4 + 148);
+  v14 = *(fromCopy + 148);
   if ((v14 & 2) != 0)
   {
-    self->_lastModifiedDate = *(v4 + 2);
+    self->_lastModifiedDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v14 = *(v4 + 148);
+    v14 = *(fromCopy + 148);
     if ((v14 & 0x20) == 0)
     {
 LABEL_42:
@@ -1178,23 +1178,23 @@ LABEL_42:
     }
   }
 
-  else if ((*(v4 + 148) & 0x20) == 0)
+  else if ((*(fromCopy + 148) & 0x20) == 0)
   {
     goto LABEL_42;
   }
 
-  self->_deleted = *(v4 + 144);
+  self->_deleted = *(fromCopy + 144);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 148) & 0x10) != 0)
+  if ((*(fromCopy + 148) & 0x10) != 0)
   {
 LABEL_43:
-    self->_sourceType = *(v4 + 5);
+    self->_sourceType = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_44:
   syncIdentity = self->_syncIdentity;
-  v16 = *(v4 + 15);
+  v16 = *(fromCopy + 15);
   if (syncIdentity)
   {
     if (v16)

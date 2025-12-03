@@ -1,21 +1,21 @@
 @interface AVUnifiedPlayerPlaybackControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVUnifiedPlayerPlaybackControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_playbackMetadataViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVUnifiedPlayerPlaybackMetadataViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"overlayViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVxOverlayViewController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVxCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceVariable:@"_transportBar" withType:"UIView<AVTransportControlsProviding>"];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceVariable:@"_infoPanelViewController" withType:"AVInfoPanelViewController"];
-  [v3 validateClass:@"AVInfoMenuController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_playbackMetadataViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVUnifiedPlayerPlaybackMetadataViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"overlayViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVxOverlayViewController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVxCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceVariable:@"_transportBar" withType:"UIView<AVTransportControlsProviding>"];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceVariable:@"_infoPanelViewController" withType:"AVInfoPanelViewController"];
+  [validationsCopy validateClass:@"AVInfoMenuController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

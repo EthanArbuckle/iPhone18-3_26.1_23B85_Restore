@@ -1,52 +1,52 @@
 @interface GTShaderProfilerStringCache
 - (GTShaderProfilerStringCache)init;
-- (GTShaderProfilerStringCache)initWithCoder:(id)a3;
-- (id)stringFromIndex:(unint64_t)a3;
-- (unint64_t)addString:(id)a3;
+- (GTShaderProfilerStringCache)initWithCoder:(id)coder;
+- (id)stringFromIndex:(unint64_t)index;
+- (unint64_t)addString:(id)string;
 @end
 
 @implementation GTShaderProfilerStringCache
 
-- (unint64_t)addString:(id)a3
+- (unint64_t)addString:(id)string
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_stringDict objectForKey:v4];
+  stringCopy = string;
+  v5 = [(NSMutableDictionary *)self->_stringDict objectForKey:stringCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_strings count];
-    [(NSMutableArray *)self->_strings addObject:v4];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
-    [(NSMutableDictionary *)self->_stringDict setObject:v8 forKeyedSubscript:v4];
+    unsignedIntegerValue = [(NSMutableArray *)self->_strings count];
+    [(NSMutableArray *)self->_strings addObject:stringCopy];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    [(NSMutableDictionary *)self->_stringDict setObject:v8 forKeyedSubscript:stringCopy];
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (id)stringFromIndex:(unint64_t)a3
+- (id)stringFromIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_strings count]<= a3)
+  if ([(NSMutableArray *)self->_strings count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-- (GTShaderProfilerStringCache)initWithCoder:(id)a3
+- (GTShaderProfilerStringCache)initWithCoder:(id)coder
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = GTShaderProfilerStringCache;
   v5 = [(GTShaderProfilerStringCache *)&v18 init];
@@ -58,7 +58,7 @@
     v19[2] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"strings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"strings"];
     strings = v5->_strings;
     v5->_strings = v9;
 

@@ -1,7 +1,7 @@
 @interface SettingsApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC11SettingsApp27SettingsApplicationDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation SettingsApplicationDelegate
@@ -15,27 +15,27 @@
   return [(SettingsApplicationDelegate *)&v4 init];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1000779E4();
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = sub_100008A30();
 
   return v8 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
-  v7 = [objc_allocWithZone(UISceneConfiguration) initWithName:0 sessionRole:v6];
+  sessionCopy = session;
+  role = [sessionCopy role];
+  v7 = [objc_allocWithZone(UISceneConfiguration) initWithName:0 sessionRole:role];
 
   type metadata accessor for SettingsAppSceneDelegate();
   [v7 setDelegateClass:swift_getObjCClassFromMetadata()];

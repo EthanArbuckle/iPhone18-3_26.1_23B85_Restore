@@ -1,63 +1,63 @@
 @interface HUAccessoryManager
 + (HUAccessoryManager)sharedInstance;
-- (BOOL)pmeEverywhereSupportedForAddress:(id)a3;
+- (BOOL)pmeEverywhereSupportedForAddress:(id)address;
 - (BOOL)updateBluetoothAvailability;
 - (HUAccessoryManager)init;
 - (NSArray)peripherals;
-- (id)availableAddressesWithCharacteristicSupport:(id)a3;
-- (id)characteristicWithUUID:(id)a3 forPeripheral:(id)a4;
-- (id)identifierFromBluetoothAddress:(id)a3;
-- (int)bluetoothListeningModeFromHearingListeningMode:(unint64_t)a3;
-- (unint64_t)hearingListeningModeFromBluetoothListeningMode:(int)a3;
-- (unint64_t)pseVersionForAddress:(id)a3;
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (id)availableAddressesWithCharacteristicSupport:(id)support;
+- (id)characteristicWithUUID:(id)d forPeripheral:(id)peripheral;
+- (id)identifierFromBluetoothAddress:(id)address;
+- (int)bluetoothListeningModeFromHearingListeningMode:(unint64_t)mode;
+- (unint64_t)hearingListeningModeFromBluetoothListeningMode:(int)mode;
+- (unint64_t)pseVersionForAddress:(id)address;
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)discoverAccessories;
-- (void)enumerateAudioBluetoothDevicesUsingBlock:(id)a3;
-- (void)enumerateAvailableDevicesWithBlock:(id)a3 andCompletion:(id)a4;
-- (void)enumerateAvailablePSEDevicesWithBlock:(id)a3 andCompletion:(id)a4;
-- (void)enumerateConnectedBluetoothDevices:(BOOL)a3 usingBlock:(id)a4 andCompletion:(id)a5;
-- (void)enumerateProductCodesForAddresses:(id)a3 withBlock:(id)a4;
-- (void)getAddressesFromIdentifiers:(id)a3 withCompletion:(id)a4;
-- (void)getAudioOwnershipForAddress:(id)a3 withCompletion:(id)a4;
-- (void)getAvailableAddressesSupportingCharacteristic:(id)a3 withCompletion:(id)a4;
-- (void)getBluetoothState:(id)a3;
-- (void)getCBDeviceForCurrentRouteWithCompletion:(id)a3;
-- (void)getCurrentRouteInformationWithCompletion:(id)a3;
-- (void)getCurrentRouteListeningModeWithCompletion:(id)a3;
-- (void)getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:(id)a3;
-- (void)getHearingProtectionSupportForAddress:(id)a3 withCompletion:(id)a4;
-- (void)getIdentifiersFromAddresses:(id)a3 withCompletion:(id)a4;
-- (void)getPMEEverywhereSupportStateForAddress:(id)a3 withCompletion:(id)a4;
-- (void)getPSEVersionForAddress:(id)a3 withCompletion:(id)a4;
-- (void)getPairedDeviceSupportsHearingProtection:(id)a3;
-- (void)getPairedDeviceSupportsPSE:(id)a3;
-- (void)getProductCodeForAddress:(id)a3 withCompletion:(id)a4;
-- (void)getSSLEnabledForAddress:(id)a3 withCompletion:(id)a4;
-- (void)getSSLSupportStateForAddress:(id)a3 withCompletion:(id)a4;
-- (void)logMessage:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)readValueForCharacteristicUUID:(id)a3;
-- (void)registerAttributeUpdateBlock:(id)a3 withListener:(id)a4;
-- (void)registerBluetoothStateBlock:(id)a3 withListener:(id)a4;
-- (void)registerDiscoveryBlock:(id)a3 withListener:(id)a4;
-- (void)registerLoggingBlock:(id)a3 withListener:(id)a4;
-- (void)registerUpdateBlock:(id)a3 forCharacteristicUUIDs:(id)a4 withListener:(id)a5;
+- (void)enumerateAudioBluetoothDevicesUsingBlock:(id)block;
+- (void)enumerateAvailableDevicesWithBlock:(id)block andCompletion:(id)completion;
+- (void)enumerateAvailablePSEDevicesWithBlock:(id)block andCompletion:(id)completion;
+- (void)enumerateConnectedBluetoothDevices:(BOOL)devices usingBlock:(id)block andCompletion:(id)completion;
+- (void)enumerateProductCodesForAddresses:(id)addresses withBlock:(id)block;
+- (void)getAddressesFromIdentifiers:(id)identifiers withCompletion:(id)completion;
+- (void)getAudioOwnershipForAddress:(id)address withCompletion:(id)completion;
+- (void)getAvailableAddressesSupportingCharacteristic:(id)characteristic withCompletion:(id)completion;
+- (void)getBluetoothState:(id)state;
+- (void)getCBDeviceForCurrentRouteWithCompletion:(id)completion;
+- (void)getCurrentRouteInformationWithCompletion:(id)completion;
+- (void)getCurrentRouteListeningModeWithCompletion:(id)completion;
+- (void)getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:(id)completion;
+- (void)getHearingProtectionSupportForAddress:(id)address withCompletion:(id)completion;
+- (void)getIdentifiersFromAddresses:(id)addresses withCompletion:(id)completion;
+- (void)getPMEEverywhereSupportStateForAddress:(id)address withCompletion:(id)completion;
+- (void)getPSEVersionForAddress:(id)address withCompletion:(id)completion;
+- (void)getPairedDeviceSupportsHearingProtection:(id)protection;
+- (void)getPairedDeviceSupportsPSE:(id)e;
+- (void)getProductCodeForAddress:(id)address withCompletion:(id)completion;
+- (void)getSSLEnabledForAddress:(id)address withCompletion:(id)completion;
+- (void)getSSLSupportStateForAddress:(id)address withCompletion:(id)completion;
+- (void)logMessage:(id)message;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)readValueForCharacteristicUUID:(id)d;
+- (void)registerAttributeUpdateBlock:(id)block withListener:(id)listener;
+- (void)registerBluetoothStateBlock:(id)block withListener:(id)listener;
+- (void)registerDiscoveryBlock:(id)block withListener:(id)listener;
+- (void)registerLoggingBlock:(id)block withListener:(id)listener;
+- (void)registerUpdateBlock:(id)block forCharacteristicUUIDs:(id)ds withListener:(id)listener;
 - (void)removeDiscoveredAccessories;
 - (void)resetAADeviceManager;
-- (void)setCurrentRouteListeningMode:(unint64_t)a3;
-- (void)setNotify:(BOOL)a3 forCharacteristicUUIDs:(id)a4;
-- (void)setPeripherals:(id)a3;
-- (void)setSSLEnabled:(BOOL)a3 forAddress:(id)a4;
+- (void)setCurrentRouteListeningMode:(unint64_t)mode;
+- (void)setNotify:(BOOL)notify forCharacteristicUUIDs:(id)ds;
+- (void)setPeripherals:(id)peripherals;
+- (void)setSSLEnabled:(BOOL)enabled forAddress:(id)address;
 - (void)setupAADeviceManager;
 - (void)setupBluetoothController;
-- (void)turnBluetoothOnWithCompletion:(id)a3;
-- (void)updateNotify:(BOOL)a3 forPeripheral:(id)a4 withCharacteristicUUIDs:(id)a5;
-- (void)writeValue:(id)a3 forCharacteristicUUID:(id)a4 andAddress:(id)a5;
+- (void)turnBluetoothOnWithCompletion:(id)completion;
+- (void)updateNotify:(BOOL)notify forPeripheral:(id)peripheral withCharacteristicUUIDs:(id)ds;
+- (void)writeValue:(id)value forCharacteristicUUID:(id)d andAddress:(id)address;
 @end
 
 @implementation HUAccessoryManager
@@ -71,9 +71,9 @@
   if (v2)
   {
     v2->_syncLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E69A4560] bluetoothManagerQueue];
+    bluetoothManagerQueue = [MEMORY[0x1E69A4560] bluetoothManagerQueue];
     bluetoothCentralQueue = v3->_bluetoothCentralQueue;
-    v3->_bluetoothCentralQueue = v4;
+    v3->_bluetoothCentralQueue = bluetoothManagerQueue;
 
     v6 = objc_alloc(MEMORY[0x1E695D258]);
     v7 = v3->_bluetoothCentralQueue;
@@ -92,29 +92,29 @@
     v14 = v3;
     v29 = v14;
     dispatch_async(v13, block);
-    v15 = [MEMORY[0x1E695DF70] array];
-    [v14 setRegisteredCharacteristics:v15];
+    array = [MEMORY[0x1E695DF70] array];
+    [v14 setRegisteredCharacteristics:array];
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setLoggingUpdates:v16];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setLoggingUpdates:dictionary];
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setUpdateUpdates:v17];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setUpdateUpdates:dictionary2];
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setDiscoveryUpdates:v18];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setDiscoveryUpdates:dictionary3];
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setBluetoothStateUpdates:v19];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setBluetoothStateUpdates:dictionary4];
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setAudioOwnershipByAddress:v20];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setAudioOwnershipByAddress:dictionary5];
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setAttributeUpdateUpdates:v21];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setAttributeUpdateUpdates:dictionary6];
 
-    v22 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setAaAvailableDevices:v22];
+    dictionary7 = [MEMORY[0x1E695DF90] dictionary];
+    [v14 setAaAvailableDevices:dictionary7];
 
     [v14 setupBluetoothController];
     objc_initWeak(&location, v14);
@@ -152,18 +152,18 @@ uint64_t __36__HUAccessoryManager_sharedInstance__block_invoke()
 
 - (BOOL)updateBluetoothAvailability
 {
-  v3 = [(CBController *)self->_bluetoothController bluetoothState];
+  bluetoothState = [(CBController *)self->_bluetoothController bluetoothState];
   bluetoothAvailable = self->_bluetoothAvailable;
-  v5 = v3 == 5;
+  v5 = bluetoothState == 5;
   self->_bluetoothAvailable = v5;
-  if (v3 > 0xA)
+  if (bluetoothState > 0xA)
   {
     v6 = "?";
   }
 
   else
   {
-    v6 = off_1E85CB708[v3];
+    v6 = off_1E85CB708[bluetoothState];
   }
 
   [(HUAccessoryManager *)self logMessage:@"Updating BT state %s", v6];
@@ -219,28 +219,28 @@ uint64_t __36__HUAccessoryManager_sharedInstance__block_invoke()
 
 - (NSArray)peripherals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_peripherals copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_peripherals copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)removeDiscoveredAccessories
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HUAccessoryManager *)self peripherals];
+  array = [MEMORY[0x1E695DF70] array];
+  peripherals = [(HUAccessoryManager *)self peripherals];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__HUAccessoryManager_removeDiscoveredAccessories__block_invoke;
   v10[3] = &unk_1E85CB460;
-  v5 = v3;
+  v5 = array;
   v11 = v5;
-  [v4 enumerateObjectsUsingBlock:v10];
+  [peripherals enumerateObjectsUsingBlock:v10];
 
-  v6 = [MEMORY[0x1E695DEC8] array];
-  [(HUAccessoryManager *)self setPeripherals:v6];
+  array2 = [MEMORY[0x1E695DEC8] array];
+  [(HUAccessoryManager *)self setPeripherals:array2];
 
   v8[0] = 0;
   v8[1] = v8;
@@ -432,11 +432,11 @@ void __26__HUAccessoryManager_init__block_invoke_2(uint64_t a1)
   [WeakRetained resetAADeviceManager];
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v22 = &v23;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v4 locale:0 arguments:&v23];
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:messageCopy locale:0 arguments:&v23];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -447,7 +447,7 @@ void __26__HUAccessoryManager_init__block_invoke_2(uint64_t a1)
   v11 = 3221225472;
   v12 = __33__HUAccessoryManager_logMessage___block_invoke;
   v13 = &unk_1E85CAF38;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   AX_PERFORM_WITH_LOCK();
   v6 = v17[5];
@@ -483,15 +483,15 @@ void __33__HUAccessoryManager_logMessage___block_invoke_2(uint64_t a1, int a2, v
   }
 }
 
-- (void)registerLoggingBlock:(id)a3 withListener:(id)a4
+- (void)registerLoggingBlock:(id)block withListener:(id)listener
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  listenerCopy = listener;
+  v7 = listenerCopy;
+  if (listenerCopy)
   {
-    v8 = v6;
-    v9 = v5;
+    v8 = listenerCopy;
+    v9 = blockCopy;
     AX_PERFORM_WITH_LOCK();
   }
 }
@@ -523,22 +523,22 @@ void __56__HUAccessoryManager_registerLoggingBlock_withListener___block_invoke(u
   }
 }
 
-- (void)updateNotify:(BOOL)a3 forPeripheral:(id)a4 withCharacteristicUUIDs:(id)a5
+- (void)updateNotify:(BOOL)notify forPeripheral:(id)peripheral withCharacteristicUUIDs:(id)ds
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 services];
+  peripheralCopy = peripheral;
+  dsCopy = ds;
+  services = [peripheralCopy services];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__HUAccessoryManager_updateNotify_forPeripheral_withCharacteristicUUIDs___block_invoke;
   v13[3] = &unk_1E85CAFB0;
-  v14 = v9;
-  v15 = self;
-  v17 = a3;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  [v10 enumerateObjectsUsingBlock:v13];
+  v14 = dsCopy;
+  selfCopy = self;
+  notifyCopy = notify;
+  v16 = peripheralCopy;
+  v11 = peripheralCopy;
+  v12 = dsCopy;
+  [services enumerateObjectsUsingBlock:v13];
 }
 
 void __73__HUAccessoryManager_updateNotify_forPeripheral_withCharacteristicUUIDs___block_invoke(uint64_t a1, void *a2)
@@ -573,19 +573,19 @@ void __73__HUAccessoryManager_updateNotify_forPeripheral_withCharacteristicUUIDs
   }
 }
 
-- (void)setNotify:(BOOL)a3 forCharacteristicUUIDs:(id)a4
+- (void)setNotify:(BOOL)notify forCharacteristicUUIDs:(id)ds
 {
-  v6 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__HUAccessoryManager_setNotify_forCharacteristicUUIDs___block_invoke;
     block[3] = &unk_1E85CB028;
-    v11 = a3;
-    v9 = v6;
-    v10 = self;
+    notifyCopy = notify;
+    v9 = dsCopy;
+    selfCopy = self;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -634,15 +634,15 @@ void __55__HUAccessoryManager_setNotify_forCharacteristicUUIDs___block_invoke_2(
   }
 }
 
-- (void)registerUpdateBlock:(id)a3 forCharacteristicUUIDs:(id)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forCharacteristicUUIDs:(id)ds withListener:(id)listener
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  blockCopy = block;
+  listenerCopy = listener;
+  if (listenerCopy)
   {
-    [(HUAccessoryManager *)self setNotify:v8 != 0 forCharacteristicUUIDs:a4];
-    v10 = v9;
-    v11 = v8;
+    [(HUAccessoryManager *)self setNotify:blockCopy != 0 forCharacteristicUUIDs:ds];
+    v10 = listenerCopy;
+    v11 = blockCopy;
     AX_PERFORM_WITH_LOCK();
   }
 }
@@ -674,15 +674,15 @@ void __78__HUAccessoryManager_registerUpdateBlock_forCharacteristicUUIDs_withLis
   }
 }
 
-- (void)registerAttributeUpdateBlock:(id)a3 withListener:(id)a4
+- (void)registerAttributeUpdateBlock:(id)block withListener:(id)listener
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  listenerCopy = listener;
+  v7 = listenerCopy;
+  if (listenerCopy)
   {
-    v8 = v6;
-    v9 = v5;
+    v8 = listenerCopy;
+    v9 = blockCopy;
     AX_PERFORM_WITH_LOCK();
   }
 }
@@ -714,15 +714,15 @@ void __64__HUAccessoryManager_registerAttributeUpdateBlock_withListener___block_
   }
 }
 
-- (void)registerDiscoveryBlock:(id)a3 withListener:(id)a4
+- (void)registerDiscoveryBlock:(id)block withListener:(id)listener
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  listenerCopy = listener;
+  v7 = listenerCopy;
+  if (listenerCopy)
   {
-    v8 = v6;
-    v9 = v5;
+    v8 = listenerCopy;
+    v9 = blockCopy;
     AX_PERFORM_WITH_LOCK();
   }
 }
@@ -754,15 +754,15 @@ void __58__HUAccessoryManager_registerDiscoveryBlock_withListener___block_invoke
   }
 }
 
-- (void)registerBluetoothStateBlock:(id)a3 withListener:(id)a4
+- (void)registerBluetoothStateBlock:(id)block withListener:(id)listener
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  listenerCopy = listener;
+  v7 = listenerCopy;
+  if (listenerCopy)
   {
-    v8 = v6;
-    v9 = v5;
+    v8 = listenerCopy;
+    v9 = blockCopy;
     AX_PERFORM_WITH_LOCK();
   }
 }
@@ -818,11 +818,11 @@ uint64_t __63__HUAccessoryManager_registerBluetoothStateBlock_withListener___blo
   return result;
 }
 
-- (void)getBluetoothState:(id)a3
+- (void)getBluetoothState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -830,37 +830,37 @@ uint64_t __63__HUAccessoryManager_registerBluetoothStateBlock_withListener___blo
     v7[2] = __40__HUAccessoryManager_getBluetoothState___block_invoke;
     v7[3] = &unk_1E85CA508;
     v7[4] = self;
-    v8 = v4;
+    v8 = stateCopy;
     dispatch_async(bluetoothCentralQueue, v7);
   }
 }
 
-- (void)setPeripherals:(id)a3
+- (void)setPeripherals:(id)peripherals
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  peripherals = v4->_peripherals;
-  v4->_peripherals = v5;
+  peripheralsCopy = peripherals;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [peripheralsCopy copy];
+  peripherals = selfCopy->_peripherals;
+  selfCopy->_peripherals = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)enumerateConnectedBluetoothDevices:(BOOL)a3 usingBlock:(id)a4 andCompletion:(id)a5
+- (void)enumerateConnectedBluetoothDevices:(BOOL)devices usingBlock:(id)block andCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  blockCopy = block;
+  completionCopy = completion;
+  if (blockCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__HUAccessoryManager_enumerateConnectedBluetoothDevices_usingBlock_andCompletion___block_invoke;
     block[3] = &unk_1E85CB078;
-    v14 = a3;
-    v12 = v8;
-    v13 = v9;
+    devicesCopy = devices;
+    v12 = blockCopy;
+    v13 = completionCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -892,11 +892,11 @@ void __82__HUAccessoryManager_enumerateConnectedBluetoothDevices_usingBlock_andC
   }
 }
 
-- (void)enumerateAudioBluetoothDevicesUsingBlock:(id)a3
+- (void)enumerateAudioBluetoothDevicesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -904,7 +904,7 @@ void __82__HUAccessoryManager_enumerateConnectedBluetoothDevices_usingBlock_andC
     v7[2] = __63__HUAccessoryManager_enumerateAudioBluetoothDevicesUsingBlock___block_invoke;
     v7[3] = &unk_1E85CA380;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(bluetoothCentralQueue, v7);
   }
 }
@@ -921,20 +921,20 @@ void __63__HUAccessoryManager_enumerateAudioBluetoothDevicesUsingBlock___block_i
   [v3 enumerateObjectsUsingBlock:v4];
 }
 
-- (void)getAvailableAddressesSupportingCharacteristic:(id)a3 withCompletion:(id)a4
+- (void)getAvailableAddressesSupportingCharacteristic:(id)characteristic withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  characteristicCopy = characteristic;
+  completionCopy = completion;
+  if (completionCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __83__HUAccessoryManager_getAvailableAddressesSupportingCharacteristic_withCompletion___block_invoke;
     block[3] = &unk_1E85CB0F0;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = characteristicCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -983,11 +983,11 @@ void __83__HUAccessoryManager_getAvailableAddressesSupportingCharacteristic_with
   }
 }
 
-- (void)getAudioOwnershipForAddress:(id)a3 withCompletion:(id)a4
+- (void)getAudioOwnershipForAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  addressCopy = address;
+  completionCopy = completion;
+  if (completionCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -995,8 +995,8 @@ void __83__HUAccessoryManager_getAvailableAddressesSupportingCharacteristic_with
     block[2] = __65__HUAccessoryManager_getAudioOwnershipForAddress_withCompletion___block_invoke;
     block[3] = &unk_1E85CB0F0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = addressCopy;
+    v11 = completionCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -1016,38 +1016,38 @@ uint64_t __65__HUAccessoryManager_getAudioOwnershipForAddress_withCompletion___b
   return v7();
 }
 
-- (void)getProductCodeForAddress:(id)a3 withCompletion:(id)a4
+- (void)getProductCodeForAddress:(id)address withCompletion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [v6 length])
+  addressCopy = address;
+  completionCopy = completion;
+  if (completionCopy && [addressCopy length])
   {
-    v12[0] = v6;
+    v12[0] = addressCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__HUAccessoryManager_getProductCodeForAddress_withCompletion___block_invoke;
     v10[3] = &unk_1E85CB118;
-    v11 = v7;
+    v11 = completionCopy;
     [(HUAccessoryManager *)self enumerateProductCodesForAddresses:v8 withBlock:v10];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateProductCodesForAddresses:(id)a3 withBlock:(id)a4
+- (void)enumerateProductCodesForAddresses:(id)addresses withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  addressesCopy = addresses;
+  blockCopy = block;
+  if (blockCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __66__HUAccessoryManager_enumerateProductCodesForAddresses_withBlock___block_invoke;
     v8[3] = &unk_1E85CB140;
-    v9 = v6;
-    v10 = v7;
+    v9 = addressesCopy;
+    v10 = blockCopy;
     [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v8 andCompletion:0];
   }
 }
@@ -1065,19 +1065,19 @@ void __66__HUAccessoryManager_enumerateProductCodesForAddresses_withBlock___bloc
   }
 }
 
-- (void)enumerateAvailableDevicesWithBlock:(id)a3 andCompletion:(id)a4
+- (void)enumerateAvailableDevicesWithBlock:(id)block andCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __71__HUAccessoryManager_enumerateAvailableDevicesWithBlock_andCompletion___block_invoke;
     v8[3] = &unk_1E85CB140;
     v8[4] = self;
-    v9 = v6;
-    [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v8 andCompletion:a4];
+    v9 = blockCopy;
+    [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v8 andCompletion:completion];
   }
 }
 
@@ -1098,18 +1098,18 @@ void __71__HUAccessoryManager_enumerateAvailableDevicesWithBlock_andCompletion__
   }
 }
 
-- (void)getHearingProtectionSupportForAddress:(id)a3 withCompletion:(id)a4
+- (void)getHearingProtectionSupportForAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  addressCopy = address;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __75__HUAccessoryManager_getHearingProtectionSupportForAddress_withCompletion___block_invoke;
     v8[3] = &unk_1E85CB168;
-    v9 = v6;
-    v10 = v7;
+    v9 = addressCopy;
+    v10 = completionCopy;
     [(HUAccessoryManager *)self enumerateAudioBluetoothDevicesUsingBlock:v8];
   }
 }
@@ -1130,11 +1130,11 @@ void __75__HUAccessoryManager_getHearingProtectionSupportForAddress_withCompleti
   }
 }
 
-- (void)getPairedDeviceSupportsHearingProtection:(id)a3
+- (void)getPairedDeviceSupportsHearingProtection:(id)protection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  protectionCopy = protection;
+  v5 = protectionCopy;
+  if (protectionCopy)
   {
     v10[0] = 0;
     v10[1] = v10;
@@ -1149,7 +1149,7 @@ void __75__HUAccessoryManager_getHearingProtectionSupportForAddress_withCompleti
     v6[1] = 3221225472;
     v6[2] = __63__HUAccessoryManager_getPairedDeviceSupportsHearingProtection___block_invoke_69;
     v6[3] = &unk_1E85CB1B8;
-    v7 = v4;
+    v7 = protectionCopy;
     v8 = v10;
     [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:0 usingBlock:v9 andCompletion:v6];
 
@@ -1189,18 +1189,18 @@ void __63__HUAccessoryManager_getPairedDeviceSupportsHearingProtection___block_i
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:(id)a3
+- (void)getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __85__HUAccessoryManager_getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion___block_invoke;
     v6[3] = &unk_1E85CB1E0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(HUAccessoryManager *)self getCBDeviceForCurrentRouteWithCompletion:v6];
   }
 }
@@ -1269,11 +1269,11 @@ LABEL_13:
   }
 }
 
-- (void)getPairedDeviceSupportsPSE:(id)a3
+- (void)getPairedDeviceSupportsPSE:(id)e
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eCopy = e;
+  v5 = eCopy;
+  if (eCopy)
   {
     v10[0] = 0;
     v10[1] = v10;
@@ -1288,7 +1288,7 @@ LABEL_13:
     v6[1] = 3221225472;
     v6[2] = __49__HUAccessoryManager_getPairedDeviceSupportsPSE___block_invoke_2;
     v6[3] = &unk_1E85CB1B8;
-    v7 = v4;
+    v7 = eCopy;
     v8 = v10;
     [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:0 usingBlock:v9 andCompletion:v6];
 
@@ -1310,10 +1310,10 @@ void __49__HUAccessoryManager_getPairedDeviceSupportsPSE___block_invoke(uint64_t
   }
 }
 
-- (unint64_t)pseVersionForAddress:(id)a3
+- (unint64_t)pseVersionForAddress:(id)address
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1322,36 +1322,36 @@ void __49__HUAccessoryManager_getPairedDeviceSupportsPSE___block_invoke(uint64_t
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = addressCopy;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "AccessoryManager: Checking PSE version for address %@", buf, 0xCu);
   }
 
-  if ([v4 length])
+  if ([addressCopy length])
   {
     v6 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = MEMORY[0x1E696AD98];
-      v8 = [(HUAccessoryManager *)self aaAvailableDevices];
-      v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-      v10 = [(HUAccessoryManager *)self aaAvailableDevices];
-      v11 = [v10 allValues];
+      aaAvailableDevices = [(HUAccessoryManager *)self aaAvailableDevices];
+      v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(aaAvailableDevices, "count")}];
+      aaAvailableDevices2 = [(HUAccessoryManager *)self aaAvailableDevices];
+      allValues = [aaAvailableDevices2 allValues];
       *buf = 138412546;
       v25 = v9;
       v26 = 2112;
-      v27 = v11;
+      v27 = allValues;
       _os_log_impl(&dword_1DA5E2000, v6, OS_LOG_TYPE_DEFAULT, "AccessoryManager: Found devices %@ - %@", buf, 0x16u);
     }
 
-    v12 = [(HUAccessoryManager *)self aaAvailableDevices];
-    v13 = [v12 allValues];
+    aaAvailableDevices3 = [(HUAccessoryManager *)self aaAvailableDevices];
+    allValues2 = [aaAvailableDevices3 allValues];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __43__HUAccessoryManager_pseVersionForAddress___block_invoke;
     v17[3] = &unk_1E85CB208;
-    v18 = v4;
+    v18 = addressCopy;
     v19 = &v20;
-    [v13 enumerateObjectsUsingBlock:v17];
+    [allValues2 enumerateObjectsUsingBlock:v17];
   }
 
   v14 = v21[3];
@@ -1388,21 +1388,21 @@ void __43__HUAccessoryManager_pseVersionForAddress___block_invoke(uint64_t a1, v
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPSEVersionForAddress:(id)a3 withCompletion:(id)a4
+- (void)getPSEVersionForAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  addressCopy = address;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__HUAccessoryManager_getPSEVersionForAddress_withCompletion___block_invoke;
     block[3] = &unk_1E85CB230;
-    v12 = v7;
+    v12 = completionCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = addressCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -1416,24 +1416,24 @@ uint64_t __61__HUAccessoryManager_getPSEVersionForAddress_withCompletion___block
   return v3(v1, v2);
 }
 
-- (BOOL)pmeEverywhereSupportedForAddress:(id)a3
+- (BOOL)pmeEverywhereSupportedForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if ([v4 length])
+  if ([addressCopy length])
   {
-    v5 = [(HUAccessoryManager *)self aaAvailableDevices];
-    v6 = [v5 allValues];
+    aaAvailableDevices = [(HUAccessoryManager *)self aaAvailableDevices];
+    allValues = [aaAvailableDevices allValues];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __55__HUAccessoryManager_pmeEverywhereSupportedForAddress___block_invoke;
     v9[3] = &unk_1E85CB208;
-    v10 = v4;
+    v10 = addressCopy;
     v11 = &v12;
-    [v6 enumerateObjectsUsingBlock:v9];
+    [allValues enumerateObjectsUsingBlock:v9];
   }
 
   v7 = *(v13 + 24);
@@ -1454,21 +1454,21 @@ void __55__HUAccessoryManager_pmeEverywhereSupportedForAddress___block_invoke(ui
   }
 }
 
-- (void)getPMEEverywhereSupportStateForAddress:(id)a3 withCompletion:(id)a4
+- (void)getPMEEverywhereSupportStateForAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  addressCopy = address;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__HUAccessoryManager_getPMEEverywhereSupportStateForAddress_withCompletion___block_invoke;
     block[3] = &unk_1E85CB230;
-    v12 = v7;
+    v12 = completionCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = addressCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -1482,13 +1482,13 @@ uint64_t __76__HUAccessoryManager_getPMEEverywhereSupportStateForAddress_withCom
   return v3(v1, v2);
 }
 
-- (void)getSSLSupportStateForAddress:(id)a3 withCompletion:(id)a4
+- (void)getSSLSupportStateForAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  addressCopy = address;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 length])
+    if ([addressCopy length])
     {
       *buf = 0;
       v17 = buf;
@@ -1498,7 +1498,7 @@ uint64_t __76__HUAccessoryManager_getPMEEverywhereSupportStateForAddress_withCom
       v13[1] = 3221225472;
       v13[2] = __66__HUAccessoryManager_getSSLSupportStateForAddress_withCompletion___block_invoke;
       v13[3] = &unk_1E85CB258;
-      v14 = v6;
+      v14 = addressCopy;
       v15 = buf;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -1506,7 +1506,7 @@ uint64_t __76__HUAccessoryManager_getPMEEverywhereSupportStateForAddress_withCom
       v9[3] = &unk_1E85CB280;
       v12 = buf;
       v10 = v14;
-      v11 = v7;
+      v11 = completionCopy;
       [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v13 andCompletion:v9];
 
       _Block_object_dispose(buf, 8);
@@ -1521,7 +1521,7 @@ uint64_t __76__HUAccessoryManager_getPMEEverywhereSupportStateForAddress_withCom
         _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "AccessoryManager: SSL is not supported for nil address", buf, 2u);
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1560,13 +1560,13 @@ uint64_t __66__HUAccessoryManager_getSSLSupportStateForAddress_withCompletion___
   return result;
 }
 
-- (void)getSSLEnabledForAddress:(id)a3 withCompletion:(id)a4
+- (void)getSSLEnabledForAddress:(id)address withCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
-  if (v7 && v8)
+  addressCopy = address;
+  completionCopy = completion;
+  v8 = [addressCopy length];
+  if (completionCopy && v8)
   {
     v16 = 0;
     v17 = &v16;
@@ -1576,9 +1576,9 @@ uint64_t __66__HUAccessoryManager_getSSLSupportStateForAddress_withCompletion___
     v12[1] = 3221225472;
     v12[2] = __61__HUAccessoryManager_getSSLEnabledForAddress_withCompletion___block_invoke;
     v12[3] = &unk_1E85CB2A8;
-    v9 = v6;
+    v9 = addressCopy;
     v13 = v9;
-    v14 = v7;
+    v14 = completionCopy;
     v15 = &v16;
     [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v12 andCompletion:0];
     if ((v17[3] & 1) == 0)
@@ -1627,18 +1627,18 @@ void __61__HUAccessoryManager_getSSLEnabledForAddress_withCompletion___block_inv
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSSLEnabled:(BOOL)a3 forAddress:(id)a4
+- (void)setSSLEnabled:(BOOL)enabled forAddress:(id)address
 {
-  v6 = a4;
-  if ([v6 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__HUAccessoryManager_setSSLEnabled_forAddress___block_invoke;
     v7[3] = &unk_1E85CB2F8;
-    v10 = a3;
-    v8 = v6;
-    v9 = self;
+    enabledCopy = enabled;
+    v8 = addressCopy;
+    selfCopy = self;
     [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v7 andCompletion:0];
   }
 }
@@ -1689,18 +1689,18 @@ void __47__HUAccessoryManager_setSSLEnabled_forAddress___block_invoke_2(uint64_t
   [v3 logMessage:{@"AccessoryManager: Updated SSL mode %@ for %@ with error %@", v8, v7, v6}];
 }
 
-- (void)enumerateAvailablePSEDevicesWithBlock:(id)a3 andCompletion:(id)a4
+- (void)enumerateAvailablePSEDevicesWithBlock:(id)block andCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __74__HUAccessoryManager_enumerateAvailablePSEDevicesWithBlock_andCompletion___block_invoke;
     v8[3] = &unk_1E85CB050;
-    v9 = v6;
-    [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v8 andCompletion:a4];
+    v9 = blockCopy;
+    [(HUAccessoryManager *)self enumerateConnectedBluetoothDevices:1 usingBlock:v8 andCompletion:completion];
   }
 }
 
@@ -1717,10 +1717,10 @@ void __74__HUAccessoryManager_enumerateAvailablePSEDevicesWithBlock_andCompletio
   }
 }
 
-- (void)getCBDeviceForCurrentRouteWithCompletion:(id)a3
+- (void)getCBDeviceForCurrentRouteWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = +[HUUtilities sharedUtilities];
     v6[0] = MEMORY[0x1E69E9820];
@@ -1728,7 +1728,7 @@ void __74__HUAccessoryManager_enumerateAvailablePSEDevicesWithBlock_andCompletio
     v6[2] = __63__HUAccessoryManager_getCBDeviceForCurrentRouteWithCompletion___block_invoke;
     v6[3] = &unk_1E85CB370;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [v5 requestCurrentRoutesWithCompletion:v6];
   }
 }
@@ -1795,17 +1795,17 @@ void __63__HUAccessoryManager_getCBDeviceForCurrentRouteWithCompletion___block_i
   }
 }
 
-- (void)getCurrentRouteInformationWithCompletion:(id)a3
+- (void)getCurrentRouteInformationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __63__HUAccessoryManager_getCurrentRouteInformationWithCompletion___block_invoke;
     v6[3] = &unk_1E85CB398;
-    v7 = v4;
+    v7 = completionCopy;
     [(HUAccessoryManager *)self getCBDeviceForCurrentRouteWithCompletion:v6];
   }
 }
@@ -1853,22 +1853,22 @@ void __63__HUAccessoryManager_getCurrentRouteInformationWithCompletion___block_i
   }
 }
 
-- (unint64_t)hearingListeningModeFromBluetoothListeningMode:(int)a3
+- (unint64_t)hearingListeningModeFromBluetoothListeningMode:(int)mode
 {
-  if ((a3 - 1) > 3)
+  if ((mode - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DA6874F8[a3 - 1];
+    return qword_1DA6874F8[mode - 1];
   }
 }
 
-- (int)bluetoothListeningModeFromHearingListeningMode:(unint64_t)a3
+- (int)bluetoothListeningModeFromHearingListeningMode:(unint64_t)mode
 {
-  v3 = __ROR8__(a3, 1) - 1;
+  v3 = __ROR8__(mode, 1) - 1;
   if (v3 > 7)
   {
     return 0;
@@ -1880,18 +1880,18 @@ void __63__HUAccessoryManager_getCurrentRouteInformationWithCompletion___block_i
   }
 }
 
-- (void)getCurrentRouteListeningModeWithCompletion:(id)a3
+- (void)getCurrentRouteListeningModeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __65__HUAccessoryManager_getCurrentRouteListeningModeWithCompletion___block_invoke;
     v6[3] = &unk_1E85CB1E0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(HUAccessoryManager *)self getCBDeviceForCurrentRouteWithCompletion:v6];
   }
 }
@@ -1925,16 +1925,16 @@ void __65__HUAccessoryManager_getCurrentRouteListeningModeWithCompletion___block
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentRouteListeningMode:(unint64_t)a3
+- (void)setCurrentRouteListeningMode:(unint64_t)mode
 {
-  if (a3)
+  if (mode)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __51__HUAccessoryManager_setCurrentRouteListeningMode___block_invoke;
     v3[3] = &unk_1E85CB3E8;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = mode;
     [(HUAccessoryManager *)self getCBDeviceForCurrentRouteWithCompletion:v3];
   }
 }
@@ -1973,11 +1973,11 @@ void __51__HUAccessoryManager_setCurrentRouteListeningMode___block_invoke_2(uint
   [v3 logMessage:{@"Updated listening mode %@ for %@ with error %@", v8, v7, v6}];
 }
 
-- (void)getIdentifiersFromAddresses:(id)a3 withCompletion:(id)a4
+- (void)getIdentifiersFromAddresses:(id)addresses withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  addressesCopy = addresses;
+  completionCopy = completion;
+  if (completionCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1985,8 +1985,8 @@ void __51__HUAccessoryManager_setCurrentRouteListeningMode___block_invoke_2(uint
     block[2] = __65__HUAccessoryManager_getIdentifiersFromAddresses_withCompletion___block_invoke;
     block[3] = &unk_1E85CB0F0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = addressesCopy;
+    v11 = completionCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -2038,11 +2038,11 @@ void __65__HUAccessoryManager_getIdentifiersFromAddresses_withCompletion___block
   }
 }
 
-- (void)getAddressesFromIdentifiers:(id)a3 withCompletion:(id)a4
+- (void)getAddressesFromIdentifiers:(id)identifiers withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (completionCopy)
   {
     bluetoothCentralQueue = self->_bluetoothCentralQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -2050,8 +2050,8 @@ void __65__HUAccessoryManager_getIdentifiersFromAddresses_withCompletion___block
     block[2] = __65__HUAccessoryManager_getAddressesFromIdentifiers_withCompletion___block_invoke;
     block[3] = &unk_1E85CB0F0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = identifiersCopy;
+    v11 = completionCopy;
     dispatch_async(bluetoothCentralQueue, block);
   }
 }
@@ -2103,17 +2103,17 @@ void __65__HUAccessoryManager_getAddressesFromIdentifiers_withCompletion___block
   }
 }
 
-- (void)readValueForCharacteristicUUID:(id)a3
+- (void)readValueForCharacteristicUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   bluetoothCentralQueue = self->_bluetoothCentralQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__HUAccessoryManager_readValueForCharacteristicUUID___block_invoke;
   v7[3] = &unk_1E85C9F38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(bluetoothCentralQueue, v7);
 }
 
@@ -2167,30 +2167,30 @@ void __53__HUAccessoryManager_readValueForCharacteristicUUID___block_invoke_4(ui
   }
 }
 
-- (void)writeValue:(id)a3 forCharacteristicUUID:(id)a4 andAddress:(id)a5
+- (void)writeValue:(id)value forCharacteristicUUID:(id)d andAddress:(id)address
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] && objc_msgSend(v10, "length") && (objc_msgSend(v9, "UUIDString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v12))
+  valueCopy = value;
+  dCopy = d;
+  addressCopy = address;
+  if ([valueCopy length] && objc_msgSend(addressCopy, "length") && (objc_msgSend(dCopy, "UUIDString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v12))
   {
-    v19[0] = v10;
+    v19[0] = addressCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __66__HUAccessoryManager_writeValue_forCharacteristicUUID_andAddress___block_invoke;
     v15[3] = &unk_1E85CB488;
     v15[4] = self;
-    v16 = v9;
-    v17 = v8;
-    v18 = v10;
+    v16 = dCopy;
+    v17 = valueCopy;
+    v18 = addressCopy;
     [(HUAccessoryManager *)self getIdentifiersFromAddresses:v13 withCompletion:v15];
   }
 
   else
   {
-    [(HUAccessoryManager *)self logMessage:@"Skipping write request. Missing value %@, %@ = %@", v10, v9, v8];
+    [(HUAccessoryManager *)self logMessage:@"Skipping write request. Missing value %@, %@ = %@", addressCopy, dCopy, valueCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -2249,17 +2249,17 @@ void __66__HUAccessoryManager_writeValue_forCharacteristicUUID_andAddress___bloc
   }
 }
 
-- (void)turnBluetoothOnWithCompletion:(id)a3
+- (void)turnBluetoothOnWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   bluetoothCentralQueue = self->_bluetoothCentralQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__HUAccessoryManager_turnBluetoothOnWithCompletion___block_invoke;
   v7[3] = &unk_1E85CA380;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(bluetoothCentralQueue, v7);
 }
 
@@ -2705,25 +2705,25 @@ void __49__HUAccessoryManager_removeDiscoveredAccessories__block_invoke_4(uint64
   (*(v4 + 2))(v4, 0, *(a1 + 32));
 }
 
-- (id)characteristicWithUUID:(id)a3 forPeripheral:(id)a4
+- (id)characteristicWithUUID:(id)d forPeripheral:(id)peripheral
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  peripheralCopy = peripheral;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__1;
   v18 = __Block_byref_object_dispose__1;
   v19 = 0;
-  v7 = [v6 services];
+  services = [peripheralCopy services];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__HUAccessoryManager_characteristicWithUUID_forPeripheral___block_invoke;
   v11[3] = &unk_1E85CAB00;
-  v8 = v5;
+  v8 = dCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [services enumerateObjectsUsingBlock:v11];
 
   v9 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -2760,13 +2760,13 @@ void __59__HUAccessoryManager_characteristicWithUUID_forPeripheral___block_invok
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  -[HUAccessoryManager logMessage:](self, "logMessage:", @"Central state (%ld) %d", [v4 state], self->_centralIsOn);
-  v5 = [v4 state];
+  stateCopy = state;
+  -[HUAccessoryManager logMessage:](self, "logMessage:", @"Central state (%ld) %d", [stateCopy state], self->_centralIsOn);
+  state = [stateCopy state];
 
-  if (v5 == 5)
+  if (state == 5)
   {
     self->_centralIsOn = 1;
     [(HUAccessoryManager *)self logMessage:@"centralManager ON"];
@@ -2782,29 +2782,29 @@ void __59__HUAccessoryManager_characteristicWithUUID_forPeripheral___block_invok
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  [v5 setDelegate:self];
+  peripheralCopy = peripheral;
+  [peripheralCopy setDelegate:self];
   v6 = MEMORY[0x1E695DEC8];
   v7 = [MEMORY[0x1E695D2A0] UUIDWithString:*MEMORY[0x1E695D240]];
   v8 = [v6 arrayWithObjects:{v7, 0}];
-  [v5 discoverServices:v8];
+  [peripheralCopy discoverServices:v8];
 
-  v9 = [v5 identifier];
-  v10 = [v9 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if ([v10 length])
+  if ([uUIDString length])
   {
-    v15[0] = v10;
+    v15[0] = uUIDString;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __58__HUAccessoryManager_centralManager_didConnectPeripheral___block_invoke;
     v13[3] = &unk_1E85CB5F0;
     v13[4] = self;
-    v14 = v5;
+    v14 = peripheralCopy;
     [(HUAccessoryManager *)self getAddressesFromIdentifiers:v11 withCompletion:v13];
   }
 
@@ -2817,27 +2817,27 @@ void __58__HUAccessoryManager_centralManager_didConnectPeripheral___block_invoke
   [*(a1 + 32) logMessage:{@"Connected to %@ - %@", v3, *(a1 + 40)}];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HUAccessoryManager *)self peripherals];
-  v12 = [v11 mutableCopy];
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  peripherals = [(HUAccessoryManager *)self peripherals];
+  v12 = [peripherals mutableCopy];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __67__HUAccessoryManager_centralManager_didDisconnectPeripheral_error___block_invoke;
   v29[3] = &unk_1E85CB618;
-  v13 = v9;
+  v13 = peripheralCopy;
   v30 = v13;
   [v12 ax_removeObjectsFromArrayUsingBlock:v29];
   [(HUAccessoryManager *)self setPeripherals:v12];
-  v14 = [v13 identifier];
-  v15 = [v14 UUIDString];
+  identifier = [v13 identifier];
+  uUIDString = [identifier UUIDString];
 
-  if ([v15 length])
+  if ([uUIDString length])
   {
     v27[0] = 0;
     v27[1] = v27;
@@ -2849,10 +2849,10 @@ void __58__HUAccessoryManager_centralManager_didConnectPeripheral___block_invoke
     v22 = 3221225472;
     v23 = __67__HUAccessoryManager_centralManager_didDisconnectPeripheral_error___block_invoke_2;
     v24 = &unk_1E85CAF38;
-    v25 = self;
+    selfCopy = self;
     v26 = v27;
     AX_PERFORM_WITH_LOCK();
-    v31[0] = v15;
+    v31[0] = uUIDString;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -2918,25 +2918,25 @@ void __67__HUAccessoryManager_centralManager_didDisconnectPeripheral_error___blo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral
 {
-  v7 = a5;
-  [(HUAccessoryManager *)self logMessage:@"Connection changed %ld - %@", a4, v7];
-  if (a4 == 1)
+  peripheralCopy = peripheral;
+  [(HUAccessoryManager *)self logMessage:@"Connection changed %ld - %@", occur, peripheralCopy];
+  if (occur == 1)
   {
-    v8 = [(HUAccessoryManager *)self peripherals];
+    peripherals = [(HUAccessoryManager *)self peripherals];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __75__HUAccessoryManager_centralManager_connectionEventDidOccur_forPeripheral___block_invoke;
     v13[3] = &unk_1E85CB618;
-    v9 = v7;
+    v9 = peripheralCopy;
     v14 = v9;
-    v10 = [v8 indexOfObjectPassingTest:v13];
+    v10 = [peripherals indexOfObjectPassingTest:v13];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(HUAccessoryManager *)self peripherals];
-      v12 = [v11 arrayByAddingObject:v9];
+      peripherals2 = [(HUAccessoryManager *)self peripherals];
+      v12 = [peripherals2 arrayByAddingObject:v9];
       [(HUAccessoryManager *)self setPeripherals:v12];
     }
 
@@ -2953,17 +2953,17 @@ uint64_t __75__HUAccessoryManager_centralManager_connectionEventDidOccur_forPeri
   return v5;
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v4 = a3;
-  v5 = [v4 services];
+  peripheralCopy = peripheral;
+  services = [peripheralCopy services];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__HUAccessoryManager_peripheral_didDiscoverServices___block_invoke;
   v7[3] = &unk_1E85CA0E0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = peripheralCopy;
+  v6 = peripheralCopy;
+  [services enumerateObjectsUsingBlock:v7];
 }
 
 void __53__HUAccessoryManager_peripheral_didDiscoverServices___block_invoke(uint64_t a1, void *a2)
@@ -2979,22 +2979,22 @@ void __53__HUAccessoryManager_peripheral_didDiscoverServices___block_invoke(uint
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 characteristics];
-  [(HUAccessoryManager *)self logMessage:@"Found characteristics %@ - %@", v8, v11];
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  characteristics = [serviceCopy characteristics];
+  [(HUAccessoryManager *)self logMessage:@"Found characteristics %@ - %@", peripheralCopy, characteristics];
 
-  v12 = [(HUAccessoryManager *)self registeredCharacteristics];
-  [(HUAccessoryManager *)self updateNotify:1 forPeripheral:v8 withCharacteristicUUIDs:v12];
+  registeredCharacteristics = [(HUAccessoryManager *)self registeredCharacteristics];
+  [(HUAccessoryManager *)self updateNotify:1 forPeripheral:peripheralCopy withCharacteristicUUIDs:registeredCharacteristics];
 
-  v13 = [v8 identifier];
-  v14 = [v13 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if ([v14 length])
+  if ([uUIDString length])
   {
     v18[0] = 0;
     v18[1] = v18;
@@ -3009,7 +3009,7 @@ void __53__HUAccessoryManager_peripheral_didDiscoverServices___block_invoke(uint
     v17[9] = self;
     v17[10] = v18;
     AX_PERFORM_WITH_LOCK();
-    v20[0] = v14;
+    v20[0] = uUIDString;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -3063,18 +3063,18 @@ void __76__HUAccessoryManager_peripheral_didDiscoverCharacteristicsForService_er
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 UUID];
-  v12 = [v9 value];
-  v13 = [v8 identifier];
-  v14 = [v13 UUIDString];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  uUID = [characteristicCopy UUID];
+  value = [characteristicCopy value];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if ([v14 length])
+  if ([uUIDString length])
   {
     v27[0] = 0;
     v27[1] = v27;
@@ -3086,18 +3086,18 @@ void __76__HUAccessoryManager_peripheral_didDiscoverCharacteristicsForService_er
     v22 = 3221225472;
     v23 = __71__HUAccessoryManager_peripheral_didUpdateValueForCharacteristic_error___block_invoke;
     v24 = &unk_1E85CAF38;
-    v25 = self;
+    selfCopy = self;
     v26 = v27;
     AX_PERFORM_WITH_LOCK();
-    v29[0] = v14;
+    v29[0] = uUIDString;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __71__HUAccessoryManager_peripheral_didUpdateValueForCharacteristic_error___block_invoke_2;
     v17[3] = &unk_1E85CB690;
     v20 = v27;
-    v18 = v11;
-    v19 = v12;
+    v18 = uUID;
+    v19 = value;
     [(HUAccessoryManager *)self getAddressesFromIdentifiers:v15 withCompletion:v17];
 
     _Block_object_dispose(v27, 8);
@@ -3144,9 +3144,9 @@ void __71__HUAccessoryManager_peripheral_didUpdateValueForCharacteristic_error__
   }
 }
 
-- (id)availableAddressesWithCharacteristicSupport:(id)a3
+- (id)availableAddressesWithCharacteristicSupport:(id)support
 {
-  v4 = a3;
+  supportCopy = support;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -3161,7 +3161,7 @@ void __71__HUAccessoryManager_peripheral_didUpdateValueForCharacteristic_error__
   v12 = &v13;
   v6 = v5;
   v11 = v6;
-  [(HUAccessoryManager *)self getAvailableAddressesSupportingCharacteristic:v4 withCompletion:v10];
+  [(HUAccessoryManager *)self getAvailableAddressesSupportingCharacteristic:supportCopy withCompletion:v10];
   v7 = dispatch_time(0, 2000000000);
   dispatch_semaphore_wait(v6, v7);
   v8 = v14[5];
@@ -3178,20 +3178,20 @@ void __66__HUAccessoryManager_availableAddressesWithCharacteristicSupport___bloc
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)identifierFromBluetoothAddress:(id)a3
+- (id)identifierFromBluetoothAddress:(id)address
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__1;
   v19 = __Block_byref_object_dispose__1;
   v20 = 0;
-  if ([v4 length])
+  if ([addressCopy length])
   {
     v5 = dispatch_semaphore_create(0);
-    v21[0] = v4;
+    v21[0] = addressCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;

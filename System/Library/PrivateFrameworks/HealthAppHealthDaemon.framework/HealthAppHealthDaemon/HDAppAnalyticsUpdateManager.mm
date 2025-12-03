@@ -1,9 +1,9 @@
 @interface HDAppAnalyticsUpdateManager
 - (HDAppAnalyticsUpdateManager)init;
-- (HDAppAnalyticsUpdateManager)initWithProfile:(id)a3;
+- (HDAppAnalyticsUpdateManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (int64_t)currentVersionForAgreement:(id)a3;
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4;
+- (int64_t)currentVersionForAgreement:(id)agreement;
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion;
 @end
 
 @implementation HDAppAnalyticsUpdateManager
@@ -18,38 +18,38 @@
   return 0;
 }
 
-- (HDAppAnalyticsUpdateManager)initWithProfile:(id)a3
+- (HDAppAnalyticsUpdateManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDAppAnalyticsUpdateManager;
   v5 = [(HDAppAnalyticsUpdateManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
-    v8 = [v4 daemon];
-    v9 = [v8 postInstallUpdateManager];
-    [v9 registerUpdateTaskHandler:v6 queue:0];
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
+    daemon = [profileCopy daemon];
+    postInstallUpdateManager = [daemon postInstallUpdateManager];
+    [postInstallUpdateManager registerUpdateTaskHandler:v6 queue:0];
   }
 
   return v6;
 }
 
-- (int64_t)currentVersionForAgreement:(id)a3
+- (int64_t)currentVersionForAgreement:(id)agreement
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D0FD30]])
+  agreementCopy = agreement;
+  if ([agreementCopy isEqualToString:*MEMORY[0x277D0FD30]])
   {
-    v5 = [(HDAppAnalyticsUpdateManager *)self currentVersionImproveHealthAgreement];
+    currentVersionImproveHealthAgreement = [(HDAppAnalyticsUpdateManager *)self currentVersionImproveHealthAgreement];
 LABEL_5:
-    v6 = v5;
+    v6 = currentVersionImproveHealthAgreement;
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277D0FD38]])
+  if ([agreementCopy isEqualToString:*MEMORY[0x277D0FD38]])
   {
-    v5 = [(HDAppAnalyticsUpdateManager *)self currentVersionImproveHealthRecords];
+    currentVersionImproveHealthAgreement = [(HDAppAnalyticsUpdateManager *)self currentVersionImproveHealthRecords];
     goto LABEL_5;
   }
 
@@ -57,7 +57,7 @@ LABEL_5:
   v7 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(HDAppAnalyticsUpdateManager *)v4 currentVersionForAgreement:v7];
+    [(HDAppAnalyticsUpdateManager *)agreementCopy currentVersionForAgreement:v7];
   }
 
   v6 = 0;
@@ -66,22 +66,22 @@ LABEL_9:
   return v6;
 }
 
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HDAppAnalyticsUpdateManager *)self profile];
-  v7 = [v6 database];
-  v8 = [MEMORY[0x277D106B8] contextForReading];
+  completionCopy = completion;
+  profile = [(HDAppAnalyticsUpdateManager *)self profile];
+  database = [profile database];
+  contextForReading = [MEMORY[0x277D106B8] contextForReading];
   v11[4] = self;
   v12 = 0;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__HDAppAnalyticsUpdateManager_performPostInstallUpdateTaskForManager_completion___block_invoke;
   v11[3] = &unk_278658408;
-  v9 = [v7 performTransactionWithContext:v8 error:&v12 block:v11 inaccessibilityHandler:0];
+  v9 = [database performTransactionWithContext:contextForReading error:&v12 block:v11 inaccessibilityHandler:0];
   v10 = v12;
 
-  v5[2](v5, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
 uint64_t __81__HDAppAnalyticsUpdateManager_performPostInstallUpdateTaskForManager_completion___block_invoke(uint64_t a1, void *a2)

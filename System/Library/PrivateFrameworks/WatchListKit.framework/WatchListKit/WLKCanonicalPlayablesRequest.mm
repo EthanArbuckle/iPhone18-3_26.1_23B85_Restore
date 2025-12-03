@@ -1,78 +1,78 @@
 @interface WLKCanonicalPlayablesRequest
-- (WLKCanonicalPlayablesRequest)initWithCanonicalID:(id)a3;
-- (WLKCanonicalPlayablesRequest)initWithStatsID:(id)a3;
-- (void)makeRequestWithCompletion:(id)a3;
-- (void)makeRequestWithCompletion:(id)a3 canonicalType:(int64_t)a4;
+- (WLKCanonicalPlayablesRequest)initWithCanonicalID:(id)d;
+- (WLKCanonicalPlayablesRequest)initWithStatsID:(id)d;
+- (void)makeRequestWithCompletion:(id)completion;
+- (void)makeRequestWithCompletion:(id)completion canonicalType:(int64_t)type;
 @end
 
 @implementation WLKCanonicalPlayablesRequest
 
-- (WLKCanonicalPlayablesRequest)initWithCanonicalID:(id)a3
+- (WLKCanonicalPlayablesRequest)initWithCanonicalID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v10.receiver = self;
     v10.super_class = WLKCanonicalPlayablesRequest;
     v5 = [(WLKCanonicalPlayablesRequest *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dCopy copy];
       canonicalID = v5->_canonicalID;
       v5->_canonicalID = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"canonicalID must be non-nil"];
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (WLKCanonicalPlayablesRequest)initWithStatsID:(id)a3
+- (WLKCanonicalPlayablesRequest)initWithStatsID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v10.receiver = self;
     v10.super_class = WLKCanonicalPlayablesRequest;
     v5 = [(WLKCanonicalPlayablesRequest *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dCopy copy];
       statsID = v5->_statsID;
       v5->_statsID = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"statsID must be non-nil"];
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)makeRequestWithCompletion:(id)a3
+- (void)makeRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_canonicalID;
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v7 = [WLKCanonicalPlayablesRequestOperation alloc];
-    v8 = [(WLKRequest *)self caller];
-    v9 = [(WLKCanonicalPlayablesRequestOperation *)v7 initWithContentID:v5 caller:v8 isMovie:1];
+    caller = [(WLKRequest *)self caller];
+    v9 = [(WLKCanonicalPlayablesRequestOperation *)v7 initWithContentID:v5 caller:caller isMovie:1];
 
     objc_initWeak(&location, v9);
     v19[0] = MEMORY[0x277D85DD0];
@@ -81,12 +81,12 @@
     v19[3] = &unk_279E5F0C0;
     objc_copyWeak(&v22, &location);
     v19[4] = self;
-    v10 = v6;
+    v10 = date;
     v20 = v10;
-    v21 = v4;
+    v21 = completionCopy;
     [(WLKCanonicalPlayablesRequestOperation *)v9 setCompletionBlock:v19];
-    v11 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-    [v11 addOperation:v9];
+    wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+    [wlkDefaultQueue addOperation:v9];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -96,8 +96,8 @@
   {
     v12 = [WLKCanonicalPlayablesSiriRequestOperation alloc];
     statsID = self->_statsID;
-    v14 = [(WLKRequest *)self caller];
-    v10 = [(WLKCanonicalPlayablesSiriRequestOperation *)v12 initWithStatsID:statsID caller:v14];
+    caller2 = [(WLKRequest *)self caller];
+    v10 = [(WLKCanonicalPlayablesSiriRequestOperation *)v12 initWithStatsID:statsID caller:caller2];
 
     objc_initWeak(&location, v10);
     v16[0] = MEMORY[0x277D85DD0];
@@ -105,10 +105,10 @@
     v16[2] = __58__WLKCanonicalPlayablesRequest_makeRequestWithCompletion___block_invoke_2;
     v16[3] = &unk_279E5E660;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
+    v17 = completionCopy;
     [(WLKCanonicalPlayablesSiriRequestOperation *)v10 setCompletionBlock:v16];
-    v15 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-    [v15 addOperation:v10];
+    wlkDefaultQueue2 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+    [wlkDefaultQueue2 addOperation:v10];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -149,14 +149,14 @@ void __58__WLKCanonicalPlayablesRequest_makeRequestWithCompletion___block_invoke
   }
 }
 
-- (void)makeRequestWithCompletion:(id)a3 canonicalType:(int64_t)a4
+- (void)makeRequestWithCompletion:(id)completion canonicalType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
   v8 = [WLKCanonicalPlayablesRequestOperation alloc];
   canonicalID = self->_canonicalID;
-  v10 = [(WLKRequest *)self caller];
-  v11 = [(WLKCanonicalPlayablesRequestOperation *)v8 initWithContentID:canonicalID caller:v10 canonicalType:a4];
+  caller = [(WLKRequest *)self caller];
+  v11 = [(WLKCanonicalPlayablesRequestOperation *)v8 initWithContentID:canonicalID caller:caller canonicalType:type];
 
   objc_initWeak(&location, v11);
   v15[0] = MEMORY[0x277D85DD0];
@@ -165,13 +165,13 @@ void __58__WLKCanonicalPlayablesRequest_makeRequestWithCompletion___block_invoke
   v15[3] = &unk_279E5F0C0;
   objc_copyWeak(&v18, &location);
   v15[4] = self;
-  v12 = v7;
+  v12 = date;
   v16 = v12;
-  v13 = v6;
+  v13 = completionCopy;
   v17 = v13;
   [(WLKCanonicalPlayablesRequestOperation *)v11 setCompletionBlock:v15];
-  v14 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-  [v14 addOperation:v11];
+  wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+  [wlkDefaultQueue addOperation:v11];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);

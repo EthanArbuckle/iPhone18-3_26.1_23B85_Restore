@@ -1,56 +1,56 @@
 @interface PKSECredentialAddress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)mostSpecificIdentifier;
-- (PKSECredentialAddress)initWithType:(unint64_t)a3 identifier:(id)a4;
-- (id)addressByAppendingType:(unint64_t)a3 identifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKSECredentialAddress)initWithType:(unint64_t)type identifier:(id)identifier;
+- (id)addressByAppendingType:(unint64_t)type identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)firstIdentifierOfType:(unint64_t)a3;
+- (id)firstIdentifierOfType:(unint64_t)type;
 - (id)shortDescription;
 - (unint64_t)hash;
 - (unint64_t)mostSpecificType;
 - (void)_tail;
-- (void)appendType:(unint64_t)a3 identifier:(id)a4;
+- (void)appendType:(unint64_t)type identifier:(id)identifier;
 @end
 
 @implementation PKSECredentialAddress
 
-- (PKSECredentialAddress)initWithType:(unint64_t)a3 identifier:(id)a4
+- (PKSECredentialAddress)initWithType:(unint64_t)type identifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PKSECredentialAddress;
   v8 = [(PKSECredentialAddress *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_identifier, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_identifier, identifier);
   }
 
   return v9;
 }
 
-- (id)addressByAppendingType:(unint64_t)a3 identifier:(id)a4
+- (id)addressByAppendingType:(unint64_t)type identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = [(PKSECredentialAddress *)self copy];
-  v8 = [[PKSECredentialAddress alloc] initWithType:a3 identifier:v6];
+  v8 = [[PKSECredentialAddress alloc] initWithType:type identifier:identifierCopy];
 
-  v9 = [(PKSECredentialAddress *)v7 _tail];
-  v10 = v9[1];
-  v9[1] = v8;
+  _tail = [(PKSECredentialAddress *)v7 _tail];
+  v10 = _tail[1];
+  _tail[1] = v8;
 
   return v7;
 }
 
 - (void)_tail
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = v1;
-    v3 = *(v1 + 1);
+    selfCopy = self;
+    v2 = selfCopy;
+    v3 = *(selfCopy + 1);
     if (v3)
     {
       do
@@ -66,7 +66,7 @@
 
     else
     {
-      v4 = v1;
+      v4 = selfCopy;
     }
   }
 
@@ -78,23 +78,23 @@
   return v4;
 }
 
-- (void)appendType:(unint64_t)a3 identifier:(id)a4
+- (void)appendType:(unint64_t)type identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [[PKSECredentialAddress alloc] initWithType:a3 identifier:v6];
+  identifierCopy = identifier;
+  v7 = [[PKSECredentialAddress alloc] initWithType:type identifier:identifierCopy];
 
-  v9 = [(PKSECredentialAddress *)self _tail];
-  v8 = v9[1];
-  v9[1] = v7;
+  _tail = [(PKSECredentialAddress *)self _tail];
+  v8 = _tail[1];
+  _tail[1] = v7;
 }
 
-- (id)firstIdentifierOfType:(unint64_t)a3
+- (id)firstIdentifierOfType:(unint64_t)type
 {
-  v4 = self;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v5 = v4;
-    while (v5->_type != a3)
+    v5 = selfCopy;
+    while (v5->_type != type)
     {
       v6 = v5->_next;
 
@@ -119,8 +119,8 @@ LABEL_5:
 
 - (NSString)mostSpecificIdentifier
 {
-  v2 = [(PKSECredentialAddress *)self _tail];
-  v3 = v2[2];
+  _tail = [(PKSECredentialAddress *)self _tail];
+  v3 = _tail[2];
   v4 = v3;
 
   return v3;
@@ -128,8 +128,8 @@ LABEL_5:
 
 - (unint64_t)mostSpecificType
 {
-  v2 = [(PKSECredentialAddress *)self _tail];
-  v3 = v2[3];
+  _tail = [(PKSECredentialAddress *)self _tail];
+  v3 = _tail[3];
 
   return v3;
 }
@@ -137,8 +137,8 @@ LABEL_5:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSECredentialAddress *)self shortDescription];
-  [v3 appendFormat:@"address: '%@'; ", v4];
+  shortDescription = [(PKSECredentialAddress *)self shortDescription];
+  [v3 appendFormat:@"address: '%@'; ", shortDescription];
 
   [v3 appendFormat:@">"];
 
@@ -166,8 +166,8 @@ LABEL_5:
 
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   identifier = self->_identifier;
-  v8 = [(PKSECredentialAddress *)self->_next shortDescription];
-  v9 = [v6 initWithFormat:@"(%@: %@) -> %@", v5, identifier, v8];
+  shortDescription = [(PKSECredentialAddress *)self->_next shortDescription];
+  v9 = [v6 initWithFormat:@"(%@: %@) -> %@", v5, identifier, shortDescription];
 
   return v9;
 }
@@ -187,15 +187,15 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5[2];
       v7 = self->_identifier;
       v8 = v6;
@@ -251,15 +251,15 @@ LABEL_17:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKSECredentialAddress allocWithZone:?];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
   v5->_type = self->_type;
-  v8 = [(PKSECredentialAddress *)self->_next copyWithZone:a3];
+  v8 = [(PKSECredentialAddress *)self->_next copyWithZone:zone];
   next = v5->_next;
   v5->_next = v8;
 

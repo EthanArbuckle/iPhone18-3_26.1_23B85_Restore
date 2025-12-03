@@ -1,75 +1,75 @@
 @interface LPLinkHTMLTextGenerator
-- (LPLinkHTMLTextGenerator)initWithPresentationProperties:(id)a3 URL:(id)a4;
-- (LPLinkHTMLTextGenerator)initWithURL:(id)a3;
+- (LPLinkHTMLTextGenerator)initWithPresentationProperties:(id)properties URL:(id)l;
+- (LPLinkHTMLTextGenerator)initWithURL:(id)l;
 - (LPLinkHTMLTextGeneratorDelegate)delegate;
 - (NSString)HTMLFragmentString;
-- (id)linkHTMLGenerator:(id)a3 URLForResource:(id)a4 withMIMEType:(id)a5;
+- (id)linkHTMLGenerator:(id)generator URLForResource:(id)resource withMIMEType:(id)type;
 - (void)_cleanUpDOMDocumentBody;
-- (void)_commonInitWithPresentationProperties:(id)a3 URL:(id)a4;
+- (void)_commonInitWithPresentationProperties:(id)properties URL:(id)l;
 - (void)_generateDOMDocumentBody;
-- (void)generateHTMLFragmentString:(id)a3;
-- (void)generateWebArchiveData:(id)a3;
-- (void)setMetadata:(id)a3;
+- (void)generateHTMLFragmentString:(id)string;
+- (void)generateWebArchiveData:(id)data;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation LPLinkHTMLTextGenerator
 
-- (LPLinkHTMLTextGenerator)initWithURL:(id)a3
+- (LPLinkHTMLTextGenerator)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = LPLinkHTMLTextGenerator;
   v5 = [(LPLinkHTMLTextGenerator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(LPLinkHTMLTextGenerator *)v5 _commonInitWithPresentationProperties:0 URL:v4];
+    [(LPLinkHTMLTextGenerator *)v5 _commonInitWithPresentationProperties:0 URL:lCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (LPLinkHTMLTextGenerator)initWithPresentationProperties:(id)a3 URL:(id)a4
+- (LPLinkHTMLTextGenerator)initWithPresentationProperties:(id)properties URL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = LPLinkHTMLTextGenerator;
   v8 = [(LPLinkHTMLTextGenerator *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(LPLinkHTMLTextGenerator *)v8 _commonInitWithPresentationProperties:v6 URL:v7];
+    [(LPLinkHTMLTextGenerator *)v8 _commonInitWithPresentationProperties:propertiesCopy URL:lCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)_commonInitWithPresentationProperties:(id)a3 URL:(id)a4
+- (void)_commonInitWithPresentationProperties:(id)properties URL:(id)l
 {
-  v16 = a3;
-  v6 = a4;
-  LPWebLock(v6, v7);
+  propertiesCopy = properties;
+  lCopy = l;
+  LPWebLock(lCopy, v7);
   v8 = objc_alloc_init(MEMORY[0x1E69E2FB8]);
   webView = self->_webView;
   self->_webView = v8;
 
-  v10 = [(WebView *)self->_webView mainFrame];
-  [v10 loadHTMLString:&stru_1F2447CF0 baseURL:0];
+  mainFrame = [(WebView *)self->_webView mainFrame];
+  [mainFrame loadHTMLString:&stru_1F2447CF0 baseURL:0];
 
   v11 = [LPLinkHTMLGenerator alloc];
-  v12 = [(WebView *)self->_webView mainFrame];
-  v13 = [v12 DOMDocument];
-  if (v16)
+  mainFrame2 = [(WebView *)self->_webView mainFrame];
+  dOMDocument = [mainFrame2 DOMDocument];
+  if (propertiesCopy)
   {
-    v14 = [(LPLinkHTMLGenerator *)v11 initWithPresentationProperties:v16 URL:v6 document:v13];
+    v14 = [(LPLinkHTMLGenerator *)v11 initWithPresentationProperties:propertiesCopy URL:lCopy document:dOMDocument];
   }
 
   else
   {
-    v14 = [(LPLinkHTMLGenerator *)v11 initWithURL:v6 document:v13];
+    v14 = [(LPLinkHTMLGenerator *)v11 initWithURL:lCopy document:dOMDocument];
   }
 
   DOMGenerator = self->_DOMGenerator;
@@ -78,9 +78,9 @@
   [(LPLinkHTMLGenerator *)self->_DOMGenerator setDelegate:self];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  [(LPLinkHTMLGenerator *)self->_DOMGenerator setMetadata:a3];
+  [(LPLinkHTMLGenerator *)self->_DOMGenerator setMetadata:metadata];
   generatedFragmentText = self->_generatedFragmentText;
   self->_generatedFragmentText = 0;
 }
@@ -88,18 +88,18 @@
 - (void)_generateDOMDocumentBody
 {
   LPWebLock(self, a2);
-  v16 = [(LPLinkHTMLGenerator *)self->_DOMGenerator documentFragment];
-  v3 = [(WebView *)self->_webView mainFrame];
-  v4 = [v3 DOMDocument];
-  v5 = [v4 body];
+  documentFragment = [(LPLinkHTMLGenerator *)self->_DOMGenerator documentFragment];
+  mainFrame = [(WebView *)self->_webView mainFrame];
+  dOMDocument = [mainFrame DOMDocument];
+  body = [dOMDocument body];
 
   layoutDirection = self->_layoutDirection;
   if (layoutDirection)
   {
-    v7 = [(NSNumber *)layoutDirection unsignedIntegerValue];
-    if (v7)
+    unsignedIntegerValue = [(NSNumber *)layoutDirection unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
-      if (v7 != 1)
+      if (unsignedIntegerValue != 1)
       {
         goto LABEL_7;
       }
@@ -112,7 +112,7 @@
       v8 = @"ltr";
     }
 
-    [v5 setDir:v8];
+    [body setDir:v8];
   }
 
 LABEL_7:
@@ -126,25 +126,25 @@ LABEL_7:
     v14 = [(WebView *)webView stringByEvaluatingJavaScriptFromString:v13];
   }
 
-  v15 = [v5 appendChild:v16];
+  v15 = [body appendChild:documentFragment];
 }
 
 - (void)_cleanUpDOMDocumentBody
 {
-  v2 = [(WebView *)self->_webView mainFrame];
-  v3 = [v2 DOMDocument];
-  v5 = [v3 body];
+  mainFrame = [(WebView *)self->_webView mainFrame];
+  dOMDocument = [mainFrame DOMDocument];
+  body = [dOMDocument body];
 
   while (1)
   {
 
-    if (![v5 hasChildNodes])
+    if (![body hasChildNodes])
     {
       break;
     }
 
-    v2 = [v5 lastChild];
-    v4 = [v5 removeChild:v2];
+    mainFrame = [body lastChild];
+    v4 = [body removeChild:mainFrame];
   }
 }
 
@@ -156,16 +156,16 @@ LABEL_7:
   {
     [(LPLinkHTMLTextGenerator *)self _generateDOMDocumentBody];
     v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v6 = [(WebView *)self->_webView mainFrame];
-    v7 = [v6 DOMDocument];
-    v8 = [v7 body];
-    v9 = [v8 childNodes];
+    mainFrame = [(WebView *)self->_webView mainFrame];
+    dOMDocument = [mainFrame DOMDocument];
+    body = [dOMDocument body];
+    childNodes = [body childNodes];
 
-    for (i = 0; i < [v9 length]; i = (i + 1))
+    for (i = 0; i < [childNodes length]; i = (i + 1))
     {
-      v11 = [v9 item:i];
-      v12 = [v11 markupString];
-      [v5 appendString:v12];
+      v11 = [childNodes item:i];
+      markupString = [v11 markupString];
+      [v5 appendString:markupString];
     }
 
     objc_storeStrong(p_generatedFragmentText, v5);
@@ -179,16 +179,16 @@ LABEL_7:
   return v13;
 }
 
-- (void)generateHTMLFragmentString:(id)a3
+- (void)generateHTMLFragmentString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__LPLinkHTMLTextGenerator_generateHTMLFragmentString___block_invoke;
   v6[3] = &unk_1E7A35428;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stringCopy;
+  v5 = stringCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -199,16 +199,16 @@ void __54__LPLinkHTMLTextGenerator_generateHTMLFragmentString___block_invoke(uin
   (*(v1 + 16))(v1);
 }
 
-- (void)generateWebArchiveData:(id)a3
+- (void)generateWebArchiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__LPLinkHTMLTextGenerator_generateWebArchiveData___block_invoke;
   v6[3] = &unk_1E7A356A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dataCopy;
+  v5 = dataCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -224,24 +224,24 @@ void __50__LPLinkHTMLTextGenerator_generateWebArchiveData___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)linkHTMLGenerator:(id)a3 URLForResource:(id)a4 withMIMEType:(id)a5
+- (id)linkHTMLGenerator:(id)generator URLForResource:(id)resource withMIMEType:(id)type
 {
-  v7 = a4;
-  v8 = a5;
+  resourceCopy = resource;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (v10 = WeakRetained, v11 = objc_loadWeakRetained(&self->_delegate), v12 = objc_opt_respondsToSelector(), v11, v10, (v12 & 1) != 0))
   {
-    v13 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v13 linkHTMLTextGenerator:self URLForResource:v7 withMIMEType:v8];
+    uRLPathAllowedCharacterSet = objc_loadWeakRetained(&self->_delegate);
+    v14 = [uRLPathAllowedCharacterSet linkHTMLTextGenerator:self URLForResource:resourceCopy withMIMEType:typeCopy];
   }
 
   else
   {
     v15 = MEMORY[0x1E695DFF8];
     v16 = MEMORY[0x1E696AEC0];
-    v13 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v17 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v13];
-    v18 = [v7 base64EncodedStringWithOptions:0];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v17 = [typeCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
+    v18 = [resourceCopy base64EncodedStringWithOptions:0];
     v19 = [v16 stringWithFormat:@"data:%@base64, %@", v17, v18];;
     v14 = [v15 URLWithString:v19];
   }

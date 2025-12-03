@@ -6,23 +6,23 @@
 
 - (uint64_t)wf_shortcutAvailability
 {
-  v2 = [a1 intent];
+  intent = [self intent];
 
-  if (v2)
+  if (intent)
   {
-    v3 = [a1 intent];
+    intent2 = [self intent];
 LABEL_5:
-    v5 = v3;
-    v6 = [v3 shortcutAvailability];
+    v5 = intent2;
+    shortcutAvailability = [intent2 shortcutAvailability];
 
-    return v6;
+    return shortcutAvailability;
   }
 
-  v4 = [a1 userActivity];
+  userActivity = [self userActivity];
 
-  if (v4)
+  if (userActivity)
   {
-    v3 = [a1 userActivity];
+    intent2 = [self userActivity];
     goto LABEL_5;
   }
 

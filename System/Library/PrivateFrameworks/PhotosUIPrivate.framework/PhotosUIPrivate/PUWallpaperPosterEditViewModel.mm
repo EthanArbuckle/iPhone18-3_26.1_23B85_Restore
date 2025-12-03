@@ -14,15 +14,15 @@
 - (PFWallpaperCompoundDeviceConfiguration)layoutConfiguration;
 - (PUParallaxLayerStackViewModelUpdater)currentLayerStackViewModelUpdater;
 - (PUWallpaperPosterEditViewModel)init;
-- (PUWallpaperPosterEditViewModel)initWithInitialLayerStackViewModel:(id)a3 availableStyles:(id)a4 environmentIsBackdrop:(BOOL)a5 isUserTransformDisabled:(BOOL)a6;
-- (double)currentClockAreaLuminanceForStyleKind:(id)a3;
-- (id)_layerStackViewModelForStyleKind:(id)a3;
-- (id)_nextStyleKindForStyleKind:(id)a3;
-- (id)_previousStyleKindForStyleKind:(id)a3;
+- (PUWallpaperPosterEditViewModel)initWithInitialLayerStackViewModel:(id)model availableStyles:(id)styles environmentIsBackdrop:(BOOL)backdrop isUserTransformDisabled:(BOOL)disabled;
+- (double)currentClockAreaLuminanceForStyleKind:(id)kind;
+- (id)_layerStackViewModelForStyleKind:(id)kind;
+- (id)_nextStyleKindForStyleKind:(id)kind;
+- (id)_previousStyleKindForStyleKind:(id)kind;
 - (id)availableLayerStackViewModels;
 - (id)posterEditConfigurationRepresentation;
-- (void)_createViewModelsWithInitialViewModel:(id)a3 isUserTransformDisabled:(BOOL)a4;
-- (void)_initScrollPositionWithViewModel:(id)a3;
+- (void)_createViewModelsWithInitialViewModel:(id)model isUserTransformDisabled:(BOOL)disabled;
+- (void)_initScrollPositionWithViewModel:(id)model;
 - (void)_invalidateActiveLayerStackViewModels;
 - (void)_invalidateAdaptiveTimeFrame;
 - (void)_invalidateAvailableLayerStackViewModelsContainerGeometry;
@@ -46,10 +46,10 @@
 - (void)_updateAvailableLayerStackViewModelsDefaultLayouts;
 - (void)_updateAvailableLayerStackViewModelsProperties;
 - (void)_updateCurrentLayerStackViewModel;
-- (void)_updateCurrentStylesWithChange:(int64_t)a3;
+- (void)_updateCurrentStylesWithChange:(int64_t)change;
 - (void)_updateDepthEnabled;
 - (void)_updateDesiredHeadroomVisibilityAmount;
-- (void)_updateLayerStackViewModelProperties:(id)a3;
+- (void)_updateLayerStackViewModelProperties:(id)properties;
 - (void)_updateNormalizedVisibleFrame;
 - (void)_updateOffscreenStylesPreheat;
 - (void)_updatePreviewThumbnail;
@@ -57,42 +57,42 @@
 - (void)_updateSpatialPhotoEnabled;
 - (void)_updateVisibleFrameCrossesHeadroomBoundary;
 - (void)_updateVisibleLayerStackViewModels;
-- (void)applyChangesFromPosterEditConfiguration:(id)a3;
-- (void)applyReframeIfNeededForUseCase:(int64_t)a3;
+- (void)applyChangesFromPosterEditConfiguration:(id)configuration;
+- (void)applyReframeIfNeededForUseCase:(int64_t)case;
 - (void)dealloc;
 - (void)didPerformChanges;
 - (void)noteUserAdjustedVisibleFrame;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
 - (void)preferencesDidChange;
-- (void)reframeIfNeededNormalizedBounds:(CGRect)a3 layout:(id)a4 useCase:(int64_t)a5 forceReframe:(BOOL)a6;
-- (void)scrollToPosition:(id *)a3;
-- (void)setActiveLayerStackViewModels:(id)a3;
-- (void)setAppliesDepthToAllOrientations:(BOOL)a3;
-- (void)setConfiguredSalientContentRectangle:(CGRect)a3;
-- (void)setContainerFrame:(CGRect)a3;
-- (void)setCurrentLayerStackViewModel:(id)a3;
-- (void)setCurrentStyles:(id)a3;
-- (void)setDepthEnabled:(BOOL)a3;
-- (void)setDesiredHeadroomVisibilityAmount:(id)a3;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setHeadroomEnabled:(BOOL)a3;
-- (void)setIsUserPanningOrZooming:(BOOL)a3;
-- (void)setNormalizedVisibleFrame:(CGRect)a3;
-- (void)setNormalizedVisibleFrameAnimated:(CGRect)a3;
-- (void)setParallaxDisabled:(BOOL)a3;
-- (void)setPresentingSingleStyle:(BOOL)a3;
-- (void)setPreviewThumbnail:(id)a3;
-- (void)setSettlingEffectEnabled:(BOOL)a3;
-- (void)setSettlingEffectStateRestorationLayerStyleKind:(id)a3;
-- (void)setSpatialPhotoEnabled:(BOOL)a3;
-- (void)setUserHasAdjustedVisibleFrame:(BOOL)a3;
-- (void)setUsingHeadroom:(BOOL)a3;
-- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)a3;
-- (void)setVisibleLayerStackViewModels:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
-- (void)shutdownWithTimeout:(double)a3;
-- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)a3 layerStack:(id)a4;
+- (void)reframeIfNeededNormalizedBounds:(CGRect)bounds layout:(id)layout useCase:(int64_t)case forceReframe:(BOOL)reframe;
+- (void)scrollToPosition:(id *)position;
+- (void)setActiveLayerStackViewModels:(id)models;
+- (void)setAppliesDepthToAllOrientations:(BOOL)orientations;
+- (void)setConfiguredSalientContentRectangle:(CGRect)rectangle;
+- (void)setContainerFrame:(CGRect)frame;
+- (void)setCurrentLayerStackViewModel:(id)model;
+- (void)setCurrentStyles:(id)styles;
+- (void)setDepthEnabled:(BOOL)enabled;
+- (void)setDesiredHeadroomVisibilityAmount:(id)amount;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setHeadroomEnabled:(BOOL)enabled;
+- (void)setIsUserPanningOrZooming:(BOOL)zooming;
+- (void)setNormalizedVisibleFrame:(CGRect)frame;
+- (void)setNormalizedVisibleFrameAnimated:(CGRect)animated;
+- (void)setParallaxDisabled:(BOOL)disabled;
+- (void)setPresentingSingleStyle:(BOOL)style;
+- (void)setPreviewThumbnail:(id)thumbnail;
+- (void)setSettlingEffectEnabled:(BOOL)enabled;
+- (void)setSettlingEffectStateRestorationLayerStyleKind:(id)kind;
+- (void)setSpatialPhotoEnabled:(BOOL)enabled;
+- (void)setUserHasAdjustedVisibleFrame:(BOOL)frame;
+- (void)setUsingHeadroom:(BOOL)headroom;
+- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)boundary;
+- (void)setVisibleLayerStackViewModels:(id)models;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
+- (void)shutdownWithTimeout:(double)timeout;
+- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)item layerStack:(id)stack;
 @end
 
 @implementation PUWallpaperPosterEditViewModel
@@ -172,28 +172,28 @@
   [(PUWallpaperPosterEditViewModel *)self performChanges:v2];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
+  changeCopy = change;
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (a5 == "LayerStackViewModelObservationContext")
+  observableCopy = observable;
+  v10 = observableCopy;
+  if (context == "LayerStackViewModelObservationContext")
   {
-    v14 = v9;
-    if (v14)
+    currentLayerStackViewModel5 = observableCopy;
+    if (currentLayerStackViewModel5)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_16:
-        v22 = [v14 stylePropertiesChange];
-        v23 = [v14 currentLayerStackPropertiesChange];
-        if ((v6 & 2) != 0)
+        stylePropertiesChange = [currentLayerStackViewModel5 stylePropertiesChange];
+        currentLayerStackPropertiesChange = [currentLayerStackViewModel5 currentLayerStackPropertiesChange];
+        if ((changeCopy & 2) != 0)
         {
-          v24 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+          currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
 
-          if (v24 == v14)
+          if (currentLayerStackViewModel == currentLayerStackViewModel5)
           {
             v46[0] = MEMORY[0x1E69E9820];
             v46[1] = 3221225472;
@@ -204,17 +204,17 @@ LABEL_16:
           }
         }
 
-        if ((v6 & 0x8000) != 0)
+        if ((changeCopy & 0x8000) != 0)
         {
-          v25 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+          currentLayerStackViewModel2 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
 
-          if (v25 == v14)
+          if (currentLayerStackViewModel2 == currentLayerStackViewModel5)
           {
             [(PUWallpaperPosterEditViewModel *)self _updateNormalizedVisibleFrame];
           }
         }
 
-        if (v22)
+        if (stylePropertiesChange)
         {
           v45[0] = MEMORY[0x1E69E9820];
           v45[1] = 3221225472;
@@ -222,10 +222,10 @@ LABEL_16:
           v45[3] = &unk_1E7B78288;
           v45[4] = self;
           [(PUWallpaperPosterEditViewModel *)self performChanges:v45];
-          if ((v22 & 0x10) == 0)
+          if ((stylePropertiesChange & 0x10) == 0)
           {
 LABEL_24:
-            if ((v23 & 0x20) == 0)
+            if ((currentLayerStackPropertiesChange & 0x20) == 0)
             {
               goto LABEL_26;
             }
@@ -234,7 +234,7 @@ LABEL_24:
           }
         }
 
-        else if ((v22 & 0x10) == 0)
+        else if ((stylePropertiesChange & 0x10) == 0)
         {
           goto LABEL_24;
         }
@@ -245,14 +245,14 @@ LABEL_24:
         v44[3] = &unk_1E7B78288;
         v44[4] = self;
         [(PUWallpaperPosterEditViewModel *)self performChanges:v44];
-        if ((v23 & 0x20) == 0)
+        if ((currentLayerStackPropertiesChange & 0x20) == 0)
         {
 LABEL_26:
-          if (([v14 currentLayerStackPropertiesChange] & 2) != 0)
+          if (([currentLayerStackViewModel5 currentLayerStackPropertiesChange] & 2) != 0)
           {
-            v26 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+            originalLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
 
-            if (v26 == v14)
+            if (originalLayerStackViewModel == currentLayerStackViewModel5)
             {
               v42[0] = MEMORY[0x1E69E9820];
               v42[1] = 3221225472;
@@ -263,29 +263,29 @@ LABEL_26:
             }
           }
 
-          if ((v6 & 0x8000000) != 0)
+          if ((changeCopy & 0x8000000) != 0)
           {
-            v27 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-            if (v27 != v14 || ([v14 isLoadingSpatialPhoto] & 1) != 0 || (objc_msgSend(v14, "spatialPhotoEnabled") & 1) != 0)
+            currentLayerStackViewModel3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+            if (currentLayerStackViewModel3 != currentLayerStackViewModel5 || ([currentLayerStackViewModel5 isLoadingSpatialPhoto] & 1) != 0 || (objc_msgSend(currentLayerStackViewModel5, "spatialPhotoEnabled") & 1) != 0)
             {
             }
 
             else
             {
-              v29 = [(PUWallpaperPosterEditViewModel *)self spatialPhotoEnabled];
+              spatialPhotoEnabled = [(PUWallpaperPosterEditViewModel *)self spatialPhotoEnabled];
 
-              if (v29)
+              if (spatialPhotoEnabled)
               {
                 [(PUWallpaperPosterEditViewModel *)self performChanges:&__block_literal_global_123];
               }
             }
           }
 
-          if ((v6 & 0x4000008) != 0)
+          if ((changeCopy & 0x4000008) != 0)
           {
-            v28 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+            currentLayerStackViewModel4 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
 
-            if (v28 == v14)
+            if (currentLayerStackViewModel4 == currentLayerStackViewModel5)
             {
               v41[0] = MEMORY[0x1E69E9820];
               v41[1] = 3221225472;
@@ -309,45 +309,45 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v33 = objc_opt_class();
       v32 = NSStringFromClass(v33);
-      v34 = [v14 px_descriptionForAssertionMessage];
-      [v30 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:1314 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v32, v34}];
+      px_descriptionForAssertionMessage = [currentLayerStackViewModel5 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:1314 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v32, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
-      [v30 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:1314 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v32}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:1314 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v32}];
     }
 
     goto LABEL_16;
   }
 
-  if (a5 == "HeadroomVisibilityAmountAnimatorObservationContext" && (v6 & 2) != 0)
+  if (context == "HeadroomVisibilityAmountAnimatorObservationContext" && (changeCopy & 2) != 0)
   {
-    v11 = [(PUWallpaperPosterEditViewModel *)self headroomVisibilityAmountAnimator];
-    [v11 presentationValue];
+    headroomVisibilityAmountAnimator = [(PUWallpaperPosterEditViewModel *)self headroomVisibilityAmountAnimator];
+    [headroomVisibilityAmountAnimator presentationValue];
     v13 = v12;
 
-    v14 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+    currentLayerStackViewModel5 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __63__PUWallpaperPosterEditViewModel_observable_didChange_context___block_invoke_8;
     v40[3] = &__block_descriptor_40_e48_v16__0___PUParallaxLayerStackMutableViewModel__8l;
     v40[4] = v13;
-    [v14 performChanges:v40];
+    [currentLayerStackViewModel5 performChanges:v40];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v15 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-    v16 = [v15 allValues];
+    layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+    allValues = [layerStackViewModelsByStyleKind allValues];
 
-    v17 = [v16 countByEnumeratingWithState:&v36 objects:v47 count:16];
+    v17 = [allValues countByEnumeratingWithState:&v36 objects:v47 count:16];
     if (v17)
     {
       v18 = v17;
@@ -358,11 +358,11 @@ LABEL_25:
         {
           if (*v37 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allValues);
           }
 
           v21 = *(*(&v36 + 1) + 8 * i);
-          if (v21 != v14)
+          if (v21 != currentLayerStackViewModel5)
           {
             v35[0] = MEMORY[0x1E69E9820];
             v35[1] = 3221225472;
@@ -373,7 +373,7 @@ LABEL_25:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v36 objects:v47 count:16];
+        v18 = [allValues countByEnumeratingWithState:&v36 objects:v47 count:16];
       }
 
       while (v18);
@@ -399,12 +399,12 @@ uint64_t __63__PUWallpaperPosterEditViewModel_observable_didChange_context___blo
   return [v2 signalChange:512];
 }
 
-- (void)setPreviewThumbnail:(id)a3
+- (void)setPreviewThumbnail:(id)thumbnail
 {
-  v8 = a3;
+  thumbnailCopy = thumbnail;
   v5 = self->_previewThumbnail;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == thumbnailCopy)
   {
   }
 
@@ -414,7 +414,7 @@ uint64_t __63__PUWallpaperPosterEditViewModel_observable_didChange_context___blo
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_previewThumbnail, a3);
+      objc_storeStrong(&self->_previewThumbnail, thumbnail);
       [(PUWallpaperPosterEditViewModel *)self signalChange:0x8000];
     }
   }
@@ -422,20 +422,20 @@ uint64_t __63__PUWallpaperPosterEditViewModel_observable_didChange_context___blo
 
 - (void)_updatePreviewThumbnail
 {
-  v3 = [(PUWallpaperPosterEditViewModel *)self previewThumbnail];
+  previewThumbnail = [(PUWallpaperPosterEditViewModel *)self previewThumbnail];
 
-  if (!v3)
+  if (!previewThumbnail)
   {
-    v4 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
-    v66 = [v4 currentLayerStack];
+    originalLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+    currentLayerStack = [originalLayerStackViewModel currentLayerStack];
 
-    v5 = [v66 backgroundLayer];
-    v6 = [v5 image];
+    backgroundLayer = [currentLayerStack backgroundLayer];
+    image = [backgroundLayer image];
 
-    if (v6 || ([v66 backgroundBackfillLayer], v7 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v7, "image"), v7, v6))
+    if (image || ([currentLayerStack backgroundBackfillLayer], v7 = objc_claimAutoreleasedReturnValue(), image = objc_msgSend(v7, "image"), v7, image))
     {
-      v64 = self;
-      v8 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:v6];
+      selfCopy = self;
+      v8 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:image];
       PFDeviceScreenScale();
       v65 = v9;
       PXSizeScale();
@@ -461,86 +461,86 @@ uint64_t __63__PUWallpaperPosterEditViewModel_observable_didChange_context___blo
       v24 = v23;
       v26 = v25;
       v67 = vdivq_f64(vrndaq_f64(vmulq_n_f64(vmulq_n_f64(xmmword_1B3D0CEC0, *&v65), *&v65)), vdupq_lane_s64(v65, 0));
-      v27 = [MEMORY[0x1E695F648] gaussianBlurFilter];
-      v28 = [v18 imageByClampingToExtent];
-      [v27 setInputImage:v28];
+      gaussianBlurFilter = [MEMORY[0x1E695F648] gaussianBlurFilter];
+      imageByClampingToExtent = [v18 imageByClampingToExtent];
+      [gaussianBlurFilter setInputImage:imageByClampingToExtent];
 
       LODWORD(v29) = 10.0;
-      [v27 setRadius:v29];
-      v63 = v27;
-      v30 = [v27 outputImage];
-      v31 = [v30 imageByCroppingToRect:{v20, v22, v24, v26}];
+      [gaussianBlurFilter setRadius:v29];
+      v63 = gaussianBlurFilter;
+      outputImage = [gaussianBlurFilter outputImage];
+      v31 = [outputImage imageByCroppingToRect:{v20, v22, v24, v26}];
 
-      v32 = [MEMORY[0x1E695F648] colorControlsFilter];
+      colorControlsFilter = [MEMORY[0x1E695F648] colorControlsFilter];
       v62 = v31;
-      [v32 setInputImage:v31];
+      [colorControlsFilter setInputImage:v31];
       LODWORD(v33) = 1075419546;
-      [v32 setSaturation:v33];
-      v61 = v32;
-      v34 = [v32 outputImage];
-      v35 = [MEMORY[0x1E695F648] roundedRectangleGeneratorFilter];
-      [v35 setExtent:{v20, v22, v24, v26}];
+      [colorControlsFilter setSaturation:v33];
+      v61 = colorControlsFilter;
+      outputImage2 = [colorControlsFilter outputImage];
+      roundedRectangleGeneratorFilter = [MEMORY[0x1E695F648] roundedRectangleGeneratorFilter];
+      [roundedRectangleGeneratorFilter setExtent:{v20, v22, v24, v26}];
       HIDWORD(v36) = HIDWORD(v67.f64[0]);
       *&v36 = v67.f64[0];
-      [v35 setRadius:v36];
+      [roundedRectangleGeneratorFilter setRadius:v36];
       v37 = [MEMORY[0x1E695F610] colorWithRed:1.0 green:1.0 blue:1.0];
-      [v35 setColor:v37];
+      [roundedRectangleGeneratorFilter setColor:v37];
 
-      v59 = v35;
-      v38 = [v35 outputImage];
-      v39 = [MEMORY[0x1E695F648] roundedRectangleGeneratorFilter];
+      v59 = roundedRectangleGeneratorFilter;
+      outputImage3 = [roundedRectangleGeneratorFilter outputImage];
+      roundedRectangleGeneratorFilter2 = [MEMORY[0x1E695F648] roundedRectangleGeneratorFilter];
       v70.origin.x = v20;
       v70.origin.y = v22;
       v70.size.width = v24;
       v70.size.height = v26;
       v71 = CGRectInset(v70, v67.f64[1], v67.f64[1]);
-      [v39 setExtent:{v71.origin.x, v71.origin.y, v71.size.width, v71.size.height}];
+      [roundedRectangleGeneratorFilter2 setExtent:{v71.origin.x, v71.origin.y, v71.size.width, v71.size.height}];
       v40 = fmax(v67.f64[0] - v67.f64[1], 0.1);
       *&v40 = v40;
-      [v39 setRadius:v40];
+      [roundedRectangleGeneratorFilter2 setRadius:v40];
       v41 = [MEMORY[0x1E695F610] colorWithRed:1.0 green:1.0 blue:1.0];
-      [v39 setColor:v41];
+      [roundedRectangleGeneratorFilter2 setColor:v41];
 
-      v42 = [v39 outputImage];
-      v43 = [MEMORY[0x1E695F648] differenceBlendModeFilter];
-      [v43 setInputImage:v38];
-      v57 = v42;
-      [v43 setBackgroundImage:v42];
-      v44 = [v43 outputImage];
-      v45 = [MEMORY[0x1E695F648] blendWithMaskFilter];
-      v60 = v34;
-      [v45 setInputImage:v34];
-      [v45 setBackgroundImage:0];
-      v56 = v44;
-      [v45 setMaskImage:v44];
-      v46 = [v45 outputImage];
-      v47 = [MEMORY[0x1E695F648] blendWithMaskFilter];
+      outputImage4 = [roundedRectangleGeneratorFilter2 outputImage];
+      differenceBlendModeFilter = [MEMORY[0x1E695F648] differenceBlendModeFilter];
+      [differenceBlendModeFilter setInputImage:outputImage3];
+      v57 = outputImage4;
+      [differenceBlendModeFilter setBackgroundImage:outputImage4];
+      outputImage5 = [differenceBlendModeFilter outputImage];
+      blendWithMaskFilter = [MEMORY[0x1E695F648] blendWithMaskFilter];
+      v60 = outputImage2;
+      [blendWithMaskFilter setInputImage:outputImage2];
+      [blendWithMaskFilter setBackgroundImage:0];
+      v56 = outputImage5;
+      [blendWithMaskFilter setMaskImage:outputImage5];
+      outputImage6 = [blendWithMaskFilter outputImage];
+      blendWithMaskFilter2 = [MEMORY[0x1E695F648] blendWithMaskFilter];
       v68 = v18;
-      [v47 setInputImage:v18];
-      [v47 setBackgroundImage:0];
-      v58 = v38;
-      [v47 setMaskImage:v38];
-      v48 = [v47 outputImage];
-      v49 = [MEMORY[0x1E695F648] sourceOverCompositingFilter];
-      v55 = v46;
-      [v49 setInputImage:v46];
-      [v49 setBackgroundImage:v48];
-      v50 = [v49 outputImage];
-      v51 = [MEMORY[0x1E695F620] context];
-      [v50 extent];
-      v52 = [v51 createCGImage:v50 fromRect:?];
+      [blendWithMaskFilter2 setInputImage:v18];
+      [blendWithMaskFilter2 setBackgroundImage:0];
+      v58 = outputImage3;
+      [blendWithMaskFilter2 setMaskImage:outputImage3];
+      outputImage7 = [blendWithMaskFilter2 outputImage];
+      sourceOverCompositingFilter = [MEMORY[0x1E695F648] sourceOverCompositingFilter];
+      v55 = outputImage6;
+      [sourceOverCompositingFilter setInputImage:outputImage6];
+      [sourceOverCompositingFilter setBackgroundImage:outputImage7];
+      outputImage8 = [sourceOverCompositingFilter outputImage];
+      context = [MEMORY[0x1E695F620] context];
+      [outputImage8 extent];
+      v52 = [context createCGImage:outputImage8 fromRect:?];
       if (v52)
       {
         v53 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v52 scale:0 orientation:*&v65];
-        [(PUWallpaperPosterEditViewModel *)v64 setPreviewThumbnail:v53];
+        [(PUWallpaperPosterEditViewModel *)selfCopy setPreviewThumbnail:v53];
 
         CGImageRelease(v52);
       }
 
       else
       {
-        v54 = [MEMORY[0x1E69DCAB8] imageWithCIImage:v50];
-        [(PUWallpaperPosterEditViewModel *)v64 setPreviewThumbnail:v54];
+        v54 = [MEMORY[0x1E69DCAB8] imageWithCIImage:outputImage8];
+        [(PUWallpaperPosterEditViewModel *)selfCopy setPreviewThumbnail:v54];
       }
     }
   }
@@ -548,31 +548,31 @@ uint64_t __63__PUWallpaperPosterEditViewModel_observable_didChange_context___blo
 
 - (void)_invalidatePreviewThumbnail
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePreviewThumbnail];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePreviewThumbnail];
 }
 
-- (void)setDesiredHeadroomVisibilityAmount:(id)a3
+- (void)setDesiredHeadroomVisibilityAmount:(id)amount
 {
-  v5 = a3;
+  amountCopy = amount;
   v6 = self->_desiredHeadroomVisibilityAmount;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == amountCopy)
   {
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v8 = [(NSNumber *)v6 isEqual:v5];
+  v8 = [(NSNumber *)v6 isEqual:amountCopy];
 
   if ((v8 & 1) == 0)
   {
     v7 = self->_desiredHeadroomVisibilityAmount;
-    objc_storeStrong(&self->_desiredHeadroomVisibilityAmount, a3);
+    objc_storeStrong(&self->_desiredHeadroomVisibilityAmount, amount);
     if (v7 || [(PUWallpaperPosterEditViewModel *)self isUserPanningOrZooming])
     {
-      v9 = [(PUWallpaperPosterEditViewModel *)self headroomVisibilityAmountAnimator];
+      headroomVisibilityAmountAnimator = [(PUWallpaperPosterEditViewModel *)self headroomVisibilityAmountAnimator];
       v10 = +[PUPosterHeadroomSettings sharedInstance];
       [v10 fadeAnimationDuration];
       v12 = v11;
@@ -581,20 +581,20 @@ LABEL_7:
       v16[2] = __69__PUWallpaperPosterEditViewModel_setDesiredHeadroomVisibilityAmount___block_invoke;
       v16[3] = &unk_1E7B78010;
       v13 = &v17;
-      v17 = v5;
-      [v9 performChangesWithDuration:4 curve:v16 changes:v12];
+      v17 = amountCopy;
+      [headroomVisibilityAmountAnimator performChangesWithDuration:4 curve:v16 changes:v12];
     }
 
     else
     {
-      v9 = [(PUWallpaperPosterEditViewModel *)self headroomVisibilityAmountAnimator];
+      headroomVisibilityAmountAnimator = [(PUWallpaperPosterEditViewModel *)self headroomVisibilityAmountAnimator];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __69__PUWallpaperPosterEditViewModel_setDesiredHeadroomVisibilityAmount___block_invoke_2;
       v14[3] = &unk_1E7B78010;
       v13 = &v15;
-      v15 = v5;
-      [v9 performChangesWithoutAnimation:v14];
+      v15 = amountCopy;
+      [headroomVisibilityAmountAnimator performChangesWithoutAnimation:v14];
     }
 
     goto LABEL_7;
@@ -636,36 +636,36 @@ void __69__PUWallpaperPosterEditViewModel_setDesiredHeadroomVisibilityAmount___b
 
 - (void)_invalidateDesiredHeadroomVisibilityAmount
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDesiredHeadroomVisibilityAmount];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDesiredHeadroomVisibilityAmount];
 }
 
-- (void)setUsingHeadroom:(BOOL)a3
+- (void)setUsingHeadroom:(BOOL)headroom
 {
-  if (self->_usingHeadroom != a3)
+  if (self->_usingHeadroom != headroom)
   {
-    self->_usingHeadroom = a3;
+    self->_usingHeadroom = headroom;
     [(PUWallpaperPosterEditViewModel *)self signalChange:4096];
   }
 }
 
-- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)a3
+- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)boundary
 {
-  if (self->_visibleFrameCrossesHeadroomBoundary != a3)
+  if (self->_visibleFrameCrossesHeadroomBoundary != boundary)
   {
-    self->_visibleFrameCrossesHeadroomBoundary = a3;
+    self->_visibleFrameCrossesHeadroomBoundary = boundary;
     [(PUWallpaperPosterEditViewModel *)self _invalidateDesiredHeadroomVisibilityAmount];
   }
 }
 
 - (void)_updateVisibleFrameCrossesHeadroomBoundary
 {
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [v3 currentLayerStack];
-  v5 = [v4 layout];
-  v6 = [v5 canApplyHeadroom];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  currentLayerStack = [currentLayerStackViewModel currentLayerStack];
+  layout = [currentLayerStack layout];
+  canApplyHeadroom = [layout canApplyHeadroom];
 
-  if (v6)
+  if (canApplyHeadroom)
   {
     [(PUWallpaperPosterEditViewModel *)self normalizedVisibleFrame];
     v7 = 0.0 - CGRectGetMinY(v9) > 0.00000011920929;
@@ -683,51 +683,51 @@ void __69__PUWallpaperPosterEditViewModel_setDesiredHeadroomVisibilityAmount___b
 
 - (void)_invalidateVisibleFrameCrossesHeadroomBoundary
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateVisibleFrameCrossesHeadroomBoundary];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateVisibleFrameCrossesHeadroomBoundary];
 }
 
 - (void)_updateSpatialPhotoEnabled
 {
-  v6 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v5 = [v4 allValues];
-  [v6 renderOnscreenModelAfterVisibleFrameChange:v3 recalculateLayoutProperties:0 allViewModels:v5];
+  currentLayerStackViewModelUpdater = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  allValues = [layerStackViewModelsByStyleKind allValues];
+  [currentLayerStackViewModelUpdater renderOnscreenModelAfterVisibleFrameChange:currentLayerStackViewModel recalculateLayoutProperties:0 allViewModels:allValues];
 }
 
 - (void)_invalidateSpatialPhotoEnabled
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSpatialPhotoEnabled];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSpatialPhotoEnabled];
 }
 
 - (void)_updateDepthEnabled
 {
-  v5 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
-  [v5 recalculateClockOverlap:v3 allViewModels:v4 highPriority:1];
+  currentLayerStackViewModelUpdater = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  availableLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
+  [currentLayerStackViewModelUpdater recalculateClockOverlap:currentLayerStackViewModel allViewModels:availableLayerStackViewModels highPriority:1];
 }
 
 - (void)_invalidateDepthEnabled
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDepthEnabled];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDepthEnabled];
 }
 
 - (void)_updateAvailableLayerStackViewModelsDefaultLayouts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v5 = [v4 allValues];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  allValues = [layerStackViewModelsByStyleKind allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -739,17 +739,17 @@ void __69__PUWallpaperPosterEditViewModel_setDesiredHeadroomVisibilityAmount___b
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if (v10 != v3)
+        if (v10 != currentLayerStackViewModel)
         {
           v11[0] = MEMORY[0x1E69E9820];
           v11[1] = 3221225472;
           v11[2] = __84__PUWallpaperPosterEditViewModel__updateAvailableLayerStackViewModelsDefaultLayouts__block_invoke;
           v11[3] = &unk_1E7B77FE8;
-          v12 = v3;
+          v12 = currentLayerStackViewModel;
           [v10 performPrivateChanges:v11];
         }
 
@@ -757,7 +757,7 @@ void __69__PUWallpaperPosterEditViewModel_setDesiredHeadroomVisibilityAmount___b
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -777,18 +777,18 @@ void __84__PUWallpaperPosterEditViewModel__updateAvailableLayerStackViewModelsDe
 
 - (void)_invalidateAvailableLayerStackViewModelsDefaultLayouts
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAvailableLayerStackViewModelsDefaultLayouts];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAvailableLayerStackViewModelsDefaultLayouts];
 }
 
-- (void)_updateLayerStackViewModelProperties:(id)a3
+- (void)_updateLayerStackViewModelProperties:(id)properties
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties___block_invoke;
   v3[3] = &unk_1E7B80328;
   v3[4] = self;
-  [a3 performChanges:v3];
+  [properties performChanges:v3];
 }
 
 void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties___block_invoke(uint64_t a1, void *a2)
@@ -815,10 +815,10 @@ void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties__
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v4 = [v3 allValues];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  allValues = [layerStackViewModelsByStyleKind allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -830,14 +830,14 @@ void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties__
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [(PUWallpaperPosterEditViewModel *)self _updateLayerStackViewModelProperties:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -846,24 +846,24 @@ void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties__
 
 - (void)_invalidateAvailableLayerStackViewModelsProperties
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAvailableLayerStackViewModelsProperties];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAvailableLayerStackViewModelsProperties];
 }
 
 - (void)_updatePropertiesFromCurrentLayerStackViewModel
 {
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  [v3 normalizedVisibleFrame];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  [currentLayerStackViewModel normalizedVisibleFrame];
   [(PUWallpaperPosterEditViewModel *)self setNormalizedVisibleFrame:?];
-  -[PUWallpaperPosterEditViewModel setDepthEnabled:](self, "setDepthEnabled:", [v3 depthEnabled]);
-  -[PUWallpaperPosterEditViewModel setSpatialPhotoEnabled:](self, "setSpatialPhotoEnabled:", [v3 spatialPhotoEnabled]);
-  -[PUWallpaperPosterEditViewModel setParallaxDisabled:](self, "setParallaxDisabled:", [v3 parallaxDisabled]);
+  -[PUWallpaperPosterEditViewModel setDepthEnabled:](self, "setDepthEnabled:", [currentLayerStackViewModel depthEnabled]);
+  -[PUWallpaperPosterEditViewModel setSpatialPhotoEnabled:](self, "setSpatialPhotoEnabled:", [currentLayerStackViewModel spatialPhotoEnabled]);
+  -[PUWallpaperPosterEditViewModel setParallaxDisabled:](self, "setParallaxDisabled:", [currentLayerStackViewModel parallaxDisabled]);
 }
 
 - (void)_invalidatePropertiesFromCurrentLayerStackViewModel
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePropertiesFromCurrentLayerStackViewModel];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePropertiesFromCurrentLayerStackViewModel];
 }
 
 - (void)_updateAvailableLayerStackViewModelsContainerGeometry
@@ -873,10 +873,10 @@ void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties__
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v4 = [v3 allValues];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  allValues = [layerStackViewModelsByStyleKind allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -888,7 +888,7 @@ void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties__
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -902,7 +902,7 @@ void __71__PUWallpaperPosterEditViewModel__updateLayerStackViewModelProperties__
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -920,58 +920,58 @@ void __87__PUWallpaperPosterEditViewModel__updateAvailableLayerStackViewModelsCo
 
 - (void)_invalidateAvailableLayerStackViewModelsContainerGeometry
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAvailableLayerStackViewModelsContainerGeometry];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAvailableLayerStackViewModelsContainerGeometry];
 }
 
 - (void)_updateNormalizedVisibleFrame
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditViewModel *)self isUserPanningOrZooming];
-  v4 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  isUserPanningOrZooming = [(PUWallpaperPosterEditViewModel *)self isUserPanningOrZooming];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __63__PUWallpaperPosterEditViewModel__updateNormalizedVisibleFrame__block_invoke;
   v34[3] = &unk_1E7B80328;
   v34[4] = self;
-  [v4 performChanges:v34];
+  [currentLayerStackViewModel performChanges:v34];
   v5 = +[PUSuggestionsSettings sharedInstance];
-  v6 = [v5 debugDisableFrameUpdates];
+  debugDisableFrameUpdates = [v5 debugDisableFrameUpdates];
 
-  if ((v6 & 1) == 0)
+  if ((debugDisableFrameUpdates & 1) == 0)
   {
-    v7 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-    v8 = [v4 style];
-    v9 = [v8 kind];
-    v10 = [v7 objectForKeyedSubscript:v9];
+    viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+    style = [currentLayerStackViewModel style];
+    kind = [style kind];
+    v10 = [viewModelUpdatersByStyleKind objectForKeyedSubscript:kind];
 
-    if (v3)
+    if (isUserPanningOrZooming)
     {
-      v11 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-      v12 = [v11 allValues];
-      [v10 renderOnscreenModelAfterVisibleFrameChange:v4 recalculateLayoutProperties:1 allViewModels:v12];
+      layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+      allValues = [layerStackViewModelsByStyleKind allValues];
+      [v10 renderOnscreenModelAfterVisibleFrameChange:currentLayerStackViewModel recalculateLayoutProperties:1 allViewModels:allValues];
     }
 
     else
     {
-      v13 = [(PUWallpaperPosterEditViewModel *)self spatialPhotoEnabled];
-      v14 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-      v15 = [v14 allValues];
-      [v10 renderOnscreenModelAfterVisibleFrameChange:v4 recalculateLayoutProperties:!v13 allViewModels:v15];
+      spatialPhotoEnabled = [(PUWallpaperPosterEditViewModel *)self spatialPhotoEnabled];
+      layerStackViewModelsByStyleKind2 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+      allValues2 = [layerStackViewModelsByStyleKind2 allValues];
+      [v10 renderOnscreenModelAfterVisibleFrameChange:currentLayerStackViewModel recalculateLayoutProperties:!spatialPhotoEnabled allViewModels:allValues2];
 
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v16 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-      v11 = [v16 allValues];
+      layerStackViewModelsByStyleKind3 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+      layerStackViewModelsByStyleKind = [layerStackViewModelsByStyleKind3 allValues];
 
-      v17 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v17 = [layerStackViewModelsByStyleKind countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v17)
       {
         v18 = v17;
         v27 = v10;
-        obj = v11;
+        obj = layerStackViewModelsByStyleKind;
         v19 = *v31;
         do
         {
@@ -983,7 +983,7 @@ void __87__PUWallpaperPosterEditViewModel__updateAvailableLayerStackViewModelsCo
             }
 
             v21 = *(*(&v30 + 1) + 8 * i);
-            if (v21 != v4)
+            if (v21 != currentLayerStackViewModel)
             {
               v29[0] = MEMORY[0x1E69E9820];
               v29[1] = 3221225472;
@@ -991,13 +991,13 @@ void __87__PUWallpaperPosterEditViewModel__updateAvailableLayerStackViewModelsCo
               v29[3] = &unk_1E7B80328;
               v29[4] = self;
               [v21 performChanges:v29];
-              v22 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+              viewModelUpdatersByStyleKind2 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
               [v21 style];
-              v24 = v23 = v4;
-              v25 = [v24 kind];
-              v26 = [v22 objectForKeyedSubscript:v25];
+              v24 = v23 = currentLayerStackViewModel;
+              kind2 = [v24 kind];
+              v26 = [viewModelUpdatersByStyleKind2 objectForKeyedSubscript:kind2];
 
-              v4 = v23;
+              currentLayerStackViewModel = v23;
               [v26 renderOffscreenModelAfterVisibleFrameChange:v21 highPriority:{-[NSSet containsObject:](self->_activeLayerStackViewModels, "containsObject:", v21)}];
             }
           }
@@ -1007,7 +1007,7 @@ void __87__PUWallpaperPosterEditViewModel__updateAvailableLayerStackViewModelsCo
 
         while (v18);
         v10 = v27;
-        v11 = obj;
+        layerStackViewModelsByStyleKind = obj;
       }
     }
   }
@@ -1031,35 +1031,35 @@ void __63__PUWallpaperPosterEditViewModel__updateNormalizedVisibleFrame__block_i
 
 - (void)_invalidateNormalizedVisibleFrame
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateNormalizedVisibleFrame];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateNormalizedVisibleFrame];
 }
 
 - (void)_invalidateAdaptiveTimeFrame
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAdaptiveTimeFrame];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAdaptiveTimeFrame];
 }
 
 - (void)_updateAdaptiveTimeFrame
 {
-  v5 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
-  [v5 recalculateClockOverlap:v3 allViewModels:v4 highPriority:1];
+  currentLayerStackViewModelUpdater = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  availableLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
+  [currentLayerStackViewModelUpdater recalculateClockOverlap:currentLayerStackViewModel allViewModels:availableLayerStackViewModels highPriority:1];
 }
 
 - (void)_updateOffscreenStylesPreheat
 {
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
-  v4 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  currentStyleKinds = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PUWallpaperPosterEditViewModel__updateOffscreenStylesPreheat__block_invoke;
   v8[3] = &unk_1E7B77F98;
-  v5 = v4;
+  v5 = currentLayerStackViewModel;
   v9 = v5;
-  v6 = [v3 indexOfObjectPassingTest:v8];
+  v6 = [currentStyleKinds indexOfObjectPassingTest:v8];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7[0] = MEMORY[0x1E69E9820];
@@ -1068,7 +1068,7 @@ void __63__PUWallpaperPosterEditViewModel__updateNormalizedVisibleFrame__block_i
     v7[3] = &unk_1E7B77FC0;
     v7[4] = self;
     v7[5] = v6;
-    [v3 enumerateObjectsUsingBlock:v7];
+    [currentStyleKinds enumerateObjectsUsingBlock:v7];
   }
 }
 
@@ -1111,8 +1111,8 @@ void __63__PUWallpaperPosterEditViewModel__updateOffscreenStylesPreheat__block_i
 
 - (void)_invalidateOffscreenStylesPreheat
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOffscreenStylesPreheat];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOffscreenStylesPreheat];
 }
 
 - (void)_updateCurrentLayerStackViewModel
@@ -1132,17 +1132,17 @@ void __63__PUWallpaperPosterEditViewModel__updateOffscreenStylesPreheat__block_i
   }
 
   v4 = *v3;
-  v5 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  v6 = [layerStackViewModelsByStyleKind objectForKeyedSubscript:v4];
   [(PUWallpaperPosterEditViewModel *)self setCurrentLayerStackViewModel:v6];
 
-  v7 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  if ([v7 clockIntersection])
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  if ([currentLayerStackViewModel clockIntersection])
   {
-    v8 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
-    v9 = [v8 supportsManualClockIntersectionTolerance];
+    segmentationItem = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
+    supportsManualClockIntersectionTolerance = [segmentationItem supportsManualClockIntersectionTolerance];
 
-    if (v9)
+    if (supportsManualClockIntersectionTolerance)
     {
       goto LABEL_9;
     }
@@ -1152,24 +1152,24 @@ void __63__PUWallpaperPosterEditViewModel__updateOffscreenStylesPreheat__block_i
   {
   }
 
-  v10 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
-  v11 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v12 = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
-  [v10 recalculateClockIntersection:v11 allViewModels:v12 highPriority:1];
+  currentLayerStackViewModelUpdater = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModelUpdater];
+  currentLayerStackViewModel2 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  availableLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
+  [currentLayerStackViewModelUpdater recalculateClockIntersection:currentLayerStackViewModel2 allViewModels:availableLayerStackViewModels highPriority:1];
 
 LABEL_9:
 }
 
 - (void)_invalidateCurrentLayerStackViewModel
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentLayerStackViewModel];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentLayerStackViewModel];
 }
 
 - (void)_invalidatePresentingSingleStyle
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePresentingSingleStyle];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePresentingSingleStyle];
 }
 
 - (void)_updateVisibleLayerStackViewModels
@@ -1232,8 +1232,8 @@ LABEL_9:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  availableLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
+  v11 = [availableLayerStackViewModels countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1244,19 +1244,19 @@ LABEL_9:
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(availableLayerStackViewModels);
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-        v17 = [v15 style];
-        v18 = [v17 kind];
-        v19 = [v16 objectForKeyedSubscript:v18];
+        viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+        style = [v15 style];
+        kind = [style kind];
+        v19 = [viewModelUpdatersByStyleKind objectForKeyedSubscript:kind];
 
-        v20 = [(PUWallpaperPosterEditViewModel *)self visibleLayerStackViewModels];
-        LODWORD(v18) = [v20 containsObject:v15];
+        visibleLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self visibleLayerStackViewModels];
+        LODWORD(kind) = [visibleLayerStackViewModels containsObject:v15];
 
-        if (v18)
+        if (kind)
         {
           [v19 ensureOnscreenModelIsLoaded:v15];
         }
@@ -1267,7 +1267,7 @@ LABEL_9:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v12 = [availableLayerStackViewModels countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v12);
@@ -1292,8 +1292,8 @@ void __68__PUWallpaperPosterEditViewModel__updateVisibleLayerStackViewModels__bl
 
 - (void)_invalidateVisibleLayerStackViewModels
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateVisibleLayerStackViewModels];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateVisibleLayerStackViewModels];
 }
 
 - (void)_updateActiveLayerStackViewModels
@@ -1350,36 +1350,36 @@ uint64_t __67__PUWallpaperPosterEditViewModel__updateActiveLayerStackViewModels_
 
 - (void)_invalidateActiveLayerStackViewModels
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateActiveLayerStackViewModels];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateActiveLayerStackViewModels];
 }
 
 - (void)_invalidateCurrentStyles
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentStyles];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentStyles];
 }
 
 - (PFWallpaperCompoundDeviceConfiguration)layoutConfiguration
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v3 = [v2 layoutConfiguration];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  layoutConfiguration = [currentLayerStackViewModel layoutConfiguration];
 
-  return v3;
+  return layoutConfiguration;
 }
 
-- (id)_layerStackViewModelForStyleKind:(id)a3
+- (id)_layerStackViewModelForStyleKind:(id)kind
 {
-  v4 = a3;
-  if (*MEMORY[0x1E69C0B38] == v4)
+  kindCopy = kind;
+  if (*MEMORY[0x1E69C0B38] == kindCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+    v6 = [layerStackViewModelsByStyleKind objectForKeyedSubscript:kindCopy];
 
     if (!v6)
     {
@@ -1394,52 +1394,52 @@ uint64_t __67__PUWallpaperPosterEditViewModel__updateActiveLayerStackViewModels_
 {
   [(PUWallpaperPosterEditViewModel *)self scrollPosition];
   v3 = *&v26[16 * (v27 > 0.5)];
-  v4 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  v5 = [layerStackViewModelsByStyleKind objectForKeyedSubscript:v3];
 
-  v6 = [v5 compoundLayerStack];
-  v7 = [v6 portraitLayerStack];
-  v8 = [v6 landscapeLayerStack];
+  compoundLayerStack = [v5 compoundLayerStack];
+  portraitLayerStack = [compoundLayerStack portraitLayerStack];
+  landscapeLayerStack = [compoundLayerStack landscapeLayerStack];
   if ([(PUWallpaperPosterEditViewModel *)self isBackdropEnvironment])
   {
-    v9 = [v5 currentLayerStack];
+    currentLayerStack = [v5 currentLayerStack];
 
-    v8 = v9;
-    v7 = v8;
+    landscapeLayerStack = currentLayerStack;
+    portraitLayerStack = landscapeLayerStack;
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E69C07F8]);
-  v11 = [v7 layout];
-  [v11 normalizedVisibleFrame];
+  layout = [portraitLayerStack layout];
+  [layout normalizedVisibleFrame];
   PXRectFlippedVertically();
   [v10 setNormalizedVisibleFrame:?];
 
-  v12 = [v8 layout];
-  [v12 normalizedVisibleFrame];
+  layout2 = [landscapeLayerStack layout];
+  [layout2 normalizedVisibleFrame];
   PXRectFlippedVertically();
   [v10 setNormalizedLandscapeVisibleFrame:?];
 
-  v13 = [v7 layout];
-  [v13 normalizedAdaptiveVisibleFrame];
+  layout3 = [portraitLayerStack layout];
+  [layout3 normalizedAdaptiveVisibleFrame];
   PXRectFlippedVertically();
   [v10 setNormalizedAdaptiveVisibleFrame:?];
 
-  v14 = [v8 layout];
-  [v14 normalizedAdaptiveVisibleFrame];
+  layout4 = [landscapeLayerStack layout];
+  [layout4 normalizedAdaptiveVisibleFrame];
   PXRectFlippedVertically();
   [v10 setNormalizedLandscapeAdaptiveVisibleFrame:?];
 
-  v15 = [v7 layout];
-  [v15 normalizedAdaptiveTimeFrame];
+  layout5 = [portraitLayerStack layout];
+  [layout5 normalizedAdaptiveTimeFrame];
   PXRectFlippedVertically();
   [v10 setNormalizedAdaptiveTimeFrame:?];
 
-  v16 = [v8 layout];
-  [v16 normalizedAdaptiveTimeFrame];
+  layout6 = [landscapeLayerStack layout];
+  [layout6 normalizedAdaptiveTimeFrame];
   PXRectFlippedVertically();
   [v10 setNormalizedLandscapeAdaptiveTimeFrame:?];
 
-  if ([v7 depthEnabled] && !-[PUWallpaperPosterEditViewModel settlingEffectEnabled](self, "settlingEffectEnabled"))
+  if ([portraitLayerStack depthEnabled] && !-[PUWallpaperPosterEditViewModel settlingEffectEnabled](self, "settlingEffectEnabled"))
   {
     v17 = [(PUWallpaperPosterEditViewModel *)self isBackdropEnvironment]^ 1;
   }
@@ -1450,11 +1450,11 @@ uint64_t __67__PUWallpaperPosterEditViewModel__updateActiveLayerStackViewModels_
   }
 
   [v10 setIsDepthEnabled:v17];
-  v18 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
-  v19 = [v18 segmentationMatte];
-  [v10 setIsDepthAvailable:v19 != 0];
+  segmentationItem = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
+  segmentationMatte = [segmentationItem segmentationMatte];
+  [v10 setIsDepthAvailable:segmentationMatte != 0];
 
-  if ([v8 depthEnabled])
+  if ([landscapeLayerStack depthEnabled])
   {
     v20 = [(PUWallpaperPosterEditViewModel *)self isBackdropEnvironment]^ 1;
   }
@@ -1466,18 +1466,18 @@ uint64_t __67__PUWallpaperPosterEditViewModel__updateActiveLayerStackViewModels_
 
   [v10 setIsLandscapeDepthEnabled:v20];
   [v10 setIsSettlingEffectEnabled:{-[PUWallpaperPosterEditViewModel settlingEffectEnabled](self, "settlingEffectEnabled")}];
-  v21 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
-  [v10 setIsSettlingEffectAvailable:{objc_msgSend(v21, "isSettlingEffectAvailable")}];
+  segmentationItem2 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
+  [v10 setIsSettlingEffectAvailable:{objc_msgSend(segmentationItem2, "isSettlingEffectAvailable")}];
 
   [v10 setIsSpatialPhotoEnabled:{-[PUWallpaperPosterEditViewModel spatialPhotoEnabled](self, "spatialPhotoEnabled")}];
-  v22 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
-  [v10 setIsSpatialPhotoAvailable:{objc_msgSend(v22, "isSpatialPhotoAvailable")}];
+  segmentationItem3 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
+  [v10 setIsSpatialPhotoAvailable:{objc_msgSend(segmentationItem3, "isSpatialPhotoAvailable")}];
 
   [v10 setIsPerspectiveZoomEnabled:{-[PUWallpaperPosterEditViewModel parallaxDisabled](self, "parallaxDisabled") ^ 1}];
   [v10 setUserAdjustedVisibleFrame:{-[PUWallpaperPosterEditViewModel userHasAdjustedVisibleFrame](self, "userHasAdjustedVisibleFrame")}];
-  v23 = [v5 style];
-  v24 = [v23 bakedStyle];
-  [v10 setStyle:v24];
+  style = [v5 style];
+  bakedStyle = [style bakedStyle];
+  [v10 setStyle:bakedStyle];
 
   [v5 overrideTitleHeight];
   [v10 setAdditionalTitleLabelHeight:?];
@@ -1489,30 +1489,30 @@ uint64_t __67__PUWallpaperPosterEditViewModel__updateActiveLayerStackViewModels_
   return v10;
 }
 
-- (void)applyChangesFromPosterEditConfiguration:(id)a3
+- (void)applyChangesFromPosterEditConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v6 = [v5 orientation];
+  configurationCopy = configuration;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  orientation = [currentLayerStackViewModel orientation];
 
-  if (v6 == 2)
+  if (orientation == 2)
   {
-    [v4 normalizedLandscapeVisibleFrame];
+    [configurationCopy normalizedLandscapeVisibleFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v4 isLandscapeDepthEnabled];
+    isLandscapeDepthEnabled = [configurationCopy isLandscapeDepthEnabled];
   }
 
   else
   {
-    [v4 normalizedVisibleFrame];
+    [configurationCopy normalizedVisibleFrame];
     v8 = v16;
     v10 = v17;
     v12 = v18;
     v14 = v19;
-    v15 = [v4 isDepthEnabled];
+    isLandscapeDepthEnabled = [configurationCopy isDepthEnabled];
   }
 
   v21[0] = MEMORY[0x1E69E9820];
@@ -1523,10 +1523,10 @@ uint64_t __67__PUWallpaperPosterEditViewModel__updateActiveLayerStackViewModels_
   v25 = v10;
   v26 = v12;
   v27 = v14;
-  v28 = v15;
-  v22 = v4;
-  v23 = self;
-  v20 = v4;
+  v28 = isLandscapeDepthEnabled;
+  v22 = configurationCopy;
+  selfCopy = self;
+  v20 = configurationCopy;
   [(PUWallpaperPosterEditViewModel *)self performChanges:v21];
 }
 
@@ -1574,19 +1574,19 @@ void __74__PUWallpaperPosterEditViewModel_applyChangesFromPosterEditConfiguratio
   }
 }
 
-- (id)_nextStyleKindForStyleKind:(id)a3
+- (id)_nextStyleKindForStyleKind:(id)kind
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
-  v6 = [v5 indexOfObject:v4];
+  kindCopy = kind;
+  currentStyleKinds = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
+  v6 = [currentStyleKinds indexOfObject:kindCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = PLWallpaperGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = kindCopy;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "styleKind %@ not found in availableStyleKinds", &v15, 0xCu);
     }
 
@@ -1597,7 +1597,7 @@ void __74__PUWallpaperPosterEditViewModel_applyChangesFromPosterEditConfiguratio
   {
     v9 = v6;
     v10 = v6 + 1;
-    v11 = [v5 count];
+    v11 = [currentStyleKinds count];
     if (v10 < v11 - 1)
     {
       v12 = v9 + 1;
@@ -1608,7 +1608,7 @@ void __74__PUWallpaperPosterEditViewModel_applyChangesFromPosterEditConfiguratio
       v12 = v11 - 1;
     }
 
-    v8 = [v5 objectAtIndexedSubscript:v12];
+    v8 = [currentStyleKinds objectAtIndexedSubscript:v12];
   }
 
   v13 = v8;
@@ -1616,19 +1616,19 @@ void __74__PUWallpaperPosterEditViewModel_applyChangesFromPosterEditConfiguratio
   return v13;
 }
 
-- (id)_previousStyleKindForStyleKind:(id)a3
+- (id)_previousStyleKindForStyleKind:(id)kind
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
-  v6 = [v5 indexOfObject:v4];
+  kindCopy = kind;
+  currentStyleKinds = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
+  v6 = [currentStyleKinds indexOfObject:kindCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = PLWallpaperGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = kindCopy;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "styleKind %@ not found in availableStyleKinds", &v12, 0xCu);
     }
 
@@ -1647,7 +1647,7 @@ void __74__PUWallpaperPosterEditViewModel_applyChangesFromPosterEditConfiguratio
       v9 = v6;
     }
 
-    v8 = [v5 objectAtIndexedSubscript:v9 - 1];
+    v8 = [currentStyleKinds objectAtIndexedSubscript:v9 - 1];
   }
 
   v10 = v8;
@@ -1655,25 +1655,25 @@ void __74__PUWallpaperPosterEditViewModel_applyChangesFromPosterEditConfiguratio
   return v10;
 }
 
-- (void)_updateCurrentStylesWithChange:(int64_t)a3
+- (void)_updateCurrentStylesWithChange:(int64_t)change
 {
-  v6 = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
+  availableLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self availableLayerStackViewModels];
   v7 = PXMap();
 
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
-  v21 = a3;
-  v8 = [(PUWallpaperPosterEditViewModel *)self currentStyles];
-  v9 = [v8 copy];
+  changeCopy = change;
+  currentStyles = [(PUWallpaperPosterEditViewModel *)self currentStyles];
+  v9 = [currentStyles copy];
 
   if (v9)
   {
     v10 = [v9 count];
     if (v10 != [v7 count])
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:777 description:@"Diffing is only supported when number of styles does not change"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:777 description:@"Diffing is only supported when number of styles does not change"];
     }
 
     v12 = MEMORY[0x1E69E9820];
@@ -1729,9 +1729,9 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)setCurrentStyles:(id)a3
+- (void)setCurrentStyles:(id)styles
 {
-  v4 = [a3 copy];
+  v4 = [styles copy];
   currentStyles = self->_currentStyles;
   self->_currentStyles = v4;
 
@@ -1740,83 +1740,83 @@ LABEL_9:
 
 - (NSArray)currentStyleKinds
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self currentStyles];
+  currentStyles = [(PUWallpaperPosterEditViewModel *)self currentStyles];
   v3 = PXMap();
 
   return v3;
 }
 
-- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)a3 layerStack:(id)a4
+- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)item layerStack:(id)stack
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_segmentationItem != v7)
+  itemCopy = item;
+  stackCopy = stack;
+  if (self->_segmentationItem != itemCopy)
   {
-    objc_storeStrong(&self->_segmentationItem, a3);
-    v9 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+    objc_storeStrong(&self->_segmentationItem, item);
+    originalLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __90__PUWallpaperPosterEditViewModel_updatePhotoEffectsWithLoadedSegmentationItem_layerStack___block_invoke;
     v13 = &unk_1E7B804F8;
-    v14 = v7;
-    v15 = v8;
-    [v9 performChanges:&v10];
+    v14 = itemCopy;
+    v15 = stackCopy;
+    [originalLayerStackViewModel performChanges:&v10];
 
     [(PUWallpaperPosterEditViewModel *)self signalChange:0x10000, v10, v11, v12, v13];
   }
 }
 
-- (void)setPresentingSingleStyle:(BOOL)a3
+- (void)setPresentingSingleStyle:(BOOL)style
 {
-  if (self->_presentingSingleStyle != a3)
+  if (self->_presentingSingleStyle != style)
   {
-    self->_presentingSingleStyle = a3;
+    self->_presentingSingleStyle = style;
     [(PUWallpaperPosterEditViewModel *)self signalChange:64];
   }
 }
 
-- (void)setSettlingEffectStateRestorationLayerStyleKind:(id)a3
+- (void)setSettlingEffectStateRestorationLayerStyleKind:(id)kind
 {
-  v5 = a3;
-  if (self->_settlingEffectStateRestorationLayerStyleKind != v5)
+  kindCopy = kind;
+  if (self->_settlingEffectStateRestorationLayerStyleKind != kindCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_settlingEffectStateRestorationLayerStyleKind, a3);
-    v5 = v6;
+    v6 = kindCopy;
+    objc_storeStrong(&self->_settlingEffectStateRestorationLayerStyleKind, kind);
+    kindCopy = v6;
   }
 }
 
-- (void)setParallaxDisabled:(BOOL)a3
+- (void)setParallaxDisabled:(BOOL)disabled
 {
-  if (self->_parallaxDisabled != a3)
+  if (self->_parallaxDisabled != disabled)
   {
-    self->_parallaxDisabled = a3;
+    self->_parallaxDisabled = disabled;
     [(PUWallpaperPosterEditViewModel *)self _invalidateAvailableLayerStackViewModelsProperties];
 
     [(PUWallpaperPosterEditViewModel *)self signalChange:32];
   }
 }
 
-- (void)setHeadroomEnabled:(BOOL)a3
+- (void)setHeadroomEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PUWallpaperPosterEditViewModel *)self isUsingHeadroom]!= a3)
+  enabledCopy = enabled;
+  if ([(PUWallpaperPosterEditViewModel *)self isUsingHeadroom]!= enabled)
   {
-    self->_headroomEnabled = v3;
-    v5 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-    v6 = [v5 orientation];
+    self->_headroomEnabled = enabledCopy;
+    currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+    orientation = [currentLayerStackViewModel orientation];
     if ([(PUWallpaperPosterEditViewModel *)self isUsingHeadroom])
     {
-      [v5 effectiveDefaultLayout];
+      [currentLayerStackViewModel effectiveDefaultLayout];
     }
 
     else
     {
-      [v5 effectiveHeadroomLayout];
+      [currentLayerStackViewModel effectiveHeadroomLayout];
     }
     v7 = ;
     v8 = v7;
-    if (v6 == 2)
+    if (orientation == 2)
     {
       [v7 landscapeLayout];
     }
@@ -1847,20 +1847,20 @@ LABEL_9:
     }
 
     y = *(MEMORY[0x1E69BDDA8] + 8) + *(MEMORY[0x1E69BDDA8] + 24) - (height + v13);
-    [v5 normalizedVisibleFrame];
+    [currentLayerStackViewModel normalizedVisibleFrame];
     v23 = PXRectApproximatelyEqualToRect();
-    v24 = [v5 effectiveHeadroomLayout];
+    effectiveHeadroomLayout = [currentLayerStackViewModel effectiveHeadroomLayout];
 
-    v25 = [v9 isUsingHeadroom];
-    if (v3)
+    isUsingHeadroom = [v9 isUsingHeadroom];
+    if (enabledCopy)
     {
-      v26 = v24 ? v23 : 1;
-      if ((v26 & 1) != 0 || v25 != 1)
+      v26 = effectiveHeadroomLayout ? v23 : 1;
+      if ((v26 & 1) != 0 || isUsingHeadroom != 1)
       {
         if ([(PUWallpaperPosterEditViewModel *)self spatialPhotoEnabled])
         {
-          v27 = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
-          [v27 spatialPhotoNormalizedBounds];
+          segmentationItem = [(PUWallpaperPosterEditViewModel *)self segmentationItem];
+          [segmentationItem spatialPhotoNormalizedBounds];
           v29 = v28;
           v31 = v30;
           v33 = v32;
@@ -1881,7 +1881,7 @@ LABEL_9:
         v42.size.width = v33;
         v42.size.height = v35;
         CGRectOffset(v42, 0.0, v36);
-        [v5 normalizedVisibleFrame];
+        [currentLayerStackViewModel normalizedVisibleFrame];
         PXSizeGetAspectRatio();
         PXRectWithAspectRatioFittingRect();
         x = v43.origin.x;
@@ -1904,7 +1904,7 @@ LABEL_9:
       [(PUWallpaperPosterEditViewModel *)self setNormalizedVisibleFrameAnimated:x, y, width, height];
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       [(PUWallpaperPosterEditViewModel *)self setSettlingEffectEnabled:0];
       [(PUWallpaperPosterEditViewModel *)self setDepthEnabled:1];
@@ -1914,15 +1914,15 @@ LABEL_9:
     v40[1] = 3221225472;
     v40[2] = __53__PUWallpaperPosterEditViewModel_setHeadroomEnabled___block_invoke;
     v40[3] = &__block_descriptor_33_e48_v16__0___PUParallaxLayerStackMutableViewModel__8l;
-    v41 = v3;
-    [v5 performChanges:v40];
+    v41 = enabledCopy;
+    [currentLayerStackViewModel performChanges:v40];
     if ([(PUWallpaperPosterEditViewModel *)self spatialPhotoEnabled])
     {
-      v37 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-      v38 = [v37 objectForKeyedSubscript:*MEMORY[0x1E69C0B28]];
+      viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+      v38 = [viewModelUpdatersByStyleKind objectForKeyedSubscript:*MEMORY[0x1E69C0B28]];
 
-      v39 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
-      [v38 renderSpatialPhotoLayerIfNeededForViewModel:v39 isUserTransformDisabled:-[PUWallpaperPosterEditViewModel isUserTransformDisabled](self completionHandler:{"isUserTransformDisabled"), &__block_literal_global_80}];
+      originalLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+      [v38 renderSpatialPhotoLayerIfNeededForViewModel:originalLayerStackViewModel isUserTransformDisabled:-[PUWallpaperPosterEditViewModel isUserTransformDisabled](self completionHandler:{"isUserTransformDisabled"), &__block_literal_global_80}];
     }
 
     [(PUWallpaperPosterEditViewModel *)self signalChange:0x2000];
@@ -1944,14 +1944,14 @@ uint64_t __53__PUWallpaperPosterEditViewModel_setHeadroomEnabled___block_invoke(
   return [a2 setHeadroomState:v2];
 }
 
-- (void)setConfiguredSalientContentRectangle:(CGRect)a3
+- (void)setConfiguredSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   p_configuredSalientContentRectangle = &self->_configuredSalientContentRectangle;
-  if (!CGRectEqualToRect(self->_configuredSalientContentRectangle, a3))
+  if (!CGRectEqualToRect(self->_configuredSalientContentRectangle, rectangle))
   {
     p_configuredSalientContentRectangle->origin.x = x;
     p_configuredSalientContentRectangle->origin.y = y;
@@ -1963,13 +1963,13 @@ uint64_t __53__PUWallpaperPosterEditViewModel_setHeadroomEnabled___block_invoke(
   }
 }
 
-- (void)setSettlingEffectEnabled:(BOOL)a3
+- (void)setSettlingEffectEnabled:(BOOL)enabled
 {
-  if (self->_settlingEffectEnabled != a3)
+  if (self->_settlingEffectEnabled != enabled)
   {
     v8 = v3;
-    self->_settlingEffectEnabled = a3;
-    if (a3)
+    self->_settlingEffectEnabled = enabled;
+    if (enabled)
     {
       [(PUWallpaperPosterEditViewModel *)self setSpatialPhotoEnabled:0];
     }
@@ -1980,42 +1980,42 @@ uint64_t __53__PUWallpaperPosterEditViewModel_setHeadroomEnabled___block_invoke(
   }
 }
 
-- (void)setAppliesDepthToAllOrientations:(BOOL)a3
+- (void)setAppliesDepthToAllOrientations:(BOOL)orientations
 {
-  if (self->_appliesDepthToAllOrientations != a3)
+  if (self->_appliesDepthToAllOrientations != orientations)
   {
-    self->_appliesDepthToAllOrientations = a3;
+    self->_appliesDepthToAllOrientations = orientations;
     [(PUWallpaperPosterEditViewModel *)self _invalidateAvailableLayerStackViewModelsProperties];
 
     [(PUWallpaperPosterEditViewModel *)self signalChange:2048];
   }
 }
 
-- (void)setSpatialPhotoEnabled:(BOOL)a3
+- (void)setSpatialPhotoEnabled:(BOOL)enabled
 {
-  if (self->_spatialPhotoEnabled != a3)
+  if (self->_spatialPhotoEnabled != enabled)
   {
-    self->_spatialPhotoEnabled = a3;
-    if (a3)
+    self->_spatialPhotoEnabled = enabled;
+    if (enabled)
     {
       [(PUWallpaperPosterEditViewModel *)self setSettlingEffectEnabled:0];
-      v4 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
-      v5 = [v4 isLoadingSpatialPhoto];
+      originalLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+      isLoadingSpatialPhoto = [originalLayerStackViewModel isLoadingSpatialPhoto];
 
-      if ((v5 & 1) == 0)
+      if ((isLoadingSpatialPhoto & 1) == 0)
       {
-        v6 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-        v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0B28]];
+        viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+        v7 = [viewModelUpdatersByStyleKind objectForKeyedSubscript:*MEMORY[0x1E69C0B28]];
 
         objc_initWeak(&location, self);
-        v8 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
-        v9 = [(PUWallpaperPosterEditViewModel *)self isUserTransformDisabled];
+        originalLayerStackViewModel2 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+        isUserTransformDisabled = [(PUWallpaperPosterEditViewModel *)self isUserTransformDisabled];
         v10 = MEMORY[0x1E69E9820];
         v11 = 3221225472;
         v12 = __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke;
         v13 = &unk_1E7B80638;
         objc_copyWeak(&v14, &location);
-        [v7 renderSpatialPhotoLayerIfNeededForViewModel:v8 isUserTransformDisabled:v9 completionHandler:&v10];
+        [v7 renderSpatialPhotoLayerIfNeededForViewModel:originalLayerStackViewModel2 isUserTransformDisabled:isUserTransformDisabled completionHandler:&v10];
 
         objc_destroyWeak(&v14);
         objc_destroyWeak(&location);
@@ -2039,11 +2039,11 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
   [WeakRetained performChanges:&__block_literal_global_77];
 }
 
-- (void)setDepthEnabled:(BOOL)a3
+- (void)setDepthEnabled:(BOOL)enabled
 {
-  if (self->_depthEnabled != a3 && !self->_backdropEnvironment)
+  if (self->_depthEnabled != enabled && !self->_backdropEnvironment)
   {
-    self->_depthEnabled = a3;
+    self->_depthEnabled = enabled;
     [(PUWallpaperPosterEditViewModel *)self _invalidateAvailableLayerStackViewModelsProperties];
     [(PUWallpaperPosterEditViewModel *)self _invalidateDepthEnabled];
 
@@ -2058,18 +2058,18 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     return 1;
   }
 
-  v4 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v5 = [v4 depthEnabledInAnyOrientation];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  depthEnabledInAnyOrientation = [currentLayerStackViewModel depthEnabledInAnyOrientation];
 
-  return v5;
+  return depthEnabledInAnyOrientation;
 }
 
-- (void)setContainerFrame:(CGRect)a3
+- (void)setContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_containerFrame = &self->_containerFrame;
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
@@ -2085,12 +2085,12 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
 
 - (BOOL)applyReframeVisibleFrameRestoration
 {
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [v3 orientation];
-  v5 = [v3 compoundLayerStack];
-  v6 = [v5 landscapeLayerStack];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  orientation = [currentLayerStackViewModel orientation];
+  compoundLayerStack = [currentLayerStackViewModel compoundLayerStack];
+  landscapeLayerStack = [compoundLayerStack landscapeLayerStack];
 
-  if (v4 == 2)
+  if (orientation == 2)
   {
     [(PUWallpaperPosterEditViewModel *)self reframeStateRestorationLandscapeNormalizedVisibleFrame];
   }
@@ -2110,9 +2110,9 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     [(PUWallpaperPosterEditViewModel *)self setNormalizedVisibleFrameAnimated:v11, v12, v13, v14];
   }
 
-  if (v6)
+  if (landscapeLayerStack)
   {
-    if (v4 == 2)
+    if (orientation == 2)
     {
       [(PUWallpaperPosterEditViewModel *)self reframeStateRestorationPortraitNormalizedVisibleFrame];
     }
@@ -2136,16 +2136,16 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
       v25[5] = v21;
       v25[6] = v22;
       v25[7] = v23;
-      [v3 performChanges:v25];
+      [currentLayerStackViewModel performChanges:v25];
     }
   }
 
   return !IsEmpty;
 }
 
-- (void)setUserHasAdjustedVisibleFrame:(BOOL)a3
+- (void)setUserHasAdjustedVisibleFrame:(BOOL)frame
 {
-  if (self->_userHasAdjustedVisibleFrame != a3)
+  if (self->_userHasAdjustedVisibleFrame != frame)
   {
     self->_userHasAdjustedVisibleFrame = 1;
     [(PUWallpaperPosterEditViewModel *)self _invalidateAvailableLayerStackViewModelsProperties];
@@ -2165,16 +2165,16 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
 - (void)noteUserAdjustedVisibleFrame
 {
   [(PUWallpaperPosterEditViewModel *)self setSettlingEffectStateRestorationLayerStyleKind:*MEMORY[0x1E69C0B28]];
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [v3 orientation];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  orientation = [currentLayerStackViewModel orientation];
 
-  if (v4 == 2)
+  if (orientation == 2)
   {
     [(PUWallpaperPosterEditViewModel *)self setUserHasAdjustedLandscapeVisibleFrame:1];
     [(PUWallpaperPosterEditViewModel *)self setReframeStateRestorationLandscapeNormalizedVisibleFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
-  else if (v4 == 1)
+  else if (orientation == 1)
   {
     [(PUWallpaperPosterEditViewModel *)self setUserHasAdjustedPortraitVisibleFrame:1];
     [(PUWallpaperPosterEditViewModel *)self setReframeStateRestorationPortraitNormalizedVisibleFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -2183,55 +2183,55 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
   [(PUWallpaperPosterEditViewModel *)self setUserHasAdjustedVisibleFrame:1];
 }
 
-- (void)reframeIfNeededNormalizedBounds:(CGRect)a3 layout:(id)a4 useCase:(int64_t)a5 forceReframe:(BOOL)a6
+- (void)reframeIfNeededNormalizedBounds:(CGRect)bounds layout:(id)layout useCase:(int64_t)case forceReframe:(BOOL)reframe
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v135 = *MEMORY[0x1E69E9840];
-  v13 = a4;
+  layoutCopy = layout;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__PUWallpaperPosterEditViewModel_reframeIfNeededNormalizedBounds_layout_useCase_forceReframe___block_invoke;
   aBlock[3] = &unk_1E7B77EE0;
-  v128 = a6;
+  reframeCopy = reframe;
   aBlock[4] = self;
   *&aBlock[5] = x;
   *&aBlock[6] = y;
   *&aBlock[7] = width;
   *&aBlock[8] = height;
-  aBlock[9] = a5;
+  aBlock[9] = case;
   v14 = _Block_copy(aBlock);
-  v15 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v16 = [v15 orientation];
-  v17 = [v15 compoundLayerStack];
-  v18 = [v17 landscapeLayerStack];
-  v19 = [v17 portraitLayerStack];
-  v20 = v19;
-  if (v16 == 2)
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  orientation = [currentLayerStackViewModel orientation];
+  compoundLayerStack = [currentLayerStackViewModel compoundLayerStack];
+  landscapeLayerStack = [compoundLayerStack landscapeLayerStack];
+  portraitLayerStack = [compoundLayerStack portraitLayerStack];
+  v20 = portraitLayerStack;
+  if (orientation == 2)
   {
-    v21 = v18;
+    v21 = landscapeLayerStack;
   }
 
   else
   {
-    v21 = v19;
+    v21 = portraitLayerStack;
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
-    v22 = v19;
+    v22 = portraitLayerStack;
   }
 
   else
   {
-    v22 = v18;
+    v22 = landscapeLayerStack;
   }
 
   v125 = v21;
   v124 = v22;
-  if (!v13)
+  if (!layoutCopy)
   {
     v78 = PLWallpaperGetLog();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
@@ -2243,15 +2243,15 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     goto LABEL_71;
   }
 
-  v23 = [v13 portraitLayout];
-  [v23 visibleFrame];
+  portraitLayout = [layoutCopy portraitLayout];
+  [portraitLayout visibleFrame];
   v109 = v25;
   log = v24;
   v120 = v27;
   v121 = v26;
 
-  v28 = [v13 landscapeLayout];
-  [v28 visibleFrame];
+  landscapeLayout = [layoutCopy landscapeLayout];
+  [landscapeLayout visibleFrame];
   v116 = v30;
   v118 = v29;
   v122 = v32;
@@ -2261,14 +2261,14 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
   v33.f64[1] = log;
   v34.f64[0] = v116;
   v34.f64[1] = v118;
-  if (a5 == 1)
+  if (case == 1)
   {
     v107 = v33;
     rect1 = v34;
     if (![(PUWallpaperPosterEditViewModel *)self isUserTransformDisabled])
     {
-      [v15 contentRect];
-      [v15 layoutRectForViewRect:?];
+      [currentLayerStackViewModel contentRect];
+      [currentLayerStackViewModel layoutRectForViewRect:?];
       v36.f64[0] = v35;
       v38 = v37;
       v40.f64[0] = v39;
@@ -2366,7 +2366,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v34 = rect1;
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v65 = v122;
   }
@@ -2376,7 +2376,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v65 = v120;
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v66 = v123;
   }
@@ -2386,7 +2386,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v66 = v121;
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v67 = v34.f64[0];
   }
@@ -2396,7 +2396,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v67 = v33.f64[0];
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v68 = v34.f64[1];
   }
@@ -2406,7 +2406,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v68 = v33.f64[1];
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v69 = v120;
   }
@@ -2416,7 +2416,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v69 = v122;
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v70 = v121;
   }
@@ -2426,7 +2426,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v70 = v123;
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v71 = v33.f64[0];
   }
@@ -2436,7 +2436,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v71 = v34.f64[0];
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     v72 = v33.f64[1];
   }
@@ -2460,7 +2460,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     v77 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  if (v16 == 2)
+  if (orientation == 2)
   {
     [(PUWallpaperPosterEditViewModel *)self setReframeStateRestorationLandscapeNormalizedVisibleFrame:v74, v75, v76, v77];
     if (!v73)
@@ -2478,7 +2478,7 @@ void __57__PUWallpaperPosterEditViewModel_setSpatialPhotoEnabled___block_invoke(
     }
   }
 
-  [v15 imageSize];
+  [currentLayerStackViewModel imageSize];
   v81 = 0.0;
   v82 = 0.0;
   if (v79 != 0.0)
@@ -2501,8 +2501,8 @@ LABEL_58:
     v84 = v14[2](v14, v124);
     if (v84)
     {
-      v85 = [v124 layout];
-      [v85 normalizedVisibleFrame];
+      layout = [v124 layout];
+      [layout normalizedVisibleFrame];
       PXRectFlippedVertically();
       v87 = v86;
       v89 = v88;
@@ -2518,7 +2518,7 @@ LABEL_58:
       v93 = *(MEMORY[0x1E695F058] + 24);
     }
 
-    if (v16 == 2)
+    if (orientation == 2)
     {
       [(PUWallpaperPosterEditViewModel *)self setReframeStateRestorationPortraitNormalizedVisibleFrame:v87, v89, v91, v93];
     }
@@ -2531,8 +2531,8 @@ LABEL_58:
     v83 = v124;
     if (v84)
     {
-      v94 = [v124 layout];
-      [v94 imageSize];
+      layout2 = [v124 layout];
+      [layout2 imageSize];
       v97 = 0.0;
       v98 = 0.0;
       if (v95 != 0.0)
@@ -2556,7 +2556,7 @@ LABEL_58:
       *&v126[5] = v99;
       *&v126[6] = v98;
       *&v126[7] = v97;
-      [v15 performChanges:v126];
+      [currentLayerStackViewModel performChanges:v126];
 LABEL_71:
       v83 = v124;
     }
@@ -2645,49 +2645,49 @@ LABEL_15:
   return v6 & 1;
 }
 
-- (void)applyReframeIfNeededForUseCase:(int64_t)a3
+- (void)applyReframeIfNeededForUseCase:(int64_t)case
 {
-  v5 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v25 = [v5 segmentationItem];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  segmentationItem = [currentLayerStackViewModel segmentationItem];
 
-  if (a3 == 1)
+  if (case == 1)
   {
-    [v25 spatialPhotoNormalizedBounds];
+    [segmentationItem spatialPhotoNormalizedBounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v14 = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
-    v23 = [v14 compoundLayerStack];
-    v24 = [v23 layout];
-    [(PUWallpaperPosterEditViewModel *)self reframeIfNeededNormalizedBounds:v24 layout:1 useCase:0 forceReframe:v16, v18, v20, v22];
+    originalLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self originalLayerStackViewModel];
+    compoundLayerStack = [originalLayerStackViewModel compoundLayerStack];
+    layout = [compoundLayerStack layout];
+    [(PUWallpaperPosterEditViewModel *)self reframeIfNeededNormalizedBounds:layout layout:1 useCase:0 forceReframe:v16, v18, v20, v22];
   }
 
   else
   {
-    if (a3)
+    if (case)
     {
       goto LABEL_6;
     }
 
-    [v25 settlingEffectNormalizedBounds];
+    [segmentationItem settlingEffectNormalizedBounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v25 settlingEffectLayout];
-    [(PUWallpaperPosterEditViewModel *)self reframeIfNeededNormalizedBounds:v14 layout:0 useCase:0 forceReframe:v7, v9, v11, v13];
+    originalLayerStackViewModel = [segmentationItem settlingEffectLayout];
+    [(PUWallpaperPosterEditViewModel *)self reframeIfNeededNormalizedBounds:originalLayerStackViewModel layout:0 useCase:0 forceReframe:v7, v9, v11, v13];
   }
 
 LABEL_6:
 }
 
-- (void)setNormalizedVisibleFrameAnimated:(CGRect)a3
+- (void)setNormalizedVisibleFrameAnimated:(CGRect)animated
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = animated.size.height;
+  width = animated.size.width;
+  y = animated.origin.y;
+  x = animated.origin.x;
   p_normalizedVisibleFrame = &self->_normalizedVisibleFrame;
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
@@ -2697,7 +2697,7 @@ LABEL_6:
     p_normalizedVisibleFrame->size.height = height;
     [(PUWallpaperPosterEditViewModel *)self _invalidateVisibleFrameCrossesHeadroomBoundary];
     [(PUWallpaperPosterEditViewModel *)self signalChange:8];
-    v9 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__PUWallpaperPosterEditViewModel_setNormalizedVisibleFrameAnimated___block_invoke;
@@ -2706,16 +2706,16 @@ LABEL_6:
     *&v10[5] = y;
     *&v10[6] = width;
     *&v10[7] = height;
-    [v9 performChanges:v10];
+    [currentLayerStackViewModel performChanges:v10];
   }
 }
 
-- (void)setNormalizedVisibleFrame:(CGRect)a3
+- (void)setNormalizedVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_normalizedVisibleFrame = &self->_normalizedVisibleFrame;
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
@@ -2730,37 +2730,37 @@ LABEL_6:
   }
 }
 
-- (void)setActiveLayerStackViewModels:(id)a3
+- (void)setActiveLayerStackViewModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   activeLayerStackViewModels = self->_activeLayerStackViewModels;
-  if (activeLayerStackViewModels != v4)
+  if (activeLayerStackViewModels != modelsCopy)
   {
-    v8 = v4;
-    activeLayerStackViewModels = [(NSSet *)activeLayerStackViewModels isEqual:v4];
-    v4 = v8;
+    v8 = modelsCopy;
+    activeLayerStackViewModels = [(NSSet *)activeLayerStackViewModels isEqual:modelsCopy];
+    modelsCopy = v8;
     if ((activeLayerStackViewModels & 1) == 0)
     {
       v6 = [(NSSet *)v8 copy];
       v7 = self->_activeLayerStackViewModels;
       self->_activeLayerStackViewModels = v6;
 
-      v4 = v8;
+      modelsCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](activeLayerStackViewModels, v4);
+  MEMORY[0x1EEE66BB8](activeLayerStackViewModels, modelsCopy);
 }
 
-- (void)setVisibleLayerStackViewModels:(id)a3
+- (void)setVisibleLayerStackViewModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   visibleLayerStackViewModels = self->_visibleLayerStackViewModels;
-  if (visibleLayerStackViewModels != v4)
+  if (visibleLayerStackViewModels != modelsCopy)
   {
-    v8 = v4;
-    visibleLayerStackViewModels = [visibleLayerStackViewModels isEqual:v4];
-    v4 = v8;
+    v8 = modelsCopy;
+    visibleLayerStackViewModels = [visibleLayerStackViewModels isEqual:modelsCopy];
+    modelsCopy = v8;
     if ((visibleLayerStackViewModels & 1) == 0)
     {
       [(NSArray *)self->_visibleLayerStackViewModels enumerateObjectsUsingBlock:&__block_literal_global_70];
@@ -2769,36 +2769,36 @@ LABEL_6:
       self->_visibleLayerStackViewModels = v6;
 
       visibleLayerStackViewModels = [(PUWallpaperPosterEditViewModel *)self signalChange:4];
-      v4 = v8;
+      modelsCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](visibleLayerStackViewModels, v4);
+  MEMORY[0x1EEE66BB8](visibleLayerStackViewModels, modelsCopy);
 }
 
-- (void)scrollToPosition:(id *)a3
+- (void)scrollToPosition:(id *)position
 {
   p_scrollPosition = &self->_scrollPosition;
   firstStyle = self->_scrollPosition.firstStyle;
-  if (firstStyle != a3->var0 || (self->_scrollPosition.secondStyleMixFactor == a3->var1 ? (v7 = firstStyle == a3->var2) : (v7 = 0), !v7))
+  if (firstStyle != position->var0 || (self->_scrollPosition.secondStyleMixFactor == position->var1 ? (v7 = firstStyle == position->var2) : (v7 = 0), !v7))
   {
-    v13 = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
-    v8 = a3->var0;
-    v9 = a3->var2;
+    currentStyleKinds = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
+    v8 = position->var0;
+    v9 = position->var2;
     if (v9)
     {
-      v10 = [v13 indexOfObject:v8];
-      if ([v13 indexOfObject:v9] < v10)
+      v10 = [currentStyleKinds indexOfObject:v8];
+      if ([currentStyleKinds indexOfObject:v9] < v10)
       {
-        v11 = 1.0 - a3->var1;
-        a3->var0 = v9;
-        a3->var1 = v11;
-        a3->var2 = v8;
+        v11 = 1.0 - position->var1;
+        position->var0 = v9;
+        position->var1 = v11;
+        position->var2 = v8;
       }
     }
 
-    v12 = *&a3->var0;
-    p_scrollPosition->secondStyle = a3->var2;
+    v12 = *&position->var0;
+    p_scrollPosition->secondStyle = position->var2;
     *&p_scrollPosition->firstStyle = v12;
     [(PUWallpaperPosterEditViewModel *)self signalChange:256];
     [(PUWallpaperPosterEditViewModel *)self _invalidateActiveLayerStackViewModels];
@@ -2808,13 +2808,13 @@ LABEL_6:
   }
 }
 
-- (void)setIsUserPanningOrZooming:(BOOL)a3
+- (void)setIsUserPanningOrZooming:(BOOL)zooming
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self->_isUserPanningOrZooming != a3)
+  if (self->_isUserPanningOrZooming != zooming)
   {
-    self->_isUserPanningOrZooming = a3;
-    if (a3)
+    self->_isUserPanningOrZooming = zooming;
+    if (zooming)
     {
       [(PUWallpaperPosterEditViewModel *)self noteUserAdjustedVisibleFrame];
     }
@@ -2823,16 +2823,16 @@ LABEL_6:
     [(PUWallpaperPosterEditViewModel *)self signalChange:2];
     if (!self->_isUserPanningOrZooming)
     {
-      v4 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+      currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v5 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-      v6 = [v5 allValues];
+      layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+      allValues = [layerStackViewModelsByStyleKind allValues];
 
-      obj = v6;
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      obj = allValues;
+      v7 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         v8 = v7;
@@ -2848,7 +2848,7 @@ LABEL_6:
             }
 
             v11 = *(*(&v18 + 1) + 8 * v10);
-            if (v11 != v4)
+            if (v11 != currentLayerStackViewModel)
             {
               v17[0] = MEMORY[0x1E69E9820];
               v17[1] = 3221225472;
@@ -2856,10 +2856,10 @@ LABEL_6:
               v17[3] = &unk_1E7B80328;
               v17[4] = self;
               [v11 performChanges:v17];
-              v12 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-              v13 = [v11 style];
-              v14 = [v13 kind];
-              v15 = [v12 objectForKeyedSubscript:v14];
+              viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+              style = [v11 style];
+              kind = [style kind];
+              v15 = [viewModelUpdatersByStyleKind objectForKeyedSubscript:kind];
 
               [v15 renderOffscreenModelAfterVisibleFrameChange:v11 highPriority:{-[NSSet containsObject:](self->_activeLayerStackViewModels, "containsObject:", v11)}];
             }
@@ -2885,48 +2885,48 @@ void __60__PUWallpaperPosterEditViewModel_setIsUserPanningOrZooming___block_invo
   [v3 setNormalizedVisibleFrame:?];
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
-  if (self->_deviceOrientation != a3)
+  if (self->_deviceOrientation != orientation)
   {
-    self->_deviceOrientation = a3;
+    self->_deviceOrientation = orientation;
     [(PUWallpaperPosterEditViewModel *)self _updateAvailableLayerStackViewModelsContainerGeometry];
   }
 }
 
 - (id)availableLayerStackViewModels
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
+  currentStyleKinds = [(PUWallpaperPosterEditViewModel *)self currentStyleKinds];
   v3 = PXMap();
 
   return v3;
 }
 
-- (void)setCurrentLayerStackViewModel:(id)a3
+- (void)setCurrentLayerStackViewModel:(id)model
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   v6 = self->_currentLayerStackViewModel;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == modelCopy)
   {
   }
 
   else
   {
-    v8 = [(PUParallaxLayerStackViewModel *)v6 isEqual:v5];
+    v8 = [(PUParallaxLayerStackViewModel *)v6 isEqual:modelCopy];
 
     if ((v8 & 1) == 0)
     {
       currentLayerStackViewModel = self->_currentLayerStackViewModel;
-      objc_storeStrong(&self->_currentLayerStackViewModel, a3);
+      objc_storeStrong(&self->_currentLayerStackViewModel, model);
       v10 = PLWallpaperGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(PUParallaxLayerStackViewModel *)v5 style];
-        v12 = [v11 kind];
+        style = [(PUParallaxLayerStackViewModel *)modelCopy style];
+        kind = [style kind];
         v13 = 138412290;
-        v14 = v12;
+        v14 = kind;
         _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_INFO, "currentLayerStackViewModel:%@", &v13, 0xCu);
       }
 
@@ -2941,40 +2941,40 @@ void __60__PUWallpaperPosterEditViewModel_setIsUserPanningOrZooming___block_invo
 
 - (BOOL)headroomLayoutCanApplyHeadroom
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v3 = [v2 headroomLayoutCanApplyHeadroom];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  headroomLayoutCanApplyHeadroom = [currentLayerStackViewModel headroomLayoutCanApplyHeadroom];
 
-  return v3;
+  return headroomLayoutCanApplyHeadroom;
 }
 
 - (BOOL)headroomLayoutUsesHeadroomArea
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v3 = [v2 headroomLayoutUsesHeadroomArea];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  headroomLayoutUsesHeadroomArea = [currentLayerStackViewModel headroomLayoutUsesHeadroomArea];
 
-  return v3;
+  return headroomLayoutUsesHeadroomArea;
 }
 
 - (BOOL)canApplyHeadroom
 {
-  v2 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v3 = [v2 canApplyHeadroom];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  canApplyHeadroom = [currentLayerStackViewModel canApplyHeadroom];
 
-  return v3;
+  return canApplyHeadroom;
 }
 
 - (PUParallaxLayerStackViewModelUpdater)currentLayerStackViewModelUpdater
 {
   viewModelUpdatersByStyleKind = self->_viewModelUpdatersByStyleKind;
-  v3 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
-  v4 = [v3 style];
-  v5 = [v4 kind];
-  v6 = [(NSMutableDictionary *)viewModelUpdatersByStyleKind objectForKeyedSubscript:v5];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
+  kind = [style kind];
+  v6 = [(NSMutableDictionary *)viewModelUpdatersByStyleKind objectForKeyedSubscript:kind];
 
   return v6;
 }
 
-- (void)shutdownWithTimeout:(double)a3
+- (void)shutdownWithTimeout:(double)timeout
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E695DF00] now];
@@ -2982,10 +2982,10 @@ void __60__PUWallpaperPosterEditViewModel_setIsUserPanningOrZooming___block_invo
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-  v6 = [v5 allValues];
+  viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+  allValues = [viewModelUpdatersByStyleKind allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v31 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v24 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2997,14 +2997,14 @@ void __60__PUWallpaperPosterEditViewModel_setIsUserPanningOrZooming___block_invo
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v24 + 1) + 8 * v10++) cancelPendingRenders];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v31 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v24 objects:v31 count:16];
     }
 
     while (v8);
@@ -3014,10 +3014,10 @@ void __60__PUWallpaperPosterEditViewModel_setIsUserPanningOrZooming___block_invo
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-  v12 = [v11 allValues];
+  viewModelUpdatersByStyleKind2 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+  allValues2 = [viewModelUpdatersByStyleKind2 allValues];
 
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  v13 = [allValues2 countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -3029,14 +3029,14 @@ void __60__PUWallpaperPosterEditViewModel_setIsUserPanningOrZooming___block_invo
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues2);
         }
 
         [*(*(&v20 + 1) + 8 * v16++) notifyWhenInFlightRendersComplete:&__block_literal_global_66];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v14 = [allValues2 countByEnumeratingWithState:&v20 objects:v30 count:16];
     }
 
     while (v14);
@@ -3063,17 +3063,17 @@ void __54__PUWallpaperPosterEditViewModel_shutdownWithTimeout___block_invoke()
   }
 }
 
-- (double)currentClockAreaLuminanceForStyleKind:(id)a3
+- (double)currentClockAreaLuminanceForStyleKind:(id)kind
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindCopy = kind;
   v5 = *MEMORY[0x1E69C0AD0];
-  v6 = [(NSMutableDictionary *)self->_layerStackViewModelsByStyleKind objectForKeyedSubscript:v4];
-  v7 = [v6 currentLayerStack];
-  v8 = v7;
-  if (v7)
+  v6 = [(NSMutableDictionary *)self->_layerStackViewModelsByStyleKind objectForKeyedSubscript:kindCopy];
+  currentLayerStack = [v6 currentLayerStack];
+  v8 = currentLayerStack;
+  if (currentLayerStack)
   {
-    [v7 clockAreaLuminance];
+    [currentLayerStack clockAreaLuminance];
     v10 = v9;
     if (v9 != v5)
     {
@@ -3084,7 +3084,7 @@ void __54__PUWallpaperPosterEditViewModel_shutdownWithTimeout___block_invoke()
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = kindCopy;
       v12 = "LuminanceForLook: Layer stack for look %@ has unknown clockAreaLuminance";
 LABEL_7:
       _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, v12, &v15, 0xCu);
@@ -3097,7 +3097,7 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = kindCopy;
       v12 = "LuminanceForLook: Can't find layer stack for look %@";
       goto LABEL_7;
     }
@@ -3109,7 +3109,7 @@ LABEL_9:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412802;
-    v16 = v4;
+    v16 = kindCopy;
     v17 = 2048;
     v18 = v10;
     v19 = 2112;
@@ -3125,34 +3125,34 @@ LABEL_9:
   v4.receiver = self;
   v4.super_class = PUWallpaperPosterEditViewModel;
   [(PUWallpaperPosterEditViewModel *)&v4 didPerformChanges];
-  v3 = [(PUWallpaperPosterEditViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PUWallpaperPosterEditViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUWallpaperPosterEditViewModel;
-  [(PUWallpaperPosterEditViewModel *)&v3 performChanges:a3];
+  [(PUWallpaperPosterEditViewModel *)&v3 performChanges:changes];
 }
 
 - (PUWallpaperPosterEditViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:194 description:{@"%s is not available as initializer", "-[PUWallpaperPosterEditViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditViewModel.m" lineNumber:194 description:{@"%s is not available as initializer", "-[PUWallpaperPosterEditViewModel init]"}];
 
   abort();
 }
 
-- (void)_initScrollPositionWithViewModel:(id)a3
+- (void)_initScrollPositionWithViewModel:(id)model
 {
-  v4 = [a3 style];
-  v5 = [v4 kind];
-  v6 = v5;
+  style = [model style];
+  kind = [style kind];
+  v6 = kind;
   v7 = *MEMORY[0x1E69C0B28];
-  if (v5)
+  if (kind)
   {
-    v7 = v5;
+    v7 = kind;
   }
 
   v8 = v7;
@@ -3165,32 +3165,32 @@ LABEL_9:
   p_scrollPosition->secondStyle = v10;
 }
 
-- (void)_createViewModelsWithInitialViewModel:(id)a3 isUserTransformDisabled:(BOOL)a4
+- (void)_createViewModelsWithInitialViewModel:(id)model isUserTransformDisabled:(BOOL)disabled
 {
-  v6 = a3;
+  modelCopy = model;
   v7 = [[PUParallaxLayerStackViewModelUpdater alloc] initWithSegmentationItem:self->_segmentationItem];
-  v8 = [(PUWallpaperPosterEditViewModel *)self availableStyles];
+  availableStyles = [(PUWallpaperPosterEditViewModel *)self availableStyles];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_isUserTransformDisabled___block_invoke;
   v20[3] = &unk_1E7B79D50;
-  v9 = v6;
+  v9 = modelCopy;
   v21 = v9;
-  v10 = [v8 indexOfObjectPassingTest:v20];
+  v10 = [availableStyles indexOfObjectPassingTest:v20];
 
-  v11 = [(PUWallpaperPosterEditViewModel *)self availableStyles];
+  availableStyles2 = [(PUWallpaperPosterEditViewModel *)self availableStyles];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_isUserTransformDisabled___block_invoke_2;
   v14[3] = &unk_1E7B77E70;
   v15 = v9;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v18 = v10;
-  v19 = a4;
+  disabledCopy = disabled;
   v12 = v7;
   v13 = v9;
-  [v11 enumerateObjectsUsingBlock:v14];
+  [availableStyles2 enumerateObjectsUsingBlock:v14];
 }
 
 uint64_t __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_isUserTransformDisabled___block_invoke(uint64_t a1, void *a2)
@@ -3265,17 +3265,17 @@ void __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_
   [v11 registerChangeObserver:*(a1 + 48) context:"LayerStackViewModelObservationContext"];
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v11 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel:a3];
-  v5 = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
-  v6 = [v11 style];
-  v7 = [v6 kind];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v11 = [(PUWallpaperPosterEditViewModel *)self currentLayerStackViewModel:settings];
+  viewModelUpdatersByStyleKind = [(PUWallpaperPosterEditViewModel *)self viewModelUpdatersByStyleKind];
+  style = [v11 style];
+  kind = [style kind];
+  v8 = [viewModelUpdatersByStyleKind objectForKeyedSubscript:kind];
 
-  v9 = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
-  v10 = [v9 allValues];
-  [v8 renderOnscreenModelAfterVisibleFrameChange:v11 recalculateLayoutProperties:1 allViewModels:v10];
+  layerStackViewModelsByStyleKind = [(PUWallpaperPosterEditViewModel *)self layerStackViewModelsByStyleKind];
+  allValues = [layerStackViewModelsByStyleKind allValues];
+  [v8 renderOnscreenModelAfterVisibleFrameChange:v11 recalculateLayoutProperties:1 allViewModels:allValues];
 }
 
 - (void)dealloc
@@ -3286,34 +3286,34 @@ void __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_
   [(PUWallpaperPosterEditViewModel *)&v3 dealloc];
 }
 
-- (PUWallpaperPosterEditViewModel)initWithInitialLayerStackViewModel:(id)a3 availableStyles:(id)a4 environmentIsBackdrop:(BOOL)a5 isUserTransformDisabled:(BOOL)a6
+- (PUWallpaperPosterEditViewModel)initWithInitialLayerStackViewModel:(id)model availableStyles:(id)styles environmentIsBackdrop:(BOOL)backdrop isUserTransformDisabled:(BOOL)disabled
 {
-  v7 = a6;
-  v11 = a3;
-  v12 = a4;
+  disabledCopy = disabled;
+  modelCopy = model;
+  stylesCopy = styles;
   v56.receiver = self;
   v56.super_class = PUWallpaperPosterEditViewModel;
   v13 = [(PUWallpaperPosterEditViewModel *)&v56 init];
   v14 = v13;
   if (v13)
   {
-    v13->_backdropEnvironment = a5;
-    v13->_isUserTransformDisabled = v7;
-    v15 = [v11 segmentationItem];
+    v13->_backdropEnvironment = backdrop;
+    v13->_isUserTransformDisabled = disabledCopy;
+    segmentationItem = [modelCopy segmentationItem];
     segmentationItem = v14->_segmentationItem;
-    v14->_segmentationItem = v15;
+    v14->_segmentationItem = segmentationItem;
 
-    v14->_deviceOrientation = [v11 deviceOrientation];
-    v17 = [v11 style];
-    v18 = v17;
-    if (v17)
+    v14->_deviceOrientation = [modelCopy deviceOrientation];
+    style = [modelCopy style];
+    v18 = style;
+    if (style)
     {
       v51 = MEMORY[0x1E69E9820];
       v52 = 3221225472;
       v53 = __131__PUWallpaperPosterEditViewModel_initWithInitialLayerStackViewModel_availableStyles_environmentIsBackdrop_isUserTransformDisabled___block_invoke;
       v54 = &unk_1E7B79D78;
       v6 = &v55;
-      v55 = v17;
+      v55 = style;
       v19 = PXExists();
     }
 
@@ -3322,7 +3322,7 @@ void __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_
       v19 = 1;
     }
 
-    v20 = [v12 copy];
+    v20 = [stylesCopy copy];
     availableStyles = v14->_availableStyles;
     v14->_availableStyles = v20;
 
@@ -3342,37 +3342,37 @@ void __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_
     currentStyles = v14->_currentStyles;
     v14->_currentStyles = v27;
 
-    [v11 normalizedVisibleFrame];
+    [modelCopy normalizedVisibleFrame];
     v14->_normalizedVisibleFrame.origin.x = v29;
     v14->_normalizedVisibleFrame.origin.y = v30;
     v14->_normalizedVisibleFrame.size.width = v31;
     v14->_normalizedVisibleFrame.size.height = v32;
-    if (a5)
+    if (backdrop)
     {
-      v33 = 0;
+      depthEnabled = 0;
     }
 
     else
     {
-      v33 = [v11 depthEnabled];
+      depthEnabled = [modelCopy depthEnabled];
     }
 
-    v14->_depthEnabled = v33;
-    v14->_parallaxDisabled = [v11 parallaxDisabled];
-    if (a5)
+    v14->_depthEnabled = depthEnabled;
+    v14->_parallaxDisabled = [modelCopy parallaxDisabled];
+    if (backdrop)
     {
-      v34 = 0;
+      spatialPhotoEnabled = 0;
       v14->_settlingEffectEnabled = 0;
     }
 
     else
     {
-      v14->_settlingEffectEnabled = [v11 settlingEffectEnabled];
-      v34 = [v11 spatialPhotoEnabled];
+      v14->_settlingEffectEnabled = [modelCopy settlingEffectEnabled];
+      spatialPhotoEnabled = [modelCopy spatialPhotoEnabled];
     }
 
-    v14->_spatialPhotoEnabled = v34;
-    [(PUWallpaperPosterEditViewModel *)v14 _initScrollPositionWithViewModel:v11];
+    v14->_spatialPhotoEnabled = spatialPhotoEnabled;
+    [(PUWallpaperPosterEditViewModel *)v14 _initScrollPositionWithViewModel:modelCopy];
     v35 = objc_alloc_init(MEMORY[0x1E695DF90]);
     layerStackViewModelsByStyleKind = v14->_layerStackViewModelsByStyleKind;
     v14->_layerStackViewModelsByStyleKind = v35;
@@ -3381,7 +3381,7 @@ void __96__PUWallpaperPosterEditViewModel__createViewModelsWithInitialViewModel_
     viewModelUpdatersByStyleKind = v14->_viewModelUpdatersByStyleKind;
     v14->_viewModelUpdatersByStyleKind = v37;
 
-    [(PUWallpaperPosterEditViewModel *)v14 _createViewModelsWithInitialViewModel:v11 isUserTransformDisabled:v7];
+    [(PUWallpaperPosterEditViewModel *)v14 _createViewModelsWithInitialViewModel:modelCopy isUserTransformDisabled:disabledCopy];
     v39 = objc_alloc_init(MEMORY[0x1E69C4588]);
     headroomVisibilityAmountAnimator = v14->_headroomVisibilityAmountAnimator;
     v14->_headroomVisibilityAmountAnimator = v39;

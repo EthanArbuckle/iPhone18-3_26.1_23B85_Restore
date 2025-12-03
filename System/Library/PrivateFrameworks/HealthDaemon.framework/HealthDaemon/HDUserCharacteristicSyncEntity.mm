@@ -1,20 +1,20 @@
 @interface HDUserCharacteristicSyncEntity
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDUserCharacteristicSyncEntity
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v68.receiver = a1;
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
+  v68.receiver = self;
   v68.super_class = &OBJC_METACLASS___HDUserCharacteristicSyncEntity;
-  v47 = v12;
-  v45 = v13;
-  v46 = objc_msgSendSuper2(&v68, sel_receiveSyncObjects_version_syncStore_profile_error_, v12, a4, v13, v14, a7);
+  v47 = objectsCopy;
+  v45 = storeCopy;
+  v46 = objc_msgSendSuper2(&v68, sel_receiveSyncObjects_version_syncStore_profile_error_, objectsCopy, version, storeCopy, profileCopy, error);
   if (v46)
   {
     goto LABEL_2;
@@ -24,7 +24,7 @@
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v18 = v12;
+  v18 = objectsCopy;
   v50 = [v18 countByEnumeratingWithState:&v64 objects:v71 count:16];
   if (!v50)
   {
@@ -36,10 +36,10 @@
   v20 = 1;
   v21 = off_27860F000;
   v53 = *MEMORY[0x277CCBB18];
-  v54 = a7;
+  errorCopy = error;
   v48 = *v65;
   v49 = v18;
-  v52 = v14;
+  v52 = profileCopy;
   do
   {
     v22 = 0;
@@ -87,14 +87,14 @@
               v30 = [v27 key];
               v31 = [(__objc2_class *)v29 userCharacteristicTypeForKey:v30];
 
-              v32 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               if ([v27 hasTimestamp])
               {
-                v33 = [v27 decodedTimestamp];
+                decodedTimestamp = [v27 decodedTimestamp];
 
-                [v33 timeIntervalSinceReferenceDate];
+                [decodedTimestamp timeIntervalSinceReferenceDate];
                 v35 = v34;
-                v32 = v33;
+                date = decodedTimestamp;
               }
 
               else
@@ -102,42 +102,42 @@
                 v35 = 2.22507386e-308;
               }
 
-              v36 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:v25];
-              if (v31 != v36 || ([v14 daemon], v57 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "behavior"), v56 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v56, "futureMigrationsEnabled")))
+              decodedValue = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:v25];
+              if (v31 != decodedValue || ([profileCopy daemon], v57 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "behavior"), v56 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v56, "futureMigrationsEnabled")))
               {
-                v37 = [v31 _relatedQuantityType];
+                _relatedQuantityType = [v31 _relatedQuantityType];
 
-                if (v31 == v36)
+                if (v31 == decodedValue)
                 {
                 }
 
-                if (!v37)
+                if (!_relatedQuantityType)
                 {
-                  v36 = [v27 decodedValue];
-                  v38 = [v31 _relatedSampleForInsertionWithCharacteristicValue:v36 date:v32];
+                  decodedValue = [v27 decodedValue];
+                  v38 = [v31 _relatedSampleForInsertionWithCharacteristicValue:decodedValue date:date];
                   if (v38)
                   {
-                    v39 = [v14 dataProvenanceManager];
-                    v40 = [v39 defaultLocalDataProvenance];
+                    dataProvenanceManager = [profileCopy dataProvenanceManager];
+                    defaultLocalDataProvenance = [dataProvenanceManager defaultLocalDataProvenance];
 
-                    if (v40)
+                    if (defaultLocalDataProvenance)
                     {
-                      v41 = [v14 dataManager];
+                      dataManager = [profileCopy dataManager];
                       v69 = v38;
                       [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
                       v43 = v42 = v20;
-                      v44 = [v41 insertDataObjects:v43 withProvenance:v40 creationDate:v54 error:v35];
+                      v44 = [dataManager insertDataObjects:v43 withProvenance:defaultLocalDataProvenance creationDate:errorCopy error:v35];
 
                       LODWORD(v43) = v42;
                       v25 = v53;
 
                       v20 = v44 & v43;
-                      v14 = v52;
+                      profileCopy = v52;
                     }
 
                     else
                     {
-                      [MEMORY[0x277CCA9B8] hk_assignError:v54 code:100 description:@"Failed to get local device data provenance"];
+                      [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:100 description:@"Failed to get local device data provenance"];
                     }
 
                     v21 = off_27860F000;
@@ -148,7 +148,7 @@ LABEL_30:
                 continue;
               }
 
-              v40 = v56;
+              defaultLocalDataProvenance = v56;
               v38 = v57;
               goto LABEL_30;
             }
@@ -182,8 +182,8 @@ LABEL_35:
   }
 
 LABEL_2:
-  v15 = [v14 userCharacteristicsManager];
-  [(HDUserCharacteristicsManager *)v15 _userCharacteristicsDidChangeShouldUpdateUserProfile:0 shouldSync:?];
+  userCharacteristicsManager = [profileCopy userCharacteristicsManager];
+  [(HDUserCharacteristicsManager *)userCharacteristicsManager _userCharacteristicsDidChangeShouldUpdateUserProfile:0 shouldSync:?];
 
 LABEL_3:
   v16 = *MEMORY[0x277D85DE8];

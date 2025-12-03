@@ -1,5 +1,5 @@
 @interface NSURL
-- (BOOL)writePlist:(id)a3;
+- (BOOL)writePlist:(id)plist;
 - (id)readPlist;
 @end
 
@@ -24,7 +24,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v14 = self;
+        selfCopy = self;
         v15 = 2112;
         v16 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "could not deserialize PersistentState from %@: %@", buf, 0x16u);
@@ -41,13 +41,13 @@
   return v6;
 }
 
-- (BOOL)writePlist:(id)a3
+- (BOOL)writePlist:(id)plist
 {
-  v4 = a3;
-  if ([NSPropertyListSerialization propertyList:v4 isValidForFormat:100])
+  plistCopy = plist;
+  if ([NSPropertyListSerialization propertyList:plistCopy isValidForFormat:100])
   {
     v14 = 0;
-    v5 = [NSPropertyListSerialization dataWithPropertyList:v4 format:100 options:0 error:&v14];
+    v5 = [NSPropertyListSerialization dataWithPropertyList:plistCopy format:100 options:0 error:&v14];
     v6 = v14;
     v7 = v6;
     if (v5)

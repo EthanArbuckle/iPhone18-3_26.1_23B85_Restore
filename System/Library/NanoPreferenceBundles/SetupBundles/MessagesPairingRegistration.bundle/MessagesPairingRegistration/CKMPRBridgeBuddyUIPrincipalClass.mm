@@ -1,6 +1,6 @@
 @interface CKMPRBridgeBuddyUIPrincipalClass
 - (CKMPRBridgeBuddyUIPrincipalClass)init;
-- (void)miniFlowStepComplete:(id)a3;
+- (void)miniFlowStepComplete:(id)complete;
 @end
 
 @implementation CKMPRBridgeBuddyUIPrincipalClass
@@ -15,17 +15,17 @@
     v3 = objc_alloc_init(CKMPRiMessageConsentViewController);
     [(CKMPRBridgeBuddyUIPrincipalClass *)v2 setIMessageConsentViewController:v3];
 
-    v4 = [(CKMPRBridgeBuddyUIPrincipalClass *)v2 iMessageConsentViewController];
-    [v4 setMiniFlowDelegate:v2];
+    iMessageConsentViewController = [(CKMPRBridgeBuddyUIPrincipalClass *)v2 iMessageConsentViewController];
+    [iMessageConsentViewController setMiniFlowDelegate:v2];
   }
 
   return v2;
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(CKMPRBridgeBuddyUIPrincipalClass *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(CKMPRBridgeBuddyUIPrincipalClass *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

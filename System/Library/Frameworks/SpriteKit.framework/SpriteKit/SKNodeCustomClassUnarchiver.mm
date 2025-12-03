@@ -1,9 +1,9 @@
 @interface SKNodeCustomClassUnarchiver
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
 - (SKNodeCustomClassUnarchiver)init;
 - (id)_currentAppModuleName;
-- (id)_findValidClassName:(id)a3;
-- (id)_mangledSwiftClassName:(id)a3 moduleName:(id)a4;
+- (id)_findValidClassName:(id)name;
+- (id)_mangledSwiftClassName:(id)name moduleName:(id)moduleName;
 @end
 
 @implementation SKNodeCustomClassUnarchiver
@@ -15,9 +15,9 @@
   v2 = [(SKNodeCustomClassUnarchiver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cache = v2->_cache;
-    v2->_cache = v3;
+    v2->_cache = dictionary;
   }
 
   return v2;
@@ -25,42 +25,42 @@
 
 - (id)_currentAppModuleName
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 objectForInfoDictionaryKey:@"CFBundleName"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle objectForInfoDictionaryKey:@"CFBundleName"];
 
   v4 = [v3 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   return v4;
 }
 
-- (id)_mangledSwiftClassName:(id)a3 moduleName:(id)a4
+- (id)_mangledSwiftClassName:(id)name moduleName:(id)moduleName
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"_TtC%lu%@%lu%@", objc_msgSend(v6, "length"), v6, objc_msgSend(v5, "length"), v5];
+  nameCopy = name;
+  moduleNameCopy = moduleName;
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"_TtC%lu%@%lu%@", objc_msgSend(moduleNameCopy, "length"), moduleNameCopy, objc_msgSend(nameCopy, "length"), nameCopy];
 
-  return v7;
+  return nameCopy;
 }
 
-- (id)_findValidClassName:(id)a3
+- (id)_findValidClassName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"."];
+  nameCopy = name;
+  v5 = [nameCopy componentsSeparatedByString:@"."];
   if ([v5 count] == 1)
   {
-    v6 = [(SKNodeCustomClassUnarchiver *)self _currentAppModuleName];
-    if (!v6)
+    _currentAppModuleName = [(SKNodeCustomClassUnarchiver *)self _currentAppModuleName];
+    if (!_currentAppModuleName)
     {
       goto LABEL_14;
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v6, v4];
-    if (NSClassFromString(v7))
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", _currentAppModuleName, nameCopy];
+    if (NSClassFromString(nameCopy))
     {
       goto LABEL_12;
     }
 
-    v8 = [(SKNodeCustomClassUnarchiver *)self _mangledSwiftClassName:v4 moduleName:v6];
+    v8 = [(SKNodeCustomClassUnarchiver *)self _mangledSwiftClassName:nameCopy moduleName:_currentAppModuleName];
     v9 = NSClassFromString(v8);
 LABEL_9:
     if (!v9)
@@ -69,50 +69,50 @@ LABEL_9:
       v8 = 0;
     }
 
-    v7 = v8;
+    nameCopy = v8;
 LABEL_12:
 
-    v6 = v7;
+    _currentAppModuleName = nameCopy;
     goto LABEL_14;
   }
 
   if ([v5 count] == 2)
   {
-    v6 = [v5 lastObject];
-    if (NSClassFromString(v6))
+    _currentAppModuleName = [v5 lastObject];
+    if (NSClassFromString(_currentAppModuleName))
     {
       goto LABEL_14;
     }
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v5 firstObject];
-    v12 = [v11 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-    v13 = [v5 lastObject];
-    v7 = [v10 stringWithFormat:@"%@.%@", v12, v13];
+    firstObject = [v5 firstObject];
+    v12 = [firstObject stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    lastObject = [v5 lastObject];
+    nameCopy = [v10 stringWithFormat:@"%@.%@", v12, lastObject];
 
-    if (NSClassFromString(v7))
+    if (NSClassFromString(nameCopy))
     {
       goto LABEL_12;
     }
 
-    v14 = [v5 lastObject];
-    v15 = [v5 firstObject];
-    v8 = [(SKNodeCustomClassUnarchiver *)self _mangledSwiftClassName:v14 moduleName:v15];
+    lastObject2 = [v5 lastObject];
+    firstObject2 = [v5 firstObject];
+    v8 = [(SKNodeCustomClassUnarchiver *)self _mangledSwiftClassName:lastObject2 moduleName:firstObject2];
 
     v9 = NSClassFromString(v8);
     goto LABEL_9;
   }
 
-  v6 = 0;
+  _currentAppModuleName = 0;
 LABEL_14:
 
-  return v6;
+  return _currentAppModuleName;
 }
 
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:nameCopy];
   v8 = v7;
   if (v7)
   {
@@ -121,10 +121,10 @@ LABEL_14:
 
   else
   {
-    v10 = [(SKNodeCustomClassUnarchiver *)self _findValidClassName:v6];
+    v10 = [(SKNodeCustomClassUnarchiver *)self _findValidClassName:nameCopy];
     if (v10)
     {
-      [(NSMutableDictionary *)self->_cache setObject:v10 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_cache setObject:v10 forKeyedSubscript:nameCopy];
       v9 = NSClassFromString(v10);
     }
 

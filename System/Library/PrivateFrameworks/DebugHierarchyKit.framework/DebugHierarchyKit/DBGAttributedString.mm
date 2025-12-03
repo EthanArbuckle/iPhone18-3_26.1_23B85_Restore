@@ -1,31 +1,31 @@
 @interface DBGAttributedString
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withAttributedString:(id)a3;
-- (DBGAttributedString)initWithAttributedString:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withAttributedString:(id)string;
+- (DBGAttributedString)initWithAttributedString:(id)string;
 - (NSString)debugDescription;
 - (NSString)description;
 @end
 
 @implementation DBGAttributedString
 
-+ (id)withAttributedString:(id)a3
++ (id)withAttributedString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAttributedString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithAttributedString:stringCopy];
 
   return v5;
 }
 
-- (DBGAttributedString)initWithAttributedString:(id)a3
+- (DBGAttributedString)initWithAttributedString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = DBGAttributedString;
   v6 = [(DBGAttributedString *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributedString, a3);
+    objc_storeStrong(&v6->_attributedString, string);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGAttributedString *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGAttributedString *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -49,22 +49,22 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"attrStr"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if ([format isEqualToString:@"attrStr"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [[NSAttributedString alloc] initWithString:v8];
-    v10 = [a1 withAttributedString:v9];
+    v9 = [[NSAttributedString alloc] initWithString:valueCopy];
+    v10 = [self withAttributedString:v9];
   }
 
   else
   {
     v10 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v10 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 

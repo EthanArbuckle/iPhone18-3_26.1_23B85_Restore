@@ -1,28 +1,28 @@
 @interface MONotificationsManager
-- (MONotificationsManager)initWithUniverse:(id)a3;
+- (MONotificationsManager)initWithUniverse:(id)universe;
 - (id)_getCurrentAppDefaultActionURL;
 - (id)_getFallBackTimeForNotification;
-- (id)getBiomeContextDictionaryWithUserInfo:(id)a3;
+- (id)getBiomeContextDictionaryWithUserInfo:(id)info;
 - (int64_t)getNotificationScheduledDeliverySetting;
-- (unint64_t)_MOStatusFromUNStatus:(int64_t)a3;
+- (unint64_t)_MOStatusFromUNStatus:(int64_t)status;
 - (unint64_t)getAppNotificationAuthorizationStatus;
 - (unint64_t)getSystemNotificationAuthorizationStatus;
-- (void)_generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3;
-- (void)_generateAvailabilityPredictionsWithHandler:(id)a3;
+- (void)_generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler;
+- (void)_generateAvailabilityPredictionsWithHandler:(id)handler;
 - (void)_recreateNotificationRealtimeCheckTimer;
-- (void)checkAuthorizationStatusForNotificationCenter:(id)a3 completion:(id)a4;
-- (void)fetchEligiblePOICategoriesForNotificationsWithHandler:(id)a3;
-- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3;
-- (void)generateAvailabilityPredictionsWithHandler:(id)a3;
-- (void)setUpNotificationTimerWithFireDate:(id)a3;
-- (void)submitEngagementHistoryUpdateWithEvent:(id)a3 userInfo:(id)a4;
+- (void)checkAuthorizationStatusForNotificationCenter:(id)center completion:(id)completion;
+- (void)fetchEligiblePOICategoriesForNotificationsWithHandler:(id)handler;
+- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler;
+- (void)generateAvailabilityPredictionsWithHandler:(id)handler;
+- (void)setUpNotificationTimerWithFireDate:(id)date;
+- (void)submitEngagementHistoryUpdateWithEvent:(id)event userInfo:(id)info;
 @end
 
 @implementation MONotificationsManager
 
-- (MONotificationsManager)initWithUniverse:(id)a3
+- (MONotificationsManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v53.receiver = self;
   v53.super_class = MONotificationsManager;
   v5 = [(MONotificationsManager *)&v53 init];
@@ -35,49 +35,49 @@
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v4 getService:v10];
+    v11 = [universeCopy getService:v10];
     defaultsManager = v5->_defaultsManager;
     v5->_defaultsManager = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v4 getService:v14];
+    v15 = [universeCopy getService:v14];
     configManager = v5->_configManager;
     v5->_configManager = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v4 getService:v18];
+    v19 = [universeCopy getService:v18];
     engagementHistoryManager = v5->_engagementHistoryManager;
     v5->_engagementHistoryManager = v19;
 
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [v4 getService:v22];
+    v23 = [universeCopy getService:v22];
     eventBundleManager = v5->_eventBundleManager;
     v5->_eventBundleManager = v23;
 
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    v27 = [v4 getService:v26];
+    v27 = [universeCopy getService:v26];
     eventManager = v5->_eventManager;
     v5->_eventManager = v27;
 
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
-    v31 = [v4 getService:v30];
+    v31 = [universeCopy getService:v30];
     availabilityPredictionManager = v5->_availabilityPredictionManager;
     v5->_availabilityPredictionManager = v31;
 
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
-    v35 = [v4 getService:v34];
+    v35 = [universeCopy getService:v34];
     categoryStore = v5->_categoryStore;
     v5->_categoryStore = v35;
 
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
-    v39 = [v4 getService:v38];
+    v39 = [universeCopy getService:v38];
     onboardingAndSettingsPersistence = v5->_onboardingAndSettingsPersistence;
     v5->_onboardingAndSettingsPersistence = v39;
 
@@ -96,8 +96,8 @@
     v47 = v45;
 
     v48 = [MONotificationsReporter alloc];
-    v49 = [(MONotificationsManager *)v5 defaultsManager];
-    v50 = [(MONotificationsReporter *)v48 init:v49];
+    defaultsManager = [(MONotificationsManager *)v5 defaultsManager];
+    v50 = [(MONotificationsReporter *)v48 init:defaultsManager];
     reporter = v5->_reporter;
     v5->_reporter = v50;
 
@@ -109,8 +109,8 @@
 
 - (id)_getCurrentAppDefaultActionURL
 {
-  v2 = [(MONotificationsManager *)self configManager];
-  v3 = [v2 getStringSettingForKey:@"UserNotificationAppURL" withFallback:@"moments://canvas"];
+  configManager = [(MONotificationsManager *)self configManager];
+  v3 = [configManager getStringSettingForKey:@"UserNotificationAppURL" withFallback:@"moments://canvas"];
 
   if ([v3 length])
   {
@@ -125,15 +125,15 @@
   return v4;
 }
 
-- (void)checkAuthorizationStatusForNotificationCenter:(id)a3 completion:(id)a4
+- (void)checkAuthorizationStatusForNotificationCenter:(id)center completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __83__MONotificationsManager_checkAuthorizationStatusForNotificationCenter_completion___block_invoke;
   v6[3] = &unk_10033C508;
-  v7 = a4;
-  v5 = v7;
-  [a3 getNotificationSettingsWithCompletionHandler:v6];
+  completionCopy = completion;
+  v5 = completionCopy;
+  [center getNotificationSettingsWithCompletionHandler:v6];
 }
 
 uint64_t __83__MONotificationsManager_checkAuthorizationStatusForNotificationCenter_completion___block_invoke(uint64_t a1, void *a2)
@@ -148,16 +148,16 @@ uint64_t __83__MONotificationsManager_checkAuthorizationStatusForNotificationCen
   return (*(*(a1 + 32) + 16))(*(a1 + 32), v3 > 1, v3);
 }
 
-- (unint64_t)_MOStatusFromUNStatus:(int64_t)a3
+- (unint64_t)_MOStatusFromUNStatus:(int64_t)status
 {
-  if ((a3 - 1) >= 4)
+  if ((status - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
@@ -169,7 +169,7 @@ uint64_t __83__MONotificationsManager_checkAuthorizationStatusForNotificationCen
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [(MONotificationsManager *)self userNotificationCenterAppBranded];
+  userNotificationCenterAppBranded = [(MONotificationsManager *)self userNotificationCenterAppBranded];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __63__MONotificationsManager_getAppNotificationAuthorizationStatus__block_invoke;
@@ -178,7 +178,7 @@ uint64_t __83__MONotificationsManager_checkAuthorizationStatusForNotificationCen
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [(MONotificationsManager *)self checkAuthorizationStatusForNotificationCenter:v4 completion:v9];
+  [(MONotificationsManager *)self checkAuthorizationStatusForNotificationCenter:userNotificationCenterAppBranded completion:v9];
 
   v6 = dispatch_time(0, 3000000000);
   dispatch_group_wait(v5, v6);
@@ -204,7 +204,7 @@ void __63__MONotificationsManager_getAppNotificationAuthorizationStatus__block_i
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [(MONotificationsManager *)self userNotificationCenterSystemBranded];
+  userNotificationCenterSystemBranded = [(MONotificationsManager *)self userNotificationCenterSystemBranded];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __66__MONotificationsManager_getSystemNotificationAuthorizationStatus__block_invoke;
@@ -213,7 +213,7 @@ void __63__MONotificationsManager_getAppNotificationAuthorizationStatus__block_i
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [(MONotificationsManager *)self checkAuthorizationStatusForNotificationCenter:v4 completion:v9];
+  [(MONotificationsManager *)self checkAuthorizationStatusForNotificationCenter:userNotificationCenterSystemBranded completion:v9];
 
   v6 = dispatch_time(0, 3000000000);
   dispatch_group_wait(v5, v6);
@@ -239,7 +239,7 @@ void __66__MONotificationsManager_getSystemNotificationAuthorizationStatus__bloc
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [(MONotificationsManager *)self userNotificationCenterSystemBranded];
+  userNotificationCenterSystemBranded = [(MONotificationsManager *)self userNotificationCenterSystemBranded];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __65__MONotificationsManager_getNotificationScheduledDeliverySetting__block_invoke;
@@ -247,7 +247,7 @@ void __66__MONotificationsManager_getSystemNotificationAuthorizationStatus__bloc
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  [v4 getNotificationSettingsWithCompletionHandler:v9];
+  [userNotificationCenterSystemBranded getNotificationSettingsWithCompletionHandler:v9];
 
   v6 = dispatch_time(0, 3000000000);
   dispatch_group_wait(v5, v6);
@@ -265,18 +265,18 @@ void __65__MONotificationsManager_getNotificationScheduledDeliverySetting__block
   dispatch_group_leave(v3);
 }
 
-- (id)getBiomeContextDictionaryWithUserInfo:(id)a3
+- (id)getBiomeContextDictionaryWithUserInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
   [v4 setObject:@"com.apple.momentsd.MOUserNotifications" forKey:@"clientIdentifier"];
-  v5 = [v3 objectForKey:@"numSuggestionInNotification"];
+  v5 = [infoCopy objectForKey:@"numSuggestionInNotification"];
   if (v5)
   {
     [v4 setObject:v5 forKey:@"numSuggestionInNotification"];
   }
 
-  v6 = [v3 objectForKey:@"postingDate"];
+  v6 = [infoCopy objectForKey:@"postingDate"];
   if (v6)
   {
     [v4 setObject:v6 forKey:@"postingDate"];
@@ -285,15 +285,15 @@ void __65__MONotificationsManager_getNotificationScheduledDeliverySetting__block
   return v4;
 }
 
-- (void)submitEngagementHistoryUpdateWithEvent:(id)a3 userInfo:(id)a4
+- (void)submitEngagementHistoryUpdateWithEvent:(id)event userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:@"bundleID"];
+  eventCopy = event;
+  infoCopy = info;
+  v8 = [infoCopy objectForKey:@"bundleID"];
   if (v8)
   {
-    v9 = [(MONotificationsManager *)self onboardingAndSettingsPersistence];
-    v10 = [v9 getSnapshotDictionaryForAnalytics];
+    onboardingAndSettingsPersistence = [(MONotificationsManager *)self onboardingAndSettingsPersistence];
+    getSnapshotDictionaryForAnalytics = [onboardingAndSettingsPersistence getSnapshotDictionaryForAnalytics];
 
     v11 = [[NSUUID alloc] initWithUUIDString:v8];
     v12 = [MOEventBundleFetchOptions alloc];
@@ -301,17 +301,17 @@ void __65__MONotificationsManager_getNotificationScheduledDeliverySetting__block
     v13 = [NSArray arrayWithObjects:&v21 count:1];
     v14 = [(MOEventBundleFetchOptions *)v12 initWithIdentifiers:v13 ascending:0 filterBundle:0];
 
-    v15 = [(MONotificationsManager *)self eventBundleManager];
+    eventBundleManager = [(MONotificationsManager *)self eventBundleManager];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __74__MONotificationsManager_submitEngagementHistoryUpdateWithEvent_userInfo___block_invoke;
     v17[3] = &unk_10033C580;
     v17[4] = self;
-    v18 = v7;
-    v19 = v6;
-    v20 = v10;
-    v16 = v10;
-    [v15 fetchEventBundlesWithOptions:v14 CompletionHandler:v17];
+    v18 = infoCopy;
+    v19 = eventCopy;
+    v20 = getSnapshotDictionaryForAnalytics;
+    v16 = getSnapshotDictionaryForAnalytics;
+    [eventBundleManager fetchEventBundlesWithOptions:v14 CompletionHandler:v17];
   }
 }
 
@@ -332,9 +332,9 @@ void __74__MONotificationsManager_submitEngagementHistoryUpdateWithEvent_userInf
   }
 }
 
-- (void)generateAvailabilityPredictionsWithHandler:(id)a3
+- (void)generateAvailabilityPredictionsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v5))
   {
@@ -344,17 +344,17 @@ void __74__MONotificationsManager_submitEngagementHistoryUpdateWithEvent_userInf
 
   v6 = [[MOPerformanceMeasurement alloc] initWithName:@"NotificationAvailabilityPredictionWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v6 startSession];
-  v7 = [(MONotificationsManager *)self queue];
+  queue = [(MONotificationsManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__MONotificationsManager_generateAvailabilityPredictionsWithHandler___block_invoke;
   block[3] = &unk_10033BF58;
   v11 = v6;
-  v12 = v4;
+  v12 = handlerCopy;
   block[4] = self;
   v8 = v6;
-  v9 = v4;
-  dispatch_async(v7, block);
+  v9 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__MONotificationsManager_generateAvailabilityPredictionsWithHandler___block_invoke(uint64_t a1)
@@ -382,9 +382,9 @@ id __69__MONotificationsManager_generateAvailabilityPredictionsWithHandler___blo
   return [*(a1 + 32) endSession];
 }
 
-- (void)_generateAvailabilityPredictionsWithHandler:(id)a3
+- (void)_generateAvailabilityPredictionsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityNotificationManager);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -393,14 +393,14 @@ id __69__MONotificationsManager_generateAvailabilityPredictionsWithHandler___blo
   }
 
   v6 = +[NSDate date];
-  v7 = [(MONotificationsManager *)self configManager];
+  configManager = [(MONotificationsManager *)self configManager];
   LODWORD(v8) = 1242802176;
-  [v7 getFloatSettingForKey:@"NotificationAvailabilityPredictionInputTimeWindow" withFallback:v8];
+  [configManager getFloatSettingForKey:@"NotificationAvailabilityPredictionInputTimeWindow" withFallback:v8];
   v10 = [v6 dateByAddingTimeInterval:-v9];
 
-  v11 = [(MONotificationsManager *)self engagementHistoryManager];
+  engagementHistoryManager = [(MONotificationsManager *)self engagementHistoryManager];
   v30 = 0;
-  v12 = [v11 fetchSuggestionEngagementLightEventsWithTypes:&off_10036DC38 fromStartDate:v10 toEndDate:v6 withError:&v30];
+  v12 = [engagementHistoryManager fetchSuggestionEngagementLightEventsWithTypes:&off_10036DC38 fromStartDate:v10 toEndDate:v6 withError:&v30];
   v13 = v30;
 
   if (v13)
@@ -411,14 +411,14 @@ id __69__MONotificationsManager_generateAvailabilityPredictionsWithHandler___blo
       [MONotificationsManager _generateAvailabilityPredictionsWithHandler:];
     }
 
-    v4[2](v4, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
   else
   {
-    v15 = [(MONotificationsManager *)self engagementHistoryManager];
+    engagementHistoryManager2 = [(MONotificationsManager *)self engagementHistoryManager];
     v29 = 0;
-    v16 = [v15 fetchAppEntryEngagementLightEventsWithTypes:&off_10036DC50 fromStartDate:v10 toEndDate:v6 withError:&v29];
+    v16 = [engagementHistoryManager2 fetchAppEntryEngagementLightEventsWithTypes:&off_10036DC50 fromStartDate:v10 toEndDate:v6 withError:&v29];
     v17 = v29;
 
     if (v17)
@@ -429,25 +429,25 @@ id __69__MONotificationsManager_generateAvailabilityPredictionsWithHandler___blo
         [MONotificationsManager _generateAvailabilityPredictionsWithHandler:];
       }
 
-      v4[2](v4, v17);
+      handlerCopy[2](handlerCopy, v17);
     }
 
     else
     {
       v21 = [[NSDateInterval alloc] initWithStartDate:v10 endDate:v6];
       v19 = [[MOEventFetchOptions alloc] initWithDateInterval:v21 ascending:1 categories:&off_10036DC68 limit:0];
-      v20 = [(MONotificationsManager *)self eventManager];
+      eventManager = [(MONotificationsManager *)self eventManager];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = __70__MONotificationsManager__generateAvailabilityPredictionsWithHandler___block_invoke;
       v22[3] = &unk_100337828;
-      v28 = v4;
+      v28 = handlerCopy;
       v23 = v10;
       v24 = v6;
-      v25 = self;
+      selfCopy = self;
       v26 = v12;
       v27 = v16;
-      [v20 fetchEventsWithOptions:v19 CompletionHandler:v22];
+      [eventManager fetchEventsWithOptions:v19 CompletionHandler:v22];
     }
   }
 }
@@ -589,9 +589,9 @@ void __70__MONotificationsManager__generateAvailabilityPredictionsWithHandler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3
+- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v5))
   {
@@ -601,17 +601,17 @@ void __70__MONotificationsManager__generateAvailabilityPredictionsWithHandler___
 
   v6 = [[MOPerformanceMeasurement alloc] initWithName:@"NotificationPredictionAndTimerWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v6 startSession];
-  v7 = [(MONotificationsManager *)self queue];
+  queue = [(MONotificationsManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __85__MONotificationsManager_generateAvailabilityPredictionsAndRegisterTimerWithHandler___block_invoke;
   block[3] = &unk_10033BF58;
   v11 = v6;
-  v12 = v4;
+  v12 = handlerCopy;
   block[4] = self;
   v8 = v6;
-  v9 = v4;
-  dispatch_async(v7, block);
+  v9 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __85__MONotificationsManager_generateAvailabilityPredictionsAndRegisterTimerWithHandler___block_invoke(uint64_t a1)
@@ -639,18 +639,18 @@ id __85__MONotificationsManager_generateAvailabilityPredictionsAndRegisterTimerW
   return [*(a1 + 32) endSession];
 }
 
-- (void)_generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3
+- (void)_generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MONotificationsManager *)self queue];
+  handlerCopy = handler;
+  queue = [(MONotificationsManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __86__MONotificationsManager__generateAvailabilityPredictionsAndRegisterTimerWithHandler___block_invoke;
   v7[3] = &unk_100337B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __86__MONotificationsManager__generateAvailabilityPredictionsAndRegisterTimerWithHandler___block_invoke(uint64_t a1)
@@ -809,8 +809,8 @@ LABEL_30:
 
 - (void)_recreateNotificationRealtimeCheckTimer
 {
-  v3 = [(MONotificationsManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"NotificationRealTimeCheckAlarmFireDate"];
+  defaultsManager = [(MONotificationsManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"NotificationRealTimeCheckAlarmFireDate"];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -838,19 +838,19 @@ LABEL_30:
   }
 }
 
-- (void)setUpNotificationTimerWithFireDate:(id)a3
+- (void)setUpNotificationTimerWithFireDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [(MONotificationsManager *)self queue];
+    queue = [(MONotificationsManager *)self queue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = __61__MONotificationsManager_setUpNotificationTimerWithFireDate___block_invoke;
     v7[3] = &unk_100335B08;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = dateCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -1034,8 +1034,8 @@ void __61__MONotificationsManager_setUpNotificationTimerWithFireDate___block_inv
   v4 = +[NSDate now];
   v5 = [v3 components:28 fromDate:v4];
 
-  v6 = [(MONotificationsManager *)self configManager];
-  [v5 setHour:{objc_msgSend(v6, "getIntegerSettingForKey:withFallback:", @"UserNotificationUnscheduledHour", 19)}];
+  configManager = [(MONotificationsManager *)self configManager];
+  [v5 setHour:{objc_msgSend(configManager, "getIntegerSettingForKey:withFallback:", @"UserNotificationUnscheduledHour", 19)}];
 
   [v5 setMinute:0];
   [v5 setSecond:0];
@@ -1045,17 +1045,17 @@ void __61__MONotificationsManager_setUpNotificationTimerWithFireDate___block_inv
   return v8;
 }
 
-- (void)fetchEligiblePOICategoriesForNotificationsWithHandler:(id)a3
+- (void)fetchEligiblePOICategoriesForNotificationsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MONotificationsManager *)self categoryStore];
+  handlerCopy = handler;
+  categoryStore = [(MONotificationsManager *)self categoryStore];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __80__MONotificationsManager_fetchEligiblePOICategoriesForNotificationsWithHandler___block_invoke;
   v7[3] = &unk_1003369E0;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchEligiblePOICategoriesWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [categoryStore fetchEligiblePOICategoriesWithCompletionHandler:v7];
 }
 
 void __80__MONotificationsManager_fetchEligiblePOICategoriesForNotificationsWithHandler___block_invoke(uint64_t a1, void *a2, void *a3)

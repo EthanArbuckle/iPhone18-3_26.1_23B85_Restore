@@ -1,32 +1,32 @@
 @interface CoreRCBus
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setAllowHibernation:(BOOL)a3 error:(id *)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setAllowHibernation:(BOOL)hibernation error:(id *)error;
+- (BOOL)setProperty:(id)property forKey:(id)key error:(id *)error;
 - (CoreRCBus)init;
-- (CoreRCBus)initWithBus:(id)a3;
-- (CoreRCBus)initWithCoder:(id)a3;
+- (CoreRCBus)initWithBus:(id)bus;
+- (CoreRCBus)initWithCoder:(id)coder;
 - (NSSet)devices;
 - (OS_dispatch_queue)serialQueue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)deviceOnBusEquivalentTo:(id)a3;
-- (id)mergeDevice:(id)a3;
-- (id)propertyForKey:(id)a3 error:(id *)a4;
+- (id)deviceOnBusEquivalentTo:(id)to;
+- (id)mergeDevice:(id)device;
+- (id)propertyForKey:(id)key error:(id *)error;
 - (uint64_t)serialQueue;
-- (void)addDevice:(id)a3;
+- (void)addDevice:(id)device;
 - (void)dealloc;
-- (void)didRemoveFromManager:(id)a3;
-- (void)didUpdateProperties:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergePropertiesFromBus:(id)a3;
-- (void)notifyDelegateAllDevicesRemoved:(id)a3;
-- (void)notifyDelegateDeviceAdded:(id)a3;
-- (void)notifyDelegateDeviceRemoved:(id)a3;
-- (void)notifyDelegateDeviceUpdated:(id)a3;
+- (void)didRemoveFromManager:(id)manager;
+- (void)didUpdateProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergePropertiesFromBus:(id)bus;
+- (void)notifyDelegateAllDevicesRemoved:(id)removed;
+- (void)notifyDelegateDeviceAdded:(id)added;
+- (void)notifyDelegateDeviceRemoved:(id)removed;
+- (void)notifyDelegateDeviceUpdated:(id)updated;
 - (void)removeAllExternalDevices;
-- (void)removeDevice:(id)a3;
-- (void)replaceDevice:(id)a3 withDevice:(id)a4;
-- (void)setManager:(id)a3;
+- (void)removeDevice:(id)device;
+- (void)replaceDevice:(id)device withDevice:(id)withDevice;
+- (void)setManager:(id)manager;
 @end
 
 @implementation CoreRCBus
@@ -46,10 +46,10 @@
   return v2;
 }
 
-- (CoreRCBus)initWithBus:(id)a3
+- (CoreRCBus)initWithBus:(id)bus
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (bus)
   {
     v18.receiver = self;
     v18.super_class = CoreRCBus;
@@ -59,13 +59,13 @@
     {
       v6 = [(CoreRCBus *)v4 zone];
       v5->_devicesInternal = [objc_msgSend(MEMORY[0x277CBEB58] allocWithZone:{v6), "init"}];
-      v5->_uniqueID = [objc_msgSend(a3 "uniqueID")];
+      v5->_uniqueID = [objc_msgSend(bus "uniqueID")];
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = [a3 devices];
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      devices = [bus devices];
+      v8 = [devices countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v8)
       {
         v9 = v8;
@@ -77,14 +77,14 @@
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(devices);
             }
 
             [(CoreRCBus *)v5 addDevice:*(*(&v14 + 1) + 8 * v11++)];
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v9 = [devices countByEnumeratingWithState:&v14 objects:v19 count:16];
         }
 
         while (v9);
@@ -102,7 +102,7 @@
   return v5;
 }
 
-- (CoreRCBus)initWithCoder:(id)a3
+- (CoreRCBus)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
@@ -117,7 +117,7 @@
     v18 = 0u;
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v7 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0, 0), @"devices"}];
+    v7 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0, 0), @"devices"}];
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
@@ -150,19 +150,19 @@
       while (v9);
     }
 
-    v4->_uniqueID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v4->_uniqueID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_uniqueID forKey:@"uniqueID"];
-  v5 = [(CoreRCBus *)self devicesInternal];
+  [coder encodeObject:self->_uniqueID forKey:@"uniqueID"];
+  devicesInternal = [(CoreRCBus *)self devicesInternal];
 
-  [a3 encodeObject:v5 forKey:@"devices"];
+  [coder encodeObject:devicesInternal forKey:@"devices"];
 }
 
 - (void)dealloc
@@ -174,9 +174,9 @@
   [(CoreRCBus *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithBus:self];
 }
@@ -191,7 +191,7 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -200,9 +200,9 @@
   }
 
   uniqueID = self->_uniqueID;
-  v6 = [a3 uniqueID];
+  uniqueID = [equal uniqueID];
 
-  return [(NSUUID *)uniqueID isEqual:v6];
+  return [(NSUUID *)uniqueID isEqual:uniqueID];
 }
 
 - (OS_dispatch_queue)serialQueue
@@ -216,30 +216,30 @@
   return v2;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setProperty:(id)property forKey:(id)key error:(id *)error
 {
-  v9 = [(CoreRCBus *)self manager];
+  manager = [(CoreRCBus *)self manager];
 
-  return [v9 setProperty:a3 forKey:a4 ofBus:self error:a5];
+  return [manager setProperty:property forKey:key ofBus:self error:error];
 }
 
-- (id)propertyForKey:(id)a3 error:(id *)a4
+- (id)propertyForKey:(id)key error:(id *)error
 {
-  v7 = [(CoreRCBus *)self manager];
+  manager = [(CoreRCBus *)self manager];
 
-  return [v7 propertyForKey:a3 ofBus:self error:a4];
+  return [manager propertyForKey:key ofBus:self error:error];
 }
 
-- (void)setManager:(id)a3
+- (void)setManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
-  self->_manager = a3;
+  self->_manager = manager;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CoreRCBus *)self devices];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  devices = [(CoreRCBus *)self devices];
+  v5 = [(NSSet *)devices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -251,14 +251,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) setManager:a3];
+        [*(*(&v10 + 1) + 8 * v8++) setManager:manager];
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)devices countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -267,17 +267,17 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
-  [a3 willAddToBus:self];
-  [(CoreRCBus *)self willAddDevice:a3];
-  [a3 setManager:{-[CoreRCBus manager](self, "manager")}];
-  [(NSMutableSet *)[(CoreRCBus *)self devicesInternal] addObject:a3];
-  [(CoreRCBus *)self notifyDelegateDeviceAdded:a3];
-  [(CoreRCBus *)self didAddDevice:a3];
-  [a3 didAddToBus:self];
+  [device willAddToBus:self];
+  [(CoreRCBus *)self willAddDevice:device];
+  [device setManager:{-[CoreRCBus manager](self, "manager")}];
+  [(NSMutableSet *)[(CoreRCBus *)self devicesInternal] addObject:device];
+  [(CoreRCBus *)self notifyDelegateDeviceAdded:device];
+  [(CoreRCBus *)self didAddDevice:device];
+  [device didAddToBus:self];
 
-  [a3 readyToSend];
+  [device readyToSend];
 }
 
 - (void)removeAllExternalDevices
@@ -388,14 +388,14 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRemoveFromManager:(id)a3
+- (void)didRemoveFromManager:(id)manager
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CoreRCBus *)self devices:a3];
+  v3 = [(CoreRCBus *)self devices:manager];
   v4 = [(NSSet *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -424,49 +424,49 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateProperties:(id)a3
+- (void)didUpdateProperties:(id)properties
 {
-  v4 = [(CoreRCBus *)self manager];
+  manager = [(CoreRCBus *)self manager];
 
-  [v4 notifyDelegateUpdateBus:self];
+  [manager notifyDelegateUpdateBus:self];
 }
 
-- (id)mergeDevice:(id)a3
+- (id)mergeDevice:(id)device
 {
   v5 = [(CoreRCBus *)self deviceOnBusEquivalentTo:?];
   if (v5)
   {
     v6 = v5;
-    [v5 mergePropertiesFromDevice:a3];
+    [v5 mergePropertiesFromDevice:device];
     return v6;
   }
 
   else
   {
-    [(CoreRCBus *)self addDevice:a3];
+    [(CoreRCBus *)self addDevice:device];
 
-    return [(CoreRCBus *)self deviceOnBusEquivalentTo:a3];
+    return [(CoreRCBus *)self deviceOnBusEquivalentTo:device];
   }
 }
 
 - (NSSet)devices
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(CoreRCBus *)self devicesInternal];
+  devicesInternal = [(CoreRCBus *)self devicesInternal];
 
-  return [v2 setWithSet:v3];
+  return [v2 setWithSet:devicesInternal];
 }
 
-- (id)deviceOnBusEquivalentTo:(id)a3
+- (id)deviceOnBusEquivalentTo:(id)to
 {
-  v4 = [(CoreRCBus *)self devicesInternal];
+  devicesInternal = [(CoreRCBus *)self devicesInternal];
 
-  return [(NSMutableSet *)v4 member:a3];
+  return [(NSMutableSet *)devicesInternal member:to];
 }
 
-- (void)notifyDelegateDeviceAdded:(id)a3
+- (void)notifyDelegateDeviceAdded:(id)added
 {
-  v5 = [(CoreRCBus *)self delegate];
+  delegate = [(CoreRCBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreRCBus notifyDelegateDeviceAdded:];
@@ -475,13 +475,13 @@
   if (objc_opt_respondsToSelector())
   {
 
-    [v5 bus:self deviceHasBeenAdded:a3];
+    [delegate bus:self deviceHasBeenAdded:added];
   }
 }
 
-- (void)notifyDelegateDeviceRemoved:(id)a3
+- (void)notifyDelegateDeviceRemoved:(id)removed
 {
-  v5 = [(CoreRCBus *)self delegate];
+  delegate = [(CoreRCBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreRCBus notifyDelegateDeviceRemoved:];
@@ -490,11 +490,11 @@
   if (objc_opt_respondsToSelector())
   {
 
-    [v5 bus:self deviceHasBeenRemoved:a3];
+    [delegate bus:self deviceHasBeenRemoved:removed];
   }
 }
 
-- (void)notifyDelegateAllDevicesRemoved:(id)a3
+- (void)notifyDelegateAllDevicesRemoved:(id)removed
 {
   v15 = *MEMORY[0x277D85DE8];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
@@ -506,7 +506,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [removed countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -517,13 +517,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(removed);
         }
 
         [(CoreRCBus *)self notifyDelegateDeviceRemoved:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [removed countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -532,9 +532,9 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateDeviceUpdated:(id)a3
+- (void)notifyDelegateDeviceUpdated:(id)updated
 {
-  v5 = [(CoreRCBus *)self delegate];
+  delegate = [(CoreRCBus *)self delegate];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreRCBus notifyDelegateDeviceUpdated:];
@@ -543,34 +543,34 @@
   if (objc_opt_respondsToSelector())
   {
 
-    [v5 bus:self deviceHasBeenUpdated:a3];
+    [delegate bus:self deviceHasBeenUpdated:updated];
   }
 }
 
-- (BOOL)setAllowHibernation:(BOOL)a3 error:(id *)a4
+- (BOOL)setAllowHibernation:(BOOL)hibernation error:(id *)error
 {
-  if (a3)
+  if (hibernation)
   {
-    v5 = [(CoreRCBus *)self _allowSleep];
+    _allowSleep = [(CoreRCBus *)self _allowSleep];
   }
 
   else
   {
-    v5 = [(CoreRCBus *)self _preventSleep];
+    _allowSleep = [(CoreRCBus *)self _preventSleep];
   }
 
-  v6 = v5;
-  if (a4 && v5)
+  v6 = _allowSleep;
+  if (error && _allowSleep)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA4A8] code:v5 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA4A8] code:_allowSleep userInfo:0];
   }
 
   return v6 == 0;
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
-  v4 = [(CoreRCBus *)self deviceOnBusEquivalentTo:a3];
+  v4 = [(CoreRCBus *)self deviceOnBusEquivalentTo:device];
   if (v4)
   {
     v5 = v4;
@@ -585,33 +585,33 @@
   }
 }
 
-- (void)replaceDevice:(id)a3 withDevice:(id)a4
+- (void)replaceDevice:(id)device withDevice:(id)withDevice
 {
-  v6 = [(CoreRCBus *)self deviceOnBusEquivalentTo:a3];
+  v6 = [(CoreRCBus *)self deviceOnBusEquivalentTo:device];
   if (v6)
   {
-    [a4 setManager:{-[CoreRCBus manager](self, "manager")}];
+    [withDevice setManager:{-[CoreRCBus manager](self, "manager")}];
     [(NSMutableSet *)[(CoreRCBus *)self devicesInternal] removeObject:v6];
-    [(NSMutableSet *)[(CoreRCBus *)self devicesInternal] addObject:a4];
-    [(CoreRCBus *)self notifyDelegateDeviceUpdated:a4];
-    [a4 readyToSend];
+    [(NSMutableSet *)[(CoreRCBus *)self devicesInternal] addObject:withDevice];
+    [(CoreRCBus *)self notifyDelegateDeviceUpdated:withDevice];
+    [withDevice readyToSend];
   }
 
   v7 = v6;
 }
 
-- (void)mergePropertiesFromBus:(id)a3
+- (void)mergePropertiesFromBus:(id)bus
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  if (v5 && [(CoreRCBus *)self isEqual:a3])
+  if (v5 && [(CoreRCBus *)self isEqual:bus])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = [(CoreRCBus *)self mergeProperties];
-    v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    mergeProperties = [(CoreRCBus *)self mergeProperties];
+    v7 = [mergeProperties countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
@@ -622,11 +622,11 @@
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(mergeProperties);
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          v12 = [a3 valueForKey:{v11, v19, v20}];
+          v12 = [bus valueForKey:{v11, v19, selfCopy}];
           if (([-[CoreRCBus valueForKey:](self valueForKey:{v11), "isEqual:", v12}] & 1) == 0)
           {
             [(CoreRCBus *)self setValue:v12 forKey:v11];
@@ -634,13 +634,13 @@
             if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
             {
               v19 = v11;
-              v20 = self;
+              selfCopy = self;
               LogPrintF();
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v8 = [mergeProperties countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v8);
@@ -650,8 +650,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [a3 devices];
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    devices = [bus devices];
+    v14 = [devices countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v14)
     {
       v15 = v14;
@@ -662,13 +662,13 @@
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(devices);
           }
 
           [(CoreRCBus *)self mergeDevice:*(*(&v21 + 1) + 8 * j)];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v15 = [devices countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v15);
@@ -686,9 +686,9 @@
 - (uint64_t)serialQueue
 {
   OUTLINED_FUNCTION_1_4();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
-  return [v2 handleFailureInMethod:v1 object:v0 file:@"CoreRCBus.m" lineNumber:173 description:@"manager queue must not be nil!"];
+  return [currentHandler handleFailureInMethod:v1 object:v0 file:@"CoreRCBus.m" lineNumber:173 description:@"manager queue must not be nil!"];
 }
 
 - (uint64_t)notifyDelegateDeviceAdded:.cold.1()

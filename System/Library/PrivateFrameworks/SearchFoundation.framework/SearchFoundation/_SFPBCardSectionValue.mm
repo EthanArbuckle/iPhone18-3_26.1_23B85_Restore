@@ -1,1130 +1,1130 @@
 @interface _SFPBCardSectionValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCardSectionValue)initWithDictionary:(id)a3;
-- (_SFPBCardSectionValue)initWithFacade:(id)a3;
-- (_SFPBCardSectionValue)initWithJSON:(id)a3;
+- (_SFPBCardSectionValue)initWithDictionary:(id)dictionary;
+- (_SFPBCardSectionValue)initWithFacade:(id)facade;
+- (_SFPBCardSectionValue)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCardSectionValue
 
-- (_SFPBCardSectionValue)initWithFacade:(id)a3
+- (_SFPBCardSectionValue)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCardSectionValue *)self init];
 
   if (v5)
   {
-    v6 = [v4 appLinkCardSection];
+    appLinkCardSection = [facadeCopy appLinkCardSection];
 
-    if (v6)
+    if (appLinkCardSection)
     {
       v7 = [_SFPBAppLinkCardSection alloc];
-      v8 = [v4 appLinkCardSection];
-      v9 = [(_SFPBAppLinkCardSection *)v7 initWithFacade:v8];
+      appLinkCardSection2 = [facadeCopy appLinkCardSection];
+      v9 = [(_SFPBAppLinkCardSection *)v7 initWithFacade:appLinkCardSection2];
       [(_SFPBCardSectionValue *)v5 setAppLinkCardSection:v9];
     }
 
-    v10 = [v4 descriptionCardSection];
+    descriptionCardSection = [facadeCopy descriptionCardSection];
 
-    if (v10)
+    if (descriptionCardSection)
     {
       v11 = [_SFPBDescriptionCardSection alloc];
-      v12 = [v4 descriptionCardSection];
-      v13 = [(_SFPBDescriptionCardSection *)v11 initWithFacade:v12];
+      descriptionCardSection2 = [facadeCopy descriptionCardSection];
+      v13 = [(_SFPBDescriptionCardSection *)v11 initWithFacade:descriptionCardSection2];
       [(_SFPBCardSectionValue *)v5 setDescriptionCardSection:v13];
     }
 
-    v14 = [v4 keyValueDataCardSection];
+    keyValueDataCardSection = [facadeCopy keyValueDataCardSection];
 
-    if (v14)
+    if (keyValueDataCardSection)
     {
       v15 = [_SFPBKeyValueDataCardSection alloc];
-      v16 = [v4 keyValueDataCardSection];
-      v17 = [(_SFPBKeyValueDataCardSection *)v15 initWithFacade:v16];
+      keyValueDataCardSection2 = [facadeCopy keyValueDataCardSection];
+      v17 = [(_SFPBKeyValueDataCardSection *)v15 initWithFacade:keyValueDataCardSection2];
       [(_SFPBCardSectionValue *)v5 setKeyValueDataCardSection:v17];
     }
 
-    v18 = [v4 mapCardSection];
+    mapCardSection = [facadeCopy mapCardSection];
 
-    if (v18)
+    if (mapCardSection)
     {
       v19 = [_SFPBMapCardSection alloc];
-      v20 = [v4 mapCardSection];
-      v21 = [(_SFPBMapCardSection *)v19 initWithFacade:v20];
+      mapCardSection2 = [facadeCopy mapCardSection];
+      v21 = [(_SFPBMapCardSection *)v19 initWithFacade:mapCardSection2];
       [(_SFPBCardSectionValue *)v5 setMapCardSection:v21];
     }
 
-    v22 = [v4 mediaInfoCardSection];
+    mediaInfoCardSection = [facadeCopy mediaInfoCardSection];
 
-    if (v22)
+    if (mediaInfoCardSection)
     {
       v23 = [_SFPBMediaInfoCardSection alloc];
-      v24 = [v4 mediaInfoCardSection];
-      v25 = [(_SFPBMediaInfoCardSection *)v23 initWithFacade:v24];
+      mediaInfoCardSection2 = [facadeCopy mediaInfoCardSection];
+      v25 = [(_SFPBMediaInfoCardSection *)v23 initWithFacade:mediaInfoCardSection2];
       [(_SFPBCardSectionValue *)v5 setMediaInfoCardSection:v25];
     }
 
-    v26 = [v4 mediaPlayerCardSection];
+    mediaPlayerCardSection = [facadeCopy mediaPlayerCardSection];
 
-    if (v26)
+    if (mediaPlayerCardSection)
     {
       v27 = [_SFPBMediaPlayerCardSection alloc];
-      v28 = [v4 mediaPlayerCardSection];
-      v29 = [(_SFPBMediaPlayerCardSection *)v27 initWithFacade:v28];
+      mediaPlayerCardSection2 = [facadeCopy mediaPlayerCardSection];
+      v29 = [(_SFPBMediaPlayerCardSection *)v27 initWithFacade:mediaPlayerCardSection2];
       [(_SFPBCardSectionValue *)v5 setMediaPlayerCardSection:v29];
     }
 
-    v30 = [v4 nowPlayingCardSection];
+    nowPlayingCardSection = [facadeCopy nowPlayingCardSection];
 
-    if (v30)
+    if (nowPlayingCardSection)
     {
       v31 = [_SFPBNowPlayingCardSection alloc];
-      v32 = [v4 nowPlayingCardSection];
-      v33 = [(_SFPBNowPlayingCardSection *)v31 initWithFacade:v32];
+      nowPlayingCardSection2 = [facadeCopy nowPlayingCardSection];
+      v33 = [(_SFPBNowPlayingCardSection *)v31 initWithFacade:nowPlayingCardSection2];
       [(_SFPBCardSectionValue *)v5 setNowPlayingCardSection:v33];
     }
 
-    v34 = [v4 richTitleCardSection];
+    richTitleCardSection = [facadeCopy richTitleCardSection];
 
-    if (v34)
+    if (richTitleCardSection)
     {
       v35 = [_SFPBRichTitleCardSection alloc];
-      v36 = [v4 richTitleCardSection];
-      v37 = [(_SFPBRichTitleCardSection *)v35 initWithFacade:v36];
+      richTitleCardSection2 = [facadeCopy richTitleCardSection];
+      v37 = [(_SFPBRichTitleCardSection *)v35 initWithFacade:richTitleCardSection2];
       [(_SFPBCardSectionValue *)v5 setRichTitleCardSection:v37];
     }
 
-    v38 = [v4 rowCardSection];
+    rowCardSection = [facadeCopy rowCardSection];
 
-    if (v38)
+    if (rowCardSection)
     {
       v39 = [_SFPBRowCardSection alloc];
-      v40 = [v4 rowCardSection];
-      v41 = [(_SFPBRowCardSection *)v39 initWithFacade:v40];
+      rowCardSection2 = [facadeCopy rowCardSection];
+      v41 = [(_SFPBRowCardSection *)v39 initWithFacade:rowCardSection2];
       [(_SFPBCardSectionValue *)v5 setRowCardSection:v41];
     }
 
-    v42 = [v4 scoreboardCardSection];
+    scoreboardCardSection = [facadeCopy scoreboardCardSection];
 
-    if (v42)
+    if (scoreboardCardSection)
     {
       v43 = [_SFPBScoreboardCardSection alloc];
-      v44 = [v4 scoreboardCardSection];
-      v45 = [(_SFPBScoreboardCardSection *)v43 initWithFacade:v44];
+      scoreboardCardSection2 = [facadeCopy scoreboardCardSection];
+      v45 = [(_SFPBScoreboardCardSection *)v43 initWithFacade:scoreboardCardSection2];
       [(_SFPBCardSectionValue *)v5 setScoreboardCardSection:v45];
     }
 
-    v46 = [v4 socialMediaPostCardSection];
+    socialMediaPostCardSection = [facadeCopy socialMediaPostCardSection];
 
-    if (v46)
+    if (socialMediaPostCardSection)
     {
       v47 = [_SFPBSocialMediaPostCardSection alloc];
-      v48 = [v4 socialMediaPostCardSection];
-      v49 = [(_SFPBSocialMediaPostCardSection *)v47 initWithFacade:v48];
+      socialMediaPostCardSection2 = [facadeCopy socialMediaPostCardSection];
+      v49 = [(_SFPBSocialMediaPostCardSection *)v47 initWithFacade:socialMediaPostCardSection2];
       [(_SFPBCardSectionValue *)v5 setSocialMediaPostCardSection:v49];
     }
 
-    v50 = [v4 stockChartCardSection];
+    stockChartCardSection = [facadeCopy stockChartCardSection];
 
-    if (v50)
+    if (stockChartCardSection)
     {
       v51 = [_SFPBStockChartCardSection alloc];
-      v52 = [v4 stockChartCardSection];
-      v53 = [(_SFPBStockChartCardSection *)v51 initWithFacade:v52];
+      stockChartCardSection2 = [facadeCopy stockChartCardSection];
+      v53 = [(_SFPBStockChartCardSection *)v51 initWithFacade:stockChartCardSection2];
       [(_SFPBCardSectionValue *)v5 setStockChartCardSection:v53];
     }
 
-    v54 = [v4 tableHeaderRowCardSection];
+    tableHeaderRowCardSection = [facadeCopy tableHeaderRowCardSection];
 
-    if (v54)
+    if (tableHeaderRowCardSection)
     {
       v55 = [_SFPBTableHeaderRowCardSection alloc];
-      v56 = [v4 tableHeaderRowCardSection];
-      v57 = [(_SFPBTableHeaderRowCardSection *)v55 initWithFacade:v56];
+      tableHeaderRowCardSection2 = [facadeCopy tableHeaderRowCardSection];
+      v57 = [(_SFPBTableHeaderRowCardSection *)v55 initWithFacade:tableHeaderRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setTableHeaderRowCardSection:v57];
     }
 
-    v58 = [v4 tableRowCardSection];
+    tableRowCardSection = [facadeCopy tableRowCardSection];
 
-    if (v58)
+    if (tableRowCardSection)
     {
       v59 = [_SFPBTableRowCardSection alloc];
-      v60 = [v4 tableRowCardSection];
-      v61 = [(_SFPBTableRowCardSection *)v59 initWithFacade:v60];
+      tableRowCardSection2 = [facadeCopy tableRowCardSection];
+      v61 = [(_SFPBTableRowCardSection *)v59 initWithFacade:tableRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setTableRowCardSection:v61];
     }
 
-    v62 = [v4 textColumnsCardSection];
+    textColumnsCardSection = [facadeCopy textColumnsCardSection];
 
-    if (v62)
+    if (textColumnsCardSection)
     {
       v63 = [_SFPBTextColumnsCardSection alloc];
-      v64 = [v4 textColumnsCardSection];
-      v65 = [(_SFPBTextColumnsCardSection *)v63 initWithFacade:v64];
+      textColumnsCardSection2 = [facadeCopy textColumnsCardSection];
+      v65 = [(_SFPBTextColumnsCardSection *)v63 initWithFacade:textColumnsCardSection2];
       [(_SFPBCardSectionValue *)v5 setTextColumnsCardSection:v65];
     }
 
-    v66 = [v4 titleCardSection];
+    titleCardSection = [facadeCopy titleCardSection];
 
-    if (v66)
+    if (titleCardSection)
     {
       v67 = [_SFPBTitleCardSection alloc];
-      v68 = [v4 titleCardSection];
-      v69 = [(_SFPBTitleCardSection *)v67 initWithFacade:v68];
+      titleCardSection2 = [facadeCopy titleCardSection];
+      v69 = [(_SFPBTitleCardSection *)v67 initWithFacade:titleCardSection2];
       [(_SFPBCardSectionValue *)v5 setTitleCardSection:v69];
     }
 
-    v70 = [v4 trackListCardSection];
+    trackListCardSection = [facadeCopy trackListCardSection];
 
-    if (v70)
+    if (trackListCardSection)
     {
       v71 = [_SFPBTrackListCardSection alloc];
-      v72 = [v4 trackListCardSection];
-      v73 = [(_SFPBTrackListCardSection *)v71 initWithFacade:v72];
+      trackListCardSection2 = [facadeCopy trackListCardSection];
+      v73 = [(_SFPBTrackListCardSection *)v71 initWithFacade:trackListCardSection2];
       [(_SFPBCardSectionValue *)v5 setTrackListCardSection:v73];
     }
 
-    v74 = [v4 audioPlaybackCardSection];
+    audioPlaybackCardSection = [facadeCopy audioPlaybackCardSection];
 
-    if (v74)
+    if (audioPlaybackCardSection)
     {
       v75 = [_SFPBAudioPlaybackCardSection alloc];
-      v76 = [v4 audioPlaybackCardSection];
-      v77 = [(_SFPBAudioPlaybackCardSection *)v75 initWithFacade:v76];
+      audioPlaybackCardSection2 = [facadeCopy audioPlaybackCardSection];
+      v77 = [(_SFPBAudioPlaybackCardSection *)v75 initWithFacade:audioPlaybackCardSection2];
       [(_SFPBCardSectionValue *)v5 setAudioPlaybackCardSection:v77];
     }
 
-    v78 = [v4 flightCardSection];
+    flightCardSection = [facadeCopy flightCardSection];
 
-    if (v78)
+    if (flightCardSection)
     {
       v79 = [_SFPBFlightCardSection alloc];
-      v80 = [v4 flightCardSection];
-      v81 = [(_SFPBFlightCardSection *)v79 initWithFacade:v80];
+      flightCardSection2 = [facadeCopy flightCardSection];
+      v81 = [(_SFPBFlightCardSection *)v79 initWithFacade:flightCardSection2];
       [(_SFPBCardSectionValue *)v5 setFlightCardSection:v81];
     }
 
-    v82 = [v4 activityIndicatorCardSection];
+    activityIndicatorCardSection = [facadeCopy activityIndicatorCardSection];
 
-    if (v82)
+    if (activityIndicatorCardSection)
     {
       v83 = [_SFPBActivityIndicatorCardSection alloc];
-      v84 = [v4 activityIndicatorCardSection];
-      v85 = [(_SFPBActivityIndicatorCardSection *)v83 initWithFacade:v84];
+      activityIndicatorCardSection2 = [facadeCopy activityIndicatorCardSection];
+      v85 = [(_SFPBActivityIndicatorCardSection *)v83 initWithFacade:activityIndicatorCardSection2];
       [(_SFPBCardSectionValue *)v5 setActivityIndicatorCardSection:v85];
     }
 
-    v86 = [v4 webCardSection];
+    webCardSection = [facadeCopy webCardSection];
 
-    if (v86)
+    if (webCardSection)
     {
       v87 = [_SFPBWebCardSection alloc];
-      v88 = [v4 webCardSection];
-      v89 = [(_SFPBWebCardSection *)v87 initWithFacade:v88];
+      webCardSection2 = [facadeCopy webCardSection];
+      v89 = [(_SFPBWebCardSection *)v87 initWithFacade:webCardSection2];
       [(_SFPBCardSectionValue *)v5 setWebCardSection:v89];
     }
 
-    v90 = [v4 messageCardSection];
+    messageCardSection = [facadeCopy messageCardSection];
 
-    if (v90)
+    if (messageCardSection)
     {
       v91 = [_SFPBMessageCardSection alloc];
-      v92 = [v4 messageCardSection];
-      v93 = [(_SFPBMessageCardSection *)v91 initWithFacade:v92];
+      messageCardSection2 = [facadeCopy messageCardSection];
+      v93 = [(_SFPBMessageCardSection *)v91 initWithFacade:messageCardSection2];
       [(_SFPBCardSectionValue *)v5 setMessageCardSection:v93];
     }
 
-    v94 = [v4 detailedRowCardSection];
+    detailedRowCardSection = [facadeCopy detailedRowCardSection];
 
-    if (v94)
+    if (detailedRowCardSection)
     {
       v95 = [_SFPBDetailedRowCardSection alloc];
-      v96 = [v4 detailedRowCardSection];
-      v97 = [(_SFPBDetailedRowCardSection *)v95 initWithFacade:v96];
+      detailedRowCardSection2 = [facadeCopy detailedRowCardSection];
+      v97 = [(_SFPBDetailedRowCardSection *)v95 initWithFacade:detailedRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setDetailedRowCardSection:v97];
     }
 
-    v98 = [v4 imagesCardSection];
+    imagesCardSection = [facadeCopy imagesCardSection];
 
-    if (v98)
+    if (imagesCardSection)
     {
       v99 = [_SFPBImagesCardSection alloc];
-      v100 = [v4 imagesCardSection];
-      v101 = [(_SFPBImagesCardSection *)v99 initWithFacade:v100];
+      imagesCardSection2 = [facadeCopy imagesCardSection];
+      v101 = [(_SFPBImagesCardSection *)v99 initWithFacade:imagesCardSection2];
       [(_SFPBCardSectionValue *)v5 setImagesCardSection:v101];
     }
 
-    v102 = [v4 suggestionCardSection];
+    suggestionCardSection = [facadeCopy suggestionCardSection];
 
-    if (v102)
+    if (suggestionCardSection)
     {
       v103 = [_SFPBSuggestionCardSection alloc];
-      v104 = [v4 suggestionCardSection];
-      v105 = [(_SFPBSuggestionCardSection *)v103 initWithFacade:v104];
+      suggestionCardSection2 = [facadeCopy suggestionCardSection];
+      v105 = [(_SFPBSuggestionCardSection *)v103 initWithFacade:suggestionCardSection2];
       [(_SFPBCardSectionValue *)v5 setSuggestionCardSection:v105];
     }
 
-    v106 = [v4 selectableGridCardSection];
+    selectableGridCardSection = [facadeCopy selectableGridCardSection];
 
-    if (v106)
+    if (selectableGridCardSection)
     {
       v107 = [_SFPBSelectableGridCardSection alloc];
-      v108 = [v4 selectableGridCardSection];
-      v109 = [(_SFPBSelectableGridCardSection *)v107 initWithFacade:v108];
+      selectableGridCardSection2 = [facadeCopy selectableGridCardSection];
+      v109 = [(_SFPBSelectableGridCardSection *)v107 initWithFacade:selectableGridCardSection2];
       [(_SFPBCardSectionValue *)v5 setSelectableGridCardSection:v109];
     }
 
-    v110 = [v4 sectionHeaderCardSection];
+    sectionHeaderCardSection = [facadeCopy sectionHeaderCardSection];
 
-    if (v110)
+    if (sectionHeaderCardSection)
     {
       v111 = [_SFPBSectionHeaderCardSection alloc];
-      v112 = [v4 sectionHeaderCardSection];
-      v113 = [(_SFPBSectionHeaderCardSection *)v111 initWithFacade:v112];
+      sectionHeaderCardSection2 = [facadeCopy sectionHeaderCardSection];
+      v113 = [(_SFPBSectionHeaderCardSection *)v111 initWithFacade:sectionHeaderCardSection2];
       [(_SFPBCardSectionValue *)v5 setSectionHeaderCardSection:v113];
     }
 
-    v114 = [v4 metaInfoCardSection];
+    metaInfoCardSection = [facadeCopy metaInfoCardSection];
 
-    if (v114)
+    if (metaInfoCardSection)
     {
       v115 = [_SFPBMetaInfoCardSection alloc];
-      v116 = [v4 metaInfoCardSection];
-      v117 = [(_SFPBMetaInfoCardSection *)v115 initWithFacade:v116];
+      metaInfoCardSection2 = [facadeCopy metaInfoCardSection];
+      v117 = [(_SFPBMetaInfoCardSection *)v115 initWithFacade:metaInfoCardSection2];
       [(_SFPBCardSectionValue *)v5 setMetaInfoCardSection:v117];
     }
 
-    v118 = [v4 watchListCardSection];
+    watchListCardSection = [facadeCopy watchListCardSection];
 
-    if (v118)
+    if (watchListCardSection)
     {
       v119 = [_SFPBWatchListCardSection alloc];
-      v120 = [v4 watchListCardSection];
-      v121 = [(_SFPBWatchListCardSection *)v119 initWithFacade:v120];
+      watchListCardSection2 = [facadeCopy watchListCardSection];
+      v121 = [(_SFPBWatchListCardSection *)v119 initWithFacade:watchListCardSection2];
       [(_SFPBCardSectionValue *)v5 setWatchListCardSection:v121];
     }
 
-    v122 = [v4 mapsDetailedRowCardSection];
+    mapsDetailedRowCardSection = [facadeCopy mapsDetailedRowCardSection];
 
-    if (v122)
+    if (mapsDetailedRowCardSection)
     {
       v123 = [_SFPBMapsDetailedRowCardSection alloc];
-      v124 = [v4 mapsDetailedRowCardSection];
-      v125 = [(_SFPBMapsDetailedRowCardSection *)v123 initWithFacade:v124];
+      mapsDetailedRowCardSection2 = [facadeCopy mapsDetailedRowCardSection];
+      v125 = [(_SFPBMapsDetailedRowCardSection *)v123 initWithFacade:mapsDetailedRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setMapsDetailedRowCardSection:v125];
     }
 
-    v126 = [v4 buttonCardSection];
+    buttonCardSection = [facadeCopy buttonCardSection];
 
-    if (v126)
+    if (buttonCardSection)
     {
       v127 = [_SFPBButtonCardSection alloc];
-      v128 = [v4 buttonCardSection];
-      v129 = [(_SFPBButtonCardSection *)v127 initWithFacade:v128];
+      buttonCardSection2 = [facadeCopy buttonCardSection];
+      v129 = [(_SFPBButtonCardSection *)v127 initWithFacade:buttonCardSection2];
       [(_SFPBCardSectionValue *)v5 setButtonCardSection:v129];
     }
 
-    v130 = [v4 horizontalButtonCardSection];
+    horizontalButtonCardSection = [facadeCopy horizontalButtonCardSection];
 
-    if (v130)
+    if (horizontalButtonCardSection)
     {
       v131 = [_SFPBHorizontalButtonCardSection alloc];
-      v132 = [v4 horizontalButtonCardSection];
-      v133 = [(_SFPBHorizontalButtonCardSection *)v131 initWithFacade:v132];
+      horizontalButtonCardSection2 = [facadeCopy horizontalButtonCardSection];
+      v133 = [(_SFPBHorizontalButtonCardSection *)v131 initWithFacade:horizontalButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setHorizontalButtonCardSection:v133];
     }
 
-    v134 = [v4 verticalLayoutCardSection];
+    verticalLayoutCardSection = [facadeCopy verticalLayoutCardSection];
 
-    if (v134)
+    if (verticalLayoutCardSection)
     {
       v135 = [_SFPBVerticalLayoutCardSection alloc];
-      v136 = [v4 verticalLayoutCardSection];
-      v137 = [(_SFPBVerticalLayoutCardSection *)v135 initWithFacade:v136];
+      verticalLayoutCardSection2 = [facadeCopy verticalLayoutCardSection];
+      v137 = [(_SFPBVerticalLayoutCardSection *)v135 initWithFacade:verticalLayoutCardSection2];
       [(_SFPBCardSectionValue *)v5 setVerticalLayoutCardSection:v137];
     }
 
-    v138 = [v4 productCardSection];
+    productCardSection = [facadeCopy productCardSection];
 
-    if (v138)
+    if (productCardSection)
     {
       v139 = [_SFPBProductCardSection alloc];
-      v140 = [v4 productCardSection];
-      v141 = [(_SFPBProductCardSection *)v139 initWithFacade:v140];
+      productCardSection2 = [facadeCopy productCardSection];
+      v141 = [(_SFPBProductCardSection *)v139 initWithFacade:productCardSection2];
       [(_SFPBCardSectionValue *)v5 setProductCardSection:v141];
     }
 
-    v142 = [v4 horizontalScrollCardSection];
+    horizontalScrollCardSection = [facadeCopy horizontalScrollCardSection];
 
-    if (v142)
+    if (horizontalScrollCardSection)
     {
       v143 = [_SFPBHorizontalScrollCardSection alloc];
-      v144 = [v4 horizontalScrollCardSection];
-      v145 = [(_SFPBHorizontalScrollCardSection *)v143 initWithFacade:v144];
+      horizontalScrollCardSection2 = [facadeCopy horizontalScrollCardSection];
+      v145 = [(_SFPBHorizontalScrollCardSection *)v143 initWithFacade:horizontalScrollCardSection2];
       [(_SFPBCardSectionValue *)v5 setHorizontalScrollCardSection:v145];
     }
 
-    v146 = [v4 mediaRemoteControlCardSection];
+    mediaRemoteControlCardSection = [facadeCopy mediaRemoteControlCardSection];
 
-    if (v146)
+    if (mediaRemoteControlCardSection)
     {
       v147 = [_SFPBMediaRemoteControlCardSection alloc];
-      v148 = [v4 mediaRemoteControlCardSection];
-      v149 = [(_SFPBMediaRemoteControlCardSection *)v147 initWithFacade:v148];
+      mediaRemoteControlCardSection2 = [facadeCopy mediaRemoteControlCardSection];
+      v149 = [(_SFPBMediaRemoteControlCardSection *)v147 initWithFacade:mediaRemoteControlCardSection2];
       [(_SFPBCardSectionValue *)v5 setMediaRemoteControlCardSection:v149];
     }
 
-    v150 = [v4 mapPlaceCardSection];
+    mapPlaceCardSection = [facadeCopy mapPlaceCardSection];
 
-    if (v150)
+    if (mapPlaceCardSection)
     {
       v151 = [_SFPBMapPlaceCardSection alloc];
-      v152 = [v4 mapPlaceCardSection];
-      v153 = [(_SFPBMapPlaceCardSection *)v151 initWithFacade:v152];
+      mapPlaceCardSection2 = [facadeCopy mapPlaceCardSection];
+      v153 = [(_SFPBMapPlaceCardSection *)v151 initWithFacade:mapPlaceCardSection2];
       [(_SFPBCardSectionValue *)v5 setMapPlaceCardSection:v153];
     }
 
-    v154 = [v4 compactRowCardSection];
+    compactRowCardSection = [facadeCopy compactRowCardSection];
 
-    if (v154)
+    if (compactRowCardSection)
     {
       v155 = [_SFPBCompactRowCardSection alloc];
-      v156 = [v4 compactRowCardSection];
-      v157 = [(_SFPBCompactRowCardSection *)v155 initWithFacade:v156];
+      compactRowCardSection2 = [facadeCopy compactRowCardSection];
+      v157 = [(_SFPBCompactRowCardSection *)v155 initWithFacade:compactRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setCompactRowCardSection:v157];
     }
 
-    v158 = [v4 worldMapCardSection];
+    worldMapCardSection = [facadeCopy worldMapCardSection];
 
-    if (v158)
+    if (worldMapCardSection)
     {
       v159 = [_SFPBWorldMapCardSection alloc];
-      v160 = [v4 worldMapCardSection];
-      v161 = [(_SFPBWorldMapCardSection *)v159 initWithFacade:v160];
+      worldMapCardSection2 = [facadeCopy worldMapCardSection];
+      v161 = [(_SFPBWorldMapCardSection *)v159 initWithFacade:worldMapCardSection2];
       [(_SFPBCardSectionValue *)v5 setWorldMapCardSection:v161];
     }
 
-    v162 = [v4 attributionFooterCardSection];
+    attributionFooterCardSection = [facadeCopy attributionFooterCardSection];
 
-    if (v162)
+    if (attributionFooterCardSection)
     {
       v163 = [_SFPBAttributionFooterCardSection alloc];
-      v164 = [v4 attributionFooterCardSection];
-      v165 = [(_SFPBAttributionFooterCardSection *)v163 initWithFacade:v164];
+      attributionFooterCardSection2 = [facadeCopy attributionFooterCardSection];
+      v165 = [(_SFPBAttributionFooterCardSection *)v163 initWithFacade:attributionFooterCardSection2];
       [(_SFPBCardSectionValue *)v5 setAttributionFooterCardSection:v165];
     }
 
-    v166 = [v4 gridCardSection];
+    gridCardSection = [facadeCopy gridCardSection];
 
-    if (v166)
+    if (gridCardSection)
     {
       v167 = [_SFPBGridCardSection alloc];
-      v168 = [v4 gridCardSection];
-      v169 = [(_SFPBGridCardSection *)v167 initWithFacade:v168];
+      gridCardSection2 = [facadeCopy gridCardSection];
+      v169 = [(_SFPBGridCardSection *)v167 initWithFacade:gridCardSection2];
       [(_SFPBCardSectionValue *)v5 setGridCardSection:v169];
     }
 
-    v170 = [v4 personHeaderCardSection];
+    personHeaderCardSection = [facadeCopy personHeaderCardSection];
 
-    if (v170)
+    if (personHeaderCardSection)
     {
       v171 = [_SFPBPersonHeaderCardSection alloc];
-      v172 = [v4 personHeaderCardSection];
-      v173 = [(_SFPBPersonHeaderCardSection *)v171 initWithFacade:v172];
+      personHeaderCardSection2 = [facadeCopy personHeaderCardSection];
+      v173 = [(_SFPBPersonHeaderCardSection *)v171 initWithFacade:personHeaderCardSection2];
       [(_SFPBCardSectionValue *)v5 setPersonHeaderCardSection:v173];
     }
 
-    v174 = [v4 colorBarCardSection];
+    colorBarCardSection = [facadeCopy colorBarCardSection];
 
-    if (v174)
+    if (colorBarCardSection)
     {
       v175 = [_SFPBColorBarCardSection alloc];
-      v176 = [v4 colorBarCardSection];
-      v177 = [(_SFPBColorBarCardSection *)v175 initWithFacade:v176];
+      colorBarCardSection2 = [facadeCopy colorBarCardSection];
+      v177 = [(_SFPBColorBarCardSection *)v175 initWithFacade:colorBarCardSection2];
       [(_SFPBCardSectionValue *)v5 setColorBarCardSection:v177];
     }
 
-    v178 = [v4 splitCardSection];
+    splitCardSection = [facadeCopy splitCardSection];
 
-    if (v178)
+    if (splitCardSection)
     {
       v179 = [_SFPBSplitCardSection alloc];
-      v180 = [v4 splitCardSection];
-      v181 = [(_SFPBSplitCardSection *)v179 initWithFacade:v180];
+      splitCardSection2 = [facadeCopy splitCardSection];
+      v181 = [(_SFPBSplitCardSection *)v179 initWithFacade:splitCardSection2];
       [(_SFPBCardSectionValue *)v5 setSplitCardSection:v181];
     }
 
-    v182 = [v4 linkPresentationCardSection];
+    linkPresentationCardSection = [facadeCopy linkPresentationCardSection];
 
-    if (v182)
+    if (linkPresentationCardSection)
     {
       v183 = [_SFPBLinkPresentationCardSection alloc];
-      v184 = [v4 linkPresentationCardSection];
-      v185 = [(_SFPBLinkPresentationCardSection *)v183 initWithFacade:v184];
+      linkPresentationCardSection2 = [facadeCopy linkPresentationCardSection];
+      v185 = [(_SFPBLinkPresentationCardSection *)v183 initWithFacade:linkPresentationCardSection2];
       [(_SFPBCardSectionValue *)v5 setLinkPresentationCardSection:v185];
     }
 
-    v186 = [v4 findMyCardSection];
+    findMyCardSection = [facadeCopy findMyCardSection];
 
-    if (v186)
+    if (findMyCardSection)
     {
       v187 = [_SFPBFindMyCardSection alloc];
-      v188 = [v4 findMyCardSection];
-      v189 = [(_SFPBFindMyCardSection *)v187 initWithFacade:v188];
+      findMyCardSection2 = [facadeCopy findMyCardSection];
+      v189 = [(_SFPBFindMyCardSection *)v187 initWithFacade:findMyCardSection2];
       [(_SFPBCardSectionValue *)v5 setFindMyCardSection:v189];
     }
 
-    v190 = [v4 heroCardSection];
+    heroCardSection = [facadeCopy heroCardSection];
 
-    if (v190)
+    if (heroCardSection)
     {
       v191 = [_SFPBHeroCardSection alloc];
-      v192 = [v4 heroCardSection];
-      v193 = [(_SFPBHeroCardSection *)v191 initWithFacade:v192];
+      heroCardSection2 = [facadeCopy heroCardSection];
+      v193 = [(_SFPBHeroCardSection *)v191 initWithFacade:heroCardSection2];
       [(_SFPBCardSectionValue *)v5 setHeroCardSection:v193];
     }
 
-    v194 = [v4 newsCardSection];
+    newsCardSection = [facadeCopy newsCardSection];
 
-    if (v194)
+    if (newsCardSection)
     {
       v195 = [_SFPBNewsCardSection alloc];
-      v196 = [v4 newsCardSection];
-      v197 = [(_SFPBNewsCardSection *)v195 initWithFacade:v196];
+      newsCardSection2 = [facadeCopy newsCardSection];
+      v197 = [(_SFPBNewsCardSection *)v195 initWithFacade:newsCardSection2];
       [(_SFPBCardSectionValue *)v5 setNewsCardSection:v197];
     }
 
-    v198 = [v4 miniCardSection];
+    miniCardSection = [facadeCopy miniCardSection];
 
-    if (v198)
+    if (miniCardSection)
     {
       v199 = [_SFPBMiniCardSection alloc];
-      v200 = [v4 miniCardSection];
-      v201 = [(_SFPBMiniCardSection *)v199 initWithFacade:v200];
+      miniCardSection2 = [facadeCopy miniCardSection];
+      v201 = [(_SFPBMiniCardSection *)v199 initWithFacade:miniCardSection2];
       [(_SFPBCardSectionValue *)v5 setMiniCardSection:v201];
     }
 
-    v202 = [v4 infoCardSection];
+    infoCardSection = [facadeCopy infoCardSection];
 
-    if (v202)
+    if (infoCardSection)
     {
       v203 = [_SFPBInfoCardSection alloc];
-      v204 = [v4 infoCardSection];
-      v205 = [(_SFPBInfoCardSection *)v203 initWithFacade:v204];
+      infoCardSection2 = [facadeCopy infoCardSection];
+      v205 = [(_SFPBInfoCardSection *)v203 initWithFacade:infoCardSection2];
       [(_SFPBCardSectionValue *)v5 setInfoCardSection:v205];
     }
 
-    v206 = [v4 collectionCardSection];
+    collectionCardSection = [facadeCopy collectionCardSection];
 
-    if (v206)
+    if (collectionCardSection)
     {
       v207 = [_SFPBCollectionCardSection alloc];
-      v208 = [v4 collectionCardSection];
-      v209 = [(_SFPBCollectionCardSection *)v207 initWithFacade:v208];
+      collectionCardSection2 = [facadeCopy collectionCardSection];
+      v209 = [(_SFPBCollectionCardSection *)v207 initWithFacade:collectionCardSection2];
       [(_SFPBCardSectionValue *)v5 setCollectionCardSection:v209];
     }
 
-    v210 = [v4 combinedCardSection];
+    combinedCardSection = [facadeCopy combinedCardSection];
 
-    if (v210)
+    if (combinedCardSection)
     {
       v211 = [_SFPBCombinedCardSection alloc];
-      v212 = [v4 combinedCardSection];
-      v213 = [(_SFPBCombinedCardSection *)v211 initWithFacade:v212];
+      combinedCardSection2 = [facadeCopy combinedCardSection];
+      v213 = [(_SFPBCombinedCardSection *)v211 initWithFacade:combinedCardSection2];
       [(_SFPBCardSectionValue *)v5 setCombinedCardSection:v213];
     }
 
-    v214 = [v4 responseWrapperCardSection];
+    responseWrapperCardSection = [facadeCopy responseWrapperCardSection];
 
-    if (v214)
+    if (responseWrapperCardSection)
     {
       v215 = [_SFPBResponseWrapperCardSection alloc];
-      v216 = [v4 responseWrapperCardSection];
-      v217 = [(_SFPBResponseWrapperCardSection *)v215 initWithFacade:v216];
+      responseWrapperCardSection2 = [facadeCopy responseWrapperCardSection];
+      v217 = [(_SFPBResponseWrapperCardSection *)v215 initWithFacade:responseWrapperCardSection2];
       [(_SFPBCardSectionValue *)v5 setResponseWrapperCardSection:v217];
     }
 
-    v218 = [v4 listenToCardSection];
+    listenToCardSection = [facadeCopy listenToCardSection];
 
-    if (v218)
+    if (listenToCardSection)
     {
       v219 = [_SFPBListenToCardSection alloc];
-      v220 = [v4 listenToCardSection];
-      v221 = [(_SFPBListenToCardSection *)v219 initWithFacade:v220];
+      listenToCardSection2 = [facadeCopy listenToCardSection];
+      v221 = [(_SFPBListenToCardSection *)v219 initWithFacade:listenToCardSection2];
       [(_SFPBCardSectionValue *)v5 setListenToCardSection:v221];
     }
 
-    v222 = [v4 watchNowCardSection];
+    watchNowCardSection = [facadeCopy watchNowCardSection];
 
-    if (v222)
+    if (watchNowCardSection)
     {
       v223 = [_SFPBWatchNowCardSection alloc];
-      v224 = [v4 watchNowCardSection];
-      v225 = [(_SFPBWatchNowCardSection *)v223 initWithFacade:v224];
+      watchNowCardSection2 = [facadeCopy watchNowCardSection];
+      v225 = [(_SFPBWatchNowCardSection *)v223 initWithFacade:watchNowCardSection2];
       [(_SFPBCardSectionValue *)v5 setWatchNowCardSection:v225];
     }
 
-    v226 = [v4 strokeAnimationCardSection];
+    strokeAnimationCardSection = [facadeCopy strokeAnimationCardSection];
 
-    if (v226)
+    if (strokeAnimationCardSection)
     {
       v227 = [_SFPBStrokeAnimationCardSection alloc];
-      v228 = [v4 strokeAnimationCardSection];
-      v229 = [(_SFPBStrokeAnimationCardSection *)v227 initWithFacade:v228];
+      strokeAnimationCardSection2 = [facadeCopy strokeAnimationCardSection];
+      v229 = [(_SFPBStrokeAnimationCardSection *)v227 initWithFacade:strokeAnimationCardSection2];
       [(_SFPBCardSectionValue *)v5 setStrokeAnimationCardSection:v229];
     }
 
-    v230 = [v4 buttonListCardSection];
+    buttonListCardSection = [facadeCopy buttonListCardSection];
 
-    if (v230)
+    if (buttonListCardSection)
     {
       v231 = [_SFPBButtonListCardSection alloc];
-      v232 = [v4 buttonListCardSection];
-      v233 = [(_SFPBButtonListCardSection *)v231 initWithFacade:v232];
+      buttonListCardSection2 = [facadeCopy buttonListCardSection];
+      v233 = [(_SFPBButtonListCardSection *)v231 initWithFacade:buttonListCardSection2];
       [(_SFPBCardSectionValue *)v5 setButtonListCardSection:v233];
     }
 
-    v234 = [v4 commandRowCardSection];
+    commandRowCardSection = [facadeCopy commandRowCardSection];
 
-    if (v234)
+    if (commandRowCardSection)
     {
       v235 = [_SFPBCommandRowCardSection alloc];
-      v236 = [v4 commandRowCardSection];
-      v237 = [(_SFPBCommandRowCardSection *)v235 initWithFacade:v236];
+      commandRowCardSection2 = [facadeCopy commandRowCardSection];
+      v237 = [(_SFPBCommandRowCardSection *)v235 initWithFacade:commandRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setCommandRowCardSection:v237];
     }
 
-    v238 = [v4 leadingTrailingCardSection];
+    leadingTrailingCardSection = [facadeCopy leadingTrailingCardSection];
 
-    if (v238)
+    if (leadingTrailingCardSection)
     {
       v239 = [_SFPBLeadingTrailingCardSection alloc];
-      v240 = [v4 leadingTrailingCardSection];
-      v241 = [(_SFPBLeadingTrailingCardSection *)v239 initWithFacade:v240];
+      leadingTrailingCardSection2 = [facadeCopy leadingTrailingCardSection];
+      v241 = [(_SFPBLeadingTrailingCardSection *)v239 initWithFacade:leadingTrailingCardSection2];
       [(_SFPBCardSectionValue *)v5 setLeadingTrailingCardSection:v241];
     }
 
-    v242 = [v4 heroTitleCardSection];
+    heroTitleCardSection = [facadeCopy heroTitleCardSection];
 
-    if (v242)
+    if (heroTitleCardSection)
     {
       v243 = [_SFPBHeroTitleCardSection alloc];
-      v244 = [v4 heroTitleCardSection];
-      v245 = [(_SFPBHeroTitleCardSection *)v243 initWithFacade:v244];
+      heroTitleCardSection2 = [facadeCopy heroTitleCardSection];
+      v245 = [(_SFPBHeroTitleCardSection *)v243 initWithFacade:heroTitleCardSection2];
       [(_SFPBCardSectionValue *)v5 setHeroTitleCardSection:v245];
     }
 
-    v246 = [v4 archiveViewCardSection];
+    archiveViewCardSection = [facadeCopy archiveViewCardSection];
 
-    if (v246)
+    if (archiveViewCardSection)
     {
       v247 = [_SFPBArchiveViewCardSection alloc];
-      v248 = [v4 archiveViewCardSection];
-      v249 = [(_SFPBArchiveViewCardSection *)v247 initWithFacade:v248];
+      archiveViewCardSection2 = [facadeCopy archiveViewCardSection];
+      v249 = [(_SFPBArchiveViewCardSection *)v247 initWithFacade:archiveViewCardSection2];
       [(_SFPBCardSectionValue *)v5 setArchiveViewCardSection:v249];
     }
 
-    v250 = [v4 appIconCardSection];
+    appIconCardSection = [facadeCopy appIconCardSection];
 
-    if (v250)
+    if (appIconCardSection)
     {
       v251 = [_SFPBAppIconCardSection alloc];
-      v252 = [v4 appIconCardSection];
-      v253 = [(_SFPBAppIconCardSection *)v251 initWithFacade:v252];
+      appIconCardSection2 = [facadeCopy appIconCardSection];
+      v253 = [(_SFPBAppIconCardSection *)v251 initWithFacade:appIconCardSection2];
       [(_SFPBCardSectionValue *)v5 setAppIconCardSection:v253];
     }
 
-    v254 = [v4 largeTitleDetailedRowCardSection];
+    largeTitleDetailedRowCardSection = [facadeCopy largeTitleDetailedRowCardSection];
 
-    if (v254)
+    if (largeTitleDetailedRowCardSection)
     {
       v255 = [_SFPBLargeTitleDetailedRowCardSection alloc];
-      v256 = [v4 largeTitleDetailedRowCardSection];
-      v257 = [(_SFPBLargeTitleDetailedRowCardSection *)v255 initWithFacade:v256];
+      largeTitleDetailedRowCardSection2 = [facadeCopy largeTitleDetailedRowCardSection];
+      v257 = [(_SFPBLargeTitleDetailedRowCardSection *)v255 initWithFacade:largeTitleDetailedRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setLargeTitleDetailedRowCardSection:v257];
     }
 
-    v258 = [v4 safariTableOfContentsCardSection];
+    safariTableOfContentsCardSection = [facadeCopy safariTableOfContentsCardSection];
 
-    if (v258)
+    if (safariTableOfContentsCardSection)
     {
       v259 = [_SFPBSafariTableOfContentsCardSection alloc];
-      v260 = [v4 safariTableOfContentsCardSection];
-      v261 = [(_SFPBSafariTableOfContentsCardSection *)v259 initWithFacade:v260];
+      safariTableOfContentsCardSection2 = [facadeCopy safariTableOfContentsCardSection];
+      v261 = [(_SFPBSafariTableOfContentsCardSection *)v259 initWithFacade:safariTableOfContentsCardSection2];
       [(_SFPBCardSectionValue *)v5 setSafariTableOfContentsCardSection:v261];
     }
 
-    v262 = [v4 rfSummaryItemShortNumberCardSection];
+    rfSummaryItemShortNumberCardSection = [facadeCopy rfSummaryItemShortNumberCardSection];
 
-    if (v262)
+    if (rfSummaryItemShortNumberCardSection)
     {
       v263 = [_SFPBRFSummaryItemShortNumberCardSection alloc];
-      v264 = [v4 rfSummaryItemShortNumberCardSection];
-      v265 = [(_SFPBRFSummaryItemShortNumberCardSection *)v263 initWithFacade:v264];
+      rfSummaryItemShortNumberCardSection2 = [facadeCopy rfSummaryItemShortNumberCardSection];
+      v265 = [(_SFPBRFSummaryItemShortNumberCardSection *)v263 initWithFacade:rfSummaryItemShortNumberCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemShortNumberCardSection:v265];
     }
 
-    v266 = [v4 rfSummaryItemTextCardSection];
+    rfSummaryItemTextCardSection = [facadeCopy rfSummaryItemTextCardSection];
 
-    if (v266)
+    if (rfSummaryItemTextCardSection)
     {
       v267 = [_SFPBRFSummaryItemTextCardSection alloc];
-      v268 = [v4 rfSummaryItemTextCardSection];
-      v269 = [(_SFPBRFSummaryItemTextCardSection *)v267 initWithFacade:v268];
+      rfSummaryItemTextCardSection2 = [facadeCopy rfSummaryItemTextCardSection];
+      v269 = [(_SFPBRFSummaryItemTextCardSection *)v267 initWithFacade:rfSummaryItemTextCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemTextCardSection:v269];
     }
 
-    v270 = [v4 rfSummaryItemStandardCardSection];
+    rfSummaryItemStandardCardSection = [facadeCopy rfSummaryItemStandardCardSection];
 
-    if (v270)
+    if (rfSummaryItemStandardCardSection)
     {
       v271 = [_SFPBRFSummaryItemStandardCardSection alloc];
-      v272 = [v4 rfSummaryItemStandardCardSection];
-      v273 = [(_SFPBRFSummaryItemStandardCardSection *)v271 initWithFacade:v272];
+      rfSummaryItemStandardCardSection2 = [facadeCopy rfSummaryItemStandardCardSection];
+      v273 = [(_SFPBRFSummaryItemStandardCardSection *)v271 initWithFacade:rfSummaryItemStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemStandardCardSection:v273];
     }
 
-    v274 = [v4 rfFactItemShortNumberCardSection];
+    rfFactItemShortNumberCardSection = [facadeCopy rfFactItemShortNumberCardSection];
 
-    if (v274)
+    if (rfFactItemShortNumberCardSection)
     {
       v275 = [_SFPBRFFactItemShortNumberCardSection alloc];
-      v276 = [v4 rfFactItemShortNumberCardSection];
-      v277 = [(_SFPBRFFactItemShortNumberCardSection *)v275 initWithFacade:v276];
+      rfFactItemShortNumberCardSection2 = [facadeCopy rfFactItemShortNumberCardSection];
+      v277 = [(_SFPBRFFactItemShortNumberCardSection *)v275 initWithFacade:rfFactItemShortNumberCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemShortNumberCardSection:v277];
     }
 
-    v278 = [v4 rfFactItemStandardCardSection];
+    rfFactItemStandardCardSection = [facadeCopy rfFactItemStandardCardSection];
 
-    if (v278)
+    if (rfFactItemStandardCardSection)
     {
       v279 = [_SFPBRFFactItemStandardCardSection alloc];
-      v280 = [v4 rfFactItemStandardCardSection];
-      v281 = [(_SFPBRFFactItemStandardCardSection *)v279 initWithFacade:v280];
+      rfFactItemStandardCardSection2 = [facadeCopy rfFactItemStandardCardSection];
+      v281 = [(_SFPBRFFactItemStandardCardSection *)v279 initWithFacade:rfFactItemStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemStandardCardSection:v281];
     }
 
-    v282 = [v4 rfLongItemStandardCardSection];
+    rfLongItemStandardCardSection = [facadeCopy rfLongItemStandardCardSection];
 
-    if (v282)
+    if (rfLongItemStandardCardSection)
     {
       v283 = [_SFPBRFLongItemStandardCardSection alloc];
-      v284 = [v4 rfLongItemStandardCardSection];
-      v285 = [(_SFPBRFLongItemStandardCardSection *)v283 initWithFacade:v284];
+      rfLongItemStandardCardSection2 = [facadeCopy rfLongItemStandardCardSection];
+      v285 = [(_SFPBRFLongItemStandardCardSection *)v283 initWithFacade:rfLongItemStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfLongItemStandardCardSection:v285];
     }
 
-    v286 = [v4 rfPrimaryHeaderRichCardSection];
+    rfPrimaryHeaderRichCardSection = [facadeCopy rfPrimaryHeaderRichCardSection];
 
-    if (v286)
+    if (rfPrimaryHeaderRichCardSection)
     {
       v287 = [_SFPBRFPrimaryHeaderRichCardSection alloc];
-      v288 = [v4 rfPrimaryHeaderRichCardSection];
-      v289 = [(_SFPBRFPrimaryHeaderRichCardSection *)v287 initWithFacade:v288];
+      rfPrimaryHeaderRichCardSection2 = [facadeCopy rfPrimaryHeaderRichCardSection];
+      v289 = [(_SFPBRFPrimaryHeaderRichCardSection *)v287 initWithFacade:rfPrimaryHeaderRichCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderRichCardSection:v289];
     }
 
-    v290 = [v4 rfPrimaryHeaderStandardCardSection];
+    rfPrimaryHeaderStandardCardSection = [facadeCopy rfPrimaryHeaderStandardCardSection];
 
-    if (v290)
+    if (rfPrimaryHeaderStandardCardSection)
     {
       v291 = [_SFPBRFPrimaryHeaderStandardCardSection alloc];
-      v292 = [v4 rfPrimaryHeaderStandardCardSection];
-      v293 = [(_SFPBRFPrimaryHeaderStandardCardSection *)v291 initWithFacade:v292];
+      rfPrimaryHeaderStandardCardSection2 = [facadeCopy rfPrimaryHeaderStandardCardSection];
+      v293 = [(_SFPBRFPrimaryHeaderStandardCardSection *)v291 initWithFacade:rfPrimaryHeaderStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderStandardCardSection:v293];
     }
 
-    v294 = [v4 rfReferenceFootnoteCardSection];
+    rfReferenceFootnoteCardSection = [facadeCopy rfReferenceFootnoteCardSection];
 
-    if (v294)
+    if (rfReferenceFootnoteCardSection)
     {
       v295 = [_SFPBRFReferenceFootnoteCardSection alloc];
-      v296 = [v4 rfReferenceFootnoteCardSection];
-      v297 = [(_SFPBRFReferenceFootnoteCardSection *)v295 initWithFacade:v296];
+      rfReferenceFootnoteCardSection2 = [facadeCopy rfReferenceFootnoteCardSection];
+      v297 = [(_SFPBRFReferenceFootnoteCardSection *)v295 initWithFacade:rfReferenceFootnoteCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfReferenceFootnoteCardSection:v297];
     }
 
-    v298 = [v4 rfReferenceRichCardSection];
+    rfReferenceRichCardSection = [facadeCopy rfReferenceRichCardSection];
 
-    if (v298)
+    if (rfReferenceRichCardSection)
     {
       v299 = [_SFPBRFReferenceRichCardSection alloc];
-      v300 = [v4 rfReferenceRichCardSection];
-      v301 = [(_SFPBRFReferenceRichCardSection *)v299 initWithFacade:v300];
+      rfReferenceRichCardSection2 = [facadeCopy rfReferenceRichCardSection];
+      v301 = [(_SFPBRFReferenceRichCardSection *)v299 initWithFacade:rfReferenceRichCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfReferenceRichCardSection:v301];
     }
 
-    v302 = [v4 rfSimpleItemRichCardSection];
+    rfSimpleItemRichCardSection = [facadeCopy rfSimpleItemRichCardSection];
 
-    if (v302)
+    if (rfSimpleItemRichCardSection)
     {
       v303 = [_SFPBRFSimpleItemRichCardSection alloc];
-      v304 = [v4 rfSimpleItemRichCardSection];
-      v305 = [(_SFPBRFSimpleItemRichCardSection *)v303 initWithFacade:v304];
+      rfSimpleItemRichCardSection2 = [facadeCopy rfSimpleItemRichCardSection];
+      v305 = [(_SFPBRFSimpleItemRichCardSection *)v303 initWithFacade:rfSimpleItemRichCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemRichCardSection:v305];
     }
 
-    v306 = [v4 rfSimpleItemStandardCardSection];
+    rfSimpleItemStandardCardSection = [facadeCopy rfSimpleItemStandardCardSection];
 
-    if (v306)
+    if (rfSimpleItemStandardCardSection)
     {
       v307 = [_SFPBRFSimpleItemStandardCardSection alloc];
-      v308 = [v4 rfSimpleItemStandardCardSection];
-      v309 = [(_SFPBRFSimpleItemStandardCardSection *)v307 initWithFacade:v308];
+      rfSimpleItemStandardCardSection2 = [facadeCopy rfSimpleItemStandardCardSection];
+      v309 = [(_SFPBRFSimpleItemStandardCardSection *)v307 initWithFacade:rfSimpleItemStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemStandardCardSection:v309];
     }
 
-    v310 = [v4 rfSummaryItemAlignedTextCardSection];
+    rfSummaryItemAlignedTextCardSection = [facadeCopy rfSummaryItemAlignedTextCardSection];
 
-    if (v310)
+    if (rfSummaryItemAlignedTextCardSection)
     {
       v311 = [_SFPBRFSummaryItemAlignedTextCardSection alloc];
-      v312 = [v4 rfSummaryItemAlignedTextCardSection];
-      v313 = [(_SFPBRFSummaryItemAlignedTextCardSection *)v311 initWithFacade:v312];
+      rfSummaryItemAlignedTextCardSection2 = [facadeCopy rfSummaryItemAlignedTextCardSection];
+      v313 = [(_SFPBRFSummaryItemAlignedTextCardSection *)v311 initWithFacade:rfSummaryItemAlignedTextCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemAlignedTextCardSection:v313];
     }
 
-    v314 = [v4 rfExpandableStandardCardSection];
+    rfExpandableStandardCardSection = [facadeCopy rfExpandableStandardCardSection];
 
-    if (v314)
+    if (rfExpandableStandardCardSection)
     {
       v315 = [_SFPBRFExpandableStandardCardSection alloc];
-      v316 = [v4 rfExpandableStandardCardSection];
-      v317 = [(_SFPBRFExpandableStandardCardSection *)v315 initWithFacade:v316];
+      rfExpandableStandardCardSection2 = [facadeCopy rfExpandableStandardCardSection];
+      v317 = [(_SFPBRFExpandableStandardCardSection *)v315 initWithFacade:rfExpandableStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfExpandableStandardCardSection:v317];
     }
 
-    v318 = [v4 rfFactItemButtonCardSection];
+    rfFactItemButtonCardSection = [facadeCopy rfFactItemButtonCardSection];
 
-    if (v318)
+    if (rfFactItemButtonCardSection)
     {
       v319 = [_SFPBRFFactItemButtonCardSection alloc];
-      v320 = [v4 rfFactItemButtonCardSection];
-      v321 = [(_SFPBRFFactItemButtonCardSection *)v319 initWithFacade:v320];
+      rfFactItemButtonCardSection2 = [facadeCopy rfFactItemButtonCardSection];
+      v321 = [(_SFPBRFFactItemButtonCardSection *)v319 initWithFacade:rfFactItemButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemButtonCardSection:v321];
     }
 
-    v322 = [v4 rfFactItemHeroNumberCardSection];
+    rfFactItemHeroNumberCardSection = [facadeCopy rfFactItemHeroNumberCardSection];
 
-    if (v322)
+    if (rfFactItemHeroNumberCardSection)
     {
       v323 = [_SFPBRFFactItemHeroNumberCardSection alloc];
-      v324 = [v4 rfFactItemHeroNumberCardSection];
-      v325 = [(_SFPBRFFactItemHeroNumberCardSection *)v323 initWithFacade:v324];
+      rfFactItemHeroNumberCardSection2 = [facadeCopy rfFactItemHeroNumberCardSection];
+      v325 = [(_SFPBRFFactItemHeroNumberCardSection *)v323 initWithFacade:rfFactItemHeroNumberCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemHeroNumberCardSection:v325];
     }
 
-    v326 = [v4 rfPrimaryHeaderMarqueeCardSection];
+    rfPrimaryHeaderMarqueeCardSection = [facadeCopy rfPrimaryHeaderMarqueeCardSection];
 
-    if (v326)
+    if (rfPrimaryHeaderMarqueeCardSection)
     {
       v327 = [_SFPBRFPrimaryHeaderMarqueeCardSection alloc];
-      v328 = [v4 rfPrimaryHeaderMarqueeCardSection];
-      v329 = [(_SFPBRFPrimaryHeaderMarqueeCardSection *)v327 initWithFacade:v328];
+      rfPrimaryHeaderMarqueeCardSection2 = [facadeCopy rfPrimaryHeaderMarqueeCardSection];
+      v329 = [(_SFPBRFPrimaryHeaderMarqueeCardSection *)v327 initWithFacade:rfPrimaryHeaderMarqueeCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderMarqueeCardSection:v329];
     }
 
-    v330 = [v4 rfSummaryItemDetailedTextCardSection];
+    rfSummaryItemDetailedTextCardSection = [facadeCopy rfSummaryItemDetailedTextCardSection];
 
-    if (v330)
+    if (rfSummaryItemDetailedTextCardSection)
     {
       v331 = [_SFPBRFSummaryItemDetailedTextCardSection alloc];
-      v332 = [v4 rfSummaryItemDetailedTextCardSection];
-      v333 = [(_SFPBRFSummaryItemDetailedTextCardSection *)v331 initWithFacade:v332];
+      rfSummaryItemDetailedTextCardSection2 = [facadeCopy rfSummaryItemDetailedTextCardSection];
+      v333 = [(_SFPBRFSummaryItemDetailedTextCardSection *)v331 initWithFacade:rfSummaryItemDetailedTextCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemDetailedTextCardSection:v333];
     }
 
-    v334 = [v4 rfSimpleItemPlayerCardSection];
+    rfSimpleItemPlayerCardSection = [facadeCopy rfSimpleItemPlayerCardSection];
 
-    if (v334)
+    if (rfSimpleItemPlayerCardSection)
     {
       v335 = [_SFPBRFSimpleItemPlayerCardSection alloc];
-      v336 = [v4 rfSimpleItemPlayerCardSection];
-      v337 = [(_SFPBRFSimpleItemPlayerCardSection *)v335 initWithFacade:v336];
+      rfSimpleItemPlayerCardSection2 = [facadeCopy rfSimpleItemPlayerCardSection];
+      v337 = [(_SFPBRFSimpleItemPlayerCardSection *)v335 initWithFacade:rfSimpleItemPlayerCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemPlayerCardSection:v337];
     }
 
-    v338 = [v4 rfSummaryItemPairCardSection];
+    rfSummaryItemPairCardSection = [facadeCopy rfSummaryItemPairCardSection];
 
-    if (v338)
+    if (rfSummaryItemPairCardSection)
     {
       v339 = [_SFPBRFSummaryItemPairCardSection alloc];
-      v340 = [v4 rfSummaryItemPairCardSection];
-      v341 = [(_SFPBRFSummaryItemPairCardSection *)v339 initWithFacade:v340];
+      rfSummaryItemPairCardSection2 = [facadeCopy rfSummaryItemPairCardSection];
+      v341 = [(_SFPBRFSummaryItemPairCardSection *)v339 initWithFacade:rfSummaryItemPairCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemPairCardSection:v341];
     }
 
-    v342 = [v4 rfSummaryItemPairNumberCardSection];
+    rfSummaryItemPairNumberCardSection = [facadeCopy rfSummaryItemPairNumberCardSection];
 
-    if (v342)
+    if (rfSummaryItemPairNumberCardSection)
     {
       v343 = [_SFPBRFSummaryItemPairNumberCardSection alloc];
-      v344 = [v4 rfSummaryItemPairNumberCardSection];
-      v345 = [(_SFPBRFSummaryItemPairNumberCardSection *)v343 initWithFacade:v344];
+      rfSummaryItemPairNumberCardSection2 = [facadeCopy rfSummaryItemPairNumberCardSection];
+      v345 = [(_SFPBRFSummaryItemPairNumberCardSection *)v343 initWithFacade:rfSummaryItemPairNumberCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemPairNumberCardSection:v345];
     }
 
-    v346 = [v4 rfFactItemShortHeroNumberCardSection];
+    rfFactItemShortHeroNumberCardSection = [facadeCopy rfFactItemShortHeroNumberCardSection];
 
-    if (v346)
+    if (rfFactItemShortHeroNumberCardSection)
     {
       v347 = [_SFPBRFFactItemShortHeroNumberCardSection alloc];
-      v348 = [v4 rfFactItemShortHeroNumberCardSection];
-      v349 = [(_SFPBRFFactItemShortHeroNumberCardSection *)v347 initWithFacade:v348];
+      rfFactItemShortHeroNumberCardSection2 = [facadeCopy rfFactItemShortHeroNumberCardSection];
+      v349 = [(_SFPBRFFactItemShortHeroNumberCardSection *)v347 initWithFacade:rfFactItemShortHeroNumberCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemShortHeroNumberCardSection:v349];
     }
 
-    v350 = [v4 rfFactItemDetailedNumberCardSection];
+    rfFactItemDetailedNumberCardSection = [facadeCopy rfFactItemDetailedNumberCardSection];
 
-    if (v350)
+    if (rfFactItemDetailedNumberCardSection)
     {
       v351 = [_SFPBRFFactItemDetailedNumberCardSection alloc];
-      v352 = [v4 rfFactItemDetailedNumberCardSection];
-      v353 = [(_SFPBRFFactItemDetailedNumberCardSection *)v351 initWithFacade:v352];
+      rfFactItemDetailedNumberCardSection2 = [facadeCopy rfFactItemDetailedNumberCardSection];
+      v353 = [(_SFPBRFFactItemDetailedNumberCardSection *)v351 initWithFacade:rfFactItemDetailedNumberCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemDetailedNumberCardSection:v353];
     }
 
-    v354 = [v4 rfFactItemHeroButtonCardSection];
+    rfFactItemHeroButtonCardSection = [facadeCopy rfFactItemHeroButtonCardSection];
 
-    if (v354)
+    if (rfFactItemHeroButtonCardSection)
     {
       v355 = [_SFPBRFFactItemHeroButtonCardSection alloc];
-      v356 = [v4 rfFactItemHeroButtonCardSection];
-      v357 = [(_SFPBRFFactItemHeroButtonCardSection *)v355 initWithFacade:v356];
+      rfFactItemHeroButtonCardSection2 = [facadeCopy rfFactItemHeroButtonCardSection];
+      v357 = [(_SFPBRFFactItemHeroButtonCardSection *)v355 initWithFacade:rfFactItemHeroButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemHeroButtonCardSection:v357];
     }
 
-    v358 = [v4 rfFactItemImageRightCardSection];
+    rfFactItemImageRightCardSection = [facadeCopy rfFactItemImageRightCardSection];
 
-    if (v358)
+    if (rfFactItemImageRightCardSection)
     {
       v359 = [_SFPBRFFactItemImageRightCardSection alloc];
-      v360 = [v4 rfFactItemImageRightCardSection];
-      v361 = [(_SFPBRFFactItemImageRightCardSection *)v359 initWithFacade:v360];
+      rfFactItemImageRightCardSection2 = [facadeCopy rfFactItemImageRightCardSection];
+      v361 = [(_SFPBRFFactItemImageRightCardSection *)v359 initWithFacade:rfFactItemImageRightCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfFactItemImageRightCardSection:v361];
     }
 
-    v362 = [v4 rfSummaryItemSwitchV2CardSection];
+    rfSummaryItemSwitchV2CardSection = [facadeCopy rfSummaryItemSwitchV2CardSection];
 
-    if (v362)
+    if (rfSummaryItemSwitchV2CardSection)
     {
       v363 = [_SFPBRFSummaryItemSwitchV2CardSection alloc];
-      v364 = [v4 rfSummaryItemSwitchV2CardSection];
-      v365 = [(_SFPBRFSummaryItemSwitchV2CardSection *)v363 initWithFacade:v364];
+      rfSummaryItemSwitchV2CardSection2 = [facadeCopy rfSummaryItemSwitchV2CardSection];
+      v365 = [(_SFPBRFSummaryItemSwitchV2CardSection *)v363 initWithFacade:rfSummaryItemSwitchV2CardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemSwitchV2CardSection:v365];
     }
 
-    v366 = [v4 rfTableHeaderCardSection];
+    rfTableHeaderCardSection = [facadeCopy rfTableHeaderCardSection];
 
-    if (v366)
+    if (rfTableHeaderCardSection)
     {
       v367 = [_SFPBRFTableHeaderCardSection alloc];
-      v368 = [v4 rfTableHeaderCardSection];
-      v369 = [(_SFPBRFTableHeaderCardSection *)v367 initWithFacade:v368];
+      rfTableHeaderCardSection2 = [facadeCopy rfTableHeaderCardSection];
+      v369 = [(_SFPBRFTableHeaderCardSection *)v367 initWithFacade:rfTableHeaderCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfTableHeaderCardSection:v369];
     }
 
-    v370 = [v4 rfTableRowCardSection];
+    rfTableRowCardSection = [facadeCopy rfTableRowCardSection];
 
-    if (v370)
+    if (rfTableRowCardSection)
     {
       v371 = [_SFPBRFTableRowCardSection alloc];
-      v372 = [v4 rfTableRowCardSection];
-      v373 = [(_SFPBRFTableRowCardSection *)v371 initWithFacade:v372];
+      rfTableRowCardSection2 = [facadeCopy rfTableRowCardSection];
+      v373 = [(_SFPBRFTableRowCardSection *)v371 initWithFacade:rfTableRowCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfTableRowCardSection:v373];
     }
 
-    v374 = [v4 rfSimpleItemVisualElementCardSection];
+    rfSimpleItemVisualElementCardSection = [facadeCopy rfSimpleItemVisualElementCardSection];
 
-    if (v374)
+    if (rfSimpleItemVisualElementCardSection)
     {
       v375 = [_SFPBRFSimpleItemVisualElementCardSection alloc];
-      v376 = [v4 rfSimpleItemVisualElementCardSection];
-      v377 = [(_SFPBRFSimpleItemVisualElementCardSection *)v375 initWithFacade:v376];
+      rfSimpleItemVisualElementCardSection2 = [facadeCopy rfSimpleItemVisualElementCardSection];
+      v377 = [(_SFPBRFSimpleItemVisualElementCardSection *)v375 initWithFacade:rfSimpleItemVisualElementCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemVisualElementCardSection:v377];
     }
 
-    v378 = [v4 rfSummaryItemPlayerCardSection];
+    rfSummaryItemPlayerCardSection = [facadeCopy rfSummaryItemPlayerCardSection];
 
-    if (v378)
+    if (rfSummaryItemPlayerCardSection)
     {
       v379 = [_SFPBRFSummaryItemPlayerCardSection alloc];
-      v380 = [v4 rfSummaryItemPlayerCardSection];
-      v381 = [(_SFPBRFSummaryItemPlayerCardSection *)v379 initWithFacade:v380];
+      rfSummaryItemPlayerCardSection2 = [facadeCopy rfSummaryItemPlayerCardSection];
+      v381 = [(_SFPBRFSummaryItemPlayerCardSection *)v379 initWithFacade:rfSummaryItemPlayerCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemPlayerCardSection:v381];
     }
 
-    v382 = [v4 rfSummaryItemImageRightCardSection];
+    rfSummaryItemImageRightCardSection = [facadeCopy rfSummaryItemImageRightCardSection];
 
-    if (v382)
+    if (rfSummaryItemImageRightCardSection)
     {
       v383 = [_SFPBRFSummaryItemImageRightCardSection alloc];
-      v384 = [v4 rfSummaryItemImageRightCardSection];
-      v385 = [(_SFPBRFSummaryItemImageRightCardSection *)v383 initWithFacade:v384];
+      rfSummaryItemImageRightCardSection2 = [facadeCopy rfSummaryItemImageRightCardSection];
+      v385 = [(_SFPBRFSummaryItemImageRightCardSection *)v383 initWithFacade:rfSummaryItemImageRightCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemImageRightCardSection:v385];
     }
 
-    v386 = [v4 rfSummaryItemButtonCardSection];
+    rfSummaryItemButtonCardSection = [facadeCopy rfSummaryItemButtonCardSection];
 
-    if (v386)
+    if (rfSummaryItemButtonCardSection)
     {
       v387 = [_SFPBRFSummaryItemButtonCardSection alloc];
-      v388 = [v4 rfSummaryItemButtonCardSection];
-      v389 = [(_SFPBRFSummaryItemButtonCardSection *)v387 initWithFacade:v388];
+      rfSummaryItemButtonCardSection2 = [facadeCopy rfSummaryItemButtonCardSection];
+      v389 = [(_SFPBRFSummaryItemButtonCardSection *)v387 initWithFacade:rfSummaryItemButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemButtonCardSection:v389];
     }
 
-    v390 = [v4 rfSimpleItemReverseRichCardSection];
+    rfSimpleItemReverseRichCardSection = [facadeCopy rfSimpleItemReverseRichCardSection];
 
-    if (v390)
+    if (rfSimpleItemReverseRichCardSection)
     {
       v391 = [_SFPBRFSimpleItemReverseRichCardSection alloc];
-      v392 = [v4 rfSimpleItemReverseRichCardSection];
-      v393 = [(_SFPBRFSimpleItemReverseRichCardSection *)v391 initWithFacade:v392];
+      rfSimpleItemReverseRichCardSection2 = [facadeCopy rfSimpleItemReverseRichCardSection];
+      v393 = [(_SFPBRFSimpleItemReverseRichCardSection *)v391 initWithFacade:rfSimpleItemReverseRichCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemReverseRichCardSection:v393];
     }
 
-    v394 = [v4 rfSimpleItemRichSearchResultCardSection];
+    rfSimpleItemRichSearchResultCardSection = [facadeCopy rfSimpleItemRichSearchResultCardSection];
 
-    if (v394)
+    if (rfSimpleItemRichSearchResultCardSection)
     {
       v395 = [_SFPBRFSimpleItemRichSearchResultCardSection alloc];
-      v396 = [v4 rfSimpleItemRichSearchResultCardSection];
-      v397 = [(_SFPBRFSimpleItemRichSearchResultCardSection *)v395 initWithFacade:v396];
+      rfSimpleItemRichSearchResultCardSection2 = [facadeCopy rfSimpleItemRichSearchResultCardSection];
+      v397 = [(_SFPBRFSimpleItemRichSearchResultCardSection *)v395 initWithFacade:rfSimpleItemRichSearchResultCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemRichSearchResultCardSection:v397];
     }
 
-    v398 = [v4 rfPrimaryHeaderStackedImageCardSection];
+    rfPrimaryHeaderStackedImageCardSection = [facadeCopy rfPrimaryHeaderStackedImageCardSection];
 
-    if (v398)
+    if (rfPrimaryHeaderStackedImageCardSection)
     {
       v399 = [_SFPBRFPrimaryHeaderStackedImageCardSection alloc];
-      v400 = [v4 rfPrimaryHeaderStackedImageCardSection];
-      v401 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)v399 initWithFacade:v400];
+      rfPrimaryHeaderStackedImageCardSection2 = [facadeCopy rfPrimaryHeaderStackedImageCardSection];
+      v401 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)v399 initWithFacade:rfPrimaryHeaderStackedImageCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderStackedImageCardSection:v401];
     }
 
-    v402 = [v4 rfReferenceItemLogoCardSection];
+    rfReferenceItemLogoCardSection = [facadeCopy rfReferenceItemLogoCardSection];
 
-    if (v402)
+    if (rfReferenceItemLogoCardSection)
     {
       v403 = [_SFPBRFReferenceItemLogoCardSection alloc];
-      v404 = [v4 rfReferenceItemLogoCardSection];
-      v405 = [(_SFPBRFReferenceItemLogoCardSection *)v403 initWithFacade:v404];
+      rfReferenceItemLogoCardSection2 = [facadeCopy rfReferenceItemLogoCardSection];
+      v405 = [(_SFPBRFReferenceItemLogoCardSection *)v403 initWithFacade:rfReferenceItemLogoCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfReferenceItemLogoCardSection:v405];
     }
 
-    v406 = [v4 rfReferenceItemButtonCardSection];
+    rfReferenceItemButtonCardSection = [facadeCopy rfReferenceItemButtonCardSection];
 
-    if (v406)
+    if (rfReferenceItemButtonCardSection)
     {
       v407 = [_SFPBRFReferenceItemButtonCardSection alloc];
-      v408 = [v4 rfReferenceItemButtonCardSection];
-      v409 = [(_SFPBRFReferenceItemButtonCardSection *)v407 initWithFacade:v408];
+      rfReferenceItemButtonCardSection2 = [facadeCopy rfReferenceItemButtonCardSection];
+      v409 = [(_SFPBRFReferenceItemButtonCardSection *)v407 initWithFacade:rfReferenceItemButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfReferenceItemButtonCardSection:v409];
     }
 
-    v410 = [v4 rfButtonCardSection];
+    rfButtonCardSection = [facadeCopy rfButtonCardSection];
 
-    if (v410)
+    if (rfButtonCardSection)
     {
       v411 = [_SFPBRFButtonCardSection alloc];
-      v412 = [v4 rfButtonCardSection];
-      v413 = [(_SFPBRFButtonCardSection *)v411 initWithFacade:v412];
+      rfButtonCardSection2 = [facadeCopy rfButtonCardSection];
+      v413 = [(_SFPBRFButtonCardSection *)v411 initWithFacade:rfButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfButtonCardSection:v413];
     }
 
-    v414 = [v4 rfBinaryButtonCardSection];
+    rfBinaryButtonCardSection = [facadeCopy rfBinaryButtonCardSection];
 
-    if (v414)
+    if (rfBinaryButtonCardSection)
     {
       v415 = [_SFPBRFBinaryButtonCardSection alloc];
-      v416 = [v4 rfBinaryButtonCardSection];
-      v417 = [(_SFPBRFBinaryButtonCardSection *)v415 initWithFacade:v416];
+      rfBinaryButtonCardSection2 = [facadeCopy rfBinaryButtonCardSection];
+      v417 = [(_SFPBRFBinaryButtonCardSection *)v415 initWithFacade:rfBinaryButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfBinaryButtonCardSection:v417];
     }
 
-    v418 = [v4 rfReferenceCenteredCardSection];
+    rfReferenceCenteredCardSection = [facadeCopy rfReferenceCenteredCardSection];
 
-    if (v418)
+    if (rfReferenceCenteredCardSection)
     {
       v419 = [_SFPBRFReferenceCenteredCardSection alloc];
-      v420 = [v4 rfReferenceCenteredCardSection];
-      v421 = [(_SFPBRFReferenceCenteredCardSection *)v419 initWithFacade:v420];
+      rfReferenceCenteredCardSection2 = [facadeCopy rfReferenceCenteredCardSection];
+      v421 = [(_SFPBRFReferenceCenteredCardSection *)v419 initWithFacade:rfReferenceCenteredCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfReferenceCenteredCardSection:v421];
     }
 
-    v422 = [v4 rfSecondaryHeaderStandardCardSection];
+    rfSecondaryHeaderStandardCardSection = [facadeCopy rfSecondaryHeaderStandardCardSection];
 
-    if (v422)
+    if (rfSecondaryHeaderStandardCardSection)
     {
       v423 = [_SFPBRFSecondaryHeaderStandardCardSection alloc];
-      v424 = [v4 rfSecondaryHeaderStandardCardSection];
-      v425 = [(_SFPBRFSecondaryHeaderStandardCardSection *)v423 initWithFacade:v424];
+      rfSecondaryHeaderStandardCardSection2 = [facadeCopy rfSecondaryHeaderStandardCardSection];
+      v425 = [(_SFPBRFSecondaryHeaderStandardCardSection *)v423 initWithFacade:rfSecondaryHeaderStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSecondaryHeaderStandardCardSection:v425];
     }
 
-    v426 = [v4 rfSecondaryHeaderEmphasizedCardSection];
+    rfSecondaryHeaderEmphasizedCardSection = [facadeCopy rfSecondaryHeaderEmphasizedCardSection];
 
-    if (v426)
+    if (rfSecondaryHeaderEmphasizedCardSection)
     {
       v427 = [_SFPBRFSecondaryHeaderEmphasizedCardSection alloc];
-      v428 = [v4 rfSecondaryHeaderEmphasizedCardSection];
-      v429 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)v427 initWithFacade:v428];
+      rfSecondaryHeaderEmphasizedCardSection2 = [facadeCopy rfSecondaryHeaderEmphasizedCardSection];
+      v429 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)v427 initWithFacade:rfSecondaryHeaderEmphasizedCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSecondaryHeaderEmphasizedCardSection:v429];
     }
 
-    v430 = [v4 rfMapCardSection];
+    rfMapCardSection = [facadeCopy rfMapCardSection];
 
-    if (v430)
+    if (rfMapCardSection)
     {
       v431 = [_SFPBRFMapCardSection alloc];
-      v432 = [v4 rfMapCardSection];
-      v433 = [(_SFPBRFMapCardSection *)v431 initWithFacade:v432];
+      rfMapCardSection2 = [facadeCopy rfMapCardSection];
+      v433 = [(_SFPBRFMapCardSection *)v431 initWithFacade:rfMapCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfMapCardSection:v433];
     }
 
-    v434 = [v4 rfReferenceStandardCardSection];
+    rfReferenceStandardCardSection = [facadeCopy rfReferenceStandardCardSection];
 
-    if (v434)
+    if (rfReferenceStandardCardSection)
     {
       v435 = [_SFPBRFReferenceStandardCardSection alloc];
-      v436 = [v4 rfReferenceStandardCardSection];
-      v437 = [(_SFPBRFReferenceStandardCardSection *)v435 initWithFacade:v436];
+      rfReferenceStandardCardSection2 = [facadeCopy rfReferenceStandardCardSection];
+      v437 = [(_SFPBRFReferenceStandardCardSection *)v435 initWithFacade:rfReferenceStandardCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfReferenceStandardCardSection:v437];
     }
 
-    v438 = [v4 rfMultiButtonCardSection];
+    rfMultiButtonCardSection = [facadeCopy rfMultiButtonCardSection];
 
-    if (v438)
+    if (rfMultiButtonCardSection)
     {
       v439 = [_SFPBRFMultiButtonCardSection alloc];
-      v440 = [v4 rfMultiButtonCardSection];
-      v441 = [(_SFPBRFMultiButtonCardSection *)v439 initWithFacade:v440];
+      rfMultiButtonCardSection2 = [facadeCopy rfMultiButtonCardSection];
+      v441 = [(_SFPBRFMultiButtonCardSection *)v439 initWithFacade:rfMultiButtonCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfMultiButtonCardSection:v441];
     }
 
-    v442 = [v4 rfDisambiguationTitleCardSection];
+    rfDisambiguationTitleCardSection = [facadeCopy rfDisambiguationTitleCardSection];
 
-    if (v442)
+    if (rfDisambiguationTitleCardSection)
     {
       v443 = [_SFPBRFDisambiguationTitleCardSection alloc];
-      v444 = [v4 rfDisambiguationTitleCardSection];
-      v445 = [(_SFPBRFDisambiguationTitleCardSection *)v443 initWithFacade:v444];
+      rfDisambiguationTitleCardSection2 = [facadeCopy rfDisambiguationTitleCardSection];
+      v445 = [(_SFPBRFDisambiguationTitleCardSection *)v443 initWithFacade:rfDisambiguationTitleCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfDisambiguationTitleCardSection:v445];
     }
 
-    v446 = [v4 rfSummaryItemExpandableCardSection];
+    rfSummaryItemExpandableCardSection = [facadeCopy rfSummaryItemExpandableCardSection];
 
-    if (v446)
+    if (rfSummaryItemExpandableCardSection)
     {
       v447 = [_SFPBRFSummaryItemExpandableCardSection alloc];
-      v448 = [v4 rfSummaryItemExpandableCardSection];
-      v449 = [(_SFPBRFSummaryItemExpandableCardSection *)v447 initWithFacade:v448];
+      rfSummaryItemExpandableCardSection2 = [facadeCopy rfSummaryItemExpandableCardSection];
+      v449 = [(_SFPBRFSummaryItemExpandableCardSection *)v447 initWithFacade:rfSummaryItemExpandableCardSection2];
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemExpandableCardSection:v449];
     }
 
@@ -1134,16 +1134,16 @@
   return v5;
 }
 
-- (_SFPBCardSectionValue)initWithDictionary:(id)a3
+- (_SFPBCardSectionValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v334.receiver = self;
   v334.super_class = _SFPBCardSectionValue;
   v5 = [(_SFPBCardSectionValue *)&v334 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appLinkCardSection"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appLinkCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1151,7 +1151,7 @@
       [(_SFPBCardSectionValue *)v5 setAppLinkCardSection:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"descriptionCardSection"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"descriptionCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1159,7 +1159,7 @@
       [(_SFPBCardSectionValue *)v5 setDescriptionCardSection:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"keyValueDataCardSection"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"keyValueDataCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1167,7 +1167,7 @@
       [(_SFPBCardSectionValue *)v5 setKeyValueDataCardSection:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"mapCardSection"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"mapCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1175,7 +1175,7 @@
       [(_SFPBCardSectionValue *)v5 setMapCardSection:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"mediaInfoCardSection"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"mediaInfoCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1183,7 +1183,7 @@
       [(_SFPBCardSectionValue *)v5 setMediaInfoCardSection:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"mediaPlayerCardSection"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"mediaPlayerCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1191,7 +1191,7 @@
       [(_SFPBCardSectionValue *)v5 setMediaPlayerCardSection:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"nowPlayingCardSection"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingCardSection"];
     objc_opt_class();
     v333 = v18;
     if (objc_opt_isKindOfClass())
@@ -1200,7 +1200,7 @@
       [(_SFPBCardSectionValue *)v5 setNowPlayingCardSection:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"richTitleCardSection"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"richTitleCardSection"];
     objc_opt_class();
     v332 = v20;
     if (objc_opt_isKindOfClass())
@@ -1209,7 +1209,7 @@
       [(_SFPBCardSectionValue *)v5 setRichTitleCardSection:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"rowCardSection"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"rowCardSection"];
     objc_opt_class();
     v331 = v22;
     if (objc_opt_isKindOfClass())
@@ -1218,7 +1218,7 @@
       [(_SFPBCardSectionValue *)v5 setRowCardSection:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"scoreboardCardSection"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"scoreboardCardSection"];
     objc_opt_class();
     v330 = v24;
     if (objc_opt_isKindOfClass())
@@ -1227,7 +1227,7 @@
       [(_SFPBCardSectionValue *)v5 setScoreboardCardSection:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"socialMediaPostCardSection"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"socialMediaPostCardSection"];
     objc_opt_class();
     v329 = v26;
     if (objc_opt_isKindOfClass())
@@ -1236,7 +1236,7 @@
       [(_SFPBCardSectionValue *)v5 setSocialMediaPostCardSection:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"stockChartCardSection"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"stockChartCardSection"];
     objc_opt_class();
     v328 = v28;
     if (objc_opt_isKindOfClass())
@@ -1245,7 +1245,7 @@
       [(_SFPBCardSectionValue *)v5 setStockChartCardSection:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"tableHeaderRowCardSection"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"tableHeaderRowCardSection"];
     objc_opt_class();
     v327 = v30;
     if (objc_opt_isKindOfClass())
@@ -1254,7 +1254,7 @@
       [(_SFPBCardSectionValue *)v5 setTableHeaderRowCardSection:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"tableRowCardSection"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"tableRowCardSection"];
     objc_opt_class();
     v326 = v32;
     if (objc_opt_isKindOfClass())
@@ -1263,7 +1263,7 @@
       [(_SFPBCardSectionValue *)v5 setTableRowCardSection:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"textColumnsCardSection"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"textColumnsCardSection"];
     objc_opt_class();
     v325 = v34;
     if (objc_opt_isKindOfClass())
@@ -1272,7 +1272,7 @@
       [(_SFPBCardSectionValue *)v5 setTextColumnsCardSection:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"titleCardSection"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"titleCardSection"];
     objc_opt_class();
     v324 = v36;
     if (objc_opt_isKindOfClass())
@@ -1281,7 +1281,7 @@
       [(_SFPBCardSectionValue *)v5 setTitleCardSection:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"trackListCardSection"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"trackListCardSection"];
     objc_opt_class();
     v323 = v38;
     if (objc_opt_isKindOfClass())
@@ -1290,7 +1290,7 @@
       [(_SFPBCardSectionValue *)v5 setTrackListCardSection:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"audioPlaybackCardSection"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"audioPlaybackCardSection"];
     objc_opt_class();
     v322 = v40;
     if (objc_opt_isKindOfClass())
@@ -1299,7 +1299,7 @@
       [(_SFPBCardSectionValue *)v5 setAudioPlaybackCardSection:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"flightCardSection"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"flightCardSection"];
     objc_opt_class();
     v321 = v42;
     if (objc_opt_isKindOfClass())
@@ -1308,7 +1308,7 @@
       [(_SFPBCardSectionValue *)v5 setFlightCardSection:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"activityIndicatorCardSection"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"activityIndicatorCardSection"];
     objc_opt_class();
     v320 = v44;
     if (objc_opt_isKindOfClass())
@@ -1317,7 +1317,7 @@
       [(_SFPBCardSectionValue *)v5 setActivityIndicatorCardSection:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"webCardSection"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"webCardSection"];
     objc_opt_class();
     v319 = v46;
     if (objc_opt_isKindOfClass())
@@ -1326,7 +1326,7 @@
       [(_SFPBCardSectionValue *)v5 setWebCardSection:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"messageCardSection"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"messageCardSection"];
     objc_opt_class();
     v318 = v48;
     if (objc_opt_isKindOfClass())
@@ -1335,7 +1335,7 @@
       [(_SFPBCardSectionValue *)v5 setMessageCardSection:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"detailedRowCardSection"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"detailedRowCardSection"];
     objc_opt_class();
     v317 = v50;
     if (objc_opt_isKindOfClass())
@@ -1344,7 +1344,7 @@
       [(_SFPBCardSectionValue *)v5 setDetailedRowCardSection:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"imagesCardSection"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"imagesCardSection"];
     objc_opt_class();
     v316 = v52;
     if (objc_opt_isKindOfClass())
@@ -1353,7 +1353,7 @@
       [(_SFPBCardSectionValue *)v5 setImagesCardSection:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"suggestionCardSection"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"suggestionCardSection"];
     objc_opt_class();
     v315 = v54;
     if (objc_opt_isKindOfClass())
@@ -1362,7 +1362,7 @@
       [(_SFPBCardSectionValue *)v5 setSuggestionCardSection:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"selectableGridCardSection"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"selectableGridCardSection"];
     objc_opt_class();
     v314 = v56;
     if (objc_opt_isKindOfClass())
@@ -1371,7 +1371,7 @@
       [(_SFPBCardSectionValue *)v5 setSelectableGridCardSection:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"sectionHeaderCardSection"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"sectionHeaderCardSection"];
     objc_opt_class();
     v313 = v58;
     if (objc_opt_isKindOfClass())
@@ -1380,7 +1380,7 @@
       [(_SFPBCardSectionValue *)v5 setSectionHeaderCardSection:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"metaInfoCardSection"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"metaInfoCardSection"];
     objc_opt_class();
     v312 = v60;
     if (objc_opt_isKindOfClass())
@@ -1389,7 +1389,7 @@
       [(_SFPBCardSectionValue *)v5 setMetaInfoCardSection:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"watchListCardSection"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"watchListCardSection"];
     objc_opt_class();
     v311 = v62;
     if (objc_opt_isKindOfClass())
@@ -1398,7 +1398,7 @@
       [(_SFPBCardSectionValue *)v5 setWatchListCardSection:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"mapsDetailedRowCardSection"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"mapsDetailedRowCardSection"];
     objc_opt_class();
     v310 = v64;
     if (objc_opt_isKindOfClass())
@@ -1407,7 +1407,7 @@
       [(_SFPBCardSectionValue *)v5 setMapsDetailedRowCardSection:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"buttonCardSection"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"buttonCardSection"];
     objc_opt_class();
     v309 = v66;
     if (objc_opt_isKindOfClass())
@@ -1416,7 +1416,7 @@
       [(_SFPBCardSectionValue *)v5 setButtonCardSection:v67];
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"horizontalButtonCardSection"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"horizontalButtonCardSection"];
     objc_opt_class();
     v308 = v68;
     if (objc_opt_isKindOfClass())
@@ -1425,7 +1425,7 @@
       [(_SFPBCardSectionValue *)v5 setHorizontalButtonCardSection:v69];
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"verticalLayoutCardSection"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"verticalLayoutCardSection"];
     objc_opt_class();
     v307 = v70;
     if (objc_opt_isKindOfClass())
@@ -1434,7 +1434,7 @@
       [(_SFPBCardSectionValue *)v5 setVerticalLayoutCardSection:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"productCardSection"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"productCardSection"];
     objc_opt_class();
     v306 = v72;
     if (objc_opt_isKindOfClass())
@@ -1443,7 +1443,7 @@
       [(_SFPBCardSectionValue *)v5 setProductCardSection:v73];
     }
 
-    v74 = [v4 objectForKeyedSubscript:@"horizontalScrollCardSection"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"horizontalScrollCardSection"];
     objc_opt_class();
     v305 = v74;
     if (objc_opt_isKindOfClass())
@@ -1452,7 +1452,7 @@
       [(_SFPBCardSectionValue *)v5 setHorizontalScrollCardSection:v75];
     }
 
-    v76 = [v4 objectForKeyedSubscript:@"mediaRemoteControlCardSection"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"mediaRemoteControlCardSection"];
     objc_opt_class();
     v304 = v76;
     if (objc_opt_isKindOfClass())
@@ -1461,7 +1461,7 @@
       [(_SFPBCardSectionValue *)v5 setMediaRemoteControlCardSection:v77];
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"mapPlaceCardSection"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"mapPlaceCardSection"];
     objc_opt_class();
     v303 = v78;
     if (objc_opt_isKindOfClass())
@@ -1470,7 +1470,7 @@
       [(_SFPBCardSectionValue *)v5 setMapPlaceCardSection:v79];
     }
 
-    v80 = [v4 objectForKeyedSubscript:@"compactRowCardSection"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"compactRowCardSection"];
     objc_opt_class();
     v302 = v80;
     if (objc_opt_isKindOfClass())
@@ -1479,7 +1479,7 @@
       [(_SFPBCardSectionValue *)v5 setCompactRowCardSection:v81];
     }
 
-    v82 = [v4 objectForKeyedSubscript:@"worldMapCardSection"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"worldMapCardSection"];
     objc_opt_class();
     v301 = v82;
     if (objc_opt_isKindOfClass())
@@ -1488,7 +1488,7 @@
       [(_SFPBCardSectionValue *)v5 setWorldMapCardSection:v83];
     }
 
-    v84 = [v4 objectForKeyedSubscript:@"attributionFooterCardSection"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"attributionFooterCardSection"];
     objc_opt_class();
     v300 = v84;
     if (objc_opt_isKindOfClass())
@@ -1497,7 +1497,7 @@
       [(_SFPBCardSectionValue *)v5 setAttributionFooterCardSection:v85];
     }
 
-    v86 = [v4 objectForKeyedSubscript:@"gridCardSection"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"gridCardSection"];
     objc_opt_class();
     v299 = v86;
     if (objc_opt_isKindOfClass())
@@ -1506,7 +1506,7 @@
       [(_SFPBCardSectionValue *)v5 setGridCardSection:v87];
     }
 
-    v88 = [v4 objectForKeyedSubscript:@"personHeaderCardSection"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"personHeaderCardSection"];
     objc_opt_class();
     v298 = v88;
     if (objc_opt_isKindOfClass())
@@ -1515,7 +1515,7 @@
       [(_SFPBCardSectionValue *)v5 setPersonHeaderCardSection:v89];
     }
 
-    v90 = [v4 objectForKeyedSubscript:@"colorBarCardSection"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"colorBarCardSection"];
     objc_opt_class();
     v297 = v90;
     if (objc_opt_isKindOfClass())
@@ -1524,7 +1524,7 @@
       [(_SFPBCardSectionValue *)v5 setColorBarCardSection:v91];
     }
 
-    v92 = [v4 objectForKeyedSubscript:@"splitCardSection"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"splitCardSection"];
     objc_opt_class();
     v296 = v92;
     if (objc_opt_isKindOfClass())
@@ -1533,7 +1533,7 @@
       [(_SFPBCardSectionValue *)v5 setSplitCardSection:v93];
     }
 
-    v94 = [v4 objectForKeyedSubscript:@"linkPresentationCardSection"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"linkPresentationCardSection"];
     objc_opt_class();
     v295 = v94;
     if (objc_opt_isKindOfClass())
@@ -1542,7 +1542,7 @@
       [(_SFPBCardSectionValue *)v5 setLinkPresentationCardSection:v95];
     }
 
-    v96 = [v4 objectForKeyedSubscript:@"findMyCardSection"];
+    v96 = [dictionaryCopy objectForKeyedSubscript:@"findMyCardSection"];
     objc_opt_class();
     v294 = v96;
     if (objc_opt_isKindOfClass())
@@ -1551,7 +1551,7 @@
       [(_SFPBCardSectionValue *)v5 setFindMyCardSection:v97];
     }
 
-    v98 = [v4 objectForKeyedSubscript:@"heroCardSection"];
+    v98 = [dictionaryCopy objectForKeyedSubscript:@"heroCardSection"];
     objc_opt_class();
     v293 = v98;
     if (objc_opt_isKindOfClass())
@@ -1560,7 +1560,7 @@
       [(_SFPBCardSectionValue *)v5 setHeroCardSection:v99];
     }
 
-    v100 = [v4 objectForKeyedSubscript:@"newsCardSection"];
+    v100 = [dictionaryCopy objectForKeyedSubscript:@"newsCardSection"];
     objc_opt_class();
     v292 = v100;
     if (objc_opt_isKindOfClass())
@@ -1569,7 +1569,7 @@
       [(_SFPBCardSectionValue *)v5 setNewsCardSection:v101];
     }
 
-    v102 = [v4 objectForKeyedSubscript:@"miniCardSection"];
+    v102 = [dictionaryCopy objectForKeyedSubscript:@"miniCardSection"];
     objc_opt_class();
     v291 = v102;
     if (objc_opt_isKindOfClass())
@@ -1578,7 +1578,7 @@
       [(_SFPBCardSectionValue *)v5 setMiniCardSection:v103];
     }
 
-    v104 = [v4 objectForKeyedSubscript:@"infoCardSection"];
+    v104 = [dictionaryCopy objectForKeyedSubscript:@"infoCardSection"];
     objc_opt_class();
     v290 = v104;
     if (objc_opt_isKindOfClass())
@@ -1587,7 +1587,7 @@
       [(_SFPBCardSectionValue *)v5 setInfoCardSection:v105];
     }
 
-    v106 = [v4 objectForKeyedSubscript:@"collectionCardSection"];
+    v106 = [dictionaryCopy objectForKeyedSubscript:@"collectionCardSection"];
     objc_opt_class();
     v289 = v106;
     if (objc_opt_isKindOfClass())
@@ -1596,7 +1596,7 @@
       [(_SFPBCardSectionValue *)v5 setCollectionCardSection:v107];
     }
 
-    v108 = [v4 objectForKeyedSubscript:@"combinedCardSection"];
+    v108 = [dictionaryCopy objectForKeyedSubscript:@"combinedCardSection"];
     objc_opt_class();
     v288 = v108;
     if (objc_opt_isKindOfClass())
@@ -1605,7 +1605,7 @@
       [(_SFPBCardSectionValue *)v5 setCombinedCardSection:v109];
     }
 
-    v110 = [v4 objectForKeyedSubscript:@"responseWrapperCardSection"];
+    v110 = [dictionaryCopy objectForKeyedSubscript:@"responseWrapperCardSection"];
     objc_opt_class();
     v287 = v110;
     if (objc_opt_isKindOfClass())
@@ -1614,7 +1614,7 @@
       [(_SFPBCardSectionValue *)v5 setResponseWrapperCardSection:v111];
     }
 
-    v112 = [v4 objectForKeyedSubscript:@"listenToCardSection"];
+    v112 = [dictionaryCopy objectForKeyedSubscript:@"listenToCardSection"];
     objc_opt_class();
     v286 = v112;
     if (objc_opt_isKindOfClass())
@@ -1623,7 +1623,7 @@
       [(_SFPBCardSectionValue *)v5 setListenToCardSection:v113];
     }
 
-    v114 = [v4 objectForKeyedSubscript:@"watchNowCardSection"];
+    v114 = [dictionaryCopy objectForKeyedSubscript:@"watchNowCardSection"];
     objc_opt_class();
     v285 = v114;
     if (objc_opt_isKindOfClass())
@@ -1632,7 +1632,7 @@
       [(_SFPBCardSectionValue *)v5 setWatchNowCardSection:v115];
     }
 
-    v116 = [v4 objectForKeyedSubscript:@"strokeAnimationCardSection"];
+    v116 = [dictionaryCopy objectForKeyedSubscript:@"strokeAnimationCardSection"];
     objc_opt_class();
     v284 = v116;
     if (objc_opt_isKindOfClass())
@@ -1641,7 +1641,7 @@
       [(_SFPBCardSectionValue *)v5 setStrokeAnimationCardSection:v117];
     }
 
-    v118 = [v4 objectForKeyedSubscript:@"buttonListCardSection"];
+    v118 = [dictionaryCopy objectForKeyedSubscript:@"buttonListCardSection"];
     objc_opt_class();
     v283 = v118;
     if (objc_opt_isKindOfClass())
@@ -1650,7 +1650,7 @@
       [(_SFPBCardSectionValue *)v5 setButtonListCardSection:v119];
     }
 
-    v120 = [v4 objectForKeyedSubscript:@"commandRowCardSection"];
+    v120 = [dictionaryCopy objectForKeyedSubscript:@"commandRowCardSection"];
     objc_opt_class();
     v282 = v120;
     if (objc_opt_isKindOfClass())
@@ -1659,7 +1659,7 @@
       [(_SFPBCardSectionValue *)v5 setCommandRowCardSection:v121];
     }
 
-    v122 = [v4 objectForKeyedSubscript:@"leadingTrailingCardSection"];
+    v122 = [dictionaryCopy objectForKeyedSubscript:@"leadingTrailingCardSection"];
     objc_opt_class();
     v281 = v122;
     if (objc_opt_isKindOfClass())
@@ -1668,7 +1668,7 @@
       [(_SFPBCardSectionValue *)v5 setLeadingTrailingCardSection:v123];
     }
 
-    v124 = [v4 objectForKeyedSubscript:@"heroTitleCardSection"];
+    v124 = [dictionaryCopy objectForKeyedSubscript:@"heroTitleCardSection"];
     objc_opt_class();
     v280 = v124;
     if (objc_opt_isKindOfClass())
@@ -1677,7 +1677,7 @@
       [(_SFPBCardSectionValue *)v5 setHeroTitleCardSection:v125];
     }
 
-    v126 = [v4 objectForKeyedSubscript:@"archiveViewCardSection"];
+    v126 = [dictionaryCopy objectForKeyedSubscript:@"archiveViewCardSection"];
     objc_opt_class();
     v279 = v126;
     if (objc_opt_isKindOfClass())
@@ -1686,7 +1686,7 @@
       [(_SFPBCardSectionValue *)v5 setArchiveViewCardSection:v127];
     }
 
-    v128 = [v4 objectForKeyedSubscript:@"appIconCardSection"];
+    v128 = [dictionaryCopy objectForKeyedSubscript:@"appIconCardSection"];
     objc_opt_class();
     v278 = v128;
     if (objc_opt_isKindOfClass())
@@ -1695,7 +1695,7 @@
       [(_SFPBCardSectionValue *)v5 setAppIconCardSection:v129];
     }
 
-    v130 = [v4 objectForKeyedSubscript:@"largeTitleDetailedRowCardSection"];
+    v130 = [dictionaryCopy objectForKeyedSubscript:@"largeTitleDetailedRowCardSection"];
     objc_opt_class();
     v277 = v130;
     if (objc_opt_isKindOfClass())
@@ -1704,7 +1704,7 @@
       [(_SFPBCardSectionValue *)v5 setLargeTitleDetailedRowCardSection:v131];
     }
 
-    v132 = [v4 objectForKeyedSubscript:@"safariTableOfContentsCardSection"];
+    v132 = [dictionaryCopy objectForKeyedSubscript:@"safariTableOfContentsCardSection"];
     objc_opt_class();
     v276 = v132;
     if (objc_opt_isKindOfClass())
@@ -1713,7 +1713,7 @@
       [(_SFPBCardSectionValue *)v5 setSafariTableOfContentsCardSection:v133];
     }
 
-    v134 = [v4 objectForKeyedSubscript:@"rfSummaryItemShortNumberCardSection"];
+    v134 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemShortNumberCardSection"];
     objc_opt_class();
     v275 = v134;
     if (objc_opt_isKindOfClass())
@@ -1722,7 +1722,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemShortNumberCardSection:v135];
     }
 
-    v136 = [v4 objectForKeyedSubscript:@"rfSummaryItemTextCardSection"];
+    v136 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemTextCardSection"];
     objc_opt_class();
     v274 = v136;
     if (objc_opt_isKindOfClass())
@@ -1731,7 +1731,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemTextCardSection:v137];
     }
 
-    v138 = [v4 objectForKeyedSubscript:@"rfSummaryItemStandardCardSection"];
+    v138 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemStandardCardSection"];
     objc_opt_class();
     v273 = v138;
     if (objc_opt_isKindOfClass())
@@ -1740,7 +1740,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemStandardCardSection:v139];
     }
 
-    v140 = [v4 objectForKeyedSubscript:@"rfFactItemShortNumberCardSection"];
+    v140 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemShortNumberCardSection"];
     objc_opt_class();
     v272 = v140;
     if (objc_opt_isKindOfClass())
@@ -1749,7 +1749,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemShortNumberCardSection:v141];
     }
 
-    v142 = [v4 objectForKeyedSubscript:@"rfFactItemStandardCardSection"];
+    v142 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemStandardCardSection"];
     objc_opt_class();
     v271 = v142;
     if (objc_opt_isKindOfClass())
@@ -1758,7 +1758,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemStandardCardSection:v143];
     }
 
-    v144 = [v4 objectForKeyedSubscript:@"rfLongItemStandardCardSection"];
+    v144 = [dictionaryCopy objectForKeyedSubscript:@"rfLongItemStandardCardSection"];
     objc_opt_class();
     v270 = v144;
     if (objc_opt_isKindOfClass())
@@ -1767,7 +1767,7 @@
       [(_SFPBCardSectionValue *)v5 setRfLongItemStandardCardSection:v145];
     }
 
-    v146 = [v4 objectForKeyedSubscript:@"rfPrimaryHeaderRichCardSection"];
+    v146 = [dictionaryCopy objectForKeyedSubscript:@"rfPrimaryHeaderRichCardSection"];
     objc_opt_class();
     v269 = v146;
     if (objc_opt_isKindOfClass())
@@ -1776,7 +1776,7 @@
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderRichCardSection:v147];
     }
 
-    v148 = [v4 objectForKeyedSubscript:@"rfPrimaryHeaderStandardCardSection"];
+    v148 = [dictionaryCopy objectForKeyedSubscript:@"rfPrimaryHeaderStandardCardSection"];
     objc_opt_class();
     v268 = v148;
     if (objc_opt_isKindOfClass())
@@ -1785,7 +1785,7 @@
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderStandardCardSection:v149];
     }
 
-    v150 = [v4 objectForKeyedSubscript:@"rfReferenceFootnoteCardSection"];
+    v150 = [dictionaryCopy objectForKeyedSubscript:@"rfReferenceFootnoteCardSection"];
     objc_opt_class();
     v267 = v150;
     if (objc_opt_isKindOfClass())
@@ -1794,7 +1794,7 @@
       [(_SFPBCardSectionValue *)v5 setRfReferenceFootnoteCardSection:v151];
     }
 
-    v152 = [v4 objectForKeyedSubscript:@"rfReferenceRichCardSection"];
+    v152 = [dictionaryCopy objectForKeyedSubscript:@"rfReferenceRichCardSection"];
     objc_opt_class();
     v266 = v152;
     if (objc_opt_isKindOfClass())
@@ -1803,7 +1803,7 @@
       [(_SFPBCardSectionValue *)v5 setRfReferenceRichCardSection:v153];
     }
 
-    v154 = [v4 objectForKeyedSubscript:@"rfSimpleItemRichCardSection"];
+    v154 = [dictionaryCopy objectForKeyedSubscript:@"rfSimpleItemRichCardSection"];
     objc_opt_class();
     v265 = v154;
     if (objc_opt_isKindOfClass())
@@ -1812,7 +1812,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemRichCardSection:v155];
     }
 
-    v156 = [v4 objectForKeyedSubscript:@"rfSimpleItemStandardCardSection"];
+    v156 = [dictionaryCopy objectForKeyedSubscript:@"rfSimpleItemStandardCardSection"];
     objc_opt_class();
     v264 = v156;
     if (objc_opt_isKindOfClass())
@@ -1821,7 +1821,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemStandardCardSection:v157];
     }
 
-    v158 = [v4 objectForKeyedSubscript:@"rfSummaryItemAlignedTextCardSection"];
+    v158 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemAlignedTextCardSection"];
     objc_opt_class();
     v263 = v158;
     if (objc_opt_isKindOfClass())
@@ -1830,7 +1830,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemAlignedTextCardSection:v159];
     }
 
-    v160 = [v4 objectForKeyedSubscript:@"rfExpandableStandardCardSection"];
+    v160 = [dictionaryCopy objectForKeyedSubscript:@"rfExpandableStandardCardSection"];
     objc_opt_class();
     v262 = v160;
     if (objc_opt_isKindOfClass())
@@ -1839,7 +1839,7 @@
       [(_SFPBCardSectionValue *)v5 setRfExpandableStandardCardSection:v161];
     }
 
-    v162 = [v4 objectForKeyedSubscript:@"rfFactItemButtonCardSection"];
+    v162 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemButtonCardSection"];
     objc_opt_class();
     v261 = v162;
     if (objc_opt_isKindOfClass())
@@ -1848,7 +1848,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemButtonCardSection:v163];
     }
 
-    v164 = [v4 objectForKeyedSubscript:@"rfFactItemHeroNumberCardSection"];
+    v164 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemHeroNumberCardSection"];
     objc_opt_class();
     v260 = v164;
     if (objc_opt_isKindOfClass())
@@ -1857,7 +1857,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemHeroNumberCardSection:v165];
     }
 
-    v166 = [v4 objectForKeyedSubscript:@"rfPrimaryHeaderMarqueeCardSection"];
+    v166 = [dictionaryCopy objectForKeyedSubscript:@"rfPrimaryHeaderMarqueeCardSection"];
     objc_opt_class();
     v259 = v166;
     if (objc_opt_isKindOfClass())
@@ -1866,7 +1866,7 @@
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderMarqueeCardSection:v167];
     }
 
-    v168 = [v4 objectForKeyedSubscript:@"rfSummaryItemDetailedTextCardSection"];
+    v168 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemDetailedTextCardSection"];
     objc_opt_class();
     v258 = v168;
     if (objc_opt_isKindOfClass())
@@ -1875,7 +1875,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemDetailedTextCardSection:v169];
     }
 
-    v170 = [v4 objectForKeyedSubscript:@"rfSimpleItemPlayerCardSection"];
+    v170 = [dictionaryCopy objectForKeyedSubscript:@"rfSimpleItemPlayerCardSection"];
     objc_opt_class();
     v257 = v170;
     if (objc_opt_isKindOfClass())
@@ -1884,7 +1884,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemPlayerCardSection:v171];
     }
 
-    v172 = [v4 objectForKeyedSubscript:@"rfSummaryItemPairCardSection"];
+    v172 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemPairCardSection"];
     objc_opt_class();
     v256 = v172;
     if (objc_opt_isKindOfClass())
@@ -1893,7 +1893,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemPairCardSection:v173];
     }
 
-    v174 = [v4 objectForKeyedSubscript:@"rfSummaryItemPairNumberCardSection"];
+    v174 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemPairNumberCardSection"];
     objc_opt_class();
     v255 = v174;
     if (objc_opt_isKindOfClass())
@@ -1902,7 +1902,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemPairNumberCardSection:v175];
     }
 
-    v176 = [v4 objectForKeyedSubscript:@"rfFactItemShortHeroNumberCardSection"];
+    v176 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemShortHeroNumberCardSection"];
     objc_opt_class();
     v254 = v176;
     if (objc_opt_isKindOfClass())
@@ -1911,7 +1911,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemShortHeroNumberCardSection:v177];
     }
 
-    v178 = [v4 objectForKeyedSubscript:@"rfFactItemDetailedNumberCardSection"];
+    v178 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemDetailedNumberCardSection"];
     objc_opt_class();
     v253 = v178;
     if (objc_opt_isKindOfClass())
@@ -1920,7 +1920,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemDetailedNumberCardSection:v179];
     }
 
-    v180 = [v4 objectForKeyedSubscript:@"rfFactItemHeroButtonCardSection"];
+    v180 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemHeroButtonCardSection"];
     objc_opt_class();
     v252 = v180;
     if (objc_opt_isKindOfClass())
@@ -1929,7 +1929,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemHeroButtonCardSection:v181];
     }
 
-    v182 = [v4 objectForKeyedSubscript:@"rfFactItemImageRightCardSection"];
+    v182 = [dictionaryCopy objectForKeyedSubscript:@"rfFactItemImageRightCardSection"];
     objc_opt_class();
     v251 = v182;
     if (objc_opt_isKindOfClass())
@@ -1938,7 +1938,7 @@
       [(_SFPBCardSectionValue *)v5 setRfFactItemImageRightCardSection:v183];
     }
 
-    v184 = [v4 objectForKeyedSubscript:@"rfSummaryItemSwitchV2CardSection"];
+    v184 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemSwitchV2CardSection"];
     objc_opt_class();
     v250 = v184;
     if (objc_opt_isKindOfClass())
@@ -1947,7 +1947,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemSwitchV2CardSection:v185];
     }
 
-    v186 = [v4 objectForKeyedSubscript:@"rfTableHeaderCardSection"];
+    v186 = [dictionaryCopy objectForKeyedSubscript:@"rfTableHeaderCardSection"];
     objc_opt_class();
     v249 = v186;
     if (objc_opt_isKindOfClass())
@@ -1956,7 +1956,7 @@
       [(_SFPBCardSectionValue *)v5 setRfTableHeaderCardSection:v187];
     }
 
-    v188 = [v4 objectForKeyedSubscript:@"rfTableRowCardSection"];
+    v188 = [dictionaryCopy objectForKeyedSubscript:@"rfTableRowCardSection"];
     objc_opt_class();
     v248 = v188;
     if (objc_opt_isKindOfClass())
@@ -1965,7 +1965,7 @@
       [(_SFPBCardSectionValue *)v5 setRfTableRowCardSection:v189];
     }
 
-    v190 = [v4 objectForKeyedSubscript:@"rfSimpleItemVisualElementCardSection"];
+    v190 = [dictionaryCopy objectForKeyedSubscript:@"rfSimpleItemVisualElementCardSection"];
     objc_opt_class();
     v247 = v190;
     if (objc_opt_isKindOfClass())
@@ -1974,7 +1974,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemVisualElementCardSection:v191];
     }
 
-    v192 = [v4 objectForKeyedSubscript:@"rfSummaryItemPlayerCardSection"];
+    v192 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemPlayerCardSection"];
     objc_opt_class();
     v246 = v192;
     if (objc_opt_isKindOfClass())
@@ -1983,7 +1983,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemPlayerCardSection:v193];
     }
 
-    v194 = [v4 objectForKeyedSubscript:@"rfSummaryItemImageRightCardSection"];
+    v194 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemImageRightCardSection"];
     objc_opt_class();
     v245 = v194;
     if (objc_opt_isKindOfClass())
@@ -1992,7 +1992,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemImageRightCardSection:v195];
     }
 
-    v196 = [v4 objectForKeyedSubscript:@"rfSummaryItemButtonCardSection"];
+    v196 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemButtonCardSection"];
     objc_opt_class();
     v244 = v196;
     if (objc_opt_isKindOfClass())
@@ -2001,7 +2001,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSummaryItemButtonCardSection:v197];
     }
 
-    v198 = [v4 objectForKeyedSubscript:@"rfSimpleItemReverseRichCardSection"];
+    v198 = [dictionaryCopy objectForKeyedSubscript:@"rfSimpleItemReverseRichCardSection"];
     objc_opt_class();
     v243 = v198;
     if (objc_opt_isKindOfClass())
@@ -2010,7 +2010,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemReverseRichCardSection:v199];
     }
 
-    v200 = [v4 objectForKeyedSubscript:@"rfSimpleItemRichSearchResultCardSection"];
+    v200 = [dictionaryCopy objectForKeyedSubscript:@"rfSimpleItemRichSearchResultCardSection"];
     objc_opt_class();
     v242 = v200;
     if (objc_opt_isKindOfClass())
@@ -2019,7 +2019,7 @@
       [(_SFPBCardSectionValue *)v5 setRfSimpleItemRichSearchResultCardSection:v201];
     }
 
-    v202 = [v4 objectForKeyedSubscript:@"rfPrimaryHeaderStackedImageCardSection"];
+    v202 = [dictionaryCopy objectForKeyedSubscript:@"rfPrimaryHeaderStackedImageCardSection"];
     objc_opt_class();
     v241 = v202;
     if (objc_opt_isKindOfClass())
@@ -2028,7 +2028,7 @@
       [(_SFPBCardSectionValue *)v5 setRfPrimaryHeaderStackedImageCardSection:v203];
     }
 
-    v204 = [v4 objectForKeyedSubscript:@"rfReferenceItemLogoCardSection"];
+    v204 = [dictionaryCopy objectForKeyedSubscript:@"rfReferenceItemLogoCardSection"];
     objc_opt_class();
     v240 = v204;
     if (objc_opt_isKindOfClass())
@@ -2037,7 +2037,7 @@
       [(_SFPBCardSectionValue *)v5 setRfReferenceItemLogoCardSection:v205];
     }
 
-    v206 = [v4 objectForKeyedSubscript:@"rfReferenceItemButtonCardSection"];
+    v206 = [dictionaryCopy objectForKeyedSubscript:@"rfReferenceItemButtonCardSection"];
     objc_opt_class();
     v239 = v206;
     if (objc_opt_isKindOfClass())
@@ -2046,7 +2046,7 @@
       [(_SFPBCardSectionValue *)v5 setRfReferenceItemButtonCardSection:v207];
     }
 
-    v208 = [v4 objectForKeyedSubscript:@"rfButtonCardSection"];
+    v208 = [dictionaryCopy objectForKeyedSubscript:@"rfButtonCardSection"];
     objc_opt_class();
     v238 = v208;
     if (objc_opt_isKindOfClass())
@@ -2055,7 +2055,7 @@
       [(_SFPBCardSectionValue *)v5 setRfButtonCardSection:v209];
     }
 
-    v210 = [v4 objectForKeyedSubscript:@"rfBinaryButtonCardSection"];
+    v210 = [dictionaryCopy objectForKeyedSubscript:@"rfBinaryButtonCardSection"];
     objc_opt_class();
     v237 = v210;
     if (objc_opt_isKindOfClass())
@@ -2065,7 +2065,7 @@
     }
 
     v236 = v6;
-    v212 = [v4 objectForKeyedSubscript:@"rfReferenceCenteredCardSection"];
+    v212 = [dictionaryCopy objectForKeyedSubscript:@"rfReferenceCenteredCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2075,7 +2075,7 @@
 
     v230 = v212;
     v235 = v8;
-    v214 = [v4 objectForKeyedSubscript:@"rfSecondaryHeaderStandardCardSection"];
+    v214 = [dictionaryCopy objectForKeyedSubscript:@"rfSecondaryHeaderStandardCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2084,7 +2084,7 @@
     }
 
     v234 = v10;
-    v216 = [v4 objectForKeyedSubscript:@"rfSecondaryHeaderEmphasizedCardSection"];
+    v216 = [dictionaryCopy objectForKeyedSubscript:@"rfSecondaryHeaderEmphasizedCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2093,7 +2093,7 @@
     }
 
     v233 = v12;
-    v218 = [v4 objectForKeyedSubscript:@"rfMapCardSection"];
+    v218 = [dictionaryCopy objectForKeyedSubscript:@"rfMapCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2102,7 +2102,7 @@
     }
 
     v232 = v14;
-    v220 = [v4 objectForKeyedSubscript:@"rfReferenceStandardCardSection"];
+    v220 = [dictionaryCopy objectForKeyedSubscript:@"rfReferenceStandardCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2111,7 +2111,7 @@
     }
 
     v231 = v16;
-    v222 = [v4 objectForKeyedSubscript:@"rfMultiButtonCardSection"];
+    v222 = [dictionaryCopy objectForKeyedSubscript:@"rfMultiButtonCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2119,7 +2119,7 @@
       [(_SFPBCardSectionValue *)v5 setRfMultiButtonCardSection:v223];
     }
 
-    v224 = [v4 objectForKeyedSubscript:@"rfDisambiguationTitleCardSection"];
+    v224 = [dictionaryCopy objectForKeyedSubscript:@"rfDisambiguationTitleCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2127,7 +2127,7 @@
       [(_SFPBCardSectionValue *)v5 setRfDisambiguationTitleCardSection:v225];
     }
 
-    v226 = [v4 objectForKeyedSubscript:@"rfSummaryItemExpandableCardSection"];
+    v226 = [dictionaryCopy objectForKeyedSubscript:@"rfSummaryItemExpandableCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2141,30 +2141,30 @@
   return v5;
 }
 
-- (_SFPBCardSectionValue)initWithJSON:(id)a3
+- (_SFPBCardSectionValue)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCardSectionValue *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCardSectionValue *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCardSectionValue *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -2177,1786 +2177,1786 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_activityIndicatorCardSection)
   {
-    v4 = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    activityIndicatorCardSection = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
+    dictionaryRepresentation = [activityIndicatorCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"activityIndicatorCardSection"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"activityIndicatorCardSection"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"activityIndicatorCardSection"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"activityIndicatorCardSection"];
     }
   }
 
   if (self->_appIconCardSection)
   {
-    v7 = [(_SFPBCardSectionValue *)self appIconCardSection];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    appIconCardSection = [(_SFPBCardSectionValue *)self appIconCardSection];
+    dictionaryRepresentation2 = [appIconCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"appIconCardSection"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"appIconCardSection"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"appIconCardSection"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"appIconCardSection"];
     }
   }
 
   if (self->_appLinkCardSection)
   {
-    v10 = [(_SFPBCardSectionValue *)self appLinkCardSection];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    appLinkCardSection = [(_SFPBCardSectionValue *)self appLinkCardSection];
+    dictionaryRepresentation3 = [appLinkCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"appLinkCardSection"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"appLinkCardSection"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"appLinkCardSection"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"appLinkCardSection"];
     }
   }
 
   if (self->_archiveViewCardSection)
   {
-    v13 = [(_SFPBCardSectionValue *)self archiveViewCardSection];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    archiveViewCardSection = [(_SFPBCardSectionValue *)self archiveViewCardSection];
+    dictionaryRepresentation4 = [archiveViewCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"archiveViewCardSection"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"archiveViewCardSection"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"archiveViewCardSection"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"archiveViewCardSection"];
     }
   }
 
   if (self->_attributionFooterCardSection)
   {
-    v16 = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    attributionFooterCardSection = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
+    dictionaryRepresentation5 = [attributionFooterCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"attributionFooterCardSection"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"attributionFooterCardSection"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"attributionFooterCardSection"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"attributionFooterCardSection"];
     }
   }
 
   if (self->_audioPlaybackCardSection)
   {
-    v19 = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    audioPlaybackCardSection = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
+    dictionaryRepresentation6 = [audioPlaybackCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"audioPlaybackCardSection"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"audioPlaybackCardSection"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"audioPlaybackCardSection"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"audioPlaybackCardSection"];
     }
   }
 
   if (self->_buttonCardSection)
   {
-    v22 = [(_SFPBCardSectionValue *)self buttonCardSection];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    buttonCardSection = [(_SFPBCardSectionValue *)self buttonCardSection];
+    dictionaryRepresentation7 = [buttonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"buttonCardSection"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"buttonCardSection"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"buttonCardSection"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"buttonCardSection"];
     }
   }
 
   if (self->_buttonListCardSection)
   {
-    v25 = [(_SFPBCardSectionValue *)self buttonListCardSection];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    buttonListCardSection = [(_SFPBCardSectionValue *)self buttonListCardSection];
+    dictionaryRepresentation8 = [buttonListCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"buttonListCardSection"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"buttonListCardSection"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"buttonListCardSection"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"buttonListCardSection"];
     }
   }
 
   if (self->_collectionCardSection)
   {
-    v28 = [(_SFPBCardSectionValue *)self collectionCardSection];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    collectionCardSection = [(_SFPBCardSectionValue *)self collectionCardSection];
+    dictionaryRepresentation9 = [collectionCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"collectionCardSection"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"collectionCardSection"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"collectionCardSection"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"collectionCardSection"];
     }
   }
 
   if (self->_colorBarCardSection)
   {
-    v31 = [(_SFPBCardSectionValue *)self colorBarCardSection];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    colorBarCardSection = [(_SFPBCardSectionValue *)self colorBarCardSection];
+    dictionaryRepresentation10 = [colorBarCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"colorBarCardSection"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"colorBarCardSection"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"colorBarCardSection"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"colorBarCardSection"];
     }
   }
 
   if (self->_combinedCardSection)
   {
-    v34 = [(_SFPBCardSectionValue *)self combinedCardSection];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    combinedCardSection = [(_SFPBCardSectionValue *)self combinedCardSection];
+    dictionaryRepresentation11 = [combinedCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"combinedCardSection"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"combinedCardSection"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"combinedCardSection"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"combinedCardSection"];
     }
   }
 
   if (self->_commandRowCardSection)
   {
-    v37 = [(_SFPBCardSectionValue *)self commandRowCardSection];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    commandRowCardSection = [(_SFPBCardSectionValue *)self commandRowCardSection];
+    dictionaryRepresentation12 = [commandRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"commandRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"commandRowCardSection"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"commandRowCardSection"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"commandRowCardSection"];
     }
   }
 
   if (self->_compactRowCardSection)
   {
-    v40 = [(_SFPBCardSectionValue *)self compactRowCardSection];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    compactRowCardSection = [(_SFPBCardSectionValue *)self compactRowCardSection];
+    dictionaryRepresentation13 = [compactRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"compactRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"compactRowCardSection"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"compactRowCardSection"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"compactRowCardSection"];
     }
   }
 
   if (self->_descriptionCardSection)
   {
-    v43 = [(_SFPBCardSectionValue *)self descriptionCardSection];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    descriptionCardSection = [(_SFPBCardSectionValue *)self descriptionCardSection];
+    dictionaryRepresentation14 = [descriptionCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"descriptionCardSection"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"descriptionCardSection"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"descriptionCardSection"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"descriptionCardSection"];
     }
   }
 
   if (self->_detailedRowCardSection)
   {
-    v46 = [(_SFPBCardSectionValue *)self detailedRowCardSection];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    detailedRowCardSection = [(_SFPBCardSectionValue *)self detailedRowCardSection];
+    dictionaryRepresentation15 = [detailedRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"detailedRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"detailedRowCardSection"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"detailedRowCardSection"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"detailedRowCardSection"];
     }
   }
 
   if (self->_findMyCardSection)
   {
-    v49 = [(_SFPBCardSectionValue *)self findMyCardSection];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    findMyCardSection = [(_SFPBCardSectionValue *)self findMyCardSection];
+    dictionaryRepresentation16 = [findMyCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"findMyCardSection"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"findMyCardSection"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"findMyCardSection"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"findMyCardSection"];
     }
   }
 
   if (self->_flightCardSection)
   {
-    v52 = [(_SFPBCardSectionValue *)self flightCardSection];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    flightCardSection = [(_SFPBCardSectionValue *)self flightCardSection];
+    dictionaryRepresentation17 = [flightCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"flightCardSection"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"flightCardSection"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"flightCardSection"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"flightCardSection"];
     }
   }
 
   if (self->_gridCardSection)
   {
-    v55 = [(_SFPBCardSectionValue *)self gridCardSection];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    gridCardSection = [(_SFPBCardSectionValue *)self gridCardSection];
+    dictionaryRepresentation18 = [gridCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"gridCardSection"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"gridCardSection"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"gridCardSection"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"gridCardSection"];
     }
   }
 
   if (self->_heroCardSection)
   {
-    v58 = [(_SFPBCardSectionValue *)self heroCardSection];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    heroCardSection = [(_SFPBCardSectionValue *)self heroCardSection];
+    dictionaryRepresentation19 = [heroCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"heroCardSection"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"heroCardSection"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"heroCardSection"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"heroCardSection"];
     }
   }
 
   if (self->_heroTitleCardSection)
   {
-    v61 = [(_SFPBCardSectionValue *)self heroTitleCardSection];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    heroTitleCardSection = [(_SFPBCardSectionValue *)self heroTitleCardSection];
+    dictionaryRepresentation20 = [heroTitleCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"heroTitleCardSection"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"heroTitleCardSection"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"heroTitleCardSection"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"heroTitleCardSection"];
     }
   }
 
   if (self->_horizontalButtonCardSection)
   {
-    v64 = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    horizontalButtonCardSection = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
+    dictionaryRepresentation21 = [horizontalButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"horizontalButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"horizontalButtonCardSection"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"horizontalButtonCardSection"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"horizontalButtonCardSection"];
     }
   }
 
   if (self->_horizontalScrollCardSection)
   {
-    v67 = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    horizontalScrollCardSection = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
+    dictionaryRepresentation22 = [horizontalScrollCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"horizontalScrollCardSection"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"horizontalScrollCardSection"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"horizontalScrollCardSection"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"horizontalScrollCardSection"];
     }
   }
 
   if (self->_imagesCardSection)
   {
-    v70 = [(_SFPBCardSectionValue *)self imagesCardSection];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    imagesCardSection = [(_SFPBCardSectionValue *)self imagesCardSection];
+    dictionaryRepresentation23 = [imagesCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"imagesCardSection"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"imagesCardSection"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"imagesCardSection"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"imagesCardSection"];
     }
   }
 
   if (self->_infoCardSection)
   {
-    v73 = [(_SFPBCardSectionValue *)self infoCardSection];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    infoCardSection = [(_SFPBCardSectionValue *)self infoCardSection];
+    dictionaryRepresentation24 = [infoCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"infoCardSection"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"infoCardSection"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"infoCardSection"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"infoCardSection"];
     }
   }
 
   if (self->_keyValueDataCardSection)
   {
-    v76 = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    keyValueDataCardSection = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
+    dictionaryRepresentation25 = [keyValueDataCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"keyValueDataCardSection"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"keyValueDataCardSection"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"keyValueDataCardSection"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"keyValueDataCardSection"];
     }
   }
 
   if (self->_largeTitleDetailedRowCardSection)
   {
-    v79 = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    largeTitleDetailedRowCardSection = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
+    dictionaryRepresentation26 = [largeTitleDetailedRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"largeTitleDetailedRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"largeTitleDetailedRowCardSection"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"largeTitleDetailedRowCardSection"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"largeTitleDetailedRowCardSection"];
     }
   }
 
   if (self->_leadingTrailingCardSection)
   {
-    v82 = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    leadingTrailingCardSection = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
+    dictionaryRepresentation27 = [leadingTrailingCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"leadingTrailingCardSection"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"leadingTrailingCardSection"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"leadingTrailingCardSection"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"leadingTrailingCardSection"];
     }
   }
 
   if (self->_linkPresentationCardSection)
   {
-    v85 = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    linkPresentationCardSection = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
+    dictionaryRepresentation28 = [linkPresentationCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"linkPresentationCardSection"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"linkPresentationCardSection"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"linkPresentationCardSection"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"linkPresentationCardSection"];
     }
   }
 
   if (self->_listenToCardSection)
   {
-    v88 = [(_SFPBCardSectionValue *)self listenToCardSection];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    listenToCardSection = [(_SFPBCardSectionValue *)self listenToCardSection];
+    dictionaryRepresentation29 = [listenToCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"listenToCardSection"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"listenToCardSection"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"listenToCardSection"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"listenToCardSection"];
     }
   }
 
   if (self->_mapCardSection)
   {
-    v91 = [(_SFPBCardSectionValue *)self mapCardSection];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    mapCardSection = [(_SFPBCardSectionValue *)self mapCardSection];
+    dictionaryRepresentation30 = [mapCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"mapCardSection"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"mapCardSection"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"mapCardSection"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"mapCardSection"];
     }
   }
 
   if (self->_mapPlaceCardSection)
   {
-    v94 = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
-    v95 = [v94 dictionaryRepresentation];
-    if (v95)
+    mapPlaceCardSection = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
+    dictionaryRepresentation31 = [mapPlaceCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation31)
     {
-      [v3 setObject:v95 forKeyedSubscript:@"mapPlaceCardSection"];
+      [dictionary setObject:dictionaryRepresentation31 forKeyedSubscript:@"mapPlaceCardSection"];
     }
 
     else
     {
-      v96 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v96 forKeyedSubscript:@"mapPlaceCardSection"];
+      null31 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null31 forKeyedSubscript:@"mapPlaceCardSection"];
     }
   }
 
   if (self->_mapsDetailedRowCardSection)
   {
-    v97 = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
-    v98 = [v97 dictionaryRepresentation];
-    if (v98)
+    mapsDetailedRowCardSection = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
+    dictionaryRepresentation32 = [mapsDetailedRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation32)
     {
-      [v3 setObject:v98 forKeyedSubscript:@"mapsDetailedRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation32 forKeyedSubscript:@"mapsDetailedRowCardSection"];
     }
 
     else
     {
-      v99 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v99 forKeyedSubscript:@"mapsDetailedRowCardSection"];
+      null32 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null32 forKeyedSubscript:@"mapsDetailedRowCardSection"];
     }
   }
 
   if (self->_mediaInfoCardSection)
   {
-    v100 = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
-    v101 = [v100 dictionaryRepresentation];
-    if (v101)
+    mediaInfoCardSection = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
+    dictionaryRepresentation33 = [mediaInfoCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation33)
     {
-      [v3 setObject:v101 forKeyedSubscript:@"mediaInfoCardSection"];
+      [dictionary setObject:dictionaryRepresentation33 forKeyedSubscript:@"mediaInfoCardSection"];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v102 forKeyedSubscript:@"mediaInfoCardSection"];
+      null33 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null33 forKeyedSubscript:@"mediaInfoCardSection"];
     }
   }
 
   if (self->_mediaPlayerCardSection)
   {
-    v103 = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
-    v104 = [v103 dictionaryRepresentation];
-    if (v104)
+    mediaPlayerCardSection = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
+    dictionaryRepresentation34 = [mediaPlayerCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation34)
     {
-      [v3 setObject:v104 forKeyedSubscript:@"mediaPlayerCardSection"];
+      [dictionary setObject:dictionaryRepresentation34 forKeyedSubscript:@"mediaPlayerCardSection"];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v105 forKeyedSubscript:@"mediaPlayerCardSection"];
+      null34 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null34 forKeyedSubscript:@"mediaPlayerCardSection"];
     }
   }
 
   if (self->_mediaRemoteControlCardSection)
   {
-    v106 = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
-    v107 = [v106 dictionaryRepresentation];
-    if (v107)
+    mediaRemoteControlCardSection = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
+    dictionaryRepresentation35 = [mediaRemoteControlCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation35)
     {
-      [v3 setObject:v107 forKeyedSubscript:@"mediaRemoteControlCardSection"];
+      [dictionary setObject:dictionaryRepresentation35 forKeyedSubscript:@"mediaRemoteControlCardSection"];
     }
 
     else
     {
-      v108 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v108 forKeyedSubscript:@"mediaRemoteControlCardSection"];
+      null35 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null35 forKeyedSubscript:@"mediaRemoteControlCardSection"];
     }
   }
 
   if (self->_messageCardSection)
   {
-    v109 = [(_SFPBCardSectionValue *)self messageCardSection];
-    v110 = [v109 dictionaryRepresentation];
-    if (v110)
+    messageCardSection = [(_SFPBCardSectionValue *)self messageCardSection];
+    dictionaryRepresentation36 = [messageCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation36)
     {
-      [v3 setObject:v110 forKeyedSubscript:@"messageCardSection"];
+      [dictionary setObject:dictionaryRepresentation36 forKeyedSubscript:@"messageCardSection"];
     }
 
     else
     {
-      v111 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v111 forKeyedSubscript:@"messageCardSection"];
+      null36 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null36 forKeyedSubscript:@"messageCardSection"];
     }
   }
 
   if (self->_metaInfoCardSection)
   {
-    v112 = [(_SFPBCardSectionValue *)self metaInfoCardSection];
-    v113 = [v112 dictionaryRepresentation];
-    if (v113)
+    metaInfoCardSection = [(_SFPBCardSectionValue *)self metaInfoCardSection];
+    dictionaryRepresentation37 = [metaInfoCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation37)
     {
-      [v3 setObject:v113 forKeyedSubscript:@"metaInfoCardSection"];
+      [dictionary setObject:dictionaryRepresentation37 forKeyedSubscript:@"metaInfoCardSection"];
     }
 
     else
     {
-      v114 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v114 forKeyedSubscript:@"metaInfoCardSection"];
+      null37 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null37 forKeyedSubscript:@"metaInfoCardSection"];
     }
   }
 
   if (self->_miniCardSection)
   {
-    v115 = [(_SFPBCardSectionValue *)self miniCardSection];
-    v116 = [v115 dictionaryRepresentation];
-    if (v116)
+    miniCardSection = [(_SFPBCardSectionValue *)self miniCardSection];
+    dictionaryRepresentation38 = [miniCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation38)
     {
-      [v3 setObject:v116 forKeyedSubscript:@"miniCardSection"];
+      [dictionary setObject:dictionaryRepresentation38 forKeyedSubscript:@"miniCardSection"];
     }
 
     else
     {
-      v117 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v117 forKeyedSubscript:@"miniCardSection"];
+      null38 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null38 forKeyedSubscript:@"miniCardSection"];
     }
   }
 
   if (self->_newsCardSection)
   {
-    v118 = [(_SFPBCardSectionValue *)self newsCardSection];
-    v119 = [v118 dictionaryRepresentation];
-    if (v119)
+    newsCardSection = [(_SFPBCardSectionValue *)self newsCardSection];
+    dictionaryRepresentation39 = [newsCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation39)
     {
-      [v3 setObject:v119 forKeyedSubscript:@"newsCardSection"];
+      [dictionary setObject:dictionaryRepresentation39 forKeyedSubscript:@"newsCardSection"];
     }
 
     else
     {
-      v120 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v120 forKeyedSubscript:@"newsCardSection"];
+      null39 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null39 forKeyedSubscript:@"newsCardSection"];
     }
   }
 
   if (self->_nowPlayingCardSection)
   {
-    v121 = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
-    v122 = [v121 dictionaryRepresentation];
-    if (v122)
+    nowPlayingCardSection = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
+    dictionaryRepresentation40 = [nowPlayingCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation40)
     {
-      [v3 setObject:v122 forKeyedSubscript:@"nowPlayingCardSection"];
+      [dictionary setObject:dictionaryRepresentation40 forKeyedSubscript:@"nowPlayingCardSection"];
     }
 
     else
     {
-      v123 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v123 forKeyedSubscript:@"nowPlayingCardSection"];
+      null40 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null40 forKeyedSubscript:@"nowPlayingCardSection"];
     }
   }
 
   if (self->_personHeaderCardSection)
   {
-    v124 = [(_SFPBCardSectionValue *)self personHeaderCardSection];
-    v125 = [v124 dictionaryRepresentation];
-    if (v125)
+    personHeaderCardSection = [(_SFPBCardSectionValue *)self personHeaderCardSection];
+    dictionaryRepresentation41 = [personHeaderCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation41)
     {
-      [v3 setObject:v125 forKeyedSubscript:@"personHeaderCardSection"];
+      [dictionary setObject:dictionaryRepresentation41 forKeyedSubscript:@"personHeaderCardSection"];
     }
 
     else
     {
-      v126 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v126 forKeyedSubscript:@"personHeaderCardSection"];
+      null41 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null41 forKeyedSubscript:@"personHeaderCardSection"];
     }
   }
 
   if (self->_productCardSection)
   {
-    v127 = [(_SFPBCardSectionValue *)self productCardSection];
-    v128 = [v127 dictionaryRepresentation];
-    if (v128)
+    productCardSection = [(_SFPBCardSectionValue *)self productCardSection];
+    dictionaryRepresentation42 = [productCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation42)
     {
-      [v3 setObject:v128 forKeyedSubscript:@"productCardSection"];
+      [dictionary setObject:dictionaryRepresentation42 forKeyedSubscript:@"productCardSection"];
     }
 
     else
     {
-      v129 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v129 forKeyedSubscript:@"productCardSection"];
+      null42 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null42 forKeyedSubscript:@"productCardSection"];
     }
   }
 
   if (self->_responseWrapperCardSection)
   {
-    v130 = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
-    v131 = [v130 dictionaryRepresentation];
-    if (v131)
+    responseWrapperCardSection = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
+    dictionaryRepresentation43 = [responseWrapperCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation43)
     {
-      [v3 setObject:v131 forKeyedSubscript:@"responseWrapperCardSection"];
+      [dictionary setObject:dictionaryRepresentation43 forKeyedSubscript:@"responseWrapperCardSection"];
     }
 
     else
     {
-      v132 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v132 forKeyedSubscript:@"responseWrapperCardSection"];
+      null43 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null43 forKeyedSubscript:@"responseWrapperCardSection"];
     }
   }
 
   if (self->_rfBinaryButtonCardSection)
   {
-    v133 = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
-    v134 = [v133 dictionaryRepresentation];
-    if (v134)
+    rfBinaryButtonCardSection = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
+    dictionaryRepresentation44 = [rfBinaryButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation44)
     {
-      [v3 setObject:v134 forKeyedSubscript:@"rfBinaryButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation44 forKeyedSubscript:@"rfBinaryButtonCardSection"];
     }
 
     else
     {
-      v135 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v135 forKeyedSubscript:@"rfBinaryButtonCardSection"];
+      null44 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null44 forKeyedSubscript:@"rfBinaryButtonCardSection"];
     }
   }
 
   if (self->_rfButtonCardSection)
   {
-    v136 = [(_SFPBCardSectionValue *)self rfButtonCardSection];
-    v137 = [v136 dictionaryRepresentation];
-    if (v137)
+    rfButtonCardSection = [(_SFPBCardSectionValue *)self rfButtonCardSection];
+    dictionaryRepresentation45 = [rfButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation45)
     {
-      [v3 setObject:v137 forKeyedSubscript:@"rfButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation45 forKeyedSubscript:@"rfButtonCardSection"];
     }
 
     else
     {
-      v138 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v138 forKeyedSubscript:@"rfButtonCardSection"];
+      null45 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null45 forKeyedSubscript:@"rfButtonCardSection"];
     }
   }
 
   if (self->_rfDisambiguationTitleCardSection)
   {
-    v139 = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
-    v140 = [v139 dictionaryRepresentation];
-    if (v140)
+    rfDisambiguationTitleCardSection = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
+    dictionaryRepresentation46 = [rfDisambiguationTitleCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation46)
     {
-      [v3 setObject:v140 forKeyedSubscript:@"rfDisambiguationTitleCardSection"];
+      [dictionary setObject:dictionaryRepresentation46 forKeyedSubscript:@"rfDisambiguationTitleCardSection"];
     }
 
     else
     {
-      v141 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v141 forKeyedSubscript:@"rfDisambiguationTitleCardSection"];
+      null46 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null46 forKeyedSubscript:@"rfDisambiguationTitleCardSection"];
     }
   }
 
   if (self->_rfExpandableStandardCardSection)
   {
-    v142 = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
-    v143 = [v142 dictionaryRepresentation];
-    if (v143)
+    rfExpandableStandardCardSection = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
+    dictionaryRepresentation47 = [rfExpandableStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation47)
     {
-      [v3 setObject:v143 forKeyedSubscript:@"rfExpandableStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation47 forKeyedSubscript:@"rfExpandableStandardCardSection"];
     }
 
     else
     {
-      v144 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v144 forKeyedSubscript:@"rfExpandableStandardCardSection"];
+      null47 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null47 forKeyedSubscript:@"rfExpandableStandardCardSection"];
     }
   }
 
   if (self->_rfFactItemButtonCardSection)
   {
-    v145 = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
-    v146 = [v145 dictionaryRepresentation];
-    if (v146)
+    rfFactItemButtonCardSection = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
+    dictionaryRepresentation48 = [rfFactItemButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation48)
     {
-      [v3 setObject:v146 forKeyedSubscript:@"rfFactItemButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation48 forKeyedSubscript:@"rfFactItemButtonCardSection"];
     }
 
     else
     {
-      v147 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v147 forKeyedSubscript:@"rfFactItemButtonCardSection"];
+      null48 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null48 forKeyedSubscript:@"rfFactItemButtonCardSection"];
     }
   }
 
   if (self->_rfFactItemDetailedNumberCardSection)
   {
-    v148 = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
-    v149 = [v148 dictionaryRepresentation];
-    if (v149)
+    rfFactItemDetailedNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
+    dictionaryRepresentation49 = [rfFactItemDetailedNumberCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation49)
     {
-      [v3 setObject:v149 forKeyedSubscript:@"rfFactItemDetailedNumberCardSection"];
+      [dictionary setObject:dictionaryRepresentation49 forKeyedSubscript:@"rfFactItemDetailedNumberCardSection"];
     }
 
     else
     {
-      v150 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v150 forKeyedSubscript:@"rfFactItemDetailedNumberCardSection"];
+      null49 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null49 forKeyedSubscript:@"rfFactItemDetailedNumberCardSection"];
     }
   }
 
   if (self->_rfFactItemHeroButtonCardSection)
   {
-    v151 = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
-    v152 = [v151 dictionaryRepresentation];
-    if (v152)
+    rfFactItemHeroButtonCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
+    dictionaryRepresentation50 = [rfFactItemHeroButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation50)
     {
-      [v3 setObject:v152 forKeyedSubscript:@"rfFactItemHeroButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation50 forKeyedSubscript:@"rfFactItemHeroButtonCardSection"];
     }
 
     else
     {
-      v153 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v153 forKeyedSubscript:@"rfFactItemHeroButtonCardSection"];
+      null50 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null50 forKeyedSubscript:@"rfFactItemHeroButtonCardSection"];
     }
   }
 
   if (self->_rfFactItemHeroNumberCardSection)
   {
-    v154 = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
-    v155 = [v154 dictionaryRepresentation];
-    if (v155)
+    rfFactItemHeroNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
+    dictionaryRepresentation51 = [rfFactItemHeroNumberCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation51)
     {
-      [v3 setObject:v155 forKeyedSubscript:@"rfFactItemHeroNumberCardSection"];
+      [dictionary setObject:dictionaryRepresentation51 forKeyedSubscript:@"rfFactItemHeroNumberCardSection"];
     }
 
     else
     {
-      v156 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v156 forKeyedSubscript:@"rfFactItemHeroNumberCardSection"];
+      null51 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null51 forKeyedSubscript:@"rfFactItemHeroNumberCardSection"];
     }
   }
 
   if (self->_rfFactItemImageRightCardSection)
   {
-    v157 = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
-    v158 = [v157 dictionaryRepresentation];
-    if (v158)
+    rfFactItemImageRightCardSection = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
+    dictionaryRepresentation52 = [rfFactItemImageRightCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation52)
     {
-      [v3 setObject:v158 forKeyedSubscript:@"rfFactItemImageRightCardSection"];
+      [dictionary setObject:dictionaryRepresentation52 forKeyedSubscript:@"rfFactItemImageRightCardSection"];
     }
 
     else
     {
-      v159 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v159 forKeyedSubscript:@"rfFactItemImageRightCardSection"];
+      null52 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null52 forKeyedSubscript:@"rfFactItemImageRightCardSection"];
     }
   }
 
   if (self->_rfFactItemShortHeroNumberCardSection)
   {
-    v160 = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
-    v161 = [v160 dictionaryRepresentation];
-    if (v161)
+    rfFactItemShortHeroNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
+    dictionaryRepresentation53 = [rfFactItemShortHeroNumberCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation53)
     {
-      [v3 setObject:v161 forKeyedSubscript:@"rfFactItemShortHeroNumberCardSection"];
+      [dictionary setObject:dictionaryRepresentation53 forKeyedSubscript:@"rfFactItemShortHeroNumberCardSection"];
     }
 
     else
     {
-      v162 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v162 forKeyedSubscript:@"rfFactItemShortHeroNumberCardSection"];
+      null53 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null53 forKeyedSubscript:@"rfFactItemShortHeroNumberCardSection"];
     }
   }
 
   if (self->_rfFactItemShortNumberCardSection)
   {
-    v163 = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
-    v164 = [v163 dictionaryRepresentation];
-    if (v164)
+    rfFactItemShortNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
+    dictionaryRepresentation54 = [rfFactItemShortNumberCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation54)
     {
-      [v3 setObject:v164 forKeyedSubscript:@"rfFactItemShortNumberCardSection"];
+      [dictionary setObject:dictionaryRepresentation54 forKeyedSubscript:@"rfFactItemShortNumberCardSection"];
     }
 
     else
     {
-      v165 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v165 forKeyedSubscript:@"rfFactItemShortNumberCardSection"];
+      null54 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null54 forKeyedSubscript:@"rfFactItemShortNumberCardSection"];
     }
   }
 
   if (self->_rfFactItemStandardCardSection)
   {
-    v166 = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
-    v167 = [v166 dictionaryRepresentation];
-    if (v167)
+    rfFactItemStandardCardSection = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
+    dictionaryRepresentation55 = [rfFactItemStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation55)
     {
-      [v3 setObject:v167 forKeyedSubscript:@"rfFactItemStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation55 forKeyedSubscript:@"rfFactItemStandardCardSection"];
     }
 
     else
     {
-      v168 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v168 forKeyedSubscript:@"rfFactItemStandardCardSection"];
+      null55 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null55 forKeyedSubscript:@"rfFactItemStandardCardSection"];
     }
   }
 
   if (self->_rfLongItemStandardCardSection)
   {
-    v169 = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
-    v170 = [v169 dictionaryRepresentation];
-    if (v170)
+    rfLongItemStandardCardSection = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
+    dictionaryRepresentation56 = [rfLongItemStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation56)
     {
-      [v3 setObject:v170 forKeyedSubscript:@"rfLongItemStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation56 forKeyedSubscript:@"rfLongItemStandardCardSection"];
     }
 
     else
     {
-      v171 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v171 forKeyedSubscript:@"rfLongItemStandardCardSection"];
+      null56 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null56 forKeyedSubscript:@"rfLongItemStandardCardSection"];
     }
   }
 
   if (self->_rfMapCardSection)
   {
-    v172 = [(_SFPBCardSectionValue *)self rfMapCardSection];
-    v173 = [v172 dictionaryRepresentation];
-    if (v173)
+    rfMapCardSection = [(_SFPBCardSectionValue *)self rfMapCardSection];
+    dictionaryRepresentation57 = [rfMapCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation57)
     {
-      [v3 setObject:v173 forKeyedSubscript:@"rfMapCardSection"];
+      [dictionary setObject:dictionaryRepresentation57 forKeyedSubscript:@"rfMapCardSection"];
     }
 
     else
     {
-      v174 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v174 forKeyedSubscript:@"rfMapCardSection"];
+      null57 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null57 forKeyedSubscript:@"rfMapCardSection"];
     }
   }
 
   if (self->_rfMultiButtonCardSection)
   {
-    v175 = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
-    v176 = [v175 dictionaryRepresentation];
-    if (v176)
+    rfMultiButtonCardSection = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
+    dictionaryRepresentation58 = [rfMultiButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation58)
     {
-      [v3 setObject:v176 forKeyedSubscript:@"rfMultiButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation58 forKeyedSubscript:@"rfMultiButtonCardSection"];
     }
 
     else
     {
-      v177 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v177 forKeyedSubscript:@"rfMultiButtonCardSection"];
+      null58 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null58 forKeyedSubscript:@"rfMultiButtonCardSection"];
     }
   }
 
   if (self->_rfPrimaryHeaderMarqueeCardSection)
   {
-    v178 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
-    v179 = [v178 dictionaryRepresentation];
-    if (v179)
+    rfPrimaryHeaderMarqueeCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
+    dictionaryRepresentation59 = [rfPrimaryHeaderMarqueeCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation59)
     {
-      [v3 setObject:v179 forKeyedSubscript:@"rfPrimaryHeaderMarqueeCardSection"];
+      [dictionary setObject:dictionaryRepresentation59 forKeyedSubscript:@"rfPrimaryHeaderMarqueeCardSection"];
     }
 
     else
     {
-      v180 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v180 forKeyedSubscript:@"rfPrimaryHeaderMarqueeCardSection"];
+      null59 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null59 forKeyedSubscript:@"rfPrimaryHeaderMarqueeCardSection"];
     }
   }
 
   if (self->_rfPrimaryHeaderRichCardSection)
   {
-    v181 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
-    v182 = [v181 dictionaryRepresentation];
-    if (v182)
+    rfPrimaryHeaderRichCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
+    dictionaryRepresentation60 = [rfPrimaryHeaderRichCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation60)
     {
-      [v3 setObject:v182 forKeyedSubscript:@"rfPrimaryHeaderRichCardSection"];
+      [dictionary setObject:dictionaryRepresentation60 forKeyedSubscript:@"rfPrimaryHeaderRichCardSection"];
     }
 
     else
     {
-      v183 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v183 forKeyedSubscript:@"rfPrimaryHeaderRichCardSection"];
+      null60 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null60 forKeyedSubscript:@"rfPrimaryHeaderRichCardSection"];
     }
   }
 
   if (self->_rfPrimaryHeaderStackedImageCardSection)
   {
-    v184 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
-    v185 = [v184 dictionaryRepresentation];
-    if (v185)
+    rfPrimaryHeaderStackedImageCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
+    dictionaryRepresentation61 = [rfPrimaryHeaderStackedImageCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation61)
     {
-      [v3 setObject:v185 forKeyedSubscript:@"rfPrimaryHeaderStackedImageCardSection"];
+      [dictionary setObject:dictionaryRepresentation61 forKeyedSubscript:@"rfPrimaryHeaderStackedImageCardSection"];
     }
 
     else
     {
-      v186 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v186 forKeyedSubscript:@"rfPrimaryHeaderStackedImageCardSection"];
+      null61 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null61 forKeyedSubscript:@"rfPrimaryHeaderStackedImageCardSection"];
     }
   }
 
   if (self->_rfPrimaryHeaderStandardCardSection)
   {
-    v187 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
-    v188 = [v187 dictionaryRepresentation];
-    if (v188)
+    rfPrimaryHeaderStandardCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
+    dictionaryRepresentation62 = [rfPrimaryHeaderStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation62)
     {
-      [v3 setObject:v188 forKeyedSubscript:@"rfPrimaryHeaderStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation62 forKeyedSubscript:@"rfPrimaryHeaderStandardCardSection"];
     }
 
     else
     {
-      v189 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v189 forKeyedSubscript:@"rfPrimaryHeaderStandardCardSection"];
+      null62 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null62 forKeyedSubscript:@"rfPrimaryHeaderStandardCardSection"];
     }
   }
 
   if (self->_rfReferenceCenteredCardSection)
   {
-    v190 = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
-    v191 = [v190 dictionaryRepresentation];
-    if (v191)
+    rfReferenceCenteredCardSection = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
+    dictionaryRepresentation63 = [rfReferenceCenteredCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation63)
     {
-      [v3 setObject:v191 forKeyedSubscript:@"rfReferenceCenteredCardSection"];
+      [dictionary setObject:dictionaryRepresentation63 forKeyedSubscript:@"rfReferenceCenteredCardSection"];
     }
 
     else
     {
-      v192 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v192 forKeyedSubscript:@"rfReferenceCenteredCardSection"];
+      null63 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null63 forKeyedSubscript:@"rfReferenceCenteredCardSection"];
     }
   }
 
   if (self->_rfReferenceFootnoteCardSection)
   {
-    v193 = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
-    v194 = [v193 dictionaryRepresentation];
-    if (v194)
+    rfReferenceFootnoteCardSection = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
+    dictionaryRepresentation64 = [rfReferenceFootnoteCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation64)
     {
-      [v3 setObject:v194 forKeyedSubscript:@"rfReferenceFootnoteCardSection"];
+      [dictionary setObject:dictionaryRepresentation64 forKeyedSubscript:@"rfReferenceFootnoteCardSection"];
     }
 
     else
     {
-      v195 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v195 forKeyedSubscript:@"rfReferenceFootnoteCardSection"];
+      null64 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null64 forKeyedSubscript:@"rfReferenceFootnoteCardSection"];
     }
   }
 
   if (self->_rfReferenceItemButtonCardSection)
   {
-    v196 = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
-    v197 = [v196 dictionaryRepresentation];
-    if (v197)
+    rfReferenceItemButtonCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
+    dictionaryRepresentation65 = [rfReferenceItemButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation65)
     {
-      [v3 setObject:v197 forKeyedSubscript:@"rfReferenceItemButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation65 forKeyedSubscript:@"rfReferenceItemButtonCardSection"];
     }
 
     else
     {
-      v198 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v198 forKeyedSubscript:@"rfReferenceItemButtonCardSection"];
+      null65 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null65 forKeyedSubscript:@"rfReferenceItemButtonCardSection"];
     }
   }
 
   if (self->_rfReferenceItemLogoCardSection)
   {
-    v199 = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
-    v200 = [v199 dictionaryRepresentation];
-    if (v200)
+    rfReferenceItemLogoCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
+    dictionaryRepresentation66 = [rfReferenceItemLogoCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation66)
     {
-      [v3 setObject:v200 forKeyedSubscript:@"rfReferenceItemLogoCardSection"];
+      [dictionary setObject:dictionaryRepresentation66 forKeyedSubscript:@"rfReferenceItemLogoCardSection"];
     }
 
     else
     {
-      v201 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v201 forKeyedSubscript:@"rfReferenceItemLogoCardSection"];
+      null66 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null66 forKeyedSubscript:@"rfReferenceItemLogoCardSection"];
     }
   }
 
   if (self->_rfReferenceRichCardSection)
   {
-    v202 = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
-    v203 = [v202 dictionaryRepresentation];
-    if (v203)
+    rfReferenceRichCardSection = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
+    dictionaryRepresentation67 = [rfReferenceRichCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation67)
     {
-      [v3 setObject:v203 forKeyedSubscript:@"rfReferenceRichCardSection"];
+      [dictionary setObject:dictionaryRepresentation67 forKeyedSubscript:@"rfReferenceRichCardSection"];
     }
 
     else
     {
-      v204 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v204 forKeyedSubscript:@"rfReferenceRichCardSection"];
+      null67 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null67 forKeyedSubscript:@"rfReferenceRichCardSection"];
     }
   }
 
   if (self->_rfReferenceStandardCardSection)
   {
-    v205 = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
-    v206 = [v205 dictionaryRepresentation];
-    if (v206)
+    rfReferenceStandardCardSection = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
+    dictionaryRepresentation68 = [rfReferenceStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation68)
     {
-      [v3 setObject:v206 forKeyedSubscript:@"rfReferenceStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation68 forKeyedSubscript:@"rfReferenceStandardCardSection"];
     }
 
     else
     {
-      v207 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v207 forKeyedSubscript:@"rfReferenceStandardCardSection"];
+      null68 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null68 forKeyedSubscript:@"rfReferenceStandardCardSection"];
     }
   }
 
   if (self->_rfSecondaryHeaderEmphasizedCardSection)
   {
-    v208 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
-    v209 = [v208 dictionaryRepresentation];
-    if (v209)
+    rfSecondaryHeaderEmphasizedCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
+    dictionaryRepresentation69 = [rfSecondaryHeaderEmphasizedCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation69)
     {
-      [v3 setObject:v209 forKeyedSubscript:@"rfSecondaryHeaderEmphasizedCardSection"];
+      [dictionary setObject:dictionaryRepresentation69 forKeyedSubscript:@"rfSecondaryHeaderEmphasizedCardSection"];
     }
 
     else
     {
-      v210 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v210 forKeyedSubscript:@"rfSecondaryHeaderEmphasizedCardSection"];
+      null69 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null69 forKeyedSubscript:@"rfSecondaryHeaderEmphasizedCardSection"];
     }
   }
 
   if (self->_rfSecondaryHeaderStandardCardSection)
   {
-    v211 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
-    v212 = [v211 dictionaryRepresentation];
-    if (v212)
+    rfSecondaryHeaderStandardCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
+    dictionaryRepresentation70 = [rfSecondaryHeaderStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation70)
     {
-      [v3 setObject:v212 forKeyedSubscript:@"rfSecondaryHeaderStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation70 forKeyedSubscript:@"rfSecondaryHeaderStandardCardSection"];
     }
 
     else
     {
-      v213 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v213 forKeyedSubscript:@"rfSecondaryHeaderStandardCardSection"];
+      null70 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null70 forKeyedSubscript:@"rfSecondaryHeaderStandardCardSection"];
     }
   }
 
   if (self->_rfSimpleItemPlayerCardSection)
   {
-    v214 = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
-    v215 = [v214 dictionaryRepresentation];
-    if (v215)
+    rfSimpleItemPlayerCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
+    dictionaryRepresentation71 = [rfSimpleItemPlayerCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation71)
     {
-      [v3 setObject:v215 forKeyedSubscript:@"rfSimpleItemPlayerCardSection"];
+      [dictionary setObject:dictionaryRepresentation71 forKeyedSubscript:@"rfSimpleItemPlayerCardSection"];
     }
 
     else
     {
-      v216 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v216 forKeyedSubscript:@"rfSimpleItemPlayerCardSection"];
+      null71 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null71 forKeyedSubscript:@"rfSimpleItemPlayerCardSection"];
     }
   }
 
   if (self->_rfSimpleItemReverseRichCardSection)
   {
-    v217 = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
-    v218 = [v217 dictionaryRepresentation];
-    if (v218)
+    rfSimpleItemReverseRichCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
+    dictionaryRepresentation72 = [rfSimpleItemReverseRichCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation72)
     {
-      [v3 setObject:v218 forKeyedSubscript:@"rfSimpleItemReverseRichCardSection"];
+      [dictionary setObject:dictionaryRepresentation72 forKeyedSubscript:@"rfSimpleItemReverseRichCardSection"];
     }
 
     else
     {
-      v219 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v219 forKeyedSubscript:@"rfSimpleItemReverseRichCardSection"];
+      null72 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null72 forKeyedSubscript:@"rfSimpleItemReverseRichCardSection"];
     }
   }
 
   if (self->_rfSimpleItemRichCardSection)
   {
-    v220 = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
-    v221 = [v220 dictionaryRepresentation];
-    if (v221)
+    rfSimpleItemRichCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
+    dictionaryRepresentation73 = [rfSimpleItemRichCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation73)
     {
-      [v3 setObject:v221 forKeyedSubscript:@"rfSimpleItemRichCardSection"];
+      [dictionary setObject:dictionaryRepresentation73 forKeyedSubscript:@"rfSimpleItemRichCardSection"];
     }
 
     else
     {
-      v222 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v222 forKeyedSubscript:@"rfSimpleItemRichCardSection"];
+      null73 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null73 forKeyedSubscript:@"rfSimpleItemRichCardSection"];
     }
   }
 
   if (self->_rfSimpleItemRichSearchResultCardSection)
   {
-    v223 = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
-    v224 = [v223 dictionaryRepresentation];
-    if (v224)
+    rfSimpleItemRichSearchResultCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
+    dictionaryRepresentation74 = [rfSimpleItemRichSearchResultCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation74)
     {
-      [v3 setObject:v224 forKeyedSubscript:@"rfSimpleItemRichSearchResultCardSection"];
+      [dictionary setObject:dictionaryRepresentation74 forKeyedSubscript:@"rfSimpleItemRichSearchResultCardSection"];
     }
 
     else
     {
-      v225 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v225 forKeyedSubscript:@"rfSimpleItemRichSearchResultCardSection"];
+      null74 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null74 forKeyedSubscript:@"rfSimpleItemRichSearchResultCardSection"];
     }
   }
 
   if (self->_rfSimpleItemStandardCardSection)
   {
-    v226 = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
-    v227 = [v226 dictionaryRepresentation];
-    if (v227)
+    rfSimpleItemStandardCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
+    dictionaryRepresentation75 = [rfSimpleItemStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation75)
     {
-      [v3 setObject:v227 forKeyedSubscript:@"rfSimpleItemStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation75 forKeyedSubscript:@"rfSimpleItemStandardCardSection"];
     }
 
     else
     {
-      v228 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v228 forKeyedSubscript:@"rfSimpleItemStandardCardSection"];
+      null75 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null75 forKeyedSubscript:@"rfSimpleItemStandardCardSection"];
     }
   }
 
   if (self->_rfSimpleItemVisualElementCardSection)
   {
-    v229 = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
-    v230 = [v229 dictionaryRepresentation];
-    if (v230)
+    rfSimpleItemVisualElementCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
+    dictionaryRepresentation76 = [rfSimpleItemVisualElementCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation76)
     {
-      [v3 setObject:v230 forKeyedSubscript:@"rfSimpleItemVisualElementCardSection"];
+      [dictionary setObject:dictionaryRepresentation76 forKeyedSubscript:@"rfSimpleItemVisualElementCardSection"];
     }
 
     else
     {
-      v231 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v231 forKeyedSubscript:@"rfSimpleItemVisualElementCardSection"];
+      null76 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null76 forKeyedSubscript:@"rfSimpleItemVisualElementCardSection"];
     }
   }
 
   if (self->_rfSummaryItemAlignedTextCardSection)
   {
-    v232 = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
-    v233 = [v232 dictionaryRepresentation];
-    if (v233)
+    rfSummaryItemAlignedTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
+    dictionaryRepresentation77 = [rfSummaryItemAlignedTextCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation77)
     {
-      [v3 setObject:v233 forKeyedSubscript:@"rfSummaryItemAlignedTextCardSection"];
+      [dictionary setObject:dictionaryRepresentation77 forKeyedSubscript:@"rfSummaryItemAlignedTextCardSection"];
     }
 
     else
     {
-      v234 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v234 forKeyedSubscript:@"rfSummaryItemAlignedTextCardSection"];
+      null77 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null77 forKeyedSubscript:@"rfSummaryItemAlignedTextCardSection"];
     }
   }
 
   if (self->_rfSummaryItemButtonCardSection)
   {
-    v235 = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
-    v236 = [v235 dictionaryRepresentation];
-    if (v236)
+    rfSummaryItemButtonCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
+    dictionaryRepresentation78 = [rfSummaryItemButtonCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation78)
     {
-      [v3 setObject:v236 forKeyedSubscript:@"rfSummaryItemButtonCardSection"];
+      [dictionary setObject:dictionaryRepresentation78 forKeyedSubscript:@"rfSummaryItemButtonCardSection"];
     }
 
     else
     {
-      v237 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v237 forKeyedSubscript:@"rfSummaryItemButtonCardSection"];
+      null78 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null78 forKeyedSubscript:@"rfSummaryItemButtonCardSection"];
     }
   }
 
   if (self->_rfSummaryItemDetailedTextCardSection)
   {
-    v238 = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
-    v239 = [v238 dictionaryRepresentation];
-    if (v239)
+    rfSummaryItemDetailedTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
+    dictionaryRepresentation79 = [rfSummaryItemDetailedTextCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation79)
     {
-      [v3 setObject:v239 forKeyedSubscript:@"rfSummaryItemDetailedTextCardSection"];
+      [dictionary setObject:dictionaryRepresentation79 forKeyedSubscript:@"rfSummaryItemDetailedTextCardSection"];
     }
 
     else
     {
-      v240 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v240 forKeyedSubscript:@"rfSummaryItemDetailedTextCardSection"];
+      null79 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null79 forKeyedSubscript:@"rfSummaryItemDetailedTextCardSection"];
     }
   }
 
   if (self->_rfSummaryItemExpandableCardSection)
   {
-    v241 = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
-    v242 = [v241 dictionaryRepresentation];
-    if (v242)
+    rfSummaryItemExpandableCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
+    dictionaryRepresentation80 = [rfSummaryItemExpandableCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation80)
     {
-      [v3 setObject:v242 forKeyedSubscript:@"rfSummaryItemExpandableCardSection"];
+      [dictionary setObject:dictionaryRepresentation80 forKeyedSubscript:@"rfSummaryItemExpandableCardSection"];
     }
 
     else
     {
-      v243 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v243 forKeyedSubscript:@"rfSummaryItemExpandableCardSection"];
+      null80 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null80 forKeyedSubscript:@"rfSummaryItemExpandableCardSection"];
     }
   }
 
   if (self->_rfSummaryItemImageRightCardSection)
   {
-    v244 = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
-    v245 = [v244 dictionaryRepresentation];
-    if (v245)
+    rfSummaryItemImageRightCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
+    dictionaryRepresentation81 = [rfSummaryItemImageRightCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation81)
     {
-      [v3 setObject:v245 forKeyedSubscript:@"rfSummaryItemImageRightCardSection"];
+      [dictionary setObject:dictionaryRepresentation81 forKeyedSubscript:@"rfSummaryItemImageRightCardSection"];
     }
 
     else
     {
-      v246 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v246 forKeyedSubscript:@"rfSummaryItemImageRightCardSection"];
+      null81 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null81 forKeyedSubscript:@"rfSummaryItemImageRightCardSection"];
     }
   }
 
   if (self->_rfSummaryItemPairCardSection)
   {
-    v247 = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
-    v248 = [v247 dictionaryRepresentation];
-    if (v248)
+    rfSummaryItemPairCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
+    dictionaryRepresentation82 = [rfSummaryItemPairCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation82)
     {
-      [v3 setObject:v248 forKeyedSubscript:@"rfSummaryItemPairCardSection"];
+      [dictionary setObject:dictionaryRepresentation82 forKeyedSubscript:@"rfSummaryItemPairCardSection"];
     }
 
     else
     {
-      v249 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v249 forKeyedSubscript:@"rfSummaryItemPairCardSection"];
+      null82 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null82 forKeyedSubscript:@"rfSummaryItemPairCardSection"];
     }
   }
 
   if (self->_rfSummaryItemPairNumberCardSection)
   {
-    v250 = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
-    v251 = [v250 dictionaryRepresentation];
-    if (v251)
+    rfSummaryItemPairNumberCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
+    dictionaryRepresentation83 = [rfSummaryItemPairNumberCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation83)
     {
-      [v3 setObject:v251 forKeyedSubscript:@"rfSummaryItemPairNumberCardSection"];
+      [dictionary setObject:dictionaryRepresentation83 forKeyedSubscript:@"rfSummaryItemPairNumberCardSection"];
     }
 
     else
     {
-      v252 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v252 forKeyedSubscript:@"rfSummaryItemPairNumberCardSection"];
+      null83 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null83 forKeyedSubscript:@"rfSummaryItemPairNumberCardSection"];
     }
   }
 
   if (self->_rfSummaryItemPlayerCardSection)
   {
-    v253 = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
-    v254 = [v253 dictionaryRepresentation];
-    if (v254)
+    rfSummaryItemPlayerCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
+    dictionaryRepresentation84 = [rfSummaryItemPlayerCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation84)
     {
-      [v3 setObject:v254 forKeyedSubscript:@"rfSummaryItemPlayerCardSection"];
+      [dictionary setObject:dictionaryRepresentation84 forKeyedSubscript:@"rfSummaryItemPlayerCardSection"];
     }
 
     else
     {
-      v255 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v255 forKeyedSubscript:@"rfSummaryItemPlayerCardSection"];
+      null84 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null84 forKeyedSubscript:@"rfSummaryItemPlayerCardSection"];
     }
   }
 
   if (self->_rfSummaryItemShortNumberCardSection)
   {
-    v256 = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
-    v257 = [v256 dictionaryRepresentation];
-    if (v257)
+    rfSummaryItemShortNumberCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
+    dictionaryRepresentation85 = [rfSummaryItemShortNumberCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation85)
     {
-      [v3 setObject:v257 forKeyedSubscript:@"rfSummaryItemShortNumberCardSection"];
+      [dictionary setObject:dictionaryRepresentation85 forKeyedSubscript:@"rfSummaryItemShortNumberCardSection"];
     }
 
     else
     {
-      v258 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v258 forKeyedSubscript:@"rfSummaryItemShortNumberCardSection"];
+      null85 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null85 forKeyedSubscript:@"rfSummaryItemShortNumberCardSection"];
     }
   }
 
   if (self->_rfSummaryItemStandardCardSection)
   {
-    v259 = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
-    v260 = [v259 dictionaryRepresentation];
-    if (v260)
+    rfSummaryItemStandardCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
+    dictionaryRepresentation86 = [rfSummaryItemStandardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation86)
     {
-      [v3 setObject:v260 forKeyedSubscript:@"rfSummaryItemStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation86 forKeyedSubscript:@"rfSummaryItemStandardCardSection"];
     }
 
     else
     {
-      v261 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v261 forKeyedSubscript:@"rfSummaryItemStandardCardSection"];
+      null86 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null86 forKeyedSubscript:@"rfSummaryItemStandardCardSection"];
     }
   }
 
   if (self->_rfSummaryItemSwitchV2CardSection)
   {
-    v262 = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
-    v263 = [v262 dictionaryRepresentation];
-    if (v263)
+    rfSummaryItemSwitchV2CardSection = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
+    dictionaryRepresentation87 = [rfSummaryItemSwitchV2CardSection dictionaryRepresentation];
+    if (dictionaryRepresentation87)
     {
-      [v3 setObject:v263 forKeyedSubscript:@"rfSummaryItemSwitchV2CardSection"];
+      [dictionary setObject:dictionaryRepresentation87 forKeyedSubscript:@"rfSummaryItemSwitchV2CardSection"];
     }
 
     else
     {
-      v264 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v264 forKeyedSubscript:@"rfSummaryItemSwitchV2CardSection"];
+      null87 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null87 forKeyedSubscript:@"rfSummaryItemSwitchV2CardSection"];
     }
   }
 
   if (self->_rfSummaryItemTextCardSection)
   {
-    v265 = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
-    v266 = [v265 dictionaryRepresentation];
-    if (v266)
+    rfSummaryItemTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
+    dictionaryRepresentation88 = [rfSummaryItemTextCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation88)
     {
-      [v3 setObject:v266 forKeyedSubscript:@"rfSummaryItemTextCardSection"];
+      [dictionary setObject:dictionaryRepresentation88 forKeyedSubscript:@"rfSummaryItemTextCardSection"];
     }
 
     else
     {
-      v267 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v267 forKeyedSubscript:@"rfSummaryItemTextCardSection"];
+      null88 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null88 forKeyedSubscript:@"rfSummaryItemTextCardSection"];
     }
   }
 
   if (self->_rfTableHeaderCardSection)
   {
-    v268 = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
-    v269 = [v268 dictionaryRepresentation];
-    if (v269)
+    rfTableHeaderCardSection = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
+    dictionaryRepresentation89 = [rfTableHeaderCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation89)
     {
-      [v3 setObject:v269 forKeyedSubscript:@"rfTableHeaderCardSection"];
+      [dictionary setObject:dictionaryRepresentation89 forKeyedSubscript:@"rfTableHeaderCardSection"];
     }
 
     else
     {
-      v270 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v270 forKeyedSubscript:@"rfTableHeaderCardSection"];
+      null89 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null89 forKeyedSubscript:@"rfTableHeaderCardSection"];
     }
   }
 
   if (self->_rfTableRowCardSection)
   {
-    v271 = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
-    v272 = [v271 dictionaryRepresentation];
-    if (v272)
+    rfTableRowCardSection = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
+    dictionaryRepresentation90 = [rfTableRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation90)
     {
-      [v3 setObject:v272 forKeyedSubscript:@"rfTableRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation90 forKeyedSubscript:@"rfTableRowCardSection"];
     }
 
     else
     {
-      v273 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v273 forKeyedSubscript:@"rfTableRowCardSection"];
+      null90 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null90 forKeyedSubscript:@"rfTableRowCardSection"];
     }
   }
 
   if (self->_richTitleCardSection)
   {
-    v274 = [(_SFPBCardSectionValue *)self richTitleCardSection];
-    v275 = [v274 dictionaryRepresentation];
-    if (v275)
+    richTitleCardSection = [(_SFPBCardSectionValue *)self richTitleCardSection];
+    dictionaryRepresentation91 = [richTitleCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation91)
     {
-      [v3 setObject:v275 forKeyedSubscript:@"richTitleCardSection"];
+      [dictionary setObject:dictionaryRepresentation91 forKeyedSubscript:@"richTitleCardSection"];
     }
 
     else
     {
-      v276 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v276 forKeyedSubscript:@"richTitleCardSection"];
+      null91 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null91 forKeyedSubscript:@"richTitleCardSection"];
     }
   }
 
   if (self->_rowCardSection)
   {
-    v277 = [(_SFPBCardSectionValue *)self rowCardSection];
-    v278 = [v277 dictionaryRepresentation];
-    if (v278)
+    rowCardSection = [(_SFPBCardSectionValue *)self rowCardSection];
+    dictionaryRepresentation92 = [rowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation92)
     {
-      [v3 setObject:v278 forKeyedSubscript:@"rowCardSection"];
+      [dictionary setObject:dictionaryRepresentation92 forKeyedSubscript:@"rowCardSection"];
     }
 
     else
     {
-      v279 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v279 forKeyedSubscript:@"rowCardSection"];
+      null92 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null92 forKeyedSubscript:@"rowCardSection"];
     }
   }
 
   if (self->_safariTableOfContentsCardSection)
   {
-    v280 = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
-    v281 = [v280 dictionaryRepresentation];
-    if (v281)
+    safariTableOfContentsCardSection = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
+    dictionaryRepresentation93 = [safariTableOfContentsCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation93)
     {
-      [v3 setObject:v281 forKeyedSubscript:@"safariTableOfContentsCardSection"];
+      [dictionary setObject:dictionaryRepresentation93 forKeyedSubscript:@"safariTableOfContentsCardSection"];
     }
 
     else
     {
-      v282 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v282 forKeyedSubscript:@"safariTableOfContentsCardSection"];
+      null93 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null93 forKeyedSubscript:@"safariTableOfContentsCardSection"];
     }
   }
 
   if (self->_scoreboardCardSection)
   {
-    v283 = [(_SFPBCardSectionValue *)self scoreboardCardSection];
-    v284 = [v283 dictionaryRepresentation];
-    if (v284)
+    scoreboardCardSection = [(_SFPBCardSectionValue *)self scoreboardCardSection];
+    dictionaryRepresentation94 = [scoreboardCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation94)
     {
-      [v3 setObject:v284 forKeyedSubscript:@"scoreboardCardSection"];
+      [dictionary setObject:dictionaryRepresentation94 forKeyedSubscript:@"scoreboardCardSection"];
     }
 
     else
     {
-      v285 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v285 forKeyedSubscript:@"scoreboardCardSection"];
+      null94 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null94 forKeyedSubscript:@"scoreboardCardSection"];
     }
   }
 
   if (self->_sectionHeaderCardSection)
   {
-    v286 = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
-    v287 = [v286 dictionaryRepresentation];
-    if (v287)
+    sectionHeaderCardSection = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
+    dictionaryRepresentation95 = [sectionHeaderCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation95)
     {
-      [v3 setObject:v287 forKeyedSubscript:@"sectionHeaderCardSection"];
+      [dictionary setObject:dictionaryRepresentation95 forKeyedSubscript:@"sectionHeaderCardSection"];
     }
 
     else
     {
-      v288 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v288 forKeyedSubscript:@"sectionHeaderCardSection"];
+      null95 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null95 forKeyedSubscript:@"sectionHeaderCardSection"];
     }
   }
 
   if (self->_selectableGridCardSection)
   {
-    v289 = [(_SFPBCardSectionValue *)self selectableGridCardSection];
-    v290 = [v289 dictionaryRepresentation];
-    if (v290)
+    selectableGridCardSection = [(_SFPBCardSectionValue *)self selectableGridCardSection];
+    dictionaryRepresentation96 = [selectableGridCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation96)
     {
-      [v3 setObject:v290 forKeyedSubscript:@"selectableGridCardSection"];
+      [dictionary setObject:dictionaryRepresentation96 forKeyedSubscript:@"selectableGridCardSection"];
     }
 
     else
     {
-      v291 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v291 forKeyedSubscript:@"selectableGridCardSection"];
+      null96 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null96 forKeyedSubscript:@"selectableGridCardSection"];
     }
   }
 
   if (self->_socialMediaPostCardSection)
   {
-    v292 = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
-    v293 = [v292 dictionaryRepresentation];
-    if (v293)
+    socialMediaPostCardSection = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
+    dictionaryRepresentation97 = [socialMediaPostCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation97)
     {
-      [v3 setObject:v293 forKeyedSubscript:@"socialMediaPostCardSection"];
+      [dictionary setObject:dictionaryRepresentation97 forKeyedSubscript:@"socialMediaPostCardSection"];
     }
 
     else
     {
-      v294 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v294 forKeyedSubscript:@"socialMediaPostCardSection"];
+      null97 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null97 forKeyedSubscript:@"socialMediaPostCardSection"];
     }
   }
 
   if (self->_splitCardSection)
   {
-    v295 = [(_SFPBCardSectionValue *)self splitCardSection];
-    v296 = [v295 dictionaryRepresentation];
-    if (v296)
+    splitCardSection = [(_SFPBCardSectionValue *)self splitCardSection];
+    dictionaryRepresentation98 = [splitCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation98)
     {
-      [v3 setObject:v296 forKeyedSubscript:@"splitCardSection"];
+      [dictionary setObject:dictionaryRepresentation98 forKeyedSubscript:@"splitCardSection"];
     }
 
     else
     {
-      v297 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v297 forKeyedSubscript:@"splitCardSection"];
+      null98 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null98 forKeyedSubscript:@"splitCardSection"];
     }
   }
 
   if (self->_stockChartCardSection)
   {
-    v298 = [(_SFPBCardSectionValue *)self stockChartCardSection];
-    v299 = [v298 dictionaryRepresentation];
-    if (v299)
+    stockChartCardSection = [(_SFPBCardSectionValue *)self stockChartCardSection];
+    dictionaryRepresentation99 = [stockChartCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation99)
     {
-      [v3 setObject:v299 forKeyedSubscript:@"stockChartCardSection"];
+      [dictionary setObject:dictionaryRepresentation99 forKeyedSubscript:@"stockChartCardSection"];
     }
 
     else
     {
-      v300 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v300 forKeyedSubscript:@"stockChartCardSection"];
+      null99 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null99 forKeyedSubscript:@"stockChartCardSection"];
     }
   }
 
   if (self->_strokeAnimationCardSection)
   {
-    v301 = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
-    v302 = [v301 dictionaryRepresentation];
-    if (v302)
+    strokeAnimationCardSection = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
+    dictionaryRepresentation100 = [strokeAnimationCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation100)
     {
-      [v3 setObject:v302 forKeyedSubscript:@"strokeAnimationCardSection"];
+      [dictionary setObject:dictionaryRepresentation100 forKeyedSubscript:@"strokeAnimationCardSection"];
     }
 
     else
     {
-      v303 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v303 forKeyedSubscript:@"strokeAnimationCardSection"];
+      null100 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null100 forKeyedSubscript:@"strokeAnimationCardSection"];
     }
   }
 
   if (self->_suggestionCardSection)
   {
-    v304 = [(_SFPBCardSectionValue *)self suggestionCardSection];
-    v305 = [v304 dictionaryRepresentation];
-    if (v305)
+    suggestionCardSection = [(_SFPBCardSectionValue *)self suggestionCardSection];
+    dictionaryRepresentation101 = [suggestionCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation101)
     {
-      [v3 setObject:v305 forKeyedSubscript:@"suggestionCardSection"];
+      [dictionary setObject:dictionaryRepresentation101 forKeyedSubscript:@"suggestionCardSection"];
     }
 
     else
     {
-      v306 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v306 forKeyedSubscript:@"suggestionCardSection"];
+      null101 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null101 forKeyedSubscript:@"suggestionCardSection"];
     }
   }
 
   if (self->_tableHeaderRowCardSection)
   {
-    v307 = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
-    v308 = [v307 dictionaryRepresentation];
-    if (v308)
+    tableHeaderRowCardSection = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
+    dictionaryRepresentation102 = [tableHeaderRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation102)
     {
-      [v3 setObject:v308 forKeyedSubscript:@"tableHeaderRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation102 forKeyedSubscript:@"tableHeaderRowCardSection"];
     }
 
     else
     {
-      v309 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v309 forKeyedSubscript:@"tableHeaderRowCardSection"];
+      null102 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null102 forKeyedSubscript:@"tableHeaderRowCardSection"];
     }
   }
 
   if (self->_tableRowCardSection)
   {
-    v310 = [(_SFPBCardSectionValue *)self tableRowCardSection];
-    v311 = [v310 dictionaryRepresentation];
-    if (v311)
+    tableRowCardSection = [(_SFPBCardSectionValue *)self tableRowCardSection];
+    dictionaryRepresentation103 = [tableRowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation103)
     {
-      [v3 setObject:v311 forKeyedSubscript:@"tableRowCardSection"];
+      [dictionary setObject:dictionaryRepresentation103 forKeyedSubscript:@"tableRowCardSection"];
     }
 
     else
     {
-      v312 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v312 forKeyedSubscript:@"tableRowCardSection"];
+      null103 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null103 forKeyedSubscript:@"tableRowCardSection"];
     }
   }
 
   if (self->_textColumnsCardSection)
   {
-    v313 = [(_SFPBCardSectionValue *)self textColumnsCardSection];
-    v314 = [v313 dictionaryRepresentation];
-    if (v314)
+    textColumnsCardSection = [(_SFPBCardSectionValue *)self textColumnsCardSection];
+    dictionaryRepresentation104 = [textColumnsCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation104)
     {
-      [v3 setObject:v314 forKeyedSubscript:@"textColumnsCardSection"];
+      [dictionary setObject:dictionaryRepresentation104 forKeyedSubscript:@"textColumnsCardSection"];
     }
 
     else
     {
-      v315 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v315 forKeyedSubscript:@"textColumnsCardSection"];
+      null104 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null104 forKeyedSubscript:@"textColumnsCardSection"];
     }
   }
 
   if (self->_titleCardSection)
   {
-    v316 = [(_SFPBCardSectionValue *)self titleCardSection];
-    v317 = [v316 dictionaryRepresentation];
-    if (v317)
+    titleCardSection = [(_SFPBCardSectionValue *)self titleCardSection];
+    dictionaryRepresentation105 = [titleCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation105)
     {
-      [v3 setObject:v317 forKeyedSubscript:@"titleCardSection"];
+      [dictionary setObject:dictionaryRepresentation105 forKeyedSubscript:@"titleCardSection"];
     }
 
     else
     {
-      v318 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v318 forKeyedSubscript:@"titleCardSection"];
+      null105 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null105 forKeyedSubscript:@"titleCardSection"];
     }
   }
 
   if (self->_trackListCardSection)
   {
-    v319 = [(_SFPBCardSectionValue *)self trackListCardSection];
-    v320 = [v319 dictionaryRepresentation];
-    if (v320)
+    trackListCardSection = [(_SFPBCardSectionValue *)self trackListCardSection];
+    dictionaryRepresentation106 = [trackListCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation106)
     {
-      [v3 setObject:v320 forKeyedSubscript:@"trackListCardSection"];
+      [dictionary setObject:dictionaryRepresentation106 forKeyedSubscript:@"trackListCardSection"];
     }
 
     else
     {
-      v321 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v321 forKeyedSubscript:@"trackListCardSection"];
+      null106 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null106 forKeyedSubscript:@"trackListCardSection"];
     }
   }
 
   if (self->_verticalLayoutCardSection)
   {
-    v322 = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
-    v323 = [v322 dictionaryRepresentation];
-    if (v323)
+    verticalLayoutCardSection = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
+    dictionaryRepresentation107 = [verticalLayoutCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation107)
     {
-      [v3 setObject:v323 forKeyedSubscript:@"verticalLayoutCardSection"];
+      [dictionary setObject:dictionaryRepresentation107 forKeyedSubscript:@"verticalLayoutCardSection"];
     }
 
     else
     {
-      v324 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v324 forKeyedSubscript:@"verticalLayoutCardSection"];
+      null107 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null107 forKeyedSubscript:@"verticalLayoutCardSection"];
     }
   }
 
   if (self->_watchListCardSection)
   {
-    v325 = [(_SFPBCardSectionValue *)self watchListCardSection];
-    v326 = [v325 dictionaryRepresentation];
-    if (v326)
+    watchListCardSection = [(_SFPBCardSectionValue *)self watchListCardSection];
+    dictionaryRepresentation108 = [watchListCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation108)
     {
-      [v3 setObject:v326 forKeyedSubscript:@"watchListCardSection"];
+      [dictionary setObject:dictionaryRepresentation108 forKeyedSubscript:@"watchListCardSection"];
     }
 
     else
     {
-      v327 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v327 forKeyedSubscript:@"watchListCardSection"];
+      null108 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null108 forKeyedSubscript:@"watchListCardSection"];
     }
   }
 
   if (self->_watchNowCardSection)
   {
-    v328 = [(_SFPBCardSectionValue *)self watchNowCardSection];
-    v329 = [v328 dictionaryRepresentation];
-    if (v329)
+    watchNowCardSection = [(_SFPBCardSectionValue *)self watchNowCardSection];
+    dictionaryRepresentation109 = [watchNowCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation109)
     {
-      [v3 setObject:v329 forKeyedSubscript:@"watchNowCardSection"];
+      [dictionary setObject:dictionaryRepresentation109 forKeyedSubscript:@"watchNowCardSection"];
     }
 
     else
     {
-      v330 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v330 forKeyedSubscript:@"watchNowCardSection"];
+      null109 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null109 forKeyedSubscript:@"watchNowCardSection"];
     }
   }
 
   if (self->_webCardSection)
   {
-    v331 = [(_SFPBCardSectionValue *)self webCardSection];
-    v332 = [v331 dictionaryRepresentation];
-    if (v332)
+    webCardSection = [(_SFPBCardSectionValue *)self webCardSection];
+    dictionaryRepresentation110 = [webCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation110)
     {
-      [v3 setObject:v332 forKeyedSubscript:@"webCardSection"];
+      [dictionary setObject:dictionaryRepresentation110 forKeyedSubscript:@"webCardSection"];
     }
 
     else
     {
-      v333 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v333 forKeyedSubscript:@"webCardSection"];
+      null110 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null110 forKeyedSubscript:@"webCardSection"];
     }
   }
 
   if (self->_worldMapCardSection)
   {
-    v334 = [(_SFPBCardSectionValue *)self worldMapCardSection];
-    v335 = [v334 dictionaryRepresentation];
-    if (v335)
+    worldMapCardSection = [(_SFPBCardSectionValue *)self worldMapCardSection];
+    dictionaryRepresentation111 = [worldMapCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation111)
     {
-      [v3 setObject:v335 forKeyedSubscript:@"worldMapCardSection"];
+      [dictionary setObject:dictionaryRepresentation111 forKeyedSubscript:@"worldMapCardSection"];
     }
 
     else
     {
-      v336 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v336 forKeyedSubscript:@"worldMapCardSection"];
+      null111 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null111 forKeyedSubscript:@"worldMapCardSection"];
     }
   }
 
-  v337 = v3;
+  v337 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -4074,28 +4074,28 @@
   return v108 ^ v112 ^ [(_SFPBRFSummaryItemExpandableCardSection *)self->_rfSummaryItemExpandableCardSection hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_557;
   }
 
-  v5 = [(_SFPBCardSectionValue *)self appLinkCardSection];
-  v6 = [v4 appLinkCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self appLinkCardSection];
+  appLinkCardSection2 = [equalCopy appLinkCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v7 = [(_SFPBCardSectionValue *)self appLinkCardSection];
-  if (v7)
+  appLinkCardSection3 = [(_SFPBCardSectionValue *)self appLinkCardSection];
+  if (appLinkCardSection3)
   {
-    v8 = v7;
-    v9 = [(_SFPBCardSectionValue *)self appLinkCardSection];
-    v10 = [v4 appLinkCardSection];
-    v11 = [v9 isEqual:v10];
+    v8 = appLinkCardSection3;
+    appLinkCardSection4 = [(_SFPBCardSectionValue *)self appLinkCardSection];
+    appLinkCardSection5 = [equalCopy appLinkCardSection];
+    v11 = [appLinkCardSection4 isEqual:appLinkCardSection5];
 
     if (!v11)
     {
@@ -4107,20 +4107,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self descriptionCardSection];
-  v6 = [v4 descriptionCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self descriptionCardSection];
+  appLinkCardSection2 = [equalCopy descriptionCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v12 = [(_SFPBCardSectionValue *)self descriptionCardSection];
-  if (v12)
+  descriptionCardSection = [(_SFPBCardSectionValue *)self descriptionCardSection];
+  if (descriptionCardSection)
   {
-    v13 = v12;
-    v14 = [(_SFPBCardSectionValue *)self descriptionCardSection];
-    v15 = [v4 descriptionCardSection];
-    v16 = [v14 isEqual:v15];
+    v13 = descriptionCardSection;
+    descriptionCardSection2 = [(_SFPBCardSectionValue *)self descriptionCardSection];
+    descriptionCardSection3 = [equalCopy descriptionCardSection];
+    v16 = [descriptionCardSection2 isEqual:descriptionCardSection3];
 
     if (!v16)
     {
@@ -4132,20 +4132,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
-  v6 = [v4 keyValueDataCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
+  appLinkCardSection2 = [equalCopy keyValueDataCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v17 = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
-  if (v17)
+  keyValueDataCardSection = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
+  if (keyValueDataCardSection)
   {
-    v18 = v17;
-    v19 = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
-    v20 = [v4 keyValueDataCardSection];
-    v21 = [v19 isEqual:v20];
+    v18 = keyValueDataCardSection;
+    keyValueDataCardSection2 = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
+    keyValueDataCardSection3 = [equalCopy keyValueDataCardSection];
+    v21 = [keyValueDataCardSection2 isEqual:keyValueDataCardSection3];
 
     if (!v21)
     {
@@ -4157,20 +4157,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self mapCardSection];
-  v6 = [v4 mapCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self mapCardSection];
+  appLinkCardSection2 = [equalCopy mapCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v22 = [(_SFPBCardSectionValue *)self mapCardSection];
-  if (v22)
+  mapCardSection = [(_SFPBCardSectionValue *)self mapCardSection];
+  if (mapCardSection)
   {
-    v23 = v22;
-    v24 = [(_SFPBCardSectionValue *)self mapCardSection];
-    v25 = [v4 mapCardSection];
-    v26 = [v24 isEqual:v25];
+    v23 = mapCardSection;
+    mapCardSection2 = [(_SFPBCardSectionValue *)self mapCardSection];
+    mapCardSection3 = [equalCopy mapCardSection];
+    v26 = [mapCardSection2 isEqual:mapCardSection3];
 
     if (!v26)
     {
@@ -4182,20 +4182,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
-  v6 = [v4 mediaInfoCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
+  appLinkCardSection2 = [equalCopy mediaInfoCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v27 = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
-  if (v27)
+  mediaInfoCardSection = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
+  if (mediaInfoCardSection)
   {
-    v28 = v27;
-    v29 = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
-    v30 = [v4 mediaInfoCardSection];
-    v31 = [v29 isEqual:v30];
+    v28 = mediaInfoCardSection;
+    mediaInfoCardSection2 = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
+    mediaInfoCardSection3 = [equalCopy mediaInfoCardSection];
+    v31 = [mediaInfoCardSection2 isEqual:mediaInfoCardSection3];
 
     if (!v31)
     {
@@ -4207,20 +4207,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
-  v6 = [v4 mediaPlayerCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
+  appLinkCardSection2 = [equalCopy mediaPlayerCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v32 = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
-  if (v32)
+  mediaPlayerCardSection = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
+  if (mediaPlayerCardSection)
   {
-    v33 = v32;
-    v34 = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
-    v35 = [v4 mediaPlayerCardSection];
-    v36 = [v34 isEqual:v35];
+    v33 = mediaPlayerCardSection;
+    mediaPlayerCardSection2 = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
+    mediaPlayerCardSection3 = [equalCopy mediaPlayerCardSection];
+    v36 = [mediaPlayerCardSection2 isEqual:mediaPlayerCardSection3];
 
     if (!v36)
     {
@@ -4232,20 +4232,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
-  v6 = [v4 nowPlayingCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
+  appLinkCardSection2 = [equalCopy nowPlayingCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v37 = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
-  if (v37)
+  nowPlayingCardSection = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
+  if (nowPlayingCardSection)
   {
-    v38 = v37;
-    v39 = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
-    v40 = [v4 nowPlayingCardSection];
-    v41 = [v39 isEqual:v40];
+    v38 = nowPlayingCardSection;
+    nowPlayingCardSection2 = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
+    nowPlayingCardSection3 = [equalCopy nowPlayingCardSection];
+    v41 = [nowPlayingCardSection2 isEqual:nowPlayingCardSection3];
 
     if (!v41)
     {
@@ -4257,20 +4257,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self richTitleCardSection];
-  v6 = [v4 richTitleCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self richTitleCardSection];
+  appLinkCardSection2 = [equalCopy richTitleCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v42 = [(_SFPBCardSectionValue *)self richTitleCardSection];
-  if (v42)
+  richTitleCardSection = [(_SFPBCardSectionValue *)self richTitleCardSection];
+  if (richTitleCardSection)
   {
-    v43 = v42;
-    v44 = [(_SFPBCardSectionValue *)self richTitleCardSection];
-    v45 = [v4 richTitleCardSection];
-    v46 = [v44 isEqual:v45];
+    v43 = richTitleCardSection;
+    richTitleCardSection2 = [(_SFPBCardSectionValue *)self richTitleCardSection];
+    richTitleCardSection3 = [equalCopy richTitleCardSection];
+    v46 = [richTitleCardSection2 isEqual:richTitleCardSection3];
 
     if (!v46)
     {
@@ -4282,20 +4282,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rowCardSection];
-  v6 = [v4 rowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rowCardSection];
+  appLinkCardSection2 = [equalCopy rowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v47 = [(_SFPBCardSectionValue *)self rowCardSection];
-  if (v47)
+  rowCardSection = [(_SFPBCardSectionValue *)self rowCardSection];
+  if (rowCardSection)
   {
-    v48 = v47;
-    v49 = [(_SFPBCardSectionValue *)self rowCardSection];
-    v50 = [v4 rowCardSection];
-    v51 = [v49 isEqual:v50];
+    v48 = rowCardSection;
+    rowCardSection2 = [(_SFPBCardSectionValue *)self rowCardSection];
+    rowCardSection3 = [equalCopy rowCardSection];
+    v51 = [rowCardSection2 isEqual:rowCardSection3];
 
     if (!v51)
     {
@@ -4307,20 +4307,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self scoreboardCardSection];
-  v6 = [v4 scoreboardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self scoreboardCardSection];
+  appLinkCardSection2 = [equalCopy scoreboardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v52 = [(_SFPBCardSectionValue *)self scoreboardCardSection];
-  if (v52)
+  scoreboardCardSection = [(_SFPBCardSectionValue *)self scoreboardCardSection];
+  if (scoreboardCardSection)
   {
-    v53 = v52;
-    v54 = [(_SFPBCardSectionValue *)self scoreboardCardSection];
-    v55 = [v4 scoreboardCardSection];
-    v56 = [v54 isEqual:v55];
+    v53 = scoreboardCardSection;
+    scoreboardCardSection2 = [(_SFPBCardSectionValue *)self scoreboardCardSection];
+    scoreboardCardSection3 = [equalCopy scoreboardCardSection];
+    v56 = [scoreboardCardSection2 isEqual:scoreboardCardSection3];
 
     if (!v56)
     {
@@ -4332,20 +4332,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
-  v6 = [v4 socialMediaPostCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
+  appLinkCardSection2 = [equalCopy socialMediaPostCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v57 = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
-  if (v57)
+  socialMediaPostCardSection = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
+  if (socialMediaPostCardSection)
   {
-    v58 = v57;
-    v59 = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
-    v60 = [v4 socialMediaPostCardSection];
-    v61 = [v59 isEqual:v60];
+    v58 = socialMediaPostCardSection;
+    socialMediaPostCardSection2 = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
+    socialMediaPostCardSection3 = [equalCopy socialMediaPostCardSection];
+    v61 = [socialMediaPostCardSection2 isEqual:socialMediaPostCardSection3];
 
     if (!v61)
     {
@@ -4357,20 +4357,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self stockChartCardSection];
-  v6 = [v4 stockChartCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self stockChartCardSection];
+  appLinkCardSection2 = [equalCopy stockChartCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v62 = [(_SFPBCardSectionValue *)self stockChartCardSection];
-  if (v62)
+  stockChartCardSection = [(_SFPBCardSectionValue *)self stockChartCardSection];
+  if (stockChartCardSection)
   {
-    v63 = v62;
-    v64 = [(_SFPBCardSectionValue *)self stockChartCardSection];
-    v65 = [v4 stockChartCardSection];
-    v66 = [v64 isEqual:v65];
+    v63 = stockChartCardSection;
+    stockChartCardSection2 = [(_SFPBCardSectionValue *)self stockChartCardSection];
+    stockChartCardSection3 = [equalCopy stockChartCardSection];
+    v66 = [stockChartCardSection2 isEqual:stockChartCardSection3];
 
     if (!v66)
     {
@@ -4382,20 +4382,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
-  v6 = [v4 tableHeaderRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
+  appLinkCardSection2 = [equalCopy tableHeaderRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v67 = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
-  if (v67)
+  tableHeaderRowCardSection = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
+  if (tableHeaderRowCardSection)
   {
-    v68 = v67;
-    v69 = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
-    v70 = [v4 tableHeaderRowCardSection];
-    v71 = [v69 isEqual:v70];
+    v68 = tableHeaderRowCardSection;
+    tableHeaderRowCardSection2 = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
+    tableHeaderRowCardSection3 = [equalCopy tableHeaderRowCardSection];
+    v71 = [tableHeaderRowCardSection2 isEqual:tableHeaderRowCardSection3];
 
     if (!v71)
     {
@@ -4407,20 +4407,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self tableRowCardSection];
-  v6 = [v4 tableRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self tableRowCardSection];
+  appLinkCardSection2 = [equalCopy tableRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v72 = [(_SFPBCardSectionValue *)self tableRowCardSection];
-  if (v72)
+  tableRowCardSection = [(_SFPBCardSectionValue *)self tableRowCardSection];
+  if (tableRowCardSection)
   {
-    v73 = v72;
-    v74 = [(_SFPBCardSectionValue *)self tableRowCardSection];
-    v75 = [v4 tableRowCardSection];
-    v76 = [v74 isEqual:v75];
+    v73 = tableRowCardSection;
+    tableRowCardSection2 = [(_SFPBCardSectionValue *)self tableRowCardSection];
+    tableRowCardSection3 = [equalCopy tableRowCardSection];
+    v76 = [tableRowCardSection2 isEqual:tableRowCardSection3];
 
     if (!v76)
     {
@@ -4432,20 +4432,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self textColumnsCardSection];
-  v6 = [v4 textColumnsCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self textColumnsCardSection];
+  appLinkCardSection2 = [equalCopy textColumnsCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v77 = [(_SFPBCardSectionValue *)self textColumnsCardSection];
-  if (v77)
+  textColumnsCardSection = [(_SFPBCardSectionValue *)self textColumnsCardSection];
+  if (textColumnsCardSection)
   {
-    v78 = v77;
-    v79 = [(_SFPBCardSectionValue *)self textColumnsCardSection];
-    v80 = [v4 textColumnsCardSection];
-    v81 = [v79 isEqual:v80];
+    v78 = textColumnsCardSection;
+    textColumnsCardSection2 = [(_SFPBCardSectionValue *)self textColumnsCardSection];
+    textColumnsCardSection3 = [equalCopy textColumnsCardSection];
+    v81 = [textColumnsCardSection2 isEqual:textColumnsCardSection3];
 
     if (!v81)
     {
@@ -4457,20 +4457,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self titleCardSection];
-  v6 = [v4 titleCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self titleCardSection];
+  appLinkCardSection2 = [equalCopy titleCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v82 = [(_SFPBCardSectionValue *)self titleCardSection];
-  if (v82)
+  titleCardSection = [(_SFPBCardSectionValue *)self titleCardSection];
+  if (titleCardSection)
   {
-    v83 = v82;
-    v84 = [(_SFPBCardSectionValue *)self titleCardSection];
-    v85 = [v4 titleCardSection];
-    v86 = [v84 isEqual:v85];
+    v83 = titleCardSection;
+    titleCardSection2 = [(_SFPBCardSectionValue *)self titleCardSection];
+    titleCardSection3 = [equalCopy titleCardSection];
+    v86 = [titleCardSection2 isEqual:titleCardSection3];
 
     if (!v86)
     {
@@ -4482,20 +4482,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self trackListCardSection];
-  v6 = [v4 trackListCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self trackListCardSection];
+  appLinkCardSection2 = [equalCopy trackListCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v87 = [(_SFPBCardSectionValue *)self trackListCardSection];
-  if (v87)
+  trackListCardSection = [(_SFPBCardSectionValue *)self trackListCardSection];
+  if (trackListCardSection)
   {
-    v88 = v87;
-    v89 = [(_SFPBCardSectionValue *)self trackListCardSection];
-    v90 = [v4 trackListCardSection];
-    v91 = [v89 isEqual:v90];
+    v88 = trackListCardSection;
+    trackListCardSection2 = [(_SFPBCardSectionValue *)self trackListCardSection];
+    trackListCardSection3 = [equalCopy trackListCardSection];
+    v91 = [trackListCardSection2 isEqual:trackListCardSection3];
 
     if (!v91)
     {
@@ -4507,20 +4507,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
-  v6 = [v4 audioPlaybackCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
+  appLinkCardSection2 = [equalCopy audioPlaybackCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v92 = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
-  if (v92)
+  audioPlaybackCardSection = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
+  if (audioPlaybackCardSection)
   {
-    v93 = v92;
-    v94 = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
-    v95 = [v4 audioPlaybackCardSection];
-    v96 = [v94 isEqual:v95];
+    v93 = audioPlaybackCardSection;
+    audioPlaybackCardSection2 = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
+    audioPlaybackCardSection3 = [equalCopy audioPlaybackCardSection];
+    v96 = [audioPlaybackCardSection2 isEqual:audioPlaybackCardSection3];
 
     if (!v96)
     {
@@ -4532,20 +4532,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self flightCardSection];
-  v6 = [v4 flightCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self flightCardSection];
+  appLinkCardSection2 = [equalCopy flightCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v97 = [(_SFPBCardSectionValue *)self flightCardSection];
-  if (v97)
+  flightCardSection = [(_SFPBCardSectionValue *)self flightCardSection];
+  if (flightCardSection)
   {
-    v98 = v97;
-    v99 = [(_SFPBCardSectionValue *)self flightCardSection];
-    v100 = [v4 flightCardSection];
-    v101 = [v99 isEqual:v100];
+    v98 = flightCardSection;
+    flightCardSection2 = [(_SFPBCardSectionValue *)self flightCardSection];
+    flightCardSection3 = [equalCopy flightCardSection];
+    v101 = [flightCardSection2 isEqual:flightCardSection3];
 
     if (!v101)
     {
@@ -4557,20 +4557,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
-  v6 = [v4 activityIndicatorCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
+  appLinkCardSection2 = [equalCopy activityIndicatorCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v102 = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
-  if (v102)
+  activityIndicatorCardSection = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
+  if (activityIndicatorCardSection)
   {
-    v103 = v102;
-    v104 = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
-    v105 = [v4 activityIndicatorCardSection];
-    v106 = [v104 isEqual:v105];
+    v103 = activityIndicatorCardSection;
+    activityIndicatorCardSection2 = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
+    activityIndicatorCardSection3 = [equalCopy activityIndicatorCardSection];
+    v106 = [activityIndicatorCardSection2 isEqual:activityIndicatorCardSection3];
 
     if (!v106)
     {
@@ -4582,20 +4582,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self webCardSection];
-  v6 = [v4 webCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self webCardSection];
+  appLinkCardSection2 = [equalCopy webCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v107 = [(_SFPBCardSectionValue *)self webCardSection];
-  if (v107)
+  webCardSection = [(_SFPBCardSectionValue *)self webCardSection];
+  if (webCardSection)
   {
-    v108 = v107;
-    v109 = [(_SFPBCardSectionValue *)self webCardSection];
-    v110 = [v4 webCardSection];
-    v111 = [v109 isEqual:v110];
+    v108 = webCardSection;
+    webCardSection2 = [(_SFPBCardSectionValue *)self webCardSection];
+    webCardSection3 = [equalCopy webCardSection];
+    v111 = [webCardSection2 isEqual:webCardSection3];
 
     if (!v111)
     {
@@ -4607,20 +4607,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self messageCardSection];
-  v6 = [v4 messageCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self messageCardSection];
+  appLinkCardSection2 = [equalCopy messageCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v112 = [(_SFPBCardSectionValue *)self messageCardSection];
-  if (v112)
+  messageCardSection = [(_SFPBCardSectionValue *)self messageCardSection];
+  if (messageCardSection)
   {
-    v113 = v112;
-    v114 = [(_SFPBCardSectionValue *)self messageCardSection];
-    v115 = [v4 messageCardSection];
-    v116 = [v114 isEqual:v115];
+    v113 = messageCardSection;
+    messageCardSection2 = [(_SFPBCardSectionValue *)self messageCardSection];
+    messageCardSection3 = [equalCopy messageCardSection];
+    v116 = [messageCardSection2 isEqual:messageCardSection3];
 
     if (!v116)
     {
@@ -4632,20 +4632,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self detailedRowCardSection];
-  v6 = [v4 detailedRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self detailedRowCardSection];
+  appLinkCardSection2 = [equalCopy detailedRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v117 = [(_SFPBCardSectionValue *)self detailedRowCardSection];
-  if (v117)
+  detailedRowCardSection = [(_SFPBCardSectionValue *)self detailedRowCardSection];
+  if (detailedRowCardSection)
   {
-    v118 = v117;
-    v119 = [(_SFPBCardSectionValue *)self detailedRowCardSection];
-    v120 = [v4 detailedRowCardSection];
-    v121 = [v119 isEqual:v120];
+    v118 = detailedRowCardSection;
+    detailedRowCardSection2 = [(_SFPBCardSectionValue *)self detailedRowCardSection];
+    detailedRowCardSection3 = [equalCopy detailedRowCardSection];
+    v121 = [detailedRowCardSection2 isEqual:detailedRowCardSection3];
 
     if (!v121)
     {
@@ -4657,20 +4657,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self imagesCardSection];
-  v6 = [v4 imagesCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self imagesCardSection];
+  appLinkCardSection2 = [equalCopy imagesCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v122 = [(_SFPBCardSectionValue *)self imagesCardSection];
-  if (v122)
+  imagesCardSection = [(_SFPBCardSectionValue *)self imagesCardSection];
+  if (imagesCardSection)
   {
-    v123 = v122;
-    v124 = [(_SFPBCardSectionValue *)self imagesCardSection];
-    v125 = [v4 imagesCardSection];
-    v126 = [v124 isEqual:v125];
+    v123 = imagesCardSection;
+    imagesCardSection2 = [(_SFPBCardSectionValue *)self imagesCardSection];
+    imagesCardSection3 = [equalCopy imagesCardSection];
+    v126 = [imagesCardSection2 isEqual:imagesCardSection3];
 
     if (!v126)
     {
@@ -4682,20 +4682,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self suggestionCardSection];
-  v6 = [v4 suggestionCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self suggestionCardSection];
+  appLinkCardSection2 = [equalCopy suggestionCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v127 = [(_SFPBCardSectionValue *)self suggestionCardSection];
-  if (v127)
+  suggestionCardSection = [(_SFPBCardSectionValue *)self suggestionCardSection];
+  if (suggestionCardSection)
   {
-    v128 = v127;
-    v129 = [(_SFPBCardSectionValue *)self suggestionCardSection];
-    v130 = [v4 suggestionCardSection];
-    v131 = [v129 isEqual:v130];
+    v128 = suggestionCardSection;
+    suggestionCardSection2 = [(_SFPBCardSectionValue *)self suggestionCardSection];
+    suggestionCardSection3 = [equalCopy suggestionCardSection];
+    v131 = [suggestionCardSection2 isEqual:suggestionCardSection3];
 
     if (!v131)
     {
@@ -4707,20 +4707,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self selectableGridCardSection];
-  v6 = [v4 selectableGridCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self selectableGridCardSection];
+  appLinkCardSection2 = [equalCopy selectableGridCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v132 = [(_SFPBCardSectionValue *)self selectableGridCardSection];
-  if (v132)
+  selectableGridCardSection = [(_SFPBCardSectionValue *)self selectableGridCardSection];
+  if (selectableGridCardSection)
   {
-    v133 = v132;
-    v134 = [(_SFPBCardSectionValue *)self selectableGridCardSection];
-    v135 = [v4 selectableGridCardSection];
-    v136 = [v134 isEqual:v135];
+    v133 = selectableGridCardSection;
+    selectableGridCardSection2 = [(_SFPBCardSectionValue *)self selectableGridCardSection];
+    selectableGridCardSection3 = [equalCopy selectableGridCardSection];
+    v136 = [selectableGridCardSection2 isEqual:selectableGridCardSection3];
 
     if (!v136)
     {
@@ -4732,20 +4732,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
-  v6 = [v4 sectionHeaderCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
+  appLinkCardSection2 = [equalCopy sectionHeaderCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v137 = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
-  if (v137)
+  sectionHeaderCardSection = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
+  if (sectionHeaderCardSection)
   {
-    v138 = v137;
-    v139 = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
-    v140 = [v4 sectionHeaderCardSection];
-    v141 = [v139 isEqual:v140];
+    v138 = sectionHeaderCardSection;
+    sectionHeaderCardSection2 = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
+    sectionHeaderCardSection3 = [equalCopy sectionHeaderCardSection];
+    v141 = [sectionHeaderCardSection2 isEqual:sectionHeaderCardSection3];
 
     if (!v141)
     {
@@ -4757,20 +4757,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self metaInfoCardSection];
-  v6 = [v4 metaInfoCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self metaInfoCardSection];
+  appLinkCardSection2 = [equalCopy metaInfoCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v142 = [(_SFPBCardSectionValue *)self metaInfoCardSection];
-  if (v142)
+  metaInfoCardSection = [(_SFPBCardSectionValue *)self metaInfoCardSection];
+  if (metaInfoCardSection)
   {
-    v143 = v142;
-    v144 = [(_SFPBCardSectionValue *)self metaInfoCardSection];
-    v145 = [v4 metaInfoCardSection];
-    v146 = [v144 isEqual:v145];
+    v143 = metaInfoCardSection;
+    metaInfoCardSection2 = [(_SFPBCardSectionValue *)self metaInfoCardSection];
+    metaInfoCardSection3 = [equalCopy metaInfoCardSection];
+    v146 = [metaInfoCardSection2 isEqual:metaInfoCardSection3];
 
     if (!v146)
     {
@@ -4782,20 +4782,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self watchListCardSection];
-  v6 = [v4 watchListCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self watchListCardSection];
+  appLinkCardSection2 = [equalCopy watchListCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v147 = [(_SFPBCardSectionValue *)self watchListCardSection];
-  if (v147)
+  watchListCardSection = [(_SFPBCardSectionValue *)self watchListCardSection];
+  if (watchListCardSection)
   {
-    v148 = v147;
-    v149 = [(_SFPBCardSectionValue *)self watchListCardSection];
-    v150 = [v4 watchListCardSection];
-    v151 = [v149 isEqual:v150];
+    v148 = watchListCardSection;
+    watchListCardSection2 = [(_SFPBCardSectionValue *)self watchListCardSection];
+    watchListCardSection3 = [equalCopy watchListCardSection];
+    v151 = [watchListCardSection2 isEqual:watchListCardSection3];
 
     if (!v151)
     {
@@ -4807,20 +4807,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
-  v6 = [v4 mapsDetailedRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
+  appLinkCardSection2 = [equalCopy mapsDetailedRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v152 = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
-  if (v152)
+  mapsDetailedRowCardSection = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
+  if (mapsDetailedRowCardSection)
   {
-    v153 = v152;
-    v154 = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
-    v155 = [v4 mapsDetailedRowCardSection];
-    v156 = [v154 isEqual:v155];
+    v153 = mapsDetailedRowCardSection;
+    mapsDetailedRowCardSection2 = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
+    mapsDetailedRowCardSection3 = [equalCopy mapsDetailedRowCardSection];
+    v156 = [mapsDetailedRowCardSection2 isEqual:mapsDetailedRowCardSection3];
 
     if (!v156)
     {
@@ -4832,20 +4832,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self buttonCardSection];
-  v6 = [v4 buttonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self buttonCardSection];
+  appLinkCardSection2 = [equalCopy buttonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v157 = [(_SFPBCardSectionValue *)self buttonCardSection];
-  if (v157)
+  buttonCardSection = [(_SFPBCardSectionValue *)self buttonCardSection];
+  if (buttonCardSection)
   {
-    v158 = v157;
-    v159 = [(_SFPBCardSectionValue *)self buttonCardSection];
-    v160 = [v4 buttonCardSection];
-    v161 = [v159 isEqual:v160];
+    v158 = buttonCardSection;
+    buttonCardSection2 = [(_SFPBCardSectionValue *)self buttonCardSection];
+    buttonCardSection3 = [equalCopy buttonCardSection];
+    v161 = [buttonCardSection2 isEqual:buttonCardSection3];
 
     if (!v161)
     {
@@ -4857,20 +4857,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
-  v6 = [v4 horizontalButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
+  appLinkCardSection2 = [equalCopy horizontalButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v162 = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
-  if (v162)
+  horizontalButtonCardSection = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
+  if (horizontalButtonCardSection)
   {
-    v163 = v162;
-    v164 = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
-    v165 = [v4 horizontalButtonCardSection];
-    v166 = [v164 isEqual:v165];
+    v163 = horizontalButtonCardSection;
+    horizontalButtonCardSection2 = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
+    horizontalButtonCardSection3 = [equalCopy horizontalButtonCardSection];
+    v166 = [horizontalButtonCardSection2 isEqual:horizontalButtonCardSection3];
 
     if (!v166)
     {
@@ -4882,20 +4882,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
-  v6 = [v4 verticalLayoutCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
+  appLinkCardSection2 = [equalCopy verticalLayoutCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v167 = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
-  if (v167)
+  verticalLayoutCardSection = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
+  if (verticalLayoutCardSection)
   {
-    v168 = v167;
-    v169 = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
-    v170 = [v4 verticalLayoutCardSection];
-    v171 = [v169 isEqual:v170];
+    v168 = verticalLayoutCardSection;
+    verticalLayoutCardSection2 = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
+    verticalLayoutCardSection3 = [equalCopy verticalLayoutCardSection];
+    v171 = [verticalLayoutCardSection2 isEqual:verticalLayoutCardSection3];
 
     if (!v171)
     {
@@ -4907,20 +4907,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self productCardSection];
-  v6 = [v4 productCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self productCardSection];
+  appLinkCardSection2 = [equalCopy productCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v172 = [(_SFPBCardSectionValue *)self productCardSection];
-  if (v172)
+  productCardSection = [(_SFPBCardSectionValue *)self productCardSection];
+  if (productCardSection)
   {
-    v173 = v172;
-    v174 = [(_SFPBCardSectionValue *)self productCardSection];
-    v175 = [v4 productCardSection];
-    v176 = [v174 isEqual:v175];
+    v173 = productCardSection;
+    productCardSection2 = [(_SFPBCardSectionValue *)self productCardSection];
+    productCardSection3 = [equalCopy productCardSection];
+    v176 = [productCardSection2 isEqual:productCardSection3];
 
     if (!v176)
     {
@@ -4932,20 +4932,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
-  v6 = [v4 horizontalScrollCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
+  appLinkCardSection2 = [equalCopy horizontalScrollCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v177 = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
-  if (v177)
+  horizontalScrollCardSection = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
+  if (horizontalScrollCardSection)
   {
-    v178 = v177;
-    v179 = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
-    v180 = [v4 horizontalScrollCardSection];
-    v181 = [v179 isEqual:v180];
+    v178 = horizontalScrollCardSection;
+    horizontalScrollCardSection2 = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
+    horizontalScrollCardSection3 = [equalCopy horizontalScrollCardSection];
+    v181 = [horizontalScrollCardSection2 isEqual:horizontalScrollCardSection3];
 
     if (!v181)
     {
@@ -4957,20 +4957,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
-  v6 = [v4 mediaRemoteControlCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
+  appLinkCardSection2 = [equalCopy mediaRemoteControlCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v182 = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
-  if (v182)
+  mediaRemoteControlCardSection = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
+  if (mediaRemoteControlCardSection)
   {
-    v183 = v182;
-    v184 = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
-    v185 = [v4 mediaRemoteControlCardSection];
-    v186 = [v184 isEqual:v185];
+    v183 = mediaRemoteControlCardSection;
+    mediaRemoteControlCardSection2 = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
+    mediaRemoteControlCardSection3 = [equalCopy mediaRemoteControlCardSection];
+    v186 = [mediaRemoteControlCardSection2 isEqual:mediaRemoteControlCardSection3];
 
     if (!v186)
     {
@@ -4982,20 +4982,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
-  v6 = [v4 mapPlaceCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
+  appLinkCardSection2 = [equalCopy mapPlaceCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v187 = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
-  if (v187)
+  mapPlaceCardSection = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
+  if (mapPlaceCardSection)
   {
-    v188 = v187;
-    v189 = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
-    v190 = [v4 mapPlaceCardSection];
-    v191 = [v189 isEqual:v190];
+    v188 = mapPlaceCardSection;
+    mapPlaceCardSection2 = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
+    mapPlaceCardSection3 = [equalCopy mapPlaceCardSection];
+    v191 = [mapPlaceCardSection2 isEqual:mapPlaceCardSection3];
 
     if (!v191)
     {
@@ -5007,20 +5007,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self compactRowCardSection];
-  v6 = [v4 compactRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self compactRowCardSection];
+  appLinkCardSection2 = [equalCopy compactRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v192 = [(_SFPBCardSectionValue *)self compactRowCardSection];
-  if (v192)
+  compactRowCardSection = [(_SFPBCardSectionValue *)self compactRowCardSection];
+  if (compactRowCardSection)
   {
-    v193 = v192;
-    v194 = [(_SFPBCardSectionValue *)self compactRowCardSection];
-    v195 = [v4 compactRowCardSection];
-    v196 = [v194 isEqual:v195];
+    v193 = compactRowCardSection;
+    compactRowCardSection2 = [(_SFPBCardSectionValue *)self compactRowCardSection];
+    compactRowCardSection3 = [equalCopy compactRowCardSection];
+    v196 = [compactRowCardSection2 isEqual:compactRowCardSection3];
 
     if (!v196)
     {
@@ -5032,20 +5032,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self worldMapCardSection];
-  v6 = [v4 worldMapCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self worldMapCardSection];
+  appLinkCardSection2 = [equalCopy worldMapCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v197 = [(_SFPBCardSectionValue *)self worldMapCardSection];
-  if (v197)
+  worldMapCardSection = [(_SFPBCardSectionValue *)self worldMapCardSection];
+  if (worldMapCardSection)
   {
-    v198 = v197;
-    v199 = [(_SFPBCardSectionValue *)self worldMapCardSection];
-    v200 = [v4 worldMapCardSection];
-    v201 = [v199 isEqual:v200];
+    v198 = worldMapCardSection;
+    worldMapCardSection2 = [(_SFPBCardSectionValue *)self worldMapCardSection];
+    worldMapCardSection3 = [equalCopy worldMapCardSection];
+    v201 = [worldMapCardSection2 isEqual:worldMapCardSection3];
 
     if (!v201)
     {
@@ -5057,20 +5057,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
-  v6 = [v4 attributionFooterCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
+  appLinkCardSection2 = [equalCopy attributionFooterCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v202 = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
-  if (v202)
+  attributionFooterCardSection = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
+  if (attributionFooterCardSection)
   {
-    v203 = v202;
-    v204 = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
-    v205 = [v4 attributionFooterCardSection];
-    v206 = [v204 isEqual:v205];
+    v203 = attributionFooterCardSection;
+    attributionFooterCardSection2 = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
+    attributionFooterCardSection3 = [equalCopy attributionFooterCardSection];
+    v206 = [attributionFooterCardSection2 isEqual:attributionFooterCardSection3];
 
     if (!v206)
     {
@@ -5082,20 +5082,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self gridCardSection];
-  v6 = [v4 gridCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self gridCardSection];
+  appLinkCardSection2 = [equalCopy gridCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v207 = [(_SFPBCardSectionValue *)self gridCardSection];
-  if (v207)
+  gridCardSection = [(_SFPBCardSectionValue *)self gridCardSection];
+  if (gridCardSection)
   {
-    v208 = v207;
-    v209 = [(_SFPBCardSectionValue *)self gridCardSection];
-    v210 = [v4 gridCardSection];
-    v211 = [v209 isEqual:v210];
+    v208 = gridCardSection;
+    gridCardSection2 = [(_SFPBCardSectionValue *)self gridCardSection];
+    gridCardSection3 = [equalCopy gridCardSection];
+    v211 = [gridCardSection2 isEqual:gridCardSection3];
 
     if (!v211)
     {
@@ -5107,20 +5107,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self personHeaderCardSection];
-  v6 = [v4 personHeaderCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self personHeaderCardSection];
+  appLinkCardSection2 = [equalCopy personHeaderCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v212 = [(_SFPBCardSectionValue *)self personHeaderCardSection];
-  if (v212)
+  personHeaderCardSection = [(_SFPBCardSectionValue *)self personHeaderCardSection];
+  if (personHeaderCardSection)
   {
-    v213 = v212;
-    v214 = [(_SFPBCardSectionValue *)self personHeaderCardSection];
-    v215 = [v4 personHeaderCardSection];
-    v216 = [v214 isEqual:v215];
+    v213 = personHeaderCardSection;
+    personHeaderCardSection2 = [(_SFPBCardSectionValue *)self personHeaderCardSection];
+    personHeaderCardSection3 = [equalCopy personHeaderCardSection];
+    v216 = [personHeaderCardSection2 isEqual:personHeaderCardSection3];
 
     if (!v216)
     {
@@ -5132,20 +5132,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self colorBarCardSection];
-  v6 = [v4 colorBarCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self colorBarCardSection];
+  appLinkCardSection2 = [equalCopy colorBarCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v217 = [(_SFPBCardSectionValue *)self colorBarCardSection];
-  if (v217)
+  colorBarCardSection = [(_SFPBCardSectionValue *)self colorBarCardSection];
+  if (colorBarCardSection)
   {
-    v218 = v217;
-    v219 = [(_SFPBCardSectionValue *)self colorBarCardSection];
-    v220 = [v4 colorBarCardSection];
-    v221 = [v219 isEqual:v220];
+    v218 = colorBarCardSection;
+    colorBarCardSection2 = [(_SFPBCardSectionValue *)self colorBarCardSection];
+    colorBarCardSection3 = [equalCopy colorBarCardSection];
+    v221 = [colorBarCardSection2 isEqual:colorBarCardSection3];
 
     if (!v221)
     {
@@ -5157,20 +5157,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self splitCardSection];
-  v6 = [v4 splitCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self splitCardSection];
+  appLinkCardSection2 = [equalCopy splitCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v222 = [(_SFPBCardSectionValue *)self splitCardSection];
-  if (v222)
+  splitCardSection = [(_SFPBCardSectionValue *)self splitCardSection];
+  if (splitCardSection)
   {
-    v223 = v222;
-    v224 = [(_SFPBCardSectionValue *)self splitCardSection];
-    v225 = [v4 splitCardSection];
-    v226 = [v224 isEqual:v225];
+    v223 = splitCardSection;
+    splitCardSection2 = [(_SFPBCardSectionValue *)self splitCardSection];
+    splitCardSection3 = [equalCopy splitCardSection];
+    v226 = [splitCardSection2 isEqual:splitCardSection3];
 
     if (!v226)
     {
@@ -5182,20 +5182,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
-  v6 = [v4 linkPresentationCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
+  appLinkCardSection2 = [equalCopy linkPresentationCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v227 = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
-  if (v227)
+  linkPresentationCardSection = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
+  if (linkPresentationCardSection)
   {
-    v228 = v227;
-    v229 = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
-    v230 = [v4 linkPresentationCardSection];
-    v231 = [v229 isEqual:v230];
+    v228 = linkPresentationCardSection;
+    linkPresentationCardSection2 = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
+    linkPresentationCardSection3 = [equalCopy linkPresentationCardSection];
+    v231 = [linkPresentationCardSection2 isEqual:linkPresentationCardSection3];
 
     if (!v231)
     {
@@ -5207,20 +5207,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self findMyCardSection];
-  v6 = [v4 findMyCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self findMyCardSection];
+  appLinkCardSection2 = [equalCopy findMyCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v232 = [(_SFPBCardSectionValue *)self findMyCardSection];
-  if (v232)
+  findMyCardSection = [(_SFPBCardSectionValue *)self findMyCardSection];
+  if (findMyCardSection)
   {
-    v233 = v232;
-    v234 = [(_SFPBCardSectionValue *)self findMyCardSection];
-    v235 = [v4 findMyCardSection];
-    v236 = [v234 isEqual:v235];
+    v233 = findMyCardSection;
+    findMyCardSection2 = [(_SFPBCardSectionValue *)self findMyCardSection];
+    findMyCardSection3 = [equalCopy findMyCardSection];
+    v236 = [findMyCardSection2 isEqual:findMyCardSection3];
 
     if (!v236)
     {
@@ -5232,20 +5232,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self heroCardSection];
-  v6 = [v4 heroCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self heroCardSection];
+  appLinkCardSection2 = [equalCopy heroCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v237 = [(_SFPBCardSectionValue *)self heroCardSection];
-  if (v237)
+  heroCardSection = [(_SFPBCardSectionValue *)self heroCardSection];
+  if (heroCardSection)
   {
-    v238 = v237;
-    v239 = [(_SFPBCardSectionValue *)self heroCardSection];
-    v240 = [v4 heroCardSection];
-    v241 = [v239 isEqual:v240];
+    v238 = heroCardSection;
+    heroCardSection2 = [(_SFPBCardSectionValue *)self heroCardSection];
+    heroCardSection3 = [equalCopy heroCardSection];
+    v241 = [heroCardSection2 isEqual:heroCardSection3];
 
     if (!v241)
     {
@@ -5257,20 +5257,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self newsCardSection];
-  v6 = [v4 newsCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self newsCardSection];
+  appLinkCardSection2 = [equalCopy newsCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v242 = [(_SFPBCardSectionValue *)self newsCardSection];
-  if (v242)
+  newsCardSection = [(_SFPBCardSectionValue *)self newsCardSection];
+  if (newsCardSection)
   {
-    v243 = v242;
-    v244 = [(_SFPBCardSectionValue *)self newsCardSection];
-    v245 = [v4 newsCardSection];
-    v246 = [v244 isEqual:v245];
+    v243 = newsCardSection;
+    newsCardSection2 = [(_SFPBCardSectionValue *)self newsCardSection];
+    newsCardSection3 = [equalCopy newsCardSection];
+    v246 = [newsCardSection2 isEqual:newsCardSection3];
 
     if (!v246)
     {
@@ -5282,20 +5282,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self miniCardSection];
-  v6 = [v4 miniCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self miniCardSection];
+  appLinkCardSection2 = [equalCopy miniCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v247 = [(_SFPBCardSectionValue *)self miniCardSection];
-  if (v247)
+  miniCardSection = [(_SFPBCardSectionValue *)self miniCardSection];
+  if (miniCardSection)
   {
-    v248 = v247;
-    v249 = [(_SFPBCardSectionValue *)self miniCardSection];
-    v250 = [v4 miniCardSection];
-    v251 = [v249 isEqual:v250];
+    v248 = miniCardSection;
+    miniCardSection2 = [(_SFPBCardSectionValue *)self miniCardSection];
+    miniCardSection3 = [equalCopy miniCardSection];
+    v251 = [miniCardSection2 isEqual:miniCardSection3];
 
     if (!v251)
     {
@@ -5307,20 +5307,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self infoCardSection];
-  v6 = [v4 infoCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self infoCardSection];
+  appLinkCardSection2 = [equalCopy infoCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v252 = [(_SFPBCardSectionValue *)self infoCardSection];
-  if (v252)
+  infoCardSection = [(_SFPBCardSectionValue *)self infoCardSection];
+  if (infoCardSection)
   {
-    v253 = v252;
-    v254 = [(_SFPBCardSectionValue *)self infoCardSection];
-    v255 = [v4 infoCardSection];
-    v256 = [v254 isEqual:v255];
+    v253 = infoCardSection;
+    infoCardSection2 = [(_SFPBCardSectionValue *)self infoCardSection];
+    infoCardSection3 = [equalCopy infoCardSection];
+    v256 = [infoCardSection2 isEqual:infoCardSection3];
 
     if (!v256)
     {
@@ -5332,20 +5332,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self collectionCardSection];
-  v6 = [v4 collectionCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self collectionCardSection];
+  appLinkCardSection2 = [equalCopy collectionCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v257 = [(_SFPBCardSectionValue *)self collectionCardSection];
-  if (v257)
+  collectionCardSection = [(_SFPBCardSectionValue *)self collectionCardSection];
+  if (collectionCardSection)
   {
-    v258 = v257;
-    v259 = [(_SFPBCardSectionValue *)self collectionCardSection];
-    v260 = [v4 collectionCardSection];
-    v261 = [v259 isEqual:v260];
+    v258 = collectionCardSection;
+    collectionCardSection2 = [(_SFPBCardSectionValue *)self collectionCardSection];
+    collectionCardSection3 = [equalCopy collectionCardSection];
+    v261 = [collectionCardSection2 isEqual:collectionCardSection3];
 
     if (!v261)
     {
@@ -5357,20 +5357,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self combinedCardSection];
-  v6 = [v4 combinedCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self combinedCardSection];
+  appLinkCardSection2 = [equalCopy combinedCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v262 = [(_SFPBCardSectionValue *)self combinedCardSection];
-  if (v262)
+  combinedCardSection = [(_SFPBCardSectionValue *)self combinedCardSection];
+  if (combinedCardSection)
   {
-    v263 = v262;
-    v264 = [(_SFPBCardSectionValue *)self combinedCardSection];
-    v265 = [v4 combinedCardSection];
-    v266 = [v264 isEqual:v265];
+    v263 = combinedCardSection;
+    combinedCardSection2 = [(_SFPBCardSectionValue *)self combinedCardSection];
+    combinedCardSection3 = [equalCopy combinedCardSection];
+    v266 = [combinedCardSection2 isEqual:combinedCardSection3];
 
     if (!v266)
     {
@@ -5382,20 +5382,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
-  v6 = [v4 responseWrapperCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
+  appLinkCardSection2 = [equalCopy responseWrapperCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v267 = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
-  if (v267)
+  responseWrapperCardSection = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
+  if (responseWrapperCardSection)
   {
-    v268 = v267;
-    v269 = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
-    v270 = [v4 responseWrapperCardSection];
-    v271 = [v269 isEqual:v270];
+    v268 = responseWrapperCardSection;
+    responseWrapperCardSection2 = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
+    responseWrapperCardSection3 = [equalCopy responseWrapperCardSection];
+    v271 = [responseWrapperCardSection2 isEqual:responseWrapperCardSection3];
 
     if (!v271)
     {
@@ -5407,20 +5407,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self listenToCardSection];
-  v6 = [v4 listenToCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self listenToCardSection];
+  appLinkCardSection2 = [equalCopy listenToCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v272 = [(_SFPBCardSectionValue *)self listenToCardSection];
-  if (v272)
+  listenToCardSection = [(_SFPBCardSectionValue *)self listenToCardSection];
+  if (listenToCardSection)
   {
-    v273 = v272;
-    v274 = [(_SFPBCardSectionValue *)self listenToCardSection];
-    v275 = [v4 listenToCardSection];
-    v276 = [v274 isEqual:v275];
+    v273 = listenToCardSection;
+    listenToCardSection2 = [(_SFPBCardSectionValue *)self listenToCardSection];
+    listenToCardSection3 = [equalCopy listenToCardSection];
+    v276 = [listenToCardSection2 isEqual:listenToCardSection3];
 
     if (!v276)
     {
@@ -5432,20 +5432,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self watchNowCardSection];
-  v6 = [v4 watchNowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self watchNowCardSection];
+  appLinkCardSection2 = [equalCopy watchNowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v277 = [(_SFPBCardSectionValue *)self watchNowCardSection];
-  if (v277)
+  watchNowCardSection = [(_SFPBCardSectionValue *)self watchNowCardSection];
+  if (watchNowCardSection)
   {
-    v278 = v277;
-    v279 = [(_SFPBCardSectionValue *)self watchNowCardSection];
-    v280 = [v4 watchNowCardSection];
-    v281 = [v279 isEqual:v280];
+    v278 = watchNowCardSection;
+    watchNowCardSection2 = [(_SFPBCardSectionValue *)self watchNowCardSection];
+    watchNowCardSection3 = [equalCopy watchNowCardSection];
+    v281 = [watchNowCardSection2 isEqual:watchNowCardSection3];
 
     if (!v281)
     {
@@ -5457,20 +5457,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
-  v6 = [v4 strokeAnimationCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
+  appLinkCardSection2 = [equalCopy strokeAnimationCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v282 = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
-  if (v282)
+  strokeAnimationCardSection = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
+  if (strokeAnimationCardSection)
   {
-    v283 = v282;
-    v284 = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
-    v285 = [v4 strokeAnimationCardSection];
-    v286 = [v284 isEqual:v285];
+    v283 = strokeAnimationCardSection;
+    strokeAnimationCardSection2 = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
+    strokeAnimationCardSection3 = [equalCopy strokeAnimationCardSection];
+    v286 = [strokeAnimationCardSection2 isEqual:strokeAnimationCardSection3];
 
     if (!v286)
     {
@@ -5482,20 +5482,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self buttonListCardSection];
-  v6 = [v4 buttonListCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self buttonListCardSection];
+  appLinkCardSection2 = [equalCopy buttonListCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v287 = [(_SFPBCardSectionValue *)self buttonListCardSection];
-  if (v287)
+  buttonListCardSection = [(_SFPBCardSectionValue *)self buttonListCardSection];
+  if (buttonListCardSection)
   {
-    v288 = v287;
-    v289 = [(_SFPBCardSectionValue *)self buttonListCardSection];
-    v290 = [v4 buttonListCardSection];
-    v291 = [v289 isEqual:v290];
+    v288 = buttonListCardSection;
+    buttonListCardSection2 = [(_SFPBCardSectionValue *)self buttonListCardSection];
+    buttonListCardSection3 = [equalCopy buttonListCardSection];
+    v291 = [buttonListCardSection2 isEqual:buttonListCardSection3];
 
     if (!v291)
     {
@@ -5507,20 +5507,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self commandRowCardSection];
-  v6 = [v4 commandRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self commandRowCardSection];
+  appLinkCardSection2 = [equalCopy commandRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v292 = [(_SFPBCardSectionValue *)self commandRowCardSection];
-  if (v292)
+  commandRowCardSection = [(_SFPBCardSectionValue *)self commandRowCardSection];
+  if (commandRowCardSection)
   {
-    v293 = v292;
-    v294 = [(_SFPBCardSectionValue *)self commandRowCardSection];
-    v295 = [v4 commandRowCardSection];
-    v296 = [v294 isEqual:v295];
+    v293 = commandRowCardSection;
+    commandRowCardSection2 = [(_SFPBCardSectionValue *)self commandRowCardSection];
+    commandRowCardSection3 = [equalCopy commandRowCardSection];
+    v296 = [commandRowCardSection2 isEqual:commandRowCardSection3];
 
     if (!v296)
     {
@@ -5532,20 +5532,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
-  v6 = [v4 leadingTrailingCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
+  appLinkCardSection2 = [equalCopy leadingTrailingCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v297 = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
-  if (v297)
+  leadingTrailingCardSection = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
+  if (leadingTrailingCardSection)
   {
-    v298 = v297;
-    v299 = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
-    v300 = [v4 leadingTrailingCardSection];
-    v301 = [v299 isEqual:v300];
+    v298 = leadingTrailingCardSection;
+    leadingTrailingCardSection2 = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
+    leadingTrailingCardSection3 = [equalCopy leadingTrailingCardSection];
+    v301 = [leadingTrailingCardSection2 isEqual:leadingTrailingCardSection3];
 
     if (!v301)
     {
@@ -5557,20 +5557,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self heroTitleCardSection];
-  v6 = [v4 heroTitleCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self heroTitleCardSection];
+  appLinkCardSection2 = [equalCopy heroTitleCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v302 = [(_SFPBCardSectionValue *)self heroTitleCardSection];
-  if (v302)
+  heroTitleCardSection = [(_SFPBCardSectionValue *)self heroTitleCardSection];
+  if (heroTitleCardSection)
   {
-    v303 = v302;
-    v304 = [(_SFPBCardSectionValue *)self heroTitleCardSection];
-    v305 = [v4 heroTitleCardSection];
-    v306 = [v304 isEqual:v305];
+    v303 = heroTitleCardSection;
+    heroTitleCardSection2 = [(_SFPBCardSectionValue *)self heroTitleCardSection];
+    heroTitleCardSection3 = [equalCopy heroTitleCardSection];
+    v306 = [heroTitleCardSection2 isEqual:heroTitleCardSection3];
 
     if (!v306)
     {
@@ -5582,20 +5582,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self archiveViewCardSection];
-  v6 = [v4 archiveViewCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self archiveViewCardSection];
+  appLinkCardSection2 = [equalCopy archiveViewCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v307 = [(_SFPBCardSectionValue *)self archiveViewCardSection];
-  if (v307)
+  archiveViewCardSection = [(_SFPBCardSectionValue *)self archiveViewCardSection];
+  if (archiveViewCardSection)
   {
-    v308 = v307;
-    v309 = [(_SFPBCardSectionValue *)self archiveViewCardSection];
-    v310 = [v4 archiveViewCardSection];
-    v311 = [v309 isEqual:v310];
+    v308 = archiveViewCardSection;
+    archiveViewCardSection2 = [(_SFPBCardSectionValue *)self archiveViewCardSection];
+    archiveViewCardSection3 = [equalCopy archiveViewCardSection];
+    v311 = [archiveViewCardSection2 isEqual:archiveViewCardSection3];
 
     if (!v311)
     {
@@ -5607,20 +5607,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self appIconCardSection];
-  v6 = [v4 appIconCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self appIconCardSection];
+  appLinkCardSection2 = [equalCopy appIconCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v312 = [(_SFPBCardSectionValue *)self appIconCardSection];
-  if (v312)
+  appIconCardSection = [(_SFPBCardSectionValue *)self appIconCardSection];
+  if (appIconCardSection)
   {
-    v313 = v312;
-    v314 = [(_SFPBCardSectionValue *)self appIconCardSection];
-    v315 = [v4 appIconCardSection];
-    v316 = [v314 isEqual:v315];
+    v313 = appIconCardSection;
+    appIconCardSection2 = [(_SFPBCardSectionValue *)self appIconCardSection];
+    appIconCardSection3 = [equalCopy appIconCardSection];
+    v316 = [appIconCardSection2 isEqual:appIconCardSection3];
 
     if (!v316)
     {
@@ -5632,20 +5632,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
-  v6 = [v4 largeTitleDetailedRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
+  appLinkCardSection2 = [equalCopy largeTitleDetailedRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v317 = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
-  if (v317)
+  largeTitleDetailedRowCardSection = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
+  if (largeTitleDetailedRowCardSection)
   {
-    v318 = v317;
-    v319 = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
-    v320 = [v4 largeTitleDetailedRowCardSection];
-    v321 = [v319 isEqual:v320];
+    v318 = largeTitleDetailedRowCardSection;
+    largeTitleDetailedRowCardSection2 = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
+    largeTitleDetailedRowCardSection3 = [equalCopy largeTitleDetailedRowCardSection];
+    v321 = [largeTitleDetailedRowCardSection2 isEqual:largeTitleDetailedRowCardSection3];
 
     if (!v321)
     {
@@ -5657,20 +5657,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
-  v6 = [v4 safariTableOfContentsCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
+  appLinkCardSection2 = [equalCopy safariTableOfContentsCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v322 = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
-  if (v322)
+  safariTableOfContentsCardSection = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
+  if (safariTableOfContentsCardSection)
   {
-    v323 = v322;
-    v324 = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
-    v325 = [v4 safariTableOfContentsCardSection];
-    v326 = [v324 isEqual:v325];
+    v323 = safariTableOfContentsCardSection;
+    safariTableOfContentsCardSection2 = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
+    safariTableOfContentsCardSection3 = [equalCopy safariTableOfContentsCardSection];
+    v326 = [safariTableOfContentsCardSection2 isEqual:safariTableOfContentsCardSection3];
 
     if (!v326)
     {
@@ -5682,20 +5682,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
-  v6 = [v4 rfSummaryItemShortNumberCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemShortNumberCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v327 = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
-  if (v327)
+  rfSummaryItemShortNumberCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
+  if (rfSummaryItemShortNumberCardSection)
   {
-    v328 = v327;
-    v329 = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
-    v330 = [v4 rfSummaryItemShortNumberCardSection];
-    v331 = [v329 isEqual:v330];
+    v328 = rfSummaryItemShortNumberCardSection;
+    rfSummaryItemShortNumberCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
+    rfSummaryItemShortNumberCardSection3 = [equalCopy rfSummaryItemShortNumberCardSection];
+    v331 = [rfSummaryItemShortNumberCardSection2 isEqual:rfSummaryItemShortNumberCardSection3];
 
     if (!v331)
     {
@@ -5707,20 +5707,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
-  v6 = [v4 rfSummaryItemTextCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemTextCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v332 = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
-  if (v332)
+  rfSummaryItemTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
+  if (rfSummaryItemTextCardSection)
   {
-    v333 = v332;
-    v334 = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
-    v335 = [v4 rfSummaryItemTextCardSection];
-    v336 = [v334 isEqual:v335];
+    v333 = rfSummaryItemTextCardSection;
+    rfSummaryItemTextCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
+    rfSummaryItemTextCardSection3 = [equalCopy rfSummaryItemTextCardSection];
+    v336 = [rfSummaryItemTextCardSection2 isEqual:rfSummaryItemTextCardSection3];
 
     if (!v336)
     {
@@ -5732,20 +5732,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
-  v6 = [v4 rfSummaryItemStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v337 = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
-  if (v337)
+  rfSummaryItemStandardCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
+  if (rfSummaryItemStandardCardSection)
   {
-    v338 = v337;
-    v339 = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
-    v340 = [v4 rfSummaryItemStandardCardSection];
-    v341 = [v339 isEqual:v340];
+    v338 = rfSummaryItemStandardCardSection;
+    rfSummaryItemStandardCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
+    rfSummaryItemStandardCardSection3 = [equalCopy rfSummaryItemStandardCardSection];
+    v341 = [rfSummaryItemStandardCardSection2 isEqual:rfSummaryItemStandardCardSection3];
 
     if (!v341)
     {
@@ -5757,20 +5757,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
-  v6 = [v4 rfFactItemShortNumberCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemShortNumberCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v342 = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
-  if (v342)
+  rfFactItemShortNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
+  if (rfFactItemShortNumberCardSection)
   {
-    v343 = v342;
-    v344 = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
-    v345 = [v4 rfFactItemShortNumberCardSection];
-    v346 = [v344 isEqual:v345];
+    v343 = rfFactItemShortNumberCardSection;
+    rfFactItemShortNumberCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
+    rfFactItemShortNumberCardSection3 = [equalCopy rfFactItemShortNumberCardSection];
+    v346 = [rfFactItemShortNumberCardSection2 isEqual:rfFactItemShortNumberCardSection3];
 
     if (!v346)
     {
@@ -5782,20 +5782,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
-  v6 = [v4 rfFactItemStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v347 = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
-  if (v347)
+  rfFactItemStandardCardSection = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
+  if (rfFactItemStandardCardSection)
   {
-    v348 = v347;
-    v349 = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
-    v350 = [v4 rfFactItemStandardCardSection];
-    v351 = [v349 isEqual:v350];
+    v348 = rfFactItemStandardCardSection;
+    rfFactItemStandardCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
+    rfFactItemStandardCardSection3 = [equalCopy rfFactItemStandardCardSection];
+    v351 = [rfFactItemStandardCardSection2 isEqual:rfFactItemStandardCardSection3];
 
     if (!v351)
     {
@@ -5807,20 +5807,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
-  v6 = [v4 rfLongItemStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfLongItemStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v352 = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
-  if (v352)
+  rfLongItemStandardCardSection = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
+  if (rfLongItemStandardCardSection)
   {
-    v353 = v352;
-    v354 = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
-    v355 = [v4 rfLongItemStandardCardSection];
-    v356 = [v354 isEqual:v355];
+    v353 = rfLongItemStandardCardSection;
+    rfLongItemStandardCardSection2 = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
+    rfLongItemStandardCardSection3 = [equalCopy rfLongItemStandardCardSection];
+    v356 = [rfLongItemStandardCardSection2 isEqual:rfLongItemStandardCardSection3];
 
     if (!v356)
     {
@@ -5832,20 +5832,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
-  v6 = [v4 rfPrimaryHeaderRichCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
+  appLinkCardSection2 = [equalCopy rfPrimaryHeaderRichCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v357 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
-  if (v357)
+  rfPrimaryHeaderRichCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
+  if (rfPrimaryHeaderRichCardSection)
   {
-    v358 = v357;
-    v359 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
-    v360 = [v4 rfPrimaryHeaderRichCardSection];
-    v361 = [v359 isEqual:v360];
+    v358 = rfPrimaryHeaderRichCardSection;
+    rfPrimaryHeaderRichCardSection2 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
+    rfPrimaryHeaderRichCardSection3 = [equalCopy rfPrimaryHeaderRichCardSection];
+    v361 = [rfPrimaryHeaderRichCardSection2 isEqual:rfPrimaryHeaderRichCardSection3];
 
     if (!v361)
     {
@@ -5857,20 +5857,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
-  v6 = [v4 rfPrimaryHeaderStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfPrimaryHeaderStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v362 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
-  if (v362)
+  rfPrimaryHeaderStandardCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
+  if (rfPrimaryHeaderStandardCardSection)
   {
-    v363 = v362;
-    v364 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
-    v365 = [v4 rfPrimaryHeaderStandardCardSection];
-    v366 = [v364 isEqual:v365];
+    v363 = rfPrimaryHeaderStandardCardSection;
+    rfPrimaryHeaderStandardCardSection2 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
+    rfPrimaryHeaderStandardCardSection3 = [equalCopy rfPrimaryHeaderStandardCardSection];
+    v366 = [rfPrimaryHeaderStandardCardSection2 isEqual:rfPrimaryHeaderStandardCardSection3];
 
     if (!v366)
     {
@@ -5882,20 +5882,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
-  v6 = [v4 rfReferenceFootnoteCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
+  appLinkCardSection2 = [equalCopy rfReferenceFootnoteCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v367 = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
-  if (v367)
+  rfReferenceFootnoteCardSection = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
+  if (rfReferenceFootnoteCardSection)
   {
-    v368 = v367;
-    v369 = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
-    v370 = [v4 rfReferenceFootnoteCardSection];
-    v371 = [v369 isEqual:v370];
+    v368 = rfReferenceFootnoteCardSection;
+    rfReferenceFootnoteCardSection2 = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
+    rfReferenceFootnoteCardSection3 = [equalCopy rfReferenceFootnoteCardSection];
+    v371 = [rfReferenceFootnoteCardSection2 isEqual:rfReferenceFootnoteCardSection3];
 
     if (!v371)
     {
@@ -5907,20 +5907,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
-  v6 = [v4 rfReferenceRichCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
+  appLinkCardSection2 = [equalCopy rfReferenceRichCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v372 = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
-  if (v372)
+  rfReferenceRichCardSection = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
+  if (rfReferenceRichCardSection)
   {
-    v373 = v372;
-    v374 = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
-    v375 = [v4 rfReferenceRichCardSection];
-    v376 = [v374 isEqual:v375];
+    v373 = rfReferenceRichCardSection;
+    rfReferenceRichCardSection2 = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
+    rfReferenceRichCardSection3 = [equalCopy rfReferenceRichCardSection];
+    v376 = [rfReferenceRichCardSection2 isEqual:rfReferenceRichCardSection3];
 
     if (!v376)
     {
@@ -5932,20 +5932,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
-  v6 = [v4 rfSimpleItemRichCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
+  appLinkCardSection2 = [equalCopy rfSimpleItemRichCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v377 = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
-  if (v377)
+  rfSimpleItemRichCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
+  if (rfSimpleItemRichCardSection)
   {
-    v378 = v377;
-    v379 = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
-    v380 = [v4 rfSimpleItemRichCardSection];
-    v381 = [v379 isEqual:v380];
+    v378 = rfSimpleItemRichCardSection;
+    rfSimpleItemRichCardSection2 = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
+    rfSimpleItemRichCardSection3 = [equalCopy rfSimpleItemRichCardSection];
+    v381 = [rfSimpleItemRichCardSection2 isEqual:rfSimpleItemRichCardSection3];
 
     if (!v381)
     {
@@ -5957,20 +5957,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
-  v6 = [v4 rfSimpleItemStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfSimpleItemStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v382 = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
-  if (v382)
+  rfSimpleItemStandardCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
+  if (rfSimpleItemStandardCardSection)
   {
-    v383 = v382;
-    v384 = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
-    v385 = [v4 rfSimpleItemStandardCardSection];
-    v386 = [v384 isEqual:v385];
+    v383 = rfSimpleItemStandardCardSection;
+    rfSimpleItemStandardCardSection2 = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
+    rfSimpleItemStandardCardSection3 = [equalCopy rfSimpleItemStandardCardSection];
+    v386 = [rfSimpleItemStandardCardSection2 isEqual:rfSimpleItemStandardCardSection3];
 
     if (!v386)
     {
@@ -5982,20 +5982,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
-  v6 = [v4 rfSummaryItemAlignedTextCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemAlignedTextCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v387 = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
-  if (v387)
+  rfSummaryItemAlignedTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
+  if (rfSummaryItemAlignedTextCardSection)
   {
-    v388 = v387;
-    v389 = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
-    v390 = [v4 rfSummaryItemAlignedTextCardSection];
-    v391 = [v389 isEqual:v390];
+    v388 = rfSummaryItemAlignedTextCardSection;
+    rfSummaryItemAlignedTextCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
+    rfSummaryItemAlignedTextCardSection3 = [equalCopy rfSummaryItemAlignedTextCardSection];
+    v391 = [rfSummaryItemAlignedTextCardSection2 isEqual:rfSummaryItemAlignedTextCardSection3];
 
     if (!v391)
     {
@@ -6007,20 +6007,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
-  v6 = [v4 rfExpandableStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfExpandableStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v392 = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
-  if (v392)
+  rfExpandableStandardCardSection = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
+  if (rfExpandableStandardCardSection)
   {
-    v393 = v392;
-    v394 = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
-    v395 = [v4 rfExpandableStandardCardSection];
-    v396 = [v394 isEqual:v395];
+    v393 = rfExpandableStandardCardSection;
+    rfExpandableStandardCardSection2 = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
+    rfExpandableStandardCardSection3 = [equalCopy rfExpandableStandardCardSection];
+    v396 = [rfExpandableStandardCardSection2 isEqual:rfExpandableStandardCardSection3];
 
     if (!v396)
     {
@@ -6032,20 +6032,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
-  v6 = [v4 rfFactItemButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v397 = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
-  if (v397)
+  rfFactItemButtonCardSection = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
+  if (rfFactItemButtonCardSection)
   {
-    v398 = v397;
-    v399 = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
-    v400 = [v4 rfFactItemButtonCardSection];
-    v401 = [v399 isEqual:v400];
+    v398 = rfFactItemButtonCardSection;
+    rfFactItemButtonCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
+    rfFactItemButtonCardSection3 = [equalCopy rfFactItemButtonCardSection];
+    v401 = [rfFactItemButtonCardSection2 isEqual:rfFactItemButtonCardSection3];
 
     if (!v401)
     {
@@ -6057,20 +6057,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
-  v6 = [v4 rfFactItemHeroNumberCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemHeroNumberCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v402 = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
-  if (v402)
+  rfFactItemHeroNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
+  if (rfFactItemHeroNumberCardSection)
   {
-    v403 = v402;
-    v404 = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
-    v405 = [v4 rfFactItemHeroNumberCardSection];
-    v406 = [v404 isEqual:v405];
+    v403 = rfFactItemHeroNumberCardSection;
+    rfFactItemHeroNumberCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
+    rfFactItemHeroNumberCardSection3 = [equalCopy rfFactItemHeroNumberCardSection];
+    v406 = [rfFactItemHeroNumberCardSection2 isEqual:rfFactItemHeroNumberCardSection3];
 
     if (!v406)
     {
@@ -6082,20 +6082,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
-  v6 = [v4 rfPrimaryHeaderMarqueeCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
+  appLinkCardSection2 = [equalCopy rfPrimaryHeaderMarqueeCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v407 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
-  if (v407)
+  rfPrimaryHeaderMarqueeCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
+  if (rfPrimaryHeaderMarqueeCardSection)
   {
-    v408 = v407;
-    v409 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
-    v410 = [v4 rfPrimaryHeaderMarqueeCardSection];
-    v411 = [v409 isEqual:v410];
+    v408 = rfPrimaryHeaderMarqueeCardSection;
+    rfPrimaryHeaderMarqueeCardSection2 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
+    rfPrimaryHeaderMarqueeCardSection3 = [equalCopy rfPrimaryHeaderMarqueeCardSection];
+    v411 = [rfPrimaryHeaderMarqueeCardSection2 isEqual:rfPrimaryHeaderMarqueeCardSection3];
 
     if (!v411)
     {
@@ -6107,20 +6107,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
-  v6 = [v4 rfSummaryItemDetailedTextCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemDetailedTextCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v412 = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
-  if (v412)
+  rfSummaryItemDetailedTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
+  if (rfSummaryItemDetailedTextCardSection)
   {
-    v413 = v412;
-    v414 = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
-    v415 = [v4 rfSummaryItemDetailedTextCardSection];
-    v416 = [v414 isEqual:v415];
+    v413 = rfSummaryItemDetailedTextCardSection;
+    rfSummaryItemDetailedTextCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
+    rfSummaryItemDetailedTextCardSection3 = [equalCopy rfSummaryItemDetailedTextCardSection];
+    v416 = [rfSummaryItemDetailedTextCardSection2 isEqual:rfSummaryItemDetailedTextCardSection3];
 
     if (!v416)
     {
@@ -6132,20 +6132,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
-  v6 = [v4 rfSimpleItemPlayerCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
+  appLinkCardSection2 = [equalCopy rfSimpleItemPlayerCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v417 = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
-  if (v417)
+  rfSimpleItemPlayerCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
+  if (rfSimpleItemPlayerCardSection)
   {
-    v418 = v417;
-    v419 = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
-    v420 = [v4 rfSimpleItemPlayerCardSection];
-    v421 = [v419 isEqual:v420];
+    v418 = rfSimpleItemPlayerCardSection;
+    rfSimpleItemPlayerCardSection2 = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
+    rfSimpleItemPlayerCardSection3 = [equalCopy rfSimpleItemPlayerCardSection];
+    v421 = [rfSimpleItemPlayerCardSection2 isEqual:rfSimpleItemPlayerCardSection3];
 
     if (!v421)
     {
@@ -6157,20 +6157,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
-  v6 = [v4 rfSummaryItemPairCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemPairCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v422 = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
-  if (v422)
+  rfSummaryItemPairCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
+  if (rfSummaryItemPairCardSection)
   {
-    v423 = v422;
-    v424 = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
-    v425 = [v4 rfSummaryItemPairCardSection];
-    v426 = [v424 isEqual:v425];
+    v423 = rfSummaryItemPairCardSection;
+    rfSummaryItemPairCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
+    rfSummaryItemPairCardSection3 = [equalCopy rfSummaryItemPairCardSection];
+    v426 = [rfSummaryItemPairCardSection2 isEqual:rfSummaryItemPairCardSection3];
 
     if (!v426)
     {
@@ -6182,20 +6182,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
-  v6 = [v4 rfSummaryItemPairNumberCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemPairNumberCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v427 = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
-  if (v427)
+  rfSummaryItemPairNumberCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
+  if (rfSummaryItemPairNumberCardSection)
   {
-    v428 = v427;
-    v429 = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
-    v430 = [v4 rfSummaryItemPairNumberCardSection];
-    v431 = [v429 isEqual:v430];
+    v428 = rfSummaryItemPairNumberCardSection;
+    rfSummaryItemPairNumberCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
+    rfSummaryItemPairNumberCardSection3 = [equalCopy rfSummaryItemPairNumberCardSection];
+    v431 = [rfSummaryItemPairNumberCardSection2 isEqual:rfSummaryItemPairNumberCardSection3];
 
     if (!v431)
     {
@@ -6207,20 +6207,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
-  v6 = [v4 rfFactItemShortHeroNumberCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemShortHeroNumberCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v432 = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
-  if (v432)
+  rfFactItemShortHeroNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
+  if (rfFactItemShortHeroNumberCardSection)
   {
-    v433 = v432;
-    v434 = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
-    v435 = [v4 rfFactItemShortHeroNumberCardSection];
-    v436 = [v434 isEqual:v435];
+    v433 = rfFactItemShortHeroNumberCardSection;
+    rfFactItemShortHeroNumberCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
+    rfFactItemShortHeroNumberCardSection3 = [equalCopy rfFactItemShortHeroNumberCardSection];
+    v436 = [rfFactItemShortHeroNumberCardSection2 isEqual:rfFactItemShortHeroNumberCardSection3];
 
     if (!v436)
     {
@@ -6232,20 +6232,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
-  v6 = [v4 rfFactItemDetailedNumberCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemDetailedNumberCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v437 = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
-  if (v437)
+  rfFactItemDetailedNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
+  if (rfFactItemDetailedNumberCardSection)
   {
-    v438 = v437;
-    v439 = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
-    v440 = [v4 rfFactItemDetailedNumberCardSection];
-    v441 = [v439 isEqual:v440];
+    v438 = rfFactItemDetailedNumberCardSection;
+    rfFactItemDetailedNumberCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
+    rfFactItemDetailedNumberCardSection3 = [equalCopy rfFactItemDetailedNumberCardSection];
+    v441 = [rfFactItemDetailedNumberCardSection2 isEqual:rfFactItemDetailedNumberCardSection3];
 
     if (!v441)
     {
@@ -6257,20 +6257,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
-  v6 = [v4 rfFactItemHeroButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemHeroButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v442 = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
-  if (v442)
+  rfFactItemHeroButtonCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
+  if (rfFactItemHeroButtonCardSection)
   {
-    v443 = v442;
-    v444 = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
-    v445 = [v4 rfFactItemHeroButtonCardSection];
-    v446 = [v444 isEqual:v445];
+    v443 = rfFactItemHeroButtonCardSection;
+    rfFactItemHeroButtonCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
+    rfFactItemHeroButtonCardSection3 = [equalCopy rfFactItemHeroButtonCardSection];
+    v446 = [rfFactItemHeroButtonCardSection2 isEqual:rfFactItemHeroButtonCardSection3];
 
     if (!v446)
     {
@@ -6282,20 +6282,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
-  v6 = [v4 rfFactItemImageRightCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
+  appLinkCardSection2 = [equalCopy rfFactItemImageRightCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v447 = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
-  if (v447)
+  rfFactItemImageRightCardSection = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
+  if (rfFactItemImageRightCardSection)
   {
-    v448 = v447;
-    v449 = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
-    v450 = [v4 rfFactItemImageRightCardSection];
-    v451 = [v449 isEqual:v450];
+    v448 = rfFactItemImageRightCardSection;
+    rfFactItemImageRightCardSection2 = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
+    rfFactItemImageRightCardSection3 = [equalCopy rfFactItemImageRightCardSection];
+    v451 = [rfFactItemImageRightCardSection2 isEqual:rfFactItemImageRightCardSection3];
 
     if (!v451)
     {
@@ -6307,20 +6307,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
-  v6 = [v4 rfSummaryItemSwitchV2CardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemSwitchV2CardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v452 = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
-  if (v452)
+  rfSummaryItemSwitchV2CardSection = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
+  if (rfSummaryItemSwitchV2CardSection)
   {
-    v453 = v452;
-    v454 = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
-    v455 = [v4 rfSummaryItemSwitchV2CardSection];
-    v456 = [v454 isEqual:v455];
+    v453 = rfSummaryItemSwitchV2CardSection;
+    rfSummaryItemSwitchV2CardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
+    rfSummaryItemSwitchV2CardSection3 = [equalCopy rfSummaryItemSwitchV2CardSection];
+    v456 = [rfSummaryItemSwitchV2CardSection2 isEqual:rfSummaryItemSwitchV2CardSection3];
 
     if (!v456)
     {
@@ -6332,20 +6332,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
-  v6 = [v4 rfTableHeaderCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
+  appLinkCardSection2 = [equalCopy rfTableHeaderCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v457 = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
-  if (v457)
+  rfTableHeaderCardSection = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
+  if (rfTableHeaderCardSection)
   {
-    v458 = v457;
-    v459 = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
-    v460 = [v4 rfTableHeaderCardSection];
-    v461 = [v459 isEqual:v460];
+    v458 = rfTableHeaderCardSection;
+    rfTableHeaderCardSection2 = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
+    rfTableHeaderCardSection3 = [equalCopy rfTableHeaderCardSection];
+    v461 = [rfTableHeaderCardSection2 isEqual:rfTableHeaderCardSection3];
 
     if (!v461)
     {
@@ -6357,20 +6357,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
-  v6 = [v4 rfTableRowCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
+  appLinkCardSection2 = [equalCopy rfTableRowCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v462 = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
-  if (v462)
+  rfTableRowCardSection = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
+  if (rfTableRowCardSection)
   {
-    v463 = v462;
-    v464 = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
-    v465 = [v4 rfTableRowCardSection];
-    v466 = [v464 isEqual:v465];
+    v463 = rfTableRowCardSection;
+    rfTableRowCardSection2 = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
+    rfTableRowCardSection3 = [equalCopy rfTableRowCardSection];
+    v466 = [rfTableRowCardSection2 isEqual:rfTableRowCardSection3];
 
     if (!v466)
     {
@@ -6382,20 +6382,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
-  v6 = [v4 rfSimpleItemVisualElementCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
+  appLinkCardSection2 = [equalCopy rfSimpleItemVisualElementCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v467 = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
-  if (v467)
+  rfSimpleItemVisualElementCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
+  if (rfSimpleItemVisualElementCardSection)
   {
-    v468 = v467;
-    v469 = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
-    v470 = [v4 rfSimpleItemVisualElementCardSection];
-    v471 = [v469 isEqual:v470];
+    v468 = rfSimpleItemVisualElementCardSection;
+    rfSimpleItemVisualElementCardSection2 = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
+    rfSimpleItemVisualElementCardSection3 = [equalCopy rfSimpleItemVisualElementCardSection];
+    v471 = [rfSimpleItemVisualElementCardSection2 isEqual:rfSimpleItemVisualElementCardSection3];
 
     if (!v471)
     {
@@ -6407,20 +6407,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
-  v6 = [v4 rfSummaryItemPlayerCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemPlayerCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v472 = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
-  if (v472)
+  rfSummaryItemPlayerCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
+  if (rfSummaryItemPlayerCardSection)
   {
-    v473 = v472;
-    v474 = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
-    v475 = [v4 rfSummaryItemPlayerCardSection];
-    v476 = [v474 isEqual:v475];
+    v473 = rfSummaryItemPlayerCardSection;
+    rfSummaryItemPlayerCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
+    rfSummaryItemPlayerCardSection3 = [equalCopy rfSummaryItemPlayerCardSection];
+    v476 = [rfSummaryItemPlayerCardSection2 isEqual:rfSummaryItemPlayerCardSection3];
 
     if (!v476)
     {
@@ -6432,20 +6432,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
-  v6 = [v4 rfSummaryItemImageRightCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemImageRightCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v477 = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
-  if (v477)
+  rfSummaryItemImageRightCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
+  if (rfSummaryItemImageRightCardSection)
   {
-    v478 = v477;
-    v479 = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
-    v480 = [v4 rfSummaryItemImageRightCardSection];
-    v481 = [v479 isEqual:v480];
+    v478 = rfSummaryItemImageRightCardSection;
+    rfSummaryItemImageRightCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
+    rfSummaryItemImageRightCardSection3 = [equalCopy rfSummaryItemImageRightCardSection];
+    v481 = [rfSummaryItemImageRightCardSection2 isEqual:rfSummaryItemImageRightCardSection3];
 
     if (!v481)
     {
@@ -6457,20 +6457,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
-  v6 = [v4 rfSummaryItemButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v482 = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
-  if (v482)
+  rfSummaryItemButtonCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
+  if (rfSummaryItemButtonCardSection)
   {
-    v483 = v482;
-    v484 = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
-    v485 = [v4 rfSummaryItemButtonCardSection];
-    v486 = [v484 isEqual:v485];
+    v483 = rfSummaryItemButtonCardSection;
+    rfSummaryItemButtonCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
+    rfSummaryItemButtonCardSection3 = [equalCopy rfSummaryItemButtonCardSection];
+    v486 = [rfSummaryItemButtonCardSection2 isEqual:rfSummaryItemButtonCardSection3];
 
     if (!v486)
     {
@@ -6482,20 +6482,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
-  v6 = [v4 rfSimpleItemReverseRichCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
+  appLinkCardSection2 = [equalCopy rfSimpleItemReverseRichCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v487 = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
-  if (v487)
+  rfSimpleItemReverseRichCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
+  if (rfSimpleItemReverseRichCardSection)
   {
-    v488 = v487;
-    v489 = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
-    v490 = [v4 rfSimpleItemReverseRichCardSection];
-    v491 = [v489 isEqual:v490];
+    v488 = rfSimpleItemReverseRichCardSection;
+    rfSimpleItemReverseRichCardSection2 = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
+    rfSimpleItemReverseRichCardSection3 = [equalCopy rfSimpleItemReverseRichCardSection];
+    v491 = [rfSimpleItemReverseRichCardSection2 isEqual:rfSimpleItemReverseRichCardSection3];
 
     if (!v491)
     {
@@ -6507,20 +6507,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
-  v6 = [v4 rfSimpleItemRichSearchResultCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
+  appLinkCardSection2 = [equalCopy rfSimpleItemRichSearchResultCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v492 = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
-  if (v492)
+  rfSimpleItemRichSearchResultCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
+  if (rfSimpleItemRichSearchResultCardSection)
   {
-    v493 = v492;
-    v494 = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
-    v495 = [v4 rfSimpleItemRichSearchResultCardSection];
-    v496 = [v494 isEqual:v495];
+    v493 = rfSimpleItemRichSearchResultCardSection;
+    rfSimpleItemRichSearchResultCardSection2 = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
+    rfSimpleItemRichSearchResultCardSection3 = [equalCopy rfSimpleItemRichSearchResultCardSection];
+    v496 = [rfSimpleItemRichSearchResultCardSection2 isEqual:rfSimpleItemRichSearchResultCardSection3];
 
     if (!v496)
     {
@@ -6532,20 +6532,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
-  v6 = [v4 rfPrimaryHeaderStackedImageCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
+  appLinkCardSection2 = [equalCopy rfPrimaryHeaderStackedImageCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v497 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
-  if (v497)
+  rfPrimaryHeaderStackedImageCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
+  if (rfPrimaryHeaderStackedImageCardSection)
   {
-    v498 = v497;
-    v499 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
-    v500 = [v4 rfPrimaryHeaderStackedImageCardSection];
-    v501 = [v499 isEqual:v500];
+    v498 = rfPrimaryHeaderStackedImageCardSection;
+    rfPrimaryHeaderStackedImageCardSection2 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
+    rfPrimaryHeaderStackedImageCardSection3 = [equalCopy rfPrimaryHeaderStackedImageCardSection];
+    v501 = [rfPrimaryHeaderStackedImageCardSection2 isEqual:rfPrimaryHeaderStackedImageCardSection3];
 
     if (!v501)
     {
@@ -6557,20 +6557,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
-  v6 = [v4 rfReferenceItemLogoCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
+  appLinkCardSection2 = [equalCopy rfReferenceItemLogoCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v502 = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
-  if (v502)
+  rfReferenceItemLogoCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
+  if (rfReferenceItemLogoCardSection)
   {
-    v503 = v502;
-    v504 = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
-    v505 = [v4 rfReferenceItemLogoCardSection];
-    v506 = [v504 isEqual:v505];
+    v503 = rfReferenceItemLogoCardSection;
+    rfReferenceItemLogoCardSection2 = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
+    rfReferenceItemLogoCardSection3 = [equalCopy rfReferenceItemLogoCardSection];
+    v506 = [rfReferenceItemLogoCardSection2 isEqual:rfReferenceItemLogoCardSection3];
 
     if (!v506)
     {
@@ -6582,20 +6582,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
-  v6 = [v4 rfReferenceItemButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfReferenceItemButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v507 = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
-  if (v507)
+  rfReferenceItemButtonCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
+  if (rfReferenceItemButtonCardSection)
   {
-    v508 = v507;
-    v509 = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
-    v510 = [v4 rfReferenceItemButtonCardSection];
-    v511 = [v509 isEqual:v510];
+    v508 = rfReferenceItemButtonCardSection;
+    rfReferenceItemButtonCardSection2 = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
+    rfReferenceItemButtonCardSection3 = [equalCopy rfReferenceItemButtonCardSection];
+    v511 = [rfReferenceItemButtonCardSection2 isEqual:rfReferenceItemButtonCardSection3];
 
     if (!v511)
     {
@@ -6607,20 +6607,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfButtonCardSection];
-  v6 = [v4 rfButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v512 = [(_SFPBCardSectionValue *)self rfButtonCardSection];
-  if (v512)
+  rfButtonCardSection = [(_SFPBCardSectionValue *)self rfButtonCardSection];
+  if (rfButtonCardSection)
   {
-    v513 = v512;
-    v514 = [(_SFPBCardSectionValue *)self rfButtonCardSection];
-    v515 = [v4 rfButtonCardSection];
-    v516 = [v514 isEqual:v515];
+    v513 = rfButtonCardSection;
+    rfButtonCardSection2 = [(_SFPBCardSectionValue *)self rfButtonCardSection];
+    rfButtonCardSection3 = [equalCopy rfButtonCardSection];
+    v516 = [rfButtonCardSection2 isEqual:rfButtonCardSection3];
 
     if (!v516)
     {
@@ -6632,20 +6632,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
-  v6 = [v4 rfBinaryButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfBinaryButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v517 = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
-  if (v517)
+  rfBinaryButtonCardSection = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
+  if (rfBinaryButtonCardSection)
   {
-    v518 = v517;
-    v519 = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
-    v520 = [v4 rfBinaryButtonCardSection];
-    v521 = [v519 isEqual:v520];
+    v518 = rfBinaryButtonCardSection;
+    rfBinaryButtonCardSection2 = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
+    rfBinaryButtonCardSection3 = [equalCopy rfBinaryButtonCardSection];
+    v521 = [rfBinaryButtonCardSection2 isEqual:rfBinaryButtonCardSection3];
 
     if (!v521)
     {
@@ -6657,20 +6657,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
-  v6 = [v4 rfReferenceCenteredCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
+  appLinkCardSection2 = [equalCopy rfReferenceCenteredCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v522 = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
-  if (v522)
+  rfReferenceCenteredCardSection = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
+  if (rfReferenceCenteredCardSection)
   {
-    v523 = v522;
-    v524 = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
-    v525 = [v4 rfReferenceCenteredCardSection];
-    v526 = [v524 isEqual:v525];
+    v523 = rfReferenceCenteredCardSection;
+    rfReferenceCenteredCardSection2 = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
+    rfReferenceCenteredCardSection3 = [equalCopy rfReferenceCenteredCardSection];
+    v526 = [rfReferenceCenteredCardSection2 isEqual:rfReferenceCenteredCardSection3];
 
     if (!v526)
     {
@@ -6682,20 +6682,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
-  v6 = [v4 rfSecondaryHeaderStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfSecondaryHeaderStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v527 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
-  if (v527)
+  rfSecondaryHeaderStandardCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
+  if (rfSecondaryHeaderStandardCardSection)
   {
-    v528 = v527;
-    v529 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
-    v530 = [v4 rfSecondaryHeaderStandardCardSection];
-    v531 = [v529 isEqual:v530];
+    v528 = rfSecondaryHeaderStandardCardSection;
+    rfSecondaryHeaderStandardCardSection2 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
+    rfSecondaryHeaderStandardCardSection3 = [equalCopy rfSecondaryHeaderStandardCardSection];
+    v531 = [rfSecondaryHeaderStandardCardSection2 isEqual:rfSecondaryHeaderStandardCardSection3];
 
     if (!v531)
     {
@@ -6707,20 +6707,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
-  v6 = [v4 rfSecondaryHeaderEmphasizedCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
+  appLinkCardSection2 = [equalCopy rfSecondaryHeaderEmphasizedCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v532 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
-  if (v532)
+  rfSecondaryHeaderEmphasizedCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
+  if (rfSecondaryHeaderEmphasizedCardSection)
   {
-    v533 = v532;
-    v534 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
-    v535 = [v4 rfSecondaryHeaderEmphasizedCardSection];
-    v536 = [v534 isEqual:v535];
+    v533 = rfSecondaryHeaderEmphasizedCardSection;
+    rfSecondaryHeaderEmphasizedCardSection2 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
+    rfSecondaryHeaderEmphasizedCardSection3 = [equalCopy rfSecondaryHeaderEmphasizedCardSection];
+    v536 = [rfSecondaryHeaderEmphasizedCardSection2 isEqual:rfSecondaryHeaderEmphasizedCardSection3];
 
     if (!v536)
     {
@@ -6732,20 +6732,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfMapCardSection];
-  v6 = [v4 rfMapCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfMapCardSection];
+  appLinkCardSection2 = [equalCopy rfMapCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v537 = [(_SFPBCardSectionValue *)self rfMapCardSection];
-  if (v537)
+  rfMapCardSection = [(_SFPBCardSectionValue *)self rfMapCardSection];
+  if (rfMapCardSection)
   {
-    v538 = v537;
-    v539 = [(_SFPBCardSectionValue *)self rfMapCardSection];
-    v540 = [v4 rfMapCardSection];
-    v541 = [v539 isEqual:v540];
+    v538 = rfMapCardSection;
+    rfMapCardSection2 = [(_SFPBCardSectionValue *)self rfMapCardSection];
+    rfMapCardSection3 = [equalCopy rfMapCardSection];
+    v541 = [rfMapCardSection2 isEqual:rfMapCardSection3];
 
     if (!v541)
     {
@@ -6757,20 +6757,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
-  v6 = [v4 rfReferenceStandardCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
+  appLinkCardSection2 = [equalCopy rfReferenceStandardCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v542 = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
-  if (v542)
+  rfReferenceStandardCardSection = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
+  if (rfReferenceStandardCardSection)
   {
-    v543 = v542;
-    v544 = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
-    v545 = [v4 rfReferenceStandardCardSection];
-    v546 = [v544 isEqual:v545];
+    v543 = rfReferenceStandardCardSection;
+    rfReferenceStandardCardSection2 = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
+    rfReferenceStandardCardSection3 = [equalCopy rfReferenceStandardCardSection];
+    v546 = [rfReferenceStandardCardSection2 isEqual:rfReferenceStandardCardSection3];
 
     if (!v546)
     {
@@ -6782,20 +6782,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
-  v6 = [v4 rfMultiButtonCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
+  appLinkCardSection2 = [equalCopy rfMultiButtonCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v547 = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
-  if (v547)
+  rfMultiButtonCardSection = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
+  if (rfMultiButtonCardSection)
   {
-    v548 = v547;
-    v549 = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
-    v550 = [v4 rfMultiButtonCardSection];
-    v551 = [v549 isEqual:v550];
+    v548 = rfMultiButtonCardSection;
+    rfMultiButtonCardSection2 = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
+    rfMultiButtonCardSection3 = [equalCopy rfMultiButtonCardSection];
+    v551 = [rfMultiButtonCardSection2 isEqual:rfMultiButtonCardSection3];
 
     if (!v551)
     {
@@ -6807,20 +6807,20 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
-  v6 = [v4 rfDisambiguationTitleCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
+  appLinkCardSection2 = [equalCopy rfDisambiguationTitleCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
     goto LABEL_556;
   }
 
-  v552 = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
-  if (v552)
+  rfDisambiguationTitleCardSection = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
+  if (rfDisambiguationTitleCardSection)
   {
-    v553 = v552;
-    v554 = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
-    v555 = [v4 rfDisambiguationTitleCardSection];
-    v556 = [v554 isEqual:v555];
+    v553 = rfDisambiguationTitleCardSection;
+    rfDisambiguationTitleCardSection2 = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
+    rfDisambiguationTitleCardSection3 = [equalCopy rfDisambiguationTitleCardSection];
+    v556 = [rfDisambiguationTitleCardSection2 isEqual:rfDisambiguationTitleCardSection3];
 
     if (!v556)
     {
@@ -6832,17 +6832,17 @@
   {
   }
 
-  v5 = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
-  v6 = [v4 rfSummaryItemExpandableCardSection];
-  if ((v5 != 0) == (v6 == 0))
+  appLinkCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
+  appLinkCardSection2 = [equalCopy rfSummaryItemExpandableCardSection];
+  if ((appLinkCardSection != 0) == (appLinkCardSection2 == 0))
   {
 LABEL_556:
 
     goto LABEL_557;
   }
 
-  v557 = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
-  if (!v557)
+  rfSummaryItemExpandableCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
+  if (!rfSummaryItemExpandableCardSection)
   {
 
 LABEL_560:
@@ -6850,10 +6850,10 @@ LABEL_560:
     goto LABEL_558;
   }
 
-  v558 = v557;
-  v559 = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
-  v560 = [v4 rfSummaryItemExpandableCardSection];
-  v561 = [v559 isEqual:v560];
+  v558 = rfSummaryItemExpandableCardSection;
+  rfSummaryItemExpandableCardSection2 = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
+  rfSummaryItemExpandableCardSection3 = [equalCopy rfSummaryItemExpandableCardSection];
+  v561 = [rfSummaryItemExpandableCardSection2 isEqual:rfSummaryItemExpandableCardSection3];
 
   if (v561)
   {
@@ -6867,671 +6867,671 @@ LABEL_558:
   return v562;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v115 = a3;
-  v4 = [(_SFPBCardSectionValue *)self appLinkCardSection];
-  if (v4)
+  toCopy = to;
+  appLinkCardSection = [(_SFPBCardSectionValue *)self appLinkCardSection];
+  if (appLinkCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBCardSectionValue *)self descriptionCardSection];
-  if (v5)
+  descriptionCardSection = [(_SFPBCardSectionValue *)self descriptionCardSection];
+  if (descriptionCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
-  if (v6)
+  keyValueDataCardSection = [(_SFPBCardSectionValue *)self keyValueDataCardSection];
+  if (keyValueDataCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBCardSectionValue *)self mapCardSection];
-  if (v7)
+  mapCardSection = [(_SFPBCardSectionValue *)self mapCardSection];
+  if (mapCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
-  if (v8)
+  mediaInfoCardSection = [(_SFPBCardSectionValue *)self mediaInfoCardSection];
+  if (mediaInfoCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
-  if (v9)
+  mediaPlayerCardSection = [(_SFPBCardSectionValue *)self mediaPlayerCardSection];
+  if (mediaPlayerCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
-  if (v10)
+  nowPlayingCardSection = [(_SFPBCardSectionValue *)self nowPlayingCardSection];
+  if (nowPlayingCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_SFPBCardSectionValue *)self richTitleCardSection];
-  if (v11)
+  richTitleCardSection = [(_SFPBCardSectionValue *)self richTitleCardSection];
+  if (richTitleCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_SFPBCardSectionValue *)self rowCardSection];
-  if (v12)
+  rowCardSection = [(_SFPBCardSectionValue *)self rowCardSection];
+  if (rowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_SFPBCardSectionValue *)self scoreboardCardSection];
-  if (v13)
+  scoreboardCardSection = [(_SFPBCardSectionValue *)self scoreboardCardSection];
+  if (scoreboardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
-  if (v14)
+  socialMediaPostCardSection = [(_SFPBCardSectionValue *)self socialMediaPostCardSection];
+  if (socialMediaPostCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBCardSectionValue *)self stockChartCardSection];
-  if (v15)
+  stockChartCardSection = [(_SFPBCardSectionValue *)self stockChartCardSection];
+  if (stockChartCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
-  if (v16)
+  tableHeaderRowCardSection = [(_SFPBCardSectionValue *)self tableHeaderRowCardSection];
+  if (tableHeaderRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_SFPBCardSectionValue *)self tableRowCardSection];
-  if (v17)
+  tableRowCardSection = [(_SFPBCardSectionValue *)self tableRowCardSection];
+  if (tableRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_SFPBCardSectionValue *)self textColumnsCardSection];
-  if (v18)
+  textColumnsCardSection = [(_SFPBCardSectionValue *)self textColumnsCardSection];
+  if (textColumnsCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_SFPBCardSectionValue *)self titleCardSection];
-  if (v19)
+  titleCardSection = [(_SFPBCardSectionValue *)self titleCardSection];
+  if (titleCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_SFPBCardSectionValue *)self trackListCardSection];
-  if (v20)
+  trackListCardSection = [(_SFPBCardSectionValue *)self trackListCardSection];
+  if (trackListCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
-  if (v21)
+  audioPlaybackCardSection = [(_SFPBCardSectionValue *)self audioPlaybackCardSection];
+  if (audioPlaybackCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_SFPBCardSectionValue *)self flightCardSection];
-  if (v22)
+  flightCardSection = [(_SFPBCardSectionValue *)self flightCardSection];
+  if (flightCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
-  if (v23)
+  activityIndicatorCardSection = [(_SFPBCardSectionValue *)self activityIndicatorCardSection];
+  if (activityIndicatorCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(_SFPBCardSectionValue *)self webCardSection];
-  if (v24)
+  webCardSection = [(_SFPBCardSectionValue *)self webCardSection];
+  if (webCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v25 = [(_SFPBCardSectionValue *)self messageCardSection];
-  if (v25)
+  messageCardSection = [(_SFPBCardSectionValue *)self messageCardSection];
+  if (messageCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(_SFPBCardSectionValue *)self detailedRowCardSection];
-  if (v26)
+  detailedRowCardSection = [(_SFPBCardSectionValue *)self detailedRowCardSection];
+  if (detailedRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(_SFPBCardSectionValue *)self imagesCardSection];
-  if (v27)
+  imagesCardSection = [(_SFPBCardSectionValue *)self imagesCardSection];
+  if (imagesCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(_SFPBCardSectionValue *)self suggestionCardSection];
-  if (v28)
+  suggestionCardSection = [(_SFPBCardSectionValue *)self suggestionCardSection];
+  if (suggestionCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v29 = [(_SFPBCardSectionValue *)self selectableGridCardSection];
-  if (v29)
+  selectableGridCardSection = [(_SFPBCardSectionValue *)self selectableGridCardSection];
+  if (selectableGridCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
-  if (v30)
+  sectionHeaderCardSection = [(_SFPBCardSectionValue *)self sectionHeaderCardSection];
+  if (sectionHeaderCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v31 = [(_SFPBCardSectionValue *)self metaInfoCardSection];
-  if (v31)
+  metaInfoCardSection = [(_SFPBCardSectionValue *)self metaInfoCardSection];
+  if (metaInfoCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(_SFPBCardSectionValue *)self watchListCardSection];
-  if (v32)
+  watchListCardSection = [(_SFPBCardSectionValue *)self watchListCardSection];
+  if (watchListCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v33 = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
-  if (v33)
+  mapsDetailedRowCardSection = [(_SFPBCardSectionValue *)self mapsDetailedRowCardSection];
+  if (mapsDetailedRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(_SFPBCardSectionValue *)self buttonCardSection];
-  if (v34)
+  buttonCardSection = [(_SFPBCardSectionValue *)self buttonCardSection];
+  if (buttonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v35 = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
-  if (v35)
+  horizontalButtonCardSection = [(_SFPBCardSectionValue *)self horizontalButtonCardSection];
+  if (horizontalButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
-  if (v36)
+  verticalLayoutCardSection = [(_SFPBCardSectionValue *)self verticalLayoutCardSection];
+  if (verticalLayoutCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v37 = [(_SFPBCardSectionValue *)self productCardSection];
-  if (v37)
+  productCardSection = [(_SFPBCardSectionValue *)self productCardSection];
+  if (productCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
-  if (v38)
+  horizontalScrollCardSection = [(_SFPBCardSectionValue *)self horizontalScrollCardSection];
+  if (horizontalScrollCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v39 = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
-  if (v39)
+  mediaRemoteControlCardSection = [(_SFPBCardSectionValue *)self mediaRemoteControlCardSection];
+  if (mediaRemoteControlCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
-  if (v40)
+  mapPlaceCardSection = [(_SFPBCardSectionValue *)self mapPlaceCardSection];
+  if (mapPlaceCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v41 = [(_SFPBCardSectionValue *)self compactRowCardSection];
-  if (v41)
+  compactRowCardSection = [(_SFPBCardSectionValue *)self compactRowCardSection];
+  if (compactRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(_SFPBCardSectionValue *)self worldMapCardSection];
-  if (v42)
+  worldMapCardSection = [(_SFPBCardSectionValue *)self worldMapCardSection];
+  if (worldMapCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v43 = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
-  if (v43)
+  attributionFooterCardSection = [(_SFPBCardSectionValue *)self attributionFooterCardSection];
+  if (attributionFooterCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(_SFPBCardSectionValue *)self gridCardSection];
-  if (v44)
+  gridCardSection = [(_SFPBCardSectionValue *)self gridCardSection];
+  if (gridCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v45 = [(_SFPBCardSectionValue *)self personHeaderCardSection];
-  if (v45)
+  personHeaderCardSection = [(_SFPBCardSectionValue *)self personHeaderCardSection];
+  if (personHeaderCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(_SFPBCardSectionValue *)self colorBarCardSection];
-  if (v46)
+  colorBarCardSection = [(_SFPBCardSectionValue *)self colorBarCardSection];
+  if (colorBarCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v47 = [(_SFPBCardSectionValue *)self splitCardSection];
-  if (v47)
+  splitCardSection = [(_SFPBCardSectionValue *)self splitCardSection];
+  if (splitCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
-  if (v48)
+  linkPresentationCardSection = [(_SFPBCardSectionValue *)self linkPresentationCardSection];
+  if (linkPresentationCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v49 = [(_SFPBCardSectionValue *)self findMyCardSection];
-  if (v49)
+  findMyCardSection = [(_SFPBCardSectionValue *)self findMyCardSection];
+  if (findMyCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(_SFPBCardSectionValue *)self heroCardSection];
-  if (v50)
+  heroCardSection = [(_SFPBCardSectionValue *)self heroCardSection];
+  if (heroCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v51 = [(_SFPBCardSectionValue *)self newsCardSection];
-  if (v51)
+  newsCardSection = [(_SFPBCardSectionValue *)self newsCardSection];
+  if (newsCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(_SFPBCardSectionValue *)self miniCardSection];
-  if (v52)
+  miniCardSection = [(_SFPBCardSectionValue *)self miniCardSection];
+  if (miniCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v53 = [(_SFPBCardSectionValue *)self infoCardSection];
-  if (v53)
+  infoCardSection = [(_SFPBCardSectionValue *)self infoCardSection];
+  if (infoCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(_SFPBCardSectionValue *)self collectionCardSection];
-  if (v54)
+  collectionCardSection = [(_SFPBCardSectionValue *)self collectionCardSection];
+  if (collectionCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v55 = [(_SFPBCardSectionValue *)self combinedCardSection];
-  if (v55)
+  combinedCardSection = [(_SFPBCardSectionValue *)self combinedCardSection];
+  if (combinedCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
-  if (v56)
+  responseWrapperCardSection = [(_SFPBCardSectionValue *)self responseWrapperCardSection];
+  if (responseWrapperCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v57 = [(_SFPBCardSectionValue *)self listenToCardSection];
-  if (v57)
+  listenToCardSection = [(_SFPBCardSectionValue *)self listenToCardSection];
+  if (listenToCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(_SFPBCardSectionValue *)self watchNowCardSection];
-  if (v58)
+  watchNowCardSection = [(_SFPBCardSectionValue *)self watchNowCardSection];
+  if (watchNowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v59 = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
-  if (v59)
+  strokeAnimationCardSection = [(_SFPBCardSectionValue *)self strokeAnimationCardSection];
+  if (strokeAnimationCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(_SFPBCardSectionValue *)self buttonListCardSection];
-  if (v60)
+  buttonListCardSection = [(_SFPBCardSectionValue *)self buttonListCardSection];
+  if (buttonListCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v61 = [(_SFPBCardSectionValue *)self commandRowCardSection];
-  if (v61)
+  commandRowCardSection = [(_SFPBCardSectionValue *)self commandRowCardSection];
+  if (commandRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
-  if (v62)
+  leadingTrailingCardSection = [(_SFPBCardSectionValue *)self leadingTrailingCardSection];
+  if (leadingTrailingCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v63 = [(_SFPBCardSectionValue *)self heroTitleCardSection];
-  if (v63)
+  heroTitleCardSection = [(_SFPBCardSectionValue *)self heroTitleCardSection];
+  if (heroTitleCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(_SFPBCardSectionValue *)self archiveViewCardSection];
-  if (v64)
+  archiveViewCardSection = [(_SFPBCardSectionValue *)self archiveViewCardSection];
+  if (archiveViewCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v65 = [(_SFPBCardSectionValue *)self appIconCardSection];
-  if (v65)
+  appIconCardSection = [(_SFPBCardSectionValue *)self appIconCardSection];
+  if (appIconCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
-  if (v66)
+  largeTitleDetailedRowCardSection = [(_SFPBCardSectionValue *)self largeTitleDetailedRowCardSection];
+  if (largeTitleDetailedRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v67 = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
-  if (v67)
+  safariTableOfContentsCardSection = [(_SFPBCardSectionValue *)self safariTableOfContentsCardSection];
+  if (safariTableOfContentsCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
-  if (v68)
+  rfSummaryItemShortNumberCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemShortNumberCardSection];
+  if (rfSummaryItemShortNumberCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v69 = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
-  if (v69)
+  rfSummaryItemTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemTextCardSection];
+  if (rfSummaryItemTextCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
-  if (v70)
+  rfSummaryItemStandardCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemStandardCardSection];
+  if (rfSummaryItemStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v71 = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
-  if (v71)
+  rfFactItemShortNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortNumberCardSection];
+  if (rfFactItemShortNumberCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
-  if (v72)
+  rfFactItemStandardCardSection = [(_SFPBCardSectionValue *)self rfFactItemStandardCardSection];
+  if (rfFactItemStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v73 = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
-  if (v73)
+  rfLongItemStandardCardSection = [(_SFPBCardSectionValue *)self rfLongItemStandardCardSection];
+  if (rfLongItemStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
-  if (v74)
+  rfPrimaryHeaderRichCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderRichCardSection];
+  if (rfPrimaryHeaderRichCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v75 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
-  if (v75)
+  rfPrimaryHeaderStandardCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStandardCardSection];
+  if (rfPrimaryHeaderStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
-  if (v76)
+  rfReferenceFootnoteCardSection = [(_SFPBCardSectionValue *)self rfReferenceFootnoteCardSection];
+  if (rfReferenceFootnoteCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v77 = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
-  if (v77)
+  rfReferenceRichCardSection = [(_SFPBCardSectionValue *)self rfReferenceRichCardSection];
+  if (rfReferenceRichCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
-  if (v78)
+  rfSimpleItemRichCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichCardSection];
+  if (rfSimpleItemRichCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v79 = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
-  if (v79)
+  rfSimpleItemStandardCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemStandardCardSection];
+  if (rfSimpleItemStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
-  if (v80)
+  rfSummaryItemAlignedTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemAlignedTextCardSection];
+  if (rfSummaryItemAlignedTextCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v81 = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
-  if (v81)
+  rfExpandableStandardCardSection = [(_SFPBCardSectionValue *)self rfExpandableStandardCardSection];
+  if (rfExpandableStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
-  if (v82)
+  rfFactItemButtonCardSection = [(_SFPBCardSectionValue *)self rfFactItemButtonCardSection];
+  if (rfFactItemButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v83 = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
-  if (v83)
+  rfFactItemHeroNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroNumberCardSection];
+  if (rfFactItemHeroNumberCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
-  if (v84)
+  rfPrimaryHeaderMarqueeCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderMarqueeCardSection];
+  if (rfPrimaryHeaderMarqueeCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v85 = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
-  if (v85)
+  rfSummaryItemDetailedTextCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemDetailedTextCardSection];
+  if (rfSummaryItemDetailedTextCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
-  if (v86)
+  rfSimpleItemPlayerCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemPlayerCardSection];
+  if (rfSimpleItemPlayerCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v87 = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
-  if (v87)
+  rfSummaryItemPairCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairCardSection];
+  if (rfSummaryItemPairCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v88 = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
-  if (v88)
+  rfSummaryItemPairNumberCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPairNumberCardSection];
+  if (rfSummaryItemPairNumberCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v89 = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
-  if (v89)
+  rfFactItemShortHeroNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemShortHeroNumberCardSection];
+  if (rfFactItemShortHeroNumberCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v90 = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
-  if (v90)
+  rfFactItemDetailedNumberCardSection = [(_SFPBCardSectionValue *)self rfFactItemDetailedNumberCardSection];
+  if (rfFactItemDetailedNumberCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v91 = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
-  if (v91)
+  rfFactItemHeroButtonCardSection = [(_SFPBCardSectionValue *)self rfFactItemHeroButtonCardSection];
+  if (rfFactItemHeroButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v92 = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
-  if (v92)
+  rfFactItemImageRightCardSection = [(_SFPBCardSectionValue *)self rfFactItemImageRightCardSection];
+  if (rfFactItemImageRightCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v93 = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
-  if (v93)
+  rfSummaryItemSwitchV2CardSection = [(_SFPBCardSectionValue *)self rfSummaryItemSwitchV2CardSection];
+  if (rfSummaryItemSwitchV2CardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v94 = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
-  if (v94)
+  rfTableHeaderCardSection = [(_SFPBCardSectionValue *)self rfTableHeaderCardSection];
+  if (rfTableHeaderCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v95 = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
-  if (v95)
+  rfTableRowCardSection = [(_SFPBCardSectionValue *)self rfTableRowCardSection];
+  if (rfTableRowCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v96 = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
-  if (v96)
+  rfSimpleItemVisualElementCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemVisualElementCardSection];
+  if (rfSimpleItemVisualElementCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v97 = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
-  if (v97)
+  rfSummaryItemPlayerCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemPlayerCardSection];
+  if (rfSummaryItemPlayerCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v98 = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
-  if (v98)
+  rfSummaryItemImageRightCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemImageRightCardSection];
+  if (rfSummaryItemImageRightCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v99 = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
-  if (v99)
+  rfSummaryItemButtonCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemButtonCardSection];
+  if (rfSummaryItemButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v100 = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
-  if (v100)
+  rfSimpleItemReverseRichCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemReverseRichCardSection];
+  if (rfSimpleItemReverseRichCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v101 = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
-  if (v101)
+  rfSimpleItemRichSearchResultCardSection = [(_SFPBCardSectionValue *)self rfSimpleItemRichSearchResultCardSection];
+  if (rfSimpleItemRichSearchResultCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v102 = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
-  if (v102)
+  rfPrimaryHeaderStackedImageCardSection = [(_SFPBCardSectionValue *)self rfPrimaryHeaderStackedImageCardSection];
+  if (rfPrimaryHeaderStackedImageCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v103 = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
-  if (v103)
+  rfReferenceItemLogoCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemLogoCardSection];
+  if (rfReferenceItemLogoCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v104 = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
-  if (v104)
+  rfReferenceItemButtonCardSection = [(_SFPBCardSectionValue *)self rfReferenceItemButtonCardSection];
+  if (rfReferenceItemButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v105 = [(_SFPBCardSectionValue *)self rfButtonCardSection];
-  if (v105)
+  rfButtonCardSection = [(_SFPBCardSectionValue *)self rfButtonCardSection];
+  if (rfButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v106 = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
-  if (v106)
+  rfBinaryButtonCardSection = [(_SFPBCardSectionValue *)self rfBinaryButtonCardSection];
+  if (rfBinaryButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v107 = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
-  if (v107)
+  rfReferenceCenteredCardSection = [(_SFPBCardSectionValue *)self rfReferenceCenteredCardSection];
+  if (rfReferenceCenteredCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v108 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
-  if (v108)
+  rfSecondaryHeaderStandardCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderStandardCardSection];
+  if (rfSecondaryHeaderStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v109 = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
-  if (v109)
+  rfSecondaryHeaderEmphasizedCardSection = [(_SFPBCardSectionValue *)self rfSecondaryHeaderEmphasizedCardSection];
+  if (rfSecondaryHeaderEmphasizedCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v110 = [(_SFPBCardSectionValue *)self rfMapCardSection];
-  if (v110)
+  rfMapCardSection = [(_SFPBCardSectionValue *)self rfMapCardSection];
+  if (rfMapCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v111 = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
-  if (v111)
+  rfReferenceStandardCardSection = [(_SFPBCardSectionValue *)self rfReferenceStandardCardSection];
+  if (rfReferenceStandardCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v112 = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
-  if (v112)
+  rfMultiButtonCardSection = [(_SFPBCardSectionValue *)self rfMultiButtonCardSection];
+  if (rfMultiButtonCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v113 = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
-  if (v113)
+  rfDisambiguationTitleCardSection = [(_SFPBCardSectionValue *)self rfDisambiguationTitleCardSection];
+  if (rfDisambiguationTitleCardSection)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v114 = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
-  if (v114)
+  rfSummaryItemExpandableCardSection = [(_SFPBCardSectionValue *)self rfSummaryItemExpandableCardSection];
+  if (rfSummaryItemExpandableCardSection)
   {
     PBDataWriterWriteSubmessage();
   }

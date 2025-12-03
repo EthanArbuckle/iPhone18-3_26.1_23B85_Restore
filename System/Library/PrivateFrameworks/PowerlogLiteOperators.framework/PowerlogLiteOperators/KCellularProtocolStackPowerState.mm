@@ -1,23 +1,23 @@
 @interface KCellularProtocolStackPowerState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPrevState:(BOOL)a3;
-- (void)setHasPrevStateDurMs:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPrevState:(BOOL)state;
+- (void)setHasPrevStateDurMs:(BOOL)ms;
+- (void)setHasState:(BOOL)state;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularProtocolStackPowerState
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPrevState:(BOOL)a3
+- (void)setHasPrevState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPrevStateDurMs:(BOOL)a3
+- (void)setHasPrevStateDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = KCellularProtocolStackPowerState;
   v4 = [(KCellularProtocolStackPowerState *)&v8 description];
-  v5 = [(KCellularProtocolStackPowerState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularProtocolStackPowerState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -115,7 +115,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_state];
-  [v3 setObject:v8 forKey:@"state"];
+  [dictionary setObject:v8 forKey:@"state"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -131,7 +131,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevState];
-  [v3 setObject:v9 forKey:@"prev_state"];
+  [dictionary setObject:v9 forKey:@"prev_state"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -147,23 +147,23 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevStateDurMs];
-  [v3 setObject:v10 forKey:@"prev_state_dur_ms"];
+  [dictionary setObject:v10 forKey:@"prev_state_dur_ms"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v5 forKey:@"subs_id"];
+    [dictionary setObject:v5 forKey:@"subs_id"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -229,14 +229,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -255,8 +255,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_state;
-  *(v4 + 32) |= 8u;
+  *(toCopy + 6) = self->_state;
+  *(toCopy + 32) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -270,8 +270,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(v4 + 4) = self->_prevState;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 4) = self->_prevState;
+  *(toCopy + 32) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -285,21 +285,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(v4 + 5) = self->_prevStateDurMs;
-  *(v4 + 32) |= 4u;
+  *(toCopy + 5) = self->_prevStateDurMs;
+  *(toCopy + 32) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
-    *(v4 + 7) = self->_subsId;
-    *(v4 + 32) |= 0x10u;
+    *(toCopy + 7) = self->_subsId;
+    *(toCopy + 32) |= 0x10u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -366,23 +366,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_26:
     v5 = 0;
@@ -391,47 +391,47 @@ LABEL_26:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_state != *(v4 + 6))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_state != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_prevState != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_prevState != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_prevStateDurMs != *(v4 + 5))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_prevStateDurMs != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 32) & 0x10) == 0;
+  v5 = (*(equalCopy + 32) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0 || self->_subsId != *(v4 + 7))
+    if ((*(equalCopy + 32) & 0x10) == 0 || self->_subsId != *(equalCopy + 7))
     {
       goto LABEL_26;
     }
@@ -512,15 +512,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -533,14 +533,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 8) == 0)
+  else if ((*(fromCopy + 32) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_state = *(v4 + 6);
+  self->_state = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -553,9 +553,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_prevState = *(v4 + 4);
+  self->_prevState = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -568,12 +568,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_prevStateDurMs = *(v4 + 5);
+  self->_prevStateDurMs = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 32) & 0x10) != 0)
+  if ((*(fromCopy + 32) & 0x10) != 0)
   {
 LABEL_6:
-    self->_subsId = *(v4 + 7);
+    self->_subsId = *(fromCopy + 7);
     *&self->_has |= 0x10u;
   }
 

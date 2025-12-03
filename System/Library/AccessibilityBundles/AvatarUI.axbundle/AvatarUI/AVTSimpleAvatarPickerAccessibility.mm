@@ -1,25 +1,25 @@
 @interface AVTSimpleAvatarPickerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axMarkupCellWithAXInfo:(id)a3 indexPath:(id)a4;
+- (void)_axMarkupCellWithAXInfo:(id)info indexPath:(id)path;
 - (void)loadView;
 @end
 
 @implementation AVTSimpleAvatarPickerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTSimpleAvatarPicker" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarPickerDataSource" hasInstanceMethod:@"itemAtIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"AVTAvatarPickerDataSource" hasInstanceMethod:@"isItemAtIndexAddItem:" withFullSignature:{"B", "q", 0}];
-  [v3 validateClass:@"AVTAvatarListRecordItem" hasInstanceMethod:@"avatar" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"isEditable"];
-  [v3 validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"identifier"];
-  [v3 validateProtocol:@"AVTAvatarListItem" hasRequiredInstanceMethod:@"downcastWithRecordHandler:viewHandler:"];
-  [v3 validateClass:@"AVTSimpleAvatarPicker" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"AVTSimpleAvatarPicker" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTSimpleAvatarPicker" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarPickerDataSource" hasInstanceMethod:@"itemAtIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarPickerDataSource" hasInstanceMethod:@"isItemAtIndexAddItem:" withFullSignature:{"B", "q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarListRecordItem" hasInstanceMethod:@"avatar" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"isEditable"];
+  [validationsCopy validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"identifier"];
+  [validationsCopy validateProtocol:@"AVTAvatarListItem" hasRequiredInstanceMethod:@"downcastWithRecordHandler:viewHandler:"];
+  [validationsCopy validateClass:@"AVTSimpleAvatarPicker" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"AVTSimpleAvatarPicker" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -37,8 +37,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  visibleCells = [v4 visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -49,15 +49,15 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 _accessibilityIndexPath];
-        [(AVTSimpleAvatarPickerAccessibility *)self _axMarkupCellWithAXInfo:v10 indexPath:v11];
+        _accessibilityIndexPath = [v10 _accessibilityIndexPath];
+        [(AVTSimpleAvatarPickerAccessibility *)self _axMarkupCellWithAXInfo:v10 indexPath:_accessibilityIndexPath];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v7);
@@ -77,18 +77,18 @@
   [(AVTSimpleAvatarPickerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axMarkupCellWithAXInfo:(id)a3 indexPath:(id)a4
+- (void)_axMarkupCellWithAXInfo:(id)info indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 setIsAccessibilityElement:1];
-  [v6 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  infoCopy = info;
+  pathCopy = path;
+  [infoCopy setIsAccessibilityElement:1];
+  [infoCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
   [(AVTSimpleAvatarPickerAccessibility *)self safeValueForKey:@"dataSource"];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v8 = v17 = 0;
-  v9 = v7;
+  v9 = pathCopy;
   AXPerformSafeBlock();
   LODWORD(self) = *(v15 + 24);
 
@@ -96,14 +96,14 @@
   if (self == 1)
   {
     v10 = accessibilityLocalizedString(@"starfish.add");
-    [v6 setAccessibilityLabel:v10];
+    [infoCopy setAccessibilityLabel:v10];
   }
 
   else
   {
     v11 = v8;
     v12 = v9;
-    v13 = v6;
+    v13 = infoCopy;
     AXPerformSafeBlock();
 
     v10 = v11;
@@ -211,13 +211,13 @@ id __72__AVTSimpleAvatarPickerAccessibility__axMarkupCellWithAXInfo_indexPath___
   return v2;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AVTSimpleAvatarPickerAccessibility;
-  v6 = a4;
-  v7 = [(AVTSimpleAvatarPickerAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(AVTSimpleAvatarPickerAccessibility *)self _axMarkupCellWithAXInfo:v7 indexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AVTSimpleAvatarPickerAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(AVTSimpleAvatarPickerAccessibility *)self _axMarkupCellWithAXInfo:v7 indexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }

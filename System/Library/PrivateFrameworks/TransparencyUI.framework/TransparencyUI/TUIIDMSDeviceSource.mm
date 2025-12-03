@@ -1,22 +1,22 @@
 @interface TUIIDMSDeviceSource
-- (TUIIDMSDeviceSource)initWithIdmsDeviceProtocol:(id)a3;
-- (id)mapDeviceWithMissing:(id)a3 aaDevices:(id)a4;
+- (TUIIDMSDeviceSource)initWithIdmsDeviceProtocol:(id)protocol;
+- (id)mapDeviceWithMissing:(id)missing aaDevices:(id)devices;
 @end
 
 @implementation TUIIDMSDeviceSource
 
-- (TUIIDMSDeviceSource)initWithIdmsDeviceProtocol:(id)a3
+- (TUIIDMSDeviceSource)initWithIdmsDeviceProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v10.receiver = self;
   v10.super_class = TUIIDMSDeviceSource;
   v5 = [(TUIIDMSDeviceSource *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (protocolCopy)
     {
-      [(TUIIDMSDeviceSource *)v5 setD:v4];
+      [(TUIIDMSDeviceSource *)v5 setD:protocolCopy];
     }
 
     else
@@ -31,18 +31,18 @@
   return v6;
 }
 
-- (id)mapDeviceWithMissing:(id)a3 aaDevices:(id)a4
+- (id)mapDeviceWithMissing:(id)missing aaDevices:(id)devices
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIIDMSDeviceSource *)self idmsDevices];
+  missingCopy = missing;
+  devicesCopy = devices;
+  idmsDevices = [(TUIIDMSDeviceSource *)self idmsDevices];
 
-  if (!v8)
+  if (!idmsDevices)
   {
-    v50 = v7;
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    [(TUIIDMSDeviceSource *)self setIdmsDevices:v9];
+    v50 = devicesCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(TUIIDMSDeviceSource *)self setIdmsDevices:dictionary];
 
     v10 = [(TUIIDMSDeviceSource *)self d];
     v67 = 0;
@@ -69,13 +69,13 @@
           }
 
           v18 = *(*(&v63 + 1) + 8 * i);
-          v19 = [v18 pushToken];
+          pushToken = [v18 pushToken];
 
-          if (v19)
+          if (pushToken)
           {
-            v20 = [(TUIIDMSDeviceSource *)self idmsDevices];
-            v21 = [v18 pushToken];
-            [v20 setObject:v18 forKeyedSubscript:v21];
+            idmsDevices2 = [(TUIIDMSDeviceSource *)self idmsDevices];
+            pushToken2 = [v18 pushToken];
+            [idmsDevices2 setObject:v18 forKeyedSubscript:pushToken2];
           }
         }
 
@@ -85,24 +85,24 @@
       while (v15);
     }
 
-    v7 = v50;
+    devicesCopy = v50;
   }
 
-  v22 = [(TUIIDMSDeviceSource *)self idmsDevices];
-  v23 = [v22 objectForKeyedSubscript:v6];
+  idmsDevices3 = [(TUIIDMSDeviceSource *)self idmsDevices];
+  v23 = [idmsDevices3 objectForKeyedSubscript:missingCopy];
 
   if (v23)
   {
-    v24 = [MEMORY[0x277CBEB18] array];
-    v25 = [(TUIIDMSDeviceSource *)self idmsDevices];
+    array = [MEMORY[0x277CBEB18] array];
+    idmsDevices4 = [(TUIIDMSDeviceSource *)self idmsDevices];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __54__TUIIDMSDeviceSource_mapDeviceWithMissing_aaDevices___block_invoke_33;
     v60[3] = &unk_279DDA998;
     v61 = v23;
-    v26 = v24;
+    v26 = array;
     v62 = v26;
-    [v25 enumerateKeysAndObjectsUsingBlock:v60];
+    [idmsDevices4 enumerateKeysAndObjectsUsingBlock:v60];
 
     v58 = 0u;
     v59 = 0u;
@@ -113,8 +113,8 @@
     if (v46)
     {
       v28 = *v57;
-      v49 = v6;
-      v51 = v7;
+      v49 = missingCopy;
+      v51 = devicesCopy;
       v47 = v27;
       v48 = v23;
       v45 = *v57;
@@ -133,7 +133,7 @@
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v31 = v7;
+          v31 = devicesCopy;
           v32 = [v31 countByEnumeratingWithState:&v52 objects:v68 count:16];
           if (v32)
           {
@@ -149,20 +149,20 @@
                 }
 
                 v36 = *(*(&v52 + 1) + 8 * j);
-                v37 = [v36 pushToken];
+                pushToken3 = [v36 pushToken];
 
-                if (v37)
+                if (pushToken3)
                 {
-                  v38 = [v30 pushToken];
-                  v39 = [v36 pushToken];
-                  v40 = [v38 isEqual:v39];
+                  pushToken4 = [v30 pushToken];
+                  pushToken5 = [v36 pushToken];
+                  v40 = [pushToken4 isEqual:pushToken5];
 
                   if (v40)
                   {
                     v41 = v36;
 
-                    v6 = v49;
-                    v7 = v51;
+                    missingCopy = v49;
+                    devicesCopy = v51;
                     v27 = v47;
                     v23 = v48;
                     goto LABEL_37;
@@ -182,8 +182,8 @@
 
           ++v29;
           v27 = v47;
-          v6 = v49;
-          v7 = v51;
+          missingCopy = v49;
+          devicesCopy = v51;
           v23 = v48;
           v28 = v45;
         }
@@ -214,7 +214,7 @@ LABEL_37:
     v42 = TRANSPARENCYUI_DEFAULT_LOG_INTERNAL;
     if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL, OS_LOG_TYPE_ERROR))
     {
-      [(TUIIDMSDeviceSource *)v6 mapDeviceWithMissing:v42 aaDevices:?];
+      [(TUIIDMSDeviceSource *)missingCopy mapDeviceWithMissing:v42 aaDevices:?];
     }
 
     v41 = 0;

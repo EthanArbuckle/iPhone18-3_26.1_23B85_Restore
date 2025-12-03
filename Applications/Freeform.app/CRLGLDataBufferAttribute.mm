@@ -1,42 +1,42 @@
 @interface CRLGLDataBufferAttribute
-+ (id)attributeWithName:(id)a3 bufferUsage:(unsigned int)a4 dataType:(int64_t)a5 normalized:(BOOL)a6 componentCount:(unint64_t)a7;
-- (CRLGLDataBufferAttribute)initWithName:(id)a3 bufferUsage:(unsigned int)a4 dataType:(int64_t)a5 normalized:(BOOL)a6 componentCount:(unint64_t)a7;
++ (id)attributeWithName:(id)name bufferUsage:(unsigned int)usage dataType:(int64_t)type normalized:(BOOL)normalized componentCount:(unint64_t)count;
+- (CRLGLDataBufferAttribute)initWithName:(id)name bufferUsage:(unsigned int)usage dataType:(int64_t)type normalized:(BOOL)normalized componentCount:(unint64_t)count;
 - (id)description;
 @end
 
 @implementation CRLGLDataBufferAttribute
 
-+ (id)attributeWithName:(id)a3 bufferUsage:(unsigned int)a4 dataType:(int64_t)a5 normalized:(BOOL)a6 componentCount:(unint64_t)a7
++ (id)attributeWithName:(id)name bufferUsage:(unsigned int)usage dataType:(int64_t)type normalized:(BOOL)normalized componentCount:(unint64_t)count
 {
-  v8 = a6;
-  v10 = *&a4;
-  v11 = a3;
-  v12 = [[CRLGLDataBufferAttribute alloc] initWithName:v11 bufferUsage:v10 dataType:a5 normalized:v8 componentCount:a7];
+  normalizedCopy = normalized;
+  v10 = *&usage;
+  nameCopy = name;
+  v12 = [[CRLGLDataBufferAttribute alloc] initWithName:nameCopy bufferUsage:v10 dataType:type normalized:normalizedCopy componentCount:count];
 
   return v12;
 }
 
-- (CRLGLDataBufferAttribute)initWithName:(id)a3 bufferUsage:(unsigned int)a4 dataType:(int64_t)a5 normalized:(BOOL)a6 componentCount:(unint64_t)a7
+- (CRLGLDataBufferAttribute)initWithName:(id)name bufferUsage:(unsigned int)usage dataType:(int64_t)type normalized:(BOOL)normalized componentCount:(unint64_t)count
 {
-  v7 = a7;
-  v12 = a3;
+  countCopy = count;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = CRLGLDataBufferAttribute;
   v13 = [(CRLGLDataBufferAttribute *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(CRLGLDataBufferAttribute *)v13 setName:v12];
-    v15 = 5;
-    if (a5 != 3)
+    [(CRLGLDataBufferAttribute *)v13 setName:nameCopy];
+    typeCopy = 5;
+    if (type != 3)
     {
-      v15 = a5;
+      typeCopy = type;
     }
 
-    v14->_dataType = v15;
-    v14->_bufferUsage = a4;
-    v14->_componentCount = v7;
-    v14->_isNormalized = a6;
+    v14->_dataType = typeCopy;
+    v14->_bufferUsage = usage;
+    v14->_componentCount = countCopy;
+    v14->_isNormalized = normalized;
     v14->_locationInShader = -1;
   }
 
@@ -46,19 +46,19 @@
 - (id)description
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLGLDataBufferAttribute *)self name];
-  v5 = [NSString stringWithFormat:@"%@", v4];
+  name = [(CRLGLDataBufferAttribute *)self name];
+  v5 = [NSString stringWithFormat:@"%@", name];
   [v3 addObject:v5];
 
-  v6 = [(CRLGLDataBufferAttribute *)self dataType];
-  if (v6 > 5)
+  dataType = [(CRLGLDataBufferAttribute *)self dataType];
+  if (dataType > 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_101842740[v6];
+    v7 = off_101842740[dataType];
   }
 
   v8 = [NSString stringWithFormat:@"dataType:%@", v7];
@@ -67,8 +67,8 @@
   v9 = [NSString stringWithFormat:@"components:%d", [(CRLGLDataBufferAttribute *)self componentCount]];
   [v3 addObject:v9];
 
-  v10 = [(CRLGLDataBufferAttribute *)self bufferUsage];
-  switch(v10)
+  bufferUsage = [(CRLGLDataBufferAttribute *)self bufferUsage];
+  switch(bufferUsage)
   {
     case 0x88E0u:
       v11 = @"GL_STREAM_DRAW";

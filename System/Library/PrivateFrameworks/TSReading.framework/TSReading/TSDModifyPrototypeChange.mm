@@ -2,13 +2,13 @@
 - (NSString)description;
 - (TSSPropertySource)propertiesAfterChange;
 - (TSSPropertySource)propertiesBeforeChange;
-- (id)initModifyPrototypeChangeForPrototype:(id)a3;
+- (id)initModifyPrototypeChangeForPrototype:(id)prototype;
 - (void)dealloc;
 @end
 
 @implementation TSDModifyPrototypeChange
 
-- (id)initModifyPrototypeChangeForPrototype:(id)a3
+- (id)initModifyPrototypeChangeForPrototype:(id)prototype
 {
   v6.receiver = self;
   v6.super_class = TSDModifyPrototypeChange;
@@ -16,7 +16,7 @@
   if (v4)
   {
     v4->mChangedPropertySet = objc_alloc_init(TSSMutablePropertySet);
-    v4->mPrototype = a3;
+    v4->mPrototype = prototype;
     v4->mChangedPropertyMapBeforeChange = objc_alloc_init(TSSPropertyMap);
     v4->mChangedPropertyMapAfterChange = objc_alloc_init(TSSPropertyMap);
     v4->mPropertiesWithOldValuesRecordedButNotNewValues = objc_alloc_init(TSSMutablePropertySet);
@@ -48,9 +48,9 @@
   [(TSDModifyPrototypeChange *)self prototype];
   if (!TSUProtocolCast())
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDModifyPrototypeChange propertiesBeforeChange]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 202, @"Tried to treat %@ as a property source when it's not", -[TSDModifyPrototypeChange prototype](self, "prototype")}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 202, @"Tried to treat %@ as a property source when it's not", -[TSDModifyPrototypeChange prototype](self, "prototype")}];
   }
 
   result = self->mPropertySourceBeforeChange;
@@ -68,9 +68,9 @@
   [(TSDModifyPrototypeChange *)self prototype];
   if (!TSUProtocolCast())
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDModifyPrototypeChange propertiesAfterChange]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 216, @"Tried to treat %@ as a property source when it's not", -[TSDModifyPrototypeChange prototype](self, "prototype")}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPrototypeChange.m"), 216, @"Tried to treat %@ as a property source when it's not", -[TSDModifyPrototypeChange prototype](self, "prototype")}];
   }
 
   result = self->mPropertySourceAfterChange;

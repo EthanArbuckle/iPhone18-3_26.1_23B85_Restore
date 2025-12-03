@@ -1,16 +1,16 @@
 @interface WBSDomainAllowListSnapshot
-- (BOOL)isEqual:(id)a3;
-- (WBSDomainAllowListSnapshot)initWithDomains:(id)a3;
-- (WBSDomainAllowListSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (WBSDomainAllowListSnapshot)initWithDomains:(id)domains;
+- (WBSDomainAllowListSnapshot)initWithSnapshotData:(id)data error:(id *)error;
 - (id)snapshotData;
 @end
 
 @implementation WBSDomainAllowListSnapshot
 
-- (WBSDomainAllowListSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4
+- (WBSDomainAllowListSnapshot)initWithSnapshotData:(id)data error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DEC8] safari_arrayWithPropertyListData:a3 options:0];
+  v6 = [MEMORY[0x1E695DEC8] safari_arrayWithPropertyListData:data options:0];
   if (v6)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
@@ -37,12 +37,12 @@
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
-              *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:{0, v16}];
+              *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:{0, v16}];
             }
 
-            v14 = 0;
+            selfCopy = 0;
             goto LABEL_14;
           }
 
@@ -60,33 +60,33 @@
     }
 
     self = [(WBSDomainAllowListSnapshot *)self initWithDomains:v7];
-    v14 = self;
+    selfCopy = self;
 LABEL_14:
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-    *a4 = v14 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (WBSDomainAllowListSnapshot)initWithDomains:(id)a3
+- (WBSDomainAllowListSnapshot)initWithDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v10.receiver = self;
   v10.super_class = WBSDomainAllowListSnapshot;
   v5 = [(WBSDomainAllowListSnapshot *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [domainsCopy copy];
     allowedDomains = v5->_allowedDomains;
     v5->_allowedDomains = v6;
 
@@ -96,11 +96,11 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSSet *)self->_allowedDomains isEqualToSet:v4[1]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSSet *)self->_allowedDomains isEqualToSet:equalCopy[1]];
 
   return v5;
 }
@@ -108,8 +108,8 @@ LABEL_14:
 - (id)snapshotData
 {
   v2 = MEMORY[0x1E696AE40];
-  v3 = [(NSSet *)self->_allowedDomains allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allObjects = [(NSSet *)self->_allowedDomains allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
   v5 = [v2 dataWithPropertyList:v4 format:200 options:0 error:0];
 
   return v5;

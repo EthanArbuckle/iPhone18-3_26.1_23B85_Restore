@@ -1,9 +1,9 @@
 @interface CLSArchivedAnswerFormat
-- (CLSArchivedAnswerFormat)initWithCoder:(id)a3;
+- (CLSArchivedAnswerFormat)initWithCoder:(id)coder;
 - (id)_init;
 - (int64_t)answerFormatType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAnswerFormatType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAnswerFormatType:(int64_t)type;
 @end
 
 @implementation CLSArchivedAnswerFormat
@@ -15,27 +15,27 @@
   return [(CLSObject *)&v3 _init];
 }
 
-- (CLSArchivedAnswerFormat)initWithCoder:(id)a3
+- (CLSArchivedAnswerFormat)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CLSArchivedAnswerFormat;
-  v6 = [(CLSObject *)&v8 initWithCoder:v4];
+  v6 = [(CLSObject *)&v8 initWithCoder:coderCopy];
   if (v6)
   {
-    v6->_answerFormatType = objc_msgSend_decodeIntegerForKey_(v4, v5, @"answerFormatType");
+    v6->_answerFormatType = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"answerFormatType");
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLSArchivedAnswerFormat;
-  v4 = a3;
-  [(CLSObject *)&v6 encodeWithCoder:v4];
-  objc_msgSend_encodeInteger_forKey_(v4, v5, self->_answerFormatType, @"answerFormatType", v6.receiver, v6.super_class);
+  coderCopy = coder;
+  [(CLSObject *)&v6 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, self->_answerFormatType, @"answerFormatType", v6.receiver, v6.super_class);
 }
 
 - (int64_t)answerFormatType
@@ -46,12 +46,12 @@
   return answerFormatType;
 }
 
-- (void)setAnswerFormatType:(int64_t)a3
+- (void)setAnswerFormatType:(int64_t)type
 {
-  objc_msgSend_lock(self, a2, a3);
-  if (self->_answerFormatType != a3)
+  objc_msgSend_lock(self, a2, type);
+  if (self->_answerFormatType != type)
   {
-    self->_answerFormatType = a3;
+    self->_answerFormatType = type;
     objc_msgSend_setModified_(self, v5, 1);
   }
 

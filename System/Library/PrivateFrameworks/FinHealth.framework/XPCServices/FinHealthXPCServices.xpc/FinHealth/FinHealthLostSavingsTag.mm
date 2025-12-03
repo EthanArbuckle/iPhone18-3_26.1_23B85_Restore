@@ -1,8 +1,8 @@
 @interface FinHealthLostSavingsTag
 - (FinHealthLostSavingsTag)init;
-- (id)lostSavingsOverTimeForMerchant:(id)a3 timePeriod:(int64_t)a4 currentDate:(id)a5 stateController:(id)a6;
-- (int64_t)cashbackPercentForMerchant:(id)a3;
-- (void)lostSavingsTagComputationForTransaction:(id)a3 transactionSource:(unint64_t)a4 cashbackPercent:(int64_t)a5 merchantName:(id)a6 completion:(id)a7;
+- (id)lostSavingsOverTimeForMerchant:(id)merchant timePeriod:(int64_t)period currentDate:(id)date stateController:(id)controller;
+- (int64_t)cashbackPercentForMerchant:(id)merchant;
+- (void)lostSavingsTagComputationForTransaction:(id)transaction transactionSource:(unint64_t)source cashbackPercent:(int64_t)percent merchantName:(id)name completion:(id)completion;
 @end
 
 @implementation FinHealthLostSavingsTag
@@ -14,7 +14,7 @@
   return [(FinHealthLostSavingsTag *)&v3 init];
 }
 
-- (int64_t)cashbackPercentForMerchant:(id)a3
+- (int64_t)cashbackPercentForMerchant:(id)merchant
 {
   v3 = getCleanMerchantName();
   v4 = FHMerchantsUnaffectedBySource();
@@ -42,50 +42,50 @@
   return v9;
 }
 
-- (void)lostSavingsTagComputationForTransaction:(id)a3 transactionSource:(unint64_t)a4 cashbackPercent:(int64_t)a5 merchantName:(id)a6 completion:(id)a7
+- (void)lostSavingsTagComputationForTransaction:(id)transaction transactionSource:(unint64_t)source cashbackPercent:(int64_t)percent merchantName:(id)name completion:(id)completion
 {
-  v26 = a3;
-  v11 = a6;
-  if (a7)
+  transactionCopy = transaction;
+  nameCopy = name;
+  if (completion)
   {
-    v12 = a7;
+    completionCopy = completion;
     v13 = objc_opt_new();
-    if (a4 - 5 <= 2)
+    if (source - 5 <= 2)
     {
       v14 = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:0 scale:2 raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
-      v15 = [NSString stringWithFormat:@"%ld", a5 - 1];
+      v15 = [NSString stringWithFormat:@"%ld", percent - 1];
       v16 = [NSDecimalNumber decimalNumberWithString:v15];
 
-      v17 = [v16 decimalNumberByMultiplyingBy:v26];
+      v17 = [v16 decimalNumberByMultiplyingBy:transactionCopy];
       v18 = [NSString stringWithFormat:@"100"];
       v19 = [NSDecimalNumber decimalNumberWithString:v18];
       v20 = [v17 decimalNumberByDividingBy:v19];
 
       v21 = [v20 decimalNumberByRoundingAccordingToBehavior:v14];
-      v22 = [NSString stringWithFormat:@"FHLostSaving%@", v11];
-      v23 = [[FHSmartCompoundFeatureRankedValue alloc] initWithLabelAndRank:v22 featureRank:v21];
+      nameCopy = [NSString stringWithFormat:@"FHLostSaving%@", nameCopy];
+      v23 = [[FHSmartCompoundFeatureRankedValue alloc] initWithLabelAndRank:nameCopy featureRank:v21];
       [v13 addObject:v23];
     }
 
     v24 = [NSArray arrayWithArray:v13];
     v25 = [NSDictionary dictionaryWithObject:v24 forKey:FHSmartFeatureCompoundTypeLostSavings];
-    v12[2](v12, v25);
+    completionCopy[2](completionCopy, v25);
   }
 }
 
-- (id)lostSavingsOverTimeForMerchant:(id)a3 timePeriod:(int64_t)a4 currentDate:(id)a5 stateController:(id)a6
+- (id)lostSavingsOverTimeForMerchant:(id)merchant timePeriod:(int64_t)period currentDate:(id)date stateController:(id)controller
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
+  merchantCopy = merchant;
+  controllerCopy = controller;
+  dateCopy = date;
   v12 = objc_alloc_init(NSDateComponents);
   v13 = objc_alloc_init(NSArray);
-  [v12 setDay:-a4];
+  [v12 setDay:-period];
   v14 = +[NSCalendar currentCalendar];
-  v15 = [v14 dateByAddingComponents:v12 toDate:v11 options:0];
-  if (v9)
+  v15 = [v14 dateByAddingComponents:v12 toDate:dateCopy options:0];
+  if (merchantCopy)
   {
-    v16 = v9;
+    v16 = merchantCopy;
   }
 
   else
@@ -93,7 +93,7 @@
     v16 = 0;
   }
 
-  v17 = [v10 getLostSavingsOverTime:v16 from:v15 to:v11];
+  v17 = [controllerCopy getLostSavingsOverTime:v16 from:v15 to:dateCopy];
 
   v18 = [v17 valueForKeyPath:@"@sum.self"];
 

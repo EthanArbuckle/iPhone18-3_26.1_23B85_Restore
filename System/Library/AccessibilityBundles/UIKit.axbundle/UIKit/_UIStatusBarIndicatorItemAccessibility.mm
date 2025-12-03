@@ -1,5 +1,5 @@
 @interface _UIStatusBarIndicatorItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_UIStatusBarIndicatorItemAccessibility)init;
 - (id)_axLabelKeyForClassNameDict;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,14 +7,14 @@
 
 @implementation _UIStatusBarIndicatorItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIStatusBarIndicatorQuietModeItem"];
   [location[0] validateClass:@"_UIStatusBarIndicatorStudentItem"];
   [location[0] validateClass:@"_UIStatusBarIndicatorRotationLockItem"];
@@ -38,7 +38,7 @@
 
 - (id)_axLabelKeyForClassNameDict
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x29EDC9748](&unk_2A238EA60);
   }
@@ -54,14 +54,14 @@
 - (void)_accessibilityLoadAccessibilityInformation
 {
   v28 = *MEMORY[0x29EDCA608];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   v24.receiver = self;
   v24.super_class = _UIStatusBarIndicatorItemAccessibility;
   [(_UIStatusBarIndicatorItemAccessibility *)&v24 _accessibilityLoadAccessibilityInformation];
   v22 = 0;
   objc_opt_class();
-  v9 = [(_UIStatusBarIndicatorItemAccessibility *)v26 safeValueForKey:@"displayItems"];
+  v9 = [(_UIStatusBarIndicatorItemAccessibility *)selfCopy safeValueForKey:@"displayItems"];
   v21 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v9);
   v20 = MEMORY[0x29EDC9748](v21);
@@ -86,7 +86,7 @@
       v19 = *(__b[1] + 8 * v5);
       v17 = [v19 safeValueForKey:@"view"];
       [v17 setIsAccessibilityElement:1];
-      objc_initWeak(&from, v26);
+      objc_initWeak(&from, selfCopy);
       v2 = v17;
       v10 = MEMORY[0x29EDCA5F8];
       v11 = -1073741824;

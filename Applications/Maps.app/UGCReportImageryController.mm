@@ -1,13 +1,13 @@
 @interface UGCReportImageryController
-- (UGCReportImageryController)initWithMapItem:(id)a3 reportedPhoto:(id)a4 presentingViewController:(id)a5;
-- (void)fetchLayoutAndPresentWithCompletion:(id)a3;
+- (UGCReportImageryController)initWithMapItem:(id)item reportedPhoto:(id)photo presentingViewController:(id)controller;
+- (void)fetchLayoutAndPresentWithCompletion:(id)completion;
 @end
 
 @implementation UGCReportImageryController
 
-- (void)fetchLayoutAndPresentWithCompletion:(id)a3
+- (void)fetchLayoutAndPresentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[RAPPlacecardImageryContextImpl alloc] initWithMapItem:self->_mapItem photo:self->_geoPhoto selectedPhotoURL:self->_photoURL];
   v6 = [RAPPlacecardImageryLayoutManager alloc];
   v7 = +[RAPPlacecardImageryIssueItem defaultIssueItems];
@@ -32,7 +32,7 @@
   v14[4] = self;
   v12 = v5;
   v15 = v12;
-  v13 = v4;
+  v13 = completionCopy;
   v16 = v13;
   [(RAPPlacecardImageryLayoutManager *)v10 downloadAndResolveLayoutWithMapItem:mapItem completion:v14];
 
@@ -40,29 +40,29 @@
   objc_destroyWeak(location);
 }
 
-- (UGCReportImageryController)initWithMapItem:(id)a3 reportedPhoto:(id)a4 presentingViewController:(id)a5
+- (UGCReportImageryController)initWithMapItem:(id)item reportedPhoto:(id)photo presentingViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  photoCopy = photo;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = UGCReportImageryController;
   v12 = [(UGCReportImageryController *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mapItem, a3);
-    objc_storeStrong(&v13->_geoPhoto, a4);
-    v14 = [v10 largestPhoto];
-    v15 = [v14 url];
-    v16 = [v15 absoluteString];
+    objc_storeStrong(&v12->_mapItem, item);
+    objc_storeStrong(&v13->_geoPhoto, photo);
+    largestPhoto = [photoCopy largestPhoto];
+    v15 = [largestPhoto url];
+    absoluteString = [v15 absoluteString];
     photoURL = v13->_photoURL;
-    v13->_photoURL = v16;
+    v13->_photoURL = absoluteString;
 
-    objc_storeStrong(&v13->_presentingViewController, a5);
-    v18 = [v11 rapBarButtonView];
+    objc_storeStrong(&v13->_presentingViewController, controller);
+    rapBarButtonView = [controllerCopy rapBarButtonView];
     rapButtonView = v13->_rapButtonView;
-    v13->_rapButtonView = v18;
+    v13->_rapButtonView = rapBarButtonView;
 
     v13->_shouldCancelPresentation = 0;
     v20 = geo_isolater_create();

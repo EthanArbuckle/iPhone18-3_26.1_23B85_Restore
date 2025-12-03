@@ -1,150 +1,150 @@
 @interface NTKModularTemplateView
-- (BOOL)_useInvertedHighlightForColorScheme:(id)a3;
-- (void)_enumerateColoringViewsSubviewsWithBlock:(id)a3 invertedHighlight:(BOOL)a4;
-- (void)_propagateColorSchemeToSubviews:(id)a3;
-- (void)_setColorScheme:(id)a3 propagateToSubviews:(BOOL)a4;
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4;
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 units:(unint64_t)a6 brightenedUnits:(unint64_t)a7;
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (BOOL)_useInvertedHighlightForColorScheme:(id)scheme;
+- (void)_enumerateColoringViewsSubviewsWithBlock:(id)block invertedHighlight:(BOOL)highlight;
+- (void)_propagateColorSchemeToSubviews:(id)subviews;
+- (void)_setColorScheme:(id)scheme propagateToSubviews:(BOOL)subviews;
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units;
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette units:(unint64_t)units brightenedUnits:(unint64_t)brightenedUnits;
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NTKModularTemplateView
 
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
-  if (self->_complicationTemplate != v6)
+  templateCopy = template;
+  if (self->_complicationTemplate != templateCopy)
   {
-    v24 = v6;
-    objc_storeStrong(&self->_complicationTemplate, a3);
-    v7 = [(NTKModularTemplateView *)self highlightMode];
+    v24 = templateCopy;
+    objc_storeStrong(&self->_complicationTemplate, template);
+    highlightMode = [(NTKModularTemplateView *)self highlightMode];
     [(NTKModularTemplateView *)self _update];
-    v8 = [(NTKModularTemplateView *)self highlightMode];
-    v9 = [(CLKComplicationTemplate *)self->_complicationTemplate tintColor];
-    [(NTKModuleView *)self setOverrideColor:v9];
+    highlightMode2 = [(NTKModularTemplateView *)self highlightMode];
+    tintColor = [(CLKComplicationTemplate *)self->_complicationTemplate tintColor];
+    [(NTKModuleView *)self setOverrideColor:tintColor];
 
-    v10 = [(NTKModuleView *)self colorScheme];
-    v11 = [v10 containsOverrideFaceColor];
+    colorScheme = [(NTKModuleView *)self colorScheme];
+    containsOverrideFaceColor = [colorScheme containsOverrideFaceColor];
 
-    if (v11)
+    if (containsOverrideFaceColor)
     {
       v12 = self->_highlightMode - 1 < 2;
       v13 = [[NTKFaceColorPalette alloc] initWithDomainName:0 inBundle:0];
       v14 = [NTKPigmentEditOption pigmentNamed:@"special.multicolor"];
       [(NTKFaceColorPalette *)v13 setPigmentEditOption:v14];
 
-      v15 = [(NTKModuleView *)self device];
-      v16 = [(NTKModuleView *)self overrideColor];
-      v17 = [(NTKModuleView *)self colorScheme];
-      v18 = +[NTKFaceColorScheme colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:](NTKFaceColorScheme, "colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:", v15, v13, v16, [v17 units], v12);
+      device = [(NTKModuleView *)self device];
+      overrideColor = [(NTKModuleView *)self overrideColor];
+      colorScheme2 = [(NTKModuleView *)self colorScheme];
+      v18 = +[NTKFaceColorScheme colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:](NTKFaceColorScheme, "colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:", device, v13, overrideColor, [colorScheme2 units], v12);
       [(NTKModularTemplateView *)self setContainsOverrideFaceColor:v18];
     }
 
     else
     {
-      v6 = v24;
-      if (v7 == v8)
+      templateCopy = v24;
+      if (highlightMode == highlightMode2)
       {
         goto LABEL_7;
       }
 
       v19 = self->_highlightMode == 1;
-      v20 = [(NTKModuleView *)self device];
-      v21 = [(NTKModuleView *)self colorScheme];
-      v22 = [v21 faceColorPalette];
-      v23 = [(NTKModuleView *)self colorScheme];
-      v13 = +[NTKFaceColorScheme colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:](NTKFaceColorScheme, "colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:", v20, v22, 0, [v23 units], v19);
+      device2 = [(NTKModuleView *)self device];
+      colorScheme3 = [(NTKModuleView *)self colorScheme];
+      faceColorPalette = [colorScheme3 faceColorPalette];
+      colorScheme4 = [(NTKModuleView *)self colorScheme];
+      v13 = +[NTKFaceColorScheme colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:](NTKFaceColorScheme, "colorSchemeForDevice:withFaceColorPalette:foregroundColor:units:alternateHighlight:", device2, faceColorPalette, 0, [colorScheme4 units], v19);
 
       [(NTKModularTemplateView *)self setContainsOverrideFaceColor:v13];
     }
 
-    v6 = v24;
+    templateCopy = v24;
   }
 
 LABEL_7:
 }
 
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units
 {
   highlightMode = self->_highlightMode;
   v7 = highlightMode == 1;
-  v8 = a3;
-  if ([v8 isMulticolor])
+  paletteCopy = palette;
+  if ([paletteCopy isMulticolor])
   {
     v7 = highlightMode == 1 || self->_highlightMode == 2;
-    v13 = [(NTKModuleView *)self overrideColor];
+    overrideColor = [(NTKModuleView *)self overrideColor];
     v10 = 0.0;
   }
 
   else
   {
-    v13 = 0;
+    overrideColor = 0;
     v10 = 1.0;
   }
 
   [(NTKModuleView *)self transitionToMonochromeWithFraction:v10];
-  v11 = [(NTKModuleView *)self device];
-  v12 = [NTKFaceColorScheme colorSchemeForDevice:v11 withFaceColorPalette:v8 foregroundColor:v13 units:a4 alternateHighlight:v7];
+  device = [(NTKModuleView *)self device];
+  v12 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:paletteCopy foregroundColor:overrideColor units:units alternateHighlight:v7];
 
   [(NTKModularTemplateView *)self setContainsOverrideFaceColor:v12];
 }
 
-- (void)_setColorScheme:(id)a3 propagateToSubviews:(BOOL)a4
+- (void)_setColorScheme:(id)scheme propagateToSubviews:(BOOL)subviews
 {
-  v4 = a4;
-  v6 = a3;
+  subviewsCopy = subviews;
+  schemeCopy = scheme;
   v7.receiver = self;
   v7.super_class = NTKModularTemplateView;
-  [(NTKModuleView *)&v7 setColorScheme:v6];
-  if (v4)
+  [(NTKModuleView *)&v7 setColorScheme:schemeCopy];
+  if (subviewsCopy)
   {
-    [(NTKModularTemplateView *)self _propagateColorSchemeToSubviews:v6];
+    [(NTKModularTemplateView *)self _propagateColorSchemeToSubviews:schemeCopy];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 units:(unint64_t)a6 brightenedUnits:(unint64_t)a7
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette units:(unint64_t)units brightenedUnits:(unint64_t)brightenedUnits
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [v12 isMulticolor];
-  v15 = [v13 isMulticolor];
-  v16 = v15;
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  isMulticolor = [paletteCopy isMulticolor];
+  isMulticolor2 = [colorPaletteCopy isMulticolor];
+  v16 = isMulticolor2;
   highlightMode = self->_highlightMode;
-  if (v14 & 1) != 0 || (v15)
+  if (isMulticolor & 1) != 0 || (isMulticolor2)
   {
     v22 = highlightMode == 1;
     v23 = [NTKPigmentEditOption pigmentNamed:@"special.multicolor"];
-    v24 = [v12 copyWithOption:v23];
+    v24 = [paletteCopy copyWithOption:v23];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __112__NTKModularTemplateView_applyTransitionFraction_fromFaceColorPalette_toFaceColorPalette_units_brightenedUnits___block_invoke;
     aBlock[3] = &unk_278785100;
-    v44 = v14;
+    v44 = isMulticolor;
     v45 = v22;
     aBlock[4] = self;
     v25 = v24;
     v39 = v25;
-    v42 = a6;
-    v40 = v12;
+    unitsCopy = units;
+    v40 = paletteCopy;
     v46 = v16;
-    v41 = v13;
-    v43 = a3;
+    v41 = colorPaletteCopy;
+    fractionCopy = fraction;
     v26 = _Block_copy(aBlock);
-    v27 = [(CLKComplicationTemplate *)self->_complicationTemplate tintColor];
-    v28 = v27;
-    if (v27)
+    tintColor = [(CLKComplicationTemplate *)self->_complicationTemplate tintColor];
+    v28 = tintColor;
+    if (tintColor)
     {
-      v29 = v27;
+      overrideColor = tintColor;
     }
 
     else
     {
-      v29 = [(NTKModuleView *)self overrideColor];
+      overrideColor = [(NTKModuleView *)self overrideColor];
     }
 
-    v30 = v29;
+    v30 = overrideColor;
 
     v31 = v26[2](v26, v30);
     [(NTKModularTemplateView *)self _setColorScheme:v31 propagateToSubviews:0];
@@ -169,14 +169,14 @@ LABEL_7:
   else
   {
     v18 = highlightMode == 1;
-    v19 = [(NTKModuleView *)self device];
-    v20 = [(NTKModuleView *)self overrideColor];
+    device = [(NTKModuleView *)self device];
+    overrideColor2 = [(NTKModuleView *)self overrideColor];
     LOBYTE(v33) = v18;
-    v21 = [NTKFaceColorScheme interpolationForDevice:v19 fromFaceColorPalette:v12 toFaceColorPalette:v13 fraction:a6 units:a7 brightenUnits:v20 overrideColor:a3 alternateHighlight:v33];
+    v21 = [NTKFaceColorScheme interpolationForDevice:device fromFaceColorPalette:paletteCopy toFaceColorPalette:colorPaletteCopy fraction:units units:brightenedUnits brightenUnits:overrideColor2 overrideColor:fraction alternateHighlight:v33];
     [(NTKModularTemplateView *)self setContainsOverrideFaceColor:v21];
   }
 
-  [(NTKModuleView *)self _applyMonochromeTransitionFraction:v12 fromFaceColorPalette:v13 toFaceColorPalette:a3];
+  [(NTKModuleView *)self _applyMonochromeTransitionFraction:paletteCopy fromFaceColorPalette:colorPaletteCopy toFaceColorPalette:fraction];
 }
 
 id __112__NTKModularTemplateView_applyTransitionFraction_fromFaceColorPalette_toFaceColorPalette_units_brightenedUnits___block_invoke(uint64_t a1, void *a2)
@@ -259,14 +259,14 @@ void __112__NTKModularTemplateView_applyTransitionFraction_fromFaceColorPalette_
   }
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = v6;
+  dateCopy = date;
+  v7 = dateCopy;
   timeTravelDate = self->_timeTravelDate;
-  if (v6)
+  if (dateCopy)
   {
-    if ([v6 isEqual:timeTravelDate])
+    if ([dateCopy isEqual:timeTravelDate])
     {
       goto LABEL_14;
     }
@@ -285,7 +285,7 @@ void __112__NTKModularTemplateView_applyTransitionFraction_fromFaceColorPalette_
     v11 = 1;
   }
 
-  objc_storeStrong(&self->_timeTravelDate, a3);
+  objc_storeStrong(&self->_timeTravelDate, date);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__NTKModularTemplateView_setTimeTravelDate_animated___block_invoke;
@@ -324,47 +324,47 @@ void __53__NTKModularTemplateView_setTimeTravelDate_animated___block_invoke_2(ui
   }
 }
 
-- (BOOL)_useInvertedHighlightForColorScheme:(id)a3
+- (BOOL)_useInvertedHighlightForColorScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = v4;
+  schemeCopy = scheme;
+  v5 = schemeCopy;
   highlightMode = self->_highlightMode;
-  v7 = highlightMode == 1 || highlightMode == 2 && ([v4 containsOverrideFaceColor] & 1) != 0;
+  v7 = highlightMode == 1 || highlightMode == 2 && ([schemeCopy containsOverrideFaceColor] & 1) != 0;
 
   return v7;
 }
 
-- (void)_enumerateColoringViewsSubviewsWithBlock:(id)a3 invertedHighlight:(BOOL)a4
+- (void)_enumerateColoringViewsSubviewsWithBlock:(id)block invertedHighlight:(BOOL)highlight
 {
-  v6 = a3;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__NTKModularTemplateView__enumerateColoringViewsSubviewsWithBlock_invertedHighlight___block_invoke;
   v12[3] = &unk_278785150;
-  v7 = v6;
+  v7 = blockCopy;
   v13 = v7;
-  v14 = a4;
+  highlightCopy = highlight;
   [(NTKModuleView *)self _enumerateForegroundColoringViewsWithBlock:v12];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __85__NTKModularTemplateView__enumerateColoringViewsSubviewsWithBlock_invertedHighlight___block_invoke_2;
   v9[3] = &unk_278785150;
   v10 = v7;
-  v11 = a4;
+  highlightCopy2 = highlight;
   v8 = v7;
   [(NTKModuleView *)self _enumerateSecondaryForegroundColoringViewsWithBlock:v9];
 }
 
-- (void)_propagateColorSchemeToSubviews:(id)a3
+- (void)_propagateColorSchemeToSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(NTKModularTemplateView *)self _useInvertedHighlightForColorScheme:v4];
+  subviewsCopy = subviews;
+  v5 = [(NTKModularTemplateView *)self _useInvertedHighlightForColorScheme:subviewsCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__NTKModularTemplateView__propagateColorSchemeToSubviews___block_invoke;
   v7[3] = &unk_278785178;
-  v8 = v4;
-  v6 = v4;
+  v8 = subviewsCopy;
+  v6 = subviewsCopy;
   [(NTKModularTemplateView *)self _enumerateColoringViewsSubviewsWithBlock:v7 invertedHighlight:v5];
 }
 

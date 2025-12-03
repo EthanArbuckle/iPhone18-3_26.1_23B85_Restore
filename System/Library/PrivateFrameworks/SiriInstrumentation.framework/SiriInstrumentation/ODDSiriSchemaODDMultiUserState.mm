@@ -1,27 +1,27 @@
 @interface ODDSiriSchemaODDMultiUserState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDMultiUserState)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDMultiUserState)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDMultiUserState)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDMultiUserState)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addEnrolledUsers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEnrolledUsers:(id)users;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDMultiUserState
 
-- (ODDSiriSchemaODDMultiUserState)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDMultiUserState)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ODDSiriSchemaODDMultiUserState;
   v5 = [(ODDSiriSchemaODDMultiUserState *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"enrolledUsers"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"enrolledUsers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"multiUserSetupStatus", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"multiUserSetupStatus", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDMultiUserState)initWithJSON:(id)a3
+- (ODDSiriSchemaODDMultiUserState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDMultiUserState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDMultiUserState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDMultiUserState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,10 +116,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_enrolledUsers count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -139,16 +139,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -158,52 +158,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"enrolledUsers"];
+    [dictionary setObject:array forKeyedSubscript:@"enrolledUsers"];
   }
 
   if (self->_multiUserSetupStatus)
   {
-    v12 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    multiUserSetupStatus = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+    dictionaryRepresentation2 = [multiUserSetupStatus dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"multiUserSetupStatus"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"multiUserSetupStatus"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"multiUserSetupStatus"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"multiUserSetupStatus"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers];
-  v6 = [v4 enrolledUsers];
-  if ((v5 != 0) == (v6 == 0))
+  enrolledUsers = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers];
+  enrolledUsers2 = [equalCopy enrolledUsers];
+  if ((enrolledUsers != 0) == (enrolledUsers2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers];
-  if (v7)
+  enrolledUsers3 = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers];
+  if (enrolledUsers3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers];
-    v10 = [v4 enrolledUsers];
-    v11 = [v9 isEqual:v10];
+    v8 = enrolledUsers3;
+    enrolledUsers4 = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers];
+    enrolledUsers5 = [equalCopy enrolledUsers];
+    v11 = [enrolledUsers4 isEqual:enrolledUsers5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
-  v6 = [v4 multiUserSetupStatus];
-  if ((v5 != 0) != (v6 == 0))
+  enrolledUsers = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+  enrolledUsers2 = [equalCopy multiUserSetupStatus];
+  if ((enrolledUsers != 0) != (enrolledUsers2 == 0))
   {
-    v12 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
-    if (!v12)
+    multiUserSetupStatus = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+    if (!multiUserSetupStatus)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
-    v15 = [v4 multiUserSetupStatus];
-    v16 = [v14 isEqual:v15];
+    v13 = multiUserSetupStatus;
+    multiUserSetupStatus2 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+    multiUserSetupStatus3 = [equalCopy multiUserSetupStatus];
+    v16 = [multiUserSetupStatus2 isEqual:multiUserSetupStatus3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+  multiUserSetupStatus = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
 
-  if (v10)
+  if (multiUserSetupStatus)
   {
-    v11 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+    multiUserSetupStatus2 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addEnrolledUsers:(id)a3
+- (void)addEnrolledUsers:(id)users
 {
-  v4 = a3;
+  usersCopy = users;
   enrolledUsers = self->_enrolledUsers;
-  v8 = v4;
+  v8 = usersCopy;
   if (!enrolledUsers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_enrolledUsers;
-    self->_enrolledUsers = v6;
+    self->_enrolledUsers = array;
 
-    v4 = v8;
+    usersCopy = v8;
     enrolledUsers = self->_enrolledUsers;
   }
 
-  [(NSArray *)enrolledUsers addObject:v4];
+  [(NSArray *)enrolledUsers addObject:usersCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = ODDSiriSchemaODDMultiUserState;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDMultiUserState *)self enrolledUsers:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(ODDSiriSchemaODDMultiUserState *)self setEnrolledUsers:v7];
 
-  v8 = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  multiUserSetupStatus = [(ODDSiriSchemaODDMultiUserState *)self multiUserSetupStatus];
+  v9 = [multiUserSetupStatus applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDMultiUserState *)self deleteMultiUserSetupStatus];
   }

@@ -32,64 +32,64 @@
 
 - (id)colorScheme
 {
-  v3 = [(PDSlideChild *)self themeOverrides];
-  v4 = [v3 colorScheme];
+  themeOverrides = [(PDSlideChild *)self themeOverrides];
+  colorScheme = [themeOverrides colorScheme];
 
-  if (!v4)
+  if (!colorScheme)
   {
-    v5 = [(PDSlideBase *)self parentSlideBase];
-    v4 = [v5 colorScheme];
+    parentSlideBase = [(PDSlideBase *)self parentSlideBase];
+    colorScheme = [parentSlideBase colorScheme];
   }
 
-  return v4;
+  return colorScheme;
 }
 
 - (id)colorMap
 {
-  v3 = [(PDSlideChild *)self colorMapOverride];
-  if (!v3)
+  colorMapOverride = [(PDSlideChild *)self colorMapOverride];
+  if (!colorMapOverride)
   {
-    v4 = [(PDSlideBase *)self parentSlideBase];
-    v3 = [v4 colorMap];
+    parentSlideBase = [(PDSlideBase *)self parentSlideBase];
+    colorMapOverride = [parentSlideBase colorMap];
   }
 
-  return v3;
+  return colorMapOverride;
 }
 
 - (id)fontScheme
 {
-  v3 = [(PDSlideChild *)self themeOverrides];
-  v4 = [v3 fontScheme];
+  themeOverrides = [(PDSlideChild *)self themeOverrides];
+  fontScheme = [themeOverrides fontScheme];
 
-  if (!v4)
+  if (!fontScheme)
   {
-    v5 = [(PDSlideBase *)self parentSlideBase];
-    v4 = [v5 fontScheme];
+    parentSlideBase = [(PDSlideBase *)self parentSlideBase];
+    fontScheme = [parentSlideBase fontScheme];
   }
 
-  return v4;
+  return fontScheme;
 }
 
 - (id)styleMatrix
 {
-  v3 = [(PDSlideChild *)self themeOverrides];
-  v4 = [v3 styleMatrix];
+  themeOverrides = [(PDSlideChild *)self themeOverrides];
+  styleMatrix = [themeOverrides styleMatrix];
 
-  if (!v4)
+  if (!styleMatrix)
   {
-    v5 = [(PDSlideBase *)self parentSlideBase];
-    v4 = [v5 styleMatrix];
+    parentSlideBase = [(PDSlideBase *)self parentSlideBase];
+    styleMatrix = [parentSlideBase styleMatrix];
   }
 
-  return v4;
+  return styleMatrix;
 }
 
 - (id)defaultTextListStyle
 {
-  v2 = [(PDSlideBase *)self parentSlideBase];
-  v3 = [v2 defaultTextListStyle];
+  parentSlideBase = [(PDSlideBase *)self parentSlideBase];
+  defaultTextListStyle = [parentSlideBase defaultTextListStyle];
 
-  return v3;
+  return defaultTextListStyle;
 }
 
 - (void)doneWithContent
@@ -107,12 +107,12 @@
 
 - (id)drawingTheme
 {
-  v3 = [(PDSlideBase *)self parentSlideBase];
-  v4 = [v3 drawingTheme];
+  parentSlideBase = [(PDSlideBase *)self parentSlideBase];
+  drawingTheme = [parentSlideBase drawingTheme];
 
-  [v4 applyThemeOverrides:*&self->mShowMasterPlaceholderAnimations colorMapOverride:self->mThemeOverrides];
+  [drawingTheme applyThemeOverrides:*&self->mShowMasterPlaceholderAnimations colorMapOverride:self->mThemeOverrides];
 
-  return v4;
+  return drawingTheme;
 }
 
 - (id)description

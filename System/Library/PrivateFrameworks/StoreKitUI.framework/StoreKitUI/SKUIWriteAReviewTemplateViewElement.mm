@@ -1,16 +1,16 @@
 @interface SKUIWriteAReviewTemplateViewElement
 - (NSString)reviewMetadataURLString;
-- (SKUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIWriteAReviewTemplateViewElement
 
-- (SKUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIWriteAReviewTemplateViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,13 +18,13 @@
 
   v16.receiver = self;
   v16.super_class = SKUIWriteAReviewTemplateViewElement;
-  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"data-content-id"];
+    v12 = [elementCopy getAttribute:@"data-content-id"];
     v11->_itemIdentifier = [v12 longLongValue];
 
-    v13 = [v8 getAttribute:@"src"];
+    v13 = [elementCopy getAttribute:@"src"];
     reviewMetadataURLString = v11->_reviewMetadataURLString;
     v11->_reviewMetadataURLString = v13;
   }
@@ -62,8 +62,8 @@
     if (v22[5])
     {
       v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:self->_reviewMetadataURLString];
-      v10 = [v9 queryItems];
-      v11 = [v10 mutableCopy];
+      queryItems = [v9 queryItems];
+      v11 = [queryItems mutableCopy];
 
       if (!v11)
       {
@@ -77,9 +77,9 @@
 
       [v9 setQueryItems:v11];
       v15 = [v9 URL];
-      v16 = [v15 absoluteString];
+      absoluteString = [v15 absoluteString];
 
-      v3 = v16;
+      v3 = absoluteString;
     }
 
     _Block_object_dispose(&v21, 8);
@@ -99,19 +99,19 @@ void __62__SKUIWriteAReviewTemplateViewElement_reviewMetadataURLString__block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIWriteAReviewTemplateViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_itemIdentifier = [(SKUIWriteAReviewTemplateViewElement *)v4 itemIdentifier];
-    v7 = [(SKUIWriteAReviewTemplateViewElement *)v4 reviewMetadataURLString];
+    self->_itemIdentifier = [(SKUIWriteAReviewTemplateViewElement *)elementCopy itemIdentifier];
+    reviewMetadataURLString = [(SKUIWriteAReviewTemplateViewElement *)elementCopy reviewMetadataURLString];
     reviewMetadataURLString = self->_reviewMetadataURLString;
-    self->_reviewMetadataURLString = v7;
+    self->_reviewMetadataURLString = reviewMetadataURLString;
   }
 
   return v6;

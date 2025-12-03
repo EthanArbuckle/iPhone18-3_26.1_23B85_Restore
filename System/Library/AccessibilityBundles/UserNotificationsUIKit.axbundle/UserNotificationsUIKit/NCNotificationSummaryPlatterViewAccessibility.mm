@@ -1,15 +1,15 @@
 @interface NCNotificationSummaryPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NCNotificationSummaryPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationSummaryPlatterView" hasInstanceVariable:@"_summaryContentView" withType:"NCNotificationSummaryContentView"];
-  [v3 validateClass:@"NCNotificationSummaryContentView" hasInstanceVariable:@"_summaryDateLabel" withType:"UILabel<BSUIDateLabel>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationSummaryPlatterView" hasInstanceVariable:@"_summaryContentView" withType:"NCNotificationSummaryContentView"];
+  [validationsCopy validateClass:@"NCNotificationSummaryContentView" hasInstanceVariable:@"_summaryDateLabel" withType:"UILabel<BSUIDateLabel>"];
 }
 
 - (id)accessibilityLabel

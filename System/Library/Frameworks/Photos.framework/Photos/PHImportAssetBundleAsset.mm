@@ -1,5 +1,5 @@
 @interface PHImportAssetBundleAsset
-- (PHImportAssetBundleAsset)initWithAssetBundleAtURL:(id)a3 withImportSource:(id)a4;
+- (PHImportAssetBundleAsset)initWithAssetBundleAtURL:(id)l withImportSource:(id)source;
 - (id)accessibilityDescription;
 - (id)assetDescription;
 - (id)creationDate;
@@ -12,132 +12,132 @@
 
 - (id)accessibilityDescription
 {
-  v2 = [(PHImportAssetBundleAsset *)self assetBundle];
-  v3 = [v2 accessibilityDescription];
+  assetBundle = [(PHImportAssetBundleAsset *)self assetBundle];
+  accessibilityDescription = [assetBundle accessibilityDescription];
 
-  return v3;
+  return accessibilityDescription;
 }
 
 - (id)assetDescription
 {
-  v2 = [(PHImportAssetBundleAsset *)self assetBundle];
-  v3 = [v2 assetDescription];
+  assetBundle = [(PHImportAssetBundleAsset *)self assetBundle];
+  assetDescription = [assetBundle assetDescription];
 
-  return v3;
+  return assetDescription;
 }
 
 - (id)keywordTitles
 {
-  v2 = [(PHImportAssetBundleAsset *)self assetBundle];
-  v3 = [v2 keywordTitles];
+  assetBundle = [(PHImportAssetBundleAsset *)self assetBundle];
+  keywordTitles = [assetBundle keywordTitles];
 
-  return v3;
+  return keywordTitles;
 }
 
 - (id)title
 {
-  v2 = [(PHImportAssetBundleAsset *)self assetBundle];
-  v3 = [v2 assetTitle];
+  assetBundle = [(PHImportAssetBundleAsset *)self assetBundle];
+  assetTitle = [assetBundle assetTitle];
 
-  return v3;
+  return assetTitle;
 }
 
 - (id)timeZone
 {
-  v3 = [(PHImportAssetBundleAsset *)self assetBundle];
-  v4 = [v3 libraryCreationDateTimeZone];
+  assetBundle = [(PHImportAssetBundleAsset *)self assetBundle];
+  libraryCreationDateTimeZone = [assetBundle libraryCreationDateTimeZone];
 
-  if (!v4)
+  if (!libraryCreationDateTimeZone)
   {
     v6.receiver = self;
     v6.super_class = PHImportAssetBundleAsset;
-    v4 = [(PHImportAsset *)&v6 timeZone];
+    libraryCreationDateTimeZone = [(PHImportAsset *)&v6 timeZone];
   }
 
-  return v4;
+  return libraryCreationDateTimeZone;
 }
 
 - (id)creationDate
 {
-  v3 = [(PHImportAssetBundleAsset *)self assetBundle];
-  v4 = [v3 libraryCreationDate];
+  assetBundle = [(PHImportAssetBundleAsset *)self assetBundle];
+  libraryCreationDate = [assetBundle libraryCreationDate];
 
-  if (!v4)
+  if (!libraryCreationDate)
   {
     v6.receiver = self;
     v6.super_class = PHImportAssetBundleAsset;
-    v4 = [(PHImportAsset *)&v6 creationDate];
+    libraryCreationDate = [(PHImportAsset *)&v6 creationDate];
   }
 
-  return v4;
+  return libraryCreationDate;
 }
 
-- (PHImportAssetBundleAsset)initWithAssetBundleAtURL:(id)a3 withImportSource:(id)a4
+- (PHImportAssetBundleAsset)initWithAssetBundleAtURL:(id)l withImportSource:(id)source
 {
   v80 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E69C0668]) initWithAssetBundleAtURL:v6];
+  lCopy = l;
+  sourceCopy = source;
+  v8 = [objc_alloc(MEMORY[0x1E69C0668]) initWithAssetBundleAtURL:lCopy];
   v9 = v8;
   if (v8)
   {
     if ([v8 mediaType] == 2)
     {
-      v10 = [v9 videoURL];
+      videoURL = [v9 videoURL];
       v11 = 16;
       goto LABEL_8;
     }
 
     if ([v9 mediaType] == 1)
     {
-      v10 = [v9 photoURL];
+      videoURL = [v9 photoURL];
       v11 = 2;
 LABEL_8:
       v77.receiver = self;
       v77.super_class = PHImportAssetBundleAsset;
-      v13 = [(PHImportAsset *)&v77 initWithSource:v7 url:v10 type:0 supportedMediaType:v11 uuid:0];
+      v13 = [(PHImportAsset *)&v77 initWithSource:sourceCopy url:videoURL type:0 supportedMediaType:v11 uuid:0];
       if (!v13)
       {
 LABEL_47:
         self = v13;
-        v26 = self;
+        selfCopy = self;
         goto LABEL_48;
       }
 
       if ([v9 mediaType] == 2)
       {
-        v14 = [v9 fullSizeVideoURL];
+        fullSizeVideoURL = [v9 fullSizeVideoURL];
 
-        if (v14)
+        if (fullSizeVideoURL)
         {
           v15 = [PHImportAsset alloc];
-          v16 = [v9 fullSizeVideoURL];
-          v17 = [(PHImportAsset *)v15 initWithSource:v7 url:v16 type:0 supportedMediaType:16 uuid:0];
+          fullSizeVideoURL2 = [v9 fullSizeVideoURL];
+          v17 = [(PHImportAsset *)v15 initWithSource:sourceCopy url:fullSizeVideoURL2 type:0 supportedMediaType:16 uuid:0];
 
           [(PHImportAsset *)v13 setLargeMovieRender:v17];
         }
 
-        v18 = [v9 adjustmentBaseVideoURL];
+        adjustmentBaseVideoURL = [v9 adjustmentBaseVideoURL];
 
-        if (v18)
+        if (adjustmentBaseVideoURL)
         {
           v19 = [PHImportAsset alloc];
-          v20 = [v9 adjustmentBaseVideoURL];
-          v21 = [(PHImportAsset *)v19 initWithSource:v7 url:v20 type:0 supportedMediaType:16 uuid:0];
+          adjustmentBaseVideoURL2 = [v9 adjustmentBaseVideoURL];
+          v21 = [(PHImportAsset *)v19 initWithSource:sourceCopy url:adjustmentBaseVideoURL2 type:0 supportedMediaType:16 uuid:0];
 
           [(PHImportAsset *)v13 setBase:v21];
         }
 
-        v22 = [v9 spatialOvercaptureVideoURL];
+        spatialOvercaptureVideoURL = [v9 spatialOvercaptureVideoURL];
 
-        if (!v22)
+        if (!spatialOvercaptureVideoURL)
         {
           goto LABEL_40;
         }
 
         v23 = [PHImportAsset alloc];
-        v24 = [v9 fullSizeVideoURL];
-        v25 = [(PHImportAsset *)v23 initWithSource:v7 url:v24 type:0 supportedMediaType:16 uuid:0];
+        fullSizeVideoURL3 = [v9 fullSizeVideoURL];
+        v25 = [(PHImportAsset *)v23 initWithSource:sourceCopy url:fullSizeVideoURL3 type:0 supportedMediaType:16 uuid:0];
 
         [(PHImportAsset *)v13 setSpatialOverCapture:v25];
       }
@@ -149,54 +149,54 @@ LABEL_47:
           goto LABEL_40;
         }
 
-        v27 = [v9 alternatePhotoURL];
+        alternatePhotoURL = [v9 alternatePhotoURL];
 
-        if (v27)
+        if (alternatePhotoURL)
         {
           v28 = [PHImportAsset alloc];
-          v29 = [v9 alternatePhotoURL];
-          v30 = [(PHImportAsset *)v28 initWithSource:v7 url:v29 type:0 supportedMediaType:2 uuid:0];
+          alternatePhotoURL2 = [v9 alternatePhotoURL];
+          v30 = [(PHImportAsset *)v28 initWithSource:sourceCopy url:alternatePhotoURL2 type:0 supportedMediaType:2 uuid:0];
 
           [(PHImportAsset *)v13 setRawAsset:v30];
         }
 
-        v31 = [v9 fullSizePhotoURL];
+        fullSizePhotoURL = [v9 fullSizePhotoURL];
 
-        if (v31)
+        if (fullSizePhotoURL)
         {
           v32 = [PHImportAsset alloc];
-          v33 = [v9 fullSizePhotoURL];
-          v34 = [(PHImportAsset *)v32 initWithSource:v7 url:v33 type:0 supportedMediaType:2 uuid:0];
+          fullSizePhotoURL2 = [v9 fullSizePhotoURL];
+          v34 = [(PHImportAsset *)v32 initWithSource:sourceCopy url:fullSizePhotoURL2 type:0 supportedMediaType:2 uuid:0];
 
           [(PHImportAsset *)v13 setLargeRender:v34];
         }
 
-        v35 = [v9 adjustmentBasePhotoURL];
+        adjustmentBasePhotoURL = [v9 adjustmentBasePhotoURL];
 
-        if (v35)
+        if (adjustmentBasePhotoURL)
         {
           v36 = [PHImportAsset alloc];
-          v37 = [v9 adjustmentBasePhotoURL];
-          v38 = [(PHImportAsset *)v36 initWithSource:v7 url:v37 type:0 supportedMediaType:2 uuid:0];
+          adjustmentBasePhotoURL2 = [v9 adjustmentBasePhotoURL];
+          v38 = [(PHImportAsset *)v36 initWithSource:sourceCopy url:adjustmentBasePhotoURL2 type:0 supportedMediaType:2 uuid:0];
 
           [(PHImportAsset *)v13 setBase:v38];
         }
 
-        v39 = [v9 spatialOvercapturePhotoURL];
+        spatialOvercapturePhotoURL = [v9 spatialOvercapturePhotoURL];
 
-        if (v39)
+        if (spatialOvercapturePhotoURL)
         {
           v40 = [PHImportAsset alloc];
-          v41 = [v9 spatialOvercapturePhotoURL];
-          v42 = [(PHImportAsset *)v40 initWithSource:v7 url:v41 type:0 supportedMediaType:2 uuid:0];
+          spatialOvercapturePhotoURL2 = [v9 spatialOvercapturePhotoURL];
+          v42 = [(PHImportAsset *)v40 initWithSource:sourceCopy url:spatialOvercapturePhotoURL2 type:0 supportedMediaType:2 uuid:0];
 
-          v43 = [v9 spatialOvercapturePairedVideoURL];
+          spatialOvercapturePairedVideoURL = [v9 spatialOvercapturePairedVideoURL];
 
-          if (v43)
+          if (spatialOvercapturePairedVideoURL)
           {
             v44 = [PHImportAsset alloc];
-            v45 = [v9 spatialOvercapturePairedVideoURL];
-            v46 = [(PHImportAsset *)v44 initWithSource:v7 url:v45 type:0 supportedMediaType:16 uuid:0];
+            spatialOvercapturePairedVideoURL2 = [v9 spatialOvercapturePairedVideoURL];
+            v46 = [(PHImportAsset *)v44 initWithSource:sourceCopy url:spatialOvercapturePairedVideoURL2 type:0 supportedMediaType:16 uuid:0];
 
             [(PHImportAsset *)v42 setVideoComplement:v46];
           }
@@ -204,86 +204,86 @@ LABEL_47:
           [(PHImportAsset *)v13 setSpatialOverCapture:v42];
         }
 
-        v47 = [v9 pairedVideoURL];
+        pairedVideoURL = [v9 pairedVideoURL];
 
-        if (v47)
+        if (pairedVideoURL)
         {
           v48 = [PHImportAsset alloc];
-          v49 = [v9 pairedVideoURL];
-          v50 = [(PHImportAsset *)v48 initWithSource:v7 url:v49 type:0 supportedMediaType:16 uuid:0];
+          pairedVideoURL2 = [v9 pairedVideoURL];
+          v50 = [(PHImportAsset *)v48 initWithSource:sourceCopy url:pairedVideoURL2 type:0 supportedMediaType:16 uuid:0];
 
           [(PHImportAsset *)v13 setVideoComplement:v50];
         }
 
-        v51 = [v9 fullSizePairedVideoURL];
-        if (v51)
+        fullSizePairedVideoURL = [v9 fullSizePairedVideoURL];
+        if (fullSizePairedVideoURL)
         {
-          v52 = v51;
-          v53 = [(PHImportAsset *)v13 largeRender];
+          v52 = fullSizePairedVideoURL;
+          largeRender = [(PHImportAsset *)v13 largeRender];
 
-          if (v53)
+          if (largeRender)
           {
             v54 = [PHImportAsset alloc];
-            v55 = [v9 fullSizePairedVideoURL];
-            v56 = [(PHImportAsset *)v54 initWithSource:v7 url:v55 type:0 supportedMediaType:16 uuid:0];
+            fullSizePairedVideoURL2 = [v9 fullSizePairedVideoURL];
+            v56 = [(PHImportAsset *)v54 initWithSource:sourceCopy url:fullSizePairedVideoURL2 type:0 supportedMediaType:16 uuid:0];
 
-            v57 = [(PHImportAsset *)v13 largeRender];
-            [v57 setVideoComplement:v56];
+            largeRender2 = [(PHImportAsset *)v13 largeRender];
+            [largeRender2 setVideoComplement:v56];
           }
         }
 
-        v58 = [v9 adjustmentBasePairedVideoURL];
-        if (!v58)
+        adjustmentBasePairedVideoURL = [v9 adjustmentBasePairedVideoURL];
+        if (!adjustmentBasePairedVideoURL)
         {
           goto LABEL_40;
         }
 
-        v59 = v58;
-        v60 = [(PHImportAsset *)v13 base];
+        v59 = adjustmentBasePairedVideoURL;
+        base = [(PHImportAsset *)v13 base];
 
-        if (!v60)
+        if (!base)
         {
           goto LABEL_40;
         }
 
         v61 = [PHImportAsset alloc];
-        v62 = [v9 adjustmentBasePairedVideoURL];
-        v25 = [(PHImportAsset *)v61 initWithSource:v7 url:v62 type:0 supportedMediaType:16 uuid:0];
+        adjustmentBasePairedVideoURL2 = [v9 adjustmentBasePairedVideoURL];
+        v25 = [(PHImportAsset *)v61 initWithSource:sourceCopy url:adjustmentBasePairedVideoURL2 type:0 supportedMediaType:16 uuid:0];
 
-        v63 = [(PHImportAsset *)v13 base];
-        [v63 setVideoComplement:v25];
+        base2 = [(PHImportAsset *)v13 base];
+        [base2 setVideoComplement:v25];
       }
 
 LABEL_40:
-      v64 = [v9 adjustmentDataURL];
+      adjustmentDataURL = [v9 adjustmentDataURL];
 
-      if (v64)
+      if (adjustmentDataURL)
       {
         v65 = [PHImportAsset alloc];
-        v66 = [v9 adjustmentDataURL];
-        v67 = [(PHImportAsset *)v65 initWithSource:v7 url:v66 type:0 supportedMediaType:64 uuid:0];
+        adjustmentDataURL2 = [v9 adjustmentDataURL];
+        v67 = [(PHImportAsset *)v65 initWithSource:sourceCopy url:adjustmentDataURL2 type:0 supportedMediaType:64 uuid:0];
 
         [(PHImportAsset *)v13 addSidecarAsset:v67];
       }
 
-      v68 = [v9 originalAdjustmentDataURL];
+      originalAdjustmentDataURL = [v9 originalAdjustmentDataURL];
 
-      if (v68)
+      if (originalAdjustmentDataURL)
       {
         v69 = [PHImportAsset alloc];
-        v70 = [v9 originalAdjustmentDataURL];
-        v71 = [(PHImportAsset *)v69 initWithSource:v7 url:v70 type:0 supportedMediaType:64 uuid:0];
+        originalAdjustmentDataURL2 = [v9 originalAdjustmentDataURL];
+        v71 = [(PHImportAsset *)v69 initWithSource:sourceCopy url:originalAdjustmentDataURL2 type:0 supportedMediaType:64 uuid:0];
 
         [(PHImportAsset *)v13 addSidecarAsset:v71];
       }
 
-      v72 = [v9 adjustmentSecondaryDataURL];
+      adjustmentSecondaryDataURL = [v9 adjustmentSecondaryDataURL];
 
-      if (v72)
+      if (adjustmentSecondaryDataURL)
       {
         v73 = [PHImportAsset alloc];
-        v74 = [v9 adjustmentSecondaryDataURL];
-        v75 = [(PHImportAsset *)v73 initWithSource:v7 url:v74 type:0 supportedMediaType:64 uuid:0];
+        adjustmentSecondaryDataURL2 = [v9 adjustmentSecondaryDataURL];
+        v75 = [(PHImportAsset *)v73 initWithSource:sourceCopy url:adjustmentSecondaryDataURL2 type:0 supportedMediaType:64 uuid:0];
 
         [(PHImportAsset *)v13 addSidecarAsset:v75];
       }
@@ -292,11 +292,11 @@ LABEL_40:
       goto LABEL_47;
     }
 
-    v10 = PLImportGetLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    videoURL = PLImportGetLog();
+    if (os_log_type_enabled(videoURL, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v79 = [v9 mediaType];
+      mediaType = [v9 mediaType];
       v12 = "Unsupported asset bundle media type: %ld.";
       goto LABEL_18;
     }
@@ -304,21 +304,21 @@ LABEL_40:
 
   else
   {
-    v10 = PLImportGetLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    videoURL = PLImportGetLog();
+    if (os_log_type_enabled(videoURL, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v79 = v6;
+      mediaType = lCopy;
       v12 = "Tried to parse asset bundle at URL: %@, but it was invalid.";
 LABEL_18:
-      _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, v12, buf, 0xCu);
+      _os_log_impl(&dword_19C86F000, videoURL, OS_LOG_TYPE_ERROR, v12, buf, 0xCu);
     }
   }
 
-  v26 = 0;
+  selfCopy = 0;
 LABEL_48:
 
-  return v26;
+  return selfCopy;
 }
 
 @end

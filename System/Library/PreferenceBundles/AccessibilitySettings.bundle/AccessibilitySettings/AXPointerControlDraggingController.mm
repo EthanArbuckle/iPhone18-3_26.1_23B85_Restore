@@ -1,27 +1,27 @@
 @interface AXPointerControlDraggingController
-+ (id)localizedDescriptionForDoubleTapDragMode:(int64_t)a3;
-+ (id)localizedNameForDoubleTapDragMode:(int64_t)a3;
++ (id)localizedDescriptionForDoubleTapDragMode:(int64_t)mode;
++ (id)localizedNameForDoubleTapDragMode:(int64_t)mode;
 - (id)globalDevicePreferences;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXPointerControlDraggingController
 
-+ (id)localizedNameForDoubleTapDragMode:(int64_t)a3
++ (id)localizedNameForDoubleTapDragMode:(int64_t)mode
 {
-  if (a3 <= 2)
+  if (mode <= 2)
   {
-    a1 = settingsLocString(*(&off_258C40 + a3), @"Accessibility-hello");
+    self = settingsLocString(*(&off_258C40 + mode), @"Accessibility-hello");
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)localizedDescriptionForDoubleTapDragMode:(int64_t)a3
++ (id)localizedDescriptionForDoubleTapDragMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v4 = @"PointerDraggingWithoutDragLockDescription";
 LABEL_5:
@@ -30,7 +30,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v4 = @"PointerDraggingWithDragLockDescription";
     goto LABEL_5;
@@ -44,14 +44,14 @@ LABEL_5:
 - (id)globalDevicePreferences
 {
   v2 = +[BKSMousePointerService sharedInstance];
-  v3 = [v2 globalDevicePreferences];
+  globalDevicePreferences = [v2 globalDevicePreferences];
 
-  if (!v3)
+  if (!globalDevicePreferences)
   {
-    v3 = [BKSMousePointerDevicePreferences defaultPreferencesForHardwareType:9];
+    globalDevicePreferences = [BKSMousePointerDevicePreferences defaultPreferencesForHardwareType:9];
   }
 
-  return v3;
+  return globalDevicePreferences;
 }
 
 - (id)specifiers
@@ -63,8 +63,8 @@ LABEL_5:
     v4 = +[NSMutableArray array];
     v5 = +[PSSpecifier emptyGroupSpecifier];
     v6 = objc_opt_class();
-    v7 = [(AXPointerControlDraggingController *)self globalDevicePreferences];
-    v8 = [v6 localizedDescriptionForDoubleTapDragMode:{objc_msgSend(v7, "doubleTapDragMode")}];
+    globalDevicePreferences = [(AXPointerControlDraggingController *)self globalDevicePreferences];
+    v8 = [v6 localizedDescriptionForDoubleTapDragMode:{objc_msgSend(globalDevicePreferences, "doubleTapDragMode")}];
     [v5 setProperty:v8 forKey:PSFooterTextGroupKey];
 
     [v4 addObject:v5];
@@ -74,8 +74,8 @@ LABEL_5:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [objc_opt_class() doubleTapDragModes];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    doubleTapDragModes = [objc_opt_class() doubleTapDragModes];
+    v10 = [doubleTapDragModes countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -86,7 +86,7 @@ LABEL_5:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(doubleTapDragModes);
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
@@ -96,7 +96,7 @@ LABEL_5:
           [v4 addObject:v16];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [doubleTapDragModes countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
@@ -111,54 +111,54 @@ LABEL_5:
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v7 = [(AXPointerControlDraggingController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(AXPointerControlDraggingController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"_DoubleTapDragMode"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
-    v11 = [(AXPointerControlDraggingController *)self globalDevicePreferences];
-    [v12 setChecked:{v10 == objc_msgSend(v11, "doubleTapDragMode")}];
+    integerValue = [v8 integerValue];
+    globalDevicePreferences = [(AXPointerControlDraggingController *)self globalDevicePreferences];
+    [cellCopy setChecked:{integerValue == objc_msgSend(globalDevicePreferences, "doubleTapDragMode")}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v37.receiver = self;
   v37.super_class = AXPointerControlDraggingController;
-  [(AXPointerControlDraggingController *)&v37 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(AXPointerControlDraggingController *)self specifierForIndexPath:v7];
+  [(AXPointerControlDraggingController *)&v37 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(AXPointerControlDraggingController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"_DoubleTapDragMode"];
   v10 = v9;
   if (v9)
   {
     v28 = v9;
     v29 = v8;
-    v31 = v7;
-    v11 = [v9 integerValue];
-    v30 = self;
-    v12 = [(AXPointerControlDraggingController *)self globalDevicePreferences];
-    [v12 setDoubleTapDragMode:v11];
-    if (v11)
+    v31 = pathCopy;
+    integerValue = [v9 integerValue];
+    selfCopy = self;
+    globalDevicePreferences = [(AXPointerControlDraggingController *)self globalDevicePreferences];
+    [globalDevicePreferences setDoubleTapDragMode:integerValue];
+    if (integerValue)
     {
-      [v12 setEnableTapToClick:1];
+      [globalDevicePreferences setEnableTapToClick:1];
     }
 
     v13 = +[BKSMousePointerService sharedInstance];
-    [v13 setGlobalDevicePreferences:v12];
+    [v13 setGlobalDevicePreferences:globalDevicePreferences];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v32 = v6;
-    v14 = [v6 visibleCells];
-    v15 = [v14 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    v32 = viewCopy;
+    visibleCells = [viewCopy visibleCells];
+    v15 = [visibleCells countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v15)
     {
       v16 = v15;
@@ -169,35 +169,35 @@ LABEL_5:
         {
           if (*v34 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(visibleCells);
           }
 
           v19 = *(*(&v33 + 1) + 8 * i);
-          v20 = [v19 specifier];
-          v21 = [v20 propertyForKey:@"_DoubleTapDragMode"];
+          specifier = [v19 specifier];
+          v21 = [specifier propertyForKey:@"_DoubleTapDragMode"];
           v22 = v21;
           if (v21)
           {
-            [v19 setChecked:{objc_msgSend(v21, "integerValue") == objc_msgSend(v12, "doubleTapDragMode")}];
+            [v19 setChecked:{objc_msgSend(v21, "integerValue") == objc_msgSend(globalDevicePreferences, "doubleTapDragMode")}];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v16 = [visibleCells countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v16);
     }
 
-    v7 = v31;
-    v6 = v32;
+    pathCopy = v31;
+    viewCopy = v32;
     v8 = v29;
-    self = v30;
+    self = selfCopy;
     v10 = v28;
   }
 
   v23 = objc_opt_class();
-  v24 = [(AXPointerControlDraggingController *)self globalDevicePreferences];
-  v25 = [v23 localizedDescriptionForDoubleTapDragMode:{objc_msgSend(v24, "doubleTapDragMode")}];
+  globalDevicePreferences2 = [(AXPointerControlDraggingController *)self globalDevicePreferences];
+  v25 = [v23 localizedDescriptionForDoubleTapDragMode:{objc_msgSend(globalDevicePreferences2, "doubleTapDragMode")}];
 
   v26 = [v25 length];
   groupSpecifier = self->_groupSpecifier;

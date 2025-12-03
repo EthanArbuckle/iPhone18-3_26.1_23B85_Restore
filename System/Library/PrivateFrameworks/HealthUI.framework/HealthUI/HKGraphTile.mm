@@ -1,34 +1,34 @@
 @interface HKGraphTile
 - (BOOL)hidden;
-- (HKGraphTile)initWithParentView:(id)a3 graphViewTileThread:(id)a4;
+- (HKGraphTile)initWithParentView:(id)view graphViewTileThread:(id)thread;
 - (HKGraphTileDrawingDelegate)drawingDelegate;
 - (HKGraphViewTileThread)graphViewTileThread;
 - (UIView)parentView;
-- (id)_imageRendererForSize:(CGSize)a3;
+- (id)_imageRendererForSize:(CGSize)size;
 - (void)_handlePostRenderOperations;
-- (void)configureTileWithScreenRect:(CGRect)a3 column:(int64_t)a4;
+- (void)configureTileWithScreenRect:(CGRect)rect column:(int64_t)column;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)prepareTileForReuse;
 - (void)refreshTileContent;
-- (void)renderTileInBackgroundWithRenderer:(id)a3 tileSize:(CGSize)a4 configurationChangedCounter:(int64_t)a5;
-- (void)setHidden:(BOOL)a3;
+- (void)renderTileInBackgroundWithRenderer:(id)renderer tileSize:(CGSize)size configurationChangedCounter:(int64_t)counter;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation HKGraphTile
 
-- (HKGraphTile)initWithParentView:(id)a3 graphViewTileThread:(id)a4
+- (HKGraphTile)initWithParentView:(id)view graphViewTileThread:(id)thread
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  threadCopy = thread;
   v19.receiver = self;
   v19.super_class = HKGraphTile;
   v8 = [(HKGraphTile *)&v19 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v11 = v10;
 
     v12 = objc_alloc_init(MEMORY[0x1E6979398]);
@@ -43,19 +43,19 @@
     [(CALayer *)v8->_caLayer setContents:0];
     [(CALayer *)v8->_caLayer setContentsFormat:*MEMORY[0x1E6979650]];
     v20 = @"contents";
-    v14 = [MEMORY[0x1E695DFB0] null];
-    v21[0] = v14;
+    null = [MEMORY[0x1E695DFB0] null];
+    v21[0] = null;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     [(CALayer *)v8->_caLayer setActions:v15];
 
-    v16 = [v6 layer];
-    [v16 addSublayer:v8->_caLayer];
+    layer = [viewCopy layer];
+    [layer addSublayer:v8->_caLayer];
 
-    objc_storeWeak(&v8->_graphViewTileThread, v7);
+    objc_storeWeak(&v8->_graphViewTileThread, threadCopy);
     v8->_currentColumn = -1;
     v8->_tileDisplayedSinceSetNeedsDisplay = 0;
     v8->_configurationChangedCounter = 0;
-    objc_storeWeak(&v8->_parentView, v6);
+    objc_storeWeak(&v8->_parentView, viewCopy);
     currentImageRenderer = v8->_currentImageRenderer;
     v8->_currentImageRenderer = 0;
 
@@ -67,25 +67,25 @@
 
 - (void)dealloc
 {
-  v3 = [(HKGraphTile *)self currentImageRenderer];
+  currentImageRenderer = [(HKGraphTile *)self currentImageRenderer];
   [(HKGraphTile *)self lastImageAssignmentTime];
-  [_HKGraphTileDelayedRendererReleaseManager handleDelayedRendererRelease:v3 lastAssignmentTime:?];
+  [_HKGraphTileDelayedRendererReleaseManager handleDelayedRendererRelease:currentImageRenderer lastAssignmentTime:?];
 
-  v4 = [(HKGraphTile *)self caLayer];
-  [v4 setDelegate:0];
+  caLayer = [(HKGraphTile *)self caLayer];
+  [caLayer setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = HKGraphTile;
   [(HKGraphTile *)&v5 dealloc];
 }
 
-- (void)configureTileWithScreenRect:(CGRect)a3 column:(int64_t)a4
+- (void)configureTileWithScreenRect:(CGRect)rect column:(int64_t)column
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_currentColumn = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  self->_currentColumn = column;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setValue:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697A020]];
   [(CALayer *)self->_caLayer setBounds:0.0, 0.0, width, height];
@@ -105,19 +105,19 @@
 
 - (BOOL)hidden
 {
-  v2 = [(HKGraphTile *)self caLayer];
-  v3 = [v2 isHidden];
+  caLayer = [(HKGraphTile *)self caLayer];
+  isHidden = [caLayer isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setValue:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697A020]];
-  v5 = [(HKGraphTile *)self caLayer];
-  [v5 setHidden:v3];
+  caLayer = [(HKGraphTile *)self caLayer];
+  [caLayer setHidden:hiddenCopy];
 
   v6 = MEMORY[0x1E6979518];
 
@@ -127,45 +127,45 @@
 - (void)refreshTileContent
 {
   self->_tileDisplayedSinceSetNeedsDisplay = 0;
-  v3 = [(HKGraphTile *)self graphViewTileThread];
+  graphViewTileThread = [(HKGraphTile *)self graphViewTileThread];
 
-  if (v3)
+  if (graphViewTileThread)
   {
-    v4 = [(HKGraphTile *)self drawingDelegate];
-    v5 = [(HKGraphTile *)self caLayer];
-    [v5 frame];
-    v16 = [v4 createTileRendererWithTileRect:-[HKGraphTile currentColumn](self column:{"currentColumn"), v6, v7, v8, v9}];
+    drawingDelegate = [(HKGraphTile *)self drawingDelegate];
+    caLayer = [(HKGraphTile *)self caLayer];
+    [caLayer frame];
+    caLayer3 = [drawingDelegate createTileRendererWithTileRect:-[HKGraphTile currentColumn](self column:{"currentColumn"), v6, v7, v8, v9}];
 
     v10 = [_HKGraphTileBackgroundRenderingContext alloc];
-    v11 = [(HKGraphTile *)self caLayer];
-    [v11 bounds];
-    v14 = [(_HKGraphTileBackgroundRenderingContext *)v10 initWithGraphTile:self graphViewRenderer:v16 tileSize:[(HKGraphTile *)self configurationChangedCounter] configurationChangedCounter:v12, v13];
+    caLayer2 = [(HKGraphTile *)self caLayer];
+    [caLayer2 bounds];
+    v14 = [(_HKGraphTileBackgroundRenderingContext *)v10 initWithGraphTile:self graphViewRenderer:caLayer3 tileSize:[(HKGraphTile *)self configurationChangedCounter] configurationChangedCounter:v12, v13];
 
-    v15 = [(HKGraphTile *)self graphViewTileThread];
-    [v15 scheduleRedrawUsingRenderer:v14];
+    graphViewTileThread2 = [(HKGraphTile *)self graphViewTileThread];
+    [graphViewTileThread2 scheduleRedrawUsingRenderer:v14];
   }
 
   else
   {
-    v16 = [(HKGraphTile *)self caLayer];
-    [v16 setNeedsDisplay];
+    caLayer3 = [(HKGraphTile *)self caLayer];
+    [caLayer3 setNeedsDisplay];
   }
 }
 
-- (id)_imageRendererForSize:(CGSize)a3
+- (id)_imageRendererForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(HKGraphTile *)self currentImageRenderer];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  currentImageRenderer = [(HKGraphTile *)self currentImageRenderer];
+  if (currentImageRenderer)
   {
-    v7 = v6;
-    v8 = [(HKGraphTile *)self currentImageRenderer];
-    [v8 sizeInPoints];
+    v7 = currentImageRenderer;
+    currentImageRenderer2 = [(HKGraphTile *)self currentImageRenderer];
+    [currentImageRenderer2 sizeInPoints];
     if (vabdd_f64(width, v9) <= 0.01)
     {
-      v10 = [(HKGraphTile *)self currentImageRenderer];
-      [v10 sizeInPoints];
+      currentImageRenderer3 = [(HKGraphTile *)self currentImageRenderer];
+      [currentImageRenderer3 sizeInPoints];
       v12 = vabdd_f64(height, v11);
 
       if (v12 <= 0.01)
@@ -179,19 +179,19 @@
     }
   }
 
-  v13 = [(HKGraphTile *)self currentImageRenderer];
+  currentImageRenderer4 = [(HKGraphTile *)self currentImageRenderer];
 
-  if (v13)
+  if (currentImageRenderer4)
   {
-    v14 = [(HKGraphTile *)self currentImageRenderer];
+    currentImageRenderer5 = [(HKGraphTile *)self currentImageRenderer];
     [(HKGraphTile *)self lastImageAssignmentTime];
-    [_HKGraphTileDelayedRendererReleaseManager handleDelayedRendererRelease:v14 lastAssignmentTime:?];
+    [_HKGraphTileDelayedRendererReleaseManager handleDelayedRendererRelease:currentImageRenderer5 lastAssignmentTime:?];
 
     [(HKGraphTile *)self setCurrentImageRenderer:0];
   }
 
-  v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v17 = v16;
 
   v18 = [[_HKGraphTileRenderToImage alloc] initWithSize:1 scale:width invertedYAxis:height, v17];
@@ -202,11 +202,11 @@ LABEL_8:
   return [(HKGraphTile *)self currentImageRenderer];
 }
 
-- (void)renderTileInBackgroundWithRenderer:(id)a3 tileSize:(CGSize)a4 configurationChangedCounter:(int64_t)a5
+- (void)renderTileInBackgroundWithRenderer:(id)renderer tileSize:(CGSize)size configurationChangedCounter:(int64_t)counter
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     [HKGraphTile renderTileInBackgroundWithRenderer:a2 tileSize:self configurationChangedCounter:?];
@@ -214,19 +214,19 @@ LABEL_8:
 
   if (height != 0.0 && width != 0.0)
   {
-    v11 = [(HKGraphTile *)self _imageRendererForSize:width, height];
+    height = [(HKGraphTile *)self _imageRendererForSize:width, height];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __87__HKGraphTile_renderTileInBackgroundWithRenderer_tileSize_configurationChangedCounter___block_invoke;
     v14[3] = &unk_1E81B5D10;
-    v15 = v10;
-    v12 = CFRetain([v11 drawToImage:v14]);
+    v15 = rendererCopy;
+    v12 = CFRetain([height drawToImage:v14]);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __87__HKGraphTile_renderTileInBackgroundWithRenderer_tileSize_configurationChangedCounter___block_invoke_2;
     v13[3] = &unk_1E81B5D38;
     v13[4] = self;
-    v13[5] = a5;
+    v13[5] = counter;
     v13[6] = v12;
     dispatch_async(MEMORY[0x1E69E96A0], v13);
   }
@@ -251,27 +251,27 @@ uint64_t __87__HKGraphTile_renderTileInBackgroundWithRenderer_tileSize_configura
   return result;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     [HKGraphTile drawLayer:a2 inContext:self];
   }
 
-  v7 = [(HKGraphTile *)self drawingDelegate];
-  v8 = [(HKGraphTile *)self caLayer];
-  [v8 frame];
-  v13 = [v7 createTileRendererWithTileRect:-[HKGraphTile currentColumn](self column:{"currentColumn"), v9, v10, v11, v12}];
+  drawingDelegate = [(HKGraphTile *)self drawingDelegate];
+  caLayer = [(HKGraphTile *)self caLayer];
+  [caLayer frame];
+  v13 = [drawingDelegate createTileRendererWithTileRect:-[HKGraphTile currentColumn](self column:{"currentColumn"), v9, v10, v11, v12}];
 
-  [v13 renderContentToContext:a4];
+  [v13 renderContentToContext:context];
   [(HKGraphTile *)self _handlePostRenderOperations];
 }
 
 - (void)_handlePostRenderOperations
 {
   self->_tileDisplayedSinceSetNeedsDisplay = 1;
-  v2 = [(HKGraphTile *)self drawingDelegate];
-  [v2 tileRenderDidFinish];
+  drawingDelegate = [(HKGraphTile *)self drawingDelegate];
+  [drawingDelegate tileRenderDidFinish];
 }
 
 - (HKGraphTileDrawingDelegate)drawingDelegate

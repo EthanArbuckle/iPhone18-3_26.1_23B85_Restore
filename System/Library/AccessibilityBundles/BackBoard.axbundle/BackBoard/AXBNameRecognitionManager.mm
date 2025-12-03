@@ -1,7 +1,7 @@
 @interface AXBNameRecognitionManager
 + (_TtC9BackBoard25AXBNameRecognitionManager)shared;
 - (_TtC9BackBoard25AXBNameRecognitionManager)init;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)initializeMonitoring;
 @end
 
@@ -21,7 +21,7 @@
 
 - (void)initializeMonitoring
 {
-  v2 = self;
+  selfCopy = self;
   sub_29BBE033C();
 }
 
@@ -34,11 +34,11 @@
   return [(AXBNameRecognitionManager *)&v3 init];
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  AXBNameRecognitionManager.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(a3);
+  clientCopy = client;
+  selfCopy = self;
+  AXBNameRecognitionManager.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(client);
 }
 
 @end

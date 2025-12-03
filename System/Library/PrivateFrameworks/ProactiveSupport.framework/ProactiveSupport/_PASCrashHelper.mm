@@ -1,33 +1,33 @@
 @interface _PASCrashHelper
-+ (void)optInCurrentProcessForLogFaultProbabalisticCrashesWithConfig:(id)a3;
-+ (void)simulateCrashWithDescription:(id)a3;
++ (void)optInCurrentProcessForLogFaultProbabalisticCrashesWithConfig:(id)config;
++ (void)simulateCrashWithDescription:(id)description;
 @end
 
 @implementation _PASCrashHelper
 
-+ (void)optInCurrentProcessForLogFaultProbabalisticCrashesWithConfig:(id)a3
++ (void)optInCurrentProcessForLogFaultProbabalisticCrashesWithConfig:(id)config
 {
-  v5 = a3;
-  if (!v5)
+  configCopy = config;
+  if (!configCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"_PASCrashHelper.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"config"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASCrashHelper.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"config"}];
   }
 
   if (+[_PASDeviceInfo isDNUEnabled])
   {
-    v6 = [v5 oddsNumerator];
-    if (v6 > [v5 oddsDenominator])
+    oddsNumerator = [configCopy oddsNumerator];
+    if (oddsNumerator > [configCopy oddsDenominator])
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASCrashHelper.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"config.oddsNumerator <= config.oddsDenominator"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASCrashHelper.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"config.oddsNumerator <= config.oddsDenominator"}];
     }
 
-    if ([v5 oddsNumerator])
+    if ([configCopy oddsNumerator])
     {
-      _PASLogFaultAndProbCrashWindowSize = [v5 uniqueCallsiteWindowSize];
-      v7 = arc4random_uniform([v5 oddsDenominator]);
-      if (v7 < [v5 oddsNumerator])
+      _PASLogFaultAndProbCrashWindowSize = [configCopy uniqueCallsiteWindowSize];
+      v7 = arc4random_uniform([configCopy oddsDenominator]);
+      if (v7 < [configCopy oddsNumerator])
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -41,13 +41,13 @@
   }
 }
 
-+ (void)simulateCrashWithDescription:(id)a3
++ (void)simulateCrashWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
-    v4 = v3;
+    v4 = descriptionCopy;
   }
 
   else

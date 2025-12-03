@@ -19,7 +19,7 @@
 
 + (id)alloc
 {
-  v3 = objc_msgSend___class(a1, a2, v2);
+  v3 = objc_msgSend___class(self, a2, v2);
 
   return [v3 alloc];
 }

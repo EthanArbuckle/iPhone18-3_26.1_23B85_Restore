@@ -1,6 +1,6 @@
 @interface MTRClosureControlClusterOverallTargetStateStruct
 - (MTRClosureControlClusterOverallTargetStateStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureControlClusterOverallTargetStateStruct);
-  v5 = [(MTRClosureControlClusterOverallTargetStateStruct *)self position];
-  [(MTRClosureControlClusterOverallTargetStateStruct *)v4 setPosition:v5];
+  position = [(MTRClosureControlClusterOverallTargetStateStruct *)self position];
+  [(MTRClosureControlClusterOverallTargetStateStruct *)v4 setPosition:position];
 
-  v6 = [(MTRClosureControlClusterOverallTargetStateStruct *)self latch];
-  [(MTRClosureControlClusterOverallTargetStateStruct *)v4 setLatch:v6];
+  latch = [(MTRClosureControlClusterOverallTargetStateStruct *)self latch];
+  [(MTRClosureControlClusterOverallTargetStateStruct *)v4 setLatch:latch];
 
-  v7 = [(MTRClosureControlClusterOverallTargetStateStruct *)self speed];
-  [(MTRClosureControlClusterOverallTargetStateStruct *)v4 setSpeed:v7];
+  speed = [(MTRClosureControlClusterOverallTargetStateStruct *)self speed];
+  [(MTRClosureControlClusterOverallTargetStateStruct *)v4 setSpeed:speed];
 
   return v4;
 }

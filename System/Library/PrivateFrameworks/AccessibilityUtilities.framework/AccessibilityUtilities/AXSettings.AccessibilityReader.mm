@@ -1,38 +1,38 @@
 @interface AXSettings.AccessibilityReader
 - (BOOL)accessibilityReaderAutomaticallyStartSpeaking;
 - (BOOL)accessibilityReaderEnabled;
-- (void)setAccessibilityReaderAutomaticallyStartSpeaking:(BOOL)a3;
-- (void)setAccessibilityReaderEnabled:(BOOL)a3;
+- (void)setAccessibilityReaderAutomaticallyStartSpeaking:(BOOL)speaking;
+- (void)setAccessibilityReaderEnabled:(BOOL)enabled;
 @end
 
 @implementation AXSettings.AccessibilityReader
 
 - (BOOL)accessibilityReaderEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.AccessibilityReader.enabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setAccessibilityReaderEnabled:(BOOL)a3
+- (void)setAccessibilityReaderEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.AccessibilityReader.enabled.setter(a3);
+  selfCopy = self;
+  AXSettings.AccessibilityReader.enabled.setter(enabled);
 }
 
 - (BOOL)accessibilityReaderAutomaticallyStartSpeaking
 {
-  v2 = self;
+  selfCopy = self;
   started = AXSettings.AccessibilityReader.automaticallyStartSpeaking.getter();
 
   return started & 1;
 }
 
-- (void)setAccessibilityReaderAutomaticallyStartSpeaking:(BOOL)a3
+- (void)setAccessibilityReaderAutomaticallyStartSpeaking:(BOOL)speaking
 {
-  v4 = self;
-  AXSettings.AccessibilityReader.automaticallyStartSpeaking.setter(a3);
+  selfCopy = self;
+  AXSettings.AccessibilityReader.automaticallyStartSpeaking.setter(speaking);
 }
 
 @end

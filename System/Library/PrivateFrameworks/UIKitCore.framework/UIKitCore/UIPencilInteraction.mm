@@ -1,33 +1,33 @@
 @interface UIPencilInteraction
-- (UIPencilHoverPose)_hoverPoseForEvent:(uint64_t)a1;
+- (UIPencilHoverPose)_hoverPoseForEvent:(uint64_t)event;
 - (UIPencilInteraction)init;
-- (UIPencilInteraction)initWithDelegate:(id)a3;
+- (UIPencilInteraction)initWithDelegate:(id)delegate;
 - (UIView)view;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
 - (id)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (uint64_t)_internalShouldReceiveEvent:(unsigned __int8 *)a1;
+- (uint64_t)_internalShouldReceiveEvent:(unsigned __int8 *)event;
 - (uint64_t)_updateLastKnownHoverStateFromGesture:(uint64_t)result;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_handleHoverGestureRecognizer:(id)a3;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_handleHoverGestureRecognizer:(id)recognizer;
 - (void)_installHoverGestureIfNeeded;
-- (void)_performCallbacksWithEvent:(_BYTE *)a1;
+- (void)_performCallbacksWithEvent:(_BYTE *)event;
 - (void)_registerWithEventIfAble;
-- (void)_sendSqueezeFromEvent:(_BYTE *)a1;
-- (void)_sendTapFromEvent:(_BYTE *)a1;
+- (void)_sendSqueezeFromEvent:(_BYTE *)event;
+- (void)_sendTapFromEvent:(_BYTE *)event;
 - (void)_uninstallHoverGestureIfNeeded;
 - (void)_unregisterFromEvent;
-- (void)_willMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_windowDidMoveToScene:(id)a3;
-- (void)_windowWillMoveToScene:(id)a3;
+- (void)_willMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_windowDidMoveToScene:(id)scene;
+- (void)_windowWillMoveToScene:(id)scene;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)setDelegate:(id)delegate;
 - (void)setEnabled:(BOOL)enabled;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIPencilInteraction
@@ -48,13 +48,13 @@
   return result;
 }
 
-- (UIPencilInteraction)initWithDelegate:(id)a3
+- (UIPencilInteraction)initWithDelegate:(id)delegate
 {
   v4 = [(UIPencilInteraction *)self init];
   v5 = v4;
   if (v4)
   {
-    [(UIPencilInteraction *)v4 setDelegate:a3];
+    [(UIPencilInteraction *)v4 setDelegate:delegate];
   }
 
   return v5;
@@ -71,18 +71,18 @@
 - (void)_unregisterFromEvent
 {
   v5[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5[0] = @"_UIWindowWillMoveToSceneNotification";
     v5[1] = @"_UIWindowDidMoveToSceneNotification";
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:2];
-    [(NSNotificationCenter *)v2 _uiRemoveObserver:a1 names:v3];
+    [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:self names:v3];
 
-    *(a1 + 8) &= ~2u;
-    [*(a1 + 24) invalidate];
-    v4 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    *(self + 8) &= ~2u;
+    [*(self + 24) invalidate];
+    v4 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
@@ -147,15 +147,15 @@
   objc_storeWeak(&self->_delegate, delegate);
 }
 
-- (void)_sendTapFromEvent:(_BYTE *)a1
+- (void)_sendTapFromEvent:(_BYTE *)event
 {
   v61 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (event)
   {
-    v4 = [a1 delegate];
-    if ((a1[8] & 8) != 0)
+    delegate = [event delegate];
+    if ((event[8] & 8) != 0)
     {
-      v6 = [(UIPencilInteraction *)a1 _hoverPoseForEvent:a2];
+      v6 = [(UIPencilInteraction *)event _hoverPoseForEvent:a2];
       objc_opt_self();
       v7 = [UIPencilInteractionTap alloc];
       [a2 timestamp];
@@ -167,15 +167,15 @@
         v17 = *(CategoryCachedImpl + 8);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v9 succinctDescription];
+          succinctDescription = [v9 succinctDescription];
           v19 = MEMORY[0x1E696AEC0];
-          v20 = a1;
+          eventCopy = event;
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
-          v23 = [v19 stringWithFormat:@"<%@: %p>", v22, v20];
+          eventCopy = [v19 stringWithFormat:@"<%@: %p>", v22, eventCopy];
 
-          v24 = v23;
-          v25 = v4;
+          v24 = eventCopy;
+          v25 = delegate;
           if (v25)
           {
             v26 = MEMORY[0x1E696AEC0];
@@ -190,7 +190,7 @@
           }
 
           *buf = 138412802;
-          v56 = v18;
+          v56 = succinctDescription;
           v57 = 2112;
           v58 = v24;
           v59 = 2112;
@@ -199,14 +199,14 @@
         }
       }
 
-      [v4 pencilInteraction:a1 didReceiveTap:v9];
+      [delegate pencilInteraction:event didReceiveTap:v9];
     }
 
     else
     {
-      if ((a1[8] & 0x10) == 0)
+      if ((event[8] & 0x10) == 0)
       {
-        if ((a1[8] & 4) != 0)
+        if ((event[8] & 4) != 0)
         {
           v5 = __UILogGetCategoryCachedImpl("PencilInteraction", &qword_1ED4A0760);
           if (*v5)
@@ -215,13 +215,13 @@
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
               v44 = MEMORY[0x1E696AEC0];
-              v45 = a1;
+              eventCopy2 = event;
               v46 = objc_opt_class();
               v47 = NSStringFromClass(v46);
-              v48 = [v44 stringWithFormat:@"<%@: %p>", v47, v45];
+              eventCopy2 = [v44 stringWithFormat:@"<%@: %p>", v47, eventCopy2];
 
-              v49 = v48;
-              v50 = v4;
+              v49 = eventCopy2;
+              v50 = delegate;
               if (v50)
               {
                 v51 = MEMORY[0x1E696AEC0];
@@ -243,13 +243,13 @@
             }
           }
 
-          [v4 pencilInteractionDidTap:a1];
+          [delegate pencilInteractionDidTap:event];
         }
 
         goto LABEL_15;
       }
 
-      v9 = [(UIPencilInteraction *)a1 _hoverPoseForEvent:a2];
+      v9 = [(UIPencilInteraction *)event _hoverPoseForEvent:a2];
       v11 = [_UIPencilHoverState _hoverStateFromHoverPose:v9];
       objc_opt_self();
       v12 = [_UIPencilInteractionTap alloc];
@@ -275,15 +275,15 @@
         v30 = *(v16 + 8);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v31 = [v15 succinctDescription];
+          succinctDescription2 = [v15 succinctDescription];
           v32 = MEMORY[0x1E696AEC0];
-          v33 = a1;
+          eventCopy3 = event;
           v34 = objc_opt_class();
           v35 = NSStringFromClass(v34);
-          v36 = [v32 stringWithFormat:@"<%@: %p>", v35, v33];
+          eventCopy3 = [v32 stringWithFormat:@"<%@: %p>", v35, eventCopy3];
 
-          v37 = v36;
-          v38 = v4;
+          v37 = eventCopy3;
+          v38 = delegate;
           if (v38)
           {
             v39 = MEMORY[0x1E696AEC0];
@@ -298,7 +298,7 @@
           }
 
           *buf = 138412802;
-          v56 = v31;
+          v56 = succinctDescription2;
           v57 = 2112;
           v58 = v37;
           v59 = 2112;
@@ -307,23 +307,23 @@
         }
       }
 
-      [v4 _pencilInteraction:a1 didReceiveTap:v15];
+      [delegate _pencilInteraction:event didReceiveTap:v15];
     }
 
 LABEL_15:
   }
 }
 
-- (UIPencilHoverPose)_hoverPoseForEvent:(uint64_t)a1
+- (UIPencilHoverPose)_hoverPoseForEvent:(uint64_t)event
 {
-  v3 = [a2 subtype];
-  v4 = v3 != 251;
-  if (([*(a1 + 40) state] - 4) >= 0xFFFFFFFFFFFFFFFDLL)
+  subtype = [a2 subtype];
+  v4 = subtype != 251;
+  if (([*(event + 40) state] - 4) >= 0xFFFFFFFFFFFFFFFDLL)
   {
     v4 = 0;
   }
 
-  if (v3 == 251)
+  if (subtype == 251)
   {
     v5 = CAPoint3DEqualToPoint();
   }
@@ -334,7 +334,7 @@ LABEL_15:
   }
 
   v6 = 0;
-  if (*(a1 + 40) != 0 && !v4 && (v5 & 1) == 0)
+  if (*(event + 40) != 0 && !v4 && (v5 & 1) == 0)
   {
     v6 = [UIPencilHoverPose alloc];
     if (v6)
@@ -344,14 +344,14 @@ LABEL_15:
       v6 = objc_msgSendSuper2(&v9, sel_init);
       if (v6)
       {
-        v7 = *(a1 + 120);
-        *&v6->_location3D.x = *(a1 + 104);
+        v7 = *(event + 120);
+        *&v6->_location3D.x = *(event + 104);
         v6->_location3D.z = v7;
-        v6->_zOffset = *(a1 + 48);
-        v6->_azimuthAngle = *(a1 + 56);
-        v6->_azimuthUnitVector = *(a1 + 88);
-        v6->_altitudeAngle = *(a1 + 64);
-        v6->_rollAngle = *(a1 + 72);
+        v6->_zOffset = *(event + 48);
+        v6->_azimuthAngle = *(event + 56);
+        v6->_azimuthUnitVector = *(event + 88);
+        v6->_altitudeAngle = *(event + 64);
+        v6->_rollAngle = *(event + 72);
       }
     }
   }
@@ -359,14 +359,14 @@ LABEL_15:
   return v6;
 }
 
-- (void)_sendSqueezeFromEvent:(_BYTE *)a1
+- (void)_sendSqueezeFromEvent:(_BYTE *)event
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (event)
   {
-    v4 = [a1 delegate];
-    v5 = [(UIPencilInteraction *)a1 _hoverPoseForEvent:a2];
-    if ((a1[8] & 0x20) != 0)
+    delegate = [event delegate];
+    v5 = [(UIPencilInteraction *)event _hoverPoseForEvent:a2];
+    if ((event[8] & 0x20) != 0)
     {
       objc_opt_self();
       v14 = [UIPencilInteractionSqueeze alloc];
@@ -390,15 +390,15 @@ LABEL_15:
         v19 = *(CategoryCachedImpl + 8);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v45 = [v12 succinctDescription];
+          succinctDescription = [v12 succinctDescription];
           v20 = MEMORY[0x1E696AEC0];
-          v21 = a1;
+          eventCopy = event;
           v22 = objc_opt_class();
           v23 = NSStringFromClass(v22);
-          v24 = [v20 stringWithFormat:@"<%@: %p>", v23, v21];
+          eventCopy = [v20 stringWithFormat:@"<%@: %p>", v23, eventCopy];
 
-          v25 = v24;
-          v26 = v4;
+          v25 = eventCopy;
+          v26 = delegate;
           if (v26)
           {
             v27 = MEMORY[0x1E696AEC0];
@@ -415,7 +415,7 @@ LABEL_15:
           }
 
           *buf = 138412802;
-          v47 = v45;
+          v47 = succinctDescription;
           v48 = 2112;
           v49 = v25;
           v50 = 2112;
@@ -424,11 +424,11 @@ LABEL_15:
         }
       }
 
-      [v4 pencilInteraction:a1 didReceiveSqueeze:v12];
+      [delegate pencilInteraction:event didReceiveSqueeze:v12];
       goto LABEL_14;
     }
 
-    if ((a1[8] & 0x40) == 0)
+    if ((event[8] & 0x40) == 0)
     {
 LABEL_15:
 
@@ -476,15 +476,15 @@ LABEL_8:
       v32 = *(v13 + 8);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [v12 succinctDescription];
+        succinctDescription2 = [v12 succinctDescription];
         v34 = MEMORY[0x1E696AEC0];
-        v35 = a1;
+        eventCopy2 = event;
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
-        v38 = [v34 stringWithFormat:@"<%@: %p>", v37, v35];
+        eventCopy2 = [v34 stringWithFormat:@"<%@: %p>", v37, eventCopy2];
 
-        v39 = v38;
-        v40 = v4;
+        v39 = eventCopy2;
+        v40 = delegate;
         if (v40)
         {
           v41 = MEMORY[0x1E696AEC0];
@@ -499,7 +499,7 @@ LABEL_8:
         }
 
         *buf = 138412802;
-        v47 = v33;
+        v47 = succinctDescription2;
         v48 = 2112;
         v49 = v39;
         v50 = 2112;
@@ -508,32 +508,32 @@ LABEL_8:
       }
     }
 
-    [v4 _pencilInteraction:a1 didReceiveSqueeze:v12];
+    [delegate _pencilInteraction:event didReceiveSqueeze:v12];
 LABEL_14:
 
     goto LABEL_15;
   }
 }
 
-- (void)_performCallbacksWithEvent:(_BYTE *)a1
+- (void)_performCallbacksWithEvent:(_BYTE *)event
 {
-  if (a1)
+  if (event)
   {
-    v4 = [a2 subtype];
-    if (v4 == 251)
+    subtype = [a2 subtype];
+    if (subtype == 251)
     {
-      [(UIPencilInteraction *)a1 _sendSqueezeFromEvent:a2];
+      [(UIPencilInteraction *)event _sendSqueezeFromEvent:a2];
     }
 
-    else if (v4 == 250)
+    else if (subtype == 250)
     {
-      [(UIPencilInteraction *)a1 _sendTapFromEvent:a2];
+      [(UIPencilInteraction *)event _sendTapFromEvent:a2];
     }
 
     if (a2 && (a2[20] - 3) <= 1)
     {
 
-      [(UIPencilInteraction *)a1 _updateLastKnownHoverStateFromGesture:?];
+      [(UIPencilInteraction *)event _updateLastKnownHoverStateFromGesture:?];
     }
   }
 }
@@ -579,17 +579,17 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_internalShouldReceiveEvent:(unsigned __int8 *)a1
+- (uint64_t)_internalShouldReceiveEvent:(unsigned __int8 *)event
 {
-  if (!a1)
+  if (!event)
   {
     return 0;
   }
 
-  v3 = [a2 subtype];
-  if (v3 == 250)
+  subtype = [a2 subtype];
+  if (subtype == 250)
   {
-    if (((a1[8] >> 2) | (a1[8] >> 3) | (a1[8] >> 4)))
+    if (((event[8] >> 2) | (event[8] >> 3) | (event[8] >> 4)))
     {
       v4 = 0;
       goto LABEL_8;
@@ -598,7 +598,7 @@ LABEL_14:
     return 0;
   }
 
-  if (v3 != 251 || (a1[8] & 0x60) == 0)
+  if (subtype != 251 || (event[8] & 0x60) == 0)
   {
     return 0;
   }
@@ -606,22 +606,22 @@ LABEL_14:
   v4 = 1;
 LABEL_8:
 
-  return [a1 _shouldReceiveGestureType:v4];
+  return [event _shouldReceiveGestureType:v4];
 }
 
-- (void)_handleHoverGestureRecognizer:(id)a3
+- (void)_handleHoverGestureRecognizer:(id)recognizer
 {
   hoverGestureRecognizer = self->_hoverGestureRecognizer;
-  if (hoverGestureRecognizer != a3)
+  if (hoverGestureRecognizer != recognizer)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:895 description:{@"%s: Received updates from an unknown hover gesture recognizer: %@", "-[UIPencilInteraction _handleHoverGestureRecognizer:]", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:895 description:{@"%s: Received updates from an unknown hover gesture recognizer: %@", "-[UIPencilInteraction _handleHoverGestureRecognizer:]", recognizer}];
 
     hoverGestureRecognizer = self->_hoverGestureRecognizer;
   }
 
-  v5 = [(UIGestureRecognizer *)hoverGestureRecognizer state];
-  if (v5 < 3 || v5 == 4)
+  state = [(UIGestureRecognizer *)hoverGestureRecognizer state];
+  if (state < 3 || state == 4)
   {
     v7 = self->_hoverGestureRecognizer;
 
@@ -631,48 +631,48 @@ LABEL_8:
 
 - (void)_installHoverGestureIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
 
     if (WeakRetained)
     {
-      if (!*(a1 + 40))
+      if (!*(self + 40))
       {
-        v3 = [[UIHoverGestureRecognizer alloc] initWithTarget:a1 action:sel__handleHoverGestureRecognizer_];
-        v4 = *(a1 + 40);
-        *(a1 + 40) = v3;
+        v3 = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:sel__handleHoverGestureRecognizer_];
+        v4 = *(self + 40);
+        *(self + 40) = v3;
 
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"pencilInteraction.hover.%p", a1];
-        [*(a1 + 40) setName:v5];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"pencilInteraction.hover.%p", self];
+        [*(self + 40) setName:v5];
 
-        [*(a1 + 40) setDelegate:a1];
-        [(UIHoverGestureRecognizer *)*(a1 + 40) _setAllowedTouchTypes:?];
+        [*(self + 40) setDelegate:self];
+        [(UIHoverGestureRecognizer *)*(self + 40) _setAllowedTouchTypes:?];
       }
 
-      v6 = objc_loadWeakRetained((a1 + 16));
-      [v6 addGestureRecognizer:*(a1 + 40)];
+      v6 = objc_loadWeakRetained((self + 16));
+      [v6 addGestureRecognizer:*(self + 40)];
     }
   }
 }
 
 - (void)_uninstallHoverGestureIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
     if (WeakRetained)
     {
-      v3 = *(a1 + 40);
+      v3 = *(self + 40);
 
       if (v3)
       {
-        [(UIPencilInteraction *)a1 _updateLastKnownHoverStateFromGesture:?];
-        v4 = objc_loadWeakRetained((a1 + 16));
-        [v4 removeGestureRecognizer:*(a1 + 40)];
+        [(UIPencilInteraction *)self _updateLastKnownHoverStateFromGesture:?];
+        v4 = objc_loadWeakRetained((self + 16));
+        [v4 removeGestureRecognizer:*(self + 40)];
 
-        v5 = *(a1 + 40);
-        *(a1 + 40) = 0;
+        v5 = *(self + 40);
+        *(self + 40) = 0;
       }
     }
   }
@@ -680,25 +680,25 @@ LABEL_8:
 
 - (void)_registerWithEventIfAble
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v10 = [WeakRetained _window];
+  WeakRetained = objc_loadWeakRetained((self + 16));
+  _window = [WeakRetained _window];
 
-  v3 = [v10 _windowHostingScene];
-  v4 = *(a1 + 8);
-  if (v3)
+  _windowHostingScene = [_window _windowHostingScene];
+  v4 = *(self + 8);
+  if (_windowHostingScene)
   {
-    *(a1 + 8) = v4 & 0xFD;
-    v5 = [UIApp _mainEventEnvironment];
-    v6 = [(UIEventEnvironment *)v5 _pencilEventForWindow:v10];
+    *(self + 8) = v4 & 0xFD;
+    _mainEventEnvironment = [UIApp _mainEventEnvironment];
+    v6 = [(UIEventEnvironment *)_mainEventEnvironment _pencilEventForWindow:_window];
 
-    v7 = [(_UIPencilEvent *)v6 registerInteraction:a1];
-    v8 = *(a1 + 24);
-    *(a1 + 24) = v7;
+    v7 = [(_UIPencilEvent *)v6 registerInteraction:self];
+    v8 = *(self + 24);
+    *(self + 24) = v7;
 
     if ((v4 & 2) != 0)
     {
@@ -706,19 +706,19 @@ LABEL_8:
     }
 
 LABEL_7:
-    if (v10)
+    if (_window)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:a1 selector:sel__windowWillMoveToScene_ name:@"_UIWindowWillMoveToSceneNotification" object:v10];
-      [v9 addObserver:a1 selector:sel__windowDidMoveToScene_ name:@"_UIWindowDidMoveToSceneNotification" object:v10];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__windowWillMoveToScene_ name:@"_UIWindowWillMoveToSceneNotification" object:_window];
+      [defaultCenter addObserver:self selector:sel__windowDidMoveToScene_ name:@"_UIWindowDidMoveToSceneNotification" object:_window];
     }
 
     goto LABEL_9;
   }
 
-  if (v10)
+  if (_window)
   {
-    *(a1 + 8) = v4 | 2;
+    *(self + 8) = v4 | 2;
     if ((v4 & 2) == 0)
     {
       goto LABEL_7;
@@ -749,7 +749,7 @@ LABEL_9:
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   if (self)
   {
@@ -760,10 +760,10 @@ LABEL_9:
   objc_storeWeak(&self->_view, 0);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v5 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     enabled = self->_enabled;
 
@@ -776,27 +776,27 @@ LABEL_9:
   }
 }
 
-- (void)_willMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_willMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   if (!self->_enabled)
   {
     return;
   }
 
-  v8 = [a4 _windowHostingScene];
+  _windowHostingScene = [toWindow _windowHostingScene];
   if (self->_eventRegistrationToken)
   {
-    if (a3 && a4 && v8)
+    if (window && toWindow && _windowHostingScene)
     {
       *&self->_interactionFlags |= 1u;
 LABEL_7:
-      v9 = v8;
+      v9 = _windowHostingScene;
       [(UIPencilInteraction *)self _unregisterFromEvent];
-      v8 = v9;
+      _windowHostingScene = v9;
       goto LABEL_11;
     }
 
-    if (!a4 || !v8)
+    if (!toWindow || !_windowHostingScene)
     {
       goto LABEL_7;
     }
@@ -805,31 +805,31 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   if (!self->_enabled)
   {
     return;
   }
 
-  v17 = [a3 _windowHostingScene];
-  v8 = [a4 _windowHostingScene];
+  _windowHostingScene = [window _windowHostingScene];
+  _windowHostingScene2 = [toWindow _windowHostingScene];
   eventRegistrationToken = self->_eventRegistrationToken;
   interactionFlags = self->_interactionFlags;
-  v11 = (a3 != 0) & interactionFlags;
-  if (!a4)
+  v11 = (window != 0) & interactionFlags;
+  if (!toWindow)
   {
     v11 = 0;
   }
 
-  if (!(a3 | eventRegistrationToken))
+  if (!(window | eventRegistrationToken))
   {
     v11 = 1;
   }
 
   if (eventRegistrationToken)
   {
-    v12 = v17 == 0;
+    v12 = _windowHostingScene == 0;
   }
 
   else
@@ -837,8 +837,8 @@ LABEL_11:
     v12 = 1;
   }
 
-  v15 = !v12 && v8 != 0 && v17 != v8;
-  if (v11 == 1 && v8 != 0)
+  v15 = !v12 && _windowHostingScene2 != 0 && _windowHostingScene != _windowHostingScene2;
+  if (v11 == 1 && _windowHostingScene2 != 0)
   {
     *&self->_interactionFlags = interactionFlags & 0xFE;
 LABEL_30:
@@ -846,7 +846,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!a3 && a4 && !eventRegistrationToken && !v8)
+  if (!window && toWindow && !eventRegistrationToken && !_windowHostingScene2)
   {
     goto LABEL_30;
   }
@@ -860,9 +860,9 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_windowWillMoveToScene:(id)a3
+- (void)_windowWillMoveToScene:(id)scene
 {
-  v5 = [a3 object];
+  object = [scene object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -870,9 +870,9 @@ LABEL_31:
     goto LABEL_7;
   }
 
-  v11 = [a3 object];
+  object2 = [scene object];
 
-  if (!v11)
+  if (!object2)
   {
 LABEL_7:
     v8 = 0;
@@ -880,10 +880,10 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v7 = [WeakRetained _window];
+  _window = [WeakRetained _window];
 
-  v8 = v11;
-  if (v7 == v11)
+  v8 = object2;
+  if (_window == object2)
   {
     eventRegistrationToken = self->_eventRegistrationToken;
     if (eventRegistrationToken)
@@ -892,7 +892,7 @@ LABEL_7:
       v10 = self->_eventRegistrationToken;
       self->_eventRegistrationToken = 0;
 
-      v8 = v11;
+      v8 = object2;
       *&self->_interactionFlags |= 2u;
     }
   }
@@ -900,25 +900,25 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_windowDidMoveToScene:(id)a3
+- (void)_windowDidMoveToScene:(id)scene
 {
-  v5 = [a3 object];
+  object = [scene object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [a3 object];
+    object2 = [scene object];
 
-    v6 = v9;
-    if (v9)
+    v6 = object2;
+    if (object2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_view);
-      v8 = [WeakRetained _window];
+      _window = [WeakRetained _window];
 
-      v6 = v9;
-      if (v8 == v9 && !self->_eventRegistrationToken && (*&self->_interactionFlags & 2) != 0)
+      v6 = object2;
+      if (_window == object2 && !self->_eventRegistrationToken && (*&self->_interactionFlags & 2) != 0)
       {
         [(UIPencilInteraction *)self _registerWithEventIfAble];
-        v6 = v9;
+        v6 = object2;
       }
     }
   }
@@ -932,10 +932,10 @@ LABEL_8:
 
 - (id)succinctDescription
 {
-  v2 = [(UIPencilInteraction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIPencilInteraction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -1007,27 +1007,27 @@ LABEL_8:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIPencilInteraction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIPencilInteraction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIPencilInteraction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIPencilInteraction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v6 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v6 setActiveMultilinePrefix:a3];
+  [v6 setActiveMultilinePrefix:prefix];
   v7 = [v6 appendBool:self->_enabled withName:@"enabled"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1035,7 +1035,7 @@ LABEL_8:
   v12[3] = &unk_1E70F5AF0;
   v8 = v6;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v15 = has_internal_diagnostics;
   v9 = [v8 modifyBody:v12];
   v10 = v8;

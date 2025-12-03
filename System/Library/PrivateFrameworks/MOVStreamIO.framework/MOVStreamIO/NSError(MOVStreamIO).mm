@@ -146,18 +146,18 @@
     v5 = @"Unknown";
   }
 
-  v6 = [a1 userInfo];
-  v7 = [v6 mutableCopy];
+  userInfo = [self userInfo];
+  v7 = [userInfo mutableCopy];
 
-  v8 = [a1 domain];
-  v9 = [a1 code];
+  domain = [self domain];
+  code = [self code];
   if (!v7)
   {
     v7 = objc_opt_new();
   }
 
   [v7 setObject:v5 forKey:@"ErrorInfoStreamId"];
-  v10 = [MEMORY[0x277CCA9B8] errorWithDomain:v8 code:v9 userInfo:v7];
+  v10 = [MEMORY[0x277CCA9B8] errorWithDomain:domain code:code userInfo:v7];
   v11 = +[MIOLog defaultLog];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {

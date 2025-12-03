@@ -14,42 +14,42 @@
 {
   v4 = WFReturnKeyTypeFromString(a3);
 
-  return [a1 setReturnKeyType:v4];
+  return [self setReturnKeyType:v4];
 }
 
 - (id)alertReturnKeyType
 {
-  v1 = [a1 returnKeyType];
+  returnKeyType = [self returnKeyType];
 
-  return WFReturnKeyTypeFromType(v1);
+  return WFReturnKeyTypeFromType(returnKeyType);
 }
 
 - (uint64_t)setAlertAutocapitalizationType:()WFAlertTextField
 {
   v4 = WFAutocapitalizationTypeFromString(a3);
 
-  return [a1 setAutocapitalizationType:v4];
+  return [self setAutocapitalizationType:v4];
 }
 
 - (id)alertAutocapitalizationType
 {
-  v1 = [a1 autocapitalizationType];
+  autocapitalizationType = [self autocapitalizationType];
 
-  return WFAutocapitalizationTypeFromType(v1);
+  return WFAutocapitalizationTypeFromType(autocapitalizationType);
 }
 
 - (uint64_t)setAlertClearButtonMode:()WFAlertTextField
 {
   v4 = WFClearButtonModeFromString(a3);
 
-  return [a1 setClearButtonMode:v4];
+  return [self setClearButtonMode:v4];
 }
 
 - (id)alertClearButtonMode
 {
-  v1 = [a1 clearButtonMode];
+  clearButtonMode = [self clearButtonMode];
 
-  return WFClearButtonModeFromMode(v1);
+  return WFClearButtonModeFromMode(clearButtonMode);
 }
 
 - (void)setSuggestions:()WFAlertTextField

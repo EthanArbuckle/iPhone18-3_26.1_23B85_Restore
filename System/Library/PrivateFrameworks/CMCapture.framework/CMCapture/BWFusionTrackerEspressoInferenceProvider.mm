@@ -1,28 +1,28 @@
 @interface BWFusionTrackerEspressoInferenceProvider
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation BWFusionTrackerEspressoInferenceProvider
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = CMGetAttachment(a3, @"FusionTrackerInput", 0);
+  v10 = CMGetAttachment(buffer, @"FusionTrackerInput", 0);
   if (v10)
   {
-    v11 = [v10 highPriorityTrackerState];
+    highPriorityTrackerState = [v10 highPriorityTrackerState];
   }
 
   else
   {
-    v11 = 0;
+    highPriorityTrackerState = 0;
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = [(BWEspressoInferenceProvider *)self inputMetadataRequirements];
-  v13 = [(NSArray *)v12 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  inputMetadataRequirements = [(BWEspressoInferenceProvider *)self inputMetadataRequirements];
+  v13 = [(NSArray *)inputMetadataRequirements countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -33,22 +33,22 @@
       {
         if (*v29 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(inputMetadataRequirements);
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [objc_msgSend(v11 "sessionStorage")];
+        v18 = [objc_msgSend(highPriorityTrackerState "sessionStorage")];
         if (!v18)
         {
           v19 = -31714;
-          (*(a7 + 2))(a7, 4294935582, self);
+          (*(handler + 2))(handler, 4294935582, self);
           return v19;
         }
 
-        [v18 getValue:{objc_msgSend(a4, "tensorForRequirement:", v17)}];
+        [v18 getValue:{objc_msgSend(storage, "tensorForRequirement:", v17)}];
       }
 
-      v14 = [(NSArray *)v12 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v14 = [(NSArray *)inputMetadataRequirements countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (v14)
       {
         continue;
@@ -60,9 +60,9 @@
 
   v26.receiver = self;
   v26.super_class = BWFusionTrackerEspressoInferenceProvider;
-  v24 = *&a5->var0;
-  var3 = a5->var3;
-  return [(BWEspressoInferenceProvider *)&v26 submitForSampleBuffer:a3 usingStorage:a4 withSubmissionTime:&v24 workQueue:a6 completionHandler:a7];
+  v24 = *&time->var0;
+  var3 = time->var3;
+  return [(BWEspressoInferenceProvider *)&v26 submitForSampleBuffer:buffer usingStorage:storage withSubmissionTime:&v24 workQueue:queue completionHandler:handler];
 }
 
 @end

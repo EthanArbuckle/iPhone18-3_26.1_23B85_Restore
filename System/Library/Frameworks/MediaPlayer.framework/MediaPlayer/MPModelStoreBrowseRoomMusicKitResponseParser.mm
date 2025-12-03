@@ -1,24 +1,24 @@
 @interface MPModelStoreBrowseRoomMusicKitResponseParser
-- (MPModelStoreBrowseRoomMusicKitResponseParser)initWithRawResponseOutput:(id)a3 sectionBuilder:(id)a4 contentItemBuilder:(id)a5 filteredFCKinds:(id)a6 userIdentity:(id)a7;
+- (MPModelStoreBrowseRoomMusicKitResponseParser)initWithRawResponseOutput:(id)output sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder filteredFCKinds:(id)kinds userIdentity:(id)identity;
 - (MPSectionedCollection)results;
-- (id)_parsedContentNode:(id)a3 additionalAttributesFromParent:(id)a4;
-- (id)_parsedElements:(id)a3;
+- (id)_parsedContentNode:(id)node additionalAttributesFromParent:(id)parent;
+- (id)_parsedElements:(id)elements;
 - (id)_parsedSectionedCollection;
 @end
 
 @implementation MPModelStoreBrowseRoomMusicKitResponseParser
 
-- (id)_parsedContentNode:(id)a3 additionalAttributesFromParent:(id)a4
+- (id)_parsedContentNode:(id)node additionalAttributesFromParent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  parentCopy = parent;
   if (!_NSIsNSDictionary())
   {
     v16 = 0;
     goto LABEL_19;
   }
 
-  v8 = v6;
+  v8 = nodeCopy;
   v9 = [v8 objectForKey:@"id"];
   v10 = v9;
   if (v9)
@@ -36,7 +36,7 @@
       if (_NSIsNSDictionary())
       {
         v21 = v12;
-        v14 = [v7 mutableCopy];
+        v14 = [parentCopy mutableCopy];
         if (v14)
         {
           v15 = v14;
@@ -85,19 +85,19 @@ LABEL_19:
   return v16;
 }
 
-- (id)_parsedElements:(id)a3
+- (id)_parsedElements:(id)elements
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E695DFB0] null];
-  [v5 appendSection:v6];
+  null = [MEMORY[0x1E695DFB0] null];
+  [v5 appendSection:null];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = elementsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -208,8 +208,8 @@ LABEL_27:
 
         else
         {
-          v20 = [v16 firstObject];
-          if (!v20)
+          firstObject = [v16 firstObject];
+          if (!firstObject)
           {
             v12 = os_log_create("com.apple.amp.mediaplayer", "Default");
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -222,11 +222,11 @@ LABEL_27:
             goto LABEL_27;
           }
 
-          v12 = v20;
+          v12 = firstObject;
         }
 
-        v21 = [v17 type];
-        if (v21 == 1)
+        type = [v17 type];
+        if (type == 1)
         {
           if ((_NSIsNSDictionary() & 1) == 0)
           {
@@ -268,7 +268,7 @@ LABEL_41:
           }
         }
 
-        else if (!v21 && (_NSIsNSArray() & 1) == 0)
+        else if (!type && (_NSIsNSArray() & 1) == 0)
         {
           v30 = [v17 key];
 
@@ -367,24 +367,24 @@ void __55__MPModelStoreBrowseRoomMusicKitResponseParser_results__block_invoke(ui
   *(v3 + 48) = v2;
 }
 
-- (MPModelStoreBrowseRoomMusicKitResponseParser)initWithRawResponseOutput:(id)a3 sectionBuilder:(id)a4 contentItemBuilder:(id)a5 filteredFCKinds:(id)a6 userIdentity:(id)a7
+- (MPModelStoreBrowseRoomMusicKitResponseParser)initWithRawResponseOutput:(id)output sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder filteredFCKinds:(id)kinds userIdentity:(id)identity
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  outputCopy = output;
+  builderCopy = builder;
+  itemBuilderCopy = itemBuilder;
+  kindsCopy = kinds;
+  identityCopy = identity;
   v21.receiver = self;
   v21.super_class = MPModelStoreBrowseRoomMusicKitResponseParser;
   v17 = [(MPModelStoreBrowseRoomMusicKitResponseParser *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_rawResponseOutput, a3);
-    objc_storeStrong(&v18->_sectionBuilder, a4);
-    objc_storeStrong(&v18->_contentItemBuilder, a5);
-    objc_storeStrong(&v18->_filteredFCKinds, a6);
-    objc_storeStrong(&v18->_userIdentity, a7);
+    objc_storeStrong(&v17->_rawResponseOutput, output);
+    objc_storeStrong(&v18->_sectionBuilder, builder);
+    objc_storeStrong(&v18->_contentItemBuilder, itemBuilder);
+    objc_storeStrong(&v18->_filteredFCKinds, kinds);
+    objc_storeStrong(&v18->_userIdentity, identity);
   }
 
   return v18;

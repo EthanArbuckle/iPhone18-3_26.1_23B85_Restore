@@ -1,10 +1,10 @@
 @interface MDARSessionObserver
 - (ARSession)session;
-- (MDARSessionObserver)initWithObserver:(ARSessionObserver *)a3 onQueue:(id)a4;
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4;
-- (void)session:(id)a3 didUpdateAnchors:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)setSession:(id)a3;
+- (MDARSessionObserver)initWithObserver:(ARSessionObserver *)observer onQueue:(id)queue;
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status;
+- (void)session:(id)session didUpdateAnchors:(id)anchors;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)setSession:(id)session;
 @end
 
 @implementation MDARSessionObserver
@@ -16,13 +16,13 @@
   return WeakRetained;
 }
 
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status
 {
   observer = self->_observer;
   if (observer)
   {
-    v7 = a4;
-    v8 = a3;
+    statusCopy = status;
+    sessionCopy = session;
     WeakRetained = objc_loadWeakRetained(&self->_session);
     v9 = *(observer->var0 + 1);
 
@@ -30,34 +30,34 @@
   }
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
+  sessionCopy = session;
   observer = self->_observer;
   if (observer)
   {
-    (*observer->var0)(observer, v6);
+    (*observer->var0)(observer, sessionCopy);
   }
 }
 
-- (void)session:(id)a3 didUpdateAnchors:(id)a4
+- (void)session:(id)session didUpdateAnchors:(id)anchors
 {
-  v8 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  anchorsCopy = anchors;
   observer = self->_observer;
   if (observer)
   {
-    (*(observer->var0 + 2))(observer, v8, v6);
+    (*(observer->var0 + 2))(observer, sessionCopy, anchorsCopy);
   }
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_session);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != sessionCopy)
   {
     v6 = objc_loadWeakRetained(&self->_session);
 
@@ -79,9 +79,9 @@
       }
     }
 
-    v11 = objc_storeWeak(&self->_session, v4);
+    v11 = objc_storeWeak(&self->_session, sessionCopy);
 
-    if (v4)
+    if (sessionCopy)
     {
       v12 = objc_loadWeakRetained(&self->_session);
       [v12 setDelegate:self];
@@ -102,17 +102,17 @@
   }
 }
 
-- (MDARSessionObserver)initWithObserver:(ARSessionObserver *)a3 onQueue:(id)a4
+- (MDARSessionObserver)initWithObserver:(ARSessionObserver *)observer onQueue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = MDARSessionObserver;
   v8 = [(MDARSessionObserver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_observer = a3;
-    objc_storeStrong(&v8->_delegateQueue, a4);
+    v8->_observer = observer;
+    objc_storeStrong(&v8->_delegateQueue, queue);
   }
 
   return v9;

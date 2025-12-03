@@ -1,40 +1,40 @@
 @interface BMSiriAssistantSuggestionFeaturesAppUsageFeatures
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithAppUsage:(id)a3 appCategoryUsage:(id)a4;
-- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithAppUsage:(id)usage appCategoryUsage:(id)categoryUsage;
+- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_appCategoryUsageJSONArray;
 - (id)_appUsageJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriAssistantSuggestionFeaturesAppUsageFeatures
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
-    v7 = [v5 appUsage];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    appUsage = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
+    appUsage2 = [v5 appUsage];
+    v8 = appUsage2;
+    if (appUsage == appUsage2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
-      v10 = [v5 appUsage];
-      v11 = [v9 isEqual:v10];
+      appUsage3 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
+      appUsage4 = [v5 appUsage];
+      v11 = [appUsage3 isEqual:appUsage4];
 
       if (!v11)
       {
@@ -45,18 +45,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
-    v14 = [v5 appCategoryUsage];
-    if (v13 == v14)
+    appCategoryUsage = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
+    appCategoryUsage2 = [v5 appCategoryUsage];
+    if (appCategoryUsage == appCategoryUsage2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
-      v16 = [v5 appCategoryUsage];
-      v12 = [v15 isEqual:v16];
+      appCategoryUsage3 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
+      appCategoryUsage4 = [v5 appCategoryUsage];
+      v12 = [appCategoryUsage3 isEqual:appCategoryUsage4];
     }
 
     goto LABEL_11;
@@ -71,28 +71,28 @@ LABEL_12:
 - (id)jsonDictionary
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self _appUsageJSONArray];
-  v4 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self _appCategoryUsageJSONArray];
+  _appUsageJSONArray = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self _appUsageJSONArray];
+  _appCategoryUsageJSONArray = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self _appCategoryUsageJSONArray];
   v10[0] = @"appUsage";
-  v5 = v3;
-  if (!v3)
+  null = _appUsageJSONArray;
+  if (!_appUsageJSONArray)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"appCategoryUsage";
-  v11[0] = v5;
-  v6 = v4;
-  if (!v4)
+  v11[0] = null;
+  null2 = _appCategoryUsageJSONArray;
+  if (!_appCategoryUsageJSONArray)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (v4)
+  if (_appCategoryUsageJSONArray)
   {
-    if (v3)
+    if (_appUsageJSONArray)
     {
       goto LABEL_7;
     }
@@ -101,7 +101,7 @@ LABEL_12:
   else
   {
 
-    if (v3)
+    if (_appUsageJSONArray)
     {
       goto LABEL_7;
     }
@@ -121,8 +121,8 @@ LABEL_7:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  appCategoryUsage = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
+  v5 = [appCategoryUsage countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(appCategoryUsage);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [appCategoryUsage countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -159,8 +159,8 @@ LABEL_7:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  appUsage = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
+  v5 = [appUsage countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -171,14 +171,14 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(appUsage);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [appUsage countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -189,19 +189,19 @@ LABEL_7:
   return v3;
 }
 
-- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v83[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"appUsage"];
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = [v7 isEqual:v8];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"appUsage"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = [v7 isEqual:null];
 
-  v58 = v6;
+  v58 = dictionaryCopy;
   if (v9)
   {
-    v56 = a4;
-    v57 = self;
+    errorCopy2 = error;
+    selfCopy2 = self;
 
     v7 = 0;
   }
@@ -213,7 +213,7 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v41 = objc_alloc(MEMORY[0x1E696ABC0]);
           v42 = *MEMORY[0x1E698F240];
@@ -221,18 +221,18 @@ LABEL_7:
           v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"appUsage"];
           v83[0] = v59;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:&v82 count:1];
-          v31 = 0;
-          *a4 = [v41 initWithDomain:v42 code:2 userInfo:v19];
+          selfCopy3 = 0;
+          *error = [v41 initWithDomain:v42 code:2 userInfo:v19];
           goto LABEL_56;
         }
 
-        v31 = 0;
+        selfCopy3 = 0;
         goto LABEL_57;
       }
     }
 
-    v56 = a4;
-    v57 = self;
+    errorCopy2 = error;
+    selfCopy2 = self;
   }
 
   v59 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -262,8 +262,8 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = v56;
-        if (v56)
+        v22 = errorCopy2;
+        if (errorCopy2)
         {
           v23 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -277,17 +277,17 @@ LABEL_7:
         }
 
 LABEL_42:
-        v31 = 0;
+        selfCopy3 = 0;
         v19 = v7;
-        self = v57;
+        self = selfCopy2;
         goto LABEL_56;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v22 = v56;
-        if (!v56)
+        v22 = errorCopy2;
+        if (!errorCopy2)
         {
           goto LABEL_42;
         }
@@ -305,9 +305,9 @@ LABEL_22:
         *v22 = [v23 initWithDomain:v24 code:2 userInfo:v28];
 
 LABEL_26:
-        v31 = 0;
+        selfCopy3 = 0;
         v19 = v7;
-        self = v57;
+        self = selfCopy2;
         goto LABEL_55;
       }
 
@@ -319,10 +319,10 @@ LABEL_26:
       if (v18)
       {
         v29 = v18;
-        if (v56)
+        if (errorCopy2)
         {
           v30 = v18;
-          *v56 = v29;
+          *errorCopy2 = v29;
         }
 
         goto LABEL_26;
@@ -332,15 +332,15 @@ LABEL_26:
     }
 
     v11 = [v7 countByEnumeratingWithState:&v66 objects:v81 count:16];
-    v6 = v58;
+    dictionaryCopy = v58;
   }
 
   while (v11);
 LABEL_16:
 
-  v19 = [v6 objectForKeyedSubscript:@"appCategoryUsage"];
-  v20 = [MEMORY[0x1E695DFB0] null];
-  v21 = [v19 isEqual:v20];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"appCategoryUsage"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v21 = [v19 isEqual:null2];
 
   if (v21)
   {
@@ -380,9 +380,9 @@ LABEL_31:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v43 = v56;
-        self = v57;
-        if (!v56)
+        v43 = errorCopy2;
+        self = selfCopy2;
+        if (!errorCopy2)
         {
           goto LABEL_53;
         }
@@ -406,13 +406,13 @@ LABEL_31:
       if (v40)
       {
         v49 = v40;
-        if (v56)
+        if (errorCopy2)
         {
           v50 = v40;
-          *v56 = v49;
+          *errorCopy2 = v49;
         }
 
-        self = v57;
+        self = selfCopy2;
 LABEL_52:
 
 LABEL_53:
@@ -431,17 +431,17 @@ LABEL_53:
 
 LABEL_39:
 
-        self = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)v57 initWithAppUsage:v59 appCategoryUsage:v15];
-        v31 = self;
+        self = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)selfCopy2 initWithAppUsage:v59 appCategoryUsage:v15];
+        selfCopy3 = self;
 LABEL_55:
 
         goto LABEL_56;
       }
     }
 
-    v43 = v56;
-    self = v57;
-    if (!v56)
+    v43 = errorCopy2;
+    self = selfCopy2;
+    if (!errorCopy2)
     {
       goto LABEL_53;
     }
@@ -471,8 +471,8 @@ LABEL_48:
     goto LABEL_29;
   }
 
-  self = v57;
-  if (v56)
+  self = selfCopy2;
+  if (errorCopy2)
   {
     v53 = objc_alloc(MEMORY[0x1E696ABC0]);
     v54 = *MEMORY[0x1E698F240];
@@ -480,36 +480,36 @@ LABEL_48:
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"appCategoryUsage"];
     v76 = v15;
     v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-    *v56 = [v53 initWithDomain:v54 code:2 userInfo:v55];
+    *errorCopy2 = [v53 initWithDomain:v54 code:2 userInfo:v55];
 
 LABEL_54:
-    v31 = 0;
+    selfCopy3 = 0;
     goto LABEL_55;
   }
 
-  v31 = 0;
+  selfCopy3 = 0;
 LABEL_56:
 
-  v6 = v58;
+  dictionaryCopy = v58;
 LABEL_57:
 
   v51 = *MEMORY[0x1E69E9840];
-  return v31;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -533,7 +533,7 @@ LABEL_57:
         v10 = *(*(&v23 + 1) + 8 * v9);
         v22 = 0;
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v9;
       }
@@ -568,7 +568,7 @@ LABEL_57:
         v16 = *(*(&v18 + 1) + 8 * v15);
         v22 = 0;
         PBDataWriterPlaceMark();
-        [v16 writeTo:{v4, v18}];
+        [v16 writeTo:{toCopy, v18}];
         PBDataWriterRecallMark();
         ++v15;
       }
@@ -583,9 +583,9 @@ LABEL_57:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMSiriAssistantSuggestionFeaturesAppUsageFeatures;
   v5 = [(BMEventBase *)&v29 init];
@@ -596,12 +596,12 @@ LABEL_57:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_29;
       }
@@ -612,18 +612,18 @@ LABEL_57:
       while (1)
       {
         LOBYTE(v30) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v30 & 0x7F) << v9;
@@ -640,9 +640,9 @@ LABEL_57:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         goto LABEL_29;
       }
@@ -661,7 +661,7 @@ LABEL_16:
           goto LABEL_31;
         }
 
-        v17 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeaturesAppUsageTimeBucket alloc] initByReadFrom:v4];
+        v17 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeaturesAppUsageTimeBucket alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_31;
@@ -682,8 +682,8 @@ LABEL_26:
       }
 
 LABEL_28:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_29;
       }
@@ -691,7 +691,7 @@ LABEL_28:
 
     v30 = 0;
     v31 = 0;
-    if (!PBReaderPlaceMark() || (v20 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeaturesAppUsageTimeBucket alloc] initByReadFrom:v4]) == 0)
+    if (!PBReaderPlaceMark() || (v20 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeaturesAppUsageTimeBucket alloc] initByReadFrom:fromCopy]) == 0)
     {
 LABEL_31:
 
@@ -712,8 +712,8 @@ LABEL_29:
   appCategoryUsage = v5->_appCategoryUsage;
   v5->_appCategoryUsage = v24;
 
-  v26 = [v4 hasError];
-  if (v26)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_32:
     v27 = 0;
@@ -731,25 +731,25 @@ LABEL_30:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
-  v5 = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
-  v6 = [v3 initWithFormat:@"BMSiriAssistantSuggestionFeaturesAppUsageFeatures with appUsage: %@, appCategoryUsage: %@", v4, v5];
+  appUsage = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appUsage];
+  appCategoryUsage = [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self appCategoryUsage];
+  v6 = [v3 initWithFormat:@"BMSiriAssistantSuggestionFeaturesAppUsageFeatures with appUsage: %@, appCategoryUsage: %@", appUsage, appCategoryUsage];
 
   return v6;
 }
 
-- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithAppUsage:(id)a3 appCategoryUsage:(id)a4
+- (BMSiriAssistantSuggestionFeaturesAppUsageFeatures)initWithAppUsage:(id)usage appCategoryUsage:(id)categoryUsage
 {
-  v7 = a3;
-  v8 = a4;
+  usageCopy = usage;
+  categoryUsageCopy = categoryUsage;
   v11.receiver = self;
   v11.super_class = BMSiriAssistantSuggestionFeaturesAppUsageFeatures;
   v9 = [(BMEventBase *)&v11 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_appUsage, a3);
-    objc_storeStrong(&v9->_appCategoryUsage, a4);
+    objc_storeStrong(&v9->_appUsage, usage);
+    objc_storeStrong(&v9->_appCategoryUsage, categoryUsage);
   }
 
   return v9;
@@ -801,9 +801,9 @@ id __60__BMSiriAssistantSuggestionFeaturesAppUsageFeatures_columns__block_invoke
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -811,8 +811,8 @@ id __60__BMSiriAssistantSuggestionFeaturesAppUsageFeatures_columns__block_invoke
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeatures alloc] initByReadFrom:v7];
     v4 = v8;

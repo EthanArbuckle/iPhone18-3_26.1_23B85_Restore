@@ -1,38 +1,38 @@
 @interface LiveActivitySceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setWindow:(id)window;
 @end
 
 @implementation LiveActivitySceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16SafetyMonitorApp25LiveActivitySceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR____TtC16SafetyMonitorApp25LiveActivitySceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC16SafetyMonitorApp25LiveActivitySceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_10000D2B0(v7);
+  sceneCopy = scene;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_10000D2B0(sceneCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_10000DDD8("%@,sceneDidBecomeActive,requesting resize");
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_10000DDD8("%@,sceneWillEnterForeground,requesting resize");
 }
 

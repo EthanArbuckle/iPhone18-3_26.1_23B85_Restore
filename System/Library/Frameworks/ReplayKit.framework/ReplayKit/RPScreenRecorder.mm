@@ -1,9 +1,9 @@
 @interface RPScreenRecorder
 + (RPScreenRecorder)sharedRecorder;
-+ (id)validateHQLRSessionInfo:(id)a3;
-- (BOOL)checkContextID:(id)a3 withHandler:(id)a4;
++ (id)validateHQLRSessionInfo:(id)info;
+- (BOOL)checkContextID:(id)d withHandler:(id)handler;
 - (BOOL)isAvailable;
-- (BOOL)isConnectionInterruptedOrInvalid:(id)a3;
+- (BOOL)isConnectionInterruptedOrInvalid:(id)invalid;
 - (BOOL)screenRecordingAllowed;
 - (BOOL)shouldNotifyDidStop;
 - (CGSize)currentWindowSize;
@@ -15,11 +15,11 @@
 - (id)handleUnavailableState;
 - (id)processQueue;
 - (id)videoQueue;
-- (void)captureHandlerWithAudioSample:(id)a3 bufferType:(int64_t)a4;
-- (void)captureHandlerWithSample:(id)a3 timingData:(id)a4;
-- (void)clientDidUpdateBroadcastServiceInfo:(id)a3;
+- (void)captureHandlerWithAudioSample:(id)sample bufferType:(int64_t)type;
+- (void)captureHandlerWithSample:(id)sample timingData:(id)data;
+- (void)clientDidUpdateBroadcastServiceInfo:(id)info;
 - (void)dealloc;
-- (void)didStopRecordingWithError:(id)a3 previewViewController:(id)a4;
+- (void)didStopRecordingWithError:(id)error previewViewController:(id)controller;
 - (void)discardRecordingWithHandler:(void *)handler;
 - (void)exportClipToURL:(NSURL *)url duration:(NSTimeInterval)duration completionHandler:(void *)completionHandler;
 - (void)handleUnavailableState;
@@ -29,9 +29,9 @@
 - (void)pauseInAppCapture;
 - (void)pauseInAppRecording;
 - (void)recordingDidPause;
-- (void)recordingDidStopWithError:(id)a3 movieURL:(id)a4;
-- (void)recordingLockInterrupted:(id)a3;
-- (void)recordingTimerDidUpdate:(id)a3;
+- (void)recordingDidStopWithError:(id)error movieURL:(id)l;
+- (void)recordingLockInterrupted:(id)interrupted;
+- (void)recordingTimerDidUpdate:(id)update;
 - (void)removePipView;
 - (void)resumeHQLR;
 - (void)resumeInAppBroadcast;
@@ -40,39 +40,39 @@
 - (void)resumeInAppRecording;
 - (void)resumeSystemBroadcast;
 - (void)resumeSystemRecording;
-- (void)saveClipToCameraRoll:(id)a3 handler:(id)a4;
-- (void)saveVideo:(id)a3 handler:(id)a4;
-- (void)saveVideoToCameraRoll:(id)a3 handler:(id)a4;
-- (void)setBroadcastURL:(id)a3;
+- (void)saveClipToCameraRoll:(id)roll handler:(id)handler;
+- (void)saveVideo:(id)video handler:(id)handler;
+- (void)saveVideoToCameraRoll:(id)roll handler:(id)handler;
+- (void)setBroadcastURL:(id)l;
 - (void)setCameraEnabled:(BOOL)cameraEnabled;
 - (void)setCameraPosition:(RPCameraPosition)cameraPosition;
 - (void)setDelegate:(id)delegate;
-- (void)setMixedRealityCameraEnabled:(BOOL)a3;
-- (void)setSecondDelegate:(id)a3;
-- (void)setWindowRotationLocked:(BOOL)a3;
-- (void)setupSystemBroadcastWithExtension:(id)a3 handler:(id)a4;
-- (void)shouldResumeSessionType:(id)a3;
+- (void)setMixedRealityCameraEnabled:(BOOL)enabled;
+- (void)setSecondDelegate:(id)delegate;
+- (void)setWindowRotationLocked:(BOOL)locked;
+- (void)setupSystemBroadcastWithExtension:(id)extension handler:(id)handler;
+- (void)shouldResumeSessionType:(id)type;
 - (void)startCaptureWithHandler:(void *)captureHandler completionHandler:(void *)completionHandler;
 - (void)startClipBufferingWithCompletionHandler:(void *)completionHandler;
-- (void)startHQLRWithSessionInfo:(id)a3 handler:(id)a4;
-- (void)startInAppBroadcastWithHandler:(id)a3;
+- (void)startHQLRWithSessionInfo:(id)info handler:(id)handler;
+- (void)startInAppBroadcastWithHandler:(id)handler;
 - (void)startRecordingWithHandler:(void *)handler;
-- (void)startSystemBroadcastWithHandler:(id)a3;
-- (void)startSystemRecordingWithMicrophoneEnabled:(BOOL)a3 handler:(id)a4;
+- (void)startSystemBroadcastWithHandler:(id)handler;
+- (void)startSystemRecordingWithMicrophoneEnabled:(BOOL)enabled handler:(id)handler;
 - (void)stopCaptureWithHandler:(void *)handler;
 - (void)stopClipBufferingWithCompletionHandler:(void *)completionHandler;
-- (void)stopHQLR:(id)a3;
-- (void)stopInAppBroadcastWithHandler:(id)a3;
-- (void)stopRecordingWithAdditionalShareFileAttachment:(id)a3 overrideShareMessage:(id)a4 previewViewControllerOverrideTintColor:(id)a5 handler:(id)a6;
+- (void)stopHQLR:(id)r;
+- (void)stopInAppBroadcastWithHandler:(id)handler;
+- (void)stopRecordingWithAdditionalShareFileAttachment:(id)attachment overrideShareMessage:(id)message previewViewControllerOverrideTintColor:(id)color handler:(id)handler;
 - (void)stopRecordingWithHandler:(void *)handler;
 - (void)stopRecordingWithOutputURL:(NSURL *)url completionHandler:(void *)completionHandler;
-- (void)stopRecordingWithVideoURLHandler:(id)a3;
-- (void)stopSystemBroadcastWithHandler:(id)a3;
-- (void)stopSystemRecording:(id)a3;
-- (void)stopSystemRecordingWithURLHandler:(id)a3;
-- (void)updateRecordingAvailability:(id)a3;
-- (void)updateScreenRecordingStateWithCurrentState:(id)a3;
-- (void)updateStateWithActive:(BOOL)a3 error:(id)a4;
+- (void)stopRecordingWithVideoURLHandler:(id)handler;
+- (void)stopSystemBroadcastWithHandler:(id)handler;
+- (void)stopSystemRecording:(id)recording;
+- (void)stopSystemRecordingWithURLHandler:(id)handler;
+- (void)updateRecordingAvailability:(id)availability;
+- (void)updateScreenRecordingStateWithCurrentState:(id)state;
+- (void)updateStateWithActive:(BOOL)active error:(id)error;
 @end
 
 @implementation RPScreenRecorder
@@ -148,10 +148,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSecondDelegate:(id)a3
+- (void)setSecondDelegate:(id)delegate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  delegateCopy = delegate;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446722;
@@ -159,11 +159,11 @@
     v11 = 1024;
     v12 = 177;
     v13 = 2048;
-    v14 = v5;
+    v14 = delegateCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d secondDelegate %p", &v9, 0x1Cu);
   }
 
-  objc_storeStrong(&self->_secondDelegate, a3);
+  objc_storeStrong(&self->_secondDelegate, delegate);
   secondDelegate = self->_secondDelegate;
   if (objc_opt_respondsToSelector())
   {
@@ -185,9 +185,9 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMixedRealityCameraEnabled:(BOOL)a3
+- (void)setMixedRealityCameraEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x277D85DE8];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -196,15 +196,15 @@
     v8 = 1024;
     v9 = 200;
     v10 = 1024;
-    v11 = v3;
+    v11 = enabledCopy;
     v12 = 1024;
-    v13 = [(RPScreenRecorder *)self isMixedRealityCameraEnabled];
+    isMixedRealityCameraEnabled = [(RPScreenRecorder *)self isMixedRealityCameraEnabled];
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d :%d from current mixed reality camera state:%d", &v6, 0x1Eu);
   }
 
-  if (self->_mixedRealityCameraEnabled != v3)
+  if (self->_mixedRealityCameraEnabled != enabledCopy)
   {
-    self->_mixedRealityCameraEnabled = v3;
+    self->_mixedRealityCameraEnabled = enabledCopy;
   }
 
   [(RPScreenRecorder *)self notifyDelegateOfUpdatedState];
@@ -218,7 +218,7 @@
   block[1] = 3221225472;
   block[2] = __34__RPScreenRecorder_sharedRecorder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRecorder_onceToken != -1)
   {
     dispatch_once(&sharedRecorder_onceToken, block);
@@ -231,7 +231,7 @@
     v9 = 1024;
     v10 = 239;
     v11 = 2048;
-    v12 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d Accessing the sharedRecorder %p", buf, 0x1Cu);
   }
 
@@ -272,12 +272,12 @@ void __34__RPScreenRecorder_sharedRecorder__block_invoke_2()
     v8 = 1024;
     v9 = 244;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = RPScreenRecorder;
@@ -311,10 +311,10 @@ void __34__RPScreenRecorder_sharedRecorder__block_invoke_2()
   return v4;
 }
 
-- (void)stopRecordingWithVideoURLHandler:(id)a3
+- (void)stopRecordingWithVideoURLHandler:(id)handler
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -324,18 +324,18 @@ void __34__RPScreenRecorder_sharedRecorder__block_invoke_2()
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v6, 0x12u);
   }
 
-  [(RPScreenRecorder *)self stopSystemRecordingWithURLHandler:v4];
+  [(RPScreenRecorder *)self stopSystemRecordingWithURLHandler:handlerCopy];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopRecordingWithAdditionalShareFileAttachment:(id)a3 overrideShareMessage:(id)a4 previewViewControllerOverrideTintColor:(id)a5 handler:(id)a6
+- (void)stopRecordingWithAdditionalShareFileAttachment:(id)attachment overrideShareMessage:(id)message previewViewControllerOverrideTintColor:(id)color handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attachmentCopy = attachment;
+  messageCopy = message;
+  colorCopy = color;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136446466;
@@ -345,7 +345,7 @@ void __34__RPScreenRecorder_sharedRecorder__block_invoke_2()
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v15, 0x12u);
   }
 
-  [(RPScreenRecorder *)self stopRecordingWithHandler:v13];
+  [(RPScreenRecorder *)self stopRecordingWithHandler:handlerCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -370,7 +370,7 @@ void __34__RPScreenRecorder_sharedRecorder__block_invoke_2()
       [RPScreenRecorder startRecordingWithHandler:];
     }
 
-    v5 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+    handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
     if (!v4)
     {
       goto LABEL_15;
@@ -392,9 +392,9 @@ void __34__RPScreenRecorder_sharedRecorder__block_invoke_2()
 
   else if (v4)
   {
-    v5 = [(RPScreenRecorder *)self handleUnavailableState];
+    handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
 LABEL_14:
-    (*(v4 + 2))(v4, v5);
+    (*(v4 + 2))(v4, handleUnavailableState);
 LABEL_15:
   }
 
@@ -778,13 +778,13 @@ void __65__RPScreenRecorder_stopRecordingWithOutputURL_completionHandler___block
   if (self->_recording && self->_paused)
   {
     v5 = +[RPDaemonProxy daemonProxy];
-    v6 = [(RPScreenRecorder *)self currentWindowLayerContextID];
+    currentWindowLayerContextID = [(RPScreenRecorder *)self currentWindowLayerContextID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __40__RPScreenRecorder_resumeInAppRecording__block_invoke;
     v8[3] = &unk_278B62268;
     v8[4] = self;
-    [v5 resumeInAppRecordingWithWindowLayerContextID:v6 completionHandler:v8];
+    [v5 resumeInAppRecordingWithWindowLayerContextID:currentWindowLayerContextID completionHandler:v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -862,7 +862,7 @@ void __40__RPScreenRecorder_resumeInAppRecording__block_invoke(uint64_t a1, void
       [RPScreenRecorder startCaptureWithHandler:completionHandler:];
     }
 
-    v8 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+    handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
     if (!v7)
     {
       goto LABEL_15;
@@ -885,9 +885,9 @@ void __40__RPScreenRecorder_resumeInAppRecording__block_invoke(uint64_t a1, void
 
   else if (v7)
   {
-    v8 = [(RPScreenRecorder *)self handleUnavailableState];
+    handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
 LABEL_14:
-    (*(v7 + 2))(v7, v8);
+    (*(v7 + 2))(v7, handleUnavailableState);
 LABEL_15:
   }
 
@@ -1111,13 +1111,13 @@ void __43__RPScreenRecorder_stopCaptureWithHandler___block_invoke(uint64_t a1, v
   if (self->_recording && self->_paused)
   {
     v5 = +[RPDaemonProxy daemonProxy];
-    v6 = [(RPScreenRecorder *)self currentWindowLayerContextID];
+    currentWindowLayerContextID = [(RPScreenRecorder *)self currentWindowLayerContextID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __38__RPScreenRecorder_resumeInAppCapture__block_invoke;
     v8[3] = &unk_278B62268;
     v8[4] = self;
-    [v5 resumeInAppCaptureWithWindowLayerContextID:v6 completionHandler:v8];
+    [v5 resumeInAppCaptureWithWindowLayerContextID:currentWindowLayerContextID completionHandler:v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1174,21 +1174,21 @@ void __38__RPScreenRecorder_resumeInAppCapture__block_invoke(uint64_t a1, void *
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureHandlerWithSample:(id)a3 timingData:(id)a4
+- (void)captureHandlerWithSample:(id)sample timingData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RPScreenRecorder *)self videoQueue];
+  sampleCopy = sample;
+  dataCopy = data;
+  videoQueue = [(RPScreenRecorder *)self videoQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RPScreenRecorder_captureHandlerWithSample_timingData___block_invoke;
   block[3] = &unk_278B622B8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sampleCopy;
+  v13 = dataCopy;
+  selfCopy = self;
+  v9 = dataCopy;
+  v10 = sampleCopy;
+  dispatch_async(videoQueue, block);
 }
 
 void __56__RPScreenRecorder_captureHandlerWithSample_timingData___block_invoke(uint64_t a1)
@@ -1202,19 +1202,19 @@ void __56__RPScreenRecorder_captureHandlerWithSample_timingData___block_invoke(u
   CFRelease(v3);
 }
 
-- (void)captureHandlerWithAudioSample:(id)a3 bufferType:(int64_t)a4
+- (void)captureHandlerWithAudioSample:(id)sample bufferType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(RPScreenRecorder *)self audioQueue];
+  sampleCopy = sample;
+  audioQueue = [(RPScreenRecorder *)self audioQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__RPScreenRecorder_captureHandlerWithAudioSample_bufferType___block_invoke;
   block[3] = &unk_278B622E0;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = sampleCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v8 = sampleCopy;
+  dispatch_async(audioQueue, block);
 }
 
 void __61__RPScreenRecorder_captureHandlerWithAudioSample_bufferType___block_invoke(uint64_t a1)
@@ -1230,10 +1230,10 @@ void __61__RPScreenRecorder_captureHandlerWithAudioSample_bufferType___block_inv
   }
 }
 
-- (void)startInAppBroadcastWithHandler:(id)a3
+- (void)startInAppBroadcastWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1248,19 +1248,19 @@ void __61__RPScreenRecorder_captureHandlerWithAudioSample_bufferType___block_inv
     if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RPScreenRecorder startInAppBroadcastWithHandler:];
-      if (v4)
+      if (handlerCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (v4)
+    else if (handlerCopy)
     {
 LABEL_8:
-      v5 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+      handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
 LABEL_13:
-      v6 = v5;
-      v4[2](v4, v5);
+      v6 = handleUnavailableState;
+      handlerCopy[2](handlerCopy, handleUnavailableState);
 
       goto LABEL_14;
     }
@@ -1278,13 +1278,13 @@ LABEL_13:
     v8[2] = __51__RPScreenRecorder_startInAppBroadcastWithHandler___block_invoke;
     v8[3] = &unk_278B61D70;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    v5 = [(RPScreenRecorder *)self handleUnavailableState];
+    handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
     goto LABEL_13;
   }
 
@@ -1412,10 +1412,10 @@ void __51__RPScreenRecorder_startInAppBroadcastWithHandler___block_invoke_21(uin
   }
 }
 
-- (void)stopInAppBroadcastWithHandler:(id)a3
+- (void)stopInAppBroadcastWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1433,7 +1433,7 @@ void __51__RPScreenRecorder_startInAppBroadcastWithHandler___block_invoke_21(uin
     v8[2] = __50__RPScreenRecorder_stopInAppBroadcastWithHandler___block_invoke;
     v8[3] = &unk_278B61E88;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     [v5 stopInAppBroadcastWithHandler:v8];
   }
 
@@ -1445,7 +1445,7 @@ void __51__RPScreenRecorder_startInAppBroadcastWithHandler___block_invoke_21(uin
     }
 
     v6 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5829 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(handlerCopy + 2))(handlerCopy, 0, v6);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1516,13 +1516,13 @@ void __50__RPScreenRecorder_stopInAppBroadcastWithHandler___block_invoke(uint64_
   if (self->_recording && self->_paused)
   {
     v5 = +[RPDaemonProxy daemonProxy];
-    v6 = [(RPScreenRecorder *)self currentWindowLayerContextID];
+    currentWindowLayerContextID = [(RPScreenRecorder *)self currentWindowLayerContextID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke;
     v8[3] = &unk_278B62268;
     v8[4] = self;
-    [v5 resumeInAppBroadcastWithWindowLayerContextID:v6 completionHandler:v8];
+    [v5 resumeInAppBroadcastWithWindowLayerContextID:currentWindowLayerContextID completionHandler:v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1579,18 +1579,18 @@ void __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke(uint64_t a1, void
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBroadcastURL:(id)a3
+- (void)setBroadcastURL:(id)l
 {
-  objc_storeStrong(&self->_broadcastURL, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_broadcastURL, l);
+  lCopy = l;
   v5 = +[RPDaemonProxy daemonProxy];
-  [v5 setBroadcastURL:v4];
+  [v5 setBroadcastURL:lCopy];
 }
 
-- (void)clientDidUpdateBroadcastServiceInfo:(id)a3
+- (void)clientDidUpdateBroadcastServiceInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   activeBroadcastController = self->_activeBroadcastController;
   if (activeBroadcastController)
   {
@@ -1611,24 +1611,24 @@ void __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke(uint64_t a1, void
       activeBroadcastController = self->_activeBroadcastController;
     }
 
-    [(RPBroadcastController *)activeBroadcastController setServiceInfo:v4];
-    v7 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
+    [(RPBroadcastController *)activeBroadcastController setServiceInfo:infoCopy];
+    delegate = [(RPBroadcastController *)self->_activeBroadcastController delegate];
 
-    if (v7)
+    if (delegate)
     {
       if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
+        delegate2 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
         v13 = 136446722;
         v14 = "[RPScreenRecorder clientDidUpdateBroadcastServiceInfo:]";
         v15 = 1024;
         v16 = 772;
         v17 = 2112;
-        v18 = v8;
+        v18 = delegate2;
         _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d activeBroadcastController delegate: %@", &v13, 0x1Cu);
       }
 
-      v9 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
+      delegate3 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
@@ -1642,8 +1642,8 @@ void __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke(uint64_t a1, void
           _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d delegate responds to protocol", &v13, 0x12u);
         }
 
-        v11 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
-        [v11 broadcastController:self->_activeBroadcastController didUpdateServiceInfo:v4];
+        delegate4 = [(RPBroadcastController *)self->_activeBroadcastController delegate];
+        [delegate4 broadcastController:self->_activeBroadcastController didUpdateServiceInfo:infoCopy];
       }
 
       else if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1666,10 +1666,10 @@ void __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke(uint64_t a1, void
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSystemRecordingWithMicrophoneEnabled:(BOOL)a3 handler:(id)a4
+- (void)startSystemRecordingWithMicrophoneEnabled:(BOOL)enabled handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1686,8 +1686,8 @@ void __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke(uint64_t a1, void
       [RPScreenRecorder startSystemRecordingWithMicrophoneEnabled:handler:];
     }
 
-    v6 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
-    if (!v5)
+    handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+    if (!handlerCopy)
     {
       goto LABEL_15;
     }
@@ -1703,15 +1703,15 @@ void __40__RPScreenRecorder_resumeInAppBroadcast__block_invoke(uint64_t a1, void
     v8[2] = __70__RPScreenRecorder_startSystemRecordingWithMicrophoneEnabled_handler___block_invoke;
     v8[3] = &unk_278B61D70;
     v8[4] = self;
-    v9 = v5;
+    v9 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
-  else if (v5)
+  else if (handlerCopy)
   {
-    v6 = [(RPScreenRecorder *)self handleUnavailableState];
+    handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
 LABEL_14:
-    (*(v5 + 2))(v5, v6);
+    (*(handlerCopy + 2))(handlerCopy, handleUnavailableState);
 LABEL_15:
   }
 
@@ -1858,10 +1858,10 @@ void __70__RPScreenRecorder_startSystemRecordingWithMicrophoneEnabled_handler___
   }
 }
 
-- (void)stopSystemRecording:(id)a3
+- (void)stopSystemRecording:(id)recording
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordingCopy = recording;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1879,7 +1879,7 @@ void __70__RPScreenRecorder_startSystemRecordingWithMicrophoneEnabled_handler___
     v8[2] = __40__RPScreenRecorder_stopSystemRecording___block_invoke;
     v8[3] = &unk_278B61E88;
     v8[4] = self;
-    v9 = v4;
+    v9 = recordingCopy;
     [v5 stopSystemRecordingWithHandler:v8];
   }
 
@@ -1891,9 +1891,9 @@ void __70__RPScreenRecorder_startSystemRecordingWithMicrophoneEnabled_handler___
     }
 
     v6 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5829 userInfo:0];
-    if (v4)
+    if (recordingCopy)
     {
-      (*(v4 + 2))(v4, v6);
+      (*(recordingCopy + 2))(recordingCopy, v6);
     }
   }
 
@@ -1912,10 +1912,10 @@ void __40__RPScreenRecorder_stopSystemRecording___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)stopSystemRecordingWithURLHandler:(id)a3
+- (void)stopSystemRecordingWithURLHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1933,7 +1933,7 @@ void __40__RPScreenRecorder_stopSystemRecording___block_invoke(uint64_t a1, void
     v8[2] = __54__RPScreenRecorder_stopSystemRecordingWithURLHandler___block_invoke;
     v8[3] = &unk_278B62240;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     [v5 stopSystemRecordingWithURLHandler:v8];
   }
 
@@ -1945,7 +1945,7 @@ void __40__RPScreenRecorder_stopSystemRecording___block_invoke(uint64_t a1, void
     }
 
     v6 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(handlerCopy + 2))(handlerCopy, 0, v6);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2005,11 +2005,11 @@ void __41__RPScreenRecorder_resumeSystemRecording__block_invoke(uint64_t a1, int
   }
 }
 
-- (void)setupSystemBroadcastWithExtension:(id)a3 handler:(id)a4
+- (void)setupSystemBroadcastWithExtension:(id)extension handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  extensionCopy = extension;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -2019,8 +2019,8 @@ void __41__RPScreenRecorder_resumeSystemRecording__block_invoke(uint64_t a1, int
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEAC0]);
   v10 = objc_alloc_init(RPBroadcastConfiguration);
@@ -2030,9 +2030,9 @@ void __41__RPScreenRecorder_resumeSystemRecording__block_invoke(uint64_t a1, int
   v15[1] = 3221225472;
   v15[2] = __62__RPScreenRecorder_setupSystemBroadcastWithExtension_handler___block_invoke;
   v15[3] = &unk_278B61DE8;
-  v16 = v6;
-  v13 = v6;
-  [v12 setupSystemBroadcastWithHostBundleID:v8 broadcastExtensionBundleID:v5 broadcastConfigurationData:v11 userInfo:v9 handler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  [v12 setupSystemBroadcastWithHostBundleID:bundleIdentifier broadcastExtensionBundleID:extensionCopy broadcastConfigurationData:v11 userInfo:v9 handler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2048,10 +2048,10 @@ void __62__RPScreenRecorder_setupSystemBroadcastWithExtension_handler___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startSystemBroadcastWithHandler:(id)a3
+- (void)startSystemBroadcastWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -2068,7 +2068,7 @@ void __62__RPScreenRecorder_setupSystemBroadcastWithExtension_handler___block_in
       [RPScreenRecorder startSystemBroadcastWithHandler:];
     }
 
-    v5 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+    handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
     goto LABEL_13;
   }
 
@@ -2080,16 +2080,16 @@ void __62__RPScreenRecorder_setupSystemBroadcastWithExtension_handler___block_in
     v8[2] = __52__RPScreenRecorder_startSystemBroadcastWithHandler___block_invoke;
     v8[3] = &unk_278B61D70;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    v5 = [(RPScreenRecorder *)self handleUnavailableState];
+    handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
 LABEL_13:
-    v6 = v5;
-    (*(v4 + 2))(v4, v5);
+    v6 = handleUnavailableState;
+    (*(handlerCopy + 2))(handlerCopy, handleUnavailableState);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2237,10 +2237,10 @@ void __52__RPScreenRecorder_startSystemBroadcastWithHandler___block_invoke_35(ui
   }
 }
 
-- (void)stopSystemBroadcastWithHandler:(id)a3
+- (void)stopSystemBroadcastWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -2258,7 +2258,7 @@ void __52__RPScreenRecorder_startSystemBroadcastWithHandler___block_invoke_35(ui
     v8[2] = __51__RPScreenRecorder_stopSystemBroadcastWithHandler___block_invoke;
     v8[3] = &unk_278B61E88;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     [v5 stopSystemBroadcastWithHandler:v8];
   }
 
@@ -2270,7 +2270,7 @@ void __52__RPScreenRecorder_startSystemBroadcastWithHandler___block_invoke_35(ui
     }
 
     v6 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5829 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(handlerCopy + 2))(handlerCopy, 0, v6);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2328,11 +2328,11 @@ void __41__RPScreenRecorder_resumeSystemBroadcast__block_invoke(uint64_t a1, int
   }
 }
 
-- (void)startHQLRWithSessionInfo:(id)a3 handler:(id)a4
+- (void)startHQLRWithSessionInfo:(id)info handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -2340,11 +2340,11 @@ void __41__RPScreenRecorder_resumeSystemBroadcast__block_invoke(uint64_t a1, int
     v16 = 1024;
     v17 = 1048;
     v18 = 2112;
-    v19 = v6;
+    v19 = infoCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d sessionInfo=%@", buf, 0x1Cu);
   }
 
-  v8 = [RPScreenRecorder validateHQLRSessionInfo:v6];
+  v8 = [RPScreenRecorder validateHQLRSessionInfo:infoCopy];
   if (!v8)
   {
     if (self->_recording)
@@ -2354,8 +2354,8 @@ void __41__RPScreenRecorder_resumeSystemBroadcast__block_invoke(uint64_t a1, int
         [RPScreenRecorder startHQLRWithSessionInfo:handler:];
       }
 
-      v9 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
-      if (!v7)
+      handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+      if (!handlerCopy)
       {
         goto LABEL_20;
       }
@@ -2371,22 +2371,22 @@ void __41__RPScreenRecorder_resumeSystemBroadcast__block_invoke(uint64_t a1, int
         block[2] = __53__RPScreenRecorder_startHQLRWithSessionInfo_handler___block_invoke;
         block[3] = &unk_278B61E60;
         block[4] = self;
-        v12 = v6;
-        v13 = v7;
+        v12 = infoCopy;
+        v13 = handlerCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
 
         goto LABEL_21;
       }
 
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_21;
       }
 
-      v9 = [(RPScreenRecorder *)self handleUnavailableState];
+      handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
     }
 
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, handleUnavailableState);
 LABEL_20:
 
     goto LABEL_21;
@@ -2395,7 +2395,7 @@ LABEL_20:
   if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RPScreenRecorder startHQLRWithSessionInfo:handler:];
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_21;
     }
@@ -2403,10 +2403,10 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
 LABEL_8:
-    (*(v7 + 2))(v7, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 
 LABEL_21:
@@ -2481,10 +2481,10 @@ void __53__RPScreenRecorder_startHQLRWithSessionInfo_handler___block_invoke_38(u
   }
 }
 
-- (void)stopHQLR:(id)a3
+- (void)stopHQLR:(id)r
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rCopy = r;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -2502,7 +2502,7 @@ void __53__RPScreenRecorder_startHQLRWithSessionInfo_handler___block_invoke_38(u
     v8[2] = __29__RPScreenRecorder_stopHQLR___block_invoke;
     v8[3] = &unk_278B61E88;
     v8[4] = self;
-    v9 = v4;
+    v9 = rCopy;
     [v5 stopHQLRWithHandler:v8];
   }
 
@@ -2514,9 +2514,9 @@ void __53__RPScreenRecorder_startHQLRWithSessionInfo_handler___block_invoke_38(u
     }
 
     v6 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5829 userInfo:0];
-    if (v4)
+    if (rCopy)
     {
-      (*(v4 + 2))(v4, v6);
+      (*(rCopy + 2))(rCopy, v6);
     }
   }
 
@@ -2576,11 +2576,11 @@ void __30__RPScreenRecorder_resumeHQLR__block_invoke(uint64_t a1, int a2)
   }
 }
 
-+ (id)validateHQLRSessionInfo:(id)a3
++ (id)validateHQLRSessionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"saveToDestination"];
-  v5 = [v3 objectForKeyedSubscript:@"fileURL"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"saveToDestination"];
+  v5 = [infoCopy objectForKeyedSubscript:@"fileURL"];
 
   if ([v4 isEqualToString:@"com.apple.replaykit.saveToURL"] && (!v5 || (objc_msgSend(MEMORY[0x277CBEB68], "null"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5 == v6)))
   {
@@ -2624,10 +2624,10 @@ void __30__RPScreenRecorder_resumeHQLR__block_invoke(uint64_t a1, int a2)
     if (v4)
     {
 LABEL_8:
-      v5 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
+      handleUnavailableState = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5830 userInfo:0];
 LABEL_13:
-      v6 = v5;
-      v4[2](v4, v5);
+      v6 = handleUnavailableState;
+      v4[2](v4, handleUnavailableState);
     }
   }
 
@@ -2644,7 +2644,7 @@ LABEL_13:
 
   else if (v4)
   {
-    v5 = [(RPScreenRecorder *)self handleUnavailableState];
+    handleUnavailableState = [(RPScreenRecorder *)self handleUnavailableState];
     goto LABEL_13;
   }
 
@@ -2911,13 +2911,13 @@ LABEL_11:
   if (self->_recording && self->_paused)
   {
     v5 = +[RPDaemonProxy daemonProxy];
-    v6 = [(RPScreenRecorder *)self currentWindowLayerContextID];
+    currentWindowLayerContextID = [(RPScreenRecorder *)self currentWindowLayerContextID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __35__RPScreenRecorder_resumeInAppClip__block_invoke;
     v8[3] = &unk_278B62268;
     v8[4] = self;
-    [v5 resumeInAppClipWithWindowLayerContextID:v6 completionHandler:v8];
+    [v5 resumeInAppClipWithWindowLayerContextID:currentWindowLayerContextID completionHandler:v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2974,11 +2974,11 @@ void __35__RPScreenRecorder_resumeInAppClip__block_invoke(uint64_t a1, void *a2,
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveVideoToCameraRoll:(id)a3 handler:(id)a4
+- (void)saveVideoToCameraRoll:(id)roll handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  rollCopy = roll;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -2993,9 +2993,9 @@ void __35__RPScreenRecorder_resumeInAppClip__block_invoke(uint64_t a1, void *a2,
   v10[1] = 3221225472;
   v10[2] = __50__RPScreenRecorder_saveVideoToCameraRoll_handler___block_invoke;
   v10[3] = &unk_278B61DE8;
-  v11 = v6;
-  v8 = v6;
-  [v7 saveVideoToCameraRoll:v5 handler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  [v7 saveVideoToCameraRoll:rollCopy handler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -3011,11 +3011,11 @@ uint64_t __50__RPScreenRecorder_saveVideoToCameraRoll_handler___block_invoke(uin
   return result;
 }
 
-- (void)saveClipToCameraRoll:(id)a3 handler:(id)a4
+- (void)saveClipToCameraRoll:(id)roll handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  rollCopy = roll;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -3030,9 +3030,9 @@ uint64_t __50__RPScreenRecorder_saveVideoToCameraRoll_handler___block_invoke(uin
   v10[1] = 3221225472;
   v10[2] = __49__RPScreenRecorder_saveClipToCameraRoll_handler___block_invoke;
   v10[3] = &unk_278B61DE8;
-  v11 = v6;
-  v8 = v6;
-  [v7 saveClipToCameraRoll:v5 handler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  [v7 saveClipToCameraRoll:rollCopy handler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -3048,11 +3048,11 @@ uint64_t __49__RPScreenRecorder_saveClipToCameraRoll_handler___block_invoke(uint
   return result;
 }
 
-- (void)saveVideo:(id)a3 handler:(id)a4
+- (void)saveVideo:(id)video handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  videoCopy = video;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -3067,9 +3067,9 @@ uint64_t __49__RPScreenRecorder_saveClipToCameraRoll_handler___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __38__RPScreenRecorder_saveVideo_handler___block_invoke;
   v10[3] = &unk_278B61DE8;
-  v11 = v6;
-  v8 = v6;
-  [v7 saveVideo:v5 handler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  [v7 saveVideo:videoCopy handler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -3230,8 +3230,8 @@ LABEL_11:
     if ([(RPScreenRecorder *)self isRecording])
     {
       v7 = +[RPDaemonProxy daemonProxy];
-      v8 = [(RPScreenRecorder *)self pipViewController];
-      [v7 reportCameraUsage:{objc_msgSend(v8, "cameraPosition")}];
+      pipViewController = [(RPScreenRecorder *)self pipViewController];
+      [v7 reportCameraUsage:{objc_msgSend(pipViewController, "cameraPosition")}];
     }
 
     goto LABEL_13;
@@ -3244,8 +3244,8 @@ LABEL_14:
 - (void)instantiatePipView
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
   if ([(RPScreenRecorder *)self isCameraEnabled])
   {
@@ -3256,7 +3256,7 @@ LABEL_14:
       v14 = 1024;
       v15 = 1385;
       v16 = 1024;
-      v17 = [(RPScreenRecorder *)self cameraPosition];
+      cameraPosition = [(RPScreenRecorder *)self cameraPosition];
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d create pip for camera position %d", &v12, 0x18u);
     }
 
@@ -3271,12 +3271,12 @@ LABEL_14:
       {
 LABEL_10:
         v7 = +[RPDaemonProxy daemonProxy];
-        v8 = [(RPScreenRecorder *)self pipViewController];
-        [v7 reportCameraUsage:{objc_msgSend(v8, "cameraPosition")}];
+        pipViewController = [(RPScreenRecorder *)self pipViewController];
+        [v7 reportCameraUsage:{objc_msgSend(pipViewController, "cameraPosition")}];
 
-        v9 = [(RPScreenRecorder *)self pipViewController];
-        v10 = [v9 view];
-        [(RPScreenRecorder *)self setCameraPreviewView:v10];
+        pipViewController2 = [(RPScreenRecorder *)self pipViewController];
+        view = [pipViewController2 view];
+        [(RPScreenRecorder *)self setCameraPreviewView:view];
 
         goto LABEL_11;
       }
@@ -3284,7 +3284,7 @@ LABEL_10:
       v5 = 1;
     }
 
-    v6 = [[RPPipViewController alloc] initWithOrientation:v4 position:v5];
+    v6 = [[RPPipViewController alloc] initWithOrientation:orientation position:v5];
     [(RPScreenRecorder *)self setPipViewController:v6];
 
     goto LABEL_10;
@@ -3296,13 +3296,13 @@ LABEL_11:
 
 - (void)isScreenRecordingAvailable
 {
-  v3 = [(RPScreenRecorder *)self processQueue];
+  processQueue = [(RPScreenRecorder *)self processQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke;
   block[3] = &unk_278B61B70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(processQueue, block);
 }
 
 void __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke(uint64_t a1)
@@ -3381,11 +3381,11 @@ void __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke(uint64_t a1
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStateWithActive:(BOOL)a3 error:(id)a4
+- (void)updateStateWithActive:(BOOL)active error:(id)error
 {
-  v4 = a3;
+  activeCopy = active;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136446978;
@@ -3393,13 +3393,13 @@ void __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke(uint64_t a1
     v10 = 1024;
     v11 = 1457;
     v12 = 1024;
-    v13 = v4;
+    v13 = activeCopy;
     v14 = 1024;
-    v15 = v6 != 0;
+    v15 = errorCopy != 0;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d update state with isActive %d error %d", &v8, 0x1Eu);
   }
 
-  if (v6 || !v4)
+  if (errorCopy || !activeCopy)
   {
     [(RPScreenRecorder *)self setRecording:0];
     [(RPScreenRecorder *)self removePipView];
@@ -3446,15 +3446,15 @@ void __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke(uint64_t a1
   windowToRecord = self->_windowToRecord;
   if (windowToRecord)
   {
-    v3 = windowToRecord;
+    firstObject = windowToRecord;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 delegate];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    delegate = [mEMORY[0x277D75128] delegate];
 
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 window], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate window], (firstObject = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -3465,33 +3465,33 @@ void __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke(uint64_t a1
         _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d appWindow: app doesn't have the window property set on UIApplicationDelegate. Using first window.", &v10, 0x12u);
       }
 
-      v6 = [MEMORY[0x277D75128] sharedApplication];
-      v7 = [v6 windows];
-      v3 = [v7 firstObject];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      windows = [mEMORY[0x277D75128]2 windows];
+      firstObject = [windows firstObject];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return firstObject;
 }
 
 - (CGSize)currentWindowSize
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v10 = v9;
 
   if (!self->_systemRecording)
   {
-    v11 = [(RPScreenRecorder *)self applicationWindow];
-    [v11 frame];
+    applicationWindow = [(RPScreenRecorder *)self applicationWindow];
+    [applicationWindow frame];
     v5 = v12;
     v7 = v13;
   }
@@ -3523,43 +3523,43 @@ void __46__RPScreenRecorder_isScreenRecordingAvailable__block_invoke(uint64_t a1
 
 - (id)currentWindowLayerContextID
 {
-  v3 = [(RPScreenRecorder *)self windowToRecord];
+  windowToRecord = [(RPScreenRecorder *)self windowToRecord];
 
-  if (v3)
+  if (windowToRecord)
   {
-    v4 = [(UIWindow *)self->_windowToRecord layer];
-    v5 = [v4 context];
-    v6 = [v5 contextId];
+    layer = [(UIWindow *)self->_windowToRecord layer];
+    context = [layer context];
+    contextId = [context contextId];
   }
 
   else
   {
     if (self->_systemRecording)
     {
-      v6 = 0xFFFFFFFFLL;
+      contextId = 0xFFFFFFFFLL;
       goto LABEL_7;
     }
 
-    v4 = [(RPScreenRecorder *)self applicationWindow];
-    v5 = [v4 layer];
-    v7 = [v5 context];
-    v6 = [v7 contextId];
+    layer = [(RPScreenRecorder *)self applicationWindow];
+    context = [layer layer];
+    v5Context = [context context];
+    contextId = [v5Context contextId];
   }
 
 LABEL_7:
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
-  v9 = [v8 stringValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:contextId];
+  stringValue = [v8 stringValue];
 
-  return v9;
+  return stringValue;
 }
 
-- (void)setWindowRotationLocked:(BOOL)a3
+- (void)setWindowRotationLocked:(BOOL)locked
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __44__RPScreenRecorder_setWindowRotationLocked___block_invoke;
   v3[3] = &unk_278B62308;
-  v4 = a3;
+  lockedCopy = locked;
   v3[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
@@ -3672,10 +3672,10 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
   processQueue_sProcessQueue = v0;
 }
 
-- (void)recordingLockInterrupted:(id)a3
+- (void)recordingLockInterrupted:(id)interrupted
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  interruptedCopy = interrupted;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446722;
@@ -3683,17 +3683,17 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
     v7 = 1024;
     v8 = 1692;
     v9 = 1024;
-    v10 = [v3 code];
+    code = [interruptedCopy code];
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d recordingLockInterrupted error[%d]", &v5, 0x18u);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordingTimerDidUpdate:(id)a3
+- (void)recordingTimerDidUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446722;
@@ -3701,12 +3701,12 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
     v9 = 1024;
     v10 = 1697;
     v11 = 2112;
-    v12 = v4;
+    v12 = updateCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d time[%@]", &v7, 0x1Cu);
   }
 
-  v5 = [(RPScreenRecorder *)self privateDelegate];
-  [v5 recordingTimerDidUpdate:v4];
+  privateDelegate = [(RPScreenRecorder *)self privateDelegate];
+  [privateDelegate recordingTimerDidUpdate:updateCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -3719,10 +3719,10 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
   }
 }
 
-- (void)shouldResumeSessionType:(id)a3
+- (void)shouldResumeSessionType:(id)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     systemRecording = self->_systemRecording;
@@ -3743,34 +3743,34 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
 
   if (self->_recording && self->_paused)
   {
-    if ([v4 isEqualToString:@"RPInAppRecording"])
+    if ([typeCopy isEqualToString:@"RPInAppRecording"])
     {
       [(RPScreenRecorder *)self resumeInAppRecording];
     }
 
-    else if ([v4 isEqualToString:@"RPInAppCapture"])
+    else if ([typeCopy isEqualToString:@"RPInAppCapture"])
     {
       [(RPScreenRecorder *)self resumeInAppCapture];
     }
 
-    else if ([v4 isEqualToString:@"RPInAppBroadcast"])
+    else if ([typeCopy isEqualToString:@"RPInAppBroadcast"])
     {
       [(RPScreenRecorder *)self resumeInAppBroadcast];
     }
 
-    else if ([v4 isEqualToString:@"RPInAppClip"])
+    else if ([typeCopy isEqualToString:@"RPInAppClip"])
     {
       [(RPScreenRecorder *)self resumeInAppClip];
     }
 
     else
     {
-      if (![v4 isEqualToString:@"RPHQLR"])
+      if (![typeCopy isEqualToString:@"RPHQLR"])
       {
-        if ([v4 isEqualToString:@"RPSystemRecording"])
+        if ([typeCopy isEqualToString:@"RPSystemRecording"])
         {
           v8 = dispatch_time(0, 200000000);
-          v9 = [(RPScreenRecorder *)self processQueue];
+          processQueue = [(RPScreenRecorder *)self processQueue];
           v13[0] = MEMORY[0x277D85DD0];
           v13[1] = 3221225472;
           v13[2] = __44__RPScreenRecorder_shouldResumeSessionType___block_invoke;
@@ -3781,13 +3781,13 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
 
         else
         {
-          if (![v4 isEqualToString:@"RPSystemBroadcast"])
+          if (![typeCopy isEqualToString:@"RPSystemBroadcast"])
           {
             goto LABEL_21;
           }
 
           v8 = dispatch_time(0, 200000000);
-          v9 = [(RPScreenRecorder *)self processQueue];
+          processQueue = [(RPScreenRecorder *)self processQueue];
           v12[0] = MEMORY[0x277D85DD0];
           v12[1] = 3221225472;
           v12[2] = __44__RPScreenRecorder_shouldResumeSessionType___block_invoke_2;
@@ -3796,7 +3796,7 @@ void __32__RPScreenRecorder_processQueue__block_invoke()
           v10 = v12;
         }
 
-        dispatch_after(v8, v9, v10);
+        dispatch_after(v8, processQueue, v10);
 
         goto LABEL_21;
       }
@@ -3810,10 +3810,10 @@ LABEL_21:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateScreenRecordingStateWithCurrentState:(id)a3
+- (void)updateScreenRecordingStateWithCurrentState:(id)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -3828,19 +3828,19 @@ LABEL_21:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordingDidStopWithError:(id)a3 movieURL:(id)a4
+- (void)recordingDidStopWithError:(id)error movieURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  lCopy = l;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__RPScreenRecorder_recordingDidStopWithError_movieURL___block_invoke;
   block[3] = &unk_278B622B8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = errorCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -3936,10 +3936,10 @@ void __55__RPScreenRecorder_recordingDidStopWithError_movieURL___block_invoke_88
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isConnectionInterruptedOrInvalid:(id)a3
+- (BOOL)isConnectionInterruptedOrInvalid:(id)invalid
 {
-  v3 = a3;
-  v4 = [v3 code] == -5815 || objc_msgSend(v3, "code") == -5814;
+  invalidCopy = invalid;
+  v4 = [invalidCopy code] == -5815 || objc_msgSend(invalidCopy, "code") == -5814;
 
   return v4;
 }
@@ -3973,18 +3973,18 @@ void __55__RPScreenRecorder_recordingDidStopWithError_movieURL___block_invoke_88
   return (v4 | v7) & 1;
 }
 
-- (void)didStopRecordingWithError:(id)a3 previewViewController:(id)a4
+- (void)didStopRecordingWithError:(id)error previewViewController:(id)controller
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(RPScreenRecorder *)self delegate];
+  errorCopy = error;
+  controllerCopy = controller;
+  delegate = [(RPScreenRecorder *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
-  v9 = [(RPScreenRecorder *)self delegate];
-  v10 = v9;
+  delegate2 = [(RPScreenRecorder *)self delegate];
+  delegate3 = delegate2;
   if (v8)
   {
-    [v9 screenRecorder:self didStopRecordingWithPreviewViewController:v6 error:v17];
+    [delegate2 screenRecorder:self didStopRecordingWithPreviewViewController:controllerCopy error:errorCopy];
   }
 
   else
@@ -3996,19 +3996,19 @@ void __55__RPScreenRecorder_recordingDidStopWithError_movieURL___block_invoke_88
       goto LABEL_6;
     }
 
-    v10 = [(RPScreenRecorder *)self delegate];
-    [v10 screenRecorder:self didStopRecordingWithError:v17 previewViewController:v6];
+    delegate3 = [(RPScreenRecorder *)self delegate];
+    [delegate3 screenRecorder:self didStopRecordingWithError:errorCopy previewViewController:controllerCopy];
   }
 
 LABEL_6:
-  v12 = [(RPScreenRecorder *)self secondDelegate];
+  secondDelegate = [(RPScreenRecorder *)self secondDelegate];
   v13 = objc_opt_respondsToSelector();
 
-  v14 = [(RPScreenRecorder *)self secondDelegate];
-  v15 = v14;
+  secondDelegate2 = [(RPScreenRecorder *)self secondDelegate];
+  secondDelegate3 = secondDelegate2;
   if (v13)
   {
-    [v14 screenRecorder:self didStopRecordingWithPreviewViewController:v6 error:v17];
+    [secondDelegate2 screenRecorder:self didStopRecordingWithPreviewViewController:controllerCopy error:errorCopy];
   }
 
   else
@@ -4020,17 +4020,17 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    v15 = [(RPScreenRecorder *)self secondDelegate];
-    [v15 screenRecorder:self didStopRecordingWithError:v17 previewViewController:v6];
+    secondDelegate3 = [(RPScreenRecorder *)self secondDelegate];
+    [secondDelegate3 screenRecorder:self didStopRecordingWithError:errorCopy previewViewController:controllerCopy];
   }
 
 LABEL_11:
 }
 
-- (void)updateRecordingAvailability:(id)a3
+- (void)updateRecordingAvailability:(id)availability
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availabilityCopy = availability;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -4045,16 +4045,16 @@ LABEL_11:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkContextID:(id)a3 withHandler:(id)a4
+- (BOOL)checkContextID:(id)d withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RPScreenRecorder checkContextID:withHandler:];
-      if (!v6)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
@@ -4062,23 +4062,23 @@ LABEL_11:
       goto LABEL_5;
     }
 
-    if (v6)
+    if (handlerCopy)
     {
 LABEL_5:
       v7 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5803 userInfo:0];
-      v6[2](v6, v7);
+      handlerCopy[2](handlerCopy, v7);
     }
   }
 
 LABEL_6:
 
-  return v5 != 0;
+  return dCopy != 0;
 }
 
 - (BOOL)screenRecordingAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D26040]] != 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D26040]] != 2;
 
   return v3;
 }

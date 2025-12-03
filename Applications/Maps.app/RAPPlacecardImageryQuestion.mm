@@ -2,17 +2,17 @@
 - (BOOL)isAnonymous;
 - (BOOL)isComplete;
 - (NSString)localizedTitle;
-- (RAPPlacecardImageryQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 supportedIssueItems:(id)a5;
+- (RAPPlacecardImageryQuestion)initWithReport:(id)report parentQuestion:(id)question supportedIssueItems:(id)items;
 - (id)placeholderText;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)setIssueType:(unint64_t)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)setIssueType:(unint64_t)type;
 @end
 
 @implementation RAPPlacecardImageryQuestion
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc_init(GEORPPoiImageFeedbackCorrections);
   v21 = v5;
   if (self->_issueType - 1 < 8)
@@ -27,50 +27,50 @@
 
   [v5 setCorrectionType:issueType_low];
   v7 = objc_alloc_init(GEORPPoiImageFeedbackContext);
-  v8 = [(RAPQuestion *)self _context];
-  v9 = [v8 placecardImageryContext];
+  _context = [(RAPQuestion *)self _context];
+  placecardImageryContext = [_context placecardImageryContext];
 
-  v10 = [v9 reportedPlace];
-  [v7 setPlace:v10];
+  reportedPlace = [placecardImageryContext reportedPlace];
+  [v7 setPlace:reportedPlace];
 
   v11 = objc_alloc_init(GEORPFeedbackClientImageInfo);
-  v12 = [v9 photoURL];
-  [v11 setImageUrl:v12];
+  photoURL = [placecardImageryContext photoURL];
+  [v11 setImageUrl:photoURL];
 
-  v13 = [v9 photoIdentifier];
-  [v11 setProviderImageId:v13];
+  photoIdentifier = [placecardImageryContext photoIdentifier];
+  [v11 setProviderImageId:photoIdentifier];
 
   [v7 setImageInfo:v11];
-  [v4 setType:13];
+  [parametersCopy setType:13];
   v14 = objc_alloc_init(GEORPFeedbackDetails);
-  [v4 setDetails:v14];
+  [parametersCopy setDetails:v14];
 
   v15 = objc_alloc_init(GEORPPoiImageFeedback);
-  v16 = [v4 details];
-  [v16 setPoiImageFeedback:v15];
+  details = [parametersCopy details];
+  [details setPoiImageFeedback:v15];
 
-  v17 = [v4 details];
-  v18 = [v17 poiImageFeedback];
-  [v18 setPoiImageCorrections:v21];
+  details2 = [parametersCopy details];
+  poiImageFeedback = [details2 poiImageFeedback];
+  [poiImageFeedback setPoiImageCorrections:v21];
 
-  v19 = [v4 details];
-  v20 = [v19 poiImageFeedback];
-  [v20 setPoiImageContext:v7];
+  details3 = [parametersCopy details];
+  poiImageFeedback2 = [details3 poiImageFeedback];
+  [poiImageFeedback2 setPoiImageContext:v7];
 
-  [(RAPCommentQuestion *)self->_commentQuestion _fillSubmissionParameters:v4];
+  [(RAPCommentQuestion *)self->_commentQuestion _fillSubmissionParameters:parametersCopy];
 }
 
 - (BOOL)isAnonymous
 {
   v5.receiver = self;
   v5.super_class = RAPPlacecardImageryQuestion;
-  v3 = [(RAPQuestion *)&v5 isAnonymous];
-  if (v3)
+  isAnonymous = [(RAPQuestion *)&v5 isAnonymous];
+  if (isAnonymous)
   {
-    LOBYTE(v3) = (self->_issueType & 0xFFFFFFFFFFFFFFFELL) != 6;
+    LOBYTE(isAnonymous) = (self->_issueType & 0xFFFFFFFFFFFFFFFELL) != 6;
   }
 
-  return v3;
+  return isAnonymous;
 }
 
 - (NSString)localizedTitle
@@ -119,35 +119,35 @@
   return result;
 }
 
-- (void)setIssueType:(unint64_t)a3
+- (void)setIssueType:(unint64_t)type
 {
-  if (self->_issueType != a3)
+  if (self->_issueType != type)
   {
-    self->_issueType = a3;
+    self->_issueType = type;
     commentQuestion = self->_commentQuestion;
-    v5 = [(RAPPlacecardImageryQuestion *)self placeholderText];
-    [(RAPCommentQuestion *)commentQuestion _setPlaceholderText:v5];
+    placeholderText = [(RAPPlacecardImageryQuestion *)self placeholderText];
+    [(RAPCommentQuestion *)commentQuestion _setPlaceholderText:placeholderText];
 
     [(RAPCommentQuestion *)self->_commentQuestion setShouldShowEmail:(self->_issueType & 0xFFFFFFFFFFFFFFFELL) == 6];
-    v6 = [(RAPPlacecardImageryQuestion *)self isComplete];
+    isComplete = [(RAPPlacecardImageryQuestion *)self isComplete];
 
-    [(RAPQuestion *)self _setComplete:v6 allowInvokingDidChange:1];
+    [(RAPQuestion *)self _setComplete:isComplete allowInvokingDidChange:1];
   }
 }
 
-- (RAPPlacecardImageryQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 supportedIssueItems:(id)a5
+- (RAPPlacecardImageryQuestion)initWithReport:(id)report parentQuestion:(id)question supportedIssueItems:(id)items
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  itemsCopy = items;
   v16.receiver = self;
   v16.super_class = RAPPlacecardImageryQuestion;
-  v11 = [(RAPQuestion *)&v16 initWithReport:v8 parentQuestion:v9];
+  v11 = [(RAPQuestion *)&v16 initWithReport:reportCopy parentQuestion:questionCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_issueItems, a5);
-    v13 = [[RAPCommentQuestion alloc] initWithReport:v8 parentQuestion:v9];
+    objc_storeStrong(&v11->_issueItems, items);
+    v13 = [[RAPCommentQuestion alloc] initWithReport:reportCopy parentQuestion:questionCopy];
     commentQuestion = v12->_commentQuestion;
     v12->_commentQuestion = v13;
 

@@ -1,17 +1,17 @@
 @interface REMTemplatePublicLinkConfiguration_Codable
-- (REMTemplatePublicLinkConfiguration_Codable)initWithShouldIncludeHashtags:(BOOL)a3 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)a4 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)a5;
+- (REMTemplatePublicLinkConfiguration_Codable)initWithShouldIncludeHashtags:(BOOL)hashtags shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)interval shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)vehicle;
 @end
 
 @implementation REMTemplatePublicLinkConfiguration_Codable
 
-- (REMTemplatePublicLinkConfiguration_Codable)initWithShouldIncludeHashtags:(BOOL)a3 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)a4 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)a5
+- (REMTemplatePublicLinkConfiguration_Codable)initWithShouldIncludeHashtags:(BOOL)hashtags shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)interval shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)vehicle
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  vehicleCopy = vehicle;
+  intervalCopy = interval;
+  hashtagsCopy = hashtags;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  return [(REMTemplatePublicLinkConfiguration *)&v9 initWithShouldIncludeHashtags:v7 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:v6 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:v5];
+  return [(REMTemplatePublicLinkConfiguration *)&v9 initWithShouldIncludeHashtags:hashtagsCopy shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:intervalCopy shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:vehicleCopy];
 }
 
 @end

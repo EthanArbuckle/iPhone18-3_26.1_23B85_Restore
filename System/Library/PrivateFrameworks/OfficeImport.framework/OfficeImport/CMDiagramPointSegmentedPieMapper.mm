@@ -1,15 +1,15 @@
 @interface CMDiagramPointSegmentedPieMapper
-- (id)_arrowFillWithState:(id)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (id)_arrowFillWithState:(id)state;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramPointSegmentedPieMapper
 
-- (id)_arrowFillWithState:(id)a3
+- (id)_arrowFillWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(CMDiagramPointMapper *)self fill];
-  v6 = [CMColorProperty nsColorFromOADFill:v5 state:v4];
+  stateCopy = state;
+  fill = [(CMDiagramPointMapper *)self fill];
+  v6 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
 
   [v6 redComponent];
   v8 = v7 * 1.2;
@@ -60,15 +60,15 @@
   return v20;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v46 = a3;
-  v47 = a4;
-  v6 = [(CMDiagramPointSegmentedPieMapper *)self transformPresentationName];
-  v45 = v6;
-  if (v6)
+  atCopy = at;
+  stateCopy = state;
+  transformPresentationName = [(CMDiagramPointSegmentedPieMapper *)self transformPresentationName];
+  v45 = transformPresentationName;
+  if (transformPresentationName)
   {
-    v7 = [(CMDiagramPointMapper *)self transformForPresentationWithName:v6];
+    v7 = [(CMDiagramPointMapper *)self transformForPresentationWithName:transformPresentationName];
     v9 = v7;
     if (self->mDrawArrows || !self->mSegmentIndex)
     {
@@ -107,12 +107,12 @@
   }
 
   [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
-  v44 = [(CMDiagramPointMapper *)self fill];
-  v17 = [(CMDiagramPointMapper *)self stroke];
+  fill = [(CMDiagramPointMapper *)self fill];
+  stroke = [(CMDiagramPointMapper *)self stroke];
   v18 = MEMORY[0x277CBEAC0];
   mStartAngle = self->mStartAngle;
   *&mStartAngle = mStartAngle;
-  v43 = v17;
+  v43 = stroke;
   v42 = [MEMORY[0x277CCABB0] numberWithFloat:mStartAngle];
   v20 = [MEMORY[0x277CCABB0] numberWithInt:0];
   mStopAngle = self->mStopAngle;
@@ -120,12 +120,12 @@
   v22 = [MEMORY[0x277CCABB0] numberWithFloat:mStopAngle];
   v23 = [MEMORY[0x277CCABB0] numberWithInt:1];
   v24 = [v18 dictionaryWithObjectsAndKeys:{v42, v20, v22, v23, 0}];
-  v25 = v47;
-  [CMShapeRenderer renderCanonicalShape:250 fill:v44 stroke:v43 adjustValues:v24 orientedBounds:v48 state:v47 drawingContext:self->super.mDrawingContext];
+  v25 = stateCopy;
+  [CMShapeRenderer renderCanonicalShape:250 fill:fill stroke:v43 adjustValues:v24 orientedBounds:v48 state:stateCopy drawingContext:self->super.mDrawingContext];
 
   if (self->mDrawArrows)
   {
-    v26 = [(CMDiagramPointSegmentedPieMapper *)self _arrowFillWithState:v47];
+    v26 = [(CMDiagramPointSegmentedPieMapper *)self _arrowFillWithState:stateCopy];
     v27 = MEMORY[0x277CBEAC0];
     v28 = self->mStartAngle;
     *&v28 = v28;
@@ -136,9 +136,9 @@
     v32 = [MEMORY[0x277CCABB0] numberWithFloat:v31];
     v33 = [MEMORY[0x277CCABB0] numberWithInt:1];
     v34 = [v27 dictionaryWithObjectsAndKeys:{v29, v30, v32, v33, 0}];
-    [CMShapeRenderer renderCanonicalShape:251 fill:v26 stroke:0 adjustValues:v34 orientedBounds:v48 state:v47 drawingContext:self->super.mDrawingContext];
+    [CMShapeRenderer renderCanonicalShape:251 fill:v26 stroke:0 adjustValues:v34 orientedBounds:v48 state:stateCopy drawingContext:self->super.mDrawingContext];
 
-    v25 = v47;
+    v25 = stateCopy;
   }
 
   [(OADOrientedBounds *)v48 bounds];
@@ -152,7 +152,7 @@
   v41 = objc_alloc_init(CMDrawableStyle);
   [v39 bounds];
   [(CMDrawableStyle *)v41 addPositionProperties:?];
-  [v46 addChild:v40];
+  [atCopy addChild:v40];
   v49.receiver = self;
   v49.super_class = CMDiagramPointSegmentedPieMapper;
   [(CMMapper *)&v49 addStyleUsingGlobalCacheTo:v40 style:v41];

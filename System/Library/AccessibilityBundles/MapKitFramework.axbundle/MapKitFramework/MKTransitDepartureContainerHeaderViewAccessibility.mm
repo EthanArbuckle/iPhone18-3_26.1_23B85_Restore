@@ -1,33 +1,33 @@
 @interface MKTransitDepartureContainerHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)automationElements;
 @end
 
 @implementation MKTransitDepartureContainerHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKTransitDepartureContainerHeaderView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"MKTransitDepartureContainerHeaderView" hasInstanceVariable:@"_containerTitleLabel" withType:"_MKUILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKTransitDepartureContainerHeaderView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"MKTransitDepartureContainerHeaderView" hasInstanceVariable:@"_containerTitleLabel" withType:"_MKUILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MKTransitDepartureContainerHeaderViewAccessibility *)self safeUIViewForKey:@"_containerTitleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)automationElements
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 subviews];
+  subviews = [v2 subviews];
 
-  return v3;
+  return subviews;
 }
 
 @end

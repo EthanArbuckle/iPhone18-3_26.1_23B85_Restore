@@ -1,6 +1,6 @@
 @interface EDFetchController
 + (OS_os_log)log;
-- (EDFetchController)initWithAccountsProvider:(id)a3;
+- (EDFetchController)initWithAccountsProvider:(id)provider;
 @end
 
 @implementation EDFetchController
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __24__EDFetchController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_38 != -1)
   {
     dispatch_once(&log_onceToken_38, block);
@@ -30,16 +30,16 @@ void __24__EDFetchController_log__block_invoke(uint64_t a1)
   log_log_38 = v1;
 }
 
-- (EDFetchController)initWithAccountsProvider:(id)a3
+- (EDFetchController)initWithAccountsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = EDFetchController;
   v6 = [(EDFetchController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountsProvider, a3);
+    objc_storeStrong(&v6->_accountsProvider, provider);
   }
 
   return v7;

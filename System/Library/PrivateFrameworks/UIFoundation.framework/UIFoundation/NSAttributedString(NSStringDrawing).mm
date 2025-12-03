@@ -9,7 +9,7 @@
 {
   v6 = MEMORY[0x193AD39D0](0.15);
   MEMORY[0x193AD39E0](0.0);
-  _NSStringDrawingCore(a1, 0, 1, 0, a2, a3, 0.0, 0.0, 0.0, v7, 0);
+  _NSStringDrawingCore(self, 0, 1, 0, a2, a3, 0.0, 0.0, 0.0, v7, 0);
   MEMORY[0x193AD39D0](v6);
 
   JUMPOUT(0x193AD39E0);

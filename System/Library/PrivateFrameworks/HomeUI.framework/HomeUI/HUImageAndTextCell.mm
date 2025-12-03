@@ -1,64 +1,64 @@
 @interface HUImageAndTextCell
 - (CGSize)imageViewRecommendedSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HUImageAndTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HUImageAndTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_resetContentConstraints;
 - (void)prepareForReuse;
-- (void)setImageViewRecommendedSize:(CGSize)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setImageViewRecommendedSize:(CGSize)size;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUImageAndTextCell
 
-- (HUImageAndTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUImageAndTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = HUImageAndTextCell;
-  v4 = [(HUImageAndTextCell *)&v34 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUImageAndTextCell *)&v34 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
     messageTextView = v4->_messageTextView;
     v4->_messageTextView = v5;
 
-    v7 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    messageTextView = [(HUImageAndTextCell *)v4 messageTextView];
+    [messageTextView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v8 setEditable:0];
+    messageTextView2 = [(HUImageAndTextCell *)v4 messageTextView];
+    [messageTextView2 setEditable:0];
 
-    v9 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v9 _setInteractiveTextSelectionDisabled:1];
+    messageTextView3 = [(HUImageAndTextCell *)v4 messageTextView];
+    [messageTextView3 _setInteractiveTextSelectionDisabled:1];
 
-    v10 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v10 setScrollEnabled:0];
+    messageTextView4 = [(HUImageAndTextCell *)v4 messageTextView];
+    [messageTextView4 setScrollEnabled:0];
 
-    v11 = [(HUImageAndTextCell *)v4 messageTextView];
-    v12 = [v11 textContainer];
-    [v12 setLineFragmentPadding:0.0];
+    messageTextView5 = [(HUImageAndTextCell *)v4 messageTextView];
+    textContainer = [messageTextView5 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v13 = [MEMORY[0x277D75348] clearColor];
-    v14 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v14 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    messageTextView6 = [(HUImageAndTextCell *)v4 messageTextView];
+    [messageTextView6 setBackgroundColor:clearColor];
 
     v15 = *MEMORY[0x277D768C8];
     v16 = *(MEMORY[0x277D768C8] + 8);
     v17 = *(MEMORY[0x277D768C8] + 16);
     v18 = *(MEMORY[0x277D768C8] + 24);
-    v19 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v19 setTextContainerInset:{v15, v16, v17, v18}];
+    messageTextView7 = [(HUImageAndTextCell *)v4 messageTextView];
+    [messageTextView7 setTextContainerInset:{v15, v16, v17, v18}];
 
-    v20 = [(HUImageAndTextCell *)v4 messageTextView];
+    messageTextView8 = [(HUImageAndTextCell *)v4 messageTextView];
     LODWORD(v21) = 1148846080;
-    [v20 setContentCompressionResistancePriority:1 forAxis:v21];
+    [messageTextView8 setContentCompressionResistancePriority:1 forAxis:v21];
 
-    v22 = [(HUImageAndTextCell *)v4 messageTextView];
+    messageTextView9 = [(HUImageAndTextCell *)v4 messageTextView];
     LODWORD(v23) = 1132068864;
-    [v22 setContentHuggingPriority:1 forAxis:v23];
+    [messageTextView9 setContentHuggingPriority:1 forAxis:v23];
 
-    v24 = [(HUImageAndTextCell *)v4 contentView];
-    v25 = [(HUImageAndTextCell *)v4 messageTextView];
-    [v24 addSubview:v25];
+    contentView = [(HUImageAndTextCell *)v4 contentView];
+    messageTextView10 = [(HUImageAndTextCell *)v4 messageTextView];
+    [contentView addSubview:messageTextView10];
 
     v26 = objc_opt_new();
     infoImageViewTrailingMarginLayoutGuide = v4->_infoImageViewTrailingMarginLayoutGuide;
@@ -68,12 +68,12 @@
     infoImageView = v4->_infoImageView;
     v4->_infoImageView = v28;
 
-    v30 = [(HUImageAndTextCell *)v4 infoImageView];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    infoImageView = [(HUImageAndTextCell *)v4 infoImageView];
+    [infoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(HUImageAndTextCell *)v4 contentView];
-    v32 = [(HUImageAndTextCell *)v4 infoImageView];
-    [v31 addSubview:v32];
+    contentView2 = [(HUImageAndTextCell *)v4 contentView];
+    infoImageView2 = [(HUImageAndTextCell *)v4 infoImageView];
+    [contentView2 addSubview:infoImageView2];
 
     [(HUImageAndTextCell *)v4 setImageViewRecommendedSize:*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)];
     [(HUImageAndTextCell *)v4 setBackgroundColor:0];
@@ -92,25 +92,25 @@
   [(HUImageAndTextCell *)self updateUIWithAnimation:0];
 }
 
-- (void)setImageViewRecommendedSize:(CGSize)a3
+- (void)setImageViewRecommendedSize:(CGSize)size
 {
-  if (a3.width != self->_imageViewRecommendedSize.width || a3.height != self->_imageViewRecommendedSize.height)
+  if (size.width != self->_imageViewRecommendedSize.width || size.height != self->_imageViewRecommendedSize.height)
   {
-    self->_imageViewRecommendedSize = a3;
+    self->_imageViewRecommendedSize = size;
     [(HUImageAndTextCell *)self _resetContentConstraints];
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUImageAndTextCell *)self item];
+  item = [(HUImageAndTextCell *)self item];
 
-  if (v4)
+  if (item)
   {
     objc_opt_class();
-    v5 = [(HUImageAndTextCell *)self item];
-    v6 = [v5 latestResults];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+    item2 = [(HUImageAndTextCell *)self item];
+    latestResults = [item2 latestResults];
+    v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -122,11 +122,11 @@
     }
 
     v9 = v8;
-    v25 = [v9 identifier];
+    identifier = [v9 identifier];
 
-    if (v25)
+    if (identifier)
     {
-      v10 = HUImageNamed(v25);
+      v10 = HUImageNamed(identifier);
     }
 
     else
@@ -134,74 +134,74 @@
       v10 = 0;
     }
 
-    v14 = [(HUImageAndTextCell *)self infoImageView];
-    [v14 setImage:v10];
+    infoImageView = [(HUImageAndTextCell *)self infoImageView];
+    [infoImageView setImage:v10];
 
-    v15 = [(HUImageAndTextCell *)self infoImageView];
-    [v15 setContentMode:1];
+    infoImageView2 = [(HUImageAndTextCell *)self infoImageView];
+    [infoImageView2 setContentMode:1];
 
-    v16 = [(HUImageAndTextCell *)self item];
-    v17 = [v16 latestResults];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    item3 = [(HUImageAndTextCell *)self item];
+    latestResults2 = [item3 latestResults];
+    v18 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
 
     if ([v18 prefersDynamicString])
     {
-      v19 = [(HUImageAndTextCell *)self messageTextView];
-      [v19 bounds];
-      v22 = [v18 dynamicStringForSize:MEMORY[0x277CBEC10] attributes:{v20, v21}];
-      v23 = [(HUImageAndTextCell *)self messageTextView];
-      [v23 setAttributedText:v22];
+      messageTextView = [(HUImageAndTextCell *)self messageTextView];
+      [messageTextView bounds];
+      messageTextView3 = [v18 dynamicStringForSize:MEMORY[0x277CBEC10] attributes:{v20, v21}];
+      messageTextView2 = [(HUImageAndTextCell *)self messageTextView];
+      [messageTextView2 setAttributedText:messageTextView3];
     }
 
     else
     {
-      v19 = [v18 stringWithAttributes:MEMORY[0x277CBEC10]];
-      v22 = [(HUImageAndTextCell *)self messageTextView];
-      [v22 setAttributedText:v19];
+      messageTextView = [v18 stringWithAttributes:MEMORY[0x277CBEC10]];
+      messageTextView3 = [(HUImageAndTextCell *)self messageTextView];
+      [messageTextView3 setAttributedText:messageTextView];
     }
 
     [(HUImageAndTextCell *)self _resetContentConstraints];
-    v24 = [(HUImageAndTextCell *)self messageTextView];
-    [v24 invalidateIntrinsicContentSize];
+    messageTextView4 = [(HUImageAndTextCell *)self messageTextView];
+    [messageTextView4 invalidateIntrinsicContentSize];
 
     [(HUImageAndTextCell *)self invalidateIntrinsicContentSize];
   }
 
   else
   {
-    v11 = [(HUImageAndTextCell *)self infoImageView];
-    [v11 setImage:0];
+    infoImageView3 = [(HUImageAndTextCell *)self infoImageView];
+    [infoImageView3 setImage:0];
 
-    v12 = [(HUImageAndTextCell *)self messageTextView];
-    [v12 setAttributedText:0];
+    messageTextView5 = [(HUImageAndTextCell *)self messageTextView];
+    [messageTextView5 setAttributedText:0];
 
-    v13 = [(HUImageAndTextCell *)self messageTextView];
-    [v13 setText:0];
+    messageTextView6 = [(HUImageAndTextCell *)self messageTextView];
+    [messageTextView6 setText:0];
 
     [(HUImageAndTextCell *)self _resetContentConstraints];
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(HUImageAndTextCell *)self layoutMargins];
   v11 = v10;
   [(HUImageAndTextCell *)self layoutMargins];
   v13 = width - (v11 + v12);
-  v14 = [(HUImageAndTextCell *)self infoImageView];
-  v15 = [v14 image];
+  infoImageView = [(HUImageAndTextCell *)self infoImageView];
+  image = [infoImageView image];
 
-  if (v15)
+  if (image)
   {
     v16 = MEMORY[0x277D76C80];
     [(HUImageAndTextCell *)self imageViewRecommendedSize];
     if (v18 == *(MEMORY[0x277CBF390] + 16) && v17 == *(MEMORY[0x277CBF390] + 24))
     {
-      v22 = [(HUImageAndTextCell *)self infoImageView];
-      v23 = [v22 image];
-      [v23 size];
+      infoImageView2 = [(HUImageAndTextCell *)self infoImageView];
+      image2 = [infoImageView2 image];
+      [image2 size];
       v21 = v24;
     }
 
@@ -215,10 +215,10 @@
     v13 = v13 - v21 + -24.0;
   }
 
-  v25 = [(HUImageAndTextCell *)self messageTextView];
-  *&v26 = a4;
-  *&v27 = a5;
-  [v25 systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:height verticalFittingPriority:{v26, v27}];
+  messageTextView = [(HUImageAndTextCell *)self messageTextView];
+  *&v26 = priority;
+  *&v27 = fittingPriority;
+  [messageTextView systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:height verticalFittingPriority:{v26, v27}];
   v29 = v28;
   v31 = v30;
 
@@ -234,18 +234,18 @@
   v68[5] = *MEMORY[0x277D85DE8];
   v3 = 0x277CCA000uLL;
   v4 = MEMORY[0x277CCAAD0];
-  v5 = [(HUImageAndTextCell *)self contentConstraints];
-  [v4 deactivateConstraints:v5];
+  contentConstraints = [(HUImageAndTextCell *)self contentConstraints];
+  [v4 deactivateConstraints:contentConstraints];
 
   v6 = objc_opt_new();
-  v7 = [(HUImageAndTextCell *)self infoImageView];
-  v8 = [v7 image];
+  infoImageView = [(HUImageAndTextCell *)self infoImageView];
+  image = [infoImageView image];
 
-  v9 = [(HUImageAndTextCell *)self contentView];
-  v10 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
-  if (v8)
+  contentView = [(HUImageAndTextCell *)self contentView];
+  infoImageViewTrailingMarginLayoutGuide = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
+  if (image)
   {
-    [v9 addLayoutGuide:v10];
+    [contentView addLayoutGuide:infoImageViewTrailingMarginLayoutGuide];
 
     [(HUImageAndTextCell *)self imageViewRecommendedSize];
     v67[0] = MEMORY[0x277D85DD0];
@@ -256,34 +256,34 @@
     v67[6] = v12;
     v67[4] = self;
     v66 = __46__HUImageAndTextCell__resetContentConstraints__block_invoke(v67);
-    v65 = [(HUImageAndTextCell *)self infoImageView];
-    v63 = [v65 topAnchor];
-    v64 = [(HUImageAndTextCell *)self messageTextView];
-    v62 = [v64 topAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    infoImageView2 = [(HUImageAndTextCell *)self infoImageView];
+    topAnchor = [infoImageView2 topAnchor];
+    messageTextView = [(HUImageAndTextCell *)self messageTextView];
+    topAnchor2 = [messageTextView topAnchor];
+    v61 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v68[0] = v61;
-    v60 = [(HUImageAndTextCell *)self infoImageView];
-    v58 = [v60 leadingAnchor];
-    v59 = [(HUImageAndTextCell *)self layoutMarginsGuide];
-    v57 = [v59 leadingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    infoImageView3 = [(HUImageAndTextCell *)self infoImageView];
+    leadingAnchor = [infoImageView3 leadingAnchor];
+    layoutMarginsGuide = [(HUImageAndTextCell *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v68[1] = v56;
-    v55 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
-    v53 = [v55 leadingAnchor];
-    v54 = [(HUImageAndTextCell *)self infoImageView];
-    v52 = [v54 trailingAnchor];
-    v50 = [v53 constraintEqualToAnchor:v52];
+    infoImageViewTrailingMarginLayoutGuide2 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
+    leadingAnchor3 = [infoImageViewTrailingMarginLayoutGuide2 leadingAnchor];
+    infoImageView4 = [(HUImageAndTextCell *)self infoImageView];
+    trailingAnchor = [infoImageView4 trailingAnchor];
+    v50 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
     v68[2] = v50;
-    v13 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
-    v14 = [v13 widthAnchor];
-    v15 = [v14 constraintEqualToConstant:24.0];
+    infoImageViewTrailingMarginLayoutGuide3 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
+    widthAnchor = [infoImageViewTrailingMarginLayoutGuide3 widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:24.0];
     v68[3] = v15;
-    v16 = [(HUImageAndTextCell *)self messageTextView];
-    v17 = [v16 leadingAnchor];
-    v18 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
-    [v18 trailingAnchor];
+    messageTextView2 = [(HUImageAndTextCell *)self messageTextView];
+    leadingAnchor4 = [messageTextView2 leadingAnchor];
+    infoImageViewTrailingMarginLayoutGuide4 = [(HUImageAndTextCell *)self infoImageViewTrailingMarginLayoutGuide];
+    [infoImageViewTrailingMarginLayoutGuide4 trailingAnchor];
     v20 = v19 = v6;
-    v21 = [v17 constraintEqualToAnchor:v20];
+    v21 = [leadingAnchor4 constraintEqualToAnchor:v20];
     v68[4] = v21;
     v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:5];
 
@@ -296,49 +296,49 @@
 
   else
   {
-    [v9 removeLayoutGuide:v10];
+    [contentView removeLayoutGuide:infoImageViewTrailingMarginLayoutGuide];
 
-    v22 = [(HUImageAndTextCell *)self messageTextView];
-    v23 = [v22 leadingAnchor];
-    v24 = [(HUImageAndTextCell *)self layoutMarginsGuide];
-    v25 = [v24 leadingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    messageTextView3 = [(HUImageAndTextCell *)self messageTextView];
+    leadingAnchor5 = [messageTextView3 leadingAnchor];
+    layoutMarginsGuide2 = [(HUImageAndTextCell *)self layoutMarginsGuide];
+    leadingAnchor6 = [layoutMarginsGuide2 leadingAnchor];
+    v26 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
     [v6 addObject:v26];
-    v27 = [(HUImageAndTextCell *)self layoutMarginsGuide];
-    v28 = [v27 trailingAnchor];
-    v29 = [(HUImageAndTextCell *)self messageTextView];
-    v30 = [v29 trailingAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    layoutMarginsGuide3 = [(HUImageAndTextCell *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+    messageTextView4 = [(HUImageAndTextCell *)self messageTextView];
+    trailingAnchor3 = [messageTextView4 trailingAnchor];
+    v31 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     [v6 addObject:v31];
   }
 
-  v32 = [(HUImageAndTextCell *)self contentView];
-  v33 = [v32 topAnchor];
-  v34 = [(HUImageAndTextCell *)self messageTextView];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  contentView2 = [(HUImageAndTextCell *)self contentView];
+  topAnchor3 = [contentView2 topAnchor];
+  messageTextView5 = [(HUImageAndTextCell *)self messageTextView];
+  topAnchor4 = [messageTextView5 topAnchor];
+  v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v6 addObject:v36];
 
-  v37 = [(HUImageAndTextCell *)self contentView];
-  v38 = [v37 bottomAnchor];
-  v39 = [(HUImageAndTextCell *)self messageTextView];
-  v40 = [v39 bottomAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  contentView3 = [(HUImageAndTextCell *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  messageTextView6 = [(HUImageAndTextCell *)self messageTextView];
+  bottomAnchor2 = [messageTextView6 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v6 addObject:v41];
 
-  v42 = [(HUImageAndTextCell *)self contentView];
-  v43 = [v42 layoutMarginsGuide];
-  v44 = [v43 trailingAnchor];
-  v45 = [(HUImageAndTextCell *)self messageTextView];
-  v46 = [v45 trailingAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
+  contentView4 = [(HUImageAndTextCell *)self contentView];
+  layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+  messageTextView7 = [(HUImageAndTextCell *)self messageTextView];
+  trailingAnchor5 = [messageTextView7 trailingAnchor];
+  v47 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   [v6 addObject:v47];
 
   [(HUImageAndTextCell *)self setContentConstraints:v6];
   v48 = *(v3 + 2768);
-  v49 = [(HUImageAndTextCell *)self contentConstraints];
-  [v48 activateConstraints:v49];
+  contentConstraints2 = [(HUImageAndTextCell *)self contentConstraints];
+  [v48 activateConstraints:contentConstraints2];
 }
 
 id __46__HUImageAndTextCell__resetContentConstraints__block_invoke(uint64_t a1)

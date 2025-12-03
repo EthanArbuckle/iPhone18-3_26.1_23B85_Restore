@@ -1,20 +1,20 @@
 @interface AXPointerControllerVoiceOverCursorOptions
-+ (id)localizedNameForVoiceOverCursorOption:(int)a3;
++ (id)localizedNameForVoiceOverCursorOption:(int)option;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXPointerControllerVoiceOverCursorOptions
 
-+ (id)localizedNameForVoiceOverCursorOption:(int)a3
++ (id)localizedNameForVoiceOverCursorOption:(int)option
 {
-  if (a3 <= 2)
+  if (option <= 2)
   {
-    a1 = settingsLocString(*(&off_258C58 + a3), @"Accessibility-hello");
+    self = settingsLocString(*(&off_258C58 + option), @"Accessibility-hello");
   }
 
-  return a1;
+  return self;
 }
 
 - (id)specifiers
@@ -60,41 +60,41 @@ id __55__AXPointerControllerVoiceOverCursorOptions_specifiers__block_invoke(uint
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = [(AXPointerControllerVoiceOverCursorOptions *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(AXPointerControllerVoiceOverCursorOptions *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"CursorOptionKey"];
   if (v8)
   {
-    v9 = v10;
+    v9 = cellCopy;
     [v9 setChecked:{objc_msgSend(v8, "intValue") == _AXSPointerVoiceOverCursorOption()}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v28.receiver = self;
   v28.super_class = AXPointerControllerVoiceOverCursorOptions;
-  [(AXPointerControllerVoiceOverCursorOptions *)&v28 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(AXPointerControllerVoiceOverCursorOptions *)self specifierForIndexPath:v7];
+  [(AXPointerControllerVoiceOverCursorOptions *)&v28 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(AXPointerControllerVoiceOverCursorOptions *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"CursorOptionKey"];
   v10 = v9;
   if (v9)
   {
     v21 = v8;
-    v22 = v7;
-    v11 = [v9 intValue];
+    v22 = pathCopy;
+    intValue = [v9 intValue];
     _AXSPointerSetVoiceOverCursorOption();
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v23 = v6;
-    v12 = [v6 visibleCells];
-    v13 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v23 = viewCopy;
+    visibleCells = [viewCopy visibleCells];
+    v13 = [visibleCells countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -105,27 +105,27 @@ id __55__AXPointerControllerVoiceOverCursorOptions_specifiers__block_invoke(uint
         {
           if (*v25 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(visibleCells);
           }
 
           v17 = *(*(&v24 + 1) + 8 * i);
-          v18 = [v17 specifier];
-          v19 = [v18 propertyForKey:@"CursorOptionKey"];
+          specifier = [v17 specifier];
+          v19 = [specifier propertyForKey:@"CursorOptionKey"];
           v20 = v19;
           if (v19)
           {
-            [v17 setChecked:{objc_msgSend(v19, "intValue") == v11}];
+            [v17 setChecked:{objc_msgSend(v19, "intValue") == intValue}];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v14 = [visibleCells countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v14);
     }
 
-    v7 = v22;
-    v6 = v23;
+    pathCopy = v22;
+    viewCopy = v23;
     v8 = v21;
   }
 }

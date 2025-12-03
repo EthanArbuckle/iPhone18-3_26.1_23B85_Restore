@@ -1,15 +1,15 @@
 @interface _BRModalProgressTouchStealingView
-- (_BRModalProgressTouchStealingView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_BRModalProgressTouchStealingView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _BRModalProgressTouchStealingView
 
-- (_BRModalProgressTouchStealingView)initWithFrame:(CGRect)a3
+- (_BRModalProgressTouchStealingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _BRModalProgressTouchStealingView;
-  v3 = [(_BRModalProgressTouchStealingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_BRModalProgressTouchStealingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIColor colorWithWhite:0.5 alpha:0.00999999978];
@@ -19,21 +19,21 @@
   return v3;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v9.receiver = self;
   v9.super_class = _BRModalProgressTouchStealingView;
-  v5 = [(_BRModalProgressTouchStealingView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(_BRModalProgressTouchStealingView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5)
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v7 = v4;
+  v7 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
 @end

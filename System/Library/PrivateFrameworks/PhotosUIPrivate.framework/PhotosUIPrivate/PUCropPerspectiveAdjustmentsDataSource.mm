@@ -1,26 +1,26 @@
 @interface PUCropPerspectiveAdjustmentsDataSource
-- (BOOL)canModifyAdjustmentAtIndexPath:(id)a3;
+- (BOOL)canModifyAdjustmentAtIndexPath:(id)path;
 - (NSMutableArray)adjustmentInfoSections;
 - (PUCropPerspectiveAdjustmentsDataSource)init;
 - (PUCropPerspectiveAdjustmentsDataSourceDelegate)delegate;
 - (id)_geometryAdjustmentInfos;
-- (id)_newAdjustmentInfoWithIdentifier:(id)a3 adjustmentKey:(id)a4 settingKey:(id)a5 attributeKey:(id)a6;
-- (id)infoForItemAtIndexPath:(id)a3;
+- (id)_newAdjustmentInfoWithIdentifier:(id)identifier adjustmentKey:(id)key settingKey:(id)settingKey attributeKey:(id)attributeKey;
+- (id)infoForItemAtIndexPath:(id)path;
 - (id)renderer;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (void)_createAdjustmentInfos;
-- (void)_enableNonAutoAjustments:(BOOL)a3;
-- (void)_modifyAdjustmentForInfo:(id)a3;
-- (void)_setDefaultsForInfo:(id)a3;
+- (void)_enableNonAutoAjustments:(BOOL)ajustments;
+- (void)_modifyAdjustmentForInfo:(id)info;
+- (void)_setDefaultsForInfo:(id)info;
 - (void)_updateAdjustmentInfos;
 - (void)beginInteractiveChange;
 - (void)endInteractiveChange;
-- (void)modifyValue:(double)a3 atIndexPath:(id)a4;
-- (void)resetInfoAtIndexPath:(id)a3;
-- (void)setAdjustmentEnabled:(BOOL)a3 atIndexPath:(id)a4 completionHandler:(id)a5;
-- (void)setOrientation:(int64_t)a3;
-- (void)setupWithCompositionController:(id)a3 valuesCalculator:(id)a4;
+- (void)modifyValue:(double)value atIndexPath:(id)path;
+- (void)resetInfoAtIndexPath:(id)path;
+- (void)setAdjustmentEnabled:(BOOL)enabled atIndexPath:(id)path completionHandler:(id)handler;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setupWithCompositionController:(id)controller valuesCalculator:(id)calculator;
 @end
 
 @implementation PUCropPerspectiveAdjustmentsDataSource
@@ -32,24 +32,24 @@
   return WeakRetained;
 }
 
-- (void)resetInfoAtIndexPath:(id)a3
+- (void)resetInfoAtIndexPath:(id)path
 {
-  v4 = [(PUCropPerspectiveAdjustmentsDataSource *)self infoForItemAtIndexPath:a3];
+  v4 = [(PUCropPerspectiveAdjustmentsDataSource *)self infoForItemAtIndexPath:path];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 settingKey];
+    settingKey = [v4 settingKey];
 
-    if (v6)
+    if (settingKey)
     {
-      v7 = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
-      v8 = [v5 adjustmentKey];
+      compositionController = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
+      adjustmentKey = [v5 adjustmentKey];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __63__PUCropPerspectiveAdjustmentsDataSource_resetInfoAtIndexPath___block_invoke;
       v9[3] = &unk_1E7B80728;
       v10 = v5;
-      [v7 modifyAdjustmentWithKey:v8 modificationBlock:v9];
+      [compositionController modifyAdjustmentWithKey:adjustmentKey modificationBlock:v9];
     }
   }
 }
@@ -65,46 +65,46 @@ void __63__PUCropPerspectiveAdjustmentsDataSource_resetInfoAtIndexPath___block_i
   [v3 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)modifyValue:(double)a3 atIndexPath:(id)a4
+- (void)modifyValue:(double)value atIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   v6 = [(PUCropPerspectiveAdjustmentsDataSource *)self infoForItemAtIndexPath:?];
   if (([v6 enabled] & 1) == 0)
   {
-    [(PUCropPerspectiveAdjustmentsDataSource *)self setAdjustmentEnabled:1 atIndexPath:v8 completionHandler:0];
+    [(PUCropPerspectiveAdjustmentsDataSource *)self setAdjustmentEnabled:1 atIndexPath:pathCopy completionHandler:0];
   }
 
-  v7 = [v6 settingKey];
+  settingKey = [v6 settingKey];
 
-  if (v7)
+  if (settingKey)
   {
-    [v6 setCurrentLevel:a3];
+    [v6 setCurrentLevel:value];
     [(PUCropPerspectiveAdjustmentsDataSource *)self _modifyAdjustmentForInfo:v6];
   }
 }
 
-- (void)_modifyAdjustmentForInfo:(id)a3
+- (void)_modifyAdjustmentForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
-  [v5 willModifyAdjustment];
+  infoCopy = info;
+  delegate = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
+  [delegate willModifyAdjustment];
 
-  v6 = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
-  v7 = [v4 adjustmentKey];
+  compositionController = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
+  adjustmentKey = [infoCopy adjustmentKey];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __67__PUCropPerspectiveAdjustmentsDataSource__modifyAdjustmentForInfo___block_invoke;
   v14 = &unk_1E7B80700;
-  v15 = v4;
-  v16 = self;
-  v8 = v4;
-  [v6 modifyAdjustmentWithKey:v7 modificationBlock:&v11];
+  v15 = infoCopy;
+  selfCopy = self;
+  v8 = infoCopy;
+  [compositionController modifyAdjustmentWithKey:adjustmentKey modificationBlock:&v11];
 
-  v9 = [v8 localizedActionName];
-  v10 = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
-  [v10 didModifyAdjustmentWithLocalizedName:v9];
+  localizedActionName = [v8 localizedActionName];
+  delegate2 = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
+  [delegate2 didModifyAdjustmentWithLocalizedName:localizedActionName];
 
-  [(PUCropPerspectiveAdjustmentsDataSource *)self setLastAdjustmentLocalizedName:v9];
+  [(PUCropPerspectiveAdjustmentsDataSource *)self setLastAdjustmentLocalizedName:localizedActionName];
 }
 
 void __67__PUCropPerspectiveAdjustmentsDataSource__modifyAdjustmentForInfo___block_invoke(uint64_t a1, void *a2)
@@ -125,14 +125,14 @@ void __67__PUCropPerspectiveAdjustmentsDataSource__modifyAdjustmentForInfo___blo
   [v12 adjustmentsDataChanged:*(a1 + 40)];
 }
 
-- (void)setAdjustmentEnabled:(BOOL)a3 atIndexPath:(id)a4 completionHandler:(id)a5
+- (void)setAdjustmentEnabled:(BOOL)enabled atIndexPath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PUCropPerspectiveAdjustmentsDataSource *)self infoForItemAtIndexPath:a4];
-  if ([v9 enabled] == v6)
+  enabledCopy = enabled;
+  handlerCopy = handler;
+  v9 = [(PUCropPerspectiveAdjustmentsDataSource *)self infoForItemAtIndexPath:path];
+  if ([v9 enabled] == enabledCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       v10 = v13;
       v13[0] = MEMORY[0x1E69E9820];
@@ -141,14 +141,14 @@ void __67__PUCropPerspectiveAdjustmentsDataSource__modifyAdjustmentForInfo___blo
 LABEL_9:
       v10[2] = v11;
       v10[3] = &unk_1E7B80C88;
-      v10[4] = v8;
+      v10[4] = handlerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v10);
     }
   }
 
   else
   {
-    [v9 setEnabled:v6];
+    [v9 setEnabled:enabledCopy];
     if ([v9 enabled])
     {
       [v9 lastAdjustedLevel];
@@ -161,7 +161,7 @@ LABEL_9:
 
     [v9 setCurrentLevel:?];
     [(PUCropPerspectiveAdjustmentsDataSource *)self _modifyAdjustmentForInfo:v9];
-    if (v8)
+    if (handlerCopy)
     {
       v10 = v12;
       v12[0] = MEMORY[0x1E69E9820];
@@ -174,33 +174,33 @@ LABEL_9:
 
 - (void)endInteractiveChange
 {
-  v4 = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
-  v3 = [(PUCropPerspectiveAdjustmentsDataSource *)self lastAdjustmentLocalizedName];
-  [v4 didModifyAdjustmentWithLocalizedName:v3];
+  delegate = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
+  lastAdjustmentLocalizedName = [(PUCropPerspectiveAdjustmentsDataSource *)self lastAdjustmentLocalizedName];
+  [delegate didModifyAdjustmentWithLocalizedName:lastAdjustmentLocalizedName];
 }
 
 - (void)beginInteractiveChange
 {
-  v2 = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
-  [v2 willModifyAdjustment];
+  delegate = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
+  [delegate willModifyAdjustment];
 }
 
-- (BOOL)canModifyAdjustmentAtIndexPath:(id)a3
+- (BOOL)canModifyAdjustmentAtIndexPath:(id)path
 {
-  v3 = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
-  v4 = v3 != 0;
+  compositionController = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
+  v4 = compositionController != 0;
 
   return v4;
 }
 
-- (id)infoForItemAtIndexPath:(id)a3
+- (id)infoForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 section], -[PUCropPerspectiveAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 < v8) && (v9 = objc_msgSend(v5, "item"), -[PUCropPerspectiveAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectAtIndexedSubscript:", objc_msgSend(v5, "section")), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v9 < v12))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && (v6 = [pathCopy section], -[PUCropPerspectiveAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 < v8) && (v9 = objc_msgSend(v5, "item"), -[PUCropPerspectiveAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectAtIndexedSubscript:", objc_msgSend(v5, "section")), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v9 < v12))
   {
-    v13 = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+    adjustmentInfoSections = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
+    v14 = [adjustmentInfoSections objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
     v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
   }
 
@@ -212,18 +212,18 @@ LABEL_9:
   return v15;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
-  v6 = [v5 count];
+  adjustmentInfoSections = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
+  v6 = [adjustmentInfoSections count];
 
-  if (a3 < 0 || v6 <= a3)
+  if (section < 0 || v6 <= section)
   {
     return 0;
   }
 
-  v7 = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  adjustmentInfoSections2 = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
+  v8 = [adjustmentInfoSections2 objectAtIndexedSubscript:section];
   v9 = [v8 count];
 
   return v9;
@@ -231,8 +231,8 @@ LABEL_9:
 
 - (int64_t)numberOfSections
 {
-  v2 = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
-  v3 = [v2 count];
+  adjustmentInfoSections = [(PUCropPerspectiveAdjustmentsDataSource *)self adjustmentInfoSections];
+  v3 = [adjustmentInfoSections count];
 
   return v3;
 }
@@ -298,23 +298,23 @@ LABEL_9:
               }
 
               v10 = *(*(&v31 + 1) + 8 * i);
-              v11 = [v10 attributeKey];
+              attributeKey = [v10 attributeKey];
 
-              if (v11)
+              if (attributeKey)
               {
                 v12 = MEMORY[0x1E69BE360];
-                v13 = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
-                v14 = [v10 adjustmentKey];
-                v15 = [v10 attributeKey];
-                v16 = [v12 valueForCompositionController:v13 adjustmentKey:v14 settingKey:v15];
+                compositionController = [(PUCropPerspectiveAdjustmentsDataSource *)self compositionController];
+                adjustmentKey = [v10 adjustmentKey];
+                attributeKey2 = [v10 attributeKey];
+                v16 = [v12 valueForCompositionController:compositionController adjustmentKey:adjustmentKey settingKey:attributeKey2];
 
                 if (v16)
                 {
                   [v16 floatValue];
                   v18 = v17;
                   valueScaleForKey = self->_valueScaleForKey;
-                  v20 = [v10 settingKey];
-                  v21 = [(NSMutableDictionary *)valueScaleForKey objectForKeyedSubscript:v20];
+                  settingKey = [v10 settingKey];
+                  v21 = [(NSMutableDictionary *)valueScaleForKey objectForKeyedSubscript:settingKey];
                   [v10 setCurrentLevel:{(v18 * objc_msgSend(v21, "intValue"))}];
 
                   if ([v10 enabled])
@@ -360,9 +360,9 @@ LABEL_9:
   }
 }
 
-- (void)_enableNonAutoAjustments:(BOOL)a3
+- (void)_enableNonAutoAjustments:(BOOL)ajustments
 {
-  v3 = a3;
+  ajustmentsCopy = ajustments;
   v28 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
@@ -405,11 +405,11 @@ LABEL_9:
               }
 
               v14 = *(*(&v18 + 1) + 8 * j);
-              v15 = [v14 identifier];
+              identifier = [v14 identifier];
 
-              if (v15 != v6)
+              if (identifier != v6)
               {
-                [v14 setEnabled:v3];
+                [v14 setEnabled:ajustmentsCopy];
               }
             }
 
@@ -432,15 +432,15 @@ LABEL_9:
   v35 = *MEMORY[0x1E69E9840];
   v3 = PULocalizedString(@"PHOTOEDIT_CROP_ADJUSTMENTS");
   v4 = *MEMORY[0x1E69BDFC0];
-  v5 = [MEMORY[0x1E69BDE10] angleKey];
-  v6 = [MEMORY[0x1E69BDE10] angleKey];
-  v7 = [(PUCropPerspectiveAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v5 attributeKey:v6];
+  angleKey = [MEMORY[0x1E69BDE10] angleKey];
+  angleKey2 = [MEMORY[0x1E69BDE10] angleKey];
+  v7 = [(PUCropPerspectiveAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:angleKey attributeKey:angleKey2];
   straightenAngleInfo = self->_straightenAngleInfo;
   self->_straightenAngleInfo = v7;
 
   valueScaleForKey = self->_valueScaleForKey;
-  v10 = [(PUAdjustmentInfo *)self->_straightenAngleInfo settingKey];
-  [(NSMutableDictionary *)valueScaleForKey setObject:&unk_1F2B7EF48 forKeyedSubscript:v10];
+  settingKey = [(PUAdjustmentInfo *)self->_straightenAngleInfo settingKey];
+  [(NSMutableDictionary *)valueScaleForKey setObject:&unk_1F2B7EF48 forKeyedSubscript:settingKey];
 
   [(PUAdjustmentInfo *)self->_straightenAngleInfo setIconName:@"PUPerspectiveToolRoll"];
   v11 = PULocalizedString(@"PHOTOEDIT_CROP_ADJUSTMENTS_STRAIGHTEN");
@@ -451,12 +451,12 @@ LABEL_9:
 
   [(PUAdjustmentInfo *)self->_straightenAngleInfo setLocalizedSectionName:v3];
   v13 = self->_valueScaleForKey;
-  v14 = [(PUAdjustmentInfo *)self->_straightenAngleInfo settingKey];
-  [(NSMutableDictionary *)v13 setObject:&unk_1F2B7EF48 forKeyedSubscript:v14];
+  settingKey2 = [(PUAdjustmentInfo *)self->_straightenAngleInfo settingKey];
+  [(NSMutableDictionary *)v13 setObject:&unk_1F2B7EF48 forKeyedSubscript:settingKey2];
 
-  v15 = [MEMORY[0x1E69BDE10] pitchKey];
-  v16 = [MEMORY[0x1E69BDE10] pitchKey];
-  v17 = [(PUCropPerspectiveAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v15 attributeKey:v16];
+  pitchKey = [MEMORY[0x1E69BDE10] pitchKey];
+  pitchKey2 = [MEMORY[0x1E69BDE10] pitchKey];
+  v17 = [(PUCropPerspectiveAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:pitchKey attributeKey:pitchKey2];
   pitchAngleInfo = self->_pitchAngleInfo;
   self->_pitchAngleInfo = v17;
 
@@ -469,12 +469,12 @@ LABEL_9:
 
   [(PUAdjustmentInfo *)self->_pitchAngleInfo setLocalizedSectionName:v3];
   v21 = self->_valueScaleForKey;
-  v22 = [(PUAdjustmentInfo *)self->_pitchAngleInfo settingKey];
-  [(NSMutableDictionary *)v21 setObject:&unk_1F2B7EF48 forKeyedSubscript:v22];
+  settingKey3 = [(PUAdjustmentInfo *)self->_pitchAngleInfo settingKey];
+  [(NSMutableDictionary *)v21 setObject:&unk_1F2B7EF48 forKeyedSubscript:settingKey3];
 
-  v23 = [MEMORY[0x1E69BDE10] yawKey];
-  v24 = [MEMORY[0x1E69BDE10] yawKey];
-  v25 = [(PUCropPerspectiveAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v23 attributeKey:v24];
+  yawKey = [MEMORY[0x1E69BDE10] yawKey];
+  yawKey2 = [MEMORY[0x1E69BDE10] yawKey];
+  v25 = [(PUCropPerspectiveAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:yawKey attributeKey:yawKey2];
   yawAngleInfo = self->_yawAngleInfo;
   self->_yawAngleInfo = v25;
 
@@ -487,8 +487,8 @@ LABEL_9:
 
   [(PUAdjustmentInfo *)self->_yawAngleInfo setLocalizedSectionName:v3];
   v29 = self->_valueScaleForKey;
-  v30 = [(PUAdjustmentInfo *)self->_yawAngleInfo settingKey];
-  [(NSMutableDictionary *)v29 setObject:&unk_1F2B7EF48 forKeyedSubscript:v30];
+  settingKey4 = [(PUAdjustmentInfo *)self->_yawAngleInfo settingKey];
+  [(NSMutableDictionary *)v29 setObject:&unk_1F2B7EF48 forKeyedSubscript:settingKey4];
 
   v33 = *&self->_straightenAngleInfo;
   v34 = self->_yawAngleInfo;
@@ -500,29 +500,29 @@ LABEL_9:
 - (void)_createAdjustmentInfos
 {
   adjustmentInfoSections = self->_adjustmentInfoSections;
-  v3 = [(PUCropPerspectiveAdjustmentsDataSource *)self _geometryAdjustmentInfos];
-  [(NSMutableArray *)adjustmentInfoSections addObject:v3];
+  _geometryAdjustmentInfos = [(PUCropPerspectiveAdjustmentsDataSource *)self _geometryAdjustmentInfos];
+  [(NSMutableArray *)adjustmentInfoSections addObject:_geometryAdjustmentInfos];
 }
 
-- (id)_newAdjustmentInfoWithIdentifier:(id)a3 adjustmentKey:(id)a4 settingKey:(id)a5 attributeKey:(id)a6
+- (id)_newAdjustmentInfoWithIdentifier:(id)identifier adjustmentKey:(id)key settingKey:(id)settingKey attributeKey:(id)attributeKey
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  attributeKeyCopy = attributeKey;
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  identifierCopy = identifier;
   v14 = objc_alloc_init(PUAdjustmentInfo);
-  [(PUAdjustmentInfo *)v14 setIdentifier:v13];
+  [(PUAdjustmentInfo *)v14 setIdentifier:identifierCopy];
 
-  [(PUAdjustmentInfo *)v14 setAdjustmentKey:v12];
-  [(PUAdjustmentInfo *)v14 setSettingKey:v11];
-  if (v10)
+  [(PUAdjustmentInfo *)v14 setAdjustmentKey:keyCopy];
+  [(PUAdjustmentInfo *)v14 setSettingKey:settingKeyCopy];
+  if (attributeKeyCopy)
   {
-    v15 = v10;
+    v15 = attributeKeyCopy;
   }
 
   else
   {
-    v15 = v11;
+    v15 = settingKeyCopy;
   }
 
   [(PUAdjustmentInfo *)v14 setAttributeKey:v15];
@@ -531,86 +531,86 @@ LABEL_9:
   return v14;
 }
 
-- (void)_setDefaultsForInfo:(id)a3
+- (void)_setDefaultsForInfo:(id)info
 {
-  v21 = a3;
-  v3 = [v21 attributeKey];
-  if (v3)
+  infoCopy = info;
+  attributeKey = [infoCopy attributeKey];
+  if (attributeKey)
   {
-    v4 = v3;
-    v5 = [v21 adjustmentKey];
+    v4 = attributeKey;
+    adjustmentKey = [infoCopy adjustmentKey];
 
-    if (v5)
+    if (adjustmentKey)
     {
       v6 = MEMORY[0x1E69BE360];
-      v7 = [v21 adjustmentKey];
-      v8 = [v21 attributeKey];
-      v9 = [v6 valueForType:2 adjustmentKey:v7 settingKey:v8];
+      adjustmentKey2 = [infoCopy adjustmentKey];
+      attributeKey2 = [infoCopy attributeKey];
+      v9 = [v6 valueForType:2 adjustmentKey:adjustmentKey2 settingKey:attributeKey2];
       [v9 floatValue];
-      [v21 setMinimumLevel:v10];
+      [infoCopy setMinimumLevel:v10];
 
       v11 = MEMORY[0x1E69BE360];
-      v12 = [v21 adjustmentKey];
-      v13 = [v21 attributeKey];
-      v14 = [v11 valueForType:3 adjustmentKey:v12 settingKey:v13];
+      adjustmentKey3 = [infoCopy adjustmentKey];
+      attributeKey3 = [infoCopy attributeKey];
+      v14 = [v11 valueForType:3 adjustmentKey:adjustmentKey3 settingKey:attributeKey3];
       [v14 floatValue];
-      [v21 setMaximumLevel:v15];
+      [infoCopy setMaximumLevel:v15];
 
       v16 = MEMORY[0x1E69BE360];
-      v17 = [v21 adjustmentKey];
-      v18 = [v21 attributeKey];
-      v19 = [v16 valueForType:1 adjustmentKey:v17 settingKey:v18];
+      adjustmentKey4 = [infoCopy adjustmentKey];
+      attributeKey4 = [infoCopy attributeKey];
+      v19 = [v16 valueForType:1 adjustmentKey:adjustmentKey4 settingKey:attributeKey4];
       [v19 floatValue];
-      [v21 setDefaultLevel:v20];
+      [infoCopy setDefaultLevel:v20];
 
-      [v21 defaultLevel];
-      [v21 setCurrentLevel:?];
+      [infoCopy defaultLevel];
+      [infoCopy setCurrentLevel:?];
     }
   }
 }
 
 - (id)renderer
 {
-  v3 = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
-  v4 = [v3 adjustmentsRenderer:self];
+  delegate = [(PUCropPerspectiveAdjustmentsDataSource *)self delegate];
+  v4 = [delegate adjustmentsRenderer:self];
 
   return v4;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation == a3)
+  if (self->_orientation == orientation)
   {
     return;
   }
 
   v5 = PLOrientationBetweenOrientations();
-  self->_orientation = a3;
+  self->_orientation = orientation;
   [(PUAdjustmentInfo *)self->_straightenAngleInfo currentLevel];
   v7 = v6;
   [(PUAdjustmentInfo *)self->_straightenAngleInfo lastAdjustedLevel];
   v9 = v8;
-  v47 = [(PUAdjustmentInfo *)self->_straightenAngleInfo settingKey];
+  settingKey = [(PUAdjustmentInfo *)self->_straightenAngleInfo settingKey];
   v10 = [(NSMutableDictionary *)self->_valueScaleForKey objectForKeyedSubscript:?];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
   [(PUAdjustmentInfo *)self->_yawAngleInfo currentLevel];
   v13 = v12;
   [(PUAdjustmentInfo *)self->_yawAngleInfo lastAdjustedLevel];
   v15 = v14;
-  v16 = [(PUAdjustmentInfo *)self->_yawAngleInfo settingKey];
-  v17 = [(PUAdjustmentInfo *)self->_yawAngleInfo attributeKey];
-  v18 = [(NSMutableDictionary *)self->_valueScaleForKey objectForKeyedSubscript:v16];
-  v19 = [v18 intValue];
+  settingKey2 = [(PUAdjustmentInfo *)self->_yawAngleInfo settingKey];
+  attributeKey = [(PUAdjustmentInfo *)self->_yawAngleInfo attributeKey];
+  v18 = [(NSMutableDictionary *)self->_valueScaleForKey objectForKeyedSubscript:settingKey2];
+  intValue2 = [v18 intValue];
 
   [(PUAdjustmentInfo *)self->_pitchAngleInfo currentLevel];
   v21 = v20;
   [(PUAdjustmentInfo *)self->_pitchAngleInfo lastAdjustedLevel];
   v23 = v22;
-  v24 = [(PUAdjustmentInfo *)self->_pitchAngleInfo settingKey];
-  v25 = [(PUAdjustmentInfo *)self->_pitchAngleInfo attributeKey];
-  v26 = [(NSMutableDictionary *)self->_valueScaleForKey objectForKeyedSubscript:v24];
-  v27 = [v26 intValue];
+  settingKey3 = [(PUAdjustmentInfo *)self->_pitchAngleInfo settingKey];
+  attributeKey2 = [(PUAdjustmentInfo *)self->_pitchAngleInfo attributeKey];
+  v26 = [(NSMutableDictionary *)self->_valueScaleForKey objectForKeyedSubscript:settingKey3];
+  intValue3 = [v26 intValue];
 
   if (v5 <= 4)
   {
@@ -621,38 +621,38 @@ LABEL_9:
         [(PUAdjustmentInfo *)self->_yawAngleInfo setLastAdjustedLevel:-v15];
         [(PUAdjustmentInfo *)self->_straightenAngleInfo setCurrentLevel:-v7];
         [(PUAdjustmentInfo *)self->_straightenAngleInfo setLastAdjustedLevel:-v9];
-        v40 = [MEMORY[0x1E696AD98] numberWithInt:-v19];
-        [(NSMutableDictionary *)self->_valueScaleForKey setObject:v40 forKeyedSubscript:v16];
+        v40 = [MEMORY[0x1E696AD98] numberWithInt:-intValue2];
+        [(NSMutableDictionary *)self->_valueScaleForKey setObject:v40 forKeyedSubscript:settingKey2];
 
         v41 = MEMORY[0x1E696AD98];
 LABEL_19:
-        v36 = [v41 numberWithInt:-v11];
+        v36 = [v41 numberWithInt:-intValue];
         valueScaleForKey = self->_valueScaleForKey;
         v38 = v36;
-        v39 = v47;
+        v39 = settingKey;
         goto LABEL_20;
       case 3:
         [(PUAdjustmentInfo *)self->_yawAngleInfo setCurrentLevel:-v13];
         [(PUAdjustmentInfo *)self->_yawAngleInfo setLastAdjustedLevel:-v15];
         [(PUAdjustmentInfo *)self->_pitchAngleInfo setCurrentLevel:-v21];
         [(PUAdjustmentInfo *)self->_pitchAngleInfo setLastAdjustedLevel:-v23];
-        v46 = [MEMORY[0x1E696AD98] numberWithInt:-v19];
-        [(NSMutableDictionary *)self->_valueScaleForKey setObject:v46 forKeyedSubscript:v16];
+        v46 = [MEMORY[0x1E696AD98] numberWithInt:-intValue2];
+        [(NSMutableDictionary *)self->_valueScaleForKey setObject:v46 forKeyedSubscript:settingKey2];
 
-        v36 = [MEMORY[0x1E696AD98] numberWithInt:-v27];
+        v36 = [MEMORY[0x1E696AD98] numberWithInt:-intValue3];
         valueScaleForKey = self->_valueScaleForKey;
         v38 = v36;
-        v39 = v24;
+        v39 = settingKey3;
         goto LABEL_20;
       case 4:
         [(PUAdjustmentInfo *)self->_pitchAngleInfo setCurrentLevel:-v21];
         [(PUAdjustmentInfo *)self->_pitchAngleInfo setLastAdjustedLevel:-v23];
         [(PUAdjustmentInfo *)self->_straightenAngleInfo setCurrentLevel:-v7];
         [(PUAdjustmentInfo *)self->_straightenAngleInfo setLastAdjustedLevel:-v9];
-        v31 = [MEMORY[0x1E696AD98] numberWithInt:-v27];
+        v31 = [MEMORY[0x1E696AD98] numberWithInt:-intValue3];
         v32 = self->_valueScaleForKey;
         v33 = v31;
-        v34 = v24;
+        v34 = settingKey3;
 LABEL_18:
         [(NSMutableDictionary *)v32 setObject:v33 forKeyedSubscript:v34];
 
@@ -669,22 +669,22 @@ LABEL_18:
       {
         [(PUAdjustmentInfo *)self->_yawAngleInfo setCurrentLevel:-v21];
         [(PUAdjustmentInfo *)self->_yawAngleInfo setLastAdjustedLevel:-v23];
-        [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:v24];
-        [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:v25];
+        [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:settingKey3];
+        [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:attributeKey2];
         [(PUAdjustmentInfo *)self->_pitchAngleInfo setCurrentLevel:v13];
         [(PUAdjustmentInfo *)self->_pitchAngleInfo setLastAdjustedLevel:v15];
-        [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:v16];
-        [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:v17];
-        v28 = [MEMORY[0x1E696AD98] numberWithInt:-v27];
-        [(NSMutableDictionary *)self->_valueScaleForKey setObject:v28 forKeyedSubscript:v24];
+        [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:settingKey2];
+        [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:attributeKey];
+        v28 = [MEMORY[0x1E696AD98] numberWithInt:-intValue3];
+        [(NSMutableDictionary *)self->_valueScaleForKey setObject:v28 forKeyedSubscript:settingKey3];
 
         v29 = MEMORY[0x1E696AD98];
-        v30 = v19;
+        v30 = intValue2;
 LABEL_13:
         v36 = [v29 numberWithInt:v30];
         valueScaleForKey = self->_valueScaleForKey;
         v38 = v36;
-        v39 = v16;
+        v39 = settingKey2;
 LABEL_20:
         [(NSMutableDictionary *)valueScaleForKey setObject:v38 forKeyedSubscript:v39];
 
@@ -693,19 +693,19 @@ LABEL_20:
 
       [(PUAdjustmentInfo *)self->_yawAngleInfo setCurrentLevel:v21];
       [(PUAdjustmentInfo *)self->_yawAngleInfo setLastAdjustedLevel:v23];
-      [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:v24];
-      [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:v25];
+      [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:settingKey3];
+      [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:attributeKey2];
       [(PUAdjustmentInfo *)self->_pitchAngleInfo setCurrentLevel:v13];
       [(PUAdjustmentInfo *)self->_pitchAngleInfo setLastAdjustedLevel:v15];
-      [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:v16];
-      [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:v17];
+      [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:settingKey2];
+      [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:attributeKey];
       [(PUAdjustmentInfo *)self->_straightenAngleInfo setCurrentLevel:-v7];
       [(PUAdjustmentInfo *)self->_straightenAngleInfo setLastAdjustedLevel:-v9];
-      v42 = [MEMORY[0x1E696AD98] numberWithInt:v27];
-      [(NSMutableDictionary *)self->_valueScaleForKey setObject:v42 forKeyedSubscript:v24];
+      v42 = [MEMORY[0x1E696AD98] numberWithInt:intValue3];
+      [(NSMutableDictionary *)self->_valueScaleForKey setObject:v42 forKeyedSubscript:settingKey3];
 
       v43 = MEMORY[0x1E696AD98];
-      v44 = v19;
+      v44 = intValue2;
       goto LABEL_17;
     }
 
@@ -713,24 +713,24 @@ LABEL_20:
     {
       [(PUAdjustmentInfo *)self->_yawAngleInfo setCurrentLevel:-v21];
       [(PUAdjustmentInfo *)self->_yawAngleInfo setLastAdjustedLevel:-v23];
-      [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:v24];
-      [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:v25];
+      [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:settingKey3];
+      [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:attributeKey2];
       [(PUAdjustmentInfo *)self->_pitchAngleInfo setCurrentLevel:-v13];
       [(PUAdjustmentInfo *)self->_pitchAngleInfo setLastAdjustedLevel:-v15];
-      [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:v16];
-      [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:v17];
+      [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:settingKey2];
+      [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:attributeKey];
       [(PUAdjustmentInfo *)self->_straightenAngleInfo setCurrentLevel:-v7];
       [(PUAdjustmentInfo *)self->_straightenAngleInfo setLastAdjustedLevel:-v9];
-      v45 = [MEMORY[0x1E696AD98] numberWithInt:-v27];
-      [(NSMutableDictionary *)self->_valueScaleForKey setObject:v45 forKeyedSubscript:v24];
+      v45 = [MEMORY[0x1E696AD98] numberWithInt:-intValue3];
+      [(NSMutableDictionary *)self->_valueScaleForKey setObject:v45 forKeyedSubscript:settingKey3];
 
       v43 = MEMORY[0x1E696AD98];
-      v44 = -v19;
+      v44 = -intValue2;
 LABEL_17:
       v31 = [v43 numberWithInt:v44];
       v32 = self->_valueScaleForKey;
       v33 = v31;
-      v34 = v16;
+      v34 = settingKey2;
       goto LABEL_18;
     }
 
@@ -738,17 +738,17 @@ LABEL_17:
     {
       [(PUAdjustmentInfo *)self->_yawAngleInfo setCurrentLevel:v21];
       [(PUAdjustmentInfo *)self->_yawAngleInfo setLastAdjustedLevel:v23];
-      [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:v24];
-      [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:v25];
+      [(PUAdjustmentInfo *)self->_yawAngleInfo setSettingKey:settingKey3];
+      [(PUAdjustmentInfo *)self->_yawAngleInfo setAttributeKey:attributeKey2];
       [(PUAdjustmentInfo *)self->_pitchAngleInfo setCurrentLevel:-v13];
       [(PUAdjustmentInfo *)self->_pitchAngleInfo setLastAdjustedLevel:-v15];
-      [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:v16];
-      [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:v17];
-      v35 = [MEMORY[0x1E696AD98] numberWithInt:v27];
-      [(NSMutableDictionary *)self->_valueScaleForKey setObject:v35 forKeyedSubscript:v24];
+      [(PUAdjustmentInfo *)self->_pitchAngleInfo setSettingKey:settingKey2];
+      [(PUAdjustmentInfo *)self->_pitchAngleInfo setAttributeKey:attributeKey];
+      v35 = [MEMORY[0x1E696AD98] numberWithInt:intValue3];
+      [(NSMutableDictionary *)self->_valueScaleForKey setObject:v35 forKeyedSubscript:settingKey3];
 
       v29 = MEMORY[0x1E696AD98];
-      v30 = -v19;
+      v30 = -intValue2;
       goto LABEL_13;
     }
   }
@@ -756,14 +756,14 @@ LABEL_17:
 LABEL_21:
 }
 
-- (void)setupWithCompositionController:(id)a3 valuesCalculator:(id)a4
+- (void)setupWithCompositionController:(id)controller valuesCalculator:(id)calculator
 {
-  v9 = a3;
-  v7 = a4;
-  if (self->_compositionController == v9)
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  if (self->_compositionController == controllerCopy)
   {
     p_valuesCalculator = &self->_valuesCalculator;
-    if (self->_valuesCalculator == v7)
+    if (self->_valuesCalculator == calculatorCopy)
     {
       goto LABEL_7;
     }
@@ -771,15 +771,15 @@ LABEL_21:
 
   else
   {
-    objc_storeStrong(&self->_compositionController, a3);
+    objc_storeStrong(&self->_compositionController, controller);
     p_valuesCalculator = &self->_valuesCalculator;
-    if (self->_valuesCalculator == v7)
+    if (self->_valuesCalculator == calculatorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  objc_storeStrong(p_valuesCalculator, a4);
+  objc_storeStrong(p_valuesCalculator, calculator);
 LABEL_6:
   [(PUCropPerspectiveAdjustmentsDataSource *)self _enableNonAutoAjustments:1];
   [(PUCropPerspectiveAdjustmentsDataSource *)self _updateAdjustmentInfos];

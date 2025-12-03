@@ -1,10 +1,10 @@
 @interface NviSignalData
 + (id)headerString;
-- (NviSignalData)initWithCoder:(id)a3;
-- (NviSignalData)initWithSignalType:(unint64_t)a3 timestamp:(unint64_t)a4;
+- (NviSignalData)initWithCoder:(id)coder;
+- (NviSignalData)initWithSignalType:(unint64_t)type timestamp:(unint64_t)timestamp;
 - (id)description;
 - (id)stringForLogging;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NviSignalData
@@ -33,38 +33,38 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sigType = self->_sigType;
-  v5 = a3;
-  [v5 encodeInteger:sigType forKey:@"type"];
-  [v5 encodeInt64:self->_sigGenTs forKey:@"ts"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:sigType forKey:@"type"];
+  [coderCopy encodeInt64:self->_sigGenTs forKey:@"ts"];
 }
 
-- (NviSignalData)initWithCoder:(id)a3
+- (NviSignalData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NviSignalData;
   v5 = [(NviSignalData *)&v7 init];
   if (v5)
   {
-    v5->_sigType = [v4 decodeIntegerForKey:@"type"];
-    v5->_sigGenTs = [v4 decodeInt64ForKey:@"ts"];
+    v5->_sigType = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_sigGenTs = [coderCopy decodeInt64ForKey:@"ts"];
   }
 
   return v5;
 }
 
-- (NviSignalData)initWithSignalType:(unint64_t)a3 timestamp:(unint64_t)a4
+- (NviSignalData)initWithSignalType:(unint64_t)type timestamp:(unint64_t)timestamp
 {
   v7.receiver = self;
   v7.super_class = NviSignalData;
   result = [(NviSignalData *)&v7 init];
   if (result)
   {
-    result->_sigType = a3;
-    result->_sigGenTs = a4;
+    result->_sigType = type;
+    result->_sigGenTs = timestamp;
   }
 
   return result;

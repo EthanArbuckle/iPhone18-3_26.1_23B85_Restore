@@ -1,38 +1,38 @@
 @interface BMSafariBrowsingAssistantServerRequestContext
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariBrowsingAssistantServerRequestContext)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSafariBrowsingAssistantServerRequestContext)initWithWebpageViewIdentifier:(id)a3 requestIdentifier:(id)a4 started:(id)a5 ended:(id)a6 failed:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariBrowsingAssistantServerRequestContext)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSafariBrowsingAssistantServerRequestContext)initWithWebpageViewIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier started:(id)started ended:(id)ended failed:(id)failed;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariBrowsingAssistantServerRequestContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
-    v7 = [v5 webpageViewIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    webpageViewIdentifier = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
+    webpageViewIdentifier2 = [v5 webpageViewIdentifier];
+    v8 = webpageViewIdentifier2;
+    if (webpageViewIdentifier == webpageViewIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
-      v10 = [v5 webpageViewIdentifier];
-      v11 = [v9 isEqual:v10];
+      webpageViewIdentifier3 = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
+      webpageViewIdentifier4 = [v5 webpageViewIdentifier];
+      v11 = [webpageViewIdentifier3 isEqual:webpageViewIdentifier4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
-    v14 = [v5 requestIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    requestIdentifier = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
+    requestIdentifier2 = [v5 requestIdentifier];
+    v15 = requestIdentifier2;
+    if (requestIdentifier == requestIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
-      v17 = [v5 requestIdentifier];
-      v18 = [v16 isEqual:v17];
+      requestIdentifier3 = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
+      requestIdentifier4 = [v5 requestIdentifier];
+      v18 = [requestIdentifier3 isEqual:requestIdentifier4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
-    v20 = [v5 started];
-    v21 = v20;
-    if (v19 == v20)
+    started = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
+    started2 = [v5 started];
+    v21 = started2;
+    if (started == started2)
     {
     }
 
     else
     {
-      v22 = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
-      v23 = [v5 started];
-      v24 = [v22 isEqual:v23];
+      started3 = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
+      started4 = [v5 started];
+      v24 = [started3 isEqual:started4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
-    v26 = [v5 ended];
-    v27 = v26;
-    if (v25 == v26)
+    ended = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
+    ended2 = [v5 ended];
+    v27 = ended2;
+    if (ended == ended2)
     {
     }
 
     else
     {
-      v28 = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
-      v29 = [v5 ended];
-      v30 = [v28 isEqual:v29];
+      ended3 = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
+      ended4 = [v5 ended];
+      v30 = [ended3 isEqual:ended4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
-    v32 = [v5 failed];
-    if (v31 == v32)
+    failed = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
+    failed2 = [v5 failed];
+    if (failed == failed2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
-      v34 = [v5 failed];
-      v12 = [v33 isEqual:v34];
+      failed3 = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
+      failed4 = [v5 failed];
+      v12 = [failed3 isEqual:failed4];
     }
 
     goto LABEL_23;
@@ -127,64 +127,64 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
-  v4 = [v3 base64EncodedStringWithOptions:0];
+  webpageViewIdentifier = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
+  v4 = [webpageViewIdentifier base64EncodedStringWithOptions:0];
 
-  v5 = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
-  v6 = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
-  v7 = [v6 jsonDictionary];
+  requestIdentifier = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
+  started = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
+  jsonDictionary = [started jsonDictionary];
 
-  v8 = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
-  v9 = [v8 jsonDictionary];
+  ended = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
+  jsonDictionary2 = [ended jsonDictionary];
 
-  v10 = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
-  v11 = [v10 jsonDictionary];
+  failed = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
+  jsonDictionary3 = [failed jsonDictionary];
 
   v22 = @"webpageViewIdentifier";
-  v12 = v4;
+  null = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v12;
-  v27[0] = v12;
+  v20 = null;
+  v27[0] = null;
   v23 = @"requestIdentifier";
-  v13 = v5;
-  if (!v5)
+  null2 = requestIdentifier;
+  if (!requestIdentifier)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[1] = v13;
+  v27[1] = null2;
   v24 = @"started";
-  v14 = v7;
-  if (!v7)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[2] = v14;
+  v27[2] = null3;
   v25 = @"ended";
-  v15 = v9;
-  if (!v9)
+  null4 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[3] = v15;
+  v27[3] = null4;
   v26 = @"failed";
-  v16 = v11;
-  if (!v11)
+  null5 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v16;
+  v27[4] = null5;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v22 count:{5, v20}];
-  if (v11)
+  if (jsonDictionary3)
   {
-    if (v9)
+    if (jsonDictionary2)
     {
       goto LABEL_13;
     }
@@ -193,10 +193,10 @@ LABEL_24:
   else
   {
 
-    if (v9)
+    if (jsonDictionary2)
     {
 LABEL_13:
-      if (v7)
+      if (jsonDictionary)
       {
         goto LABEL_14;
       }
@@ -205,10 +205,10 @@ LABEL_13:
     }
   }
 
-  if (v7)
+  if (jsonDictionary)
   {
 LABEL_14:
-    if (v5)
+    if (requestIdentifier)
     {
       goto LABEL_15;
     }
@@ -225,7 +225,7 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v5)
+  if (!requestIdentifier)
   {
     goto LABEL_22;
   }
@@ -244,22 +244,22 @@ LABEL_16:
   return v17;
 }
 
-- (BMSafariBrowsingAssistantServerRequestContext)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariBrowsingAssistantServerRequestContext)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"webpageViewIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"webpageViewIdentifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"requestIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"requestIdentifier"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_58;
@@ -276,8 +276,8 @@ LABEL_4:
         v8 = v46;
         v29 = [v26 initWithDomain:v28 code:2 userInfo:v18];
         v15 = 0;
-        *a4 = v29;
-        a4 = 0;
+        *error = v29;
+        error = 0;
         goto LABEL_56;
       }
 
@@ -289,17 +289,17 @@ LABEL_4:
       v43 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"started"];
-    v48 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"started"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
-          a4 = v43;
+          error = v43;
           goto LABEL_57;
         }
 
@@ -312,11 +312,11 @@ LABEL_4:
         v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
         v35 = v33;
         v8 = v47;
-        *a4 = [v32 initWithDomain:v35 code:2 userInfo:v34];
+        *error = [v32 initWithDomain:v35 code:2 userInfo:v34];
 
         v15 = 0;
         v16 = v10;
-        a4 = v43;
+        error = v43;
 LABEL_56:
 
         v10 = v16;
@@ -331,14 +331,14 @@ LABEL_57:
       v17 = v51;
       if (v17)
       {
-        if (a4)
+        if (error)
         {
           v17 = v17;
-          *a4 = v17;
+          *error = v17;
         }
 
         v15 = 0;
-        a4 = v43;
+        error = v43;
         v18 = v44;
         goto LABEL_56;
       }
@@ -349,17 +349,17 @@ LABEL_57:
       v44 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"ended"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     v45 = v8;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
-          a4 = v43;
+          error = v43;
           v18 = v44;
           goto LABEL_55;
         }
@@ -371,7 +371,7 @@ LABEL_57:
         v55 = v12;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         v15 = 0;
-        *a4 = [v41 initWithDomain:v36 code:2 userInfo:v13];
+        *error = [v41 initWithDomain:v36 code:2 userInfo:v13];
         goto LABEL_68;
       }
 
@@ -382,14 +382,14 @@ LABEL_57:
       if (v19)
       {
         v18 = v44;
-        if (a4)
+        if (error)
         {
           v19 = v19;
-          *a4 = v19;
+          *error = v19;
         }
 
         v15 = 0;
-        a4 = v43;
+        error = v43;
         goto LABEL_54;
       }
     }
@@ -399,14 +399,14 @@ LABEL_57:
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"failed"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v14 = 0;
 LABEL_16:
-      a4 = v43;
-      v15 = [(BMSafariBrowsingAssistantServerRequestContext *)v48 initWithWebpageViewIdentifier:v45 requestIdentifier:v43 started:v44 ended:v12 failed:v14];
-      v48 = v15;
+      error = v43;
+      v15 = [(BMSafariBrowsingAssistantServerRequestContext *)selfCopy initWithWebpageViewIdentifier:v45 requestIdentifier:v43 started:v44 ended:v12 failed:v14];
+      selfCopy = v15;
 LABEL_52:
 
 LABEL_53:
@@ -417,7 +417,7 @@ LABEL_54:
 LABEL_55:
 
       v16 = v10;
-      self = v48;
+      self = selfCopy;
       goto LABEL_56;
     }
 
@@ -434,19 +434,19 @@ LABEL_55:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (error)
       {
         v31 = v31;
-        *a4 = v31;
+        *error = v31;
       }
 
 LABEL_51:
       v15 = 0;
-      a4 = v43;
+      error = v43;
       goto LABEL_52;
     }
 
-    if (a4)
+    if (error)
     {
       v42 = objc_alloc(MEMORY[0x1E696ABC0]);
       v40 = *MEMORY[0x1E698F240];
@@ -454,13 +454,13 @@ LABEL_51:
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"failed"];
       v53 = v14;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-      *a4 = [v42 initWithDomain:v40 code:2 userInfo:v30];
+      *error = [v42 initWithDomain:v40 code:2 userInfo:v30];
       goto LABEL_51;
     }
 
     v15 = 0;
 LABEL_68:
-    a4 = v43;
+    error = v43;
     goto LABEL_53;
   }
 
@@ -474,7 +474,7 @@ LABEL_68:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v20 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E698F240];
@@ -499,7 +499,7 @@ LABEL_63:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_63;
   }
@@ -517,8 +517,8 @@ LABEL_48:
   v37 = [v20 initWithDomain:v21 code:2 userInfo:v9];
   v8 = 0;
   v15 = 0;
-  *a4 = v37;
-  a4 = v22;
+  *error = v37;
+  error = v22;
 LABEL_58:
 
 LABEL_59:
@@ -530,14 +530,14 @@ LABEL_59:
 {
   v3 = objc_opt_new();
   [(BMSafariBrowsingAssistantServerRequestContext *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_webpageViewIdentifier)
   {
     PBDataWriterWriteDataField();
@@ -551,28 +551,28 @@ LABEL_59:
   if (self->_started)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantServerRequestContextStarted *)self->_started writeTo:v4];
+    [(BMSafariBrowsingAssistantServerRequestContextStarted *)self->_started writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_ended)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantServerRequestContextEnded *)self->_ended writeTo:v4];
+    [(BMSafariBrowsingAssistantServerRequestContextEnded *)self->_ended writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_failed)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantServerRequestContextFailed *)self->_failed writeTo:v4];
+    [(BMSafariBrowsingAssistantServerRequestContextFailed *)self->_failed writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMSafariBrowsingAssistantServerRequestContext;
   v5 = [(BMEventBase *)&v25 init];
@@ -581,12 +581,12 @@ LABEL_59:
     goto LABEL_41;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -597,18 +597,18 @@ LABEL_59:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v26 & 0x7F) << v7;
@@ -625,9 +625,9 @@ LABEL_59:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -674,7 +674,7 @@ LABEL_37:
               goto LABEL_40;
             }
 
-            v16 = [[BMSafariBrowsingAssistantServerRequestContextStarted alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantServerRequestContextStarted alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_40;
@@ -690,7 +690,7 @@ LABEL_37:
               goto LABEL_40;
             }
 
-            v16 = [[BMSafariBrowsingAssistantServerRequestContextEnded alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantServerRequestContextEnded alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_40;
@@ -706,7 +706,7 @@ LABEL_37:
               goto LABEL_40;
             }
 
-            v16 = [[BMSafariBrowsingAssistantServerRequestContextFailed alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantServerRequestContextFailed alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_40;
@@ -725,13 +725,13 @@ LABEL_37:
       }
 
 LABEL_38:
-      v22 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v22 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_40:
     v23 = 0;
@@ -749,34 +749,34 @@ LABEL_41:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
-  v5 = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
-  v6 = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
-  v7 = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
-  v8 = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
-  v9 = [v3 initWithFormat:@"BMSafariBrowsingAssistantServerRequestContext with webpageViewIdentifier: %@, requestIdentifier: %@, started: %@, ended: %@, failed: %@", v4, v5, v6, v7, v8];
+  webpageViewIdentifier = [(BMSafariBrowsingAssistantServerRequestContext *)self webpageViewIdentifier];
+  requestIdentifier = [(BMSafariBrowsingAssistantServerRequestContext *)self requestIdentifier];
+  started = [(BMSafariBrowsingAssistantServerRequestContext *)self started];
+  ended = [(BMSafariBrowsingAssistantServerRequestContext *)self ended];
+  failed = [(BMSafariBrowsingAssistantServerRequestContext *)self failed];
+  v9 = [v3 initWithFormat:@"BMSafariBrowsingAssistantServerRequestContext with webpageViewIdentifier: %@, requestIdentifier: %@, started: %@, ended: %@, failed: %@", webpageViewIdentifier, requestIdentifier, started, ended, failed];
 
   return v9;
 }
 
-- (BMSafariBrowsingAssistantServerRequestContext)initWithWebpageViewIdentifier:(id)a3 requestIdentifier:(id)a4 started:(id)a5 ended:(id)a6 failed:(id)a7
+- (BMSafariBrowsingAssistantServerRequestContext)initWithWebpageViewIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier started:(id)started ended:(id)ended failed:(id)failed
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  startedCopy = started;
+  endedCopy = ended;
+  failedCopy = failed;
   v20.receiver = self;
   v20.super_class = BMSafariBrowsingAssistantServerRequestContext;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_webpageViewIdentifier, a3);
-    objc_storeStrong(&v17->_requestIdentifier, a4);
-    objc_storeStrong(&v17->_started, a5);
-    objc_storeStrong(&v17->_ended, a6);
-    objc_storeStrong(&v17->_failed, a7);
+    objc_storeStrong(&v17->_webpageViewIdentifier, identifier);
+    objc_storeStrong(&v17->_requestIdentifier, requestIdentifier);
+    objc_storeStrong(&v17->_started, started);
+    objc_storeStrong(&v17->_ended, ended);
+    objc_storeStrong(&v17->_failed, failed);
   }
 
   return v17;
@@ -851,9 +851,9 @@ id __56__BMSafariBrowsingAssistantServerRequestContext_columns__block_invoke(uin
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -861,8 +861,8 @@ id __56__BMSafariBrowsingAssistantServerRequestContext_columns__block_invoke(uin
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariBrowsingAssistantServerRequestContext alloc] initByReadFrom:v7];
     v4 = v8;

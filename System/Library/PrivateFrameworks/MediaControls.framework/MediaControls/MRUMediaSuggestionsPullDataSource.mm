@@ -14,9 +14,9 @@
   v2 = [(MRUMediaSuggestionsPullDataSource *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B0A70] defaultRequestWithArtwork];
+    defaultRequestWithArtwork = [MEMORY[0x1E69B0A70] defaultRequestWithArtwork];
     request = v2->_request;
-    v2->_request = v3;
+    v2->_request = defaultRequestWithArtwork;
 
     v5 = dispatch_queue_create("com.apple.MediaControls.MRUMediaSuggestionsPullDataSource/requestQueue", 0);
     requestQueue = v2->_requestQueue;
@@ -48,10 +48,10 @@ void __41__MRUMediaSuggestionsPullDataSource_init__block_invoke(uint64_t a1)
 
 - (NSDictionary)mediaSuggestions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_mediaSuggestions copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_mediaSuggestions copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

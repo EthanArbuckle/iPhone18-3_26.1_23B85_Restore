@@ -1,7 +1,7 @@
 @interface MRDRouteRecommendationDemotionController
 + (id)controller;
 - (MRDRouteRecommendationDemotionController)init;
-- (id)demotionPolicyWithContext:(id)a3;
+- (id)demotionPolicyWithContext:(id)context;
 @end
 
 @implementation MRDRouteRecommendationDemotionController
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (id)demotionPolicyWithContext:(id)a3
+- (id)demotionPolicyWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10038025C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_10038025C(contextCopy);
 
   return v6;
 }

@@ -1,78 +1,78 @@
 @interface CKKSKeychainBackedKeySet
-- (CKKSKeychainBackedKeySet)initWithCoder:(id)a3;
-- (CKKSKeychainBackedKeySet)initWithTLK:(id)a3 classA:(id)a4 classC:(id)a5 newUpload:(BOOL)a6;
+- (CKKSKeychainBackedKeySet)initWithCoder:(id)coder;
+- (CKKSKeychainBackedKeySet)initWithTLK:(id)k classA:(id)a classC:(id)c newUpload:(BOOL)upload;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKKSKeychainBackedKeySet
 
-- (CKKSKeychainBackedKeySet)initWithCoder:(id)a3
+- (CKKSKeychainBackedKeySet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CKKSKeychainBackedKeySet;
   v5 = [(CKKSKeychainBackedKeySet *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tlk"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tlk"];
     tlk = v5->_tlk;
     v5->_tlk = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classA"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classA"];
     classA = v5->_classA;
     v5->_classA = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classC"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classC"];
     classC = v5->_classC;
     v5->_classC = v10;
 
-    v5->_newUpload = [v4 decodeBoolForKey:@"newUpload"];
+    v5->_newUpload = [coderCopy decodeBoolForKey:@"newUpload"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = [(CKKSKeychainBackedKeySet *)self tlk];
-  [v7 encodeObject:v4 forKey:@"tlk"];
+  [coderCopy encodeObject:v4 forKey:@"tlk"];
 
-  v5 = [(CKKSKeychainBackedKeySet *)self classA];
-  [v7 encodeObject:v5 forKey:@"classA"];
+  classA = [(CKKSKeychainBackedKeySet *)self classA];
+  [coderCopy encodeObject:classA forKey:@"classA"];
 
-  v6 = [(CKKSKeychainBackedKeySet *)self classC];
-  [v7 encodeObject:v6 forKey:@"classC"];
+  classC = [(CKKSKeychainBackedKeySet *)self classC];
+  [coderCopy encodeObject:classC forKey:@"classC"];
 
-  [v7 encodeBool:-[CKKSKeychainBackedKeySet newUpload](self forKey:{"newUpload"), @"newUpload"}];
+  [coderCopy encodeBool:-[CKKSKeychainBackedKeySet newUpload](self forKey:{"newUpload"), @"newUpload"}];
 }
 
 - (id)description
 {
   v3 = [(CKKSKeychainBackedKeySet *)self tlk];
-  v4 = [(CKKSKeychainBackedKeySet *)self classA];
-  v5 = [(CKKSKeychainBackedKeySet *)self classC];
-  v6 = [NSString stringWithFormat:@"<CKKSKeychainBackedKeySet: tlk:%@, classA:%@, classC:%@, newUpload:%d>", v3, v4, v5, [(CKKSKeychainBackedKeySet *)self newUpload]];
+  classA = [(CKKSKeychainBackedKeySet *)self classA];
+  classC = [(CKKSKeychainBackedKeySet *)self classC];
+  v6 = [NSString stringWithFormat:@"<CKKSKeychainBackedKeySet: tlk:%@, classA:%@, classC:%@, newUpload:%d>", v3, classA, classC, [(CKKSKeychainBackedKeySet *)self newUpload]];
 
   return v6;
 }
 
-- (CKKSKeychainBackedKeySet)initWithTLK:(id)a3 classA:(id)a4 classC:(id)a5 newUpload:(BOOL)a6
+- (CKKSKeychainBackedKeySet)initWithTLK:(id)k classA:(id)a classC:(id)c newUpload:(BOOL)upload
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  kCopy = k;
+  aCopy = a;
+  cCopy = c;
   v17.receiver = self;
   v17.super_class = CKKSKeychainBackedKeySet;
   v14 = [(CKKSKeychainBackedKeySet *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_tlk, a3);
-    objc_storeStrong(&v15->_classA, a4);
-    objc_storeStrong(&v15->_classC, a5);
-    v15->_newUpload = a6;
+    objc_storeStrong(&v14->_tlk, k);
+    objc_storeStrong(&v15->_classA, a);
+    objc_storeStrong(&v15->_classC, c);
+    v15->_newUpload = upload;
   }
 
   return v15;

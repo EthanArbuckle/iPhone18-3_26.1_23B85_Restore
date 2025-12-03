@@ -1,11 +1,11 @@
 @interface QLDownloadingItemViewController
-- (BOOL)shouldAutoDownloadInNetworkState:(unint64_t)a3 downloadSize:(id)a4 forceIfPossible:(BOOL)a5;
+- (BOOL)shouldAutoDownloadInNetworkState:(unint64_t)state downloadSize:(id)size forceIfPossible:(BOOL)possible;
 - (QLDownloadingItemViewControllerDelegate)downloadingDelegate;
 - (void)_presentConnectivityAlert;
 - (void)_startDownloadOperation;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)setShowsLoadingPreviewSpinner:(BOOL)a3;
-- (void)startDownload:(BOOL)a3;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)setShowsLoadingPreviewSpinner:(BOOL)spinner;
+- (void)startDownload:(BOOL)download;
 - (void)startDownloadIfNeeded;
 - (void)viewDidLoad;
 @end
@@ -53,8 +53,8 @@
   self->_completedDownloadState = v19;
 
   v21 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:9];
-  v22 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v21 setColor:v22];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v21 setColor:secondaryLabelColor];
 
   [v21 startAnimating];
   v23 = [QLDetailItemViewControllerState detailItemViewControllerStateWithActionButtonTitle:0 actionButtonView:v21 informationVisible:0];
@@ -64,22 +64,22 @@
   [(QLDetailItemViewController *)self setState:self->_readyForDownloadState animated:0];
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contentsCopy = contents;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__QLDownloadingItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v13[3] = &unk_278B58DB8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = contentsCopy;
+  v15 = handlerCopy;
   v12.receiver = self;
   v12.super_class = QLDownloadingItemViewController;
-  v10 = v9;
-  v11 = v8;
-  [(QLDetailItemViewController *)&v12 loadPreviewControllerWithContents:v11 context:a4 completionHandler:v13];
+  v10 = handlerCopy;
+  v11 = contentsCopy;
+  [(QLDetailItemViewController *)&v12 loadPreviewControllerWithContents:v11 context:context completionHandler:v13];
 }
 
 uint64_t __95__QLDownloadingItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke(uint64_t a1)
@@ -97,23 +97,23 @@ uint64_t __95__QLDownloadingItemViewController_loadPreviewControllerWithContents
   return result;
 }
 
-- (BOOL)shouldAutoDownloadInNetworkState:(unint64_t)a3 downloadSize:(id)a4 forceIfPossible:(BOOL)a5
+- (BOOL)shouldAutoDownloadInNetworkState:(unint64_t)state downloadSize:(id)size forceIfPossible:(BOOL)possible
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a3 > 2)
+  sizeCopy = size;
+  v8 = sizeCopy;
+  if (state > 2)
   {
-    if (a5)
+    if (possible)
     {
       v13 = 1;
     }
 
     else
     {
-      v14 = [v7 integerValue];
-      v15 = v14;
-      if (a3 == 3)
+      integerValue = [sizeCopy integerValue];
+      v15 = integerValue;
+      if (state == 3)
       {
         v16 = 6291456;
       }
@@ -123,7 +123,7 @@ uint64_t __95__QLDownloadingItemViewController_loadPreviewControllerWithContents
         v16 = 102400;
       }
 
-      v13 = v14 < v16;
+      v13 = integerValue < v16;
       v17 = *MEMORY[0x277D43EF8];
       if (!*MEMORY[0x277D43EF8])
       {
@@ -181,13 +181,13 @@ uint64_t __95__QLDownloadingItemViewController_loadPreviewControllerWithContents
   return v13;
 }
 
-- (void)setShowsLoadingPreviewSpinner:(BOOL)a3
+- (void)setShowsLoadingPreviewSpinner:(BOOL)spinner
 {
-  if (self->_showsLoadingPreviewSpinner != a3)
+  if (self->_showsLoadingPreviewSpinner != spinner)
   {
-    self->_showsLoadingPreviewSpinner = a3;
+    self->_showsLoadingPreviewSpinner = spinner;
     v3 = &OBJC_IVAR___QLDownloadingItemViewController__completedDownloadState;
-    if (a3)
+    if (spinner)
     {
       v3 = &OBJC_IVAR___QLDownloadingItemViewController__previewLoadingState;
     }
@@ -196,16 +196,16 @@ uint64_t __95__QLDownloadingItemViewController_loadPreviewControllerWithContents
   }
 }
 
-- (void)startDownload:(BOOL)a3
+- (void)startDownload:(BOOL)download
 {
-  v5 = [MEMORY[0x277D43F88] sharedInstance];
+  mEMORY[0x277D43F88] = [MEMORY[0x277D43F88] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__QLDownloadingItemViewController_startDownload___block_invoke;
   v6[3] = &unk_278B58F50;
   v6[4] = self;
-  v7 = a3;
-  [v5 networkStateWithCompletionBlock:v6];
+  downloadCopy = download;
+  [mEMORY[0x277D43F88] networkStateWithCompletionBlock:v6];
 }
 
 void __49__QLDownloadingItemViewController_startDownload___block_invoke(uint64_t a1, uint64_t a2)
@@ -228,13 +228,13 @@ void __49__QLDownloadingItemViewController_startDownload___block_invoke(uint64_t
 
 - (void)startDownloadIfNeeded
 {
-  v3 = [(QLDownloadingItemViewController *)self downloadingDelegate];
+  downloadingDelegate = [(QLDownloadingItemViewController *)self downloadingDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(QLDownloadingItemViewController *)self downloadingDelegate];
-    v6 = [v5 downloadingItemViewControllerShouldForceAutodownloadFile:self];
+    downloadingDelegate2 = [(QLDownloadingItemViewController *)self downloadingDelegate];
+    v6 = [downloadingDelegate2 downloadingItemViewControllerShouldForceAutodownloadFile:self];
   }
 
   else
@@ -247,8 +247,8 @@ void __49__QLDownloadingItemViewController_startDownload___block_invoke(uint64_t
 
 - (void)_presentConnectivityAlert
 {
-  v3 = [(QLItemViewController *)self delegate];
-  [v3 previewItemViewControllerWantsToShowNoInternetConnectivityAlert:self];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewControllerWantsToShowNoInternetConnectivityAlert:self];
 }
 
 - (void)_startDownloadOperation
@@ -267,7 +267,7 @@ void __49__QLDownloadingItemViewController_startDownload___block_invoke(uint64_t
   }
 
   objc_initWeak(&location, self);
-  v5 = [(QLItem *)self->_previewItem fetcher];
+  fetcher = [(QLItem *)self->_previewItem fetcher];
   v6 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -280,7 +280,7 @@ void __49__QLDownloadingItemViewController_startDownload___block_invoke(uint64_t
   v7[3] = &unk_278B58FC8;
   v7[4] = self;
   objc_copyWeak(&v8, &location);
-  [v5 fetchContentWithAllowedOutputClasses:v3 inQueue:v6 updateBlock:v9 completionBlock:v7];
+  [fetcher fetchContentWithAllowedOutputClasses:v3 inQueue:v6 updateBlock:v9 completionBlock:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);

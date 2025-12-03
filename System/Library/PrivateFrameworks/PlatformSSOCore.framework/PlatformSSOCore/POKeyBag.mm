@@ -5,8 +5,8 @@
 - (void)isUserKeybagUnlocked;
 - (void)startObservingKeyBagLockStatusChanges;
 - (void)stopObservingKeyBagLockStatusChanges;
-- (void)waitForKeyBagFirstUnlockOnStartupWithCompletion:(id)a3;
-- (void)waitForKeyBagUnlockWithCompletion:(id)a3;
+- (void)waitForKeyBagFirstUnlockOnStartupWithCompletion:(id)completion;
+- (void)waitForKeyBagUnlockWithCompletion:(id)completion;
 @end
 
 @implementation POKeyBag
@@ -45,47 +45,47 @@
   return v2 == 0;
 }
 
-- (void)waitForKeyBagUnlockWithCompletion:(id)a3
+- (void)waitForKeyBagUnlockWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(POKeyBag *)v4 isUserKeybagUnlocked])
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(POKeyBag *)selfCopy isUserKeybagUnlocked])
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    [(POKeyBag *)v4 setUnlockCompletion:v5];
+    [(POKeyBag *)selfCopy setUnlockCompletion:completionCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)waitForKeyBagFirstUnlockOnStartupWithCompletion:(id)a3
+- (void)waitForKeyBagFirstUnlockOnStartupWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(POKeyBag *)v4 firstUnlock]|| [(POKeyBag *)v4 isUserKeybagUnlocked])
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(POKeyBag *)selfCopy firstUnlock]|| [(POKeyBag *)selfCopy isUserKeybagUnlocked])
   {
-    v5[2]();
+    completionCopy[2]();
   }
 
   else
   {
-    [(POKeyBag *)v4 setStartupCompletion:v5];
+    [(POKeyBag *)selfCopy setStartupCompletion:completionCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)startObservingKeyBagLockStatusChanges
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_25E8B1000, a2, OS_LOG_TYPE_ERROR, "notify_register_dispatch failed: %u", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -171,7 +171,7 @@ void __49__POKeyBag_startObservingKeyBagLockStatusChanges__block_invoke(uint64_t
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_debug_impl(&dword_25E8B1000, a2, OS_LOG_TYPE_DEBUG, "unlock state %x", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

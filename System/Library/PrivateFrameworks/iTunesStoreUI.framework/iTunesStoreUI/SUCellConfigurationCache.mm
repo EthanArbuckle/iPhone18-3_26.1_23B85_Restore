@@ -1,6 +1,6 @@
 @interface SUCellConfigurationCache
-- (SUCellConfigurationCache)initWithClass:(Class)a3 tableHeight:(double)a4;
-- (id)configurationForRow:(unint64_t)a3;
+- (SUCellConfigurationCache)initWithClass:(Class)class tableHeight:(double)height;
+- (id)configurationForRow:(unint64_t)row;
 - (void)dealloc;
 - (void)reset;
 - (void)resetLayoutCaches;
@@ -8,16 +8,16 @@
 
 @implementation SUCellConfigurationCache
 
-- (SUCellConfigurationCache)initWithClass:(Class)a3 tableHeight:(double)a4
+- (SUCellConfigurationCache)initWithClass:(Class)class tableHeight:(double)height
 {
   v6 = [(SUCellConfigurationCache *)self init];
   if (v6)
   {
     v6->_configurations = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(objc_class *)a3 minimumRowHeight];
-    for (i = (ceil(a4 / v7) + 1.0); i; --i)
+    [(objc_class *)class minimumRowHeight];
+    for (i = (ceil(height / v7) + 1.0); i; --i)
     {
-      v9 = objc_alloc_init(a3);
+      v9 = objc_alloc_init(class);
       [(NSMutableArray *)v6->_configurations addObject:v9];
     }
   }
@@ -35,10 +35,10 @@
   [(SUCellConfigurationCache *)&v3 dealloc];
 }
 
-- (id)configurationForRow:(unint64_t)a3
+- (id)configurationForRow:(unint64_t)row
 {
   configurations = self->_configurations;
-  v4 = a3 % [(NSMutableArray *)configurations count];
+  v4 = row % [(NSMutableArray *)configurations count];
 
   return [(NSMutableArray *)configurations objectAtIndex:v4];
 }
@@ -58,9 +58,9 @@
 
 - (void)resetLayoutCaches
 {
-  v2 = [(SUCellConfigurationCache *)self cellContext];
+  cellContext = [(SUCellConfigurationCache *)self cellContext];
 
-  [v2 resetLayoutCaches];
+  [cellContext resetLayoutCaches];
 }
 
 @end

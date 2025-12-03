@@ -1,7 +1,7 @@
 @interface TTRRemindersListInteractor
 - (OS_dispatch_queue)callbackQueue;
 - (_TtC15RemindersUICore26TTRRemindersListInteractor)init;
-- (void)notifyEventFromSaveRequest:(id)a3;
+- (void)notifyEventFromSaveRequest:(id)request;
 @end
 
 @implementation TTRRemindersListInteractor
@@ -27,12 +27,12 @@
   return v6;
 }
 
-- (void)notifyEventFromSaveRequest:(id)a3
+- (void)notifyEventFromSaveRequest:(id)request
 {
   sub_21D0D8CF0(0, &unk_280D0C1E0);
   sub_21D19F2B8(&qword_27CE59990, &unk_280D0C1E0);
   v4 = sub_21DBFAAAC();
-  v5 = self;
+  selfCopy = self;
   TTRRemindersListInteractor.notifyEvent(fromSaveRequest:)(v4);
 }
 

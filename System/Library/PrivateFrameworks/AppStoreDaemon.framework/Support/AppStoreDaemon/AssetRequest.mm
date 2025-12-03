@@ -1,22 +1,22 @@
 @interface AssetRequest
-- (AssetRequest)initWithURL:(id)a3 cachePolicy:(unint64_t)a4 timeoutInterval:(double)a5;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setAllowsCellularAccess:(BOOL)a3;
-- (void)setAllowsConstrainedNetworkAccess:(BOOL)a3;
-- (void)setAllowsExpensiveNetworkAccess:(BOOL)a3;
+- (AssetRequest)initWithURL:(id)l cachePolicy:(unint64_t)policy timeoutInterval:(double)interval;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setAllowsCellularAccess:(BOOL)access;
+- (void)setAllowsConstrainedNetworkAccess:(BOOL)access;
+- (void)setAllowsExpensiveNetworkAccess:(BOOL)access;
 @end
 
 @implementation AssetRequest
 
-- (AssetRequest)initWithURL:(id)a3 cachePolicy:(unint64_t)a4 timeoutInterval:(double)a5
+- (AssetRequest)initWithURL:(id)l cachePolicy:(unint64_t)policy timeoutInterval:(double)interval
 {
-  v6 = [NSURLRequest requestWithURL:a3 cachePolicy:a4 timeoutInterval:a5];
+  v6 = [NSURLRequest requestWithURL:l cachePolicy:policy timeoutInterval:interval];
   v7 = sub_10030B7F0(self, v6, 0);
 
   return v7;
 }
 
-- (void)setAllowsCellularAccess:(BOOL)a3
+- (void)setAllowsCellularAccess:(BOOL)access
 {
   v6.receiver = self;
   v6.super_class = AssetRequest;
@@ -24,11 +24,11 @@
   properties = self->_properties;
   if (properties)
   {
-    properties->_allowsCellularAccess = a3;
+    properties->_allowsCellularAccess = access;
   }
 }
 
-- (void)setAllowsConstrainedNetworkAccess:(BOOL)a3
+- (void)setAllowsConstrainedNetworkAccess:(BOOL)access
 {
   v6.receiver = self;
   v6.super_class = AssetRequest;
@@ -36,11 +36,11 @@
   properties = self->_properties;
   if (properties)
   {
-    properties->_allowsConstrainedNetworkAccess = a3;
+    properties->_allowsConstrainedNetworkAccess = access;
   }
 }
 
-- (void)setAllowsExpensiveNetworkAccess:(BOOL)a3
+- (void)setAllowsExpensiveNetworkAccess:(BOOL)access
 {
   v6.receiver = self;
   v6.super_class = AssetRequest;
@@ -48,14 +48,14 @@
   properties = self->_properties;
   if (properties)
   {
-    properties->_allowsExpensiveNetworkAccess = a3;
+    properties->_allowsExpensiveNetworkAccess = access;
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(AssetRequestProperties *)self->_properties mutableCopyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(AssetRequestProperties *)self->_properties mutableCopyWithZone:zone];
   v7 = sub_10030B7F0(v5, self, v6);
 
   return v7;

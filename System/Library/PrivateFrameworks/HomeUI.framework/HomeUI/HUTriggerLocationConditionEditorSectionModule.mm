@@ -1,45 +1,45 @@
 @interface HUTriggerLocationConditionEditorSectionModule
 - (BOOL)conditionIsDisabled;
-- (HUTriggerLocationConditionEditorSectionModule)initWithItemUpdater:(id)a3 conditionType:(unint64_t)a4 home:(id)a5;
-- (id)_conditionItemForPresenceEvent:(id)a3;
-- (id)_createConditionItemForPresenceEventType:(unint64_t)a3 userType:(unint64_t)a4;
+- (HUTriggerLocationConditionEditorSectionModule)initWithItemUpdater:(id)updater conditionType:(unint64_t)type home:(id)home;
+- (id)_conditionItemForPresenceEvent:(id)event;
+- (id)_createConditionItemForPresenceEventType:(unint64_t)type userType:(unint64_t)userType;
 - (id)buildConditionOptionItems;
-- (id)conditionForOptionItem:(id)a3;
-- (id)preferredConditionFromConditions:(id)a3;
-- (id)selectOptionItemForCondition:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (id)conditionForOptionItem:(id)item;
+- (id)preferredConditionFromConditions:(id)conditions;
+- (id)selectOptionItemForCondition:(id)condition;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation HUTriggerLocationConditionEditorSectionModule
 
-- (HUTriggerLocationConditionEditorSectionModule)initWithItemUpdater:(id)a3 conditionType:(unint64_t)a4 home:(id)a5
+- (HUTriggerLocationConditionEditorSectionModule)initWithItemUpdater:(id)updater conditionType:(unint64_t)type home:(id)home
 {
   v8.receiver = self;
   v8.super_class = HUTriggerLocationConditionEditorSectionModule;
-  v5 = [(HUTriggerConditionEditorExpandingSectionModule *)&v8 initWithItemUpdater:a3 conditionType:a4 home:a5];
+  v5 = [(HUTriggerConditionEditorExpandingSectionModule *)&v8 initWithItemUpdater:updater conditionType:type home:home];
   if (v5)
   {
-    v6 = [MEMORY[0x277D147A8] sharedDispatcher];
-    [v6 addObserver:v5];
+    mEMORY[0x277D147A8] = [MEMORY[0x277D147A8] sharedDispatcher];
+    [mEMORY[0x277D147A8] addObserver:v5];
   }
 
   return v5;
 }
 
-- (id)conditionForOptionItem:(id)a3
+- (id)conditionForOptionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUTriggerLocationConditionEditorSectionModule *)self anyLocationOptionItem];
+  itemCopy = item;
+  anyLocationOptionItem = [(HUTriggerLocationConditionEditorSectionModule *)self anyLocationOptionItem];
 
-  if (v5 == v4)
+  if (anyLocationOptionItem == itemCopy)
   {
-    v12 = 0;
+    condition = 0;
   }
 
   else
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -54,27 +54,27 @@
 
     if (v8 && (-[HUTriggerConditionEditorExpandingSectionModule optionItems](self, "optionItems"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:v8], v9, v10))
     {
-      v11 = [v8 sourceItem];
-      v12 = [v11 condition];
+      sourceItem = [v8 sourceItem];
+      condition = [sourceItem condition];
     }
 
     else
     {
       NSLog(&cfstr_UnknownOptionI.isa, v6);
-      v12 = 0;
+      condition = 0;
     }
   }
 
-  return v12;
+  return condition;
 }
 
-- (id)selectOptionItemForCondition:(id)a3
+- (id)selectOptionItemForCondition:(id)condition
 {
-  v4 = a3;
-  if (v4)
+  conditionCopy = condition;
+  if (conditionCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = conditionCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -89,44 +89,44 @@
 
     if (v7)
     {
-      v8 = [v7 presenceEvent];
-      v9 = [(HUTriggerLocationConditionEditorSectionModule *)self _conditionItemForPresenceEvent:v8];
+      presenceEvent = [v7 presenceEvent];
+      anyLocationOptionItem = [(HUTriggerLocationConditionEditorSectionModule *)self _conditionItemForPresenceEvent:presenceEvent];
 
-      v10 = [v9 sourceItem];
-      [v10 setCondition:v7];
+      sourceItem = [anyLocationOptionItem sourceItem];
+      [sourceItem setCondition:v7];
     }
 
     else
     {
       NSLog(&cfstr_UnexpectedCond.isa, v5);
-      v9 = 0;
+      anyLocationOptionItem = 0;
     }
   }
 
   else
   {
-    v9 = [(HUTriggerLocationConditionEditorSectionModule *)self anyLocationOptionItem];
+    anyLocationOptionItem = [(HUTriggerLocationConditionEditorSectionModule *)self anyLocationOptionItem];
   }
 
-  return v9;
+  return anyLocationOptionItem;
 }
 
-- (id)preferredConditionFromConditions:(id)a3
+- (id)preferredConditionFromConditions:(id)conditions
 {
-  v3 = [a3 na_filter:&__block_literal_global_203];
+  v3 = [conditions na_filter:&__block_literal_global_203];
   v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_9_0];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    firstObject = v4;
   }
 
   else
   {
-    v6 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
-  v7 = v6;
+  v7 = firstObject;
 
   return v7;
 }
@@ -153,8 +153,8 @@ uint64_t __82__HUTriggerLocationConditionEditorSectionModule_preferredConditionF
 - (BOOL)conditionIsDisabled
 {
   v2 = MEMORY[0x277CD1D20];
-  v3 = [(HUTriggerConditionEditorExpandingSectionModule *)self home];
-  LOBYTE(v2) = [v2 hf_presenceDisableReasonsForHome:v3] != 0;
+  home = [(HUTriggerConditionEditorExpandingSectionModule *)self home];
+  LOBYTE(v2) = [v2 hf_presenceDisableReasonsForHome:home] != 0;
 
   return v2;
 }
@@ -186,23 +186,23 @@ uint64_t __82__HUTriggerLocationConditionEditorSectionModule_preferredConditionF
   return v10;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v5 = MEMORY[0x277D14788];
-  v6 = [(HUTriggerConditionEditorExpandingSectionModule *)self itemProviders];
-  v9 = [v5 requestToReloadItemProviders:v6 senderSelector:a2];
+  itemProviders = [(HUTriggerConditionEditorExpandingSectionModule *)self itemProviders];
+  v9 = [v5 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v7 = [(HFItemModule *)self itemUpdater];
-  v8 = [v7 performItemUpdateRequest:v9];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v8 = [itemUpdater performItemUpdateRequest:v9];
 }
 
-- (id)_conditionItemForPresenceEvent:(id)a3
+- (id)_conditionItemForPresenceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 presenceUserType];
-  if (v5 == 1)
+  eventCopy = event;
+  presenceUserType = [eventCopy presenceUserType];
+  if (presenceUserType == 1)
   {
-    if ([v4 presenceEventType] == 3)
+    if ([eventCopy presenceEventType] == 3)
     {
       [(HUTriggerLocationConditionEditorSectionModule *)self currentUserAtHomeOptionItem];
     }
@@ -215,9 +215,9 @@ uint64_t __82__HUTriggerLocationConditionEditorSectionModule_preferredConditionF
     goto LABEL_5;
   }
 
-  if (v5 == 2)
+  if (presenceUserType == 2)
   {
-    if ([v4 presenceEventType] == 3)
+    if ([eventCopy presenceEventType] == 3)
     {
       [(HUTriggerLocationConditionEditorSectionModule *)self anyUserAtHomeOptionItem];
     }
@@ -227,23 +227,23 @@ uint64_t __82__HUTriggerLocationConditionEditorSectionModule_preferredConditionF
       [(HUTriggerLocationConditionEditorSectionModule *)self noUserAtHomeOptionItem];
     }
 
-    v6 = LABEL_5:;
+    customOptionItem = LABEL_5:;
     goto LABEL_11;
   }
 
-  v6 = [(HUTriggerLocationConditionEditorSectionModule *)self customOptionItem];
+  customOptionItem = [(HUTriggerLocationConditionEditorSectionModule *)self customOptionItem];
 LABEL_11:
-  v7 = v6;
+  v7 = customOptionItem;
 
   return v7;
 }
 
-- (id)_createConditionItemForPresenceEventType:(unint64_t)a3 userType:(unint64_t)a4
+- (id)_createConditionItemForPresenceEventType:(unint64_t)type userType:(unint64_t)userType
 {
-  v7 = [(HUTriggerConditionEditorExpandingSectionModule *)self home];
-  v8 = [objc_alloc(MEMORY[0x277CD1D20]) initWithPresenceEventType:a3 presenceUserType:a4];
+  home = [(HUTriggerConditionEditorExpandingSectionModule *)self home];
+  v8 = [objc_alloc(MEMORY[0x277CD1D20]) initWithPresenceEventType:type presenceUserType:userType];
   v9 = [objc_alloc(MEMORY[0x277D14968]) initWithPresenceEvent:v8];
-  v10 = [objc_alloc(MEMORY[0x277D14970]) initWithCondition:v9 home:v7];
+  v10 = [objc_alloc(MEMORY[0x277D14970]) initWithCondition:v9 home:home];
   objc_initWeak(&location, self);
   v11 = objc_alloc(MEMORY[0x277D14C30]);
   v16[0] = MEMORY[0x277D85DD0];
@@ -251,10 +251,10 @@ LABEL_11:
   v16[2] = __99__HUTriggerLocationConditionEditorSectionModule__createConditionItemForPresenceEventType_userType___block_invoke_33;
   v16[3] = &unk_277DC1198;
   objc_copyWeak(v19, &location);
-  v19[1] = a4;
+  v19[1] = userType;
   v12 = v10;
   v17 = v12;
-  v13 = v7;
+  v13 = home;
   v18 = v13;
   v14 = [v11 initWithSourceItem:v12 updateOptionsTransformBlock:&__block_literal_global_29_1 resultsAndItemTransformBlock:v16];
 

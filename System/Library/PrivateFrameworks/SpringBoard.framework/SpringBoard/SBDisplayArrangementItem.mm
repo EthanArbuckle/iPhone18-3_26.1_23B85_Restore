@@ -1,22 +1,22 @@
 @interface SBDisplayArrangementItem
-+ (id)_preferredArrangementOfExternalDisplay:(id)a3 relativeToEmbeddedDisplay:(id)a4 preferences:(id)a5;
-+ (id)preferredArrangementOfDisplay:(id)a3 relativeTo:(id)a4 preferences:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (SBDisplayArrangementItem)initWithDisplayIdentity:(id)a3 relativeDisplayIdentity:(id)a4 edge:(unsigned int)a5 offset:(double)a6;
++ (id)_preferredArrangementOfExternalDisplay:(id)display relativeToEmbeddedDisplay:(id)embeddedDisplay preferences:(id)preferences;
++ (id)preferredArrangementOfDisplay:(id)display relativeTo:(id)to preferences:(id)preferences;
+- (BOOL)isEqual:(id)equal;
+- (SBDisplayArrangementItem)initWithDisplayIdentity:(id)identity relativeDisplayIdentity:(id)displayIdentity edge:(unsigned int)edge offset:(double)offset;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBDisplayArrangementItem
 
-- (SBDisplayArrangementItem)initWithDisplayIdentity:(id)a3 relativeDisplayIdentity:(id)a4 edge:(unsigned int)a5 offset:(double)a6
+- (SBDisplayArrangementItem)initWithDisplayIdentity:(id)identity relativeDisplayIdentity:(id)displayIdentity edge:(unsigned int)edge offset:(double)offset
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (v11)
+  identityCopy = identity;
+  displayIdentityCopy = displayIdentity;
+  v13 = displayIdentityCopy;
+  if (identityCopy)
   {
-    if (v12)
+    if (displayIdentityCopy)
     {
       goto LABEL_3;
     }
@@ -39,43 +39,43 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_displayIdentity, a3);
-    objc_storeStrong(&v15->_relativeDisplayIdentity, a4);
-    v15->_edge = a5;
-    v15->_offset = a6;
+    objc_storeStrong(&v14->_displayIdentity, identity);
+    objc_storeStrong(&v15->_relativeDisplayIdentity, displayIdentity);
+    v15->_edge = edge;
+    v15->_offset = offset;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && -[FBSDisplayIdentity isEqual:](self->_displayIdentity, "isEqual:", *(v4 + 2)) && -[FBSDisplayIdentity isEqual:](self->_relativeDisplayIdentity, "isEqual:", *(v4 + 3)) && self->_edge == *(v4 + 2) && self->_offset == *(v4 + 4);
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && -[FBSDisplayIdentity isEqual:](self->_displayIdentity, "isEqual:", *(equalCopy + 2)) && -[FBSDisplayIdentity isEqual:](self->_relativeDisplayIdentity, "isEqual:", *(equalCopy + 3)) && self->_edge == *(equalCopy + 2) && self->_offset == *(equalCopy + 4);
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_displayIdentity];
-  v5 = [v3 appendObject:self->_relativeDisplayIdentity];
-  v6 = [v3 appendUnsignedInteger:self->_edge];
-  v7 = [v3 appendCGFloat:self->_offset];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_displayIdentity];
+  v5 = [builder appendObject:self->_relativeDisplayIdentity];
+  v6 = [builder appendUnsignedInteger:self->_edge];
+  v7 = [builder appendCGFloat:self->_offset];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__SBDisplayArrangementItem_appendDescriptionToFormatter___block_invoke;
   v3[3] = &unk_2783BA490;
   v3[4] = self;
-  [a3 appendCustomFormatWithName:@"layout" block:v3];
+  [formatter appendCustomFormatWithName:@"layout" block:v3];
 }
 
 uint64_t __57__SBDisplayArrangementItem_appendDescriptionToFormatter___block_invoke(uint64_t a1, void *a2)
@@ -115,22 +115,22 @@ uint64_t __57__SBDisplayArrangementItem_appendDescriptionToFormatter___block_inv
   }
 }
 
-+ (id)_preferredArrangementOfExternalDisplay:(id)a3 relativeToEmbeddedDisplay:(id)a4 preferences:(id)a5
++ (id)_preferredArrangementOfExternalDisplay:(id)display relativeToEmbeddedDisplay:(id)embeddedDisplay preferences:(id)preferences
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  displayCopy = display;
+  embeddedDisplayCopy = embeddedDisplay;
+  preferencesCopy = preferences;
+  if (!displayCopy)
   {
     +[SBDisplayArrangementItem(PreferredArrangement) _preferredArrangementOfExternalDisplay:relativeToEmbeddedDisplay:preferences:];
   }
 
-  if ([v7 sb_displayWindowingMode] == 1)
+  if ([displayCopy sb_displayWindowingMode] == 1)
   {
     v10 = [SBDisplayArrangementItem alloc];
-    v11 = [v9 arrangementEdge];
-    [v9 arrangementOffset];
-    v12 = [(SBDisplayArrangementItem *)v10 initWithDisplayIdentity:v7 relativeDisplayIdentity:v8 edge:v11 offset:?];
+    arrangementEdge = [preferencesCopy arrangementEdge];
+    [preferencesCopy arrangementOffset];
+    v12 = [(SBDisplayArrangementItem *)v10 initWithDisplayIdentity:displayCopy relativeDisplayIdentity:embeddedDisplayCopy edge:arrangementEdge offset:?];
   }
 
   else
@@ -141,15 +141,15 @@ uint64_t __57__SBDisplayArrangementItem_appendDescriptionToFormatter___block_inv
   return v12;
 }
 
-+ (id)preferredArrangementOfDisplay:(id)a3 relativeTo:(id)a4 preferences:(id)a5
++ (id)preferredArrangementOfDisplay:(id)display relativeTo:(id)to preferences:(id)preferences
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  displayCopy = display;
+  toCopy = to;
+  preferencesCopy = preferences;
+  if (!displayCopy)
   {
     +[SBDisplayArrangementItem(PreferredArrangement) preferredArrangementOfDisplay:relativeTo:preferences:];
-    if (v8)
+    if (toCopy)
     {
       goto LABEL_3;
     }
@@ -159,36 +159,36 @@ LABEL_17:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!toCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_3:
-  if ([v7 sb_displayWindowingMode] == 1 && objc_msgSend(v8, "sb_displayWindowingMode") == 1)
+  if ([displayCopy sb_displayWindowingMode] == 1 && objc_msgSend(toCopy, "sb_displayWindowingMode") == 1)
   {
-    if ([v8 isMainDisplay])
+    if ([toCopy isMainDisplay])
     {
-      v10 = [SBDisplayArrangementItem _preferredArrangementOfExternalDisplay:v7 relativeToEmbeddedDisplay:v8 preferences:v9];
+      v10 = [SBDisplayArrangementItem _preferredArrangementOfExternalDisplay:displayCopy relativeToEmbeddedDisplay:toCopy preferences:preferencesCopy];
       goto LABEL_11;
     }
 
-    if ([v7 isMainDisplay])
+    if ([displayCopy isMainDisplay])
     {
-      v11 = [SBDisplayArrangementItem _preferredArrangementOfExternalDisplay:v8 relativeToEmbeddedDisplay:v7 preferences:v9];
-      v12 = [v11 edge];
-      if (v12 > 3)
+      v11 = [SBDisplayArrangementItem _preferredArrangementOfExternalDisplay:toCopy relativeToEmbeddedDisplay:displayCopy preferences:preferencesCopy];
+      edge = [v11 edge];
+      if (edge > 3)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = dword_21F8A7390[v12];
+        v13 = dword_21F8A7390[edge];
       }
 
       [v11 offset];
-      v10 = [[SBDisplayArrangementItem alloc] initWithDisplayIdentity:v7 relativeDisplayIdentity:v8 edge:v13 offset:-v15];
+      v10 = [[SBDisplayArrangementItem alloc] initWithDisplayIdentity:displayCopy relativeDisplayIdentity:toCopy edge:v13 offset:-v15];
 
       goto LABEL_11;
     }

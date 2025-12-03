@@ -1,24 +1,24 @@
 @interface _PSZKWFTCalendarEventConfig
-- (_PSZKWFTCalendarEventConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 startSecondsFromQuery:(double)a5 endSecondsFromQuery:(double)a6 urlDomainsToSkip:(id)a7 maxOtherParticipants:(unint64_t)a8;
+- (_PSZKWFTCalendarEventConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category startSecondsFromQuery:(double)query endSecondsFromQuery:(double)fromQuery urlDomainsToSkip:(id)skip maxOtherParticipants:(unint64_t)participants;
 @end
 
 @implementation _PSZKWFTCalendarEventConfig
 
-- (_PSZKWFTCalendarEventConfig)initWithIsEnabled:(BOOL)a3 defaultConfidenceCategory:(int64_t)a4 startSecondsFromQuery:(double)a5 endSecondsFromQuery:(double)a6 urlDomainsToSkip:(id)a7 maxOtherParticipants:(unint64_t)a8
+- (_PSZKWFTCalendarEventConfig)initWithIsEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category startSecondsFromQuery:(double)query endSecondsFromQuery:(double)fromQuery urlDomainsToSkip:(id)skip maxOtherParticipants:(unint64_t)participants
 {
-  v15 = a7;
+  skipCopy = skip;
   v19.receiver = self;
   v19.super_class = _PSZKWFTCalendarEventConfig;
   v16 = [(_PSZKWFTCalendarEventConfig *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_isEnabled = a3;
-    v16->_defaultConfidenceCategory = a4;
-    v16->_startSecondsFromQuery = a5;
-    v16->_endSecondsFromQuery = a6;
-    objc_storeStrong(&v16->_urlDomainsToSkip, a7);
-    v17->_maxOtherParticipants = a8;
+    v16->_isEnabled = enabled;
+    v16->_defaultConfidenceCategory = category;
+    v16->_startSecondsFromQuery = query;
+    v16->_endSecondsFromQuery = fromQuery;
+    objc_storeStrong(&v16->_urlDomainsToSkip, skip);
+    v17->_maxOtherParticipants = participants;
   }
 
   return v17;

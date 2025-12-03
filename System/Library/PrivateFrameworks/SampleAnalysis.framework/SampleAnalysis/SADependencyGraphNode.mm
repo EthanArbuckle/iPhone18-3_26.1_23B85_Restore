@@ -1,5 +1,5 @@
 @interface SADependencyGraphNode
-+ (id)dependencyGraphForThreadsInSampleStore:(id)a3 atTimestamp:(id)a4;
++ (id)dependencyGraphForThreadsInSampleStore:(id)store atTimestamp:(id)timestamp;
 - (SADependencyGraphNode)dependency;
 - (id)debugDescription;
 @end
@@ -13,7 +13,7 @@
   return WeakRetained;
 }
 
-+ (id)dependencyGraphForThreadsInSampleStore:(id)a3 atTimestamp:(id)a4
++ (id)dependencyGraphForThreadsInSampleStore:(id)store atTimestamp:(id)timestamp
 {
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -21,10 +21,10 @@
   v22[1] = 3221225472;
   v22[2] = __76__SADependencyGraphNode_dependencyGraphForThreadsInSampleStore_atTimestamp___block_invoke;
   v22[3] = &unk_1E86F5D08;
-  v22[4] = a4;
+  v22[4] = timestamp;
   v8 = v7;
   v23 = v8;
-  [a3 enumerateTasks:v22];
+  [store enumerateTasks:v22];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -33,8 +33,8 @@
   v10 = v8;
   v18 = v10;
   v19 = v9;
-  v20 = a3;
-  v21 = a4;
+  storeCopy = store;
+  timestampCopy = timestamp;
   v11 = v9;
   [v10 enumerateKeysAndObjectsUsingBlock:v17];
   v15[0] = MEMORY[0x1E69E9820];
@@ -396,21 +396,21 @@ LABEL_13:
   {
     v62 = objc_alloc(MEMORY[0x1E696AEC0]);
     v4 = [(SATask *)self->_task debugDescription];
-    v59 = [(SAThread *)self->_thread threadId];
-    v5 = [(SAThreadState *)self->_threadState dispatchQueue];
-    v6 = [v5 dispatchQueueLabel];
-    v7 = v6;
+    threadId = [(SAThread *)self->_thread threadId];
+    dispatchQueue = [(SAThreadState *)self->_threadState dispatchQueue];
+    dispatchQueueLabel = [dispatchQueue dispatchQueueLabel];
+    v7 = dispatchQueueLabel;
     v66 = v4;
-    if (v6)
+    if (dispatchQueueLabel)
     {
       v64 = 0;
-      v57 = v6;
+      v57 = dispatchQueueLabel;
     }
 
     else
     {
-      v54 = [(SAThreadState *)self->_threadState swiftTask];
-      v16 = [v54 debugDescription];
+      swiftTask = [(SAThreadState *)self->_threadState swiftTask];
+      v16 = [swiftTask debugDescription];
       if (v16)
       {
         v64 = 0;
@@ -420,13 +420,13 @@ LABEL_13:
 
       else
       {
-        v19 = [(SAThreadState *)self->_threadState name];
+        name = [(SAThreadState *)self->_threadState name];
         v53 = 0;
         v20 = &stru_1F5BBF440;
-        v49 = v19;
-        if (v19)
+        v49 = name;
+        if (name)
         {
-          v20 = v19;
+          v20 = name;
         }
 
         v57 = v20;
@@ -435,56 +435,56 @@ LABEL_13:
     }
 
     v61 = objc_loadWeakRetained(&self->_dependency);
-    v60 = [v61 task];
-    v21 = [v60 debugDescription];
+    task = [v61 task];
+    v21 = [task debugDescription];
     v58 = objc_loadWeakRetained(&self->_dependency);
-    v22 = [v58 thread];
-    v23 = [v22 threadId];
+    thread = [v58 thread];
+    threadId2 = [thread threadId];
     v24 = objc_loadWeakRetained(&self->_dependency);
-    v25 = [v24 threadState];
-    v26 = [v25 dispatchQueue];
-    v27 = [v26 dispatchQueueLabel];
-    v28 = v27;
-    if (v27)
+    threadState = [v24 threadState];
+    dispatchQueue2 = [threadState dispatchQueue];
+    dispatchQueueLabel2 = [dispatchQueue2 dispatchQueueLabel];
+    v28 = dispatchQueueLabel2;
+    if (dispatchQueueLabel2)
     {
-      v43 = v23;
+      v43 = threadId2;
       v10 = v66;
-      v17 = [v62 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@ thread 0x%llx (%@)", v66, v59, v57, v21, v43, v27];
+      v17 = [v62 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@ thread 0x%llx (%@)", v66, threadId, v57, v21, v43, dispatchQueueLabel2];
     }
 
     else
     {
-      v56 = v5;
+      v56 = dispatchQueue;
       v52 = objc_loadWeakRetained(&self->_dependency);
-      v51 = [v52 threadState];
-      v50 = [v51 swiftTask];
-      v29 = [v50 debugDescription];
+      threadState2 = [v52 threadState];
+      swiftTask2 = [threadState2 swiftTask];
+      v29 = [swiftTask2 debugDescription];
       v30 = v29;
       if (v29)
       {
-        v44 = v23;
+        v44 = threadId2;
         v10 = v66;
-        v17 = [v62 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@ thread 0x%llx (%@)", v66, v59, v57, v21, v44, v29];
+        v17 = [v62 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@ thread 0x%llx (%@)", v66, threadId, v57, v21, v44, v29];
       }
 
       else
       {
         v48 = objc_loadWeakRetained(&self->_dependency);
-        v47 = [v48 threadState];
-        v31 = [v47 name];
-        v46 = v31;
+        threadState3 = [v48 threadState];
+        name2 = [threadState3 name];
+        v46 = name2;
         v32 = &stru_1F5BBF440;
-        if (v31)
+        if (name2)
         {
-          v32 = v31;
+          v32 = name2;
         }
 
-        v45 = v23;
+        v45 = threadId2;
         v10 = v66;
-        v17 = [v62 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@ thread 0x%llx (%@)", v66, v59, v57, v21, v45, v32];
+        v17 = [v62 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@ thread 0x%llx (%@)", v66, threadId, v57, v21, v45, v32];
       }
 
-      v5 = v56;
+      dispatchQueue = v56;
     }
 
     if (v64)
@@ -501,23 +501,23 @@ LABEL_13:
     taskDependency = self->_taskDependency;
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
     v10 = [(SATask *)self->_task debugDescription];
-    v11 = [(SAThread *)self->_thread threadId];
-    v55 = [(SAThreadState *)self->_threadState dispatchQueue];
-    v12 = [v55 dispatchQueueLabel];
-    v7 = v12;
+    threadId3 = [(SAThread *)self->_thread threadId];
+    dispatchQueue3 = [(SAThreadState *)self->_threadState dispatchQueue];
+    dispatchQueueLabel3 = [dispatchQueue3 dispatchQueueLabel];
+    v7 = dispatchQueueLabel3;
     if (taskDependency)
     {
       v13 = v10;
-      if (v12)
+      if (dispatchQueueLabel3)
       {
         v14 = 0;
-        v15 = v12;
+        v15 = dispatchQueueLabel3;
       }
 
       else
       {
-        v65 = [(SAThreadState *)self->_threadState swiftTask];
-        v18 = [v65 debugDescription];
+        swiftTask3 = [(SAThreadState *)self->_threadState swiftTask];
+        v18 = [swiftTask3 debugDescription];
         taskDependency = v18;
         if (v18)
         {
@@ -527,11 +527,11 @@ LABEL_13:
 
         else
         {
-          v36 = [(SAThreadState *)self->_threadState name];
-          v63 = v36;
-          if (v36)
+          name3 = [(SAThreadState *)self->_threadState name];
+          v63 = name3;
+          if (name3)
           {
-            v15 = v36;
+            v15 = name3;
           }
 
           else
@@ -543,9 +543,9 @@ LABEL_13:
         }
       }
 
-      v37 = [(SADependencyGraphTaskNode *)self->_taskDependency task];
-      v38 = [v37 debugDescription];
-      v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@", v13, v11, v15, v38];
+      task2 = [(SADependencyGraphTaskNode *)self->_taskDependency task];
+      v38 = [task2 debugDescription];
+      v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@) blocked by %@", v13, threadId3, v15, v38];
 
       if (v14)
       {
@@ -558,38 +558,38 @@ LABEL_13:
       v10 = v13;
     }
 
-    else if (v12)
+    else if (dispatchQueueLabel3)
     {
-      v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@)", v10, v11, v12];
+      v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@)", v10, threadId3, dispatchQueueLabel3];
     }
 
     else
     {
-      v33 = [(SAThreadState *)self->_threadState swiftTask];
-      v34 = [v33 debugDescription];
+      swiftTask4 = [(SAThreadState *)self->_threadState swiftTask];
+      v34 = [swiftTask4 debugDescription];
       v35 = v34;
       if (v34)
       {
-        v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@)", v10, v11, v34];
+        v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@)", v10, threadId3, v34];
       }
 
       else
       {
-        v40 = [(SAThreadState *)self->_threadState name];
-        v41 = v40;
+        name4 = [(SAThreadState *)self->_threadState name];
+        v41 = name4;
         v42 = &stru_1F5BBF440;
-        if (v40)
+        if (name4)
         {
-          v42 = v40;
+          v42 = name4;
         }
 
-        v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@)", v10, v11, v42];
+        v17 = [v9 initWithFormat:@"%@ thread 0x%llx (%@)", v10, threadId3, v42];
       }
 
       v7 = 0;
     }
 
-    v5 = v55;
+    dispatchQueue = dispatchQueue3;
   }
 
   return v17;

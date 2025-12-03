@@ -1,16 +1,16 @@
 @interface FKSuggestionsOrderBanner
-- (FKSuggestionsOrderBanner)initWithData:(id)a3 error:(id *)a4;
+- (FKSuggestionsOrderBanner)initWithData:(id)data error:(id *)error;
 @end
 
 @implementation FKSuggestionsOrderBanner
 
-- (FKSuggestionsOrderBanner)initWithData:(id)a3 error:(id *)a4
+- (FKSuggestionsOrderBanner)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = FKSuggestionsOrderBanner;
   v7 = [(FKSuggestionsOrderBanner *)&v12 init];
-  if (v7 && (v8 = [[_TtC12FinanceKitUI22SuggestionsOrderBanner alloc] init:v6 error:a4], orderBanner = v7->_orderBanner, v7->_orderBanner = v8, orderBanner, !v7->_orderBanner))
+  if (v7 && (v8 = [[_TtC12FinanceKitUI22SuggestionsOrderBanner alloc] init:dataCopy error:error], orderBanner = v7->_orderBanner, v7->_orderBanner = v8, orderBanner, !v7->_orderBanner))
   {
     v10 = 0;
   }

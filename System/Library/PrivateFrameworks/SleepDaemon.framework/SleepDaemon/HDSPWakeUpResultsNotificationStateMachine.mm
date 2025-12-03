@@ -1,27 +1,27 @@
 @interface HDSPWakeUpResultsNotificationStateMachine
 - (BOOL)isDelayingForTracking;
 - (BOOL)isWaitingForWakeUp;
-- (HDSPWakeUpResultsNotificationStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPWakeUpResultsNotificationStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (id)allStates;
 - (void)didPostResultsNotification;
 - (void)protectedHealthDataDidBecomeAvailable;
 - (void)queryDidComplete;
-- (void)queryDidFailWithError:(id)a3;
+- (void)queryDidFailWithError:(id)error;
 - (void)retryAttemptEventDue;
 - (void)wakeUpDidOccur;
 @end
 
 @implementation HDSPWakeUpResultsNotificationStateMachine
 
-- (HDSPWakeUpResultsNotificationStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPWakeUpResultsNotificationStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v41[7] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v41[2] = objc_opt_class();
@@ -34,7 +34,7 @@
 
   v40.receiver = self;
   v40.super_class = HDSPWakeUpResultsNotificationStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v40 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v40 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -66,9 +66,9 @@
     disabledState = v20->_disabledState;
     v20->_disabledState = v33;
 
-    v35 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v36 = v35;
-    if (!v35)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v36 = persistedState;
+    if (!persistedState)
     {
       v36 = v20->_disabledState;
     }
@@ -103,15 +103,15 @@
 
 - (BOOL)isWaitingForWakeUp
 {
-  v3 = [(HKSPStateMachine *)self currentState];
-  if (v3)
+  currentState = [(HKSPStateMachine *)self currentState];
+  if (currentState)
   {
-    v4 = [(HDSPWakeUpResultsNotificationStateMachine *)self waitingForWakeUpState];
-    if (v4)
+    waitingForWakeUpState = [(HDSPWakeUpResultsNotificationStateMachine *)self waitingForWakeUpState];
+    if (waitingForWakeUpState)
     {
-      v5 = [(HKSPStateMachine *)self currentState];
-      v6 = [(HDSPWakeUpResultsNotificationStateMachine *)self waitingForWakeUpState];
-      v7 = [v5 isMemberOfClass:objc_opt_class()];
+      currentState2 = [(HKSPStateMachine *)self currentState];
+      waitingForWakeUpState2 = [(HDSPWakeUpResultsNotificationStateMachine *)self waitingForWakeUpState];
+      v7 = [currentState2 isMemberOfClass:objc_opt_class()];
     }
 
     else
@@ -130,15 +130,15 @@
 
 - (BOOL)isDelayingForTracking
 {
-  v3 = [(HKSPStateMachine *)self currentState];
-  if (v3)
+  currentState = [(HKSPStateMachine *)self currentState];
+  if (currentState)
   {
-    v4 = [(HDSPWakeUpResultsNotificationStateMachine *)self delayingForTrackingState];
-    if (v4)
+    delayingForTrackingState = [(HDSPWakeUpResultsNotificationStateMachine *)self delayingForTrackingState];
+    if (delayingForTrackingState)
     {
-      v5 = [(HKSPStateMachine *)self currentState];
-      v6 = [(HDSPWakeUpResultsNotificationStateMachine *)self delayingForTrackingState];
-      v7 = [v5 isMemberOfClass:objc_opt_class()];
+      currentState2 = [(HKSPStateMachine *)self currentState];
+      delayingForTrackingState2 = [(HDSPWakeUpResultsNotificationStateMachine *)self delayingForTrackingState];
+      v7 = [currentState2 isMemberOfClass:objc_opt_class()];
     }
 
     else
@@ -157,39 +157,39 @@
 
 - (void)protectedHealthDataDidBecomeAvailable
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 protectedHealthDataDidBecomeAvailable];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState protectedHealthDataDidBecomeAvailable];
 }
 
-- (void)queryDidFailWithError:(id)a3
+- (void)queryDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HKSPStateMachine *)self currentState];
-  [v5 queryDidFailWithError:v4];
+  errorCopy = error;
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState queryDidFailWithError:errorCopy];
 }
 
 - (void)queryDidComplete
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 queryDidComplete];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState queryDidComplete];
 }
 
 - (void)wakeUpDidOccur
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 wakeUpDidOccur];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState wakeUpDidOccur];
 }
 
 - (void)didPostResultsNotification
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 didPostResultsNotification];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState didPostResultsNotification];
 }
 
 - (void)retryAttemptEventDue
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 retryAttemptEventDue];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState retryAttemptEventDue];
 }
 
 @end

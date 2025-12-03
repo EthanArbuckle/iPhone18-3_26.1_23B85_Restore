@@ -1,73 +1,73 @@
 @interface INFERENCESchemaINFERENCEABModelEvaluated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEABModelEvaluated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEABModelEvaluated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEABModelEvaluated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEABModelEvaluated)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsDecisionCorrect:(BOOL)a3;
-- (void)setHasIsModelConfirmation:(BOOL)a3;
-- (void)setHasIsModelDisambiguation:(BOOL)a3;
-- (void)setHasModelVersion:(BOOL)a3;
-- (void)setHasNumCandidateApps:(BOOL)a3;
-- (void)setHasUserPersona:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsDecisionCorrect:(BOOL)correct;
+- (void)setHasIsModelConfirmation:(BOOL)confirmation;
+- (void)setHasIsModelDisambiguation:(BOOL)disambiguation;
+- (void)setHasModelVersion:(BOOL)version;
+- (void)setHasNumCandidateApps:(BOOL)apps;
+- (void)setHasUserPersona:(BOOL)persona;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEABModelEvaluated
 
-- (INFERENCESchemaINFERENCEABModelEvaluated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEABModelEvaluated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = INFERENCESchemaINFERENCEABModelEvaluated;
   v5 = [(INFERENCESchemaINFERENCEABModelEvaluated *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"projectIntent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"projectIntent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEABModelEvaluated setProjectIntent:](v5, "setProjectIntent:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numCandidateApps"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numCandidateApps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEABModelEvaluated setNumCandidateApps:](v5, "setNumCandidateApps:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isDecisionCorrect"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isDecisionCorrect"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEABModelEvaluated setIsDecisionCorrect:](v5, "setIsDecisionCorrect:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEABModelEvaluated setModelVersion:](v5, "setModelVersion:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isModelDisambiguation"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isModelDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEABModelEvaluated setIsModelDisambiguation:](v5, "setIsModelDisambiguation:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isModelConfirmation"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isModelConfirmation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEABModelEvaluated setIsModelConfirmation:](v5, "setIsModelConfirmation:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"userPersona"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userPersona"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEABModelEvaluated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEABModelEvaluated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEABModelEvaluated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEABModelEvaluated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEABModelEvaluated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,12 +116,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEABModelEvaluated isDecisionCorrect](self, "isDecisionCorrect")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isDecisionCorrect"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isDecisionCorrect"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -142,7 +142,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEABModelEvaluated isModelConfirmation](self, "isModelConfirmation")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isModelConfirmation"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isModelConfirmation"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -158,7 +158,7 @@ LABEL_4:
 
 LABEL_11:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEABModelEvaluated isModelDisambiguation](self, "isModelDisambiguation")}];
-  [v3 setObject:v7 forKeyedSubscript:@"isModelDisambiguation"];
+  [dictionary setObject:v7 forKeyedSubscript:@"isModelDisambiguation"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -174,7 +174,7 @@ LABEL_5:
 
 LABEL_12:
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCEABModelEvaluated modelVersion](self, "modelVersion")}];
-  [v3 setObject:v8 forKeyedSubscript:@"modelVersion"];
+  [dictionary setObject:v8 forKeyedSubscript:@"modelVersion"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -197,7 +197,7 @@ LABEL_14:
       v11 = off_1E78D85F0[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"projectIntent"];
+    [dictionary setObject:v11 forKeyedSubscript:@"projectIntent"];
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_22;
@@ -208,7 +208,7 @@ LABEL_14:
 
 LABEL_13:
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEABModelEvaluated numCandidateApps](self, "numCandidateApps")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numCandidateApps"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numCandidateApps"];
 
   has = self->_has;
   if (has)
@@ -231,13 +231,13 @@ LABEL_18:
       v13 = off_1E78D8650[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"userPersona"];
+    [dictionary setObject:v13 forKeyedSubscript:@"userPersona"];
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -336,16 +336,16 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_30;
@@ -354,13 +354,13 @@ LABEL_8:
   if (*&has)
   {
     projectIntent = self->_projectIntent;
-    if (projectIntent != [v4 projectIntent])
+    if (projectIntent != [equalCopy projectIntent])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -372,13 +372,13 @@ LABEL_8:
   if (v8)
   {
     numCandidateApps = self->_numCandidateApps;
-    if (numCandidateApps != [v4 numCandidateApps])
+    if (numCandidateApps != [equalCopy numCandidateApps])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -390,13 +390,13 @@ LABEL_8:
   if (v10)
   {
     isDecisionCorrect = self->_isDecisionCorrect;
-    if (isDecisionCorrect != [v4 isDecisionCorrect])
+    if (isDecisionCorrect != [equalCopy isDecisionCorrect])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -408,13 +408,13 @@ LABEL_8:
   if (v12)
   {
     modelVersion = self->_modelVersion;
-    if (modelVersion != [v4 modelVersion])
+    if (modelVersion != [equalCopy modelVersion])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -426,13 +426,13 @@ LABEL_8:
   if (v14)
   {
     isModelDisambiguation = self->_isModelDisambiguation;
-    if (isModelDisambiguation != [v4 isModelDisambiguation])
+    if (isModelDisambiguation != [equalCopy isModelDisambiguation])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -444,10 +444,10 @@ LABEL_8:
   if (v16)
   {
     isModelConfirmation = self->_isModelConfirmation;
-    if (isModelConfirmation == [v4 isModelConfirmation])
+    if (isModelConfirmation == [equalCopy isModelConfirmation])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_26;
     }
 
@@ -466,7 +466,7 @@ LABEL_26:
   if (v18)
   {
     userPersona = self->_userPersona;
-    if (userPersona != [v4 userPersona])
+    if (userPersona != [equalCopy userPersona])
     {
       goto LABEL_30;
     }
@@ -478,9 +478,9 @@ LABEL_31:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -569,9 +569,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasUserPersona:(BOOL)a3
+- (void)setHasUserPersona:(BOOL)persona
 {
-  if (a3)
+  if (persona)
   {
     v3 = 64;
   }
@@ -584,9 +584,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsModelConfirmation:(BOOL)a3
+- (void)setHasIsModelConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     v3 = 32;
   }
@@ -599,9 +599,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsModelDisambiguation:(BOOL)a3
+- (void)setHasIsModelDisambiguation:(BOOL)disambiguation
 {
-  if (a3)
+  if (disambiguation)
   {
     v3 = 16;
   }
@@ -614,9 +614,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasModelVersion:(BOOL)a3
+- (void)setHasModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -629,9 +629,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsDecisionCorrect:(BOOL)a3
+- (void)setHasIsDecisionCorrect:(BOOL)correct
 {
-  if (a3)
+  if (correct)
   {
     v3 = 4;
   }
@@ -644,9 +644,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumCandidateApps:(BOOL)a3
+- (void)setHasNumCandidateApps:(BOOL)apps
 {
-  if (a3)
+  if (apps)
   {
     v3 = 2;
   }

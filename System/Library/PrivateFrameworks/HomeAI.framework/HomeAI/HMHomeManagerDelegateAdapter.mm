@@ -1,18 +1,18 @@
 @interface HMHomeManagerDelegateAdapter
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HMHomeManagerDelegateAdapter
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v6 = a3;
-  v4 = [(HMHomeManagerDelegateAdapter *)self didUpdateHomes];
+  homesCopy = homes;
+  didUpdateHomes = [(HMHomeManagerDelegateAdapter *)self didUpdateHomes];
 
-  if (v4)
+  if (didUpdateHomes)
   {
-    v5 = [(HMHomeManagerDelegateAdapter *)self didUpdateHomes];
-    (v5)[2](v5, v6);
+    didUpdateHomes2 = [(HMHomeManagerDelegateAdapter *)self didUpdateHomes];
+    (didUpdateHomes2)[2](didUpdateHomes2, homesCopy);
   }
 }
 

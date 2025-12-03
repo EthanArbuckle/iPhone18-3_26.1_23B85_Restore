@@ -1,35 +1,35 @@
 @interface CKDContainerSpecificInfoURLRequest
-- (CKDContainerSpecificInfoURLRequest)initWithOperation:(id)a3 containerIdentifier:(id)a4;
+- (CKDContainerSpecificInfoURLRequest)initWithOperation:(id)operation containerIdentifier:(id)identifier;
 - (id)url;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseJSONObject:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseJSONObject:(id)object;
 @end
 
 @implementation CKDContainerSpecificInfoURLRequest
 
-- (CKDContainerSpecificInfoURLRequest)initWithOperation:(id)a3 containerIdentifier:(id)a4
+- (CKDContainerSpecificInfoURLRequest)initWithOperation:(id)operation containerIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CKDContainerSpecificInfoURLRequest;
-  v8 = [(CKDURLRequest *)&v11 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v11 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_containerIdentifier, a4);
+    objc_storeStrong(&v8->_containerIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v9.receiver = self;
   v9.super_class = CKDContainerSpecificInfoURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_containerIdentifier(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"containerIdentifier");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"containerIdentifier");
 }
 
 - (id)url
@@ -71,11 +71,11 @@
   return v36;
 }
 
-- (void)requestDidParseJSONObject:(id)a3
+- (void)requestDidParseJSONObject:(id)object
 {
   v186 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!objc_msgSend_count(v4, v5, v6))
+  objectCopy = object;
+  if (!objc_msgSend_count(objectCopy, v5, v6))
   {
     v85 = MEMORY[0x277CBC560];
     v86 = *MEMORY[0x277CBC120];
@@ -89,7 +89,7 @@
   v9 = objc_opt_new();
   objc_msgSend_setContainerServerInfo_(self, v10, v9);
 
-  v12 = objc_msgSend_CKFirstUrlForKeys_(v4, v11, &unk_2838C8F58);
+  v12 = objc_msgSend_CKFirstUrlForKeys_(objectCopy, v11, &unk_2838C8F58);
   v15 = objc_msgSend_containerServerInfo(self, v13, v14);
   objc_msgSend_setPublicCloudDBURL_(v15, v16, v12);
 
@@ -116,7 +116,7 @@
     }
   }
 
-  v27 = objc_msgSend_CKFirstUrlForKeys_(v4, v23, &unk_2838C8F70);
+  v27 = objc_msgSend_CKFirstUrlForKeys_(objectCopy, v23, &unk_2838C8F70);
   v30 = objc_msgSend_containerServerInfo(self, v28, v29);
   objc_msgSend_setPublicShareServiceURL_(v30, v31, v27);
 
@@ -141,7 +141,7 @@
     }
   }
 
-  v40 = objc_msgSend_CKFirstUrlForKeys_(v4, v38, &unk_2838C8F88);
+  v40 = objc_msgSend_CKFirstUrlForKeys_(objectCopy, v38, &unk_2838C8F88);
   v43 = objc_msgSend_containerServerInfo(self, v41, v42);
   objc_msgSend_setPublicDeviceServiceURL_(v43, v44, v40);
 
@@ -166,7 +166,7 @@
     }
   }
 
-  v53 = objc_msgSend_CKFirstUrlForKeys_(v4, v51, &unk_2838C8FA0);
+  v53 = objc_msgSend_CKFirstUrlForKeys_(objectCopy, v51, &unk_2838C8FA0);
   v56 = objc_msgSend_containerServerInfo(self, v54, v55);
   objc_msgSend_setPublicCodeServiceURL_(v56, v57, v53);
 
@@ -191,7 +191,7 @@
     }
   }
 
-  v66 = objc_msgSend_CKFirstUrlForKeys_(v4, v64, &unk_2838C8FB8);
+  v66 = objc_msgSend_CKFirstUrlForKeys_(objectCopy, v64, &unk_2838C8FB8);
   v69 = objc_msgSend_containerServerInfo(self, v67, v68);
   objc_msgSend_setPublicMetricsServiceURL_(v69, v70, v66);
 
@@ -216,7 +216,7 @@
     }
   }
 
-  v79 = objc_msgSend_objectForKeyedSubscript_(v4, v77, @"cloudKitUserId");
+  v79 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v77, @"cloudKitUserId");
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -302,7 +302,7 @@ LABEL_38:
   objc_msgSend_setContainerScopedUserID_(v82, v83, v79);
 
 LABEL_45:
-  v110 = objc_msgSend_objectForKeyedSubscript_(v4, v84, @"orgInfo");
+  v110 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v84, @"orgInfo");
   v112 = objc_msgSend_objectForKeyedSubscript_(v110, v111, @"cloudKitOrgUserId");
 
   objc_opt_class();
@@ -365,7 +365,7 @@ LABEL_45:
 
   if ((v133 & 1) == 0)
   {
-    v135 = objc_msgSend_objectForKeyedSubscript_(v4, v134, @"environment");
+    v135 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v134, @"environment");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

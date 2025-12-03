@@ -1,10 +1,10 @@
 @interface CAAUNBandEQHeaderView
-- (_TtC12CoreAudioKit21CAAUNBandEQHeaderView)initWithCoder:(id)a3;
+- (_TtC12CoreAudioKit21CAAUNBandEQHeaderView)initWithCoder:(id)coder;
 @end
 
 @implementation CAAUNBandEQHeaderView
 
-- (_TtC12CoreAudioKit21CAAUNBandEQHeaderView)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit21CAAUNBandEQHeaderView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC12CoreAudioKit21CAAUNBandEQHeaderView_typeControl);
   *v3 = 0u;

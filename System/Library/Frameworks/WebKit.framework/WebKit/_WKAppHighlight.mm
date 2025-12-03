@@ -1,46 +1,46 @@
 @interface _WKAppHighlight
-- (_WKAppHighlight)initWithHighlight:(id)a3 text:(id)a4 image:(id)a5;
+- (_WKAppHighlight)initWithHighlight:(id)highlight text:(id)text image:(id)image;
 - (id).cxx_construct;
 @end
 
 @implementation _WKAppHighlight
 
-- (_WKAppHighlight)initWithHighlight:(id)a3 text:(id)a4 image:(id)a5
+- (_WKAppHighlight)initWithHighlight:(id)highlight text:(id)text image:(id)image
 {
   v16.receiver = self;
   v16.super_class = _WKAppHighlight;
   v8 = [(_WKAppHighlight *)&v16 init];
   if (v8)
   {
-    if (a3)
+    if (highlight)
     {
-      v9 = a3;
+      highlightCopy = highlight;
     }
 
     m_ptr = v8->_highlight.m_ptr;
-    v8->_highlight.m_ptr = a3;
+    v8->_highlight.m_ptr = highlight;
     if (m_ptr)
     {
     }
 
-    if (a4)
+    if (text)
     {
-      v11 = a4;
+      textCopy = text;
     }
 
     v12 = v8->_text.m_ptr;
-    v8->_text.m_ptr = a4;
+    v8->_text.m_ptr = text;
     if (v12)
     {
     }
 
-    if (a5)
+    if (image)
     {
-      v13 = a5;
+      imageCopy = image;
     }
 
     v14 = v8->_image.m_ptr;
-    v8->_image.m_ptr = a5;
+    v8->_image.m_ptr = image;
     if (v14)
     {
     }

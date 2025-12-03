@@ -24,11 +24,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelTVSeason *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelTVSeason *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -42,9 +42,9 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"TV season %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"TV season %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyTVSeasonNumber"]&& [(MPModelTVSeason *)self number]>= 1)
   {
@@ -57,120 +57,120 @@
 
 + (void)__MPModelPropertyTVSeasonDownloadedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:110 description:@"Translator was missing mapping for MPModelPropertyTVSeasonDownloadedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:110 description:@"Translator was missing mapping for MPModelPropertyTVSeasonDownloadedDate"];
 }
 
 + (void)__MPModelPropertyTVSeasonArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:109 description:@"Translator was missing mapping for MPModelPropertyTVSeasonArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:109 description:@"Translator was missing mapping for MPModelPropertyTVSeasonArtwork"];
 }
 
 + (void)__MPModelRelationshipTVSeasonRepresentativeEpisode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:108 description:@"Translator was missing mapping for MPModelRelationshipTVSeasonRepresentativeEpisode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:108 description:@"Translator was missing mapping for MPModelRelationshipTVSeasonRepresentativeEpisode"];
 }
 
 + (void)__MPModelRelationshipTVSeasonShow__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:107 description:@"Translator was missing mapping for MPModelRelationshipTVSeasonShow"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:107 description:@"Translator was missing mapping for MPModelRelationshipTVSeasonShow"];
 }
 
 + (void)__MPModelPropertyTVSeasonStoreCanonicalID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:105 description:@"Translator was missing mapping for MPModelPropertyTVSeasonStoreCanonicalID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:105 description:@"Translator was missing mapping for MPModelPropertyTVSeasonStoreCanonicalID"];
 }
 
 + (void)__MPModelPropertyTVSeasonSortType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:104 description:@"Translator was missing mapping for MPModelPropertyTVSeasonSortType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:104 description:@"Translator was missing mapping for MPModelPropertyTVSeasonSortType"];
 }
 
 + (void)__MPModelPropertyTVSeasonLibraryAddEligible__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:103 description:@"Translator was missing mapping for MPModelPropertyTVSeasonLibraryAddEligible"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:103 description:@"Translator was missing mapping for MPModelPropertyTVSeasonLibraryAddEligible"];
 }
 
 + (void)__MPModelPropertyTVSeasonLibraryAdded__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:102 description:@"Translator was missing mapping for MPModelPropertyTVSeasonLibraryAdded"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:102 description:@"Translator was missing mapping for MPModelPropertyTVSeasonLibraryAdded"];
 }
 
 + (void)__MPModelPropertyTVSeasonLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:101 description:@"Translator was missing mapping for MPModelPropertyTVSeasonLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:101 description:@"Translator was missing mapping for MPModelPropertyTVSeasonLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertyTVSeasonHasExplicitContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:100 description:@"Translator was missing mapping for MPModelPropertyTVSeasonHasExplicitContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:100 description:@"Translator was missing mapping for MPModelPropertyTVSeasonHasExplicitContent"];
 }
 
 + (void)__MPModelPropertyTVSeasonHasCleanContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:99 description:@"Translator was missing mapping for MPModelPropertyTVSeasonHasCleanContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:99 description:@"Translator was missing mapping for MPModelPropertyTVSeasonHasCleanContent"];
 }
 
 + (void)__MPModelPropertyTVSeasonEpisodesCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:98 description:@"Translator was missing mapping for MPModelPropertyTVSeasonEpisodesCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:98 description:@"Translator was missing mapping for MPModelPropertyTVSeasonEpisodesCount"];
 }
 
 + (void)__MPModelPropertyTVSeasonYear__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:97 description:@"Translator was missing mapping for MPModelPropertyTVSeasonYear"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:97 description:@"Translator was missing mapping for MPModelPropertyTVSeasonYear"];
 }
 
 + (void)__MPModelPropertyTVSeasonDescriptionText__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:96 description:@"Translator was missing mapping for MPModelPropertyTVSeasonDescriptionText"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:96 description:@"Translator was missing mapping for MPModelPropertyTVSeasonDescriptionText"];
 }
 
 + (void)__MPModelPropertyTVSeasonNumber__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVSeason.m" lineNumber:95 description:@"Translator was missing mapping for MPModelPropertyTVSeasonNumber"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVSeason.m" lineNumber:95 description:@"Translator was missing mapping for MPModelPropertyTVSeasonNumber"];
 }
 
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
-  v3 = [(MPModelTVSeason *)self isLibraryAdded];
-  v4 = [(MPModelTVSeason *)self hasCleanContent];
-  v5 = [(MPModelTVSeason *)self hasExplicitContent];
-  v6 = [(MPModelTVSeason *)self isLibraryAddEligible];
+  isLibraryAdded = [(MPModelTVSeason *)self isLibraryAdded];
+  hasCleanContent = [(MPModelTVSeason *)self hasCleanContent];
+  hasExplicitContent = [(MPModelTVSeason *)self hasExplicitContent];
+  isLibraryAddEligible = [(MPModelTVSeason *)self isLibraryAddEligible];
   v7 = 0x100000000;
-  if (!v6)
+  if (!isLibraryAddEligible)
   {
     v7 = 0;
   }
 
   v8 = 0x1000000;
-  if (!v5)
+  if (!hasExplicitContent)
   {
     v8 = 0;
   }
 
   v9 = 0x10000;
-  if (!v4)
+  if (!hasCleanContent)
   {
     v9 = 0;
   }
 
   v10 = 257;
-  if (!v3)
+  if (!isLibraryAdded)
   {
     v10 = 1;
   }

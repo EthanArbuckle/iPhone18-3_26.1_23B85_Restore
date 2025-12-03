@@ -1,61 +1,61 @@
 @interface GDGraphActivityEvent
-- (GDGraphActivityEvent)initWithEntityIdentifierField:(id)a3 eventTypesField:(id)a4 nameField:(id)a5 dateField:(id)a6 attendeesField:(id)a7 cooccurringEventsField:(id)a8 subEventsField:(id)a9 locationsField:(id)a10 startLocationField:(id)a11 endLocationField:(id)a12 activityTypeObjectField:(id)a13 activityTypeField:(id)a14 confidenceField:(id)a15 allNameField:(id)a16 allDateField:(id)a17 allStartLocationField:(id)a18 allEndLocationField:(id)a19 allActivityTypeObjectField:(id)a20 allActivityTypeField:(id)a21 allConfidenceField:(id)a22;
+- (GDGraphActivityEvent)initWithEntityIdentifierField:(id)field eventTypesField:(id)typesField nameField:(id)nameField dateField:(id)dateField attendeesField:(id)attendeesField cooccurringEventsField:(id)eventsField subEventsField:(id)subEventsField locationsField:(id)self0 startLocationField:(id)self1 endLocationField:(id)self2 activityTypeObjectField:(id)self3 activityTypeField:(id)self4 confidenceField:(id)self5 allNameField:(id)self6 allDateField:(id)self7 allStartLocationField:(id)self8 allEndLocationField:(id)self9 allActivityTypeObjectField:(id)typeObjectField allActivityTypeField:(id)activityTypeField allConfidenceField:(id)allConfidenceField;
 @end
 
 @implementation GDGraphActivityEvent
 
-- (GDGraphActivityEvent)initWithEntityIdentifierField:(id)a3 eventTypesField:(id)a4 nameField:(id)a5 dateField:(id)a6 attendeesField:(id)a7 cooccurringEventsField:(id)a8 subEventsField:(id)a9 locationsField:(id)a10 startLocationField:(id)a11 endLocationField:(id)a12 activityTypeObjectField:(id)a13 activityTypeField:(id)a14 confidenceField:(id)a15 allNameField:(id)a16 allDateField:(id)a17 allStartLocationField:(id)a18 allEndLocationField:(id)a19 allActivityTypeObjectField:(id)a20 allActivityTypeField:(id)a21 allConfidenceField:(id)a22
+- (GDGraphActivityEvent)initWithEntityIdentifierField:(id)field eventTypesField:(id)typesField nameField:(id)nameField dateField:(id)dateField attendeesField:(id)attendeesField cooccurringEventsField:(id)eventsField subEventsField:(id)subEventsField locationsField:(id)self0 startLocationField:(id)self1 endLocationField:(id)self2 activityTypeObjectField:(id)self3 activityTypeField:(id)self4 confidenceField:(id)self5 allNameField:(id)self6 allDateField:(id)self7 allStartLocationField:(id)self8 allEndLocationField:(id)self9 allActivityTypeObjectField:(id)typeObjectField allActivityTypeField:(id)activityTypeField allConfidenceField:(id)allConfidenceField
 {
-  v55 = a3;
-  v37 = a4;
-  v54 = a4;
-  v38 = a5;
-  v53 = a5;
-  v39 = a6;
-  v52 = a6;
-  v40 = a7;
-  v51 = a7;
-  v50 = a8;
-  v49 = a9;
-  v48 = a10;
-  v47 = a11;
-  v46 = a12;
-  v45 = a13;
-  v44 = a14;
-  v27 = a15;
-  v28 = a16;
-  v29 = a17;
-  v30 = a18;
-  v31 = a19;
-  v43 = a20;
-  v42 = a21;
-  v32 = a22;
+  fieldCopy = field;
+  typesFieldCopy = typesField;
+  typesFieldCopy2 = typesField;
+  nameFieldCopy = nameField;
+  nameFieldCopy2 = nameField;
+  dateFieldCopy = dateField;
+  dateFieldCopy2 = dateField;
+  attendeesFieldCopy = attendeesField;
+  attendeesFieldCopy2 = attendeesField;
+  eventsFieldCopy = eventsField;
+  subEventsFieldCopy = subEventsField;
+  locationsFieldCopy = locationsField;
+  locationFieldCopy = locationField;
+  endLocationFieldCopy = endLocationField;
+  objectFieldCopy = objectField;
+  typeFieldCopy = typeField;
+  confidenceFieldCopy = confidenceField;
+  allNameFieldCopy = allNameField;
+  allDateFieldCopy = allDateField;
+  startLocationFieldCopy = startLocationField;
+  allEndLocationFieldCopy = allEndLocationField;
+  typeObjectFieldCopy = typeObjectField;
+  activityTypeFieldCopy = activityTypeField;
+  allConfidenceFieldCopy = allConfidenceField;
   v56.receiver = self;
   v56.super_class = GDGraphActivityEvent;
   v33 = [(GDGraphActivityEvent *)&v56 init];
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_entityIdentifier, a3);
-    objc_storeStrong(&v34->_eventTypes, v37);
-    objc_storeStrong(&v34->_name, v38);
-    objc_storeStrong(&v34->_date, v39);
-    objc_storeStrong(&v34->_attendees, v40);
-    objc_storeStrong(&v34->_cooccurringEvents, a8);
-    objc_storeStrong(&v34->_subEvents, a9);
-    objc_storeStrong(&v34->_locations, a10);
-    objc_storeStrong(&v34->_startLocation, a11);
-    objc_storeStrong(&v34->_endLocation, a12);
-    objc_storeStrong(&v34->_activityTypeObject, a13);
-    objc_storeStrong(&v34->_activityType, a14);
-    objc_storeStrong(&v34->_confidence, a15);
-    objc_storeStrong(&v34->_allName, a16);
-    objc_storeStrong(&v34->_allDate, a17);
-    objc_storeStrong(&v34->_allStartLocation, a18);
-    objc_storeStrong(&v34->_allEndLocation, a19);
-    objc_storeStrong(&v34->_allActivityTypeObject, a20);
-    objc_storeStrong(&v34->_allActivityType, a21);
-    objc_storeStrong(&v34->_allConfidence, a22);
+    objc_storeStrong(&v33->_entityIdentifier, field);
+    objc_storeStrong(&v34->_eventTypes, typesFieldCopy);
+    objc_storeStrong(&v34->_name, nameFieldCopy);
+    objc_storeStrong(&v34->_date, dateFieldCopy);
+    objc_storeStrong(&v34->_attendees, attendeesFieldCopy);
+    objc_storeStrong(&v34->_cooccurringEvents, eventsField);
+    objc_storeStrong(&v34->_subEvents, subEventsField);
+    objc_storeStrong(&v34->_locations, locationsField);
+    objc_storeStrong(&v34->_startLocation, locationField);
+    objc_storeStrong(&v34->_endLocation, endLocationField);
+    objc_storeStrong(&v34->_activityTypeObject, objectField);
+    objc_storeStrong(&v34->_activityType, typeField);
+    objc_storeStrong(&v34->_confidence, confidenceField);
+    objc_storeStrong(&v34->_allName, allNameField);
+    objc_storeStrong(&v34->_allDate, allDateField);
+    objc_storeStrong(&v34->_allStartLocation, startLocationField);
+    objc_storeStrong(&v34->_allEndLocation, allEndLocationField);
+    objc_storeStrong(&v34->_allActivityTypeObject, typeObjectField);
+    objc_storeStrong(&v34->_allActivityType, activityTypeField);
+    objc_storeStrong(&v34->_allConfidence, allConfidenceField);
   }
 
   return v34;

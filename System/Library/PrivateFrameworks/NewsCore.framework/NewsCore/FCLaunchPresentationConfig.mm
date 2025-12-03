@@ -1,21 +1,21 @@
 @interface FCLaunchPresentationConfig
-- (FCLaunchPresentationConfig)initWithConfigDictionary:(id)a3;
+- (FCLaunchPresentationConfig)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCLaunchPresentationConfig
 
-- (FCLaunchPresentationConfig)initWithConfigDictionary:(id)a3
+- (FCLaunchPresentationConfig)initWithConfigDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = FCLaunchPresentationConfig;
   v5 = [(FCLaunchPresentationConfig *)&v24 init];
   if (v5)
   {
-    v5->_configVersion = FCAppConfigurationIntegerValue(v4, @"configVersion", 0);
-    v5->_presentationRequirementTimeout = FCAppConfigurationDoubleValue(v4, @"presentationRequirementTimeout", 5.0);
-    v6 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"presentationOperations", 0);
+    v5->_configVersion = FCAppConfigurationIntegerValue(dictionaryCopy, @"configVersion", 0);
+    v5->_presentationRequirementTimeout = FCAppConfigurationDoubleValue(dictionaryCopy, @"presentationRequirementTimeout", 5.0);
+    v6 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"presentationOperations", 0);
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
     v20 = 0u;
     v21 = 0u;

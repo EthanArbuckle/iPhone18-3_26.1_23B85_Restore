@@ -1,38 +1,38 @@
 @interface CKTranscriptBackgroundChannelController
-+ (BOOL)channelNeedsUpdate:(id)a3 forChatGUID:(id)a4 deviceIndependentID:(id)a5 backgroundGUID:(id)a6 posterConfiguration:(id)a7;
++ (BOOL)channelNeedsUpdate:(id)update forChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID posterConfiguration:(id)configuration;
 + (CKTranscriptBackgroundChannelController)sharedTranscriptBackgroundChannelController;
 + (id)_sWorkQueue;
-+ (void)_updateChannelUsingUpdater:(id)a3 channel:(id)a4 posterConfiguration:(id)a5 chatGUID:(id)a6 deviceIndependentID:(id)a7 backgroundGUID:(id)a8;
++ (void)_updateChannelUsingUpdater:(id)updater channel:(id)channel posterConfiguration:(id)configuration chatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID;
 - (BOOL)_bypassesPosterGalleryCache;
 - (BOOL)isChannelControllerReady;
 - (CKTranscriptBackgroundChannelController)init;
-- (CKTranscriptBackgroundChannelController)initWithDirectory:(id)a3;
-- (id)channelForChatGUID:(id)a3;
-- (id)channelForChatGUIDBlockingIfNeeded:(id)a3;
-- (void)_asyncFetchNewGalleryObjectForChannel:(id)a3 fetchRequest:(id)a4 completion:(id)a5;
-- (void)_createChannelWithChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 retryIfNeeded:(BOOL)a6 completion:(id)a7;
-- (void)_fetchPosterGalleryForChannel:(id)a3 fetchRequest:(id)a4 completion:(id)a5;
-- (void)_updateChannel:(id)a3 usingChatGUID:(id)a4 deviceIndependentID:(id)a5 backgroundGUID:(id)a6 posterConfiguration:(id)a7 completion:(id)a8;
-- (void)channelForChatGUID:(id)a3 completion:(id)a4;
-- (void)cleanUpLegacyChannelsForChatGUID:(id)a3 completion:(id)a4;
-- (void)createChannelWithChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 completion:(id)a6;
-- (void)fetchPosterGalleryForChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 fetchRequest:(id)a6 completion:(id)a7;
-- (void)loadChannelAsyncForChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 createsChannelIfNeeded:(BOOL)a6 completion:(id)a7;
-- (void)prewarmChannelSnapshotsForChatGUID:(id)a3 forInterfaceStyle:(int64_t)a4 orientation:(int64_t)a5;
-- (void)removeChannelForChatGUID:(id)a3 completion:(id)a4;
-- (void)updateChannelUsingChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 posterConfiguration:(id)a6 completion:(id)a7;
+- (CKTranscriptBackgroundChannelController)initWithDirectory:(id)directory;
+- (id)channelForChatGUID:(id)d;
+- (id)channelForChatGUIDBlockingIfNeeded:(id)needed;
+- (void)_asyncFetchNewGalleryObjectForChannel:(id)channel fetchRequest:(id)request completion:(id)completion;
+- (void)_createChannelWithChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID retryIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)_fetchPosterGalleryForChannel:(id)channel fetchRequest:(id)request completion:(id)completion;
+- (void)_updateChannel:(id)channel usingChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID posterConfiguration:(id)configuration completion:(id)completion;
+- (void)channelForChatGUID:(id)d completion:(id)completion;
+- (void)cleanUpLegacyChannelsForChatGUID:(id)d completion:(id)completion;
+- (void)createChannelWithChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID completion:(id)completion;
+- (void)fetchPosterGalleryForChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID fetchRequest:(id)request completion:(id)completion;
+- (void)loadChannelAsyncForChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID createsChannelIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)prewarmChannelSnapshotsForChatGUID:(id)d forInterfaceStyle:(int64_t)style orientation:(int64_t)orientation;
+- (void)removeChannelForChatGUID:(id)d completion:(id)completion;
+- (void)updateChannelUsingChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID posterConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation CKTranscriptBackgroundChannelController
 
-- (CKTranscriptBackgroundChannelController)initWithDirectory:(id)a3
+- (CKTranscriptBackgroundChannelController)initWithDirectory:(id)directory
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   Helper_x8__OBJC_CLASS___PRUISPosterChannelConfiguration = gotLoadHelper_x8__OBJC_CLASS___PRUISPosterChannelConfiguration(v5);
   v8 = *(v7 + 136);
   v21 = 0;
-  v9 = [v8 backdropChannelConfigurationForURL:v4 error:{&v21, Helper_x8__OBJC_CLASS___PRUISPosterChannelConfiguration}];
+  v9 = [v8 backdropChannelConfigurationForURL:directoryCopy error:{&v21, Helper_x8__OBJC_CLASS___PRUISPosterChannelConfiguration}];
   v10 = v21;
   [v9 setReapOptions:4];
   if (v9)
@@ -43,21 +43,21 @@
     if (v11)
     {
       objc_initWeak(location, v11);
-      v12 = [objc_opt_class() _sWorkQueue];
+      _sWorkQueue = [objc_opt_class() _sWorkQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __61__CKTranscriptBackgroundChannelController_initWithDirectory___block_invoke;
       block[3] = &unk_1E72EE0D0;
       v18 = v9;
       objc_copyWeak(&v19, location);
-      dispatch_async(v12, block);
+      dispatch_async(_sWorkQueue, block);
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(location);
     }
 
     self = v11;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -67,19 +67,19 @@
       v14 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v4 absoluteString];
+        absoluteString = [directoryCopy absoluteString];
         *location = 138412546;
-        *&location[4] = v15;
+        *&location[4] = absoluteString;
         v23 = 2112;
         v24 = v10;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Failed to create channel configuration for URL: %@ due to: %@", location, 0x16u);
       }
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 void __61__CKTranscriptBackgroundChannelController_initWithDirectory___block_invoke(uint64_t a1, double a2)
@@ -102,7 +102,7 @@ void __61__CKTranscriptBackgroundChannelController_initWithDirectory___block_inv
   if (v6)
   {
     self = [(CKTranscriptBackgroundChannelController *)self initWithDirectory:v5];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -112,19 +112,19 @@ void __61__CKTranscriptBackgroundChannelController_initWithDirectory___block_inv
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v5 absoluteString];
+        absoluteString = [v5 absoluteString];
         *buf = 138412546;
-        v14 = v10;
+        v14 = absoluteString;
         v15 = 2112;
         v16 = v7;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Failed to create channels directory at '%@' due to: %@", buf, 0x16u);
       }
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 + (CKTranscriptBackgroundChannelController)sharedTranscriptBackgroundChannelController
@@ -133,7 +133,7 @@ void __61__CKTranscriptBackgroundChannelController_initWithDirectory___block_inv
   block[1] = 3221225472;
   block[2] = __86__CKTranscriptBackgroundChannelController_sharedTranscriptBackgroundChannelController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTranscriptBackgroundChannelController_onceToken != -1)
   {
     dispatch_once(&sharedTranscriptBackgroundChannelController_onceToken, block);
@@ -175,28 +175,28 @@ void __54__CKTranscriptBackgroundChannelController__sWorkQueue__block_invoke()
 
 - (BOOL)isChannelControllerReady
 {
-  v2 = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
-  v3 = v2 != 0;
+  pkChannelController = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
+  v3 = pkChannelController != 0;
 
   return v3;
 }
 
-- (void)channelForChatGUID:(id)a3 completion:(id)a4
+- (void)channelForChatGUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [objc_opt_class() _sWorkQueue];
+  _sWorkQueue = [objc_opt_class() _sWorkQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__CKTranscriptBackgroundChannelController_channelForChatGUID_completion___block_invoke;
   v11[3] = &unk_1E72EE750;
-  v12 = v6;
-  v9 = v6;
+  v12 = dCopy;
+  v9 = dCopy;
   objc_copyWeak(&v14, &location);
-  v13 = v7;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v13 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(_sWorkQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -230,22 +230,22 @@ void __73__CKTranscriptBackgroundChannelController_channelForChatGUID_completion
   }
 }
 
-- (id)channelForChatGUID:(id)a3
+- (id)channelForChatGUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if ([(CKTranscriptBackgroundChannelController *)self isChannelControllerReady])
   {
-    v5 = [v4 ck_asUUID];
-    v6 = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
+    ck_asUUID = [dCopy ck_asUUID];
+    pkChannelController = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
     v7 = objc_opt_respondsToSelector();
 
-    v8 = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
-    v9 = v8;
+    pkChannelController2 = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
+    v9 = pkChannelController2;
     if (v7)
     {
       v14 = 0;
-      v10 = [v8 channelForIdentifierIfImmediatelyAvailable:v5 error:&v14];
+      v10 = [pkChannelController2 channelForIdentifierIfImmediatelyAvailable:ck_asUUID error:&v14];
       v11 = v14;
 
       if (v11 && IMOSLoggingEnabled())
@@ -264,7 +264,7 @@ void __73__CKTranscriptBackgroundChannelController_channelForChatGUID_completion
 
     else
     {
-      v10 = [v8 channelForIdentifier:v5];
+      v10 = [pkChannelController2 channelForIdentifier:ck_asUUID];
     }
   }
 
@@ -276,14 +276,14 @@ void __73__CKTranscriptBackgroundChannelController_channelForChatGUID_completion
   return v10;
 }
 
-- (id)channelForChatGUIDBlockingIfNeeded:(id)a3
+- (id)channelForChatGUIDBlockingIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(CKTranscriptBackgroundChannelController *)self isChannelControllerReady])
   {
-    v5 = [v4 ck_asUUID];
-    v6 = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
-    v7 = [v6 channelForIdentifier:v5];
+    ck_asUUID = [neededCopy ck_asUUID];
+    pkChannelController = [(CKTranscriptBackgroundChannelController *)self pkChannelController];
+    v7 = [pkChannelController channelForIdentifier:ck_asUUID];
   }
 
   else
@@ -294,22 +294,22 @@ void __73__CKTranscriptBackgroundChannelController_channelForChatGUID_completion
   return v7;
 }
 
-- (void)prewarmChannelSnapshotsForChatGUID:(id)a3 forInterfaceStyle:(int64_t)a4 orientation:(int64_t)a5
+- (void)prewarmChannelSnapshotsForChatGUID:(id)d forInterfaceStyle:(int64_t)style orientation:(int64_t)orientation
 {
-  v8 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
-  v9 = [v8 ck_asUUID];
-  v10 = [objc_opt_class() _sWorkQueue];
+  ck_asUUID = [dCopy ck_asUUID];
+  _sWorkQueue = [objc_opt_class() _sWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __108__CKTranscriptBackgroundChannelController_prewarmChannelSnapshotsForChatGUID_forInterfaceStyle_orientation___block_invoke;
   block[3] = &unk_1E72F5D60;
   objc_copyWeak(v14, &location);
-  v13 = v9;
-  v14[1] = a4;
-  v14[2] = a5;
-  v11 = v9;
-  dispatch_async(v10, block);
+  v13 = ck_asUUID;
+  v14[1] = style;
+  v14[2] = orientation;
+  v11 = ck_asUUID;
+  dispatch_async(_sWorkQueue, block);
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
@@ -335,10 +335,10 @@ void __108__CKTranscriptBackgroundChannelController_prewarmChannelSnapshotsForCh
   }
 }
 
-- (void)removeChannelForChatGUID:(id)a3 completion:(id)a4
+- (void)removeChannelForChatGUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -346,9 +346,9 @@ void __108__CKTranscriptBackgroundChannelController_prewarmChannelSnapshotsForCh
   v9[3] = &unk_1E72F5D88;
   v9[4] = self;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v10 = v8;
-  [(CKTranscriptBackgroundChannelController *)self channelForChatGUID:v6 completion:v9];
+  [(CKTranscriptBackgroundChannelController *)self channelForChatGUID:dCopy completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -415,23 +415,23 @@ uint64_t __79__CKTranscriptBackgroundChannelController_removeChannelForChatGUID_
   return result;
 }
 
-- (void)cleanUpLegacyChannelsForChatGUID:(id)a3 completion:(id)a4
+- (void)cleanUpLegacyChannelsForChatGUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _legacy_ck_asUUID];
+  dCopy = d;
+  completionCopy = completion;
+  _legacy_ck_asUUID = [dCopy _legacy_ck_asUUID];
   objc_initWeak(&location, self);
-  v9 = [objc_opt_class() _sWorkQueue];
+  _sWorkQueue = [objc_opt_class() _sWorkQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __87__CKTranscriptBackgroundChannelController_cleanUpLegacyChannelsForChatGUID_completion___block_invoke;
   v12[3] = &unk_1E72EE778;
   objc_copyWeak(&v15, &location);
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = _legacy_ck_asUUID;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = _legacy_ck_asUUID;
+  dispatch_async(_sWorkQueue, v12);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -473,26 +473,26 @@ void __87__CKTranscriptBackgroundChannelController_cleanUpLegacyChannelsForChatG
 LABEL_7:
 }
 
-- (void)loadChannelAsyncForChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 createsChannelIfNeeded:(BOOL)a6 completion:(id)a7
+- (void)loadChannelAsyncForChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID createsChannelIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __140__CKTranscriptBackgroundChannelController_loadChannelAsyncForChatGUID_deviceIndependentID_backgroundGUID_createsChannelIfNeeded_completion___block_invoke;
   v20[3] = &unk_1E72F5DD8;
-  v16 = v15;
+  v16 = completionCopy;
   v24 = v16;
-  v26 = a6;
+  neededCopy = needed;
   objc_copyWeak(&v25, &location);
-  v17 = v12;
+  v17 = dCopy;
   v21 = v17;
-  v18 = v13;
+  v18 = iDCopy;
   v22 = v18;
-  v19 = v14;
+  v19 = uIDCopy;
   v23 = v19;
   [(CKTranscriptBackgroundChannelController *)self channelForChatGUID:v17 completion:v20];
 
@@ -540,44 +540,44 @@ void __140__CKTranscriptBackgroundChannelController_loadChannelAsyncForChatGUID_
   }
 }
 
-- (void)createChannelWithChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 completion:(id)a6
+- (void)createChannelWithChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __115__CKTranscriptBackgroundChannelController_createChannelWithChatGUID_deviceIndependentID_backgroundGUID_completion___block_invoke;
   v12[3] = &unk_1E72EE940;
-  v13 = v10;
-  v11 = v10;
-  [(CKTranscriptBackgroundChannelController *)self _createChannelWithChatGUID:a3 deviceIndependentID:a4 backgroundGUID:a5 retryIfNeeded:1 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(CKTranscriptBackgroundChannelController *)self _createChannelWithChatGUID:d deviceIndependentID:iD backgroundGUID:uID retryIfNeeded:1 completion:v12];
 }
 
-- (void)_createChannelWithChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 retryIfNeeded:(BOOL)a6 completion:(id)a7
+- (void)_createChannelWithChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID retryIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [v12 ck_asUUID];
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  completionCopy = completion;
+  ck_asUUID = [dCopy ck_asUUID];
   objc_initWeak(&location, self);
-  v17 = [objc_opt_class() _sWorkQueue];
+  _sWorkQueue = [objc_opt_class() _sWorkQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_deviceIndependentID_backgroundGUID_retryIfNeeded_completion___block_invoke;
   v23[3] = &unk_1E72F5E28;
   objc_copyWeak(&v29, &location);
-  v24 = v16;
-  v25 = v12;
-  v26 = v13;
-  v27 = v14;
-  v30 = a6;
-  v28 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = v16;
-  dispatch_async(v17, v23);
+  v24 = ck_asUUID;
+  v25 = dCopy;
+  v26 = iDCopy;
+  v27 = uIDCopy;
+  neededCopy = needed;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = uIDCopy;
+  v20 = iDCopy;
+  v21 = dCopy;
+  v22 = ck_asUUID;
+  dispatch_async(_sWorkQueue, v23);
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
@@ -661,21 +661,21 @@ void __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_d
   }
 }
 
-+ (void)_updateChannelUsingUpdater:(id)a3 channel:(id)a4 posterConfiguration:(id)a5 chatGUID:(id)a6 deviceIndependentID:(id)a7 backgroundGUID:(id)a8
++ (void)_updateChannelUsingUpdater:(id)updater channel:(id)channel posterConfiguration:(id)configuration chatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID
 {
   v35 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v28 = a6;
-  v16 = a7;
-  v17 = a8;
-  [v13 setPosterConfiguration:v15];
-  v18 = [MEMORY[0x1E695DF20] ck_newChannelContextUserInfoDictionaryWithDeviceIndependentID:v16];
+  updaterCopy = updater;
+  channelCopy = channel;
+  configurationCopy = configuration;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  [updaterCopy setPosterConfiguration:configurationCopy];
+  v18 = [MEMORY[0x1E695DF20] ck_newChannelContextUserInfoDictionaryWithDeviceIndependentID:iDCopy];
   Helper_x8__OBJC_CLASS___PRUISPosterChannelContext = gotLoadHelper_x8__OBJC_CLASS___PRUISPosterChannelContext(v19);
   v22 = [*(v21 + 144) backdropContextWithUserInfo:{v18, Helper_x8__OBJC_CLASS___PRUISPosterChannelContext}];
-  v23 = [v14 channelContext];
-  v24 = [v22 isEqual:v23];
+  channelContext = [channelCopy channelContext];
+  v24 = [v22 isEqual:channelContext];
   if (IMOSLoggingEnabled())
   {
     v25 = OSLogHandleForIMFoundationCategory();
@@ -684,9 +684,9 @@ void __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_d
       *buf = 136315650;
       v30 = "+[CKTranscriptBackgroundChannelController _updateChannelUsingUpdater:channel:posterConfiguration:chatGUID:deviceIndependentID:backgroundGUID:]";
       v31 = 2112;
-      v32 = v14;
+      v32 = channelCopy;
       v33 = 2112;
-      v34 = v15;
+      v34 = configurationCopy;
       _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "%s channel %@ updating with poster config %@", buf, 0x20u);
     }
   }
@@ -697,7 +697,7 @@ void __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_d
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v30 = v23;
+      v30 = channelContext;
       v31 = 2112;
       v32 = v22;
       _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_INFO, "About to compare existing context %@, with new context: %@", buf, 0x16u);
@@ -716,18 +716,18 @@ void __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_d
       }
     }
 
-    [v13 setChannelContext:v22];
+    [updaterCopy setChannelContext:v22];
   }
 }
 
-- (void)updateChannelUsingChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 posterConfiguration:(id)a6 completion:(id)a7
+- (void)updateChannelUsingChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID posterConfiguration:(id)configuration completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  configurationCopy = configuration;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (IMOSLoggingEnabled())
   {
@@ -737,9 +737,9 @@ void __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_d
       *buf = 136315650;
       v32 = "[CKTranscriptBackgroundChannelController updateChannelUsingChatGUID:deviceIndependentID:backgroundGUID:posterConfiguration:completion:]";
       v33 = 2112;
-      v34 = v12;
+      v34 = dCopy;
       v35 = 2112;
-      v36 = v15;
+      v36 = configurationCopy;
       _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "%s Will update channel for chat GUID %@ with configuration %@", buf, 0x20u);
     }
   }
@@ -748,16 +748,16 @@ void __130__CKTranscriptBackgroundChannelController__createChannelWithChatGUID_d
   v23[1] = 3221225472;
   v23[2] = __136__CKTranscriptBackgroundChannelController_updateChannelUsingChatGUID_deviceIndependentID_backgroundGUID_posterConfiguration_completion___block_invoke;
   v23[3] = &unk_1E72F5E78;
-  v18 = v12;
+  v18 = dCopy;
   v24 = v18;
   objc_copyWeak(&v29, &location);
-  v19 = v13;
+  v19 = iDCopy;
   v25 = v19;
-  v20 = v14;
+  v20 = uIDCopy;
   v26 = v20;
-  v21 = v15;
+  v21 = configurationCopy;
   v27 = v21;
-  v22 = v16;
+  v22 = completionCopy;
   v28 = v22;
   [(CKTranscriptBackgroundChannelController *)self channelForChatGUID:v18 completion:v23];
 
@@ -874,16 +874,16 @@ void __136__CKTranscriptBackgroundChannelController_updateChannelUsingChatGUID_d
   }
 }
 
-- (void)_updateChannel:(id)a3 usingChatGUID:(id)a4 deviceIndependentID:(id)a5 backgroundGUID:(id)a6 posterConfiguration:(id)a7 completion:(id)a8
+- (void)_updateChannel:(id)channel usingChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID posterConfiguration:(id)configuration completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [objc_opt_class() channelNeedsUpdate:v14 forChatGUID:v15 deviceIndependentID:v16 backgroundGUID:v17 posterConfiguration:v18];
+  channelCopy = channel;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v20 = [objc_opt_class() channelNeedsUpdate:channelCopy forChatGUID:dCopy deviceIndependentID:iDCopy backgroundGUID:uIDCopy posterConfiguration:configurationCopy];
   if (IMOSLoggingEnabled())
   {
     v21 = OSLogHandleForIMFoundationCategory();
@@ -900,7 +900,7 @@ void __136__CKTranscriptBackgroundChannelController_updateChannelUsingChatGUID_d
       v39 = 2112;
       v40 = v22;
       v41 = 2112;
-      v42 = v14;
+      v42 = channelCopy;
       _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "%s update needed %@ for channel %@", buf, 0x20u);
     }
   }
@@ -908,20 +908,20 @@ void __136__CKTranscriptBackgroundChannelController_updateChannelUsingChatGUID_d
   if (v20)
   {
     objc_initWeak(buf, self);
-    v23 = [objc_opt_class() _sWorkQueue];
+    _sWorkQueue = [objc_opt_class() _sWorkQueue];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __138__CKTranscriptBackgroundChannelController__updateChannel_usingChatGUID_deviceIndependentID_backgroundGUID_posterConfiguration_completion___block_invoke_2;
     v27[3] = &unk_1E72F5EC8;
     objc_copyWeak(&v34, buf);
-    v28 = v14;
-    v29 = v18;
-    v30 = v15;
-    v31 = v16;
-    v32 = v17;
-    v33 = v19;
-    v24 = v19;
-    dispatch_async(v23, v27);
+    v28 = channelCopy;
+    v29 = configurationCopy;
+    v30 = dCopy;
+    v31 = iDCopy;
+    v32 = uIDCopy;
+    v33 = completionCopy;
+    v24 = completionCopy;
+    dispatch_async(_sWorkQueue, v27);
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(buf);
@@ -929,14 +929,14 @@ void __136__CKTranscriptBackgroundChannelController_updateChannelUsingChatGUID_d
 
   else
   {
-    v25 = [objc_opt_class() _sWorkQueue];
+    _sWorkQueue2 = [objc_opt_class() _sWorkQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __138__CKTranscriptBackgroundChannelController__updateChannel_usingChatGUID_deviceIndependentID_backgroundGUID_posterConfiguration_completion___block_invoke;
     block[3] = &unk_1E72EBDB8;
-    v36 = v19;
-    v26 = v19;
-    dispatch_async(v25, block);
+    v36 = completionCopy;
+    v26 = completionCopy;
+    dispatch_async(_sWorkQueue2, block);
   }
 }
 
@@ -999,48 +999,48 @@ void __138__CKTranscriptBackgroundChannelController__updateChannel_usingChatGUID
   (*(*(a1 + 32) + 16))();
 }
 
-+ (BOOL)channelNeedsUpdate:(id)a3 forChatGUID:(id)a4 deviceIndependentID:(id)a5 backgroundGUID:(id)a6 posterConfiguration:(id)a7
++ (BOOL)channelNeedsUpdate:(id)update forChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID posterConfiguration:(id)configuration
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v30 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v11 posterConfiguration];
+  updateCopy = update;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  configurationCopy = configuration;
+  posterConfiguration = [updateCopy posterConfiguration];
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v32 = v15;
+      v32 = posterConfiguration;
       v33 = 2112;
-      v34 = v14;
+      v34 = configurationCopy;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "About to compare existing config: %@, with new config: %@", buf, 0x16u);
     }
   }
 
-  if (([v15 isEqual:v14] & 1) != 0 || !(v14 | v15))
+  if (([posterConfiguration isEqual:configurationCopy] & 1) != 0 || !(configurationCopy | posterConfiguration))
   {
-    v17 = [MEMORY[0x1E695DF20] ck_newChannelContextUserInfoDictionaryWithDeviceIndependentID:v12];
+    v17 = [MEMORY[0x1E695DF20] ck_newChannelContextUserInfoDictionaryWithDeviceIndependentID:iDCopy];
     Helper_x8__OBJC_CLASS___PRUISPosterChannelContext = gotLoadHelper_x8__OBJC_CLASS___PRUISPosterChannelContext(v18);
     v21 = [*(v20 + 144) backdropContextWithUserInfo:{v17, Helper_x8__OBJC_CLASS___PRUISPosterChannelContext}];
-    v22 = [v11 channelContext];
+    channelContext = [updateCopy channelContext];
     if (IMOSLoggingEnabled())
     {
       v23 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v32 = v22;
+        v32 = channelContext;
         v33 = 2112;
         v34 = v21;
         _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "About to compare existing context %@, with new context: %@", buf, 0x16u);
       }
     }
 
-    v24 = [v22 isEqual:v21];
+    v24 = [channelContext isEqual:v21];
     v25 = IMOSLoggingEnabled();
     if (v24)
     {
@@ -1089,28 +1089,28 @@ LABEL_26:
   return v27;
 }
 
-- (void)fetchPosterGalleryForChatGUID:(id)a3 deviceIndependentID:(id)a4 backgroundGUID:(id)a5 fetchRequest:(id)a6 completion:(id)a7
+- (void)fetchPosterGalleryForChatGUID:(id)d deviceIndependentID:(id)iD backgroundGUID:(id)uID fetchRequest:(id)request completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  requestCopy = request;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __132__CKTranscriptBackgroundChannelController_fetchPosterGalleryForChatGUID_deviceIndependentID_backgroundGUID_fetchRequest_completion___block_invoke;
   v22[3] = &unk_1E72F5F40;
   objc_copyWeak(&v28, &location);
-  v17 = v15;
+  v17 = requestCopy;
   v23 = v17;
-  v18 = v16;
+  v18 = completionCopy;
   v27 = v18;
-  v19 = v12;
+  v19 = dCopy;
   v24 = v19;
-  v20 = v13;
+  v20 = iDCopy;
   v25 = v20;
-  v21 = v14;
+  v21 = uIDCopy;
   v26 = v21;
   [(CKTranscriptBackgroundChannelController *)self channelForChatGUID:v19 completion:v22];
 
@@ -1179,25 +1179,25 @@ void __132__CKTranscriptBackgroundChannelController_fetchPosterGalleryForChatGUI
   [WeakRetained _fetchPosterGalleryForChannel:v3 fetchRequest:v5 completion:v6];
 }
 
-- (void)_fetchPosterGalleryForChannel:(id)a3 fetchRequest:(id)a4 completion:(id)a5
+- (void)_fetchPosterGalleryForChannel:(id)channel fetchRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  requestCopy = request;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [objc_opt_class() _sWorkQueue];
+  _sWorkQueue = [objc_opt_class() _sWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__CKTranscriptBackgroundChannelController__fetchPosterGalleryForChannel_fetchRequest_completion___block_invoke;
   block[3] = &unk_1E72F5F68;
-  v16 = v8;
-  v12 = v8;
+  v16 = channelCopy;
+  v12 = channelCopy;
   objc_copyWeak(&v19, &location);
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, block);
+  v17 = requestCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = requestCopy;
+  dispatch_async(_sWorkQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -1340,25 +1340,25 @@ void __97__CKTranscriptBackgroundChannelController__fetchPosterGalleryForChannel
   }
 }
 
-- (void)_asyncFetchNewGalleryObjectForChannel:(id)a3 fetchRequest:(id)a4 completion:(id)a5
+- (void)_asyncFetchNewGalleryObjectForChannel:(id)channel fetchRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 preferredSuggestionCount];
-  v11 = [objc_opt_class() _sWorkQueue];
+  channelCopy = channel;
+  requestCopy = request;
+  completionCopy = completion;
+  preferredSuggestionCount = [requestCopy preferredSuggestionCount];
+  _sWorkQueue = [objc_opt_class() _sWorkQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __105__CKTranscriptBackgroundChannelController__asyncFetchNewGalleryObjectForChannel_fetchRequest_completion___block_invoke;
   v15[3] = &unk_1E72EDE78;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v7;
-  dispatch_async(v11, v15);
+  v16 = channelCopy;
+  v17 = requestCopy;
+  v18 = completionCopy;
+  v19 = preferredSuggestionCount;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = channelCopy;
+  dispatch_async(_sWorkQueue, v15);
 }
 
 void __105__CKTranscriptBackgroundChannelController__asyncFetchNewGalleryObjectForChannel_fetchRequest_completion___block_invoke(uint64_t a1)

@@ -1,11 +1,11 @@
 @interface UAFUserManager
 + (id)getConcurrentQueue;
-+ (id)removeUser:(id)a3;
++ (id)removeUser:(id)user;
 + (void)performUserCleanup;
-+ (void)performUserCleanupOnQueue:(id)a3 completion:(id)a4;
-+ (void)removeUser:(id)a3 queue:(id)a4 completion:(id)a5;
-+ (void)updateLastSeenForCurrentUserOnQueue:(id)a3 completion:(id)a4;
-+ (void)updateLastSeenForUser:(id)a3 queue:(id)a4 completion:(id)a5;
++ (void)performUserCleanupOnQueue:(id)queue completion:(id)completion;
++ (void)removeUser:(id)user queue:(id)queue completion:(id)completion;
++ (void)updateLastSeenForCurrentUserOnQueue:(id)queue completion:(id)completion;
++ (void)updateLastSeenForUser:(id)user queue:(id)queue completion:(id)completion;
 @end
 
 @implementation UAFUserManager
@@ -30,14 +30,14 @@ void __36__UAFUserManager_getConcurrentQueue__block_invoke()
   qword_1ED7D11A0 = v0;
 }
 
-+ (void)updateLastSeenForCurrentUserOnQueue:(id)a3 completion:(id)a4
++ (void)updateLastSeenForCurrentUserOnQueue:(id)queue completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v5 = +[UAFUserManager getConcurrentQueue];
+    queueCopy = +[UAFUserManager getConcurrentQueue];
   }
 
   v16 = 0;
@@ -56,7 +56,7 @@ void __36__UAFUserManager_getConcurrentQueue__block_invoke()
 
   if (v10)
   {
-    [UAFUserManager updateLastSeenForUser:v7 queue:v5 completion:v6];
+    [UAFUserManager updateLastSeenForUser:v7 queue:queueCopy completion:completionCopy];
   }
 
   else
@@ -71,49 +71,49 @@ void __36__UAFUserManager_getConcurrentQueue__block_invoke()
       _os_log_error_impl(&dword_1BCF2C000, v11, OS_LOG_TYPE_ERROR, "%s Could not retrieve current user: %@", buf, 0x16u);
     }
 
-    if (v6)
+    if (completionCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __65__UAFUserManager_updateLastSeenForCurrentUserOnQueue_completion___block_invoke;
       block[3] = &unk_1E7FFD940;
-      v15 = v6;
+      v15 = completionCopy;
       v14 = v9;
-      dispatch_async(v5, block);
+      dispatch_async(queueCopy, block);
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)updateLastSeenForUser:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)updateLastSeenForUser:(id)user queue:(id)queue completion:(id)completion
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  userCopy = user;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v8 = +[UAFUserManager getConcurrentQueue];
+    queueCopy = +[UAFUserManager getConcurrentQueue];
   }
 
   v10 = UAFGetLogCategory(&UAFLogContextClient);
   v11 = v10;
-  if (v7)
+  if (userCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v30 = "+[UAFUserManager updateLastSeenForUser:queue:completion:]";
       v31 = 2112;
-      v32 = v7;
+      v32 = userCopy;
       _os_log_impl(&dword_1BCF2C000, v11, OS_LOG_TYPE_INFO, "%s Updating last seen time for %@", buf, 0x16u);
     }
 
     v27[0] = @"Operation";
     v27[1] = @"SubscriptionUser";
     v28[0] = @"UpdateLastSeen";
-    v28[1] = v7;
+    v28[1] = userCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v13 = +[UAFAssetSetManager createXPCConnection];
     v19[0] = MEMORY[0x1E69E9820];
@@ -121,9 +121,9 @@ void __36__UAFUserManager_getConcurrentQueue__block_invoke()
     v19[2] = __57__UAFUserManager_updateLastSeenForUser_queue_completion___block_invoke_289;
     v19[3] = &unk_1E7FFE2F8;
     v20 = v13;
-    v23 = v9;
-    v21 = v8;
-    v22 = v7;
+    v23 = completionCopy;
+    v21 = queueCopy;
+    v22 = userCopy;
     v14 = v13;
     [v14 operationWithConfig:v12 completion:v19];
 
@@ -137,7 +137,7 @@ void __36__UAFUserManager_getConcurrentQueue__block_invoke()
     _os_log_error_impl(&dword_1BCF2C000, v11, OS_LOG_TYPE_ERROR, "%s Cannot update last seen time for nil user", buf, 0xCu);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v15 = MEMORY[0x1E696ABC0];
     v33 = *MEMORY[0x1E696A578];
@@ -150,9 +150,9 @@ void __36__UAFUserManager_getConcurrentQueue__block_invoke()
     block[2] = __57__UAFUserManager_updateLastSeenForUser_queue_completion___block_invoke;
     block[3] = &unk_1E7FFD940;
     v25 = v17;
-    v26 = v9;
+    v26 = completionCopy;
     v12 = v17;
-    dispatch_async(v8, block);
+    dispatch_async(queueCopy, block);
 
     v14 = v26;
 LABEL_11:
@@ -202,15 +202,15 @@ uint64_t __57__UAFUserManager_updateLastSeenForUser_queue_completion___block_inv
   return result;
 }
 
-+ (void)removeUser:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)removeUser:(id)user queue:(id)queue completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  userCopy = user;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v8 = +[UAFUserManager getConcurrentQueue];
+    queueCopy = +[UAFUserManager getConcurrentQueue];
   }
 
   v10 = UAFGetLogCategory(&UAFLogContextClient);
@@ -219,14 +219,14 @@ uint64_t __57__UAFUserManager_updateLastSeenForUser_queue_completion___block_inv
     *buf = 136315394;
     v26 = "+[UAFUserManager removeUser:queue:completion:]";
     v27 = 2112;
-    v28 = v7;
+    v28 = userCopy;
     _os_log_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_INFO, "%s Removing user '%@'", buf, 0x16u);
   }
 
   v23[0] = @"Operation";
   v23[1] = @"SubscriptionUser";
   v24[0] = @"RemoveUser";
-  v24[1] = v7;
+  v24[1] = userCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v12 = +[UAFAssetSetManager createXPCConnection];
   v18[0] = MEMORY[0x1E69E9820];
@@ -234,12 +234,12 @@ uint64_t __57__UAFUserManager_updateLastSeenForUser_queue_completion___block_inv
   v18[2] = __46__UAFUserManager_removeUser_queue_completion___block_invoke;
   v18[3] = &unk_1E7FFE2F8;
   v19 = v12;
-  v20 = v8;
-  v21 = v7;
-  v22 = v9;
-  v13 = v7;
-  v14 = v8;
-  v15 = v9;
+  v20 = queueCopy;
+  v21 = userCopy;
+  v22 = completionCopy;
+  v13 = userCopy;
+  v14 = queueCopy;
+  v15 = completionCopy;
   v16 = v12;
   [v16 operationWithConfig:v11 completion:v18];
 
@@ -287,10 +287,10 @@ uint64_t __46__UAFUserManager_removeUser_queue_completion___block_invoke_2(void 
   return result;
 }
 
-+ (id)removeUser:(id)a3
++ (id)removeUser:(id)user
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  userCopy = user;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -300,7 +300,7 @@ uint64_t __46__UAFUserManager_removeUser_queue_completion___block_invoke_2(void 
   v4 = +[UAFSubscriptionStoreManager defaultManager];
   v5 = (v24 + 5);
   obj = v24[5];
-  v6 = [v4 getSubscribers:v3 error:&obj];
+  v6 = [v4 getSubscribers:userCopy error:&obj];
   objc_storeStrong(v5, obj);
 
   if (v24[5])
@@ -334,7 +334,7 @@ uint64_t __46__UAFUserManager_removeUser_queue_completion___block_invoke_2(void 
     v18[1] = 3221225472;
     v18[2] = __29__UAFUserManager_removeUser___block_invoke;
     v18[3] = &unk_1E7FFE320;
-    v19 = v3;
+    v19 = userCopy;
     v20 = &v23;
     v21 = v35;
     [v6 enumerateObjectsUsingBlock:v18];
@@ -359,12 +359,12 @@ LABEL_7:
         *buf = 136315394;
         v30 = "+[UAFUserManager removeUser:]";
         v31 = 2112;
-        v32 = v3;
+        v32 = userCopy;
         _os_log_impl(&dword_1BCF2C000, v9, OS_LOG_TYPE_DEFAULT, "%s Removing user '%@' from database", buf, 0x16u);
       }
 
       v10 = +[UAFSubscriptionStoreManager writeManager];
-      v11 = [v10 removeUser:v3];
+      v11 = [v10 removeUser:userCopy];
       v12 = v24[5];
       v24[5] = v11;
     }
@@ -376,7 +376,7 @@ LABEL_7:
       *buf = 136315650;
       v30 = "+[UAFUserManager removeUser:]";
       v31 = 2112;
-      v32 = v3;
+      v32 = userCopy;
       v33 = 2114;
       v34 = v14;
       _os_log_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_DEFAULT, "%s Completing removal of user '%@' with: %{public}@", buf, 0x20u);
@@ -473,14 +473,14 @@ void __29__UAFUserManager_removeUser___block_invoke_293(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-+ (void)performUserCleanupOnQueue:(id)a3 completion:(id)a4
++ (void)performUserCleanupOnQueue:(id)queue completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v5 = +[UAFUserManager getConcurrentQueue];
+    queueCopy = +[UAFUserManager getConcurrentQueue];
   }
 
   v17 = @"Operation";
@@ -491,11 +491,11 @@ void __29__UAFUserManager_removeUser___block_invoke_293(uint64_t a1, void *a2)
   v13[1] = 3221225472;
   v13[2] = __55__UAFUserManager_performUserCleanupOnQueue_completion___block_invoke;
   v13[3] = &unk_1E7FFE348;
-  v15 = v5;
-  v16 = v6;
+  v15 = queueCopy;
+  v16 = completionCopy;
   v14 = v8;
-  v9 = v5;
-  v10 = v6;
+  v9 = queueCopy;
+  v10 = completionCopy;
   v11 = v8;
   [v11 operationWithConfig:v7 completion:v13];
 
@@ -595,10 +595,10 @@ uint64_t __55__UAFUserManager_performUserCleanupOnQueue_completion___block_invok
         _os_log_impl(&dword_1BCF2C000, v9, OS_LOG_TYPE_DEFAULT, "%s Beginning user validation", v36, 0xCu);
       }
 
-      v10 = [MEMORY[0x1E695DF00] distantFuture];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
       v11 = *(&buf + 1);
       obj = *(*(&buf + 1) + 40);
-      v12 = [v2 getUsersOlderThanDate:v10 error:&obj];
+      v12 = [v2 getUsersOlderThanDate:distantFuture error:&obj];
       objc_storeStrong((v11 + 40), obj);
 
       if (*(*(&buf + 1) + 40))

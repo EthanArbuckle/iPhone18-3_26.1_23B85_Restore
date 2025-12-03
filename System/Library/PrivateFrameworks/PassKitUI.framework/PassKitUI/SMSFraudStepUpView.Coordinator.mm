@@ -1,14 +1,14 @@
 @interface SMSFraudStepUpView.Coordinator
 - (_TtCV9PassKitUI18SMSFraudStepUpView11Coordinator)init;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
 @end
 
 @implementation SMSFraudStepUpView.Coordinator
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCV9PassKitUI18SMSFraudStepUpView11Coordinator_dismissAction);
-  v5 = self;
+  selfCopy = self;
   v4 = sub_1BE048964();
   v3(v4);
 }

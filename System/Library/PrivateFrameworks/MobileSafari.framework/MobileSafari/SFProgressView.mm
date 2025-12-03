@@ -1,37 +1,37 @@
 @interface SFProgressView
 - (CGSize)intrinsicContentSize;
-- (SFProgressView)initWithFrame:(CGRect)a3;
+- (SFProgressView)initWithFrame:(CGRect)frame;
 - (void)_updateRectangularProgressFill;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setRadius:(double)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTrackWidth:(double)a3;
+- (void)setProgress:(double)progress animated:(BOOL)animated completion:(id)completion;
+- (void)setRadius:(double)radius;
+- (void)setStyle:(int64_t)style;
+- (void)setTrackWidth:(double)width;
 @end
 
 @implementation SFProgressView
 
-- (SFProgressView)initWithFrame:(CGRect)a3
+- (SFProgressView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SFProgressView;
-  v3 = [(SFProgressView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFProgressView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(SFRingView);
     trackRing = v3->_trackRing;
     v3->_trackRing = v4;
 
-    v6 = [MEMORY[0x1E69DC888] systemFillColor];
-    [(SFRingView *)v3->_trackRing setTintColor:v6];
+    systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+    [(SFRingView *)v3->_trackRing setTintColor:systemFillColor];
 
     [(SFProgressView *)v3 addSubview:v3->_trackRing];
     v7 = objc_alloc_init(SFRingView);
     progressRing = v3->_progressRing;
     v3->_progressRing = v7;
 
-    v9 = [(SFRingView *)v3->_progressRing shapeLayer];
-    [v9 setStrokeEnd:0.0];
+    shapeLayer = [(SFRingView *)v3->_progressRing shapeLayer];
+    [shapeLayer setStrokeEnd:0.0];
 
     [(SFProgressView *)v3 addSubview:v3->_progressRing];
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -41,8 +41,8 @@
     [(UIView *)v3->_rectangularFillView setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(UIView *)v3->_rectangularFillView _setContinuousCornerRadius:1.0];
     [(UIView *)v3->_rectangularFillView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v13 = [v12 colorWithAlphaComponent:0.33];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v13 = [systemBlueColor colorWithAlphaComponent:0.33];
     [(UIView *)v3->_rectangularFillView setBackgroundColor:v13];
 
     [(UIView *)v3->_rectangularFillView setHidden:1];
@@ -53,15 +53,15 @@
   return v3;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    if (a3 <= 2)
+    self->_style = style;
+    if (style <= 2)
     {
-      v4 = 4u >> (a3 & 7);
-      v5 = 3u >> (a3 & 7);
+      v4 = 4u >> (style & 7);
+      v5 = 3u >> (style & 7);
       [(SFRingView *)self->_trackRing setHidden:v4 & 1];
       [(SFRingView *)self->_progressRing setHidden:v4 & 1];
       rectangularFillView = self->_rectangularFillView;
@@ -71,35 +71,35 @@
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setProgress:(double)progress animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__SFProgressView_setProgress_animated_completion___block_invoke;
   aBlock[3] = &unk_1E721D338;
-  v9 = v8;
+  v9 = completionCopy;
   v18 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (self->_progress == a3)
+  if (self->_progress == progress)
   {
     v10[2](v10);
   }
 
   else
   {
-    self->_progress = a3;
+    self->_progress = progress;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__SFProgressView_setProgress_animated_completion___block_invoke_2;
     v16[3] = &unk_1E721BAC0;
     v16[4] = self;
-    *&v16[5] = a3;
+    *&v16[5] = progress;
     v12 = _Block_copy(v16);
     v13 = MEMORY[0x1E69DD250];
-    if (v5)
+    if (animatedCopy)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -149,22 +149,22 @@ void __50__SFProgressView_setProgress_animated_completion___block_invoke_2(uint6
   }
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  if (self->_radius != a3)
+  if (self->_radius != radius)
   {
-    self->_radius = a3;
+    self->_radius = radius;
     [(SFProgressView *)self invalidateIntrinsicContentSize];
 
     [(SFProgressView *)self setNeedsLayout];
   }
 }
 
-- (void)setTrackWidth:(double)a3
+- (void)setTrackWidth:(double)width
 {
-  if (self->_trackWidth != a3)
+  if (self->_trackWidth != width)
   {
-    self->_trackWidth = a3;
+    self->_trackWidth = width;
     [(SFProgressView *)self setNeedsLayout];
   }
 }
@@ -177,14 +177,14 @@ void __50__SFProgressView_setProgress_animated_completion___block_invoke_2(uint6
   trackWidth = self->_trackWidth;
   v4 = trackWidth * 0.5;
   v5 = self->_radius - trackWidth * 0.5 + self->_radius - trackWidth * 0.5;
-  v6 = [(SFRingView *)self->_trackRing shapeLayer];
-  [v6 setLineWidth:trackWidth];
+  shapeLayer = [(SFRingView *)self->_trackRing shapeLayer];
+  [shapeLayer setLineWidth:trackWidth];
 
   [(SFRingView *)self->_trackRing setRadius:self->_radius - trackWidth * 0.5];
   [(SFRingView *)self->_trackRing setFrame:trackWidth * 0.5, trackWidth * 0.5, v5, v5];
   v7 = self->_trackWidth;
-  v8 = [(SFRingView *)self->_progressRing shapeLayer];
-  [v8 setLineWidth:v7];
+  shapeLayer2 = [(SFRingView *)self->_progressRing shapeLayer];
+  [shapeLayer2 setLineWidth:v7];
 
   [(SFRingView *)self->_progressRing setRadius:self->_radius - v4];
   [(SFRingView *)self->_progressRing setFrame:v4, v4, v5, v5];

@@ -1,7 +1,7 @@
 @interface _AFBluetoothHeadGestureConfigurationMutation
 - (BOOL)getIsEnabled;
 - (BOOL)getIsSupported;
-- (_AFBluetoothHeadGestureConfigurationMutation)initWithBase:(id)a3;
+- (_AFBluetoothHeadGestureConfigurationMutation)initWithBase:(id)base;
 - (int64_t)getAcceptGesture;
 - (int64_t)getRejectGesture;
 @end
@@ -60,16 +60,16 @@
   }
 }
 
-- (_AFBluetoothHeadGestureConfigurationMutation)initWithBase:(id)a3
+- (_AFBluetoothHeadGestureConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFBluetoothHeadGestureConfigurationMutation;
   v6 = [(_AFBluetoothHeadGestureConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

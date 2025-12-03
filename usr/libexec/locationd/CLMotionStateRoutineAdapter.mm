@@ -1,18 +1,18 @@
 @interface CLMotionStateRoutineAdapter
-- (CLMotionStateRoutineAdapter)initWithMotionState:(void *)a3;
+- (CLMotionStateRoutineAdapter)initWithMotionState:(void *)state;
 @end
 
 @implementation CLMotionStateRoutineAdapter
 
-- (CLMotionStateRoutineAdapter)initWithMotionState:(void *)a3
+- (CLMotionStateRoutineAdapter)initWithMotionState:(void *)state
 {
   v5.receiver = self;
   v5.super_class = CLMotionStateRoutineAdapter;
   result = [(CLMotionStateRoutineAdapter *)&v5 init];
   if (result)
   {
-    result->_motionState = a3;
-    result->_valid = a3 != 0;
+    result->_motionState = state;
+    result->_valid = state != 0;
   }
 
   return result;

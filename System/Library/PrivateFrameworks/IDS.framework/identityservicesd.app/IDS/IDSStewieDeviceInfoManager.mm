@@ -1,26 +1,26 @@
 @interface IDSStewieDeviceInfoManager
-- (IDSStewieDeviceInfoManager)initWithDelegate:(id)a3 queue:(id)a4 pushHandler:(id)a5 accountStore:(id)a6 stewieStore:(id)a7;
-- (IDSStewieDeviceInfoManager)initWithDelegate:(id)a3 stewieStore:(id)a4 queue:(id)a5;
+- (IDSStewieDeviceInfoManager)initWithDelegate:(id)delegate queue:(id)queue pushHandler:(id)handler accountStore:(id)store stewieStore:(id)stewieStore;
+- (IDSStewieDeviceInfoManager)initWithDelegate:(id)delegate stewieStore:(id)store queue:(id)queue;
 - (IDSStewieDeviceInfoManagerDelegate)delegate;
-- (void)_requestFeature:(id)a3 completion:(id)a4;
-- (void)accountCredentialChanged:(id)a3;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)_requestFeature:(id)feature completion:(id)completion;
+- (void)accountCredentialChanged:(id)changed;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 - (void)dealloc;
-- (void)handler:(id)a3 pushTokenChanged:(id)a4;
-- (void)localeChanged:(id)a3;
+- (void)handler:(id)handler pushTokenChanged:(id)changed;
+- (void)localeChanged:(id)changed;
 - (void)performInitialDeviceInfoCheck;
-- (void)requestAccessTokensForFeatures:(id)a3;
+- (void)requestAccessTokensForFeatures:(id)features;
 @end
 
 @implementation IDSStewieDeviceInfoManager
 
-- (IDSStewieDeviceInfoManager)initWithDelegate:(id)a3 stewieStore:(id)a4 queue:(id)a5
+- (IDSStewieDeviceInfoManager)initWithDelegate:(id)delegate stewieStore:(id)store queue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  queueCopy = queue;
+  storeCopy = store;
+  delegateCopy = delegate;
   v11 = objc_alloc(IMWeakLinkClass());
   if (qword_100CBD628 != -1)
   {
@@ -31,34 +31,34 @@
   v13 = [v11 initWithAccountTypes:v12 delegate:self];
 
   v14 = +[IDSPushHandler sharedInstance];
-  v15 = [(IDSStewieDeviceInfoManager *)self initWithDelegate:v10 queue:v8 pushHandler:v14 accountStore:v13 stewieStore:v9];
+  v15 = [(IDSStewieDeviceInfoManager *)self initWithDelegate:delegateCopy queue:queueCopy pushHandler:v14 accountStore:v13 stewieStore:storeCopy];
 
   return v15;
 }
 
-- (IDSStewieDeviceInfoManager)initWithDelegate:(id)a3 queue:(id)a4 pushHandler:(id)a5 accountStore:(id)a6 stewieStore:(id)a7
+- (IDSStewieDeviceInfoManager)initWithDelegate:(id)delegate queue:(id)queue pushHandler:(id)handler accountStore:(id)store stewieStore:(id)stewieStore
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  handlerCopy = handler;
+  storeCopy = store;
+  stewieStoreCopy = stewieStore;
   v27.receiver = self;
   v27.super_class = IDSStewieDeviceInfoManager;
   v17 = [(IDSStewieDeviceInfoManager *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v12);
-    objc_storeStrong(&v18->_mainQueue, a4);
-    objc_storeStrong(&v18->_pushHandler, a5);
-    [(IDSPushHandler *)v18->_pushHandler addListener:v18 topics:0 commands:0 queue:v13];
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_mainQueue, queue);
+    objc_storeStrong(&v18->_pushHandler, handler);
+    [(IDSPushHandler *)v18->_pushHandler addListener:v18 topics:0 commands:0 queue:queueCopy];
     v19 = +[NSNotificationCenter defaultCenter];
     [v19 addObserver:v18 selector:"localeChanged:" name:IMCurrentPreferredLanguageChangedNotification object:0];
 
-    objc_storeStrong(&v18->_accountStore, a6);
+    objc_storeStrong(&v18->_accountStore, store);
     [(ACMonitoredAccountStore *)v18->_accountStore registerWithCompletion:&stru_100BDEA78];
-    objc_storeStrong(&v18->_stewieStore, a7);
+    objc_storeStrong(&v18->_stewieStore, stewieStore);
     v20 = IMWeakLinkClass();
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -80,13 +80,13 @@
   [v3 removeObserver:self];
 
   [(IDSPushHandler *)self->_pushHandler removeListener:self];
-  v4 = [(IDSStewieDeviceInfoManager *)self featureChangeObserver];
+  featureChangeObserver = [(IDSStewieDeviceInfoManager *)self featureChangeObserver];
 
-  if (v4)
+  if (featureChangeObserver)
   {
     v5 = IMWeakLinkClass();
-    v6 = [(IDSStewieDeviceInfoManager *)self featureChangeObserver];
-    [v5 unregisterForFeatureChangeNotificationsUsingObserver:v6];
+    featureChangeObserver2 = [(IDSStewieDeviceInfoManager *)self featureChangeObserver];
+    [v5 unregisterForFeatureChangeNotificationsUsingObserver:featureChangeObserver2];
 
     [(IDSStewieDeviceInfoManager *)self setFeatureChangeObserver:0];
   }
@@ -105,17 +105,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Performing initial stewie device info check", v11, 2u);
   }
 
-  v4 = [(IDSStewieDeviceInfoManager *)self pushHandler];
-  v5 = [v4 pushToken];
-  [(IDSStewieDeviceInfoManager *)self setPushToken:v5];
+  pushHandler = [(IDSStewieDeviceInfoManager *)self pushHandler];
+  pushToken = [pushHandler pushToken];
+  [(IDSStewieDeviceInfoManager *)self setPushToken:pushToken];
 
   v6 = sub_100923B68(self);
   [(IDSStewieDeviceInfoManager *)self setLocale:v6];
 
-  v7 = [(IDSStewieDeviceInfoManager *)self accountStore];
-  v8 = [v7 aa_primaryAppleAccount];
-  v9 = [v8 normalizedDSID];
-  [(IDSStewieDeviceInfoManager *)self setDsid:v9];
+  accountStore = [(IDSStewieDeviceInfoManager *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  normalizedDSID = [aa_primaryAppleAccount normalizedDSID];
+  [(IDSStewieDeviceInfoManager *)self setDsid:normalizedDSID];
 
   v12[0] = @"networking.st.text-911";
   v12[1] = @"networking.st.find-my";
@@ -128,15 +128,15 @@
   sub_100923C7C(self);
 }
 
-- (void)requestAccessTokensForFeatures:(id)a3
+- (void)requestAccessTokensForFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v5 = objc_alloc_init(NSMutableArray);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = featuresCopy;
   v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -163,8 +163,8 @@
         v18 = v11;
         v12 = v11;
         [(IDSStewieDeviceInfoManager *)self _requestFeature:v10 completion:v17];
-        v13 = [v12 promise];
-        [v5 addObject:v13];
+        promise = [v12 promise];
+        [v5 addObject:promise];
 
         v9 = v9 + 1;
       }
@@ -185,129 +185,129 @@
   [v14 registerResultBlock:v16];
 }
 
-- (void)_requestFeature:(id)a3 completion:(id)a4
+- (void)_requestFeature:(id)feature completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  [IMWeakLinkClass() requestFeatureWithId:v6 completion:v5];
+  completionCopy = completion;
+  featureCopy = feature;
+  [IMWeakLinkClass() requestFeatureWithId:featureCopy completion:completionCopy];
 }
 
-- (void)handler:(id)a3 pushTokenChanged:(id)a4
+- (void)handler:(id)handler pushTokenChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = +[IDSFoundationLog stewieProvisioning];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 debugDescription];
+    v7 = [changedCopy debugDescription];
     v13 = 138412290;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received notification that push token changed { token: %@ }", &v13, 0xCu);
   }
 
-  v8 = [(IDSStewieDeviceInfoManager *)self pushToken];
-  v9 = [v5 isEqualToData:v8];
+  pushToken = [(IDSStewieDeviceInfoManager *)self pushToken];
+  v9 = [changedCopy isEqualToData:pushToken];
 
   if ((v9 & 1) == 0)
   {
-    sub_100924444(self, v5);
+    sub_100924444(self, changedCopy);
   }
 
-  v10 = [(IDSStewieStore *)self->_stewieStore persistedDeviceInfo];
-  v11 = [v10 pushToken];
+  persistedDeviceInfo = [(IDSStewieStore *)self->_stewieStore persistedDeviceInfo];
+  pushToken2 = [persistedDeviceInfo pushToken];
 
-  if (v5 && !v11)
+  if (changedCopy && !pushToken2)
   {
     v12 = +[IDSStewieProvisioningEventTracing sharedInstance];
     [v12 trackProvisioningStart];
   }
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = +[IDSFoundationLog stewieProvisioning];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = addedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore - accountWasAdded: %@", buf, 0xCu);
   }
 
-  v6 = [(IDSStewieDeviceInfoManager *)self mainQueue];
+  mainQueue = [(IDSStewieDeviceInfoManager *)self mainQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100924420;
   v8[3] = &unk_100BD6E40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = addedCopy;
+  v7 = addedCopy;
+  dispatch_async(mainQueue, v8);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v5 = +[IDSFoundationLog stewieProvisioning];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = removedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore - accountWasRemoved: %@", buf, 0xCu);
   }
 
-  v6 = [(IDSStewieDeviceInfoManager *)self mainQueue];
+  mainQueue = [(IDSStewieDeviceInfoManager *)self mainQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100924424;
   v8[3] = &unk_100BD6E40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = removedCopy;
+  v7 = removedCopy;
+  dispatch_async(mainQueue, v8);
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = a3;
+  modifiedCopy = modified;
   v5 = +[IDSFoundationLog stewieProvisioning];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = modifiedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore - accountWasModified: %@", buf, 0xCu);
   }
 
-  v6 = [(IDSStewieDeviceInfoManager *)self mainQueue];
+  mainQueue = [(IDSStewieDeviceInfoManager *)self mainQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100924428;
   v8[3] = &unk_100BD6E40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = modifiedCopy;
+  v7 = modifiedCopy;
+  dispatch_async(mainQueue, v8);
 }
 
-- (void)accountCredentialChanged:(id)a3
+- (void)accountCredentialChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[IDSFoundationLog stewieProvisioning];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore - accountCredentialChanged: %@", buf, 0xCu);
   }
 
-  v6 = [(IDSStewieDeviceInfoManager *)self mainQueue];
+  mainQueue = [(IDSStewieDeviceInfoManager *)self mainQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10092442C;
   v8[3] = &unk_100BD6E40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = changedCopy;
+  v7 = changedCopy;
+  dispatch_async(mainQueue, v8);
 }
 
 - (IDSStewieDeviceInfoManagerDelegate)delegate
@@ -317,7 +317,7 @@
   return WeakRetained;
 }
 
-- (void)localeChanged:(id)a3
+- (void)localeChanged:(id)changed
 {
   v5 = sub_100923B68(self);
   v6 = +[IDSFoundationLog stewieProvisioning];
@@ -327,15 +327,15 @@
     _os_log_impl(v7, v8, v9, v10, v11, 0xCu);
   }
 
-  v12 = [(IDSStewieDeviceInfoManager *)self locale];
-  v13 = [v5 isEqualToString:v12];
+  locale = [(IDSStewieDeviceInfoManager *)self locale];
+  v13 = [v5 isEqualToString:locale];
 
   if ((v13 & 1) == 0)
   {
     v14 = +[IDSFoundationLog stewieProvisioning];
     if (sub_1004DA798(v14))
     {
-      v20 = [(IDSStewieDeviceInfoManager *)self locale];
+      locale2 = [(IDSStewieDeviceInfoManager *)self locale];
       sub_1004DA78C();
       sub_1004DA77C();
       _os_log_impl(v15, v16, v17, v18, v19, 0x16u);

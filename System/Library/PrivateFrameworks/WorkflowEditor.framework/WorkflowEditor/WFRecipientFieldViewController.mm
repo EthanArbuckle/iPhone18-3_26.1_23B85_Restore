@@ -7,32 +7,32 @@
 - (NSString)fieldLabel;
 - (WFRecipientFieldViewController)init;
 - (WFRecipientFieldViewControllerDelegate)delegate;
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4;
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address;
 - (unint64_t)preferredSearchResultTypes;
-- (void)_addSearchResults:(id)a3 forTask:(id)a4;
-- (void)_cancelActiveSearchClearingText:(BOOL)a3;
+- (void)_addSearchResults:(id)results forTask:(id)task;
+- (void)_cancelActiveSearchClearingText:(BOOL)text;
 - (void)_finishedSearching;
-- (void)_presentContactViewControllerForRecipient:(id)a3;
+- (void)_presentContactViewControllerForRecipient:(id)recipient;
 - (void)_resetSearchResults;
-- (void)_startSearch:(id)a3;
+- (void)_startSearch:(id)search;
 - (void)_updateFetchContextChosenAddresses;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)cancel:(id)a3;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)cancel:(id)cancel;
 - (void)commitRemainingText;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
 - (void)configureBackgroundView;
 - (void)dealloc;
-- (void)done:(id)a3;
-- (void)finishedTaskWithID:(id)a3;
+- (void)done:(id)done;
+- (void)finishedTaskWithID:(id)d;
 - (void)loadView;
 - (void)requestContactAuthorization;
 - (void)requestContactsAccessIfNeeded;
-- (void)setEntries:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setEntries:(id)entries;
+- (void)setRecipients:(id)recipients;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -50,13 +50,13 @@
   [(WFRecipientFieldViewController *)self setContactAuthorizationStatus:WFCNContactAuthorizationStatus()];
   if (![(WFRecipientFieldViewController *)self contactAuthorizationStatus])
   {
-    v3 = [(WFRecipientFieldViewController *)self contactStore];
+    contactStore = [(WFRecipientFieldViewController *)self contactStore];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __63__WFRecipientFieldViewController_requestContactsAccessIfNeeded__block_invoke;
     v4[3] = &unk_279EDC2B0;
     v4[4] = self;
-    [v3 requestAccessForEntityType:0 completionHandler:v4];
+    [contactStore requestAccessForEntityType:0 completionHandler:v4];
   }
 }
 
@@ -85,15 +85,15 @@ void __63__WFRecipientFieldViewController_requestContactsAccessIfNeeded__block_i
 {
   if ([(WFRecipientFieldViewController *)self contactAuthorizationStatus]!= 3)
   {
-    v3 = [(WFRecipientFieldViewController *)self currentSearchTerm];
-    v4 = [v3 length];
+    currentSearchTerm = [(WFRecipientFieldViewController *)self currentSearchTerm];
+    v4 = [currentSearchTerm length];
 
     if (!v4)
     {
-      v6 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-      v7 = [(WFRecipientFieldViewController *)self autocompleteResultsController];
-      v8 = [v7 tableView];
-      [v8 setBackgroundView:v6];
+      tableBackgroundView = [(WFRecipientFieldViewController *)self tableBackgroundView];
+      autocompleteResultsController = [(WFRecipientFieldViewController *)self autocompleteResultsController];
+      tableView = [autocompleteResultsController tableView];
+      [tableView setBackgroundView:tableBackgroundView];
 
       if ([(WFRecipientFieldViewController *)self contactAuthorizationStatus])
       {
@@ -105,48 +105,48 @@ void __63__WFRecipientFieldViewController_requestContactsAccessIfNeeded__block_i
           }
 
           v18 = WFLocalizedString(@"Shortcuts doesn't have access to your contacts.");
-          v19 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-          [v19 setText:v18];
+          contactAuthorizationMessageLabel = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+          [contactAuthorizationMessageLabel setText:v18];
 
-          v16 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
-          v20 = v16;
+          contactAuthorizationStatusButton = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
+          autocompleteResultsController2 = contactAuthorizationStatusButton;
           v17 = 1;
           goto LABEL_12;
         }
 
         v9 = WFLocalizedString(@"To see suggestions while you type, grant access in Settings.");
-        v10 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-        [v10 setText:v9];
+        contactAuthorizationMessageLabel2 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+        [contactAuthorizationMessageLabel2 setText:v9];
 
-        v11 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
+        contactAuthorizationStatusButton2 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
         v12 = @"Shortcuts Settings";
       }
 
       else
       {
         v13 = WFLocalizedString(@"Shortcuts needs access to your contacts to provide suggestions while you type.");
-        v14 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-        [v14 setText:v13];
+        contactAuthorizationMessageLabel3 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+        [contactAuthorizationMessageLabel3 setText:v13];
 
-        v11 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
+        contactAuthorizationStatusButton2 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
         v12 = @"Allow";
       }
 
       v15 = WFLocalizedString(v12);
-      [v11 setTitle:v15 forState:0];
+      [contactAuthorizationStatusButton2 setTitle:v15 forState:0];
 
-      v16 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
-      v20 = v16;
+      contactAuthorizationStatusButton = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
+      autocompleteResultsController2 = contactAuthorizationStatusButton;
       v17 = 0;
 LABEL_12:
-      [v16 setHidden:v17];
+      [contactAuthorizationStatusButton setHidden:v17];
       goto LABEL_4;
     }
   }
 
-  v20 = [(WFRecipientFieldViewController *)self autocompleteResultsController];
-  v5 = [v20 tableView];
-  [v5 setBackgroundView:0];
+  autocompleteResultsController2 = [(WFRecipientFieldViewController *)self autocompleteResultsController];
+  tableView2 = [autocompleteResultsController2 tableView];
+  [tableView2 setBackgroundView:0];
 
 LABEL_4:
 }
@@ -157,9 +157,9 @@ LABEL_4:
   {
     if ([(WFRecipientFieldViewController *)self contactAuthorizationStatus]== 2)
     {
-      v4 = [MEMORY[0x277CFC248] sharedContext];
+      mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
       v3 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=SHORTCUTS"];
-      [v4 openURL:v3];
+      [mEMORY[0x277CFC248] openURL:v3];
     }
   }
 
@@ -172,33 +172,33 @@ LABEL_4:
 
 - (void)_updateFetchContextChosenAddresses
 {
-  v3 = [(CNComposeRecipientTextView *)self->_composeTextView uncommentedAddresses];
-  [(CNAutocompleteFetchContext *)self->_fetchContext setOtherAddressesAlreadyChosen:v3];
+  uncommentedAddresses = [(CNComposeRecipientTextView *)self->_composeTextView uncommentedAddresses];
+  [(CNAutocompleteFetchContext *)self->_fetchContext setOtherAddressesAlreadyChosen:uncommentedAddresses];
 }
 
 - (void)_resetSearchResults
 {
-  v3 = [(WFRecipientFieldViewController *)self searchResults];
-  [v3 removeAllObjects];
+  searchResults = [(WFRecipientFieldViewController *)self searchResults];
+  [searchResults removeAllObjects];
 
-  v5 = [(WFRecipientFieldViewController *)self searchResults];
-  v4 = [(WFRecipientFieldViewController *)self autocompleteResultsController];
-  [v4 setRecipients:v5];
+  searchResults2 = [(WFRecipientFieldViewController *)self searchResults];
+  autocompleteResultsController = [(WFRecipientFieldViewController *)self autocompleteResultsController];
+  [autocompleteResultsController setRecipients:searchResults2];
 }
 
-- (void)_cancelActiveSearchClearingText:(BOOL)a3
+- (void)_cancelActiveSearchClearingText:(BOOL)text
 {
-  if (a3)
+  if (text)
   {
-    v4 = [(WFRecipientFieldViewController *)self composeTextView];
-    [v4 clearText];
+    composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+    [composeTextView clearText];
   }
 
   if ([(WFRecipientFieldViewController *)self hasActiveSearch])
   {
-    v5 = [(WFRecipientFieldViewController *)self searchManager];
-    v6 = [(WFRecipientFieldViewController *)self lastSearchID];
-    [v5 cancelTaskWithID:v6];
+    searchManager = [(WFRecipientFieldViewController *)self searchManager];
+    lastSearchID = [(WFRecipientFieldViewController *)self lastSearchID];
+    [searchManager cancelTaskWithID:lastSearchID];
   }
 
   [(WFRecipientFieldViewController *)self _resetSearchResults];
@@ -208,16 +208,16 @@ LABEL_4:
 
 - (BOOL)hasActiveSearch
 {
-  v2 = [(WFRecipientFieldViewController *)self lastSearchID];
-  v3 = v2 != 0;
+  lastSearchID = [(WFRecipientFieldViewController *)self lastSearchID];
+  v3 = lastSearchID != 0;
 
   return v3;
 }
 
 - (void)_finishedSearching
 {
-  v3 = [(WFRecipientFieldViewController *)self searchResults];
-  v4 = [v3 count];
+  searchResults = [(WFRecipientFieldViewController *)self searchResults];
+  v4 = [searchResults count];
 
   if (!v4)
   {
@@ -226,49 +226,49 @@ LABEL_4:
   }
 }
 
-- (void)_startSearch:(id)a3
+- (void)_startSearch:(id)search
 {
-  v7 = a3;
-  [(WFRecipientFieldViewController *)self setCurrentSearchTerm:v7];
+  searchCopy = search;
+  [(WFRecipientFieldViewController *)self setCurrentSearchTerm:searchCopy];
   [(WFRecipientFieldViewController *)self configureBackgroundView];
   [(WFRecipientFieldViewController *)self _cancelActiveSearchClearingText:0];
-  v4 = [(WFRecipientFieldViewController *)self searchManager];
-  v5 = [(WFRecipientFieldViewController *)self fetchContext];
-  if (v7)
+  searchManager = [(WFRecipientFieldViewController *)self searchManager];
+  fetchContext = [(WFRecipientFieldViewController *)self fetchContext];
+  if (searchCopy)
   {
-    [v4 searchForText:v7 withAutocompleteFetchContext:v5 consumer:self];
+    [searchManager searchForText:searchCopy withAutocompleteFetchContext:fetchContext consumer:self];
   }
 
   else
   {
-    [v4 searchForCorecipientsWithAutocompleteFetchContext:v5 consumer:self];
+    [searchManager searchForCorecipientsWithAutocompleteFetchContext:fetchContext consumer:self];
   }
   v6 = ;
   [(WFRecipientFieldViewController *)self setLastSearchID:v6];
 }
 
-- (void)_addSearchResults:(id)a3 forTask:(id)a4
+- (void)_addSearchResults:(id)results forTask:(id)task
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(WFRecipientFieldViewController *)self lastSearchID];
-  v8 = [v6 isEqual:v7];
+  resultsCopy = results;
+  taskCopy = task;
+  lastSearchID = [(WFRecipientFieldViewController *)self lastSearchID];
+  v8 = [taskCopy isEqual:lastSearchID];
 
   if (v8)
   {
-    v9 = [v12 count];
+    v9 = [resultsCopy count];
 
     if (!v9)
     {
       goto LABEL_5;
     }
 
-    v10 = [(WFRecipientFieldViewController *)self searchResults];
-    [v10 addObjectsFromArray:v12];
+    searchResults = [(WFRecipientFieldViewController *)self searchResults];
+    [searchResults addObjectsFromArray:resultsCopy];
 
-    v7 = [(WFRecipientFieldViewController *)self searchResults];
-    v11 = [(WFRecipientFieldViewController *)self autocompleteResultsController];
-    [v11 setRecipients:v7];
+    lastSearchID = [(WFRecipientFieldViewController *)self searchResults];
+    autocompleteResultsController = [(WFRecipientFieldViewController *)self autocompleteResultsController];
+    [autocompleteResultsController setRecipients:lastSearchID];
   }
 
 LABEL_5:
@@ -281,12 +281,12 @@ LABEL_5:
   {
     v4 = objc_alloc_init(MEMORY[0x277CFBCB0]);
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v4 setBackgroundColor:clearColor];
 
     [v4 setDelegate:self];
-    v6 = [(WFRecipientFieldViewController *)self fieldLabel];
-    [v4 setLabel:v6];
+    fieldLabel = [(WFRecipientFieldViewController *)self fieldLabel];
+    [v4 setLabel:fieldLabel];
 
     [v4 setSeparatorHidden:0];
     v7 = self->_composeTextView;
@@ -298,19 +298,19 @@ LABEL_5:
   return composeTextView;
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = a3;
-  v5 = [(WFRecipientFieldViewController *)self composeTextView];
-  [v5 setRecipients:v4];
+  recipientsCopy = recipients;
+  composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+  [composeTextView setRecipients:recipientsCopy];
 }
 
 - (NSArray)recipients
 {
-  v2 = [(WFRecipientFieldViewController *)self composeTextView];
-  v3 = [v2 recipients];
+  composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+  recipients = [composeTextView recipients];
 
-  return v3;
+  return recipients;
 }
 
 - (CNAutocompleteSearchManager)searchManager
@@ -318,9 +318,9 @@ LABEL_5:
   searchManager = self->_searchManager;
   if (!searchManager)
   {
-    v4 = [(WFRecipientFieldViewController *)self supportedPersonProperties];
-    v5 = [v4 containsObject:&unk_288386A10];
-    v6 = [v4 containsObject:&unk_288386A28];
+    supportedPersonProperties = [(WFRecipientFieldViewController *)self supportedPersonProperties];
+    v5 = [supportedPersonProperties containsObject:&unk_288386A10];
+    v6 = [supportedPersonProperties containsObject:&unk_288386A28];
     v7 = v5 & v6 | ~v6;
 
     v8 = [objc_alloc(MEMORY[0x277CFBC98]) initWithAutocompleteSearchType:v7 & 1];
@@ -348,31 +348,31 @@ LABEL_5:
   }
 }
 
-- (void)_presentContactViewControllerForRecipient:(id)a3
+- (void)_presentContactViewControllerForRecipient:(id)recipient
 {
   v4 = MEMORY[0x277CBDC48];
-  v5 = [a3 contact];
-  v8 = [v4 viewControllerForUnknownContact:v5];
+  contact = [recipient contact];
+  v8 = [v4 viewControllerForUnknownContact:contact];
 
-  v6 = [(WFRecipientFieldViewController *)self contactStore];
-  [v8 setContactStore:v6];
+  contactStore = [(WFRecipientFieldViewController *)self contactStore];
+  [v8 setContactStore:contactStore];
 
   [v8 setModalPresentationStyle:3];
-  v7 = [(WFRecipientFieldViewController *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(WFRecipientFieldViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  if (a4)
+  if (recipient)
   {
-    v7 = a4;
+    recipientCopy = recipient;
     [(WFRecipientFieldViewController *)self _cancelActiveSearchClearingText:1];
-    v8 = [(WFRecipientFieldViewController *)self composeTextView];
-    [v8 addRecipient:v7];
+    composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+    [composeTextView addRecipient:recipientCopy];
 
-    v9 = [(WFRecipientFieldViewController *)self searchManager];
-    [v9 didSelectRecipient:v7 atIndex:a5];
+    searchManager = [(WFRecipientFieldViewController *)self searchManager];
+    [searchManager didSelectRecipient:recipientCopy atIndex:index];
 
     [(WFRecipientFieldViewController *)self _updateFetchContextChosenAddresses];
 
@@ -380,10 +380,10 @@ LABEL_5:
   }
 }
 
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CFC2B0] predictedTypeForHandleValue:v5 allowsCustomHandles:{-[WFRecipientFieldViewController allowsCustomHandles](self, "allowsCustomHandles")}];
+  addressCopy = address;
+  v6 = [MEMORY[0x277CFC2B0] predictedTypeForHandleValue:addressCopy allowsCustomHandles:{-[WFRecipientFieldViewController allowsCustomHandles](self, "allowsCustomHandles")}];
   if (v6 > 2)
   {
     v7 = 0;
@@ -391,47 +391,47 @@ LABEL_5:
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x277CFBCA0]) initWithContact:0 address:v5 kind:qword_2746607C0[v6]];
+    v7 = [objc_alloc(MEMORY[0x277CFBCA0]) initWithContact:0 address:addressCopy kind:qword_2746607C0[v6]];
   }
 
-  v8 = [v7 wf_contactFieldEntry];
+  wf_contactFieldEntry = [v7 wf_contactFieldEntry];
 
-  if (v8)
+  if (wf_contactFieldEntry)
   {
-    v8 = v7;
+    wf_contactFieldEntry = v7;
   }
 
-  return v8;
+  return wf_contactFieldEntry;
 }
 
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient
 {
-  v3 = [(WFRecipientFieldViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(WFRecipientFieldViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   v5 = objc_alloc_init(WFContactPickerCoordinator);
   [(WFRecipientFieldViewController *)self setContactPickerCoordinator:v5];
 
-  v6 = [(WFRecipientFieldViewController *)self supportedPersonProperties];
-  v7 = [(WFRecipientFieldViewController *)self contactPickerCoordinator];
-  [v7 setSupportedPersonProperties:v6];
+  supportedPersonProperties = [(WFRecipientFieldViewController *)self supportedPersonProperties];
+  contactPickerCoordinator = [(WFRecipientFieldViewController *)self contactPickerCoordinator];
+  [contactPickerCoordinator setSupportedPersonProperties:supportedPersonProperties];
 
-  v8 = [(WFRecipientFieldViewController *)self navigationController];
-  v9 = [(WFRecipientFieldViewController *)self contactPickerCoordinator];
-  [v9 setPresentingViewController:v8];
+  navigationController = [(WFRecipientFieldViewController *)self navigationController];
+  contactPickerCoordinator2 = [(WFRecipientFieldViewController *)self contactPickerCoordinator];
+  [contactPickerCoordinator2 setPresentingViewController:navigationController];
 
   objc_initWeak(&location, self);
-  v10 = [(WFRecipientFieldViewController *)self contactPickerCoordinator];
+  contactPickerCoordinator3 = [(WFRecipientFieldViewController *)self contactPickerCoordinator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipient___block_invoke;
   v11[3] = &unk_279EDC260;
   objc_copyWeak(&v12, &location);
-  [v10 presentContactPickerWithCompletionHandler:v11];
+  [contactPickerCoordinator3 presentContactPickerWithCompletionHandler:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -455,29 +455,29 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   [v8 setContactPickerCoordinator:0];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(WFRecipientFieldViewController *)self composeRecipientView:a3 composeRecipientForAddress:v6];
-  v8 = [v7 wf_contactFieldEntry];
+  addressCopy = address;
+  v7 = [(WFRecipientFieldViewController *)self composeRecipientView:view composeRecipientForAddress:addressCopy];
+  wf_contactFieldEntry = [v7 wf_contactFieldEntry];
 
-  if (v8)
+  if (wf_contactFieldEntry)
   {
-    v9 = [(WFRecipientFieldViewController *)self composeTextView];
-    [v9 addRecipient:v7];
+    composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+    [composeTextView addRecipient:v7];
   }
 
   else
   {
-    v9 = getWFGeneralLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    composeTextView = getWFGeneralLogObject();
+    if (os_log_type_enabled(composeTextView, OS_LOG_TYPE_ERROR))
     {
       v10 = 136315394;
       v11 = "[WFRecipientFieldViewController composeRecipientView:didFinishEnteringAddress:]";
       v12 = 2112;
-      v13 = v6;
-      _os_log_impl(&dword_2743F0000, v9, OS_LOG_TYPE_ERROR, "%s Invalid compose recipient for: %@", &v10, 0x16u);
+      v13 = addressCopy;
+      _os_log_impl(&dword_2743F0000, composeTextView, OS_LOG_TYPE_ERROR, "%s Invalid compose recipient for: %@", &v10, 0x16u);
     }
   }
 
@@ -485,22 +485,22 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   [(WFRecipientFieldViewController *)self _updateFetchContextChosenAddresses];
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  v5 = a4;
-  v6 = [(WFRecipientFieldViewController *)self composeTextView];
-  [v6 removeRecipient:v5];
+  recipientCopy = recipient;
+  composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+  [composeTextView removeRecipient:recipientCopy];
 
   [(WFRecipientFieldViewController *)self _cancelActiveSearchClearingText:1];
 
   [(WFRecipientFieldViewController *)self _updateFetchContextChosenAddresses];
 }
 
-- (void)finishedTaskWithID:(id)a3
+- (void)finishedTaskWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(WFRecipientFieldViewController *)self lastSearchID];
-  v6 = [v4 isEqual:v5];
+  dCopy = d;
+  lastSearchID = [(WFRecipientFieldViewController *)self lastSearchID];
+  v6 = [dCopy isEqual:lastSearchID];
 
   if (v6)
   {
@@ -511,15 +511,15 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
 
 - (NSArray)entries
 {
-  v2 = [(WFRecipientFieldViewController *)self recipients];
-  v3 = [v2 if_compactMap:&__block_literal_global_197];
+  recipients = [(WFRecipientFieldViewController *)self recipients];
+  v3 = [recipients if_compactMap:&__block_literal_global_197];
 
   return v3;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
-  v4 = [a3 if_map:&__block_literal_global_4734];
+  v4 = [entries if_map:&__block_literal_global_4734];
   [(WFRecipientFieldViewController *)self setRecipients:v4];
 }
 
@@ -540,28 +540,28 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
 
 - (void)commitRemainingText
 {
-  v2 = [(WFRecipientFieldViewController *)self composeTextView];
-  [v2 finishEnteringRecipient];
+  composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+  [composeTextView finishEnteringRecipient];
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v4 = [(WFRecipientFieldViewController *)self delegate];
-  [v4 recipientViewControllerDidFinish:self cancelled:0];
+  delegate = [(WFRecipientFieldViewController *)self delegate];
+  [delegate recipientViewControllerDidFinish:self cancelled:0];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(WFRecipientFieldViewController *)self delegate];
-  [v4 recipientViewControllerDidFinish:self cancelled:1];
+  delegate = [(WFRecipientFieldViewController *)self delegate];
+  [delegate recipientViewControllerDidFinish:self cancelled:1];
 }
 
 - (void)dealloc
 {
   if (self->_composeTextView)
   {
-    v3 = [(WFRecipientFieldViewController *)self composeTextView];
-    [v3 setDelegate:0];
+    composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+    [composeTextView setDelegate:0];
   }
 
   [(WFRecipientFieldViewController *)self _cancelActiveSearchClearingText:0];
@@ -570,11 +570,11 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   [(WFRecipientFieldViewController *)&v4 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WFRecipientFieldViewController;
-  [(WFRecipientFieldViewController *)&v4 viewDidAppear:a3];
+  [(WFRecipientFieldViewController *)&v4 viewDidAppear:appear];
   [(WFRecipientFieldViewController *)self requestContactsAccessIfNeeded];
   [(WFRecipientFieldViewController *)self _startSearch:0];
 }
@@ -585,8 +585,8 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   v4.super_class = WFRecipientFieldViewController;
   [(WFRecipientFieldViewController *)&v4 viewDidLoad];
   [(WFRecipientFieldViewController *)self configureBackgroundView];
-  v3 = [(WFRecipientFieldViewController *)self composeTextView];
-  [v3 becomeFirstResponder];
+  composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+  [composeTextView becomeFirstResponder];
 }
 
 - (void)loadView
@@ -595,61 +595,61 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   v121.receiver = self;
   v121.super_class = WFRecipientFieldViewController;
   [(WFRecipientFieldViewController *)&v121 loadView];
-  v3 = [(WFRecipientFieldViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(WFRecipientFieldViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(WFRecipientFieldViewController *)self composeTextView];
-  [v3 addSubview:v5];
-  v6 = [(CNAutocompleteResultsTableViewController *)self->_autocompleteResultsController tableView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setKeyboardDismissMode:1];
-  v7 = v6;
-  [v3 addSubview:v6];
-  v8 = [v5 heightAnchor];
+  composeTextView = [(WFRecipientFieldViewController *)self composeTextView];
+  [view addSubview:composeTextView];
+  tableView = [(CNAutocompleteResultsTableViewController *)self->_autocompleteResultsController tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [tableView setKeyboardDismissMode:1];
+  v7 = tableView;
+  [view addSubview:tableView];
+  heightAnchor = [composeTextView heightAnchor];
   [MEMORY[0x277CFBCB0] preferredHeight];
-  v9 = [v8 constraintEqualToConstant:?];
+  v9 = [heightAnchor constraintEqualToConstant:?];
   composeHeaderHeightConstraint = self->_composeHeaderHeightConstraint;
   self->_composeHeaderHeightConstraint = v9;
 
   v96 = MEMORY[0x277CCAAD0];
   v124[0] = self->_composeHeaderHeightConstraint;
-  v116 = [v5 leadingAnchor];
-  v114 = [v3 leadingAnchor];
-  v112 = [v116 constraintEqualToAnchor:v114];
+  leadingAnchor = [composeTextView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v112 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v124[1] = v112;
-  v110 = [v5 trailingAnchor];
-  v108 = [v3 trailingAnchor];
-  v106 = [v110 constraintEqualToAnchor:v108];
+  trailingAnchor = [composeTextView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v106 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v124[2] = v106;
-  v104 = [v5 widthAnchor];
-  v102 = [v3 widthAnchor];
-  v100 = [v104 constraintEqualToAnchor:v102];
+  widthAnchor = [composeTextView widthAnchor];
+  widthAnchor2 = [view widthAnchor];
+  v100 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v124[3] = v100;
-  v120 = v5;
-  v94 = [v5 topAnchor];
-  v98 = [v3 safeAreaLayoutGuide];
-  v92 = [v98 topAnchor];
-  v90 = [v94 constraintEqualToAnchor:v92];
+  v120 = composeTextView;
+  topAnchor = [composeTextView topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v90 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v124[4] = v90;
-  v88 = [v7 leadingAnchor];
-  v86 = [v3 leadingAnchor];
-  v84 = [v88 constraintEqualToAnchor:v86];
+  leadingAnchor3 = [v7 leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v84 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v124[5] = v84;
-  v82 = [v7 trailingAnchor];
-  v119 = v3;
-  v11 = [v3 trailingAnchor];
-  v12 = [v82 constraintEqualToAnchor:v11];
+  trailingAnchor3 = [v7 trailingAnchor];
+  v119 = view;
+  trailingAnchor4 = [view trailingAnchor];
+  v12 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v124[6] = v12;
   v13 = v7;
   v118 = v7;
-  v14 = [v7 topAnchor];
-  v15 = [v5 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  topAnchor3 = [v7 topAnchor];
+  bottomAnchor = [composeTextView bottomAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v124[7] = v16;
-  v17 = [v13 bottomAnchor];
-  v18 = [v3 bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  bottomAnchor2 = [v13 bottomAnchor];
+  bottomAnchor3 = [view bottomAnchor];
+  v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v124[8] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v124 count:9];
   [v96 activateConstraints:v20];
@@ -657,39 +657,39 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   v21 = objc_opt_new();
   [(WFRecipientFieldViewController *)self setTableBackgroundView:v21];
 
-  v22 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v23 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  [v23 setBackgroundColor:v22];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  tableBackgroundView = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  [tableBackgroundView setBackgroundColor:systemGroupedBackgroundColor];
 
   v24 = objc_opt_new();
   [(WFRecipientFieldViewController *)self setContactAuthorizationMessageLabel:v24];
 
-  v25 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contactAuthorizationMessageLabel = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+  [contactAuthorizationMessageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v26 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v27 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-  [v27 setTextColor:v26];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  contactAuthorizationMessageLabel2 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+  [contactAuthorizationMessageLabel2 setTextColor:secondaryLabelColor];
 
-  v28 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-  [v28 setTextAlignment:1];
+  contactAuthorizationMessageLabel3 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+  [contactAuthorizationMessageLabel3 setTextAlignment:1];
 
-  v29 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-  [v29 setNumberOfLines:0];
+  contactAuthorizationMessageLabel4 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+  [contactAuthorizationMessageLabel4 setNumberOfLines:0];
 
   v30 = MEMORY[0x277D75220];
-  v31 = [MEMORY[0x277D75230] plainButtonConfiguration];
-  v32 = [v30 buttonWithConfiguration:v31 primaryAction:0];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+  v32 = [v30 buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
   [(WFRecipientFieldViewController *)self setContactAuthorizationStatusButton:v32];
 
-  v33 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
-  [v33 addTarget:self action:sel_requestContactAuthorization forControlEvents:0x2000];
+  contactAuthorizationStatusButton = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
+  [contactAuthorizationStatusButton addTarget:self action:sel_requestContactAuthorization forControlEvents:0x2000];
 
   v34 = objc_alloc(MEMORY[0x277D75A68]);
-  v35 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
-  v123[0] = v35;
-  v36 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
-  v123[1] = v36;
+  contactAuthorizationMessageLabel5 = [(WFRecipientFieldViewController *)self contactAuthorizationMessageLabel];
+  v123[0] = contactAuthorizationMessageLabel5;
+  contactAuthorizationStatusButton2 = [(WFRecipientFieldViewController *)self contactAuthorizationStatusButton];
+  v123[1] = contactAuthorizationStatusButton2;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v123 count:2];
   v38 = [v34 initWithArrangedSubviews:v37];
 
@@ -698,81 +698,81 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
   [v38 setAlignment:3];
   [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v38 setSpacing:8.0];
-  v40 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  [v40 addSubview:v39];
+  tableBackgroundView2 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  [tableBackgroundView2 addSubview:v39];
 
   v41 = objc_alloc_init(MEMORY[0x277D756D0]);
   v42 = objc_alloc_init(MEMORY[0x277D756D0]);
-  v43 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  [v43 addLayoutGuide:v41];
+  tableBackgroundView3 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  [tableBackgroundView3 addLayoutGuide:v41];
 
-  v44 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  [v44 addLayoutGuide:v42];
+  tableBackgroundView4 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  [tableBackgroundView4 addLayoutGuide:v42];
 
   v79 = MEMORY[0x277CCAAD0];
-  v115 = [v39 leadingAnchor];
-  v117 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v113 = [v117 layoutMarginsGuide];
-  v111 = [v113 leadingAnchor];
-  v109 = [v115 constraintEqualToAnchor:v111];
+  leadingAnchor5 = [v39 leadingAnchor];
+  tableBackgroundView5 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide = [tableBackgroundView5 layoutMarginsGuide];
+  leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+  v109 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v122[0] = v109;
-  v105 = [v39 trailingAnchor];
-  v107 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v103 = [v107 layoutMarginsGuide];
-  v101 = [v103 trailingAnchor];
-  v99 = [v105 constraintEqualToAnchor:v101];
+  trailingAnchor5 = [v39 trailingAnchor];
+  tableBackgroundView6 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide2 = [tableBackgroundView6 layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide2 trailingAnchor];
+  v99 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v122[1] = v99;
-  v95 = [v41 leadingAnchor];
-  v97 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v93 = [v97 layoutMarginsGuide];
-  v91 = [v93 leadingAnchor];
-  v89 = [v95 constraintEqualToAnchor:v91];
+  leadingAnchor7 = [v41 leadingAnchor];
+  tableBackgroundView7 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide3 = [tableBackgroundView7 layoutMarginsGuide];
+  leadingAnchor8 = [layoutMarginsGuide3 leadingAnchor];
+  v89 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v122[2] = v89;
-  v85 = [v41 trailingAnchor];
-  v87 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v83 = [v87 layoutMarginsGuide];
-  v81 = [v83 trailingAnchor];
-  v80 = [v85 constraintEqualToAnchor:v81];
+  trailingAnchor7 = [v41 trailingAnchor];
+  tableBackgroundView8 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide4 = [tableBackgroundView8 layoutMarginsGuide];
+  trailingAnchor8 = [layoutMarginsGuide4 trailingAnchor];
+  v80 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v122[3] = v80;
-  v77 = [v42 leadingAnchor];
-  v78 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v76 = [v78 layoutMarginsGuide];
-  v75 = [v76 leadingAnchor];
-  v74 = [v77 constraintEqualToAnchor:v75];
+  leadingAnchor9 = [v42 leadingAnchor];
+  tableBackgroundView9 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide5 = [tableBackgroundView9 layoutMarginsGuide];
+  leadingAnchor10 = [layoutMarginsGuide5 leadingAnchor];
+  v74 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v122[4] = v74;
-  v70 = [v42 trailingAnchor];
-  v71 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v68 = [v71 layoutMarginsGuide];
-  v67 = [v68 trailingAnchor];
-  v66 = [v70 constraintEqualToAnchor:v67];
+  trailingAnchor9 = [v42 trailingAnchor];
+  tableBackgroundView10 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide6 = [tableBackgroundView10 layoutMarginsGuide];
+  trailingAnchor10 = [layoutMarginsGuide6 trailingAnchor];
+  v66 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v122[5] = v66;
-  v65 = [v41 heightAnchor];
-  v64 = [v42 heightAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  heightAnchor2 = [v41 heightAnchor];
+  heightAnchor3 = [v42 heightAnchor];
+  v63 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v122[6] = v63;
   v73 = v41;
-  v61 = [v41 topAnchor];
-  v62 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v60 = [v62 layoutMarginsGuide];
-  v59 = [v60 topAnchor];
-  v58 = [v61 constraintEqualToSystemSpacingBelowAnchor:v59 multiplier:1.0];
+  topAnchor4 = [v41 topAnchor];
+  tableBackgroundView11 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide7 = [tableBackgroundView11 layoutMarginsGuide];
+  topAnchor5 = [layoutMarginsGuide7 topAnchor];
+  v58 = [topAnchor4 constraintEqualToSystemSpacingBelowAnchor:topAnchor5 multiplier:1.0];
   v122[7] = v58;
-  v57 = [(WFRecipientFieldViewController *)self tableBackgroundView];
-  v56 = [v57 layoutMarginsGuide];
-  v45 = [v56 bottomAnchor];
+  tableBackgroundView12 = [(WFRecipientFieldViewController *)self tableBackgroundView];
+  layoutMarginsGuide8 = [tableBackgroundView12 layoutMarginsGuide];
+  bottomAnchor4 = [layoutMarginsGuide8 bottomAnchor];
   v69 = v42;
-  v46 = [v42 bottomAnchor];
-  v47 = [v45 constraintEqualToSystemSpacingBelowAnchor:v46 multiplier:1.0];
+  bottomAnchor5 = [v42 bottomAnchor];
+  v47 = [bottomAnchor4 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor5 multiplier:1.0];
   v122[8] = v47;
   v48 = v39;
   v72 = v39;
-  v49 = [v39 topAnchor];
-  v50 = [v41 bottomAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  topAnchor6 = [v39 topAnchor];
+  bottomAnchor6 = [v41 bottomAnchor];
+  v51 = [topAnchor6 constraintEqualToAnchor:bottomAnchor6];
   v122[9] = v51;
-  v52 = [v48 bottomAnchor];
-  v53 = [v42 topAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
+  bottomAnchor7 = [v48 bottomAnchor];
+  topAnchor7 = [v42 topAnchor];
+  v54 = [bottomAnchor7 constraintEqualToAnchor:topAnchor7];
   v122[10] = v54;
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:11];
   [v79 activateConstraints:v55];
@@ -804,12 +804,12 @@ void __74__WFRecipientFieldViewController_composeRecipientViewRequestAddRecipien
     searchResults = v2->_searchResults;
     v2->_searchResults = v9;
 
-    v11 = [(WFRecipientFieldViewController *)v2 navigationItem];
+    navigationItem = [(WFRecipientFieldViewController *)v2 navigationItem];
     v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v2 action:sel_cancel_];
-    [v11 setLeftBarButtonItem:v12];
+    [navigationItem setLeftBarButtonItem:v12];
 
     v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v2 action:sel_done_];
-    [v11 setRightBarButtonItem:v13];
+    [navigationItem setRightBarButtonItem:v13];
 
     v14 = v2;
   }

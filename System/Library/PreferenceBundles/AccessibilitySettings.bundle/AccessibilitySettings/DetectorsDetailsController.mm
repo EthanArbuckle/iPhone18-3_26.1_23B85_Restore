@@ -1,24 +1,24 @@
 @interface DetectorsDetailsController
 - (DetectorsDetailsController)init;
-- (id)_customDetectorIsEnabledForSpec:(id)a3;
-- (id)currentToneSelectedForSpecifier:(id)a3;
-- (id)footerTextForSpec:(id)a3;
-- (id)isDetectorEnabledForSpecifier:(id)a3;
+- (id)_customDetectorIsEnabledForSpec:(id)spec;
+- (id)currentToneSelectedForSpecifier:(id)specifier;
+- (id)footerTextForSpec:(id)spec;
+- (id)isDetectorEnabledForSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)_bugButtonTapped;
-- (void)_confirmedSetDetectorEnabled:(BOOL)a3 forSpec:(id)a4;
-- (void)_deleteButtonTapped:(id)a3;
+- (void)_confirmedSetDetectorEnabled:(BOOL)enabled forSpec:(id)spec;
+- (void)_deleteButtonTapped:(id)tapped;
 - (void)_kShotModelCreationCompleted;
-- (void)_setCustomDetectorEnabled:(id)a3 forSpec:(id)a4;
-- (void)_showConfirmationAlertForSpec:(id)a3;
+- (void)_setCustomDetectorEnabled:(id)enabled forSpec:(id)spec;
+- (void)_showConfirmationAlertForSpec:(id)spec;
 - (void)_updateSoundDetectionState;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)confirmationViewAlternateAcceptedForSpecifier:(id)a3;
-- (void)confirmationViewCancelledForSpecifier:(id)a3;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)confirmationViewAlternateAcceptedForSpecifier:(id)specifier;
+- (void)confirmationViewCancelledForSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)setDetectorEnabled:(id)a3 forSpec:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setDetectorEnabled:(id)enabled forSpec:(id)spec;
+- (void)setSpecifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DetectorsDetailsController
@@ -40,23 +40,23 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = DetectorsDetailsController;
-  [(DetectorsDetailsController *)&v10 viewWillAppear:a3];
+  [(DetectorsDetailsController *)&v10 viewWillAppear:appear];
   if (AXIsInternalInstall())
   {
-    v4 = [(DetectorsDetailsController *)self specifier];
-    v5 = [v4 propertyForKey:@"AssociatedDetector"];
+    specifier = [(DetectorsDetailsController *)self specifier];
+    v5 = [specifier propertyForKey:@"AssociatedDetector"];
 
     if (v5)
     {
       v6 = [UIBarButtonItem alloc];
       v7 = settingsLocString(@"BUG_BUTTON", @"SoundDetection");
       v8 = [v6 initWithTitle:v7 style:0 target:self action:"_bugButtonTapped"];
-      v9 = [(DetectorsDetailsController *)self navigationItem];
-      [v9 setRightBarButtonItem:v8];
+      navigationItem = [(DetectorsDetailsController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:v8];
     }
   }
 }
@@ -70,25 +70,25 @@
     goto LABEL_13;
   }
 
-  v5 = [(DetectorsDetailsController *)self specifier];
+  specifier = [(DetectorsDetailsController *)self specifier];
   v6 = +[NSMutableArray array];
-  v7 = [v5 propertyForKey:@"alertType"];
+  v7 = [specifier propertyForKey:@"alertType"];
   alertTypeDescription = self->_alertTypeDescription;
   self->_alertTypeDescription = v7;
 
-  v9 = [v5 propertyForKey:@"accountIdentifier"];
+  v9 = [specifier propertyForKey:@"accountIdentifier"];
   alertTopic = self->_alertTopic;
   self->_alertTopic = v9;
 
-  v11 = [v5 propertyForKey:@"AXSoundDetectionTypes"];
-  v12 = [v5 propertyForKey:@"IsCustomSound"];
+  v11 = [specifier propertyForKey:@"AXSoundDetectionTypes"];
+  v12 = [specifier propertyForKey:@"IsCustomSound"];
 
   v40 = v6;
   if (v12)
   {
     v13 = +[PSSpecifier emptyGroupSpecifier];
-    v14 = [(DetectorsDetailsController *)self specifier];
-    v15 = [(DetectorsDetailsController *)self footerTextForSpec:v14];
+    specifier2 = [(DetectorsDetailsController *)self specifier];
+    v15 = [(DetectorsDetailsController *)self footerTextForSpec:specifier2];
     [v13 setProperty:v15 forKey:PSFooterTextGroupKey];
 
     v16 = PSIDKey;
@@ -101,16 +101,16 @@
     v16 = PSIDKey;
   }
 
-  v17 = [(DetectorsDetailsController *)self specifier];
-  v18 = [v17 name];
-  v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:"setDetectorEnabled:forSpec:" get:"isDetectorEnabledForSpecifier:" detail:0 cell:6 edit:0];
+  specifier3 = [(DetectorsDetailsController *)self specifier];
+  name = [specifier3 name];
+  v19 = [PSSpecifier preferenceSpecifierNamed:name target:self set:"setDetectorEnabled:forSpec:" get:"isDetectorEnabledForSpecifier:" detail:0 cell:6 edit:0];
 
-  v20 = [(DetectorsDetailsController *)self specifier];
-  v21 = [v20 identifier];
-  [v19 setProperty:v21 forKey:v16];
+  specifier4 = [(DetectorsDetailsController *)self specifier];
+  identifier = [specifier4 identifier];
+  [v19 setProperty:identifier forKey:v16];
 
-  v22 = [(DetectorsDetailsController *)self specifier];
-  v23 = [v22 propertyForKey:@"IsCustomSound"];
+  specifier5 = [(DetectorsDetailsController *)self specifier];
+  v23 = [specifier5 propertyForKey:@"IsCustomSound"];
 
   if (!v23)
   {
@@ -118,14 +118,14 @@
   }
 
   v39 = v11;
-  v24 = [(DetectorsDetailsController *)self specifier];
-  v25 = [v24 propertyForKey:@"AssociatedDetector"];
+  specifier6 = [(DetectorsDetailsController *)self specifier];
+  v25 = [specifier6 propertyForKey:@"AssociatedDetector"];
 
   if (![v25 modelFailed])
   {
-    v32 = [(DetectorsDetailsController *)self specifier];
-    v33 = [v32 name];
-    v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:self set:"_setCustomDetectorEnabled:forSpec:" get:"_customDetectorIsEnabledForSpec:" detail:0 cell:6 edit:0];
+    specifier7 = [(DetectorsDetailsController *)self specifier];
+    name2 = [specifier7 name];
+    v34 = [PSSpecifier preferenceSpecifierNamed:name2 target:self set:"_setCustomDetectorEnabled:forSpec:" get:"_customDetectorIsEnabledForSpec:" detail:0 cell:6 edit:0];
 
     [v34 setProperty:v25 forKey:@"AssociatedDetector"];
     v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v25 isModelReady]);
@@ -182,10 +182,10 @@ LABEL_14:
   return v19;
 }
 
-- (void)_deleteButtonTapped:(id)a3
+- (void)_deleteButtonTapped:(id)tapped
 {
-  v4 = [(DetectorsDetailsController *)self specifier];
-  v5 = [v4 propertyForKey:@"AssociatedDetector"];
+  specifier = [(DetectorsDetailsController *)self specifier];
+  v5 = [specifier propertyForKey:@"AssociatedDetector"];
 
   v6 = AXLogUltronKShot();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -215,27 +215,27 @@ LABEL_14:
   [(DetectorsDetailsController *)self showConfirmationViewForSpecifier:v7];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = DetectorsDetailsController;
-  v4 = a3;
-  [(DetectorsDetailsController *)&v6 setSpecifier:v4];
-  v5 = [v4 name];
+  specifierCopy = specifier;
+  [(DetectorsDetailsController *)&v6 setSpecifier:specifierCopy];
+  name = [specifierCopy name];
 
-  [(DetectorsDetailsController *)self setTitle:v5];
+  [(DetectorsDetailsController *)self setTitle:name];
 }
 
-- (void)setDetectorEnabled:(id)a3 forSpec:(id)a4
+- (void)setDetectorEnabled:(id)enabled forSpec:(id)spec
 {
-  v15 = a4;
-  v6 = [a3 BOOLValue];
+  specCopy = spec;
+  bOOLValue = [enabled BOOLValue];
   v7 = +[AXSDSettings sharedInstance];
-  v8 = [v7 enabledSoundDetectionTypes];
-  v9 = [v8 count];
+  enabledSoundDetectionTypes = [v7 enabledSoundDetectionTypes];
+  v9 = [enabledSoundDetectionTypes count];
 
   v10 = +[VTPreferences sharedPreferences];
-  v11 = [v10 voiceTriggerEnabled];
+  voiceTriggerEnabled = [v10 voiceTriggerEnabled];
 
   v12 = AXDeviceSupportsConcurrentHPLPMics();
   if (v9)
@@ -245,24 +245,24 @@ LABEL_14:
 
   else
   {
-    v13 = v6 == 0;
+    v13 = bOOLValue == 0;
   }
 
-  v14 = v13 || v11 == 0;
+  v14 = v13 || voiceTriggerEnabled == 0;
   if (v14 || (v12 & 1) != 0)
   {
-    [(DetectorsDetailsController *)self _confirmedSetDetectorEnabled:v6 forSpec:v15];
+    [(DetectorsDetailsController *)self _confirmedSetDetectorEnabled:bOOLValue forSpec:specCopy];
   }
 
   else
   {
-    [(DetectorsDetailsController *)self _showConfirmationAlertForSpec:v15];
+    [(DetectorsDetailsController *)self _showConfirmationAlertForSpec:specCopy];
   }
 }
 
-- (id)isDetectorEnabledForSpecifier:(id)a3
+- (id)isDetectorEnabledForSpecifier:(id)specifier
 {
-  [a3 propertyForKey:@"AXSoundDetectionTypes"];
+  [specifier propertyForKey:@"AXSoundDetectionTypes"];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -282,8 +282,8 @@ LABEL_14:
 
         v7 = *(*(&v12 + 1) + 8 * i);
         v8 = +[AXSDSettings sharedInstance];
-        v9 = [v8 enabledSoundDetectionTypes];
-        LOBYTE(v7) = [v9 containsObject:v7];
+        enabledSoundDetectionTypes = [v8 enabledSoundDetectionTypes];
+        LOBYTE(v7) = [enabledSoundDetectionTypes containsObject:v7];
 
         if (v7)
         {
@@ -309,7 +309,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)currentToneSelectedForSpecifier:(id)a3
+- (id)currentToneSelectedForSpecifier:(id)specifier
 {
   v4 = TLAlertTypeFromString();
   v5 = +[TLToneManager sharedToneManager];
@@ -321,10 +321,10 @@ LABEL_11:
   return v8;
 }
 
-- (void)_setCustomDetectorEnabled:(id)a3 forSpec:(id)a4
+- (void)_setCustomDetectorEnabled:(id)enabled forSpec:(id)spec
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"AssociatedDetector"];
+  enabledCopy = enabled;
+  v7 = [spec propertyForKey:@"AssociatedDetector"];
   v8 = AXLogUltron();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -332,21 +332,21 @@ LABEL_11:
   }
 
   v9 = +[AXSDSettings sharedInstance];
-  v10 = [v6 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v9 setKShotDetectorIsEnabled:v7 isEnabled:v10];
+  [v9 setKShotDetectorIsEnabled:v7 isEnabled:bOOLValue];
   [(DetectorsDetailsController *)self _updateSoundDetectionState];
 }
 
-- (id)_customDetectorIsEnabledForSpec:(id)a3
+- (id)_customDetectorIsEnabledForSpec:(id)spec
 {
-  v3 = [a3 propertyForKey:@"AssociatedDetector"];
+  v3 = [spec propertyForKey:@"AssociatedDetector"];
   if ([v3 isModelReady])
   {
     v4 = +[AXSDSettings sharedInstance];
-    v5 = [v4 enabledKShotDetectorIdentifiers];
-    v6 = [v3 identifier];
-    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 containsObject:v6]);
+    enabledKShotDetectorIdentifiers = [v4 enabledKShotDetectorIdentifiers];
+    identifier = [v3 identifier];
+    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [enabledKShotDetectorIdentifiers containsObject:identifier]);
   }
 
   else
@@ -357,9 +357,9 @@ LABEL_11:
   return v7;
 }
 
-- (id)footerTextForSpec:(id)a3
+- (id)footerTextForSpec:(id)spec
 {
-  v3 = [a3 propertyForKey:@"AssociatedDetector"];
+  v3 = [spec propertyForKey:@"AssociatedDetector"];
   if ([v3 isModelReady])
   {
     v4 = &stru_25D420;
@@ -395,8 +395,8 @@ LABEL_11:
 
 - (void)_bugButtonTapped
 {
-  v3 = [(DetectorsDetailsController *)self specifier];
-  v4 = [v3 propertyForKey:@"AssociatedDetector"];
+  specifier = [(DetectorsDetailsController *)self specifier];
+  v4 = [specifier propertyForKey:@"AssociatedDetector"];
 
   v5 = settingsLocString(@"TTR_ALERT_TITLE", @"SoundDetection");
   v6 = settingsLocString(@"TTR_ALERT_MESSAGE", @"SoundDetection");
@@ -419,9 +419,9 @@ LABEL_11:
   [(DetectorsDetailsController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_showConfirmationAlertForSpec:(id)a3
+- (void)_showConfirmationAlertForSpec:(id)spec
 {
-  v4 = a3;
+  specCopy = spec;
   v5 = settingsLocString(@"CONFIRMATION_ALERT_TITLE", @"SoundDetection");
   v6 = settingsLocString(@"CONFIRMATION_ALERT_BODY", @"SoundDetection");
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -440,8 +440,8 @@ LABEL_11:
   v13[2] = __60__DetectorsDetailsController__showConfirmationAlertForSpec___block_invoke_2;
   v13[3] = &unk_256AA0;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = specCopy;
+  v11 = specCopy;
   v12 = [UIAlertAction actionWithTitle:v10 style:0 handler:v13];
 
   [v7 addAction:v9];
@@ -449,9 +449,9 @@ LABEL_11:
   [(DetectorsDetailsController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_confirmedSetDetectorEnabled:(BOOL)a3 forSpec:(id)a4
+- (void)_confirmedSetDetectorEnabled:(BOOL)enabled forSpec:(id)spec
 {
-  v6 = [a4 propertyForKey:@"AXSoundDetectionTypes"];
+  v6 = [spec propertyForKey:@"AXSoundDetectionTypes"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -473,7 +473,7 @@ LABEL_11:
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = +[AXSDSettings sharedInstance];
         v13 = v12;
-        if (a3)
+        if (enabled)
         {
           [v12 addSoundDetectionType:v11];
         }
@@ -496,20 +496,20 @@ LABEL_11:
 - (void)_updateSoundDetectionState
 {
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 enabledSoundDetectionTypes];
-  v4 = [v3 count];
+  enabledSoundDetectionTypes = [v2 enabledSoundDetectionTypes];
+  v4 = [enabledSoundDetectionTypes count];
   v5 = +[AXSDSettings sharedInstance];
-  v6 = [v5 enabledKShotDetectorIdentifiers];
-  if ([v6 count] + v4)
+  enabledKShotDetectorIdentifiers = [v5 enabledKShotDetectorIdentifiers];
+  if ([enabledKShotDetectorIdentifiers count] + v4)
   {
   }
 
   else
   {
     v7 = +[AXSDSettings sharedInstance];
-    v8 = [v7 soundDetectionState];
+    soundDetectionState = [v7 soundDetectionState];
 
-    if (v8 == &dword_0 + 2)
+    if (soundDetectionState == &dword_0 + 2)
     {
       v9 = +[AXSDSettings sharedInstance];
       v10 = AXSDSettingsEventSourceSettingsApp;
@@ -522,16 +522,16 @@ LABEL_9:
   }
 
   v18 = +[AXSDSettings sharedInstance];
-  v12 = [v18 enabledSoundDetectionTypes];
-  v13 = [v12 count];
+  enabledSoundDetectionTypes2 = [v18 enabledSoundDetectionTypes];
+  v13 = [enabledSoundDetectionTypes2 count];
   v14 = +[AXSDSettings sharedInstance];
-  v15 = [v14 enabledKShotDetectorIdentifiers];
-  if ([v15 count] + v13)
+  enabledKShotDetectorIdentifiers2 = [v14 enabledKShotDetectorIdentifiers];
+  if ([enabledKShotDetectorIdentifiers2 count] + v13)
   {
     v16 = +[AXSDSettings sharedInstance];
-    v17 = [v16 soundDetectionState];
+    soundDetectionState2 = [v16 soundDetectionState];
 
-    if (v17 != &dword_0 + 1)
+    if (soundDetectionState2 != &dword_0 + 1)
     {
       return;
     }
@@ -546,10 +546,10 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
-  v4 = [(DetectorsDetailsController *)self specifier];
-  v5 = [v4 propertyForKey:@"AssociatedDetector"];
+  specifier = [(DetectorsDetailsController *)self specifier];
+  v5 = [specifier propertyForKey:@"AssociatedDetector"];
 
   v6 = AXLogUltronKShot();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -569,10 +569,10 @@ LABEL_10:
   [(DetectorsDetailsController *)self reloadSpecifiers];
 }
 
-- (void)confirmationViewAlternateAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAlternateAcceptedForSpecifier:(id)specifier
 {
-  v4 = [(DetectorsDetailsController *)self specifier];
-  v5 = [v4 propertyForKey:@"AssociatedDetector"];
+  specifier = [(DetectorsDetailsController *)self specifier];
+  v5 = [specifier propertyForKey:@"AssociatedDetector"];
 
   v6 = AXLogUltronKShot();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -592,10 +592,10 @@ LABEL_10:
   [(DetectorsDetailsController *)self reloadSpecifiers];
 }
 
-- (void)confirmationViewCancelledForSpecifier:(id)a3
+- (void)confirmationViewCancelledForSpecifier:(id)specifier
 {
-  v4 = [(DetectorsDetailsController *)self specifier];
-  v5 = [v4 propertyForKey:@"AssociatedDetector"];
+  specifier = [(DetectorsDetailsController *)self specifier];
+  v5 = [specifier propertyForKey:@"AssociatedDetector"];
 
   v6 = AXLogUltronKShot();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

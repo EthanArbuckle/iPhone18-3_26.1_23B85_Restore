@@ -3,7 +3,7 @@
 - (id).cxx_construct;
 - (id)front;
 - (void)clear;
-- (void)pushBlock:(id)a3;
+- (void)pushBlock:(id)block;
 @end
 
 @implementation DYReplayControllerQueue
@@ -15,10 +15,10 @@
   return [(DYReplayControllerQueue *)&v3 init];
 }
 
-- (void)pushBlock:(id)a3
+- (void)pushBlock:(id)block
 {
-  v4 = a3;
-  std::deque<void({block_pointer} {__strong})(void),std::allocator<void({block_pointer} {__strong})(void)>>::push_back(self + 1, &v4);
+  blockCopy = block;
+  std::deque<void({block_pointer} {__strong})(void),std::allocator<void({block_pointer} {__strong})(void)>>::push_back(self + 1, &blockCopy);
 }
 
 - (id)front

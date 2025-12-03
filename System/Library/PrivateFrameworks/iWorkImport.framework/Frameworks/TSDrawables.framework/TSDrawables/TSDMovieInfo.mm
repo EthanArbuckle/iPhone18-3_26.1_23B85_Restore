@@ -1,231 +1,231 @@
 @interface TSDMovieInfo
 - (BOOL)canCopyData;
 - (BOOL)canResetMediaSize;
-- (BOOL)containsProperty:(int)a3;
+- (BOOL)containsProperty:(int)property;
 - (BOOL)needsDownload;
 - (BOOL)supportsHyperlinks;
 - (BOOL)supportsLoopingBackAndForth;
-- (BOOL)validatedLoadFromUnarchiver:(id)a3;
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver;
 - (CGSize)rawDataSize;
 - (Class)layoutClass;
 - (Class)repClass;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieData:(id)a6 loadedAsset:(id)a7;
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieRemoteURL:(id)a6 loadedAsset:(id)a7;
-- (double)doubleValueForProperty:(int)a3;
-- (float)floatValueForProperty:(int)a3;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieData:(id)data loadedAsset:(id)asset;
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieRemoteURL:(id)l loadedAsset:(id)asset;
+- (double)doubleValueForProperty:(int)property;
+- (float)floatValueForProperty:(int)property;
 - (id)animationFilters;
 - (id)fileDisplayName;
 - (id)fileType;
-- (id)generateEmptyPosterImageForContext:(id)a3;
-- (id)makeAVAssetWithOptions:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)objectForProperty:(int)a3;
-- (id)p_makePosterImageDataWithAVAsset:(id)a3 inContext:(id)a4 time:(double)a5;
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4;
+- (id)generateEmptyPosterImageForContext:(id)context;
+- (id)makeAVAssetWithOptions:(id)options;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)objectForProperty:(int)property;
+- (id)p_makePosterImageDataWithAVAsset:(id)asset inContext:(id)context time:(double)time;
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info;
 - (id)presetKind;
-- (id)promisedDataForType:(id)a3;
-- (id)promisedTSPDataForType:(id)a3;
-- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)a3;
-- (id)synchronouslyGenerateNewPosterImageForAsset:(id)a3 time:(double)a4;
+- (id)promisedDataForType:(id)type;
+- (id)promisedTSPDataForType:(id)type;
+- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)context;
+- (id)synchronouslyGenerateNewPosterImageForAsset:(id)asset time:(double)time;
 - (id)typeName;
 - (id)typesToPromiseWhenCopyingSingleDrawable;
-- (int)intValueForProperty:(int)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)i_setPosterImageData:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)p_setPropertiesFromLoadedAsset:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAudioOnly:(BOOL)a3;
-- (void)setAudioOnlyImageData:(id)a3;
-- (void)setEndTime:(double)a3;
-- (void)setFingerprint:(id)a3;
-- (void)setImportedAuxiliaryMovieData:(id)a3;
-- (void)setImportedAuxiliaryMovieDataOriginalFilename:(id)a3;
-- (void)setLoopOption:(int64_t)a3;
-- (void)setMovieData:(id)a3;
-- (void)setMovieRemoteURL:(id)a3;
-- (void)setNativeAudioRecording:(BOOL)a3;
-- (void)setPlaysAcrossSlides:(BOOL)a3;
-- (void)setPosterImageData:(id)a3;
-- (void)setPosterTime:(double)a3;
-- (void)setStartTime:(double)a3;
-- (void)setStreaming:(BOOL)a3;
-- (void)setStyle:(id)a3;
-- (void)setVolume:(float)a3;
-- (void)takePropertiesFromReplacedMediaInfo:(id)a3;
+- (int)intValueForProperty:(int)property;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)i_setPosterImageData:(id)data;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)p_setPropertiesFromLoadedAsset:(id)asset;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAudioOnly:(BOOL)only;
+- (void)setAudioOnlyImageData:(id)data;
+- (void)setEndTime:(double)time;
+- (void)setFingerprint:(id)fingerprint;
+- (void)setImportedAuxiliaryMovieData:(id)data;
+- (void)setImportedAuxiliaryMovieDataOriginalFilename:(id)filename;
+- (void)setLoopOption:(int64_t)option;
+- (void)setMovieData:(id)data;
+- (void)setMovieRemoteURL:(id)l;
+- (void)setNativeAudioRecording:(BOOL)recording;
+- (void)setPlaysAcrossSlides:(BOOL)slides;
+- (void)setPosterImageData:(id)data;
+- (void)setPosterTime:(double)time;
+- (void)setStartTime:(double)time;
+- (void)setStreaming:(BOOL)streaming;
+- (void)setStyle:(id)style;
+- (void)setVolume:(float)volume;
+- (void)takePropertiesFromReplacedMediaInfo:(id)info;
 @end
 
 @implementation TSDMovieInfo
 
-- (void)setMovieData:(id)a3
+- (void)setMovieData:(id)data
 {
-  v5 = a3;
-  if (self->mMovieData != v5)
+  dataCopy = data;
+  if (self->mMovieData != dataCopy)
   {
-    v10 = v5;
+    v10 = dataCopy;
     objc_msgSend_willModify(self, v6, v7);
     objc_msgSend_willRemoveReferenceToData_(self, v8, self->mMovieData);
-    objc_storeStrong(&self->mMovieData, a3);
+    objc_storeStrong(&self->mMovieData, data);
     objc_msgSend_didAddReferenceToData_(self, v9, v10);
-    v5 = v10;
+    dataCopy = v10;
   }
 }
 
-- (void)setMovieRemoteURL:(id)a3
+- (void)setMovieRemoteURL:(id)l
 {
-  v4 = a3;
-  if (self->mMovieRemoteURL != v4)
+  lCopy = l;
+  if (self->mMovieRemoteURL != lCopy)
   {
-    v10 = v4;
+    v10 = lCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->mMovieRemoteURL, v9);
-    v4 = v9;
+    lCopy = v9;
   }
 }
 
-- (void)setImportedAuxiliaryMovieData:(id)a3
+- (void)setImportedAuxiliaryMovieData:(id)data
 {
-  v5 = a3;
-  if (self->mImportedAuxiliaryMovieData != v5)
+  dataCopy = data;
+  if (self->mImportedAuxiliaryMovieData != dataCopy)
   {
-    v10 = v5;
+    v10 = dataCopy;
     objc_msgSend_willModify(self, v6, v7);
     objc_msgSend_willRemoveReferenceToData_(self, v8, self->mImportedAuxiliaryMovieData);
-    objc_storeStrong(&self->mImportedAuxiliaryMovieData, a3);
+    objc_storeStrong(&self->mImportedAuxiliaryMovieData, data);
     objc_msgSend_didAddReferenceToData_(self, v9, v10);
-    v5 = v10;
+    dataCopy = v10;
   }
 }
 
-- (void)setImportedAuxiliaryMovieDataOriginalFilename:(id)a3
+- (void)setImportedAuxiliaryMovieDataOriginalFilename:(id)filename
 {
-  v4 = a3;
-  if (self->mImportedAuxiliaryMovieDataOriginalFilename != v4)
+  filenameCopy = filename;
+  if (self->mImportedAuxiliaryMovieDataOriginalFilename != filenameCopy)
   {
-    v10 = v4;
+    v10 = filenameCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->mImportedAuxiliaryMovieDataOriginalFilename, v9);
-    v4 = v9;
+    filenameCopy = v9;
   }
 }
 
-- (void)setFingerprint:(id)a3
+- (void)setFingerprint:(id)fingerprint
 {
-  v4 = a3;
-  if (self->mFingerprint != v4)
+  fingerprintCopy = fingerprint;
+  if (self->mFingerprint != fingerprintCopy)
   {
-    v10 = v4;
+    v10 = fingerprintCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->mFingerprint, v9);
-    v4 = v9;
+    fingerprintCopy = v9;
   }
 }
 
-- (void)setAudioOnlyImageData:(id)a3
+- (void)setAudioOnlyImageData:(id)data
 {
-  v5 = a3;
-  if (self->mAudioOnlyImageData != v5)
+  dataCopy = data;
+  if (self->mAudioOnlyImageData != dataCopy)
   {
-    v10 = v5;
+    v10 = dataCopy;
     objc_msgSend_willModify(self, v6, v7);
     objc_msgSend_willRemoveReferenceToData_(self, v8, self->mAudioOnlyImageData);
-    objc_storeStrong(&self->mAudioOnlyImageData, a3);
+    objc_storeStrong(&self->mAudioOnlyImageData, data);
     objc_msgSend_didAddReferenceToData_(self, v9, v10);
-    v5 = v10;
+    dataCopy = v10;
   }
 }
 
-- (void)i_setPosterImageData:(id)a3
+- (void)i_setPosterImageData:(id)data
 {
-  v5 = a3;
-  if (self->mPosterImageData != v5)
+  dataCopy = data;
+  if (self->mPosterImageData != dataCopy)
   {
-    v10 = v5;
+    v10 = dataCopy;
     objc_msgSend_willModify(self, v6, v7);
     objc_msgSend_willRemoveReferenceToData_(self, v8, self->mPosterImageData);
-    objc_storeStrong(&self->mPosterImageData, a3);
+    objc_storeStrong(&self->mPosterImageData, data);
     objc_msgSend_didAddReferenceToData_(self, v9, v10);
-    v5 = v10;
+    dataCopy = v10;
   }
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  if (self->mStartTime != a3)
+  if (self->mStartTime != time)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->mStartTime = a3;
+    self->mStartTime = time;
   }
 }
 
-- (void)setEndTime:(double)a3
+- (void)setEndTime:(double)time
 {
-  if (self->mEndTime != a3)
+  if (self->mEndTime != time)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->mEndTime = a3;
+    self->mEndTime = time;
   }
 }
 
-- (void)setPosterTime:(double)a3
+- (void)setPosterTime:(double)time
 {
-  if (self->mPosterTime != a3)
+  if (self->mPosterTime != time)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->mPosterTime = a3;
+    self->mPosterTime = time;
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->mVolume != a3)
+  if (self->mVolume != volume)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->mVolume = a3;
+    self->mVolume = volume;
   }
 }
 
-- (void)setAudioOnly:(BOOL)a3
+- (void)setAudioOnly:(BOOL)only
 {
-  if (self->mAudioOnly != a3)
+  if (self->mAudioOnly != only)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->mAudioOnly = a3;
+    objc_msgSend_willModify(self, a2, only);
+    self->mAudioOnly = only;
   }
 }
 
-- (void)setNativeAudioRecording:(BOOL)a3
+- (void)setNativeAudioRecording:(BOOL)recording
 {
-  if (self->mNativeAudioRecording != a3)
+  if (self->mNativeAudioRecording != recording)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->mNativeAudioRecording = a3;
+    objc_msgSend_willModify(self, a2, recording);
+    self->mNativeAudioRecording = recording;
   }
 }
 
-- (void)setPlaysAcrossSlides:(BOOL)a3
+- (void)setPlaysAcrossSlides:(BOOL)slides
 {
-  if (self->mPlaysAcrossSlides != a3)
+  if (self->mPlaysAcrossSlides != slides)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->mPlaysAcrossSlides = a3;
+    objc_msgSend_willModify(self, a2, slides);
+    self->mPlaysAcrossSlides = slides;
   }
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
-  v8 = a5;
+  styleCopy = style;
   v16.receiver = self;
   v16.super_class = TSDMovieInfo;
-  v9 = [(TSDMediaInfo *)&v16 initWithContext:a3 geometry:a4];
+  v9 = [(TSDMediaInfo *)&v16 initWithContext:context geometry:geometry];
   v10 = v9;
   if (v9)
   {
@@ -234,18 +234,18 @@
     v13[2] = sub_2766B20DC;
     v13[3] = &unk_27A6CCBD8;
     v14 = v9;
-    v15 = v8;
+    v15 = styleCopy;
     objc_msgSend_performBlockIgnoringModifications_(v14, v11, v13);
   }
 
   return v10;
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieData:(id)a6 loadedAsset:(id)a7
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieData:(id)data loadedAsset:(id)asset
 {
-  v12 = a6;
-  v13 = a7;
-  v15 = objc_msgSend_initWithContext_geometry_style_(self, v14, a3, a4, a5);
+  dataCopy = data;
+  assetCopy = asset;
+  v15 = objc_msgSend_initWithContext_geometry_style_(self, v14, context, geometry, style);
   v16 = v15;
   if (v15)
   {
@@ -254,19 +254,19 @@
     v19[2] = sub_2766B221C;
     v19[3] = &unk_27A6CC6F0;
     v20 = v15;
-    v21 = v12;
-    v22 = v13;
+    v21 = dataCopy;
+    v22 = assetCopy;
     objc_msgSend_performBlockIgnoringModifications_(v20, v17, v19);
   }
 
   return v16;
 }
 
-- (TSDMovieInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 movieRemoteURL:(id)a6 loadedAsset:(id)a7
+- (TSDMovieInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style movieRemoteURL:(id)l loadedAsset:(id)asset
 {
-  v12 = a6;
-  v13 = a7;
-  v15 = objc_msgSend_initWithContext_geometry_style_(self, v14, a3, a4, a5);
+  lCopy = l;
+  assetCopy = asset;
+  v15 = objc_msgSend_initWithContext_geometry_style_(self, v14, context, geometry, style);
   v16 = v15;
   if (v15)
   {
@@ -275,8 +275,8 @@
     v19[2] = sub_2766B2360;
     v19[3] = &unk_27A6CC6F0;
     v20 = v15;
-    v21 = v12;
-    v22 = v13;
+    v21 = lCopy;
+    v22 = assetCopy;
     objc_msgSend_performBlockIgnoringModifications_(v20, v17, v19);
   }
 
@@ -326,24 +326,24 @@
   return v12;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
-  if (self->mStyle != v5)
+  styleCopy = style;
+  if (self->mStyle != styleCopy)
   {
-    v12 = v5;
+    v12 = styleCopy;
     v8 = objc_msgSend_properties(TSDMediaStyle, v6, v7);
     objc_msgSend_willChangeProperties_(self, v9, v8);
 
     objc_msgSend_willModify(self, v10, v11);
-    objc_storeStrong(&self->mStyle, a3);
-    v5 = v12;
+    objc_storeStrong(&self->mStyle, style);
+    styleCopy = v12;
   }
 }
 
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info
 {
-  v4 = objc_msgSend_fullPropertyMap(a3, a2, a3, *&a4);
+  v4 = objc_msgSend_fullPropertyMap(style, a2, style, *&info);
   v7 = objc_msgSend_copy(v4, v5, v6);
 
   objc_msgSend_validatePastedPropertyMap_(TSDMediaStyle, v8, v7);
@@ -368,14 +368,14 @@
   return v3;
 }
 
-- (void)setPosterImageData:(id)a3
+- (void)setPosterImageData:(id)data
 {
-  v22 = a3;
-  if (self->mPosterImageData != v22)
+  dataCopy = data;
+  if (self->mPosterImageData != dataCopy)
   {
     objc_msgSend_willModify(self, v4, v5);
     objc_opt_class();
-    v8 = objc_msgSend_attributes(v22, v6, v7);
+    v8 = objc_msgSend_attributes(dataCopy, v6, v7);
     v9 = TSUDynamicCast();
 
     if (v9 && objc_msgSend_hasPixelSize(v9, v10, v11))
@@ -388,7 +388,7 @@
     else
     {
       v15 = objc_msgSend_sharedPool(TSDImageProviderPool, v10, v11);
-      v17 = objc_msgSend_providerForData_shouldValidate_(v15, v16, v22, 1);
+      v17 = objc_msgSend_providerForData_shouldValidate_(v15, v16, dataCopy, 1);
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -399,7 +399,7 @@
       }
     }
 
-    objc_msgSend_i_setPosterImageData_(self, v12, v22);
+    objc_msgSend_i_setPosterImageData_(self, v12, dataCopy);
   }
 
   if (!self->mPosterImageGeneratedWithAlphaSupport)
@@ -422,28 +422,28 @@
 {
   v9.receiver = self;
   v9.super_class = TSDMovieInfo;
-  v3 = [(TSDMediaInfo *)&v9 canResetMediaSize];
-  if (v3)
+  canResetMediaSize = [(TSDMediaInfo *)&v9 canResetMediaSize];
+  if (canResetMediaSize)
   {
     if (objc_msgSend_isAudioOnly(self, v4, v5))
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(canResetMediaSize) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = objc_msgSend_isStreaming(self, v6, v7) ^ 1;
+      LOBYTE(canResetMediaSize) = objc_msgSend_isStreaming(self, v6, v7) ^ 1;
     }
   }
 
-  return v3;
+  return canResetMediaSize;
 }
 
-- (void)p_setPropertiesFromLoadedAsset:(id)a3
+- (void)p_setPropertiesFromLoadedAsset:(id)asset
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDMovieInfo p_setPropertiesFromLoadedAsset:]");
@@ -453,7 +453,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  if (objc_msgSend_statusOfValueForKey_error_(v5, v4, @"duration", 0) != 2)
+  if (objc_msgSend_statusOfValueForKey_error_(assetCopy, v4, @"duration", 0) != 2)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSDMovieInfo p_setPropertiesFromLoadedAsset:]");
@@ -463,7 +463,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
   }
 
-  if (objc_msgSend_statusOfValueForKey_error_(v5, v13, @"tracks", 0) != 2)
+  if (objc_msgSend_statusOfValueForKey_error_(assetCopy, v13, @"tracks", 0) != 2)
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "[TSDMovieInfo p_setPropertiesFromLoadedAsset:]");
@@ -474,9 +474,9 @@
   }
 
   memset(&v54, 0, sizeof(v54));
-  if (v5)
+  if (assetCopy)
   {
-    objc_msgSend_duration(v5, v21, v22);
+    objc_msgSend_duration(assetCopy, v21, v22);
   }
 
   else
@@ -492,7 +492,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v37 = objc_msgSend_tracks(v5, v35, v36);
+  v37 = objc_msgSend_tracks(assetCopy, v35, v36);
   v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v37, v38, &v49, v55, 16);
   if (v39)
   {
@@ -566,14 +566,14 @@ LABEL_21:
   return v10;
 }
 
-- (void)setStreaming:(BOOL)a3
+- (void)setStreaming:(BOOL)streaming
 {
-  if (self->mStreaming != a3)
+  if (self->mStreaming != streaming)
   {
-    v3 = a3;
-    objc_msgSend_willModify(self, a2, a3);
-    self->mStreaming = v3;
-    if (v3)
+    streamingCopy = streaming;
+    objc_msgSend_willModify(self, a2, streaming);
+    self->mStreaming = streamingCopy;
+    if (streamingCopy)
     {
 
       objc_msgSend_setAspectRatioLocked_(self, v5, 0);
@@ -592,17 +592,17 @@ LABEL_21:
   return v4;
 }
 
-- (void)setLoopOption:(int64_t)a3
+- (void)setLoopOption:(int64_t)option
 {
-  v3 = a3;
-  v5 = objc_msgSend_supportsLoopingBackAndForth(self, a2, a3);
+  optionCopy = option;
+  v5 = objc_msgSend_supportsLoopingBackAndForth(self, a2, option);
   v8 = 1;
   if (v5)
   {
     v8 = 2;
   }
 
-  if (v8 < v3)
+  if (v8 < optionCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDMovieInfo setLoopOption:]");
@@ -610,22 +610,22 @@ LABEL_21:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 378, 0, "Out of bounds loop option");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
-    v3 = 0;
+    optionCopy = 0;
   }
 
-  if (self->mLoopOption != v3)
+  if (self->mLoopOption != optionCopy)
   {
     objc_msgSend_willModify(self, v6, v7);
-    self->mLoopOption = v3;
+    self->mLoopOption = optionCopy;
   }
 }
 
-- (void)takePropertiesFromReplacedMediaInfo:(id)a3
+- (void)takePropertiesFromReplacedMediaInfo:(id)info
 {
   v18.receiver = self;
   v18.super_class = TSDMovieInfo;
-  v4 = a3;
-  [(TSDMediaInfo *)&v18 takePropertiesFromReplacedMediaInfo:v4];
+  infoCopy = info;
+  [(TSDMediaInfo *)&v18 takePropertiesFromReplacedMediaInfo:infoCopy];
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -661,10 +661,10 @@ LABEL_7:
   return v7;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -740,12 +740,12 @@ LABEL_16:
 
   v48 = objc_msgSend_geometry(self, v45, v46);
   v51 = objc_msgSend_geometry(v8, v49, v50);
-  v53 = objc_msgSend_mixingTypeWithObject_context_(v48, v52, v51, v6);
+  v53 = objc_msgSend_mixingTypeWithObject_context_(v48, v52, v51, contextCopy);
   v54 = TSDMixingTypeBestFromMixingTypes(v20, v53);
 
   v57 = objc_msgSend_style(self, v55, v56);
   v60 = objc_msgSend_style(v8, v58, v59);
-  v61 = TSDMixingTypeWithObjects(v57, v60, v6);
+  v61 = TSDMixingTypeWithObjects(v57, v60, contextCopy);
 
   v62 = TSDMixingTypeBestFromMixingTypes(v54, v61);
   if (v62 == 1)
@@ -991,29 +991,29 @@ LABEL_45:
   return v157;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 >= 1.0)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (fraction >= 1.0)
   {
-    self = v6;
+    self = objectCopy;
   }
 
-  v8 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)makeAVAssetWithOptions:(id)a3
+- (id)makeAVAssetWithOptions:(id)options
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v7 = objc_msgSend_movieData(self, v5, v6);
   v10 = v7;
   if (v7)
   {
-    v11 = objc_msgSend_AVAssetWithOptions_(v7, v8, v4);
+    v11 = objc_msgSend_AVAssetWithOptions_(v7, v8, optionsCopy);
   }
 
   else
@@ -1026,9 +1026,9 @@ LABEL_45:
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v21, &v20, 1);
       v17 = objc_msgSend_mutableCopy(v14, v15, v16);
 
-      if (v4)
+      if (optionsCopy)
       {
-        objc_msgSend_addEntriesFromDictionary_(v17, v18, v4);
+        objc_msgSend_addEntriesFromDictionary_(v17, v18, optionsCopy);
       }
 
       v11 = objc_msgSend_URLAssetWithURL_options_(MEMORY[0x277CE6650], v18, v13, v17);
@@ -1043,9 +1043,9 @@ LABEL_45:
   return v11;
 }
 
-- (id)generateEmptyPosterImageForContext:(id)a3
+- (id)generateEmptyPosterImageForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_msgSend_originalSize(self, v5, v6);
   if (v8 <= 0.0 || v9 <= 0.0)
   {
@@ -1070,7 +1070,7 @@ LABEL_45:
     Image = CGBitmapContextCreateImage(v10);
     v18 = MEMORY[0x277D80828];
     v19 = CGImagePNGRepresentation();
-    v21 = objc_msgSend_dataFromNSData_filename_context_(v18, v20, v19, @"posterImage.png", v4);
+    v21 = objc_msgSend_dataFromNSData_filename_context_(v18, v20, v19, @"posterImage.png", contextCopy);
 
     CGImageRelease(Image);
     CGContextRelease(v10);
@@ -1079,9 +1079,9 @@ LABEL_45:
   return v21;
 }
 
-- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)a3
+- (id)synchronouslyGenerateDefaultPosterImageForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_movieData(self, v5, v6);
   v10 = v7;
   if (v7 && (v11 = MEMORY[0x277D805F8], objc_msgSend_type(v7, v8, v9), v12 = objc_claimAutoreleasedReturnValue(), LODWORD(v11) = objc_msgSend_canInitWithDataType_(v11, v13, v12), v12, v11))
@@ -1092,7 +1092,7 @@ LABEL_45:
     {
       v19 = MEMORY[0x277D80828];
       v20 = CGImagePNGRepresentation();
-      v22 = objc_msgSend_dataFromNSData_filename_context_(v19, v21, v20, @"posterImage.png", v4);
+      v22 = objc_msgSend_dataFromNSData_filename_context_(v19, v21, v20, @"posterImage.png", contextCopy);
 
       goto LABEL_8;
     }
@@ -1103,7 +1103,7 @@ LABEL_45:
     v16 = objc_msgSend_makeAVAsset(self, v8, v9);
     if (v16)
     {
-      v22 = objc_msgSend_p_makePosterImageDataWithAVAsset_inContext_time_(self, v23, v16, v4, self->mPosterTime);
+      v22 = objc_msgSend_p_makePosterImageDataWithAVAsset_inContext_time_(self, v23, v16, contextCopy, self->mPosterTime);
       goto LABEL_8;
     }
   }
@@ -1114,25 +1114,25 @@ LABEL_8:
   return v22;
 }
 
-- (id)synchronouslyGenerateNewPosterImageForAsset:(id)a3 time:(double)a4
+- (id)synchronouslyGenerateNewPosterImageForAsset:(id)asset time:(double)time
 {
-  v6 = a3;
+  assetCopy = asset;
   v9 = objc_msgSend_context(self, v7, v8);
-  v11 = objc_msgSend_p_makePosterImageDataWithAVAsset_inContext_time_(self, v10, v6, v9, a4);
+  v11 = objc_msgSend_p_makePosterImageDataWithAVAsset_inContext_time_(self, v10, assetCopy, v9, time);
 
   return v11;
 }
 
-- (id)p_makePosterImageDataWithAVAsset:(id)a3 inContext:(id)a4 time:(double)a5
+- (id)p_makePosterImageDataWithAVAsset:(id)asset inContext:(id)context time:(double)time
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  contextCopy = context;
   v10 = [TSDMoviePosterImageGenerator alloc];
-  v12 = objc_msgSend_initWithAsset_(v10, v11, v8);
-  CMTimeMakeWithSeconds(&time, a5, *MEMORY[0x277D80710]);
-  if (v8)
+  v12 = objc_msgSend_initWithAsset_(v10, v11, assetCopy);
+  CMTimeMakeWithSeconds(&time, time, *MEMORY[0x277D80710]);
+  if (assetCopy)
   {
-    objc_msgSend_duration(v8, v13, v14);
+    objc_msgSend_duration(assetCopy, v13, v14);
   }
 
   else
@@ -1151,14 +1151,14 @@ LABEL_8:
   {
     v21 = MEMORY[0x277D80828];
     v22 = CGImagePNGRepresentation();
-    v24 = objc_msgSend_dataFromNSData_filename_context_(v21, v23, v22, @"posterImage.png", v9);
+    v24 = objc_msgSend_dataFromNSData_filename_context_(v21, v23, v22, @"posterImage.png", contextCopy);
 
     CGImageRelease(v16);
   }
 
   else if (v17 && objc_msgSend_code(v17, v18, v19) == -11832 && (objc_msgSend_domain(v20, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v27, v28, *MEMORY[0x277CE5DC0]), v27, isEqualToString))
   {
-    v24 = objc_msgSend_generateEmptyPosterImageForContext_(self, v30, v9);
+    v24 = objc_msgSend_generateEmptyPosterImageForContext_(self, v30, contextCopy);
   }
 
   else
@@ -1169,9 +1169,9 @@ LABEL_8:
   return v24;
 }
 
-- (BOOL)containsProperty:(int)a3
+- (BOOL)containsProperty:(int)property
 {
-  if ((a3 - 533) < 7)
+  if ((property - 533) < 7)
   {
     return 1;
   }
@@ -1183,16 +1183,16 @@ LABEL_8:
   return [(TSDMovieInfo *)&v6 containsProperty:?];
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 534)
+  if (property == 534)
   {
-    v3 = objc_msgSend_posterImageData(self, a2, *&a3);
+    v3 = objc_msgSend_posterImageData(self, a2, *&property);
   }
 
-  else if (a3 == 533)
+  else if (property == 533)
   {
-    v3 = objc_msgSend_movieData(self, a2, *&a3);
+    v3 = objc_msgSend_movieData(self, a2, *&property);
   }
 
   else
@@ -1205,21 +1205,21 @@ LABEL_8:
   return v3;
 }
 
-- (double)doubleValueForProperty:(int)a3
+- (double)doubleValueForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 537:
 
-      objc_msgSend_posterTime(self, a2, *&a3);
+      objc_msgSend_posterTime(self, a2, *&property);
       break;
     case 536:
 
-      objc_msgSend_endTime(self, a2, *&a3);
+      objc_msgSend_endTime(self, a2, *&property);
       break;
     case 535:
 
-      objc_msgSend_startTime(self, a2, *&a3);
+      objc_msgSend_startTime(self, a2, *&property);
       break;
     default:
       v7 = v3;
@@ -1233,12 +1233,12 @@ LABEL_8:
   return result;
 }
 
-- (float)floatValueForProperty:(int)a3
+- (float)floatValueForProperty:(int)property
 {
-  if (a3 == 539)
+  if (property == 539)
   {
 
-    objc_msgSend_volume(self, a2, *&a3);
+    objc_msgSend_volume(self, a2, *&property);
   }
 
   else
@@ -1253,11 +1253,11 @@ LABEL_8:
   return result;
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  if (a3 == 538)
+  if (property == 538)
   {
-    v3 = objc_msgSend_loopOption(self, a2, *&a3);
+    v3 = objc_msgSend_loopOption(self, a2, *&property);
     if (v3 >= 0x80000000)
     {
       sub_276808874();
@@ -1345,12 +1345,12 @@ LABEL_8:
   return isApplicationData;
 }
 
-- (id)promisedDataForType:(id)a3
+- (id)promisedDataForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v7 = objc_msgSend_movieData(self, v5, v6);
   v10 = objc_msgSend_type(v7, v8, v9);
-  isEqual = objc_msgSend_isEqual_(v4, v11, v10);
+  isEqual = objc_msgSend_isEqual_(typeCopy, v11, v10);
 
   if (isEqual)
   {
@@ -1366,12 +1366,12 @@ LABEL_8:
   return v18;
 }
 
-- (id)promisedTSPDataForType:(id)a3
+- (id)promisedTSPDataForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v7 = objc_msgSend_movieData(self, v5, v6);
   v10 = objc_msgSend_type(v7, v8, v9);
-  isEqual = objc_msgSend_isEqual_(v4, v11, v10);
+  isEqual = objc_msgSend_isEqual_(typeCopy, v11, v10);
 
   if (isEqual)
   {
@@ -1404,12 +1404,12 @@ LABEL_8:
   return v8;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 8))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 8))
   {
-    v7 = *(a3 + 8);
+    v7 = *(archive + 8);
   }
 
   else
@@ -1419,24 +1419,24 @@ LABEL_8:
 
   v78.receiver = self;
   v78.super_class = TSDMovieInfo;
-  [(TSDDrawableInfo *)&v78 loadFromArchive:v7 unarchiver:v6];
-  v10 = *(a3 + 10);
+  [(TSDDrawableInfo *)&v78 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v10 = *(archive + 10);
   if ((v10 & 8) != 0)
   {
-    v17 = *(a3 + 9);
+    v17 = *(archive + 9);
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
     v77[2] = sub_2766B4DB0;
     v77[3] = &unk_27A6CC8D0;
     v77[4] = self;
-    v18 = v6;
+    v18 = unarchiverCopy;
     v19 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v18, v20, v17, v19, 0, v77);
   }
 
   else if ((v10 & 0x40) != 0)
   {
-    v21 = objc_msgSend_readDataReferenceMessage_(v6, v8, *(a3 + 12));
+    v21 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v8, *(archive + 12));
     mMovieData = self->mMovieData;
     self->mMovieData = v21;
   }
@@ -1444,88 +1444,88 @@ LABEL_8:
   else if (v10)
   {
     v11 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v12, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+    v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v12, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL);
     v15 = objc_msgSend_initWithString_(v11, v14, v13);
     mMovieRemoteURL = self->mMovieRemoteURL;
     self->mMovieRemoteURL = v15;
   }
 
-  v23 = *(a3 + 10);
+  v23 = *(archive + 10);
   if ((v23 & 0x1000) != 0)
   {
-    v24 = objc_msgSend_readDataReferenceMessage_(v6, v8, *(a3 + 18));
+    v24 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v8, *(archive + 18));
     mImportedAuxiliaryMovieData = self->mImportedAuxiliaryMovieData;
     self->mImportedAuxiliaryMovieData = v24;
 
-    v23 = *(a3 + 10);
+    v23 = *(archive + 10);
   }
 
   if ((v23 & 2) != 0)
   {
     v26 = objc_alloc(MEMORY[0x277CCACA8]);
-    v28 = objc_msgSend_tsp_initWithProtobufString_(v26, v27, *(a3 + 7) & 0xFFFFFFFFFFFFFFFELL);
+    v28 = objc_msgSend_tsp_initWithProtobufString_(v26, v27, *(archive + 7) & 0xFFFFFFFFFFFFFFFELL);
     mImportedAuxiliaryMovieDataOriginalFilename = self->mImportedAuxiliaryMovieDataOriginalFilename;
     self->mImportedAuxiliaryMovieDataOriginalFilename = v28;
 
-    v23 = *(a3 + 10);
+    v23 = *(archive + 10);
   }
 
   if ((v23 & 0x10) != 0)
   {
-    v32 = *(a3 + 10);
+    v32 = *(archive + 10);
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v76[2] = sub_2766B4E2C;
     v76[3] = &unk_27A6CC8D0;
     v76[4] = self;
-    v33 = v6;
+    v33 = unarchiverCopy;
     v34 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v33, v35, v32, v34, 0, v76);
   }
 
   else if ((v23 & 0x80) != 0)
   {
-    v30 = objc_msgSend_readDataReferenceMessage_(v6, v8, *(a3 + 13));
+    v30 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v8, *(archive + 13));
     mPosterImageData = self->mPosterImageData;
     self->mPosterImageData = v30;
   }
 
-  self->mPosterImageGeneratedWithAlphaSupport = *(a3 + 205);
-  v36 = *(a3 + 10);
+  self->mPosterImageGeneratedWithAlphaSupport = *(archive + 205);
+  v36 = *(archive + 10);
   if ((v36 & 0x20) != 0)
   {
-    v39 = *(a3 + 11);
+    v39 = *(archive + 11);
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = sub_2766B4EA8;
     v75[3] = &unk_27A6CC8D0;
     v75[4] = self;
-    v40 = v6;
+    v40 = unarchiverCopy;
     v41 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v40, v42, v39, v41, 0, v75);
   }
 
   else if ((v36 & 0x100) != 0)
   {
-    v37 = objc_msgSend_readDataReferenceMessage_(v6, v8, *(a3 + 14));
+    v37 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v8, *(archive + 14));
     mAudioOnlyImageData = self->mAudioOnlyImageData;
     self->mAudioOnlyImageData = v37;
   }
 
-  if ((*(a3 + 41) & 2) != 0)
+  if ((*(archive + 41) & 2) != 0)
   {
-    v43 = *(a3 + 15);
+    v43 = *(archive + 15);
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = sub_2766B4F24;
     v74[3] = &unk_27A6CC8F8;
     v74[4] = self;
-    v44 = v6;
+    v44 = unarchiverCopy;
     v45 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v44, v46, v43, v45, 0, v74);
   }
 
-  v47 = *(a3 + 8);
+  v47 = *(archive + 8);
   if (!v47)
   {
     v47 = &TSD::_DrawableArchive_default_instance_;
@@ -1536,18 +1536,18 @@ LABEL_8:
     self->super.super.super.mAspectRatioLocked = 1;
   }
 
-  v48 = *(a3 + 43);
-  self->mStartTime = *(a3 + 42);
+  v48 = *(archive + 43);
+  self->mStartTime = *(archive + 42);
   self->mEndTime = v48;
-  self->mPosterTime = *(a3 + 44);
-  self->mAudioOnly = *(a3 + 197);
-  self->mStreaming = *(a3 + 198);
-  self->mNativeAudioRecording = *(a3 + 199);
-  self->mPlaysAcrossSlides = *(a3 + 204);
-  v49 = *(a3 + 10);
+  self->mPosterTime = *(archive + 44);
+  self->mAudioOnly = *(archive + 197);
+  self->mStreaming = *(archive + 198);
+  self->mNativeAudioRecording = *(archive + 199);
+  self->mPlaysAcrossSlides = *(archive + 204);
+  v49 = *(archive + 10);
   if ((v49 & 0x40000) != 0)
   {
-    LODWORD(v51) = *(a3 + 45);
+    LODWORD(v51) = *(archive + 45);
     if (v51 <= 2)
     {
       v51 = v51;
@@ -1566,7 +1566,7 @@ LABEL_8:
     goto LABEL_38;
   }
 
-  v50 = *(a3 + 50);
+  v50 = *(archive + 50);
   switch(v50)
   {
     case 2:
@@ -1583,23 +1583,23 @@ LABEL_37:
   }
 
 LABEL_38:
-  self->mVolume = *(a3 + 46);
-  if (objc_msgSend_preUFFVersion(v6, v8, v9) < 0x774114C68 && self->mVolume == 0.0)
+  self->mVolume = *(archive + 46);
+  if (objc_msgSend_preUFFVersion(unarchiverCopy, v8, v9) < 0x774114C68 && self->mVolume == 0.0)
   {
     objc_msgSend_willModifyForUpgrade(self, v52, v53);
     self->mVolume = 1.0;
   }
 
-  v54 = *(a3 + 10);
+  v54 = *(archive + 10);
   if ((v54 & 0x200000) != 0)
   {
-    objc_msgSend_setFlags_(self, v52, *(a3 + 48));
-    v54 = *(a3 + 10);
+    objc_msgSend_setFlags_(self, v52, *(archive + 48));
+    v54 = *(archive + 10);
   }
 
   if ((v54 & 0x400) != 0)
   {
-    TSPCGSizeCreateFromMessage(*(a3 + 16));
+    TSPCGSizeCreateFromMessage(*(archive + 16));
   }
 
   else
@@ -1613,46 +1613,46 @@ LABEL_38:
   v71 = &v70;
   v72 = 0x2020000000;
   v73 = 0;
-  v58 = *(a3 + 10);
+  v58 = *(archive + 10);
   if ((v58 & 0x800) != 0)
   {
-    TSPCGSizeCreateFromMessage(*(a3 + 17));
+    TSPCGSizeCreateFromMessage(*(archive + 17));
     self->mNaturalSize.width = v59;
     self->mNaturalSize.height = v60;
     *(v71 + 24) = 1;
-    v58 = *(a3 + 10);
+    v58 = *(archive + 10);
   }
 
   if ((v58 & 0x2000) != 0)
   {
     v61 = [TSDAttribution alloc];
-    if (*(a3 + 19))
+    if (*(archive + 19))
     {
-      v63 = objc_msgSend_initFromMessage_unarchiver_(v61, v62, *(a3 + 19), v6);
+      v63 = objc_msgSend_initFromMessage_unarchiver_(v61, v62, *(archive + 19), unarchiverCopy);
     }
 
     else
     {
-      v63 = objc_msgSend_initFromMessage_unarchiver_(v61, v62, &TSD::_Attribution_default_instance_, v6);
+      v63 = objc_msgSend_initFromMessage_unarchiver_(v61, v62, &TSD::_Attribution_default_instance_, unarchiverCopy);
     }
 
     attribution = self->super._attribution;
     self->super._attribution = v63;
 
-    v58 = *(a3 + 10);
+    v58 = *(archive + 10);
   }
 
   if ((v58 & 0x4000) != 0)
   {
     v65 = [TSDMovieFingerprint alloc];
-    if (*(a3 + 20))
+    if (*(archive + 20))
     {
-      v67 = objc_msgSend_initFromMessage_unarchiver_(v65, v66, *(a3 + 20), v6);
+      v67 = objc_msgSend_initFromMessage_unarchiver_(v65, v66, *(archive + 20), unarchiverCopy);
     }
 
     else
     {
-      v67 = objc_msgSend_initFromMessage_unarchiver_(v65, v66, &TSD::_MovieFingerprint_default_instance_, v6);
+      v67 = objc_msgSend_initFromMessage_unarchiver_(v65, v66, &TSD::_MovieFingerprint_default_instance_, unarchiverCopy);
     }
 
     mFingerprint = self->mFingerprint;
@@ -1665,57 +1665,57 @@ LABEL_38:
   v69[3] = &unk_27A6CCC00;
   v69[4] = self;
   v69[5] = &v70;
-  objc_msgSend_addFinalizeHandler_(v6, v55, v69);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v55, v69);
   _Block_object_dispose(&v70, 8);
 }
 
-- (BOOL)validatedLoadFromUnarchiver:(id)a3
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812F5188[90]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812F5188[90]);
 
-  if (objc_msgSend_sourceType(v4, v7, v8) == 2 && (*(v6 + 43) & 0x20) != 0 && (*(v6 + 206) & 1) != 0)
+  if (objc_msgSend_sourceType(unarchiverCopy, v7, v8) == 2 && (*(v6 + 43) & 0x20) != 0 && (*(v6 + 206) & 1) != 0)
   {
     v10 = 0;
   }
 
   else
   {
-    objc_msgSend_loadFromArchive_unarchiver_(self, v9, v6, v4);
+    objc_msgSend_loadFromArchive_unarchiver_(self, v9, v6, unarchiverCopy);
     v10 = 1;
   }
 
   return v10;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v66 = MEMORY[0x277D85DD0];
   v67 = 3221225472;
   v68 = sub_2766B5A68;
   v69 = &unk_27A6CC520;
-  v72 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v70 = v7;
-  v71 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, &v66);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, &v66);
   mMovieData = self->mMovieData;
   if (mMovieData)
   {
-    *(a3 + 10) |= 0x40u;
-    v12 = *(a3 + 12);
+    *(archive + 10) |= 0x40u;
+    v12 = *(archive + 12);
     if (!v12)
     {
-      v13 = *(a3 + 1);
+      v13 = *(archive + 1);
       if (v13)
       {
         v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v12 = MEMORY[0x277C9BA90](v13);
-      *(a3 + 12) = v12;
+      *(archive + 12) = v12;
     }
 
     objc_msgSend_setDataReference_message_(v7, v9, mMovieData, v12, v66, v67, v68, v69);
@@ -1728,7 +1728,7 @@ LABEL_38:
     {
       v15 = objc_msgSend_absoluteString(mMovieRemoteURL, v9, v10, v66, v67, v68, v69);
       v18 = objc_msgSend_tsp_protobufString(v15, v16, v17);
-      *(a3 + 10) |= 1u;
+      *(archive + 10) |= 1u;
       sub_276658080(__p, v18);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v74 < 0)
@@ -1741,18 +1741,18 @@ LABEL_38:
   mImportedAuxiliaryMovieData = self->mImportedAuxiliaryMovieData;
   if (mImportedAuxiliaryMovieData)
   {
-    *(a3 + 10) |= 0x1000u;
-    v20 = *(a3 + 18);
+    *(archive + 10) |= 0x1000u;
+    v20 = *(archive + 18);
     if (!v20)
     {
-      v21 = *(a3 + 1);
+      v21 = *(archive + 1);
       if (v21)
       {
         v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v20 = MEMORY[0x277C9BA90](v21);
-      *(a3 + 18) = v20;
+      *(archive + 18) = v20;
     }
 
     objc_msgSend_setDataReference_message_(v7, v9, mImportedAuxiliaryMovieData, v20, v66, v67, v68, v69);
@@ -1762,7 +1762,7 @@ LABEL_38:
   if (mImportedAuxiliaryMovieDataOriginalFilename)
   {
     v23 = objc_msgSend_tsp_protobufString(mImportedAuxiliaryMovieDataOriginalFilename, v9, v10);
-    *(a3 + 10) |= 2u;
+    *(archive + 10) |= 2u;
     sub_276658080(__p, v23);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v74 < 0)
@@ -1774,94 +1774,94 @@ LABEL_38:
   mPosterImageData = self->mPosterImageData;
   if (mPosterImageData)
   {
-    *(a3 + 10) |= 0x80u;
-    v25 = *(a3 + 13);
+    *(archive + 10) |= 0x80u;
+    v25 = *(archive + 13);
     if (!v25)
     {
-      v26 = *(a3 + 1);
+      v26 = *(archive + 1);
       if (v26)
       {
         v26 = *(v26 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v25 = MEMORY[0x277C9BA90](v26);
-      *(a3 + 13) = v25;
+      *(archive + 13) = v25;
     }
 
     objc_msgSend_setDataReference_message_(v7, v9, mPosterImageData, v25, v66, v67, v68, v69);
   }
 
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v7, v9, 23, a3, v66, v67, v68, v69);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v7, v9, 23, archive, v66, v67, v68, v69);
   mPosterImageGeneratedWithAlphaSupport = self->mPosterImageGeneratedWithAlphaSupport;
-  v29 = *(a3 + 10);
+  v29 = *(archive + 10);
   v30 = v29 | 0x10000000;
-  *(a3 + 10) = v29 | 0x10000000;
-  *(a3 + 205) = mPosterImageGeneratedWithAlphaSupport;
+  *(archive + 10) = v29 | 0x10000000;
+  *(archive + 205) = mPosterImageGeneratedWithAlphaSupport;
   mAudioOnlyImageData = self->mAudioOnlyImageData;
   if (mAudioOnlyImageData)
   {
-    *(a3 + 10) = v29 | 0x10000100;
-    v32 = *(a3 + 14);
+    *(archive + 10) = v29 | 0x10000100;
+    v32 = *(archive + 14);
     if (!v32)
     {
-      v33 = *(a3 + 1);
+      v33 = *(archive + 1);
       if (v33)
       {
         v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v32 = MEMORY[0x277C9BA90](v33);
-      *(a3 + 14) = v32;
+      *(archive + 14) = v32;
     }
 
     objc_msgSend_setDataReference_message_(v7, v27, mAudioOnlyImageData, v32);
-    v30 = *(a3 + 10);
+    v30 = *(archive + 10);
   }
 
   mStyle = self->mStyle;
   if (mStyle)
   {
-    *(a3 + 10) = v30 | 0x200;
-    v35 = *(a3 + 15);
+    *(archive + 10) = v30 | 0x200;
+    v35 = *(archive + 15);
     if (!v35)
     {
-      v36 = *(a3 + 1);
+      v36 = *(archive + 1);
       if (v36)
       {
         v36 = *(v36 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v35 = MEMORY[0x277C9BB20](v36);
-      *(a3 + 15) = v35;
+      *(archive + 15) = v35;
     }
 
     objc_msgSend_setStrongReference_message_(v7, v27, mStyle, v35);
-    v30 = *(a3 + 10);
+    v30 = *(archive + 10);
   }
 
   mStartTime = self->mStartTime;
-  *(a3 + 42) = mStartTime;
+  *(archive + 42) = mStartTime;
   mEndTime = self->mEndTime;
-  *(a3 + 43) = mEndTime;
+  *(archive + 43) = mEndTime;
   mPosterTime = self->mPosterTime;
   v40 = v30 | 0x38000;
-  *(a3 + 10) = v30 | 0x38000;
-  *(a3 + 44) = mPosterTime;
+  *(archive + 10) = v30 | 0x38000;
+  *(archive + 44) = mPosterTime;
   mLoopOption = self->mLoopOption;
   if (mLoopOption <= 2)
   {
     v40 = v30 | 0x4038000;
-    *(a3 + 10) = v30 | 0x4038000;
-    *(a3 + 50) = mLoopOption;
+    *(archive + 10) = v30 | 0x4038000;
+    *(archive + 50) = mLoopOption;
   }
 
-  *(a3 + 46) = LODWORD(self->mVolume);
-  *(a3 + 197) = self->mAudioOnly;
-  *(a3 + 198) = self->mStreaming;
+  *(archive + 46) = LODWORD(self->mVolume);
+  *(archive + 197) = self->mAudioOnly;
+  *(archive + 198) = self->mStreaming;
   mPlaysAcrossSlides = self->mPlaysAcrossSlides;
-  *(a3 + 10) = v40 | 0x9880000;
-  *(a3 + 204) = mPlaysAcrossSlides;
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v27, 28, a3);
+  *(archive + 10) = v40 | 0x9880000;
+  *(archive + 204) = mPlaysAcrossSlides;
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v27, 28, archive);
   if (self->mPlaysAcrossSlides)
   {
     objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v7, v43, *MEMORY[0x277D80968], *MEMORY[0x277D808D0], @"TSDMovieInfoPlaysAcrossSlides");
@@ -1869,18 +1869,18 @@ LABEL_38:
 
   width = self->super._originalSize.width;
   height = self->super._originalSize.height;
-  *(a3 + 10) |= 0x400u;
-  v46 = *(a3 + 16);
+  *(archive + 10) |= 0x400u;
+  v46 = *(archive + 16);
   if (!v46)
   {
-    v47 = *(a3 + 1);
+    v47 = *(archive + 1);
     if (v47)
     {
       v47 = *(v47 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v46 = MEMORY[0x277C9BAD0](v47);
-    *(a3 + 16) = v46;
+    *(archive + 16) = v46;
   }
 
   v75.width = width;
@@ -1888,18 +1888,18 @@ LABEL_38:
   TSPCGSizeCopyToMessage(v75, v46);
   v48 = self->mNaturalSize.width;
   v49 = self->mNaturalSize.height;
-  *(a3 + 10) |= 0x800u;
-  v50 = *(a3 + 17);
+  *(archive + 10) |= 0x800u;
+  v50 = *(archive + 17);
   if (!v50)
   {
-    v51 = *(a3 + 1);
+    v51 = *(archive + 1);
     if (v51)
     {
       v51 = *(v51 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v50 = MEMORY[0x277C9BAD0](v51);
-    *(a3 + 17) = v50;
+    *(archive + 17) = v50;
   }
 
   v76.width = v48;
@@ -1907,31 +1907,31 @@ LABEL_38:
   TSPCGSizeCopyToMessage(v76, v50);
   if (self->mNativeAudioRecording)
   {
-    *(a3 + 10) |= 0x2000000u;
-    *(a3 + 199) = 1;
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v52, 27, a3);
+    *(archive + 10) |= 0x2000000u;
+    *(archive + 199) = 1;
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v52, 27, archive);
   }
 
   objc_msgSend_flags(self, v52, v53);
   v56 = objc_msgSend_flags(self, v54, v55);
-  *(a3 + 10) |= 0x200000u;
-  *(a3 + 48) = v56;
+  *(archive + 10) |= 0x200000u;
+  *(archive + 48) = v56;
   if (self->super._attribution)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v57, 26, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v57, 26, archive);
     attribution = self->super._attribution;
-    *(a3 + 10) |= 0x2000u;
-    v60 = *(a3 + 19);
+    *(archive + 10) |= 0x2000u;
+    v60 = *(archive + 19);
     if (!v60)
     {
-      v61 = *(a3 + 1);
+      v61 = *(archive + 1);
       if (v61)
       {
         v61 = *(v61 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v60 = google::protobuf::Arena::CreateMaybeMessage<TSD::Attribution>(v61);
-      *(a3 + 19) = v60;
+      *(archive + 19) = v60;
     }
 
     objc_msgSend_saveToMessage_archiver_(attribution, v58, v60, v7);
@@ -1939,33 +1939,33 @@ LABEL_38:
 
   if (self->mFingerprint)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v57, 29, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v57, 29, archive);
     mFingerprint = self->mFingerprint;
-    *(a3 + 10) |= 0x4000u;
-    v64 = *(a3 + 20);
+    *(archive + 10) |= 0x4000u;
+    v64 = *(archive + 20);
     if (!v64)
     {
-      v65 = *(a3 + 1);
+      v65 = *(archive + 1);
       if (v65)
       {
         v65 = *(v65 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v64 = google::protobuf::Arena::CreateMaybeMessage<TSD::MovieFingerprint>(v65);
-      *(a3 + 20) = v64;
+      *(archive + 20) = v64;
     }
 
     objc_msgSend_saveToMessage_archiver_(mFingerprint, v62, v64, v7);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2766B5BAC, off_2812F5188[90]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2766B5BAC, off_2812F5188[90]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

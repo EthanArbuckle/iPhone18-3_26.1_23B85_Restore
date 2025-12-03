@@ -1,44 +1,44 @@
 @interface PKAnalyticsReporter
-+ (id)_authMethodFromResult:(id)a3;
-+ (id)_eventTypeFromError:(id)a3;
++ (id)_authMethodFromResult:(id)result;
++ (id)_eventTypeFromError:(id)error;
 + (id)_isDTOSupported;
 + (id)_isDTOUserEnabled;
-+ (id)_stringFromBool:(BOOL)a3;
-+ (id)analyticsErrorTextForError:(int64_t)a3;
-+ (id)archivedSessionTokenForSubject:(id)a3;
-+ (id)bucketValueForGroupSize:(unint64_t)a3;
-+ (id)bucketValueForIneligibleCount:(unint64_t)a3;
-+ (id)pageTagForAppleCashSenderError:(id)a3;
-+ (id)reporterForSubject:(id)a3;
++ (id)_stringFromBool:(BOOL)bool;
++ (id)analyticsErrorTextForError:(int64_t)error;
++ (id)archivedSessionTokenForSubject:(id)subject;
++ (id)bucketValueForGroupSize:(unint64_t)size;
++ (id)bucketValueForIneligibleCount:(unint64_t)count;
++ (id)pageTagForAppleCashSenderError:(id)error;
++ (id)reporterForSubject:(id)subject;
 + (id)subjectDictionary;
 + (id)subjectSessionStateDateDictionary;
-+ (id)subjectToReportDashboardAnalyticsForAccount:(id)a3;
-+ (id)subjectToReportDashboardAnalyticsForFeature:(unint64_t)a3;
-+ (id)subjectToReportDashboardAnalyticsForPass:(id)a3;
-+ (id)virtualCardReferralSource:(unint64_t)a3;
-+ (int)clientTypeForSubject:(id)a3;
-+ (void)_attachFeatureTypeToEvent:(id)a3 forSubject:(id)a4;
-+ (void)_isDTOPasscodeFallbackAllowed:(id)a3;
-+ (void)beginSubjectReporting:(id)a3;
-+ (void)beginSubjectReporting:(id)a3 withArchivedParent:(id)a4;
-+ (void)endSubjectReporting:(id)a3;
-+ (void)reportAccountRewardsEventIfNecessary:(id)a3;
-+ (void)reportAppleCashEvent:(id)a3 withMessagesContext:(id)a4;
-+ (void)reportAppleCashSenderErrorPage:(id)a3;
-+ (void)reportAppleCashSenderErrorPage:(id)a3 buttonTag:(id)a4;
-+ (void)reportCampaignIdentifier:(id)a3 eventType:(int64_t)a4 referralSource:(int64_t)a5 deepLinkType:(int64_t)a6 productType:(int64_t)a7;
-+ (void)reportDTOAuthEndedWithResult:(id)a3 error:(id)a4 forSubject:(id)a5;
-+ (void)reportDTOAuthEvent:(id)a3 forSubject:(id)a4;
-+ (void)reportDashboardEventIfNecessary:(id)a3 forPass:(id)a4;
-+ (void)sendSingularEvent:(id)a3;
-+ (void)subject:(id)a3 category:(int64_t)a4 sendEvent:(id)a5;
-+ (void)subjects:(id)a3 category:(int64_t)a4 sendEvent:(id)a5;
-- (PKAnalyticsReporter)initWithArchivedParent:(id)a3 subject:(id)a4;
-- (PKAnalyticsReporter)initWithParent:(id)a3 subject:(id)a4;
-- (PKAnalyticsReporter)initWithParentToken:(id)a3 subject:(id)a4;
-- (double)clampSessionDurationFromMilliseconds:(int64_t)a3;
++ (id)subjectToReportDashboardAnalyticsForAccount:(id)account;
++ (id)subjectToReportDashboardAnalyticsForFeature:(unint64_t)feature;
++ (id)subjectToReportDashboardAnalyticsForPass:(id)pass;
++ (id)virtualCardReferralSource:(unint64_t)source;
++ (int)clientTypeForSubject:(id)subject;
++ (void)_attachFeatureTypeToEvent:(id)event forSubject:(id)subject;
++ (void)_isDTOPasscodeFallbackAllowed:(id)allowed;
++ (void)beginSubjectReporting:(id)reporting;
++ (void)beginSubjectReporting:(id)reporting withArchivedParent:(id)parent;
++ (void)endSubjectReporting:(id)reporting;
++ (void)reportAccountRewardsEventIfNecessary:(id)necessary;
++ (void)reportAppleCashEvent:(id)event withMessagesContext:(id)context;
++ (void)reportAppleCashSenderErrorPage:(id)page;
++ (void)reportAppleCashSenderErrorPage:(id)page buttonTag:(id)tag;
++ (void)reportCampaignIdentifier:(id)identifier eventType:(int64_t)type referralSource:(int64_t)source deepLinkType:(int64_t)linkType productType:(int64_t)productType;
++ (void)reportDTOAuthEndedWithResult:(id)result error:(id)error forSubject:(id)subject;
++ (void)reportDTOAuthEvent:(id)event forSubject:(id)subject;
++ (void)reportDashboardEventIfNecessary:(id)necessary forPass:(id)pass;
++ (void)sendSingularEvent:(id)event;
++ (void)subject:(id)subject category:(int64_t)category sendEvent:(id)event;
++ (void)subjects:(id)subjects category:(int64_t)category sendEvent:(id)event;
+- (PKAnalyticsReporter)initWithArchivedParent:(id)parent subject:(id)subject;
+- (PKAnalyticsReporter)initWithParent:(id)parent subject:(id)subject;
+- (PKAnalyticsReporter)initWithParentToken:(id)token subject:(id)subject;
+- (double)clampSessionDurationFromMilliseconds:(int64_t)milliseconds;
 - (id)archivedSessionToken;
-- (void)sendEvent:(id)a3 withCategory:(int64_t)a4;
+- (void)sendEvent:(id)event withCategory:(int64_t)category;
 @end
 
 @implementation PKAnalyticsReporter
@@ -73,32 +73,32 @@
   return v2;
 }
 
-+ (id)virtualCardReferralSource:(unint64_t)a3
++ (id)virtualCardReferralSource:(unint64_t)source
 {
-  if (a3 - 1 > 2)
+  if (source - 1 > 2)
   {
     return @"pushNotification";
   }
 
   else
   {
-    return off_1E79C4238[a3 - 1];
+    return off_1E79C4238[source - 1];
   }
 }
 
-+ (id)subjectToReportDashboardAnalyticsForPass:(id)a3
++ (id)subjectToReportDashboardAnalyticsForPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 passType] != 1)
+  passCopy = pass;
+  if ([passCopy passType] != 1)
   {
     v7 = 0;
     goto LABEL_16;
   }
 
-  v4 = v3;
-  v5 = [v4 associatedAccountServiceAccountIdentifier];
+  v4 = passCopy;
+  associatedAccountServiceAccountIdentifier = [v4 associatedAccountServiceAccountIdentifier];
 
-  if (!v5)
+  if (!associatedAccountServiceAccountIdentifier)
   {
     if ([v4 isPeerPaymentPass])
     {
@@ -132,16 +132,16 @@ LABEL_16:
   return v7;
 }
 
-+ (id)subjectToReportDashboardAnalyticsForAccount:(id)a3
++ (id)subjectToReportDashboardAnalyticsForAccount:(id)account
 {
-  v4 = [a3 feature];
+  feature = [account feature];
 
-  return [a1 subjectToReportDashboardAnalyticsForFeature:v4];
+  return [self subjectToReportDashboardAnalyticsForFeature:feature];
 }
 
-+ (id)subjectToReportDashboardAnalyticsForFeature:(unint64_t)a3
++ (id)subjectToReportDashboardAnalyticsForFeature:(unint64_t)feature
 {
-  if (a3 == 2)
+  if (feature == 2)
   {
     v4 = @"appleCardEngagement";
   }
@@ -154,54 +154,54 @@ LABEL_16:
   return v4;
 }
 
-+ (void)reportDashboardEventIfNecessary:(id)a3 forPass:(id)a4
++ (void)reportDashboardEventIfNecessary:(id)necessary forPass:(id)pass
 {
-  v6 = a3;
-  if (v6 && a4)
+  necessaryCopy = necessary;
+  if (necessaryCopy && pass)
   {
-    v9 = v6;
-    v7 = [a1 subjectToReportDashboardAnalyticsForPass:a4];
+    v9 = necessaryCopy;
+    v7 = [self subjectToReportDashboardAnalyticsForPass:pass];
     if (v7)
     {
       v8 = [v9 copy];
       [PKAnalyticsReporter subject:v7 sendEvent:v8];
     }
 
-    v6 = v9;
+    necessaryCopy = v9;
   }
 }
 
-+ (void)reportAccountRewardsEventIfNecessary:(id)a3
++ (void)reportAccountRewardsEventIfNecessary:(id)necessary
 {
-  if (a3)
+  if (necessary)
   {
-    v3 = [a3 copy];
+    v3 = [necessary copy];
     [PKAnalyticsReporter subject:@"appleCardEngagement" sendEvent:v3];
   }
 }
 
-+ (id)pageTagForAppleCashSenderError:(id)a3
++ (id)pageTagForAppleCashSenderError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"PKDisplayableError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"PKDisplayableError"];
 
   if (v5)
   {
-    v6 = [v3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E696AA08]];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-    v3 = v7;
+    errorCopy = v7;
   }
 
-  v8 = [v3 domain];
-  v9 = [v8 isEqualToString:@"PKPeerPaymentWebServiceErrorDomain"];
+  domain2 = [errorCopy domain];
+  v9 = [domain2 isEqualToString:@"PKPeerPaymentWebServiceErrorDomain"];
 
   if (v9)
   {
-    v10 = [v3 code];
-    v11 = v10 - 113;
-    if ((v10 - 40305) > 0x28)
+    code = [errorCopy code];
+    v11 = code - 113;
+    if ((code - 40305) > 0x28)
     {
       goto LABEL_12;
     }
@@ -226,7 +226,7 @@ LABEL_16:
     else
     {
 LABEL_12:
-      if (v10 == 40301)
+      if (code == 40301)
       {
         v12 = @"insufficientFunds";
       }
@@ -248,15 +248,15 @@ LABEL_10:
   return v12;
 }
 
-+ (void)reportAppleCashSenderErrorPage:(id)a3
++ (void)reportAppleCashSenderErrorPage:(id)page
 {
   v6[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  pageCopy = page;
+  if ([pageCopy length])
   {
     v5[0] = @"pageTag";
     v5[1] = @"p2pSide";
-    v6[0] = v3;
+    v6[0] = pageCopy;
     v6[1] = @"sender";
     v5[2] = @"featureType";
     v5[3] = @"eventType";
@@ -267,42 +267,42 @@ LABEL_10:
   }
 }
 
-+ (void)reportAppleCashSenderErrorPage:(id)a3 buttonTag:(id)a4
++ (void)reportAppleCashSenderErrorPage:(id)page buttonTag:(id)tag
 {
   v9[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  pageCopy = page;
+  tagCopy = tag;
+  if ([pageCopy length] && objc_msgSend(tagCopy, "length"))
   {
     v8[0] = @"pageTag";
     v8[1] = @"p2pSide";
-    v9[0] = v5;
+    v9[0] = pageCopy;
     v9[1] = @"sender";
     v8[2] = @"featureType";
     v8[3] = @"eventType";
     v9[2] = @"cash";
     v9[3] = @"buttonTap";
     v8[4] = @"buttonTag";
-    v9[4] = v6;
+    v9[4] = tagCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:5];
     [PKAnalyticsReporter subject:@"p2p" sendEvent:v7];
   }
 }
 
-+ (void)reportAppleCashEvent:(id)a3 withMessagesContext:(id)a4
++ (void)reportAppleCashEvent:(id)event withMessagesContext:(id)context
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v8 = [v5 dictionaryWithDictionary:a3];
-  [v8 setObject:v6 forKeyedSubscript:@"messagesContext"];
+  contextCopy = context;
+  v8 = [v5 dictionaryWithDictionary:event];
+  [v8 setObject:contextCopy forKeyedSubscript:@"messagesContext"];
 
   v7 = [v8 copy];
   [PKAnalyticsReporter subject:@"p2p" sendEvent:v7];
 }
 
-+ (id)bucketValueForGroupSize:(unint64_t)a3
++ (id)bucketValueForGroupSize:(unint64_t)size
 {
-  if (a3 - 21 >= 0xC)
+  if (size - 21 >= 0xC)
   {
     v3 = 0;
   }
@@ -312,7 +312,7 @@ LABEL_10:
     v3 = @"21 - 32";
   }
 
-  if (a3 - 13 >= 8)
+  if (size - 13 >= 8)
   {
     v4 = v3;
   }
@@ -322,7 +322,7 @@ LABEL_10:
     v4 = @"13 - 20";
   }
 
-  if (a3 - 9 >= 4)
+  if (size - 9 >= 4)
   {
     v5 = v4;
   }
@@ -332,7 +332,7 @@ LABEL_10:
     v5 = @"9 - 12";
   }
 
-  if (a3 - 7 >= 2)
+  if (size - 7 >= 2)
   {
     v6 = v5;
   }
@@ -342,7 +342,7 @@ LABEL_10:
     v6 = @"7 - 8";
   }
 
-  if (a3 - 5 >= 2)
+  if (size - 5 >= 2)
   {
     v7 = v6;
   }
@@ -352,7 +352,7 @@ LABEL_10:
     v7 = @"5 - 6";
   }
 
-  if (a3 - 3 >= 2)
+  if (size - 3 >= 2)
   {
     return v7;
   }
@@ -363,9 +363,9 @@ LABEL_10:
   }
 }
 
-+ (id)bucketValueForIneligibleCount:(unint64_t)a3
++ (id)bucketValueForIneligibleCount:(unint64_t)count
 {
-  if (a3 - 13 >= 0x14)
+  if (count - 13 >= 0x14)
   {
     v3 = 0;
   }
@@ -375,7 +375,7 @@ LABEL_10:
     v3 = @"13+";
   }
 
-  if (a3 - 5 >= 8)
+  if (count - 5 >= 8)
   {
     v4 = v3;
   }
@@ -385,7 +385,7 @@ LABEL_10:
     v4 = @"5 - 12";
   }
 
-  if (a3 - 1 >= 4)
+  if (count - 1 >= 4)
   {
     return v4;
   }
@@ -396,41 +396,41 @@ LABEL_10:
   }
 }
 
-+ (void)reportDTOAuthEvent:(id)a3 forSubject:(id)a4
++ (void)reportDTOAuthEvent:(id)event forSubject:(id)subject
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
+  subjectCopy = subject;
+  eventCopy = event;
   v9 = [v6 alloc];
   v12[0] = @"eventType";
   v12[1] = @"pageTag";
-  v13[0] = v8;
+  v13[0] = eventCopy;
   v13[1] = @"authentication";
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v11 = [v9 initWithDictionary:v10];
 
-  [a1 _attachFeatureTypeToEvent:v11 forSubject:v7];
-  [PKAnalyticsReporter subject:v7 sendEvent:v11];
+  [self _attachFeatureTypeToEvent:v11 forSubject:subjectCopy];
+  [PKAnalyticsReporter subject:subjectCopy sendEvent:v11];
 }
 
-+ (void)reportDTOAuthEndedWithResult:(id)a3 error:(id)a4 forSubject:(id)a5
++ (void)reportDTOAuthEndedWithResult:(id)result error:(id)error forSubject:(id)subject
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  errorCopy = error;
+  subjectCopy = subject;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__PKAnalyticsReporter_LocalAuthentication__reportDTOAuthEndedWithResult_error_forSubject___block_invoke;
   v14[3] = &unk_1E79DBFE0;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v18 = a1;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
-  [a1 _isDTOPasscodeFallbackAllowed:v14];
+  v15 = errorCopy;
+  v16 = resultCopy;
+  v17 = subjectCopy;
+  selfCopy = self;
+  v11 = subjectCopy;
+  v12 = resultCopy;
+  v13 = errorCopy;
+  [self _isDTOPasscodeFallbackAllowed:v14];
 }
 
 void __90__PKAnalyticsReporter_LocalAuthentication__reportDTOAuthEndedWithResult_error_forSubject___block_invoke(uint64_t a1, void *a2)
@@ -477,11 +477,11 @@ void __90__PKAnalyticsReporter_LocalAuthentication__reportDTOAuthEndedWithResult
 LABEL_7:
 }
 
-+ (void)_isDTOPasscodeFallbackAllowed:(id)a3
++ (void)_isDTOPasscodeFallbackAllowed:(id)allowed
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  allowedCopy = allowed;
+  if (allowedCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696EE50]);
     v10[0] = &unk_1F23B5360;
@@ -493,8 +493,8 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __74__PKAnalyticsReporter_LocalAuthentication___isDTOPasscodeFallbackAllowed___block_invoke;
     v7[3] = &unk_1E79DC008;
-    v8 = v4;
-    v9 = a1;
+    v8 = allowedCopy;
+    selfCopy = self;
     [v5 evaluatePolicy:1025 options:v6 reply:v7];
   }
 }
@@ -508,36 +508,36 @@ void __74__PKAnalyticsReporter_LocalAuthentication___isDTOPasscodeFallbackAllowe
 
 + (id)_isDTOSupported
 {
-  v3 = [MEMORY[0x1E696EE70] sharedInstance];
-  v4 = [v3 isFeatureSupported];
+  mEMORY[0x1E696EE70] = [MEMORY[0x1E696EE70] sharedInstance];
+  isFeatureSupported = [mEMORY[0x1E696EE70] isFeatureSupported];
 
-  return [a1 _stringFromBool:v4];
+  return [self _stringFromBool:isFeatureSupported];
 }
 
 + (id)_isDTOUserEnabled
 {
-  v3 = [MEMORY[0x1E696EE70] sharedInstance];
-  v4 = [v3 isFeatureEnabled];
+  mEMORY[0x1E696EE70] = [MEMORY[0x1E696EE70] sharedInstance];
+  isFeatureEnabled = [mEMORY[0x1E696EE70] isFeatureEnabled];
 
-  return [a1 _stringFromBool:v4];
+  return [self _stringFromBool:isFeatureEnabled];
 }
 
-+ (id)_eventTypeFromError:(id)a3
++ (id)_eventTypeFromError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E696EE30]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E696EE30]];
 
   if (v5)
   {
-    v6 = [v3 code];
+    code = [errorCopy code];
     v7 = @"authenticationError";
-    if (v6 != -1)
+    if (code != -1)
     {
       v7 = 0;
     }
 
-    if (v6 == -2)
+    if (code == -2)
     {
       v8 = @"authenticationCanceledByUser";
     }
@@ -556,10 +556,10 @@ void __74__PKAnalyticsReporter_LocalAuthentication___isDTOPasscodeFallbackAllowe
   return v8;
 }
 
-+ (id)_authMethodFromResult:(id)a3
++ (id)_authMethodFromResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:&unk_1F23B5390];
+  resultCopy = result;
+  v4 = [resultCopy objectForKey:&unk_1F23B5390];
 
   if (v4)
   {
@@ -568,7 +568,7 @@ void __74__PKAnalyticsReporter_LocalAuthentication___isDTOPasscodeFallbackAllowe
 
   else
   {
-    v6 = [v3 objectForKey:&unk_1F23B53A8];
+    v6 = [resultCopy objectForKey:&unk_1F23B53A8];
 
     if (v6)
     {
@@ -584,9 +584,9 @@ void __74__PKAnalyticsReporter_LocalAuthentication___isDTOPasscodeFallbackAllowe
   return v5;
 }
 
-+ (id)_stringFromBool:(BOOL)a3
++ (id)_stringFromBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"true";
   }
@@ -597,39 +597,39 @@ void __74__PKAnalyticsReporter_LocalAuthentication___isDTOPasscodeFallbackAllowe
   }
 }
 
-+ (void)_attachFeatureTypeToEvent:(id)a3 forSubject:(id)a4
++ (void)_attachFeatureTypeToEvent:(id)event forSubject:(id)subject
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (@"p2p" == v5)
+  eventCopy = event;
+  subjectCopy = subject;
+  v6 = subjectCopy;
+  if (@"p2p" == subjectCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v5 || !@"p2p")
+  if (!subjectCopy || !@"p2p")
   {
 
     goto LABEL_9;
   }
 
-  v7 = [(__CFString *)v5 isEqualToString:@"p2p"];
+  v7 = [(__CFString *)subjectCopy isEqualToString:@"p2p"];
 
   if (v7)
   {
 LABEL_7:
-    [v8 setObject:@"cash" forKey:@"featureType"];
+    [eventCopy setObject:@"cash" forKey:@"featureType"];
   }
 
 LABEL_9:
 }
 
-+ (void)reportCampaignIdentifier:(id)a3 eventType:(int64_t)a4 referralSource:(int64_t)a5 deepLinkType:(int64_t)a6 productType:(int64_t)a7
++ (void)reportCampaignIdentifier:(id)identifier eventType:(int64_t)type referralSource:(int64_t)source deepLinkType:(int64_t)linkType productType:(int64_t)productType
 {
-  if (a3)
+  if (identifier)
   {
-    v11 = a3;
+    identifierCopy = identifier;
     v12 = [PKAnalyticsReporter reporterForSubject:@"attribution"];
 
     if (!v12)
@@ -638,7 +638,7 @@ LABEL_9:
     }
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v18 setObject:v11 forKey:@"campaignID"];
+    [v18 setObject:identifierCopy forKey:@"campaignID"];
 
     v13 = [MEMORY[0x1E695DF00] now];
     v14 = PKDateIgnoringSmallerUnitsWithTimeZone(v13, 16, 0);
@@ -647,24 +647,24 @@ LABEL_9:
     v16 = [v15 stringFromDate:v14];
     [v18 setObject:v16 forKey:@"eventDate"];
 
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      [v18 setObject:off_1E79DC160[a4] forKey:@"eventType"];
+      [v18 setObject:off_1E79DC160[type] forKey:@"eventType"];
     }
 
-    if ((a5 - 1) <= 3)
+    if ((source - 1) <= 3)
     {
-      [v18 setObject:off_1E79DC178[a5 - 1] forKey:@"referralSource"];
+      [v18 setObject:off_1E79DC178[source - 1] forKey:@"referralSource"];
     }
 
-    if ((a6 - 1) <= 2)
+    if ((linkType - 1) <= 2)
     {
-      [v18 setObject:off_1E79DC198[a6 - 1] forKey:@"deepLinkType"];
+      [v18 setObject:off_1E79DC198[linkType - 1] forKey:@"deepLinkType"];
     }
 
-    if ((a7 - 1) <= 5)
+    if ((productType - 1) <= 5)
     {
-      [v18 setObject:off_1E79DC1B0[a7 - 1] forKey:@"productType"];
+      [v18 setObject:off_1E79DC1B0[productType - 1] forKey:@"productType"];
     }
 
     v17 = +[PKCampaignAttributionSessionManager sessionID];
@@ -674,35 +674,35 @@ LABEL_9:
   }
 }
 
-+ (id)reporterForSubject:(id)a3
++ (id)reporterForSubject:(id)subject
 {
-  v3 = a3;
+  subjectCopy = subject;
   os_unfair_lock_lock(&lockCollections);
   v4 = +[PKAnalyticsReporter subjectDictionary];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:subjectCopy];
 
   os_unfair_lock_unlock(&lockCollections);
 
   return v5;
 }
 
-+ (void)beginSubjectReporting:(id)a3
++ (void)beginSubjectReporting:(id)reporting
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[PKAnalyticsReporter alloc] initWithSubject:v3];
+  reportingCopy = reporting;
+  v4 = [[PKAnalyticsReporter alloc] initWithSubject:reportingCopy];
   os_unfair_lock_lock(&lockCollections);
   v5 = +[PKAnalyticsReporter subjectDictionary];
   v6 = +[PKAnalyticsReporter subjectSessionStateDateDictionary];
-  v7 = [v5 objectForKey:v3];
-  v8 = [v6 objectForKey:v3];
+  v7 = [v5 objectForKey:reportingCopy];
+  v8 = [v6 objectForKey:reportingCopy];
   if (!v8)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v6 setObject:v9 forKey:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [v6 setObject:date forKey:reportingCopy];
   }
 
-  [v5 setObject:v4 forKey:v3];
+  [v5 setObject:v4 forKey:reportingCopy];
   os_unfair_lock_unlock(&lockCollections);
   if (v7)
   {
@@ -712,7 +712,7 @@ LABEL_9:
     [v7 sendEvent:v10];
   }
 
-  v11 = v3;
+  v11 = reportingCopy;
   v12 = v11;
   if (v11 == @"appleCardEngagement" || v11 && (v13 = [(__CFString *)v11 isEqualToString:@"appleCardEngagement"], v12, v13))
   {
@@ -725,23 +725,23 @@ LABEL_9:
   }
 }
 
-+ (void)beginSubjectReporting:(id)a3 withArchivedParent:(id)a4
++ (void)beginSubjectReporting:(id)reporting withArchivedParent:(id)parent
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKAnalyticsReporter alloc] initWithArchivedParent:v6 subject:v5];
+  reportingCopy = reporting;
+  parentCopy = parent;
+  v7 = [[PKAnalyticsReporter alloc] initWithArchivedParent:parentCopy subject:reportingCopy];
 
   os_unfair_lock_lock(&lockCollections);
   v8 = +[PKAnalyticsReporter subjectDictionary];
-  v9 = [v8 objectForKey:v5];
-  [v8 setObject:v7 forKey:v5];
+  v9 = [v8 objectForKey:reportingCopy];
+  [v8 setObject:v7 forKey:reportingCopy];
   v10 = +[PKAnalyticsReporter subjectSessionStateDateDictionary];
-  v11 = [v10 objectForKey:v5];
+  v11 = [v10 objectForKey:reportingCopy];
   if (!v11)
   {
-    v12 = [MEMORY[0x1E695DF00] date];
-    [v10 setObject:v12 forKey:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    [v10 setObject:date forKey:reportingCopy];
   }
 
   os_unfair_lock_unlock(&lockCollections);
@@ -751,7 +751,7 @@ LABEL_9:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = reportingCopy;
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Conflicting reporter found for subject: %@", buf, 0xCu);
     }
 
@@ -762,51 +762,51 @@ LABEL_9:
   }
 }
 
-+ (void)endSubjectReporting:(id)a3
++ (void)endSubjectReporting:(id)reporting
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  reportingCopy = reporting;
   os_unfair_lock_lock(&lockCollections);
   v4 = +[PKAnalyticsReporter subjectDictionary];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:reportingCopy];
 
   v6 = PKLogFacilityTypeGetObject(0x16uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 _reportingSessionID];
+    _reportingSessionID = [v5 _reportingSessionID];
     v10 = 138412546;
-    v11 = v3;
+    v11 = reportingCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = _reportingSessionID;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Terminating RTC reporting for subject: %@ session ID: %@", &v10, 0x16u);
   }
 
   v8 = +[PKAnalyticsReporter subjectDictionary];
-  [v8 removeObjectForKey:v3];
+  [v8 removeObjectForKey:reportingCopy];
 
   v9 = +[PKAnalyticsReporter subjectSessionStateDateDictionary];
-  [v9 removeObjectForKey:v3];
+  [v9 removeObjectForKey:reportingCopy];
 
   os_unfair_lock_unlock(&lockCollections);
 }
 
-+ (void)subject:(id)a3 category:(int64_t)a4 sendEvent:(id)a5
++ (void)subject:(id)subject category:(int64_t)category sendEvent:(id)event
 {
-  v8 = a5;
-  v9 = [a1 reporterForSubject:a3];
-  [v9 sendEvent:v8 withCategory:a4];
+  eventCopy = event;
+  v9 = [self reporterForSubject:subject];
+  [v9 sendEvent:eventCopy withCategory:category];
 }
 
-+ (void)subjects:(id)a3 category:(int64_t)a4 sendEvent:(id)a5
++ (void)subjects:(id)subjects category:(int64_t)category sendEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  subjectsCopy = subjects;
+  eventCopy = event;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [subjectsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -818,33 +818,33 @@ LABEL_9:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subjectsCopy);
         }
 
-        v14 = [a1 reporterForSubject:*(*(&v15 + 1) + 8 * v13)];
-        [v14 sendEvent:v9 withCategory:a4];
+        v14 = [self reporterForSubject:*(*(&v15 + 1) + 8 * v13)];
+        [v14 sendEvent:eventCopy withCategory:category];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [subjectsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-+ (int)clientTypeForSubject:(id)a3
++ (int)clientTypeForSubject:(id)subject
 {
   v3 = _MergedGlobals_252;
-  v4 = a3;
+  subjectCopy = subject;
   if (v3 != -1)
   {
     dispatch_once(&_MergedGlobals_252, &__block_literal_global_169);
   }
 
-  v5 = [qword_1ED6D1F68 containsObject:v4];
+  v5 = [qword_1ED6D1F68 containsObject:subjectCopy];
 
   if (v5)
   {
@@ -864,24 +864,24 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
   qword_1ED6D1F68 = v0;
 }
 
-+ (void)sendSingularEvent:(id)a3
++ (void)sendSingularEvent:(id)event
 {
   v25[5] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
-  v6 = [v4 mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = v7;
+  eventCopy = event;
+  mainBundle = [v4 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = bundleIdentifier;
   v9 = &stru_1F227FD28;
-  if (v7)
+  if (bundleIdentifier)
   {
-    v9 = v7;
+    v9 = bundleIdentifier;
   }
 
   v10 = v9;
 
   v24[0] = *MEMORY[0x1E69C6AB0];
-  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a1, "clientTypeForSubject:", @"general"}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(self, "clientTypeForSubject:", @"general"}];
   v12 = *MEMORY[0x1E69C6AB8];
   v25[0] = v11;
   v25[1] = &unk_1F23B6E90;
@@ -905,31 +905,31 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v19 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKPassKitErrorDomain" code:0 userInfo:0];
   v21 = v19;
-  [MEMORY[0x1E69C6A80] sendOneMessageWithSessionInfo:v16 userInfo:v18 category:1 type:100 payload:v5 error:&v21];
+  [MEMORY[0x1E69C6A80] sendOneMessageWithSessionInfo:v16 userInfo:v18 category:1 type:100 payload:eventCopy error:&v21];
 
   v20 = v21;
 }
 
-+ (id)archivedSessionTokenForSubject:(id)a3
++ (id)archivedSessionTokenForSubject:(id)subject
 {
-  v3 = [PKAnalyticsReporter reporterForSubject:a3];
-  v4 = [v3 archivedSessionToken];
+  v3 = [PKAnalyticsReporter reporterForSubject:subject];
+  archivedSessionToken = [v3 archivedSessionToken];
 
-  return v4;
+  return archivedSessionToken;
 }
 
-+ (id)analyticsErrorTextForError:(int64_t)a3
++ (id)analyticsErrorTextForError:(int64_t)error
 {
-  if (a3 <= 60001)
+  if (error <= 60001)
   {
-    if (a3 > 40455)
+    if (error > 40455)
     {
-      if (a3 == 40456)
+      if (error == 40456)
       {
         return @"invalidVerificationCode";
       }
 
-      if (a3 == 40457)
+      if (error == 40457)
       {
         return @"expiredVerificationCode";
       }
@@ -937,12 +937,12 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
 
     else
     {
-      if (a3 == 40423)
+      if (error == 40423)
       {
         return @"verificationRequestLimitReached";
       }
 
-      if (a3 == 40454)
+      if (error == 40454)
       {
         return @"verificationAttemptLimitReached";
       }
@@ -954,7 +954,7 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
   else
   {
     result = @"invalidFirstName";
-    switch(a3)
+    switch(error)
     {
       case 60039:
         return result;
@@ -1007,14 +1007,14 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
       case 60070:
         return @"invalidTotalAssets";
       default:
-        if (a3 == 60002)
+        if (error == 60002)
         {
           result = @"minimumAgeRequirementsNotMet";
         }
 
         else
         {
-          if (a3 != 60092)
+          if (error != 60092)
           {
             return @"invalidUndefinedField";
           }
@@ -1029,21 +1029,21 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
   return result;
 }
 
-- (PKAnalyticsReporter)initWithParent:(id)a3 subject:(id)a4
+- (PKAnalyticsReporter)initWithParent:(id)parent subject:(id)subject
 {
-  if (a3)
+  if (parent)
   {
-    a3 = *(a3 + 3);
+    parent = *(parent + 3);
   }
 
-  return [(PKAnalyticsReporter *)self initWithParentToken:a3 subject:a4];
+  return [(PKAnalyticsReporter *)self initWithParentToken:parent subject:subject];
 }
 
-- (PKAnalyticsReporter)initWithParentToken:(id)a3 subject:(id)a4
+- (PKAnalyticsReporter)initWithParentToken:(id)token subject:(id)subject
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  subjectCopy = subject;
   v34.receiver = self;
   v34.super_class = PKAnalyticsReporter;
   v8 = [(PKAnalyticsReporter *)&v34 init];
@@ -1053,29 +1053,29 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v7;
+      v40 = subjectCopy;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Initiating RTC reporting for subject: %@", buf, 0xCu);
     }
 
     v8->_lockArchive._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_subject, a4);
-    v10 = [MEMORY[0x1E69C6A80] newHierarchyTokenFromParentToken:v6];
+    objc_storeStrong(&v8->_subject, subject);
+    v10 = [MEMORY[0x1E69C6A80] newHierarchyTokenFromParentToken:tokenCopy];
     sessionToken = v8->_sessionToken;
     v8->_sessionToken = v10;
 
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 bundleIdentifier];
-    v14 = v13;
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v14 = bundleIdentifier;
     v15 = &stru_1F227FD28;
-    if (v13)
+    if (bundleIdentifier)
     {
-      v15 = v13;
+      v15 = bundleIdentifier;
     }
 
     v16 = v15;
 
     v37[0] = *MEMORY[0x1E69C6AB0];
-    v17 = [MEMORY[0x1E696AD98] numberWithInt:{+[PKAnalyticsReporter clientTypeForSubject:](PKAnalyticsReporter, "clientTypeForSubject:", v7)}];
+    v17 = [MEMORY[0x1E696AD98] numberWithInt:{+[PKAnalyticsReporter clientTypeForSubject:](PKAnalyticsReporter, "clientTypeForSubject:", subjectCopy)}];
     v18 = *MEMORY[0x1E69C6AB8];
     v38[0] = v17;
     v38[1] = &unk_1F23B6E90;
@@ -1097,7 +1097,7 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
     v35[0] = *MEMORY[0x1E69C6AE0];
     v35[1] = v23;
     v36[0] = @"wallet";
-    v36[1] = v7;
+    v36[1] = subjectCopy;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
     v25 = objc_alloc(MEMORY[0x1E69C6A80]);
     v26 = [v25 initWithSessionInfo:v22 userInfo:v24 frameworksToCheck:MEMORY[0x1E695E0F0]];
@@ -1111,7 +1111,7 @@ void __44__PKAnalyticsReporter_clientTypeForSubject___block_invoke()
     v30[2] = __51__PKAnalyticsReporter_initWithParentToken_subject___block_invoke;
     v30[3] = &unk_1E79DC690;
     objc_copyWeak(&v33, buf);
-    v31 = v7;
+    v31 = subjectCopy;
     v32 = v8;
     [(RTCReporting *)v28 startConfigurationWithCompletionHandler:v30];
 
@@ -1151,19 +1151,19 @@ void __51__PKAnalyticsReporter_initWithParentToken_subject___block_invoke(uint64
   }
 }
 
-- (PKAnalyticsReporter)initWithArchivedParent:(id)a3 subject:(id)a4
+- (PKAnalyticsReporter)initWithArchivedParent:(id)parent subject:(id)subject
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  subjectCopy = subject;
   v7 = MEMORY[0x1E695DFD8];
-  v8 = a3;
+  parentCopy = parent;
   v9 = [v7 alloc];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v9 initWithObjects:{v10, v11, v12, objc_opt_class(), 0}];
   v19 = 0;
-  v14 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v13 fromData:v8 error:&v19];
+  v14 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v13 fromData:parentCopy error:&v19];
 
   v15 = v19;
   if (v15)
@@ -1177,7 +1177,7 @@ void __51__PKAnalyticsReporter_initWithParentToken_subject___block_invoke(uint64
     }
   }
 
-  v17 = [(PKAnalyticsReporter *)self initWithParentToken:v14 subject:v6];
+  v17 = [(PKAnalyticsReporter *)self initWithParentToken:v14 subject:subjectCopy];
 
   return v17;
 }
@@ -1198,10 +1198,10 @@ void __51__PKAnalyticsReporter_initWithParentToken_subject___block_invoke(uint64
   return v5;
 }
 
-- (void)sendEvent:(id)a3 withCategory:(int64_t)a4
+- (void)sendEvent:(id)event withCategory:(int64_t)category
 {
   v91[3] = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
+  v6 = [event mutableCopy];
   v7 = self->_subject;
   if (v7 == @"appleCardEngagement"
     || (v8 = v7) != 0 && (v9 = [(__CFString *)v7 isEqualToString:@"appleCardEngagement"], v8, (v9 & 1) != 0)
@@ -1240,8 +1240,8 @@ void __51__PKAnalyticsReporter_initWithParentToken_subject___block_invoke(uint64
     || (v58 = self->_subject, v58 == @"financeKitTransactionPicker"))
   {
 LABEL_55:
-    v61 = [MEMORY[0x1E695DF00] date];
-    v62 = PKDateIgnoringSmallerUnitsWithTimeZone(v61, 16, 0);
+    date = [MEMORY[0x1E695DF00] date];
+    v62 = PKDateIgnoringSmallerUnitsWithTimeZone(date, 16, 0);
 
     v63 = MEMORY[0x1E696AD98];
     [v62 timeIntervalSince1970];
@@ -1281,8 +1281,8 @@ LABEL_56:
     if (v67)
     {
       os_unfair_lock_unlock(&lockCollections);
-      v68 = [MEMORY[0x1E695DF00] date];
-      [v68 timeIntervalSinceDate:v67];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:v67];
       v70 = llround(v69);
       v71 = (v69 * 1000.0);
     }
@@ -1320,7 +1320,7 @@ LABEL_56:
 
   v79 = [v6 copy];
   v90[0] = *MEMORY[0x1E69C6A88];
-  v80 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v80 = [MEMORY[0x1E696AD98] numberWithInteger:category];
   v81 = *MEMORY[0x1E69C6A98];
   v91[0] = v80;
   v91[1] = &unk_1F23B53F0;
@@ -1343,11 +1343,11 @@ LABEL_56:
   }
 }
 
-- (double)clampSessionDurationFromMilliseconds:(int64_t)a3
+- (double)clampSessionDurationFromMilliseconds:(int64_t)milliseconds
 {
-  if (a3 <= 120000)
+  if (milliseconds <= 120000)
   {
-    return round(a3 / 500.0) * 0.5;
+    return round(milliseconds / 500.0) * 0.5;
   }
 
   else

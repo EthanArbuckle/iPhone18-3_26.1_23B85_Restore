@@ -1,39 +1,39 @@
 @interface CRFormContourBasedDetector
-- (CRFormContourBasedDetector)initWithConfiguration:(id)a3;
-- (id)detectFormFieldsInImage:(id)a3;
+- (CRFormContourBasedDetector)initWithConfiguration:(id)configuration;
+- (id)detectFormFieldsInImage:(id)image;
 @end
 
 @implementation CRFormContourBasedDetector
 
-- (CRFormContourBasedDetector)initWithConfiguration:(id)a3
+- (CRFormContourBasedDetector)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = CRFormContourBasedDetector;
   v6 = [(CRFormContourBasedDetector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
 }
 
-- (id)detectFormFieldsInImage:(id)a3
+- (id)detectFormFieldsInImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 width];
-  v5 = [v3 height];
-  v6 = fmin([v3 width], objc_msgSend(v3, "height"));
+  imageCopy = image;
+  width = [imageCopy width];
+  height = [imageCopy height];
+  v6 = fmin([imageCopy width], objc_msgSend(imageCopy, "height"));
   if (v6 > 1224.0)
   {
-    v7 = [v3 imageByScalingToWidth:(1224.0 / v6 * objc_msgSend(v3 height:{"width")), (1224.0 / v6 * objc_msgSend(v3, "height"))}];
+    v7 = [imageCopy imageByScalingToWidth:(1224.0 / v6 * objc_msgSend(imageCopy height:{"width")), (1224.0 / v6 * objc_msgSend(imageCopy, "height"))}];
 
-    v3 = v7;
+    imageCopy = v7;
   }
 
-  v8 = [v3 imageByConvertingToColorSpace:0 forceDataCopy:1];
+  v8 = [imageCopy imageByConvertingToColorSpace:0 forceDataCopy:1];
   v9 = v8;
   if (!v8)
   {
@@ -51,18 +51,18 @@
   [v8 size];
   v11 = v10;
   v13 = v12;
-  v14 = [v3 url];
-  v15 = [v14 URLByDeletingPathExtension];
-  v16 = [v15 lastPathComponent];
-  v17 = v16;
-  if (v16)
+  v14 = [imageCopy url];
+  uRLByDeletingPathExtension = [v14 URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
+  v17 = lastPathComponent;
+  if (lastPathComponent)
   {
-    v18 = v16;
+    v18 = lastPathComponent;
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"null%lu", objc_msgSend(v3, "hash")];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"null%lu", objc_msgSend(imageCopy, "hash")];
   }
 
   v19 = v18;
@@ -96,7 +96,7 @@ LABEL_45:
   *buf = v92;
   v87 = v93;
   v67 = v19;
-  v68 = v3;
+  v68 = imageCopy;
   adaptiveThresholdIntegralImage(buf, &v90, 50, 10);
   v23 = CRLogger::getCRLogger(v22);
   if (*v23 == 1 && (v23[8] & 0x10) != 0)
@@ -139,10 +139,10 @@ LABEL_45:
   v75 = 0;
   v76 = 0;
   v77 = 0;
-  v31 = [MEMORY[0x1E695DF70] array];
-  v32 = v31;
-  v70 = v4;
-  v33 = v5;
+  array = [MEMORY[0x1E695DF70] array];
+  v32 = array;
+  v70 = width;
+  v33 = height;
   v34 = v84;
   if (v85 != v84)
   {
@@ -154,7 +154,7 @@ LABEL_45:
       __p[1] = 0;
       *&v80 = 0;
       std::vector<PixelPosition>::__init_with_size[abi:ne200100]<PixelPosition*,PixelPosition*>(__p, *(v34 + v35), *(v34 + v35 + 8), (*(v34 + v35 + 8) - *(v34 + v35)) >> 3);
-      v31 = __p[0];
+      array = __p[0];
       if ((__p[1] - __p[0]) >= 0x58)
       {
         *&v95.origin.x = *&boxForContour(__p[0], __p[1]);
@@ -179,13 +179,13 @@ LABEL_45:
           }
         }
 
-        v31 = __p[0];
+        array = __p[0];
       }
 
-      if (v31)
+      if (array)
       {
-        __p[1] = v31;
-        operator delete(v31);
+        __p[1] = array;
+        operator delete(array);
       }
 
       ++v36;
@@ -227,7 +227,7 @@ LABEL_45:
         [v32 addObject:v55];
       }
 
-      v31 = __p[0];
+      array = __p[0];
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -242,9 +242,9 @@ LABEL_45:
     while (v46 < 0xAAAAAAAAAAAAAAABLL * ((v83 - v82) >> 3));
   }
 
-  v57 = CRLogger::getCRLogger(v31);
+  v57 = CRLogger::getCRLogger(array);
   v19 = v67;
-  v3 = v68;
+  imageCopy = v68;
   v9 = v69;
   v58 = v32;
   if (*v57 == 1 && (v57[8] & 0x10) != 0)
@@ -257,12 +257,12 @@ LABEL_45:
     __p[0] = v72;
     std::vector<std::vector<PixelPosition>>::__destroy_vector::operator()[abi:ne200100](__p);
     v59 = [v68 url];
-    v60 = [v59 URLByDeletingPathExtension];
-    v61 = [v60 lastPathComponent];
-    v62 = v61;
-    if (v61)
+    uRLByDeletingPathExtension2 = [v59 URLByDeletingPathExtension];
+    lastPathComponent2 = [uRLByDeletingPathExtension2 lastPathComponent];
+    v62 = lastPathComponent2;
+    if (lastPathComponent2)
     {
-      v63 = v61;
+      v63 = lastPathComponent2;
     }
 
     else

@@ -1,12 +1,12 @@
 @interface PKAccountSupportTopicExplanationLink
-- (PKAccountSupportTopicExplanationLink)initWithDictionary:(id)a3;
+- (PKAccountSupportTopicExplanationLink)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKAccountSupportTopicExplanationLink
 
-- (PKAccountSupportTopicExplanationLink)initWithDictionary:(id)a3
+- (PKAccountSupportTopicExplanationLink)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PKAccountSupportTopicExplanationLink;
   v5 = [(PKAccountSupportTopicExplanationLink *)&v16 init];
@@ -15,11 +15,11 @@
     goto LABEL_10;
   }
 
-  v6 = [v4 PKStringForKey:@"linkTitle"];
+  v6 = [dictionaryCopy PKStringForKey:@"linkTitle"];
   text = v5->_text;
   v5->_text = v6;
 
-  v8 = [v4 PKStringForKey:@"linkAction"];
+  v8 = [dictionaryCopy PKStringForKey:@"linkAction"];
   if ([v8 isEqualToString:@"openURL"])
   {
     v9 = 0;
@@ -35,7 +35,7 @@
   if (v5->_action)
   {
 LABEL_9:
-    v13 = [v4 PKStringForKey:@"linkConfirmationTitle"];
+    v13 = [dictionaryCopy PKStringForKey:@"linkConfirmationTitle"];
     confirmationTitle = v5->_confirmationTitle;
     v5->_confirmationTitle = v13;
 
@@ -44,10 +44,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [v4 PKStringForKey:@"linkURL"];
+  v10 = [dictionaryCopy PKStringForKey:@"linkURL"];
   v11 = PKAccountSupportTopicURLFromActionString(v10);
 
-  if (v11 || ([v4 PKURLForKey:@"linkURL"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v11 || ([dictionaryCopy PKURLForKey:@"linkURL"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     url = v5->_url;
     v5->_url = v11;

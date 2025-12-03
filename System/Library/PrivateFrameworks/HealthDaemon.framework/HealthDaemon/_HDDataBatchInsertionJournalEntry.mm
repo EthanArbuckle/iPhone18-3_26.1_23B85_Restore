@@ -1,29 +1,29 @@
 @interface _HDDataBatchInsertionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDDataBatchInsertionJournalEntry)initWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDDataBatchInsertionJournalEntry)initWithCoder:(id)coder;
 - (id)description;
-- (id)initWithCodableObjectCollection:(void *)a3 provenance:;
-- (void)encodeWithCoder:(id)a3;
+- (id)initWithCodableObjectCollection:(void *)collection provenance:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDDataBatchInsertionJournalEntry
 
-- (id)initWithCodableObjectCollection:(void *)a3 provenance:
+- (id)initWithCodableObjectCollection:(void *)collection provenance:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  collectionCopy = collection;
+  if (self)
   {
-    v8 = [a1 init];
-    a1 = v8;
+    v8 = [self init];
+    self = v8;
     if (v8)
     {
       objc_storeStrong((v8 + 8), a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, collection);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -36,14 +36,14 @@
   return v6;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v113 = *MEMORY[0x277D85DE8];
-  v87 = a3;
-  v95 = a4;
-  v5 = [v95 deviceManager];
+  entriesCopy = entries;
+  profileCopy = profile;
+  deviceManager = [profileCopy deviceManager];
   v106 = 0;
-  v6 = [v5 deviceEntityForNoDeviceWithError:&v106];
+  v6 = [deviceManager deviceEntityForNoDeviceWithError:&v106];
   v7 = v106;
 
   v88 = v6;
@@ -67,7 +67,7 @@
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  obj = v87;
+  obj = entriesCopy;
   v94 = [obj countByEnumeratingWithState:&v102 objects:v112 count:16];
   if (v94)
   {
@@ -94,18 +94,18 @@ LABEL_7:
       }
 
       v13 = v12;
-      v14 = [v13 sourceBundleIdentifier];
-      if (v14)
+      sourceBundleIdentifier = [v13 sourceBundleIdentifier];
+      if (sourceBundleIdentifier)
       {
-        v15 = v14;
+        bundleIdentifier = sourceBundleIdentifier;
       }
 
       else
       {
-        v16 = [v13 source];
-        v15 = [v16 bundleIdentifier];
+        source = [v13 source];
+        bundleIdentifier = [source bundleIdentifier];
 
-        if (!v15)
+        if (!bundleIdentifier)
         {
           _HKInitializeLogging();
           v55 = *MEMORY[0x277CCC2A0];
@@ -115,9 +115,9 @@ LABEL_7:
             _os_log_error_impl(&dword_228986000, v55, OS_LOG_TYPE_ERROR, "missing collection source identifier during journal application", buf, 2u);
           }
 
-          v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
-          v31 = [v95 daemon];
-          v33 = [v31 autoBugCaptureReporter];
+          bundleIdentifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
+          daemon = [profileCopy daemon];
+          autoBugCaptureReporter = [daemon autoBugCaptureReporter];
           v56 = MEMORY[0x277CCABB0];
           if (v11)
           {
@@ -129,9 +129,9 @@ LABEL_7:
             v57 = 0;
           }
 
-          v46 = v57;
-          v42 = [v56 numberWithLongLong:{objc_msgSend(v46, "syncProvenance")}];
-          [(HDSourceEntity *)v33 reportJournalFailureWithErrorDescription:v15 provenance:v42 error:v7];
+          decodedObjects = v57;
+          v33AutoBugCaptureReporter = [v56 numberWithLongLong:{objc_msgSend(decodedObjects, "syncProvenance")}];
+          [(HDSourceEntity *)autoBugCaptureReporter reportJournalFailureWithErrorDescription:bundleIdentifier provenance:v33AutoBugCaptureReporter error:v7];
           goto LABEL_74;
         }
       }
@@ -146,9 +146,9 @@ LABEL_7:
         v17 = 0;
       }
 
-      v18 = [v17 sourceID];
+      sourceID = [v17 sourceID];
 
-      if (v18)
+      if (sourceID)
       {
         v19 = v7;
         v20 = v92;
@@ -160,9 +160,9 @@ LABEL_7:
 
       else
       {
-        v35 = [v95 sourceManager];
+        sourceManager = [profileCopy sourceManager];
         v101 = v7;
-        v36 = [v35 localSourceForBundleIdentifier:v15 error:&v101];
+        v36 = [sourceManager localSourceForBundleIdentifier:bundleIdentifier error:&v101];
         v19 = v101;
 
         if (!v36)
@@ -172,7 +172,7 @@ LABEL_7:
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v109 = v15;
+            v109 = bundleIdentifier;
             v110 = 2114;
             v111 = v19;
             _os_log_error_impl(&dword_228986000, v58, OS_LOG_TYPE_ERROR, "missing source for %{public}@: %{public}@", buf, 0x16u);
@@ -187,7 +187,7 @@ LABEL_107:
             goto LABEL_108;
           }
 
-          [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", objc_opt_class(), v15];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", objc_opt_class(), bundleIdentifier];
           goto LABEL_70;
         }
 
@@ -218,22 +218,22 @@ LABEL_39:
 
       v21 = *(v11 + *(v9 + 2944));
 LABEL_20:
-      v22 = [v21 sourceID];
+      sourceID2 = [v21 sourceID];
 
-      if (!v22)
+      if (!sourceID2)
       {
         _HKInitializeLogging();
         v41 = *MEMORY[0x277CCC2A0];
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v109 = v15;
+          v109 = bundleIdentifier;
           _os_log_error_impl(&dword_228986000, v41, OS_LOG_TYPE_ERROR, "Found a source for identifier %@, but it had no ID; skipping", buf, 0xCu);
         }
 
-        v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", objc_opt_class(), v15];
-        v33 = [v95 daemon];
-        v42 = [(HDSourceEntity *)v33 autoBugCaptureReporter];
+        daemon = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", objc_opt_class(), bundleIdentifier];
+        autoBugCaptureReporter = [profileCopy daemon];
+        v33AutoBugCaptureReporter = [(HDSourceEntity *)autoBugCaptureReporter autoBugCaptureReporter];
         v43 = MEMORY[0x277CCABB0];
         if (v11)
         {
@@ -246,8 +246,8 @@ LABEL_20:
         }
 
         v45 = v44;
-        v46 = [v43 numberWithLongLong:{objc_msgSend(v45, "syncProvenance")}];
-        [v42 reportJournalFailureWithErrorDescription:v31 provenance:v46 error:v19];
+        decodedObjects = [v43 numberWithLongLong:{objc_msgSend(v45, "syncProvenance")}];
+        [v33AutoBugCaptureReporter reportJournalFailureWithErrorDescription:daemon provenance:decodedObjects error:v19];
 
         goto LABEL_73;
       }
@@ -262,9 +262,9 @@ LABEL_20:
         v23 = 0;
       }
 
-      v24 = [v23 deviceID];
+      deviceID = [v23 deviceID];
 
-      if (v24)
+      if (deviceID)
       {
         if (v11)
         {
@@ -301,9 +301,9 @@ LABEL_49:
 LABEL_25:
         v25 = *(v11 + *(v9 + 2944));
 LABEL_26:
-        v26 = [v25 sourceVersion];
+        sourceVersion = [v25 sourceVersion];
 
-        if (!v26)
+        if (!sourceVersion)
         {
           if (v11)
           {
@@ -330,13 +330,13 @@ LABEL_26:
         }
 
         v30 = v29;
-        v31 = [v28 initWithFormat:@"%@-%ld", v15, objc_msgSend(v30, "hash")];
+        daemon = [v28 initWithFormat:@"%@-%ld", bundleIdentifier, objc_msgSend(v30, "hash")];
 
-        v32 = [v20 objectForKeyedSubscript:v15];
+        v32 = [v20 objectForKeyedSubscript:bundleIdentifier];
         if (v32)
         {
-          v33 = v32;
-          v34 = [v20 objectForKeyedSubscript:v31];
+          autoBugCaptureReporter = v32;
+          v34 = [v20 objectForKeyedSubscript:daemon];
 
           if (!v34)
           {
@@ -357,19 +357,19 @@ LABEL_26:
             v52 = 0;
           }
 
-          v53 = [v52 sourceID];
-          v33 = -[HDSQLiteEntity initWithPersistentID:](v51, "initWithPersistentID:", [v53 longLongValue]);
+          sourceID3 = [v52 sourceID];
+          autoBugCaptureReporter = -[HDSQLiteEntity initWithPersistentID:](v51, "initWithPersistentID:", [sourceID3 longLongValue]);
 
-          [v20 setObject:v33 forKeyedSubscript:v15];
+          [v20 setObject:autoBugCaptureReporter forKeyedSubscript:bundleIdentifier];
 LABEL_53:
-          [v20 setObject:v33 forKeyedSubscript:v31];
+          [v20 setObject:autoBugCaptureReporter forKeyedSubscript:daemon];
         }
 
-        v42 = [v91 objectForKeyedSubscript:v31];
-        if (!v42)
+        v33AutoBugCaptureReporter = [v91 objectForKeyedSubscript:daemon];
+        if (!v33AutoBugCaptureReporter)
         {
-          v42 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          [v91 setObject:v42 forKeyedSubscript:v31];
+          v33AutoBugCaptureReporter = objc_alloc_init(MEMORY[0x277CBEB18]);
+          [v91 setObject:v33AutoBugCaptureReporter forKeyedSubscript:daemon];
           if (v11)
           {
             v54 = *(v11 + 16);
@@ -380,22 +380,22 @@ LABEL_53:
             v54 = 0;
           }
 
-          [v89 setObject:v54 forKeyedSubscript:v31];
+          [v89 setObject:v54 forKeyedSubscript:daemon];
         }
 
-        v46 = [v13 decodedObjects];
-        if (v46)
+        decodedObjects = [v13 decodedObjects];
+        if (decodedObjects)
         {
-          [v42 addObjectsFromArray:v46];
+          [v33AutoBugCaptureReporter addObjectsFromArray:decodedObjects];
         }
 
         goto LABEL_73;
       }
 
       [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class(), v86];
-      v31 = LABEL_70:;
-      v33 = [v95 daemon];
-      v42 = [(HDSourceEntity *)v33 autoBugCaptureReporter];
+      daemon = LABEL_70:;
+      autoBugCaptureReporter = [profileCopy daemon];
+      v33AutoBugCaptureReporter = [(HDSourceEntity *)autoBugCaptureReporter autoBugCaptureReporter];
       if (v11)
       {
         v59 = *(v11 + 16);
@@ -408,8 +408,8 @@ LABEL_53:
 
       v60 = MEMORY[0x277CCABB0];
       v61 = v59;
-      v46 = [v60 numberWithLongLong:{objc_msgSend(v61, "syncProvenance")}];
-      [v42 reportJournalFailureWithErrorDescription:v31 provenance:v46 error:v19];
+      decodedObjects = [v60 numberWithLongLong:{objc_msgSend(v61, "syncProvenance")}];
+      [v33AutoBugCaptureReporter reportJournalFailureWithErrorDescription:daemon provenance:decodedObjects error:v19];
 
 LABEL_73:
       v7 = v19;
@@ -470,17 +470,17 @@ LABEL_74:
         v13 = [v89 objectForKeyedSubscript:v68];
         if ([v13 syncIdentity] == -1)
         {
-          v70 = [v95 syncIdentityManager];
-          v71 = [v70 legacySyncIdentity];
-          v72 = [v71 entity];
-          [v13 setSyncIdentity:{objc_msgSend(v72, "persistentID")}];
+          syncIdentityManager = [profileCopy syncIdentityManager];
+          legacySyncIdentity = [syncIdentityManager legacySyncIdentity];
+          entity = [legacySyncIdentity entity];
+          [v13 setSyncIdentity:{objc_msgSend(entity, "persistentID")}];
         }
 
-        v73 = [v95 dataManager];
+        dataManager = [profileCopy dataManager];
         v74 = [v91 objectForKeyedSubscript:v68];
         v75 = [v13 syncProvenance] == 0;
         v96 = v67;
-        v76 = [v73 insertDataObjects:v74 withProvenance:v13 creationDate:1 skipInsertionFilter:v75 updateSourceOrder:0 resolveAssociations:&v96 error:2.22507386e-308];
+        v76 = [dataManager insertDataObjects:v74 withProvenance:v13 creationDate:1 skipInsertionFilter:v75 updateSourceOrder:0 resolveAssociations:&v96 error:2.22507386e-308];
         v7 = v96;
 
         if ((v76 & 1) == 0)
@@ -502,10 +502,10 @@ LABEL_74:
           }
 
           v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v68];
-          v79 = [v95 daemon];
-          v80 = [v79 autoBugCaptureReporter];
+          daemon2 = [profileCopy daemon];
+          autoBugCaptureReporter2 = [daemon2 autoBugCaptureReporter];
           v81 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v13, "syncProvenance")}];
-          [v80 reportJournalFailureWithErrorDescription:v78 provenance:v81 error:v7];
+          [autoBugCaptureReporter2 reportJournalFailureWithErrorDescription:v78 provenance:v81 error:v7];
         }
 
         ++v66;
@@ -525,25 +525,25 @@ LABEL_109:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDDataBatchInsertionJournalEntry)initWithCoder:(id)a3
+- (_HDDataBatchInsertionJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codableCollectionData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codableCollectionData"];
   v6 = [[HDCodableObjectCollection alloc] initWithData:v5];
-  if ([v4 containsValueForKey:@"provenance"])
+  if ([coderCopy containsValueForKey:@"provenance"])
   {
-    +[HDDataOriginProvenance dataProvenanceWithSyncProvenance:syncIdentity:productType:systemBuild:operatingSystemVersion:sourceVersion:timeZoneName:sourceID:deviceID:contributorReference:](HDDataOriginProvenance, "dataProvenanceWithSyncProvenance:syncIdentity:productType:systemBuild:operatingSystemVersion:sourceVersion:timeZoneName:sourceID:deviceID:contributorReference:", [v4 decodeIntegerForKey:@"provenance"], -1, @"UnknownDevice", @"[8.2, 9.0"), &v11, &stru_283BF39C8, &stru_283BF39C8, 0, 0, 0, HDDataProvenanceOperatingSystemVersion8_2_0, 0);
+    +[HDDataOriginProvenance dataProvenanceWithSyncProvenance:syncIdentity:productType:systemBuild:operatingSystemVersion:sourceVersion:timeZoneName:sourceID:deviceID:contributorReference:](HDDataOriginProvenance, "dataProvenanceWithSyncProvenance:syncIdentity:productType:systemBuild:operatingSystemVersion:sourceVersion:timeZoneName:sourceID:deviceID:contributorReference:", [coderCopy decodeIntegerForKey:@"provenance"], -1, @"UnknownDevice", @"[8.2, 9.0"), &v11, &stru_283BF39C8, &stru_283BF39C8, 0, 0, 0, HDDataProvenanceOperatingSystemVersion8_2_0, 0);
     v7 = LABEL_6:;
     goto LABEL_7;
   }
 
-  if (![v4 containsValueForKey:@"fullProvenance"])
+  if (![coderCopy containsValueForKey:@"fullProvenance"])
   {
     [HDDataOriginProvenance dataProvenanceWithSyncProvenance:"dataProvenanceWithSyncProvenance:syncIdentity:productType:systemBuild:operatingSystemVersion:sourceVersion:timeZoneName:sourceID:deviceID:contributorReference:" syncIdentity:0 productType:-1 systemBuild:@"UnknownDevice" operatingSystemVersion:@"[8.0 sourceVersion:8.2" timeZoneName:? sourceID:? deviceID:? contributorReference:?], &v11, &stru_283BF39C8, &stru_283BF39C8, 0, 0, 0, HDDataProvenanceOperatingSystemVersion8_0_0, 0);
     goto LABEL_6;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullProvenance"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullProvenance"];
 LABEL_7:
   v8 = v7;
   v9 = [(_HDDataBatchInsertionJournalEntry *)&self->super.super.isa initWithCodableObjectCollection:v6 provenance:v7];
@@ -551,14 +551,14 @@ LABEL_7:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   collection = self->_collection;
-  v6 = a3;
-  v5 = [(HDCodableObjectCollection *)collection data];
-  [v6 encodeObject:v5 forKey:@"codableCollectionData"];
+  coderCopy = coder;
+  data = [(HDCodableObjectCollection *)collection data];
+  [coderCopy encodeObject:data forKey:@"codableCollectionData"];
 
-  [v6 encodeObject:self->_provenance forKey:@"fullProvenance"];
+  [coderCopy encodeObject:self->_provenance forKey:@"fullProvenance"];
 }
 
 @end

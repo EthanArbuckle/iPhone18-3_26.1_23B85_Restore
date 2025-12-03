@@ -1,5 +1,5 @@
 @interface EDPersistenceDatabaseJournal
-- (EDPersistenceDatabaseJournal)initWithJournalManager:(id)a3 number:(unint64_t)a4;
+- (EDPersistenceDatabaseJournal)initWithJournalManager:(id)manager number:(unint64_t)number;
 - (NSString)path;
 - (id)description;
 - (unint64_t)referenceCount;
@@ -9,17 +9,17 @@
 
 @implementation EDPersistenceDatabaseJournal
 
-- (EDPersistenceDatabaseJournal)initWithJournalManager:(id)a3 number:(unint64_t)a4
+- (EDPersistenceDatabaseJournal)initWithJournalManager:(id)manager number:(unint64_t)number
 {
-  v7 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = EDPersistenceDatabaseJournal;
   v8 = [(EDPersistenceDatabaseJournal *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_journalManager, a3);
-    v9->_number = a4;
+    objc_storeStrong(&v8->_journalManager, manager);
+    v9->_number = number;
     v9->_referenceCountLock._os_unfair_lock_opaque = 0;
   }
 
@@ -39,11 +39,11 @@
 
 - (NSString)path
 {
-  v3 = [(EDPersistenceDatabaseJournal *)self journalManager];
-  v4 = [v3 journalDirectoryPath];
+  journalManager = [(EDPersistenceDatabaseJournal *)self journalManager];
+  journalDirectoryPath = [journalManager journalDirectoryPath];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[EDPersistenceDatabaseJournal number](self, "number")}];
-  v6 = [v5 stringValue];
-  v7 = [v4 stringByAppendingPathComponent:v6];
+  stringValue = [v5 stringValue];
+  v7 = [journalDirectoryPath stringByAppendingPathComponent:stringValue];
 
   return v7;
 }
@@ -55,7 +55,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C61EF000, v3, OS_LOG_TYPE_DEFAULT, "Checking out %@", &v5, 0xCu);
   }
 
@@ -72,7 +72,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C61EF000, v4, OS_LOG_TYPE_DEFAULT, "Checking in %@", &v10, 0xCu);
   }
 
@@ -80,8 +80,8 @@
   referenceCount = self->_referenceCount;
   if (!referenceCount)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseJournal.m" lineNumber:72 description:@"reference count should be non-zero"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseJournal.m" lineNumber:72 description:@"reference count should be non-zero"];
 
     referenceCount = self->_referenceCount;
   }
@@ -91,8 +91,8 @@
   os_unfair_lock_unlock(&self->_referenceCountLock);
   if (!v6)
   {
-    v7 = [(EDPersistenceDatabaseJournal *)self journalManager];
-    [v7 _journalNoLongerReferenced:self];
+    journalManager = [(EDPersistenceDatabaseJournal *)self journalManager];
+    [journalManager _journalNoLongerReferenced:self];
   }
 
   v8 = *MEMORY[0x1E69E9840];

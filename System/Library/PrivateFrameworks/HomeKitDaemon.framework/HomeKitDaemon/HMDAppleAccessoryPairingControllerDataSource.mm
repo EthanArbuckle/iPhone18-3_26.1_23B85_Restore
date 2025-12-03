@@ -1,33 +1,33 @@
 @interface HMDAppleAccessoryPairingControllerDataSource
 - (HAPPairingIdentity)hh1ControllerIdentity;
-- (HMDAppleAccessoryPairingControllerDataSource)initWithContext:(id)a3;
+- (HMDAppleAccessoryPairingControllerDataSource)initWithContext:(id)context;
 - (NSArray)inProgressPairingAccessories;
-- (id)deviceForIdentifier:(id)a3;
-- (id)timerWithInterval:(double)a3 options:(unsigned int)a4;
-- (void)deletePairingAccessoryState:(id)a3;
-- (void)updatePairingAccessoryState:(id)a3;
+- (id)deviceForIdentifier:(id)identifier;
+- (id)timerWithInterval:(double)interval options:(unsigned int)options;
+- (void)deletePairingAccessoryState:(id)state;
+- (void)updatePairingAccessoryState:(id)state;
 @end
 
 @implementation HMDAppleAccessoryPairingControllerDataSource
 
-- (id)deviceForIdentifier:(id)a3
+- (id)deviceForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[HMDAccountRegistry sharedRegistry];
-  v5 = [v4 deviceForIdentifier:v3];
+  v5 = [v4 deviceForIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (void)deletePairingAccessoryState:(id)a3
+- (void)deletePairingAccessoryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__HMDAppleAccessoryPairingControllerDataSource_deletePairingAccessoryState___block_invoke;
   v6[3] = &unk_27867F850;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(HMCContextProvider *)self unsafeSynchronousBlock:v6];
 }
 
@@ -44,15 +44,15 @@ void __76__HMDAppleAccessoryPairingControllerDataSource_deletePairingAccessorySt
   [v3 save];
 }
 
-- (void)updatePairingAccessoryState:(id)a3
+- (void)updatePairingAccessoryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__HMDAppleAccessoryPairingControllerDataSource_updatePairingAccessoryState___block_invoke;
   v6[3] = &unk_27867F850;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(HMCContextProvider *)self unsafeSynchronousBlock:v6];
 }
 
@@ -84,9 +84,9 @@ void __76__HMDAppleAccessoryPairingControllerDataSource_updatePairingAccessorySt
   [v3 save];
 }
 
-- (id)timerWithInterval:(double)a3 options:(unsigned int)a4
+- (id)timerWithInterval:(double)interval options:(unsigned int)options
 {
-  v4 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:12 options:a3];
+  v4 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:12 options:interval];
 
   return v4;
 }
@@ -94,15 +94,15 @@ void __76__HMDAppleAccessoryPairingControllerDataSource_updatePairingAccessorySt
 - (HAPPairingIdentity)hh1ControllerIdentity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFEC78] systemStore];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v12 = 0;
-  v4 = [v3 getOrCreateLocalPairingIdentity:&v12];
+  v4 = [systemStore getOrCreateLocalPairingIdentity:&v12];
   v5 = v12;
 
   if (!v4)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -151,11 +151,11 @@ void __76__HMDAppleAccessoryPairingControllerDataSource_inProgressPairingAccesso
   *(v4 + 40) = v3;
 }
 
-- (HMDAppleAccessoryPairingControllerDataSource)initWithContext:(id)a3
+- (HMDAppleAccessoryPairingControllerDataSource)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = HMDAppleAccessoryPairingControllerDataSource;
-  return [(HMCContextProvider *)&v4 initWithContext:a3];
+  return [(HMCContextProvider *)&v4 initWithContext:context];
 }
 
 @end

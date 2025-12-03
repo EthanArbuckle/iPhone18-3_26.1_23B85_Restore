@@ -1,10 +1,10 @@
 @interface ADGeneralProperties
-- (ADGeneralProperties)initWithQueue:(id)a3;
+- (ADGeneralProperties)initWithQueue:(id)queue;
 - (BOOL)_getIsStoreDemoMode;
 - (id)_getSystemLocale;
 - (int)_getUTCOffset;
-- (void)_getStoreFrontIdWithCompletion:(id)a3;
-- (void)getODDGeneralPropertiesWithCompletion:(id)a3;
+- (void)_getStoreFrontIdWithCompletion:(id)completion;
+- (void)getODDGeneralPropertiesWithCompletion:(id)completion;
 @end
 
 @implementation ADGeneralProperties
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)_getStoreFrontIdWithCompletion:(id)a3
+- (void)_getStoreFrontIdWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -57,7 +57,7 @@
   v22[3] = &unk_100512BB0;
   v22[4] = self;
   p_buf = &buf;
-  v7 = v4;
+  v7 = completionCopy;
   v23 = v7;
   v8 = [v6 initWithBlock:v22];
   v9 = [AFWatchdogTimer alloc];
@@ -97,8 +97,8 @@
   v2 = +[NSLocale currentLocale];
   v3 = [v2 objectForKey:NSLocaleIdentifier];
 
-  v4 = [v3 uppercaseString];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  uppercaseString = [v3 uppercaseString];
+  v5 = [uppercaseString stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   v6 = [NSString stringWithFormat:@"LOCALE_%@", v5];
   if ([v6 isEqualToString:@"LOCALE_UNKNOWN_LOCALE"])
@@ -426,9 +426,9 @@
   return v8;
 }
 
-- (void)getODDGeneralPropertiesWithCompletion:(id)a3
+- (void)getODDGeneralPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -439,44 +439,44 @@
 
   v6 = +[ADPreferences sharedPreferences];
   v7 = objc_alloc_init(ODDSiriSchemaODDGeneralProperties);
-  v8 = [(ADGeneralProperties *)self _getSystemLocale];
-  [v7 setSystemLocale:v8];
+  _getSystemLocale = [(ADGeneralProperties *)self _getSystemLocale];
+  [v7 setSystemLocale:_getSystemLocale];
 
   [v7 setUTCOffset:{-[ADGeneralProperties _getUTCOffset](self, "_getUTCOffset")}];
-  v9 = [(ADGeneralProperties *)self _getDeviceType];
-  [v7 setDeviceType:v9];
+  _getDeviceType = [(ADGeneralProperties *)self _getDeviceType];
+  [v7 setDeviceType:_getDeviceType];
 
-  v10 = [(ADGeneralProperties *)self _getModelNumber];
-  [v7 setModelNumber:v10];
+  _getModelNumber = [(ADGeneralProperties *)self _getModelNumber];
+  [v7 setModelNumber:_getModelNumber];
 
-  v11 = [(ADGeneralProperties *)self _getDeviceOS];
-  [v7 setDeviceOS:v11];
+  _getDeviceOS = [(ADGeneralProperties *)self _getDeviceOS];
+  [v7 setDeviceOS:_getDeviceOS];
 
   [v7 setIsStoreDemoMode:{-[ADGeneralProperties _getIsStoreDemoMode](self, "_getIsStoreDemoMode")}];
-  v12 = [v6 productTypePrefix];
-  [v7 setDataCollectionId:v12];
+  productTypePrefix = [v6 productTypePrefix];
+  [v7 setDataCollectionId:productTypePrefix];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013CB50;
   v15[3] = &unk_100512B88;
   v16 = v7;
-  v17 = v4;
-  v13 = v4;
+  v17 = completionCopy;
+  v13 = completionCopy;
   v14 = v7;
   [(ADGeneralProperties *)self _getStoreFrontIdWithCompletion:v15];
 }
 
-- (ADGeneralProperties)initWithQueue:(id)a3
+- (ADGeneralProperties)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADGeneralProperties;
   v6 = [(ADGeneralProperties *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

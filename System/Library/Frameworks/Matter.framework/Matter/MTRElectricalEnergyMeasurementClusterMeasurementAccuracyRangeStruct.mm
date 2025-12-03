@@ -1,6 +1,6 @@
 @interface MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct
 - (MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct);
-  v5 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self rangeMin];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setRangeMin:v5];
+  rangeMin = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self rangeMin];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setRangeMin:rangeMin];
 
-  v6 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self rangeMax];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setRangeMax:v6];
+  rangeMax = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self rangeMax];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setRangeMax:rangeMax];
 
-  v7 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self percentMax];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setPercentMax:v7];
+  percentMax = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self percentMax];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setPercentMax:percentMax];
 
-  v8 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self percentMin];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setPercentMin:v8];
+  percentMin = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self percentMin];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setPercentMin:percentMin];
 
-  v9 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self percentTypical];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setPercentTypical:v9];
+  percentTypical = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self percentTypical];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setPercentTypical:percentTypical];
 
-  v10 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self fixedMax];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setFixedMax:v10];
+  fixedMax = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self fixedMax];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setFixedMax:fixedMax];
 
-  v11 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self fixedMin];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setFixedMin:v11];
+  fixedMin = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self fixedMin];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setFixedMin:fixedMin];
 
-  v12 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self fixedTypical];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setFixedTypical:v12];
+  fixedTypical = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)self fixedTypical];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyRangeStruct *)v4 setFixedTypical:fixedTypical];
 
   return v4;
 }

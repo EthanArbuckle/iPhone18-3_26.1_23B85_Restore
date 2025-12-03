@@ -1,27 +1,27 @@
 @interface ATXCategoricalFeatureMicrolocationVisitInLastThirtyMinutes
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureMicrolocationVisitInLastThirtyMinutes
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 microlocationVisitEvent];
-  v6 = v5;
+  contextCopy = context;
+  microlocationVisitEvent = [contextCopy microlocationVisitEvent];
+  v6 = microlocationVisitEvent;
   v7 = @"Microlocation NA";
-  if (v5)
+  if (microlocationVisitEvent)
   {
-    v8 = [v5 dominantMicrolocationUUID];
-    v9 = [v8 UUIDString];
+    dominantMicrolocationUUID = [microlocationVisitEvent dominantMicrolocationUUID];
+    uUIDString = [dominantMicrolocationUUID UUIDString];
 
-    v10 = [v4 timeContext];
-    v11 = [v10 date];
-    v12 = [v6 startDate];
-    [v11 timeIntervalSinceDate:v12];
+    timeContext = [contextCopy timeContext];
+    date = [timeContext date];
+    startDate = [v6 startDate];
+    [date timeIntervalSinceDate:startDate];
     v14 = v13;
 
-    if (v9)
+    if (uUIDString)
     {
       v15 = v14 > 1800.0;
     }
@@ -38,7 +38,7 @@
 
     else
     {
-      v17 = v9;
+      v17 = uUIDString;
     }
 
     v7 = v17;

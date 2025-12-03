@@ -1,10 +1,10 @@
 @interface MFPalette
-+ (MFPalette)paletteWithColours:(id)a3;
-- (BOOL)resize:(int)a3;
-- (BOOL)setEntries:(int)a3 in_colours:(id)a4;
++ (MFPalette)paletteWithColours:(id)colours;
+- (BOOL)resize:(int)resize;
+- (BOOL)setEntries:(int)entries in_colours:(id)in_colours;
 - (MFPalette)init;
-- (MFPalette)initWithColours:(id)a3;
-- (id)getColour:(int)a3;
+- (MFPalette)initWithColours:(id)colours;
+- (id)getColour:(int)colour;
 @end
 
 @implementation MFPalette
@@ -38,65 +38,65 @@
   return v2;
 }
 
-+ (MFPalette)paletteWithColours:(id)a3
++ (MFPalette)paletteWithColours:(id)colours
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithColours:v4];
+  coloursCopy = colours;
+  v5 = [[self alloc] initWithColours:coloursCopy];
 
   return v5;
 }
 
-- (MFPalette)initWithColours:(id)a3
+- (MFPalette)initWithColours:(id)colours
 {
-  v4 = a3;
+  coloursCopy = colours;
   v9.receiver = self;
   v9.super_class = MFPalette;
   v5 = [(MFPalette *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(coloursCopy, "count")}];
     m_colours = v5->m_colours;
     v5->m_colours = v6;
 
-    [(NSMutableArray *)v5->m_colours setArray:v4];
+    [(NSMutableArray *)v5->m_colours setArray:coloursCopy];
   }
 
   return v5;
 }
 
-- (BOOL)setEntries:(int)a3 in_colours:(id)a4
+- (BOOL)setEntries:(int)entries in_colours:(id)in_colours
 {
-  v6 = a4;
-  if (a3 < 0 || [(NSMutableArray *)self->m_colours count]< a3)
+  in_coloursCopy = in_colours;
+  if (entries < 0 || [(NSMutableArray *)self->m_colours count]< entries)
   {
     v7 = 0;
   }
 
   else
   {
-    -[NSMutableArray replaceObjectsInRange:withObjectsFromArray:](self->m_colours, "replaceObjectsInRange:withObjectsFromArray:", a3, [v6 count], v6);
+    -[NSMutableArray replaceObjectsInRange:withObjectsFromArray:](self->m_colours, "replaceObjectsInRange:withObjectsFromArray:", entries, [in_coloursCopy count], in_coloursCopy);
     v7 = 1;
   }
 
   return v7;
 }
 
-- (BOOL)resize:(int)a3
+- (BOOL)resize:(int)resize
 {
   v5 = [(NSMutableArray *)self->m_colours count];
   v6 = [(NSMutableArray *)self->m_colours count];
-  if (v5 >= a3)
+  if (v5 >= resize)
   {
-    if (a3 < v6)
+    if (resize < v6)
     {
-      [(NSMutableArray *)self->m_colours removeObjectsInRange:a3, [(NSMutableArray *)self->m_colours count]- a3];
+      [(NSMutableArray *)self->m_colours removeObjectsInRange:resize, [(NSMutableArray *)self->m_colours count]- resize];
     }
   }
 
   else
   {
-    v7 = a3 - v6;
-    if (a3 > v6)
+    v7 = resize - v6;
+    if (resize > v6)
     {
       do
       {
@@ -114,16 +114,16 @@
   return 1;
 }
 
-- (id)getColour:(int)a3
+- (id)getColour:(int)colour
 {
-  if (a3 < 0 || [(NSMutableArray *)self->m_colours count]<= a3)
+  if (colour < 0 || [(NSMutableArray *)self->m_colours count]<= colour)
   {
     v5 = [OITSUColor colorWithRGBBytes:0 green:0 blue:0];
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->m_colours objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->m_colours objectAtIndex:colour];
   }
 
   return v5;

@@ -1,30 +1,30 @@
 @interface CRKASMRosterProviderDecoratorBase
-- (BOOL)ingestCertificates:(id)a3 forTrustedUserIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)ingestCertificates:(id)certificates forTrustedUserIdentifier:(id)identifier error:(id *)error;
 - (BOOL)isPopulated;
 - (CRKASMRoster)roster;
-- (CRKASMRosterProviderDecoratorBase)initWithRosterProvider:(id)a3;
+- (CRKASMRosterProviderDecoratorBase)initWithRosterProvider:(id)provider;
 - (CRKASMUserFetching)userFetcher;
 - (NSArray)locationsWithManagePermissions;
-- (id)instructorDirectoryForLocationIDs:(id)a3;
-- (id)studentDirectoryForLocationIDs:(id)a3;
-- (void)createCourseWithProperties:(id)a3 completion:(id)a4;
+- (id)instructorDirectoryForLocationIDs:(id)ds;
+- (id)studentDirectoryForLocationIDs:(id)ds;
+- (void)createCourseWithProperties:(id)properties completion:(id)completion;
 - (void)refresh;
-- (void)removeCourseWithIdentifier:(id)a3 completion:(id)a4;
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 completion:(id)a5;
+- (void)removeCourseWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties completion:(id)completion;
 @end
 
 @implementation CRKASMRosterProviderDecoratorBase
 
-- (CRKASMRosterProviderDecoratorBase)initWithRosterProvider:(id)a3
+- (CRKASMRosterProviderDecoratorBase)initWithRosterProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CRKASMRosterProviderDecoratorBase;
   v6 = [(CRKASMRosterProviderDecoratorBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingRosterProvider, a3);
+    objc_storeStrong(&v6->_underlyingRosterProvider, provider);
   }
 
   return v7;
@@ -32,93 +32,93 @@
 
 - (CRKASMRoster)roster
 {
-  v2 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v3 = [v2 roster];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  roster = [underlyingRosterProvider roster];
 
-  return v3;
+  return roster;
 }
 
 - (BOOL)isPopulated
 {
-  v2 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v3 = [v2 isPopulated];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  isPopulated = [underlyingRosterProvider isPopulated];
 
-  return v3;
+  return isPopulated;
 }
 
 - (CRKASMUserFetching)userFetcher
 {
-  v2 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v3 = [v2 userFetcher];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  userFetcher = [underlyingRosterProvider userFetcher];
 
-  return v3;
+  return userFetcher;
 }
 
-- (id)studentDirectoryForLocationIDs:(id)a3
+- (id)studentDirectoryForLocationIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v6 = [v5 studentDirectoryForLocationIDs:v4];
+  dsCopy = ds;
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  v6 = [underlyingRosterProvider studentDirectoryForLocationIDs:dsCopy];
 
   return v6;
 }
 
-- (id)instructorDirectoryForLocationIDs:(id)a3
+- (id)instructorDirectoryForLocationIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v6 = [v5 instructorDirectoryForLocationIDs:v4];
+  dsCopy = ds;
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  v6 = [underlyingRosterProvider instructorDirectoryForLocationIDs:dsCopy];
 
   return v6;
 }
 
 - (NSArray)locationsWithManagePermissions
 {
-  v2 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v3 = [v2 locationsWithManagePermissions];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  locationsWithManagePermissions = [underlyingRosterProvider locationsWithManagePermissions];
 
-  return v3;
+  return locationsWithManagePermissions;
 }
 
 - (void)refresh
 {
-  v2 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  [v2 refresh];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  [underlyingRosterProvider refresh];
 }
 
-- (BOOL)ingestCertificates:(id)a3 forTrustedUserIdentifier:(id)a4 error:(id *)a5
+- (BOOL)ingestCertificates:(id)certificates forTrustedUserIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  LOBYTE(a5) = [v10 ingestCertificates:v9 forTrustedUserIdentifier:v8 error:a5];
+  identifierCopy = identifier;
+  certificatesCopy = certificates;
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  LOBYTE(error) = [underlyingRosterProvider ingestCertificates:certificatesCopy forTrustedUserIdentifier:identifierCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)removeCourseWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeCourseWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  [v8 removeCourseWithIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  [underlyingRosterProvider removeCourseWithIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)createCourseWithProperties:(id)a3 completion:(id)a4
+- (void)createCourseWithProperties:(id)properties completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  [v8 createCourseWithProperties:v7 completion:v6];
+  completionCopy = completion;
+  propertiesCopy = properties;
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  [underlyingRosterProvider createCourseWithProperties:propertiesCopy completion:completionCopy];
 }
 
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  [v11 updateCourseWithIdentifier:v10 properties:v9 completion:v8];
+  completionCopy = completion;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  [underlyingRosterProvider updateCourseWithIdentifier:identifierCopy properties:propertiesCopy completion:completionCopy];
 }
 
 @end

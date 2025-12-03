@@ -1,14 +1,14 @@
 @interface GKAPIReporter
 + (id)reporter;
 - (id)utilityService;
-- (void)recordClickWithAction:(id)a3 targetId:(id)a4 targetType:(id)a5 pageId:(id)a6 pageType:(id)a7 hostApp:(id)a8 app:(id)a9 additionalFields:(id)a10;
-- (void)recordFriendInviteActivityEventAtStage:(unint64_t)a3 hostApp:(id)a4;
-- (void)recordInviteFriendClickEventWithPageType:(id)a3 pageId:(id)a4 pushBased:(BOOL)a5 knownRecipient:(BOOL)a6 location:(id)a7;
-- (void)recordLoadUrlMetrics:(id)a3;
-- (void)recordMultiplayerActivityMetrics:(id)a3;
-- (void)recordPageWithID:(id)a3 pageContext:(id)a4 pageType:(id)a5 refApp:(id)a6 hostApp:(id)a7 app:(id)a8 additionalFields:(id)a9;
-- (void)sendMetrics:(id)a3;
-- (void)sendPerformanceMetrics:(id)a3;
+- (void)recordClickWithAction:(id)action targetId:(id)id targetType:(id)type pageId:(id)pageId pageType:(id)pageType hostApp:(id)app app:(id)a9 additionalFields:(id)self0;
+- (void)recordFriendInviteActivityEventAtStage:(unint64_t)stage hostApp:(id)app;
+- (void)recordInviteFriendClickEventWithPageType:(id)type pageId:(id)id pushBased:(BOOL)based knownRecipient:(BOOL)recipient location:(id)location;
+- (void)recordLoadUrlMetrics:(id)metrics;
+- (void)recordMultiplayerActivityMetrics:(id)metrics;
+- (void)recordPageWithID:(id)d pageContext:(id)context pageType:(id)type refApp:(id)app hostApp:(id)hostApp app:(id)a8 additionalFields:(id)fields;
+- (void)sendMetrics:(id)metrics;
+- (void)sendPerformanceMetrics:(id)metrics;
 @end
 
 @implementation GKAPIReporter
@@ -32,36 +32,36 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)recordClickWithAction:(id)a3 targetId:(id)a4 targetType:(id)a5 pageId:(id)a6 pageType:(id)a7 hostApp:(id)a8 app:(id)a9 additionalFields:(id)a10
+- (void)recordClickWithAction:(id)action targetId:(id)id targetType:(id)type pageId:(id)pageId pageType:(id)pageType hostApp:(id)app app:(id)a9 additionalFields:(id)self0
 {
   v29[6] = *MEMORY[0x277D85DE8];
-  v16 = a8;
+  appCopy = app;
   v17 = a9;
-  v18 = a10;
+  fieldsCopy = fields;
   v28[0] = @"eventType";
   v28[1] = @"actionType";
   v29[0] = @"click";
-  v29[1] = a3;
+  v29[1] = action;
   v28[2] = @"targetId";
   v28[3] = @"targetType";
-  v29[2] = a4;
-  v29[3] = a5;
+  v29[2] = id;
+  v29[3] = type;
   v28[4] = @"pageId";
   v28[5] = @"pageType";
-  v29[4] = a6;
-  v29[5] = a7;
+  v29[4] = pageId;
+  v29[5] = pageType;
   v19 = MEMORY[0x277CBEAC0];
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  pageTypeCopy = pageType;
+  pageIdCopy = pageId;
+  typeCopy = type;
+  idCopy = id;
+  actionCopy = action;
   v25 = [v19 dictionaryWithObjects:v29 forKeys:v28 count:6];
 
   v26 = [v25 mutableCopy];
-  if (v16)
+  if (appCopy)
   {
-    [v26 setObject:v16 forKeyedSubscript:@"hostApp"];
+    [v26 setObject:appCopy forKeyedSubscript:@"hostApp"];
   }
 
   if (v17)
@@ -69,42 +69,42 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
     [v26 setObject:v17 forKeyedSubscript:@"app"];
   }
 
-  [v26 addEntriesFromDictionary:v18];
+  [v26 addEntriesFromDictionary:fieldsCopy];
   [(GKAPIReporter *)self sendMetrics:v26];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordPageWithID:(id)a3 pageContext:(id)a4 pageType:(id)a5 refApp:(id)a6 hostApp:(id)a7 app:(id)a8 additionalFields:(id)a9
+- (void)recordPageWithID:(id)d pageContext:(id)context pageType:(id)type refApp:(id)app hostApp:(id)hostApp app:(id)a8 additionalFields:(id)fields
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v15 = a6;
-  v16 = a7;
+  appCopy = app;
+  hostAppCopy = hostApp;
   v17 = a8;
-  v18 = a9;
+  fieldsCopy = fields;
   v27[0] = @"eventType";
   v27[1] = @"pageId";
   v28[0] = @"page";
-  v28[1] = a3;
+  v28[1] = d;
   v27[2] = @"pageContext";
   v27[3] = @"pageType";
-  v28[2] = a4;
-  v28[3] = a5;
+  v28[2] = context;
+  v28[3] = type;
   v19 = MEMORY[0x277CBEAC0];
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  typeCopy = type;
+  contextCopy = context;
+  dCopy = d;
   v23 = [v19 dictionaryWithObjects:v28 forKeys:v27 count:4];
 
   v24 = [v23 mutableCopy];
-  if (v15)
+  if (appCopy)
   {
-    [v24 setObject:v15 forKeyedSubscript:@"refApp"];
+    [v24 setObject:appCopy forKeyedSubscript:@"refApp"];
   }
 
-  if (v16)
+  if (hostAppCopy)
   {
-    [v24 setObject:v16 forKeyedSubscript:@"hostApp"];
+    [v24 setObject:hostAppCopy forKeyedSubscript:@"hostApp"];
   }
 
   if (v17)
@@ -112,9 +112,9 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
     [v24 setObject:v17 forKeyedSubscript:@"app"];
   }
 
-  if (v18)
+  if (fieldsCopy)
   {
-    [v24 addEntriesFromDictionary:v18];
+    [v24 addEntriesFromDictionary:fieldsCopy];
   }
 
   v25 = [v24 copy];
@@ -123,24 +123,24 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordMultiplayerActivityMetrics:(id)a3
+- (void)recordMultiplayerActivityMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(GKAPIReporter *)self utilityService];
-  [v5 reportMultiplayerActivityMetricsEvent:v4];
+  metricsCopy = metrics;
+  utilityService = [(GKAPIReporter *)self utilityService];
+  [utilityService reportMultiplayerActivityMetricsEvent:metricsCopy];
 }
 
-- (void)recordLoadUrlMetrics:(id)a3
+- (void)recordLoadUrlMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(GKAPIReporter *)self utilityService];
-  [v5 reportLoadUrlMetricsEvent:v4];
+  metricsCopy = metrics;
+  utilityService = [(GKAPIReporter *)self utilityService];
+  [utilityService reportLoadUrlMetricsEvent:metricsCopy];
 }
 
-- (void)recordInviteFriendClickEventWithPageType:(id)a3 pageId:(id)a4 pushBased:(BOOL)a5 knownRecipient:(BOOL)a6 location:(id)a7
+- (void)recordInviteFriendClickEventWithPageType:(id)type pageId:(id)id pushBased:(BOOL)based knownRecipient:(BOOL)recipient location:(id)location
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (recipient)
   {
     v10 = @"invite";
   }
@@ -150,7 +150,7 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
     v10 = @"inviteOthers";
   }
 
-  if (a5)
+  if (based)
   {
     v11 = @"add";
   }
@@ -161,9 +161,9 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
   }
 
   v19 = @"location";
-  v20[0] = a7;
+  v20[0] = location;
   v12 = MEMORY[0x277CBEAC0];
-  if (a5)
+  if (based)
   {
     v13 = @"button";
   }
@@ -173,19 +173,19 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
     v13 = @"link";
   }
 
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
+  locationCopy = location;
+  idCopy = id;
+  typeCopy = type;
   v17 = [v12 dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
-  [(GKAPIReporter *)self recordClickWithAction:v11 targetId:v10 targetType:v13 pageId:v15 pageType:v16 additionalFields:v17];
+  [(GKAPIReporter *)self recordClickWithAction:v11 targetId:v10 targetType:v13 pageId:idCopy pageType:typeCopy additionalFields:v17];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordFriendInviteActivityEventAtStage:(unint64_t)a3 hostApp:(id)a4
+- (void)recordFriendInviteActivityEventAtStage:(unint64_t)stage hostApp:(id)app
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = [GKFriendInviteActivityEvent metricsFieldsForStage:a3 hostApp:a4];
+  v6 = [GKFriendInviteActivityEvent metricsFieldsForStage:stage hostApp:app];
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -195,7 +195,7 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
   if (os_log_type_enabled(os_log_GKFriending, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [GKFriendInviteActivityEvent stringForStage:a3];
+    v10 = [GKFriendInviteActivityEvent stringForStage:stage];
     v12 = 138412290;
     v13 = v10;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "GKAPIReporter: Recording inviteActivity stage %@", &v12, 0xCu);
@@ -206,26 +206,26 @@ uint64_t __25__GKAPIReporter_reporter__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMetrics:(id)a3
+- (void)sendMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(GKAPIReporter *)self utilityService];
-  [v5 reportMetricsEventWithTopic:@"xp_amp_gc_cs" shouldFlush:MEMORY[0x277CBEC28] metricsFields:v4];
+  metricsCopy = metrics;
+  utilityService = [(GKAPIReporter *)self utilityService];
+  [utilityService reportMetricsEventWithTopic:@"xp_amp_gc_cs" shouldFlush:MEMORY[0x277CBEC28] metricsFields:metricsCopy];
 }
 
-- (void)sendPerformanceMetrics:(id)a3
+- (void)sendPerformanceMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(GKAPIReporter *)self utilityService];
-  [v5 reportPerformanceMetricsEvent:v4];
+  metricsCopy = metrics;
+  utilityService = [(GKAPIReporter *)self utilityService];
+  [utilityService reportPerformanceMetricsEvent:metricsCopy];
 }
 
 - (id)utilityService
 {
   v2 = +[GKDaemonProxy daemonProxy];
-  v3 = [v2 utilityService];
+  utilityService = [v2 utilityService];
 
-  return v3;
+  return utilityService;
 }
 
 @end

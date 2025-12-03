@@ -1,21 +1,21 @@
 @interface SBContinuityLockStateProvider
-- (void)addLockStateObserver:(id)a3;
-- (void)removeLockStateObserver:(id)a3;
+- (void)addLockStateObserver:(id)observer;
+- (void)removeLockStateObserver:(id)observer;
 @end
 
 @implementation SBContinuityLockStateProvider
 
-- (void)addLockStateObserver:(id)a3
+- (void)addLockStateObserver:(id)observer
 {
-  if (!a3)
+  if (!observer)
   {
     [(SBContinuityLockStateProvider *)a2 addLockStateObserver:?];
   }
 }
 
-- (void)removeLockStateObserver:(id)a3
+- (void)removeLockStateObserver:(id)observer
 {
-  if (!a3)
+  if (!observer)
   {
     [(SBContinuityLockStateProvider *)a2 removeLockStateObserver:?];
   }

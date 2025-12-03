@@ -1,13 +1,13 @@
 @interface PUOneUpPhototypeSupportController
-- (void)setIsEnabled:(BOOL)a3;
+- (void)setIsEnabled:(BOOL)enabled;
 @end
 
 @implementation PUOneUpPhototypeSupportController
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1B37212CC(a3);
+  selfCopy = self;
+  sub_1B37212CC(enabled);
 }
 
 @end

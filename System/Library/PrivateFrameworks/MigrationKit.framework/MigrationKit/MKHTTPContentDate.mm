@@ -1,18 +1,18 @@
 @interface MKHTTPContentDate
-- (MKHTTPContentDate)initWithHeaderValue:(id)a3;
+- (MKHTTPContentDate)initWithHeaderValue:(id)value;
 @end
 
 @implementation MKHTTPContentDate
 
-- (MKHTTPContentDate)initWithHeaderValue:(id)a3
+- (MKHTTPContentDate)initWithHeaderValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = MKHTTPContentDate;
   v5 = [(MKHTTPContentDate *)&v12 init];
   if (v5)
   {
-    if (!v4)
+    if (!valueCopy)
     {
       v10 = 0;
       goto LABEL_6;
@@ -24,7 +24,7 @@
     [v6 setLocale:v7];
     [v6 setTimeZone:v8];
     [v6 setDateFormat:@"EEE', ' dd MMM yyyy HH':'mm':'ss z"];
-    v9 = [v6 dateFromString:v4];
+    v9 = [v6 dateFromString:valueCopy];
     [(MKHTTPContentDate *)v5 setDate:v9];
   }
 

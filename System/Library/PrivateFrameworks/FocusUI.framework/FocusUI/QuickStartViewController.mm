@@ -1,10 +1,10 @@
 @interface QuickStartViewController
-- (_TtC7FocusUI24QuickStartViewController)initWithCoder:(id)a3;
-- (_TtC7FocusUI24QuickStartViewController)initWithModeIdentifier:(id)a3;
-- (_TtC7FocusUI24QuickStartViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7FocusUI24QuickStartViewController)initWithCoder:(id)coder;
+- (_TtC7FocusUI24QuickStartViewController)initWithModeIdentifier:(id)identifier;
+- (_TtC7FocusUI24QuickStartViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP7FocusUI32QuickStartViewControllerDelegate_)delegate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation QuickStartViewController
@@ -17,7 +17,7 @@
   return Strong;
 }
 
-- (_TtC7FocusUI24QuickStartViewController)initWithModeIdentifier:(id)a3
+- (_TtC7FocusUI24QuickStartViewController)initWithModeIdentifier:(id)identifier
 {
   v4 = sub_24BB4B56C();
   v6 = v5;
@@ -30,7 +30,7 @@
   return [(QuickStartViewController *)&v9 initWithNibName:0 bundle:0];
 }
 
-- (_TtC7FocusUI24QuickStartViewController)initWithCoder:(id)a3
+- (_TtC7FocusUI24QuickStartViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_24BB4B58C();
@@ -40,17 +40,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24BB47E90();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24BB48964(a3);
+  selfCopy = self;
+  sub_24BB48964(appear);
 }
 
-- (_TtC7FocusUI24QuickStartViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7FocusUI24QuickStartViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

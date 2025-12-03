@@ -1,20 +1,20 @@
 @interface SVXSpeechSynthesisResultConverter
-- (id)toServiceCommandResult:(id)a3;
+- (id)toServiceCommandResult:(id)result;
 @end
 
 @implementation SVXSpeechSynthesisResultConverter
 
-- (id)toServiceCommandResult:(id)a3
+- (id)toServiceCommandResult:(id)result
 {
-  v3 = [a3 type];
-  if (v3 == 2)
+  type = [result type];
+  if (type == 2)
   {
     v4 = +[SVXServiceCommandResult resultIgnored];
   }
 
   else
   {
-    if (v3 == 1)
+    if (type == 1)
     {
       +[SVXServiceCommandResult resultSuccess];
     }

@@ -1,23 +1,23 @@
 @interface AMSUIMessageRequest
-+ (id)bk_fromJSONURL:(id)a3 localizedTexts:(id)a4 localizedActionTitles:(id)a5;
++ (id)bk_fromJSONURL:(id)l localizedTexts:(id)texts localizedActionTitles:(id)titles;
 @end
 
 @implementation AMSUIMessageRequest
 
-+ (id)bk_fromJSONURL:(id)a3 localizedTexts:(id)a4 localizedActionTitles:(id)a5
++ (id)bk_fromJSONURL:(id)l localizedTexts:(id)texts localizedActionTitles:(id)titles
 {
-  v7 = a3;
-  v8 = a4;
-  v62 = a5;
+  lCopy = l;
+  textsCopy = texts;
+  titlesCopy = titles;
   v9 = &_s19EngagementCollector15BMPropertyValueC4withACSgAA08PropertyD0OSg_tcfc_ptr;
   objc_opt_class();
-  v59 = v7;
-  v10 = [NSData dataWithContentsOfURL:v7];
+  v59 = lCopy;
+  v10 = [NSData dataWithContentsOfURL:lCopy];
   v11 = [NSJSONSerialization JSONObjectWithData:v10 options:0 error:0];
   v12 = BUDynamicCast();
 
-  v58 = v8;
-  v13 = [v8 objectForKeyedSubscript:@"title"];
+  v58 = textsCopy;
+  v13 = [textsCopy objectForKeyedSubscript:@"title"];
   v14 = v13;
   if (v13)
   {
@@ -31,7 +31,7 @@
     v57 = BUDynamicCast();
   }
 
-  v16 = [v8 objectForKeyedSubscript:@"message"];
+  v16 = [textsCopy objectForKeyedSubscript:@"message"];
   v17 = v16;
   if (v16)
   {
@@ -104,7 +104,7 @@
           v30 = [v29 objectForKeyedSubscript:@"identifier"];
           v31 = BUDynamicCast();
 
-          v32 = [v62 objectForKeyedSubscript:v31];
+          v32 = [titlesCopy objectForKeyedSubscript:v31];
           v33 = v32;
           if (v32)
           {

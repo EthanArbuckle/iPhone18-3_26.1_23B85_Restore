@@ -1,15 +1,15 @@
 @interface NEHelperSocketFactory
-- (NEHelperSocketFactory)initWithFirstMessage:(id)a3;
+- (NEHelperSocketFactory)initWithFirstMessage:(id)message;
 - (OS_dispatch_queue)handlerQueue;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperSocketFactory
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "socket-type");
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "socket-type");
   v6 = uint64;
   if (uint64 <= 2)
   {
@@ -23,7 +23,7 @@
         close(v37);
         *buf = 4500;
         sysctlbyname("net.inet.ipsec.esp_port", 0, 0, buf, 4uLL);
-        sub_10000BA0C(NEHelperServer, v4, 0, v38);
+        sub_10000BA0C(NEHelperServer, messageCopy, 0, v38);
 
         goto LABEL_165;
       }
@@ -46,7 +46,7 @@
 LABEL_77:
       v45 = *__error();
 LABEL_88:
-      sub_10000BA0C(NEHelperServer, v4, v45, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, v45, 0);
       goto LABEL_165;
     }
 
@@ -57,10 +57,10 @@ LABEL_88:
 
     length = 0;
     v77 = 0;
-    data = xpc_dictionary_get_data(v4, "socket-localaddr", &length);
-    v14 = xpc_dictionary_get_data(v4, "socket-remoteaddr", &v77);
-    string = xpc_dictionary_get_string(v4, "socket-interface");
-    v16 = xpc_dictionary_get_uint64(v4, "socket-effective-pid");
+    data = xpc_dictionary_get_data(messageCopy, "socket-localaddr", &length);
+    v14 = xpc_dictionary_get_data(messageCopy, "socket-remoteaddr", &v77);
+    string = xpc_dictionary_get_string(messageCopy, "socket-interface");
+    v16 = xpc_dictionary_get_uint64(messageCopy, "socket-effective-pid");
     if (!ne_is_sockaddr_valid() || (ne_is_sockaddr_valid() & 1) == 0)
     {
       v40 = ne_log_obj();
@@ -70,7 +70,7 @@ LABEL_88:
         _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "kNEHelperMessageSocketTypeIKE received invalid parameters", buf, 2u);
       }
 
-      sub_10000BA0C(NEHelperServer, v4, 22, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
       goto LABEL_165;
     }
 
@@ -270,7 +270,7 @@ LABEL_26:
               {
                 v29 = xpc_fd_create(v24);
                 close(v24);
-                sub_10000BA0C(NEHelperServer, v4, 0, v29);
+                sub_10000BA0C(NEHelperServer, messageCopy, 0, v29);
 
                 goto LABEL_165;
               }
@@ -368,7 +368,7 @@ LABEL_172:
       _os_log_error_impl(&_mh_execute_header, v67, OS_LOG_TYPE_ERROR, "kNEHelperMessageSocketTypeIKE connect_udp_ike_socket failed", buf, 2u);
     }
 
-    sub_10000BA0C(NEHelperServer, v4, v48, 0);
+    sub_10000BA0C(NEHelperServer, messageCopy, v48, 0);
     goto LABEL_165;
   }
 
@@ -381,7 +381,7 @@ LABEL_172:
     v94 = 0u;
     memset(v92, 0, sizeof(v92));
     memset(&v85, 0, 32);
-    xpc_dictionary_get_string(v4, "socket-control-name");
+    xpc_dictionary_get_string(messageCopy, "socket-control-name");
     length = 0;
     p_length = &length;
     v83 = 0x2020000000;
@@ -399,7 +399,7 @@ LABEL_172:
         _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "Rejecting kernel control socket request from un-privileged client", buf, 2u);
       }
 
-      sub_10000BA0C(NEHelperServer, v4, 1, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, 1, 0);
       goto LABEL_164;
     }
 
@@ -422,7 +422,7 @@ LABEL_172:
         _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "Cannot create kernel control socket: [%d] %s", v91, 0x12u);
       }
 
-      sub_10000BA0C(NEHelperServer, v4, v46, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, v46, 0);
       goto LABEL_164;
     }
 
@@ -452,14 +452,14 @@ LABEL_172:
       }
 
       close(v30);
-      sub_10000BA0C(NEHelperServer, v4, v31, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, v31, 0);
       goto LABEL_164;
     }
 
     v85.sae_srcif = 139296;
     *(&v85.sae_srcif + 1) = *v92;
     memset(&v85.sae_srcaddr, 0, 24);
-    v49 = xpc_dictionary_get_array(v4, "socket-options");
+    v49 = xpc_dictionary_get_array(messageCopy, "socket-options");
     v50 = v49;
     if (v49 && xpc_array_get_count(v49))
     {
@@ -484,7 +484,7 @@ LABEL_172:
 LABEL_100:
 
         close(v30);
-        sub_10000BA0C(NEHelperServer, v4, v51, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, v51, 0);
 LABEL_163:
 
 LABEL_164:
@@ -498,7 +498,7 @@ LABEL_164:
       applier[2] = sub_100011560;
       applier[3] = &unk_10003D0D8;
       v76 = v30;
-      v57 = v4;
+      v57 = messageCopy;
       v73 = v57;
       v74 = &length;
       v75 = &v77;
@@ -574,7 +574,7 @@ LABEL_164:
 LABEL_161:
 
         close(v30);
-        sub_10000BA0C(NEHelperServer, v4, v64, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, v64, 0);
         goto LABEL_163;
       }
 
@@ -635,7 +635,7 @@ LABEL_161:
 
     v66 = xpc_fd_create(v30);
     close(v30);
-    sub_10000BA0C(NEHelperServer, v4, 0, v66);
+    sub_10000BA0C(NEHelperServer, messageCopy, 0, v66);
 
     goto LABEL_163;
   }
@@ -644,8 +644,8 @@ LABEL_161:
   {
     if (uint64 == 5)
     {
-      v7 = xpc_dictionary_get_uint64(v4, "socket-domain");
-      v8 = xpc_dictionary_get_uint64(v4, "socket-protocol");
+      v7 = xpc_dictionary_get_uint64(messageCopy, "socket-domain");
+      v8 = xpc_dictionary_get_uint64(messageCopy, "socket-protocol");
       v9 = socket(v7, 3, v8);
       v10 = ne_log_obj();
       v11 = v10;
@@ -662,7 +662,7 @@ LABEL_161:
 
         v12 = xpc_fd_create(v9);
         close(v9);
-        sub_10000BA0C(NEHelperServer, v4, 0, v12);
+        sub_10000BA0C(NEHelperServer, messageCopy, 0, v12);
 
         goto LABEL_165;
       }
@@ -697,7 +697,7 @@ LABEL_60:
       _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "NEHelperSocketFactory received invalid socketType %llu", buf, 0xCu);
     }
 
-    sub_10000BA0C(NEHelperServer, v4, 22, 0);
+    sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
     goto LABEL_165;
   }
 
@@ -720,7 +720,7 @@ LABEL_60:
       _os_log_fault_impl(&_mh_execute_header, v43, OS_LOG_TYPE_FAULT, "Cannot create necp session fd: [%d] %s", v92, 0x12u);
     }
 
-    sub_10000BA0C(NEHelperServer, v4, v42, 0);
+    sub_10000BA0C(NEHelperServer, messageCopy, v42, 0);
   }
 
   else
@@ -728,7 +728,7 @@ LABEL_60:
     v34 = v33;
     v35 = xpc_fd_create(v33);
     close(v34);
-    sub_10000BA0C(NEHelperServer, v4, 0, v35);
+    sub_10000BA0C(NEHelperServer, messageCopy, 0, v35);
   }
 
 LABEL_165:
@@ -745,15 +745,15 @@ LABEL_165:
   return self;
 }
 
-- (NEHelperSocketFactory)initWithFirstMessage:(id)a3
+- (NEHelperSocketFactory)initWithFirstMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v23.receiver = self;
   v23.super_class = NEHelperSocketFactory;
   v5 = [(NEHelperSocketFactory *)&v23 init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_remote_connection(v4);
+    v6 = xpc_dictionary_get_remote_connection(messageCopy);
     v7 = xpc_connection_copy_entitlement_value();
     v8 = xpc_connection_copy_entitlement_value();
     v9 = v7 && xpc_get_type(v7) == &_xpc_type_BOOL && xpc_BOOL_get_value(v7);

@@ -1,28 +1,28 @@
 @interface SRUIFAnalyticsSupplement
-- (id)dialogPhaseForAceObject:(id)a3;
-- (int)computedModeForAceCommand:(id)a3;
-- (int)computedModeForRefId:(id)a3;
-- (void)didComputeMode:(int)a3 forAceCommand:(id)a4 generatedAceCommands:(id)a5;
-- (void)storeDialogPhasesForItemsAtIndexPaths:(id)a3 forConversation:(id)a4;
+- (id)dialogPhaseForAceObject:(id)object;
+- (int)computedModeForAceCommand:(id)command;
+- (int)computedModeForRefId:(id)id;
+- (void)didComputeMode:(int)mode forAceCommand:(id)command generatedAceCommands:(id)commands;
+- (void)storeDialogPhasesForItemsAtIndexPaths:(id)paths forConversation:(id)conversation;
 @end
 
 @implementation SRUIFAnalyticsSupplement
 
-- (void)didComputeMode:(int)a3 forAceCommand:(id)a4 generatedAceCommands:(id)a5
+- (void)didComputeMode:(int)mode forAceCommand:(id)command generatedAceCommands:(id)commands
 {
-  v8 = a5;
-  self->_lastComputedMode = a3;
-  v9 = [a4 refId];
+  commandsCopy = commands;
+  self->_lastComputedMode = mode;
+  refId = [command refId];
   lastComputedRefId = self->_lastComputedRefId;
-  self->_lastComputedRefId = v9;
+  self->_lastComputedRefId = refId;
 
   generatedAceCommands = self->_generatedAceCommands;
-  self->_generatedAceCommands = v8;
+  self->_generatedAceCommands = commandsCopy;
 }
 
-- (int)computedModeForRefId:(id)a3
+- (int)computedModeForRefId:(id)id
 {
-  result = [a3 isEqualToString:self->_lastComputedRefId];
+  result = [id isEqualToString:self->_lastComputedRefId];
   if (result)
   {
     return self->_lastComputedMode;
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (int)computedModeForAceCommand:(id)a3
+- (int)computedModeForAceCommand:(id)command
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -55,13 +55,13 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v4 aceId];
-        if (v11)
+        aceId = [commandCopy aceId];
+        if (aceId)
         {
-          v12 = v11;
-          v13 = [v10 aceId];
-          v14 = [v4 aceId];
-          v15 = [v13 isEqualToString:v14];
+          v12 = aceId;
+          aceId2 = [v10 aceId];
+          aceId3 = [commandCopy aceId];
+          v15 = [aceId2 isEqualToString:aceId3];
 
           if (v15)
           {
@@ -88,24 +88,24 @@ LABEL_12:
   return lastComputedMode;
 }
 
-- (void)storeDialogPhasesForItemsAtIndexPaths:(id)a3 forConversation:(id)a4
+- (void)storeDialogPhasesForItemsAtIndexPaths:(id)paths forConversation:(id)conversation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v22 = self;
+  pathsCopy = paths;
+  conversationCopy = conversation;
+  selfCopy = self;
   if (!self->_aceObjectDialogPhaseDictionary)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     aceObjectDialogPhaseDictionary = self->_aceObjectDialogPhaseDictionary;
-    self->_aceObjectDialogPhaseDictionary = v8;
+    self->_aceObjectDialogPhaseDictionary = dictionary;
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v6;
+  v10 = pathsCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -120,18 +120,18 @@ LABEL_12:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v7 itemAtIndexPath:*(*(&v23 + 1) + 8 * i)];
-        v16 = [v15 aceObject];
-        v17 = [v15 dialogPhase];
-        if (v17)
+        v15 = [conversationCopy itemAtIndexPath:*(*(&v23 + 1) + 8 * i)];
+        aceObject = [v15 aceObject];
+        dialogPhase = [v15 dialogPhase];
+        if (dialogPhase)
         {
-          v18 = [v16 aceId];
+          aceId = [aceObject aceId];
 
-          if (v18)
+          if (aceId)
           {
-            v19 = v22->_aceObjectDialogPhaseDictionary;
-            v20 = [v16 aceId];
-            [(NSMutableDictionary *)v19 setObject:v17 forKey:v20];
+            v19 = selfCopy->_aceObjectDialogPhaseDictionary;
+            aceId2 = [aceObject aceId];
+            [(NSMutableDictionary *)v19 setObject:dialogPhase forKey:aceId2];
           }
         }
       }
@@ -145,11 +145,11 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dialogPhaseForAceObject:(id)a3
+- (id)dialogPhaseForAceObject:(id)object
 {
   aceObjectDialogPhaseDictionary = self->_aceObjectDialogPhaseDictionary;
-  v4 = [a3 aceId];
-  v5 = [(NSMutableDictionary *)aceObjectDialogPhaseDictionary objectForKey:v4];
+  aceId = [object aceId];
+  v5 = [(NSMutableDictionary *)aceObjectDialogPhaseDictionary objectForKey:aceId];
 
   return v5;
 }

@@ -1,12 +1,12 @@
 @interface GetSupportedLanguagesIntentResponse
-- (GetSupportedLanguagesIntentResponse)initWithPropertiesByName:(id)a3;
+- (GetSupportedLanguagesIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation GetSupportedLanguagesIntentResponse
 
-- (GetSupportedLanguagesIntentResponse)initWithPropertiesByName:(id)a3
+- (GetSupportedLanguagesIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2694240A8();
   }

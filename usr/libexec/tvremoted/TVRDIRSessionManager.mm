@@ -1,21 +1,21 @@
 @interface TVRDIRSessionManager
 - (TVRDIRSessionManager)init;
-- (id)_candidateForDevice:(id)a3 createIfNeeded:(BOOL)a4;
-- (int64_t)_deviceClassificationFromIRClassification:(int64_t)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_donateEventWithEventType:(int64_t)a3 forDevice:(id)a4;
-- (void)_fetchServiceTokenWithCompletionHandler:(id)a3;
+- (id)_candidateForDevice:(id)device createIfNeeded:(BOOL)needed;
+- (int64_t)_deviceClassificationFromIRClassification:(int64_t)classification;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_donateEventWithEventType:(int64_t)type forDevice:(id)device;
+- (void)_fetchServiceTokenWithCompletionHandler:(id)handler;
 - (void)_invalidate;
 - (void)_restartIRSession;
 - (void)_setupSession;
 - (void)invalidate;
 - (void)pause;
-- (void)processNewDevices:(id)a3;
-- (void)removeDevice:(id)a3;
+- (void)processNewDevices:(id)devices;
+- (void)removeDevice:(id)device;
 - (void)requestCurrentRecommendedDevices;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateContext:(id)a4;
-- (void)updateDevice:(id)a3 withConnectionContext:(int64_t)a4;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateContext:(id)context;
+- (void)updateDevice:(id)device withConnectionContext:(int64_t)context;
 @end
 
 @implementation TVRDIRSessionManager
@@ -55,14 +55,14 @@
   }
 }
 
-- (void)_fetchServiceTokenWithCompletionHandler:(id)a3
+- (void)_fetchServiceTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   serviceToken = self->_serviceToken;
   if (serviceToken)
   {
-    (*(v4 + 2))(v4, serviceToken, 0);
+    (*(handlerCopy + 2))(handlerCopy, serviceToken, 0);
   }
 
   else
@@ -99,8 +99,8 @@
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Found token %@", buf, 0xCu);
         }
 
-        v15 = [(TVRDIRSessionManager *)self serviceToken];
-        (v5)[2](v5, v15, 0);
+        serviceToken = [(TVRDIRSessionManager *)self serviceToken];
+        (v5)[2](v5, serviceToken, 0);
       }
     }
 
@@ -195,19 +195,19 @@ void __64__TVRDIRSessionManager__fetchServiceTokenWithCompletionHandler___block_
 
 - (void)pause
 {
-  v3 = [(TVRDIRSessionManager *)self irSession];
-  if (v3)
+  irSession = [(TVRDIRSessionManager *)self irSession];
+  if (irSession)
   {
-    v4 = [(TVRDIRSessionManager *)self hasStarted];
+    hasStarted = [(TVRDIRSessionManager *)self hasStarted];
 
-    if (v4)
+    if (hasStarted)
     {
       v5 = _TVRDIRLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(TVRDIRSessionManager *)self irSession];
+        irSession2 = [(TVRDIRSessionManager *)self irSession];
         *buf = 138543362;
-        v10 = v6;
+        v10 = irSession2;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Pausing %{public}@", buf, 0xCu);
       }
 
@@ -262,24 +262,24 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
   v3 = _TVRDIRLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRDIRSessionManager *)self irSession];
+    irSession = [(TVRDIRSessionManager *)self irSession];
     v5 = 138543362;
-    v6 = v4;
+    v6 = irSession;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating %{public}@", &v5, 0xCu);
   }
 
   [(TVRDIRSessionManager *)self _invalidate];
 }
 
-- (id)_candidateForDevice:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_candidateForDevice:(id)device createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [(TVRDIRSessionManager *)self identifierToCandidateMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  neededCopy = needed;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  identifierToCandidateMap = [(TVRDIRSessionManager *)self identifierToCandidateMap];
+  v9 = [identifierToCandidateMap objectForKeyedSubscript:identifier];
 
-  if (v9 == 0 && v7 != 0)
+  if (v9 == 0 && identifier != 0)
   {
     v10 = 0;
   }
@@ -289,45 +289,45 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
     v10 = v9;
   }
 
-  if (v9 == 0 && v7 != 0 && v4)
+  if (v9 == 0 && identifier != 0 && neededCopy)
   {
-    v10 = [[IRCandidate alloc] initWithCandidateIdentifier:v7];
+    v10 = [[IRCandidate alloc] initWithCandidateIdentifier:identifier];
     v12 = objc_alloc_init(IRNode);
-    v13 = [v6 alternateIdentifiers];
-    v14 = [v13 objectForKeyedSubscript:TVRCAirplayIDKey];
+    alternateIdentifiers = [deviceCopy alternateIdentifiers];
+    v14 = [alternateIdentifiers objectForKeyedSubscript:TVRCAirplayIDKey];
     [v12 setAvOutpuDeviceIdentifier:v14];
 
-    v15 = [v6 idsIdentifier];
-    [v12 setIdsIdentifier:v15];
+    idsIdentifier = [deviceCopy idsIdentifier];
+    [v12 setIdsIdentifier:idsIdentifier];
 
-    if ([v6 connectionType] == 1)
+    if ([deviceCopy connectionType] == 1)
     {
-      v16 = [v6 identifier];
-      [v12 setRapportIdentifier:v16];
+      identifier2 = [deviceCopy identifier];
+      [v12 setRapportIdentifier:identifier2];
     }
 
     v17 = [NSSet setWithObject:v12];
     [v10 updateNodes:v17];
 
-    v18 = [(TVRDIRSessionManager *)self identifierToCandidateMap];
-    [v18 setObject:v10 forKeyedSubscript:v7];
+    identifierToCandidateMap2 = [(TVRDIRSessionManager *)self identifierToCandidateMap];
+    [identifierToCandidateMap2 setObject:v10 forKeyedSubscript:identifier];
   }
 
   return v10;
 }
 
-- (void)processNewDevices:(id)a3
+- (void)processNewDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = _TVRDIRLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [TVRDIRSessionManager processNewDevices:?];
   }
 
-  v6 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
-  v7 = [v6 allValues];
-  v8 = [NSSet setWithArray:v7];
+  identifierToDeviceMap = [(TVRDIRSessionManager *)self identifierToDeviceMap];
+  allValues = [identifierToDeviceMap allValues];
+  v8 = [NSSet setWithArray:allValues];
 
   v9 = _TVRDIRLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -336,7 +336,7 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
   }
 
   v10 = [v8 mutableCopy];
-  [v10 minusSet:v4];
+  [v10 minusSet:devicesCopy];
   v11 = _TVRDIRLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -373,8 +373,8 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
 
   v33 = v12;
 
-  v35 = v4;
-  v17 = [v4 mutableCopy];
+  v35 = devicesCopy;
+  v17 = [devicesCopy mutableCopy];
   v34 = v8;
   [v17 minusSet:v8];
   v18 = _TVRDIRLog();
@@ -416,9 +416,9 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
 
           v27 = [(TVRDIRSessionManager *)self _candidateForDevice:v25 createIfNeeded:1];
           [v19 addObject:v27];
-          v28 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
-          v29 = [v25 identifier];
-          [v28 setValue:v25 forKey:v29];
+          identifierToDeviceMap2 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
+          identifier = [v25 identifier];
+          [identifierToDeviceMap2 setValue:v25 forKey:identifier];
         }
       }
 
@@ -436,8 +436,8 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Adding new candidates %{public}@", buf, 0xCu);
   }
 
-  v31 = [(TVRDIRSessionManager *)self irSession];
-  [v31 updateCandidates:v19];
+  irSession = [(TVRDIRSessionManager *)self irSession];
+  [irSession updateCandidates:v19];
 
   v32 = _TVRDIRLog();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -446,18 +446,18 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = _TVRDIRLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
-    v17 = v4;
+    v17 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing device %{public}@", &v16, 0xCu);
   }
 
-  v6 = [(TVRDIRSessionManager *)self _candidateForDevice:v4 createIfNeeded:0];
+  v6 = [(TVRDIRSessionManager *)self _candidateForDevice:deviceCopy createIfNeeded:0];
   if (v6)
   {
     v7 = _TVRDIRLog();
@@ -468,65 +468,65 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing candidate %{public}@", &v16, 0xCu);
     }
 
-    v8 = [(TVRDIRSessionManager *)self irSession];
-    [v8 deleteCandidate:v6];
+    irSession = [(TVRDIRSessionManager *)self irSession];
+    [irSession deleteCandidate:v6];
   }
 
-  v9 = [v4 identifier];
+  identifier = [deviceCopy identifier];
 
-  if (v9)
+  if (identifier)
   {
-    v10 = [(TVRDIRSessionManager *)self identifierToCandidateMap];
-    v11 = [v4 identifier];
-    [v10 removeObjectForKey:v11];
+    identifierToCandidateMap = [(TVRDIRSessionManager *)self identifierToCandidateMap];
+    identifier2 = [deviceCopy identifier];
+    [identifierToCandidateMap removeObjectForKey:identifier2];
 
-    v12 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
-    v13 = [v4 identifier];
-    [v12 removeObjectForKey:v13];
+    identifierToDeviceMap = [(TVRDIRSessionManager *)self identifierToDeviceMap];
+    identifier3 = [deviceCopy identifier];
+    [identifierToDeviceMap removeObjectForKey:identifier3];
   }
 
   else
   {
-    v12 = _TVRDIRLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    identifierToDeviceMap = _TVRDIRLog();
+    if (os_log_type_enabled(identifierToDeviceMap, OS_LOG_TYPE_FAULT))
     {
-      [(TVRDIRSessionManager *)self removeDevice:v12];
+      [(TVRDIRSessionManager *)self removeDevice:identifierToDeviceMap];
     }
   }
 
   v14 = _TVRDIRLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
+    identifierToDeviceMap2 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
     v16 = 138412290;
-    v17 = v15;
+    v17 = identifierToDeviceMap2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "identifierToDeviceMap %@", &v16, 0xCu);
   }
 }
 
-- (void)updateDevice:(id)a3 withConnectionContext:(int64_t)a4
+- (void)updateDevice:(id)device withConnectionContext:(int64_t)context
 {
-  if (a4 == 2)
+  if (context == 2)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = 2 * (a4 == 3);
+    v5 = 2 * (context == 3);
   }
 
-  [(TVRDIRSessionManager *)self _donateEventWithEventType:v5 forDevice:a3];
+  [(TVRDIRSessionManager *)self _donateEventWithEventType:v5 forDevice:device];
 }
 
-- (void)_donateEventWithEventType:(int64_t)a3 forDevice:(id)a4
+- (void)_donateEventWithEventType:(int64_t)type forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [[IRAppleTVControlEvent alloc] initWithEventType:a3 eventSubType:0];
-  v8 = [(TVRDIRSessionManager *)self identifierToCandidateMap];
-  v9 = [v6 identifier];
+  deviceCopy = device;
+  v7 = [[IRAppleTVControlEvent alloc] initWithEventType:type eventSubType:0];
+  identifierToCandidateMap = [(TVRDIRSessionManager *)self identifierToCandidateMap];
+  identifier = [deviceCopy identifier];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [identifierToCandidateMap objectForKeyedSubscript:identifier];
 
   if (v10)
   {
@@ -548,8 +548,8 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Donating %@ for %@", &v15, 0x16u);
     }
 
-    v14 = [(TVRDIRSessionManager *)self irSession];
-    [v14 addEvent:v7 forCandidate:v10];
+    irSession = [(TVRDIRSessionManager *)self irSession];
+    [irSession addEvent:v7 forCandidate:v10];
   }
 }
 
@@ -558,19 +558,19 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
   v3 = _TVRDIRLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRDIRSessionManager *)self irSession];
+    irSession = [(TVRDIRSessionManager *)self irSession];
     v6 = 138412290;
-    v7 = v4;
+    v7 = irSession;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Requesting current context from IRSession: %@", &v6, 0xCu);
   }
 
-  v5 = [(TVRDIRSessionManager *)self irSession];
-  [v5 requestCurrentContext];
+  irSession2 = [(TVRDIRSessionManager *)self irSession];
+  [irSession2 requestCurrentContext];
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if ([(TVRDIRSessionManager *)self hasStarted])
   {
@@ -582,18 +582,18 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
     }
 
     [(TVRDIRSessionManager *)self setSuggestedDevices:0];
-    v6 = [(TVRDIRSessionManager *)self identifierToDeviceMap];
-    [v6 removeAllObjects];
+    identifierToDeviceMap = [(TVRDIRSessionManager *)self identifierToDeviceMap];
+    [identifierToDeviceMap removeAllObjects];
 
-    v7 = [(TVRDIRSessionManager *)self identifierToCandidateMap];
-    [v7 removeAllObjects];
+    identifierToCandidateMap = [(TVRDIRSessionManager *)self identifierToCandidateMap];
+    [identifierToCandidateMap removeAllObjects];
 
     v8 = v13;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __48__TVRDIRSessionManager__activateWithCompletion___block_invoke;
     v13[3] = &unk_1000206F8;
-    v13[4] = v4;
+    v13[4] = completionCopy;
     v9 = &v14;
     objc_copyWeak(&v14, &location);
     [(TVRDIRSessionManager *)self _fetchServiceTokenWithCompletionHandler:v13];
@@ -614,7 +614,7 @@ void __29__TVRDIRSessionManager_pause__block_invoke(uint64_t a1, void *a2, void 
     v11[1] = 3221225472;
     v11[2] = __48__TVRDIRSessionManager__activateWithCompletion___block_invoke_18;
     v11[3] = &unk_1000206F8;
-    v11[4] = v4;
+    v11[4] = completionCopy;
     v9 = &v12;
     objc_copyWeak(&v12, &location);
     [(TVRDIRSessionManager *)self _fetchServiceTokenWithCompletionHandler:v11];
@@ -749,9 +749,9 @@ void __41__TVRDIRSessionManager__restartIRSession__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _TVRDIRLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -761,17 +761,17 @@ void __41__TVRDIRSessionManager__restartIRSession__block_invoke(uint64_t a1, voi
   [(TVRDIRSessionManager *)self _restartIRSession];
 }
 
-- (void)session:(id)a3 didUpdateContext:(id)a4
+- (void)session:(id)session didUpdateContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __49__TVRDIRSessionManager_session_didUpdateContext___block_invoke;
   block[3] = &unk_100020518;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v9);
@@ -935,16 +935,16 @@ int64_t __49__TVRDIRSessionManager_session_didUpdateContext___block_invoke_27(id
   return v7;
 }
 
-- (int64_t)_deviceClassificationFromIRClassification:(int64_t)a3
+- (int64_t)_deviceClassificationFromIRClassification:(int64_t)classification
 {
-  if (a3 > 4)
+  if (classification > 4)
   {
     return 5;
   }
 
   else
   {
-    return qword_100015368[a3];
+    return qword_100015368[classification];
   }
 }
 

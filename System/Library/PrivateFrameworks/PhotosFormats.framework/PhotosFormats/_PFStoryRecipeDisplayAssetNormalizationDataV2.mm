@@ -1,15 +1,15 @@
 @interface _PFStoryRecipeDisplayAssetNormalizationDataV2
 + (id)limits;
-- (_PFStoryRecipeDisplayAssetNormalizationDataV2)initWithSliderNetPackedDataV2:(id *)a3;
+- (_PFStoryRecipeDisplayAssetNormalizationDataV2)initWithSliderNetPackedDataV2:(id *)v2;
 @end
 
 @implementation _PFStoryRecipeDisplayAssetNormalizationDataV2
 
-- (_PFStoryRecipeDisplayAssetNormalizationDataV2)initWithSliderNetPackedDataV2:(id *)a3
+- (_PFStoryRecipeDisplayAssetNormalizationDataV2)initWithSliderNetPackedDataV2:(id *)v2
 {
   v4.receiver = self;
   v4.super_class = _PFStoryRecipeDisplayAssetNormalizationDataV2;
-  return [(_PFStoryRecipeDisplayAssetNormalizationDataV1 *)&v4 initWithSliderNetPackedDataV1:a3];
+  return [(_PFStoryRecipeDisplayAssetNormalizationDataV1 *)&v4 initWithSliderNetPackedDataV1:v2];
 }
 
 + (id)limits

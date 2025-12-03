@@ -1,8 +1,8 @@
 @interface BKAcquireSlotRequest
 - (BKAcquireSlotRequest)init;
-- (void)_acquireSlotWithURL:(id)a3;
+- (void)_acquireSlotWithURL:(id)l;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation BKAcquireSlotRequest
@@ -15,22 +15,22 @@
   if (v2)
   {
     v3 = [ICStoreRequestContext alloc];
-    v4 = [v3 ae_initWithActiveAccountAllowAuthenticationOnceADay];
+    ae_initWithActiveAccountAllowAuthenticationOnceADay = [v3 ae_initWithActiveAccountAllowAuthenticationOnceADay];
     requestContext = v2->_requestContext;
-    v2->_requestContext = v4;
+    v2->_requestContext = ae_initWithActiveAccountAllowAuthenticationOnceADay;
   }
 
   return v2;
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000FD518;
   v5[3] = &unk_100A060C0;
-  v6 = a3;
-  v4 = v6;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   [(BKAcquireSlotRequest *)self performRequestWithCompletionHandler:v5];
 }
 
@@ -38,31 +38,31 @@
 {
   v3 = +[BUBag defaultBag];
   objc_initWeak(&location, self);
-  v4 = [v3 acquireSlotURL];
+  acquireSlotURL = [v3 acquireSlotURL];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000FD620;
   v5[3] = &unk_100A07340;
   objc_copyWeak(&v6, &location);
-  [v4 valueWithCompletion:v5];
+  [acquireSlotURL valueWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)_acquireSlotWithURL:(id)a3
+- (void)_acquireSlotWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(BKAcquireSlotRequest *)self additionalParams];
+  lCopy = l;
+  additionalParams = [(BKAcquireSlotRequest *)self additionalParams];
 
-  v6 = v4;
-  if (v5)
+  v6 = lCopy;
+  if (additionalParams)
   {
-    if (v4)
+    if (lCopy)
     {
-      v7 = [[NSURLComponents alloc] initWithURL:v4 resolvingAgainstBaseURL:0];
-      v8 = [(BKAcquireSlotRequest *)self additionalParams];
-      [v7 setQuery:v8];
+      v7 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
+      additionalParams2 = [(BKAcquireSlotRequest *)self additionalParams];
+      [v7 setQuery:additionalParams2];
 
       v6 = [v7 URL];
     }

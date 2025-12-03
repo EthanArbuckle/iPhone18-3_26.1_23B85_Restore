@@ -1,41 +1,41 @@
 @interface PDFDetectedForm
-- (PDFDetectedForm)initWithPage:(id)a3 displayBox:(int64_t)a4;
+- (PDFDetectedForm)initWithPage:(id)page displayBox:(int64_t)box;
 - (id).cxx_construct;
-- (id)detectedFormFieldAtIndex:(unint64_t)a3;
-- (id)detectedFormFieldNearestPoint:(CGPoint)a3;
-- (int64_t)_classifyRect:(CGRect)a3;
-- (vector<const)_collectGlyphEntriesInDisplayList:(PDFDetectedForm *)self medianGlyphHeight:(SEL)a3;
-- (void)_insertFieldRect:(const CGRect *)a3 ofKind:(int64_t)a4;
+- (id)detectedFormFieldAtIndex:(unint64_t)index;
+- (id)detectedFormFieldNearestPoint:(CGPoint)point;
+- (int64_t)_classifyRect:(CGRect)rect;
+- (vector<const)_collectGlyphEntriesInDisplayList:(PDFDetectedForm *)self medianGlyphHeight:(SEL)height;
+- (void)_insertFieldRect:(const CGRect *)rect ofKind:(int64_t)kind;
 @end
 
 @implementation PDFDetectedForm
 
-- (PDFDetectedForm)initWithPage:(id)a3 displayBox:(int64_t)a4
+- (PDFDetectedForm)initWithPage:(id)page displayBox:(int64_t)box
 {
-  v6 = a3;
+  pageCopy = page;
   v37.receiver = self;
   v37.super_class = PDFDetectedForm;
   v7 = [(PDFDetectedForm *)&v37 init];
   if (!v7)
   {
 LABEL_19:
-    v8 = v7;
+    createDisplayListForFormDetection = v7;
     goto LABEL_20;
   }
 
-  v8 = [v6 createDisplayListForFormDetection];
-  v36[1] = v8;
-  if (v8)
+  createDisplayListForFormDetection = [pageCopy createDisplayListForFormDetection];
+  v36[1] = createDisplayListForFormDetection;
+  if (createDisplayListForFormDetection)
   {
-    v7->_displayBox = a4;
-    [v6 boundsForBox:a4];
+    v7->_displayBox = box;
+    [pageCopy boundsForBox:box];
     v10 = v9;
     v12 = v11;
-    [v6 boundsForBox:0];
+    [pageCopy boundsForBox:0];
     v14 = v13;
     v16 = v15;
     v36[0] = 0;
-    [(PDFDetectedForm *)v7 _collectGlyphEntriesInDisplayList:v8 medianGlyphHeight:v36];
+    [(PDFDetectedForm *)v7 _collectGlyphEntriesInDisplayList:createDisplayListForFormDetection medianGlyphHeight:v36];
     v23 = MEMORY[0x1E69E9820];
     v24 = 3321888768;
     v25 = __43__PDFDetectedForm_initWithPage_displayBox___block_invoke;
@@ -106,13 +106,13 @@ LABEL_19:
       operator delete(v34);
     }
 
-    CFRelease(v8);
+    CFRelease(createDisplayListForFormDetection);
     goto LABEL_19;
   }
 
 LABEL_20:
 
-  return v8;
+  return createDisplayListForFormDetection;
 }
 
 void __43__PDFDetectedForm_initWithPage_displayBox___block_invoke(uint64_t a1)
@@ -244,9 +244,9 @@ LABEL_23:
   }
 }
 
-- (id)detectedFormFieldNearestPoint:(CGPoint)a3
+- (id)detectedFormFieldNearestPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   end = self->_rows.__end_;
   begin = self->_rows.__begin_;
   if (begin == end)
@@ -263,7 +263,7 @@ LABEL_23:
     v11 = *v9;
     v10 = v9 + 4;
     v6 += ~(v6 >> 1);
-    if (v11 < a3.y)
+    if (v11 < point.y)
     {
       v7 = v10;
     }
@@ -283,13 +283,13 @@ LABEL_23:
   else if (v7 != begin)
   {
     begin = v7;
-    if (vabdd_f64(a3.y, *v7) >= vabdd_f64(a3.y, *(v7 - 4)))
+    if (vabdd_f64(point.y, *v7) >= vabdd_f64(point.y, *(v7 - 4)))
     {
       begin = (v7 - 4);
     }
   }
 
-  if (*(begin + 2) == *(begin + 1) || vabdd_f64(a3.y, *begin) > 20.0 || (v12 = PDFDetectedFormRow::fieldNearestXCoordinate(begin, a3.x), *(begin + 2) == v12))
+  if (*(begin + 2) == *(begin + 1) || vabdd_f64(point.y, *begin) > 20.0 || (v12 = PDFDetectedFormRow::fieldNearestXCoordinate(begin, point.x), *(begin + 2) == v12))
   {
 LABEL_20:
     v18 = 0;
@@ -313,7 +313,7 @@ LABEL_20:
   return v18;
 }
 
-- (id)detectedFormFieldAtIndex:(unint64_t)a3
+- (id)detectedFormFieldAtIndex:(unint64_t)index
 {
   begin = self->_rows.__begin_;
   end = self->_rows.__end_;
@@ -327,8 +327,8 @@ LABEL_20:
   v6 = 0;
   while (1)
   {
-    v7 = a3 - v6;
-    if (a3 >= v6)
+    v7 = index - v6;
+    if (index >= v6)
     {
       break;
     }
@@ -345,7 +345,7 @@ LABEL_6:
 
   v8 = *(end - 3);
   v6 += (*(end - 2) - v8) >> 3;
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     goto LABEL_6;
   }
@@ -356,9 +356,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)_insertFieldRect:(const CGRect *)a3 ofKind:(int64_t)a4
+- (void)_insertFieldRect:(const CGRect *)rect ofKind:(int64_t)kind
 {
-  MidY = CGRectGetMidY(*a3);
+  MidY = CGRectGetMidY(*rect);
   begin = self->_rows.__begin_;
   end = self->_rows.__end_;
   p_rows = &self->_rows;
@@ -400,11 +400,11 @@ LABEL_12:
     std::vector<PDFDetectedFormField * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v19);
   }
 
-  v16 = [[PDFDetectedFormField alloc] initWithRect:a4 andKind:a3->origin.x, a3->origin.y, a3->size.width, a3->size.height];
+  v16 = [[PDFDetectedFormField alloc] initWithRect:kind andKind:rect->origin.x, rect->origin.y, rect->size.width, rect->size.height];
   PDFDetectedFormRow::insertField(begin, v16);
 }
 
-- (vector<const)_collectGlyphEntriesInDisplayList:(PDFDetectedForm *)self medianGlyphHeight:(SEL)a3
+- (vector<const)_collectGlyphEntriesInDisplayList:(PDFDetectedForm *)self medianGlyphHeight:(SEL)height
 {
   v20 = 0;
   v21 = &v20;
@@ -563,13 +563,13 @@ void __71__PDFDetectedForm__collectGlyphEntriesInDisplayList_medianGlyphHeight__
   }
 }
 
-- (int64_t)_classifyRect:(CGRect)a3
+- (int64_t)_classifyRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = CGRectGetWidth(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;

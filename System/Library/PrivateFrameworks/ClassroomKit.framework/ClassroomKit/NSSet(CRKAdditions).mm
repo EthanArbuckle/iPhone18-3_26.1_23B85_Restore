@@ -15,8 +15,8 @@
 
 - (id)crk_stableDescription
 {
-  v1 = [a1 allObjects];
-  v2 = [v1 valueForKey:@"description"];
+  allObjects = [self allObjects];
+  v2 = [allObjects valueForKey:@"description"];
 
   v3 = [v2 sortedArrayUsingSelector:sel_compare_];
   v4 = MEMORY[0x277CCACA8];
@@ -33,7 +33,7 @@
   v6[0] = v2;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
-  v4 = [a1 sortedArrayUsingDescriptors:v3];
+  v4 = [self sortedArrayUsingDescriptors:v3];
 
   return v4;
 }
@@ -41,15 +41,15 @@
 - (id)crk_setByRemovingObject:()CRKAdditions
 {
   v4 = a3;
-  if (v4 && ([a1 containsObject:v4] & 1) != 0)
+  if (v4 && ([self containsObject:v4] & 1) != 0)
   {
     v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
-    v6 = [a1 crk_setBySubtractingSet:v5];
+    v6 = [self crk_setBySubtractingSet:v5];
   }
 
   else
   {
-    v6 = [a1 copy];
+    v6 = [self copy];
   }
 
   return v6;
@@ -61,7 +61,7 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSSet(CRKAdditions) *)a2 crk_mapUsingBlock:a1];
+    [(NSSet(CRKAdditions) *)a2 crk_mapUsingBlock:self];
   }
 
   v6 = objc_opt_new();
@@ -69,8 +69,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -81,7 +81,7 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = v5[2](v5, *(*(&v15 + 1) + 8 * i));
@@ -91,7 +91,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -111,7 +111,7 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a1;
+  obj = self;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -185,7 +185,7 @@
   v8[3] = &unk_278DC20D8;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 crk_mapUsingBlock:v8];
+  v6 = [self crk_mapUsingBlock:v8];
 
   return v6;
 }
@@ -193,8 +193,8 @@
 - (uint64_t)crk_containsObjectMatchingPredicate:()CRKAdditions
 {
   v4 = a3;
-  v5 = [a1 objectEnumerator];
-  v6 = [v5 crk_containsObjectMatchingPredicate:v4];
+  objectEnumerator = [self objectEnumerator];
+  v6 = [objectEnumerator crk_containsObjectMatchingPredicate:v4];
 
   return v6;
 }
@@ -202,8 +202,8 @@
 - (uint64_t)crk_allObjectsMatchPredicate:()CRKAdditions
 {
   v4 = a3;
-  v5 = [a1 objectEnumerator];
-  v6 = [v5 crk_allObjectsMatchPredicate:v4];
+  objectEnumerator = [self objectEnumerator];
+  v6 = [objectEnumerator crk_allObjectsMatchPredicate:v4];
 
   return v6;
 }
@@ -259,7 +259,7 @@
 - (id)setByCombiningWithSet:()CRKAdditions operation:
 {
   v6 = a3;
-  v7 = [a1 mutableCopy];
+  v7 = [self mutableCopy];
   ([v7 methodForSelector:a4])(v7, a4, v6);
 
   v8 = [objc_opt_class() setWithSet:v7];

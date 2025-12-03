@@ -1,12 +1,12 @@
 @interface HKCodableSummaryVisualizationDataPresencePoint
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryVisualizationDataPresencePoint
@@ -17,69 +17,69 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryVisualizationDataPresencePoint;
   v4 = [(HKCodableSummaryVisualizationDataPresencePoint *)&v8 description];
-  v5 = [(HKCodableSummaryVisualizationDataPresencePoint *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryVisualizationDataPresencePoint *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
-    v5 = [(HKCodableDateInterval *)dateInterval dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"dateInterval"];
+    dictionaryRepresentation = [(HKCodableDateInterval *)dateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dateInterval"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_dataPresent];
-    [v3 setObject:v6 forKey:@"dataPresent"];
+    [dictionary setObject:v6 forKey:@"dataPresent"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_dateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_dateInterval)
   {
-    v5 = v4;
-    [v4 setDateInterval:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setDateInterval:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_dataPresent;
-    v4[20] |= 1u;
+    toCopy[16] = self->_dataPresent;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableDateInterval *)self->_dateInterval copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableDateInterval *)self->_dateInterval copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -92,16 +92,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   dateInterval = self->_dateInterval;
-  if (dateInterval | *(v4 + 1))
+  if (dateInterval | *(equalCopy + 1))
   {
     if (![(HKCodableDateInterval *)dateInterval isEqual:?])
     {
@@ -109,10 +109,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v6 = 0;
@@ -121,13 +121,13 @@ LABEL_6:
 
     if (self->_dataPresent)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -156,11 +156,11 @@ LABEL_7:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   dateInterval = self->_dateInterval;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (dateInterval)
   {
     if (!v6)
@@ -168,7 +168,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     dateInterval = [(HKCodableDateInterval *)dateInterval mergeFrom:?];
   }
 
@@ -179,19 +179,19 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     dateInterval = [(HKCodableSummaryVisualizationDataPresencePoint *)self setDateInterval:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_dataPresent = *(v4 + 16);
+    self->_dataPresent = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](dateInterval, v4);
+  MEMORY[0x1EEE66BB8](dateInterval, fromCopy);
 }
 
 @end

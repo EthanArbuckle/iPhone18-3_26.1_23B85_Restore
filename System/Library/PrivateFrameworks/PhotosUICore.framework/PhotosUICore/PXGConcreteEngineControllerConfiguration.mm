@@ -2,16 +2,16 @@
 - (CGSize)referenceSize;
 - (NSString)description;
 - (PXGConcreteEngineControllerConfiguration)init;
-- (PXGConcreteEngineControllerConfiguration)initWithViewEnvironment:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDeferReferenceSizeChanges:(BOOL)a3;
-- (void)setDisplayScale:(double)a3;
-- (void)setIsVisible:(BOOL)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setReferenceSize:(CGSize)a3;
-- (void)setRootLayoutPromise:(id)a3;
-- (void)setViewEnvironment:(id)a3;
+- (PXGConcreteEngineControllerConfiguration)initWithViewEnvironment:(id)environment;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBackgroundColor:(id)color;
+- (void)setDeferReferenceSizeChanges:(BOOL)changes;
+- (void)setDisplayScale:(double)scale;
+- (void)setIsVisible:(BOOL)visible;
+- (void)setMediaProvider:(id)provider;
+- (void)setReferenceSize:(CGSize)size;
+- (void)setRootLayoutPromise:(id)promise;
+- (void)setViewEnvironment:(id)environment;
 @end
 
 @implementation PXGConcreteEngineControllerConfiguration
@@ -37,27 +37,27 @@
   return v7;
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor != v4)
+  if (backgroundColor != colorCopy)
   {
-    v9 = v4;
-    v6 = [(UIColor *)backgroundColor isEqual:v4];
-    v4 = v9;
+    v9 = colorCopy;
+    v6 = [(UIColor *)backgroundColor isEqual:colorCopy];
+    colorCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIColor *)v9 copy];
@@ -65,63 +65,63 @@
       self->_backgroundColor = v7;
 
       [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
-      v4 = v9;
+      colorCopy = v9;
     }
   }
 }
 
-- (void)setDeferReferenceSizeChanges:(BOOL)a3
+- (void)setDeferReferenceSizeChanges:(BOOL)changes
 {
-  if (self->_deferReferenceSizeChanges != a3)
+  if (self->_deferReferenceSizeChanges != changes)
   {
-    self->_deferReferenceSizeChanges = a3;
+    self->_deferReferenceSizeChanges = changes;
     [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
   }
 }
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
+    self->_isVisible = visible;
     [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
   }
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGConcreteEngineControllerConfiguration.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0 && !isnan(displayScale)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGConcreteEngineControllerConfiguration.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0 && !isnan(displayScale)"}];
   }
 
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
 
     [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  if (self->_referenceSize.width != a3.width || self->_referenceSize.height != a3.height)
+  if (self->_referenceSize.width != size.width || self->_referenceSize.height != size.height)
   {
-    self->_referenceSize = a3;
+    self->_referenceSize = size;
     [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
   }
 }
 
-- (void)setViewEnvironment:(id)a3
+- (void)setViewEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   viewEnvironment = self->_viewEnvironment;
-  if (viewEnvironment != v4)
+  if (viewEnvironment != environmentCopy)
   {
-    v9 = v4;
-    v6 = [(PXGViewEnvironment *)viewEnvironment isEqual:v4];
-    v4 = v9;
+    v9 = environmentCopy;
+    v6 = [(PXGViewEnvironment *)viewEnvironment isEqual:environmentCopy];
+    environmentCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(PXGViewEnvironment *)v9 copy];
@@ -129,14 +129,14 @@
       self->_viewEnvironment = v7;
 
       [(PXGConcreteEngineControllerConfiguration *)self _incrementVersion];
-      v4 = v9;
+      environmentCopy = v9;
     }
   }
 }
 
-- (void)setRootLayoutPromise:(id)a3
+- (void)setRootLayoutPromise:(id)promise
 {
-  aBlock = a3;
+  aBlock = promise;
   v4 = _Block_copy(self->_rootLayoutPromise);
   v5 = _Block_copy(aBlock);
   v6 = v5;
@@ -159,17 +159,17 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PXGConcreteEngineControllerConfiguration allocWithZone:a3];
-  v5 = [(PXGConcreteEngineControllerConfiguration *)self viewEnvironment];
-  v6 = [(PXGConcreteEngineControllerConfiguration *)v4 initWithViewEnvironment:v5];
+  v4 = [PXGConcreteEngineControllerConfiguration allocWithZone:zone];
+  viewEnvironment = [(PXGConcreteEngineControllerConfiguration *)self viewEnvironment];
+  v6 = [(PXGConcreteEngineControllerConfiguration *)v4 initWithViewEnvironment:viewEnvironment];
 
-  v7 = [(PXGConcreteEngineControllerConfiguration *)self rootLayoutPromise];
-  [(PXGConcreteEngineControllerConfiguration *)v6 setRootLayoutPromise:v7];
+  rootLayoutPromise = [(PXGConcreteEngineControllerConfiguration *)self rootLayoutPromise];
+  [(PXGConcreteEngineControllerConfiguration *)v6 setRootLayoutPromise:rootLayoutPromise];
 
-  v8 = [(PXGConcreteEngineControllerConfiguration *)self viewEnvironment];
-  [(PXGConcreteEngineControllerConfiguration *)v6 setViewEnvironment:v8];
+  viewEnvironment2 = [(PXGConcreteEngineControllerConfiguration *)self viewEnvironment];
+  [(PXGConcreteEngineControllerConfiguration *)v6 setViewEnvironment:viewEnvironment2];
 
   [(PXGConcreteEngineControllerConfiguration *)v6 setIsVisible:[(PXGConcreteEngineControllerConfiguration *)self isVisible]];
   [(PXGConcreteEngineControllerConfiguration *)v6 setDeferReferenceSizeChanges:[(PXGConcreteEngineControllerConfiguration *)self deferReferenceSizeChanges]];
@@ -177,19 +177,19 @@
   [(PXGConcreteEngineControllerConfiguration *)v6 setReferenceSize:?];
   [(PXGConcreteEngineControllerConfiguration *)self displayScale];
   [(PXGConcreteEngineControllerConfiguration *)v6 setDisplayScale:?];
-  v9 = [(PXGConcreteEngineControllerConfiguration *)self backgroundColor];
-  [(PXGConcreteEngineControllerConfiguration *)v6 setBackgroundColor:v9];
+  backgroundColor = [(PXGConcreteEngineControllerConfiguration *)self backgroundColor];
+  [(PXGConcreteEngineControllerConfiguration *)v6 setBackgroundColor:backgroundColor];
 
-  v10 = [(PXGConcreteEngineControllerConfiguration *)self mediaProvider];
-  [(PXGConcreteEngineControllerConfiguration *)v6 setMediaProvider:v10];
+  mediaProvider = [(PXGConcreteEngineControllerConfiguration *)self mediaProvider];
+  [(PXGConcreteEngineControllerConfiguration *)v6 setMediaProvider:mediaProvider];
 
   v6->_version = [(PXGConcreteEngineControllerConfiguration *)self version];
   return v6;
 }
 
-- (PXGConcreteEngineControllerConfiguration)initWithViewEnvironment:(id)a3
+- (PXGConcreteEngineControllerConfiguration)initWithViewEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v11.receiver = self;
   v11.super_class = PXGConcreteEngineControllerConfiguration;
   v6 = [(PXGConcreteEngineControllerConfiguration *)&v11 init];
@@ -197,10 +197,10 @@
   if (v6)
   {
     v6->_displayScale = 1.0;
-    objc_storeStrong(&v6->_viewEnvironment, a3);
-    v8 = [MEMORY[0x1E69DC888] blackColor];
+    objc_storeStrong(&v6->_viewEnvironment, environment);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     backgroundColor = v7->_backgroundColor;
-    v7->_backgroundColor = v8;
+    v7->_backgroundColor = blackColor;
   }
 
   return v7;

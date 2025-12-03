@@ -1,33 +1,33 @@
 @interface AVCaptureFigAudioDevice
-+ (id)_devicesWithPriorRegisteredDevices:(id)a3;
++ (id)_devicesWithPriorRegisteredDevices:(id)devices;
 + (id)_newFigCaptureSources;
-+ (void)_reconnectDevices:(id)a3;
++ (void)_reconnectDevices:(id)devices;
 + (void)initialize;
 - (AVCaptureFigAudioDevice)init;
 - (BOOL)_currentAudioInputRouteIsBuiltInMic;
 - (BOOL)_systemHasAudioInputDevice;
-- (BOOL)isAudioCaptureModeSupported:(int64_t)a3;
+- (BOOL)isAudioCaptureModeSupported:(int64_t)supported;
 - (BOOL)isAudioInputRouteBuiltInMic;
 - (BOOL)isBuiltInStereoAudioCaptureSupported;
 - (BOOL)isConnected;
 - (BOOL)isWindNoiseRemovalSupported;
 - (OpaqueCMClock)deviceClock;
-- (id)_copyFigCaptureSourceProperty:(__CFString *)a3;
-- (id)_currentAudioInputDeviceLocalizedName:(id)a3;
-- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)a3;
+- (id)_copyFigCaptureSourceProperty:(__CFString *)property;
+- (id)_currentAudioInputDeviceLocalizedName:(id)name;
+- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)source;
 - (id)clientAudioClockDeviceUID;
-- (id)figCaptureSourceAudioSettingsForSessionPreset:(id)a3;
+- (id)figCaptureSourceAudioSettingsForSessionPreset:(id)preset;
 - (id)localizedName;
 - (id)preferredIOBufferDuration;
-- (int64_t)fallbackAudioCaptureModeIfApplicableForCurrentRoute:(int64_t)a3;
-- (void)_handleNotification:(__CFString *)a3 payload:(id)a4;
-- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)a3;
-- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)a3;
-- (void)_updateStateForInputDevice:(id)a3;
-- (void)audioInputDeviceDidChangeHandler:(id)a3;
-- (void)audioServicesWereResetHandler:(id)a3;
+- (int64_t)fallbackAudioCaptureModeIfApplicableForCurrentRoute:(int64_t)route;
+- (void)_handleNotification:(__CFString *)notification payload:(id)payload;
+- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)source;
+- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)source;
+- (void)_updateStateForInputDevice:(id)device;
+- (void)audioInputDeviceDidChangeHandler:(id)handler;
+- (void)audioServicesWereResetHandler:(id)handler;
 - (void)dealloc;
-- (void)setAllowsBluetoothHighQualityRecording:(BOOL)a3;
+- (void)setAllowsBluetoothHighQualityRecording:(BOOL)recording;
 @end
 
 @implementation AVCaptureFigAudioDevice
@@ -67,7 +67,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -128,9 +128,9 @@ LABEL_6:
   return v2;
 }
 
-+ (id)_devicesWithPriorRegisteredDevices:(id)a3
++ (id)_devicesWithPriorRegisteredDevices:(id)devices
 {
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -154,7 +154,7 @@ LABEL_6:
         }
 
         v8 = *(*(&v30 + 1) + 8 * i);
-        if ([a3 count])
+        if ([devices count])
         {
           v28 = 0;
           v9 = *(*(CMBaseObjectGetVTable() + 8) + 48);
@@ -169,7 +169,7 @@ LABEL_6:
           v27 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v11 = [a3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+          v11 = [devices countByEnumeratingWithState:&v24 objects:v23 count:16];
           if (v11)
           {
             v12 = v11;
@@ -180,7 +180,7 @@ LABEL_11:
             {
               if (*v25 != v13)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(devices);
               }
 
               v15 = *(*(&v24 + 1) + 8 * v14);
@@ -191,7 +191,7 @@ LABEL_11:
 
               if (v12 == ++v14)
               {
-                v12 = [a3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+                v12 = [devices countByEnumeratingWithState:&v24 objects:v23 count:16];
                 if (v12)
                 {
                   goto LABEL_11;
@@ -217,7 +217,7 @@ LABEL_17:
 
         v16 = [[AVCaptureFigAudioDevice alloc] _initWithFigCaptureSource:v8];
 LABEL_20:
-        [v22 addObject:v16];
+        [array addObject:v16];
       }
 
       v5 = [obj countByEnumeratingWithState:&v30 objects:v29 count:16];
@@ -226,10 +226,10 @@ LABEL_20:
     while (v5);
   }
 
-  return v22;
+  return array;
 }
 
-+ (void)_reconnectDevices:(id)a3
++ (void)_reconnectDevices:(id)devices
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
@@ -278,7 +278,7 @@ LABEL_20:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v13 = [a3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        v13 = [devices countByEnumeratingWithState:&v23 objects:v22 count:16];
         if (v13)
         {
           v14 = v13;
@@ -289,7 +289,7 @@ LABEL_20:
             {
               if (*v24 != v15)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(devices);
               }
 
               if (v12)
@@ -303,7 +303,7 @@ LABEL_20:
               }
             }
 
-            v14 = [a3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+            v14 = [devices countByEnumeratingWithState:&v23 objects:v22 count:16];
             if (v14)
             {
               continue;
@@ -348,37 +348,37 @@ LABEL_22:
   return 0;
 }
 
-- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)a3
+- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)source
 {
   v9.receiver = self;
   v9.super_class = AVCaptureFigAudioDevice;
-  v4 = [(AVCaptureDevice *)&v9 initSubclass];
-  if (v4)
+  initSubclass = [(AVCaptureDevice *)&v9 initSubclass];
+  if (initSubclass)
   {
-    *(v4 + 19) = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v4];
-    *(v4 + 5) = dispatch_queue_create("com.apple.avfoundation.audiocapturedevice.source_queue", 0);
-    *(v4 + 20) = dispatch_semaphore_create(0);
-    [v4 _setFigCaptureSource:a3];
-    *(v4 + 7) = [v4 _copyFigCaptureSourceProperty:*MEMORY[0x1E69905E0]];
-    *(v4 + 96) = 0;
-    *(v4 + 25) = 0;
-    *(v4 + 105) = 0;
-    *(v4 + 27) = 0;
-    *(v4 + 15) = FigDispatchQueueCreateWithPriority();
-    *(v4 + 32) = 0;
+    *(initSubclass + 19) = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
+    *(initSubclass + 5) = dispatch_queue_create("com.apple.avfoundation.audiocapturedevice.source_queue", 0);
+    *(initSubclass + 20) = dispatch_semaphore_create(0);
+    [initSubclass _setFigCaptureSource:source];
+    *(initSubclass + 7) = [initSubclass _copyFigCaptureSourceProperty:*MEMORY[0x1E69905E0]];
+    *(initSubclass + 96) = 0;
+    *(initSubclass + 25) = 0;
+    *(initSubclass + 105) = 0;
+    *(initSubclass + 27) = 0;
+    *(initSubclass + 15) = FigDispatchQueueCreateWithPriority();
+    *(initSubclass + 32) = 0;
     v5 = dispatch_group_create();
-    *(v4 + 17) = v5;
+    *(initSubclass + 17) = v5;
     dispatch_group_enter(v5);
-    v6 = *(v4 + 15);
+    v6 = *(initSubclass + 15);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__AVCaptureFigAudioDevice__initWithFigCaptureSource___block_invoke;
     block[3] = &unk_1E786EC08;
-    block[4] = v4;
+    block[4] = initSubclass;
     dispatch_async(v6, block);
   }
 
-  return v4;
+  return initSubclass;
 }
 
 void __53__AVCaptureFigAudioDevice__initWithFigCaptureSource___block_invoke(uint64_t a1)
@@ -428,7 +428,7 @@ void __53__AVCaptureFigAudioDevice__initWithFigCaptureSource___block_invoke(uint
   [(AVCaptureDevice *)&v4 dealloc];
 }
 
-- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)a3
+- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)source
 {
   fcsQueue = self->_fcsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -436,7 +436,7 @@ void __53__AVCaptureFigAudioDevice__initWithFigCaptureSource___block_invoke(uint
   v4[2] = __48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = source;
   dispatch_sync(fcsQueue, v4);
 }
 
@@ -500,11 +500,11 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
   return result;
 }
 
-- (id)figCaptureSourceAudioSettingsForSessionPreset:(id)a3
+- (id)figCaptureSourceAudioSettingsForSessionPreset:(id)preset
 {
   v4 = [(NSDictionary *)self->_attributes objectForKeyedSubscript:*MEMORY[0x1E69900A8]];
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:preset];
 }
 
 - (BOOL)isBuiltInStereoAudioCaptureSupported
@@ -514,13 +514,13 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
   return [v2 BOOLValue];
 }
 
-- (BOOL)isAudioCaptureModeSupported:(int64_t)a3
+- (BOOL)isAudioCaptureModeSupported:(int64_t)supported
 {
-  if (a3 > 3)
+  if (supported > 3)
   {
-    v5 = a3 == 6 || a3 == 7;
-    v6 = a3 == 4 || a3 == 5;
-    if (a3 <= 5)
+    v5 = supported == 6 || supported == 7;
+    v6 = supported == 4 || supported == 5;
+    if (supported <= 5)
     {
       return v6;
     }
@@ -533,9 +533,9 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
 
   else
   {
-    if (a3 > 1)
+    if (supported > 1)
     {
-      if (a3 != 2)
+      if (supported != 2)
       {
         return 1;
       }
@@ -546,12 +546,12 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
 
     else
     {
-      if (!a3)
+      if (!supported)
       {
         return 1;
       }
 
-      if (a3 != 1)
+      if (supported != 1)
       {
         return 0;
       }
@@ -566,10 +566,10 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
   }
 }
 
-- (int64_t)fallbackAudioCaptureModeIfApplicableForCurrentRoute:(int64_t)a3
+- (int64_t)fallbackAudioCaptureModeIfApplicableForCurrentRoute:(int64_t)route
 {
-  v3 = a3;
-  if ((a3 | 4) == 6 && ![(AVCaptureFigAudioDevice *)self isAudioInputRouteBuiltInMic])
+  routeCopy = route;
+  if ((route | 4) == 6 && ![(AVCaptureFigAudioDevice *)self isAudioInputRouteBuiltInMic])
   {
     if (dword_1ED806960)
     {
@@ -581,7 +581,7 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
     return 0;
   }
 
-  return v3;
+  return routeCopy;
 }
 
 - (BOOL)isAudioInputRouteBuiltInMic
@@ -593,14 +593,14 @@ void *__48__AVCaptureFigAudioDevice__setFigCaptureSource___block_invoke(void *re
   return audioInputRouteIsBuiltInMic;
 }
 
-- (void)setAllowsBluetoothHighQualityRecording:(BOOL)a3
+- (void)setAllowsBluetoothHighQualityRecording:(BOOL)recording
 {
   audioRoutesInfoUpdateQueue = self->_audioRoutesInfoUpdateQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__AVCaptureFigAudioDevice_setAllowsBluetoothHighQualityRecording___block_invoke;
   v4[3] = &unk_1E786EE40;
-  v5 = a3;
+  recordingCopy = recording;
   v4[4] = self;
   dispatch_async(audioRoutesInfoUpdateQueue, v4);
 }
@@ -660,7 +660,7 @@ uint64_t __66__AVCaptureFigAudioDevice_setAllowsBluetoothHighQualityRecording___
   return result;
 }
 
-- (id)_copyFigCaptureSourceProperty:(__CFString *)a3
+- (id)_copyFigCaptureSourceProperty:(__CFString *)property
 {
   v7 = 0;
   v8 = &v7;
@@ -674,7 +674,7 @@ uint64_t __66__AVCaptureFigAudioDevice_setAllowsBluetoothHighQualityRecording___
   block[2] = __57__AVCaptureFigAudioDevice__copyFigCaptureSourceProperty___block_invoke;
   block[3] = &unk_1E7870018;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = property;
   block[4] = self;
   dispatch_sync(fcsQueue, block);
   v4 = v8[5];
@@ -711,12 +711,12 @@ uint64_t __57__AVCaptureFigAudioDevice__copyFigCaptureSourceProperty___block_inv
 
   else
   {
-    v4 = [(AVInputDeviceDiscoverySession *)self->_inputDeviceDiscoverySession availableInputDevices];
+    availableInputDevices = [(AVInputDeviceDiscoverySession *)self->_inputDeviceDiscoverySession availableInputDevices];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    v3 = [availableInputDevices countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v3)
     {
       v5 = *v11;
@@ -726,7 +726,7 @@ uint64_t __57__AVCaptureFigAudioDevice__copyFigCaptureSourceProperty___block_inv
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(availableInputDevices);
           }
 
           v7 = *(*(&v10 + 1) + 8 * i);
@@ -737,7 +737,7 @@ uint64_t __57__AVCaptureFigAudioDevice__copyFigCaptureSourceProperty___block_inv
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v3 = [availableInputDevices countByEnumeratingWithState:&v10 objects:v9 count:16];
         if (v3)
         {
           continue;
@@ -748,7 +748,7 @@ uint64_t __57__AVCaptureFigAudioDevice__copyFigCaptureSourceProperty___block_inv
     }
 
 LABEL_16:
-    if (![v4 count])
+    if (![availableInputDevices count])
     {
       LOBYTE(v3) = fad_isRunningOnDeviceClass(@"iPhone") || fad_isRunningOnDeviceClass(@"iPad");
     }
@@ -767,7 +767,7 @@ LABEL_16:
   return fad_isRunningOnDeviceClass(@"iPad");
 }
 
-- (id)_currentAudioInputDeviceLocalizedName:(id)a3
+- (id)_currentAudioInputDeviceLocalizedName:(id)name
 {
   if (self->_committedInputDevice)
   {
@@ -780,12 +780,12 @@ LABEL_16:
   {
     v17 = v3;
     v18 = v4;
-    v7 = [(AVInputDeviceDiscoverySession *)self->_inputDeviceDiscoverySession availableInputDevices];
+    availableInputDevices = [(AVInputDeviceDiscoverySession *)self->_inputDeviceDiscoverySession availableInputDevices];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    result = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    result = [availableInputDevices countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (result)
     {
       v8 = result;
@@ -797,7 +797,7 @@ LABEL_16:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(availableInputDevices);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
@@ -810,7 +810,7 @@ LABEL_16:
         }
 
         while (v8 != v10);
-        result = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        result = [availableInputDevices countByEnumeratingWithState:&v13 objects:v12 count:16];
         v8 = result;
         if (result)
         {
@@ -825,9 +825,9 @@ LABEL_16:
   return result;
 }
 
-- (void)audioInputDeviceDidChangeHandler:(id)a3
+- (void)audioInputDeviceDidChangeHandler:(id)handler
 {
-  v4 = [objc_msgSend(a3 "object")];
+  v4 = [objc_msgSend(handler "object")];
   audioRoutesInfoUpdateQueue = self->_audioRoutesInfoUpdateQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -838,7 +838,7 @@ LABEL_16:
   dispatch_sync(audioRoutesInfoUpdateQueue, v6);
 }
 
-- (void)_updateStateForInputDevice:(id)a3
+- (void)_updateStateForInputDevice:(id)device
 {
   if (!_FigIsCurrentDispatchQueue())
   {
@@ -898,7 +898,7 @@ LABEL_16:
             v48 = 136315906;
             v49 = "[AVCaptureFigAudioDevice _updateStateForInputDevice:]";
             v50 = 2048;
-            v51 = self;
+            selfCopy3 = self;
             v52 = 1024;
             v53[0] = v8;
             LOWORD(v53[1]) = 2112;
@@ -919,8 +919,8 @@ LABEL_16:
     while (v7);
   }
 
-  v16 = a3;
-  if (a3 || !self->_committedInputDevice)
+  deviceCopy = device;
+  if (device || !self->_committedInputDevice)
   {
     goto LABEL_20;
   }
@@ -966,7 +966,7 @@ LABEL_16:
               v48 = 136315394;
               v49 = "[AVCaptureFigAudioDevice _updateStateForInputDevice:]";
               v50 = 2048;
-              v51 = self;
+              selfCopy3 = self;
               _os_log_send_and_compose_impl();
             }
 
@@ -1039,28 +1039,28 @@ LABEL_49:
     v48 = 136315394;
     v49 = "[AVCaptureFigAudioDevice _updateStateForInputDevice:]";
     v50 = 2048;
-    v51 = self;
+    selfCopy3 = self;
     _os_log_send_and_compose_impl();
 LABEL_51:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    v16 = 0;
+    deviceCopy = 0;
   }
 
 LABEL_20:
-  v17 = v16;
+  v17 = deviceCopy;
 
-  self->_committedInputDevice = v16;
+  self->_committedInputDevice = deviceCopy;
   v18 = [(AVCaptureFigAudioDevice *)self _currentAudioInputDeviceLocalizedName:self->_attributes];
-  v19 = [(AVCaptureFigAudioDevice *)self _currentAudioInputRouteIsBuiltInMic];
-  v20 = [(AVCaptureFigAudioDevice *)self _systemHasAudioInputDevice];
+  _currentAudioInputRouteIsBuiltInMic = [(AVCaptureFigAudioDevice *)self _currentAudioInputRouteIsBuiltInMic];
+  _systemHasAudioInputDevice = [(AVCaptureFigAudioDevice *)self _systemHasAudioInputDevice];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__AVCaptureFigAudioDevice__updateStateForInputDevice___block_invoke;
   block[3] = &unk_1E7876628;
   block[4] = self;
   block[5] = v18;
-  v41 = v19;
-  v42 = v20;
+  v41 = _currentAudioInputRouteIsBuiltInMic;
+  v42 = _systemHasAudioInputDevice;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1169,7 +1169,7 @@ LABEL_20:
   return result;
 }
 
-- (void)audioServicesWereResetHandler:(id)a3
+- (void)audioServicesWereResetHandler:(id)handler
 {
   audioRoutesInfoUpdateQueue = self->_audioRoutesInfoUpdateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1325,7 +1325,7 @@ LABEL_17:
   return result;
 }
 
-- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)a3
+- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)source
 {
   v5 = [(AVCaptureFigAudioDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990888]];
   if (v5 == *MEMORY[0x1E695E4D0])
@@ -1338,12 +1338,12 @@ LABEL_17:
     CFRelease(v5);
   }
 
-  [(AVCaptureFigAudioDevice *)self _setFigCaptureSource:a3];
+  [(AVCaptureFigAudioDevice *)self _setFigCaptureSource:source];
 }
 
-- (void)_handleNotification:(__CFString *)a3 payload:(id)a4
+- (void)_handleNotification:(__CFString *)notification payload:(id)payload
 {
-  if (CFEqual(a3, *MEMORY[0x1E6990540]))
+  if (CFEqual(notification, *MEMORY[0x1E6990540]))
   {
     v5 = [(AVCaptureFigAudioDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990888]];
     if (v5 != *MEMORY[0x1E695E4C0])

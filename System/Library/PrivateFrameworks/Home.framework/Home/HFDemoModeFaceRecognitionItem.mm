@@ -1,11 +1,11 @@
 @interface HFDemoModeFaceRecognitionItem
 + (id)dateFormatter;
 - (HFDemoModeFaceRecognitionItem)init;
-- (HFDemoModeFaceRecognitionItem)initWithRecentsData:(id)a3 home:(id)a4;
+- (HFDemoModeFaceRecognitionItem)initWithRecentsData:(id)data home:(id)home;
 - (HMPerson)person;
 - (HMPersonManager)personManager;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFDemoModeFaceRecognitionItem
@@ -34,18 +34,18 @@ uint64_t __46__HFDemoModeFaceRecognitionItem_dateFormatter__block_invoke()
   return [v3 setTimeStyle:0];
 }
 
-- (HFDemoModeFaceRecognitionItem)initWithRecentsData:(id)a3 home:(id)a4
+- (HFDemoModeFaceRecognitionItem)initWithRecentsData:(id)data home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HFDemoModeFaceRecognitionItem;
   v9 = [(HFDemoModeFaceRecognitionItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_demoRecentsEntry, a3);
-    objc_storeStrong(&v10->_home, a4);
+    objc_storeStrong(&v9->_demoRecentsEntry, data);
+    objc_storeStrong(&v10->_home, home);
   }
 
   return v10;
@@ -53,19 +53,19 @@ uint64_t __46__HFDemoModeFaceRecognitionItem_dateFormatter__block_invoke()
 
 - (HFDemoModeFaceRecognitionItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithRecentsData_home_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDemoModeFaceRecognitionItem.m" lineNumber:50 description:{@"%s is unavailable; use %@ instead", "-[HFDemoModeFaceRecognitionItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDemoModeFaceRecognitionItem.m" lineNumber:50 description:{@"%s is unavailable; use %@ instead", "-[HFDemoModeFaceRecognitionItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFDemoModeFaceRecognitionItem alloc];
-  v5 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
-  v6 = [(HFDemoModeFaceRecognitionItem *)self home];
-  v7 = [(HFDemoModeFaceRecognitionItem *)v4 initWithRecentsData:v5 home:v6];
+  demoRecentsEntry = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
+  home = [(HFDemoModeFaceRecognitionItem *)self home];
+  v7 = [(HFDemoModeFaceRecognitionItem *)v4 initWithRecentsData:demoRecentsEntry home:home];
 
   [(HFItem *)v7 copyLatestResultsFromItem:self];
   return v7;
@@ -73,69 +73,69 @@ uint64_t __46__HFDemoModeFaceRecognitionItem_dateFormatter__block_invoke()
 
 - (HMPerson)person
 {
-  v2 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
-  v3 = [v2 person];
+  demoRecentsEntry = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
+  person = [demoRecentsEntry person];
 
-  return v3;
+  return person;
 }
 
 - (HMPersonManager)personManager
 {
   NSLog(&cfstr_DemoModeShould.isa, a2);
-  v3 = [(HFDemoModeFaceRecognitionItem *)self home];
-  v4 = [v3 personManager];
+  home = [(HFDemoModeFaceRecognitionItem *)self home];
+  personManager = [home personManager];
 
-  return v4;
+  return personManager;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
-  v6 = [v5 faceCrop];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  demoRecentsEntry = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
+  faceCrop = [demoRecentsEntry faceCrop];
 
   v7 = objc_alloc(MEMORY[0x277D755B8]);
-  v8 = [v6 dataRepresentation];
-  v9 = [v7 initWithData:v8];
+  dataRepresentation = [faceCrop dataRepresentation];
+  v9 = [v7 initWithData:dataRepresentation];
 
   if (v9)
   {
-    [v4 setObject:v9 forKeyedSubscript:@"HFPersonResultFaceCropImageKey"];
-    v10 = [v6 dateCreated];
-    v11 = [MEMORY[0x277CBEAA8] distantFuture];
+    [dictionary setObject:v9 forKeyedSubscript:@"HFPersonResultFaceCropImageKey"];
+    dateCreated = [faceCrop dateCreated];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
 
-    if (v10 != v11)
+    if (dateCreated != distantFuture)
     {
-      [v4 na_safeSetObject:v10 forKey:@"HFPersonResultFaceCropDateKey"];
-      [v4 na_safeSetObject:v10 forKey:@"HFResultCameraSignificantEventDateKey"];
-      v12 = [objc_opt_class() dateFormatter];
-      v13 = [v12 stringFromDate:v10];
-      [v4 setObject:v13 forKeyedSubscript:@"description"];
+      [dictionary na_safeSetObject:dateCreated forKey:@"HFPersonResultFaceCropDateKey"];
+      [dictionary na_safeSetObject:dateCreated forKey:@"HFResultCameraSignificantEventDateKey"];
+      dateFormatter = [objc_opt_class() dateFormatter];
+      v13 = [dateFormatter stringFromDate:dateCreated];
+      [dictionary setObject:v13 forKeyedSubscript:@"description"];
     }
 
     v14 = MEMORY[0x277CBEB98];
-    v15 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
-    v16 = [v15 faceCrop];
-    v17 = [v16 UUID];
-    v18 = [v14 na_setWithSafeObject:v17];
-    [v4 setObject:v18 forKeyedSubscript:@"HFPersonResultFaceCropIdentifiersKey"];
+    demoRecentsEntry2 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
+    faceCrop2 = [demoRecentsEntry2 faceCrop];
+    uUID = [faceCrop2 UUID];
+    v18 = [v14 na_setWithSafeObject:uUID];
+    [dictionary setObject:v18 forKeyedSubscript:@"HFPersonResultFaceCropIdentifiersKey"];
   }
 
-  [v4 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"HFPersonResultIsHomeOriginatedKey"];
-  v19 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
-  v20 = [v19 person];
+  [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"HFPersonResultIsHomeOriginatedKey"];
+  demoRecentsEntry3 = [(HFDemoModeFaceRecognitionItem *)self demoRecentsEntry];
+  person = [demoRecentsEntry3 person];
 
-  if (v20)
+  if (person)
   {
-    v21 = [v20 name];
-    [v4 na_safeSetObject:v21 forKey:@"title"];
+    name = [person name];
+    [dictionary na_safeSetObject:name forKey:@"title"];
 
-    v22 = [v20 UUID];
-    [v4 na_safeSetObject:v22 forKey:@"personIdentifier"];
+    uUID2 = [person UUID];
+    [dictionary na_safeSetObject:uUID2 forKey:@"personIdentifier"];
   }
 
   v23 = MEMORY[0x277D2C900];
-  v24 = [HFItemUpdateOutcome outcomeWithResults:v4];
+  v24 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
   v25 = [v23 futureWithResult:v24];
 
   return v25;

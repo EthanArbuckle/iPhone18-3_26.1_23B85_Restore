@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterTariffPeriodStruct
 - (MTRCommodityTariffClusterTariffPeriodStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,29 +17,29 @@
     label = v2->_label;
     v2->_label = 0;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     dayEntryIDs = v3->_dayEntryIDs;
-    v3->_dayEntryIDs = v5;
+    v3->_dayEntryIDs = array;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     tariffComponentIDs = v3->_tariffComponentIDs;
-    v3->_tariffComponentIDs = v7;
+    v3->_tariffComponentIDs = array2;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterTariffPeriodStruct);
-  v5 = [(MTRCommodityTariffClusterTariffPeriodStruct *)self label];
-  [(MTRCommodityTariffClusterTariffPeriodStruct *)v4 setLabel:v5];
+  label = [(MTRCommodityTariffClusterTariffPeriodStruct *)self label];
+  [(MTRCommodityTariffClusterTariffPeriodStruct *)v4 setLabel:label];
 
-  v6 = [(MTRCommodityTariffClusterTariffPeriodStruct *)self dayEntryIDs];
-  [(MTRCommodityTariffClusterTariffPeriodStruct *)v4 setDayEntryIDs:v6];
+  dayEntryIDs = [(MTRCommodityTariffClusterTariffPeriodStruct *)self dayEntryIDs];
+  [(MTRCommodityTariffClusterTariffPeriodStruct *)v4 setDayEntryIDs:dayEntryIDs];
 
-  v7 = [(MTRCommodityTariffClusterTariffPeriodStruct *)self tariffComponentIDs];
-  [(MTRCommodityTariffClusterTariffPeriodStruct *)v4 setTariffComponentIDs:v7];
+  tariffComponentIDs = [(MTRCommodityTariffClusterTariffPeriodStruct *)self tariffComponentIDs];
+  [(MTRCommodityTariffClusterTariffPeriodStruct *)v4 setTariffComponentIDs:tariffComponentIDs];
 
   return v4;
 }

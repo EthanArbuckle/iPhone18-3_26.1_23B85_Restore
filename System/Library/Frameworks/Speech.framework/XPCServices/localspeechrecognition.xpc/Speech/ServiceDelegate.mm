@@ -1,21 +1,21 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [[LSRConnection alloc] initWithXPCConnection:v4];
+  connectionCopy = connection;
+  v5 = [[LSRConnection alloc] initWithXPCConnection:connectionCopy];
   v6 = SFLSRGetInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:v5];
+  [connectionCopy setExportedObject:v5];
   v7 = SFLSRDelegateGetInterface();
-  [v4 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 

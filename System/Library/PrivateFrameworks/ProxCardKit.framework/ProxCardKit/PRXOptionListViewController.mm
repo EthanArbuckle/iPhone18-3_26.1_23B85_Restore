@@ -1,12 +1,12 @@
 @interface PRXOptionListViewController
 - (NSArray)selectedOptions;
-- (PRXOptionListViewController)initWithContentView:(id)a3;
-- (PRXOptionListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (PRXOptionListViewController)initWithContentView:(id)view;
+- (PRXOptionListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_createCollectionViewLayout;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setOptions:(id)a3;
-- (void)setSelectedOptions:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setOptions:(id)options;
+- (void)setSelectedOptions:(id)options;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
@@ -14,7 +14,7 @@
 
 @implementation PRXOptionListViewController
 
-- (PRXOptionListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PRXOptionListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = [PRXScrollableContentView alloc];
   v6 = objc_alloc(MEMORY[0x277D752A0]);
@@ -26,11 +26,11 @@
   return v10;
 }
 
-- (PRXOptionListViewController)initWithContentView:(id)a3
+- (PRXOptionListViewController)initWithContentView:(id)view
 {
   v8.receiver = self;
   v8.super_class = PRXOptionListViewController;
-  v3 = [(PRXCardContentViewController *)&v8 initWithContentView:a3];
+  v3 = [(PRXCardContentViewController *)&v8 initWithContentView:view];
   v4 = v3;
   if (v3)
   {
@@ -48,9 +48,9 @@
   v17.receiver = self;
   v17.super_class = PRXOptionListViewController;
   [(PRXCardContentViewController *)&v17 viewDidLoad];
-  v3 = [(PRXCardContentViewController *)self contentView];
+  contentView = [(PRXCardContentViewController *)self contentView];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v3 scrollView], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([contentView scrollView], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) == 0))
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = *MEMORY[0x277CBE660];
@@ -64,12 +64,12 @@
     objc_exception_throw(v15);
   }
 
-  v6 = [v3 scrollView];
+  scrollView = [contentView scrollView];
   collectionView = self->_collectionView;
-  self->_collectionView = v6;
+  self->_collectionView = scrollView;
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setDataSource:self];
@@ -108,42 +108,42 @@
 
   v11 = [MEMORY[0x277CFB868] sectionWithGroup:v10];
   [v11 setInterGroupSpacing:8.0];
-  v12 = [(PRXCardContentViewController *)self contentView];
-  [v12 directionalLayoutMargins];
+  contentView = [(PRXCardContentViewController *)self contentView];
+  [contentView directionalLayoutMargins];
   v14 = v13;
-  v15 = [(PRXCardContentViewController *)self contentView];
-  [v15 directionalLayoutMargins];
+  contentView2 = [(PRXCardContentViewController *)self contentView];
+  [contentView2 directionalLayoutMargins];
   [v11 setContentInsets:{0.0, v14, 0.0}];
 
   v16 = [objc_alloc(MEMORY[0x277D752B8]) initWithSection:v11];
   [(UICollectionView *)self->_collectionView setCollectionViewLayout:v16];
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v7 = a3;
+  optionsCopy = options;
   if (![(NSArray *)self->_options isEqualToArray:?])
   {
-    v4 = [(PRXOptionListViewController *)self selectedOptions];
-    v5 = [v7 copy];
+    selectedOptions = [(PRXOptionListViewController *)self selectedOptions];
+    v5 = [optionsCopy copy];
     options = self->_options;
     self->_options = v5;
 
     [(UICollectionView *)self->_collectionView reloadData];
-    [(PRXOptionListViewController *)self setSelectedOptions:v4];
+    [(PRXOptionListViewController *)self setSelectedOptions:selectedOptions];
   }
 }
 
 - (NSArray)selectedOptions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -154,29 +154,29 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [v3 addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "item")}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "item")}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(NSArray *)self->_options objectsAtIndexes:v3];
+  v9 = [(NSArray *)self->_options objectsAtIndexes:indexSet];
 
   return v9;
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
-  v4 = a3;
-  if ([v4 count] || (-[UICollectionView indexPathsForSelectedItems](self->_collectionView, "indexPathsForSelectedItems"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+  optionsCopy = options;
+  if ([optionsCopy count] || (-[UICollectionView indexPathsForSelectedItems](self->_collectionView, "indexPathsForSelectedItems"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
   {
-    v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v7 = [MEMORY[0x277CBEB98] setWithArray:optionsCopy];
     collectionView = self->_collectionView;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -222,14 +222,14 @@ void __50__PRXOptionListViewController_setSelectedOptions___block_invoke_2(uint6
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"PRXOptionCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"PRXOptionCell" forIndexPath:pathCopy];
   options = self->_options;
-  v9 = [v6 item];
+  item = [pathCopy item];
 
-  v10 = [(NSArray *)options objectAtIndexedSubscript:v9];
+  v10 = [(NSArray *)options objectAtIndexedSubscript:item];
   formatterBlock = self->_formatterBlock;
   if (formatterBlock)
   {
@@ -241,17 +241,17 @@ void __50__PRXOptionListViewController_setSelectedOptions___block_invoke_2(uint6
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v10];
   }
   v12 = ;
-  v13 = [v7 textLabel];
-  [v13 setText:v12];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v12];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   if (self->_selectionHandler)
   {
-    v5 = -[NSArray objectAtIndexedSubscript:](self->_options, "objectAtIndexedSubscript:", [a4 item]);
+    v5 = -[NSArray objectAtIndexedSubscript:](self->_options, "objectAtIndexedSubscript:", [path item]);
     (*(self->_selectionHandler + 2))();
   }
 }

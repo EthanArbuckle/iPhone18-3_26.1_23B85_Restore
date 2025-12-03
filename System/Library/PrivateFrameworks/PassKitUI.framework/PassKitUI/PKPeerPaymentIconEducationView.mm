@@ -1,20 +1,20 @@
 @interface PKPeerPaymentIconEducationView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_imageForWatchView;
 - (void)layoutSubviews;
-- (void)setShowIconsView:(BOOL)a3;
-- (void)setShowWatchView:(BOOL)a3;
+- (void)setShowIconsView:(BOOL)view;
+- (void)setShowWatchView:(BOOL)view;
 @end
 
 @implementation PKPeerPaymentIconEducationView
 
-- (void)setShowWatchView:(BOOL)a3
+- (void)setShowWatchView:(BOOL)view
 {
-  if (self->_showWatchView != a3)
+  if (self->_showWatchView != view)
   {
-    self->_showWatchView = a3;
+    self->_showWatchView = view;
     watchDeviceImageView = self->_watchDeviceImageView;
-    if (a3)
+    if (view)
     {
       if (watchDeviceImageView)
       {
@@ -26,8 +26,8 @@
       self->_watchDeviceImageView = v6;
 
       v8 = self->_watchDeviceImageView;
-      v9 = [(PKPeerPaymentIconEducationView *)self _imageForWatchView];
-      [(PKWatchDeviceImageOverlayView *)v8 setOverlayImage:v9];
+      _imageForWatchView = [(PKPeerPaymentIconEducationView *)self _imageForWatchView];
+      [(PKWatchDeviceImageOverlayView *)v8 setOverlayImage:_imageForWatchView];
 
       [(PKPeerPaymentIconEducationView *)self addSubview:self->_watchDeviceImageView];
     }
@@ -43,13 +43,13 @@
   }
 }
 
-- (void)setShowIconsView:(BOOL)a3
+- (void)setShowIconsView:(BOOL)view
 {
-  if (self->_showIconsView != a3)
+  if (self->_showIconsView != view)
   {
-    self->_showIconsView = a3;
+    self->_showIconsView = view;
     iconsView = self->_iconsView;
-    if (a3)
+    if (view)
     {
       if (iconsView)
       {
@@ -101,10 +101,10 @@
   [(PKPaymentSetupInitialCardEducationIconsView *)self->_iconsView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKPaymentSetupInitialCardEducationIconsView *)self->_iconsView sizeThatFits:?];
   v7 = v6;
   v9 = v8;

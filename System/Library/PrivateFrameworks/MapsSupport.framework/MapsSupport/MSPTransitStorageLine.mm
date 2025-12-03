@@ -1,89 +1,89 @@
 @interface MSPTransitStorageLine
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GEOMapItemIdentifier)identifier;
-- (MSPTransitStorageLine)initWithLine:(id)a3;
+- (MSPTransitStorageLine)initWithLine:(id)line;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPTransitStorageLine
 
-- (MSPTransitStorageLine)initWithLine:(id)a3
+- (MSPTransitStorageLine)initWithLine:(id)line
 {
-  v4 = a3;
+  lineCopy = line;
   v33.receiver = self;
   v33.super_class = MSPTransitStorageLine;
   v5 = [(MSPTransitStorageLine *)&v33 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    -[MSPTransitStorageLine setMuid:](v5, "setMuid:", [v6 muid]);
-    v7 = [v4 name];
-    [(MSPTransitStorageLine *)v5 setName:v7];
+    identifier = [lineCopy identifier];
+    -[MSPTransitStorageLine setMuid:](v5, "setMuid:", [identifier muid]);
+    name = [lineCopy name];
+    [(MSPTransitStorageLine *)v5 setName:name];
 
-    v8 = [v4 lineColorString];
-    [(MSPTransitStorageLine *)v5 setLineColorString:v8];
+    lineColorString = [lineCopy lineColorString];
+    [(MSPTransitStorageLine *)v5 setLineColorString:lineColorString];
 
-    if ([v6 hasCoordinate])
+    if ([identifier hasCoordinate])
     {
       v9 = objc_alloc(MEMORY[0x277D0EB58]);
-      [v6 coordinate];
+      [identifier coordinate];
       v10 = [v9 initWithCoordinate:?];
       [(MSPTransitStorageLine *)v5 setLocationHint:v10];
     }
 
-    v11 = [v4 system];
+    system = [lineCopy system];
 
-    if (v11)
+    if (system)
     {
       v12 = [MSPTransitStorageSystem alloc];
-      v13 = [v4 system];
-      v14 = [(MSPTransitStorageSystem *)v12 initWithSystem:v13];
+      system2 = [lineCopy system];
+      v14 = [(MSPTransitStorageSystem *)v12 initWithSystem:system2];
       [(MSPTransitStorageLine *)v5 setSystem:v14];
     }
 
-    v15 = [v4 artwork];
+    artwork = [lineCopy artwork];
 
-    if (v15)
+    if (artwork)
     {
       v16 = [MSPTransitStorageArtwork alloc];
-      v17 = [v4 artwork];
-      v18 = [(MSPTransitStorageArtwork *)v16 initWithArtwork:v17];
+      artwork2 = [lineCopy artwork];
+      v18 = [(MSPTransitStorageArtwork *)v16 initWithArtwork:artwork2];
       [(MSPTransitStorageLine *)v5 setArtwork:v18];
     }
 
-    v19 = [v4 modeArtwork];
+    modeArtwork = [lineCopy modeArtwork];
 
-    if (v19)
+    if (modeArtwork)
     {
       v20 = [MSPTransitStorageArtwork alloc];
-      v21 = [v4 modeArtwork];
-      v22 = [(MSPTransitStorageArtwork *)v20 initWithArtwork:v21];
+      modeArtwork2 = [lineCopy modeArtwork];
+      v22 = [(MSPTransitStorageArtwork *)v20 initWithArtwork:modeArtwork2];
       [(MSPTransitStorageLine *)v5 setModeArtwork:v22];
     }
 
-    v23 = [v4 alternateArtwork];
+    alternateArtwork = [lineCopy alternateArtwork];
 
-    if (v23)
+    if (alternateArtwork)
     {
       v24 = [MSPTransitStorageArtwork alloc];
-      v25 = [v4 alternateArtwork];
-      v26 = [(MSPTransitStorageArtwork *)v24 initWithArtwork:v25];
+      alternateArtwork2 = [lineCopy alternateArtwork];
+      v26 = [(MSPTransitStorageArtwork *)v24 initWithArtwork:alternateArtwork2];
       [(MSPTransitStorageLine *)v5 setAlternateArtwork:v26];
     }
 
-    v27 = [v4 headerArtwork];
+    headerArtwork = [lineCopy headerArtwork];
 
-    if (v27)
+    if (headerArtwork)
     {
       v28 = [MSPTransitStorageArtwork alloc];
-      v29 = [v4 headerArtwork];
-      v30 = [(MSPTransitStorageArtwork *)v28 initWithArtwork:v29];
+      headerArtwork2 = [lineCopy headerArtwork];
+      v30 = [(MSPTransitStorageArtwork *)v28 initWithArtwork:headerArtwork2];
       [(MSPTransitStorageLine *)v5 setHeaderArtwork:v30];
     }
 
@@ -96,17 +96,17 @@
 - (GEOMapItemIdentifier)identifier
 {
   v3 = objc_alloc(MEMORY[0x277D0EBA8]);
-  v4 = [(MSPTransitStorageLine *)self muid];
+  muid = [(MSPTransitStorageLine *)self muid];
   if ([(MSPTransitStorageLine *)self hasLocationHint])
   {
-    v5 = [(MSPTransitStorageLine *)self locationHint];
-    [v5 coordinate];
-    v6 = [v3 initWithMUID:v4 resultProviderID:0 coordinate:?];
+    locationHint = [(MSPTransitStorageLine *)self locationHint];
+    [locationHint coordinate];
+    v6 = [v3 initWithMUID:muid resultProviderID:0 coordinate:?];
   }
 
   else
   {
-    v6 = [v3 initWithMUID:v4 resultProviderID:0 coordinate:{-180.0, -180.0}];
+    v6 = [v3 initWithMUID:muid resultProviderID:0 coordinate:{-180.0, -180.0}];
   }
 
   return v6;
@@ -118,209 +118,209 @@
   v8.receiver = self;
   v8.super_class = MSPTransitStorageLine;
   v4 = [(MSPTransitStorageLine *)&v8 description];
-  v5 = [(MSPTransitStorageLine *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPTransitStorageLine *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_muid];
-    [v3 setObject:v4 forKey:@"muid"];
+    [dictionary setObject:v4 forKey:@"muid"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   lineColorString = self->_lineColorString;
   if (lineColorString)
   {
-    [v3 setObject:lineColorString forKey:@"line_color_string"];
+    [dictionary setObject:lineColorString forKey:@"line_color_string"];
   }
 
   artwork = self->_artwork;
   if (artwork)
   {
-    v8 = [(MSPTransitStorageArtwork *)artwork dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"artwork"];
+    dictionaryRepresentation = [(MSPTransitStorageArtwork *)artwork dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"artwork"];
   }
 
   modeArtwork = self->_modeArtwork;
   if (modeArtwork)
   {
-    v10 = [(MSPTransitStorageArtwork *)modeArtwork dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"mode_artwork"];
+    dictionaryRepresentation2 = [(MSPTransitStorageArtwork *)modeArtwork dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"mode_artwork"];
   }
 
   system = self->_system;
   if (system)
   {
-    v12 = [(MSPTransitStorageSystem *)system dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"system"];
+    dictionaryRepresentation3 = [(MSPTransitStorageSystem *)system dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"system"];
   }
 
   alternateArtwork = self->_alternateArtwork;
   if (alternateArtwork)
   {
-    v14 = [(MSPTransitStorageArtwork *)alternateArtwork dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"alternate_artwork"];
+    dictionaryRepresentation4 = [(MSPTransitStorageArtwork *)alternateArtwork dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"alternate_artwork"];
   }
 
   locationHint = self->_locationHint;
   if (locationHint)
   {
-    v16 = [(GEOLatLng *)locationHint dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"location_hint"];
+    dictionaryRepresentation5 = [(GEOLatLng *)locationHint dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"location_hint"];
   }
 
   headerArtwork = self->_headerArtwork;
   if (headerArtwork)
   {
-    v18 = [(MSPTransitStorageArtwork *)headerArtwork dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"header_artwork"];
+    dictionaryRepresentation6 = [(MSPTransitStorageArtwork *)headerArtwork dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"header_artwork"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v20 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"Unknown Fields"];
+    dictionaryRepresentation7 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     muid = self->_muid;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lineColorString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_artwork)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_modeArtwork)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_system)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_alternateArtwork)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_locationHint)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_headerArtwork)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_muid;
-    *(v4 + 88) |= 1u;
+    toCopy[2] = self->_muid;
+    *(toCopy + 88) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (self->_lineColorString)
   {
     [v5 setLineColorString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_artwork)
   {
     [v5 setArtwork:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modeArtwork)
   {
     [v5 setModeArtwork:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_system)
   {
     [v5 setSystem:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_alternateArtwork)
   {
     [v5 setAlternateArtwork:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationHint)
   {
     [v5 setLocationHint:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_headerArtwork)
   {
     [v5 setHeaderArtwork:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -328,35 +328,35 @@
     *(v5 + 88) |= 1u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = *(v6 + 72);
   *(v6 + 72) = v7;
 
-  v9 = [(NSString *)self->_lineColorString copyWithZone:a3];
+  v9 = [(NSString *)self->_lineColorString copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
-  v11 = [(MSPTransitStorageArtwork *)self->_artwork copyWithZone:a3];
+  v11 = [(MSPTransitStorageArtwork *)self->_artwork copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
-  v13 = [(MSPTransitStorageArtwork *)self->_modeArtwork copyWithZone:a3];
+  v13 = [(MSPTransitStorageArtwork *)self->_modeArtwork copyWithZone:zone];
   v14 = *(v6 + 64);
   *(v6 + 64) = v13;
 
-  v15 = [(MSPTransitStorageSystem *)self->_system copyWithZone:a3];
+  v15 = [(MSPTransitStorageSystem *)self->_system copyWithZone:zone];
   v16 = *(v6 + 80);
   *(v6 + 80) = v15;
 
-  v17 = [(MSPTransitStorageArtwork *)self->_alternateArtwork copyWithZone:a3];
+  v17 = [(MSPTransitStorageArtwork *)self->_alternateArtwork copyWithZone:zone];
   v18 = *(v6 + 24);
   *(v6 + 24) = v17;
 
-  v19 = [(GEOLatLng *)self->_locationHint copyWithZone:a3];
+  v19 = [(GEOLatLng *)self->_locationHint copyWithZone:zone];
   v20 = *(v6 + 56);
   *(v6 + 56) = v19;
 
-  v21 = [(MSPTransitStorageArtwork *)self->_headerArtwork copyWithZone:a3];
+  v21 = [(MSPTransitStorageArtwork *)self->_headerArtwork copyWithZone:zone];
   v22 = *(v6 + 40);
   *(v6 + 40) = v21;
 
@@ -364,24 +364,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(equalCopy + 88);
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_muid != *(v4 + 2))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_muid != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
 LABEL_23:
     v14 = 0;
@@ -389,13 +389,13 @@ LABEL_23:
   }
 
   name = self->_name;
-  if (name | *(v4 + 9) && ![(NSString *)name isEqual:?])
+  if (name | *(equalCopy + 9) && ![(NSString *)name isEqual:?])
   {
     goto LABEL_23;
   }
 
   lineColorString = self->_lineColorString;
-  if (lineColorString | *(v4 + 6))
+  if (lineColorString | *(equalCopy + 6))
   {
     if (![(NSString *)lineColorString isEqual:?])
     {
@@ -404,7 +404,7 @@ LABEL_23:
   }
 
   artwork = self->_artwork;
-  if (artwork | *(v4 + 4))
+  if (artwork | *(equalCopy + 4))
   {
     if (![(MSPTransitStorageArtwork *)artwork isEqual:?])
     {
@@ -413,7 +413,7 @@ LABEL_23:
   }
 
   modeArtwork = self->_modeArtwork;
-  if (modeArtwork | *(v4 + 8))
+  if (modeArtwork | *(equalCopy + 8))
   {
     if (![(MSPTransitStorageArtwork *)modeArtwork isEqual:?])
     {
@@ -422,7 +422,7 @@ LABEL_23:
   }
 
   system = self->_system;
-  if (system | *(v4 + 10))
+  if (system | *(equalCopy + 10))
   {
     if (![(MSPTransitStorageSystem *)system isEqual:?])
     {
@@ -431,7 +431,7 @@ LABEL_23:
   }
 
   alternateArtwork = self->_alternateArtwork;
-  if (alternateArtwork | *(v4 + 3))
+  if (alternateArtwork | *(equalCopy + 3))
   {
     if (![(MSPTransitStorageArtwork *)alternateArtwork isEqual:?])
     {
@@ -440,7 +440,7 @@ LABEL_23:
   }
 
   locationHint = self->_locationHint;
-  if (locationHint | *(v4 + 7))
+  if (locationHint | *(equalCopy + 7))
   {
     if (![(GEOLatLng *)locationHint isEqual:?])
     {
@@ -449,7 +449,7 @@ LABEL_23:
   }
 
   headerArtwork = self->_headerArtwork;
-  if (headerArtwork | *(v4 + 5))
+  if (headerArtwork | *(equalCopy + 5))
   {
     v14 = [(MSPTransitStorageArtwork *)headerArtwork isEqual:?];
   }
@@ -486,18 +486,18 @@ LABEL_24:
   return v9 ^ v10 ^ [(MSPTransitStorageArtwork *)self->_headerArtwork hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[11])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[11])
   {
-    self->_muid = v4[2];
+    self->_muid = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  v18 = v4;
-  if (v4[9])
+  v18 = fromCopy;
+  if (fromCopy[9])
   {
     [(MSPTransitStorageLine *)self setName:?];
     v5 = v18;

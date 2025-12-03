@@ -1,20 +1,20 @@
 @interface INHandleIntentForwardingAction
-- (BOOL)executeRemotelyWithVendorRemote:(id)a3 completionHandler:(id)a4;
-- (id)_completionHandlerWithActionCompletionHandler:(id)a3;
-- (void)executeLocallyWithIntentDeliverer:(id)a3 completionHandler:(id)a4;
+- (BOOL)executeRemotelyWithVendorRemote:(id)remote completionHandler:(id)handler;
+- (id)_completionHandlerWithActionCompletionHandler:(id)handler;
+- (void)executeLocallyWithIntentDeliverer:(id)deliverer completionHandler:(id)handler;
 @end
 
 @implementation INHandleIntentForwardingAction
 
-- (id)_completionHandlerWithActionCompletionHandler:(id)a3
+- (id)_completionHandlerWithActionCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__INHandleIntentForwardingAction__completionHandlerWithActionCompletionHandler___block_invoke;
   v7[3] = &unk_1E72871D0;
-  v8 = v3;
-  v4 = v3;
+  v8 = handlerCopy;
+  v4 = handlerCopy;
   v5 = MEMORY[0x193AD7780](v7);
 
   return v5;
@@ -31,29 +31,29 @@ void __80__INHandleIntentForwardingAction__completionHandlerWithActionCompletion
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)executeLocallyWithIntentDeliverer:(id)a3 completionHandler:(id)a4
+- (void)executeLocallyWithIntentDeliverer:(id)deliverer completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(INIntentForwardingAction *)self intent];
-  v8 = [(INHandleIntentForwardingAction *)self _completionHandlerWithActionCompletionHandler:v6];
+  handlerCopy = handler;
+  delivererCopy = deliverer;
+  intent = [(INIntentForwardingAction *)self intent];
+  v8 = [(INHandleIntentForwardingAction *)self _completionHandlerWithActionCompletionHandler:handlerCopy];
 
-  [v7 handleIntent:v9 withCompletion:v8];
+  [delivererCopy handleIntent:intent withCompletion:v8];
 }
 
-- (BOOL)executeRemotelyWithVendorRemote:(id)a3 completionHandler:(id)a4
+- (BOOL)executeRemotelyWithVendorRemote:(id)remote completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  remoteCopy = remote;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = INHandleIntentForwardingAction;
-  if (![(INIntentForwardingAction *)&v12 executeRemotelyWithVendorRemote:v6 completionHandler:v7])
+  if (![(INIntentForwardingAction *)&v12 executeRemotelyWithVendorRemote:remoteCopy completionHandler:handlerCopy])
   {
-    v8 = [(INIntentForwardingAction *)self intent];
-    v9 = INIntentWithTypedIntent(v8);
+    intent = [(INIntentForwardingAction *)self intent];
+    v9 = INIntentWithTypedIntent(intent);
 
-    v10 = [(INHandleIntentForwardingAction *)self _completionHandlerWithActionCompletionHandler:v7];
-    [v6 handleIntent:v9 withCompletion:v10];
+    v10 = [(INHandleIntentForwardingAction *)self _completionHandlerWithActionCompletionHandler:handlerCopy];
+    [remoteCopy handleIntent:v9 withCompletion:v10];
   }
 
   return 1;

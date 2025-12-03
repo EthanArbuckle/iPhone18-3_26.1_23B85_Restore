@@ -1,7 +1,7 @@
 @interface CDPDSecureBackupConfiguration
-+ (CDPDSecureBackupConfiguration)configurationWithContext:(id)a3;
-+ (CDPDSecureBackupConfiguration)configurationWithContext:(id)a3 andSession:(id)a4;
-+ (id)_configurationRequestWithURLString:(id)a3;
++ (CDPDSecureBackupConfiguration)configurationWithContext:(id)context;
++ (CDPDSecureBackupConfiguration)configurationWithContext:(id)context andSession:(id)session;
++ (id)_configurationRequestWithURLString:(id)string;
 - (id)_configurationInfoURLRequest;
 - (id)_escrowConfigurationBag;
 - (id)_escrowConfigurationBagFull;
@@ -9,46 +9,46 @@
 - (id)_escrowProxyConfigurationURLRequest;
 - (id)_escrowProxyURL;
 - (id)_fetchConfigurationDictionary;
-- (id)_fetchConfigurationWithRequest:(id)a3;
+- (id)_fetchConfigurationWithRequest:(id)request;
 - (id)_fetchEscrowConfigurationBag;
 - (id)_iCloudEnvironment;
 - (id)_setupConfigurationURLs;
 - (id)accountInfoFetchSetupDictionary;
-- (id)escrowAuthInfoForCreateEscrowRecordFlow:(BOOL)a3;
+- (id)escrowAuthInfoForCreateEscrowRecordFlow:(BOOL)flow;
 @end
 
 @implementation CDPDSecureBackupConfiguration
 
-+ (CDPDSecureBackupConfiguration)configurationWithContext:(id)a3
++ (CDPDSecureBackupConfiguration)configurationWithContext:(id)context
 {
   v4 = _SharedURLSession_onceToken;
-  v5 = a3;
+  contextCopy = context;
   if (v4 != -1)
   {
     +[CDPDSecureBackupConfiguration configurationWithContext:];
   }
 
-  v6 = [a1 configurationWithContext:v5 andSession:_SharedURLSession_sharedURLSession];
+  v6 = [self configurationWithContext:contextCopy andSession:_SharedURLSession_sharedURLSession];
 
   return v6;
 }
 
-+ (CDPDSecureBackupConfiguration)configurationWithContext:(id)a3 andSession:(id)a4
++ (CDPDSecureBackupConfiguration)configurationWithContext:(id)context andSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  sessionCopy = session;
   v7 = objc_alloc_init(objc_opt_class());
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = contextCopy;
+  v9 = contextCopy;
 
   v10 = v7[4];
-  v7[4] = v6;
+  v7[4] = sessionCopy;
 
   return v7;
 }
 
-- (id)escrowAuthInfoForCreateEscrowRecordFlow:(BOOL)a3
+- (id)escrowAuthInfoForCreateEscrowRecordFlow:(BOOL)flow
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -56,13 +56,13 @@
     [CDPDSecureBackupConfiguration escrowAuthInfoForCreateEscrowRecordFlow:];
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(CDPContext *)self->_context guestMode])
   {
-    v6 = [(CDPDSecureBackupConfiguration *)self _iCloudEnvironment];
-    if (v6)
+    _iCloudEnvironment = [(CDPDSecureBackupConfiguration *)self _iCloudEnvironment];
+    if (_iCloudEnvironment)
     {
-      [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CFB2D0]];
+      [dictionary setObject:_iCloudEnvironment forKeyedSubscript:*MEMORY[0x277CFB2D0]];
     }
 
     else
@@ -74,15 +74,15 @@
       }
     }
 
-    v9 = [(CDPDSecureBackupConfiguration *)self _escrowProxyURL];
-    if (v9)
+    _escrowProxyURL = [(CDPDSecureBackupConfiguration *)self _escrowProxyURL];
+    if (_escrowProxyURL)
     {
-      [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x277CFB2C0]];
+      [dictionary setObject:_escrowProxyURL forKeyedSubscript:*MEMORY[0x277CFB2C0]];
       goto LABEL_29;
     }
 
-    v12 = _CDPLogSystem();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    escrowURL = _CDPLogSystem();
+    if (os_log_type_enabled(escrowURL, OS_LOG_TYPE_DEBUG))
     {
       [CDPDSecureBackupConfiguration escrowAuthInfoForCreateEscrowRecordFlow:];
     }
@@ -90,12 +90,12 @@
 
   else
   {
-    v7 = [MEMORY[0x277CFD480] sharedInstance];
-    v6 = [v7 iCloudEnv];
+    mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+    _iCloudEnvironment = [mEMORY[0x277CFD480] iCloudEnv];
 
-    if (v6)
+    if (_iCloudEnvironment)
     {
-      [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CFB2D0]];
+      [dictionary setObject:_iCloudEnvironment forKeyedSubscript:*MEMORY[0x277CFB2D0]];
     }
 
     else
@@ -107,12 +107,12 @@
       }
     }
 
-    v11 = [MEMORY[0x277CFD480] sharedInstance];
-    v9 = [v11 authToken];
+    mEMORY[0x277CFD480]2 = [MEMORY[0x277CFD480] sharedInstance];
+    _escrowProxyURL = [mEMORY[0x277CFD480]2 authToken];
 
-    if (v9)
+    if (_escrowProxyURL)
     {
-      [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x277CFB2B0]];
+      [dictionary setObject:_escrowProxyURL forKeyedSubscript:*MEMORY[0x277CFB2B0]];
     }
 
     else
@@ -124,12 +124,12 @@
       }
     }
 
-    v14 = [MEMORY[0x277CFD480] sharedInstance];
-    v12 = [v14 escrowURL];
+    mEMORY[0x277CFD480]3 = [MEMORY[0x277CFD480] sharedInstance];
+    escrowURL = [mEMORY[0x277CFD480]3 escrowURL];
 
-    if (v12)
+    if (escrowURL)
     {
-      [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFB2C0]];
+      [dictionary setObject:escrowURL forKeyedSubscript:*MEMORY[0x277CFB2C0]];
     }
 
     else
@@ -145,58 +145,58 @@
 LABEL_29:
   if ([(CDPContext *)self->_context idmsRecovery])
   {
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB328]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB328]];
   }
 
   else
   {
-    v16 = [(CDPContext *)self->_context findMyiPhoneUUID];
+    findMyiPhoneUUID = [(CDPContext *)self->_context findMyiPhoneUUID];
 
-    if (v16)
+    if (findMyiPhoneUUID)
     {
-      [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB300]];
-      v17 = [(CDPContext *)self->_context findMyiPhoneUUID];
-      [v5 setObject:v17 forKeyedSubscript:*MEMORY[0x277CFB308]];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB300]];
+      findMyiPhoneUUID2 = [(CDPContext *)self->_context findMyiPhoneUUID];
+      [dictionary setObject:findMyiPhoneUUID2 forKeyedSubscript:*MEMORY[0x277CFB308]];
     }
   }
 
-  v18 = [(CDPContext *)self->_context appleID];
+  appleID = [(CDPContext *)self->_context appleID];
 
-  if (v18)
+  if (appleID)
   {
-    v19 = [(CDPContext *)self->_context appleID];
-    [v5 setObject:v19 forKeyedSubscript:*MEMORY[0x277CFB2A8]];
+    appleID2 = [(CDPContext *)self->_context appleID];
+    [dictionary setObject:appleID2 forKeyedSubscript:*MEMORY[0x277CFB2A8]];
   }
 
-  v20 = [(CDPContext *)self->_context dsid];
-  v21 = [v20 stringValue];
+  dsid = [(CDPContext *)self->_context dsid];
+  stringValue = [dsid stringValue];
 
-  if (v21)
+  if (stringValue)
   {
-    v22 = [(CDPContext *)self->_context dsid];
-    v23 = [v22 stringValue];
-    [v5 setObject:v23 forKeyedSubscript:*MEMORY[0x277CFB2B8]];
+    dsid2 = [(CDPContext *)self->_context dsid];
+    stringValue2 = [dsid2 stringValue];
+    [dictionary setObject:stringValue2 forKeyedSubscript:*MEMORY[0x277CFB2B8]];
   }
 
-  v24 = [(CDPContext *)self->_context passwordEquivToken];
+  passwordEquivToken = [(CDPContext *)self->_context passwordEquivToken];
 
-  if (v24)
+  if (passwordEquivToken)
   {
-    v25 = [(CDPContext *)self->_context passwordEquivToken];
-    [v5 setObject:v25 forKeyedSubscript:*MEMORY[0x277CFB2C8]];
+    passwordEquivToken2 = [(CDPContext *)self->_context passwordEquivToken];
+    [dictionary setObject:passwordEquivToken2 forKeyedSubscript:*MEMORY[0x277CFB2C8]];
   }
 
-  v26 = [v5 copy];
+  v26 = [dictionary copy];
 
   return v26;
 }
 
 - (id)accountInfoFetchSetupDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (([(CDPContext *)self->_context guestMode]& 1) == 0)
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB398]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB398]];
   }
 
   if ([(CDPContext *)self->_context type]== 3 || [(CDPContext *)self->_context type]== 6 || [(CDPContext *)self->_context type]== 7 || [(CDPContext *)self->_context type]== 15)
@@ -208,45 +208,45 @@ LABEL_29:
       _os_log_impl(&dword_24510B000, v4, OS_LOG_TYPE_DEFAULT, "Requesting the server suppress filtering", v8, 2u);
     }
 
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB390]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFB390]];
   }
 
   v5 = [(CDPDSecureBackupConfiguration *)self escrowAuthInfoForCreateEscrowRecordFlow:0];
-  [v3 addEntriesFromDictionary:v5];
+  [dictionary addEntriesFromDictionary:v5];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
 - (id)_iCloudEnvironment
 {
-  v2 = [(CDPDSecureBackupConfiguration *)self _escrowConfigurationBag];
-  v3 = [v2 objectForKeyedSubscript:@"iCloudEnv"];
+  _escrowConfigurationBag = [(CDPDSecureBackupConfiguration *)self _escrowConfigurationBag];
+  v3 = [_escrowConfigurationBag objectForKeyedSubscript:@"iCloudEnv"];
 
   return v3;
 }
 
 - (id)_escrowProxyURL
 {
-  v2 = [(CDPDSecureBackupConfiguration *)self _escrowConfigurationBag];
-  v3 = [v2 objectForKeyedSubscript:@"escrowProxyUrl"];
+  _escrowConfigurationBag = [(CDPDSecureBackupConfiguration *)self _escrowConfigurationBag];
+  v3 = [_escrowConfigurationBag objectForKeyedSubscript:@"escrowProxyUrl"];
 
   return v3;
 }
 
 - (id)_escrowProxyConfigurationURL
 {
-  v2 = [(CDPDSecureBackupConfiguration *)self _setupConfigurationURLs];
-  v3 = [v2 objectForKey:@"getRecoverySettings"];
+  _setupConfigurationURLs = [(CDPDSecureBackupConfiguration *)self _setupConfigurationURLs];
+  v3 = [_setupConfigurationURLs objectForKey:@"getRecoverySettings"];
 
   return v3;
 }
 
 - (id)_escrowConfigurationBag
 {
-  v2 = [(CDPDSecureBackupConfiguration *)self _escrowConfigurationBagFull];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.mobileme"];
+  _escrowConfigurationBagFull = [(CDPDSecureBackupConfiguration *)self _escrowConfigurationBagFull];
+  v3 = [_escrowConfigurationBagFull objectForKeyedSubscript:@"com.apple.mobileme"];
   v4 = [v3 objectForKeyedSubscript:@"com.apple.Dataclass.KeychainSync"];
 
   return v4;
@@ -257,9 +257,9 @@ LABEL_29:
   configurationURLs = self->_configurationURLs;
   if (!configurationURLs)
   {
-    v4 = [(CDPDSecureBackupConfiguration *)self _fetchConfigurationDictionary];
+    _fetchConfigurationDictionary = [(CDPDSecureBackupConfiguration *)self _fetchConfigurationDictionary];
     v5 = self->_configurationURLs;
-    self->_configurationURLs = v4;
+    self->_configurationURLs = _fetchConfigurationDictionary;
 
     configurationURLs = self->_configurationURLs;
   }
@@ -272,9 +272,9 @@ LABEL_29:
   escrowConfigurationURLs = self->_escrowConfigurationURLs;
   if (!escrowConfigurationURLs)
   {
-    v4 = [(CDPDSecureBackupConfiguration *)self _fetchEscrowConfigurationBag];
+    _fetchEscrowConfigurationBag = [(CDPDSecureBackupConfiguration *)self _fetchEscrowConfigurationBag];
     v5 = self->_escrowConfigurationURLs;
-    self->_escrowConfigurationURLs = v4;
+    self->_escrowConfigurationURLs = _fetchEscrowConfigurationBag;
 
     escrowConfigurationURLs = self->_escrowConfigurationURLs;
   }
@@ -285,8 +285,8 @@ LABEL_29:
 - (id)_escrowProxyConfigurationURLRequest
 {
   v3 = objc_opt_class();
-  v4 = [(CDPDSecureBackupConfiguration *)self _escrowProxyConfigurationURL];
-  v5 = [v3 _configurationRequestWithURLString:v4];
+  _escrowProxyConfigurationURL = [(CDPDSecureBackupConfiguration *)self _escrowProxyConfigurationURL];
+  v5 = [v3 _configurationRequestWithURLString:_escrowProxyConfigurationURL];
 
   [v5 cdp_addClientInfoHeader];
   [v5 cdp_addAuthHeaderWithContext:self->_context];
@@ -303,12 +303,12 @@ LABEL_29:
   return [v2 _configurationRequestWithURLString:@"https://setup.icloud.com/configurations/init?context=settings"];
 }
 
-+ (id)_configurationRequestWithURLString:(id)a3
++ (id)_configurationRequestWithURLString:(id)string
 {
   v3 = MEMORY[0x277CCAB70];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 alloc];
-  v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+  v6 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
 
   v7 = [v5 initWithURL:v6];
   [v7 cdp_addClientInfoHeader];
@@ -318,25 +318,25 @@ LABEL_29:
 
 - (id)_fetchEscrowConfigurationBag
 {
-  v3 = [(CDPDSecureBackupConfiguration *)self _escrowProxyConfigurationURLRequest];
-  v4 = [(CDPDSecureBackupConfiguration *)self _fetchConfigurationWithRequest:v3];
+  _escrowProxyConfigurationURLRequest = [(CDPDSecureBackupConfiguration *)self _escrowProxyConfigurationURLRequest];
+  v4 = [(CDPDSecureBackupConfiguration *)self _fetchConfigurationWithRequest:_escrowProxyConfigurationURLRequest];
 
   return v4;
 }
 
 - (id)_fetchConfigurationDictionary
 {
-  v3 = [(CDPDSecureBackupConfiguration *)self _configurationInfoURLRequest];
-  v4 = [(CDPDSecureBackupConfiguration *)self _fetchConfigurationWithRequest:v3];
+  _configurationInfoURLRequest = [(CDPDSecureBackupConfiguration *)self _configurationInfoURLRequest];
+  v4 = [(CDPDSecureBackupConfiguration *)self _fetchConfigurationWithRequest:_configurationInfoURLRequest];
 
   return v4;
 }
 
-- (id)_fetchConfigurationWithRequest:(id)a3
+- (id)_fetchConfigurationWithRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v27 = 0;
     v28[0] = &v27;
@@ -356,7 +356,7 @@ LABEL_29:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = v4;
+        v31 = requestCopy;
         _os_log_debug_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEBUG, "Attempting to fetch configuration using request: %@", buf, 0xCu);
       }
 
@@ -371,7 +371,7 @@ LABEL_29:
       v22 = v5;
       v10 = v8;
       v19 = v10;
-      v11 = [(NSURLSession *)session dataTaskWithRequest:v4 completionHandler:v18];
+      v11 = [(NSURLSession *)session dataTaskWithRequest:requestCopy completionHandler:v18];
       [v11 resume];
       dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
 

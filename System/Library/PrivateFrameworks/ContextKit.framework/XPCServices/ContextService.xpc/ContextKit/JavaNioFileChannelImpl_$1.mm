@@ -1,19 +1,19 @@
 @interface JavaNioFileChannelImpl_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation JavaNioFileChannelImpl_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v5 = [a3 position], !a4))
+  if (!id || (v5 = [id position], !withId))
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  v7 = [a4 position];
-  if (v6 >= v7)
+  position = [withId position];
+  if (v6 >= position)
   {
     v8 = 0;
   }
@@ -23,7 +23,7 @@
     v8 = -1;
   }
 
-  if (v6 > v7)
+  if (v6 > position)
   {
     return 1;
   }

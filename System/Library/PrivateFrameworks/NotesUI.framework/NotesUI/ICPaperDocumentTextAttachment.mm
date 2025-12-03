@@ -3,16 +3,16 @@
 + (void)initialize;
 - (BOOL)isLegacyMediaType;
 - (ICPDFEncryptionStateChecker)encryptionStateChecker;
-- (ICPaperDocumentTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (ICPaperDocumentTextAttachment)initWithData:(id)data ofType:(id)type;
 - (NSURL)pdfURL;
 - (id)_paperBundleURL;
 - (id)attachmentAsNSTextAttachment;
 - (id)inlineViews;
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5;
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container;
 - (id)supportedPresentationSizes;
-- (signed)effectiveAttachmentViewSizeForTextContainer:(id)a3;
-- (void)attachmentView:(id)a3 didMoveToWindow:(id)a4;
-- (void)attachmentView:(id)a3 willMoveToWindow:(id)a4;
+- (signed)effectiveAttachmentViewSizeForTextContainer:(id)container;
+- (void)attachmentView:(id)view didMoveToWindow:(id)window;
+- (void)attachmentView:(id)view willMoveToWindow:(id)window;
 - (void)paperDidChange;
 @end
 
@@ -20,7 +20,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x1E69DB7F0];
     v3 = NSClassFromString(&cfstr_Icpaperdocumen.isa);
@@ -32,26 +32,26 @@
 
 + (BOOL)isEnabled
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___ICPaperDocumentTextAttachment;
   if (!objc_msgSendSuper2(&v5, sel_isEnabled) || !ICInternalSettingsIsPDFsInNotesEnabled())
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 ic_canEditNotes];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  ic_canEditNotes = [mainBundle ic_canEditNotes];
 
-  return v3;
+  return ic_canEditNotes;
 }
 
-- (ICPaperDocumentTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (ICPaperDocumentTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  v5 = a3;
-  v6 = [(ICPaperDocumentTextAttachment *)self fileType];
+  dataCopy = data;
+  fileType = [(ICPaperDocumentTextAttachment *)self fileType];
   v9.receiver = self;
   v9.super_class = ICPaperDocumentTextAttachment;
-  v7 = [(ICSystemPaperTextAttachment *)&v9 initWithData:v5 ofType:v6];
+  v7 = [(ICSystemPaperTextAttachment *)&v9 initWithData:dataCopy ofType:fileType];
 
   return v7;
 }
@@ -59,14 +59,14 @@
 - (id)attachmentAsNSTextAttachment
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(ICPaperDocumentTextAttachment *)self isLegacyMediaType];
-  v4 = [(ICAbstractTextAttachment *)self attachment];
-  v5 = v4;
-  if (v3)
+  isLegacyMediaType = [(ICPaperDocumentTextAttachment *)self isLegacyMediaType];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v5 = attachment;
+  if (isLegacyMediaType)
   {
-    v6 = [v4 attachmentType];
+    attachmentType = [attachment attachmentType];
 
-    if (v6 == 6 || (-[ICAbstractTextAttachment attachment](self, "attachment"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 attachmentType], v13, v14 == 11))
+    if (attachmentType == 6 || (-[ICAbstractTextAttachment attachment](self, "attachment"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 attachmentType], v13, v14 == 11))
     {
       v15 = objc_opt_class();
     }
@@ -77,38 +77,38 @@
     }
 
     v21 = [v15 alloc];
-    v20 = [(ICAbstractTextAttachment *)self attachment];
-    v19 = [v21 initWithAttachment:v20];
-    v12 = [v19 attachmentAsNSTextAttachment];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    v19 = [v21 initWithAttachment:attachment2];
+    attachmentAsNSTextAttachment = [v19 attachmentAsNSTextAttachment];
   }
 
   else
   {
-    v7 = [v4 isPasswordProtected];
+    isPasswordProtected = [attachment isPasswordProtected];
 
-    if (v7)
+    if (isPasswordProtected)
     {
-      v8 = [(ICAbstractTextAttachment *)self attachment];
-      v9 = [v8 fallbackPDFData];
+      attachment3 = [(ICAbstractTextAttachment *)self attachment];
+      fallbackPDFData = [attachment3 fallbackPDFData];
 
       v10 = objc_alloc(MEMORY[0x1E69DB7F0]);
-      v11 = [MEMORY[0x1E69B7680] fallbackPDFUTI];
-      v12 = [v10 initWithData:v9 ofType:v11];
+      fallbackPDFUTI = [MEMORY[0x1E69B7680] fallbackPDFUTI];
+      attachmentAsNSTextAttachment = [v10 initWithData:fallbackPDFData ofType:fallbackPDFUTI];
 
       goto LABEL_13;
     }
 
     v16 = objc_alloc(MEMORY[0x1E696AC38]);
-    v17 = [(ICAbstractTextAttachment *)self attachment];
-    v18 = [v17 previewItemURL];
+    attachment4 = [(ICAbstractTextAttachment *)self attachment];
+    previewItemURL = [attachment4 previewItemURL];
     v26 = 0;
-    v19 = [v16 initWithURL:v18 options:0 error:&v26];
-    v20 = v26;
+    v19 = [v16 initWithURL:previewItemURL options:0 error:&v26];
+    attachment2 = v26;
 
     if (v19)
     {
-      v12 = [objc_alloc(MEMORY[0x1E69DB7F0]) initWithData:0 ofType:0];
-      [v12 setFileWrapper:v19];
+      attachmentAsNSTextAttachment = [objc_alloc(MEMORY[0x1E69DB7F0]) initWithData:0 ofType:0];
+      [attachmentAsNSTextAttachment setFileWrapper:v19];
     }
 
     else
@@ -116,27 +116,27 @@
       v23 = os_log_create("com.apple.notes", "UI");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(ICAbstractTextAttachment *)self attachment];
-        v25 = [v24 shortLoggingDescription];
+        attachment5 = [(ICAbstractTextAttachment *)self attachment];
+        shortLoggingDescription = [attachment5 shortLoggingDescription];
         *buf = 138412546;
-        v28 = v25;
+        v28 = shortLoggingDescription;
         v29 = 2112;
-        v30 = v20;
+        v30 = attachment2;
         _os_log_impl(&dword_1D4171000, v23, OS_LOG_TYPE_DEFAULT, "Failed to create fallback PDF file wrapper for attachment %@ error: %@", buf, 0x16u);
       }
 
-      v12 = 0;
+      attachmentAsNSTextAttachment = 0;
     }
   }
 
 LABEL_13:
 
-  return v12;
+  return attachmentAsNSTextAttachment;
 }
 
 - (void)paperDidChange
 {
-  v1 = [a1 ic_loggingIdentifier];
+  ic_loggingIdentifier = [self ic_loggingIdentifier];
   OUTLINED_FUNCTION_0_2(&dword_1D4171000, v2, v3, "Received debounced paperDidChange for paper document %@", v4, v5, v6, v7, 2u);
 }
 
@@ -184,18 +184,18 @@ void __59__ICPaperDocumentTextAttachment_supportedPresentationSizes__block_invok
 {
   if (!self->_encryptionStateChecker)
   {
-    v3 = [(ICAbstractTextAttachment *)self attachment];
-    v4 = [v3 attachmentType];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    attachmentType = [attachment attachmentType];
 
-    if (v4 == 6)
+    if (attachmentType == 6)
     {
-      v5 = [(ICAbstractTextAttachment *)self attachment];
-      v6 = [v5 media];
-      v7 = [v6 mediaURL];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      media = [attachment2 media];
+      mediaURL = [media mediaURL];
 
-      if (v7)
+      if (mediaURL)
       {
-        v8 = [[ICPDFEncryptionStateChecker alloc] initWithPDFURL:v7];
+        v8 = [[ICPDFEncryptionStateChecker alloc] initWithPDFURL:mediaURL];
         encryptionStateChecker = self->_encryptionStateChecker;
         self->_encryptionStateChecker = v8;
       }
@@ -207,12 +207,12 @@ void __59__ICPaperDocumentTextAttachment_supportedPresentationSizes__block_invok
   return v10;
 }
 
-- (signed)effectiveAttachmentViewSizeForTextContainer:(id)a3
+- (signed)effectiveAttachmentViewSizeForTextContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = ICPaperDocumentTextAttachment;
-  v5 = [(ICBaseTextAttachment *)&v12 effectiveAttachmentViewSizeForTextContainer:v4];
+  v5 = [(ICBaseTextAttachment *)&v12 effectiveAttachmentViewSizeForTextContainer:containerCopy];
   if (v5 != 1)
   {
     v6 = ICProtocolCast();
@@ -223,15 +223,15 @@ void __59__ICPaperDocumentTextAttachment_supportedPresentationSizes__block_invok
 
     else
     {
-      v7 = [(ICAbstractTextAttachment *)self attachment];
-      v8 = [v7 attachmentType];
+      attachment = [(ICAbstractTextAttachment *)self attachment];
+      attachmentType = [attachment attachmentType];
 
-      if (v8 == 6)
+      if (attachmentType == 6)
       {
-        v9 = [(ICPaperDocumentTextAttachment *)self encryptionStateChecker];
-        v10 = [v9 encryptionState];
+        encryptionStateChecker = [(ICPaperDocumentTextAttachment *)self encryptionStateChecker];
+        encryptionState = [encryptionStateChecker encryptionState];
 
-        if (v10 != 2)
+        if (encryptionState != 2)
         {
           LOWORD(v5) = 1;
         }
@@ -242,43 +242,43 @@ void __59__ICPaperDocumentTextAttachment_supportedPresentationSizes__block_invok
   return v5;
 }
 
-- (void)attachmentView:(id)a3 willMoveToWindow:(id)a4
+- (void)attachmentView:(id)view willMoveToWindow:(id)window
 {
-  if (!a4)
+  if (!window)
   {
-    v6 = a3;
-    v7 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-    [v7 removeObject:v6];
+    viewCopy = view;
+    systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+    [systemPaperViews removeObject:viewCopy];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"ICSystemPaperTextAttachmentWillDisappearNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICSystemPaperTextAttachmentWillDisappearNotification" object:viewCopy];
   }
 }
 
-- (void)attachmentView:(id)a3 didMoveToWindow:(id)a4
+- (void)attachmentView:(id)view didMoveToWindow:(id)window
 {
-  if (a4)
+  if (window)
   {
-    v5 = a3;
-    v6 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-    [v6 addObject:v5];
+    viewCopy = view;
+    systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+    [systemPaperViews addObject:viewCopy];
 
     [(ICInlineCanvasTextAttachment *)self updatePaletteVisibility];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"ICSystemPaperTextAttachmentDidAppearNotification" object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICSystemPaperTextAttachmentDidAppearNotification" object:viewCopy];
   }
 }
 
 - (id)inlineViews
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  v5 = [systemPaperViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -289,116 +289,116 @@ void __59__ICPaperDocumentTextAttachment_supportedPresentationSizes__block_invok
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(systemPaperViews);
         }
 
-        ICGatherInterestingSubviewsFromViewInArray(*(*(&v11 + 1) + 8 * i), v3);
+        ICGatherInterestingSubviewsFromViewInArray(*(*(&v11 + 1) + 8 * i), array);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [systemPaperViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [v3 copy];
+  v9 = [array copy];
 
   return v9;
 }
 
 - (BOOL)isLegacyMediaType
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 attachmentType];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  v5 = v4 - 3;
-  if (v4 - 3) < 0xD && ((0x1909u >> v5))
+  v5 = attachmentType - 3;
+  if (attachmentType - 3) < 0xD && ((0x1909u >> v5))
   {
-    v6 = 0x109u >> v5;
+    attachmentType2 = 0x109u >> v5;
   }
 
   else
   {
     v7 = MEMORY[0x1E69B7A38];
-    v8 = [(ICAbstractTextAttachment *)self attachment];
-    v6 = [v8 attachmentType];
-    v9 = [(ICAbstractTextAttachment *)self attachment];
-    v10 = [v9 shortLoggingDescription];
-    v12 = v6;
-    LOBYTE(v6) = 1;
-    [v7 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICPaperDocumentTextAttachment isLegacyMediaType]" simulateCrash:1 showAlert:0 format:{@"Unexpected type %hd for attachment %@", v12, v10}];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    attachmentType2 = [attachment2 attachmentType];
+    attachment3 = [(ICAbstractTextAttachment *)self attachment];
+    shortLoggingDescription = [attachment3 shortLoggingDescription];
+    v12 = attachmentType2;
+    LOBYTE(attachmentType2) = 1;
+    [v7 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICPaperDocumentTextAttachment isLegacyMediaType]" simulateCrash:1 showAlert:0 format:{@"Unexpected type %hd for attachment %@", v12, shortLoggingDescription}];
   }
 
-  return v6 & 1;
+  return attachmentType2 & 1;
 }
 
 - (NSURL)pdfURL
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  if ([v3 attachmentType] == 6)
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  if ([attachment attachmentType] == 6)
   {
-    v4 = [(ICAbstractTextAttachment *)self attachment];
-    v5 = [v4 media];
-    v6 = [v5 mediaURL];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    media = [attachment2 media];
+    mediaURL = [media mediaURL];
   }
 
   else
   {
-    v6 = 0;
+    mediaURL = 0;
   }
 
-  return v6;
+  return mediaURL;
 }
 
 - (id)_paperBundleURL
 {
   if ([(ICPaperDocumentTextAttachment *)self isLegacyMediaType])
   {
-    v3 = [(ICAbstractTextAttachment *)self attachment];
-    v4 = [v3 temporaryPaperBundleURL];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    temporaryPaperBundleURL = [attachment temporaryPaperBundleURL];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = ICPaperDocumentTextAttachment;
-    v4 = [(ICSystemPaperTextAttachment *)&v6 _paperBundleURL];
+    temporaryPaperBundleURL = [(ICSystemPaperTextAttachment *)&v6 _paperBundleURL];
   }
 
-  return v4;
+  return temporaryPaperBundleURL;
 }
 
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container
 {
-  v6 = [(ICAbstractTextAttachment *)self attachment:a3];
-  v7 = [v6 preferredViewSize];
+  v6 = [(ICAbstractTextAttachment *)self attachment:type];
+  preferredViewSize = [v6 preferredViewSize];
 
-  if (v7 != 1)
+  if (preferredViewSize != 1)
   {
-    v9 = [(ICAbstractTextAttachment *)self attachment];
-    v10 = [v9 attachmentType];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    attachmentType = [attachment attachmentType];
 
-    if (v10 == 11)
+    if (attachmentType == 11)
     {
-      v11 = [(ICAbstractTextAttachment *)self attachment];
-      v12 = [v11 galleryModel];
-      v13 = [v12 firstSubAttachment];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      galleryModel = [attachment2 galleryModel];
+      firstSubAttachment = [galleryModel firstSubAttachment];
 
-      if (v13)
+      if (firstSubAttachment)
       {
-        v14 = [ICGalleryAttachmentUtilities imageForSubAttachment:v13 rotateForMacImageGallery:1 allowCached:1];
+        v14 = [ICGalleryAttachmentUtilities imageForSubAttachment:firstSubAttachment rotateForMacImageGallery:1 allowCached:1];
         v15 = MEMORY[0x1E6982C40];
-        v16 = [v13 typeUTI];
-        v17 = [v15 typeWithIdentifier:v16];
+        typeUTI = [firstSubAttachment typeUTI];
+        v17 = [v15 typeWithIdentifier:typeUTI];
 LABEL_11:
 
 LABEL_14:
         if (v14)
         {
           v28 = [ICPrintableTextAttachment alloc];
-          v29 = [MEMORY[0x1E695DEF0] data];
-          v30 = [v17 identifier];
-          v31 = [(ICPrintableTextAttachment *)v28 initWithData:v29 ofType:v30];
+          data = [MEMORY[0x1E695DEF0] data];
+          identifier = [v17 identifier];
+          v31 = [(ICPrintableTextAttachment *)v28 initWithData:data ofType:identifier];
 
           [(ICPrintableTextAttachment *)v31 setImage:v14];
           [v14 size];
@@ -422,27 +422,27 @@ LABEL_14:
     else
     {
       v17 = *MEMORY[0x1E6982F10];
-      v18 = [(ICAbstractTextAttachment *)self attachment];
-      v19 = [v18 attachmentType];
+      attachment3 = [(ICAbstractTextAttachment *)self attachment];
+      attachmentType2 = [attachment3 attachmentType];
 
-      if (v19 == 6)
+      if (attachmentType2 == 6)
       {
         v20 = MEMORY[0x1E695DEF0];
-        v21 = [(ICPaperDocumentTextAttachment *)self pdfURL];
-        [v20 dataWithContentsOfURL:v21];
+        pdfURL = [(ICPaperDocumentTextAttachment *)self pdfURL];
+        [v20 dataWithContentsOfURL:pdfURL];
       }
 
       else
       {
-        v21 = [(ICAbstractTextAttachment *)self attachment];
-        [v21 fallbackPDFData];
+        pdfURL = [(ICAbstractTextAttachment *)self attachment];
+        [pdfURL fallbackPDFData];
       }
-      v13 = ;
+      firstSubAttachment = ;
 
-      if (v13)
+      if (firstSubAttachment)
       {
-        v16 = [objc_alloc(MEMORY[0x1E6978028]) initWithData:v13];
-        v22 = [v16 pageAtIndex:0];
+        typeUTI = [objc_alloc(MEMORY[0x1E6978028]) initWithData:firstSubAttachment];
+        v22 = [typeUTI pageAtIndex:0];
         [v22 boundsForBox:1];
         TSDScaleSizeWithinSize();
         v24 = v23;

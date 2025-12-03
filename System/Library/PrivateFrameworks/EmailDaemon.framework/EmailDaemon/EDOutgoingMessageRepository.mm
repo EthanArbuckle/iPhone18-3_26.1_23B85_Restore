@@ -1,24 +1,24 @@
 @interface EDOutgoingMessageRepository
 + (id)log;
 + (id)signpostLog;
-- (EDOutgoingMessageRepository)initWithMessagePersistence:(id)a3 messageChangeManager:(id)a4;
-- (id)messagesForDocumentID:(id)a3 mailboxID:(id)a4;
-- (id)outgoingMessageFromPersistedMessage:(id)a3;
+- (EDOutgoingMessageRepository)initWithMessagePersistence:(id)persistence messageChangeManager:(id)manager;
+- (id)messagesForDocumentID:(id)d mailboxID:(id)iD;
+- (id)outgoingMessageFromPersistedMessage:(id)message;
 - (unint64_t)signpostID;
-- (void)cancelLastDelayedMessage:(id)a3;
-- (void)cancelObservation:(id)a3;
-- (void)deleteDraftsInMailboxID:(id)a3 documentID:(id)a4 previousDraftObjectID:(id)a5;
-- (void)deliverMessage:(id)a3 usingMailDrop:(BOOL)a4 isCancelable:(BOOL)a5 completion:(id)a6;
-- (void)isProcessingWithCompletion:(id)a3;
-- (void)numberOfPendingMessagesWithCompletion:(id)a3;
-- (void)outboxContainsMessageFromAccountObjectID:(id)a3 completion:(id)a4;
-- (void)performBlock:(id)a3;
-- (void)removeSendLaterDateFromMessage:(id)a3 draftsMailboxObjectID:(id)a4 completion:(id)a5;
-- (void)saveDraftMessage:(id)a3 mailboxID:(id)a4 previousDraftObjectID:(id)a5 completion:(id)a6;
-- (void)saveSendLaterMessage:(id)a3 sendLaterDate:(id)a4 completion:(id)a5;
-- (void)scheduleAlarmForSendLaterDate:(id)a3 completion:(id)a4;
-- (void)startObservingPendingMessageChangesWithChangeObserver:(id)a3 observationIdentifier:(id)a4;
-- (void)updateSendLaterDate:(id)a3 message:(id)a4 completion:(id)a5;
+- (void)cancelLastDelayedMessage:(id)message;
+- (void)cancelObservation:(id)observation;
+- (void)deleteDraftsInMailboxID:(id)d documentID:(id)iD previousDraftObjectID:(id)objectID;
+- (void)deliverMessage:(id)message usingMailDrop:(BOOL)drop isCancelable:(BOOL)cancelable completion:(id)completion;
+- (void)isProcessingWithCompletion:(id)completion;
+- (void)numberOfPendingMessagesWithCompletion:(id)completion;
+- (void)outboxContainsMessageFromAccountObjectID:(id)d completion:(id)completion;
+- (void)performBlock:(id)block;
+- (void)removeSendLaterDateFromMessage:(id)message draftsMailboxObjectID:(id)d completion:(id)completion;
+- (void)saveDraftMessage:(id)message mailboxID:(id)d previousDraftObjectID:(id)iD completion:(id)completion;
+- (void)saveSendLaterMessage:(id)message sendLaterDate:(id)date completion:(id)completion;
+- (void)scheduleAlarmForSendLaterDate:(id)date completion:(id)completion;
+- (void)startObservingPendingMessageChangesWithChangeObserver:(id)observer observationIdentifier:(id)identifier;
+- (void)updateSendLaterDate:(id)date message:(id)message completion:(id)completion;
 @end
 
 @implementation EDOutgoingMessageRepository
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __34__EDOutgoingMessageRepository_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_72 != -1)
   {
     dispatch_once(&log_onceToken_72, block);
@@ -54,7 +54,7 @@ void __34__EDOutgoingMessageRepository_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__EDOutgoingMessageRepository_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_6 != -1)
   {
     dispatch_once(&signpostLog_onceToken_6, block);
@@ -75,16 +75,16 @@ void __42__EDOutgoingMessageRepository_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EDOutgoingMessageRepository)initWithMessagePersistence:(id)a3 messageChangeManager:(id)a4
+- (EDOutgoingMessageRepository)initWithMessagePersistence:(id)persistence messageChangeManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  persistenceCopy = persistence;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = EDOutgoingMessageRepository;
   v9 = [(EDOutgoingMessageRepository *)&v14 init];
@@ -95,25 +95,25 @@ void __42__EDOutgoingMessageRepository_signpostLog__block_invoke(uint64_t a1)
     workQueue = v9->_workQueue;
     v9->_workQueue = v11;
 
-    objc_storeStrong(&v9->_messagePersistence, a3);
-    objc_storeStrong(&v9->_messageChangeManager, a4);
+    objc_storeStrong(&v9->_messagePersistence, persistence);
+    objc_storeStrong(&v9->_messageChangeManager, manager);
   }
 
   return v9;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [MEMORY[0x1E699B860] transactionWithDescription:@"com.apple.email.outgoingmessagerepository.deliveryworkblock"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__EDOutgoingMessageRepository_performBlock___block_invoke;
   v9[3] = &unk_1E82518B0;
   v10 = v5;
-  v11 = v4;
+  v11 = blockCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = blockCopy;
   v8 = _Block_copy(v9);
   dispatch_async(self->_workQueue, v8);
 }
@@ -126,25 +126,25 @@ uint64_t __44__EDOutgoingMessageRepository_performBlock___block_invoke(uint64_t 
   return [v2 invalidate];
 }
 
-- (void)saveDraftMessage:(id)a3 mailboxID:(id)a4 previousDraftObjectID:(id)a5 completion:(id)a6
+- (void)saveDraftMessage:(id)message mailboxID:(id)d previousDraftObjectID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __91__EDOutgoingMessageRepository_saveDraftMessage_mailboxID_previousDraftObjectID_completion___block_invoke;
   v18[3] = &unk_1E8255400;
   v18[4] = self;
-  v19 = v12;
-  v20 = v10;
-  v21 = v11;
-  v22 = v13;
-  v14 = v13;
-  v15 = v11;
-  v16 = v10;
-  v17 = v12;
+  v19 = iDCopy;
+  v20 = messageCopy;
+  v21 = dCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = dCopy;
+  v16 = messageCopy;
+  v17 = iDCopy;
   [(EDOutgoingMessageRepository *)self performBlock:v18];
 }
 
@@ -250,22 +250,22 @@ void __91__EDOutgoingMessageRepository_saveDraftMessage_mailboxID_previousDraftO
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveSendLaterMessage:(id)a3 sendLaterDate:(id)a4 completion:(id)a5
+- (void)saveSendLaterMessage:(id)message sendLaterDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dateCopy = date;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__EDOutgoingMessageRepository_saveSendLaterMessage_sendLaterDate_completion___block_invoke;
   v14[3] = &unk_1E8253348;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = dateCopy;
+  v16 = messageCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = messageCopy;
+  v13 = dateCopy;
   [(EDOutgoingMessageRepository *)self performBlock:v14];
 }
 
@@ -346,22 +346,22 @@ void __77__EDOutgoingMessageRepository_saveSendLaterMessage_sendLaterDate_comple
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSendLaterDate:(id)a3 message:(id)a4 completion:(id)a5
+- (void)updateSendLaterDate:(id)date message:(id)message completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  messageCopy = message;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__EDOutgoingMessageRepository_updateSendLaterDate_message_completion___block_invoke;
   v14[3] = &unk_1E8253348;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = messageCopy;
+  v16 = dateCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  v13 = messageCopy;
   [(EDOutgoingMessageRepository *)self performBlock:v14];
 }
 
@@ -409,22 +409,22 @@ void __70__EDOutgoingMessageRepository_updateSendLaterDate_message_completion___
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSendLaterDateFromMessage:(id)a3 draftsMailboxObjectID:(id)a4 completion:(id)a5
+- (void)removeSendLaterDateFromMessage:(id)message draftsMailboxObjectID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__EDOutgoingMessageRepository_removeSendLaterDateFromMessage_draftsMailboxObjectID_completion___block_invoke;
   v14[3] = &unk_1E8253348;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = messageCopy;
+  v16 = dCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
+  v13 = messageCopy;
   [(EDOutgoingMessageRepository *)self performBlock:v14];
 }
 
@@ -479,30 +479,30 @@ void __95__EDOutgoingMessageRepository_removeSendLaterDateFromMessage_draftsMail
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduleAlarmForSendLaterDate:(id)a3 completion:(id)a4
+- (void)scheduleAlarmForSendLaterDate:(id)date completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository scheduleAlarmForSendLaterDate:completion:]", "EDOutgoingMessageRepository.m", 129, "0");
 }
 
-- (void)deleteDraftsInMailboxID:(id)a3 documentID:(id)a4 previousDraftObjectID:(id)a5
+- (void)deleteDraftsInMailboxID:(id)d documentID:(id)iD previousDraftObjectID:(id)objectID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  objectIDCopy = objectID;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__EDOutgoingMessageRepository_deleteDraftsInMailboxID_documentID_previousDraftObjectID___block_invoke;
   v14[3] = &unk_1E8250AB8;
-  v15 = v10;
-  v16 = self;
-  v17 = v8;
-  v18 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = objectIDCopy;
+  selfCopy = self;
+  v17 = dCopy;
+  v18 = iDCopy;
+  v11 = iDCopy;
+  v12 = dCopy;
+  v13 = objectIDCopy;
   [(EDOutgoingMessageRepository *)self performBlock:v14];
 }
 
@@ -596,69 +596,69 @@ void __88__EDOutgoingMessageRepository_deleteDraftsInMailboxID_documentID_previo
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deliverMessage:(id)a3 usingMailDrop:(BOOL)a4 isCancelable:(BOOL)a5 completion:(id)a6
+- (void)deliverMessage:(id)message usingMailDrop:(BOOL)drop isCancelable:(BOOL)cancelable completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
+  messageCopy = message;
+  completionCopy = completion;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository deliverMessage:usingMailDrop:isCancelable:completion:]", "EDOutgoingMessageRepository.m", 158, "0");
 }
 
-- (id)outgoingMessageFromPersistedMessage:(id)a3
+- (id)outgoingMessageFromPersistedMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository outgoingMessageFromPersistedMessage:]", "EDOutgoingMessageRepository.m", 162, "0");
 }
 
-- (void)cancelLastDelayedMessage:(id)a3
+- (void)cancelLastDelayedMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository cancelLastDelayedMessage:]", "EDOutgoingMessageRepository.m", 166, "0");
 }
 
-- (void)isProcessingWithCompletion:(id)a3
+- (void)isProcessingWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository isProcessingWithCompletion:]", "EDOutgoingMessageRepository.m", 170, "0");
 }
 
-- (void)numberOfPendingMessagesWithCompletion:(id)a3
+- (void)numberOfPendingMessagesWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository numberOfPendingMessagesWithCompletion:]", "EDOutgoingMessageRepository.m", 174, "0");
 }
 
-- (void)outboxContainsMessageFromAccountObjectID:(id)a3 completion:(id)a4
+- (void)outboxContainsMessageFromAccountObjectID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository outboxContainsMessageFromAccountObjectID:completion:]", "EDOutgoingMessageRepository.m", 178, "0");
 }
 
-- (id)messagesForDocumentID:(id)a3 mailboxID:(id)a4
+- (id)messagesForDocumentID:(id)d mailboxID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository messagesForDocumentID:mailboxID:]", "EDOutgoingMessageRepository.m", 194, "0");
 }
 
-- (void)startObservingPendingMessageChangesWithChangeObserver:(id)a3 observationIdentifier:(id)a4
+- (void)startObservingPendingMessageChangesWithChangeObserver:(id)observer observationIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository startObservingPendingMessageChangesWithChangeObserver:observationIdentifier:]", "EDOutgoingMessageRepository.m", 198, "0");
 }
 
-- (void)cancelObservation:(id)a3
+- (void)cancelObservation:(id)observation
 {
-  v5 = a3;
+  observationCopy = observation;
   [(EDOutgoingMessageRepository *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDOutgoingMessageRepository cancelObservation:]", "EDOutgoingMessageRepository.m", 202, "0");
 }

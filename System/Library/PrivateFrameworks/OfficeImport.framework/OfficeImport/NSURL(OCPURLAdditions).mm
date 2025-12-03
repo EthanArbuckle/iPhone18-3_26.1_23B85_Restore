@@ -8,16 +8,16 @@
 
 - (BOOL)isInternalToPackage
 {
-  v2 = [a1 host];
-  if (v2)
+  host = [self host];
+  if (host)
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [a1 scheme];
-    v3 = v4 == 0;
+    scheme = [self scheme];
+    v3 = scheme == 0;
   }
 
   return v3;
@@ -26,7 +26,7 @@
 + (id)URLWithPackagePart:()OCPURLAdditions
 {
   v4 = a3;
-  v5 = [[a1 alloc] initWithPackagePart:v4];
+  v5 = [[self alloc] initWithPackagePart:v4];
 
   return v5;
 }
@@ -41,7 +41,7 @@
     v4 = v5;
   }
 
-  v6 = [a1 initWithString:v4];
+  v6 = [self initWithString:v4];
 
   return v6;
 }

@@ -1,20 +1,20 @@
 @interface COMTTimerReadResult
-- (COMTTimerReadResult)initWithCoder:(id)a3;
-- (COMTTimerReadResult)initWithTimers:(id)a3 actionIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (COMTTimerReadResult)initWithCoder:(id)coder;
+- (COMTTimerReadResult)initWithTimers:(id)timers actionIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTTimerReadResult
 
-- (COMTTimerReadResult)initWithTimers:(id)a3 actionIdentifier:(id)a4
+- (COMTTimerReadResult)initWithTimers:(id)timers actionIdentifier:(id)identifier
 {
-  v6 = a3;
+  timersCopy = timers;
   v11.receiver = self;
   v11.super_class = COMTTimerReadResult;
-  v7 = [(COMTResult *)&v11 initWithActionIdentifier:a4];
+  v7 = [(COMTResult *)&v11 initWithActionIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [timersCopy copy];
     timers = v7->_timers;
     v7->_timers = v8;
   }
@@ -22,19 +22,19 @@
   return v7;
 }
 
-- (COMTTimerReadResult)initWithCoder:(id)a3
+- (COMTTimerReadResult)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = COMTTimerReadResult;
-  v5 = [(COMTResult *)&v24 initWithCoder:v4];
+  v5 = [(COMTResult *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"TRA"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"TRA"];
 
     v22 = 0u;
     v23 = 0u;
@@ -90,14 +90,14 @@ LABEL_13:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COMTTimerReadResult;
-  v4 = a3;
-  [(COMTResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMTResult *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COMTTimerReadResult *)self timers:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"TRA"];
+  [coderCopy encodeObject:v5 forKey:@"TRA"];
 }
 
 @end

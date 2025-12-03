@@ -1,15 +1,15 @@
 @interface FloatingTabBarContentView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithFrame:(CGRect)a3;
-- (void)handleSelectionGesture:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithFrame:(CGRect)frame;
+- (void)handleSelectionGesture:(id)gesture;
 - (void)layoutSubviews;
 @end
 
 @implementation FloatingTabBarContentView
 
-- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -19,7 +19,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20C3B20C8();
 }
 
@@ -33,11 +33,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20C3AB6B0();
 }
 
-- (void)handleSelectionGesture:(id)a3
+- (void)handleSelectionGesture:(id)gesture
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -47,12 +47,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_20C3AF5F8(v5);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_20C3AF5F8(gestureCopy);
 }
 
-- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI25FloatingTabBarContentView)initWithFrame:(CGRect)frame
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -67,7 +67,7 @@
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -80,7 +80,7 @@
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();

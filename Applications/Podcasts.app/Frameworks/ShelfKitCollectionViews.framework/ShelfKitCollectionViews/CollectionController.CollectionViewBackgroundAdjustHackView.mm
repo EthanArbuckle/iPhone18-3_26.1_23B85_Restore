@@ -1,12 +1,12 @@
 @interface CollectionController.CollectionViewBackgroundAdjustHackView
-- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithCoder:(id)a3;
-- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithFrame:(CGRect)a3;
+- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithCoder:(id)coder;
+- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CollectionController.CollectionViewBackgroundAdjustHackView
 
-- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithCoder:(id)a3
+- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithCoder:(id)coder
 {
   swift_weakInit();
   swift_unknownObjectWeakInit();
@@ -23,11 +23,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_9DF38();
 }
 
-- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithFrame:(CGRect)a3
+- (_TtCC23ShelfKitCollectionViews20CollectionControllerP33_837FEDCB1403A966AF6BE091B9902C8A38CollectionViewBackgroundAdjustHackView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

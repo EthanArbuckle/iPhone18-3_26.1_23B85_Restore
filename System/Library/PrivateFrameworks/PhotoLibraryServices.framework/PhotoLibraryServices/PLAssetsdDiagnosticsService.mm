@@ -1,31 +1,31 @@
 @interface PLAssetsdDiagnosticsService
-- (void)incompleteRestoreProcessesWithReply:(id)a3;
-- (void)setPhotosXPCEndpoint:(id)a3 withReply:(id)a4;
+- (void)incompleteRestoreProcessesWithReply:(id)reply;
+- (void)setPhotosXPCEndpoint:(id)endpoint withReply:(id)reply;
 @end
 
 @implementation PLAssetsdDiagnosticsService
 
-- (void)setPhotosXPCEndpoint:(id)a3 withReply:(id)a4
+- (void)setPhotosXPCEndpoint:(id)endpoint withReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: setPhotosXPCEndpoint:withReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v8 = [v5 _endpoint];
-  [PLAssetsdNonBindingDebugService setPhotosXPCEndpoint:v8];
+  _endpoint = [endpointCopy _endpoint];
+  [PLAssetsdNonBindingDebugService setPhotosXPCEndpoint:_endpoint];
 
-  v6[2](v6, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -45,16 +45,16 @@
   }
 }
 
-- (void)incompleteRestoreProcessesWithReply:(id)a3
+- (void)incompleteRestoreProcessesWithReply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v11) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v11) = enabled;
+  if (enabled)
   {
     *(&v11 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: incompleteRestoreProcessesWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -62,8 +62,8 @@
   }
 
   v6 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdDiagnosticsService incompleteRestoreProcessesWithReply:]", v11];
-  v7 = [v6 incompleteRestoreProcesses];
-  v4[2](v4, v7);
+  incompleteRestoreProcesses = [v6 incompleteRestoreProcesses];
+  replyCopy[2](replyCopy, incompleteRestoreProcesses);
 
   if (v12 == 1)
   {

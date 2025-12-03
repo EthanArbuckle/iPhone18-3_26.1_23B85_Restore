@@ -1,9 +1,9 @@
 @interface TUIRenderUpdateArrayContainer
 - (BOOL)hasDeletesOrInserts;
 - (NSString)description;
-- (TUIRenderUpdateArrayContainer)initWithCurrent:(id)a3 from:(id)a4 to:(id)a5 tracker:(id)a6 flags:(unint64_t)a7;
+- (TUIRenderUpdateArrayContainer)initWithCurrent:(id)current from:(id)from to:(id)to tracker:(id)tracker flags:(unint64_t)flags;
 - (id)newCurrentContainerPlusInserted;
-- (id)newToContainerPlusDeletedWithInterests:(id)a3 changes:(id *)a4;
+- (id)newToContainerPlusDeletedWithInterests:(id)interests changes:(id *)changes;
 - (void)_compute;
 @end
 
@@ -18,23 +18,23 @@
   return v5;
 }
 
-- (TUIRenderUpdateArrayContainer)initWithCurrent:(id)a3 from:(id)a4 to:(id)a5 tracker:(id)a6 flags:(unint64_t)a7
+- (TUIRenderUpdateArrayContainer)initWithCurrent:(id)current from:(id)from to:(id)to tracker:(id)tracker flags:(unint64_t)flags
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  currentCopy = current;
+  fromCopy = from;
+  toCopy = to;
+  trackerCopy = tracker;
   v22.receiver = self;
   v22.super_class = TUIRenderUpdateArrayContainer;
   v17 = [(TUIRenderUpdateArrayContainer *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_current, a3);
-    objc_storeStrong(&v18->_from, a4);
-    objc_storeStrong(&v18->_to, a5);
-    objc_storeStrong(&v18->_tracker, a6);
-    v18->_copyingFlags = a7;
+    objc_storeStrong(&v17->_current, current);
+    objc_storeStrong(&v18->_from, from);
+    objc_storeStrong(&v18->_to, to);
+    objc_storeStrong(&v18->_tracker, tracker);
+    v18->_copyingFlags = flags;
     [(TUIRenderUpdateArrayContainer *)v18 _compute];
     if (!v18->_tracker)
     {
@@ -57,17 +57,17 @@
     return 1;
   }
 
-  v5 = [(TUIRenderUpdateArrayTracker *)self->_tracker deletedModels];
-  v3 = [v5 count] != 0;
+  deletedModels = [(TUIRenderUpdateArrayTracker *)self->_tracker deletedModels];
+  v3 = [deletedModels count] != 0;
 
   return v3;
 }
 
 - (void)_compute
 {
-  v50 = [(TUIRenderModelArrayContaining *)self->_from identifierToContainedSubmodelMap];
-  v52 = [(TUIRenderModelArrayContaining *)self->_current identifierToContainedSubmodelMap];
-  v3 = [(TUIRenderModelArrayContaining *)self->_to identifierToContainedSubmodelMap];
+  identifierToContainedSubmodelMap = [(TUIRenderModelArrayContaining *)self->_from identifierToContainedSubmodelMap];
+  identifierToContainedSubmodelMap2 = [(TUIRenderModelArrayContaining *)self->_current identifierToContainedSubmodelMap];
+  identifierToContainedSubmodelMap3 = [(TUIRenderModelArrayContaining *)self->_to identifierToContainedSubmodelMap];
   v49 = objc_alloc_init(NSMutableSet);
   v57 = 0u;
   v58 = 0u;
@@ -75,7 +75,7 @@
   v60 = 0u;
   obj = [(TUIRenderModelArrayContaining *)self->_from containedSubmodels];
   v4 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
-  v46 = v3;
+  v46 = identifierToContainedSubmodelMap3;
   if (!v4)
   {
     v47 = 0;
@@ -97,8 +97,8 @@
       }
 
       v8 = *(*(&v57 + 1) + 8 * i);
-      v9 = [v8 identifier];
-      v10 = [v3 objectForKeyedSubscript:v9];
+      identifier = [v8 identifier];
+      v10 = [identifierToContainedSubmodelMap3 objectForKeyedSubscript:identifier];
 
       if (v10)
       {
@@ -108,18 +108,18 @@
         }
 
         tracker = self->_tracker;
-        v12 = [v8 identifier];
-        v13 = [(TUIRenderUpdateArrayTracker *)tracker submodelTrackerForIdentifier:v12];
+        identifier2 = [v8 identifier];
+        v13 = [(TUIRenderUpdateArrayTracker *)tracker submodelTrackerForIdentifier:identifier2];
 
-        v14 = [v8 identifier];
-        v15 = [v52 objectForKeyedSubscript:v14];
+        identifier3 = [v8 identifier];
+        v15 = [identifierToContainedSubmodelMap2 objectForKeyedSubscript:identifier3];
 
         v16 = [v10 computeContainerUpdateCurrent:v15 from:v8 tracker:v13 flags:0];
         if ([v16 hasDeletesOrInserts])
         {
           v17 = self->_tracker;
-          v18 = [v8 identifier];
-          [(TUIRenderUpdateArrayTracker *)v17 setSubmodelTracker:v13 forIdentifier:v18];
+          identifier4 = [v8 identifier];
+          [(TUIRenderUpdateArrayTracker *)v17 setSubmodelTracker:v13 forIdentifier:identifier4];
 
           v19 = v47;
           if (!v47)
@@ -127,11 +127,11 @@
             v19 = objc_opt_new();
           }
 
-          v20 = [v10 identifier];
+          identifier5 = [v10 identifier];
           v47 = v19;
-          [v19 setObject:v16 forKeyedSubscript:v20];
+          [v19 setObject:v16 forKeyedSubscript:identifier5];
 
-          v3 = v46;
+          identifierToContainedSubmodelMap3 = v46;
         }
       }
 
@@ -172,8 +172,8 @@ LABEL_24:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v24 = [(TUIRenderModelArrayContaining *)self->_to containedSubmodels];
-  v25 = [v24 countByEnumeratingWithState:&v53 objects:v61 count:16];
+  containedSubmodels = [(TUIRenderModelArrayContaining *)self->_to containedSubmodels];
+  v25 = [containedSubmodels countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (v25)
   {
     v26 = v25;
@@ -185,19 +185,19 @@ LABEL_24:
       {
         if (*v54 != v28)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(containedSubmodels);
         }
 
         v30 = *(*(&v53 + 1) + 8 * j);
-        v31 = [v30 identifier];
-        v32 = [v52 objectForKeyedSubscript:v31];
+        identifier6 = [v30 identifier];
+        v32 = [identifierToContainedSubmodelMap2 objectForKeyedSubscript:identifier6];
         if (v32)
         {
-          v33 = [v50 objectForKeyedSubscript:v31];
+          v33 = [identifierToContainedSubmodelMap objectForKeyedSubscript:identifier6];
 
           if (!v33)
           {
-            [v49 addObject:v31];
+            [v49 addObject:identifier6];
           }
         }
 
@@ -223,11 +223,11 @@ LABEL_24:
           v37 = v36;
 
           [v27 addObject:v37];
-          [v49 addObject:v31];
+          [v49 addObject:identifier6];
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v53 objects:v61 count:16];
+      v26 = [containedSubmodels countByEnumeratingWithState:&v53 objects:v61 count:16];
     }
 
     while (v26);
@@ -255,14 +255,14 @@ LABEL_24:
   self->_updated = v44;
 }
 
-- (id)newToContainerPlusDeletedWithInterests:(id)a3 changes:(id *)a4
+- (id)newToContainerPlusDeletedWithInterests:(id)interests changes:(id *)changes
 {
-  v5 = a3;
-  v6 = [(TUIRenderModelArrayContaining *)self->_to identifierToContainedSubmodelMap];
+  interestsCopy = interests;
+  identifierToContainedSubmodelMap = [(TUIRenderModelArrayContaining *)self->_to identifierToContainedSubmodelMap];
   if ([(NSArray *)self->_deleted count])
   {
     v7 = [(TUIRenderUpdateArrayTracker *)self->_tracker addDeletedInterestInDeletedModels:self->_deleted];
-    [v5 addObject:v7];
+    [interestsCopy addObject:v7];
   }
 
   v46 = 0;
@@ -277,24 +277,24 @@ LABEL_24:
   v43 = sub_AFF38;
   v44 = sub_AFF48;
   v45 = 0;
-  v8 = [(TUIRenderUpdateArrayTracker *)self->_tracker deletedModels];
+  deletedModels = [(TUIRenderUpdateArrayTracker *)self->_tracker deletedModels];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_AFF50;
   v35[3] = &unk_260CF0;
-  v9 = v6;
+  v9 = identifierToContainedSubmodelMap;
   v36 = v9;
-  v37 = self;
+  selfCopy = self;
   v38 = &v46;
   v39 = &v40;
-  [v8 enumerateKeysAndObjectsUsingBlock:v35];
+  [deletedModels enumerateKeysAndObjectsUsingBlock:v35];
 
   if ([(NSDictionary *)self->_updated count])
   {
     if (!v41[5])
     {
-      v10 = [(TUIRenderModelArrayContaining *)self->_to containedSubmodels];
-      v11 = [v10 mutableCopy];
+      containedSubmodels = [(TUIRenderModelArrayContaining *)self->_to containedSubmodels];
+      v11 = [containedSubmodels mutableCopy];
       v12 = v11;
       if (!v11)
       {
@@ -314,7 +314,7 @@ LABEL_24:
     v32[3] = &unk_260D40;
     v34 = &v40;
     v32[4] = self;
-    v33 = v5;
+    v33 = interestsCopy;
     [(NSDictionary *)updated enumerateKeysAndObjectsUsingBlock:v32];
   }
 
@@ -327,9 +327,9 @@ LABEL_24:
   {
     v14 = objc_alloc_init(TUIRenderUpdateChanges);
     [(TUIRenderUpdateChanges *)v14 setInserts:self->_insertedForAnimations];
-    v15 = [(TUIRenderUpdateArrayContainer *)self updated];
-    v16 = [v15 allKeys];
-    v17 = [NSSet setWithArray:v16];
+    updated = [(TUIRenderUpdateArrayContainer *)self updated];
+    allKeys = [updated allKeys];
+    v17 = [NSSet setWithArray:allKeys];
 
     if (![v17 count])
     {
@@ -339,13 +339,13 @@ LABEL_24:
 
     [(TUIRenderUpdateChanges *)v14 setUpdates:v17];
 
-    v18 = [(TUIRenderUpdateArrayContainer *)self deleted];
+    deleted = [(TUIRenderUpdateArrayContainer *)self deleted];
     v19 = objc_alloc_init(NSMutableSet);
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v20 = v18;
+    v20 = deleted;
     v21 = [v20 countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v21)
     {
@@ -359,10 +359,10 @@ LABEL_24:
             objc_enumerationMutation(v20);
           }
 
-          v24 = [*(*(&v52 + 1) + 8 * i) identifier];
-          if (v24)
+          identifier = [*(*(&v52 + 1) + 8 * i) identifier];
+          if (identifier)
           {
-            [v19 addObject:v24];
+            [v19 addObject:identifier];
           }
         }
 
@@ -407,8 +407,8 @@ LABEL_24:
   v3 = self->_current;
   if ([(NSArray *)self->_inserted count])
   {
-    v4 = [(TUIRenderModelArrayContaining *)self->_current containedSubmodels];
-    v5 = [v4 mutableCopy];
+    containedSubmodels = [(TUIRenderModelArrayContaining *)self->_current containedSubmodels];
+    v5 = [containedSubmodels mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -434,8 +434,8 @@ LABEL_24:
   {
     if (!v8)
     {
-      v9 = [(TUIRenderModelArrayContaining *)self->_current containedSubmodels];
-      v10 = [v9 mutableCopy];
+      containedSubmodels2 = [(TUIRenderModelArrayContaining *)self->_current containedSubmodels];
+      v10 = [containedSubmodels2 mutableCopy];
       v11 = v10;
       if (v10)
       {
@@ -457,7 +457,7 @@ LABEL_24:
     v16[3] = &unk_260D68;
     v8 = v8;
     v17 = v8;
-    v18 = self;
+    selfCopy = self;
     [(NSDictionary *)updated enumerateKeysAndObjectsUsingBlock:v16];
   }
 

@@ -1,5 +1,5 @@
 @interface ASUIConnectionErrorViewController
-- (_TtC16AccessorySetupUI33ASUIConnectionErrorViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI33ASUIConnectionErrorViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{3, v3.receiver, v3.super_class}];
 }
 
-- (_TtC16AccessorySetupUI33ASUIConnectionErrorViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI33ASUIConnectionErrorViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI33ASUIConnectionErrorViewController_type] = 14;
@@ -29,7 +29,7 @@
   *(v6 + 56) = 0u;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUIConnectionErrorViewController *)&v8 initWithContentView:a3];
+  return [(ASUIConnectionErrorViewController *)&v8 initWithContentView:view];
 }
 
 @end

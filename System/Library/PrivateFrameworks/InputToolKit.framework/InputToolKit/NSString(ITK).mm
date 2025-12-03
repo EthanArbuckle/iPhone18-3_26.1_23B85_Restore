@@ -37,21 +37,21 @@
 - (id)itk_hexCodes
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if ([a1 length])
+  if ([self length])
   {
     v3 = 0;
     v4 = *MEMORY[0x277CBE770];
     do
     {
-      v5 = [a1 characterAtIndex:v3];
-      v6 = [a1 itk_substringWithRange:{v3, 1}];
+      v5 = [self characterAtIndex:v3];
+      v6 = [self itk_substringWithRange:{v3, 1}];
       v7 = [v6 stringByApplyingTransform:v4 reverse:0];
       [v2 appendFormat:@"%lu: U+%04x %@\n", v3, v5, v7];
 
       ++v3;
     }
 
-    while (v3 < [a1 length]);
+    while (v3 < [self length]);
   }
 
   v8 = [v2 copy];
@@ -61,16 +61,16 @@
 
 - (id)itk_md5
 {
-  v1 = [a1 dataUsingEncoding:4];
-  v2 = [v1 itk_md5];
+  v1 = [self dataUsingEncoding:4];
+  itk_md5 = [v1 itk_md5];
 
-  return v2;
+  return itk_md5;
 }
 
 - (id)itk_htmlStringEscapingQuotesAndLineBreaks
 {
   v16 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -83,7 +83,7 @@
     do
     {
       v5 = 0;
-      v6 = v1;
+      v6 = selfCopy;
       do
       {
         if (*v12 != v4)
@@ -94,10 +94,10 @@
         v7 = *(*(&v11 + 1) + 8 * v5);
         v8 = [v7 objectAtIndexedSubscript:0];
         v9 = [v7 objectAtIndexedSubscript:1];
-        v1 = [v6 stringByReplacingOccurrencesOfString:v8 withString:v9];
+        selfCopy = [v6 stringByReplacingOccurrencesOfString:v8 withString:v9];
 
         ++v5;
-        v6 = v1;
+        v6 = selfCopy;
       }
 
       while (v3 != v5);
@@ -107,30 +107,30 @@
     while (v3);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)itk_trimmedString
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (__CFString)itk_trailingTrimmedString
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v3 = [a1 length] + 1;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v3 = [self length] + 1;
     v4 = &stru_28670F9B0;
     while (v3 - 2 >= 1)
     {
       --v3;
-      if (([v2 characterIsMember:{objc_msgSend(a1, "characterAtIndex:")}] & 1) == 0)
+      if (([whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(self, "characterAtIndex:")}] & 1) == 0)
       {
-        v4 = [a1 substringToIndex:v3];
+        v4 = [self substringToIndex:v3];
         break;
       }
     }
@@ -146,8 +146,8 @@
 
 - (id)itk_leadingTrimmedString
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 itk_stringByTrimmingLeadingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self itk_stringByTrimmingLeadingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
@@ -160,43 +160,43 @@
   }
 
   v2 = itk_whitespaceAndNewlineCoalescedString_regex;
-  v3 = [a1 length];
+  v3 = [self length];
 
-  return [v2 stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{v3, @" "}];
+  return [v2 stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{v3, @" "}];
 }
 
 - (id)itk_sanitizedFilenameString
 {
-  v1 = a1;
-  if ([v1 length])
+  selfCopy = self;
+  if ([selfCopy length])
   {
-    if ([v1 length] >= 0x81)
+    if ([selfCopy length] >= 0x81)
     {
-      v2 = [v1 itk_substringToIndex:128];
+      v2 = [selfCopy itk_substringToIndex:128];
 
-      v1 = v2;
+      selfCopy = v2;
     }
 
     v3 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"///\\?%*|<>:"];
-    v4 = [v1 itk_stringByReplacingCharactersInSet:v3 withString:&stru_28670F9B0];
+    v4 = [selfCopy itk_stringByReplacingCharactersInSet:v3 withString:&stru_28670F9B0];
 
     v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"."];
     v6 = [v5 mutableCopy];
 
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    [v6 formUnionWithCharacterSet:v7];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    [v6 formUnionWithCharacterSet:whitespaceAndNewlineCharacterSet];
 
-    v1 = [v4 stringByTrimmingCharactersInSet:v6];
+    selfCopy = [v4 stringByTrimmingCharactersInSet:v6];
   }
 
-  v8 = [v1 lastPathComponent];
+  lastPathComponent = [selfCopy lastPathComponent];
 
-  return v8;
+  return lastPathComponent;
 }
 
 - (uint64_t)itk_lineRangeIgnoringLineBreakCharactersForIndex:()ITK
 {
-  location = [a1 lineRangeForRange:{a3, 0}];
+  location = [self lineRangeForRange:{a3, 0}];
   length = v5;
   v7 = [@"\u2028" characterAtIndex:0];
   v8 = location - 1;
@@ -204,12 +204,12 @@
   {
     do
     {
-      if ([a1 characterAtIndex:v8] != v7)
+      if ([self characterAtIndex:v8] != v7)
       {
         break;
       }
 
-      v16.location = [a1 lineRangeForRange:{v8, 0}];
+      v16.location = [self lineRangeForRange:{v8, 0}];
       v16.length = v9;
       v14.location = location;
       v14.length = length;
@@ -222,9 +222,9 @@
     while ((v10.location - 1) > 0);
   }
 
-  for (i = location + length; (i - 1) >= 0 && i < [a1 length] && objc_msgSend(a1, "characterAtIndex:", i - 1) == v7; i = v12.location + v12.length)
+  for (i = location + length; (i - 1) >= 0 && i < [self length] && objc_msgSend(self, "characterAtIndex:", i - 1) == v7; i = v12.location + v12.length)
   {
-    v15.location = [a1 lineRangeForRange:{i, 0}];
+    v15.location = [self lineRangeForRange:{i, 0}];
     v17.location = location;
     v17.length = length;
     v12 = NSUnionRange(v15, v17);
@@ -237,14 +237,14 @@
 
 - (uint64_t)itk_isLastCharacterANewline
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 itk_isLastCharacterInRangeANewlineForRange:{0, v2}];
+  return [self itk_isLastCharacterInRangeANewlineForRange:{0, v2}];
 }
 
 - (uint64_t)itk_numberOfLines
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 0;
@@ -255,7 +255,7 @@
   v5 = 0;
   do
   {
-    v6 = [a1 lineRangeForRange:{v5, 0}];
+    v6 = [self lineRangeForRange:{v5, 0}];
     v5 = v6 + v7;
     ++v4;
   }
@@ -270,13 +270,13 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [a1 itk_range];
+  itk_range = [self itk_range];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__NSString_ITK__itk_wordCount__block_invoke;
   v6[3] = &unk_2797AF018;
   v6[4] = &v7;
-  [a1 enumerateSubstringsInRange:v2 options:v3 usingBlock:{1539, v6}];
+  [self enumerateSubstringsInRange:itk_range options:v3 usingBlock:{1539, v6}];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
@@ -292,8 +292,8 @@
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   v9 = [v6 initWithTagSchemes:v8 options:0];
 
-  [v9 setString:a1];
-  v10 = [a1 length];
+  [v9 setString:self];
+  v10 = [self length];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __46__NSString_ITK__itk_uniqueWordsWithMinLength___block_invoke;
@@ -301,7 +301,7 @@
   v24 = a3;
   v11 = v5;
   v22 = v11;
-  v23 = a1;
+  selfCopy = self;
   [v9 enumerateTagsInRange:0 scheme:v10 options:v7 usingBlock:{6, v21}];
   v15 = 0;
   v16 = &v15;
@@ -323,17 +323,17 @@
 
 - (BOOL)itk_containsNonWhitespaceCharacters
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [v2 invertedSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
 
-  v4 = [a1 rangeOfCharacterFromSet:v3] != 0x7FFFFFFFFFFFFFFFLL;
+  v4 = [self rangeOfCharacterFromSet:invertedSet] != 0x7FFFFFFFFFFFFFFFLL;
   return v4;
 }
 
 - (BOOL)itk_containsAlphanumericCharacters
 {
-  v2 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL;
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:alphanumericCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
@@ -342,7 +342,7 @@
 {
   v8 = a5;
   v9 = a3 + a4;
-  v10 = [a1 length];
+  v10 = [self length];
   if (v9 >= v10)
   {
     v9 = v10;
@@ -359,7 +359,7 @@
     v12 = 0;
     v13 = 0;
     v11 = 0;
-    [a1 getParagraphStart:&v13 end:&v12 contentsEnd:&v11 forRange:{a3, 0}];
+    [self getParagraphStart:&v13 end:&v12 contentsEnd:&v11 forRange:{a3, 0}];
     v8[2](v8, v13, v12, v11, &v14);
     a3 = v12;
   }
@@ -371,7 +371,7 @@
 {
   v8 = a5;
   v9 = a3 + a4;
-  v10 = [a1 length];
+  v10 = [self length];
   v13 = 0;
   v14 = a3;
   if (v9 >= v10)
@@ -383,7 +383,7 @@
   v11 = 0;
   do
   {
-    [a1 getLineStart:&v14 end:&v13 contentsEnd:&v12 forRange:{a3, 0}];
+    [self getLineStart:&v14 end:&v13 contentsEnd:&v12 forRange:{a3, 0}];
     v8[2](v8, v14, v12 - v14, &v11);
     a3 = v13;
     v14 = v13;
@@ -394,16 +394,16 @@
 
 - (uint64_t)itk_substringFromIndex:()ITK
 {
-  v2 = [a1 rangeOfComposedCharacterSequenceAtIndex:?];
+  v2 = [self rangeOfComposedCharacterSequenceAtIndex:?];
 
-  return [a1 substringFromIndex:v2];
+  return [self substringFromIndex:v2];
 }
 
 - (id)itk_substringToIndex:()ITK
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 length];
+    v5 = [self length];
     if (v5 - 1 >= a3)
     {
       v6 = a3;
@@ -414,13 +414,13 @@
       v6 = v5 - 1;
     }
 
-    v7 = [a1 rangeOfComposedCharacterSequenceAtIndex:v6];
-    v9 = [a1 substringToIndex:v7 + v8];
+    v7 = [self rangeOfComposedCharacterSequenceAtIndex:v6];
+    v9 = [self substringToIndex:v7 + v8];
   }
 
   else
   {
-    v9 = [a1 copy];
+    v9 = [self copy];
   }
 
   return v9;
@@ -428,12 +428,12 @@
 
 - (__CFString)itk_substringWithRange:()ITK
 {
-  v7 = [a1 itk_range];
-  v9 = ITKClampRange(a3, a4, v7, v8);
+  itk_range = [self itk_range];
+  v9 = ITKClampRange(a3, a4, itk_range, v8);
   if (v10)
   {
-    v11 = [a1 rangeOfComposedCharacterSequencesForRange:{v9, v10}];
-    v13 = [a1 substringWithRange:{v11, v12}];
+    v11 = [self rangeOfComposedCharacterSequencesForRange:{v9, v10}];
+    v13 = [self substringWithRange:{v11, v12}];
   }
 
   else
@@ -446,9 +446,9 @@
 
 - (__CFString)itk_checkedSubstringWithRange:()ITK
 {
-  if ([a1 itk_rangeIsValid:?])
+  if ([self itk_rangeIsValid:?])
   {
-    v7 = [a1 itk_substringWithRange:{a3, a4}];
+    v7 = [self itk_substringWithRange:{a3, a4}];
   }
 
   else
@@ -461,8 +461,8 @@
 
 - (id)itk_stringByReplacingNewlineCharactersWithWhiteSpace
 {
-  v2 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v3 = [a1 itk_stringByReplacingCharactersInSet:v2 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v3 = [self itk_stringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v3;
 }
@@ -471,8 +471,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v8 rangeOfCharacterFromSet:v6];
+  selfCopy = self;
+  v9 = [selfCopy rangeOfCharacterFromSet:v6];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
@@ -487,7 +487,7 @@
     {
       if (!v11)
       {
-        v11 = [v8 mutableCopy];
+        v11 = [selfCopy mutableCopy];
       }
 
       [v11 replaceCharactersInRange:v12 withString:{v13, v7}];
@@ -500,18 +500,18 @@
     {
       v15 = [v11 copy];
 
-      v8 = v15;
+      selfCopy = v15;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)itk_stringByReplacingCharactersInStringMap:()ITK
 {
   v44 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v26 = a1;
+  selfCopy = self;
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
   objc_msgSend(v5, "appendString:", @"(");
   v40 = 0u;
@@ -519,8 +519,8 @@
   v38 = 0u;
   v39 = 0u;
   v25 = v4;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  allKeys = [v4 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v7)
   {
     v8 = *v39;
@@ -530,7 +530,7 @@
       {
         if (*v39 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = [MEMORY[0x277CCAC68] escapedPatternForString:*(*(&v38 + 1) + 8 * i)];
@@ -539,7 +539,7 @@
         [v5 appendString:@"|"];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v7);
@@ -558,16 +558,16 @@
   v35 = __Block_byref_object_copy_;
   v36 = __Block_byref_object_dispose_;
   v37 = 0;
-  v11 = [v26 length];
+  v11 = [selfCopy length];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __60__NSString_ITK__itk_stringByReplacingCharactersInStringMap___block_invoke;
   v31[3] = &unk_2797AF090;
   v31[4] = &v32;
-  [v24 enumerateMatchesInString:v26 options:0 range:0 usingBlock:{v11, v31}];
+  [v24 enumerateMatchesInString:selfCopy options:0 range:0 usingBlock:{v11, v31}];
   if ([v33[5] count])
   {
-    v12 = [v26 mutableCopy];
+    v12 = [selfCopy mutableCopy];
   }
 
   else
@@ -579,8 +579,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [v33[5] reverseObjectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v27 objects:v42 count:16];
+  reverseObjectEnumerator = [v33[5] reverseObjectEnumerator];
+  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v42 count:16];
   if (v14)
   {
     v15 = *v28;
@@ -590,16 +590,16 @@
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v17 = [*(*(&v27 + 1) + 8 * j) rangeValue];
+        rangeValue = [*(*(&v27 + 1) + 8 * j) rangeValue];
         v19 = v18;
-        v20 = [v26 substringWithRange:{v17, v18}];
+        v20 = [selfCopy substringWithRange:{rangeValue, v18}];
         v21 = [v25 objectForKeyedSubscript:v20];
         if (v21)
         {
-          [v12 replaceCharactersInRange:v17 withString:{v19, v21}];
+          [v12 replaceCharactersInRange:rangeValue withString:{v19, v21}];
         }
 
         else
@@ -608,7 +608,7 @@
         }
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v27 objects:v42 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v42 count:16];
     }
 
     while (v14);
@@ -618,12 +618,12 @@
   {
     v22 = [v12 copy];
 
-    v26 = v22;
+    selfCopy = v22;
   }
 
   _Block_object_dispose(&v32, 8);
 
-  return v26;
+  return selfCopy;
 }
 
 - (uint64_t)itk_paragraphRangeForRange:()ITK contentEnd:
@@ -631,7 +631,7 @@
   v8 = 0;
   v9 = 0;
   v7 = 0;
-  [a1 getParagraphStart:&v9 end:&v8 contentsEnd:&v7 forRange:{a3, a4}];
+  [self getParagraphStart:&v9 end:&v8 contentsEnd:&v7 forRange:{a3, a4}];
   if (a5)
   {
     *a5 = v7;
@@ -651,7 +651,7 @@
   v3[2] = __40__NSString_ITK__itk_lengthOfLongestLine__block_invoke;
   v3[3] = &unk_2797AF068;
   v3[4] = &v4;
-  [a1 enumerateLinesUsingBlock:v3];
+  [self enumerateLinesUsingBlock:v3];
   v1 = v5[3];
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -659,11 +659,11 @@
 
 - (BOOL)itk_isLastCharacterInRangeANewlineForRange:()ITK
 {
-  v7 = [a1 itk_safeCharacterRangeForRange:?];
+  v7 = [self itk_safeCharacterRangeForRange:?];
   v9 = 0;
   if (a3 == v7 && a4 == v8)
   {
-    v10 = [a1 itk_substringWithRange:{v7, v8}];
+    v10 = [self itk_substringWithRange:{v7, v8}];
     if ([v10 length])
     {
       v9 = [v10 characterAtIndex:{objc_msgSend(v10, "length") - 1}] == 10;
@@ -680,7 +680,7 @@
 
 - (NSUInteger)itk_safeCharacterRangeForRange:()ITK
 {
-  v6 = [a1 length];
+  v6 = [self length];
   if (v6 == a3)
   {
     return a3;
@@ -702,7 +702,7 @@
 - (uint64_t)itk_countOfCharactersInSet:()ITK
 {
   v4 = a3;
-  v5 = [a1 rangeOfCharacterFromSet:v4 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v5 = [self rangeOfCharacterFromSet:v4 options:0 range:{0, objc_msgSend(self, "length")}];
   v6 = 0;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -711,7 +711,7 @@
     do
     {
       ++v6;
-      v7 = [a1 rangeOfCharacterFromSet:v4 options:0 range:{v7 + 1, objc_msgSend(a1, "length") + ~v7}];
+      v7 = [self rangeOfCharacterFromSet:v4 options:0 range:{v7 + 1, objc_msgSend(self, "length") + ~v7}];
     }
 
     while (v7 != 0x7FFFFFFFFFFFFFFFLL);
@@ -722,25 +722,25 @@
 
 - (__CFString)itk_stringByTrimmingLeadingCharactersInSet:()ITK
 {
-  v4 = [a3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4];
+  invertedSet = [a3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = &stru_28670F9B0;
+    selfCopy = &stru_28670F9B0;
   }
 
   else if (v5)
   {
-    v6 = [a1 itk_substringFromIndex:v5];
+    selfCopy = [self itk_substringFromIndex:v5];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)itk_truncatedStringWithMaxLength:()ITK truncated:
@@ -750,24 +750,24 @@
     *a4 = 0;
   }
 
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [a1 itk_substringWithRange:{0, a3}];
+    v7 = [self itk_substringWithRange:{0, a3}];
     v8 = [v7 length];
-    if (v8 == [a1 length])
+    if (v8 == [self length])
     {
-      v9 = v7;
+      selfCopy = v7;
     }
 
     else
     {
-      v10 = [v7 itk_trailingTrimmedString];
-      v9 = [v10 stringByAppendingString:@"…"];
+      itk_trailingTrimmedString = [v7 itk_trailingTrimmedString];
+      selfCopy = [itk_trailingTrimmedString stringByAppendingString:@"…"];
 
       if (a4)
       {
@@ -776,7 +776,7 @@
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

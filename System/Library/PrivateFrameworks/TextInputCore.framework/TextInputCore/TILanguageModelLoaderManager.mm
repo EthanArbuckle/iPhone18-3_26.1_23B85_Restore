@@ -1,13 +1,13 @@
 @interface TILanguageModelLoaderManager
 + (id)knownClients;
-+ (id)modelLocalesForInputModes:(id)a3;
++ (id)modelLocalesForInputModes:(id)modes;
 + (id)recipientRecords;
-+ (shared_ptr<KB::LanguageModel>)modelForLocale:(id)a3 isMultilingualModel:(BOOL)a4 languageLocales:(id)a5 adaptationContext:(id)a6 staticResourcePaths:(id)a7 dynamicResourcePath:(id)a8 isMultiLingualModeEnabled:(BOOL)a9 isSiriMode:(BOOL)a10 validEnglishTransformerMultilingualConfig:(BOOL)a11 trialParameters:(id)a12 inlineCompletionPrecision:(int)a13 isInlineCompletionEnabled:(BOOL)a14;
-+ (shared_ptr<KB::LanguageModel>)stubForModelLocale:(id)a3 isMultilingualModel:(BOOL)a4 languageLocales:(id)a5 adaptationContext:(id)a6 staticResourcePaths:(id)a7 dynamicResourcePath:(id)a8 isMultiLingualModeEnabled:(BOOL)a9 isSiriMode:(BOOL)a10 isInlineCompletionEnabled:(BOOL)a11;
-+ (void)clearDynamicResourcesAtPath:(id)a3;
-+ (void)contactStoreDidChange:(id)a3;
-+ (void)dropResourcesExcludingInputModes:(id)a3;
-+ (void)flushDynamicResourcesForInputModes:(id)a3;
++ (shared_ptr<KB::LanguageModel>)modelForLocale:(id)locale isMultilingualModel:(BOOL)model languageLocales:(id)locales adaptationContext:(id)context staticResourcePaths:(id)paths dynamicResourcePath:(id)path isMultiLingualModeEnabled:(BOOL)enabled isSiriMode:(BOOL)self0 validEnglishTransformerMultilingualConfig:(BOOL)self1 trialParameters:(id)self2 inlineCompletionPrecision:(int)self3 isInlineCompletionEnabled:(BOOL)self4;
++ (shared_ptr<KB::LanguageModel>)stubForModelLocale:(id)locale isMultilingualModel:(BOOL)model languageLocales:(id)locales adaptationContext:(id)context staticResourcePaths:(id)paths dynamicResourcePath:(id)path isMultiLingualModeEnabled:(BOOL)enabled isSiriMode:(BOOL)self0 isInlineCompletionEnabled:(BOOL)self1;
++ (void)clearDynamicResourcesAtPath:(id)path;
++ (void)contactStoreDidChange:(id)change;
++ (void)dropResourcesExcludingInputModes:(id)modes;
++ (void)flushDynamicResourcesForInputModes:(id)modes;
 + (void)performMaintenance;
 + (void)resetClientAndRecipientCache;
 + (void)startObservingContactStore;
@@ -20,12 +20,12 @@
 + (void)wireAllLanguageModelMemory
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [__sharedInstances allKeys];
+  allKeys = [__sharedInstances allKeys];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -37,7 +37,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = [__sharedInstances objectForKey:*(*(&v9 + 1) + 8 * v6)];
@@ -47,7 +47,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -68,9 +68,9 @@
   return v3;
 }
 
-+ (void)contactStoreDidChange:(id)a3
++ (void)contactStoreDidChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5 = +[TILanguageModelLoaderManager recipientRecords];
@@ -79,26 +79,26 @@
 
   else
   {
-    [a1 performSelectorOnMainThread:a2 withObject:v6 waitUntilDone:1];
+    [self performSelectorOnMainThread:a2 withObject:changeCopy waitUntilDone:1];
   }
 }
 
 + (void)startObservingContactStore
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:a1 selector:sel_contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
 }
 
-+ (id)modelLocalesForInputModes:(id)a3
++ (id)modelLocalesForInputModes:(id)modes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modesCopy = modes;
   v4 = [MEMORY[0x277CBEB58] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = modesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -114,8 +114,8 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 preferredModelLocaleIdentifier];
-        v12 = [v11 mutableCopy];
+        preferredModelLocaleIdentifier = [v10 preferredModelLocaleIdentifier];
+        v12 = [preferredModelLocaleIdentifier mutableCopy];
 
         if ([v10 isSiriMode])
         {
@@ -139,12 +139,12 @@
 + (void)unwireAllLanguageModelMemory
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [__sharedInstances allKeys];
+  allKeys = [__sharedInstances allKeys];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -156,7 +156,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = [__sharedInstances objectForKey:*(*(&v9 + 1) + 8 * v6)];
@@ -166,7 +166,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -189,16 +189,16 @@ void __50__TILanguageModelLoaderManager_performMaintenance__block_invoke()
   [v0 releaseBackgroundActivityAssertion];
 }
 
-+ (void)flushDynamicResourcesForInputModes:(id)a3
++ (void)flushDynamicResourcesForInputModes:(id)modes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [TILanguageModelLoaderManager modelLocalesForInputModes:a3];
-  v4 = [__sharedInstances allKeys];
+  v3 = [TILanguageModelLoaderManager modelLocalesForInputModes:modes];
+  allKeys = [__sharedInstances allKeys];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
     v7 = v5;
@@ -212,7 +212,7 @@ void __50__TILanguageModelLoaderManager_performMaintenance__block_invoke()
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -232,7 +232,7 @@ void __50__TILanguageModelLoaderManager_performMaintenance__block_invoke()
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v7);
@@ -241,18 +241,18 @@ void __50__TILanguageModelLoaderManager_performMaintenance__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)dropResourcesExcludingInputModes:(id)a3
++ (void)dropResourcesExcludingInputModes:(id)modes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [__sharedInstances allKeys];
-  v15 = v3;
-  v5 = [TILanguageModelLoaderManager modelLocalesForInputModes:v3];
+  modesCopy = modes;
+  allKeys = [__sharedInstances allKeys];
+  v15 = modesCopy;
+  v5 = [TILanguageModelLoaderManager modelLocalesForInputModes:modesCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = allKeys;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v7)
   {
@@ -331,20 +331,20 @@ void __58__TILanguageModelLoaderManager_clearDynamicLearningCaches__block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)clearDynamicResourcesAtPath:(id)a3
++ (void)clearDynamicResourcesAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = __sharedInstances;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__TILanguageModelLoaderManager_clearDynamicResourcesAtPath___block_invoke;
   v14[3] = &unk_2787307F8;
-  v5 = v3;
+  v5 = pathCopy;
   v15 = v5;
   v6 = [v4 keysOfEntriesPassingTest:v14];
   v7 = __sharedInstances;
-  v8 = [v6 allObjects];
-  [v7 removeObjectsForKeys:v8];
+  allObjects = [v6 allObjects];
+  [v7 removeObjectsForKeys:allObjects];
 
   v9 = +[TILanguageModelLoaderManager knownClients];
   [v9 removeAllObjects];
@@ -438,33 +438,33 @@ uint64_t __44__TILanguageModelLoaderManager_knownClients__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (shared_ptr<KB::LanguageModel>)stubForModelLocale:(id)a3 isMultilingualModel:(BOOL)a4 languageLocales:(id)a5 adaptationContext:(id)a6 staticResourcePaths:(id)a7 dynamicResourcePath:(id)a8 isMultiLingualModeEnabled:(BOOL)a9 isSiriMode:(BOOL)a10 isInlineCompletionEnabled:(BOOL)a11
++ (shared_ptr<KB::LanguageModel>)stubForModelLocale:(id)locale isMultilingualModel:(BOOL)model languageLocales:(id)locales adaptationContext:(id)context staticResourcePaths:(id)paths dynamicResourcePath:(id)path isMultiLingualModeEnabled:(BOOL)enabled isSiriMode:(BOOL)self0 isInlineCompletionEnabled:(BOOL)self1
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [v17 appContext];
-  v21 = [v17 recipientContext];
+  pathCopy = path;
+  pathsCopy = paths;
+  contextCopy = context;
+  localesCopy = locales;
+  localeCopy = locale;
+  appContext = [contextCopy appContext];
+  recipientContext = [contextCopy recipientContext];
 
-  KB::LanguageModelConfig::LanguageModelConfig(&v23, v19, a4, v18, v16, v15, v20, v21, 0, !a9, a10, 1, 1, 90, a11);
+  KB::LanguageModelConfig::LanguageModelConfig(&v23, localeCopy, model, localesCopy, pathsCopy, pathCopy, appContext, recipientContext, 0, !enabled, mode, 1, 1, 90, completionEnabled);
   operator new();
 }
 
-+ (shared_ptr<KB::LanguageModel>)modelForLocale:(id)a3 isMultilingualModel:(BOOL)a4 languageLocales:(id)a5 adaptationContext:(id)a6 staticResourcePaths:(id)a7 dynamicResourcePath:(id)a8 isMultiLingualModeEnabled:(BOOL)a9 isSiriMode:(BOOL)a10 validEnglishTransformerMultilingualConfig:(BOOL)a11 trialParameters:(id)a12 inlineCompletionPrecision:(int)a13 isInlineCompletionEnabled:(BOOL)a14
++ (shared_ptr<KB::LanguageModel>)modelForLocale:(id)locale isMultilingualModel:(BOOL)model languageLocales:(id)locales adaptationContext:(id)context staticResourcePaths:(id)paths dynamicResourcePath:(id)path isMultiLingualModeEnabled:(BOOL)enabled isSiriMode:(BOOL)self0 validEnglishTransformerMultilingualConfig:(BOOL)self1 trialParameters:(id)self2 inlineCompletionPrecision:(int)self3 isInlineCompletionEnabled:(BOOL)self4
 {
-  v19 = a12;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a3;
-  v25 = [v22 appContext];
-  v26 = [v22 recipientContext];
-  v27 = [v22 isOnline];
+  parametersCopy = parameters;
+  pathCopy = path;
+  pathsCopy = paths;
+  contextCopy = context;
+  localesCopy = locales;
+  localeCopy = locale;
+  appContext = [contextCopy appContext];
+  recipientContext = [contextCopy recipientContext];
+  isOnline = [contextCopy isOnline];
 
-  KB::LanguageModelConfig::LanguageModelConfig(&v29, v24, a4, v23, v21, v20, v25, v26, v19, !a9, a10, v27 ^ 1, !a11, a13, a14);
+  KB::LanguageModelConfig::LanguageModelConfig(&v29, localeCopy, model, localesCopy, pathsCopy, pathCopy, appContext, recipientContext, parametersCopy, !enabled, mode, isOnline ^ 1, !config, precision, completionEnabled);
   operator new();
 }
 

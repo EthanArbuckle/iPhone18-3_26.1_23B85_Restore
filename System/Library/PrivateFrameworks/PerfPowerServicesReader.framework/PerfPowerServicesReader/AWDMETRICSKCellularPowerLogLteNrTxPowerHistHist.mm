@@ -1,19 +1,19 @@
 @interface AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChanType:(id)a3;
-- (int)StringAsRat:(id)a3;
+- (int)StringAsChanType:(id)type;
+- (int)StringAsRat:(id)rat;
 - (int)chanType;
 - (int)rat;
 - (unint64_t)hash;
-- (unsigned)countAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)countAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRat:(BOOL)rat;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 2;
   }
@@ -54,17 +54,17 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LTE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"LTE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"NR"];
+    v4 = [ratCopy isEqualToString:@"NR"];
   }
 
   return v4;
@@ -83,36 +83,36 @@
   }
 }
 
-- (int)StringAsChanType:(id)a3
+- (int)StringAsChanType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PUSCH"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PUSCH"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"PUCCH"];
+    v4 = [typeCopy isEqualToString:@"PUCCH"];
   }
 
   return v4;
 }
 
-- (unsigned)countAtIndex:(unint64_t)a3
+- (unsigned)countAtIndex:(unint64_t)index
 {
   p_counts = &self->_counts;
   count = self->_counts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_counts->list[a3];
+  return p_counts->list[index];
 }
 
 - (id)description
@@ -121,15 +121,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist;
   v4 = [(AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -152,7 +152,7 @@
       v6 = @"LTE";
     }
 
-    [v3 setObject:v6 forKey:@"rat"];
+    [dictionary setObject:v6 forKey:@"rat"];
 
     has = self->_has;
   }
@@ -178,25 +178,25 @@
       v8 = @"PUSCH";
     }
 
-    [v3 setObject:v8 forKey:@"chan_type"];
+    [dictionary setObject:v8 forKey:@"chan_type"];
   }
 
   v9 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v9 forKey:@"count"];
+  [dictionary setObject:v9 forKey:@"count"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v11 = v4;
+  v11 = toCopy;
   if ((has & 2) != 0)
   {
     rat = self->_rat;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
   }
 
@@ -204,7 +204,7 @@
   {
     chanType = self->_chanType;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   p_counts = &self->_counts;
@@ -215,7 +215,7 @@
     {
       v10 = p_counts->list[v9];
       PBDataWriterWriteUint32Field();
-      v4 = v11;
+      toCopy = v11;
       ++v9;
     }
 
@@ -223,31 +223,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[9] = self->_rat;
-    *(v4 + 40) |= 2u;
+    toCopy[9] = self->_rat;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[8] = self->_chanType;
-    *(v4 + 40) |= 1u;
+    toCopy[8] = self->_chanType;
+    *(toCopy + 40) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist *)self countsCount])
   {
     [v9 clearCounts];
-    v6 = [(AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist *)self countsCount];
-    if (v6)
+    countsCount = [(AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist *)self countsCount];
+    if (countsCount)
     {
-      v7 = v6;
+      v7 = countsCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addCount:{-[AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist countAtIndex:](self, "countAtIndex:", i)}];
@@ -256,9 +256,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 2) != 0)
@@ -278,24 +278,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_rat != *(v4 + 9))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_rat != *(equalCopy + 9))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_13:
     IsEqual = 0;
@@ -304,13 +304,13 @@ LABEL_13:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_chanType != *(v4 + 8))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_chanType != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_13;
   }
@@ -347,28 +347,28 @@ LABEL_3:
   return v3 ^ v2 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_rat = *(v4 + 9);
+    self->_rat = *(fromCopy + 9);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_chanType = *(v4 + 8);
+    self->_chanType = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  v9 = v4;
-  v6 = [v4 countsCount];
-  if (v6)
+  v9 = fromCopy;
+  countsCount = [fromCopy countsCount];
+  if (countsCount)
   {
-    v7 = v6;
+    v7 = countsCount;
     for (i = 0; i != v7; ++i)
     {
       -[AWDMETRICSKCellularPowerLogLteNrTxPowerHistHist addCount:](self, "addCount:", [v9 countAtIndex:i]);

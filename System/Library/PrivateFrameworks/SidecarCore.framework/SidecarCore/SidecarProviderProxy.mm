@@ -3,7 +3,7 @@
 - (SidecarProviderProxy)init;
 - (SidecarServiceProviderDelegate)delegate;
 - (void)sidecarServiceTerminate;
-- (void)sidecarSession:(id)a3 receivedMessage:(id)a4;
+- (void)sidecarSession:(id)session receivedMessage:(id)message;
 @end
 
 @implementation SidecarProviderProxy
@@ -21,16 +21,16 @@
   [WeakRetained sidecarServiceProviderTerminate];
 }
 
-- (void)sidecarSession:(id)a3 receivedMessage:(id)a4
+- (void)sidecarSession:(id)session receivedMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(SidecarRequest *)[SidecarResponse alloc] initWithSession:v7 message:v6];
+  v8 = [(SidecarRequest *)[SidecarResponse alloc] initWithSession:sessionCopy message:messageCopy];
 
   [(SidecarRequest *)v8 setDelegate:WeakRetained];
-  [v7 setDelegate:v8];
-  [(SidecarRequest *)v8 sidecarSessionStarted:v7];
+  [sessionCopy setDelegate:v8];
+  [(SidecarRequest *)v8 sidecarSessionStarted:sessionCopy];
 
   [WeakRetained sidecarServiceProviderHandleRequest:v8];
 }

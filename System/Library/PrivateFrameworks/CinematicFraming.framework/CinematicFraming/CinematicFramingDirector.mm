@@ -4,36 +4,36 @@
 - (CGRect)idealViewport;
 - (CGRect)slackViewport;
 - (CGRect)targetViewport;
-- (CinematicFramingDirector)initWithFramingSpaceManager:(id)a3;
-- (void)computeSceneFramingForMetadata:(id)a3;
+- (CinematicFramingDirector)initWithFramingSpaceManager:(id)manager;
+- (void)computeSceneFramingForMetadata:(id)metadata;
 - (void)reset;
-- (void)resetCameraViewport:(CGRect)a3;
-- (void)setOptions:(id)a3;
-- (void)setZoomLevel:(float)a3;
-- (void)updateWithMetadata:(id)a3;
+- (void)resetCameraViewport:(CGRect)viewport;
+- (void)setOptions:(id)options;
+- (void)setZoomLevel:(float)level;
+- (void)updateWithMetadata:(id)metadata;
 @end
 
 @implementation CinematicFramingDirector
 
-- (CinematicFramingDirector)initWithFramingSpaceManager:(id)a3
+- (CinematicFramingDirector)initWithFramingSpaceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = CinematicFramingDirector;
   v6 = [(CinematicFramingDirector *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_framingSpaceManager, a3);
+    objc_storeStrong(&v6->_framingSpaceManager, manager);
     v8 = objc_alloc_init(CinematicTracker);
     tracker = v7->_tracker;
     v7->_tracker = v8;
 
-    v10 = [[RectangleAnimator alloc] initWithFramingSpaceManager:v5];
+    v10 = [[RectangleAnimator alloc] initWithFramingSpaceManager:managerCopy];
     rectangleAnimator = v7->_rectangleAnimator;
     v7->_rectangleAnimator = v10;
 
-    v12 = [[SceneFramingEngine alloc] initWithFramingSpaceManager:v5];
+    v12 = [[SceneFramingEngine alloc] initWithFramingSpaceManager:managerCopy];
     sceneFramingEngine = v7->_sceneFramingEngine;
     v7->_sceneFramingEngine = v12;
   }
@@ -41,24 +41,24 @@
   return v7;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  objc_storeStrong(&self->_options, a3);
-  v5 = a3;
-  [(CinematicTracker *)self->_tracker setOptions:v5];
-  [(RectangleAnimator *)self->_rectangleAnimator setOptions:v5];
-  [(SceneFramingEngine *)self->_sceneFramingEngine setOptions:v5];
+  objc_storeStrong(&self->_options, options);
+  optionsCopy = options;
+  [(CinematicTracker *)self->_tracker setOptions:optionsCopy];
+  [(RectangleAnimator *)self->_rectangleAnimator setOptions:optionsCopy];
+  [(SceneFramingEngine *)self->_sceneFramingEngine setOptions:optionsCopy];
 }
 
-- (void)updateWithMetadata:(id)a3
+- (void)updateWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   tracker = self->_tracker;
-  v6 = [v4 faceDetections];
-  v7 = [v4 bodyDetections];
-  if (v4)
+  faceDetections = [metadataCopy faceDetections];
+  bodyDetections = [metadataCopy bodyDetections];
+  if (metadataCopy)
   {
-    [v4 timestamp];
+    [metadataCopy timestamp];
   }
 
   else
@@ -68,13 +68,13 @@
     v18 = 0;
   }
 
-  [(CinematicTracker *)tracker processFaceDetections:v6 bodyDetections:v7 atTime:&v16 inView:self->_targetViewport.origin.x, self->_targetViewport.origin.y, self->_targetViewport.size.width, self->_targetViewport.size.height];
+  [(CinematicTracker *)tracker processFaceDetections:faceDetections bodyDetections:bodyDetections atTime:&v16 inView:self->_targetViewport.origin.x, self->_targetViewport.origin.y, self->_targetViewport.size.width, self->_targetViewport.size.height];
 
-  [(CinematicFramingDirector *)self computeSceneFramingForMetadata:v4];
-  v8 = [(CinematicFramingDirector *)self options];
-  v9 = [v8 shouldDisableTransitions];
+  [(CinematicFramingDirector *)self computeSceneFramingForMetadata:metadataCopy];
+  options = [(CinematicFramingDirector *)self options];
+  shouldDisableTransitions = [options shouldDisableTransitions];
 
-  if (v9)
+  if (shouldDisableTransitions)
   {
     size = self->_targetViewport.size;
     self->_currentViewport.origin = self->_targetViewport.origin;
@@ -86,9 +86,9 @@
     [(RectangleAnimator *)self->_rectangleAnimator rectangle];
     CGRectIsNull(v19);
     rectangleAnimator = self->_rectangleAnimator;
-    if (v4)
+    if (metadataCopy)
     {
-      [v4 timestamp];
+      [metadataCopy timestamp];
     }
 
     else
@@ -106,9 +106,9 @@
   }
 }
 
-- (void)resetCameraViewport:(CGRect)a3
+- (void)resetCameraViewport:(CGRect)viewport
 {
-  [(RectangleAnimator *)self->_rectangleAnimator resetToRectangle:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(RectangleAnimator *)self->_rectangleAnimator resetToRectangle:viewport.origin.x, viewport.origin.y, viewport.size.width, viewport.size.height];
   sceneFramingEngine = self->_sceneFramingEngine;
 
   [(SceneFramingEngine *)sceneFramingEngine reset];
@@ -162,26 +162,26 @@
   return result;
 }
 
-- (void)setZoomLevel:(float)a3
+- (void)setZoomLevel:(float)level
 {
-  self->_currentViewport.size.width = a3;
-  self->_currentViewport.size.height = a3;
-  [(RectangleAnimator *)self->_rectangleAnimator resetToRectangle:self->_currentViewport.origin.x, self->_currentViewport.origin.y, a3, a3];
+  self->_currentViewport.size.width = level;
+  self->_currentViewport.size.height = level;
+  [(RectangleAnimator *)self->_rectangleAnimator resetToRectangle:self->_currentViewport.origin.x, self->_currentViewport.origin.y, level, level];
 }
 
-- (void)computeSceneFramingForMetadata:(id)a3
+- (void)computeSceneFramingForMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(CinematicTracker *)self->_tracker tracks];
+  metadataCopy = metadata;
+  tracks = [(CinematicTracker *)self->_tracker tracks];
   framingSpaceManager = self->_framingSpaceManager;
   [(RectangleAnimator *)self->_rectangleAnimator rectangle];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (v4)
+  if (metadataCopy)
   {
-    [v4 timestamp];
+    [metadataCopy timestamp];
   }
 
   else
@@ -191,7 +191,7 @@
   }
 
   options = self->_options;
-  v16 = v5;
+  v16 = tracks;
   v17 = framingSpaceManager;
   v67 = options;
   if (![v16 count] || (v96.origin.x = v8, v96.origin.y = v10, v96.size.width = v12, v96.size.height = v14, CGRectIsNull(v96)))
@@ -267,8 +267,8 @@
       if (v36 <= (v35 * v37))
       {
         rect_24 = v23;
-        v38 = [v25 isTrackedByDirector];
-        v39 = [v25 isTrackedByDirector];
+        isTrackedByDirector = [v25 isTrackedByDirector];
+        isTrackedByDirector2 = [v25 isTrackedByDirector];
         [(FramingSpaceManager *)v17 framingSpaceBounds];
         v40 = v100.origin.x;
         v41 = v100.origin.y;
@@ -281,7 +281,7 @@
         v101.size.height = v43;
         v45 = CGRectGetWidth(v101);
         v46 = 0.100000001;
-        if (v38)
+        if (isTrackedByDirector)
         {
           v46 = 0.0500000007;
         }
@@ -311,7 +311,7 @@
         v105.size.height = v43;
         v51 = CGRectGetHeight(v105);
         v52 = 0.0199999996;
-        if (!v39)
+        if (!isTrackedByDirector2)
         {
           v52 = 0.0500000007;
         }
@@ -398,24 +398,24 @@ LABEL_28:
 
 LABEL_30:
   v58 = [v18 count];
-  v59 = [(CinematicFramingDirector *)self options];
-  v60 = v59;
+  options = [(CinematicFramingDirector *)self options];
+  v60 = options;
   if (v58 <= 1)
   {
-    [v59 singlePersonFramingParameters];
+    [options singlePersonFramingParameters];
   }
 
   else
   {
-    [v59 multiPersonFramingParameters];
+    [options multiPersonFramingParameters];
   }
   v61 = ;
 
   [(SceneFramingEngine *)self->_sceneFramingEngine setActiveFramingParameters:v61];
   sceneFramingEngine = self->_sceneFramingEngine;
-  if (v4)
+  if (metadataCopy)
   {
-    [v4 timestamp];
+    [metadataCopy timestamp];
   }
 
   else

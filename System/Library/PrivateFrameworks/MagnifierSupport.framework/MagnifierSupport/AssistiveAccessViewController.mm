@@ -1,50 +1,50 @@
 @interface AssistiveAccessViewController
-- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AssistiveAccessViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   sub_257C6BBA8();
-  v3 = [objc_opt_self() sharedApplication];
-  [v3 setIdleTimerDisabled_];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication setIdleTimerDisabled_];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = [objc_opt_self() sharedApplication];
-  [v3 setIdleTimerDisabled_];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication setIdleTimerDisabled_];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C6B6AC();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AssistiveAccessViewController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(AssistiveAccessViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(AssistiveAccessViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   sub_257C6BBA8();
   swift_unknownObjectRelease();
 }
 
-- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_257ECF500();
     v7 = v6;
@@ -57,7 +57,7 @@
 
   v8 = OBJC_IVAR____TtC16MagnifierSupport29AssistiveAccessViewController_cameraVideoPreviewView;
   v9 = objc_allocWithZone(type metadata accessor for AssistiveAccessLivePreviewView());
-  v10 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.isa + v8) = [v9 initWithFrame_];
   if (v7)
   {
@@ -71,20 +71,20 @@
 
   v14.receiver = self;
   v14.super_class = type metadata accessor for AssistiveAccessViewController();
-  v12 = [(AssistiveAccessViewController *)&v14 initWithNibName:v11 bundle:v10];
+  v12 = [(AssistiveAccessViewController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport29AssistiveAccessViewController)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC16MagnifierSupport29AssistiveAccessViewController_cameraVideoPreviewView;
   v6 = objc_allocWithZone(type metadata accessor for AssistiveAccessLivePreviewView());
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 initWithFrame_];
   v10.receiver = self;
   v10.super_class = type metadata accessor for AssistiveAccessViewController();
-  v8 = [(AssistiveAccessViewController *)&v10 initWithCoder:v7];
+  v8 = [(AssistiveAccessViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

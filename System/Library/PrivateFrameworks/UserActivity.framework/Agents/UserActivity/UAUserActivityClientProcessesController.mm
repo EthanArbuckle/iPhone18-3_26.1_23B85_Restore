@@ -1,60 +1,60 @@
 @interface UAUserActivityClientProcessesController
-- (BOOL)addAdditionalUserActivityAdvertisableItems:(id)a3;
-- (BOOL)clientIsActive:(id)a3;
-- (BOOL)ifLockScreenIsActive:(id)a3 visibleBundleIdentifiers:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)removeAdditionalUserActivityAdvertisableItems:(id)a3;
+- (BOOL)addAdditionalUserActivityAdvertisableItems:(id)items;
+- (BOOL)clientIsActive:(id)active;
+- (BOOL)ifLockScreenIsActive:(id)active visibleBundleIdentifiers:(id)identifiers;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)removeAdditionalUserActivityAdvertisableItems:(id)items;
 - (BOOL)resume;
 - (BOOL)suspend;
-- (BOOL)updateCarPlayScreenLayout:(id)a3;
-- (BOOL)updateMainScreenLayout:(id)a3;
+- (BOOL)updateCarPlayScreenLayout:(id)layout;
+- (BOOL)updateMainScreenLayout:(id)layout;
 - (NSArray)userActivityClients;
 - (NSSet)additionalUserActivityAdvertisableItems;
 - (NSSet)visibleUserActivityClients;
-- (UAUserActivityClientProcessesController)initWithManager:(id)a3 name:(id)a4;
-- (double)intervalToDelaySuspensionOfAdvertisingForItem:(id)a3;
-- (id)advertiseableItemForBundleIdentifier:(id)a3;
-- (id)determineVisibleOrderingForProcessesWithUserActivities:(id)a3 previousBundleIDOrdering:(id)a4;
+- (UAUserActivityClientProcessesController)initWithManager:(id)manager name:(id)name;
+- (double)intervalToDelaySuspensionOfAdvertisingForItem:(id)item;
+- (id)advertiseableItemForBundleIdentifier:(id)identifier;
+- (id)determineVisibleOrderingForProcessesWithUserActivities:(id)activities previousBundleIDOrdering:(id)ordering;
 - (id)eligibleAdvertiseableItemsInOrder;
 - (id)items;
-- (id)recentEligibleItemsInOrder:(double)a3;
+- (id)recentEligibleItemsInOrder:(double)order;
 - (id)statusString;
-- (id)userActivityClientForBundleIdentifier:(id)a3;
-- (id)userActivityClientForPID:(int)a3;
-- (id)userActivityClientForUUID:(id)a3;
-- (id)userActivityInfoForUUID:(id)a3;
-- (void)addUserActivityClient:(id)a3;
+- (id)userActivityClientForBundleIdentifier:(id)identifier;
+- (id)userActivityClientForPID:(int)d;
+- (id)userActivityClientForUUID:(id)d;
+- (id)userActivityInfoForUUID:(id)d;
+- (void)addUserActivityClient:(id)client;
 - (void)dealloc;
-- (void)handleAppStateMonitorUpdate:(id)a3;
-- (void)removeClientActivityClient:(id)a3;
+- (void)handleAppStateMonitorUpdate:(id)update;
+- (void)removeClientActivityClient:(id)client;
 @end
 
 @implementation UAUserActivityClientProcessesController
 
 - (NSArray)userActivityClients
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_userActivityClientsByPID allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_userActivityClientsByPID allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
 - (id)eligibleAdvertiseableItemsInOrder
 {
   v2 = +[NSMutableArray array];
   v3 = +[UAUserActivityDefaults sharedDefaults];
-  v4 = [v3 debugEnablePinging];
+  debugEnablePinging = [v3 debugEnablePinging];
 
-  if (v4)
+  if (debugEnablePinging)
   {
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v5 = [(UAUserActivityClientProcessesController *)self userActivityClients];
-    v6 = [v5 countByEnumeratingWithState:&v101 objects:v113 count:16];
+    userActivityClients = [(UAUserActivityClientProcessesController *)self userActivityClients];
+    v6 = [userActivityClients countByEnumeratingWithState:&v101 objects:v113 count:16];
     if (v6)
     {
       v7 = *v102;
@@ -64,25 +64,25 @@
         {
           if (*v102 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(userActivityClients);
           }
 
           v9 = *(*(&v101 + 1) + 8 * i);
-          v10 = [v9 currentAdvertisableActivity];
-          v11 = v10;
-          if (v10)
+          currentAdvertisableActivity = [v9 currentAdvertisableActivity];
+          v11 = currentAdvertisableActivity;
+          if (currentAdvertisableActivity)
           {
-            v12 = [v10 activityType];
-            v13 = [v12 isEqual:@"com.apple.coreservices.ping"];
+            activityType = [currentAdvertisableActivity activityType];
+            v13 = [activityType isEqual:@"com.apple.coreservices.ping"];
 
             if (v13)
             {
               v14 = sub_100001A30(0);
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
               {
-                v15 = [v9 currentAdvertisableActivity];
+                currentAdvertisableActivity2 = [v9 currentAdvertisableActivity];
                 *buf = 138477827;
-                v112 = v15;
+                v112 = currentAdvertisableActivity2;
                 _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "*** FORCING item %{private}@ as the most eligible item, since it's a ping", buf, 0xCu);
               }
 
@@ -91,7 +91,7 @@
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v101 objects:v113 count:16];
+        v6 = [userActivityClients countByEnumeratingWithState:&v101 objects:v113 count:16];
       }
 
       while (v6);
@@ -105,8 +105,8 @@
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v18 = [(UAUserActivityClientProcessesController *)self userActivityClients];
-  v19 = [v18 countByEnumeratingWithState:&v97 objects:v110 count:16];
+  userActivityClients2 = [(UAUserActivityClientProcessesController *)self userActivityClients];
+  v19 = [userActivityClients2 countByEnumeratingWithState:&v97 objects:v110 count:16];
   if (v19)
   {
     v20 = *v98;
@@ -116,37 +116,37 @@
       {
         if (*v98 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(userActivityClients2);
         }
 
-        v22 = [*(*(&v97 + 1) + 8 * j) currentAdvertisableActivity];
-        if (([v22 eligibleToAdvertise] & 1) != 0 || (objc_msgSend(v22, "proxiedBundleIdentifier"), v23 = objc_claimAutoreleasedReturnValue(), v24 = v23 == 0, v23, !v24))
+        currentAdvertisableActivity3 = [*(*(&v97 + 1) + 8 * j) currentAdvertisableActivity];
+        if (([currentAdvertisableActivity3 eligibleToAdvertise] & 1) != 0 || (objc_msgSend(currentAdvertisableActivity3, "proxiedBundleIdentifier"), v23 = objc_claimAutoreleasedReturnValue(), v24 = v23 == 0, v23, !v24))
         {
-          if ([v22 alwaysPick])
+          if ([currentAdvertisableActivity3 alwaysPick])
           {
-            [v16 addObject:v22];
+            [v16 addObject:currentAdvertisableActivity3];
           }
 
-          if ([v22 eligibleInBackground])
+          if ([currentAdvertisableActivity3 eligibleInBackground])
           {
-            [v17 addObject:v22];
+            [v17 addObject:currentAdvertisableActivity3];
           }
 
-          v25 = [v22 proxiedBundleIdentifier];
-          if (v25)
+          proxiedBundleIdentifier = [currentAdvertisableActivity3 proxiedBundleIdentifier];
+          if (proxiedBundleIdentifier)
           {
-            v26 = [v22 eligibleToAdvertise];
+            eligibleToAdvertise = [currentAdvertisableActivity3 eligibleToAdvertise];
 
-            if (v26)
+            if (eligibleToAdvertise)
             {
-              v27 = [v22 proxiedBundleIdentifier];
-              [v84 setObject:v22 forKey:v27];
+              proxiedBundleIdentifier2 = [currentAdvertisableActivity3 proxiedBundleIdentifier];
+              [v84 setObject:currentAdvertisableActivity3 forKey:proxiedBundleIdentifier2];
             }
           }
         }
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v97 objects:v110 count:16];
+      v19 = [userActivityClients2 countByEnumeratingWithState:&v97 objects:v110 count:16];
     }
 
     while (v19);
@@ -156,8 +156,8 @@
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v28 = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
-  v29 = [v28 countByEnumeratingWithState:&v93 objects:v109 count:16];
+  additionalUserActivityAdvertisableItems = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
+  v29 = [additionalUserActivityAdvertisableItems countByEnumeratingWithState:&v93 objects:v109 count:16];
   if (v29)
   {
     v30 = *v94;
@@ -167,7 +167,7 @@
       {
         if (*v94 != v30)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(additionalUserActivityAdvertisableItems);
         }
 
         v32 = *(*(&v93 + 1) + 8 * k);
@@ -185,7 +185,7 @@
         }
       }
 
-      v29 = [v28 countByEnumeratingWithState:&v93 objects:v109 count:16];
+      v29 = [additionalUserActivityAdvertisableItems countByEnumeratingWithState:&v93 objects:v109 count:16];
     }
 
     while (v29);
@@ -193,8 +193,8 @@
 
   if ([v16 count])
   {
-    v33 = [NSString stringWithFormat:@"options.%@", UAUserActivityAlwaysPickKey];
-    v34 = [NSSortDescriptor sortDescriptorWithKey:v33 ascending:0];
+    uAUserActivityAlwaysPickKey = [NSString stringWithFormat:@"options.%@", UAUserActivityAlwaysPickKey];
+    v34 = [NSSortDescriptor sortDescriptorWithKey:uAUserActivityAlwaysPickKey ascending:0];
     v108 = v34;
     v35 = [NSArray arrayWithObjects:&v108 count:1];
     [v16 sortUsingDescriptors:v35];
@@ -210,34 +210,34 @@
     [v2 addObjectsFromArray:v16];
   }
 
-  v37 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-  if (!v37)
+  carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+  if (!carPlayScreenBundleIdentifiersInOrder)
   {
     goto LABEL_54;
   }
 
-  v38 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-  v39 = [v38 firstObject];
-  v40 = v39 == 0;
+  carPlayScreenBundleIdentifiersInOrder2 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+  firstObject = [carPlayScreenBundleIdentifiersInOrder2 firstObject];
+  v40 = firstObject == 0;
 
   if (v40)
   {
 LABEL_54:
-    v46 = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
-    v47 = [v46 firstObject];
+    mainScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
+    firstObject2 = [mainScreenBundleIdentifiersInOrder firstObject];
 
-    if (!v47)
+    if (!firstObject2)
     {
       goto LABEL_74;
     }
 
-    v48 = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
-    v83 = [v48 firstObject];
+    mainScreenBundleIdentifiersInOrder2 = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
+    firstObject3 = [mainScreenBundleIdentifiersInOrder2 firstObject];
 
-    v81 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:v83];
-    v49 = [v81 currentAdvertisableActivity];
-    v50 = v49;
-    if (v81 && v49 && [v49 eligibleToAdvertise])
+    v81 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:firstObject3];
+    currentAdvertisableActivity4 = [v81 currentAdvertisableActivity];
+    v50 = currentAdvertisableActivity4;
+    if (v81 && currentAdvertisableActivity4 && [currentAdvertisableActivity4 eligibleToAdvertise])
     {
       [v2 addObject:v50];
     }
@@ -248,8 +248,8 @@ LABEL_54:
       v92 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v51 = [(UAUserActivityClientProcessesController *)self userActivityClients];
-      v52 = [v51 countByEnumeratingWithState:&v89 objects:v107 count:16];
+      userActivityClients3 = [(UAUserActivityClientProcessesController *)self userActivityClients];
+      v52 = [userActivityClients3 countByEnumeratingWithState:&v89 objects:v107 count:16];
       if (v52)
       {
         v53 = *v90;
@@ -259,18 +259,18 @@ LABEL_54:
           {
             if (*v90 != v53)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(userActivityClients3);
             }
 
-            v55 = [*(*(&v89 + 1) + 8 * m) currentAdvertisableActivity];
+            currentAdvertisableActivity5 = [*(*(&v89 + 1) + 8 * m) currentAdvertisableActivity];
 
-            v50 = v55;
-            if (v55)
+            v50 = currentAdvertisableActivity5;
+            if (currentAdvertisableActivity5)
             {
-              if ([v55 eligibleToAdvertise])
+              if ([currentAdvertisableActivity5 eligibleToAdvertise])
               {
-                v56 = [v55 proxiedBundleIdentifier];
-                v57 = [v56 isEqual:v83];
+                proxiedBundleIdentifier3 = [currentAdvertisableActivity5 proxiedBundleIdentifier];
+                v57 = [proxiedBundleIdentifier3 isEqual:firstObject3];
 
                 if (v57)
                 {
@@ -280,48 +280,48 @@ LABEL_54:
             }
           }
 
-          v52 = [v51 countByEnumeratingWithState:&v89 objects:v107 count:16];
+          v52 = [userActivityClients3 countByEnumeratingWithState:&v89 objects:v107 count:16];
         }
 
         while (v52);
       }
     }
 
-    v44 = v81;
+    currentAdvertisableActivity6 = v81;
     goto LABEL_72;
   }
 
-  v41 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-  v42 = [v41 firstObject];
-  v83 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:v42];
+  carPlayScreenBundleIdentifiersInOrder3 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+  firstObject4 = [carPlayScreenBundleIdentifiersInOrder3 firstObject];
+  firstObject3 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:firstObject4];
 
-  v43 = v83;
-  if (v83)
+  v43 = firstObject3;
+  if (firstObject3)
   {
-    v44 = [v83 currentAdvertisableActivity];
-    v45 = v44;
-    if (v44)
+    currentAdvertisableActivity6 = [firstObject3 currentAdvertisableActivity];
+    v45 = currentAdvertisableActivity6;
+    if (currentAdvertisableActivity6)
     {
-      if ([v44 eligibleToAdvertise])
+      if ([currentAdvertisableActivity6 eligibleToAdvertise])
       {
         [v2 addObject:v45];
       }
 
-      v44 = v45;
+      currentAdvertisableActivity6 = v45;
     }
 
 LABEL_72:
 
-    v43 = v83;
+    v43 = firstObject3;
   }
 
 LABEL_74:
-  v58 = [(UAUserActivityClientProcessesController *)self frontBundleID];
+  frontBundleID = [(UAUserActivityClientProcessesController *)self frontBundleID];
 
-  if (v58)
+  if (frontBundleID)
   {
-    v59 = [(UAUserActivityClientProcessesController *)self frontBundleID];
-    v60 = [v84 objectForKeyedSubscript:v59];
+    frontBundleID2 = [(UAUserActivityClientProcessesController *)self frontBundleID];
+    v60 = [v84 objectForKeyedSubscript:frontBundleID2];
 
     if (v60 || ([(UAUserActivityClientProcessesController *)self frontBundleID], v61 = objc_claimAutoreleasedReturnValue(), [(UAUserActivityClientProcessesController *)self advertiseableItemForBundleIdentifier:v61], v60 = objc_claimAutoreleasedReturnValue(), v61, v60))
     {
@@ -334,8 +334,8 @@ LABEL_74:
 
   if ([v17 count])
   {
-    v62 = [NSString stringWithFormat:@"options.%@", UAUserActivityEligibleEvenWhenInBackgroundKey];
-    v63 = [NSSortDescriptor sortDescriptorWithKey:v62 ascending:0];
+    uAUserActivityEligibleEvenWhenInBackgroundKey = [NSString stringWithFormat:@"options.%@", UAUserActivityEligibleEvenWhenInBackgroundKey];
+    v63 = [NSSortDescriptor sortDescriptorWithKey:uAUserActivityEligibleEvenWhenInBackgroundKey ascending:0];
     v106 = v63;
     v64 = [NSArray arrayWithObjects:&v106 count:1];
     [v17 sortUsingDescriptors:v64];
@@ -357,8 +357,8 @@ LABEL_74:
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v68 = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
-  v69 = [v68 countByEnumeratingWithState:&v85 objects:v105 count:16];
+  additionalUserActivityAdvertisableItems2 = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
+  v69 = [additionalUserActivityAdvertisableItems2 countByEnumeratingWithState:&v85 objects:v105 count:16];
   if (v69)
   {
     v70 = *v86;
@@ -368,7 +368,7 @@ LABEL_74:
       {
         if (*v86 != v70)
         {
-          objc_enumerationMutation(v68);
+          objc_enumerationMutation(additionalUserActivityAdvertisableItems2);
         }
 
         v72 = *(*(&v85 + 1) + 8 * n);
@@ -378,7 +378,7 @@ LABEL_74:
         }
       }
 
-      v69 = [v68 countByEnumeratingWithState:&v85 objects:v105 count:16];
+      v69 = [additionalUserActivityAdvertisableItems2 countByEnumeratingWithState:&v85 objects:v105 count:16];
     }
 
     while (v69);
@@ -397,13 +397,13 @@ LABEL_74:
     }
   }
 
-  v76 = self;
-  objc_sync_enter(v76);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v77 = [v2 copy];
-  DEBUG_lastEligibleItems = v76->_DEBUG_lastEligibleItems;
-  v76->_DEBUG_lastEligibleItems = v77;
+  DEBUG_lastEligibleItems = selfCopy->_DEBUG_lastEligibleItems;
+  selfCopy->_DEBUG_lastEligibleItems = v77;
 
-  objc_sync_exit(v76);
+  objc_sync_exit(selfCopy);
   if (v2)
   {
     v79 = [v2 copy];
@@ -434,8 +434,8 @@ LABEL_74:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(UAUserActivityClientProcessesController *)self userActivityClients];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  userActivityClients = [(UAUserActivityClientProcessesController *)self userActivityClients];
+  v5 = [userActivityClients countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -446,17 +446,17 @@ LABEL_74:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(userActivityClients);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * i) currentAdvertisableActivity];
-        if (v9)
+        currentAdvertisableActivity = [*(*(&v21 + 1) + 8 * i) currentAdvertisableActivity];
+        if (currentAdvertisableActivity)
         {
-          [v3 addObject:v9];
+          [v3 addObject:currentAdvertisableActivity];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [userActivityClients countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -466,8 +466,8 @@ LABEL_74:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  additionalUserActivityAdvertisableItems = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
+  v11 = [additionalUserActivityAdvertisableItems countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -478,13 +478,13 @@ LABEL_74:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(additionalUserActivityAdvertisableItems);
         }
 
         [v3 addObject:*(*(&v17 + 1) + 8 * j)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v12 = [additionalUserActivityAdvertisableItems countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v12);
@@ -495,13 +495,13 @@ LABEL_74:
   return v15;
 }
 
-- (UAUserActivityClientProcessesController)initWithManager:(id)a3 name:(id)a4
+- (UAUserActivityClientProcessesController)initWithManager:(id)manager name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  nameCopy = name;
   v43.receiver = self;
   v43.super_class = UAUserActivityClientProcessesController;
-  v8 = [(UAClientController *)&v43 initWithManager:v6 name:v7];
+  v8 = [(UAClientController *)&v43 initWithManager:managerCopy name:nameCopy];
   if (v8)
   {
     v9 = [NSXPCListener alloc];
@@ -523,15 +523,15 @@ LABEL_74:
     userActivityClientsByBundleID = v8->_userActivityClientsByBundleID;
     v8->_userActivityClientsByBundleID = v17;
 
-    v19 = [(UACornerActionManagerHandler *)v8 manager];
-    v20 = [v19 mainDispatchQ];
+    manager = [(UACornerActionManagerHandler *)v8 manager];
+    mainDispatchQ = [manager mainDispatchQ];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_10004205C;
     v41[3] = &unk_1000C4CC0;
     v21 = v8;
     v42 = v21;
-    v22 = [UADispatchScheduler dispatchScheduler:@"layoutUpdate" frequency:v20 queue:v41 block:0.0];
+    v22 = [UADispatchScheduler dispatchScheduler:@"layoutUpdate" frequency:mainDispatchQ queue:v41 block:0.0];
     layoutUpdateScheduler = v21->_layoutUpdateScheduler;
     v21->_layoutUpdateScheduler = v22;
 
@@ -539,9 +539,9 @@ LABEL_74:
     visibleUserActivityClients = v21->_visibleUserActivityClients;
     v21->_visibleUserActivityClients = v24;
 
-    v26 = [(UAUserActivityClientProcessesController *)v21 appStateMonitor];
+    appStateMonitor = [(UAUserActivityClientProcessesController *)v21 appStateMonitor];
 
-    if (!v26)
+    if (!appStateMonitor)
     {
       v27 = objc_alloc_init(BKSApplicationStateMonitor);
       [(UAUserActivityClientProcessesController *)v21 setAppStateMonitor:v27];
@@ -552,8 +552,8 @@ LABEL_74:
       v38[2] = sub_100042104;
       v38[3] = &unk_1000C5B58;
       objc_copyWeak(&v39, &location);
-      v28 = [(UAUserActivityClientProcessesController *)v21 appStateMonitor];
-      [v28 setHandler:v38];
+      appStateMonitor2 = [(UAUserActivityClientProcessesController *)v21 appStateMonitor];
+      [appStateMonitor2 setHandler:v38];
 
       objc_destroyWeak(&v39);
       objc_destroyWeak(&location);
@@ -564,14 +564,14 @@ LABEL_74:
     v21->_additionalUserActivityAdvertisableItems = v29;
 
     v31 = [UALocalItemReceiver alloc];
-    v32 = [(UACornerActionManagerHandler *)v21 manager];
-    v33 = [(UALocalItemReceiver *)v31 initWithManager:v32 controller:v21];
+    manager2 = [(UACornerActionManagerHandler *)v21 manager];
+    v33 = [(UALocalItemReceiver *)v31 initWithManager:manager2 controller:v21];
     localReceiver = v21->_localReceiver;
     v21->_localReceiver = v33;
 
-    v35 = [(UACornerActionManagerHandler *)v21 manager];
-    v36 = [(UAUserActivityClientProcessesController *)v21 localReceiver];
-    [v35 addReceiver:v36];
+    manager3 = [(UACornerActionManagerHandler *)v21 manager];
+    localReceiver = [(UAUserActivityClientProcessesController *)v21 localReceiver];
+    [manager3 addReceiver:localReceiver];
   }
 
   return v8;
@@ -579,27 +579,27 @@ LABEL_74:
 
 - (void)dealloc
 {
-  v3 = [(UACornerActionManagerHandler *)self manager];
-  v4 = [(UAUserActivityClientProcessesController *)self localReceiver];
-  [v3 removeReceiver:v4];
+  manager = [(UACornerActionManagerHandler *)self manager];
+  localReceiver = [(UAUserActivityClientProcessesController *)self localReceiver];
+  [manager removeReceiver:localReceiver];
 
-  v5 = [(UAUserActivityClientProcessesController *)self mainDisplayLayoutMonitor];
+  mainDisplayLayoutMonitor = [(UAUserActivityClientProcessesController *)self mainDisplayLayoutMonitor];
 
-  if (v5)
+  if (mainDisplayLayoutMonitor)
   {
-    v6 = [(UAUserActivityClientProcessesController *)self mainDisplayLayoutMonitor];
-    [v6 invalidate];
+    mainDisplayLayoutMonitor2 = [(UAUserActivityClientProcessesController *)self mainDisplayLayoutMonitor];
+    [mainDisplayLayoutMonitor2 invalidate];
 
     mainDisplayLayoutMonitor = self->_mainDisplayLayoutMonitor;
     self->_mainDisplayLayoutMonitor = 0;
   }
 
-  v8 = [(UAUserActivityClientProcessesController *)self carPlayDisplayLayoutMonitor];
+  carPlayDisplayLayoutMonitor = [(UAUserActivityClientProcessesController *)self carPlayDisplayLayoutMonitor];
 
-  if (v8)
+  if (carPlayDisplayLayoutMonitor)
   {
-    v9 = [(UAUserActivityClientProcessesController *)self carPlayDisplayLayoutMonitor];
-    [v9 invalidate];
+    carPlayDisplayLayoutMonitor2 = [(UAUserActivityClientProcessesController *)self carPlayDisplayLayoutMonitor];
+    [carPlayDisplayLayoutMonitor2 invalidate];
 
     carPlayDisplayLayoutMonitor = self->_carPlayDisplayLayoutMonitor;
     self->_carPlayDisplayLayoutMonitor = 0;
@@ -614,31 +614,31 @@ LABEL_74:
 {
   v6.receiver = self;
   v6.super_class = UAUserActivityClientProcessesController;
-  v3 = [(UACornerActionManagerHandler *)&v6 suspend];
-  if (v3)
+  suspend = [(UACornerActionManagerHandler *)&v6 suspend];
+  if (suspend)
   {
     [(NSXPCListener *)self->_activityManagerListener suspend];
-    v4 = [(UAUserActivityClientProcessesController *)self localReceiver];
-    [v4 suspend];
+    localReceiver = [(UAUserActivityClientProcessesController *)self localReceiver];
+    [localReceiver suspend];
   }
 
-  return v3;
+  return suspend;
 }
 
 - (BOOL)resume
 {
   v23.receiver = self;
   v23.super_class = UAUserActivityClientProcessesController;
-  v3 = [(UACornerActionManagerHandler *)&v23 resume];
-  if (v3)
+  resume = [(UACornerActionManagerHandler *)&v23 resume];
+  if (resume)
   {
-    v4 = [(UAUserActivityClientProcessesController *)self localReceiver];
-    [v4 resume];
+    localReceiver = [(UAUserActivityClientProcessesController *)self localReceiver];
+    [localReceiver resume];
 
     [(NSXPCListener *)self->_activityManagerListener resume];
-    v5 = [(UAUserActivityClientProcessesController *)self mainDisplayLayoutMonitor];
+    mainDisplayLayoutMonitor = [(UAUserActivityClientProcessesController *)self mainDisplayLayoutMonitor];
 
-    if (!v5)
+    if (!mainDisplayLayoutMonitor)
     {
       v6 = +[FBSDisplayLayoutMonitorConfiguration configurationForDefaultMainDisplayMonitor];
       [v6 setNeedsUserInteractivePriority:1];
@@ -652,19 +652,19 @@ LABEL_74:
       mainDisplayLayoutMonitor = self->_mainDisplayLayoutMonitor;
       self->_mainDisplayLayoutMonitor = v7;
 
-      v9 = [(UACornerActionManagerHandler *)self manager];
-      v10 = [v9 mainDispatchQ];
+      manager = [(UACornerActionManagerHandler *)self manager];
+      mainDispatchQ = [manager mainDispatchQ];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000426A8;
       block[3] = &unk_1000C4CC0;
       block[4] = self;
-      dispatch_async(v10, block);
+      dispatch_async(mainDispatchQ, block);
     }
 
-    v11 = [(UAUserActivityClientProcessesController *)self carPlayDisplayLayoutMonitor];
+    carPlayDisplayLayoutMonitor = [(UAUserActivityClientProcessesController *)self carPlayDisplayLayoutMonitor];
 
-    if (!v11 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (!carPlayDisplayLayoutMonitor && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v12 = +[FBSDisplayLayoutMonitorConfiguration configurationForCarDisplayMonitor];
       v13 = v12;
@@ -681,32 +681,32 @@ LABEL_74:
         carPlayDisplayLayoutMonitor = self->_carPlayDisplayLayoutMonitor;
         self->_carPlayDisplayLayoutMonitor = v14;
 
-        v16 = [(UACornerActionManagerHandler *)self manager];
-        v17 = [v16 mainDispatchQ];
+        manager2 = [(UACornerActionManagerHandler *)self manager];
+        mainDispatchQ2 = [manager2 mainDispatchQ];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_100042710;
         v19[3] = &unk_1000C4CC0;
         v19[4] = self;
-        dispatch_async(v17, v19);
+        dispatch_async(mainDispatchQ2, v19);
       }
     }
   }
 
-  return v3;
+  return resume;
 }
 
-- (BOOL)updateMainScreenLayout:(id)a3
+- (BOOL)updateMainScreenLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
-  v6 = [(UAUserActivityClientProcessesController *)self ifLockScreenIsActive:v4 visibleBundleIdentifiers:v5];
+  layoutCopy = layout;
+  mainScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
+  v6 = [(UAUserActivityClientProcessesController *)self ifLockScreenIsActive:layoutCopy visibleBundleIdentifiers:mainScreenBundleIdentifiersInOrder];
 
-  v7 = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
-  v8 = v7;
+  mainScreenBundleIdentifiersInOrder2 = [(UAUserActivityClientProcessesController *)self mainScreenBundleIdentifiersInOrder];
+  v8 = mainScreenBundleIdentifiersInOrder2;
   if ((v6 & 1) == 0)
   {
-    v9 = [(UAUserActivityClientProcessesController *)self determineVisibleOrderingForProcessesWithUserActivities:v4 previousBundleIDOrdering:v7];
+    v9 = [(UAUserActivityClientProcessesController *)self determineVisibleOrderingForProcessesWithUserActivities:layoutCopy previousBundleIDOrdering:mainScreenBundleIdentifiersInOrder2];
     v10 = v9;
     if (v8 && v9)
     {
@@ -735,10 +735,10 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  if (![(NSArray *)v7 count])
+  if (![(NSArray *)mainScreenBundleIdentifiersInOrder2 count])
   {
-    v13 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-    v14 = [v13 count];
+    carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+    v14 = [carPlayScreenBundleIdentifiersInOrder count];
 
     if (v14)
     {
@@ -765,16 +765,16 @@ LABEL_13:
   self->_mainScreenBundleIdentifiersInOrder = 0;
 LABEL_16:
 
-  v16 = [(UACornerActionManagerHandler *)self manager];
-  [v16 scheduleUpdatingAdvertisableItems:0.0];
+  manager = [(UACornerActionManagerHandler *)self manager];
+  [manager scheduleUpdatingAdvertisableItems:0.0];
 
   v17 = +[UAUserActivityDefaults sharedDefaults];
-  v18 = [v17 debugCrossoverAllActivities];
+  debugCrossoverAllActivities = [v17 debugCrossoverAllActivities];
 
-  if (v18)
+  if (debugCrossoverAllActivities)
   {
-    v19 = [(UACornerActionManagerHandler *)self manager];
-    [v19 scheduleBestAppDetermination];
+    manager2 = [(UACornerActionManagerHandler *)self manager];
+    [manager2 scheduleBestAppDetermination];
   }
 
   v20 = 1;
@@ -783,13 +783,13 @@ LABEL_21:
   return v20;
 }
 
-- (BOOL)updateCarPlayScreenLayout:(id)a3
+- (BOOL)updateCarPlayScreenLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-  v6 = [(UAUserActivityClientProcessesController *)self determineVisibleOrderingForProcessesWithUserActivities:v4 previousBundleIDOrdering:v5];
+  layoutCopy = layout;
+  carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+  v6 = [(UAUserActivityClientProcessesController *)self determineVisibleOrderingForProcessesWithUserActivities:layoutCopy previousBundleIDOrdering:carPlayScreenBundleIdentifiersInOrder];
 
-  if (v6 && ![v6 isEqual:v5] || v5 && objc_msgSend(v5, "count"))
+  if (v6 && ![v6 isEqual:carPlayScreenBundleIdentifiersInOrder] || carPlayScreenBundleIdentifiersInOrder && objc_msgSend(carPlayScreenBundleIdentifiersInOrder, "count"))
   {
     v7 = sub_100001A30(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -799,16 +799,16 @@ LABEL_21:
     }
 
     [(UAUserActivityClientProcessesController *)self setCarPlayScreenBundleIdentifiersInOrder:v6];
-    v8 = [(UACornerActionManagerHandler *)self manager];
-    [v8 scheduleUpdatingAdvertisableItems:0.0];
+    manager = [(UACornerActionManagerHandler *)self manager];
+    [manager scheduleUpdatingAdvertisableItems:0.0];
 
     v9 = +[UAUserActivityDefaults sharedDefaults];
-    v10 = [v9 debugCrossoverAllActivities];
+    debugCrossoverAllActivities = [v9 debugCrossoverAllActivities];
 
-    if (v10)
+    if (debugCrossoverAllActivities)
     {
-      v11 = [(UACornerActionManagerHandler *)self manager];
-      [v11 scheduleBestAppDetermination];
+      manager2 = [(UACornerActionManagerHandler *)self manager];
+      [manager2 scheduleBestAppDetermination];
     }
 
     v12 = 1;
@@ -822,24 +822,24 @@ LABEL_21:
   return v12;
 }
 
-- (double)intervalToDelaySuspensionOfAdvertisingForItem:(id)a3
+- (double)intervalToDelaySuspensionOfAdvertisingForItem:(id)item
 {
-  v4 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+  carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
   v5 = 0.0;
-  if (v4)
+  if (carPlayScreenBundleIdentifiersInOrder)
   {
-    v6 = v4;
-    v7 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-    v8 = [v7 count];
+    v6 = carPlayScreenBundleIdentifiersInOrder;
+    carPlayScreenBundleIdentifiersInOrder2 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+    v8 = [carPlayScreenBundleIdentifiersInOrder2 count];
 
     if (v8)
     {
-      v9 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
-      v10 = [v9 firstObject];
+      carPlayScreenBundleIdentifiersInOrder3 = [(UAUserActivityClientProcessesController *)self carPlayScreenBundleIdentifiersInOrder];
+      firstObject = [carPlayScreenBundleIdentifiersInOrder3 firstObject];
 
-      if (v10)
+      if (firstObject)
       {
-        v11 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:v10];
+        v11 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:firstObject];
         if (v11)
         {
           v5 = 1.0e99;
@@ -856,18 +856,18 @@ LABEL_21:
   return v5;
 }
 
-- (id)determineVisibleOrderingForProcessesWithUserActivities:(id)a3 previousBundleIDOrdering:(id)a4
+- (id)determineVisibleOrderingForProcessesWithUserActivities:(id)activities previousBundleIDOrdering:(id)ordering
 {
-  v42 = a3;
-  v41 = a4;
-  v43 = self;
-  v7 = [(UACornerActionManagerHandler *)self manager];
-  v8 = [v7 mainDispatchQ];
-  dispatch_assert_queue_V2(v8);
+  activitiesCopy = activities;
+  orderingCopy = ordering;
+  selfCopy = self;
+  manager = [(UACornerActionManagerHandler *)self manager];
+  mainDispatchQ = [manager mainDispatchQ];
+  dispatch_assert_queue_V2(mainDispatchQ);
 
   v9 = +[NSMutableArray array];
-  v10 = [v42 elements];
-  v11 = [NSMutableArray arrayWithArray:v10];
+  elements = [activitiesCopy elements];
+  v11 = [NSMutableArray arrayWithArray:elements];
 
   [v11 sortUsingComparator:&stru_1000C5BE8];
   v59 = 0u;
@@ -891,9 +891,9 @@ LABEL_21:
         v12 = *(*(&v57 + 1) + 8 * i);
         if ([v12 conformsToProtocol:&OBJC_PROTOCOL___SBSDisplayLayoutElement])
         {
-          v13 = [v12 layoutRole];
-          v14 = !SBSDisplayLayoutRoleIsDefined() || v13 > 7;
-          if (v14 || ((1 << v13) & 0xDE) == 0)
+          layoutRole = [v12 layoutRole];
+          v14 = !SBSDisplayLayoutRoleIsDefined() || layoutRole > 7;
+          if (v14 || ((1 << layoutRole) & 0xDE) == 0)
           {
             continue;
           }
@@ -901,12 +901,12 @@ LABEL_21:
 
         if ([v12 conformsToProtocol:&OBJC_PROTOCOL___FBSDisplayLayoutElement])
         {
-          v16 = [v12 bundleIdentifier];
+          bundleIdentifier = [v12 bundleIdentifier];
 
-          if (v16)
+          if (bundleIdentifier)
           {
-            v17 = [v12 bundleIdentifier];
-            v45 = [(UAUserActivityClientProcessesController *)v43 userActivityClientForBundleIdentifier:v17];
+            bundleIdentifier2 = [v12 bundleIdentifier];
+            v45 = [(UAUserActivityClientProcessesController *)selfCopy userActivityClientForBundleIdentifier:bundleIdentifier2];
 
             if (v45)
             {
@@ -920,8 +920,8 @@ LABEL_21:
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "LAYOUT: Found %{public}@/%{public}@ as active layout", buf, 0x16u);
               }
 
-              v19 = [v12 bundleIdentifier];
-              [v9 addObject:v19];
+              bundleIdentifier3 = [v12 bundleIdentifier];
+              [v9 addObject:bundleIdentifier3];
             }
 
             else
@@ -930,8 +930,8 @@ LABEL_21:
               v56 = 0u;
               v53 = 0u;
               v54 = 0u;
-              v19 = [(UAUserActivityClientProcessesController *)v43 userActivityClients];
-              v20 = [v19 countByEnumeratingWithState:&v53 objects:v62 count:16];
+              bundleIdentifier3 = [(UAUserActivityClientProcessesController *)selfCopy userActivityClients];
+              v20 = [bundleIdentifier3 countByEnumeratingWithState:&v53 objects:v62 count:16];
               if (v20)
               {
                 v21 = *v54;
@@ -941,13 +941,13 @@ LABEL_21:
                   {
                     if (*v54 != v21)
                     {
-                      objc_enumerationMutation(v19);
+                      objc_enumerationMutation(bundleIdentifier3);
                     }
 
-                    v23 = [*(*(&v53 + 1) + 8 * j) currentAdvertisableActivity];
-                    v24 = [v23 proxiedBundleIdentifier];
-                    v25 = [v12 bundleIdentifier];
-                    v4 = [v24 isEqual:v25];
+                    currentAdvertisableActivity = [*(*(&v53 + 1) + 8 * j) currentAdvertisableActivity];
+                    proxiedBundleIdentifier = [currentAdvertisableActivity proxiedBundleIdentifier];
+                    bundleIdentifier4 = [v12 bundleIdentifier];
+                    v4 = [proxiedBundleIdentifier isEqual:bundleIdentifier4];
 
                     if (v4)
                     {
@@ -961,12 +961,12 @@ LABEL_21:
                         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "LAYOUT: Found %{public}@/%{public}@ as proxy for active layout", buf, 0x16u);
                       }
 
-                      v27 = [v12 bundleIdentifier];
-                      [v9 addObject:v27];
+                      bundleIdentifier5 = [v12 bundleIdentifier];
+                      [v9 addObject:bundleIdentifier5];
                     }
                   }
 
-                  v20 = [v19 countByEnumeratingWithState:&v53 objects:v62 count:16];
+                  v20 = [bundleIdentifier3 countByEnumeratingWithState:&v53 objects:v62 count:16];
                 }
 
                 while (v20);
@@ -982,13 +982,13 @@ LABEL_21:
     while (v47);
   }
 
-  v28 = v43;
+  v28 = selfCopy;
   objc_sync_enter(v28);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v29 = v41;
+  v29 = orderingCopy;
   v30 = [v29 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v30)
   {
@@ -1006,13 +1006,13 @@ LABEL_21:
         v34 = v33;
         if (v33)
         {
-          v35 = [v33 bundleIdentifier];
-          v36 = [v9 containsObject:v35];
+          bundleIdentifier6 = [v33 bundleIdentifier];
+          v36 = [v9 containsObject:bundleIdentifier6];
 
           if ((v36 & 1) == 0)
           {
-            v37 = [v34 currentAdvertisableActivity];
-            if (v37)
+            currentAdvertisableActivity2 = [v34 currentAdvertisableActivity];
+            if (currentAdvertisableActivity2)
             {
               v4 = +[NSDate date];
               v38 = v4;
@@ -1024,7 +1024,7 @@ LABEL_21:
             }
 
             [v34 setLastFrontTime:v38];
-            if (v37)
+            if (currentAdvertisableActivity2)
             {
             }
           }
@@ -1043,21 +1043,21 @@ LABEL_21:
   return v39;
 }
 
-- (BOOL)ifLockScreenIsActive:(id)a3 visibleBundleIdentifiers:(id)a4
+- (BOOL)ifLockScreenIsActive:(id)active visibleBundleIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v46 = a4;
+  activeCopy = active;
+  identifiersCopy = identifiers;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = [v6 elements];
-  v8 = [v7 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  elements = [activeCopy elements];
+  v8 = [elements countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v8)
   {
     v9 = v8;
-    v44 = self;
-    v45 = v6;
+    selfCopy = self;
+    v45 = activeCopy;
     v10 = *v52;
 LABEL_3:
     v11 = 0;
@@ -1065,18 +1065,18 @@ LABEL_3:
     {
       if (*v52 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(elements);
       }
 
       v12 = *(*(&v51 + 1) + 8 * v11);
       if ([v12 conformsToProtocol:&OBJC_PROTOCOL___FBSDisplayLayoutElement])
       {
-        v13 = [v12 bundleIdentifier];
-        if (v13)
+        bundleIdentifier = [v12 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          v14 = v13;
-          v15 = [v12 bundleIdentifier];
-          v16 = [v15 isEqual:@"com.apple.lock-screen"];
+          v14 = bundleIdentifier;
+          bundleIdentifier2 = [v12 bundleIdentifier];
+          v16 = [bundleIdentifier2 isEqual:@"com.apple.lock-screen"];
 
           if (v16)
           {
@@ -1087,15 +1087,15 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v51 objects:v58 count:16];
+        v9 = [elements countByEnumeratingWithState:&v51 objects:v58 count:16];
         if (v9)
         {
           goto LABEL_3;
         }
 
 LABEL_38:
-        self = v44;
-        v6 = v45;
+        self = selfCopy;
+        activeCopy = v45;
         goto LABEL_39;
       }
     }
@@ -1108,8 +1108,8 @@ LABEL_38:
     }
 
     v18 = v12;
-    self = v44;
-    v6 = v45;
+    self = selfCopy;
+    activeCopy = v45;
     if (!v18)
     {
       goto LABEL_40;
@@ -1119,8 +1119,8 @@ LABEL_38:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v7 = [v45 elements];
-    v19 = [v7 countByEnumeratingWithState:&v47 objects:v57 count:16];
+    elements = [v45 elements];
+    v19 = [elements countByEnumeratingWithState:&v47 objects:v57 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1131,22 +1131,22 @@ LABEL_38:
         {
           if (*v48 != v21)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(elements);
           }
 
           v23 = *(*(&v47 + 1) + 8 * i);
           v24 = [v23 conformsToProtocol:&OBJC_PROTOCOL___FBSDisplayLayoutElement];
           if (v23 != v18 && v24 != 0)
           {
-            v26 = [v23 level];
-            if (v26 >= [v18 level])
+            level = [v23 level];
+            if (level >= [v18 level])
             {
-              v27 = [v23 bundleIdentifier];
-              if (v27)
+              bundleIdentifier3 = [v23 bundleIdentifier];
+              if (bundleIdentifier3)
               {
-                v28 = v27;
-                v29 = [v23 bundleIdentifier];
-                v30 = [v46 containsObject:v29];
+                v28 = bundleIdentifier3;
+                bundleIdentifier4 = [v23 bundleIdentifier];
+                v30 = [identifiersCopy containsObject:bundleIdentifier4];
 
                 if (v30)
                 {
@@ -1166,7 +1166,7 @@ LABEL_38:
           }
         }
 
-        v20 = [v7 countByEnumeratingWithState:&v47 objects:v57 count:16];
+        v20 = [elements countByEnumeratingWithState:&v47 objects:v57 count:16];
         if (v20)
         {
           continue;
@@ -1176,43 +1176,43 @@ LABEL_38:
       }
     }
 
-    if (![v46 count])
+    if (![identifiersCopy count])
     {
-      [(UAUserActivityClientProcessesController *)v44 setIgnoreLockScreenUntil:0];
+      [(UAUserActivityClientProcessesController *)selfCopy setIgnoreLockScreenUntil:0];
 
       v40 = 0;
-      v6 = v45;
+      activeCopy = v45;
       goto LABEL_43;
     }
 
-    v31 = [(UAUserActivityClientProcessesController *)v44 ignoreLockScreenUntil];
-    v6 = v45;
-    if (v31)
+    ignoreLockScreenUntil = [(UAUserActivityClientProcessesController *)selfCopy ignoreLockScreenUntil];
+    activeCopy = v45;
+    if (ignoreLockScreenUntil)
     {
-      v32 = v31;
-      v33 = [(UAUserActivityClientProcessesController *)v44 ignoreLockScreenUntil];
+      v32 = ignoreLockScreenUntil;
+      ignoreLockScreenUntil2 = [(UAUserActivityClientProcessesController *)selfCopy ignoreLockScreenUntil];
       v34 = +[NSDate date];
-      v35 = [v33 compare:v34];
+      v35 = [ignoreLockScreenUntil2 compare:v34];
 
       if (v35 == -1)
       {
-        [(UAUserActivityClientProcessesController *)v44 setIgnoreLockScreenUntil:0];
+        [(UAUserActivityClientProcessesController *)selfCopy setIgnoreLockScreenUntil:0];
 
         goto LABEL_42;
       }
     }
 
-    v36 = [(UAUserActivityClientProcessesController *)v44 ignoreLockScreenUntil];
+    ignoreLockScreenUntil3 = [(UAUserActivityClientProcessesController *)selfCopy ignoreLockScreenUntil];
 
-    if (!v36)
+    if (!ignoreLockScreenUntil3)
     {
       v37 = [NSDate dateWithTimeIntervalSinceNow:8.0];
-      [(UAUserActivityClientProcessesController *)v44 setIgnoreLockScreenUntil:v37];
+      [(UAUserActivityClientProcessesController *)selfCopy setIgnoreLockScreenUntil:v37];
     }
 
-    v38 = [(UAUserActivityClientProcessesController *)v44 layoutUpdateScheduler];
-    v39 = [(UAUserActivityClientProcessesController *)v44 ignoreLockScreenUntil];
-    [v38 scheduleAt:v39];
+    layoutUpdateScheduler = [(UAUserActivityClientProcessesController *)selfCopy layoutUpdateScheduler];
+    ignoreLockScreenUntil4 = [(UAUserActivityClientProcessesController *)selfCopy ignoreLockScreenUntil];
+    [layoutUpdateScheduler scheduleAt:ignoreLockScreenUntil4];
 
     v40 = 1;
   }
@@ -1222,9 +1222,9 @@ LABEL_38:
 LABEL_39:
 
 LABEL_40:
-    v42 = [(UAUserActivityClientProcessesController *)self ignoreLockScreenUntil];
+    ignoreLockScreenUntil5 = [(UAUserActivityClientProcessesController *)self ignoreLockScreenUntil];
 
-    if (v42)
+    if (ignoreLockScreenUntil5)
     {
       [(UAUserActivityClientProcessesController *)self setIgnoreLockScreenUntil:0];
     }
@@ -1238,96 +1238,96 @@ LABEL_43:
   return v40;
 }
 
-- (void)addUserActivityClient:(id)a3
+- (void)addUserActivityClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
-    v6 = [v4 auditToken];
-    v7 = [v6 pid];
+    auditToken = [clientCopy auditToken];
+    v7 = [auditToken pid];
 
     if (v7 >= 1)
     {
-      v8 = self;
-      objc_sync_enter(v8);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v9 = sub_100001A30(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v5 auditToken];
-        v11 = [v5 bundleIdentifier];
+        auditToken2 = [v5 auditToken];
+        bundleIdentifier = [v5 bundleIdentifier];
         v19 = 138478339;
         v20 = v5;
         v21 = 2114;
-        v22 = v10;
+        v22 = auditToken2;
         v23 = 2113;
-        v24 = v11;
+        v24 = bundleIdentifier;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Adding client %{private}@, %{public}@, bundleID=%{private}@ to known userActivityClients.", &v19, 0x20u);
       }
 
-      userActivityClientsByPID = v8->_userActivityClientsByPID;
-      v13 = [v5 auditToken];
-      v14 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 pid]);
+      userActivityClientsByPID = selfCopy->_userActivityClientsByPID;
+      auditToken3 = [v5 auditToken];
+      v14 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [auditToken3 pid]);
       [(NSMutableDictionary *)userActivityClientsByPID setObject:v5 forKey:v14];
 
-      v15 = [v5 bundleIdentifier];
+      bundleIdentifier2 = [v5 bundleIdentifier];
 
-      if (v15)
+      if (bundleIdentifier2)
       {
-        userActivityClientsByBundleID = v8->_userActivityClientsByBundleID;
-        v17 = [v5 bundleIdentifier];
-        [(NSMutableDictionary *)userActivityClientsByBundleID setObject:v5 forKey:v17];
+        userActivityClientsByBundleID = selfCopy->_userActivityClientsByBundleID;
+        bundleIdentifier3 = [v5 bundleIdentifier];
+        [(NSMutableDictionary *)userActivityClientsByBundleID setObject:v5 forKey:bundleIdentifier3];
       }
 
-      v18 = [(UAUserActivityClientProcessesController *)v8 layoutUpdateScheduler];
-      [v18 scheduleNext:0.0];
+      layoutUpdateScheduler = [(UAUserActivityClientProcessesController *)selfCopy layoutUpdateScheduler];
+      [layoutUpdateScheduler scheduleNext:0.0];
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
     }
   }
 }
 
-- (BOOL)clientIsActive:(id)a3
+- (BOOL)clientIsActive:(id)active
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  activeCopy = active;
+  v5 = activeCopy;
+  if (activeCopy)
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [activeCopy bundleIdentifier];
 
-    if (v6)
+    if (bundleIdentifier)
     {
-      v7 = self;
-      objc_sync_enter(v7);
-      v8 = [(UAUserActivityClientProcessesController *)v7 carPlayScreenBundleIdentifiersInOrder];
-      if (v8 && (-[UAUserActivityClientProcessesController carPlayScreenBundleIdentifiersInOrder](v7, "carPlayScreenBundleIdentifiersInOrder"), v9 = objc_claimAutoreleasedReturnValue(), [v9 firstObject], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)selfCopy carPlayScreenBundleIdentifiersInOrder];
+      if (carPlayScreenBundleIdentifiersInOrder && (-[UAUserActivityClientProcessesController carPlayScreenBundleIdentifiersInOrder](selfCopy, "carPlayScreenBundleIdentifiersInOrder"), v9 = objc_claimAutoreleasedReturnValue(), [v9 firstObject], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, carPlayScreenBundleIdentifiersInOrder, v10))
       {
-        v11 = [(UAUserActivityClientProcessesController *)v7 carPlayScreenBundleIdentifiersInOrder];
-        v12 = [v11 firstObject];
-        v13 = [v5 bundleIdentifier];
-        v14 = [v12 isEqual:v13];
+        carPlayScreenBundleIdentifiersInOrder2 = [(UAUserActivityClientProcessesController *)selfCopy carPlayScreenBundleIdentifiersInOrder];
+        firstObject = [carPlayScreenBundleIdentifiersInOrder2 firstObject];
+        bundleIdentifier2 = [v5 bundleIdentifier];
+        v14 = [firstObject isEqual:bundleIdentifier2];
       }
 
       else
       {
-        v16 = [(UAUserActivityClientProcessesController *)v7 mainScreenBundleIdentifiersInOrder];
+        mainScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)selfCopy mainScreenBundleIdentifiersInOrder];
 
-        if (!v16)
+        if (!mainScreenBundleIdentifiersInOrder)
         {
           v15 = 0;
           goto LABEL_11;
         }
 
-        v11 = [v5 bundleIdentifier];
-        v12 = [(UAUserActivityClientProcessesController *)v7 mainScreenBundleIdentifiersInOrder];
-        v13 = [v12 firstObject];
-        v14 = [v11 isEqual:v13];
+        carPlayScreenBundleIdentifiersInOrder2 = [v5 bundleIdentifier];
+        firstObject = [(UAUserActivityClientProcessesController *)selfCopy mainScreenBundleIdentifiersInOrder];
+        bundleIdentifier2 = [firstObject firstObject];
+        v14 = [carPlayScreenBundleIdentifiersInOrder2 isEqual:bundleIdentifier2];
       }
 
       v15 = v14;
 
 LABEL_11:
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_12;
     }
@@ -1339,15 +1339,15 @@ LABEL_12:
   return v15;
 }
 
-- (id)userActivityInfoForUUID:(id)a3
+- (id)userActivityInfoForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(UAUserActivityClientProcessesController *)self userActivityClients];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  userActivityClients = [(UAUserActivityClientProcessesController *)self userActivityClients];
+  v6 = [userActivityClients countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1358,10 +1358,10 @@ LABEL_12:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(userActivityClients);
         }
 
-        v10 = [*(*(&v24 + 1) + 8 * i) userActivityAdvertisableItemByUUID:v4];
+        v10 = [*(*(&v24 + 1) + 8 * i) userActivityAdvertisableItemByUUID:dCopy];
         if (v10)
         {
 LABEL_19:
@@ -1370,7 +1370,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [userActivityClients countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v7)
       {
         continue;
@@ -1384,8 +1384,8 @@ LABEL_19:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
-  v11 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  userActivityClients = [(UAUserActivityClientProcessesController *)self additionalUserActivityAdvertisableItems];
+  v11 = [userActivityClients countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1396,12 +1396,12 @@ LABEL_19:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(userActivityClients);
         }
 
         v15 = *(*(&v20 + 1) + 8 * j);
-        v16 = [v15 uuid];
-        v17 = [v16 isEqual:v4];
+        uuid = [v15 uuid];
+        v17 = [uuid isEqual:dCopy];
 
         if (v17)
         {
@@ -1410,7 +1410,7 @@ LABEL_19:
         }
       }
 
-      v12 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v12 = [userActivityClients countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v12)
       {
         continue;
@@ -1428,14 +1428,14 @@ LABEL_20:
 
 - (NSSet)visibleUserActivityClients
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSMutableSet set];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v2->_mainScreenBundleIdentifiersInOrder;
+  v4 = selfCopy->_mainScreenBundleIdentifiersInOrder;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
@@ -1449,7 +1449,7 @@ LABEL_20:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [(UAUserActivityClientProcessesController *)v2 userActivityClientForBundleIdentifier:*(*(&v20 + 1) + 8 * i)];
+        v8 = [(UAUserActivityClientProcessesController *)selfCopy userActivityClientForBundleIdentifier:*(*(&v20 + 1) + 8 * i)];
         if (v8)
         {
           [v3 addObject:v8];
@@ -1466,8 +1466,8 @@ LABEL_20:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(UAUserActivityClientProcessesController *)v2 carPlayScreenBundleIdentifiersInOrder];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)selfCopy carPlayScreenBundleIdentifiersInOrder];
+  v10 = [carPlayScreenBundleIdentifiersInOrder countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v10)
   {
     v11 = *v17;
@@ -1477,41 +1477,41 @@ LABEL_20:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(carPlayScreenBundleIdentifiersInOrder);
         }
 
-        v13 = [(UAUserActivityClientProcessesController *)v2 userActivityClientForBundleIdentifier:*(*(&v16 + 1) + 8 * j)];
+        v13 = [(UAUserActivityClientProcessesController *)selfCopy userActivityClientForBundleIdentifier:*(*(&v16 + 1) + 8 * j)];
         if (v13)
         {
           [v3 addObject:v13];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v10 = [carPlayScreenBundleIdentifiersInOrder countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v10);
   }
 
   v14 = [v3 copy];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
-- (id)userActivityClientForUUID:(id)a3
+- (id)userActivityClientForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(UAUserActivityClientProcessesController *)v5 userActivityClients];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    userActivityClients = [(UAUserActivityClientProcessesController *)selfCopy userActivityClients];
+    v7 = [userActivityClients countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -1521,12 +1521,12 @@ LABEL_20:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(userActivityClients);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 uniqueIdentifiers];
-          v12 = [v11 containsObject:v4];
+          uniqueIdentifiers = [v10 uniqueIdentifiers];
+          v12 = [uniqueIdentifiers containsObject:dCopy];
 
           if (v12)
           {
@@ -1535,7 +1535,7 @@ LABEL_20:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [userActivityClients countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -1547,7 +1547,7 @@ LABEL_20:
 
 LABEL_12:
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1558,36 +1558,36 @@ LABEL_12:
   return v7;
 }
 
-- (id)userActivityClientForPID:(int)a3
+- (id)userActivityClientForPID:(int)d
 {
-  if (a3 < 2)
+  if (d < 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    userActivityClientsByPID = v4->_userActivityClientsByPID;
-    v6 = [NSNumber numberWithLong:a3];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    userActivityClientsByPID = selfCopy->_userActivityClientsByPID;
+    v6 = [NSNumber numberWithLong:d];
     v7 = [(NSMutableDictionary *)userActivityClientsByPID objectForKey:v6];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   return v7;
 }
 
-- (BOOL)addAdditionalUserActivityAdvertisableItems:(id)a3
+- (BOOL)addAdditionalUserActivityAdvertisableItems:(id)items
 {
-  v4 = a3;
-  if (v4)
+  itemsCopy = items;
+  if (itemsCopy)
   {
     v5 = self->_additionalUserActivityAdvertisableItems;
     objc_sync_enter(v5);
-    v6 = [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems containsObject:v4];
-    [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems addObject:v4];
+    v6 = [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems containsObject:itemsCopy];
+    [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems addObject:itemsCopy];
     v7 = v6 ^ 1;
     objc_sync_exit(v5);
   }
@@ -1600,15 +1600,15 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)removeAdditionalUserActivityAdvertisableItems:(id)a3
+- (BOOL)removeAdditionalUserActivityAdvertisableItems:(id)items
 {
-  v4 = a3;
-  if (v4)
+  itemsCopy = items;
+  if (itemsCopy)
   {
     v5 = self->_additionalUserActivityAdvertisableItems;
     objc_sync_enter(v5);
-    v6 = [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems containsObject:v4];
-    [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems removeObject:v4];
+    v6 = [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems containsObject:itemsCopy];
+    [(NSMutableSet *)self->_additionalUserActivityAdvertisableItems removeObject:itemsCopy];
     objc_sync_exit(v5);
   }
 
@@ -1620,15 +1620,15 @@ LABEL_12:
   return v6;
 }
 
-- (id)userActivityClientForBundleIdentifier:(id)a3
+- (id)userActivityClientForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_userActivityClientsByBundleID objectForKey:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_userActivityClientsByBundleID objectForKey:identifierCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1639,189 +1639,189 @@ LABEL_12:
   return v6;
 }
 
-- (void)removeClientActivityClient:(id)a3
+- (void)removeClientActivityClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 auditToken];
+    auditToken = [clientCopy auditToken];
     v38 = 138478083;
-    v39 = v4;
+    v39 = clientCopy;
     v40 = 2114;
-    v41 = v6;
+    v41 = auditToken;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing client %{private}@, application %{public}@, from known userActivityClients.", &v38, 0x16u);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [v4 currentAdvertisableActivity];
-  if (v8)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentAdvertisableActivity = [clientCopy currentAdvertisableActivity];
+  if (currentAdvertisableActivity)
   {
-    v9 = [v4 currentAdvertisableActivity];
-    v10 = [v9 options];
-    v11 = [v10 objectForKeyedSubscript:@"LSLivePastProcessExit"];
-    v12 = [v11 BOOLValue];
+    currentAdvertisableActivity2 = [clientCopy currentAdvertisableActivity];
+    options = [currentAdvertisableActivity2 options];
+    v11 = [options objectForKeyedSubscript:@"LSLivePastProcessExit"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = sub_100001A30(0);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v4 currentAdvertisableActivity];
-        v15 = [v14 uuid];
-        v16 = [v15 UUIDString];
-        v17 = [v4 currentAdvertisableActivity];
-        v18 = [v4 auditToken];
+        currentAdvertisableActivity3 = [clientCopy currentAdvertisableActivity];
+        uuid = [currentAdvertisableActivity3 uuid];
+        uUIDString = [uuid UUIDString];
+        currentAdvertisableActivity4 = [clientCopy currentAdvertisableActivity];
+        auditToken2 = [clientCopy auditToken];
         v38 = 138543875;
-        v39 = v16;
+        v39 = uUIDString;
         v40 = 2113;
-        v41 = v17;
+        v41 = currentAdvertisableActivity4;
         v42 = 2114;
-        v43 = v18;
+        v43 = auditToken2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Moving 'LSLivePastProcessExit' activity %{public}@/%{private}@ from process %{public}@ into additionalUserActivityAdvertisableItems", &v38, 0x20u);
       }
 
-      v19 = [v4 currentAdvertisableActivity];
-      [(UAUserActivityClientProcessesController *)v7 addAdditionalUserActivityAdvertisableItems:v19];
+      currentAdvertisableActivity5 = [clientCopy currentAdvertisableActivity];
+      [(UAUserActivityClientProcessesController *)selfCopy addAdditionalUserActivityAdvertisableItems:currentAdvertisableActivity5];
     }
   }
 
-  v20 = [v4 auditToken];
-  v21 = [v20 pid] > 0;
+  auditToken3 = [clientCopy auditToken];
+  v21 = [auditToken3 pid] > 0;
 
   if (v21)
   {
     v22 = sub_100001A30(0);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v4 auditToken];
+      auditToken4 = [clientCopy auditToken];
       v38 = 138543362;
-      v39 = v23;
+      v39 = auditToken4;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Removing client %{public}@ from _userActivityClientsByPID", &v38, 0xCu);
     }
 
-    userActivityClientsByPID = v7->_userActivityClientsByPID;
-    v25 = [v4 auditToken];
-    v26 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v25 pid]);
+    userActivityClientsByPID = selfCopy->_userActivityClientsByPID;
+    auditToken5 = [clientCopy auditToken];
+    v26 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [auditToken5 pid]);
     [(NSMutableDictionary *)userActivityClientsByPID removeObjectForKey:v26];
   }
 
-  v27 = [v4 bundleIdentifier];
+  bundleIdentifier = [clientCopy bundleIdentifier];
 
-  if (v27)
+  if (bundleIdentifier)
   {
     v28 = sub_100001A30(0);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [v4 bundleIdentifier];
+      bundleIdentifier2 = [clientCopy bundleIdentifier];
       v38 = 138477827;
-      v39 = v29;
+      v39 = bundleIdentifier2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Removing client %{private}@ from _userActivityClientsByBundleIdentifier", &v38, 0xCu);
     }
 
-    userActivityClientsByBundleID = v7->_userActivityClientsByBundleID;
-    v31 = [v4 bundleIdentifier];
-    [(NSMutableDictionary *)userActivityClientsByBundleID removeObjectForKey:v31];
+    userActivityClientsByBundleID = selfCopy->_userActivityClientsByBundleID;
+    bundleIdentifier3 = [clientCopy bundleIdentifier];
+    [(NSMutableDictionary *)userActivityClientsByBundleID removeObjectForKey:bundleIdentifier3];
   }
 
-  [(NSMutableSet *)v7->_visibleUserActivityClients removeObject:v4];
-  [(NSMutableSet *)v7->_clients removeObject:v4];
-  v32 = [(UAUserActivityClientProcessesController *)v7 proxiedClients];
+  [(NSMutableSet *)selfCopy->_visibleUserActivityClients removeObject:clientCopy];
+  [(NSMutableSet *)selfCopy->_clients removeObject:clientCopy];
+  proxiedClients = [(UAUserActivityClientProcessesController *)selfCopy proxiedClients];
 
-  if (v32)
+  if (proxiedClients)
   {
-    v33 = [(UAUserActivityClientProcessesController *)v7 proxiedClients];
-    v34 = [v4 uuid];
-    [v33 removeObjectForKey:v34];
+    proxiedClients2 = [(UAUserActivityClientProcessesController *)selfCopy proxiedClients];
+    uuid2 = [clientCopy uuid];
+    [proxiedClients2 removeObjectForKey:uuid2];
   }
 
-  v35 = [(UAUserActivityClientProcessesController *)v7 layoutUpdateScheduler];
-  [v35 scheduleNext:0.01];
+  layoutUpdateScheduler = [(UAUserActivityClientProcessesController *)selfCopy layoutUpdateScheduler];
+  [layoutUpdateScheduler scheduleNext:0.01];
 
-  v36 = [(UACornerActionManagerHandler *)v7 manager];
-  [v36 scheduleUpdatingAdvertisableItems:0.1];
+  manager = [(UACornerActionManagerHandler *)selfCopy manager];
+  [manager scheduleUpdatingAdvertisableItems:0.1];
 
-  v37 = [(UACornerActionManagerHandler *)v7 manager];
-  [v37 processWasRemoved];
+  manager2 = [(UACornerActionManagerHandler *)selfCopy manager];
+  [manager2 processWasRemoved];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)handleAppStateMonitorUpdate:(id)a3
+- (void)handleAppStateMonitorUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 objectForKey:BKSApplicationStateKey];
-    v7 = [v6 integerValue];
-    v8 = [v4 description];
+    v6 = [updateCopy objectForKey:BKSApplicationStateKey];
+    integerValue = [v6 integerValue];
+    v8 = [updateCopy description];
     v9 = sub_100009684(v8);
     *buf = 134218243;
-    v56 = v7;
+    v56 = integerValue;
     v57 = 2113;
     v58 = v9;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "MAKEFRONT: handleAppStateMonitorUpdate:%ld %{private}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (updateCopy)
   {
-    v10 = [v4 objectForKey:BKSApplicationStateDisplayIDKey];
-    v11 = [v4 objectForKey:BKSApplicationStateAppIsFrontmostKey];
-    v12 = [v11 BOOLValue];
+    v10 = [updateCopy objectForKey:BKSApplicationStateDisplayIDKey];
+    v11 = [updateCopy objectForKey:BKSApplicationStateAppIsFrontmostKey];
+    bOOLValue = [v11 BOOLValue];
 
     v13 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:v10];
     if (v10)
     {
-      if (v12)
+      if (bOOLValue)
       {
         if (v13)
         {
-          v14 = self;
-          objc_sync_enter(v14);
-          [(NSMutableSet *)v14->_visibleUserActivityClients addObject:v13];
-          objc_sync_exit(v14);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          [(NSMutableSet *)selfCopy->_visibleUserActivityClients addObject:v13];
+          objc_sync_exit(selfCopy);
 
-          v15 = [(UAUserActivityClientProcessesController *)v14 frontBundleID];
-          v54 = [v10 isEqual:v15];
+          frontBundleID = [(UAUserActivityClientProcessesController *)selfCopy frontBundleID];
+          v54 = [v10 isEqual:frontBundleID];
 
-          v16 = [v13 bundleIdentifier];
-          [(UAUserActivityClientProcessesController *)v14 setFrontBundleID:v16];
+          bundleIdentifier = [v13 bundleIdentifier];
+          [(UAUserActivityClientProcessesController *)selfCopy setFrontBundleID:bundleIdentifier];
 
           v17 = sub_100001A30(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
-            v18 = [v13 bundleIdentifier];
-            v19 = [v13 auditToken];
-            v20 = v19;
+            bundleIdentifier2 = [v13 bundleIdentifier];
+            auditToken = [v13 auditToken];
+            v20 = auditToken;
             v21 = " and possibly change advertisement.";
             *buf = 138543874;
-            v56 = v18;
+            v56 = bundleIdentifier2;
             if (v54)
             {
               v21 = "";
             }
 
             v57 = 2114;
-            v58 = v19;
+            v58 = auditToken;
             v59 = 2080;
             v60 = v21;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "MAKEFRONT: %{public}@/%{public}@ %s", buf, 0x20u);
           }
 
-          v22 = [v13 bundleIdentifier];
-          v23 = [v13 currentAdvertisableActivity];
-          v24 = [v23 uuid];
-          v25 = [v24 UUIDString];
-          v26 = v25;
+          bundleIdentifier3 = [v13 bundleIdentifier];
+          currentAdvertisableActivity = [v13 currentAdvertisableActivity];
+          uuid = [currentAdvertisableActivity uuid];
+          uUIDString = [uuid UUIDString];
+          v26 = uUIDString;
           v27 = "(update)";
           if (v54)
           {
             v27 = "";
           }
 
-          v28 = [NSString stringWithFormat:@"APP:%@, %@ %s", v22, v25, v27];
+          v28 = [NSString stringWithFormat:@"APP:%@, %@ %s", bundleIdentifier3, uUIDString, v27];
           [ActivityManagerDebuggingManager appendRecentAction:v28];
 
           if (v54)
@@ -1832,30 +1832,30 @@ LABEL_12:
 
         else
         {
-          v33 = [(UAUserActivityClientProcessesController *)self frontBundleID];
-          v34 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:v33];
-          v35 = [v34 currentAdvertisableActivity];
+          frontBundleID2 = [(UAUserActivityClientProcessesController *)self frontBundleID];
+          v34 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:frontBundleID2];
+          currentAdvertisableActivity2 = [v34 currentAdvertisableActivity];
 
           v36 = sub_100001A30(0);
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
-            v37 = [(UAUserActivityClientProcessesController *)self frontBundleID];
-            v38 = v37;
+            frontBundleID3 = [(UAUserActivityClientProcessesController *)self frontBundleID];
+            v38 = frontBundleID3;
             v39 = " and possibly change advertisement.";
-            if (!v35)
+            if (!currentAdvertisableActivity2)
             {
               v39 = "";
             }
 
             *buf = 138543618;
-            v56 = v37;
+            v56 = frontBundleID3;
             v57 = 2082;
             v58 = v39;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "MAKEFRONT: -(was %{public}@/%{public}s)", buf, 0x16u);
           }
 
           v40 = "(update)";
-          if (!v35)
+          if (!currentAdvertisableActivity2)
           {
             v40 = "";
           }
@@ -1864,7 +1864,7 @@ LABEL_12:
           [ActivityManagerDebuggingManager appendRecentAction:v41];
 
           [(UAUserActivityClientProcessesController *)self setFrontBundleID:0];
-          if (!v35)
+          if (!currentAdvertisableActivity2)
           {
             goto LABEL_53;
           }
@@ -1875,15 +1875,15 @@ LABEL_12:
 
       if (v13)
       {
-        v29 = [v13 currentAdvertisableActivity];
+        currentAdvertisableActivity3 = [v13 currentAdvertisableActivity];
 
-        v30 = self;
-        objc_sync_enter(v30);
-        if ([(NSMutableSet *)v30->_visibleUserActivityClients containsObject:v13])
+        selfCopy2 = self;
+        objc_sync_enter(selfCopy2);
+        if ([(NSMutableSet *)selfCopy2->_visibleUserActivityClients containsObject:v13])
         {
-          [(NSMutableSet *)v30->_visibleUserActivityClients removeObject:v13];
-          v31 = [v13 currentAdvertisableActivity];
-          if (v31)
+          [(NSMutableSet *)selfCopy2->_visibleUserActivityClients removeObject:v13];
+          currentAdvertisableActivity4 = [v13 currentAdvertisableActivity];
+          if (currentAdvertisableActivity4)
           {
             v32 = +[NSDate date];
           }
@@ -1894,77 +1894,77 @@ LABEL_12:
           }
 
           [v13 setLastFrontTime:v32];
-          if (v31)
+          if (currentAdvertisableActivity4)
           {
           }
 
           v42 = sub_100001A30(0);
           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
           {
-            v43 = [(UAUserActivityClientProcessesController *)v30 frontBundleID];
-            if (v43)
+            frontBundleID4 = [(UAUserActivityClientProcessesController *)selfCopy2 frontBundleID];
+            if (frontBundleID4)
             {
-              v44 = [(UAUserActivityClientProcessesController *)v30 frontBundleID];
+              frontBundleID5 = [(UAUserActivityClientProcessesController *)selfCopy2 frontBundleID];
             }
 
             else
             {
-              v44 = @"-";
+              frontBundleID5 = @"-";
             }
 
             v45 = "";
-            if (v29)
+            if (currentAdvertisableActivity3)
             {
               v45 = " and possibly change advertisement.";
             }
 
             *buf = 138412546;
-            v56 = v44;
+            v56 = frontBundleID5;
             v57 = 2082;
             v58 = v45;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "MAKEFRONT:- (was %@) %{public}s", buf, 0x16u);
-            if (v43)
+            if (frontBundleID4)
             {
             }
           }
 
-          v46 = [(UAUserActivityClientProcessesController *)v30 frontBundleID];
-          if (v46)
+          frontBundleID6 = [(UAUserActivityClientProcessesController *)selfCopy2 frontBundleID];
+          if (frontBundleID6)
           {
-            v47 = [(UAUserActivityClientProcessesController *)v30 frontBundleID];
+            frontBundleID7 = [(UAUserActivityClientProcessesController *)selfCopy2 frontBundleID];
           }
 
           else
           {
-            v47 = @"-";
+            frontBundleID7 = @"-";
           }
 
           v48 = " and possibly change advertisement.";
-          if (!v29)
+          if (!currentAdvertisableActivity3)
           {
             v48 = "";
           }
 
-          v49 = [NSString stringWithFormat:@"APP:- (was %@) %s", v47, v48];
+          v49 = [NSString stringWithFormat:@"APP:- (was %@) %s", frontBundleID7, v48];
           [ActivityManagerDebuggingManager appendRecentAction:v49];
 
-          if (v46)
+          if (frontBundleID6)
           {
           }
         }
 
-        objc_sync_exit(v30);
+        objc_sync_exit(selfCopy2);
 
-        v50 = [(UAUserActivityClientProcessesController *)v30 frontBundleID];
-        if (v50)
+        frontBundleID8 = [(UAUserActivityClientProcessesController *)selfCopy2 frontBundleID];
+        if (frontBundleID8)
         {
-          v51 = [(UAUserActivityClientProcessesController *)v30 frontBundleID];
-          v52 = [v51 isEqual:v10];
+          frontBundleID9 = [(UAUserActivityClientProcessesController *)selfCopy2 frontBundleID];
+          v52 = [frontBundleID9 isEqual:v10];
 
           if (v52)
           {
-            [(UAUserActivityClientProcessesController *)v30 setFrontBundleID:0];
-            if (!v29)
+            [(UAUserActivityClientProcessesController *)selfCopy2 setFrontBundleID:0];
+            if (!currentAdvertisableActivity3)
             {
               goto LABEL_53;
             }
@@ -1973,11 +1973,11 @@ LABEL_12:
           }
         }
 
-        if (v29)
+        if (currentAdvertisableActivity3)
         {
 LABEL_52:
-          v53 = [(UACornerActionManagerHandler *)self manager];
-          [v53 scheduleUpdatingAdvertisableItems:0.1];
+          manager = [(UACornerActionManagerHandler *)self manager];
+          [manager scheduleUpdatingAdvertisableItems:0.1];
         }
       }
     }
@@ -1986,41 +1986,41 @@ LABEL_53:
   }
 }
 
-- (id)advertiseableItemForBundleIdentifier:(id)a3
+- (id)advertiseableItemForBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(UAUserActivityClientProcessesController *)self userActivityClientForBundleIdentifier:?];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 currentAdvertisableActivity];
+      currentAdvertisableActivity = [v3 currentAdvertisableActivity];
     }
 
     else
     {
-      v5 = 0;
+      currentAdvertisableActivity = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    currentAdvertisableActivity = 0;
   }
 
-  return v5;
+  return currentAdvertisableActivity;
 }
 
-- (id)recentEligibleItemsInOrder:(double)a3
+- (id)recentEligibleItemsInOrder:(double)order
 {
   v5 = +[NSMutableArray array];
-  v6 = [NSDate dateWithTimeIntervalSinceNow:-a3];
+  v6 = [NSDate dateWithTimeIntervalSinceNow:-order];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(UAUserActivityClientProcessesController *)self userActivityClients];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  userActivityClients = [(UAUserActivityClientProcessesController *)self userActivityClients];
+  v8 = [userActivityClients countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2031,16 +2031,16 @@ LABEL_53:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(userActivityClients);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 lastFrontTime];
-        if (v13)
+        lastFrontTime = [v12 lastFrontTime];
+        if (lastFrontTime)
         {
-          v14 = v13;
-          v15 = [v12 lastFrontTime];
-          v16 = sub_10000A010(v15, v6);
+          v14 = lastFrontTime;
+          lastFrontTime2 = [v12 lastFrontTime];
+          v16 = sub_10000A010(lastFrontTime2, v6);
 
           if (v16)
           {
@@ -2049,7 +2049,7 @@ LABEL_53:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v9 = [userActivityClients countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v9);
@@ -2058,13 +2058,13 @@ LABEL_53:
   if ([v5 count])
   {
     [v5 sortUsingComparator:&stru_1000C5C08];
-    v17 = [v5 firstObject];
-    v18 = [v17 currentAdvertisableActivity];
-    if (v18)
+    firstObject = [v5 firstObject];
+    currentAdvertisableActivity = [firstObject currentAdvertisableActivity];
+    if (currentAdvertisableActivity)
     {
-      v19 = [v5 firstObject];
-      v20 = [v19 currentAdvertisableActivity];
-      v27 = v20;
+      firstObject2 = [v5 firstObject];
+      currentAdvertisableActivity2 = [firstObject2 currentAdvertisableActivity];
+      v27 = currentAdvertisableActivity2;
       v21 = [NSArray arrayWithObjects:&v27 count:1];
     }
 
@@ -2082,42 +2082,42 @@ LABEL_53:
   return v21;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = sub_100001A30(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138478083;
-    v13 = v6;
+    v13 = listenerCopy;
     v14 = 2113;
-    v15 = v7;
+    v15 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "listener=%{private}@ newConnection=%{private}@", &v12, 0x16u);
   }
 
-  v9 = [[UAUserActivityClientProcess alloc] initWithController:self connection:v7];
-  v10 = self;
-  objc_sync_enter(v10);
-  [(NSMutableSet *)v10->_clients addObject:v9];
-  objc_sync_exit(v10);
+  v9 = [[UAUserActivityClientProcess alloc] initWithController:self connection:connectionCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_clients addObject:v9];
+  objc_sync_exit(selfCopy);
 
-  [v7 resume];
+  [connectionCopy resume];
   return 1;
 }
 
 - (id)statusString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  p_isa = &v2->super.super.super.isa;
-  v3 = [NSMutableString stringWithFormat:@"##### Client processes: %ld clients", [(NSMutableSet *)v2->_clients count]];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_isa = &selfCopy->super.super.super.isa;
+  v3 = [NSMutableString stringWithFormat:@"##### Client processes: %ld clients", [(NSMutableSet *)selfCopy->_clients count]];
   [v3 appendString:@" Layout:"];
-  v4 = [(UAUserActivityClientProcessesController *)v2 carPlayScreenBundleIdentifiersInOrder];
-  if (v4)
+  carPlayScreenBundleIdentifiersInOrder = [(UAUserActivityClientProcessesController *)selfCopy carPlayScreenBundleIdentifiersInOrder];
+  if (carPlayScreenBundleIdentifiersInOrder)
   {
-    v5 = [(UAUserActivityClientProcessesController *)v2 carPlayScreenBundleIdentifiersInOrder];
-    v6 = [v5 count];
+    carPlayScreenBundleIdentifiersInOrder2 = [(UAUserActivityClientProcessesController *)selfCopy carPlayScreenBundleIdentifiersInOrder];
+    v6 = [carPlayScreenBundleIdentifiersInOrder2 count];
 
     if (v6)
     {
@@ -2126,8 +2126,8 @@ LABEL_53:
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v7 = [p_isa carPlayScreenBundleIdentifiersInOrder];
-      v8 = [v7 countByEnumeratingWithState:&v68 objects:v76 count:16];
+      carPlayScreenBundleIdentifiersInOrder3 = [p_isa carPlayScreenBundleIdentifiersInOrder];
+      v8 = [carPlayScreenBundleIdentifiersInOrder3 countByEnumeratingWithState:&v68 objects:v76 count:16];
       if (v8)
       {
         v9 = *v69;
@@ -2137,14 +2137,14 @@ LABEL_53:
           {
             if (*v69 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(carPlayScreenBundleIdentifiersInOrder3);
             }
 
             [v3 appendString:*(*(&v68 + 1) + 8 * i)];
             [v3 appendString:@" "];
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v68 objects:v76 count:16];
+          v8 = [carPlayScreenBundleIdentifiersInOrder3 countByEnumeratingWithState:&v68 objects:v76 count:16];
         }
 
         while (v8);
@@ -2188,8 +2188,8 @@ LABEL_53:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v15 = [p_isa[7] allObjects];
-  obj = [v15 sortedArrayUsingComparator:&stru_1000C5C48];
+  allObjects = [p_isa[7] allObjects];
+  obj = [allObjects sortedArrayUsingComparator:&stru_1000C5C48];
 
   v16 = [obj countByEnumeratingWithState:&v60 objects:v74 count:16];
   if (v16)
@@ -2206,15 +2206,15 @@ LABEL_53:
 
         v19 = *(*(&v60 + 1) + 8 * k);
         v20 = [p_isa clientIsActive:v19];
-        v21 = [v19 statusString];
-        v22 = v21;
+        statusString = [v19 statusString];
+        v22 = statusString;
         v23 = "";
         if (v20)
         {
           v23 = "FRONT ";
         }
 
-        v24 = [NSString stringWithFormat:@" - %s%@\n", v23, v21];
+        v24 = [NSString stringWithFormat:@" - %s%@\n", v23, statusString];
         if (v20)
         {
           v25 = 0;
@@ -2241,16 +2241,16 @@ LABEL_53:
   v43 = v3;
   v59 = v43;
   [v46 enumerateObjectsUsingBlock:v58];
-  v26 = [p_isa DEBUG_lastEligibleItems];
-  if (v26)
+  dEBUG_lastEligibleItems = [p_isa DEBUG_lastEligibleItems];
+  if (dEBUG_lastEligibleItems)
   {
     [v43 appendString:@" Order:{"];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v41 = v26;
-    v42 = v26;
+    v41 = dEBUG_lastEligibleItems;
+    v42 = dEBUG_lastEligibleItems;
     v45 = [v42 countByEnumeratingWithState:&v54 objects:v73 count:16];
     if (v45)
     {
@@ -2269,8 +2269,8 @@ LABEL_53:
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
-          v28 = [p_isa userActivityClients];
-          v29 = [v28 countByEnumeratingWithState:&v50 objects:v72 count:16];
+          userActivityClients = [p_isa userActivityClients];
+          v29 = [userActivityClients countByEnumeratingWithState:&v50 objects:v72 count:16];
           if (v29)
           {
             v30 = *v51;
@@ -2280,30 +2280,30 @@ LABEL_53:
               {
                 if (*v51 != v30)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(userActivityClients);
                 }
 
                 v32 = *(*(&v50 + 1) + 8 * m);
-                v33 = [v32 bundleIdentifier];
-                if (v33)
+                bundleIdentifier = [v32 bundleIdentifier];
+                if (bundleIdentifier)
                 {
-                  v34 = [v32 uniqueIdentifiers];
-                  v35 = [v27 uuid];
-                  v36 = [v34 containsObject:v35];
+                  uniqueIdentifiers = [v32 uniqueIdentifiers];
+                  uuid = [v27 uuid];
+                  v36 = [uniqueIdentifiers containsObject:uuid];
 
                   if (v36)
                   {
-                    v37 = [v32 bundleIdentifier];
-                    v38 = [v27 uuid];
-                    v39 = [v38 UUIDString];
-                    [v43 appendFormat:@"%@/%@ ", v37, v39];
+                    bundleIdentifier2 = [v32 bundleIdentifier];
+                    uuid2 = [v27 uuid];
+                    uUIDString = [uuid2 UUIDString];
+                    [v43 appendFormat:@"%@/%@ ", bundleIdentifier2, uUIDString];
 
                     goto LABEL_47;
                   }
                 }
               }
 
-              v29 = [v28 countByEnumeratingWithState:&v50 objects:v72 count:16];
+              v29 = [userActivityClients countByEnumeratingWithState:&v50 objects:v72 count:16];
               if (v29)
               {
                 continue;
@@ -2323,7 +2323,7 @@ LABEL_47:
     }
 
     [v43 appendString:@"}\n"];
-    v26 = v41;
+    dEBUG_lastEligibleItems = v41;
   }
 
   objc_sync_exit(p_isa);

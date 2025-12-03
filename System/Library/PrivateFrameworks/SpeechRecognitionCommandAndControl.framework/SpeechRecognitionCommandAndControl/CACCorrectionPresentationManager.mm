@@ -1,24 +1,24 @@
 @interface CACCorrectionPresentationManager
 - (id)currentlyDisplayedCorrections;
-- (void)_showCorrectionsForElement:(id)a3 fromString:(id)a4 withAlternatives:(id)a5 withEmojis:(id)a6 portraitUpRect:(CGRect)a7;
-- (void)correctionsPresentationViewController:(id)a3 didSelectItemWithText:(id)a4;
-- (void)dismissCorrectionsPresentationViewController:(id)a3;
-- (void)handleAXNotificationData:(void *)a3;
-- (void)hideIfNeededForElements:(id)a3;
-- (void)showCorrectionsForElement:(id)a3 nBestStrings:(id)a4;
+- (void)_showCorrectionsForElement:(id)element fromString:(id)string withAlternatives:(id)alternatives withEmojis:(id)emojis portraitUpRect:(CGRect)rect;
+- (void)correctionsPresentationViewController:(id)controller didSelectItemWithText:(id)text;
+- (void)dismissCorrectionsPresentationViewController:(id)controller;
+- (void)handleAXNotificationData:(void *)data;
+- (void)hideIfNeededForElements:(id)elements;
+- (void)showCorrectionsForElement:(id)element nBestStrings:(id)strings;
 @end
 
 @implementation CACCorrectionPresentationManager
 
-- (void)_showCorrectionsForElement:(id)a3 fromString:(id)a4 withAlternatives:(id)a5 withEmojis:(id)a6 portraitUpRect:(CGRect)a7
+- (void)_showCorrectionsForElement:(id)element fromString:(id)string withAlternatives:(id)alternatives withEmojis:(id)emojis portraitUpRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stringCopy = string;
+  alternativesCopy = alternatives;
+  emojisCopy = emojis;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __117__CACCorrectionPresentationManager__showCorrectionsForElement_fromString_withAlternatives_withEmojis_portraitUpRect___block_invoke;
@@ -28,16 +28,16 @@
   v20[1] = 3221225472;
   v20[2] = __117__CACCorrectionPresentationManager__showCorrectionsForElement_fromString_withAlternatives_withEmojis_portraitUpRect___block_invoke_2;
   v20[3] = &unk_279CECB68;
-  v21 = v14;
-  v22 = v15;
-  v23 = v16;
+  v21 = stringCopy;
+  v22 = alternativesCopy;
+  v23 = emojisCopy;
   v24 = x;
   v25 = y;
   v26 = width;
   v27 = height;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
+  v17 = emojisCopy;
+  v18 = alternativesCopy;
+  v19 = stringCopy;
   [(CACSimpleContentViewManager *)self showViewControllerWithCreationHandler:v28 updateHandler:v20];
 }
 
@@ -59,43 +59,43 @@ void __117__CACCorrectionPresentationManager__showCorrectionsForElement_fromStri
   [v4 setPortraitUpSourceRect:{*(a1 + 56), *(a1 + 64), *(a1 + 72), *(a1 + 80)}];
 }
 
-- (void)showCorrectionsForElement:(id)a3 nBestStrings:(id)a4
+- (void)showCorrectionsForElement:(id)element nBestStrings:(id)strings
 {
   v114 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(CACCorrectionPresentationManager *)self setElement:v6];
+  elementCopy = element;
+  stringsCopy = strings;
+  [(CACCorrectionPresentationManager *)self setElement:elementCopy];
   if (showCorrectionsForElement_nBestStrings__textCheckerInialize != -1)
   {
     [CACCorrectionPresentationManager showCorrectionsForElement:nBestStrings:];
   }
 
-  v8 = [v6 selectedTextRange];
-  [v6 rectForRange:{v8, v9}];
+  selectedTextRange = [elementCopy selectedTextRange];
+  [elementCopy rectForRange:{selectedTextRange, v9}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v6 cacTextSelectionCACTextMarkerRange];
-  v19 = [v6 cacStringForCACTextMarkerRange:v18];
+  cacTextSelectionCACTextMarkerRange = [elementCopy cacTextSelectionCACTextMarkerRange];
+  v19 = [elementCopy cacStringForCACTextMarkerRange:cacTextSelectionCACTextMarkerRange];
 
-  v20 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   v98 = objc_opt_new();
   if ([v19 length])
   {
     v21 = [v19 characterAtIndex:0];
     if ([v19 length] == 1 && ((v21 - 32) < 0x5Fu || (v22 = v21 - 8216, v22 <= 5) && ((1 << v22) & 0x33) != 0))
     {
-      v23 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-      v24 = [v23 characterIsMember:v21];
+      alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+      v24 = [alphanumericCharacterSet characterIsMember:v21];
 
       if (v24)
       {
         if ((v21 - 48) > 9u)
         {
-          v77 = [v19 uppercaseString];
+          uppercaseString = [v19 uppercaseString];
           v78 = v19;
-          v79 = [v19 isEqualToString:v77];
+          v79 = [v19 isEqualToString:uppercaseString];
 
           v80 = 65;
           do
@@ -109,7 +109,7 @@ void __117__CACCorrectionPresentationManager__showCorrectionsForElement_fromStri
               if (v80 == 91)
               {
                 v19 = v78;
-                v83 = [v78 lowercaseString];
+                lowercaseString = [v78 lowercaseString];
                 goto LABEL_68;
               }
             }
@@ -122,10 +122,10 @@ void __117__CACCorrectionPresentationManager__showCorrectionsForElement_fromStri
 
           while (v80 != 91);
           v19 = v78;
-          v83 = [v78 uppercaseString];
+          lowercaseString = [v78 uppercaseString];
 LABEL_68:
-          v84 = v83;
-          [v98 addObject:v83];
+          v84 = lowercaseString;
+          [v98 addObject:lowercaseString];
 
           v85 = 0;
           do
@@ -216,31 +216,31 @@ LABEL_68:
     else
     {
       v30 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v97 = [v30 leadingTextForCurrentSelection];
+      leadingTextForCurrentSelection = [v30 leadingTextForCurrentSelection];
 
       v31 = +[CACSpeechSystem speechSystem];
-      v32 = [v31 recognitionLocaleIdentifier];
+      recognitionLocaleIdentifier = [v31 recognitionLocaleIdentifier];
 
       v88 = [CACCorrectionUtilities emojiSuggestionsForString:v19];
 
-      v96 = v32;
-      v33 = [CACCorrectionUtilities alternativesForString:v19 languageIdentifier:v32];
+      v96 = recognitionLocaleIdentifier;
+      v33 = [CACCorrectionUtilities alternativesForString:v19 languageIdentifier:recognitionLocaleIdentifier];
       v34 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      LODWORD(v32) = [v34 dictationRecognizerMode];
+      LODWORD(recognitionLocaleIdentifier) = [v34 dictationRecognizerMode];
 
-      v92 = v6;
+      v92 = elementCopy;
       v93 = v33;
       v89 = v19;
-      v90 = self;
-      if ((v32 - 4) > 0xFFFFFFFD)
+      selfCopy = self;
+      if ((recognitionLocaleIdentifier - 4) > 0xFFFFFFFD)
       {
-        v36 = 0;
+        doesCurrentLanguageSupportInterWordSpaces = 0;
       }
 
       else
       {
         v35 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-        v36 = [v35 doesCurrentLanguageSupportInterWordSpaces];
+        doesCurrentLanguageSupportInterWordSpaces = [v35 doesCurrentLanguageSupportInterWordSpaces];
       }
 
       v37 = +[VCVocabularyObjC visibleVocabularyEntriesForActiveLocale];
@@ -280,8 +280,8 @@ LABEL_68:
       v106 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v91 = v7;
-      v46 = v7;
+      v91 = stringsCopy;
+      v46 = stringsCopy;
       v47 = [v46 countByEnumeratingWithState:&v103 objects:v112 count:16];
       if (v47)
       {
@@ -297,19 +297,19 @@ LABEL_68:
             }
 
             v51 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:*(*(&v103 + 1) + 8 * j)];
-            if (v36)
+            if (doesCurrentLanguageSupportInterWordSpaces)
             {
               v52 = [v38 copy];
-              [v51 adjustCapsAndSpacingUsingLeadingText:v97 localeIdentifier:v96 vocabularyEntries:v52 spellingGuessesBlock:&__block_literal_global_313];
+              [v51 adjustCapsAndSpacingUsingLeadingText:leadingTextForCurrentSelection localeIdentifier:v96 vocabularyEntries:v52 spellingGuessesBlock:&__block_literal_global_313];
             }
 
-            v53 = [v51 string];
-            v54 = [v98 containsObject:v53];
+            string = [v51 string];
+            v54 = [v98 containsObject:string];
 
             if ((v54 & 1) == 0)
             {
-              v55 = [v51 string];
-              [v98 addObject:v55];
+              string2 = [v51 string];
+              [v98 addObject:string2];
             }
           }
 
@@ -339,22 +339,22 @@ LABEL_68:
             }
 
             v60 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:*(*(&v99 + 1) + 8 * k)];
-            if (v36)
+            if (doesCurrentLanguageSupportInterWordSpaces)
             {
               v61 = [v38 copy];
-              [v60 adjustCapsAndSpacingUsingLeadingText:v97 localeIdentifier:v96 vocabularyEntries:v61 spellingGuessesBlock:&__block_literal_global_315];
+              [v60 adjustCapsAndSpacingUsingLeadingText:leadingTextForCurrentSelection localeIdentifier:v96 vocabularyEntries:v61 spellingGuessesBlock:&__block_literal_global_315];
             }
 
-            v62 = [v60 stringByReplacingNewLinesWithSymbols];
-            v63 = [v62 mutableCopy];
+            stringByReplacingNewLinesWithSymbols = [v60 stringByReplacingNewLinesWithSymbols];
+            v63 = [stringByReplacingNewLinesWithSymbols mutableCopy];
 
-            v64 = [v63 string];
-            v65 = [v98 containsObject:v64];
+            string3 = [v63 string];
+            v65 = [v98 containsObject:string3];
 
             if ((v65 & 1) == 0)
             {
-              v66 = [v63 string];
-              [v98 addObject:v66];
+              string4 = [v63 string];
+              [v98 addObject:string4];
             }
           }
 
@@ -371,9 +371,9 @@ LABEL_68:
       }
 
       v67 = v88;
-      v7 = v91;
-      v6 = v92;
-      self = v90;
+      stringsCopy = v91;
+      elementCopy = v92;
+      self = selfCopy;
       if ([v88 count] >= 0xD)
       {
         v68 = [v88 subarrayWithRange:{0, 12}];
@@ -381,14 +381,14 @@ LABEL_68:
         v67 = v68;
       }
 
-      v20 = v67;
+      array = v67;
     }
 
-    v87 = [v19 stringByReplacingNewLinesWithSymbols];
+    stringByReplacingNewLinesWithSymbols2 = [v19 stringByReplacingNewLinesWithSymbols];
 
     v29 = v98;
-    [(CACCorrectionPresentationManager *)self _showCorrectionsForElement:v6 fromString:v87 withAlternatives:v98 withEmojis:v20 portraitUpRect:v11, v13, v15, v17];
-    v19 = v87;
+    [(CACCorrectionPresentationManager *)self _showCorrectionsForElement:elementCopy fromString:stringByReplacingNewLinesWithSymbols2 withAlternatives:v98 withEmojis:array portraitUpRect:v11, v13, v15, v17];
+    v19 = stringByReplacingNewLinesWithSymbols2;
   }
 
   else
@@ -404,24 +404,24 @@ uint64_t __75__CACCorrectionPresentationManager_showCorrectionsForElement_nBestS
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)hideIfNeededForElements:(id)a3
+- (void)hideIfNeededForElements:(id)elements
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CACCorrectionPresentationManager *)v5 element];
-  if (v6)
+  elementsCopy = elements;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  element = [(CACCorrectionPresentationManager *)selfCopy element];
+  if (element)
   {
-    v7 = [(CACSimpleContentViewManager *)v5 viewController];
+    viewController = [(CACSimpleContentViewManager *)selfCopy viewController];
 
-    if (v7)
+    if (viewController)
     {
-      v8 = [(CACCorrectionPresentationManager *)v5 element];
-      if (([v4 containsObject:v8] & 1) == 0)
+      element2 = [(CACCorrectionPresentationManager *)selfCopy element];
+      if (([elementsCopy containsObject:element2] & 1) == 0)
       {
         v9 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-        v10 = [v9 focusedElement];
-        v11 = [v8 isEqual:v10];
+        focusedElement = [v9 focusedElement];
+        v11 = [element2 isEqual:focusedElement];
 
         if ((v11 & 1) == 0)
         {
@@ -429,59 +429,59 @@ uint64_t __75__CACCorrectionPresentationManager_showCorrectionsForElement_nBestS
           v12[1] = 3221225472;
           v12[2] = __60__CACCorrectionPresentationManager_hideIfNeededForElements___block_invoke;
           v12[3] = &unk_279CEB2D0;
-          v12[4] = v5;
-          [(CACSimpleContentViewManager *)v5 hideAnimated:0 completion:v12];
+          v12[4] = selfCopy;
+          [(CACSimpleContentViewManager *)selfCopy hideAnimated:0 completion:v12];
         }
       }
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)currentlyDisplayedCorrections
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CACSimpleContentViewManager *)self viewController];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  viewController = [(CACSimpleContentViewManager *)self viewController];
+  v5 = viewController;
+  if (viewController)
   {
-    v6 = [v4 alternatives];
-    v7 = [v6 count];
+    alternatives = [viewController alternatives];
+    v7 = [alternatives count];
 
     if (v7)
     {
-      v8 = [v5 alternatives];
-      [v3 addObjectsFromArray:v8];
+      alternatives2 = [v5 alternatives];
+      [array addObjectsFromArray:alternatives2];
     }
 
-    v9 = [v5 emojis];
-    v10 = [v9 count];
+    emojis = [v5 emojis];
+    v10 = [emojis count];
 
     if (v10)
     {
-      v11 = [v5 emojis];
-      [v3 addObjectsFromArray:v11];
+      emojis2 = [v5 emojis];
+      [array addObjectsFromArray:emojis2];
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (void)correctionsPresentationViewController:(id)a3 didSelectItemWithText:(id)a4
+- (void)correctionsPresentationViewController:(id)controller didSelectItemWithText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  controllerCopy = controller;
+  textCopy = text;
+  if (textCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v8 = +[CACEmojiManager sharedManager];
-      [v8 willInsertStringPotentiallyContainingEmojis:v7];
+      [v8 willInsertStringPotentiallyContainingEmojis:textCopy];
 
-      v9 = [(CACCorrectionPresentationManager *)self element];
-      [v9 insertText:v7 asUndoableAction:1];
+      element = [(CACCorrectionPresentationManager *)self element];
+      [element insertText:textCopy asUndoableAction:1];
 
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
@@ -493,7 +493,7 @@ uint64_t __75__CACCorrectionPresentationManager_showCorrectionsForElement_nBestS
   }
 }
 
-- (void)dismissCorrectionsPresentationViewController:(id)a3
+- (void)dismissCorrectionsPresentationViewController:(id)controller
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -503,21 +503,21 @@ uint64_t __75__CACCorrectionPresentationManager_showCorrectionsForElement_nBestS
   [(CACSimpleContentViewManager *)self hideAnimated:1 completion:v3];
 }
 
-- (void)handleAXNotificationData:(void *)a3
+- (void)handleAXNotificationData:(void *)data
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataCopy = data;
+  if (dataCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(CACCorrectionPresentationManager *)self element];
-    [v5 insertText:v4 asUndoableAction:1];
+    element = [(CACCorrectionPresentationManager *)self element];
+    [element insertText:dataCopy asUndoableAction:1];
   }
 
   else
   {
-    v5 = CACLogAccessibility();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    element = CACLogAccessibility();
+    if (os_log_type_enabled(element, OS_LOG_TYPE_ERROR))
     {
-      [(CACCorrectionPresentationManager *)v4 handleAXNotificationData:v5];
+      [(CACCorrectionPresentationManager *)dataCopy handleAXNotificationData:element];
     }
   }
 }

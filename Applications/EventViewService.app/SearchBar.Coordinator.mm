@@ -1,19 +1,19 @@
 @interface SearchBar.Coordinator
 - (_TtCV16EventViewService9SearchBar11Coordinator)init;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
 @end
 
 @implementation SearchBar.Coordinator
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1000024C4(&qword_100226588);
   Binding.wrappedValue.setter();
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
   v3 = objc_opt_self();
   v5[4] = sub_1000F5624;

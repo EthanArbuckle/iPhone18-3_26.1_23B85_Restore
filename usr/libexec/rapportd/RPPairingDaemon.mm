@@ -1,11 +1,11 @@
 @interface RPPairingDaemon
 + (_TtC8rapportd15RPPairingDaemon)shared;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (OS_dispatch_queue)dispatchQueue;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)activate;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
+- (void)setDispatchQueue:(id)queue;
 @end
 
 @implementation RPPairingDaemon
@@ -29,18 +29,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v5 = OBJC_IVAR____TtC8rapportd15RPPairingDaemon_dispatchQueue;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = queue;
+  queueCopy = queue;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v3 = self;
+  selfCopy = self;
   _s8rapportd15RPPairingDaemonC20descriptionWithLevelySSs5Int32VF_0();
 
   v4 = String._bridgeToObjectiveC()();
@@ -50,22 +50,22 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   RPPairingDaemon.activate()();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   RPPairingDaemon.invalidate()();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000E90E4(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_1000E90E4(connectionCopy);
 
   return v9 & 1;
 }

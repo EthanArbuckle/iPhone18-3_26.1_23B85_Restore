@@ -1,11 +1,11 @@
 @interface GTMTLReplaySharedBlitBuffer
-- (BOOL)_commitCommandBufferWithLog:(id)a3 sync:(GTMTLCoreSync *)a4;
-- (GTMTLReplaySharedBlitBuffer)bufferWithLength:(unint64_t)a3 alignment:(unint64_t)a4;
-- (GTMTLReplaySharedBlitBuffer)initWithCommandQueue:(id)a3 resourcePool:(id)a4 sync:(GTMTLCoreSync *)a5;
+- (BOOL)_commitCommandBufferWithLog:(id)log sync:(GTMTLCoreSync *)sync;
+- (GTMTLReplaySharedBlitBuffer)bufferWithLength:(unint64_t)length alignment:(unint64_t)alignment;
+- (GTMTLReplaySharedBlitBuffer)initWithCommandQueue:(id)queue resourcePool:(id)pool sync:(GTMTLCoreSync *)sync;
 - (id)accelerationStructureCommandEncoder;
 - (id)blitCommandEncoder;
-- (id)commitCommandBufferAndWaitWithLog:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
+- (id)commitCommandBufferAndWaitWithLog:(id)log;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
 - (void)clearCommandBuffer;
 - (void)dealloc;
 @end
@@ -19,11 +19,11 @@
   SharedCommandBuffer_clearCommandBuffer(&self->_commandBuffer);
 }
 
-- (BOOL)_commitCommandBufferWithLog:(id)a3 sync:(GTMTLCoreSync *)a4
+- (BOOL)_commitCommandBufferWithLog:(id)log sync:(GTMTLCoreSync *)sync
 {
-  v6 = a3;
+  logCopy = log;
   pthread_mutex_lock(&SharedBlitLock);
-  [v6 logSharedCommandBuffer:self->_commandBuffer.commandBuffer];
+  [logCopy logSharedCommandBuffer:self->_commandBuffer.commandBuffer];
 
   if (self->_commandBuffer.commandBuffer)
   {
@@ -31,9 +31,9 @@
     commandEncoder = self->_commandBuffer.commandEncoder;
     self->_commandBuffer.commandEncoder = 0;
 
-    add = atomic_fetch_add(&a4->var1, 1uLL);
+    add = atomic_fetch_add(&sync->var1, 1uLL);
     commandBuffer = self->_commandBuffer.commandBuffer;
-    v10 = a4->var0;
+    v10 = sync->var0;
     [(MTLCommandBuffer *)commandBuffer encodeSignalEvent:v10 value:add];
   }
 
@@ -53,18 +53,18 @@
   return v12 != 0;
 }
 
-- (id)commitCommandBufferAndWaitWithLog:(id)a3
+- (id)commitCommandBufferAndWaitWithLog:(id)log
 {
   v5 = self->_commandBuffer.commandBuffer;
-  [(GTMTLReplaySharedBlitBuffer *)self commitCommandBufferWithLog:a3];
+  [(GTMTLReplaySharedBlitBuffer *)self commitCommandBufferWithLog:log];
   [(MTLCommandBuffer *)v5 waitUntilCompleted];
 
   return v5;
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   p_commandEncoder = &self->_commandBuffer.commandEncoder;
   sync = self->_sync;
   v7 = self->_commandBuffer.commandEncoder;
@@ -75,7 +75,7 @@
   }
 
   v9 = SharedCommandBuffer_commandBuffer(&self->_commandBuffer, sync);
-  v10 = [v9 renderCommandEncoderWithDescriptor:v4];
+  v10 = [v9 renderCommandEncoderWithDescriptor:descriptorCopy];
   objc_storeStrong(p_commandEncoder, v10);
 
   return v10;
@@ -88,22 +88,22 @@
   v4 = self->_commandBuffer.commandEncoder;
   if (v4)
   {
-    v5 = v4;
+    accelerationStructureCommandEncoder = v4;
     if (([(MTLCommandEncoder *)v4 conformsToProtocol:&unk_2860F8868]& 1) != 0)
     {
       goto LABEL_5;
     }
 
-    [v5 endEncoding];
+    [accelerationStructureCommandEncoder endEncoding];
   }
 
   v6 = SharedCommandBuffer_commandBuffer((p_commandEncoder - 2), sync);
-  v5 = [v6 accelerationStructureCommandEncoder];
-  objc_storeStrong(p_commandEncoder, v5);
+  accelerationStructureCommandEncoder = [v6 accelerationStructureCommandEncoder];
+  objc_storeStrong(p_commandEncoder, accelerationStructureCommandEncoder);
 
 LABEL_5:
 
-  return v5;
+  return accelerationStructureCommandEncoder;
 }
 
 - (id)blitCommandEncoder
@@ -131,35 +131,35 @@ LABEL_5:
   return v5;
 }
 
-- (GTMTLReplaySharedBlitBuffer)bufferWithLength:(unint64_t)a3 alignment:(unint64_t)a4
+- (GTMTLReplaySharedBlitBuffer)bufferWithLength:(unint64_t)length alignment:(unint64_t)alignment
 {
-  v7 = [(NSMutableArray *)self->_bufferArray.retainArray lastObject];
-  if (v7)
+  lastObject = [(NSMutableArray *)self->_bufferArray.retainArray lastObject];
+  if (lastObject)
   {
-    v8 = v7;
-    v9 = (a4 + self->_bufferArray.bufferOffset - 1) & -a4;
-    v10 = [v7 buffer];
-    v11 = [v10 length];
+    v8 = lastObject;
+    v9 = (alignment + self->_bufferArray.bufferOffset - 1) & -alignment;
+    buffer = [lastObject buffer];
+    v11 = [buffer length];
 
-    if (v11 >= v9 + a3)
+    if (v11 >= v9 + length)
     {
       goto LABEL_7;
     }
   }
 
-  v12 = [(GTMTLReplaySharedResourcePool *)self->_bufferArray.resourcePool defaultBufferCapacity];
-  v13 = a3;
-  if (v12 > a3)
+  defaultBufferCapacity = [(GTMTLReplaySharedResourcePool *)self->_bufferArray.resourcePool defaultBufferCapacity];
+  lengthCopy = length;
+  if (defaultBufferCapacity > length)
   {
-    v13 = [(GTMTLReplaySharedResourcePool *)self->_bufferArray.resourcePool defaultBufferCapacity];
+    lengthCopy = [(GTMTLReplaySharedResourcePool *)self->_bufferArray.resourcePool defaultBufferCapacity];
   }
 
-  v8 = [(GTMTLReplaySharedResourcePool *)self->_bufferArray.resourcePool newBufferHeapWithLength:v13];
+  v8 = [(GTMTLReplaySharedResourcePool *)self->_bufferArray.resourcePool newBufferHeapWithLength:lengthCopy];
   [(NSMutableArray *)self->_bufferArray.retainArray addObject:v8];
   v9 = 0;
 LABEL_7:
-  self->_bufferArray.bufferOffset = v9 + a3;
-  v14 = [[GTMTLReplaySharedBufferRange alloc] initWithHeap:v8 range:v9, a3];
+  self->_bufferArray.bufferOffset = v9 + length;
+  v14 = [[GTMTLReplaySharedBufferRange alloc] initWithHeap:v8 range:v9, length];
 
   return v14;
 }
@@ -181,16 +181,16 @@ LABEL_7:
   [(GTMTLReplaySharedBlitBuffer *)&v6 dealloc];
 }
 
-- (GTMTLReplaySharedBlitBuffer)initWithCommandQueue:(id)a3 resourcePool:(id)a4 sync:(GTMTLCoreSync *)a5
+- (GTMTLReplaySharedBlitBuffer)initWithCommandQueue:(id)queue resourcePool:(id)pool sync:(GTMTLCoreSync *)sync
 {
-  v9 = a3;
-  v10 = a4;
+  queueCopy = queue;
+  poolCopy = pool;
   v19.receiver = self;
   v19.super_class = GTMTLReplaySharedBlitBuffer;
   v11 = [(GTMTLReplaySharedBlitBuffer *)&v19 init];
   if (v11)
   {
-    v12 = v10;
+    v12 = poolCopy;
     v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
 
     resourcePool = v11->_bufferArray.resourcePool;
@@ -200,7 +200,7 @@ LABEL_7:
     v11->_bufferArray.retainArray = v13;
 
     v11->_bufferArray.bufferOffset = 0;
-    objc_storeStrong(&v11->_commandBuffer.commandQueue, a3);
+    objc_storeStrong(&v11->_commandBuffer.commandQueue, queue);
     commandBuffer = v11->_commandBuffer.commandBuffer;
     v11->_commandBuffer.commandBuffer = 0;
 
@@ -208,7 +208,7 @@ LABEL_7:
     v11->_commandBuffer.commandEncoder = 0;
 
     v11->_commandBuffer.sync = 0;
-    v11->_sync = a5;
+    v11->_sync = sync;
   }
 
   return v11;

@@ -1,7 +1,7 @@
 @interface TUICompactVariantCell
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)backgroundInsets;
-- (id)fontForSymbolStyle:(id)a3;
+- (id)fontForSymbolStyle:(id)style;
 @end
 
 @implementation TUICompactVariantCell
@@ -28,15 +28,15 @@
   return result;
 }
 
-- (id)fontForSymbolStyle:(id)a3
+- (id)fontForSymbolStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 fontName];
-  [v3 fontWeight];
+  styleCopy = style;
+  fontName = [styleCopy fontName];
+  [styleCopy fontWeight];
   v6 = v5;
-  [v3 fontSize];
-  v7 = [v4 isEqualToString:*MEMORY[0x1E69DDE80]];
-  v8 = [v4 isEqualToString:*MEMORY[0x1E69DDE78]];
+  [styleCopy fontSize];
+  v7 = [fontName isEqualToString:*MEMORY[0x1E69DDE80]];
+  v8 = [fontName isEqualToString:*MEMORY[0x1E69DDE78]];
   if (v7)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0 weight:v6];
@@ -46,15 +46,15 @@
   {
     if (v8)
     {
-      [v3 fontWidth];
+      [styleCopy fontWidth];
       v11 = v10;
-      v12 = [v3 keycapsFallback];
-      v13 = UIKBCreateCTFont(v4, v12, 14.0, v6, v11);
+      keycapsFallback = [styleCopy keycapsFallback];
+      v13 = UIKBCreateCTFont(fontName, keycapsFallback, 14.0, v6, v11);
 
       goto LABEL_7;
     }
 
-    v9 = [MEMORY[0x1E69DB878] fontWithName:v4 size:4096 traits:14.0];
+    v9 = [MEMORY[0x1E69DB878] fontWithName:fontName size:4096 traits:14.0];
   }
 
   v13 = v9;

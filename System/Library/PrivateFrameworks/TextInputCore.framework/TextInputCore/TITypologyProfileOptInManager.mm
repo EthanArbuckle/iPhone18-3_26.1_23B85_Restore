@@ -1,15 +1,15 @@
 @interface TITypologyProfileOptInManager
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 - (BOOL)_isProfileInstalledAndUserEnabled;
 - (BOOL)devicePasscodeSet;
 - (BOOL)iCloudAccountAvailable;
 - (BOOL)isTypologyProfileInstalled;
 - (TITypologyProfileOptInManager)init;
-- (id)notificationDetailsForType:(int64_t)a3;
+- (id)notificationDetailsForType:(int64_t)type;
 - (void)_askUserToAllow;
 - (void)_launchVPNAndDeviceManagementSettings;
-- (void)dismissDialogWithCompletionHandler:(id)a3;
-- (void)presentDialogForType:(int64_t)a3 withCompletionHandler:(id)a4;
+- (void)dismissDialogWithCompletionHandler:(id)handler;
+- (void)presentDialogForType:(int64_t)type withCompletionHandler:(id)handler;
 @end
 
 @implementation TITypologyProfileOptInManager
@@ -17,11 +17,11 @@
 - (BOOL)_isProfileInstalledAndUserEnabled
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 BOOLForKey:54];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v4 = [mEMORY[0x277D6F470] BOOLForKey:54];
 
-  v5 = TITypologyDiagnosticExtensionOSLogFacility();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
+  typologyProfileState9 = TITypologyDiagnosticExtensionOSLogFacility();
+  v6 = os_log_type_enabled(typologyProfileState9, OS_LOG_TYPE_DEBUG);
   if (!v4)
   {
     if (v6)
@@ -29,7 +29,7 @@
       v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s %@", "-[TITypologyProfileOptInManager _isProfileInstalledAndUserEnabled]", @"CustomerTypologyEnabledByDiagnosticExtension is false"];
       *buf = 138412290;
       v50 = v32;
-      _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+      _os_log_debug_impl(&dword_22CA55000, typologyProfileState9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
     if ([(TITypologyProfileOptInManager *)self isTypologyProfileInstalled])
@@ -71,30 +71,30 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v12 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      typologyProfileState = [(TITypologyProfileOptInManager *)self typologyProfileState];
 
-      if (!v12)
+      if (!typologyProfileState)
       {
         v13 = +[TITypologyProfileState typologyProfileStateFromPersistedState];
         [(TITypologyProfileOptInManager *)self setTypologyProfileState:v13];
       }
 
-      v14 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      typologyProfileState2 = [(TITypologyProfileOptInManager *)self typologyProfileState];
 
-      if (!v14)
+      if (!typologyProfileState2)
       {
         v15 = [TITypologyProfileState alloc];
         v16 = [MEMORY[0x277CBEAA8] now];
         v17 = [(TITypologyProfileState *)v15 initWithProfileInstallationDate:v16];
         [(TITypologyProfileOptInManager *)self setTypologyProfileState:v17];
 
-        v18 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-        [v18 persistState];
+        typologyProfileState3 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+        [typologyProfileState3 persistState];
       }
 
-      v19 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      typologyProfileState4 = [(TITypologyProfileOptInManager *)self typologyProfileState];
 
-      if (!v19)
+      if (!typologyProfileState4)
       {
         v8 = TITypologyProfileStateLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -106,23 +106,23 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v20 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-      v21 = [v20 userResponse];
-      v22 = [v21 isEqualToString:@"Enable"];
+      typologyProfileState5 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      userResponse = [typologyProfileState5 userResponse];
+      v22 = [userResponse isEqualToString:@"Enable"];
 
-      v23 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-      v24 = v23;
+      typologyProfileState6 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      v24 = typologyProfileState6;
       if (v22)
       {
-        v25 = [v23 userNotificationDate];
-        v26 = [v25 dateByAddingTimeInterval:259200.0];
+        userNotificationDate = [typologyProfileState6 userNotificationDate];
+        v26 = [userNotificationDate dateByAddingTimeInterval:259200.0];
 
-        v5 = [MEMORY[0x277CBEAA8] now];
-        v27 = [v26 laterDate:v5];
+        typologyProfileState9 = [MEMORY[0x277CBEAA8] now];
+        v27 = [v26 laterDate:typologyProfileState9];
 
         v28 = TITypologyProfileStateLog();
         v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-        LOBYTE(v5) = v27 == v26;
+        LOBYTE(typologyProfileState9) = v27 == v26;
         if (v27 == v26)
         {
           if (v29)
@@ -144,15 +144,15 @@ LABEL_44:
         goto LABEL_21;
       }
 
-      v33 = [v23 userResponse];
-      v34 = [v33 isEqualToString:@"NotNow"];
+      userResponse2 = [typologyProfileState6 userResponse];
+      v34 = [userResponse2 isEqualToString:@"NotNow"];
 
-      v35 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-      v36 = v35;
+      typologyProfileState7 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      v36 = typologyProfileState7;
       if (v34)
       {
-        v37 = [v35 userNotificationDate];
-        v38 = [v37 dateByAddingTimeInterval:600.0];
+        userNotificationDate2 = [typologyProfileState7 userNotificationDate];
+        v38 = [userNotificationDate2 dateByAddingTimeInterval:600.0];
 
         v39 = [MEMORY[0x277CBEAA8] now];
         v40 = [v38 earlierDate:v39];
@@ -182,8 +182,8 @@ LABEL_44:
         goto LABEL_20;
       }
 
-      v43 = [v35 userResponse];
-      v44 = [v43 isEqualToString:@"None"];
+      userResponse3 = [typologyProfileState7 userResponse];
+      v44 = [userResponse3 isEqualToString:@"None"];
 
       if (v44)
       {
@@ -198,9 +198,9 @@ LABEL_44:
         goto LABEL_20;
       }
 
-      v46 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-      v47 = [v46 userResponse];
-      v48 = [v47 isEqualToString:@"Disabled"];
+      typologyProfileState8 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      userResponse4 = [typologyProfileState8 userResponse];
+      v48 = [userResponse4 isEqualToString:@"Disabled"];
 
       if (v48)
       {
@@ -218,9 +218,9 @@ LABEL_44:
 
     else
     {
-      v5 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+      typologyProfileState9 = [(TITypologyProfileOptInManager *)self typologyProfileState];
 
-      if (!v5)
+      if (!typologyProfileState9)
       {
         goto LABEL_21;
       }
@@ -230,7 +230,7 @@ LABEL_44:
     }
 
 LABEL_20:
-    LOBYTE(v5) = 0;
+    LOBYTE(typologyProfileState9) = 0;
     goto LABEL_21;
   }
 
@@ -239,13 +239,13 @@ LABEL_20:
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s %@", "-[TITypologyProfileOptInManager _isProfileInstalledAndUserEnabled]", @"CustomerTypologyEnabledByDiagnosticExtension is true"];
     *buf = 138412290;
     v50 = v31;
-    _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+    _os_log_debug_impl(&dword_22CA55000, typologyProfileState9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  LOBYTE(v5) = 1;
+  LOBYTE(typologyProfileState9) = 1;
 LABEL_21:
   v10 = *MEMORY[0x277D85DE8];
-  return v5;
+  return typologyProfileState9;
 }
 
 - (BOOL)isTypologyProfileInstalled
@@ -255,17 +255,17 @@ LABEL_21:
     dispatch_once(&TIGetTypologyEnabledByProfileValue_onceToken, &__block_literal_global_8766);
   }
 
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:@"TypologyEnabledByProfile"];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] valueForPreferenceKey:@"TypologyEnabledByProfile"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(mEMORY[0x277D6F470]) = [v3 BOOLValue];
+  return mEMORY[0x277D6F470];
 }
 
-- (void)dismissDialogWithCompletionHandler:(id)a3
+- (void)dismissDialogWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v3 = v4;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   TIDispatchAsync();
 }
 
@@ -286,9 +286,9 @@ uint64_t __68__TITypologyProfileOptInManager_dismissDialogWithCompletionHandler_
   return v3();
 }
 
-- (id)notificationDetailsForType:(int64_t)a3
+- (id)notificationDetailsForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
     v4 = 0;
@@ -306,42 +306,42 @@ uint64_t __68__TITypologyProfileOptInManager_dismissDialogWithCompletionHandler_
     v6 = [objc_opt_class() localizedStringForKey:@"TYPOLOGY_PROFILE_OPT_IN_REMOVE_PROFILE"];
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [v8 setObject:v7 forKey:*MEMORY[0x277CBF188]];
-  [v8 setObject:v3 forKey:*MEMORY[0x277CBF198]];
-  [v8 setObject:v6 forKey:*MEMORY[0x277CBF1E8]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v7 forKey:*MEMORY[0x277CBF188]];
+  [dictionary setObject:v3 forKey:*MEMORY[0x277CBF198]];
+  [dictionary setObject:v6 forKey:*MEMORY[0x277CBF1E8]];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v8 setObject:v9 forKey:@"DismissOnLock"];
+  [dictionary setObject:v9 forKey:@"DismissOnLock"];
 
   if (v5)
   {
-    [v8 setObject:v5 forKey:*MEMORY[0x277CBF218]];
+    [dictionary setObject:v5 forKey:*MEMORY[0x277CBF218]];
   }
 
   if (v4)
   {
-    [v8 setObject:v4 forKey:*MEMORY[0x277CBF1C0]];
+    [dictionary setObject:v4 forKey:*MEMORY[0x277CBF1C0]];
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v8 setObject:v10 forKey:@"SBUserNotificationAllowMenuButtonDismissal"];
+  [dictionary setObject:v10 forKey:@"SBUserNotificationAllowMenuButtonDismissal"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v8 setObject:v11 forKey:@"SBUserNotificationForcesModalAlertAppearance"];
+  [dictionary setObject:v11 forKey:@"SBUserNotificationForcesModalAlertAppearance"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v8 setObject:v12 forKey:@"SBUserNotificationDisplayActionButtonOnLockScreen"];
+  [dictionary setObject:v12 forKey:@"SBUserNotificationDisplayActionButtonOnLockScreen"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v8 setObject:v13 forKey:*MEMORY[0x277CBF1B0]];
+  [dictionary setObject:v13 forKey:*MEMORY[0x277CBF1B0]];
 
-  return v8;
+  return dictionary;
 }
 
-- (void)presentDialogForType:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)presentDialogForType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   TIDispatchAsync();
 }
 
@@ -398,10 +398,10 @@ void __76__TITypologyProfileOptInManager_presentDialogForType_withCompletionHand
 
 - (void)_launchVPNAndDeviceManagementSettings
 {
-  v2 = [NSClassFromString(&cfstr_Lsapplicationw.isa) defaultWorkspace];
+  defaultWorkspace = [NSClassFromString(&cfstr_Lsapplicationw.isa) defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=General&path=ManagedConfigurationList"];
   v4 = 0;
-  [v2 openSensitiveURL:v3 withOptions:0 error:&v4];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0 error:&v4];
 }
 
 - (TITypologyProfileOptInManager)init
@@ -429,14 +429,14 @@ void __76__TITypologyProfileOptInManager_presentDialogForType_withCompletionHand
   }
 
   v4 = [TITypologyProfileState alloc];
-  v5 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-  v6 = [v5 profileInstallationDate];
+  typologyProfileState = [(TITypologyProfileOptInManager *)self typologyProfileState];
+  profileInstallationDate = [typologyProfileState profileInstallationDate];
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [(TITypologyProfileState *)v4 initWithProfileInstallationDate:v6 userNotificationDate:v7 userResponse:@"None"];
+  v8 = [(TITypologyProfileState *)v4 initWithProfileInstallationDate:profileInstallationDate userNotificationDate:v7 userResponse:@"None"];
   [(TITypologyProfileOptInManager *)self setTypologyProfileState:v8];
 
-  v9 = [(TITypologyProfileOptInManager *)self typologyProfileState];
-  [v9 persistState];
+  typologyProfileState2 = [(TITypologyProfileOptInManager *)self typologyProfileState];
+  [typologyProfileState2 persistState];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -543,9 +543,9 @@ LABEL_18:
 
 - (BOOL)iCloudAccountAvailable
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 ubiquityIdentityToken];
-  v4 = v3 != 0;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  ubiquityIdentityToken = [defaultManager ubiquityIdentityToken];
+  v4 = ubiquityIdentityToken != 0;
 
   return v4;
 }
@@ -579,14 +579,14 @@ LABEL_18:
   return __getMKBGetDeviceLockStateSymbolLoc_block_invoke(v4);
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Tiassistantset.isa)];
   v5 = MEMORY[0x277CCA8D8];
-  v6 = [v4 localizations];
-  v7 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v8 = [v5 preferredLocalizationsFromArray:v6 forPreferences:v7];
+  localizations = [v4 localizations];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v8 = [v5 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
 
   if (![v8 count])
   {
@@ -597,12 +597,12 @@ LABEL_18:
   v10 = [v4 pathForResource:@"TypologyProfileOptIn" ofType:@"strings" inDirectory:0 forLocalization:v9];
 
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v10];
-  v12 = [v11 objectForKey:v3];
+  v12 = [v11 objectForKey:keyCopy];
 
   if (!v12)
   {
 LABEL_3:
-    v12 = [v4 localizedStringForKey:v3 value:&stru_283FDFAF8 table:@"TypologyProfileOptIn"];
+    v12 = [v4 localizedStringForKey:keyCopy value:&stru_283FDFAF8 table:@"TypologyProfileOptIn"];
   }
 
   return v12;

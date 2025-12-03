@@ -1,10 +1,10 @@
 @interface NPHCSCellularDataUsageDataSource
 - (CoreTelephonyClient)coreTelephonyClient;
 - (OS_dispatch_queue)coreTelephonyQueue;
-- (id)_dataUsageStringForBytesUsed:(unint64_t)a3;
-- (void)_addTotalUsageItemsToDataUsageArray:(id)a3 deviceDataUsage:(id)a4 completion:(id)a5;
-- (void)_getappDataUsageArrayfromTempArray:(id)a3 forSystemServices:(BOOL)a4 withCompletion:(id)a5;
-- (void)getCellularDataUsage:(id)a3;
+- (id)_dataUsageStringForBytesUsed:(unint64_t)used;
+- (void)_addTotalUsageItemsToDataUsageArray:(id)array deviceDataUsage:(id)usage completion:(id)completion;
+- (void)_getappDataUsageArrayfromTempArray:(id)array forSystemServices:(BOOL)services withCompletion:(id)completion;
+- (void)getCellularDataUsage:(id)usage;
 @end
 
 @implementation NPHCSCellularDataUsageDataSource
@@ -15,8 +15,8 @@
   if (!coreTelephonyClient)
   {
     v4 = [CoreTelephonyClient alloc];
-    v5 = [(NPHCSCellularDataUsageDataSource *)self coreTelephonyQueue];
-    v6 = [v4 initWithQueue:v5];
+    coreTelephonyQueue = [(NPHCSCellularDataUsageDataSource *)self coreTelephonyQueue];
+    v6 = [v4 initWithQueue:coreTelephonyQueue];
     v7 = self->_coreTelephonyClient;
     self->_coreTelephonyClient = v6;
 
@@ -41,24 +41,24 @@
   return coreTelephonyQueue;
 }
 
-- (void)getCellularDataUsage:(id)a3
+- (void)getCellularDataUsage:(id)usage
 {
-  v4 = a3;
-  v5 = [(NPHCSCellularDataUsageDataSource *)self coreTelephonyClient];
+  usageCopy = usage;
+  coreTelephonyClient = [(NPHCSCellularDataUsageDataSource *)self coreTelephonyClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4060;
   v7[3] = &unk_1C720;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dataUsageForLastPeriodsOnActivePairedDevice:1 completion:v7];
+  v8 = usageCopy;
+  v6 = usageCopy;
+  [coreTelephonyClient dataUsageForLastPeriodsOnActivePairedDevice:1 completion:v7];
 }
 
-- (void)_getappDataUsageArrayfromTempArray:(id)a3 forSystemServices:(BOOL)a4 withCompletion:(id)a5
+- (void)_getappDataUsageArrayfromTempArray:(id)array forSystemServices:(BOOL)services withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  arrayCopy = array;
+  completionCopy = completion;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -69,7 +69,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v7;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v10)
   {
@@ -89,8 +89,8 @@
         [(NPHCSAppCellularDataUsageItem *)v14 setUsageDisplayString:v15];
 
         v16 = v31[5];
-        v17 = [v13 bundleId];
-        [v16 setValue:v14 forKey:v17];
+        bundleId = [v13 bundleId];
+        [v16 setValue:v14 forKey:bundleId];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v26 objects:v36 count:16];
@@ -99,50 +99,50 @@
     while (v10);
   }
 
-  if (a4)
+  if (services)
   {
-    v18 = [v31[5] allValues];
-    v8[2](v8, v18);
+    allValues = [v31[5] allValues];
+    completionCopy[2](completionCopy, allValues);
   }
 
   else
   {
-    v19 = [(NPHCSCellularDataUsageDataSource *)self coreTelephonyClient];
-    v20 = [v31[5] allKeys];
-    v21 = [NSSet setWithArray:v20];
+    coreTelephonyClient = [(NPHCSCellularDataUsageDataSource *)self coreTelephonyClient];
+    allKeys = [v31[5] allKeys];
+    v21 = [NSSet setWithArray:allKeys];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_4668;
     v23[3] = &unk_1C748;
     v25 = &v30;
-    v24 = v8;
-    [v19 getRemotePolicies:v21 completion:v23];
+    v24 = completionCopy;
+    [coreTelephonyClient getRemotePolicies:v21 completion:v23];
 
-    v18 = v24;
+    allValues = v24;
   }
 
   _Block_object_dispose(&v30, 8);
 }
 
-- (void)_addTotalUsageItemsToDataUsageArray:(id)a3 deviceDataUsage:(id)a4 completion:(id)a5
+- (void)_addTotalUsageItemsToDataUsageArray:(id)array deviceDataUsage:(id)usage completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  usageCopy = usage;
+  completionCopy = completion;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = sub_4650;
   v50 = sub_4660;
-  v51 = [v8 mutableCopy];
-  v11 = [v9 totalDataUsedForPeriod:0];
-  v12 = [v11 native];
+  v51 = [arrayCopy mutableCopy];
+  v11 = [usageCopy totalDataUsedForPeriod:0];
+  native = [v11 native];
 
-  v13 = [v12 cellularHome];
-  if ([v12 cellularRoaming] + v13)
+  cellularHome = [native cellularHome];
+  if ([native cellularRoaming] + cellularHome)
   {
     v14 = objc_alloc_init(NPHCSAppCellularDataUsageItem);
-    -[NPHCSAppCellularDataUsageItem setBytesUsed:](v14, "setBytesUsed:", [v12 cellularHome] + objc_msgSend(v12, "cellularRoaming"));
+    -[NPHCSAppCellularDataUsageItem setBytesUsed:](v14, "setBytesUsed:", [native cellularHome] + objc_msgSend(native, "cellularRoaming"));
     v15 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"CELLULAR_DATA_USAGE_CURRENT_PERIOD" value:&stru_1CD90 table:0];
     [(NPHCSAppCellularDataUsageItem *)v14 setDisplayName:v16];
@@ -154,11 +154,11 @@
     [v47[5] addObject:v14];
   }
 
-  v18 = [v9 totalUninstalledAppDataUsedForPeriod:0];
-  v19 = [v18 native];
+  v18 = [usageCopy totalUninstalledAppDataUsedForPeriod:0];
+  native2 = [v18 native];
 
-  v20 = [v19 cellularHome];
-  v21 = &v20[[v19 cellularRoaming]];
+  cellularHome2 = [native2 cellularHome];
+  v21 = &cellularHome2[[native2 cellularRoaming]];
   if (v21)
   {
     v22 = objc_alloc_init(NPHCSAppCellularDataUsageItem);
@@ -173,11 +173,11 @@
     [v47[5] addObject:v22];
   }
 
-  v26 = [v9 totalSystemServiceDataUsedForPeriod:0];
-  v27 = [v26 native];
+  v26 = [usageCopy totalSystemServiceDataUsedForPeriod:0];
+  native3 = [v26 native];
 
-  v28 = [v27 cellularHome];
-  v29 = &v28[[v27 cellularRoaming]];
+  cellularHome3 = [native3 cellularHome];
+  v29 = &cellularHome3[[native3 cellularRoaming]];
   if (v29)
   {
     v40 = 0;
@@ -194,7 +194,7 @@
     v32 = -[NPHCSCellularDataUsageDataSource _dataUsageStringForBytesUsed:](self, "_dataUsageStringForBytesUsed:", [v41[5] bytesUsed]);
     [v41[5] setUsageDisplayString:v32];
 
-    v33 = [v9 systemServiceDataUsageForPeriod:0];
+    v33 = [usageCopy systemServiceDataUsageForPeriod:0];
     v34 = nph_general_log();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
@@ -209,7 +209,7 @@
     v36[3] = &unk_1C770;
     v38 = &v40;
     v39 = &v46;
-    v37 = v10;
+    v37 = completionCopy;
     [(NPHCSCellularDataUsageDataSource *)self _getappDataUsageArrayfromTempArray:v33 forSystemServices:1 withCompletion:v36];
 
     _Block_object_dispose(&v40, 8);
@@ -218,13 +218,13 @@
   else
   {
     v35 = [v47[5] copy];
-    (*(v10 + 2))(v10, v35);
+    (*(completionCopy + 2))(completionCopy, v35);
   }
 
   _Block_object_dispose(&v46, 8);
 }
 
-- (id)_dataUsageStringForBytesUsed:(unint64_t)a3
+- (id)_dataUsageStringForBytesUsed:(unint64_t)used
 {
   if (qword_22AD0 != -1)
   {
@@ -233,7 +233,7 @@
 
   v4 = qword_22AC8;
 
-  return [v4 stringFromByteCount:a3];
+  return [v4 stringFromByteCount:used];
 }
 
 @end

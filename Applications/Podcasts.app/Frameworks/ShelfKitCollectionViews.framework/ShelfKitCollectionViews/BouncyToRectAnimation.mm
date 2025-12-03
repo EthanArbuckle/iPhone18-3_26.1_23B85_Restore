@@ -1,17 +1,17 @@
 @interface BouncyToRectAnimation
 - (_TtC23ShelfKitCollectionViews21BouncyToRectAnimation)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BouncyToRectAnimation
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1D4938(0);
-  sub_1D5D88(a3);
-  sub_1D701C(a3);
+  sub_1D5D88(transition);
+  sub_1D701C(transition);
   swift_unknownObjectRelease();
 }
 

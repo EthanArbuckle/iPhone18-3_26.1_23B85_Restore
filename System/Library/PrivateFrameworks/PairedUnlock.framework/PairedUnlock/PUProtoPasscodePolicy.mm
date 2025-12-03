@@ -1,12 +1,12 @@
 @interface PUProtoPasscodePolicy
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PUProtoPasscodePolicy
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PUProtoPasscodePolicy;
   v3 = [(PUProtoPasscodePolicy *)&v7 description];
-  v4 = [(PUProtoPasscodePolicy *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PUProtoPasscodePolicy *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -37,11 +37,11 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   modificationAllowed = self->_modificationAllowed;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteBOOLField();
   if (*&self->_has)
   {
@@ -50,19 +50,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 12) = self->_modificationAllowed;
+  *(to + 12) = self->_modificationAllowed;
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_minimumLength;
-    *(a3 + 16) |= 1u;
+    *(to + 2) = self->_minimumLength;
+    *(to + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 12) = self->_modificationAllowed;
   if (*&self->_has)
   {
@@ -73,34 +73,34 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
-  v5 = *(v4 + 12);
+  v5 = *(equalCopy + 12);
   if (self->_modificationAllowed)
   {
-    if ((*(v4 + 12) & 1) == 0)
+    if ((*(equalCopy + 12) & 1) == 0)
     {
       goto LABEL_10;
     }
   }
 
-  else if (*(v4 + 12))
+  else if (*(equalCopy + 12))
   {
 LABEL_10:
     v6 = 0;
     goto LABEL_11;
   }
 
-  v6 = (*(v4 + 16) & 1) == 0;
+  v6 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_minimumLength != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_minimumLength != *(equalCopy + 2))
     {
       goto LABEL_10;
     }
@@ -128,12 +128,12 @@ LABEL_11:
   return v2 ^ (2654435761 * self->_modificationAllowed);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_modificationAllowed = *(a3 + 12);
-  if (*(a3 + 16))
+  self->_modificationAllowed = *(from + 12);
+  if (*(from + 16))
   {
-    self->_minimumLength = *(a3 + 2);
+    self->_minimumLength = *(from + 2);
     *&self->_has |= 1u;
   }
 }

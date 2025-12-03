@@ -2,9 +2,9 @@
 - (RTEventAgent)init;
 - (void)createConnection;
 - (void)dealloc;
-- (void)launchDaemonWithRestorationIdentifier:(id)a3 reply:(id)a4;
+- (void)launchDaemonWithRestorationIdentifier:(id)identifier reply:(id)reply;
 - (void)logClients;
-- (void)onEventCallback:(int64_t)a3 token:(unint64_t)a4 event:(id)a5;
+- (void)onEventCallback:(int64_t)callback token:(unint64_t)token event:(id)event;
 @end
 
 @implementation RTEventAgent
@@ -24,23 +24,23 @@
 
 - (void)createConnection
 {
-  v3 = [(RTEventAgent *)self connection];
-  [v3 invalidate];
+  connection = [(RTEventAgent *)self connection];
+  [connection invalidate];
 
   v4 = [NSXPCConnection alloc];
   v5 = [v4 initWithMachServiceName:RTMachServiceEvent options:4096];
   [(RTEventAgent *)self setConnection:v5];
 
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RTEventAgentPluginProtocol];
-  v7 = [(RTEventAgent *)self connection];
-  [v7 setExportedInterface:v6];
+  connection2 = [(RTEventAgent *)self connection];
+  [connection2 setExportedInterface:v6];
 
-  v8 = [(RTEventAgent *)self connection];
-  [v8 setExportedObject:self];
+  connection3 = [(RTEventAgent *)self connection];
+  [connection3 setExportedObject:self];
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RTEventAgentDaemonProtocol];
-  v10 = [(RTEventAgent *)self connection];
-  [v10 setRemoteObjectInterface:v9];
+  connection4 = [(RTEventAgent *)self connection];
+  [connection4 setRemoteObjectInterface:v9];
 
   [(RTEventAgent *)self connection];
   objc_claimAutoreleasedReturnValue();
@@ -67,15 +67,15 @@
   [(RTEventAgent *)&v5 dealloc];
 }
 
-- (void)onEventCallback:(int64_t)a3 token:(unint64_t)a4 event:(id)a5
+- (void)onEventCallback:(int64_t)callback token:(unint64_t)token event:(id)event
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 1)
+  eventCopy = event;
+  v9 = eventCopy;
+  if (callback == 1)
   {
-    if (v8)
+    if (eventCopy)
     {
-      if (xpc_get_type(v8) == &_xpc_type_dictionary)
+      if (xpc_get_type(eventCopy) == &_xpc_type_dictionary)
       {
         v11 = xpc_dictionary_get_value(v9, "RestorationIdentifier");
 
@@ -95,14 +95,14 @@
             }
           }
 
-          v14 = [(RTEventAgent *)self clients];
-          v15 = [NSNumber numberWithUnsignedLongLong:a4];
-          [v14 setObject:v15 forKey:v10];
+          clients = [(RTEventAgent *)self clients];
+          v15 = [NSNumber numberWithUnsignedLongLong:token];
+          [clients setObject:v15 forKey:v10];
 
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [(RTEventAgent *)self clients];
-            [v16 enumerateKeysAndObjectsUsingBlock:&stru_4178];
+            clients2 = [(RTEventAgent *)self clients];
+            [clients2 enumerateKeysAndObjectsUsingBlock:&stru_4178];
           }
 
 LABEL_7:
@@ -128,14 +128,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)launchDaemonWithRestorationIdentifier:(id)a3 reply:(id)a4
+- (void)launchDaemonWithRestorationIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (identifierCopy)
   {
-    v8 = [(RTEventAgent *)self clients];
-    v9 = [v8 objectForKey:v6];
+    clients = [(RTEventAgent *)self clients];
+    v9 = [clients objectForKey:identifierCopy];
 
     if (v9)
     {
@@ -150,14 +150,14 @@ LABEL_8:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = identifierCopy;
         _os_log_debug_impl(&dword_0, v11, OS_LOG_TYPE_DEBUG, "no token for restoration identifier, %@", &v12, 0xCu);
       }
     }
 
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -174,9 +174,9 @@ LABEL_8:
       }
     }
 
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 }
@@ -185,8 +185,8 @@ LABEL_8:
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(RTEventAgent *)self clients];
-    [v3 enumerateKeysAndObjectsUsingBlock:&stru_4198];
+    clients = [(RTEventAgent *)self clients];
+    [clients enumerateKeysAndObjectsUsingBlock:&stru_4198];
   }
 }
 

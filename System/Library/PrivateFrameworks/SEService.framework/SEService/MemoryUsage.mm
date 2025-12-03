@@ -1,27 +1,27 @@
 @interface MemoryUsage
 + (_TtC9SEService11MemoryUsage)empty;
 - (_TtC9SEService11MemoryUsage)init;
-- (_TtC9SEService11MemoryUsage)initWithCoder:(id)a3;
-- (_TtC9SEService11MemoryUsage)initWithPHeap:(int64_t)a3 cor:(int64_t)a4 cod:(int64_t)a5 usedIndices:(int64_t)a6;
+- (_TtC9SEService11MemoryUsage)initWithCoder:(id)coder;
+- (_TtC9SEService11MemoryUsage)initWithPHeap:(int64_t)heap cor:(int64_t)cor cod:(int64_t)cod usedIndices:(int64_t)indices;
 - (int64_t)cod;
 - (int64_t)cor;
 - (int64_t)pHeap;
 - (int64_t)usedIndices;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCod:(int64_t)a3;
-- (void)setCor:(int64_t)a3;
-- (void)setPHeap:(int64_t)a3;
-- (void)setUsedIndices:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCod:(int64_t)cod;
+- (void)setCor:(int64_t)cor;
+- (void)setPHeap:(int64_t)heap;
+- (void)setUsedIndices:(int64_t)indices;
 @end
 
 @implementation MemoryUsage
 
-- (_TtC9SEService11MemoryUsage)initWithPHeap:(int64_t)a3 cor:(int64_t)a4 cod:(int64_t)a5 usedIndices:(int64_t)a6
+- (_TtC9SEService11MemoryUsage)initWithPHeap:(int64_t)heap cor:(int64_t)cor cod:(int64_t)cod usedIndices:(int64_t)indices
 {
-  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_pHeap) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_cor) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_cod) = a5;
-  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_usedIndices) = a6;
+  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_pHeap) = heap;
+  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_cor) = cor;
+  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_cod) = cod;
+  *(&self->super.isa + OBJC_IVAR____TtC9SEService11MemoryUsage_usedIndices) = indices;
   v7.receiver = self;
   v7.super_class = type metadata accessor for MemoryUsage();
   return [(MemoryUsage *)&v7 init];
@@ -49,11 +49,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPHeap:(int64_t)a3
+- (void)setPHeap:(int64_t)heap
 {
   v5 = OBJC_IVAR____TtC9SEService11MemoryUsage_pHeap;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = heap;
 }
 
 - (int64_t)cor
@@ -63,11 +63,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCor:(int64_t)a3
+- (void)setCor:(int64_t)cor
 {
   v5 = OBJC_IVAR____TtC9SEService11MemoryUsage_cor;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = cor;
 }
 
 - (int64_t)cod
@@ -77,11 +77,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCod:(int64_t)a3
+- (void)setCod:(int64_t)cod
 {
   v5 = OBJC_IVAR____TtC9SEService11MemoryUsage_cod;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = cod;
 }
 
 - (int64_t)usedIndices
@@ -91,24 +91,24 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUsedIndices:(int64_t)a3
+- (void)setUsedIndices:(int64_t)indices
 {
   v5 = OBJC_IVAR____TtC9SEService11MemoryUsage_usedIndices;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = indices;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C7C5BBE4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C7C5BBE4(coderCopy);
 }
 
-- (_TtC9SEService11MemoryUsage)initWithCoder:(id)a3
+- (_TtC9SEService11MemoryUsage)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1C7C5CCBC(v3);
+  coderCopy = coder;
+  v4 = sub_1C7C5CCBC(coderCopy);
 
   return v4;
 }

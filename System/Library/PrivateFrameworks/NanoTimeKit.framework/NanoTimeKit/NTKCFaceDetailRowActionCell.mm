@@ -1,16 +1,16 @@
 @interface NTKCFaceDetailRowActionCell
-- (NTKCFaceDetailRowActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NTKCFaceDetailRowActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setShowsTopSeparator:(BOOL)a3;
+- (void)setShowsTopSeparator:(BOOL)separator;
 @end
 
 @implementation NTKCFaceDetailRowActionCell
 
-- (NTKCFaceDetailRowActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCFaceDetailRowActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = NTKCFaceDetailRowActionCell;
-  v4 = [(NTKCDetailTableViewCell *)&v7 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(NTKCDetailTableViewCell *)&v7 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -20,13 +20,13 @@
   return v5;
 }
 
-- (void)setShowsTopSeparator:(BOOL)a3
+- (void)setShowsTopSeparator:(BOOL)separator
 {
-  if (self->_showsTopSeparator != a3)
+  if (self->_showsTopSeparator != separator)
   {
-    self->_showsTopSeparator = a3;
+    self->_showsTopSeparator = separator;
     topSeparator = self->_topSeparator;
-    if (a3)
+    if (separator)
     {
       if (!topSeparator)
       {

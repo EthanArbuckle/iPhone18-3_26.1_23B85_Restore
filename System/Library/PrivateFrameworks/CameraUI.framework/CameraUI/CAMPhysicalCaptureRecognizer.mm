@@ -1,29 +1,29 @@
 @interface CAMPhysicalCaptureRecognizer
-- (CAMPhysicalCaptureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (int64_t)_captureButtonForPressType:(int64_t)a3;
+- (CAMPhysicalCaptureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (int64_t)_captureButtonForPressType:(int64_t)type;
 - (void)_updateApplicationButtonStatus;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reset;
-- (void)setDesiredButtons:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setDesiredButtons:(id)buttons;
+- (void)setEnabled:(BOOL)enabled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CAMPhysicalCaptureRecognizer
 
 - (void)_updateApplicationButtonStatus
 {
-  v3 = [(CAMPhysicalCaptureRecognizer *)self isEnabled];
-  v13 = [(CAMPhysicalCaptureRecognizer *)self desiredButtons];
+  isEnabled = [(CAMPhysicalCaptureRecognizer *)self isEnabled];
+  desiredButtons = [(CAMPhysicalCaptureRecognizer *)self desiredButtons];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v13 containsObject:&unk_1F16C8180];
-  v6 = [v13 containsObject:&unk_1F16C8198];
+  v5 = [desiredButtons containsObject:&unk_1F16C8180];
+  v6 = [desiredButtons containsObject:&unk_1F16C8198];
   v7 = v6;
   v8 = v5 | v6;
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v9 setWantsVolumeButtonEvents:v3 & v8];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setWantsVolumeButtonEvents:isEnabled & v8];
 
   if (!v5)
   {
@@ -34,14 +34,14 @@
 
 LABEL_9:
     [v4 addObject:&unk_1F16C81C8];
-    if (v3)
+    if (isEnabled)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v12 setWantsLockEvents:0];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668]2 setWantsLockEvents:0];
 
     goto LABEL_11;
   }
@@ -53,22 +53,22 @@ LABEL_10:
   }
 
 LABEL_3:
-  if (!v3)
+  if (!isEnabled)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  v10 = [v13 containsObject:&unk_1F16C81E0];
-  v11 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v11 setWantsLockEvents:v10];
+  v10 = [desiredButtons containsObject:&unk_1F16C81E0];
+  mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668]3 setWantsLockEvents:v10];
 
   if (v10)
   {
     [v4 addObject:&unk_1F16C81F8];
   }
 
-  if ([v13 containsObject:&unk_1F16C8210])
+  if ([desiredButtons containsObject:&unk_1F16C8210])
   {
     [v4 addObject:&unk_1F16C8228];
   }
@@ -85,11 +85,11 @@ LABEL_11:
   [(CAMPhysicalCaptureRecognizer *)self setPressType:-1];
 }
 
-- (CAMPhysicalCaptureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CAMPhysicalCaptureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = CAMPhysicalCaptureRecognizer;
-  v4 = [(CAMPhysicalCaptureRecognizer *)&v10 initWithTarget:a3 action:a4];
+  v4 = [(CAMPhysicalCaptureRecognizer *)&v10 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -109,11 +109,11 @@ LABEL_11:
   return v5;
 }
 
-- (void)setDesiredButtons:(id)a3
+- (void)setDesiredButtons:(id)buttons
 {
-  if (self->_desiredButtons != a3)
+  if (self->_desiredButtons != buttons)
   {
-    v4 = [a3 copy];
+    v4 = [buttons copy];
     desiredButtons = self->_desiredButtons;
     self->_desiredButtons = v4;
 
@@ -121,37 +121,37 @@ LABEL_11:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CAMPhysicalCaptureRecognizer;
-  [(CAMPhysicalCaptureRecognizer *)&v4 setEnabled:a3];
+  [(CAMPhysicalCaptureRecognizer *)&v4 setEnabled:enabled];
   [(CAMPhysicalCaptureRecognizer *)self _updateApplicationButtonStatus];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (![(CAMPhysicalCaptureRecognizer *)self state:a3])
+  if (![(CAMPhysicalCaptureRecognizer *)self state:began])
   {
 
     [(CAMPhysicalCaptureRecognizer *)self setState:5];
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (![(CAMPhysicalCaptureRecognizer *)self isSuspended])
   {
-    v23 = [(CAMPhysicalCaptureRecognizer *)self activeButtons];
+    activeButtons = [(CAMPhysicalCaptureRecognizer *)self activeButtons];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v21 = v6;
-    obj = v6;
+    v21 = beganCopy;
+    obj = beganCopy;
     v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (!v8)
     {
@@ -171,8 +171,8 @@ LABEL_11:
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        v13 = [v12 type];
-        v14 = [(CAMPhysicalCaptureRecognizer *)self _captureButtonForPressType:v13];
+        type = [v12 type];
+        v14 = [(CAMPhysicalCaptureRecognizer *)self _captureButtonForPressType:type];
         if (!v14)
         {
           goto LABEL_14;
@@ -180,31 +180,31 @@ LABEL_11:
 
         v15 = v14;
         v16 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
-        if (([v23 containsObject:v16] & 1) == 0)
+        if (([activeButtons containsObject:v16] & 1) == 0)
         {
 
 LABEL_14:
-          [(CAMPhysicalCaptureRecognizer *)self ignorePress:v12 forEvent:v7];
+          [(CAMPhysicalCaptureRecognizer *)self ignorePress:v12 forEvent:eventCopy];
           goto LABEL_15;
         }
 
-        v17 = [(CAMPhysicalCaptureRecognizer *)self state];
+        state = [(CAMPhysicalCaptureRecognizer *)self state];
 
-        if (v17)
+        if (state)
         {
           goto LABEL_14;
         }
 
         v18 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
-        if ([v23 containsObject:v18])
+        if ([activeButtons containsObject:v18])
         {
-          v19 = [(CAMPhysicalCaptureRecognizer *)self state];
+          state2 = [(CAMPhysicalCaptureRecognizer *)self state];
 
-          if (!v19)
+          if (!state2)
           {
             [(CAMPhysicalCaptureRecognizer *)self setLastActiveButton:v15];
             [(CAMPhysicalCaptureRecognizer *)self setState:1];
-            [(CAMPhysicalCaptureRecognizer *)self setPressType:v13];
+            [(CAMPhysicalCaptureRecognizer *)self setPressType:type];
           }
         }
 
@@ -223,38 +223,38 @@ LABEL_15:
       {
 LABEL_19:
 
-        v6 = v21;
+        beganCopy = v21;
         break;
       }
     }
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  if ([(CAMPhysicalCaptureRecognizer *)self state:a3])
+  if ([(CAMPhysicalCaptureRecognizer *)self state:ended])
   {
 
     [(CAMPhysicalCaptureRecognizer *)self setState:3];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(CAMPhysicalCaptureRecognizer *)self state:a3])
+  if ([(CAMPhysicalCaptureRecognizer *)self state:cancelled])
   {
 
     [(CAMPhysicalCaptureRecognizer *)self setState:4];
   }
 }
 
-- (int64_t)_captureButtonForPressType:(int64_t)a3
+- (int64_t)_captureButtonForPressType:(int64_t)type
 {
-  if (a3 > 103)
+  if (type > 103)
   {
-    if (a3 != 104)
+    if (type != 104)
     {
-      if (a3 == 601)
+      if (type == 601)
       {
         return 4;
       }
@@ -267,9 +267,9 @@ LABEL_19:
 
   else
   {
-    if (a3 != 102)
+    if (type != 102)
     {
-      if (a3 == 103)
+      if (type == 103)
       {
         return 2;
       }

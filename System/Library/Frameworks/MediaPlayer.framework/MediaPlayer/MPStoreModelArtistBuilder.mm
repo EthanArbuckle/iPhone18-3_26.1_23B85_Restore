@@ -1,6 +1,6 @@
 @interface MPStoreModelArtistBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelArtistBuilder
@@ -32,17 +32,17 @@
   return v7;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   p_requestedArtistProperties = &self->_requestedArtistProperties;
   if ((*&self->_requestedArtistProperties & 1) == 0)
   {
-    v12 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v13 = [v12 properties];
-    if ([v13 containsObject:@"MPModelPropertyPersonName"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyPersonName"])
     {
       v14 = 2;
     }
@@ -53,7 +53,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFFFD | v14;
-    if ([v13 containsObject:@"MPModelPropertyArtistHasBiography"])
+    if ([properties containsObject:@"MPModelPropertyArtistHasBiography"])
     {
       v15 = 4;
     }
@@ -64,7 +64,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFFFB | v15;
-    if ([v13 containsObject:@"MPModelPropertyPersonHasSocialPosts"])
+    if ([properties containsObject:@"MPModelPropertyPersonHasSocialPosts"])
     {
       v16 = 8;
     }
@@ -75,7 +75,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFFF7 | v16;
-    if ([v13 containsObject:@"MPModelPropertyArtistArtwork"])
+    if ([properties containsObject:@"MPModelPropertyArtistArtwork"])
     {
       v17 = 16;
     }
@@ -86,7 +86,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFFEF | v17;
-    if ([v13 containsObject:@"MPModelPropertyArtistEditorialArtwork"])
+    if ([properties containsObject:@"MPModelPropertyArtistEditorialArtwork"])
     {
       v18 = 32;
     }
@@ -97,7 +97,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFFDF | v18;
-    if ([v13 containsObject:@"MPModelPropertyArtistClassicalExperienceAvailable"])
+    if ([properties containsObject:@"MPModelPropertyArtistClassicalExperienceAvailable"])
     {
       v19 = 64;
     }
@@ -108,7 +108,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFFBF | v19;
-    if ([v13 containsObject:@"MPModelPropertyArtistIsFavorite"])
+    if ([properties containsObject:@"MPModelPropertyArtistIsFavorite"])
     {
       v20 = 128;
     }
@@ -119,7 +119,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFF7F | v20;
-    if ([v13 containsObject:@"MPModelPropertyArtistIsDisliked"])
+    if ([properties containsObject:@"MPModelPropertyArtistIsDisliked"])
     {
       v21 = 256;
     }
@@ -130,7 +130,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFEFF | v21;
-    if ([v13 containsObject:@"MPModelPropertyArtistDateFavorited"])
+    if ([properties containsObject:@"MPModelPropertyArtistDateFavorited"])
     {
       v22 = 512;
     }
@@ -141,7 +141,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFDFF | v22;
-    if ([v13 containsObject:@"MPModelPropertyArtistLibraryAdded"])
+    if ([properties containsObject:@"MPModelPropertyArtistLibraryAdded"])
     {
       v23 = 1024;
     }
@@ -152,7 +152,7 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xFBFF | v23;
-    if ([v13 containsObject:@"MPModelPropertyArtistIsPinned"])
+    if ([properties containsObject:@"MPModelPropertyArtistIsPinned"])
     {
       v24 = 2048;
     }
@@ -163,14 +163,14 @@
     }
 
     *p_requestedArtistProperties = *p_requestedArtistProperties & 0xF7FF | v24;
-    v25 = [v12 relationships];
-    v26 = [v25 objectForKey:@"MPModelRelationshipArtistGenre"];
+    relationships = [requestedPropertySet relationships];
+    v26 = [relationships objectForKey:@"MPModelRelationshipArtistGenre"];
     v27 = v26;
     if (v26)
     {
-      v28 = [v26 properties];
+      properties2 = [v26 properties];
       *&self->_requestedArtistProperties.genre |= 1u;
-      if ([v28 containsObject:@"MPModelPropertyGenreName"])
+      if ([properties2 containsObject:@"MPModelPropertyGenreName"])
       {
         v29 = 2;
       }
@@ -190,9 +190,9 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __93__MPStoreModelArtistBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E767EE00;
-  v30 = v8;
+  v30 = metadataCopy;
   v48 = v30;
-  v31 = v10;
+  v31 = identityCopy;
   v49 = v31;
   v32 = _Block_copy(aBlock);
   v44[0] = MEMORY[0x1E69E9820];
@@ -202,13 +202,13 @@
   v44[4] = self;
   v33 = v30;
   v45 = v33;
-  v34 = v9;
+  v34 = objectCopy;
   v46 = v34;
   v35 = _Block_copy(v44);
   if (v34)
   {
-    v36 = [v34 identifiers];
-    v37 = [v36 copyWithSource:@"StorePlatform" block:v32];
+    identifiers = [v34 identifiers];
+    v37 = [identifiers copyWithSource:@"StorePlatform" block:v32];
     v38 = [v34 copyWithIdentifiers:v37 block:v35];
   }
 
@@ -216,8 +216,8 @@
   {
     v39 = [MPModelArtist alloc];
     v40 = [MPIdentifierSet alloc];
-    v36 = +[MPModelArtistKind identityKind];
-    v37 = [(MPIdentifierSet *)v40 initWithSource:@"StorePlatform" modelKind:v36 block:v32];
+    identifiers = +[MPModelArtistKind identityKind];
+    v37 = [(MPIdentifierSet *)v40 initWithSource:@"StorePlatform" modelKind:identifiers block:v32];
     v38 = [(MPModelObject *)v39 initWithIdentifiers:v37 block:v35];
   }
 

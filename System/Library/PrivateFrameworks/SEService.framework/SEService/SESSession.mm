@@ -2,16 +2,16 @@
 - (SESSession)init;
 - (id)endRemoteSession;
 - (id)proxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)didEndUnexpectedly:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)endSessionWithError:(id)a3;
+- (void)didEndUnexpectedly:(id)unexpectedly;
+- (void)didStartSession:(id)session;
+- (void)endSessionWithError:(id)error;
 - (void)resume;
-- (void)setDidEndCallback:(id)a3;
-- (void)setDidStartCallback:(id)a3;
-- (void)setProxy:(id)a3;
+- (void)setDidEndCallback:(id)callback;
+- (void)setDidStartCallback:(id)callback;
+- (void)setProxy:(id)proxy;
 @end
 
 @implementation SESSession
@@ -72,17 +72,17 @@
   }
 }
 
-- (void)setDidStartCallback:(id)a3
+- (void)setDidStartCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SESSession_setDidStartCallback___block_invoke;
   v7[3] = &unk_1E82D13F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(queue, v7);
 }
 
@@ -96,17 +96,17 @@ uint64_t __34__SESSession_setDidStartCallback___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDidEndCallback:(id)a3
+- (void)setDidEndCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__SESSession_setDidEndCallback___block_invoke;
   v7[3] = &unk_1E82D13F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(queue, v7);
 }
 
@@ -120,17 +120,17 @@ uint64_t __32__SESSession_setDidEndCallback___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__SESSession_didStartSession___block_invoke;
   v7[3] = &unk_1E82D11C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -192,17 +192,17 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endSessionWithError:(id)a3
+- (void)endSessionWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SESSession_endSessionWithError___block_invoke;
   v7[3] = &unk_1E82D11C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -284,9 +284,9 @@ void __34__SESSession_endSessionWithError___block_invoke(uint64_t a1)
 
 - (id)endRemoteSession
 {
-  v3 = [(SESSession *)self proxy];
+  proxy = [(SESSession *)self proxy];
 
-  if (v3)
+  if (proxy)
   {
     v9 = 0;
     v10 = &v9;
@@ -294,13 +294,13 @@ void __34__SESSession_endSessionWithError___block_invoke(uint64_t a1)
     v12 = __Block_byref_object_copy__5;
     v13 = __Block_byref_object_dispose__5;
     v14 = 0;
-    v4 = [(SESSession *)self proxy];
+    proxy2 = [(SESSession *)self proxy];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __30__SESSession_endRemoteSession__block_invoke;
     v8[3] = &unk_1E82D1170;
     v8[4] = &v9;
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v5 = [proxy2 synchronousRemoteObjectProxyWithErrorHandler:v8];
     [v5 endSession:&__block_literal_global_5];
 
     [(SESSession *)self setProxy:0];
@@ -316,17 +316,17 @@ void __34__SESSession_endSessionWithError___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)didEndUnexpectedly:(id)a3
+- (void)didEndUnexpectedly:(id)unexpectedly
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  unexpectedlyCopy = unexpectedly;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = unexpectedlyCopy;
     _os_log_impl(&dword_1C7B9A000, v5, OS_LOG_TYPE_ERROR, "Session %@ ended unexpectedly with error %@", &v7, 0x16u);
   }
 
@@ -336,54 +336,54 @@ void __34__SESSession_endSessionWithError___block_invoke(uint64_t a1)
 
 - (id)proxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_proxy;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_proxy;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setProxy:(id)a3
+- (void)setProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   obj = self;
   objc_sync_enter(obj);
   proxy = obj->_proxy;
-  obj->_proxy = v4;
+  obj->_proxy = proxyCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SESSession *)self proxy];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  proxy = [(SESSession *)self proxy];
+  v6 = [proxy remoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v6)
   {
     v7 = SESDefaultLogObject();
     v8 = *MEMORY[0x1E69E5148];
     v9 = SESCreateAndLogError();
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SESSession *)self proxy];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  proxy = [(SESSession *)self proxy];
+  v6 = [proxy synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v6)
   {
     v7 = SESDefaultLogObject();
     v8 = *MEMORY[0x1E69E5148];
     v9 = SESCreateAndLogError();
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   return v6;

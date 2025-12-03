@@ -1,18 +1,18 @@
 @interface PLKLegibilityContext
-+ (PLKLegibilityContext)contextWithIdentifier:(id)a3 preferredCacheCapacity:(unint64_t)a4 displayScale:(double)a5 cacheProvider:(id)a6;
++ (PLKLegibilityContext)contextWithIdentifier:(id)identifier preferredCacheCapacity:(unint64_t)capacity displayScale:(double)scale cacheProvider:(id)provider;
 + (PLKLegibilityContext)defaultContext;
-- (PLKLegibilityContext)initWithCacheIdentifier:(id)a3 preferredCacheCapacity:(unint64_t)a4 displayScale:(double)a5 cacheProvider:(id)a6;
-- (id)imageForKey:(id)a3 generatingIfNil:(id)a4;
-- (void)_memoryWarningDidFire:(id)a3;
+- (PLKLegibilityContext)initWithCacheIdentifier:(id)identifier preferredCacheCapacity:(unint64_t)capacity displayScale:(double)scale cacheProvider:(id)provider;
+- (id)imageForKey:(id)key generatingIfNil:(id)nil;
+- (void)_memoryWarningDidFire:(id)fire;
 - (void)cancel;
 @end
 
 @implementation PLKLegibilityContext
 
-+ (PLKLegibilityContext)contextWithIdentifier:(id)a3 preferredCacheCapacity:(unint64_t)a4 displayScale:(double)a5 cacheProvider:(id)a6
++ (PLKLegibilityContext)contextWithIdentifier:(id)identifier preferredCacheCapacity:(unint64_t)capacity displayScale:(double)scale cacheProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a6;
+  identifierCopy = identifier;
+  providerCopy = provider;
   if (contextWithIdentifier_preferredCacheCapacity_displayScale_cacheProvider__onceToken != -1)
   {
     +[PLKLegibilityContext contextWithIdentifier:preferredCacheCapacity:displayScale:cacheProvider:];
@@ -20,11 +20,11 @@
 
   v11 = contextWithIdentifier_preferredCacheCapacity_displayScale_cacheProvider__cacheIdentifierToContextMapTable;
   objc_sync_enter(v11);
-  v12 = [contextWithIdentifier_preferredCacheCapacity_displayScale_cacheProvider__cacheIdentifierToContextMapTable objectForKey:v9];
+  v12 = [contextWithIdentifier_preferredCacheCapacity_displayScale_cacheProvider__cacheIdentifierToContextMapTable objectForKey:identifierCopy];
   if (!v12)
   {
-    v12 = [[PLKLegibilityContext alloc] initWithCacheIdentifier:v9 preferredCacheCapacity:a4 displayScale:v10 cacheProvider:a5];
-    [contextWithIdentifier_preferredCacheCapacity_displayScale_cacheProvider__cacheIdentifierToContextMapTable setObject:v12 forKey:v9];
+    v12 = [[PLKLegibilityContext alloc] initWithCacheIdentifier:identifierCopy preferredCacheCapacity:capacity displayScale:providerCopy cacheProvider:scale];
+    [contextWithIdentifier_preferredCacheCapacity_displayScale_cacheProvider__cacheIdentifierToContextMapTable setObject:v12 forKey:identifierCopy];
   }
 
   objc_sync_exit(v11);
@@ -60,13 +60,13 @@ void __38__PLKLegibilityContext_defaultContext__block_invoke()
   defaultContext_defaultContext = v0;
 }
 
-- (id)imageForKey:(id)a3 generatingIfNil:(id)a4
+- (id)imageForKey:(id)key generatingIfNil:(id)nil
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(PLKLRUCache *)v8->_LRUCache objectForKey:v6];
+  keyCopy = key;
+  nilCopy = nil;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(PLKLRUCache *)selfCopy->_LRUCache objectForKey:keyCopy];
   if (v9)
   {
     v10 = v9;
@@ -75,29 +75,29 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ([(NSMutableSet *)v8->_knownMappedImageCacheKeys containsObject:v6])
+  if ([(NSMutableSet *)selfCopy->_knownMappedImageCacheKeys containsObject:keyCopy])
   {
-    v13 = [(BSUIMappedImageCache *)v8->_mappedImageCache imageForKey:v6];
+    v13 = [(BSUIMappedImageCache *)selfCopy->_mappedImageCache imageForKey:keyCopy];
     if (v13)
     {
-      [(PLKLRUCache *)v8->_LRUCache setObject:v13 forKey:v6];
+      [(PLKLRUCache *)selfCopy->_LRUCache setObject:v13 forKey:keyCopy];
       v10 = v13;
       goto LABEL_3;
     }
   }
 
-  if (!v7)
+  if (!nilCopy)
   {
     goto LABEL_14;
   }
 
   v14 = objc_autoreleasePoolPush();
-  v11 = v7[2](v7, v6);
+  v11 = nilCopy[2](nilCopy, keyCopy);
   if (v11)
   {
-    [(PLKLRUCache *)v8->_LRUCache setObject:v11 forKey:v6];
-    [(BSUIMappedImageCache *)v8->_mappedImageCache setImage:v11 forKey:v6];
-    [(NSMutableSet *)v8->_knownMappedImageCacheKeys addObject:v6];
+    [(PLKLRUCache *)selfCopy->_LRUCache setObject:v11 forKey:keyCopy];
+    [(BSUIMappedImageCache *)selfCopy->_mappedImageCache setImage:v11 forKey:keyCopy];
+    [(NSMutableSet *)selfCopy->_knownMappedImageCacheKeys addObject:keyCopy];
     v15 = v11;
   }
 
@@ -110,69 +110,69 @@ LABEL_14:
 
 LABEL_4:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (PLKLegibilityContext)initWithCacheIdentifier:(id)a3 preferredCacheCapacity:(unint64_t)a4 displayScale:(double)a5 cacheProvider:(id)a6
+- (PLKLegibilityContext)initWithCacheIdentifier:(id)identifier preferredCacheCapacity:(unint64_t)capacity displayScale:(double)scale cacheProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = PLKLegibilityContext;
   v12 = [(PLKLegibilityContext *)&v26 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     cacheIdentifier = v12->_cacheIdentifier;
     v12->_cacheIdentifier = v13;
 
-    v12->_preferredCacheCapacity = a4;
-    v12->_displayScale = a5;
+    v12->_preferredCacheCapacity = capacity;
+    v12->_displayScale = scale;
     v15 = [[PLKLRUCache alloc] initWithCapacity:v12->_preferredCacheCapacity];
     LRUCache = v12->_LRUCache;
     v12->_LRUCache = v15;
 
-    if (v11)
+    if (providerCopy)
     {
-      v17 = [MEMORY[0x277CF0D70] optionsWithContainerPathProvider:v11];
-      objc_storeStrong(&v12->_mappedImageCachePathProvider, a6);
+      v17 = [MEMORY[0x277CF0D70] optionsWithContainerPathProvider:providerCopy];
+      objc_storeStrong(&v12->_mappedImageCachePathProvider, provider);
       v18 = [objc_alloc(MEMORY[0x277CF0D68]) initWithUniqueIdentifier:v12->_cacheIdentifier options:v17];
       mappedImageCache = v12->_mappedImageCache;
       v12->_mappedImageCache = v18;
 
       v20 = MEMORY[0x277CBEB58];
-      v21 = [(BSUIMappedImageCache *)v12->_mappedImageCache allKeys];
-      v22 = [v20 setWithArray:v21];
+      allKeys = [(BSUIMappedImageCache *)v12->_mappedImageCache allKeys];
+      v22 = [v20 setWithArray:allKeys];
       knownMappedImageCacheKeys = v12->_knownMappedImageCacheKeys;
       v12->_knownMappedImageCacheKeys = v22;
     }
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v12 selector:sel__memoryWarningDidFire_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__memoryWarningDidFire_ name:*MEMORY[0x277D76670] object:0];
   }
 
   return v12;
 }
 
-- (void)_memoryWarningDidFire:(id)a3
+- (void)_memoryWarningDidFire:(id)fire
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  fireCopy = fire;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = PLKLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    cacheIdentifier = v5->_cacheIdentifier;
+    cacheIdentifier = selfCopy->_cacheIdentifier;
     v9 = 138412290;
     v10 = cacheIdentifier;
     _os_log_impl(&dword_21E5D5000, v6, OS_LOG_TYPE_DEFAULT, "Memory warning did fire for legibility context %@", &v9, 0xCu);
   }
 
-  [(PLKLRUCache *)v5->_LRUCache removeAllObjects];
-  objc_sync_exit(v5);
+  [(PLKLRUCache *)selfCopy->_LRUCache removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }

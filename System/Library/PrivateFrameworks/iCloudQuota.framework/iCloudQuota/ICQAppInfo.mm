@@ -1,21 +1,21 @@
 @interface ICQAppInfo
-- (ICQAppInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQAppInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQAppInfo
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = ICQAppInfo;
   v5 = [(ICQAppInfo *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,18 +30,18 @@
       [(ICQAppInfo *)v5 setBundleIds:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"label"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQAppInfo *)v5 setLabel:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"fetchLocally"];
-    v11 = [v10 BOOLValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"fetchLocally"];
+    bOOLValue = [v10 BOOLValue];
 
-    [(ICQAppInfo *)v5 setFetchLocally:v11];
-    v12 = [v4 objectForKeyedSubscript:@"iconURLs"];
+    [(ICQAppInfo *)v5 setFetchLocally:bOOLValue];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"iconURLs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,21 +49,21 @@
       [(ICQAppInfo *)v5 setIconURL:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"detailLabel"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"detailLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQAppInfo *)v5 setDetailLabel:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"detailLabelColor"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"detailLabelColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQAppInfo *)v5 setDetailLabelColor:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"action"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"action"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@ void __33__ICQAppInfo_initFromDictionary___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQAppInfo);
   [(ICQAppInfo *)v4 setBundleIds:self->_bundleIds];
@@ -98,23 +98,23 @@ void __33__ICQAppInfo_initFromDictionary___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIds = self->_bundleIds;
-  v5 = a3;
-  [v5 encodeObject:bundleIds forKey:@"bundleIds"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeBool:self->_fetchLocally forKey:@"fetchLocally"];
-  [v5 encodeObject:self->_iconURL forKey:@"iconURL"];
-  [v5 encodeObject:self->_detailLabel forKey:@"detailLabel"];
-  [v5 encodeObject:self->_detailLabelColor forKey:@"detailLabelColor"];
-  [v5 encodeObject:self->_action forKey:@"action"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIds forKey:@"bundleIds"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeBool:self->_fetchLocally forKey:@"fetchLocally"];
+  [coderCopy encodeObject:self->_iconURL forKey:@"iconURL"];
+  [coderCopy encodeObject:self->_detailLabel forKey:@"detailLabel"];
+  [coderCopy encodeObject:self->_detailLabelColor forKey:@"detailLabelColor"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
 }
 
-- (ICQAppInfo)initWithCoder:(id)a3
+- (ICQAppInfo)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = ICQAppInfo;
   v5 = [(ICQAppInfo *)&v23 init];
@@ -126,28 +126,28 @@ void __33__ICQAppInfo_initFromDictionary___block_invoke(uint64_t a1, void *a2)
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"bundleIds"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"bundleIds"];
     bundleIds = v5->_bundleIds;
     v5->_bundleIds = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v11;
 
-    v5->_fetchLocally = [v4 decodeBoolForKey:@"fetchLocally"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
+    v5->_fetchLocally = [coderCopy decodeBoolForKey:@"fetchLocally"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detailLabel"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detailLabel"];
     detailLabel = v5->_detailLabel;
     v5->_detailLabel = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detailLabelColor"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detailLabelColor"];
     detailLabelColor = v5->_detailLabelColor;
     v5->_detailLabelColor = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v19;
   }

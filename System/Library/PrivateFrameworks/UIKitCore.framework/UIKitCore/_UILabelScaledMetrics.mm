@@ -1,6 +1,6 @@
 @interface _UILabelScaledMetrics
-- (double)initWithConfiguration:(double)a3 size:(double)a4;
-- (double)initWithConfiguration:(void *)a3 size:(double)a4 associatedScaledMetrics:(double)a5;
+- (double)initWithConfiguration:(double)configuration size:(double)size;
+- (double)initWithConfiguration:(void *)configuration size:(double)size associatedScaledMetrics:(double)metrics;
 - (id)description;
 - (id)scaledAttributedText;
 - (void)_calculateIfNecessary;
@@ -10,17 +10,17 @@
 
 @implementation _UILabelScaledMetrics
 
-- (double)initWithConfiguration:(double)a3 size:(double)a4
+- (double)initWithConfiguration:(double)configuration size:(double)size
 {
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_19;
   }
 
-  v9 = 0;
-  v10 = a4 >= 3.40282347e38 && a3 >= 3.40282347e38;
+  selfCopy = 0;
+  v10 = size >= 3.40282347e38 && configuration >= 3.40282347e38;
   if (!v7 || v10)
   {
     goto LABEL_20;
@@ -29,11 +29,11 @@
   if (![v7 adjustsFontSizeToFitWidth] || (objc_msgSend(v8, "minimumScaleFactor"), v11 >= 1.0))
   {
 LABEL_19:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = _UILabelScaledMetrics;
   v12 = objc_msgSendSuper2(&v21, sel_init);
   if (v12)
@@ -43,44 +43,44 @@ LABEL_19:
     *(v12 + 15) = v13;
 
     v15 = *(MEMORY[0x1E695F060] + 8);
-    if (*MEMORY[0x1E695F060] == a3 && v15 == a4)
+    if (*MEMORY[0x1E695F060] == configuration && v15 == size)
     {
       v17 = *(v12 + 15);
       if (v17)
       {
         [v17 bounds];
-        a3 = v18;
-        a4 = v19;
+        configuration = v18;
+        size = v19;
       }
 
       else
       {
-        a3 = 0.0;
-        a4 = 0.0;
+        configuration = 0.0;
+        size = 0.0;
       }
     }
 
-    v12[1] = a3;
-    v12[2] = a4;
+    v12[1] = configuration;
+    v12[2] = size;
   }
 
-  a1 = v12;
-  v9 = a1;
+  self = v12;
+  selfCopy = self;
 LABEL_20:
 
-  return v9;
+  return selfCopy;
 }
 
-- (double)initWithConfiguration:(void *)a3 size:(double)a4 associatedScaledMetrics:(double)a5
+- (double)initWithConfiguration:(void *)configuration size:(double)size associatedScaledMetrics:(double)metrics
 {
-  v10 = a3;
-  if (a1)
+  configurationCopy = configuration;
+  if (self)
   {
-    v11 = [(_UILabelScaledMetrics *)a1 initWithConfiguration:a2 size:a4, a5];
-    v12 = v11;
-    if (v11)
+    metrics = [(_UILabelScaledMetrics *)self initWithConfiguration:a2 size:size, metrics];
+    v12 = metrics;
+    if (metrics)
     {
-      objc_storeStrong(v11 + 16, a3);
+      objc_storeStrong(metrics + 16, configuration);
     }
   }
 
@@ -94,15 +94,15 @@ LABEL_20:
 
 - (id)scaledAttributedText
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1 _calculateIfNecessary];
-    a1 = v2[10];
+    selfCopy = self;
+    [self _calculateIfNecessary];
+    self = selfCopy[10];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_calculateIfNecessary
@@ -112,10 +112,10 @@ LABEL_20:
     *&self->_scaledMetricsFlags |= 1u;
     if (self->_sourceSize.width < 3.40282347e38 || self->_sourceSize.height < 3.40282347e38)
     {
-      v3 = [(_UILabelConfiguration *)&self->_configuration->super.isa _content];
-      v4 = [v3 attributedString];
+      _content = [(_UILabelConfiguration *)&self->_configuration->super.isa _content];
+      attributedString = [_content attributedString];
 
-      if (v4)
+      if (attributedString)
       {
         if (self->_associatedScaledMetrics)
         {
@@ -135,10 +135,10 @@ LABEL_20:
 
 - (void)_calculateIfNecessaryWithAssociatedMetrics
 {
-  v3 = [(_UILabelConfiguration *)&self->_configuration->super.isa _content];
-  v30 = [v3 attributedString];
+  _content = [(_UILabelConfiguration *)&self->_configuration->super.isa _content];
+  attributedString = [_content attributedString];
 
-  v4 = [v30 length];
+  v4 = [attributedString length];
   associatedScaledMetrics = self->_associatedScaledMetrics;
   if (associatedScaledMetrics)
   {
@@ -151,12 +151,12 @@ LABEL_20:
     actualScaleFactor = 0.0;
   }
 
-  v7 = [v30 _ui_attributedSubstringFromRange:0 scaledByScaleFactor:{v4, actualScaleFactor}];
-  v8 = [(_UILabelConfiguration *)&self->_configuration->super.isa _resolvedStringDrawingContext];
-  [v8 setWantsNumberOfLineFragments:1];
-  [v8 setMaximumNumberOfLines:{-[_UILabelConfiguration numberOfLines](self->_configuration, "numberOfLines")}];
-  [v8 setMinimumScaleFactor:1.0];
-  [v8 setLayout:0];
+  v7 = [attributedString _ui_attributedSubstringFromRange:0 scaledByScaleFactor:{v4, actualScaleFactor}];
+  _resolvedStringDrawingContext = [(_UILabelConfiguration *)&self->_configuration->super.isa _resolvedStringDrawingContext];
+  [_resolvedStringDrawingContext setWantsNumberOfLineFragments:1];
+  [_resolvedStringDrawingContext setMaximumNumberOfLines:{-[_UILabelConfiguration numberOfLines](self->_configuration, "numberOfLines")}];
+  [_resolvedStringDrawingContext setMinimumScaleFactor:1.0];
+  [_resolvedStringDrawingContext setLayout:0];
   configuration = self->_configuration;
   if (configuration)
   {
@@ -180,11 +180,11 @@ LABEL_20:
     v10 = 0;
   }
 
-  [v30 boundingRectWithSize:v10 options:v8 context:{self->_sourceSize.width, self->_sourceSize.height}];
+  [attributedString boundingRectWithSize:v10 options:_resolvedStringDrawingContext context:{self->_sourceSize.width, self->_sourceSize.height}];
   v15 = v14;
   v17 = v16;
-  [v8 setLayout:0];
-  [(NSAttributedString *)v7 boundingRectWithSize:v10 options:v8 context:self->_sourceSize.width, self->_sourceSize.height];
+  [_resolvedStringDrawingContext setLayout:0];
+  [(NSAttributedString *)v7 boundingRectWithSize:v10 options:_resolvedStringDrawingContext context:self->_sourceSize.width, self->_sourceSize.height];
   self->_scaledSize.width = v18;
   self->_scaledSize.height = v19;
   self->_unscaledAndPossiblyTooLargeSize.width = v15;
@@ -233,9 +233,9 @@ LABEL_21:
   v27 = 0.0;
 LABEL_13:
   self->_actualScaleFactor = v27;
-  v28 = [v8 numberOfLineFragments];
+  numberOfLineFragments = [_resolvedStringDrawingContext numberOfLineFragments];
   scaledAttributedText = self->_scaledAttributedText;
-  self->_measuredNumberOfLines = v28;
+  self->_measuredNumberOfLines = numberOfLineFragments;
   self->_scaledAttributedText = v7;
 }
 
@@ -265,9 +265,9 @@ LABEL_18:
     v5 = 0.0;
   }
 
-  v34 = [(_UILabelConfiguration *)&configuration->super.isa _resolvedStringDrawingContext];
-  v6 = [(_UILabelConfiguration *)&self->_configuration->super.isa _content];
-  v7 = [v6 attributedString];
+  _resolvedStringDrawingContext = [(_UILabelConfiguration *)&configuration->super.isa _resolvedStringDrawingContext];
+  _content = [(_UILabelConfiguration *)&self->_configuration->super.isa _content];
+  attributedString = [_content attributedString];
 
   v8 = 0.01;
   if (v5 > 0.0)
@@ -275,13 +275,13 @@ LABEL_18:
     v8 = v5;
   }
 
-  [v34 setMinimumScaleFactor:v8];
-  [v34 setLayout:0];
-  [v34 setWantsBaselineOffset:1];
-  [v34 setWantsScaledBaselineOffset:1];
-  [v34 setWantsScaledLineHeight:1];
-  [v34 setWantsNumberOfLineFragments:1];
-  [v34 setMaximumNumberOfLines:{-[_UILabelConfiguration numberOfLines](self->_configuration, "numberOfLines")}];
+  [_resolvedStringDrawingContext setMinimumScaleFactor:v8];
+  [_resolvedStringDrawingContext setLayout:0];
+  [_resolvedStringDrawingContext setWantsBaselineOffset:1];
+  [_resolvedStringDrawingContext setWantsScaledBaselineOffset:1];
+  [_resolvedStringDrawingContext setWantsScaledLineHeight:1];
+  [_resolvedStringDrawingContext setWantsNumberOfLineFragments:1];
+  [_resolvedStringDrawingContext setMaximumNumberOfLines:{-[_UILabelConfiguration numberOfLines](self->_configuration, "numberOfLines")}];
   v9 = self->_configuration;
   if (v9)
   {
@@ -305,12 +305,12 @@ LABEL_18:
     v10 = 0;
   }
 
-  [v7 boundingRectWithSize:v10 options:v34 context:{self->_sourceSize.width, self->_sourceSize.height}];
+  [attributedString boundingRectWithSize:v10 options:_resolvedStringDrawingContext context:{self->_sourceSize.width, self->_sourceSize.height}];
   v15 = v14;
   v17 = v16;
-  [v34 scaledLineHeight];
+  [_resolvedStringDrawingContext scaledLineHeight];
   v19 = v18;
-  [v34 actualScaleFactor];
+  [_resolvedStringDrawingContext actualScaleFactor];
   if (v20 <= 0.0 || (v21 = v20, v20 >= 1.0) || (v22 = 1.0 - v20, 1.0 - v21 <= 0.00000011920929))
   {
 
@@ -321,21 +321,21 @@ LABEL_18:
   self->_scaledSize.height = v19;
   self->_unscaledAndPossiblyTooLargeSize.width = v15;
   self->_unscaledAndPossiblyTooLargeSize.height = v17;
-  [v34 baselineOffset];
+  [_resolvedStringDrawingContext baselineOffset];
   self->_baselineOffset = v23;
-  [v34 firstBaselineOffset];
+  [_resolvedStringDrawingContext firstBaselineOffset];
   self->_scaledFirstBaselineOffset = v24;
-  [v34 scaledBaselineOffset];
+  [_resolvedStringDrawingContext scaledBaselineOffset];
   self->_scaledBaselineOffset = v25;
   self->_actualScaleFactor = v21;
-  self->_measuredNumberOfLines = [v34 numberOfLineFragments];
-  v26 = [v7 length];
-  [v34 actualScaleFactor];
-  v27 = [v7 _ui_attributedSubstringFromRange:0 scaledByScaleFactor:v26];
+  self->_measuredNumberOfLines = [_resolvedStringDrawingContext numberOfLineFragments];
+  v26 = [attributedString length];
+  [_resolvedStringDrawingContext actualScaleFactor];
+  v27 = [attributedString _ui_attributedSubstringFromRange:0 scaledByScaleFactor:v26];
   scaledAttributedText = self->_scaledAttributedText;
   self->_scaledAttributedText = v27;
 
-  [v34 totalBounds];
+  [_resolvedStringDrawingContext totalBounds];
   self->_totalBounds.origin.x = v29;
   self->_totalBounds.origin.y = v30;
   self->_totalBounds.size.width = v31;

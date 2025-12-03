@@ -1,17 +1,17 @@
 @interface SBRootSceneWindow
-- (SBRootSceneWindow)initWithDisplayConfiguration:(id)a3;
-- (void)_configureRootLayer:(id)a3 sceneTransformLayer:(id)a4 transformLayer:(id)a5;
+- (SBRootSceneWindow)initWithDisplayConfiguration:(id)configuration;
+- (void)_configureRootLayer:(id)layer sceneTransformLayer:(id)transformLayer transformLayer:(id)a5;
 - (void)_updateRootLayerBackgroundColor;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBRootSceneWindow
 
-- (SBRootSceneWindow)initWithDisplayConfiguration:(id)a3
+- (SBRootSceneWindow)initWithDisplayConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = SBRootSceneWindow;
-  v3 = [(UIRootSceneWindow *)&v6 initWithDisplayConfiguration:a3];
+  v3 = [(UIRootSceneWindow *)&v6 initWithDisplayConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
@@ -21,24 +21,24 @@
   return v4;
 }
 
-- (void)_configureRootLayer:(id)a3 sceneTransformLayer:(id)a4 transformLayer:(id)a5
+- (void)_configureRootLayer:(id)layer sceneTransformLayer:(id)transformLayer transformLayer:(id)a5
 {
-  v9 = a3;
-  v10 = a4;
+  layerCopy = layer;
+  transformLayerCopy = transformLayer;
   v88.receiver = self;
   v88.super_class = SBRootSceneWindow;
-  [(_UIRootWindow *)&v88 _configureRootLayer:v9 sceneTransformLayer:v10 transformLayer:a5];
-  v11 = [(UIRootSceneWindow *)self displayConfiguration];
-  if (!v11 || ![MEMORY[0x277D0ACD8] isEmulatedDevice] || !objc_msgSend(v11, "isMainDisplay"))
+  [(_UIRootWindow *)&v88 _configureRootLayer:layerCopy sceneTransformLayer:transformLayerCopy transformLayer:a5];
+  displayConfiguration = [(UIRootSceneWindow *)self displayConfiguration];
+  if (!displayConfiguration || ![MEMORY[0x277D0ACD8] isEmulatedDevice] || !objc_msgSend(displayConfiguration, "isMainDisplay"))
   {
     goto LABEL_64;
   }
 
-  [v11 scale];
+  [displayConfiguration scale];
   v13 = v12;
-  [v11 nativeOrientation];
+  [displayConfiguration nativeOrientation];
   v14 = FBSDisplayRotationFromRadians() & 0xFFFFFFFFFFFFFFFDLL;
-  [v11 _nativeBounds];
+  [displayConfiguration _nativeBounds];
   v18 = v17;
   v20 = v19;
   if (v14 == 1)
@@ -63,17 +63,17 @@
 
   v23 = v22 / v13;
   v24 = v21 / v13;
-  [v9 setBounds:{v18, v20, v21 / v13, v22 / v13}];
-  [v11 renderingCenter];
-  [v9 setPosition:?];
+  [layerCopy setBounds:{v18, v20, v21 / v13, v22 / v13}];
+  [displayConfiguration renderingCenter];
+  [layerCopy setPosition:?];
   UIRectGetCenter();
-  [v10 setPosition:?];
+  [transformLayerCopy setPosition:?];
   if ([MEMORY[0x277D0ACD8] hasEmulatedDeviceBounds])
   {
     [MEMORY[0x277D0ACD8] emulatedDeviceBounds];
     v26 = v25;
     v28 = v27;
-    v29 = [MEMORY[0x277D0ACD8] scalingStyle];
+    scalingStyle = [MEMORY[0x277D0ACD8] scalingStyle];
     [MEMORY[0x277D0ACD8] customTranslationOffsetX];
     v31 = v30;
     [MEMORY[0x277D0ACD8] customTranslationOffsetY];
@@ -101,12 +101,12 @@
       v41 = v23 / v28;
     }
 
-    if (v29 > 1)
+    if (scalingStyle > 1)
     {
       v45 = v41;
-      if (v29 != 2)
+      if (scalingStyle != 2)
       {
-        if (v29 == 3)
+        if (scalingStyle == 3)
         {
           v41 = 1.0;
           if (BSFloatIsZero())
@@ -137,7 +137,7 @@
     {
       v42 = 1.0;
       v43 = fmin(fmax(v41, 0.0), 1.0);
-      if (v29 == 1)
+      if (scalingStyle == 1)
       {
         v44 = 1.0;
       }
@@ -147,12 +147,12 @@
         v44 = v40;
       }
 
-      if (v29 != 1)
+      if (scalingStyle != 1)
       {
         v42 = v38;
       }
 
-      if (v29)
+      if (scalingStyle)
       {
         v41 = v44;
       }
@@ -162,7 +162,7 @@
         v41 = v43;
       }
 
-      if (v29)
+      if (scalingStyle)
       {
         v45 = v42;
       }
@@ -185,9 +185,9 @@
       v47 = IsOne ^ 1;
 LABEL_41:
       memset(&v87, 0, sizeof(v87));
-      if (v10)
+      if (transformLayerCopy)
       {
-        [v10 transform];
+        [transformLayerCopy transform];
       }
 
       if (!v34)
@@ -205,36 +205,36 @@ LABEL_41:
       }
 
       v86 = v87;
-      [v10 setTransform:&v86];
+      [transformLayerCopy setTransform:&v86];
     }
   }
 
-  [v10 bounds];
+  [transformLayerCopy bounds];
   v49 = v48;
   v51 = v50;
   v53 = v52;
   v55 = v54;
-  v56 = [MEMORY[0x277D0ACD8] emulatedDeviceMaskImageName];
-  v57 = [MEMORY[0x277D0ACD8] emulatedDeviceBezelImageName];
-  if (v56 | v57)
+  emulatedDeviceMaskImageName = [MEMORY[0x277D0ACD8] emulatedDeviceMaskImageName];
+  emulatedDeviceBezelImageName = [MEMORY[0x277D0ACD8] emulatedDeviceBezelImageName];
+  if (emulatedDeviceMaskImageName | emulatedDeviceBezelImageName)
   {
-    v58 = [MEMORY[0x277D0ACD8] emulatedDeviceImageContainingBundle];
+    emulatedDeviceImageContainingBundle = [MEMORY[0x277D0ACD8] emulatedDeviceImageContainingBundle];
   }
 
   else
   {
-    v58 = 0;
+    emulatedDeviceImageContainingBundle = 0;
   }
 
-  v84 = [MEMORY[0x277D755B8] imageNamed:v56 inBundle:v58];
+  v84 = [MEMORY[0x277D755B8] imageNamed:emulatedDeviceMaskImageName inBundle:emulatedDeviceImageContainingBundle];
   if (v84)
   {
     maskLayer = self->_maskLayer;
     if (!maskLayer)
     {
-      v60 = [MEMORY[0x277CD9ED0] layer];
+      layer = [MEMORY[0x277CD9ED0] layer];
       v61 = self->_maskLayer;
-      self->_maskLayer = v60;
+      self->_maskLayer = layer;
 
       -[CALayer setContents:](self->_maskLayer, "setContents:", [v84 CGImage]);
       maskLayer = self->_maskLayer;
@@ -244,39 +244,39 @@ LABEL_41:
     v62 = self->_maskLayer;
     UIRectGetCenter();
     [(CALayer *)v62 setPosition:?];
-    [v10 setMask:self->_maskLayer];
-    [v10 setMasksToBounds:1];
+    [transformLayerCopy setMask:self->_maskLayer];
+    [transformLayerCopy setMasksToBounds:1];
   }
 
   else
   {
-    v81 = v57;
-    v63 = v56;
-    v64 = [v10 mask];
+    v81 = emulatedDeviceBezelImageName;
+    v63 = emulatedDeviceMaskImageName;
+    mask = [transformLayerCopy mask];
     v65 = self->_maskLayer;
 
-    if (v64 == v65)
+    if (mask == v65)
     {
-      [v10 setMask:0];
+      [transformLayerCopy setMask:0];
     }
 
     v66 = self->_maskLayer;
     self->_maskLayer = 0;
 
-    v56 = v63;
-    v57 = v81;
+    emulatedDeviceMaskImageName = v63;
+    emulatedDeviceBezelImageName = v81;
   }
 
-  v67 = [MEMORY[0x277D755B8] imageNamed:v57 inBundle:v58];
+  v67 = [MEMORY[0x277D755B8] imageNamed:emulatedDeviceBezelImageName inBundle:emulatedDeviceImageContainingBundle];
   bezelLayer = self->_bezelLayer;
   if (v67)
   {
-    v82 = v56;
+    v82 = emulatedDeviceMaskImageName;
     if (!bezelLayer)
     {
-      v69 = [MEMORY[0x277CD9ED0] layer];
+      layer2 = [MEMORY[0x277CD9ED0] layer];
       v70 = self->_bezelLayer;
-      self->_bezelLayer = v69;
+      self->_bezelLayer = layer2;
 
       v71 = self->_bezelLayer;
       v72 = *MEMORY[0x277CBF348];
@@ -284,15 +284,15 @@ LABEL_41:
       [v67 size];
       [(CALayer *)v71 setBounds:v72, v73, v74, v75];
       -[CALayer setContents:](self->_bezelLayer, "setContents:", [v67 CGImage]);
-      [v9 insertSublayer:self->_bezelLayer below:v10];
+      [layerCopy insertSublayer:self->_bezelLayer below:transformLayerCopy];
       bezelLayer = self->_bezelLayer;
     }
 
-    [v9 insertSublayer:bezelLayer below:{v10, v82}];
+    [layerCopy insertSublayer:bezelLayer below:{transformLayerCopy, v82}];
     v76 = self->_bezelLayer;
     UIRectGetCenter();
     [(CALayer *)v76 setPosition:?];
-    v56 = v83;
+    emulatedDeviceMaskImageName = v83;
   }
 
   else
@@ -302,21 +302,21 @@ LABEL_41:
     self->_bezelLayer = 0;
   }
 
-  v78 = [MEMORY[0x277D0ACD8] rootLayerBackgroundColorString];
-  v79 = colorForSpecifierString(v78);
+  rootLayerBackgroundColorString = [MEMORY[0x277D0ACD8] rootLayerBackgroundColorString];
+  v79 = colorForSpecifierString(rootLayerBackgroundColorString);
   backgroundColor = self->_backgroundColor;
   self->_backgroundColor = v79;
 
-  objc_storeStrong(&self->_layerForBackgroundColor, a3);
+  objc_storeStrong(&self->_layerForBackgroundColor, layer);
   [(SBRootSceneWindow *)self _updateRootLayerBackgroundColor];
 LABEL_64:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SBRootSceneWindow *)self traitCollection];
-  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  changeCopy = change;
+  traitCollection = [(SBRootSceneWindow *)self traitCollection];
+  v6 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v6)
   {
@@ -328,9 +328,9 @@ LABEL_64:
 - (void)_updateRootLayerBackgroundColor
 {
   layerForBackgroundColor = self->_layerForBackgroundColor;
-  v3 = [(UIColor *)self->_backgroundColor CGColor];
+  cGColor = [(UIColor *)self->_backgroundColor CGColor];
 
-  [(CALayer *)layerForBackgroundColor setBackgroundColor:v3];
+  [(CALayer *)layerForBackgroundColor setBackgroundColor:cGColor];
 }
 
 @end

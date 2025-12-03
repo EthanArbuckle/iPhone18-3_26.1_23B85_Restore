@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (BOOL)isSuppressing;
 - (PKAutomaticPassPresentationSuppressor)init;
-- (unint64_t)requestSuppressionWithResponseHandler:(id)a3;
-- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)a3;
-- (void)_acquireSuppressionAssertionWithCompletion:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (unint64_t)requestSuppressionWithResponseHandler:(id)handler;
+- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)completion;
+- (void)_acquireSuppressionAssertionWithCompletion:(id)completion;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)dealloc;
-- (void)endSuppressionWithRequestToken:(unint64_t)a3;
+- (void)endSuppressionWithRequestToken:(unint64_t)token;
 @end
 
 @implementation PKAutomaticPassPresentationSuppressor
@@ -71,8 +71,8 @@ void __45__PKAutomaticPassPresentationSuppressor_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PKAssertion *)self->_suppressionAssertion setInvalidationHandler:0];
   [(PKAssertion *)self->_suppressionAssertion invalidate];
@@ -81,9 +81,9 @@ void __45__PKAutomaticPassPresentationSuppressor_init__block_invoke(uint64_t a1)
   [(PKAutomaticPassPresentationSuppressor *)&v4 dealloc];
 }
 
-- (unint64_t)requestSuppressionWithResponseHandler:(id)a3
+- (unint64_t)requestSuppressionWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -98,17 +98,17 @@ void __45__PKAutomaticPassPresentationSuppressor_init__block_invoke(uint64_t a1)
     block[4] = self;
     block[5] = &v13;
     dispatch_sync(suppressorQueue, block);
-    [(PKAutomaticPassPresentationSuppressor *)self _acquireSuppressionAssertionIfNeededWithCompletion:v4];
+    [(PKAutomaticPassPresentationSuppressor *)self _acquireSuppressionAssertionIfNeededWithCompletion:handlerCopy];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     v6 = dispatch_get_global_queue(0, 0);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __79__PKAutomaticPassPresentationSuppressor_requestSuppressionWithResponseHandler___block_invoke_2;
     v10[3] = &unk_1E79C4428;
-    v11 = v4;
+    v11 = handlerCopy;
     v7 = v10;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -133,7 +133,7 @@ uint64_t __79__PKAutomaticPassPresentationSuppressor_requestSuppressionWithRespo
   return [*(*(a1 + 32) + 16) addIndex:*(*(*(a1 + 40) + 8) + 24)];
 }
 
-- (void)endSuppressionWithRequestToken:(unint64_t)a3
+- (void)endSuppressionWithRequestToken:(unint64_t)token
 {
   suppressorQueue = self->_suppressorQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -141,7 +141,7 @@ uint64_t __79__PKAutomaticPassPresentationSuppressor_requestSuppressionWithRespo
   v5[2] = __72__PKAutomaticPassPresentationSuppressor_endSuppressionWithRequestToken___block_invoke;
   v5[3] = &unk_1E79CAED8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = token;
   v4 = v5;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -184,7 +184,7 @@ uint64_t __72__PKAutomaticPassPresentationSuppressor_endSuppressionWithRequestTo
   return v3;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   suppressorQueue = self->_suppressorQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -214,7 +214,7 @@ void __72__PKAutomaticPassPresentationSuppressor__applicationDidEnterBackground_
   *(v6 + 32) = v5;
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   suppressorQueue = self->_suppressorQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -278,10 +278,10 @@ LABEL_11:
   *(v8 + 32) = 0;
 }
 
-- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)a3
+- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   suppressionAssertion = self->_suppressionAssertion;
   if (suppressionAssertion)
   {
@@ -290,13 +290,13 @@ LABEL_11:
     v7[2] = __92__PKAutomaticPassPresentationSuppressor__acquireSuppressionAssertionIfNeededWithCompletion___block_invoke;
     v7[3] = &unk_1E79C4888;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [PKAssertion isAssertionValid:suppressionAssertion completion:v7];
   }
 
   else
   {
-    [(PKAutomaticPassPresentationSuppressor *)self _acquireSuppressionAssertionWithCompletion:v4];
+    [(PKAutomaticPassPresentationSuppressor *)self _acquireSuppressionAssertionWithCompletion:completionCopy];
   }
 }
 
@@ -316,20 +316,20 @@ uint64_t __92__PKAutomaticPassPresentationSuppressor__acquireSuppressionAssertio
   return result;
 }
 
-- (void)_acquireSuppressionAssertionWithCompletion:(id)a3
+- (void)_acquireSuppressionAssertionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Automatic Pass Presentation Suppression API from %@", v6];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Automatic Pass Presentation Suppression API from %@", bundleIdentifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__PKAutomaticPassPresentationSuppressor__acquireSuppressionAssertionWithCompletion___block_invoke;
   v9[3] = &unk_1E79DA620;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [PKAssertion acquireAssertionOfType:5 withReason:v7 completion:v9];
 }
 

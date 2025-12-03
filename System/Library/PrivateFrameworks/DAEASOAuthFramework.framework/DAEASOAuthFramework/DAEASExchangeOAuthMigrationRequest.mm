@@ -1,33 +1,33 @@
 @interface DAEASExchangeOAuthMigrationRequest
-+ (id)urlRequestForOAuthTokenFromUsername:(id)a3 tokenRequestURI:(id)a4 password:(id)a5 scope:(id)a6;
++ (id)urlRequestForOAuthTokenFromUsername:(id)username tokenRequestURI:(id)i password:(id)password scope:(id)scope;
 @end
 
 @implementation DAEASExchangeOAuthMigrationRequest
 
-+ (id)urlRequestForOAuthTokenFromUsername:(id)a3 tokenRequestURI:(id)a4 password:(id)a5 scope:(id)a6
++ (id)urlRequestForOAuthTokenFromUsername:(id)username tokenRequestURI:(id)i password:(id)password scope:(id)scope
 {
   v9 = MEMORY[0x277CBEBC0];
-  v10 = a6;
-  v41 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 URLWithString:v11];
-  v14 = [v13 path];
-  v15 = [v13 path];
+  scopeCopy = scope;
+  passwordCopy = password;
+  iCopy = i;
+  usernameCopy = username;
+  v13 = [v9 URLWithString:iCopy];
+  path = [v13 path];
+  path2 = [v13 path];
   v16 = @"/common";
-  v17 = [v15 hasPrefix:@"/common"];
+  v17 = [path2 hasPrefix:@"/common"];
 
   if ((v17 & 1) != 0 || ([v13 path], v18 = objc_claimAutoreleasedReturnValue(), v16 = @"/consumers", v19 = objc_msgSend(v18, "hasPrefix:", @"/consumers"), v18, v19))
   {
-    v20 = [v14 rangeOfString:v16];
-    v22 = [v14 stringByReplacingCharactersInRange:v20 withString:{v21, @"/organizations"}];
+    v20 = [path rangeOfString:v16];
+    v22 = [path stringByReplacingCharactersInRange:v20 withString:{v21, @"/organizations"}];
 
-    v14 = v22;
+    path = v22;
   }
 
-  v23 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v11];
+  v23 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:iCopy];
 
-  [v23 setPath:v14];
+  [v23 setPath:path];
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"response_type" value:@"code"];
   [v24 addObject:v25];
@@ -41,15 +41,15 @@
   [v24 addObject:v29];
 
   v30 = objc_alloc(MEMORY[0x277CCAD18]);
-  v31 = [v10 componentsJoinedByString:@" "];
+  v31 = [scopeCopy componentsJoinedByString:@" "];
 
   v32 = [v30 initWithName:@"scope" value:v31];
   [v24 addObject:v32];
 
-  v33 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"username" value:v12];
+  v33 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"username" value:usernameCopy];
   [v24 addObject:v33];
 
-  v34 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"password" value:v41];
+  v34 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"password" value:passwordCopy];
   [v24 addObject:v34];
 
   [v23 setQueryItems:v24];
@@ -57,8 +57,8 @@
   v36 = [v23 URL];
   v37 = [v35 requestWithURL:v36];
 
-  v38 = [v23 percentEncodedQuery];
-  v39 = [v38 dataUsingEncoding:4];
+  percentEncodedQuery = [v23 percentEncodedQuery];
+  v39 = [percentEncodedQuery dataUsingEncoding:4];
   [v37 setHTTPBody:v39];
 
   [v37 setCachePolicy:1];

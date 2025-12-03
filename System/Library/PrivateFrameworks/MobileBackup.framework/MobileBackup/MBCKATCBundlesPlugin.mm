@@ -1,21 +1,21 @@
 @interface MBCKATCBundlesPlugin
-- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4;
-- (BOOL)shouldRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4;
+- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)policy fileInfo:(id)info;
+- (BOOL)shouldRestoreContentWithPolicy:(id)policy fileInfo:(id)info;
 @end
 
 @implementation MBCKATCBundlesPlugin
 
-- (BOOL)shouldRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4
+- (BOOL)shouldRestoreContentWithPolicy:(id)policy fileInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  policyCopy = policy;
+  infoCopy = info;
   v7 = +[ATClientController sharedInstance];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v7 allClients];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allClients = [v7 allClients];
+  v9 = [allClients countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -30,7 +30,7 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allClients);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v13);
@@ -38,7 +38,7 @@
         if (objc_opt_respondsToSelector())
         {
           v17 = +[MBCKManager sharedInstance];
-          v18 = [v15 shouldRestoreFile:v6 backupManager:v17];
+          v18 = [v15 shouldRestoreFile:infoCopy backupManager:v17];
 
           if (!v18)
           {
@@ -53,7 +53,7 @@
       }
 
       while (v10 != v13);
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [allClients countByEnumeratingWithState:&v22 objects:v26 count:16];
       v12 = &selRef_setServiceDelegate_;
       if (v10)
       {
@@ -76,11 +76,11 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4
+- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)policy fileInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isRestoringPrimaryAccount])
+  policyCopy = policy;
+  infoCopy = info;
+  if ([policyCopy isRestoringPrimaryAccount])
   {
     v7 = +[ATClientController sharedInstance];
     v32 = 0u;
@@ -92,7 +92,7 @@ LABEL_12:
     if (v8)
     {
       v28 = v7;
-      v29 = v5;
+      v29 = policyCopy;
       v9 = *v33;
       v10 = &selRef_setServiceDelegate_;
       v11 = &selRef_setServiceDelegate_;
@@ -112,17 +112,17 @@ LABEL_12:
           v16 = objc_autoreleasePoolPush();
           if (objc_opt_respondsToSelector())
           {
-            [v6 path];
+            [infoCopy path];
             context = v16;
             v17 = v14;
             v18 = v13;
             v19 = v8;
             v20 = v9;
-            v22 = v21 = v6;
+            v22 = v21 = infoCopy;
             v23 = +[MBCKManager sharedInstance];
             v24 = [v15 shouldBackgroundRestorePath:v22 backupManager:v23];
 
-            v6 = v21;
+            infoCopy = v21;
             v9 = v20;
             v8 = v19;
             v13 = v18;
@@ -137,7 +137,7 @@ LABEL_12:
           if (objc_opt_respondsToSelector())
           {
             v25 = +[MBCKManager sharedInstance];
-            v26 = [v15 shouldBackgroundRestoreFile:v6 backupManager:v25];
+            v26 = [v15 shouldBackgroundRestoreFile:infoCopy backupManager:v25];
 
             if (v26)
             {
@@ -166,7 +166,7 @@ LABEL_15:
 
 LABEL_16:
       v7 = v28;
-      v5 = v29;
+      policyCopy = v29;
     }
   }
 

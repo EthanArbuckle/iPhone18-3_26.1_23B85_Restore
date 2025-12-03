@@ -1,18 +1,18 @@
 @interface BuddyMigrationTargetLockscreenController
-- (void)deviceMigrationManager:(id)a3 didCompleteWithError:(id)a4;
+- (void)deviceMigrationManager:(id)manager didCompleteWithError:(id)error;
 @end
 
 @implementation BuddyMigrationTargetLockscreenController
 
-- (void)deviceMigrationManager:(id)a3 didCompleteWithError:(id)a4
+- (void)deviceMigrationManager:(id)manager didCompleteWithError:(id)error
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14.receiver = v17;
+  objc_storeStrong(&v15, error);
+  v14.receiver = selfCopy;
   v14.super_class = BuddyMigrationTargetLockscreenController;
   [(BuddyMigrationLockscreenController *)&v14 deviceMigrationManager:location[0] didCompleteWithError:v15];
   if (v15)
@@ -23,7 +23,7 @@
     v8 = 0;
     v9 = sub_1000B847C;
     v10 = &unk_10032B838;
-    v11 = v17;
+    v11 = selfCopy;
     v12 = v15;
     dispatch_async(v5, &block);
 

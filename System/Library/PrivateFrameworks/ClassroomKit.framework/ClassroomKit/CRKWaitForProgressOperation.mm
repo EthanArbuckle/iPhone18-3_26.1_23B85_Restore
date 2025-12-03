@@ -1,27 +1,27 @@
 @interface CRKWaitForProgressOperation
-- (CRKWaitForProgressOperation)initWithOperationQueue:(id)a3 operation:(id)a4 expectedCompletedUnitCount:(int64_t)a5 expectedTotalUnitCount:(int64_t)a6;
+- (CRKWaitForProgressOperation)initWithOperationQueue:(id)queue operation:(id)operation expectedCompletedUnitCount:(int64_t)count expectedTotalUnitCount:(int64_t)unitCount;
 - (void)cancel;
 - (void)main;
-- (void)observedOperationDidFail:(id)a3;
-- (void)observedOperationDidProgress:(id)a3;
+- (void)observedOperationDidFail:(id)fail;
+- (void)observedOperationDidProgress:(id)progress;
 @end
 
 @implementation CRKWaitForProgressOperation
 
-- (CRKWaitForProgressOperation)initWithOperationQueue:(id)a3 operation:(id)a4 expectedCompletedUnitCount:(int64_t)a5 expectedTotalUnitCount:(int64_t)a6
+- (CRKWaitForProgressOperation)initWithOperationQueue:(id)queue operation:(id)operation expectedCompletedUnitCount:(int64_t)count expectedTotalUnitCount:(int64_t)unitCount
 {
-  v11 = a3;
-  v12 = a4;
+  queueCopy = queue;
+  operationCopy = operation;
   v16.receiver = self;
   v16.super_class = CRKWaitForProgressOperation;
   v13 = [(CRKWaitForProgressOperation *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_operationQueue, a3);
-    objc_storeStrong(&v14->_operation, a4);
-    v14->_expectedTotalUnitCount = a6;
-    v14->_expctedCompletedUnitCount = a5;
+    objc_storeStrong(&v13->_operationQueue, queue);
+    objc_storeStrong(&v14->_operation, operation);
+    v14->_expectedTotalUnitCount = unitCount;
+    v14->_expctedCompletedUnitCount = count;
   }
 
   return v14;
@@ -55,27 +55,27 @@ void __37__CRKWaitForProgressOperation_cancel__block_invoke(uint64_t a1)
 
 - (void)main
 {
-  v3 = [(CRKWaitForProgressOperation *)self operation];
-  [v3 addTarget:self selector:sel_observedOperationDidProgress_ forOperationEvents:8];
+  operation = [(CRKWaitForProgressOperation *)self operation];
+  [operation addTarget:self selector:sel_observedOperationDidProgress_ forOperationEvents:8];
 
-  v4 = [(CRKWaitForProgressOperation *)self operation];
-  [v4 addTarget:self selector:sel_observedOperationDidFail_ forOperationEvents:4];
+  operation2 = [(CRKWaitForProgressOperation *)self operation];
+  [operation2 addTarget:self selector:sel_observedOperationDidFail_ forOperationEvents:4];
 
-  v6 = [(CRKWaitForProgressOperation *)self operationQueue];
-  v5 = [(CRKWaitForProgressOperation *)self operation];
-  [v6 addOperation:v5];
+  operationQueue = [(CRKWaitForProgressOperation *)self operationQueue];
+  operation3 = [(CRKWaitForProgressOperation *)self operation];
+  [operationQueue addOperation:operation3];
 }
 
-- (void)observedOperationDidProgress:(id)a3
+- (void)observedOperationDidProgress:(id)progress
 {
-  v6 = a3;
+  progressCopy = progress;
   if ([(CRKWaitForProgressOperation *)self isExecuting])
   {
-    v4 = [v6 totalUnitCount];
-    if (v4 == [(CRKWaitForProgressOperation *)self expectedTotalUnitCount])
+    totalUnitCount = [progressCopy totalUnitCount];
+    if (totalUnitCount == [(CRKWaitForProgressOperation *)self expectedTotalUnitCount])
     {
-      v5 = [v6 completedUnitCount];
-      if (v5 == [(CRKWaitForProgressOperation *)self expctedCompletedUnitCount])
+      completedUnitCount = [progressCopy completedUnitCount];
+      if (completedUnitCount == [(CRKWaitForProgressOperation *)self expctedCompletedUnitCount])
       {
         [(CRKWaitForProgressOperation *)self endOperationWithResultObject:0];
       }
@@ -83,13 +83,13 @@ void __37__CRKWaitForProgressOperation_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)observedOperationDidFail:(id)a3
+- (void)observedOperationDidFail:(id)fail
 {
-  v5 = a3;
+  failCopy = fail;
   if ([(CRKWaitForProgressOperation *)self isExecuting])
   {
-    v4 = [v5 error];
-    [(CRKWaitForProgressOperation *)self endOperationWithError:v4];
+    error = [failCopy error];
+    [(CRKWaitForProgressOperation *)self endOperationWithError:error];
   }
 }
 

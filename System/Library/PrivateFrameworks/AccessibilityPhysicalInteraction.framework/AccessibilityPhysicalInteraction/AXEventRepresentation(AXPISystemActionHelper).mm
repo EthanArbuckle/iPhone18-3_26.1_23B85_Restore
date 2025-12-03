@@ -8,15 +8,15 @@
 - (void)setPostHIDEventDirectly:()AXPISystemActionHelper
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, &PostHIDDirectly, v2, 1);
+  objc_setAssociatedObject(self, &PostHIDDirectly, v2, 1);
 }
 
 - (uint64_t)postHIDEventDirectly
 {
-  v1 = objc_getAssociatedObject(a1, &PostHIDDirectly);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, &PostHIDDirectly);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

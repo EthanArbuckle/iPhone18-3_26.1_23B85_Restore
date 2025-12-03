@@ -1,23 +1,23 @@
 @interface PXPhotosDetailsHeaderTileLayout
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
-- (CGRect)_contentsRectForAspectRatio:(double)a3;
-- (CGRect)_rectForTileWithIdentifier:(PXTileIdentifier *)a3;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
+- (CGRect)_contentsRectForAspectRatio:(double)ratio;
+- (CGRect)_rectForTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGRect)contentBounds;
 - (CGRect)previewRect;
 - (CGSize)_playButtonSize;
-- (PXPhotosDetailsHeaderTileLayout)initWithSpec:(id)a3;
+- (PXPhotosDetailsHeaderTileLayout)initWithSpec:(id)spec;
 - (PXPhotosDetailsHeaderTileLayoutDelegate)delegate;
 - (PXTileIdentifier)contentTileIdentifier;
-- (PXTileIdentifier)tileIdentifierForTileKind:(SEL)a3;
-- (double)_zPositionForTileWithIdentifier:(PXTileIdentifier *)a3;
-- (id)_userDataForTileWithIdentifier:(PXTileIdentifier *)a3 inContainingRect:(CGRect)a4;
-- (id)_viewSpecForTileWithIdentifier:(PXTileIdentifier *)a3 boundingSize:(CGSize)a4;
-- (int64_t)tileKindForTileIdentifier:(PXTileIdentifier *)a3;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setReferenceSize:(CGSize)a3;
-- (void)setSpec:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (PXTileIdentifier)tileIdentifierForTileKind:(SEL)kind;
+- (double)_zPositionForTileWithIdentifier:(PXTileIdentifier *)identifier;
+- (id)_userDataForTileWithIdentifier:(PXTileIdentifier *)identifier inContainingRect:(CGRect)rect;
+- (id)_viewSpecForTileWithIdentifier:(PXTileIdentifier *)identifier boundingSize:(CGSize)size;
+- (int64_t)tileKindForTileIdentifier:(PXTileIdentifier *)identifier;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
+- (void)setDelegate:(id)delegate;
+- (void)setReferenceSize:(CGSize)size;
+- (void)setSpec:(id)spec;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation PXPhotosDetailsHeaderTileLayout
@@ -29,12 +29,12 @@
   return WeakRetained;
 }
 
-- (CGRect)_contentsRectForAspectRatio:(double)a3
+- (CGRect)_contentsRectForAspectRatio:(double)ratio
 {
   if (self->_delegateRespondsTo.contentsRectForAspectRatio)
   {
-    v5 = [(PXPhotosDetailsHeaderTileLayout *)self delegate];
-    [v5 photosDetailsHeaderTileLayout:self contentsRectForAspectRatio:a3];
+    delegate = [(PXPhotosDetailsHeaderTileLayout *)self delegate];
+    [delegate photosDetailsHeaderTileLayout:self contentsRectForAspectRatio:ratio];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -73,7 +73,7 @@
   return [(PXPhotosDetailsHeaderTileLayout *)self tileIdentifierForTileKind:v4];
 }
 
-- (PXTileIdentifier)tileIdentifierForTileKind:(SEL)a3
+- (PXTileIdentifier)tileIdentifierForTileKind:(SEL)kind
 {
   retstr->index[9] = 0;
   *&retstr->index[5] = 0u;
@@ -85,22 +85,22 @@
   return self;
 }
 
-- (int64_t)tileKindForTileIdentifier:(PXTileIdentifier *)a3
+- (int64_t)tileKindForTileIdentifier:(PXTileIdentifier *)identifier
 {
-  v3 = *&a3->index[5];
-  v6[2] = *&a3->index[3];
+  v3 = *&identifier->index[5];
+  v6[2] = *&identifier->index[3];
   v6[3] = v3;
-  v6[4] = *&a3->index[7];
-  v7 = a3->index[9];
-  v4 = *&a3->index[1];
-  v6[0] = *&a3->length;
+  v6[4] = *&identifier->index[7];
+  v7 = identifier->index[9];
+  v4 = *&identifier->index[1];
+  v6[0] = *&identifier->length;
   v6[1] = v4;
   return *(v6 + *&v6[0]);
 }
 
-- (id)_userDataForTileWithIdentifier:(PXTileIdentifier *)a3 inContainingRect:(CGRect)a4
+- (id)_userDataForTileWithIdentifier:(PXTileIdentifier *)identifier inContainingRect:(CGRect)rect
 {
-  if (a3->index[0] == 2)
+  if (identifier->index[0] == 2)
   {
     PXViewSpecContextForMemoryTile();
   }
@@ -110,15 +110,15 @@
   return v4;
 }
 
-- (double)_zPositionForTileWithIdentifier:(PXTileIdentifier *)a3
+- (double)_zPositionForTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v3 = *&a3->index[5];
-  v7[2] = *&a3->index[3];
+  v3 = *&identifier->index[5];
+  v7[2] = *&identifier->index[3];
   v7[3] = v3;
-  v7[4] = *&a3->index[7];
-  v8 = a3->index[9];
-  v4 = *&a3->index[1];
-  v7[0] = *&a3->length;
+  v7[4] = *&identifier->index[7];
+  v8 = identifier->index[9];
+  v4 = *&identifier->index[1];
+  v7[0] = *&identifier->length;
   v7[1] = v4;
   v5 = [(PXPhotosDetailsHeaderTileLayout *)self tileKindForTileIdentifier:v7];
   result = 0.0;
@@ -130,17 +130,17 @@
   return result;
 }
 
-- (id)_viewSpecForTileWithIdentifier:(PXTileIdentifier *)a3 boundingSize:(CGSize)a4
+- (id)_viewSpecForTileWithIdentifier:(PXTileIdentifier *)identifier boundingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = *&a3->index[5];
-  v18 = *&a3->index[3];
+  height = size.height;
+  width = size.width;
+  v7 = *&identifier->index[5];
+  v18 = *&identifier->index[3];
   v19 = v7;
-  v20 = *&a3->index[7];
-  v21 = a3->index[9];
-  v8 = *&a3->index[1];
-  v16 = *&a3->length;
+  v20 = *&identifier->index[7];
+  v21 = identifier->index[9];
+  v8 = *&identifier->index[1];
+  v16 = *&identifier->length;
   v17 = v8;
   v9 = [(PXPhotosDetailsHeaderTileLayout *)self tileKindForTileIdentifier:&v16];
   if (v9 > 1)
@@ -149,8 +149,8 @@
     {
       if (self->_delegateRespondsTo.titleFontName)
       {
-        v12 = [(PXPhotosDetailsHeaderTileLayout *)self delegate];
-        [v12 photosDetailsHeaderTileLayoutFontName:self];
+        delegate = [(PXPhotosDetailsHeaderTileLayout *)self delegate];
+        [delegate photosDetailsHeaderTileLayoutFontName:self];
         objc_claimAutoreleasedReturnValue();
       }
 
@@ -187,11 +187,11 @@
     }
   }
 
-  v13 = [(PXPhotosDetailsHeaderTileLayout *)self spec];
+  spec = [(PXPhotosDetailsHeaderTileLayout *)self spec];
   v16 = v11;
   *&v17 = width;
   *(&v17 + 1) = height;
-  v14 = [v13 viewSpecWithDescriptor:&v16];
+  v14 = [spec viewSpecWithDescriptor:&v16];
 
   return v14;
 }
@@ -200,8 +200,8 @@
 {
   if (self->_delegateRespondsTo.playButtonSize)
   {
-    v3 = [(PXPhotosDetailsHeaderTileLayout *)self delegate];
-    [v3 photosDetailsHeaderTileLayoutPlayButtonSize:self];
+    delegate = [(PXPhotosDetailsHeaderTileLayout *)self delegate];
+    [delegate photosDetailsHeaderTileLayoutPlayButtonSize:self];
     v5 = v4;
     v7 = v6;
 
@@ -221,15 +221,15 @@
   return result;
 }
 
-- (CGRect)_rectForTileWithIdentifier:(PXTileIdentifier *)a3
+- (CGRect)_rectForTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v4 = *&a3->index[5];
-  v6[2] = *&a3->index[3];
+  v4 = *&identifier->index[5];
+  v6[2] = *&identifier->index[3];
   v6[3] = v4;
-  v6[4] = *&a3->index[7];
-  v7 = a3->index[9];
-  v5 = *&a3->index[1];
-  v6[0] = *&a3->length;
+  v6[4] = *&identifier->index[7];
+  v7 = identifier->index[9];
+  v5 = *&identifier->index[1];
+  v6[0] = *&identifier->length;
   v6[1] = v5;
   [(PXPhotosDetailsHeaderTileLayout *)self tileKindForTileIdentifier:v6];
   [(PXTilingLayout *)self contentInset];
@@ -238,37 +238,37 @@
   sub_1A524D1D4();
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v11 = *&a6->index[5];
-  v28 = *&a6->index[3];
+  v11 = *&identifier->index[5];
+  v28 = *&identifier->index[3];
   v29 = v11;
-  v30 = *&a6->index[7];
-  v31 = a6->index[9];
-  v12 = *&a6->index[1];
-  v26 = *&a6->length;
+  v30 = *&identifier->index[7];
+  v31 = identifier->index[9];
+  v12 = *&identifier->index[1];
+  v26 = *&identifier->length;
   v27 = v12;
   v13 = [(PXPhotosDetailsHeaderTileLayout *)self tileKindForTileIdentifier:&v26];
-  v14 = [(PXPhotosDetailsHeaderTileLayout *)self style];
-  v15 = [(PXPhotosDetailsHeaderTileLayout *)self style];
-  if (!v13 && v14)
+  style = [(PXPhotosDetailsHeaderTileLayout *)self style];
+  style2 = [(PXPhotosDetailsHeaderTileLayout *)self style];
+  if (!v13 && style)
   {
     return 0;
   }
 
   v16 = v13 == 3 || v13 == 1;
-  if (v16 && v15 != 1)
+  if (v16 && style2 != 1)
   {
     return 0;
   }
 
-  v17 = *&a6->index[5];
-  v28 = *&a6->index[3];
+  v17 = *&identifier->index[5];
+  v28 = *&identifier->index[3];
   v29 = v17;
-  v30 = *&a6->index[7];
-  v31 = a6->index[9];
-  v18 = *&a6->index[1];
-  v26 = *&a6->length;
+  v30 = *&identifier->index[7];
+  v31 = identifier->index[9];
+  v18 = *&identifier->index[1];
+  v26 = *&identifier->length;
   v27 = v18;
   [(PXPhotosDetailsHeaderTileLayout *)self _rectForTileWithIdentifier:&v26];
   width = v32.size.width;
@@ -278,43 +278,43 @@
     return 0;
   }
 
-  if (a3)
+  if (geometry)
   {
     [(PXTilingLayout *)self coordinateSpaceIdentifier];
     PXRectGetCenter();
   }
 
-  if (a4)
+  if (group)
   {
-    *a4 = 0;
+    *group = 0;
   }
 
-  if (a5)
+  if (data)
   {
-    v22 = *&a6->index[5];
-    v28 = *&a6->index[3];
+    v22 = *&identifier->index[5];
+    v28 = *&identifier->index[3];
     v29 = v22;
-    v30 = *&a6->index[7];
-    v31 = a6->index[9];
-    v23 = *&a6->index[1];
-    v26 = *&a6->length;
+    v30 = *&identifier->index[7];
+    v31 = identifier->index[9];
+    v23 = *&identifier->index[1];
+    v26 = *&identifier->length;
     v27 = v23;
-    v24 = [(PXPhotosDetailsHeaderTileLayout *)self _viewSpecForTileWithIdentifier:&v26 boundingSize:width, height];
-    v25 = [PXBasicTileUserData userDataWithViewSpec:v24];
-    *a5 = v25;
+    height = [(PXPhotosDetailsHeaderTileLayout *)self _viewSpecForTileWithIdentifier:&v26 boundingSize:width, height];
+    v25 = [PXBasicTileUserData userDataWithViewSpec:height];
+    *data = v25;
   }
 
   return 1;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -329,7 +329,7 @@
   v26 = y;
   v27 = width;
   v28 = height;
-  v13 = v12;
+  v13 = blockCopy;
   v23 = v13;
   v14 = _Block_copy(aBlock);
   v21 = 0;
@@ -432,11 +432,11 @@ void __79__PXPhotosDetailsHeaderTileLayout_enumerateTilesInRect_withOptions_usin
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     v5 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PXTilingLayoutInvalidationContext *)v5 invalidateContentBounds];
@@ -444,24 +444,24 @@ void __79__PXPhotosDetailsHeaderTileLayout_enumerateTilesInRect_withOptions_usin
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v7 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     v6 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v6 invalidateAllTiles];
     [(PXTilingLayout *)self invalidateLayoutWithContext:v6];
 
-    v5 = v7;
+    specCopy = v7;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -513,10 +513,10 @@ void __79__PXPhotosDetailsHeaderTileLayout_enumerateTilesInRect_withOptions_usin
   return result;
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   v7 = v6;
   v9 = v8;
@@ -529,18 +529,18 @@ void __79__PXPhotosDetailsHeaderTileLayout_enumerateTilesInRect_withOptions_usin
   }
 }
 
-- (PXPhotosDetailsHeaderTileLayout)initWithSpec:(id)a3
+- (PXPhotosDetailsHeaderTileLayout)initWithSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   v9.receiver = self;
   v9.super_class = PXPhotosDetailsHeaderTileLayout;
   v6 = [(PXTilingLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spec, a3);
+    objc_storeStrong(&v6->_spec, spec);
     v7->_useTitledPlayButton = 0;
-    if ([v5 userInterfaceIdiom] == 5)
+    if ([specCopy userInterfaceIdiom] == 5)
     {
       v7->_useTitledPlayButton = 1;
     }

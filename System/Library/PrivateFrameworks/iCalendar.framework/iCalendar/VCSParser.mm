@@ -1,29 +1,29 @@
 @interface VCSParser
-+ (id)parseVCSData:(id)a3;
-+ (id)parseVCSFile:(id)a3;
-+ (unint64_t)beginVCSEntity:(id)a3 withParseState:(id)a4;
-+ (unint64_t)decodeVCSLine:(id)a3 withParseState:(id)a4;
-+ (unint64_t)endVCSEntity:(id)a3 withParseState:(id)a4;
++ (id)parseVCSData:(id)data;
++ (id)parseVCSFile:(id)file;
++ (unint64_t)beginVCSEntity:(id)entity withParseState:(id)state;
++ (unint64_t)decodeVCSLine:(id)line withParseState:(id)state;
++ (unint64_t)endVCSEntity:(id)entity withParseState:(id)state;
 @end
 
 @implementation VCSParser
 
-+ (id)parseVCSFile:(id)a3
++ (id)parseVCSFile:(id)file
 {
   v4 = MEMORY[0x277CBEB28];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContentsOfFile:v5];
+  fileCopy = file;
+  v6 = [[v4 alloc] initWithContentsOfFile:fileCopy];
 
   [v6 increaseLengthBy:1];
-  v7 = [a1 parseVCSData:v6];
+  v7 = [self parseVCSData:v6];
 
   return v7;
 }
 
-+ (id)parseVCSData:(id)a3
++ (id)parseVCSData:(id)data
 {
-  v3 = a3;
-  v4 = [[VCSParserInputStream alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[VCSParserInputStream alloc] initWithData:dataCopy];
   if (!v4)
   {
     v8 = VCSLogHandle();
@@ -36,7 +36,7 @@
     goto LABEL_38;
   }
 
-  v24 = v3;
+  v24 = dataCopy;
   v5 = 100;
   v6 = malloc_type_malloc(0x64uLL, 0x100004077774924uLL);
   v7 = malloc_type_malloc(0x64uLL, 0x100004077774924uLL);
@@ -66,8 +66,8 @@ LABEL_7:
       {
         free(v6);
         free(v7);
-        v22 = [(VCSParseState *)v8 calendars];
-        v23 = [v22 copy];
+        calendars = [(VCSParseState *)v8 calendars];
+        v23 = [calendars copy];
 
         goto LABEL_34;
       }
@@ -127,7 +127,7 @@ LABEL_7:
 LABEL_27:
       [(VCSParseState *)v8 setLineNumber:[(VCSParserInputStream *)v4 lineNum]];
       v19 = [(VCSParsedLine *)v26 loadFromCString:v6 withParseState:v8];
-      if (v19 && [a1 decodeVCSLine:v19 withParseState:v8] == 2)
+      if (v19 && [self decodeVCSLine:v19 withParseState:v8] == 2)
       {
         v20 = VCSLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -152,57 +152,57 @@ LABEL_33:
 
   v23 = 0;
 LABEL_34:
-  v3 = v24;
+  dataCopy = v24;
 LABEL_38:
 
   return v23;
 }
 
-+ (unint64_t)decodeVCSLine:(id)a3 withParseState:(id)a4
++ (unint64_t)decodeVCSLine:(id)line withParseState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (v8 == 3)
+  lineCopy = line;
+  stateCopy = state;
+  type = [lineCopy type];
+  if (type == 3)
   {
-    v11 = [[VCSProperty alloc] initWithVCSLine:v6 parseState:v7];
+    v11 = [[VCSProperty alloc] initWithVCSLine:lineCopy parseState:stateCopy];
     if (!v11)
     {
 LABEL_15:
-      v10 = [v7 status];
+      status = [stateCopy status];
       goto LABEL_16;
     }
 
     v12 = v11;
-    v13 = [v7 currentEntity];
-    [v13 setProperty:v12];
+    currentEntity = [stateCopy currentEntity];
+    [currentEntity setProperty:v12];
 
-    v14 = v7;
+    v14 = stateCopy;
     v15 = 0;
 LABEL_14:
     [v14 setStatus:v15];
     goto LABEL_15;
   }
 
-  if (v8 != 1)
+  if (type != 1)
   {
     v16 = VCSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [VCSParser decodeVCSLine:v6 withParseState:v16];
+      [VCSParser decodeVCSLine:lineCopy withParseState:v16];
     }
 
     goto LABEL_13;
   }
 
-  v9 = [v6 tokenID];
-  if (v9 == 2)
+  tokenID = [lineCopy tokenID];
+  if (tokenID == 2)
   {
-    v10 = [a1 endVCSEntity:v6 withParseState:v7];
+    status = [self endVCSEntity:lineCopy withParseState:stateCopy];
     goto LABEL_16;
   }
 
-  if (v9 != 1)
+  if (tokenID != 1)
   {
     v16 = VCSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -212,35 +212,35 @@ LABEL_14:
 
 LABEL_13:
 
-    v14 = v7;
+    v14 = stateCopy;
     v15 = 1;
     goto LABEL_14;
   }
 
-  v10 = [a1 beginVCSEntity:v6 withParseState:v7];
+  status = [self beginVCSEntity:lineCopy withParseState:stateCopy];
 LABEL_16:
-  v17 = v10;
+  v17 = status;
 
   return v17;
 }
 
-+ (unint64_t)beginVCSEntity:(id)a3 withParseState:(id)a4
++ (unint64_t)beginVCSEntity:(id)entity withParseState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v19 = 0;
-  v6 = a3;
-  v7 = [v5 context];
+  entityCopy = entity;
+  context = [stateCopy context];
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
-  v9 = [v6 content];
+  content = [entityCopy content];
 
-  v10 = [v8 initWithData:v9 encoding:1];
+  v10 = [v8 initWithData:content encoding:1];
   v11 = [VCSParsedLine tokenizeNSStringKeyword:v10 withType:&v19];
   if (v19 != 2)
   {
     v12 = VCSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(VCSParser *)v10 beginVCSEntity:v5 withParseState:v12];
+      [(VCSParser *)v10 beginVCSEntity:stateCopy withParseState:v12];
     }
 
     goto LABEL_19;
@@ -250,15 +250,15 @@ LABEL_16:
   {
     if (v11 == 3)
     {
-      if (!v7)
+      if (!context)
       {
         v17 = objc_opt_new();
-        [v5 setCurrentCalendar:v17];
+        [stateCopy setCurrentCalendar:v17];
 
-        v18 = [v5 currentCalendar];
-        [v5 setCurrentEntity:v18];
+        currentCalendar = [stateCopy currentCalendar];
+        [stateCopy setCurrentEntity:currentCalendar];
 
-        [v5 setContext:1];
+        [stateCopy setContext:1];
         goto LABEL_20;
       }
 
@@ -281,12 +281,12 @@ LABEL_16:
 
   else
   {
-    if (v7 == 1)
+    if (context == 1)
     {
       if (v11 == 4)
       {
         v12 = objc_opt_new();
-        [v5 setContext:2];
+        [stateCopy setContext:2];
       }
 
       else
@@ -294,7 +294,7 @@ LABEL_16:
         v12 = 0;
       }
 
-      [v5 setCurrentEntity:v12];
+      [stateCopy setCurrentEntity:v12];
 LABEL_19:
 
 LABEL_20:
@@ -311,22 +311,22 @@ LABEL_20:
 
   v14 = 1;
 LABEL_21:
-  [v5 setStatus:v14];
-  v15 = [v5 status];
+  [stateCopy setStatus:v14];
+  status = [stateCopy status];
 
-  return v15;
+  return status;
 }
 
-+ (unint64_t)endVCSEntity:(id)a3 withParseState:(id)a4
++ (unint64_t)endVCSEntity:(id)entity withParseState:(id)state
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  stateCopy = state;
   v41 = 0;
-  v7 = [v6 context];
+  context = [stateCopy context];
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
-  v9 = [v5 content];
-  v10 = [v8 initWithData:v9 encoding:1];
+  content = [entityCopy content];
+  v10 = [v8 initWithData:content encoding:1];
 
   v11 = [VCSParsedLine tokenizeNSStringKeyword:v10 withType:&v41];
   if (v41 != 2)
@@ -342,7 +342,7 @@ LABEL_21:
 
   if (v11 == 5)
   {
-    if (v7 != 3)
+    if (context != 3)
     {
       v32 = VCSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -353,13 +353,13 @@ LABEL_21:
       goto LABEL_35;
     }
 
-    v16 = [v6 currentEntity];
+    currentEntity = [stateCopy currentEntity];
     goto LABEL_28;
   }
 
   if (v11 == 4)
   {
-    if (v7 != 2)
+    if (context != 2)
     {
       v32 = VCSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -370,30 +370,30 @@ LABEL_21:
       goto LABEL_35;
     }
 
-    v16 = [v6 currentEntity];
-    [v16 ensureDurationAlarms];
-    if ([v16 hasPropertyWithName:@"DTSTART"] && (objc_msgSend(v16, "hasPropertyWithName:", @"DTEND") & 1) == 0)
+    currentEntity = [stateCopy currentEntity];
+    [currentEntity ensureDurationAlarms];
+    if ([currentEntity hasPropertyWithName:@"DTSTART"] && (objc_msgSend(currentEntity, "hasPropertyWithName:", @"DTEND") & 1) == 0)
     {
-      v17 = [v16 startDate];
-      v18 = [v17 dateByAddingDays:1];
-      [v16 setEndDate:v18];
+      startDate = [currentEntity startDate];
+      v18 = [startDate dateByAddingDays:1];
+      [currentEntity setEndDate:v18];
 
-      [v16 setFullDayEvent:1];
+      [currentEntity setFullDayEvent:1];
     }
 
-    if ([v16 hasPropertyWithName:@"EXDATE"])
+    if ([currentEntity hasPropertyWithName:@"EXDATE"])
     {
       v35 = v10;
-      v36 = v5;
+      v36 = entityCopy;
       v19 = objc_opt_new();
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v20 = [v16 propertyForName:@"EXDATE"];
-      v21 = [v20 values];
+      v20 = [currentEntity propertyForName:@"EXDATE"];
+      values = [v20 values];
 
-      v22 = [v21 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v22 = [values countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v22)
       {
         v23 = v22;
@@ -404,17 +404,17 @@ LABEL_21:
           {
             if (*v38 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(values);
             }
 
-            v26 = [*(*(&v37 + 1) + 8 * i) value];
-            v27 = [v16 startDate];
-            v28 = [v26 dateWithTimeComponentsFromDate:v27];
+            value = [*(*(&v37 + 1) + 8 * i) value];
+            startDate2 = [currentEntity startDate];
+            v28 = [value dateWithTimeComponentsFromDate:startDate2];
 
             [v19 addObject:v28];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v37 objects:v42 count:16];
+          v23 = [values countByEnumeratingWithState:&v37 objects:v42 count:16];
         }
 
         while (v23);
@@ -422,24 +422,24 @@ LABEL_21:
 
       if ([v19 count])
       {
-        [v16 removePropertyForName:@"EXDATE"];
+        [currentEntity removePropertyForName:@"EXDATE"];
         v29 = [[VCSProperty alloc] initWithName:@"EXDATE" rawValues:v19 type:7];
-        [v16 setProperty:v29];
+        [currentEntity setProperty:v29];
       }
 
       v10 = v35;
-      v5 = v36;
+      entityCopy = v36;
     }
 
 LABEL_28:
-    v30 = [v6 currentCalendar];
-    [v30 addChildEntity:v16];
+    currentCalendar = [stateCopy currentCalendar];
+    [currentCalendar addChildEntity:currentEntity];
 
-    v31 = [v6 currentCalendar];
-    [v6 setCurrentEntity:v31];
+    currentCalendar2 = [stateCopy currentCalendar];
+    [stateCopy setCurrentEntity:currentCalendar2];
 
     v15 = 1;
-    [v6 setContext:1];
+    [stateCopy setContext:1];
 
     goto LABEL_36;
   }
@@ -458,7 +458,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v7 != 1)
+  if (context != 1)
   {
     v14 = VCSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -471,13 +471,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v6 calendars];
-  v13 = [v6 currentCalendar];
-  [v12 addObject:v13];
+  calendars = [stateCopy calendars];
+  currentCalendar3 = [stateCopy currentCalendar];
+  [calendars addObject:currentCalendar3];
 
-  [v6 setCurrentCalendar:0];
-  [v6 setCurrentEntity:0];
-  [v6 setContext:0];
+  [stateCopy setCurrentCalendar:0];
+  [stateCopy setCurrentEntity:0];
+  [stateCopy setContext:0];
 LABEL_10:
   v15 = 1;
 LABEL_36:

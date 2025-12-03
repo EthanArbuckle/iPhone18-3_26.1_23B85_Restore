@@ -1,7 +1,7 @@
 @interface EQKitMathMLMOperator
-- (EQKitMathMLMOperator)initWithString:(id)a3 environment:(id)a4;
+- (EQKitMathMLMOperator)initWithString:(id)string environment:(id)environment;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (id)stretchyLayoutSchemata;
 @end
@@ -12,7 +12,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 10;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;
@@ -22,21 +22,21 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 11;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;
 }
 
-- (EQKitMathMLMOperator)initWithString:(id)a3 environment:(id)a4
+- (EQKitMathMLMOperator)initWithString:(id)string environment:(id)environment
 {
   v20.receiver = self;
   v20.super_class = EQKitMathMLMOperator;
   v9 = [EQKitMathMLMToken initWithString:sel_initWithString_environment_ environment:?];
   if (v9)
   {
-    v10 = objc_msgSend_operatorDictionary(a4, v6, v7, v8);
-    v14 = objc_msgSend_UTF8String(a3, v11, v12, v13);
+    v10 = objc_msgSend_operatorDictionary(environment, v6, v7, v8);
+    v14 = objc_msgSend_UTF8String(string, v11, v12, v13);
     v15 = strlen(v14);
     if (v15 >= 0x7FFFFFFFFFFFFFF8)
     {
@@ -66,11 +66,11 @@
   return v9;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v5.receiver = self;
   v5.super_class = EQKitMathMLMOperator;
-  return [(EQKitMathMLMToken *)&v5 initFromXMLNode:a3 parser:a4];
+  return [(EQKitMathMLMToken *)&v5 initFromXMLNode:node parser:parser];
 }
 
 - (const)mathMLAttributes

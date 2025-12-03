@@ -13,7 +13,7 @@
   if (objc_opt_respondsToSelector())
   {
     LOWORD(v19) = a9;
-    [a1 _checkForHashtagInEditedRange:a3 ofTextStorage:a4 note:v20 textView:v16 allowAutoExplicitHashtag:v17 isEndingEditing:a8 languageHasSpaces:v19 parentAttachment:v18];
+    [self _checkForHashtagInEditedRange:a3 ofTextStorage:a4 note:v20 textView:v16 allowAutoExplicitHashtag:v17 isEndingEditing:a8 languageHasSpaces:v19 parentAttachment:v18];
   }
 }
 

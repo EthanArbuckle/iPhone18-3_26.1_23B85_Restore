@@ -1,6 +1,6 @@
 @interface HDNotificationEngineConfiguration
 - (HDNotificationEngineConfiguration)init;
-- (HDNotificationEngineConfiguration)initWithCalendar:(id)a3 startGenerationDate:(id)a4 endGenerationDate:(id)a5;
+- (HDNotificationEngineConfiguration)initWithCalendar:(id)calendar startGenerationDate:(id)date endGenerationDate:(id)generationDate;
 @end
 
 @implementation HDNotificationEngineConfiguration
@@ -15,25 +15,25 @@
   return 0;
 }
 
-- (HDNotificationEngineConfiguration)initWithCalendar:(id)a3 startGenerationDate:(id)a4 endGenerationDate:(id)a5
+- (HDNotificationEngineConfiguration)initWithCalendar:(id)calendar startGenerationDate:(id)date endGenerationDate:(id)generationDate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  calendarCopy = calendar;
+  dateCopy = date;
+  generationDateCopy = generationDate;
   v18.receiver = self;
   v18.super_class = HDNotificationEngineConfiguration;
   v12 = [(HDNotificationEngineConfiguration *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dateCopy copy];
     startGenerationDate = v12->_startGenerationDate;
     v12->_startGenerationDate = v13;
 
-    v15 = [v11 copy];
+    v15 = [generationDateCopy copy];
     endGenerationDate = v12->_endGenerationDate;
     v12->_endGenerationDate = v15;
 
-    objc_storeStrong(&v12->_calendar, a3);
+    objc_storeStrong(&v12->_calendar, calendar);
   }
 
   return v12;

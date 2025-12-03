@@ -1,22 +1,22 @@
 @interface HMDHH2MigratorRecord
-+ (BOOL)recordMigrationFailureWithError:(id)a3;
-+ (id)archiveMigratorDict:(id)a3;
++ (BOOL)recordMigrationFailureWithError:(id)error;
++ (id)archiveMigratorDict:(id)dict;
 + (id)lastMigrationFailure;
 + (id)logCategory;
-+ (id)prepareDictionary:(id)a3;
++ (id)prepareDictionary:(id)dictionary;
 + (id)singleRecord;
-+ (id)unarchiveMigratorDict:(id)a3;
++ (id)unarchiveMigratorDict:(id)dict;
 + (void)removeMigrationFailureRecord;
 - (BOOL)beginMigration;
 - (BOOL)finishMigration;
-- (BOOL)writeMigratorRecord:(id)a3;
+- (BOOL)writeMigratorRecord:(id)record;
 - (BOOL)writeNewMigrationRecord;
 - (BOOL)writeToDisk;
-- (HMDHH2MigratorRecord)initWithLocalStorePath:(id)a3;
+- (HMDHH2MigratorRecord)initWithLocalStorePath:(id)path;
 - (id)attributeDescriptions;
 - (void)readMigratorRecord;
-- (void)unarchiveRecordFromData:(id)a3;
-- (void)updateValuesFromDict:(id)a3;
+- (void)unarchiveRecordFromData:(id)data;
+- (void)updateValuesFromDict:(id)dict;
 @end
 
 @implementation HMDHH2MigratorRecord
@@ -24,25 +24,25 @@
 - (BOOL)finishMigration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(HMDHH2MigratorRecord *)self hh2MigratorRecordDataStorePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  hh2MigratorRecordDataStorePath = [(HMDHH2MigratorRecord *)self hh2MigratorRecordDataStorePath];
   v14 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v14];
+  v5 = [defaultManager removeItemAtPath:hh2MigratorRecordDataStorePath error:&v14];
   v6 = v14;
 
   if ((v5 & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HMDHH2MigratorRecord *)v8 hh2MigratorRecordDataStorePath];
+      hh2MigratorRecordDataStorePath2 = [(HMDHH2MigratorRecord *)selfCopy hh2MigratorRecordDataStorePath];
       *buf = 138543874;
       v16 = v10;
       v17 = 2112;
-      v18 = v11;
+      v18 = hh2MigratorRecordDataStorePath2;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Unable to remove migration record from disk %@ (%@)", buf, 0x20u);
@@ -61,7 +61,7 @@
   if (![(HMDHH2MigratorRecord *)self isMigrationInProgress])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy3 = self;
     v9 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -85,7 +85,7 @@ LABEL_8:
   if ([(HMDHH2MigratorRecord *)self migrateFromTestDirectory])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy2 = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -102,7 +102,7 @@ LABEL_8:
   if ([(HMDHH2MigratorRecord *)self isMaximumMigrationAttemptReached])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy3 = self;
     v9 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -119,21 +119,21 @@ LABEL_8:
 LABEL_13:
   [(HMDHH2MigratorRecord *)self setCurrentMigrationAttempt:[(HMDHH2MigratorRecord *)self currentMigrationAttempt]+ 1];
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy4 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [(HMDHH2MigratorRecord *)v14 currentMigrationAttempt];
+    currentMigrationAttempt = [(HMDHH2MigratorRecord *)selfCopy4 currentMigrationAttempt];
     v19 = 138543618;
     v20 = v16;
     v21 = 1024;
-    v22 = v17;
+    v22 = currentMigrationAttempt;
     _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Increased migration attempt to %u", &v19, 0x12u);
   }
 
   objc_autoreleasePoolPop(v13);
-  result = [(HMDHH2MigratorRecord *)v14 writeToDisk];
+  result = [(HMDHH2MigratorRecord *)selfCopy4 writeToDisk];
 LABEL_16:
   v18 = *MEMORY[0x277D85DE8];
   return result;
@@ -143,14 +143,14 @@ LABEL_16:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [(HMDHH2MigratorRecord *)self isMigrationInProgress];
-  v5 = [(HMDHH2MigratorRecord *)self currentMigrationAttempt];
-  v6 = [(HMDHH2MigratorRecord *)self shouldSkipKeyRollOperations];
-  v7 = [(HMDHH2MigratorRecord *)self forceMigrationFailureForTesting];
-  v8 = [(HMDHH2MigratorRecord *)self migrateFromTestDirectory];
-  v9 = [(HMDHH2MigratorRecord *)self dryRun];
+  isMigrationInProgress = [(HMDHH2MigratorRecord *)self isMigrationInProgress];
+  currentMigrationAttempt = [(HMDHH2MigratorRecord *)self currentMigrationAttempt];
+  shouldSkipKeyRollOperations = [(HMDHH2MigratorRecord *)self shouldSkipKeyRollOperations];
+  forceMigrationFailureForTesting = [(HMDHH2MigratorRecord *)self forceMigrationFailureForTesting];
+  migrateFromTestDirectory = [(HMDHH2MigratorRecord *)self migrateFromTestDirectory];
+  dryRun = [(HMDHH2MigratorRecord *)self dryRun];
   LOBYTE(v18) = [(HMDHH2MigratorRecord *)self isAutoMigration];
-  v10 = [v3 prepareDictionary:v4 attempt:v5 skipKeyRoll:v6 forceFailForTesting:v7 migrateFromTestDirectory:v8 dryRun:v9 isAutoMigration:v18];
+  v10 = [v3 prepareDictionary:isMigrationInProgress attempt:currentMigrationAttempt skipKeyRoll:shouldSkipKeyRollOperations forceFailForTesting:forceMigrationFailureForTesting migrateFromTestDirectory:migrateFromTestDirectory dryRun:dryRun isAutoMigration:v18];
   if (v10)
   {
     v11 = [(HMDHH2MigratorRecord *)self writeMigratorRecord:v10];
@@ -159,7 +159,7 @@ LABEL_16:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -177,15 +177,15 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)writeMigratorRecord:(id)a3
+- (BOOL)writeMigratorRecord:(id)record
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() archiveMigratorDict:v4];
+  recordCopy = record;
+  v5 = [objc_opt_class() archiveMigratorDict:recordCopy];
   if (!v5)
   {
     v8 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -193,7 +193,7 @@ LABEL_16:
       v20 = 138543618;
       v21 = v16;
       v22 = 2112;
-      v23 = v4;
+      v23 = recordCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to create an archive of the HH2 migrator record : %@", &v20, 0x16u);
 LABEL_9:
     }
@@ -203,11 +203,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [(HMDHH2MigratorRecord *)self hh2MigratorRecordDataStorePath];
-  v7 = [v5 writeToFile:v6 atomically:1];
+  hh2MigratorRecordDataStorePath = [(HMDHH2MigratorRecord *)self hh2MigratorRecordDataStorePath];
+  v7 = [v5 writeToFile:hh2MigratorRecordDataStorePath atomically:1];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
   if ((v7 & 1) == 0)
@@ -215,11 +215,11 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(HMDHH2MigratorRecord *)v9 hh2MigratorRecordDataStorePath];
+      hh2MigratorRecordDataStorePath2 = [(HMDHH2MigratorRecord *)selfCopy2 hh2MigratorRecordDataStorePath];
       v20 = 138543618;
       v21 = v16;
       v22 = 2112;
-      v23 = v17;
+      v23 = hh2MigratorRecordDataStorePath2;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to write the HH2 migrator record to %@", &v20, 0x16u);
 
       goto LABEL_9;
@@ -232,13 +232,13 @@ LABEL_10:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [(HMDHH2MigratorRecord *)v9 hh2MigratorRecordDataStorePath];
+    hh2MigratorRecordDataStorePath3 = [(HMDHH2MigratorRecord *)selfCopy2 hh2MigratorRecordDataStorePath];
     v20 = 138543874;
     v21 = v13;
     v22 = 2112;
-    v23 = v4;
+    v23 = recordCopy;
     v24 = 2112;
-    v25 = v14;
+    v25 = hh2MigratorRecordDataStorePath3;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Successfully written HH2 migrator record to disk: %@ : %@", &v20, 0x20u);
   }
 
@@ -255,12 +255,12 @@ LABEL_11:
   if (![(HMDHH2MigratorRecord *)self isMigrationInProgress])
   {
     v4 = objc_opt_class();
-    v5 = [(HMDHH2MigratorRecord *)self shouldSkipKeyRollOperations];
-    v6 = [(HMDHH2MigratorRecord *)self forceMigrationFailureForTesting];
-    v7 = [(HMDHH2MigratorRecord *)self migrateFromTestDirectory];
-    v8 = [(HMDHH2MigratorRecord *)self dryRun];
+    shouldSkipKeyRollOperations = [(HMDHH2MigratorRecord *)self shouldSkipKeyRollOperations];
+    forceMigrationFailureForTesting = [(HMDHH2MigratorRecord *)self forceMigrationFailureForTesting];
+    migrateFromTestDirectory = [(HMDHH2MigratorRecord *)self migrateFromTestDirectory];
+    dryRun = [(HMDHH2MigratorRecord *)self dryRun];
     LOBYTE(v16) = [(HMDHH2MigratorRecord *)self isAutoMigration];
-    v9 = [v4 prepareDictionary:1 attempt:0 skipKeyRoll:v5 forceFailForTesting:v6 migrateFromTestDirectory:v7 dryRun:v8 isAutoMigration:v16];
+    v9 = [v4 prepareDictionary:1 attempt:0 skipKeyRoll:shouldSkipKeyRollOperations forceFailForTesting:forceMigrationFailureForTesting migrateFromTestDirectory:migrateFromTestDirectory dryRun:dryRun isAutoMigration:v16];
     if (v9)
     {
       if ([(HMDHH2MigratorRecord *)self writeMigratorRecord:v9])
@@ -276,7 +276,7 @@ LABEL_10:
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -343,53 +343,53 @@ LABEL_11:
   return v19;
 }
 
-- (void)updateValuesFromDict:(id)a3
+- (void)updateValuesFromDict:(id)dict
 {
-  v11 = a3;
-  v4 = [v11 objectForKeyedSubscript:@"HH2.MG.migrator"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"HH2.MG.migrator"];
   -[HMDHH2MigratorRecord setIsMigrationInProgress:](self, "setIsMigrationInProgress:", [v4 BOOLValue]);
 
-  v5 = [v11 objectForKeyedSubscript:@"HH2.MG.attempt"];
+  v5 = [dictCopy objectForKeyedSubscript:@"HH2.MG.attempt"];
   -[HMDHH2MigratorRecord setCurrentMigrationAttempt:](self, "setCurrentMigrationAttempt:", [v5 unsignedIntValue]);
 
-  v6 = [v11 objectForKeyedSubscript:@"HH2.MG.dry.run"];
+  v6 = [dictCopy objectForKeyedSubscript:@"HH2.MG.dry.run"];
   -[HMDHH2MigratorRecord setDryRun:](self, "setDryRun:", [v6 BOOLValue]);
 
-  v7 = [v11 objectForKeyedSubscript:@"HH2.MG.auto"];
+  v7 = [dictCopy objectForKeyedSubscript:@"HH2.MG.auto"];
   -[HMDHH2MigratorRecord setIsAutoMigration:](self, "setIsAutoMigration:", [v7 BOOLValue]);
 
   if (isInternalBuild())
   {
-    v8 = [v11 objectForKeyedSubscript:@"HH2.MG.skip.key.roll"];
+    v8 = [dictCopy objectForKeyedSubscript:@"HH2.MG.skip.key.roll"];
     -[HMDHH2MigratorRecord setShouldSkipKeyRollOperations:](self, "setShouldSkipKeyRollOperations:", [v8 BOOLValue]);
 
-    v9 = [v11 objectForKeyedSubscript:@"HH2.MG.simulate.migration.failure"];
+    v9 = [dictCopy objectForKeyedSubscript:@"HH2.MG.simulate.migration.failure"];
     -[HMDHH2MigratorRecord setForceMigrationFailureForTesting:](self, "setForceMigrationFailureForTesting:", [v9 BOOLValue]);
 
-    v10 = [v11 objectForKeyedSubscript:@"HH2.MG.migrate.test.directory"];
+    v10 = [dictCopy objectForKeyedSubscript:@"HH2.MG.migrate.test.directory"];
     -[HMDHH2MigratorRecord setMigrateFromTestDirectory:](self, "setMigrateFromTestDirectory:", [v10 BOOLValue]);
   }
 }
 
-- (void)unarchiveRecordFromData:(id)a3
+- (void)unarchiveRecordFromData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() unarchiveMigratorDict:v4];
+  dataCopy = data;
+  v5 = [objc_opt_class() unarchiveMigratorDict:dataCopy];
   if (v5)
   {
     [(HMDHH2MigratorRecord *)self updateValuesFromDict:v5];
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMDHH2MigratorRecord *)v7 attributeDescriptions];
+      attributeDescriptions = [(HMDHH2MigratorRecord *)selfCopy attributeDescriptions];
       v14 = 138543618;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = attributeDescriptions;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Successfully got the HH2 Migrator record : %@", &v14, 0x16u);
     }
   }
@@ -397,7 +397,7 @@ LABEL_11:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -416,28 +416,28 @@ LABEL_11:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDHH2MigratorRecord *)v4 hh2MigratorRecordDataStorePath];
+    hh2MigratorRecordDataStorePath = [(HMDHH2MigratorRecord *)selfCopy hh2MigratorRecordDataStorePath];
     *buf = 138543618;
     v18 = v6;
     v19 = 2112;
-    v20 = v7;
+    v20 = hh2MigratorRecordDataStorePath;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Going to read migrator record from : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMDHH2MigratorRecord *)v4 hh2MigratorRecordDataStorePath];
+  hh2MigratorRecordDataStorePath2 = [(HMDHH2MigratorRecord *)selfCopy hh2MigratorRecordDataStorePath];
   v16 = 0;
-  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v8 options:2 error:&v16];
+  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:hh2MigratorRecordDataStorePath2 options:2 error:&v16];
   v10 = v16;
   if (v10 || !v9)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v4;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -454,22 +454,22 @@ LABEL_11:
 
   else
   {
-    [(HMDHH2MigratorRecord *)v4 unarchiveRecordFromData:v9];
+    [(HMDHH2MigratorRecord *)selfCopy unarchiveRecordFromData:v9];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHH2MigratorRecord)initWithLocalStorePath:(id)a3
+- (HMDHH2MigratorRecord)initWithLocalStorePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = HMDHH2MigratorRecord;
   v6 = [(HMDHH2MigratorRecord *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hh2MigratorRecordDataStorePath, a3);
+    objc_storeStrong(&v6->_hh2MigratorRecordDataStorePath, path);
     v7->_isMigrationInProgress = 0;
     [(HMDHH2MigratorRecord *)v7 readMigratorRecord];
   }
@@ -480,9 +480,9 @@ LABEL_11:
 + (void)removeMigrationFailureRecord
 {
   v2 = hh2MigrationFailureRecordStorePath;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = 0;
-  [v3 removeItemAtPath:v2 error:&v4];
+  [defaultManager removeItemAtPath:v2 error:&v4];
 }
 
 + (id)lastMigrationFailure
@@ -491,7 +491,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __44__HMDHH2MigratorRecord_lastMigrationFailure__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (lastMigrationFailure_onceToken != -1)
   {
     dispatch_once(&lastMigrationFailure_onceToken, block);
@@ -670,21 +670,21 @@ void __44__HMDHH2MigratorRecord_lastMigrationFailure__block_invoke(uint64_t a1)
   v48 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)recordMigrationFailureWithError:(id)a3
++ (BOOL)recordMigrationFailureWithError:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277CD0218]];
+  v5 = errorCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x277CD0218]];
   v7 = hh2MigrationFailureRecordStorePath;
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -692,7 +692,7 @@ void __44__HMDHH2MigratorRecord_lastMigrationFailure__block_invoke(uint64_t a1)
     v28 = 138543874;
     v29 = v11;
     v30 = 2112;
-    v31 = v6;
+    v31 = dictionary;
     v32 = 2112;
     v33 = v7;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Going to write migration failure record : [%@] -> [%@]", &v28, 0x20u);
@@ -704,7 +704,7 @@ void __44__HMDHH2MigratorRecord_lastMigrationFailure__block_invoke(uint64_t a1)
   if (!v12)
   {
     v15 = objc_autoreleasePoolPush();
-    v21 = v9;
+    v21 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -727,7 +727,7 @@ LABEL_14:
 
   v14 = [v12 writeToFile:v7 atomically:1];
   v15 = objc_autoreleasePoolPush();
-  v16 = v9;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   v18 = v17;
   if ((v14 & 1) == 0)
@@ -756,7 +756,7 @@ LABEL_14:
     v28 = 138543874;
     v29 = v19;
     v30 = 2112;
-    v31 = v6;
+    v31 = dictionary;
     v32 = 2112;
     v33 = v7;
     _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully written migration failure record on disk : %@, %@", &v28, 0x20u);
@@ -770,10 +770,10 @@ LABEL_15:
   return v20;
 }
 
-+ (id)unarchiveMigratorDict:(id)a3
++ (id)unarchiveMigratorDict:(id)dict
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v5 = MEMORY[0x277CCAAC8];
   v6 = MEMORY[0x277CBEB98];
   v29[0] = objc_opt_class();
@@ -786,13 +786,13 @@ LABEL_15:
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
   v11 = [v9 setWithArray:v10];
   v23 = 0;
-  v12 = [v5 unarchivedDictionaryWithKeysOfClasses:v8 objectsOfClasses:v11 fromData:v4 error:&v23];
+  v12 = [v5 unarchivedDictionaryWithKeysOfClasses:v8 objectsOfClasses:v11 fromData:dictCopy error:&v23];
   v13 = v23;
 
   if (!v12)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = a1;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -825,12 +825,12 @@ LABEL_15:
   return v19;
 }
 
-+ (id)archiveMigratorDict:(id)a3
++ (id)archiveMigratorDict:(id)dict
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -838,7 +838,7 @@ LABEL_15:
     v12 = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = dictCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Going to archive : %@", &v12, 0x16u);
   }
 
@@ -850,20 +850,20 @@ LABEL_15:
   return v9;
 }
 
-+ (id)prepareDictionary:(id)a3
++ (id)prepareDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
-  v5 = [v3 isMigrationInProgress];
-  v6 = [v3 currentMigrationAttempt];
-  v7 = [v3 shouldSkipKeyRollOperations];
-  v8 = [v3 forceMigrationFailureForTesting];
-  v9 = [v3 migrateFromTestDirectory];
-  v10 = [v3 dryRun];
-  v11 = [v3 isAutoMigration];
+  isMigrationInProgress = [dictionaryCopy isMigrationInProgress];
+  currentMigrationAttempt = [dictionaryCopy currentMigrationAttempt];
+  shouldSkipKeyRollOperations = [dictionaryCopy shouldSkipKeyRollOperations];
+  forceMigrationFailureForTesting = [dictionaryCopy forceMigrationFailureForTesting];
+  migrateFromTestDirectory = [dictionaryCopy migrateFromTestDirectory];
+  dryRun = [dictionaryCopy dryRun];
+  isAutoMigration = [dictionaryCopy isAutoMigration];
 
-  LOBYTE(v13) = v11;
-  return [v4 prepareDictionary:v5 attempt:v6 skipKeyRoll:v7 forceFailForTesting:v8 migrateFromTestDirectory:v9 dryRun:v10 isAutoMigration:v13];
+  LOBYTE(v13) = isAutoMigration;
+  return [v4 prepareDictionary:isMigrationInProgress attempt:currentMigrationAttempt skipKeyRoll:shouldSkipKeyRollOperations forceFailForTesting:forceMigrationFailureForTesting migrateFromTestDirectory:migrateFromTestDirectory dryRun:dryRun isAutoMigration:v13];
 }
 
 + (id)logCategory

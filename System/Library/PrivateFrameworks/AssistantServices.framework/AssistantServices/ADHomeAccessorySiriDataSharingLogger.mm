@@ -1,28 +1,28 @@
 @interface ADHomeAccessorySiriDataSharingLogger
-- (ADHomeAccessorySiriDataSharingLogger)initWithTargetQueue:(id)a3;
-- (id)logSiriDataSharingRepromptOptInStatus:(int64_t)a3 source:(int64_t)a4 reason:(id)a5;
-- (void)_logSiriDataSharingPropagationAccessoryIdentifier:(id)a3 propagationEvent:(int64_t)a4 propagationReason:(id)a5 associatedLogEventIdentifier:(id)a6;
-- (void)_logSiriDataSharingRepromptOptInStatus:(int64_t)a3 source:(int64_t)a4 reason:(id)a5 logEventIdentifier:(id)a6;
-- (void)logSiriDataSharingPropagationAccessoryIdentifier:(id)a3 propagationEvent:(int64_t)a4 propagationReason:(id)a5 associatedLogEventIdentifier:(id)a6;
+- (ADHomeAccessorySiriDataSharingLogger)initWithTargetQueue:(id)queue;
+- (id)logSiriDataSharingRepromptOptInStatus:(int64_t)status source:(int64_t)source reason:(id)reason;
+- (void)_logSiriDataSharingPropagationAccessoryIdentifier:(id)identifier propagationEvent:(int64_t)event propagationReason:(id)reason associatedLogEventIdentifier:(id)eventIdentifier;
+- (void)_logSiriDataSharingRepromptOptInStatus:(int64_t)status source:(int64_t)source reason:(id)reason logEventIdentifier:(id)identifier;
+- (void)logSiriDataSharingPropagationAccessoryIdentifier:(id)identifier propagationEvent:(int64_t)event propagationReason:(id)reason associatedLogEventIdentifier:(id)eventIdentifier;
 @end
 
 @implementation ADHomeAccessorySiriDataSharingLogger
 
-- (void)_logSiriDataSharingPropagationAccessoryIdentifier:(id)a3 propagationEvent:(int64_t)a4 propagationReason:(id)a5 associatedLogEventIdentifier:(id)a6
+- (void)_logSiriDataSharingPropagationAccessoryIdentifier:(id)identifier propagationEvent:(int64_t)event propagationReason:(id)reason associatedLogEventIdentifier:(id)eventIdentifier
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  eventIdentifierCopy = eventIdentifier;
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_1003626D8;
   v21 = &unk_10051D6A0;
-  v12 = v9;
+  v12 = identifierCopy;
   v22 = v12;
-  v25 = a4;
-  v13 = v10;
+  eventCopy = event;
+  v13 = reasonCopy;
   v23 = v13;
-  v14 = v11;
+  v14 = eventIdentifierCopy;
   v24 = v14;
   v15 = [AFHomeAccessorySiriDataSharingPropagationLogEvent newWithBuilder:&v18];
   v16 = AFSiriLogContextDaemon;
@@ -39,18 +39,18 @@
   [v17 insertHomeAccessorySiriDataSharingPropagationLogEvent:v15];
 }
 
-- (void)_logSiriDataSharingRepromptOptInStatus:(int64_t)a3 source:(int64_t)a4 reason:(id)a5 logEventIdentifier:(id)a6
+- (void)_logSiriDataSharingRepromptOptInStatus:(int64_t)status source:(int64_t)source reason:(id)reason logEventIdentifier:(id)identifier
 {
-  v9 = a5;
+  reasonCopy = reason;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100362904;
   v18 = &unk_10051D678;
-  v10 = a6;
-  v19 = v10;
-  v21 = a3;
-  v22 = a4;
-  v11 = v9;
+  identifierCopy = identifier;
+  v19 = identifierCopy;
+  statusCopy = status;
+  sourceCopy = source;
+  v11 = reasonCopy;
   v20 = v11;
   v12 = [AFHomeAccessorySiriDataSharingChangeLogEvent newWithBuilder:&v15];
   v13 = AFSiriLogContextDaemon;
@@ -67,45 +67,45 @@
   [v14 appendHomeAccessorySiriDataSharingChangeLogEvent:v12];
 }
 
-- (void)logSiriDataSharingPropagationAccessoryIdentifier:(id)a3 propagationEvent:(int64_t)a4 propagationReason:(id)a5 associatedLogEventIdentifier:(id)a6
+- (void)logSiriDataSharingPropagationAccessoryIdentifier:(id)identifier propagationEvent:(int64_t)event propagationReason:(id)reason associatedLogEventIdentifier:(id)eventIdentifier
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  eventIdentifierCopy = eventIdentifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100362AE8;
   block[3] = &unk_10051D650;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = identifierCopy;
+  v20 = eventIdentifierCopy;
+  eventCopy = event;
+  v19 = reasonCopy;
+  v14 = eventIdentifierCopy;
+  v15 = reasonCopy;
+  v16 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (id)logSiriDataSharingRepromptOptInStatus:(int64_t)a3 source:(int64_t)a4 reason:(id)a5
+- (id)logSiriDataSharingRepromptOptInStatus:(int64_t)status source:(int64_t)source reason:(id)reason
 {
-  v8 = a5;
+  reasonCopy = reason;
   v9 = +[NSUUID UUID];
-  v10 = [v9 UUIDString];
+  uUIDString = [v9 UUIDString];
 
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100362BFC;
   block[3] = &unk_10051D628;
-  v20 = a3;
-  v21 = a4;
+  statusCopy = status;
+  sourceCopy = source;
   block[4] = self;
-  v18 = v8;
-  v12 = v10;
+  v18 = reasonCopy;
+  v12 = uUIDString;
   v19 = v12;
-  v13 = v8;
+  v13 = reasonCopy;
   dispatch_async(queue, block);
   v14 = v19;
   v15 = v12;
@@ -113,16 +113,16 @@
   return v12;
 }
 
-- (ADHomeAccessorySiriDataSharingLogger)initWithTargetQueue:(id)a3
+- (ADHomeAccessorySiriDataSharingLogger)initWithTargetQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADHomeAccessorySiriDataSharingLogger;
   v6 = [(ADHomeAccessorySiriDataSharingLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

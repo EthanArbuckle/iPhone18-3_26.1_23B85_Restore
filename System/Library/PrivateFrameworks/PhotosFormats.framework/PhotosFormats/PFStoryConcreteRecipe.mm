@@ -1,21 +1,21 @@
 @interface PFStoryConcreteRecipe
 - ($1FC4720596A894E2A002A84B8283F478)overallDurationInfo;
-- (BOOL)_isArray:(id)a3 equalToArray:(id)a4 usingObjectEquality:(id)a5;
-- (BOOL)_isDictionary:(id)a3 equalToDictionary:(id)a4 usingObjectEquality:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecipe:(id)a3;
+- (BOOL)_isArray:(id)array equalToArray:(id)toArray usingObjectEquality:(id)equality;
+- (BOOL)_isDictionary:(id)dictionary equalToDictionary:(id)toDictionary usingObjectEquality:(id)equality;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecipe:(id)recipe;
 - (NSString)diagnosticDescription;
-- (PFStoryConcreteRecipe)initWithContentIdentifier:(id)a3 majorVersion:(int64_t)a4 minorVersion:(int64_t)a5 libraries:(id)a6 assets:(id)a7 overallDurationInfo:(id *)a8 currentStyle:(id)a9 seedSongIdentifiersByCatalog:(id)a10 autoDecisionLists:(id)a11 presentations:(id)a12;
+- (PFStoryConcreteRecipe)initWithContentIdentifier:(id)identifier majorVersion:(int64_t)version minorVersion:(int64_t)minorVersion libraries:(id)libraries assets:(id)assets overallDurationInfo:(id *)info currentStyle:(id)style seedSongIdentifiersByCatalog:(id)self0 autoDecisionLists:(id)self1 presentations:(id)self2;
 - (PFStoryRecipeSongAsset)currentStyleSongAsset;
-- (id)assetAtIndex:(int64_t)a3;
-- (id)assetWithKind:(int64_t)a3 identifier:(id)a4;
-- (id)libraryWithKind:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)presentationAtIndex:(int64_t)a3;
-- (id)seedSongAssetForCatalog:(id)a3;
+- (id)assetAtIndex:(int64_t)index;
+- (id)assetWithKind:(int64_t)kind identifier:(id)identifier;
+- (id)libraryWithKind:(int64_t)kind;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)presentationAtIndex:(int64_t)index;
+- (id)seedSongAssetForCatalog:(id)catalog;
 - (int64_t)numberOfAssets;
 - (int64_t)numberOfPresentations;
-- (void)enumerateAssetsWithKind:(int64_t)a3 usingBlock:(id)a4;
+- (void)enumerateAssetsWithKind:(int64_t)kind usingBlock:(id)block;
 @end
 
 @implementation PFStoryConcreteRecipe
@@ -32,30 +32,30 @@
   return self;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PFStoryConcreteMutableRecipe alloc];
-  v5 = [(PFStoryConcreteRecipe *)self contentIdentifier];
-  v6 = [(PFStoryConcreteRecipe *)self majorVersion];
-  v7 = [(PFStoryConcreteRecipe *)self minorVersion];
-  v8 = [(PFStoryConcreteRecipe *)self libraries];
-  v9 = [(PFStoryConcreteRecipe *)self assets];
+  contentIdentifier = [(PFStoryConcreteRecipe *)self contentIdentifier];
+  majorVersion = [(PFStoryConcreteRecipe *)self majorVersion];
+  minorVersion = [(PFStoryConcreteRecipe *)self minorVersion];
+  libraries = [(PFStoryConcreteRecipe *)self libraries];
+  assets = [(PFStoryConcreteRecipe *)self assets];
   [(PFStoryConcreteRecipe *)self overallDurationInfo];
-  v10 = [(PFStoryConcreteRecipe *)self currentStyle];
-  v11 = [(PFStoryConcreteRecipe *)self seedSongIdentifiersByCatalog];
-  v12 = [(PFStoryConcreteRecipe *)self autoEditDecisionLists];
-  v13 = [(PFStoryConcreteRecipe *)self presentations];
-  v14 = [(PFStoryConcreteRecipe *)v4 initWithContentIdentifier:v5 majorVersion:v6 minorVersion:v7 libraries:v8 assets:v9 overallDurationInfo:v16 currentStyle:v10 seedSongIdentifiersByCatalog:v11 autoDecisionLists:v12 presentations:v13];
+  currentStyle = [(PFStoryConcreteRecipe *)self currentStyle];
+  seedSongIdentifiersByCatalog = [(PFStoryConcreteRecipe *)self seedSongIdentifiersByCatalog];
+  autoEditDecisionLists = [(PFStoryConcreteRecipe *)self autoEditDecisionLists];
+  presentations = [(PFStoryConcreteRecipe *)self presentations];
+  v14 = [(PFStoryConcreteRecipe *)v4 initWithContentIdentifier:contentIdentifier majorVersion:majorVersion minorVersion:minorVersion libraries:libraries assets:assets overallDurationInfo:v16 currentStyle:currentStyle seedSongIdentifiersByCatalog:seedSongIdentifiersByCatalog autoDecisionLists:autoEditDecisionLists presentations:presentations];
 
   return v14;
 }
 
-- (BOOL)_isDictionary:(id)a3 equalToDictionary:(id)a4 usingObjectEquality:(id)a5
+- (BOOL)_isDictionary:(id)dictionary equalToDictionary:(id)toDictionary usingObjectEquality:(id)equality
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((v7 != 0) != (v8 != 0) || (v10 = [v7 count], v10 != objc_msgSend(v8, "count")))
+  dictionaryCopy = dictionary;
+  toDictionaryCopy = toDictionary;
+  equalityCopy = equality;
+  if ((dictionaryCopy != 0) != (toDictionaryCopy != 0) || (v10 = [dictionaryCopy count], v10 != objc_msgSend(toDictionaryCopy, "count")))
   {
     v11 = 0;
   }
@@ -70,10 +70,10 @@
     v13[1] = 3221225472;
     v13[2] = __77__PFStoryConcreteRecipe__isDictionary_equalToDictionary_usingObjectEquality___block_invoke;
     v13[3] = &unk_1E7B664A0;
-    v14 = v8;
-    v15 = v9;
+    v14 = toDictionaryCopy;
+    v15 = equalityCopy;
     v16 = &v17;
-    [v7 enumerateKeysAndObjectsUsingBlock:v13];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v13];
     v11 = *(v18 + 24);
 
     _Block_object_dispose(&v17, 8);
@@ -93,12 +93,12 @@ void __77__PFStoryConcreteRecipe__isDictionary_equalToDictionary_usingObjectEqua
   }
 }
 
-- (BOOL)_isArray:(id)a3 equalToArray:(id)a4 usingObjectEquality:(id)a5
+- (BOOL)_isArray:(id)array equalToArray:(id)toArray usingObjectEquality:(id)equality
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((v7 != 0) != (v8 != 0) || (v10 = [v7 count], v10 != objc_msgSend(v8, "count")))
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  equalityCopy = equality;
+  if ((arrayCopy != 0) != (toArrayCopy != 0) || (v10 = [arrayCopy count], v10 != objc_msgSend(toArrayCopy, "count")))
   {
     v11 = 0;
   }
@@ -113,10 +113,10 @@ void __77__PFStoryConcreteRecipe__isDictionary_equalToDictionary_usingObjectEqua
     v13[1] = 3221225472;
     v13[2] = __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___block_invoke;
     v13[3] = &unk_1E7B66478;
-    v14 = v8;
-    v15 = v9;
+    v14 = toArrayCopy;
+    v15 = equalityCopy;
     v16 = &v17;
-    [v7 enumerateObjectsUsingBlock:v13];
+    [arrayCopy enumerateObjectsUsingBlock:v13];
     v11 = *(v18 + 24);
 
     _Block_object_dispose(&v17, 8);
@@ -136,16 +136,16 @@ void __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___blo
   }
 }
 
-- (BOOL)isEqualToRecipe:(id)a3
+- (BOOL)isEqualToRecipe:(id)recipe
 {
-  v4 = a3;
-  if (v4 != self)
+  recipeCopy = recipe;
+  if (recipeCopy != self)
   {
-    v5 = [(PFStoryConcreteRecipe *)self contentIdentifier];
-    v6 = [(PFStoryConcreteRecipe *)v4 contentIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    contentIdentifier = [(PFStoryConcreteRecipe *)self contentIdentifier];
+    contentIdentifier2 = [(PFStoryConcreteRecipe *)recipeCopy contentIdentifier];
+    v7 = [contentIdentifier isEqualToString:contentIdentifier2];
 
-    if (!v7 || (v8 = [(PFStoryConcreteRecipe *)self majorVersion], v8 != [(PFStoryConcreteRecipe *)v4 majorVersion]) || (v9 = [(PFStoryConcreteRecipe *)self minorVersion], v9 != [(PFStoryConcreteRecipe *)v4 minorVersion]) || (v10 = [(PFStoryConcreteRecipe *)self numberOfAssets], v10 != [(PFStoryConcreteRecipe *)v4 numberOfAssets]) || (v11 = [(PFStoryConcreteRecipe *)self numberOfPresentations], v11 != [(PFStoryConcreteRecipe *)v4 numberOfPresentations]) || (([(PFStoryConcreteRecipe *)self overallDurationInfo], !v4) ? (v12 = 0, memset(v43, 0, sizeof(v43))) : ([(PFStoryConcreteRecipe *)v4 overallDurationInfo], v12 = *&v43[0]), v44 != v12 || (v54 = v48, v51 = *(&v43[3] + 8), *&v53[16] = v47, v52 = v45, *v53 = v46, *&v50[16] = *(&v43[2] + 8), v49 = *(v43 + 8), *v50 = *(&v43[1] + 8), *&time1.value = v45, time1.epoch = v46, time2 = *(v43 + 8), CMTimeCompare(&time1, &time2)) || (time1 = *&v53[8], time2 = *&v50[8], CMTimeCompare(&time1, &time2)) || (time1 = v54, time2 = v51, CMTimeCompare(&time1, &time2))))
+    if (!v7 || (v8 = [(PFStoryConcreteRecipe *)self majorVersion], v8 != [(PFStoryConcreteRecipe *)recipeCopy majorVersion]) || (v9 = [(PFStoryConcreteRecipe *)self minorVersion], v9 != [(PFStoryConcreteRecipe *)recipeCopy minorVersion]) || (v10 = [(PFStoryConcreteRecipe *)self numberOfAssets], v10 != [(PFStoryConcreteRecipe *)recipeCopy numberOfAssets]) || (v11 = [(PFStoryConcreteRecipe *)self numberOfPresentations], v11 != [(PFStoryConcreteRecipe *)recipeCopy numberOfPresentations]) || (([(PFStoryConcreteRecipe *)self overallDurationInfo], !recipeCopy) ? (v12 = 0, memset(v43, 0, sizeof(v43))) : ([(PFStoryConcreteRecipe *)recipeCopy overallDurationInfo], v12 = *&v43[0]), v44 != v12 || (v54 = v48, v51 = *(&v43[3] + 8), *&v53[16] = v47, v52 = v45, *v53 = v46, *&v50[16] = *(&v43[2] + 8), v49 = *(v43 + 8), *v50 = *(&v43[1] + 8), *&time1.value = v45, time1.epoch = v46, time2 = *(v43 + 8), CMTimeCompare(&time1, &time2)) || (time1 = *&v53[8], time2 = *&v50[8], CMTimeCompare(&time1, &time2)) || (time1 = v54, time2 = v51, CMTimeCompare(&time1, &time2))))
     {
       v13 = 0;
       goto LABEL_16;
@@ -160,7 +160,7 @@ void __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___blo
     v40[2] = __41__PFStoryConcreteRecipe_isEqualToRecipe___block_invoke;
     v40[3] = &unk_1E7B66430;
     v40[4] = self;
-    v15 = v4;
+    v15 = recipeCopy;
     v41 = v15;
     v42 = &v44;
     PFStoryRecipeLibraryKindEnumerateSupportedValuesUsingBlock(v40);
@@ -169,8 +169,8 @@ void __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___blo
       goto LABEL_32;
     }
 
-    v16 = [(PFStoryConcreteRecipe *)self numberOfAssets];
-    if (v16 >= 1)
+    numberOfAssets = [(PFStoryConcreteRecipe *)self numberOfAssets];
+    if (numberOfAssets >= 1)
     {
       v17 = 0;
       do
@@ -185,11 +185,11 @@ void __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___blo
         }
       }
 
-      while (v16 != ++v17);
+      while (numberOfAssets != ++v17);
     }
 
-    v21 = [(PFStoryConcreteRecipe *)self numberOfPresentations];
-    if (v21 >= 1)
+    numberOfPresentations = [(PFStoryConcreteRecipe *)self numberOfPresentations];
+    if (numberOfPresentations >= 1)
     {
       v22 = 0;
       do
@@ -204,13 +204,13 @@ void __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___blo
         }
       }
 
-      while (v21 != ++v22);
+      while (numberOfPresentations != ++v22);
     }
 
-    v26 = [(PFStoryConcreteRecipe *)self currentStyle];
-    v27 = [(PFStoryConcreteRecipe *)v15 currentStyle];
-    v28 = v26;
-    v29 = v27;
+    currentStyle = [(PFStoryConcreteRecipe *)self currentStyle];
+    currentStyle2 = [(PFStoryConcreteRecipe *)v15 currentStyle];
+    v28 = currentStyle;
+    v29 = currentStyle2;
     v30 = v29;
     if (v28 == v29)
     {
@@ -226,10 +226,10 @@ void __67__PFStoryConcreteRecipe__isArray_equalToArray_usingObjectEquality___blo
       }
     }
 
-    v32 = [(PFStoryConcreteRecipe *)self seedSongIdentifiersByCatalog];
-    v33 = [(PFStoryConcreteRecipe *)v15 seedSongIdentifiersByCatalog];
-    v34 = v32;
-    v35 = v33;
+    seedSongIdentifiersByCatalog = [(PFStoryConcreteRecipe *)self seedSongIdentifiersByCatalog];
+    seedSongIdentifiersByCatalog2 = [(PFStoryConcreteRecipe *)v15 seedSongIdentifiersByCatalog];
+    v34 = seedSongIdentifiersByCatalog;
+    v35 = seedSongIdentifiersByCatalog2;
     v36 = v35;
     if (v34 == v35)
     {
@@ -250,9 +250,9 @@ LABEL_33:
       }
     }
 
-    v38 = [(PFStoryConcreteRecipe *)self autoEditDecisionLists];
-    v39 = [(PFStoryConcreteRecipe *)v15 autoEditDecisionLists];
-    v13 = [(PFStoryConcreteRecipe *)self _isDictionary:v38 equalToDictionary:v39 usingObjectEquality:&__block_literal_global_11465];
+    autoEditDecisionLists = [(PFStoryConcreteRecipe *)self autoEditDecisionLists];
+    autoEditDecisionLists2 = [(PFStoryConcreteRecipe *)v15 autoEditDecisionLists];
+    v13 = [(PFStoryConcreteRecipe *)self _isDictionary:autoEditDecisionLists equalToDictionary:autoEditDecisionLists2 usingObjectEquality:&__block_literal_global_11465];
 
     goto LABEL_33;
   }
@@ -274,13 +274,13 @@ void __41__PFStoryConcreteRecipe_isEqualToRecipe___block_invoke(uint64_t a1, uin
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualToRecipe:self];
+    v5 = [equalCopy isEqualToRecipe:self];
   }
 
   else
@@ -301,18 +301,18 @@ void __41__PFStoryConcreteRecipe_isEqualToRecipe___block_invoke(uint64_t a1, uin
   return v5;
 }
 
-- (id)presentationAtIndex:(int64_t)a3
+- (id)presentationAtIndex:(int64_t)index
 {
-  v4 = [(PFStoryConcreteRecipe *)self presentations];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  presentations = [(PFStoryConcreteRecipe *)self presentations];
+  v5 = [presentations objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (int64_t)numberOfPresentations
 {
-  v2 = [(PFStoryConcreteRecipe *)self presentations];
-  v3 = [v2 count];
+  presentations = [(PFStoryConcreteRecipe *)self presentations];
+  v3 = [presentations count];
 
   return v3;
 }
@@ -325,16 +325,16 @@ void __41__PFStoryConcreteRecipe_isEqualToRecipe___block_invoke(uint64_t a1, uin
   v13 = __Block_byref_object_copy__11471;
   v14 = __Block_byref_object_dispose__11472;
   v15 = 0;
-  v3 = [(PFStoryConcreteRecipe *)self currentStyle];
-  v4 = [v3 songAssetIdentifier];
+  currentStyle = [(PFStoryConcreteRecipe *)self currentStyle];
+  songAssetIdentifier = [currentStyle songAssetIdentifier];
 
-  if (v4)
+  if (songAssetIdentifier)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__PFStoryConcreteRecipe_currentStyleSongAsset__block_invoke;
     v7[3] = &unk_1E7B663B8;
-    v8 = v4;
+    v8 = songAssetIdentifier;
     v9 = &v10;
     [(PFStoryConcreteRecipe *)self enumerateAssetsWithKind:2 usingBlock:v7];
   }
@@ -367,11 +367,11 @@ LABEL_5:
   }
 }
 
-- (id)seedSongAssetForCatalog:(id)a3
+- (id)seedSongAssetForCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [(PFStoryConcreteRecipe *)self seedSongIdentifiersByCatalog];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  catalogCopy = catalog;
+  seedSongIdentifiersByCatalog = [(PFStoryConcreteRecipe *)self seedSongIdentifiersByCatalog];
+  v6 = [seedSongIdentifiersByCatalog objectForKeyedSubscript:catalogCopy];
 
   if (v6)
   {
@@ -386,9 +386,9 @@ LABEL_5:
   return v7;
 }
 
-- (id)assetWithKind:(int64_t)a3 identifier:(id)a4
+- (id)assetWithKind:(int64_t)kind identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -399,10 +399,10 @@ LABEL_5:
   v10[1] = 3221225472;
   v10[2] = __50__PFStoryConcreteRecipe_assetWithKind_identifier___block_invoke;
   v10[3] = &unk_1E7B663B8;
-  v7 = v6;
+  v7 = identifierCopy;
   v11 = v7;
   v12 = &v13;
-  [(PFStoryConcreteRecipe *)self enumerateAssetsWithKind:a3 usingBlock:v10];
+  [(PFStoryConcreteRecipe *)self enumerateAssetsWithKind:kind usingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -431,18 +431,18 @@ LABEL_5:
   }
 }
 
-- (void)enumerateAssetsWithKind:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateAssetsWithKind:(int64_t)kind usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PFStoryConcreteRecipe *)self assets];
+  blockCopy = block;
+  assets = [(PFStoryConcreteRecipe *)self assets];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__PFStoryConcreteRecipe_enumerateAssetsWithKind_usingBlock___block_invoke;
   v9[3] = &unk_1E7B66408;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = blockCopy;
+  kindCopy = kind;
+  v8 = blockCopy;
+  [assets enumerateObjectsUsingBlock:v9];
 }
 
 void __60__PFStoryConcreteRecipe_enumerateAssetsWithKind_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -454,31 +454,31 @@ void __60__PFStoryConcreteRecipe_enumerateAssetsWithKind_usingBlock___block_invo
   }
 }
 
-- (id)assetAtIndex:(int64_t)a3
+- (id)assetAtIndex:(int64_t)index
 {
-  v4 = [(PFStoryConcreteRecipe *)self assets];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  assets = [(PFStoryConcreteRecipe *)self assets];
+  v5 = [assets objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (int64_t)numberOfAssets
 {
-  v2 = [(PFStoryConcreteRecipe *)self assets];
-  v3 = [v2 count];
+  assets = [(PFStoryConcreteRecipe *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
 
-- (id)libraryWithKind:(int64_t)a3
+- (id)libraryWithKind:(int64_t)kind
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PFStoryConcreteRecipe *)self libraries];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  libraries = [(PFStoryConcreteRecipe *)self libraries];
+  v5 = [libraries countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -489,18 +489,18 @@ void __60__PFStoryConcreteRecipe_enumerateAssetsWithKind_usingBlock___block_invo
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(libraries);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 kind] == a3)
+        if ([v9 kind] == kind)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [libraries countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -516,52 +516,52 @@ LABEL_11:
   return v10;
 }
 
-- (PFStoryConcreteRecipe)initWithContentIdentifier:(id)a3 majorVersion:(int64_t)a4 minorVersion:(int64_t)a5 libraries:(id)a6 assets:(id)a7 overallDurationInfo:(id *)a8 currentStyle:(id)a9 seedSongIdentifiersByCatalog:(id)a10 autoDecisionLists:(id)a11 presentations:(id)a12
+- (PFStoryConcreteRecipe)initWithContentIdentifier:(id)identifier majorVersion:(int64_t)version minorVersion:(int64_t)minorVersion libraries:(id)libraries assets:(id)assets overallDurationInfo:(id *)info currentStyle:(id)style seedSongIdentifiersByCatalog:(id)self0 autoDecisionLists:(id)self1 presentations:(id)self2
 {
-  v41 = a3;
-  v18 = a6;
-  v19 = a7;
-  v40 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  identifierCopy = identifier;
+  librariesCopy = libraries;
+  assetsCopy = assets;
+  styleCopy = style;
+  catalogCopy = catalog;
+  listsCopy = lists;
+  presentationsCopy = presentations;
   v42.receiver = self;
   v42.super_class = PFStoryConcreteRecipe;
   v23 = [(PFStoryConcreteRecipe *)&v42 init];
   if (v23)
   {
-    v24 = [v41 copy];
+    v24 = [identifierCopy copy];
     v25 = *(v23 + 1);
     *(v23 + 1) = v24;
 
-    *(v23 + 2) = a4;
-    *(v23 + 3) = a5;
-    v26 = [v18 copy];
+    *(v23 + 2) = version;
+    *(v23 + 3) = minorVersion;
+    v26 = [librariesCopy copy];
     v27 = *(v23 + 4);
     *(v23 + 4) = v26;
 
-    v28 = [v19 copy];
+    v28 = [assetsCopy copy];
     v29 = *(v23 + 5);
     *(v23 + 5) = v28;
 
-    *(v23 + 56) = *&a8->var0;
-    v30 = *&a8->var1.var0.var1;
-    v31 = *&a8->var1.var1.var0;
-    v32 = *&a8->var1.var1.var3;
-    *(v23 + 120) = *&a8->var1.var2.var1;
+    *(v23 + 56) = *&info->var0;
+    v30 = *&info->var1.var0.var1;
+    v31 = *&info->var1.var1.var0;
+    v32 = *&info->var1.var1.var3;
+    *(v23 + 120) = *&info->var1.var2.var1;
     *(v23 + 104) = v32;
     *(v23 + 88) = v31;
     *(v23 + 72) = v30;
-    objc_storeStrong(v23 + 17, a9);
-    v33 = [v20 copy];
+    objc_storeStrong(v23 + 17, style);
+    v33 = [catalogCopy copy];
     v34 = *(v23 + 20);
     *(v23 + 20) = v33;
 
-    v35 = [v21 copy];
+    v35 = [listsCopy copy];
     v36 = *(v23 + 19);
     *(v23 + 19) = v35;
 
-    v37 = [v22 copy];
+    v37 = [presentationsCopy copy];
     v38 = *(v23 + 6);
     *(v23 + 6) = v37;
   }

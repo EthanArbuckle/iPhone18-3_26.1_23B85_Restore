@@ -1,31 +1,31 @@
 @interface SKHelperClient
 + (id)sharedClient;
-- (BOOL)_isRecachingDiskAbuse:(id)a3;
+- (BOOL)_isRecachingDiskAbuse:(id)abuse;
 - (SKHelperClient)init;
-- (id)_parameters:(id)a3 valueAtIndex:(unint64_t)a4;
-- (id)_scheduleCompletionUUID:(id)a3 forFunction:(const char *)a4 blocking:(BOOL)a5 withBlock:(id)a6;
-- (id)_scheduleSyncCompletionUUID:(id)a3 forFunction:(const char *)a4 withBlock:(id)a5;
-- (id)eraseWithEraser:(id)a3 completionBlock:(id)a4;
-- (id)queueWithBlocking:(BOOL)a3;
-- (id)remoteObjectProxyWithSync:(BOOL)a3 errorHandler:(id)a4;
-- (id)remoteObjectWithUUID:(id)a3 errorHandler:(id)a4;
-- (id)resize:(id)a3 toSize:(unint64_t)a4 completionBlock:(id)a5;
+- (id)_parameters:(id)_parameters valueAtIndex:(unint64_t)index;
+- (id)_scheduleCompletionUUID:(id)d forFunction:(const char *)function blocking:(BOOL)blocking withBlock:(id)block;
+- (id)_scheduleSyncCompletionUUID:(id)d forFunction:(const char *)function withBlock:(id)block;
+- (id)eraseWithEraser:(id)eraser completionBlock:(id)block;
+- (id)queueWithBlocking:(BOOL)blocking;
+- (id)remoteObjectProxyWithSync:(BOOL)sync errorHandler:(id)handler;
+- (id)remoteObjectWithUUID:(id)d errorHandler:(id)handler;
+- (id)resize:(id)resize toSize:(unint64_t)size completionBlock:(id)block;
 - (id)retrieveFilesystems;
 - (void)_abortAllCalls;
-- (void)_scheduleCompletionUUID:(id)a3 progress:(id)a4 forFunction:(const char *)a5 withBlock:(id)a6;
+- (void)_scheduleCompletionUUID:(id)d progress:(id)progress forFunction:(const char *)function withBlock:(id)block;
 - (void)createXPCConnection;
-- (void)disksAppeared:(id)a3;
-- (void)disksChanged:(id)a3;
-- (void)disksDisappeared:(id)a3;
-- (void)filesystemsWithCallbackBlock:(id)a3;
+- (void)disksAppeared:(id)appeared;
+- (void)disksChanged:(id)changed;
+- (void)disksDisappeared:(id)disappeared;
+- (void)filesystemsWithCallbackBlock:(id)block;
 - (void)initialPopulateComplete;
 - (void)managerResumed;
 - (void)managerStalled;
-- (void)renameDisk:(id)a3 to:(id)a4 withCompletionBlock:(id)a5;
-- (void)requestWithUUID:(id)a3 didCompleteWithResult:(id)a4;
+- (void)renameDisk:(id)disk to:(id)to withCompletionBlock:(id)block;
+- (void)requestWithUUID:(id)d didCompleteWithResult:(id)result;
 - (void)syncAllDisks;
-- (void)syncAllDisksWithCompletionBlock:(id)a3;
-- (void)updateUUID:(id)a3 progress:(float)a4 message:(id)a5;
+- (void)syncAllDisksWithCompletionBlock:(id)block;
+- (void)updateUUID:(id)d progress:(float)progress message:(id)message;
 @end
 
 @implementation SKHelperClient
@@ -64,10 +64,10 @@ uint64_t __30__SKHelperClient_sharedClient__block_invoke()
     [(SKHelperClient *)v2 setRecacheAbuseLimiterInfo:v5];
 
     [(SKHelperClient *)v2 createXPCConnection];
-    v6 = [(SKHelperClient *)v2 xpcConnection];
-    v7 = [v6 _queue];
+    xpcConnection = [(SKHelperClient *)v2 xpcConnection];
+    _queue = [xpcConnection _queue];
     xpcQueue = v2->_xpcQueue;
-    v2->_xpcQueue = v7;
+    v2->_xpcQueue = _queue;
 
     v9 = dispatch_queue_create("com.apple.StorageKit.Callbacks", 0);
     callbackQueue = v2->_callbackQueue;
@@ -77,9 +77,9 @@ uint64_t __30__SKHelperClient_sharedClient__block_invoke()
   return v2;
 }
 
-- (id)queueWithBlocking:(BOOL)a3
+- (id)queueWithBlocking:(BOOL)blocking
 {
-  if (a3)
+  if (blocking)
   {
     [(SKHelperClient *)self xpcQueue];
   }
@@ -96,38 +96,38 @@ uint64_t __30__SKHelperClient_sharedClient__block_invoke()
 - (void)syncAllDisks
 {
   v2 = [[SKSyncXPCCaller alloc] initWithHelperClient:self];
-  v3 = [(SKSyncXPCCaller *)v2 syncRemoteObject];
+  syncRemoteObject = [(SKSyncXPCCaller *)v2 syncRemoteObject];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __30__SKHelperClient_syncAllDisks__block_invoke;
   v5[3] = &unk_279D1F5B0;
   v6 = v2;
   v4 = v2;
-  [v3 syncAllDisksWithCompletionBlock:v5];
+  [syncRemoteObject syncAllDisksWithCompletionBlock:v5];
 
   [(SKSyncXPCCaller *)v4 wait];
 }
 
-- (void)syncAllDisksWithCompletionBlock:(id)a3
+- (void)syncAllDisksWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  blockCopy = block;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__SKHelperClient_syncAllDisksWithCompletionBlock___block_invoke;
   v12[3] = &unk_279D1FAA0;
-  v13 = v4;
-  v7 = v4;
-  [(SKHelperClient *)self _scheduleCompletionUUID:v6 forFunction:"[SKHelperClient syncAllDisksWithCompletionBlock:]" withBlock:v12];
+  v13 = blockCopy;
+  v7 = blockCopy;
+  [(SKHelperClient *)self _scheduleCompletionUUID:uUIDString forFunction:"[SKHelperClient syncAllDisksWithCompletionBlock:]" withBlock:v12];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__SKHelperClient_syncAllDisksWithCompletionBlock___block_invoke_2;
   v10[3] = &unk_279D1FAC8;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = uUIDString;
+  v8 = uUIDString;
   v9 = [(SKHelperClient *)self remoteObjectWithUUID:v8 errorHandler:v10];
   [v9 syncAllDisksWithCompletionUUID:v8];
 }
@@ -143,34 +143,34 @@ uint64_t __50__SKHelperClient_syncAllDisksWithCompletionBlock___block_invoke(uin
   return result;
 }
 
-- (void)renameDisk:(id)a3 to:(id)a4 withCompletionBlock:(id)a5
+- (void)renameDisk:(id)disk to:(id)to withCompletionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = MEMORY[0x277CCAD78];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 UUID];
-  v13 = [v12 UUIDString];
+  toCopy = to;
+  diskCopy = disk;
+  uUID = [v9 UUID];
+  uUIDString = [uUID UUIDString];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __52__SKHelperClient_renameDisk_to_withCompletionBlock___block_invoke;
   v24[3] = &unk_279D1FAF0;
   v24[4] = self;
-  v25 = v8;
-  v14 = v8;
-  [(SKHelperClient *)self _scheduleCompletionUUID:v13 forFunction:"[SKHelperClient renameDisk:to:withCompletionBlock:]" withBlock:v24];
+  v25 = blockCopy;
+  v14 = blockCopy;
+  [(SKHelperClient *)self _scheduleCompletionUUID:uUIDString forFunction:"[SKHelperClient renameDisk:to:withCompletionBlock:]" withBlock:v24];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __52__SKHelperClient_renameDisk_to_withCompletionBlock___block_invoke_2;
   v21 = &unk_279D1FAC8;
-  v22 = self;
-  v23 = v13;
-  v15 = v13;
+  selfCopy = self;
+  v23 = uUIDString;
+  v15 = uUIDString;
   v16 = [(SKHelperClient *)self remoteObjectWithUUID:v15 errorHandler:&v18];
-  v17 = [v11 minimalDictionaryRepresentation];
+  minimalDictionaryRepresentation = [diskCopy minimalDictionaryRepresentation];
 
-  [v16 renameDisk:v17 to:v10 withCompletionUUID:v15];
+  [v16 renameDisk:minimalDictionaryRepresentation to:toCopy withCompletionUUID:v15];
 }
 
 void __52__SKHelperClient_renameDisk_to_withCompletionBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -373,7 +373,7 @@ void __53__SKHelperClient_isBusyWithBlocking_completionBlock___block_invoke(uint
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = MEMORY[0x277CBEBF8];
-  v3 = [(SKSyncXPCCaller *)v2 syncRemoteObject];
+  syncRemoteObject = [(SKSyncXPCCaller *)v2 syncRemoteObject];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __37__SKHelperClient_retrieveFilesystems__block_invoke;
@@ -381,7 +381,7 @@ void __53__SKHelperClient_isBusyWithBlocking_completionBlock___block_invoke(uint
   v4 = v2;
   v11 = v4;
   v12 = &v13;
-  [v3 filesystemsWithCallbackBlock:&v7];
+  [syncRemoteObject filesystemsWithCallbackBlock:&v7];
 
   [(SKSyncXPCCaller *)v4 wait:v7];
   v5 = v14[5];
@@ -406,11 +406,11 @@ void __37__SKHelperClient_retrieveFilesystems__block_invoke(uint64_t a1, void *a
   [v5 queueWithCompletionBlock:v7];
 }
 
-- (void)filesystemsWithCallbackBlock:(id)a3
+- (void)filesystemsWithCallbackBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(SKHelperClient *)self retrieveFilesystems];
-  (*(a3 + 2))(v5, v6);
+  blockCopy = block;
+  retrieveFilesystems = [(SKHelperClient *)self retrieveFilesystems];
+  (*(block + 2))(blockCopy, retrieveFilesystems);
 }
 
 void __71__SKHelperClient_physicalStoresForAPFSVolume_blocking_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -717,96 +717,96 @@ void __60__SKHelperClient_volumesForAPFSPS_blocking_completionBlock___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateUUID:(id)a3 progress:(float)a4 message:(id)a5
+- (void)updateUUID:(id)d progress:(float)progress message:(id)message
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SKHelperClient *)self completionHandlers];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  messageCopy = message;
+  dCopy = d;
+  completionHandlers = [(SKHelperClient *)self completionHandlers];
+  v11 = [completionHandlers objectForKeyedSubscript:dCopy];
 
   if (v11)
   {
-    v12 = [v11 progressBlock];
+    progressBlock = [v11 progressBlock];
 
-    if (v12)
+    if (progressBlock)
     {
-      v13 = [v11 progressBlock];
-      v14 = [(SKHelperClient *)self callbackQueue];
+      progressBlock2 = [v11 progressBlock];
+      callbackQueue = [(SKHelperClient *)self callbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __46__SKHelperClient_updateUUID_progress_message___block_invoke;
       block[3] = &unk_279D1FC80;
-      v18 = v13;
-      v19 = a4;
-      v17 = v8;
-      v15 = v13;
-      dispatch_async(v14, block);
+      v18 = progressBlock2;
+      progressCopy = progress;
+      v17 = messageCopy;
+      v15 = progressBlock2;
+      dispatch_async(callbackQueue, block);
     }
   }
 }
 
-- (void)requestWithUUID:(id)a3 didCompleteWithResult:(id)a4
+- (void)requestWithUUID:(id)d didCompleteWithResult:(id)result
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKHelperClient *)self completionHandlers];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  resultCopy = result;
+  completionHandlers = [(SKHelperClient *)self completionHandlers];
+  v9 = [completionHandlers objectForKeyedSubscript:dCopy];
 
   v10 = SKGetOSLog();
-  v11 = v10;
+  completionHandlers2 = v10;
   if (v9)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = v6;
+      v22 = dCopy;
       v23 = 2082;
-      v24 = [v9 functionName];
-      _os_log_impl(&dword_26BBB8000, v11, OS_LOG_TYPE_DEFAULT, "Reached XPC reply for %{public}@ %{public}s", buf, 0x16u);
+      functionName = [v9 functionName];
+      _os_log_impl(&dword_26BBB8000, completionHandlers2, OS_LOG_TYPE_DEFAULT, "Reached XPC reply for %{public}@ %{public}s", buf, 0x16u);
     }
 
     [v9 setProgressBlock:0];
-    v12 = [v9 semaphore];
+    semaphore = [v9 semaphore];
 
-    if (v12)
+    if (semaphore)
     {
-      v13 = [v9 completionBlock];
-      (v13)[2](v13, v7);
+      completionBlock = [v9 completionBlock];
+      (completionBlock)[2](completionBlock, resultCopy);
 
       v14 = SKGetOSLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v22 = v6;
+        v22 = dCopy;
         _os_log_impl(&dword_26BBB8000, v14, OS_LOG_TYPE_DEFAULT, "Completion block directly executed for: %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v15 = [(SKHelperClient *)self callbackQueue];
+      callbackQueue = [(SKHelperClient *)self callbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __56__SKHelperClient_requestWithUUID_didCompleteWithResult___block_invoke;
       block[3] = &unk_279D1FCA8;
-      v18 = v6;
+      v18 = dCopy;
       v19 = v9;
-      v20 = v7;
-      dispatch_async(v15, block);
+      v20 = resultCopy;
+      dispatch_async(callbackQueue, block);
 
       v14 = v18;
     }
 
-    v11 = [(SKHelperClient *)self completionHandlers];
-    [v11 setObject:0 forKeyedSubscript:v6];
+    completionHandlers2 = [(SKHelperClient *)self completionHandlers];
+    [completionHandlers2 setObject:0 forKeyedSubscript:dCopy];
   }
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v22 = v6;
-    _os_log_impl(&dword_26BBB8000, v11, OS_LOG_TYPE_ERROR, "Error: no completion handler for %{public}@", buf, 0xCu);
+    v22 = dCopy;
+    _os_log_impl(&dword_26BBB8000, completionHandlers2, OS_LOG_TYPE_ERROR, "Error: no completion handler for %{public}@", buf, 0xCu);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -845,25 +845,25 @@ void __56__SKHelperClient_requestWithUUID_didCompleteWithResult___block_invoke(u
   [v2 initialPopulateComplete];
 }
 
-- (void)disksAppeared:(id)a3
+- (void)disksAppeared:(id)appeared
 {
-  v3 = a3;
+  appearedCopy = appeared;
   v4 = +[SKManager sharedManager];
-  [v4 disksAppeared:v3];
+  [v4 disksAppeared:appearedCopy];
 }
 
-- (void)disksChanged:(id)a3
+- (void)disksChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = +[SKManager sharedManager];
-  [v4 disksChanged:v3];
+  [v4 disksChanged:changedCopy];
 }
 
-- (void)disksDisappeared:(id)a3
+- (void)disksDisappeared:(id)disappeared
 {
-  v3 = a3;
+  disappearedCopy = disappeared;
   v4 = +[SKManager sharedManager];
-  [v4 disksDisappeared:v3];
+  [v4 disksDisappeared:disappearedCopy];
 }
 
 - (void)managerStalled
@@ -878,18 +878,18 @@ void __56__SKHelperClient_requestWithUUID_didCompleteWithResult___block_invoke(u
   [v2 managerResumed];
 }
 
-- (id)remoteObjectProxyWithSync:(BOOL)a3 errorHandler:(id)a4
+- (id)remoteObjectProxyWithSync:(BOOL)sync errorHandler:(id)handler
 {
-  v4 = a3;
+  syncCopy = sync;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   if (![(SKHelperClient *)self connectionDone])
   {
     v7 = SKGetOSLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "async";
-      if (v4)
+      if (syncCopy)
       {
         v8 = "sync";
       }
@@ -904,16 +904,16 @@ void __56__SKHelperClient_requestWithUUID_didCompleteWithResult___block_invoke(u
     [(SKHelperClient *)self setConnectionDone:1];
   }
 
-  v9 = [(SKHelperClient *)self xpcConnection];
-  v10 = v9;
-  if (v4)
+  xpcConnection = [(SKHelperClient *)self xpcConnection];
+  v10 = xpcConnection;
+  if (syncCopy)
   {
-    [v9 synchronousRemoteObjectProxyWithErrorHandler:v6];
+    [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v9 remoteObjectProxyWithErrorHandler:v6];
+    [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
   v11 = ;
 
@@ -922,21 +922,21 @@ void __56__SKHelperClient_requestWithUUID_didCompleteWithResult___block_invoke(u
   return v11;
 }
 
-- (id)remoteObjectWithUUID:(id)a3 errorHandler:(id)a4
+- (id)remoteObjectWithUUID:(id)d errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKHelperClient *)self xpcQueue];
+  dCopy = d;
+  handlerCopy = handler;
+  xpcQueue = [(SKHelperClient *)self xpcQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SKHelperClient_remoteObjectWithUUID_errorHandler___block_invoke;
   block[3] = &unk_279D1FCD0;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v14 = dCopy;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(xpcQueue, block);
 
   v11 = [(SKHelperClient *)self remoteObjectProxyWithSync:0 errorHandler:v9];
 
@@ -980,9 +980,9 @@ void __52__SKHelperClient_remoteObjectWithUUID_errorHandler___block_invoke(uint6
   v4 = SKGetOSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SKHelperClient *)self hasDaemonAccess];
+    hasDaemonAccess = [(SKHelperClient *)self hasDaemonAccess];
     v6 = @"doesn't have";
-    if (v5)
+    if (hasDaemonAccess)
     {
       v6 = @"has";
     }
@@ -1062,10 +1062,10 @@ void __37__SKHelperClient_createXPCConnection__block_invoke_108(uint64_t a1)
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SKHelperClient *)self completionHandlers];
-  v5 = [v4 allKeys];
+  completionHandlers = [(SKHelperClient *)self completionHandlers];
+  allKeys = [completionHandlers allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1076,7 +1076,7 @@ void __37__SKHelperClient_createXPCConnection__block_invoke_108(uint64_t a1)
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -1088,49 +1088,49 @@ void __37__SKHelperClient_createXPCConnection__block_invoke_108(uint64_t a1)
           _os_log_impl(&dword_26BBB8000, v11, OS_LOG_TYPE_DEFAULT, "Calling completion handler to abort UUID: %{public}@", buf, 0xCu);
         }
 
-        v12 = [(SKHelperClient *)self completionHandlers];
-        v13 = [v12 objectForKeyedSubscript:v10];
+        completionHandlers2 = [(SKHelperClient *)self completionHandlers];
+        v13 = [completionHandlers2 objectForKeyedSubscript:v10];
 
-        v14 = [v13 errorBlock];
+        errorBlock = [v13 errorBlock];
 
-        if (v14)
+        if (errorBlock)
         {
-          v15 = [v13 errorBlock];
-          (v15)[2](v15, v3);
+          errorBlock2 = [v13 errorBlock];
+          (errorBlock2)[2](errorBlock2, v3);
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v7);
   }
 
-  v16 = [(SKHelperClient *)self completionHandlers];
-  [v16 removeAllObjects];
+  completionHandlers3 = [(SKHelperClient *)self completionHandlers];
+  [completionHandlers3 removeAllObjects];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleCompletionUUID:(id)a3 progress:(id)a4 forFunction:(const char *)a5 withBlock:(id)a6
+- (void)_scheduleCompletionUUID:(id)d progress:(id)progress forFunction:(const char *)function withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SKHelperClient *)self xpcQueue];
+  dCopy = d;
+  progressCopy = progress;
+  blockCopy = block;
+  xpcQueue = [(SKHelperClient *)self xpcQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SKHelperClient__scheduleCompletionUUID_progress_forFunction_withBlock___block_invoke;
   block[3] = &unk_279D1FD20;
-  v21 = v11;
-  v22 = a5;
-  v18 = v10;
-  v19 = self;
-  v20 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v21 = progressCopy;
+  functionCopy = function;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = blockCopy;
+  v14 = progressCopy;
+  v15 = blockCopy;
+  v16 = dCopy;
+  dispatch_async(xpcQueue, block);
 }
 
 void __73__SKHelperClient__scheduleCompletionUUID_progress_forFunction_withBlock___block_invoke(uint64_t a1)
@@ -1155,25 +1155,25 @@ void __73__SKHelperClient__scheduleCompletionUUID_progress_forFunction_withBlock
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_scheduleSyncCompletionUUID:(id)a3 forFunction:(const char *)a4 withBlock:(id)a5
+- (id)_scheduleSyncCompletionUUID:(id)d forFunction:(const char *)function withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v10 = dispatch_semaphore_create(0);
-  v11 = [(SKHelperClient *)self xpcQueue];
+  xpcQueue = [(SKHelperClient *)self xpcQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SKHelperClient__scheduleSyncCompletionUUID_forFunction_withBlock___block_invoke;
   block[3] = &unk_279D1FD48;
-  v21 = v9;
-  v22 = a4;
-  v18 = v8;
+  v21 = blockCopy;
+  functionCopy = function;
+  v18 = dCopy;
   v12 = v10;
   v19 = v12;
-  v20 = self;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  selfCopy = self;
+  v13 = blockCopy;
+  v14 = dCopy;
+  dispatch_async(xpcQueue, block);
 
   v15 = v12;
   return v12;
@@ -1202,30 +1202,30 @@ void __68__SKHelperClient__scheduleSyncCompletionUUID_forFunction_withBlock___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_scheduleCompletionUUID:(id)a3 forFunction:(const char *)a4 blocking:(BOOL)a5 withBlock:(id)a6
+- (id)_scheduleCompletionUUID:(id)d forFunction:(const char *)function blocking:(BOOL)blocking withBlock:(id)block
 {
-  if (a5)
+  if (blocking)
   {
-    v6 = [(SKHelperClient *)self _scheduleSyncCompletionUUID:a3 forFunction:a4 withBlock:a6];
+    v6 = [(SKHelperClient *)self _scheduleSyncCompletionUUID:d forFunction:function withBlock:block];
   }
 
   else
   {
-    [(SKHelperClient *)self _scheduleCompletionUUID:a3 progress:0 forFunction:a4 withBlock:a6];
+    [(SKHelperClient *)self _scheduleCompletionUUID:d progress:0 forFunction:function withBlock:block];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (id)_parameters:(id)a3 valueAtIndex:(unint64_t)a4
+- (id)_parameters:(id)_parameters valueAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  if ([v5 count] > a4)
+  _parametersCopy = _parameters;
+  if ([_parametersCopy count] > index)
   {
-    v6 = [v5 objectAtIndex:a4];
-    v7 = [MEMORY[0x277CBEB68] null];
-    v8 = [v6 isEqual:v7];
+    v6 = [_parametersCopy objectAtIndex:index];
+    null = [MEMORY[0x277CBEB68] null];
+    v8 = [v6 isEqual:null];
 
     if (!v8)
     {
@@ -1239,27 +1239,27 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_isRecachingDiskAbuse:(id)a3
+- (BOOL)_isRecachingDiskAbuse:(id)abuse
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 minimalDictionaryRepresentation];
-  v5 = [(SKHelperClient *)self recacheAbuseLimiterInfo];
-  v6 = [v5 objectForKey:v4];
+  minimalDictionaryRepresentation = [abuse minimalDictionaryRepresentation];
+  recacheAbuseLimiterInfo = [(SKHelperClient *)self recacheAbuseLimiterInfo];
+  v6 = [recacheAbuseLimiterInfo objectForKey:minimalDictionaryRepresentation];
 
   if (v6)
   {
-    v7 = [v6 objectForKey:@"FirstCallTime"];
+    date3 = [v6 objectForKey:@"FirstCallTime"];
     v8 = [v6 objectForKey:@"CallCount"];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v9 timeIntervalSinceDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:date3];
     v11 = v10;
 
     if (v11 >= 60.0)
     {
       v24[0] = @"FirstCallTime";
-      v13 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v24[1] = @"CallCount";
-      v25[0] = v13;
+      v25[0] = date2;
       v25[1] = &unk_287C9A670;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
@@ -1276,22 +1276,22 @@ LABEL_5:
   else
   {
     v22[0] = @"FirstCallTime";
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date3 = [MEMORY[0x277CBEAA8] date];
     v22[1] = @"CallCount";
-    v23[0] = v7;
+    v23[0] = date3;
     v23[1] = &unk_287C9A670;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
     v12 = 0;
   }
 
   v15 = [v6 objectForKey:@"CallCount"];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
   v17 = [v6 mutableCopy];
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:v16 + 1];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
   [v17 setObject:v18 forKey:@"CallCount"];
 
-  v19 = [(SKHelperClient *)self recacheAbuseLimiterInfo];
-  [v19 setObject:v17 forKey:v4];
+  recacheAbuseLimiterInfo2 = [(SKHelperClient *)self recacheAbuseLimiterInfo];
+  [recacheAbuseLimiterInfo2 setObject:v17 forKey:minimalDictionaryRepresentation];
 
   v20 = *MEMORY[0x277D85DE8];
   return v12;
@@ -1396,17 +1396,17 @@ void __57__SKHelperClient_ejectDisk_blocking_withCompletionBlock___block_invoke_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)eraseWithEraser:(id)a3 completionBlock:(id)a4
+- (id)eraseWithEraser:(id)eraser completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __50__SKHelperClient_eraseWithEraser_completionBlock___block_invoke;
   v15[3] = &unk_279D1FD70;
   v15[4] = self;
-  v7 = v6;
+  v7 = blockCopy;
   v16 = v7;
-  v8 = a3;
+  eraserCopy = eraser;
   v9 = [(SKHelperClient *)self remoteObjectProxyWithSync:0 errorHandler:v15];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1415,7 +1415,7 @@ void __57__SKHelperClient_ejectDisk_blocking_withCompletionBlock___block_invoke_
   v13[4] = self;
   v14 = v7;
   v10 = v7;
-  v11 = [v9 eraseWithEraser:v8 reply:v13];
+  v11 = [v9 eraseWithEraser:eraserCopy reply:v13];
 
   return v11;
 }
@@ -1482,19 +1482,19 @@ void __50__SKHelperClient_eraseWithEraser_completionBlock___block_invoke_4(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resize:(id)a3 toSize:(unint64_t)a4 completionBlock:(id)a5
+- (id)resize:(id)resize toSize:(unint64_t)size completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__SKHelperClient_resize_toSize_completionBlock___block_invoke;
   v18[3] = &unk_279D1FD70;
   v18[4] = self;
-  v9 = v8;
+  v9 = blockCopy;
   v19 = v9;
-  v10 = a3;
+  resizeCopy = resize;
   v11 = [(SKHelperClient *)self remoteObjectProxyWithSync:0 errorHandler:v18];
-  v12 = [v10 minimalDictionaryRepresentation];
+  minimalDictionaryRepresentation = [resizeCopy minimalDictionaryRepresentation];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1503,7 +1503,7 @@ void __50__SKHelperClient_eraseWithEraser_completionBlock___block_invoke_4(uint6
   v16[4] = self;
   v17 = v9;
   v13 = v9;
-  v14 = [v11 resizeDisk:v12 size:a4 reply:v16];
+  v14 = [v11 resizeDisk:minimalDictionaryRepresentation size:size reply:v16];
 
   return v14;
 }

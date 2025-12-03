@@ -1,51 +1,51 @@
 @interface REImageContentProvider
-+ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)a3;
-+ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)a3 twoPieceForegroundImage:(id)a4 twoPieceBackgroundImage:(id)a5;
-- (REImageContentProvider)initWithCoder:(id)a3;
-- (REImageContentProvider)initWithImage:(id)a3 foregroundImage:(id)a4 backgroundImage:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)image;
++ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)image twoPieceForegroundImage:(id)foregroundImage twoPieceBackgroundImage:(id)backgroundImage;
+- (REImageContentProvider)initWithCoder:(id)coder;
+- (REImageContentProvider)initWithImage:(id)image foregroundImage:(id)foregroundImage backgroundImage:(id)backgroundImage;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REImageContentProvider
 
-+ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)a3
++ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)image
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithImage:v4 foregroundImage:0 backgroundImage:0];
+  imageCopy = image;
+  v5 = [[self alloc] initWithImage:imageCopy foregroundImage:0 backgroundImage:0];
 
   return v5;
 }
 
-+ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)a3 twoPieceForegroundImage:(id)a4 twoPieceBackgroundImage:(id)a5
++ (REImageContentProvider)imageContentProviderWithOnePieceImage:(id)image twoPieceForegroundImage:(id)foregroundImage twoPieceBackgroundImage:(id)backgroundImage
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithImage:v10 foregroundImage:v9 backgroundImage:v8];
+  backgroundImageCopy = backgroundImage;
+  foregroundImageCopy = foregroundImage;
+  imageCopy = image;
+  v11 = [[self alloc] initWithImage:imageCopy foregroundImage:foregroundImageCopy backgroundImage:backgroundImageCopy];
 
   return v11;
 }
 
-- (REImageContentProvider)initWithImage:(id)a3 foregroundImage:(id)a4 backgroundImage:(id)a5
+- (REImageContentProvider)initWithImage:(id)image foregroundImage:(id)foregroundImage backgroundImage:(id)backgroundImage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  foregroundImageCopy = foregroundImage;
+  backgroundImageCopy = backgroundImage;
   v19.receiver = self;
   v19.super_class = REImageContentProvider;
   v11 = [(REImageContentProvider *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [imageCopy copy];
     onePieceImage = v11->_onePieceImage;
     v11->_onePieceImage = v12;
 
-    v14 = [v10 copy];
+    v14 = [backgroundImageCopy copy];
     twoPieceBackgroundImage = v11->_twoPieceBackgroundImage;
     v11->_twoPieceBackgroundImage = v14;
 
-    v16 = [v9 copy];
+    v16 = [foregroundImageCopy copy];
     twoPieceForegroundImage = v11->_twoPieceForegroundImage;
     v11->_twoPieceForegroundImage = v16;
   }
@@ -53,7 +53,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   onePieceImage = self->_onePieceImage;
@@ -63,21 +63,21 @@
   return [v4 initWithImage:onePieceImage foregroundImage:twoPieceForegroundImage backgroundImage:twoPieceBackgroundImage];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   onePieceImage = self->_onePieceImage;
-  v5 = a3;
-  [v5 encodeObject:onePieceImage forKey:@"onePieceImage"];
-  [v5 encodeObject:self->_twoPieceForegroundImage forKey:@"twoPieceForeground"];
-  [v5 encodeObject:self->_twoPieceBackgroundImage forKey:@"twoPieceBackground"];
+  coderCopy = coder;
+  [coderCopy encodeObject:onePieceImage forKey:@"onePieceImage"];
+  [coderCopy encodeObject:self->_twoPieceForegroundImage forKey:@"twoPieceForeground"];
+  [coderCopy encodeObject:self->_twoPieceBackgroundImage forKey:@"twoPieceBackground"];
 }
 
-- (REImageContentProvider)initWithCoder:(id)a3
+- (REImageContentProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onePieceImage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"twoPieceForeground"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"twoPieceBackground"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onePieceImage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"twoPieceForeground"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"twoPieceBackground"];
 
   v8 = [(REImageContentProvider *)self initWithImage:v5 foregroundImage:v6 backgroundImage:v7];
   return v8;

@@ -1,18 +1,18 @@
 @interface CSSmartSiriVolumeServiceProxy
 - (CSSmartSiriVolumeServiceProxy)init;
-- (void)getVolumeForTTSType:(unint64_t)a3 withContext:(id)a4 reply:(id)a5;
-- (void)setSmartSiriVolumePercentage:(float)a3;
+- (void)getVolumeForTTSType:(unint64_t)type withContext:(id)context reply:(id)reply;
+- (void)setSmartSiriVolumePercentage:(float)percentage;
 @end
 
 @implementation CSSmartSiriVolumeServiceProxy
 
-- (void)setSmartSiriVolumePercentage:(float)a3
+- (void)setSmartSiriVolumePercentage:(float)percentage
 {
   v4 = +[CSSmartSiriVolumeManager sharedInstance];
   v6 = v4;
   if (v4)
   {
-    *&v5 = a3;
+    *&v5 = percentage;
     [v4 setSmartSiriVolumePercentage:v5];
   }
 
@@ -31,19 +31,19 @@
   }
 }
 
-- (void)getVolumeForTTSType:(unint64_t)a3 withContext:(id)a4 reply:(id)a5
+- (void)getVolumeForTTSType:(unint64_t)type withContext:(id)context reply:(id)reply
 {
-  v7 = a5;
-  v8 = [a4 objectForKeyedSubscript:@"overrideMediaVolume"];
+  replyCopy = reply;
+  v8 = [context objectForKeyedSubscript:@"overrideMediaVolume"];
   v9 = +[CSSmartSiriVolumeManager sharedInstance];
   if (v9)
   {
-    v10 = [v9 getVolumeForTTSType:a3 withOverrideMediaVolume:v8 WithRequestTime:mach_absolute_time()];
+    v10 = [v9 getVolumeForTTSType:type withOverrideMediaVolume:v8 WithRequestTime:mach_absolute_time()];
     if (v10)
     {
       v11 = v10;
       v12 = 0;
-      if (!v7)
+      if (!replyCopy)
       {
         goto LABEL_13;
       }
@@ -94,10 +94,10 @@
   v12 = [NSError errorWithDomain:v17 code:v18 userInfo:v16];
 
   v11 = 0;
-  if (v7)
+  if (replyCopy)
   {
 LABEL_12:
-    v7[2](v7, v12, v11);
+    replyCopy[2](replyCopy, v12, v11);
   }
 
 LABEL_13:

@@ -1,17 +1,17 @@
 @interface VCStreamInputAudio
-- (VCStreamInputAudio)initWithStreamInputID:(id)a3 format:(opaqueCMFormatDescription *)a4 delegate:(id)a5 delegateQueue:(id)a6 remoteQueue:(id)a7;
+- (VCStreamInputAudio)initWithStreamInputID:(id)d format:(opaqueCMFormatDescription *)format delegate:(id)delegate delegateQueue:(id)queue remoteQueue:(id)remoteQueue;
 - (void)dealloc;
-- (void)registerSampleBufferCallback:(void *)a3 context:(void *)a4;
+- (void)registerSampleBufferCallback:(void *)callback context:(void *)context;
 @end
 
 @implementation VCStreamInputAudio
 
-- (VCStreamInputAudio)initWithStreamInputID:(id)a3 format:(opaqueCMFormatDescription *)a4 delegate:(id)a5 delegateQueue:(id)a6 remoteQueue:(id)a7
+- (VCStreamInputAudio)initWithStreamInputID:(id)d format:(opaqueCMFormatDescription *)format delegate:(id)delegate delegateQueue:(id)queue remoteQueue:(id)remoteQueue
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VCStreamInputAudio;
-  result = [(VCStreamInput *)&v8 initWithStreamInputID:a3 format:a4 delegate:a5 delegateQueue:a6 remoteQueue:a7];
+  result = [(VCStreamInput *)&v8 initWithStreamInputID:d format:format delegate:delegate delegateQueue:queue remoteQueue:remoteQueue];
   if (result)
   {
     result->super._receiverQueue = 0;
@@ -35,11 +35,11 @@
   [(VCStreamInput *)&v3 dealloc];
 }
 
-- (void)registerSampleBufferCallback:(void *)a3 context:(void *)a4
+- (void)registerSampleBufferCallback:(void *)callback context:(void *)context
 {
   os_unfair_lock_lock(&self->_sampleBufferDelegateCallbackContext);
-  self->super._receiverQueue = a3;
-  self->_sampleBufferDelegateCallback = a4;
+  self->super._receiverQueue = callback;
+  self->_sampleBufferDelegateCallback = context;
 
   os_unfair_lock_unlock(&self->_sampleBufferDelegateCallbackContext);
 }

@@ -1,16 +1,16 @@
 @interface BLSHDiagnosticsServer
-+ (BLSHDiagnosticsServer)serverWithFlipbookDiagnosticsProvider:(id)a3;
++ (BLSHDiagnosticsServer)serverWithFlipbookDiagnosticsProvider:(id)provider;
 + (id)domainSpecification;
-- (BLSHDiagnosticsServer)initWithFlipbookDiagnosticsProvider:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (BLSHDiagnosticsServer)initWithFlipbookDiagnosticsProvider:(id)provider;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation BLSHDiagnosticsServer
 
-+ (BLSHDiagnosticsServer)serverWithFlipbookDiagnosticsProvider:(id)a3
++ (BLSHDiagnosticsServer)serverWithFlipbookDiagnosticsProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [[BLSHDiagnosticsServer alloc] initWithFlipbookDiagnosticsProvider:v3];
+  providerCopy = provider;
+  v4 = [[BLSHDiagnosticsServer alloc] initWithFlipbookDiagnosticsProvider:providerCopy];
   v5 = bls_diagnostics_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -65,16 +65,16 @@ void __44__BLSHDiagnosticsServer_domainSpecification__block_invoke()
   }
 }
 
-- (BLSHDiagnosticsServer)initWithFlipbookDiagnosticsProvider:(id)a3
+- (BLSHDiagnosticsServer)initWithFlipbookDiagnosticsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = BLSHDiagnosticsServer;
   v6 = [(BLSHDiagnosticsServer *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_flipbookDiagnosticsProvider, a3);
+    objc_storeStrong(&v6->_flipbookDiagnosticsProvider, provider);
     v8 = +[BLSHDiagnosticsServer domainSpecification];
     if (v8)
     {
@@ -84,9 +84,9 @@ void __44__BLSHDiagnosticsServer_domainSpecification__block_invoke()
         [(BLSHDiagnosticsServer *)v7 initWithFlipbookDiagnosticsProvider:v8, v9];
       }
 
-      v10 = [MEMORY[0x277CF08F0] serviceQuality];
-      v11 = [MEMORY[0x277CF0C18] serial];
-      v12 = [v11 serviceClass:objc_msgSend(v10 relativePriority:{"serviceClass"), objc_msgSend(v10, "relativePriority")}];
+      serviceQuality = [MEMORY[0x277CF08F0] serviceQuality];
+      serial = [MEMORY[0x277CF0C18] serial];
+      v12 = [serial serviceClass:objc_msgSend(serviceQuality relativePriority:{"serviceClass"), objc_msgSend(serviceQuality, "relativePriority")}];
       v13 = BSDispatchQueueCreate();
       callbackQueue = v7->_callbackQueue;
       v7->_callbackQueue = v13;
@@ -137,15 +137,15 @@ void __61__BLSHDiagnosticsServer_initWithFlipbookDiagnosticsProvider___block_inv
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __67__BLSHDiagnosticsServer_listener_didReceiveConnection_withContext___block_invoke;
   v12 = &unk_27841EBB8;
-  v13 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = connectionCopy;
   v14 = v7;
   [v7 configureConnection:&v9];
   [v7 activate];

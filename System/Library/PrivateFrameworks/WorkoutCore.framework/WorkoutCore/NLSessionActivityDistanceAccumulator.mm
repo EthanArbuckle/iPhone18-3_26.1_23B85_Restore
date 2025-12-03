@@ -1,71 +1,71 @@
 @interface NLSessionActivityDistanceAccumulator
-- (NLSessionActivityDistanceAccumulator)initWithBuilder:(id)a3 activityType:(id)a4;
+- (NLSessionActivityDistanceAccumulator)initWithBuilder:(id)builder activityType:(id)type;
 - (double)distance;
 - (void)accumulatorDidStop;
-- (void)authorizationStatusDidUpdateWithAuthorizationStatus:(int)a3 locationManager:(id)a4;
-- (void)locationDidFailWithError:(id)a3 locationManager:(id)a4;
-- (void)locationDidUpdateWithLocations:(id)a3 locationManager:(id)a4;
-- (void)locationManagerStateDidChangeWithState:(int64_t)a3 locationManager:(id)a4;
-- (void)updateDistance:(double)a3 distanceEndDate:(id)a4;
-- (void)updateDistanceWithStatistics:(id)a3;
+- (void)authorizationStatusDidUpdateWithAuthorizationStatus:(int)status locationManager:(id)manager;
+- (void)locationDidFailWithError:(id)error locationManager:(id)manager;
+- (void)locationDidUpdateWithLocations:(id)locations locationManager:(id)manager;
+- (void)locationManagerStateDidChangeWithState:(int64_t)state locationManager:(id)manager;
+- (void)updateDistance:(double)distance distanceEndDate:(id)date;
+- (void)updateDistanceWithStatistics:(id)statistics;
 @end
 
 @implementation NLSessionActivityDistanceAccumulator
 
-- (NLSessionActivityDistanceAccumulator)initWithBuilder:(id)a3 activityType:(id)a4
+- (NLSessionActivityDistanceAccumulator)initWithBuilder:(id)builder activityType:(id)type
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v4 = v20;
-  v20 = 0;
+  objc_storeStrong(&v18, type);
+  v4 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v4;
   v17.super_class = NLSessionActivityDistanceAccumulator;
   v14 = [(NLSessionActivityBuilderAccumulator *)&v17 initWithBuilder:location[0]];
-  v20 = v14;
-  objc_storeStrong(&v20, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (v14)
   {
     [v18 effectiveTypeIdentifier];
     v5 = _HKWorkoutDistanceTypeForActivityType();
-    expectedDistanceType = v20->_expectedDistanceType;
-    v20->_expectedDistanceType = v5;
+    expectedDistanceType = selfCopy->_expectedDistanceType;
+    selfCopy->_expectedDistanceType = v5;
     MEMORY[0x277D82BD8](expectedDistanceType);
-    v7 = [MEMORY[0x277CCDAB0] meterUnit];
-    meterUnit = v20->_meterUnit;
-    v20->_meterUnit = v7;
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    meterUnit = selfCopy->_meterUnit;
+    selfCopy->_meterUnit = meterUnit;
     MEMORY[0x277D82BD8](meterUnit);
-    v20->_trackProximity = 0;
+    selfCopy->_trackProximity = 0;
   }
 
   v15 = 0;
   LOBYTE(v12) = 0;
   if ([v18 supportsTrackRunning])
   {
-    v16 = [location[0] workoutConfiguration];
+    workoutConfiguration = [location[0] workoutConfiguration];
     v15 = 1;
-    v12 = [v16 shouldUseExtendedMode] ^ 1;
+    v12 = [workoutConfiguration shouldUseExtendedMode] ^ 1;
   }
 
   if (v15)
   {
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](workoutConfiguration);
   }
 
   if (v12)
   {
     v11 = +[WOCoreLocationManager sharedManager];
-    [(WOCoreLocationManager *)v11 addObserver:v20];
+    [(WOCoreLocationManager *)v11 addObserver:selfCopy];
     MEMORY[0x277D82BD8](v11);
   }
 
-  v10 = MEMORY[0x277D82BE0](v20);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
@@ -76,18 +76,18 @@
   MEMORY[0x277D82BD8](v2);
 }
 
-- (void)updateDistanceWithStatistics:(id)a3
+- (void)updateDistanceWithStatistics:(id)statistics
 {
   v30 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, statistics);
   v14 = +[WOCoreTrackRunningCoordinator shared];
   v15 = 0;
   if ([(WOCoreTrackRunningCoordinator *)v14 trackModeEnabledLocal])
   {
-    v15 = v28->_trackProximity == 4;
+    v15 = selfCopy->_trackProximity == 4;
   }
 
   MEMORY[0x277D82BD8](v14);
@@ -114,20 +114,20 @@
 
   else
   {
-    v22 = [location[0] quantityType];
-    if ([v22 isEqual:v28->_expectedDistanceType])
+    quantityType = [location[0] quantityType];
+    if ([quantityType isEqual:selfCopy->_expectedDistanceType])
     {
-      v9 = [location[0] sumQuantity];
-      v8 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v9 doubleValueForUnit:?];
+      sumQuantity = [location[0] sumQuantity];
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+      [sumQuantity doubleValueForUnit:?];
       v10 = v3;
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](meterUnit);
+      MEMORY[0x277D82BD8](sumQuantity);
       v21 = v10;
-      v11 = [location[0] mostRecentQuantityDateInterval];
-      v20 = [v11 endDate];
-      MEMORY[0x277D82BD8](v11);
-      if (!v20)
+      mostRecentQuantityDateInterval = [location[0] mostRecentQuantityDateInterval];
+      endDate = [mostRecentQuantityDateInterval endDate];
+      MEMORY[0x277D82BD8](mostRecentQuantityDateInterval);
+      if (!endDate)
       {
         _HKInitializeLogging();
         v19 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -141,14 +141,14 @@
         }
 
         objc_storeStrong(&v19, 0);
-        v4 = [MEMORY[0x277CBEAA8] date];
-        v5 = v20;
-        v20 = v4;
+        date = [MEMORY[0x277CBEAA8] date];
+        v5 = endDate;
+        endDate = date;
         MEMORY[0x277D82BD8](v5);
       }
 
-      [(NLSessionActivityDistanceAccumulator *)v28 updateDistance:v20 distanceEndDate:v21];
-      objc_storeStrong(&v20, 0);
+      [(NLSessionActivityDistanceAccumulator *)selfCopy updateDistance:endDate distanceEndDate:v21];
+      objc_storeStrong(&endDate, 0);
     }
 
     else
@@ -157,15 +157,15 @@
       oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v29, v22, v28->_expectedDistanceType);
+        __os_log_helper_16_2_2_8_64_8_64(v29, quantityType, selfCopy->_expectedDistanceType);
         _os_log_error_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_ERROR, "Received distance quantity type %@, expected %@", v29, 0x16u);
       }
 
       objc_storeStrong(&oslog, 0);
     }
 
-    [(NLSessionActivityBuilderAccumulator *)v28 update];
-    objc_storeStrong(&v22, 0);
+    [(NLSessionActivityBuilderAccumulator *)selfCopy update];
+    objc_storeStrong(&quantityType, 0);
     v23 = 0;
   }
 
@@ -184,19 +184,19 @@
   return v2;
 }
 
-- (void)authorizationStatusDidUpdateWithAuthorizationStatus:(int)a3 locationManager:(id)a4
+- (void)authorizationStatusDidUpdateWithAuthorizationStatus:(int)status locationManager:(id)manager
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  statusCopy = status;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, manager);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_4_0(v9, v6);
+    __os_log_helper_16_0_1_4_0(v9, statusCopy);
     _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[trackRunning] LocationManager authorization status changed to: %d", v9, 8u);
   }
 
@@ -205,15 +205,15 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)locationDidFailWithError:(id)a3 locationManager:(id)a4
+- (void)locationDidFailWithError:(id)error locationManager:(id)manager
 {
   v14 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, manager);
   _HKInitializeLogging();
   v10 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v9 = 16;
@@ -235,21 +235,21 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)locationDidUpdateWithLocations:(id)a3 locationManager:(id)a4
+- (void)locationDidUpdateWithLocations:(id)locations locationManager:(id)manager
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, locations);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, manager);
   v8 = +[WOCoreTrackRunningCoordinator shared];
-  v9 = [(WOCoreTrackRunningCoordinator *)v8 trackModeEnabledLocal];
+  trackModeEnabledLocal = [(WOCoreTrackRunningCoordinator *)v8 trackModeEnabledLocal];
   MEMORY[0x277D82BD8](v8);
-  if (v9)
+  if (trackModeEnabledLocal)
   {
-    v17 = [location[0] lastObject];
-    if (v17)
+    lastObject = [location[0] lastObject];
+    if (lastObject)
     {
       v5 = MEMORY[0x277D85CD0];
       v4 = MEMORY[0x277D85CD0];
@@ -259,8 +259,8 @@
       v12 = 0;
       v13 = __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocations_locationManager___block_invoke;
       v14 = &unk_277D88998;
-      v15 = MEMORY[0x277D82BE0](v17);
-      v16 = MEMORY[0x277D82BE0](v21);
+      v15 = MEMORY[0x277D82BE0](lastObject);
+      v16 = MEMORY[0x277D82BE0](selfCopy);
       dispatch_async(queue, &v10);
       MEMORY[0x277D82BD8](queue);
       objc_storeStrong(&v16, 0);
@@ -273,7 +273,7 @@
       v18 = 1;
     }
 
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&lastObject, 0);
   }
 
   else
@@ -358,14 +358,14 @@ uint64_t __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocatio
   return result;
 }
 
-- (void)updateDistance:(double)a3 distanceEndDate:(id)a4
+- (void)updateDistance:(double)distance distanceEndDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  *&v18 = a3;
+  *&v18 = distance;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, date);
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -376,25 +376,25 @@ uint64_t __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocatio
   }
 
   objc_storeStrong(&v16, 0);
-  if (*(v20 + 8) <= *&v18)
+  if (*(selfCopy + 8) <= *&v18)
   {
-    v7 = [v20 distanceEndDate];
+    distanceEndDate = [selfCopy distanceEndDate];
     v10 = 0;
     v8 = 0;
-    if (v7)
+    if (distanceEndDate)
     {
       v6 = location;
-      v11 = [v20 distanceEndDate];
+      distanceEndDate2 = [selfCopy distanceEndDate];
       v10 = 1;
       v8 = [v6 hk_isBeforeDate:?];
     }
 
     if (v10)
     {
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](distanceEndDate2);
     }
 
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](distanceEndDate);
     if (v8)
     {
       _HKInitializeLogging();
@@ -402,10 +402,10 @@ uint64_t __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocatio
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v4 = location;
-        v5 = [v20 distanceEndDate];
-        __os_log_helper_16_2_2_8_64_8_64(v21, v4, v5);
+        distanceEndDate3 = [selfCopy distanceEndDate];
+        __os_log_helper_16_2_2_8_64_8_64(v21, v4, distanceEndDate3);
         _os_log_error_impl(&dword_20AEA4000, v9, OS_LOG_TYPE_ERROR, "Received distance update with distanceEndDate=%@ before existing distanceEndDate=%@, not updating", v21, 0x16u);
-        MEMORY[0x277D82BD8](v5);
+        MEMORY[0x277D82BD8](distanceEndDate3);
       }
 
       objc_storeStrong(&v9, 0);
@@ -414,8 +414,8 @@ uint64_t __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocatio
 
     else
     {
-      [v20 setDistance:*&v18];
-      [v20 setDistanceEndDate:location];
+      [selfCopy setDistance:*&v18];
+      [selfCopy setDistanceEndDate:location];
       v12 = 0;
     }
   }
@@ -427,7 +427,7 @@ uint64_t __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocatio
     v13 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_2_8_0_8_0(v22, v18, v20[8]);
+      __os_log_helper_16_0_2_8_0_8_0(v22, v18, selfCopy[8]);
       _os_log_impl(&dword_20AEA4000, oslog, v13, "Received distance update (%f) less than known total distance (%f), catching up.", v22, 0x16u);
     }
 
@@ -439,19 +439,19 @@ uint64_t __87__NLSessionActivityDistanceAccumulator_locationDidUpdateWithLocatio
   *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManagerStateDidChangeWithState:(int64_t)a3 locationManager:(id)a4
+- (void)locationManagerStateDidChangeWithState:(int64_t)state locationManager:(id)manager
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, manager);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v9, v6);
+    __os_log_helper_16_0_1_8_0(v9, stateCopy);
     _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[trackRunning] LocationManager state changed to: %ld", v9, 0xCu);
   }
 

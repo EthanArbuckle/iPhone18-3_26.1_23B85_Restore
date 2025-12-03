@@ -1,9 +1,9 @@
 @interface PublisherActionView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (PublisherActionView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (PublisherActionView)initWithFrame:(CGRect)frame;
 - (PublisherHeaderViewActionManager)actionManager;
-- (id)titleForFilterAtIndexPath:(id)a3;
-- (void)configureWithActionManager:(id)a3 publishersResultFilters:(id)a4 routingDelegate:(id)a5 selectedFilterIndex:(id)a6;
+- (id)titleForFilterAtIndexPath:(id)path;
+- (void)configureWithActionManager:(id)manager publishersResultFilters:(id)filters routingDelegate:(id)delegate selectedFilterIndex:(id)index;
 - (void)createActions;
 - (void)setupConstraints;
 - (void)setupSubviews;
@@ -18,30 +18,30 @@
   return WeakRetained;
 }
 
-- (id)titleForFilterAtIndexPath:(id)a3
+- (id)titleForFilterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PublisherActionView *)self filterCarousel];
-  v6 = [v5 titleForFilterAtIndexPath:v4];
+  pathCopy = path;
+  filterCarousel = [(PublisherActionView *)self filterCarousel];
+  v6 = [filterCarousel titleForFilterAtIndexPath:pathCopy];
 
   return v6;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PublisherActionView *)self layoutIfNeeded];
   v20.receiver = self;
   v20.super_class = PublisherActionView;
-  *&v10 = a4;
-  *&v11 = a5;
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [(PublisherActionView *)&v20 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
   v13 = v12;
   v15 = v14;
-  v16 = [(PublisherActionView *)self filterCarousel];
+  filterCarousel = [(PublisherActionView *)self filterCarousel];
 
-  if (v16)
+  if (filterCarousel)
   {
     [CollectionsFilterCarouselView defaultHeightForDisplayStyle:0 inContext:0];
     v15 = v17 + v15;
@@ -56,48 +56,48 @@
 
 - (void)createActions
 {
-  v4 = [(PublisherActionView *)self actionManager];
-  v3 = [(PublisherActionView *)self actionRowView];
-  [v3 setActionManager:v4];
+  actionManager = [(PublisherActionView *)self actionManager];
+  actionRowView = [(PublisherActionView *)self actionRowView];
+  [actionRowView setActionManager:actionManager];
 }
 
 - (void)setupConstraints
 {
-  v32 = [(PublisherActionView *)self actionRowView];
-  v31 = [v32 topAnchor];
-  v30 = [(PublisherActionView *)self topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:16.0];
+  actionRowView = [(PublisherActionView *)self actionRowView];
+  topAnchor = [actionRowView topAnchor];
+  topAnchor2 = [(PublisherActionView *)self topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v33[0] = v29;
-  v28 = [(PublisherActionView *)self actionRowView];
-  v27 = [v28 leadingAnchor];
-  v26 = [(PublisherActionView *)self leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:10.0];
+  actionRowView2 = [(PublisherActionView *)self actionRowView];
+  leadingAnchor = [actionRowView2 leadingAnchor];
+  leadingAnchor2 = [(PublisherActionView *)self leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v33[1] = v25;
-  v24 = [(PublisherActionView *)self actionRowView];
-  v23 = [v24 trailingAnchor];
-  v22 = [(PublisherActionView *)self trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:-10.0];
+  actionRowView3 = [(PublisherActionView *)self actionRowView];
+  trailingAnchor = [actionRowView3 trailingAnchor];
+  trailingAnchor2 = [(PublisherActionView *)self trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v33[2] = v21;
-  v20 = [(PublisherActionView *)self filterCarousel];
-  v18 = [v20 topAnchor];
-  v19 = [(PublisherActionView *)self actionRowView];
-  v17 = [v19 bottomAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:16.0];
+  filterCarousel = [(PublisherActionView *)self filterCarousel];
+  topAnchor3 = [filterCarousel topAnchor];
+  actionRowView4 = [(PublisherActionView *)self actionRowView];
+  bottomAnchor = [actionRowView4 bottomAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
   v33[3] = v16;
-  v15 = [(PublisherActionView *)self filterCarousel];
-  v14 = [v15 leadingAnchor];
-  v13 = [(PublisherActionView *)self leadingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  filterCarousel2 = [(PublisherActionView *)self filterCarousel];
+  leadingAnchor3 = [filterCarousel2 leadingAnchor];
+  leadingAnchor4 = [(PublisherActionView *)self leadingAnchor];
+  v3 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v33[4] = v3;
-  v4 = [(PublisherActionView *)self filterCarousel];
-  v5 = [v4 trailingAnchor];
-  v6 = [(PublisherActionView *)self trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  filterCarousel3 = [(PublisherActionView *)self filterCarousel];
+  trailingAnchor3 = [filterCarousel3 trailingAnchor];
+  trailingAnchor4 = [(PublisherActionView *)self trailingAnchor];
+  v7 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v33[5] = v7;
-  v8 = [(PublisherActionView *)self filterCarousel];
-  v9 = [v8 bottomAnchor];
-  v10 = [(PublisherActionView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  filterCarousel4 = [(PublisherActionView *)self filterCarousel];
+  bottomAnchor2 = [filterCarousel4 bottomAnchor];
+  bottomAnchor3 = [(PublisherActionView *)self bottomAnchor];
+  v11 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v33[6] = v11;
   v12 = [NSArray arrayWithObjects:v33 count:7];
   [NSLayoutConstraint activateConstraints:v12];
@@ -111,56 +111,56 @@
   v4 = [[MUPlaceCardActionsRowView alloc] initWithStyle:2 * (sub_10000FA08(self) == 5)];
   [(PublisherActionView *)self setActionRowView:v4];
 
-  v5 = [(PublisherActionView *)self actionRowView];
-  [v5 setPreservesSuperviewLayoutMargins:0];
+  actionRowView = [(PublisherActionView *)self actionRowView];
+  [actionRowView setPreservesSuperviewLayoutMargins:0];
 
-  v6 = [(PublisherActionView *)self actionRowView];
-  [v6 setInsetsLayoutMarginsFromSafeArea:0];
+  actionRowView2 = [(PublisherActionView *)self actionRowView];
+  [actionRowView2 setInsetsLayoutMarginsFromSafeArea:0];
 
-  v7 = [(PublisherActionView *)self actionRowView];
-  [v7 setLayoutMargins:{0.0, 6.0, 0.0, 6.0}];
+  actionRowView3 = [(PublisherActionView *)self actionRowView];
+  [actionRowView3 setLayoutMargins:{0.0, 6.0, 0.0, 6.0}];
 
-  v8 = [(PublisherActionView *)self actionRowView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  actionRowView4 = [(PublisherActionView *)self actionRowView];
+  [actionRowView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(PublisherActionView *)self actionRowView];
-  [(PublisherActionView *)self addSubview:v9];
+  actionRowView5 = [(PublisherActionView *)self actionRowView];
+  [(PublisherActionView *)self addSubview:actionRowView5];
 
   v10 = [[CollectionsFilterCarouselView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(PublisherActionView *)self setFilterCarousel:v10];
 
-  v11 = [(PublisherActionView *)self filterCarousel];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  filterCarousel = [(PublisherActionView *)self filterCarousel];
+  [filterCarousel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(PublisherActionView *)self filterCarousel];
-  [(PublisherActionView *)self addSubview:v12];
+  filterCarousel2 = [(PublisherActionView *)self filterCarousel];
+  [(PublisherActionView *)self addSubview:filterCarousel2];
 }
 
-- (void)configureWithActionManager:(id)a3 publishersResultFilters:(id)a4 routingDelegate:(id)a5 selectedFilterIndex:(id)a6
+- (void)configureWithActionManager:(id)manager publishersResultFilters:(id)filters routingDelegate:(id)delegate selectedFilterIndex:(id)index
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [(PublisherActionView *)self setActionManager:a3];
+  filtersCopy = filters;
+  delegateCopy = delegate;
+  indexCopy = index;
+  [(PublisherActionView *)self setActionManager:manager];
   [(PublisherActionView *)self createActions];
-  v13 = [v10 count];
-  v14 = [(PublisherActionView *)self filterCarousel];
-  v15 = v14;
+  v13 = [filtersCopy count];
+  filterCarousel = [(PublisherActionView *)self filterCarousel];
+  v15 = filterCarousel;
   if (v13 < 2)
   {
 
     if (v15)
     {
-      v17 = [(PublisherActionView *)self actionRowView];
-      v18 = [v17 bottomAnchor];
-      v19 = [(PublisherActionView *)self bottomAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19 constant:-10.0];
+      actionRowView = [(PublisherActionView *)self actionRowView];
+      bottomAnchor = [actionRowView bottomAnchor];
+      bottomAnchor2 = [(PublisherActionView *)self bottomAnchor];
+      v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
       v23 = v20;
       v21 = [NSArray arrayWithObjects:&v23 count:1];
       [NSLayoutConstraint activateConstraints:v21];
 
-      v22 = [(PublisherActionView *)self filterCarousel];
-      [v22 removeFromSuperview];
+      filterCarousel2 = [(PublisherActionView *)self filterCarousel];
+      [filterCarousel2 removeFromSuperview];
 
       [(PublisherActionView *)self setFilterCarousel:0];
     }
@@ -168,18 +168,18 @@
 
   else
   {
-    [v14 configureWithContext:0 withRoutingDelegate:v11 withPublishersResultFilters:v10 withSelectedFilterIndex:v12];
+    [filterCarousel configureWithContext:0 withRoutingDelegate:delegateCopy withPublishersResultFilters:filtersCopy withSelectedFilterIndex:indexCopy];
 
-    v16 = [(PublisherActionView *)self filterCarousel];
-    [v16 displayFilters];
+    filterCarousel3 = [(PublisherActionView *)self filterCarousel];
+    [filterCarousel3 displayFilters];
   }
 }
 
-- (PublisherActionView)initWithFrame:(CGRect)a3
+- (PublisherActionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PublisherActionView;
-  v3 = [(PublisherActionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PublisherActionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

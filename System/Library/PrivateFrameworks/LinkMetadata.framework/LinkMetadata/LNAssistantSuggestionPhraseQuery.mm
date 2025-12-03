@@ -1,10 +1,10 @@
 @interface LNAssistantSuggestionPhraseQuery
-- (BOOL)isEqual:(id)a3;
-- (LNAssistantSuggestionPhraseQuery)initWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4;
-- (LNAssistantSuggestionPhraseQuery)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAssistantSuggestionPhraseQuery)initWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier;
+- (LNAssistantSuggestionPhraseQuery)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAssistantSuggestionPhraseQuery
@@ -12,20 +12,20 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
-  v5 = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
-  v6 = [v3 stringWithFormat:@"bundleIdentifier:%@, actionIdentifier:%@", v4, v5];
+  bundleIdentifier = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
+  actionIdentifier = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
+  v6 = [v3 stringWithFormat:@"bundleIdentifier:%@, actionIdentifier:%@", bundleIdentifier, actionIdentifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -34,10 +34,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
-    v8 = [(LNAssistantSuggestionPhraseQuery *)v6 bundleIdentifier];
-    v9 = v7;
-    v10 = v8;
+    bundleIdentifier = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
+    bundleIdentifier2 = [(LNAssistantSuggestionPhraseQuery *)v6 bundleIdentifier];
+    v9 = bundleIdentifier;
+    v10 = bundleIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -64,10 +64,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
-    v16 = [(LNAssistantSuggestionPhraseQuery *)v6 actionIdentifier];
-    v14 = v15;
-    v17 = v16;
+    actionIdentifier = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
+    actionIdentifier2 = [(LNAssistantSuggestionPhraseQuery *)v6 actionIdentifier];
+    v14 = actionIdentifier;
+    v17 = actionIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -94,49 +94,49 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
-  v6 = [v5 hash];
+  bundleIdentifier = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  actionIdentifier = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
+  v6 = [actionIdentifier hash];
 
   return v6 ^ v4;
 }
 
-- (LNAssistantSuggestionPhraseQuery)initWithCoder:(id)a3
+- (LNAssistantSuggestionPhraseQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
 
   v7 = [(LNAssistantSuggestionPhraseQuery *)self initWithBundleIdentifier:v5 actionIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(LNAssistantSuggestionPhraseQuery *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
-  [v4 encodeObject:v6 forKey:@"actionIdentifier"];
+  actionIdentifier = [(LNAssistantSuggestionPhraseQuery *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 }
 
-- (LNAssistantSuggestionPhraseQuery)initWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4
+- (LNAssistantSuggestionPhraseQuery)initWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
+  v9 = actionIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (actionIdentifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseQuery.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseQuery.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
     if (!self)
     {
@@ -146,8 +146,8 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseQuery.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseQuery.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
   if (!v9)
   {
@@ -158,7 +158,7 @@ LABEL_3:
   if (self)
   {
 LABEL_4:
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = self->_bundleIdentifier;
     self->_bundleIdentifier = v10;
 
@@ -166,7 +166,7 @@ LABEL_4:
     actionIdentifier = self->_actionIdentifier;
     self->_actionIdentifier = v12;
 
-    v14 = self;
+    selfCopy = self;
   }
 
 LABEL_5:

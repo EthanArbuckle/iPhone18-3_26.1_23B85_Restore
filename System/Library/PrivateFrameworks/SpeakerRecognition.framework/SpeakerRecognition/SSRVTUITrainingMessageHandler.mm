@@ -1,42 +1,42 @@
 @interface SSRVTUITrainingMessageHandler
-- (SSRVTUITrainingMessageHandler)initWithAudioProvidingSelector:(id)a3;
-- (void)audioSourceWithCompletion:(id)a3;
-- (void)cancelTrainingViaXPCForID:(int64_t)a3;
-- (void)cleanupViaXPCWithCompletion:(id)a3;
-- (void)setupWithLocaleID:(id)a3 appDomain:(id)a4 siriSharedUserId:(id)a5;
-- (void)voiceProfileWithCompletion:(id)a3;
+- (SSRVTUITrainingMessageHandler)initWithAudioProvidingSelector:(id)selector;
+- (void)audioSourceWithCompletion:(id)completion;
+- (void)cancelTrainingViaXPCForID:(int64_t)d;
+- (void)cleanupViaXPCWithCompletion:(id)completion;
+- (void)setupWithLocaleID:(id)d appDomain:(id)domain siriSharedUserId:(id)id;
+- (void)voiceProfileWithCompletion:(id)completion;
 - (void)vtuiTrainingXPCDisconnected;
 @end
 
 @implementation SSRVTUITrainingMessageHandler
 
-- (void)audioSourceWithCompletion:(id)a3
+- (void)audioSourceWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SSRVTUITrainingManager *)self->_trainingManager audioSource];
+  completionCopy = completion;
+  audioSource = [(SSRVTUITrainingManager *)self->_trainingManager audioSource];
   v6 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SSRVTUITrainingMessageHandler audioSourceWithCompletion:]";
     v10 = 2048;
-    v11 = v5;
+    v11 = audioSource;
     _os_log_impl(&dword_225E12000, v6, OS_LOG_TYPE_DEFAULT, "%s audioSource : %lu", &v8, 0x16u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v5);
+    completionCopy[2](completionCopy, audioSource);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)voiceProfileWithCompletion:(id)a3
+- (void)voiceProfileWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
@@ -45,16 +45,16 @@
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v6 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-  if (v4)
+  voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+  if (completionCopy)
   {
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, voiceProfile);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTrainingViaXPCForID:(int64_t)a3
+- (void)cancelTrainingViaXPCForID:(int64_t)d
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D01970];
@@ -65,14 +65,14 @@
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v7, 0xCu);
   }
 
-  [(SSRVTUITrainingManager *)self->_trainingManager cancelTrainingForID:a3];
+  [(SSRVTUITrainingManager *)self->_trainingManager cancelTrainingForID:d];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupViaXPCWithCompletion:(id)a3
+- (void)cleanupViaXPCWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
@@ -81,7 +81,7 @@
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v6 = [(SSRVTUITrainingManager *)self->_trainingManager cleanupWithCompletion:v4];
+  v6 = [(SSRVTUITrainingManager *)self->_trainingManager cleanupWithCompletion:completionCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -102,27 +102,27 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupWithLocaleID:(id)a3 appDomain:(id)a4 siriSharedUserId:(id)a5
+- (void)setupWithLocaleID:(id)d appDomain:(id)domain siriSharedUserId:(id)id
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  domainCopy = domain;
+  idCopy = id;
   v11 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v25 = "[SSRVTUITrainingMessageHandler setupWithLocaleID:appDomain:siriSharedUserId:]";
     v26 = 2114;
-    v27 = v8;
+    v27 = dCopy;
     v28 = 2114;
-    v29 = v9;
+    v29 = domainCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = idCopy;
     _os_log_impl(&dword_225E12000, v11, OS_LOG_TYPE_DEFAULT, "%s localeIdentifier : %{public}@, appDomain : %{public}@, siriSharedUserId: %@", buf, 0x2Au);
   }
 
-  objc_storeStrong(&self->_siriSharedUserId, a5);
+  objc_storeStrong(&self->_siriSharedUserId, id);
   trainingManager = self->_trainingManager;
   if (trainingManager)
   {
@@ -150,7 +150,7 @@
 
   self->_trainingManager = 0;
 
-  v19 = [[SSRVTUITrainingManager alloc] initWithLocaleIdentifier:v8 withAppDomain:v9 withSiriSharedUserId:self->_siriSharedUserId withAudioProviderSelector:self->_audioProviderSelector shouldTrainViaXPC:0];
+  v19 = [[SSRVTUITrainingManager alloc] initWithLocaleIdentifier:dCopy withAppDomain:domainCopy withSiriSharedUserId:self->_siriSharedUserId withAudioProviderSelector:self->_audioProviderSelector shouldTrainViaXPC:0];
   v20 = self->_trainingManager;
   self->_trainingManager = v19;
 
@@ -158,9 +158,9 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRVTUITrainingMessageHandler)initWithAudioProvidingSelector:(id)a3
+- (SSRVTUITrainingMessageHandler)initWithAudioProvidingSelector:(id)selector
 {
-  v5 = a3;
+  selectorCopy = selector;
   v9.receiver = self;
   v9.super_class = SSRVTUITrainingMessageHandler;
   v6 = [(SSRVTUITrainingMessageHandler *)&v9 init];
@@ -170,7 +170,7 @@
     trainingManager = v6->_trainingManager;
     v6->_trainingManager = 0;
 
-    objc_storeStrong(&v6->_audioProviderSelector, a3);
+    objc_storeStrong(&v6->_audioProviderSelector, selector);
   }
 
   return v6;

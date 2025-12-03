@@ -26,32 +26,32 @@
 - (unint64_t)connectionStopNStatRXBytes;
 - (unint64_t)connectionStopNStatTXBytes;
 - (unint64_t)redirectCount;
-- (void)setCachedResponse:(BOOL)a3;
-- (void)setConnectionEndTime:(double)a3;
-- (void)setConnectionReused:(BOOL)a3;
-- (void)setConnectionStartNStatRXBytes:(unint64_t)a3;
-- (void)setConnectionStartNStatTXBytes:(unint64_t)a3;
-- (void)setConnectionStartTime:(double)a3;
-- (void)setConnectionStopNStatRXBytes:(unint64_t)a3;
-- (void)setConnectionStopNStatTXBytes:(unint64_t)a3;
-- (void)setDomainLookupEndTime:(double)a3;
-- (void)setDomainLookupStartTime:(double)a3;
-- (void)setFetchStartTime:(double)a3;
-- (void)setPageHistoryDescriptionWithIdentifiers:(id)a3;
-- (void)setPageRenderTime:(double)a3;
-- (void)setRedirectCount:(unint64_t)a3;
-- (void)setRedirectEndTime:(double)a3;
-- (void)setRedirectStartTime:(double)a3;
-- (void)setRequestEndTime:(double)a3;
-- (void)setRequestStartTime:(double)a3;
-- (void)setResponseEndTime:(double)a3;
-- (void)setResponseStartTime:(double)a3;
-- (void)setSecureConnectionStartTime:(double)a3;
-- (void)setUbered:(BOOL)a3;
-- (void)setXPSamplingForced:(BOOL)a3;
-- (void)setXPSamplingPercentageCachedResponses:(double)a3;
-- (void)setXPSamplingPercentageUsers:(double)a3;
-- (void)setXPSessionDuration:(double)a3;
+- (void)setCachedResponse:(BOOL)response;
+- (void)setConnectionEndTime:(double)time;
+- (void)setConnectionReused:(BOOL)reused;
+- (void)setConnectionStartNStatRXBytes:(unint64_t)bytes;
+- (void)setConnectionStartNStatTXBytes:(unint64_t)bytes;
+- (void)setConnectionStartTime:(double)time;
+- (void)setConnectionStopNStatRXBytes:(unint64_t)bytes;
+- (void)setConnectionStopNStatTXBytes:(unint64_t)bytes;
+- (void)setDomainLookupEndTime:(double)time;
+- (void)setDomainLookupStartTime:(double)time;
+- (void)setFetchStartTime:(double)time;
+- (void)setPageHistoryDescriptionWithIdentifiers:(id)identifiers;
+- (void)setPageRenderTime:(double)time;
+- (void)setRedirectCount:(unint64_t)count;
+- (void)setRedirectEndTime:(double)time;
+- (void)setRedirectStartTime:(double)time;
+- (void)setRequestEndTime:(double)time;
+- (void)setRequestStartTime:(double)time;
+- (void)setResponseEndTime:(double)time;
+- (void)setResponseStartTime:(double)time;
+- (void)setSecureConnectionStartTime:(double)time;
+- (void)setUbered:(BOOL)ubered;
+- (void)setXPSamplingForced:(BOOL)forced;
+- (void)setXPSamplingPercentageCachedResponses:(double)responses;
+- (void)setXPSamplingPercentageUsers:(double)users;
+- (void)setXPSessionDuration:(double)duration;
 @end
 
 @implementation SSMetricsPageEvent
@@ -73,17 +73,17 @@
 - (BOOL)isCachedResponse
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"isCachedResponse"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isUbered
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"isUber"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)connectionEndTime
@@ -98,9 +98,9 @@
 - (BOOL)connectionReused
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionReused"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)connectionStartTime
@@ -115,33 +115,33 @@
 - (unint64_t)connectionStartNStatRXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStartNStatRXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStartNStatTXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStartNStatTXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStopNStatRXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStopNStatRXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStopNStatTXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStopNStatTXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)domainLookupEndTime
@@ -183,9 +183,9 @@
 - (unint64_t)redirectCount
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"redirectCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)redirectEndTime
@@ -251,15 +251,15 @@
   return v5;
 }
 
-- (void)setCachedResponse:(BOOL)a3
+- (void)setCachedResponse:(BOOL)response
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:response];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"isCachedResponse"];
 }
 
-- (void)setConnectionEndTime:(double)a3
+- (void)setConnectionEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -273,15 +273,15 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionEndTime"];
 }
 
-- (void)setConnectionReused:(BOOL)a3
+- (void)setConnectionReused:(BOOL)reused
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:reused];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionReused"];
 }
 
-- (void)setConnectionStartTime:(double)a3
+- (void)setConnectionStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -295,33 +295,33 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStartTime"];
 }
 
-- (void)setConnectionStartNStatRXBytes:(unint64_t)a3
+- (void)setConnectionStartNStatRXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStartNStatRXBytes"];
 }
 
-- (void)setConnectionStartNStatTXBytes:(unint64_t)a3
+- (void)setConnectionStartNStatTXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStartNStatTXBytes"];
 }
 
-- (void)setConnectionStopNStatRXBytes:(unint64_t)a3
+- (void)setConnectionStopNStatRXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStopNStatRXBytes"];
 }
 
-- (void)setConnectionStopNStatTXBytes:(unint64_t)a3
+- (void)setConnectionStopNStatTXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStopNStatTXBytes"];
 }
 
-- (void)setDomainLookupEndTime:(double)a3
+- (void)setDomainLookupEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -335,9 +335,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"domainLookupEndTime"];
 }
 
-- (void)setDomainLookupStartTime:(double)a3
+- (void)setDomainLookupStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -351,9 +351,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"domainLookupStartTime"];
 }
 
-- (void)setFetchStartTime:(double)a3
+- (void)setFetchStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -367,19 +367,19 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"fetchStartTime"];
 }
 
-- (void)setPageHistoryDescriptionWithIdentifiers:(id)a3
+- (void)setPageHistoryDescriptionWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  if ([v5 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = [v5 componentsJoinedByString:{@", "}];
+    v4 = [identifiersCopy componentsJoinedByString:{@", "}];
     [(SSMetricsPageEvent *)self setPageHistoryDescription:v4];
   }
 }
 
-- (void)setPageRenderTime:(double)a3
+- (void)setPageRenderTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -393,15 +393,15 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"pageRenderTime"];
 }
 
-- (void)setRedirectCount:(unint64_t)a3
+- (void)setRedirectCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"redirectCount"];
 }
 
-- (void)setRedirectEndTime:(double)a3
+- (void)setRedirectEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -415,9 +415,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"redirectEndTime"];
 }
 
-- (void)setRedirectStartTime:(double)a3
+- (void)setRedirectStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -431,9 +431,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"redirectStartTime"];
 }
 
-- (void)setRequestEndTime:(double)a3
+- (void)setRequestEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -447,9 +447,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"requestEndTime"];
 }
 
-- (void)setRequestStartTime:(double)a3
+- (void)setRequestStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -463,9 +463,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"requestStartTime"];
 }
 
-- (void)setResponseEndTime:(double)a3
+- (void)setResponseEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -479,9 +479,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"responseEndTime"];
 }
 
-- (void)setResponseStartTime:(double)a3
+- (void)setResponseStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -495,9 +495,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"responseStartTime"];
 }
 
-- (void)setSecureConnectionStartTime:(double)a3
+- (void)setSecureConnectionStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -511,33 +511,33 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"secureConnectionStartTime"];
 }
 
-- (void)setUbered:(BOOL)a3
+- (void)setUbered:(BOOL)ubered
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:ubered];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"isUber"];
 }
 
-- (void)setXPSessionDuration:(double)a3
+- (void)setXPSessionDuration:(double)duration
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSessionDuration"];
 }
 
-- (void)setXPSamplingForced:(BOOL)a3
+- (void)setXPSamplingForced:(BOOL)forced
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:forced];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingForced"];
 }
 
-- (void)setXPSamplingPercentageUsers:(double)a3
+- (void)setXPSamplingPercentageUsers:(double)users
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:users];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageUsers"];
 }
 
-- (void)setXPSamplingPercentageCachedResponses:(double)a3
+- (void)setXPSamplingPercentageCachedResponses:(double)responses
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:responses];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageCachedResponses"];
 }
 
@@ -553,9 +553,9 @@
 - (BOOL)xpSamplingForced
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"xpSamplingForced"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)xpSamplingPercentageUsers
@@ -582,8 +582,8 @@
   v8.receiver = self;
   v8.super_class = SSMetricsPageEvent;
   v4 = [(SSMetricsBaseEvent *)&v8 description];
-  v5 = [(SSMetricsPageEvent *)self serverApplicationInstance];
-  v6 = [v3 stringWithFormat:@"%@: Instance: %@", v4, v5];
+  serverApplicationInstance = [(SSMetricsPageEvent *)self serverApplicationInstance];
+  v6 = [v3 stringWithFormat:@"%@: Instance: %@", v4, serverApplicationInstance];
 
   return v6;
 }

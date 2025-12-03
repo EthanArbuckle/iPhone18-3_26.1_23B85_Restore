@@ -1,30 +1,30 @@
 @interface NTKNumeralsAnalogRichFaceView
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (void)_applyFaceColorPalette:(id)a3 toComplicationView:(id)a4;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationFactory:(id)a3;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (void)_applyFaceColorPalette:(id)palette toComplicationView:(id)view;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationFactory:(id)factory;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 - (void)_loadLayoutRules;
 @end
 
 @implementation NTKNumeralsAnalogRichFaceView
 
-- (void)_applyFaceColorPalette:(id)a3 toComplicationView:(id)a4
+- (void)_applyFaceColorPalette:(id)palette toComplicationView:(id)view
 {
-  v13 = a3;
-  v6 = a4;
+  paletteCopy = palette;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(NTKNumeralsAnalogRichFaceView *)self device];
-    v8 = [NTKFaceColorScheme colorSchemeForDevice:v7 withFaceColorPalette:v13 units:25];
+    device = [(NTKNumeralsAnalogRichFaceView *)self device];
+    v8 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:paletteCopy units:25];
 
-    v9 = v6;
-    v10 = [v8 foregroundColor];
-    [(NTKNumeralsAnalogRichFaceView *)self setComplicationColor:v10];
+    v9 = viewCopy;
+    foregroundColor = [v8 foregroundColor];
+    [(NTKNumeralsAnalogRichFaceView *)self setComplicationColor:foregroundColor];
 
-    v11 = [v8 foregroundColor];
-    [(NTKNumeralsAnalogRichFaceView *)self setInterpolatedComplicationColor:v11];
+    foregroundColor2 = [v8 foregroundColor];
+    [(NTKNumeralsAnalogRichFaceView *)self setInterpolatedComplicationColor:foregroundColor2];
 
     v12 = +[UIColor whiteColor];
     [(NTKNumeralsAnalogRichFaceView *)self setAlternateComplicationColor:v12];
@@ -34,11 +34,11 @@
   }
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v5 = a3;
-  v6 = [(NTKNumeralsAnalogRichFaceView *)self faceColorPalette];
-  [(NTKNumeralsAnalogRichFaceView *)self _applyFaceColorPalette:v6 toComplicationView:v5];
+  viewCopy = view;
+  faceColorPalette = [(NTKNumeralsAnalogRichFaceView *)self faceColorPalette];
+  [(NTKNumeralsAnalogRichFaceView *)self _applyFaceColorPalette:faceColorPalette toComplicationView:viewCopy];
 }
 
 - (void)_loadLayoutRules
@@ -49,55 +49,55 @@
   [(NTKNumeralsAnalogRichFaceView *)self bounds];
   v3 = NTKComplicationSlot1;
   v4 = [(NTKNumeralsAnalogRichFaceView *)self complicationLayoutforSlot:v3];
-  v5 = [(NTKNumeralsAnalogRichFaceView *)self device];
-  sub_7668(v5, v5);
+  device = [(NTKNumeralsAnalogRichFaceView *)self device];
+  sub_7668(device, device);
   NTKGraphicCircularScaledComplicationDiameter();
   v7 = v6;
   NTKWhistlerSubdialComplicationDiameter();
   NTKWhistlerSubdialComplicationContentDiameter();
   memset(&v14, 0, sizeof(v14));
   CGAffineTransformMakeScale(&v14, v7 / v8, v7 / v8);
-  v9 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
-  [v9 utilitySlot];
+  _faceConfiguration = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+  [_faceConfiguration utilitySlot];
 
-  v12 = v5;
+  v12 = device;
   v13 = v4;
   v10 = v4;
-  v11 = v5;
+  v11 = device;
   NTKEnumerateComplicationStates();
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKNumeralsAnalogRichFaceView *)self delegate];
-  v6 = [v5 faceViewComplicationFamilyForSlot:v4];
+  slotCopy = slot;
+  delegate = [(NTKNumeralsAnalogRichFaceView *)self delegate];
+  v6 = [delegate faceViewComplicationFamilyForSlot:slotCopy];
 
   return v6 == &dword_8 + 2;
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v22.receiver = self;
   v22.super_class = NTKNumeralsAnalogRichFaceView;
-  [(NTKNumeralsAnalogFaceView *)&v22 _applyTransitionFraction:a4 fromOption:a5 toOption:a6 forCustomEditMode:a7 slot:?];
-  if (a6 == 10)
+  [(NTKNumeralsAnalogFaceView *)&v22 _applyTransitionFraction:option fromOption:toOption toOption:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
-    v10 = [(NTKNumeralsAnalogRichFaceView *)self device];
-    v11 = [(NTKNumeralsAnalogRichFaceView *)self interpolatedColorPalette];
-    v12 = [v11 fromPalette];
-    v13 = [NTKFaceColorScheme colorSchemeForDevice:v10 withFaceColorPalette:v12 units:25];
-    v14 = [(NTKNumeralsAnalogRichFaceView *)self device];
-    v15 = [(NTKNumeralsAnalogRichFaceView *)self interpolatedColorPalette];
-    v16 = [v15 toPalette];
-    v17 = [NTKFaceColorScheme colorSchemeForDevice:v14 withFaceColorPalette:v16 units:25];
-    v18 = [NTKFaceColorScheme interpolationFrom:v13 to:v17 fraction:a3];
+    device = [(NTKNumeralsAnalogRichFaceView *)self device];
+    interpolatedColorPalette = [(NTKNumeralsAnalogRichFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    v13 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:fromPalette units:25];
+    device2 = [(NTKNumeralsAnalogRichFaceView *)self device];
+    interpolatedColorPalette2 = [(NTKNumeralsAnalogRichFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    v17 = [NTKFaceColorScheme colorSchemeForDevice:device2 withFaceColorPalette:toPalette units:25];
+    v18 = [NTKFaceColorScheme interpolationFrom:v13 to:v17 fraction:fraction];
 
-    v19 = [v18 foregroundColor];
-    [(NTKNumeralsAnalogRichFaceView *)self setComplicationColor:v19];
+    foregroundColor = [v18 foregroundColor];
+    [(NTKNumeralsAnalogRichFaceView *)self setComplicationColor:foregroundColor];
 
-    v20 = [v18 foregroundColor];
-    [(NTKNumeralsAnalogRichFaceView *)self setInterpolatedComplicationColor:v20];
+    foregroundColor2 = [v18 foregroundColor];
+    [(NTKNumeralsAnalogRichFaceView *)self setInterpolatedComplicationColor:foregroundColor2];
 
     v21 = +[UIColor whiteColor];
     [(NTKNumeralsAnalogRichFaceView *)self setAlternateComplicationColor:v21];
@@ -106,13 +106,13 @@
   }
 }
 
-- (void)_configureComplicationFactory:(id)a3
+- (void)_configureComplicationFactory:(id)factory
 {
   v4.receiver = self;
   v4.super_class = NTKNumeralsAnalogRichFaceView;
-  v3 = a3;
-  [(NTKNumeralsAnalogFaceView *)&v4 _configureComplicationFactory:v3];
-  [v3 setGraphicCornerComplications:{1, v4.receiver, v4.super_class}];
+  factoryCopy = factory;
+  [(NTKNumeralsAnalogFaceView *)&v4 _configureComplicationFactory:factoryCopy];
+  [factoryCopy setGraphicCornerComplications:{1, v4.receiver, v4.super_class}];
 }
 
 @end

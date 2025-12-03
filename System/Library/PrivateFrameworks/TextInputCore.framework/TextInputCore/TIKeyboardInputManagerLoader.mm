@@ -1,17 +1,17 @@
 @interface TIKeyboardInputManagerLoader
 + (id)sharedLoader;
-- (BOOL)isActiveInputManager:(id)a3;
+- (BOOL)isActiveInputManager:(id)manager;
 - (TIKeyboardInputManagerLoader)init;
 - (id)activeInputModeIdentifiers;
 - (id)currentLoadedInputModes;
-- (id)inputManagerForInputMode:(id)a3 withKeyboardState:(id)a4 class:(Class)a5;
-- (void)cacheInputManager:(id)a3 switchingToInputMode:(id)a4;
+- (id)inputManagerForInputMode:(id)mode withKeyboardState:(id)state class:(Class)class;
+- (void)cacheInputManager:(id)manager switchingToInputMode:(id)mode;
 - (void)dealloc;
 - (void)prepareForKeyboardInactivity;
-- (void)reduceInputManagerCacheToSize:(int)a3 switchingToInputMode:(id)a4;
+- (void)reduceInputManagerCacheToSize:(int)size switchingToInputMode:(id)mode;
 - (void)registerMaintenanceActivity;
 - (void)releaseAllInputManagers;
-- (void)removeInputModeFromAllContainers:(id)a3;
+- (void)removeInputModeFromAllContainers:(id)containers;
 - (void)startSyncHelper;
 @end
 
@@ -40,11 +40,11 @@
       dispatch_once(&TIGetEnableUserWordSyncingValue_onceToken, &__block_literal_global_69);
     }
 
-    v5 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    v6 = [v5 valueForPreferenceKey:@"EnableUserWordSyncing"];
+    mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+    v6 = [mEMORY[0x277D6F470] valueForPreferenceKey:@"EnableUserWordSyncing"];
 
-    LODWORD(v5) = [v6 BOOLValue];
-    if (v5)
+    LODWORD(mEMORY[0x277D6F470]) = [v6 BOOLValue];
+    if (mEMORY[0x277D6F470])
     {
       objc_initWeak(location, self);
       v7 = objc_opt_new();
@@ -174,12 +174,12 @@ uint64_t __58__TIKeyboardInputManagerLoader_activeInputModeIdentifiers__block_in
   return MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (BOOL)isActiveInputManager:(id)a3
+- (BOOL)isActiveInputManager:(id)manager
 {
   activeInputManagers = self->_activeInputManagers;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)activeInputManagers allValues];
-  v6 = [v5 containsObject:v4];
+  managerCopy = manager;
+  allValues = [(NSMutableDictionary *)activeInputManagers allValues];
+  v6 = [allValues containsObject:managerCopy];
 
   return v6;
 }
@@ -203,9 +203,9 @@ uint64_t __58__TIKeyboardInputManagerLoader_activeInputModeIdentifiers__block_in
   v14 = v5;
   v7 = v5;
   [(NSMutableDictionary *)activeInputManagers enumerateKeysAndObjectsUsingBlock:&v10];
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 void __55__TIKeyboardInputManagerLoader_currentLoadedInputModes__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -316,17 +316,17 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reduceInputManagerCacheToSize:(int)a3 switchingToInputMode:(id)a4
+- (void)reduceInputManagerCacheToSize:(int)size switchingToInputMode:(id)mode
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(NSMutableDictionary *)self->_availableInputManagers allKeys];
+  modeCopy = mode;
+  allKeys = [(NSMutableDictionary *)self->_availableInputManagers allKeys];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __83__TIKeyboardInputManagerLoader_reduceInputManagerCacheToSize_switchingToInputMode___block_invoke;
   v50[3] = &unk_278732428;
   v50[4] = self;
-  v7 = [v6 sortedArrayUsingComparator:v50];
+  v7 = [allKeys sortedArrayUsingComparator:v50];
 
   v48 = 0u;
   v49 = 0u;
@@ -334,7 +334,7 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
   v47 = 0u;
   v8 = v7;
   v9 = [v8 countByEnumeratingWithState:&v46 objects:v58 count:16];
-  v41 = v5;
+  v41 = modeCopy;
   if (v9)
   {
     v10 = v9;
@@ -355,22 +355,22 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
         {
           if (v11)
           {
-            if (v14 != v5)
+            if (v14 != modeCopy)
             {
               v16 = TIInputManagerOSLogFacility();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
-                v17 = [v14 normalizedIdentifier];
-                v18 = [v14 isSiriMode];
+                normalizedIdentifier = [v14 normalizedIdentifier];
+                isSiriMode = [v14 isSiriMode];
                 *buf = 136315650;
                 v53 = "[TIKeyboardInputManagerLoader reduceInputManagerCacheToSize:switchingToInputMode:]";
                 v54 = 2114;
-                v55 = v17;
+                v55 = normalizedIdentifier;
                 v56 = 1024;
-                v57 = v18;
+                v57 = isSiriMode;
                 _os_log_impl(&dword_22CA55000, v16, OS_LOG_TYPE_DEFAULT, "%s  Removing inputManager from cache for inputMode %{public}@ isSiriMode: %d", buf, 0x1Cu);
 
-                v5 = v41;
+                modeCopy = v41;
               }
 
               [(TIKeyboardInputManagerLoader *)self removeInputModeFromAllContainers:v14];
@@ -395,7 +395,7 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
     v11 = 0;
   }
 
-  if ([(NSMutableDictionary *)self->_availableInputManagers count]> a3)
+  if ([(NSMutableDictionary *)self->_availableInputManagers count]> size)
   {
     v19 = [v8 count];
     v42 = 0u;
@@ -408,11 +408,11 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
     {
       v21 = v20;
       v22 = 0;
-      v23 = v19 - a3;
+      v23 = v19 - size;
       v24 = *v43;
-      v26 = a3 == 1 && v41 != 0;
+      v26 = size == 1 && v41 != 0;
       v40 = v26;
-      v37 = v19 - a3;
+      v37 = v19 - size;
       while (2)
       {
         v27 = 0;
@@ -433,11 +433,11 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
             v32 = TIInputManagerOSLogFacility();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = [v28 normalizedIdentifier];
+              normalizedIdentifier2 = [v28 normalizedIdentifier];
               *buf = 136315394;
               v53 = "[TIKeyboardInputManagerLoader reduceInputManagerCacheToSize:switchingToInputMode:]";
               v54 = 2114;
-              v55 = v33;
+              v55 = normalizedIdentifier2;
               _os_log_impl(&dword_22CA55000, v32, OS_LOG_TYPE_DEFAULT, "%s  Removing inputManager from cache for inputMode %{public}@", buf, 0x16u);
 
               v23 = v37;
@@ -470,8 +470,8 @@ void __60__TIKeyboardInputManagerLoader_prepareForKeyboardInactivity__block_invo
 
 LABEL_39:
 
-    v5 = v41;
-    if (!a3)
+    modeCopy = v41;
+    if (!size)
     {
       v34 = TIInputManagerOSLogFacility();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -502,12 +502,12 @@ uint64_t __83__TIKeyboardInputManagerLoader_reduceInputManagerCacheToSize_switch
 - (void)releaseAllInputManagers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_availableInputManagers allKeys];
+  allKeys = [(NSMutableDictionary *)self->_availableInputManagers allKeys];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -518,25 +518,25 @@ uint64_t __83__TIKeyboardInputManagerLoader_reduceInputManagerCacheToSize_switch
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = TIInputManagerOSLogFacility();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 normalizedIdentifier];
+          normalizedIdentifier = [v8 normalizedIdentifier];
           *buf = 136315394;
           v17 = "[TIKeyboardInputManagerLoader releaseAllInputManagers]";
           v18 = 2114;
-          v19 = v10;
+          v19 = normalizedIdentifier;
           _os_log_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEFAULT, "%s  removing inputManager from cache for inputMode %{public}@", buf, 0x16u);
         }
 
         [(TIKeyboardInputManagerLoader *)self removeInputModeFromAllContainers:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v12 objects:v20 count:16];
     }
 
     while (v5);
@@ -545,27 +545,27 @@ uint64_t __83__TIKeyboardInputManagerLoader_reduceInputManagerCacheToSize_switch
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cacheInputManager:(id)a3 switchingToInputMode:(id)a4
+- (void)cacheInputManager:(id)manager switchingToInputMode:(id)mode
 {
-  v21 = a3;
-  v6 = a4;
-  if (v21)
+  managerCopy = manager;
+  modeCopy = mode;
+  if (managerCopy)
   {
-    [v21 suspend];
-    v7 = [v21 inputMode];
+    [managerCopy suspend];
+    inputMode = [managerCopy inputMode];
 
-    if (v7)
+    if (inputMode)
     {
-      v8 = [(TIKeyboardInputManagerLoaderSyncHelper *)self->_helper shouldCacheObject:v21];
+      v8 = [(TIKeyboardInputManagerLoaderSyncHelper *)self->_helper shouldCacheObject:managerCopy];
       activeInputManagers = self->_activeInputManagers;
-      v10 = [v21 inputMode];
-      v11 = [(NSMutableDictionary *)activeInputManagers objectForKey:v10];
+      inputMode2 = [managerCopy inputMode];
+      v11 = [(NSMutableDictionary *)activeInputManagers objectForKey:inputMode2];
 
-      if (v11 == v21)
+      if (v11 == managerCopy)
       {
         v12 = self->_activeInputManagers;
-        v13 = [v21 inputMode];
-        [(NSMutableDictionary *)v12 removeObjectForKey:v13];
+        inputMode3 = [managerCopy inputMode];
+        [(NSMutableDictionary *)v12 removeObjectForKey:inputMode3];
       }
 
       else
@@ -579,13 +579,13 @@ uint64_t __83__TIKeyboardInputManagerLoader_reduceInputManagerCacheToSize_switch
       }
 
       availableInputManagers = self->_availableInputManagers;
-      v15 = [v21 inputMode];
-      [(NSMutableDictionary *)availableInputManagers setObject:v21 forKey:v15];
+      inputMode4 = [managerCopy inputMode];
+      [(NSMutableDictionary *)availableInputManagers setObject:managerCopy forKey:inputMode4];
 
-      if ([v21 hasHandledInput])
+      if ([managerCopy hasHandledInput])
       {
-        v16 = [MEMORY[0x277CBEAA8] date];
-        if (!v16)
+        date = [MEMORY[0x277CBEAA8] date];
+        if (!date)
         {
           goto LABEL_12;
         }
@@ -594,43 +594,43 @@ uint64_t __83__TIKeyboardInputManagerLoader_reduceInputManagerCacheToSize_switch
       else
       {
         lastUsedDate = self->_lastUsedDate;
-        v18 = [v21 inputMode];
-        v16 = [(NSMutableDictionary *)lastUsedDate objectForKey:v18];
+        inputMode5 = [managerCopy inputMode];
+        date = [(NSMutableDictionary *)lastUsedDate objectForKey:inputMode5];
 
-        if (!v16)
+        if (!date)
         {
 LABEL_12:
-          v16 = [MEMORY[0x277CBEAA8] distantPast];
+          date = [MEMORY[0x277CBEAA8] distantPast];
         }
       }
 
       v19 = self->_lastUsedDate;
-      v20 = [v21 inputMode];
-      [(NSMutableDictionary *)v19 setObject:v16 forKey:v20];
+      inputMode6 = [managerCopy inputMode];
+      [(NSMutableDictionary *)v19 setObject:date forKey:inputMode6];
 
-      [(TIKeyboardInputManagerLoader *)self reduceInputManagerCacheToSize:4 switchingToInputMode:v6];
+      [(TIKeyboardInputManagerLoader *)self reduceInputManagerCacheToSize:4 switchingToInputMode:modeCopy];
 LABEL_14:
     }
   }
 }
 
-- (id)inputManagerForInputMode:(id)a3 withKeyboardState:(id)a4 class:(Class)a5
+- (id)inputManagerForInputMode:(id)mode withKeyboardState:(id)state class:(Class)class
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_availableInputManagers objectForKey:v8];
-  [(NSMutableDictionary *)self->_availableInputManagers removeObjectForKey:v8];
-  if (v10 && [v10 isMemberOfClass:a5] && (objc_msgSend(v10, "inputMode"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, (v12 & 1) != 0))
+  modeCopy = mode;
+  stateCopy = state;
+  v10 = [(NSMutableDictionary *)self->_availableInputManagers objectForKey:modeCopy];
+  [(NSMutableDictionary *)self->_availableInputManagers removeObjectForKey:modeCopy];
+  if (v10 && [v10 isMemberOfClass:class] && (objc_msgSend(v10, "inputMode"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", modeCopy), v11, (v12 & 1) != 0))
   {
-    v13 = TIInputManagerOSLogFacility();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    inputMode = TIInputManagerOSLogFacility();
+    if (os_log_type_enabled(inputMode, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 136315394;
       v23 = "[TIKeyboardInputManagerLoader inputManagerForInputMode:withKeyboardState:class:]";
       v24 = 2114;
-      v25 = v8;
-      _os_log_impl(&dword_22CA55000, v13, OS_LOG_TYPE_DEFAULT, "%s  Reusing existing input manager for input mode %{public}@", &v22, 0x16u);
+      v25 = modeCopy;
+      _os_log_impl(&dword_22CA55000, inputMode, OS_LOG_TYPE_DEFAULT, "%s  Reusing existing input manager for input mode %{public}@", &v22, 0x16u);
     }
   }
 
@@ -638,30 +638,30 @@ LABEL_14:
   {
 
     helper = self->_helper;
-    v15 = [v8 languageWithRegion];
-    [(TIKeyboardInputManagerLoaderSyncHelper *)helper willLoadLanguage:v15];
+    languageWithRegion = [modeCopy languageWithRegion];
+    [(TIKeyboardInputManagerLoaderSyncHelper *)helper willLoadLanguage:languageWithRegion];
 
     v16 = TIInputManagerOSLogFacility();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = NSStringFromClass(a5);
+      v17 = NSStringFromClass(class);
       v22 = 136315650;
       v23 = "[TIKeyboardInputManagerLoader inputManagerForInputMode:withKeyboardState:class:]";
       v24 = 2114;
       v25 = v17;
       v26 = 2114;
-      v27 = v8;
+      v27 = modeCopy;
       _os_log_impl(&dword_22CA55000, v16, OS_LOG_TYPE_DEFAULT, "%s  Initializing new input manager with class %{public}@ for input mode %{public}@", &v22, 0x20u);
     }
 
-    v10 = [[a5 alloc] initWithInputMode:v8 keyboardState:v9];
+    v10 = [[class alloc] initWithInputMode:modeCopy keyboardState:stateCopy];
     v18 = self->_helper;
-    v13 = [v10 inputMode];
-    v19 = [v13 languageWithRegion];
-    [(TIKeyboardInputManagerLoaderSyncHelper *)v18 noteObject:v10 forLanguage:v19];
+    inputMode = [v10 inputMode];
+    languageWithRegion2 = [inputMode languageWithRegion];
+    [(TIKeyboardInputManagerLoaderSyncHelper *)v18 noteObject:v10 forLanguage:languageWithRegion2];
   }
 
-  [(NSMutableDictionary *)self->_activeInputManagers setObject:v10 forKey:v8];
+  [(NSMutableDictionary *)self->_activeInputManagers setObject:v10 forKey:modeCopy];
   [v10 resume];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -719,13 +719,13 @@ void __47__TIKeyboardInputManagerLoader_startSyncHelper__block_invoke(uint64_t a
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeInputModeFromAllContainers:(id)a3
+- (void)removeInputModeFromAllContainers:(id)containers
 {
   availableInputManagers = self->_availableInputManagers;
-  v5 = a3;
-  [(NSMutableDictionary *)availableInputManagers removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->_activeInputManagers removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->_lastUsedDate removeObjectForKey:v5];
+  containersCopy = containers;
+  [(NSMutableDictionary *)availableInputManagers removeObjectForKey:containersCopy];
+  [(NSMutableDictionary *)self->_activeInputManagers removeObjectForKey:containersCopy];
+  [(NSMutableDictionary *)self->_lastUsedDate removeObjectForKey:containersCopy];
 }
 
 - (void)dealloc

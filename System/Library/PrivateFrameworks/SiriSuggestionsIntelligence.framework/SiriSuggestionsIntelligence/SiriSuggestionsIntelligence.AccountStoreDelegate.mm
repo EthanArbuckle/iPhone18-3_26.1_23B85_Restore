@@ -1,13 +1,13 @@
 @interface SiriSuggestionsIntelligence.AccountStoreDelegate
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 @end
 
 @implementation SiriSuggestionsIntelligence.AccountStoreDelegate
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1DA3A3B28();
 
   type metadata accessor for AIDAServiceType(0);

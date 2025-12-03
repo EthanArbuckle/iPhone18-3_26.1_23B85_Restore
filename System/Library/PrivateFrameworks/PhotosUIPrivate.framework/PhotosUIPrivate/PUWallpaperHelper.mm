@@ -1,37 +1,37 @@
 @interface PUWallpaperHelper
-+ (id)deleteSuggestionAction:(id)a3;
-+ (id)fileRadarActionForComponent:(int64_t)a3 title:(id)a4 suggestion:(id)a5 asset:(id)a6 actionBeingHandler:(id)a7 actionEndHandler:(id)a8;
-+ (id)fileRadarSubmenuForSuggestion:(id)a3 asset:(id)a4 actionBeingHandler:(id)a5 actionEndHandler:(id)a6;
-+ (id)presentPosterEditorWithAsset:(id)a3 fromViewController:(id)a4;
-+ (id)rejectSuggestionAction:(id)a3;
++ (id)deleteSuggestionAction:(id)action;
++ (id)fileRadarActionForComponent:(int64_t)component title:(id)title suggestion:(id)suggestion asset:(id)asset actionBeingHandler:(id)handler actionEndHandler:(id)endHandler;
++ (id)fileRadarSubmenuForSuggestion:(id)suggestion asset:(id)asset actionBeingHandler:(id)handler actionEndHandler:(id)endHandler;
++ (id)presentPosterEditorWithAsset:(id)asset fromViewController:(id)controller;
++ (id)rejectSuggestionAction:(id)action;
 @end
 
 @implementation PUWallpaperHelper
 
-+ (id)fileRadarActionForComponent:(int64_t)a3 title:(id)a4 suggestion:(id)a5 asset:(id)a6 actionBeingHandler:(id)a7 actionEndHandler:(id)a8
++ (id)fileRadarActionForComponent:(int64_t)component title:(id)title suggestion:(id)suggestion asset:(id)asset actionBeingHandler:(id)handler actionEndHandler:(id)endHandler
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  suggestionCopy = suggestion;
+  assetCopy = asset;
+  handlerCopy = handler;
+  endHandlerCopy = endHandler;
   v17 = MEMORY[0x1E69DC628];
   v18 = MEMORY[0x1E69DCAB8];
-  v19 = a4;
+  titleCopy = title;
   v20 = [v18 systemImageNamed:@"ant.circle"];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __108__PUWallpaperHelper_fileRadarActionForComponent_title_suggestion_asset_actionBeingHandler_actionEndHandler___block_invoke;
   v27[3] = &unk_1E7B7C4F0;
-  v28 = v14;
-  v29 = v13;
-  v31 = v16;
-  v32 = a3;
-  v30 = v15;
-  v21 = v16;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v25 = [v17 actionWithTitle:v19 image:v20 identifier:0 handler:v27];
+  v28 = assetCopy;
+  v29 = suggestionCopy;
+  v31 = endHandlerCopy;
+  componentCopy = component;
+  v30 = handlerCopy;
+  v21 = endHandlerCopy;
+  v22 = suggestionCopy;
+  v23 = assetCopy;
+  v24 = handlerCopy;
+  v25 = [v17 actionWithTitle:titleCopy image:v20 identifier:0 handler:v27];
 
   return v25;
 }
@@ -48,17 +48,17 @@ void __108__PUWallpaperHelper_fileRadarActionForComponent_title_suggestion_asset
   PXFileRadarWithConfiguration();
 }
 
-+ (id)fileRadarSubmenuForSuggestion:(id)a3 asset:(id)a4 actionBeingHandler:(id)a5 actionEndHandler:(id)a6
++ (id)fileRadarSubmenuForSuggestion:(id)suggestion asset:(id)asset actionBeingHandler:(id)handler actionEndHandler:(id)endHandler
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 fileRadarActionForComponent:8 title:@"File Curation Radar" suggestion:v13 asset:v12 actionBeingHandler:v11 actionEndHandler:v10];
-  v15 = [a1 fileRadarActionForComponent:7 title:@"File UI Radar" suggestion:v13 asset:v12 actionBeingHandler:v11 actionEndHandler:{v10, v14}];
+  endHandlerCopy = endHandler;
+  handlerCopy = handler;
+  assetCopy = asset;
+  suggestionCopy = suggestion;
+  v14 = [self fileRadarActionForComponent:8 title:@"File Curation Radar" suggestion:suggestionCopy asset:assetCopy actionBeingHandler:handlerCopy actionEndHandler:endHandlerCopy];
+  v15 = [self fileRadarActionForComponent:7 title:@"File UI Radar" suggestion:suggestionCopy asset:assetCopy actionBeingHandler:handlerCopy actionEndHandler:{endHandlerCopy, v14}];
   v22[1] = v15;
-  v16 = [a1 fileRadarActionForComponent:9 title:@"File Imaging Radar" suggestion:v13 asset:v12 actionBeingHandler:v11 actionEndHandler:v10];
+  v16 = [self fileRadarActionForComponent:9 title:@"File Imaging Radar" suggestion:suggestionCopy asset:assetCopy actionBeingHandler:handlerCopy actionEndHandler:endHandlerCopy];
 
   v22[2] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
@@ -70,20 +70,20 @@ void __108__PUWallpaperHelper_fileRadarActionForComponent_title_suggestion_asset
   return v20;
 }
 
-+ (id)presentPosterEditorWithAsset:(id)a3 fromViewController:(id)a4
++ (id)presentPosterEditorWithAsset:(id)asset fromViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  controllerCopy = controller;
   v7 = MEMORY[0x1E69DC628];
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"slider.horizontal.3"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__PUWallpaperHelper_presentPosterEditorWithAsset_fromViewController___block_invoke;
   v13[3] = &unk_1E7B7C4C8;
-  v14 = v5;
-  v15 = v6;
-  v9 = v6;
-  v10 = v5;
+  v14 = assetCopy;
+  v15 = controllerCopy;
+  v9 = controllerCopy;
+  v10 = assetCopy;
   v11 = [v7 actionWithTitle:@"Edit Poster" image:v8 identifier:0 handler:v13];
 
   return v11;
@@ -96,17 +96,17 @@ void __69__PUWallpaperHelper_presentPosterEditorWithAsset_fromViewController___b
   [*(a1 + 40) presentViewController:v2 animated:1 completion:0];
 }
 
-+ (id)rejectSuggestionAction:(id)a3
++ (id)rejectSuggestionAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = MEMORY[0x1E69DC628];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PUWallpaperHelper_rejectSuggestionAction___block_invoke;
   v9[3] = &unk_1E7B7C4A0;
-  v10 = v3;
-  v6 = v3;
+  v10 = actionCopy;
+  v6 = actionCopy;
   v7 = [v4 actionWithTitle:@"Reject Suggestion" image:v5 identifier:0 handler:v9];
 
   [v7 setAttributes:2];
@@ -145,17 +145,17 @@ void __44__PUWallpaperHelper_rejectSuggestionAction___block_invoke_2(uint64_t a1
   }
 }
 
-+ (id)deleteSuggestionAction:(id)a3
++ (id)deleteSuggestionAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = MEMORY[0x1E69DC628];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"trash"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PUWallpaperHelper_deleteSuggestionAction___block_invoke;
   v9[3] = &unk_1E7B7C4A0;
-  v10 = v3;
-  v6 = v3;
+  v10 = actionCopy;
+  v6 = actionCopy;
   v7 = [v4 actionWithTitle:@"Delete Suggestion" image:v5 identifier:0 handler:v9];
 
   [v7 setAttributes:2];

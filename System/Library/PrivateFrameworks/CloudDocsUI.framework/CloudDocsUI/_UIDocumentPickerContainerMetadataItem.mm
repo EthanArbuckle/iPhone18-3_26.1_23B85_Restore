@@ -1,27 +1,27 @@
 @interface _UIDocumentPickerContainerMetadataItem
-- (BOOL)isEqual:(id)a3;
-- (_UIDocumentPickerContainerMetadataItem)initWithMetadataItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIDocumentPickerContainerMetadataItem)initWithMetadataItem:(id)item;
 - (id)sortPath;
 - (id)sortPathComponents;
 - (id)urlInLocalContainer;
 - (unint64_t)indentationLevel;
 - (void)_modelChanged;
 - (void)_removeCachedValues;
-- (void)cacheValues:(id)a3;
+- (void)cacheValues:(id)values;
 @end
 
 @implementation _UIDocumentPickerContainerMetadataItem
 
-- (_UIDocumentPickerContainerMetadataItem)initWithMetadataItem:(id)a3
+- (_UIDocumentPickerContainerMetadataItem)initWithMetadataItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = _UIDocumentPickerContainerMetadataItem;
   v5 = [(_UIDocumentPickerContainerItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIDocumentPickerContainerMetadataItem *)v5 cacheValues:v4];
+    [(_UIDocumentPickerContainerMetadataItem *)v5 cacheValues:itemCopy];
     v6->_cachedIndentation = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -58,13 +58,13 @@
   self->_cachedRenameable = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[22] isEqual:self->_cachedFileObjectID];
+    v5 = [equalCopy[22] isEqual:self->_cachedFileObjectID];
   }
 
   else
@@ -75,45 +75,45 @@
   return v5;
 }
 
-- (void)cacheValues:(id)a3
+- (void)cacheValues:(id)values
 {
-  v75 = a3;
+  valuesCopy = values;
   [(_UIDocumentPickerContainerMetadataItem *)self _removeCachedValues];
-  v4 = [v75 valueForAttribute:*MEMORY[0x277CCA4C0]];
+  v4 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA4C0]];
   v5 = [v4 copy];
   cachedTitle = self->_cachedTitle;
   self->_cachedTitle = v5;
 
   if (!self->_cachedTitle)
   {
-    v7 = [v75 valueForAttribute:*MEMORY[0x277CCA4D0]];
+    v7 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA4D0]];
     v8 = [v7 copy];
     v9 = self->_cachedTitle;
     self->_cachedTitle = v8;
   }
 
-  v10 = [v75 valueForAttribute:*MEMORY[0x277CCA4E0]];
+  v10 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA4E0]];
   v11 = [v10 copy];
   cachedURL = self->_cachedURL;
   self->_cachedURL = v11;
 
-  v13 = [v75 valueForAttribute:*MEMORY[0x277CCA4B8]];
+  v13 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA4B8]];
   v14 = [v13 copy];
   cachedContentType = self->_cachedContentType;
   self->_cachedContentType = v14;
 
-  v16 = [v75 valueForAttribute:*MEMORY[0x277CCA540]];
+  v16 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA540]];
   v17 = [v16 copy];
   cachedURLInLocalContainer = self->_cachedURLInLocalContainer;
   self->_cachedURLInLocalContainer = v17;
 
-  v19 = [v75 valueForAttribute:@"BRMetadataItemFileObjectIdentifierKey"];
+  v19 = [valuesCopy valueForAttribute:@"BRMetadataItemFileObjectIdentifierKey"];
   cachedFileObjectID = self->_cachedFileObjectID;
   self->_cachedFileObjectID = v19;
 
   v21 = self->_cachedURL;
-  v22 = [(NSURL *)v21 br_containerID];
-  v23 = [v22 isEqualToString:*MEMORY[0x277CFAD68]];
+  br_containerID = [(NSURL *)v21 br_containerID];
+  v23 = [br_containerID isEqualToString:*MEMORY[0x277CFAD68]];
 
   if (!v23)
   {
@@ -122,10 +122,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v24 = [(NSURL *)v21 br_pathRelativeToMobileDocuments];
-  v25 = [v24 rangeOfString:@"/"];
-  v26 = [(NSURL *)v21 lastPathComponent];
-  v27 = [v24 rangeOfString:v26 options:4];
+  br_pathRelativeToMobileDocuments = [(NSURL *)v21 br_pathRelativeToMobileDocuments];
+  v25 = [br_pathRelativeToMobileDocuments rangeOfString:@"/"];
+  lastPathComponent = [(NSURL *)v21 lastPathComponent];
+  v27 = [br_pathRelativeToMobileDocuments rangeOfString:lastPathComponent options:4];
 
   if (v25 && v25 + 1 == v27)
   {
@@ -156,11 +156,11 @@ LABEL_11:
   }
 
 LABEL_12:
-  v32 = [v75 valueForAttribute:*MEMORY[0x277CCA530]];
-  v33 = [v75 valueForAttribute:*MEMORY[0x277CCA528]];
+  v32 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA530]];
+  v33 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA528]];
   if ([v32 BOOLValue])
   {
-    v34 = [v75 valueForAttribute:*MEMORY[0x277CCA550]];
+    v34 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA550]];
     if ([v34 isEqualToString:*MEMORY[0x277CCA568]])
     {
       v35 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -174,7 +174,7 @@ LABEL_12:
 
     else
     {
-      v45 = [v75 valueForAttribute:*MEMORY[0x277CCA560]];
+      v45 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA560]];
       if (v45)
       {
         v46 = MEMORY[0x277CCACA8];
@@ -210,7 +210,7 @@ LABEL_12:
       goto LABEL_23;
     }
 
-    v34 = [v75 valueForAttribute:*MEMORY[0x277CCA510]];
+    v34 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA510]];
     v39 = MEMORY[0x277CCACA8];
     v40 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v41 = [v40 localizedStringForKey:@"in ContainerDisplayName" value:@"in %@" table:@"Localizable"];
@@ -223,23 +223,23 @@ LABEL_12:
   }
 
 LABEL_23:
-  v54 = [v75 valueForAttribute:*MEMORY[0x277CCA548]];
+  v54 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA548]];
   v55 = v54;
   if (!v54)
   {
     goto LABEL_29;
   }
 
-  v56 = [v54 domain];
-  if (![v56 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [v54 domain];
+  if (![domain isEqualToString:*MEMORY[0x277CCA050]])
   {
 
     goto LABEL_28;
   }
 
-  v57 = [v55 code];
+  code = [v55 code];
 
-  if (v57 != 4355)
+  if (code != 4355)
   {
 LABEL_28:
     v58 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -249,13 +249,13 @@ LABEL_28:
   }
 
 LABEL_29:
-  v61 = [v75 valueForAttribute:*MEMORY[0x277CCA4C8]];
+  v61 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA4C8]];
   v62 = [v61 copy];
   cachedContentModifiedDate = self->_cachedContentModifiedDate;
   self->_cachedContentModifiedDate = v62;
 
   self->_cachedType = UTTypeConformsTo(self->_cachedContentType, *MEMORY[0x277CC2078]) != 0;
-  v64 = [v75 valueForAttribute:*MEMORY[0x277CCA4D8]];
+  v64 = [valuesCopy valueForAttribute:*MEMORY[0x277CCA4D8]];
   v65 = v64;
   if (v64)
   {
@@ -279,7 +279,7 @@ LABEL_29:
     self->_cachedSubtitle2 = v70;
   }
 
-  v72 = [v75 valueForKey:*MEMORY[0x277CFAD10]];
+  v72 = [valuesCopy valueForKey:*MEMORY[0x277CFAD10]];
   v73 = [v72 copy];
   cachedTags = self->_cachedTags;
   self->_cachedTags = v73;
@@ -298,9 +298,9 @@ LABEL_29:
 
 - (void)_modelChanged
 {
-  v7 = [(_UIDocumentPickerContainerItem *)self model];
-  v3 = [v7 modelObjects];
-  v4 = -[_UIDocumentPickerContainerItem _formattedSubtitleForNumberOfItems:](self, "_formattedSubtitleForNumberOfItems:", [v3 count]);
+  model = [(_UIDocumentPickerContainerItem *)self model];
+  modelObjects = [model modelObjects];
+  v4 = -[_UIDocumentPickerContainerItem _formattedSubtitleForNumberOfItems:](self, "_formattedSubtitleForNumberOfItems:", [modelObjects count]);
   v5 = [v4 copy];
   cachedSubtitle = self->_cachedSubtitle;
   self->_cachedSubtitle = v5;
@@ -311,8 +311,8 @@ LABEL_29:
   result = self->_cachedIndentation;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(_UIDocumentPickerContainerMetadataItem *)self sortPathComponents];
-    [(_UIDocumentPickerContainerMetadataItem *)self _cacheIndentationLevelWithSortPathComponents:v4];
+    sortPathComponents = [(_UIDocumentPickerContainerMetadataItem *)self sortPathComponents];
+    [(_UIDocumentPickerContainerMetadataItem *)self _cacheIndentationLevelWithSortPathComponents:sortPathComponents];
 
     return self->_cachedIndentation;
   }
@@ -323,12 +323,12 @@ LABEL_29:
 - (id)sortPathComponents
 {
   v2 = [(_UIDocumentPickerContainerMetadataItem *)self url];
-  v3 = [v2 path];
-  v4 = [MEMORY[0x277CFAE38] mobileDocumentsURL];
-  v5 = [v4 path];
-  v6 = [v3 br_pathRelativeToPath:v5];
-  v7 = [v6 pathComponents];
-  v8 = [v7 mutableCopy];
+  path = [v2 path];
+  mobileDocumentsURL = [MEMORY[0x277CFAE38] mobileDocumentsURL];
+  path2 = [mobileDocumentsURL path];
+  v6 = [path br_pathRelativeToPath:path2];
+  pathComponents = [v6 pathComponents];
+  v8 = [pathComponents mutableCopy];
 
   if (![v8 count])
   {
@@ -381,12 +381,12 @@ LABEL_11:
   }
 
 LABEL_12:
-  v22 = [v2 br_cloudDocsContainer];
-  v23 = v22;
-  if (v22)
+  br_cloudDocsContainer = [v2 br_cloudDocsContainer];
+  v23 = br_cloudDocsContainer;
+  if (br_cloudDocsContainer)
   {
-    v24 = [v22 localizedName];
-    [v8 setObject:v24 atIndexedSubscript:0];
+    localizedName = [br_cloudDocsContainer localizedName];
+    [v8 setObject:localizedName atIndexedSubscript:0];
   }
 
   v17 = v8;
@@ -402,14 +402,14 @@ LABEL_15:
   cachedSortPath = self->_cachedSortPath;
   if (!cachedSortPath)
   {
-    v5 = [(_UIDocumentPickerContainerMetadataItem *)self sortPathComponents];
-    v6 = [v5 componentsJoinedByString:@"/"];
+    sortPathComponents = [(_UIDocumentPickerContainerMetadataItem *)self sortPathComponents];
+    v6 = [sortPathComponents componentsJoinedByString:@"/"];
     v7 = self->_cachedSortPath;
     self->_cachedSortPath = v6;
 
     if (self->_cachedIndentation == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(_UIDocumentPickerContainerMetadataItem *)self _cacheIndentationLevelWithSortPathComponents:v5];
+      [(_UIDocumentPickerContainerMetadataItem *)self _cacheIndentationLevelWithSortPathComponents:sortPathComponents];
     }
 
     cachedSortPath = self->_cachedSortPath;

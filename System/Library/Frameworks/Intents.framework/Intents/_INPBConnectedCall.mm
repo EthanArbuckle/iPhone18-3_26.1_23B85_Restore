@@ -1,37 +1,37 @@
 @interface _INPBConnectedCall
-- (BOOL)isEqual:(id)a3;
-- (_INPBConnectedCall)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBConnectedCall)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAudioRoute:(id)a3;
+- (int)StringAsAudioRoute:(id)route;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioRoute:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioRoute:(int)route;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBConnectedCall
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBConnectedCall *)self hasAudioRoute])
   {
-    v4 = [(_INPBConnectedCall *)self audioRoute];
-    if ((v4 - 2) >= 3)
+    audioRoute = [(_INPBConnectedCall *)self audioRoute];
+    if ((audioRoute - 2) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", audioRoute];
     }
 
     else
     {
-      v5 = off_1E7287FE0[(v4 - 2)];
+      v5 = off_1E7287FE0[(audioRoute - 2)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"audioRoute"];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioRoute"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -47,16 +47,16 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBConnectedCall *)self hasAudioRoute];
-    if (v5 == [v4 hasAudioRoute])
+    hasAudioRoute = [(_INPBConnectedCall *)self hasAudioRoute];
+    if (hasAudioRoute == [equalCopy hasAudioRoute])
     {
-      if (!-[_INPBConnectedCall hasAudioRoute](self, "hasAudioRoute") || ![v4 hasAudioRoute] || (audioRoute = self->_audioRoute, audioRoute == objc_msgSend(v4, "audioRoute")))
+      if (!-[_INPBConnectedCall hasAudioRoute](self, "hasAudioRoute") || ![equalCopy hasAudioRoute] || (audioRoute = self->_audioRoute, audioRoute == objc_msgSend(equalCopy, "audioRoute")))
       {
         v6 = 1;
       }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBConnectedCall allocWithZone:?]];
   if ([(_INPBConnectedCall *)self hasAudioRoute])
@@ -77,33 +77,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBConnectedCall *)self data];
+  coderCopy = coder;
+  data = [(_INPBConnectedCall *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBConnectedCall)initWithCoder:(id)a3
+- (_INPBConnectedCall)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBConnectedCall *)self initWithData:v6];
+    self = [(_INPBConnectedCall *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_INPBConnectedCall *)self hasAudioRoute])
   {
     audioRoute = self->_audioRoute;
@@ -111,20 +111,20 @@
   }
 }
 
-- (int)StringAsAudioRoute:(id)a3
+- (int)StringAsAudioRoute:(id)route
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
+  routeCopy = route;
+  if ([routeCopy isEqualToString:@"SPEAKERPHONE_AUDIO_ROUTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
+  else if ([routeCopy isEqualToString:@"BLUETOOTH_AUDIO_ROUTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
+  else if ([routeCopy isEqualToString:@"HEY_SIRI_AUDIO_ROUTE"])
   {
     v4 = 4;
   }
@@ -137,10 +137,10 @@
   return v4;
 }
 
-- (void)setAudioRoute:(int)a3
+- (void)setAudioRoute:(int)route
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (route == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -148,7 +148,7 @@
   else
   {
     *&self->_has = has | 1;
-    self->_audioRoute = a3;
+    self->_audioRoute = route;
   }
 }
 

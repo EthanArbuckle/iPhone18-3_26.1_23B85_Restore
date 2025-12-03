@@ -1,28 +1,28 @@
 @interface PXActionPerformer
-- (BOOL)dismissAlertWithToken:(id)a3 completionHandler:(id)a4;
-- (BOOL)dismissViewController:(id)a3 completionHandler:(id)a4;
+- (BOOL)dismissAlertWithToken:(id)token completionHandler:(id)handler;
+- (BOOL)dismissViewController:(id)controller completionHandler:(id)handler;
 - (BOOL)prefersAssetInclusionAfterRemoval;
-- (BOOL)presentAlertWithTitle:(id)a3 message:(id)a4 completionHandler:(id)a5;
-- (BOOL)presentViewController:(id)a3 completionHandler:(id)a4;
-- (BOOL)pushViewController:(id)a3;
+- (BOOL)presentAlertWithTitle:(id)title message:(id)message completionHandler:(id)handler;
+- (BOOL)presentViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)pushViewController:(id)controller;
 - (NSUndoManager)undoManager;
 - (PXActionPerformer)init;
-- (PXActionPerformer)initWithActionType:(id)a3;
+- (PXActionPerformer)initWithActionType:(id)type;
 - (PXActionPerformerDelegate)delegate;
 - (PXPresentationEnvironment)presentationEnvironment;
 - (UIViewController)hostViewController;
-- (id)barButtonItemWithTarget:(id)a3 action:(SEL)a4;
+- (id)barButtonItemWithTarget:(id)target action:(SEL)action;
 - (id)description;
 - (id)menuElement;
-- (id)presentAlertWithConfigurationHandler:(id)a3;
+- (id)presentAlertWithConfigurationHandler:(id)handler;
 - (id)sender;
 - (int64_t)menuElementState;
-- (void)_completeStateWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handleStepFinished:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5;
+- (void)_completeStateWithSuccess:(BOOL)success error:(id)error;
+- (void)_handleStepFinished:(unint64_t)finished withSuccess:(BOOL)success error:(id)error;
 - (void)_performUnlockIfNeeded;
-- (void)_transitionToState:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5;
-- (void)cancelActionWithCompletionHandler:(id)a3;
-- (void)performActionWithCompletionHandler:(id)a3;
+- (void)_transitionToState:(unint64_t)state withSuccess:(BOOL)success error:(id)error;
+- (void)cancelActionWithCompletionHandler:(id)handler;
+- (void)performActionWithCompletionHandler:(id)handler;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -43,21 +43,21 @@
   return WeakRetained;
 }
 
-- (BOOL)presentAlertWithTitle:(id)a3 message:(id)a4 completionHandler:(id)a5
+- (BOOL)presentAlertWithTitle:(id)title message:(id)message completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__PXActionPerformer_presentAlertWithTitle_message_completionHandler___block_invoke;
   v16[3] = &unk_1E7BB7778;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = titleCopy;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = messageCopy;
+  v13 = titleCopy;
   v14 = [(PXActionPerformer *)self presentAlertWithConfigurationHandler:v16];
   LOBYTE(self) = v14 != 0;
 
@@ -75,67 +75,67 @@ void __69__PXActionPerformer_presentAlertWithTitle_message_completionHandler___b
   [v4 addActionWithTitle:v5 style:0 action:a1[6]];
 }
 
-- (BOOL)dismissAlertWithToken:(id)a3 completionHandler:(id)a4
+- (BOOL)dismissAlertWithToken:(id)token completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PXActionPerformer *)self presentationEnvironment];
-  v10 = v9;
-  if (!v9)
+  tokenCopy = token;
+  handlerCopy = handler;
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  v10 = presentationEnvironment;
+  if (!presentationEnvironment)
   {
-    v11 = v7;
+    v11 = tokenCopy;
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_5:
-        [v11 dismissWithCompletionHandler:v8];
+        [v11 dismissWithCompletionHandler:handlerCopy];
 
         goto LABEL_6;
       }
 
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = objc_opt_class();
       v15 = NSStringFromClass(v16);
-      v17 = [v11 px_descriptionForAssertionMessage];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:517 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"token", v15, v17}];
+      px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:517 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"token", v15, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      [v13 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:517 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"token", v15}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:517 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"token", v15}];
     }
 
     goto LABEL_5;
   }
 
-  [v9 dismissAlertWithToken:v7 completionHandler:v8];
+  [presentationEnvironment dismissAlertWithToken:tokenCopy completionHandler:handlerCopy];
 LABEL_6:
 
   return 1;
 }
 
-- (id)presentAlertWithConfigurationHandler:(id)a3
+- (id)presentAlertWithConfigurationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self presentationEnvironment];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  v6 = presentationEnvironment;
+  if (presentationEnvironment)
   {
-    v7 = [v5 presentAlertWithConfigurationHandler:v4];
+    v7 = [presentationEnvironment presentAlertWithConfigurationHandler:handlerCopy];
   }
 
   else
   {
     v8 = objc_alloc_init(PXAlertConfiguration);
-    v4[2](v4, v8);
+    handlerCopy[2](handlerCopy, v8);
     v9 = [[PXAlert alloc] initWithConfiguration:v8];
-    v10 = [(PXAlert *)v9 alertController];
-    v11 = [(PXActionPerformer *)self presentViewController:v10];
+    alertController = [(PXAlert *)v9 alertController];
+    v11 = [(PXActionPerformer *)self presentViewController:alertController];
 
     if (v11)
     {
@@ -153,7 +153,7 @@ LABEL_6:
   return v7;
 }
 
-- (void)_completeStateWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_completeStateWithSuccess:(BOOL)success error:(id)error
 {
   (*(self->_completionHandler + 2))();
   completionHandler = self->_completionHandler;
@@ -168,15 +168,15 @@ LABEL_6:
   }
 }
 
-- (void)_transitionToState:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_transitionToState:(unint64_t)state withSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
+  successCopy = success;
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (self->_state >= a3)
+  errorCopy = error;
+  if (self->_state >= state)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    v16 = v15;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v16 = currentHandler;
     v17 = 0;
     state = self->_state;
     if (state <= 9)
@@ -212,11 +212,11 @@ LABEL_6:
     }
 
     v19 = 0;
-    if (a3 <= 9)
+    if (state <= 9)
     {
-      if (a3)
+      if (state)
       {
-        if (a3 == 5)
+        if (state == 5)
         {
           v19 = @"unlockIfNeeded";
         }
@@ -230,7 +230,7 @@ LABEL_6:
 
     else
     {
-      switch(a3)
+      switch(state)
       {
         case 0xAuLL:
           v19 = @"userInteractive";
@@ -244,24 +244,24 @@ LABEL_6:
       }
     }
 
-    [v15 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:443 description:{@"Tried transitioning from %@ to the same or earlier step %@", v17, v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:443 description:{@"Tried transitioning from %@ to the same or earlier step %@", v17, v19}];
   }
 
-  self->_state = a3;
-  if (a3 == 30)
+  self->_state = state;
+  if (state == 30)
   {
-    self->_success = v5;
+    self->_success = successCopy;
   }
 
   v10 = PFUIGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = 0;
-    if (a3 <= 9)
+    if (state <= 9)
     {
-      if (a3)
+      if (state)
       {
-        if (a3 == 5)
+        if (state == 5)
         {
           v11 = @"unlockIfNeeded";
         }
@@ -275,7 +275,7 @@ LABEL_6:
 
     else
     {
-      switch(a3)
+      switch(state)
       {
         case 0xAuLL:
           v11 = @"userInteractive";
@@ -292,50 +292,50 @@ LABEL_6:
     *buf = 138412802;
     v23 = v11;
     v24 = 1024;
-    v25 = v5;
+    v25 = successCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = errorCopy;
     _os_log_impl(&dword_1B3F73000, v10, OS_LOG_TYPE_DEBUG, "Transition to state: %@, success: %d, error: %@", buf, 0x1Cu);
   }
 
-  v12 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(PXActionPerformer *)self delegate];
-    [v14 actionPerformer:self didChangeState:a3];
+    delegate2 = [(PXActionPerformer *)self delegate];
+    [delegate2 actionPerformer:self didChangeState:state];
   }
 
-  if (a3 > 19)
+  if (state > 19)
   {
-    if (a3 == 20)
+    if (state == 20)
     {
       [(PXActionPerformer *)self performBackgroundTask];
       goto LABEL_28;
     }
 
-    if (a3 == 30)
+    if (state == 30)
     {
-      [(PXActionPerformer *)self _completeStateWithSuccess:v5 error:v9];
+      [(PXActionPerformer *)self _completeStateWithSuccess:successCopy error:errorCopy];
       goto LABEL_28;
     }
 
 LABEL_52:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    v21 = PXActionPerformerStateDescription(a3);
-    [v20 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:475 description:{@"Not allowed to transition to state:%@", v21}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    v21 = PXActionPerformerStateDescription(state);
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:475 description:{@"Not allowed to transition to state:%@", v21}];
 
     abort();
   }
 
-  if (a3 == 5)
+  if (state == 5)
   {
     [(PXActionPerformer *)self _performUnlockIfNeeded];
     goto LABEL_28;
   }
 
-  if (a3 != 10)
+  if (state != 10)
   {
     goto LABEL_52;
   }
@@ -344,28 +344,28 @@ LABEL_52:
 LABEL_28:
 }
 
-- (void)_handleStepFinished:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_handleStepFinished:(unint64_t)finished withSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
+  successCopy = success;
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (v9)
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = PFUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = 0;
       v12 = @"NO";
-      if (v5)
+      if (successCopy)
       {
         v12 = @"YES";
       }
 
-      if (a3 <= 9)
+      if (finished <= 9)
       {
-        if (a3)
+        if (finished)
         {
-          if (a3 == 5)
+          if (finished == 5)
           {
             v11 = @"unlockIfNeeded";
           }
@@ -379,7 +379,7 @@ LABEL_28:
 
       else
       {
-        switch(a3)
+        switch(finished)
         {
           case 0xAuLL:
             v11 = @"userInteractive";
@@ -394,26 +394,26 @@ LABEL_28:
       }
 
       *buf = 138413058;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
       v25 = v11;
       v26 = 2112;
-      v27 = v9;
+      v27 = errorCopy;
       _os_log_impl(&dword_1B3F73000, v10, OS_LOG_TYPE_ERROR, "%@ success:%@ step:%@ encountered error:%@", buf, 0x2Au);
     }
   }
 
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:410 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:410 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
-  if ([(PXActionPerformer *)self state]== a3)
+  if ([(PXActionPerformer *)self state]== finished)
   {
-    if (!v5)
+    if (!successCopy)
     {
       goto LABEL_28;
     }
@@ -421,14 +421,14 @@ LABEL_28:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    v16 = v15;
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    v16 = currentHandler2;
     v17 = 0;
-    if (a3 <= 9)
+    if (finished <= 9)
     {
-      if (a3)
+      if (finished)
       {
-        if (a3 == 5)
+        if (finished == 5)
         {
           v17 = @"unlockIfNeeded";
         }
@@ -442,7 +442,7 @@ LABEL_28:
 
     else
     {
-      switch(a3)
+      switch(finished)
       {
         case 0xAuLL:
           v17 = @"userInteractive";
@@ -456,23 +456,23 @@ LABEL_28:
       }
     }
 
-    [v15 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:411 description:{@"%@: Invalid transition fromState: %@", self, v17}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:411 description:{@"%@: Invalid transition fromState: %@", self, v17}];
 
-    if (!v5)
+    if (!successCopy)
     {
       goto LABEL_28;
     }
   }
 
-  if (a3 > 9)
+  if (finished > 9)
   {
-    if (a3 == 10)
+    if (finished == 10)
     {
       v13 = 20;
       goto LABEL_29;
     }
 
-    if (a3 != 20)
+    if (finished != 20)
     {
       goto LABEL_45;
     }
@@ -482,25 +482,25 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!finished)
   {
     v13 = 5;
     goto LABEL_29;
   }
 
-  if (a3 != 5)
+  if (finished != 5)
   {
 LABEL_45:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    v19 = PXActionPerformerStateDescription(a3);
-    [v18 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:434 description:{@"Not allowed to transition from state:%@", v19}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    v19 = PXActionPerformerStateDescription(finished);
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:434 description:{@"Not allowed to transition from state:%@", v19}];
 
     abort();
   }
 
   v13 = 10;
 LABEL_29:
-  [(PXActionPerformer *)self _transitionToState:v13 withSuccess:v5 error:v9];
+  [(PXActionPerformer *)self _transitionToState:v13 withSuccess:successCopy error:errorCopy];
 }
 
 - (void)performBackgroundTask
@@ -513,84 +513,84 @@ LABEL_29:
   }
 }
 
-- (BOOL)dismissViewController:(id)a3 completionHandler:(id)a4
+- (BOOL)dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:367 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:367 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   if ([(PXActionPerformer *)self state]!= 10)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive"}];
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
-    v8 = &__block_literal_global_13265;
+    handlerCopy = &__block_literal_global_13265;
   }
 
-  v9 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PXActionPerformer *)self delegate];
-    v12 = [v11 actionPerformer:self dismissViewController:v7 completionHandler:v8];
+    delegate2 = [(PXActionPerformer *)self delegate];
+    v12 = [delegate2 actionPerformer:self dismissViewController:controllerCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v13 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
 
-    if (!v13)
+    if (!presentationEnvironment)
     {
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
       v12 = 0;
       goto LABEL_12;
     }
 
-    v11 = [(PXActionPerformer *)self presentationEnvironment];
+    delegate2 = [(PXActionPerformer *)self presentationEnvironment];
     v12 = 1;
-    [v11 dismissViewController:v7 animated:1 completionHandler:v8];
+    [delegate2 dismissViewController:controllerCopy animated:1 completionHandler:handlerCopy];
   }
 
 LABEL_12:
   return v12;
 }
 
-- (BOOL)pushViewController:(id)a3
+- (BOOL)pushViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:352 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:352 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   if ([(PXActionPerformer *)self state]!= 10)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive"}];
   }
 
-  v6 = [(PXActionPerformer *)self presentationEnvironment];
-  v7 = [(PXActionPerformer *)self delegate];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  delegate = [(PXActionPerformer *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PXActionPerformer *)self delegate];
-    v10 = [v9 actionPerformer:self transitionToViewController:v5 transitionType:1];
+    delegate2 = [(PXActionPerformer *)self delegate];
+    v10 = [delegate2 actionPerformer:self transitionToViewController:controllerCopy transitionType:1];
   }
 
-  else if (v6)
+  else if (presentationEnvironment)
   {
-    v10 = [v6 pushViewController:v5 animated:1];
+    v10 = [presentationEnvironment pushViewController:controllerCopy animated:1];
   }
 
   else
@@ -606,13 +606,13 @@ LABEL_12:
   v3 = self->_presentationEnvironment;
   if (!v3)
   {
-    v4 = [(PXActionPerformer *)self delegate];
+    delegate = [(PXActionPerformer *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(PXActionPerformer *)self delegate];
-      v3 = [v6 presentationEnvironmentForActionPerformer:self];
+      delegate2 = [(PXActionPerformer *)self delegate];
+      v3 = [delegate2 presentationEnvironmentForActionPerformer:self];
     }
 
     else
@@ -626,7 +626,7 @@ LABEL_12:
 
 - (BOOL)prefersAssetInclusionAfterRemoval
 {
-  v3 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -634,8 +634,8 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(PXActionPerformer *)self delegate];
-  v6 = [v5 prefersAssetInclusionAfterRemovalForActionPerformer:self];
+  delegate2 = [(PXActionPerformer *)self delegate];
+  v6 = [delegate2 prefersAssetInclusionAfterRemovalForActionPerformer:self];
 
   return v6;
 }
@@ -645,13 +645,13 @@ LABEL_12:
   v3 = self->_undoManager;
   if (!v3)
   {
-    v4 = [(PXActionPerformer *)self delegate];
+    delegate = [(PXActionPerformer *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(PXActionPerformer *)self delegate];
-      v3 = [v6 undoManagerForActionPerformer:self];
+      delegate2 = [(PXActionPerformer *)self delegate];
+      v3 = [delegate2 undoManagerForActionPerformer:self];
     }
 
     else
@@ -667,23 +667,23 @@ LABEL_12:
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   if ([(PXActionPerformer *)self state]!= 10)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive"}];
   }
 
-  v4 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PXActionPerformer *)self delegate];
-    v7 = [v6 hostViewControllerForActionPerformer:self];
+    delegate2 = [(PXActionPerformer *)self delegate];
+    v7 = [delegate2 hostViewControllerForActionPerformer:self];
   }
 
   else
@@ -694,26 +694,26 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)presentViewController:(id)a3 completionHandler:(id)a4
+- (BOOL)presentViewController:(id)controller completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   if ([(PXActionPerformer *)self state]!= 10 && ([(PXActionPerformer *)self state]!= 20 || ![(PXActionPerformer *)self canPresentAlertInBackgroudState]))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive || ([self state] == PXActionPerformerStateBackgroundTask && self.canPresentAlertInBackgroudState)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PXActionPerformerStateUserInteractive || ([self state] == PXActionPerformerStateBackgroundTask && self.canPresentAlertInBackgroudState)"}];
   }
 
-  v11 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    if (([v11 actionPerformer:self transitionToViewController:v8 transitionType:2] & 1) == 0)
+    if (([delegate actionPerformer:self transitionToViewController:controllerCopy transitionType:2] & 1) == 0)
     {
       goto LABEL_16;
     }
@@ -721,7 +721,7 @@ LABEL_12:
 
   else if (objc_opt_respondsToSelector())
   {
-    if (![v11 actionPerformer:self presentViewController:v8])
+    if (![delegate actionPerformer:self presentViewController:controllerCopy])
     {
       goto LABEL_16;
     }
@@ -729,20 +729,20 @@ LABEL_12:
 
   else
   {
-    v12 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
 
-    if (!v12)
+    if (!presentationEnvironment)
     {
 LABEL_16:
       v14 = 0;
       goto LABEL_17;
     }
 
-    v13 = [(PXActionPerformer *)self presentationEnvironment];
-    [v13 presentViewController:v8 animated:1 completionHandler:v9];
+    presentationEnvironment2 = [(PXActionPerformer *)self presentationEnvironment];
+    [presentationEnvironment2 presentViewController:controllerCopy animated:1 completionHandler:handlerCopy];
   }
 
-  objc_storeStrong(&self->_presentedViewController, a3);
+  objc_storeStrong(&self->_presentedViewController, controller);
   v14 = 1;
 LABEL_17:
 
@@ -781,38 +781,38 @@ LABEL_17:
 
 - (id)description
 {
-  v3 = [(PXActionPerformer *)self state];
+  state = [(PXActionPerformer *)self state];
   v4 = @"userInteractive";
   v5 = @"backgroundTask";
   v6 = @"finished";
-  if (v3 != 30)
+  if (state != 30)
   {
     v6 = 0;
   }
 
-  if (v3 != 20)
+  if (state != 20)
   {
     v5 = v6;
   }
 
-  if (v3 != 10)
+  if (state != 10)
   {
     v4 = v5;
   }
 
   v7 = @"ready";
   v8 = @"unlockIfNeeded";
-  if (v3 != 5)
+  if (state != 5)
   {
     v8 = 0;
   }
 
-  if (v3)
+  if (state)
   {
     v7 = v8;
   }
 
-  if (v3 <= 9)
+  if (state <= 9)
   {
     v9 = v7;
   }
@@ -824,25 +824,25 @@ LABEL_17:
 
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
-  v12 = [(PXActionPerformer *)self actionType];
-  v13 = [v10 stringWithFormat:@"<%@: %p type = %@, state = %@>", v11, self, v12, v9];;
+  actionType = [(PXActionPerformer *)self actionType];
+  v13 = [v10 stringWithFormat:@"<%@: %p type = %@, state = %@>", v11, self, actionType, v9];;
 
   return v13;
 }
 
-- (void)cancelActionWithCompletionHandler:(id)a3
+- (void)cancelActionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   if (![(PXActionPerformer *)self isCancellable])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"[self isCancellable]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"[self isCancellable]"}];
   }
 
   presentedViewController = self->_presentedViewController;
@@ -851,8 +851,8 @@ LABEL_17:
   v10[2] = __55__PXActionPerformer_cancelActionWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7BB7DA8;
   v10[4] = self;
-  v11 = v5;
-  v7 = v5;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
   [(PXActionPerformer *)self dismissViewController:presentedViewController completionHandler:v10];
 }
 
@@ -874,13 +874,13 @@ uint64_t __55__PXActionPerformer_cancelActionWithCompletionHandler___block_invok
   return result;
 }
 
-- (void)performActionWithCompletionHandler:(id)a3
+- (void)performActionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -888,8 +888,8 @@ uint64_t __55__PXActionPerformer_cancelActionWithCompletionHandler___block_invok
   v10[2] = __56__PXActionPerformer_performActionWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7BB7728;
   v10[4] = self;
-  v11 = v5;
-  v6 = v5;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [v10 copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v7;
@@ -912,19 +912,19 @@ uint64_t __56__PXActionPerformer_performActionWithCompletionHandler___block_invo
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (PXActionPerformer)initWithActionType:(id)a3
+- (PXActionPerformer)initWithActionType:(id)type
 {
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"nil != actionType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"nil != actionType"}];
   }
 
-  if (![v5 length])
+  if (![typeCopy length])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"[actionType length] > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"[actionType length] > 0"}];
   }
 
   v12.receiver = self;
@@ -932,7 +932,7 @@ uint64_t __56__PXActionPerformer_performActionWithCompletionHandler___block_invo
   v6 = [(PXActionPerformer *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [typeCopy copy];
     actionType = v6->_actionType;
     v6->_actionType = v7;
 
@@ -944,28 +944,28 @@ uint64_t __56__PXActionPerformer_performActionWithCompletionHandler___block_invo
 
 - (PXActionPerformer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:175 description:@"Use the designated initializer: -initWithActionType:."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionManager.m" lineNumber:175 description:@"Use the designated initializer: -initWithActionType:."];
 
   abort();
 }
 
-- (id)barButtonItemWithTarget:(id)a3 action:(SEL)a4
+- (id)barButtonItemWithTarget:(id)target action:(SEL)action
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PXActionPerformer *)self activitySystemImageName];
+  targetCopy = target;
+  activitySystemImageName = [(PXActionPerformer *)self activitySystemImageName];
   v8 = [(PXActionPerformer *)self localizedTitleForUseCase:1];
   v9 = v8;
-  if (v7)
+  if (activitySystemImageName)
   {
-    v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v7];
-    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v10 style:0 target:v6 action:a4];
+    v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:activitySystemImageName];
+    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v10 style:0 target:targetCopy action:action];
   }
 
   else if (v8)
   {
-    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v8 style:0 target:v6 action:a4];
+    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v8 style:0 target:targetCopy action:action];
   }
 
   else
@@ -974,7 +974,7 @@ uint64_t __56__PXActionPerformer_performActionWithCompletionHandler___block_invo
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_1B3F73000, v12, OS_LOG_TYPE_ERROR, "Tried to create a bar button item from %@, but it has no system image or title", &v14, 0xCu);
     }
 
@@ -1001,17 +1001,17 @@ uint64_t __56__PXActionPerformer_performActionWithCompletionHandler___block_invo
   if (v3)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(PXActionPerformer *)self activitySystemImageName];
-    v6 = [v4 px_systemImageNamed:v5];
+    activitySystemImageName = [(PXActionPerformer *)self activitySystemImageName];
+    v6 = [v4 px_systemImageNamed:activitySystemImageName];
 
     v7 = MEMORY[0x1E69DC628];
-    v8 = [(PXActionPerformer *)self actionType];
+    actionType = [(PXActionPerformer *)self actionType];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__PXActionPerformer_UIKit__menuElement__block_invoke;
     v12[3] = &unk_1E7BB77A8;
     v12[4] = self;
-    v9 = [v7 actionWithTitle:v3 image:v6 identifier:v8 handler:v12];
+    v9 = [v7 actionWithTitle:v3 image:v6 identifier:actionType handler:v12];
 
     v10 = [(PXActionPerformer *)self localizedSubtitleForUseCase:1];
     [v9 setSubtitle:v10];

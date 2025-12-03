@@ -1,36 +1,36 @@
 @interface TPSFullTipUsageEventManager
-- (id)contextualInfoForIdentifier:(id)a3;
+- (id)contextualInfoForIdentifier:(id)identifier;
 - (id)contextualInfoMap;
 - (void)removeUsageEventCache;
-- (void)updateContextualInfoForIdentifiers:(id)a3 tipsDeliveryInfoMap:(id)a4 deliveryInfoMap:(id)a5;
+- (void)updateContextualInfoForIdentifiers:(id)identifiers tipsDeliveryInfoMap:(id)map deliveryInfoMap:(id)infoMap;
 @end
 
 @implementation TPSFullTipUsageEventManager
 
-- (void)updateContextualInfoForIdentifiers:(id)a3 tipsDeliveryInfoMap:(id)a4 deliveryInfoMap:(id)a5
+- (void)updateContextualInfoForIdentifiers:(id)identifiers tipsDeliveryInfoMap:(id)map deliveryInfoMap:(id)infoMap
 {
   v8 = sub_232E015D0();
-  if (a4)
+  if (map)
   {
-    a4 = sub_232E01470();
+    map = sub_232E01470();
   }
 
-  if (a5)
+  if (infoMap)
   {
-    LOBYTE(a5) = sub_232E01470();
+    LOBYTE(infoMap) = sub_232E01470();
   }
 
-  v9 = self;
-  v11.value._rawValue = a4;
-  v11.is_nil = a5;
+  selfCopy = self;
+  v11.value._rawValue = map;
+  v11.is_nil = infoMap;
   TPSFullTipUsageEventManager.updateContextualInfo(for:tipsDeliveryInfoMap:deliveryInfoMap:)(v8, v11, v12);
 }
 
-- (id)contextualInfoForIdentifier:(id)a3
+- (id)contextualInfoForIdentifier:(id)identifier
 {
   sub_232E014D0();
   v4 = *(&self->super.isa + OBJC_IVAR___TPSFullTipUsageEventManager_queue);
-  v5 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDD7448, &qword_232E06520);
   sub_232E01770();
 
@@ -40,7 +40,7 @@
 - (id)contextualInfoMap
 {
   v2 = *(&self->super.isa + OBJC_IVAR___TPSFullTipUsageEventManager_queue);
-  v3 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDD7450, &qword_232E06528);
   sub_232E01770();
 
@@ -65,7 +65,7 @@
   v8[2] = sub_232DB231C;
   v8[3] = &block_descriptor_25;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   dispatch_sync(v3, v6);
   _Block_release(v6);

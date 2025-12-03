@@ -1,19 +1,19 @@
 @interface CACZoomController
 + (id)sharedController;
-- (CACZoomController)initWithContainingView:(id)a3;
-- (CACZoomController)initWithZoomFactor:(double)a3;
-- (CGRect)_effectiveRectForBounds:(CGRect)a3 position:(CGPoint)a4 scaleFactor:(double)a5;
-- (CGRect)bestDockFromZoomRegion:(CGRect)a3;
+- (CACZoomController)initWithContainingView:(id)view;
+- (CACZoomController)initWithZoomFactor:(double)factor;
+- (CGRect)_effectiveRectForBounds:(CGRect)bounds position:(CGPoint)position scaleFactor:(double)factor;
+- (CGRect)bestDockFromZoomRegion:(CGRect)region;
 - (CGRect)dockedLensFrame;
 - (CGRect)zoomedRegionFrame;
-- (CGSize)_prescaledSizeForFinalSize:(CGSize)a3 withScaleFactor:(double)a4;
+- (CGSize)_prescaledSizeForFinalSize:(CGSize)size withScaleFactor:(double)factor;
 - (UIView)containingView;
 - (void)hide;
-- (void)layerize:(id)a3 color:(id)a4;
+- (void)layerize:(id)layerize color:(id)color;
 - (void)loadView;
-- (void)moveZoomRegion:(CGRect)a3;
+- (void)moveZoomRegion:(CGRect)region;
 - (void)printLayers;
-- (void)setZoomFactor:(double)a3;
+- (void)setZoomFactor:(double)factor;
 - (void)show;
 @end
 
@@ -38,9 +38,9 @@ uint64_t __37__CACZoomController_sharedController__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CACZoomController)initWithContainingView:(id)a3
+- (CACZoomController)initWithContainingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = CACZoomController;
   v5 = [(CACZoomController *)&v8 init];
@@ -48,13 +48,13 @@ uint64_t __37__CACZoomController_sharedController__block_invoke()
   if (v5)
   {
     [(CACZoomController *)v5 setZoomFactor:1.0];
-    [(CACZoomController *)v6 setContainingView:v4];
+    [(CACZoomController *)v6 setContainingView:viewCopy];
   }
 
   return v6;
 }
 
-- (CACZoomController)initWithZoomFactor:(double)a3
+- (CACZoomController)initWithZoomFactor:(double)factor
 {
   v7.receiver = self;
   v7.super_class = CACZoomController;
@@ -62,7 +62,7 @@ uint64_t __37__CACZoomController_sharedController__block_invoke()
   v5 = v4;
   if (v4)
   {
-    [(CACZoomController *)v4 setZoomFactor:a3];
+    [(CACZoomController *)v4 setZoomFactor:factor];
   }
 
   return v5;
@@ -71,33 +71,33 @@ uint64_t __37__CACZoomController_sharedController__block_invoke()
 - (void)loadView
 {
   v3 = [CACZoomMainView alloc];
-  v4 = [(CACZoomController *)self containingView];
-  [v4 frame];
+  containingView = [(CACZoomController *)self containingView];
+  [containingView frame];
   v5 = [(CACZoomMainView *)v3 initWithFrame:?];
   [(CACZoomController *)self setView:v5];
 
-  v6 = [(CACZoomController *)self containingView];
-  [v6 size];
+  containingView2 = [(CACZoomController *)self containingView];
+  [containingView2 size];
   v8 = v7 * 0.5;
-  v9 = [(CACZoomController *)self containingView];
-  [v9 size];
+  containingView3 = [(CACZoomController *)self containingView];
+  [containingView3 size];
   v11 = v10 * 0.5;
-  v12 = [(CACZoomController *)self view];
-  [v12 setPosition:{v8, v11}];
+  view = [(CACZoomController *)self view];
+  [view setPosition:{v8, v11}];
 
-  v13 = [(CACZoomController *)self view];
-  v14 = [v13 layer];
-  [v14 setNeedsDisplayOnBoundsChange:1];
+  view2 = [(CACZoomController *)self view];
+  layer = [view2 layer];
+  [layer setNeedsDisplayOnBoundsChange:1];
 
   v15 = objc_alloc(MEMORY[0x277D75D18]);
-  v16 = [(CACZoomController *)self view];
-  [v16 bounds];
+  view3 = [(CACZoomController *)self view];
+  [view3 bounds];
   v17 = [v15 initWithFrame:?];
 
   v18 = objc_alloc_init(MEMORY[0x277CD9F48]);
   [v18 setAllowsHitTesting:0];
-  v19 = [(CACZoomController *)self view];
-  [v19 frame];
+  view4 = [(CACZoomController *)self view];
+  [view4 frame];
   [v18 setFrame:?];
 
   [v17 bounds];
@@ -115,16 +115,16 @@ uint64_t __37__CACZoomController_sharedController__block_invoke()
   [(CACZoomController *)self zoomFactor];
   [v20 setCornerRadius:v21 / v22];
   [(CACZoomController *)self setZoomedRegionBackdropLayer:v20];
-  v23 = [(CACZoomController *)self dockedReplicatorLayer];
-  [v23 addSublayer:v20];
+  dockedReplicatorLayer = [(CACZoomController *)self dockedReplicatorLayer];
+  [dockedReplicatorLayer addSublayer:v20];
 
-  v24 = [v17 layer];
-  [v24 addSublayer:v18];
+  layer2 = [v17 layer];
+  [layer2 addSublayer:v18];
 
-  v25 = [(CACZoomController *)self view];
-  [v25 addSubview:v17];
+  view5 = [(CACZoomController *)self view];
+  [view5 addSubview:v17];
 
-  v26 = [(CACZoomController *)self dockedReplicatorLayer];
+  dockedReplicatorLayer2 = [(CACZoomController *)self dockedReplicatorLayer];
   v27 = *(MEMORY[0x277CD9DE8] + 80);
   v34[4] = *(MEMORY[0x277CD9DE8] + 64);
   v34[5] = v27;
@@ -137,36 +137,36 @@ uint64_t __37__CACZoomController_sharedController__block_invoke()
   v30 = *(MEMORY[0x277CD9DE8] + 48);
   v34[2] = *(MEMORY[0x277CD9DE8] + 32);
   v34[3] = v30;
-  [v26 setTransform:v34];
+  [dockedReplicatorLayer2 setTransform:v34];
 
   v31 = [CACZWLensChromeView alloc];
   v32 = [(CACZWLensChromeView *)v31 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(CACZoomController *)self setLensChromeView:v32];
   [(CACZWLensChromeView *)v32 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [(CACZoomController *)self view];
-  [v33 addSubview:v32];
+  view6 = [(CACZoomController *)self view];
+  [view6 addSubview:v32];
 }
 
 - (void)show
 {
-  v2 = [(CACZoomController *)self view];
-  [v2 setAlpha:1.0];
+  view = [(CACZoomController *)self view];
+  [view setAlpha:1.0];
 }
 
 - (void)hide
 {
-  v2 = [(CACZoomController *)self view];
-  [v2 setAlpha:0.0];
+  view = [(CACZoomController *)self view];
+  [view setAlpha:0.0];
 }
 
-- (void)moveZoomRegion:(CGRect)a3
+- (void)moveZoomRegion:(CGRect)region
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __36__CACZoomController_moveZoomRegion___block_invoke;
   v3[3] = &unk_279CEB398;
   v3[4] = self;
-  v4 = a3;
+  regionCopy = region;
   [MEMORY[0x277D75D18] animateWithDuration:v3 animations:0.5];
 }
 
@@ -268,25 +268,25 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
   return [MEMORY[0x277CD9FF0] commit];
 }
 
-- (CGRect)bestDockFromZoomRegion:(CGRect)a3
+- (CGRect)bestDockFromZoomRegion:(CGRect)region
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(CACZoomController *)self zoomFactor:a3.origin.x];
+  height = region.size.height;
+  width = region.size.width;
+  [(CACZoomController *)self zoomFactor:region.origin.x];
   v7 = width * v6;
   v8 = height * v6;
-  v9 = [(CACZoomController *)self view];
-  [v9 center];
+  view = [(CACZoomController *)self view];
+  [view center];
   v11 = v10 - v7 * 0.5;
-  v12 = [(CACZoomController *)self view];
-  [v12 center];
+  view2 = [(CACZoomController *)self view];
+  [view2 center];
   v14 = v13 - v8 * 0.5;
 
-  v15 = [(CACZoomController *)self view];
-  [v15 frame];
+  view3 = [(CACZoomController *)self view];
+  [view3 frame];
   v17 = v16 * 0.9;
-  v18 = [(CACZoomController *)self view];
-  [v18 frame];
+  view4 = [(CACZoomController *)self view];
+  [view4 frame];
   v20 = v19 * 0.9;
 
   if (v7 <= v17)
@@ -334,29 +334,29 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
-  if (self->_zoomFactor != a3)
+  if (self->_zoomFactor != factor)
   {
-    self->_zoomFactor = a3;
+    self->_zoomFactor = factor;
   }
 }
 
-- (CGSize)_prescaledSizeForFinalSize:(CGSize)a3 withScaleFactor:(double)a4
+- (CGSize)_prescaledSizeForFinalSize:(CGSize)size withScaleFactor:(double)factor
 {
-  v4 = a3.width / a4;
-  v5 = a3.height / a4;
+  v4 = size.width / factor;
+  v5 = size.height / factor;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGRect)_effectiveRectForBounds:(CGRect)a3 position:(CGPoint)a4 scaleFactor:(double)a5
+- (CGRect)_effectiveRectForBounds:(CGRect)bounds position:(CGPoint)position scaleFactor:(double)factor
 {
-  v5 = a3.size.width * a5;
-  v6 = a3.size.height * a5;
-  v7 = a4.x - v5 * 0.5;
-  v8 = a4.y - v6 * 0.5;
+  v5 = bounds.size.width * factor;
+  v6 = bounds.size.height * factor;
+  v7 = position.x - v5 * 0.5;
+  v8 = position.y - v6 * 0.5;
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v8;
@@ -364,30 +364,30 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)layerize:(id)a3 color:(id)a4
+- (void)layerize:(id)layerize color:(id)color
 {
-  v5 = a4;
-  v7 = a3;
-  [v7 setBorderWidth:3.0];
-  v6 = [v5 CGColor];
+  colorCopy = color;
+  layerizeCopy = layerize;
+  [layerizeCopy setBorderWidth:3.0];
+  cGColor = [colorCopy CGColor];
 
-  [v7 setBorderColor:{CGColorCreateCopyWithAlpha(v6, 0.3)}];
+  [layerizeCopy setBorderColor:{CGColorCreateCopyWithAlpha(cGColor, 0.3)}];
 }
 
 - (void)printLayers
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v38 = self;
-  v4 = [(CACZoomController *)self view];
-  v5 = [v4 subviews];
+  selfCopy = self;
+  view = [(CACZoomController *)self view];
+  subviews = [view subviews];
 
-  obj = v5;
-  v41 = [v5 countByEnumeratingWithState:&v67 objects:v75 count:16];
+  obj = subviews;
+  v41 = [subviews countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v41)
   {
     v40 = *v68;
@@ -403,16 +403,16 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
 
         v42 = v6;
         v7 = *(*(&v67 + 1) + 8 * v6);
-        [v3 appendFormat:@"\n %@", v7];
+        [string appendFormat:@"\n %@", v7];
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v8 = [v7 layer];
-        v9 = [v8 sublayers];
+        layer = [v7 layer];
+        sublayers = [layer sublayers];
 
-        v43 = v9;
-        v47 = [v9 countByEnumeratingWithState:&v63 objects:v74 count:16];
+        v43 = sublayers;
+        v47 = [sublayers countByEnumeratingWithState:&v63 objects:v74 count:16];
         if (v47)
         {
           v45 = *v64;
@@ -433,21 +433,21 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
               v49 = v10;
               if (objc_opt_isKindOfClass())
               {
-                v13 = [v11 groupName];
-                [v3 appendFormat:@"\n\t %@, frame: %@, name: %@", v11, v12, v13];
+                groupName = [v11 groupName];
+                [string appendFormat:@"\n\t %@, frame: %@, name: %@", v11, v12, groupName];
               }
 
               else
               {
-                [v3 appendFormat:@"\n\t %@, frame: %@, name: %@", v11, v12, @"N/A"];
+                [string appendFormat:@"\n\t %@, frame: %@, name: %@", v11, v12, @"N/A"];
               }
 
               v61 = 0u;
               v62 = 0u;
               v59 = 0u;
               v60 = 0u;
-              v14 = [v11 sublayers];
-              v15 = [v14 countByEnumeratingWithState:&v59 objects:v73 count:16];
+              sublayers2 = [v11 sublayers];
+              v15 = [sublayers2 countByEnumeratingWithState:&v59 objects:v73 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -458,7 +458,7 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
                   {
                     if (*v60 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(sublayers2);
                     }
 
                     v19 = *(*(&v59 + 1) + 8 * i);
@@ -467,17 +467,17 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v21 = [v19 groupName];
-                      [v3 appendFormat:@"\n\t\t %@, frame: %@ name: %@", v19, v20, v21];
+                      groupName2 = [v19 groupName];
+                      [string appendFormat:@"\n\t\t %@, frame: %@ name: %@", v19, v20, groupName2];
                     }
 
                     else
                     {
-                      [v3 appendFormat:@"\n\t\t %@, frame: %@ name: %@", v19, v20, @"N/A"];
+                      [string appendFormat:@"\n\t\t %@, frame: %@ name: %@", v19, v20, @"N/A"];
                     }
                   }
 
-                  v16 = [v14 countByEnumeratingWithState:&v59 objects:v73 count:16];
+                  v16 = [sublayers2 countByEnumeratingWithState:&v59 objects:v73 count:16];
                 }
 
                 while (v16);
@@ -503,19 +503,19 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
     while (v41);
   }
 
-  v22 = [(CACZoomController *)v38 view];
-  [v3 appendFormat:@"\n %@", v22];
+  view2 = [(CACZoomController *)selfCopy view];
+  [string appendFormat:@"\n %@", view2];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v23 = [(CACZoomController *)v38 view];
-  v24 = [v23 layer];
-  v25 = [v24 sublayers];
+  view3 = [(CACZoomController *)selfCopy view];
+  layer2 = [view3 layer];
+  sublayers3 = [layer2 sublayers];
 
-  v44 = v25;
-  v48 = [v25 countByEnumeratingWithState:&v55 objects:v72 count:16];
+  v44 = sublayers3;
+  v48 = [sublayers3 countByEnumeratingWithState:&v55 objects:v72 count:16];
   if (v48)
   {
     v46 = *v56;
@@ -536,21 +536,21 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
         v50 = v26;
         if (objc_opt_isKindOfClass())
         {
-          v29 = [v27 groupName];
-          [v3 appendFormat:@"\n\t %@, frame: %@, name: %@", v27, v28, v29];
+          groupName3 = [v27 groupName];
+          [string appendFormat:@"\n\t %@, frame: %@, name: %@", v27, v28, groupName3];
         }
 
         else
         {
-          [v3 appendFormat:@"\n\t %@, frame: %@, name: %@", v27, v28, @"N/A"];
+          [string appendFormat:@"\n\t %@, frame: %@, name: %@", v27, v28, @"N/A"];
         }
 
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v30 = [v27 sublayers];
-        v31 = [v30 countByEnumeratingWithState:&v51 objects:v71 count:16];
+        sublayers4 = [v27 sublayers];
+        v31 = [sublayers4 countByEnumeratingWithState:&v51 objects:v71 count:16];
         if (v31)
         {
           v32 = v31;
@@ -561,7 +561,7 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
             {
               if (*v52 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(sublayers4);
               }
 
               v35 = *(*(&v51 + 1) + 8 * j);
@@ -570,17 +570,17 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v37 = [v35 groupName];
-                [v3 appendFormat:@"\n\t\t %@, frame: %@ name: %@", v35, v36, v37];
+                groupName4 = [v35 groupName];
+                [string appendFormat:@"\n\t\t %@, frame: %@ name: %@", v35, v36, groupName4];
               }
 
               else
               {
-                [v3 appendFormat:@"\n\t\t %@, frame: %@ name: %@", v35, v36, @"N/A"];
+                [string appendFormat:@"\n\t\t %@, frame: %@ name: %@", v35, v36, @"N/A"];
               }
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v51 objects:v71 count:16];
+            v32 = [sublayers4 countByEnumeratingWithState:&v51 objects:v71 count:16];
           }
 
           while (v32);
@@ -596,7 +596,7 @@ uint64_t __36__CACZoomController_moveZoomRegion___block_invoke(uint64_t a1)
     while (v48);
   }
 
-  NSLog(&stru_287BDCAB0.isa, v3);
+  NSLog(&stru_287BDCAB0.isa, string);
 }
 
 - (CGRect)zoomedRegionFrame

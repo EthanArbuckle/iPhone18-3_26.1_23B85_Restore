@@ -1,29 +1,29 @@
 @interface SSVMediaContentTasteUpdateRequest
-- (SSVMediaContentTasteUpdateRequest)initWithXPCEncoding:(id)a3;
+- (SSVMediaContentTasteUpdateRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithResponseBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithResponseBlock:(id)block;
 @end
 
 @implementation SSVMediaContentTasteUpdateRequest
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__SSVMediaContentTasteUpdateRequest_startWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E84B0E60;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSVMediaContentTasteUpdateRequest *)self startWithResponseBlock:v6];
 }
 
-- (SSVMediaContentTasteUpdateRequest)initWithXPCEncoding:(id)a3
+- (SSVMediaContentTasteUpdateRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v16.receiver = self;
     v16.super_class = SSVMediaContentTasteUpdateRequest;
@@ -112,10 +112,10 @@ uint64_t __57__SSVMediaContentTasteUpdateRequest_initWithXPCEncoding___block_inv
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) copyXPCEncoding];
-        if (v10)
+        copyXPCEncoding = [*(*(&v12 + 1) + 8 * v9) copyXPCEncoding];
+        if (copyXPCEncoding)
         {
-          xpc_array_append_value(v4, v10);
+          xpc_array_append_value(v4, copyXPCEncoding);
         }
 
         ++v9;
@@ -134,10 +134,10 @@ uint64_t __57__SSVMediaContentTasteUpdateRequest_initWithXPCEncoding___block_inv
   return v3;
 }
 
-- (void)startWithResponseBlock:(id)a3
+- (void)startWithResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -146,19 +146,19 @@ uint64_t __57__SSVMediaContentTasteUpdateRequest_initWithXPCEncoding___block_inv
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -182,9 +182,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -196,8 +196,8 @@ LABEL_16:
   v19[2] = __60__SSVMediaContentTasteUpdateRequest_startWithResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:163 messageBlock:v19];
 }
 

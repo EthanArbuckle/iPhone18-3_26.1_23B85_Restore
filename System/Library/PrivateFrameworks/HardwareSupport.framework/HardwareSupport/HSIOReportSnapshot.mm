@@ -1,21 +1,21 @@
 @interface HSIOReportSnapshot
-+ (id)report:(id *)a3;
-+ (id)reportWithOnlySimpleChannels:(id *)a3;
-+ (id)snapshotReport:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSnapshot:(id)a3;
-- (HSIOReportSnapshot)snapshotWithBaseline:(id)a3 error:(id *)a4;
++ (id)report:(id *)report;
++ (id)reportWithOnlySimpleChannels:(id *)channels;
++ (id)snapshotReport:(id)report error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSnapshot:(id)snapshot;
+- (HSIOReportSnapshot)snapshotWithBaseline:(id)baseline error:(id *)error;
 - (NSArray)samples;
 - (id)reportWithOnlySimpleChannels;
-- (id)snapshotByFilteringSamples:(id)a3;
+- (id)snapshotByFilteringSamples:(id)samples;
 - (unint64_t)hash;
 @end
 
 @implementation HSIOReportSnapshot
 
-+ (id)snapshotReport:(id)a3 error:(id *)a4
++ (id)snapshotReport:(id)report error:(id *)error
 {
-  v6 = [a3 reportDictionary];
+  reportDictionary = [report reportDictionary];
   Subscription = IOReportCreateSubscription();
 
   if (Subscription)
@@ -24,7 +24,7 @@
     CFRelease(Subscription);
     if (Samples)
     {
-      v9 = [a1 alloc];
+      v9 = [self alloc];
       v10 = [Samples copy];
       v11 = [v9 initWithReportDictionary:v10];
     }
@@ -32,11 +32,11 @@
     else
     {
       v10 = 0;
-      if (a4)
+      if (error)
       {
         v13 = 0;
         v11 = 0;
-        *a4 = 0;
+        *error = 0;
       }
 
       else
@@ -49,11 +49,11 @@
   else
   {
     Samples = 0;
-    if (a4)
+    if (error)
     {
       v12 = 0;
       v11 = 0;
-      *a4 = 0;
+      *error = 0;
     }
 
     else
@@ -65,14 +65,14 @@
   return v11;
 }
 
-+ (id)report:(id *)a3
++ (id)report:(id *)report
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HSIOReportSnapshot;
   v4 = objc_msgSendSuper2(&v7, sel_report_);
   if (v4)
   {
-    v5 = [objc_opt_class() snapshotReport:v4 error:a3];
+    v5 = [objc_opt_class() snapshotReport:v4 error:report];
   }
 
   else
@@ -85,16 +85,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HSIOReportSnapshot *)self samples];
-  v3 = [v2 hash];
+  samples = [(HSIOReportSnapshot *)self samples];
+  v3 = [samples hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -102,25 +102,25 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSIOReportSnapshot *)self isEqualToSnapshot:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSIOReportSnapshot *)self isEqualToSnapshot:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSnapshot:(id)a3
+- (BOOL)isEqualToSnapshot:(id)snapshot
 {
-  v4 = [a3 samples];
-  v5 = [(HSIOReportSnapshot *)self samples];
-  v6 = [v4 isEqualToArray:v5];
+  samples = [snapshot samples];
+  samples2 = [(HSIOReportSnapshot *)self samples];
+  v6 = [samples isEqualToArray:samples2];
 
   return v6;
 }
 
-- (HSIOReportSnapshot)snapshotWithBaseline:(id)a3 error:(id *)a4
+- (HSIOReportSnapshot)snapshotWithBaseline:(id)baseline error:(id *)error
 {
-  v6 = [a3 reportDictionary];
-  v7 = [(HSIOReport *)self reportDictionary];
+  reportDictionary = [baseline reportDictionary];
+  reportDictionary2 = [(HSIOReport *)self reportDictionary];
   SamplesDelta = IOReportCreateSamplesDelta();
 
   if (SamplesDelta)
@@ -133,11 +133,11 @@
   else
   {
     v10 = 0;
-    if (a4)
+    if (error)
     {
       v12 = 0;
       v11 = 0;
-      *a4 = 0;
+      *error = 0;
     }
 
     else
@@ -154,10 +154,10 @@
   samples = self->_samples;
   if (!samples)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HSIOReport *)self reportDictionary];
-    v10 = v4;
-    v6 = v4;
+    array = [MEMORY[0x277CBEB18] array];
+    reportDictionary = [(HSIOReport *)self reportDictionary];
+    v10 = array;
+    v6 = array;
     IOReportIterate();
 
     v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_177];
@@ -191,16 +191,16 @@ uint64_t __29__HSIOReportSnapshot_samples__block_invoke_2(uint64_t a1, void *a2,
   return v9;
 }
 
-- (id)snapshotByFilteringSamples:(id)a3
+- (id)snapshotByFilteringSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   v5 = [(HSIOReportSnapshot *)self copy];
-  v6 = [v5 reportDictionary];
-  v7 = [v6 mutableCopy];
+  reportDictionary = [v5 reportDictionary];
+  v7 = [reportDictionary mutableCopy];
 
-  v8 = [(HSIOReport *)self reportDictionary];
-  v14 = v4;
-  v9 = v4;
+  reportDictionary2 = [(HSIOReport *)self reportDictionary];
+  v14 = samplesCopy;
+  v9 = samplesCopy;
   IOReportPrune();
 
   v10 = objc_alloc(objc_opt_class());
@@ -226,14 +226,14 @@ uint64_t __49__HSIOReportSnapshot_snapshotByFilteringSamples___block_invoke(uint
   return v4;
 }
 
-+ (id)reportWithOnlySimpleChannels:(id *)a3
++ (id)reportWithOnlySimpleChannels:(id *)channels
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HSIOReportSnapshot;
   v4 = objc_msgSendSuper2(&v7, sel_reportWithOnlySimpleChannels_);
   if (v4)
   {
-    v5 = [objc_opt_class() snapshotReport:v4 error:a3];
+    v5 = [objc_opt_class() snapshotReport:v4 error:channels];
   }
 
   else
@@ -248,9 +248,9 @@ uint64_t __49__HSIOReportSnapshot_snapshotByFilteringSamples___block_invoke(uint
 {
   v4.receiver = self;
   v4.super_class = HSIOReportSnapshot;
-  v2 = [(HSIOReport *)&v4 reportWithOnlySimpleChannels];
+  reportWithOnlySimpleChannels = [(HSIOReport *)&v4 reportWithOnlySimpleChannels];
 
-  return v2;
+  return reportWithOnlySimpleChannels;
 }
 
 @end

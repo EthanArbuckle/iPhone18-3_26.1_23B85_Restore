@@ -5,48 +5,48 @@
 + (id)overrideBootIntentSSID;
 + (id)overrideOSEnvironment;
 + (id)persistedBootIntentReason;
-+ (id)preferencesValueforKey:(__CFString *)a3 domain:(__CFString *)a4;
++ (id)preferencesValueforKey:(__CFString *)key domain:(__CFString *)domain;
 + (id)remoteSetupClientAuthDirection;
 + (id)remoteSetupClientAuthType;
-+ (void)setOverrideBootIntentLocale:(id)a3;
-+ (void)setOverrideBootIntentPassword:(id)a3;
-+ (void)setOverrideBootIntentReason:(id)a3;
-+ (void)setOverrideBootIntentSSID:(id)a3;
-+ (void)setOverrideOSEnvironment:(id)a3;
-+ (void)setPersistedBootIntentReason:(id)a3;
-+ (void)setPreferencesValue:(id)a3 key:(__CFString *)a4 domain:(__CFString *)a5;
-+ (void)setRemoteSetupClientAuthDirection:(id)a3;
-+ (void)setRemoteSetupClientAuthType:(id)a3;
++ (void)setOverrideBootIntentLocale:(id)locale;
++ (void)setOverrideBootIntentPassword:(id)password;
++ (void)setOverrideBootIntentReason:(id)reason;
++ (void)setOverrideBootIntentSSID:(id)d;
++ (void)setOverrideOSEnvironment:(id)environment;
++ (void)setPersistedBootIntentReason:(id)reason;
++ (void)setPreferencesValue:(id)value key:(__CFString *)key domain:(__CFString *)domain;
++ (void)setRemoteSetupClientAuthDirection:(id)direction;
++ (void)setRemoteSetupClientAuthType:(id)type;
 @end
 
 @implementation CBInternalSettings
 
-+ (void)setPreferencesValue:(id)a3 key:(__CFString *)a4 domain:(__CFString *)a5
++ (void)setPreferencesValue:(id)value key:(__CFString *)key domain:(__CFString *)domain
 {
-  CFPreferencesSetValue(a4, a3, a5, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  CFPreferencesSetValue(key, value, domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
-  CFPreferencesSynchronize(a5, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  CFPreferencesSynchronize(domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-+ (id)preferencesValueforKey:(__CFString *)a3 domain:(__CFString *)a4
++ (id)preferencesValueforKey:(__CFString *)key domain:(__CFString *)domain
 {
-  CFPreferencesAppSynchronize(a4);
-  v6 = CFPreferencesCopyAppValue(a3, a4);
+  CFPreferencesAppSynchronize(domain);
+  v6 = CFPreferencesCopyAppValue(key, domain);
 
   return v6;
 }
 
-+ (void)setRemoteSetupClientAuthDirection:(id)a3
++ (void)setRemoteSetupClientAuthDirection:(id)direction
 {
-  v4 = a3;
-  if ([v4 isEqualToNumber:&off_1000810F0])
+  directionCopy = direction;
+  if ([directionCopy isEqualToNumber:&off_1000810F0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = directionCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"PreferClientSideAuth" domain:@"com.apple.CheckerBoard"];
@@ -69,17 +69,17 @@
   return v4;
 }
 
-+ (void)setRemoteSetupClientAuthType:(id)a3
++ (void)setRemoteSetupClientAuthType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToNumber:&off_1000810F0])
+  typeCopy = type;
+  if ([typeCopy isEqualToNumber:&off_1000810F0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = typeCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"PreferredClientSideAuthType" domain:@"com.apple.CheckerBoard"];
@@ -102,17 +102,17 @@
   return v4;
 }
 
-+ (void)setPersistedBootIntentReason:(id)a3
++ (void)setPersistedBootIntentReason:(id)reason
 {
-  v4 = a3;
-  if ([v4 isEqualToNumber:&off_1000810F0])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToNumber:&off_1000810F0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = reasonCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"persistedBootIntentReason" domain:@"com.apple.CheckerBoard"];
@@ -135,17 +135,17 @@
   return v4;
 }
 
-+ (void)setOverrideBootIntentReason:(id)a3
++ (void)setOverrideBootIntentReason:(id)reason
 {
-  v4 = a3;
-  if ([v4 isEqualToNumber:&off_1000810F0])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToNumber:&off_1000810F0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = reasonCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"overrideBootIntentReason" domain:@"com.apple.CheckerBoard"];
@@ -168,17 +168,17 @@
   return v4;
 }
 
-+ (void)setOverrideBootIntentLocale:(id)a3
++ (void)setOverrideBootIntentLocale:(id)locale
 {
-  v4 = a3;
-  if ([v4 isEqualToString:&stru_10007EAB0])
+  localeCopy = locale;
+  if ([localeCopy isEqualToString:&stru_10007EAB0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = localeCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"overrideBootIntentLocale" domain:@"com.apple.CheckerBoard"];
@@ -201,17 +201,17 @@
   return v4;
 }
 
-+ (void)setOverrideBootIntentSSID:(id)a3
++ (void)setOverrideBootIntentSSID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqualToString:&stru_10007EAB0])
+  dCopy = d;
+  if ([dCopy isEqualToString:&stru_10007EAB0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = dCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"overrideBootIntentSSID" domain:@"com.apple.CheckerBoard"];
@@ -234,17 +234,17 @@
   return v4;
 }
 
-+ (void)setOverrideBootIntentPassword:(id)a3
++ (void)setOverrideBootIntentPassword:(id)password
 {
-  v4 = a3;
-  if ([v4 isEqualToString:&stru_10007EAB0])
+  passwordCopy = password;
+  if ([passwordCopy isEqualToString:&stru_10007EAB0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = passwordCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"overrideBootIntentPassword" domain:@"com.apple.CheckerBoard"];
@@ -267,17 +267,17 @@
   return v4;
 }
 
-+ (void)setOverrideOSEnvironment:(id)a3
++ (void)setOverrideOSEnvironment:(id)environment
 {
-  v4 = a3;
-  if ([v4 isEqualToString:&stru_10007EAB0])
+  environmentCopy = environment;
+  if ([environmentCopy isEqualToString:&stru_10007EAB0])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v4;
+    v3 = environmentCopy;
   }
 
   [CBInternalSettings setPreferencesValue:v3 key:@"overrideOSEnvironment" domain:@"com.apple.CheckerBoard"];

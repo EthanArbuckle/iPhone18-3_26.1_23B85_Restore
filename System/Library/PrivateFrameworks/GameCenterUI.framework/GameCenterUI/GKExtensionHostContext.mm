@@ -1,20 +1,20 @@
 @interface GKExtensionHostContext
 - (GKExtensionRemoteViewController)remoteViewController;
-- (void)messageFromExtension:(id)a3;
+- (void)messageFromExtension:(id)extension;
 @end
 
 @implementation GKExtensionHostContext
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__GKExtensionHostContext_messageFromExtension___block_invoke;
   v6[3] = &unk_279669E48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = extensionCopy;
+  v5 = extensionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

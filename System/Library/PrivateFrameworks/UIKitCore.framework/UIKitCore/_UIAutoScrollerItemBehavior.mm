@@ -1,33 +1,33 @@
 @interface _UIAutoScrollerItemBehavior
-- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)a3 timeDelta:(id)a4;
+- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)scroller timeDelta:(id)delta;
 @end
 
 @implementation _UIAutoScrollerItemBehavior
 
-- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)a3 timeDelta:(id)a4
+- ($9F891FA3B7BC1BE651A10F4EEBEFFC62)offsetForAutoScroller:(SEL)scroller timeDelta:(id)delta
 {
   retstr->var0.x = 0.0;
   retstr->var0.y = 0.0;
   retstr->var1 = 0;
-  v6 = a4;
-  [v6 point];
+  deltaCopy = delta;
+  [deltaCopy point];
   v8 = v7;
   v10 = v9;
-  [v6 touchInsets];
+  [deltaCopy touchInsets];
   v106 = v10 + v11;
   v108 = v8 + v12;
   v14 = 0.0;
   v15 = 0.0 - (v12 + v13);
   v17 = 0.0 - (v11 + v16);
-  v18 = [v6 scrollView];
-  v19 = [v6 allowedDirections];
+  scrollView = [deltaCopy scrollView];
+  allowedDirections = [deltaCopy allowedDirections];
 
-  [v18 adjustedContentInset];
+  [scrollView adjustedContentInset];
   v21 = fmax(v20, 0.0);
   v23 = fmax(v22, 0.0);
   v25 = fmax(v24, 0.0);
   v27 = fmax(v26, 0.0);
-  [v18 bounds];
+  [scrollView bounds];
   v110 = v23 + v28;
   v30 = v21 + v29;
   v99 = v23;
@@ -38,32 +38,32 @@
   v33 = v21 + v25;
   v34 = v15;
   v36 = v35 - v33;
-  [v18 contentSize];
+  [scrollView contentSize];
   v104 = v37;
   v105 = v38;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63___UIAutoScrollerItemBehavior_offsetForAutoScroller_timeDelta___block_invoke;
   aBlock[3] = &__block_descriptor_40_e73_B72__0_CGRect__CGPoint_dd__CGSize_dd__8_CGRect__CGPoint_dd__CGSize_dd__40l;
-  aBlock[4] = v19;
+  aBlock[4] = allowedDirections;
   v39 = _Block_copy(aBlock);
   v115[0] = MEMORY[0x1E69E9820];
   v115[1] = 3221225472;
   v115[2] = __63___UIAutoScrollerItemBehavior_offsetForAutoScroller_timeDelta___block_invoke_2;
   v115[3] = &__block_descriptor_40_e73_B72__0_CGRect__CGPoint_dd__CGSize_dd__8_CGRect__CGPoint_dd__CGSize_dd__40l;
-  v115[4] = v19;
+  v115[4] = allowedDirections;
   v40 = _Block_copy(v115);
   v114[0] = MEMORY[0x1E69E9820];
   v114[1] = 3221225472;
   v114[2] = __63___UIAutoScrollerItemBehavior_offsetForAutoScroller_timeDelta___block_invoke_3;
   v114[3] = &__block_descriptor_40_e73_B72__0_CGRect__CGPoint_dd__CGSize_dd__8_CGRect__CGPoint_dd__CGSize_dd__40l;
-  v114[4] = v19;
+  v114[4] = allowedDirections;
   v41 = _Block_copy(v114);
   v113[0] = MEMORY[0x1E69E9820];
   v113[1] = 3221225472;
   v113[2] = __63___UIAutoScrollerItemBehavior_offsetForAutoScroller_timeDelta___block_invoke_4;
   v113[3] = &__block_descriptor_40_e73_B72__0_CGRect__CGPoint_dd__CGSize_dd__8_CGRect__CGPoint_dd__CGSize_dd__40l;
-  v113[4] = v19;
+  v113[4] = allowedDirections;
   v42 = _Block_copy(v113);
   rect = v17;
   v43 = v17;
@@ -277,13 +277,13 @@ LABEL_29:
 
 LABEL_35:
   recta = v72;
-  v80 = [v18 isPagingEnabled];
-  [v18 contentOffset];
+  isPagingEnabled = [scrollView isPagingEnabled];
+  [scrollView contentOffset];
   v82 = v81;
   v84 = v83;
-  if (v80)
+  if (isPagingEnabled)
   {
-    [v18 contentSize];
+    [scrollView contentSize];
     v107 = v85;
     v109 = v86;
     v131.origin.x = v45;

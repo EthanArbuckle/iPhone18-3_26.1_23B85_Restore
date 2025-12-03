@@ -1,7 +1,7 @@
 @interface LACSharedModeDataSourceDefaultsDecorator
 - (BOOL)_shouldUseMockedResponse;
-- (LACSharedModeDataSourceDefaultsDecorator)initWithDataSource:(id)a3 replyQueue:(id)a4;
-- (void)fetchSharedModeWithOptions:(id)a3 completion:(id)a4;
+- (LACSharedModeDataSourceDefaultsDecorator)initWithDataSource:(id)source replyQueue:(id)queue;
+- (void)fetchSharedModeWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation LACSharedModeDataSourceDefaultsDecorator
@@ -19,42 +19,42 @@
   return v3;
 }
 
-- (LACSharedModeDataSourceDefaultsDecorator)initWithDataSource:(id)a3 replyQueue:(id)a4
+- (LACSharedModeDataSourceDefaultsDecorator)initWithDataSource:(id)source replyQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACSharedModeDataSourceDefaultsDecorator;
   v9 = [(LACSharedModeDataSourceDefaultsDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_replyQueue, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_replyQueue, queue);
   }
 
   return v10;
 }
 
-- (void)fetchSharedModeWithOptions:(id)a3 completion:(id)a4
+- (void)fetchSharedModeWithOptions:(id)options completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   if ([(LACSharedModeDataSourceDefaultsDecorator *)self _shouldUseMockedResponse])
   {
     v8 = LACLogSharedMode();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
     }
 
     v9 = +[LACGlobalDomain isSharedModeActive];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    v11 = [[LACSharedMode alloc] initWithActive:v10 confirmed:0];
+    v11 = [[LACSharedMode alloc] initWithActive:bOOLValue confirmed:0];
     v12 = +[LACGlobalDomain sharedModeLatency];
     [v12 doubleValue];
     v14 = v13;
@@ -67,14 +67,14 @@
     block[3] = &unk_1E7A953B0;
     block[4] = self;
     v20 = v11;
-    v21 = v7;
+    v21 = completionCopy;
     v17 = v11;
     dispatch_after(v15, replyQueue, block);
   }
 
   else
   {
-    [(LACSharedModeDataSource *)self->_dataSource fetchSharedModeWithOptions:v6 completion:v7];
+    [(LACSharedModeDataSource *)self->_dataSource fetchSharedModeWithOptions:optionsCopy completion:completionCopy];
   }
 
   v18 = *MEMORY[0x1E69E9840];

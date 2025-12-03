@@ -1,8 +1,8 @@
 @interface ReviewCycleFactorsEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (void)setEventName:(id)a3;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (void)setEventName:(id)name;
 @end
 
 @implementation ReviewCycleFactorsEvent
@@ -15,13 +15,13 @@
   return v2;
 }
 
-- (void)setEventName:(id)a3
+- (void)setEventName:(id)name
 {
   *(self + 2) = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   *(self + 3) = v4;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   sub_29E1853E0(MEMORY[0x29EDCA190]);
   v4 = sub_29E2C31F4();
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  sub_29DED0768(v4);
+  sub_29DED0768(sourceCopy);
 
   v5 = sub_29E2C31F4();
 

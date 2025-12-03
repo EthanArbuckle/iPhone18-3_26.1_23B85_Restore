@@ -1,44 +1,44 @@
 @interface INSpeakableString
-- (BOOL)isEqual:(id)a3;
-- (INSpeakableString)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INSpeakableString)initWithCoder:(id)coder;
 - (INSpeakableString)initWithVocabularyIdentifier:(NSString *)vocabularyIdentifier spokenPhrase:(NSString *)spokenPhrase pronunciationHint:(NSString *)pronunciationHint;
 - (NSString)description;
 - (id)_effectiveNSStringValue;
-- (id)_initWithVocabularyIdentifier:(id)a3 spokenPhrase:(id)a4 pronunciationHint:(id)a5 alternativeMatches:(id)a6;
-- (id)_intents_localizedCopyWithLocalizer:(id)a3;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithVocabularyIdentifier:(id)identifier spokenPhrase:(id)phrase pronunciationHint:(id)hint alternativeMatches:(id)matches;
+- (id)_intents_localizedCopyWithLocalizer:(id)localizer;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)spokenPhrases;
 - (unint64_t)hash;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSpeakableString
 
-- (id)_intents_localizedCopyWithLocalizer:(id)a3
+- (id)_intents_localizedCopyWithLocalizer:(id)localizer
 {
-  v4 = a3;
+  localizerCopy = localizer;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(INSpeakableString *)self vocabularyIdentifier];
-  v7 = [(INSpeakableString *)self spokenPhrase];
-  v8 = [v4 languageCode];
+  vocabularyIdentifier = [(INSpeakableString *)self vocabularyIdentifier];
+  spokenPhrase = [(INSpeakableString *)self spokenPhrase];
+  languageCode = [localizerCopy languageCode];
 
-  v9 = [v7 localizeForLanguage:v8];
-  v10 = [(INSpeakableString *)self pronunciationHint];
-  v11 = [v5 initWithVocabularyIdentifier:v6 spokenPhrase:v9 pronunciationHint:v10];
+  v9 = [spokenPhrase localizeForLanguage:languageCode];
+  pronunciationHint = [(INSpeakableString *)self pronunciationHint];
+  v11 = [v5 initWithVocabularyIdentifier:vocabularyIdentifier spokenPhrase:v9 pronunciationHint:pronunciationHint];
 
   return v11;
 }
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INSpeakableString *)self spokenPhrase];
-  v7 = [v5 languageCode];
+  localizerCopy = localizer;
+  spokenPhrase = [(INSpeakableString *)self spokenPhrase];
+  languageCode = [localizerCopy languageCode];
 
-  v8 = [v6 localizeForLanguage:v7];
+  v8 = [spokenPhrase localizeForLanguage:languageCode];
 
   return v8;
 }
@@ -46,8 +46,8 @@
 - (id)spokenPhrases
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(INSpeakableString *)self spokenPhrase];
-  v6[0] = v2;
+  spokenPhrase = [(INSpeakableString *)self spokenPhrase];
+  v6[0] = spokenPhrase;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -66,50 +66,50 @@
   return spokenPhrase;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vocabularyIdentifier = self->_vocabularyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:vocabularyIdentifier forKey:@"vocabularyIdentifier"];
-  [v5 encodeObject:self->_spokenPhrase forKey:@"spokenPhrase"];
-  [v5 encodeObject:self->_pronunciationHint forKey:@"pronunciationHint"];
+  coderCopy = coder;
+  [coderCopy encodeObject:vocabularyIdentifier forKey:@"vocabularyIdentifier"];
+  [coderCopy encodeObject:self->_spokenPhrase forKey:@"spokenPhrase"];
+  [coderCopy encodeObject:self->_pronunciationHint forKey:@"pronunciationHint"];
 }
 
-- (INSpeakableString)initWithCoder:(id)a3
+- (INSpeakableString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vocabularyIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vocabularyIdentifier"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"spokenPhrase"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"spokenPhrase"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"pronunciationHint"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"pronunciationHint"];
 
   v14 = [(INSpeakableString *)self initWithVocabularyIdentifier:v5 spokenPhrase:v9 pronunciationHint:v13];
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   vocabularyIdentifier = self->_vocabularyIdentifier;
   v6 = self->_spokenPhrase;
   v7 = vocabularyIdentifier;
-  v8 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithVocabularyIdentifier:spokenPhrase:pronunciationHint:", v7, v6, self->_pronunciationHint}];
+  v8 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithVocabularyIdentifier:spokenPhrase:pronunciationHint:", v7, v6, self->_pronunciationHint}];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     vocabularyIdentifier = self->_vocabularyIdentifier;
     v12 = 0;
@@ -142,18 +142,18 @@
   return [(NSString *)self->_spokenPhrase hash]^ (v3 >> 32);
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  v4 = [(INSpeakableString *)self _effectiveNSStringValue];
-  LOWORD(a3) = [v4 characterAtIndex:a3];
+  _effectiveNSStringValue = [(INSpeakableString *)self _effectiveNSStringValue];
+  LOWORD(index) = [_effectiveNSStringValue characterAtIndex:index];
 
-  return a3;
+  return index;
 }
 
 - (unint64_t)length
 {
-  v2 = [(INSpeakableString *)self _effectiveNSStringValue];
-  v3 = [v2 length];
+  _effectiveNSStringValue = [(INSpeakableString *)self _effectiveNSStringValue];
+  v3 = [_effectiveNSStringValue length];
 
   return v3;
 }
@@ -169,14 +169,14 @@
   return vocabularyIdentifier;
 }
 
-- (id)_initWithVocabularyIdentifier:(id)a3 spokenPhrase:(id)a4 pronunciationHint:(id)a5 alternativeMatches:(id)a6
+- (id)_initWithVocabularyIdentifier:(id)identifier spokenPhrase:(id)phrase pronunciationHint:(id)hint alternativeMatches:(id)matches
 {
-  v11 = a6;
-  v12 = [(INSpeakableString *)self initWithVocabularyIdentifier:a3 spokenPhrase:a4 pronunciationHint:a5];
+  matchesCopy = matches;
+  v12 = [(INSpeakableString *)self initWithVocabularyIdentifier:identifier spokenPhrase:phrase pronunciationHint:hint];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_alternativeSpeakableMatches, a6);
+    objc_storeStrong(&v12->_alternativeSpeakableMatches, matches);
   }
 
   return v13;

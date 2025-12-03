@@ -1,42 +1,42 @@
 @interface BENavigationHandler
-- (BENavigationHandler)initWithMode:(unint64_t)a3;
+- (BENavigationHandler)initWithMode:(unint64_t)mode;
 - (BENavigationHandlerDelegate)delegate;
-- (BOOL)_navigationIsUserInitiatedAndNotYetApproved:(id)a3;
+- (BOOL)_navigationIsUserInitiatedAndNotYetApproved:(id)approved;
 - (WKWebView)webView;
 - (id)allObservers;
 - (void)_cancelProvisionalLoadTimeout;
 - (void)_cancelReloadTimeout;
 - (void)_cancelTimeout;
 - (void)_contentLoadTimeout;
-- (void)_decidePolicyForFootnoteOrPreviewNavigationAction:(id)a3 shouldObserveProvisionalLoadTimeout:(BOOL *)a4 webView:(id)a5 decisionHandler:(id)a6;
+- (void)_decidePolicyForFootnoteOrPreviewNavigationAction:(id)action shouldObserveProvisionalLoadTimeout:(BOOL *)timeout webView:(id)view decisionHandler:(id)handler;
 - (void)_notifyLoadCompleteIfNecessary;
-- (void)_notifyLoadFailureError:(id)a3 completion:(id)a4;
+- (void)_notifyLoadFailureError:(id)error completion:(id)completion;
 - (void)_provisionalLoadTimeout;
 - (void)_reloadTimeout;
 - (void)_startContentLoadTimeout;
 - (void)_startReloadTimeout;
-- (void)_webView:(id)a3 contentFailedToLoadWithReason:(unint64_t)a4;
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4;
-- (void)_webView:(id)a3 webContentProcessDidTerminateWithReason:(int64_t)a4;
-- (void)addObserver:(id)a3;
+- (void)_webView:(id)view contentFailedToLoadWithReason:(unint64_t)reason;
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change;
+- (void)_webView:(id)view webContentProcessDidTerminateWithReason:(int64_t)reason;
+- (void)addObserver:(id)observer;
 - (void)attemptReload;
 - (void)dealloc;
-- (void)performAfterLoadCompleteOrFailure:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)performAfterLoadCompleteOrFailure:(id)failure;
+- (void)removeObserver:(id)observer;
 - (void)requestCancelationOfCurrentNavigation;
-- (void)setDelegate:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
 @end
 
 @implementation BENavigationHandler
 
-- (BENavigationHandler)initWithMode:(unint64_t)a3
+- (BENavigationHandler)initWithMode:(unint64_t)mode
 {
   v10.receiver = self;
   v10.super_class = BENavigationHandler;
@@ -47,7 +47,7 @@
     approvalCache = v4->_approvalCache;
     v4->_approvalCache = v5;
 
-    v4->_mode = a3;
+    v4->_mode = mode;
     v7 = +[NSHashTable weakObjectsHashTable];
     observers = v4->__observers;
     v4->__observers = v7;
@@ -70,22 +70,22 @@
   [(BENavigationHandler *)&v3 dealloc];
 }
 
-- (void)performAfterLoadCompleteOrFailure:(id)a3
+- (void)performAfterLoadCompleteOrFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   postLoadCompleteOrFailureWork = self->_postLoadCompleteOrFailureWork;
-  v10 = v4;
+  v10 = failureCopy;
   if (!postLoadCompleteOrFailureWork)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_postLoadCompleteOrFailureWork;
     self->_postLoadCompleteOrFailureWork = v6;
 
-    v4 = v10;
+    failureCopy = v10;
     postLoadCompleteOrFailureWork = self->_postLoadCompleteOrFailureWork;
   }
 
-  v8 = [v4 copy];
+  v8 = [failureCopy copy];
   v9 = objc_retainBlock(v8);
   [(NSMutableArray *)postLoadCompleteOrFailureWork addObject:v9];
 }
@@ -96,8 +96,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BENavigationHandler *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BENavigationHandler *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -109,7 +109,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -122,37 +122,37 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1B318;
   v5[3] = &unk_328358;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_accessLock);
+  selfCopy = self;
+  observerCopy = observer;
+  v4 = observerCopy;
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   sub_1B318(v5);
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1B474;
   v5[3] = &unk_328358;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_accessLock);
+  selfCopy = self;
+  observerCopy = observer;
+  v4 = observerCopy;
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   sub_1B474(v5);
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -169,7 +169,7 @@
   v6[1] = 3221225472;
   v7 = sub_1B624;
   v8 = &unk_3289F8;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_accessLock);
@@ -182,13 +182,13 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v8 = delegateCopy;
+  if (delegateCopy)
   {
-    [(BENavigationHandler *)self addObserver:v4];
+    [(BENavigationHandler *)self addObserver:delegateCopy];
     p_delegate = &self->_delegate;
     v6 = v8;
   }
@@ -215,15 +215,15 @@
 
   if ([(BENavigationHandler *)self shouldWaitForJavascriptLoadComplete])
   {
-    v3 = [(WKNavigationResponse *)self->_pendingMainFrameLoadURLResponse response];
-    v4 = [v3 MIMEType];
-    if ([v4 isEqualToString:@"application/xhtml+xml"])
+    response = [(WKNavigationResponse *)self->_pendingMainFrameLoadURLResponse response];
+    mIMEType = [response MIMEType];
+    if ([mIMEType isEqualToString:@"application/xhtml+xml"])
     {
 
       goto LABEL_6;
     }
 
-    v5 = [v4 isEqualToString:@"text/html"];
+    v5 = [mIMEType isEqualToString:@"text/html"];
 
     if (v5)
     {
@@ -235,42 +235,42 @@ LABEL_6:
     }
   }
 
-  v6 = [(NSMutableArray *)self->_postLoadCompleteOrFailureWork firstObject];
-  if (v6)
+  firstObject = [(NSMutableArray *)self->_postLoadCompleteOrFailureWork firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_postLoadCompleteOrFailureWork removeObjectAtIndex:0];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_1BB68;
     v35[3] = &unk_3286D0;
-    v36 = self;
-    v7 = v6[2];
-    v8 = v36;
-    v7(v6, 0, v35);
-    v9 = v36;
+    selfCopy = self;
+    v7 = firstObject[2];
+    webView = selfCopy;
+    v7(firstObject, 0, v35);
+    mainFrameNavigationURL = selfCopy;
   }
 
   else
   {
-    v8 = [(BENavigationHandler *)self webView];
-    v9 = [(BENavigationHandler *)self mainFrameNavigationURL];
-    if (v9)
+    webView = [(BENavigationHandler *)self webView];
+    mainFrameNavigationURL = [(BENavigationHandler *)self mainFrameNavigationURL];
+    if (mainFrameNavigationURL)
     {
       [(BENavigationHandler *)self setMainFrameNavigationURL:0];
-      [(BENavigationHandler *)v8 setBe_hasPendingOperations:0];
-      [(BENavigationHandler *)v8 setBe_hasCompletedLoad:1];
-      [(BENavigationHandler *)v8 setBe_requiresReload:0];
+      [(BENavigationHandler *)webView setBe_hasPendingOperations:0];
+      [(BENavigationHandler *)webView setBe_hasCompletedLoad:1];
+      [(BENavigationHandler *)webView setBe_requiresReload:0];
       v10 = _BookEPUBLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         *buf = 138412802;
-        v39 = v9;
+        v39 = mainFrameNavigationURL;
         v40 = 2112;
         v41 = v12;
         v42 = 2048;
-        v43 = v8;
+        v43 = webView;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Notifying delegate load of %@ in <%@:%p> is complete & JS has been executed", buf, 0x20u);
       }
 
@@ -278,8 +278,8 @@ LABEL_6:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v13 = [(BENavigationHandler *)self allObservers];
-      v14 = [v13 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      allObservers = [(BENavigationHandler *)self allObservers];
+      v14 = [allObservers countByEnumeratingWithState:&v27 objects:v37 count:16];
       if (v14)
       {
         v15 = v14;
@@ -290,17 +290,17 @@ LABEL_6:
           {
             if (*v28 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allObservers);
             }
 
             v18 = *(*(&v27 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v18 navigationHandler:self didFinishLoadOfURL:v9];
+              [v18 navigationHandler:self didFinishLoadOfURL:mainFrameNavigationURL];
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v27 objects:v37 count:16];
+          v15 = [allObservers countByEnumeratingWithState:&v27 objects:v37 count:16];
         }
 
         while (v15);
@@ -317,7 +317,7 @@ LABEL_6:
         *buf = 138412546;
         v39 = v21;
         v40 = 2048;
-        v41 = v8;
+        v41 = webView;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "Notifying delegate of missing URL in <%@:%p>", buf, 0x16u);
       }
 
@@ -325,8 +325,8 @@ LABEL_6:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v13 = [(BENavigationHandler *)self allObservers];
-      v22 = [v13 countByEnumeratingWithState:&v31 objects:v44 count:16];
+      allObservers = [(BENavigationHandler *)self allObservers];
+      v22 = [allObservers countByEnumeratingWithState:&v31 objects:v44 count:16];
       if (v22)
       {
         v23 = v22;
@@ -337,17 +337,17 @@ LABEL_6:
           {
             if (*v32 != v24)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allObservers);
             }
 
             v26 = *(*(&v31 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              [v26 navigationHandlerWebContentProcessFailedWithNoURL:v8];
+              [v26 navigationHandlerWebContentProcessFailedWithNoURL:webView];
             }
           }
 
-          v23 = [v13 countByEnumeratingWithState:&v31 objects:v44 count:16];
+          v23 = [allObservers countByEnumeratingWithState:&v31 objects:v44 count:16];
         }
 
         while (v23);
@@ -356,25 +356,25 @@ LABEL_6:
   }
 }
 
-- (void)_notifyLoadFailureError:(id)a3 completion:(id)a4
+- (void)_notifyLoadFailureError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   [(BENavigationHandler *)self _cancelTimeout];
-  v8 = [(NSMutableArray *)self->_postLoadCompleteOrFailureWork firstObject];
-  if (v8)
+  firstObject = [(NSMutableArray *)self->_postLoadCompleteOrFailureWork firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_postLoadCompleteOrFailureWork removeObjectAtIndex:0];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1BD38;
     v13[3] = &unk_328A20;
-    v14 = self;
-    v15 = v6;
-    v16 = v7;
-    v9 = v8[2];
-    v10 = v14;
-    v9(v8, v15, v13);
+    selfCopy = self;
+    v15 = errorCopy;
+    v16 = completionCopy;
+    v9 = firstObject[2];
+    v10 = selfCopy;
+    v9(firstObject, v15, v13);
   }
 
   else
@@ -383,11 +383,11 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = errorCopy;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "Notifying delegate load Failure - %@", buf, 0xCu);
     }
 
-    v12 = objc_retainBlock(v7);
+    v12 = objc_retainBlock(completionCopy);
     v10 = v12;
     if (v12)
     {
@@ -440,20 +440,20 @@ LABEL_6:
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_provisionalLoadTimeout" object:0];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  actionCopy = action;
+  handlerCopy = handler;
   v11 = 0;
   if ((self->_mode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [(BENavigationHandler *)self _decidePolicyForFootnoteOrPreviewNavigationAction:v9 shouldObserveProvisionalLoadTimeout:&v11 webView:v8 decisionHandler:v10];
+    [(BENavigationHandler *)self _decidePolicyForFootnoteOrPreviewNavigationAction:actionCopy shouldObserveProvisionalLoadTimeout:&v11 webView:viewCopy decisionHandler:handlerCopy];
   }
 
   else
   {
-    [(BENavigationHandler *)self _decidePolicyForContentNavigationAction:v9 shouldObserveProvisionalLoadTimeout:&v11 webView:v8 decisionHandler:v10];
+    [(BENavigationHandler *)self _decidePolicyForContentNavigationAction:actionCopy shouldObserveProvisionalLoadTimeout:&v11 webView:viewCopy decisionHandler:handlerCopy];
   }
 
   if (v11 == 1)
@@ -462,16 +462,16 @@ LABEL_6:
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v11 = a4;
-  v8 = a5;
-  if ([v11 isForMainFrame])
+  responseCopy = response;
+  handlerCopy = handler;
+  if ([responseCopy isForMainFrame])
   {
-    objc_storeStrong(&self->_pendingMainFrameLoadURLResponse, a4);
+    objc_storeStrong(&self->_pendingMainFrameLoadURLResponse, response);
   }
 
-  v9 = objc_retainBlock(v8);
+  v9 = objc_retainBlock(handlerCopy);
   v10 = v9;
   if (v9)
   {
@@ -479,11 +479,11 @@ LABEL_6:
   }
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = [a4 _request];
-  v8 = [v7 URL];
+  viewCopy = view;
+  _request = [navigation _request];
+  v8 = [_request URL];
   v9 = v8;
   if (v8)
   {
@@ -492,7 +492,7 @@ LABEL_6:
 
   else
   {
-    v10 = [v6 URL];
+    v10 = [viewCopy URL];
   }
 
   v11 = v10;
@@ -500,9 +500,9 @@ LABEL_6:
   [(BENavigationHandler *)self setMainFrameNavigationURL:v11];
   [(BENavigationHandler *)self setWebViewLoadComplete:0];
   [(BENavigationHandler *)self setJavascriptLoadComplete:0];
-  [(BENavigationHandler *)self setWebView:v6];
-  [v6 setBe_hasPendingOperations:1];
-  [v6 setBe_hasCompletedLoad:0];
+  [(BENavigationHandler *)self setWebView:viewCopy];
+  [viewCopy setBe_hasPendingOperations:1];
+  [viewCopy setBe_hasCompletedLoad:0];
   [(BENavigationHandler *)self _cancelReloadTimeout];
   [(BENavigationHandler *)self _cancelProvisionalLoadTimeout];
   [(BENavigationHandler *)self _startContentLoadTimeout];
@@ -510,8 +510,8 @@ LABEL_6:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(BENavigationHandler *)self allObservers];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allObservers = [(BENavigationHandler *)self allObservers];
+  v13 = [allObservers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -522,7 +522,7 @@ LABEL_6:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObservers);
         }
 
         v17 = *(*(&v18 + 1) + 8 * i);
@@ -532,18 +532,18 @@ LABEL_6:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [allObservers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
   [(BENavigationHandler *)self _cancelProvisionalLoadTimeout];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -552,9 +552,9 @@ LABEL_6:
   v13[3] = &unk_328A48;
   objc_copyWeak(&v16, &location);
   v13[4] = self;
-  v11 = v9;
+  v11 = navigationCopy;
   v14 = v11;
-  v12 = v10;
+  v12 = errorCopy;
   v15 = v12;
   [(BENavigationHandler *)self _notifyLoadFailureError:v12 completion:v13];
 
@@ -562,40 +562,40 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  [(BENavigationHandler *)self setRetryCount:0, a4];
+  [(BENavigationHandler *)self setRetryCount:0, navigation];
   [(BENavigationHandler *)self setWebViewLoadComplete:1];
   [(BENavigationHandler *)self _notifyLoadCompleteIfNecessary];
   pendingMainFrameLoadURLResponse = self->_pendingMainFrameLoadURLResponse;
   self->_pendingMainFrameLoadURLResponse = 0;
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v11 = [v9 _request];
-  v12 = [v11 URL];
+  _request = [navigationCopy _request];
+  v12 = [_request URL];
 
   v13 = _BookEPUBLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v8 be_identifier];
+    be_identifier = [viewCopy be_identifier];
     *buf = 138544386;
     v25 = v15;
     v26 = 2114;
-    v27 = v16;
+    v27 = be_identifier;
     v28 = 2160;
     v29 = 1752392040;
     v30 = 2112;
     v31 = v12;
     v32 = 2114;
-    v33 = v10;
+    v33 = errorCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "<%{public}@ %{public}@> didFailNavigation url:%{mask.hash}@ error: %{public}@", buf, 0x34u);
   }
 
@@ -607,7 +607,7 @@ LABEL_6:
   v19[4] = self;
   v17 = v12;
   v20 = v17;
-  v18 = v10;
+  v18 = errorCopy;
   v21 = v18;
   [(BENavigationHandler *)self _notifyLoadFailureError:v18 completion:v19];
 
@@ -615,17 +615,17 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_webView:(id)a3 webContentProcessDidTerminateWithReason:(int64_t)a4
+- (void)_webView:(id)view webContentProcessDidTerminateWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 URL];
+  viewCopy = view;
+  v7 = [viewCopy URL];
   v8 = _BookEPUBLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [v6 be_identifier];
-    v10 = [NSNumber numberWithInteger:a4];
+    be_identifier = [viewCopy be_identifier];
+    v10 = [NSNumber numberWithInteger:reason];
     v12 = 138544130;
-    v13 = v9;
+    v13 = be_identifier;
     v14 = 2160;
     v15 = 1752392040;
     v16 = 2112;
@@ -635,29 +635,29 @@ LABEL_6:
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "webView %{public}@ url: %{mask.hash}@ - webContentProcessDidTerminateWithReason: %{public}@", &v12, 0x2Au);
   }
 
-  if ((a4 - 1) >= 4)
+  if ((reason - 1) >= 4)
   {
-    v11 = 0;
+    reasonCopy = 0;
   }
 
   else
   {
-    v11 = a4;
+    reasonCopy = reason;
   }
 
-  [(BENavigationHandler *)self _webView:v6 contentFailedToLoadWithReason:v11];
+  [(BENavigationHandler *)self _webView:viewCopy contentFailedToLoadWithReason:reasonCopy];
 }
 
 - (void)_contentLoadTimeout
 {
-  v3 = [(BENavigationHandler *)self webView];
-  v4 = [v3 URL];
+  webView = [(BENavigationHandler *)self webView];
+  v4 = [webView URL];
   v5 = _BookEPUBLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v3 be_identifier];
+    be_identifier = [webView be_identifier];
     v7 = 138543874;
-    v8 = v6;
+    v8 = be_identifier;
     v9 = 2160;
     v10 = 1752392040;
     v11 = 2112;
@@ -665,27 +665,27 @@ LABEL_6:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "webView: %{public}@ url: %{mask.hash}@ - _contentLoadTimeout", &v7, 0x20u);
   }
 
-  [(BENavigationHandler *)self _webView:v3 contentFailedToLoadWithReason:32];
+  [(BENavigationHandler *)self _webView:webView contentFailedToLoadWithReason:32];
 }
 
 - (void)_reloadTimeout
 {
   [(BENavigationHandler *)self setReloadTimeoutActive:0];
-  v3 = [(BENavigationHandler *)self webView];
-  if (v3)
+  webView = [(BENavigationHandler *)self webView];
+  if (webView)
   {
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 applicationState];
+    applicationState = [v4 applicationState];
 
-    if (v5 == &dword_0 + 2)
+    if (applicationState == &dword_0 + 2)
     {
-      [v3 setBe_requiresReload:1];
+      [webView setBe_requiresReload:1];
       v6 = _BookEPUBLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v3 be_identifier];
+        be_identifier = [webView be_identifier];
         v11 = 138543362;
-        v12 = v7;
+        v12 = be_identifier;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "webView: %{public}@ Received reloadTimeout, but we are backgrounded.  Ignoring.", &v11, 0xCu);
 LABEL_13:
       }
@@ -693,13 +693,13 @@ LABEL_13:
 
     else
     {
-      v6 = [v3 URL];
+      v6 = [webView URL];
       v8 = _BookEPUBLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v3 be_identifier];
+        be_identifier2 = [webView be_identifier];
         v11 = 138543874;
-        v12 = v9;
+        v12 = be_identifier2;
         v13 = 2160;
         v14 = 1752392040;
         v15 = 2112;
@@ -709,19 +709,19 @@ LABEL_13:
 
       if (!v6)
       {
-        v7 = _BookEPUBLog();
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+        be_identifier = _BookEPUBLog();
+        if (os_log_type_enabled(be_identifier, OS_LOG_TYPE_ERROR))
         {
-          v10 = [v3 be_identifier];
+          be_identifier3 = [webView be_identifier];
           v11 = 138543362;
-          v12 = v10;
-          _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "webView: %{public}@ Received reloadTimeout, but our webView has no url.  Ignoring.", &v11, 0xCu);
+          v12 = be_identifier3;
+          _os_log_impl(&dword_0, be_identifier, OS_LOG_TYPE_ERROR, "webView: %{public}@ Received reloadTimeout, but our webView has no url.  Ignoring.", &v11, 0xCu);
         }
 
         goto LABEL_13;
       }
 
-      [(BENavigationHandler *)self _webView:v3 contentFailedToLoadWithReason:64];
+      [(BENavigationHandler *)self _webView:webView contentFailedToLoadWithReason:64];
     }
   }
 
@@ -738,14 +738,14 @@ LABEL_13:
 
 - (void)_provisionalLoadTimeout
 {
-  v3 = [(BENavigationHandler *)self webView];
-  v4 = [v3 URL];
+  webView = [(BENavigationHandler *)self webView];
+  v4 = [webView URL];
   v5 = _BookEPUBLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v3 be_identifier];
+    be_identifier = [webView be_identifier];
     v7 = 138543874;
-    v8 = v6;
+    v8 = be_identifier;
     v9 = 2160;
     v10 = 1752392040;
     v11 = 2112;
@@ -753,20 +753,20 @@ LABEL_13:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "webView: %{public}@ url: %{mask.hash}@ - _provisionalLoadTimeout #LOADTIMEOUT!", &v7, 0x20u);
   }
 
-  [(BENavigationHandler *)self _webView:v3 contentFailedToLoadWithReason:32];
+  [(BENavigationHandler *)self _webView:webView contentFailedToLoadWithReason:32];
 }
 
 - (void)attemptReload
 {
-  v3 = [(BENavigationHandler *)self webView];
-  if (v3)
+  webView = [(BENavigationHandler *)self webView];
+  if (webView)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(BENavigationHandler *)self allObservers];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v31 count:16];
+    allObservers = [(BENavigationHandler *)self allObservers];
+    v5 = [allObservers countByEnumeratingWithState:&v19 objects:v31 count:16];
     if (v5)
     {
       v6 = v5;
@@ -778,7 +778,7 @@ LABEL_13:
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObservers);
           }
 
           v9 = *(*(&v19 + 1) + 8 * v8);
@@ -791,20 +791,20 @@ LABEL_13:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v19 objects:v31 count:16];
+        v6 = [allObservers countByEnumeratingWithState:&v19 objects:v31 count:16];
       }
 
       while (v6);
     }
 
-    v10 = [v3 reloadFromOrigin];
-    v11 = [v3 URL];
+    reloadFromOrigin = [webView reloadFromOrigin];
+    v11 = [webView URL];
     v12 = _BookEPUBLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v3 be_identifier];
+      be_identifier = [webView be_identifier];
       *buf = 138543874;
-      v24 = v13;
+      v24 = be_identifier;
       v25 = 2160;
       v26 = 1752392040;
       v27 = 2112;
@@ -812,22 +812,22 @@ LABEL_13:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "webView: %{public}@ Attempting reload of url: %{mask.hash}@", buf, 0x20u);
     }
 
-    if (v10 | v11)
+    if (reloadFromOrigin | v11)
     {
       [(BENavigationHandler *)self setRetryCount:[(BENavigationHandler *)self retryCount]+ 1];
       v14 = _BookEPUBLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(BENavigationHandler *)self retryCount];
-        v16 = [(BENavigationHandler *)self maxReloadAttempts];
+        retryCount = [(BENavigationHandler *)self retryCount];
+        maxReloadAttempts = [(BENavigationHandler *)self maxReloadAttempts];
         *buf = 141558786;
         v24 = 1752392040;
         v25 = 2112;
         v26 = v11;
         v27 = 2048;
-        v28 = v15;
+        v28 = retryCount;
         v29 = 2048;
-        v30 = v16;
+        v30 = maxReloadAttempts;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Attempting reload of url: %{mask.hash}@ - %ld/%ldattempts", buf, 0x2Au);
       }
 
@@ -856,16 +856,16 @@ LABEL_13:
   }
 }
 
-- (void)_webView:(id)a3 contentFailedToLoadWithReason:(unint64_t)a4
+- (void)_webView:(id)view contentFailedToLoadWithReason:(unint64_t)reason
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  v7 = viewCopy;
+  if (viewCopy)
   {
-    [v6 be_clearRegisteredFonts];
-    if (a4 <= 2)
+    [viewCopy be_clearRegisteredFonts];
+    if (reason <= 2)
     {
-      switch(a4)
+      switch(reason)
       {
         case 0uLL:
           v8 = @"Memory Limit";
@@ -879,15 +879,15 @@ LABEL_13:
       }
     }
 
-    else if (a4 > 31)
+    else if (reason > 31)
     {
-      if (a4 == 32)
+      if (reason == 32)
       {
         v8 = @"Internal Timeout";
         goto LABEL_21;
       }
 
-      if (a4 == 64)
+      if (reason == 64)
       {
         v8 = @"Reload Timeout";
         goto LABEL_21;
@@ -896,13 +896,13 @@ LABEL_13:
 
     else
     {
-      if (a4 == 3)
+      if (reason == 3)
       {
         v8 = @"Crash";
         goto LABEL_21;
       }
 
-      if (a4 == 4)
+      if (reason == 4)
       {
         v8 = @"Exceeded Shared Process Crash Limit";
 LABEL_21:
@@ -910,10 +910,10 @@ LABEL_21:
         v10 = _BookEPUBLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
         {
-          v11 = [v7 be_identifier];
-          v12 = [NSNumber numberWithUnsignedInteger:a4];
+          be_identifier = [v7 be_identifier];
+          v12 = [NSNumber numberWithUnsignedInteger:reason];
           *buf = 138544386;
-          v49 = v11;
+          v49 = be_identifier;
           v50 = 2160;
           v51 = 1752392040;
           v52 = 2112;
@@ -927,22 +927,22 @@ LABEL_21:
 
         if (v9)
         {
-          v13 = [(BENavigationHandler *)self retryCount];
-          if (v13 >= [(BENavigationHandler *)self maxReloadAttempts])
+          retryCount = [(BENavigationHandler *)self retryCount];
+          if (retryCount >= [(BENavigationHandler *)self maxReloadAttempts])
           {
             [v7 setBe_requiresReload:1];
             v45 = NSDebugDescriptionErrorKey;
             v46 = v8;
             v24 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-            v25 = [NSError errorWithDomain:WKErrorDomain code:a4 userInfo:v24];
+            v25 = [NSError errorWithDomain:WKErrorDomain code:reason userInfo:v24];
 
             v26 = _BookEPUBLog();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v7 be_identifier];
-              v28 = [NSNumber numberWithUnsignedInteger:a4];
+              be_identifier2 = [v7 be_identifier];
+              v28 = [NSNumber numberWithUnsignedInteger:reason];
               *buf = 138544386;
-              v49 = v27;
+              v49 = be_identifier2;
               v50 = 2160;
               v51 = 1752392040;
               v52 = 2112;
@@ -958,8 +958,8 @@ LABEL_21:
             v39 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v29 = [(BENavigationHandler *)self allObservers];
-            v30 = [v29 countByEnumeratingWithState:&v36 objects:v44 count:16];
+            allObservers = [(BENavigationHandler *)self allObservers];
+            v30 = [allObservers countByEnumeratingWithState:&v36 objects:v44 count:16];
             if (v30)
             {
               v31 = v30;
@@ -970,7 +970,7 @@ LABEL_21:
                 {
                   if (*v37 != v32)
                   {
-                    objc_enumerationMutation(v29);
+                    objc_enumerationMutation(allObservers);
                   }
 
                   v34 = *(*(&v36 + 1) + 8 * i);
@@ -980,7 +980,7 @@ LABEL_21:
                   }
                 }
 
-                v31 = [v29 countByEnumeratingWithState:&v36 objects:v44 count:16];
+                v31 = [allObservers countByEnumeratingWithState:&v36 objects:v44 count:16];
               }
 
               while (v31);
@@ -992,16 +992,16 @@ LABEL_21:
           else
           {
             v14 = +[UIApplication sharedApplication];
-            v15 = [v14 applicationState];
+            applicationState = [v14 applicationState];
 
-            if (v15 == &dword_0 + 2)
+            if (applicationState == &dword_0 + 2)
             {
               v16 = _BookEPUBLog();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
-                v17 = [v7 be_identifier];
+                be_identifier3 = [v7 be_identifier];
                 *buf = 138543362;
-                v49 = v17;
+                v49 = be_identifier3;
                 _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Application is in the background.  Marking reload required for webView:%{public}@", buf, 0xCu);
               }
 
@@ -1021,8 +1021,8 @@ LABEL_21:
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v18 = [(BENavigationHandler *)self allObservers];
-          v19 = [v18 countByEnumeratingWithState:&v40 objects:v47 count:16];
+          allObservers2 = [(BENavigationHandler *)self allObservers];
+          v19 = [allObservers2 countByEnumeratingWithState:&v40 objects:v47 count:16];
           if (v19)
           {
             v20 = v19;
@@ -1033,7 +1033,7 @@ LABEL_21:
               {
                 if (*v41 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(allObservers2);
                 }
 
                 v23 = *(*(&v40 + 1) + 8 * j);
@@ -1043,7 +1043,7 @@ LABEL_21:
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v40 objects:v47 count:16];
+              v20 = [allObservers2 countByEnumeratingWithState:&v40 objects:v47 count:16];
             }
 
             while (v20);
@@ -1071,18 +1071,18 @@ LABEL_21:
 LABEL_53:
 }
 
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change
 {
-  v4 = a4;
-  v6 = a3;
-  if ((v4 & 0x100) != 0)
+  changeCopy = change;
+  viewCopy = view;
+  if ((changeCopy & 0x100) != 0)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(BENavigationHandler *)self allObservers];
-    v13 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    allObservers = [(BENavigationHandler *)self allObservers];
+    v13 = [allObservers countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1093,7 +1093,7 @@ LABEL_53:
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObservers);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
@@ -1103,7 +1103,7 @@ LABEL_53:
           }
         }
 
-        v14 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v14 = [allObservers countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v14);
@@ -1112,14 +1112,14 @@ LABEL_53:
     goto LABEL_22;
   }
 
-  if ((v4 & 0x40) != 0)
+  if ((changeCopy & 0x40) != 0)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(BENavigationHandler *)self allObservers];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    allObservers = [(BENavigationHandler *)self allObservers];
+    v8 = [allObservers countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1130,7 +1130,7 @@ LABEL_53:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObservers);
           }
 
           v12 = *(*(&v18 + 1) + 8 * j);
@@ -1140,7 +1140,7 @@ LABEL_53:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v9 = [allObservers countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v9);
@@ -1150,10 +1150,10 @@ LABEL_22:
   }
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v5 = [a4 name];
-  v6 = [v5 isEqualToString:@"BENavigationHandlerJSLoadComplete"];
+  name = [message name];
+  v6 = [name isEqualToString:@"BENavigationHandlerJSLoadComplete"];
 
   if (v6)
   {
@@ -1163,34 +1163,34 @@ LABEL_22:
   }
 }
 
-- (BOOL)_navigationIsUserInitiatedAndNotYetApproved:(id)a3
+- (BOOL)_navigationIsUserInitiatedAndNotYetApproved:(id)approved
 {
-  v4 = a3;
-  if (-[BEDocumentExternalLoadApprovalCache didApproveLoadingExternalContentForBookID:](self->_approvalCache, "didApproveLoadingExternalContentForBookID:", self->_bookID) || [v4 navigationType])
+  approvedCopy = approved;
+  if (-[BEDocumentExternalLoadApprovalCache didApproveLoadingExternalContentForBookID:](self->_approvalCache, "didApproveLoadingExternalContentForBookID:", self->_bookID) || [approvedCopy navigationType])
   {
-    v5 = 0;
+    _isUserInitiated = 0;
   }
 
   else
   {
-    v5 = [v4 _isUserInitiated];
+    _isUserInitiated = [approvedCopy _isUserInitiated];
   }
 
-  return v5;
+  return _isUserInitiated;
 }
 
-- (void)_decidePolicyForFootnoteOrPreviewNavigationAction:(id)a3 shouldObserveProvisionalLoadTimeout:(BOOL *)a4 webView:(id)a5 decisionHandler:(id)a6
+- (void)_decidePolicyForFootnoteOrPreviewNavigationAction:(id)action shouldObserveProvisionalLoadTimeout:(BOOL *)timeout webView:(id)view decisionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 request];
-  v14 = [v13 URL];
-  v15 = [v14 absoluteURL];
-  v16 = [v15 standardizedURL];
+  actionCopy = action;
+  viewCopy = view;
+  handlerCopy = handler;
+  request = [actionCopy request];
+  v14 = [request URL];
+  absoluteURL = [v14 absoluteURL];
+  standardizedURL = [absoluteURL standardizedURL];
 
-  v17 = [v16 fragment];
-  LOBYTE(v14) = [v17 hasSuffix:@"__ibooks_ignore_load"];
+  fragment = [standardizedURL fragment];
+  LOBYTE(v14) = [fragment hasSuffix:@"__ibooks_ignore_load"];
 
   if (v14)
   {
@@ -1198,29 +1198,29 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  if (BEURLHandlerURLIsApprovedToLoad(v16))
+  if (BEURLHandlerURLIsApprovedToLoad(standardizedURL))
   {
     v18 = 1;
     goto LABEL_31;
   }
 
-  v19 = [(BENavigationHandler *)self delegate];
-  v20 = [v10 targetFrame];
-  if (BEURLHandlerSchemeIsOkForBookToLoad(v16))
+  delegate = [(BENavigationHandler *)self delegate];
+  targetFrame = [actionCopy targetFrame];
+  if (BEURLHandlerSchemeIsOkForBookToLoad(standardizedURL))
   {
-    if (v20)
+    if (targetFrame)
     {
-      if ([v20 isMainFrame])
+      if ([targetFrame isMainFrame])
       {
         if (objc_opt_respondsToSelector())
         {
-          v21 = [v19 navigationHandler:self handleInternalLoadRequest:v16];
+          v21 = [delegate navigationHandler:self handleInternalLoadRequest:standardizedURL];
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          v23 = [v19 urlForNavigationHandler];
-          v21 = [v16 be_isEquivalentToURL:v23 ignoringFragment:1];
+          urlForNavigationHandler = [delegate urlForNavigationHandler];
+          v21 = [standardizedURL be_isEquivalentToURL:urlForNavigationHandler ignoringFragment:1];
         }
 
         else
@@ -1228,9 +1228,9 @@ LABEL_22:
           v21 = 1;
         }
 
-        if (a4)
+        if (timeout)
         {
-          *a4 = v21;
+          *timeout = v21;
         }
 
         goto LABEL_30;
@@ -1241,7 +1241,7 @@ LABEL_22:
 
     if (objc_opt_respondsToSelector())
     {
-      [v19 navigationHandler:self handleInternalLoadRequestForNewWindow:v16];
+      [delegate navigationHandler:self handleInternalLoadRequestForNewWindow:standardizedURL];
     }
 
 LABEL_29:
@@ -1249,24 +1249,24 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (!v20 || [v20 isMainFrame])
+  if (!targetFrame || [targetFrame isMainFrame])
   {
     if (objc_opt_respondsToSelector())
     {
-      [v19 navigationHandler:self handleExternalLoadRequest:v16 likelyUserInitiated:{objc_msgSend(v10, "navigationType") == 0}];
+      [delegate navigationHandler:self handleExternalLoadRequest:standardizedURL likelyUserInitiated:{objc_msgSend(actionCopy, "navigationType") == 0}];
     }
 
     goto LABEL_29;
   }
 
-  v22 = [(BEExternalIframeJS *)self->_externalIframeJS urlForExternalIframeAuthorization];
-  if ([v16 isEqual:v22])
+  urlForExternalIframeAuthorization = [(BEExternalIframeJS *)self->_externalIframeJS urlForExternalIframeAuthorization];
+  if ([standardizedURL isEqual:urlForExternalIframeAuthorization])
   {
 
     goto LABEL_21;
   }
 
-  v24 = [(BENavigationHandler *)self _navigationIsUserInitiatedAndNotYetApproved:v10];
+  v24 = [(BENavigationHandler *)self _navigationIsUserInitiatedAndNotYetApproved:actionCopy];
 
   if (v24)
   {
@@ -1274,7 +1274,7 @@ LABEL_21:
     if (objc_opt_respondsToSelector())
     {
       v25 = self->_approvalCache;
-      v26 = [(BEExternalIframeJS *)self->_externalIframeJS postApprovalToLoadScript];
+      postApprovalToLoadScript = [(BEExternalIframeJS *)self->_externalIframeJS postApprovalToLoadScript];
       v27 = self->_bookID;
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
@@ -1282,12 +1282,12 @@ LABEL_21:
       v36[3] = &unk_328B10;
       v37 = v25;
       v38 = v27;
-      v39 = v11;
-      v40 = v26;
-      v28 = v26;
+      v39 = viewCopy;
+      v40 = postApprovalToLoadScript;
+      v28 = postApprovalToLoadScript;
       v29 = v27;
       v30 = v25;
-      [v19 navigationHandler:self handleUserRequestForFrameToLoadExternalURL:v16 completion:v36];
+      [delegate navigationHandler:self handleUserRequestForFrameToLoadExternalURL:standardizedURL completion:v36];
     }
 
     goto LABEL_29;
@@ -1295,13 +1295,13 @@ LABEL_21:
 
   if (![(BEDocumentExternalLoadApprovalCache *)self->_approvalCache didApproveLoadingExternalContentForBookID:self->_bookID])
   {
-    v31 = [(BEExternalIframeJS *)self->_externalIframeJS preApprovalToLoadScriptForURL:v16];
+    v31 = [(BEExternalIframeJS *)self->_externalIframeJS preApprovalToLoadScriptForURL:standardizedURL];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1E148;
     v34[3] = &unk_328B38;
-    v35 = v16;
-    [v11 evaluateJavaScript:v31 completionHandler:v34];
+    v35 = standardizedURL;
+    [viewCopy evaluateJavaScript:v31 completionHandler:v34];
 
     goto LABEL_29;
   }
@@ -1312,7 +1312,7 @@ LABEL_30:
 
   v18 = v21;
 LABEL_31:
-  v32 = objc_retainBlock(v12);
+  v32 = objc_retainBlock(handlerCopy);
   v33 = v32;
   if (v32)
   {

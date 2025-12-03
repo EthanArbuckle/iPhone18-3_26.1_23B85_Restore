@@ -1,21 +1,21 @@
 @interface PUEditableMediaProviderImageDataNode
-- (PUEditableMediaProviderImageDataNode)initWithAsset:(id)a3 mediaProvider:(id)a4 version:(int64_t)a5;
-- (void)_handleLoadedImageData:(id)a3 imageUTI:(id)a4 imageOrientation:(int64_t)a5 info:(id)a6;
+- (PUEditableMediaProviderImageDataNode)initWithAsset:(id)asset mediaProvider:(id)provider version:(int64_t)version;
+- (void)_handleLoadedImageData:(id)data imageUTI:(id)i imageOrientation:(int64_t)orientation info:(id)info;
 - (void)didCancel;
 - (void)run;
 @end
 
 @implementation PUEditableMediaProviderImageDataNode
 
-- (void)_handleLoadedImageData:(id)a3 imageUTI:(id)a4 imageOrientation:(int64_t)a5 info:(id)a6
+- (void)_handleLoadedImageData:(id)data imageUTI:(id)i imageOrientation:(int64_t)orientation info:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  iCopy = i;
   v11 = *MEMORY[0x1E6978E20];
-  v12 = a6;
-  v13 = [v12 objectForKeyedSubscript:v11];
-  v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
+  infoCopy = info;
+  v13 = [infoCopy objectForKeyedSubscript:v11];
+  v14 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
 
   if (!v13)
   {
@@ -29,15 +29,15 @@
   }
 
   imageData = self->_imageData;
-  self->_imageData = v9;
-  v17 = v9;
+  self->_imageData = dataCopy;
+  v17 = dataCopy;
 
   imageDataURL = self->_imageDataURL;
   self->_imageDataURL = v13;
   v19 = v13;
 
   imageDataUTI = self->_imageDataUTI;
-  self->_imageDataUTI = v10;
+  self->_imageDataUTI = iCopy;
 
   self->_imageExifOrientation = PLExifOrientationFromImageOrientation();
   [(PXRunNode *)self completeWithError:v14];
@@ -59,15 +59,15 @@
   [v6 setDeliveryMode:1];
   [v6 setLoadingMode:0x10000];
   [v6 setVersion:{-[PUEditableMediaProviderImageDataNode version](self, "version")}];
-  v7 = [(PUEditableMediaProviderImageDataNode *)self asset];
-  v8 = [(PUEditableMediaProviderImageDataNode *)self mediaProvider];
+  asset = [(PUEditableMediaProviderImageDataNode *)self asset];
+  mediaProvider = [(PUEditableMediaProviderImageDataNode *)self mediaProvider];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__PUEditableMediaProviderImageDataNode_run__block_invoke;
   v9[3] = &unk_1E7B76E08;
   objc_copyWeak(&v10, &location);
-  self->_requestID = [v8 requestImageDataForAsset:v7 options:v6 resultHandler:v9];
+  self->_requestID = [mediaProvider requestImageDataForAsset:asset options:v6 resultHandler:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
@@ -83,23 +83,23 @@ void __43__PUEditableMediaProviderImageDataNode_run__block_invoke(uint64_t a1, v
 
 - (void)didCancel
 {
-  v3 = [(PUEditableMediaProviderImageDataNode *)self mediaProvider];
-  [v3 cancelImageRequest:self->_requestID];
+  mediaProvider = [(PUEditableMediaProviderImageDataNode *)self mediaProvider];
+  [mediaProvider cancelImageRequest:self->_requestID];
 }
 
-- (PUEditableMediaProviderImageDataNode)initWithAsset:(id)a3 mediaProvider:(id)a4 version:(int64_t)a5
+- (PUEditableMediaProviderImageDataNode)initWithAsset:(id)asset mediaProvider:(id)provider version:(int64_t)version
 {
-  v9 = a3;
-  v10 = a4;
+  assetCopy = asset;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PUEditableMediaProviderImageDataNode;
   v11 = [(PXRunNode *)&v14 initWithDependencies:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_asset, a3);
-    objc_storeStrong(&v12->_mediaProvider, a4);
-    v12->_version = a5;
+    objc_storeStrong(&v11->_asset, asset);
+    objc_storeStrong(&v12->_mediaProvider, provider);
+    v12->_version = version;
   }
 
   return v12;

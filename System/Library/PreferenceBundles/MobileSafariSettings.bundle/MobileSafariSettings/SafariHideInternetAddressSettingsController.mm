@@ -1,10 +1,10 @@
 @interface SafariHideInternetAddressSettingsController
 + (id)_hideInternetAddressOptionList;
-+ (unint64_t)_hideInternetAddressIndexForState:(unint64_t)a3;
-+ (unint64_t)_hideInternetAddressStateForIndex:(unint64_t)a3;
++ (unint64_t)_hideInternetAddressIndexForState:(unint64_t)state;
++ (unint64_t)_hideInternetAddressStateForIndex:(unint64_t)index;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation SafariHideInternetAddressSettingsController
@@ -13,9 +13,9 @@
 {
   v2 = objc_opt_new();
   v3 = +[SafariSettingsController privacyProxyAvailabilityManager];
-  v4 = [v3 isPrivacyProxyOnInICloudSettings];
+  isPrivacyProxyOnInICloudSettings = [v3 isPrivacyProxyOnInICloudSettings];
 
-  if (v4)
+  if (isPrivacyProxyOnInICloudSettings)
   {
     v5 = SafariSettingsLocalizedString(@"Hide Internet Address Trackers and Websites List Item Title", @"Safari");
     [v2 addObject:v5];
@@ -37,47 +37,47 @@
   return v2;
 }
 
-+ (unint64_t)_hideInternetAddressIndexForState:(unint64_t)a3
++ (unint64_t)_hideInternetAddressIndexForState:(unint64_t)state
 {
   v4 = +[SafariSettingsController privacyProxyAvailabilityManager];
-  v5 = [v4 isPrivacyProxyOnInICloudSettings];
+  isPrivacyProxyOnInICloudSettings = [v4 isPrivacyProxyOnInICloudSettings];
 
-  v6 = a3 == 1;
-  if (!a3)
+  v6 = state == 1;
+  if (!state)
   {
     v6 = 2;
   }
 
-  if (v5)
+  if (isPrivacyProxyOnInICloudSettings)
   {
     return v6;
   }
 
   else
   {
-    return a3 == 0;
+    return state == 0;
   }
 }
 
-+ (unint64_t)_hideInternetAddressStateForIndex:(unint64_t)a3
++ (unint64_t)_hideInternetAddressStateForIndex:(unint64_t)index
 {
   v4 = +[SafariSettingsController privacyProxyAvailabilityManager];
-  v5 = [v4 isPrivacyProxyOnInICloudSettings];
+  isPrivacyProxyOnInICloudSettings = [v4 isPrivacyProxyOnInICloudSettings];
 
-  v6 = 2 - a3;
-  if (a3 >= 3)
+  v6 = 2 - index;
+  if (index >= 3)
   {
     v6 = 0;
   }
 
-  if (v5)
+  if (isPrivacyProxyOnInICloudSettings)
   {
     return v6;
   }
 
   else
   {
-    return a3 == 0;
+    return index == 0;
   }
 }
 
@@ -93,20 +93,20 @@
   else
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [objc_opt_class() _hideInternetAddressOptionList];
+    _hideInternetAddressOptionList = [objc_opt_class() _hideInternetAddressOptionList];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = __57__SafariHideInternetAddressSettingsController_specifiers__block_invoke;
     v30[3] = &unk_8A430;
     v30[4] = self;
-    v8 = [v7 safari_mapObjectsUsingBlock:v30];
+    v8 = [_hideInternetAddressOptionList safari_mapObjectsUsingBlock:v30];
     [v6 addObjectsFromArray:v8];
 
     v9 = SafariSettingsLocalizedString(@"Hide Internet Address Learn More", @"Safari");
     v10 = +[SafariSettingsController privacyProxyAvailabilityManager];
-    v11 = [v10 isPrivacyProxyOnInICloudSettings];
+    isPrivacyProxyOnInICloudSettings = [v10 isPrivacyProxyOnInICloudSettings];
 
-    if (v11)
+    if (isPrivacyProxyOnInICloudSettings)
     {
       v12 = @"Hide Internet Address Paid Tier Footer Text";
     }
@@ -156,11 +156,11 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   currentCheckmarkIndexPath = self->_currentCheckmarkIndexPath;
-  v8 = a4;
-  if ([(NSIndexPath *)currentCheckmarkIndexPath isEqual:a5])
+  cellCopy = cell;
+  if ([(NSIndexPath *)currentCheckmarkIndexPath isEqual:path])
   {
     v7 = 3;
   }
@@ -170,36 +170,36 @@
     v7 = 0;
   }
 
-  [v8 setAccessoryType:v7];
+  [cellCopy setAccessoryType:v7];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:0];
-  if (([(NSIndexPath *)self->_currentCheckmarkIndexPath isEqual:v7]& 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  if (([(NSIndexPath *)self->_currentCheckmarkIndexPath isEqual:pathCopy]& 1) == 0)
   {
-    v8 = [v6 cellForRowAtIndexPath:self->_currentCheckmarkIndexPath];
+    v8 = [viewCopy cellForRowAtIndexPath:self->_currentCheckmarkIndexPath];
     [v8 setAccessoryType:0];
 
-    v9 = [v6 cellForRowAtIndexPath:v7];
+    v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [v9 setAccessoryType:3];
 
-    v10 = [objc_opt_class() _hideInternetAddressStateForIndex:{objc_msgSend(v7, "indexAtPosition:", 1)}];
+    v10 = [objc_opt_class() _hideInternetAddressStateForIndex:{objc_msgSend(pathCopy, "indexAtPosition:", 1)}];
     v11 = +[SafariSettingsController privacyProxyAvailabilityManager];
-    v12 = [v11 state];
+    state = [v11 state];
 
-    if (v12 != v10)
+    if (state != v10)
     {
-      objc_storeStrong(&self->_currentCheckmarkIndexPath, a4);
+      objc_storeStrong(&self->_currentCheckmarkIndexPath, path);
       v13 = +[SafariSettingsController privacyProxyAvailabilityManager];
       [v13 setPrivacyProxyState:v10 completionHandler:0];
     }
 
     v14.receiver = self;
     v14.super_class = SafariHideInternetAddressSettingsController;
-    [(SafariSettingsListController *)&v14 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

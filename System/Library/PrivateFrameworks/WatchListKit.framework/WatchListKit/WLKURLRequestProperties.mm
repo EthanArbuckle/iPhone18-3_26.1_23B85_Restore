@@ -1,9 +1,9 @@
 @interface WLKURLRequestProperties
-+ (WLKURLRequestProperties)requestPropertiesWithEndpoint:(id)a3 queryParameters:(id)a4 httpMethod:(id)a5 httpBody:(id)a6 headers:(id)a7 caller:(id)a8 timeout:(id)a9 apiVersion:(id)a10 options:(int64_t)a11 clientProtocolVersion:(id)a12;
-+ (WLKURLRequestProperties)requestPropertiesWithServerRoute:(id)a3 queryParameters:(id)a4 httpMethod:(id)a5 httpBody:(id)a6 headers:(id)a7 caller:(id)a8 timeout:(id)a9 options:(int64_t)a10 clientProtocolVersion:(id)a11;
-- (BOOL)isEqual:(id)a3;
-- (id)URLRequestWithConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (WLKURLRequestProperties)requestPropertiesWithEndpoint:(id)endpoint queryParameters:(id)parameters httpMethod:(id)method httpBody:(id)body headers:(id)headers caller:(id)caller timeout:(id)timeout apiVersion:(id)self0 options:(int64_t)self1 clientProtocolVersion:(id)self2;
++ (WLKURLRequestProperties)requestPropertiesWithServerRoute:(id)route queryParameters:(id)parameters httpMethod:(id)method httpBody:(id)body headers:(id)headers caller:(id)caller timeout:(id)timeout options:(int64_t)self0 clientProtocolVersion:(id)self1;
+- (BOOL)isEqual:(id)equal;
+- (id)URLRequestWithConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)shortDescription;
 - (unint64_t)hash;
@@ -22,69 +22,69 @@
   return endpoint;
 }
 
-+ (WLKURLRequestProperties)requestPropertiesWithServerRoute:(id)a3 queryParameters:(id)a4 httpMethod:(id)a5 httpBody:(id)a6 headers:(id)a7 caller:(id)a8 timeout:(id)a9 options:(int64_t)a10 clientProtocolVersion:(id)a11
++ (WLKURLRequestProperties)requestPropertiesWithServerRoute:(id)route queryParameters:(id)parameters httpMethod:(id)method httpBody:(id)body headers:(id)headers caller:(id)caller timeout:(id)timeout options:(int64_t)self0 clientProtocolVersion:(id)self1
 {
-  v16 = a5;
-  v17 = a11;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a4;
-  v23 = a3;
+  methodCopy = method;
+  versionCopy = version;
+  timeoutCopy = timeout;
+  callerCopy = caller;
+  headersCopy = headers;
+  bodyCopy = body;
+  parametersCopy = parameters;
+  routeCopy = route;
   v24 = objc_alloc_init(WLKURLRequestProperties);
-  [(WLKURLRequestProperties *)v24 setRouteName:v23];
+  [(WLKURLRequestProperties *)v24 setRouteName:routeCopy];
 
-  [(WLKURLRequestProperties *)v24 setQueryParameters:v22];
-  if (![(__CFString *)v16 length])
+  [(WLKURLRequestProperties *)v24 setQueryParameters:parametersCopy];
+  if (![(__CFString *)methodCopy length])
   {
 
-    v16 = @"GET";
+    methodCopy = @"GET";
   }
 
-  [(WLKURLRequestProperties *)v24 setHttpMethod:v16];
-  [(WLKURLRequestProperties *)v24 setHttpBody:v21];
+  [(WLKURLRequestProperties *)v24 setHttpMethod:methodCopy];
+  [(WLKURLRequestProperties *)v24 setHttpBody:bodyCopy];
 
-  [(WLKURLRequestProperties *)v24 setHeaders:v20];
-  [(WLKURLRequestProperties *)v24 setCaller:v19];
+  [(WLKURLRequestProperties *)v24 setHeaders:headersCopy];
+  [(WLKURLRequestProperties *)v24 setCaller:callerCopy];
 
-  [(WLKURLRequestProperties *)v24 setTimeout:v18];
-  [(WLKURLRequestProperties *)v24 setOptions:a10];
-  [(WLKURLRequestProperties *)v24 setClientProtocolVersion:v17];
+  [(WLKURLRequestProperties *)v24 setTimeout:timeoutCopy];
+  [(WLKURLRequestProperties *)v24 setOptions:options];
+  [(WLKURLRequestProperties *)v24 setClientProtocolVersion:versionCopy];
 
   return v24;
 }
 
-+ (WLKURLRequestProperties)requestPropertiesWithEndpoint:(id)a3 queryParameters:(id)a4 httpMethod:(id)a5 httpBody:(id)a6 headers:(id)a7 caller:(id)a8 timeout:(id)a9 apiVersion:(id)a10 options:(int64_t)a11 clientProtocolVersion:(id)a12
++ (WLKURLRequestProperties)requestPropertiesWithEndpoint:(id)endpoint queryParameters:(id)parameters httpMethod:(id)method httpBody:(id)body headers:(id)headers caller:(id)caller timeout:(id)timeout apiVersion:(id)self0 options:(int64_t)self1 clientProtocolVersion:(id)self2
 {
-  v17 = a5;
-  v30 = a10;
-  v18 = a12;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a4;
-  v24 = a3;
+  methodCopy = method;
+  versionCopy = version;
+  protocolVersionCopy = protocolVersion;
+  timeoutCopy = timeout;
+  callerCopy = caller;
+  headersCopy = headers;
+  bodyCopy = body;
+  parametersCopy = parameters;
+  endpointCopy = endpoint;
   v25 = objc_alloc_init(WLKURLRequestProperties);
-  [(WLKURLRequestProperties *)v25 setEndpoint:v24];
+  [(WLKURLRequestProperties *)v25 setEndpoint:endpointCopy];
 
-  [(WLKURLRequestProperties *)v25 setQueryParameters:v23];
-  if (![(__CFString *)v17 length])
+  [(WLKURLRequestProperties *)v25 setQueryParameters:parametersCopy];
+  if (![(__CFString *)methodCopy length])
   {
 
-    v17 = @"GET";
+    methodCopy = @"GET";
   }
 
-  [(WLKURLRequestProperties *)v25 setHttpMethod:v17, v30];
-  [(WLKURLRequestProperties *)v25 setHttpBody:v22];
+  [(WLKURLRequestProperties *)v25 setHttpMethod:methodCopy, versionCopy];
+  [(WLKURLRequestProperties *)v25 setHttpBody:bodyCopy];
 
-  [(WLKURLRequestProperties *)v25 setHeaders:v21];
-  [(WLKURLRequestProperties *)v25 setCaller:v20];
-  [(WLKURLRequestProperties *)v25 setTimeout:v19];
+  [(WLKURLRequestProperties *)v25 setHeaders:headersCopy];
+  [(WLKURLRequestProperties *)v25 setCaller:callerCopy];
+  [(WLKURLRequestProperties *)v25 setTimeout:timeoutCopy];
 
-  [(WLKURLRequestProperties *)v25 setClientProtocolVersion:v18];
-  v26 = [v20 isEqualToString:@"tvjs"];
+  [(WLKURLRequestProperties *)v25 setClientProtocolVersion:protocolVersionCopy];
+  v26 = [callerCopy isEqualToString:@"tvjs"];
 
   if (v26)
   {
@@ -103,15 +103,15 @@
 
   v28 = v27;
   [(WLKURLRequestProperties *)v25 setApiVersion:v27];
-  [(WLKURLRequestProperties *)v25 setOptions:a11];
+  [(WLKURLRequestProperties *)v25 setOptions:options];
 
   return v25;
 }
 
-- (id)URLRequestWithConfiguration:(id)a3
+- (id)URLRequestWithConfiguration:(id)configuration
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   endpoint = self->_endpoint;
   routeName = self->_routeName;
   if (endpoint)
@@ -129,23 +129,23 @@
     [WLKURLRequestProperties URLRequestWithConfiguration:];
   }
 
-  v9 = [(NSDictionary *)self->_queryParameters mutableCopy];
-  if (!v9)
+  dictionary = [(NSDictionary *)self->_queryParameters mutableCopy];
+  if (!dictionary)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v10 = [(WLKURLRequestProperties *)self clientProtocolVersion];
+  clientProtocolVersion = [(WLKURLRequestProperties *)self clientProtocolVersion];
 
-  if (v10)
+  if (clientProtocolVersion)
   {
-    v11 = [(WLKURLRequestProperties *)self clientProtocolVersion];
-    [v9 setObject:v11 forKeyedSubscript:@"v"];
+    clientProtocolVersion2 = [(WLKURLRequestProperties *)self clientProtocolVersion];
+    [dictionary setObject:clientProtocolVersion2 forKeyedSubscript:@"v"];
   }
 
   if ((self->_options & 0x100000) == 0 && [(NSString *)self->_caller length])
   {
-    [v9 setObject:self->_caller forKeyedSubscript:@"caller"];
+    [dictionary setObject:self->_caller forKeyedSubscript:@"caller"];
   }
 
   options = self->_options;
@@ -157,7 +157,7 @@
       goto LABEL_23;
     }
 
-    v17 = [MEMORY[0x277CBEBC0] wlk_URLWithServerConfig:v4 routeName:v18 queryParameters:v9 suppressParameterEncoding:(options >> 1) & 1];
+    v17 = [MEMORY[0x277CBEBC0] wlk_URLWithServerConfig:configurationCopy routeName:v18 queryParameters:dictionary suppressParameterEncoding:(options >> 1) & 1];
     if (!v17)
     {
       goto LABEL_23;
@@ -185,7 +185,7 @@ LABEL_21:
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v16 = [v14 wlk_stringByAppendingPathComponents:v15];
 
-  v17 = [MEMORY[0x277CBEBC0] wlk_URLWithServerConfig:v4 endpoint:v16 relativeToBaseURL:1 queryParameters:v9 suppressParameterEncoding:v13 ignoreUserLocation:{-[WLKURLRequestProperties ignoreUserLocation](self, "ignoreUserLocation")}];
+  v17 = [MEMORY[0x277CBEBC0] wlk_URLWithServerConfig:configurationCopy endpoint:v16 relativeToBaseURL:1 queryParameters:dictionary suppressParameterEncoding:v13 ignoreUserLocation:{-[WLKURLRequestProperties ignoreUserLocation](self, "ignoreUserLocation")}];
 
   if (v17)
   {
@@ -197,7 +197,7 @@ LABEL_23:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_272A0F000, v21, OS_LOG_TYPE_DEFAULT, "%@: unable to resolve URL", buf, 0xCu);
   }
 
@@ -210,7 +210,7 @@ LABEL_28:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WLKURLRequestProperties);
   v5 = [(NSString *)self->_endpoint copy];
@@ -281,52 +281,52 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(WLKURLRequestProperties *)self endpoint];
-  v4 = [v3 hash];
+  endpoint = [(WLKURLRequestProperties *)self endpoint];
+  v4 = [endpoint hash];
 
-  v5 = [(WLKURLRequestProperties *)self routeName];
-  v6 = [v5 hash] ^ v4;
+  routeName = [(WLKURLRequestProperties *)self routeName];
+  v6 = [routeName hash] ^ v4;
 
-  v7 = [(WLKURLRequestProperties *)self httpMethod];
-  v8 = [v7 hash];
+  httpMethod = [(WLKURLRequestProperties *)self httpMethod];
+  v8 = [httpMethod hash];
 
-  v9 = [(WLKURLRequestProperties *)self httpBody];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  httpBody = [(WLKURLRequestProperties *)self httpBody];
+  v10 = v6 ^ v8 ^ [httpBody hash];
 
-  v11 = [(WLKURLRequestProperties *)self queryParameters];
-  v12 = [v11 hash];
+  queryParameters = [(WLKURLRequestProperties *)self queryParameters];
+  v12 = [queryParameters hash];
 
-  v13 = [(WLKURLRequestProperties *)self headers];
-  v14 = v12 ^ [v13 hash];
+  headers = [(WLKURLRequestProperties *)self headers];
+  v14 = v12 ^ [headers hash];
 
-  v15 = [(WLKURLRequestProperties *)self caller];
-  v16 = v10 ^ v14 ^ [v15 hash];
+  caller = [(WLKURLRequestProperties *)self caller];
+  v16 = v10 ^ v14 ^ [caller hash];
 
-  v17 = [(WLKURLRequestProperties *)self timeout];
-  v18 = [v17 hash];
+  timeout = [(WLKURLRequestProperties *)self timeout];
+  v18 = [timeout hash];
 
-  v19 = [(WLKURLRequestProperties *)self apiVersion];
-  v20 = v18 ^ [v19 hash];
+  apiVersion = [(WLKURLRequestProperties *)self apiVersion];
+  v20 = v18 ^ [apiVersion hash];
 
   return v16 ^ v20 ^ [(WLKURLRequestProperties *)self options];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(WLKURLRequestProperties *)self endpoint];
-    v8 = [(WLKURLRequestProperties *)v6 endpoint];
-    v9 = v7;
-    v10 = v8;
+    endpoint = [(WLKURLRequestProperties *)self endpoint];
+    endpoint2 = [(WLKURLRequestProperties *)v6 endpoint];
+    v9 = endpoint;
+    v10 = endpoint2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -342,10 +342,10 @@ LABEL_28:
       }
     }
 
-    v14 = [(WLKURLRequestProperties *)self routeName];
-    v15 = [(WLKURLRequestProperties *)v6 routeName];
-    v16 = v14;
-    v17 = v15;
+    routeName = [(WLKURLRequestProperties *)self routeName];
+    routeName2 = [(WLKURLRequestProperties *)v6 routeName];
+    v16 = routeName;
+    v17 = routeName2;
     v18 = v17;
     if (v16 == v17)
     {
@@ -362,10 +362,10 @@ LABEL_28:
     }
 
     v20 = v12 & v19;
-    v21 = [(WLKURLRequestProperties *)self httpMethod];
-    v22 = [(WLKURLRequestProperties *)v6 httpMethod];
-    v23 = v21;
-    v24 = v22;
+    httpMethod = [(WLKURLRequestProperties *)self httpMethod];
+    httpMethod2 = [(WLKURLRequestProperties *)v6 httpMethod];
+    v23 = httpMethod;
+    v24 = httpMethod2;
     v25 = v24;
     if (v23 == v24)
     {
@@ -382,10 +382,10 @@ LABEL_28:
     }
 
     v27 = v20 & v26;
-    v28 = [(WLKURLRequestProperties *)self httpBody];
-    v29 = [(WLKURLRequestProperties *)v6 httpBody];
-    v30 = v28;
-    v31 = v29;
+    httpBody = [(WLKURLRequestProperties *)self httpBody];
+    httpBody2 = [(WLKURLRequestProperties *)v6 httpBody];
+    v30 = httpBody;
+    v31 = httpBody2;
     v32 = v31;
     if (v30 == v31)
     {
@@ -402,10 +402,10 @@ LABEL_28:
     }
 
     v34 = v27 & v33;
-    v35 = [(WLKURLRequestProperties *)self queryParameters];
-    v36 = [(WLKURLRequestProperties *)v6 queryParameters];
-    v37 = v35;
-    v38 = v36;
+    queryParameters = [(WLKURLRequestProperties *)self queryParameters];
+    queryParameters2 = [(WLKURLRequestProperties *)v6 queryParameters];
+    v37 = queryParameters;
+    v38 = queryParameters2;
     v39 = v38;
     if (v37 == v38)
     {
@@ -422,10 +422,10 @@ LABEL_28:
     }
 
     v41 = v34 & v40;
-    v42 = [(WLKURLRequestProperties *)self headers];
-    v43 = [(WLKURLRequestProperties *)v6 headers];
-    v44 = v42;
-    v45 = v43;
+    headers = [(WLKURLRequestProperties *)self headers];
+    headers2 = [(WLKURLRequestProperties *)v6 headers];
+    v44 = headers;
+    v45 = headers2;
     v46 = v45;
     if (v44 == v45)
     {
@@ -442,10 +442,10 @@ LABEL_28:
     }
 
     v48 = v41 & v47;
-    v49 = [(WLKURLRequestProperties *)self caller];
-    v50 = [(WLKURLRequestProperties *)v6 caller];
-    v51 = v49;
-    v52 = v50;
+    caller = [(WLKURLRequestProperties *)self caller];
+    caller2 = [(WLKURLRequestProperties *)v6 caller];
+    v51 = caller;
+    v52 = caller2;
     v53 = v52;
     if (v51 == v52)
     {
@@ -462,10 +462,10 @@ LABEL_28:
     }
 
     v55 = v48 & v54;
-    v56 = [(WLKURLRequestProperties *)self timeout];
-    v57 = [(WLKURLRequestProperties *)v6 timeout];
-    v58 = v56;
-    v59 = v57;
+    timeout = [(WLKURLRequestProperties *)self timeout];
+    timeout2 = [(WLKURLRequestProperties *)v6 timeout];
+    v58 = timeout;
+    v59 = timeout2;
     v60 = v59;
     if (v58 == v59)
     {
@@ -482,10 +482,10 @@ LABEL_28:
     }
 
     v62 = v55 & v61;
-    v63 = [(WLKURLRequestProperties *)self apiVersion];
-    v64 = [(WLKURLRequestProperties *)v6 apiVersion];
-    v65 = v63;
-    v66 = v64;
+    apiVersion = [(WLKURLRequestProperties *)self apiVersion];
+    apiVersion2 = [(WLKURLRequestProperties *)v6 apiVersion];
+    v65 = apiVersion;
+    v66 = apiVersion2;
     v67 = v66;
     if (v65 == v66)
     {
@@ -502,8 +502,8 @@ LABEL_28:
     }
 
     v69 = v62 & v68;
-    v70 = [(WLKURLRequestProperties *)self options];
-    if (v70 == [(WLKURLRequestProperties *)v6 options])
+    options = [(WLKURLRequestProperties *)self options];
+    if (options == [(WLKURLRequestProperties *)v6 options])
     {
       v13 = v69;
     }
@@ -528,8 +528,8 @@ LABEL_28:
   v8.receiver = self;
   v8.super_class = WLKURLRequestProperties;
   v4 = [(WLKURLRequestProperties *)&v8 description];
-  v5 = [(WLKURLRequestProperties *)self shortDescription];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [(WLKURLRequestProperties *)self shortDescription];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, shortDescription];
 
   return v6;
 }

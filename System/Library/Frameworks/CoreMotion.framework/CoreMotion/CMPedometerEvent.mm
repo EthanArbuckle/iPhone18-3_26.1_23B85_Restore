@@ -1,24 +1,24 @@
 @interface CMPedometerEvent
-+ (id)eventStringFromType:(int64_t)a3;
-- (CMPedometerEvent)initWithCoder:(id)a3;
-- (CMPedometerEvent)initWithEventDate:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)eventStringFromType:(int64_t)type;
+- (CMPedometerEvent)initWithCoder:(id)coder;
+- (CMPedometerEvent)initWithEventDate:(id)date type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMPedometerEvent
 
-- (CMPedometerEvent)initWithEventDate:(id)a3 type:(int64_t)a4
+- (CMPedometerEvent)initWithEventDate:(id)date type:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = CMPedometerEvent;
   v6 = [(CMPedometerEvent *)&v8 init];
   if (v6)
   {
-    v6->fDate = a3;
-    v6->fType = a4;
+    v6->fDate = date;
+    v6->fType = type;
   }
 
   return v6;
@@ -31,17 +31,17 @@
   [(CMPedometerEvent *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fDate = self->fDate;
   fType = self->fType;
 
   return MEMORY[0x1EEE66B58](v7, sel_initWithEventDate_type_, fDate);
 }
 
-- (CMPedometerEvent)initWithCoder:(id)a3
+- (CMPedometerEvent)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CMPedometerEvent;
@@ -49,30 +49,30 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMPedometerEventKeyEventDate");
-    v4->fType = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCMPedometerEventKeyEventType");
+    v4->fDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMPedometerEventKeyEventDate");
+    v4->fType = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCMPedometerEventKeyEventType");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fDate, @"kCMPedometerEventKeyEventDate");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fDate, @"kCMPedometerEventKeyEventDate");
   fType = self->fType;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v5, fType, @"kCMPedometerEventKeyEventType");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, fType, @"kCMPedometerEventKeyEventType");
 }
 
-+ (id)eventStringFromType:(int64_t)a3
++ (id)eventStringFromType:(int64_t)type
 {
   v3 = @"Resume";
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }

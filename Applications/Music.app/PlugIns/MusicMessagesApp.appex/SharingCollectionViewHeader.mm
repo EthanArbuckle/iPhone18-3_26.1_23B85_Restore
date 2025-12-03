@@ -1,6 +1,6 @@
 @interface SharingCollectionViewHeader
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicMessagesApp27SharingCollectionViewHeader)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicMessagesApp27SharingCollectionViewHeader)initWithCoder:(id)coder;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -8,7 +8,7 @@
 
 @implementation SharingCollectionViewHeader
 
-- (_TtC16MusicMessagesApp27SharingCollectionViewHeader)initWithCoder:(id)a3
+- (_TtC16MusicMessagesApp27SharingCollectionViewHeader)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp27SharingCollectionViewHeader_layoutInvalidationHandler);
   *v3 = 0;
@@ -21,11 +21,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for SharingCollectionViewHeader();
   [(SharingCollectionViewHeader *)&v6 dealloc];
 }
@@ -40,10 +40,10 @@
   [v2 setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_100023978(width);
   v7 = v6;
 
@@ -56,7 +56,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100023AE0();
 }
 

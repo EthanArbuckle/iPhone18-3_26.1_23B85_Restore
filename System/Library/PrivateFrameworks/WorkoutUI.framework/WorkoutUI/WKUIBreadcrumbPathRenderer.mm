@@ -1,19 +1,19 @@
 @interface WKUIBreadcrumbPathRenderer
-- (BOOL)canDrawMapRect:(id)a3 zoomScale:(double)a4;
-- (_TtC9WorkoutUI26WKUIBreadcrumbPathRenderer)initWithOverlay:(id)a3;
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5;
+- (BOOL)canDrawMapRect:(id)rect zoomScale:(double)scale;
+- (_TtC9WorkoutUI26WKUIBreadcrumbPathRenderer)initWithOverlay:(id)overlay;
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context;
 @end
 
 @implementation WKUIBreadcrumbPathRenderer
 
-- (BOOL)canDrawMapRect:(id)a3 zoomScale:(double)a4
+- (BOOL)canDrawMapRect:(id)rect zoomScale:(double)scale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v6 = a3.var0.var1;
-  v7 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v6 = rect.var0.var1;
+  v7 = rect.var0.var0;
   v8 = *(*(&self->super.super.isa + OBJC_IVAR____TtC9WorkoutUI26WKUIBreadcrumbPathRenderer_crumbs) + OBJC_IVAR____TtC9WorkoutUI18WKUIBreadcrumbPath_protectedBreadcrumbData);
-  v9 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v8 + 56));
   v10 = *(v8 + 24);
   v11 = *(v8 + 32);
@@ -33,18 +33,18 @@
   return v8;
 }
 
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v8 = a3.var0.var1;
-  v9 = a3.var0.var0;
-  v11 = a5;
-  v12 = self;
-  WKUIBreadcrumbPathRenderer.draw(_:zoomScale:in:)(v11, v9, v8, var0, var1, a4);
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v8 = rect.var0.var1;
+  v9 = rect.var0.var0;
+  contextCopy = context;
+  selfCopy = self;
+  WKUIBreadcrumbPathRenderer.draw(_:zoomScale:in:)(contextCopy, v9, v8, var0, var1, scale);
 }
 
-- (_TtC9WorkoutUI26WKUIBreadcrumbPathRenderer)initWithOverlay:(id)a3
+- (_TtC9WorkoutUI26WKUIBreadcrumbPathRenderer)initWithOverlay:(id)overlay
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

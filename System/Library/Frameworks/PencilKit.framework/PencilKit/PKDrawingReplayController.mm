@@ -1,32 +1,32 @@
 @interface PKDrawingReplayController
-+ (BOOL)isDrawingInProgressForWindow:(id)a3;
++ (BOOL)isDrawingInProgressForWindow:(id)window;
 - (BOOL)disablePencilInput;
 - (BOOL)shouldEndDrawing;
 - (CGAffineTransform)transform;
 - (CGPoint)currentOffset;
 - (CGPoint)originOffset;
 - (CGPoint)startingTextFieldOrigin;
-- (PKDrawingReplayController)initWithDrawing:(id)a3 transform:(CGAffineTransform *)a4 sourceTextField:(id)a5;
-- (PKDrawingReplayController)initWithSourceTextField:(id)a3;
+- (PKDrawingReplayController)initWithDrawing:(id)drawing transform:(CGAffineTransform *)transform sourceTextField:(id)field;
+- (PKDrawingReplayController)initWithSourceTextField:(id)field;
 - (PKTextInputDrawingGestureRecognizer)drawingGestureRecognizer;
 - (PKTextInputInteraction)textInputInteraction;
 - (UITextField)textField;
-- (id)pencilTextInputInteractionFromWindowScene:(id)a3;
+- (id)pencilTextInputInteractionFromWindowScene:(id)scene;
 - (void)_beginDrawing;
-- (void)_beginStrokeWithPoint:(id)a3;
+- (void)_beginStrokeWithPoint:(id)point;
 - (void)_endDrawing;
 - (void)_loadPointArray;
 - (void)_processNextPoint;
 - (void)_setUpIfNecessary;
-- (void)_strokeEndedWithReplayPoint:(id)a3;
-- (void)_strokeMovedWithReplayPoint:(id)a3;
-- (void)beginDrawingAnimationAtPoint:(CGPoint)a3 completion:(id)a4;
-- (void)beginDrawingAnimationAtRange:(_NSRange)a3 offset:(CGPoint)a4 completion:(id)a5;
-- (void)beginInsertTextAnimationAtIndex:(unint64_t)a3 offset:(CGPoint)a4 completion:(id)a5;
+- (void)_strokeEndedWithReplayPoint:(id)point;
+- (void)_strokeMovedWithReplayPoint:(id)point;
+- (void)beginDrawingAnimationAtPoint:(CGPoint)point completion:(id)completion;
+- (void)beginDrawingAnimationAtRange:(_NSRange)range offset:(CGPoint)offset completion:(id)completion;
+- (void)beginInsertTextAnimationAtIndex:(unint64_t)index offset:(CGPoint)offset completion:(id)completion;
 - (void)cancel;
 - (void)dealloc;
-- (void)setDisablePencilInput:(BOOL)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setDisablePencilInput:(BOOL)input;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PKDrawingReplayController
@@ -41,33 +41,33 @@
   [(PKDrawingReplayController *)&v4 dealloc];
 }
 
-+ (BOOL)isDrawingInProgressForWindow:(id)a3
++ (BOOL)isDrawingInProgressForWindow:(id)window
 {
-  v3 = [a3 windowScene];
-  v4 = [PKTextInputInteraction interactionForScene:v3];
+  windowScene = [window windowScene];
+  v4 = [PKTextInputInteraction interactionForScene:windowScene];
 
-  v5 = [v4 canvasController];
-  HasVisible = [(PKTextInputCanvasController *)v5 canvasHasVisibleStrokes];
+  canvasController = [v4 canvasController];
+  HasVisible = [(PKTextInputCanvasController *)canvasController canvasHasVisibleStrokes];
 
-  v7 = [v4 drawingGestureRecognizer];
-  v8 = [v7 drawingTargetIsDrawing];
+  drawingGestureRecognizer = [v4 drawingGestureRecognizer];
+  drawingTargetIsDrawing = [drawingGestureRecognizer drawingTargetIsDrawing];
 
-  v9 = [v4 drawingGestureRecognizer];
-  v10 = [v9 isReplaying];
+  drawingGestureRecognizer2 = [v4 drawingGestureRecognizer];
+  isReplaying = [drawingGestureRecognizer2 isReplaying];
 
-  return (v8 | HasVisible | v10) & 1;
+  return (drawingTargetIsDrawing | HasVisible | isReplaying) & 1;
 }
 
-- (PKDrawingReplayController)initWithSourceTextField:(id)a3
+- (PKDrawingReplayController)initWithSourceTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v10.receiver = self;
   v10.super_class = PKDrawingReplayController;
   v5 = [(PKDrawingReplayController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_textField, v4);
+    objc_storeWeak(&v5->_textField, fieldCopy);
     v7 = MEMORY[0x1E695EFD0];
     v8 = *(MEMORY[0x1E695EFD0] + 16);
     *&v6->_transform.a = *MEMORY[0x1E695EFD0];
@@ -79,22 +79,22 @@
   return v6;
 }
 
-- (PKDrawingReplayController)initWithDrawing:(id)a3 transform:(CGAffineTransform *)a4 sourceTextField:(id)a5
+- (PKDrawingReplayController)initWithDrawing:(id)drawing transform:(CGAffineTransform *)transform sourceTextField:(id)field
 {
-  v9 = a3;
-  v10 = a5;
+  drawingCopy = drawing;
+  fieldCopy = field;
   v16.receiver = self;
   v16.super_class = PKDrawingReplayController;
   v11 = [(PKDrawingReplayController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_textField, v10);
-    objc_storeStrong(&v12->_drawing, a3);
+    objc_storeWeak(&v11->_textField, fieldCopy);
+    objc_storeStrong(&v12->_drawing, drawing);
     v12->_originOffset = *MEMORY[0x1E695EFF8];
-    v13 = *&a4->a;
-    v14 = *&a4->c;
-    *&v12->_transform.tx = *&a4->tx;
+    v13 = *&transform->a;
+    v14 = *&transform->c;
+    *&v12->_transform.tx = *&transform->tx;
     *&v12->_transform.c = v14;
     *&v12->_transform.a = v13;
     v12->_speedRatio = 1.0;
@@ -104,45 +104,45 @@
   return v12;
 }
 
-- (id)pencilTextInputInteractionFromWindowScene:(id)a3
+- (id)pencilTextInputInteractionFromWindowScene:(id)scene
 {
-  v3 = [MEMORY[0x1E69DD0A8] activeTextEffectsWindowForWindowScene:a3];
+  v3 = [MEMORY[0x1E69DD0A8] activeTextEffectsWindowForWindowScene:scene];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 editingOverlayViewController];
+    editingOverlayViewController = [v3 editingOverlayViewController];
   }
 
   else
   {
-    v4 = 0;
+    editingOverlayViewController = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 pencilTextInputInteraction];
+    pencilTextInputInteraction = [editingOverlayViewController pencilTextInputInteraction];
   }
 
   else
   {
-    v5 = 0;
+    pencilTextInputInteraction = 0;
   }
 
-  return v5;
+  return pencilTextInputInteraction;
 }
 
-- (void)setDisablePencilInput:(BOOL)a3
+- (void)setDisablePencilInput:(BOOL)input
 {
-  v3 = a3;
-  v4 = [(PKDrawingReplayController *)self drawingGestureRecognizer];
-  [v4 setEnabled:!v3];
+  inputCopy = input;
+  drawingGestureRecognizer = [(PKDrawingReplayController *)self drawingGestureRecognizer];
+  [drawingGestureRecognizer setEnabled:!inputCopy];
 }
 
 - (BOOL)disablePencilInput
 {
-  v2 = [(PKDrawingReplayController *)self drawingGestureRecognizer];
-  v3 = [v2 isEnabled];
+  drawingGestureRecognizer = [(PKDrawingReplayController *)self drawingGestureRecognizer];
+  isEnabled = [drawingGestureRecognizer isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
 - (void)_setUpIfNecessary
@@ -150,16 +150,16 @@
   v11 = *MEMORY[0x1E69E9840];
   if (![(PKDrawingReplayController *)self setupComplete])
   {
-    v3 = [(PKDrawingReplayController *)self textField];
-    v4 = [v3 window];
-    v5 = [v4 windowScene];
-    v6 = [(PKDrawingReplayController *)self pencilTextInputInteractionFromWindowScene:v5];
+    textField = [(PKDrawingReplayController *)self textField];
+    window = [textField window];
+    windowScene = [window windowScene];
+    v6 = [(PKDrawingReplayController *)self pencilTextInputInteractionFromWindowScene:windowScene];
 
     if (v6)
     {
       [(PKDrawingReplayController *)self setTextInputInteraction:v6];
-      v7 = [v6 drawingGestureRecognizer];
-      [(PKDrawingReplayController *)self setDrawingGestureRecognizer:v7];
+      drawingGestureRecognizer = [v6 drawingGestureRecognizer];
+      [(PKDrawingReplayController *)self setDrawingGestureRecognizer:drawingGestureRecognizer];
 
       [(PKDrawingReplayController *)self setSetupComplete:1];
       [(PKDrawingReplayController *)self _loadPointArray];
@@ -178,33 +178,33 @@
   }
 }
 
-- (void)beginInsertTextAnimationAtIndex:(unint64_t)a3 offset:(CGPoint)a4 completion:(id)a5
+- (void)beginInsertTextAnimationAtIndex:(unint64_t)index offset:(CGPoint)offset completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = offset.y;
+  x = offset.x;
+  completionCopy = completion;
   if ([(PKDrawingReplayController *)self isAnimating])
   {
-    v10 = os_log_create("com.apple.pencilkit", "");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    textField = os_log_create("com.apple.pencilkit", "");
+    if (os_log_type_enabled(textField, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_ERROR, "Trying to begin replay animation, but an animation is currently running, skipping.", buf, 2u);
+      _os_log_error_impl(&dword_1C7CCA000, textField, OS_LOG_TYPE_ERROR, "Trying to begin replay animation, but an animation is currently running, skipping.", buf, 2u);
     }
   }
 
   else
   {
-    v10 = [(PKDrawingReplayController *)self textField];
-    v11 = [v10 beginningOfDocument];
-    v12 = [v10 positionFromPosition:v11 offset:a3];
+    textField = [(PKDrawingReplayController *)self textField];
+    beginningOfDocument = [textField beginningOfDocument];
+    v12 = [textField positionFromPosition:beginningOfDocument offset:index];
 
     if (v12)
     {
-      [v10 caretRectForPosition:v12];
+      [textField caretRectForPosition:v12];
       v14 = x + v13;
-      [v10 bounds];
-      [v10 textRectForBounds:?];
+      [textField bounds];
+      [textField textRectForBounds:?];
       v15 = v14 + v32.origin.x;
       v16 = y + CGRectGetMidY(v32);
       v28 = unk_1C801F458;
@@ -215,21 +215,21 @@
       v26 = unk_1C801F438;
       v27 = unk_1C801F448;
       [(PKDrawingReplayController *)self _beginDrawing];
-      v17 = [(PKDrawingReplayController *)self drawingGestureRecognizer];
+      drawingGestureRecognizer = [(PKDrawingReplayController *)self drawingGestureRecognizer];
       *buf = v15;
       v23 = v16;
       v24 = 0x3FE0000000000000;
-      [v17 _replayDrawingBegan:buf coordinateSpace:v10 activeInputProperties:23 inputType:1];
+      [drawingGestureRecognizer _replayDrawingBegan:buf coordinateSpace:textField activeInputProperties:23 inputType:1];
 
-      v18 = [(PKDrawingReplayController *)self textInputInteraction];
-      v19 = [(PKDrawingReplayController *)self textField];
+      textInputInteraction = [(PKDrawingReplayController *)self textInputInteraction];
+      textField2 = [(PKDrawingReplayController *)self textField];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __79__PKDrawingReplayController_beginInsertTextAnimationAtIndex_offset_completion___block_invoke;
       v20[3] = &unk_1E82D77F0;
       v20[4] = self;
-      v21 = v9;
-      [v18 simulateReserveSpaceForTextInputView:v19 location:v20 completion:{v15, v16}];
+      v21 = completionCopy;
+      [textInputInteraction simulateReserveSpaceForTextInputView:textField2 location:v20 completion:{v15, v16}];
     }
   }
 }
@@ -257,11 +257,11 @@ uint64_t __79__PKDrawingReplayController_beginInsertTextAnimationAtIndex_offset_
   return result;
 }
 
-- (void)beginDrawingAnimationAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)beginDrawingAnimationAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
   [(PKDrawingReplayController *)self setOriginOffset:x, y];
   if ([(PKDrawingReplayController *)self isAnimating])
   {
@@ -278,17 +278,17 @@ LABEL_10:
 
   else
   {
-    v11 = [(PKDrawingReplayController *)self textInputInteraction];
-    v12 = [v11 drawingGestureRecognizer];
-    v13 = [v12 isReplaying];
+    textInputInteraction = [(PKDrawingReplayController *)self textInputInteraction];
+    drawingGestureRecognizer = [textInputInteraction drawingGestureRecognizer];
+    isReplaying = [drawingGestureRecognizer isReplaying];
 
-    if (!v13)
+    if (!isReplaying)
     {
-      [(PKDrawingReplayController *)self setCompletionHandler:v7];
-      v14 = [(PKDrawingReplayController *)self textField];
-      v15 = [(PKDrawingReplayController *)self textField];
-      v16 = [v15 window];
-      [v14 PK_convertPoint:v16 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+      [(PKDrawingReplayController *)self setCompletionHandler:completionCopy];
+      textField = [(PKDrawingReplayController *)self textField];
+      textField2 = [(PKDrawingReplayController *)self textField];
+      window = [textField2 window];
+      [textField PK_convertPoint:window toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
       [(PKDrawingReplayController *)self setStartingTextFieldOrigin:?];
 
       [(PKDrawingReplayController *)self setCurrentPointIndex:0];
@@ -309,16 +309,16 @@ LABEL_10:
 LABEL_8:
 }
 
-- (void)beginDrawingAnimationAtRange:(_NSRange)a3 offset:(CGPoint)a4 completion:(id)a5
+- (void)beginDrawingAnimationAtRange:(_NSRange)range offset:(CGPoint)offset completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  location = a3.location;
-  v9 = a5;
-  v10 = v9;
+  y = offset.y;
+  x = offset.x;
+  location = range.location;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v9)
+    if (completionCopy)
     {
       v11 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -333,18 +333,18 @@ LABEL_8:
 
   else
   {
-    [(PKDrawingReplayController *)self setCompletionHandler:v9];
-    v12 = [(PKDrawingReplayController *)self textField];
-    v13 = [v12 beginningOfDocument];
-    v14 = [v12 positionFromPosition:v13 offset:location];
+    [(PKDrawingReplayController *)self setCompletionHandler:completionCopy];
+    textField = [(PKDrawingReplayController *)self textField];
+    beginningOfDocument = [textField beginningOfDocument];
+    v14 = [textField positionFromPosition:beginningOfDocument offset:location];
 
     if (v14)
     {
-      [v12 caretRectForPosition:v14];
+      [textField caretRectForPosition:v14];
       v16 = x + v15;
       v18 = y + v17;
-      [v12 bounds];
-      [v12 textRectForBounds:?];
+      [textField bounds];
+      [textField textRectForBounds:?];
       [(PKDrawingReplayController *)self beginDrawingAnimationAtPoint:v10 completion:v16 + v19, v18 + v20];
     }
   }
@@ -352,10 +352,10 @@ LABEL_8:
 
 - (void)_processNextPoint
 {
-  v3 = [(PKDrawingReplayController *)self textField];
-  v4 = [(PKDrawingReplayController *)self textField];
-  v5 = [v4 window];
-  [v3 PK_convertPoint:v5 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  textField = [(PKDrawingReplayController *)self textField];
+  textField2 = [(PKDrawingReplayController *)self textField];
+  window = [textField2 window];
+  [textField PK_convertPoint:window toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   v7 = v6;
   v9 = v8;
 
@@ -365,15 +365,15 @@ LABEL_8:
     [(PKDrawingReplayController *)self cancel];
   }
 
-  v12 = [(PKDrawingReplayController *)self drawingGestureRecognizer];
-  v13 = [v12 drawingTouch];
+  drawingGestureRecognizer = [(PKDrawingReplayController *)self drawingGestureRecognizer];
+  drawingTouch = [drawingGestureRecognizer drawingTouch];
 
-  if (!v13 && ![(PKDrawingReplayController *)self cancelled])
+  if (!drawingTouch && ![(PKDrawingReplayController *)self cancelled])
   {
-    v14 = [(PKDrawingReplayController *)self pointArray];
-    v15 = [(PKDrawingReplayController *)self currentPointIndex];
-    [(PKDrawingReplayController *)self setCurrentPointIndex:v15 + 1];
-    if (v15 >= [v14 count])
+    pointArray = [(PKDrawingReplayController *)self pointArray];
+    currentPointIndex = [(PKDrawingReplayController *)self currentPointIndex];
+    [(PKDrawingReplayController *)self setCurrentPointIndex:currentPointIndex + 1];
+    if (currentPointIndex >= [pointArray count])
     {
       v18 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -387,14 +387,14 @@ LABEL_8:
 
     else
     {
-      v16 = [v14 objectAtIndexedSubscript:v15];
-      if (!v15)
+      v16 = [pointArray objectAtIndexedSubscript:currentPointIndex];
+      if (!currentPointIndex)
       {
         [(PKDrawingReplayController *)self _beginDrawing];
       }
 
-      v17 = [v16 type];
-      switch(v17)
+      type = [v16 type];
+      switch(type)
       {
         case 3:
           [(PKDrawingReplayController *)self _strokeEndedWithReplayPoint:v16];
@@ -413,9 +413,9 @@ LABEL_8:
 - (void)_beginDrawing
 {
   [(PKDrawingReplayController *)self setIsAnimating:1];
-  v3 = [(PKDrawingReplayController *)self textInputInteraction];
-  v4 = [v3 drawingGestureRecognizer];
-  [v4 setIsReplaying:1];
+  textInputInteraction = [(PKDrawingReplayController *)self textInputInteraction];
+  drawingGestureRecognizer = [textInputInteraction drawingGestureRecognizer];
+  [drawingGestureRecognizer setIsReplaying:1];
 
   v5 = os_log_create("com.apple.pencilkit", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -428,27 +428,27 @@ LABEL_8:
 - (void)_endDrawing
 {
   [(PKDrawingReplayController *)self setIsAnimating:0];
-  v3 = [(PKDrawingReplayController *)self textInputInteraction];
-  v4 = [v3 drawingGestureRecognizer];
-  v5 = [v4 isReplaying];
+  textInputInteraction = [(PKDrawingReplayController *)self textInputInteraction];
+  drawingGestureRecognizer = [textInputInteraction drawingGestureRecognizer];
+  isReplaying = [drawingGestureRecognizer isReplaying];
 
-  if (v5)
+  if (isReplaying)
   {
-    v6 = [(PKDrawingReplayController *)self textInputInteraction];
-    v7 = [v6 drawingGestureRecognizer];
-    [v7 _replayDrawingEnded];
+    textInputInteraction2 = [(PKDrawingReplayController *)self textInputInteraction];
+    drawingGestureRecognizer2 = [textInputInteraction2 drawingGestureRecognizer];
+    [drawingGestureRecognizer2 _replayDrawingEnded];
   }
 
-  v8 = [(PKDrawingReplayController *)self textInputInteraction];
-  v9 = [v8 drawingGestureRecognizer];
-  [v9 setState:3];
+  textInputInteraction3 = [(PKDrawingReplayController *)self textInputInteraction];
+  drawingGestureRecognizer3 = [textInputInteraction3 drawingGestureRecognizer];
+  [drawingGestureRecognizer3 setState:3];
 
-  v10 = [(PKDrawingReplayController *)self completionHandler];
+  completionHandler = [(PKDrawingReplayController *)self completionHandler];
 
-  if (v10)
+  if (completionHandler)
   {
-    v11 = [(PKDrawingReplayController *)self completionHandler];
-    v11[2](v11, [(PKDrawingReplayController *)self cancelled]^ 1);
+    completionHandler2 = [(PKDrawingReplayController *)self completionHandler];
+    completionHandler2[2](completionHandler2, [(PKDrawingReplayController *)self cancelled]^ 1);
   }
 
   [(PKDrawingReplayController *)self setCompletionHandler:0];
@@ -462,10 +462,10 @@ LABEL_8:
 
 - (CGPoint)currentOffset
 {
-  v3 = [(PKDrawingReplayController *)self textField];
-  v4 = [(PKDrawingReplayController *)self textInputInteraction];
-  v5 = [v4 view];
-  [v3 PK_convertPoint:v5 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  textField = [(PKDrawingReplayController *)self textField];
+  textInputInteraction = [(PKDrawingReplayController *)self textInputInteraction];
+  view = [textInputInteraction view];
+  [textField PK_convertPoint:view toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   v7 = v6;
   v9 = v8;
 
@@ -477,9 +477,9 @@ LABEL_8:
   return result;
 }
 
-- (void)_beginStrokeWithPoint:(id)a3
+- (void)_beginStrokeWithPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   if (![(PKDrawingReplayController *)self cancelled])
   {
     [(PKDrawingReplayController *)self currentOffset];
@@ -492,14 +492,14 @@ LABEL_8:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    if (v4)
+    if (pointCopy)
     {
-      [v4 pkInputPointWithOffset:?];
+      [pointCopy pkInputPointWithOffset:?];
     }
 
-    v5 = [(PKDrawingReplayController *)self drawingGestureRecognizer];
-    v6 = [(PKDrawingReplayController *)self canvasView];
-    v7 = [v6 window];
+    drawingGestureRecognizer = [(PKDrawingReplayController *)self drawingGestureRecognizer];
+    canvasView = [(PKDrawingReplayController *)self canvasView];
+    window = [canvasView window];
     v8[6] = v16;
     v8[7] = v17;
     v9 = v18;
@@ -509,17 +509,17 @@ LABEL_8:
     v8[5] = v15;
     v8[0] = v10;
     v8[1] = v11;
-    [v5 _replayDrawingBegan:v8 coordinateSpace:v7 activeInputProperties:23 inputType:1];
+    [drawingGestureRecognizer _replayDrawingBegan:v8 coordinateSpace:window activeInputProperties:23 inputType:1];
 
     [(PKDrawingReplayController *)self _processNextPoint];
   }
 }
 
-- (void)_strokeMovedWithReplayPoint:(id)a3
+- (void)_strokeMovedWithReplayPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   objc_initWeak(&location, self);
-  [v4 delay];
+  [pointCopy delay];
   v6 = v5;
   [(PKDrawingReplayController *)self speedRatio];
   if (v7 > 0.0)
@@ -541,7 +541,7 @@ LABEL_8:
     block[2] = __57__PKDrawingReplayController__strokeMovedWithReplayPoint___block_invoke;
     block[3] = &unk_1E82D7690;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = pointCopy;
     dispatch_after(v9, MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v12);
@@ -588,9 +588,9 @@ void __57__PKDrawingReplayController__strokeMovedWithReplayPoint___block_invoke(
   }
 }
 
-- (void)_strokeEndedWithReplayPoint:(id)a3
+- (void)_strokeEndedWithReplayPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   if ([(PKDrawingReplayController *)self shouldEndDrawing])
   {
     [(PKDrawingReplayController *)self _endDrawing];
@@ -599,7 +599,7 @@ void __57__PKDrawingReplayController__strokeMovedWithReplayPoint___block_invoke(
   else
   {
     objc_initWeak(&location, self);
-    [v4 delay];
+    [pointCopy delay];
     v6 = dispatch_time(0, (v5 * 1000000000.0));
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -635,8 +635,8 @@ void __57__PKDrawingReplayController__strokeEndedWithReplayPoint___block_invoke(
 - (BOOL)shouldEndDrawing
 {
   v3 = [(PKDrawingReplayController *)self currentPointIndex]+ 1;
-  v4 = [(PKDrawingReplayController *)self pointArray];
-  LOBYTE(v3) = v3 >= [v4 count];
+  pointArray = [(PKDrawingReplayController *)self pointArray];
+  LOBYTE(v3) = v3 >= [pointArray count];
 
   return v3;
 }
@@ -647,22 +647,22 @@ void __57__PKDrawingReplayController__strokeEndedWithReplayPoint___block_invoke(
   {
     [(PKDrawingReplayController *)self setCancelled:1];
     [(PKDrawingReplayController *)self _endDrawing];
-    v3 = [(PKDrawingReplayController *)self drawingGestureRecognizer];
-    [v3 _replayDrawingCancelled];
+    drawingGestureRecognizer = [(PKDrawingReplayController *)self drawingGestureRecognizer];
+    [drawingGestureRecognizer _replayDrawingCancelled];
 
-    v4 = [(PKDrawingReplayController *)self textInputInteraction];
-    [v4 cancelReplay];
+    textInputInteraction = [(PKDrawingReplayController *)self textInputInteraction];
+    [textInputInteraction cancelReplay];
   }
 }
 
 - (void)_loadPointArray
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PKDrawingReplayController *)self drawing];
-  v4 = [v3 strokes];
+  drawing = [(PKDrawingReplayController *)self drawing];
+  strokes = [drawing strokes];
 
-  v5 = [(PKDrawingReplayController *)self drawing];
-  [v5 bounds];
+  drawing2 = [(PKDrawingReplayController *)self drawing];
+  [drawing2 bounds];
   v7 = v6;
   v9 = v8;
 
@@ -675,7 +675,7 @@ void __57__PKDrawingReplayController__strokeEndedWithReplayPoint___block_invoke(
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = strokes;
   v11 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v11)
   {
@@ -691,11 +691,11 @@ void __57__PKDrawingReplayController__strokeEndedWithReplayPoint___block_invoke(
           objc_enumerationMutation(obj);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * i) _strokeData];
-        v16 = [v15 _pointsCount];
-        if (v16)
+        _strokeData = [*(*(&v28 + 1) + 8 * i) _strokeData];
+        _pointsCount = [_strokeData _pointsCount];
+        if (_pointsCount)
         {
-          v17 = v16;
+          v17 = _pointsCount;
           v18 = 0;
           v19 = v13;
           do
@@ -712,10 +712,10 @@ void __57__PKDrawingReplayController__strokeEndedWithReplayPoint___block_invoke(
 
             v21 = objc_alloc_init(PKDrawingReplayPoint);
             [(PKDrawingReplayPoint *)v21 setType:v20];
-            [v15 timestampAtIndex:v18];
+            [_strokeData timestampAtIndex:v18];
             v13 = v22;
             [(PKDrawingReplayPoint *)v21 setDelay:v22 - v19];
-            [v15 locationAtIndex:v18];
+            [_strokeData locationAtIndex:v18];
             [(PKDrawingReplayPoint *)v21 setPoint:vaddq_f64(v34, vmlaq_n_f64(vmulq_n_f64(v33, v24 - v9), v32, v23 - v7))];
             [v10 addObject:v21];
             if (v17 == 1)
@@ -791,11 +791,11 @@ void __57__PKDrawingReplayController__strokeEndedWithReplayPoint___block_invoke(
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }

@@ -1,19 +1,19 @@
 @interface RouteLoadingController
 - (BOOL)isActive;
-- (BOOL)isActiveForTransportType:(int64_t)a3;
+- (BOOL)isActiveForTransportType:(int64_t)type;
 - (NSDictionary)routesResults;
 - (NSSet)supportedTransportTypes;
-- (RouteLoadingController)initWithWaypointSet:(id)a3 taskFactory:(id)a4;
+- (RouteLoadingController)initWithWaypointSet:(id)set taskFactory:(id)factory;
 - (RouteLoadingControllerDelegate)delegate;
-- (id)_routeLoadingTaskForTransportType:(int64_t)a3;
-- (id)routesForTransportType:(int64_t)a3;
-- (void)_handleResults:(id)a3;
+- (id)_routeLoadingTaskForTransportType:(int64_t)type;
+- (id)routesForTransportType:(int64_t)type;
+- (void)_handleResults:(id)results;
 - (void)_updateTaskForRealtimeUpdates;
 - (void)cancelLoading;
-- (void)cancelLoadingForTransportType:(int64_t)a3;
-- (void)refreshRoutesForTransportType:(int64_t)a3;
-- (void)setTransportTypeForRealtimeUpdates:(int64_t)a3;
-- (void)setWaypointSet:(id)a3;
+- (void)cancelLoadingForTransportType:(int64_t)type;
+- (void)refreshRoutesForTransportType:(int64_t)type;
+- (void)setTransportTypeForRealtimeUpdates:(int64_t)updates;
+- (void)setWaypointSet:(id)set;
 @end
 
 @implementation RouteLoadingController
@@ -25,21 +25,21 @@
   return WeakRetained;
 }
 
-- (void)_handleResults:(id)a3
+- (void)_handleResults:(id)results
 {
-  v4 = a3;
-  if ([v4 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
-    v20 = self;
+    selfCopy = self;
     v22 = [(RouteLoadingController *)self routesForTransportType:[(RouteLoadingController *)self transportTypeForRealtimeUpdates]];
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-    v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
+    v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
     [PPTNotificationCenter postNotificationIfNeededWithName:@"MapsTestingTransitRouteUpdateWillUpdateRoute" object:0 userInfo:0];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v4;
+    obj = resultsCopy;
     v7 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v7)
     {
@@ -55,18 +55,18 @@
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
-          v12 = [v11 routeID];
-          v13 = [v11 transitUpdate];
+          routeID = [v11 routeID];
+          transitUpdate = [v11 transitUpdate];
           v23[0] = _NSConcreteStackBlock;
           v23[1] = 3221225472;
           v23[2] = sub_10099DC40;
           v23[3] = &unk_1016308B0;
-          v24 = v12;
-          v25 = v13;
+          v24 = routeID;
+          v25 = transitUpdate;
           v26 = v5;
           v27 = v6;
-          v14 = v13;
-          v15 = v12;
+          v14 = transitUpdate;
+          v15 = routeID;
           [v22 withValue:v23 orError:&stru_1016308D0];
         }
 
@@ -77,23 +77,23 @@
     }
 
     [PPTNotificationCenter postNotificationIfNeededWithName:@"MapsTestingTransitRouteUpdateDidUpdateRoute" object:0 userInfo:0];
-    v16 = [(RouteLoadingController *)v20 delegate];
+    delegate = [(RouteLoadingController *)selfCopy delegate];
     v17 = [v6 copy];
     v18 = [v5 copy];
     v19 = [Result resultWithValue:v18];
-    [v16 routeLoadingController:v20 didReceiveUpdates:v17 forRoutesResult:v19];
+    [delegate routeLoadingController:selfCopy didReceiveUpdates:v17 forRoutesResult:v19];
   }
 }
 
 - (void)_updateTaskForRealtimeUpdates
 {
-  v3 = [(RouteLoadingController *)self activeTasksSync];
-  objc_sync_enter(v3);
-  v4 = [(RouteLoadingController *)self routeUpdatingTask];
-  [v4 stop];
+  activeTasksSync = [(RouteLoadingController *)self activeTasksSync];
+  objc_sync_enter(activeTasksSync);
+  routeUpdatingTask = [(RouteLoadingController *)self routeUpdatingTask];
+  [routeUpdatingTask stop];
 
   [(RouteLoadingController *)self setRouteUpdatingTask:0];
-  objc_sync_exit(v3);
+  objc_sync_exit(activeTasksSync);
 
   if ([(RouteLoadingController *)self transportTypeForRealtimeUpdates])
   {
@@ -107,9 +107,9 @@
   }
 }
 
-- (void)setTransportTypeForRealtimeUpdates:(int64_t)a3
+- (void)setTransportTypeForRealtimeUpdates:(int64_t)updates
 {
-  if (self->_transportTypeForRealtimeUpdates != a3)
+  if (self->_transportTypeForRealtimeUpdates != updates)
   {
     v5 = sub_100798A3C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -125,14 +125,14 @@
         v7 = off_1016308F0[v6];
       }
 
-      if ((a3 - 1) > 4)
+      if ((updates - 1) > 4)
       {
         v8 = @"Undefined";
       }
 
       else
       {
-        v8 = off_1016308F0[a3 - 1];
+        v8 = off_1016308F0[updates - 1];
       }
 
       v9 = 138543618;
@@ -142,38 +142,38 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Updating transport type for realtime updates: %{public}@ -> %{public}@", &v9, 0x16u);
     }
 
-    self->_transportTypeForRealtimeUpdates = a3;
+    self->_transportTypeForRealtimeUpdates = updates;
     [(RouteLoadingController *)self _updateTaskForRealtimeUpdates];
   }
 }
 
-- (id)_routeLoadingTaskForTransportType:(int64_t)a3
+- (id)_routeLoadingTaskForTransportType:(int64_t)type
 {
-  v5 = [(RouteLoadingController *)self activeTasksSync];
-  objc_sync_enter(v5);
-  v6 = [(RouteLoadingController *)self activeTasks];
-  v7 = [NSNumber numberWithInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  activeTasksSync = [(RouteLoadingController *)self activeTasksSync];
+  objc_sync_enter(activeTasksSync);
+  activeTasks = [(RouteLoadingController *)self activeTasks];
+  v7 = [NSNumber numberWithInteger:type];
+  v8 = [activeTasks objectForKeyedSubscript:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(activeTasksSync);
 
   return v8;
 }
 
-- (void)refreshRoutesForTransportType:(int64_t)a3
+- (void)refreshRoutesForTransportType:(int64_t)type
 {
-  v5 = [(RouteLoadingController *)self supportedTransportTypes];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 containsObject:v6];
+  supportedTransportTypes = [(RouteLoadingController *)self supportedTransportTypes];
+  v6 = [NSNumber numberWithInteger:type];
+  v7 = [supportedTransportTypes containsObject:v6];
 
   if (!v7)
   {
     return;
   }
 
-  if ([(RouteLoadingController *)self isActiveForTransportType:a3])
+  if ([(RouteLoadingController *)self isActiveForTransportType:type])
   {
-    [(RouteLoadingController *)self cancelLoadingForTransportType:a3];
+    [(RouteLoadingController *)self cancelLoadingForTransportType:type];
   }
 
   v8 = sub_100798A3C();
@@ -187,13 +187,13 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "RouteLoading", "", buf, 2u);
   }
 
-  v12 = [(RouteLoadingController *)self waypointSet];
-  [v12 count];
-  if (a3 > 1)
+  waypointSet = [(RouteLoadingController *)self waypointSet];
+  [waypointSet count];
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         MapsFeature_IsEnabled_Maps420();
       }
@@ -206,9 +206,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
     }
@@ -222,21 +222,21 @@ LABEL_16:
   }
 
 LABEL_17:
-  v13 = [(RouteLoadingController *)self routeLoadingTaskFactory];
-  v14 = [v13 taskForTransportType:a3 waypointSet:v12];
+  routeLoadingTaskFactory = [(RouteLoadingController *)self routeLoadingTaskFactory];
+  v14 = [routeLoadingTaskFactory taskForTransportType:type waypointSet:waypointSet];
 
-  v15 = [(RouteLoadingController *)self activeTasksSync];
-  objc_sync_enter(v15);
-  v16 = [(RouteLoadingController *)self activeTasks];
-  v17 = [NSNumber numberWithInteger:a3];
-  [v16 setObject:v14 forKeyedSubscript:v17];
+  activeTasksSync = [(RouteLoadingController *)self activeTasksSync];
+  objc_sync_enter(activeTasksSync);
+  activeTasks = [(RouteLoadingController *)self activeTasks];
+  v17 = [NSNumber numberWithInteger:type];
+  [activeTasks setObject:v14 forKeyedSubscript:v17];
 
-  objc_sync_exit(v15);
+  objc_sync_exit(activeTasksSync);
   objc_initWeak(buf, self);
   v18 = +[GEONotificationPreferenceManager sharedManager];
-  LODWORD(v15) = [v18 isEnabledForSubTestWithName:@"GEOPPTTest_RouteManager_DirectionsRequest"];
+  LODWORD(activeTasksSync) = [v18 isEnabledForSubTestWithName:@"GEOPPTTest_RouteManager_DirectionsRequest"];
 
-  if (v15)
+  if (activeTasksSync)
   {
     v19 = +[NSNotificationCenter defaultCenter];
     [v19 postNotificationName:@"GEOPPTTest_RouteManager_DirectionsRequestBEGIN" object:0];
@@ -248,89 +248,89 @@ LABEL_17:
   v20[3] = &unk_101630868;
   v21[1] = v9;
   objc_copyWeak(v21, buf);
-  v21[2] = a3;
+  v21[2] = type;
   [v14 startWithCompletionHandler:v20];
   objc_destroyWeak(v21);
   objc_destroyWeak(buf);
 }
 
-- (id)routesForTransportType:(int64_t)a3
+- (id)routesForTransportType:(int64_t)type
 {
-  v5 = [(RouteLoadingController *)self routesResultsSync];
-  objc_sync_enter(v5);
-  v6 = [(RouteLoadingController *)self mutableRoutesResults];
-  v7 = [NSNumber numberWithInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  routesResultsSync = [(RouteLoadingController *)self routesResultsSync];
+  objc_sync_enter(routesResultsSync);
+  mutableRoutesResults = [(RouteLoadingController *)self mutableRoutesResults];
+  v7 = [NSNumber numberWithInteger:type];
+  v8 = [mutableRoutesResults objectForKeyedSubscript:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(routesResultsSync);
 
   return v8;
 }
 
 - (NSDictionary)routesResults
 {
-  v3 = [(RouteLoadingController *)self routesResultsSync];
-  objc_sync_enter(v3);
-  v4 = [(RouteLoadingController *)self mutableRoutesResults];
-  v5 = [v4 copy];
+  routesResultsSync = [(RouteLoadingController *)self routesResultsSync];
+  objc_sync_enter(routesResultsSync);
+  mutableRoutesResults = [(RouteLoadingController *)self mutableRoutesResults];
+  v5 = [mutableRoutesResults copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(routesResultsSync);
 
   return v5;
 }
 
-- (void)setWaypointSet:(id)a3
+- (void)setWaypointSet:(id)set
 {
-  v5 = a3;
-  if (self->_waypointSet != v5)
+  setCopy = set;
+  if (self->_waypointSet != setCopy)
   {
-    v6 = v5;
+    v6 = setCopy;
     [(RouteLoadingController *)self cancelLoading];
-    objc_storeStrong(&self->_waypointSet, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_waypointSet, set);
+    setCopy = v6;
   }
 }
 
-- (BOOL)isActiveForTransportType:(int64_t)a3
+- (BOOL)isActiveForTransportType:(int64_t)type
 {
-  v3 = [(RouteLoadingController *)self _routeLoadingTaskForTransportType:a3];
+  v3 = [(RouteLoadingController *)self _routeLoadingTaskForTransportType:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 inProgress];
+    inProgress = [v3 inProgress];
   }
 
   else
   {
-    v5 = 0;
+    inProgress = 0;
   }
 
-  return v5;
+  return inProgress;
 }
 
 - (BOOL)isActive
 {
-  v3 = [(RouteLoadingController *)self activeTasksSync];
-  objc_sync_enter(v3);
-  v4 = [(RouteLoadingController *)self activeTasks];
-  v5 = [v4 count] != 0;
+  activeTasksSync = [(RouteLoadingController *)self activeTasksSync];
+  objc_sync_enter(activeTasksSync);
+  activeTasks = [(RouteLoadingController *)self activeTasks];
+  v5 = [activeTasks count] != 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(activeTasksSync);
   return v5;
 }
 
-- (void)cancelLoadingForTransportType:(int64_t)a3
+- (void)cancelLoadingForTransportType:(int64_t)type
 {
   obj = [(RouteLoadingController *)self activeTasksSync];
   objc_sync_enter(obj);
-  v5 = [(RouteLoadingController *)self activeTasks];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  activeTasks = [(RouteLoadingController *)self activeTasks];
+  v6 = [NSNumber numberWithInteger:type];
+  v7 = [activeTasks objectForKeyedSubscript:v6];
   [v7 cancel];
 
-  v8 = [(RouteLoadingController *)self activeTasks];
-  v9 = [NSNumber numberWithInteger:a3];
-  [v8 removeObjectForKey:v9];
+  activeTasks2 = [(RouteLoadingController *)self activeTasks];
+  v9 = [NSNumber numberWithInteger:type];
+  [activeTasks2 removeObjectForKey:v9];
 
   objc_sync_exit(obj);
 }
@@ -339,38 +339,38 @@ LABEL_17:
 {
   obj = [(RouteLoadingController *)self activeTasksSync];
   objc_sync_enter(obj);
-  v3 = [(RouteLoadingController *)self activeTasks];
-  [v3 enumerateKeysAndObjectsUsingBlock:&stru_101630820];
+  activeTasks = [(RouteLoadingController *)self activeTasks];
+  [activeTasks enumerateKeysAndObjectsUsingBlock:&stru_101630820];
 
-  v4 = [(RouteLoadingController *)self activeTasks];
-  [v4 removeAllObjects];
+  activeTasks2 = [(RouteLoadingController *)self activeTasks];
+  [activeTasks2 removeAllObjects];
 
   objc_sync_exit(obj);
 }
 
 - (NSSet)supportedTransportTypes
 {
-  v2 = [(RouteLoadingController *)self routeLoadingTaskFactory];
-  v3 = [v2 supportedTransportTypes];
+  routeLoadingTaskFactory = [(RouteLoadingController *)self routeLoadingTaskFactory];
+  supportedTransportTypes = [routeLoadingTaskFactory supportedTransportTypes];
 
-  return v3;
+  return supportedTransportTypes;
 }
 
-- (RouteLoadingController)initWithWaypointSet:(id)a3 taskFactory:(id)a4
+- (RouteLoadingController)initWithWaypointSet:(id)set taskFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  factoryCopy = factory;
   v23.receiver = self;
   v23.super_class = RouteLoadingController;
   v9 = [(RouteLoadingController *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_waypointSet, a3);
-    objc_storeStrong(&v10->_routeLoadingTaskFactory, a4);
+    objc_storeStrong(&v9->_waypointSet, set);
+    objc_storeStrong(&v10->_routeLoadingTaskFactory, factory);
     v11 = +[NSBundle mainBundle];
-    v12 = [v11 bundleIdentifier];
-    v13 = [NSString stringWithFormat:@"%@.%@.%p", v12, objc_opt_class(), v10];
+    bundleIdentifier = [v11 bundleIdentifier];
+    v13 = [NSString stringWithFormat:@"%@.%@.%p", bundleIdentifier, objc_opt_class(), v10];
 
     v14 = [NSString stringWithFormat:@"%@.activeTasksSync", v13];
     activeTasksSync = v10->_activeTasksSync;

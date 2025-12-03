@@ -1,30 +1,30 @@
 @interface ATXSpotlightActionsSuggestionSender
-+ (id)identifierForNowPlayingSuggestionFromLayout:(id)a3;
-+ (id)identifierForOngoingCallSuggestionFromLayout:(id)a3;
-+ (id)identifiersForDirectionsSuggestionFromLayout:(id)a3;
-+ (id)identifiersForSuggestionsFromLayout:(id)a3;
++ (id)identifierForNowPlayingSuggestionFromLayout:(id)layout;
++ (id)identifierForOngoingCallSuggestionFromLayout:(id)layout;
++ (id)identifiersForDirectionsSuggestionFromLayout:(id)layout;
++ (id)identifiersForSuggestionsFromLayout:(id)layout;
 - (ATXSpotlightActionsSuggestionSender)init;
-- (void)_logCAEvents:(id)a3 eventType:(int64_t)a4 toStream:(id)a5;
-- (void)_processChanges:(id)a3;
-- (void)_sendSpotlightSuggestionUpdateNotification:(id)a3;
-- (void)blendingLayerDidUpdateSpotlightUICache:(id)a3;
+- (void)_logCAEvents:(id)events eventType:(int64_t)type toStream:(id)stream;
+- (void)_processChanges:(id)changes;
+- (void)_sendSpotlightSuggestionUpdateNotification:(id)notification;
+- (void)blendingLayerDidUpdateSpotlightUICache:(id)cache;
 @end
 
 @implementation ATXSpotlightActionsSuggestionSender
 
-+ (id)identifiersForSuggestionsFromLayout:(id)a3
++ (id)identifiersForSuggestionsFromLayout:(id)layout
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     v4 = objc_opt_new();
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v3;
-    obj = [v3 collections];
+    v18 = layoutCopy;
+    obj = [layoutCopy collections];
     v21 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v21)
     {
@@ -45,8 +45,8 @@
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v7 = [v6 suggestions];
-          v8 = [v7 countByEnumeratingWithState:&v24 objects:v36 count:16];
+          suggestions = [v6 suggestions];
+          v8 = [suggestions countByEnumeratingWithState:&v24 objects:v36 count:16];
           if (v8)
           {
             v9 = v8;
@@ -58,7 +58,7 @@
               {
                 if (*v25 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(suggestions);
                 }
 
                 v12 = *(*(&v24 + 1) + 8 * v11);
@@ -73,10 +73,10 @@
                   v14 = __atxlog_handle_blending();
                   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
                   {
-                    v23 = [v12 executableSpecification];
-                    v15 = [v23 executableIdentifier];
+                    executableSpecification = [v12 executableSpecification];
+                    executableIdentifier = [executableSpecification executableIdentifier];
                     *buf = 138412546;
-                    v33 = v15;
+                    v33 = executableIdentifier;
                     v34 = 2112;
                     v35 = v12;
                     _os_log_error_impl(&dword_2263AA000, v14, OS_LOG_TYPE_ERROR, "ATXContextActionIdentifier: nil: %@, %@", buf, 0x16u);
@@ -87,7 +87,7 @@
               }
 
               while (v9 != v11);
-              v9 = [v7 countByEnumeratingWithState:&v24 objects:v36 count:16];
+              v9 = [suggestions countByEnumeratingWithState:&v24 objects:v36 count:16];
             }
 
             while (v9);
@@ -103,7 +103,7 @@
       while (v21);
     }
 
-    v3 = v18;
+    layoutCopy = v18;
   }
 
   else
@@ -116,19 +116,19 @@
   return v4;
 }
 
-+ (id)identifiersForDirectionsSuggestionFromLayout:(id)a3
++ (id)identifiersForDirectionsSuggestionFromLayout:(id)layout
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     v4 = objc_opt_new();
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v23 = v3;
-    obj = [v3 collections];
+    v23 = layoutCopy;
+    obj = [layoutCopy collections];
     v26 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v26)
     {
@@ -149,8 +149,8 @@
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v7 = [v6 suggestions];
-          v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          suggestions = [v6 suggestions];
+          v8 = [suggestions countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v8)
           {
             v9 = v8;
@@ -161,28 +161,28 @@
               {
                 if (*v29 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(suggestions);
                 }
 
                 v12 = *(*(&v28 + 1) + 8 * i);
-                v13 = [v12 atxShortcutsActionExecutableObject];
-                v14 = [v13 contextualAction];
+                atxShortcutsActionExecutableObject = [v12 atxShortcutsActionExecutableObject];
+                contextualAction = [atxShortcutsActionExecutableObject contextualAction];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v16 = [v13 contextualAction];
-                  v17 = [v16 uniqueIdentifier];
+                  contextualAction2 = [atxShortcutsActionExecutableObject contextualAction];
+                  uniqueIdentifier = [contextualAction2 uniqueIdentifier];
 
-                  v18 = [v12 uiSpecification];
-                  v19 = [v18 title];
+                  uiSpecification = [v12 uiSpecification];
+                  title = [uiSpecification title];
 
-                  [v4 setObject:v19 forKeyedSubscript:v17];
+                  [v4 setObject:title forKeyedSubscript:uniqueIdentifier];
                 }
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+              v9 = [suggestions countByEnumeratingWithState:&v28 objects:v36 count:16];
             }
 
             while (v9);
@@ -199,7 +199,7 @@
     }
 
     v20 = [v4 copy];
-    v3 = v23;
+    layoutCopy = v23;
   }
 
   else
@@ -212,19 +212,19 @@
   return v20;
 }
 
-+ (id)identifierForNowPlayingSuggestionFromLayout:(id)a3
++ (id)identifierForNowPlayingSuggestionFromLayout:(id)layout
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  layoutCopy = layout;
+  v4 = layoutCopy;
+  if (layoutCopy)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [v3 collections];
-    v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    collections = [layoutCopy collections];
+    v22 = [collections countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v22)
     {
       v6 = *v28;
@@ -235,7 +235,7 @@
         {
           if (*v28 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(collections);
           }
 
           v8 = *(*(&v27 + 1) + 8 * i);
@@ -243,8 +243,8 @@
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v9 = [v8 suggestions];
-          v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          suggestions = [v8 suggestions];
+          v10 = [suggestions countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -255,23 +255,23 @@
               {
                 if (*v24 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(suggestions);
                 }
 
                 v14 = *(*(&v23 + 1) + 8 * j);
-                v15 = [v14 uiSpecification];
-                v16 = [v15 predictionReasons];
+                uiSpecification = [v14 uiSpecification];
+                predictionReasons = [uiSpecification predictionReasons];
 
-                if ((v16 & 0x40000) != 0)
+                if ((predictionReasons & 0x40000) != 0)
                 {
-                  v18 = [v14 executableSpecification];
-                  v17 = [v18 executableIdentifier];
+                  executableSpecification = [v14 executableSpecification];
+                  executableIdentifier = [executableSpecification executableIdentifier];
 
                   goto LABEL_21;
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v11 = [suggestions countByEnumeratingWithState:&v23 objects:v31 count:16];
               if (v11)
               {
                 continue;
@@ -284,8 +284,8 @@
           v6 = v21;
         }
 
-        v17 = 0;
-        v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        executableIdentifier = 0;
+        v22 = [collections countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v22);
@@ -293,7 +293,7 @@
 
     else
     {
-      v17 = 0;
+      executableIdentifier = 0;
     }
 
 LABEL_21:
@@ -301,27 +301,27 @@ LABEL_21:
 
   else
   {
-    v17 = 0;
+    executableIdentifier = 0;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return executableIdentifier;
 }
 
-+ (id)identifierForOngoingCallSuggestionFromLayout:(id)a3
++ (id)identifierForOngoingCallSuggestionFromLayout:(id)layout
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  layoutCopy = layout;
+  v4 = layoutCopy;
+  if (layoutCopy)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [v3 collections];
-    v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    collections = [layoutCopy collections];
+    v22 = [collections countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v22)
     {
       v6 = *v28;
@@ -332,7 +332,7 @@ LABEL_21:
         {
           if (*v28 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(collections);
           }
 
           v8 = *(*(&v27 + 1) + 8 * i);
@@ -340,8 +340,8 @@ LABEL_21:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v9 = [v8 suggestions];
-          v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          suggestions = [v8 suggestions];
+          v10 = [suggestions countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -352,23 +352,23 @@ LABEL_21:
               {
                 if (*v24 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(suggestions);
                 }
 
                 v14 = *(*(&v23 + 1) + 8 * j);
-                v15 = [v14 uiSpecification];
-                v16 = [v15 predictionReasons];
+                uiSpecification = [v14 uiSpecification];
+                predictionReasons = [uiSpecification predictionReasons];
 
-                if ((v16 & 0x80000) != 0)
+                if ((predictionReasons & 0x80000) != 0)
                 {
-                  v18 = [v14 executableSpecification];
-                  v17 = [v18 executableIdentifier];
+                  executableSpecification = [v14 executableSpecification];
+                  executableIdentifier = [executableSpecification executableIdentifier];
 
                   goto LABEL_21;
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v11 = [suggestions countByEnumeratingWithState:&v23 objects:v31 count:16];
               if (v11)
               {
                 continue;
@@ -381,8 +381,8 @@ LABEL_21:
           v6 = v21;
         }
 
-        v17 = 0;
-        v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        executableIdentifier = 0;
+        v22 = [collections countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v22);
@@ -390,7 +390,7 @@ LABEL_21:
 
     else
     {
-      v17 = 0;
+      executableIdentifier = 0;
     }
 
 LABEL_21:
@@ -398,12 +398,12 @@ LABEL_21:
 
   else
   {
-    v17 = 0;
+    executableIdentifier = 0;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return executableIdentifier;
 }
 
 - (ATXSpotlightActionsSuggestionSender)init
@@ -413,9 +413,9 @@ LABEL_21:
   v2 = [(ATXSpotlightActionsSuggestionSender *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     previousDirectionsIdentifiers = v2->_previousDirectionsIdentifiers;
-    v2->_previousDirectionsIdentifiers = v3;
+    v2->_previousDirectionsIdentifiers = dictionary;
 
     v5 = objc_opt_new();
     previousIdentifiers = v2->_previousIdentifiers;
@@ -425,10 +425,10 @@ LABEL_21:
   return v2;
 }
 
-- (void)blendingLayerDidUpdateSpotlightUICache:(id)a3
+- (void)blendingLayerDidUpdateSpotlightUICache:(id)cache
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -439,18 +439,18 @@ LABEL_21:
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "%@ - received new ui cache", &v9, 0xCu);
   }
 
-  [(ATXSpotlightActionsSuggestionSender *)self _processChanges:v4];
-  [(ATXSpotlightActionsSuggestionSender *)self _sendSpotlightSuggestionUpdateNotification:v4];
+  [(ATXSpotlightActionsSuggestionSender *)self _processChanges:cacheCopy];
+  [(ATXSpotlightActionsSuggestionSender *)self _sendSpotlightSuggestionUpdateNotification:cacheCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processChanges:(id)a3
+- (void)_processChanges:(id)changes
 {
-  if (a3)
+  if (changes)
   {
-    v4 = a3;
-    v5 = [objc_opt_class() identifiersForSuggestionsFromLayout:v4];
+    changesCopy = changes;
+    v5 = [objc_opt_class() identifiersForSuggestionsFromLayout:changesCopy];
 
     v6 = [(NSSet *)v5 mutableCopy];
     [v6 minusSet:self->_previousIdentifiers];
@@ -477,17 +477,17 @@ LABEL_21:
   }
 }
 
-- (void)_logCAEvents:(id)a3 eventType:(int64_t)a4 toStream:(id)a5
+- (void)_logCAEvents:(id)events eventType:(int64_t)type toStream:(id)stream
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  eventsCopy = events;
+  streamCopy = stream;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v7;
-  v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  obj = eventsCopy;
+  v9 = [eventsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -504,12 +504,12 @@ LABEL_21:
 
         v13 = *(*(&v21 + 1) + 8 * v12);
         v14 = objc_alloc(MEMORY[0x277D420D0]);
-        v15 = [v13 uniqueIdentifier];
-        v16 = [v13 subtype];
-        v17 = [v13 context];
-        v18 = [v14 initWithType:a4 suggestionUniqueId:v15 suggestionType:@"action" suggestionSubtype:v16 suggestionContext:v17];
+        uniqueIdentifier = [v13 uniqueIdentifier];
+        subtype = [v13 subtype];
+        context = [v13 context];
+        v18 = [v14 initWithType:type suggestionUniqueId:uniqueIdentifier suggestionType:@"action" suggestionSubtype:subtype suggestionContext:context];
 
-        [v8 sendEvent:v18];
+        [streamCopy sendEvent:v18];
         ++v12;
       }
 
@@ -523,9 +523,9 @@ LABEL_21:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSpotlightSuggestionUpdateNotification:(id)a3
+- (void)_sendSpotlightSuggestionUpdateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   keyExistsAndHasValidFormat = 0;
   if (CFPreferencesGetAppBooleanValue(@"zkwTriggerUIRefresh", *MEMORY[0x277CEBD00], &keyExistsAndHasValidFormat) && [MEMORY[0x277D42590] isInternalBuild])
   {
@@ -541,18 +541,18 @@ LABEL_21:
 
   else
   {
-    v6 = [objc_opt_class() identifierForNowPlayingSuggestionFromLayout:v4];
+    v6 = [objc_opt_class() identifierForNowPlayingSuggestionFromLayout:notificationCopy];
     v7 = v6;
     v8 = v6 == self->_previousNowPlayingIdentifier || [(NSString *)v6 isEqualToString:?];
     objc_storeStrong(&self->_previousNowPlayingIdentifier, v7);
-    v9 = [objc_opt_class() identifierForOngoingCallSuggestionFromLayout:v4];
+    v9 = [objc_opt_class() identifierForOngoingCallSuggestionFromLayout:notificationCopy];
     v10 = v9;
     v11 = v9 == self->_previousOngoingCallIdentifier || [(NSString *)v9 isEqualToString:?];
     previousOngoingCallIdentifier = self->_previousOngoingCallIdentifier;
     self->_previousOngoingCallIdentifier = v10;
     v13 = v10;
 
-    v14 = [objc_opt_class() identifiersForDirectionsSuggestionFromLayout:v4];
+    v14 = [objc_opt_class() identifiersForDirectionsSuggestionFromLayout:notificationCopy];
     v15 = [(NSDictionary *)v14 isEqualToDictionary:self->_previousDirectionsIdentifiers];
     previousDirectionsIdentifiers = self->_previousDirectionsIdentifiers;
     self->_previousDirectionsIdentifiers = v14;

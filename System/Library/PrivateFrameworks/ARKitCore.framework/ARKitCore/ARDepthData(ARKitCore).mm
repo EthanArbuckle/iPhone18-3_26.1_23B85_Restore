@@ -6,22 +6,22 @@
 
 - (id)tracingEntry
 {
-  v2 = ARQATraceableDefaultEntryForResultData(a1);
+  v2 = ARQATraceableDefaultEntryForResultData(self);
   v3 = [v2 mutableCopy];
 
-  [a1 cameraIntrinsics];
+  [self cameraIntrinsics];
   v4 = [ARQAHelper arrayWithMatrix3x3:?];
   [v3 setObject:v4 forKeyedSubscript:@"cameraIntrinsics"];
 
-  [a1 extrinsicsToAppNode];
+  [self extrinsicsToAppNode];
   v5 = [ARQAHelper arrayWithMatrix4x4:?];
   [v3 setObject:v5 forKeyedSubscript:@"extrinsicsToAppNode"];
 
-  [a1 deviceTransform];
+  [self deviceTransform];
   v6 = [ARQAHelper arrayWithMatrix4x4:?];
   [v3 setObject:v6 forKeyedSubscript:@"deviceTransform"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isValid")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isValid")}];
   [v3 setObject:v7 forKeyedSubscript:@"isValid"];
 
   return v3;

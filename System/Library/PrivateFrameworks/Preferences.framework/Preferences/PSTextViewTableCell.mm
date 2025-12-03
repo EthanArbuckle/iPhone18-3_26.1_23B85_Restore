@@ -1,23 +1,23 @@
 @interface PSTextViewTableCell
 - (BOOL)resignFirstResponder;
-- (PSTextViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)_adjustTextView:(id)a3 updateTable:(BOOL)a4 withSpecifier:(id)a5;
+- (PSTextViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)_adjustTextView:(id)view updateTable:(BOOL)table withSpecifier:(id)specifier;
 - (void)cellRemovedFromView;
 - (void)layoutSubviews;
-- (void)setTextView:(id)a3;
-- (void)setValue:(id)a3;
-- (void)textContentViewDidEndEditing:(id)a3;
+- (void)setTextView:(id)view;
+- (void)setValue:(id)value;
+- (void)textContentViewDidEndEditing:(id)editing;
 @end
 
 @implementation PSTextViewTableCell
 
-- (PSTextViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSTextViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = PSTextViewTableCell;
-  v10 = [(PSTableCell *)&v20 initWithStyle:a3 reuseIdentifier:v8 specifier:v9];
+  v10 = [(PSTableCell *)&v20 initWithStyle:style reuseIdentifier:identifierCopy specifier:specifierCopy];
   v11 = v10;
   if (v10)
   {
@@ -31,31 +31,31 @@
     [(UITextContentView *)v13 setFont:v14];
 
     [(PSTextViewTableCell *)v11 setTextView:v13];
-    if (v9[2])
+    if (specifierCopy[2])
     {
-      WeakRetained = objc_loadWeakRetained(v9 + 1);
+      WeakRetained = objc_loadWeakRetained(specifierCopy + 1);
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [v9 performGetter];
-        [(PSTextViewTableCell *)v11 setValue:v17];
+        performGetter = [specifierCopy performGetter];
+        [(PSTextViewTableCell *)v11 setValue:performGetter];
       }
     }
 
-    if (v9[3] && v9[2])
+    if (specifierCopy[3] && specifierCopy[2])
     {
-      v18 = objc_loadWeakRetained(v9 + 1);
-      [(PSTableCell *)v11 setValueChangedTarget:v18 action:v9[3] specifier:v9];
+      v18 = objc_loadWeakRetained(specifierCopy + 1);
+      [(PSTableCell *)v11 setValueChangedTarget:v18 action:specifierCopy[3] specifier:specifierCopy];
     }
   }
 
   return v11;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  [(UITextContentView *)self->_textView setContentToHTMLString:a3];
+  [(UITextContentView *)self->_textView setContentToHTMLString:value];
   [(PSTextViewTableCell *)self setNeedsLayout];
 
   [(PSTextViewTableCell *)self layoutIfNeeded];
@@ -63,13 +63,13 @@
 
 - (void)cellRemovedFromView
 {
-  v3 = [(PSTableCell *)self specifier];
+  specifier = [(PSTableCell *)self specifier];
   v5.receiver = self;
   v5.super_class = PSTextViewTableCell;
   [(PSTableCell *)&v5 cellRemovedFromView];
   if ([(UITextContentView *)self->_textView isEditing])
   {
-    v4 = v3 == 0;
+    v4 = specifier == 0;
   }
 
   else
@@ -79,7 +79,7 @@
 
   if (!v4)
   {
-    [(PSTableCell *)self setSpecifier:v3];
+    [(PSTableCell *)self setSpecifier:specifier];
   }
 }
 
@@ -88,81 +88,81 @@
   v5.receiver = self;
   v5.super_class = PSTextViewTableCell;
   [(PSTableCell *)&v5 layoutSubviews];
-  v3 = [(PSTextViewTableCell *)self textView];
-  v4 = [(PSTableCell *)self specifier];
-  [(PSTextViewTableCell *)self _adjustTextView:v3 updateTable:1 withSpecifier:v4];
+  textView = [(PSTextViewTableCell *)self textView];
+  specifier = [(PSTableCell *)self specifier];
+  [(PSTextViewTableCell *)self _adjustTextView:textView updateTable:1 withSpecifier:specifier];
 }
 
-- (void)_adjustTextView:(id)a3 updateTable:(BOOL)a4 withSpecifier:(id)a5
+- (void)_adjustTextView:(id)view updateTable:(BOOL)table withSpecifier:(id)specifier
 {
-  v6 = a4;
-  v25 = a3;
-  v7 = a5;
-  v8 = [v7 propertyForKey:@"textViewBottomMargin"];
+  tableCopy = table;
+  viewCopy = view;
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:@"textViewBottomMargin"];
   if (v8)
   {
-    v9 = [v25 text];
+    text = [viewCopy text];
     v10 = PSTextViewInsets();
     v12 = v11;
-    v13 = [v25 webView];
-    [v13 frame];
+    webView = [viewCopy webView];
+    [webView frame];
     v14 = v12 + v10 + CGRectGetHeight(v27);
     [v8 floatValue];
     v16 = v14 + v15;
 
     *&v17 = v16;
     v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-    v19 = [v7 propertyForKey:@"height"];
+    v19 = [specifierCopy propertyForKey:@"height"];
     v20 = [v19 isEqual:v18];
 
     if ((v20 & 1) == 0)
     {
-      if (v6)
+      if (tableCopy)
       {
-        v21 = [v7 target];
+        target = [specifierCopy target];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [v7 target];
-          v23 = [v22 table];
+          target2 = [specifierCopy target];
+          table = [target2 table];
         }
 
         else
         {
-          v23 = 0;
+          table = 0;
         }
 
-        v24 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+        areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
         [MEMORY[0x1E69DD250] setAnimationsEnabled:0];
-        [v23 beginUpdates];
-        [v7 setProperty:v18 forKey:@"height"];
-        [v23 endUpdates];
-        [MEMORY[0x1E69DD250] setAnimationsEnabled:v24];
+        [table beginUpdates];
+        [specifierCopy setProperty:v18 forKey:@"height"];
+        [table endUpdates];
+        [MEMORY[0x1E69DD250] setAnimationsEnabled:areAnimationsEnabled];
       }
 
       else
       {
-        [v7 setProperty:v18 forKey:@"height"];
+        [specifierCopy setProperty:v18 forKey:@"height"];
       }
     }
   }
 }
 
-- (void)textContentViewDidEndEditing:(id)a3
+- (void)textContentViewDidEndEditing:(id)editing
 {
-  v11 = a3;
-  v4 = [(PSTableCell *)self cellTarget];
-  if (v4)
+  editingCopy = editing;
+  cellTarget = [(PSTableCell *)self cellTarget];
+  if (cellTarget)
   {
-    v5 = v4;
-    v6 = [(PSTableCell *)self specifier];
+    v5 = cellTarget;
+    specifier = [(PSTableCell *)self specifier];
 
-    if (v6)
+    if (specifier)
     {
       [(PSTableCell *)self cellAction];
-      v7 = [(PSTableCell *)self cellTarget];
-      v8 = [v11 contentAsHTMLString];
-      v9 = [(PSTableCell *)self specifier];
+      cellTarget2 = [(PSTableCell *)self cellTarget];
+      contentAsHTMLString = [editingCopy contentAsHTMLString];
+      specifier2 = [(PSTableCell *)self specifier];
       v10 = SFPerformSelector2();
     }
   }
@@ -182,14 +182,14 @@
   return [(PSTextViewTableCell *)&v4 resignFirstResponder];
 }
 
-- (void)setTextView:(id)a3
+- (void)setTextView:(id)view
 {
-  v5 = a3;
-  if (self->_textView != v5)
+  viewCopy = view;
+  if (self->_textView != viewCopy)
   {
-    v8 = v5;
-    v6 = [(PSTextViewTableCell *)self contentView];
-    [v6 addSubview:v8];
+    v8 = viewCopy;
+    contentView = [(PSTextViewTableCell *)self contentView];
+    [contentView addSubview:v8];
 
     textView = self->_textView;
     if (textView)
@@ -197,9 +197,9 @@
       [(UITextContentView *)textView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_textView, a3);
+    objc_storeStrong(&self->_textView, view);
     [(UITextContentView *)self->_textView setDelegate:self];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 

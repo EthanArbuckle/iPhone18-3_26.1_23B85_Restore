@@ -1,13 +1,13 @@
 @interface EAEmergencyAlertCenter
 - (EAEmergencyAlertCenter)init;
-- (EAEmergencyAlertCenter)initWithUserNotificationCenter:(id)a3;
-- (id)getUpdatedNotificationForAppleSafetyAlert:(id)a3 withMessageDictionary:(id)a4;
-- (id)handleCellBroadcastMessage:(id)a3 withCompletionHandler:(id)a4;
+- (EAEmergencyAlertCenter)initWithUserNotificationCenter:(id)center;
+- (id)getUpdatedNotificationForAppleSafetyAlert:(id)alert withMessageDictionary:(id)dictionary;
+- (id)handleCellBroadcastMessage:(id)message withCompletionHandler:(id)handler;
 - (unint64_t)currentAudioAndVideoCallCount;
-- (void)addNotificationRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)handleAppleSafetyAlertMessage:(id)a3;
-- (void)handleRawCellBroadcastMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)replaceContentForRequestWithRequestID:(id)a3 replacementContent:(id)a4 completionHandler:(id)a5;
+- (void)addNotificationRequest:(id)request withCompletionHandler:(id)handler;
+- (void)handleAppleSafetyAlertMessage:(id)message;
+- (void)handleRawCellBroadcastMessage:(id)message withCompletionHandler:(id)handler;
+- (void)replaceContentForRequestWithRequestID:(id)d replacementContent:(id)content completionHandler:(id)handler;
 @end
 
 @implementation EAEmergencyAlertCenter
@@ -21,35 +21,35 @@
   return v4;
 }
 
-- (EAEmergencyAlertCenter)initWithUserNotificationCenter:(id)a3
+- (EAEmergencyAlertCenter)initWithUserNotificationCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v9.receiver = self;
   v9.super_class = EAEmergencyAlertCenter;
   v6 = [(EAEmergencyAlertCenter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userNotificationCenter, a3);
+    objc_storeStrong(&v6->_userNotificationCenter, center);
   }
 
   return v7;
 }
 
-- (void)replaceContentForRequestWithRequestID:(id)a3 replacementContent:(id)a4 completionHandler:(id)a5
+- (void)replaceContentForRequestWithRequestID:(id)d replacementContent:(id)content completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   userNotificationCenter = self->_userNotificationCenter;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __101__EAEmergencyAlertCenter_replaceContentForRequestWithRequestID_replacementContent_completionHandler___block_invoke;
   v13[3] = &unk_278FC11B0;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  [(UNUserNotificationCenter *)userNotificationCenter replaceContentForRequestWithIdentifier:v12 replacementContent:a4 completionHandler:v13];
+  v14 = dCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dCopy;
+  [(UNUserNotificationCenter *)userNotificationCenter replaceContentForRequestWithIdentifier:v12 replacementContent:content completionHandler:v13];
 }
 
 void __101__EAEmergencyAlertCenter_replaceContentForRequestWithRequestID_replacementContent_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -101,38 +101,38 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getUpdatedNotificationForAppleSafetyAlert:(id)a3 withMessageDictionary:(id)a4
+- (id)getUpdatedNotificationForAppleSafetyAlert:(id)alert withMessageDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 request];
-  v8 = [v7 content];
-  v9 = [v8 mutableCopy];
+  alertCopy = alert;
+  dictionaryCopy = dictionary;
+  request = [alertCopy request];
+  content = [request content];
+  v9 = [content mutableCopy];
 
   if (v9)
   {
-    v10 = [v5 request];
-    v11 = [v10 content];
-    v12 = [v11 body];
-    v13 = [v9 ea_getUpdatedBodyString:v12 withMessageDictionary:v6];
+    request2 = [alertCopy request];
+    content2 = [request2 content];
+    body = [content2 body];
+    v13 = [v9 ea_getUpdatedBodyString:body withMessageDictionary:dictionaryCopy];
 
     [v9 setBody:v13];
-    v14 = [v5 request];
-    v15 = [v14 content];
-    v16 = [v15 userInfo];
-    v17 = [v16 mutableCopy];
-    [v9 ea_updateUserInfo:v17 withMessageDictionary:v6];
+    request3 = [alertCopy request];
+    content3 = [request3 content];
+    userInfo = [content3 userInfo];
+    v17 = [userInfo mutableCopy];
+    [v9 ea_updateUserInfo:v17 withMessageDictionary:dictionaryCopy];
 
-    [v9 ea_updateAlertCategory:v6];
+    [v9 ea_updateAlertCategory:dictionaryCopy];
   }
 
   return v9;
 }
 
-- (void)handleAppleSafetyAlertMessage:(id)a3
+- (void)handleAppleSafetyAlertMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kCTSMSAppleSafetyAlertData"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKey:@"kCTSMSAppleSafetyAlertData"];
   v6 = [v5 objectForKeyedSubscript:@"CmamText"];
   v7 = ea_getHashForString(v6);
 
@@ -148,8 +148,8 @@ LABEL_7:
     v11[3] = &unk_278FC1220;
     v12 = v7;
     v13 = v9;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = messageCopy;
     [(UNUserNotificationCenter *)userNotificationCenter getDeliveredNotificationsWithCompletionHandler:v11];
   }
 
@@ -327,10 +327,10 @@ void __56__EAEmergencyAlertCenter_handleAppleSafetyAlertMessage___block_invoke_2
   }
 }
 
-- (id)handleCellBroadcastMessage:(id)a3 withCompletionHandler:(id)a4
+- (id)handleCellBroadcastMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = EALogDefault;
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
@@ -339,11 +339,11 @@ void __56__EAEmergencyAlertCenter_handleAppleSafetyAlertMessage___block_invoke_2
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  [v9 ea_setPropertiesForCellBroadcastMessage:v6 withActivePhoneCall:{-[EAEmergencyAlertCenter currentAudioAndVideoCallCount](self, "currentAudioAndVideoCallCount") != 0}];
-  v10 = [v6 objectForKey:@"PreventScreenCapture"];
-  v11 = [v10 BOOLValue];
+  [v9 ea_setPropertiesForCellBroadcastMessage:messageCopy withActivePhoneCall:{-[EAEmergencyAlertCenter currentAudioAndVideoCallCount](self, "currentAudioAndVideoCallCount") != 0}];
+  v10 = [messageCopy objectForKey:@"PreventScreenCapture"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = EALogDefault;
     if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
@@ -358,11 +358,11 @@ void __56__EAEmergencyAlertCenter_handleAppleSafetyAlertMessage___block_invoke_2
   return v9;
 }
 
-- (void)handleRawCellBroadcastMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)handleRawCellBroadcastMessage:(id)message withCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = EALogDefault;
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
@@ -370,14 +370,14 @@ void __56__EAEmergencyAlertCenter_handleAppleSafetyAlertMessage___block_invoke_2
     _os_log_impl(&dword_249FC1000, v8, OS_LOG_TYPE_DEFAULT, "Handling RAW cellbroadcast message", buf, 2u);
   }
 
-  v9 = [v6 objectForKey:*MEMORY[0x277CC4120]];
-  v10 = [v6 objectForKey:@"kCTSMSAppleSafetyAlertData"];
+  v9 = [messageCopy objectForKey:*MEMORY[0x277CC4120]];
+  v10 = [messageCopy objectForKey:@"kCTSMSAppleSafetyAlertData"];
   v11 = v10;
   if (!v9)
   {
     if (v10)
     {
-      [(EAEmergencyAlertCenter *)self handleAppleSafetyAlertMessage:v6];
+      [(EAEmergencyAlertCenter *)self handleAppleSafetyAlertMessage:messageCopy];
 LABEL_13:
       v12 = 0;
       goto LABEL_14;
@@ -386,31 +386,31 @@ LABEL_13:
     if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_ERROR))
     {
       [EAEmergencyAlertCenter handleRawCellBroadcastMessage:withCompletionHandler:];
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v7)
+    else if (!handlerCopy)
     {
       goto LABEL_13;
     }
 
     v25 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:-1 userInfo:0];
-    v7[2](v7, 0, v25);
+    handlerCopy[2](handlerCopy, 0, v25);
 
     goto LABEL_13;
   }
 
-  v12 = [(EAEmergencyAlertCenter *)self handleCellBroadcastMessage:v6 withCompletionHandler:v7];
-  v13 = [v12 body];
-  v14 = [v13 length];
+  v12 = [(EAEmergencyAlertCenter *)self handleCellBroadcastMessage:messageCopy withCompletionHandler:handlerCopy];
+  body = [v12 body];
+  v14 = [body length];
 
   if (v14)
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v15 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v17 = v16;
 
     v18 = MEMORY[0x277CCACA8];
@@ -422,9 +422,9 @@ LABEL_13:
     if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v21 identifier];
+      identifier = [v21 identifier];
       *buf = 138543362;
-      v30 = v24;
+      v30 = identifier;
       _os_log_impl(&dword_249FC1000, v23, OS_LOG_TYPE_DEFAULT, "Adding notification request for emergency alert %{public}@", buf, 0xCu);
     }
 
@@ -432,7 +432,7 @@ LABEL_13:
     v27[1] = 3221225472;
     v27[2] = __78__EAEmergencyAlertCenter_handleRawCellBroadcastMessage_withCompletionHandler___block_invoke;
     v27[3] = &unk_278FC1248;
-    v28 = v7;
+    v28 = handlerCopy;
     [(EAEmergencyAlertCenter *)self addNotificationRequest:v21 withCompletionHandler:v27];
   }
 
@@ -454,17 +454,17 @@ uint64_t __78__EAEmergencyAlertCenter_handleRawCellBroadcastMessage_withCompleti
 
 - (unint64_t)currentAudioAndVideoCallCount
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 currentAudioAndVideoCallCount];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentAudioAndVideoCallCount = [mEMORY[0x277D6EDF8] currentAudioAndVideoCallCount];
 
-  return v3;
+  return currentAudioAndVideoCallCount;
 }
 
-- (void)addNotificationRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)addNotificationRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   if (self->_userNotificationCenter)
   {
     v9 = dispatch_get_global_queue(25, 0);
@@ -473,12 +473,12 @@ uint64_t __78__EAEmergencyAlertCenter_handleRawCellBroadcastMessage_withCompleti
     block[2] = __71__EAEmergencyAlertCenter_addNotificationRequest_withCompletionHandler___block_invoke;
     block[3] = &unk_278FC1298;
     block[4] = self;
-    v11 = v6;
+    v11 = requestCopy;
     v12 = v8;
     dispatch_async(v9, block);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_ERROR))
     {

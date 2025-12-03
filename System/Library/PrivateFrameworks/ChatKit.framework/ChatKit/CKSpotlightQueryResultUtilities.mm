@@ -1,51 +1,51 @@
 @interface CKSpotlightQueryResultUtilities
-+ (CLLocationCoordinate2D)coordinateForResult:(id)a3;
-+ (id)contactForResult:(id)a3;
-+ (id)indexDomainForResult:(id)a3;
-+ (id)indexItemTypeForItem:(id)a3;
-+ (id)indexItemTypeForResult:(id)a3;
++ (CLLocationCoordinate2D)coordinateForResult:(id)result;
++ (id)contactForResult:(id)result;
++ (id)indexDomainForResult:(id)result;
++ (id)indexItemTypeForItem:(id)item;
++ (id)indexItemTypeForResult:(id)result;
 @end
 
 @implementation CKSpotlightQueryResultUtilities
 
-+ (id)contactForResult:(id)a3
++ (id)contactForResult:(id)result
 {
-  v3 = [a3 item];
-  v4 = [v3 attributeSet];
+  item = [result item];
+  attributeSet = [item attributeSet];
 
-  v5 = [v4 isFromMe];
-  v6 = [v5 BOOLValue];
+  isFromMe = [attributeSet isFromMe];
+  bOOLValue = [isFromMe BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [MEMORY[0x1E69A5BD0] me];
-    v8 = [v7 cnContact];
+    firstObject = [MEMORY[0x1E69A5BD0] me];
+    cnContact = [firstObject cnContact];
   }
 
   else
   {
-    v9 = [v4 authorAddresses];
-    v7 = [v9 firstObject];
+    authorAddresses = [attributeSet authorAddresses];
+    firstObject = [authorAddresses firstObject];
 
-    if (v7)
+    if (firstObject)
     {
-      v10 = [MEMORY[0x1E69A7FD0] sharedInstance];
-      v8 = [v10 fetchCNContactForHandleWithID:v7];
+      mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+      cnContact = [mEMORY[0x1E69A7FD0] fetchCNContactForHandleWithID:firstObject];
     }
 
     else
     {
-      v8 = 0;
+      cnContact = 0;
     }
   }
 
-  return v8;
+  return cnContact;
 }
 
-+ (CLLocationCoordinate2D)coordinateForResult:(id)a3
++ (CLLocationCoordinate2D)coordinateForResult:(id)result
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   if (coordinateForResult___pred_CLLocationCoordinate2DIsValidCoreLocation != -1)
   {
     +[CKSpotlightQueryResultUtilities coordinateForResult:];
@@ -56,28 +56,28 @@
     +[CKSpotlightQueryResultUtilities coordinateForResult:];
   }
 
-  v4 = [v3 item];
-  v5 = [v4 attributeSet];
-  v6 = [v5 contentURL];
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  if (v6)
+  if (contentURL)
   {
-    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6 options:8 error:0];
+    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:contentURL options:8 error:0];
     v46 = 0;
     v8 = [MEMORY[0x1E695CE30] contactsWithData:v7 error:&v46];
     v9 = v46;
     if ([v8 count])
     {
-      v37 = v3;
-      v10 = [MEMORY[0x1E695DF70] array];
+      v37 = resultCopy;
+      array = [MEMORY[0x1E695DF70] array];
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v11 = [v8 firstObject];
-      v12 = [v11 urlAddresses];
+      firstObject = [v8 firstObject];
+      urlAddresses = [firstObject urlAddresses];
 
-      v13 = [v12 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v13 = [urlAddresses countByEnumeratingWithState:&v42 objects:v48 count:16];
       if (v13)
       {
         v14 = v13;
@@ -88,22 +88,22 @@
           {
             if (*v43 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(urlAddresses);
             }
 
-            v17 = [*(*(&v42 + 1) + 8 * i) value];
-            [v10 addObject:v17];
+            value = [*(*(&v42 + 1) + 8 * i) value];
+            [array addObject:value];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v42 objects:v48 count:16];
+          v14 = [urlAddresses countByEnumeratingWithState:&v42 objects:v48 count:16];
         }
 
         while (v14);
       }
 
-      v18 = [MEMORY[0x1E695DEC8] arrayWithArray:v10];
+      v18 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
-      v3 = v37;
+      resultCopy = v37;
     }
 
     else
@@ -151,8 +151,8 @@
           [v28 doubleValue];
           v30 = v29;
           v31 = [v26 objectAtIndex:1];
-          v32 = [v31 doubleValue];
-          v19 = v27(v32, v30, v33);
+          doubleValue = [v31 doubleValue];
+          v19 = v27(doubleValue, v30, v33);
           v20 = v34;
 
           goto LABEL_30;
@@ -192,28 +192,28 @@ void *__55__CKSpotlightQueryResultUtilities_coordinateForResult___block_invoke_2
   return result;
 }
 
-+ (id)indexItemTypeForResult:(id)a3
++ (id)indexItemTypeForResult:(id)result
 {
-  v3 = [a3 item];
-  v4 = [objc_opt_class() indexItemTypeForItem:v3];
+  item = [result item];
+  v4 = [objc_opt_class() indexItemTypeForItem:item];
 
   return v4;
 }
 
-+ (id)indexItemTypeForItem:(id)a3
++ (id)indexItemTypeForItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 messageType];
+  attributeSet = [item attributeSet];
+  messageType = [attributeSet messageType];
 
-  return v4;
+  return messageType;
 }
 
-+ (id)indexDomainForResult:(id)a3
++ (id)indexDomainForResult:(id)result
 {
-  v3 = [a3 item];
-  v4 = [v3 domainIdentifier];
+  item = [result item];
+  domainIdentifier = [item domainIdentifier];
 
-  return v4;
+  return domainIdentifier;
 }
 
 @end

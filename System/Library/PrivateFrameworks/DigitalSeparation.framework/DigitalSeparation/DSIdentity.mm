@@ -1,21 +1,21 @@
 @interface DSIdentity
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLikeIdentity:(id)a3;
-- (DSIdentity)initWithCoder:(id)a3;
-- (DSIdentity)initWithContact:(id)a3;
-- (DSIdentity)initWithEmail:(id)a3;
-- (DSIdentity)initWithIdentity:(id)a3;
-- (DSIdentity)initWithPhone:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLikeIdentity:(id)identity;
+- (DSIdentity)initWithCoder:(id)coder;
+- (DSIdentity)initWithContact:(id)contact;
+- (DSIdentity)initWithEmail:(id)email;
+- (DSIdentity)initWithIdentity:(id)identity;
+- (DSIdentity)initWithPhone:(id)phone;
 - (NSString)ds_identifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DSIdentity
 
-- (DSIdentity)initWithContact:(id)a3
+- (DSIdentity)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v20.receiver = self;
   v20.super_class = DSIdentity;
   v5 = [(DSIdentity *)&v20 init];
@@ -24,108 +24,108 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [v4 identifier];
-      [(DSIdentity *)v5 setIdentifier:v6];
+      identifier = [contactCopy identifier];
+      [(DSIdentity *)v5 setIdentifier:identifier];
     }
 
-    v7 = [MEMORY[0x277CCAC00] componentsForContact:v4];
+    v7 = [MEMORY[0x277CCAC00] componentsForContact:contactCopy];
     [(DSIdentity *)v5 setIdentityNameComponents:v7];
 
-    v8 = [v4 emailAddresses];
-    v9 = [v8 count];
+    emailAddresses = [contactCopy emailAddresses];
+    v9 = [emailAddresses count];
 
     if (v9)
     {
-      v10 = [v4 emailAddresses];
-      v11 = [v10 firstObject];
-      v12 = [v11 value];
-      [(DSIdentity *)v5 setEmail:v12];
+      emailAddresses2 = [contactCopy emailAddresses];
+      firstObject = [emailAddresses2 firstObject];
+      value = [firstObject value];
+      [(DSIdentity *)v5 setEmail:value];
     }
 
-    v13 = [v4 phoneNumbers];
-    v14 = [v13 count];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v14 = [phoneNumbers count];
 
     if (v14)
     {
-      v15 = [v4 phoneNumbers];
-      v16 = [v15 firstObject];
-      v17 = [v16 value];
-      v18 = [v17 stringValue];
-      [(DSIdentity *)v5 setPhone:v18];
+      phoneNumbers2 = [contactCopy phoneNumbers];
+      firstObject2 = [phoneNumbers2 firstObject];
+      value2 = [firstObject2 value];
+      stringValue = [value2 stringValue];
+      [(DSIdentity *)v5 setPhone:stringValue];
     }
   }
 
   return v5;
 }
 
-- (DSIdentity)initWithPhone:(id)a3
+- (DSIdentity)initWithPhone:(id)phone
 {
-  v4 = a3;
+  phoneCopy = phone;
   v8.receiver = self;
   v8.super_class = DSIdentity;
   v5 = [(DSIdentity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DSIdentity *)v5 setPhone:v4];
+    [(DSIdentity *)v5 setPhone:phoneCopy];
   }
 
   return v6;
 }
 
-- (DSIdentity)initWithEmail:(id)a3
+- (DSIdentity)initWithEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   v8.receiver = self;
   v8.super_class = DSIdentity;
   v5 = [(DSIdentity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DSIdentity *)v5 setEmail:v4];
+    [(DSIdentity *)v5 setEmail:emailCopy];
   }
 
   return v6;
 }
 
-- (DSIdentity)initWithIdentity:(id)a3
+- (DSIdentity)initWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = DSIdentity;
   v5 = [(DSIdentity *)&v11 init];
   if (v5)
   {
-    v6 = [v4 unifiedContactIdentifier];
-    [(DSIdentity *)v5 setIdentifier:v6];
+    unifiedContactIdentifier = [identityCopy unifiedContactIdentifier];
+    [(DSIdentity *)v5 setIdentifier:unifiedContactIdentifier];
 
-    v7 = [v4 phoneNumber];
-    [(DSIdentity *)v5 setPhone:v7];
+    phoneNumber = [identityCopy phoneNumber];
+    [(DSIdentity *)v5 setPhone:phoneNumber];
 
-    v8 = [v4 emailAddress];
-    [(DSIdentity *)v5 setEmail:v8];
+    emailAddress = [identityCopy emailAddress];
+    [(DSIdentity *)v5 setEmail:emailAddress];
 
-    v9 = [v4 nameComponents];
-    [(DSIdentity *)v5 setIdentityNameComponents:v9];
+    nameComponents = [identityCopy nameComponents];
+    [(DSIdentity *)v5 setIdentityNameComponents:nameComponents];
   }
 
   return v5;
 }
 
-- (BOOL)isLikeIdentity:(id)a3
+- (BOOL)isLikeIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(DSIdentity *)self identifier];
-  if ([v5 length])
+  identityCopy = identity;
+  identifier = [(DSIdentity *)self identifier];
+  if ([identifier length])
   {
-    v6 = [v4 unifiedContactIdentifier];
-    v7 = [(DSIdentity *)self identifier];
-    v8 = [v6 isEqualToString:v7];
+    unifiedContactIdentifier = [identityCopy unifiedContactIdentifier];
+    identifier2 = [(DSIdentity *)self identifier];
+    v8 = [unifiedContactIdentifier isEqualToString:identifier2];
 
     if (v8)
     {
 LABEL_12:
-      LOBYTE(v22) = 1;
+      LOBYTE(identityNameComponents) = 1;
       goto LABEL_13;
     }
   }
@@ -134,12 +134,12 @@ LABEL_12:
   {
   }
 
-  v9 = [(DSIdentity *)self email];
-  if ([v9 length])
+  email = [(DSIdentity *)self email];
+  if ([email length])
   {
-    v10 = [v4 emailAddress];
-    v11 = [(DSIdentity *)self email];
-    v12 = [v10 isEqualToString:v11];
+    emailAddress = [identityCopy emailAddress];
+    email2 = [(DSIdentity *)self email];
+    v12 = [emailAddress isEqualToString:email2];
 
     if (v12)
     {
@@ -151,24 +151,24 @@ LABEL_12:
   {
   }
 
-  v13 = [(DSIdentity *)self phone];
-  if ([v13 length])
+  phone = [(DSIdentity *)self phone];
+  if ([phone length])
   {
-    v14 = [v4 phoneNumber];
-    v15 = [v14 length];
+    phoneNumber = [identityCopy phoneNumber];
+    v15 = [phoneNumber length];
 
     if (v15)
     {
       v16 = MEMORY[0x277CBDB70];
-      v17 = [(DSIdentity *)self phone];
-      v18 = [v16 phoneNumberWithStringValue:v17];
+      phone2 = [(DSIdentity *)self phone];
+      v18 = [v16 phoneNumberWithStringValue:phone2];
 
       v19 = MEMORY[0x277CBDB70];
-      v20 = [v4 phoneNumber];
-      v21 = [v19 phoneNumberWithStringValue:v20];
+      phoneNumber2 = [identityCopy phoneNumber];
+      v21 = [v19 phoneNumberWithStringValue:phoneNumber2];
 
-      LOBYTE(v20) = [v18 isLikePhoneNumber:v21];
-      if (v20)
+      LOBYTE(phoneNumber2) = [v18 isLikePhoneNumber:v21];
+      if (phoneNumber2)
       {
         goto LABEL_12;
       }
@@ -179,122 +179,122 @@ LABEL_12:
   {
   }
 
-  v22 = [(DSIdentity *)self identityNameComponents];
-  if (v22)
+  identityNameComponents = [(DSIdentity *)self identityNameComponents];
+  if (identityNameComponents)
   {
-    v24 = [v4 nameComponents];
+    nameComponents = [identityCopy nameComponents];
 
-    if (v24)
+    if (nameComponents)
     {
       v25 = MEMORY[0x277CCAC08];
-      v26 = [(DSIdentity *)self identityNameComponents];
-      v27 = [v25 localizedStringFromPersonNameComponents:v26 style:0 options:0];
+      identityNameComponents2 = [(DSIdentity *)self identityNameComponents];
+      v27 = [v25 localizedStringFromPersonNameComponents:identityNameComponents2 style:0 options:0];
 
       v28 = MEMORY[0x277CCAC08];
-      v29 = [v4 nameComponents];
-      v30 = [v28 localizedStringFromPersonNameComponents:v29 style:0 options:0];
+      nameComponents2 = [identityCopy nameComponents];
+      v30 = [v28 localizedStringFromPersonNameComponents:nameComponents2 style:0 options:0];
 
       if ([v27 length])
       {
-        LOBYTE(v22) = [v27 isEqualToString:v30];
+        LOBYTE(identityNameComponents) = [v27 isEqualToString:v30];
       }
 
       else
       {
-        LOBYTE(v22) = 0;
+        LOBYTE(identityNameComponents) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v22) = 0;
+      LOBYTE(identityNameComponents) = 0;
     }
   }
 
 LABEL_13:
 
-  return v22;
+  return identityNameComponents;
 }
 
 - (NSString)ds_identifier
 {
-  v3 = [(DSIdentity *)self identifier];
+  identifier = [(DSIdentity *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [(DSIdentity *)self identifier];
+    identifier2 = [(DSIdentity *)self identifier];
 LABEL_5:
-    v7 = v4;
+    ds_formattedPotentialPhoneNumber = identifier2;
     goto LABEL_6;
   }
 
-  v5 = [(DSIdentity *)self email];
-  v6 = [v5 length];
+  email = [(DSIdentity *)self email];
+  v6 = [email length];
 
   if (v6)
   {
-    v4 = [(DSIdentity *)self email];
+    identifier2 = [(DSIdentity *)self email];
     goto LABEL_5;
   }
 
-  v9 = [(DSIdentity *)self phone];
-  v10 = [v9 length];
+  phone = [(DSIdentity *)self phone];
+  v10 = [phone length];
 
   if (v10)
   {
-    v11 = [(DSIdentity *)self phone];
-    v7 = [v11 ds_formattedPotentialPhoneNumber];
+    phone2 = [(DSIdentity *)self phone];
+    ds_formattedPotentialPhoneNumber = [phone2 ds_formattedPotentialPhoneNumber];
   }
 
   else
   {
-    v7 = 0;
+    ds_formattedPotentialPhoneNumber = 0;
   }
 
 LABEL_6:
 
-  return v7;
+  return ds_formattedPotentialPhoneNumber;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(DSIdentity *)v4 conformsToProtocol:&unk_285BA46E0])
+    if ([(DSIdentity *)equalCopy conformsToProtocol:&unk_285BA46E0])
     {
       v6 = v5;
-      v7 = [(DSIdentity *)v6 unifiedContactIdentifier];
-      v8 = [v7 length];
+      unifiedContactIdentifier = [(DSIdentity *)v6 unifiedContactIdentifier];
+      v8 = [unifiedContactIdentifier length];
 
       if (v8)
       {
-        v9 = [(DSIdentity *)self identifier];
-        v10 = [(DSIdentity *)v6 unifiedContactIdentifier];
-        v11 = [v9 isEqualToString:v10];
+        identifier = [(DSIdentity *)self identifier];
+        unifiedContactIdentifier2 = [(DSIdentity *)v6 unifiedContactIdentifier];
+        v11 = [identifier isEqualToString:unifiedContactIdentifier2];
       }
 
       else
       {
-        v13 = [(DSIdentity *)v6 phoneNumber];
-        v14 = [v13 length];
+        phoneNumber = [(DSIdentity *)v6 phoneNumber];
+        v14 = [phoneNumber length];
 
         if (v14)
         {
-          v9 = [(DSIdentity *)self phone];
-          v15 = [(DSIdentity *)v6 phoneNumber];
+          identifier = [(DSIdentity *)self phone];
+          phoneNumber2 = [(DSIdentity *)v6 phoneNumber];
         }
 
         else
         {
-          v16 = [(DSIdentity *)v6 emailAddress];
-          v17 = [v16 length];
+          emailAddress = [(DSIdentity *)v6 emailAddress];
+          v17 = [emailAddress length];
 
           if (!v17)
           {
@@ -302,12 +302,12 @@ LABEL_6:
             goto LABEL_13;
           }
 
-          v9 = [(DSIdentity *)self email];
-          v15 = [(DSIdentity *)v6 emailAddress];
+          identifier = [(DSIdentity *)self email];
+          phoneNumber2 = [(DSIdentity *)v6 emailAddress];
         }
 
-        v10 = v15;
-        v11 = [v9 isEqual:v15];
+        unifiedContactIdentifier2 = phoneNumber2;
+        v11 = [identifier isEqual:phoneNumber2];
       }
 
       v12 = v11;
@@ -324,27 +324,27 @@ LABEL_14:
   return v12;
 }
 
-- (DSIdentity)initWithCoder:(id)a3
+- (DSIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DSIdentity;
   v5 = [(DSIdentity *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identityNameComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identityNameComponents"];
     identityNameComponents = v5->_identityNameComponents;
     v5->_identityNameComponents = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     phone = v5->_phone;
     v5->_phone = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phone"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phone"];
     email = v5->_email;
     v5->_email = v12;
   }
@@ -352,17 +352,17 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_identityNameComponents forKey:@"identityNameComponents"];
-  [v5 encodeObject:self->_phone forKey:@"email"];
-  [v5 encodeObject:self->_email forKey:@"phone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_identityNameComponents forKey:@"identityNameComponents"];
+  [coderCopy encodeObject:self->_phone forKey:@"email"];
+  [coderCopy encodeObject:self->_email forKey:@"phone"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DSIdentity alloc];
 

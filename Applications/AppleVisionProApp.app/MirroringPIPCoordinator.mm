@@ -1,13 +1,13 @@
 @interface MirroringPIPCoordinator
-- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)a3;
+- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)animation;
 - (_TtC17AppleVisionProApp23MirroringPIPCoordinator)init;
-- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)a3;
-- (void)pictureInPictureProxy:(id)a3 didStartPictureInPictureWithAnimationType:(int64_t)a4;
-- (void)pictureInPictureProxy:(id)a3 didStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5;
-- (void)pictureInPictureProxy:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4;
-- (void)pictureInPictureProxy:(id)a3 willStartPictureInPictureWithAnimationType:(int64_t)a4;
-- (void)pictureInPictureProxy:(id)a3 willStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5;
-- (void)pictureInPictureProxyWillSetupPictureInPictureStop:(id)a3;
+- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)animation;
+- (void)pictureInPictureProxy:(id)proxy didStartPictureInPictureWithAnimationType:(int64_t)type;
+- (void)pictureInPictureProxy:(id)proxy didStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason;
+- (void)pictureInPictureProxy:(id)proxy restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler;
+- (void)pictureInPictureProxy:(id)proxy willStartPictureInPictureWithAnimationType:(int64_t)type;
+- (void)pictureInPictureProxy:(id)proxy willStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason;
+- (void)pictureInPictureProxyWillSetupPictureInPictureStop:(id)stop;
 @end
 
 @implementation MirroringPIPCoordinator
@@ -19,19 +19,19 @@
   return result;
 }
 
-- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)a3
+- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   v6 = sub_100014154();
 
   return v6;
 }
 
-- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)a3
+- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   v6 = sub_10001463C();
   v8 = v7;
   v10 = v9;
@@ -48,53 +48,53 @@
   return result;
 }
 
-- (void)pictureInPictureProxy:(id)a3 willStartPictureInPictureWithAnimationType:(int64_t)a4
+- (void)pictureInPictureProxy:(id)proxy willStartPictureInPictureWithAnimationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  sub_100014920(a3, "%s Started transitioning from full screen to PIP for session: %{public}s", sub_100030DB8);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_100014920(proxy, "%s Started transitioning from full screen to PIP for session: %{public}s", sub_100030DB8);
 }
 
-- (void)pictureInPictureProxy:(id)a3 didStartPictureInPictureWithAnimationType:(int64_t)a4
+- (void)pictureInPictureProxy:(id)proxy didStartPictureInPictureWithAnimationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  sub_100014920(a3, "%s Finished transitioning from full screen to PIP for session: %{public}s", sub_10002EFE4);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_100014920(proxy, "%s Finished transitioning from full screen to PIP for session: %{public}s", sub_10002EFE4);
 }
 
-- (void)pictureInPictureProxyWillSetupPictureInPictureStop:(id)a3
+- (void)pictureInPictureProxyWillSetupPictureInPictureStop:(id)stop
 {
-  v4 = a3;
-  v5 = self;
+  stopCopy = stop;
+  selfCopy = self;
   sub_100014B74();
 }
 
-- (void)pictureInPictureProxy:(id)a3 willStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5
+- (void)pictureInPictureProxy:(id)proxy willStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason
 {
-  v7 = a3;
-  v8 = self;
-  sub_100014C64(a5);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_100014C64(reason);
 }
 
-- (void)pictureInPictureProxy:(id)a3 didStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5
+- (void)pictureInPictureProxy:(id)proxy didStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason
 {
-  v7 = a3;
-  v8 = self;
-  sub_100014FB0(a5);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_100014FB0(reason);
 }
 
-- (void)pictureInPictureProxy:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4
+- (void)pictureInPictureProxy:(id)proxy restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_10001414C;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100013DC4(a3, v6);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_100013DC4(proxy, v6);
   sub_100014104(v6);
 }
 

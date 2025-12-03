@@ -1,25 +1,25 @@
 @interface CHDivingDetailChartDetailViewController
-- (CHDivingDetailChartDetailViewController)initWithCoder:(id)a3;
-- (CHDivingDetailChartDetailViewController)initWithDataCalculator:(id)a3;
-- (CHDivingDetailChartDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CHDivingDetailChartDetailViewController)initWithCoder:(id)coder;
+- (CHDivingDetailChartDetailViewController)initWithDataCalculator:(id)calculator;
+- (CHDivingDetailChartDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CHDivingDetailChartDetailViewController
 
-- (CHDivingDetailChartDetailViewController)initWithDataCalculator:(id)a3
+- (CHDivingDetailChartDetailViewController)initWithDataCalculator:(id)calculator
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR___CHDivingDetailChartDetailViewController_hostingController) = 0;
-  *(&self->super.super.super.isa + OBJC_IVAR___CHDivingDetailChartDetailViewController_dataCalculator) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___CHDivingDetailChartDetailViewController_dataCalculator) = calculator;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  calculatorCopy = calculator;
   return [(CHDivingDetailChartDetailViewController *)&v8 initWithNibName:0 bundle:0];
 }
 
-- (CHDivingDetailChartDetailViewController)initWithCoder:(id)a3
+- (CHDivingDetailChartDetailViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___CHDivingDetailChartDetailViewController_hostingController) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -29,17 +29,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10037DC18();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10037E298(a3);
+  selfCopy = self;
+  sub_10037E298(appear);
 }
 
-- (CHDivingDetailChartDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CHDivingDetailChartDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

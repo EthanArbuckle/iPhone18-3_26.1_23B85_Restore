@@ -1,38 +1,38 @@
 @interface DIVerificationSession
-+ (void)concludeVerification:(id)a3;
-- (DIVerificationSession)initWithContext:(id)a3;
++ (void)concludeVerification:(id)verification;
+- (DIVerificationSession)initWithContext:(id)context;
 - (DIVerificationSessionContext)context;
 - (id)client;
 - (id)configureError;
 - (void)concludeVerification;
-- (void)confirmVerificationCompletedWithFeedback:(id)a3;
-- (void)getVerificationResultWithOptions:(id)a3 completion:(id)a4;
+- (void)confirmVerificationCompletedWithFeedback:(id)feedback;
+- (void)getVerificationResultWithOptions:(id)options completion:(id)completion;
 - (void)invalidate;
-- (void)performVerificationWithAttributes:(id)a3 completion:(id)a4;
-- (void)setClient:(id)a3;
-- (void)setConfigureError:(id)a3;
-- (void)setContext:(id)a3;
-- (void)shareVerificationResultWithOptions:(id)a3 completion:(id)a4;
+- (void)performVerificationWithAttributes:(id)attributes completion:(id)completion;
+- (void)setClient:(id)client;
+- (void)setConfigureError:(id)error;
+- (void)setContext:(id)context;
+- (void)shareVerificationResultWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation DIVerificationSession
 
-+ (void)concludeVerification:(id)a3
++ (void)concludeVerification:(id)verification
 {
-  v5 = a3;
+  verificationCopy = verification;
   v3 = objc_alloc_init(DIVClient);
   v4 = v3;
   if (v3)
   {
-    [(DIVClient *)v3 concludeVerification:v5];
+    [(DIVClient *)v3 concludeVerification:verificationCopy];
   }
 }
 
-- (DIVerificationSession)initWithContext:(id)a3
+- (DIVerificationSession)initWithContext:(id)context
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 serviceName], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
+  contextCopy = context;
+  v6 = contextCopy;
+  if (contextCopy && ([contextCopy serviceName], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
   {
     v18.receiver = self;
     v18.super_class = DIVerificationSession;
@@ -41,7 +41,7 @@
     if (v9)
     {
       v9->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v9->_context, a3);
+      objc_storeStrong(&v9->_context, context);
       configureError = v10->_configureError;
       v10->_configureError = 0;
 
@@ -72,126 +72,126 @@
   return v10;
 }
 
-- (void)performVerificationWithAttributes:(id)a3 completion:(id)a4
+- (void)performVerificationWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DIVerificationSession *)self configureError];
+  attributesCopy = attributes;
+  completionCopy = completion;
+  configureError = [(DIVerificationSession *)self configureError];
 
-  if (v8)
+  if (configureError)
   {
     [(DIVerificationSession *)self setConfigureError:0];
     v9 = objc_alloc_init(DIVClient);
     [(DIVerificationSession *)self setClient:v9];
 
-    v10 = [(DIVerificationSession *)self client];
-    v11 = [(DIVerificationSession *)self context];
+    client = [(DIVerificationSession *)self client];
+    context = [(DIVerificationSession *)self context];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __70__DIVerificationSession_performVerificationWithAttributes_completion___block_invoke;
     v14[3] = &unk_278320F70;
     v14[4] = self;
-    [v10 configure:v11 completion:v14];
+    [client configure:context completion:v14];
   }
 
-  v12 = [(DIVerificationSession *)self client];
+  client2 = [(DIVerificationSession *)self client];
 
-  if (v12)
+  if (client2)
   {
-    v13 = [(DIVerificationSession *)self client];
-    [v13 performVerificationWithAttributes:v6 completion:v7];
+    client3 = [(DIVerificationSession *)self client];
+    [client3 performVerificationWithAttributes:attributesCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v13);
+    client3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, 0, client3);
   }
 }
 
-- (void)shareVerificationResultWithOptions:(id)a3 completion:(id)a4
+- (void)shareVerificationResultWithOptions:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DIVerificationSession *)self client];
+  optionsCopy = options;
+  completionCopy = completion;
+  client = [(DIVerificationSession *)self client];
 
-  if (v7)
+  if (client)
   {
-    v8 = [(DIVerificationSession *)self client];
-    [v8 shareVerificationResultWithOptions:v9 completion:v6];
+    client2 = [(DIVerificationSession *)self client];
+    [client2 shareVerificationResultWithOptions:optionsCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
-    v6[2](v6, 0, v8);
+    client2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
+    completionCopy[2](completionCopy, 0, client2);
   }
 }
 
-- (void)getVerificationResultWithOptions:(id)a3 completion:(id)a4
+- (void)getVerificationResultWithOptions:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DIVerificationSession *)self client];
+  optionsCopy = options;
+  completionCopy = completion;
+  client = [(DIVerificationSession *)self client];
 
-  if (v7)
+  if (client)
   {
-    v8 = [(DIVerificationSession *)self client];
-    [v8 getVerificationResultWithOptions:v9 completion:v6];
+    client2 = [(DIVerificationSession *)self client];
+    [client2 getVerificationResultWithOptions:optionsCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
-    v6[2](v6, 0, v8);
+    client2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DIVError" code:-2 userInfo:0];
+    completionCopy[2](completionCopy, 0, client2);
   }
 }
 
 - (void)invalidate
 {
-  v2 = [(DIVerificationSession *)self client];
-  [v2 invalidate];
+  client = [(DIVerificationSession *)self client];
+  [client invalidate];
 }
 
 - (void)concludeVerification
 {
-  v2 = [(DIVerificationSession *)self client];
-  [v2 concludeVerification:0];
+  client = [(DIVerificationSession *)self client];
+  [client concludeVerification:0];
 }
 
-- (void)confirmVerificationCompletedWithFeedback:(id)a3
+- (void)confirmVerificationCompletedWithFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(DIVerificationSession *)self client];
-  [v5 confirmVerificationCompletedWithFeedback:v4];
+  feedbackCopy = feedback;
+  client = [(DIVerificationSession *)self client];
+  [client confirmVerificationCompletedWithFeedback:feedbackCopy];
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   client = self->_client;
-  self->_client = v4;
+  self->_client = clientCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setConfigureError:(id)a3
+- (void)setConfigureError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   configureError = self->_configureError;
-  self->_configureError = v4;
+  self->_configureError = errorCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

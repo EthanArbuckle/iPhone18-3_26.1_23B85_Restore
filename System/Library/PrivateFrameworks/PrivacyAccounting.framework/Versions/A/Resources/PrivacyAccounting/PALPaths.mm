@@ -1,8 +1,8 @@
 @interface PALPaths
-- (BOOL)createDirectories:(id *)a3;
+- (BOOL)createDirectories:(id *)directories;
 - (NSString)biomeDirectory;
 - (NSString)settingsFile;
-- (PALPaths)initWithRootDirectory:(id)a3;
+- (PALPaths)initWithRootDirectory:(id)directory;
 - (void)removeBiomeDirectory;
 @end
 
@@ -10,21 +10,21 @@
 
 - (NSString)biomeDirectory
 {
-  v2 = [(PALPaths *)self rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Biome"];
+  rootDirectory = [(PALPaths *)self rootDirectory];
+  v3 = [rootDirectory stringByAppendingPathComponent:@"Biome"];
 
   return v3;
 }
 
-- (PALPaths)initWithRootDirectory:(id)a3
+- (PALPaths)initWithRootDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v9.receiver = self;
   v9.super_class = PALPaths;
   v5 = [(PALPaths *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [directoryCopy copy];
     rootDirectory = v5->_rootDirectory;
     v5->_rootDirectory = v6;
   }
@@ -34,19 +34,19 @@
 
 - (NSString)settingsFile
 {
-  v2 = [(PALPaths *)self rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"privacyaccountingd.plist"];
+  rootDirectory = [(PALPaths *)self rootDirectory];
+  v3 = [rootDirectory stringByAppendingPathComponent:@"privacyaccountingd.plist"];
 
   return v3;
 }
 
-- (BOOL)createDirectories:(id *)a3
+- (BOOL)createDirectories:(id *)directories
 {
   v5 = +[NSFileManager defaultManager];
-  v6 = [(PALPaths *)self rootDirectory];
-  v30[0] = v6;
-  v7 = [(PALPaths *)self biomeDirectory];
-  v30[1] = v7;
+  rootDirectory = [(PALPaths *)self rootDirectory];
+  v30[0] = rootDirectory;
+  biomeDirectory = [(PALPaths *)self biomeDirectory];
+  v30[1] = biomeDirectory;
   v8 = [NSArray arrayWithObjects:v30 count:2];
 
   v25 = 0u;
@@ -73,14 +73,14 @@
         v15 = *(*(&v23 + 1) + 8 * i);
         if (([v5 fileExistsAtPath:{v15, v22, v23}] & 1) == 0)
         {
-          v16 = [v5 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:a3];
+          v16 = [v5 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:directories];
           v17 = sub_100005738();
           v18 = v17;
           if (!v16)
           {
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
-              sub_10000588C(v15, a3, v18);
+              sub_10000588C(v15, directories, v18);
             }
 
             v20 = sub_100005738();
@@ -121,9 +121,9 @@ LABEL_19:
 - (void)removeBiomeDirectory
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(PALPaths *)self biomeDirectory];
+  biomeDirectory = [(PALPaths *)self biomeDirectory];
   v8 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v8];
+  v5 = [v3 removeItemAtPath:biomeDirectory error:&v8];
   v6 = v8;
 
   if ((v5 & 1) == 0)

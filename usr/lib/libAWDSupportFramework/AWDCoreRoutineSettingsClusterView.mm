@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineSettingsClusterView
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClusterCount:(BOOL)a3;
-- (void)setHasElsewhereCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasClusterCount:(BOOL)count;
+- (void)setHasElsewhereCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineSettingsClusterView
@@ -22,9 +22,9 @@
   [(AWDCoreRoutineSettingsClusterView *)&v3 dealloc];
 }
 
-- (void)setHasClusterCount:(BOOL)a3
+- (void)setHasClusterCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasElsewhereCount:(BOOL)a3
+- (void)setHasElsewhereCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v3 setObject:sessionId forKey:@"sessionId"];
+    [dictionary setObject:sessionId forKey:@"sessionId"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_clusterCount), @"clusterCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_clusterCount), @"clusterCount"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_elsewhereCount), @"elsewhereCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_elsewhereCount), @"elsewhereCount"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if (self->_sessionId)
   {
-    [a3 setSessionId:?];
+    [to setSessionId:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_clusterCount;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_clusterCount;
+    *(to + 32) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 5) = self->_elsewhereCount;
-    *(a3 + 32) |= 4u;
+    *(to + 5) = self->_elsewhereCount;
+    *(to + 32) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -155,7 +155,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_sessionId copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_sessionId copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -196,7 +196,7 @@ LABEL_19:
     }
 
     sessionId = self->_sessionId;
-    if (sessionId | *(a3 + 3))
+    if (sessionId | *(equal + 3))
     {
       v5 = [(NSString *)sessionId isEqual:?];
       if (!v5)
@@ -209,21 +209,21 @@ LABEL_19:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_clusterCount != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_clusterCount != *(equal + 4))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_elsewhereCount != *(a3 + 5))
+      if ((*(equal + 32) & 4) == 0 || self->_elsewhereCount != *(equal + 5))
       {
         goto LABEL_19;
       }
@@ -272,30 +272,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineSettingsClusterView *)self setSessionId:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 2) != 0)
   {
-    self->_clusterCount = *(a3 + 4);
+    self->_clusterCount = *(from + 4);
     *&self->_has |= 2u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_elsewhereCount = *(a3 + 5);
+    self->_elsewhereCount = *(from + 5);
     *&self->_has |= 4u;
   }
 }

@@ -8,14 +8,14 @@
 
 - (uint64_t)CA_numericValueCount
 {
-  v1 = [a1 objCType];
-  v2 = v1;
-  if (!v1)
+  objCType = [self objCType];
+  v2 = objCType;
+  if (!objCType)
   {
     goto LABEL_18;
   }
 
-  if (!strcmp(v1, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
     return 4;
   }
@@ -52,13 +52,13 @@ LABEL_18:
 - (_DWORD)CA_copyRenderValue
 {
   v53 = *MEMORY[0x1E69E9840];
-  v2 = [a1 objCType];
-  v3 = v2;
-  if (v2)
+  objCType = [self objCType];
+  v3 = objCType;
+  if (objCType)
   {
-    if (!strcmp(v2, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+    if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
     {
-      [a1 rectValue];
+      [self rectValue];
       *v9.i64 = v8;
       v9.i64[1] = v6;
       v10.f64[0] = 0.0;
@@ -86,7 +86,7 @@ LABEL_18:
 
     if (!strcmp(v3, "{CGPoint=dd}"))
     {
-      [a1 pointValue];
+      [self pointValue];
     }
 
     else
@@ -95,9 +95,9 @@ LABEL_18:
       {
         if (!strcmp(v3, "{CATransform3D=dddddddddddddddd}"))
         {
-          if (a1)
+          if (self)
           {
-            [a1 CATransform3DValue];
+            [self CATransform3DValue];
             v25 = v38;
             v24 = v39;
             v27 = v40;
@@ -135,9 +135,9 @@ LABEL_18:
 
         if (!strcmp(v3, "{CGAffineTransform=dddddd}"))
         {
-          if (a1)
+          if (self)
           {
-            [a1 CA_CGAffineTransformValue];
+            [self CA_CGAffineTransformValue];
             v33 = v38;
             v32 = v39;
             v34 = v40;
@@ -160,7 +160,7 @@ LABEL_18:
 
         if (!strcmp(v3, "{CAPoint3D=ddd}"))
         {
-          [a1 CAPoint3DValue];
+          [self CAPoint3DValue];
           v38.f64[0] = v35;
           v38.f64[1] = v36;
           v39.f64[0] = v37;
@@ -175,9 +175,9 @@ LABEL_18:
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          if (a1)
+          if (self)
           {
-            [a1 CACornerRadiiValue];
+            [self CACornerRadiiValue];
           }
 
           v48 = v38;
@@ -192,7 +192,7 @@ LABEL_18:
         goto LABEL_9;
       }
 
-      [a1 sizeValue];
+      [self sizeValue];
     }
 
     v38.f64[0] = v22;
@@ -213,7 +213,7 @@ LABEL_9:
   v49 = 0u;
   v50 = 0u;
   v48 = 0u;
-  [a1 getValue:&v48 size:80];
+  [self getValue:&v48 size:80];
   v19 = 0;
   v46 = 0u;
   v47 = 0u;
@@ -244,16 +244,16 @@ LABEL_9:
 - (uint64_t)CA_copyNumericValue:()CARenderValue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [a1 objCType];
-  v6 = v5;
-  if (!v5)
+  objCType = [self objCType];
+  v6 = objCType;
+  if (!objCType)
   {
     goto LABEL_8;
   }
 
-  if (!strcmp(v5, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
-    [a1 rectValue];
+    [self rectValue];
     *a3 = v8;
     a3[1] = v9;
     a3[2] = v8 + v10;
@@ -263,25 +263,25 @@ LABEL_9:
 
   if (!strcmp(v6, "{CGPoint=dd}") || !strcmp(v6, "{CGSize=dd}"))
   {
-    [a1 getValue:a3 size:16];
+    [self getValue:a3 size:16];
     return 2;
   }
 
   if (!strcmp(v6, "{CATransform3D=dddddddddddddddd}"))
   {
-    [a1 getValue:a3 size:128];
+    [self getValue:a3 size:128];
     return 16;
   }
 
   if (!strcmp(v6, "{CAPoint3D=ddd}"))
   {
-    [a1 getValue:a3 size:24];
+    [self getValue:a3 size:24];
     return 3;
   }
 
   if (!strcmp(v6, "{CACornerRadii={CGSize=dd}{CGSize=dd}{CGSize=dd}{CGSize=dd}}"))
   {
-    [a1 getValue:a3 size:64];
+    [self getValue:a3 size:64];
     return 8;
   }
 
@@ -291,7 +291,7 @@ LABEL_8:
     if (!strcmp(v6, "{CAColorMatrix=ffffffffffffffffffff}"))
     {
       memset(v14, 0, sizeof(v14));
-      [a1 getValue:v14 size:80];
+      [self getValue:v14 size:80];
       for (i = 0; i != 5; ++i)
       {
         v13 = v14[i];

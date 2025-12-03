@@ -1,19 +1,19 @@
 @interface CKDirectoryPurger
-+ (void)purgeDirectoryAtURL:(id)a3;
-- (CKDirectoryPurger)initWithDirectoryURLs:(id)a3;
++ (void)purgeDirectoryAtURL:(id)l;
+- (CKDirectoryPurger)initWithDirectoryURLs:(id)ls;
 - (void)purge;
 @end
 
 @implementation CKDirectoryPurger
 
-+ (void)purgeDirectoryAtURL:(id)a3
++ (void)purgeDirectoryAtURL:(id)l
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (l)
   {
-    v3 = a3;
+    lCopy = l;
     v4 = [CKDirectoryPurger alloc];
-    v13[0] = v3;
+    v13[0] = lCopy;
     v6 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v5, v13, 1);
 
     v8 = objc_msgSend_initWithDirectoryURLs_(v4, v7, v6);
@@ -24,15 +24,15 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (CKDirectoryPurger)initWithDirectoryURLs:(id)a3
+- (CKDirectoryPurger)initWithDirectoryURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v11.receiver = self;
   v11.super_class = CKDirectoryPurger;
   v7 = [(CKDirectoryPurger *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_CKDeepCopy(v4, v5, v6);
+    v8 = objc_msgSend_CKDeepCopy(lsCopy, v5, v6);
     urls = v7->_urls;
     v7->_urls = v8;
   }

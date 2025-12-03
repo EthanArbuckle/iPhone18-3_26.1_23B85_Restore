@@ -1,27 +1,27 @@
 @interface NTKCLeghornFaceDetailContentSectionController
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4;
-- (NTKCLeghornFaceDetailContentSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7;
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options;
+- (NTKCLeghornFaceDetailContentSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view;
 - (UIViewController)parentViewController;
 - (id)_allSections;
 - (id)_currentEditOption;
 - (id)_currentFilter;
-- (id)_sectionForRow:(int64_t)a3;
+- (id)_sectionForRow:(int64_t)row;
 - (void)_createRows;
 - (void)_filterUpdated;
 - (void)_refreshRows;
-- (void)didSelectRow:(int64_t)a3;
+- (void)didSelectRow:(int64_t)row;
 - (void)faceDidChange;
-- (void)poiSectionDetailsLoaded:(BOOL)a3 forSection:(id)a4;
-- (void)setSelectedOptions:(id)a3;
+- (void)poiSectionDetailsLoaded:(BOOL)loaded forSection:(id)section;
+- (void)setSelectedOptions:(id)options;
 @end
 
 @implementation NTKCLeghornFaceDetailContentSectionController
 
-- (NTKCLeghornFaceDetailContentSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7
+- (NTKCLeghornFaceDetailContentSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view
 {
   v20.receiver = self;
   v20.super_class = NTKCLeghornFaceDetailContentSectionController;
-  v7 = [(NTKCFaceDetailEditOptionSectionController *)&v20 _initWithTableViewController:a3 face:a4 inGallery:a5 editOptionCollection:a6 faceView:a7];
+  v7 = [(NTKCFaceDetailEditOptionSectionController *)&v20 _initWithTableViewController:controller face:face inGallery:gallery editOptionCollection:collection faceView:view];
   v10 = v7;
   if (v7)
   {
@@ -175,39 +175,39 @@
   return filter;
 }
 
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options
 {
-  v6 = a4;
-  objc_msgSend_setCollection_(self, v7, v8, a3);
-  objc_msgSend_setSelectedOptions_(self, v9, v10, v6);
+  optionsCopy = options;
+  objc_msgSend_setCollection_(self, v7, v8, changed);
+  objc_msgSend_setSelectedOptions_(self, v9, v10, optionsCopy);
 
   return 1;
 }
 
-- (id)_sectionForRow:(int64_t)a3
+- (id)_sectionForRow:(int64_t)row
 {
-  if (a3 < 0)
+  if (row < 0)
   {
     v9 = 0;
   }
 
   else
   {
-    if (objc_msgSend_count(self->_sections, a2, v4) <= a3)
+    if (objc_msgSend_count(self->_sections, a2, v4) <= row)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = objc_msgSend_objectAtIndexedSubscript_(self->_sections, v7, v8, a3);
+      v9 = objc_msgSend_objectAtIndexedSubscript_(self->_sections, v7, v8, row);
     }
   }
 
   return v9;
 }
 
-- (void)didSelectRow:(int64_t)a3
+- (void)didSelectRow:(int64_t)row
 {
   v42 = objc_msgSend__sectionForRow_(self, a2, v3);
   if (objc_msgSend_detailsCount(v42, v6, v7))
@@ -230,7 +230,7 @@
   else
   {
     v28 = objc_msgSend_rows(self, v8, v9);
-    v16 = objc_msgSend_objectAtIndexedSubscript_(v28, v29, v30, a3);
+    v16 = objc_msgSend_objectAtIndexedSubscript_(v28, v29, v30, row);
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -268,28 +268,28 @@ LABEL_7:
   objc_msgSend_editOptionSection_didModifyEditOption_transiently_canceled_(v15, v16, v17, self, v12, 0, 0);
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = NTKCLeghornFaceDetailContentSectionController;
-  [(NTKCFaceDetailEditOptionSectionController *)&v7 setSelectedOptions:a3];
+  [(NTKCFaceDetailEditOptionSectionController *)&v7 setSelectedOptions:options];
   filter = self->_filter;
   self->_filter = 0;
 
   objc_msgSend__refreshRows(self, v5, v6);
 }
 
-- (void)poiSectionDetailsLoaded:(BOOL)a3 forSection:(id)a4
+- (void)poiSectionDetailsLoaded:(BOOL)loaded forSection:(id)section
 {
-  v5 = a4;
+  sectionCopy = section;
   sections = self->_sections;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_23BEE0894;
   v10[3] = &unk_278BA1BF0;
-  v11 = v5;
-  v12 = self;
-  v7 = v5;
+  v11 = sectionCopy;
+  selfCopy = self;
+  v7 = sectionCopy;
   objc_msgSend_enumerateObjectsUsingBlock_(sections, v8, v9, v10);
 }
 

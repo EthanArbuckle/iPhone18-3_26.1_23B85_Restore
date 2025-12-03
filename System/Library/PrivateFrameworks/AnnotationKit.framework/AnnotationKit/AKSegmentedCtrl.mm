@@ -1,33 +1,33 @@
 @interface AKSegmentedCtrl
-- (AKSegmentedCtrl)initWithImages:(id)a3;
-- (BOOL)isEnabledForSegment:(unint64_t)a3;
-- (BOOL)isSelectedForSegment:(unint64_t)a3;
-- (id)segmentAtIndex:(unint64_t)a3;
-- (id)segmentForTag:(int64_t)a3;
-- (int64_t)tagForSegment:(unint64_t)a3;
+- (AKSegmentedCtrl)initWithImages:(id)images;
+- (BOOL)isEnabledForSegment:(unint64_t)segment;
+- (BOOL)isSelectedForSegment:(unint64_t)segment;
+- (id)segmentAtIndex:(unint64_t)index;
+- (id)segmentForTag:(int64_t)tag;
+- (int64_t)tagForSegment:(unint64_t)segment;
 - (unint64_t)segmentCount;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)_commonInit;
 - (void)_configureForNewImages;
-- (void)_setSelected:(BOOL)a3 forSegment:(unint64_t)a4;
+- (void)_setSelected:(BOOL)selected forSegment:(unint64_t)segment;
 - (void)deselectAllSegments;
-- (void)selectSegmentWithTag:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3 forSegment:(unint64_t)a4;
-- (void)setSelected:(BOOL)a3 forSegment:(unint64_t)a4;
-- (void)setTag:(int64_t)a3 forSegment:(unint64_t)a4;
+- (void)selectSegmentWithTag:(int64_t)tag;
+- (void)setEnabled:(BOOL)enabled forSegment:(unint64_t)segment;
+- (void)setSelected:(BOOL)selected forSegment:(unint64_t)segment;
+- (void)setTag:(int64_t)tag forSegment:(unint64_t)segment;
 @end
 
 @implementation AKSegmentedCtrl
 
-- (AKSegmentedCtrl)initWithImages:(id)a3
+- (AKSegmentedCtrl)initWithImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   v9.receiver = self;
   v9.super_class = AKSegmentedCtrl;
   v5 = [(AKSegmentedCtrl *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [imagesCopy copy];
     images = v5->_images;
     v5->_images = v6;
 
@@ -39,9 +39,9 @@
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   buttons = self->_buttons;
-  self->_buttons = v3;
+  self->_buttons = array;
 
   self->_selectedSegment = 0x7FFFFFFFFFFFFFFFLL;
 
@@ -56,8 +56,8 @@
   v47 = 480;
   self->_buttons = 0;
 
-  v4 = [(AKSegmentedCtrl *)self subviews];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
+  subviews = [(AKSegmentedCtrl *)self subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](self->_images, "count")}];
   v53 = 0u;
@@ -87,15 +87,15 @@
         v15 = [[AKToggleButton alloc] initWithFrame:v14 templateImage:1 autoUpdatesColor:v9, v10, v11, v12];
         [(AKToggleButton *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
         [(AKToggleButton *)v15 setShouldTintNormalImage:1];
-        v16 = [(AKToggleButton *)v15 layer];
-        [v16 setCornerRadius:3.0];
+        layer = [(AKToggleButton *)v15 layer];
+        [layer setCornerRadius:3.0];
 
-        v17 = [(AKToggleButton *)v15 widthAnchor];
-        v18 = [v17 constraintEqualToConstant:29.0];
+        widthAnchor = [(AKToggleButton *)v15 widthAnchor];
+        v18 = [widthAnchor constraintEqualToConstant:29.0];
         [v18 setActive:1];
 
-        v19 = [(AKToggleButton *)v15 heightAnchor];
-        v20 = [v19 constraintEqualToConstant:29.0];
+        heightAnchor = [(AKToggleButton *)v15 heightAnchor];
+        v20 = [heightAnchor constraintEqualToConstant:29.0];
         [v20 setActive:1];
 
         [(AKToggleButton *)v15 setImage:v14 forState:0];
@@ -143,7 +143,7 @@
         {
           v33 = 0.0;
           v34 = v24;
-          v35 = v31;
+          selfCopy = v31;
           v36 = 2;
         }
 
@@ -151,16 +151,16 @@
         {
           v33 = -10.0;
           v34 = v24;
-          v35 = self;
+          selfCopy = self;
           v36 = 1;
         }
 
-        v37 = [MEMORY[0x277CCAAD0] constraintWithItem:v34 attribute:1 relatedBy:0 toItem:v35 attribute:v36 multiplier:1.0 constant:{v33, v47}];
+        v37 = [MEMORY[0x277CCAAD0] constraintWithItem:v34 attribute:1 relatedBy:0 toItem:selfCopy attribute:v36 multiplier:1.0 constant:{v33, v47}];
         [v37 setActive:1];
 
-        v38 = [v21 lastObject];
+        lastObject = [v21 lastObject];
 
-        if (v32 == v38)
+        if (v32 == lastObject)
         {
           v39 = [MEMORY[0x277CCAAD0] constraintWithItem:v24 attribute:2 relatedBy:0 toItem:self attribute:2 multiplier:1.0 constant:10.0];
           [v39 setActive:1];
@@ -201,27 +201,27 @@
   *(&self->super.super.super.super.isa + v47) = v45;
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v6 = a3;
-  v4 = [(AKSegmentedCtrl *)self buttons];
-  v5 = [v4 indexOfObject:v6];
+  tappedCopy = tapped;
+  buttons = [(AKSegmentedCtrl *)self buttons];
+  v5 = [buttons indexOfObject:tappedCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    -[AKSegmentedCtrl _setSelected:forSegment:](self, "_setSelected:forSegment:", [v6 isSelected], v5);
+    -[AKSegmentedCtrl _setSelected:forSegment:](self, "_setSelected:forSegment:", [tappedCopy isSelected], v5);
     [(AKSegmentedCtrl *)self sendActionsForControlEvents:4096];
   }
 }
 
-- (void)_setSelected:(BOOL)a3 forSegment:(unint64_t)a4
+- (void)_setSelected:(BOOL)selected forSegment:(unint64_t)segment
 {
-  v4 = a3;
+  selectedCopy = selected;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = [(AKSegmentedCtrl *)self segmentAtIndex:a4];
-  if ([v6 isSelected] != v4)
+  v6 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
+  if ([v6 isSelected] != selectedCopy)
   {
-    [v6 setSelected:v4];
+    [v6 setSelected:selectedCopy];
   }
 
   if (![(AKSegmentedCtrl *)self selectionType])
@@ -275,46 +275,46 @@ LABEL_20:
   }
 }
 
-- (void)setSelected:(BOOL)a3 forSegment:(unint64_t)a4
+- (void)setSelected:(BOOL)selected forSegment:(unint64_t)segment
 {
-  v5 = a3;
-  v7 = [(AKSegmentedCtrl *)self buttons];
-  v8 = [v7 count];
+  selectedCopy = selected;
+  buttons = [(AKSegmentedCtrl *)self buttons];
+  v8 = [buttons count];
 
-  if (v8 <= a4)
+  if (v8 <= segment)
   {
-    NSLog(&cfstr_SegmentIndexLu.isa, a4);
+    NSLog(&cfstr_SegmentIndexLu.isa, segment);
   }
 
   else
   {
-    v9 = [(AKSegmentedCtrl *)self segmentAtIndex:a4];
-    if ([v9 isSelected] != v5)
+    v9 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
+    if ([v9 isSelected] != selectedCopy)
     {
-      [(AKSegmentedCtrl *)self _setSelected:v5 forSegment:a4];
+      [(AKSegmentedCtrl *)self _setSelected:selectedCopy forSegment:segment];
     }
   }
 }
 
-- (BOOL)isSelectedForSegment:(unint64_t)a3
+- (BOOL)isSelectedForSegment:(unint64_t)segment
 {
-  v5 = [(AKSegmentedCtrl *)self buttons];
-  v6 = [v5 count];
+  buttons = [(AKSegmentedCtrl *)self buttons];
+  v6 = [buttons count];
 
-  if (v6 <= a3)
+  if (v6 <= segment)
   {
     return 0;
   }
 
-  v7 = [(AKSegmentedCtrl *)self segmentAtIndex:a3];
-  v8 = [v7 isSelected];
+  v7 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
+  isSelected = [v7 isSelected];
 
-  return v8;
+  return isSelected;
 }
 
-- (void)selectSegmentWithTag:(int64_t)a3
+- (void)selectSegmentWithTag:(int64_t)tag
 {
-  v5 = [(AKSegmentedCtrl *)self segmentForTag:a3];
+  v5 = [(AKSegmentedCtrl *)self segmentForTag:tag];
   v4 = [(NSArray *)self->_buttons indexOfObject:v5];
   if (([v5 isSelected] & 1) == 0)
   {
@@ -331,8 +331,8 @@ LABEL_20:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(AKSegmentedCtrl *)self buttons];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    buttons = [(AKSegmentedCtrl *)self buttons];
+    v4 = [buttons countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -343,7 +343,7 @@ LABEL_20:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(buttons);
           }
 
           v8 = *(*(&v9 + 1) + 8 * i);
@@ -353,7 +353,7 @@ LABEL_20:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [buttons countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -361,55 +361,55 @@ LABEL_20:
   }
 }
 
-- (void)setEnabled:(BOOL)a3 forSegment:(unint64_t)a4
+- (void)setEnabled:(BOOL)enabled forSegment:(unint64_t)segment
 {
-  v4 = a3;
-  v5 = [(AKSegmentedCtrl *)self segmentAtIndex:a4];
-  [v5 setEnabled:v4];
+  enabledCopy = enabled;
+  v5 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
+  [v5 setEnabled:enabledCopy];
 }
 
-- (BOOL)isEnabledForSegment:(unint64_t)a3
+- (BOOL)isEnabledForSegment:(unint64_t)segment
 {
-  v3 = [(AKSegmentedCtrl *)self segmentAtIndex:a3];
-  v4 = [v3 isEnabled];
+  v3 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
+  isEnabled = [v3 isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (id)segmentAtIndex:(unint64_t)a3
+- (id)segmentAtIndex:(unint64_t)index
 {
-  v5 = [(AKSegmentedCtrl *)self buttons];
-  v6 = [v5 count];
+  buttons = [(AKSegmentedCtrl *)self buttons];
+  v6 = [buttons count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(AKSegmentedCtrl *)self buttons];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    buttons2 = [(AKSegmentedCtrl *)self buttons];
+    v8 = [buttons2 objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (void)setTag:(int64_t)a3 forSegment:(unint64_t)a4
+- (void)setTag:(int64_t)tag forSegment:(unint64_t)segment
 {
-  v5 = [(AKSegmentedCtrl *)self segmentAtIndex:a4];
-  [v5 setTag:a3];
+  v5 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
+  [v5 setTag:tag];
 }
 
-- (int64_t)tagForSegment:(unint64_t)a3
+- (int64_t)tagForSegment:(unint64_t)segment
 {
-  v3 = [(AKSegmentedCtrl *)self segmentAtIndex:a3];
+  v3 = [(AKSegmentedCtrl *)self segmentAtIndex:segment];
   v4 = [v3 tag];
 
   return v4;
 }
 
-- (id)segmentForTag:(int64_t)a3
+- (id)segmentForTag:(int64_t)tag
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -433,7 +433,7 @@ LABEL_20:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 tag] == a3)
+        if ([v10 tag] == tag)
         {
           v11 = v10;
 
@@ -457,8 +457,8 @@ LABEL_20:
 
 - (unint64_t)segmentCount
 {
-  v2 = [(AKSegmentedCtrl *)self buttons];
-  v3 = [v2 count];
+  buttons = [(AKSegmentedCtrl *)self buttons];
+  v3 = [buttons count];
 
   return v3;
 }

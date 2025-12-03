@@ -1,22 +1,22 @@
 @interface CCToolKitToolTriggerDefinition
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTriggerDefinition)initWithError:(id *)a3;
-- (CCToolKitToolTriggerDefinition)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTriggerDefinition)initWithError:(id *)error;
+- (CCToolKitToolTriggerDefinition)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (id)jsonDictionary;
 @end
 
 @implementation CCToolKitToolTriggerDefinition
 
-- (CCToolKitToolTriggerDefinition)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTriggerDefinition)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
 
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [[CCToolKitToolTriggerDefinition alloc] initWithError:a4];
+    v9 = [[CCToolKitToolTriggerDefinition alloc] initWithError:error];
   }
 
   else
@@ -36,10 +36,10 @@
   return v3;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v4];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   v8 = MEMORY[0x1E6993AA8];
@@ -151,11 +151,11 @@ LABEL_28:
   return v26;
 }
 
-- (CCToolKitToolTriggerDefinition)initWithError:(id *)a3
+- (CCToolKitToolTriggerDefinition)initWithError:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = [v5 immutableData];
-  v7 = [(CCItemMessage *)self initWithData:v6 error:a3];
+  immutableData = [v5 immutableData];
+  v7 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
   return v7;
 }

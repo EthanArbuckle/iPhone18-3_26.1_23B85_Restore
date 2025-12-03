@@ -1,20 +1,20 @@
 @interface TSCEFunction_MONTHNAME
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_MONTHNAME
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v59 = 0;
-  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v59);
+  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v59);
   v10 = v59;
   v15 = objc_msgSend_trunc(v9, v11, v12, v13, v14);
 
   if (v10)
   {
-    v20 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v10, v18, v19);
+    v20 = objc_msgSend_raiseErrorOrConvert_(context, v16, v10, v18, v19);
   }
 
   else
@@ -24,15 +24,15 @@
     TSUDecimal::doubleValue(&v54);
     if (v26 < -2147483650.0 || v26 > 2147483650.0)
     {
-      v37 = objc_msgSend_functionName(a4, v22, v23, v24, v25);
+      v37 = objc_msgSend_functionName(spec, v22, v23, v24, v25);
       v47 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v48, 1, v37, 1, 1, -2147483650.0, 2147483650.0);
-      v52 = objc_msgSend_raiseErrorOrConvert_(a3, v49, v47, v50, v51);
+      v52 = objc_msgSend_raiseErrorOrConvert_(context, v49, v47, v50, v51);
     }
 
     else
     {
       v27 = objc_msgSend_integer(v15, v22, v23, v24, v25);
-      v32 = objc_msgSend_locale(a3, v28, v29, v30, v31);
+      v32 = objc_msgSend_locale(context, v28, v29, v30, v31);
       v37 = objc_msgSend_standaloneMonthSymbols(v32, v33, v34, v35, v36);
 
       v42 = objc_msgSend_count(v37, v38, v39, v40, v41);

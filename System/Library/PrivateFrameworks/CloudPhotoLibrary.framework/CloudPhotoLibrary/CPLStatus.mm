@@ -1,7 +1,7 @@
 @interface CPLStatus
-+ (id)descriptionForAccountEPPCapability:(int64_t)a3;
-- (BOOL)_deleteInitialSyncMarkerWithError:(id *)a3;
-- (BOOL)_writeInitialSyncMarkerForDate:(id)a3 error:(id *)a4;
++ (id)descriptionForAccountEPPCapability:(int64_t)capability;
+- (BOOL)_deleteInitialSyncMarkerWithError:(id *)error;
+- (BOOL)_writeInitialSyncMarkerForDate:(id)date error:(id *)error;
 - (BOOL)containerHasBeenWiped;
 - (BOOL)hasBatteryBudget;
 - (BOOL)hasCellularBudget;
@@ -31,10 +31,10 @@
 - (BOOL)isWalrusEnabled;
 - (BOOL)lowDiskSpace;
 - (BOOL)veryLowDiskSpace;
-- (BOOL)writeInitialSyncMarker:(id *)a3;
+- (BOOL)writeInitialSyncMarker:(id *)marker;
 - (CPLAccountFlags)accountFlags;
-- (CPLStatus)initWithClientLibraryBaseURL:(id)a3;
-- (CPLStatus)initWithClientLibraryBaseURLForCPLEngine:(id)a3;
+- (CPLStatus)initWithClientLibraryBaseURL:(id)l;
+- (CPLStatus)initWithClientLibraryBaseURLForCPLEngine:(id)engine;
 - (CPLStatusDelegate)delegate;
 - (NSArray)disabledFeatures;
 - (NSData)accountFlagsData;
@@ -58,40 +58,40 @@
 - (unint64_t)estimatedCountOfRemainingRecordsDuringSharedLibraryExit;
 - (void)_loadIfNecessary;
 - (void)_save;
-- (void)_setObjectInStatus:(id)a3 forKey:(id)a4;
+- (void)_setObjectInStatus:(id)status forKey:(id)key;
 - (void)_statusDidChange;
 - (void)checkInitialSyncMarker;
-- (void)preventDelegateWithDelegationClass:(id)a3 selector:(SEL)a4;
+- (void)preventDelegateWithDelegationClass:(id)class selector:(SEL)selector;
 - (void)refetchFromDisk;
-- (void)setAccountEPPCapability:(int64_t)a3;
-- (void)setAccountFlagsData:(id)a3;
-- (void)setBusyState:(int64_t)a3;
-- (void)setCloudAssetCountPerType:(id)a3 updateCheckDate:(BOOL)a4;
-- (void)setConnectedToNetwork:(BOOL)a3 cellularIsRestricted:(BOOL)a4 inAirplaneMode:(BOOL)a5;
-- (void)setContainerHasBeenWiped:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisabledFeatures:(id)a3;
-- (void)setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit:(unint64_t)a3;
-- (void)setExitDeleteTime:(id)a3;
-- (void)setHasCellularBudget:(BOOL)a3 hasBatteryBudget:(BOOL)a4 hasLowBatteryLevel:(BOOL)a5 isConstrainedNetwork:(BOOL)a6 isBlockedByLowPowerMode:(BOOL)a7 hasHeavyResourceUsage:(BOOL)a8 hasPoorNetworkQuality:(BOOL)a9 hasModerateThermalPressure:(BOOL)a10 hasThermalPressure:(BOOL)a11 hasPoorSystemConditions:(BOOL)a12 isBudgetValid:(BOOL)a13 blockedReason:(int64_t)a14 unBlockedReason:(int64_t)a15;
-- (void)setHasChangesToProcess:(BOOL)a3;
-- (void)setICloudLibraryClientIsNotAuthenticated:(BOOL)a3;
-- (void)setICloudLibraryClientVersionTooOld:(BOOL)a3;
-- (void)setICloudLibraryExists:(BOOL)a3;
-- (void)setICloudLibraryHasBeenWiped:(BOOL)a3;
-- (void)setInitialDownloadDate:(id)a3;
-- (void)setInitialSyncDate:(id)a3;
-- (void)setIsExceedingQuota:(BOOL)a3;
-- (void)setIsExceedingSharedLibraryQuota:(BOOL)a3;
-- (void)setIsStuckInExitForSharedLibrary:(BOOL)a3;
-- (void)setKeychainCDPEnabled:(BOOL)a3;
-- (void)setLastCompletePrefetchDate:(id)a3;
-- (void)setLastPruneDate:(id)a3;
-- (void)setLastSuccessfulSyncDate:(id)a3;
-- (void)setLowDiskSpace:(BOOL)a3 veryLowDiskSpace:(BOOL)a4;
-- (void)setServerFeatureCompatibleVersion:(int64_t)a3;
-- (void)setUpgradeSuggestedToAccessAllPhotos:(BOOL)a3;
-- (void)setWalrusEnabled:(BOOL)a3;
+- (void)setAccountEPPCapability:(int64_t)capability;
+- (void)setAccountFlagsData:(id)data;
+- (void)setBusyState:(int64_t)state;
+- (void)setCloudAssetCountPerType:(id)type updateCheckDate:(BOOL)date;
+- (void)setConnectedToNetwork:(BOOL)network cellularIsRestricted:(BOOL)restricted inAirplaneMode:(BOOL)mode;
+- (void)setContainerHasBeenWiped:(BOOL)wiped;
+- (void)setDelegate:(id)delegate;
+- (void)setDisabledFeatures:(id)features;
+- (void)setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit:(unint64_t)exit;
+- (void)setExitDeleteTime:(id)time;
+- (void)setHasCellularBudget:(BOOL)budget hasBatteryBudget:(BOOL)batteryBudget hasLowBatteryLevel:(BOOL)level isConstrainedNetwork:(BOOL)network isBlockedByLowPowerMode:(BOOL)mode hasHeavyResourceUsage:(BOOL)usage hasPoorNetworkQuality:(BOOL)quality hasModerateThermalPressure:(BOOL)self0 hasThermalPressure:(BOOL)self1 hasPoorSystemConditions:(BOOL)self2 isBudgetValid:(BOOL)self3 blockedReason:(int64_t)self4 unBlockedReason:(int64_t)self5;
+- (void)setHasChangesToProcess:(BOOL)process;
+- (void)setICloudLibraryClientIsNotAuthenticated:(BOOL)authenticated;
+- (void)setICloudLibraryClientVersionTooOld:(BOOL)old;
+- (void)setICloudLibraryExists:(BOOL)exists;
+- (void)setICloudLibraryHasBeenWiped:(BOOL)wiped;
+- (void)setInitialDownloadDate:(id)date;
+- (void)setInitialSyncDate:(id)date;
+- (void)setIsExceedingQuota:(BOOL)quota;
+- (void)setIsExceedingSharedLibraryQuota:(BOOL)quota;
+- (void)setIsStuckInExitForSharedLibrary:(BOOL)library;
+- (void)setKeychainCDPEnabled:(BOOL)enabled;
+- (void)setLastCompletePrefetchDate:(id)date;
+- (void)setLastPruneDate:(id)date;
+- (void)setLastSuccessfulSyncDate:(id)date;
+- (void)setLowDiskSpace:(BOOL)space veryLowDiskSpace:(BOOL)diskSpace;
+- (void)setServerFeatureCompatibleVersion:(int64_t)version;
+- (void)setUpgradeSuggestedToAccessAllPhotos:(BOOL)photos;
+- (void)setWalrusEnabled:(BOOL)enabled;
 @end
 
 @implementation CPLStatus
@@ -130,8 +130,8 @@
 
       if (!v14)
       {
-        v15 = [(NSURL *)self->_statusFileURL URLByDeletingLastPathComponent];
-        v16 = [v15 URLByAppendingPathComponent:@"initialsync_marker"];
+        uRLByDeletingLastPathComponent = [(NSURL *)self->_statusFileURL URLByDeletingLastPathComponent];
+        v16 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"initialsync_marker"];
 
         v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithContentsOfURL:v16 encoding:4 error:0];
         if (v17)
@@ -166,15 +166,15 @@
       v24 = __CPLStatusOSLogDomain();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(CPLStatus *)self _statusClient];
-        v26 = [(NSURL *)self->_statusFileURL path];
+        _statusClient = [(CPLStatus *)self _statusClient];
+        path = [(NSURL *)self->_statusFileURL path];
         status = self->_status;
         *buf = 138413058;
-        v31 = v25;
+        selfCopy2 = _statusClient;
         v32 = 2048;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2112;
-        v35 = v26;
+        v35 = path;
         v36 = 2112;
         v37 = status;
         _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_DEFAULT, "%@ read CPLStatus %p at %@: %@", buf, 0x2Au);
@@ -186,8 +186,8 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 cplIsFileDoesNotExistError:v7];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager cplIsFileDoesNotExistError:v7];
 
     if (v10)
     {
@@ -196,14 +196,14 @@ LABEL_29:
         v11 = __CPLStatusOSLogDomain();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(NSURL *)self->_statusFileURL path];
-          v13 = [(CPLStatus *)self _statusClient];
+          path2 = [(NSURL *)self->_statusFileURL path];
+          _statusClient2 = [(CPLStatus *)self _statusClient];
           *buf = 134218498;
-          v31 = self;
+          selfCopy2 = self;
           v32 = 2112;
-          v33 = v12;
+          selfCopy3 = path2;
           v34 = 2112;
-          v35 = v13;
+          v35 = _statusClient2;
           _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "CPLStatus %p at %@ for %@ does not exist - starting empty", buf, 0x20u);
         }
 
@@ -216,14 +216,14 @@ LABEL_19:
       v11 = __CPLStatusOSLogDomain();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v21 = [(CPLStatus *)self _statusClient];
-        v22 = [(NSURL *)self->_statusFileURL path];
+        _statusClient3 = [(CPLStatus *)self _statusClient];
+        path3 = [(NSURL *)self->_statusFileURL path];
         *buf = 138413058;
-        v31 = v21;
+        selfCopy2 = _statusClient3;
         v32 = 2048;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2112;
-        v35 = v22;
+        v35 = path3;
         v36 = 2112;
         v37 = v7;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "%@ failed to read CPLStatus %p at %@: %@", buf, 0x2Au);
@@ -282,20 +282,20 @@ void __32__CPLStatus_hasChangesToProcess__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)preventDelegateWithDelegationClass:(id)a3 selector:(SEL)a4
+- (void)preventDelegateWithDelegationClass:(id)class selector:(SEL)selector
 {
-  objc_storeStrong(&self->_delegationProtocol, a3);
-  if (a4)
+  objc_storeStrong(&self->_delegationProtocol, class);
+  if (selector)
   {
-    v6 = a4;
+    selectorCopy = selector;
   }
 
   else
   {
-    v6 = 0;
+    selectorCopy = 0;
   }
 
-  self->_delegationSelector = v6;
+  self->_delegationSelector = selectorCopy;
 }
 
 - (int64_t)maximumAccountEPPCapability
@@ -344,7 +344,7 @@ void __40__CPLStatus_maximumAccountEPPCapability__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v6;
 }
 
-- (void)setAccountEPPCapability:(int64_t)a3
+- (void)setAccountEPPCapability:(int64_t)capability
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -352,7 +352,7 @@ void __40__CPLStatus_maximumAccountEPPCapability__block_invoke(uint64_t a1)
   v4[2] = __37__CPLStatus_setAccountEPPCapability___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = capability;
   dispatch_sync(lock, v4);
 }
 
@@ -461,13 +461,13 @@ void __33__CPLStatus_accountEPPCapability__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 integerValue];
 }
 
-- (void)setDisabledFeatures:(id)a3
+- (void)setDisabledFeatures:(id)features
 {
-  v4 = a3;
-  if (![v4 count])
+  featuresCopy = features;
+  if (![featuresCopy count])
   {
 
-    v4 = 0;
+    featuresCopy = 0;
   }
 
   lock = self->_lock;
@@ -476,8 +476,8 @@ void __33__CPLStatus_accountEPPCapability__block_invoke(uint64_t a1)
   v7[2] = __33__CPLStatus_setDisabledFeatures___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = featuresCopy;
+  v6 = featuresCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -558,17 +558,17 @@ void __29__CPLStatus_disabledFeatures__block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v3);
 }
 
-- (void)setAccountFlagsData:(id)a3
+- (void)setAccountFlagsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__CPLStatus_setAccountFlagsData___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -643,10 +643,10 @@ uint64_t __29__CPLStatus_accountFlagsData__block_invoke(uint64_t a1)
 
 - (CPLAccountFlags)accountFlags
 {
-  v2 = [(CPLStatus *)self accountFlagsData];
-  if (v2)
+  accountFlagsData = [(CPLStatus *)self accountFlagsData];
+  if (accountFlagsData)
   {
-    v3 = [[CPLAccountFlags alloc] initWithData:v2];
+    v3 = [[CPLAccountFlags alloc] initWithData:accountFlagsData];
   }
 
   else
@@ -657,7 +657,7 @@ uint64_t __29__CPLStatus_accountFlagsData__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLowDiskSpace:(BOOL)a3 veryLowDiskSpace:(BOOL)a4
+- (void)setLowDiskSpace:(BOOL)space veryLowDiskSpace:(BOOL)diskSpace
 {
   lock = self->_lock;
   v5[0] = MEMORY[0x1E69E9820];
@@ -665,8 +665,8 @@ uint64_t __29__CPLStatus_accountFlagsData__block_invoke(uint64_t a1)
   v5[2] = __46__CPLStatus_setLowDiskSpace_veryLowDiskSpace___block_invoke;
   v5[3] = &unk_1E861C358;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  diskSpaceCopy = diskSpace;
   dispatch_sync(lock, v5);
 }
 
@@ -762,7 +762,7 @@ void __25__CPLStatus_lowDiskSpace__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setConnectedToNetwork:(BOOL)a3 cellularIsRestricted:(BOOL)a4 inAirplaneMode:(BOOL)a5
+- (void)setConnectedToNetwork:(BOOL)network cellularIsRestricted:(BOOL)restricted inAirplaneMode:(BOOL)mode
 {
   lock = self->_lock;
   v6[0] = MEMORY[0x1E69E9820];
@@ -770,9 +770,9 @@ void __25__CPLStatus_lowDiskSpace__block_invoke(uint64_t a1)
   v6[2] = __71__CPLStatus_setConnectedToNetwork_cellularIsRestricted_inAirplaneMode___block_invoke;
   v6[3] = &unk_1E861C330;
   v6[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  networkCopy = network;
+  restrictedCopy = restricted;
+  modeCopy = mode;
   dispatch_sync(lock, v6);
 }
 
@@ -1285,27 +1285,27 @@ void __33__CPLStatus_hasValidSystemBudget__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setHasCellularBudget:(BOOL)a3 hasBatteryBudget:(BOOL)a4 hasLowBatteryLevel:(BOOL)a5 isConstrainedNetwork:(BOOL)a6 isBlockedByLowPowerMode:(BOOL)a7 hasHeavyResourceUsage:(BOOL)a8 hasPoorNetworkQuality:(BOOL)a9 hasModerateThermalPressure:(BOOL)a10 hasThermalPressure:(BOOL)a11 hasPoorSystemConditions:(BOOL)a12 isBudgetValid:(BOOL)a13 blockedReason:(int64_t)a14 unBlockedReason:(int64_t)a15
+- (void)setHasCellularBudget:(BOOL)budget hasBatteryBudget:(BOOL)batteryBudget hasLowBatteryLevel:(BOOL)level isConstrainedNetwork:(BOOL)network isBlockedByLowPowerMode:(BOOL)mode hasHeavyResourceUsage:(BOOL)usage hasPoorNetworkQuality:(BOOL)quality hasModerateThermalPressure:(BOOL)self0 hasThermalPressure:(BOOL)self1 hasPoorSystemConditions:(BOOL)self2 isBudgetValid:(BOOL)self3 blockedReason:(int64_t)self4 unBlockedReason:(int64_t)self5
 {
   lock = self->_lock;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __273__CPLStatus_setHasCellularBudget_hasBatteryBudget_hasLowBatteryLevel_isConstrainedNetwork_isBlockedByLowPowerMode_hasHeavyResourceUsage_hasPoorNetworkQuality_hasModerateThermalPressure_hasThermalPressure_hasPoorSystemConditions_isBudgetValid_blockedReason_unBlockedReason___block_invoke;
   block[3] = &unk_1E861C308;
-  v17 = a13;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
+  validCopy = valid;
+  budgetCopy = budget;
+  batteryBudgetCopy = batteryBudget;
+  levelCopy = level;
+  networkCopy = network;
+  modeCopy = mode;
+  usageCopy = usage;
+  qualityCopy = quality;
+  pressureCopy = pressure;
+  thermalPressureCopy = thermalPressure;
+  conditionsCopy = conditions;
   block[4] = self;
-  block[5] = a14;
-  block[6] = a15;
+  block[5] = reason;
+  block[6] = blockedReason;
   dispatch_sync(lock, block);
 }
 
@@ -1612,18 +1612,18 @@ LABEL_27:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   lock = self->_lock;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __25__CPLStatus_setDelegate___block_invoke;
   block[3] = &unk_1E861B128;
   block[4] = self;
-  v9 = v5;
+  v9 = delegateCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = delegateCopy;
   dispatch_sync(lock, block);
 }
 
@@ -1790,9 +1790,9 @@ void __29__CPLStatus__statusDidChange__block_invoke_2(uint64_t a1)
   v3 = v10[5];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     v5 = v10[5];
-    v10[5] = v4;
+    v10[5] = distantPast;
 
     v3 = v10[5];
   }
@@ -1814,9 +1814,9 @@ uint64_t __48__CPLStatus_cloudAssetCountPerTypeLastCheckDate__block_invoke(uint6
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setCloudAssetCountPerType:(id)a3 updateCheckDate:(BOOL)a4
+- (void)setCloudAssetCountPerType:(id)type updateCheckDate:(BOOL)date
 {
-  v6 = [a3 copy];
+  v6 = [type copy];
   lock = self->_lock;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1824,7 +1824,7 @@ uint64_t __48__CPLStatus_cloudAssetCountPerTypeLastCheckDate__block_invoke(uint6
   block[3] = &unk_1E861F360;
   block[4] = self;
   v10 = v6;
-  v11 = a4;
+  dateCopy = date;
   v8 = v6;
   dispatch_sync(lock, block);
 }
@@ -1906,7 +1906,7 @@ uint64_t __35__CPLStatus_cloudAssetCountPerType__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setServerFeatureCompatibleVersion:(int64_t)a3
+- (void)setServerFeatureCompatibleVersion:(int64_t)version
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1914,7 +1914,7 @@ uint64_t __35__CPLStatus_cloudAssetCountPerType__block_invoke(uint64_t a1)
   v4[2] = __47__CPLStatus_setServerFeatureCompatibleVersion___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = version;
   dispatch_sync(lock, v4);
 }
 
@@ -1950,8 +1950,8 @@ void __47__CPLStatus_setServerFeatureCompatibleVersion___block_invoke(uint64_t a
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 integerForKey:@"CPLSimulatedServerFeatureCompatibleVersion"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults integerForKey:@"CPLSimulatedServerFeatureCompatibleVersion"];
 
   v12 = v4;
   v5 = v10[3];
@@ -1979,7 +1979,7 @@ void __43__CPLStatus_serverFeatureCompatibleVersion__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 integerValue];
 }
 
-- (void)setUpgradeSuggestedToAccessAllPhotos:(BOOL)a3
+- (void)setUpgradeSuggestedToAccessAllPhotos:(BOOL)photos
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1987,7 +1987,7 @@ void __43__CPLStatus_serverFeatureCompatibleVersion__block_invoke(uint64_t a1)
   v4[2] = __50__CPLStatus_setUpgradeSuggestedToAccessAllPhotos___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  photosCopy = photos;
   dispatch_sync(lock, v4);
 }
 
@@ -2052,7 +2052,7 @@ void __48__CPLStatus_isUpgradeSuggestedToAccessAllPhotos__block_invoke(uint64_t 
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setKeychainCDPEnabled:(BOOL)a3
+- (void)setKeychainCDPEnabled:(BOOL)enabled
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2060,7 +2060,7 @@ void __48__CPLStatus_isUpgradeSuggestedToAccessAllPhotos__block_invoke(uint64_t 
   v4[2] = __35__CPLStatus_setKeychainCDPEnabled___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(lock, v4);
 }
 
@@ -2114,7 +2114,7 @@ void __33__CPLStatus_isKeychainCDPEnabled__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setWalrusEnabled:(BOOL)a3
+- (void)setWalrusEnabled:(BOOL)enabled
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2122,7 +2122,7 @@ void __33__CPLStatus_isKeychainCDPEnabled__block_invoke(uint64_t a1)
   v4[2] = __30__CPLStatus_setWalrusEnabled___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(lock, v4);
 }
 
@@ -2170,7 +2170,7 @@ void __28__CPLStatus_isWalrusEnabled__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setIsStuckInExitForSharedLibrary:(BOOL)a3
+- (void)setIsStuckInExitForSharedLibrary:(BOOL)library
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2178,7 +2178,7 @@ void __28__CPLStatus_isWalrusEnabled__block_invoke(uint64_t a1)
   v4[2] = __46__CPLStatus_setIsStuckInExitForSharedLibrary___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  libraryCopy = library;
   dispatch_sync(lock, v4);
 }
 
@@ -2226,7 +2226,7 @@ void __42__CPLStatus_isStuckInExitForSharedLibrary__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setICloudLibraryClientIsNotAuthenticated:(BOOL)a3
+- (void)setICloudLibraryClientIsNotAuthenticated:(BOOL)authenticated
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2234,7 +2234,7 @@ void __42__CPLStatus_isStuckInExitForSharedLibrary__block_invoke(uint64_t a1)
   v4[2] = __54__CPLStatus_setICloudLibraryClientIsNotAuthenticated___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  authenticatedCopy = authenticated;
   dispatch_sync(lock, v4);
 }
 
@@ -2282,7 +2282,7 @@ void __50__CPLStatus_iCloudLibraryClientIsNotAuthenticated__block_invoke(uint64_
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setICloudLibraryClientVersionTooOld:(BOOL)a3
+- (void)setICloudLibraryClientVersionTooOld:(BOOL)old
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2290,7 +2290,7 @@ void __50__CPLStatus_iCloudLibraryClientIsNotAuthenticated__block_invoke(uint64_
   v4[2] = __49__CPLStatus_setICloudLibraryClientVersionTooOld___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  oldCopy = old;
   dispatch_sync(lock, v4);
 }
 
@@ -2338,7 +2338,7 @@ void __45__CPLStatus_iCloudLibraryClientVersionTooOld__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setContainerHasBeenWiped:(BOOL)a3
+- (void)setContainerHasBeenWiped:(BOOL)wiped
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2346,7 +2346,7 @@ void __45__CPLStatus_iCloudLibraryClientVersionTooOld__block_invoke(uint64_t a1)
   v4[2] = __38__CPLStatus_setContainerHasBeenWiped___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  wipedCopy = wiped;
   dispatch_sync(lock, v4);
 }
 
@@ -2394,7 +2394,7 @@ void __34__CPLStatus_containerHasBeenWiped__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setICloudLibraryExists:(BOOL)a3
+- (void)setICloudLibraryExists:(BOOL)exists
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2402,7 +2402,7 @@ void __34__CPLStatus_containerHasBeenWiped__block_invoke(uint64_t a1)
   v4[2] = __36__CPLStatus_setICloudLibraryExists___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  existsCopy = exists;
   dispatch_sync(lock, v4);
 }
 
@@ -2450,7 +2450,7 @@ void __32__CPLStatus_iCloudLibraryExists__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setICloudLibraryHasBeenWiped:(BOOL)a3
+- (void)setICloudLibraryHasBeenWiped:(BOOL)wiped
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2458,7 +2458,7 @@ void __32__CPLStatus_iCloudLibraryExists__block_invoke(uint64_t a1)
   v4[2] = __42__CPLStatus_setICloudLibraryHasBeenWiped___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  wipedCopy = wiped;
   dispatch_sync(lock, v4);
 }
 
@@ -2506,17 +2506,17 @@ void __38__CPLStatus_iCloudLibraryHasBeenWiped__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setExitDeleteTime:(id)a3
+- (void)setExitDeleteTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__CPLStatus_setExitDeleteTime___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeCopy;
+  v6 = timeCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -2590,7 +2590,7 @@ uint64_t __27__CPLStatus_exitDeleteTime__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setBusyState:(int64_t)a3
+- (void)setBusyState:(int64_t)state
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2598,7 +2598,7 @@ uint64_t __27__CPLStatus_exitDeleteTime__block_invoke(uint64_t a1)
   v4[2] = __26__CPLStatus_setBusyState___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_sync(lock, v4);
 }
 
@@ -2677,7 +2677,7 @@ void __22__CPLStatus_busyState__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 integerValue];
 }
 
-- (void)setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit:(unint64_t)a3
+- (void)setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit:(unint64_t)exit
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2685,7 +2685,7 @@ void __22__CPLStatus_busyState__block_invoke(uint64_t a1)
   v4[2] = __72__CPLStatus_setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = exit;
   dispatch_sync(lock, v4);
 }
 
@@ -2764,7 +2764,7 @@ void __68__CPLStatus_estimatedCountOfRemainingRecordsDuringSharedLibraryExit__bl
   *(*(*(a1 + 40) + 8) + 24) = [v2 unsignedIntegerValue];
 }
 
-- (void)setIsExceedingSharedLibraryQuota:(BOOL)a3
+- (void)setIsExceedingSharedLibraryQuota:(BOOL)quota
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2772,7 +2772,7 @@ void __68__CPLStatus_estimatedCountOfRemainingRecordsDuringSharedLibraryExit__bl
   v4[2] = __46__CPLStatus_setIsExceedingSharedLibraryQuota___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  quotaCopy = quota;
   dispatch_sync(lock, v4);
 }
 
@@ -2820,7 +2820,7 @@ void __42__CPLStatus_isExceedingSharedLibraryQuota__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setIsExceedingQuota:(BOOL)a3
+- (void)setIsExceedingQuota:(BOOL)quota
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2828,7 +2828,7 @@ void __42__CPLStatus_isExceedingSharedLibraryQuota__block_invoke(uint64_t a1)
   v4[2] = __33__CPLStatus_setIsExceedingQuota___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  quotaCopy = quota;
   dispatch_sync(lock, v4);
 }
 
@@ -2876,7 +2876,7 @@ void __29__CPLStatus_isExceedingQuota__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (void)setHasChangesToProcess:(BOOL)a3
+- (void)setHasChangesToProcess:(BOOL)process
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2884,7 +2884,7 @@ void __29__CPLStatus_isExceedingQuota__block_invoke(uint64_t a1)
   v4[2] = __36__CPLStatus_setHasChangesToProcess___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  processCopy = process;
   dispatch_sync(lock, v4);
 }
 
@@ -2914,17 +2914,17 @@ void __36__CPLStatus_setHasChangesToProcess___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setInitialDownloadDate:(id)a3
+- (void)setInitialDownloadDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CPLStatus_setInitialDownloadDate___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -2978,17 +2978,17 @@ void __32__CPLStatus_initialDownloadDate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setInitialSyncDate:(id)a3
+- (void)setInitialSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__CPLStatus_setInitialSyncDate___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -3102,17 +3102,17 @@ void __39__CPLStatus_hasFinishedInitialDownload__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (void)setLastPruneDate:(id)a3
+- (void)setLastPruneDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CPLStatus_setLastPruneDate___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -3158,17 +3158,17 @@ uint64_t __26__CPLStatus_lastPruneDate__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setLastCompletePrefetchDate:(id)a3
+- (void)setLastCompletePrefetchDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CPLStatus_setLastCompletePrefetchDate___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -3214,17 +3214,17 @@ uint64_t __37__CPLStatus_lastCompletePrefetchDate__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setLastSuccessfulSyncDate:(id)a3
+- (void)setLastSuccessfulSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CPLStatus_setLastSuccessfulSyncDate___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -3455,14 +3455,14 @@ LABEL_31:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_deleteInitialSyncMarkerWithError:(id *)a3
+- (BOOL)_deleteInitialSyncMarkerWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(NSURL *)self->_statusFileURL URLByDeletingLastPathComponent];
-  v5 = [v4 URLByAppendingPathComponent:@"initialsync_marker"];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_statusFileURL URLByDeletingLastPathComponent];
+  v5 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"initialsync_marker"];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 cplFileExistsAtURL:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager cplFileExistsAtURL:v5];
 
   if (v7)
   {
@@ -3471,15 +3471,15 @@ LABEL_31:
       v8 = __CPLStatusOSLogDomain();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v5 path];
+        path = [v5 path];
         v14 = 138412290;
-        v15 = v9;
+        v15 = path;
         _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Removing initial sync marker at %@", &v14, 0xCu);
       }
     }
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 removeItemAtURL:v5 error:a3];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager2 removeItemAtURL:v5 error:error];
   }
 
   else
@@ -3491,7 +3491,7 @@ LABEL_31:
   return v11;
 }
 
-- (BOOL)writeInitialSyncMarker:(id *)a3
+- (BOOL)writeInitialSyncMarker:(id *)marker
 {
   v14 = 0;
   v15 = &v14;
@@ -3513,9 +3513,9 @@ LABEL_31:
   block[6] = &v8;
   dispatch_sync(lock, block);
   v5 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (marker && (v15[3] & 1) == 0)
   {
-    *a3 = v9[5];
+    *marker = v9[5];
     v5 = *(v15 + 24);
   }
 
@@ -3540,10 +3540,10 @@ void __36__CPLStatus_writeInitialSyncMarker___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_writeInitialSyncMarkerForDate:(id)a3 error:(id *)a4
+- (BOOL)_writeInitialSyncMarkerForDate:(id)date error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v7 = [(NSMutableDictionary *)self->_status objectForKeyedSubscript:@"exitDeleteTime"];
   if (v7)
   {
@@ -3563,11 +3563,11 @@ void __36__CPLStatus_writeInitialSyncMarker___block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [(NSURL *)self->_statusFileURL URLByDeletingLastPathComponent];
-    v8 = [v9 URLByAppendingPathComponent:@"initialsync_marker"];
+    uRLByDeletingLastPathComponent = [(NSURL *)self->_statusFileURL URLByDeletingLastPathComponent];
+    v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"initialsync_marker"];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 cplFileExistsAtURL:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager cplFileExistsAtURL:v8];
 
     if ((v11 & 1) == 0)
     {
@@ -3576,9 +3576,9 @@ void __36__CPLStatus_writeInitialSyncMarker___block_invoke(uint64_t a1)
         v15 = __CPLStatusOSLogDomain();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v8 path];
+          path = [v8 path];
           *buf = 138412290;
-          v26 = v16;
+          v26 = path;
           _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_DEFAULT, "Writing initial sync marker at %@", buf, 0xCu);
         }
       }
@@ -3588,7 +3588,7 @@ void __36__CPLStatus_writeInitialSyncMarker___block_invoke(uint64_t a1)
       v18 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
       [v17 setLocale:v18];
 
-      v19 = [v17 stringFromDate:v6];
+      v19 = [v17 stringFromDate:dateCopy];
       v24 = 0;
       v12 = [v19 writeToURL:v8 atomically:1 encoding:4 error:&v24];
       v20 = v24;
@@ -3600,19 +3600,19 @@ void __36__CPLStatus_writeInitialSyncMarker___block_invoke(uint64_t a1)
           v21 = __CPLStatusOSLogDomain();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v8 path];
+            path2 = [v8 path];
             *buf = 138412546;
-            v26 = v22;
+            v26 = path2;
             v27 = 2112;
             v28 = v20;
             _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_ERROR, "Failed to write initial sync marker at %@: %@", buf, 0x16u);
           }
         }
 
-        if (a4)
+        if (error)
         {
           v23 = v20;
-          *a4 = v20;
+          *error = v20;
         }
       }
 
@@ -3642,19 +3642,19 @@ LABEL_8:
         v5 = __CPLStatusOSLogDomain();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [(CPLStatus *)self _statusClient];
-          v7 = [(NSMutableSet *)self->_changedKeys allObjects];
-          v8 = [v7 componentsJoinedByString:{@", "}];
-          v9 = [(NSURL *)self->_statusFileURL path];
+          _statusClient = [(CPLStatus *)self _statusClient];
+          allObjects = [(NSMutableSet *)self->_changedKeys allObjects];
+          v8 = [allObjects componentsJoinedByString:{@", "}];
+          path = [(NSURL *)self->_statusFileURL path];
           v10 = self->_status;
           *buf = 138413314;
-          v20 = v6;
+          v20 = _statusClient;
           v21 = 2048;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2114;
           v24 = v8;
           v25 = 2112;
-          v26 = v9;
+          v26 = path;
           v27 = 2112;
           v28 = v10;
           _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "%@ saving CPLStatus %p (changed keys: %{public}@) to %@: %@", buf, 0x34u);
@@ -3676,7 +3676,7 @@ LABEL_8:
           *buf = 134218498;
           v20 = v15;
           v21 = 2112;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2112;
           v24 = v13;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_ERROR, "Failed to save CPLStatus %p to %@: %@", buf, 0x20u);
@@ -3708,15 +3708,15 @@ LABEL_8:
 
     if (WeakRetained)
     {
-      v5 = objc_loadWeakRetained(&self->_delegate);
+      processInfo = objc_loadWeakRetained(&self->_delegate);
       v6 = objc_opt_class();
       NSStringFromClass(v6);
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AE30] processInfo];
-      [v5 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      [processInfo processName];
     }
     v2 = ;
   }
@@ -3724,21 +3724,21 @@ LABEL_8:
   return v2;
 }
 
-- (void)_setObjectInStatus:(id)a3 forKey:(id)a4
+- (void)_setObjectInStatus:(id)status forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_status objectForKeyedSubscript:v6];
+  statusCopy = status;
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_status objectForKeyedSubscript:keyCopy];
   v8 = v7;
-  if (v13 && v7)
+  if (statusCopy && v7)
   {
-    if ([v7 isEqual:v13])
+    if ([v7 isEqual:statusCopy])
     {
       goto LABEL_11;
     }
   }
 
-  else if (!(v13 | v7))
+  else if (!(statusCopy | v7))
   {
     goto LABEL_11;
   }
@@ -3753,24 +3753,24 @@ LABEL_8:
     changedKeys = self->_changedKeys;
   }
 
-  [(NSMutableSet *)changedKeys addObject:v6];
+  [(NSMutableSet *)changedKeys addObject:keyCopy];
   status = self->_status;
-  if (v13)
+  if (statusCopy)
   {
-    [(NSMutableDictionary *)status setObject:v13 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)status setObject:statusCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)status removeObjectForKey:v6];
+    [(NSMutableDictionary *)status removeObjectForKey:keyCopy];
   }
 
 LABEL_11:
 }
 
-- (CPLStatus)initWithClientLibraryBaseURLForCPLEngine:(id)a3
+- (CPLStatus)initWithClientLibraryBaseURLForCPLEngine:(id)engine
 {
-  result = [(CPLStatus *)self initWithClientLibraryBaseURL:a3];
+  result = [(CPLStatus *)self initWithClientLibraryBaseURL:engine];
   if (result)
   {
     result->_forCPL = 1;
@@ -3779,15 +3779,15 @@ LABEL_11:
   return result;
 }
 
-- (CPLStatus)initWithClientLibraryBaseURL:(id)a3
+- (CPLStatus)initWithClientLibraryBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = CPLStatus;
   v5 = [(CPLStatus *)&v11 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"syncstatus.plist"];
+    v6 = [lCopy URLByAppendingPathComponent:@"syncstatus.plist"];
     statusFileURL = v5->_statusFileURL;
     v5->_statusFileURL = v6;
 
@@ -3799,19 +3799,19 @@ LABEL_11:
   return v5;
 }
 
-+ (id)descriptionForAccountEPPCapability:(int64_t)a3
++ (id)descriptionForAccountEPPCapability:(int64_t)capability
 {
-  if (a3 >= 4)
+  if (capability >= 4)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", a3];
+    capability = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", capability];
   }
 
   else
   {
-    v3 = off_1E861C378[a3];
+    capability = off_1E861C378[capability];
   }
 
-  return v3;
+  return capability;
 }
 
 @end

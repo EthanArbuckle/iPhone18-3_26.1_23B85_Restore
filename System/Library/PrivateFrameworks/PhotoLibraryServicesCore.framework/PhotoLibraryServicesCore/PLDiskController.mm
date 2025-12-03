@@ -1,17 +1,17 @@
 @interface PLDiskController
-+ (BOOL)freeSpaceBelowDesiredSpaceThresholdForPath:(id)a3;
-+ (id)mountPointForPath:(id)a3;
-+ (int64_t)diskSpaceAvailableForPath:(id)a3;
++ (BOOL)freeSpaceBelowDesiredSpaceThresholdForPath:(id)path;
++ (id)mountPointForPath:(id)path;
++ (int64_t)diskSpaceAvailableForPath:(id)path;
 + (int64_t)diskSpaceAvailableForUse;
-+ (int64_t)fileSystemSizeForPath:(id)a3;
++ (int64_t)fileSystemSizeForPath:(id)path;
 + (int64_t)freeDiskSpaceThreshold;
 @end
 
 @implementation PLDiskController
 
-+ (BOOL)freeSpaceBelowDesiredSpaceThresholdForPath:(id)a3
++ (BOOL)freeSpaceBelowDesiredSpaceThresholdForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -33,13 +33,13 @@
 
   else
   {
-    v6 = [a1 mountPointForPath:v4];
+    v6 = [self mountPointForPath:pathCopy];
     if (v6)
     {
       v7 = [freeSpaceBelowDesiredSpaceThresholdForPath__mountPointToThreshold objectForKeyedSubscript:v6];
       if (v7 || (v11 = -[PLVolumeInfo initWithMountPoint:]([PLVolumeInfo alloc], "initWithMountPoint:", v6), (v12 = v11) != 0) && ([MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLVolumeInfo desiredDiskThreshold](v11, "desiredDiskThreshold")}], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(freeSpaceBelowDesiredSpaceThresholdForPath__mountPointToThreshold, "setObject:forKeyedSubscript:", v7, v6), v12, v7))
       {
-        v8 = [a1 diskSpaceAvailableForPath:v4];
+        v8 = [self diskSpaceAvailableForPath:pathCopy];
         v9 = v8 < [v7 longLongValue];
         *(v15 + 24) = v9;
       }
@@ -61,12 +61,12 @@ uint64_t __63__PLDiskController_freeSpaceBelowDesiredSpaceThresholdForPath___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)mountPointForPath:(id)a3
++ (id)mountPointForPath:(id)path
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (!pathCopy)
   {
     v13 = PLBackendGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([v4 hasPrefix:@"/"] & 1) == 0)
+  if (([pathCopy hasPrefix:@"/"] & 1) == 0)
   {
     v13 = PLBackendGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -105,12 +105,12 @@ LABEL_12:
   {
     if (v26.f_mntonname[0])
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v26.f_mntonname];
+      path = [MEMORY[0x1E696AEC0] stringWithUTF8String:v26.f_mntonname];
       goto LABEL_27;
     }
 
 LABEL_13:
-    v12 = 0;
+    path = 0;
     goto LABEL_27;
   }
 
@@ -124,10 +124,10 @@ LABEL_13:
   v11 = v10;
   if (!v8 || v10)
   {
-    v17 = [v5 stringByDeletingLastPathComponent];
-    while (([v17 isEqualToString:&stru_1F1F75560] & 1) == 0)
+    stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
+    while (([stringByDeletingLastPathComponent isEqualToString:&stru_1F1F75560] & 1) == 0)
     {
-      if ([v17 isEqualToString:@"/Volumes"])
+      if ([stringByDeletingLastPathComponent isEqualToString:@"/Volumes"])
       {
         v19 = PLBackendGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -140,21 +140,21 @@ LABEL_13:
         break;
       }
 
-      v18 = [a1 mountPointForPath:v17];
+      v18 = [self mountPointForPath:stringByDeletingLastPathComponent];
       if (v18)
       {
-        v12 = v18;
+        path = v18;
         goto LABEL_25;
       }
     }
 
-    v12 = 0;
+    path = 0;
 LABEL_25:
   }
 
   else
   {
-    v12 = [v9 path];
+    path = [v9 path];
   }
 
 LABEL_27:
@@ -164,28 +164,28 @@ LABEL_27:
     v26.f_bsize = 138412546;
     *&v26.f_iosize = v5;
     WORD2(v26.f_blocks) = 2112;
-    *(&v26.f_blocks + 6) = v12;
+    *(&v26.f_blocks + 6) = path;
     _os_log_impl(&dword_1AA9BD000, v20, OS_LOG_TYPE_DEFAULT, "Mount point for %@: %@", &v26, 0x16u);
   }
 
-  return v12;
+  return path;
 }
 
-+ (int64_t)fileSystemSizeForPath:(id)a3
++ (int64_t)fileSystemSizeForPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [a1 mountPointForPath:a3];
+  v3 = [self mountPointForPath:path];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v10 = 0;
-    v5 = [v4 attributesOfFileSystemForPath:v3 error:&v10];
+    v5 = [defaultManager attributesOfFileSystemForPath:v3 error:&v10];
     v6 = v10;
 
     if (v5)
     {
       v7 = [v5 objectForKey:*MEMORY[0x1E696A3D0]];
-      v8 = [v7 unsignedLongLongValue];
+      unsignedLongLongValue = [v7 unsignedLongLongValue];
     }
 
     else
@@ -200,7 +200,7 @@ LABEL_27:
         _os_log_impl(&dword_1AA9BD000, v7, OS_LOG_TYPE_ERROR, "Unable to get file system attributes for %@: %@", buf, 0x16u);
       }
 
-      v8 = -1;
+      unsignedLongLongValue = -1;
     }
   }
 
@@ -213,37 +213,37 @@ LABEL_27:
       _os_log_impl(&dword_1AA9BD000, v6, OS_LOG_TYPE_ERROR, "Missing path to get free space", buf, 2u);
     }
 
-    v8 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v8;
+  return unsignedLongLongValue;
 }
 
-+ (int64_t)diskSpaceAvailableForPath:(id)a3
++ (int64_t)diskSpaceAvailableForPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v14 = 0;
-    v6 = [v5 attributesOfFileSystemForPath:v4 error:&v14];
+    v6 = [defaultManager attributesOfFileSystemForPath:pathCopy error:&v14];
     v7 = v14;
 
     if (v6)
     {
       v8 = [v6 objectForKey:*MEMORY[0x1E696A3C0]];
-      v9 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-      v10 = [a1 freeDiskSpaceThreshold];
-      if (v9 <= v10)
+      freeDiskSpaceThreshold = [self freeDiskSpaceThreshold];
+      if (unsignedLongLongValue <= freeDiskSpaceThreshold)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = v9 - v10;
+        v11 = unsignedLongLongValue - freeDiskSpaceThreshold;
       }
     }
 
@@ -253,7 +253,7 @@ LABEL_27:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v4;
+        v16 = pathCopy;
         v17 = 2112;
         v18 = v7;
         _os_log_impl(&dword_1AA9BD000, v12, OS_LOG_TYPE_ERROR, "Unable to get file system attributes for %@: %@", buf, 0x16u);
@@ -281,7 +281,7 @@ LABEL_27:
 + (int64_t)diskSpaceAvailableForUse
 {
   v3 = NSHomeDirectory();
-  v4 = [a1 diskSpaceAvailableForPath:v3];
+  v4 = [self diskSpaceAvailableForPath:v3];
 
   return v4;
 }

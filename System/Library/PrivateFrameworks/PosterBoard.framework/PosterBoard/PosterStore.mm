@@ -1,9 +1,9 @@
 @interface PosterStore
 - (_TtC11PosterBoard11PosterStore)init;
 - (void)dataStoreDidTearDown;
-- (void)posterExtensionDataStore:(id)a3 didAddConfiguration:(id)a4;
-- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4;
-- (void)posterExtensionDataStore:(id)a3 posterConfiguration:(id)a4 didUpdateAssociatedHomeScreenPosterConfigurationTo:(id)a5;
+- (void)posterExtensionDataStore:(id)store didAddConfiguration:(id)configuration;
+- (void)posterExtensionDataStore:(id)store didUpdateGalleryConfiguration:(id)configuration;
+- (void)posterExtensionDataStore:(id)store posterConfiguration:(id)configuration didUpdateAssociatedHomeScreenPosterConfigurationTo:(id)to;
 @end
 
 @implementation PosterStore
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4
+- (void)posterExtensionDataStore:(id)store didUpdateGalleryConfiguration:(id)configuration
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
-  *(v6 + 24) = a4;
+  *(v6 + 24) = configuration;
   v7 = swift_allocObject();
   v7[2] = self;
   v7[3] = sub_21B62A904;
@@ -35,21 +35,21 @@
   v13[2] = sub_21B63863C;
   v13[3] = &block_descriptor_215;
   v8 = _Block_copy(v13);
-  v9 = self;
-  v10 = a4;
-  v11 = v9;
-  v12 = v10;
+  selfCopy = self;
+  configurationCopy = configuration;
+  v11 = selfCopy;
+  v12 = configurationCopy;
 
   BSDispatchMain();
 
   _Block_release(v8);
 }
 
-- (void)posterExtensionDataStore:(id)a3 didAddConfiguration:(id)a4
+- (void)posterExtensionDataStore:(id)store didAddConfiguration:(id)configuration
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
-  *(v6 + 24) = a4;
+  *(v6 + 24) = configuration;
   v11[4] = sub_21B62AB54;
   v11[5] = v6;
   v11[0] = MEMORY[0x277D85DD0];
@@ -57,20 +57,20 @@
   v11[2] = sub_21B63863C;
   v11[3] = &block_descriptor_205;
   v7 = _Block_copy(v11);
-  v8 = a4;
-  v9 = self;
-  v10 = v8;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v10 = configurationCopy;
 
   BSDispatchMain();
 
   _Block_release(v7);
 }
 
-- (void)posterExtensionDataStore:(id)a3 posterConfiguration:(id)a4 didUpdateAssociatedHomeScreenPosterConfigurationTo:(id)a5
+- (void)posterExtensionDataStore:(id)store posterConfiguration:(id)configuration didUpdateAssociatedHomeScreenPosterConfigurationTo:(id)to
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a4;
+  *(v7 + 24) = configuration;
   v12[4] = sub_21B62A8E0;
   v12[5] = v7;
   v12[0] = MEMORY[0x277D85DD0];
@@ -78,9 +78,9 @@
   v12[2] = sub_21B63863C;
   v12[3] = &block_descriptor_181;
   v8 = _Block_copy(v12);
-  v9 = a4;
-  v10 = self;
-  v11 = v9;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v11 = configurationCopy;
 
   BSDispatchMain();
 
@@ -98,7 +98,7 @@
   v6[2] = sub_21B63863C;
   v6[3] = &block_descriptor_147;
   v4 = _Block_copy(v6);
-  v5 = self;
+  selfCopy = self;
 
   BSDispatchMain();
 

@@ -3,16 +3,16 @@
 + (NSDictionary)accNavParameterKeysIndexed;
 + (NSDictionary)accNavParametersIndexed;
 - (CPRouteGuidance)init;
-- (CPRouteGuidance)initWithCoder:(id)a3;
-- (CPRouteGuidance)routeGuidanceWithComponent:(id)a3;
+- (CPRouteGuidance)initWithCoder:(id)coder;
+- (CPRouteGuidance)routeGuidanceWithComponent:(id)component;
 - (CPTravelEstimates)maneuverTravelEstimates;
 - (CPTravelEstimates)tripTravelEstimates;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentLaneGuidance:(id)a3;
-- (void)setCurrentLaneGuidanceIndex:(unsigned __int16)a3;
-- (void)setCurrentManeuverIndexes:(id)a3;
-- (void)setCurrentManeuvers:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentLaneGuidance:(id)guidance;
+- (void)setCurrentLaneGuidanceIndex:(unsigned __int16)index;
+- (void)setCurrentManeuverIndexes:(id)indexes;
+- (void)setCurrentManeuvers:(id)maneuvers;
 @end
 
 @implementation CPRouteGuidance
@@ -54,60 +54,60 @@
   return v6;
 }
 
-- (CPRouteGuidance)initWithCoder:(id)a3
+- (CPRouteGuidance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPRouteGuidance;
   v5 = [(CPRouteGuidance *)&v8 init];
   if (v5)
   {
-    [CPAccNavUpdate decodeUpdate:v5 withCoder:v4];
-    [v4 decodeDoubleForKey:@"kCPRouteGuidanceTimeRemainingToNextManeuver"];
+    [CPAccNavUpdate decodeUpdate:v5 withCoder:coderCopy];
+    [coderCopy decodeDoubleForKey:@"kCPRouteGuidanceTimeRemainingToNextManeuver"];
     v5->_timeRemainingToNextManeuver = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [CPAccNavUpdate encodeUpdate:self withCoder:v4];
+  coderCopy = coder;
+  [CPAccNavUpdate encodeUpdate:self withCoder:coderCopy];
   [(CPRouteGuidance *)self timeRemainingToNextManeuver];
-  [v4 encodeDouble:@"kCPRouteGuidanceTimeRemainingToNextManeuver" forKey:?];
+  [coderCopy encodeDouble:@"kCPRouteGuidanceTimeRemainingToNextManeuver" forKey:?];
 }
 
-- (void)setCurrentManeuvers:(id)a3
+- (void)setCurrentManeuvers:(id)maneuvers
 {
-  v4 = a3;
-  v5 = [(NSArray *)v4 valueForKey:@"index"];
+  maneuversCopy = maneuvers;
+  v5 = [(NSArray *)maneuversCopy valueForKey:@"index"];
   currentManeuverIndexes = self->_currentManeuverIndexes;
   self->_currentManeuverIndexes = v5;
 
   currentManeuvers = self->_currentManeuvers;
-  self->_currentManeuvers = v4;
+  self->_currentManeuvers = maneuversCopy;
 }
 
-- (void)setCurrentManeuverIndexes:(id)a3
+- (void)setCurrentManeuverIndexes:(id)indexes
 {
-  objc_storeStrong(&self->_currentManeuverIndexes, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_currentManeuverIndexes, indexes);
+  indexesCopy = indexes;
   currentManeuvers = self->_currentManeuvers;
   self->_currentManeuvers = 0;
 }
 
-- (void)setCurrentLaneGuidance:(id)a3
+- (void)setCurrentLaneGuidance:(id)guidance
 {
-  v4 = a3;
-  self->_currentLaneGuidanceIndex = [(CPLaneGuidance *)v4 index];
+  guidanceCopy = guidance;
+  self->_currentLaneGuidanceIndex = [(CPLaneGuidance *)guidanceCopy index];
   currentLaneGuidance = self->_currentLaneGuidance;
-  self->_currentLaneGuidance = v4;
+  self->_currentLaneGuidance = guidanceCopy;
 }
 
-- (void)setCurrentLaneGuidanceIndex:(unsigned __int16)a3
+- (void)setCurrentLaneGuidanceIndex:(unsigned __int16)index
 {
-  self->_currentLaneGuidanceIndex = a3;
+  self->_currentLaneGuidanceIndex = index;
   currentLaneGuidance = self->_currentLaneGuidance;
   self->_currentLaneGuidance = 0;
   MEMORY[0x2821F96F8]();
@@ -116,10 +116,10 @@
 - (CPTravelEstimates)maneuverTravelEstimates
 {
   v3 = [CPTravelEstimates alloc];
-  v4 = [(CPRouteGuidance *)self distanceRemainingToNextManeuver];
-  v5 = [(CPRouteGuidance *)self distanceRemainingToNextManeuverDisplay];
+  distanceRemainingToNextManeuver = [(CPRouteGuidance *)self distanceRemainingToNextManeuver];
+  distanceRemainingToNextManeuverDisplay = [(CPRouteGuidance *)self distanceRemainingToNextManeuverDisplay];
   [(CPRouteGuidance *)self timeRemainingToNextManeuver];
-  v6 = [(CPTravelEstimates *)v3 initWithDistanceRemaining:v4 distanceRemainingToDisplay:v5 timeRemaining:?];
+  v6 = [(CPTravelEstimates *)v3 initWithDistanceRemaining:distanceRemainingToNextManeuver distanceRemainingToDisplay:distanceRemainingToNextManeuverDisplay timeRemaining:?];
 
   return v6;
 }
@@ -127,10 +127,10 @@
 - (CPTravelEstimates)tripTravelEstimates
 {
   v3 = [CPTravelEstimates alloc];
-  v4 = [(CPRouteGuidance *)self distanceRemaining];
-  v5 = [(CPRouteGuidance *)self distanceRemainingDisplay];
+  distanceRemaining = [(CPRouteGuidance *)self distanceRemaining];
+  distanceRemainingDisplay = [(CPRouteGuidance *)self distanceRemainingDisplay];
   [(CPRouteGuidance *)self timeRemaining];
-  v6 = [(CPTravelEstimates *)v3 initWithDistanceRemaining:v4 distanceRemainingToDisplay:v5 timeRemaining:?];
+  v6 = [(CPTravelEstimates *)v3 initWithDistanceRemaining:distanceRemaining distanceRemainingToDisplay:distanceRemainingDisplay timeRemaining:?];
 
   return v6;
 }
@@ -323,7 +323,7 @@ void __51__CPRouteGuidance_CPAccNavUpdate__accNavParameters__block_invoke()
   block[1] = 3221225472;
   block[2] = __58__CPRouteGuidance_CPAccNavUpdate__accNavParametersIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParametersIndexed_onceToken_2 != -1)
   {
     dispatch_once(&accNavParametersIndexed_onceToken_2, block);
@@ -349,7 +349,7 @@ uint64_t __58__CPRouteGuidance_CPAccNavUpdate__accNavParametersIndexed__block_in
   block[1] = 3221225472;
   block[2] = __61__CPRouteGuidance_CPAccNavUpdate__accNavParameterKeysIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParameterKeysIndexed_onceToken_2 != -1)
   {
     dispatch_once(&accNavParameterKeysIndexed_onceToken_2, block);
@@ -369,15 +369,15 @@ uint64_t __61__CPRouteGuidance_CPAccNavUpdate__accNavParameterKeysIndexed__block
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (CPRouteGuidance)routeGuidanceWithComponent:(id)a3
+- (CPRouteGuidance)routeGuidanceWithComponent:(id)component
 {
   v4 = MEMORY[0x277CE82F8];
-  v5 = a3;
+  componentCopy = component;
   v6 = [v4 alloc];
-  v7 = [v5 component];
-  v8 = [v6 initWithRouteGuidance:self component:v7];
+  component = [componentCopy component];
+  v8 = [v6 initWithRouteGuidance:self component:component];
 
-  v9 = [objc_alloc(MEMORY[0x277CF8AA0]) initWithComponent:v5 accNavInfo:v8];
+  v9 = [objc_alloc(MEMORY[0x277CF8AA0]) initWithComponent:componentCopy accNavInfo:v8];
 
   return v9;
 }

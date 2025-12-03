@@ -1,16 +1,16 @@
 @interface PXStoryDefaultMovieHighlightsProducerFactory
-- (id)movieHighlightsProducerWithConfiguration:(id)a3;
+- (id)movieHighlightsProducerWithConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultMovieHighlightsProducerFactory
 
-- (id)movieHighlightsProducerWithConfiguration:(id)a3
+- (id)movieHighlightsProducerWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[PXStorySettings sharedInstance];
   if ([v4 wantsMovieHighlights])
   {
-    v5 = [[PXStoryMediaAnalysisMovieHighlightsProducer alloc] initWithStoryConfiguration:v3];
+    v5 = [[PXStoryMediaAnalysisMovieHighlightsProducer alloc] initWithStoryConfiguration:configurationCopy];
   }
 
   else

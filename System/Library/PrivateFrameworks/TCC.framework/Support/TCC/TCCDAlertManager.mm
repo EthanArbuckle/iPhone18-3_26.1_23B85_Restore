@@ -1,19 +1,19 @@
 @interface TCCDAlertManager
-- (TCCDAlertManager)initWithAlerts:(id)a3;
-- (void)displayAlertForCondition:(int64_t)a3 withCustomUserInfo:(id)a4;
+- (TCCDAlertManager)initWithAlerts:(id)alerts;
+- (void)displayAlertForCondition:(int64_t)condition withCustomUserInfo:(id)info;
 @end
 
 @implementation TCCDAlertManager
 
-- (TCCDAlertManager)initWithAlerts:(id)a3
+- (TCCDAlertManager)initWithAlerts:(id)alerts
 {
-  v4 = a3;
+  alertsCopy = alerts;
   v11.receiver = self;
   v11.super_class = TCCDAlertManager;
   v5 = [(TCCDAlertManager *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [alertsCopy copy];
     alerts = v5->_alerts;
     v5->_alerts = v6;
 
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (void)displayAlertForCondition:(int64_t)a3 withCustomUserInfo:(id)a4
+- (void)displayAlertForCondition:(int64_t)condition withCustomUserInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(TCCDAlertManager *)self alerts];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  alerts = [(TCCDAlertManager *)self alerts];
+  v8 = [alerts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -44,24 +44,24 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(alerts);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 isDisplayableForCondition:a3])
+        if ([v12 isDisplayableForCondition:condition])
         {
-          v13 = [(TCCDAlertManager *)self displayQueue];
+          displayQueue = [(TCCDAlertManager *)self displayQueue];
           v14[0] = _NSConcreteStackBlock;
           v14[1] = 3221225472;
           v14[2] = sub_10005EA80;
           v14[3] = &unk_1000A50C0;
           v14[4] = v12;
-          v15 = v6;
-          dispatch_sync(v13, v14);
+          v15 = infoCopy;
+          dispatch_sync(displayQueue, v14);
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [alerts countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);

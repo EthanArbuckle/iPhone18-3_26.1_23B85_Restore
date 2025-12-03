@@ -1,31 +1,31 @@
 @interface StoreKitMessagesManager
 + (id)sharedManager;
-- (BOOL)_accountHasMessagesForBundleID:(id)a3 bundleID:(id)a4;
-- (BOOL)addMessage:(id)a3 error:(id *)a4;
-- (BOOL)addMessageStatus:(id)a3 forBundleID:(id)a4 accountID:(id)a5 allowDeveloperControl:(BOOL)a6 messageType:(int64_t)a7 error:(id *)a8;
+- (BOOL)_accountHasMessagesForBundleID:(id)d bundleID:(id)iD;
+- (BOOL)addMessage:(id)message error:(id *)error;
+- (BOOL)addMessageStatus:(id)status forBundleID:(id)d accountID:(id)iD allowDeveloperControl:(BOOL)control messageType:(int64_t)type error:(id *)error;
 - (StoreKitMessagesManager)init;
-- (id)_bundleIDsWithMessagesForAccount:(id)a3;
-- (id)_bundleIDsWithMessagesInBundleIDs:(id)a3 account:(id)a4;
-- (id)_removeStoreKitMessageForAccount:(id)a3 bundleID:(id)a4 type:(int64_t)a5 logKey:(id)a6;
-- (id)_storeKitConnectionForBundleID:(id)a3;
+- (id)_bundleIDsWithMessagesForAccount:(id)account;
+- (id)_bundleIDsWithMessagesInBundleIDs:(id)ds account:(id)account;
+- (id)_removeStoreKitMessageForAccount:(id)account bundleID:(id)d type:(int64_t)type logKey:(id)key;
+- (id)_storeKitConnectionForBundleID:(id)d;
 - (id)databaseStore;
-- (id)messageInfoForClient:(id)a3 messageType:(id)a4;
-- (id)revocationsForClient:(id)a3;
-- (void)_accountDidChange:(id)a3;
-- (void)_displayMessageForProdAccount:(id)a3 bundleID:(id)a4;
+- (id)messageInfoForClient:(id)client messageType:(id)type;
+- (id)revocationsForClient:(id)client;
+- (void)_accountDidChange:(id)change;
+- (void)_displayMessageForProdAccount:(id)account bundleID:(id)d;
 - (void)_handleObservationsForCurrentAccount;
-- (void)_presentEngagementTaskWithURL:(id)a3 client:(id)a4;
-- (void)_recordPotentialMessageWithURL:(id)a3 type:(int64_t)a4 allowsDeveloperControl:(BOOL)a5 client:(id)a6;
-- (void)_showMessage:(id)a3 forClient:(id)a4 messageType:(int64_t)a5 useItmsUI:(BOOL)a6;
-- (void)appDidLaunchWithBundleID:(id)a3;
-- (void)askToShowMessageForClient:(id)a3 message:(id)a4 pendingURL:(id)a5 connection:(id)a6;
-- (void)checkForMessagesForClient:(id)a3 remoteObjectProxy:(id)a4 xpcConnection:(id)a5;
-- (void)displayMessageForMessageInfo:(id)a3 client:(id)a4;
-- (void)displayMessageWithType:(id)a3 forClient:(id)a4 connection:(id)a5;
-- (void)handleAppInstallWithBundleIDs:(id)a3;
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4;
-- (void)recordMessageDisplayEventWithType:(int64_t)a3 messageType:(int64_t)a4 client:(id)a5;
-- (void)revokeProductIdentifiers:(id)a3 forBundleID:(id)a4 accountID:(id)a5;
+- (void)_presentEngagementTaskWithURL:(id)l client:(id)client;
+- (void)_recordPotentialMessageWithURL:(id)l type:(int64_t)type allowsDeveloperControl:(BOOL)control client:(id)client;
+- (void)_showMessage:(id)message forClient:(id)client messageType:(int64_t)type useItmsUI:(BOOL)i;
+- (void)appDidLaunchWithBundleID:(id)d;
+- (void)askToShowMessageForClient:(id)client message:(id)message pendingURL:(id)l connection:(id)connection;
+- (void)checkForMessagesForClient:(id)client remoteObjectProxy:(id)proxy xpcConnection:(id)connection;
+- (void)displayMessageForMessageInfo:(id)info client:(id)client;
+- (void)displayMessageWithType:(id)type forClient:(id)client connection:(id)connection;
+- (void)handleAppInstallWithBundleIDs:(id)ds;
+- (void)pushService:(id)service didReceiveMessage:(id)message;
+- (void)recordMessageDisplayEventWithType:(int64_t)type messageType:(int64_t)messageType client:(id)client;
+- (void)revokeProductIdentifiers:(id)identifiers forBundleID:(id)d accountID:(id)iD;
 @end
 
 @implementation StoreKitMessagesManager
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000644AC;
   block[3] = &unk_10037F9B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003D46A8 != -1)
   {
     dispatch_once(&qword_1003D46A8, block);
@@ -105,42 +105,42 @@
 
 - (id)databaseStore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_databaseStore);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_databaseStore);
   if (!WeakRetained)
   {
     v4 = +[Environment sharedInstance];
-    v5 = [v4 userDatabase];
-    WeakRetained = [(SQLiteDatabaseStore *)[StoreKitMessagesDatabaseStore alloc] initWithDatabase:v5];
-    objc_storeWeak(&v2->_databaseStore, WeakRetained);
+    userDatabase = [v4 userDatabase];
+    WeakRetained = [(SQLiteDatabaseStore *)[StoreKitMessagesDatabaseStore alloc] initWithDatabase:userDatabase];
+    objc_storeWeak(&selfCopy->_databaseStore, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (BOOL)addMessage:(id)a3 error:(id *)a4
+- (BOOL)addMessage:(id)message error:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = sub_100064B48;
   v33 = sub_100064B58;
   v34 = 0;
-  if (v6)
+  if (messageCopy)
   {
-    v7 = [(StoreKitMessagesManager *)self databaseStore];
+    databaseStore = [(StoreKitMessagesManager *)self databaseStore];
     v23 = _NSConcreteStackBlock;
     v24 = 3221225472;
     v25 = sub_100064B60;
     v26 = &unk_100382908;
-    v8 = v6;
+    v8 = messageCopy;
     v27 = v8;
     v28 = &v29;
-    [v7 modifyUsingTransaction:&v23];
+    [databaseStore modifyUsingTransaction:&v23];
 
     if (v30[5])
     {
@@ -153,14 +153,14 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v17 = v30[5];
-        v18 = [v8 userID];
-        v19 = [v8 bundleID];
+        userID = [v8 userID];
+        bundleID = [v8 bundleID];
         *buf = 138543875;
         v36 = v17;
         v37 = 2113;
-        v38 = v18;
+        v38 = userID;
         v39 = 2114;
-        v40 = v19;
+        v40 = bundleID;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Error inserting message info: %{public}@ for DSID: %{private}@, bundle ID: %{public}@", buf, 0x20u);
       }
     }
@@ -177,7 +177,7 @@
   }
 
   v13 = v30;
-  if (a4 && v30[5])
+  if (error && v30[5])
   {
     if (qword_1003D46F8 != -1)
     {
@@ -188,18 +188,18 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v20 = v30[5];
-      v21 = [v6 userID];
-      v22 = [v6 bundleID];
+      userID2 = [messageCopy userID];
+      bundleID2 = [messageCopy bundleID];
       *buf = 138543875;
       v36 = v20;
       v37 = 2113;
-      v38 = v21;
+      v38 = userID2;
       v39 = 2114;
-      v40 = v22;
+      v40 = bundleID2;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Error inserting message info: %{public}@ for DSID: %{private}@, bundle ID: %{public}@", buf, 0x20u);
     }
 
-    *a4 = v30[5];
+    *error = v30[5];
     v13 = v30;
   }
 
@@ -209,34 +209,34 @@
   return v15;
 }
 
-- (BOOL)addMessageStatus:(id)a3 forBundleID:(id)a4 accountID:(id)a5 allowDeveloperControl:(BOOL)a6 messageType:(int64_t)a7 error:(id *)a8
+- (BOOL)addMessageStatus:(id)status forBundleID:(id)d accountID:(id)iD allowDeveloperControl:(BOOL)control messageType:(int64_t)type error:(id *)error
 {
-  v10 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[StoreKitMessageInfo alloc] initWithUserID:v14 bundleID:v15 status:v16 allowDeveloperControl:v10 messageType:a7];
+  controlCopy = control;
+  iDCopy = iD;
+  dCopy = d;
+  statusCopy = status;
+  v17 = [[StoreKitMessageInfo alloc] initWithUserID:iDCopy bundleID:dCopy status:statusCopy allowDeveloperControl:controlCopy messageType:type];
 
-  LOBYTE(a8) = [(StoreKitMessagesManager *)self addMessage:v17 error:a8];
-  return a8;
+  LOBYTE(error) = [(StoreKitMessagesManager *)self addMessage:v17 error:error];
+  return error;
 }
 
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4
+- (void)pushService:(id)service didReceiveMessage:(id)message
 {
-  v31 = a3;
-  v6 = a4;
-  v7 = [v6 accountID];
-  if ([v6 actionType] == 30)
+  serviceCopy = service;
+  messageCopy = message;
+  accountID = [messageCopy accountID];
+  if ([messageCopy actionType] == 30)
   {
-    v8 = [v6 valueForUserInfoKey:@"2"];
+    v8 = [messageCopy valueForUserInfoKey:@"2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 valueForUserInfoKey:@"9"];
+      v9 = [messageCopy valueForUserInfoKey:@"9"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 valueForUserInfoKey:{@"11", v9, v31}];
+        [messageCopy valueForUserInfoKey:{@"11", v9, serviceCopy}];
       }
 
       else
@@ -248,32 +248,32 @@
           [v12 setNumberStyle:1];
           v30 = [v12 numberFromString:v9];
 
-          [v6 valueForUserInfoKey:{@"11", v30, v31}];
+          [messageCopy valueForUserInfoKey:{@"11", v30, serviceCopy}];
         }
 
         else
         {
-          [v6 valueForUserInfoKey:{@"11", &off_1003A14C8, v31}];
+          [messageCopy valueForUserInfoKey:{@"11", &off_1003A14C8, serviceCopy}];
         }
       }
       v14 = ;
 
       if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
       }
 
       else
       {
-        v15 = 1;
+        bOOLValue = 1;
       }
 
-      v16 = [v6 valueForUserInfoKey:@"12"];
+      v16 = [messageCopy valueForUserInfoKey:@"12"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v16 integerValue];
+        integerValue = [v16 integerValue];
       }
 
       else
@@ -287,18 +287,18 @@
           v20 = v19;
           if (v19)
           {
-            v17 = [v19 integerValue];
+            integerValue = [v19 integerValue];
           }
 
           else
           {
-            v17 = 2;
+            integerValue = 2;
           }
         }
 
         else
         {
-          v17 = 2;
+          integerValue = 2;
         }
       }
 
@@ -313,7 +313,7 @@
         v22 = @"false";
         *buf = 138544642;
         *&buf[4] = self;
-        if (v15)
+        if (bOOLValue)
         {
           v22 = @"true";
         }
@@ -321,17 +321,17 @@
         *&buf[12] = 2112;
         *&buf[14] = v8;
         *&buf[22] = 2112;
-        v49 = v7;
+        v49 = accountID;
         *v50 = 2112;
         *&v50[2] = v29;
         *&v50[10] = 2112;
         *&v50[12] = v22;
         v51 = 2048;
-        v52 = v17;
+        v52 = integerValue;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Received StoreKit message for bundleID: %@ accountID: %@ status: %@ allowDeveloperControl: %@ type: %ld", buf, 0x3Eu);
       }
 
-      v23 = [[StoreKitMessageInfo alloc] initWithUserID:v7 bundleID:v8 status:v29 allowDeveloperControl:v15 messageType:v17];
+      v23 = [[StoreKitMessageInfo alloc] initWithUserID:accountID bundleID:v8 status:v29 allowDeveloperControl:bOOLValue messageType:integerValue];
       if (v23)
       {
         *buf = 0;
@@ -340,14 +340,14 @@
         v49 = sub_100064B48;
         *v50 = sub_100064B58;
         *&v50[8] = 0;
-        v24 = [(StoreKitMessagesManager *)self databaseStore];
+        databaseStore = [(StoreKitMessagesManager *)self databaseStore];
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
         v36[2] = sub_1000652C0;
         v36[3] = &unk_100382908;
         v37 = v23;
         v38 = buf;
-        [v24 modifyUsingTransaction:v36];
+        [databaseStore modifyUsingTransaction:v36];
 
         if (*(*&buf[8] + 40))
         {
@@ -363,7 +363,7 @@
             *v40 = 138544130;
             v41 = v26;
             v42 = 2112;
-            v43 = v7;
+            v43 = accountID;
             v44 = 2112;
             v45 = v8;
             v46 = 2112;
@@ -404,22 +404,22 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ([v6 actionType] == 32)
+  if ([messageCopy actionType] == 32)
   {
-    v10 = [v6 getRevokedProductsMap];
-    v8 = v10;
-    if (v10)
+    getRevokedProductsMap = [messageCopy getRevokedProductsMap];
+    v8 = getRevokedProductsMap;
+    if (getRevokedProductsMap)
     {
-      v11 = [v10 allKeys];
+      allKeys = [getRevokedProductsMap allKeys];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_100065314;
       v32[3] = &unk_1003826D0;
       v8 = v8;
       v33 = v8;
-      v34 = self;
-      v35 = v7;
-      [v11 enumerateObjectsUsingBlock:v32];
+      selfCopy = self;
+      v35 = accountID;
+      [allKeys enumerateObjectsUsingBlock:v32];
     }
 
     else
@@ -442,21 +442,21 @@ LABEL_47:
 LABEL_48:
 }
 
-- (id)messageInfoForClient:(id)a3 messageType:(id)a4
+- (id)messageInfoForClient:(id)client messageType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 objc_clientType] == 3)
+  clientCopy = client;
+  typeCopy = type;
+  if ([clientCopy objc_clientType] == 3)
   {
-    v8 = &off_1003A14C8;
+    ams_DSID = &off_1003A14C8;
   }
 
   else
   {
-    v9 = [v6 account];
-    v8 = [v9 ams_DSID];
+    account = [clientCopy account];
+    ams_DSID = [account ams_DSID];
 
-    if (!v8)
+    if (!ams_DSID)
     {
       goto LABEL_11;
     }
@@ -468,18 +468,18 @@ LABEL_48:
   v28 = sub_100064B48;
   v29 = sub_100064B58;
   v30 = 0;
-  v10 = [(StoreKitMessagesManager *)self databaseStore];
+  databaseStore = [(StoreKitMessagesManager *)self databaseStore];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100065620;
   v20 = &unk_100382930;
   v24 = &v25;
-  v11 = v8;
+  v11 = ams_DSID;
   v21 = v11;
-  v12 = v6;
+  v12 = clientCopy;
   v22 = v12;
-  v23 = v7;
-  [v10 readUsingSession:&v17];
+  v23 = typeCopy;
+  [databaseStore readUsingSession:&v17];
 
   v13 = v26[5];
   if (!v13)
@@ -492,32 +492,32 @@ LABEL_48:
     v14 = qword_1003D46B8;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v12 requestBundleID];
+      requestBundleID = [v12 requestBundleID];
       *buf = 138478083;
       v32 = v11;
       v33 = 2114;
-      v34 = v15;
+      v34 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "No message in database for DSID: %{private}@, bundle ID: %{public}@", buf, 0x16u);
     }
 
     v13 = v26[5];
   }
 
-  v8 = v13;
+  ams_DSID = v13;
 
   _Block_object_dispose(&v25, 8);
 LABEL_11:
 
-  return v8;
+  return ams_DSID;
 }
 
-- (id)revocationsForClient:(id)a3
+- (id)revocationsForClient:(id)client
 {
-  v4 = a3;
-  if ([v4 objc_clientType] == 3)
+  clientCopy = client;
+  if ([clientCopy objc_clientType] == 3)
   {
-    v5 = +[OctaneManager testAccountID];
-    if (v5)
+    ams_DSID = +[OctaneManager testAccountID];
+    if (ams_DSID)
     {
 LABEL_3:
       v34 = 0;
@@ -532,17 +532,17 @@ LABEL_3:
       v31 = sub_100064B48;
       v32 = sub_100064B58;
       v33 = 0;
-      v6 = [(StoreKitMessagesManager *)self databaseStore];
+      databaseStore = [(StoreKitMessagesManager *)self databaseStore];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100065AC4;
       v24[3] = &unk_100382958;
       v27 = &v28;
-      v7 = v5;
+      v7 = ams_DSID;
       v25 = v7;
-      v8 = v4;
+      v8 = clientCopy;
       v26 = v8;
-      [v6 readUsingSession:v24];
+      [databaseStore readUsingSession:v24];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100065B54;
@@ -551,7 +551,7 @@ LABEL_3:
       v22 = v9;
       v10 = v8;
       v23 = v10;
-      [v6 modifyUsingTransaction:v21];
+      [databaseStore modifyUsingTransaction:v21];
       if ([v29[5] count])
       {
         v11 = objc_alloc_init(NSMutableArray);
@@ -577,11 +577,11 @@ LABEL_3:
         v17 = qword_1003D46B8;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v10 requestBundleID];
+          requestBundleID = [v10 requestBundleID];
           *buf = 138478083;
           v41 = v9;
           v42 = 2114;
-          v43 = v18;
+          v43 = requestBundleID;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "No revocations in database for DSID: %{private}@, bundleID: %{public}@", buf, 0x16u);
         }
       }
@@ -597,10 +597,10 @@ LABEL_3:
 
   else
   {
-    v14 = [v4 account];
-    v5 = [v14 ams_DSID];
+    account = [clientCopy account];
+    ams_DSID = [account ams_DSID];
 
-    if (v5)
+    if (ams_DSID)
     {
       goto LABEL_3;
     }
@@ -614,7 +614,7 @@ LABEL_3:
   v15 = qword_1003D46B8;
   if (os_log_type_enabled(qword_1003D46B8, OS_LOG_TYPE_ERROR))
   {
-    sub_1002D0584(v15, v4);
+    sub_1002D0584(v15, clientCopy);
   }
 
   v16 = 0;
@@ -623,45 +623,45 @@ LABEL_17:
   return v16;
 }
 
-- (void)revokeProductIdentifiers:(id)a3 forBundleID:(id)a4 accountID:(id)a5
+- (void)revokeProductIdentifiers:(id)identifiers forBundleID:(id)d accountID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(StoreKitMessagesManager *)self databaseStore];
+  identifiersCopy = identifiers;
+  dCopy = d;
+  iDCopy = iD;
+  databaseStore = [(StoreKitMessagesManager *)self databaseStore];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100065D64;
   v17[3] = &unk_1003829F8;
-  v12 = v8;
+  v12 = identifiersCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = iDCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = dCopy;
   v20 = v14;
-  [v11 modifyUsingTransaction:v17];
+  [databaseStore modifyUsingTransaction:v17];
 
   v15 = +[OctaneManager testAccountID];
-  LODWORD(v9) = [v13 isEqualToNumber:v15];
+  LODWORD(dCopy) = [v13 isEqualToNumber:v15];
 
-  if (v9)
+  if (dCopy)
   {
     v16 = [StoreKitServiceConnection octaneConnectionForBundleID:v14];
     [v16 checkForMessages];
   }
 }
 
-- (void)appDidLaunchWithBundleID:(id)a3
+- (void)appDidLaunchWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(StoreKitMessagesManager *)self _storeKitConnectionForBundleID:v4];
+  dCopy = d;
+  v5 = [(StoreKitMessagesManager *)self _storeKitConnectionForBundleID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 client];
-    v8 = [v7 objc_clientType];
+    client = [v5 client];
+    objc_clientType = [client objc_clientType];
 
-    if (v8 == 1)
+    if (objc_clientType == 1)
     {
       [v6 checkForMessages];
     }
@@ -675,49 +675,49 @@ LABEL_17:
     v10[2] = sub_1000660A0;
     v10[3] = &unk_10037F868;
     v10[4] = self;
-    v11 = v4;
+    v11 = dCopy;
     dispatch_async(accountObserverQueue, v10);
   }
 }
 
-- (void)handleAppInstallWithBundleIDs:(id)a3
+- (void)handleAppInstallWithBundleIDs:(id)ds
 {
-  v8 = a3;
+  dsCopy = ds;
   v4 = +[ActiveAccountObserver activeAccount];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 ams_DSID];
+    ams_DSID = [v4 ams_DSID];
 
-    if (v6)
+    if (ams_DSID)
     {
-      v7 = [(StoreKitMessagesManager *)self _bundleIDsWithMessagesInBundleIDs:v8 account:v5];
+      v7 = [(StoreKitMessagesManager *)self _bundleIDsWithMessagesInBundleIDs:dsCopy account:v5];
       [(StoreKitAppLaunchObserver *)self->_observer observeAppLaunchForBundleIDs:v7];
     }
   }
 }
 
-- (id)_bundleIDsWithMessagesForAccount:(id)a3
+- (id)_bundleIDsWithMessagesForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100064B48;
   v16 = sub_100064B58;
   v17 = objc_alloc_init(NSArray);
-  v5 = [v4 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  if (v5)
+  if (ams_DSID)
   {
-    v6 = [(StoreKitMessagesManager *)self databaseStore];
+    databaseStore = [(StoreKitMessagesManager *)self databaseStore];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100066334;
     v9[3] = &unk_100382A20;
     v11 = &v12;
-    v10 = v4;
-    [v6 readUsingSession:v9];
+    v10 = accountCopy;
+    [databaseStore readUsingSession:v9];
   }
 
   v7 = v13[5];
@@ -726,27 +726,27 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)_accountHasMessagesForBundleID:(id)a3 bundleID:(id)a4
+- (BOOL)_accountHasMessagesForBundleID:(id)d bundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [v6 ams_DSID];
+  ams_DSID = [dCopy ams_DSID];
 
-  if (v8)
+  if (ams_DSID)
   {
-    v9 = [(StoreKitMessagesManager *)self databaseStore];
+    databaseStore = [(StoreKitMessagesManager *)self databaseStore];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000664F8;
     v12[3] = &unk_100382958;
     v15 = &v16;
-    v13 = v6;
-    v14 = v7;
-    [v9 readUsingSession:v12];
+    v13 = dCopy;
+    v14 = iDCopy;
+    [databaseStore readUsingSession:v12];
   }
 
   v10 = *(v17 + 24);
@@ -755,29 +755,29 @@ LABEL_17:
   return v10;
 }
 
-- (id)_bundleIDsWithMessagesInBundleIDs:(id)a3 account:(id)a4
+- (id)_bundleIDsWithMessagesInBundleIDs:(id)ds account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  accountCopy = account;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_100064B48;
   v20 = sub_100064B58;
   v21 = objc_alloc_init(NSArray);
-  v8 = [v7 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  if (v8)
+  if (ams_DSID)
   {
-    v9 = [(StoreKitMessagesManager *)self databaseStore];
+    databaseStore = [(StoreKitMessagesManager *)self databaseStore];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100066708;
     v12[3] = &unk_100382958;
     v15 = &v16;
-    v13 = v6;
-    v14 = v7;
-    [v9 readUsingSession:v12];
+    v13 = dsCopy;
+    v14 = accountCopy;
+    [databaseStore readUsingSession:v12];
   }
 
   v10 = v17[5];
@@ -786,10 +786,10 @@ LABEL_17:
   return v10;
 }
 
-- (id)_storeKitConnectionForBundleID:(id)a3
+- (id)_storeKitConnectionForBundleID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -802,7 +802,7 @@ LABEL_17:
     v7[1] = 3221225472;
     v7[2] = sub_100066924;
     v7[3] = &unk_100382A48;
-    v8 = v3;
+    v8 = dCopy;
     v9 = &v10;
     [v4 enumerateObjectsUsingBlock:v7];
 
@@ -828,13 +828,13 @@ LABEL_17:
   return v5;
 }
 
-- (void)_displayMessageForProdAccount:(id)a3 bundleID:(id)a4
+- (void)_displayMessageForProdAccount:(id)account bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  accountCopy = account;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [[LSApplicationExtensionRecord alloc] initWithBundleIdentifier:v7 error:0];
+    v8 = [[LSApplicationExtensionRecord alloc] initWithBundleIdentifier:dCopy error:0];
     if (v8)
     {
       v9 = [_TtC9storekitd6Client alloc];
@@ -896,10 +896,10 @@ LABEL_17:
   if (v3)
   {
     v6 = v3;
-    v4 = [v3 ams_DSID];
+    ams_DSID = [v3 ams_DSID];
 
     v3 = v6;
-    if (v4)
+    if (ams_DSID)
     {
       v5 = [(StoreKitMessagesManager *)self _bundleIDsWithMessagesForAccount:v6];
       [(StoreKitAppLaunchObserver *)self->_observer observeAppLaunchForBundleIDs:v5];
@@ -909,10 +909,10 @@ LABEL_17:
   }
 }
 
-- (void)_presentEngagementTaskWithURL:(id)a3 client:(id)a4
+- (void)_presentEngagementTaskWithURL:(id)l client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  clientCopy = client;
   if (qword_1003D46F8 != -1)
   {
     sub_1002D04C4();
@@ -922,33 +922,33 @@ LABEL_17:
   if (os_log_type_enabled(qword_1003D46B8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v6;
+    v26 = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Opening message URL: %{public}@", buf, 0x16u);
   }
 
-  v9 = [v7 account];
+  account = [clientCopy account];
   v10 = objc_alloc_init(AMSEngagementRequest);
-  [v10 setURL:v6];
-  if (v9)
+  [v10 setURL:lCopy];
+  if (account)
   {
-    [v10 setAccount:v9];
+    [v10 setAccount:account];
   }
 
   v21[0] = @"refApp";
-  v11 = [v7 requestBundleID];
+  requestBundleID = [clientCopy requestBundleID];
   v21[1] = @"app";
-  v22[0] = v11;
+  v22[0] = requestBundleID;
   v22[1] = @"com.apple.AppStore";
   v12 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
   [v10 setMetricsOverlay:v12];
 
   v13 = [[AMSSystemEngagementTask alloc] initWithRequest:v10];
-  v14 = [v7 processInfo];
-  [v13 setClientInfo:v14];
+  processInfo = [clientCopy processInfo];
+  [v13 setClientInfo:processInfo];
 
-  v15 = [v7 bag];
+  v15 = [clientCopy bag];
   [v13 setBag:v15];
 
   showMessageQueue = self->_showMessageQueue;
@@ -957,12 +957,12 @@ LABEL_17:
   v18[2] = sub_100066E94;
   v18[3] = &unk_10037F868;
   v19 = v13;
-  v20 = self;
+  selfCopy2 = self;
   v17 = v13;
   dispatch_async(showMessageQueue, v18);
 }
 
-- (void)_accountDidChange:(id)a3
+- (void)_accountDidChange:(id)change
 {
   [(StoreKitAppLaunchObserver *)self->_observer stopObserving];
   accountObserverQueue = self->_accountObserverQueue;
@@ -974,11 +974,11 @@ LABEL_17:
   dispatch_async(accountObserverQueue, block);
 }
 
-- (void)_recordPotentialMessageWithURL:(id)a3 type:(int64_t)a4 allowsDeveloperControl:(BOOL)a5 client:(id)a6
+- (void)_recordPotentialMessageWithURL:(id)l type:(int64_t)type allowsDeveloperControl:(BOOL)control client:(id)client
 {
-  if (a3)
+  if (l)
   {
-    if (a5)
+    if (control)
     {
       v6 = 1;
     }
@@ -988,26 +988,26 @@ LABEL_17:
       v6 = 4;
     }
 
-    [(StoreKitMessagesManager *)self recordMessageDisplayEventWithType:v6 messageType:a4 client:a6];
+    [(StoreKitMessagesManager *)self recordMessageDisplayEventWithType:v6 messageType:type client:client];
   }
 }
 
-- (void)_showMessage:(id)a3 forClient:(id)a4 messageType:(int64_t)a5 useItmsUI:(BOOL)a6
+- (void)_showMessage:(id)message forClient:(id)client messageType:(int64_t)type useItmsUI:(BOOL)i
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = [NSNumber numberWithInteger:a5];
-  v13 = [(StoreKitMessagesManager *)self messageInfoForClient:v11 messageType:v12];
+  iCopy = i;
+  messageCopy = message;
+  clientCopy = client;
+  v12 = [NSNumber numberWithInteger:type];
+  v13 = [(StoreKitMessagesManager *)self messageInfoForClient:clientCopy messageType:v12];
 
   if (v13)
   {
-    v14 = [v11 account];
-    if ([v11 objc_clientType] != 3)
+    account = [clientCopy account];
+    if ([clientCopy objc_clientType] != 3)
     {
-      if (v6)
+      if (iCopy)
       {
-        v15 = [NSURLComponents componentsWithURL:v10 resolvingAgainstBaseURL:0];
+        v15 = [NSURLComponents componentsWithURL:messageCopy resolvingAgainstBaseURL:0];
         [v15 setScheme:@"itms-ui"];
         v16 = [v15 URL];
         if (v16)
@@ -1021,7 +1021,7 @@ LABEL_17:
           if (os_log_type_enabled(qword_1003D46B8, OS_LOG_TYPE_DEFAULT))
           {
             v26 = 138543618;
-            v27 = self;
+            selfCopy = self;
             v28 = 2114;
             v29 = v16;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Opening message URL: %{public}@", &v26, 0x16u);
@@ -1045,15 +1045,15 @@ LABEL_17:
         }
 
 LABEL_25:
-        if ([v11 objc_clientType] == 3)
+        if ([clientCopy objc_clientType] == 3)
         {
-          v20 = &off_1003A14C8;
+          ams_DSID = &off_1003A14C8;
         }
 
         else
         {
-          v20 = [v14 ams_DSID];
-          if (!v20)
+          ams_DSID = [account ams_DSID];
+          if (!ams_DSID)
           {
             v22 = ASDErrorWithDescription();
             if (v22)
@@ -1065,8 +1065,8 @@ LABEL_25:
           }
         }
 
-        v21 = [v11 requestBundleID];
-        v22 = [(StoreKitMessagesManager *)self _removeStoreKitMessageForAccount:v20 bundleID:v21 type:a5 logKey:0];
+        requestBundleID = [clientCopy requestBundleID];
+        v22 = [(StoreKitMessagesManager *)self _removeStoreKitMessageForAccount:ams_DSID bundleID:requestBundleID type:type logKey:0];
 
         if (v22)
         {
@@ -1080,13 +1080,13 @@ LABEL_29:
           if (os_log_type_enabled(qword_1003D46B8, OS_LOG_TYPE_ERROR))
           {
             v24 = v23;
-            v25 = [v11 requestBundleID];
+            requestBundleID2 = [clientCopy requestBundleID];
             v26 = 138543874;
-            v27 = v22;
+            selfCopy = v22;
             v28 = 2112;
-            v29 = v20;
+            v29 = ams_DSID;
             v30 = 2112;
-            v31 = v25;
+            v31 = requestBundleID2;
             _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Error removing message info: %{public}@ for DSID: %@, bundle ID: %@", &v26, 0x20u);
           }
         }
@@ -1096,7 +1096,7 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if (!v14)
+      if (!account)
       {
         if (qword_1003D46F8 != -1)
         {
@@ -1106,12 +1106,12 @@ LABEL_33:
         v19 = qword_1003D46B8;
         if (os_log_type_enabled(qword_1003D46B8, OS_LOG_TYPE_ERROR))
         {
-          sub_1002D07E0(v19, v11);
+          sub_1002D07E0(v19, clientCopy);
         }
       }
     }
 
-    [(StoreKitMessagesManager *)self _presentEngagementTaskWithURL:v10 client:v11];
+    [(StoreKitMessagesManager *)self _presentEngagementTaskWithURL:messageCopy client:clientCopy];
     goto LABEL_25;
   }
 
@@ -1128,11 +1128,11 @@ LABEL_33:
 LABEL_34:
 }
 
-- (id)_removeStoreKitMessageForAccount:(id)a3 bundleID:(id)a4 type:(int64_t)a5 logKey:(id)a6
+- (id)_removeStoreKitMessageForAccount:(id)account bundleID:(id)d type:(int64_t)type logKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  dCopy = d;
+  keyCopy = key;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1148,24 +1148,24 @@ LABEL_34:
   if (os_log_type_enabled(qword_1003D46B8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v32 = v12;
+    v32 = keyCopy;
     v33 = 2114;
-    v34 = v11;
+    v34 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Removing message info for %{public}@", buf, 0x16u);
   }
 
-  if (v10 && v11)
+  if (accountCopy && dCopy)
   {
-    v14 = [(StoreKitMessagesManager *)self databaseStore];
+    databaseStore = [(StoreKitMessagesManager *)self databaseStore];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100067810;
     v20[3] = &unk_100382A70;
-    v21 = v10;
-    v22 = v11;
+    v21 = accountCopy;
+    v22 = dCopy;
     v23 = &v25;
-    v24 = a5;
-    [v14 modifyUsingTransaction:v20];
+    typeCopy = type;
+    [databaseStore modifyUsingTransaction:v20];
   }
 
   v15 = v26[5];
@@ -1181,9 +1181,9 @@ LABEL_34:
     {
       v19 = v26[5];
       *buf = 138543874;
-      v32 = v12;
+      v32 = keyCopy;
       v33 = 2114;
-      v34 = v11;
+      v34 = dCopy;
       v35 = 2114;
       v36 = v19;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[%{public}@]: Failed to remove message info for %{public}@: %{public}@", buf, 0x20u);
@@ -1198,39 +1198,39 @@ LABEL_34:
   return v17;
 }
 
-- (void)recordMessageDisplayEventWithType:(int64_t)a3 messageType:(int64_t)a4 client:(id)a5
+- (void)recordMessageDisplayEventWithType:(int64_t)type messageType:(int64_t)messageType client:(id)client
 {
-  v9 = a5;
-  v10 = self;
-  sub_1001BF9B0(a3, a4, a5);
+  clientCopy = client;
+  selfCopy = self;
+  sub_1001BF9B0(type, messageType, client);
 }
 
-- (void)checkForMessagesForClient:(id)a3 remoteObjectProxy:(id)a4 xpcConnection:(id)a5
+- (void)checkForMessagesForClient:(id)client remoteObjectProxy:(id)proxy xpcConnection:(id)connection
 {
-  v7 = a3;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_1001BFCB0();
 
   swift_unknownObjectRelease();
 }
 
-- (void)displayMessageWithType:(id)a3 forClient:(id)a4 connection:(id)a5
+- (void)displayMessageWithType:(id)type forClient:(id)client connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  typeCopy = type;
+  clientCopy = client;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_1001C0320();
 }
 
-- (void)askToShowMessageForClient:(id)a3 message:(id)a4 pendingURL:(id)a5 connection:(id)a6
+- (void)askToShowMessageForClient:(id)client message:(id)message pendingURL:(id)l connection:(id)connection
 {
   v11 = sub_100080FB4(&unk_1003D0540);
   __chkstk_darwin(v11 - 8);
   v13 = &v20 - v12;
-  if (a5)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = type metadata accessor for URL();
@@ -1244,20 +1244,20 @@ LABEL_34:
   }
 
   sub_100081DFC(v13, v15, 1, v14);
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = self;
+  clientCopy = client;
+  messageCopy = message;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_1001C1B60();
 
   sub_10013B1E8(v13, &unk_1003D0540);
 }
 
-- (void)displayMessageForMessageInfo:(id)a3 client:(id)a4
+- (void)displayMessageForMessageInfo:(id)info client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  infoCopy = info;
+  clientCopy = client;
+  selfCopy = self;
   sub_1001C2B7C();
 }
 

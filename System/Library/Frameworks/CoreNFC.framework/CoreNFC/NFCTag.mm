@@ -1,65 +1,65 @@
 @interface NFCTag
-- (BOOL)_connectWithSession:(id)a3 outError:(id *)a4;
-- (BOOL)_disconnectWithError:(id *)a3;
-- (BOOL)_transceiveWithSession:(id)a3 sendData:(id)a4 receivedData:(id *)a5 error:(id *)a6;
+- (BOOL)_connectWithSession:(id)session outError:(id *)error;
+- (BOOL)_disconnectWithError:(id *)error;
+- (BOOL)_transceiveWithSession:(id)session sendData:(id)data receivedData:(id *)receivedData error:(id *)error;
 - (BOOL)isAvailable;
-- (BOOL)isEqualToNFTag:(id)a3;
-- (BOOL)isMatchingSession:(id)a3 outError:(id *)a4;
+- (BOOL)isEqualToNFTag:(id)tag;
+- (BOOL)isMatchingSession:(id)session outError:(id *)error;
 - (BOOL)isNDEFFormatted;
 - (BOOL)isReadOnly;
 - (BOOL)proprietaryApplicationDataCoding;
-- (NFCTag)initWithCoder:(id)a3;
-- (NFCTag)initWithSession:(id)a3 tag:(id)a4 startupConfig:(int64_t)a5;
+- (NFCTag)initWithCoder:(id)coder;
+- (NFCTag)initWithSession:(id)session tag:(id)tag startupConfig:(int64_t)config;
 - (id)_getInternalReaderSession;
 - (id)applicationData;
 - (id)asNFCFeliCaTag;
 - (id)asNFCISO15693Tag;
 - (id)asNFCISO7816Tag;
 - (id)asNFCMiFareTag;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)historicalBytes;
 - (id)identifier;
 - (id)selectedAID;
 - (id)systemCode;
 - (unint64_t)capacity;
 - (unint64_t)type;
-- (void)_connectWithCompletionHandler:(id)a3;
-- (void)_sendAPDU:(id)a3 completionHandler:(id)a4;
-- (void)_setSession:(id)a3;
-- (void)_setTag:(id)a3;
-- (void)_transceiveWithData:(id)a3 completionHandler:(id)a4;
-- (void)dispatchOnDelegateQueueAsync:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)queryNDEFStatusWithCompletionHandler:(id)a3;
-- (void)readNDEFWithCompletionHandler:(id)a3;
-- (void)writeLockWithCompletionHandler:(id)a3;
-- (void)writeNDEF:(id)a3 completionHandler:(id)a4;
+- (void)_connectWithCompletionHandler:(id)handler;
+- (void)_sendAPDU:(id)u completionHandler:(id)handler;
+- (void)_setSession:(id)session;
+- (void)_setTag:(id)tag;
+- (void)_transceiveWithData:(id)data completionHandler:(id)handler;
+- (void)dispatchOnDelegateQueueAsync:(id)async;
+- (void)encodeWithCoder:(id)coder;
+- (void)queryNDEFStatusWithCompletionHandler:(id)handler;
+- (void)readNDEFWithCompletionHandler:(id)handler;
+- (void)writeLockWithCompletionHandler:(id)handler;
+- (void)writeNDEF:(id)f completionHandler:(id)handler;
 @end
 
 @implementation NFCTag
 
-- (NFCTag)initWithCoder:(id)a3
+- (NFCTag)initWithCoder:(id)coder
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = NFCTag;
   v6 = [(NFCTag *)&v31 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v6->_tag;
     v6->_tag = v7;
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"sessionKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionKey"];
     sessionKey = v6->_sessionKey;
     v6->_sessionKey = v9;
 
-    v6->_configuration = [v5 decodeIntegerForKey:@"configuration"];
+    v6->_configuration = [coderCopy decodeIntegerForKey:@"configuration"];
     if (!v6->_sessionKey)
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v6 file:@"NFCTag.m" lineNumber:67 description:@"Missing session key"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"NFCTag.m" lineNumber:67 description:@"Missing session key"];
     }
 
     v11 = +[NFCHardwareManager sharedHardwareManager];
@@ -70,9 +70,9 @@
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 sessionQueue];
+      sessionQueue = [v13 sessionQueue];
       delegateQueue = v6->_delegateQueue;
-      v6->_delegateQueue = v15;
+      v6->_delegateQueue = sessionQueue;
     }
 
     else
@@ -129,26 +129,26 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tag = self->_tag;
-  v5 = a3;
-  [v5 encodeObject:tag forKey:@"tag"];
-  [v5 encodeObject:self->_sessionKey forKey:@"sessionKey"];
-  [v5 encodeInteger:self->_configuration forKey:@"configuration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tag forKey:@"tag"];
+  [coderCopy encodeObject:self->_sessionKey forKey:@"sessionKey"];
+  [coderCopy encodeInteger:self->_configuration forKey:@"configuration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (!self->_hardwareManager)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:92 description:@"Nil hardwareManager"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:92 description:@"Nil hardwareManager"];
   }
 
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(NFCTag *)self _getInternalReaderSession];
-  v6 = [v4 initWithSession:v5 tag:self->_tag startupConfig:self->_configuration];
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  v6 = [v4 initWithSession:_getInternalReaderSession tag:self->_tag startupConfig:self->_configuration];
 
   return v6;
 }
@@ -164,13 +164,13 @@
   os_unfair_lock_lock(&self->_lock);
   v4 = sub_2372B34DC(v37);
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(NFCTag *)self _getInternalReaderSession];
-  v6 = [v5 currentTag];
-  v7 = v6;
-  if (v5 && ([v6 isEqualToNFTag:v4] & 1) != 0)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  currentTag = [_getInternalReaderSession currentTag];
+  v7 = currentTag;
+  if (_getInternalReaderSession && ([currentTag isEqualToNFTag:v4] & 1) != 0)
   {
     v36 = 0;
-    v8 = [v5 ndefStatus:&v36 maxMessageLength:0];
+    v8 = [_getInternalReaderSession ndefStatus:&v36 maxMessageLength:0];
     if (v8)
     {
       Logger = NFLogGetLogger();
@@ -292,13 +292,13 @@
   os_unfair_lock_lock(&self->_lock);
   v4 = sub_2372B386C(v37);
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(NFCTag *)self _getInternalReaderSession];
-  v6 = [v5 currentTag];
-  v7 = v6;
-  if (v5 && ([v6 isEqualToNFTag:v4] & 1) != 0)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  currentTag = [_getInternalReaderSession currentTag];
+  v7 = currentTag;
+  if (_getInternalReaderSession && ([currentTag isEqualToNFTag:v4] & 1) != 0)
   {
     v36 = 0;
-    v8 = [v5 ndefStatus:&v36 maxMessageLength:0];
+    v8 = [_getInternalReaderSession ndefStatus:&v36 maxMessageLength:0];
     if (v8)
     {
       Logger = NFLogGetLogger();
@@ -420,13 +420,13 @@
   os_unfair_lock_lock(&self->_lock);
   v4 = sub_2372B3BF4(v37);
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(NFCTag *)self _getInternalReaderSession];
-  v6 = [v5 currentTag];
-  v7 = v6;
-  if (v5 && ([v6 isEqualToNFTag:v4] & 1) != 0)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  currentTag = [_getInternalReaderSession currentTag];
+  v7 = currentTag;
+  if (_getInternalReaderSession && ([currentTag isEqualToNFTag:v4] & 1) != 0)
   {
     v36 = 0;
-    v8 = [v5 ndefStatus:0 maxMessageLength:&v36];
+    v8 = [_getInternalReaderSession ndefStatus:0 maxMessageLength:&v36];
     if (v8)
     {
       Logger = NFLogGetLogger();
@@ -537,28 +537,28 @@
   return v19;
 }
 
-- (void)queryNDEFStatusWithCompletionHandler:(id)a3
+- (void)queryNDEFStatusWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = _os_activity_create(&dword_23728C000, "NFCNDEFTag queryNDEFStatusWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = [(NFCTag *)self _getInternalReaderSession];
-  v8 = v7;
-  if (v7)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  v8 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2372B3DDC;
     v12[3] = &unk_278A29D98;
     v12[4] = self;
-    v14 = v5;
+    v14 = handlerCopy;
     v15 = a2;
-    v13 = v7;
-    v9 = v5;
+    v13 = _getInternalReaderSession;
+    v9 = handlerCopy;
     [v13 submitBlockOnSessionQueue:v12];
 
     v10 = v13;
@@ -570,35 +570,35 @@
     v16[1] = 3221225472;
     v16[2] = sub_2372B3D6C;
     v16[3] = &unk_278A29C38;
-    v17 = v5;
-    v11 = v5;
+    v17 = handlerCopy;
+    v11 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v16];
     v10 = v17;
   }
 }
 
-- (void)readNDEFWithCompletionHandler:(id)a3
+- (void)readNDEFWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCNDEFTag readNDEFWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  v6 = [(NFCTag *)self _getInternalReaderSession];
-  v7 = v6;
-  if (v6)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  v7 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2372B450C;
     v12[3] = &unk_278A29DC0;
     v8 = &v13;
-    v9 = v6;
+    v9 = _getInternalReaderSession;
     v13 = v9;
-    v14 = v4;
-    v10 = v4;
+    v14 = handlerCopy;
+    v10 = handlerCopy;
     [v9 submitBlockOnSessionQueue:v12];
   }
 
@@ -609,34 +609,34 @@
     v15[2] = sub_2372B44A0;
     v15[3] = &unk_278A29C38;
     v8 = &v16;
-    v16 = v4;
-    v11 = v4;
+    v16 = handlerCopy;
+    v11 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v15];
   }
 }
 
-- (void)writeLockWithCompletionHandler:(id)a3
+- (void)writeLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCNDEFTag writeLockWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  v6 = [(NFCTag *)self _getInternalReaderSession];
-  v7 = v6;
-  if (v6)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  v7 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2372B47F4;
     v12[3] = &unk_278A29DC0;
     v8 = &v13;
-    v9 = v6;
+    v9 = _getInternalReaderSession;
     v13 = v9;
-    v14 = v4;
-    v10 = v4;
+    v14 = handlerCopy;
+    v10 = handlerCopy;
     [v9 submitBlockOnSessionQueue:v12];
   }
 
@@ -647,36 +647,36 @@
     v15[2] = sub_2372B478C;
     v15[3] = &unk_278A29C38;
     v8 = &v16;
-    v16 = v4;
-    v11 = v4;
+    v16 = handlerCopy;
+    v11 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v15];
   }
 }
 
-- (void)writeNDEF:(id)a3 completionHandler:(id)a4
+- (void)writeNDEF:(id)f completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  fCopy = f;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_23728C000, "NFCNDEFTag writeNDEF:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   os_activity_scope_leave(&state);
 
-  v9 = [(NFCTag *)self _getInternalReaderSession];
-  v10 = v9;
-  if (v9)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  v10 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_2372B4AD4;
     v15[3] = &unk_278A29DE8;
     v11 = &v16;
-    v12 = v9;
+    v12 = _getInternalReaderSession;
     v16 = v12;
-    v17 = v6;
-    v18 = v7;
-    v13 = v7;
+    v17 = fCopy;
+    v18 = handlerCopy;
+    v13 = handlerCopy;
     [v12 submitBlockOnSessionQueue:v15];
   }
 
@@ -687,8 +687,8 @@
     v19[2] = sub_2372B4A6C;
     v19[3] = &unk_278A29C38;
     v11 = &v20;
-    v20 = v7;
-    v14 = v7;
+    v20 = handlerCopy;
+    v14 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v19];
   }
 }
@@ -733,19 +733,19 @@
   os_unfair_lock_lock(&self->_lock);
   v3 = sub_2372B4E04(v8);
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [(NFCTag *)self _getInternalReaderSession];
-  v5 = [v4 currentTag];
-  if ([v5 isEqualToNFTag:v3])
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  currentTag = [_getInternalReaderSession currentTag];
+  if ([currentTag isEqualToNFTag:v3])
   {
 LABEL_2:
-    v6 = [v4 checkPresenceWithError:0];
+    v6 = [_getInternalReaderSession checkPresenceWithError:0];
     goto LABEL_3;
   }
 
   v6 = 0;
-  if (!v5 && (self->_configuration & 1) != 0)
+  if (!currentTag && (self->_configuration & 1) != 0)
   {
-    if (![(NFCTag *)self _connectWithSession:v4 outError:0])
+    if (![(NFCTag *)self _connectWithSession:_getInternalReaderSession outError:0])
     {
       v6 = 0;
       goto LABEL_3;
@@ -763,86 +763,86 @@ LABEL_3:
 {
   if ([(NFCTag *)self type]== 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asNFCISO7816Tag
 {
   if ([(NFCTag *)self type]== 3)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asNFCMiFareTag
 {
   if ([(NFCTag *)self type]== 4)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asNFCFeliCaTag
 {
   if ([(NFCTag *)self type]== 2)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (NFCTag)initWithSession:(id)a3 tag:(id)a4 startupConfig:(int64_t)a5
+- (NFCTag)initWithSession:(id)session tag:(id)tag startupConfig:(int64_t)config
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  sessionCopy = session;
+  tagCopy = tag;
+  if (!sessionCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:418 description:@"Nil session"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:418 description:@"Nil session"];
   }
 
-  v11 = [v9 sessionQueue];
+  sessionQueue = [sessionCopy sessionQueue];
 
-  if (!v11)
+  if (!sessionQueue)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:419 description:@"Nil session queue"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:419 description:@"Nil session queue"];
   }
 
-  v12 = [v9 hardwareManager];
+  hardwareManager = [sessionCopy hardwareManager];
 
-  if (!v12)
+  if (!hardwareManager)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:420 description:@"Nil hardwareManager"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"NFCTag.m" lineNumber:420 description:@"Nil hardwareManager"];
   }
 
   v24.receiver = self;
@@ -850,19 +850,19 @@ LABEL_3:
   v13 = [(NFCTag *)&v24 init];
   if (v13)
   {
-    v14 = [v9 sessionId];
+    sessionId = [sessionCopy sessionId];
     sessionKey = v13->_sessionKey;
-    v13->_sessionKey = v14;
+    v13->_sessionKey = sessionId;
 
-    objc_storeStrong(&v13->_tag, a4);
-    v13->_configuration = a5;
-    v16 = [v9 sessionQueue];
+    objc_storeStrong(&v13->_tag, tag);
+    v13->_configuration = config;
+    sessionQueue2 = [sessionCopy sessionQueue];
     delegateQueue = v13->_delegateQueue;
-    v13->_delegateQueue = v16;
+    v13->_delegateQueue = sessionQueue2;
 
-    v18 = [v9 hardwareManager];
+    hardwareManager2 = [sessionCopy hardwareManager];
     hardwareManager = v13->_hardwareManager;
-    v13->_hardwareManager = v18;
+    v13->_hardwareManager = hardwareManager2;
 
     v13->_lock._os_unfair_lock_opaque = 0;
   }
@@ -942,7 +942,7 @@ LABEL_3:
 
 - (BOOL)proprietaryApplicationDataCoding
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
@@ -955,39 +955,39 @@ LABEL_3:
   v4[5] = &v5;
   os_unfair_lock_lock(&self->_lock);
   sub_2372B56FC(v4);
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = *(v6 + 24);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_setTag:(id)a3
+- (void)_setTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2372B5818;
   v6[3] = &unk_278A29E60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = tagCopy;
+  v5 = tagCopy;
   os_unfair_lock_lock(&self->_lock);
   sub_2372B5818(v6);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setSession:(id)a3
+- (void)_setSession:(id)session
 {
-  v4 = [a3 sessionId];
+  sessionId = [session sessionId];
   sessionKey = self->_sessionKey;
-  self->_sessionKey = v4;
+  self->_sessionKey = sessionId;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isEqualToNFTag:(id)a3
+- (BOOL)isEqualToNFTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -996,10 +996,10 @@ LABEL_3:
   v7[1] = 3221225472;
   v7[2] = sub_2372B5954;
   v7[3] = &unk_278A29E88;
-  v8 = v4;
+  v8 = tagCopy;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = tagCopy;
   os_unfair_lock_lock(&self->_lock);
   sub_2372B5954(v7);
   os_unfair_lock_unlock(&self->_lock);
@@ -1011,8 +1011,8 @@ LABEL_3:
 
 - (id)_getInternalReaderSession
 {
-  v3 = [(NFCTag *)self hardwareManager];
-  v4 = [v3 getReaderSessionWithKey:self->_sessionKey];
+  hardwareManager = [(NFCTag *)self hardwareManager];
+  v4 = [hardwareManager getReaderSessionWithKey:self->_sessionKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1028,11 +1028,11 @@ LABEL_3:
   return v5;
 }
 
-- (void)dispatchOnDelegateQueueAsync:(id)a3
+- (void)dispatchOnDelegateQueueAsync:(id)async
 {
   v27 = *MEMORY[0x277D85DE8];
   delegateQueue = self->_delegateQueue;
-  v6 = a3;
+  asyncCopy = async;
   if (delegateQueue)
   {
     v7 = delegateQueue;
@@ -1085,24 +1085,24 @@ LABEL_3:
     v7 = MEMORY[0x277D85CD0];
   }
 
-  dispatch_async(v7, v6);
+  dispatch_async(v7, asyncCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_connectWithSession:(id)a3 outError:(id *)a4
+- (BOOL)_connectWithSession:(id)session outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  sessionCopy = session;
+  v7 = sessionCopy;
+  if (sessionCopy)
   {
-    v8 = [v6 connectTag:self->_tag error:a4];
+    v8 = [sessionCopy connectTag:self->_tag error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [NFCError errorWithCode:103];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -1113,11 +1113,11 @@ LABEL_3:
   return v8;
 }
 
-- (void)_connectWithCompletionHandler:(id)a3
+- (void)_connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NFCTag *)self _getInternalReaderSession];
-  if (v5)
+  handlerCopy = handler;
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  if (_getInternalReaderSession)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -1132,9 +1132,9 @@ LABEL_3:
     v9[2] = sub_2372B5E44;
     v9[3] = &unk_278A29EB0;
     v9[4] = self;
-    v10 = v5;
-    v11 = v4;
-    v7 = v4;
+    v10 = _getInternalReaderSession;
+    v11 = handlerCopy;
+    v7 = handlerCopy;
     [v10 connectTag:v6 completionHandler:v9];
   }
 
@@ -1144,25 +1144,25 @@ LABEL_3:
     v13[1] = 3221225472;
     v13[2] = sub_2372B5DD0;
     v13[3] = &unk_278A29C38;
-    v14 = v4;
-    v8 = v4;
+    v14 = handlerCopy;
+    v8 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v13];
   }
 }
 
-- (BOOL)_disconnectWithError:(id *)a3
+- (BOOL)_disconnectWithError:(id *)error
 {
-  v4 = [(NFCTag *)self _getInternalReaderSession];
-  v5 = v4;
-  if (v4)
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  v5 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
-    v6 = [v4 disconnectTagWithError:a3];
+    v6 = [_getInternalReaderSession disconnectTagWithError:error];
   }
 
-  else if (a3)
+  else if (error)
   {
     [NFCError errorWithCode:103];
-    *a3 = v6 = 0;
+    *error = v6 = 0;
   }
 
   else
@@ -1173,14 +1173,14 @@ LABEL_3:
   return v6;
 }
 
-- (void)_transceiveWithData:(id)a3 completionHandler:(id)a4
+- (void)_transceiveWithData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NFCTag *)self _getInternalReaderSession];
-  if (v8)
+  dataCopy = data;
+  handlerCopy = handler;
+  _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+  if (_getInternalReaderSession)
   {
-    if (-[NFCTag type](self, "type") != 1 || [v6 length] < 0x101)
+    if (-[NFCTag type](self, "type") != 1 || [dataCopy length] < 0x101)
     {
       goto LABEL_8;
     }
@@ -1202,10 +1202,10 @@ LABEL_8:
     v14[2] = sub_2372B619C;
     v14[3] = &unk_278A29ED8;
     v14[4] = self;
-    v15 = v8;
-    v16 = v6;
-    v17 = v7;
-    v13 = v7;
+    v15 = _getInternalReaderSession;
+    v16 = dataCopy;
+    v17 = handlerCopy;
+    v13 = handlerCopy;
     [v15 submitBlockOnSessionQueue:v14];
 
     goto LABEL_9;
@@ -1216,34 +1216,34 @@ LABEL_8:
   v18[2] = sub_2372B6184;
   v18[3] = &unk_278A29D48;
   v19 = v10;
-  v20 = v7;
+  v20 = handlerCopy;
   v11 = v10;
-  v12 = v7;
+  v12 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v18];
 
 LABEL_9:
 }
 
-- (BOOL)_transceiveWithSession:(id)a3 sendData:(id)a4 receivedData:(id *)a5 error:(id *)a6
+- (BOOL)_transceiveWithSession:(id)session sendData:(id)data receivedData:(id *)receivedData error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (a5)
+  sessionCopy = session;
+  dataCopy = data;
+  if (receivedData)
   {
-    *a5 = 0;
+    *receivedData = 0;
   }
 
   if (self->_configuration)
   {
     v32 = 0;
-    v16 = [(NFCTag *)self _connectWithSession:v10 outError:&v32];
+    v16 = [(NFCTag *)self _connectWithSession:sessionCopy outError:&v32];
     v17 = v32;
     v15 = v17;
     if (v16)
     {
       v30 = v17;
       v31 = 0;
-      v13 = [v10 transceive:v11 tagUpdate:&v31 error:&v30];
+      v13 = [sessionCopy transceive:dataCopy tagUpdate:&v31 error:&v30];
       v14 = v31;
       v18 = v30;
 
@@ -1262,7 +1262,7 @@ LABEL_9:
       }
 
       v15 = v18;
-      if (a5)
+      if (receivedData)
       {
         goto LABEL_14;
       }
@@ -1272,23 +1272,23 @@ LABEL_9:
     {
       v13 = 0;
       v14 = 0;
-      if (a5)
+      if (receivedData)
       {
 LABEL_14:
         v19 = v13;
-        *a5 = v13;
+        *receivedData = v13;
       }
     }
   }
 
   else
   {
-    v12 = [v10 currentTag];
-    if ([v12 isEqualToNFTag:self->_tag])
+    currentTag = [sessionCopy currentTag];
+    if ([currentTag isEqualToNFTag:self->_tag])
     {
       v26 = 0;
       v27 = 0;
-      v13 = [v10 transceive:v11 tagUpdate:&v27 error:&v26];
+      v13 = [sessionCopy transceive:dataCopy tagUpdate:&v27 error:&v26];
       v14 = v27;
       v15 = v26;
       if (v14)
@@ -1313,16 +1313,16 @@ LABEL_14:
       v14 = 0;
     }
 
-    if (a5)
+    if (receivedData)
     {
       goto LABEL_14;
     }
   }
 
-  if (a6)
+  if (error)
   {
     v20 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   if (v15)
@@ -1340,26 +1340,26 @@ LABEL_14:
   return v22;
 }
 
-- (void)_sendAPDU:(id)a3 completionHandler:(id)a4
+- (void)_sendAPDU:(id)u completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372B6630;
   v8[3] = &unk_278A29C10;
-  v9 = v6;
-  v7 = v6;
-  [(NFCTag *)self _transceiveWithData:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(NFCTag *)self _transceiveWithData:u completionHandler:v8];
 }
 
-- (BOOL)isMatchingSession:(id)a3 outError:(id *)a4
+- (BOOL)isMatchingSession:(id)session outError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sessionId];
+  sessionCopy = session;
+  sessionId = [sessionCopy sessionId];
 
-  if (!v7)
+  if (!sessionId)
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_8;
@@ -1369,14 +1369,14 @@ LABEL_14:
   }
 
   sessionKey = self->_sessionKey;
-  v9 = [v6 sessionId];
-  v10 = [(NSNumber *)sessionKey isEqualToNumber:v9];
+  sessionId2 = [sessionCopy sessionId];
+  v10 = [(NSNumber *)sessionKey isEqualToNumber:sessionId2];
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
 LABEL_6:
     [NFCError errorWithCode:103];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_8:

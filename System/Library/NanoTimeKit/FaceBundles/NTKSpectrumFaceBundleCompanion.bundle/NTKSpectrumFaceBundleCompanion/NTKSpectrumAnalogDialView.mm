@@ -1,55 +1,55 @@
 @interface NTKSpectrumAnalogDialView
 + (id)_disabledLayerActions;
-- (NTKSpectrumAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
-- (double)_tickOpactiyAtIndex:(int64_t)a3 bezelTextWidthInRadius:(double)a4 invisibleTicksAlpha:(double)a5;
-- (id)_instantaneousAnimationForKeyPath:(id)a3 value:(id)a4;
-- (void)_toggleRasterization:(BOOL)a3;
-- (void)fillDialTransitionWithFraction:(double)a3 bezelTextWidthRadians:(double)a4;
+- (NTKSpectrumAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device;
+- (double)_tickOpactiyAtIndex:(int64_t)index bezelTextWidthInRadius:(double)radius invisibleTicksAlpha:(double)alpha;
+- (id)_instantaneousAnimationForKeyPath:(id)path value:(id)value;
+- (void)_toggleRasterization:(BOOL)rasterization;
+- (void)fillDialTransitionWithFraction:(double)fraction bezelTextWidthRadians:(double)radians;
 - (void)layoutSubviews;
-- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)a3 invisbleTicksAlpha:(double)a4;
-- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)a3 finalBezelTextWidthInRadius:(double)a4 fraction:(double)a5;
+- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)radius invisbleTicksAlpha:(double)alpha;
+- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)radius finalBezelTextWidthInRadius:(double)inRadius fraction:(double)fraction;
 @end
 
 @implementation NTKSpectrumAnalogDialView
 
-- (NTKSpectrumAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKSpectrumAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v53.receiver = self;
   v53.super_class = NTKSpectrumAnalogDialView;
-  v11 = [(NTKSpectrumAnalogDialView *)&v53 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKSpectrumAnalogDialView *)&v53 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     [(NTKSpectrumAnalogDialView *)v12 setOpaque:0];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
     sub_25B0(v12->_device, &v49);
-    v13 = [(NTKSpectrumAnalogDialView *)v12 layer];
-    [v13 bounds];
+    layer = [(NTKSpectrumAnalogDialView *)v12 layer];
+    [layer bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v22 = v18 * 0.5;
     v23 = v20 * 0.5;
-    v24 = [objc_opt_class() _disabledLayerActions];
+    _disabledLayerActions = [objc_opt_class() _disabledLayerActions];
     v25 = objc_opt_new();
     ticksLayer = v12->_ticksLayer;
     v12->_ticksLayer = v25;
 
     [(CALayer *)v12->_ticksLayer setPosition:v22, v23];
     [(CALayer *)v12->_ticksLayer setBounds:v15, v17, v19, v21];
-    [(CALayer *)v12->_ticksLayer setActions:v24];
-    v45 = v13;
-    [v13 addSublayer:v12->_ticksLayer];
+    [(CALayer *)v12->_ticksLayer setActions:_disabledLayerActions];
+    v45 = layer;
+    [layer addSublayer:v12->_ticksLayer];
     v27 = +[NSMutableArray array];
     v28 = +[UIColor grayColor];
     v29 = +[UIColor whiteColor];
@@ -119,7 +119,7 @@
       [v36 setBounds:{0.0, 0.0, v38, v39}];
       [v37 setCornerRadius:v40];
       [v37 setPosition:{v22, v41}];
-      [v37 setActions:v24];
+      [v37 setActions:_disabledLayerActions];
       [v37 setBackgroundColor:{objc_msgSend(v42, "CGColor")}];
       [(CALayer *)v12->_ticksLayer addSublayer:v37];
       [(NSArray *)v27 addObject:v37];
@@ -195,12 +195,12 @@
   while (v5 != 120);
 }
 
-- (id)_instantaneousAnimationForKeyPath:(id)a3 value:(id)a4
+- (id)_instantaneousAnimationForKeyPath:(id)path value:(id)value
 {
-  v4 = a4;
+  valueCopy = value;
   v5 = [CABasicAnimation animationWithKeyPath:@"instanceDelay"];
-  [v5 setFromValue:v4];
-  [v5 setToValue:v4];
+  [v5 setFromValue:valueCopy];
+  [v5 setToValue:valueCopy];
 
   [v5 setBeginTime:0.00000011920929];
   [v5 setDuration:0.00001];
@@ -209,21 +209,21 @@
   return v5;
 }
 
-- (void)fillDialTransitionWithFraction:(double)a3 bezelTextWidthRadians:(double)a4
+- (void)fillDialTransitionWithFraction:(double)fraction bezelTextWidthRadians:(double)radians
 {
-  v6 = ([(NSArray *)self->_allTicks count]* a3);
+  v6 = ([(NSArray *)self->_allTicks count]* fraction);
   allTicks = self->_allTicks;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_203C;
   v8[3] = &unk_10498;
   v8[4] = self;
-  *&v8[5] = a4;
+  *&v8[5] = radians;
   v8[6] = v6;
   [(NSArray *)allTicks enumerateObjectsUsingBlock:v8];
 }
 
-- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)a3 finalBezelTextWidthInRadius:(double)a4 fraction:(double)a5
+- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)radius finalBezelTextWidthInRadius:(double)inRadius fraction:(double)fraction
 {
   allTicks = self->_allTicks;
   v6[0] = _NSConcreteStackBlock;
@@ -231,13 +231,13 @@
   v6[2] = sub_2160;
   v6[3] = &unk_104C0;
   v6[4] = self;
-  *&v6[5] = a3;
-  *&v6[6] = a4;
-  *&v6[7] = a5;
+  *&v6[5] = radius;
+  *&v6[6] = inRadius;
+  *&v6[7] = fraction;
   [(NSArray *)allTicks enumerateObjectsUsingBlock:v6];
 }
 
-- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)a3 invisbleTicksAlpha:(double)a4
+- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)radius invisbleTicksAlpha:(double)alpha
 {
   allTicks = self->_allTicks;
   v5[0] = _NSConcreteStackBlock;
@@ -245,8 +245,8 @@
   v5[2] = sub_2288;
   v5[3] = &unk_10498;
   v5[4] = self;
-  *&v5[5] = a3;
-  *&v5[6] = a4;
+  *&v5[5] = radius;
+  *&v5[6] = alpha;
   [(NSArray *)allTicks enumerateObjectsUsingBlock:v5];
 }
 
@@ -262,39 +262,39 @@
   return v3;
 }
 
-- (double)_tickOpactiyAtIndex:(int64_t)a3 bezelTextWidthInRadius:(double)a4 invisibleTicksAlpha:(double)a5
+- (double)_tickOpactiyAtIndex:(int64_t)index bezelTextWidthInRadius:(double)radius invisibleTicksAlpha:(double)alpha
 {
-  if (a3 >= 61)
+  if (index >= 61)
   {
     [(NSArray *)self->_allTicks count];
   }
 
   CLKDegreesToRadians();
-  v8 = v7 < a4 * 0.5;
+  v8 = v7 < radius * 0.5;
   result = 1.0;
   if (v8)
   {
-    return a5;
+    return alpha;
   }
 
   return result;
 }
 
-- (void)_toggleRasterization:(BOOL)a3
+- (void)_toggleRasterization:(BOOL)rasterization
 {
-  v3 = a3;
-  v5 = [(NTKSpectrumAnalogDialView *)self layer];
-  v6 = v5;
-  if (v3)
+  rasterizationCopy = rasterization;
+  layer = [(NTKSpectrumAnalogDialView *)self layer];
+  v6 = layer;
+  if (rasterizationCopy)
   {
-    [v5 setShouldRasterize:1];
+    [layer setShouldRasterize:1];
     [(CLKDevice *)self->_device screenScale];
     [v6 setRasterizationScale:?];
   }
 
   else
   {
-    [v5 setShouldRasterize:0];
+    [layer setShouldRasterize:0];
   }
 }
 

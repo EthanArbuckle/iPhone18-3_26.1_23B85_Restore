@@ -1,15 +1,15 @@
 @interface ABCPbSigGrantResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsGlobalDecision:(id)a3;
+- (int)StringAsGlobalDecision:(id)decision;
 - (int)globalDecision;
 - (unint64_t)hash;
-- (void)addSigResponse:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSigResponse:(id)response;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABCPbSigGrantResponse
@@ -27,20 +27,20 @@
   }
 }
 
-- (int)StringAsGlobalDecision:(id)a3
+- (int)StringAsGlobalDecision:(id)decision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ALL_FALSE"])
+  decisionCopy = decision;
+  if ([decisionCopy isEqualToString:@"ALL_FALSE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ALL_TRUE"])
+  else if ([decisionCopy isEqualToString:@"ALL_TRUE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FOLLOW_SIG_RESPONSE"])
+  else if ([decisionCopy isEqualToString:@"FOLLOW_SIG_RESPONSE"])
   {
     v4 = 2;
   }
@@ -53,22 +53,22 @@
   return v4;
 }
 
-- (void)addSigResponse:(id)a3
+- (void)addSigResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   sigResponses = self->_sigResponses;
-  v8 = v4;
+  v8 = responseCopy;
   if (!sigResponses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sigResponses;
     self->_sigResponses = v6;
 
-    v4 = v8;
+    responseCopy = v8;
     sigResponses = self->_sigResponses;
   }
 
-  [(NSMutableArray *)sigResponses addObject:v4];
+  [(NSMutableArray *)sigResponses addObject:responseCopy];
 }
 
 - (NSString)description
@@ -77,8 +77,8 @@
   v8.receiver = self;
   v8.super_class = ABCPbSigGrantResponse;
   v4 = [(ABCPbSigGrantResponse *)&v8 description];
-  v5 = [(ABCPbSigGrantResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ABCPbSigGrantResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -86,7 +86,7 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     globalDecision = self->_globalDecision;
@@ -100,13 +100,13 @@
       v5 = off_278CF1FA0[globalDecision];
     }
 
-    [v3 setObject:v5 forKey:@"global_decision"];
+    [dictionary setObject:v5 forKey:@"global_decision"];
   }
 
   status = self->_status;
   if (status)
   {
-    [v3 setObject:status forKey:@"status"];
+    [dictionary setObject:status forKey:@"status"];
   }
 
   if ([(NSMutableArray *)self->_sigResponses count])
@@ -131,8 +131,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -141,25 +141,25 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"sig_response"];
+    [dictionary setObject:v7 forKey:@"sig_response"];
   }
 
   sigConfigWhitelist = self->_sigConfigWhitelist;
   if (sigConfigWhitelist)
   {
-    v15 = [(ABCPbSigConfigWhitelist *)sigConfigWhitelist dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"sig_config_whitelist"];
+    dictionaryRepresentation2 = [(ABCPbSigConfigWhitelist *)sigConfigWhitelist dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sig_config_whitelist"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     globalDecision = self->_globalDecision;
@@ -211,28 +211,28 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_globalDecision;
-    *(v4 + 40) |= 1u;
+    toCopy[2] = self->_globalDecision;
+    *(toCopy + 40) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_status)
   {
-    [v4 setStatus:?];
+    [toCopy setStatus:?];
   }
 
   if ([(ABCPbSigGrantResponse *)self sigResponsesCount])
   {
     [v9 clearSigResponses];
-    v5 = [(ABCPbSigGrantResponse *)self sigResponsesCount];
-    if (v5)
+    sigResponsesCount = [(ABCPbSigGrantResponse *)self sigResponsesCount];
+    if (sigResponsesCount)
     {
-      v6 = v5;
+      v6 = sigResponsesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ABCPbSigGrantResponse *)self sigResponseAtIndex:i];
@@ -247,10 +247,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -258,7 +258,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_status copyWithZone:a3];
+  v7 = [(NSString *)self->_status copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -282,7 +282,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * v13) copyWithZone:{a3, v19}];
+        v14 = [*(*(&v19 + 1) + 8 * v13) copyWithZone:{zone, v19}];
         [v6 addSigResponse:v14];
 
         ++v13;
@@ -295,7 +295,7 @@
     while (v11);
   }
 
-  v15 = [(ABCPbSigConfigWhitelist *)self->_sigConfigWhitelist copyWithZone:a3];
+  v15 = [(ABCPbSigConfigWhitelist *)self->_sigConfigWhitelist copyWithZone:zone];
   v16 = v6[2];
   v6[2] = v15;
 
@@ -303,24 +303,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_globalDecision != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_globalDecision != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -328,13 +328,13 @@ LABEL_13:
   }
 
   status = self->_status;
-  if (status | *(v4 + 4) && ![(NSString *)status isEqual:?])
+  if (status | *(equalCopy + 4) && ![(NSString *)status isEqual:?])
   {
     goto LABEL_13;
   }
 
   sigResponses = self->_sigResponses;
-  if (sigResponses | *(v4 + 3))
+  if (sigResponses | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)sigResponses isEqual:?])
     {
@@ -343,7 +343,7 @@ LABEL_13:
   }
 
   sigConfigWhitelist = self->_sigConfigWhitelist;
-  if (sigConfigWhitelist | *(v4 + 2))
+  if (sigConfigWhitelist | *(equalCopy + 2))
   {
     v9 = [(ABCPbSigConfigWhitelist *)sigConfigWhitelist isEqual:?];
   }
@@ -375,18 +375,18 @@ LABEL_14:
   return v4 ^ v5 ^ [(ABCPbSigConfigWhitelist *)self->_sigConfigWhitelist hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_globalDecision = *(v4 + 2);
+    self->_globalDecision = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(ABCPbSigGrantResponse *)self setStatus:?];
   }

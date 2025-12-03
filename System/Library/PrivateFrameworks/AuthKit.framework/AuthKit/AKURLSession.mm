@@ -1,5 +1,5 @@
 @interface AKURLSession
-+ (id)_createURLSessionUsesAppleIDContext:(BOOL)a3;
++ (id)_createURLSessionUsesAppleIDContext:(BOOL)context;
 + (id)_urlBagCache;
 + (id)sharedAnisetteFreeURLSession;
 + (id)sharedCacheEnabledAnisetteFreeSession;
@@ -9,29 +9,29 @@
 + (id)sharedURLSessionWithDenyVirtualInterfaces;
 + (void)removeAllCachedResponses;
 - (AKURLSession)init;
-- (BOOL)_unsafe_retryTaskIfPossible:(id)a3;
-- (BOOL)isRecoverableError:(id)a3;
+- (BOOL)_unsafe_retryTaskIfPossible:(id)possible;
+- (BOOL)isRecoverableError:(id)error;
 - (id)_URLSession;
-- (id)beginAuthenticationDataTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (id)beginDataTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (id)defaultSessionObjectWithConfiguration:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_unsafe_completeTask:(id)a3 withError:(id)a4;
-- (void)cancelDataTask:(id)a3;
+- (id)beginAuthenticationDataTaskWithRequest:(id)request completionHandler:(id)handler;
+- (id)beginDataTaskWithRequest:(id)request completionHandler:(id)handler;
+- (id)defaultSessionObjectWithConfiguration:(id)configuration;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_unsafe_completeTask:(id)task withError:(id)error;
+- (void)cancelDataTask:(id)task;
 @end
 
 @implementation AKURLSession
 
-+ (id)_createURLSessionUsesAppleIDContext:(BOOL)a3
++ (id)_createURLSessionUsesAppleIDContext:(BOOL)context
 {
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(AKURLSession);
-  [(AKURLSession *)v5 set_usesAppleIDContext:v6];
+  [(AKURLSession *)v5 set_usesAppleIDContext:contextCopy];
   v4 = MEMORY[0x1E69E5928](v5);
   objc_storeStrong(&v5, 0);
 
@@ -40,14 +40,14 @@
 
 + (id)sharedURLSession
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __32__AKURLSession_sharedURLSession__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedURLSession_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -72,14 +72,14 @@ uint64_t __32__AKURLSession_sharedURLSession__block_invoke(uint64_t a1)
 
 + (id)sharedAnisetteFreeURLSession
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __44__AKURLSession_sharedAnisetteFreeURLSession__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedAnisetteFreeURLSession_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -104,14 +104,14 @@ uint64_t __44__AKURLSession_sharedAnisetteFreeURLSession__block_invoke(uint64_t 
 
 + (id)sharedCacheEnabledURLSession
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __44__AKURLSession_sharedCacheEnabledURLSession__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedCacheEnabledURLSession_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -152,14 +152,14 @@ void __44__AKURLSession_sharedCacheEnabledURLSession__block_invoke(id *a1)
 
 + (id)sharedURLSessionWithDenyVirtualInterfaces
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __57__AKURLSession_sharedURLSessionWithDenyVirtualInterfaces__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedURLSessionWithDenyVirtualInterfaces_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -239,14 +239,14 @@ void __57__AKURLSession_sharedURLSessionWithDenyVirtualInterfaces__block_invoke(
 
 + (id)sharedCacheEnabledAnisetteFreeSession
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __53__AKURLSession_sharedCacheEnabledAnisetteFreeSession__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedCacheEnabledAnisetteFreeSession_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -284,14 +284,14 @@ void __53__AKURLSession_sharedCacheEnabledAnisetteFreeSession__block_invoke(id *
 
 + (id)sharedCacheReliantAnisetteFreeSession
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __53__AKURLSession_sharedCacheReliantAnisetteFreeSession__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedCacheReliantAnisetteFreeSession_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -388,9 +388,9 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
 
 + (void)removeAllCachedResponses
 {
-  v2 = [a1 _urlBagCache];
-  [v2 removeAllCachedResponses];
-  MEMORY[0x1E69E5920](v2);
+  _urlBagCache = [self _urlBagCache];
+  [_urlBagCache removeAllCachedResponses];
+  MEMORY[0x1E69E5920](_urlBagCache);
 }
 
 - (AKURLSession)init
@@ -434,15 +434,15 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
   return v9;
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, error);
   v20 = _AKLogSystem();
   v19 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -452,8 +452,8 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
   }
 
   objc_storeStrong(&v20, 0);
-  v18 = [(NSMutableDictionary *)v23->_tasksByIdentifier allValues];
-  if ([v18 count])
+  allValues = [(NSMutableDictionary *)selfCopy->_tasksByIdentifier allValues];
+  if ([allValues count])
   {
     oslog = _AKLogSystem();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -467,7 +467,7 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
 
     objc_storeStrong(&oslog, 0);
     memset(__b, 0, sizeof(__b));
-    v8 = MEMORY[0x1E69E5928](v18);
+    v8 = MEMORY[0x1E69E5928](allValues);
     v9 = [v8 countByEnumeratingWithState:__b objects:v24 count:16];
     if (v9)
     {
@@ -483,7 +483,7 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
         }
 
         v14 = *(__b[1] + 8 * v6);
-        [(AKURLSession *)v23 _unsafe_completeTask:v14 withError:v21];
+        [(AKURLSession *)selfCopy _unsafe_completeTask:v14 withError:v21];
         ++v6;
         if (v4 + 1 >= v7)
         {
@@ -500,8 +500,8 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
     MEMORY[0x1E69E5920](v8);
   }
 
-  objc_storeStrong(&v23->_urlSession, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy->_urlSession, 0);
+  objc_storeStrong(&allValues, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -509,7 +509,7 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
 
 - (id)_URLSession
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_urlSession)
   {
@@ -524,64 +524,64 @@ void __28__AKURLSession__urlBagCache__block_invoke(void *a1)
     }
 
     objc_storeStrong(location, 0);
-    v9 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-    [v9 setWaitsForConnectivity:1];
-    [v9 setTimeoutIntervalForResource:0x3CuLL];
-    if ([(AKURLSession *)v13 _usesAppleIDContext])
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    [defaultSessionConfiguration setWaitsForConnectivity:1];
+    [defaultSessionConfiguration setTimeoutIntervalForResource:0x3CuLL];
+    if ([(AKURLSession *)selfCopy _usesAppleIDContext])
     {
       v6 = [[AKAppleIDSession alloc] initWithIdentifier:@"AuthKitURLSession"];
-      [v9 set_appleIDContext:?];
+      [defaultSessionConfiguration set_appleIDContext:?];
       MEMORY[0x1E69E5920](v6);
     }
 
-    v2 = [(AKURLSession *)v13 defaultSessionObjectWithConfiguration:v9];
-    urlSession = v13->_urlSession;
-    v13->_urlSession = v2;
+    v2 = [(AKURLSession *)selfCopy defaultSessionObjectWithConfiguration:defaultSessionConfiguration];
+    urlSession = selfCopy->_urlSession;
+    selfCopy->_urlSession = v2;
     MEMORY[0x1E69E5920](urlSession);
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&defaultSessionConfiguration, 0);
   }
 
-  v4 = v13->_urlSession;
+  v4 = selfCopy->_urlSession;
 
   return v4;
 }
 
-- (id)defaultSessionObjectWithConfiguration:(id)a3
+- (id)defaultSessionObjectWithConfiguration:(id)configuration
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v5 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   [v5 setMaxConcurrentOperationCount:1];
-  [v5 setUnderlyingQueue:v7->_sessionQueue];
-  v4 = [MEMORY[0x1E695AC78] sessionWithConfiguration:location[0] delegate:v7 delegateQueue:v5];
+  [v5 setUnderlyingQueue:selfCopy->_sessionQueue];
+  v4 = [MEMORY[0x1E695AC78] sessionWithConfiguration:location[0] delegate:selfCopy delegateQueue:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)beginDataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (id)beginDataTaskWithRequest:(id)request completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, handler);
   if (location[0] && v23)
   {
     v19 = objc_alloc_init(AKURLDataTask);
-    queue = v25->_sessionQueue;
+    queue = selfCopy->_sessionQueue;
     v10 = MEMORY[0x1E69E9820];
     v11 = -1073741824;
     v12 = 0;
     v13 = __59__AKURLSession_beginDataTaskWithRequest_completionHandler___block_invoke;
     v14 = &unk_1E73D4058;
     v15 = MEMORY[0x1E69E5928](location[0]);
-    v16 = MEMORY[0x1E69E5928](v25);
+    v16 = MEMORY[0x1E69E5928](selfCopy);
     v17 = MEMORY[0x1E69E5928](v19);
     v18 = MEMORY[0x1E69E5928](v23);
     dispatch_async(queue, &v10);
@@ -661,20 +661,20 @@ void __59__AKURLSession_beginDataTaskWithRequest_completionHandler___block_invok
   *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelDataTask:(id)a3
+- (void)cancelDataTask:(id)task
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_sessionQueue;
+  objc_storeStrong(location, task);
+  queue = selfCopy->_sessionQueue;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __31__AKURLSession_cancelDataTask___block_invoke;
   v8 = &unk_1E73D4080;
   v9 = MEMORY[0x1E69E5928](location[0]);
-  v10 = MEMORY[0x1E69E5928](v12);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
@@ -724,46 +724,46 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_unsafe_completeTask:(id)a3 withError:(id)a4
+- (void)_unsafe_completeTask:(id)task withError:(id)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, error);
   v5 = MEMORY[0x1E696AD98];
-  v6 = [location[0] underlyingTask];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "taskIdentifier")}];
-  MEMORY[0x1E69E5920](v6);
-  [(NSMutableDictionary *)v10->_tasksByIdentifier removeObjectForKey:v7];
+  underlyingTask = [location[0] underlyingTask];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(underlyingTask, "taskIdentifier")}];
+  MEMORY[0x1E69E5920](underlyingTask);
+  [(NSMutableDictionary *)selfCopy->_tasksByIdentifier removeObjectForKey:v7];
   [location[0] _completeWithError:v8];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, task);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, data);
   if (v17)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v18, "taskIdentifier")}];
-    v11 = [(NSMutableDictionary *)v20->_tasksByIdentifier objectForKey:v12];
-    v10 = [v11 receivedData];
-    if (!v10)
+    v11 = [(NSMutableDictionary *)selfCopy->_tasksByIdentifier objectForKey:v12];
+    receivedData = [v11 receivedData];
+    if (!receivedData)
     {
-      v10 = objc_alloc_init(MEMORY[0x1E695DF88]);
+      receivedData = objc_alloc_init(MEMORY[0x1E695DF88]);
       MEMORY[0x1E69E5920](0);
-      [v11 setReceivedData:v10];
+      [v11 setReceivedData:receivedData];
     }
 
     oslog = _AKLogSystem();
@@ -774,8 +774,8 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
     }
 
     objc_storeStrong(&oslog, 0);
-    [v10 appendData:v17];
-    objc_storeStrong(&v10, 0);
+    [receivedData appendData:v17];
+    objc_storeStrong(&receivedData, 0);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v12, 0);
     v13 = 0;
@@ -803,17 +803,17 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, task);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, error);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -824,9 +824,9 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
 
   objc_storeStrong(&v16, 0);
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v18, "taskIdentifier")}];
-  v13 = [(NSMutableDictionary *)v20->_tasksByIdentifier objectForKey:v14];
+  v13 = [(NSMutableDictionary *)selfCopy->_tasksByIdentifier objectForKey:v14];
   v12 = 0;
-  if (v17 && [(AKURLSession *)v20 isRecoverableError:v17])
+  if (v17 && [(AKURLSession *)selfCopy isRecoverableError:v17])
   {
     oslog = _AKLogSystem();
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -840,12 +840,12 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
 
     objc_storeStrong(&oslog, 0);
     [v13 setLastRetryError:v17];
-    v12 = [(AKURLSession *)v20 _unsafe_retryTaskIfPossible:v13];
+    v12 = [(AKURLSession *)selfCopy _unsafe_retryTaskIfPossible:v13];
   }
 
   if (!v12)
   {
-    [(AKURLSession *)v20 _unsafe_completeTask:v13 withError:v17];
+    [(AKURLSession *)selfCopy _unsafe_completeTask:v13 withError:v17];
   }
 
   objc_storeStrong(&v13, 0);
@@ -856,15 +856,15 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isRecoverableError:(id)a3
+- (BOOL)isRecoverableError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E696A978]];
-  MEMORY[0x1E69E5920](v4);
+  objc_storeStrong(location, error);
+  domain = [location[0] domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E696A978]];
+  MEMORY[0x1E69E5920](domain);
   if (v5)
   {
     v7 = [location[0] code] == -997 || objc_msgSend(location[0], "code") == -1005 || objc_msgSend(location[0], "code") == -1001 || objc_msgSend(location[0], "code") == -1009;
@@ -879,13 +879,13 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)_unsafe_retryTaskIfPossible:(id)a3
+- (BOOL)_unsafe_retryTaskIfPossible:(id)possible
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, possible);
   v35 = &_unsafe_retryTaskIfPossible__onceToken;
   v34 = 0;
   objc_storeStrong(&v34, &__block_literal_global_97);
@@ -895,28 +895,28 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
   }
 
   objc_storeStrong(&v34, 0);
-  v30 = [location[0] request];
-  if (v30)
+  request = [location[0] request];
+  if (request)
   {
-    v26 = [location[0] retryCount];
+    retryCount = [location[0] retryCount];
     v25 = _AKLogSystem();
     v24 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v26];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:retryCount];
       __os_log_helper_16_2_1_8_64(v38, v10);
       _os_log_impl(&dword_193225000, v25, v24, "This request has been retried %@ times.", v38, 0xCu);
       MEMORY[0x1E69E5920](v10);
     }
 
     objc_storeStrong(&v25, 0);
-    v9 = v26;
+    v9 = retryCount;
     if (v9 < [_unsafe_retryTaskIfPossible__retryIntervals count])
     {
-      v7 = [_unsafe_retryTaskIfPossible__retryIntervals objectAtIndexedSubscript:v26];
-      v8 = [v7 integerValue];
+      v7 = [_unsafe_retryTaskIfPossible__retryIntervals objectAtIndexedSubscript:retryCount];
+      integerValue = [v7 integerValue];
       MEMORY[0x1E69E5920](v7);
-      v21 = v8;
+      v21 = integerValue;
       v20 = _AKLogSystem();
       v19 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -929,16 +929,16 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
 
       objc_storeStrong(&v20, 0);
       when = dispatch_time(0, (v21 * 1000000000.0));
-      queue = v32->_sessionQueue;
+      queue = selfCopy->_sessionQueue;
       v11 = MEMORY[0x1E69E9820];
       v12 = -1073741824;
       v13 = 0;
       v14 = __44__AKURLSession__unsafe_retryTaskIfPossible___block_invoke_101;
       v15 = &unk_1E73D40A8;
       v16 = MEMORY[0x1E69E5928](location[0]);
-      v17 = MEMORY[0x1E69E5928](v32);
-      v18[0] = MEMORY[0x1E69E5928](v30);
-      v18[1] = v26;
+      v17 = MEMORY[0x1E69E5928](selfCopy);
+      v18[0] = MEMORY[0x1E69E5928](request);
+      v18[1] = retryCount;
       dispatch_after(when, queue, &v11);
       v33 = 1;
       v27 = 1;
@@ -978,7 +978,7 @@ void __31__AKURLSession_cancelDataTask___block_invoke(uint64_t a1)
     v27 = 1;
   }
 
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&request, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   return v33 & 1;
@@ -1023,15 +1023,15 @@ void __44__AKURLSession__unsafe_retryTaskIfPossible___block_invoke_101(uint64_t 
   *MEMORY[0x1E69E9840];
 }
 
-- (id)beginAuthenticationDataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (id)beginAuthenticationDataTaskWithRequest:(id)request completionHandler:(id)handler
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  if ([(AKServerBackoffHelper *)v31->_serverBackoffHelper shouldBackoffRequest:location[0]])
+  objc_storeStrong(&v29, handler);
+  if ([(AKServerBackoffHelper *)selfCopy->_serverBackoffHelper shouldBackoffRequest:location[0]])
   {
     if (v29)
     {
@@ -1054,7 +1054,7 @@ void __44__AKURLSession__unsafe_retryTaskIfPossible___block_invoke_101(uint64_t 
     v25 = __Block_byref_object_copy__0;
     v26 = __Block_byref_object_dispose__0;
     v27 = 0;
-    v9 = v31;
+    v9 = selfCopy;
     v8 = location[0];
     v13 = MEMORY[0x1E69E9820];
     v14 = -1073741824;
@@ -1063,7 +1063,7 @@ void __44__AKURLSession__unsafe_retryTaskIfPossible___block_invoke_101(uint64_t 
     v17 = &unk_1E73D40D0;
     v20[1] = &v21;
     v20[0] = MEMORY[0x1E69E5928](v29);
-    v18 = MEMORY[0x1E69E5928](v31);
+    v18 = MEMORY[0x1E69E5928](selfCopy);
     v19 = MEMORY[0x1E69E5928](location[0]);
     v4 = [(AKURLSession *)v9 beginDataTaskWithRequest:v8 completionHandler:&v13];
     v5 = v22[5];
@@ -1281,21 +1281,21 @@ void __73__AKURLSession_beginAuthenticationDataTaskWithRequest_completionHandler
   *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, challenge);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
-  v20 = [v30 protectionSpace];
-  v19 = [v20 host];
-  v21 = [v19 containsString:@"icloud.com"];
-  MEMORY[0x1E69E5920](v19);
-  MEMORY[0x1E69E5920](v20);
+  objc_storeStrong(&v29, handler);
+  protectionSpace = [v30 protectionSpace];
+  host = [protectionSpace host];
+  v21 = [host containsString:@"icloud.com"];
+  MEMORY[0x1E69E5920](host);
+  MEMORY[0x1E69E5920](protectionSpace);
   if (v21)
   {
     v28 = _AKLogSystem();
@@ -1314,24 +1314,24 @@ void __73__AKURLSession_beginAuthenticationDataTaskWithRequest_completionHandler
 
   else
   {
-    v13 = [v30 protectionSpace];
-    v12 = [v13 authenticationMethod];
-    v14 = [v12 isEqualToString:*MEMORY[0x1E695AB80]];
-    MEMORY[0x1E69E5920](v12);
-    MEMORY[0x1E69E5920](v13);
+    protectionSpace2 = [v30 protectionSpace];
+    authenticationMethod = [protectionSpace2 authenticationMethod];
+    v14 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]];
+    MEMORY[0x1E69E5920](authenticationMethod);
+    MEMORY[0x1E69E5920](protectionSpace2);
     if ((v14 & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v10 = [v30 protectionSpace];
-    v7 = [v10 serverTrust];
-    v9 = [v30 protectionSpace];
-    v8 = [v9 host];
-    v11 = [AKCertificatePinning isValidCertificateTrust:v7 forHostname:?];
-    MEMORY[0x1E69E5920](v8);
-    MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
+    protectionSpace3 = [v30 protectionSpace];
+    serverTrust = [protectionSpace3 serverTrust];
+    protectionSpace4 = [v30 protectionSpace];
+    host2 = [protectionSpace4 host];
+    v11 = [AKCertificatePinning isValidCertificateTrust:serverTrust forHostname:?];
+    MEMORY[0x1E69E5920](host2);
+    MEMORY[0x1E69E5920](protectionSpace4);
+    MEMORY[0x1E69E5920](protectionSpace3);
     v25 = v11;
     if (v11)
     {

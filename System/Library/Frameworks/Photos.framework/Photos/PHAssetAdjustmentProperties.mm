@@ -1,24 +1,24 @@
 @interface PHAssetAdjustmentProperties
 + (id)propertiesToFetch;
-- (PHAssetAdjustmentProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetAdjustmentProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetAdjustmentProperties
 
-- (PHAssetAdjustmentProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetAdjustmentProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v22.receiver = self;
   v22.super_class = PHAssetAdjustmentProperties;
   v10 = [(PHAssetAdjustmentProperties *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    v12 = !v5;
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    v12 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v13 = @"additionalAttributes.unmanagedAdjustment.adjustmentFormatIdentifier";
     }
@@ -28,7 +28,7 @@
       v13 = @"unmanagedAdjustment.adjustmentFormatIdentifier";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"additionalAttributes.unmanagedAdjustment.adjustmentFormatVersion";
     }
@@ -48,15 +48,15 @@
       v15 = @"additionalAttributes.originalResourceChoice";
     }
 
-    v16 = [v8 objectForKeyedSubscript:v13];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v13];
     formatIdentifier = v11->_formatIdentifier;
     v11->_formatIdentifier = v16;
 
-    v18 = [v8 objectForKeyedSubscript:v14];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v14];
     formatVersion = v11->_formatVersion;
     v11->_formatVersion = v18;
 
-    v20 = [v8 objectForKeyedSubscript:v15];
+    v20 = [dictionaryCopy objectForKeyedSubscript:v15];
     v11->_originalResourceChoice = [v20 unsignedIntegerValue];
   }
 

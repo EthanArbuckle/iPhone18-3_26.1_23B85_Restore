@@ -1,26 +1,26 @@
 @interface SHServerMatchResponseParser
-+ (id)matcherResponseFromServerData:(id)a3 signature:(id)a4 location:(id)a5 context:(id)a6;
-+ (id)mediaItemFromResourcesResponse:(id)a3 shazamID:(id)a4 signatureStartDate:(id)a5 campaignToken:(id)a6 location:(id)a7;
++ (id)matcherResponseFromServerData:(id)data signature:(id)signature location:(id)location context:(id)context;
++ (id)mediaItemFromResourcesResponse:(id)response shazamID:(id)d signatureStartDate:(id)date campaignToken:(id)token location:(id)location;
 @end
 
 @implementation SHServerMatchResponseParser
 
-+ (id)matcherResponseFromServerData:(id)a3 signature:(id)a4 location:(id)a5 context:(id)a6
++ (id)matcherResponseFromServerData:(id)data signature:(id)signature location:(id)location context:(id)context
 {
-  v10 = a4;
-  v90 = a5;
-  v91 = a6;
+  signatureCopy = signature;
+  locationCopy = location;
+  contextCopy = context;
   v96 = 0;
-  v11 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v96];
+  v11 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v96];
   v12 = v96;
   if (v11)
   {
     v13 = [v11 objectForKeyedSubscript:@"errors"];
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v15 = [[SHServerErrorResponse alloc] initWithErrorDictionary:v14];
+      v15 = [[SHServerErrorResponse alloc] initWithErrorDictionary:firstObject];
     }
 
     else
@@ -48,18 +48,18 @@
       v20 = sh_log_object();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [(SHServerErrorResponse *)v15 error];
+        error = [(SHServerErrorResponse *)v15 error];
         *buf = 138412290;
-        v99 = v21;
+        v99 = error;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Server response parser: Error, %@", buf, 0xCu);
       }
 
       v22 = [SHMatcherResponse alloc];
-      [v91 defaultRecordingIntermissionInSeconds];
+      [contextCopy defaultRecordingIntermissionInSeconds];
       v24 = v23;
-      [v91 defaultRecordingSignatureOffsetInSeconds];
+      [contextCopy defaultRecordingSignatureOffsetInSeconds];
       v26 = v25;
-      v27 = [(SHServerErrorResponse *)v15 error];
+      error2 = [(SHServerErrorResponse *)v15 error];
       v28 = 0.0;
       v29 = v22;
       v30 = v24;
@@ -70,7 +70,7 @@
 LABEL_16:
     if (!v19 || !v15)
     {
-      v27 = [v11 objectForKeyedSubscript:@"resources"];
+      error2 = [v11 objectForKeyedSubscript:@"resources"];
       v45 = sh_log_object();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
       {
@@ -84,26 +84,26 @@ LABEL_16:
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEBUG, "Server response parser: Returning results, recording intermission %f, retry %f", buf, 0x16u);
       }
 
-      if (v27)
+      if (error2)
       {
         v84 = v18;
         v85 = v15;
-        v86 = v14;
+        v86 = firstObject;
         v87 = v12;
         v88 = v11;
-        v49 = v27;
+        v49 = error2;
         v50 = v19;
-        v51 = v10;
+        v51 = signatureCopy;
         v82 = v49;
         v52 = [[SHServerResourcesResponse alloc] initWithResourcesDictionary:v49];
         v83 = v50;
-        v53 = [(SHServerResultsResponse *)v50 shazamIDs];
-        v54 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v53 count]);
+        shazamIDs = [(SHServerResultsResponse *)v50 shazamIDs];
+        v54 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [shazamIDs count]);
         v92 = 0u;
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        obj = v53;
+        obj = shazamIDs;
         v55 = [obj countByEnumeratingWithState:&v92 objects:v97 count:16];
         if (v55)
         {
@@ -119,9 +119,9 @@ LABEL_16:
               }
 
               v59 = *(*(&v92 + 1) + 8 * i);
-              v60 = [v51 audioStartDate];
-              v61 = [v91 campaignToken];
-              v62 = [a1 mediaItemFromResourcesResponse:v52 shazamID:v59 signatureStartDate:v60 campaignToken:v61 location:v90];
+              audioStartDate = [v51 audioStartDate];
+              campaignToken = [contextCopy campaignToken];
+              v62 = [self mediaItemFromResourcesResponse:v52 shazamID:v59 signatureStartDate:audioStartDate campaignToken:campaignToken location:locationCopy];
 
               [v54 addObject:v62];
             }
@@ -134,7 +134,7 @@ LABEL_16:
 
         if ([v54 count])
         {
-          v10 = v51;
+          signatureCopy = v51;
           v63 = [[SHMatch alloc] initWithMediaItems:v54 forSignature:v51];
           v64 = sh_log_object();
           v12 = v87;
@@ -158,7 +158,7 @@ LABEL_16:
         else
         {
           v76 = sh_log_object();
-          v10 = v51;
+          signatureCopy = v51;
           v12 = v87;
           v18 = v84;
           if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
@@ -173,14 +173,14 @@ LABEL_16:
           [(SHServerResultsResponse *)v83 recordingSignatureOffsetSeconds];
           v80 = v79;
           [(SHServerResultsResponse *)v83 retrySeconds];
-          v17 = [SHMatcherResponse noMatchWithRecordingIntermission:v10 recordingSignatureOffset:v78 retrySeconds:v80 signature:v81];
+          v17 = [SHMatcherResponse noMatchWithRecordingIntermission:signatureCopy recordingSignatureOffset:v78 retrySeconds:v80 signature:v81];
         }
 
         v11 = v88;
 
         v15 = v85;
-        v14 = v86;
-        v27 = v82;
+        firstObject = v86;
+        error2 = v82;
         goto LABEL_23;
       }
 
@@ -196,7 +196,7 @@ LABEL_16:
       [(SHServerResultsResponse *)v19 recordingSignatureOffsetSeconds];
       v74 = v73;
       [(SHServerResultsResponse *)v19 retrySeconds];
-      v43 = [SHMatcherResponse noMatchWithRecordingIntermission:v10 recordingSignatureOffset:v72 retrySeconds:v74 signature:v75];
+      v43 = [SHMatcherResponse noMatchWithRecordingIntermission:signatureCopy recordingSignatureOffset:v72 retrySeconds:v74 signature:v75];
 LABEL_22:
       v17 = v43;
 LABEL_23:
@@ -224,13 +224,13 @@ LABEL_23:
     v40 = v39;
     [(SHServerResultsResponse *)v19 retrySeconds];
     v42 = v41;
-    v27 = [(SHServerErrorResponse *)v15 error];
+    error2 = [(SHServerErrorResponse *)v15 error];
     v29 = v36;
     v30 = v38;
     v31 = v40;
     v28 = v42;
 LABEL_21:
-    v43 = [v29 initWithRecordingIntermission:0 recordingSignatureOffset:v10 retrySeconds:0 match:v27 signature:v30 runningAssociatedRequestID:v31 error:v28];
+    v43 = [v29 initWithRecordingIntermission:0 recordingSignatureOffset:signatureCopy retrySeconds:0 match:error2 signature:v30 runningAssociatedRequestID:v31 error:v28];
     goto LABEL_22;
   }
 
@@ -242,81 +242,81 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Server response parser: No response %@", buf, 0xCu);
   }
 
-  v14 = [SHError errorWithCode:202 underlyingError:v12];
-  v17 = [SHMatcherResponse errorResponseForSignature:v10 error:v14];
+  firstObject = [SHError errorWithCode:202 underlyingError:v12];
+  v17 = [SHMatcherResponse errorResponseForSignature:signatureCopy error:firstObject];
 LABEL_24:
 
   return v17;
 }
 
-+ (id)mediaItemFromResourcesResponse:(id)a3 shazamID:(id)a4 signatureStartDate:(id)a5 campaignToken:(id)a6 location:(id)a7
++ (id)mediaItemFromResourcesResponse:(id)response shazamID:(id)d signatureStartDate:(id)date campaignToken:(id)token location:(id)location
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = [SHServerGetResponseParser mediaDictionaryFromResourcesResponse:v11 shazamID:v15 campaignToken:v14];
+  responseCopy = response;
+  dateCopy = date;
+  locationCopy = location;
+  tokenCopy = token;
+  dCopy = d;
+  v16 = [SHServerGetResponseParser mediaDictionaryFromResourcesResponse:responseCopy shazamID:dCopy campaignToken:tokenCopy];
   v17 = [v16 mutableCopy];
 
-  v18 = [v11 shazamResponse];
-  v19 = [v18 itemForIdentifier:v15];
+  shazamResponse = [responseCopy shazamResponse];
+  v19 = [shazamResponse itemForIdentifier:dCopy];
 
-  v20 = [v19 matchOffset];
-  [v17 setValue:v20 forKey:SHMediaItemMatchOffset];
+  matchOffset = [v19 matchOffset];
+  [v17 setValue:matchOffset forKey:SHMediaItemMatchOffset];
 
-  v21 = [v19 speedSkew];
-  [v17 setValue:v21 forKey:SHMediaItemSpeedSkew];
+  speedSkew = [v19 speedSkew];
+  [v17 setValue:speedSkew forKey:SHMediaItemSpeedSkew];
 
-  v22 = [v19 frequencySkew];
-  [v17 setValue:v22 forKey:SHMediaItemFrequencySkew];
+  frequencySkew = [v19 frequencySkew];
+  [v17 setValue:frequencySkew forKey:SHMediaItemFrequencySkew];
 
-  [v17 setValue:v12 forKey:SHMediaItemAudioStartDate];
-  v23 = [SHLocationTransformer coordinateValueFromLocation:v13];
+  [v17 setValue:dateCopy forKey:SHMediaItemAudioStartDate];
+  v23 = [SHLocationTransformer coordinateValueFromLocation:locationCopy];
 
   [v17 setValue:v23 forKey:SHMediaItemMatchLocationCoordinate];
-  v24 = [v19 confidence];
-  [v17 setValue:v24 forKey:SHMediaItemConfidence];
+  confidence = [v19 confidence];
+  [v17 setValue:confidence forKey:SHMediaItemConfidence];
 
-  v25 = [v19 songRelationIDs];
-  v26 = [v25 count];
+  songRelationIDs = [v19 songRelationIDs];
+  v26 = [songRelationIDs count];
 
   if (v26)
   {
-    v27 = [v11 songsResponse];
-    v28 = [v19 songRelationIDs];
-    v29 = [v27 itemForIdentifiers:v28];
+    songsResponse = [responseCopy songsResponse];
+    songRelationIDs2 = [v19 songRelationIDs];
+    v29 = [songsResponse itemForIdentifiers:songRelationIDs2];
 
-    v30 = [v29 lyricsRelationIDs];
-    v31 = [v30 count];
+    lyricsRelationIDs = [v29 lyricsRelationIDs];
+    v31 = [lyricsRelationIDs count];
 
     if (v31)
     {
-      v32 = [v11 lyricsResponse];
-      v33 = [v29 lyricsRelationIDs];
-      v34 = [v32 itemForIdentifiers:v33];
+      lyricsResponse = [responseCopy lyricsResponse];
+      lyricsRelationIDs2 = [v29 lyricsRelationIDs];
+      v34 = [lyricsResponse itemForIdentifiers:lyricsRelationIDs2];
 
-      v35 = [v19 matchOffset];
-      [v35 doubleValue];
+      matchOffset2 = [v19 matchOffset];
+      [matchOffset2 doubleValue];
       v36 = [v34 snippetFromOffset:?];
       [v17 setValue:v36 forKey:SHMediaItemSyncedLyricsSnippet];
 
-      v37 = [v19 matchOffset];
-      [v37 doubleValue];
-      v39 = [v12 dateByAddingTimeInterval:-v38];
+      matchOffset3 = [v19 matchOffset];
+      [matchOffset3 doubleValue];
+      v39 = [dateCopy dateByAddingTimeInterval:-v38];
 
       v40 = [SHSyncedLyrics alloc];
       v51 = v34;
       [v34 lyricLines];
-      v41 = v11;
-      v42 = v14;
-      v44 = v43 = v12;
-      v45 = [v34 songwriters];
-      v31 = [v40 initWithLyricsStartDate:v39 lines:v44 songwriters:v45];
+      v41 = responseCopy;
+      v42 = tokenCopy;
+      v44 = v43 = dateCopy;
+      songwriters = [v34 songwriters];
+      v31 = [v40 initWithLyricsStartDate:v39 lines:v44 songwriters:songwriters];
 
-      v12 = v43;
-      v14 = v42;
-      v11 = v41;
+      dateCopy = v43;
+      tokenCopy = v42;
+      responseCopy = v41;
     }
   }
 
@@ -330,7 +330,7 @@ LABEL_24:
   v47 = [v17 copy];
   v48 = [v46 initWithMatchedMediaItemDictionary:v47 syncedLyrics:v31];
 
-  v49 = [v29 rawResponseDataWithCampaignToken:v14];
+  v49 = [v29 rawResponseDataWithCampaignToken:tokenCopy];
 
   [v48 set_rawResponseSongsData:v49];
 

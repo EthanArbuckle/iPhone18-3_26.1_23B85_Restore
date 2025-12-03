@@ -1,63 +1,63 @@
 @interface PPSTimeIntervalSetGenerator
-- (PPSTimeIntervalSetGenerator)initWithDispatcher:(id)a3 settings:(unint64_t)a4 directionality:(unint64_t)a5;
-- (PPSTimeIntervalSetGenerator)initWithFilepath:(id)a3 settings:(unint64_t)a4 directionality:(unint64_t)a5;
+- (PPSTimeIntervalSetGenerator)initWithDispatcher:(id)dispatcher settings:(unint64_t)settings directionality:(unint64_t)directionality;
+- (PPSTimeIntervalSetGenerator)initWithFilepath:(id)filepath settings:(unint64_t)settings directionality:(unint64_t)directionality;
 - (id)fetchTimeSeriesForBatteryShutdown;
 - (id)fetchTimeSeriesForBootTime;
-- (id)intervalSetForTimeSeries:(id)a3 withIntervalStartCheckBlock:(id)a4 intervalEndCheckBlock:(id)a5 payloadBlock:(id)a6 coalescePolicy:(id)a7;
-- (id)intervalSetMapForTimeSeries:(id)a3 withGroupingDimensions:(id)a4 withIntervalStartCheckBlock:(id)a5 intervalEndCheckBlock:(id)a6 payloadBlock:(id)a7 coalescePolicy:(id)a8;
+- (id)intervalSetForTimeSeries:(id)series withIntervalStartCheckBlock:(id)block intervalEndCheckBlock:(id)checkBlock payloadBlock:(id)payloadBlock coalescePolicy:(id)policy;
+- (id)intervalSetMapForTimeSeries:(id)series withGroupingDimensions:(id)dimensions withIntervalStartCheckBlock:(id)block intervalEndCheckBlock:(id)checkBlock payloadBlock:(id)payloadBlock coalescePolicy:(id)policy;
 @end
 
 @implementation PPSTimeIntervalSetGenerator
 
-- (PPSTimeIntervalSetGenerator)initWithFilepath:(id)a3 settings:(unint64_t)a4 directionality:(unint64_t)a5
+- (PPSTimeIntervalSetGenerator)initWithFilepath:(id)filepath settings:(unint64_t)settings directionality:(unint64_t)directionality
 {
-  v8 = a3;
+  filepathCopy = filepath;
   v14.receiver = self;
   v14.super_class = PPSTimeIntervalSetGenerator;
   v9 = [(PPSTimeIntervalSetGenerator *)&v14 init];
   v10 = v9;
-  if (v8 && v9)
+  if (filepathCopy && v9)
   {
-    v11 = [[PPSRequestDispatcher alloc] initWithFilepath:v8];
+    v11 = [[PPSRequestDispatcher alloc] initWithFilepath:filepathCopy];
     dispatcher = v10->_dispatcher;
     v10->_dispatcher = v11;
 
-    v10->_settings = a4;
-    v10->_directionality = a5;
+    v10->_settings = settings;
+    v10->_directionality = directionality;
   }
 
   return v10;
 }
 
-- (PPSTimeIntervalSetGenerator)initWithDispatcher:(id)a3 settings:(unint64_t)a4 directionality:(unint64_t)a5
+- (PPSTimeIntervalSetGenerator)initWithDispatcher:(id)dispatcher settings:(unint64_t)settings directionality:(unint64_t)directionality
 {
-  v9 = a3;
+  dispatcherCopy = dispatcher;
   v13.receiver = self;
   v13.super_class = PPSTimeIntervalSetGenerator;
   v10 = [(PPSTimeIntervalSetGenerator *)&v13 init];
   v11 = v10;
-  if (v9 && v10)
+  if (dispatcherCopy && v10)
   {
-    objc_storeStrong(&v10->_dispatcher, a3);
-    v11->_settings = a4;
-    v11->_directionality = a5;
+    objc_storeStrong(&v10->_dispatcher, dispatcher);
+    v11->_settings = settings;
+    v11->_directionality = directionality;
   }
 
   return v11;
 }
 
-- (id)intervalSetForTimeSeries:(id)a3 withIntervalStartCheckBlock:(id)a4 intervalEndCheckBlock:(id)a5 payloadBlock:(id)a6 coalescePolicy:(id)a7
+- (id)intervalSetForTimeSeries:(id)series withIntervalStartCheckBlock:(id)block intervalEndCheckBlock:(id)checkBlock payloadBlock:(id)payloadBlock coalescePolicy:(id)policy
 {
   v96[1] = *MEMORY[0x277D85DE8];
-  v88 = a3;
-  v94 = a4;
-  v89 = a5;
-  v91 = a6;
-  v87 = a7;
+  seriesCopy = series;
+  blockCopy = block;
+  checkBlockCopy = checkBlock;
+  payloadBlockCopy = payloadBlock;
+  policyCopy = policy;
   v12 = +[PPSPerformanceProfiler sharedInstance];
   [v12 startProfilingForPhase:@"IntervalSetGeneration"];
 
-  v93 = [v88 copy];
+  v93 = [seriesCopy copy];
   settings = self->_settings;
   v90 = objc_opt_new();
   if (self->_directionality == 3)
@@ -67,18 +67,18 @@
 
   if (settings)
   {
-    v13 = [(PPSTimeIntervalSetGenerator *)self systemSleepTimeSeries];
-    if (v13)
+    systemSleepTimeSeries = [(PPSTimeIntervalSetGenerator *)self systemSleepTimeSeries];
+    if (systemSleepTimeSeries)
     {
-      [v93 mergeWithTimeSeries:v13];
+      [v93 mergeWithTimeSeries:systemSleepTimeSeries];
     }
 
-    if ([v13 count])
+    if ([systemSleepTimeSeries count])
     {
-      v14 = [v13 firstObject];
-      v15 = [v14 groupId];
+      firstObject = [systemSleepTimeSeries firstObject];
+      groupId = [firstObject groupId];
 
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:groupId];
       [v90 addObject:v16];
     }
   }
@@ -86,61 +86,61 @@
   if ((settings & 6) == 0)
   {
 LABEL_13:
-    v19 = -1;
+    groupId2 = -1;
   }
 
   else
   {
-    v17 = [(PPSTimeIntervalSetGenerator *)self systemHaltTimeSeries];
-    if (v17)
+    systemHaltTimeSeries = [(PPSTimeIntervalSetGenerator *)self systemHaltTimeSeries];
+    if (systemHaltTimeSeries)
     {
-      [v93 mergeWithTimeSeries:v17];
+      [v93 mergeWithTimeSeries:systemHaltTimeSeries];
     }
 
-    if ([v17 count])
+    if ([systemHaltTimeSeries count])
     {
-      v18 = [v17 firstObject];
-      v19 = [v18 groupId];
+      firstObject2 = [systemHaltTimeSeries firstObject];
+      groupId2 = [firstObject2 groupId];
 
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:groupId2];
       [v90 addObject:v20];
     }
 
     else
     {
-      v19 = -1;
+      groupId2 = -1;
     }
   }
 
-  v21 = [v93 firstObject];
-  [v21 monotonicTimestamp];
+  firstObject3 = [v93 firstObject];
+  [firstObject3 monotonicTimestamp];
   v23 = v22;
 
-  v24 = [v93 lastObject];
-  [v24 monotonicTimestamp];
+  lastObject = [v93 lastObject];
+  [lastObject monotonicTimestamp];
   v26 = v25;
 
-  v27 = [(PPSTimeIntervalSetGenerator *)self timelineBoundaries];
+  timelineBoundaries = [(PPSTimeIntervalSetGenerator *)self timelineBoundaries];
 
-  if (v27)
+  if (timelineBoundaries)
   {
-    v28 = [(PPSTimeIntervalSetGenerator *)self timelineBoundaries];
-    v29 = [v28 startDate];
-    [v29 timeIntervalSince1970];
+    timelineBoundaries2 = [(PPSTimeIntervalSetGenerator *)self timelineBoundaries];
+    startDate = [timelineBoundaries2 startDate];
+    [startDate timeIntervalSince1970];
     v23 = v30;
 
-    v31 = [(PPSTimeIntervalSetGenerator *)self timelineBoundaries];
-    [v31 duration];
+    timelineBoundaries3 = [(PPSTimeIntervalSetGenerator *)self timelineBoundaries];
+    [timelineBoundaries3 duration];
     v26 = v23 + v32;
   }
 
-  v33 = [v93 objectEnumerator];
+  objectEnumerator = [v93 objectEnumerator];
   directionality = self->_directionality;
   if (directionality == 1)
   {
-    v34 = [v93 reverseObjectEnumerator];
+    reverseObjectEnumerator = [v93 reverseObjectEnumerator];
 
-    v33 = v34;
+    objectEnumerator = reverseObjectEnumerator;
   }
 
   else
@@ -148,8 +148,8 @@ LABEL_13:
     v23 = v26;
   }
 
-  v92 = [[PPSTimeIntervalSet alloc] initWithCoalescePolicy:v87];
-  v83 = v19;
+  v92 = [[PPSTimeIntervalSet alloc] initWithCoalescePolicy:policyCopy];
+  v83 = groupId2;
   v95 = @"__directionality";
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_directionality];
   v96[0] = v35;
@@ -158,31 +158,31 @@ LABEL_13:
 
   v38 = 0;
   v39 = 0;
-  v40 = 0;
+  nextObject = 0;
 LABEL_22:
-  v41 = v40;
+  v41 = nextObject;
   while (1)
   {
-    v40 = [v33 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
     v42 = self->_directionality;
-    if (!v40)
+    if (!nextObject)
     {
       break;
     }
 
     if (v42 == 3)
     {
-      v43 = [v40 metricValueForKey:@"timestampEnd"];
+      v43 = [nextObject metricValueForKey:@"timestampEnd"];
       [v43 doubleValue];
       v45 = v44;
 
-      v41 = v40;
-      if (PPSValidateIntervalStart(v94, v40, v37))
+      v41 = nextObject;
+      if (PPSValidateIntervalStart(blockCopy, nextObject, v37))
       {
-        if (v91)
+        if (payloadBlockCopy)
         {
-          v46 = v91[2]();
+          v46 = payloadBlockCopy[2]();
         }
 
         else
@@ -190,7 +190,7 @@ LABEL_22:
           v46 = 0;
         }
 
-        [v40 monotonicTimestamp];
+        [nextObject monotonicTimestamp];
         v38 = v46;
         PPSAddInterval(v92, v58, v45, v46);
         goto LABEL_22;
@@ -199,11 +199,11 @@ LABEL_22:
 
     else
     {
-      v41 = v40;
+      v41 = nextObject;
       if (v42 < 3)
       {
-        v47 = [v40 groupId];
-        v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v47];
+        groupId3 = [nextObject groupId];
+        v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:groupId3];
         v49 = [v90 containsObject:v48];
 
         if (v49)
@@ -211,11 +211,11 @@ LABEL_22:
           if (v39)
           {
             v50 = 0;
-            if ([v39 groupId] != v47 && ((v47 == v83) & (settings >> 2)) == 0)
+            if ([v39 groupId] != groupId3 && ((groupId3 == v83) & (settings >> 2)) == 0)
             {
-              if (v91)
+              if (payloadBlockCopy)
               {
-                v51 = v91[2]();
+                v51 = payloadBlockCopy[2]();
               }
 
               else
@@ -225,7 +225,7 @@ LABEL_22:
 
               [v39 monotonicTimestamp];
               v68 = v67;
-              [v40 monotonicTimestamp];
+              [nextObject monotonicTimestamp];
               if (directionality == 1)
               {
                 v70 = v69;
@@ -263,18 +263,18 @@ LABEL_22:
         if (v39)
         {
           v82 = v38;
-          v52 = v89;
-          v53 = v40;
+          v52 = checkBlockCopy;
+          v53 = nextObject;
           v54 = v37;
           v55 = v54;
           v84 = v53;
-          if (v89)
+          if (checkBlockCopy)
           {
-            v56 = (*(v89 + 2))(v52, v53, v54);
+            v56 = (*(checkBlockCopy + 2))(v52, v53, v54);
 
             v38 = v82;
             v57 = v84;
-            if ((v56 & 1) == 0 && !PPSValidateIntervalStart(v94, v84, v55))
+            if ((v56 & 1) == 0 && !PPSValidateIntervalStart(blockCopy, v84, v55))
             {
               goto LABEL_55;
             }
@@ -291,9 +291,9 @@ LABEL_22:
           v60 = v59;
           [v57 monotonicTimestamp];
           v62 = v61;
-          if (v91)
+          if (payloadBlockCopy)
           {
-            v63 = v91[2]();
+            v63 = payloadBlockCopy[2]();
           }
 
           else
@@ -326,9 +326,9 @@ LABEL_22:
         }
 
 LABEL_55:
-        if (PPSValidateIntervalStart(v94, v40, v37))
+        if (PPSValidateIntervalStart(blockCopy, nextObject, v37))
         {
-          v66 = v40;
+          v66 = nextObject;
         }
 
         else
@@ -354,9 +354,9 @@ LABEL_67:
   {
     [v39 monotonicTimestamp];
     v75 = v74;
-    if (v91)
+    if (payloadBlockCopy)
     {
-      v73 = v91[2]();
+      v73 = payloadBlockCopy[2]();
     }
 
     else
@@ -395,21 +395,21 @@ LABEL_67:
   return v92;
 }
 
-- (id)intervalSetMapForTimeSeries:(id)a3 withGroupingDimensions:(id)a4 withIntervalStartCheckBlock:(id)a5 intervalEndCheckBlock:(id)a6 payloadBlock:(id)a7 coalescePolicy:(id)a8
+- (id)intervalSetMapForTimeSeries:(id)series withGroupingDimensions:(id)dimensions withIntervalStartCheckBlock:(id)block intervalEndCheckBlock:(id)checkBlock payloadBlock:(id)payloadBlock coalescePolicy:(id)policy
 {
   v59 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v44 = a4;
-  v36 = a5;
-  v37 = a6;
-  v38 = a7;
-  v39 = a8;
-  v41 = [MEMORY[0x277CBEB38] dictionary];
+  seriesCopy = series;
+  dimensionsCopy = dimensions;
+  blockCopy = block;
+  checkBlockCopy = checkBlock;
+  payloadBlockCopy = payloadBlock;
+  policyCopy = policy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v13;
+  obj = seriesCopy;
   v43 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v43)
   {
@@ -426,7 +426,7 @@ LABEL_67:
         v14 = *(*(&v53 + 1) + 8 * i);
         if (v14)
         {
-          if (![v44 count])
+          if (![dimensionsCopy count])
           {
             goto LABEL_22;
           }
@@ -436,7 +436,7 @@ LABEL_67:
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v15 = v44;
+          v15 = dimensionsCopy;
           v16 = [v15 countByEnumeratingWithState:&v49 objects:v57 count:16];
           if (v16)
           {
@@ -452,15 +452,15 @@ LABEL_67:
 
                 v19 = *(*(&v49 + 1) + 8 * j);
                 v20 = MEMORY[0x277CCACA8];
-                v21 = [v14 metricKeysAndValues];
-                v22 = [v19 groupBy];
-                v23 = [v21 objectForKeyedSubscript:v22];
+                metricKeysAndValues = [v14 metricKeysAndValues];
+                groupBy = [v19 groupBy];
+                v23 = [metricKeysAndValues objectForKeyedSubscript:groupBy];
                 v24 = [v20 stringWithFormat:@"%@", v23];
 
                 if (v24)
                 {
-                  v25 = [v19 groupBy];
-                  [v46 setObject:v24 forKeyedSubscript:v25];
+                  groupBy2 = [v19 groupBy];
+                  [v46 setObject:v24 forKeyedSubscript:groupBy2];
                 }
               }
 
@@ -470,7 +470,7 @@ LABEL_67:
             while (v16);
           }
 
-          v26 = [v41 objectForKeyedSubscript:v46];
+          v26 = [dictionary objectForKeyedSubscript:v46];
           v27 = v26 == 0;
 
           if (v27)
@@ -484,8 +484,8 @@ LABEL_67:
             v48 = v29;
             v30 = [v28 predicateWithBlock:v47];
             v31 = [obj filteredTimeSeriesUsingPredicate:v30];
-            v32 = [(PPSTimeIntervalSetGenerator *)self intervalSetForTimeSeries:v31 withIntervalStartCheckBlock:v36 intervalEndCheckBlock:v37 payloadBlock:v38 coalescePolicy:v39];
-            [v41 setObject:v32 forKeyedSubscript:v29];
+            v32 = [(PPSTimeIntervalSetGenerator *)self intervalSetForTimeSeries:v31 withIntervalStartCheckBlock:blockCopy intervalEndCheckBlock:checkBlockCopy payloadBlock:payloadBlockCopy coalescePolicy:policyCopy];
+            [dictionary setObject:v32 forKeyedSubscript:v29];
           }
         }
       }
@@ -500,7 +500,7 @@ LABEL_22:
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v41;
+  return dictionary;
 }
 
 uint64_t __160__PPSTimeIntervalSetGenerator_intervalSetMapForTimeSeries_withGroupingDimensions_withIntervalStartCheckBlock_intervalEndCheckBlock_payloadBlock_coalescePolicy___block_invoke(uint64_t a1, void *a2)

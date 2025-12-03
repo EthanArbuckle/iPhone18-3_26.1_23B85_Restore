@@ -1,37 +1,37 @@
 @interface BLTBBObserverDelegate
 - (BBObserverDelegate)actualDelegate;
 - (BLTBBObserverDelegateDelegate)delegate;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation BLTBBObserverDelegate
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = [BLTTransaction transactionWithDescription:@"BLTBBObserverDelegate forwarding transaction"];
-  v6 = [(BLTBBObserverDelegate *)self actualDelegate];
-  [v4 selector];
+  actualDelegate = [(BLTBBObserverDelegate *)self actualDelegate];
+  [invocationCopy selector];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(BLTBBObserverDelegate *)self actualDelegate];
-    [v4 invokeWithTarget:v8];
+    actualDelegate2 = [(BLTBBObserverDelegate *)self actualDelegate];
+    [invocationCopy invokeWithTarget:actualDelegate2];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = BLTBBObserverDelegate;
-    [(BLTBBObserverDelegate *)&v9 forwardInvocation:v4];
+    [(BLTBBObserverDelegate *)&v9 forwardInvocation:invocationCopy];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = BLTBBObserverDelegate;
@@ -42,38 +42,38 @@
 
   else
   {
-    v5 = [(BLTBBObserverDelegate *)self actualDelegate];
+    actualDelegate = [(BLTBBObserverDelegate *)self actualDelegate];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v4 = [(BLTBBObserverDelegate *)self actualDelegate];
+    actualDelegate = [(BLTBBObserverDelegate *)self actualDelegate];
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
   return isKindOfClass & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = BLTBBObserverDelegate;
   v5 = [(BLTBBObserverDelegate *)&v8 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = [(BLTBBObserverDelegate *)self actualDelegate];
-    v5 = [v6 methodSignatureForSelector:a3];
+    actualDelegate = [(BLTBBObserverDelegate *)self actualDelegate];
+    v5 = [actualDelegate methodSignatureForSelector:selector];
   }
 
   return v5;

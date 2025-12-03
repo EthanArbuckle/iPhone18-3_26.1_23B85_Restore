@@ -1,45 +1,45 @@
 @interface KMMapper_INVocabularyItem
-+ (id)_fieldTypeNumberForIntentSlotName:(id)a3;
-+ (int64_t)fieldTypeForIntentSlotName:(id)a3;
++ (id)_fieldTypeNumberForIntentSlotName:(id)name;
++ (int64_t)fieldTypeForIntentSlotName:(id)name;
 - (KMMapper_INVocabularyItem)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_INVocabularyItem
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 objectForKey:self->_intentSlotNameKey];
+  objectCopy = object;
+  v9 = [fields objectForKey:self->_intentSlotNameKey];
   if (!v9)
   {
     v32 = MEMORY[0x277CCA9B8];
     v48 = *MEMORY[0x277CCA068];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected additional field with type: %i", 4294967294];
-    v49[0] = v10;
-    v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-    v16 = [v32 errorWithDomain:@"com.apple.siri.koa.mapper" code:7 userInfo:v12];
+    4294967294 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected additional field with type: %i", 4294967294];
+    v49[0] = 4294967294;
+    string = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
+    v16 = [v32 errorWithDomain:@"com.apple.siri.koa.mapper" code:7 userInfo:string];
     KVSetError();
     v31 = 0;
     goto LABEL_20;
   }
 
-  v10 = [objc_opt_class() _fieldTypeNumberForIntentSlotName:v9];
-  if (v10)
+  4294967294 = [objc_opt_class() _fieldTypeNumberForIntentSlotName:v9];
+  if (4294967294)
   {
-    v39 = a5;
+    errorCopy = error;
     v11 = KVFieldTypeFromNumber();
-    v12 = [v8 string];
-    v13 = [v8 vocabularyIdentifier];
+    string = [objectCopy string];
+    vocabularyIdentifier = [objectCopy vocabularyIdentifier];
 
-    v41 = v10;
-    if (v13)
+    v41 = 4294967294;
+    if (vocabularyIdentifier)
     {
-      v14 = [v8 vocabularyIdentifier];
-      v15 = [v12 stringByAppendingString:v14];
+      vocabularyIdentifier2 = [objectCopy vocabularyIdentifier];
+      v15 = [string stringByAppendingString:vocabularyIdentifier2];
 
-      v12 = v15;
+      string = v15;
     }
 
     v16 = KVHash64String();
@@ -53,16 +53,16 @@
     if (v19)
     {
       v22 = self->_builder;
-      v23 = [v8 string];
+      string2 = [objectCopy string];
       v44[0] = v21;
-      v24 = [(KVItemBuilder *)v22 addFieldWithType:v11 value:v23 error:v44];
+      v24 = [(KVItemBuilder *)v22 addFieldWithType:v11 value:string2 error:v44];
       v25 = v44[0];
 
       if (v24)
       {
         v26 = self->_builder;
-        [v8 vocabularyIdentifier];
-        v27 = v37 = v23;
+        [objectCopy vocabularyIdentifier];
+        v27 = v37 = string2;
         v43 = v25;
         v28 = [(KVItemBuilder *)v26 addFieldWithType:20 value:v27 error:&v43];
         v38 = v43;
@@ -74,7 +74,7 @@
           v30 = [(KVItemBuilder *)v29 buildItemWithError:&v42];
           v25 = v42;
 
-          v10 = v41;
+          4294967294 = v41;
           if (v30)
           {
             v45 = v30;
@@ -83,7 +83,7 @@
 
           else
           {
-            KMMapperSetBuilderError(v39, v25);
+            KMMapperSetBuilderError(errorCopy, v25);
             v31 = 0;
           }
 
@@ -103,8 +103,8 @@
       v25 = v20;
     }
 
-    v10 = v41;
-    KMMapperSetBuilderError(v39, v25);
+    4294967294 = v41;
+    KMMapperSetBuilderError(errorCopy, v25);
     v31 = 0;
 LABEL_18:
     v34 = v40;
@@ -114,8 +114,8 @@ LABEL_18:
 
   v33 = MEMORY[0x277CCA9B8];
   v46 = *MEMORY[0x277CCA068];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unrecognized additional field with type: %i value: %@", 4294967294, v9];
-  v47 = v12;
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unrecognized additional field with type: %i value: %@", 4294967294, v9];
+  v47 = string;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
   v34 = [v33 errorWithDomain:@"com.apple.siri.koa.mapper" code:8 userInfo:v16];
   KVSetError();
@@ -147,25 +147,25 @@ LABEL_20:
   return v2;
 }
 
-+ (int64_t)fieldTypeForIntentSlotName:(id)a3
++ (int64_t)fieldTypeForIntentSlotName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _fieldTypeNumberForIntentSlotName:v3];
+  nameCopy = name;
+  v4 = [objc_opt_class() _fieldTypeNumberForIntentSlotName:nameCopy];
 
   v5 = KVFieldTypeFromNumber();
   return v5;
 }
 
-+ (id)_fieldTypeNumberForIntentSlotName:(id)a3
++ (id)_fieldTypeNumberForIntentSlotName:(id)name
 {
   v3 = _fieldTypeNumberForIntentSlotName__once;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     dispatch_once(&_fieldTypeNumberForIntentSlotName__once, &__block_literal_global_306);
   }
 
-  v5 = [_fieldTypeNumberForIntentSlotName__intentSlotToFieldTypeMap objectForKey:v4];
+  v5 = [_fieldTypeNumberForIntentSlotName__intentSlotToFieldTypeMap objectForKey:nameCopy];
 
   return v5;
 }

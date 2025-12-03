@@ -1,17 +1,17 @@
 @interface PLSocialGroupJournalEntryPayload
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
-+ (id)payloadAdapterForManagedObject:(id)a3;
++ (id)payloadAdapterForManagedObject:(id)object;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withSourceObject:(id)a5 forPayloadProperty:(id)a6;
-- (id)insertSocialGroupInManagedObjectContext:(id)a3;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withSourceObject:(id)object forPayloadProperty:(id)property;
+- (id)insertSocialGroupInManagedObjectContext:(id)context;
 - (id)keyAssetUUID;
 - (id)memberPersonUUIDs;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (int64_t)keyAssetPickSource;
 - (signed)socialGroupVerifiedType;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
 @end
 
 @implementation PLSocialGroupJournalEntryPayload
@@ -19,17 +19,17 @@
 - (signed)socialGroupVerifiedType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"verifiedType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)keyAssetPickSource
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"keyAssetPickSource"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)memberPersonUUIDs
@@ -48,13 +48,13 @@
   return v4;
 }
 
-- (id)insertSocialGroupInManagedObjectContext:(id)a3
+- (id)insertSocialGroupInManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [PLSocialGroup newNodeContainerWithManagedObjectContext:v4];
-  v6 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v7 = [v6 payloadIDString];
-  [v5 setUuid:v7];
+  contextCopy = context;
+  v5 = [PLSocialGroup newNodeContainerWithManagedObjectContext:contextCopy];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v5 setUuid:payloadIDString];
 
   v18[0] = 0;
   v18[1] = v18;
@@ -62,7 +62,7 @@
   v18[3] = __Block_byref_object_copy__44497;
   v18[4] = __Block_byref_object_dispose__44498;
   v19 = 0;
-  v8 = [objc_opt_class() modelProperties];
+  modelProperties = [objc_opt_class() modelProperties];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__PLSocialGroupJournalEntryPayload_insertSocialGroupInManagedObjectContext___block_invoke;
@@ -71,9 +71,9 @@
   v9 = v5;
   v15 = v9;
   v17 = v18;
-  v10 = v4;
+  v10 = contextCopy;
   v16 = v10;
-  [v8 enumerateKeysAndObjectsUsingBlock:v14];
+  [modelProperties enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -269,39 +269,39 @@ void __76__PLSocialGroupJournalEntryPayload_insertSocialGroupInManagedObjectCont
   }
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEqualToKey:@"members"])
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"members"])
   {
-    v11 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-    v12 = [v11 isEqualToSet:v8];
+    v11 = [MEMORY[0x1E695DFD8] setWithArray:dictionaryValueCopy];
+    v12 = [v11 isEqualToSet:valueCopy];
   }
 
   else
   {
-    if ([v10 isEqualToKey:@"keyAsset"])
+    if ([propertyCopy isEqualToKey:@"keyAsset"])
     {
       v13 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"keyAssetPickSource"];
-      v14 = [v13 integerValue];
+      integerValue = [v13 integerValue];
 
-      if (v14 != 1)
+      if (integerValue != 1)
       {
-        v12 = v8 == 0;
+        v12 = valueCopy == 0;
         goto LABEL_9;
       }
 
-      v15 = [(PLManagedObjectJournalEntryPayload *)&v18 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10, v17.receiver, v17.super_class, self, PLSocialGroupJournalEntryPayload];
+      pLSocialGroupJournalEntryPayload = [(PLManagedObjectJournalEntryPayload *)&v18 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy, v17.receiver, v17.super_class, self, PLSocialGroupJournalEntryPayload];
     }
 
     else
     {
-      v15 = [(PLManagedObjectJournalEntryPayload *)&v17 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10, self, PLSocialGroupJournalEntryPayload, v18.receiver, v18.super_class];
+      pLSocialGroupJournalEntryPayload = [(PLManagedObjectJournalEntryPayload *)&v17 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy, self, PLSocialGroupJournalEntryPayload, v18.receiver, v18.super_class];
     }
 
-    v12 = v15;
+    v12 = pLSocialGroupJournalEntryPayload;
   }
 
 LABEL_9:
@@ -309,14 +309,14 @@ LABEL_9:
   return v12;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"keyAsset"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"keyAsset"])
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
 LABEL_5:
     v11 = v10;
@@ -324,67 +324,67 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToKey:@"members"])
+  if ([propertyCopy isEqualToKey:@"members"])
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
     goto LABEL_5;
   }
 
   v13.receiver = self;
   v13.super_class = PLSocialGroupJournalEntryPayload;
-  v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+  v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
 LABEL_7:
 
   return v11;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"keyAsset"])
+  keyCopy = key;
+  valueCopy = value;
+  builderCopy = builder;
+  if ([keyCopy isEqualToString:@"keyAsset"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:valueCopy];
     v14.receiver = self;
     v14.super_class = PLSocialGroupJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
   else
   {
-    if (![v8 isEqualToString:@"members"])
+    if (![keyCopy isEqualToString:@"members"])
     {
       v12.receiver = self;
       v12.super_class = PLSocialGroupJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v9 toDescriptionBuilder:v10];
+      [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
       goto LABEL_7;
     }
 
-    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:valueCopy];
     v13.receiver = self;
     v13.super_class = PLSocialGroupJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
 LABEL_7:
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withSourceObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withSourceObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v12;
-  if ([v13 isEqualToKey:@"keyAsset"])
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v14 = objectCopy;
+  if ([propertyCopy isEqualToKey:@"keyAsset"])
   {
     if ([v14 keyAssetPickSource] != 1 || (objc_msgSend(v14, "keyAsset"), v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
-      v23 = [v13 key];
-      [v11 addObject:v23];
+      v23 = [propertyCopy key];
+      [nilAttributesCopy addObject:v23];
 
       if ([v14 keyAssetPickSource] == 1)
       {
@@ -399,33 +399,33 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    v16 = [v14 keyAsset];
-    v17 = [v16 uuid];
-    v18 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v17];
-    v19 = [v13 key];
-    [v10 setObject:v18 forKeyedSubscript:v19];
+    keyAsset = [v14 keyAsset];
+    uuid = [keyAsset uuid];
+    v18 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:uuid];
+    v19 = [propertyCopy key];
+    [attributesCopy setObject:v18 forKeyedSubscript:v19];
   }
 
   else
   {
-    if (![v13 isEqualToKey:@"members"])
+    if (![propertyCopy isEqualToKey:@"members"])
     {
       v25 = 0;
       goto LABEL_14;
     }
 
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v21 = [v14 members];
+    members = [v14 members];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __113__PLSocialGroupJournalEntryPayload_updatePayloadAttributes_andNilAttributes_withSourceObject_forPayloadProperty___block_invoke;
     v27[3] = &unk_1E756C980;
     v28 = v20;
-    v16 = v20;
-    [v21 enumerateObjectsUsingBlock:v27];
+    keyAsset = v20;
+    [members enumerateObjectsUsingBlock:v27];
 
-    v22 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringArray:v16];
-    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:v10 andNilAttributes:v11 forPayloadProperty:v13 withUUIDStringData:v22];
+    v22 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringArray:keyAsset];
+    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy forPayloadProperty:propertyCopy withUUIDStringData:v22];
   }
 
 LABEL_12:
@@ -442,10 +442,10 @@ void __113__PLSocialGroupJournalEntryPayload_updatePayloadAttributes_andNilAttri
   [v2 addObject:v3];
 }
 
-+ (id)payloadAdapterForManagedObject:(id)a3
++ (id)payloadAdapterForManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [[PLSocialGroupPayloadAdapter alloc] initWithManagedObject:v3];
+  objectCopy = object;
+  v4 = [[PLSocialGroupPayloadAdapter alloc] initWithManagedObject:objectCopy];
 
   return v4;
 }
@@ -456,7 +456,7 @@ void __113__PLSocialGroupJournalEntryPayload_updatePayloadAttributes_andNilAttri
   block[1] = 3221225472;
   block[2] = __72__PLSocialGroupJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_44534 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_44534, block);
@@ -480,7 +480,7 @@ void __72__PLSocialGroupJournalEntryPayload_persistedPropertyNamesForEntityNames
   block[1] = 3221225472;
   block[2] = __51__PLSocialGroupJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_44536 != -1)
   {
     dispatch_once(&modelProperties_onceToken_44536, block);

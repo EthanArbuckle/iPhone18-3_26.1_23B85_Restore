@@ -1,34 +1,34 @@
 @interface CSVTUITwoPassKeywordDetector
-- (CSVTUITwoPassKeywordDetector)initWithAsset:(id)a3 supportMph:(BOOL)a4;
-- (id)analyzeWithBuffer:(id)a3;
-- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)a3;
-- (unint64_t)_sampleLengthFrom:(unsigned int)a3 To:(unsigned int)a4;
+- (CSVTUITwoPassKeywordDetector)initWithAsset:(id)asset supportMph:(BOOL)mph;
+- (id)analyzeWithBuffer:(id)buffer;
+- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)info;
+- (unint64_t)_sampleLengthFrom:(unsigned int)from To:(unsigned int)to;
 - (void)internalReset;
 - (void)reset;
 @end
 
 @implementation CSVTUITwoPassKeywordDetector
 
-- (unint64_t)_sampleLengthFrom:(unsigned int)a3 To:(unsigned int)a4
+- (unint64_t)_sampleLengthFrom:(unsigned int)from To:(unsigned int)to
 {
-  v4 = -a3;
-  if (a3 > a4)
+  v4 = -from;
+  if (from > to)
   {
-    v4 = ~a3;
+    v4 = ~from;
   }
 
-  return v4 + a4;
+  return v4 + to;
 }
 
-- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)a3
+- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D01F00]];
-  v5 = [v4 unsignedIntValue];
+  v4 = [info objectForKeyedSubscript:*MEMORY[0x277D01F00]];
+  unsignedIntValue = [v4 unsignedIntValue];
 
   extraSamplesAtStart = self->_extraSamplesAtStart;
-  if (extraSamplesAtStart <= v5)
+  if (extraSamplesAtStart <= unsignedIntValue)
   {
-    v7 = v5 - extraSamplesAtStart;
+    v7 = unsignedIntValue - extraSamplesAtStart;
   }
 
   else
@@ -42,21 +42,21 @@
   return v9;
 }
 
-- (id)analyzeWithBuffer:(id)a3
+- (id)analyzeWithBuffer:(id)buffer
 {
   v82 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  bufferCopy = buffer;
+  v5 = [bufferCopy length];
   v6 = v5 / [MEMORY[0x277D016E0] inputRecordingBytesPerFrame];
   v7 = objc_alloc(MEMORY[0x277D01600]);
-  v8 = [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
-  v9 = [(CSAudioCircularBuffer *)self->_audioBuffer sampleCount];
+  inputRecordingSampleByteDepth = [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
+  sampleCount = [(CSAudioCircularBuffer *)self->_audioBuffer sampleCount];
   LOBYTE(v70) = [MEMORY[0x277D016E0] inputRecordingIsFloat];
-  v10 = [v7 initWithData:v4 numChannels:1 numSamples:v6 sampleByteDepth:v8 startSampleCount:v9 hostTime:0 remoteVAD:0 isFloat:v70];
+  v10 = [v7 initWithData:bufferCopy numChannels:1 numSamples:v6 sampleByteDepth:inputRecordingSampleByteDepth startSampleCount:sampleCount hostTime:0 remoteVAD:0 isFloat:v70];
   audioBuffer = self->_audioBuffer;
-  v12 = [v4 bytes];
+  bytes = [bufferCopy bytes];
 
-  [(CSAudioCircularBuffer *)audioBuffer addSamples:v12 numSamples:v6];
+  [(CSAudioCircularBuffer *)audioBuffer addSamples:bytes numSamples:v6];
   if (v10)
   {
     v13 = [(CSKeywordAnalyzerNDAPI *)self->_keywordAnalyzer getBestAnalyzedResultsFromAudioChunk:v10];
@@ -76,19 +76,19 @@
           {
             firstPassResult = self->_firstPassResult;
             v19 = v17;
-            v20 = [(CSKeywordAnalyzerNDAPIResult *)firstPassResult bestStart];
-            v21 = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult bestEnd];
-            v22 = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult samplesAtFire];
+            bestStart = [(CSKeywordAnalyzerNDAPIResult *)firstPassResult bestStart];
+            bestEnd = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult bestEnd];
+            samplesAtFire = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult samplesAtFire];
             *buf = 136316162;
             v73 = "[CSVTUITwoPassKeywordDetector analyzeWithBuffer:]";
             v74 = 2048;
             v75 = v16;
             v76 = 2048;
-            v77 = v20;
+            v77 = bestStart;
             v78 = 2048;
-            v79 = v21;
+            v79 = bestEnd;
             v80 = 2048;
-            v81 = v22;
+            v81 = samplesAtFire;
             _os_log_impl(&dword_225E12000, v19, OS_LOG_TYPE_DEFAULT, "%s FirstPass triggered, score %f start %lu end %lu fire %lu", buf, 0x34u);
           }
         }
@@ -97,16 +97,16 @@
 
     if (self->_firstPassResult)
     {
-      v25 = [MEMORY[0x277CBEB38] dictionary];
-      v26 = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult bestStart];
-      v27 = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult samplesAtFire];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      bestStart2 = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult bestStart];
+      samplesAtFire2 = [(CSKeywordAnalyzerNDAPIResult *)self->_firstPassResult samplesAtFire];
       extraSamplesAtStart = self->_extraSamplesAtStart;
-      v29 = self->_analyzerTrailingSamples + v27;
+      v29 = self->_analyzerTrailingSamples + samplesAtFire2;
       if ([(CSAudioCircularBuffer *)self->_audioBuffer sampleCount]>= v29)
       {
-        if (v26 >= extraSamplesAtStart)
+        if (bestStart2 >= extraSamplesAtStart)
         {
-          v34 = v26 - extraSamplesAtStart;
+          v34 = bestStart2 - extraSamplesAtStart;
         }
 
         else
@@ -116,17 +116,17 @@
 
         v35 = [(CSAudioCircularBuffer *)self->_audioBuffer copySamplesFrom:v34 to:v29];
         v36 = [(CSPhraseDetector *)self->_phraseDetector getAnalyzedResultFromAudioChunk:v35];
-        v37 = [v35 numSamples];
+        numSamples = [v35 numSamples];
         v38 = v29 - v34;
         v39 = *MEMORY[0x277D015D8];
-        if (v37 != v38 && os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
+        if (numSamples != v38 && os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
         {
           v68 = v39;
-          v69 = [v35 numSamples];
+          numSamples2 = [v35 numSamples];
           *buf = 136315650;
           v73 = "[CSVTUITwoPassKeywordDetector analyzeWithBuffer:]";
           v74 = 2048;
-          v75 = *&v69;
+          v75 = *&numSamples2;
           v76 = 2048;
           v77 = v38;
           _os_log_error_impl(&dword_225E12000, v68, OS_LOG_TYPE_ERROR, "%s numSamplesinAudioChunk %lu not matching requiredNumSamples %lu !", buf, 0x20u);
@@ -137,68 +137,68 @@
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           v40 = v39;
-          v41 = [v35 numSamples];
+          numSamples3 = [v35 numSamples];
           *buf = 136315394;
           v73 = "[CSVTUITwoPassKeywordDetector analyzeWithBuffer:]";
           v74 = 2048;
-          v75 = *&v41;
+          v75 = *&numSamples3;
           _os_log_impl(&dword_225E12000, v40, OS_LOG_TYPE_DEFAULT, "%s Second pass set to analyze %lu samples, stop feeding", buf, 0x16u);
         }
 
-        v42 = [(CSPhraseDetector *)self->_phraseDetector getAnalyzedResultFromFlushedAudio];
-        v43 = [v42 ndapiResult];
-        v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v43, "bestStart")}];
-        [v25 setObject:v44 forKey:*MEMORY[0x277D01F00]];
+        getAnalyzedResultFromFlushedAudio = [(CSPhraseDetector *)self->_phraseDetector getAnalyzedResultFromFlushedAudio];
+        ndapiResult = [getAnalyzedResultFromFlushedAudio ndapiResult];
+        v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(ndapiResult, "bestStart")}];
+        [dictionary setObject:v44 forKey:*MEMORY[0x277D01F00]];
 
-        v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v43, "bestEnd")}];
-        [v25 setObject:v45 forKey:*MEMORY[0x277D01EA8]];
+        v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(ndapiResult, "bestEnd")}];
+        [dictionary setObject:v45 forKey:*MEMORY[0x277D01EA8]];
 
-        v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v43, "samplesFed")}];
-        [v25 setObject:v46 forKey:*MEMORY[0x277D01E78]];
+        v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(ndapiResult, "samplesFed")}];
+        [dictionary setObject:v46 forKey:*MEMORY[0x277D01E78]];
 
-        v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v43, "samplesAtFire")}];
-        [v25 setObject:v47 forKey:*MEMORY[0x277D01ED8]];
+        v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(ndapiResult, "samplesAtFire")}];
+        [dictionary setObject:v47 forKey:*MEMORY[0x277D01ED8]];
 
         v48 = MEMORY[0x277CCABB0];
-        [v42 combinedScore];
+        [getAnalyzedResultFromFlushedAudio combinedScore];
         v49 = [v48 numberWithFloat:?];
-        [v25 setObject:v49 forKey:*MEMORY[0x277D01EF0]];
+        [dictionary setObject:v49 forKey:*MEMORY[0x277D01EF0]];
 
-        v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v42, "phId")}];
-        [v25 setObject:v50 forKey:*MEMORY[0x277D01CF8]];
+        v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(getAnalyzedResultFromFlushedAudio, "phId")}];
+        [dictionary setObject:v50 forKey:*MEMORY[0x277D01CF8]];
 
-        v71 = -[CSPhraseDetector phraseDetectorInfoFromPhId:](self->_phraseDetector, "phraseDetectorInfoFromPhId:", [v42 phId]);
-        v51 = [v71 phraseConfig];
-        v52 = [v51 name];
+        v71 = -[CSPhraseDetector phraseDetectorInfoFromPhId:](self->_phraseDetector, "phraseDetectorInfoFromPhId:", [getAnalyzedResultFromFlushedAudio phId]);
+        phraseConfig = [v71 phraseConfig];
+        name = [phraseConfig name];
 
-        if (v52)
+        if (name)
         {
-          v53 = [v51 name];
-          [v25 setObject:v53 forKey:*MEMORY[0x277D01CF0]];
+          name2 = [phraseConfig name];
+          [dictionary setObject:name2 forKey:*MEMORY[0x277D01CF0]];
         }
 
-        if ([v42 isRunningQuasar])
+        if ([getAnalyzedResultFromFlushedAudio isRunningQuasar])
         {
           v54 = MEMORY[0x277CCABB0];
-          [v42 recognizerScore];
+          [getAnalyzedResultFromFlushedAudio recognizerScore];
           v55 = [v54 numberWithFloat:?];
-          [v25 setObject:v55 forKey:*MEMORY[0x277D01E10]];
+          [dictionary setObject:v55 forKey:*MEMORY[0x277D01E10]];
 
           v56 = MEMORY[0x277CCABB0];
-          [v51 recognizerScoreOffset];
+          [phraseConfig recognizerScoreOffset];
           v57 = [v56 numberWithFloat:?];
-          [v25 setObject:v57 forKey:*MEMORY[0x277D01E18]];
+          [dictionary setObject:v57 forKey:*MEMORY[0x277D01E18]];
 
           v58 = MEMORY[0x277CCABB0];
-          [v51 recognizerScoreScaleFactor];
+          [phraseConfig recognizerScoreScaleFactor];
           v59 = [v58 numberWithFloat:?];
-          [v25 setObject:v59 forKey:*MEMORY[0x277D01E08]];
+          [dictionary setObject:v59 forKey:*MEMORY[0x277D01E08]];
         }
 
-        v60 = [v42 decision] == 1;
+        v60 = [getAnalyzedResultFromFlushedAudio decision] == 1;
         if (!self->_supportsMph)
         {
-          if ([v42 phId])
+          if ([getAnalyzedResultFromFlushedAudio phId])
           {
             v61 = *MEMORY[0x277D015D8];
             v60 = 0;
@@ -213,13 +213,13 @@
         }
 
         v62 = [MEMORY[0x277CCABB0] numberWithBool:v60];
-        [v25 setObject:v62 forKey:*MEMORY[0x277D01DF8]];
+        [dictionary setObject:v62 forKey:*MEMORY[0x277D01DF8]];
 
         v63 = *MEMORY[0x277D015D8];
         if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
         {
           v64 = v63;
-          v65 = [v42 description];
+          v65 = [getAnalyzedResultFromFlushedAudio description];
           *buf = 136315394;
           v73 = "[CSVTUITwoPassKeywordDetector analyzeWithBuffer:]";
           v74 = 2112;
@@ -228,7 +228,7 @@
         }
 
         [(CSVTUITwoPassKeywordDetector *)self internalReset];
-        v24 = v25;
+        v24 = dictionary;
       }
 
       else
@@ -238,11 +238,11 @@
         {
           v31 = self->_audioBuffer;
           v32 = v30;
-          v33 = [(CSAudioCircularBuffer *)v31 sampleCount];
+          sampleCount2 = [(CSAudioCircularBuffer *)v31 sampleCount];
           *buf = 136315650;
           v73 = "[CSVTUITwoPassKeywordDetector analyzeWithBuffer:]";
           v74 = 2048;
-          v75 = *&v33;
+          v75 = *&sampleCount2;
           v76 = 2048;
           v77 = v29;
           _os_log_impl(&dword_225E12000, v32, OS_LOG_TYPE_DEFAULT, "%s Waiting for the entire audio... samplesInBuffer %lu triggerSampleFedCount %lu", buf, 0x20u);
@@ -293,20 +293,20 @@
   [(CSAudioCircularBuffer *)audioBuffer reset];
 }
 
-- (CSVTUITwoPassKeywordDetector)initWithAsset:(id)a3 supportMph:(BOOL)a4
+- (CSVTUITwoPassKeywordDetector)initWithAsset:(id)asset supportMph:(BOOL)mph
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetCopy = asset;
   v37.receiver = self;
   v37.super_class = CSVTUITwoPassKeywordDetector;
   v7 = [(CSVTUITwoPassKeywordDetector *)&v37 init];
   if (v7)
   {
-    if (v6)
+    if (assetCopy)
     {
-      v8 = [v6 resourcePath];
-      v9 = [v8 stringByAppendingPathComponent:@"config_1st.txt"];
-      v10 = [objc_alloc(MEMORY[0x277D017B8]) initWithConfigPath:v9 resourcePath:v8];
+      resourcePath = [assetCopy resourcePath];
+      v9 = [resourcePath stringByAppendingPathComponent:@"config_1st.txt"];
+      v10 = [objc_alloc(MEMORY[0x277D017B8]) initWithConfigPath:v9 resourcePath:resourcePath];
       keywordAnalyzer = v7->_keywordAnalyzer;
       v7->_keywordAnalyzer = v10;
 
@@ -323,10 +323,10 @@
           _os_log_impl(&dword_225E12000, v12, OS_LOG_TYPE_DEFAULT, "%s Initialized with config path: %@", buf, 0x16u);
         }
 
-        v14 = [MEMORY[0x277D01948] decodeConfigFrom:v6];
+        v14 = [MEMORY[0x277D01948] decodeConfigFrom:assetCopy];
         [v14 threshold];
         v7->_keywordThreshold = v15;
-        v16 = [MEMORY[0x277D01958] decodeConfigFrom:v6 forFirstPassSource:10];
+        v16 = [MEMORY[0x277D01958] decodeConfigFrom:assetCopy forFirstPassSource:10];
         v17 = objc_alloc_init(MEMORY[0x277D01828]);
         phraseDetector = v7->_phraseDetector;
         v7->_phraseDetector = v17;
@@ -350,7 +350,7 @@
         audioBuffer = v7->_audioBuffer;
         v7->_audioBuffer = v31;
 
-        v7->_supportsMph = a4;
+        v7->_supportsMph = mph;
         [(CSVTUITwoPassKeywordDetector *)v7 reset];
 
         goto LABEL_7;

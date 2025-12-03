@@ -1,14 +1,14 @@
 @interface MTChapter
-- (MTChapter)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (MTChapter)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation MTChapter
 
-- (MTChapter)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (MTChapter)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MTChapter();
-  return [(MTChapter *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(MTChapter *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

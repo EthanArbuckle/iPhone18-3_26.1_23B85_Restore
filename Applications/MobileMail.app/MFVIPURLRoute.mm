@@ -1,32 +1,32 @@
 @interface MFVIPURLRoute
-- (BOOL)canRouteRequest:(id)a3;
+- (BOOL)canRouteRequest:(id)request;
 - (DaemonInterfaceProviding)scene;
-- (MFVIPURLRoute)initWithScene:(id)a3;
-- (id)_routeVIPMessagesURL:(id)a3;
-- (id)routeRequest:(id)a3;
+- (MFVIPURLRoute)initWithScene:(id)scene;
+- (id)_routeVIPMessagesURL:(id)l;
+- (id)routeRequest:(id)request;
 @end
 
 @implementation MFVIPURLRoute
 
-- (MFVIPURLRoute)initWithScene:(id)a3
+- (MFVIPURLRoute)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = MFVIPURLRoute;
   v5 = [(MFVIPURLRoute *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     v6->_priority = 0;
   }
 
   return v6;
 }
 
-- (BOOL)canRouteRequest:(id)a3
+- (BOOL)canRouteRequest:(id)request
 {
-  v3 = [a3 URL];
+  v3 = [request URL];
   if ([v3 ef_hasScheme:EMAppleMailShowVIPMessagesURLScheme])
   {
     v4 = 1;
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (id)routeRequest:(id)a3
+- (id)routeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[EFPromise promise];
-  v6 = [v4 URL];
+  v6 = [requestCopy URL];
   if ([v6 ef_hasScheme:EMAppleMailShowVIPMessagesURLScheme])
   {
     v21[0] = _NSConcreteStackBlock;
@@ -52,7 +52,7 @@
     v21[2] = sub_10023C37C;
     v21[3] = &unk_10064C6B0;
     v22 = v5;
-    v23 = self;
+    selfCopy = self;
     v24 = v6;
     v7 = +[EFScheduler mainThreadScheduler];
     [v7 performBlock:v21];
@@ -81,45 +81,45 @@
     v11 = +[MFURLRoutingRequest log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 ef_publicDescription];
-      sub_10048C86C(v12, buf, v11);
+      ef_publicDescription = [requestCopy ef_publicDescription];
+      sub_10048C86C(ef_publicDescription, buf, v11);
     }
   }
 
-  v13 = [v5 future];
+  future = [v5 future];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10023C4C4;
   v17[3] = &unk_100654B90;
-  v14 = v4;
+  v14 = requestCopy;
   v18 = v14;
-  v15 = [v13 recover:v17];
+  v15 = [future recover:v17];
 
   return v15;
 }
 
-- (id)_routeVIPMessagesURL:(id)a3
+- (id)_routeVIPMessagesURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MFVIPURLRoute *)self scene];
-  v6 = [v5 daemonInterface];
-  v7 = [v6 vipManager];
+  lCopy = l;
+  scene = [(MFVIPURLRoute *)self scene];
+  daemonInterface = [scene daemonInterface];
+  vipManager = [daemonInterface vipManager];
 
-  if ([v7 hasVIPs])
+  if ([vipManager hasVIPs])
   {
-    v8 = [v4 resourceSpecifier];
+    resourceSpecifier = [lCopy resourceSpecifier];
     v9 = [NSCharacterSet characterSetWithCharactersInString:@"/"];
-    v10 = [v8 ef_stringByTrimmingLeadingCharactersInSet:v9];
+    v10 = [resourceSpecifier ef_stringByTrimmingLeadingCharactersInSet:v9];
 
     if ([v10 length])
     {
-      v11 = [v7 vipWithIdentifier:v10];
+      v11 = [vipManager vipWithIdentifier:v10];
       if (v11)
       {
         v12 = [FavoriteItem itemForVIP:v11 selected:1];
-        v13 = [v5 mailboxPickerController];
-        v14 = [v13 favoriteItemSelectionTarget];
-        [v14 selectVIPMailboxWithItem:v12 animated:0];
+        mailboxPickerController = [scene mailboxPickerController];
+        favoriteItemSelectionTarget = [mailboxPickerController favoriteItemSelectionTarget];
+        [favoriteItemSelectionTarget selectVIPMailboxWithItem:v12 animated:0];
 
         v15 = 0;
       }
@@ -127,7 +127,7 @@
       else
       {
         v18 = NSURLErrorKey;
-        v19 = v4;
+        v19 = lCopy;
         v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
         v15 = [NSError errorWithDomain:NSURLErrorDomain code:-1008 userInfo:v16];
       }
@@ -136,7 +136,7 @@
     else
     {
       v20 = NSURLErrorKey;
-      v21 = v4;
+      v21 = lCopy;
       v11 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v15 = [NSError errorWithDomain:NSURLErrorDomain code:-1000 userInfo:v11];
     }
@@ -145,7 +145,7 @@
   else
   {
     v22 = NSURLErrorKey;
-    v23 = v4;
+    v23 = lCopy;
     v10 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v15 = [NSError errorWithDomain:NSURLErrorDomain code:-1008 userInfo:v10];
   }

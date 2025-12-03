@@ -1,40 +1,40 @@
 @interface SBAppDeniedAlertItem
-- (SBAppDeniedAlertItem)initWithApp:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBAppDeniedAlertItem)initWithApp:(id)app;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBAppDeniedAlertItem
 
-- (SBAppDeniedAlertItem)initWithApp:(id)a3
+- (SBAppDeniedAlertItem)initWithApp:(id)app
 {
-  v5 = a3;
+  appCopy = app;
   v6 = [(SBAlertItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_application, a3);
+    objc_storeStrong(&v6->_application, app);
   }
 
   return v7;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
+  v5 = [(SBAlertItem *)self alertController:configure];
   v6 = objc_alloc(MEMORY[0x277D28AB0]);
-  v7 = [(SBApplication *)self->_application bundleIdentifier];
-  v8 = [v6 initWithBundleIdentifier:v7];
+  bundleIdentifier = [(SBApplication *)self->_application bundleIdentifier];
+  v8 = [v6 initWithBundleIdentifier:bundleIdentifier];
 
   if (v8)
   {
-    v9 = [v8 title];
-    [v5 setTitle:v9];
+    title = [v8 title];
+    [v5 setTitle:title];
 
     v10 = [v8 description];
     [v5 setMessage:v10];
 
     v11 = MEMORY[0x277D750F8];
-    v12 = [v8 deleteAppButtonText];
+    deleteAppButtonText = [v8 deleteAppButtonText];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __60__SBAppDeniedAlertItem_configure_requirePasscodeForActions___block_invoke;
@@ -42,10 +42,10 @@
     v26[4] = self;
     v13 = v8;
     v27 = v13;
-    v14 = [v11 actionWithTitle:v12 style:2 handler:v26];
+    v14 = [v11 actionWithTitle:deleteAppButtonText style:2 handler:v26];
 
     v15 = MEMORY[0x277D750F8];
-    v16 = [v13 learnMoreButtonText];
+    learnMoreButtonText = [v13 learnMoreButtonText];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __60__SBAppDeniedAlertItem_configure_requirePasscodeForActions___block_invoke_2;
@@ -53,16 +53,16 @@
     v24[4] = self;
     v17 = v13;
     v25 = v17;
-    v18 = [v15 actionWithTitle:v16 style:0 handler:v24];
+    v18 = [v15 actionWithTitle:learnMoreButtonText style:0 handler:v24];
 
     v19 = MEMORY[0x277D750F8];
-    v20 = [v17 cancelButtonText];
+    cancelButtonText = [v17 cancelButtonText];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __60__SBAppDeniedAlertItem_configure_requirePasscodeForActions___block_invoke_3;
     v23[3] = &unk_2783A8A40;
     v23[4] = self;
-    v21 = [v19 actionWithTitle:v20 style:1 handler:v23];
+    v21 = [v19 actionWithTitle:cancelButtonText style:1 handler:v23];
 
     [v5 addAction:v14];
     [v5 addAction:v18];

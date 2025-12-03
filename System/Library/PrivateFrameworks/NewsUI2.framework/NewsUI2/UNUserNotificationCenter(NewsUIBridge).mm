@@ -10,8 +10,8 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [v7 currentNotificationCenter];
-  [v11 replaceContentForRequestWithIdentifier:v10 replacementContent:v9 completionHandler:v8];
+  currentNotificationCenter = [v7 currentNotificationCenter];
+  [currentNotificationCenter replaceContentForRequestWithIdentifier:v10 replacementContent:v9 completionHandler:v8];
 }
 
 @end

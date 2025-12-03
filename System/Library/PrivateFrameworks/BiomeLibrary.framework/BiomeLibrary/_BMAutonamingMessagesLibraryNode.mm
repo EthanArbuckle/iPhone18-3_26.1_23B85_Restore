@@ -8,7 +8,7 @@
 + (id)storeConfigurationForAccuracyFedStats;
 + (id)storeConfigurationForInferences;
 + (id)storeConfigurationForMessageIds;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -17,7 +17,7 @@
 + (id)AccuracyFedStats
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAccuracyFedStats];
+  configurationForAccuracyFedStats = [self configurationForAccuracyFedStats];
   v3 = +[BMAutonamingAccuracyFedStats columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -29,7 +29,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Autonaming.Messages.AccuracyFedStats" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Autonaming.Messages.AccuracyFedStats" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Autonaming.Messages.AccuracyFedStats" schema:v9 configuration:configurationForAccuracyFedStats];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -39,8 +39,8 @@
 + (id)configurationForAccuracyFedStats
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForAccuracyFedStats];
-  v4 = [a1 syncPolicyForAccuracyFedStats];
+  storeConfigurationForAccuracyFedStats = [self storeConfigurationForAccuracyFedStats];
+  syncPolicyForAccuracyFedStats = [self syncPolicyForAccuracyFedStats];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"com.apple.MobileSMS IN $disabledApps" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"learn-from-this-app" predicate:v6];
@@ -51,7 +51,7 @@
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B6A01403-A5C7-4A29-AAD3-BCA3E343CFAC"];
   BYTE2(v14) = 0;
   LOWORD(v14) = 1;
-  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Autonaming.Messages.AccuracyFedStats" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Autonaming.Messages.AccuracyFedStats" eventClass:objc_opt_class() storeConfig:storeConfigurationForAccuracyFedStats syncPolicy:syncPolicyForAccuracyFedStats legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -70,7 +70,7 @@
 + (id)Inferences
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInferences];
+  configurationForInferences = [self configurationForInferences];
   v3 = +[BMAutonamingInferences columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -82,7 +82,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Autonaming.Messages.Inferences" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Autonaming.Messages.Inferences" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Autonaming.Messages.Inferences" schema:v9 configuration:configurationForInferences];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -92,8 +92,8 @@
 + (id)configurationForInferences
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForInferences];
-  v4 = [a1 syncPolicyForInferences];
+  storeConfigurationForInferences = [self storeConfigurationForInferences];
+  syncPolicyForInferences = [self syncPolicyForInferences];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"com.apple.MobileSMS IN $disabledApps" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"learn-from-this-app" predicate:v6];
@@ -104,7 +104,7 @@
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F9833224-FBFE-4073-BFC3-1353F4D2B555"];
   BYTE2(v14) = 1;
   LOWORD(v14) = 1;
-  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Autonaming.Messages.Inferences" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Autonaming.Messages.Inferences" eventClass:objc_opt_class() storeConfig:storeConfigurationForInferences syncPolicy:syncPolicyForInferences legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -122,7 +122,7 @@
 + (id)MessageIds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMessageIds];
+  configurationForMessageIds = [self configurationForMessageIds];
   v3 = +[BMAutonamingMessageIds columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -134,7 +134,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Autonaming.Messages.MessageIds" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Autonaming.Messages.MessageIds" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Autonaming.Messages.MessageIds" schema:v9 configuration:configurationForMessageIds];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -144,8 +144,8 @@
 + (id)configurationForMessageIds
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForMessageIds];
-  v4 = [a1 syncPolicyForMessageIds];
+  storeConfigurationForMessageIds = [self storeConfigurationForMessageIds];
+  syncPolicyForMessageIds = [self syncPolicyForMessageIds];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"com.apple.MobileSMS IN $disabledApps" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"learn-from-this-app" predicate:v6];
@@ -156,7 +156,7 @@
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"20C3E6E8-463D-4946-A782-0BAAFB8F425E"];
   BYTE2(v14) = 1;
   LOWORD(v14) = 1;
-  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Autonaming.Messages.MessageIds" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Autonaming.Messages.MessageIds" eventClass:objc_opt_class() storeConfig:storeConfigurationForMessageIds syncPolicy:syncPolicyForMessageIds legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -171,26 +171,26 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AccuracyFedStats"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AccuracyFedStats"])
   {
-    v5 = [a1 AccuracyFedStats];
+    accuracyFedStats = [self AccuracyFedStats];
 LABEL_7:
-    v6 = v5;
+    v6 = accuracyFedStats;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"Inferences"])
+  if ([nameCopy isEqualToString:@"Inferences"])
   {
-    v5 = [a1 Inferences];
+    accuracyFedStats = [self Inferences];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"MessageIds"])
+  if ([nameCopy isEqualToString:@"MessageIds"])
   {
-    v5 = [a1 MessageIds];
+    accuracyFedStats = [self MessageIds];
     goto LABEL_7;
   }
 

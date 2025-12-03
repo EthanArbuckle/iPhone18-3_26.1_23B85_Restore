@@ -1,12 +1,12 @@
 @interface TRNearbyDeviceScanner
 - (TRNearbyDeviceScanner)init;
 - (TRNearbyDeviceScannerDelegate)delegate;
-- (void)_deviceFound:(id)a3;
-- (void)_handleActivationWithError:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_handleActivationWithError:(id)error;
 - (void)_handleInterruption;
 - (void)_handleInvalidation;
-- (void)openSession:(id)a3 withCompletion:(id)a4;
-- (void)startScanningForDevicesWithService:(unint64_t)a3;
+- (void)openSession:(id)session withCompletion:(id)completion;
+- (void)startScanningForDevicesWithService:(unint64_t)service;
 - (void)stopScanning;
 @end
 
@@ -29,12 +29,12 @@
   return v2;
 }
 
-- (void)startScanningForDevicesWithService:(unint64_t)a3
+- (void)startScanningForDevicesWithService:(unint64_t)service
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(TRNearbyDeviceScanner *)self delegate];
+  delegate = [(TRNearbyDeviceScanner *)self delegate];
 
-  if (!v5)
+  if (!delegate)
   {
     v9 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"TRNearbyDeviceScanner requires a delegate." userInfo:0];
     objc_exception_throw(v9);
@@ -48,7 +48,7 @@
       *buf = 136315394;
       v12 = "[TRNearbyDeviceScanner startScanningForDevicesWithService:]";
       v13 = 2048;
-      v14 = a3;
+      serviceCopy = service;
       _os_log_impl(&dword_26F2A2000, v6, OS_LOG_TYPE_DEFAULT, "%s Start scanning for devices with service: %lu.", buf, 0x16u);
     }
   }
@@ -59,7 +59,7 @@
   v10[2] = __60__TRNearbyDeviceScanner_startScanningForDevicesWithService___block_invoke;
   v10[3] = &unk_279DCEB80;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = service;
   dispatch_async(scannerQ, v10);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -257,17 +257,17 @@ LABEL_20:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActivationWithError:(id)a3
+- (void)_handleActivationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   scannerQ = self->_scannerQ;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__TRNearbyDeviceScanner__handleActivationWithError___block_invoke;
   v7[3] = &unk_279DCEC20;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
   dispatch_sync(scannerQ, v7);
 }
 
@@ -400,17 +400,17 @@ void __44__TRNearbyDeviceScanner__handleInvalidation__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 distance] == 10)
+  foundCopy = found;
+  if ([foundCopy distance] == 10)
   {
-    if (-[TRNearbyDeviceScanner requestedService](self, "requestedService") != 1 || ([v4 needsSetup] & 1) != 0)
+    if (-[TRNearbyDeviceScanner requestedService](self, "requestedService") != 1 || ([foundCopy needsSetup] & 1) != 0)
     {
-      v5 = [[TRNearbyDevice alloc] initWithRepresentedDevice:v4 supportedService:[(TRNearbyDeviceScanner *)self requestedService]];
-      v6 = [(TRNearbyDeviceScanner *)self delegate];
-      [v6 nearbyDeviceScanner:self didDiscoverDevice:v5];
+      v5 = [[TRNearbyDevice alloc] initWithRepresentedDevice:foundCopy supportedService:[(TRNearbyDeviceScanner *)self requestedService]];
+      delegate = [(TRNearbyDeviceScanner *)self delegate];
+      [delegate nearbyDeviceScanner:self didDiscoverDevice:v5];
 
       goto LABEL_11;
     }
@@ -423,11 +423,11 @@ void __44__TRNearbyDeviceScanner__handleInvalidation__block_invoke(uint64_t a1)
     v7 = TRLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 identifier];
+      identifier = [foundCopy identifier];
       v11 = 136315394;
       v12 = "[TRNearbyDeviceScanner _deviceFound:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = identifier;
       v9 = "%s Device (%@) rejected. Does not support setup.";
       goto LABEL_9;
     }
@@ -435,16 +435,16 @@ void __44__TRNearbyDeviceScanner__handleInvalidation__block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  if ([v4 distance] == 20 && _TRLogEnabled == 1)
+  if ([foundCopy distance] == 20 && _TRLogEnabled == 1)
   {
     v7 = TRLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 identifier];
+      identifier = [foundCopy identifier];
       v11 = 136315394;
       v12 = "[TRNearbyDeviceScanner _deviceFound:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = identifier;
       v9 = "%s Device (%@) rejected. Not at tap distance.";
 LABEL_9:
       _os_log_impl(&dword_26F2A2000, v7, OS_LOG_TYPE_DEFAULT, v9, &v11, 0x16u);
@@ -458,23 +458,23 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openSession:(id)a3 withCompletion:(id)a4
+- (void)openSession:(id)session withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v7 = objc_alloc_init(TRClientConnection);
-  v8 = [v5 nearbyDevice];
+  nearbyDevice = [sessionCopy nearbyDevice];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__TRNearbyDeviceScanner_openSession_withCompletion___block_invoke;
   v12[3] = &unk_279DCF500;
   v14 = v7;
-  v15 = v6;
-  v13 = v5;
+  v15 = completionCopy;
+  v13 = sessionCopy;
   v9 = v7;
-  v10 = v5;
-  v11 = v6;
-  [(TRClientConnection *)v9 connectToNearbyDevice:v8 withCompletion:v12];
+  v10 = sessionCopy;
+  v11 = completionCopy;
+  [(TRClientConnection *)v9 connectToNearbyDevice:nearbyDevice withCompletion:v12];
 }
 
 void __52__TRNearbyDeviceScanner_openSession_withCompletion___block_invoke(uint64_t a1, char a2)

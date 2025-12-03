@@ -1,30 +1,30 @@
 @interface CUWiFiDevice
 - (id)description;
-- (unsigned)_updateWithDeviceIE:(const char *)a3 end:(const char *)a4;
+- (unsigned)_updateWithDeviceIE:(const char *)e end:(const char *)end;
 @end
 
 @implementation CUWiFiDevice
 
-- (unsigned)_updateWithDeviceIE:(const char *)a3 end:(const char *)a4
+- (unsigned)_updateWithDeviceIE:(const char *)e end:(const char *)end
 {
-  v5 = a3;
-  v7 = a3;
+  eCopy = e;
+  eCopy2 = e;
   while (1)
   {
     v8 = 0;
-    if (a4 <= v7 || (a4 - v7) < 2)
+    if (end <= eCopy2 || (end - eCopy2) < 2)
     {
       break;
     }
 
-    v9 = *(v7 + 1);
-    if (&v7[v9 + 2] > a4)
+    v9 = *(eCopy2 + 1);
+    if (&eCopy2[v9 + 2] > end)
     {
       goto LABEL_11;
     }
 
-    v10 = *v7;
-    v7 += v9 + 2;
+    v10 = *eCopy2;
+    eCopy2 += v9 + 2;
     if (v10 == 6)
     {
       if (v9 != 6)
@@ -75,23 +75,23 @@ LABEL_16:
     }
   }
 
-  UInt64 = TLV8GetUInt64(v5, a4, 8, 0, 0);
+  UInt64 = TLV8GetUInt64(eCopy, end, 8, 0, 0);
   if (self->_deviceIECategory != UInt64)
   {
     self->_deviceIECategory = UInt64;
     v8 = 1;
   }
 
-  v20 = v5;
-  while (a4 > v20)
+  v20 = eCopy;
+  while (end > v20)
   {
-    if (&a4[-v20] < 2)
+    if (&end[-v20] < 2)
     {
       break;
     }
 
     v21 = *(v20 + 1);
-    if (v20 + 2 + v21 > a4)
+    if (v20 + 2 + v21 > end)
     {
       break;
     }
@@ -143,18 +143,18 @@ LABEL_33:
     }
   }
 
-  v31 = v5;
+  v31 = eCopy;
   do
   {
     v32 = 0;
-    if (a4 <= v31 || &a4[-v31] < 2)
+    if (end <= v31 || &end[-v31] < 2)
     {
       goto LABEL_56;
     }
 
     v33 = (v31 + 2);
     v34 = *(v31 + 1);
-    if (v31 + 2 + v34 > a4)
+    if (v31 + 2 + v34 > end)
     {
       goto LABEL_55;
     }
@@ -229,17 +229,17 @@ LABEL_56:
     v8 = 1;
   }
 
-  v46 = v5;
-  while (a4 > v46)
+  v46 = eCopy;
+  while (end > v46)
   {
-    if (&a4[-v46] < 2)
+    if (&end[-v46] < 2)
     {
       break;
     }
 
     v47 = v46 + 2;
     v48 = *(v46 + 1);
-    if (v46 + 2 + v48 > a4)
+    if (v46 + 2 + v48 > end)
     {
       break;
     }
@@ -294,17 +294,17 @@ LABEL_72:
     }
   }
 
-  v57 = v5;
-  while (a4 > v57)
+  v57 = eCopy;
+  while (end > v57)
   {
-    if (&a4[-v57] < 2)
+    if (&end[-v57] < 2)
     {
       break;
     }
 
     v58 = v57 + 2;
     v59 = *(v57 + 1);
-    if (v57 + 2 + v59 > a4)
+    if (v57 + 2 + v59 > end)
     {
       break;
     }
@@ -359,17 +359,17 @@ LABEL_87:
     }
   }
 
-  v68 = v5;
-  while (a4 > v68)
+  v68 = eCopy;
+  while (end > v68)
   {
-    if (&a4[-v68] < 2)
+    if (&end[-v68] < 2)
     {
       break;
     }
 
     v69 = v68 + 2;
     v70 = *(v68 + 1);
-    if (v68 + 2 + v70 > a4)
+    if (v68 + 2 + v70 > end)
     {
       break;
     }
@@ -424,16 +424,16 @@ LABEL_102:
     }
   }
 
-  v79 = v5;
-  while (a4 > v79)
+  v79 = eCopy;
+  while (end > v79)
   {
-    if (&a4[-v79] < 2)
+    if (&end[-v79] < 2)
     {
       break;
     }
 
     v80 = *(v79 + 1);
-    if (v79 + 2 + v80 > a4)
+    if (v79 + 2 + v80 > end)
     {
       break;
     }
@@ -485,21 +485,21 @@ LABEL_117:
     }
   }
 
-  while (a4 > v5)
+  while (end > eCopy)
   {
-    if ((a4 - v5) < 2)
+    if ((end - eCopy) < 2)
     {
       break;
     }
 
-    v90 = v5[1];
-    if (&v5[v90 + 2] > a4)
+    v90 = eCopy[1];
+    if (&eCopy[v90 + 2] > end)
     {
       break;
     }
 
-    v91 = *v5;
-    v5 += v90 + 2;
+    v91 = *eCopy;
+    eCopy += v90 + 2;
     if (v91 == 9)
     {
       if (v90 != 4)
@@ -556,8 +556,8 @@ LABEL_131:
   if ([(NSData *)self->_bssid length]== 6)
   {
     v55 = v9;
-    v16 = [(NSData *)self->_bssid bytes];
-    NSAppendPrintF(&v55, ", BSSID %.6a", v17, v18, v19, v20, v21, v22, v16);
+    bytes = [(NSData *)self->_bssid bytes];
+    NSAppendPrintF(&v55, ", BSSID %.6a", v17, v18, v19, v20, v21, v22, bytes);
     v23 = v55;
 
     v9 = v23;

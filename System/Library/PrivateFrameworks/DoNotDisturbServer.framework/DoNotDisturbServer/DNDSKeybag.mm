@@ -1,15 +1,15 @@
 @interface DNDSKeybag
 + (id)sharedInstance;
-- (BOOL)_hasUnlockedSinceBootForObserver:(id)a3;
+- (BOOL)_hasUnlockedSinceBootForObserver:(id)observer;
 - (BOOL)hasUnlockedSinceBoot;
 - (DNDSKeybag)init;
 - (void)_beginObservingKeybag;
 - (void)_queue_handleFirstUnlock;
 - (void)_queue_handleKeybagStatusChanged;
-- (void)addObserver:(id)a3;
-- (void)addPriorityObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addPriorityObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DNDSKeybag
@@ -40,12 +40,12 @@ LABEL_6:
 
 - (void)_queue_handleKeybagStatusChanged
 {
-  v3 = [(NSHashTable *)self->_queue_priorityObservers allObjects];
-  v4 = v3;
+  allObjects = [(NSHashTable *)self->_queue_priorityObservers allObjects];
+  v4 = allObjects;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (allObjects)
   {
-    v6 = v3;
+    v6 = allObjects;
   }
 
   else
@@ -55,11 +55,11 @@ LABEL_6:
 
   v7 = v6;
 
-  v8 = [(NSHashTable *)self->_queue_observers allObjects];
-  v9 = v8;
-  if (v8)
+  allObjects2 = [(NSHashTable *)self->_queue_observers allObjects];
+  v9 = allObjects2;
+  if (allObjects2)
   {
-    v10 = v8;
+    v10 = allObjects2;
   }
 
   else
@@ -82,7 +82,7 @@ LABEL_6:
   v15[2] = __46__DNDSKeybag__queue_handleKeybagStatusChanged__block_invoke;
   v15[3] = &unk_278F89F48;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v14 = v11;
   dispatch_async(calloutQueue, v15);
 }
@@ -200,9 +200,9 @@ uint64_t __28__DNDSKeybag_sharedInstance__block_invoke()
   return v3;
 }
 
-- (BOOL)_hasUnlockedSinceBootForObserver:(id)a3
+- (BOOL)_hasUnlockedSinceBootForObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -213,9 +213,9 @@ uint64_t __28__DNDSKeybag_sharedInstance__block_invoke()
   block[2] = __47__DNDSKeybag__hasUnlockedSinceBootForObserver___block_invoke;
   block[3] = &unk_278F8ACC8;
   block[4] = self;
-  v9 = v4;
+  v9 = observerCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = observerCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -242,9 +242,9 @@ void __47__DNDSKeybag__hasUnlockedSinceBootForObserver___block_invoke(uint64_t a
   *(*(*(a1 + 48) + 8) + 24) = *(*(a1 + 32) + v4);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   BSDispatchQueueAssertNot();
   v6 = self->_queue;
@@ -253,8 +253,8 @@ void __47__DNDSKeybag__hasUnlockedSinceBootForObserver___block_invoke(uint64_t a
   v8[2] = __26__DNDSKeybag_addObserver___block_invoke;
   v8[3] = &unk_278F89F48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -276,9 +276,9 @@ uint64_t __26__DNDSKeybag_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)addPriorityObserver:(id)a3
+- (void)addPriorityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   BSDispatchQueueAssertNot();
   v6 = self->_queue;
@@ -287,8 +287,8 @@ uint64_t __26__DNDSKeybag_addObserver___block_invoke(uint64_t a1)
   v8[2] = __34__DNDSKeybag_addPriorityObserver___block_invoke;
   v8[3] = &unk_278F89F48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -310,9 +310,9 @@ uint64_t __34__DNDSKeybag_addPriorityObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   BSDispatchQueueAssertNot();
   v6 = self->_queue;
@@ -321,8 +321,8 @@ uint64_t __34__DNDSKeybag_addPriorityObserver___block_invoke(uint64_t a1)
   v8[2] = __29__DNDSKeybag_removeObserver___block_invoke;
   v8[3] = &unk_278F89F48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -357,8 +357,8 @@ void __29__DNDSKeybag_removeObserver___block_invoke(uint64_t a1)
     _os_log_impl(&dword_24912E000, v3, OS_LOG_TYPE_DEFAULT, "First unlock occurred", buf, 2u);
   }
 
-  v4 = [(NSHashTable *)self->_queue_priorityObservers allObjects];
-  v5 = [(NSHashTable *)self->_queue_observers allObjects];
+  allObjects = [(NSHashTable *)self->_queue_priorityObservers allObjects];
+  allObjects2 = [(NSHashTable *)self->_queue_observers allObjects];
   objc_initWeak(buf, self);
   calloutQueue = self->_calloutQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -366,11 +366,11 @@ void __29__DNDSKeybag_removeObserver___block_invoke(uint64_t a1)
   v9[2] = __38__DNDSKeybag__queue_handleFirstUnlock__block_invoke;
   v9[3] = &unk_278F8C030;
   objc_copyWeak(&v13, buf);
-  v10 = v4;
-  v11 = self;
-  v12 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = allObjects;
+  selfCopy = self;
+  v12 = allObjects2;
+  v7 = allObjects2;
+  v8 = allObjects;
   dispatch_async(calloutQueue, v9);
 
   objc_destroyWeak(&v13);

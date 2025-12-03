@@ -1,52 +1,52 @@
 @interface RTVisitMonitor
 + (double)LocationHeartbeatWhileAwake;
-+ (id)bucketLocations:(id)a3 interval:(double)a4;
-+ (id)hyperParameterForPipelineType:(unint64_t)a3;
-+ (id)regionMonitoringClientIdentifierForPipelineType:(unint64_t)a3;
-+ (id)regionWithRegionIdentifier:(id)a3 location:(id)a4 shouldNotifyForEntry:(BOOL)a5;
-+ (int64_t)hintSourceForRegionCallbackType:(int64_t)a3;
-- (BOOL)_setupGeoFencesForVisit:(id)a3 pipelineType:(unint64_t)a4 error:(id *)a5;
-- (RTVisitMonitor)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 distanceCalculator:(id)a5 hintManager:(id)a6 learnedLocationManager:(id)a7 locationAwarenessManager:(id)a8 locationManager:(id)a9 metricManager:(id)a10 motionActivityManager:(id)a11 platform:(id)a12 queue:(id)a13 state:(id)a14 timerManager:(id)a15 visitLabeler:(id)a16;
-- (RTVisitMonitor)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 hintManager:(id)a5 learnedLocationManager:(id)a6 locationAwarenessManager:(id)a7 locationManager:(id)a8 metricManager:(id)a9 motionActivityManager:(id)a10 platform:(id)a11 queue:(id)a12 state:(id)a13 visitLabeler:(id)a14;
++ (id)bucketLocations:(id)locations interval:(double)interval;
++ (id)hyperParameterForPipelineType:(unint64_t)type;
++ (id)regionMonitoringClientIdentifierForPipelineType:(unint64_t)type;
++ (id)regionWithRegionIdentifier:(id)identifier location:(id)location shouldNotifyForEntry:(BOOL)entry;
++ (int64_t)hintSourceForRegionCallbackType:(int64_t)type;
+- (BOOL)_setupGeoFencesForVisit:(id)visit pipelineType:(unint64_t)type error:(id *)error;
+- (RTVisitMonitor)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor distanceCalculator:(id)calculator hintManager:(id)hintManager learnedLocationManager:(id)locationManager locationAwarenessManager:(id)awarenessManager locationManager:(id)a9 metricManager:(id)self0 motionActivityManager:(id)self1 platform:(id)self2 queue:(id)self3 state:(id)self4 timerManager:(id)self5 visitLabeler:(id)self6;
+- (RTVisitMonitor)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor hintManager:(id)hintManager learnedLocationManager:(id)locationManager locationAwarenessManager:(id)awarenessManager locationManager:(id)a8 metricManager:(id)metricManager motionActivityManager:(id)self0 platform:(id)self1 queue:(id)self2 state:(id)self3 visitLabeler:(id)self4;
 - (RTVisitMonitorDelegate)delegate;
 - (double)maxHorizontalAccuracyOverride;
-- (id)_configurationForPipelineType:(unint64_t)a3;
-- (id)_createPipelineWithType:(unint64_t)a3 name:(id)a4 lastVisit:(id)a5;
-- (id)_moduleWithName:(id)a3 pipelineType:(unint64_t)a4 hyperParameter:(id)a5;
-- (id)_modulesForPipelineType:(unint64_t)a3 hyperParameter:(id)a4;
-- (id)_updateSourceForVisit:(id)a3;
+- (id)_configurationForPipelineType:(unint64_t)type;
+- (id)_createPipelineWithType:(unint64_t)type name:(id)name lastVisit:(id)visit;
+- (id)_moduleWithName:(id)name pipelineType:(unint64_t)type hyperParameter:(id)parameter;
+- (id)_modulesForPipelineType:(unint64_t)type hyperParameter:(id)parameter;
+- (id)_updateSourceForVisit:(id)visit;
 - (unint64_t)visitPipelineTypeOverride;
-- (void)_batchProcess:(id)a3 fromDate:(id)a4 toDate:(id)a5 handler:(id)a6;
-- (void)_bootstrapPipeline:(id)a3 handler:(id)a4;
-- (void)_compareVisit:(id)a3 previousVisit:(id)a4;
-- (void)_processLeechedLocations:(id)a3;
+- (void)_batchProcess:(id)process fromDate:(id)date toDate:(id)toDate handler:(id)handler;
+- (void)_bootstrapPipeline:(id)pipeline handler:(id)handler;
+- (void)_compareVisit:(id)visit previousVisit:(id)previousVisit;
+- (void)_processLeechedLocations:(id)locations;
 - (void)_processMatureLocations;
-- (void)_processRealtimeVisits:(id)a3 pipeline:(id)a4;
-- (void)_registerVisitMonitorForRegionEventsForPipelineType:(unint64_t)a3;
-- (void)_setupRealtimePipelineWithType:(unint64_t)a3 handler:(id)a4;
+- (void)_processRealtimeVisits:(id)visits pipeline:(id)pipeline;
+- (void)_registerVisitMonitorForRegionEventsForPipelineType:(unint64_t)type;
+- (void)_setupRealtimePipelineWithType:(unint64_t)type handler:(id)handler;
 - (void)_shutdown;
 - (void)_startFeedBuffer;
 - (void)_startFeedBufferTimer;
 - (void)_stopFeedBuffer;
-- (void)_stopMonitoringAllRegionsForPipelineType:(unint64_t)a3;
-- (void)_unregisterVisitMonitorForRegionEventsForPipelineType:(unint64_t)a3;
-- (void)compareVisit:(id)a3 previousVisit:(id)a4;
-- (void)fetchVisitMonitorState:(id)a3;
-- (void)fetchVisitMonitorStatusWithHandler:(id)a3;
-- (void)fetchVisitsFromDate:(id)a3 toDate:(id)a4 handler:(id)a5;
-- (void)handleLowConfidenceVisitIncident:(id)a3;
-- (void)handleRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5;
-- (void)handleVisitIncident:(id)a3;
-- (void)onLeechedLocationsNotification:(id)a3;
-- (void)setFeedBufferReferenceCounter:(unint64_t)a3;
-- (void)setHighConfidencePipelineReferenceCounter:(unint64_t)a3;
-- (void)setLowConfidencePipelineReferenceCounter:(unint64_t)a3;
-- (void)setMonitoringLeechedVisitIncidents:(BOOL)a3;
-- (void)setMonitoringLowConfidenceVisitIncidents:(BOOL)a3;
-- (void)setMonitoringVisitIncidents:(BOOL)a3;
-- (void)setupGeoFencesForVisit:(id)a3 pipelineType:(unint64_t)a4 handler:(id)a5;
+- (void)_stopMonitoringAllRegionsForPipelineType:(unint64_t)type;
+- (void)_unregisterVisitMonitorForRegionEventsForPipelineType:(unint64_t)type;
+- (void)compareVisit:(id)visit previousVisit:(id)previousVisit;
+- (void)fetchVisitMonitorState:(id)state;
+- (void)fetchVisitMonitorStatusWithHandler:(id)handler;
+- (void)fetchVisitsFromDate:(id)date toDate:(id)toDate handler:(id)handler;
+- (void)handleLowConfidenceVisitIncident:(id)incident;
+- (void)handleRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier;
+- (void)handleVisitIncident:(id)incident;
+- (void)onLeechedLocationsNotification:(id)notification;
+- (void)setFeedBufferReferenceCounter:(unint64_t)counter;
+- (void)setHighConfidencePipelineReferenceCounter:(unint64_t)counter;
+- (void)setLowConfidencePipelineReferenceCounter:(unint64_t)counter;
+- (void)setMonitoringLeechedVisitIncidents:(BOOL)incidents;
+- (void)setMonitoringLowConfidenceVisitIncidents:(BOOL)incidents;
+- (void)setMonitoringVisitIncidents:(BOOL)incidents;
+- (void)setupGeoFencesForVisit:(id)visit pipelineType:(unint64_t)type handler:(id)handler;
 - (void)showVisitReentryDetectionUI;
-- (void)shutdownWithHandler:(id)a3;
+- (void)shutdownWithHandler:(id)handler;
 - (void)startMonitoringLeechedVisitIncidents;
 - (void)startMonitoringLowConfidenceVisitIncidents;
 - (void)startMonitoringVisitIncidents;
@@ -65,13 +65,13 @@
     {
       objc_initWeak(&location, self);
       timerManager = self->_timerManager;
-      v4 = [(RTVisitMonitor *)self queue];
+      queue = [(RTVisitMonitor *)self queue];
       v9 = MEMORY[0x277D85DD0];
       v10 = 3221225472;
       v11 = __39__RTVisitMonitor__startFeedBufferTimer__block_invoke;
       v12 = &unk_2788C5908;
       objc_copyWeak(&v13, &location);
-      v5 = [(RTTimerManager *)timerManager timerWithIdentifier:@"com.apple.routined.visit.feedbuffer.timer" queue:v4 handler:&v9];
+      v5 = [(RTTimerManager *)timerManager timerWithIdentifier:@"com.apple.routined.visit.feedbuffer.timer" queue:queue handler:&v9];
       feedBufferTimer = self->_feedBufferTimer;
       self->_feedBufferTimer = v5;
 
@@ -109,11 +109,11 @@ void __39__RTVisitMonitor__startFeedBufferTimer__block_invoke(uint64_t a1)
 - (void)_processMatureLocations
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(RTVisitFeedBuffer *)self->_feedBuffer numLocations];
-  if (v4)
+  numLocations = [(RTVisitFeedBuffer *)self->_feedBuffer numLocations];
+  if (numLocations)
   {
-    v5 = v4;
-    v6 = [(RTVisitFeedBuffer *)self->_feedBuffer maturedLocations];
+    v5 = numLocations;
+    maturedLocations = [(RTVisitFeedBuffer *)self->_feedBuffer maturedLocations];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -123,22 +123,22 @@ void __39__RTVisitMonitor__startFeedBufferTimer__block_invoke(uint64_t a1)
         *buf = 138412802;
         v14 = v9;
         v15 = 2048;
-        v16 = [v6 count];
+        v16 = [maturedLocations count];
         v17 = 2048;
         v18 = v5;
         _os_log_debug_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEBUG, "%@, processing %lu/%lu matured locations from feedBuffer", buf, 0x20u);
       }
     }
 
-    if ([v6 count])
+    if ([maturedLocations count])
     {
       pipelines = self->_pipelines;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __41__RTVisitMonitor__processMatureLocations__block_invoke;
       v10[3] = &unk_2788CA4B8;
-      v11 = v6;
-      v12 = self;
+      v11 = maturedLocations;
+      selfCopy = self;
       [(NSMutableDictionary *)pipelines enumerateKeysAndObjectsUsingBlock:v10];
     }
   }
@@ -157,8 +157,8 @@ void __41__RTVisitMonitor__processMatureLocations__block_invoke(uint64_t a1, uin
 + (double)LocationHeartbeatWhileAwake
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"VisitMonitorLocationHeartbeatIntervalWhileAwake"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"VisitMonitorLocationHeartbeatIntervalWhileAwake"];
 
   if (v3)
   {
@@ -186,70 +186,70 @@ void __41__RTVisitMonitor__processMatureLocations__block_invoke(uint64_t a1, uin
   return v5;
 }
 
-+ (id)regionMonitoringClientIdentifierForPipelineType:(unint64_t)a3
++ (id)regionMonitoringClientIdentifierForPipelineType:(unint64_t)type
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [RTVisitPipeline typeToString:a3];
+  v7 = [RTVisitPipeline typeToString:type];
   v8 = [v4 stringWithFormat:@"%@.%@", v6, v7];
 
   return v8;
 }
 
-- (RTVisitMonitor)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 hintManager:(id)a5 learnedLocationManager:(id)a6 locationAwarenessManager:(id)a7 locationManager:(id)a8 metricManager:(id)a9 motionActivityManager:(id)a10 platform:(id)a11 queue:(id)a12 state:(id)a13 visitLabeler:(id)a14
+- (RTVisitMonitor)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor hintManager:(id)hintManager learnedLocationManager:(id)locationManager locationAwarenessManager:(id)awarenessManager locationManager:(id)a8 metricManager:(id)metricManager motionActivityManager:(id)self0 platform:(id)self1 queue:(id)self2 state:(id)self3 visitLabeler:(id)self4
 {
-  v35 = a14;
-  v32 = a13;
-  v31 = a12;
-  v25 = a11;
-  v18 = a10;
-  v27 = a9;
+  labelerCopy = labeler;
+  stateCopy = state;
+  queueCopy = queue;
+  platformCopy = platform;
+  activityManagerCopy = activityManager;
+  metricManagerCopy = metricManager;
   v37 = a8;
-  v26 = a7;
-  v19 = a6;
-  v20 = a5;
-  v29 = a4;
-  v21 = a3;
+  awarenessManagerCopy = awarenessManager;
+  locationManagerCopy = locationManager;
+  hintManagerCopy = hintManager;
+  predictorCopy = predictor;
+  managerCopy = manager;
   v30 = objc_opt_new();
   v34 = objc_opt_new();
-  v22 = v19;
-  v23 = [(RTVisitMonitor *)self initWithDefaultsManager:v21 deviceLocationPredictor:v29 distanceCalculator:v30 hintManager:v20 learnedLocationManager:v19 locationAwarenessManager:v26 locationManager:v37 metricManager:v27 motionActivityManager:v18 platform:v25 queue:v31 state:v32 timerManager:v34 visitLabeler:v35];
+  v22 = locationManagerCopy;
+  v23 = [(RTVisitMonitor *)self initWithDefaultsManager:managerCopy deviceLocationPredictor:predictorCopy distanceCalculator:v30 hintManager:hintManagerCopy learnedLocationManager:locationManagerCopy locationAwarenessManager:awarenessManagerCopy locationManager:v37 metricManager:metricManagerCopy motionActivityManager:activityManagerCopy platform:platformCopy queue:queueCopy state:stateCopy timerManager:v34 visitLabeler:labelerCopy];
 
   return v23;
 }
 
-- (RTVisitMonitor)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 distanceCalculator:(id)a5 hintManager:(id)a6 learnedLocationManager:(id)a7 locationAwarenessManager:(id)a8 locationManager:(id)a9 metricManager:(id)a10 motionActivityManager:(id)a11 platform:(id)a12 queue:(id)a13 state:(id)a14 timerManager:(id)a15 visitLabeler:(id)a16
+- (RTVisitMonitor)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor distanceCalculator:(id)calculator hintManager:(id)hintManager learnedLocationManager:(id)locationManager locationAwarenessManager:(id)awarenessManager locationManager:(id)a9 metricManager:(id)self0 motionActivityManager:(id)self1 platform:(id)self2 queue:(id)self3 state:(id)self4 timerManager:(id)self5 visitLabeler:(id)self6
 {
-  v60 = a3;
-  v50 = a4;
-  v46 = a5;
-  v53 = a5;
-  v47 = a6;
-  v59 = a6;
-  v48 = a7;
-  v58 = a7;
-  v49 = a8;
-  v51 = a8;
+  managerCopy = manager;
+  predictorCopy = predictor;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  hintManagerCopy = hintManager;
+  hintManagerCopy2 = hintManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  awarenessManagerCopy = awarenessManager;
+  awarenessManagerCopy2 = awarenessManager;
   v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v57 = a13;
-  v56 = a14;
-  v55 = a15;
-  v25 = a16;
-  v52 = v25;
-  if (v60)
+  metricManagerCopy = metricManager;
+  activityManagerCopy = activityManager;
+  platformCopy = platform;
+  queueCopy = queue;
+  stateCopy = state;
+  timerManagerCopy = timerManager;
+  labelerCopy = labeler;
+  v52 = labelerCopy;
+  if (managerCopy)
   {
-    v26 = v50;
-    if (!v50)
+    v26 = predictorCopy;
+    if (!predictorCopy)
     {
       v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v27 = v53;
-      v37 = v58;
-      v38 = v59;
-      v28 = v51;
+      v27 = calculatorCopy2;
+      v37 = locationManagerCopy2;
+      v38 = hintManagerCopy2;
+      v28 = awarenessManagerCopy2;
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
 LABEL_22:
@@ -265,11 +265,11 @@ LABEL_37:
       goto LABEL_22;
     }
 
-    v27 = v53;
-    v28 = v51;
-    if (!v53)
+    v27 = calculatorCopy2;
+    v28 = awarenessManagerCopy2;
+    if (!calculatorCopy2)
     {
-      v38 = v59;
+      v38 = hintManagerCopy2;
       v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -281,27 +281,27 @@ LABEL_37:
       goto LABEL_51;
     }
 
-    if (v59)
+    if (hintManagerCopy2)
     {
-      if (v58)
+      if (locationManagerCopy2)
       {
-        if (v51)
+        if (awarenessManagerCopy2)
         {
           if (v21)
           {
-            if (v22)
+            if (metricManagerCopy)
             {
-              if (v23)
+              if (activityManagerCopy)
               {
-                if (v24)
+                if (platformCopy)
                 {
-                  if (v57)
+                  if (queueCopy)
                   {
-                    if (v56)
+                    if (stateCopy)
                     {
-                      if (v55)
+                      if (timerManagerCopy)
                       {
-                        if (v25)
+                        if (labelerCopy)
                         {
                           v61.receiver = self;
                           v61.super_class = RTVisitMonitor;
@@ -309,19 +309,19 @@ LABEL_37:
                           v30 = v29;
                           if (v29)
                           {
-                            objc_storeStrong(&v29->_defaultsManager, a3);
-                            objc_storeStrong(&v30->_deviceLocationPredictor, a4);
-                            objc_storeStrong(&v30->_distanceCalculator, v46);
-                            objc_storeStrong(&v30->_hintManager, v47);
-                            objc_storeStrong(&v30->_learnedLocationManager, v48);
-                            objc_storeStrong(&v30->_locationAwarenessManager, v49);
+                            objc_storeStrong(&v29->_defaultsManager, manager);
+                            objc_storeStrong(&v30->_deviceLocationPredictor, predictor);
+                            objc_storeStrong(&v30->_distanceCalculator, calculatorCopy);
+                            objc_storeStrong(&v30->_hintManager, hintManagerCopy);
+                            objc_storeStrong(&v30->_learnedLocationManager, locationManagerCopy);
+                            objc_storeStrong(&v30->_locationAwarenessManager, awarenessManagerCopy);
                             objc_storeStrong(&v30->_locationManager, a9);
-                            objc_storeStrong(&v30->_metricManager, a10);
-                            objc_storeStrong(&v30->_motionActivityManager, a11);
-                            objc_storeStrong(&v30->_platform, a12);
-                            objc_storeStrong(&v30->_timerManager, a15);
-                            objc_storeStrong(&v30->_state, a14);
-                            objc_storeStrong(&v30->_queue, a13);
+                            objc_storeStrong(&v30->_metricManager, metricManager);
+                            objc_storeStrong(&v30->_motionActivityManager, activityManager);
+                            objc_storeStrong(&v30->_platform, platform);
+                            objc_storeStrong(&v30->_timerManager, timerManager);
+                            objc_storeStrong(&v30->_state, state);
+                            objc_storeStrong(&v30->_queue, queue);
                             v31 = objc_opt_new();
                             pipelines = v30->_pipelines;
                             v30->_pipelines = v31;
@@ -330,7 +330,7 @@ LABEL_37:
                             pipelinesMonitoringRegion = v30->_pipelinesMonitoringRegion;
                             v30->_pipelinesMonitoringRegion = v33;
 
-                            objc_storeStrong(&v30->_visitLabeler, a16);
+                            objc_storeStrong(&v30->_visitLabeler, labeler);
                           }
 
                           v35 = v30;
@@ -339,8 +339,8 @@ LABEL_37:
                         }
 
                         v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-                        v37 = v58;
-                        v38 = v59;
+                        v37 = locationManagerCopy2;
+                        v38 = hintManagerCopy2;
                         if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
                         {
                           goto LABEL_22;
@@ -363,9 +363,9 @@ LABEL_49:
 
                       v35 = 0;
 LABEL_50:
-                      v38 = v59;
+                      v38 = hintManagerCopy2;
 LABEL_51:
-                      v37 = v58;
+                      v37 = locationManagerCopy2;
                       goto LABEL_52;
                     }
 
@@ -487,7 +487,7 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v26 = v50;
+  v26 = predictorCopy;
   v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
@@ -496,27 +496,27 @@ LABEL_48:
   }
 
   v35 = 0;
-  v27 = v53;
-  v37 = v58;
-  v38 = v59;
-  v28 = v51;
+  v27 = calculatorCopy2;
+  v37 = locationManagerCopy2;
+  v38 = hintManagerCopy2;
+  v28 = awarenessManagerCopy2;
 LABEL_52:
 
   return v35;
 }
 
-- (void)shutdownWithHandler:(id)a3
+- (void)shutdownWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTVisitMonitor *)self queue];
+  handlerCopy = handler;
+  queue = [(RTVisitMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__RTVisitMonitor_shutdownWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __38__RTVisitMonitor_shutdownWithHandler___block_invoke(uint64_t a1)
@@ -545,26 +545,26 @@ uint64_t __38__RTVisitMonitor_shutdownWithHandler___block_invoke(uint64_t a1)
       *buf = 138412546;
       v20 = v5;
       v21 = 2112;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@ %@", buf, 0x16u);
     }
   }
 
-  v6 = [(RTVisitMonitor *)self locationManager];
-  [v6 removeObserver:self];
+  locationManager = [(RTVisitMonitor *)self locationManager];
+  [locationManager removeObserver:self];
 
-  v7 = [(RTVisitMonitor *)self locationAwarenessManager];
-  [v7 removeLocationHeartbeatRequester:self];
+  locationAwarenessManager = [(RTVisitMonitor *)self locationAwarenessManager];
+  [locationAwarenessManager removeLocationHeartbeatRequester:self];
 
   [(RTVisitMonitor *)self _unregisterVisitMonitorForRegionEventsForPipelineType:2];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(RTVisitMonitor *)self pipelines];
-  v9 = [v8 allValues];
+  pipelines = [(RTVisitMonitor *)self pipelines];
+  allValues = [pipelines allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -576,14 +576,14 @@ uint64_t __38__RTVisitMonitor_shutdownWithHandler___block_invoke(uint64_t a1)
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v14 + 1) + 8 * v13++) shutdown];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
@@ -592,8 +592,8 @@ uint64_t __38__RTVisitMonitor_shutdownWithHandler___block_invoke(uint64_t a1)
 
 - (double)maxHorizontalAccuracyOverride
 {
-  v2 = [(RTVisitMonitor *)self defaultsManager];
-  v3 = [v2 objectForKey:@"MaxHorizontalAccuracy"];
+  defaultsManager = [(RTVisitMonitor *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"MaxHorizontalAccuracy"];
 
   if (v3)
   {
@@ -611,8 +611,8 @@ uint64_t __38__RTVisitMonitor_shutdownWithHandler___block_invoke(uint64_t a1)
 
 - (unint64_t)visitPipelineTypeOverride
 {
-  v2 = [(RTVisitMonitor *)self defaultsManager];
-  v3 = [v2 objectForKey:@"PlaybackVisitPipelineType"];
+  defaultsManager = [(RTVisitMonitor *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"PlaybackVisitPipelineType"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -653,19 +653,19 @@ uint64_t __38__RTVisitMonitor_shutdownWithHandler___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setFeedBufferReferenceCounter:(unint64_t)a3
+- (void)setFeedBufferReferenceCounter:(unint64_t)counter
 {
   feedBufferReferenceCounter = self->_feedBufferReferenceCounter;
-  if (feedBufferReferenceCounter != a3)
+  if (feedBufferReferenceCounter != counter)
   {
     v10 = v4;
     v11 = v3;
     if (feedBufferReferenceCounter)
     {
-      if (a3)
+      if (counter)
       {
 LABEL_4:
-        self->_feedBufferReferenceCounter = a3;
+        self->_feedBufferReferenceCounter = counter;
         return;
       }
     }
@@ -673,7 +673,7 @@ LABEL_4:
     else
     {
       [(RTVisitMonitor *)self _startFeedBuffer];
-      if (a3)
+      if (counter)
       {
         goto LABEL_4;
       }
@@ -684,50 +684,50 @@ LABEL_4:
   }
 }
 
-- (id)_moduleWithName:(id)a3 pipelineType:(unint64_t)a4 hyperParameter:(id)a5
+- (id)_moduleWithName:(id)name pipelineType:(unint64_t)type hyperParameter:(id)parameter
 {
   v69 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  parameterCopy = parameter;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v8 isEqualToString:v11];
+  v12 = [nameCopy isEqualToString:v11];
 
   if (v12)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v13 = [RTDelayedLocationRequester alloc];
-      v14 = [(RTVisitMonitor *)self locationManager];
-      [v9 maxHorizontalAccuracy];
+      locationManager = [(RTVisitMonitor *)self locationManager];
+      [parameterCopy maxHorizontalAccuracy];
       v16 = v15;
-      v17 = [(RTVisitMonitor *)self queue];
-      v18 = [(RTDelayedLocationRequester *)v13 initWithLocationManager:v14 maxHorizontalAccuracy:v17 queue:v16];
+      queue = [(RTVisitMonitor *)self queue];
+      locationManager2 = [(RTDelayedLocationRequester *)v13 initWithLocationManager:locationManager maxHorizontalAccuracy:queue queue:v16];
     }
 
     else
     {
-      v18 = 0;
+      locationManager2 = 0;
     }
 
     v23 = [RTVisitPipelineModuleSCI alloc];
-    v24 = [(RTVisitMonitor *)self defaultsManager];
-    v25 = [(RTVisitMonitor *)self hintManager];
-    v26 = [(RTVisitMonitor *)self queue];
-    v27 = [(RTVisitPipelineModuleSCI *)v23 initWithDefaultsManager:v24 delayedLocationRequester:v18 hintManager:v25 queue:v26 hyperParameter:v9 useLowConfidence:a4 == 1];
+    defaultsManager = [(RTVisitMonitor *)self defaultsManager];
+    hintManager = [(RTVisitMonitor *)self hintManager];
+    queue2 = [(RTVisitMonitor *)self queue];
+    v27 = [(RTVisitPipelineModuleSCI *)v23 initWithDefaultsManager:defaultsManager delayedLocationRequester:locationManager2 hintManager:hintManager queue:queue2 hyperParameter:parameterCopy useLowConfidence:type == 1];
 
     goto LABEL_8;
   }
 
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = [v8 isEqualToString:v20];
+  v21 = [nameCopy isEqualToString:v20];
 
   if (v21)
   {
     v22 = RTVisitPipelineModuleBurstNoiseFilter;
 LABEL_11:
-    v31 = [[v22 alloc] initWithHyperParameter:v9];
+    v31 = [[v22 alloc] initWithHyperParameter:parameterCopy];
 LABEL_12:
     v27 = v31;
     goto LABEL_13;
@@ -735,7 +735,7 @@ LABEL_12:
 
   v28 = objc_opt_class();
   v29 = NSStringFromClass(v28);
-  v30 = [v8 isEqualToString:v29];
+  v30 = [nameCopy isEqualToString:v29];
 
   if (v30)
   {
@@ -745,41 +745,41 @@ LABEL_12:
 
   v33 = objc_opt_class();
   v34 = NSStringFromClass(v33);
-  v35 = [v8 isEqualToString:v34];
+  v35 = [nameCopy isEqualToString:v34];
 
   if (v35)
   {
     v36 = [RTVisitPipelineModuleSmoother alloc];
-    v37 = [v9 timeIntervalBetweenSmoothedPoints];
-    v38 = [v9 smootherKernelWidth];
-    [v9 maxGapInVisit];
-    v31 = [(RTVisitPipelineModuleSmoother *)v36 initWithTimeIntervalBetweenSmoothedPoints:v37 kernelWidth:v38 smallestSignificantWeightExponent:-10.0 maxGapWithinVisit:v39];
+    timeIntervalBetweenSmoothedPoints = [parameterCopy timeIntervalBetweenSmoothedPoints];
+    smootherKernelWidth = [parameterCopy smootherKernelWidth];
+    [parameterCopy maxGapInVisit];
+    v31 = [(RTVisitPipelineModuleSmoother *)v36 initWithTimeIntervalBetweenSmoothedPoints:timeIntervalBetweenSmoothedPoints kernelWidth:smootherKernelWidth smallestSignificantWeightExponent:-10.0 maxGapWithinVisit:v39];
     goto LABEL_12;
   }
 
   v40 = objc_opt_class();
   v41 = NSStringFromClass(v40);
-  v42 = [v8 isEqualToString:v41];
+  v42 = [nameCopy isEqualToString:v41];
 
   if (v42)
   {
     v43 = [RTVisitPipelineModuleTrajectorySequenceCluster alloc];
-    v44 = [[RTVisitModelControllerBatchMode alloc] initWithHyperParameter:v9];
-    v27 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)v43 initWithVisitTrajectorySequenceClassifier:v44 hyperParameter:v9];
+    v44 = [[RTVisitModelControllerBatchMode alloc] initWithHyperParameter:parameterCopy];
+    v27 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)v43 initWithVisitTrajectorySequenceClassifier:v44 hyperParameter:parameterCopy];
 
     goto LABEL_13;
   }
 
   v45 = objc_opt_class();
   v46 = NSStringFromClass(v45);
-  v47 = [v8 isEqualToString:v46];
+  v47 = [nameCopy isEqualToString:v46];
 
   if (v47)
   {
     v48 = [RTVisitPipelineModuleVisitCentroidUpdater alloc];
-    v18 = [(RTVisitMonitor *)self locationManager];
-    v49 = objc_opt_new();
-    v50 = [(RTVisitPipelineModuleVisitCentroidUpdater *)v48 initWithHyperParameter:v9 locationManager:v18 distanceCalculator:v49];
+    locationManager2 = [(RTVisitMonitor *)self locationManager];
+    defaultsManager2 = objc_opt_new();
+    v50 = [(RTVisitPipelineModuleVisitCentroidUpdater *)v48 initWithHyperParameter:parameterCopy locationManager:locationManager2 distanceCalculator:defaultsManager2];
 LABEL_22:
     v27 = v50;
 
@@ -789,28 +789,28 @@ LABEL_8:
 
   v51 = objc_opt_class();
   v52 = NSStringFromClass(v51);
-  v53 = [v8 isEqualToString:v52];
+  v53 = [nameCopy isEqualToString:v52];
 
   if (v53)
   {
     v54 = [RTVisitPipelineModuleAltitudeEstimator alloc];
-    [v9 maxHorizontalAccuracy];
+    [parameterCopy maxHorizontalAccuracy];
     v56 = v55;
-    v18 = [(RTVisitMonitor *)self locationManager];
-    v27 = [(RTVisitPipelineModuleAltitudeEstimator *)v54 initWithMaxHorizontalAccuracy:v18 locationManager:v56];
+    locationManager2 = [(RTVisitMonitor *)self locationManager];
+    v27 = [(RTVisitPipelineModuleAltitudeEstimator *)v54 initWithMaxHorizontalAccuracy:locationManager2 locationManager:v56];
     goto LABEL_8;
   }
 
   v57 = objc_opt_class();
   v58 = NSStringFromClass(v57);
-  v59 = [v8 isEqualToString:v58];
+  v59 = [nameCopy isEqualToString:v58];
 
   if (v59)
   {
     v60 = [RTVisitPipelineModuleMotionStateTrimmer alloc];
-    v18 = [(RTVisitMonitor *)self motionActivityManager];
-    v49 = [(RTVisitMonitor *)self defaultsManager];
-    v50 = [(RTVisitPipelineModuleMotionStateTrimmer *)v60 initWithMotionActivityManager:v18 defaultsManager:v49];
+    locationManager2 = [(RTVisitMonitor *)self motionActivityManager];
+    defaultsManager2 = [(RTVisitMonitor *)self defaultsManager];
+    v50 = [(RTVisitPipelineModuleMotionStateTrimmer *)v60 initWithMotionActivityManager:locationManager2 defaultsManager:defaultsManager2];
     goto LABEL_22;
   }
 
@@ -818,7 +818,7 @@ LABEL_8:
   if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
   {
     v63 = 138412802;
-    v64 = v8;
+    v64 = nameCopy;
     v65 = 2080;
     v66 = "[RTVisitMonitor _moduleWithName:pipelineType:hyperParameter:]";
     v67 = 1024;
@@ -830,7 +830,7 @@ LABEL_8:
   if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
   {
     v63 = 138412290;
-    v64 = v8;
+    v64 = nameCopy;
     _os_log_fault_impl(&dword_2304B3000, v62, OS_LOG_TYPE_FAULT, "unsupported module, name, %@", &v63, 0xCu);
   }
 
@@ -840,10 +840,10 @@ LABEL_13:
   return v27;
 }
 
-- (id)_configurationForPipelineType:(unint64_t)a3
+- (id)_configurationForPipelineType:(unint64_t)type
 {
   v48 = *MEMORY[0x277D85DE8];
-  if (a3 > 4 || ((1 << a3) & 0x16) == 0)
+  if (type > 4 || ((1 << type) & 0x16) == 0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -852,21 +852,21 @@ LABEL_13:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: VALID_PIPELINE(pipelineType)", buf, 2u);
     }
 
-    if (a3 != 4)
+    if (type != 4)
     {
       v18 = 0;
       goto LABEL_29;
     }
   }
 
-  v6 = [(RTVisitMonitor *)self platform];
-  if (([v6 internalInstall] & 1) == 0)
+  platform = [(RTVisitMonitor *)self platform];
+  if (([platform internalInstall] & 1) == 0)
   {
 
 LABEL_9:
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v12 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -884,13 +884,13 @@ LABEL_9:
         goto LABEL_27;
       }
 
-      v24 = [(RTVisitMonitor *)self platform];
-      v25 = [v24 usesTSCForClustering];
+      platform2 = [(RTVisitMonitor *)self platform];
+      usesTSCForClustering = [platform2 usesTSCForClustering];
 
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v12 = v27;
-      if (!v25)
+      if (!usesTSCForClustering)
       {
         v40[0] = v27;
         v35 = objc_opt_class();
@@ -924,7 +924,7 @@ LABEL_9:
 
     else
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v15 = objc_opt_class();
         v12 = NSStringFromClass(v15);
@@ -957,11 +957,11 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v7 = [(RTVisitMonitor *)self defaultsManager];
+  defaultsManager = [(RTVisitMonitor *)self defaultsManager];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [RTVisitPipeline typeToString:a3];
+  v9 = [RTVisitPipeline typeToString:type];
   v10 = [v8 stringWithFormat:@"RTVisitPiplelineType%@", v9];
-  v11 = [v7 objectForKey:v10];
+  v11 = [defaultsManager objectForKey:v10];
 
   if (!v11)
   {
@@ -978,7 +978,7 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v13 = [RTVisitPipeline typeToString:a3];
+    v13 = [RTVisitPipeline typeToString:type];
     v14 = [v11 componentsJoinedByString:{@", "}];
     *buf = 138412546;
     v45 = v13;
@@ -996,11 +996,11 @@ LABEL_29:
   return v18;
 }
 
-- (id)_modulesForPipelineType:(unint64_t)a3 hyperParameter:(id)a4
+- (id)_modulesForPipelineType:(unint64_t)type hyperParameter:(id)parameter
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a3 <= 4 && ((1 << a3) & 0x16) != 0)
+  parameterCopy = parameter;
+  if (type <= 4 && ((1 << type) & 0x16) != 0)
   {
     goto LABEL_3;
   }
@@ -1012,20 +1012,20 @@ LABEL_29:
     _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: VALID_PIPELINE(type)", buf, 2u);
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
 LABEL_3:
-    if (v7)
+    if (parameterCopy)
     {
       v8 = objc_opt_new();
-      v9 = [(RTVisitMonitor *)self _configurationForPipelineType:a3];
+      v9 = [(RTVisitMonitor *)self _configurationForPipelineType:type];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v10 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v11 = NSStringFromSelector(a2);
-          v12 = [RTVisitPipeline typeToString:a3];
+          v12 = [RTVisitPipeline typeToString:type];
           v13 = [v9 componentsJoinedByString:{@", "}];
           *buf = 138412802;
           v28 = v11;
@@ -1056,7 +1056,7 @@ LABEL_3:
               objc_enumerationMutation(v14);
             }
 
-            v19 = [(RTVisitMonitor *)self _moduleWithName:*(*(&v22 + 1) + 8 * i) pipelineType:a3 hyperParameter:v7, v22];
+            v19 = [(RTVisitMonitor *)self _moduleWithName:*(*(&v22 + 1) + 8 * i) pipelineType:type hyperParameter:parameterCopy, v22];
             if (v19)
             {
               [v8 addObject:v19];
@@ -1091,15 +1091,15 @@ LABEL_3:
   return v8;
 }
 
-+ (id)hyperParameterForPipelineType:(unint64_t)a3
++ (id)hyperParameterForPipelineType:(unint64_t)type
 {
   v5 = 0;
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_11;
       }
@@ -1110,21 +1110,21 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if (a3 - 1 < 2)
+  if (type - 1 < 2)
   {
 LABEL_6:
     v5 = objc_opt_new();
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!type)
   {
 LABEL_8:
     v6 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = NSStringFromSelector(a2);
-      v9 = [RTVisitPipeline typeToString:a3];
+      v9 = [RTVisitPipeline typeToString:type];
       v10 = 138412546;
       v11 = v8;
       v12 = 2112;
@@ -1140,12 +1140,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)_createPipelineWithType:(unint64_t)a3 name:(id)a4 lastVisit:(id)a5
+- (id)_createPipelineWithType:(unint64_t)type name:(id)name lastVisit:(id)visit
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (a3 <= 4 && ((1 << a3) & 0x16) != 0)
+  nameCopy = name;
+  visitCopy = visit;
+  if (type <= 4 && ((1 << type) & 0x16) != 0)
   {
     goto LABEL_3;
   }
@@ -1157,16 +1157,16 @@ LABEL_11:
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: VALID_PIPELINE(type)", &v21, 2u);
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
 LABEL_3:
-    if (v8)
+    if (nameCopy)
     {
-      v10 = [objc_opt_class() hyperParameterForPipelineType:a3];
-      v11 = [(RTVisitMonitor *)self platform];
-      v12 = [v11 internalInstall];
+      v10 = [objc_opt_class() hyperParameterForPipelineType:type];
+      platform = [(RTVisitMonitor *)self platform];
+      internalInstall = [platform internalInstall];
 
-      if (v12)
+      if (internalInstall)
       {
         [(RTVisitMonitor *)self maxHorizontalAccuracyOverride];
         if (v13 > 0.0)
@@ -1190,8 +1190,8 @@ LABEL_3:
         }
       }
 
-      v17 = [(RTVisitMonitor *)self _modulesForPipelineType:a3 hyperParameter:v10];
-      v18 = [[RTVisitPipeline alloc] initWithModules:v17 name:v8 type:a3 lastVisit:v9 hyperParameter:v10];
+      v17 = [(RTVisitMonitor *)self _modulesForPipelineType:type hyperParameter:v10];
+      v18 = [[RTVisitPipeline alloc] initWithModules:v17 name:nameCopy type:type lastVisit:visitCopy hyperParameter:v10];
     }
 
     else
@@ -1215,11 +1215,11 @@ LABEL_3:
   return v18;
 }
 
-- (void)_setupRealtimePipelineWithType:(unint64_t)a3 handler:(id)a4
+- (void)_setupRealtimePipelineWithType:(unint64_t)type handler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a3 - 1 >= 2)
+  handlerCopy = handler;
+  if (type - 1 >= 2)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1238,7 +1238,7 @@ LABEL_3:
     }
 
     v12 = NSStringFromSelector(a2);
-    v13 = [RTVisitPipeline typeToString:a3];
+    v13 = [RTVisitPipeline typeToString:type];
     v24 = 138412546;
     v25 = v12;
     v26 = 2112;
@@ -1248,7 +1248,7 @@ LABEL_3:
   }
 
   pipelines = self->_pipelines;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v10 = [(NSMutableDictionary *)pipelines objectForKeyedSubscript:v9];
 
   if (v10)
@@ -1258,12 +1258,12 @@ LABEL_3:
     {
 LABEL_8:
 
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_9;
     }
 
     v12 = NSStringFromSelector(a2);
-    v13 = [RTVisitPipeline typeToString:a3];
+    v13 = [RTVisitPipeline typeToString:type];
     v24 = 138412546;
     v25 = v12;
     v26 = 2112;
@@ -1275,21 +1275,21 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  v16 = [(RTVisitMonitor *)self state];
-  v17 = v16;
-  if (a3 == 1)
+  state = [(RTVisitMonitor *)self state];
+  v17 = state;
+  if (type == 1)
   {
-    v18 = [v16 lastLowConfidenceVisitIncident];
+    lastLowConfidenceVisitIncident = [state lastLowConfidenceVisitIncident];
     v19 = @"com.apple.routined.visit.pipeline.realtime-low-confidence";
   }
 
   else
   {
-    v18 = [v16 lastVisitIncident];
+    lastLowConfidenceVisitIncident = [state lastVisitIncident];
     v19 = @"com.apple.routined.visit.pipeline.realtime-high-confidence";
   }
 
-  v20 = [(RTVisitMonitor *)self _createPipelineWithType:a3 name:v19 lastVisit:v18];
+  v20 = [(RTVisitMonitor *)self _createPipelineWithType:type name:v19 lastVisit:lastLowConfidenceVisitIncident];
   if (!v20)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1304,17 +1304,17 @@ LABEL_19:
   }
 
   v22 = self->_pipelines;
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)v22 setObject:v20 forKeyedSubscript:v23];
 
-  [(RTVisitMonitor *)self _bootstrapPipeline:v20 handler:v7];
+  [(RTVisitMonitor *)self _bootstrapPipeline:v20 handler:handlerCopy];
 LABEL_9:
 }
 
-- (void)_registerVisitMonitorForRegionEventsForPipelineType:(unint64_t)a3
+- (void)_registerVisitMonitorForRegionEventsForPipelineType:(unint64_t)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:a3];
+  v6 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:type];
   locationManager = self->_locationManager;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -1331,7 +1331,7 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = [RTVisitPipeline typeToString:a3];
+      v11 = [RTVisitPipeline typeToString:type];
       *buf = 138412546;
       v18 = v10;
       v19 = 2112;
@@ -1341,7 +1341,7 @@ LABEL_9:
   }
 
   pipelinesMonitoringRegion = self->_pipelinesMonitoringRegion;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [(NSMutableSet *)pipelinesMonitoringRegion addObject:v13];
 }
 
@@ -1423,7 +1423,7 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)_unregisterVisitMonitorForRegionEventsForPipelineType:(unint64_t)a3
+- (void)_unregisterVisitMonitorForRegionEventsForPipelineType:(unint64_t)type
 {
   pipelinesMonitoringRegion = self->_pipelinesMonitoringRegion;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -1432,7 +1432,7 @@ LABEL_12:
   if (pipelinesMonitoringRegion)
   {
     locationManager = self->_locationManager;
-    v9 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:a3];
+    v9 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:type];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__RTVisitMonitor__unregisterVisitMonitorForRegionEventsForPipelineType___block_invoke;
@@ -1441,7 +1441,7 @@ LABEL_12:
     [(RTLocationManager *)locationManager unregisterForRegionEventsWithClientIdentifier:v9 handler:v12];
 
     v10 = self->_pipelinesMonitoringRegion;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     [(NSMutableSet *)v10 removeObject:v11];
   }
 }
@@ -1491,44 +1491,44 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)handleRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5
+- (void)handleRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  regionCopy = region;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = NSStringFromSelector(a2);
-      v13 = [RTLocationManager stringForRegionCallbackType:a3];
+      v13 = [RTLocationManager stringForRegionCallbackType:callback];
       *buf = 138413059;
       v30 = v12;
       v31 = 2112;
       v32 = v13;
       v33 = 2117;
-      v34 = v9;
+      v34 = regionCopy;
       v35 = 2112;
-      v36 = v10;
+      v36 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, callbackType, %@, region, %{sensitive}@, clientIdentifier, %@", buf, 0x2Au);
     }
   }
 
-  if ((a3 - 1) <= 1)
+  if ((callback - 1) <= 1)
   {
-    v14 = [objc_opt_class() hintSourceForRegionCallbackType:a3];
+    v14 = [objc_opt_class() hintSourceForRegionCallbackType:callback];
     v15 = objc_alloc(MEMORY[0x277D01160]);
-    [v9 center];
+    [regionCopy center];
     v17 = v16;
-    [v9 center];
+    [regionCopy center];
     v19 = v18;
-    [v9 radius];
+    [regionCopy radius];
     v21 = v20;
     v22 = [MEMORY[0x277CBEAA8] now];
     v23 = [v15 initWithLatitude:v22 longitude:v17 horizontalUncertainty:v19 date:v21];
 
-    v24 = [(RTVisitMonitor *)self queue];
+    queue = [(RTVisitMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__RTVisitMonitor_handleRegionCallback_region_clientIdentifier___block_invoke;
@@ -1537,19 +1537,19 @@ LABEL_4:
     v28 = v14;
     block[4] = self;
     v25 = v23;
-    dispatch_async(v24, block);
+    dispatch_async(queue, block);
   }
 }
 
-+ (int64_t)hintSourceForRegionCallbackType:(int64_t)a3
++ (int64_t)hintSourceForRegionCallbackType:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     return 7;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 8;
   }
@@ -1558,7 +1558,7 @@ LABEL_4:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [RTLocationManager stringForRegionCallbackType:a3];
+    v8 = [RTLocationManager stringForRegionCallbackType:type];
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
@@ -1569,41 +1569,41 @@ LABEL_4:
   return -1;
 }
 
-- (void)_bootstrapPipeline:(id)a3 handler:(id)a4
+- (void)_bootstrapPipeline:(id)pipeline handler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEAA8] distantPast];
-  v9 = [v6 lastVisit];
-  v10 = [v9 exit];
+  pipelineCopy = pipeline;
+  handlerCopy = handler;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  lastVisit = [pipelineCopy lastVisit];
+  exit = [lastVisit exit];
 
-  v11 = [v6 lastVisit];
-  v12 = v11;
-  if (v10)
+  lastVisit2 = [pipelineCopy lastVisit];
+  lastVisit3 = lastVisit2;
+  if (exit)
   {
-    v13 = [v11 exit];
+    exit2 = [lastVisit2 exit];
   }
 
   else
   {
-    v14 = [v11 entry];
+    entry = [lastVisit2 entry];
 
-    if (!v14)
+    if (!entry)
     {
       goto LABEL_6;
     }
 
-    v12 = [v6 lastVisit];
-    v13 = [v12 entry];
+    lastVisit3 = [pipelineCopy lastVisit];
+    exit2 = [lastVisit3 entry];
   }
 
-  v15 = v13;
-  v16 = [v13 dateByAddingTimeInterval:1.0];
+  v15 = exit2;
+  v16 = [exit2 dateByAddingTimeInterval:1.0];
 
-  v8 = v16;
+  distantPast = v16;
 LABEL_6:
-  v17 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -1613,29 +1613,29 @@ LABEL_6:
     v18 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v8 stringFromDate];
+      stringFromDate = [distantPast stringFromDate];
       *buf = 138740227;
-      v31 = v6;
+      v31 = pipelineCopy;
       v32 = 2112;
-      v33 = v19;
+      v33 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "start bootstrapping pipeline, %{sensitive}@, with locations since %@", buf, 0x16u);
     }
   }
 
-  v20 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __45__RTVisitMonitor__bootstrapPipeline_handler___block_invoke;
   v24[3] = &unk_2788CA3A0;
   v24[4] = self;
-  v21 = v6;
+  v21 = pipelineCopy;
   v25 = v21;
   v28 = v29;
-  v22 = v17;
+  v22 = date;
   v26 = v22;
-  v23 = v7;
+  v23 = handlerCopy;
   v27 = v23;
-  [(RTVisitMonitor *)self _batchProcess:v21 fromDate:v8 toDate:v20 handler:v24];
+  [(RTVisitMonitor *)self _batchProcess:v21 fromDate:distantPast toDate:date2 handler:v24];
 
   _Block_object_dispose(v29, 8);
 }
@@ -1699,25 +1699,25 @@ void __45__RTVisitMonitor__bootstrapPipeline_handler___block_invoke(uint64_t a1,
   }
 }
 
-+ (id)bucketLocations:(id)a3 interval:(double)a4
++ (id)bucketLocations:(id)locations interval:(double)interval
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [MEMORY[0x277CBEB18] array];
-    [v6 addObject:v7];
-    v8 = [v5 firstObject];
-    v9 = [v8 date];
-    v10 = [v9 dateByAddingTimeInterval:a4];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [array addObject:array2];
+    firstObject = [locationsCopy firstObject];
+    date = [firstObject date];
+    v10 = [date dateByAddingTimeInterval:interval];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v24 = v5;
-    v11 = v5;
+    v24 = locationsCopy;
+    v11 = locationsCopy;
     v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
@@ -1733,22 +1733,22 @@ void __45__RTVisitMonitor__bootstrapPipeline_handler___block_invoke(uint64_t a1,
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 date];
-          v18 = [v17 compare:v10];
+          date2 = [v16 date];
+          v18 = [date2 compare:v10];
 
           if (v18 != -1)
           {
-            v19 = [MEMORY[0x277CBEB18] array];
+            array3 = [MEMORY[0x277CBEB18] array];
 
-            [v6 addObject:v19];
-            v20 = [v16 date];
-            v21 = [v20 dateByAddingTimeInterval:a4];
+            [array addObject:array3];
+            date3 = [v16 date];
+            v21 = [date3 dateByAddingTimeInterval:interval];
 
-            v7 = v19;
+            array2 = array3;
             v10 = v21;
           }
 
-          [v7 addObject:v16];
+          [array2 addObject:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1757,8 +1757,8 @@ void __45__RTVisitMonitor__bootstrapPipeline_handler___block_invoke(uint64_t a1,
       while (v13);
     }
 
-    v22 = v6;
-    v5 = v24;
+    v22 = array;
+    locationsCopy = v24;
   }
 
   else
@@ -1769,16 +1769,16 @@ void __45__RTVisitMonitor__bootstrapPipeline_handler___block_invoke(uint64_t a1,
   return v22;
 }
 
-- (void)_batchProcess:(id)a3 fromDate:(id)a4 toDate:(id)a5 handler:(id)a6
+- (void)_batchProcess:(id)process fromDate:(id)date toDate:(id)toDate handler:(id)handler
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  processCopy = process;
+  dateCopy = date;
+  toDateCopy = toDate;
+  handlerCopy = handler;
+  if (processCopy)
   {
-    if (v11)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -1796,10 +1796,10 @@ void __45__RTVisitMonitor__bootstrapPipeline_handler___block_invoke(uint64_t a1,
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: pipeline (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (dateCopy)
     {
 LABEL_3:
-      if (v12)
+      if (toDateCopy)
       {
         goto LABEL_4;
       }
@@ -1818,23 +1818,23 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fromDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v12)
+  if (toDateCopy)
   {
 LABEL_4:
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_19:
-    v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    stringFromDate = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(stringFromDate, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v50 = "[RTVisitMonitor _batchProcess:fromDate:toDate:handler:]";
       v51 = 1024;
       LODWORD(v52) = 842;
-      _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, stringFromDate, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
     goto LABEL_21;
@@ -1851,13 +1851,13 @@ LABEL_16:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: toDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_5:
-  if (!v10)
+  if (!processCopy)
   {
     v25 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277D01448];
@@ -1869,12 +1869,12 @@ LABEL_5:
 LABEL_24:
     v30 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
     v31 = [v25 errorWithDomain:v26 code:7 userInfo:v30];
-    v13[2](v13, 0, 1, v31);
+    handlerCopy[2](handlerCopy, 0, 1, v31);
 
     goto LABEL_25;
   }
 
-  if (!v11 || !v12)
+  if (!dateCopy || !toDateCopy)
   {
     v25 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277D01448];
@@ -1886,19 +1886,19 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ([v11 isAfterDate:v12])
+  if ([dateCopy isAfterDate:toDateCopy])
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277D01448];
     v55 = *MEMORY[0x277CCA450];
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v11 stringFromDate];
-    v18 = [v12 stringFromDate];
-    v19 = [v16 stringWithFormat:@"fromDate, %@, postdates toDate, %@", v17, v18];
+    stringFromDate = [dateCopy stringFromDate];
+    stringFromDate2 = [toDateCopy stringFromDate];
+    v19 = [v16 stringWithFormat:@"fromDate, %@, postdates toDate, %@", stringFromDate, stringFromDate2];
     v56 = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     v21 = [v14 errorWithDomain:v15 code:7 userInfo:v20];
-    v13[2](v13, 0, 1, v21);
+    handlerCopy[2](handlerCopy, 0, 1, v21);
 
 LABEL_21:
     goto LABEL_25;
@@ -1909,14 +1909,14 @@ LABEL_21:
     v32 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
-      v33 = [v11 stringFromDate];
-      v34 = [v12 stringFromDate];
+      stringFromDate3 = [dateCopy stringFromDate];
+      stringFromDate4 = [toDateCopy stringFromDate];
       *buf = 138740483;
-      v50 = v10;
+      v50 = processCopy;
       v51 = 2112;
-      v52 = v33;
+      v52 = stringFromDate3;
       v53 = 2112;
-      v54 = v34;
+      v54 = stringFromDate4;
       _os_log_impl(&dword_2304B3000, v32, OS_LOG_TYPE_INFO, "batch processing pipeline %{sensitive}@ between, %@, to, %@", buf, 0x20u);
     }
   }
@@ -1926,22 +1926,22 @@ LABEL_21:
   aBlock[2] = __56__RTVisitMonitor__batchProcess_fromDate_toDate_handler___block_invoke;
   aBlock[3] = &unk_2788CA3F0;
   aBlock[4] = self;
-  v48 = v13;
-  v35 = v11;
+  v48 = handlerCopy;
+  v35 = dateCopy;
   v45 = v35;
-  v36 = v12;
+  v36 = toDateCopy;
   v46 = v36;
-  v37 = v10;
+  v37 = processCopy;
   v47 = v37;
   v38 = _Block_copy(aBlock);
   v39 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v35 endDate:v36];
   v40 = objc_alloc(MEMORY[0x277D01320]);
-  v41 = [v37 hyperParameter];
-  [v41 maxHorizontalAccuracy];
+  hyperParameter = [v37 hyperParameter];
+  [hyperParameter maxHorizontalAccuracy];
   v42 = [v40 initWithDateInterval:v39 horizontalAccuracy:3600 batchSize:0 boundingBoxLocation:?];
 
-  v43 = [(RTVisitMonitor *)self locationManager];
-  [v43 fetchStoredLocationsWithOptions:v42 handler:v38];
+  locationManager = [(RTVisitMonitor *)self locationManager];
+  [locationManager fetchStoredLocationsWithOptions:v42 handler:v38];
 
 LABEL_25:
 }
@@ -2148,15 +2148,15 @@ void __56__RTVisitMonitor__batchProcess_fromDate_toDate_handler___block_invoke_3
   }
 }
 
-- (void)fetchVisitsFromDate:(id)a3 toDate:(id)a4 handler:(id)a5
+- (void)fetchVisitsFromDate:(id)date toDate:(id)toDate handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dateCopy = date;
+  toDateCopy = toDate;
+  handlerCopy = handler;
+  if (dateCopy)
   {
-    if (v9)
+    if (toDateCopy)
     {
       goto LABEL_3;
     }
@@ -2174,10 +2174,10 @@ void __56__RTVisitMonitor__batchProcess_fromDate_toDate_handler___block_invoke_3
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fromDate (in %s:%d)", buf, 0x12u);
     }
 
-    if (v9)
+    if (toDateCopy)
     {
 LABEL_3:
-      if (v10)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -2196,7 +2196,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: toDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
 LABEL_11:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -2212,21 +2212,21 @@ LABEL_11:
 
 LABEL_14:
   v14 = objc_opt_new();
-  v15 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__RTVisitMonitor_fetchVisitsFromDate_toDate_handler___block_invoke;
   block[3] = &unk_2788CA440;
   block[4] = self;
-  v21 = v8;
+  v21 = dateCopy;
   v23 = v14;
-  v24 = v10;
-  v22 = v9;
+  v24 = handlerCopy;
+  v22 = toDateCopy;
   v16 = v14;
-  v17 = v10;
-  v18 = v9;
-  v19 = v8;
-  dispatch_async(v15, block);
+  v17 = handlerCopy;
+  v18 = toDateCopy;
+  v19 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __53__RTVisitMonitor_fetchVisitsFromDate_toDate_handler___block_invoke(id *a1)
@@ -2326,19 +2326,19 @@ uint64_t __53__RTVisitMonitor_fetchVisitsFromDate_toDate_handler___block_invoke_
   return result;
 }
 
-- (void)setHighConfidencePipelineReferenceCounter:(unint64_t)a3
+- (void)setHighConfidencePipelineReferenceCounter:(unint64_t)counter
 {
   highConfidencePipelineReferenceCounter = self->_highConfidencePipelineReferenceCounter;
-  if (highConfidencePipelineReferenceCounter != a3)
+  if (highConfidencePipelineReferenceCounter != counter)
   {
     v10 = v4;
     v11 = v3;
     if (highConfidencePipelineReferenceCounter)
     {
-      if (a3)
+      if (counter)
       {
 LABEL_4:
-        self->_highConfidencePipelineReferenceCounter = a3;
+        self->_highConfidencePipelineReferenceCounter = counter;
         return;
       }
     }
@@ -2346,7 +2346,7 @@ LABEL_4:
     else
     {
       [(RTVisitMonitor *)self _setupRealtimePipelineWithType:2 handler:&__block_literal_global_137];
-      if (a3)
+      if (counter)
       {
         goto LABEL_4;
       }
@@ -2377,7 +2377,7 @@ void __60__RTVisitMonitor_setHighConfidencePipelineReferenceCounter___block_invo
   }
 }
 
-- (void)_stopMonitoringAllRegionsForPipelineType:(unint64_t)a3
+- (void)_stopMonitoringAllRegionsForPipelineType:(unint64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
   pipelinesMonitoringRegion = self->_pipelinesMonitoringRegion;
@@ -2386,10 +2386,10 @@ void __60__RTVisitMonitor_setHighConfidencePipelineReferenceCounter___block_invo
 
   if (pipelinesMonitoringRegion)
   {
-    v7 = [(RTVisitMonitor *)self locationManager];
-    v8 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:a3];
+    locationManager = [(RTVisitMonitor *)self locationManager];
+    v8 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:type];
     v12 = 0;
-    [v7 stopMonitoringAllRegionsForClientIdentifier:v8 error:&v12];
+    [locationManager stopMonitoringAllRegionsForClientIdentifier:v8 error:&v12];
     v9 = v12;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2408,19 +2408,19 @@ void __60__RTVisitMonitor_setHighConfidencePipelineReferenceCounter___block_invo
   }
 }
 
-- (void)setLowConfidencePipelineReferenceCounter:(unint64_t)a3
+- (void)setLowConfidencePipelineReferenceCounter:(unint64_t)counter
 {
   lowConfidencePipelineReferenceCounter = self->_lowConfidencePipelineReferenceCounter;
-  if (lowConfidencePipelineReferenceCounter != a3)
+  if (lowConfidencePipelineReferenceCounter != counter)
   {
     v10 = v4;
     v11 = v3;
     if (lowConfidencePipelineReferenceCounter)
     {
-      if (a3)
+      if (counter)
       {
 LABEL_4:
-        self->_lowConfidencePipelineReferenceCounter = a3;
+        self->_lowConfidencePipelineReferenceCounter = counter;
         return;
       }
     }
@@ -2428,7 +2428,7 @@ LABEL_4:
     else
     {
       [(RTVisitMonitor *)self _setupRealtimePipelineWithType:1 handler:&__block_literal_global_140];
-      if (a3)
+      if (counter)
       {
         goto LABEL_4;
       }
@@ -2458,16 +2458,16 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
   }
 }
 
-- (void)setMonitoringVisitIncidents:(BOOL)a3
+- (void)setMonitoringVisitIncidents:(BOOL)incidents
 {
-  if (self->_monitoringVisitIncidents != a3)
+  if (self->_monitoringVisitIncidents != incidents)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_monitoringVisitIncidents = a3;
+    incidentsCopy = incidents;
+    self->_monitoringVisitIncidents = incidents;
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v5)
+    if (incidentsCopy)
     {
       if (v7)
       {
@@ -2503,16 +2503,16 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
   }
 }
 
-- (void)setMonitoringLeechedVisitIncidents:(BOOL)a3
+- (void)setMonitoringLeechedVisitIncidents:(BOOL)incidents
 {
-  if (self->_monitoringLeechedVisitIncidents != a3)
+  if (self->_monitoringLeechedVisitIncidents != incidents)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_monitoringLeechedVisitIncidents = a3;
+    incidentsCopy = incidents;
+    self->_monitoringLeechedVisitIncidents = incidents;
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v5)
+    if (incidentsCopy)
     {
       if (v7)
       {
@@ -2546,16 +2546,16 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
   }
 }
 
-- (void)setMonitoringLowConfidenceVisitIncidents:(BOOL)a3
+- (void)setMonitoringLowConfidenceVisitIncidents:(BOOL)incidents
 {
-  if (self->_monitoringLowConfidenceVisitIncidents != a3)
+  if (self->_monitoringLowConfidenceVisitIncidents != incidents)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_monitoringLowConfidenceVisitIncidents = a3;
+    incidentsCopy = incidents;
+    self->_monitoringLowConfidenceVisitIncidents = incidents;
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v5)
+    if (incidentsCopy)
     {
       if (v7)
       {
@@ -2591,68 +2591,68 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
 
 - (void)startMonitoringVisitIncidents
 {
-  v3 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTVisitMonitor_startMonitoringVisitIncidents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopMonitoringVisitIncidents
 {
-  v3 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__RTVisitMonitor_stopMonitoringVisitIncidents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)startMonitoringLeechedVisitIncidents
 {
-  v3 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__RTVisitMonitor_startMonitoringLeechedVisitIncidents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopMonitoringLeechedVisitIncidents
 {
-  v3 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__RTVisitMonitor_stopMonitoringLeechedVisitIncidents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)startMonitoringLowConfidenceVisitIncidents
 {
-  v3 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTVisitMonitor_startMonitoringLowConfidenceVisitIncidents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopMonitoringLowConfidenceVisitIncidents
 {
-  v3 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__RTVisitMonitor_stopMonitoringLowConfidenceVisitIncidents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_startFeedBuffer
@@ -2672,17 +2672,17 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
   feedBuffer = self->_feedBuffer;
   self->_feedBuffer = v4;
 
-  v6 = [(RTVisitMonitor *)self state];
-  [v6 dump];
+  state = [(RTVisitMonitor *)self state];
+  [state dump];
 
-  v7 = [(RTVisitMonitor *)self locationManager];
+  locationManager = [(RTVisitMonitor *)self locationManager];
   v8 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-  [v7 addObserver:self selector:sel_onLeechedLocationsNotification_ name:v8];
+  [locationManager addObserver:self selector:sel_onLeechedLocationsNotification_ name:v8];
 
-  v9 = [(RTVisitMonitor *)self locationAwarenessManager];
+  locationAwarenessManager = [(RTVisitMonitor *)self locationAwarenessManager];
   [objc_opt_class() LocationHeartbeatWhileAwake];
   v14 = 0;
-  [v9 addLocationHeartbeatRequester:self interval:&v14 error:?];
+  [locationAwarenessManager addLocationHeartbeatRequester:self interval:&v14 error:?];
   v10 = v14;
 
   if (v10)
@@ -2690,12 +2690,12 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v10 code];
-      v13 = [v10 localizedDescription];
+      code = [v10 code];
+      localizedDescription = [v10 localizedDescription];
       *buf = 134218754;
-      v16 = v12;
+      v16 = code;
       v17 = 2112;
-      v18 = v13;
+      v18 = localizedDescription;
       v19 = 2080;
       v20 = "[RTVisitMonitor _startFeedBuffer]";
       v21 = 1024;
@@ -2707,12 +2707,12 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
 
 - (void)_stopFeedBuffer
 {
-  v3 = [(RTVisitMonitor *)self locationManager];
+  locationManager = [(RTVisitMonitor *)self locationManager];
   v4 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-  [v3 removeObserver:self fromNotification:v4];
+  [locationManager removeObserver:self fromNotification:v4];
 
-  v5 = [(RTVisitMonitor *)self locationAwarenessManager];
-  [v5 removeLocationHeartbeatRequester:self];
+  locationAwarenessManager = [(RTVisitMonitor *)self locationAwarenessManager];
+  [locationAwarenessManager removeLocationHeartbeatRequester:self];
 
   [(RTTimer *)self->_feedBufferTimer invalidate];
   feedBufferTimer = self->_feedBufferTimer;
@@ -2722,19 +2722,19 @@ void __59__RTVisitMonitor_setLowConfidencePipelineReferenceCounter___block_invok
   self->_feedBuffer = 0;
 }
 
-- (void)onLeechedLocationsNotification:(id)a3
+- (void)onLeechedLocationsNotification:(id)notification
 {
-  v5 = a3;
-  v6 = [(RTVisitMonitor *)self queue];
+  notificationCopy = notification;
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__RTVisitMonitor_onLeechedLocationsNotification___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
-  v10 = self;
+  v9 = notificationCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = notificationCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__RTVisitMonitor_onLeechedLocationsNotification___block_invoke(uint64_t a1)
@@ -2788,26 +2788,26 @@ id __49__RTVisitMonitor_onLeechedLocationsNotification___block_invoke_2(uint64_t
   return v4;
 }
 
-- (void)_processLeechedLocations:(id)a3
+- (void)_processLeechedLocations:(id)locations
 {
   feedBuffer = self->_feedBuffer;
   if (feedBuffer)
   {
-    [(RTVisitFeedBuffer *)feedBuffer addLocations:a3];
+    [(RTVisitFeedBuffer *)feedBuffer addLocations:locations];
 
     [(RTVisitMonitor *)self _startFeedBufferTimer];
   }
 }
 
-+ (id)regionWithRegionIdentifier:(id)a3 location:(id)a4 shouldNotifyForEntry:(BOOL)a5
++ (id)regionWithRegionIdentifier:(id)identifier location:(id)location shouldNotifyForEntry:(BOOL)entry
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v5)
+  entryCopy = entry;
+  identifierCopy = identifier;
+  locationCopy = location;
+  v9 = locationCopy;
+  if (entryCopy)
   {
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     if (v10 < 5.0)
     {
       v10 = 5.0;
@@ -2826,29 +2826,29 @@ id __49__RTVisitMonitor_onLeechedLocationsNotification___block_invoke_2(uint64_t
   v14 = v13;
   [v9 longitude];
   v16 = CLLocationCoordinate2DMake(v14, v15);
-  v17 = [v12 initForLowPowerWithCenter:v7 radius:v16.latitude identifier:{v16.longitude, v11}];
-  [v17 setNotifyOnEntry:v5];
-  [v17 setNotifyOnExit:v5 ^ 1];
+  v17 = [v12 initForLowPowerWithCenter:identifierCopy radius:v16.latitude identifier:{v16.longitude, v11}];
+  [v17 setNotifyOnEntry:entryCopy];
+  [v17 setNotifyOnExit:entryCopy ^ 1];
 
   return v17;
 }
 
-- (void)setupGeoFencesForVisit:(id)a3 pipelineType:(unint64_t)a4 handler:(id)a5
+- (void)setupGeoFencesForVisit:(id)visit pipelineType:(unint64_t)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTVisitMonitor *)self queue];
+  visitCopy = visit;
+  handlerCopy = handler;
+  queue = [(RTVisitMonitor *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = visitCopy;
+  v15 = handlerCopy;
+  typeCopy = type;
+  v11 = handlerCopy;
+  v12 = visitCopy;
+  dispatch_async(queue, v13);
 }
 
 void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_invoke(void *a1)
@@ -2862,11 +2862,11 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
   (*(a1[6] + 16))();
 }
 
-- (BOOL)_setupGeoFencesForVisit:(id)a3 pipelineType:(unint64_t)a4 error:(id *)a5
+- (BOOL)_setupGeoFencesForVisit:(id)visit pipelineType:(unint64_t)type error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  visitCopy = visit;
+  if (!visitCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2880,24 +2880,24 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
   }
 
   pipelinesMonitoringRegion = self->_pipelinesMonitoringRegion;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   LODWORD(pipelinesMonitoringRegion) = [(NSMutableSet *)pipelinesMonitoringRegion containsObject:v12];
 
   if (pipelinesMonitoringRegion)
   {
-    v13 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:a4];
-    v14 = [(RTVisitMonitor *)self locationManager];
+    v13 = [objc_opt_class() regionMonitoringClientIdentifierForPipelineType:type];
+    locationManager = [(RTVisitMonitor *)self locationManager];
     v35 = 0;
-    [v14 stopMonitoringAllRegionsForClientIdentifier:v13 error:&v35];
+    [locationManager stopMonitoringAllRegionsForClientIdentifier:v13 error:&v35];
     v15 = v35;
 
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v16 = v15;
         v17 = 0;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -2908,15 +2908,15 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
       goto LABEL_27;
     }
 
-    if ([v9 type] == 1)
+    if ([visitCopy type] == 1)
     {
       v18 = objc_opt_class();
-      v19 = [v9 location];
-      v20 = [v18 regionWithRegionIdentifier:@"ExitForCurrentVisit" location:v19 shouldNotifyForEntry:0];
+      location = [visitCopy location];
+      v20 = [v18 regionWithRegionIdentifier:@"ExitForCurrentVisit" location:location shouldNotifyForEntry:0];
 
-      v21 = [(RTVisitMonitor *)self locationManager];
+      locationManager2 = [(RTVisitMonitor *)self locationManager];
       v34 = 0;
-      [v21 startMonitoringForRegion:v20 clientIdentifier:v13 error:&v34];
+      [locationManager2 startMonitoringForRegion:v20 clientIdentifier:v13 error:&v34];
       v15 = v34;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2937,7 +2937,7 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
         }
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -2945,11 +2945,11 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
 
     else
     {
-      if ([v9 type] == 3)
+      if ([visitCopy type] == 3)
       {
         deviceLocationPredictor = self->_deviceLocationPredictor;
-        v25 = [v9 location];
-        v26 = [v9 exit];
+        location2 = [visitCopy location];
+        exit = [visitCopy exit];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __61__RTVisitMonitor__setupGeoFencesForVisit_pipelineType_error___block_invoke;
@@ -2957,8 +2957,8 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
         v30[4] = self;
         v31 = v13;
         v33 = a2;
-        v32 = v9;
-        [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:v25 startDate:v26 timeInterval:v30 handler:7200.0];
+        v32 = visitCopy;
+        [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:location2 startDate:exit timeInterval:v30 handler:7200.0];
       }
 
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2967,20 +2967,20 @@ void __62__RTVisitMonitor_setupGeoFencesForVisit_pipelineType_handler___block_in
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138739971;
-          v37 = v9;
+          v37 = visitCopy;
           _os_log_debug_impl(&dword_2304B3000, v27, OS_LOG_TYPE_DEBUG, "Invalid type received on visit, %{sensitive}@", buf, 0xCu);
         }
       }
 
       v15 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
     }
 
     v28 = v15;
-    *a5 = v15;
+    *error = v15;
 LABEL_26:
     v17 = v15 == 0;
 LABEL_27:
@@ -3167,22 +3167,22 @@ void __61__RTVisitMonitor__setupGeoFencesForVisit_pipelineType_error___block_inv
   }
 }
 
-- (id)_updateSourceForVisit:(id)a3
+- (id)_updateSourceForVisit:(id)visit
 {
-  v3 = a3;
-  if (v3)
+  visitCopy = visit;
+  if (visitCopy)
   {
     v4 = objc_alloc(MEMORY[0x277D01428]);
-    v5 = [v3 date];
-    v6 = [v3 type];
-    v7 = [v3 location];
-    v8 = [v3 entry];
-    v9 = [v3 exit];
-    v10 = [v3 dataPointCount];
-    [v3 confidence];
+    date = [visitCopy date];
+    type = [visitCopy type];
+    location = [visitCopy location];
+    entry = [visitCopy entry];
+    exit = [visitCopy exit];
+    dataPointCount = [visitCopy dataPointCount];
+    [visitCopy confidence];
     v12 = v11;
-    v13 = [v3 placeInference];
-    v14 = [v4 initWithDate:v5 type:v6 location:v7 entry:v8 exit:v9 dataPointCount:v10 confidence:v12 placeInference:v13 source:1];
+    placeInference = [visitCopy placeInference];
+    v14 = [v4 initWithDate:date type:type location:location entry:entry exit:exit dataPointCount:dataPointCount confidence:v12 placeInference:placeInference source:1];
   }
 
   else
@@ -3200,19 +3200,19 @@ void __61__RTVisitMonitor__setupGeoFencesForVisit_pipelineType_error___block_inv
   return v14;
 }
 
-- (void)_processRealtimeVisits:(id)a3 pipeline:(id)a4
+- (void)_processRealtimeVisits:(id)visits pipeline:(id)pipeline
 {
   v74 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  visitsCopy = visits;
+  pipelineCopy = pipeline;
+  if (pipelineCopy)
   {
-    if (![v7 count])
+    if (![visitsCopy count])
     {
       goto LABEL_55;
     }
 
-    v9 = [[_RTMap alloc] initWithInput:v7];
+    v9 = [[_RTMap alloc] initWithInput:visitsCopy];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __50__RTVisitMonitor__processRealtimeVisits_pipeline___block_invoke;
@@ -3220,9 +3220,9 @@ void __61__RTVisitMonitor__setupGeoFencesForVisit_pipelineType_error___block_inv
     v63[4] = self;
     v10 = [(_RTMap *)v9 withBlock:v63];
 
-    if ([v8 type] != 2)
+    if ([pipelineCopy type] != 2)
     {
-      if ([v8 type] != 1)
+      if ([pipelineCopy type] != 1)
       {
         obj = _rt_log_facility_get_os_log(RTLogFacilityVisit);
         if (os_log_type_enabled(obj, OS_LOG_TYPE_FAULT))
@@ -3231,7 +3231,7 @@ void __61__RTVisitMonitor__setupGeoFencesForVisit_pipelineType_error___block_inv
           *buf = 138412547;
           v65 = v24;
           v66 = 2117;
-          v67 = v8;
+          v67 = pipelineCopy;
           _os_log_fault_impl(&dword_2304B3000, obj, OS_LOG_TYPE_FAULT, "%@, pipeline does not support realtime visits, %{sensitive}@", buf, 0x16u);
         }
 
@@ -3248,13 +3248,13 @@ void __61__RTVisitMonitor__setupGeoFencesForVisit_pipelineType_error___block_inv
       {
 LABEL_48:
 
-        v40 = [v10 lastObject];
+        lastObject = [v10 lastObject];
 
-        if (v40)
+        if (lastObject)
         {
-          v41 = [v10 lastObject];
+          lastObject2 = [v10 lastObject];
           v51 = 0;
-          -[RTVisitMonitor _setupGeoFencesForVisit:pipelineType:error:](self, "_setupGeoFencesForVisit:pipelineType:error:", v41, [v8 type], &v51);
+          -[RTVisitMonitor _setupGeoFencesForVisit:pipelineType:error:](self, "_setupGeoFencesForVisit:pipelineType:error:", lastObject2, [pipelineCopy type], &v51);
           v42 = v51;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -3265,9 +3265,9 @@ LABEL_48:
               *buf = 138413059;
               v65 = v44;
               v66 = 2117;
-              v67 = v41;
+              v67 = lastObject2;
               v68 = 2117;
-              v69 = v8;
+              v69 = pipelineCopy;
               v70 = 2112;
               v71 = v42;
               _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@, setupGeoFences for visit, %{sensitive}@, pipeline, %{sensitive}@, error %@", buf, 0x2Au);
@@ -3281,8 +3281,8 @@ LABEL_48:
       v16 = v15;
       v46 = v10;
       v47 = a2;
-      v49 = v8;
-      v45 = v7;
+      v49 = pipelineCopy;
+      v45 = visitsCopy;
       v17 = 0;
       v18 = *v53;
       v19 = MEMORY[0x277D86220];
@@ -3303,9 +3303,9 @@ LABEL_48:
             v22 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
-              v23 = [v49 name];
+              name = [v49 name];
               *buf = 138412803;
-              v65 = v23;
+              v65 = name;
               v66 = 2048;
               v67 = v17;
               v68 = 2117;
@@ -3320,8 +3320,8 @@ LABEL_48:
 
       while (v16);
 LABEL_46:
-      v7 = v45;
-      v8 = v49;
+      visitsCopy = v45;
+      pipelineCopy = v49;
 LABEL_47:
       v10 = v46;
       a2 = v47;
@@ -3331,12 +3331,12 @@ LABEL_47:
     v47 = a2;
     if (_os_feature_enabled_impl())
     {
-      v11 = [(RTVisitMonitor *)self platform];
-      if ([v11 iPhoneDevice])
+      platform = [(RTVisitMonitor *)self platform];
+      if ([platform iPhoneDevice])
       {
-        v12 = [v8 bootStrappingDone];
+        bootStrappingDone = [pipelineCopy bootStrappingDone];
 
-        v13 = v12 & 1;
+        v13 = bootStrappingDone & 1;
         goto LABEL_27;
       }
     }
@@ -3353,12 +3353,12 @@ LABEL_27:
     if (v25)
     {
       v26 = v25;
-      v49 = v8;
-      v45 = v7;
+      v49 = pipelineCopy;
+      v45 = visitsCopy;
       v27 = 0;
       v28 = *v60;
       v29 = @"com.apple.CoreRoutine.VisitMonitor";
-      v48 = self;
+      selfCopy = self;
       while (1)
       {
         for (j = 0; j != v26; ++j)
@@ -3370,17 +3370,17 @@ LABEL_27:
 
           v31 = *(*(&v59 + 1) + 8 * j);
           v13 = v13 && [*(*(&v59 + 1) + 8 * j) type] == 1;
-          v32 = [(RTVisitMonitor *)self visitLabeler];
+          visitLabeler = [(RTVisitMonitor *)self visitLabeler];
           v58 = 0;
-          [v32 labelVisit:v31 clientIdentifier:v29 policy:v13 error:&v58];
+          [visitLabeler labelVisit:v31 clientIdentifier:v29 policy:v13 error:&v58];
           v33 = v58;
 
           [(RTVisitMonitor *)self handleVisitIncident:v31];
           if ([v31 type] == 1)
           {
-            v34 = [(RTVisitMonitor *)self locationAwarenessManager];
+            locationAwarenessManager = [(RTVisitMonitor *)self locationAwarenessManager];
             v57 = 0;
-            [v34 addHighAccuracyLocationRequester:self error:&v57];
+            [locationAwarenessManager addHighAccuracyLocationRequester:self error:&v57];
           }
 
           else
@@ -3390,9 +3390,9 @@ LABEL_27:
               goto LABEL_40;
             }
 
-            v34 = [(RTVisitMonitor *)self locationAwarenessManager];
+            locationAwarenessManager = [(RTVisitMonitor *)self locationAwarenessManager];
             v56 = 0;
-            [v34 removeHighAccuracyLocationRequester:self error:&v56];
+            [locationAwarenessManager removeHighAccuracyLocationRequester:self error:&v56];
           }
 
 LABEL_40:
@@ -3417,7 +3417,7 @@ LABEL_40:
               v29 = v38;
               v28 = v37;
               v26 = v36;
-              self = v48;
+              self = selfCopy;
             }
           }
         }
@@ -3443,11 +3443,11 @@ LABEL_40:
 LABEL_55:
 }
 
-- (void)fetchVisitMonitorStatusWithHandler:(id)a3
+- (void)fetchVisitMonitorStatusWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -3460,15 +3460,15 @@ LABEL_55:
     }
   }
 
-  v6 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__RTVisitMonitor_fetchVisitMonitorStatusWithHandler___block_invoke;
   v8[3] = &unk_2788C4D38;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(queue, v8);
 }
 
 void __53__RTVisitMonitor_fetchVisitMonitorStatusWithHandler___block_invoke(uint64_t a1)
@@ -3478,11 +3478,11 @@ void __53__RTVisitMonitor_fetchVisitMonitorStatusWithHandler___block_invoke(uint
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)fetchVisitMonitorState:(id)a3
+- (void)fetchVisitMonitorState:(id)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  stateCopy = state;
+  if (!stateCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -3495,15 +3495,15 @@ void __53__RTVisitMonitor_fetchVisitMonitorStatusWithHandler___block_invoke(uint
     }
   }
 
-  v6 = [(RTVisitMonitor *)self queue];
+  queue = [(RTVisitMonitor *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__RTVisitMonitor_fetchVisitMonitorState___block_invoke;
   v8[3] = &unk_2788C4D38;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = stateCopy;
+  v7 = stateCopy;
+  dispatch_async(queue, v8);
 }
 
 void __41__RTVisitMonitor_fetchVisitMonitorState___block_invoke(uint64_t a1)
@@ -3515,21 +3515,21 @@ void __41__RTVisitMonitor_fetchVisitMonitorState___block_invoke(uint64_t a1)
 
 - (void)showVisitReentryDetectionUI
 {
-  v3 = [(RTVisitMonitor *)self platform];
-  v4 = [v3 internalInstall];
+  platform = [(RTVisitMonitor *)self platform];
+  internalInstall = [platform internalInstall];
 
-  if (v4)
+  if (internalInstall)
   {
-    v5 = [(RTVisitMonitor *)self platform];
-    v6 = [v5 iPhoneDevice];
+    platform2 = [(RTVisitMonitor *)self platform];
+    iPhoneDevice = [platform2 iPhoneDevice];
 
-    if (v6)
+    if (iPhoneDevice)
     {
-      v7 = [(RTVisitMonitor *)self defaultsManager];
-      v8 = [v7 objectForKey:@"VisitReentryDetection"];
-      v9 = [v8 BOOLValue];
+      defaultsManager = [(RTVisitMonitor *)self defaultsManager];
+      v8 = [defaultsManager objectForKey:@"VisitReentryDetection"];
+      bOOLValue = [v8 BOOLValue];
 
-      if (v9)
+      if (bOOLValue)
       {
         dictionary = objc_opt_new();
         [(__CFDictionary *)dictionary setObject:@"Detected Reentry to Home LOI" forKeyedSubscript:*MEMORY[0x277CBF188]];
@@ -3557,82 +3557,82 @@ void __41__RTVisitMonitor_fetchVisitMonitorState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_compareVisit:(id)a3 previousVisit:(id)a4
+- (void)_compareVisit:(id)visit previousVisit:(id)previousVisit
 {
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  visitCopy = visit;
+  previousVisitCopy = previousVisit;
+  v9 = previousVisitCopy;
+  if (visitCopy && previousVisitCopy)
   {
-    v10 = [v7 exit];
-    v11 = v10;
-    if (v10)
+    exit = [visitCopy exit];
+    v11 = exit;
+    if (exit)
     {
-      v12 = v10;
+      entry = exit;
     }
 
     else
     {
-      v12 = [v7 entry];
+      entry = [visitCopy entry];
     }
 
-    v13 = v12;
+    v13 = entry;
 
-    v14 = [v9 exit];
-    v15 = v14;
-    if (v14)
+    exit2 = [v9 exit];
+    v15 = exit2;
+    if (exit2)
     {
-      v16 = v14;
+      entry2 = exit2;
     }
 
     else
     {
-      v16 = [v9 entry];
+      entry2 = [v9 entry];
     }
 
-    v17 = v16;
+    v17 = entry2;
 
     [v13 timeIntervalSinceDate:v17];
     v19 = v18;
-    v20 = [v9 exit];
-    v21 = v20;
-    if (!v20)
+    exit3 = [v9 exit];
+    date = exit3;
+    if (!exit3)
     {
-      v21 = [v9 date];
+      date = [v9 date];
     }
 
-    v22 = [v9 entry];
-    if (v22)
+    entry3 = [v9 entry];
+    if (entry3)
     {
-      [v21 timeIntervalSinceDate:v22];
+      [date timeIntervalSinceDate:entry3];
       v24 = v23;
     }
 
     else
     {
-      v25 = [v9 date];
-      [v21 timeIntervalSinceDate:v25];
+      date2 = [v9 date];
+      [date timeIntervalSinceDate:date2];
       v24 = v26;
     }
 
-    if (!v20)
+    if (!exit3)
     {
     }
 
-    v27 = [(RTVisitMonitor *)self distanceCalculator];
-    v28 = [v7 location];
-    v29 = [v9 location];
+    distanceCalculator = [(RTVisitMonitor *)self distanceCalculator];
+    location = [visitCopy location];
+    location2 = [v9 location];
     v63 = 0;
-    [v27 distanceFromLocation:v28 toLocation:v29 error:&v63];
+    [distanceCalculator distanceFromLocation:location toLocation:location2 error:&v63];
     v31 = v30;
     v62 = v63;
 
-    v32 = [v7 placeInference];
-    v33 = [v32 loiIdentifier];
-    v34 = [v9 placeInference];
-    v35 = [v34 loiIdentifier];
-    v61 = [v33 isEqual:v35];
+    placeInference = [visitCopy placeInference];
+    loiIdentifier = [placeInference loiIdentifier];
+    placeInference2 = [v9 placeInference];
+    loiIdentifier2 = [placeInference2 loiIdentifier];
+    v61 = [loiIdentifier isEqual:loiIdentifier2];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3647,7 +3647,7 @@ void __41__RTVisitMonitor_fetchVisitMonitorState___block_invoke(uint64_t a1)
         v66 = 2112;
         v67 = v39;
         v68 = 2117;
-        v69 = *&v7;
+        v69 = *&visitCopy;
         _os_log_impl(&dword_2304B3000, v36, OS_LOG_TYPE_INFO, "%@, %@, visit, %{sensitive}@", buf, 0x20u);
       }
     }
@@ -3701,24 +3701,24 @@ void __41__RTVisitMonitor_fetchVisitMonitorState___block_invoke(uint64_t a1)
       }
     }
 
-    [v7 confidence];
+    [visitCopy confidence];
     v50 = *MEMORY[0x277D01470];
-    if (v51 != *MEMORY[0x277D01470] || [v7 type] != 1)
+    if (v51 != *MEMORY[0x277D01470] || [visitCopy type] != 1)
     {
       goto LABEL_51;
     }
 
-    v52 = [v7 placeInference];
-    if ([v52 userType] == 1)
+    placeInference3 = [visitCopy placeInference];
+    if ([placeInference3 userType] == 1)
     {
       [v9 confidence];
       if (v53 == v50 && [v9 type] == 3)
       {
-        v54 = [v7 placeInference];
-        if ([v54 userType] == 1)
+        placeInference4 = [visitCopy placeInference];
+        if ([placeInference4 userType] == 1)
         {
-          v55 = [v9 placeInference];
-          if ([v55 userType] == 1)
+          placeInference5 = [v9 placeInference];
+          if ([placeInference5 userType] == 1)
           {
             if (v24 > 1800.0)
             {
@@ -3761,68 +3761,68 @@ LABEL_51:
   }
 }
 
-- (void)compareVisit:(id)a3 previousVisit:(id)a4
+- (void)compareVisit:(id)visit previousVisit:(id)previousVisit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTVisitMonitor *)self queue];
+  visitCopy = visit;
+  previousVisitCopy = previousVisit;
+  queue = [(RTVisitMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__RTVisitMonitor_compareVisit_previousVisit___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = visitCopy;
+  v13 = previousVisitCopy;
+  v9 = previousVisitCopy;
+  v10 = visitCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)handleVisitIncident:(id)a3
+- (void)handleVisitIncident:(id)incident
 {
-  v8 = a3;
-  v4 = [(RTVisitMonitor *)self state];
-  v5 = [v4 lastVisitIncident];
+  incidentCopy = incident;
+  state = [(RTVisitMonitor *)self state];
+  lastVisitIncident = [state lastVisitIncident];
 
-  v6 = [(RTVisitMonitor *)self state];
-  [v6 setLastVisitIncident:v8];
+  state2 = [(RTVisitMonitor *)self state];
+  [state2 setLastVisitIncident:incidentCopy];
 
   if ([(RTVisitMonitor *)self monitoringVisitIncidents]|| [(RTVisitMonitor *)self monitoringLeechedVisitIncidents])
   {
-    v7 = [(RTVisitMonitor *)self delegate];
+    delegate = [(RTVisitMonitor *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 onVisitIncident:v8 error:0];
+      [delegate onVisitIncident:incidentCopy error:0];
     }
 
-    [(RTVisitMonitor *)self _compareVisit:v8 previousVisit:v5];
+    [(RTVisitMonitor *)self _compareVisit:incidentCopy previousVisit:lastVisitIncident];
   }
 }
 
-- (void)handleLowConfidenceVisitIncident:(id)a3
+- (void)handleLowConfidenceVisitIncident:(id)incident
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  incidentCopy = incident;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 138739971;
-      v9 = v4;
+      v9 = incidentCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "low confidence visit, %{sensitive}@", &v8, 0xCu);
     }
   }
 
-  v6 = [(RTVisitMonitor *)self state];
-  [v6 setLastLowConfidenceVisitIncident:v4];
+  state = [(RTVisitMonitor *)self state];
+  [state setLastLowConfidenceVisitIncident:incidentCopy];
 
   if ([(RTVisitMonitor *)self monitoringLowConfidenceVisitIncidents])
   {
-    v7 = [(RTVisitMonitor *)self delegate];
+    delegate = [(RTVisitMonitor *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 onLowConfidenceVisitIncident:v4 error:0];
+      [delegate onLowConfidenceVisitIncident:incidentCopy error:0];
     }
   }
 }

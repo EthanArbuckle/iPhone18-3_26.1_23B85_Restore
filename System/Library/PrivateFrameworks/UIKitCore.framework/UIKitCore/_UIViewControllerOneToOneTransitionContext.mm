@@ -1,20 +1,20 @@
 @interface _UIViewControllerOneToOneTransitionContext
-- (CGAffineTransform)finalTransformForViewController:(SEL)a3;
+- (CGAffineTransform)finalTransformForViewController:(SEL)controller;
 - (CGAffineTransform)fromEndTransform;
 - (CGAffineTransform)toEndTransform;
-- (CGRect)finalFrameForViewController:(id)a3;
+- (CGRect)finalFrameForViewController:(id)controller;
 - (CGRect)fromEndFrame;
 - (CGRect)fromStartFrame;
-- (CGRect)initialFrameForViewController:(id)a3;
+- (CGRect)initialFrameForViewController:(id)controller;
 - (CGRect)toEndFrame;
 - (CGRect)toStartFrame;
 - (UIView)_fromView;
 - (UIView)_toView;
 - (_UIViewControllerOneToOneTransitionContext)init;
-- (id)viewControllerForKey:(id)a3;
-- (id)viewForKey:(id)a3;
-- (void)_setFromEndTransform:(CGAffineTransform *)a3;
-- (void)_setToEndTransform:(CGAffineTransform *)a3;
+- (id)viewControllerForKey:(id)key;
+- (id)viewForKey:(id)key;
+- (void)_setFromEndTransform:(CGAffineTransform *)transform;
+- (void)_setToEndTransform:(CGAffineTransform *)transform;
 - (void)dealloc;
 @end
 
@@ -55,32 +55,32 @@
 {
   if (self->_isToViewSet)
   {
-    v2 = self->_toView;
+    view = self->_toView;
   }
 
   else
   {
-    v3 = [(_UIViewControllerOneToOneTransitionContext *)self toViewController];
-    v2 = [v3 view];
+    toViewController = [(_UIViewControllerOneToOneTransitionContext *)self toViewController];
+    view = [toViewController view];
   }
 
-  return v2;
+  return view;
 }
 
 - (UIView)_fromView
 {
   if (self->_isFromViewSet)
   {
-    v2 = self->_fromView;
+    view = self->_fromView;
   }
 
   else
   {
-    v3 = [(_UIViewControllerOneToOneTransitionContext *)self fromViewController];
-    v2 = [v3 view];
+    fromViewController = [(_UIViewControllerOneToOneTransitionContext *)self fromViewController];
+    view = [fromViewController view];
   }
 
-  return v2;
+  return view;
 }
 
 - (CGRect)toEndFrame
@@ -131,63 +131,63 @@
   return result;
 }
 
-- (id)viewForKey:(id)a3
+- (id)viewForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"UITransitionContextToView")
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy == @"UITransitionContextToView")
   {
-    v7 = [(_UIViewControllerOneToOneTransitionContext *)self _toView];
+    _toView = [(_UIViewControllerOneToOneTransitionContext *)self _toView];
   }
 
   else
   {
-    if (v4 != @"UITransitionContextFromView")
+    if (keyCopy != @"UITransitionContextFromView")
     {
       v6 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(_UIViewControllerOneToOneTransitionContext *)self _fromView];
+    _toView = [(_UIViewControllerOneToOneTransitionContext *)self _fromView];
   }
 
-  v6 = v7;
+  v6 = _toView;
 LABEL_7:
 
   return v6;
 }
 
-- (id)viewControllerForKey:(id)a3
+- (id)viewControllerForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"UITransitionContextToViewController")
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy == @"UITransitionContextToViewController")
   {
-    v7 = [(_UIViewControllerOneToOneTransitionContext *)self toViewController];
+    toViewController = [(_UIViewControllerOneToOneTransitionContext *)self toViewController];
   }
 
   else
   {
-    if (v4 != @"UITransitionContextFromViewController")
+    if (keyCopy != @"UITransitionContextFromViewController")
     {
       v6 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(_UIViewControllerOneToOneTransitionContext *)self fromViewController];
+    toViewController = [(_UIViewControllerOneToOneTransitionContext *)self fromViewController];
   }
 
-  v6 = v7;
+  v6 = toViewController;
 LABEL_7:
 
   return v6;
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_toViewController == v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (self->_toViewController == controllerCopy)
   {
     [(_UIViewControllerOneToOneTransitionContext *)self toStartFrame];
 LABEL_6:
@@ -198,7 +198,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (self->_fromViewController == v4)
+  if (self->_fromViewController == controllerCopy)
   {
     [(_UIViewControllerOneToOneTransitionContext *)self fromStartFrame];
     goto LABEL_6;
@@ -221,11 +221,11 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_toViewController == v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (self->_toViewController == controllerCopy)
   {
     [(_UIViewControllerOneToOneTransitionContext *)self toEndFrame];
 LABEL_6:
@@ -236,7 +236,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (self->_fromViewController == v4)
+  if (self->_fromViewController == controllerCopy)
   {
     [(_UIViewControllerOneToOneTransitionContext *)self fromEndFrame];
     goto LABEL_6;
@@ -259,7 +259,7 @@ LABEL_7:
   return result;
 }
 
-- (CGAffineTransform)finalTransformForViewController:(SEL)a3
+- (CGAffineTransform)finalTransformForViewController:(SEL)controller
 {
   v6 = a4;
   if (self->_toViewController == v6)
@@ -303,11 +303,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_setToEndTransform:(CGAffineTransform *)a3
+- (void)_setToEndTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_toEndTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_toEndTransform.a = *&transform->a;
   *&self->_toEndTransform.c = v4;
   *&self->_toEndTransform.tx = v3;
 }
@@ -321,11 +321,11 @@ LABEL_7:
   return self;
 }
 
-- (void)_setFromEndTransform:(CGAffineTransform *)a3
+- (void)_setFromEndTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_fromEndTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_fromEndTransform.a = *&transform->a;
   *&self->_fromEndTransform.c = v4;
   *&self->_fromEndTransform.tx = v3;
 }

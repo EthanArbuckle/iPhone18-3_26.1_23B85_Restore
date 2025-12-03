@@ -7,7 +7,7 @@
 - (BOOL)MD5:()MD5
 {
   v15 = 0;
-  v4 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a1 error:&v15];
+  v4 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:self error:&v15];
   v5 = v15;
   if (v4)
   {

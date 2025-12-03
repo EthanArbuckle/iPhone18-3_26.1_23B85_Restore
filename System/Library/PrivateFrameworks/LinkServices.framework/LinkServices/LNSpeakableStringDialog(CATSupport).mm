@@ -7,43 +7,43 @@
 
 - (id)localeXML
 {
-  v2 = [a1 fullSpeakableString];
-  v3 = [v2 printed];
-  v4 = [a1 localeIdentifier];
-  v5 = [v3 localizedStringForLocaleIdentifier:v4];
-  v6 = [v5 ln_stringByEscapingForXML];
+  fullSpeakableString = [self fullSpeakableString];
+  printed = [fullSpeakableString printed];
+  localeIdentifier = [self localeIdentifier];
+  v5 = [printed localizedStringForLocaleIdentifier:localeIdentifier];
+  ln_stringByEscapingForXML = [v5 ln_stringByEscapingForXML];
 
-  v7 = [a1 fullSpeakableString];
-  v8 = [v7 spoken];
-  v9 = [a1 localeIdentifier];
-  v10 = [v8 localizedStringForLocaleIdentifier:v9];
-  v11 = [v10 ln_stringByEscapingForXML];
+  fullSpeakableString2 = [self fullSpeakableString];
+  spoken = [fullSpeakableString2 spoken];
+  localeIdentifier2 = [self localeIdentifier];
+  v10 = [spoken localizedStringForLocaleIdentifier:localeIdentifier2];
+  ln_stringByEscapingForXML2 = [v10 ln_stringByEscapingForXML];
 
-  v12 = [a1 supportingSpeakableString];
-  v13 = [v12 printed];
-  v14 = [a1 localeIdentifier];
-  v15 = [v13 localizedStringForLocaleIdentifier:v14];
-  v16 = [v15 ln_stringByEscapingForXML];
+  supportingSpeakableString = [self supportingSpeakableString];
+  printed2 = [supportingSpeakableString printed];
+  localeIdentifier3 = [self localeIdentifier];
+  v15 = [printed2 localizedStringForLocaleIdentifier:localeIdentifier3];
+  ln_stringByEscapingForXML3 = [v15 ln_stringByEscapingForXML];
 
-  v17 = [a1 supportingSpeakableString];
-  v18 = [v17 spoken];
-  v19 = [a1 localeIdentifier];
-  v20 = [v18 localizedStringForLocaleIdentifier:v19];
-  v21 = [v20 ln_stringByEscapingForXML];
+  supportingSpeakableString2 = [self supportingSpeakableString];
+  spoken2 = [supportingSpeakableString2 spoken];
+  localeIdentifier4 = [self localeIdentifier];
+  v20 = [spoken2 localizedStringForLocaleIdentifier:localeIdentifier4];
+  ln_stringByEscapingForXML4 = [v20 ln_stringByEscapingForXML];
 
-  if (v16)
+  if (ln_stringByEscapingForXML3)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"<full><print>%@</print><speak>%@</speak></full><supporting><print>%@</print><speak>%@</speak></supporting>", v6, v11, v16, v21];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"<full><print>%@</print><speak>%@</speak></full><supporting><print>%@</print><speak>%@</speak></supporting>", ln_stringByEscapingForXML, ln_stringByEscapingForXML2, ln_stringByEscapingForXML3, ln_stringByEscapingForXML4];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"<print>%@</print><speak>%@</speak>", v6, v11, v27, v28];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"<print>%@</print><speak>%@</speak>", ln_stringByEscapingForXML, ln_stringByEscapingForXML2, v27, v28];
   }
   v22 = ;
   v23 = MEMORY[0x1E696AEC0];
-  v24 = [a1 localeIdentifier];
-  v25 = [v23 stringWithFormat:@"<?xml version=1.0 encoding=UTF-8 standalone=no?>\n<cat xmlns=urn:apple:names:siri:cat:1.0 locale=%@>\n<all>\n<dialog>%@</dialog>\n</all>\n</cat>\n", v24, v22];
+  localeIdentifier5 = [self localeIdentifier];
+  v25 = [v23 stringWithFormat:@"<?xml version=1.0 encoding=UTF-8 standalone=no?>\n<cat xmlns=urn:apple:names:siri:cat:1.0 locale=%@>\n<all>\n<dialog>%@</dialog>\n</all>\n</cat>\n", localeIdentifier5, v22];
 
   return v25;
 }
@@ -54,13 +54,13 @@
   v5 = a3;
   if (!v5)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"LNSpeakableStringDialog+CATSupport.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSpeakableStringDialog+CATSupport.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v24 = @"locale";
-  v6 = [a1 localeIdentifier];
-  v25[0] = v6;
+  localeIdentifier = [self localeIdentifier];
+  v25[0] = localeIdentifier;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
   v20 = 0;
@@ -81,17 +81,17 @@
 
   v9 = v8;
   _Block_object_dispose(&v20, 8);
-  v10 = [a1 parametersXML];
-  v11 = [a1 localeXML];
-  v12 = [a1 defaultCATOptions];
+  parametersXML = [self parametersXML];
+  localeXML = [self localeXML];
+  defaultCATOptions = [self defaultCATOptions];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__LNSpeakableStringDialog_CATSupport__getResultWithCompletionHandler___block_invoke;
   v17[3] = &unk_1E74B13B0;
   v18 = v5;
   v13 = v5;
-  LODWORD(v16) = v12;
-  [v8 execute:0 paramsXML:v10 localeXML:v11 parameters:MEMORY[0x1E695E0F8] globals:v7 callback:0 options:v16 completion:v17];
+  LODWORD(v16) = defaultCATOptions;
+  [v8 execute:0 paramsXML:parametersXML localeXML:localeXML parameters:MEMORY[0x1E695E0F8] globals:v7 callback:0 options:v16 completion:v17];
 
   v14 = *MEMORY[0x1E69E9840];
 }

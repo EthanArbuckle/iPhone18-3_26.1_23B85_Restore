@@ -1,22 +1,22 @@
 @interface LAACLBuilder
-+ (id)customACL:(id)a3;
++ (id)customACL:(id)l;
 + (id)denyAllACL;
 @end
 
 @implementation LAACLBuilder
 
-+ (id)customACL:(id)a3
++ (id)customACL:(id)l
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   error = 0;
-  if ([v3 authType] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([lCopy authType] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __26__LAACLBuilder_customACL___block_invoke;
     v57[3] = &unk_1E77CB998;
-    v7 = v3;
+    v7 = lCopy;
     v58 = v7;
     v8 = __26__LAACLBuilder_customACL___block_invoke(v57);
     v9 = v8;
@@ -39,16 +39,16 @@
     }
 
     v11 = v10;
-    v47 = v3;
+    v47 = lCopy;
     v12 = objc_opt_new();
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v13 = [v7 credentials];
-    v14 = [v13 allKeys];
+    credentials = [v7 credentials];
+    allKeys = [credentials allKeys];
 
-    v15 = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
+    v15 = [allKeys countByEnumeratingWithState:&v53 objects:v65 count:16];
     if (v15)
     {
       v16 = v15;
@@ -59,17 +59,17 @@
         {
           if (*v54 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys);
           }
 
           v19 = *(*(&v53 + 1) + 8 * i);
-          v20 = [v7 credentials];
-          v21 = [v20 objectForKeyedSubscript:v19];
+          credentials2 = [v7 credentials];
+          v21 = [credentials2 objectForKeyedSubscript:v19];
 
           -[NSObject setCredential:type:](v12, "setCredential:type:", v21, [v19 integerValue]);
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
+        v16 = [allKeys countByEnumeratingWithState:&v53 objects:v65 count:16];
       }
 
       while (v16);
@@ -89,8 +89,8 @@
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v25 = [v24 allKeys];
-    v26 = [v25 countByEnumeratingWithState:&v48 objects:v62 count:16];
+    allKeys2 = [v24 allKeys];
+    v26 = [allKeys2 countByEnumeratingWithState:&v48 objects:v62 count:16];
     if (!v26)
     {
 LABEL_21:
@@ -116,7 +116,7 @@ LABEL_15:
     {
       if (*v49 != v28)
       {
-        objc_enumerationMutation(v25);
+        objc_enumerationMutation(allKeys2);
       }
 
       v30 = *(*(&v48 + 1) + 8 * v29);
@@ -131,7 +131,7 @@ LABEL_15:
 
       if (v27 == ++v29)
       {
-        v27 = [v25 countByEnumeratingWithState:&v48 objects:v62 count:16];
+        v27 = [allKeys2 countByEnumeratingWithState:&v48 objects:v62 count:16];
         if (v27)
         {
           goto LABEL_15;
@@ -195,7 +195,7 @@ LABEL_15:
 LABEL_43:
         v6 = 0;
 LABEL_44:
-        v3 = v47;
+        lCopy = v47;
 
 LABEL_45:
         v4 = v58;
@@ -270,10 +270,10 @@ uint64_t __26__LAACLBuilder_customACL___block_invoke(uint64_t a1)
 + (id)denyAllACL
 {
   v2 = [LAACL alloc];
-  v3 = [MEMORY[0x1E69AD210] denyAllACL];
+  denyAllACL = [MEMORY[0x1E69AD210] denyAllACL];
   if (v2)
   {
-    v4 = v3;
+    v4 = denyAllACL;
     v7.receiver = v2;
     v7.super_class = LAACL;
     v5 = objc_msgSendSuper2(&v7, sel_init);

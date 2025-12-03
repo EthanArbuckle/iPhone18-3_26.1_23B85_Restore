@@ -1,10 +1,10 @@
 @interface ADLKTTexturesDescriptor
 - ($06231CF0FCC0A6A3B5C95DAAB190E4AF)opticalFlowConfig;
-- (CGSize)downscaledInputSizeForLayout:(unint64_t)a3;
-- (CGSize)inputSizeForLayout:(unint64_t)a3;
-- (CGSize)outputSizeForLayout:(unint64_t)a3;
-- (id)initForSupportedSizes:(id)a3 config:(id *)a4;
-- (id)initForSupportedSizes:(id)a3 prioritization:(int64_t)a4;
+- (CGSize)downscaledInputSizeForLayout:(unint64_t)layout;
+- (CGSize)inputSizeForLayout:(unint64_t)layout;
+- (CGSize)outputSizeForLayout:(unint64_t)layout;
+- (id)initForSupportedSizes:(id)sizes config:(id *)config;
+- (id)initForSupportedSizes:(id)sizes prioritization:(int64_t)prioritization;
 @end
 
 @implementation ADLKTTexturesDescriptor
@@ -22,65 +22,65 @@
   return result;
 }
 
-- (CGSize)outputSizeForLayout:(unint64_t)a3
+- (CGSize)outputSizeForLayout:(unint64_t)layout
 {
-  [(ADImageDescriptor *)self->_outputDescriptor sizeForLayout:a3];
+  [(ADImageDescriptor *)self->_outputDescriptor sizeForLayout:layout];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)downscaledInputSizeForLayout:(unint64_t)a3
+- (CGSize)downscaledInputSizeForLayout:(unint64_t)layout
 {
-  [(ADImageDescriptor *)self->_downscaledInputDescriptor sizeForLayout:a3];
+  [(ADImageDescriptor *)self->_downscaledInputDescriptor sizeForLayout:layout];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)inputSizeForLayout:(unint64_t)a3
+- (CGSize)inputSizeForLayout:(unint64_t)layout
 {
-  [(ADImageDescriptor *)self->_inputDescriptor sizeForLayout:a3];
+  [(ADImageDescriptor *)self->_inputDescriptor sizeForLayout:layout];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)initForSupportedSizes:(id)a3 config:(id *)a4
+- (id)initForSupportedSizes:(id)sizes config:(id *)config
 {
-  v7 = a3;
+  sizesCopy = sizes;
   v71.receiver = self;
   v71.super_class = ADLKTTexturesDescriptor;
   v8 = [(ADLKTTexturesDescriptor *)&v71 init];
   v9 = v8;
   if (v8)
   {
-    var0 = a4->var0;
-    var1 = a4->var1;
-    v8->_scales = a4->var0;
+    var0 = config->var0;
+    var1 = config->var1;
+    v8->_scales = config->var0;
     v8->_opticalFlowConfig.scales = var0;
     objc_storeStrong(&v8->_opticalFlowConfig.nwarpings, var1);
-    v12 = *&a4->var2;
-    v13 = *&a4->var6;
-    *(&v9->_opticalFlowConfig.downscaleToWidth + 5) = *(&a4->var8 + 5);
+    v12 = *&config->var2;
+    v13 = *&config->var6;
+    *(&v9->_opticalFlowConfig.downscaleToWidth + 5) = *(&config->var8 + 5);
     *&v9->_opticalFlowConfig.useNonLocalRegularization = v12;
     *&v9->_opticalFlowConfig.nlreg_sigma_c = v13;
-    v14 = [MEMORY[0x277CED078] descriptorForSupportedSizes:v7 pixelFormat:1278226488];
+    v14 = [MEMORY[0x277CED078] descriptorForSupportedSizes:sizesCopy pixelFormat:1278226488];
     inputDescriptor = v9->_inputDescriptor;
     v69 = v9;
     v9->_inputDescriptor = v14;
 
-    v16 = [v7 mutableCopy];
-    if (a4->var8)
+    v16 = [sizesCopy mutableCopy];
+    if (config->var8)
     {
-      for (i = 0; [v7 count] > i; ++i)
+      for (i = 0; [sizesCopy count] > i; ++i)
       {
-        v18 = [v7 objectAtIndexedSubscript:i];
+        v18 = [sizesCopy objectAtIndexedSubscript:i];
         [v18 size];
         v4 = v19;
         v21 = v20;
 
-        var8 = a4->var8;
+        var8 = config->var8;
         v23 = var8;
         if (v4 <= var8)
         {
@@ -95,7 +95,7 @@
         }
 
         v26 = MEMORY[0x277CED088];
-        v27 = [v7 objectAtIndexedSubscript:i];
+        v27 = [sizesCopy objectAtIndexedSubscript:i];
         v28 = [v26 createWithSize:objc_msgSend(v27 andLayout:{"layout"), v23, v21}];
         [v16 setObject:v28 atIndexedSubscript:i];
       }
@@ -158,7 +158,7 @@
     objc_storeStrong(&v69->_derivitivesDescriptors, v66);
     objc_storeStrong(&v69->_pyramidsDescriptors, v68);
     v49 = [v16 mutableCopy];
-    if (a4->var9 >= 2)
+    if (config->var9 >= 2)
     {
       for (k = 0; ; k = v51 + 1)
       {
@@ -171,14 +171,14 @@
         v52 = [v16 objectAtIndexedSubscript:k];
         [v52 size];
         v54 = v53;
-        LODWORD(v4) = a4->var9;
+        LODWORD(v4) = config->var9;
         v55 = [v16 objectAtIndexedSubscript:v51];
         [v55 size];
         v57 = v56;
-        LODWORD(v5) = a4->var9;
+        LODWORD(v5) = config->var9;
 
         v58 = MEMORY[0x277CED088];
-        v59 = [v7 objectAtIndexedSubscript:v51];
+        v59 = [sizesCopy objectAtIndexedSubscript:v51];
         v60 = [v58 createWithSize:objc_msgSend(v59 andLayout:{"layout"), ceil(v54 / *&v4), ceil(v57 / v5)}];
         [v49 setObject:v60 atIndexedSubscript:v51];
       }
@@ -198,10 +198,10 @@
   return v9;
 }
 
-- (id)initForSupportedSizes:(id)a3 prioritization:(int64_t)a4
+- (id)initForSupportedSizes:(id)sizes prioritization:(int64_t)prioritization
 {
-  v6 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  sizesCopy = sizes;
+  if ((prioritization & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     +[ADLKTOpticalFlow defaultConfig];
     if (self)
@@ -217,7 +217,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  switch(a4)
+  switch(prioritization)
   {
     case 4:
       goto LABEL_5;
@@ -238,10 +238,10 @@ LABEL_5:
       {
         v7 = v13;
 LABEL_11:
-        v8 = [(ADLKTTexturesDescriptor *)self initForSupportedSizes:v6 config:v7];
+        v8 = [(ADLKTTexturesDescriptor *)self initForSupportedSizes:sizesCopy config:v7];
 LABEL_17:
         self = v8;
-        v9 = self;
+        selfCopy = self;
         goto LABEL_18;
       }
 
@@ -249,10 +249,10 @@ LABEL_17:
       goto LABEL_16;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

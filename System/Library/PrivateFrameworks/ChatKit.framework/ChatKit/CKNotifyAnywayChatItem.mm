@@ -1,25 +1,25 @@
 @interface CKNotifyAnywayChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKNotifyAnywayChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v15 = +[CKUIBehavior sharedBehaviors];
@@ -60,9 +60,9 @@ LABEL_10:
 
   v4 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3 attributes:0];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 transcriptNotifyAnywayFontAttributes];
+  transcriptNotifyAnywayFontAttributes = [v5 transcriptNotifyAnywayFontAttributes];
 
-  [v4 addAttributes:v6 range:{0, objc_msgSend(v4, "length")}];
+  [v4 addAttributes:transcriptNotifyAnywayFontAttributes range:{0, objc_msgSend(v4, "length")}];
 
   return v4;
 }
@@ -87,24 +87,24 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = v8;
-  if (a4)
+  if (insets)
   {
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v10;
-    a4->left = v11;
-    a4->bottom = v12;
-    a4->right = v13;
+    insets->top = v10;
+    insets->left = v11;
+    insets->bottom = v12;
+    insets->right = v13;
   }
 
   v14 = +[CKTranscriptNotifyAnywayButtonCell notifyAnywayButton];
-  v15 = [(CKChatItem *)self transcriptText];
-  [v14 setAttributedTitle:v15 forState:0];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  [v14 setAttributedTitle:transcriptText forState:0];
   [v14 sizeThatFits:{width, height}];
   v17 = v16;
 

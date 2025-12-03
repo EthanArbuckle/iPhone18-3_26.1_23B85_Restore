@@ -1,29 +1,29 @@
 @interface NDOfflineTodayFeedOperation
-- (NDOfflineTodayFeedOperation)initWithFeedConfig:(id)a3 context:(id)a4 ANFHelper:(id)a5;
-- (void)_handleArchive:(id)a3;
-- (void)_handleError:(id)a3;
-- (void)_handleInterestToken:(id)a3;
-- (void)_updateProgress:(double)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (NDOfflineTodayFeedOperation)initWithFeedConfig:(id)config context:(id)context ANFHelper:(id)helper;
+- (void)_handleArchive:(id)archive;
+- (void)_handleError:(id)error;
+- (void)_handleInterestToken:(id)token;
+- (void)_updateProgress:(double)progress;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation NDOfflineTodayFeedOperation
 
-- (NDOfflineTodayFeedOperation)initWithFeedConfig:(id)a3 context:(id)a4 ANFHelper:(id)a5
+- (NDOfflineTodayFeedOperation)initWithFeedConfig:(id)config context:(id)context ANFHelper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configCopy = config;
+  contextCopy = context;
+  helperCopy = helper;
   v21.receiver = self;
   v21.super_class = NDOfflineTodayFeedOperation;
   v12 = [(NDOfflineTodayFeedOperation *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_feedConfig, a3);
-    objc_storeStrong(&v13->_context, a4);
-    objc_storeStrong(&v13->_ANFHelper, a5);
+    objc_storeStrong(&v12->_feedConfig, config);
+    objc_storeStrong(&v13->_context, context);
+    objc_storeStrong(&v13->_ANFHelper, helper);
     v14 = objc_alloc_init(FCThreadSafeMutableArray);
     resultInterestTokens = v13->_resultInterestTokens;
     v13->_resultInterestTokens = v14;
@@ -45,18 +45,18 @@
 
 - (void)performOperation
 {
-  v3 = [(NDOfflineTodayFeedOperation *)self ANFHelper];
-  [v3 pushInterest];
+  aNFHelper = [(NDOfflineTodayFeedOperation *)self ANFHelper];
+  [aNFHelper pushInterest];
 
   v4 = dispatch_group_create();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [(NDOfflineTodayFeedOperation *)self feedConfig];
-  v6 = [v5 topStoriesArticleIDs];
+  feedConfig = [(NDOfflineTodayFeedOperation *)self feedConfig];
+  topStoriesArticleIDs = [feedConfig topStoriesArticleIDs];
 
-  v7 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v7 = [topStoriesArticleIDs countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v7)
   {
     v8 = v7;
@@ -67,14 +67,14 @@
       {
         if (*v35 != v24)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(topStoriesArticleIDs);
         }
 
         v10 = *(*(&v34 + 1) + 8 * i);
         v11 = [FCOfflineArticleFetchOperation alloc];
-        v12 = [(NDOfflineTodayFeedOperation *)self context];
-        v13 = [(NDOfflineTodayFeedOperation *)self ANFHelper];
-        v14 = [v11 initWithContext:v12 ANFHelper:v13 articleID:v10];
+        context = [(NDOfflineTodayFeedOperation *)self context];
+        aNFHelper2 = [(NDOfflineTodayFeedOperation *)self ANFHelper];
+        v14 = [v11 initWithContext:context ANFHelper:aNFHelper2 articleID:v10];
 
         [v14 setCachedOnly:{-[NDOfflineTodayFeedOperation cachedOnly](self, "cachedOnly")}];
         [v14 setProgressHandler:&stru_100072230];
@@ -93,24 +93,24 @@
         v32 = v4;
         [v14 setFetchCompletionHandler:v31];
         [(NDOfflineTodayFeedOperation *)self associateChildOperation:v14];
-        v15 = [(NDOfflineTodayFeedOperation *)self serialQueue];
-        [v15 addOperation:v14];
+        serialQueue = [(NDOfflineTodayFeedOperation *)self serialQueue];
+        [serialQueue addOperation:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v8 = [topStoriesArticleIDs countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v8);
   }
 
-  v16 = [(NDOfflineTodayFeedOperation *)self feedConfig];
-  v17 = [v16 topStoriesPackageURLs];
+  feedConfig2 = [(NDOfflineTodayFeedOperation *)self feedConfig];
+  topStoriesPackageURLs = [feedConfig2 topStoriesPackageURLs];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10000DC6C;
   v30[3] = &unk_1000722A8;
   v30[4] = self;
-  v18 = [v17 fc_arrayByTransformingWithBlock:v30];
+  v18 = [topStoriesPackageURLs fc_arrayByTransformingWithBlock:v30];
 
   v19 = [[FCAssetsFetchOperation alloc] initWithAssetHandles:v18];
   [v19 setMaxConcurrentFetchCount:20];
@@ -148,8 +148,8 @@
   v21 = v4;
   [v19 setFetchCompletionBlock:v26];
   [(NDOfflineTodayFeedOperation *)self associateChildOperation:v19];
-  v22 = [(NDOfflineTodayFeedOperation *)self serialQueue];
-  [v22 addOperation:v19];
+  serialQueue2 = [(NDOfflineTodayFeedOperation *)self serialQueue];
+  [serialQueue2 addOperation:v19];
 
   [(NDOfflineTodayFeedOperation *)self qualityOfService];
   v23 = FCDispatchQueueForQualityOfService();
@@ -161,123 +161,123 @@
   dispatch_group_notify(v21, v23, block);
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [(NDOfflineTodayFeedOperation *)self _updateProgress:1.0];
   }
 
-  v5 = [(NDOfflineTodayFeedOperation *)self fetchCompletionQueue];
+  fetchCompletionQueue = [(NDOfflineTodayFeedOperation *)self fetchCompletionQueue];
 
-  v6 = [(NDOfflineTodayFeedOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(NDOfflineTodayFeedOperation *)self fetchCompletionHandler];
 
-  if (v5)
+  if (fetchCompletionQueue)
   {
-    if (v6)
+    if (fetchCompletionHandler)
     {
-      v7 = [(NDOfflineTodayFeedOperation *)self fetchCompletionQueue];
+      fetchCompletionQueue2 = [(NDOfflineTodayFeedOperation *)self fetchCompletionQueue];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10000DF34;
       v11[3] = &unk_100071DB0;
       v11[4] = self;
-      v12 = v4;
-      dispatch_async(v7, v11);
+      v12 = errorCopy;
+      dispatch_async(fetchCompletionQueue2, v11);
     }
   }
 
-  else if (v6)
+  else if (fetchCompletionHandler)
   {
-    v8 = [(NDOfflineTodayFeedOperation *)self fetchCompletionHandler];
-    v9 = [(NDOfflineTodayFeedOperation *)self resultInterestTokens];
-    v10 = [v9 readOnlyArray];
-    (v8)[2](v8, v10, v4);
+    fetchCompletionHandler2 = [(NDOfflineTodayFeedOperation *)self fetchCompletionHandler];
+    resultInterestTokens = [(NDOfflineTodayFeedOperation *)self resultInterestTokens];
+    readOnlyArray = [resultInterestTokens readOnlyArray];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, readOnlyArray, errorCopy);
   }
 }
 
-- (void)_updateProgress:(double)a3
+- (void)_updateProgress:(double)progress
 {
   if (([(NDOfflineTodayFeedOperation *)self isFinished]& 1) == 0)
   {
-    [(NDOfflineTodayFeedOperation *)self setProgress:a3];
-    v5 = [(NDOfflineTodayFeedOperation *)self progressQueue];
+    [(NDOfflineTodayFeedOperation *)self setProgress:progress];
+    progressQueue = [(NDOfflineTodayFeedOperation *)self progressQueue];
 
-    v6 = [(NDOfflineTodayFeedOperation *)self progressHandler];
+    progressHandler = [(NDOfflineTodayFeedOperation *)self progressHandler];
 
-    if (v5)
+    if (progressQueue)
     {
-      if (v6)
+      if (progressHandler)
       {
-        v7 = [(NDOfflineTodayFeedOperation *)self progressQueue];
+        progressQueue2 = [(NDOfflineTodayFeedOperation *)self progressQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10000E104;
         block[3] = &unk_100071D20;
         block[4] = self;
-        dispatch_async(v7, block);
+        dispatch_async(progressQueue2, block);
       }
     }
 
-    else if (v6)
+    else if (progressHandler)
     {
-      v8 = [(NDOfflineTodayFeedOperation *)self progressHandler];
+      progressHandler2 = [(NDOfflineTodayFeedOperation *)self progressHandler];
       [(NDOfflineTodayFeedOperation *)self progress];
-      v8[2]();
+      progressHandler2[2]();
     }
   }
 }
 
-- (void)_handleInterestToken:(id)a3
+- (void)_handleInterestToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v4 = a3;
-    v5 = [(NDOfflineTodayFeedOperation *)self resultInterestTokens];
-    [v5 addObject:v4];
+    tokenCopy = token;
+    resultInterestTokens = [(NDOfflineTodayFeedOperation *)self resultInterestTokens];
+    [resultInterestTokens addObject:tokenCopy];
   }
 }
 
-- (void)_handleArchive:(id)a3
+- (void)_handleArchive:(id)archive
 {
-  v4 = a3;
-  if (v4)
+  archiveCopy = archive;
+  if (archiveCopy)
   {
-    v5 = [(NDOfflineTodayFeedOperation *)self archiveQueue];
+    archiveQueue = [(NDOfflineTodayFeedOperation *)self archiveQueue];
 
-    v6 = [(NDOfflineTodayFeedOperation *)self archiveHandler];
+    archiveHandler = [(NDOfflineTodayFeedOperation *)self archiveHandler];
 
-    if (v5)
+    if (archiveQueue)
     {
-      if (v6)
+      if (archiveHandler)
       {
-        v7 = [(NDOfflineTodayFeedOperation *)self archiveQueue];
+        archiveQueue2 = [(NDOfflineTodayFeedOperation *)self archiveQueue];
         v9[0] = _NSConcreteStackBlock;
         v9[1] = 3221225472;
         v9[2] = sub_10000E2E4;
         v9[3] = &unk_100071DB0;
         v9[4] = self;
-        v10 = v4;
-        dispatch_async(v7, v9);
+        v10 = archiveCopy;
+        dispatch_async(archiveQueue2, v9);
       }
     }
 
-    else if (v6)
+    else if (archiveHandler)
     {
-      v8 = [(NDOfflineTodayFeedOperation *)self archiveHandler];
-      (v8)[2](v8, v4);
+      archiveHandler2 = [(NDOfflineTodayFeedOperation *)self archiveHandler];
+      (archiveHandler2)[2](archiveHandler2, archiveCopy);
     }
   }
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    v4 = a3;
-    v5 = [(NDOfflineTodayFeedOperation *)self resultErrors];
-    [v5 addObject:v4];
+    errorCopy = error;
+    resultErrors = [(NDOfflineTodayFeedOperation *)self resultErrors];
+    [resultErrors addObject:errorCopy];
   }
 }
 

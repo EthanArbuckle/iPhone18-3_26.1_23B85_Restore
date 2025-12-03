@@ -1,23 +1,23 @@
 @interface CDSearchUtilities
-+ (BOOL)matchedProperties:(id)a3 contains:(id)a4;
-+ (id)matchedPhoneNumberFor:(id)a3 searchText:(id)a4 allowMatchingLastFour:(BOOL)a5;
++ (BOOL)matchedProperties:(id)properties contains:(id)contains;
++ (id)matchedPhoneNumberFor:(id)for searchText:(id)text allowMatchingLastFour:(BOOL)four;
 - (CDSearchUtilities)init;
 @end
 
 @implementation CDSearchUtilities
 
-+ (id)matchedPhoneNumberFor:(id)a3 searchText:(id)a4 allowMatchingLastFour:(BOOL)a5
++ (id)matchedPhoneNumberFor:(id)for searchText:(id)text allowMatchingLastFour:(BOOL)four
 {
-  v5 = a5;
+  fourCopy = four;
   v7 = sub_25E5080A8();
   v9 = v8;
-  v10 = a3;
-  FourSo14CNLabeledValueCySo07CNPhoneF0CGSgSo9CNContactC_SSSbtFZ_0 = _sSo17CDSearchUtilitiesC8PhoneKitE07matchedC6Number3for10searchText21allowMatchingLastFourSo14CNLabeledValueCySo07CNPhoneF0CGSgSo9CNContactC_SSSbtFZ_0(v10, v7, v9, v5);
+  forCopy = for;
+  FourSo14CNLabeledValueCySo07CNPhoneF0CGSgSo9CNContactC_SSSbtFZ_0 = _sSo17CDSearchUtilitiesC8PhoneKitE07matchedC6Number3for10searchText21allowMatchingLastFourSo14CNLabeledValueCySo07CNPhoneF0CGSgSo9CNContactC_SSSbtFZ_0(forCopy, v7, v9, fourCopy);
 
   return FourSo14CNLabeledValueCySo07CNPhoneF0CGSgSo9CNContactC_SSSbtFZ_0;
 }
 
-+ (BOOL)matchedProperties:(id)a3 contains:(id)a4
++ (BOOL)matchedProperties:(id)properties contains:(id)contains
 {
   v4 = sub_25E508068();
   v5 = sub_25E5080A8();

@@ -1,6 +1,6 @@
 @interface SingleCycleViewCollectionViewFlowLayout
 - (_TtC24MenstrualCyclesAppPlugin39SingleCycleViewCollectionViewFlowLayout)init;
-- (_TtC24MenstrualCyclesAppPlugin39SingleCycleViewCollectionViewFlowLayout)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin39SingleCycleViewCollectionViewFlowLayout)initWithCoder:(id)coder;
 - (void)prepareLayout;
 @end
 
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin39SingleCycleViewCollectionViewFlowLayout)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin39SingleCycleViewCollectionViewFlowLayout)initWithCoder:(id)coder
 {
   result = sub_29E2C4724();
   __break(1u);
@@ -24,7 +24,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E074938();
 }
 

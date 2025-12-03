@@ -1,5 +1,5 @@
 @interface WMTop
-- (Class)mapperClassForIndexing:(BOOL)a3;
+- (Class)mapperClassForIndexing:(BOOL)indexing;
 - (void)initializeClasses;
 @end
 
@@ -14,7 +14,7 @@
   [(QLTop *)&v3 initializeClasses];
 }
 
-- (Class)mapperClassForIndexing:(BOOL)a3
+- (Class)mapperClassForIndexing:(BOOL)indexing
 {
   v3 = objc_opt_class();
 

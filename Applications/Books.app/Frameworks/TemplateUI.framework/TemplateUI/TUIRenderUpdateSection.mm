@@ -1,25 +1,25 @@
 @interface TUIRenderUpdateSection
-- (TUIRenderUpdateSection)initWithFrom:(id)a3 to:(id)a4;
+- (TUIRenderUpdateSection)initWithFrom:(id)from to:(id)to;
 - (id)description;
 - (void)_computeViewUpdate;
-- (void)applyToContext:(id)a3;
-- (void)debugViewIdentifiersWithPackage:(id)a3;
+- (void)applyToContext:(id)context;
+- (void)debugViewIdentifiersWithPackage:(id)package;
 @end
 
 @implementation TUIRenderUpdateSection
 
-- (TUIRenderUpdateSection)initWithFrom:(id)a3 to:(id)a4
+- (TUIRenderUpdateSection)initWithFrom:(id)from to:(id)to
 {
-  v7 = a3;
-  v8 = a4;
+  fromCopy = from;
+  toCopy = to;
   v12.receiver = self;
   v12.super_class = TUIRenderUpdateSection;
   v9 = [(TUIRenderUpdateSection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_from, a3);
-    objc_storeStrong(&v10->_to, a4);
+    objc_storeStrong(&v9->_from, from);
+    objc_storeStrong(&v10->_to, to);
     [(TUIRenderUpdateSection *)v10 _computeViewUpdate];
   }
 
@@ -30,16 +30,16 @@
 {
   location = [(TUIRenderModelSection *)self->_from viewRange];
   length = v4;
-  v6 = [(TUIRenderModelSection *)self->_to viewRange];
-  v8.location = v6;
+  viewRange = [(TUIRenderModelSection *)self->_to viewRange];
+  v8.location = viewRange;
   v8.length = v7;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || v6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (location == 0x7FFFFFFFFFFFFFFFLL || viewRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (location == 0x7FFFFFFFFFFFFFFFLL)
     {
       length = v7;
-      location = v6;
-      v10 = v6 == 0x7FFFFFFFFFFFFFFFLL;
+      location = viewRange;
+      v10 = viewRange == 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -190,26 +190,26 @@ LABEL_49:
   self->_hasInvalidationsToApply = [(NSIndexSet *)self->_viewUpdates count:v8.location]!= 0;
 }
 
-- (void)debugViewIdentifiersWithPackage:(id)a3
+- (void)debugViewIdentifiersWithPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   viewUpdates = self->_viewUpdates;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_168600;
   v7[3] = &unk_25F928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = packageCopy;
+  v6 = packageCopy;
   [(NSIndexSet *)viewUpdates enumerateIndexesUsingBlock:v7];
 }
 
-- (void)applyToContext:(id)a3
+- (void)applyToContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(NSIndexSet *)self->_viewUpdates count])
   {
-    v5 = [(TUIRenderModelSection *)self->_to section];
+    section = [(TUIRenderModelSection *)self->_to section];
     v6 = objc_opt_new();
     viewUpdates = self->_viewUpdates;
     v9 = _NSConcreteStackBlock;
@@ -217,10 +217,10 @@ LABEL_49:
     v11 = sub_168860;
     v12 = &unk_2633B8;
     v13 = v6;
-    v14 = v5;
+    v14 = section;
     v8 = v6;
     [(NSIndexSet *)viewUpdates enumerateIndexesUsingBlock:&v9];
-    [v4 invalidateIndexPaths:{v8, v9, v10, v11, v12}];
+    [contextCopy invalidateIndexPaths:{v8, v9, v10, v11, v12}];
   }
 }
 

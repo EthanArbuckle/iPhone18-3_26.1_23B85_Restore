@@ -1,28 +1,28 @@
 @interface PSMultilineSwitchTableCell
 + (Class)alternativeCellClass;
 - (BOOL)loading;
-- (PSMultilineSwitchTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSMultilineSwitchTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)controlValue;
 - (id)newControl;
-- (void)controlChanged:(id)a3;
+- (void)controlChanged:(id)changed;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)setCellEnabled:(BOOL)a3;
-- (void)setControl:(id)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setValue:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)setCellEnabled:(BOOL)enabled;
+- (void)setControl:(id)control;
+- (void)setLoading:(BOOL)loading;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setValue:(id)value;
 @end
 
 @implementation PSMultilineSwitchTableCell
 
-- (PSMultilineSwitchTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSMultilineSwitchTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = PSMultilineSwitchTableCell;
-  v4 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -30,27 +30,27 @@
     [(PSMultilineSwitchTableCell *)v5 setSelectionStyle:0];
     if (![(PSTableCell *)v5 skipsPreferencesTableCellLayoutSubviews])
     {
-      v6 = [(PSMultilineSwitchTableCell *)v5 newControl];
-      [(PSMultilineSwitchTableCell *)v5 setControl:v6];
-      [v6 addTarget:v5 action:sel_controlChanged_ forControlEvents:4096];
-      v7 = [(PSMultilineSwitchTableCell *)v5 control];
-      [(PSMultilineSwitchTableCell *)v5 setAccessoryView:v7];
+      newControl = [(PSMultilineSwitchTableCell *)v5 newControl];
+      [(PSMultilineSwitchTableCell *)v5 setControl:newControl];
+      [newControl addTarget:v5 action:sel_controlChanged_ forControlEvents:4096];
+      control = [(PSMultilineSwitchTableCell *)v5 control];
+      [(PSMultilineSwitchTableCell *)v5 setAccessoryView:control];
     }
   }
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PSMultilineSwitchTableCell;
-  v4 = a3;
-  [(PSMultilineTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSMultilineTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(PSMultilineSwitchTableCell *)self control:v7.receiver];
-  [v4 setProperty:v5 forKey:@"control"];
+  [specifierCopy setProperty:v5 forKey:@"control"];
 
-  v6 = [v4 propertyForKey:@"control-loading"];
+  v6 = [specifierCopy propertyForKey:@"control-loading"];
 
   if (v6)
   {
@@ -61,14 +61,14 @@
 - (void)dealloc
 {
   [(PSTableCell *)self setCellTarget:0];
-  v3 = [(PSMultilineSwitchTableCell *)self control];
+  control = [(PSMultilineSwitchTableCell *)self control];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(PSMultilineSwitchTableCell *)self control];
-    [v5 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+    control2 = [(PSMultilineSwitchTableCell *)self control];
+    [control2 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
   }
 
   v6.receiver = self;
@@ -76,14 +76,14 @@
   [(PSTableCell *)&v6 dealloc];
 }
 
-- (void)setControl:(id)a3
+- (void)setControl:(id)control
 {
-  v5 = a3;
-  if (self->_control != v5)
+  controlCopy = control;
+  if (self->_control != controlCopy)
   {
-    v8 = v5;
-    v6 = [(PSMultilineSwitchTableCell *)self contentView];
-    [v6 addSubview:v8];
+    v8 = controlCopy;
+    contentView = [(PSMultilineSwitchTableCell *)self contentView];
+    [contentView addSubview:v8];
 
     control = self->_control;
     if (control)
@@ -91,35 +91,35 @@
       [(UIControl *)control removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_control, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_control, control);
+    controlCopy = v8;
   }
 }
 
-- (void)controlChanged:(id)a3
+- (void)controlChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(PSTableCell *)self cellTarget];
-  if (v5)
+  changedCopy = changed;
+  cellTarget = [(PSTableCell *)self cellTarget];
+  if (cellTarget)
   {
-    v6 = v5;
-    v7 = [(PSTableCell *)self specifier];
+    v6 = cellTarget;
+    specifier = [(PSTableCell *)self specifier];
 
-    if (v7)
+    if (specifier)
     {
       [(PSTableCell *)self cellAction];
-      v8 = [(PSTableCell *)self cellTarget];
-      v9 = [(PSMultilineSwitchTableCell *)self controlValue];
-      v10 = [(PSTableCell *)self specifier];
+      cellTarget2 = [(PSTableCell *)self cellTarget];
+      controlValue = [(PSMultilineSwitchTableCell *)self controlValue];
+      specifier2 = [(PSTableCell *)self specifier];
       v11 = SFPerformSelector2();
     }
   }
 
-  v12 = [(PSTableCell *)self cellTarget];
+  cellTarget3 = [(PSTableCell *)self cellTarget];
 
-  if (v12)
+  if (cellTarget3)
   {
-    v13 = [(PSTableCell *)self cellTarget];
+    cellTarget4 = [(PSTableCell *)self cellTarget];
     v14 = objc_opt_class();
     v18 = NSStringFromClass(v14);
   }
@@ -136,14 +136,14 @@
   [MEMORY[0x1E69CA9B0] trackingControlValueChanged:v18 sender:v17];
 }
 
-- (void)setCellEnabled:(BOOL)a3
+- (void)setCellEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = PSMultilineSwitchTableCell;
   [(PSTableCell *)&v6 setCellEnabled:?];
-  v5 = [(PSMultilineSwitchTableCell *)self control];
-  [v5 setEnabled:v3];
+  control = [(PSMultilineSwitchTableCell *)self control];
+  [control setEnabled:enabledCopy];
 }
 
 - (void)prepareForReuse
@@ -161,8 +161,8 @@
     v4.receiver = self;
     v4.super_class = PSMultilineSwitchTableCell;
     [(PSTableCell *)&v4 prepareForReuse];
-    v3 = [(PSMultilineSwitchTableCell *)self control];
-    [(PSMultilineSwitchTableCell *)self setAccessoryView:v3];
+    control = [(PSMultilineSwitchTableCell *)self control];
+    [(PSMultilineSwitchTableCell *)self setAccessoryView:control];
   }
 }
 
@@ -175,66 +175,66 @@
 
 - (BOOL)loading
 {
-  v2 = [(PSMultilineSwitchTableCell *)self activityIndicator];
-  v3 = v2 != 0;
+  activityIndicator = [(PSMultilineSwitchTableCell *)self activityIndicator];
+  v3 = activityIndicator != 0;
 
   return v3;
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   if ([(PSTableCell *)self skipsPreferencesTableCellLayoutSubviews])
   {
     return;
   }
 
-  v5 = [(PSMultilineSwitchTableCell *)self activityIndicator];
+  activityIndicator = [(PSMultilineSwitchTableCell *)self activityIndicator];
 
-  if (!v3)
+  if (!loadingCopy)
   {
-    if (!v5)
+    if (!activityIndicator)
     {
       return;
     }
 
-    v26 = [(PSMultilineSwitchTableCell *)self activityIndicator];
-    [v26 removeFromSuperview];
+    activityIndicator2 = [(PSMultilineSwitchTableCell *)self activityIndicator];
+    [activityIndicator2 removeFromSuperview];
 
     [(PSMultilineSwitchTableCell *)self setActivityIndicator:0];
-    v27 = [(PSMultilineSwitchTableCell *)self control];
+    control = [(PSMultilineSwitchTableCell *)self control];
 
-    if (!v27)
+    if (!control)
     {
       return;
     }
 
     if ([(PSMultilineSwitchTableCell *)self tag]!= 6)
     {
-      v30 = [(PSMultilineSwitchTableCell *)self contentView];
-      v29 = [(PSMultilineSwitchTableCell *)self control];
-      [v30 addSubview:v29];
+      contentView = [(PSMultilineSwitchTableCell *)self contentView];
+      control2 = [(PSMultilineSwitchTableCell *)self control];
+      [contentView addSubview:control2];
 
       goto LABEL_18;
     }
 
-    v28 = [(PSMultilineSwitchTableCell *)self control];
-    [(PSMultilineSwitchTableCell *)self setAccessoryView:v28];
+    control3 = [(PSMultilineSwitchTableCell *)self control];
+    [(PSMultilineSwitchTableCell *)self setAccessoryView:control3];
 
-    v24 = [(PSMultilineSwitchTableCell *)self control];
-    v30 = v24;
+    control4 = [(PSMultilineSwitchTableCell *)self control];
+    contentView = control4;
     v25 = 0;
 LABEL_14:
-    [v24 setHidden:v25];
+    [control4 setHidden:v25];
 LABEL_18:
 
     return;
   }
 
-  if (!v5)
+  if (!activityIndicator)
   {
-    v6 = [(PSMultilineSwitchTableCell *)self contentView];
-    [v6 bounds];
+    contentView2 = [(PSMultilineSwitchTableCell *)self contentView];
+    [contentView2 bounds];
     v8 = v7;
     v10 = v9;
 
@@ -247,30 +247,30 @@ LABEL_18:
     v18 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:{-[PSMultilineSwitchTableCell spinnerStyle](self, "spinnerStyle")}];
     [(PSMultilineSwitchTableCell *)self setActivityIndicator:v18];
 
-    v19 = [(PSMultilineSwitchTableCell *)self activityIndicator];
-    [v19 setFrame:{v15, v17, v12, v14}];
+    activityIndicator3 = [(PSMultilineSwitchTableCell *)self activityIndicator];
+    [activityIndicator3 setFrame:{v15, v17, v12, v14}];
 
-    v20 = [(PSMultilineSwitchTableCell *)self activityIndicator];
-    [v20 startAnimating];
+    activityIndicator4 = [(PSMultilineSwitchTableCell *)self activityIndicator];
+    [activityIndicator4 startAnimating];
 
-    v21 = [(PSMultilineSwitchTableCell *)self contentView];
-    v22 = [(PSMultilineSwitchTableCell *)self activityIndicator];
-    [v21 addSubview:v22];
+    contentView3 = [(PSMultilineSwitchTableCell *)self contentView];
+    activityIndicator5 = [(PSMultilineSwitchTableCell *)self activityIndicator];
+    [contentView3 addSubview:activityIndicator5];
 
-    v23 = [(PSMultilineSwitchTableCell *)self control];
+    control5 = [(PSMultilineSwitchTableCell *)self control];
 
-    if (v23)
+    if (control5)
     {
       if ([(PSMultilineSwitchTableCell *)self tag]!= 6)
       {
-        v30 = [(PSMultilineSwitchTableCell *)self control];
-        [v30 removeFromSuperview];
+        contentView = [(PSMultilineSwitchTableCell *)self control];
+        [contentView removeFromSuperview];
         goto LABEL_18;
       }
 
       [(PSMultilineSwitchTableCell *)self setAccessoryView:0];
-      v24 = [(PSMultilineSwitchTableCell *)self control];
-      v30 = v24;
+      control4 = [(PSMultilineSwitchTableCell *)self control];
+      contentView = control4;
       v25 = 1;
       goto LABEL_14;
     }
@@ -280,53 +280,53 @@ LABEL_18:
 - (id)controlValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(PSMultilineSwitchTableCell *)self control];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isOn")}];
+  control = [(PSMultilineSwitchTableCell *)self control];
+  v4 = [v2 numberWithBool:{objc_msgSend(control, "isOn")}];
 
   return v4;
 }
 
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v10.receiver = self;
   v10.super_class = PSMultilineSwitchTableCell;
-  [(PSTableCell *)&v10 reloadWithSpecifier:a3 animated:?];
-  v6 = [self->super.super._value BOOLValue];
-  v7 = [(PSMultilineSwitchTableCell *)self control];
-  v8 = [v7 isOn];
+  [(PSTableCell *)&v10 reloadWithSpecifier:specifier animated:?];
+  bOOLValue = [self->super.super._value BOOLValue];
+  control = [(PSMultilineSwitchTableCell *)self control];
+  isOn = [control isOn];
 
-  if (v6 != v8)
+  if (bOOLValue != isOn)
   {
-    v9 = [(PSMultilineSwitchTableCell *)self control];
-    [v9 setOn:objc_msgSend(self->super.super._value animated:{"BOOLValue"), v4}];
+    control2 = [(PSMultilineSwitchTableCell *)self control];
+    [control2 setOn:objc_msgSend(self->super.super._value animated:{"BOOLValue"), animatedCopy}];
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->super.super._value != v5)
+  valueCopy = value;
+  if (self->super.super._value != valueCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->super.super._value, a3);
-    v6 = [(PSMultilineSwitchTableCell *)self control];
-    [v6 setOn:{objc_msgSend(v7, "intValue") != 0}];
+    v7 = valueCopy;
+    objc_storeStrong(&self->super.super._value, value);
+    control = [(PSMultilineSwitchTableCell *)self control];
+    [control setOn:{objc_msgSend(v7, "intValue") != 0}];
 
-    v5 = v7;
+    valueCopy = v7;
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = [(PSMultilineSwitchTableCell *)self backgroundColor:a3];
-  v5 = [(PSMultilineSwitchTableCell *)self selectedBackgroundView];
-  [v5 setBackgroundColor:v6];
+  v6 = [(PSMultilineSwitchTableCell *)self backgroundColor:selected];
+  selectedBackgroundView = [(PSMultilineSwitchTableCell *)self selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:v6];
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

@@ -1,42 +1,42 @@
 @interface PGMomentIngestCLIPFeatureVectorExtractor
-+ (id)decodeEncodedCLIPFeatureVector:(id)a3 withError:(id *)a4;
-+ (id)encodeCLIPFeatureVector:(id)a3;
++ (id)decodeEncodedCLIPFeatureVector:(id)vector withError:(id *)error;
++ (id)encodeCLIPFeatureVector:(id)vector;
 - (PGMomentIngestCLIPFeatureVectorExtractor)init;
-- (PGMomentIngestCLIPFeatureVectorExtractor)initWithIngestMomentContainer:(id)a3;
-- (id)extractCLIPFeatureVectorWithError:(id *)a3;
+- (PGMomentIngestCLIPFeatureVectorExtractor)initWithIngestMomentContainer:(id)container;
+- (id)extractCLIPFeatureVectorWithError:(id *)error;
 @end
 
 @implementation PGMomentIngestCLIPFeatureVectorExtractor
 
-- (PGMomentIngestCLIPFeatureVectorExtractor)initWithIngestMomentContainer:(id)a3
+- (PGMomentIngestCLIPFeatureVectorExtractor)initWithIngestMomentContainer:(id)container
 {
-  *(&self->super.isa + OBJC_IVAR___PGMomentIngestCLIPFeatureVectorExtractor_ingestMomentContainer) = a3;
+  *(&self->super.isa + OBJC_IVAR___PGMomentIngestCLIPFeatureVectorExtractor_ingestMomentContainer) = container;
   v6.receiver = self;
   v6.super_class = type metadata accessor for MomentIngestCLIPFeatureVectorExtractor();
-  v4 = a3;
+  containerCopy = container;
   return [(PGMomentIngestCLIPFeatureVectorExtractor *)&v6 init];
 }
 
-- (id)extractCLIPFeatureVectorWithError:(id *)a3
+- (id)extractCLIPFeatureVectorWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_22F3BB638();
   v5 = v4;
 
   return v5;
 }
 
-+ (id)encodeCLIPFeatureVector:(id)a3
++ (id)encodeCLIPFeatureVector:(id)vector
 {
-  v3 = a3;
-  _s11PhotosGraph38MomentIngestCLIPFeatureVectorExtractorC6encodeySSSo07MAFloatF0CFZ_0(v3);
+  vectorCopy = vector;
+  _s11PhotosGraph38MomentIngestCLIPFeatureVectorExtractorC6encodeySSSo07MAFloatF0CFZ_0(vectorCopy);
 
   v4 = sub_22F740DF0();
 
   return v4;
 }
 
-+ (id)decodeEncodedCLIPFeatureVector:(id)a3 withError:(id *)a4
++ (id)decodeEncodedCLIPFeatureVector:(id)vector withError:(id *)error
 {
   sub_22F740E20();
   sub_22F3BC0F0();

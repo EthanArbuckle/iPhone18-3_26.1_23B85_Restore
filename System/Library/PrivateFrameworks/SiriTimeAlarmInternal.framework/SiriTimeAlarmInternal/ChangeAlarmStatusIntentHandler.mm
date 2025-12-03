@@ -1,35 +1,35 @@
 @interface ChangeAlarmStatusIntentHandler
-- (void)confirmChangeAlarmStatus:(id)a3 completion:(id)a4;
-- (void)resolveHandleSilentlyForChangeAlarmStatus:(id)a3 withCompletion:(id)a4;
+- (void)confirmChangeAlarmStatus:(id)status completion:(id)completion;
+- (void)resolveHandleSilentlyForChangeAlarmStatus:(id)status withCompletion:(id)completion;
 @end
 
 @implementation ChangeAlarmStatusIntentHandler
 
-- (void)resolveHandleSilentlyForChangeAlarmStatus:(id)a3 withCompletion:(id)a4
+- (void)resolveHandleSilentlyForChangeAlarmStatus:(id)status withCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
-  v6 = a3;
-  v7 = [v6 handleSilently];
-  if (v7)
+  v5 = _Block_copy(completion);
+  statusCopy = status;
+  handleSilently = [statusCopy handleSilently];
+  if (handleSilently)
   {
-    v8 = v7;
-    v9 = [v7 BOOLValue];
+    v8 = handleSilently;
+    bOOLValue = [handleSilently BOOLValue];
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  v10 = [objc_opt_self() successWithResolvedValue_];
-  v5[2](v5, v10);
+  successWithResolvedValue_ = [objc_opt_self() successWithResolvedValue_];
+  v5[2](v5, successWithResolvedValue_);
 
   _Block_release(v5);
 }
 
-- (void)confirmChangeAlarmStatus:(id)a3 completion:(id)a4
+- (void)confirmChangeAlarmStatus:(id)status completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = [objc_allocWithZone(type metadata accessor for ChangeAlarmStatusIntentResponse()) init];
   v6 = OBJC_IVAR___ChangeAlarmStatusIntentResponse_code;
   swift_beginAccess();

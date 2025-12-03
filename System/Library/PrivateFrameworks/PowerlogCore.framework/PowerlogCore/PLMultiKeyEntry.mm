@@ -1,10 +1,10 @@
 @interface PLMultiKeyEntry
 + (void)load;
 - (PLMultiKeyEntry)init;
-- (id)keysForSubKey:(id)a3 ofSubKeyType:(id)a4;
-- (id)objectsForSubKey:(id)a3 ofSubKeyType:(id)a4;
+- (id)keysForSubKey:(id)key ofSubKeyType:(id)type;
+- (id)objectsForSubKey:(id)key ofSubKeyType:(id)type;
 - (id)serializedForJSON;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation PLMultiKeyEntry
@@ -26,21 +26,21 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLMultiKeyEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = PLMultiKeyEntry;
-  [(PLEntry *)&v10 setObject:a3 forKey:v6];
+  [(PLEntry *)&v10 setObject:object forKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = keyCopy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __36__PLMultiKeyEntry_setObject_forKey___block_invoke;
@@ -83,22 +83,22 @@ void __36__PLMultiKeyEntry_setObject_forKey___block_invoke(uint64_t a1, void *a2
   [v18 addObject:*(a1 + 40)];
 }
 
-- (id)keysForSubKey:(id)a3 ofSubKeyType:(id)a4
+- (id)keysForSubKey:(id)key ofSubKeyType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLMultiKeyEntry *)self multiKeys];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  keyCopy = key;
+  multiKeys = [(PLMultiKeyEntry *)self multiKeys];
+  v9 = [multiKeys objectForKeyedSubscript:typeCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v10 = [v9 objectForKeyedSubscript:keyCopy];
 
   return v10;
 }
 
-- (id)objectsForSubKey:(id)a3 ofSubKeyType:(id)a4
+- (id)objectsForSubKey:(id)key ofSubKeyType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(PLMultiKeyEntry *)self keysForSubKey:a3 ofSubKeyType:a4];
+  v5 = [(PLMultiKeyEntry *)self keysForSubKey:key ofSubKeyType:type];
   v6 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
@@ -137,18 +137,18 @@ void __36__PLMultiKeyEntry_setObject_forKey___block_invoke(uint64_t a1, void *a2
 - (id)serializedForJSON
 {
   v3 = objc_opt_new();
-  v4 = [(PLEntry *)self dictionary];
+  dictionary = [(PLEntry *)self dictionary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__PLMultiKeyEntry_serializedForJSON__block_invoke;
   v10[3] = &unk_1E8519700;
   v5 = v3;
   v11 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v10];
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(PLEntry *)self entryDate];
-  [v7 timeIntervalSince1970];
+  entryDate = [(PLEntry *)self entryDate];
+  [entryDate timeIntervalSince1970];
   v8 = [v6 numberWithDouble:?];
   [v5 setObject:v8 forKeyedSubscript:@"timestamp"];
 

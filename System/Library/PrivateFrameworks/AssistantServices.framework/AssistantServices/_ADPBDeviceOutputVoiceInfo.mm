@@ -1,41 +1,41 @@
 @interface _ADPBDeviceOutputVoiceInfo
 - (AFVoiceInfo)_ad_voiceInfo;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)genderAsString:(int)a3;
-- (int)StringAsGender:(id)a3;
+- (id)genderAsString:(int)string;
+- (int)StringAsGender:(id)gender;
 - (int)gender;
 - (unint64_t)hash;
-- (void)_ad_setVoiceInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_ad_setVoiceInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBDeviceOutputVoiceInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(_ADPBDeviceOutputVoiceInfo *)self setLanguageCode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_gender = v4[2];
+    self->_gender = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_ADPBDeviceOutputVoiceInfo *)self setVoiceName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -55,16 +55,16 @@
   return v4 ^ v3 ^ [(NSString *)self->_voiceName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   languageCode = self->_languageCode;
-  if (languageCode | *(v4 + 2))
+  if (languageCode | *(equalCopy + 2))
   {
     if (![(NSString *)languageCode isEqual:?])
     {
@@ -74,13 +74,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_gender != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_gender != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -88,7 +88,7 @@ LABEL_11:
   }
 
   voiceName = self->_voiceName;
-  if (voiceName | *(v4 + 3))
+  if (voiceName | *(equalCopy + 3))
   {
     v7 = [(NSString *)voiceName isEqual:?];
   }
@@ -103,10 +103,10 @@ LABEL_12:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_languageCode copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_languageCode copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -116,56 +116,56 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_voiceName copyWithZone:a3];
+  v8 = [(NSString *)self->_voiceName copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_languageCode)
   {
-    [v4 setLanguageCode:?];
-    v4 = v5;
+    [toCopy setLanguageCode:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_gender;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_gender;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_voiceName)
   {
     [v5 setVoiceName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_languageCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_voiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
@@ -209,31 +209,31 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = _ADPBDeviceOutputVoiceInfo;
   v3 = [(_ADPBDeviceOutputVoiceInfo *)&v7 description];
-  v4 = [(_ADPBDeviceOutputVoiceInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBDeviceOutputVoiceInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (int)StringAsGender:(id)a3
+- (int)StringAsGender:(id)gender
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  genderCopy = gender;
+  if ([genderCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MALE"])
+  else if ([genderCopy isEqualToString:@"MALE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FEMALE"])
+  else if ([genderCopy isEqualToString:@"FEMALE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NEUTRAL"])
+  else if ([genderCopy isEqualToString:@"NEUTRAL"])
   {
     v4 = 3;
   }
@@ -246,16 +246,16 @@ LABEL_12:
   return v4;
 }
 
-- (id)genderAsString:(int)a3
+- (id)genderAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_100512EE8 + a3);
+    v4 = *(&off_100512EE8 + string);
   }
 
   return v4;
@@ -274,13 +274,13 @@ LABEL_12:
   }
 }
 
-- (void)_ad_setVoiceInfo:(id)a3
+- (void)_ad_setVoiceInfo:(id)info
 {
-  v8 = a3;
-  v4 = [v8 languageCode];
-  [(_ADPBDeviceOutputVoiceInfo *)self setLanguageCode:v4];
+  infoCopy = info;
+  languageCode = [infoCopy languageCode];
+  [(_ADPBDeviceOutputVoiceInfo *)self setLanguageCode:languageCode];
 
-  v5 = [v8 gender] - 1;
+  v5 = [infoCopy gender] - 1;
   if (v5 < 3)
   {
     v6 = (v5 + 1);
@@ -292,14 +292,14 @@ LABEL_12:
   }
 
   [(_ADPBDeviceOutputVoiceInfo *)self setGender:v6];
-  v7 = [v8 name];
-  [(_ADPBDeviceOutputVoiceInfo *)self setVoiceName:v7];
+  name = [infoCopy name];
+  [(_ADPBDeviceOutputVoiceInfo *)self setVoiceName:name];
 }
 
 - (AFVoiceInfo)_ad_voiceInfo
 {
   v3 = [AFVoiceInfo alloc];
-  v4 = [(_ADPBDeviceOutputVoiceInfo *)self languageCode];
+  languageCode = [(_ADPBDeviceOutputVoiceInfo *)self languageCode];
   v5 = [(_ADPBDeviceOutputVoiceInfo *)self gender]- 1;
   if (v5 < 3)
   {
@@ -311,8 +311,8 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = [(_ADPBDeviceOutputVoiceInfo *)self voiceName];
-  v8 = [v3 initWithLanguageCode:v4 gender:v6 isCustom:1 name:v7 footprint:0 contentVersion:0 masteredVersion:0];
+  voiceName = [(_ADPBDeviceOutputVoiceInfo *)self voiceName];
+  v8 = [v3 initWithLanguageCode:languageCode gender:v6 isCustom:1 name:voiceName footprint:0 contentVersion:0 masteredVersion:0];
 
   return v8;
 }

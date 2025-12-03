@@ -1,13 +1,13 @@
 @interface _DKAnyDoubleQuantity
-+ (id)withValue:(double)a3;
++ (id)withValue:(double)value;
 @end
 
 @implementation _DKAnyDoubleQuantity
 
-+ (id)withValue:(double)a3
++ (id)withValue:(double)value
 {
-  v4 = [a1 type];
-  v5 = [_DKQuantity quantityWithDouble:v4 type:a3];
+  type = [self type];
+  v5 = [_DKQuantity quantityWithDouble:type type:value];
 
   return v5;
 }

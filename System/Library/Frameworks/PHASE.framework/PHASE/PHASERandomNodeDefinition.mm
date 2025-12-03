@@ -25,18 +25,18 @@
 {
   v7.receiver = self;
   v7.super_class = PHASERandomNodeDefinition;
-  v2 = [(PHASEDefinition *)&v7 initInternal];
-  if (v2)
+  initInternal = [(PHASEDefinition *)&v7 initInternal];
+  if (initInternal)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    subtrees = v2->_subtrees;
-    v2->_subtrees = v3;
+    subtrees = initInternal->_subtrees;
+    initInternal->_subtrees = v3;
 
-    v2->_uniqueSelectionQueueLength = 0;
-    v5 = v2;
+    initInternal->_uniqueSelectionQueueLength = 0;
+    v5 = initInternal;
   }
 
-  return v2;
+  return initInternal;
 }
 
 - (void)addSubtree:(PHASESoundEventNodeDefinition *)subtree weight:(NSNumber *)weight
@@ -95,8 +95,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) subtree];
-        [v3 addObject:v8];
+        subtree = [*(*(&v10 + 1) + 8 * i) subtree];
+        [v3 addObject:subtree];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];

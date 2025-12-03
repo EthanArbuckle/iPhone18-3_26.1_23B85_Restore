@@ -1,24 +1,24 @@
 @interface ErrorActionOption
-- (ErrorActionOption)initWithTitle:(id)a3 cancels:(BOOL)a4 handler:(id)a5;
+- (ErrorActionOption)initWithTitle:(id)title cancels:(BOOL)cancels handler:(id)handler;
 @end
 
 @implementation ErrorActionOption
 
-- (ErrorActionOption)initWithTitle:(id)a3 cancels:(BOOL)a4 handler:(id)a5
+- (ErrorActionOption)initWithTitle:(id)title cancels:(BOOL)cancels handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  titleCopy = title;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = ErrorActionOption;
   v10 = [(ErrorActionOption *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v10->_cancels = a4;
-    v13 = [v9 copy];
+    v10->_cancels = cancels;
+    v13 = [handlerCopy copy];
     handler = v10->_handler;
     v10->_handler = v13;
   }

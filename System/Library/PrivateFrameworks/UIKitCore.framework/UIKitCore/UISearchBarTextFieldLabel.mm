@@ -1,6 +1,6 @@
 @interface UISearchBarTextFieldLabel
 + (id)_defaultAttributes;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UISearchBarTextFieldLabel
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __47__UISearchBarTextFieldLabel__defaultAttributes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_27 != -1)
   {
     dispatch_once(&_MergedGlobals_27, block);
@@ -31,12 +31,12 @@ void __47__UISearchBarTextFieldLabel__defaultAttributes__block_invoke(uint64_t a
   qword_1ED49A440 = v1;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (![(UISearchBarTextFieldLabel *)self ignoresGeometryChanges])
   {
     v8.receiver = self;

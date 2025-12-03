@@ -1,20 +1,20 @@
 @interface CLVehicleSpeed
-- (CLVehicleSpeed)initWithClientVehicleSpeed:(id)a3;
-- (CLVehicleSpeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLVehicleSpeed)initWithClientVehicleSpeed:(id)speed;
+- (CLVehicleSpeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)shortDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLVehicleSpeed
 
-- (CLVehicleSpeed)initWithClientVehicleSpeed:(id)a3
+- (CLVehicleSpeed)initWithClientVehicleSpeed:(id)speed
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = speed.var3;
+  var2 = speed.var2;
+  var1 = speed.var1;
+  var0 = speed.var0;
   v9.receiver = self;
   v9.super_class = CLVehicleSpeed;
   v7 = [(CLVehicleSpeed *)&v9 init];
@@ -26,15 +26,15 @@
   return v7;
 }
 
-- (CLVehicleSpeed)initWithCoder:(id)a3
+- (CLVehicleSpeed)initWithCoder:(id)coder
 {
   v12 = 0u;
   v13 = 0u;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 decodeDoubleForKey:@"kCLVehicleSpeedCodingKeySpeed"];
+    [coder decodeDoubleForKey:@"kCLVehicleSpeedCodingKeySpeed"];
     v6 = v5;
-    [a3 decodeDoubleForKey:{@"kCLVehicleSpeedCodingKeyTimestamp", *&v5}];
+    [coder decodeDoubleForKey:{@"kCLVehicleSpeedCodingKeyTimestamp", *&v5}];
     v8 = v7;
     *(&v12 + 1) = v7;
     v9 = 0.0;
@@ -43,8 +43,8 @@
 
   else
   {
-    [a3 decodeValueOfObjCType:"d" at:&v12];
-    [a3 decodeValueOfObjCType:"d" at:&v12 + 8];
+    [coder decodeValueOfObjCType:"d" at:&v12];
+    [coder decodeValueOfObjCType:"d" at:&v12 + 8];
     v8 = *(&v12 + 1);
     v6 = *&v12;
     v9 = *(&v13 + 1);
@@ -54,22 +54,22 @@
   return [(CLVehicleSpeed *)self initWithClientVehicleSpeed:v6, v8, v10, v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   internal = self->_internal;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeDouble:@"kCLVehicleSpeedCodingKeySpeed" forKey:internal[1]];
+    [coder encodeDouble:@"kCLVehicleSpeedCodingKeySpeed" forKey:internal[1]];
     v5 = internal[2];
 
-    [a3 encodeDouble:@"kCLVehicleSpeedCodingKeyTimestamp" forKey:v5];
+    [coder encodeDouble:@"kCLVehicleSpeedCodingKeyTimestamp" forKey:v5];
   }
 
   else
   {
-    [a3 encodeValueOfObjCType:"d" at:internal + 1];
+    [coder encodeValueOfObjCType:"d" at:internal + 1];
 
-    [a3 encodeValueOfObjCType:"d" at:internal + 2];
+    [coder encodeValueOfObjCType:"d" at:internal + 2];
   }
 }
 
@@ -80,10 +80,10 @@
   [(CLVehicleSpeed *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [self->_internal copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [self->_internal copyWithZone:zone];
   return v5;
 }
 

@@ -3,7 +3,7 @@
 - (IKCSSMediaQueryAndList)init;
 - (id)description;
 - (id)expressionAsString;
-- (void)setType:(id)a3;
+- (void)setType:(id)type;
 @end
 
 @implementation IKCSSMediaQueryAndList
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 ik_sharedInstance];
+  ik_sharedInstance = [type ik_sharedInstance];
   type = self->_type;
-  self->_type = v4;
+  self->_type = ik_sharedInstance;
 
   MEMORY[0x2821F96F8]();
 }
@@ -37,7 +37,7 @@
 - (id)expressionAsString
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -61,15 +61,15 @@
         v10 = *(*(&v15 + 1) + 8 * i);
         if (v8)
         {
-          v11 = [(IKCSSMediaQueryAndList *)self type];
-          v12 = [v10 expressionAsString];
-          [v3 appendFormat:@"%@ and (%@)", v11, v12, v15];
+          type = [(IKCSSMediaQueryAndList *)self type];
+          expressionAsString = [v10 expressionAsString];
+          [string appendFormat:@"%@ and (%@)", type, expressionAsString, v15];
         }
 
         else
         {
-          v11 = [*(*(&v15 + 1) + 8 * i) expressionAsString];
-          [v3 appendFormat:@" and (%@)", v11];
+          type = [*(*(&v15 + 1) + 8 * i) expressionAsString];
+          [string appendFormat:@" and (%@)", type];
         }
 
         v8 = 0;
@@ -84,7 +84,7 @@
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)evaluate
@@ -146,11 +146,11 @@ LABEL_12:
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   if (self->_negated)
   {
-    [v3 appendString:@"!"];
+    [string appendString:@"!"];
   }
 
   objc_msgSend(v4, "appendFormat:", @"(type=%@, exprs=["), self->_type;

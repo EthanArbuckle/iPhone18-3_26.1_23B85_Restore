@@ -1,31 +1,31 @@
 @interface PGGraphIngestFaceAttributeConveniences
-+ (id)sampledAssetsWithSingleFaceForPersonLocalIdentifier:(id)a3 photoLibrary:(id)a4 numberOfYearsBack:(unint64_t)a5 sampleSize:(unint64_t)a6 fetchPropertySets:(id)a7;
++ (id)sampledAssetsWithSingleFaceForPersonLocalIdentifier:(id)identifier photoLibrary:(id)library numberOfYearsBack:(unint64_t)back sampleSize:(unint64_t)size fetchPropertySets:(id)sets;
 @end
 
 @implementation PGGraphIngestFaceAttributeConveniences
 
-+ (id)sampledAssetsWithSingleFaceForPersonLocalIdentifier:(id)a3 photoLibrary:(id)a4 numberOfYearsBack:(unint64_t)a5 sampleSize:(unint64_t)a6 fetchPropertySets:(id)a7
++ (id)sampledAssetsWithSingleFaceForPersonLocalIdentifier:(id)identifier photoLibrary:(id)library numberOfYearsBack:(unint64_t)back sampleSize:(unint64_t)size fetchPropertySets:(id)sets
 {
   v75 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12)
+  identifierCopy = identifier;
+  libraryCopy = library;
+  setsCopy = sets;
+  if (identifierCopy)
   {
-    v15 = [v13 librarySpecificFetchOptions];
-    [v15 setFetchLimit:1];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v16 = MEMORY[0x277CD9938];
-    v72 = v12;
+    v72 = identifierCopy;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
-    v18 = [v16 fetchPersonsWithLocalIdentifiers:v17 options:v15];
+    v18 = [v16 fetchPersonsWithLocalIdentifiers:v17 options:librarySpecificFetchOptions];
 
     v63 = v18;
-    v64 = [v18 firstObject];
-    if (v64)
+    firstObject = [v18 firstObject];
+    if (firstObject)
     {
-      v57 = a6;
-      v62 = v12;
-      v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a5 * -31557600.0];
+      sizeCopy = size;
+      v62 = identifierCopy;
+      v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:back * -31557600.0];
       v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.@count == 1", @"detectedFaces"];
       v60 = v19;
       v58 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"dateCreated", v19];
@@ -33,8 +33,8 @@
       v71[0] = v20;
       v71[1] = v58;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:2];
-      [v13 librarySpecificFetchOptions];
-      v23 = v22 = v14;
+      [libraryCopy librarySpecificFetchOptions];
+      v23 = v22 = setsCopy;
       [v23 setFetchLimit:3000];
       [v23 setIncludeGuestAssets:1];
       v24 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
@@ -53,9 +53,9 @@
       }
 
       v61 = v22;
-      v28 = v64;
-      v29 = [MEMORY[0x277CD97A8] fetchAssetsForPerson:v64 options:v23];
-      if ([v29 count] <= v57)
+      v28 = firstObject;
+      v29 = [MEMORY[0x277CD97A8] fetchAssetsForPerson:firstObject options:v23];
+      if ([v29 count] <= sizeCopy)
       {
         v45 = v63;
         v47 = v58;
@@ -65,14 +65,14 @@
       else
       {
         v55 = v21;
-        v56 = v13;
+        v56 = libraryCopy;
         v30 = objc_alloc_init(MEMORY[0x277D3AD70]);
-        [v30 setNumberOfClusters:v57];
-        v31 = [v29 fetchedObjects];
+        [v30 setNumberOfClusters:sizeCopy];
+        fetchedObjects = [v29 fetchedObjects];
         v54 = v30;
-        v32 = [v30 performWithDataset:v31 progressBlock:0];
+        v32 = [v30 performWithDataset:fetchedObjects progressBlock:0];
 
-        v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:v57];
+        v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:sizeCopy];
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
@@ -92,12 +92,12 @@
                 objc_enumerationMutation(v34);
               }
 
-              v39 = [*(*(&v65 + 1) + 8 * i) objects];
-              v40 = [v39 firstObject];
+              objects = [*(*(&v65 + 1) + 8 * i) objects];
+              firstObject2 = [objects firstObject];
 
-              if (v40)
+              if (firstObject2)
               {
-                [v33 addObject:v40];
+                [v33 addObject:firstObject2];
               }
             }
 
@@ -108,34 +108,34 @@
         }
 
         v41 = objc_alloc(MEMORY[0x277CD98D0]);
-        v42 = [v29 fetchType];
-        v43 = [v29 fetchPropertySets];
-        v13 = v56;
-        v44 = [v41 initWithObjects:v33 photoLibrary:v56 fetchType:v42 fetchPropertySets:v43 identifier:0 registerIfNeeded:0];
+        fetchType = [v29 fetchType];
+        fetchPropertySets = [v29 fetchPropertySets];
+        libraryCopy = v56;
+        v44 = [v41 initWithObjects:v33 photoLibrary:v56 fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
         v29 = v44;
         v45 = v63;
-        v28 = v64;
+        v28 = firstObject;
         v47 = v58;
         v46 = v59;
         v21 = v55;
       }
 
-      v14 = v61;
-      v12 = v62;
-      v50 = v60;
+      setsCopy = v61;
+      identifierCopy = v62;
+      loggingConnection = v60;
     }
 
     else
     {
       v49 = +[PGLogging sharedLogging];
-      v50 = [v49 loggingConnection];
+      loggingConnection = [v49 loggingConnection];
 
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v74 = v12;
-        _os_log_error_impl(&dword_22F0FC000, v50, OS_LOG_TYPE_ERROR, "No person found for local identifier %@", buf, 0xCu);
+        v74 = identifierCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "No person found for local identifier %@", buf, 0xCu);
       }
 
       v29 = 0;
@@ -147,14 +147,14 @@
   else
   {
     v48 = +[PGLogging sharedLogging];
-    v15 = [v48 loggingConnection];
+    librarySpecificFetchOptions = [v48 loggingConnection];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_ERROR))
     {
       v53 = NSStringFromSelector(a2);
       *buf = 138412290;
       v74 = v53;
-      _os_log_error_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_ERROR, "Nil person identifier incorrectly passed into '%@'. Exiting early.", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, librarySpecificFetchOptions, OS_LOG_TYPE_ERROR, "Nil person identifier incorrectly passed into '%@'. Exiting early.", buf, 0xCu);
     }
 
     v29 = 0;

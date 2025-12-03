@@ -1,29 +1,29 @@
 @interface SBHAnalyticsEventsController
-- (SBHAnalyticsEventsController)initWithEventsControllerDomain:(id)a3;
-- (void)addProvider:(id)a3;
+- (SBHAnalyticsEventsController)initWithEventsControllerDomain:(id)domain;
+- (void)addProvider:(id)provider;
 - (void)dealloc;
-- (void)removeProvider:(id)a3;
+- (void)removeProvider:(id)provider;
 - (void)sendEventsForProvidersWhenSignificantTimeChanged;
 @end
 
 @implementation SBHAnalyticsEventsController
 
-- (SBHAnalyticsEventsController)initWithEventsControllerDomain:(id)a3
+- (SBHAnalyticsEventsController)initWithEventsControllerDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v12.receiver = self;
   v12.super_class = SBHAnalyticsEventsController;
   v6 = [(SBHAnalyticsEventsController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventsControllerDomain, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_eventsControllerDomain, domain);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     allProviders = v7->_allProviders;
-    v7->_allProviders = v8;
+    v7->_allProviders = weakObjectsHashTable;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel_sendEventsForProvidersWhenSignificantTimeChanged name:*MEMORY[0x1E69DDB88] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_sendEventsForProvidersWhenSignificantTimeChanged name:*MEMORY[0x1E69DDB88] object:0];
   }
 
   return v7;
@@ -31,29 +31,29 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(SBHAnalyticsEventsController *)self allProviders];
-  [v4 removeAllObjects];
+  allProviders = [(SBHAnalyticsEventsController *)self allProviders];
+  [allProviders removeAllObjects];
 
   v5.receiver = self;
   v5.super_class = SBHAnalyticsEventsController;
   [(SBHAnalyticsEventsController *)&v5 dealloc];
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SBHAnalyticsEventsController *)self allProviders];
-  [v5 addObject:v4];
+  providerCopy = provider;
+  allProviders = [(SBHAnalyticsEventsController *)self allProviders];
+  [allProviders addObject:providerCopy];
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SBHAnalyticsEventsController *)self allProviders];
-  [v5 removeObject:v4];
+  providerCopy = provider;
+  allProviders = [(SBHAnalyticsEventsController *)self allProviders];
+  [allProviders removeObject:providerCopy];
 }
 
 - (void)sendEventsForProvidersWhenSignificantTimeChanged

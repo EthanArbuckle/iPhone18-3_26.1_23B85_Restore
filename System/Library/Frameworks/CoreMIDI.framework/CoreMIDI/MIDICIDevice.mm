@@ -1,31 +1,31 @@
 @interface MIDICIDevice
-- (BOOL)deserialize:(id)a3;
-- (BOOL)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)a3;
-- (BOOL)handleProfileDetailsReplyMessage:(const void *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)deserialize:(id)deserialize;
+- (BOOL)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)message;
+- (BOOL)handleProfileDetailsReplyMessage:(const void *)message;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMine;
-- (BOOL)sendMessage:(unsigned __int8)a3 deviceID:(unsigned __int8)a4 data:(id)a5 error:(id *)a6;
-- (BOOL)sendProfileSpecificData:(id)a3 profileData:(id)a4 error:(id *)a5;
-- (BOOL)setProfile:(id)a3 newState:(BOOL)a4 enabledChannelCount:(unsigned __int16)a5 error:(id *)a6;
+- (BOOL)sendMessage:(unsigned __int8)message deviceID:(unsigned __int8)d data:(id)data error:(id *)error;
+- (BOOL)sendProfileSpecificData:(id)data profileData:(id)profileData error:(id *)error;
+- (BOOL)setProfile:(id)profile newState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error;
 - (BOOL)supportsProcessInquiry;
 - (BOOL)supportsProfileConfiguration;
 - (BOOL)supportsPropertyExchange;
 - (BOOL)supportsProtocolNegotiation;
 - (MIDI2DeviceInfo)deviceInfo;
-- (MIDICIDevice)initWithDescription:(id)a3;
+- (MIDICIDevice)initWithDescription:(id)description;
 - (NSArray)profiles;
 - (id).cxx_construct;
-- (id)findProfileForID:(const void *)a3;
+- (id)findProfileForID:(const void *)d;
 - (id)serializeDescription;
-- (id)serverSideTransactionDictionary:(int)a3;
+- (id)serverSideTransactionDictionary:(int)dictionary;
 - (unint64_t)maxPropertyExchangeRequests;
 - (unint64_t)maxSysExSize;
 - (unsigned)MUID;
 - (unsigned)deviceType;
-- (void)addProfile:(id)a3;
-- (void)detailsInquiry:(id)a3 target:(unsigned __int8)a4 completion:(id)a5;
-- (void)removeProfile:(id)a3;
-- (void)requestProcessInquiryMessageReport:(unsigned __int8)a3 channelControllerMessages:(unsigned __int8)a4 noteDataMessages:(unsigned __int8)a5 dataControl:(unsigned __int8)a6 completion:(id)a7;
+- (void)addProfile:(id)profile;
+- (void)detailsInquiry:(id)inquiry target:(unsigned __int8)target completion:(id)completion;
+- (void)removeProfile:(id)profile;
+- (void)requestProcessInquiryMessageReport:(unsigned __int8)report channelControllerMessages:(unsigned __int8)messages noteDataMessages:(unsigned __int8)dataMessages dataControl:(unsigned __int8)control completion:(id)completion;
 @end
 
 @implementation MIDICIDevice
@@ -126,18 +126,18 @@
   return ownerClientRef == UMPCIClients::instance(void)::all;
 }
 
-- (BOOL)sendMessage:(unsigned __int8)a3 deviceID:(unsigned __int8)a4 data:(id)a5 error:(id *)a6
+- (BOOL)sendMessage:(unsigned __int8)message deviceID:(unsigned __int8)d data:(id)data error:(id *)error
 {
-  v9 = a5;
+  dataCopy = data;
   v10 = +[MIDICIDeviceManager sharedInstance];
-  v11 = [v10 serverMUID];
+  serverMUID = [v10 serverMUID];
 
-  midi::ci::message::make_with_payload_size(&v17, [v9 length], a3, v11, 0xFFFFFFFu, a4);
+  midi::ci::message::make_with_payload_size(&v17, [dataCopy length], message, serverMUID, 0xFFFFFFFu, d);
   v12 = __p[1];
-  v13 = [v9 bytes];
-  v14 = [v9 bytes];
-  v15 = [v9 length];
-  std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(__p, v12, v13, (v14 + v15), v14 + v15 - v13);
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v15 = [dataCopy length];
+  std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(__p, v12, bytes, (bytes2 + v15), bytes2 + v15 - bytes);
   os_unfair_recursive_lock_lock_with_options();
   sendUMPMessage(self->_MIDIDestination, [(MIDICIDevice *)self group], &v17);
   os_unfair_recursive_lock_unlock();
@@ -149,14 +149,14 @@
   return 1;
 }
 
-- (BOOL)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)a3
+- (BOOL)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)message
 {
   os_unfair_recursive_lock_lock_with_options();
   begin = self->_activeTransactions.__begin_;
   end = self->_activeTransactions.__end_;
   if (begin != end)
   {
-    while (*(begin + 2) != 2 || *(begin + 3) != a3->var3)
+    while (*(begin + 2) != 2 || *(begin + 3) != message->var3)
     {
       begin = (begin + 48);
       if (begin == end)
@@ -166,22 +166,22 @@
     }
   }
 
-  if (begin != end && a3->var3 == self->_MUID)
+  if (begin != end && message->var3 == self->_MUID)
   {
     v7 = _Block_copy(*(begin + 3));
     v8 = _Block_copy(*(begin + 5));
     os_unfair_recursive_lock_unlock();
-    if (a3->var8)
+    if (message->var8)
     {
       v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10899 userInfo:0];
-      (*(v8 + 2))(v8, a3->var4, a3->var5, a3->var6, &__p, v9);
+      (*(v8 + 2))(v8, message->var4, message->var5, message->var6, &__p, v9);
 LABEL_52:
 
       v10 = 1;
       goto LABEL_11;
     }
 
-    v12 = a3->var7;
+    v12 = message->var7;
     v9 = v12;
     if (v12)
     {
@@ -201,7 +201,7 @@ LABEL_52:
     if (v13 < 4)
     {
 LABEL_50:
-      (*(v8 + 2))(v8, a3->var4, a3->var5, a3->var6, v14, 0);
+      (*(v8 + 2))(v8, message->var4, message->var5, message->var6, v14, 0);
       if (__p)
       {
         v34 = __p;
@@ -211,8 +211,8 @@ LABEL_50:
       goto LABEL_52;
     }
 
-    v16 = [v9 bytes];
-    v17 = v16;
+    bytes = [v9 bytes];
+    v17 = bytes;
     v18 = (v14 + 2);
     v19 = v13 >> 2;
     v20 = v14[1];
@@ -253,7 +253,7 @@ LABEL_50:
       }
 
       v27 = (v14 + 5);
-      if (!*(v14 + 1) && ((((*v16 & 0xF0000000) == 805306368) ^ v26) & 1) == 0 && (*v16 & 0xF0E00000) != 0x30000000 && !v25)
+      if (!*(v14 + 1) && ((((*bytes & 0xF0000000) == 805306368) ^ v26) & 1) == 0 && (*bytes & 0xF0E00000) != 0x30000000 && !v25)
       {
         if (&v27[4 * v19 + 4 * v21] > v15)
         {
@@ -333,12 +333,12 @@ LABEL_11:
   return v10;
 }
 
-- (void)requestProcessInquiryMessageReport:(unsigned __int8)a3 channelControllerMessages:(unsigned __int8)a4 noteDataMessages:(unsigned __int8)a5 dataControl:(unsigned __int8)a6 completion:(id)a7
+- (void)requestProcessInquiryMessageReport:(unsigned __int8)report channelControllerMessages:(unsigned __int8)messages noteDataMessages:(unsigned __int8)dataMessages dataControl:(unsigned __int8)control completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a3;
-  v11 = a7;
+  controlCopy = control;
+  dataMessagesCopy = dataMessages;
+  reportCopy = report;
+  completionCopy = completion;
   v12 = [(MIDICIDevice *)self serverSideTransactionDictionary:2];
   os_unfair_recursive_lock_lock_with_options();
   *&v27 = mach_absolute_time();
@@ -347,7 +347,7 @@ LABEL_11:
   HIDWORD(v27) = MUID;
   v28 = 0;
   memset(v29, 0, 13);
-  v14 = _Block_copy(v11);
+  v14 = _Block_copy(completionCopy);
   v30 = v14;
   end = self->_activeTransactions.__end_;
   if (end >= self->_activeTransactions.__cap_)
@@ -372,15 +372,15 @@ LABEL_11:
 
   self->_activeTransactions.__end_ = v18;
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v9];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:reportCopy];
   v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"system_messages"];
   [v12 setValue:v19 forKey:v20];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v8];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dataMessagesCopy];
   v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"channel_controller"];
   [v12 setValue:v21 forKey:v22];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v7];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:controlCopy];
   v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"note_data"];
   [v12 setValue:v23 forKey:v24];
 
@@ -391,16 +391,16 @@ LABEL_11:
   {
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v25 userInfo:0];
     *&v27 = 2;
-    (*(v11 + 2))(v11, 0, 0, 0, &v27, v26);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, &v27, v26);
   }
 }
 
-- (BOOL)handleProfileDetailsReplyMessage:(const void *)a3
+- (BOOL)handleProfileDetailsReplyMessage:(const void *)message
 {
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [(MIDICIDevice *)self findProfileForID:a3 + 16];
+  v5 = [(MIDICIDevice *)self findProfileForID:message + 16];
   v6 = v5;
-  v7 = *(a3 + 3);
+  v7 = *(message + 3);
   if (v7 != self->_MUID || v5 == 0)
   {
     goto LABEL_17;
@@ -410,7 +410,7 @@ LABEL_11:
   end = self->_activeTransactions.__end_;
   if (begin != end)
   {
-    while (*(begin + 2) != 1 || *(begin + 16) != *(a3 + 21) || *(begin + 3) != v7)
+    while (*(begin + 2) != 1 || *(begin + 16) != *(message + 21) || *(begin + 3) != v7)
     {
       begin = (begin + 48);
       if (begin == end)
@@ -463,7 +463,7 @@ LABEL_17:
 
     std::vector<CIAsyncTransaction>::__base_destruct_at_end[abi:ne200100](&self->_activeTransactions, begin);
     os_unfair_recursive_lock_unlock();
-    if (*(a3 + 32) == 1)
+    if (*(message + 32) == 1)
     {
       v20 = 0;
       v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10899 userInfo:0];
@@ -471,11 +471,11 @@ LABEL_17:
 
     else
     {
-      v20 = *(a3 + 3);
+      v20 = *(message + 3);
       v21 = 0;
     }
 
-    v11[2](v11, self, v6, *(a3 + 21), v20, v21);
+    v11[2](v11, self, v6, *(message + 21), v20, v21);
 
     v22 = 1;
   }
@@ -483,22 +483,22 @@ LABEL_17:
   return v22;
 }
 
-- (void)detailsInquiry:(id)a3 target:(unsigned __int8)a4 completion:(id)a5
+- (void)detailsInquiry:(id)inquiry target:(unsigned __int8)target completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  inquiryCopy = inquiry;
+  completionCopy = completion;
   os_unfair_recursive_lock_lock_with_options();
   *&v27 = mach_absolute_time();
   MUID = self->_MUID;
   DWORD2(v27) = 1;
   HIDWORD(v27) = MUID;
-  v28 = v6;
-  v11 = _Block_copy(v9);
+  v28 = targetCopy;
+  v11 = _Block_copy(completionCopy);
   v29 = v11;
-  v12 = [v8 profileID];
-  v30 = v12;
-  v31 = BYTE4(v12);
+  profileID = [inquiryCopy profileID];
+  v30 = profileID;
+  v31 = BYTE4(profileID);
   v32 = 0;
   end = self->_activeTransactions.__end_;
   if (end >= self->_activeTransactions.__cap_)
@@ -524,9 +524,9 @@ LABEL_17:
   self->_activeTransactions.__end_ = v16;
 
   v17 = [(MIDICIDevice *)self serverSideTransactionDictionary:1];
-  v18 = [v8 profileID];
-  LODWORD(v27) = v18;
-  BYTE4(v27) = BYTE4(v18);
+  profileID2 = [inquiryCopy profileID];
+  LODWORD(v27) = profileID2;
+  BYTE4(v27) = BYTE4(profileID2);
   v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{5, v27}];
   for (i = 0; i != 5; ++i)
   {
@@ -537,7 +537,7 @@ LABEL_17:
   v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"id"];
   [v17 setValue:v19 forKey:v22];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v6];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:targetCopy];
   v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"target"];
   [v17 setValue:v23 forKey:v24];
 
@@ -547,27 +547,27 @@ LABEL_17:
   {
     std::vector<CIAsyncTransaction>::__base_destruct_at_end[abi:ne200100](&self->_activeTransactions, self->_activeTransactions.__end_ - 48);
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v25 userInfo:0];
-    (*(v9 + 2))(v9, self, v8, v6, 0, v26);
+    (*(completionCopy + 2))(completionCopy, self, inquiryCopy, targetCopy, 0, v26);
   }
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (BOOL)sendProfileSpecificData:(id)a3 profileData:(id)a4 error:(id *)a5
+- (BOOL)sendProfileSpecificData:(id)data profileData:(id)profileData error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  profileDataCopy = profileData;
   os_unfair_recursive_lock_lock_with_options();
   v9 = +[MIDICIDeviceManager sharedInstance];
-  v10 = [v9 serverMUID];
+  serverMUID = [v9 serverMUID];
 
-  v11 = [v7 profileID];
-  __src = v11;
-  v23 = BYTE4(v11);
+  profileID = [dataCopy profileID];
+  __src = profileID;
+  v23 = BYTE4(profileID);
   MUID = self->_MUID;
-  v13 = [v8 bytes];
-  v14 = [v8 length];
-  midi::ci::message::make_with_payload_size(&v19, v14 + 9, 47, v10, MUID, 127);
+  bytes = [profileDataCopy bytes];
+  v14 = [profileDataCopy length];
+  midi::ci::message::make_with_payload_size(&v19, v14 + 9, 47, serverMUID, MUID, 127);
   std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, __dst, &__src, v24, 5);
   if ((v14 & 0xF0000000) != 0)
   {
@@ -587,7 +587,7 @@ LABEL_17:
     goto LABEL_5;
   }
 
-  if (!v13)
+  if (!bytes)
   {
     v16 = "d";
     v17 = 216;
@@ -596,7 +596,7 @@ LABEL_10:
     __assert_rtn(v18, "sysex.h", v17, v16);
   }
 
-  std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, __dst, v13, &v13[v14], v14);
+  std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, __dst, bytes, &bytes[v14], v14);
 LABEL_5:
   sendUMPMessage(self->_MIDIDestination, [(MIDICIDevice *)self group], &v19);
   if (__p)
@@ -609,9 +609,9 @@ LABEL_5:
   return 1;
 }
 
-- (id)serverSideTransactionDictionary:(int)a3
+- (id)serverSideTransactionDictionary:(int)dictionary
 {
-  v3 = *&a3;
+  v3 = *&dictionary;
   v17[4] = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"transaction_type"];
@@ -638,10 +638,10 @@ LABEL_5:
   return v13;
 }
 
-- (void)removeProfile:(id)a3
+- (void)removeProfile:(id)profile
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:self->_profiles];
   v15 = 0u;
@@ -664,9 +664,9 @@ LABEL_5:
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if ([v10 isEqual:{v4, v13}])
+        if ([v10 isEqual:{profileCopy, v13}])
         {
-          [v5 removeObject:v4];
+          [v5 removeObject:profileCopy];
         }
 
         ++v9;
@@ -686,10 +686,10 @@ LABEL_5:
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)addProfile:(id)a3
+- (void)addProfile:(id)profile
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   os_unfair_recursive_lock_lock_with_options();
   v14 = 0u;
   v15 = 0u;
@@ -710,7 +710,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      v10 = [v9 isEqual:{v4, v12}];
+      v10 = [v9 isEqual:{profileCopy, v12}];
 
       if (v10)
       {
@@ -734,7 +734,7 @@ LABEL_3:
   {
 LABEL_9:
 
-    v11 = [(NSArray *)self->_profiles arrayByAddingObject:v4];
+    v11 = [(NSArray *)self->_profiles arrayByAddingObject:profileCopy];
     profiles = self->_profiles;
     self->_profiles = v11;
   }
@@ -742,7 +742,7 @@ LABEL_9:
   os_unfair_recursive_lock_unlock();
 }
 
-- (id)findProfileForID:(const void *)a3
+- (id)findProfileForID:(const void *)d
 {
   v18 = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
@@ -765,8 +765,8 @@ LABEL_3:
       }
 
       v9 = *(*(&v13 + 1) + 8 * v8);
-      v10 = [v9 profileID];
-      if (v10 == *a3 && BYTE4(v10) == *(a3 + 4))
+      profileID = [v9 profileID];
+      if (profileID == *d && BYTE4(profileID) == *(d + 4))
       {
         break;
       }
@@ -795,25 +795,25 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)setProfile:(id)a3 newState:(BOOL)a4 enabledChannelCount:(unsigned __int16)a5 error:(id *)a6
+- (BOOL)setProfile:(id)profile newState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  stateCopy = state;
+  profileCopy = profile;
   os_unfair_recursive_lock_lock_with_options();
-  v9 = [v8 profileID];
-  __src = v9;
-  v16 = BYTE4(v9);
+  profileID = [profileCopy profileID];
+  __src = profileID;
+  v16 = BYTE4(profileID);
   v10 = +[MIDICIDeviceManager sharedInstance];
-  v11 = [v10 serverMUID];
+  serverMUID = [v10 serverMUID];
 
-  if (v6)
+  if (stateCopy)
   {
-    midi::ci::message::make_with_payload_size(v13, 5, 34, v11, self->_MUID, 127);
+    midi::ci::message::make_with_payload_size(v13, 5, 34, serverMUID, self->_MUID, 127);
   }
 
   else
   {
-    midi::ci::message::make_with_payload_size(v13, 5, 35, v11, self->_MUID, 127);
+    midi::ci::message::make_with_payload_size(v13, 5, 35, serverMUID, self->_MUID, 127);
   }
 
   std::vector<unsigned char>::__insert_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(__p, __p[1], &__src, v17, 5);
@@ -885,7 +885,7 @@ LABEL_12:
 
   if (self->_profiles)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -905,20 +905,20 @@ LABEL_12:
           }
 
           v17 = *(*(&v44 + 1) + 8 * i);
-          v18 = [v17 ciDevice];
-          v19 = v18 == 0;
+          ciDevice = [v17 ciDevice];
+          v19 = ciDevice == 0;
 
           if (v19)
           {
             [v17 setCiDevice:self];
           }
 
-          v20 = [v17 serializeDescription];
+          serializeDescription = [v17 serializeDescription];
           v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v43];
           v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"timestamp"];
-          [v20 setValue:v21 forKey:v22];
+          [serializeDescription setValue:v21 forKey:v22];
 
-          [v12 addObject:v20];
+          [array addObject:serializeDescription];
         }
 
         v14 = [(NSArray *)v13 countByEnumeratingWithState:&v44 objects:v48 count:16];
@@ -928,7 +928,7 @@ LABEL_12:
     }
 
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"profiles"];
-    [v41 setValue:v12 forKey:v23];
+    [v41 setValue:array forKey:v23];
   }
 
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v43];
@@ -940,29 +940,29 @@ LABEL_12:
   return v41;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = v4;
-  v6 = [(MIDICIDevice *)self MUID];
-  v11 = v6 == [v5 MUID] && (v7 = -[MIDICIDevice supportsProtocolNegotiation](self, "supportsProtocolNegotiation"), v7 == objc_msgSend(v5, "supportsProtocolNegotiation")) && (v8 = -[MIDICIDevice supportsProfileConfiguration](self, "supportsProfileConfiguration"), v8 == objc_msgSend(v5, "supportsProfileConfiguration")) && (v9 = -[MIDICIDevice supportsPropertyExchange](self, "supportsPropertyExchange"), v9 == objc_msgSend(v5, "supportsPropertyExchange")) && (v10 = -[MIDICIDevice supportsProcessInquiry](self, "supportsProcessInquiry"), v10 == objc_msgSend(v5, "supportsProcessInquiry")) && self->_maxSysExSize == v5[4] && self->_maxPropertyExchangeRequests == v5[5] && -[NSArray isEqualToArray:](self->_profiles, "isEqualToArray:", v5[7]);
+  v5 = equalCopy;
+  mUID = [(MIDICIDevice *)self MUID];
+  v11 = mUID == [v5 MUID] && (v7 = -[MIDICIDevice supportsProtocolNegotiation](self, "supportsProtocolNegotiation"), v7 == objc_msgSend(v5, "supportsProtocolNegotiation")) && (v8 = -[MIDICIDevice supportsProfileConfiguration](self, "supportsProfileConfiguration"), v8 == objc_msgSend(v5, "supportsProfileConfiguration")) && (v9 = -[MIDICIDevice supportsPropertyExchange](self, "supportsPropertyExchange"), v9 == objc_msgSend(v5, "supportsPropertyExchange")) && (v10 = -[MIDICIDevice supportsProcessInquiry](self, "supportsProcessInquiry"), v10 == objc_msgSend(v5, "supportsProcessInquiry")) && self->_maxSysExSize == v5[4] && self->_maxPropertyExchangeRequests == v5[5] && -[NSArray isEqualToArray:](self->_profiles, "isEqualToArray:", v5[7]);
 
   os_unfair_recursive_lock_unlock();
   return v11;
 }
 
-- (BOOL)deserialize:(id)a3
+- (BOOL)deserialize:(id)deserialize
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deserializeCopy = deserialize;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"destination"];
-  v6 = [v4 objectForKey:v5];
-  v7 = [v6 unsignedIntValue];
+  v6 = [deserializeCopy objectForKey:v5];
+  unsignedIntValue = [v6 unsignedIntValue];
 
   outValue = 0;
-  if (MIDIObjectGetIntegerProperty(v7, kMIDIPropertyProtocolID, &outValue))
+  if (MIDIObjectGetIntegerProperty(unsignedIntValue, kMIDIPropertyProtocolID, &outValue))
   {
     v54 = 0;
   }
@@ -970,64 +970,64 @@ LABEL_12:
   else
   {
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"device_info"];
-    v9 = [v4 objectForKey:v8];
+    v9 = [deserializeCopy objectForKey:v8];
     obj = [MIDI2DeviceInfo infoWithDescription:v9];
 
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"source"];
-    v11 = [v4 objectForKey:v10];
-    v12 = [v11 unsignedIntValue];
+    v11 = [deserializeCopy objectForKey:v10];
+    unsignedIntValue2 = [v11 unsignedIntValue];
 
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"muid"];
-    v14 = [v4 objectForKey:v13];
-    v15 = [v14 unsignedIntValue];
+    v14 = [deserializeCopy objectForKey:v13];
+    unsignedIntValue3 = [v14 unsignedIntValue];
 
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"device_type"];
-    v17 = [v4 objectForKey:v16];
-    v42 = [v17 unsignedIntValue];
+    v17 = [deserializeCopy objectForKey:v16];
+    unsignedIntValue4 = [v17 unsignedIntValue];
 
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"destination"];
-    v19 = [v4 objectForKey:v18];
-    v20 = [v19 unsignedIntValue];
+    v19 = [deserializeCopy objectForKey:v18];
+    unsignedIntValue5 = [v19 unsignedIntValue];
 
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supports_protocol_negotiation"];
-    v48 = [v4 objectForKey:v21];
+    v48 = [deserializeCopy objectForKey:v21];
 
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supports_profile_capability"];
-    v47 = [v4 objectForKey:v22];
+    v47 = [deserializeCopy objectForKey:v22];
 
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supports_property_exchange_capability"];
-    v46 = [v4 objectForKey:v23];
+    v46 = [deserializeCopy objectForKey:v23];
 
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supports_process_inquiry_capability"];
-    v44 = [v4 objectForKey:v24];
+    v44 = [deserializeCopy objectForKey:v24];
 
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"max_sysex_size"];
-    v43 = [v4 objectForKey:v25];
+    v43 = [deserializeCopy objectForKey:v25];
 
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"max_property_requests"];
-    v45 = [v4 objectForKey:v26];
+    v45 = [deserializeCopy objectForKey:v26];
 
     v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"object"];
-    v49 = [v4 objectForKey:v27];
+    v49 = [deserializeCopy objectForKey:v27];
 
     v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"profiles"];
-    v50 = [v4 objectForKey:v28];
+    v50 = [deserializeCopy objectForKey:v28];
 
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"function_block_id"];
-    v52 = [v4 objectForKey:v29];
+    v52 = [deserializeCopy objectForKey:v29];
 
     v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"owner_client_ref"];
-    v53 = [v4 objectForKey:v30];
+    v53 = [deserializeCopy objectForKey:v30];
 
-    IntegerProperty = MIDIObjectGetIntegerProperty(v7, kMIDIPropertyProtocolID, &outValue);
+    IntegerProperty = MIDIObjectGetIntegerProperty(unsignedIntValue, kMIDIPropertyProtocolID, &outValue);
     v54 = IntegerProperty == 0;
     if (!IntegerProperty)
     {
       objc_storeStrong(&self->_deviceInfo, obj);
-      self->_MUID = v15;
-      self->_deviceType = v42;
-      self->_MIDISource = v12;
-      self->_MIDIDestination = v20;
+      self->_MUID = unsignedIntValue3;
+      self->_deviceType = unsignedIntValue4;
+      self->_MIDISource = unsignedIntValue2;
+      self->_MIDIDestination = unsignedIntValue5;
       self->_supportsProtocolNegotiation = [v48 BOOLValue];
       self->_supportsProfileConfiguration = [v47 BOOLValue];
       self->_supportsPropertyExchange = [v46 BOOLValue];
@@ -1079,14 +1079,14 @@ LABEL_12:
   return v54;
 }
 
-- (MIDICIDevice)initWithDescription:(id)a3
+- (MIDICIDevice)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [(MIDICIDevice *)self init];
   v6 = v5;
   if (v5)
   {
-    [(MIDICIDevice *)v5 deserialize:v4];
+    [(MIDICIDevice *)v5 deserialize:descriptionCopy];
   }
 
   return v6;

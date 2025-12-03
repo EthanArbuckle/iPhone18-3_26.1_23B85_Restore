@@ -1,28 +1,28 @@
 @interface HFSetupAccessoryResult
 - (BOOL)isAllZerosCode;
-- (HFSetupAccessoryResult)initWithPayload:(id)a3 error:(id)a4 hasAddRequest:(BOOL)a5;
-- (HFSetupAccessoryResult)initWithSetupCode:(id)a3;
-- (HFSetupAccessoryResult)initWithSetupURL:(id)a3;
+- (HFSetupAccessoryResult)initWithPayload:(id)payload error:(id)error hasAddRequest:(BOOL)request;
+- (HFSetupAccessoryResult)initWithSetupCode:(id)code;
+- (HFSetupAccessoryResult)initWithSetupURL:(id)l;
 - (id)description;
 @end
 
 @implementation HFSetupAccessoryResult
 
-- (HFSetupAccessoryResult)initWithPayload:(id)a3 error:(id)a4 hasAddRequest:(BOOL)a5
+- (HFSetupAccessoryResult)initWithPayload:(id)payload error:(id)error hasAddRequest:(BOOL)request
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 | v9)
+  payloadCopy = payload;
+  errorCopy = error;
+  if (payloadCopy | errorCopy)
   {
-    v10 = 1;
+    requestCopy = 1;
   }
 
   else
   {
-    v10 = a5;
+    requestCopy = request;
   }
 
-  if (v10)
+  if (requestCopy)
   {
     v25.receiver = self;
     v25.super_class = HFSetupAccessoryResult;
@@ -30,23 +30,23 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_error, a4);
-      v13 = [v8 copy];
+      objc_storeStrong(&v11->_error, error);
+      v13 = [payloadCopy copy];
       setupPayload = v12->_setupPayload;
       v12->_setupPayload = v13;
 
-      v12->_isValidForPairing = v10;
+      v12->_isValidForPairing = requestCopy;
       if (v12->_error)
       {
-        if (v8)
+        if (payloadCopy)
         {
-          NSLog(&cfstr_Hfsetupaccesso_0.isa, v8);
+          NSLog(&cfstr_Hfsetupaccesso_0.isa, payloadCopy);
         }
 
         goto LABEL_14;
       }
 
-      v12->_hasAddRequest = a5;
+      v12->_hasAddRequest = request;
       if ([(HMSetupAccessoryPayload *)v12->_setupPayload isPaired])
       {
         v16 = [MEMORY[0x277CCA9B8] hf_errorWithCode:21];
@@ -75,23 +75,23 @@ LABEL_14:
 
 LABEL_15:
     self = v12;
-    v15 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
   NSLog(&cfstr_Hfsetupaccesso.isa);
-  v15 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v15;
+  return selfCopy;
 }
 
-- (HFSetupAccessoryResult)initWithSetupURL:(id)a3
+- (HFSetupAccessoryResult)initWithSetupURL:(id)l
 {
   v4 = MEMORY[0x277CD1DF0];
-  v5 = a3;
+  lCopy = l;
   v10 = 0;
-  v6 = [[v4 alloc] initWithSetupPayloadURL:v5 error:&v10];
+  v6 = [[v4 alloc] initWithSetupPayloadURL:lCopy error:&v10];
 
   v7 = v10;
   v8 = [(HFSetupAccessoryResult *)self initWithPayload:v6 error:v7 hasAddRequest:0];
@@ -99,11 +99,11 @@ LABEL_16:
   return v8;
 }
 
-- (HFSetupAccessoryResult)initWithSetupCode:(id)a3
+- (HFSetupAccessoryResult)initWithSetupCode:(id)code
 {
   v4 = MEMORY[0x277CD1DF0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithHAPSetupCode:v5];
+  codeCopy = code;
+  v6 = [[v4 alloc] initWithHAPSetupCode:codeCopy];
 
   v7 = [(HFSetupAccessoryResult *)self initWithPayload:v6 error:0 hasAddRequest:0];
   return v7;
@@ -112,40 +112,40 @@ LABEL_16:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFSetupAccessoryResult *)self setupPayload];
-  v5 = [v3 appendObject:v4 withName:@"setupPayload"];
+  setupPayload = [(HFSetupAccessoryResult *)self setupPayload];
+  v5 = [v3 appendObject:setupPayload withName:@"setupPayload"];
 
-  v6 = [(HFSetupAccessoryResult *)self error];
-  v7 = [v3 appendObject:v6 withName:@"error"];
+  error = [(HFSetupAccessoryResult *)self error];
+  v7 = [v3 appendObject:error withName:@"error"];
 
   v8 = [v3 appendBool:-[HFSetupAccessoryResult hasAddRequest](self withName:{"hasAddRequest"), @"hasAddRequest"}];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (BOOL)isAllZerosCode
 {
-  v3 = [(HFSetupAccessoryResult *)self setupPayload];
+  setupPayload = [(HFSetupAccessoryResult *)self setupPayload];
 
-  if (v3)
+  if (setupPayload)
   {
-    v4 = [(HFSetupAccessoryResult *)self setupPayload];
-    v5 = [v4 setupCode];
-    v6 = [v5 stringByReplacingOccurrencesOfString:@"-" withString:&stru_2824B1A78];
+    setupPayload2 = [(HFSetupAccessoryResult *)self setupPayload];
+    setupCode = [setupPayload2 setupCode];
+    v6 = [setupCode stringByReplacingOccurrencesOfString:@"-" withString:&stru_2824B1A78];
 
     if (v6)
     {
-      LOBYTE(v3) = [v6 compare:@"00000000"] == 0;
+      LOBYTE(setupPayload) = [v6 compare:@"00000000"] == 0;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(setupPayload) = 0;
     }
   }
 
-  return v3;
+  return setupPayload;
 }
 
 @end

@@ -1,66 +1,66 @@
 @interface ATXFaceGalleryConfiguration
-+ (id)configurationFromJSONDictionary:(id)a3;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXFaceGalleryConfiguration)initWithCoder:(id)a3;
-- (ATXFaceGalleryConfiguration)initWithProto:(id)a3;
-- (ATXFaceGalleryConfiguration)initWithProtoData:(id)a3;
-- (ATXFaceGalleryConfiguration)initWithSections:(id)a3 source:(int64_t)a4 locale:(id)a5 dayZero:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXFaceGalleryConfiguration:(id)a3;
++ (id)configurationFromJSONDictionary:(id)dictionary;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXFaceGalleryConfiguration)initWithCoder:(id)coder;
+- (ATXFaceGalleryConfiguration)initWithProto:(id)proto;
+- (ATXFaceGalleryConfiguration)initWithProtoData:(id)data;
+- (ATXFaceGalleryConfiguration)initWithSections:(id)sections source:(int64_t)source locale:(id)locale dayZero:(BOOL)zero;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXFaceGalleryConfiguration:(id)configuration;
 - (NSDictionary)jsonDictionary;
 - (NSString)description;
-- (id)configurationByApplyingConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)configurationByApplyingConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)encodeAsProto;
 - (id)json;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXFaceGalleryConfiguration
 
-- (ATXFaceGalleryConfiguration)initWithSections:(id)a3 source:(int64_t)a4 locale:(id)a5 dayZero:(BOOL)a6
+- (ATXFaceGalleryConfiguration)initWithSections:(id)sections source:(int64_t)source locale:(id)locale dayZero:(BOOL)zero
 {
-  v10 = a3;
-  v11 = a5;
+  sectionsCopy = sections;
+  localeCopy = locale;
   v16.receiver = self;
   v16.super_class = ATXFaceGalleryConfiguration;
   v12 = [(ATXFaceGalleryConfiguration *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [sectionsCopy copy];
     sections = v12->_sections;
     v12->_sections = v13;
 
-    v12->_source = a4;
-    objc_storeStrong(&v12->_locale, a5);
-    v12->_dayZero = a6;
+    v12->_source = source;
+    objc_storeStrong(&v12->_locale, locale);
+    v12->_dayZero = zero;
   }
 
   return v12;
 }
 
-+ (id)configurationFromJSONDictionary:(id)a3
++ (id)configurationFromJSONDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"sections"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"sections"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 objectForKeyedSubscript:@"sections"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sections"];
     v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_70];
 
-    v8 = [v3 objectForKeyedSubscript:@"source"];
-    v9 = [v8 integerValue];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"source"];
+    integerValue = [v8 integerValue];
 
-    v10 = [v3 objectForKeyedSubscript:@"dayZero"];
-    v11 = [v10 BOOLValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dayZero"];
+    bOOLValue = [v10 BOOLValue];
 
-    v12 = [[ATXFaceGalleryConfiguration alloc] initWithSections:v7 source:v9 locale:0 dayZero:v11];
+    v12 = [[ATXFaceGalleryConfiguration alloc] initWithSections:v7 source:integerValue locale:0 dayZero:bOOLValue];
   }
 
   else
@@ -94,19 +94,19 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
   return v3;
 }
 
-- (id)configurationByApplyingConfiguration:(id)a3
+- (id)configurationByApplyingConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(ATXFaceGalleryConfiguration *)self copy];
-  if (v4)
+  if (configurationCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v4 sections];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    sections = [configurationCopy sections];
+    v7 = [sections countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -117,29 +117,29 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sections);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
           if ([v11 semanticType] <= 0xE)
           {
-            v12 = [v5 sections];
+            sections2 = [v5 sections];
             v16[0] = MEMORY[0x1E69E9820];
             v16[1] = 3221225472;
             v16[2] = __68__ATXFaceGalleryConfiguration_configurationByApplyingConfiguration___block_invoke;
             v16[3] = &unk_1E80C42D8;
             v16[4] = v11;
-            v13 = [v12 bs_firstObjectPassingTest:v16];
+            v13 = [sections2 bs_firstObjectPassingTest:v16];
 
             if (v13)
             {
-              v14 = [v11 items];
-              [v13 setItems:v14];
+              items = [v11 items];
+              [v13 setItems:items];
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [sections countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
@@ -152,13 +152,13 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(ATXFaceGalleryConfiguration *)self sections];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  v5 = [sections countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -169,71 +169,71 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sections);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = @"Hero";
         if ([v9 semanticType] != 4)
         {
-          v11 = [v9 localizedTitle];
-          v12 = v11;
+          localizedTitle = [v9 localizedTitle];
+          v12 = localizedTitle;
           v13 = @"nil";
-          if (v11)
+          if (localizedTitle)
           {
-            v13 = v11;
+            v13 = localizedTitle;
           }
 
           v10 = v13;
         }
 
         v14 = MEMORY[0x1E696AD98];
-        v15 = [v9 items];
-        v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-        [v3 setObject:v16 forKeyedSubscript:v10];
+        items = [v9 items];
+        v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(items, "count")}];
+        [dictionary setObject:v16 forKeyedSubscript:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [sections countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
   }
 
-  v17 = [v3 copy];
+  v17 = [dictionary copy];
 
   return v17;
 }
 
 - (NSString)description
 {
-  v3 = [(ATXFaceGalleryConfiguration *)self sections];
-  v4 = [v3 count];
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  v4 = [sections count];
 
-  v5 = [(ATXFaceGalleryConfiguration *)self dictionaryRepresentation];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<ATXFaceGalleryConfiguration: %lu sections, contents = %@>", v4, v5];
+  dictionaryRepresentation = [(ATXFaceGalleryConfiguration *)self dictionaryRepresentation];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<ATXFaceGalleryConfiguration: %lu sections, contents = %@>", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (ATXFaceGalleryConfiguration)initWithCoder:(id)a3
+- (ATXFaceGalleryConfiguration)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"sections"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sections"];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
-    v10 = [v9 integerValue];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    integerValue = [v9 integerValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
-    self = -[ATXFaceGalleryConfiguration initWithSections:source:locale:dayZero:](self, "initWithSections:source:locale:dayZero:", v8, v10, v11, [v4 decodeBoolForKey:@"dayZero"]);
-    v12 = self;
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    self = -[ATXFaceGalleryConfiguration initWithSections:source:locale:dayZero:](self, "initWithSections:source:locale:dayZero:", v8, integerValue, v11, [coderCopy decodeBoolForKey:@"dayZero"]);
+    selfCopy = self;
   }
 
   else
@@ -244,61 +244,61 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
       [ATXFaceGalleryConfiguration initWithCoder:v11];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ATXFaceGalleryConfiguration *)self sections];
-  [v7 encodeObject:v4 forKey:@"sections"];
+  coderCopy = coder;
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  [coderCopy encodeObject:sections forKey:@"sections"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[ATXFaceGalleryConfiguration source](self, "source")}];
-  [v7 encodeObject:v5 forKey:@"source"];
+  [coderCopy encodeObject:v5 forKey:@"source"];
 
-  v6 = [(ATXFaceGalleryConfiguration *)self locale];
-  [v7 encodeObject:v6 forKey:@"locale"];
+  locale = [(ATXFaceGalleryConfiguration *)self locale];
+  [coderCopy encodeObject:locale forKey:@"locale"];
 
-  [v7 encodeBool:-[ATXFaceGalleryConfiguration isDayZero](self forKey:{"isDayZero"), @"dayZero"}];
+  [coderCopy encodeBool:-[ATXFaceGalleryConfiguration isDayZero](self forKey:{"isDayZero"), @"dayZero"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ATXFaceGalleryConfiguration *)self sections];
-  v6 = [(ATXFaceGalleryConfiguration *)self source];
-  v7 = [(ATXFaceGalleryConfiguration *)self locale];
-  v8 = [v4 initWithSections:v5 source:v6 locale:v7 dayZero:{-[ATXFaceGalleryConfiguration isDayZero](self, "isDayZero")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  source = [(ATXFaceGalleryConfiguration *)self source];
+  locale = [(ATXFaceGalleryConfiguration *)self locale];
+  v8 = [v4 initWithSections:sections source:source locale:locale dayZero:{-[ATXFaceGalleryConfiguration isDayZero](self, "isDayZero")}];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXFaceGalleryConfiguration *)self isEqualToATXFaceGalleryConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXFaceGalleryConfiguration *)self isEqualToATXFaceGalleryConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXFaceGalleryConfiguration:(id)a3
+- (BOOL)isEqualToATXFaceGalleryConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = self->_sections;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == configurationCopy[2])
   {
   }
 
@@ -312,11 +312,11 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
     }
   }
 
-  if (self->_source == v4[3])
+  if (self->_source == configurationCopy[3])
   {
     v8 = self->_locale;
     v9 = v8;
-    if (v8 == v4[4])
+    if (v8 == configurationCopy[4])
     {
     }
 
@@ -330,7 +330,7 @@ id __63__ATXFaceGalleryConfiguration_configurationFromJSONDictionary___block_inv
       }
     }
 
-    v11 = self->_dayZero == *(v4 + 8);
+    v11 = self->_dayZero == *(configurationCopy + 8);
     goto LABEL_11;
   }
 
@@ -343,20 +343,20 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXFaceGalleryConfiguration *)self sections];
-  v4 = [v3 hash];
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  v4 = [sections hash];
 
   v5 = [(ATXFaceGalleryConfiguration *)self source]- v4 + 32 * v4;
-  v6 = [(ATXFaceGalleryConfiguration *)self locale];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  locale = [(ATXFaceGalleryConfiguration *)self locale];
+  v7 = [locale hash] - v5 + 32 * v5;
 
   return 31 * v7 + [(ATXFaceGalleryConfiguration *)self isDayZero];
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -365,21 +365,21 @@ LABEL_11:
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"sections";
-  v3 = [(ATXFaceGalleryConfiguration *)self sections];
-  v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_49];
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  v4 = [sections _pas_mappedArrayWithTransform:&__block_literal_global_49];
   v11[0] = v4;
   v10[1] = @"source";
-  v5 = [(ATXFaceGalleryConfiguration *)self source];
-  if (v5)
+  source = [(ATXFaceGalleryConfiguration *)self source];
+  if (source)
   {
-    if (v5 == 1)
+    if (source == 1)
     {
       v6 = @"Proactive";
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", source];
     }
   }
 
@@ -400,46 +400,46 @@ LABEL_11:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXFaceGalleryConfiguration *)self jsonDictionary];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDictionary = [(ATXFaceGalleryConfiguration *)self jsonDictionary];
+  v4 = [v2 dataWithJSONObject:jsonDictionary options:1 error:0];
 
   return v4;
 }
 
-- (ATXFaceGalleryConfiguration)initWithProtoData:(id)a3
+- (ATXFaceGalleryConfiguration)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBFaceGalleryConfiguration alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBFaceGalleryConfiguration alloc] initWithData:dataCopy];
 
     self = [(ATXFaceGalleryConfiguration *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXFaceGalleryConfiguration *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXFaceGalleryConfiguration *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXFaceGalleryConfiguration)initWithProto:(id)a3
+- (ATXFaceGalleryConfiguration)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_9:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -455,9 +455,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBFaceGalleryConfiguration *)v5 sections];
-  v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_54_0];
+  v5 = protoCopy;
+  sections = [(ATXPBFaceGalleryConfiguration *)v5 sections];
+  v7 = [sections _pas_mappedArrayWithTransform:&__block_literal_global_54_0];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
   if (v7)
@@ -467,14 +467,14 @@ LABEL_9:
 
   v10 = v9;
 
-  v11 = [(ATXPBFaceGalleryConfiguration *)v5 source];
-  v12 = [(ATXFaceGalleryConfiguration *)self initWithSections:v10 source:v11 locale:0 dayZero:0];
+  source = [(ATXPBFaceGalleryConfiguration *)v5 source];
+  v12 = [(ATXFaceGalleryConfiguration *)self initWithSections:v10 source:source locale:0 dayZero:0];
 
   self = v12;
-  v13 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v13;
+  return selfCopy;
 }
 
 ATXFaceGallerySection *__45__ATXFaceGalleryConfiguration_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -488,8 +488,8 @@ ATXFaceGallerySection *__45__ATXFaceGalleryConfiguration_initWithProto___block_i
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(ATXFaceGalleryConfiguration *)self sections];
-  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_57];
+  sections = [(ATXFaceGalleryConfiguration *)self sections];
+  v5 = [sections _pas_mappedArrayWithTransform:&__block_literal_global_57];
   v6 = [v5 mutableCopy];
   [(ATXPBFaceGalleryConfiguration *)v3 setSections:v6];
 

@@ -2,14 +2,14 @@
 + (id)logCategory;
 + (void)resetClassMappings;
 + (void)resetSchemaHash;
-+ (void)setClass:(Class)a3 forClassName:(id)a4;
++ (void)setClass:(Class)class forClassName:(id)name;
 + (void)start;
 - (HMDBackingStoreSingleton)init;
 - (HMDHomeManager)homeManager;
 - (id)flushBackingStore;
 - (id)resetBackingStore;
-- (id)schemaHashForObject:(id)a3;
-- (void)setHomeManager:(id)a3;
+- (id)schemaHashForObject:(id)object;
+- (void)setHomeManager:(id)manager;
 @end
 
 @implementation HMDBackingStoreSingleton
@@ -21,16 +21,16 @@
   return WeakRetained;
 }
 
-- (void)setHomeManager:(id)a3
+- (void)setHomeManager:(id)manager
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   WeakRetained = objc_loadWeakRetained(&self->_homeManager);
 
   if (WeakRetained)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
@@ -43,43 +43,43 @@
     objc_autoreleasePoolPop(v6);
   }
 
-  objc_storeWeak(&self->_homeManager, v4);
+  objc_storeWeak(&self->_homeManager, managerCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (id)resetBackingStore
 {
-  v2 = [(HMDBackingStoreSingleton *)self local];
-  v3 = [v2 flush:1];
+  local = [(HMDBackingStoreSingleton *)self local];
+  v3 = [local flush:1];
 
   return v3;
 }
 
 - (id)flushBackingStore
 {
-  v2 = [(HMDBackingStoreSingleton *)self local];
-  v3 = [v2 flush:0];
+  local = [(HMDBackingStoreSingleton *)self local];
+  v3 = [local flush:0];
 
   return v3;
 }
 
-- (id)schemaHashForObject:(id)a3
+- (id)schemaHashForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
-  v6 = [v4 bsoType];
-  v7 = [v5 objectForKey:v6];
+  objectCopy = object;
+  objectPropertyHashLookup = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
+  bsoType = [objectCopy bsoType];
+  bsoSchemaHash = [objectPropertyHashLookup objectForKey:bsoType];
 
-  if (!v7)
+  if (!bsoSchemaHash)
   {
-    v7 = [objc_opt_class() bsoSchemaHash];
-    v8 = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
-    v9 = [v4 bsoType];
-    [v8 setObject:v7 forKey:v9];
+    bsoSchemaHash = [objc_opt_class() bsoSchemaHash];
+    objectPropertyHashLookup2 = [(HMDBackingStoreSingleton *)self objectPropertyHashLookup];
+    bsoType2 = [objectCopy bsoType];
+    [objectPropertyHashLookup2 setObject:bsoSchemaHash forKey:bsoType2];
   }
 
-  v10 = v7;
+  v10 = bsoSchemaHash;
 
   return v10;
 }
@@ -92,21 +92,21 @@
   v2 = [(HMDBackingStoreSingleton *)&v25 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     objectLookup = v2->_objectLookup;
-    v2->_objectLookup = v3;
+    v2->_objectLookup = strongToWeakObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     classToNameTransform = v2->_classToNameTransform;
-    v2->_classToNameTransform = v5;
+    v2->_classToNameTransform = strongToStrongObjectsMapTable;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     nameToClassTransform = v2->_nameToClassTransform;
-    v2->_nameToClassTransform = v7;
+    v2->_nameToClassTransform = strongToStrongObjectsMapTable2;
 
-    v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     objectPropertyHashLookup = v2->_objectPropertyHashLookup;
-    v2->_objectPropertyHashLookup = v9;
+    v2->_objectPropertyHashLookup = strongToStrongObjectsMapTable3;
 
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
     queue = v2->_queue;
@@ -176,43 +176,43 @@ uint64_t __39__HMDBackingStoreSingleton_logCategory__block_invoke()
 + (void)resetSchemaHash
 {
   v3 = +[HMDBackingStoreSingleton sharedInstance];
-  v2 = [v3 objectPropertyHashLookup];
-  [v2 removeAllObjects];
+  objectPropertyHashLookup = [v3 objectPropertyHashLookup];
+  [objectPropertyHashLookup removeAllObjects];
 }
 
 + (void)resetClassMappings
 {
   v4 = +[HMDBackingStoreSingleton sharedInstance];
-  v2 = [v4 nameToClassTransform];
-  [v2 removeAllObjects];
+  nameToClassTransform = [v4 nameToClassTransform];
+  [nameToClassTransform removeAllObjects];
 
-  v3 = [v4 classToNameTransform];
-  [v3 removeAllObjects];
+  classToNameTransform = [v4 classToNameTransform];
+  [classToNameTransform removeAllObjects];
 }
 
-+ (void)setClass:(Class)a3 forClassName:(id)a4
++ (void)setClass:(Class)class forClassName:(id)name
 {
-  v15 = a4;
+  nameCopy = name;
   v5 = +[HMDBackingStoreSingleton sharedInstance];
-  v6 = [v5 nameToClassTransform];
-  v7 = [v6 objectForKey:v15];
+  nameToClassTransform = [v5 nameToClassTransform];
+  v7 = [nameToClassTransform objectForKey:nameCopy];
 
   if (v7)
   {
     v10 = MEMORY[0x277CBEAD8];
     v11 = *MEMORY[0x277CBE658];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Only one class name transformation for %@ may be specified in the BackingStore", v15];
-    v13 = [v10 exceptionWithName:v11 reason:v12 userInfo:0];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Only one class name transformation for %@ may be specified in the BackingStore", nameCopy];
+    v13 = [v10 exceptionWithName:v11 reason:nameCopy userInfo:0];
     v14 = v13;
 
     objc_exception_throw(v13);
   }
 
-  v8 = [v5 nameToClassTransform];
-  [v8 setObject:a3 forKey:v15];
+  nameToClassTransform2 = [v5 nameToClassTransform];
+  [nameToClassTransform2 setObject:class forKey:nameCopy];
 
-  v9 = [v5 classToNameTransform];
-  [v9 setObject:v15 forKey:a3];
+  classToNameTransform = [v5 classToNameTransform];
+  [classToNameTransform setObject:nameCopy forKey:class];
 }
 
 + (void)start

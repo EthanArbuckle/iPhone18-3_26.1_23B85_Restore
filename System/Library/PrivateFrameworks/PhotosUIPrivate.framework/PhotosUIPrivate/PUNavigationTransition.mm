@@ -1,17 +1,17 @@
 @interface PUNavigationTransition
-+ (BOOL)shouldCrossFadeBottomBarsForNavigationController:(id)a3;
-+ (id)animationControllerForOperation:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5 inNavigationController:(id)a6;
-- (PUNavigationTransition)initWithPushDuration:(double)a3 popDuration:(double)a4;
++ (BOOL)shouldCrossFadeBottomBarsForNavigationController:(id)controller;
++ (id)animationControllerForOperation:(int64_t)operation fromViewController:(id)controller toViewController:(id)viewController inNavigationController:(id)navigationController;
+- (PUNavigationTransition)initWithPushDuration:(double)duration popDuration:(double)popDuration;
 - (UINavigationController)navigationController;
 - (UIViewController)expectedDestinationOnPop;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 - (void)cancelInteractiveTransition;
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 - (void)didCompleteTransitionAnimation;
 - (void)finishInteractiveTransition;
 - (void)imageModulationIntensityDidChange;
-- (void)transitionWillStartOperation:(int64_t)a3 animated:(BOOL)a4 interactive:(BOOL)a5;
+- (void)transitionWillStartOperation:(int64_t)operation animated:(BOOL)animated interactive:(BOOL)interactive;
 @end
 
 @implementation PUNavigationTransition
@@ -30,19 +30,19 @@
   return WeakRetained;
 }
 
-- (void)transitionWillStartOperation:(int64_t)a3 animated:(BOOL)a4 interactive:(BOOL)a5
+- (void)transitionWillStartOperation:(int64_t)operation animated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 isStatusBarHidden];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isStatusBarHidden = [mEMORY[0x1E69DC668] isStatusBarHidden];
 
-  [(PUNavigationTransition *)self setWasStatusBarHiddenBeforeTransition:v7];
+  [(PUNavigationTransition *)self setWasStatusBarHiddenBeforeTransition:isStatusBarHidden];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v5.receiver = self;
   v5.super_class = PUNavigationTransition;
-  [(PUViewControllerTransition *)&v5 animateTransition:a3];
+  [(PUViewControllerTransition *)&v5 animateTransition:transition];
   operation = self->__operation;
   if (operation == 2)
   {
@@ -55,12 +55,12 @@
   }
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v4 = [(PUNavigationTransition *)self _operation];
-  if (v4 >= 2)
+  _operation = [(PUNavigationTransition *)self _operation];
+  if (_operation >= 2)
   {
-    if (v4 == 2)
+    if (_operation == 2)
     {
 
       [(PUNavigationTransition *)self popDuration];
@@ -81,16 +81,16 @@
   return result;
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
-  v3 = a3;
-  v5 = [(PUNavigationTransition *)self navigationController];
-  [v5 pu_navigationTransitionWillEnd:self];
+  transitionCopy = transition;
+  navigationController = [(PUNavigationTransition *)self navigationController];
+  [navigationController pu_navigationTransitionWillEnd:self];
   [(PUNavigationTransition *)self _setOperation:0];
   v6.receiver = self;
   v6.super_class = PUNavigationTransition;
-  [(PUViewControllerTransition *)&v6 completeTransition:v3];
-  [v5 pu_navigationTransitionDidEnd:self];
+  [(PUViewControllerTransition *)&v6 completeTransition:transitionCopy];
+  [navigationController pu_navigationTransitionDidEnd:self];
 }
 
 - (void)didCompleteTransitionAnimation
@@ -98,8 +98,8 @@
   v4.receiver = self;
   v4.super_class = PUNavigationTransition;
   [(PUViewControllerTransition *)&v4 didCompleteTransitionAnimation];
-  v3 = [(PUNavigationTransition *)self navigationController];
-  [v3 ppt_notifyTransitionAnimationDidComplete];
+  navigationController = [(PUNavigationTransition *)self navigationController];
+  [navigationController ppt_notifyTransitionAnimationDidComplete];
 }
 
 - (void)cancelInteractiveTransition
@@ -131,72 +131,72 @@
   v4.receiver = self;
   v4.super_class = PUNavigationTransition;
   [(PUViewControllerTransition *)&v4 imageModulationIntensityDidChange];
-  v3 = [(PUNavigationTransition *)self navigationController];
-  [v3 px_setNeedsImageModulationIntensityUpdate];
+  navigationController = [(PUNavigationTransition *)self navigationController];
+  [navigationController px_setNeedsImageModulationIntensityUpdate];
 }
 
-- (PUNavigationTransition)initWithPushDuration:(double)a3 popDuration:(double)a4
+- (PUNavigationTransition)initWithPushDuration:(double)duration popDuration:(double)popDuration
 {
   v7.receiver = self;
   v7.super_class = PUNavigationTransition;
   result = [(PUViewControllerTransition *)&v7 initWithDuration:?];
   if (result)
   {
-    result->_pushDuration = a3;
-    result->_popDuration = a4;
+    result->_pushDuration = duration;
+    result->_popDuration = popDuration;
   }
 
   return result;
 }
 
-+ (BOOL)shouldCrossFadeBottomBarsForNavigationController:(id)a3
++ (BOOL)shouldCrossFadeBottomBarsForNavigationController:(id)controller
 {
-  v3 = [a3 topViewController];
-  v4 = [v3 pu_navigationTransition];
-  v5 = [v4 _operation] != 0;
+  topViewController = [controller topViewController];
+  pu_navigationTransition = [topViewController pu_navigationTransition];
+  v5 = [pu_navigationTransition _operation] != 0;
 
   return v5;
 }
 
-+ (id)animationControllerForOperation:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5 inNavigationController:(id)a6
++ (id)animationControllerForOperation:(int64_t)operation fromViewController:(id)controller toViewController:(id)viewController inNavigationController:(id)navigationController
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (a3 == 1)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  navigationControllerCopy = navigationController;
+  if (operation == 1)
   {
-    v12 = [v10 pu_navigationTransition];
-    v15 = [v12 expectedDestinationOnPop];
+    pu_navigationTransition = [viewControllerCopy pu_navigationTransition];
+    expectedDestinationOnPop = [pu_navigationTransition expectedDestinationOnPop];
 
-    if (!v15)
+    if (!expectedDestinationOnPop)
     {
-      [v12 setExpectedDestinationOnPop:v9];
+      [pu_navigationTransition setExpectedDestinationOnPop:controllerCopy];
     }
   }
 
-  else if (a3 == 2)
+  else if (operation == 2)
   {
-    v12 = [v9 pu_navigationTransition];
-    v13 = [v12 expectedDestinationOnPop];
-    v14 = v13;
-    if (v13 && v13 != v10)
+    pu_navigationTransition = [controllerCopy pu_navigationTransition];
+    expectedDestinationOnPop2 = [pu_navigationTransition expectedDestinationOnPop];
+    v14 = expectedDestinationOnPop2;
+    if (expectedDestinationOnPop2 && expectedDestinationOnPop2 != viewControllerCopy)
     {
 
-      v12 = 0;
+      pu_navigationTransition = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    pu_navigationTransition = 0;
   }
 
-  [v12 setNavigationController:v11];
-  [v12 transitionWillAnimateOperation:a3 interactive:{objc_msgSend(v12, "isInteractive")}];
-  [v12 _setOperation:a3];
-  [v11 pu_navigationTransitionWillStart:v12];
+  [pu_navigationTransition setNavigationController:navigationControllerCopy];
+  [pu_navigationTransition transitionWillAnimateOperation:operation interactive:{objc_msgSend(pu_navigationTransition, "isInteractive")}];
+  [pu_navigationTransition _setOperation:operation];
+  [navigationControllerCopy pu_navigationTransitionWillStart:pu_navigationTransition];
 
-  return v12;
+  return pu_navigationTransition;
 }
 
 @end

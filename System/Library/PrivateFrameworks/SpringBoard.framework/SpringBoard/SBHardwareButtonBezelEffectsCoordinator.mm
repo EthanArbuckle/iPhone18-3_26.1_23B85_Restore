@@ -2,36 +2,36 @@
 - (BOOL)hintDropletsEnabled;
 - (CGPoint)preludeAnimationVelocity;
 - (CGRect)preludeAnimationRectPresentationValue;
-- (SBHardwareButtonBezelEffectsCoordinator)initWithWindowScene:(id)a3;
+- (SBHardwareButtonBezelEffectsCoordinator)initWithWindowScene:(id)scene;
 - (id)_policyAggregator;
-- (id)activateHintDropletForButton:(int64_t)a3;
-- (id)animateLaunchZoomUpPreludeFromButton:(int64_t)a3;
-- (id)associateHintView:(id)a3 withButton:(int64_t)a4;
-- (id)commandeerDropletAnimationWithToken:(id)a3;
-- (id)observePortalSourceWithHandler:(id)a3;
-- (id)requestSystemGlowEffectWithInitialStyle:(int64_t)a3 reason:(id)a4;
-- (id)setDropletLayoutCallback:(id)a3 forButton:(int64_t)a4;
-- (void)_beginRequiringBacklightAssertionForReason:(id)a3;
-- (void)_endRequiringBacklightAssertionForReason:(id)a3;
+- (id)activateHintDropletForButton:(int64_t)button;
+- (id)animateLaunchZoomUpPreludeFromButton:(int64_t)button;
+- (id)associateHintView:(id)view withButton:(int64_t)button;
+- (id)commandeerDropletAnimationWithToken:(id)token;
+- (id)observePortalSourceWithHandler:(id)handler;
+- (id)requestSystemGlowEffectWithInitialStyle:(int64_t)style reason:(id)reason;
+- (id)setDropletLayoutCallback:(id)callback forButton:(int64_t)button;
+- (void)_beginRequiringBacklightAssertionForReason:(id)reason;
+- (void)_endRequiringBacklightAssertionForReason:(id)reason;
 - (void)_presentOrDismissLaunchAnimationWindowIfNecessary;
 - (void)_reevaluateSystemGlowEffect;
-- (void)_setHintDropletWindowVisible:(BOOL)a3;
-- (void)_setLaunchAnimationWindowVisible:(BOOL)a3;
-- (void)_setShockwaveState:(int64_t)a3 completion:(id)a4;
+- (void)_setHintDropletWindowVisible:(BOOL)visible;
+- (void)_setLaunchAnimationWindowVisible:(BOOL)visible;
+- (void)_setShockwaveState:(int64_t)state completion:(id)completion;
 - (void)_updateLaunchAnimationWindowLevelIfNecessary;
 - (void)cancelPrelude;
 - (void)dealloc;
-- (void)hintDropletViewControllerDidBecomeIdle:(id)a3;
-- (void)preludeToken:(id)a3 expandHintingDropletByAddingComponents:(unint64_t)a4 shockwave:(BOOL)a5;
-- (void)preludeToken:(id)a3 updateShockwaveLightType:(int64_t)a4;
-- (void)updateHintContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5;
+- (void)hintDropletViewControllerDidBecomeIdle:(id)idle;
+- (void)preludeToken:(id)token expandHintingDropletByAddingComponents:(unint64_t)components shockwave:(BOOL)shockwave;
+- (void)preludeToken:(id)token updateShockwaveLightType:(int64_t)type;
+- (void)updateHintContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings;
 @end
 
 @implementation SBHardwareButtonBezelEffectsCoordinator
 
-- (SBHardwareButtonBezelEffectsCoordinator)initWithWindowScene:(id)a3
+- (SBHardwareButtonBezelEffectsCoordinator)initWithWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v16.receiver = self;
   v16.super_class = SBHardwareButtonBezelEffectsCoordinator;
   v6 = [(SBHardwareButtonBezelEffectsCoordinator *)&v16 init];
@@ -41,7 +41,7 @@
     settings = v6->_settings;
     v6->_settings = v7;
 
-    objc_storeStrong(&v6->_windowScene, a3);
+    objc_storeStrong(&v6->_windowScene, scene);
     objc_initWeak(&location, v6);
     v9 = MEMORY[0x277CF0BD0];
     v13[0] = MEMORY[0x277D85DD0];
@@ -77,9 +77,9 @@ void __63__SBHardwareButtonBezelEffectsCoordinator_initWithWindowScene___block_i
   [(SBHardwareButtonBezelEffectsCoordinator *)&v4 dealloc];
 }
 
-- (id)observePortalSourceWithHandler:(id)a3
+- (id)observePortalSourceWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = [_SBHardwareButtonPortalObservationToken alloc];
   v12 = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@ void __63__SBHardwareButtonBezelEffectsCoordinator_initWithWindowScene___block_i
   v14 = __74__SBHardwareButtonBezelEffectsCoordinator_observePortalSourceWithHandler___block_invoke;
   v15 = &unk_2783B6800;
   objc_copyWeak(&v16, &location);
-  v6 = [(_SBHardwareButtonPortalObservationToken *)v5 initWithObserverBlock:v4 invalidationBlock:&v12];
+  v6 = [(_SBHardwareButtonPortalObservationToken *)v5 initWithObserverBlock:handlerCopy invalidationBlock:&v12];
   portalObservationTokens = self->_portalObservationTokens;
   if (!portalObservationTokens)
   {
@@ -117,7 +117,7 @@ void __74__SBHardwareButtonBezelEffectsCoordinator_observePortalSourceWithHandle
   }
 }
 
-- (id)animateLaunchZoomUpPreludeFromButton:(int64_t)a3
+- (id)animateLaunchZoomUpPreludeFromButton:(int64_t)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_animatingPreludeToken);
   if (WeakRetained)
@@ -145,13 +145,13 @@ LABEL_4:
   kdebug_trace();
   [*MEMORY[0x277D76620] _performBlockAfterCATransactionCommits:&__block_literal_global_165];
   objc_initWeak(buf, self);
-  if (!a3)
+  if (!button)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"SBHardwareButtonBezelEffectsCoordinator.m" lineNumber:173 description:@"Must supply specific concrete origin from which to animate."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBHardwareButtonBezelEffectsCoordinator.m" lineNumber:173 description:@"Must supply specific concrete origin from which to animate."];
   }
 
-  self->_lastRequestedLaunchOrigin = a3;
+  self->_lastRequestedLaunchOrigin = button;
   v11 = [_SBCaptureButtonLaunchAnimationPreludeToken alloc];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -163,16 +163,16 @@ LABEL_4:
   [(SBHardwareButtonBezelEffectsCoordinator *)self _presentOrDismissLaunchAnimationWindowIfNecessary];
   [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController animateDropletFromButtonWithMilestones:0];
   [(SBHardwareButtonBezelEffectsCoordinator *)self _setShockwaveState:1 completion:0];
-  v12 = [(SBWindowScene *)self->_windowScene assistantController];
-  v13 = [v12 isVisualSearchEnabled];
+  assistantController = [(SBWindowScene *)self->_windowScene assistantController];
+  isVisualSearchEnabled = [assistantController isVisualSearchEnabled];
 
-  if (v13)
+  if (isVisualSearchEnabled)
   {
-    v14 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-    [v14 layoutIfNeeded];
+    view = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+    [view layoutIfNeeded];
 
-    v15 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
-    [v15 layoutIfNeeded];
+    view2 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
+    [view2 layoutIfNeeded];
 
     [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController expandDropletKeylineToIntelligentKeylineStage:1];
     [(SUIAShockwaveViewController *)self->_shockwaveViewController setPreferredLightType:1];
@@ -209,17 +209,17 @@ void __80__SBHardwareButtonBezelEffectsCoordinator_animateLaunchZoomUpPreludeFro
   }
 }
 
-- (id)commandeerDropletAnimationWithToken:(id)a3
+- (id)commandeerDropletAnimationWithToken:(id)token
 {
-  v5 = a3;
-  v6 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-  v7 = [v6 layer];
-  v8 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-  v9 = [v8 layer];
-  [v7 setDisableUpdateMask:{objc_msgSend(v9, "disableUpdateMask") & 0xFFFFFFFDLL}];
+  tokenCopy = token;
+  view = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+  layer = [view layer];
+  view2 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+  layer2 = [view2 layer];
+  [layer setDisableUpdateMask:{objc_msgSend(layer2, "disableUpdateMask") & 0xFFFFFFFDLL}];
 
   v10 = objc_opt_self();
-  v11 = v5;
+  v11 = tokenCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -252,28 +252,28 @@ void __80__SBHardwareButtonBezelEffectsCoordinator_animateLaunchZoomUpPreludeFro
   {
     if ([(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController expandHintingDropletByAddingComponents:7])
     {
-      v16 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-      [v16 layoutIfNeeded];
+      view3 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+      [view3 layoutIfNeeded];
     }
 
     objc_initWeak(&location, self);
-    v17 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController lendAnimatingDropletViewToExternalOwner];
+    lendAnimatingDropletViewToExternalOwner = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController lendAnimatingDropletViewToExternalOwner];
     v18 = [_SBHardwareButtonLaunchZoomUpAnimationToken alloc];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __79__SBHardwareButtonBezelEffectsCoordinator_commandeerDropletAnimationWithToken___block_invoke;
     v25[3] = &unk_2783A9CE8;
     objc_copyWeak(&v27, &location);
-    v19 = v17;
+    v19 = lendAnimatingDropletViewToExternalOwner;
     v26 = v19;
     v20 = [(_SBHardwareButtonLaunchZoomUpAnimationToken *)v18 initWithPreludeAnimating:self invalidationBlock:v25];
     objc_storeWeak(&self->_animatingLaunchCompletionToken, v20);
     [(_SBHardwareButtonLaunchZoomUpAnimationToken *)v20 setRequestedDropletWindowLevel:0.0];
     [v13 invalidate];
     objc_storeWeak(&self->_animatingPreludeToken, 0);
-    v21 = [(_SBHardwareButtonLaunchZoomUpAnimationToken *)v20 animatingDropletContext];
-    v22 = [(_SBHardwareButtonLaunchZoomUpAnimationToken *)v20 animatingDroplet];
-    [v21 applyKeylineStyle:0 forContainerView:v22];
+    animatingDropletContext = [(_SBHardwareButtonLaunchZoomUpAnimationToken *)v20 animatingDropletContext];
+    animatingDroplet = [(_SBHardwareButtonLaunchZoomUpAnimationToken *)v20 animatingDroplet];
+    [animatingDropletContext applyKeylineStyle:0 forContainerView:animatingDroplet];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -281,8 +281,8 @@ void __80__SBHardwareButtonBezelEffectsCoordinator_animateLaunchZoomUpPreludeFro
 
   else
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"SBHardwareButtonBezelEffectsCoordinator.m" lineNumber:232 description:@"Unexpected"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBHardwareButtonBezelEffectsCoordinator.m" lineNumber:232 description:@"Unexpected"];
 
     v20 = 0;
   }
@@ -303,11 +303,11 @@ void __79__SBHardwareButtonBezelEffectsCoordinator_commandeerDropletAnimationWit
   }
 }
 
-- (void)preludeToken:(id)a3 expandHintingDropletByAddingComponents:(unint64_t)a4 shockwave:(BOOL)a5
+- (void)preludeToken:(id)token expandHintingDropletByAddingComponents:(unint64_t)components shockwave:(BOOL)shockwave
 {
-  v5 = a5;
-  v8 = a3;
-  if (v8)
+  shockwaveCopy = shockwave;
+  tokenCopy = token;
+  if (tokenCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_animatingPreludeToken);
     v10 = BSEqualObjects();
@@ -323,8 +323,8 @@ void __79__SBHardwareButtonBezelEffectsCoordinator_commandeerDropletAnimationWit
 
       kdebug_trace();
       [*MEMORY[0x277D76620] _performBlockAfterCATransactionCommits:&__block_literal_global_30_0];
-      v12 = [(SUIAShockwaveViewController *)self->_shockwaveViewController state];
-      if (v5)
+      state = [(SUIAShockwaveViewController *)self->_shockwaveViewController state];
+      if (shockwaveCopy)
       {
         v13 = 2;
       }
@@ -335,7 +335,7 @@ void __79__SBHardwareButtonBezelEffectsCoordinator_commandeerDropletAnimationWit
       }
 
       [(SBHardwareButtonBezelEffectsCoordinator *)self _setShockwaveState:v13 completion:0];
-      if ([(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController expandHintingDropletByAddingComponents:a4]|| v12 != [(SUIAShockwaveViewController *)self->_shockwaveViewController state])
+      if ([(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController expandHintingDropletByAddingComponents:components]|| state != [(SUIAShockwaveViewController *)self->_shockwaveViewController state])
       {
         [(SBHardwareButtonBezelEffectsCoordinator *)self _presentOrDismissLaunchAnimationWindowIfNecessary];
       }
@@ -355,21 +355,21 @@ uint64_t __105__SBHardwareButtonBezelEffectsCoordinator_preludeToken_expandHinti
   return kdebug_trace();
 }
 
-- (void)preludeToken:(id)a3 updateShockwaveLightType:(int64_t)a4
+- (void)preludeToken:(id)token updateShockwaveLightType:(int64_t)type
 {
-  v6 = a3;
-  if (v6)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v11 = v6;
+    v11 = tokenCopy;
     WeakRetained = objc_loadWeakRetained(&self->_animatingPreludeToken);
     v8 = BSEqualObjects();
 
-    v6 = v11;
+    tokenCopy = v11;
     if (v8)
     {
-      [(SUIAShockwaveViewController *)self->_shockwaveViewController setPreferredLightType:a4];
+      [(SUIAShockwaveViewController *)self->_shockwaveViewController setPreferredLightType:type];
       dropletLaunchViewController = self->_dropletLaunchViewController;
-      if (a4 == 1)
+      if (type == 1)
       {
         [(SBCaptureButtonDropletLaunchViewController *)dropletLaunchViewController expandDropletKeylineToIntelligentKeylineStage:2];
       }
@@ -377,11 +377,11 @@ uint64_t __105__SBHardwareButtonBezelEffectsCoordinator_preludeToken_expandHinti
       else
       {
         [(SBCaptureButtonDropletLaunchViewController *)dropletLaunchViewController expandDropletKeylineToIntelligentKeylineStage:0];
-        v10 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-        [v10 layoutIfNeeded];
+        view = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+        [view layoutIfNeeded];
       }
 
-      v6 = v11;
+      tokenCopy = v11;
     }
   }
 }
@@ -404,9 +404,9 @@ uint64_t __105__SBHardwareButtonBezelEffectsCoordinator_preludeToken_expandHinti
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   [(SBCaptureButtonDropletLaunchViewController *)dropletLaunchViewController resetToOffscreenAnimated:1 milestones:v5];
 
-  v6 = [(SUIAShockwaveViewController *)self->_shockwaveViewController state];
-  v7 = v6;
-  if (self->_animatingShockwave || v6 == 1)
+  state = [(SUIAShockwaveViewController *)self->_shockwaveViewController state];
+  v7 = state;
+  if (self->_animatingShockwave || state == 1)
   {
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
@@ -487,12 +487,12 @@ void __56__SBHardwareButtonBezelEffectsCoordinator_cancelPrelude__block_invoke_2
   return result;
 }
 
-- (id)activateHintDropletForButton:(int64_t)a3
+- (id)activateHintDropletForButton:(int64_t)button
 {
   if ([(SBHardwareButtonBezelEffectsCoordinator *)self hintDropletsEnabled])
   {
     [(SBHardwareButtonBezelEffectsCoordinator *)self _setHintDropletWindowVisible:1];
-    v5 = [(SBHardwareButtonHintDropletViewController *)self->_hintDropletViewController activateHintDropletForButton:a3];
+    v5 = [(SBHardwareButtonHintDropletViewController *)self->_hintDropletViewController activateHintDropletForButton:button];
   }
 
   else
@@ -503,13 +503,13 @@ void __56__SBHardwareButtonBezelEffectsCoordinator_cancelPrelude__block_invoke_2
   return v5;
 }
 
-- (id)associateHintView:(id)a3 withButton:(int64_t)a4
+- (id)associateHintView:(id)view withButton:(int64_t)button
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(SBHardwareButtonBezelEffectsCoordinator *)self hintDropletsEnabled])
   {
     [(SBHardwareButtonBezelEffectsCoordinator *)self _setHintDropletWindowVisible:1];
-    v7 = [(SBHardwareButtonHintDropletViewController *)self->_hintDropletViewController associateHintView:v6 withButton:a4];
+    v7 = [(SBHardwareButtonHintDropletViewController *)self->_hintDropletViewController associateHintView:viewCopy withButton:button];
   }
 
   else
@@ -520,15 +520,15 @@ void __56__SBHardwareButtonBezelEffectsCoordinator_cancelPrelude__block_invoke_2
   return v7;
 }
 
-- (void)updateHintContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5
+- (void)updateHintContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings
 {
-  v8 = a5;
+  settingsCopy = settings;
   if ([(SBHardwareButtonBezelEffectsCoordinator *)self hintDropletsEnabled])
   {
     hintDropletViewController = self->_hintDropletViewController;
     if (hintDropletViewController)
     {
-      [(SBHardwareButtonHintDropletViewController *)hintDropletViewController updateHintContentVisibility:a3 forButton:a4 animationSettings:v8];
+      [(SBHardwareButtonHintDropletViewController *)hintDropletViewController updateHintContentVisibility:visibility forButton:button animationSettings:settingsCopy];
     }
 
     else
@@ -542,19 +542,19 @@ void __56__SBHardwareButtonBezelEffectsCoordinator_cancelPrelude__block_invoke_2
   }
 }
 
-- (id)requestSystemGlowEffectWithInitialStyle:(int64_t)a3 reason:(id)a4
+- (id)requestSystemGlowEffectWithInitialStyle:(int64_t)style reason:(id)reason
 {
-  v6 = a4;
-  v7 = [(SBWindowScene *)self->_windowScene assistantController];
-  if ([v7 isSystemAssistantExperienceEnabled])
+  reasonCopy = reason;
+  assistantController = [(SBWindowScene *)self->_windowScene assistantController];
+  if ([assistantController isSystemAssistantExperienceEnabled])
   {
-    v8 = [(SBHardwareButtonBezelEffectsCoordinator *)self _policyAggregator];
-    v9 = [v8 allowsCapability:29];
+    _policyAggregator = [(SBHardwareButtonBezelEffectsCoordinator *)self _policyAggregator];
+    v9 = [_policyAggregator allowsCapability:29];
 
     if (v9)
     {
-      self->_systemGlowActivating = a3 == 0;
-      v10 = [(BSCompoundAssertion *)self->_systemGlowEffectAssertion acquireForReason:v6];
+      self->_systemGlowActivating = style == 0;
+      v10 = [(BSCompoundAssertion *)self->_systemGlowEffectAssertion acquireForReason:reasonCopy];
       goto LABEL_6;
     }
   }
@@ -595,18 +595,18 @@ LABEL_6:
   [(SBHardwareButtonHintDropletViewController *)hintDropletViewController setKeylineStyle:v4];
 }
 
-- (id)setDropletLayoutCallback:(id)a3 forButton:(int64_t)a4
+- (id)setDropletLayoutCallback:(id)callback forButton:(int64_t)button
 {
-  v6 = a3;
+  callbackCopy = callback;
   [(SBHardwareButtonBezelEffectsCoordinator *)self _setHintDropletWindowVisible:1];
-  v7 = [(SBHardwareButtonHintDropletViewController *)self->_hintDropletViewController setDropletLayoutCallback:v6 forButton:a4];
+  v7 = [(SBHardwareButtonHintDropletViewController *)self->_hintDropletViewController setDropletLayoutCallback:callbackCopy forButton:button];
 
   return v7;
 }
 
-- (void)hintDropletViewControllerDidBecomeIdle:(id)a3
+- (void)hintDropletViewControllerDidBecomeIdle:(id)idle
 {
-  if (self->_hintDropletViewController == a3)
+  if (self->_hintDropletViewController == idle)
   {
     [(SBHardwareButtonBezelEffectsCoordinator *)self _setHintDropletWindowVisible:0];
   }
@@ -631,10 +631,10 @@ LABEL_6:
   [(SBHardwareButtonBezelEffectsCoordinator *)self _updateLaunchAnimationWindowLevelIfNecessary];
 }
 
-- (void)_setLaunchAnimationWindowVisible:(BOOL)a3
+- (void)_setLaunchAnimationWindowVisible:(BOOL)visible
 {
   dropletLaunchWindow = self->_dropletLaunchWindow;
-  if (a3)
+  if (visible)
   {
     if (!dropletLaunchWindow)
     {
@@ -657,8 +657,8 @@ LABEL_6:
       v17 = v16;
 
       v18 = objc_alloc(MEMORY[0x277D6C048]);
-      v19 = [MEMORY[0x277D759A0] mainScreen];
-      [v19 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v36 = [v18 initWithNormalizedButtonEdgeLocation:v11 shockwaveViewBounds:{v13, v15, v17, v20, v21, v22, v23}];
 
       v24 = [objc_alloc(MEMORY[0x277D6C068]) initWithStyle:v36];
@@ -666,21 +666,21 @@ LABEL_6:
       self->_shockwaveViewController = v24;
 
       [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController addChildViewController:self->_shockwaveViewController];
-      v26 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
-      v27 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-      [v27 bounds];
-      [v26 setFrame:?];
+      view = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
+      view2 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+      [view2 bounds];
+      [view setFrame:?];
 
-      v28 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
-      [v28 setAutoresizingMask:18];
+      view3 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
+      [view3 setAutoresizingMask:18];
 
-      v29 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-      v30 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
-      [v29 insertSubview:v30 atIndex:0];
+      view4 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+      view5 = [(SUIAShockwaveViewController *)self->_shockwaveViewController view];
+      [view4 insertSubview:view5 atIndex:0];
 
-      v31 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
-      v32 = [v31 layer];
-      [v32 setDisableUpdateMask:2];
+      view6 = [(SBCaptureButtonDropletLaunchViewController *)self->_dropletLaunchViewController view];
+      layer = [view6 layer];
+      [layer setDisableUpdateMask:2];
 
       [(SUIAShockwaveViewController *)self->_shockwaveViewController didMoveToParentViewController:self->_dropletLaunchViewController];
       [(SBFSecureTouchPassThroughWindow *)self->_dropletLaunchWindow setHidden:0];
@@ -723,10 +723,10 @@ LABEL_6:
   [(SBFSecureTouchPassThroughWindow *)self->_dropletLaunchWindow setWindowLevel:v3];
 }
 
-- (void)_setShockwaveState:(int64_t)a3 completion:(id)a4
+- (void)_setShockwaveState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if (!self->_animatingShockwave && a3 != 4 && self->_animatingShockwaveCancellation)
+  completionCopy = completion;
+  if (!self->_animatingShockwave && state != 4 && self->_animatingShockwaveCancellation)
   {
     [(SUIAShockwaveViewController *)self->_shockwaveViewController setState:0 animated:0 recommendedNextAction:0 completion:0];
   }
@@ -743,9 +743,9 @@ LABEL_6:
   v10[3] = &unk_2783B3518;
   objc_copyWeak(v12, &location);
   v12[1] = v7;
-  v9 = v6;
+  v9 = completionCopy;
   v11 = v9;
-  [(SUIAShockwaveViewController *)shockwaveViewController setState:a3 animated:1 recommendedNextAction:0 completion:v10];
+  [(SUIAShockwaveViewController *)shockwaveViewController setState:state animated:1 recommendedNextAction:0 completion:v10];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -769,10 +769,10 @@ void __73__SBHardwareButtonBezelEffectsCoordinator__setShockwaveState_completion
   }
 }
 
-- (void)_setHintDropletWindowVisible:(BOOL)a3
+- (void)_setHintDropletWindowVisible:(BOOL)visible
 {
   hintDropletWindow = self->_hintDropletWindow;
-  if (a3)
+  if (visible)
   {
     if (!hintDropletWindow && [(SBHardwareButtonBezelEffectsCoordinator *)self hintDropletsEnabled])
     {
@@ -818,8 +818,8 @@ void __73__SBHardwareButtonBezelEffectsCoordinator__setShockwaveState_completion
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v3 = [v4 BOOLForKey:@"SBHardwareButtonHintDropletsEnabled"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v3 = [standardUserDefaults BOOLForKey:@"SBHardwareButtonHintDropletsEnabled"];
   }
 
   return v3;
@@ -827,53 +827,53 @@ void __73__SBHardwareButtonBezelEffectsCoordinator__setShockwaveState_completion
 
 - (id)_policyAggregator
 {
-  v2 = [(SBWindowScene *)self->_windowScene sceneManager];
-  v3 = [v2 policyAggregator];
+  sceneManager = [(SBWindowScene *)self->_windowScene sceneManager];
+  policyAggregator = [sceneManager policyAggregator];
 
-  return v3;
+  return policyAggregator;
 }
 
-- (void)_beginRequiringBacklightAssertionForReason:(id)a3
+- (void)_beginRequiringBacklightAssertionForReason:(id)reason
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBHardwareButtonBezelEffectsCoordinator _beginRequiringBacklightAssertionForReason:];
   }
 
-  [(NSCountedSet *)self->_backlightAssertionRequiringReasons addObject:v4];
+  [(NSCountedSet *)self->_backlightAssertionRequiringReasons addObject:reasonCopy];
   if (!self->_liveUpdatingAssertion && self->_windowScene)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Animating Bezel Effects, assertion first required for <%@>:", v4];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Animating Bezel Effects, assertion first required for <%@>:", reasonCopy];
     v6 = MEMORY[0x277CF0868];
     v7 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:self->_windowScene];
     v13[0] = v7;
     v8 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:self->_windowScene];
     v13[1] = v8;
-    v9 = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
-    v13[2] = v9;
+    ignoreWhenBacklightInactivates = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
+    v13[2] = ignoreWhenBacklightInactivates;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
-    v11 = [v6 acquireWithExplanation:v5 observer:0 attributes:v10];
+    v11 = [v6 acquireWithExplanation:reasonCopy observer:0 attributes:v10];
     liveUpdatingAssertion = self->_liveUpdatingAssertion;
     self->_liveUpdatingAssertion = v11;
   }
 }
 
-- (void)_endRequiringBacklightAssertionForReason:(id)a3
+- (void)_endRequiringBacklightAssertionForReason:(id)reason
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v7 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBHardwareButtonBezelEffectsCoordinator _endRequiringBacklightAssertionForReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSCountedSet *)self->_backlightAssertionRequiringReasons removeObject:v4];
-  v5 = [(NSCountedSet *)self->_backlightAssertionRequiringReasons anyObject];
+  [(NSCountedSet *)self->_backlightAssertionRequiringReasons removeObject:reasonCopy];
+  anyObject = [(NSCountedSet *)self->_backlightAssertionRequiringReasons anyObject];
 
-  if (!v5)
+  if (!anyObject)
   {
     [(BSInvalidatable *)self->_liveUpdatingAssertion invalidate];
     liveUpdatingAssertion = self->_liveUpdatingAssertion;

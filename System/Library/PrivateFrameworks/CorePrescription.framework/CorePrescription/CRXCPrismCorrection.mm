@@ -1,28 +1,28 @@
 @interface CRXCPrismCorrection
 - (CRXCPrismCorrection)init;
-- (CRXCPrismCorrection)initWithPrismOD:(id)a3 prismOS:(id)a4 type:(int64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (CRXCPrismCorrection)initWithPrismOD:(id)d prismOS:(id)s type:(int64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCPrismCorrection
 
-- (CRXCPrismCorrection)initWithPrismOD:(id)a3 prismOS:(id)a4 type:(int64_t)a5
+- (CRXCPrismCorrection)initWithPrismOD:(id)d prismOS:(id)s type:(int64_t)type
 {
-  *(&self->super.isa + OBJC_IVAR___CRXCPrismCorrection_prismOD) = a3;
-  *(&self->super.isa + OBJC_IVAR___CRXCPrismCorrection_prismOS) = a4;
-  *(&self->super.isa + OBJC_IVAR___CRXCPrismCorrection_type) = a5;
+  *(&self->super.isa + OBJC_IVAR___CRXCPrismCorrection_prismOD) = d;
+  *(&self->super.isa + OBJC_IVAR___CRXCPrismCorrection_prismOS) = s;
+  *(&self->super.isa + OBJC_IVAR___CRXCPrismCorrection_type) = type;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CRXCPrismCorrection();
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  sCopy = s;
   return [(CRXCPrismCorrection *)&v10 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24735B0BC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24735B0BC(coderCopy);
 }
 
 - (CRXCPrismCorrection)init

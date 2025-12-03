@@ -1,17 +1,17 @@
 @interface TSTCellDictionary
-- (BOOL)hasCellAtCellID:(TSUCellCoord)a3;
-- (BOOL)shouldUpgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)a3;
+- (BOOL)hasCellAtCellID:(TSUCellCoord)d;
+- (BOOL)shouldUpgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)coord;
 - (TSCECellCoordSet)allCellCoords;
 - (TSTCellDictionary)init;
 - (id).cxx_construct;
-- (id)cellAtCellID:(TSUCellCoord)a3;
+- (id)cellAtCellID:(TSUCellCoord)d;
 - (id)cellMap;
-- (id)concurrentCellMapForTable:(id)a3;
-- (void)applyBlockToAllCells:(id)a3;
+- (id)concurrentCellMapForTable:(id)table;
+- (void)applyBlockToAllCells:(id)cells;
 - (void)removeAllCells;
-- (void)removeCellAtCellID:(TSUCellCoord)a3;
-- (void)setCell:(id)a3 atCellID:(TSUCellCoord)a4;
-- (void)upgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)a3;
+- (void)removeCellAtCellID:(TSUCellCoord)d;
+- (void)setCell:(id)cell atCellID:(TSUCellCoord)d;
+- (void)upgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)coord;
 @end
 
 @implementation TSTCellDictionary
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (void)setCell:(id)a3 atCellID:(TSUCellCoord)a4
+- (void)setCell:(id)cell atCellID:(TSUCellCoord)d
 {
-  v29[0] = a4;
-  v10 = a3;
-  if (a4.row == 0x7FFFFFFF || (*&a4 & 0xFFFF00000000) == 0x7FFF00000000)
+  v29[0] = d;
+  cellCopy = cell;
+  if (d.row == 0x7FFFFFFF || (*&d & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTCellDictionary setCell:atCellID:]", v8, v9);
@@ -50,16 +50,16 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  if (v10)
+  if (cellCopy)
   {
-    v22 = (*(&a4.row + 3) & 0xFFFF00 ^ a4.row) % 0x14;
+    v22 = (*(&d.row + 3) & 0xFFFF00 ^ d.row) % 0x14;
     v23 = (self + 4 * v22);
     os_unfair_lock_lock(v23 + 2);
     v29[2] = v29;
     v24 = sub_221280404(&self->_cellsByCoord[v22].__table_.__bucket_list_.__ptr_, v29);
-    objc_storeStrong(v24 + 3, a3);
+    objc_storeStrong(v24 + 3, cell);
     os_unfair_lock_unlock(v23 + 2);
-    if (!self->_hasAnyRichTextCells && objc_msgSend_valueType(v10, v25, v26, v27, v28) == 9)
+    if (!self->_hasAnyRichTextCells && objc_msgSend_valueType(cellCopy, v25, v26, v27, v28) == 9)
     {
       os_unfair_lock_lock(&self->_hasRichTextLock);
       self->_hasAnyRichTextCells = 1;
@@ -68,23 +68,23 @@
   }
 }
 
-- (void)removeCellAtCellID:(TSUCellCoord)a3
+- (void)removeCellAtCellID:(TSUCellCoord)d
 {
-  v6 = a3;
-  if (a3.row != 0x7FFFFFFF && (*&a3 & 0xFFFF00000000) != 0x7FFF00000000)
+  dCopy = d;
+  if (d.row != 0x7FFFFFFF && (*&d & 0xFFFF00000000) != 0x7FFF00000000)
   {
-    v4 = (*(&a3.row + 3) & 0xFFFF00 ^ a3.row) % 0x14;
+    v4 = (*(&d.row + 3) & 0xFFFF00 ^ d.row) % 0x14;
     v5 = (self + 4 * v4);
     os_unfair_lock_lock(v5 + 2);
-    sub_221087EC8(&self->_cellsByCoord[v4].__table_.__bucket_list_.__ptr_, &v6);
+    sub_221087EC8(&self->_cellsByCoord[v4].__table_.__bucket_list_.__ptr_, &dCopy);
     os_unfair_lock_unlock(v5 + 2);
   }
 }
 
-- (id)cellAtCellID:(TSUCellCoord)a3
+- (id)cellAtCellID:(TSUCellCoord)d
 {
-  v23 = a3;
-  if (a3.row == 0x7FFFFFFF || (*&a3 & 0xFFFF00000000) == 0x7FFF00000000)
+  dCopy = d;
+  if (d.row == 0x7FFFFFFF || (*&d & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTCellDictionary cellAtCellID:]", v3, v4);
@@ -94,10 +94,10 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  v18 = (*(&a3.row + 3) & 0xFFFF00 ^ a3.row) % 0x14;
+  v18 = (*(&d.row + 3) & 0xFFFF00 ^ d.row) % 0x14;
   v19 = (self + 4 * v18);
   os_unfair_lock_lock(v19 + 2);
-  v20 = sub_221087F14(&self->_cellsByCoord[v18].__table_.__bucket_list_.__ptr_, &v23);
+  v20 = sub_221087F14(&self->_cellsByCoord[v18].__table_.__bucket_list_.__ptr_, &dCopy);
   if (v20)
   {
     v21 = v20[3];
@@ -113,10 +113,10 @@
   return v21;
 }
 
-- (BOOL)hasCellAtCellID:(TSUCellCoord)a3
+- (BOOL)hasCellAtCellID:(TSUCellCoord)d
 {
-  v22 = a3;
-  if (a3.row == 0x7FFFFFFF || (*&a3 & 0xFFFF00000000) == 0x7FFF00000000)
+  dCopy = d;
+  if (d.row == 0x7FFFFFFF || (*&d & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTCellDictionary hasCellAtCellID:]", v3, v4);
@@ -126,10 +126,10 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  v18 = (*(&a3.row + 3) & 0xFFFF00 ^ a3.row) % 0x14;
+  v18 = (*(&d.row + 3) & 0xFFFF00 ^ d.row) % 0x14;
   v19 = (self + 4 * v18);
   os_unfair_lock_lock(v19 + 2);
-  v20 = sub_221087F14(&self->_cellsByCoord[v18].__table_.__bucket_list_.__ptr_, &v22) != 0;
+  v20 = sub_221087F14(&self->_cellsByCoord[v18].__table_.__bucket_list_.__ptr_, &dCopy) != 0;
   os_unfair_lock_unlock(v19 + 2);
   return v20;
 }
@@ -193,9 +193,9 @@
   return v15;
 }
 
-- (id)concurrentCellMapForTable:(id)a3
+- (id)concurrentCellMapForTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   objc_msgSend_allCellCoords(self, v5, v6, v7, v8);
   v9 = TSCECellCoordSet::minColumn(&v31);
   v10 = TSCECellCoordSet::maxColumn(&v31);
@@ -218,8 +218,8 @@
     v24[3] = &unk_2784675C8;
     v27 = v9;
     v28 = v10 - v9 + 1;
-    v25 = v4;
-    v26 = self;
+    v25 = tableCopy;
+    selfCopy = self;
     v29 = v9;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -276,18 +276,18 @@
   return result;
 }
 
-- (void)applyBlockToAllCells:(id)a3
+- (void)applyBlockToAllCells:(id)cells
 {
   v4 = 0;
   lock = self->_lock;
-  v8 = a3;
+  cellsCopy = cells;
   do
   {
     os_unfair_lock_lock(&lock[v4]);
     for (i = self->_cellsByCoord[v4].__table_.__first_node_.__next_; i; i = *i)
     {
       v7 = i[3];
-      v8[2](v8, v7, (i + 2));
+      cellsCopy[2](cellsCopy, v7, (i + 2));
     }
 
     os_unfair_lock_unlock(&lock[v4++]);
@@ -296,25 +296,25 @@
   while (v4 != 20);
 }
 
-- (void)upgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)a3
+- (void)upgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)coord
 {
-  v5 = (a3->row ^ (a3->column << 8)) % 0x14;
+  v5 = (coord->row ^ (coord->column << 8)) % 0x14;
   v6 = (self + 4 * v5);
   os_unfair_lock_lock(v6 + 2);
-  TSCECellCoordSet::addCellCoord(&self->_cellCoordsToStyleUpgradeForFormulatext[v5], a3);
+  TSCECellCoordSet::addCellCoord(&self->_cellCoordsToStyleUpgradeForFormulatext[v5], coord);
 
   os_unfair_lock_unlock(v6 + 2);
 }
 
-- (BOOL)shouldUpgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)a3
+- (BOOL)shouldUpgradeStyleForFormulatextForCellCoord:(const TSUCellCoord *)coord
 {
-  v3 = a3;
-  v5 = (a3->row ^ (a3->column << 8)) % 0x14;
+  coordCopy = coord;
+  v5 = (coord->row ^ (coord->column << 8)) % 0x14;
   v6 = (self + 4 * v5);
   os_unfair_lock_lock(v6 + 2);
-  LOBYTE(v3) = TSCECellCoordSet::containsCellCoord(&self->_cellCoordsToStyleUpgradeForFormulatext[v5], v3);
+  LOBYTE(coordCopy) = TSCECellCoordSet::containsCellCoord(&self->_cellCoordsToStyleUpgradeForFormulatext[v5], coordCopy);
   os_unfair_lock_unlock(v6 + 2);
-  return v3;
+  return coordCopy;
 }
 
 - (id).cxx_construct

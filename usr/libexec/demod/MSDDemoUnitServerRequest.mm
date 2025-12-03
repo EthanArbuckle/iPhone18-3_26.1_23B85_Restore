@@ -22,11 +22,11 @@
 
 - (BOOL)isValid
 {
-  v3 = [(MSDCommandServerRequest *)self server];
-  if (v3)
+  server = [(MSDCommandServerRequest *)self server];
+  if (server)
   {
-    v4 = [(MSDCommandServerRequest *)self port];
-    v5 = v4 != 0;
+    port = [(MSDCommandServerRequest *)self port];
+    v5 = port != 0;
   }
 
   else

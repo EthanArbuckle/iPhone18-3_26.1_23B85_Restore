@@ -1,35 +1,35 @@
 @interface GKAchievementDescription
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)_achievementDescriptionFromGame:(id)a3 propertyListDictionary:(id)a4;
-+ (id)_loadLocalAchievementDescriptionsForGame:(id)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (void)loadAchievementDescriptionsForGame:(id)a3 withCompletionHandler:(id)a4;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)_achievementDescriptionFromGame:(id)game propertyListDictionary:(id)dictionary;
++ (id)_loadLocalAchievementDescriptionsForGame:(id)game;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (void)loadAchievementDescriptionsForGame:(id)game withCompletionHandler:(id)handler;
 + (void)loadAchievementDescriptionsWithCompletionHandler:(void *)completionHandler;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GKAchievementDescription)initWithCoder:(id)a3;
-- (GKAchievementDescription)initWithInternalRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GKAchievementDescription)initWithCoder:(id)coder;
+- (GKAchievementDescription)initWithInternalRepresentation:(id)representation;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKAchievementDescription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKAchievementDescription *)self internal];
-    v7 = [v5 internal];
+    v5 = equalCopy;
+    internal = [(GKAchievementDescription *)self internal];
+    internal2 = [v5 internal];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internal isEqual:internal2];
   }
 
   else
@@ -42,18 +42,18 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKAchievementDescription *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKAchievementDescription *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (GKAchievementDescription)initWithInternalRepresentation:(id)a3
+- (GKAchievementDescription)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
-    v4 = +[(GKInternalRepresentation *)GKAchievementInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKAchievementInternal];
   }
 
   v8.receiver = self;
@@ -62,29 +62,29 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_internal, v4);
+    objc_storeStrong(&v5->_internal, representationCopy);
   }
 
   return v6;
 }
 
-- (GKAchievementDescription)initWithCoder:(id)a3
+- (GKAchievementDescription)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"internal"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"internal"];
 
   v9 = [(GKAchievementDescription *)self initWithInternalRepresentation:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKAchievementDescription *)self internal];
-  [v4 encodeObject:v5 forKey:@"internal"];
+  coderCopy = coder;
+  internal = [(GKAchievementDescription *)self internal];
+  [coderCopy encodeObject:internal forKey:@"internal"];
 }
 
 - (id)description
@@ -92,8 +92,8 @@
   v10.receiver = self;
   v10.super_class = GKAchievementDescription;
   v3 = [(GKAchievementDescription *)&v10 description];
-  v4 = [(GKAchievementDescription *)self identifier];
-  v5 = [(GKAchievementDescription *)self title];
+  identifier = [(GKAchievementDescription *)self identifier];
+  title = [(GKAchievementDescription *)self title];
   if ([(GKAchievementDescription *)self isHidden])
   {
     v6 = @"hidden";
@@ -104,8 +104,8 @@
     v6 = @"visible";
   }
 
-  v7 = [(GKAchievementDescription *)self achievedDescription];
-  v8 = [v3 stringByAppendingFormat:@"id: %@\t%@\t%@\t%@", v4, v5, v6, v7];
+  achievedDescription = [(GKAchievementDescription *)self achievedDescription];
+  v8 = [v3 stringByAppendingFormat:@"id: %@\t%@\t%@\t%@", identifier, title, v6, achievedDescription];
 
   return v8;
 }
@@ -120,7 +120,7 @@
   v7[3] = &unk_2785DDCB0;
   v8 = v4;
   v6 = v4;
-  [a1 loadAchievementDescriptionsForGame:v5 withCompletionHandler:v7];
+  [self loadAchievementDescriptionsForGame:v5 withCompletionHandler:v7];
 }
 
 void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -149,36 +149,36 @@ void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHan
   }
 }
 
-+ (id)_achievementDescriptionFromGame:(id)a3 propertyListDictionary:(id)a4
++ (id)_achievementDescriptionFromGame:(id)game propertyListDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
+  dictionaryCopy = dictionary;
+  gameCopy = game;
   v7 = objc_alloc_init(GKLocalizedAchievementDescription);
-  [(GKLocalizedAchievementDescription *)v7 setGame:v6];
+  [(GKLocalizedAchievementDescription *)v7 setGame:gameCopy];
 
   v8 = +[(GKInternalRepresentation *)GKAchievementInternal];
-  v9 = [v5 objectForKeyedSubscript:@"identifier"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   [v8 setIdentifier:v9];
 
-  v10 = [v5 objectForKeyedSubscript:@"nameKey"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"nameKey"];
   [v8 setTitle:v10];
 
-  v11 = [v5 objectForKeyedSubscript:@"earnedDescriptionKey"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"earnedDescriptionKey"];
   [v8 setAchievedDescription:v11];
 
-  v12 = [v5 objectForKeyedSubscript:@"unearnedDescriptionKey"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"unearnedDescriptionKey"];
   [v8 setUnachievedDescription:v12];
 
-  v13 = [v5 objectForKeyedSubscript:@"maximumPoints"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"maximumPoints"];
   [v8 setMaximumPoints:{objc_msgSend(v13, "intValue")}];
 
-  v14 = [v5 objectForKeyedSubscript:@"hiddenUntilSubmitted"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"hiddenUntilSubmitted"];
   [v8 setHidden:{objc_msgSend(v14, "BOOLValue")}];
 
-  v15 = [v5 objectForKeyedSubscript:@"canReplay"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"canReplay"];
   [v8 setReplayable:{objc_msgSend(v15, "BOOLValue")}];
 
-  v16 = [v5 objectForKeyedSubscript:@"iconImageName"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"iconImageName"];
 
   [(GKLocalizedAchievementDescription *)v7 setIconImageName:v16];
   [(GKAchievementDescription *)v7 setInternal:v8];
@@ -186,22 +186,22 @@ void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHan
   return v7;
 }
 
-+ (id)_loadLocalAchievementDescriptionsForGame:(id)a3
++ (id)_loadLocalAchievementDescriptionsForGame:(id)game
 {
-  v4 = a3;
-  v5 = [v4 gameDescriptorDictionary];
-  v6 = [GKContentPropertyList localPropertyListForGameDescriptor:v5];
+  gameCopy = game;
+  gameDescriptorDictionary = [gameCopy gameDescriptorDictionary];
+  v6 = [GKContentPropertyList localPropertyListForGameDescriptor:gameDescriptorDictionary];
 
-  v7 = [v6 achievementDescriptions];
-  if (v7)
+  achievementDescriptions = [v6 achievementDescriptions];
+  if (achievementDescriptions)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __69__GKAchievementDescription__loadLocalAchievementDescriptionsForGame___block_invoke;
     v10[3] = &unk_2785DE398;
-    v12 = a1;
-    v11 = v4;
-    v8 = [v7 _gkMapWithBlock:v10];
+    selfCopy = self;
+    v11 = gameCopy;
+    v8 = [achievementDescriptions _gkMapWithBlock:v10];
   }
 
   else
@@ -212,11 +212,11 @@ void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHan
   return v8;
 }
 
-+ (void)loadAchievementDescriptionsForGame:(id)a3 withCompletionHandler:(id)a4
++ (void)loadAchievementDescriptionsForGame:(id)game withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _loadLocalAchievementDescriptionsForGame:v6];
+  gameCopy = game;
+  handlerCopy = handler;
+  v8 = [self _loadLocalAchievementDescriptionsForGame:gameCopy];
   v9 = v8;
   if (v8)
   {
@@ -224,9 +224,9 @@ void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHan
     block[1] = 3221225472;
     block[2] = __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withCompletionHandler___block_invoke;
     block[3] = &unk_2785DDC10;
-    v32 = v7;
+    v32 = handlerCopy;
     v31 = v8;
-    v10 = v7;
+    v10 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     v11 = v32;
@@ -244,8 +244,8 @@ void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHan
     v13 = dispatch_group_create();
     dispatch_group_enter(v13);
     v14 = +[GKDaemonProxy proxyForLocalPlayer];
-    v15 = [v14 gameStatService];
-    v16 = [v6 gameDescriptor];
+    gameStatService = [v14 gameStatService];
+    gameDescriptor = [gameCopy gameDescriptor];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withCompletionHandler___block_invoke_49;
@@ -255,16 +255,16 @@ void __77__GKAchievementDescription_loadAchievementDescriptionsWithCompletionHan
     v27 = v28;
     v18 = v13;
     v26 = v18;
-    [v15 getAchievementDescriptionsForGameDescriptor:v16 handler:v24];
+    [gameStatService getAchievementDescriptionsForGameDescriptor:gameDescriptor handler:v24];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withCompletionHandler___block_invoke_2;
     v20[3] = &unk_2785DE3E8;
     v21 = v17;
-    v22 = v7;
+    v22 = handlerCopy;
     v23 = v28;
-    v10 = v7;
+    v10 = handlerCopy;
     v19 = v17;
     dispatch_group_notify(v18, MEMORY[0x277D85CD0], v20);
 
@@ -350,9 +350,9 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
   return result;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKAchievementDescription;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -363,7 +363,7 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -371,7 +371,7 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKAchievementDescription;
@@ -384,14 +384,14 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
 
   else
   {
-    v8 = [(GKAchievementDescription *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKAchievementDescription *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKAchievementDescription;
@@ -402,18 +402,18 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
 
   else
   {
-    v6 = [(GKAchievementDescription *)self forwardingTargetForSelector:a3];
+    v6 = [(GKAchievementDescription *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -424,7 +424,7 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
       if (v4)
       {
 
-        LOBYTE(v4) = [GKAchievementInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKAchievementInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -437,21 +437,21 @@ uint64_t __85__GKAchievementDescription_loadAchievementDescriptionsForGame_withC
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKAchievementDescription *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKAchievementDescription *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKAchievementDescription *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKAchievementDescription *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
 @end

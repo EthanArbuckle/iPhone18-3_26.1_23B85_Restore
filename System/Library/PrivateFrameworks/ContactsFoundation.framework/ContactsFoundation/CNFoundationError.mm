@@ -1,60 +1,60 @@
 @interface CNFoundationError
-+ (BOOL)ifResultIsNo:(BOOL)a3 setOutputError:(id *)a4 withBlock:(id)a5;
-+ (BOOL)isCertificateError:(id)a3;
-+ (BOOL)isError:(id)a3 errorWithDomain:(id)a4 code:(int64_t)a5;
-+ (BOOL)isFileNotFoundError:(id)a3;
-+ (BOOL)isXPCServiceError:(id)a3;
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 underlyingException:(id)a4;
++ (BOOL)ifResultIsNo:(BOOL)no setOutputError:(id *)error withBlock:(id)block;
++ (BOOL)isCertificateError:(id)error;
++ (BOOL)isError:(id)error errorWithDomain:(id)domain code:(int64_t)code;
++ (BOOL)isFileNotFoundError:(id)error;
++ (BOOL)isXPCServiceError:(id)error;
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error;
++ (id)errorWithCode:(int64_t)code underlyingException:(id)exception;
 + (id)errorWithErrno;
-+ (id)errorWithErrnoAndUserInfo:(id)a3;
-+ (id)ifResultIsNil:(id)a3 setOutputError:(id *)a4 toError:(id)a5;
-+ (id)ifResultIsNil:(id)a3 setOutputError:(id *)a4 withBlock:(id)a5;
++ (id)errorWithErrnoAndUserInfo:(id)info;
++ (id)ifResultIsNil:(id)nil setOutputError:(id *)error toError:(id)toError;
++ (id)ifResultIsNil:(id)nil setOutputError:(id *)error withBlock:(id)block;
 @end
 
 @implementation CNFoundationError
 
-+ (BOOL)isFileNotFoundError:(id)a3
++ (BOOL)isFileNotFoundError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = *MEMORY[0x1E696A250];
-  if ([a1 isError:v4 errorWithDomain:*MEMORY[0x1E696A250] code:260] & 1) != 0 || (objc_msgSend(a1, "isError:errorWithDomain:code:", v4, v5, 4))
+  if ([self isError:errorCopy errorWithDomain:*MEMORY[0x1E696A250] code:260] & 1) != 0 || (objc_msgSend(self, "isError:errorWithDomain:code:", errorCopy, v5, 4))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [a1 isError:v4 errorWithDomain:*MEMORY[0x1E696A798] code:2];
+    v6 = [self isError:errorCopy errorWithDomain:*MEMORY[0x1E696A798] code:2];
   }
 
   return v6;
 }
 
-+ (BOOL)isCertificateError:(id)a3
++ (BOOL)isCertificateError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = *MEMORY[0x1E696A978];
-  if ([a1 isError:v4 errorWithDomain:*MEMORY[0x1E696A978] code:-1203] & 1) != 0 || (objc_msgSend(a1, "isError:errorWithDomain:code:", v4, v5, -1201) & 1) != 0 || (objc_msgSend(a1, "isError:errorWithDomain:code:", v4, v5, -1204))
+  if ([self isError:errorCopy errorWithDomain:*MEMORY[0x1E696A978] code:-1203] & 1) != 0 || (objc_msgSend(self, "isError:errorWithDomain:code:", errorCopy, v5, -1201) & 1) != 0 || (objc_msgSend(self, "isError:errorWithDomain:code:", errorCopy, v5, -1204))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [a1 isError:v4 errorWithDomain:v5 code:-1202];
+    v6 = [self isError:errorCopy errorWithDomain:v5 code:-1202];
   }
 
   return v6;
 }
 
-+ (BOOL)isXPCServiceError:(id)a3
++ (BOOL)isXPCServiceError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] >= 4096 && objc_msgSend(v3, "code") <= 4224)
+  errorCopy = error;
+  if ([errorCopy code] >= 4096 && objc_msgSend(errorCopy, "code") <= 4224)
   {
-    v5 = [v3 domain];
-    v4 = [v5 isEqualToString:*MEMORY[0x1E696A250]];
+    domain = [errorCopy domain];
+    v4 = [domain isEqualToString:*MEMORY[0x1E696A250]];
   }
 
   else
@@ -65,14 +65,14 @@
   return v4;
 }
 
-+ (BOOL)isError:(id)a3 errorWithDomain:(id)a4 code:(int64_t)a5
++ (BOOL)isError:(id)error errorWithDomain:(id)domain code:(int64_t)code
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 code] == a5)
+  errorCopy = error;
+  domainCopy = domain;
+  if ([errorCopy code] == code)
   {
-    v9 = [v7 domain];
-    v10 = [v8 isEqualToString:v9];
+    domain = [errorCopy domain];
+    v10 = [domainCopy isEqualToString:domain];
   }
 
   else
@@ -87,26 +87,26 @@
 {
   v3 = *__error();
 
-  return [a1 errorWithErrno:v3 userInfo:0];
+  return [self errorWithErrno:v3 userInfo:0];
 }
 
-+ (id)errorWithErrnoAndUserInfo:(id)a3
++ (id)errorWithErrnoAndUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [a1 errorWithErrno:*__error() userInfo:v4];
+  infoCopy = info;
+  v5 = [self errorWithErrno:*__error() userInfo:infoCopy];
 
   return v5;
 }
 
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
     v11 = *MEMORY[0x1E696AA08];
-    v12[0] = v5;
+    v12[0] = errorCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
@@ -115,22 +115,22 @@
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:a3 userInfo:v7];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:code userInfo:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)errorWithCode:(int64_t)a3 underlyingException:(id)a4
++ (id)errorWithCode:(int64_t)code underlyingException:(id)exception
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  exceptionCopy = exception;
+  v6 = exceptionCopy;
+  if (exceptionCopy)
   {
     v11 = @"com.apple.contacts.underlying-exception";
-    v12[0] = v5;
+    v12[0] = exceptionCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
@@ -139,53 +139,53 @@
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:a3 userInfo:v7];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:code userInfo:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)ifResultIsNil:(id)a3 setOutputError:(id *)a4 toError:(id)a5
++ (id)ifResultIsNil:(id)nil setOutputError:(id *)error toError:(id)toError
 {
-  v8 = a5;
+  toErrorCopy = toError;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__CNFoundationError_ifResultIsNil_setOutputError_toError___block_invoke;
   v12[3] = &unk_1E6ED8090;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a1 ifResultIsNil:a3 setOutputError:a4 withBlock:v12];
+  v13 = toErrorCopy;
+  v9 = toErrorCopy;
+  v10 = [self ifResultIsNil:nil setOutputError:error withBlock:v12];
 
   return v10;
 }
 
-+ (id)ifResultIsNil:(id)a3 setOutputError:(id *)a4 withBlock:(id)a5
++ (id)ifResultIsNil:(id)nil setOutputError:(id *)error withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  nilCopy = nil;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (nilCopy)
   {
-    v10 = v7;
+    v10 = nilCopy;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = (*(v8 + 2))(v8);
+    *error = (*(blockCopy + 2))(blockCopy);
   }
 
-  return v7;
+  return nilCopy;
 }
 
-+ (BOOL)ifResultIsNo:(BOOL)a3 setOutputError:(id *)a4 withBlock:(id)a5
++ (BOOL)ifResultIsNo:(BOOL)no setOutputError:(id *)error withBlock:(id)block
 {
-  if (a4 && !a3)
+  if (error && !no)
   {
-    *a4 = (*(a5 + 2))(a5, a2);
+    *error = (*(block + 2))(block, a2);
   }
 
-  return a3;
+  return no;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface GDGraphDateRelationship
-- (GDGraphDateRelationship)initWithStartDateField:(id)a3 endDateField:(id)a4 occurrenceDateField:(id)a5 allStartDateField:(id)a6 allEndDateField:(id)a7 allOccurrenceDateField:(id)a8;
+- (GDGraphDateRelationship)initWithStartDateField:(id)field endDateField:(id)dateField occurrenceDateField:(id)occurrenceDateField allStartDateField:(id)startDateField allEndDateField:(id)endDateField allOccurrenceDateField:(id)allOccurrenceDateField;
 @end
 
 @implementation GDGraphDateRelationship
 
-- (GDGraphDateRelationship)initWithStartDateField:(id)a3 endDateField:(id)a4 occurrenceDateField:(id)a5 allStartDateField:(id)a6 allEndDateField:(id)a7 allOccurrenceDateField:(id)a8
+- (GDGraphDateRelationship)initWithStartDateField:(id)field endDateField:(id)dateField occurrenceDateField:(id)occurrenceDateField allStartDateField:(id)startDateField allEndDateField:(id)endDateField allOccurrenceDateField:(id)allOccurrenceDateField
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  fieldCopy = field;
+  dateFieldCopy = dateField;
+  occurrenceDateFieldCopy = occurrenceDateField;
+  startDateFieldCopy = startDateField;
+  endDateFieldCopy = endDateField;
+  allOccurrenceDateFieldCopy = allOccurrenceDateField;
   v24.receiver = self;
   v24.super_class = GDGraphDateRelationship;
   v18 = [(GDGraphDateRelationship *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_startDate, a3);
-    objc_storeStrong(&v19->_endDate, a4);
-    objc_storeStrong(&v19->_occurrenceDate, a5);
-    objc_storeStrong(&v19->_allStartDate, a6);
-    objc_storeStrong(&v19->_allEndDate, a7);
-    objc_storeStrong(&v19->_allOccurrenceDate, a8);
+    objc_storeStrong(&v18->_startDate, field);
+    objc_storeStrong(&v19->_endDate, dateField);
+    objc_storeStrong(&v19->_occurrenceDate, occurrenceDateField);
+    objc_storeStrong(&v19->_allStartDate, startDateField);
+    objc_storeStrong(&v19->_allEndDate, endDateField);
+    objc_storeStrong(&v19->_allOccurrenceDate, allOccurrenceDateField);
   }
 
   return v19;

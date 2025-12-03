@@ -1,12 +1,12 @@
 @interface PPEventCache
-- (PPEventCache)initWithEventStorage:(id)a3;
-- (id)objectForRange:(_NSRange)a3;
-- (id)refreshCacheWithChanges:(id)a3;
+- (PPEventCache)initWithEventStorage:(id)storage;
+- (id)objectForRange:(_NSRange)range;
+- (id)refreshCacheWithChanges:(id)changes;
 - (void)_scheduleCacheBackingFileUpdate;
-- (void)evictAllEventsNotInRange:(_NSRange)a3;
+- (void)evictAllEventsNotInRange:(_NSRange)range;
 - (void)removeAllObjects;
-- (void)setEventHighlight:(id)a3;
-- (void)setExtraSecondsToBackfill:(unint64_t)a3;
+- (void)setEventHighlight:(id)highlight;
+- (void)setExtraSecondsToBackfill:(unint64_t)backfill;
 @end
 
 @implementation PPEventCache
@@ -21,23 +21,23 @@ uint64_t __73__PPEventCache_cachedEventHighlightForEvent_rankingOptions_trialWra
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setEventHighlight:(id)a3
+- (void)setEventHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = [v4 eventIdentifier];
-  if (v5)
+  highlightCopy = highlight;
+  eventIdentifier = [highlightCopy eventIdentifier];
+  if (eventIdentifier)
   {
     v6 = [PPEventFeatureScore alloc];
-    v7 = [v4 features];
-    [v4 score];
-    v9 = -[PPEventFeatureScore initWithFeatureValues:weightedScore:prominentFeature:](v6, "initWithFeatureValues:weightedScore:prominentFeature:", v7, [v4 prominentFeature], v8);
+    features = [highlightCopy features];
+    [highlightCopy score];
+    v9 = -[PPEventFeatureScore initWithFeatureValues:weightedScore:prominentFeature:](v6, "initWithFeatureValues:weightedScore:prominentFeature:", features, [highlightCopy prominentFeature], v8);
 
     data = self->_data;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __34__PPEventCache_setEventHighlight___block_invoke;
     v13[3] = &unk_2789738F8;
-    v14 = v5;
+    v14 = eventIdentifier;
     v15 = v9;
     v11 = v9;
     [(_PASLock *)data runWithLockAcquired:v13];
@@ -54,10 +54,10 @@ uint64_t __73__PPEventCache_cachedEventHighlightForEvent_rankingOptions_trialWra
   }
 }
 
-- (void)evictAllEventsNotInRange:(_NSRange)a3
+- (void)evictAllEventsNotInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v39 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
   data = self->_data;
@@ -196,15 +196,15 @@ uint64_t __32__PPEventCache_removeAllObjects__block_invoke(uint64_t a1, void *a2
   return [v4 removeAllObjects];
 }
 
-- (id)refreshCacheWithChanges:(id)a3
+- (id)refreshCacheWithChanges:(id)changes
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v64 = self;
+  changesCopy = changes;
+  selfCopy = self;
   [(PPCalendarInternPool *)self->_calendarInternPool clearPool];
   v5 = objc_opt_new();
   v60 = objc_opt_new();
-  v6 = [v4 _pas_filteredArrayWithTest:&__block_literal_global_64];
+  v6 = [changesCopy _pas_filteredArrayWithTest:&__block_literal_global_64];
   v7 = objc_alloc(MEMORY[0x277CBEAC0]);
   v8 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_69];
   v9 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_71];
@@ -214,7 +214,7 @@ uint64_t __32__PPEventCache_removeAllObjects__block_invoke(uint64_t a1, void *a2
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v4;
+  obj = changesCopy;
   v10 = [obj countByEnumeratingWithState:&v82 objects:v87 count:16];
   if (v10)
   {
@@ -236,8 +236,8 @@ uint64_t __32__PPEventCache_removeAllObjects__block_invoke(uint64_t a1, void *a2
         {
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v15 = [v13 ownerID];
-            __40__PPEventCache_refreshCacheWithChanges___block_invoke(v15, v5);
+            ownerID = [v13 ownerID];
+            __40__PPEventCache_refreshCacheWithChanges___block_invoke(ownerID, v5);
 
             goto LABEL_10;
           }
@@ -246,43 +246,43 @@ uint64_t __32__PPEventCache_removeAllObjects__block_invoke(uint64_t a1, void *a2
           if (objc_opt_isKindOfClass())
           {
             v16 = v13;
-            if ([v16 changeType] == 2 || (storage = v64->_storage, objc_msgSend(v16, "calendarID"), v18 = objc_claimAutoreleasedReturnValue(), LODWORD(storage) = -[PPEventStorage shouldIgnoreEventsOnCalendarWithObjectID:](storage, "shouldIgnoreEventsOnCalendarWithObjectID:", v18), v18, !storage))
+            if ([v16 changeType] == 2 || (storage = selfCopy->_storage, objc_msgSend(v16, "calendarID"), v18 = objc_claimAutoreleasedReturnValue(), LODWORD(storage) = -[PPEventStorage shouldIgnoreEventsOnCalendarWithObjectID:](storage, "shouldIgnoreEventsOnCalendarWithObjectID:", v18), v18, !storage))
             {
-              v27 = [v16 changeType];
-              if (v27 != 2)
+              changeType = [v16 changeType];
+              if (changeType != 2)
               {
-                if (v27 != 1)
+                if (changeType != 1)
                 {
-                  if (v27)
+                  if (changeType)
                   {
                     goto LABEL_36;
                   }
 
-                  v28 = [v16 originalItemID];
-                  v29 = v28 == 0;
+                  originalItemID = [v16 originalItemID];
+                  v29 = originalItemID == 0;
 
                   if (!v29)
                   {
-                    v30 = [v16 originalItemID];
-                    __40__PPEventCache_refreshCacheWithChanges___block_invoke(v30, v5);
+                    originalItemID2 = [v16 originalItemID];
+                    __40__PPEventCache_refreshCacheWithChanges___block_invoke(originalItemID2, v5);
                   }
                 }
 
-                v20 = [v16 changedObjectID];
-                __40__PPEventCache_refreshCacheWithChanges___block_invoke(v20, v5);
+                changedObjectID = [v16 changedObjectID];
+                __40__PPEventCache_refreshCacheWithChanges___block_invoke(changedObjectID, v5);
                 goto LABEL_35;
               }
 
-              v31 = [v16 changedObjectID];
-              __40__PPEventCache_refreshCacheWithChanges___block_invoke(v31, v60);
+              changedObjectID2 = [v16 changedObjectID];
+              __40__PPEventCache_refreshCacheWithChanges___block_invoke(changedObjectID2, v60);
 
-              v32 = [v16 originalItemID];
-              LOBYTE(v31) = v32 == 0;
+              originalItemID3 = [v16 originalItemID];
+              LOBYTE(changedObjectID2) = originalItemID3 == 0;
 
-              if ((v31 & 1) == 0)
+              if ((changedObjectID2 & 1) == 0)
               {
-                v20 = [v16 originalItemID];
-                __40__PPEventCache_refreshCacheWithChanges___block_invoke(v20, v5);
+                changedObjectID = [v16 originalItemID];
+                __40__PPEventCache_refreshCacheWithChanges___block_invoke(changedObjectID, v5);
                 goto LABEL_35;
               }
             }
@@ -297,8 +297,8 @@ uint64_t __32__PPEventCache_removeAllObjects__block_invoke(uint64_t a1, void *a2
                 _os_log_debug_impl(&dword_23224A000, v19, OS_LOG_TYPE_DEBUG, "PPEventChange: filtered out subscribed calendar event change %@", buf, 0xCu);
               }
 
-              v20 = [v16 changedObjectID];
-              __40__PPEventCache_refreshCacheWithChanges___block_invoke(v20, v60);
+              changedObjectID = [v16 changedObjectID];
+              __40__PPEventCache_refreshCacheWithChanges___block_invoke(changedObjectID, v60);
 LABEL_35:
             }
 
@@ -316,16 +316,16 @@ LABEL_36:
               goto LABEL_31;
             }
 
-            v22 = v64->_storage;
-            v23 = [v21 ownerID];
-            v24 = [v58 objectForKeyedSubscript:v23];
+            v22 = selfCopy->_storage;
+            ownerID2 = [v21 ownerID];
+            v24 = [v58 objectForKeyedSubscript:ownerID2];
             LODWORD(v22) = [(PPEventStorage *)v22 shouldIgnoreEventsOnCalendarWithObjectID:v24];
 
             if (!v22)
             {
 LABEL_31:
-              v26 = [v21 ownerID];
-              __40__PPEventCache_refreshCacheWithChanges___block_invoke(v26, v5);
+              ownerID3 = [v21 ownerID];
+              __40__PPEventCache_refreshCacheWithChanges___block_invoke(ownerID3, v5);
             }
 
             else
@@ -338,8 +338,8 @@ LABEL_31:
                 _os_log_debug_impl(&dword_23224A000, v25, OS_LOG_TYPE_DEBUG, "PPEventChange: filtered out subscribed calendar event participant change %@", buf, 0xCu);
               }
 
-              v26 = [v21 changedObjectID];
-              __40__PPEventCache_refreshCacheWithChanges___block_invoke(v26, v60);
+              ownerID3 = [v21 changedObjectID];
+              __40__PPEventCache_refreshCacheWithChanges___block_invoke(ownerID3, v60);
             }
           }
         }
@@ -369,9 +369,9 @@ LABEL_10:
   v35 = [v60 setByAddingObjectsFromSet:v5];
   objc_autoreleasePoolPop(v34);
   v36 = v35;
-  if (v64)
+  if (selfCopy)
   {
-    data = v64->_data;
+    data = selfCopy->_data;
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __36__PPEventCache__deleteCachedEvents___block_invoke;
@@ -391,7 +391,7 @@ LABEL_10:
   v79 = __Block_byref_object_copy__6604;
   v80 = __Block_byref_object_dispose__6605;
   v81 = 0;
-  v39 = v64->_data;
+  v39 = selfCopy->_data;
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __40__PPEventCache_refreshCacheWithChanges___block_invoke_77;
@@ -422,19 +422,19 @@ LABEL_10:
 
         v44 = *(*(&v71 + 1) + 8 * v43);
         v45 = objc_autoreleasePoolPush();
-        v46 = v64->_storage;
+        v46 = selfCopy->_storage;
         v68[0] = MEMORY[0x277D85DD0];
         v68[1] = 3221225472;
         v68[2] = __40__PPEventCache_refreshCacheWithChanges___block_invoke_2_80;
         v68[3] = &unk_2789763B0;
-        v68[4] = v64;
+        v68[4] = selfCopy;
         v68[5] = v44;
         v70 = &v76;
         v69 = v63;
         [(PPEventStorage *)v46 runBlockWithPurgerDisabled:v68];
         if (!(v40 % 0xA))
         {
-          [(PPEventStorage *)v64->_storage attemptToPurgeImmediately];
+          [(PPEventStorage *)selfCopy->_storage attemptToPurgeImmediately];
         }
 
         objc_autoreleasePoolPop(v45);
@@ -457,7 +457,7 @@ LABEL_10:
   v65[3] = &unk_278979190;
   v48 = v47;
   v66 = v48;
-  v67 = v64;
+  v67 = selfCopy;
   v49 = [v63 _pas_mappedArrayWithTransform:v65];
 
   v50 = pp_events_log_handle();
@@ -478,13 +478,13 @@ LABEL_10:
   v52 = v49;
   if ([v52 count])
   {
-    v53 = v64->_data;
+    v53 = selfCopy->_data;
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __37__PPEventCache__refreshCachedEvents___block_invoke;
     v89 = &unk_2789738F8;
     *&v90 = v52;
-    *(&v90 + 1) = v64;
+    *(&v90 + 1) = selfCopy;
     [(_PASLock *)v53 runWithLockAcquired:buf];
   }
 
@@ -578,9 +578,9 @@ void __37__PPEventCache__refreshCachedEvents___block_invoke(uint64_t a1, void *a
 
 - (void)_scheduleCacheBackingFileUpdate
 {
-  if (a1)
+  if (self)
   {
-    v2 = atomic_exchange((a1 + 32), 1u);
+    v2 = atomic_exchange((self + 32), 1u);
     v3 = pp_events_log_handle();
     v4 = v3;
     if (v2)
@@ -601,9 +601,9 @@ void __37__PPEventCache__refreshCachedEvents___block_invoke(uint64_t a1, void *a
       }
 
       v5 = os_transaction_create();
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v6 = [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:0.5];
-      v7 = *(a1 + 40);
+      v7 = *(self + 40);
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __47__PPEventCache__scheduleCacheBackingFileUpdate__block_invoke;
@@ -756,10 +756,10 @@ BOOL __40__PPEventCache_refreshCacheWithChanges___block_invoke_2(uint64_t a1, vo
   return v4;
 }
 
-- (id)objectForRange:(_NSRange)a3
+- (id)objectForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v25 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
   data = self->_data;
@@ -769,7 +769,7 @@ BOOL __40__PPEventCache_refreshCacheWithChanges___block_invoke_2(uint64_t a1, vo
   v18 = &unk_278973988;
   v21 = location;
   v22 = length;
-  v19 = self;
+  selfCopy = self;
   v8 = v6;
   v20 = v8;
   [(_PASLock *)data runWithLockAcquired:&v15];
@@ -1016,24 +1016,24 @@ void __31__PPEventCache_objectForRange___block_invoke_55(uint64_t a1, void *a2)
   [v3 addObject:v6];
 }
 
-- (void)setExtraSecondsToBackfill:(unint64_t)a3
+- (void)setExtraSecondsToBackfill:(unint64_t)backfill
 {
   data = self->_data;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__PPEventCache_setExtraSecondsToBackfill___block_invoke;
   v4[3] = &__block_descriptor_40_e33_v16__0__PPEventCacheGuardedData_8l;
-  v4[4] = a3;
+  v4[4] = backfill;
   [(_PASLock *)data runWithLockAcquired:v4];
 }
 
-- (PPEventCache)initWithEventStorage:(id)a3
+- (PPEventCache)initWithEventStorage:(id)storage
 {
-  v6 = a3;
-  if (!v6)
+  storageCopy = storage;
+  if (!storageCopy)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PPEventCache.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"eventStorage"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPEventCache.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"eventStorage"}];
   }
 
   v33.receiver = self;
@@ -1042,7 +1042,7 @@ void __31__PPEventCache_objectForRange___block_invoke_55(uint64_t a1, void *a2)
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_storage, a3);
+    objc_storeStrong(&v7->_storage, storage);
     v9 = objc_opt_new();
     v10 = objc_opt_new();
     v11 = v9[1];

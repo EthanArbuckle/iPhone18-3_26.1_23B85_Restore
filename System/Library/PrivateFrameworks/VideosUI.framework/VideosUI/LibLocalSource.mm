@@ -6,7 +6,7 @@
 
 - (void)sideBandContentChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E41343A0();
 }
 

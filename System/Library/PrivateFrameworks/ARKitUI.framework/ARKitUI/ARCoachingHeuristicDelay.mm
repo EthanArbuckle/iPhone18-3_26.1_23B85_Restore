@@ -1,11 +1,11 @@
 @interface ARCoachingHeuristicDelay
-- (ARCoachingHeuristicDelay)initWithDuration:(double)a3;
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (ARCoachingHeuristicDelay)initWithDuration:(double)duration;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicDelay
 
-- (ARCoachingHeuristicDelay)initWithDuration:(double)a3
+- (ARCoachingHeuristicDelay)initWithDuration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = ARCoachingHeuristicDelay;
@@ -13,24 +13,24 @@
   if (result)
   {
     result->_endTime = -1.0;
-    result->_duration = a3;
+    result->_duration = duration;
   }
 
   return result;
 }
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
-  v7 = a3;
+  frameCopy = frame;
   if (![(ARCoachingHeuristic *)self satisfied])
   {
     if (self->_endTime < 0.0)
     {
-      [v7 timestamp];
+      [frameCopy timestamp];
       self->_endTime = v5 + self->_duration;
     }
 
-    [v7 timestamp];
+    [frameCopy timestamp];
     [(ARCoachingHeuristic *)self setSatisfied:v6 >= self->_endTime];
   }
 }

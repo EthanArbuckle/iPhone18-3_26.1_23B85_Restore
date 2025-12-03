@@ -1,5 +1,5 @@
 @interface PSMain
-- (BOOL)canAddEmitterToDoc:(void *)a3;
+- (BOOL)canAddEmitterToDoc:(void *)doc;
 - (PSMain)init;
 @end
 
@@ -63,14 +63,14 @@
   return v3;
 }
 
-- (BOOL)canAddEmitterToDoc:(void *)a3
+- (BOOL)canAddEmitterToDoc:(void *)doc
 {
-  if (!a3)
+  if (!doc)
   {
     return 0;
   }
 
-  v3 = *(a3 + 3);
+  v3 = *(doc + 3);
   OZScene::begin_sel(v3, v14);
   OZScene::end_sel(v3, v12);
   v4 = v14[0];

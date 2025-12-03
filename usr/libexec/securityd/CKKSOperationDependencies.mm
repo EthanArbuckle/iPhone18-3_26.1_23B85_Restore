@@ -1,7 +1,7 @@
 @interface CKKSOperationDependencies
-- (BOOL)considerSelfTrusted:(id)a3 error:(id *)a4;
-- (BOOL)intransactionCKWriteFailed:(id)a3 attemptedRecordsChanged:(id)a4;
-- (CKKSOperationDependencies)initWithViewStates:(id)a3 contextID:(id)a4 activeAccount:(id)a5 ckdatabase:(id)a6 cloudKitClassDependencies:(id)a7 ckoperationGroup:(id)a8 flagHandler:(id)a9 overallLaunch:(id)a10 accountStateTracker:(id)a11 lockStateTracker:(id)a12 reachabilityTracker:(id)a13 peerProviders:(id)a14 databaseProvider:(id)a15 savedTLKNotifier:(id)a16 personaAdapter:(id)a17 sendMetric:(BOOL)a18;
+- (BOOL)considerSelfTrusted:(id)trusted error:(id *)error;
+- (BOOL)intransactionCKWriteFailed:(id)failed attemptedRecordsChanged:(id)changed;
+- (CKKSOperationDependencies)initWithViewStates:(id)states contextID:(id)d activeAccount:(id)account ckdatabase:(id)ckdatabase cloudKitClassDependencies:(id)dependencies ckoperationGroup:(id)group flagHandler:(id)handler overallLaunch:(id)self0 accountStateTracker:(id)self1 lockStateTracker:(id)self2 reachabilityTracker:(id)self3 peerProviders:(id)self4 databaseProvider:(id)self5 savedTLKNotifier:(id)self6 personaAdapter:(id)self7 sendMetric:(BOOL)self8;
 - (NSSet)activeManagedViews;
 - (NSSet)allCKKSManagedViews;
 - (NSSet)allExternalManagedViews;
@@ -9,20 +9,20 @@
 - (id)currentTrustStates;
 - (id)keychainMusrForCurrentAccount;
 - (id)readyAndSyncingViews;
-- (id)viewNameForItem:(SecDbItem *)a3;
-- (id)viewStateForName:(id)a3;
-- (id)viewStatesByNames:(id)a3;
-- (id)viewsInState:(id)a3;
-- (void)applyNewSyncingPolicy:(id)a3 viewStates:(id)a4;
-- (void)inspectErrorForRetryAfter:(id)a3;
+- (id)viewNameForItem:(SecDbItem *)item;
+- (id)viewStateForName:(id)name;
+- (id)viewStatesByNames:(id)names;
+- (id)viewsInState:(id)state;
+- (void)applyNewSyncingPolicy:(id)policy viewStates:(id)states;
+- (void)inspectErrorForRetryAfter:(id)after;
 - (void)limitOperationToPriorityViews;
 - (void)operateOnAllViews;
-- (void)operateOnSelectViews:(id)a3;
-- (void)provideKeySets:(id)a3;
-- (void)setStateForActiveCKKSManagedViews:(id)a3;
-- (void)setStateForActiveExternallyManagedViews:(id)a3;
-- (void)setStateForActiveZones:(id)a3;
-- (void)setStateForAllViews:(id)a3;
+- (void)operateOnSelectViews:(id)views;
+- (void)provideKeySets:(id)sets;
+- (void)setStateForActiveCKKSManagedViews:(id)views;
+- (void)setStateForActiveExternallyManagedViews:(id)views;
+- (void)setStateForActiveZones:(id)zones;
+- (void)setStateForAllViews:(id)views;
 @end
 
 @implementation CKKSOperationDependencies
@@ -34,8 +34,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CKKSOperationDependencies *)self allViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allViews = [(CKKSOperationDependencies *)self allViews];
+  v5 = [allViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -46,7 +46,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allViews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (void)inspectErrorForRetryAfter:(id)a3
+- (void)inspectErrorForRetryAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   CKRetryAfterSecondsForError();
   if (v5 != 0.0)
   {
@@ -79,23 +79,23 @@
       v10 = 134218242;
       v11 = v6;
       v12 = 2112;
-      v13 = v4;
+      v13 = afterCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CK operation failed with rate-limit, scheduling delay for %.1f seconds: %@", &v10, 0x16u);
     }
 
-    v9 = [(CKKSOperationDependencies *)self cloudkitRetryAfter];
-    [v9 waitUntil:v7];
+    cloudkitRetryAfter = [(CKKSOperationDependencies *)self cloudkitRetryAfter];
+    [cloudkitRetryAfter waitUntil:v7];
   }
 }
 
 - (id)keychainMusrForCurrentAccount
 {
-  v2 = [(CKKSOperationDependencies *)self activeAccount];
-  v3 = [v2 personaUniqueString];
+  activeAccount = [(CKKSOperationDependencies *)self activeAccount];
+  personaUniqueString = [activeAccount personaUniqueString];
 
-  if (v3)
+  if (personaUniqueString)
   {
-    v4 = [[NSUUID alloc] initWithUUIDString:v3];
+    v4 = [[NSUUID alloc] initWithUUIDString:personaUniqueString];
     v5 = v4;
     if (v4)
     {
@@ -107,7 +107,7 @@
 
     else
     {
-      v6 = [v3 dataUsingEncoding:4];
+      v6 = [personaUniqueString dataUsingEncoding:4];
     }
 
     v7 = v6;
@@ -126,10 +126,10 @@
   return v7;
 }
 
-- (id)viewNameForItem:(SecDbItem *)a3
+- (id)viewNameForItem:(SecDbItem *)item
 {
   cf = 0;
-  v5 = sub_10001B350(a3, 0x10000, 0, &cf);
+  v5 = sub_10001B350(item, 0x10000, 0, &cf);
   v6 = v5;
   if (cf)
   {
@@ -153,9 +153,9 @@
 
   else
   {
-    [(__CFDictionary *)v5 setObject:a3->var1->var0 forKeyedSubscript:kSecClass];
-    v10 = [(CKKSOperationDependencies *)self syncingPolicy];
-    v9 = [v10 mapDictionaryToView:v6];
+    [(__CFDictionary *)v5 setObject:item->var1->var0 forKeyedSubscript:kSecClass];
+    syncingPolicy = [(CKKSOperationDependencies *)self syncingPolicy];
+    v9 = [syncingPolicy mapDictionaryToView:v6];
 
     if (v9)
     {
@@ -167,11 +167,11 @@
       v12 = sub_100019104(@"ckks", 0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(CKKSOperationDependencies *)self syncingPolicy];
+        syncingPolicy2 = [(CKKSOperationDependencies *)self syncingPolicy];
         *buf = 138412547;
-        v17 = v13;
+        v17 = syncingPolicy2;
         v18 = 2113;
-        v19 = a3;
+        itemCopy = item;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "No view returned from policy (%@): %{private}@", buf, 0x16u);
       }
     }
@@ -180,15 +180,15 @@
   return v9;
 }
 
-- (BOOL)intransactionCKWriteFailed:(id)a3 attemptedRecordsChanged:(id)a4
+- (BOOL)intransactionCKWriteFailed:(id)failed attemptedRecordsChanged:(id)changed
 {
-  v5 = a3;
-  v69 = a4;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  failedCopy = failed;
+  changedCopy = changed;
+  userInfo = [failedCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
-  v8 = [v5 domain];
-  if (![v8 isEqual:?] || objc_msgSend(v5, "code") != 2)
+  domain = [failedCopy domain];
+  if (![domain isEqual:?] || objc_msgSend(failedCopy, "code") != 2)
   {
 
     goto LABEL_23;
@@ -201,13 +201,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v68 = v5;
+  v68 = failedCopy;
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v9 = [v7 allValues];
-  v10 = [v9 countByEnumeratingWithState:&v85 objects:v97 count:16];
+  allValues = [v7 allValues];
+  v10 = [allValues countByEnumeratingWithState:&v85 objects:v97 count:16];
   v76 = v7;
   if (!v10)
   {
@@ -225,12 +225,12 @@ LABEL_23:
     {
       if (*v86 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(allValues);
       }
 
       v15 = *(*(&v85 + 1) + 8 * v14);
-      v16 = [v15 domain];
-      if (![v16 isEqual:CKErrorDomain])
+      domain2 = [v15 domain];
+      if (![domain2 isEqual:CKErrorDomain])
       {
 
 LABEL_14:
@@ -244,9 +244,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v17 = [v15 code];
+      code = [v15 code];
 
-      if (v17 != 11)
+      if (code != 11)
       {
         goto LABEL_14;
       }
@@ -256,7 +256,7 @@ LABEL_15:
     }
 
     while (v11 != v14);
-    v18 = [v9 countByEnumeratingWithState:&v85 objects:v97 count:16];
+    v18 = [allValues countByEnumeratingWithState:&v85 objects:v97 count:16];
     v11 = v18;
   }
 
@@ -279,8 +279,8 @@ LABEL_26:
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v22 = [v7 allKeys];
-  v23 = [v22 countByEnumeratingWithState:&v81 objects:v96 count:16];
+  allKeys = [v7 allKeys];
+  v23 = [allKeys countByEnumeratingWithState:&v81 objects:v96 count:16];
   if (!v23)
   {
 
@@ -298,33 +298,33 @@ LABEL_26:
     {
       if (*v82 != v26)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(allKeys);
       }
 
       v28 = *(*(&v81 + 1) + 8 * v27);
       v29 = [v7 objectForKeyedSubscript:v28];
-      v30 = [v29 domain];
-      if ([v30 isEqual:CKErrorDomain])
+      domain3 = [v29 domain];
+      if ([domain3 isEqual:CKErrorDomain])
       {
-        v31 = [v29 code];
+        code2 = [v29 code];
 
-        if (v31 == 14)
+        if (code2 == 14)
         {
-          v32 = [v29 userInfo];
-          v33 = [v32 objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
+          userInfo2 = [v29 userInfo];
+          domain4 = [userInfo2 objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
 
-          v34 = [v28 zoneID];
-          v35 = [v34 zoneName];
-          v36 = sub_100019104(@"ckks", v35);
+          zoneID = [v28 zoneID];
+          zoneName = [zoneID zoneName];
+          v36 = sub_100019104(@"ckks", zoneName);
 
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v90 = v33;
+            v90 = domain4;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "On error: updating our idea of: %@", buf, 0xCu);
           }
 
-          v25 |= [(CKKSOperationDependencies *)self intransactionCKRecordChanged:v33 resync:1];
+          v25 |= [(CKKSOperationDependencies *)self intransactionCKRecordChanged:domain4 resync:1];
           goto LABEL_44;
         }
       }
@@ -333,36 +333,36 @@ LABEL_26:
       {
       }
 
-      v33 = [v29 domain];
-      if (![v33 isEqual:CKErrorDomain])
+      domain4 = [v29 domain];
+      if (![domain4 isEqual:CKErrorDomain])
       {
         goto LABEL_44;
       }
 
-      v37 = [v29 code];
+      code3 = [v29 code];
 
-      if (v37 == 11)
+      if (code3 == 11)
       {
         v38 = v26;
-        v39 = v22;
-        v33 = [v69 objectForKeyedSubscript:v28];
-        v40 = [v28 zoneID];
-        v41 = [v40 zoneName];
-        v42 = sub_100019104(@"ckks", v41);
+        v39 = allKeys;
+        domain4 = [changedCopy objectForKeyedSubscript:v28];
+        zoneID2 = [v28 zoneID];
+        zoneName2 = [zoneID2 zoneName];
+        v42 = sub_100019104(@"ckks", zoneName2);
 
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
           v90 = v28;
           v91 = 2112;
-          v92 = v33;
+          v92 = domain4;
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "On error: handling an unexpected delete of: %@ %@", buf, 0x16u);
         }
 
-        v43 = [v33 recordType];
-        v25 |= [(CKKSOperationDependencies *)self intransactionCKRecordDeleted:v28 recordType:v43 resync:1];
+        recordType = [domain4 recordType];
+        v25 |= [(CKKSOperationDependencies *)self intransactionCKRecordDeleted:v28 recordType:recordType resync:1];
 
-        v22 = v39;
+        allKeys = v39;
         v26 = v38;
         v24 = v73;
 LABEL_44:
@@ -378,7 +378,7 @@ LABEL_44:
       break;
     }
 
-    v24 = [v22 countByEnumeratingWithState:&v81 objects:v96 count:16];
+    v24 = [allKeys countByEnumeratingWithState:&v81 objects:v96 count:16];
     if (v24)
     {
       continue;
@@ -389,8 +389,8 @@ LABEL_44:
 
   if (v25)
   {
-    v44 = [(CKKSOperationDependencies *)self flagHandler];
-    [v44 _onqueueHandleFlag:@"process_incoming_queue"];
+    flagHandler = [(CKKSOperationDependencies *)self flagHandler];
+    [flagHandler _onqueueHandleFlag:@"process_incoming_queue"];
 
     v19 = 1;
     goto LABEL_79;
@@ -422,15 +422,15 @@ LABEL_50:
 
       v46 = *(*(&v77 + 1) + 8 * v45);
       v47 = [v7 objectForKeyedSubscript:v46];
-      v48 = [v47 userInfo];
-      v49 = [v48 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo3 = [v47 userInfo];
+      v49 = [userInfo3 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      v50 = [v49 userInfo];
-      v51 = [v50 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo4 = [v49 userInfo];
+      v51 = [userInfo4 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      v52 = [v46 zoneID];
-      v53 = [v52 zoneName];
-      v54 = sub_100019104(@"ckks", v53);
+      zoneID3 = [v46 zoneID];
+      zoneName3 = [zoneID3 zoneName];
+      v54 = sub_100019104(@"ckks", zoneName3);
 
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
@@ -443,61 +443,61 @@ LABEL_50:
         _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Examining 'write failed' error: %@ %@ %@", buf, 0x20u);
       }
 
-      v55 = [v47 domain];
-      if (!-[NSObject isEqualToString:](v55, "isEqualToString:", CKErrorDomain) || [v47 code] != 15 || !v49)
+      domain5 = [v47 domain];
+      if (!-[NSObject isEqualToString:](domain5, "isEqualToString:", CKErrorDomain) || [v47 code] != 15 || !v49)
       {
         goto LABEL_68;
       }
 
-      v56 = [v49 domain];
-      if (![v56 isEqualToString:v70] || objc_msgSend(v49, "code") != 6000 || !v51)
+      domain6 = [v49 domain];
+      if (![domain6 isEqualToString:v70] || objc_msgSend(v49, "code") != 6000 || !v51)
       {
 
         goto LABEL_68;
       }
 
-      v57 = [v51 domain];
-      v58 = [v57 isEqualToString:@"CloudkitKeychainService"];
+      domain7 = [v51 domain];
+      v58 = [domain7 isEqualToString:@"CloudkitKeychainService"];
 
       if (v58)
       {
         if ([v51 code] == 9)
         {
-          v59 = [v46 zoneID];
-          v60 = [v59 zoneName];
-          v55 = sub_100019104(@"ckks", v60);
+          zoneID4 = [v46 zoneID];
+          zoneName4 = [zoneID4 zoneName];
+          domain5 = sub_100019104(@"ckks", zoneName4);
 
-          if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(domain5, OS_LOG_TYPE_ERROR))
           {
 LABEL_73:
             *buf = 138412546;
             v90 = v51;
             v91 = 2112;
             v92 = v46;
-            _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "CKKS Server extension has told us about %@ for record %@; requesting refetch and reprocess of key hierarchy", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, domain5, OS_LOG_TYPE_ERROR, "CKKS Server extension has told us about %@ for record %@; requesting refetch and reprocess of key hierarchy", buf, 0x16u);
           }
 
 LABEL_74:
 
-          v65 = [(CKKSOperationDependencies *)self currentFetchReasons];
-          [v65 addObject:@"keyhierarchy"];
+          currentFetchReasons = [(CKKSOperationDependencies *)self currentFetchReasons];
+          [currentFetchReasons addObject:@"keyhierarchy"];
 
-          v66 = [(CKKSOperationDependencies *)self currentFetchReasons];
-          [v66 addObject:@"conflict"];
+          currentFetchReasons2 = [(CKKSOperationDependencies *)self currentFetchReasons];
+          [currentFetchReasons2 addObject:@"conflict"];
 
-          v55 = [(CKKSOperationDependencies *)self flagHandler];
-          [v55 _onqueueHandleFlag:@"fetch_requested"];
+          domain5 = [(CKKSOperationDependencies *)self flagHandler];
+          [domain5 _onqueueHandleFlag:@"fetch_requested"];
         }
 
         else
         {
-          v61 = [v51 code];
-          v62 = [v46 zoneID];
-          v63 = [v62 zoneName];
-          v55 = sub_100019104(@"ckks", v63);
+          code4 = [v51 code];
+          zoneID5 = [v46 zoneID];
+          zoneName5 = [zoneID5 zoneName];
+          domain5 = sub_100019104(@"ckks", zoneName5);
 
-          v64 = os_log_type_enabled(v55, OS_LOG_TYPE_ERROR);
-          if (v61 == 2)
+          v64 = os_log_type_enabled(domain5, OS_LOG_TYPE_ERROR);
+          if (code4 == 2)
           {
             if (v64)
             {
@@ -513,7 +513,7 @@ LABEL_74:
             v90 = v51;
             v91 = 2112;
             v92 = v46;
-            _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "CKKS Server extension has told us about %@ for record %@, but we don't currently handle this error", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, domain5, OS_LOG_TYPE_ERROR, "CKKS Server extension has told us about %@ for record %@, but we don't currently handle this error", buf, 0x16u);
           }
         }
 
@@ -544,21 +544,21 @@ LABEL_78:
 
   v19 = 0;
 LABEL_79:
-  v5 = v68;
+  failedCopy = v68;
 LABEL_24:
 
   return v19;
 }
 
-- (void)provideKeySets:(id)a3
+- (void)provideKeySets:(id)sets
 {
-  v3 = a3;
+  setsCopy = sets;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v30 count:16];
+  allKeys = [setsCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -569,13 +569,13 @@ LABEL_24:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
-        v11 = [v9 zoneName];
-        v12 = sub_100019104(@"ckkskey", v11);
+        v10 = [setsCopy objectForKeyedSubscript:v9];
+        zoneName = [v9 zoneName];
+        v12 = sub_100019104(@"ckkskey", zoneName);
 
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
@@ -585,7 +585,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v30 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v23 objects:v30 count:16];
     }
 
     while (v6);
@@ -595,8 +595,8 @@ LABEL_24:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = [(CKKSOperationDependencies *)self keysetProviderOperations];
-  v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  keysetProviderOperations = [(CKKSOperationDependencies *)self keysetProviderOperations];
+  v14 = [keysetProviderOperations countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -607,27 +607,27 @@ LABEL_24:
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(keysetProviderOperations);
         }
 
-        [*(*(&v19 + 1) + 8 * j) provideKeySets:v3];
+        [*(*(&v19 + 1) + 8 * j) provideKeySets:setsCopy];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v15 = [keysetProviderOperations countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v15);
   }
 }
 
-- (BOOL)considerSelfTrusted:(id)a3 error:(id *)a4
+- (BOOL)considerSelfTrusted:(id)trusted error:(id *)error
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  trustedCopy = trusted;
+  v6 = [trustedCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = 0;
@@ -640,38 +640,38 @@ LABEL_24:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(trustedCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v9);
         if ([v11 essential])
         {
-          v12 = [v11 currentSelfPeersError];
-          v13 = v12;
-          if (v12)
+          currentSelfPeersError = [v11 currentSelfPeersError];
+          v13 = currentSelfPeersError;
+          if (currentSelfPeersError)
           {
-            v14 = v12;
+            currentTrustedPeersError = currentSelfPeersError;
           }
 
           else
           {
-            v14 = [v11 currentTrustedPeersError];
+            currentTrustedPeersError = [v11 currentTrustedPeersError];
           }
 
-          v7 = v14;
+          v7 = currentTrustedPeersError;
 
           if ([v11 essential])
           {
-            v15 = [v11 currentSelfPeersError];
-            if (v15)
+            currentSelfPeersError2 = [v11 currentSelfPeersError];
+            if (currentSelfPeersError2)
             {
             }
 
             else
             {
-              v16 = [v11 currentTrustedPeersError];
+              currentTrustedPeersError2 = [v11 currentTrustedPeersError];
 
-              if (!v16)
+              if (!currentTrustedPeersError2)
               {
 
                 LOBYTE(v6) = 1;
@@ -692,7 +692,7 @@ LABEL_24:
       }
 
       while (v6 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [trustedCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v6)
       {
         continue;
@@ -701,11 +701,11 @@ LABEL_24:
       break;
     }
 
-    if (a4 && v7)
+    if (error && v7)
     {
       v17 = v7;
       LOBYTE(v6) = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     v10 = v7;
@@ -724,13 +724,13 @@ LABEL_24:
 
 - (id)currentTrustStates
 {
-  v2 = [(CKKSOperationDependencies *)self peerProviders];
+  peerProviders = [(CKKSOperationDependencies *)self peerProviders];
   v3 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = peerProviders;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
   {
@@ -754,8 +754,8 @@ LABEL_24:
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Fetching account keys for provider %@", buf, 0xCu);
         }
 
-        v11 = [v9 currentState];
-        [v3 addObject:v11];
+        currentState = [v9 currentState];
+        [v3 addObject:currentState];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
@@ -767,18 +767,18 @@ LABEL_24:
   return v3;
 }
 
-- (void)applyNewSyncingPolicy:(id)a3 viewStates:(id)a4
+- (void)applyNewSyncingPolicy:(id)policy viewStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
-  v18 = self;
-  [(CKKSOperationDependencies *)self setSyncingPolicy:v6];
+  policyCopy = policy;
+  statesCopy = states;
+  selfCopy = self;
+  [(CKKSOperationDependencies *)self setSyncingPolicy:policyCopy];
   v8 = +[NSMutableSet set];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = statesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -795,9 +795,9 @@ LABEL_24:
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        v15 = [v6 priorityViews];
-        v16 = [v14 zoneName];
-        v17 = [v15 containsObject:v16];
+        priorityViews = [policyCopy priorityViews];
+        zoneName = [v14 zoneName];
+        v17 = [priorityViews containsObject:zoneName];
 
         if (v17)
         {
@@ -814,9 +814,9 @@ LABEL_24:
     while (v11);
   }
 
-  [(CKKSOperationDependencies *)v18 setAllPriorityViews:v8];
-  [(CKKSOperationDependencies *)v18 setAllViews:v9];
-  [(CKKSOperationDependencies *)v18 setViewsOverride:0];
+  [(CKKSOperationDependencies *)selfCopy setAllPriorityViews:v8];
+  [(CKKSOperationDependencies *)selfCopy setAllViews:v9];
+  [(CKKSOperationDependencies *)selfCopy setViewsOverride:0];
 }
 
 - (id)readyAndSyncingViews
@@ -826,8 +826,8 @@ LABEL_24:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(CKKSOperationDependencies *)self views];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v4 = [views countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -838,25 +838,25 @@ LABEL_24:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(views);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
         if ([v8 ckksManagedView])
         {
-          v9 = [(CKKSOperationDependencies *)self syncingPolicy];
-          v10 = [v8 zoneID];
-          v11 = [v10 zoneName];
-          if ([v9 isSyncingEnabledForView:v11])
+          syncingPolicy = [(CKKSOperationDependencies *)self syncingPolicy];
+          zoneID = [v8 zoneID];
+          zoneName = [zoneID zoneName];
+          if ([syncingPolicy isSyncingEnabledForView:zoneName])
           {
             [v8 viewKeyHierarchyState];
             v12 = v6;
-            v13 = v3;
+            v13 = views;
             v15 = v14 = self;
             v18 = [v15 isEqualToString:@"ready"];
 
             self = v14;
-            v3 = v13;
+            views = v13;
             v6 = v12;
 
             if (v18)
@@ -871,7 +871,7 @@ LABEL_24:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [views countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -880,15 +880,15 @@ LABEL_24:
   return v17;
 }
 
-- (id)viewStateForName:(id)a3
+- (id)viewStateForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CKKSOperationDependencies *)self allViews];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allViews = [(CKKSOperationDependencies *)self allViews];
+  v6 = [allViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -898,13 +898,13 @@ LABEL_24:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allViews);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 zoneID];
-        v11 = [v10 zoneName];
-        v12 = [v11 isEqualToString:v4];
+        zoneID = [v9 zoneID];
+        zoneName = [zoneID zoneName];
+        v12 = [zoneName isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -913,7 +913,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allViews countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -928,16 +928,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)viewStatesByNames:(id)a3
+- (id)viewStatesByNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = +[NSMutableSet set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(CKKSOperationDependencies *)self views];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v7 = [views countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -948,13 +948,13 @@ LABEL_11:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(views);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 zoneID];
-        v13 = [v12 zoneName];
-        v14 = [v4 containsObject:v13];
+        zoneID = [v11 zoneID];
+        zoneName = [zoneID zoneName];
+        v14 = [namesCopy containsObject:zoneName];
 
         if (v14)
         {
@@ -962,7 +962,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [views countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -971,16 +971,16 @@ LABEL_11:
   return v5;
 }
 
-- (id)viewsInState:(id)a3
+- (id)viewsInState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[NSMutableSet set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(CKKSOperationDependencies *)self views];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v7 = [views countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -991,12 +991,12 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(views);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 viewKeyHierarchyState];
-        v13 = [v12 isEqualToString:v4];
+        viewKeyHierarchyState = [v11 viewKeyHierarchyState];
+        v13 = [viewKeyHierarchyState isEqualToString:stateCopy];
 
         if (v13)
         {
@@ -1004,7 +1004,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [views countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1019,9 +1019,9 @@ LABEL_11:
   v3 = sub_100019104(@"ckksviews", 0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CKKSOperationDependencies *)self views];
+    views = [(CKKSOperationDependencies *)self views];
     v5 = 138412290;
-    v6 = v4;
+    v6 = views;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Limited view operation to priority views %@", &v5, 0xCu);
   }
 }
@@ -1033,36 +1033,36 @@ LABEL_11:
   v3 = sub_100019104(@"ckksviews", 0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CKKSOperationDependencies *)self views];
+    views = [(CKKSOperationDependencies *)self views];
     v5 = 138412290;
-    v6 = v4;
+    v6 = views;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Expanded view operation to %@", &v5, 0xCu);
   }
 }
 
-- (void)operateOnSelectViews:(id)a3
+- (void)operateOnSelectViews:(id)views
 {
-  v4 = a3;
-  [(CKKSOperationDependencies *)self setViewsOverride:v4];
+  viewsCopy = views;
+  [(CKKSOperationDependencies *)self setViewsOverride:viewsCopy];
   v5 = sub_100019104(@"ckksviews", 0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CKKSOperationDependencies *)self views];
+    views = [(CKKSOperationDependencies *)self views];
     v7 = 138412290;
-    v8 = v6;
+    v8 = views;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Limited view operation to %@", &v7, 0xCu);
   }
 }
 
-- (void)setStateForAllViews:(id)a3
+- (void)setStateForAllViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CKKSOperationDependencies *)self allViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allViews = [(CKKSOperationDependencies *)self allViews];
+  v6 = [allViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1074,30 +1074,30 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setViewKeyHierarchyState:v4];
+        [*(*(&v10 + 1) + 8 * v9) setViewKeyHierarchyState:viewsCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setStateForActiveExternallyManagedViews:(id)a3
+- (void)setStateForActiveExternallyManagedViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CKKSOperationDependencies *)self views];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v6 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1108,32 +1108,32 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(views);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 ckksManagedView] & 1) == 0)
         {
-          [v10 setViewKeyHierarchyState:v4];
+          [v10 setViewKeyHierarchyState:viewsCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setStateForActiveCKKSManagedViews:(id)a3
+- (void)setStateForActiveCKKSManagedViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CKKSOperationDependencies *)self views];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v6 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1144,32 +1144,32 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(views);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 ckksManagedView])
         {
-          [v10 setViewKeyHierarchyState:v4];
+          [v10 setViewKeyHierarchyState:viewsCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setStateForActiveZones:(id)a3
+- (void)setStateForActiveZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CKKSOperationDependencies *)self views];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v6 = [views countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1181,15 +1181,15 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(views);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setViewKeyHierarchyState:v4];
+        [*(*(&v10 + 1) + 8 * v9) setViewKeyHierarchyState:zonesCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [views countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -1203,8 +1203,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CKKSOperationDependencies *)self allViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allViews = [(CKKSOperationDependencies *)self allViews];
+  v5 = [allViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1215,7 +1215,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allViews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1225,7 +1225,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1241,8 +1241,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CKKSOperationDependencies *)self views];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  views = [(CKKSOperationDependencies *)self views];
+  v5 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1253,7 +1253,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(views);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1263,7 +1263,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [views countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1274,11 +1274,11 @@ LABEL_11:
 
 - (NSSet)views
 {
-  v3 = [(CKKSOperationDependencies *)self viewsOverride];
+  viewsOverride = [(CKKSOperationDependencies *)self viewsOverride];
 
-  if (v3)
+  if (viewsOverride)
   {
-    v4 = [(CKKSOperationDependencies *)self viewsOverride];
+    viewsOverride2 = [(CKKSOperationDependencies *)self viewsOverride];
   }
 
   else
@@ -1292,50 +1292,50 @@ LABEL_11:
     {
       [(CKKSOperationDependencies *)self allViews];
     }
-    v4 = ;
+    viewsOverride2 = ;
   }
 
-  return v4;
+  return viewsOverride2;
 }
 
-- (CKKSOperationDependencies)initWithViewStates:(id)a3 contextID:(id)a4 activeAccount:(id)a5 ckdatabase:(id)a6 cloudKitClassDependencies:(id)a7 ckoperationGroup:(id)a8 flagHandler:(id)a9 overallLaunch:(id)a10 accountStateTracker:(id)a11 lockStateTracker:(id)a12 reachabilityTracker:(id)a13 peerProviders:(id)a14 databaseProvider:(id)a15 savedTLKNotifier:(id)a16 personaAdapter:(id)a17 sendMetric:(BOOL)a18
+- (CKKSOperationDependencies)initWithViewStates:(id)states contextID:(id)d activeAccount:(id)account ckdatabase:(id)ckdatabase cloudKitClassDependencies:(id)dependencies ckoperationGroup:(id)group flagHandler:(id)handler overallLaunch:(id)self0 accountStateTracker:(id)self1 lockStateTracker:(id)self2 reachabilityTracker:(id)self3 peerProviders:(id)self4 databaseProvider:(id)self5 savedTLKNotifier:(id)self6 personaAdapter:(id)self7 sendMetric:(BOOL)self8
 {
-  v50 = a3;
-  v49 = a4;
-  v48 = a5;
-  v47 = a6;
-  v36 = a7;
-  v46 = a7;
-  v45 = a8;
-  v44 = a9;
-  v43 = a10;
-  v42 = a11;
-  v41 = a12;
-  v40 = a13;
-  v39 = a14;
-  v38 = a15;
-  v22 = a16;
-  v23 = a17;
+  statesCopy = states;
+  dCopy = d;
+  accountCopy = account;
+  ckdatabaseCopy = ckdatabase;
+  dependenciesCopy = dependencies;
+  dependenciesCopy2 = dependencies;
+  groupCopy = group;
+  handlerCopy = handler;
+  launchCopy = launch;
+  trackerCopy = tracker;
+  stateTrackerCopy = stateTracker;
+  reachabilityTrackerCopy = reachabilityTracker;
+  providersCopy = providers;
+  providerCopy = provider;
+  notifierCopy = notifier;
+  adapterCopy = adapter;
   v52.receiver = self;
   v52.super_class = CKKSOperationDependencies;
   v24 = [(CKKSOperationDependencies *)&v52 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_allViews, a3);
-    objc_storeStrong(&v25->_ckdatabase, a6);
-    objc_storeStrong(&v25->_cloudKitClassDependencies, v36);
-    objc_storeStrong(&v25->_ckoperationGroup, a8);
-    objc_storeStrong(&v25->_flagHandler, a9);
-    objc_storeStrong(&v25->_overallLaunch, a10);
-    objc_storeStrong(&v25->_accountStateTracker, a11);
-    objc_storeStrong(&v25->_lockStateTracker, a12);
-    objc_storeStrong(&v25->_reachabilityTracker, a13);
-    objc_storeStrong(&v25->_peerProviders, a14);
-    objc_storeStrong(&v25->_databaseProvider, a15);
-    objc_storeStrong(&v25->_savedTLKNotifier, a16);
-    objc_storeStrong(&v25->_contextID, a4);
-    objc_storeStrong(&v25->_activeAccount, a5);
+    objc_storeStrong(&v24->_allViews, states);
+    objc_storeStrong(&v25->_ckdatabase, ckdatabase);
+    objc_storeStrong(&v25->_cloudKitClassDependencies, dependenciesCopy);
+    objc_storeStrong(&v25->_ckoperationGroup, group);
+    objc_storeStrong(&v25->_flagHandler, handler);
+    objc_storeStrong(&v25->_overallLaunch, launch);
+    objc_storeStrong(&v25->_accountStateTracker, tracker);
+    objc_storeStrong(&v25->_lockStateTracker, stateTracker);
+    objc_storeStrong(&v25->_reachabilityTracker, reachabilityTracker);
+    objc_storeStrong(&v25->_peerProviders, providers);
+    objc_storeStrong(&v25->_databaseProvider, provider);
+    objc_storeStrong(&v25->_savedTLKNotifier, notifier);
+    objc_storeStrong(&v25->_contextID, d);
+    objc_storeStrong(&v25->_activeAccount, account);
     currentOutgoingQueueOperationGroup = v25->_currentOutgoingQueueOperationGroup;
     v25->_currentOutgoingQueueOperationGroup = 0;
 
@@ -1351,8 +1351,8 @@ LABEL_11:
     v25->_currentFetchReasons = v30;
 
     v25->_limitOperationToPriorityViewsSet = 0;
-    objc_storeStrong(&v25->_personaAdapter, a17);
-    v25->_sendMetric = a18;
+    objc_storeStrong(&v25->_personaAdapter, adapter);
+    v25->_sendMetric = metric;
     v32 = [[CKKSNearFutureScheduler alloc] initWithName:@"zonemodifier-ckretryafter" initialDelay:100000000 exponentialBackoff:100000000 maximumDelay:0 keepProcessAlive:1005 dependencyDescriptionCode:25 qosClass:1.0 block:&stru_100336EF8];
     cloudkitRetryAfter = v25->_cloudkitRetryAfter;
     v25->_cloudkitRetryAfter = v32;

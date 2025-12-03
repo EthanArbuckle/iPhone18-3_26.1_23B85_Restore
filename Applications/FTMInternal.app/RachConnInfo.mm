@@ -1,24 +1,24 @@
 @interface RachConnInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFailRachAttempts:(BOOL)a3;
-- (void)setHasTotalMoRrcConn:(BOOL)a3;
-- (void)setHasTotalMtRrcConn:(BOOL)a3;
-- (void)setHasTotalRachAttempts:(BOOL)a3;
-- (void)setHasTotalSigRrcConn:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFailRachAttempts:(BOOL)attempts;
+- (void)setHasTotalMoRrcConn:(BOOL)conn;
+- (void)setHasTotalMtRrcConn:(BOOL)conn;
+- (void)setHasTotalRachAttempts:(BOOL)attempts;
+- (void)setHasTotalSigRrcConn:(BOOL)conn;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RachConnInfo
 
-- (void)setHasFailRachAttempts:(BOOL)a3
+- (void)setHasFailRachAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTotalRachAttempts:(BOOL)a3
+- (void)setHasTotalRachAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 16;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTotalMoRrcConn:(BOOL)a3
+- (void)setHasTotalMoRrcConn:(BOOL)conn
 {
-  if (a3)
+  if (conn)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTotalMtRrcConn:(BOOL)a3
+- (void)setHasTotalMtRrcConn:(BOOL)conn
 {
-  if (a3)
+  if (conn)
   {
     v3 = 8;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTotalSigRrcConn:(BOOL)a3
+- (void)setHasTotalSigRrcConn:(BOOL)conn
 {
-  if (a3)
+  if (conn)
   {
     v3 = 32;
   }
@@ -96,8 +96,8 @@
   v7.receiver = self;
   v7.super_class = RachConnInfo;
   v3 = [(RachConnInfo *)&v7 description];
-  v4 = [(RachConnInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RachConnInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -192,9 +192,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -275,14 +275,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_failRachAttempts;
-    *(v4 + 32) |= 2u;
+    toCopy[3] = self->_failRachAttempts;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -301,8 +301,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_totalRachAttempts;
-  *(v4 + 32) |= 0x10u;
+  toCopy[6] = self->_totalRachAttempts;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -316,8 +316,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[4] = self->_totalMoRrcConn;
-  *(v4 + 32) |= 4u;
+  toCopy[4] = self->_totalMoRrcConn;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -331,8 +331,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  v4[5] = self->_totalMtRrcConn;
-  *(v4 + 32) |= 8u;
+  toCopy[5] = self->_totalMtRrcConn;
+  *(toCopy + 32) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -346,21 +346,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  v4[7] = self->_totalSigRrcConn;
-  *(v4 + 32) |= 0x20u;
+  toCopy[7] = self->_totalSigRrcConn;
+  *(toCopy + 32) |= 0x20u;
   if (*&self->_has)
   {
 LABEL_7:
-    v4[2] = self->_avgInterRrcConnDuration;
-    *(v4 + 32) |= 1u;
+    toCopy[2] = self->_avgInterRrcConnDuration;
+    *(toCopy + 32) |= 1u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -442,23 +442,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_failRachAttempts != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_failRachAttempts != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_31:
     v5 = 0;
@@ -467,60 +467,60 @@ LABEL_31:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0 || self->_totalRachAttempts != *(v4 + 6))
+    if ((*(equalCopy + 32) & 0x10) == 0 || self->_totalRachAttempts != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) != 0)
+  else if ((*(equalCopy + 32) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_totalMoRrcConn != *(v4 + 4))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_totalMoRrcConn != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_totalMtRrcConn != *(v4 + 5))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_totalMtRrcConn != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 32) & 0x20) == 0 || self->_totalSigRrcConn != *(v4 + 7))
+    if ((*(equalCopy + 32) & 0x20) == 0 || self->_totalSigRrcConn != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 0x20) != 0)
+  else if ((*(equalCopy + 32) & 0x20) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 32) & 1) == 0;
+  v5 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_avgInterRrcConnDuration != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_avgInterRrcConnDuration != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
@@ -615,15 +615,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_failRachAttempts = *(v4 + 3);
+    self->_failRachAttempts = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -636,14 +636,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) == 0)
+  else if ((*(fromCopy + 32) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_totalRachAttempts = *(v4 + 6);
+  self->_totalRachAttempts = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -656,9 +656,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_totalMoRrcConn = *(v4 + 4);
+  self->_totalMoRrcConn = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -671,9 +671,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_totalMtRrcConn = *(v4 + 5);
+  self->_totalMtRrcConn = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -686,12 +686,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_totalSigRrcConn = *(v4 + 7);
+  self->_totalSigRrcConn = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
 LABEL_7:
-    self->_avgInterRrcConnDuration = *(v4 + 2);
+    self->_avgInterRrcConnDuration = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

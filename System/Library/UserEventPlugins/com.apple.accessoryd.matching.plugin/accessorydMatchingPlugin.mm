@@ -1,32 +1,32 @@
 @interface accessorydMatchingPlugin
-- (BOOL)areAttachEventsInList:(id)a3;
+- (BOOL)areAttachEventsInList:(id)list;
 - (BOOL)attachToBTServer;
 - (BOOL)detachFromBTServer;
-- (BOOL)doAttachEventsForPrimaryPortExistInList:(id)a3;
-- (BOOL)findUniqueEventsOnPrimaryPort:(id)a3 scanReason:(BOOL)a4 resultsArray:(id)a5;
+- (BOOL)doAttachEventsForPrimaryPortExistInList:(id)list;
+- (BOOL)findUniqueEventsOnPrimaryPort:(id)port scanReason:(BOOL)reason resultsArray:(id)array;
 - (BOOL)launchDigitalIDClients;
-- (accessorydMatchingPlugin)initWithModule:(void *)a3;
-- (id)bucketizeRMDurations:(id)a3;
+- (accessorydMatchingPlugin)initWithModule:(void *)module;
+- (id)bucketizeRMDurations:(id)durations;
 - (id)scanEventsListForPrimaryPortsSeen;
-- (void)addBTServiceClient:(unint64_t)a3;
-- (void)addDigitalIDClient:(unint64_t)a3;
-- (void)addUserNotificationForPort:(id)a3;
+- (void)addBTServiceClient:(unint64_t)client;
+- (void)addDigitalIDClient:(unint64_t)client;
+- (void)addUserNotificationForPort:(id)port;
 - (void)dealloc;
 - (void)findKnownBTDevices;
 - (void)handleUSBPortAdded;
-- (void)intrusiveUIStateDidChange:(BOOL)a3 forService:(id)a4;
-- (void)launchWirelessCarPlay:(BTDeviceImpl *)a3;
-- (void)portManager:(id)a3 didAddPort:(id)a4;
-- (void)portManager:(id)a3 didRemovePort:(id)a4;
-- (void)portManager:(id)a3 didUpdateAuthorizationStateForPort:(id)a4;
-- (void)postUniqueAnalyticEventToFigaro:(id)a3 scanReason:(BOOL)a4 scanTime:(id)a5;
+- (void)intrusiveUIStateDidChange:(BOOL)change forService:(id)service;
+- (void)launchWirelessCarPlay:(BTDeviceImpl *)play;
+- (void)portManager:(id)manager didAddPort:(id)port;
+- (void)portManager:(id)manager didRemovePort:(id)port;
+- (void)portManager:(id)manager didUpdateAuthorizationStateForPort:(id)port;
+- (void)postUniqueAnalyticEventToFigaro:(id)figaro scanReason:(BOOL)reason scanTime:(id)time;
 - (void)printRMEventArray;
-- (void)processAnalyticsEventListUsingTime:(id)a3 scanReason:(BOOL)a4 primaryPort:(id)a5;
-- (void)removeBTServiceClient:(unint64_t)a3;
-- (void)removeDigitalIDClient:(unint64_t)a3;
+- (void)processAnalyticsEventListUsingTime:(id)time scanReason:(BOOL)reason primaryPort:(id)port;
+- (void)removeBTServiceClient:(unint64_t)client;
+- (void)removeDigitalIDClient:(unint64_t)client;
 - (void)removeStandardModeEvents;
-- (void)removeUserNotificationForPort:(id)a3;
-- (void)serverRunningDidChange:(id)a3 status:(int)a4;
+- (void)removeUserNotificationForPort:(id)port;
+- (void)serverRunningDidChange:(id)change status:(int)status;
 - (void)setRoleSwapMaskForUSBPort;
 - (void)startBluetoothMatching;
 - (void)startIOAccessoryManagerEventMonitoring;
@@ -41,9 +41,9 @@
 - (void)stopTRMMonitoring;
 - (void)stopUSBRestrictedModeTimeoutMonitoring;
 - (void)trmStatusDidChange;
-- (void)updateRMDialogShownForPrimaryPort:(id)a3;
-- (void)updateUSBChargeCurrent:(id)a3 AndChargeVoltage:(id)a4 ForPrimaryPort:(id)a5 WithDigitalID:(id)a6;
-- (void)updateUSBConectType:(id)a3 ForPrimaryPort:(id)a4 WithDigitalID:(id)a5;
+- (void)updateRMDialogShownForPrimaryPort:(id)port;
+- (void)updateUSBChargeCurrent:(id)current AndChargeVoltage:(id)voltage ForPrimaryPort:(id)port WithDigitalID:(id)d;
+- (void)updateUSBConectType:(id)type ForPrimaryPort:(id)port WithDigitalID:(id)d;
 @end
 
 @implementation accessorydMatchingPlugin
@@ -108,46 +108,46 @@
 
 - (void)startIOAccessoryManagerEventMonitoring
 {
-  v3 = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
+  ioAccessoryEventQueue = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __66__accessorydMatchingPlugin_startIOAccessoryManagerEventMonitoring__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ioAccessoryEventQueue, block);
 }
 
 - (void)stopIOAccessoryManagerEventMonitoring
 {
-  v3 = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
+  ioAccessoryEventQueue = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __65__accessorydMatchingPlugin_stopIOAccessoryManagerEventMonitoring__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ioAccessoryEventQueue, block);
 }
 
 - (void)startUSBRestrictedModeTimeoutMonitoring
 {
-  v3 = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
+  ioAccessoryEventQueue = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __67__accessorydMatchingPlugin_startUSBRestrictedModeTimeoutMonitoring__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ioAccessoryEventQueue, block);
 }
 
 - (void)stopUSBRestrictedModeTimeoutMonitoring
 {
-  v3 = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
+  ioAccessoryEventQueue = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __66__accessorydMatchingPlugin_stopUSBRestrictedModeTimeoutMonitoring__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ioAccessoryEventQueue, block);
 }
 
 - (void)startTRMMonitoring
@@ -185,18 +185,18 @@
   }
 
   [(accessorydMatchingPlugin *)self setIoNotifyPortTRM:IONotificationPortCreate(kIOMainPortDefault)];
-  v6 = [(accessorydMatchingPlugin *)self ioNotifyPortTRM];
-  v7 = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
-  IONotificationPortSetDispatchQueue(v6, v7);
+  ioNotifyPortTRM = [(accessorydMatchingPlugin *)self ioNotifyPortTRM];
+  ioAccessoryEventQueue = [(accessorydMatchingPlugin *)self ioAccessoryEventQueue];
+  IONotificationPortSetDispatchQueue(ioNotifyPortTRM, ioAccessoryEventQueue);
 
   v8 = IOServiceMatching("IOAccessoryTRM");
-  v9 = [(accessorydMatchingPlugin *)self ioNotifyPortTRM];
+  ioNotifyPortTRM2 = [(accessorydMatchingPlugin *)self ioNotifyPortTRM];
   v10 = CFRetain(v8);
-  IOServiceAddMatchingNotification(v9, "IOServiceFirstMatch", v10, serviceAddedTRM, self, &self->_ioAddedIteratorTRM);
+  IOServiceAddMatchingNotification(ioNotifyPortTRM2, "IOServiceFirstMatch", v10, serviceAddedTRM, self, &self->_ioAddedIteratorTRM);
   serviceAddedTRM(self, [(accessorydMatchingPlugin *)self ioAddedIteratorTRM]);
-  v11 = [(accessorydMatchingPlugin *)self ioNotifyPortTRM];
+  ioNotifyPortTRM3 = [(accessorydMatchingPlugin *)self ioNotifyPortTRM];
   v12 = CFRetain(v8);
-  IOServiceAddMatchingNotification(v11, "IOServiceTerminate", v12, serviceRemovedTRM, self, &self->_ioRemovedIteratorTRM);
+  IOServiceAddMatchingNotification(ioNotifyPortTRM3, "IOServiceTerminate", v12, serviceRemovedTRM, self, &self->_ioRemovedIteratorTRM);
   [(accessorydMatchingPlugin *)self ioRemovedIteratorTRM];
   serviceRemovedTRM(self);
   if (v8)
@@ -268,8 +268,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  digitalIDTokenSet = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+  v4 = [digitalIDTokenSet countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v6 = v4;
@@ -282,7 +282,7 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(digitalIDTokenSet);
         }
 
         if ([*(*(&v16 + 1) + 8 * i) unsignedLongLongValue])
@@ -330,7 +330,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [digitalIDTokenSet countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -372,32 +372,32 @@
 
 - (void)startBluetoothMatching
 {
-  v3 = [(accessorydMatchingPlugin *)self btEventQueue];
+  btEventQueue = [(accessorydMatchingPlugin *)self btEventQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __50__accessorydMatchingPlugin_startBluetoothMatching__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(btEventQueue, block);
 }
 
 - (void)stopBluetoothMatching
 {
-  v3 = [(accessorydMatchingPlugin *)self btEventQueue];
+  btEventQueue = [(accessorydMatchingPlugin *)self btEventQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __49__accessorydMatchingPlugin_stopBluetoothMatching__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(btEventQueue, block);
 }
 
 - (BOOL)attachToBTServer
 {
   signal(30, drop_signal);
-  v3 = [NSString stringWithFormat:@"com.apple.accessoryd.btServiceMatching-%d", getpid(), BTSessionCallback];
-  [v3 cStringUsingEncoding:4];
-  v4 = [(accessorydMatchingPlugin *)self btEventQueue];
+  bTSessionCallback = [NSString stringWithFormat:@"com.apple.accessoryd.btServiceMatching-%d", getpid(), BTSessionCallback];
+  [bTSessionCallback cStringUsingEncoding:4];
+  btEventQueue = [(accessorydMatchingPlugin *)self btEventQueue];
   v5 = BTSessionAttachWithQueue();
 
   if (v5)
@@ -473,7 +473,7 @@
   _os_log_error_impl(&def_3A0E8, log, OS_LOG_TYPE_ERROR, "%s no supported service for this BT device\n", buf, 0xCu);
 }
 
-- (void)launchWirelessCarPlay:(BTDeviceImpl *)a3
+- (void)launchWirelessCarPlay:(BTDeviceImpl *)play
 {
   memset(__s, 170, 18);
   if (!BTDeviceGetAddressString())
@@ -563,9 +563,9 @@
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(accessorydMatchingPlugin *)self rmEventArray];
+    rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
     *buf = 134217984;
-    v62 = [v7 count];
+    v62 = [rmEventArray count];
     _os_log_impl(&def_3A0E8, v6, OS_LOG_TYPE_DEFAULT, "printRMEventArray rmEventArray has count of: %lu", buf, 0xCu);
   }
 
@@ -618,8 +618,8 @@
 
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [(accessorydMatchingPlugin *)self rmEventArray];
-            v21 = [v20 indexOfObject:v11];
+            rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+            v21 = [rmEventArray2 indexOfObject:v11];
             *buf = 134217984;
             v62 = v21;
             _os_log_impl(&def_3A0E8, v14, OS_LOG_TYPE_DEFAULT, "AttachEvent object at index: %lu", buf, 0xCu);
@@ -649,39 +649,39 @@
 
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v52 = [v11 timestamp];
-            v50 = [v52 unsignedLongLongValue];
-            v51 = [v11 connectType];
-            v49 = [v51 intValue];
-            v26 = [v11 primaryPort];
-            v27 = [v26 intValue];
-            v28 = [v11 restrictedModeEnabled];
-            v29 = [v11 rmDialogShown];
-            v30 = [v11 accSupoortsUSB];
-            v31 = [v11 accSupoortsUART];
-            v32 = [v11 accSupoortsMikeyBus];
-            v33 = [v11 accDigitalID];
+            timestamp = [v11 timestamp];
+            unsignedLongLongValue = [timestamp unsignedLongLongValue];
+            connectType = [v11 connectType];
+            intValue = [connectType intValue];
+            primaryPort = [v11 primaryPort];
+            intValue2 = [primaryPort intValue];
+            restrictedModeEnabled = [v11 restrictedModeEnabled];
+            rmDialogShown = [v11 rmDialogShown];
+            accSupoortsUSB = [v11 accSupoortsUSB];
+            accSupoortsUART = [v11 accSupoortsUART];
+            accSupoortsMikeyBus = [v11 accSupoortsMikeyBus];
+            accDigitalID = [v11 accDigitalID];
             *buf = 134220034;
-            v62 = v50;
+            v62 = unsignedLongLongValue;
             v63 = 1024;
-            v64 = v49;
+            v64 = intValue;
             v65 = 1024;
-            v66 = v27;
+            v66 = intValue2;
             p_cache = (ACCAnalyticsLogger + 16);
             v67 = 1024;
-            *v68 = v28;
+            *v68 = restrictedModeEnabled;
             *&v68[4] = 1024;
-            *&v68[6] = v29;
+            *&v68[6] = rmDialogShown;
             LOWORD(v69) = 1024;
-            *(&v69 + 2) = v30;
+            *(&v69 + 2) = accSupoortsUSB;
             HIWORD(v69) = 1024;
-            v70 = v31;
+            v70 = accSupoortsUART;
             v8 = v47;
             v71 = 1024;
-            v72 = v32;
+            v72 = accSupoortsMikeyBus;
             v3 = (ACCAnalyticsLogger + 16);
             v73 = 2112;
-            v74 = v33;
+            v74 = accDigitalID;
             _os_log_impl(&def_3A0E8, v24, OS_LOG_TYPE_DEFAULT, "timestamp: %llu\nconnectType: %d\nprimaryPort: %d\nrestrictedModeEnabled: %d\nrmDialogShown: %d\naccSupoortsUSB: %d\naccSupoortsUART: %d\naccSupoortsMikeyBus: %d\naccDigitalID: %@", buf, 0x40u);
           }
         }
@@ -720,8 +720,8 @@
 
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [(accessorydMatchingPlugin *)self rmEventArray];
-            v36 = [v35 indexOfObject:v15];
+            rmEventArray3 = [(accessorydMatchingPlugin *)self rmEventArray];
+            v36 = [rmEventArray3 indexOfObject:v15];
             *buf = 134217984;
             v62 = v36;
             _os_log_impl(&def_3A0E8, v18, OS_LOG_TYPE_DEFAULT, "DetachEvent object at index: %lu", buf, 0xCu);
@@ -751,26 +751,26 @@
 
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = [v15 timestamp];
-            v40 = [v53 unsignedLongLongValue];
-            v41 = [v15 primaryPort];
-            v42 = [v41 intValue];
-            v43 = [v15 restrictedModeEnabled];
-            v44 = [v15 duration];
-            v45 = [v44 unsignedLongLongValue];
-            v46 = [v15 accDigitalID];
+            timestamp2 = [v15 timestamp];
+            unsignedLongLongValue2 = [timestamp2 unsignedLongLongValue];
+            primaryPort2 = [v15 primaryPort];
+            intValue3 = [primaryPort2 intValue];
+            restrictedModeEnabled2 = [v15 restrictedModeEnabled];
+            duration = [v15 duration];
+            unsignedLongLongValue3 = [duration unsignedLongLongValue];
+            accDigitalID2 = [v15 accDigitalID];
             *buf = 134219010;
-            v62 = v40;
+            v62 = unsignedLongLongValue2;
             v63 = 1024;
-            v64 = v42;
+            v64 = intValue3;
             v65 = 1024;
-            v66 = v43;
+            v66 = restrictedModeEnabled2;
             p_cache = (ACCAnalyticsLogger + 16);
             v67 = 2048;
-            *v68 = v45;
+            *v68 = unsignedLongLongValue3;
             v8 = v47;
             *&v68[8] = 2112;
-            v69 = v46;
+            v69 = accDigitalID2;
             _os_log_impl(&def_3A0E8, v24, OS_LOG_TYPE_DEFAULT, "timestamp: %llu\nprimaryPort: %d\nrestictedModeEnabled: %d\nduration: %llu\naccDigitalID: %@", buf, 0x2Cu);
 
             v3 = (ACCAnalyticsLogger + 16);
@@ -785,23 +785,23 @@
   }
 }
 
-- (void)processAnalyticsEventListUsingTime:(id)a3 scanReason:(BOOL)a4 primaryPort:(id)a5
+- (void)processAnalyticsEventListUsingTime:(id)time scanReason:(BOOL)reason primaryPort:(id)port
 {
-  v8 = a3;
-  v9 = a5;
+  timeCopy = time;
+  portCopy = port;
   v10 = +[NSMutableArray array];
   [(accessorydMatchingPlugin *)self removeStandardModeEvents];
-  if (v9)
+  if (portCopy)
   {
-    v11 = 0;
-    if (a4)
+    scanEventsListForPrimaryPortsSeen = 0;
+    if (reason)
     {
 LABEL_3:
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v12 = v11;
+      v12 = scanEventsListForPrimaryPortsSeen;
       v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v13)
       {
@@ -819,7 +819,7 @@ LABEL_3:
 
             if ([(accessorydMatchingPlugin *)self findUniqueEventsOnPrimaryPort:*(*(&v18 + 1) + 8 * v16) scanReason:1 resultsArray:v10, v18])
             {
-              [(accessorydMatchingPlugin *)self postUniqueAnalyticEventToFigaro:v10 scanReason:1 scanTime:v8];
+              [(accessorydMatchingPlugin *)self postUniqueAnalyticEventToFigaro:v10 scanReason:1 scanTime:timeCopy];
             }
 
             v16 = v16 + 1;
@@ -832,8 +832,8 @@ LABEL_3:
         while (v14);
       }
 
-      v17 = [(accessorydMatchingPlugin *)self rmEventArray];
-      [v17 removeAllObjects];
+      rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+      [rmEventArray removeAllObjects];
 
       goto LABEL_16;
     }
@@ -841,16 +841,16 @@ LABEL_3:
 
   else
   {
-    v11 = [(accessorydMatchingPlugin *)self scanEventsListForPrimaryPortsSeen];
-    if (a4)
+    scanEventsListForPrimaryPortsSeen = [(accessorydMatchingPlugin *)self scanEventsListForPrimaryPortsSeen];
+    if (reason)
     {
       goto LABEL_3;
     }
   }
 
-  if ([(accessorydMatchingPlugin *)self findUniqueEventsOnPrimaryPort:v9 scanReason:0 resultsArray:v10])
+  if ([(accessorydMatchingPlugin *)self findUniqueEventsOnPrimaryPort:portCopy scanReason:0 resultsArray:v10])
   {
-    [(accessorydMatchingPlugin *)self postUniqueAnalyticEventToFigaro:v10 scanReason:0 scanTime:v8];
+    [(accessorydMatchingPlugin *)self postUniqueAnalyticEventToFigaro:v10 scanReason:0 scanTime:timeCopy];
   }
 
 LABEL_16:
@@ -864,8 +864,8 @@ LABEL_16:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v3 = [(accessorydMatchingPlugin *)self rmEventArray];
-  v4 = [v3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+  v4 = [rmEventArray countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v4)
   {
     v6 = v4;
@@ -879,7 +879,7 @@ LABEL_16:
       {
         if (*v37 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rmEventArray);
         }
 
         v9 = *(*(&v36 + 1) + 8 * v8);
@@ -976,7 +976,7 @@ LABEL_29:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v6 = [rmEventArray countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v6);
@@ -1025,8 +1025,8 @@ LABEL_29:
         }
 
         v28 = *(*(&v32 + 1) + 8 * i);
-        v29 = [(accessorydMatchingPlugin *)self rmEventArray];
-        [v29 removeObject:v28];
+        rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+        [rmEventArray2 removeObject:v28];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -1043,8 +1043,8 @@ LABEL_29:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(accessorydMatchingPlugin *)self rmEventArray];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+  v5 = [rmEventArray countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1055,7 +1055,7 @@ LABEL_29:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rmEventArray);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -1069,17 +1069,17 @@ LABEL_29:
           }
         }
 
-        v10 = [v9 primaryPort];
-        v11 = [v3 containsObject:v10];
+        primaryPort = [v9 primaryPort];
+        v11 = [v3 containsObject:primaryPort];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 primaryPort];
-          [v3 addObject:v12];
+          primaryPort2 = [v9 primaryPort];
+          [v3 addObject:primaryPort2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [rmEventArray countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
@@ -1121,14 +1121,14 @@ LABEL_29:
   return v3;
 }
 
-- (BOOL)areAttachEventsInList:(id)a3
+- (BOOL)areAttachEventsInList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [listCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1140,7 +1140,7 @@ LABEL_29:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1148,7 +1148,7 @@ LABEL_29:
         v6 |= objc_opt_isKindOfClass();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [listCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1162,12 +1162,12 @@ LABEL_29:
   return v6 & 1;
 }
 
-- (BOOL)findUniqueEventsOnPrimaryPort:(id)a3 scanReason:(BOOL)a4 resultsArray:(id)a5
+- (BOOL)findUniqueEventsOnPrimaryPort:(id)port scanReason:(BOOL)reason resultsArray:(id)array
 {
-  v6 = a4;
-  v74 = a3;
-  v67 = a5;
-  [v67 removeAllObjects];
+  reasonCopy = reason;
+  portCopy = port;
+  arrayCopy = array;
+  [arrayCopy removeAllObjects];
   [(accessorydMatchingPlugin *)self printRMEventArray];
   v77 = 0u;
   v78 = 0u;
@@ -1177,15 +1177,15 @@ LABEL_29:
   v8 = [obj countByEnumeratingWithState:&v75 objects:v83 count:16];
   if (!v8)
   {
-    v38 = 0;
+    timestamp2 = 0;
     v12 = 0;
-    v73 = 0;
+    primaryPort3 = 0;
     v10 = 0;
     goto LABEL_59;
   }
 
   v9 = v8;
-  v66 = v6;
+  v66 = reasonCopy;
   v10 = 0;
   v11 = 0;
   v12 = 0;
@@ -1207,12 +1207,12 @@ LABEL_29:
       {
         v16 = v15;
 
-        v17 = [v16 primaryPort];
-        v18 = [v17 isEqualToNumber:v74];
+        primaryPort = [v16 primaryPort];
+        v18 = [primaryPort isEqualToNumber:portCopy];
 
         if (v18)
         {
-          [v67 addObject:v16];
+          [arrayCopy addObject:v16];
         }
 
         v10 = v16;
@@ -1227,8 +1227,8 @@ LABEL_29:
 
       v71 = v10;
       v19 = v15;
-      v20 = [v19 primaryPort];
-      v21 = [v20 isEqualToNumber:v74];
+      primaryPort2 = [v19 primaryPort];
+      v21 = [primaryPort2 isEqualToNumber:portCopy];
 
       if (!v21)
       {
@@ -1236,17 +1236,17 @@ LABEL_29:
         goto LABEL_32;
       }
 
-      v73 = [v19 primaryPort];
+      primaryPort3 = [v19 primaryPort];
 
-      v22 = [(accessorydMatchingPlugin *)self rmEventArray];
-      v23 = [v22 indexOfObject:v19];
+      rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+      v23 = [rmEventArray indexOfObject:v19];
 
-      v70 = [v19 timestamp];
+      timestamp = [v19 timestamp];
 
-      [v67 addObject:v19];
+      [arrayCopy addObject:v19];
       v24 = v23 + 1;
-      v25 = [(accessorydMatchingPlugin *)self rmEventArray];
-      v26 = [v25 count];
+      rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+      v26 = [rmEventArray2 count];
 
       if (v24 == v26)
       {
@@ -1273,47 +1273,47 @@ LABEL_29:
           v30 = &_os_log_default;
         }
 
-        v12 = v70;
+        v12 = timestamp;
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [v70 unsignedLongLongValue];
-          v41 = [v70 unsignedLongLongValue];
+          unsignedLongLongValue = [timestamp unsignedLongLongValue];
+          unsignedLongLongValue2 = [timestamp unsignedLongLongValue];
           *buf = 134218496;
           *v80 = CurrentUnixTimeMS;
           *&v80[8] = 2048;
-          *&v80[10] = v40;
+          *&v80[10] = unsignedLongLongValue;
           v81 = 2048;
-          v82 = CurrentUnixTimeMS - v41;
+          v82 = CurrentUnixTimeMS - unsignedLongLongValue2;
           _os_log_impl(&def_3A0E8, v30, OS_LOG_TYPE_DEFAULT, "now: %llu, currentDetachEventTimestamp: %llu, delta: %llu", buf, 0x20u);
         }
 
-        v42 = CurrentUnixTimeMS - [v70 unsignedLongLongValue];
+        v42 = CurrentUnixTimeMS - [timestamp unsignedLongLongValue];
         if (v42 <= 0xEA60)
         {
-          v11 = v73;
+          v11 = primaryPort3;
           goto LABEL_32;
         }
 
-        v6 = 1;
-        v38 = v68;
+        reasonCopy = 1;
+        timestamp2 = v68;
         goto LABEL_58;
       }
 
       while (1)
       {
-        v31 = [(accessorydMatchingPlugin *)self rmEventArray];
-        v32 = [v31 count];
+        rmEventArray3 = [(accessorydMatchingPlugin *)self rmEventArray];
+        v32 = [rmEventArray3 count];
 
         if (v24 >= v32)
         {
 
-          v11 = v73;
-          v12 = v70;
+          v11 = primaryPort3;
+          v12 = timestamp;
           goto LABEL_32;
         }
 
-        v33 = [(accessorydMatchingPlugin *)self rmEventArray];
-        v34 = [v33 objectAtIndex:v24];
+        rmEventArray4 = [(accessorydMatchingPlugin *)self rmEventArray];
+        v34 = [rmEventArray4 objectAtIndex:v24];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1327,19 +1327,19 @@ LABEL_22:
       }
 
       v35 = v34;
-      v36 = [v35 primaryPort];
-      v37 = [v73 isEqualToNumber:v36];
+      primaryPort4 = [v35 primaryPort];
+      v37 = [primaryPort3 isEqualToNumber:primaryPort4];
 
       if (!v37)
       {
         goto LABEL_21;
       }
 
-      v38 = [v35 timestamp];
+      timestamp2 = [v35 timestamp];
 
-      if (!v70)
+      if (!timestamp)
       {
-        v68 = v38;
+        v68 = timestamp2;
 LABEL_21:
 
         goto LABEL_22;
@@ -1367,26 +1367,26 @@ LABEL_21:
         v45 = &_os_log_default;
       }
 
-      v47 = v70;
+      v47 = timestamp;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = [v70 unsignedLongLongValue];
-        v48 = [v38 unsignedLongLongValue];
-        v49 = [v38 unsignedLongLongValue];
-        v50 = [v70 unsignedLongLongValue];
+        unsignedLongLongValue3 = [timestamp unsignedLongLongValue];
+        unsignedLongLongValue4 = [timestamp2 unsignedLongLongValue];
+        unsignedLongLongValue5 = [timestamp2 unsignedLongLongValue];
+        unsignedLongLongValue6 = [timestamp unsignedLongLongValue];
         *buf = 134218496;
-        v51 = v49 - v50;
-        v47 = v70;
-        *v80 = v69;
+        v51 = unsignedLongLongValue5 - unsignedLongLongValue6;
+        v47 = timestamp;
+        *v80 = unsignedLongLongValue3;
         *&v80[8] = 2048;
-        *&v80[10] = v48;
+        *&v80[10] = unsignedLongLongValue4;
         v81 = 2048;
         v82 = v51;
         _os_log_impl(&def_3A0E8, v45, OS_LOG_TYPE_DEFAULT, "currentDetachEventTimestamp: %llu, currentAttachEventTimestamp: %llu, delta: %llu", buf, 0x20u);
       }
 
-      v52 = [v38 unsignedLongLongValue];
-      if ((v52 - [v47 unsignedLongLongValue]) > 0xEA60 || (objc_msgSend(v71, "accDigitalID"), v53 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "accDigitalID"), v54 = objc_claimAutoreleasedReturnValue(), v55 = objc_msgSend(v53, "isEqualToData:", v54), v54, v53, !v55))
+      unsignedLongLongValue7 = [timestamp2 unsignedLongLongValue];
+      if ((unsignedLongLongValue7 - [v47 unsignedLongLongValue]) > 0xEA60 || (objc_msgSend(v71, "accDigitalID"), v53 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "accDigitalID"), v54 = objc_claimAutoreleasedReturnValue(), v55 = objc_msgSend(v53, "isEqualToData:", v54), v54, v53, !v55))
       {
         if (gLogObjects && gNumLogObjects >= 1)
         {
@@ -1404,14 +1404,14 @@ LABEL_21:
           v65 = &_os_log_default;
         }
 
-        v12 = v70;
+        v12 = timestamp;
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           _os_log_impl(&def_3A0E8, v64, OS_LOG_TYPE_DEFAULT, "Unique event detected", buf, 2u);
         }
 
-        v6 = 1;
+        reasonCopy = 1;
 LABEL_58:
         v10 = v71;
         goto LABEL_59;
@@ -1439,15 +1439,15 @@ LABEL_58:
         v59 = &_os_log_default;
       }
 
-      v12 = v70;
+      v12 = timestamp;
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         _os_log_impl(&def_3A0E8, v58, OS_LOG_TYPE_DEFAULT, "Flurry detected", buf, 2u);
       }
 
-      v11 = v73;
-      v68 = v38;
+      v11 = primaryPort3;
+      v68 = timestamp2;
 LABEL_32:
       v10 = v71;
 LABEL_33:
@@ -1460,9 +1460,9 @@ LABEL_33:
   }
 
   while (v60);
-  v38 = v68;
-  v73 = v11;
-  v6 = v66;
+  timestamp2 = v68;
+  primaryPort3 = v11;
+  reasonCopy = v66;
 LABEL_59:
 
   if (gLogObjects && gNumLogObjects >= 1)
@@ -1484,37 +1484,37 @@ LABEL_59:
   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *v80 = v6;
+    *v80 = reasonCopy;
     *&v80[4] = 2112;
-    *&v80[6] = v67;
+    *&v80[6] = arrayCopy;
     _os_log_impl(&def_3A0E8, v61, OS_LOG_TYPE_DEFAULT, "uniqueEventDetected: %d, uniqueEvent: %@", buf, 0x12u);
   }
 
-  return v6;
+  return reasonCopy;
 }
 
-- (id)bucketizeRMDurations:(id)a3
+- (id)bucketizeRMDurations:(id)durations
 {
-  v3 = [a3 unsignedLongLongValue];
-  v4 = v3;
-  v5 = v3 >> 3;
-  if (v3 >= 0x3E8)
+  unsignedLongLongValue = [durations unsignedLongLongValue];
+  v4 = unsignedLongLongValue;
+  v5 = unsignedLongLongValue >> 3;
+  if (unsignedLongLongValue >= 0x3E8)
   {
-    if (v3 >= 0xBB8)
+    if (unsignedLongLongValue >= 0xBB8)
     {
-      if (v3 >> 4 >= 0x177)
+      if (unsignedLongLongValue >> 4 >= 0x177)
       {
         if (v5 >= 0x55F)
         {
           if (v5 >= 0xF23)
           {
-            if (v3 >= 0xEE48)
+            if (unsignedLongLongValue >= 0xEE48)
             {
-              if (v3 >= 0x92BA8)
+              if (unsignedLongLongValue >= 0x92BA8)
               {
-                if (v3 >= 0x1B7B28)
+                if (unsignedLongLongValue >= 0x1B7B28)
                 {
-                  if (v3 < 0x36F268)
+                  if (unsignedLongLongValue < 0x36F268)
                   {
                     v6 = 9;
                   }
@@ -1614,16 +1614,16 @@ LABEL_59:
   return v10;
 }
 
-- (void)postUniqueAnalyticEventToFigaro:(id)a3 scanReason:(BOOL)a4 scanTime:(id)a5
+- (void)postUniqueAnalyticEventToFigaro:(id)figaro scanReason:(BOOL)reason scanTime:(id)time
 {
-  v7 = a3;
-  v8 = a5;
-  if (![(accessorydMatchingPlugin *)self areAttachEventsInList:v7])
+  figaroCopy = figaro;
+  timeCopy = time;
+  if (![(accessorydMatchingPlugin *)self areAttachEventsInList:figaroCopy])
   {
-    v23 = v8;
+    v23 = timeCopy;
     v24 = 0;
     v90 = 0;
-    v91 = 0;
+    primaryPort = 0;
     v86 = 0;
     v88 = 0;
     v82 = 0;
@@ -1631,67 +1631,67 @@ LABEL_59:
     goto LABEL_52;
   }
 
-  v9 = [v7 firstObject];
+  firstObject = [figaroCopy firstObject];
   objc_opt_class();
-  v76 = v9;
+  v76 = firstObject;
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
-    v11 = [v10 accDigitalID];
-    v85 = [v10 accSupoortsMikeyBus];
-    v73 = [v10 accSupoortsUART];
-    v71 = [v10 accSupoortsUSB];
-    v87 = [v10 rmDialogShown];
-    v91 = [v10 primaryPort];
-    v81 = [v10 connectType];
-    v12 = [v10 currentLimit];
-    v13 = [v10 chargeVoltage];
-    v14 = [v8 unsignedLongLongValue];
+    v10 = firstObject;
+    accDigitalID = [v10 accDigitalID];
+    accSupoortsMikeyBus = [v10 accSupoortsMikeyBus];
+    accSupoortsUART = [v10 accSupoortsUART];
+    accSupoortsUSB = [v10 accSupoortsUSB];
+    rmDialogShown = [v10 rmDialogShown];
+    primaryPort = [v10 primaryPort];
+    connectType = [v10 connectType];
+    currentLimit = [v10 currentLimit];
+    chargeVoltage = [v10 chargeVoltage];
+    unsignedLongLongValue = [timeCopy unsignedLongLongValue];
     v79 = v10;
-    v15 = [v10 timestamp];
-    v90 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", v14 - [v15 unsignedLongLongValue]);
+    timestamp = [v10 timestamp];
+    v90 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", unsignedLongLongValue - [timestamp unsignedLongLongValue]);
 
-    v16 = v12;
-    v80 = v11;
-    if (v12)
+    v16 = currentLimit;
+    v80 = accDigitalID;
+    if (currentLimit)
     {
       v17 = [NSNumber numberWithInt:0];
-      v18 = [v12 isEqualToNumber:v17];
-      LOBYTE(v12) = 0;
-      if ((v18 & 1) == 0 && v13)
+      v18 = [currentLimit isEqualToNumber:v17];
+      LOBYTE(currentLimit) = 0;
+      if ((v18 & 1) == 0 && chargeVoltage)
       {
         v19 = [NSNumber numberWithInt:0];
-        LODWORD(v12) = [v13 isEqualToNumber:v19] ^ 1;
+        LODWORD(currentLimit) = [chargeVoltage isEqualToNumber:v19] ^ 1;
       }
     }
 
     v20 = @"unlock";
-    v21 = v81;
-    v22 = v87;
+    v21 = connectType;
+    rmDialogShown2 = rmDialogShown;
   }
 
   else
   {
-    v71 = 0;
-    v73 = 0;
-    LOBYTE(v12) = 0;
-    v22 = 0;
+    accSupoortsUSB = 0;
+    accSupoortsUART = 0;
+    LOBYTE(currentLimit) = 0;
+    rmDialogShown2 = 0;
     v79 = 0;
     v80 = 0;
     v90 = 0;
-    v91 = 0;
-    v13 = 0;
+    primaryPort = 0;
+    chargeVoltage = 0;
     v16 = 0;
     v21 = 0;
-    v85 = 0;
+    accSupoortsMikeyBus = 0;
     v20 = 0;
   }
 
-  v26 = [v7 lastObject];
+  lastObject = [figaroCopy lastObject];
   objc_opt_class();
-  v77 = v8;
-  v78 = v7;
-  v75 = v26;
+  v77 = timeCopy;
+  v78 = figaroCopy;
+  v75 = lastObject;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
@@ -1700,99 +1700,99 @@ LABEL_59:
       goto LABEL_28;
     }
 
-    v89 = v22;
-    v84 = v12;
-    v12 = v21;
-    v28 = [v26 timestamp];
+    v89 = rmDialogShown2;
+    v84 = currentLimit;
+    currentLimit = v21;
+    timestamp2 = [lastObject timestamp];
     v33 = v16;
-    v34 = [v28 unsignedLongLongValue];
-    v35 = [v79 timestamp];
-    v36 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", v34 - [v35 unsignedLongLongValue]);
+    unsignedLongLongValue2 = [timestamp2 unsignedLongLongValue];
+    timestamp3 = [v79 timestamp];
+    v36 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", unsignedLongLongValue2 - [timestamp3 unsignedLongLongValue]);
 
-    v31 = v13;
-    v30 = v33;
-    v32 = v12;
-    LOBYTE(v12) = v84;
+    chargeVoltage2 = chargeVoltage;
+    currentLimit2 = v33;
+    connectType2 = currentLimit;
+    LOBYTE(currentLimit) = v84;
     v90 = v36;
-    v7 = v78;
+    figaroCopy = v78;
     v20 = @"detach";
     goto LABEL_26;
   }
 
-  v83 = v12;
-  v12 = v13;
+  v83 = currentLimit;
+  currentLimit = chargeVoltage;
   v27 = v21;
-  v28 = v26;
+  timestamp2 = lastObject;
   if (!v79)
   {
-    v89 = v22;
-    v37 = [v8 unsignedLongLongValue];
-    v30 = v16;
-    v38 = v37;
-    v35 = [v28 timestamp];
-    v39 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", v38 - [v35 unsignedLongLongValue]);
+    v89 = rmDialogShown2;
+    unsignedLongLongValue3 = [timeCopy unsignedLongLongValue];
+    currentLimit2 = v16;
+    v38 = unsignedLongLongValue3;
+    timestamp3 = [timestamp2 timestamp];
+    v39 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", v38 - [timestamp3 unsignedLongLongValue]);
 
-    v31 = v12;
-    v32 = v27;
+    chargeVoltage2 = currentLimit;
+    connectType2 = v27;
     v90 = v39;
-    v7 = v78;
-    LOBYTE(v12) = v83;
+    figaroCopy = v78;
+    LOBYTE(currentLimit) = v83;
 LABEL_26:
 
-    v22 = v89;
+    rmDialogShown2 = v89;
     goto LABEL_27;
   }
 
-  v29 = [v7 indexOfObject:?];
-  if (v29 != [v7 indexOfObject:v28])
+  v29 = [figaroCopy indexOfObject:?];
+  if (v29 != [figaroCopy indexOfObject:timestamp2])
   {
-    v30 = [v28 currentLimit];
+    currentLimit2 = [timestamp2 currentLimit];
 
-    v31 = [v28 chargeVoltage];
+    chargeVoltage2 = [timestamp2 chargeVoltage];
 
-    v32 = [v28 connectType];
+    connectType2 = [timestamp2 connectType];
 
-    if (v22)
+    if (rmDialogShown2)
     {
-      v22 = 1;
+      rmDialogShown2 = 1;
     }
 
     else
     {
-      v22 = [v28 rmDialogShown];
+      rmDialogShown2 = [timestamp2 rmDialogShown];
     }
 
-    LOBYTE(v12) = v83;
-    if (!v30)
+    LOBYTE(currentLimit) = v83;
+    if (!currentLimit2)
     {
       goto LABEL_27;
     }
 
-    v89 = v22;
-    v35 = [NSNumber numberWithInt:0];
-    if (([v30 isEqualToNumber:v35] & 1) == 0 && v31)
+    v89 = rmDialogShown2;
+    timestamp3 = [NSNumber numberWithInt:0];
+    if (([currentLimit2 isEqualToNumber:timestamp3] & 1) == 0 && chargeVoltage2)
     {
       v40 = [NSNumber numberWithInt:0];
-      v41 = [v31 isEqualToNumber:v40] ^ 1;
+      v41 = [chargeVoltage2 isEqualToNumber:v40] ^ 1;
 
-      v7 = v78;
-      LOBYTE(v12) = v41 | v83;
+      figaroCopy = v78;
+      LOBYTE(currentLimit) = v41 | v83;
     }
 
     goto LABEL_26;
   }
 
-  v30 = v16;
-  v31 = v12;
-  v32 = v27;
-  LOBYTE(v12) = v83;
+  currentLimit2 = v16;
+  chargeVoltage2 = currentLimit;
+  connectType2 = v27;
+  LOBYTE(currentLimit) = v83;
 LABEL_27:
 
-  v13 = v31;
-  v21 = v32;
-  v16 = v30;
+  chargeVoltage = chargeVoltage2;
+  v21 = connectType2;
+  v16 = currentLimit2;
 LABEL_28:
-  v42 = [v7 count] > 2;
+  v42 = [figaroCopy count] > 2;
   v43 = CFStringCreateFromCFData(v80, @"%02X");
   v97[0] = @"bucketedEventDuration";
   v69 = [(accessorydMatchingPlugin *)self bucketizeRMDurations:v90];
@@ -1824,39 +1824,39 @@ LABEL_28:
   v67 = v46;
   v98[3] = v46;
   v97[4] = @"supportsUSB";
-  v72 = [NSNumber numberWithBool:v71];
+  v72 = [NSNumber numberWithBool:accSupoortsUSB];
   v98[4] = v72;
   v97[5] = @"supportsUART";
-  v74 = [NSNumber numberWithBool:v73];
+  v74 = [NSNumber numberWithBool:accSupoortsUART];
   v98[5] = v74;
   v97[6] = @"supportsMikeyBus";
-  v66 = [NSNumber numberWithBool:v85];
+  v66 = [NSNumber numberWithBool:accSupoortsMikeyBus];
   v98[6] = v66;
   v97[7] = @"supportsAIDBulkPipes";
   v65 = [NSNumber numberWithBool:0];
   v98[7] = v65;
   v97[8] = @"unlockDialogSeen";
-  v64 = [NSNumber numberWithBool:v22];
+  v64 = [NSNumber numberWithBool:rmDialogShown2];
   v98[8] = v64;
   v97[9] = @"chargingCapable";
-  v47 = [NSNumber numberWithBool:v12 & 1];
+  v47 = [NSNumber numberWithBool:currentLimit & 1];
   v98[9] = v47;
   v97[10] = @"lightningPrimaryPortNumber";
-  v48 = v91;
-  if (!v91)
+  v48 = primaryPort;
+  if (!primaryPort)
   {
     v48 = [NSNumber numberWithInt:0];
   }
 
   v98[10] = v48;
   v97[11] = @"chargingVoltage";
-  v49 = v13;
-  if (!v13)
+  v49 = chargeVoltage;
+  if (!chargeVoltage)
   {
     v49 = [NSNumber numberWithInt:0];
   }
 
-  v86 = v13;
+  v86 = chargeVoltage;
   v88 = v16;
   v98[11] = v49;
   v97[12] = @"chargingCurrent";
@@ -1888,7 +1888,7 @@ LABEL_28:
   {
   }
 
-  v7 = v78;
+  figaroCopy = v78;
   if (!v88)
   {
   }
@@ -1898,7 +1898,7 @@ LABEL_28:
   }
 
   v82 = v52;
-  if (!v91)
+  if (!primaryPort)
   {
   }
 
@@ -1918,7 +1918,7 @@ LABEL_52:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v57 = v7;
+  v57 = figaroCopy;
   v58 = [v57 countByEnumeratingWithState:&v92 objects:v96 count:16];
   if (v58)
   {
@@ -1934,8 +1934,8 @@ LABEL_52:
         }
 
         v62 = *(*(&v92 + 1) + 8 * i);
-        v63 = [(accessorydMatchingPlugin *)self rmEventArray];
-        [v63 removeObject:v62];
+        rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+        [rmEventArray removeObject:v62];
       }
 
       v59 = [v57 countByEnumeratingWithState:&v92 objects:v96 count:16];
@@ -1945,19 +1945,19 @@ LABEL_52:
   }
 }
 
-- (void)updateRMDialogShownForPrimaryPort:(id)a3
+- (void)updateRMDialogShownForPrimaryPort:(id)port
 {
-  v11 = a3;
-  v4 = [(accessorydMatchingPlugin *)self rmEventArray];
-  v5 = [v4 count];
+  portCopy = port;
+  rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+  v5 = [rmEventArray count];
 
   if ((v5 - 1) >= 0)
   {
     do
     {
       --v5;
-      v6 = [(accessorydMatchingPlugin *)self rmEventArray];
-      v7 = [v6 objectAtIndex:v5];
+      rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+      v7 = [rmEventArray2 objectAtIndex:v5];
 
       if (v7)
       {
@@ -1965,8 +1965,8 @@ LABEL_52:
         if (objc_opt_isKindOfClass())
         {
           v8 = v7;
-          v9 = [v8 primaryPort];
-          v10 = [v9 isEqualToNumber:v11];
+          primaryPort = [v8 primaryPort];
+          v10 = [primaryPort isEqualToNumber:portCopy];
 
           if (v10)
           {
@@ -1982,13 +1982,13 @@ LABEL_52:
   }
 }
 
-- (void)updateUSBConectType:(id)a3 ForPrimaryPort:(id)a4 WithDigitalID:(id)a5
+- (void)updateUSBConectType:(id)type ForPrimaryPort:(id)port WithDigitalID:(id)d
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(accessorydMatchingPlugin *)self rmEventArray];
-  v11 = [v10 count];
+  typeCopy = type;
+  portCopy = port;
+  dCopy = d;
+  rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+  v11 = [rmEventArray count];
 
   if ((v11 - 1) < 0)
   {
@@ -1998,8 +1998,8 @@ LABEL_52:
   while (1)
   {
     --v11;
-    v12 = [(accessorydMatchingPlugin *)self rmEventArray];
-    v13 = [v12 objectAtIndex:v11];
+    rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+    v13 = [rmEventArray2 objectAtIndex:v11];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2011,11 +2011,11 @@ LABEL_52:
     if (objc_opt_isKindOfClass())
     {
       v18 = v13;
-      v15 = [v18 primaryPort];
-      if ([v15 isEqualToNumber:v8])
+      primaryPort = [v18 primaryPort];
+      if ([primaryPort isEqualToNumber:portCopy])
       {
-        v19 = [v18 accDigitalID];
-        v20 = [v19 isEqualToData:v9];
+        accDigitalID = [v18 accDigitalID];
+        v20 = [accDigitalID isEqualToData:dCopy];
 
         if (v20)
         {
@@ -2037,34 +2037,34 @@ LABEL_11:
   }
 
   v14 = v13;
-  v15 = [v14 primaryPort];
-  if (![v15 isEqualToNumber:v8])
+  primaryPort = [v14 primaryPort];
+  if (![primaryPort isEqualToNumber:portCopy])
   {
     goto LABEL_10;
   }
 
-  v16 = [v14 accDigitalID];
-  v17 = [v16 isEqualToData:v9];
+  accDigitalID2 = [v14 accDigitalID];
+  v17 = [accDigitalID2 isEqualToData:dCopy];
 
   if (!v17)
   {
     goto LABEL_11;
   }
 
-  [v14 setConnectType:v21];
+  [v14 setConnectType:typeCopy];
 LABEL_14:
 
 LABEL_15:
 }
 
-- (void)updateUSBChargeCurrent:(id)a3 AndChargeVoltage:(id)a4 ForPrimaryPort:(id)a5 WithDigitalID:(id)a6
+- (void)updateUSBChargeCurrent:(id)current AndChargeVoltage:(id)voltage ForPrimaryPort:(id)port WithDigitalID:(id)d
 {
-  v29 = a3;
-  v28 = a4;
-  v10 = a5;
-  v30 = a6;
-  v11 = [(accessorydMatchingPlugin *)self rmEventArray];
-  v12 = [v11 count];
+  currentCopy = current;
+  voltageCopy = voltage;
+  portCopy = port;
+  dCopy = d;
+  rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+  v12 = [rmEventArray count];
 
   if ((v12 - 1) < 0)
   {
@@ -2074,8 +2074,8 @@ LABEL_15:
   while (1)
   {
     --v12;
-    v13 = [(accessorydMatchingPlugin *)self rmEventArray];
-    v14 = [v13 objectAtIndex:v12];
+    rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+    v14 = [rmEventArray2 objectAtIndex:v12];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2084,15 +2084,15 @@ LABEL_15:
     }
 
     v15 = v14;
-    v16 = [v15 primaryPort];
-    if (([v16 isEqualToNumber:v10] & 1) == 0)
+    primaryPort = [v15 primaryPort];
+    if (([primaryPort isEqualToNumber:portCopy] & 1) == 0)
     {
 
       goto LABEL_7;
     }
 
-    v17 = [v15 accDigitalID];
-    v18 = [v17 isEqualToData:v30];
+    accDigitalID = [v15 accDigitalID];
+    v18 = [accDigitalID isEqualToData:dCopy];
 
     if (v18)
     {
@@ -2106,11 +2106,11 @@ LABEL_8:
     if (objc_opt_isKindOfClass())
     {
       v19 = v14;
-      v20 = [v19 primaryPort];
-      if ([v20 isEqualToNumber:v10])
+      primaryPort2 = [v19 primaryPort];
+      if ([primaryPort2 isEqualToNumber:portCopy])
       {
-        v21 = [v19 accDigitalID];
-        v22 = [v21 isEqualToData:v30];
+        accDigitalID2 = [v19 accDigitalID];
+        v22 = [accDigitalID2 isEqualToData:dCopy];
 
         if (v22)
         {
@@ -2129,19 +2129,19 @@ LABEL_8:
     }
   }
 
-  [v15 setCurrentLimit:v29];
-  [v15 setChargeVoltage:v28];
-  v23 = [v15 currentLimit];
+  [v15 setCurrentLimit:currentCopy];
+  [v15 setChargeVoltage:voltageCopy];
+  currentLimit = [v15 currentLimit];
   v24 = [NSNumber numberWithInt:0];
-  if ([v23 isEqualToNumber:v24])
+  if ([currentLimit isEqualToNumber:v24])
   {
   }
 
   else
   {
-    v25 = [v15 chargeVoltage];
+    chargeVoltage = [v15 chargeVoltage];
     v26 = [NSNumber numberWithInt:0];
-    v27 = [v25 isEqualToNumber:v26];
+    v27 = [chargeVoltage isEqualToNumber:v26];
 
     if ((v27 & 1) == 0)
     {
@@ -2154,11 +2154,11 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)doAttachEventsForPrimaryPortExistInList:(id)a3
+- (BOOL)doAttachEventsForPrimaryPortExistInList:(id)list
 {
-  v4 = a3;
-  v5 = [(accessorydMatchingPlugin *)self rmEventArray];
-  v6 = [v5 count];
+  listCopy = list;
+  rmEventArray = [(accessorydMatchingPlugin *)self rmEventArray];
+  v6 = [rmEventArray count];
 
   v7 = v6 - 1;
   if ((v6 - 1) < 0)
@@ -2171,14 +2171,14 @@ LABEL_7:
   {
     while (1)
     {
-      v8 = [(accessorydMatchingPlugin *)self rmEventArray];
-      v9 = [v8 objectAtIndex:v7];
+      rmEventArray2 = [(accessorydMatchingPlugin *)self rmEventArray];
+      v9 = [rmEventArray2 objectAtIndex:v7];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 primaryPort];
-        v11 = [v10 isEqualToNumber:v4];
+        primaryPort = [v9 primaryPort];
+        v11 = [primaryPort isEqualToNumber:listCopy];
 
         if (v11)
         {
@@ -2190,8 +2190,8 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v9 primaryPort];
-        v13 = [v12 isEqualToNumber:v4];
+        primaryPort2 = [v9 primaryPort];
+        v13 = [primaryPort2 isEqualToNumber:listCopy];
 
         if (v13)
         {
@@ -2261,8 +2261,8 @@ LABEL_10:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v8 = [_portsPendingUserAuthorization allValues];
-      v9 = [v8 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      allValues = [_portsPendingUserAuthorization allValues];
+      v9 = [allValues countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2273,13 +2273,13 @@ LABEL_10:
           {
             if (*v27 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allValues);
             }
 
             [(accessorydMatchingPlugin *)self addUserNotificationForPort:*(*(&v26 + 1) + 8 * i)];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v26 objects:v32 count:16];
+          v10 = [allValues countByEnumeratingWithState:&v26 objects:v32 count:16];
         }
 
         while (v10);
@@ -2294,11 +2294,11 @@ LABEL_10:
 
   else
   {
-    v13 = [_userNotificationsTRM allKeys];
-    v14 = [NSMutableSet setWithArray:v13];
+    allKeys = [_userNotificationsTRM allKeys];
+    v14 = [NSMutableSet setWithArray:allKeys];
 
-    v15 = [_portsPendingUserAuthorization allKeys];
-    v16 = [NSSet setWithArray:v15];
+    allKeys2 = [_portsPendingUserAuthorization allKeys];
+    v16 = [NSSet setWithArray:allKeys2];
 
     [v14 minusSet:v16];
     v24 = 0u;
@@ -2331,9 +2331,9 @@ LABEL_10:
   }
 }
 
-- (void)addUserNotificationForPort:(id)a3
+- (void)addUserNotificationForPort:(id)port
 {
-  v4 = a3;
+  portCopy = port;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -2363,7 +2363,7 @@ LABEL_10:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = portCopy;
     _os_log_impl(&def_3A0E8, v7, OS_LOG_TYPE_DEFAULT, "Adding user notification... (port: %@)", &buf, 0xCu);
   }
 
@@ -2373,13 +2373,13 @@ LABEL_10:
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  if (!v4)
+  if (!portCopy)
   {
     goto LABEL_14;
   }
 
   v8 = _userNotificationsTRM;
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 registryEntryID]);
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [portCopy registryEntryID]);
   v10 = [v8 objectForKeyedSubscript:v9];
   v11 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v10;
@@ -2391,7 +2391,7 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = __55__accessorydMatchingPlugin_addUserNotificationForPort___block_invoke;
     block[3] = &unk_59970;
-    v21[0] = v4;
+    v21[0] = portCopy;
     v21[1] = &buf;
     dispatch_async(v12, block);
 
@@ -2406,7 +2406,7 @@ LABEL_14:
     v18[2] = __55__accessorydMatchingPlugin_addUserNotificationForPort___block_invoke_308;
     v18[3] = &unk_594D8;
     v19[2] = &buf;
-    v14 = v4;
+    v14 = portCopy;
     v19[0] = v14;
     v19[1] = self;
     if (addUserNotificationForPort__onceToken != -1)
@@ -2428,16 +2428,16 @@ LABEL_14:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)removeUserNotificationForPort:(id)a3
+- (void)removeUserNotificationForPort:(id)port
 {
-  v3 = a3;
+  portCopy = port;
   v4 = _uiQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__accessorydMatchingPlugin_removeUserNotificationForPort___block_invoke;
   block[3] = &unk_59250;
-  v7 = v3;
-  v5 = v3;
+  v7 = portCopy;
+  v5 = portCopy;
   dispatch_async(v4, block);
 }
 
@@ -2446,7 +2446,7 @@ LABEL_14:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = a1;
+    v6[1] = self;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IOServiceAddMatchingNotification failed: %08x", v6, 8u);
   }
 
@@ -2475,10 +2475,10 @@ LABEL_14:
   }
 }
 
-- (void)portManager:(id)a3 didAddPort:(id)a4
+- (void)portManager:(id)manager didAddPort:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  portCopy = port;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -2508,28 +2508,28 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v7;
+    v15 = portCopy;
     _os_log_impl(&def_3A0E8, v10, OS_LOG_TYPE_DEFAULT, "Port added: %@", buf, 0xCu);
   }
 
-  if ([v7 authorizationRequired] && objc_msgSend(v7, "userAuthorizationPending"))
+  if ([portCopy authorizationRequired] && objc_msgSend(portCopy, "userAuthorizationPending"))
   {
     v11 = _uiQueue();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __51__accessorydMatchingPlugin_portManager_didAddPort___block_invoke;
     block[3] = &unk_59250;
-    v13 = v7;
+    v13 = portCopy;
     dispatch_sync(v11, block);
 
     [(accessorydMatchingPlugin *)self trmStatusDidChange];
   }
 }
 
-- (void)portManager:(id)a3 didRemovePort:(id)a4
+- (void)portManager:(id)manager didRemovePort:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  portCopy = port;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -2559,7 +2559,7 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v7;
+    v16 = portCopy;
     _os_log_impl(&def_3A0E8, v10, OS_LOG_TYPE_DEFAULT, "Port removed: %@", buf, 0xCu);
   }
 
@@ -2568,17 +2568,17 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __54__accessorydMatchingPlugin_portManager_didRemovePort___block_invoke;
   block[3] = &unk_59250;
-  v14 = v7;
-  v12 = v7;
+  v14 = portCopy;
+  v12 = portCopy;
   dispatch_sync(v11, block);
 
   [(accessorydMatchingPlugin *)self trmStatusDidChange];
 }
 
-- (void)portManager:(id)a3 didUpdateAuthorizationStateForPort:(id)a4
+- (void)portManager:(id)manager didUpdateAuthorizationStateForPort:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  portCopy = port;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -2608,7 +2608,7 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v7;
+    v16 = portCopy;
     _os_log_impl(&def_3A0E8, v10, OS_LOG_TYPE_DEFAULT, "Port authorization state updated: %@", buf, 0xCu);
   }
 
@@ -2617,17 +2617,17 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __75__accessorydMatchingPlugin_portManager_didUpdateAuthorizationStateForPort___block_invoke;
   block[3] = &unk_59250;
-  v14 = v7;
-  v12 = v7;
+  v14 = portCopy;
+  v12 = portCopy;
   dispatch_sync(v11, block);
 
   [(accessorydMatchingPlugin *)self trmStatusDidChange];
 }
 
-- (void)intrusiveUIStateDidChange:(BOOL)a3 forService:(id)a4
+- (void)intrusiveUIStateDidChange:(BOOL)change forService:(id)service
 {
-  v4 = a3;
-  v5 = a4;
+  changeCopy = change;
+  serviceCopy = service;
   if (gLogObjects)
   {
     v6 = gNumLogObjects <= 4;
@@ -2639,7 +2639,7 @@ LABEL_14:
   }
 
   v7 = !v6;
-  if (v4)
+  if (changeCopy)
   {
     if (v7)
     {
@@ -2686,13 +2686,13 @@ LABEL_14:
       [accessorydMatchingPlugin intrusiveUIStateDidChange:forService:];
     }
 
-    [v5 invalidate];
+    [serviceCopy invalidate];
   }
 }
 
-- (void)serverRunningDidChange:(id)a3 status:(int)a4
+- (void)serverRunningDidChange:(id)change status:(int)status
 {
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -2725,40 +2725,40 @@ LABEL_14:
   }
 }
 
-- (accessorydMatchingPlugin)initWithModule:(void *)a3
+- (accessorydMatchingPlugin)initWithModule:(void *)module
 {
-  v6 = self;
-  if (a3)
+  selfCopy = self;
+  if (module)
   {
     init_logging();
-    v8 = [(accessorydMatchingPlugin *)v6 init];
-    v6 = v8;
+    v8 = [(accessorydMatchingPlugin *)selfCopy init];
+    selfCopy = v8;
     if (v8)
     {
-      v8->_eventModule = a3;
+      v8->_eventModule = module;
       v9 = [[NSMutableSet alloc] initWithCapacity:1];
-      digitalIDTokenSet = v6->_digitalIDTokenSet;
-      v6->_digitalIDTokenSet = v9;
+      digitalIDTokenSet = selfCopy->_digitalIDTokenSet;
+      selfCopy->_digitalIDTokenSet = v9;
 
       v11 = [[NSMutableSet alloc] initWithCapacity:1];
-      btServiceTokenSet = v6->_btServiceTokenSet;
-      v6->_btServiceTokenSet = v11;
+      btServiceTokenSet = selfCopy->_btServiceTokenSet;
+      selfCopy->_btServiceTokenSet = v11;
 
       v13 = dispatch_queue_create("accessorydMatchingPlugin_AccPowerTimerQueue", 0);
-      accPowerQueue = v6->_accPowerQueue;
-      v6->_accPowerQueue = v13;
+      accPowerQueue = selfCopy->_accPowerQueue;
+      selfCopy->_accPowerQueue = v13;
 
-      accPowerTimer = v6->_accPowerTimer;
-      v6->_accPowerTimer = 0;
+      accPowerTimer = selfCopy->_accPowerTimer;
+      selfCopy->_accPowerTimer = 0;
 
       v16 = dispatch_queue_create("accessorydMatchingPlugin_SystemPowerQueue", 0);
-      systemPowerQueue = v6->_systemPowerQueue;
-      v6->_systemPowerQueue = v16;
+      systemPowerQueue = selfCopy->_systemPowerQueue;
+      selfCopy->_systemPowerQueue = v16;
 
-      v6->_systemPowerNotifyPortRef = 0;
-      v6->_systemPowerIterator = 0;
-      notifier = &v6->_systemPowerIterator;
-      v6->_systemPowerPort = 0;
+      selfCopy->_systemPowerNotifyPortRef = 0;
+      selfCopy->_systemPowerIterator = 0;
+      notifier = &selfCopy->_systemPowerIterator;
+      selfCopy->_systemPowerPort = 0;
       CFRunLoopGetMain();
       if (!IOAccessoryStartVoltageEventMonitor())
       {
@@ -2787,65 +2787,65 @@ LABEL_14:
         }
       }
 
-      v6->_btSession = 0;
-      *&v6->_digitalIDMatchingEnabled = 0;
-      v6->_ioAccessoryManagerClassIteratorArrived = 0;
-      v6->_ioAccessoryManagerClassIteratorTerminated = 0;
-      chargeConfigDict = v6->_chargeConfigDict;
-      *&v6->_ioAccessoryManagerClassNotify = 0u;
+      selfCopy->_btSession = 0;
+      *&selfCopy->_digitalIDMatchingEnabled = 0;
+      selfCopy->_ioAccessoryManagerClassIteratorArrived = 0;
+      selfCopy->_ioAccessoryManagerClassIteratorTerminated = 0;
+      chargeConfigDict = selfCopy->_chargeConfigDict;
+      *&selfCopy->_ioAccessoryManagerClassNotify = 0u;
 
-      v6->_isCarPlayAllowed = 0;
+      selfCopy->_isCarPlayAllowed = 0;
       v21 = dispatch_queue_create("accessorydMatchingPlugin_CarPlayEventQueue", 0);
-      carPlayEventQueue = v6->_carPlayEventQueue;
-      v6->_carPlayEventQueue = v21;
+      carPlayEventQueue = selfCopy->_carPlayEventQueue;
+      selfCopy->_carPlayEventQueue = v21;
 
       v23 = dispatch_queue_create("com.apple.accessoryd.uea.IOAccessoryEventQueue", 0);
-      ioAccessoryEventQueue = v6->_ioAccessoryEventQueue;
-      v6->_ioAccessoryEventQueue = v23;
+      ioAccessoryEventQueue = selfCopy->_ioAccessoryEventQueue;
+      selfCopy->_ioAccessoryEventQueue = v23;
 
       v25 = dispatch_queue_create("accessorydMatchingPlugin_BTEventQueue", 0);
-      btEventQueue = v6->_btEventQueue;
-      v6->_btEventQueue = v25;
+      btEventQueue = selfCopy->_btEventQueue;
+      selfCopy->_btEventQueue = v25;
 
-      v6->_isIOAccessoryManagerMonitorRunning = 0;
-      v6->_ioResourceNotifyPort = 0;
-      *&v6->_ioAccessoryPortClassIteratorArrived = 0u;
+      selfCopy->_isIOAccessoryManagerMonitorRunning = 0;
+      selfCopy->_ioResourceNotifyPort = 0;
+      *&selfCopy->_ioAccessoryPortClassIteratorArrived = 0u;
       v27 = objc_alloc_init(NSMutableArray);
-      rmEventArray = v6->_rmEventArray;
-      v6->_rmEventArray = v27;
+      rmEventArray = selfCopy->_rmEventArray;
+      selfCopy->_rmEventArray = v27;
 
-      v6->_roleSwapMaskWritten = 0;
+      selfCopy->_roleSwapMaskWritten = 0;
       v29 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.accessoryd.plugin"];
-      pluginDefaults = v6->_pluginDefaults;
-      v6->_pluginDefaults = v29;
+      pluginDefaults = selfCopy->_pluginDefaults;
+      selfCopy->_pluginDefaults = v29;
 
       [OUTLINED_FUNCTION_21() objectForKey:@"cachedDigitalID"];
       objc_claimAutoreleasedReturnValue();
       v31 = [OUTLINED_FUNCTION_15() dictionaryWithDictionary:?];
-      digitalIDCacheDict = v6->_digitalIDCacheDict;
-      v6->_digitalIDCacheDict = v31;
+      digitalIDCacheDict = selfCopy->_digitalIDCacheDict;
+      selfCopy->_digitalIDCacheDict = v31;
 
       [OUTLINED_FUNCTION_21() objectForKey:@"uartDetachTimes"];
       objc_claimAutoreleasedReturnValue();
       v33 = [OUTLINED_FUNCTION_15() dictionaryWithDictionary:?];
-      uartAccessoryDetachTimesDict = v6->_uartAccessoryDetachTimesDict;
-      v6->_uartAccessoryDetachTimesDict = v33;
+      uartAccessoryDetachTimesDict = selfCopy->_uartAccessoryDetachTimesDict;
+      selfCopy->_uartAccessoryDetachTimesDict = v33;
 
       [OUTLINED_FUNCTION_21() objectForKey:@"mikeyBusDetachTimes"];
       objc_claimAutoreleasedReturnValue();
       v35 = [OUTLINED_FUNCTION_15() dictionaryWithDictionary:?];
-      mikeyBusAccessoryDetachTimesDict = v6->_mikeyBusAccessoryDetachTimesDict;
-      v6->_mikeyBusAccessoryDetachTimesDict = v35;
+      mikeyBusAccessoryDetachTimesDict = selfCopy->_mikeyBusAccessoryDetachTimesDict;
+      selfCopy->_mikeyBusAccessoryDetachTimesDict = v35;
 
       [OUTLINED_FUNCTION_21() objectForKey:@"aidBulkPipeDetachTimes"];
       objc_claimAutoreleasedReturnValue();
       v37 = [OUTLINED_FUNCTION_15() dictionaryWithDictionary:?];
-      aidBulkPipeAccessoryDetachTimesDict = v6->_aidBulkPipeAccessoryDetachTimesDict;
-      v6->_aidBulkPipeAccessoryDetachTimesDict = v37;
+      aidBulkPipeAccessoryDetachTimesDict = selfCopy->_aidBulkPipeAccessoryDetachTimesDict;
+      selfCopy->_aidBulkPipeAccessoryDetachTimesDict = v37;
 
-      v39 = [(NSUserDefaults *)v6->_pluginDefaults objectForKey:@"lastUSBDetach"];
-      lastUSBAccessoryDetachTime = v6->_lastUSBAccessoryDetachTime;
-      v6->_lastUSBAccessoryDetachTime = v39;
+      v39 = [(NSUserDefaults *)selfCopy->_pluginDefaults objectForKey:@"lastUSBDetach"];
+      lastUSBAccessoryDetachTime = selfCopy->_lastUSBAccessoryDetachTime;
+      selfCopy->_lastUSBAccessoryDetachTime = v39;
 
       OUTLINED_FUNCTION_13();
       if (v3 && v4 >= 1)
@@ -2867,7 +2867,7 @@ LABEL_14:
 
       if (OUTLINED_FUNCTION_18())
       {
-        v43 = v6->_digitalIDCacheDict;
+        v43 = selfCopy->_digitalIDCacheDict;
         OUTLINED_FUNCTION_17();
         OUTLINED_FUNCTION_2_0();
         _os_log_impl(v44, v45, v46, v47, v48, 0xCu);
@@ -2893,7 +2893,7 @@ LABEL_14:
 
       if (OUTLINED_FUNCTION_18())
       {
-        v51 = v6->_uartAccessoryDetachTimesDict;
+        v51 = selfCopy->_uartAccessoryDetachTimesDict;
         OUTLINED_FUNCTION_17();
         OUTLINED_FUNCTION_2_0();
         _os_log_impl(v52, v53, v54, v55, v56, 0xCu);
@@ -2919,7 +2919,7 @@ LABEL_14:
 
       if (OUTLINED_FUNCTION_18())
       {
-        v59 = v6->_mikeyBusAccessoryDetachTimesDict;
+        v59 = selfCopy->_mikeyBusAccessoryDetachTimesDict;
         OUTLINED_FUNCTION_17();
         OUTLINED_FUNCTION_2_0();
         _os_log_impl(v60, v61, v62, v63, v64, 0xCu);
@@ -2945,7 +2945,7 @@ LABEL_14:
 
       if (OUTLINED_FUNCTION_18())
       {
-        v67 = v6->_aidBulkPipeAccessoryDetachTimesDict;
+        v67 = selfCopy->_aidBulkPipeAccessoryDetachTimesDict;
         OUTLINED_FUNCTION_17();
         OUTLINED_FUNCTION_2_0();
         _os_log_impl(v68, v69, v70, v71, v72, 0xCu);
@@ -2971,15 +2971,15 @@ LABEL_14:
 
       if (OUTLINED_FUNCTION_18())
       {
-        v75 = v6->_lastUSBAccessoryDetachTime;
+        v75 = selfCopy->_lastUSBAccessoryDetachTime;
         OUTLINED_FUNCTION_17();
         OUTLINED_FUNCTION_2_0();
         _os_log_impl(v76, v77, v78, v79, v80, 0xCu);
       }
 
-      v81 = [(NSUserDefaults *)v6->_pluginDefaults objectForKey:@"cachedUSBConnectType"];
-      cachedUSBConnectType = v6->_cachedUSBConnectType;
-      v6->_cachedUSBConnectType = v81;
+      v81 = [(NSUserDefaults *)selfCopy->_pluginDefaults objectForKey:@"cachedUSBConnectType"];
+      cachedUSBConnectType = selfCopy->_cachedUSBConnectType;
+      selfCopy->_cachedUSBConnectType = v81;
 
       OUTLINED_FUNCTION_13();
       if (v3 && v73 >= 1)
@@ -3001,23 +3001,23 @@ LABEL_14:
 
       if (OUTLINED_FUNCTION_18())
       {
-        v85 = v6->_cachedUSBConnectType;
+        v85 = selfCopy->_cachedUSBConnectType;
         OUTLINED_FUNCTION_17();
         OUTLINED_FUNCTION_2_0();
         _os_log_impl(v86, v87, v88, v89, v90, 0xCu);
       }
 
       v91 = dispatch_queue_create("accessorydMatchingPlugin_EventLoggerQueue", 0);
-      analyticsQueue = v6->_analyticsQueue;
-      v6->_analyticsQueue = v91;
+      analyticsQueue = selfCopy->_analyticsQueue;
+      selfCopy->_analyticsQueue = v91;
 
-      v6->_ioNotifyPortTRM = 0;
-      *&v6->_ioAddedIteratorTRM = 0;
-      v6->_isLightning = MGGetBoolAnswer();
-      v6->_ioNotifyPortLDCM = 0;
-      *&v6->_ioNotificationLDCM = 0;
-      ueaPluginSystemSettingsMonitor = v6->_ueaPluginSystemSettingsMonitor;
-      v6->_ueaPluginSystemSettingsMonitor = 0;
+      selfCopy->_ioNotifyPortTRM = 0;
+      *&selfCopy->_ioAddedIteratorTRM = 0;
+      selfCopy->_isLightning = MGGetBoolAnswer();
+      selfCopy->_ioNotifyPortLDCM = 0;
+      *&selfCopy->_ioNotificationLDCM = 0;
+      ueaPluginSystemSettingsMonitor = selfCopy->_ueaPluginSystemSettingsMonitor;
+      selfCopy->_ueaPluginSystemSettingsMonitor = 0;
 
       ServiceWithPrimaryPort = IOAccessoryManagerGetServiceWithPrimaryPort();
       if (ServiceWithPrimaryPort)
@@ -3049,8 +3049,8 @@ LABEL_14:
         }
 
         v103 = objc_alloc_init(ueaPluginSystemSettingsMonitor);
-        v96 = v6->_ueaPluginSystemSettingsMonitor;
-        v6->_ueaPluginSystemSettingsMonitor = v103;
+        v96 = selfCopy->_ueaPluginSystemSettingsMonitor;
+        selfCopy->_ueaPluginSystemSettingsMonitor = v103;
       }
 
       else
@@ -3144,20 +3144,20 @@ LABEL_14:
   {
 
     notify_cancel(0);
-    v6 = 0;
+    selfCopy = 0;
     *&stru_20.segname[12] = -1;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)addDigitalIDClient:(unint64_t)a3
+- (void)addDigitalIDClient:(unint64_t)client
 {
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:client];
   if (v4)
   {
-    v5 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-    [v5 addObject:v4];
+    digitalIDTokenSet = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+    [digitalIDTokenSet addObject:v4];
 
     if (gLogObjects)
     {
@@ -3188,14 +3188,14 @@ LABEL_14:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-      [v9 count];
+      digitalIDTokenSet2 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+      [digitalIDTokenSet2 count];
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_24(&def_3A0E8, v10, v11, "addDigitalIDClient digitalIDTokenSet count: %lu", v12, v13, v14, v15, v23);
     }
 
-    v16 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-    v17 = [v16 count];
+    digitalIDTokenSet3 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+    v17 = [digitalIDTokenSet3 count];
 
     if (v17 == &def_3A0E8 + 1)
     {
@@ -3207,13 +3207,13 @@ LABEL_14:
   }
 }
 
-- (void)removeDigitalIDClient:(unint64_t)a3
+- (void)removeDigitalIDClient:(unint64_t)client
 {
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:client];
   if (v4)
   {
-    v5 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-    [v5 removeObject:v4];
+    digitalIDTokenSet = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+    [digitalIDTokenSet removeObject:v4];
 
     if (gLogObjects)
     {
@@ -3244,14 +3244,14 @@ LABEL_14:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-      [v9 count];
+      digitalIDTokenSet2 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+      [digitalIDTokenSet2 count];
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_24(&def_3A0E8, v10, v11, "removeDigitalIDClient digitalIDTokenSet count: %lu", v12, v13, v14, v15, v23);
     }
 
-    v16 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
-    v17 = [v16 count];
+    digitalIDTokenSet3 = [(accessorydMatchingPlugin *)self digitalIDTokenSet];
+    v17 = [digitalIDTokenSet3 count];
 
     if (!v17)
     {
@@ -3263,16 +3263,16 @@ LABEL_14:
   }
 }
 
-- (void)addBTServiceClient:(unint64_t)a3
+- (void)addBTServiceClient:(unint64_t)client
 {
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
+  v7 = [NSNumber numberWithUnsignedLongLong:client];
   if (v7)
   {
-    v4 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
-    [v4 addObject:v7];
+    btServiceTokenSet = [(accessorydMatchingPlugin *)self btServiceTokenSet];
+    [btServiceTokenSet addObject:v7];
 
-    v5 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
-    v6 = [v5 count];
+    btServiceTokenSet2 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
+    v6 = [btServiceTokenSet2 count];
 
     if (v6 == &def_3A0E8 + 1)
     {
@@ -3281,17 +3281,17 @@ LABEL_14:
   }
 }
 
-- (void)removeBTServiceClient:(unint64_t)a3
+- (void)removeBTServiceClient:(unint64_t)client
 {
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:client];
   if (v4)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    btServiceTokenSet = [(accessorydMatchingPlugin *)self btServiceTokenSet];
+    v6 = [btServiceTokenSet countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3302,25 +3302,25 @@ LABEL_14:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(btServiceTokenSet);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
           if ([v10 isEqualToNumber:v4])
           {
-            v11 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
-            [v11 removeObject:v10];
+            btServiceTokenSet2 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
+            [btServiceTokenSet2 removeObject:v10];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [btServiceTokenSet countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
     }
 
-    v12 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
-    v13 = [v12 count];
+    btServiceTokenSet3 = [(accessorydMatchingPlugin *)self btServiceTokenSet];
+    v13 = [btServiceTokenSet3 count];
 
     if (!v13)
     {

@@ -8,30 +8,30 @@
 {
   v13 = a3;
   v4 = objc_autoreleasePoolPush();
-  v5 = [a1 spotlightItem];
-  if ([a1 isTopHitEligible])
+  spotlightItem = [self spotlightItem];
+  if ([self isTopHitEligible])
   {
-    v6 = [v5 attributeSet];
-    v7 = [a1 phrase];
-    v8 = [v7 signature];
-    v9 = [a1 bundleIdentifier];
-    v10 = [a1 associatedAppBundleIdentifier];
-    if (v10)
+    attributeSet = [spotlightItem attributeSet];
+    phrase = [self phrase];
+    signature = [phrase signature];
+    bundleIdentifier = [self bundleIdentifier];
+    associatedAppBundleIdentifier = [self associatedAppBundleIdentifier];
+    if (associatedAppBundleIdentifier)
     {
-      [v6 setAppShortcutDisplayRepresentationForPhraseSignature:v8 bundleIdentifier:v9 associatedAppBundleIdentifier:v10];
+      [attributeSet setAppShortcutDisplayRepresentationForPhraseSignature:signature bundleIdentifier:bundleIdentifier associatedAppBundleIdentifier:associatedAppBundleIdentifier];
     }
 
     else
     {
-      v11 = [a1 bundleIdentifier];
-      [v6 setAppShortcutDisplayRepresentationForPhraseSignature:v8 bundleIdentifier:v9 associatedAppBundleIdentifier:v11];
+      bundleIdentifier2 = [self bundleIdentifier];
+      [attributeSet setAppShortcutDisplayRepresentationForPhraseSignature:signature bundleIdentifier:bundleIdentifier associatedAppBundleIdentifier:bundleIdentifier2];
     }
 
-    v12 = [v5 attributeSet];
-    [v12 associateWithAppEntityForContextualAction:a1];
+    attributeSet2 = [spotlightItem attributeSet];
+    [attributeSet2 associateWithAppEntityForContextualAction:self];
   }
 
-  v13[2](v13, v5, 0);
+  v13[2](v13, spotlightItem, 0);
 
   objc_autoreleasePoolPop(v4);
 }

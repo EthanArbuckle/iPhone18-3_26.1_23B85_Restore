@@ -1,37 +1,37 @@
 @interface WDAppAccessListViewController
 - (UIFont)bodyFont;
-- (WDAppAccessListViewController)initWithSample:(id)a3 healthStore:(id)a4;
-- (id)_identifierForCellInSection:(int64_t)a3;
-- (id)_sourceForIndexPath:(id)a3;
-- (id)_textForCellAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (WDAppAccessListViewController)initWithSample:(id)sample healthStore:(id)store;
+- (id)_identifierForCellInSection:(int64_t)section;
+- (id)_sourceForIndexPath:(id)path;
+- (id)_textForCellAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_displayGuestModeAlert;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7;
-- (void)_loadIconForSource:(id)a3 onCell:(id)a4 ofTableView:(id)a5;
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error;
+- (void)_loadIconForSource:(id)source onCell:(id)cell ofTableView:(id)view;
 - (void)_refreshAppAuthorizationData;
 - (void)resetAccess;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation WDAppAccessListViewController
 
-- (WDAppAccessListViewController)initWithSample:(id)a3 healthStore:(id)a4
+- (WDAppAccessListViewController)initWithSample:(id)sample healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  sampleCopy = sample;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = WDAppAccessListViewController;
   v9 = [(HKTableViewController *)&v14 initWithUsingInsetStyling:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sample, a3);
-    objc_storeStrong(&v10->_healthStore, a4);
-    v11 = [objc_alloc(MEMORY[0x277CCD060]) initWithHealthStore:v8];
+    objc_storeStrong(&v9->_sample, sample);
+    objc_storeStrong(&v10->_healthStore, store);
+    v11 = [objc_alloc(MEMORY[0x277CCD060]) initWithHealthStore:storeCopy];
     authorizationStore = v10->_authorizationStore;
     v10->_authorizationStore = v11;
 
@@ -62,12 +62,12 @@
   v7.super_class = WDAppAccessListViewController;
   [(HKTableViewController *)&v7 viewDidLoad];
   v3 = *MEMORY[0x277D12780];
-  v4 = [(WDAppAccessListViewController *)self tableView];
-  [v4 setEstimatedRowHeight:v3];
+  tableView = [(WDAppAccessListViewController *)self tableView];
+  [tableView setEstimatedRowHeight:v3];
 
   v5 = *MEMORY[0x277D76F30];
-  v6 = [(WDAppAccessListViewController *)self tableView];
-  [v6 setRowHeight:v5];
+  tableView2 = [(WDAppAccessListViewController *)self tableView];
+  [tableView2 setRowHeight:v5];
 }
 
 - (void)_refreshAppAuthorizationData
@@ -217,24 +217,24 @@ void __61__WDAppAccessListViewController__refreshAppAuthorizationData__block_inv
   [v2 reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 2)
+  viewCopy = view;
+  if (section == 2)
   {
     v9 = 1;
   }
 
   else
   {
-    if (a4 == 1)
+    if (section == 1)
     {
       v7 = 1072;
     }
 
     else
     {
-      if (a4)
+      if (section)
       {
         v9 = 0;
         goto LABEL_11;
@@ -260,16 +260,16 @@ LABEL_11:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!section)
   {
     v6 = @"CCD_SHARED_WITH_APP";
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (section == 1)
   {
     v6 = @"CCD_NOT_SHARED_WITH_APP";
 LABEL_5:
@@ -285,22 +285,22 @@ LABEL_7:
   return v8;
 }
 
-- (id)_identifierForCellInSection:(int64_t)a3
+- (id)_identifierForCellInSection:(int64_t)section
 {
-  if (a3 == 2)
+  if (section == 2)
   {
     v6 = @"WDAppAccessListResetAllCell";
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (section == 1)
   {
     v3 = 1072;
   }
 
   else
   {
-    if (a3)
+    if (section)
     {
       v6 = 0;
       goto LABEL_11;
@@ -322,16 +322,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)_sourceForIndexPath:(id)a3
+- (id)_sourceForIndexPath:(id)path
 {
-  v4 = a3;
-  if (![v4 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
     v5 = &OBJC_IVAR___WDAppAccessListViewController__allowedApps;
     goto LABEL_5;
   }
 
-  if ([v4 section] == 1)
+  if ([pathCopy section] == 1)
   {
     v5 = &OBJC_IVAR___WDAppAccessListViewController__disallowedApps;
 LABEL_5:
@@ -341,7 +341,7 @@ LABEL_5:
 
   v6 = 0;
 LABEL_7:
-  v7 = [v4 row];
+  v7 = [pathCopy row];
   if (v7 >= [v6 count])
   {
     v8 = 0;
@@ -349,37 +349,37 @@ LABEL_7:
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v8;
 }
 
-- (void)_loadIconForSource:(id)a3 onCell:(id)a4 ofTableView:(id)a5
+- (void)_loadIconForSource:(id)source onCell:(id)cell ofTableView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  cellCopy = cell;
+  viewCopy = view;
   objc_initWeak(&location, self);
-  v11 = [MEMORY[0x277D127A8] sharedImageManager];
+  mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __71__WDAppAccessListViewController__loadIconForSource_onCell_ofTableView___block_invoke;
   v21[3] = &unk_2796E6C50;
-  v12 = v9;
+  v12 = cellCopy;
   v22 = v12;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__WDAppAccessListViewController__loadIconForSource_onCell_ofTableView___block_invoke_2;
   v16[3] = &unk_2796E6CA0;
   objc_copyWeak(&v20, &location);
-  v13 = v8;
+  v13 = sourceCopy;
   v17 = v13;
   v14 = v12;
   v18 = v14;
-  v15 = v10;
+  v15 = viewCopy;
   v19 = v15;
-  [v11 loadIconForSource:v13 syncHandler:v21 asyncHandler:v16];
+  [mEMORY[0x277D127A8] loadIconForSource:v13 syncHandler:v21 asyncHandler:v16];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -420,36 +420,36 @@ void __71__WDAppAccessListViewController__loadIconForSource_onCell_ofTableView__
   [WeakRetained _handleReturnedImage:*(a1 + 32) forSource:*(a1 + 40) cell:*(a1 + 48) tableView:*(a1 + 56) fetchError:*(a1 + 64)];
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error
 {
-  v18 = a3;
-  v12 = a5;
-  if (v18 && !a7)
+  imageCopy = image;
+  cellCopy = cell;
+  if (imageCopy && !error)
   {
-    v13 = a4;
-    v14 = [a6 indexPathForCell:v12];
+    sourceCopy = source;
+    v14 = [view indexPathForCell:cellCopy];
     v15 = [(WDAppAccessListViewController *)self _sourceForIndexPath:v14];
-    v16 = [v15 isEqual:v13];
+    v16 = [v15 isEqual:sourceCopy];
 
     if (v16)
     {
-      v17 = [v12 imageView];
-      [v17 setImage:v18];
+      imageView = [cellCopy imageView];
+      [imageView setImage:imageCopy];
     }
   }
 }
 
-- (id)_textForCellAtIndexPath:(id)a3
+- (id)_textForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (!v5)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (!section)
   {
     v8 = &OBJC_IVAR___WDAppAccessListViewController__allowedApps;
     goto LABEL_7;
   }
 
-  if (v5 == 1)
+  if (section == 1)
   {
     v8 = &OBJC_IVAR___WDAppAccessListViewController__disallowedApps;
 LABEL_7:
@@ -457,7 +457,7 @@ LABEL_7:
 LABEL_9:
     if ([v6 count])
     {
-      v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+      v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       [v9 name];
     }
 
@@ -471,7 +471,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v5 != 2)
+  if (section != 2)
   {
     v6 = 0;
     goto LABEL_9;
@@ -484,18 +484,18 @@ LABEL_13:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[WDAppAccessListViewController _identifierForCellInSection:](self, "_identifierForCellInSection:", [v7 section]);
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[WDAppAccessListViewController _identifierForCellInSection:](self, "_identifierForCellInSection:", [pathCopy section]);
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
   if (!v9)
   {
     v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v8];
   }
 
-  if ([v7 section] == 2)
+  if ([pathCopy section] == 2)
   {
     v10 = 3;
   }
@@ -506,30 +506,30 @@ LABEL_13:
   }
 
   [v9 setSelectionStyle:v10];
-  v11 = [(WDAppAccessListViewController *)self _textForCellAtIndexPath:v7];
-  v12 = [v9 textLabel];
-  [v12 setText:v11];
+  v11 = [(WDAppAccessListViewController *)self _textForCellAtIndexPath:pathCopy];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v11];
 
-  v13 = [(WDAppAccessListViewController *)self bodyFont];
-  v14 = [v9 textLabel];
-  [v14 setFont:v13];
+  bodyFont = [(WDAppAccessListViewController *)self bodyFont];
+  textLabel2 = [v9 textLabel];
+  [textLabel2 setFont:bodyFont];
 
-  v15 = [(WDAppAccessListViewController *)self _sourceForIndexPath:v7];
-  [(WDAppAccessListViewController *)self _loadIconForSource:v15 onCell:v9 ofTableView:v6];
+  v15 = [(WDAppAccessListViewController *)self _sourceForIndexPath:pathCopy];
+  [(WDAppAccessListViewController *)self _loadIconForSource:v15 onCell:v9 ofTableView:viewCopy];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 section] == 2)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == 2)
   {
     [(WDAppAccessListViewController *)self resetAccess];
   }
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (void)resetAccess
@@ -585,18 +585,18 @@ void __44__WDAppAccessListViewController_resetAccess__block_invoke(uint64_t a1, 
   [(WDAppAccessListViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = WDAppAccessListViewController;
-  [(WDAppAccessListViewController *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(WDAppAccessListViewController *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(WDAppAccessListViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(WDAppAccessListViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

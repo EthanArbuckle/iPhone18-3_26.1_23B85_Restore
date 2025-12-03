@@ -2,22 +2,22 @@
 - (NSArray)allCollaborationButtons;
 - (NSString)identifier;
 - (SFTabSwitcherShareConfiguration)init;
-- (SFTabSwitcherShareConfiguration)initWithIdentifier:(id)a3 shareHandler:(id)a4;
+- (SFTabSwitcherShareConfiguration)initWithIdentifier:(id)identifier shareHandler:(id)handler;
 - (id)shareHandler;
-- (void)setCollaborationButtonForLargeTitle:(id)a3;
-- (void)setCollaborationButtonForNavigationBar:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setShareHandler:(id)a3;
+- (void)setCollaborationButtonForLargeTitle:(id)title;
+- (void)setCollaborationButtonForNavigationBar:(id)bar;
+- (void)setIdentifier:(id)identifier;
+- (void)setShareHandler:(id)handler;
 @end
 
 @implementation SFTabSwitcherShareConfiguration
 
-- (SFTabSwitcherShareConfiguration)initWithIdentifier:(id)a3 shareHandler:(id)a4
+- (SFTabSwitcherShareConfiguration)initWithIdentifier:(id)identifier shareHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(handler);
+  if (identifier)
   {
-    a3 = sub_18BC20BD8();
+    identifier = sub_18BC20BD8();
     v8 = v7;
   }
 
@@ -31,7 +31,7 @@
   v10 = (&self->super.isa + OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped);
   *v10 = 0;
   v10[1] = 0;
-  v10[2] = a3;
+  v10[2] = identifier;
   v10[3] = v8;
   v10[4] = sub_18BA93E04;
   v10[5] = v9;
@@ -42,7 +42,7 @@
 
 - (NSArray)allCollaborationButtons
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA8E218();
 
   sub_18B7B0AC0(0, &qword_1EA9D46F0);
@@ -51,18 +51,18 @@
   return v3;
 }
 
-- (void)setCollaborationButtonForLargeTitle:(id)a3
+- (void)setCollaborationButtonForLargeTitle:(id)title
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped);
-  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped) = title;
+  titleCopy = title;
 }
 
-- (void)setCollaborationButtonForNavigationBar:(id)a3
+- (void)setCollaborationButtonForNavigationBar:(id)bar
 {
   v4 = *&self->wrapped[OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped];
-  *&self->wrapped[OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped] = a3;
-  v3 = a3;
+  *&self->wrapped[OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped] = bar;
+  barCopy = bar;
 }
 
 - (NSString)identifier
@@ -81,9 +81,9 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_18BC20BD8();
   }
@@ -114,9 +114,9 @@
   return v3;
 }
 
-- (void)setShareHandler:(id)a3
+- (void)setShareHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = self + OBJC_IVAR___SFTabSwitcherShareConfiguration_wrapped;

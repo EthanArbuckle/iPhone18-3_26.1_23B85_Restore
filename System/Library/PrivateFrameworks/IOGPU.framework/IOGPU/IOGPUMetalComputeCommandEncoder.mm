@@ -1,32 +1,32 @@
 @interface IOGPUMetalComputeCommandEncoder
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4;
-- (void)memoryBarrierWithScope:(unint64_t)a3;
-- (void)setAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count;
+- (void)memoryBarrierWithScope:(unint64_t)scope;
+- (void)setAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation IOGPUMetalComputeCommandEncoder
 
-- (void)memoryBarrierWithScope:(unint64_t)a3
+- (void)memoryBarrierWithScope:(unint64_t)scope
 {
   if ([(_MTLCommandEncoder *)self dispatchType]== 1)
   {
     [(IOGPUMetalComputeCommandEncoder *)self doesNotRecognizeSelector:a2];
   }
 
-  [(_MTLCommandEncoder *)self memoryBarrierNotificationWithScope:a3];
+  [(_MTLCommandEncoder *)self memoryBarrierNotificationWithScope:scope];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v5 = a4;
+    countCopy = count;
     v7 = 0;
     do
     {
-      v8 = *a3++;
+      v8 = *resources++;
       if (objc_opt_respondsToSelector())
       {
         v9 = 2;
@@ -38,10 +38,10 @@
       }
 
       v7 |= v9;
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 
   else
@@ -52,14 +52,14 @@
   [(IOGPUMetalComputeCommandEncoder *)self memoryBarrierWithScope:v7];
 }
 
-- (void)setAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 buffer];
-    v9 = [a3 bufferOffset];
+    buffer = [structure buffer];
+    bufferOffset = [structure bufferOffset];
 
-    [(IOGPUMetalComputeCommandEncoder *)self setBuffer:v8 offset:v9 atIndex:a4];
+    [(IOGPUMetalComputeCommandEncoder *)self setBuffer:buffer offset:bufferOffset atIndex:index];
   }
 
   else
@@ -69,13 +69,13 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(IOGPUMetalComputeCommandEncoder *)self setVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(IOGPUMetalComputeCommandEncoder *)self setVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -85,10 +85,10 @@
   }
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -98,7 +98,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }

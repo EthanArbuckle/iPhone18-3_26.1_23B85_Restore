@@ -1,27 +1,27 @@
 @interface BRCSideCarSyncUpOperation
-- (BRCSideCarSyncUpOperation)initWithSession:(id)a3;
+- (BRCSideCarSyncUpOperation)initWithSession:(id)session;
 - (id)_itemsNeedingSyncUpEnumerator;
 - (id)createActivity;
 - (void)_markItemsFailedSync;
-- (void)_syncUpRecordBatchWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 recordIDToZoneMap:(id)a5 requestID:(unint64_t)a6;
-- (void)fakeSyncForItem:(id)a3 itemRank:(unint64_t)a4;
+- (void)_syncUpRecordBatchWithModifiedRecords:(id)records deletedRecordIDs:(id)ds recordIDToZoneMap:(id)map requestID:(unint64_t)d;
+- (void)fakeSyncForItem:(id)item itemRank:(unint64_t)rank;
 - (void)main;
 @end
 
 @implementation BRCSideCarSyncUpOperation
 
-- (BRCSideCarSyncUpOperation)initWithSession:(id)a3
+- (BRCSideCarSyncUpOperation)initWithSession:(id)session
 {
-  v5 = a3;
-  v6 = [v5 syncContextProvider];
-  v7 = [v6 sideCarSyncContext];
+  sessionCopy = session;
+  syncContextProvider = [sessionCopy syncContextProvider];
+  sideCarSyncContext = [syncContextProvider sideCarSyncContext];
   v10.receiver = self;
   v10.super_class = BRCSideCarSyncUpOperation;
-  v8 = [(_BRCOperation *)&v10 initWithName:@"side-car.sync-up" syncContext:v7 sessionContext:v5];
+  v8 = [(_BRCOperation *)&v10 initWithName:@"side-car.sync-up" syncContext:sideCarSyncContext sessionContext:sessionCopy];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_session, a3);
+    objc_storeStrong(&v8->_session, session);
   }
 
   return v8;
@@ -97,16 +97,16 @@ uint64_t __49__BRCSideCarSyncUpOperation__markItemsFailedSync__block_invoke_2(ui
   return 1;
 }
 
-- (void)_syncUpRecordBatchWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 recordIDToZoneMap:(id)a5 requestID:(unint64_t)a6
+- (void)_syncUpRecordBatchWithModifiedRecords:(id)records deletedRecordIDs:(id)ds recordIDToZoneMap:(id)map requestID:(unint64_t)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v30 = a6;
-  v13 = [v10 count];
-  if (v13 + [v11 count])
+  recordsCopy = records;
+  dsCopy = ds;
+  mapCopy = map;
+  dCopy = d;
+  v13 = [recordsCopy count];
+  if (v13 + [dsCopy count])
   {
-    if (!a6)
+    if (!d)
     {
       [BRCSideCarSyncUpOperation _syncUpRecordBatchWithModifiedRecords:deletedRecordIDs:recordIDToZoneMap:requestID:];
     }
@@ -115,15 +115,15 @@ uint64_t __49__BRCSideCarSyncUpOperation__markItemsFailedSync__block_invoke_2(ui
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [BRCSideCarSyncUpOperation _syncUpRecordBatchWithModifiedRecords:v14 deletedRecordIDs:a6 recordIDToZoneMap:v15 requestID:?];
+      [BRCSideCarSyncUpOperation _syncUpRecordBatchWithModifiedRecords:v14 deletedRecordIDs:d recordIDToZoneMap:v15 requestID:?];
     }
 
     v16 = objc_alloc(MEMORY[0x277CBC4A0]);
-    v17 = [v11 allKeys];
-    v18 = [v16 initWithRecordsToSave:v10 recordIDsToDelete:v17];
+    allKeys = [dsCopy allKeys];
+    v18 = [v16 initWithRecordsToSave:recordsCopy recordIDsToDelete:allKeys];
 
-    [v18 setRecordIDsToDeleteToEtags:v11];
-    v19 = [MEMORY[0x277CBEA90] dataWithBytes:&v30 length:8];
+    [v18 setRecordIDsToDeleteToEtags:dsCopy];
+    v19 = [MEMORY[0x277CBEA90] dataWithBytes:&dCopy length:8];
     [v18 setClientChangeTokenData:v19];
 
     objc_initWeak(&location, v18);
@@ -133,12 +133,12 @@ uint64_t __49__BRCSideCarSyncUpOperation__markItemsFailedSync__block_invoke_2(ui
     v24[3] = &unk_278500F80;
     objc_copyWeak(v28, &location);
     v24[4] = self;
-    v25 = v10;
-    v26 = v11;
-    v27 = v12;
-    v28[1] = v30;
+    v25 = recordsCopy;
+    v26 = dsCopy;
+    v27 = mapCopy;
+    v28[1] = dCopy;
     [v18 setModifyRecordsCompletionBlock:v24];
-    v20 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __112__BRCSideCarSyncUpOperation__syncUpRecordBatchWithModifiedRecords_deletedRecordIDs_recordIDToZoneMap_requestID___block_invoke_14;
@@ -146,7 +146,7 @@ uint64_t __49__BRCSideCarSyncUpOperation__markItemsFailedSync__block_invoke_2(ui
     v22[4] = self;
     v23 = v18;
     v21 = v18;
-    dispatch_async(v20, v22);
+    dispatch_async(clientTruthWorkloop, v22);
 
     objc_destroyWeak(v28);
     objc_destroyWeak(&location);
@@ -330,31 +330,31 @@ void __112__BRCSideCarSyncUpOperation__syncUpRecordBatchWithModifiedRecords_dele
   [v2 scheduleFlushWithCheckpoint:0 whenFlushed:v4];
 }
 
-- (void)fakeSyncForItem:(id)a3 itemRank:(unint64_t)a4
+- (void)fakeSyncForItem:(id)item itemRank:(unint64_t)rank
 {
-  v7 = a3;
-  [v7 prepareForSyncUpSideCarZone];
-  [v7 markLatestSyncRequestAcknowledgedInZone:&unk_2837B00E8];
-  [v7 saveToDBForServerEdit:1 keepAliases:1];
-  if (a4)
+  itemCopy = item;
+  [itemCopy prepareForSyncUpSideCarZone];
+  [itemCopy markLatestSyncRequestAcknowledgedInZone:&unk_2837B00E8];
+  [itemCopy saveToDBForServerEdit:1 keepAliases:1];
+  if (rank)
   {
-    v6 = [(BRCAccountSession *)self->_session applyScheduler];
-    [v6 createApplyJobFromServerItemRank:a4 localItem:v7 state:1 kind:1];
+    applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+    [applyScheduler createApplyJobFromServerItemRank:rank localItem:itemCopy state:1 kind:1];
   }
 }
 
 - (void)main
 {
   v3 = self->_session;
-  v4 = [(BRCAccountSession *)v3 clientTruthWorkloop];
+  clientTruthWorkloop = [(BRCAccountSession *)v3 clientTruthWorkloop];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__BRCSideCarSyncUpOperation_main__block_invoke;
   v6[3] = &unk_2784FF478;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(clientTruthWorkloop, v6);
 }
 
 void __33__BRCSideCarSyncUpOperation_main__block_invoke(uint64_t a1)
@@ -641,8 +641,8 @@ LABEL_44:
 
 - (id)_itemsNeedingSyncUpEnumerator
 {
-  v3 = [(BRCAccountSession *)self->_session clientDB];
-  v4 = [v3 fetch:{@"SELECT li.rowid, li.zone_rowid, li.item_id, li.item_creator_id, li.item_sharing_options, li.item_side_car_ckinfo, li.item_parent_zone_rowid, li.item_localsyncupstate, li.item_local_diffs, li.item_notifs_rank, li.app_library_rowid, li.item_min_supported_os_rowid, li.item_user_visible, li.item_stat_ckinfo, li.item_state, li.item_type, li.item_mode, li.item_birthtime, li.item_lastusedtime, li.item_favoriterank, li.item_parent_id, li.item_filename, li.item_hidden_ext, li.item_finder_tags, li.item_xattr_signature, li.item_trash_put_back_path, li.item_trash_put_back_parent_id, li.item_alias_target, li.item_creator, li.item_processing_stamp, li.item_bouncedname, li.item_scope, li.item_local_change_count, li.item_old_version_identifier, li.fp_creation_item_identifier, li.version_name, li.version_ckinfo, li.version_mtime, li.version_size, li.version_thumb_size, li.version_thumb_signature, li.version_content_signature, li.version_xattr_signature, li.version_edited_since_shared, li.version_device, li.version_conflict_loser_etags, li.version_quarantine_info, li.version_uploaded_assets, li.version_upload_error, li.version_old_zone_item_id, li.version_old_zone_rowid, li.version_local_change_count, li.version_old_version_identifier, li.item_live_conflict_loser_etags, li.item_file_id, li.item_generation FROM client_items AS li  INNER JOIN client_sync_up AS su    ON su.throttle_id = li.rowid  WHERE         su.throttle_state = 50    AND su.throttle_state != 0    AND su.zone_rowid = %@    AND su.in_flight_diffs IS NULL    AND li.item_stat_ckinfo IS NOT NULL    AND li.item_localsyncupstate = 4    AND li.item_min_supported_os_rowid IS NULL", &unk_2837B00E8}];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  v4 = [clientDB fetch:{@"SELECT li.rowid, li.zone_rowid, li.item_id, li.item_creator_id, li.item_sharing_options, li.item_side_car_ckinfo, li.item_parent_zone_rowid, li.item_localsyncupstate, li.item_local_diffs, li.item_notifs_rank, li.app_library_rowid, li.item_min_supported_os_rowid, li.item_user_visible, li.item_stat_ckinfo, li.item_state, li.item_type, li.item_mode, li.item_birthtime, li.item_lastusedtime, li.item_favoriterank, li.item_parent_id, li.item_filename, li.item_hidden_ext, li.item_finder_tags, li.item_xattr_signature, li.item_trash_put_back_path, li.item_trash_put_back_parent_id, li.item_alias_target, li.item_creator, li.item_processing_stamp, li.item_bouncedname, li.item_scope, li.item_local_change_count, li.item_old_version_identifier, li.fp_creation_item_identifier, li.version_name, li.version_ckinfo, li.version_mtime, li.version_size, li.version_thumb_size, li.version_thumb_signature, li.version_content_signature, li.version_xattr_signature, li.version_edited_since_shared, li.version_device, li.version_conflict_loser_etags, li.version_quarantine_info, li.version_uploaded_assets, li.version_upload_error, li.version_old_zone_item_id, li.version_old_zone_rowid, li.version_local_change_count, li.version_old_version_identifier, li.item_live_conflict_loser_etags, li.item_file_id, li.item_generation FROM client_items AS li  INNER JOIN client_sync_up AS su    ON su.throttle_id = li.rowid  WHERE         su.throttle_state = 50    AND su.throttle_state != 0    AND su.zone_rowid = %@    AND su.in_flight_diffs IS NULL    AND li.item_stat_ckinfo IS NOT NULL    AND li.item_localsyncupstate = 4    AND li.item_min_supported_os_rowid IS NULL", &unk_2837B00E8}];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

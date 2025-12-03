@@ -1,21 +1,21 @@
 @interface WDCharacterProperties
-+ (SEL)fontOverriddenSelectorForFontType:(int)a3;
-+ (SEL)fontSelectorForFontType:(int)a3;
-+ (SEL)setFontSelectorForFontType:(int)a3;
++ (SEL)fontOverriddenSelectorForFontType:(int)type;
++ (SEL)fontSelectorForFontType:(int)type;
++ (SEL)setFontSelectorForFontType:(int)type;
 - (BOOL)compressHorizontalInVertical;
-- (BOOL)deletionDifferentFrom:(id)a3;
-- (BOOL)deletionDifferentFrom:(id)a3 mode:(int)a4;
-- (BOOL)editDifferentFrom:(id)a3;
-- (BOOL)editDifferentFrom:(id)a3 mode:(int)a4;
+- (BOOL)deletionDifferentFrom:(id)from;
+- (BOOL)deletionDifferentFrom:(id)from mode:(int)mode;
+- (BOOL)editDifferentFrom:(id)from;
+- (BOOL)editDifferentFrom:(id)from mode:(int)mode;
 - (BOOL)embeddedObject;
-- (BOOL)formattingChangedDifferentFrom:(id)a3;
-- (BOOL)formattingChangedDifferentFrom:(id)a3 mode:(int)a4;
+- (BOOL)formattingChangedDifferentFrom:(id)from;
+- (BOOL)formattingChangedDifferentFrom:(id)from mode:(int)mode;
 - (BOOL)horizontalInVertical;
-- (BOOL)isAnythingOverriddenIn:(id)a3;
+- (BOOL)isAnythingOverriddenIn:(id)in;
 - (BOOL)isBaseStyleOverridden;
 - (BOOL)isBoldForBiTextOverridden;
 - (BOOL)isBoldOverridden;
-- (BOOL)isBooleanProbablyDifferent:(unsigned __int8)a3 than:(unsigned __int8)a4;
+- (BOOL)isBooleanProbablyDifferent:(unsigned __int8)different than:(unsigned __int8)than;
 - (BOOL)isBorderOverridden;
 - (BOOL)isBracketTwoLinesInOneOverridden;
 - (BOOL)isCapsOverridden;
@@ -36,7 +36,7 @@
 - (BOOL)isFarEastFontOverridden;
 - (BOOL)isFontHintOverridden;
 - (BOOL)isFontOverridden;
-- (BOOL)isFontOverriddenForFontType:(int)a3;
+- (BOOL)isFontOverriddenForFontType:(int)type;
 - (BOOL)isFontSizeForBiTextOverridden;
 - (BOOL)isFontSizeOverridden;
 - (BOOL)isFormattingChangedOverridden;
@@ -88,21 +88,21 @@
 - (BOOL)isVerticalAlignOverridden;
 - (BOOL)ole2;
 - (BOOL)twoLinesInOne;
-- (WDCharacterProperties)initWithDocument:(id)a3;
+- (WDCharacterProperties)initWithDocument:(id)document;
 - (WDDocument)document;
 - (float)outline2010Width;
 - (float)shadow2010Opacity;
 - (id)baseStyle;
 - (id)border;
 - (id)color;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)deletionDate;
 - (id)description;
 - (id)editDate;
 - (id)extendedFont;
 - (id)farEastFont;
 - (id)font;
-- (id)fontForFontType:(int)a3;
+- (id)fontForFontType:(int)type;
 - (id)mutableBorder;
 - (id)mutableShading;
 - (id)outlineColor;
@@ -136,7 +136,7 @@
 - (int)offsetToPictureData;
 - (int)outline;
 - (int)resolveMode;
-- (int)reverseBooleanProperty:(int)a3;
+- (int)reverseBooleanProperty:(int)property;
 - (int)rightToLeft;
 - (int)shadow;
 - (int)smallCaps;
@@ -154,78 +154,78 @@
 - (unsigned)kerning;
 - (unsigned)symbolCharacter;
 - (unsigned)textScale;
-- (void)applyPropertiesFrom:(id)a3 ifOverriddenIn:(id)a4;
+- (void)applyPropertiesFrom:(id)from ifOverriddenIn:(id)in;
 - (void)clearBaseStyle;
-- (void)copyPropertiesInto:(id)a3;
-- (void)negateFormattingChangesWithDefaults:(id)a3;
-- (void)removeEmptyFormattingChanges:(id)a3;
-- (void)setBaseStyle:(id)a3;
-- (void)setBold:(int)a3;
-- (void)setBoldForBiText:(int)a3;
-- (void)setBracketTwoLinesInOne:(int)a3;
-- (void)setCaps:(int)a3;
-- (void)setCharPositionOfPictureBulletInBookmark:(int)a3;
-- (void)setColor:(id)a3;
-- (void)setColorAuto:(BOOL)a3;
-- (void)setCompressHorizontalInVertical:(BOOL)a3;
-- (void)setDeleted:(int)a3;
-- (void)setDeletionDate:(id)a3;
-- (void)setDoubleStrikeThrough:(int)a3;
-- (void)setEditDate:(id)a3;
-- (void)setEdited:(int)a3;
-- (void)setEmbeddedObject:(BOOL)a3;
-- (void)setEmbossed:(int)a3;
-- (void)setEmphasisMark:(int)a3;
-- (void)setExtendedFont:(id)a3;
-- (void)setFarEastFont:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setFont:(id)a3 forFontType:(int)a4;
-- (void)setFontHint:(int)a3;
-- (void)setFontSize:(unsigned __int16)a3;
-- (void)setFontSizeForBiText:(unsigned __int16)a3;
-- (void)setFormattingChanged:(int)a3;
-- (void)setHidden:(int)a3;
-- (void)setHighlight:(BOOL)a3;
-- (void)setHighlightColor:(int)a3;
-- (void)setHorizontalInVertical:(BOOL)a3;
-- (void)setImprint:(int)a3;
-- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)a3;
-- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)a3;
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3;
-- (void)setItalic:(int)a3;
-- (void)setItalicForBiText:(int)a3;
-- (void)setKerning:(unsigned __int16)a3;
-- (void)setLanguageForBiText:(int)a3;
-- (void)setLanguageForDefaultText:(int)a3;
-- (void)setLanguageForFarEast:(int)a3;
-- (void)setLigature:(int)a3;
-- (void)setListCharacterPictureBullet:(BOOL)a3;
-- (void)setLowerCase:(BOOL)a3;
-- (void)setObjectIDForOle2:(int)a3;
-- (void)setOffsetToPictureData:(int)a3;
-- (void)setOle2:(BOOL)a3;
-- (void)setOutline2010Width:(float)a3;
-- (void)setOutline:(int)a3;
-- (void)setOutlineColor:(id)a3;
-- (void)setPosition:(signed __int16)a3;
-- (void)setReflection:(id)a3;
-- (void)setResolveMode:(int)a3;
-- (void)setRightToLeft:(int)a3;
-- (void)setShadow2010:(id)a3;
-- (void)setShadow2010Opacity:(float)a3;
-- (void)setShadow:(int)a3;
-- (void)setSmallCaps:(int)a3;
-- (void)setSpacing:(signed __int16)a3;
-- (void)setSpecialCharacter:(BOOL)a3;
-- (void)setStrikeThrough:(int)a3;
-- (void)setSymbolCharacter:(unsigned __int16)a3;
-- (void)setSymbolFont:(id)a3;
-- (void)setTextScale:(unsigned __int16)a3;
-- (void)setTwoLinesInOne:(BOOL)a3;
-- (void)setUnderline:(int)a3;
-- (void)setUnderlineColor:(id)a3;
-- (void)setUseCsFont:(int)a3;
-- (void)setVerticalAlign:(int)a3;
+- (void)copyPropertiesInto:(id)into;
+- (void)negateFormattingChangesWithDefaults:(id)defaults;
+- (void)removeEmptyFormattingChanges:(id)changes;
+- (void)setBaseStyle:(id)style;
+- (void)setBold:(int)bold;
+- (void)setBoldForBiText:(int)text;
+- (void)setBracketTwoLinesInOne:(int)one;
+- (void)setCaps:(int)caps;
+- (void)setCharPositionOfPictureBulletInBookmark:(int)bookmark;
+- (void)setColor:(id)color;
+- (void)setColorAuto:(BOOL)auto;
+- (void)setCompressHorizontalInVertical:(BOOL)vertical;
+- (void)setDeleted:(int)deleted;
+- (void)setDeletionDate:(id)date;
+- (void)setDoubleStrikeThrough:(int)through;
+- (void)setEditDate:(id)date;
+- (void)setEdited:(int)edited;
+- (void)setEmbeddedObject:(BOOL)object;
+- (void)setEmbossed:(int)embossed;
+- (void)setEmphasisMark:(int)mark;
+- (void)setExtendedFont:(id)font;
+- (void)setFarEastFont:(id)font;
+- (void)setFont:(id)font;
+- (void)setFont:(id)font forFontType:(int)type;
+- (void)setFontHint:(int)hint;
+- (void)setFontSize:(unsigned __int16)size;
+- (void)setFontSizeForBiText:(unsigned __int16)text;
+- (void)setFormattingChanged:(int)changed;
+- (void)setHidden:(int)hidden;
+- (void)setHighlight:(BOOL)highlight;
+- (void)setHighlightColor:(int)color;
+- (void)setHorizontalInVertical:(BOOL)vertical;
+- (void)setImprint:(int)imprint;
+- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)deletion;
+- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)edit;
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change;
+- (void)setItalic:(int)italic;
+- (void)setItalicForBiText:(int)text;
+- (void)setKerning:(unsigned __int16)kerning;
+- (void)setLanguageForBiText:(int)text;
+- (void)setLanguageForDefaultText:(int)text;
+- (void)setLanguageForFarEast:(int)east;
+- (void)setLigature:(int)ligature;
+- (void)setListCharacterPictureBullet:(BOOL)bullet;
+- (void)setLowerCase:(BOOL)case;
+- (void)setObjectIDForOle2:(int)ole2;
+- (void)setOffsetToPictureData:(int)data;
+- (void)setOle2:(BOOL)ole2;
+- (void)setOutline2010Width:(float)width;
+- (void)setOutline:(int)outline;
+- (void)setOutlineColor:(id)color;
+- (void)setPosition:(signed __int16)position;
+- (void)setReflection:(id)reflection;
+- (void)setResolveMode:(int)mode;
+- (void)setRightToLeft:(int)left;
+- (void)setShadow2010:(id)shadow2010;
+- (void)setShadow2010Opacity:(float)opacity;
+- (void)setShadow:(int)shadow;
+- (void)setSmallCaps:(int)caps;
+- (void)setSpacing:(signed __int16)spacing;
+- (void)setSpecialCharacter:(BOOL)character;
+- (void)setStrikeThrough:(int)through;
+- (void)setSymbolCharacter:(unsigned __int16)character;
+- (void)setSymbolFont:(id)font;
+- (void)setTextScale:(unsigned __int16)scale;
+- (void)setTwoLinesInOne:(BOOL)one;
+- (void)setUnderline:(int)underline;
+- (void)setUnderlineColor:(id)color;
+- (void)setUseCsFont:(int)font;
+- (void)setVerticalAlign:(int)align;
 @end
 
 @implementation WDCharacterProperties
@@ -239,10 +239,10 @@
       mOriginalProperties = self->mOriginalProperties;
       if (mOriginalProperties || (v10 = objc_alloc_init(WDCharacterPropertiesValues), v11 = self->mOriginalProperties, self->mOriginalProperties = v10, v11, (mOriginalProperties = self->mOriginalProperties) != 0))
       {
-        v12 = [(WDCharacterPropertiesValues *)mOriginalProperties border];
+        border = [(WDCharacterPropertiesValues *)mOriginalProperties border];
 
         v7 = self->mOriginalProperties;
-        if (!v12)
+        if (!border)
         {
           [(WDCharacterPropertiesValues *)v7 setBorderOverridden:1];
           v8 = self->mOriginalProperties;
@@ -250,13 +250,13 @@
         }
 
 LABEL_10:
-        v13 = [(WDCharacterPropertiesValues *)v7 border];
+        border2 = [(WDCharacterPropertiesValues *)v7 border];
         goto LABEL_14;
       }
     }
 
 LABEL_11:
-    v13 = 0;
+    border2 = 0;
     goto LABEL_14;
   }
 
@@ -274,10 +274,10 @@ LABEL_11:
     }
   }
 
-  v6 = [(WDCharacterPropertiesValues *)mTrackedProperties border];
+  border3 = [(WDCharacterPropertiesValues *)mTrackedProperties border];
 
   v7 = self->mTrackedProperties;
-  if (v6)
+  if (border3)
   {
     goto LABEL_10;
   }
@@ -285,11 +285,11 @@ LABEL_11:
   [(WDCharacterPropertiesValues *)v7 setBorderOverridden:1];
   v8 = self->mTrackedProperties;
 LABEL_13:
-  v13 = objc_alloc_init(WDBorder);
-  [(WDCharacterPropertiesValues *)v8 setBorder:v13];
+  border2 = objc_alloc_init(WDBorder);
+  [(WDCharacterPropertiesValues *)v8 setBorder:border2];
 LABEL_14:
 
-  return v13;
+  return border2;
 }
 
 - (id)mutableShading
@@ -301,10 +301,10 @@ LABEL_14:
       mOriginalProperties = self->mOriginalProperties;
       if (mOriginalProperties || (v10 = objc_alloc_init(WDCharacterPropertiesValues), v11 = self->mOriginalProperties, self->mOriginalProperties = v10, v11, (mOriginalProperties = self->mOriginalProperties) != 0))
       {
-        v12 = [(WDCharacterPropertiesValues *)mOriginalProperties shading];
+        shading = [(WDCharacterPropertiesValues *)mOriginalProperties shading];
 
         v7 = self->mOriginalProperties;
-        if (!v12)
+        if (!shading)
         {
           [(WDCharacterPropertiesValues *)v7 setShadingOverridden:1];
           v8 = self->mOriginalProperties;
@@ -312,13 +312,13 @@ LABEL_14:
         }
 
 LABEL_10:
-        v13 = [(WDCharacterPropertiesValues *)v7 shading];
+        shading2 = [(WDCharacterPropertiesValues *)v7 shading];
         goto LABEL_14;
       }
     }
 
 LABEL_11:
-    v13 = 0;
+    shading2 = 0;
     goto LABEL_14;
   }
 
@@ -336,10 +336,10 @@ LABEL_11:
     }
   }
 
-  v6 = [(WDCharacterPropertiesValues *)mTrackedProperties shading];
+  shading3 = [(WDCharacterPropertiesValues *)mTrackedProperties shading];
 
   v7 = self->mTrackedProperties;
-  if (v6)
+  if (shading3)
   {
     goto LABEL_10;
   }
@@ -347,11 +347,11 @@ LABEL_11:
   [(WDCharacterPropertiesValues *)v7 setShadingOverridden:1];
   v8 = self->mTrackedProperties;
 LABEL_13:
-  v13 = objc_alloc_init(WDShading);
-  [(WDCharacterPropertiesValues *)v8 setShading:v13];
+  shading2 = objc_alloc_init(WDShading);
+  [(WDCharacterPropertiesValues *)v8 setShading:shading2];
 LABEL_14:
 
-  return v13;
+  return shading2;
 }
 
 - (void)clearBaseStyle
@@ -999,7 +999,7 @@ LABEL_9:
       {
         v4 = self->mTrackedProperties;
 LABEL_11:
-        v6 = [(WDCharacterPropertiesValues *)v4 baseStyle];
+        baseStyle = [(WDCharacterPropertiesValues *)v4 baseStyle];
         goto LABEL_13;
       }
     }
@@ -1019,12 +1019,12 @@ LABEL_11:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mDocument);
-  v8 = [WeakRetained styleSheet];
-  v6 = [v8 defaultCharacterStyle];
+  styleSheet = [WeakRetained styleSheet];
+  baseStyle = [styleSheet defaultCharacterStyle];
 
 LABEL_13:
 
-  return v6;
+  return baseStyle;
 }
 
 - (id)color
@@ -1049,28 +1049,28 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  color = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 colorOverridden])
+  if ([color colorOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties color];
+    color = [(WDCharacterPropertiesValues *)*p_mTrackedProperties color];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    color = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return color;
 }
 
 - (id)font
@@ -1095,28 +1095,28 @@ LABEL_11:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  font = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 fontOverridden])
+  if ([font fontOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties font];
+    font = [(WDCharacterPropertiesValues *)*p_mTrackedProperties font];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    font = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return font;
 }
 
 - (int)caps
@@ -1450,28 +1450,28 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  editDate = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 editDateOverridden])
+  if ([editDate editDateOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties editDate];
+    editDate = [(WDCharacterPropertiesValues *)*p_mTrackedProperties editDate];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    editDate = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return editDate;
 }
 
 - (unsigned)indexToAuthorIDOfEdit
@@ -1525,28 +1525,28 @@ LABEL_11:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  deletionDate = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 deletionDateOverridden])
+  if ([deletionDate deletionDateOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties deletionDate];
+    deletionDate = [(WDCharacterPropertiesValues *)*p_mTrackedProperties deletionDate];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    deletionDate = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return deletionDate;
 }
 
 - (unsigned)indexToAuthorIDOfDeletion
@@ -1676,28 +1676,28 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  shading = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 shadingOverridden])
+  if ([shading shadingOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties shading];
+    shading = [(WDCharacterPropertiesValues *)*p_mTrackedProperties shading];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    shading = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return shading;
 }
 
 - (int)rightToLeft
@@ -1776,16 +1776,16 @@ LABEL_9:
   return v5;
 }
 
-- (WDCharacterProperties)initWithDocument:(id)a3
+- (WDCharacterProperties)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v10.receiver = self;
   v10.super_class = WDCharacterProperties;
   v5 = [(WDCharacterProperties *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     *&v6->mOriginal = 1;
     v6->mResolved = 0;
     mOriginalProperties = v6->mOriginalProperties;
@@ -1818,21 +1818,21 @@ LABEL_9:
   return 0;
 }
 
-- (void)setResolveMode:(int)a3
+- (void)setResolveMode:(int)mode
 {
-  self->mTracked = a3 == 1;
-  self->mResolved = a3 == 2;
-  self->mOriginal = a3 == 0;
+  self->mTracked = mode == 1;
+  self->mResolved = mode == 2;
+  self->mOriginal = mode == 0;
 }
 
-- (void)negateFormattingChangesWithDefaults:(id)a3
+- (void)negateFormattingChangesWithDefaults:(id)defaults
 {
-  v132 = a3;
+  defaultsCopy = defaults;
   [(WDCharacterProperties *)self setResolveMode:2];
   if ([(WDCharacterProperties *)self isFormattingChangedOverridden]&& [(WDCharacterProperties *)self formattingChanged])
   {
     [(WDCharacterProperties *)self setResolveMode:1];
-    [v132 setResolveMode:2];
+    [defaultsCopy setResolveMode:2];
     mOriginalProperties = self->mOriginalProperties;
     if (!mOriginalProperties)
     {
@@ -1844,10 +1844,10 @@ LABEL_9:
       mTrackedProperties = self->mTrackedProperties;
       if (!mTrackedProperties || ![(WDCharacterPropertiesValues *)mTrackedProperties baseStyleOverridden])
       {
-        if ([v132 isBaseStyleOverridden])
+        if ([defaultsCopy isBaseStyleOverridden])
         {
-          v6 = [v132 baseStyle];
-          [(WDCharacterProperties *)self setBaseStyle:v6];
+          baseStyle = [defaultsCopy baseStyle];
+          [(WDCharacterProperties *)self setBaseStyle:baseStyle];
         }
       }
     }
@@ -1863,24 +1863,24 @@ LABEL_9:
       v8 = self->mTrackedProperties;
       if (!v8 || ![(WDCharacterPropertiesValues *)v8 borderOverridden])
       {
-        v9 = [(WDCharacterProperties *)self mutableBorder];
-        v10 = [(WDCharacterPropertiesValues *)self->mOriginalProperties border];
-        v11 = [v10 style];
+        mutableBorder = [(WDCharacterProperties *)self mutableBorder];
+        border = [(WDCharacterPropertiesValues *)self->mOriginalProperties border];
+        style = [border style];
 
-        if (v11)
+        if (style)
         {
-          [v9 setNullBorder];
+          [mutableBorder setNullBorder];
         }
 
-        else if ([v132 isBorderOverridden])
+        else if ([defaultsCopy isBorderOverridden])
         {
-          v12 = [v132 border];
-          [v9 setBorder:v12];
+          border2 = [defaultsCopy border];
+          [mutableBorder setBorder:border2];
         }
 
         else
         {
-          [v9 setSingleBlackBorder];
+          [mutableBorder setSingleBlackBorder];
         }
       }
     }
@@ -1896,34 +1896,34 @@ LABEL_9:
       v14 = self->mTrackedProperties;
       if (!v14 || ![(WDCharacterPropertiesValues *)v14 shadingOverridden])
       {
-        v15 = [(WDCharacterProperties *)self mutableShading];
-        v16 = [(WDCharacterPropertiesValues *)self->mOriginalProperties shading];
-        v17 = [v16 style];
+        mutableShading = [(WDCharacterProperties *)self mutableShading];
+        shading = [(WDCharacterPropertiesValues *)self->mOriginalProperties shading];
+        style2 = [shading style];
 
-        if (v17)
+        if (style2)
         {
-          [v15 setStyle:0];
+          [mutableShading setStyle:0];
           v18 = +[WDShading autoForegroundColor];
-          [v15 setForeground:v18];
+          [mutableShading setForeground:v18];
 
-          v19 = +[WDShading autoBackgroundColor];
-          [v15 setBackground:v19];
+          shading2 = +[WDShading autoBackgroundColor];
+          [mutableShading setBackground:shading2];
         }
 
-        else if ([v132 isShadingOverridden])
+        else if ([defaultsCopy isShadingOverridden])
         {
-          v19 = [v132 shading];
-          [v15 setShading:v19];
+          shading2 = [defaultsCopy shading];
+          [mutableShading setShading:shading2];
         }
 
         else
         {
-          [v15 setStyle:1];
+          [mutableShading setStyle:1];
           v20 = +[OITSUColor blackColor];
-          [v15 setForeground:v20];
+          [mutableShading setForeground:v20];
 
-          v19 = +[OITSUColor whiteColor];
-          [v15 setBackground:v19];
+          shading2 = +[OITSUColor whiteColor];
+          [mutableShading setBackground:shading2];
         }
       }
     }
@@ -1939,10 +1939,10 @@ LABEL_9:
       v22 = self->mTrackedProperties;
       if (!v22 || ![(WDCharacterPropertiesValues *)v22 fontOverridden])
       {
-        if ([v132 isFontOverridden])
+        if ([defaultsCopy isFontOverridden])
         {
-          v23 = [v132 font];
-          [(WDCharacterProperties *)self setFont:v23];
+          font = [defaultsCopy font];
+          [(WDCharacterProperties *)self setFont:font];
         }
       }
     }
@@ -1953,15 +1953,15 @@ LABEL_9:
       goto LABEL_296;
     }
 
-    v25 = [(WDCharacterPropertiesValues *)v24 extendedFont];
-    if (v25)
+    extendedFont = [(WDCharacterPropertiesValues *)v24 extendedFont];
+    if (extendedFont)
     {
       v26 = self->mTrackedProperties;
       if (v26)
       {
-        v27 = [(WDCharacterPropertiesValues *)v26 extendedFont];
+        extendedFont2 = [(WDCharacterPropertiesValues *)v26 extendedFont];
 
-        if (v27)
+        if (extendedFont2)
         {
           goto LABEL_43;
         }
@@ -1971,10 +1971,10 @@ LABEL_9:
       {
       }
 
-      if ([v132 isExtendedFontOverridden])
+      if ([defaultsCopy isExtendedFontOverridden])
       {
-        v28 = [v132 extendedFont];
-        [(WDCharacterProperties *)self setExtendedFont:v28];
+        extendedFont3 = [defaultsCopy extendedFont];
+        [(WDCharacterProperties *)self setExtendedFont:extendedFont3];
       }
     }
 
@@ -1985,15 +1985,15 @@ LABEL_43:
       goto LABEL_296;
     }
 
-    v30 = [(WDCharacterPropertiesValues *)v29 farEastFont];
-    if (v30)
+    farEastFont = [(WDCharacterPropertiesValues *)v29 farEastFont];
+    if (farEastFont)
     {
       v31 = self->mTrackedProperties;
       if (v31)
       {
-        v32 = [(WDCharacterPropertiesValues *)v31 farEastFont];
+        farEastFont2 = [(WDCharacterPropertiesValues *)v31 farEastFont];
 
-        if (v32)
+        if (farEastFont2)
         {
           goto LABEL_51;
         }
@@ -2003,10 +2003,10 @@ LABEL_43:
       {
       }
 
-      if ([v132 isFarEastFontOverridden])
+      if ([defaultsCopy isFarEastFontOverridden])
       {
-        v33 = [v132 farEastFont];
-        [(WDCharacterProperties *)self setFarEastFont:v33];
+        farEastFont3 = [defaultsCopy farEastFont];
+        [(WDCharacterProperties *)self setFarEastFont:farEastFont3];
       }
     }
 
@@ -2014,8 +2014,8 @@ LABEL_51:
     v34 = self->mOriginalProperties;
     if (v34)
     {
-      v35 = [(WDCharacterPropertiesValues *)v34 symbolFont];
-      if (v35)
+      symbolFont = [(WDCharacterPropertiesValues *)v34 symbolFont];
+      if (symbolFont)
       {
         v36 = self->mTrackedProperties;
         if (!v36)
@@ -2024,15 +2024,15 @@ LABEL_51:
           goto LABEL_57;
         }
 
-        v37 = [(WDCharacterPropertiesValues *)v36 symbolFont];
+        symbolFont2 = [(WDCharacterPropertiesValues *)v36 symbolFont];
 
-        if (!v37)
+        if (!symbolFont2)
         {
 LABEL_57:
-          if ([v132 isSymbolFontOverridden])
+          if ([defaultsCopy isSymbolFontOverridden])
           {
-            v38 = [v132 symbolFont];
-            [(WDCharacterProperties *)self setSymbolFont:v38];
+            symbolFont3 = [defaultsCopy symbolFont];
+            [(WDCharacterProperties *)self setSymbolFont:symbolFont3];
           }
         }
       }
@@ -2045,17 +2045,17 @@ LABEL_57:
           v40 = self->mTrackedProperties;
           if (!v40 || ![(WDCharacterPropertiesValues *)v40 symbolCharacterOverridden])
           {
-            if ([v132 isSymbolCharacterOverridden])
+            if ([defaultsCopy isSymbolCharacterOverridden])
             {
-              v41 = [v132 symbolCharacter];
+              symbolCharacter = [defaultsCopy symbolCharacter];
             }
 
             else
             {
-              v41 = 0;
+              symbolCharacter = 0;
             }
 
-            [(WDCharacterProperties *)self setSymbolCharacter:v41];
+            [(WDCharacterProperties *)self setSymbolCharacter:symbolCharacter];
           }
         }
 
@@ -2127,9 +2127,9 @@ LABEL_57:
                       v53 = self->mTrackedProperties;
                       if (!v53 || ![(WDCharacterPropertiesValues *)v53 outlineColorOverridden])
                       {
-                        if ([v132 isOutlineColorOverridden])
+                        if ([defaultsCopy isOutlineColorOverridden])
                         {
-                          [v132 outlineColor];
+                          [defaultsCopy outlineColor];
                         }
 
                         else
@@ -2152,11 +2152,11 @@ LABEL_57:
                           [(WDCharacterPropertiesValues *)self->mOriginalProperties outline2010Width];
                           if (v57 == 0.0)
                           {
-                            v58 = [v132 isOutline2010WidthOverridden];
+                            isOutline2010WidthOverridden = [defaultsCopy isOutline2010WidthOverridden];
                             LODWORD(v59) = 3.0;
-                            if (v58)
+                            if (isOutline2010WidthOverridden)
                             {
-                              [v132 outline2010Width];
+                              [defaultsCopy outline2010Width];
                             }
                           }
 
@@ -2215,20 +2215,20 @@ LABEL_57:
                                 {
                                   if ([(WDCharacterPropertiesValues *)self->mOriginalProperties underline])
                                   {
-                                    v68 = 0;
+                                    underline = 0;
                                   }
 
-                                  else if ([v132 isUnderlineOverridden])
+                                  else if ([defaultsCopy isUnderlineOverridden])
                                   {
-                                    v68 = [v132 underline];
+                                    underline = [defaultsCopy underline];
                                   }
 
                                   else
                                   {
-                                    v68 = 1;
+                                    underline = 1;
                                   }
 
-                                  [(WDCharacterProperties *)self setUnderline:v68];
+                                  [(WDCharacterProperties *)self setUnderline:underline];
                                 }
                               }
 
@@ -2240,9 +2240,9 @@ LABEL_57:
                                   v70 = self->mTrackedProperties;
                                   if (!v70 || ![(WDCharacterPropertiesValues *)v70 underlineColorOverridden])
                                   {
-                                    if ([v132 isUnderlineColorOverridden])
+                                    if ([defaultsCopy isUnderlineColorOverridden])
                                     {
-                                      [v132 underlineColor];
+                                      [defaultsCopy underlineColor];
                                     }
 
                                     else
@@ -2370,17 +2370,17 @@ LABEL_57:
                                                       v91 = self->mTrackedProperties;
                                                       if (!v91 || ![(WDCharacterPropertiesValues *)v91 spacingOverridden])
                                                       {
-                                                        if ([v132 isSpacingOverridden])
+                                                        if ([defaultsCopy isSpacingOverridden])
                                                         {
-                                                          v92 = [v132 spacing];
+                                                          spacing = [defaultsCopy spacing];
                                                         }
 
                                                         else
                                                         {
-                                                          v92 = 0;
+                                                          spacing = 0;
                                                         }
 
-                                                        [(WDCharacterProperties *)self setSpacing:v92];
+                                                        [(WDCharacterProperties *)self setSpacing:spacing];
                                                       }
                                                     }
 
@@ -2392,17 +2392,17 @@ LABEL_57:
                                                         v94 = self->mTrackedProperties;
                                                         if (!v94 || ![(WDCharacterPropertiesValues *)v94 positionOverridden])
                                                         {
-                                                          if ([v132 isPositionOverridden])
+                                                          if ([defaultsCopy isPositionOverridden])
                                                           {
-                                                            v95 = [v132 position];
+                                                            position = [defaultsCopy position];
                                                           }
 
                                                           else
                                                           {
-                                                            v95 = 0;
+                                                            position = 0;
                                                           }
 
-                                                          [(WDCharacterProperties *)self setPosition:v95];
+                                                          [(WDCharacterProperties *)self setPosition:position];
                                                         }
                                                       }
 
@@ -2414,17 +2414,17 @@ LABEL_57:
                                                           v97 = self->mTrackedProperties;
                                                           if (!v97 || ![(WDCharacterPropertiesValues *)v97 kerningOverridden])
                                                           {
-                                                            if ([v132 isKerningOverridden])
+                                                            if ([defaultsCopy isKerningOverridden])
                                                             {
-                                                              v98 = [v132 kerning];
+                                                              kerning = [defaultsCopy kerning];
                                                             }
 
                                                             else
                                                             {
-                                                              v98 = 0;
+                                                              kerning = 0;
                                                             }
 
-                                                            [(WDCharacterProperties *)self setKerning:v98];
+                                                            [(WDCharacterProperties *)self setKerning:kerning];
                                                           }
                                                         }
 
@@ -2436,17 +2436,17 @@ LABEL_57:
                                                             v100 = self->mTrackedProperties;
                                                             if (!v100 || ![(WDCharacterPropertiesValues *)v100 textScaleOverridden])
                                                             {
-                                                              if ([v132 isTextScaleOverridden])
+                                                              if ([defaultsCopy isTextScaleOverridden])
                                                               {
-                                                                v101 = [v132 textScale];
+                                                                textScale = [defaultsCopy textScale];
                                                               }
 
                                                               else
                                                               {
-                                                                v101 = 0;
+                                                                textScale = 0;
                                                               }
 
-                                                              [(WDCharacterProperties *)self setTextScale:v101];
+                                                              [(WDCharacterProperties *)self setTextScale:textScale];
                                                             }
                                                           }
 
@@ -2458,17 +2458,17 @@ LABEL_57:
                                                               v103 = self->mTrackedProperties;
                                                               if (!v103 || ![(WDCharacterPropertiesValues *)v103 fontSizeOverridden])
                                                               {
-                                                                if ([v132 isFontSizeOverridden])
+                                                                if ([defaultsCopy isFontSizeOverridden])
                                                                 {
-                                                                  v104 = [v132 fontSize];
+                                                                  fontSize = [defaultsCopy fontSize];
                                                                 }
 
                                                                 else
                                                                 {
-                                                                  v104 = 22;
+                                                                  fontSize = 22;
                                                                 }
 
-                                                                [(WDCharacterProperties *)self setFontSize:v104];
+                                                                [(WDCharacterProperties *)self setFontSize:fontSize];
                                                               }
                                                             }
 
@@ -2504,9 +2504,9 @@ LABEL_57:
                                                                     v110 = self->mTrackedProperties;
                                                                     if (!v110 || ![(WDCharacterPropertiesValues *)v110 colorOverridden])
                                                                     {
-                                                                      if ([v132 isColorOverridden])
+                                                                      if ([defaultsCopy isColorOverridden])
                                                                       {
-                                                                        [v132 color];
+                                                                        [defaultsCopy color];
                                                                       }
 
                                                                       else
@@ -2538,17 +2538,17 @@ LABEL_57:
                                                                         v115 = self->mTrackedProperties;
                                                                         if (!v115 || ![(WDCharacterPropertiesValues *)v115 languageForDefaultTextOverridden])
                                                                         {
-                                                                          if ([v132 isLanguageForDefaultTextOverridden])
+                                                                          if ([defaultsCopy isLanguageForDefaultTextOverridden])
                                                                           {
-                                                                            v116 = [v132 languageForDefaultText];
+                                                                            languageForDefaultText = [defaultsCopy languageForDefaultText];
                                                                           }
 
                                                                           else
                                                                           {
-                                                                            v116 = 0;
+                                                                            languageForDefaultText = 0;
                                                                           }
 
-                                                                          [(WDCharacterProperties *)self setLanguageForDefaultText:v116];
+                                                                          [(WDCharacterProperties *)self setLanguageForDefaultText:languageForDefaultText];
                                                                         }
                                                                       }
 
@@ -2596,17 +2596,17 @@ LABEL_57:
                                                                                 v124 = self->mTrackedProperties;
                                                                                 if (!v124 || ![(WDCharacterPropertiesValues *)v124 languageForFarEastOverridden])
                                                                                 {
-                                                                                  if ([v132 isLanguageForFarEastOverridden])
+                                                                                  if ([defaultsCopy isLanguageForFarEastOverridden])
                                                                                   {
-                                                                                    v125 = [v132 languageForFarEast];
+                                                                                    languageForFarEast = [defaultsCopy languageForFarEast];
                                                                                   }
 
                                                                                   else
                                                                                   {
-                                                                                    v125 = 0;
+                                                                                    languageForFarEast = 0;
                                                                                   }
 
-                                                                                  [(WDCharacterProperties *)self setLanguageForFarEast:v125];
+                                                                                  [(WDCharacterProperties *)self setLanguageForFarEast:languageForFarEast];
                                                                                 }
                                                                               }
 
@@ -2618,17 +2618,17 @@ LABEL_57:
                                                                                   v127 = self->mTrackedProperties;
                                                                                   if (!v127 || ![(WDCharacterPropertiesValues *)v127 languageForBiTextOverridden])
                                                                                   {
-                                                                                    if ([v132 isLanguageForBiTextOverridden])
+                                                                                    if ([defaultsCopy isLanguageForBiTextOverridden])
                                                                                     {
-                                                                                      v128 = [v132 languageForBiText];
+                                                                                      languageForBiText = [defaultsCopy languageForBiText];
                                                                                     }
 
                                                                                     else
                                                                                     {
-                                                                                      v128 = 0;
+                                                                                      languageForBiText = 0;
                                                                                     }
 
-                                                                                    [(WDCharacterProperties *)self setLanguageForBiText:v128];
+                                                                                    [(WDCharacterProperties *)self setLanguageForBiText:languageForBiText];
                                                                                   }
                                                                                 }
 
@@ -2640,17 +2640,17 @@ LABEL_57:
                                                                                     v130 = self->mTrackedProperties;
                                                                                     if (!v130 || ![(WDCharacterPropertiesValues *)v130 fontSizeForBiTextOverridden])
                                                                                     {
-                                                                                      if ([v132 isFontSizeForBiTextOverridden])
+                                                                                      if ([defaultsCopy isFontSizeForBiTextOverridden])
                                                                                       {
-                                                                                        v131 = [v132 fontSizeForBiText];
+                                                                                        fontSizeForBiText = [defaultsCopy fontSizeForBiText];
                                                                                       }
 
                                                                                       else
                                                                                       {
-                                                                                        v131 = 22;
+                                                                                        fontSizeForBiText = 22;
                                                                                       }
 
-                                                                                      [(WDCharacterProperties *)self setFontSizeForBiText:v131];
+                                                                                      [(WDCharacterProperties *)self setFontSizeForBiText:fontSizeForBiText];
                                                                                     }
                                                                                   }
                                                                                 }
@@ -2698,276 +2698,276 @@ LABEL_296:
   }
 }
 
-- (void)applyPropertiesFrom:(id)a3 ifOverriddenIn:(id)a4
+- (void)applyPropertiesFrom:(id)from ifOverriddenIn:(id)in
 {
-  v18 = a3;
-  v6 = a4;
-  if ([v6 isBorderOverridden] && objc_msgSend(v18, "isBorderOverridden"))
+  fromCopy = from;
+  inCopy = in;
+  if ([inCopy isBorderOverridden] && objc_msgSend(fromCopy, "isBorderOverridden"))
   {
-    v7 = [(WDCharacterProperties *)self mutableBorder];
-    v8 = [v18 border];
-    [v7 setBorder:v8];
+    mutableBorder = [(WDCharacterProperties *)self mutableBorder];
+    border = [fromCopy border];
+    [mutableBorder setBorder:border];
   }
 
-  if ([v6 isShadingOverridden] && objc_msgSend(v18, "isShadingOverridden"))
+  if ([inCopy isShadingOverridden] && objc_msgSend(fromCopy, "isShadingOverridden"))
   {
-    v9 = [(WDCharacterProperties *)self mutableShading];
-    v10 = [v18 shading];
-    [v9 setShading:v10];
+    mutableShading = [(WDCharacterProperties *)self mutableShading];
+    shading = [fromCopy shading];
+    [mutableShading setShading:shading];
   }
 
-  if ([v6 isFontOverridden] && objc_msgSend(v18, "isFontOverridden"))
+  if ([inCopy isFontOverridden] && objc_msgSend(fromCopy, "isFontOverridden"))
   {
-    v11 = [v18 font];
-    [(WDCharacterProperties *)self setFont:v11];
+    font = [fromCopy font];
+    [(WDCharacterProperties *)self setFont:font];
   }
 
-  if ([v6 isExtendedFontOverridden] && objc_msgSend(v18, "isExtendedFontOverridden"))
+  if ([inCopy isExtendedFontOverridden] && objc_msgSend(fromCopy, "isExtendedFontOverridden"))
   {
-    v12 = [v18 extendedFont];
-    [(WDCharacterProperties *)self setExtendedFont:v12];
+    extendedFont = [fromCopy extendedFont];
+    [(WDCharacterProperties *)self setExtendedFont:extendedFont];
   }
 
-  if ([v6 isFarEastFontOverridden] && objc_msgSend(v18, "isFarEastFontOverridden"))
+  if ([inCopy isFarEastFontOverridden] && objc_msgSend(fromCopy, "isFarEastFontOverridden"))
   {
-    v13 = [v18 farEastFont];
-    [(WDCharacterProperties *)self setFarEastFont:v13];
+    farEastFont = [fromCopy farEastFont];
+    [(WDCharacterProperties *)self setFarEastFont:farEastFont];
   }
 
-  if ([v6 isSymbolFontOverridden] && objc_msgSend(v18, "isSymbolFontOverridden"))
+  if ([inCopy isSymbolFontOverridden] && objc_msgSend(fromCopy, "isSymbolFontOverridden"))
   {
-    v14 = [v18 symbolFont];
-    [(WDCharacterProperties *)self setSymbolFont:v14];
+    symbolFont = [fromCopy symbolFont];
+    [(WDCharacterProperties *)self setSymbolFont:symbolFont];
   }
 
-  if ([v6 isSymbolCharacterOverridden] && objc_msgSend(v18, "isSymbolCharacterOverridden"))
+  if ([inCopy isSymbolCharacterOverridden] && objc_msgSend(fromCopy, "isSymbolCharacterOverridden"))
   {
-    -[WDCharacterProperties setSymbolCharacter:](self, "setSymbolCharacter:", [v18 symbolCharacter]);
+    -[WDCharacterProperties setSymbolCharacter:](self, "setSymbolCharacter:", [fromCopy symbolCharacter]);
   }
 
-  if ([v6 isBoldOverridden] && objc_msgSend(v18, "isBoldOverridden"))
+  if ([inCopy isBoldOverridden] && objc_msgSend(fromCopy, "isBoldOverridden"))
   {
-    -[WDCharacterProperties setBold:](self, "setBold:", [v18 bold]);
+    -[WDCharacterProperties setBold:](self, "setBold:", [fromCopy bold]);
   }
 
-  if ([v6 isBoldForBiTextOverridden] && objc_msgSend(v18, "isBoldForBiTextOverridden"))
+  if ([inCopy isBoldForBiTextOverridden] && objc_msgSend(fromCopy, "isBoldForBiTextOverridden"))
   {
-    -[WDCharacterProperties setBoldForBiText:](self, "setBoldForBiText:", [v18 boldForBiText]);
+    -[WDCharacterProperties setBoldForBiText:](self, "setBoldForBiText:", [fromCopy boldForBiText]);
   }
 
-  if ([v6 isItalicOverridden] && objc_msgSend(v18, "isItalicOverridden"))
+  if ([inCopy isItalicOverridden] && objc_msgSend(fromCopy, "isItalicOverridden"))
   {
-    -[WDCharacterProperties setItalic:](self, "setItalic:", [v18 italic]);
+    -[WDCharacterProperties setItalic:](self, "setItalic:", [fromCopy italic]);
   }
 
-  if ([v6 isItalicForBiTextOverridden] && objc_msgSend(v18, "isItalicForBiTextOverridden"))
+  if ([inCopy isItalicForBiTextOverridden] && objc_msgSend(fromCopy, "isItalicForBiTextOverridden"))
   {
-    -[WDCharacterProperties setItalicForBiText:](self, "setItalicForBiText:", [v18 italicForBiText]);
+    -[WDCharacterProperties setItalicForBiText:](self, "setItalicForBiText:", [fromCopy italicForBiText]);
   }
 
-  if ([v6 isOutlineOverridden] && objc_msgSend(v18, "isOutlineOverridden"))
+  if ([inCopy isOutlineOverridden] && objc_msgSend(fromCopy, "isOutlineOverridden"))
   {
-    -[WDCharacterProperties setOutline:](self, "setOutline:", [v18 outline]);
+    -[WDCharacterProperties setOutline:](self, "setOutline:", [fromCopy outline]);
   }
 
-  if ([v6 isOutlineColorOverridden] && objc_msgSend(v18, "isOutlineColorOverridden"))
+  if ([inCopy isOutlineColorOverridden] && objc_msgSend(fromCopy, "isOutlineColorOverridden"))
   {
-    v15 = [v18 outlineColor];
-    [(WDCharacterProperties *)self setOutlineColor:v15];
+    outlineColor = [fromCopy outlineColor];
+    [(WDCharacterProperties *)self setOutlineColor:outlineColor];
   }
 
-  if ([v6 isOutline2010WidthOverridden] && objc_msgSend(v18, "isOutline2010WidthOverridden"))
+  if ([inCopy isOutline2010WidthOverridden] && objc_msgSend(fromCopy, "isOutline2010WidthOverridden"))
   {
-    [v18 outline2010Width];
+    [fromCopy outline2010Width];
     [(WDCharacterProperties *)self setOutline2010Width:?];
   }
 
-  if ([v6 isEmbossedOverridden] && objc_msgSend(v18, "isEmbossedOverridden"))
+  if ([inCopy isEmbossedOverridden] && objc_msgSend(fromCopy, "isEmbossedOverridden"))
   {
-    -[WDCharacterProperties setEmbossed:](self, "setEmbossed:", [v18 embossed]);
+    -[WDCharacterProperties setEmbossed:](self, "setEmbossed:", [fromCopy embossed]);
   }
 
-  if ([v6 isImprintOverridden] && objc_msgSend(v18, "isImprintOverridden"))
+  if ([inCopy isImprintOverridden] && objc_msgSend(fromCopy, "isImprintOverridden"))
   {
-    -[WDCharacterProperties setImprint:](self, "setImprint:", [v18 imprint]);
+    -[WDCharacterProperties setImprint:](self, "setImprint:", [fromCopy imprint]);
   }
 
-  if ([v6 isShadowOverridden] && objc_msgSend(v18, "isShadowOverridden"))
+  if ([inCopy isShadowOverridden] && objc_msgSend(fromCopy, "isShadowOverridden"))
   {
-    -[WDCharacterProperties setShadow:](self, "setShadow:", [v18 shadow]);
+    -[WDCharacterProperties setShadow:](self, "setShadow:", [fromCopy shadow]);
   }
 
-  if ([v6 isKerningOverridden] && objc_msgSend(v18, "isKerningOverridden"))
+  if ([inCopy isKerningOverridden] && objc_msgSend(fromCopy, "isKerningOverridden"))
   {
-    -[WDCharacterProperties setKerning:](self, "setKerning:", [v18 kerning]);
+    -[WDCharacterProperties setKerning:](self, "setKerning:", [fromCopy kerning]);
   }
 
-  if ([v6 isTextScaleOverridden] && objc_msgSend(v18, "isTextScaleOverridden"))
+  if ([inCopy isTextScaleOverridden] && objc_msgSend(fromCopy, "isTextScaleOverridden"))
   {
-    -[WDCharacterProperties setTextScale:](self, "setTextScale:", [v18 textScale]);
+    -[WDCharacterProperties setTextScale:](self, "setTextScale:", [fromCopy textScale]);
   }
 
-  if ([v6 isUnderlineColorOverridden] && objc_msgSend(v18, "isUnderlineColorOverridden"))
+  if ([inCopy isUnderlineColorOverridden] && objc_msgSend(fromCopy, "isUnderlineColorOverridden"))
   {
-    v16 = [v18 underlineColor];
-    [(WDCharacterProperties *)self setUnderlineColor:v16];
+    underlineColor = [fromCopy underlineColor];
+    [(WDCharacterProperties *)self setUnderlineColor:underlineColor];
   }
 
-  if ([v6 isUnderlineOverridden] && objc_msgSend(v18, "isUnderlineOverridden"))
+  if ([inCopy isUnderlineOverridden] && objc_msgSend(fromCopy, "isUnderlineOverridden"))
   {
-    -[WDCharacterProperties setUnderline:](self, "setUnderline:", [v18 underline]);
+    -[WDCharacterProperties setUnderline:](self, "setUnderline:", [fromCopy underline]);
   }
 
-  if ([v6 isStrikeThroughOverridden] && objc_msgSend(v18, "isStrikeThroughOverridden"))
+  if ([inCopy isStrikeThroughOverridden] && objc_msgSend(fromCopy, "isStrikeThroughOverridden"))
   {
-    -[WDCharacterProperties setStrikeThrough:](self, "setStrikeThrough:", [v18 strikeThrough]);
+    -[WDCharacterProperties setStrikeThrough:](self, "setStrikeThrough:", [fromCopy strikeThrough]);
   }
 
-  if ([v6 isDoubleStrikeThroughOverridden] && objc_msgSend(v18, "isDoubleStrikeThroughOverridden"))
+  if ([inCopy isDoubleStrikeThroughOverridden] && objc_msgSend(fromCopy, "isDoubleStrikeThroughOverridden"))
   {
-    -[WDCharacterProperties setDoubleStrikeThrough:](self, "setDoubleStrikeThrough:", [v18 doubleStrikeThrough]);
+    -[WDCharacterProperties setDoubleStrikeThrough:](self, "setDoubleStrikeThrough:", [fromCopy doubleStrikeThrough]);
   }
 
-  if ([v6 isLigatureOverridden] && objc_msgSend(v18, "isLigatureOverridden"))
+  if ([inCopy isLigatureOverridden] && objc_msgSend(fromCopy, "isLigatureOverridden"))
   {
-    -[WDCharacterProperties setLigature:](self, "setLigature:", [v18 ligature]);
+    -[WDCharacterProperties setLigature:](self, "setLigature:", [fromCopy ligature]);
   }
 
-  if ([v6 isHighlightOverridden] && objc_msgSend(v18, "isHighlightOverridden"))
+  if ([inCopy isHighlightOverridden] && objc_msgSend(fromCopy, "isHighlightOverridden"))
   {
-    -[WDCharacterProperties setHighlight:](self, "setHighlight:", [v18 isHighlight]);
+    -[WDCharacterProperties setHighlight:](self, "setHighlight:", [fromCopy isHighlight]);
   }
 
-  if ([v6 isHighlightColorOverridden] && objc_msgSend(v18, "isHighlightColorOverridden"))
+  if ([inCopy isHighlightColorOverridden] && objc_msgSend(fromCopy, "isHighlightColorOverridden"))
   {
-    -[WDCharacterProperties setHighlightColor:](self, "setHighlightColor:", [v18 highlightColor]);
+    -[WDCharacterProperties setHighlightColor:](self, "setHighlightColor:", [fromCopy highlightColor]);
   }
 
-  if ([v6 isSmallCapsOverridden] && objc_msgSend(v18, "isSmallCapsOverridden"))
+  if ([inCopy isSmallCapsOverridden] && objc_msgSend(fromCopy, "isSmallCapsOverridden"))
   {
-    -[WDCharacterProperties setSmallCaps:](self, "setSmallCaps:", [v18 smallCaps]);
+    -[WDCharacterProperties setSmallCaps:](self, "setSmallCaps:", [fromCopy smallCaps]);
   }
 
-  if ([v6 isCapsOverridden] && objc_msgSend(v18, "isCapsOverridden"))
+  if ([inCopy isCapsOverridden] && objc_msgSend(fromCopy, "isCapsOverridden"))
   {
-    -[WDCharacterProperties setCaps:](self, "setCaps:", [v18 caps]);
+    -[WDCharacterProperties setCaps:](self, "setCaps:", [fromCopy caps]);
   }
 
-  if ([v6 isLowerCaseOverridden] && objc_msgSend(v18, "isLowerCaseOverridden"))
+  if ([inCopy isLowerCaseOverridden] && objc_msgSend(fromCopy, "isLowerCaseOverridden"))
   {
-    -[WDCharacterProperties setLowerCase:](self, "setLowerCase:", [v18 isLowerCase]);
+    -[WDCharacterProperties setLowerCase:](self, "setLowerCase:", [fromCopy isLowerCase]);
   }
 
-  if ([v6 isHiddenOverridden] && objc_msgSend(v18, "isHiddenOverridden"))
+  if ([inCopy isHiddenOverridden] && objc_msgSend(fromCopy, "isHiddenOverridden"))
   {
-    -[WDCharacterProperties setHidden:](self, "setHidden:", [v18 hidden]);
+    -[WDCharacterProperties setHidden:](self, "setHidden:", [fromCopy hidden]);
   }
 
-  if ([v6 isSpacingOverridden] && objc_msgSend(v18, "isSpacingOverridden"))
+  if ([inCopy isSpacingOverridden] && objc_msgSend(fromCopy, "isSpacingOverridden"))
   {
-    -[WDCharacterProperties setSpacing:](self, "setSpacing:", [v18 spacing]);
+    -[WDCharacterProperties setSpacing:](self, "setSpacing:", [fromCopy spacing]);
   }
 
-  if ([v6 isPositionOverridden] && objc_msgSend(v18, "isPositionOverridden"))
+  if ([inCopy isPositionOverridden] && objc_msgSend(fromCopy, "isPositionOverridden"))
   {
-    -[WDCharacterProperties setPosition:](self, "setPosition:", [v18 position]);
+    -[WDCharacterProperties setPosition:](self, "setPosition:", [fromCopy position]);
   }
 
-  if ([v6 isFontSizeOverridden] && objc_msgSend(v18, "isFontSizeOverridden"))
+  if ([inCopy isFontSizeOverridden] && objc_msgSend(fromCopy, "isFontSizeOverridden"))
   {
-    -[WDCharacterProperties setFontSize:](self, "setFontSize:", [v18 fontSize]);
+    -[WDCharacterProperties setFontSize:](self, "setFontSize:", [fromCopy fontSize]);
   }
 
-  if ([v6 isVerticalAlignOverridden] && objc_msgSend(v18, "isVerticalAlignOverridden"))
+  if ([inCopy isVerticalAlignOverridden] && objc_msgSend(fromCopy, "isVerticalAlignOverridden"))
   {
-    -[WDCharacterProperties setVerticalAlign:](self, "setVerticalAlign:", [v18 verticalAlign]);
+    -[WDCharacterProperties setVerticalAlign:](self, "setVerticalAlign:", [fromCopy verticalAlign]);
   }
 
-  if ([v6 isEmphasisMarkOverridden] && objc_msgSend(v18, "isEmphasisMarkOverridden"))
+  if ([inCopy isEmphasisMarkOverridden] && objc_msgSend(fromCopy, "isEmphasisMarkOverridden"))
   {
-    -[WDCharacterProperties setEmphasisMark:](self, "setEmphasisMark:", [v18 emphasisMark]);
+    -[WDCharacterProperties setEmphasisMark:](self, "setEmphasisMark:", [fromCopy emphasisMark]);
   }
 
-  if ([v6 isColorOverridden] && objc_msgSend(v18, "isColorOverridden"))
+  if ([inCopy isColorOverridden] && objc_msgSend(fromCopy, "isColorOverridden"))
   {
-    v17 = [v18 color];
-    [(WDCharacterProperties *)self setColor:v17];
+    color = [fromCopy color];
+    [(WDCharacterProperties *)self setColor:color];
   }
 
-  if ([v6 isColorAutoOverridden] && objc_msgSend(v18, "isColorAutoOverridden"))
+  if ([inCopy isColorAutoOverridden] && objc_msgSend(fromCopy, "isColorAutoOverridden"))
   {
-    -[WDCharacterProperties setColorAuto:](self, "setColorAuto:", [v18 isColorAuto]);
+    -[WDCharacterProperties setColorAuto:](self, "setColorAuto:", [fromCopy isColorAuto]);
   }
 
-  if ([v6 isLanguageForDefaultTextOverridden] && objc_msgSend(v18, "isLanguageForDefaultTextOverridden"))
+  if ([inCopy isLanguageForDefaultTextOverridden] && objc_msgSend(fromCopy, "isLanguageForDefaultTextOverridden"))
   {
-    -[WDCharacterProperties setLanguageForDefaultText:](self, "setLanguageForDefaultText:", [v18 languageForDefaultText]);
+    -[WDCharacterProperties setLanguageForDefaultText:](self, "setLanguageForDefaultText:", [fromCopy languageForDefaultText]);
   }
 
-  if ([v6 isSpecialCharacterOverridden] && objc_msgSend(v18, "isSpecialCharacterOverridden"))
+  if ([inCopy isSpecialCharacterOverridden] && objc_msgSend(fromCopy, "isSpecialCharacterOverridden"))
   {
-    -[WDCharacterProperties setSpecialCharacter:](self, "setSpecialCharacter:", [v18 isSpecialCharacter]);
+    -[WDCharacterProperties setSpecialCharacter:](self, "setSpecialCharacter:", [fromCopy isSpecialCharacter]);
   }
 
-  if ([v6 isListCharacterPictureBulletOverridden] && objc_msgSend(v18, "isListCharacterPictureBulletOverridden"))
+  if ([inCopy isListCharacterPictureBulletOverridden] && objc_msgSend(fromCopy, "isListCharacterPictureBulletOverridden"))
   {
-    -[WDCharacterProperties setListCharacterPictureBullet:](self, "setListCharacterPictureBullet:", [v18 isListCharacterPictureBullet]);
+    -[WDCharacterProperties setListCharacterPictureBullet:](self, "setListCharacterPictureBullet:", [fromCopy isListCharacterPictureBullet]);
   }
 
-  if ([v6 isCharPositionOfPictureBulletInBookmarkOverridden] && objc_msgSend(v18, "isCharPositionOfPictureBulletInBookmarkOverridden"))
+  if ([inCopy isCharPositionOfPictureBulletInBookmarkOverridden] && objc_msgSend(fromCopy, "isCharPositionOfPictureBulletInBookmarkOverridden"))
   {
-    -[WDCharacterProperties setCharPositionOfPictureBulletInBookmark:](self, "setCharPositionOfPictureBulletInBookmark:", [v18 charPositionOfPictureBulletInBookmark]);
+    -[WDCharacterProperties setCharPositionOfPictureBulletInBookmark:](self, "setCharPositionOfPictureBulletInBookmark:", [fromCopy charPositionOfPictureBulletInBookmark]);
   }
 
-  if ([v6 isLanguageForFarEastOverridden] && objc_msgSend(v18, "isLanguageForFarEastOverridden"))
+  if ([inCopy isLanguageForFarEastOverridden] && objc_msgSend(fromCopy, "isLanguageForFarEastOverridden"))
   {
-    -[WDCharacterProperties setLanguageForFarEast:](self, "setLanguageForFarEast:", [v18 languageForFarEast]);
+    -[WDCharacterProperties setLanguageForFarEast:](self, "setLanguageForFarEast:", [fromCopy languageForFarEast]);
   }
 
-  if ([v6 isLanguageForBiTextOverridden] && objc_msgSend(v18, "isLanguageForBiTextOverridden"))
+  if ([inCopy isLanguageForBiTextOverridden] && objc_msgSend(fromCopy, "isLanguageForBiTextOverridden"))
   {
-    -[WDCharacterProperties setLanguageForBiText:](self, "setLanguageForBiText:", [v18 languageForBiText]);
+    -[WDCharacterProperties setLanguageForBiText:](self, "setLanguageForBiText:", [fromCopy languageForBiText]);
   }
 
-  if ([v6 isFontSizeForBiTextOverridden] && objc_msgSend(v18, "isFontSizeForBiTextOverridden"))
+  if ([inCopy isFontSizeForBiTextOverridden] && objc_msgSend(fromCopy, "isFontSizeForBiTextOverridden"))
   {
-    -[WDCharacterProperties setFontSizeForBiText:](self, "setFontSizeForBiText:", [v18 fontSizeForBiText]);
+    -[WDCharacterProperties setFontSizeForBiText:](self, "setFontSizeForBiText:", [fromCopy fontSizeForBiText]);
   }
 }
 
-- (void)removeEmptyFormattingChanges:(id)a3
+- (void)removeEmptyFormattingChanges:(id)changes
 {
-  v161 = a3;
-  [v161 setResolveMode:0];
+  changesCopy = changes;
+  [changesCopy setResolveMode:0];
   p_mOriginalProperties = &self->mOriginalProperties;
   mOriginalProperties = self->mOriginalProperties;
-  if (mOriginalProperties && -[WDCharacterPropertiesValues baseStyleOverridden](mOriginalProperties, "baseStyleOverridden") && [v161 isBaseStyleOverridden])
+  if (mOriginalProperties && -[WDCharacterPropertiesValues baseStyleOverridden](mOriginalProperties, "baseStyleOverridden") && [changesCopy isBaseStyleOverridden])
   {
     v6 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v7 = [*p_mOriginalProperties baseStyle];
+      baseStyle = [*p_mOriginalProperties baseStyle];
     }
 
     else
     {
-      v7 = 0;
+      baseStyle = 0;
     }
 
-    v8 = [v161 baseStyle];
+    baseStyle2 = [changesCopy baseStyle];
 
     if (v6)
     {
     }
 
-    if (v7 == v8)
+    if (baseStyle == baseStyle2)
     {
       [*p_mOriginalProperties setBaseStyleOverridden:0];
       [*p_mOriginalProperties setBaseStyle:0];
     }
   }
 
-  [v161 setResolveMode:1];
+  [changesCopy setResolveMode:1];
   mTrackedProperties = self->mTrackedProperties;
   p_mTrackedProperties = &self->mTrackedProperties;
   v9 = mTrackedProperties;
@@ -2976,26 +2976,26 @@ LABEL_296:
     goto LABEL_27;
   }
 
-  if (-[WDCharacterPropertiesValues baseStyleOverridden](v9, "baseStyleOverridden") && [v161 isBaseStyleOverridden])
+  if (-[WDCharacterPropertiesValues baseStyleOverridden](v9, "baseStyleOverridden") && [changesCopy isBaseStyleOverridden])
   {
     v12 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v13 = [*p_mTrackedProperties baseStyle];
+      baseStyle3 = [*p_mTrackedProperties baseStyle];
     }
 
     else
     {
-      v13 = 0;
+      baseStyle3 = 0;
     }
 
-    v14 = [v161 baseStyle];
+    baseStyle4 = [changesCopy baseStyle];
 
     if (v12)
     {
     }
 
-    if (v13 == v14)
+    if (baseStyle3 == baseStyle4)
     {
       [*p_mTrackedProperties setBaseStyleOverridden:0];
       [*p_mTrackedProperties setBaseStyle:0];
@@ -3026,26 +3026,26 @@ LABEL_27:
   v15 = *p_mOriginalProperties;
   if (*p_mOriginalProperties)
   {
-    v16 = [*p_mOriginalProperties baseStyle];
+    baseStyle5 = [*p_mOriginalProperties baseStyle];
   }
 
   else
   {
-    v16 = 0;
+    baseStyle5 = 0;
   }
 
   v22 = *p_mTrackedProperties;
   if (*p_mTrackedProperties)
   {
-    v23 = [*p_mTrackedProperties baseStyle];
+    baseStyle6 = [*p_mTrackedProperties baseStyle];
   }
 
   else
   {
-    v23 = 0;
+    baseStyle6 = 0;
   }
 
-  v24 = [v16 isEqual:v23];
+  v24 = [baseStyle5 isEqual:baseStyle6];
   if (v22)
   {
   }
@@ -3081,26 +3081,26 @@ LABEL_38:
     v25 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v26 = [*p_mOriginalProperties border];
+      border = [*p_mOriginalProperties border];
     }
 
     else
     {
-      v26 = 0;
+      border = 0;
     }
 
     v27 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v28 = [*p_mTrackedProperties border];
+      border2 = [*p_mTrackedProperties border];
     }
 
     else
     {
-      v28 = 0;
+      border2 = 0;
     }
 
-    v29 = [v26 isEqual:v28];
+    v29 = [border isEqual:border2];
     if (v27)
     {
     }
@@ -3131,26 +3131,26 @@ LABEL_54:
     v30 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v31 = [*p_mOriginalProperties shading];
+      shading = [*p_mOriginalProperties shading];
     }
 
     else
     {
-      v31 = 0;
+      shading = 0;
     }
 
     v32 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v33 = [*p_mTrackedProperties shading];
+      shading2 = [*p_mTrackedProperties shading];
     }
 
     else
     {
-      v33 = 0;
+      shading2 = 0;
     }
 
-    v34 = [v31 isEqual:v33];
+    v34 = [shading isEqual:shading2];
     if (v32)
     {
     }
@@ -3181,26 +3181,26 @@ LABEL_70:
     v35 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v36 = [*p_mOriginalProperties font];
+      font = [*p_mOriginalProperties font];
     }
 
     else
     {
-      v36 = 0;
+      font = 0;
     }
 
     v37 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v38 = [*p_mTrackedProperties font];
+      font2 = [*p_mTrackedProperties font];
     }
 
     else
     {
-      v38 = 0;
+      font2 = 0;
     }
 
-    v39 = [v36 isEqual:v38];
+    v39 = [font isEqual:font2];
     if (v37)
     {
     }
@@ -3231,26 +3231,26 @@ LABEL_86:
     v40 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v41 = [*p_mOriginalProperties extendedFont];
+      extendedFont = [*p_mOriginalProperties extendedFont];
     }
 
     else
     {
-      v41 = 0;
+      extendedFont = 0;
     }
 
     v42 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v43 = [*p_mTrackedProperties extendedFont];
+      extendedFont2 = [*p_mTrackedProperties extendedFont];
     }
 
     else
     {
-      v43 = 0;
+      extendedFont2 = 0;
     }
 
-    v44 = [v41 isEqual:v43];
+    v44 = [extendedFont isEqual:extendedFont2];
     if (v42)
     {
     }
@@ -3281,26 +3281,26 @@ LABEL_102:
     v45 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v46 = [*p_mOriginalProperties farEastFont];
+      farEastFont = [*p_mOriginalProperties farEastFont];
     }
 
     else
     {
-      v46 = 0;
+      farEastFont = 0;
     }
 
     v47 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v48 = [*p_mTrackedProperties farEastFont];
+      farEastFont2 = [*p_mTrackedProperties farEastFont];
     }
 
     else
     {
-      v48 = 0;
+      farEastFont2 = 0;
     }
 
-    v49 = [v46 isEqual:v48];
+    v49 = [farEastFont isEqual:farEastFont2];
     if (v47)
     {
     }
@@ -3331,26 +3331,26 @@ LABEL_118:
     v50 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v51 = [*p_mOriginalProperties symbolFont];
+      symbolFont = [*p_mOriginalProperties symbolFont];
     }
 
     else
     {
-      v51 = 0;
+      symbolFont = 0;
     }
 
     v52 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v53 = [*p_mTrackedProperties symbolFont];
+      symbolFont2 = [*p_mTrackedProperties symbolFont];
     }
 
     else
     {
-      v53 = 0;
+      symbolFont2 = 0;
     }
 
-    v54 = [v51 isEqual:v53];
+    v54 = [symbolFont isEqual:symbolFont2];
     if (v52)
     {
     }
@@ -3381,26 +3381,26 @@ LABEL_134:
     v55 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v56 = [*p_mOriginalProperties underlineColor];
+      underlineColor = [*p_mOriginalProperties underlineColor];
     }
 
     else
     {
-      v56 = 0;
+      underlineColor = 0;
     }
 
     v57 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v58 = [*p_mTrackedProperties underlineColor];
+      underlineColor2 = [*p_mTrackedProperties underlineColor];
     }
 
     else
     {
-      v58 = 0;
+      underlineColor2 = 0;
     }
 
-    v59 = [v56 isEqual:v58];
+    v59 = [underlineColor isEqual:underlineColor2];
     if (v57)
     {
     }
@@ -3431,26 +3431,26 @@ LABEL_150:
     v60 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v61 = [*p_mOriginalProperties color];
+      color = [*p_mOriginalProperties color];
     }
 
     else
     {
-      v61 = 0;
+      color = 0;
     }
 
     v62 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v63 = [*p_mTrackedProperties color];
+      color2 = [*p_mTrackedProperties color];
     }
 
     else
     {
-      v63 = 0;
+      color2 = 0;
     }
 
-    v64 = [v61 isEqual:v63];
+    v64 = [color isEqual:color2];
     if (v62)
     {
     }
@@ -3481,26 +3481,26 @@ LABEL_166:
     v65 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v66 = [*p_mOriginalProperties shadow2010];
+      shadow2010 = [*p_mOriginalProperties shadow2010];
     }
 
     else
     {
-      v66 = 0;
+      shadow2010 = 0;
     }
 
     v67 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v68 = [*p_mTrackedProperties shadow2010];
+      shadow20102 = [*p_mTrackedProperties shadow2010];
     }
 
     else
     {
-      v68 = 0;
+      shadow20102 = 0;
     }
 
-    v69 = [v66 isEqual:v68];
+    v69 = [shadow2010 isEqual:shadow20102];
     if (v67)
     {
     }
@@ -3531,26 +3531,26 @@ LABEL_182:
     v70 = *p_mOriginalProperties;
     if (*p_mOriginalProperties)
     {
-      v71 = [*p_mOriginalProperties reflection];
+      reflection = [*p_mOriginalProperties reflection];
     }
 
     else
     {
-      v71 = 0;
+      reflection = 0;
     }
 
     v72 = *p_mTrackedProperties;
     if (*p_mTrackedProperties)
     {
-      v73 = [*p_mTrackedProperties reflection];
+      reflection2 = [*p_mTrackedProperties reflection];
     }
 
     else
     {
-      v73 = 0;
+      reflection2 = 0;
     }
 
-    v74 = [v71 isEqual:v73];
+    v74 = [reflection isEqual:reflection2];
     if (v72)
     {
     }
@@ -3580,12 +3580,12 @@ LABEL_198:
   {
     if (*p_mOriginalProperties)
     {
-      v75 = [*p_mOriginalProperties symbolCharacter];
+      symbolCharacter = [*p_mOriginalProperties symbolCharacter];
     }
 
     else
     {
-      v75 = 0;
+      symbolCharacter = 0;
     }
 
     v76 = *p_mTrackedProperties;
@@ -3594,7 +3594,7 @@ LABEL_198:
       LODWORD(v76) = [v76 symbolCharacter];
     }
 
-    if (v75 == v76)
+    if (symbolCharacter == v76)
     {
 LABEL_209:
       if (!*p_mTrackedProperties)
@@ -3611,12 +3611,12 @@ LABEL_209:
       {
         if (*p_mOriginalProperties)
         {
-          v77 = [*p_mOriginalProperties bold];
+          bold = [*p_mOriginalProperties bold];
         }
 
         else
         {
-          v77 = 0;
+          bold = 0;
         }
 
         v78 = *p_mTrackedProperties;
@@ -3625,7 +3625,7 @@ LABEL_209:
           LODWORD(v78) = [v78 bold];
         }
 
-        if (v77 == v78)
+        if (bold == v78)
         {
 LABEL_258:
           if (!*p_mTrackedProperties)
@@ -3642,12 +3642,12 @@ LABEL_258:
           {
             if (*p_mOriginalProperties)
             {
-              v79 = [*p_mOriginalProperties boldForBiText];
+              boldForBiText = [*p_mOriginalProperties boldForBiText];
             }
 
             else
             {
-              v79 = 0;
+              boldForBiText = 0;
             }
 
             v80 = *p_mTrackedProperties;
@@ -3656,7 +3656,7 @@ LABEL_258:
               LODWORD(v80) = [v80 boldForBiText];
             }
 
-            if (v79 == v80)
+            if (boldForBiText == v80)
             {
 LABEL_621:
               if (!*p_mTrackedProperties)
@@ -3673,12 +3673,12 @@ LABEL_621:
               {
                 if (*p_mOriginalProperties)
                 {
-                  v81 = [*p_mOriginalProperties italic];
+                  italic = [*p_mOriginalProperties italic];
                 }
 
                 else
                 {
-                  v81 = 0;
+                  italic = 0;
                 }
 
                 v82 = *p_mTrackedProperties;
@@ -3687,7 +3687,7 @@ LABEL_621:
                   LODWORD(v82) = [v82 italic];
                 }
 
-                if (v81 == v82)
+                if (italic == v82)
                 {
 LABEL_622:
                   if (!*p_mTrackedProperties)
@@ -3704,12 +3704,12 @@ LABEL_622:
                   {
                     if (*p_mOriginalProperties)
                     {
-                      v83 = [*p_mOriginalProperties italicForBiText];
+                      italicForBiText = [*p_mOriginalProperties italicForBiText];
                     }
 
                     else
                     {
-                      v83 = 0;
+                      italicForBiText = 0;
                     }
 
                     v84 = *p_mTrackedProperties;
@@ -3718,7 +3718,7 @@ LABEL_622:
                       LODWORD(v84) = [v84 italicForBiText];
                     }
 
-                    if (v83 == v84)
+                    if (italicForBiText == v84)
                     {
 LABEL_623:
                       if (!*p_mTrackedProperties)
@@ -3735,12 +3735,12 @@ LABEL_623:
                       {
                         if (*p_mOriginalProperties)
                         {
-                          v85 = [*p_mOriginalProperties outline];
+                          outline = [*p_mOriginalProperties outline];
                         }
 
                         else
                         {
-                          v85 = 0;
+                          outline = 0;
                         }
 
                         v86 = *p_mTrackedProperties;
@@ -3749,7 +3749,7 @@ LABEL_623:
                           LODWORD(v86) = [v86 outline];
                         }
 
-                        if (v85 == v86)
+                        if (outline == v86)
                         {
 LABEL_624:
                           if (*p_mTrackedProperties)
@@ -3764,26 +3764,26 @@ LABEL_624:
                               v18 = *p_mOriginalProperties != 0;
                               if (*p_mOriginalProperties)
                               {
-                                v159 = [*p_mOriginalProperties outlineColor];
+                                outlineColor = [*p_mOriginalProperties outlineColor];
                               }
 
                               else
                               {
-                                v159 = 0;
+                                outlineColor = 0;
                               }
 
                               v17 = *p_mTrackedProperties != 0;
                               if (*p_mTrackedProperties)
                               {
-                                v158 = [*p_mTrackedProperties outlineColor];
+                                outlineColor2 = [*p_mTrackedProperties outlineColor];
                               }
 
                               else
                               {
-                                v158 = 0;
+                                outlineColor2 = 0;
                               }
 
-                              if (v159 != v158)
+                              if (outlineColor != outlineColor2)
                               {
 LABEL_423:
                                 LOBYTE(v87) = 1;
@@ -3877,12 +3877,12 @@ LABEL_275:
 
                               if (*p_mOriginalProperties)
                               {
-                                v115 = [*p_mOriginalProperties shadow];
+                                shadow = [*p_mOriginalProperties shadow];
                               }
 
                               else
                               {
-                                v115 = 0;
+                                shadow = 0;
                               }
 
                               v124 = *p_mTrackedProperties;
@@ -3891,7 +3891,7 @@ LABEL_275:
                                 LODWORD(v124) = [v124 shadow];
                               }
 
-                              if (v115 != v124)
+                              if (shadow != v124)
                               {
                                 goto LABEL_423;
                               }
@@ -3907,26 +3907,26 @@ LABEL_275:
                               v19 = *p_mOriginalProperties != 0;
                               if (*p_mOriginalProperties)
                               {
-                                v157 = [*p_mOriginalProperties reflection];
+                                reflection3 = [*p_mOriginalProperties reflection];
                               }
 
                               else
                               {
-                                v157 = 0;
+                                reflection3 = 0;
                               }
 
                               v20 = *p_mTrackedProperties != 0;
                               if (*p_mTrackedProperties)
                               {
-                                v156 = [*p_mTrackedProperties reflection];
+                                reflection4 = [*p_mTrackedProperties reflection];
                               }
 
                               else
                               {
-                                v156 = 0;
+                                reflection4 = 0;
                               }
 
-                              if (v157 != v156)
+                              if (reflection3 != reflection4)
                               {
 LABEL_471:
                                 LOBYTE(v87) = 1;
@@ -3968,28 +3968,28 @@ LABEL_266:
                               v160 = *p_mOriginalProperties != 0;
                               if (*p_mOriginalProperties)
                               {
-                                v155 = [*p_mOriginalProperties shadow2010];
+                                shadow20103 = [*p_mOriginalProperties shadow2010];
                               }
 
                               else
                               {
-                                v155 = 0;
+                                shadow20103 = 0;
                               }
 
                               v90 = *p_mTrackedProperties;
                               v87 = *p_mTrackedProperties != 0;
                               if (*p_mTrackedProperties)
                               {
-                                v91 = [*p_mTrackedProperties shadow2010];
+                                shadow20104 = [*p_mTrackedProperties shadow2010];
                               }
 
                               else
                               {
-                                v91 = 0;
+                                shadow20104 = 0;
                               }
 
-                              v154 = v91;
-                              if (v155 != v91)
+                              v154 = shadow20104;
+                              if (shadow20103 != shadow20104)
                               {
                                 goto LABEL_613;
                               }
@@ -4028,12 +4028,12 @@ LABEL_266:
                             {
                               if (*p_mOriginalProperties)
                               {
-                                v89 = [*p_mOriginalProperties kerning];
+                                kerning = [*p_mOriginalProperties kerning];
                               }
 
                               else
                               {
-                                v89 = 0;
+                                kerning = 0;
                               }
 
                               v93 = *p_mTrackedProperties;
@@ -4042,7 +4042,7 @@ LABEL_266:
                                 LODWORD(v93) = [v93 kerning];
                               }
 
-                              if (v89 == v93)
+                              if (kerning == v93)
                               {
 LABEL_625:
                                 if (!*p_mTrackedProperties)
@@ -4059,12 +4059,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v94 = [*p_mOriginalProperties textScale];
+                                    textScale = [*p_mOriginalProperties textScale];
                                   }
 
                                   else
                                   {
-                                    v94 = 0;
+                                    textScale = 0;
                                   }
 
                                   v95 = *p_mTrackedProperties;
@@ -4073,7 +4073,7 @@ LABEL_625:
                                     LODWORD(v95) = [v95 textScale];
                                   }
 
-                                  if (v94 != v95)
+                                  if (textScale != v95)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4093,12 +4093,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v96 = [*p_mOriginalProperties embossed];
+                                    embossed = [*p_mOriginalProperties embossed];
                                   }
 
                                   else
                                   {
-                                    v96 = 0;
+                                    embossed = 0;
                                   }
 
                                   v97 = *p_mTrackedProperties;
@@ -4107,7 +4107,7 @@ LABEL_625:
                                     LODWORD(v97) = [v97 embossed];
                                   }
 
-                                  if (v96 != v97)
+                                  if (embossed != v97)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4127,12 +4127,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v98 = [*p_mOriginalProperties imprint];
+                                    imprint = [*p_mOriginalProperties imprint];
                                   }
 
                                   else
                                   {
-                                    v98 = 0;
+                                    imprint = 0;
                                   }
 
                                   v99 = *p_mTrackedProperties;
@@ -4141,7 +4141,7 @@ LABEL_625:
                                     LODWORD(v99) = [v99 imprint];
                                   }
 
-                                  if (v98 != v99)
+                                  if (imprint != v99)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4161,12 +4161,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v100 = [*p_mOriginalProperties underline];
+                                    underline = [*p_mOriginalProperties underline];
                                   }
 
                                   else
                                   {
-                                    v100 = 0;
+                                    underline = 0;
                                   }
 
                                   v101 = *p_mTrackedProperties;
@@ -4175,7 +4175,7 @@ LABEL_625:
                                     LODWORD(v101) = [v101 underline];
                                   }
 
-                                  if (v100 != v101)
+                                  if (underline != v101)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4195,12 +4195,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v102 = [*p_mOriginalProperties strikeThrough];
+                                    strikeThrough = [*p_mOriginalProperties strikeThrough];
                                   }
 
                                   else
                                   {
-                                    v102 = 0;
+                                    strikeThrough = 0;
                                   }
 
                                   v103 = *p_mTrackedProperties;
@@ -4209,7 +4209,7 @@ LABEL_625:
                                     LODWORD(v103) = [v103 strikeThrough];
                                   }
 
-                                  if (v102 != v103)
+                                  if (strikeThrough != v103)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4229,12 +4229,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v104 = [*p_mOriginalProperties doubleStrikeThrough];
+                                    doubleStrikeThrough = [*p_mOriginalProperties doubleStrikeThrough];
                                   }
 
                                   else
                                   {
-                                    v104 = 0;
+                                    doubleStrikeThrough = 0;
                                   }
 
                                   v105 = *p_mTrackedProperties;
@@ -4243,7 +4243,7 @@ LABEL_625:
                                     LODWORD(v105) = [v105 doubleStrikeThrough];
                                   }
 
-                                  if (v104 != v105)
+                                  if (doubleStrikeThrough != v105)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4263,12 +4263,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v106 = [*p_mOriginalProperties ligature];
+                                    ligature = [*p_mOriginalProperties ligature];
                                   }
 
                                   else
                                   {
-                                    v106 = 0;
+                                    ligature = 0;
                                   }
 
                                   v107 = *p_mTrackedProperties;
@@ -4277,7 +4277,7 @@ LABEL_625:
                                     LODWORD(v107) = [v107 ligature];
                                   }
 
-                                  if (v106 != v107)
+                                  if (ligature != v107)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4297,12 +4297,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v108 = [*p_mOriginalProperties highlight];
+                                    highlight = [*p_mOriginalProperties highlight];
                                   }
 
                                   else
                                   {
-                                    v108 = 0;
+                                    highlight = 0;
                                   }
 
                                   v109 = *p_mTrackedProperties;
@@ -4311,7 +4311,7 @@ LABEL_625:
                                     LODWORD(v109) = [v109 highlight];
                                   }
 
-                                  if (v108 != v109)
+                                  if (highlight != v109)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4331,12 +4331,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v110 = [*p_mOriginalProperties highlightColor];
+                                    highlightColor = [*p_mOriginalProperties highlightColor];
                                   }
 
                                   else
                                   {
-                                    v110 = 0;
+                                    highlightColor = 0;
                                   }
 
                                   v116 = *p_mTrackedProperties;
@@ -4345,7 +4345,7 @@ LABEL_625:
                                     LODWORD(v116) = [v116 highlightColor];
                                   }
 
-                                  if (v110 != v116)
+                                  if (highlightColor != v116)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4365,12 +4365,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v117 = [*p_mOriginalProperties smallCapsOverridden];
+                                    smallCapsOverridden = [*p_mOriginalProperties smallCapsOverridden];
                                   }
 
                                   else
                                   {
-                                    v117 = 0;
+                                    smallCapsOverridden = 0;
                                   }
 
                                   v118 = *p_mTrackedProperties;
@@ -4379,7 +4379,7 @@ LABEL_625:
                                     LODWORD(v118) = [v118 smallCapsOverridden];
                                   }
 
-                                  if (v117 != v118)
+                                  if (smallCapsOverridden != v118)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4399,12 +4399,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v119 = [*p_mOriginalProperties capsOverridden];
+                                    capsOverridden = [*p_mOriginalProperties capsOverridden];
                                   }
 
                                   else
                                   {
-                                    v119 = 0;
+                                    capsOverridden = 0;
                                   }
 
                                   v120 = *p_mTrackedProperties;
@@ -4413,7 +4413,7 @@ LABEL_625:
                                     LODWORD(v120) = [v120 capsOverridden];
                                   }
 
-                                  if (v119 != v120)
+                                  if (capsOverridden != v120)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4433,12 +4433,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v121 = [*p_mOriginalProperties lowerCase];
+                                    lowerCase = [*p_mOriginalProperties lowerCase];
                                   }
 
                                   else
                                   {
-                                    v121 = 0;
+                                    lowerCase = 0;
                                   }
 
                                   v122 = *p_mTrackedProperties;
@@ -4447,7 +4447,7 @@ LABEL_625:
                                     LODWORD(v122) = [v122 lowerCase];
                                   }
 
-                                  if (v121 != v122)
+                                  if (lowerCase != v122)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4467,12 +4467,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v123 = [*p_mOriginalProperties hidden];
+                                    hidden = [*p_mOriginalProperties hidden];
                                   }
 
                                   else
                                   {
-                                    v123 = 0;
+                                    hidden = 0;
                                   }
 
                                   v125 = *p_mTrackedProperties;
@@ -4481,7 +4481,7 @@ LABEL_625:
                                     LODWORD(v125) = [v125 hidden];
                                   }
 
-                                  if (v123 != v125)
+                                  if (hidden != v125)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4501,12 +4501,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v126 = [*p_mOriginalProperties spacing];
+                                    spacing = [*p_mOriginalProperties spacing];
                                   }
 
                                   else
                                   {
-                                    v126 = 0;
+                                    spacing = 0;
                                   }
 
                                   v127 = *p_mTrackedProperties;
@@ -4515,7 +4515,7 @@ LABEL_625:
                                     LODWORD(v127) = [v127 spacing];
                                   }
 
-                                  if (v126 != v127)
+                                  if (spacing != v127)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4535,12 +4535,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v128 = [*p_mOriginalProperties position];
+                                    position = [*p_mOriginalProperties position];
                                   }
 
                                   else
                                   {
-                                    v128 = 0;
+                                    position = 0;
                                   }
 
                                   v129 = *p_mTrackedProperties;
@@ -4549,7 +4549,7 @@ LABEL_625:
                                     LODWORD(v129) = [v129 position];
                                   }
 
-                                  if (v128 != v129)
+                                  if (position != v129)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4569,12 +4569,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v130 = [*p_mOriginalProperties fontSize];
+                                    fontSize = [*p_mOriginalProperties fontSize];
                                   }
 
                                   else
                                   {
-                                    v130 = 0;
+                                    fontSize = 0;
                                   }
 
                                   v131 = *p_mTrackedProperties;
@@ -4583,7 +4583,7 @@ LABEL_625:
                                     LODWORD(v131) = [v131 fontSize];
                                   }
 
-                                  if (v130 != v131)
+                                  if (fontSize != v131)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4603,12 +4603,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v132 = [*p_mOriginalProperties verticalAlign];
+                                    verticalAlign = [*p_mOriginalProperties verticalAlign];
                                   }
 
                                   else
                                   {
-                                    v132 = 0;
+                                    verticalAlign = 0;
                                   }
 
                                   v133 = *p_mTrackedProperties;
@@ -4617,7 +4617,7 @@ LABEL_625:
                                     LODWORD(v133) = [v133 verticalAlign];
                                   }
 
-                                  if (v132 != v133)
+                                  if (verticalAlign != v133)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4637,12 +4637,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v134 = [*p_mOriginalProperties emphasisMark];
+                                    emphasisMark = [*p_mOriginalProperties emphasisMark];
                                   }
 
                                   else
                                   {
-                                    v134 = 0;
+                                    emphasisMark = 0;
                                   }
 
                                   v135 = *p_mTrackedProperties;
@@ -4651,7 +4651,7 @@ LABEL_625:
                                     LODWORD(v135) = [v135 emphasisMark];
                                   }
 
-                                  if (v134 != v135)
+                                  if (emphasisMark != v135)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4671,12 +4671,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v136 = [*p_mOriginalProperties colorAuto];
+                                    colorAuto = [*p_mOriginalProperties colorAuto];
                                   }
 
                                   else
                                   {
-                                    v136 = 0;
+                                    colorAuto = 0;
                                   }
 
                                   v137 = *p_mTrackedProperties;
@@ -4685,7 +4685,7 @@ LABEL_625:
                                     LODWORD(v137) = [v137 colorAuto];
                                   }
 
-                                  if (v136 != v137)
+                                  if (colorAuto != v137)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4705,12 +4705,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v138 = [*p_mOriginalProperties languageForDefaultText];
+                                    languageForDefaultText = [*p_mOriginalProperties languageForDefaultText];
                                   }
 
                                   else
                                   {
-                                    v138 = 0;
+                                    languageForDefaultText = 0;
                                   }
 
                                   v139 = *p_mTrackedProperties;
@@ -4719,7 +4719,7 @@ LABEL_625:
                                     LODWORD(v139) = [v139 languageForDefaultText];
                                   }
 
-                                  if (v138 != v139)
+                                  if (languageForDefaultText != v139)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4739,12 +4739,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v140 = [*p_mOriginalProperties specialCharacter];
+                                    specialCharacter = [*p_mOriginalProperties specialCharacter];
                                   }
 
                                   else
                                   {
-                                    v140 = 0;
+                                    specialCharacter = 0;
                                   }
 
                                   v141 = *p_mTrackedProperties;
@@ -4753,7 +4753,7 @@ LABEL_625:
                                     LODWORD(v141) = [v141 specialCharacter];
                                   }
 
-                                  if (v140 != v141)
+                                  if (specialCharacter != v141)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4773,12 +4773,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v142 = [*p_mOriginalProperties listCharacterPictureBullet];
+                                    listCharacterPictureBullet = [*p_mOriginalProperties listCharacterPictureBullet];
                                   }
 
                                   else
                                   {
-                                    v142 = 0;
+                                    listCharacterPictureBullet = 0;
                                   }
 
                                   v143 = *p_mTrackedProperties;
@@ -4787,7 +4787,7 @@ LABEL_625:
                                     LODWORD(v143) = [v143 listCharacterPictureBullet];
                                   }
 
-                                  if (v142 != v143)
+                                  if (listCharacterPictureBullet != v143)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4807,12 +4807,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v144 = [*p_mOriginalProperties charPositionOfPictureBulletInBookmark];
+                                    charPositionOfPictureBulletInBookmark = [*p_mOriginalProperties charPositionOfPictureBulletInBookmark];
                                   }
 
                                   else
                                   {
-                                    v144 = 0;
+                                    charPositionOfPictureBulletInBookmark = 0;
                                   }
 
                                   v145 = *p_mTrackedProperties;
@@ -4821,7 +4821,7 @@ LABEL_625:
                                     LODWORD(v145) = [v145 charPositionOfPictureBulletInBookmark];
                                   }
 
-                                  if (v144 != v145)
+                                  if (charPositionOfPictureBulletInBookmark != v145)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4841,12 +4841,12 @@ LABEL_625:
 
                                   if (*p_mOriginalProperties)
                                   {
-                                    v146 = [*p_mOriginalProperties languageForFarEast];
+                                    languageForFarEast = [*p_mOriginalProperties languageForFarEast];
                                   }
 
                                   else
                                   {
-                                    v146 = 0;
+                                    languageForFarEast = 0;
                                   }
 
                                   v147 = *p_mTrackedProperties;
@@ -4855,7 +4855,7 @@ LABEL_625:
                                     LODWORD(v147) = [v147 languageForFarEast];
                                   }
 
-                                  if (v146 != v147)
+                                  if (languageForFarEast != v147)
                                   {
                                     goto LABEL_613;
                                   }
@@ -4882,12 +4882,12 @@ LABEL_583:
                                 {
                                   if (*p_mOriginalProperties)
                                   {
-                                    v148 = [*p_mOriginalProperties languageForBiText];
+                                    languageForBiText = [*p_mOriginalProperties languageForBiText];
                                   }
 
                                   else
                                   {
-                                    v148 = 0;
+                                    languageForBiText = 0;
                                   }
 
                                   v149 = *p_mTrackedProperties;
@@ -4896,7 +4896,7 @@ LABEL_583:
                                     LODWORD(v149) = [v149 languageForBiText];
                                   }
 
-                                  if (v148 == v149)
+                                  if (languageForBiText == v149)
                                   {
 LABEL_626:
                                     if (!*p_mTrackedProperties || ![*p_mTrackedProperties shadow2010OpacityOverridden])
@@ -5026,9 +5026,9 @@ LABEL_265:
 LABEL_596:
 }
 
-- (void)setBaseStyle:(id)a3
+- (void)setBaseStyle:(id)style
 {
-  v12 = a3;
+  styleCopy = style;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -5037,8 +5037,8 @@ LABEL_596:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setBaseStyle:v12];
-      [(WDCharacterPropertiesValues *)*p_mTrackedProperties setBaseStyleOverridden:v12 != 0];
+      [(WDCharacterPropertiesValues *)v4 setBaseStyle:styleCopy];
+      [(WDCharacterPropertiesValues *)*p_mTrackedProperties setBaseStyleOverridden:styleCopy != 0];
     }
   }
 
@@ -5086,28 +5086,28 @@ LABEL_8:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  border = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 borderOverridden])
+  if ([border borderOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties border];
+    border = [(WDCharacterPropertiesValues *)*p_mTrackedProperties border];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    border = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return border;
 }
 
 - (BOOL)isBorderOverridden
@@ -5137,10 +5137,10 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties borderOverridden];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v12 = a3;
-  if (v12)
+  fontCopy = font;
+  if (fontCopy)
   {
     if (self->mTracked)
     {
@@ -5150,7 +5150,7 @@ LABEL_9:
       if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
       {
 LABEL_9:
-        [(WDCharacterPropertiesValues *)v4 setFont:v12];
+        [(WDCharacterPropertiesValues *)v4 setFont:fontCopy];
         [(WDCharacterPropertiesValues *)*p_mTrackedProperties setFontOverridden:1];
       }
     }
@@ -5200,34 +5200,34 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  extendedFont = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 extendedFontOverridden])
+  if ([extendedFont extendedFontOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties extendedFont];
+    extendedFont = [(WDCharacterPropertiesValues *)*p_mTrackedProperties extendedFont];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    extendedFont = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return extendedFont;
 }
 
-- (void)setExtendedFont:(id)a3
+- (void)setExtendedFont:(id)font
 {
-  v12 = a3;
-  if (v12)
+  fontCopy = font;
+  if (fontCopy)
   {
     if (self->mTracked)
     {
@@ -5237,7 +5237,7 @@ LABEL_11:
       if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
       {
 LABEL_9:
-        [(WDCharacterPropertiesValues *)v4 setExtendedFont:v12];
+        [(WDCharacterPropertiesValues *)v4 setExtendedFont:fontCopy];
         [(WDCharacterPropertiesValues *)*p_mTrackedProperties setExtendedFontOverridden:1];
       }
     }
@@ -5314,34 +5314,34 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  farEastFont = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 farEastFontOverridden])
+  if ([farEastFont farEastFontOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties farEastFont];
+    farEastFont = [(WDCharacterPropertiesValues *)*p_mTrackedProperties farEastFont];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    farEastFont = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return farEastFont;
 }
 
-- (void)setFarEastFont:(id)a3
+- (void)setFarEastFont:(id)font
 {
-  v12 = a3;
-  if (v12)
+  fontCopy = font;
+  if (fontCopy)
   {
     if (self->mTracked)
     {
@@ -5351,7 +5351,7 @@ LABEL_11:
       if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
       {
 LABEL_9:
-        [(WDCharacterPropertiesValues *)v4 setFarEastFont:v12];
+        [(WDCharacterPropertiesValues *)v4 setFarEastFont:fontCopy];
         [(WDCharacterPropertiesValues *)*p_mTrackedProperties setFarEastFontOverridden:1];
       }
     }
@@ -5428,34 +5428,34 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  symbolFont = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 symbolFontOverridden])
+  if ([symbolFont symbolFontOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties symbolFont];
+    symbolFont = [(WDCharacterPropertiesValues *)*p_mTrackedProperties symbolFont];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    symbolFont = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return symbolFont;
 }
 
-- (void)setSymbolFont:(id)a3
+- (void)setSymbolFont:(id)font
 {
-  v12 = a3;
-  if (v12)
+  fontCopy = font;
+  if (fontCopy)
   {
     if (self->mTracked)
     {
@@ -5465,7 +5465,7 @@ LABEL_11:
       if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
       {
 LABEL_9:
-        [(WDCharacterPropertiesValues *)v4 setSymbolFont:v12];
+        [(WDCharacterPropertiesValues *)v4 setSymbolFont:fontCopy];
         [(WDCharacterPropertiesValues *)*p_mTrackedProperties setSymbolFontOverridden:1];
       }
     }
@@ -5520,45 +5520,45 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties symbolFontOverridden];
 }
 
-- (id)fontForFontType:(int)a3
+- (id)fontForFontType:(int)type
 {
-  v4 = 0;
-  if (a3 > 1)
+  extendedFont = 0;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v4 = [(WDCharacterProperties *)self extendedFont];
+      extendedFont = [(WDCharacterProperties *)self extendedFont];
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
-      v4 = [(WDCharacterProperties *)self symbolFont];
+      extendedFont = [(WDCharacterProperties *)self symbolFont];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v4 = [(WDCharacterProperties *)self farEastFont];
+      extendedFont = [(WDCharacterProperties *)self farEastFont];
     }
   }
 
   else
   {
-    v4 = [(WDCharacterProperties *)self font];
+    extendedFont = [(WDCharacterProperties *)self font];
   }
 
-  return v4;
+  return extendedFont;
 }
 
-- (BOOL)isFontOverriddenForFontType:(int)a3
+- (BOOL)isFontOverriddenForFontType:(int)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         return [(WDCharacterProperties *)self isSymbolFontOverridden];
       }
@@ -5571,9 +5571,9 @@ LABEL_9:
 
   else
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         return [(WDCharacterProperties *)self isFarEastFontOverridden];
       }
@@ -5585,15 +5585,15 @@ LABEL_9:
   }
 }
 
-- (void)setFont:(id)a3 forFontType:(int)a4
+- (void)setFont:(id)font forFontType:(int)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 1)
+  fontCopy = font;
+  v7 = fontCopy;
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_12;
       }
@@ -5601,21 +5601,21 @@ LABEL_9:
 
     else
     {
-      [(WDCharacterProperties *)self setFont:v6];
+      [(WDCharacterProperties *)self setFont:fontCopy];
     }
 
     [(WDCharacterProperties *)self setFarEastFont:v7];
     goto LABEL_10;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
 LABEL_10:
     [(WDCharacterProperties *)self setExtendedFont:v7];
     goto LABEL_11;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
 LABEL_11:
     [(WDCharacterProperties *)self setSymbolFont:v7];
@@ -5624,25 +5624,25 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (SEL)fontSelectorForFontType:(int)a3
++ (SEL)fontSelectorForFontType:(int)type
 {
   result = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return sel_extendedFont;
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       return sel_symbolFont;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return sel_farEastFont;
     }
@@ -5656,25 +5656,25 @@ LABEL_12:
   return result;
 }
 
-+ (SEL)fontOverriddenSelectorForFontType:(int)a3
++ (SEL)fontOverriddenSelectorForFontType:(int)type
 {
   result = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return sel_isExtendedFontOverridden;
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       return sel_isSymbolFontOverridden;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return sel_isFarEastFontOverridden;
     }
@@ -5688,25 +5688,25 @@ LABEL_12:
   return result;
 }
 
-+ (SEL)setFontSelectorForFontType:(int)a3
++ (SEL)setFontSelectorForFontType:(int)type
 {
   result = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return sel_setExtendedFont_;
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       return sel_setSymbolFont_;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return sel_setFarEastFont_;
     }
@@ -5749,14 +5749,14 @@ LABEL_12:
   return [(WDCharacterPropertiesValues *)v8 fontHint];
 }
 
-- (void)setFontHint:(int)a3
+- (void)setFontHint:(int)hint
 {
-  if ((a3 - 4) < 0xFFFFFFFD)
+  if ((hint - 4) < 0xFFFFFFFD)
   {
     return;
   }
 
-  v3 = *&a3;
+  v3 = *&hint;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -5853,9 +5853,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 symbolCharacter];
 }
 
-- (void)setSymbolCharacter:(unsigned __int16)a3
+- (void)setSymbolCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -5890,7 +5890,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setSymbolCharacter:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setSymbolCharacter:characterCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setSymbolCharacterOverridden:1];
@@ -5923,9 +5923,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties symbolCharacterOverridden];
 }
 
-- (void)setBold:(int)a3
+- (void)setBold:(int)bold
 {
-  v3 = a3;
+  boldCopy = bold;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -5960,7 +5960,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setBold:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setBold:boldCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setBoldOverridden:1];
@@ -6004,9 +6004,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setBoldForBiText:(int)a3
+- (void)setBoldForBiText:(int)text
 {
-  v3 = a3;
+  textCopy = text;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6041,7 +6041,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setBoldForBiText:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setBoldForBiText:textCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setBoldForBiTextOverridden:1];
@@ -6074,9 +6074,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties boldForBiTextOverridden];
 }
 
-- (void)setItalic:(int)a3
+- (void)setItalic:(int)italic
 {
-  v3 = a3;
+  italicCopy = italic;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6111,7 +6111,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setItalic:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setItalic:italicCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setItalicOverridden:1];
@@ -6155,9 +6155,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setItalicForBiText:(int)a3
+- (void)setItalicForBiText:(int)text
 {
-  v3 = a3;
+  textCopy = text;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6192,7 +6192,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setItalicForBiText:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setItalicForBiText:textCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setItalicForBiTextOverridden:1];
@@ -6263,9 +6263,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setOutline:(int)a3
+- (void)setOutline:(int)outline
 {
-  v3 = a3;
+  outlineCopy = outline;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6300,7 +6300,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setOutline:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setOutline:outlineCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setOutlineOverridden:1];
@@ -6355,33 +6355,33 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  outlineColor = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 outlineColorOverridden])
+  if ([outlineColor outlineColorOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties outlineColor];
+    outlineColor = [(WDCharacterPropertiesValues *)*p_mTrackedProperties outlineColor];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    outlineColor = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return outlineColor;
 }
 
-- (void)setOutlineColor:(id)a3
+- (void)setOutlineColor:(id)color
 {
-  v12 = a3;
+  colorCopy = color;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -6390,7 +6390,7 @@ LABEL_11:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setOutlineColor:v12];
+      [(WDCharacterPropertiesValues *)v4 setOutlineColor:colorCopy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setOutlineColorOverridden:1];
     }
   }
@@ -6474,7 +6474,7 @@ LABEL_9:
   return result;
 }
 
-- (void)setOutline2010Width:(float)a3
+- (void)setOutline2010Width:(float)width
 {
   if (self->mTracked)
   {
@@ -6510,7 +6510,7 @@ LABEL_6:
     }
   }
 
-  *&v8 = a3;
+  *&v8 = width;
   [(WDCharacterPropertiesValues *)mTrackedProperties setOutline2010Width:v8];
   v9 = *p_mTrackedProperties;
 
@@ -6582,9 +6582,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setEmbossed:(int)a3
+- (void)setEmbossed:(int)embossed
 {
-  v3 = a3;
+  embossedCopy = embossed;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6619,7 +6619,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setEmbossed:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setEmbossed:embossedCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setEmbossedOverridden:1];
@@ -6690,9 +6690,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setImprint:(int)a3
+- (void)setImprint:(int)imprint
 {
-  v3 = a3;
+  imprintCopy = imprint;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6727,7 +6727,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setImprint:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setImprint:imprintCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setImprintOverridden:1];
@@ -6798,9 +6798,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setShadow:(int)a3
+- (void)setShadow:(int)shadow
 {
-  v3 = a3;
+  shadowCopy = shadow;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -6835,7 +6835,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setShadow:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setShadow:shadowCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setShadowOverridden:1];
@@ -6898,7 +6898,7 @@ LABEL_9:
   return result;
 }
 
-- (void)setShadow2010Opacity:(float)a3
+- (void)setShadow2010Opacity:(float)opacity
 {
   if (self->mTracked)
   {
@@ -6934,7 +6934,7 @@ LABEL_6:
     }
   }
 
-  *&v8 = a3;
+  *&v8 = opacity;
   [(WDCharacterPropertiesValues *)mTrackedProperties setShadow2010Opacity:v8];
   v9 = *p_mTrackedProperties;
 
@@ -6990,33 +6990,33 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  underlineColor = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 underlineColorOverridden])
+  if ([underlineColor underlineColorOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties underlineColor];
+    underlineColor = [(WDCharacterPropertiesValues *)*p_mTrackedProperties underlineColor];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    underlineColor = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return underlineColor;
 }
 
-- (void)setUnderlineColor:(id)a3
+- (void)setUnderlineColor:(id)color
 {
-  v12 = a3;
+  colorCopy = color;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -7025,7 +7025,7 @@ LABEL_11:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setUnderlineColor:v12];
+      [(WDCharacterPropertiesValues *)v4 setUnderlineColor:colorCopy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setUnderlineColorOverridden:1];
     }
   }
@@ -7108,9 +7108,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 kerning];
 }
 
-- (void)setKerning:(unsigned __int16)a3
+- (void)setKerning:(unsigned __int16)kerning
 {
-  v3 = a3;
+  kerningCopy = kerning;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7145,7 +7145,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setKerning:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setKerning:kerningCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setKerningOverridden:1];
@@ -7207,9 +7207,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 textScale];
 }
 
-- (void)setTextScale:(unsigned __int16)a3
+- (void)setTextScale:(unsigned __int16)scale
 {
-  v3 = a3;
+  scaleCopy = scale;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7244,7 +7244,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setTextScale:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setTextScale:scaleCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setTextScaleOverridden:1];
@@ -7277,9 +7277,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties textScaleOverridden];
 }
 
-- (void)setUnderline:(int)a3
+- (void)setUnderline:(int)underline
 {
-  v3 = a3;
+  underlineCopy = underline;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7314,15 +7314,15 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setUnderline:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setUnderline:underlineCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setUnderlineOverridden:1];
 }
 
-- (void)setStrikeThrough:(int)a3
+- (void)setStrikeThrough:(int)through
 {
-  v3 = a3;
+  throughCopy = through;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7357,15 +7357,15 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setStrikeThrough:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setStrikeThrough:throughCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setStrikeThroughOverridden:1];
 }
 
-- (void)setDoubleStrikeThrough:(int)a3
+- (void)setDoubleStrikeThrough:(int)through
 {
-  v3 = a3;
+  throughCopy = through;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7400,7 +7400,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setDoubleStrikeThrough:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setDoubleStrikeThrough:throughCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setDoubleStrikeThroughOverridden:1];
@@ -7435,9 +7435,9 @@ LABEL_6:
   return [(WDCharacterPropertiesValues *)v8 highlight];
 }
 
-- (void)setHighlight:(BOOL)a3
+- (void)setHighlight:(BOOL)highlight
 {
-  v3 = a3;
+  highlightCopy = highlight;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7472,7 +7472,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setHighlight:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setHighlight:highlightCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setHighlightOverridden:1];
@@ -7543,9 +7543,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setHighlightColor:(int)a3
+- (void)setHighlightColor:(int)color
 {
-  v3 = a3;
+  colorCopy = color;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7580,7 +7580,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setHighlightColor:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setHighlightColor:colorCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setHighlightColorOverridden:1];
@@ -7651,9 +7651,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setLigature:(int)a3
+- (void)setLigature:(int)ligature
 {
-  v3 = a3;
+  ligatureCopy = ligature;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7688,7 +7688,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setLigature:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setLigature:ligatureCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setLigatureOverridden:1];
@@ -7721,9 +7721,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties ligatureOverridden];
 }
 
-- (void)setSmallCaps:(int)a3
+- (void)setSmallCaps:(int)caps
 {
-  v3 = a3;
+  capsCopy = caps;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7758,15 +7758,15 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setSmallCaps:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setSmallCaps:capsCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setSmallCapsOverridden:1];
 }
 
-- (void)setCaps:(int)a3
+- (void)setCaps:(int)caps
 {
-  v3 = a3;
+  capsCopy = caps;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7801,7 +7801,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setCaps:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setCaps:capsCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setCapsOverridden:1];
@@ -7836,9 +7836,9 @@ LABEL_6:
   return [(WDCharacterPropertiesValues *)v8 lowerCase];
 }
 
-- (void)setLowerCase:(BOOL)a3
+- (void)setLowerCase:(BOOL)case
 {
-  v3 = a3;
+  caseCopy = case;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7873,7 +7873,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setLowerCase:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setLowerCase:caseCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setLowerCaseOverridden:1];
@@ -7906,9 +7906,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties lowerCaseOverridden];
 }
 
-- (void)setHidden:(int)a3
+- (void)setHidden:(int)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -7943,7 +7943,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setHidden:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setHidden:hiddenCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setHiddenOverridden:1];
@@ -7978,9 +7978,9 @@ LABEL_6:
   return [(WDCharacterPropertiesValues *)v8 spacing];
 }
 
-- (void)setSpacing:(signed __int16)a3
+- (void)setSpacing:(signed __int16)spacing
 {
-  v3 = a3;
+  spacingCopy = spacing;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8015,7 +8015,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setSpacing:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setSpacing:spacingCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setSpacingOverridden:1];
@@ -8077,9 +8077,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 position];
 }
 
-- (void)setPosition:(signed __int16)a3
+- (void)setPosition:(signed __int16)position
 {
-  v3 = a3;
+  positionCopy = position;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8114,7 +8114,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setPosition:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setPosition:positionCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setPositionOverridden:1];
@@ -8147,9 +8147,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties positionOverridden];
 }
 
-- (void)setFontSize:(unsigned __int16)a3
+- (void)setFontSize:(unsigned __int16)size
 {
-  v3 = a3;
+  sizeCopy = size;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8184,7 +8184,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setFontSize:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setFontSize:sizeCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setFontSizeOverridden:1];
@@ -8212,33 +8212,33 @@ LABEL_6:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  reflection = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 reflectionOverridden])
+  if ([reflection reflectionOverridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties reflection];
+    reflection = [(WDCharacterPropertiesValues *)*p_mTrackedProperties reflection];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    reflection = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return reflection;
 }
 
-- (void)setReflection:(id)a3
+- (void)setReflection:(id)reflection
 {
-  v12 = a3;
+  reflectionCopy = reflection;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -8247,7 +8247,7 @@ LABEL_11:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setReflection:v12];
+      [(WDCharacterPropertiesValues *)v4 setReflection:reflectionCopy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setReflectionOverridden:1];
     }
   }
@@ -8323,33 +8323,33 @@ LABEL_9:
 
   mOriginalProperties = self->mOriginalProperties;
   p_mOriginalProperties = &self->mOriginalProperties;
-  v5 = mOriginalProperties;
+  shadow2010 = mOriginalProperties;
   if (!mOriginalProperties)
   {
     goto LABEL_11;
   }
 
   p_mTrackedProperties = p_mOriginalProperties;
-  if ([v5 shadow2010Overridden])
+  if ([shadow2010 shadow2010Overridden])
   {
 LABEL_9:
-    v5 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties shadow2010];
+    shadow2010 = [(WDCharacterPropertiesValues *)*p_mTrackedProperties shadow2010];
   }
 
   else
   {
 LABEL_10:
-    v5 = 0;
+    shadow2010 = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return shadow2010;
 }
 
-- (void)setShadow2010:(id)a3
+- (void)setShadow2010:(id)shadow2010
 {
-  v12 = a3;
+  shadow2010Copy = shadow2010;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -8358,7 +8358,7 @@ LABEL_11:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setShadow2010:v12];
+      [(WDCharacterPropertiesValues *)v4 setShadow2010:shadow2010Copy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setShadow2010Overridden:1];
     }
   }
@@ -8412,9 +8412,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties shadow2010Overridden];
 }
 
-- (void)setVerticalAlign:(int)a3
+- (void)setVerticalAlign:(int)align
 {
-  v3 = a3;
+  alignCopy = align;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8449,7 +8449,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setVerticalAlign:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setVerticalAlign:alignCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setVerticalAlignOverridden:1];
@@ -8484,9 +8484,9 @@ LABEL_6:
   return [(WDCharacterPropertiesValues *)v8 emphasisMark];
 }
 
-- (void)setEmphasisMark:(int)a3
+- (void)setEmphasisMark:(int)mark
 {
-  v3 = *&a3;
+  v3 = *&mark;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8554,9 +8554,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties emphasisMarkOverridden];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v12 = a3;
+  colorCopy = color;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -8565,7 +8565,7 @@ LABEL_9:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setColor:v12];
+      [(WDCharacterPropertiesValues *)v4 setColor:colorCopy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setColorOverridden:1];
     }
   }
@@ -8621,9 +8621,9 @@ LABEL_8:
   return [(WDCharacterPropertiesValues *)v8 colorAuto];
 }
 
-- (void)setColorAuto:(BOOL)a3
+- (void)setColorAuto:(BOOL)auto
 {
-  v3 = a3;
+  autoCopy = auto;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8658,7 +8658,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setColorAuto:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setColorAuto:autoCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setColorAutoOverridden:1];
@@ -8720,9 +8720,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 languageForDefaultText];
 }
 
-- (void)setLanguageForDefaultText:(int)a3
+- (void)setLanguageForDefaultText:(int)text
 {
-  v3 = *&a3;
+  v3 = *&text;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8790,9 +8790,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties languageForDefaultTextOverridden];
 }
 
-- (void)setRightToLeft:(int)a3
+- (void)setRightToLeft:(int)left
 {
-  v3 = a3;
+  leftCopy = left;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8827,7 +8827,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setRightToLeft:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setRightToLeft:leftCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setRightToLeftOverridden:1];
@@ -8871,9 +8871,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setUseCsFont:(int)a3
+- (void)setUseCsFont:(int)font
 {
-  v3 = a3;
+  fontCopy = font;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8908,7 +8908,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setUseCsFont:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setUseCsFont:fontCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setUseCsFontOverridden:1];
@@ -8941,9 +8941,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties useCsFontOverridden];
 }
 
-- (void)setDeleted:(int)a3
+- (void)setDeleted:(int)deleted
 {
-  v3 = a3;
+  deletedCopy = deleted;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -8978,7 +8978,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setDeleted:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setDeleted:deletedCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setDeletedOverridden:1];
@@ -9022,9 +9022,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setEdited:(int)a3
+- (void)setEdited:(int)edited
 {
-  v3 = a3;
+  editedCopy = edited;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9059,7 +9059,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setEdited:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setEdited:editedCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setEditedOverridden:1];
@@ -9092,7 +9092,7 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties editedOverridden];
 }
 
-- (void)setFormattingChanged:(int)a3
+- (void)setFormattingChanged:(int)changed
 {
   if (self->mTracked)
   {
@@ -9128,15 +9128,15 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setFormattingChanged:a3 != 0];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setFormattingChanged:changed != 0];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setFormattingChangedOverridden:1];
 }
 
-- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)deletion
 {
-  v3 = a3;
+  deletionCopy = deletion;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9171,7 +9171,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setIndexToAuthorIDOfDeletion:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setIndexToAuthorIDOfDeletion:deletionCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setIndexToAuthorIDOfDeletionOverridden:1];
@@ -9204,9 +9204,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties indexToAuthorIDOfDeletionOverridden];
 }
 
-- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)edit
 {
-  v3 = a3;
+  editCopy = edit;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9241,7 +9241,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setIndexToAuthorIDOfEdit:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setIndexToAuthorIDOfEdit:editCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setIndexToAuthorIDOfEditOverridden:1];
@@ -9303,9 +9303,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 indexToAuthorIDOfFormattingChange];
 }
 
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change
 {
-  v3 = a3;
+  changeCopy = change;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9340,7 +9340,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setIndexToAuthorIDOfFormattingChange:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setIndexToAuthorIDOfFormattingChange:changeCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setIndexToAuthorIDOfFormattingChangeOverridden:1];
@@ -9373,9 +9373,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties indexToAuthorIDOfFormattingChangeOverridden];
 }
 
-- (void)setDeletionDate:(id)a3
+- (void)setDeletionDate:(id)date
 {
-  v12 = a3;
+  dateCopy = date;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -9384,7 +9384,7 @@ LABEL_9:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setDeletionDate:v12];
+      [(WDCharacterPropertiesValues *)v4 setDeletionDate:dateCopy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setDeletionDateOverridden:1];
     }
   }
@@ -9438,9 +9438,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties deletionDateOverridden];
 }
 
-- (void)setEditDate:(id)a3
+- (void)setEditDate:(id)date
 {
-  v12 = a3;
+  dateCopy = date;
   if (self->mTracked)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -9449,7 +9449,7 @@ LABEL_9:
     if (mTrackedProperties || (v7 = objc_alloc_init(WDCharacterPropertiesValues), v8 = *p_mTrackedProperties, *p_mTrackedProperties = v7, v8, (v4 = *p_mTrackedProperties) != 0))
     {
 LABEL_8:
-      [(WDCharacterPropertiesValues *)v4 setEditDate:v12];
+      [(WDCharacterPropertiesValues *)v4 setEditDate:dateCopy];
       [(WDCharacterPropertiesValues *)*p_mTrackedProperties setEditDateOverridden:1];
     }
   }
@@ -9503,13 +9503,13 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties editDateOverridden];
 }
 
-- (BOOL)deletionDifferentFrom:(id)a3
+- (BOOL)deletionDifferentFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v5 = [(WDCharacterProperties *)self deletionDifferentFrom:v4 mode:0];
-    v6 = v5 | [(WDCharacterProperties *)self deletionDifferentFrom:v4 mode:1];
+    v5 = [(WDCharacterProperties *)self deletionDifferentFrom:fromCopy mode:0];
+    v6 = v5 | [(WDCharacterProperties *)self deletionDifferentFrom:fromCopy mode:1];
   }
 
   else
@@ -9520,13 +9520,13 @@ LABEL_9:
   return v6 & 1;
 }
 
-- (BOOL)editDifferentFrom:(id)a3
+- (BOOL)editDifferentFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v5 = [(WDCharacterProperties *)self editDifferentFrom:v4 mode:0];
-    v6 = v5 | [(WDCharacterProperties *)self editDifferentFrom:v4 mode:1];
+    v5 = [(WDCharacterProperties *)self editDifferentFrom:fromCopy mode:0];
+    v6 = v5 | [(WDCharacterProperties *)self editDifferentFrom:fromCopy mode:1];
   }
 
   else
@@ -9537,13 +9537,13 @@ LABEL_9:
   return v6 & 1;
 }
 
-- (BOOL)formattingChangedDifferentFrom:(id)a3
+- (BOOL)formattingChangedDifferentFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v5 = [(WDCharacterProperties *)self formattingChangedDifferentFrom:v4 mode:0];
-    v6 = v5 | [(WDCharacterProperties *)self formattingChangedDifferentFrom:v4 mode:1];
+    v5 = [(WDCharacterProperties *)self formattingChangedDifferentFrom:fromCopy mode:0];
+    v6 = v5 | [(WDCharacterProperties *)self formattingChangedDifferentFrom:fromCopy mode:1];
   }
 
   else
@@ -9583,9 +9583,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 specialCharacter];
 }
 
-- (void)setSpecialCharacter:(BOOL)a3
+- (void)setSpecialCharacter:(BOOL)character
 {
-  v3 = a3;
+  characterCopy = character;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9620,7 +9620,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setSpecialCharacter:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setSpecialCharacter:characterCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setSpecialCharacterOverridden:1];
@@ -9653,9 +9653,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties specialCharacterOverridden];
 }
 
-- (void)setListCharacterPictureBullet:(BOOL)a3
+- (void)setListCharacterPictureBullet:(BOOL)bullet
 {
-  v3 = a3;
+  bulletCopy = bullet;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9690,15 +9690,15 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setListCharacterPictureBullet:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setListCharacterPictureBullet:bulletCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setListCharacterPictureBulletOverridden:1];
 }
 
-- (void)setCharPositionOfPictureBulletInBookmark:(int)a3
+- (void)setCharPositionOfPictureBulletInBookmark:(int)bookmark
 {
-  v3 = *&a3;
+  v3 = *&bookmark;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9768,9 +9768,9 @@ LABEL_6:
   return [(WDCharacterPropertiesValues *)v8 languageForFarEast];
 }
 
-- (void)setLanguageForFarEast:(int)a3
+- (void)setLanguageForFarEast:(int)east
 {
-  v3 = *&a3;
+  v3 = *&east;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9867,9 +9867,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 languageForBiText];
 }
 
-- (void)setLanguageForBiText:(int)a3
+- (void)setLanguageForBiText:(int)text
 {
-  v3 = *&a3;
+  v3 = *&text;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9966,9 +9966,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 fontSizeForBiText];
 }
 
-- (void)setFontSizeForBiText:(unsigned __int16)a3
+- (void)setFontSizeForBiText:(unsigned __int16)text
 {
-  v3 = a3;
+  textCopy = text;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10003,7 +10003,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setFontSizeForBiText:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setFontSizeForBiText:textCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setFontSizeForBiTextOverridden:1];
@@ -10065,9 +10065,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 embeddedObject];
 }
 
-- (void)setEmbeddedObject:(BOOL)a3
+- (void)setEmbeddedObject:(BOOL)object
 {
-  v3 = a3;
+  objectCopy = object;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10102,7 +10102,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setEmbeddedObject:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setEmbeddedObject:objectCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setEmbeddedObjectOverridden:1];
@@ -10164,9 +10164,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 ole2];
 }
 
-- (void)setOle2:(BOOL)a3
+- (void)setOle2:(BOOL)ole2
 {
-  v3 = a3;
+  ole2Copy = ole2;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10201,7 +10201,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setOle2:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setOle2:ole2Copy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setOle2Overridden:1];
@@ -10263,9 +10263,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 objectIDForOle2];
 }
 
-- (void)setObjectIDForOle2:(int)a3
+- (void)setObjectIDForOle2:(int)ole2
 {
-  v3 = *&a3;
+  v3 = *&ole2;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10362,9 +10362,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 offsetToPictureData];
 }
 
-- (void)setOffsetToPictureData:(int)a3
+- (void)setOffsetToPictureData:(int)data
 {
-  v3 = *&a3;
+  v3 = *&data;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10461,9 +10461,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 horizontalInVertical];
 }
 
-- (void)setHorizontalInVertical:(BOOL)a3
+- (void)setHorizontalInVertical:(BOOL)vertical
 {
-  v3 = a3;
+  verticalCopy = vertical;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10498,7 +10498,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setHorizontalInVertical:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setHorizontalInVertical:verticalCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setHorizontalInVerticalOverridden:1];
@@ -10560,9 +10560,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 compressHorizontalInVertical];
 }
 
-- (void)setCompressHorizontalInVertical:(BOOL)a3
+- (void)setCompressHorizontalInVertical:(BOOL)vertical
 {
-  v3 = a3;
+  verticalCopy = vertical;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10597,7 +10597,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setCompressHorizontalInVertical:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setCompressHorizontalInVertical:verticalCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setCompressHorizontalInVerticalOverridden:1];
@@ -10659,9 +10659,9 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)v8 twoLinesInOne];
 }
 
-- (void)setTwoLinesInOne:(BOOL)a3
+- (void)setTwoLinesInOne:(BOOL)one
 {
-  v3 = a3;
+  oneCopy = one;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10696,7 +10696,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setTwoLinesInOne:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setTwoLinesInOne:oneCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setTwoLinesInOneOverridden:1];
@@ -10767,9 +10767,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setBracketTwoLinesInOne:(int)a3
+- (void)setBracketTwoLinesInOne:(int)one
 {
-  v3 = a3;
+  oneCopy = one;
   if (self->mTracked)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -10804,7 +10804,7 @@ LABEL_6:
     }
   }
 
-  [(WDCharacterPropertiesValues *)mTrackedProperties setBracketTwoLinesInOne:v3];
+  [(WDCharacterPropertiesValues *)mTrackedProperties setBracketTwoLinesInOne:oneCopy];
   v8 = *p_mTrackedProperties;
 
   [(WDCharacterPropertiesValues *)v8 setBracketTwoLinesInOneOverridden:1];
@@ -10837,7 +10837,7 @@ LABEL_9:
   return [(WDCharacterPropertiesValues *)mOriginalProperties bracketTwoLinesInOneOverridden];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDCharacterProperties allocWithZone:?]];
   if (v4)
@@ -10870,17 +10870,17 @@ LABEL_9:
   return v4;
 }
 
-- (void)copyPropertiesInto:(id)a3
+- (void)copyPropertiesInto:(id)into
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  intoCopy = into;
+  v5 = intoCopy;
+  if (intoCopy)
   {
-    v6 = v4[2];
-    v15 = v4;
+    v6 = intoCopy[2];
+    v15 = intoCopy;
     if (v6)
     {
-      v4[2] = 0;
+      intoCopy[2] = 0;
 
       v5 = v15;
     }
@@ -10927,13 +10927,13 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)isAnythingOverriddenIn:(id)a3
+- (BOOL)isAnythingOverriddenIn:(id)in
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  inCopy = in;
+  v4 = inCopy;
+  if (inCopy)
   {
-    if (([v3 baseStyleOverridden] & 1) != 0
+    if (([inCopy baseStyleOverridden] & 1) != 0
       || ([v4 borderOverridden] & 1) != 0
       || ([v4 shadingOverridden] & 1) != 0
       || ([v4 fontOverridden] & 1) != 0
@@ -10991,66 +10991,66 @@ LABEL_9:
       || ([v4 languageForFarEastOverridden] & 1) != 0
       || ([v4 languageForBiTextOverridden] & 1) != 0)
     {
-      v5 = 1;
+      fontSizeForBiTextOverridden = 1;
     }
 
     else
     {
-      v5 = [v4 fontSizeForBiTextOverridden];
+      fontSizeForBiTextOverridden = [v4 fontSizeForBiTextOverridden];
     }
   }
 
   else
   {
-    v5 = 0;
+    fontSizeForBiTextOverridden = 0;
   }
 
-  return v5;
+  return fontSizeForBiTextOverridden;
 }
 
-- (BOOL)isBooleanProbablyDifferent:(unsigned __int8)a3 than:(unsigned __int8)a4
+- (BOOL)isBooleanProbablyDifferent:(unsigned __int8)different than:(unsigned __int8)than
 {
-  if (a3 == 129)
+  if (different == 129)
   {
-    v4 = 1;
+    differentCopy = 1;
   }
 
   else
   {
-    v4 = a3;
+    differentCopy = different;
   }
 
-  if (v4 == 128)
+  if (differentCopy == 128)
   {
-    v4 = 0;
+    differentCopy = 0;
   }
 
-  if (a4 == 129)
+  if (than == 129)
   {
-    v5 = 1;
+    thanCopy = 1;
   }
 
   else
   {
-    v5 = a4;
+    thanCopy = than;
   }
 
-  if (v5 == 128)
+  if (thanCopy == 128)
   {
-    v5 = 0;
+    thanCopy = 0;
   }
 
-  return v4 != v5;
+  return differentCopy != thanCopy;
 }
 
-- (BOOL)deletionDifferentFrom:(id)a3 mode:(int)a4
+- (BOOL)deletionDifferentFrom:(id)from mode:(int)mode
 {
-  v6 = a3;
-  if (v6)
+  fromCopy = from;
+  if (fromCopy)
   {
-    if (a4)
+    if (mode)
     {
-      if (a4 != 1)
+      if (mode != 1)
       {
         v8 = 0;
         v10 = 0;
@@ -11068,7 +11068,7 @@ LABEL_22:
     }
 
     v8 = *(&self->super.isa + v7);
-    v9 = *&v6[v7];
+    v9 = *&fromCopy[v7];
     if (v8 | v9)
     {
       v10 = v9;
@@ -11081,22 +11081,22 @@ LABEL_22:
 
       if (v9)
       {
-        v11 = [v8 deletedOverridden];
-        if (v11 == [v10 deletedOverridden] && (!objc_msgSend(v8, "deletedOverridden") || !-[WDCharacterProperties isBooleanProbablyDifferent:than:](self, "isBooleanProbablyDifferent:than:", objc_msgSend(v8, "deleted"), objc_msgSend(v10, "deleted"))))
+        deletedOverridden = [v8 deletedOverridden];
+        if (deletedOverridden == [v10 deletedOverridden] && (!objc_msgSend(v8, "deletedOverridden") || !-[WDCharacterProperties isBooleanProbablyDifferent:than:](self, "isBooleanProbablyDifferent:than:", objc_msgSend(v8, "deleted"), objc_msgSend(v10, "deleted"))))
         {
-          v12 = [v8 indexToAuthorIDOfDeletionOverridden];
-          if (v12 == [v10 indexToAuthorIDOfDeletionOverridden])
+          indexToAuthorIDOfDeletionOverridden = [v8 indexToAuthorIDOfDeletionOverridden];
+          if (indexToAuthorIDOfDeletionOverridden == [v10 indexToAuthorIDOfDeletionOverridden])
           {
             if (![v8 indexToAuthorIDOfDeletionOverridden] || (v13 = objc_msgSend(v8, "indexToAuthorIDOfDeletion"), v13 == objc_msgSend(v10, "indexToAuthorIDOfDeletion")))
             {
-              v14 = [v8 deletionDateOverridden];
-              if (v14 == [v10 deletionDateOverridden])
+              deletionDateOverridden = [v8 deletionDateOverridden];
+              if (deletionDateOverridden == [v10 deletionDateOverridden])
               {
                 if ([v8 deletionDateOverridden])
                 {
-                  v15 = [v8 deletionDate];
-                  v16 = [v10 deletionDate];
-                  LODWORD(self) = [v15 isEqualToDate:v16] ^ 1;
+                  deletionDate = [v8 deletionDate];
+                  deletionDate2 = [v10 deletionDate];
+                  LODWORD(self) = [deletionDate isEqualToDate:deletionDate2] ^ 1;
                 }
 
                 else
@@ -11134,14 +11134,14 @@ LABEL_25:
   return self;
 }
 
-- (BOOL)editDifferentFrom:(id)a3 mode:(int)a4
+- (BOOL)editDifferentFrom:(id)from mode:(int)mode
 {
-  v6 = a3;
-  if (v6)
+  fromCopy = from;
+  if (fromCopy)
   {
-    if (a4)
+    if (mode)
     {
-      if (a4 != 1)
+      if (mode != 1)
       {
         v8 = 0;
         v10 = 0;
@@ -11159,7 +11159,7 @@ LABEL_22:
     }
 
     v8 = *(&self->super.isa + v7);
-    v9 = *&v6[v7];
+    v9 = *&fromCopy[v7];
     if (v8 | v9)
     {
       v10 = v9;
@@ -11172,22 +11172,22 @@ LABEL_22:
 
       if (v9)
       {
-        v11 = [v8 editedOverridden];
-        if (v11 == [v10 editedOverridden] && (!objc_msgSend(v8, "editedOverridden") || !-[WDCharacterProperties isBooleanProbablyDifferent:than:](self, "isBooleanProbablyDifferent:than:", objc_msgSend(v8, "edited"), objc_msgSend(v10, "edited"))))
+        editedOverridden = [v8 editedOverridden];
+        if (editedOverridden == [v10 editedOverridden] && (!objc_msgSend(v8, "editedOverridden") || !-[WDCharacterProperties isBooleanProbablyDifferent:than:](self, "isBooleanProbablyDifferent:than:", objc_msgSend(v8, "edited"), objc_msgSend(v10, "edited"))))
         {
-          v12 = [v8 indexToAuthorIDOfEditOverridden];
-          if (v12 == [v10 indexToAuthorIDOfEditOverridden])
+          indexToAuthorIDOfEditOverridden = [v8 indexToAuthorIDOfEditOverridden];
+          if (indexToAuthorIDOfEditOverridden == [v10 indexToAuthorIDOfEditOverridden])
           {
             if (![v8 indexToAuthorIDOfEditOverridden] || (v13 = objc_msgSend(v8, "indexToAuthorIDOfEdit"), v13 == objc_msgSend(v10, "indexToAuthorIDOfEdit")))
             {
-              v14 = [v8 editDateOverridden];
-              if (v14 == [v10 editDateOverridden])
+              editDateOverridden = [v8 editDateOverridden];
+              if (editDateOverridden == [v10 editDateOverridden])
               {
                 if ([v8 editDateOverridden])
                 {
-                  v15 = [v8 editDate];
-                  v16 = [v10 editDate];
-                  LODWORD(self) = [v15 isEqualToDate:v16] ^ 1;
+                  editDate = [v8 editDate];
+                  editDate2 = [v10 editDate];
+                  LODWORD(self) = [editDate isEqualToDate:editDate2] ^ 1;
                 }
 
                 else
@@ -11225,14 +11225,14 @@ LABEL_25:
   return self;
 }
 
-- (BOOL)formattingChangedDifferentFrom:(id)a3 mode:(int)a4
+- (BOOL)formattingChangedDifferentFrom:(id)from mode:(int)mode
 {
-  v6 = a3;
-  if (v6)
+  fromCopy = from;
+  if (fromCopy)
   {
-    if (a4)
+    if (mode)
     {
-      if (a4 != 1)
+      if (mode != 1)
       {
         v9 = 0;
         v11 = 0;
@@ -11248,7 +11248,7 @@ LABEL_25:
     }
 
     v9 = *(&self->super.isa + v7);
-    v10 = *&v6[v7];
+    v10 = *&fromCopy[v7];
     if (v9 | v10)
     {
       v11 = v10;
@@ -11261,269 +11261,269 @@ LABEL_25:
 
       if (v10)
       {
-        v12 = [v9 formattingChangedOverridden];
-        if (v12 == [v11 formattingChangedOverridden] && (!objc_msgSend(v9, "formattingChangedOverridden") || !-[WDCharacterProperties isBooleanProbablyDifferent:than:](self, "isBooleanProbablyDifferent:than:", objc_msgSend(v9, "formattingChanged"), objc_msgSend(v11, "formattingChanged"))))
+        formattingChangedOverridden = [v9 formattingChangedOverridden];
+        if (formattingChangedOverridden == [v11 formattingChangedOverridden] && (!objc_msgSend(v9, "formattingChangedOverridden") || !-[WDCharacterProperties isBooleanProbablyDifferent:than:](self, "isBooleanProbablyDifferent:than:", objc_msgSend(v9, "formattingChanged"), objc_msgSend(v11, "formattingChanged"))))
         {
-          v13 = [v9 indexToAuthorIDOfFormattingChangeOverridden];
-          if (v13 == [v11 indexToAuthorIDOfFormattingChangeOverridden])
+          indexToAuthorIDOfFormattingChangeOverridden = [v9 indexToAuthorIDOfFormattingChangeOverridden];
+          if (indexToAuthorIDOfFormattingChangeOverridden == [v11 indexToAuthorIDOfFormattingChangeOverridden])
           {
             if (![v9 indexToAuthorIDOfFormattingChangeOverridden] || (v14 = objc_msgSend(v9, "indexToAuthorIDOfFormattingChange"), v14 == objc_msgSend(v11, "indexToAuthorIDOfFormattingChange")))
             {
-              v15 = [v9 baseStyleOverridden];
-              if (v15 == [v11 baseStyleOverridden])
+              baseStyleOverridden = [v9 baseStyleOverridden];
+              if (baseStyleOverridden == [v11 baseStyleOverridden])
               {
                 if (![v9 baseStyleOverridden] || (objc_msgSend(v9, "baseStyle"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "baseStyle"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqual:", v17), v17, v16, (v18 & 1) != 0))
                 {
-                  v19 = [v9 borderOverridden];
-                  if (v19 == [v11 borderOverridden])
+                  borderOverridden = [v9 borderOverridden];
+                  if (borderOverridden == [v11 borderOverridden])
                   {
                     if (![v9 borderOverridden] || (objc_msgSend(v9, "border"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "border"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) != 0))
                     {
-                      v23 = [v9 shadingOverridden];
-                      if (v23 == [v11 shadingOverridden])
+                      shadingOverridden = [v9 shadingOverridden];
+                      if (shadingOverridden == [v11 shadingOverridden])
                       {
                         if (![v9 shadingOverridden] || (objc_msgSend(v9, "shading"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "shading"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v24, "isEqual:", v25), v25, v24, (v26 & 1) != 0))
                         {
-                          v27 = [v9 fontOverridden];
-                          if (v27 == [v11 fontOverridden])
+                          fontOverridden = [v9 fontOverridden];
+                          if (fontOverridden == [v11 fontOverridden])
                           {
                             if (![v9 fontOverridden] || (objc_msgSend(v9, "font"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "font"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "isEqual:", v29), v29, v28, (v30 & 1) != 0))
                             {
-                              v31 = [v9 extendedFontOverridden];
-                              if (v31 == [v11 extendedFontOverridden])
+                              extendedFontOverridden = [v9 extendedFontOverridden];
+                              if (extendedFontOverridden == [v11 extendedFontOverridden])
                               {
                                 if (![v9 extendedFontOverridden] || (objc_msgSend(v9, "extendedFont"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "extendedFont"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v32, "isEqual:", v33), v33, v32, (v34 & 1) != 0))
                                 {
-                                  v35 = [v9 farEastFontOverridden];
-                                  if (v35 == [v11 farEastFontOverridden])
+                                  farEastFontOverridden = [v9 farEastFontOverridden];
+                                  if (farEastFontOverridden == [v11 farEastFontOverridden])
                                   {
                                     if (![v9 farEastFontOverridden] || (objc_msgSend(v9, "farEastFont"), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "farEastFont"), v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v36, "isEqual:", v37), v37, v36, (v38 & 1) != 0))
                                     {
-                                      v39 = [v9 symbolFontOverridden];
-                                      if (v39 == [v11 symbolFontOverridden])
+                                      symbolFontOverridden = [v9 symbolFontOverridden];
+                                      if (symbolFontOverridden == [v11 symbolFontOverridden])
                                       {
                                         if (![v9 symbolFontOverridden] || (objc_msgSend(v9, "symbolFont"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "symbolFont"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v40, "isEqual:", v41), v41, v40, (v42 & 1) != 0))
                                         {
-                                          v43 = [v9 outlineColorOverridden];
-                                          if (v43 == [v11 outlineColorOverridden])
+                                          outlineColorOverridden = [v9 outlineColorOverridden];
+                                          if (outlineColorOverridden == [v11 outlineColorOverridden])
                                           {
                                             if (![v9 outlineColorOverridden] || (objc_msgSend(v9, "outlineColor"), v44 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "outlineColor"), v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v44, "isEqual:", v45), v45, v44, (v46 & 1) != 0))
                                             {
-                                              v47 = [v9 underlineColorOverridden];
-                                              if (v47 == [v11 underlineColorOverridden])
+                                              underlineColorOverridden = [v9 underlineColorOverridden];
+                                              if (underlineColorOverridden == [v11 underlineColorOverridden])
                                               {
                                                 if (![v9 underlineColorOverridden] || (objc_msgSend(v9, "underlineColor"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "underlineColor"), v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v48, "isEqual:", v49), v49, v48, (v50 & 1) != 0))
                                                 {
-                                                  v51 = [v9 colorOverridden];
-                                                  if (v51 == [v11 colorOverridden])
+                                                  colorOverridden = [v9 colorOverridden];
+                                                  if (colorOverridden == [v11 colorOverridden])
                                                   {
                                                     if (![v9 colorOverridden] || (objc_msgSend(v9, "color"), v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "color"), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v52, "isEqual:", v53), v53, v52, (v54 & 1) != 0))
                                                     {
-                                                      v55 = [v9 symbolCharacterOverridden];
-                                                      if (v55 == [v11 symbolCharacterOverridden])
+                                                      symbolCharacterOverridden = [v9 symbolCharacterOverridden];
+                                                      if (symbolCharacterOverridden == [v11 symbolCharacterOverridden])
                                                       {
-                                                        v56 = [v9 symbolCharacter];
-                                                        if (v56 == [v11 symbolCharacter])
+                                                        symbolCharacter = [v9 symbolCharacter];
+                                                        if (symbolCharacter == [v11 symbolCharacter])
                                                         {
-                                                          v57 = [v9 boldOverridden];
-                                                          if (v57 == [v11 boldOverridden])
+                                                          boldOverridden = [v9 boldOverridden];
+                                                          if (boldOverridden == [v11 boldOverridden])
                                                           {
-                                                            v58 = [v9 bold];
-                                                            if (v58 == [v11 bold])
+                                                            bold = [v9 bold];
+                                                            if (bold == [v11 bold])
                                                             {
-                                                              v59 = [v9 boldForBiTextOverridden];
-                                                              if (v59 == [v11 boldForBiTextOverridden])
+                                                              boldForBiTextOverridden = [v9 boldForBiTextOverridden];
+                                                              if (boldForBiTextOverridden == [v11 boldForBiTextOverridden])
                                                               {
-                                                                v60 = [v9 boldForBiText];
-                                                                if (v60 == [v11 boldForBiText])
+                                                                boldForBiText = [v9 boldForBiText];
+                                                                if (boldForBiText == [v11 boldForBiText])
                                                                 {
-                                                                  v61 = [v9 italicOverridden];
-                                                                  if (v61 == [v11 italicOverridden])
+                                                                  italicOverridden = [v9 italicOverridden];
+                                                                  if (italicOverridden == [v11 italicOverridden])
                                                                   {
-                                                                    v62 = [v9 italic];
-                                                                    if (v62 == [v11 italic])
+                                                                    italic = [v9 italic];
+                                                                    if (italic == [v11 italic])
                                                                     {
-                                                                      v63 = [v9 italicForBiTextOverridden];
-                                                                      if (v63 == [v11 italicForBiTextOverridden])
+                                                                      italicForBiTextOverridden = [v9 italicForBiTextOverridden];
+                                                                      if (italicForBiTextOverridden == [v11 italicForBiTextOverridden])
                                                                       {
-                                                                        v64 = [v9 italicForBiText];
-                                                                        if (v64 == [v11 italicForBiText])
+                                                                        italicForBiText = [v9 italicForBiText];
+                                                                        if (italicForBiText == [v11 italicForBiText])
                                                                         {
-                                                                          v65 = [v9 outlineOverridden];
-                                                                          if (v65 == [v11 outlineOverridden])
+                                                                          outlineOverridden = [v9 outlineOverridden];
+                                                                          if (outlineOverridden == [v11 outlineOverridden])
                                                                           {
-                                                                            v66 = [v9 outline];
-                                                                            if (v66 == [v11 outline])
+                                                                            outline = [v9 outline];
+                                                                            if (outline == [v11 outline])
                                                                             {
-                                                                              v67 = [v9 outline2010WidthOverridden];
-                                                                              if (v67 == [v11 outline2010WidthOverridden])
+                                                                              outline2010WidthOverridden = [v9 outline2010WidthOverridden];
+                                                                              if (outline2010WidthOverridden == [v11 outline2010WidthOverridden])
                                                                               {
                                                                                 [v9 outline2010Width];
                                                                                 v69 = v68;
                                                                                 [v11 outline2010Width];
                                                                                 if (v69 == v70)
                                                                                 {
-                                                                                  v71 = [v9 shadowOverridden];
-                                                                                  if (v71 == [v11 shadowOverridden])
+                                                                                  shadowOverridden = [v9 shadowOverridden];
+                                                                                  if (shadowOverridden == [v11 shadowOverridden])
                                                                                   {
-                                                                                    v72 = [v9 shadow];
-                                                                                    if (v72 == [v11 shadow])
+                                                                                    shadow = [v9 shadow];
+                                                                                    if (shadow == [v11 shadow])
                                                                                     {
-                                                                                      v73 = [v9 embossedOverridden];
-                                                                                      if (v73 == [v11 embossedOverridden])
+                                                                                      embossedOverridden = [v9 embossedOverridden];
+                                                                                      if (embossedOverridden == [v11 embossedOverridden])
                                                                                       {
-                                                                                        v74 = [v9 embossed];
-                                                                                        if (v74 == [v11 embossed])
+                                                                                        embossed = [v9 embossed];
+                                                                                        if (embossed == [v11 embossed])
                                                                                         {
-                                                                                          v75 = [v9 imprintOverridden];
-                                                                                          if (v75 == [v11 imprintOverridden])
+                                                                                          imprintOverridden = [v9 imprintOverridden];
+                                                                                          if (imprintOverridden == [v11 imprintOverridden])
                                                                                           {
-                                                                                            v76 = [v9 imprint];
-                                                                                            if (v76 == [v11 imprint])
+                                                                                            imprint = [v9 imprint];
+                                                                                            if (imprint == [v11 imprint])
                                                                                             {
-                                                                                              v77 = [v9 underlineOverridden];
-                                                                                              if (v77 == [v11 underlineOverridden])
+                                                                                              underlineOverridden = [v9 underlineOverridden];
+                                                                                              if (underlineOverridden == [v11 underlineOverridden])
                                                                                               {
-                                                                                                v78 = [v9 underline];
-                                                                                                if (v78 == [v11 underline])
+                                                                                                underline = [v9 underline];
+                                                                                                if (underline == [v11 underline])
                                                                                                 {
-                                                                                                  v79 = [v9 strikeThroughOverridden];
-                                                                                                  if (v79 == [v11 strikeThroughOverridden])
+                                                                                                  strikeThroughOverridden = [v9 strikeThroughOverridden];
+                                                                                                  if (strikeThroughOverridden == [v11 strikeThroughOverridden])
                                                                                                   {
-                                                                                                    v80 = [v9 strikeThrough];
-                                                                                                    if (v80 == [v11 strikeThrough])
+                                                                                                    strikeThrough = [v9 strikeThrough];
+                                                                                                    if (strikeThrough == [v11 strikeThrough])
                                                                                                     {
-                                                                                                      v81 = [v9 doubleStrikeThroughOverridden];
-                                                                                                      if (v81 == [v11 doubleStrikeThroughOverridden])
+                                                                                                      doubleStrikeThroughOverridden = [v9 doubleStrikeThroughOverridden];
+                                                                                                      if (doubleStrikeThroughOverridden == [v11 doubleStrikeThroughOverridden])
                                                                                                       {
-                                                                                                        v82 = [v9 doubleStrikeThrough];
-                                                                                                        if (v82 == [v11 doubleStrikeThrough])
+                                                                                                        doubleStrikeThrough = [v9 doubleStrikeThrough];
+                                                                                                        if (doubleStrikeThrough == [v11 doubleStrikeThrough])
                                                                                                         {
-                                                                                                          v83 = [v9 ligatureOverridden];
-                                                                                                          if (v83 == [v11 ligatureOverridden])
+                                                                                                          ligatureOverridden = [v9 ligatureOverridden];
+                                                                                                          if (ligatureOverridden == [v11 ligatureOverridden])
                                                                                                           {
-                                                                                                            v84 = [v9 ligature];
-                                                                                                            if (v84 == [v11 ligature])
+                                                                                                            ligature = [v9 ligature];
+                                                                                                            if (ligature == [v11 ligature])
                                                                                                             {
-                                                                                                              v85 = [v9 highlightOverridden];
-                                                                                                              if (v85 == [v11 highlightOverridden])
+                                                                                                              highlightOverridden = [v9 highlightOverridden];
+                                                                                                              if (highlightOverridden == [v11 highlightOverridden])
                                                                                                               {
-                                                                                                                v86 = [v9 highlight];
-                                                                                                                if (v86 == [v11 highlight])
+                                                                                                                highlight = [v9 highlight];
+                                                                                                                if (highlight == [v11 highlight])
                                                                                                                 {
-                                                                                                                  v87 = [v9 highlightColorOverridden];
-                                                                                                                  if (v87 == [v11 highlightColorOverridden])
+                                                                                                                  highlightColorOverridden = [v9 highlightColorOverridden];
+                                                                                                                  if (highlightColorOverridden == [v11 highlightColorOverridden])
                                                                                                                   {
-                                                                                                                    v88 = [v9 highlightColor];
-                                                                                                                    if (v88 == [v11 highlightColor])
+                                                                                                                    highlightColor = [v9 highlightColor];
+                                                                                                                    if (highlightColor == [v11 highlightColor])
                                                                                                                     {
-                                                                                                                      v89 = [v9 smallCapsOverridden];
-                                                                                                                      if (v89 == [v11 smallCapsOverridden])
+                                                                                                                      smallCapsOverridden = [v9 smallCapsOverridden];
+                                                                                                                      if (smallCapsOverridden == [v11 smallCapsOverridden])
                                                                                                                       {
-                                                                                                                        v90 = [v9 smallCaps];
-                                                                                                                        if (v90 == [v11 smallCaps])
+                                                                                                                        smallCaps = [v9 smallCaps];
+                                                                                                                        if (smallCaps == [v11 smallCaps])
                                                                                                                         {
-                                                                                                                          v91 = [v9 capsOverridden];
-                                                                                                                          if (v91 == [v11 capsOverridden])
+                                                                                                                          capsOverridden = [v9 capsOverridden];
+                                                                                                                          if (capsOverridden == [v11 capsOverridden])
                                                                                                                           {
-                                                                                                                            v92 = [v9 caps];
-                                                                                                                            if (v92 == [v11 caps])
+                                                                                                                            caps = [v9 caps];
+                                                                                                                            if (caps == [v11 caps])
                                                                                                                             {
-                                                                                                                              v93 = [v9 lowerCaseOverridden];
-                                                                                                                              if (v93 == [v11 lowerCaseOverridden])
+                                                                                                                              lowerCaseOverridden = [v9 lowerCaseOverridden];
+                                                                                                                              if (lowerCaseOverridden == [v11 lowerCaseOverridden])
                                                                                                                               {
-                                                                                                                                v94 = [v9 lowerCase];
-                                                                                                                                if (v94 == [v11 lowerCase])
+                                                                                                                                lowerCase = [v9 lowerCase];
+                                                                                                                                if (lowerCase == [v11 lowerCase])
                                                                                                                                 {
-                                                                                                                                  v95 = [v9 hiddenOverridden];
-                                                                                                                                  if (v95 == [v11 hiddenOverridden])
+                                                                                                                                  hiddenOverridden = [v9 hiddenOverridden];
+                                                                                                                                  if (hiddenOverridden == [v11 hiddenOverridden])
                                                                                                                                   {
-                                                                                                                                    v96 = [v9 hidden];
-                                                                                                                                    if (v96 == [v11 hidden])
+                                                                                                                                    hidden = [v9 hidden];
+                                                                                                                                    if (hidden == [v11 hidden])
                                                                                                                                     {
-                                                                                                                                      v97 = [v9 spacingOverridden];
-                                                                                                                                      if (v97 == [v11 spacingOverridden])
+                                                                                                                                      spacingOverridden = [v9 spacingOverridden];
+                                                                                                                                      if (spacingOverridden == [v11 spacingOverridden])
                                                                                                                                       {
-                                                                                                                                        v98 = [v9 spacing];
-                                                                                                                                        if (v98 == [v11 spacing])
+                                                                                                                                        spacing = [v9 spacing];
+                                                                                                                                        if (spacing == [v11 spacing])
                                                                                                                                         {
-                                                                                                                                          v99 = [v9 positionOverridden];
-                                                                                                                                          if (v99 == [v11 positionOverridden])
+                                                                                                                                          positionOverridden = [v9 positionOverridden];
+                                                                                                                                          if (positionOverridden == [v11 positionOverridden])
                                                                                                                                           {
-                                                                                                                                            v100 = [v9 position];
-                                                                                                                                            if (v100 == [v11 position])
+                                                                                                                                            position = [v9 position];
+                                                                                                                                            if (position == [v11 position])
                                                                                                                                             {
-                                                                                                                                              v101 = [v9 kerningOverridden];
-                                                                                                                                              if (v101 == [v11 kerningOverridden])
+                                                                                                                                              kerningOverridden = [v9 kerningOverridden];
+                                                                                                                                              if (kerningOverridden == [v11 kerningOverridden])
                                                                                                                                               {
-                                                                                                                                                v102 = [v9 kerning];
-                                                                                                                                                if (v102 == [v11 kerning])
+                                                                                                                                                kerning = [v9 kerning];
+                                                                                                                                                if (kerning == [v11 kerning])
                                                                                                                                                 {
-                                                                                                                                                  v103 = [v9 textScaleOverridden];
-                                                                                                                                                  if (v103 == [v11 textScaleOverridden])
+                                                                                                                                                  textScaleOverridden = [v9 textScaleOverridden];
+                                                                                                                                                  if (textScaleOverridden == [v11 textScaleOverridden])
                                                                                                                                                   {
-                                                                                                                                                    v104 = [v9 textScale];
-                                                                                                                                                    if (v104 == [v11 textScale])
+                                                                                                                                                    textScale = [v9 textScale];
+                                                                                                                                                    if (textScale == [v11 textScale])
                                                                                                                                                     {
-                                                                                                                                                      v105 = [v9 fontSizeOverridden];
-                                                                                                                                                      if (v105 == [v11 fontSizeOverridden])
+                                                                                                                                                      fontSizeOverridden = [v9 fontSizeOverridden];
+                                                                                                                                                      if (fontSizeOverridden == [v11 fontSizeOverridden])
                                                                                                                                                       {
-                                                                                                                                                        v106 = [v9 fontSize];
-                                                                                                                                                        if (v106 == [v11 fontSize])
+                                                                                                                                                        fontSize = [v9 fontSize];
+                                                                                                                                                        if (fontSize == [v11 fontSize])
                                                                                                                                                         {
-                                                                                                                                                          v107 = [v9 verticalAlignOverridden];
-                                                                                                                                                          if (v107 == [v11 verticalAlignOverridden])
+                                                                                                                                                          verticalAlignOverridden = [v9 verticalAlignOverridden];
+                                                                                                                                                          if (verticalAlignOverridden == [v11 verticalAlignOverridden])
                                                                                                                                                           {
-                                                                                                                                                            v108 = [v9 verticalAlign];
-                                                                                                                                                            if (v108 == [v11 verticalAlign])
+                                                                                                                                                            verticalAlign = [v9 verticalAlign];
+                                                                                                                                                            if (verticalAlign == [v11 verticalAlign])
                                                                                                                                                             {
-                                                                                                                                                              v109 = [v9 emphasisMarkOverridden];
-                                                                                                                                                              if (v109 == [v11 emphasisMarkOverridden])
+                                                                                                                                                              emphasisMarkOverridden = [v9 emphasisMarkOverridden];
+                                                                                                                                                              if (emphasisMarkOverridden == [v11 emphasisMarkOverridden])
                                                                                                                                                               {
-                                                                                                                                                                v110 = [v9 emphasisMark];
-                                                                                                                                                                if (v110 == [v11 emphasisMark])
+                                                                                                                                                                emphasisMark = [v9 emphasisMark];
+                                                                                                                                                                if (emphasisMark == [v11 emphasisMark])
                                                                                                                                                                 {
-                                                                                                                                                                  v111 = [v9 colorAutoOverridden];
-                                                                                                                                                                  if (v111 == [v11 colorAutoOverridden])
+                                                                                                                                                                  colorAutoOverridden = [v9 colorAutoOverridden];
+                                                                                                                                                                  if (colorAutoOverridden == [v11 colorAutoOverridden])
                                                                                                                                                                   {
-                                                                                                                                                                    v112 = [v9 colorAuto];
-                                                                                                                                                                    if (v112 == [v11 colorAuto])
+                                                                                                                                                                    colorAuto = [v9 colorAuto];
+                                                                                                                                                                    if (colorAuto == [v11 colorAuto])
                                                                                                                                                                     {
-                                                                                                                                                                      v113 = [v9 languageForDefaultTextOverridden];
-                                                                                                                                                                      if (v113 == [v11 languageForDefaultTextOverridden])
+                                                                                                                                                                      languageForDefaultTextOverridden = [v9 languageForDefaultTextOverridden];
+                                                                                                                                                                      if (languageForDefaultTextOverridden == [v11 languageForDefaultTextOverridden])
                                                                                                                                                                       {
-                                                                                                                                                                        v114 = [v9 languageForDefaultText];
-                                                                                                                                                                        if (v114 == [v11 languageForDefaultText])
+                                                                                                                                                                        languageForDefaultText = [v9 languageForDefaultText];
+                                                                                                                                                                        if (languageForDefaultText == [v11 languageForDefaultText])
                                                                                                                                                                         {
-                                                                                                                                                                          v115 = [v9 specialCharacterOverridden];
-                                                                                                                                                                          if (v115 == [v11 specialCharacterOverridden])
+                                                                                                                                                                          specialCharacterOverridden = [v9 specialCharacterOverridden];
+                                                                                                                                                                          if (specialCharacterOverridden == [v11 specialCharacterOverridden])
                                                                                                                                                                           {
-                                                                                                                                                                            v116 = [v9 specialCharacter];
-                                                                                                                                                                            if (v116 == [v11 specialCharacter])
+                                                                                                                                                                            specialCharacter = [v9 specialCharacter];
+                                                                                                                                                                            if (specialCharacter == [v11 specialCharacter])
                                                                                                                                                                             {
-                                                                                                                                                                              v117 = [v9 listCharacterPictureBulletOverridden];
-                                                                                                                                                                              if (v117 == [v11 listCharacterPictureBulletOverridden])
+                                                                                                                                                                              listCharacterPictureBulletOverridden = [v9 listCharacterPictureBulletOverridden];
+                                                                                                                                                                              if (listCharacterPictureBulletOverridden == [v11 listCharacterPictureBulletOverridden])
                                                                                                                                                                               {
-                                                                                                                                                                                v118 = [v9 listCharacterPictureBullet];
-                                                                                                                                                                                if (v118 == [v11 listCharacterPictureBullet])
+                                                                                                                                                                                listCharacterPictureBullet = [v9 listCharacterPictureBullet];
+                                                                                                                                                                                if (listCharacterPictureBullet == [v11 listCharacterPictureBullet])
                                                                                                                                                                                 {
-                                                                                                                                                                                  v119 = [v9 charPositionOfPictureBulletInBookmarkOverridden];
-                                                                                                                                                                                  if (v119 == [v11 charPositionOfPictureBulletInBookmarkOverridden])
+                                                                                                                                                                                  charPositionOfPictureBulletInBookmarkOverridden = [v9 charPositionOfPictureBulletInBookmarkOverridden];
+                                                                                                                                                                                  if (charPositionOfPictureBulletInBookmarkOverridden == [v11 charPositionOfPictureBulletInBookmarkOverridden])
                                                                                                                                                                                   {
-                                                                                                                                                                                    v120 = [v9 charPositionOfPictureBulletInBookmark];
-                                                                                                                                                                                    if (v120 == [v11 charPositionOfPictureBulletInBookmark])
+                                                                                                                                                                                    charPositionOfPictureBulletInBookmark = [v9 charPositionOfPictureBulletInBookmark];
+                                                                                                                                                                                    if (charPositionOfPictureBulletInBookmark == [v11 charPositionOfPictureBulletInBookmark])
                                                                                                                                                                                     {
-                                                                                                                                                                                      v121 = [v9 languageForFarEastOverridden];
-                                                                                                                                                                                      if (v121 == [v11 languageForFarEastOverridden])
+                                                                                                                                                                                      languageForFarEastOverridden = [v9 languageForFarEastOverridden];
+                                                                                                                                                                                      if (languageForFarEastOverridden == [v11 languageForFarEastOverridden])
                                                                                                                                                                                       {
-                                                                                                                                                                                        v122 = [v9 languageForFarEast];
-                                                                                                                                                                                        if (v122 == [v11 languageForFarEast])
+                                                                                                                                                                                        languageForFarEast = [v9 languageForFarEast];
+                                                                                                                                                                                        if (languageForFarEast == [v11 languageForFarEast])
                                                                                                                                                                                         {
-                                                                                                                                                                                          v123 = [v9 languageForBiTextOverridden];
-                                                                                                                                                                                          if (v123 == [v11 languageForBiTextOverridden])
+                                                                                                                                                                                          languageForBiTextOverridden = [v9 languageForBiTextOverridden];
+                                                                                                                                                                                          if (languageForBiTextOverridden == [v11 languageForBiTextOverridden])
                                                                                                                                                                                           {
-                                                                                                                                                                                            v124 = [v9 languageForBiText];
-                                                                                                                                                                                            v8 = v124 != [v11 languageForBiText];
+                                                                                                                                                                                            languageForBiText = [v9 languageForBiText];
+                                                                                                                                                                                            v8 = languageForBiText != [v11 languageForBiText];
 LABEL_119:
 
                                                                                                                                                                                             goto LABEL_120;
@@ -11642,13 +11642,13 @@ LABEL_120:
   return v8;
 }
 
-- (int)reverseBooleanProperty:(int)a3
+- (int)reverseBooleanProperty:(int)property
 {
-  if (a3 > 127)
+  if (property > 127)
   {
-    if (a3 != 128)
+    if (property != 128)
     {
-      if (a3 == 129)
+      if (property == 129)
       {
         return 128;
       }
@@ -11661,7 +11661,7 @@ LABEL_120:
 
   else
   {
-    return !a3;
+    return !property;
   }
 }
 

@@ -1,34 +1,34 @@
 @interface PXAssetEditOperationManager
 + (PXAssetEditOperationManager)sharedManager;
-- (Class)_performerClassForEditOperationWithType:(id)a3 onAsset:(id)a4;
+- (Class)_performerClassForEditOperationWithType:(id)type onAsset:(id)asset;
 - (PXAssetEditOperationManager)init;
-- (id)_performerForEditOperationWithType:(id)a3 onAsset:(id)a4;
-- (id)performEditOperationWithType:(id)a3 asset:(id)a4 undoManager:(id)a5 delay:(double)a6 completionHandler:(id)a7;
-- (int64_t)editOperationStatusForAsset:(id)a3;
-- (void)_addPendingPerformer:(id)a3;
-- (void)_enumerateObserversUsingBlock:(id)a3;
-- (void)_enumeratePredicateRecordsWithBlock:(id)a3;
-- (void)_handleCompletionOfPerformer:(id)a3 withSuccess:(BOOL)a4 error:(id)a5 externalCompletionHandler:(id)a6;
-- (void)_removePendingPerformer:(id)a3;
-- (void)_signalPendingPerformersChangeForAsset:(id)a3;
-- (void)_signalStatusChangeForAsset:(id)a3;
-- (void)_updateOperationStatusForAsset:(id)a3;
-- (void)enumerateEditOperationsPerformedOnAsset:(id)a3 usingBlock:(id)a4;
-- (void)registerObserver:(id)a3 context:(void *)a4;
-- (void)registerPerformerClass:(Class)a3 withPredicate:(id)a4;
-- (void)unregisterObserver:(id)a3 context:(void *)a4;
+- (id)_performerForEditOperationWithType:(id)type onAsset:(id)asset;
+- (id)performEditOperationWithType:(id)type asset:(id)asset undoManager:(id)manager delay:(double)delay completionHandler:(id)handler;
+- (int64_t)editOperationStatusForAsset:(id)asset;
+- (void)_addPendingPerformer:(id)performer;
+- (void)_enumerateObserversUsingBlock:(id)block;
+- (void)_enumeratePredicateRecordsWithBlock:(id)block;
+- (void)_handleCompletionOfPerformer:(id)performer withSuccess:(BOOL)success error:(id)error externalCompletionHandler:(id)handler;
+- (void)_removePendingPerformer:(id)performer;
+- (void)_signalPendingPerformersChangeForAsset:(id)asset;
+- (void)_signalStatusChangeForAsset:(id)asset;
+- (void)_updateOperationStatusForAsset:(id)asset;
+- (void)enumerateEditOperationsPerformedOnAsset:(id)asset usingBlock:(id)block;
+- (void)registerObserver:(id)observer context:(void *)context;
+- (void)registerPerformerClass:(Class)class withPredicate:(id)predicate;
+- (void)unregisterObserver:(id)observer context:(void *)context;
 @end
 
 @implementation PXAssetEditOperationManager
 
-- (void)_handleCompletionOfPerformer:(id)a3 withSuccess:(BOOL)a4 error:(id)a5 externalCompletionHandler:(id)a6
+- (void)_handleCompletionOfPerformer:(id)performer withSuccess:(BOOL)success error:(id)error externalCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  performerCopy = performer;
+  errorCopy = error;
+  handlerCopy = handler;
+  v11 = errorCopy;
+  v12 = handlerCopy;
+  v13 = performerCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -55,16 +55,16 @@ uint64_t __104__PXAssetEditOperationManager__handleCompletionOfPerformer_withSuc
   return result;
 }
 
-- (void)_signalPendingPerformersChangeForAsset:(id)a3
+- (void)_signalPendingPerformersChangeForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PXAssetEditOperationManager__signalPendingPerformersChangeForAsset___block_invoke;
   v6[3] = &unk_1E7748E30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = assetCopy;
+  v5 = assetCopy;
   [(PXAssetEditOperationManager *)self _enumerateObserversUsingBlock:v6];
 }
 
@@ -77,16 +77,16 @@ void __70__PXAssetEditOperationManager__signalPendingPerformersChangeForAsset___
   }
 }
 
-- (void)_signalStatusChangeForAsset:(id)a3
+- (void)_signalStatusChangeForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXAssetEditOperationManager__signalStatusChangeForAsset___block_invoke;
   v6[3] = &unk_1E7748E30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = assetCopy;
+  v5 = assetCopy;
   [(PXAssetEditOperationManager *)self _enumerateObserversUsingBlock:v6];
 }
 
@@ -99,9 +99,9 @@ void __59__PXAssetEditOperationManager__signalStatusChangeForAsset___block_invok
   }
 }
 
-- (void)_updateOperationStatusForAsset:(id)a3
+- (void)_updateOperationStatusForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -111,18 +111,18 @@ void __59__PXAssetEditOperationManager__signalStatusChangeForAsset___block_invok
   v10[2] = __62__PXAssetEditOperationManager__updateOperationStatusForAsset___block_invoke;
   v10[3] = &unk_1E7748E08;
   v10[4] = &v11;
-  [(PXAssetEditOperationManager *)self enumerateEditOperationsPerformedOnAsset:v4 usingBlock:v10];
-  v5 = [(PXAssetEditOperationManager *)self operationStatusByAsset];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  [(PXAssetEditOperationManager *)self enumerateEditOperationsPerformedOnAsset:assetCopy usingBlock:v10];
+  operationStatusByAsset = [(PXAssetEditOperationManager *)self operationStatusByAsset];
+  v6 = [operationStatusByAsset objectForKeyedSubscript:assetCopy];
 
   v7 = v12[3];
   if (v7 != [v6 integerValue])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v12[3]];
-    v9 = [(PXAssetEditOperationManager *)self operationStatusByAsset];
-    [v9 setObject:v8 forKeyedSubscript:v4];
+    operationStatusByAsset2 = [(PXAssetEditOperationManager *)self operationStatusByAsset];
+    [operationStatusByAsset2 setObject:v8 forKeyedSubscript:assetCopy];
 
-    [(PXAssetEditOperationManager *)self _signalStatusChangeForAsset:v4];
+    [(PXAssetEditOperationManager *)self _signalStatusChangeForAsset:assetCopy];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -156,53 +156,53 @@ void __62__PXAssetEditOperationManager__updateOperationStatusForAsset___block_in
   *(v7 + 24) = v6;
 }
 
-- (void)_removePendingPerformer:(id)a3
+- (void)_removePendingPerformer:(id)performer
 {
-  v4 = a3;
-  v8 = [v4 asset];
-  v5 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
-  v6 = [v5 objectForKeyedSubscript:v8];
+  performerCopy = performer;
+  asset = [performerCopy asset];
+  pendingPerformersByAsset = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
+  v6 = [pendingPerformersByAsset objectForKeyedSubscript:asset];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:performerCopy];
   if (![v6 count])
   {
-    v7 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
-    [v7 removeObjectForKey:v8];
+    pendingPerformersByAsset2 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
+    [pendingPerformersByAsset2 removeObjectForKey:asset];
   }
 
-  [(PXAssetEditOperationManager *)self _signalPendingPerformersChangeForAsset:v8];
+  [(PXAssetEditOperationManager *)self _signalPendingPerformersChangeForAsset:asset];
 }
 
-- (void)_addPendingPerformer:(id)a3
+- (void)_addPendingPerformer:(id)performer
 {
-  v8 = a3;
-  v4 = [v8 asset];
-  v5 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  performerCopy = performer;
+  asset = [performerCopy asset];
+  pendingPerformersByAsset = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
+  v6 = [pendingPerformersByAsset objectForKeyedSubscript:asset];
 
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    pendingPerformersByAsset2 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
+    [pendingPerformersByAsset2 setObject:v6 forKeyedSubscript:asset];
   }
 
-  [v6 addObject:v8];
-  [(PXAssetEditOperationManager *)self _signalPendingPerformersChangeForAsset:v4];
+  [v6 addObject:performerCopy];
+  [(PXAssetEditOperationManager *)self _signalPendingPerformersChangeForAsset:asset];
 }
 
-- (void)_enumerateObserversUsingBlock:(id)a3
+- (void)_enumerateObserversUsingBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXAssetEditOperationManager *)self observersWithContexts];
+  blockCopy = block;
+  observersWithContexts = [(PXAssetEditOperationManager *)self observersWithContexts];
   v19 = 0;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  keyEnumerator = [observersWithContexts keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -213,17 +213,17 @@ LABEL_3:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v11 = *(*(&v15 + 1) + 8 * v10);
-      v12 = [v5 objectForKey:v11];
+      v12 = [observersWithContexts objectForKey:v11];
       if ([v12 count])
       {
         v13 = 0;
         do
         {
-          v4[2](v4, v11, [v12 pointerAtIndex:v13], &v19);
+          blockCopy[2](blockCopy, v11, [v12 pointerAtIndex:v13], &v19);
           if (v19 == 1)
           {
             break;
@@ -244,7 +244,7 @@ LABEL_3:
 
       if (++v10 == v8)
       {
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -256,23 +256,23 @@ LABEL_3:
   }
 }
 
-- (void)unregisterObserver:(id)a3 context:(void *)a4
+- (void)unregisterObserver:(id)observer context:(void *)context
 {
-  v13 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXAssetEditOperationManager.m" lineNumber:246 description:{@"%s must be called on the main thread", "-[PXAssetEditOperationManager unregisterObserver:context:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetEditOperationManager.m" lineNumber:246 description:{@"%s must be called on the main thread", "-[PXAssetEditOperationManager unregisterObserver:context:]"}];
   }
 
-  v7 = [(PXAssetEditOperationManager *)self observersWithContexts];
-  v8 = [v7 objectForKey:v13];
+  observersWithContexts = [(PXAssetEditOperationManager *)self observersWithContexts];
+  v8 = [observersWithContexts objectForKey:observerCopy];
   v9 = [v8 count];
   if (v9)
   {
     v10 = v9;
     v11 = 0;
-    while ([v8 pointerAtIndex:v11] != a4)
+    while ([v8 pointerAtIndex:v11] != context)
     {
       if (v10 == ++v11)
       {
@@ -286,21 +286,21 @@ LABEL_3:
 LABEL_9:
   if (v8 && ![v8 count])
   {
-    [v7 removeObjectForKey:v13];
+    [observersWithContexts removeObjectForKey:observerCopy];
   }
 }
 
-- (void)registerObserver:(id)a3 context:(void *)a4
+- (void)registerObserver:(id)observer context:(void *)context
 {
-  v11 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXAssetEditOperationManager.m" lineNumber:235 description:{@"%s must be called on the main thread", "-[PXAssetEditOperationManager registerObserver:context:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetEditOperationManager.m" lineNumber:235 description:{@"%s must be called on the main thread", "-[PXAssetEditOperationManager registerObserver:context:]"}];
   }
 
-  v7 = [(PXAssetEditOperationManager *)self observersWithContexts];
-  v8 = [v7 objectForKey:v11];
+  observersWithContexts = [(PXAssetEditOperationManager *)self observersWithContexts];
+  v8 = [observersWithContexts objectForKey:observerCopy];
   if (v8)
   {
     v9 = v8;
@@ -309,22 +309,22 @@ LABEL_9:
   else
   {
     v9 = [objc_alloc(MEMORY[0x1E696AE08]) initWithOptions:256];
-    [v7 setObject:v9 forKey:v11];
+    [observersWithContexts setObject:v9 forKey:observerCopy];
   }
 
-  [v9 addPointer:a4];
+  [v9 addPointer:context];
 }
 
-- (void)enumerateEditOperationsPerformedOnAsset:(id)a3 usingBlock:(id)a4
+- (void)enumerateEditOperationsPerformedOnAsset:(id)asset usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  blockCopy = block;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXAssetEditOperationManager.m" lineNumber:223 description:{@"%s must be called on the main thread", "-[PXAssetEditOperationManager enumerateEditOperationsPerformedOnAsset:usingBlock:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetEditOperationManager.m" lineNumber:223 description:{@"%s must be called on the main thread", "-[PXAssetEditOperationManager enumerateEditOperationsPerformedOnAsset:usingBlock:]"}];
 
-    if (!v7)
+    if (!assetCopy)
     {
       goto LABEL_4;
     }
@@ -332,17 +332,17 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  if (v7)
+  if (assetCopy)
   {
 LABEL_3:
-    v9 = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    pendingPerformersByAsset = [(PXAssetEditOperationManager *)self pendingPerformersByAsset];
+    v10 = [pendingPerformersByAsset objectForKeyedSubscript:assetCopy];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__PXAssetEditOperationManager_enumerateEditOperationsPerformedOnAsset_usingBlock___block_invoke;
     v12[3] = &unk_1E7748DE0;
-    v13 = v8;
+    v13 = blockCopy;
     [v10 enumerateObjectsUsingBlock:v12];
   }
 
@@ -359,10 +359,10 @@ void __82__PXAssetEditOperationManager_enumerateEditOperationsPerformedOnAsset_u
   (*(v5 + 16))(v5, v8, v7, a4);
 }
 
-- (Class)_performerClassForEditOperationWithType:(id)a3 onAsset:(id)a4
+- (Class)_performerClassForEditOperationWithType:(id)type onAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  assetCopy = asset;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -371,9 +371,9 @@ void __82__PXAssetEditOperationManager_enumerateEditOperationsPerformedOnAsset_u
   v12[1] = 3221225472;
   v12[2] = __79__PXAssetEditOperationManager__performerClassForEditOperationWithType_onAsset___block_invoke;
   v12[3] = &unk_1E7748DB8;
-  v8 = v7;
+  v8 = assetCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = typeCopy;
   v14 = v9;
   v15 = &v16;
   [(PXAssetEditOperationManager *)self _enumeratePredicateRecordsWithBlock:v12];
@@ -397,49 +397,49 @@ void __79__PXAssetEditOperationManager__performerClassForEditOperationWithType_o
   }
 }
 
-- (id)_performerForEditOperationWithType:(id)a3 onAsset:(id)a4
+- (id)_performerForEditOperationWithType:(id)type onAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_alloc(-[PXAssetEditOperationManager _performerClassForEditOperationWithType:onAsset:](self _performerClassForEditOperationWithType:v7 onAsset:{v6)), "initWithEditOperationType:asset:", v7, v6}];
+  assetCopy = asset;
+  typeCopy = type;
+  v8 = [objc_alloc(-[PXAssetEditOperationManager _performerClassForEditOperationWithType:onAsset:](self _performerClassForEditOperationWithType:typeCopy onAsset:{assetCopy)), "initWithEditOperationType:asset:", typeCopy, assetCopy}];
 
   return v8;
 }
 
-- (int64_t)editOperationStatusForAsset:(id)a3
+- (int64_t)editOperationStatusForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PXAssetEditOperationManager *)self operationStatusByAsset];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  assetCopy = asset;
+  operationStatusByAsset = [(PXAssetEditOperationManager *)self operationStatusByAsset];
+  v6 = [operationStatusByAsset objectForKeyedSubscript:assetCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (void)registerPerformerClass:(Class)a3 withPredicate:(id)a4
+- (void)registerPerformerClass:(Class)class withPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = [[_PXAssetEditOperationPredicateRecord alloc] initWithPerformerClass:a3 predicate:v6];
+  predicateCopy = predicate;
+  v7 = [[_PXAssetEditOperationPredicateRecord alloc] initWithPerformerClass:class predicate:predicateCopy];
 
   os_unfair_lock_lock(&self->_predicateRecordsLock);
   [(NSMutableArray *)self->_predicateRecords addObject:v7];
   os_unfair_lock_unlock(&self->_predicateRecordsLock);
 }
 
-- (id)performEditOperationWithType:(id)a3 asset:(id)a4 undoManager:(id)a5 delay:(double)a6 completionHandler:(id)a7
+- (id)performEditOperationWithType:(id)type asset:(id)asset undoManager:(id)manager delay:(double)delay completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([(PXAssetEditOperationManager *)self canPerformEditOperationWithType:v12 onAsset:v13]&& ([(PXAssetEditOperationManager *)self _performerForEditOperationWithType:v12 onAsset:v13], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  typeCopy = type;
+  assetCopy = asset;
+  managerCopy = manager;
+  handlerCopy = handler;
+  if ([(PXAssetEditOperationManager *)self canPerformEditOperationWithType:typeCopy onAsset:assetCopy]&& ([(PXAssetEditOperationManager *)self _performerForEditOperationWithType:typeCopy onAsset:assetCopy], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     [(PXAssetEditOperationManager *)self _addPendingPerformer:v16];
     objc_initWeak(location, self);
     objc_initWeak(&from, v16);
-    v17 = v12;
-    v18 = v13;
+    v17 = typeCopy;
+    v18 = assetCopy;
     [v17 hash];
     kdebug_trace();
 
@@ -450,21 +450,21 @@ void __79__PXAssetEditOperationManager__performerClassForEditOperationWithType_o
     aBlock[3] = &unk_1E7748D90;
     v19 = v16;
     v33 = v19;
-    v34 = v14;
+    v34 = managerCopy;
     v37[1] = v16;
     objc_copyWeak(&v36, location);
     objc_copyWeak(v37, &from);
-    v35 = v15;
+    v35 = handlerCopy;
     v20 = _Block_copy(aBlock);
     v21 = v20;
-    if (a6 <= 0.0)
+    if (delay <= 0.0)
     {
       (*(v20 + 2))(v20);
     }
 
     else
     {
-      v22 = dispatch_time(0, (a6 * 1000000000.0));
+      v22 = dispatch_time(0, (delay * 1000000000.0));
       v27 = MEMORY[0x1E69E9820];
       v28 = 3221225472;
       v29 = __102__PXAssetEditOperationManager_performEditOperationWithType_asset_undoManager_delay_completionHandler___block_invoke_3;
@@ -486,21 +486,21 @@ void __79__PXAssetEditOperationManager__performerClassForEditOperationWithType_o
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *location = 138412546;
-      *&location[4] = v12;
+      *&location[4] = typeCopy;
       v40 = 2112;
-      v41 = v13;
+      v41 = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v23, OS_LOG_TYPE_ERROR, "no performer found for edit operation with type %@ on asset %@", location, 0x16u);
     }
 
     v24 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.photosuicore.PXAssetEditOperationManager" code:1 userInfo:0];
-    (*(v15 + 2))(v15, 0, v24);
+    (*(handlerCopy + 2))(handlerCopy, 0, v24);
 
     v19 = 0;
   }
 
-  v25 = [v19 progress];
+  progress = [v19 progress];
 
-  return v25;
+  return progress;
 }
 
 void __102__PXAssetEditOperationManager_performEditOperationWithType_asset_undoManager_delay_completionHandler___block_invoke(uint64_t a1)
@@ -530,10 +530,10 @@ void __102__PXAssetEditOperationManager_performEditOperationWithType_asset_undoM
   [WeakRetained _handleCompletionOfPerformer:v6 withSuccess:a2 error:v5 externalCompletionHandler:*(a1 + 32)];
 }
 
-- (void)_enumeratePredicateRecordsWithBlock:(id)a3
+- (void)_enumeratePredicateRecordsWithBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_predicateRecordsLock);
   v5 = [(NSMutableArray *)self->_predicateRecords copy];
   os_unfair_lock_unlock(&self->_predicateRecordsLock);
@@ -557,7 +557,7 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v10), &v15);
+      blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10), &v15);
       if (v15)
       {
         break;
@@ -594,9 +594,9 @@ LABEL_3:
     pendingPerformersByAsset = v3->_pendingPerformersByAsset;
     v3->_pendingPerformersByAsset = v6;
 
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     observersWithContexts = v3->_observersWithContexts;
-    v3->_observersWithContexts = v8;
+    v3->_observersWithContexts = weakToStrongObjectsMapTable;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     predicateRecords = v3->_predicateRecords;

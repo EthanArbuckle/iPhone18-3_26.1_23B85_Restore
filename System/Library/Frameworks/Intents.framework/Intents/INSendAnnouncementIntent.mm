@@ -1,25 +1,25 @@
 @interface INSendAnnouncementIntent
 - (INAnnouncement)announcement;
-- (INSendAnnouncementIntent)initWithAnnouncement:(id)a3 recipients:(id)a4 isReply:(id)a5 sharedUserID:(id)a6;
+- (INSendAnnouncementIntent)initWithAnnouncement:(id)announcement recipients:(id)recipients isReply:(id)reply sharedUserID:(id)d;
 - (NSArray)recipients;
 - (NSNumber)isReply;
 - (NSString)sharedUserID;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAnnouncement:(id)a3;
-- (void)setIsReply:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setSharedUserID:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAnnouncement:(id)announcement;
+- (void)setIsReply:(id)reply;
+- (void)setRecipients:(id)recipients;
+- (void)setSharedUserID:(id)d;
 @end
 
 @implementation INSendAnnouncementIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSendAnnouncementIntent *)self _typedBackingStore:a3];
+  v6 = [(INSendAnnouncementIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -28,42 +28,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"announcement";
-  v3 = [(INSendAnnouncementIntent *)self announcement];
-  v4 = v3;
-  if (!v3)
+  announcement = [(INSendAnnouncementIntent *)self announcement];
+  null = announcement;
+  if (!announcement)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"recipients";
-  v5 = [(INSendAnnouncementIntent *)self recipients];
-  v6 = v5;
-  if (!v5)
+  recipients = [(INSendAnnouncementIntent *)self recipients];
+  null2 = recipients;
+  if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"isReply";
-  v7 = [(INSendAnnouncementIntent *)self isReply];
-  v8 = v7;
-  if (!v7)
+  isReply = [(INSendAnnouncementIntent *)self isReply];
+  null3 = isReply;
+  if (!isReply)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!isReply)
   {
   }
 
-  if (!v5)
+  if (!recipients)
   {
   }
 
-  if (!v3)
+  if (!announcement)
   {
   }
 
@@ -72,45 +72,45 @@
   return v9;
 }
 
-- (void)setSharedUserID:(id)a3
+- (void)setSharedUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  [v5 setSharedUserID:v4];
+  dCopy = d;
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  [_typedBackingStore setSharedUserID:dCopy];
 }
 
 - (NSString)sharedUserID
 {
-  v2 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  v3 = [v2 sharedUserID];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  sharedUserID = [_typedBackingStore sharedUserID];
+  v4 = [sharedUserID copy];
 
   return v4;
 }
 
-- (void)setIsReply:(id)a3
+- (void)setIsReply:(id)reply
 {
-  v5 = a3;
-  v4 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  if (v5)
+  replyCopy = reply;
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  if (replyCopy)
   {
-    [v4 setIsReply:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setIsReply:{objc_msgSend(replyCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasIsReply:0];
+    [_typedBackingStore setHasIsReply:0];
   }
 }
 
 - (NSNumber)isReply
 {
-  v3 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  if ([v3 hasIsReply])
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasIsReply])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "isReply")}];
+    _typedBackingStore2 = [(INSendAnnouncementIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "isReply")}];
   }
 
   else
@@ -121,83 +121,83 @@
   return v6;
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = a3;
-  v6 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToHomeFilters(v4);
+  recipientsCopy = recipients;
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToHomeFilters(recipientsCopy);
 
-  [v6 setRecipients:v5];
+  [_typedBackingStore setRecipients:v5];
 }
 
 - (NSArray)recipients
 {
-  v2 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  v3 = [v2 recipients];
-  v4 = INIntentSlotValueTransformFromHomeFilters(v3);
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  recipients = [_typedBackingStore recipients];
+  v4 = INIntentSlotValueTransformFromHomeFilters(recipients);
 
   return v4;
 }
 
-- (void)setAnnouncement:(id)a3
+- (void)setAnnouncement:(id)announcement
 {
-  v4 = a3;
-  v6 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToAnnouncement(v4);
+  announcementCopy = announcement;
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToAnnouncement(announcementCopy);
 
-  [v6 setAnnouncement:v5];
+  [_typedBackingStore setAnnouncement:v5];
 }
 
 - (INAnnouncement)announcement
 {
-  v2 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  v3 = [v2 announcement];
-  v4 = INIntentSlotValueTransformFromAnnouncement(v3);
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  announcement = [_typedBackingStore announcement];
+  v4 = INIntentSlotValueTransformFromAnnouncement(announcement);
 
   return v4;
 }
 
-- (INSendAnnouncementIntent)initWithAnnouncement:(id)a3 recipients:(id)a4 isReply:(id)a5 sharedUserID:(id)a6
+- (INSendAnnouncementIntent)initWithAnnouncement:(id)announcement recipients:(id)recipients isReply:(id)reply sharedUserID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  announcementCopy = announcement;
+  recipientsCopy = recipients;
+  replyCopy = reply;
   v15.receiver = self;
   v15.super_class = INSendAnnouncementIntent;
   v12 = [(INIntent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(INSendAnnouncementIntent *)v12 setAnnouncement:v9];
-    [(INSendAnnouncementIntent *)v13 setRecipients:v10];
-    [(INSendAnnouncementIntent *)v13 setIsReply:v11];
+    [(INSendAnnouncementIntent *)v12 setAnnouncement:announcementCopy];
+    [(INSendAnnouncementIntent *)v13 setRecipients:recipientsCopy];
+    [(INSendAnnouncementIntent *)v13 setIsReply:replyCopy];
   }
 
   return v13;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSendAnnouncementIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSendAnnouncementIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

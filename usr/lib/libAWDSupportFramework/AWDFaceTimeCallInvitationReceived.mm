@@ -1,15 +1,15 @@
 @interface AWDFaceTimeCallInvitationReceived
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsVideo:(BOOL)a3;
-- (void)setHasOnLockScreen:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsVideo:(BOOL)video;
+- (void)setHasOnLockScreen:(BOOL)screen;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFaceTimeCallInvitationReceived
@@ -22,9 +22,9 @@
   [(AWDFaceTimeCallInvitationReceived *)&v3 dealloc];
 }
 
-- (void)setHasIsVideo:(BOOL)a3
+- (void)setHasIsVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOnLockScreen:(BOOL)a3
+- (void)setHasOnLockScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 4;
   }
@@ -61,12 +61,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -104,7 +104,7 @@ LABEL_6:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -150,18 +150,18 @@ LABEL_9:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -180,23 +180,23 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 6) = self->_isVideo;
-  *(a3 + 32) |= 2u;
+  *(to + 6) = self->_isVideo;
+  *(to + 32) |= 2u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_6:
-  *(a3 + 7) = self->_onLockScreen;
-  *(a3 + 32) |= 4u;
+  *(to + 7) = self->_onLockScreen;
+  *(to + 32) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 16) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 16) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -235,23 +235,23 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 2)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 2)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_18;
         }
       }
 
-      else if (*(a3 + 32))
+      else if (*(equal + 32))
       {
 LABEL_18:
         LOBYTE(v5) = 0;
@@ -260,21 +260,21 @@ LABEL_18:
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 32) & 2) == 0 || self->_isVideo != *(a3 + 6))
+        if ((*(equal + 32) & 2) == 0 || self->_isVideo != *(equal + 6))
         {
           goto LABEL_18;
         }
       }
 
-      else if ((*(a3 + 32) & 2) != 0)
+      else if ((*(equal + 32) & 2) != 0)
       {
         goto LABEL_18;
       }
 
-      LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+      LOBYTE(v5) = (*(equal + 32) & 4) == 0;
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 32) & 4) == 0 || self->_onLockScreen != *(a3 + 7))
+        if ((*(equal + 32) & 4) == 0 || self->_onLockScreen != *(equal + 7))
         {
           goto LABEL_18;
         }
@@ -328,19 +328,19 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDFaceTimeCallInvitationReceived *)self setGuid:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -353,20 +353,20 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 32) & 2) == 0)
+  else if ((*(from + 32) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_isVideo = *(a3 + 6);
+  self->_isVideo = *(from + 6);
   *&self->_has |= 2u;
-  if ((*(a3 + 32) & 4) == 0)
+  if ((*(from + 32) & 4) == 0)
   {
     return;
   }
 
 LABEL_6:
-  self->_onLockScreen = *(a3 + 7);
+  self->_onLockScreen = *(from + 7);
   *&self->_has |= 4u;
 }
 

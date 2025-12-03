@@ -1,29 +1,29 @@
 @interface NSNumber
-- (id)tui_identifierByAppendingIndex:(unint64_t)a3;
-- (id)tui_identifierByAppendingString:(id)a3;
-- (id)tui_identifierByPrependingUUID:(id)a3;
-- (id)tui_identifierDescribeForDebuggingWithPackage:(id)a3;
+- (id)tui_identifierByAppendingIndex:(unint64_t)index;
+- (id)tui_identifierByAppendingString:(id)string;
+- (id)tui_identifierByPrependingUUID:(id)d;
+- (id)tui_identifierDescribeForDebuggingWithPackage:(id)package;
 @end
 
 @implementation NSNumber
 
-- (id)tui_identifierByAppendingIndex:(unint64_t)a3
+- (id)tui_identifierByAppendingIndex:(unint64_t)index
 {
   v6[0] = [(NSNumber *)self unsignedIntegerValue];
-  v6[1] = a3;
+  v6[1] = index;
   v4 = [NSIndexPath indexPathWithIndexes:v6 length:2];
 
   return v4;
 }
 
-- (id)tui_identifierByAppendingString:(id)a3
+- (id)tui_identifierByAppendingString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v5 = [_TUIIdentifier alloc];
     v6 = [NSIndexPath indexPathWithIndex:[(NSNumber *)self unsignedIntegerValue]];
-    v7 = [(_TUIIdentifier *)v5 initWithUUID:0 indexPath:v6 identifier:v4];
+    v7 = [(_TUIIdentifier *)v5 initWithUUID:0 indexPath:v6 identifier:stringCopy];
   }
 
   else
@@ -34,18 +34,18 @@
   return v7;
 }
 
-- (id)tui_identifierByPrependingUUID:(id)a3
+- (id)tui_identifierByPrependingUUID:(id)d
 {
-  v4 = a3;
-  v5 = [[_TUIIdentifierNumberWithUUID alloc] initWithUUID:v4 value:[(NSNumber *)self unsignedIntegerValue]];
+  dCopy = d;
+  v5 = [[_TUIIdentifierNumberWithUUID alloc] initWithUUID:dCopy value:[(NSNumber *)self unsignedIntegerValue]];
 
   return v5;
 }
 
-- (id)tui_identifierDescribeForDebuggingWithPackage:(id)a3
+- (id)tui_identifierDescribeForDebuggingWithPackage:(id)package
 {
-  v4 = a3;
-  v5 = [TUIIdentifierMap describeForDebuggingIdentifierIndex:[(NSNumber *)self unsignedIntegerValue] package:v4];
+  packageCopy = package;
+  v5 = [TUIIdentifierMap describeForDebuggingIdentifierIndex:[(NSNumber *)self unsignedIntegerValue] package:packageCopy];
   v8 = v5;
   v6 = [NSArray arrayWithObjects:&v8 count:1];
 

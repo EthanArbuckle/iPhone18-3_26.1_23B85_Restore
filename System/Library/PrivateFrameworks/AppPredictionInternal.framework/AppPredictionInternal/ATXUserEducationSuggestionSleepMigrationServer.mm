@@ -1,17 +1,17 @@
 @interface ATXUserEducationSuggestionSleepMigrationServer
-- (ATXUserEducationSuggestionSleepMigrationServer)initWithConnector:(id)a3;
-- (void)_processModeChangeEvent:(id)a3;
+- (ATXUserEducationSuggestionSleepMigrationServer)initWithConnector:(id)connector;
+- (void)_processModeChangeEvent:(id)event;
 - (void)dealloc;
-- (void)processModeChangeEvent:(id)a3;
-- (void)sendSuggestion:(id)a3 withEventType:(unint64_t)a4;
+- (void)processModeChangeEvent:(id)event;
+- (void)sendSuggestion:(id)suggestion withEventType:(unint64_t)type;
 @end
 
 @implementation ATXUserEducationSuggestionSleepMigrationServer
 
-- (ATXUserEducationSuggestionSleepMigrationServer)initWithConnector:(id)a3
+- (ATXUserEducationSuggestionSleepMigrationServer)initWithConnector:(id)connector
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectorCopy = connector;
   v15.receiver = self;
   v15.super_class = ATXUserEducationSuggestionSleepMigrationServer;
   v6 = [(ATXUserEducationSuggestionBaseServer *)&v15 init];
@@ -33,7 +33,7 @@
     installedSuggestedPagesTracker = v6->_installedSuggestedPagesTracker;
     v6->_installedSuggestedPagesTracker = v10;
 
-    objc_storeStrong(&v6->_connector, a3);
+    objc_storeStrong(&v6->_connector, connector);
     v12 = +[ATXUserEducationSuggestionModeChangeNotifier sharedInstance];
     [v12 registerObserver:v6];
   }
@@ -52,43 +52,43 @@
   [(ATXUserEducationSuggestionSleepMigrationServer *)&v4 dealloc];
 }
 
-- (void)processModeChangeEvent:(id)a3
+- (void)processModeChangeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__ATXUserEducationSuggestionSleepMigrationServer_processModeChangeEvent___block_invoke;
   v6[3] = &unk_278596C10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = eventCopy;
+  v5 = eventCopy;
   [(ATXUserEducationSuggestionBaseServer *)self performBlockOnInternalSerialQueue:v6];
 }
 
-- (void)_processModeChangeEvent:(id)a3
+- (void)_processModeChangeEvent:(id)event
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 semanticType];
-  v6 = __atxlog_handle_context_user_education_suggestions();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == 3)
+  eventCopy = event;
+  semanticType = [eventCopy semanticType];
+  initWithRandomUUID = __atxlog_handle_context_user_education_suggestions();
+  v7 = os_log_type_enabled(initWithRandomUUID, OS_LOG_TYPE_DEFAULT);
+  if (semanticType == 3)
   {
     if (v7)
     {
       *buf = 136315394;
       v38 = "[ATXUserEducationSuggestionSleepMigrationServer _processModeChangeEvent:]";
       v39 = 2114;
-      v40 = v4;
-      _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "%s: processing new userFocusComputedModeEvent: %{public}@", buf, 0x16u);
+      v40 = eventCopy;
+      _os_log_impl(&dword_2263AA000, initWithRandomUUID, OS_LOG_TYPE_DEFAULT, "%s: processing new userFocusComputedModeEvent: %{public}@", buf, 0x16u);
     }
 
-    v6 = [objc_alloc(MEMORY[0x277CEB950]) initWithRandomUUID];
-    v8 = [v6 suggestionWasAlreadyShown];
-    v9 = [v6 suggestionWasAlreadyDismissed];
-    if (([v4 starting]& 1) != 0)
+    initWithRandomUUID = [objc_alloc(MEMORY[0x277CEB950]) initWithRandomUUID];
+    suggestionWasAlreadyShown = [initWithRandomUUID suggestionWasAlreadyShown];
+    suggestionWasAlreadyDismissed = [initWithRandomUUID suggestionWasAlreadyDismissed];
+    if (([eventCopy starting]& 1) != 0)
     {
-      if (v8)
+      if (suggestionWasAlreadyShown)
       {
         v10 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -113,8 +113,8 @@ LABEL_28:
         {
 
           v16 = objc_alloc(MEMORY[0x277CCAD78]);
-          v17 = [v4 mode];
-          v15 = [v16 initWithUUIDString:v17];
+          mode = [eventCopy mode];
+          v15 = [v16 initWithUUIDString:mode];
 
           if (!v15)
           {
@@ -154,28 +154,28 @@ LABEL_28:
           [v19 enumerateObjectsUsingBlock:v33];
           if ([v23 count]>= 2)
           {
-            v24 = __atxlog_handle_context_user_education_suggestions();
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+            firstObject = __atxlog_handle_context_user_education_suggestions();
+            if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 136315138;
               v38 = "[ATXUserEducationSuggestionSleepMigrationServer _processModeChangeEvent:]";
-              _os_log_impl(&dword_2263AA000, v24, OS_LOG_TYPE_DEFAULT, "%s: Not showing suggestion because there's more than 1 home page associated with sleep. This would be an indication that the user has customized their sleep pages, therefore doesn't qualify for the discovery platter.", buf, 0xCu);
+              _os_log_impl(&dword_2263AA000, firstObject, OS_LOG_TYPE_DEFAULT, "%s: Not showing suggestion because there's more than 1 home page associated with sleep. This would be an indication that the user has customized their sleep pages, therefore doesn't qualify for the discovery platter.", buf, 0xCu);
             }
 
             goto LABEL_47;
           }
 
-          v24 = [v23 firstObject];
-          v27 = [v24 uniqueIdentifier];
-          if ([v27 length])
+          firstObject = [v23 firstObject];
+          uniqueIdentifier = [firstObject uniqueIdentifier];
+          if ([uniqueIdentifier length])
           {
             installedSuggestedPagesTracker = self->_installedSuggestedPagesTracker;
-            v28 = [v24 uniqueIdentifier];
-            v32 = [(ATXInstalledSuggestedPagesTracker *)installedSuggestedPagesTracker suggestedPageTypeWithIdentifier:v28];
+            uniqueIdentifier2 = [firstObject uniqueIdentifier];
+            v32 = [(ATXInstalledSuggestedPagesTracker *)installedSuggestedPagesTracker suggestedPageTypeWithIdentifier:uniqueIdentifier2];
 
             if (v32 == 4)
             {
-              [(ATXUserEducationSuggestionSleepMigrationServer *)self sendSuggestion:v6 withEventType:0];
+              [(ATXUserEducationSuggestionSleepMigrationServer *)self sendSuggestion:initWithRandomUUID withEventType:0];
 LABEL_47:
 
 LABEL_48:
@@ -222,9 +222,9 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    if (v9 & 1 | ((v8 & 1) == 0))
+    if (suggestionWasAlreadyDismissed & 1 | ((suggestionWasAlreadyShown & 1) == 0))
     {
-      if ((v8 & 1) == 0)
+      if ((suggestionWasAlreadyShown & 1) == 0)
       {
         v10 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -238,7 +238,7 @@ LABEL_50:
         goto LABEL_30;
       }
 
-      if (v9)
+      if (suggestionWasAlreadyDismissed)
       {
         v10 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -263,20 +263,20 @@ LABEL_30:
         _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, "%s: Dismissing suggestion because we're exiting Sleep mode and its been shown but not yet dismissed", buf, 0xCu);
       }
 
-      [(ATXUserEducationSuggestionSleepMigrationServer *)self sendSuggestion:v6 withEventType:1];
+      [(ATXUserEducationSuggestionSleepMigrationServer *)self sendSuggestion:initWithRandomUUID withEventType:1];
     }
   }
 
   else if (v7)
   {
-    [v4 atx_dndModeSemanticType];
+    [eventCopy atx_dndModeSemanticType];
     v10 = DNDModeSemanticTypeToString();
     *buf = 136315394;
     v38 = "[ATXUserEducationSuggestionSleepMigrationServer _processModeChangeEvent:]";
     v39 = 2114;
     v40 = v10;
     v11 = "%s: Not processing mode change event because mode: %{public}@ is not Sleep";
-    v12 = v6;
+    v12 = initWithRandomUUID;
     v13 = 22;
 LABEL_29:
     _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, v11, buf, v13);
@@ -301,23 +301,23 @@ void __74__ATXUserEducationSuggestionSleepMigrationServer__processModeChangeEven
   }
 }
 
-- (void)sendSuggestion:(id)a3 withEventType:(unint64_t)a4
+- (void)sendSuggestion:(id)suggestion withEventType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CEB938]) initWithUserEducationSuggestion:v6 userEducationSuggestionEventType:a4];
+  suggestionCopy = suggestion;
+  v7 = [objc_alloc(MEMORY[0x277CEB938]) initWithUserEducationSuggestion:suggestionCopy userEducationSuggestionEventType:type];
   v8 = __atxlog_handle_context_user_education_suggestions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[ATXUserEducationSuggestionSleepMigrationServer sendSuggestion:withEventType:]";
     v13 = 2114;
-    v14 = v6;
+    v14 = suggestionCopy;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: Sending suggestion: %{public}@", &v11, 0x16u);
   }
 
-  v9 = [(ATXUserEducationSuggestionConnector *)self->_connector remoteObjectProxy];
-  [v9 didReceiveUserEducationSuggestionEvent:v7];
+  remoteObjectProxy = [(ATXUserEducationSuggestionConnector *)self->_connector remoteObjectProxy];
+  [remoteObjectProxy didReceiveUserEducationSuggestionEvent:v7];
 
   v10 = *MEMORY[0x277D85DE8];
 }

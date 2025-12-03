@@ -1,18 +1,18 @@
 @interface MusicStoreFlowScriptingClientController
 + (id)sharedScriptingClientController;
-- (BOOL)clientInterface:(id)a3 isAllowedToOpenExternalURL:(id)a4;
+- (BOOL)clientInterface:(id)interface isAllowedToOpenExternalURL:(id)l;
 - (MusicStoreFlowScriptingClientController)init;
-- (id)_correspondingStoreFlowServiceViewControllerForViewController:(id)a3;
-- (void)_activateStoreFlowServiceViewController:(id)a3;
-- (void)_deactivateStoreFlowServiceViewController:(id)a3 andUnregister:(BOOL)a4;
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3;
-- (void)applyCloudServiceSetupConfiguration:(id)a3;
-- (void)clientInterface:(id)a3 overrideCreditCardPresentationFromViewController:(id)a4 completion:(id)a5;
+- (id)_correspondingStoreFlowServiceViewControllerForViewController:(id)controller;
+- (void)_activateStoreFlowServiceViewController:(id)controller;
+- (void)_deactivateStoreFlowServiceViewController:(id)controller andUnregister:(BOOL)unregister;
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification;
+- (void)applyCloudServiceSetupConfiguration:(id)configuration;
+- (void)clientInterface:(id)interface overrideCreditCardPresentationFromViewController:(id)controller completion:(id)completion;
 - (void)dealloc;
-- (void)registerStoreFlowServiceViewController:(id)a3;
-- (void)storeFlowServiceViewControllerDidLoad:(id)a3;
-- (void)storeFlowServiceViewControllerWillAppear:(id)a3;
+- (void)registerStoreFlowServiceViewController:(id)controller;
+- (void)storeFlowServiceViewControllerDidLoad:(id)load;
+- (void)storeFlowServiceViewControllerWillAppear:(id)appear;
 @end
 
 @implementation MusicStoreFlowScriptingClientController
@@ -63,77 +63,77 @@
   [(MusicStoreFlowScriptingClientController *)&v4 dealloc];
 }
 
-- (void)applyCloudServiceSetupConfiguration:(id)a3
+- (void)applyCloudServiceSetupConfiguration:(id)configuration
 {
-  v4 = a3;
-  v7 = [(MusicStoreFlowScriptingClientController *)self clientInterface];
-  v5 = [v4 applicationIdentifier];
-  [v7 setApplicationIdentifier:v5];
+  configurationCopy = configuration;
+  clientInterface = [(MusicStoreFlowScriptingClientController *)self clientInterface];
+  applicationIdentifier = [configurationCopy applicationIdentifier];
+  [clientInterface setApplicationIdentifier:applicationIdentifier];
 
-  v6 = [v4 applicationVersion];
+  applicationVersion = [configurationCopy applicationVersion];
 
-  [v7 setApplicationVersion:v6];
+  [clientInterface setApplicationVersion:applicationVersion];
 }
 
-- (void)registerStoreFlowServiceViewController:(id)a3
+- (void)registerStoreFlowServiceViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (![(NSHashTable *)self->_registeredStoreFlowServiceViewControllers containsObject:?])
   {
-    [(NSHashTable *)self->_registeredStoreFlowServiceViewControllers addObject:v4];
+    [(NSHashTable *)self->_registeredStoreFlowServiceViewControllers addObject:controllerCopy];
   }
 }
 
-- (void)storeFlowServiceViewControllerDidLoad:(id)a3
+- (void)storeFlowServiceViewControllerDidLoad:(id)load
 {
-  v5 = a3;
-  v4 = [(MusicStoreFlowScriptingClientController *)self rootViewController];
+  loadCopy = load;
+  rootViewController = [(MusicStoreFlowScriptingClientController *)self rootViewController];
 
-  if (!v4)
+  if (!rootViewController)
   {
-    [(MusicStoreFlowScriptingClientController *)self _activateStoreFlowServiceViewController:v5];
+    [(MusicStoreFlowScriptingClientController *)self _activateStoreFlowServiceViewController:loadCopy];
   }
 }
 
-- (void)storeFlowServiceViewControllerWillAppear:(id)a3
+- (void)storeFlowServiceViewControllerWillAppear:(id)appear
 {
-  v6 = a3;
-  v4 = [(MusicStoreFlowScriptingClientController *)self rootViewController];
+  appearCopy = appear;
+  rootViewController = [(MusicStoreFlowScriptingClientController *)self rootViewController];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = appearCopy;
+  if (rootViewController != appearCopy)
   {
-    [(MusicStoreFlowScriptingClientController *)self _activateStoreFlowServiceViewController:v6];
-    v5 = v6;
+    [(MusicStoreFlowScriptingClientController *)self _activateStoreFlowServiceViewController:appearCopy];
+    v5 = appearCopy;
   }
 }
 
-- (BOOL)clientInterface:(id)a3 isAllowedToOpenExternalURL:(id)a4
+- (BOOL)clientInterface:(id)interface isAllowedToOpenExternalURL:(id)l
 {
-  v4 = a4;
-  if ([v4 isSafeExternalURL])
+  lCopy = l;
+  if ([lCopy isSafeExternalURL])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 scheme];
-    v7 = [v6 lowercaseString];
-    v5 = [v7 containsString:@"sonos"];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
+    v5 = [lowercaseString containsString:@"sonos"];
   }
 
   return v5;
 }
 
-- (void)clientInterface:(id)a3 overrideCreditCardPresentationFromViewController:(id)a4 completion:(id)a5
+- (void)clientInterface:(id)interface overrideCreditCardPresentationFromViewController:(id)controller completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(MusicStoreFlowScriptingClientController *)self _correspondingStoreFlowServiceViewControllerForViewController:a4];
-  [v8 storeFlowScriptingClientController:self overrideCreditCardPresentationWithCompletion:v7];
+  completionCopy = completion;
+  v8 = [(MusicStoreFlowScriptingClientController *)self _correspondingStoreFlowServiceViewControllerForViewController:controller];
+  [v8 storeFlowScriptingClientController:self overrideCreditCardPresentationWithCompletion:completionCopy];
 }
 
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification
 {
   self->_isApplicationInBackground = 1;
   if ([(MusicStoreFlowScriptingClientController *)self isActive])
@@ -143,14 +143,14 @@
   }
 }
 
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification
 {
   self->_isApplicationInBackground = 0;
   if (([(MusicStoreFlowScriptingClientController *)self isActive]& 1) == 0)
   {
-    v4 = [(MusicStoreFlowScriptingClientController *)self rootViewController];
+    rootViewController = [(MusicStoreFlowScriptingClientController *)self rootViewController];
 
-    if (v4)
+    if (rootViewController)
     {
 
       [(MusicStoreFlowScriptingClientController *)self becomeActive];
@@ -158,25 +158,25 @@
   }
 }
 
-- (void)_activateStoreFlowServiceViewController:(id)a3
+- (void)_activateStoreFlowServiceViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(MusicStoreFlowScriptingClientController *)self setRootViewController:?];
   if (([(MusicStoreFlowScriptingClientController *)self isActive]& 1) == 0 && !self->_isApplicationInBackground)
   {
     [(MusicStoreFlowScriptingClientController *)self becomeActive];
   }
 
-  [(NSPointerArray *)self->_activeStoreFlowServiceViewControllersStack addPointer:v4];
+  [(NSPointerArray *)self->_activeStoreFlowServiceViewControllersStack addPointer:controllerCopy];
 }
 
-- (id)_correspondingStoreFlowServiceViewControllerForViewController:(id)a3
+- (id)_correspondingStoreFlowServiceViewControllerForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    v6 = v4;
+    v6 = controllerCopy;
     while (1)
     {
       objc_opt_class();
@@ -185,32 +185,32 @@
         break;
       }
 
-      v7 = [v6 parentViewController];
+      parentViewController = [v6 parentViewController];
 
-      v6 = v7;
-      if (!v7)
+      v6 = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_5;
       }
     }
 
     v9 = v6;
-    v8 = v9;
+    rootViewController = v9;
   }
 
   else
   {
 LABEL_5:
-    v8 = [(MusicStoreFlowScriptingClientController *)self rootViewController];
+    rootViewController = [(MusicStoreFlowScriptingClientController *)self rootViewController];
     v9 = 0;
   }
 
-  return v8;
+  return rootViewController;
 }
 
-- (void)_deactivateStoreFlowServiceViewController:(id)a3 andUnregister:(BOOL)a4
+- (void)_deactivateStoreFlowServiceViewController:(id)controller andUnregister:(BOOL)unregister
 {
-  v15 = a3;
+  controllerCopy = controller;
   v6 = [(NSPointerArray *)self->_activeStoreFlowServiceViewControllersStack count];
   if (v6)
   {
@@ -218,7 +218,7 @@ LABEL_5:
     do
     {
       v8 = [(NSPointerArray *)self->_activeStoreFlowServiceViewControllersStack pointerAtIndex:v7];
-      if (v8 == v15)
+      if (v8 == controllerCopy)
       {
         [(NSPointerArray *)self->_activeStoreFlowServiceViewControllersStack removePointerAtIndex:v7];
       }
@@ -229,15 +229,15 @@ LABEL_5:
     while (v7 != -1);
   }
 
-  if (a4 && [(NSHashTable *)self->_registeredStoreFlowServiceViewControllers containsObject:v15])
+  if (unregister && [(NSHashTable *)self->_registeredStoreFlowServiceViewControllers containsObject:controllerCopy])
   {
-    [(NSHashTable *)self->_registeredStoreFlowServiceViewControllers removeObject:v15];
+    [(NSHashTable *)self->_registeredStoreFlowServiceViewControllers removeObject:controllerCopy];
   }
 
-  v9 = [(MusicStoreFlowScriptingClientController *)self rootViewController];
+  rootViewController = [(MusicStoreFlowScriptingClientController *)self rootViewController];
 
-  v10 = v15;
-  if (v9 == v15)
+  v10 = controllerCopy;
+  if (rootViewController == controllerCopy)
   {
     v11 = [(NSPointerArray *)self->_activeStoreFlowServiceViewControllersStack count];
     if (v11)
@@ -277,7 +277,7 @@ LABEL_14:
       }
     }
 
-    v10 = v15;
+    v10 = controllerCopy;
   }
 }
 

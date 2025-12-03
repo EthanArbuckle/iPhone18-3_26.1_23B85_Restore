@@ -1,18 +1,18 @@
 @interface _NSAttributedStringAsyncReadReply
-+ (id)readReplyWithConnection:(id)a3 reply:(id)a4;
++ (id)readReplyWithConnection:(id)connection reply:(id)reply;
 - (void)dealloc;
-- (void)deliverAttributedString:(id)a3 documentAttributes:(id)a4 error:(id)a5;
+- (void)deliverAttributedString:(id)string documentAttributes:(id)attributes error:(id)error;
 @end
 
 @implementation _NSAttributedStringAsyncReadReply
 
-+ (id)readReplyWithConnection:(id)a3 reply:(id)a4
++ (id)readReplyWithConnection:(id)connection reply:(id)reply
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   if (v6)
   {
-    v6[2] = a3;
-    v6[3] = [a4 copy];
+    v6[2] = connection;
+    v6[3] = [reply copy];
   }
 
   return v6;
@@ -25,12 +25,12 @@
   [(_NSAttributedStringAsyncReadReply *)&v3 dealloc];
 }
 
-- (void)deliverAttributedString:(id)a3 documentAttributes:(id)a4 error:(id)a5
+- (void)deliverAttributedString:(id)string documentAttributes:(id)attributes error:(id)error
 {
   if (!self->_delivered)
   {
-    v9 = [(_NSAttributedStringAsyncReadReply *)self reply];
-    v9[2](v9, a3, a4, a5);
+    reply = [(_NSAttributedStringAsyncReadReply *)self reply];
+    reply[2](reply, string, attributes, error);
     [(NSXPCConnection *)[(_NSAttributedStringAsyncReadReply *)self connection] invalidate];
     self->_delivered = 1;
   }

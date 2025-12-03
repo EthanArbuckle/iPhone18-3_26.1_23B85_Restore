@@ -1,26 +1,26 @@
 @interface WBSConfigurationDownloader
-- (WBSConfigurationDownloader)initWithFileName:(id)a3 dataTransformer:(id)a4;
-- (void)downloadConfigurationWithCompletionHandler:(id)a3;
+- (WBSConfigurationDownloader)initWithFileName:(id)name dataTransformer:(id)transformer;
+- (void)downloadConfigurationWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSConfigurationDownloader
 
-- (WBSConfigurationDownloader)initWithFileName:(id)a3 dataTransformer:(id)a4
+- (WBSConfigurationDownloader)initWithFileName:(id)name dataTransformer:(id)transformer
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  transformerCopy = transformer;
   v16.receiver = self;
   v16.super_class = WBSConfigurationDownloader;
   v8 = [(WBSConfigurationDownloader *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transformer, a4);
+    objc_storeStrong(&v8->_transformer, transformer);
     v10 = [MEMORY[0x1E695DFF8] URLWithString:@"https://configuration.apple.com/configurations/internetservices/safari/"];
     baseURL = v9->_baseURL;
     v9->_baseURL = v10;
 
-    v12 = [v6 copy];
+    v12 = [nameCopy copy];
     fileName = v9->_fileName;
     v9->_fileName = v12;
 
@@ -30,11 +30,11 @@
   return v9;
 }
 
-- (void)downloadConfigurationWithCompletionHandler:(id)a3
+- (void)downloadConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E695AC78] sharedSession];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
   baseURL = self->_baseURL;
   v7 = [(NSString *)self->_fileName stringByAppendingPathExtension:@"plist"];
   v8 = [(NSURL *)baseURL URLByAppendingPathComponent:v7];
@@ -43,9 +43,9 @@
   v12[2] = __73__WBSConfigurationDownloader_downloadConfigurationWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CF1AF0;
   objc_copyWeak(&v14, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
-  v10 = [v5 dataTaskWithURL:v8 completionHandler:v12];
+  v10 = [mEMORY[0x1E695AC78] dataTaskWithURL:v8 completionHandler:v12];
   dataTask = self->_dataTask;
   self->_dataTask = v10;
 

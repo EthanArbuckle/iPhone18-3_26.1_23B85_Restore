@@ -1,12 +1,12 @@
 @interface PSUICellularDataListItemsController
-- (BOOL)_isDataSwitchAutomatic:(id)a3;
+- (BOOL)_isDataSwitchAutomatic:(id)automatic;
 - (PSUICellularDataListItemsController)init;
 - (id)specifiers;
 - (void)airplaneModeChanged;
 - (void)dealloc;
 - (void)reloadCache;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PSUICellularDataListItemsController
@@ -24,11 +24,11 @@
 
     [(RadiosPreferences *)v2->_radioPreferences setNotifyForExternalChangeOnly:1];
     [(RadiosPreferences *)v2->_radioPreferences setDelegate:v2];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_reloadCache name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reloadCache name:@"PSUICellularPlanChanged" object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_reloadCache name:*MEMORY[0x277D76758] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_reloadCache name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -36,8 +36,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUICellularDataListItemsController;
@@ -47,27 +47,27 @@
 - (void)airplaneModeChanged
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularDataListItemsController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataListItemsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v11 = "[PSUICellularDataListItemsController airplaneModeChanged]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s Received airplane mode changed", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s Received airplane mode changed", buf, 0xCu);
   }
 
   v4 = *(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]);
   if ([v4 isDetailControllerNeeded])
   {
-    v5 = [(PSUICellularDataListItemsController *)self radioPreferences];
-    v6 = [v5 airplaneMode];
+    radioPreferences = [(PSUICellularDataListItemsController *)self radioPreferences];
+    airplaneMode = [radioPreferences airplaneMode];
 
-    if (v6)
+    if (airplaneMode)
     {
-      v7 = [(PSUICellularDataListItemsController *)self getLogger];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICellularDataListItemsController *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Airplane mode is enabled", buf, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Airplane mode is enabled", buf, 2u);
       }
 
       block[0] = MEMORY[0x277D85DD0];
@@ -128,7 +128,7 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
     v34 = *MEMORY[0x277D3FC48];
     v45.receiver = self;
     v45.super_class = PSUICellularDataListItemsController;
-    v4 = [(PSListItemsController *)&v45 specifiers];
+    specifiers = [(PSListItemsController *)&v45 specifiers];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v39 = [v5 localizedStringForKey:@"CELLULAR_DATA_SWITCHING_FOOTER" value:&stru_287733598 table:@"Gemini-Gemini"];
 
@@ -136,7 +136,7 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v6 = v4;
+    v6 = specifiers;
     v7 = [v6 countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v7)
     {
@@ -166,12 +166,12 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
             if (v15)
             {
               [v13 setProperty:objc_opt_class() forKey:v38];
-              v16 = [(PSUICellularDataListItemsController *)self getLogger];
-              if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+              getLogger = [(PSUICellularDataListItemsController *)self getLogger];
+              if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
                 v47 = v15;
-                _os_log_impl(&dword_2658DE000, v16, OS_LOG_TYPE_DEFAULT, "Setting plan item: %@", buf, 0xCu);
+                _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Setting plan item: %@", buf, 0xCu);
               }
 
               [v13 setProperty:v15 forKey:v37];
@@ -181,7 +181,7 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
                 [v13 setProperty:v17 forKey:v35];
               }
 
-              v18 = [v15 isSelected];
+              isSelected = [v15 isSelected];
               if ([(PSUICellularDataListItemsController *)self _isDataSwitchAutomatic:v15])
               {
                 v19 = MEMORY[0x277CCACA8];
@@ -197,7 +197,7 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
                 v39 = v23;
               }
 
-              v10 += v18;
+              v10 += isSelected;
 
               v8 = v40;
             }
@@ -219,12 +219,12 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
       v10 = 0;
     }
 
-    v24 = [(PSUICellularDataListItemsController *)self getLogger];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICellularDataListItemsController *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
       LODWORD(v47) = v10;
-      _os_log_impl(&dword_2658DE000, v24, OS_LOG_TYPE_DEFAULT, "Lines turned on: %d", buf, 8u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Lines turned on: %d", buf, 8u);
     }
 
     v25 = v10;
@@ -255,41 +255,41 @@ void __50__PSUICellularDataListItemsController_reloadCache__block_invoke(uint64_
   return v3;
 }
 
-- (BOOL)_isDataSwitchAutomatic:(id)a3
+- (BOOL)_isDataSwitchAutomatic:(id)automatic
 {
-  v3 = a3;
-  v4 = [v3 isSelected] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v3, "settingsMode") == 1;
+  automaticCopy = automatic;
+  v4 = [automaticCopy isSelected] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(automaticCopy, "settingsMode") == 1;
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
-    [v7 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PSUICellularDataListItemsController;
-    [(PSListItemsController *)&v8 tableView:v7 didSelectRowAtIndexPath:v6];
+    [(PSListItemsController *)&v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5.receiver = self;
   v5.super_class = PSUICellularDataListItemsController;
-  [(PSUICellularDataListItemsController *)&v5 setSpecifier:v4];
+  [(PSUICellularDataListItemsController *)&v5 setSpecifier:specifierCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setDetailController:self];
+    [specifierCopy setDetailController:self];
   }
 }
 

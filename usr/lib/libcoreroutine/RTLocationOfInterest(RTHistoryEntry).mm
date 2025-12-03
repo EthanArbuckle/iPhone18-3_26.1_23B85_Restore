@@ -8,16 +8,16 @@
 - (id)initWithHistoryEntryRoute:()RTHistoryEntry
 {
   v4 = a3;
-  v5 = [v4 destinationLocation];
-  v6 = [v4 destinationMapItem];
-  v7 = v6;
+  destinationLocation = [v4 destinationLocation];
+  destinationMapItem = [v4 destinationMapItem];
+  v7 = destinationMapItem;
   v8 = 0;
-  if (v5 && v6)
+  if (destinationLocation && destinationMapItem)
   {
-    v9 = [v4 identifier];
-    v8 = [a1 initWithLocation:v5 confidence:v9 identifier:-1 type:0 typeSource:0 visits:0 customLabel:1.0 mapItem:v7];
+    identifier = [v4 identifier];
+    v8 = [self initWithLocation:destinationLocation confidence:identifier identifier:-1 type:0 typeSource:0 visits:0 customLabel:1.0 mapItem:v7];
 
-    a1 = v8;
+    self = v8;
   }
 
   return v8;
@@ -26,16 +26,16 @@
 - (id)initWithHistoryEntryPlaceDisplay:()RTHistoryEntry
 {
   v4 = a3;
-  v5 = [v4 location];
-  v6 = [v4 mapItem];
-  v7 = v6;
+  location = [v4 location];
+  mapItem = [v4 mapItem];
+  v7 = mapItem;
   v8 = 0;
-  if (v5 && v6)
+  if (location && mapItem)
   {
-    v9 = [v4 identifier];
-    v8 = [a1 initWithLocation:v5 confidence:v9 identifier:-1 type:0 typeSource:0 visits:0 customLabel:1.0 mapItem:v7];
+    identifier = [v4 identifier];
+    v8 = [self initWithLocation:location confidence:identifier identifier:-1 type:0 typeSource:0 visits:0 customLabel:1.0 mapItem:v7];
 
-    a1 = v8;
+    self = v8;
   }
 
   return v8;

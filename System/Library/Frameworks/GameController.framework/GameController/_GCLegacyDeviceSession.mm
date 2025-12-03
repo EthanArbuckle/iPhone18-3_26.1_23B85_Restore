@@ -5,18 +5,18 @@
 - (GCExtendedGamepad)currentExtendedGamepad;
 - (GCMicroGamepad)currentMicroGamepad;
 - (GCMouse)currentMouse;
-- (_GCLegacyDeviceSession)initWithConfiguration:(id)a3 environment:(id)a4;
-- (void)_becomeCurrentController:(void *)a1;
-- (void)_becomeCurrentMouse:(void *)a1;
-- (void)_resignCurrentController:(void *)a1;
-- (void)_setCurrentController:(void *)a1;
-- (void)_setCurrentExtendedGamepad:(void *)a1;
-- (void)_setCurrentMicroGamepad:(void *)a1;
-- (void)_setCurrentMouse:(void *)a1;
-- (void)becomeCurrentController:(id)a3;
-- (void)becomeCurrentMouse:(id)a3;
-- (void)resignCurrentController:(id)a3;
-- (void)resignCurrentMouse:(id)a3;
+- (_GCLegacyDeviceSession)initWithConfiguration:(id)configuration environment:(id)environment;
+- (void)_becomeCurrentController:(void *)controller;
+- (void)_becomeCurrentMouse:(void *)mouse;
+- (void)_resignCurrentController:(void *)controller;
+- (void)_setCurrentController:(void *)controller;
+- (void)_setCurrentExtendedGamepad:(void *)gamepad;
+- (void)_setCurrentMicroGamepad:(void *)gamepad;
+- (void)_setCurrentMouse:(void *)mouse;
+- (void)becomeCurrentController:(id)controller;
+- (void)becomeCurrentMouse:(id)mouse;
+- (void)resignCurrentController:(id)controller;
+- (void)resignCurrentMouse:(id)mouse;
 @end
 
 @implementation _GCLegacyDeviceSession
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __40___GCLegacyDeviceSession_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -42,8 +42,8 @@
 {
   v56 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 objectForInfoDictionaryKey:@"_GCBypassUIKit"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [mainBundle objectForInfoDictionaryKey:@"_GCBypassUIKit"];
 
   if (v4)
   {
@@ -123,8 +123,8 @@
 
 LABEL_18:
 
-  v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v17 = [v16 objectForKey:@"WantsGCControllerSpatialGamepad"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v17 = [standardUserDefaults objectForKey:@"WantsGCControllerSpatialGamepad"];
   v18 = *(v7 + 3480);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -137,7 +137,7 @@ LABEL_18:
     v19 = 0;
   }
 
-  v20 = [v16 objectForKey:@"WantsGCControllerProductCategoryWithChirality"];
+  v20 = [standardUserDefaults objectForKey:@"WantsGCControllerProductCategoryWithChirality"];
   v21 = *(v7 + 3480);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -159,25 +159,25 @@ LABEL_18:
   v25 = currentProcessBundleIdentifier();
   LODWORD(v24) = [v25 isEqualToString:@"com.apple.SurfBoard"];
 
-  v26 = [MEMORY[0x1E696AE30] processInfo];
-  v27 = [v26 processName];
-  LODWORD(v25) = [v27 isEqualToString:@"arviz"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  LODWORD(v25) = [processName isEqualToString:@"arviz"];
 
-  v28 = [MEMORY[0x1E696AE30] processInfo];
-  v29 = [v28 processName];
-  v30 = [v29 isEqualToString:@"TouchToSound"];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  processName2 = [processInfo2 processName];
+  v30 = [processName2 isEqualToString:@"TouchToSound"];
 
   v31 = currentProcessBundleIdentifier();
-  LODWORD(v29) = [v31 isEqualToString:@"dev-apple.realitykit-spatial-tracking"];
+  LODWORD(processName2) = [v31 isEqualToString:@"dev-apple.realitykit-spatial-tracking"];
 
   v32 = currentProcessBundleIdentifier();
   v33 = [v32 hasPrefix:@"com.apple."];
 
-  v34 = v33 | v29 | v30 | v25 | v24 | v22 | v23;
+  v34 = v33 | processName2 | v30 | v25 | v24 | v22 | v23;
   v35 = v19;
   if (v19)
   {
-    v36 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
     v38 = v48;
     v37 = v49;
     v39 = v47;
@@ -190,16 +190,16 @@ LABEL_18:
     v39 = v47;
     if (v46)
     {
-      v36 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v36 = (_os_feature_enabled_impl() ^ 1) & v34;
+      bOOLValue = (_os_feature_enabled_impl() ^ 1) & v34;
     }
   }
 
-  [v37 setSpatialGamepadSupported:v36];
+  [v37 setSpatialGamepadSupported:bOOLValue];
   if ([v37 spatialGamepadSupported])
   {
     v40 = _gc_log_session();
@@ -214,7 +214,7 @@ LABEL_18:
   {
     v41 = v39;
 LABEL_37:
-    v42 = [v41 BOOLValue];
+    bOOLValue2 = [v41 BOOLValue];
     goto LABEL_38;
   }
 
@@ -226,16 +226,16 @@ LABEL_37:
 
   if (v46)
   {
-    v42 = 0;
+    bOOLValue2 = 0;
   }
 
   else
   {
-    v42 = (_os_feature_enabled_impl() ^ 1) & v34;
+    bOOLValue2 = (_os_feature_enabled_impl() ^ 1) & v34;
   }
 
 LABEL_38:
-  [v37 setSpatialGamepadProductCategoryIncludesChirality:v42];
+  [v37 setSpatialGamepadProductCategoryIncludesChirality:bOOLValue2];
   if ([v37 spatialGamepadProductCategoryIncludesChirality])
   {
     v43 = _gc_log_session();
@@ -251,11 +251,11 @@ LABEL_38:
   return v37;
 }
 
-- (_GCLegacyDeviceSession)initWithConfiguration:(id)a3 environment:(id)a4
+- (_GCLegacyDeviceSession)initWithConfiguration:(id)configuration environment:(id)environment
 {
   v8.receiver = self;
   v8.super_class = _GCLegacyDeviceSession;
-  v4 = [(GCDeviceSession *)&v8 initWithConfiguration:a3 environment:a4];
+  v4 = [(GCDeviceSession *)&v8 initWithConfiguration:configuration environment:environment];
   v5 = v4;
   if (v4)
   {
@@ -268,22 +268,22 @@ LABEL_38:
 
 - (GCMouse)currentMouse
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentMouse;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentMouse;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setCurrentMouse:(void *)a1
+- (void)_setCurrentMouse:(void *)mouse
 {
   v4 = a2;
-  if (a1)
+  if (mouse)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = v5[25];
+    mouseCopy = mouse;
+    objc_sync_enter(mouseCopy);
+    v6 = mouseCopy[25];
     if (v6 != v4)
     {
       if (v6)
@@ -291,83 +291,83 @@ LABEL_38:
         v7 = _gc_log_session();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentMouse:v5];
+          [_GCLegacyDeviceSession _setCurrentMouse:mouseCopy];
         }
 
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 postNotificationName:@"GCMouseDidStopBeingCurrentNotification" object:v5[25] userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"GCMouseDidStopBeingCurrentNotification" object:mouseCopy[25] userInfo:0];
       }
 
-      objc_storeStrong(v5 + 25, a2);
-      if (v5[25])
+      objc_storeStrong(mouseCopy + 25, a2);
+      if (mouseCopy[25])
       {
         v9 = _gc_log_session();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentMouse:v5];
+          [_GCLegacyDeviceSession _setCurrentMouse:mouseCopy];
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 postNotificationName:@"GCMouseDidBecomeCurrentNotification" object:v5[25] userInfo:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 postNotificationName:@"GCMouseDidBecomeCurrentNotification" object:mouseCopy[25] userInfo:0];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(mouseCopy);
   }
 }
 
-- (void)becomeCurrentMouse:(id)a3
+- (void)becomeCurrentMouse:(id)mouse
 {
-  v4 = a3;
-  v5 = [(GCDeviceSession *)self mice];
-  v6 = [(GCDeviceCollection *)v5 underlyingCollection];
-  v7 = [v6 containsObject:v4];
+  mouseCopy = mouse;
+  mice = [(GCDeviceSession *)self mice];
+  underlyingCollection = [(GCDeviceCollection *)mice underlyingCollection];
+  v7 = [underlyingCollection containsObject:mouseCopy];
 
   if (v7)
   {
-    v8 = [(GCDeviceSession *)self targetQueue];
+    targetQueue = [(GCDeviceSession *)self targetQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45___GCLegacyDeviceSession_becomeCurrentMouse___block_invoke;
     v9[3] = &unk_1E8418C50;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = mouseCopy;
+    dispatch_async(targetQueue, v9);
   }
 }
 
-- (void)resignCurrentMouse:(id)a3
+- (void)resignCurrentMouse:(id)mouse
 {
-  v4 = a3;
-  v5 = [(GCDeviceSession *)self targetQueue];
+  mouseCopy = mouse;
+  targetQueue = [(GCDeviceSession *)self targetQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45___GCLegacyDeviceSession_resignCurrentMouse___block_invoke;
   v7[3] = &unk_1E8418C50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = mouseCopy;
+  v6 = mouseCopy;
+  dispatch_async(targetQueue, v7);
 }
 
 - (GCController)currentController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentController;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentController;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setCurrentController:(void *)a1
+- (void)_setCurrentController:(void *)controller
 {
   v4 = a2;
-  if (a1)
+  if (controller)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = v5[26];
+    controllerCopy = controller;
+    objc_sync_enter(controllerCopy);
+    v6 = controllerCopy[26];
     if (v6 != v4)
     {
       if (v6)
@@ -375,49 +375,49 @@ LABEL_38:
         v7 = _gc_log_session();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentController:v5];
+          [_GCLegacyDeviceSession _setCurrentController:controllerCopy];
         }
 
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 postNotificationName:@"GCControllerDidStopBeingCurrentNotification" object:v5[26] userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"GCControllerDidStopBeingCurrentNotification" object:controllerCopy[26] userInfo:0];
       }
 
-      objc_storeStrong(v5 + 26, a2);
-      if (v5[26])
+      objc_storeStrong(controllerCopy + 26, a2);
+      if (controllerCopy[26])
       {
         v9 = _gc_log_session();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentController:v5];
+          [_GCLegacyDeviceSession _setCurrentController:controllerCopy];
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 postNotificationName:@"GCControllerDidBecomeCurrentNotification" object:v5[26] userInfo:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 postNotificationName:@"GCControllerDidBecomeCurrentNotification" object:controllerCopy[26] userInfo:0];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(controllerCopy);
   }
 }
 
 - (GCMicroGamepad)currentMicroGamepad
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentMicroGamepad;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentMicroGamepad;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setCurrentMicroGamepad:(void *)a1
+- (void)_setCurrentMicroGamepad:(void *)gamepad
 {
   v4 = a2;
-  if (a1)
+  if (gamepad)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = v5[27];
+    gamepadCopy = gamepad;
+    objc_sync_enter(gamepadCopy);
+    v6 = gamepadCopy[27];
     if (v6 != v4)
     {
       if (v6)
@@ -425,49 +425,49 @@ LABEL_38:
         v7 = _gc_log_session();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentMicroGamepad:v5];
+          [_GCLegacyDeviceSession _setCurrentMicroGamepad:gamepadCopy];
         }
 
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 postNotificationName:@"GCMicroGamepadDidStopBeingCurrentNotification" object:v5[27] userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"GCMicroGamepadDidStopBeingCurrentNotification" object:gamepadCopy[27] userInfo:0];
       }
 
-      objc_storeStrong(v5 + 27, a2);
-      if (v5[27])
+      objc_storeStrong(gamepadCopy + 27, a2);
+      if (gamepadCopy[27])
       {
         v9 = _gc_log_session();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentMicroGamepad:v5];
+          [_GCLegacyDeviceSession _setCurrentMicroGamepad:gamepadCopy];
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 postNotificationName:@"GCMicroGamepadDidBecomeCurrentNotification" object:v5[27] userInfo:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 postNotificationName:@"GCMicroGamepadDidBecomeCurrentNotification" object:gamepadCopy[27] userInfo:0];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(gamepadCopy);
   }
 }
 
 - (GCExtendedGamepad)currentExtendedGamepad
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentExtendedGamepad;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentExtendedGamepad;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setCurrentExtendedGamepad:(void *)a1
+- (void)_setCurrentExtendedGamepad:(void *)gamepad
 {
   v4 = a2;
-  if (a1)
+  if (gamepad)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = v5[28];
+    gamepadCopy = gamepad;
+    objc_sync_enter(gamepadCopy);
+    v6 = gamepadCopy[28];
     if (v6 != v4)
     {
       if (v6)
@@ -475,82 +475,82 @@ LABEL_38:
         v7 = _gc_log_session();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentExtendedGamepad:v5];
+          [_GCLegacyDeviceSession _setCurrentExtendedGamepad:gamepadCopy];
         }
 
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 postNotificationName:@"GCExtendedGamepadDidStopBeingCurrentNotification" object:v5[28] userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"GCExtendedGamepadDidStopBeingCurrentNotification" object:gamepadCopy[28] userInfo:0];
       }
 
-      objc_storeStrong(v5 + 28, a2);
-      if (v5[28])
+      objc_storeStrong(gamepadCopy + 28, a2);
+      if (gamepadCopy[28])
       {
         v9 = _gc_log_session();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          [_GCLegacyDeviceSession _setCurrentExtendedGamepad:v5];
+          [_GCLegacyDeviceSession _setCurrentExtendedGamepad:gamepadCopy];
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 postNotificationName:@"GCExtendedGamepadDidBecomeCurrentNotification" object:v5[28] userInfo:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 postNotificationName:@"GCExtendedGamepadDidBecomeCurrentNotification" object:gamepadCopy[28] userInfo:0];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(gamepadCopy);
   }
 }
 
-- (void)becomeCurrentController:(id)a3
+- (void)becomeCurrentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(GCDeviceSession *)self controllers];
-  v6 = [(GCDeviceCollection *)v5 underlyingCollection];
-  v7 = [v6 containsObject:v4];
+  controllerCopy = controller;
+  controllers = [(GCDeviceSession *)self controllers];
+  underlyingCollection = [(GCDeviceCollection *)controllers underlyingCollection];
+  v7 = [underlyingCollection containsObject:controllerCopy];
 
   if (v7)
   {
-    v8 = [(GCDeviceSession *)self targetQueue];
+    targetQueue = [(GCDeviceSession *)self targetQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __50___GCLegacyDeviceSession_becomeCurrentController___block_invoke;
     v9[3] = &unk_1E8418C50;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = controllerCopy;
+    dispatch_async(targetQueue, v9);
   }
 }
 
-- (void)resignCurrentController:(id)a3
+- (void)resignCurrentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(GCDeviceSession *)self targetQueue];
+  controllerCopy = controller;
+  targetQueue = [(GCDeviceSession *)self targetQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50___GCLegacyDeviceSession_resignCurrentController___block_invoke;
   v7[3] = &unk_1E8418C50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = controllerCopy;
+  v6 = controllerCopy;
+  dispatch_async(targetQueue, v7);
 }
 
-- (void)_becomeCurrentMouse:(void *)a1
+- (void)_becomeCurrentMouse:(void *)mouse
 {
-  if (a1)
+  if (mouse)
   {
-    [(_GCLegacyDeviceSession *)a1 _setCurrentMouse:a2];
+    [(_GCLegacyDeviceSession *)mouse _setCurrentMouse:a2];
   }
 }
 
-- (void)_becomeCurrentController:(void *)a1
+- (void)_becomeCurrentController:(void *)controller
 {
   v9 = a2;
-  if (a1)
+  if (controller)
   {
-    [(_GCLegacyDeviceSession *)a1 _setCurrentController:v9];
-    v3 = [OUTLINED_FUNCTION_12_1() extendedGamepad];
+    [(_GCLegacyDeviceSession *)controller _setCurrentController:v9];
+    extendedGamepad = [OUTLINED_FUNCTION_12_1() extendedGamepad];
 
-    if (v3)
+    if (extendedGamepad)
     {
       [OUTLINED_FUNCTION_12_1() extendedGamepad];
       objc_claimAutoreleasedReturnValue();
@@ -558,9 +558,9 @@ LABEL_38:
       [(_GCLegacyDeviceSession *)v4 _setCurrentExtendedGamepad:v5];
     }
 
-    v6 = [OUTLINED_FUNCTION_12_1() microGamepad];
+    microGamepad = [OUTLINED_FUNCTION_12_1() microGamepad];
 
-    if (v6)
+    if (microGamepad)
     {
       [OUTLINED_FUNCTION_12_1() microGamepad];
       objc_claimAutoreleasedReturnValue();
@@ -570,36 +570,36 @@ LABEL_38:
   }
 }
 
-- (void)_resignCurrentController:(void *)a1
+- (void)_resignCurrentController:(void *)controller
 {
   v12 = a2;
-  if (a1)
+  if (controller)
   {
-    [(_GCLegacyDeviceSession *)a1 _mostRecentlyActiveControllerIgnoring:v12];
+    [(_GCLegacyDeviceSession *)controller _mostRecentlyActiveControllerIgnoring:v12];
     objc_claimAutoreleasedReturnValue();
     v4 = OUTLINED_FUNCTION_1_3();
     [(_GCLegacyDeviceSession *)v4 _setCurrentController:v5];
 
-    v6 = [v12 extendedGamepad];
+    extendedGamepad = [v12 extendedGamepad];
 
-    if (v6)
+    if (extendedGamepad)
     {
       [v12 extendedGamepad];
       objc_claimAutoreleasedReturnValue();
       v8 = OUTLINED_FUNCTION_1_3();
       v9 = [_GCLegacyDeviceSession _mostRecentlyActiveExtendedGamepadIgnoring:v8];
-      [(_GCLegacyDeviceSession *)a1 _setCurrentExtendedGamepad:v9];
+      [(_GCLegacyDeviceSession *)controller _setCurrentExtendedGamepad:v9];
     }
 
-    v7 = [v12 microGamepad];
+    microGamepad = [v12 microGamepad];
 
-    if (v7)
+    if (microGamepad)
     {
       [v12 microGamepad];
       objc_claimAutoreleasedReturnValue();
       v10 = OUTLINED_FUNCTION_1_3();
       v11 = [_GCLegacyDeviceSession _mostRecentlyActiveMicroGamepadIgnoring:v10];
-      [(_GCLegacyDeviceSession *)a1 _setCurrentMicroGamepad:v11];
+      [(_GCLegacyDeviceSession *)controller _setCurrentMicroGamepad:v11];
     }
   }
 }

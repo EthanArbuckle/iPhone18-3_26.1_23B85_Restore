@@ -1,30 +1,30 @@
 @interface REMListSortDescriptor
-- (BOOL)isEqual:(id)a3;
-- (REMListSortDescriptor)initWithCoder:(id)a3;
-- (REMListSortDescriptor)initWithType:(int64_t)a3 ascending:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMListSortDescriptor)initWithCoder:(id)coder;
+- (REMListSortDescriptor)initWithType:(int64_t)type ascending:(BOOL)ascending;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMListSortDescriptor
 
-- (REMListSortDescriptor)initWithType:(int64_t)a3 ascending:(BOOL)a4
+- (REMListSortDescriptor)initWithType:(int64_t)type ascending:(BOOL)ascending
 {
   v7.receiver = self;
   v7.super_class = REMListSortDescriptor;
   result = [(REMListSortDescriptor *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_ascending = a4;
+    result->_type = type;
+    result->_ascending = ascending;
   }
 
   return result;
 }
 
-- (REMListSortDescriptor)initWithCoder:(id)a3
+- (REMListSortDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   if (v5 >= 2)
   {
     v6 = os_log_create("com.apple.reminderkit", "default");
@@ -36,35 +36,35 @@
     v5 = 0;
   }
 
-  v7 = -[REMListSortDescriptor initWithType:ascending:](self, "initWithType:ascending:", v5, [v4 decodeBoolForKey:@"ascending"]);
+  v7 = -[REMListSortDescriptor initWithType:ascending:](self, "initWithType:ascending:", v5, [coderCopy decodeBoolForKey:@"ascending"]);
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMListSortDescriptor type](self forKey:{"type"), @"type"}];
-  [v4 encodeBool:-[REMListSortDescriptor ascending](self forKey:{"ascending"), @"ascending"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMListSortDescriptor type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeBool:-[REMListSortDescriptor ascending](self forKey:{"ascending"), @"ascending"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [(REMListSortDescriptor *)v6 type], v7 == [(REMListSortDescriptor *)self type]))
     {
-      v8 = [(REMListSortDescriptor *)v6 ascending];
-      v9 = v8 ^ [(REMListSortDescriptor *)self ascending]^ 1;
+      ascending = [(REMListSortDescriptor *)v6 ascending];
+      v9 = ascending ^ [(REMListSortDescriptor *)self ascending]^ 1;
     }
 
     else

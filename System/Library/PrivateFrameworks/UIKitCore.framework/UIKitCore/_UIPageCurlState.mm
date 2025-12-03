@@ -1,48 +1,48 @@
 @interface _UIPageCurlState
-- (BOOL)isCompatibleWithCurlOfType:(int64_t)a3 inDirection:(int64_t)a4;
+- (BOOL)isCompatibleWithCurlOfType:(int64_t)type inDirection:(int64_t)direction;
 - (CGPoint)initialLocation;
 - (CGPoint)referenceLocation;
 - (CGRect)_pageViewFrame;
 - (UIView)backPageView;
 - (UIView)frontPageView;
-- (_UIPageCurlState)initWithPageCurl:(id)a3 andCurlType:(int64_t)a4 fromLocation:(CGPoint)a5 withReferenceLocation:(CGPoint)a6 inDirection:(int64_t)a7 withView:(id)a8 revealingView:(id)a9 completion:(id)a10 finally:(id)a11;
+- (_UIPageCurlState)initWithPageCurl:(id)curl andCurlType:(int64_t)type fromLocation:(CGPoint)location withReferenceLocation:(CGPoint)referenceLocation inDirection:(int64_t)direction withView:(id)view revealingView:(id)revealingView completion:(id)self0 finally:(id)self1;
 - (int64_t)_effectiveTransitionDirection;
 - (void)addBackPageContent;
 - (void)addFrontPageContent;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)cleanupWithFinishedState:(BOOL)a3 completedState:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)cleanupWithFinishedState:(BOOL)state completedState:(BOOL)completedState;
 - (void)dealloc;
 - (void)finally;
 - (void)invalidatePageCurl;
-- (void)setCurlState:(int64_t)a3 willComplete:(BOOL)a4;
+- (void)setCurlState:(int64_t)state willComplete:(BOOL)complete;
 @end
 
 @implementation _UIPageCurlState
 
-- (_UIPageCurlState)initWithPageCurl:(id)a3 andCurlType:(int64_t)a4 fromLocation:(CGPoint)a5 withReferenceLocation:(CGPoint)a6 inDirection:(int64_t)a7 withView:(id)a8 revealingView:(id)a9 completion:(id)a10 finally:(id)a11
+- (_UIPageCurlState)initWithPageCurl:(id)curl andCurlType:(int64_t)type fromLocation:(CGPoint)location withReferenceLocation:(CGPoint)referenceLocation inDirection:(int64_t)direction withView:(id)view revealingView:(id)revealingView completion:(id)self0 finally:(id)self1
 {
-  y = a6.y;
-  x = a6.x;
-  v17 = a5.y;
-  v18 = a5.x;
-  v33 = a3;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
+  y = referenceLocation.y;
+  x = referenceLocation.x;
+  v17 = location.y;
+  v18 = location.x;
+  curlCopy = curl;
+  viewCopy = view;
+  revealingViewCopy = revealingView;
+  finallyCopy = finally;
   v34.receiver = self;
   v34.super_class = _UIPageCurlState;
-  v25 = [(_UITransitionState *)&v34 initWithTransitionDirection:a7 completion:a10];
+  v25 = [(_UITransitionState *)&v34 initWithTransitionDirection:direction completion:completion];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_pageCurl, a3);
-    v26->_curlType = a4;
+    objc_storeStrong(&v25->_pageCurl, curl);
+    v26->_curlType = type;
     v26->_initialLocation.x = v18;
     v26->_initialLocation.y = v17;
     v26->_referenceLocation.x = x;
     v26->_referenceLocation.y = y;
-    objc_storeStrong(&v26->_frontView, a8);
-    objc_storeStrong(&v26->_backView, a9);
+    objc_storeStrong(&v26->_frontView, view);
+    objc_storeStrong(&v26->_backView, revealingView);
     curlType = v26->_curlType;
     if (curlType == 4 || curlType == 1)
     {
@@ -56,7 +56,7 @@
 
     v26->_curlState = v29;
     v26->_willComplete = 1;
-    v30 = [v24 copy];
+    v30 = [finallyCopy copy];
     finally = v26->_finally;
     v26->_finally = v30;
   }
@@ -80,8 +80,8 @@
 
 - (CGRect)_pageViewFrame
 {
-  v3 = [(_UIPageCurlState *)self pageCurl];
-  [v3 _pageViewFrame:{-[_UITransitionState transitionDirection](self, "transitionDirection") == 1}];
+  pageCurl = [(_UIPageCurlState *)self pageCurl];
+  [pageCurl _pageViewFrame:{-[_UITransitionState transitionDirection](self, "transitionDirection") == 1}];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -118,13 +118,13 @@
       self->_frontPageView = v5;
 
       pageCurl = self->_pageCurl;
-      v8 = [(UIView *)self->_frontPageView layer];
-      [(_UIPageCurl *)pageCurl _ensureCurlFilterOnLayer:v8];
+      layer = [(UIView *)self->_frontPageView layer];
+      [(_UIPageCurl *)pageCurl _ensureCurlFilterOnLayer:layer];
 
       if (self->_backView)
       {
-        v9 = [(UIView *)self->_frontPageView layer];
-        v10 = [v9 valueForKeyPath:@"filters.curl"];
+        layer2 = [(UIView *)self->_frontPageView layer];
+        v10 = [layer2 valueForKeyPath:@"filters.curl"];
         v11 = [MEMORY[0x1E696AD98] numberWithBool:0];
         [v10 setValue:v11 forKey:@"inputBackEnabled"];
       }
@@ -156,25 +156,25 @@
       self->_backPageView = v5;
 
       pageCurl = self->_pageCurl;
-      v8 = [(UIView *)self->_backPageView layer];
-      [(_UIPageCurl *)pageCurl _ensureCurlFilterOnLayer:v8];
+      layer = [(UIView *)self->_backPageView layer];
+      [(_UIPageCurl *)pageCurl _ensureCurlFilterOnLayer:layer];
 
-      v9 = [(UIView *)self->_backPageView layer];
-      v10 = [(UIView *)self->_backPageView layer];
-      v11 = [(_UIPageCurl *)self->_pageCurl _spineLocation];
+      layer2 = [(UIView *)self->_backPageView layer];
+      layer3 = [(UIView *)self->_backPageView layer];
+      _spineLocation = [(_UIPageCurl *)self->_pageCurl _spineLocation];
       memset(&v19, 0, sizeof(v19));
       CATransform3DMakeScale(&v19, -1.0, 1.0, 1.0);
-      if (v11 <= 0x20 && ((1 << v11) & 0x100000104) != 0)
+      if (_spineLocation <= 0x20 && ((1 << _spineLocation) & 0x100000104) != 0)
       {
         v20 = v19;
         CATransform3DRotate(&v21, &v20, 3.14159265, 0.0, 0.0, 1.0);
         v19 = v21;
       }
 
-      [v9 setSublayerTransform:&v19];
+      [layer2 setSublayerTransform:&v19];
 
-      v13 = [(UIView *)self->_backPageView layer];
-      v14 = [v13 valueForKeyPath:@"filters.curl"];
+      layer4 = [(UIView *)self->_backPageView layer];
+      v14 = [layer4 valueForKeyPath:@"filters.curl"];
 
       v15 = [MEMORY[0x1E696AD98] numberWithBool:0];
       [v14 setValue:v15 forKey:@"inputFrontEnabled"];
@@ -197,8 +197,8 @@
   [(UIView *)frontPageView center];
   v6 = v5;
   v8 = v7;
-  v9 = [(UIView *)self->_frontPageView superview];
-  [(UIView *)frontPageView convertPoint:v9 fromView:v6, v8];
+  superview = [(UIView *)self->_frontPageView superview];
+  [(UIView *)frontPageView convertPoint:superview fromView:v6, v8];
   [(UIView *)frontView setCenter:?];
 }
 
@@ -210,12 +210,12 @@
   [(UIView *)backPageView center];
   v6 = v5;
   v8 = v7;
-  v9 = [(UIView *)self->_backPageView superview];
-  [(UIView *)backPageView convertPoint:v9 fromView:v6, v8];
+  superview = [(UIView *)self->_backPageView superview];
+  [(UIView *)backPageView convertPoint:superview fromView:v6, v8];
   [(UIView *)backView setCenter:?];
 }
 
-- (void)setCurlState:(int64_t)a3 willComplete:(BOOL)a4
+- (void)setCurlState:(int64_t)state willComplete:(BOOL)complete
 {
   curlType = self->_curlType;
   if (curlType == 4 || curlType == 1)
@@ -223,18 +223,18 @@
     if (self->_curlState != 1)
     {
 LABEL_9:
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:420 description:{@"Inconsistent curl state: current=%ld, updated=%ld", self->_curlState, a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:420 description:{@"Inconsistent curl state: current=%ld, updated=%ld", self->_curlState, state}];
     }
   }
 
-  else if (self->_curlState > a3)
+  else if (self->_curlState > state)
   {
     goto LABEL_9;
   }
 
-  self->_curlState = a3;
-  self->_willComplete = a4;
+  self->_curlState = state;
+  self->_willComplete = complete;
 }
 
 - (void)finally
@@ -249,19 +249,19 @@ LABEL_9:
   self->_finally = 0;
 }
 
-- (void)cleanupWithFinishedState:(BOOL)a3 completedState:(BOOL)a4
+- (void)cleanupWithFinishedState:(BOOL)state completedState:(BOOL)completedState
 {
   v5.receiver = self;
   v5.super_class = _UIPageCurlState;
-  [(_UITransitionState *)&v5 cleanupWithFinishedState:a3 completedState:a4];
+  [(_UITransitionState *)&v5 cleanupWithFinishedState:state completedState:completedState];
   [(UIView *)self->_frontPageView removeFromSuperview];
   [(UIView *)self->_backPageView removeFromSuperview];
   [(_UIPageCurlState *)self finally];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = a3;
+  stopCopy = stop;
   v7 = self->_completionCount - 1;
   self->_completionCount = v7;
   if (!v7)
@@ -269,10 +269,10 @@ LABEL_9:
     curlState = self->_curlState;
     if ((curlState | 4) == 5)
     {
-      self->_finished = a4;
-      v9 = v6;
-      [(_UIPageCurl *)self->_pageCurl _pageCurlAnimationDidStop:v6 withState:self];
-      v6 = v9;
+      self->_finished = finished;
+      v9 = stopCopy;
+      [(_UIPageCurl *)self->_pageCurl _pageCurlAnimationDidStop:stopCopy withState:self];
+      stopCopy = v9;
     }
 
     else if (curlState >= 3)
@@ -294,20 +294,20 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isCompatibleWithCurlOfType:(int64_t)a3 inDirection:(int64_t)a4
+- (BOOL)isCompatibleWithCurlOfType:(int64_t)type inDirection:(int64_t)direction
 {
   if ([(_UIPageCurlState *)self curlType]!= 1 && [(_UIPageCurlState *)self curlType]!= 4 && [(_UIPageCurlState *)self curlState]!= 5)
   {
     return 0;
   }
 
-  v7 = [(_UIPageCurlState *)self curlType];
-  v8 = v7;
-  if (a3 <= 2 && v7 < 3 || (result = 0, a3 >= 3) && v8 >= 3)
+  curlType = [(_UIPageCurlState *)self curlType];
+  v8 = curlType;
+  if (type <= 2 && curlType < 3 || (result = 0, type >= 3) && v8 >= 3)
   {
     v10.receiver = self;
     v10.super_class = _UIPageCurlState;
-    return [(_UITransitionState *)&v10 isCompatibleWithTransitionInDirection:a4];
+    return [(_UITransitionState *)&v10 isCompatibleWithTransitionInDirection:direction];
   }
 
   return result;

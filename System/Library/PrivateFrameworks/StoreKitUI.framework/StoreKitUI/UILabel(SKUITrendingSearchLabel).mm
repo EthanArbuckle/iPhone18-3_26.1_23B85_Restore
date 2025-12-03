@@ -21,9 +21,9 @@
     }
   }
 
-  v8 = [MEMORY[0x277D75348] _labelColor];
+  _labelColor = [MEMORY[0x277D75348] _labelColor];
 
-  return v8;
+  return _labelColor;
 }
 
 + (id)SKUITrending_defaultTitleFont
@@ -77,21 +77,21 @@ LABEL_5:
   v13 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v13 setNumberOfLines:{objc_msgSend(v4, "numberOfLines")}];
   [v13 setTextAlignment:1];
-  v14 = [v4 style];
-  v15 = SKUIViewElementFontWithStyle(v14);
-  if (!v15)
+  style = [v4 style];
+  sKUITrending_defaultTitleFont = SKUIViewElementFontWithStyle(style);
+  if (!sKUITrending_defaultTitleFont)
   {
-    v15 = [a1 SKUITrending_defaultTitleFont];
+    sKUITrending_defaultTitleFont = [self SKUITrending_defaultTitleFont];
   }
 
-  v16 = SKUIViewElementPlainColorWithStyle(v14, 0);
-  if (!v16)
+  sKUITrending_defaultTitleColor = SKUIViewElementPlainColorWithStyle(style, 0);
+  if (!sKUITrending_defaultTitleColor)
   {
-    v16 = [a1 SKUITrending_defaultTitleColor];
+    sKUITrending_defaultTitleColor = [self SKUITrending_defaultTitleColor];
   }
 
-  v17 = [v4 text];
-  v18 = [v17 attributedStringWithDefaultFont:v15 foregroundColor:v16 style:v14];
+  text = [v4 text];
+  v18 = [text attributedStringWithDefaultFont:sKUITrending_defaultTitleFont foregroundColor:sKUITrending_defaultTitleColor style:style];
 
   [v13 setAttributedText:v18];
 LABEL_12:
@@ -119,13 +119,13 @@ LABEL_12:
   if ([v4 length])
   {
     v13 = objc_alloc_init(MEMORY[0x277D756B8]);
-    v14 = [a1 SKUITrending_defaultTitleFont];
-    [v13 setFont:v14];
+    sKUITrending_defaultTitleFont = [self SKUITrending_defaultTitleFont];
+    [v13 setFont:sKUITrending_defaultTitleFont];
 
     [v13 setText:v4];
     [v13 setTextAlignment:1];
-    v15 = [a1 SKUITrending_defaultTitleColor];
-    [v13 setTextColor:v15];
+    sKUITrending_defaultTitleColor = [self SKUITrending_defaultTitleColor];
+    [v13 setTextColor:sKUITrending_defaultTitleColor];
 
     goto LABEL_9;
   }

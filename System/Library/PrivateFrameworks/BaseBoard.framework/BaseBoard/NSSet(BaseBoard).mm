@@ -12,14 +12,14 @@
 
 - (id)bs_set
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
 
   return v1;
 }
 
 - (BOOL)bs_containsObjectPassingTest:()BaseBoard
 {
-  v3 = BSCollectionFind(a1, a3);
+  v3 = BSCollectionFind(self, a3);
   v4 = v3 != 0;
 
   return v4;
@@ -29,28 +29,28 @@
 {
   v5 = objc_opt_class();
 
-  return BSCollectionFilter(v5, a1, a3);
+  return BSCollectionFilter(v5, self, a3);
 }
 
 - (id)bs_map:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionCompactMap(v5, a1, a3);
+  return BSCollectionCompactMap(v5, self, a3);
 }
 
 - (id)bs_compactMap:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionCompactMap(v5, a1, a3);
+  return BSCollectionCompactMap(v5, self, a3);
 }
 
 - (id)bs_dictionaryByPartitioning:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionPartition(v5, a1, a3);
+  return BSCollectionPartition(v5, self, a3);
 }
 
 - (void)bs_each:()BaseBoard
@@ -62,8 +62,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = a1;
-    v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    selfCopy = self;
+    v5 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
       v6 = *v9;
@@ -74,14 +74,14 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(selfCopy);
           }
 
           (*(a3 + 16))(a3, *(*(&v8 + 1) + 8 * v7++));
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);

@@ -1,5 +1,5 @@
 @interface FigCaptureFlatPlistEnumerator
-- (FigCaptureFlatPlistEnumerator)initWithFlatPlist:(id)a3 offset:(unint64_t)a4 count:(unint64_t)a5;
+- (FigCaptureFlatPlistEnumerator)initWithFlatPlist:(id)plist offset:(unint64_t)offset count:(unint64_t)count;
 - (id)allObjects;
 - (id)nextObject;
 - (void)dealloc;
@@ -31,17 +31,17 @@
   [(FigCaptureFlatPlistEnumerator *)&v3 dealloc];
 }
 
-- (FigCaptureFlatPlistEnumerator)initWithFlatPlist:(id)a3 offset:(unint64_t)a4 count:(unint64_t)a5
+- (FigCaptureFlatPlistEnumerator)initWithFlatPlist:(id)plist offset:(unint64_t)offset count:(unint64_t)count
 {
   v10.receiver = self;
   v10.super_class = FigCaptureFlatPlistEnumerator;
   v8 = [(FigCaptureFlatPlistEnumerator *)&v10 init];
   if (v8)
   {
-    v8->_flatPlist = a3;
-    v8->_bplist = [a3 bplist];
-    v8->_offset = a4;
-    v8->_count = a5;
+    v8->_flatPlist = plist;
+    v8->_bplist = [plist bplist];
+    v8->_offset = offset;
+    v8->_count = count;
     v8->_index = 0;
   }
 

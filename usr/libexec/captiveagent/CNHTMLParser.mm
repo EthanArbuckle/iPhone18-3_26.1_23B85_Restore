@@ -1,60 +1,60 @@
 @interface CNHTMLParser
-+ (id)extractHTMLDocData:(id)a3;
-+ (id)extractXMLDoc:(id)a3;
-+ (id)parserReadyData:(id)a3;
++ (id)extractHTMLDocData:(id)data;
++ (id)extractXMLDoc:(id)doc;
++ (id)parserReadyData:(id)data;
 + (id)supportedHTMLElements;
 + (id)supportedWISPrAuthPollReplyXMLElements;
 + (id)supportedWISPrAuthReplyXMLElements;
 + (id)supportedWISPrRedirectXMLElements;
-- (BOOL)containsAuthPollReplyElement:(id)a3;
-- (BOOL)containsAuthReplyElement:(id)a3;
-- (BOOL)containsHTMLElement:(id)a3;
-- (BOOL)containsRedirectElement:(id)a3;
+- (BOOL)containsAuthPollReplyElement:(id)element;
+- (BOOL)containsAuthReplyElement:(id)element;
+- (BOOL)containsHTMLElement:(id)element;
+- (BOOL)containsRedirectElement:(id)element;
 - (BOOL)foundRequiredAuthPollReplyElements;
 - (BOOL)foundRequiredAuthReplyElements;
 - (BOOL)foundRequiredNonCaptiveHTMLElements;
 - (BOOL)foundRequiredRedirectElements;
-- (CNHTMLParser)initWithData:(id)a3 purpose:(int64_t)a4;
-- (Class)typeForAuthPollReplyElement:(id)a3;
-- (Class)typeForAuthReplyElement:(id)a3;
-- (Class)typeForRedirectElement:(id)a3;
-- (void)parseWithCompletionHandler:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 foundComment:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
+- (CNHTMLParser)initWithData:(id)data purpose:(int64_t)purpose;
+- (Class)typeForAuthPollReplyElement:(id)element;
+- (Class)typeForAuthReplyElement:(id)element;
+- (Class)typeForRedirectElement:(id)element;
+- (void)parseWithCompletionHandler:(id)handler;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser foundComment:(id)comment;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidStartDocument:(id)document;
 @end
 
 @implementation CNHTMLParser
 
-- (CNHTMLParser)initWithData:(id)a3 purpose:(int64_t)a4
+- (CNHTMLParser)initWithData:(id)data purpose:(int64_t)purpose
 {
-  v6 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = CNHTMLParser;
   v7 = [(CNHTMLParser *)&v11 init];
   if (v7)
   {
-    v8 = [[NSXMLParser alloc] initWithData:v6];
+    v8 = [[NSXMLParser alloc] initWithData:dataCopy];
     parser = v7->_parser;
     v7->_parser = v8;
 
     [(NSXMLParser *)v7->_parser setDelegate:v7];
     [(NSXMLParser *)v7->_parser setShouldResolveExternalEntities:0];
-    v7->_purpose = a4;
+    v7->_purpose = purpose;
     *&v7->_foundWISPr = 0;
   }
 
   return v7;
 }
 
-- (void)parseWithCompletionHandler:(id)a3
+- (void)parseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (![(NSXMLParser *)self->_parser parse]&& ![(NSString *)self->_wisprXMLDoc length])
   {
     v10 = sub_100002A8C();
@@ -62,17 +62,17 @@
     v12 = v10;
     if (os_log_type_enabled(v12, v11))
     {
-      v13 = [(NSXMLParser *)self->_parser parserError];
-      v14 = [v13 localizedDescription];
+      parserError = [(NSXMLParser *)self->_parser parserError];
+      localizedDescription = [parserError localizedDescription];
       v40 = 138412546;
-      v41 = self;
+      selfCopy4 = self;
       v42 = 2112;
-      v43 = v14;
+      v43 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v12, v11, "%@ HTML/XML parsing failed, %@", &v40, 0x16u);
     }
 
-    v15 = v4[2];
-    v16 = v4;
+    v15 = handlerCopy[2];
+    v16 = handlerCopy;
     v17 = 5;
     goto LABEL_39;
   }
@@ -82,7 +82,7 @@
   if (os_log_type_enabled(v5, v6))
   {
     v40 = 138412290;
-    v41 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v5, v6, "%@ 1st HTML/XML parsing completed", &v40, 0xCu);
   }
 
@@ -97,7 +97,7 @@ LABEL_19:
       {
         if ([(NSMutableDictionary *)wisprDictionary count]&& [(CNHTMLParser *)self foundRequiredAuthReplyElements])
         {
-          (v4[2])(v4, 3, self->_wisprDictionary);
+          (handlerCopy[2])(handlerCopy, 3, self->_wisprDictionary);
           goto LABEL_55;
         }
       }
@@ -110,7 +110,7 @@ LABEL_19:
       {
         if ([(NSMutableDictionary *)v19 count]&& [(CNHTMLParser *)self foundRequiredAuthPollReplyElements])
         {
-          (v4[2])(v4, 4, self->_wisprDictionary);
+          (handlerCopy[2])(handlerCopy, 4, self->_wisprDictionary);
           goto LABEL_55;
         }
       }
@@ -134,16 +134,16 @@ LABEL_19:
       [(NSXMLParser *)self->_parser setDelegate:self];
       [(NSXMLParser *)self->_parser setShouldResolveExternalEntities:0];
       [(NSXMLParser *)self->_parser setShouldProcessNamespaces:0];
-      v27 = [(NSXMLParser *)self->_parser parse];
+      parse = [(NSXMLParser *)self->_parser parse];
       v28 = sub_100002A8C();
-      if (v27)
+      if (parse)
       {
         v29 = _SC_syslog_os_log_mapping();
         if (os_log_type_enabled(v28, v29))
         {
           v30 = self->_wisprDictionary;
           v40 = 138412546;
-          v41 = self;
+          selfCopy4 = self;
           v42 = 2112;
           v43 = v30;
           _os_log_impl(&_mh_execute_header, v28, v29, "%@ XML parsing completed, WISPr dictionary: %@", &v40, 0x16u);
@@ -157,7 +157,7 @@ LABEL_19:
           {
             if ([(CNHTMLParser *)self foundRequiredRedirectElements])
             {
-              (v4[2])(v4, 2, self->_wisprDictionary);
+              (handlerCopy[2])(handlerCopy, 2, self->_wisprDictionary);
 LABEL_54:
 
               goto LABEL_55;
@@ -170,7 +170,7 @@ LABEL_54:
           {
             if ([(CNHTMLParser *)self foundRequiredAuthReplyElements])
             {
-              (v4[2])(v4, 3, self->_wisprDictionary);
+              (handlerCopy[2])(handlerCopy, 3, self->_wisprDictionary);
               goto LABEL_54;
             }
 
@@ -179,13 +179,13 @@ LABEL_54:
 
           if (v32 == 2 && [(CNHTMLParser *)self foundRequiredAuthPollReplyElements])
           {
-            (v4[2])(v4, 4, self->_wisprDictionary);
+            (handlerCopy[2])(handlerCopy, 4, self->_wisprDictionary);
             goto LABEL_54;
           }
         }
 
-        v37 = v4[2];
-        v38 = v4;
+        v37 = handlerCopy[2];
+        v38 = handlerCopy;
         v39 = 0;
       }
 
@@ -195,17 +195,17 @@ LABEL_54:
         v34 = v28;
         if (os_log_type_enabled(v34, v33))
         {
-          v35 = [(NSXMLParser *)self->_parser parserError];
-          v36 = [v35 localizedDescription];
+          parserError2 = [(NSXMLParser *)self->_parser parserError];
+          localizedDescription2 = [parserError2 localizedDescription];
           v40 = 138412546;
-          v41 = self;
+          selfCopy4 = self;
           v42 = 2112;
-          v43 = v36;
+          v43 = localizedDescription2;
           _os_log_impl(&_mh_execute_header, v34, v33, "%@ WISPr XML parsing failed, %@", &v40, 0x16u);
         }
 
-        v37 = v4[2];
-        v38 = v4;
+        v37 = handlerCopy[2];
+        v38 = handlerCopy;
         v39 = 5;
       }
 
@@ -213,8 +213,8 @@ LABEL_54:
       goto LABEL_54;
     }
 
-    v15 = v4[2];
-    v16 = v4;
+    v15 = handlerCopy[2];
+    v16 = handlerCopy;
     v17 = 0;
 LABEL_39:
     v15(v16, v17, 0);
@@ -230,7 +230,7 @@ LABEL_39:
       v9 = self->_wisprDictionary;
       if (v9 && [(NSMutableDictionary *)v9 count]&& [(CNHTMLParser *)self foundRequiredRedirectElements])
       {
-        (v4[2])(v4, 2, self->_wisprDictionary);
+        (handlerCopy[2])(handlerCopy, 2, self->_wisprDictionary);
         goto LABEL_55;
       }
 
@@ -240,7 +240,7 @@ LABEL_39:
     goto LABEL_19;
   }
 
-  (v4[2])(v4, 1, self->_htmlDictionary);
+  (handlerCopy[2])(handlerCopy, 1, self->_htmlDictionary);
 LABEL_55:
 }
 
@@ -256,27 +256,27 @@ LABEL_55:
   return v3;
 }
 
-- (BOOL)containsHTMLElement:(id)a3
+- (BOOL)containsHTMLElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [objc_opt_class() supportedHTMLElements];
+  supportedHTMLElements = [objc_opt_class() supportedHTMLElements];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A29C;
   v7[3] = &unk_10001C9A0;
-  v5 = v3;
+  v5 = elementCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [supportedHTMLElements enumerateObjectsUsingBlock:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(supportedHTMLElements) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return supportedHTMLElements;
 }
 
 - (BOOL)foundRequiredNonCaptiveHTMLElements
@@ -285,44 +285,44 @@ LABEL_55:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v3 = [objc_opt_class() supportedHTMLElements];
+  supportedHTMLElements = [objc_opt_class() supportedHTMLElements];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000A4D4;
   v8[3] = &unk_10001C9A0;
   v8[4] = self;
   v8[5] = &v9;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [supportedHTMLElements enumerateObjectsUsingBlock:v8];
 
-  LODWORD(v3) = *(v10 + 24);
-  if (v3 == 1)
+  LODWORD(supportedHTMLElements) = *(v10 + 24);
+  if (supportedHTMLElements == 1)
   {
     v4 = [(NSMutableDictionary *)self->_htmlDictionary objectForKeyedSubscript:@"TITLE"];
     v5 = [v4 caseInsensitiveCompare:@"Success"] == 0;
 
     if (v5)
     {
-      LOBYTE(v3) = *(v10 + 24);
+      LOBYTE(supportedHTMLElements) = *(v10 + 24);
     }
 
     else
     {
-      v3 = sub_100002A8C();
+      supportedHTMLElements = sub_100002A8C();
       v6 = _SC_syslog_os_log_mapping();
-      if (os_log_type_enabled(v3, v6))
+      if (os_log_type_enabled(supportedHTMLElements, v6))
       {
         *buf = 138412290;
-        v14 = self;
-        _os_log_impl(&_mh_execute_header, v3, v6, "%@ parsed and expected values failed to match for required HTML elements", buf, 0xCu);
+        selfCopy = self;
+        _os_log_impl(&_mh_execute_header, supportedHTMLElements, v6, "%@ parsed and expected values failed to match for required HTML elements", buf, 0xCu);
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(supportedHTMLElements) = 0;
       *(v10 + 24) = 0;
     }
   }
 
   _Block_object_dispose(&v9, 8);
-  return v3 & 1;
+  return supportedHTMLElements & 1;
 }
 
 + (id)supportedWISPrRedirectXMLElements
@@ -337,27 +337,27 @@ LABEL_55:
   return v3;
 }
 
-- (BOOL)containsRedirectElement:(id)a3
+- (BOOL)containsRedirectElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [objc_opt_class() supportedWISPrRedirectXMLElements];
+  supportedWISPrRedirectXMLElements = [objc_opt_class() supportedWISPrRedirectXMLElements];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000AB64;
   v7[3] = &unk_10001C9A0;
-  v5 = v3;
+  v5 = elementCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [supportedWISPrRedirectXMLElements enumerateObjectsUsingBlock:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(supportedWISPrRedirectXMLElements) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return supportedWISPrRedirectXMLElements;
 }
 
 - (BOOL)foundRequiredRedirectElements
@@ -366,37 +366,37 @@ LABEL_55:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [objc_opt_class() supportedWISPrRedirectXMLElements];
+  supportedWISPrRedirectXMLElements = [objc_opt_class() supportedWISPrRedirectXMLElements];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000ACA4;
   v5[3] = &unk_10001C9A0;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [supportedWISPrRedirectXMLElements enumerateObjectsUsingBlock:v5];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return self;
 }
 
-- (Class)typeForRedirectElement:(id)a3
+- (Class)typeForRedirectElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
   v16 = objc_opt_class();
-  v5 = [objc_opt_class() supportedWISPrRedirectXMLElements];
+  supportedWISPrRedirectXMLElements = [objc_opt_class() supportedWISPrRedirectXMLElements];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000AF90;
   v9[3] = &unk_10001C9E8;
-  v6 = v4;
-  v11 = self;
+  v6 = elementCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [supportedWISPrRedirectXMLElements enumerateObjectsUsingBlock:v9];
 
   v7 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -416,27 +416,27 @@ LABEL_55:
   return v3;
 }
 
-- (BOOL)containsAuthReplyElement:(id)a3
+- (BOOL)containsAuthReplyElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
+  supportedWISPrAuthReplyXMLElements = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B464;
   v7[3] = &unk_10001C9A0;
-  v5 = v3;
+  v5 = elementCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [supportedWISPrAuthReplyXMLElements enumerateObjectsUsingBlock:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(supportedWISPrAuthReplyXMLElements) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return supportedWISPrAuthReplyXMLElements;
 }
 
 - (BOOL)foundRequiredAuthReplyElements
@@ -445,37 +445,37 @@ LABEL_55:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
+  supportedWISPrAuthReplyXMLElements = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000B5A4;
   v5[3] = &unk_10001C9A0;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [supportedWISPrAuthReplyXMLElements enumerateObjectsUsingBlock:v5];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return self;
 }
 
-- (Class)typeForAuthReplyElement:(id)a3
+- (Class)typeForAuthReplyElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
   v16 = objc_opt_class();
-  v5 = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
+  supportedWISPrAuthReplyXMLElements = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000B890;
   v9[3] = &unk_10001C9E8;
-  v6 = v4;
-  v11 = self;
+  v6 = elementCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [supportedWISPrAuthReplyXMLElements enumerateObjectsUsingBlock:v9];
 
   v7 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -495,27 +495,27 @@ LABEL_55:
   return v3;
 }
 
-- (BOOL)containsAuthPollReplyElement:(id)a3
+- (BOOL)containsAuthPollReplyElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
+  supportedWISPrAuthPollReplyXMLElements = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000BD64;
   v7[3] = &unk_10001C9A0;
-  v5 = v3;
+  v5 = elementCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [supportedWISPrAuthPollReplyXMLElements enumerateObjectsUsingBlock:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(supportedWISPrAuthPollReplyXMLElements) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return supportedWISPrAuthPollReplyXMLElements;
 }
 
 - (BOOL)foundRequiredAuthPollReplyElements
@@ -524,37 +524,37 @@ LABEL_55:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
+  supportedWISPrAuthPollReplyXMLElements = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000BEA4;
   v5[3] = &unk_10001C9A0;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [supportedWISPrAuthPollReplyXMLElements enumerateObjectsUsingBlock:v5];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return self;
 }
 
-- (Class)typeForAuthPollReplyElement:(id)a3
+- (Class)typeForAuthPollReplyElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
   v16 = objc_opt_class();
-  v5 = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
+  supportedWISPrAuthPollReplyXMLElements = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000C190;
   v9[3] = &unk_10001C9E8;
-  v6 = v4;
-  v11 = self;
+  v6 = elementCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [supportedWISPrAuthPollReplyXMLElements enumerateObjectsUsingBlock:v9];
 
   v7 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -562,60 +562,60 @@ LABEL_55:
   return v7;
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
   v4 = sub_100002A8C();
   v5 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v4, v5))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, v5, "%@ parserDidStartDocument", &v6, 0xCu);
   }
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
   v4 = sub_100002A8C();
   v5 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v4, v5))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, v5, "%@ parserDidEndDocument", &v6, 0xCu);
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v9 = a4;
+  elementCopy = element;
   v10 = sub_100002A8C();
   v11 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v10, v11))
   {
     v14 = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v9;
+    v17 = elementCopy;
     _os_log_impl(&_mh_execute_header, v10, v11, "%@ didStartElement: element:[%@]", &v14, 0x16u);
   }
 
-  if ([v9 length])
+  if ([elementCopy length])
   {
     purpose = self->_purpose;
     if (!purpose)
     {
-      if (![(CNHTMLParser *)self containsHTMLElement:v9]&& ![(CNHTMLParser *)self containsRedirectElement:v9])
+      if (![(CNHTMLParser *)self containsHTMLElement:elementCopy]&& ![(CNHTMLParser *)self containsRedirectElement:elementCopy])
       {
         goto LABEL_32;
       }
 
-      if (!self->_foundHTML && ![v9 caseInsensitiveCompare:@"HTML"])
+      if (!self->_foundHTML && ![elementCopy caseInsensitiveCompare:@"HTML"])
       {
         goto LABEL_31;
       }
 
-      if (!self->_foundWISPr && -[NSString isEqualToString:](self->_currentElementName, "isEqualToString:", off_100022450) && [v9 isEqualToString:off_100022458])
+      if (!self->_foundWISPr && -[NSString isEqualToString:](self->_currentElementName, "isEqualToString:", off_100022450) && [elementCopy isEqualToString:off_100022458])
       {
         goto LABEL_29;
       }
@@ -625,17 +625,17 @@ LABEL_55:
 
     if (purpose == 1)
     {
-      if (![(CNHTMLParser *)self containsHTMLElement:v9]&& ![(CNHTMLParser *)self containsAuthReplyElement:v9])
+      if (![(CNHTMLParser *)self containsHTMLElement:elementCopy]&& ![(CNHTMLParser *)self containsAuthReplyElement:elementCopy])
       {
         goto LABEL_32;
       }
 
-      if (!self->_foundHTML && ![v9 caseInsensitiveCompare:@"HTML"])
+      if (!self->_foundHTML && ![elementCopy caseInsensitiveCompare:@"HTML"])
       {
         goto LABEL_31;
       }
 
-      if (!self->_foundWISPr && -[NSString isEqualToString:](self->_currentElementName, "isEqualToString:", off_100022450) && [v9 isEqualToString:off_1000224C8])
+      if (!self->_foundWISPr && -[NSString isEqualToString:](self->_currentElementName, "isEqualToString:", off_100022450) && [elementCopy isEqualToString:off_1000224C8])
       {
         goto LABEL_29;
       }
@@ -646,11 +646,11 @@ LABEL_55:
       goto LABEL_30;
     }
 
-    if ([(CNHTMLParser *)self containsHTMLElement:v9]|| [(CNHTMLParser *)self containsAuthPollReplyElement:v9])
+    if ([(CNHTMLParser *)self containsHTMLElement:elementCopy]|| [(CNHTMLParser *)self containsAuthPollReplyElement:elementCopy])
     {
-      if (self->_foundHTML || [v9 caseInsensitiveCompare:@"HTML"])
+      if (self->_foundHTML || [elementCopy caseInsensitiveCompare:@"HTML"])
       {
-        if (!self->_foundWISPr && -[NSString isEqualToString:](self->_currentElementName, "isEqualToString:", off_100022450) && [v9 isEqualToString:off_1000224D0])
+        if (!self->_foundWISPr && -[NSString isEqualToString:](self->_currentElementName, "isEqualToString:", off_100022450) && [elementCopy isEqualToString:off_1000224D0])
         {
 LABEL_29:
           self->_foundWISPr = 1;
@@ -658,7 +658,7 @@ LABEL_29:
         }
 
 LABEL_30:
-        objc_storeStrong(&self->_currentElementName, a4);
+        objc_storeStrong(&self->_currentElementName, element);
         currentElementValue = self->_currentElementValue;
         self->_currentElementValue = 0;
 
@@ -673,17 +673,17 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = a4;
+  elementCopy = element;
   v8 = sub_100002A8C();
   v9 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v8, v9))
   {
     v37 = 138412546;
-    v38 = self;
+    selfCopy = self;
     v39 = 2112;
-    v40 = v7;
+    v40 = elementCopy;
     _os_log_impl(&_mh_execute_header, v8, v9, "%@ didEndElement: element:[%@]", &v37, 0x16u);
   }
 
@@ -714,7 +714,7 @@ LABEL_32:
 
     if (self->_wisprDictionary)
     {
-      v16 = [(CNHTMLParser *)self typeForRedirectElement:v7];
+      v16 = [(CNHTMLParser *)self typeForRedirectElement:elementCopy];
       if (v16 != objc_opt_class())
       {
         if (v16 == objc_opt_class())
@@ -766,7 +766,7 @@ LABEL_25:
 
     if (self->_wisprDictionary)
     {
-      v24 = [(CNHTMLParser *)self typeForAuthReplyElement:v7];
+      v24 = [(CNHTMLParser *)self typeForAuthReplyElement:elementCopy];
       if (v24 != objc_opt_class())
       {
         if (v24 == objc_opt_class())
@@ -797,7 +797,7 @@ LABEL_41:
 
           if (self->_wisprDictionary)
           {
-            v32 = [(CNHTMLParser *)self typeForAuthPollReplyElement:v7];
+            v32 = [(CNHTMLParser *)self typeForAuthPollReplyElement:elementCopy];
             if (v32 != objc_opt_class())
             {
               if (v32 == objc_opt_class())
@@ -853,17 +853,17 @@ LABEL_57:
 LABEL_58:
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
+  charactersCopy = characters;
   v6 = sub_100002A8C();
   v7 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v6, v7))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v5;
+    v14 = charactersCopy;
     _os_log_impl(&_mh_execute_header, v6, v7, "%@ foundCharacters:[%@]", &v11, 0x16u);
   }
 
@@ -879,49 +879,49 @@ LABEL_58:
       currentElementValue = self->_currentElementValue;
     }
 
-    [(NSMutableString *)currentElementValue appendString:v5];
+    [(NSMutableString *)currentElementValue appendString:charactersCopy];
   }
 }
 
-+ (id)extractXMLDoc:(id)a3
++ (id)extractXMLDoc:(id)doc
 {
-  v3 = a3;
-  v4 = [[NSScanner alloc] initWithString:v3];
+  docCopy = doc;
+  v4 = [[NSScanner alloc] initWithString:docCopy];
 
   [v4 setCharactersToBeSkipped:0];
   if (![v4 scanUpToString:@"<WISPAccessGatewayParam" intoString:0])
   {
 LABEL_9:
-    v5 = 0;
+    scanLocation = 0;
     goto LABEL_10;
   }
 
-  v5 = [v4 scanLocation];
-  v6 = [v4 scanLocation];
-  v7 = [v4 string];
-  v8 = [v7 length];
+  scanLocation = [v4 scanLocation];
+  scanLocation2 = [v4 scanLocation];
+  string = [v4 string];
+  v8 = [string length];
 
-  if (v6 < v8)
+  if (scanLocation2 < v8)
   {
-    v5 = [v4 scanLocation];
+    scanLocation = [v4 scanLocation];
   }
 
-  if (v5)
+  if (scanLocation)
   {
     if ([v4 scanUpToString:@"</WISPAccessGatewayParam>" intoString:0])
     {
-      v9 = [v4 scanLocation];
-      v10 = [v4 string];
-      v11 = [v10 length];
+      scanLocation3 = [v4 scanLocation];
+      string2 = [v4 string];
+      v11 = [string2 length];
 
-      if (v9 < v11)
+      if (scanLocation3 < v11)
       {
-        v12 = [v4 scanLocation];
-        v13 = &v12[[@"</WISPAccessGatewayParam>" length]];
+        scanLocation4 = [v4 scanLocation];
+        v13 = &scanLocation4[[@"</WISPAccessGatewayParam>" length]];
         if (v13)
         {
-          v14 = [v4 string];
-          v5 = [v14 substringWithRange:{v5, v13 - v5}];
+          string3 = [v4 string];
+          scanLocation = [string3 substringWithRange:{scanLocation, v13 - scanLocation}];
 
           goto LABEL_10;
         }
@@ -933,13 +933,13 @@ LABEL_9:
 
 LABEL_10:
 
-  return v5;
+  return scanLocation;
 }
 
-+ (id)extractHTMLDocData:(id)a3
++ (id)extractHTMLDocData:(id)data
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initWithData:v3 encoding:4];
+  dataCopy = data;
+  v4 = [[NSString alloc] initWithData:dataCopy encoding:4];
   v5 = [[NSScanner alloc] initWithString:v4];
   [v5 setCharactersToBeSkipped:0];
   if (![v5 scanUpToString:@"<html" intoString:0])
@@ -947,38 +947,38 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v6 = [v5 scanLocation];
-  v7 = [v5 string];
-  v8 = [v7 length];
+  scanLocation = [v5 scanLocation];
+  string = [v5 string];
+  v8 = [string length];
 
-  if (v6 >= v8)
+  if (scanLocation >= v8)
   {
     goto LABEL_9;
   }
 
-  v9 = [v5 scanLocation];
-  if (!v9)
+  scanLocation2 = [v5 scanLocation];
+  if (!scanLocation2)
   {
     goto LABEL_9;
   }
 
-  v10 = v9;
+  v10 = scanLocation2;
   if (![v5 scanUpToString:@"</html>" intoString:0])
   {
     goto LABEL_9;
   }
 
-  v11 = [v5 scanLocation];
-  v12 = [v5 string];
-  v13 = [v12 length];
+  scanLocation3 = [v5 scanLocation];
+  string2 = [v5 string];
+  v13 = [string2 length];
 
-  if (v11 >= v13)
+  if (scanLocation3 >= v13)
   {
     goto LABEL_9;
   }
 
-  v14 = [v5 scanLocation];
-  v15 = &v14[[@"</html>" length]];
+  scanLocation4 = [v5 scanLocation];
+  v15 = &scanLocation4[[@"</html>" length]];
   if (v15 && ([v5 string], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "substringWithRange:", v10, v15 - v10), v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
   {
     v18 = [v17 dataUsingEncoding:4];
@@ -987,16 +987,16 @@ LABEL_10:
   else
   {
 LABEL_9:
-    v18 = v3;
+    v18 = dataCopy;
   }
 
   return v18;
 }
 
-+ (id)parserReadyData:(id)a3
++ (id)parserReadyData:(id)data
 {
-  v3 = a3;
-  v4 = [CNHTMLParser extractHTMLDocData:v3];
+  dataCopy = data;
+  v4 = [CNHTMLParser extractHTMLDocData:dataCopy];
   v5 = [[NSString alloc] initWithData:v4 encoding:4];
   v6 = [CNHTMLParser extractXMLDoc:v5];
   if (v6)
@@ -1006,7 +1006,7 @@ LABEL_9:
 
   else
   {
-    v8 = [[NSString alloc] initWithData:v3 encoding:4];
+    v8 = [[NSString alloc] initWithData:dataCopy encoding:4];
 
     v7 = [CNHTMLParser extractXMLDoc:v8];
     v5 = v8;
@@ -1044,18 +1044,18 @@ LABEL_9:
   return v11;
 }
 
-- (void)parser:(id)a3 foundComment:(id)a4
+- (void)parser:(id)parser foundComment:(id)comment
 {
-  v6 = a3;
-  v7 = a4;
+  parserCopy = parser;
+  commentCopy = comment;
   v8 = sub_100002A8C();
   v9 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v8, v9))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v7;
+    v30 = commentCopy;
     _os_log_impl(&_mh_execute_header, v8, v9, "%@ foundComment:[%@]", buf, 0x16u);
   }
 
@@ -1064,29 +1064,29 @@ LABEL_9:
     purpose = self->_purpose;
     if (purpose == 2)
     {
-      v11 = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
+      supportedWISPrAuthPollReplyXMLElements = [objc_opt_class() supportedWISPrAuthPollReplyXMLElements];
     }
 
     else if (purpose == 1)
     {
-      v11 = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
+      supportedWISPrAuthPollReplyXMLElements = [objc_opt_class() supportedWISPrAuthReplyXMLElements];
     }
 
     else if (purpose)
     {
-      v11 = 0;
+      supportedWISPrAuthPollReplyXMLElements = 0;
     }
 
     else
     {
-      v11 = [objc_opt_class() supportedWISPrRedirectXMLElements];
+      supportedWISPrAuthPollReplyXMLElements = [objc_opt_class() supportedWISPrRedirectXMLElements];
     }
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v11;
+    v12 = supportedWISPrAuthPollReplyXMLElements;
     v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
@@ -1104,8 +1104,8 @@ LABEL_9:
           v17 = *(*(&v22 + 1) + 8 * i);
           if ([v17 required])
           {
-            v18 = [v17 elementName];
-            v19 = [v7 containsString:v18];
+            elementName = [v17 elementName];
+            v19 = [commentCopy containsString:elementName];
 
             if (!v19)
             {
@@ -1125,20 +1125,20 @@ LABEL_9:
       }
     }
 
-    v20 = [CNHTMLParser extractXMLDoc:v7];
+    v20 = [CNHTMLParser extractXMLDoc:commentCopy];
     wisprXMLDoc = self->_wisprXMLDoc;
     self->_wisprXMLDoc = v20;
 
-    [v6 abortParsing];
+    [parserCopy abortParsing];
 LABEL_23:
   }
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v5 = a4;
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:NSXMLParserErrorDomain] && objc_msgSend(v5, "code") == 512)
+  occurredCopy = occurred;
+  domain = [occurredCopy domain];
+  if ([domain isEqualToString:NSXMLParserErrorDomain] && objc_msgSend(occurredCopy, "code") == 512)
   {
     v7 = [(NSString *)self->_wisprXMLDoc length];
 
@@ -1157,28 +1157,28 @@ LABEL_23:
   if (os_log_type_enabled(v8, v9))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v5;
+    v13 = occurredCopy;
     _os_log_impl(&_mh_execute_header, v8, v9, "%@ parseErrorOccurred:[%@]", &v10, 0x16u);
   }
 
 LABEL_9:
 }
 
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred
 {
-  v5 = a4;
+  occurredCopy = occurred;
   v6 = sub_100002A8C();
   v7 = _SC_syslog_os_log_mapping();
   v8 = v6;
   if (os_log_type_enabled(v8, v7))
   {
-    v9 = [v5 localizedDescription];
+    localizedDescription = [occurredCopy localizedDescription];
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v9;
+    v13 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v8, v7, "%@ validationErrorOccurred:[%@]", &v10, 0x16u);
   }
 }

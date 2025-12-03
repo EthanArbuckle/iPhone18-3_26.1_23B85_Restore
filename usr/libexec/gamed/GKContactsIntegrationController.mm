@@ -3,53 +3,53 @@
 - (BOOL)contactsSyncInProgress;
 - (BOOL)idsSyncInProgress;
 - (BOOL)isAlreadyWaitingOnLimitTimer;
-- (BOOL)isEligibleAllowingIneligibility:(unint64_t)a3 usingSettings:(id)a4;
-- (BOOL)isEligibleAllowingIneligibility:(unint64_t)a3 usingSettings:(id)a4 withContext:(id)a5;
+- (BOOL)isEligibleAllowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings;
+- (BOOL)isEligibleAllowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings withContext:(id)context;
 - (GKContactsIntegrationController)init;
-- (GKContactsIntegrationController)initWithNotificationCenter:(id)a3 connectionManager:(id)a4 playerProvider:(id)a5 eligibilityChecker:(id)a6 metricsHandler:(id)a7 contactStore:(id)a8 migrator:(id)a9;
-- (id)contactAssociationIDMapForContactAssociationIDs:(id)a3 withContext:(id)a4;
-- (id)contactAssociationIDMapForHandles:(id)a3 withContext:(id)a4;
-- (id)contactInfosForHandles:(id)a3 withContext:(id)a4;
-- (id)createFriendAssociationIDMapWithIDs:(id)a3 withContext:(id)a4;
-- (id)createRelationshipWithHandle:(id)a3 contactAssociationID:(id)a4 usingFriendMap:(id)a5 withContext:(id)a6;
-- (id)expirationPredicateForCohort:(int)a3 matchingHandles:(id)a4 usingSettings:(id)a5;
-- (id)expiredIDSEntriesWithFetchLimit:(int64_t)a3 matchingHandles:(id)a4 usingSettings:(id)a5 withContext:(id)a6;
-- (id)filterForContactIDsSupportingFriendingViaPushFromContactIDs:(id)a3 withContext:(id)a4;
-- (id)getContactsForContactAssociationIDs:(id)a3 withContext:(id)a4;
-- (id)handleMapForContactAssociationIDs:(id)a3 withContext:(id)a4;
-- (id)handlesExcludingNoneExpiredFromHandles:(id)a3 isAlreadyWaitingOnLimitTimer:(BOOL)a4 settings:(id)a5 moc:(id)a6 error:(id *)a7;
+- (GKContactsIntegrationController)initWithNotificationCenter:(id)center connectionManager:(id)manager playerProvider:(id)provider eligibilityChecker:(id)checker metricsHandler:(id)handler contactStore:(id)store migrator:(id)migrator;
+- (id)contactAssociationIDMapForContactAssociationIDs:(id)ds withContext:(id)context;
+- (id)contactAssociationIDMapForHandles:(id)handles withContext:(id)context;
+- (id)contactInfosForHandles:(id)handles withContext:(id)context;
+- (id)createFriendAssociationIDMapWithIDs:(id)ds withContext:(id)context;
+- (id)createRelationshipWithHandle:(id)handle contactAssociationID:(id)d usingFriendMap:(id)map withContext:(id)context;
+- (id)expirationPredicateForCohort:(int)cohort matchingHandles:(id)handles usingSettings:(id)settings;
+- (id)expiredIDSEntriesWithFetchLimit:(int64_t)limit matchingHandles:(id)handles usingSettings:(id)settings withContext:(id)context;
+- (id)filterForContactIDsSupportingFriendingViaPushFromContactIDs:(id)ds withContext:(id)context;
+- (id)getContactsForContactAssociationIDs:(id)ds withContext:(id)context;
+- (id)handleMapForContactAssociationIDs:(id)ds withContext:(id)context;
+- (id)handlesExcludingNoneExpiredFromHandles:(id)handles isAlreadyWaitingOnLimitTimer:(BOOL)timer settings:(id)settings moc:(id)moc error:(id *)error;
 - (id)relationshipForMeContact;
-- (id)relationshipsForHandles:(id)a3 contactAssociationIDMap:(id)a4 withContext:(id)a5;
-- (unint64_t)calculateRemainingIDSHandleQueryCountUsingSettings:(id)a3 withContext:(id)a4;
+- (id)relationshipsForHandles:(id)handles contactAssociationIDMap:(id)map withContext:(id)context;
+- (unint64_t)calculateRemainingIDSHandleQueryCountUsingSettings:(id)settings withContext:(id)context;
 - (unint64_t)syncState;
-- (void)clearCachesWithCompletionHandler:(id)a3;
-- (void)connectionManagerReady:(id)a3;
-- (void)contactsChanged:(id)a3;
-- (void)fetchIDSDataAndUpdateCacheForHandles:(id)a3 allowingIneligibility:(unint64_t)a4 usingSettings:(id)a5 withDelay:(BOOL)a6 completion:(id)a7;
-- (void)fetchIDSDataAndUpdateCacheForHandles:(id)a3 rangeToFetch:(_NSRange)a4 maxBatchSize:(unint64_t)a5 numberOfHandlesLeft:(int64_t)a6 allowingIneligibility:(unint64_t)a7 settings:(id)a8 withDelay:(BOOL)a9 completion:(id)a10;
-- (void)fetchMessageTransportV2AvailabilityForUnprefixedHandles:(id)a3 completion:(id)a4;
-- (void)getRelationshipsForContacts:(id)a3 updateExistingContactEntries:(BOOL)a4 completionHandler:(id)a5;
-- (void)handleIDSFetchResult:(id)a3 handlesToQuery:(id)a4 rangeToFetch:(_NSRange)a5 maxBatchSize:(unint64_t)a6 numberOfHandlesLeft:(int64_t)a7 allowingIneligibility:(unint64_t)a8 settings:(id)a9 withDelay:(BOOL)a10 completion:(id)a11;
+- (void)clearCachesWithCompletionHandler:(id)handler;
+- (void)connectionManagerReady:(id)ready;
+- (void)contactsChanged:(id)changed;
+- (void)fetchIDSDataAndUpdateCacheForHandles:(id)handles allowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings withDelay:(BOOL)delay completion:(id)completion;
+- (void)fetchIDSDataAndUpdateCacheForHandles:(id)handles rangeToFetch:(_NSRange)fetch maxBatchSize:(unint64_t)size numberOfHandlesLeft:(int64_t)left allowingIneligibility:(unint64_t)ineligibility settings:(id)settings withDelay:(BOOL)delay completion:(id)self0;
+- (void)fetchMessageTransportV2AvailabilityForUnprefixedHandles:(id)handles completion:(id)completion;
+- (void)getRelationshipsForContacts:(id)contacts updateExistingContactEntries:(BOOL)entries completionHandler:(id)handler;
+- (void)handleIDSFetchResult:(id)result handlesToQuery:(id)query rangeToFetch:(_NSRange)fetch maxBatchSize:(unint64_t)size numberOfHandlesLeft:(int64_t)left allowingIneligibility:(unint64_t)ineligibility settings:(id)settings withDelay:(BOOL)self0 completion:(id)self1;
 - (void)handleReachabilityChanged;
-- (void)logStateWithMoc:(id)a3 syncState:(unint64_t)a4;
-- (void)playerAuthenticated:(id)a3;
-- (void)populateContactInfoForProfiles:(id)a3 playerIdToContactAssociationIdMap:(id)a4 withContext:(id)a5;
-- (void)populateContactInfoForProfiles:(id)a3 replyOnQueue:(id)a4 withCompletionHandler:(id)a5;
-- (void)populateContactInfoForProfiles:(id)a3 withContext:(id)a4;
-- (void)reachabilityChanged:(id)a3;
-- (void)refetchIDSHandlesInPriorityOrderWithCompletion:(id)a3;
-- (void)relationshipsForContacts:(id)a3 updateExistingContactEntries:(BOOL)a4 allowingIneligibility:(unint64_t)a5 usingSettings:(id)a6 meContactID:(id)a7 completionHandler:(id)a8;
-- (void)setupIDSCacheUpdateTimerWithStartTime:(double)a3;
-- (void)startContactsSyncAllowingChangeHistory:(BOOL)a3 completion:(id)a4;
-- (void)startIDSSyncWithCompletion:(id)a3;
-- (void)startWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)stateWithCompletionHandler:(id)a3;
+- (void)logStateWithMoc:(id)moc syncState:(unint64_t)state;
+- (void)playerAuthenticated:(id)authenticated;
+- (void)populateContactInfoForProfiles:(id)profiles playerIdToContactAssociationIdMap:(id)map withContext:(id)context;
+- (void)populateContactInfoForProfiles:(id)profiles replyOnQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)populateContactInfoForProfiles:(id)profiles withContext:(id)context;
+- (void)reachabilityChanged:(id)changed;
+- (void)refetchIDSHandlesInPriorityOrderWithCompletion:(id)completion;
+- (void)relationshipsForContacts:(id)contacts updateExistingContactEntries:(BOOL)entries allowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings meContactID:(id)d completionHandler:(id)handler;
+- (void)setupIDSCacheUpdateTimerWithStartTime:(double)time;
+- (void)startContactsSyncAllowingChangeHistory:(BOOL)history completion:(id)completion;
+- (void)startIDSSyncWithCompletion:(id)completion;
+- (void)startWithOptions:(unint64_t)options completion:(id)completion;
+- (void)stateWithCompletionHandler:(id)handler;
 - (void)stop;
 - (void)stopCacheUpdates;
-- (void)storeBagUpdated:(id)a3;
-- (void)syncIDSDataForHandles:(id)a3 forcefully:(BOOL)a4 completion:(id)a5;
-- (void)updateIDSEntriesFromOldFriendEntries:(id)a3 againstServerRepresentation:(id)a4 withContext:(id)a5;
-- (void)updateIntervalHasFinishedExceedingIDSLimit:(BOOL)a3 allowingIneligibility:(unint64_t)a4 usingSettings:(id)a5;
+- (void)storeBagUpdated:(id)updated;
+- (void)syncIDSDataForHandles:(id)handles forcefully:(BOOL)forcefully completion:(id)completion;
+- (void)updateIDSEntriesFromOldFriendEntries:(id)entries againstServerRepresentation:(id)representation withContext:(id)context;
+- (void)updateIntervalHasFinishedExceedingIDSLimit:(BOOL)limit allowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings;
 @end
 
 @implementation GKContactsIntegrationController
@@ -82,26 +82,26 @@
   return v12;
 }
 
-- (GKContactsIntegrationController)initWithNotificationCenter:(id)a3 connectionManager:(id)a4 playerProvider:(id)a5 eligibilityChecker:(id)a6 metricsHandler:(id)a7 contactStore:(id)a8 migrator:(id)a9
+- (GKContactsIntegrationController)initWithNotificationCenter:(id)center connectionManager:(id)manager playerProvider:(id)provider eligibilityChecker:(id)checker metricsHandler:(id)handler contactStore:(id)store migrator:(id)migrator
 {
-  v15 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v16 = a8;
-  v17 = a9;
+  centerCopy = center;
+  managerCopy = manager;
+  providerCopy = provider;
+  checkerCopy = checker;
+  handlerCopy = handler;
+  storeCopy = store;
+  migratorCopy = migrator;
   v31.receiver = self;
   v31.super_class = GKContactsIntegrationController;
   v18 = [(GKContactsIntegrationController *)&v31 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_migrator, a9);
-    objc_storeStrong(&v19->_metricsHandler, a7);
-    objc_storeStrong(&v19->_eligibilityChecker, a6);
-    objc_storeStrong(&v19->_playerProvider, a5);
-    objc_storeStrong(&v19->_contactStore, a8);
+    objc_storeStrong(&v18->_migrator, migrator);
+    objc_storeStrong(&v19->_metricsHandler, handler);
+    objc_storeStrong(&v19->_eligibilityChecker, checker);
+    objc_storeStrong(&v19->_playerProvider, provider);
+    objc_storeStrong(&v19->_contactStore, store);
     v20 = dispatch_queue_create("com.apple.GameKit.contactsIntegration.serialQueue", 0);
     serialQueue = v19->_serialQueue;
     v19->_serialQueue = v20;
@@ -114,68 +114,68 @@
     contactsBatchQueue = v19->_contactsBatchQueue;
     v19->_contactsBatchQueue = v24;
 
-    objc_storeStrong(&v19->_connectionManager, a4);
-    [(GKIDSConnectionManager *)v19->_connectionManager setDelegate:v19, v27, v28, v29, v30];
-    [v15 addObserver:v19 selector:"playerAuthenticated:" name:GKPrimaryCredentialDidChangeNotification object:0];
-    [v15 addObserver:v19 selector:"storeBagUpdated:" name:@"GKStoreBagUpdatedNotification" object:0];
-    [v15 addObserver:v19 selector:"contactsChanged:" name:CNContactStoreDidChangeNotification object:0];
-    [v15 addObserver:v19 selector:"reachabilityChanged:" name:@"GKNetworkReachabilityChangedNotification" object:0];
+    objc_storeStrong(&v19->_connectionManager, manager);
+    [(GKIDSConnectionManager *)v19->_connectionManager setDelegate:v19, handlerCopy, checkerCopy, providerCopy, managerCopy];
+    [centerCopy addObserver:v19 selector:"playerAuthenticated:" name:GKPrimaryCredentialDidChangeNotification object:0];
+    [centerCopy addObserver:v19 selector:"storeBagUpdated:" name:@"GKStoreBagUpdatedNotification" object:0];
+    [centerCopy addObserver:v19 selector:"contactsChanged:" name:CNContactStoreDidChangeNotification object:0];
+    [centerCopy addObserver:v19 selector:"reachabilityChanged:" name:@"GKNetworkReachabilityChangedNotification" object:0];
   }
 
   return v19;
 }
 
-- (BOOL)isEligibleAllowingIneligibility:(unint64_t)a3 usingSettings:(id)a4 withContext:(id)a5
+- (BOOL)isEligibleAllowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings withContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(GKContactsIntegrationController *)self eligibilityChecker];
-  v11 = [(GKContactsIntegrationController *)self playerProvider];
-  v12 = [v11 localPlayer];
-  v13 = [(GKContactsIntegrationController *)self connectionManager];
-  LOBYTE(a3) = [v10 isEligibleAllowingIneligibility:a3 usingSettings:v9 localPlayerInternal:v12 isConnectionManagerReady:objc_msgSend(v13 withContext:{"isReady"), v8}];
+  contextCopy = context;
+  settingsCopy = settings;
+  eligibilityChecker = [(GKContactsIntegrationController *)self eligibilityChecker];
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayer = [playerProvider localPlayer];
+  connectionManager = [(GKContactsIntegrationController *)self connectionManager];
+  LOBYTE(ineligibility) = [eligibilityChecker isEligibleAllowingIneligibility:ineligibility usingSettings:settingsCopy localPlayerInternal:localPlayer isConnectionManagerReady:objc_msgSend(connectionManager withContext:{"isReady"), contextCopy}];
 
-  return a3;
+  return ineligibility;
 }
 
-- (BOOL)isEligibleAllowingIneligibility:(unint64_t)a3 usingSettings:(id)a4
+- (BOOL)isEligibleAllowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings
 {
-  v6 = a4;
-  v7 = [(GKContactsIntegrationController *)self playerProvider];
-  v8 = [v7 localPlayerCacheGroup];
+  settingsCopy = settings;
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [v8 context];
+  context = [localPlayerCacheGroup context];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10016C680;
   v13[3] = &unk_100369A00;
   v16 = &v18;
-  v17 = a3;
+  ineligibilityCopy = ineligibility;
   v13[4] = self;
-  v10 = v6;
+  v10 = settingsCopy;
   v14 = v10;
-  v11 = v8;
+  v11 = localPlayerCacheGroup;
   v15 = v11;
-  [v9 performBlockAndWait:v13];
+  [context performBlockAndWait:v13];
 
-  LOBYTE(v6) = *(v19 + 24);
+  LOBYTE(settingsCopy) = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
 
-  return v6;
+  return settingsCopy;
 }
 
-- (void)startWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)startWithOptions:(unint64_t)options completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v7 = [NSString stringWithFormat:@"%s:%d %s", "GKContactsIntegrationController.m", 173, "[GKContactsIntegrationController startWithOptions:completion:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
-  if (v4)
+  if (optionsCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -185,7 +185,7 @@
     [v8 perform:v11];
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -195,26 +195,26 @@
     [v8 perform:v10];
   }
 
-  v9 = [(GKContactsIntegrationController *)self serialQueue];
-  [v8 notifyOnQueue:v9 block:v6];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
+  [v8 notifyOnQueue:serialQueue block:completionCopy];
 }
 
-- (void)startContactsSyncAllowingChangeHistory:(BOOL)a3 completion:(id)a4
+- (void)startContactsSyncAllowingChangeHistory:(BOOL)history completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = dispatch_get_current_queue();
-  v7 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v6 != v7)
+  if (v6 != serialQueue)
   {
     label = dispatch_queue_get_label(v6);
-    v9 = [(GKContactsIntegrationController *)self serialQueue];
-    v10 = dispatch_queue_get_label(v9);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v10 = dispatch_queue_get_label(serialQueue2);
     v11 = +[NSThread callStackSymbols];
     v12 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController startContactsSyncAllowingChangeHistory:completion:]", label, v10, v11];
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v14 = [v13 lastPathComponent];
-    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v12, "-[GKContactsIntegrationController startContactsSyncAllowingChangeHistory:completion:]", [v14 UTF8String], 193);
+    lastPathComponent = [v13 lastPathComponent];
+    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v12, "-[GKContactsIntegrationController startContactsSyncAllowingChangeHistory:completion:]", [lastPathComponent UTF8String], 193);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v15];
   }
@@ -223,14 +223,14 @@
   v65[1] = 3221225472;
   v65[2] = sub_10016D070;
   v65[3] = &unk_100360FA0;
-  v16 = v5;
+  v16 = completionCopy;
   v66 = v16;
   v17 = objc_retainBlock(v65);
-  v18 = [(GKContactsIntegrationController *)self contactsUpdateGroup];
+  contactsUpdateGroup = [(GKContactsIntegrationController *)self contactsUpdateGroup];
 
-  if (!v18)
+  if (!contactsUpdateGroup)
   {
-    v21 = [(GKContactsIntegrationController *)self settings];
+    settings = [(GKContactsIntegrationController *)self settings];
     v61 = 0;
     v62 = &v61;
     v63 = 0x2020000000;
@@ -246,27 +246,27 @@
     v54[2] = 0x2020000000;
     v54[3] = 0;
     v22 = objc_autoreleasePoolPush();
-    v23 = [(GKContactsIntegrationController *)self playerProvider];
-    v24 = [v23 localPlayerCacheGroup];
+    playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+    localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
-    v25 = [v24 context];
+    context = [localPlayerCacheGroup context];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_10016D0A0;
     v49[3] = &unk_100369A28;
     v52 = &v61;
     v49[4] = self;
-    v26 = v21;
+    v26 = settings;
     v50 = v26;
-    v27 = v24;
+    v27 = localPlayerCacheGroup;
     v51 = v27;
     v53 = buf;
-    [v25 performBlockAndWait:v49];
+    [context performBlockAndWait:v49];
 
     objc_autoreleasePoolPop(v22);
     if (v62[3])
     {
-      if (a3 || !*(v56 + 5))
+      if (history || !*(v56 + 5))
       {
         if (!os_log_GKGeneral)
         {
@@ -285,7 +285,7 @@
         v35 = [GKDispatchGroup dispatchGroupWithName:v34];
         [(GKContactsIntegrationController *)self setContactsUpdateGroup:v35];
 
-        v36 = [(GKContactsIntegrationController *)self contactsUpdateGroup];
+        contactsUpdateGroup2 = [(GKContactsIntegrationController *)self contactsUpdateGroup];
         v43[0] = _NSConcreteStackBlock;
         v43[1] = 3221225472;
         v43[2] = sub_10016D1CC;
@@ -294,17 +294,17 @@
         v45 = buf;
         v44 = v26;
         v46 = v54;
-        [v36 perform:v43];
+        [contactsUpdateGroup2 perform:v43];
 
-        v37 = [(GKContactsIntegrationController *)self contactsUpdateGroup];
-        v38 = [(GKContactsIntegrationController *)self serialQueue];
+        contactsUpdateGroup3 = [(GKContactsIntegrationController *)self contactsUpdateGroup];
+        serialQueue3 = [(GKContactsIntegrationController *)self serialQueue];
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_10016D394;
         v40[3] = &unk_100368028;
         objc_copyWeak(&v42, &v48);
         v41 = v17;
-        [v37 notifyOnQueue:v38 block:v40];
+        [contactsUpdateGroup3 notifyOnQueue:serialQueue3 block:v40];
 
         objc_destroyWeak(&v42);
         objc_destroyWeak(&v47);
@@ -371,13 +371,13 @@ LABEL_27:
 LABEL_28:
 }
 
-- (unint64_t)calculateRemainingIDSHandleQueryCountUsingSettings:(id)a3 withContext:(id)a4
+- (unint64_t)calculateRemainingIDSHandleQueryCountUsingSettings:(id)settings withContext:(id)context
 {
-  v5 = a3;
-  v6 = [GKCDIDSInfoList _gkPrimaryListWithContext:a4];
-  v7 = [v6 updateIntervalStartTimeStamp];
-  [v5 idsUpdateInterval];
-  v8 = [v7 dateByAddingTimeInterval:?];
+  settingsCopy = settings;
+  v6 = [GKCDIDSInfoList _gkPrimaryListWithContext:context];
+  updateIntervalStartTimeStamp = [v6 updateIntervalStartTimeStamp];
+  [settingsCopy idsUpdateInterval];
+  v8 = [updateIntervalStartTimeStamp dateByAddingTimeInterval:?];
 
   v9 = +[NSDate date];
   if (!v8 || [v8 compare:v9] == -1)
@@ -385,35 +385,35 @@ LABEL_28:
     [v6 _gkReset];
   }
 
-  v10 = [v6 updateIntervalHandlesCount];
-  v11 = [v10 intValue];
+  updateIntervalHandlesCount = [v6 updateIntervalHandlesCount];
+  intValue = [updateIntervalHandlesCount intValue];
 
-  v12 = [v5 idsV2FetchSize];
-  v13 = (v12 - v11) & ~((v12 - v11) >> 63);
+  idsV2FetchSize = [settingsCopy idsV2FetchSize];
+  v13 = (idsV2FetchSize - intValue) & ~((idsV2FetchSize - intValue) >> 63);
 
   return v13;
 }
 
-- (void)stateWithCompletionHandler:(id)a3
+- (void)stateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKContactsIntegrationController *)self serialQueue];
+  handlerCopy = handler;
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016D594;
   v7[3] = &unk_100361270;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(serialQueue, v7);
 }
 
-- (void)logStateWithMoc:(id)a3 syncState:(unint64_t)a4
+- (void)logStateWithMoc:(id)moc syncState:(unint64_t)state
 {
-  v6 = a3;
+  mocCopy = moc;
   v7 = [GKContactsIntegrationState alloc];
-  v8 = [(GKContactsIntegrationController *)self settings];
-  v9 = [v7 initWithMoc:v6 settings:v8 controllerState:a4];
+  settings = [(GKContactsIntegrationController *)self settings];
+  v9 = [v7 initWithMoc:mocCopy settings:settings controllerState:state];
 
   v10 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
@@ -430,22 +430,22 @@ LABEL_28:
   }
 }
 
-- (void)refetchIDSHandlesInPriorityOrderWithCompletion:(id)a3
+- (void)refetchIDSHandlesInPriorityOrderWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_current_queue();
-  v6 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v5 != v6)
+  if (v5 != serialQueue)
   {
     label = dispatch_queue_get_label(v5);
-    v8 = [(GKContactsIntegrationController *)self serialQueue];
-    v9 = dispatch_queue_get_label(v8);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v9 = dispatch_queue_get_label(serialQueue2);
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController refetchIDSHandlesInPriorityOrderWithCompletion:]", label, v9, v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v11, "-[GKContactsIntegrationController refetchIDSHandlesInPriorityOrderWithCompletion:]", [v13 UTF8String], 321);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v11, "-[GKContactsIntegrationController refetchIDSHandlesInPriorityOrderWithCompletion:]", [lastPathComponent UTF8String], 321);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
@@ -462,55 +462,55 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "IDS refetch beginning", buf, 2u);
   }
 
-  v17 = [(GKContactsIntegrationController *)self settings];
-  v18 = [(GKContactsIntegrationController *)self syncState];
-  v19 = [(GKContactsIntegrationController *)self playerProvider];
-  v20 = [v19 localPlayerCacheGroup];
+  settings = [(GKContactsIntegrationController *)self settings];
+  syncState = [(GKContactsIntegrationController *)self syncState];
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
-  v21 = [v20 context];
+  context = [localPlayerCacheGroup context];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10016DAF4;
   v25[3] = &unk_100364128;
-  v26 = v20;
-  v27 = self;
-  v30 = v18;
+  v26 = localPlayerCacheGroup;
+  selfCopy = self;
+  v30 = syncState;
   v31 = 0;
-  v28 = v17;
-  v29 = v4;
-  v22 = v4;
-  v23 = v17;
-  v24 = v20;
-  [v21 performBlock:v25];
+  v28 = settings;
+  v29 = completionCopy;
+  v22 = completionCopy;
+  v23 = settings;
+  v24 = localPlayerCacheGroup;
+  [context performBlock:v25];
 }
 
-- (void)updateIntervalHasFinishedExceedingIDSLimit:(BOOL)a3 allowingIneligibility:(unint64_t)a4 usingSettings:(id)a5
+- (void)updateIntervalHasFinishedExceedingIDSLimit:(BOOL)limit allowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings
 {
-  v8 = a5;
-  if (a3)
+  settingsCopy = settings;
+  if (limit)
   {
-    v9 = [(GKContactsIntegrationController *)self playerProvider];
-    v10 = [v9 localPlayerCacheGroup];
+    playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+    localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10016E11C;
     v19[3] = &unk_100363F28;
-    v11 = v10;
+    v11 = localPlayerCacheGroup;
     v20 = v11;
-    v21 = self;
-    v23 = a4;
-    v22 = v8;
+    selfCopy = self;
+    ineligibilityCopy = ineligibility;
+    v22 = settingsCopy;
     [v11 performOnManagedObjectContext:v19];
-    v12 = [(GKContactsIntegrationController *)self serialQueue];
+    serialQueue = [(GKContactsIntegrationController *)self serialQueue];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10016E224;
     v16[3] = &unk_1003610B8;
     v17 = v11;
-    v18 = self;
+    selfCopy2 = self;
     v13 = v11;
-    [v13 notifyOnQueue:v12 block:v16];
+    [v13 notifyOnQueue:serialQueue block:v16];
   }
 
   else
@@ -531,17 +531,17 @@ LABEL_28:
   }
 }
 
-- (id)handlesExcludingNoneExpiredFromHandles:(id)a3 isAlreadyWaitingOnLimitTimer:(BOOL)a4 settings:(id)a5 moc:(id)a6 error:(id *)a7
+- (id)handlesExcludingNoneExpiredFromHandles:(id)handles isAlreadyWaitingOnLimitTimer:(BOOL)timer settings:(id)settings moc:(id)moc error:(id *)error
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v12 mutableCopy];
-  v16 = [(GKContactsIntegrationController *)self calculateRemainingIDSHandleQueryCountUsingSettings:v13 withContext:v14];
-  v53 = v14;
-  v54 = v12;
-  if (!v16 || v10)
+  timerCopy = timer;
+  handlesCopy = handles;
+  settingsCopy = settings;
+  mocCopy = moc;
+  v15 = [handlesCopy mutableCopy];
+  v16 = [(GKContactsIntegrationController *)self calculateRemainingIDSHandleQueryCountUsingSettings:settingsCopy withContext:mocCopy];
+  v53 = mocCopy;
+  v54 = handlesCopy;
+  if (!v16 || timerCopy)
   {
     if (!os_log_GKGeneral)
     {
@@ -558,24 +558,24 @@ LABEL_28:
     v49 = GKContactsIntegrationErrorDomain;
     v62 = @"reason";
     v17 = [NSNumber numberWithUnsignedInteger:v16];
-    v24 = [NSNumber numberWithBool:v10];
+    v24 = [NSNumber numberWithBool:timerCopy];
     v50 = [NSString stringWithFormat:@"remainingHandlesToUpdate: %@, isAlreadyWaitingOnLimitTimer: %@", v17, v24];
     v63 = v50;
     v51 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-    *a7 = [NSError errorWithDomain:v49 code:4 userInfo:v51];
+    *error = [NSError errorWithDomain:v49 code:4 userInfo:v51];
 
     v46 = 0;
     v37 = v53;
-    v36 = v12;
+    v36 = handlesCopy;
   }
 
   else
   {
     v17 = +[GKCDIDSInfo _gkFetchRequest];
-    v18 = [NSPredicate predicateWithFormat:@"handle IN %@", v12];
-    [v17 setPredicate:v18];
+    handlesCopy = [NSPredicate predicateWithFormat:@"handle IN %@", handlesCopy];
+    [v17 setPredicate:handlesCopy];
 
-    v19 = [GKCDIDSInfo _gkObjectsFromFetchRequest:v17 withContext:v14];
+    v19 = [GKCDIDSInfo _gkObjectsFromFetchRequest:v17 withContext:mocCopy];
     if (!os_log_GKGeneral)
     {
       v20 = GKOSLoggers();
@@ -611,14 +611,14 @@ LABEL_28:
           }
 
           v29 = *(*(&v55 + 1) + 8 * i);
-          if (([v29 isExpiredForSettings:v13] & 1) == 0)
+          if (([v29 isExpiredForSettings:settingsCopy] & 1) == 0)
           {
-            v30 = [v29 handle];
+            handle = [v29 handle];
 
-            if (v30)
+            if (handle)
             {
-              v31 = [v29 handle];
-              [v15 removeObject:v31];
+              handle2 = [v29 handle];
+              [v15 removeObject:handle2];
             }
           }
         }
@@ -663,8 +663,8 @@ LABEL_28:
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "IDS limit reached, limiting fetch size to: %@", buf, 0xCu);
       }
 
-      v42 = [v15 allObjects];
-      v43 = [v42 subarrayWithRange:{0, v16}];
+      allObjects = [v15 allObjects];
+      v43 = [allObjects subarrayWithRange:{0, v16}];
       v44 = [NSSet setWithArray:v43];
       v45 = [v44 mutableCopy];
 
@@ -678,29 +678,29 @@ LABEL_28:
   return v46;
 }
 
-- (void)syncIDSDataForHandles:(id)a3 forcefully:(BOOL)a4 completion:(id)a5
+- (void)syncIDSDataForHandles:(id)handles forcefully:(BOOL)forcefully completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(GKContactsIntegrationController *)self serialQueue];
+  handlesCopy = handles;
+  completionCopy = completion;
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10016EA34;
   v13[3] = &unk_100362750;
-  v16 = a4;
+  forcefullyCopy = forcefully;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = handlesCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = handlesCopy;
+  dispatch_async(serialQueue, v13);
 }
 
-- (void)fetchIDSDataAndUpdateCacheForHandles:(id)a3 allowingIneligibility:(unint64_t)a4 usingSettings:(id)a5 withDelay:(BOOL)a6 completion:(id)a7
+- (void)fetchIDSDataAndUpdateCacheForHandles:(id)handles allowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings withDelay:(BOOL)delay completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  handlesCopy = handles;
+  settingsCopy = settings;
+  completionCopy = completion;
   if (!os_log_GKGeneral)
   {
     v15 = GKOSLoggers();
@@ -710,35 +710,35 @@ LABEL_28:
   if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
   {
     v17 = v16;
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 count]);
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [handlesCopy count]);
     *buf = 138412290;
     v38 = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Beginning fetches with IDS with a handle count of: %@", buf, 0xCu);
   }
 
-  v19 = [v13 idsV2BatchFetchSize];
-  if (v19)
+  idsV2BatchFetchSize = [settingsCopy idsV2BatchFetchSize];
+  if (idsV2BatchFetchSize)
   {
-    v20 = v19;
-    v21 = [v12 allObjects];
-    v22 = [v21 count];
-    v23 = [(GKContactsIntegrationController *)self idsBatchQueue];
+    v20 = idsV2BatchFetchSize;
+    allObjects = [handlesCopy allObjects];
+    v22 = [allObjects count];
+    idsBatchQueue = [(GKContactsIntegrationController *)self idsBatchQueue];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10016F328;
     v27[3] = &unk_100369B18;
     v27[4] = self;
-    v28 = v21;
+    v28 = allObjects;
     v31 = 0;
     v32 = v20;
     v33 = v20;
     v34 = v22;
-    v35 = a4;
-    v29 = v13;
-    v36 = a6;
-    v30 = v14;
-    v24 = v21;
-    dispatch_async(v23, v27);
+    ineligibilityCopy = ineligibility;
+    v29 = settingsCopy;
+    delayCopy = delay;
+    v30 = completionCopy;
+    v24 = allObjects;
+    dispatch_async(idsBatchQueue, v27);
   }
 
   else
@@ -755,37 +755,37 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Will not fetch handles with IDS since batch size is currently 0", buf, 2u);
     }
 
-    (*(v14 + 2))(v14, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)fetchIDSDataAndUpdateCacheForHandles:(id)a3 rangeToFetch:(_NSRange)a4 maxBatchSize:(unint64_t)a5 numberOfHandlesLeft:(int64_t)a6 allowingIneligibility:(unint64_t)a7 settings:(id)a8 withDelay:(BOOL)a9 completion:(id)a10
+- (void)fetchIDSDataAndUpdateCacheForHandles:(id)handles rangeToFetch:(_NSRange)fetch maxBatchSize:(unint64_t)size numberOfHandlesLeft:(int64_t)left allowingIneligibility:(unint64_t)ineligibility settings:(id)settings withDelay:(BOOL)delay completion:(id)self0
 {
-  length = a4.length;
-  location = a4.location;
-  v40 = a3;
-  v35 = a8;
-  v39 = a10;
+  length = fetch.length;
+  location = fetch.location;
+  handlesCopy = handles;
+  settingsCopy = settings;
+  completionCopy = completion;
   v12 = dispatch_get_current_queue();
   val = self;
-  v13 = [(GKContactsIntegrationController *)self idsBatchQueue];
+  idsBatchQueue = [(GKContactsIntegrationController *)self idsBatchQueue];
 
-  if (v12 != v13)
+  if (v12 != idsBatchQueue)
   {
     label = dispatch_queue_get_label(v12);
-    v15 = [(GKContactsIntegrationController *)val idsBatchQueue];
-    v16 = dispatch_queue_get_label(v15);
+    idsBatchQueue2 = [(GKContactsIntegrationController *)val idsBatchQueue];
+    v16 = dispatch_queue_get_label(idsBatchQueue2);
     v17 = +[NSThread callStackSymbols];
     v18 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController fetchIDSDataAndUpdateCacheForHandles:rangeToFetch:maxBatchSize:numberOfHandlesLeft:allowingIneligibility:settings:withDelay:completion:]", label, v16, v17];
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v20 = [v19 lastPathComponent];
-    v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.idsBatchQueue)\n[%s (%s:%d)]", v18, "-[GKContactsIntegrationController fetchIDSDataAndUpdateCacheForHandles:rangeToFetch:maxBatchSize:numberOfHandlesLeft:allowingIneligibility:settings:withDelay:completion:]", [v20 UTF8String], 647);
+    lastPathComponent = [v19 lastPathComponent];
+    v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.idsBatchQueue)\n[%s (%s:%d)]", v18, "-[GKContactsIntegrationController fetchIDSDataAndUpdateCacheForHandles:rangeToFetch:maxBatchSize:numberOfHandlesLeft:allowingIneligibility:settings:withDelay:completion:]", [lastPathComponent UTF8String], 647);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v21];
   }
 
-  v22 = [v40 count];
-  if (a6 >= 1 && length)
+  v22 = [handlesCopy count];
+  if (left >= 1 && length)
   {
     if (&length[location] > v22)
     {
@@ -803,7 +803,7 @@ LABEL_28:
       v25 = v24;
       v26 = [NSNumber numberWithUnsignedInteger:location];
       v27 = [NSNumber numberWithUnsignedInteger:length];
-      v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v40 count]);
+      v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [handlesCopy count]);
       *buf = 138412802;
       v48 = v26;
       v49 = 2112;
@@ -813,24 +813,24 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Fetching range: (%@, %@) of total count: %@", buf, 0x20u);
     }
 
-    v29 = [v40 subarrayWithRange:{location, length}];
-    v30 = [(GKContactsIntegrationController *)val connectionManager];
+    v29 = [handlesCopy subarrayWithRange:{location, length}];
+    connectionManager = [(GKContactsIntegrationController *)val connectionManager];
     objc_initWeak(buf, val);
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_10016F810;
     v41[3] = &unk_100369B40;
     objc_copyWeak(v45, buf);
-    v42 = v40;
+    v42 = handlesCopy;
     v45[1] = location;
     v45[2] = length;
-    v45[3] = a5;
-    v45[4] = a6;
-    v45[5] = a7;
-    v43 = v35;
-    v46 = a9;
-    v44 = v39;
-    [v30 fetchIDSDataForHandles:v29 service:@"com.apple.private.alloy.arcade" infoTypes:5 performingBlockPerBatch:v41];
+    v45[3] = size;
+    v45[4] = left;
+    v45[5] = ineligibility;
+    v43 = settingsCopy;
+    delayCopy = delay;
+    v44 = completionCopy;
+    [connectionManager fetchIDSDataForHandles:v29 service:@"com.apple.private.alloy.arcade" infoTypes:5 performingBlockPerBatch:v41];
 
     objc_destroyWeak(v45);
     objc_destroyWeak(buf);
@@ -850,87 +850,87 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "IDS fetching stopping since we have reached the of end of all batches", buf, 2u);
     }
 
-    (*(v39 + 2))(v39, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)handleIDSFetchResult:(id)a3 handlesToQuery:(id)a4 rangeToFetch:(_NSRange)a5 maxBatchSize:(unint64_t)a6 numberOfHandlesLeft:(int64_t)a7 allowingIneligibility:(unint64_t)a8 settings:(id)a9 withDelay:(BOOL)a10 completion:(id)a11
+- (void)handleIDSFetchResult:(id)result handlesToQuery:(id)query rangeToFetch:(_NSRange)fetch maxBatchSize:(unint64_t)size numberOfHandlesLeft:(int64_t)left allowingIneligibility:(unint64_t)ineligibility settings:(id)settings withDelay:(BOOL)self0 completion:(id)self1
 {
-  length = a5.length;
-  location = a5.location;
-  v14 = a3;
-  v15 = a4;
-  v16 = a9;
-  v17 = a11;
-  v18 = [(GKContactsIntegrationController *)self playerProvider];
-  v19 = [v18 localPlayerCacheGroup];
+  length = fetch.length;
+  location = fetch.location;
+  resultCopy = result;
+  queryCopy = query;
+  settingsCopy = settings;
+  completionCopy = completion;
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_10016FD30;
   v43[3] = &unk_100364608;
-  v20 = v19;
+  v20 = localPlayerCacheGroup;
   v44 = v20;
-  v45 = v14;
-  v46 = self;
-  v48 = a8;
-  v21 = v16;
+  v45 = resultCopy;
+  selfCopy = self;
+  ineligibilityCopy = ineligibility;
+  v21 = settingsCopy;
   v47 = v21;
-  v22 = v14;
+  v22 = resultCopy;
   [v20 performOnManagedObjectContext:v43];
-  v23 = [(GKContactsIntegrationController *)self idsBatchQueue];
+  idsBatchQueue = [(GKContactsIntegrationController *)self idsBatchQueue];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1001702FC;
   v31[3] = &unk_100369BB8;
   v32 = v20;
   v33 = v21;
-  v36 = v17;
+  v36 = completionCopy;
   v37 = location;
   v38 = length;
-  v39 = a6;
-  v34 = self;
-  v35 = v15;
-  v40 = a7;
-  v41 = a8;
-  v42 = a10;
-  v24 = v15;
+  sizeCopy = size;
+  selfCopy2 = self;
+  v35 = queryCopy;
+  leftCopy = left;
+  ineligibilityCopy2 = ineligibility;
+  delayCopy = delay;
+  v24 = queryCopy;
   v25 = v21;
-  v26 = v17;
+  v26 = completionCopy;
   v27 = v20;
-  [v27 notifyOnQueue:v23 block:v31];
+  [v27 notifyOnQueue:idsBatchQueue block:v31];
 }
 
 - (BOOL)isAlreadyWaitingOnLimitTimer
 {
   v3 = dispatch_get_current_queue();
-  v4 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v3 != v4)
+  if (v3 != serialQueue)
   {
     label = dispatch_queue_get_label(v3);
-    v6 = [(GKContactsIntegrationController *)self serialQueue];
-    v7 = dispatch_queue_get_label(v6);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v7 = dispatch_queue_get_label(serialQueue2);
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController isAlreadyWaitingOnLimitTimer]", label, v7, v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController isAlreadyWaitingOnLimitTimer]", [v11 UTF8String], 854);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController isAlreadyWaitingOnLimitTimer]", [lastPathComponent UTF8String], 854);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
-  v13 = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
-  v14 = v13 != 0;
+  idsCacheUpdateTimer = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
+  v14 = idsCacheUpdateTimer != 0;
 
   return v14;
 }
 
-- (void)getRelationshipsForContacts:(id)a3 updateExistingContactEntries:(BOOL)a4 completionHandler:(id)a5
+- (void)getRelationshipsForContacts:(id)contacts updateExistingContactEntries:(BOOL)entries completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  entriesCopy = entries;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v10 = GKOSLoggers();
@@ -940,23 +940,23 @@ LABEL_28:
   if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v21 = v6;
+    v21 = entriesCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Getting relationships for contact with updateExistingContactEntries: %d", buf, 8u);
   }
 
-  v12 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100170B68;
   block[3] = &unk_100369C30;
-  v17 = v9;
+  v17 = handlerCopy;
   v18 = 8;
   block[4] = self;
-  v16 = v8;
-  v19 = v6;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v12, block);
+  v16 = contactsCopy;
+  v19 = entriesCopy;
+  v13 = contactsCopy;
+  v14 = handlerCopy;
+  dispatch_async(serialQueue, block);
 }
 
 - (id)relationshipForMeContact
@@ -973,8 +973,8 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Loading relationships for the me contact", buf, 2u);
   }
 
-  v5 = [(GKContactsIntegrationController *)self playerProvider];
-  v6 = [v5 localPlayerCacheGroup];
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
   *buf = 0;
   v22 = buf;
@@ -982,28 +982,28 @@ LABEL_28:
   v24 = sub_10016D088;
   v25 = sub_10016D098;
   v26 = 0;
-  v7 = [v6 context];
+  context = [localPlayerCacheGroup context];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100171258;
   v18 = &unk_100364898;
-  v8 = v6;
+  v8 = localPlayerCacheGroup;
   v19 = v8;
   v20 = buf;
-  [v7 performBlockAndWait:&v15];
+  [context performBlockAndWait:&v15];
 
   if (*(v22 + 5))
   {
     v9 = [(GKContactsIntegrationController *)self playerProvider:v15];
-    v10 = [v9 localPlayer];
-    v11 = [v10 accountName];
+    localPlayer = [v9 localPlayer];
+    accountName = [localPlayer accountName];
 
     v12 = objc_opt_new();
     [v12 setRelationship:2];
     [v12 setRelatedPlayer:*(v22 + 5)];
-    if ([v11 length])
+    if ([accountName length])
     {
-      v13 = v11;
+      v13 = accountName;
     }
 
     else
@@ -1024,40 +1024,40 @@ LABEL_28:
   return v12;
 }
 
-- (void)relationshipsForContacts:(id)a3 updateExistingContactEntries:(BOOL)a4 allowingIneligibility:(unint64_t)a5 usingSettings:(id)a6 meContactID:(id)a7 completionHandler:(id)a8
+- (void)relationshipsForContacts:(id)contacts updateExistingContactEntries:(BOOL)entries allowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings meContactID:(id)d completionHandler:(id)handler
 {
-  v12 = a4;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v41 = a8;
+  entriesCopy = entries;
+  contactsCopy = contacts;
+  settingsCopy = settings;
+  dCopy = d;
+  handlerCopy = handler;
   v17 = dispatch_get_current_queue();
-  v18 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v17 != v18)
+  if (v17 != serialQueue)
   {
-    v39 = v16;
-    v40 = v14;
-    v38 = a5;
+    v39 = dCopy;
+    v40 = contactsCopy;
+    ineligibilityCopy = ineligibility;
     label = dispatch_queue_get_label(v17);
-    v20 = [(GKContactsIntegrationController *)self serialQueue];
-    v21 = dispatch_queue_get_label(v20);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v21 = dispatch_queue_get_label(serialQueue2);
     v22 = +[NSThread callStackSymbols];
     v23 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController relationshipsForContacts:updateExistingContactEntries:allowingIneligibility:usingSettings:meContactID:completionHandler:]", label, v21, v22];
     v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v25 = [v24 lastPathComponent];
-    v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v23, "-[GKContactsIntegrationController relationshipsForContacts:updateExistingContactEntries:allowingIneligibility:usingSettings:meContactID:completionHandler:]", [v25 UTF8String], 953);
+    lastPathComponent = [v24 lastPathComponent];
+    v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v23, "-[GKContactsIntegrationController relationshipsForContacts:updateExistingContactEntries:allowingIneligibility:usingSettings:meContactID:completionHandler:]", [lastPathComponent UTF8String], 953);
 
-    v16 = v39;
-    a5 = v38;
+    dCopy = v39;
+    ineligibility = ineligibilityCopy;
 
     [NSException raise:@"GameKit Exception" format:@"%@", v26];
-    v14 = v40;
+    contactsCopy = v40;
   }
 
-  v27 = [(GKContactsIntegrationController *)self isAlreadyWaitingOnLimitTimer];
-  v28 = [(GKContactsIntegrationController *)self playerProvider];
-  v29 = [v28 localPlayerCacheGroup];
+  isAlreadyWaitingOnLimitTimer = [(GKContactsIntegrationController *)self isAlreadyWaitingOnLimitTimer];
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
   if (!os_log_GKGeneral)
   {
@@ -1068,35 +1068,35 @@ LABEL_28:
   if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v52 = v12;
+    v52 = entriesCopy;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Proceeding to relationships for contact with updateExistingContactEntries: %d", buf, 8u);
   }
 
-  v32 = [v29 context];
+  context = [localPlayerCacheGroup context];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_10017167C;
   v42[3] = &unk_100369C80;
   v42[4] = self;
-  v43 = v14;
-  v49 = v12;
-  v44 = v16;
-  v45 = v29;
-  v50 = v27;
-  v46 = v15;
-  v47 = v41;
-  v48 = a5;
-  v33 = v41;
-  v34 = v15;
-  v35 = v29;
-  v36 = v16;
-  v37 = v14;
-  [v32 performBlock:v42];
+  v43 = contactsCopy;
+  v49 = entriesCopy;
+  v44 = dCopy;
+  v45 = localPlayerCacheGroup;
+  v50 = isAlreadyWaitingOnLimitTimer;
+  v46 = settingsCopy;
+  v47 = handlerCopy;
+  ineligibilityCopy2 = ineligibility;
+  v33 = handlerCopy;
+  v34 = settingsCopy;
+  v35 = localPlayerCacheGroup;
+  v36 = dCopy;
+  v37 = contactsCopy;
+  [context performBlock:v42];
 }
 
-- (void)playerAuthenticated:(id)a3
+- (void)playerAuthenticated:(id)authenticated
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -1109,38 +1109,38 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received player authenticated changed notification.", buf, 2u);
   }
 
-  v7 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100171EAC;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)contactsChanged:(id)a3
+- (void)contactsChanged:(id)changed
 {
-  v4 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100171F44;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(GKContactsIntegrationController *)self serialQueue];
+  changedCopy = changed;
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100172220;
   v7[3] = &unk_1003610B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 - (void)handleReachabilityChanged
@@ -1157,32 +1157,32 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handling reachability notification", buf, 2u);
   }
 
-  v5 = [(GKContactsIntegrationController *)self playerProvider];
-  v6 = [v5 localPlayerCacheGroup];
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
-  v7 = [v6 context];
+  context = [localPlayerCacheGroup context];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001725B8;
   v9[3] = &unk_100361770;
-  v10 = v6;
-  v8 = v6;
-  [v7 performBlock:v9];
+  v10 = localPlayerCacheGroup;
+  v8 = localPlayerCacheGroup;
+  [context performBlock:v9];
 }
 
-- (void)storeBagUpdated:(id)a3
+- (void)storeBagUpdated:(id)updated
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [updated object];
+  if (object)
   {
     v5 = +[GKContactsIntegrationControllerSettings allBagKeys];
-    v6 = [(GKContactsIntegrationController *)self serialQueue];
+    serialQueue = [(GKContactsIntegrationController *)self serialQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100172854;
     v8[3] = &unk_100361248;
     v8[4] = self;
-    [v4 getValuesForKeys:v5 queue:v6 completion:v8];
+    [object getValuesForKeys:v5 queue:serialQueue completion:v8];
   }
 
   else
@@ -1202,25 +1202,25 @@ LABEL_28:
 - (BOOL)idsSyncInProgress
 {
   v3 = dispatch_get_current_queue();
-  v4 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v3 != v4)
+  if (v3 != serialQueue)
   {
     label = dispatch_queue_get_label(v3);
-    v6 = [(GKContactsIntegrationController *)self serialQueue];
-    v7 = dispatch_queue_get_label(v6);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v7 = dispatch_queue_get_label(serialQueue2);
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController idsSyncInProgress]", label, v7, v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController idsSyncInProgress]", [v11 UTF8String], 1152);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController idsSyncInProgress]", [lastPathComponent UTF8String], 1152);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
-  v13 = [(GKContactsIntegrationController *)self idsUpdateGroup];
+  idsUpdateGroup = [(GKContactsIntegrationController *)self idsUpdateGroup];
 
-  if (v13)
+  if (idsUpdateGroup)
   {
     if (!os_log_GKGeneral)
     {
@@ -1228,7 +1228,7 @@ LABEL_28:
     }
 
     v15 = os_log_GKContacts;
-    LOBYTE(v16) = 1;
+    LOBYTE(idsCacheUpdateTimer) = 1;
     if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
     {
       v22 = 0;
@@ -1241,9 +1241,9 @@ LABEL_13:
 
   else
   {
-    v16 = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
+    idsCacheUpdateTimer = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
 
-    if (v16)
+    if (idsCacheUpdateTimer)
     {
       if (!os_log_GKGeneral)
       {
@@ -1251,7 +1251,7 @@ LABEL_13:
       }
 
       v15 = os_log_GKContacts;
-      LOBYTE(v16) = 1;
+      LOBYTE(idsCacheUpdateTimer) = 1;
       if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -1262,30 +1262,30 @@ LABEL_13:
     }
   }
 
-  return v16;
+  return idsCacheUpdateTimer;
 }
 
 - (BOOL)contactsSyncInProgress
 {
   v3 = dispatch_get_current_queue();
-  v4 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v3 != v4)
+  if (v3 != serialQueue)
   {
     label = dispatch_queue_get_label(v3);
-    v6 = [(GKContactsIntegrationController *)self serialQueue];
-    v7 = dispatch_queue_get_label(v6);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v7 = dispatch_queue_get_label(serialQueue2);
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController contactsSyncInProgress]", label, v7, v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController contactsSyncInProgress]", [v11 UTF8String], 1166);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController contactsSyncInProgress]", [lastPathComponent UTF8String], 1166);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
-  v13 = [(GKContactsIntegrationController *)self contactsUpdateGroup];
-  v14 = v13 != 0;
+  contactsUpdateGroup = [(GKContactsIntegrationController *)self contactsUpdateGroup];
+  v14 = contactsUpdateGroup != 0;
 
   return v14;
 }
@@ -1293,37 +1293,37 @@ LABEL_13:
 - (unint64_t)syncState
 {
   v3 = dispatch_get_current_queue();
-  v4 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v3 != v4)
+  if (v3 != serialQueue)
   {
     label = dispatch_queue_get_label(v3);
-    v6 = [(GKContactsIntegrationController *)self serialQueue];
-    v7 = dispatch_queue_get_label(v6);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v7 = dispatch_queue_get_label(serialQueue2);
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController syncState]", label, v7, v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController syncState]", [v11 UTF8String], 1172);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController syncState]", [lastPathComponent UTF8String], 1172);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
-  v13 = [(GKContactsIntegrationController *)self contactsSyncInProgress];
+  contactsSyncInProgress = [(GKContactsIntegrationController *)self contactsSyncInProgress];
   if ([(GKContactsIntegrationController *)self idsSyncInProgress])
   {
-    return v13 | 2;
+    return contactsSyncInProgress | 2;
   }
 
   else
   {
-    return v13;
+    return contactsSyncInProgress;
   }
 }
 
-- (void)startIDSSyncWithCompletion:(id)a3
+- (void)startIDSSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -1336,15 +1336,15 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Will begin cache updates.", buf, 2u);
   }
 
-  v7 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001730B4;
   v9[3] = &unk_100361270;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(serialQueue, v9);
 }
 
 - (void)stop
@@ -1361,30 +1361,30 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Will stop cache updates.", buf, 2u);
   }
 
-  v5 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100173778;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)setupIDSCacheUpdateTimerWithStartTime:(double)a3
+- (void)setupIDSCacheUpdateTimerWithStartTime:(double)time
 {
   v5 = dispatch_get_current_queue();
-  v6 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v5 != v6)
+  if (v5 != serialQueue)
   {
     label = dispatch_queue_get_label(v5);
-    v8 = [(GKContactsIntegrationController *)self serialQueue];
-    v9 = dispatch_queue_get_label(v8);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v9 = dispatch_queue_get_label(serialQueue2);
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController setupIDSCacheUpdateTimerWithStartTime:]", label, v9, v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v11, "-[GKContactsIntegrationController setupIDSCacheUpdateTimerWithStartTime:]", [v13 UTF8String], 1238);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v11, "-[GKContactsIntegrationController setupIDSCacheUpdateTimerWithStartTime:]", [lastPathComponent UTF8String], 1238);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
@@ -1398,27 +1398,27 @@ LABEL_13:
   if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v25 = a3;
+    timeCopy = time;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Setting up a one time IDS timer with startTime: %f", buf, 0xCu);
   }
 
-  v17 = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
-  [v17 cancel];
+  idsCacheUpdateTimer = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
+  [idsCacheUpdateTimer cancel];
 
   v18 = objc_alloc_init(GKContactsIntegrationTimer);
   [(GKContactsIntegrationController *)self setIdsCacheUpdateTimer:v18];
 
   objc_initWeak(buf, self);
-  v19 = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
-  v20 = dispatch_walltime(0, (a3 * 1000000000.0));
-  v21 = [(GKContactsIntegrationController *)self serialQueue];
+  idsCacheUpdateTimer2 = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
+  v20 = dispatch_walltime(0, (time * 1000000000.0));
+  serialQueue3 = [(GKContactsIntegrationController *)self serialQueue];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100173AC0;
   v22[3] = &unk_100368CC8;
   objc_copyWeak(&v23, buf);
   v22[4] = self;
-  [v19 startWithStartTime:v20 updateInterval:-1 queue:v21 updateBlock:v22 cancelBlock:&stru_100369D10];
+  [idsCacheUpdateTimer2 startWithStartTime:v20 updateInterval:-1 queue:serialQueue3 updateBlock:v22 cancelBlock:&stru_100369D10];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -1427,92 +1427,92 @@ LABEL_13:
 - (void)stopCacheUpdates
 {
   v3 = dispatch_get_current_queue();
-  v4 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
 
-  if (v3 != v4)
+  if (v3 != serialQueue)
   {
     label = dispatch_queue_get_label(v3);
-    v6 = [(GKContactsIntegrationController *)self serialQueue];
-    v7 = dispatch_queue_get_label(v6);
+    serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
+    v7 = dispatch_queue_get_label(serialQueue2);
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKContactsIntegrationController stopCacheUpdates]", label, v7, v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKContactsIntegrationController.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController stopCacheUpdates]", [v11 UTF8String], 1279);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v9, "-[GKContactsIntegrationController stopCacheUpdates]", [lastPathComponent UTF8String], 1279);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
-  v13 = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
-  [v13 cancel];
+  idsCacheUpdateTimer = [(GKContactsIntegrationController *)self idsCacheUpdateTimer];
+  [idsCacheUpdateTimer cancel];
 
   [(GKContactsIntegrationController *)self setIdsCacheUpdateTimer:0];
-  v14 = [(GKContactsIntegrationController *)self idsBatchQueue];
+  idsBatchQueue = [(GKContactsIntegrationController *)self idsBatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100174044;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_async(v14, block);
+  dispatch_async(idsBatchQueue, block);
 }
 
-- (void)clearCachesWithCompletionHandler:(id)a3
+- (void)clearCachesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKContactsIntegrationController *)self playerProvider];
-  v6 = [v5 localPlayerCacheGroup];
+  handlerCopy = handler;
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
-  v7 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001741EC;
   v12[3] = &unk_100361620;
   v12[4] = self;
-  [v6 performOnQueue:v7 block:v12];
+  [localPlayerCacheGroup performOnQueue:serialQueue block:v12];
 
-  [v6 performOnManagedObjectContext:&stru_100369D30];
-  v8 = [(GKContactsIntegrationController *)self serialQueue];
+  [localPlayerCacheGroup performOnManagedObjectContext:&stru_100369D30];
+  serialQueue2 = [(GKContactsIntegrationController *)self serialQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001742E4;
   v10[3] = &unk_100360FA0;
-  v11 = v4;
-  v9 = v4;
-  [v6 notifyOnQueue:v8 block:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [localPlayerCacheGroup notifyOnQueue:serialQueue2 block:v10];
 }
 
-- (id)contactAssociationIDMapForHandles:(id)a3 withContext:(id)a4
+- (id)contactAssociationIDMapForHandles:(id)handles withContext:(id)context
 {
-  v4 = [GKCDIDSInfo _gkObjectsMatchingHandles:a3 withContext:a4];
+  v4 = [GKCDIDSInfo _gkObjectsMatchingHandles:handles withContext:context];
   v5 = [v4 _gkMapDictionaryWithKeyPath:@"handle" valueKeyPath:@"contactAssociationID"];
 
   return v5;
 }
 
-- (id)contactAssociationIDMapForContactAssociationIDs:(id)a3 withContext:(id)a4
+- (id)contactAssociationIDMapForContactAssociationIDs:(id)ds withContext:(id)context
 {
-  v4 = [GKCDIDSInfo _gkObjectsMatchingContactAssociationIDs:a3 withContext:a4];
+  v4 = [GKCDIDSInfo _gkObjectsMatchingContactAssociationIDs:ds withContext:context];
   v5 = [v4 _gkMapDictionaryWithKeyPath:@"handle" valueKeyPath:@"contactAssociationID"];
 
   return v5;
 }
 
-- (id)handleMapForContactAssociationIDs:(id)a3 withContext:(id)a4
+- (id)handleMapForContactAssociationIDs:(id)ds withContext:(id)context
 {
-  v4 = [GKCDIDSInfo _gkObjectsMatchingContactAssociationIDs:a3 withContext:a4];
+  v4 = [GKCDIDSInfo _gkObjectsMatchingContactAssociationIDs:ds withContext:context];
   v5 = [v4 _gkMapDictionaryWithKeyPath:@"contactAssociationID" valueKeyPath:@"handle"];
 
   return v5;
 }
 
-- (id)relationshipsForHandles:(id)a3 contactAssociationIDMap:(id)a4 withContext:(id)a5
+- (id)relationshipsForHandles:(id)handles contactAssociationIDMap:(id)map withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v29 = a5;
-  if ([v7 count])
+  handlesCopy = handles;
+  mapCopy = map;
+  contextCopy = context;
+  if ([handlesCopy count])
   {
-    if (![v8 count])
+    if (![mapCopy count])
     {
       if (!os_log_GKGeneral)
       {
@@ -1527,18 +1527,18 @@ LABEL_13:
       }
     }
 
-    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-    v12 = [v8 allValues];
-    v13 = [NSSet setWithArray:v12];
+    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(mapCopy, "count")}];
+    allValues = [mapCopy allValues];
+    v13 = [NSSet setWithArray:allValues];
 
     v26 = v13;
-    v14 = [(GKContactsIntegrationController *)self createFriendAssociationIDMapWithIDs:v13 withContext:v29];
+    v14 = [(GKContactsIntegrationController *)self createFriendAssociationIDMapWithIDs:v13 withContext:contextCopy];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v27 = v7;
-    v15 = v7;
+    v27 = handlesCopy;
+    v15 = handlesCopy;
     v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v16)
     {
@@ -1554,17 +1554,17 @@ LABEL_13:
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
-          v21 = [v8 objectForKeyedSubscript:v20];
+          v21 = [mapCopy objectForKeyedSubscript:v20];
           if (v21)
           {
-            v22 = [(GKContactsIntegrationController *)self createRelationshipWithHandle:v20 contactAssociationID:v21 usingFriendMap:v14 withContext:v29];
+            v22 = [(GKContactsIntegrationController *)self createRelationshipWithHandle:v20 contactAssociationID:v21 usingFriendMap:v14 withContext:contextCopy];
           }
 
           else
           {
             v22 = objc_opt_new();
-            v23 = [v20 _stripFZIDPrefix];
-            [v22 setHandle:v23];
+            _stripFZIDPrefix = [v20 _stripFZIDPrefix];
+            [v22 setHandle:_stripFZIDPrefix];
 
             [v22 setRelationship:0];
           }
@@ -1579,7 +1579,7 @@ LABEL_13:
     }
 
     v24 = [v11 copy];
-    v7 = v27;
+    handlesCopy = v27;
   }
 
   else
@@ -1590,18 +1590,18 @@ LABEL_13:
   return v24;
 }
 
-- (id)createRelationshipWithHandle:(id)a3 contactAssociationID:(id)a4 usingFriendMap:(id)a5 withContext:(id)a6
+- (id)createRelationshipWithHandle:(id)handle contactAssociationID:(id)d usingFriendMap:(id)map withContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dCopy = d;
+  mapCopy = map;
+  handleCopy = handle;
   v11 = objc_opt_new();
-  v12 = [v10 _stripFZIDPrefix];
+  _stripFZIDPrefix = [handleCopy _stripFZIDPrefix];
 
-  [v11 setHandle:v12];
-  if ([v8 length])
+  [v11 setHandle:_stripFZIDPrefix];
+  if ([dCopy length])
   {
-    v13 = [v9 objectForKeyedSubscript:v8];
+    v13 = [mapCopy objectForKeyedSubscript:dCopy];
     if (v13)
     {
       v14 = [[GKPlayerInternal alloc] initWithCacheObject:v13];
@@ -1626,25 +1626,25 @@ LABEL_13:
   return v11;
 }
 
-- (id)createFriendAssociationIDMapWithIDs:(id)a3 withContext:(id)a4
+- (id)createFriendAssociationIDMapWithIDs:(id)ds withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  contextCopy = context;
+  if ([dsCopy count])
   {
-    v7 = [NSPredicate predicateWithFormat:@"playerID != nil && friendBiDirectional == YES && contactAssociationID != nil && contactAssociationID IN %@", v5];
-    v8 = [GKFriendListEntryCacheObject _gkObjectsMatchingPredicate:v7 withContext:v6];
+    dsCopy = [NSPredicate predicateWithFormat:@"playerID != nil && friendBiDirectional == YES && contactAssociationID != nil && contactAssociationID IN %@", dsCopy];
+    v8 = [GKFriendListEntryCacheObject _gkObjectsMatchingPredicate:dsCopy withContext:contextCopy];
     if ([v8 count])
     {
       v9 = [v8 _gkDistinctValuesForKeyPath:@"playerID"];
       v10 = [NSPredicate predicateWithFormat:@"playerID != nil && playerID IN %@", v9];
-      v11 = [GKPlayerProfileCacheObject _gkObjectsMatchingPredicate:v10 withContext:v6];
+      v11 = [GKPlayerProfileCacheObject _gkObjectsMatchingPredicate:v10 withContext:contextCopy];
       if ([v11 count])
       {
         v29 = v10;
         v30 = v9;
-        v32 = v7;
-        v33 = v6;
+        v32 = dsCopy;
+        v33 = contextCopy;
         v12 = [v11 _gkMapDictionaryWithKeyPath:@"playerID"];
         v28 = v11;
         v13 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v11, "count")}];
@@ -1669,11 +1669,11 @@ LABEL_13:
               }
 
               v19 = *(*(&v34 + 1) + 8 * i);
-              v20 = [v19 playerID];
-              v21 = [v12 objectForKeyedSubscript:v20];
+              playerID = [v19 playerID];
+              v21 = [v12 objectForKeyedSubscript:playerID];
 
-              v22 = [v19 contactAssociationID];
-              [v13 setObject:v21 forKeyedSubscript:v22];
+              contactAssociationID = [v19 contactAssociationID];
+              [v13 setObject:v21 forKeyedSubscript:contactAssociationID];
             }
 
             v16 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -1683,8 +1683,8 @@ LABEL_13:
         }
 
         v23 = [v13 copy];
-        v7 = v32;
-        v6 = v33;
+        dsCopy = v32;
+        contextCopy = v33;
         v9 = v30;
         v8 = v31;
         v11 = v28;
@@ -1733,40 +1733,40 @@ LABEL_13:
   return v23;
 }
 
-- (void)populateContactInfoForProfiles:(id)a3 replyOnQueue:(id)a4 withCompletionHandler:(id)a5
+- (void)populateContactInfoForProfiles:(id)profiles replyOnQueue:(id)queue withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(GKContactsIntegrationController *)self playerProvider];
-  v12 = [v11 localPlayerCacheGroup];
+  profilesCopy = profiles;
+  queueCopy = queue;
+  handlerCopy = handler;
+  playerProvider = [(GKContactsIntegrationController *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100174C7C;
   v16[3] = &unk_1003636E0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  [v12 performOnManagedObjectContext:v16];
+  v17 = profilesCopy;
+  v18 = queueCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = queueCopy;
+  v15 = profilesCopy;
+  [localPlayerCacheGroup performOnManagedObjectContext:v16];
 }
 
-- (void)populateContactInfoForProfiles:(id)a3 withContext:(id)a4
+- (void)populateContactInfoForProfiles:(id)profiles withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKContactsIntegrationController *)self settings];
-  v9 = [(GKContactsIntegrationController *)self isEligibleAllowingIneligibility:0 usingSettings:v8 withContext:v7];
+  profilesCopy = profiles;
+  contextCopy = context;
+  settings = [(GKContactsIntegrationController *)self settings];
+  v9 = [(GKContactsIntegrationController *)self isEligibleAllowingIneligibility:0 usingSettings:settings withContext:contextCopy];
 
   if (v9)
   {
-    if ([v6 count])
+    if ([profilesCopy count])
     {
-      if ([v6 count] == 1 && (objc_msgSend(v6, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isLocalPlayer"), v10, v11))
+      if ([profilesCopy count] == 1 && (objc_msgSend(profilesCopy, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isLocalPlayer"), v10, v11))
       {
         if (!os_log_GKGeneral)
         {
@@ -1794,13 +1794,13 @@ LABEL_31:
         if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
         {
           v18 = v17;
-          v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 count]);
+          v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [profilesCopy count]);
           *buf = 138412290;
           v39 = v19;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Will attempt to populate contact info for %@ profiles", buf, 0xCu);
         }
 
-        v32 = [v6 _gkDistinctValuesForKeyPath:@"playerID"];
+        v32 = [profilesCopy _gkDistinctValuesForKeyPath:@"playerID"];
         v31 = [NSPredicate predicateWithFormat:@"friendBiDirectional == YES && playerID != nil && playerID IN %@", v32];
         v20 = [GKFriendListEntryCacheObject _gkObjectsMatchingPredicate:"_gkObjectsMatchingPredicate:withContext:" withContext:?];
         v21 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v20 count]);
@@ -1824,11 +1824,11 @@ LABEL_31:
               }
 
               v27 = *(*(&v33 + 1) + 8 * i);
-              v28 = [v27 contactAssociationID];
-              if ([v28 length])
+              contactAssociationID = [v27 contactAssociationID];
+              if ([contactAssociationID length])
               {
-                v29 = [v27 playerID];
-                [v21 setObject:v28 forKeyedSubscript:v29];
+                playerID = [v27 playerID];
+                [v21 setObject:contactAssociationID forKeyedSubscript:playerID];
               }
             }
 
@@ -1838,7 +1838,7 @@ LABEL_31:
           while (v24);
         }
 
-        [(GKContactsIntegrationController *)self populateContactInfoForProfiles:v6 playerIdToContactAssociationIdMap:v21 withContext:v7];
+        [(GKContactsIntegrationController *)self populateContactInfoForProfiles:profilesCopy playerIdToContactAssociationIdMap:v21 withContext:contextCopy];
       }
     }
 
@@ -1876,21 +1876,21 @@ LABEL_31:
   }
 }
 
-- (void)populateContactInfoForProfiles:(id)a3 playerIdToContactAssociationIdMap:(id)a4 withContext:(id)a5
+- (void)populateContactInfoForProfiles:(id)profiles playerIdToContactAssociationIdMap:(id)map withContext:(id)context
 {
-  v38 = a3;
-  v8 = a4;
-  v9 = a5;
+  profilesCopy = profiles;
+  mapCopy = map;
+  contextCopy = context;
   v10 = [NSSet alloc];
-  v39 = v8;
-  v11 = [v8 allValues];
-  v12 = [v10 initWithArray:v11];
+  v39 = mapCopy;
+  allValues = [mapCopy allValues];
+  v12 = [v10 initWithArray:allValues];
 
   v36 = v12;
-  v13 = [(GKContactsIntegrationController *)self contactAssociationIDMapForContactAssociationIDs:v12 withContext:v9];
-  v14 = [v13 allKeys];
-  v37 = v9;
-  v15 = [(GKContactsIntegrationController *)self contactInfosForHandles:v14 withContext:v9];
+  v13 = [(GKContactsIntegrationController *)self contactAssociationIDMapForContactAssociationIDs:v12 withContext:contextCopy];
+  allKeys = [v13 allKeys];
+  v37 = contextCopy;
+  v15 = [(GKContactsIntegrationController *)self contactInfosForHandles:allKeys withContext:contextCopy];
 
   v16 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v15, "count")}];
   v46 = 0u;
@@ -1913,8 +1913,8 @@ LABEL_31:
         }
 
         v21 = *(*(&v46 + 1) + 8 * i);
-        v22 = [v21 handle];
-        v23 = [v13 objectForKeyedSubscript:v22];
+        handle = [v21 handle];
+        v23 = [v13 objectForKeyedSubscript:handle];
         if ([v23 length])
         {
           v24 = [v16 objectForKeyedSubscript:v23];
@@ -1932,8 +1932,8 @@ LABEL_31:
     while (v18);
   }
 
-  v25 = [(GKContactsIntegrationController *)self metricsHandler];
-  [v25 recordContactInfoMatchCount:{objc_msgSend(v16, "count")}];
+  metricsHandler = [(GKContactsIntegrationController *)self metricsHandler];
+  [metricsHandler recordContactInfoMatchCount:{objc_msgSend(v16, "count")}];
 
   v26 = v39;
   if ([v16 count])
@@ -1942,7 +1942,7 @@ LABEL_31:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v40 = v38;
+    v40 = profilesCopy;
     v27 = [v40 countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v27)
     {
@@ -1958,8 +1958,8 @@ LABEL_31:
           }
 
           v31 = *(*(&v42 + 1) + 8 * j);
-          v32 = [v31 playerID];
-          v33 = [v26 objectForKeyedSubscript:v32];
+          playerID = [v31 playerID];
+          v33 = [v26 objectForKeyedSubscript:playerID];
           if ([v33 length])
           {
             v34 = [v16 objectForKeyedSubscript:v33];
@@ -1981,13 +1981,13 @@ LABEL_31:
   }
 }
 
-- (id)getContactsForContactAssociationIDs:(id)a3 withContext:(id)a4
+- (id)getContactsForContactAssociationIDs:(id)ds withContext:(id)context
 {
-  v6 = a4;
-  v7 = [(GKContactsIntegrationController *)self contactAssociationIDMapForContactAssociationIDs:a3 withContext:v6];
-  v8 = [v7 allKeys];
-  v22 = v6;
-  v9 = [(GKContactsIntegrationController *)self contactInfosForHandles:v8 withContext:v6];
+  contextCopy = context;
+  v7 = [(GKContactsIntegrationController *)self contactAssociationIDMapForContactAssociationIDs:ds withContext:contextCopy];
+  allKeys = [v7 allKeys];
+  v22 = contextCopy;
+  v9 = [(GKContactsIntegrationController *)self contactInfosForHandles:allKeys withContext:contextCopy];
 
   v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v9 count]);
   v23 = 0u;
@@ -2010,8 +2010,8 @@ LABEL_31:
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 handle];
-        v18 = [v7 objectForKeyedSubscript:v17];
+        handle = [v16 handle];
+        v18 = [v7 objectForKeyedSubscript:handle];
 
         v19 = [CNContact _gkContactFromCacheObject:v16];
         [v10 setObject:v19 forKeyedSubscript:v18];
@@ -2028,38 +2028,38 @@ LABEL_31:
   return v20;
 }
 
-- (id)contactInfosForHandles:(id)a3 withContext:(id)a4
+- (id)contactInfosForHandles:(id)handles withContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  handlesCopy = handles;
   v7 = +[GKCDContactInfo _gkFetchRequest];
-  v8 = [NSPredicate predicateWithFormat:@"handle IN %@", v6];
+  handlesCopy = [NSPredicate predicateWithFormat:@"handle IN %@", handlesCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:handlesCopy];
   v9 = [NSSortDescriptor sortDescriptorWithKey:@"givenName" ascending:1];
   v13 = v9;
   v10 = [NSArray arrayWithObjects:&v13 count:1];
   [v7 setSortDescriptors:v10];
 
-  v11 = [GKCDContactInfo _gkObjectsFromFetchRequest:v7 withContext:v5];
+  v11 = [GKCDContactInfo _gkObjectsFromFetchRequest:v7 withContext:contextCopy];
 
   return v11;
 }
 
-- (id)filterForContactIDsSupportingFriendingViaPushFromContactIDs:(id)a3 withContext:(id)a4
+- (id)filterForContactIDsSupportingFriendingViaPushFromContactIDs:(id)ds withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKContactsIntegrationController *)self settings];
-  LOBYTE(self) = [(GKContactsIntegrationController *)self isEligibleAllowingIneligibility:8 usingSettings:v8 withContext:v7];
+  dsCopy = ds;
+  contextCopy = context;
+  settings = [(GKContactsIntegrationController *)self settings];
+  LOBYTE(self) = [(GKContactsIntegrationController *)self isEligibleAllowingIneligibility:8 usingSettings:settings withContext:contextCopy];
 
   if (self)
   {
     v9 = +[GKCDContactInfo _gkFetchRequest];
-    if ([v6 count])
+    if ([dsCopy count])
     {
-      v10 = [NSPredicate predicateWithFormat:@"contactID IN %@", v6];
-      [v9 setPredicate:v10];
+      dsCopy = [NSPredicate predicateWithFormat:@"contactID IN %@", dsCopy];
+      [v9 setPredicate:dsCopy];
     }
 
     else
@@ -2067,18 +2067,18 @@ LABEL_31:
       [v9 setPredicate:0];
     }
 
-    v14 = [GKCDContactInfo _gkObjectsFromFetchRequest:v9 withContext:v7];
+    v14 = [GKCDContactInfo _gkObjectsFromFetchRequest:v9 withContext:contextCopy];
     v15 = [v14 _gkMapDictionaryWithKeyPath:@"handle" valueKeyPath:@"contactID"];
     if ([v15 count])
     {
       v34 = v14;
       v35 = v9;
-      v36 = v6;
-      v16 = [v15 allKeys];
-      v17 = [NSPredicate predicateWithFormat:@"handle IN %@", v16];
+      v36 = dsCopy;
+      allKeys = [v15 allKeys];
+      v17 = [NSPredicate predicateWithFormat:@"handle IN %@", allKeys];
 
       v33 = v17;
-      v18 = [GKCDIDSInfo _gkObjectsMatchingPredicate:v17 withContext:v7];
+      v18 = [GKCDIDSInfo _gkObjectsMatchingPredicate:v17 withContext:contextCopy];
       v19 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v18 count]);
       v37 = 0u;
       v38 = 0u;
@@ -2100,13 +2100,13 @@ LABEL_31:
             }
 
             v25 = *(*(&v37 + 1) + 8 * i);
-            v26 = [v25 supportsFriendingViaPush];
-            v27 = [v26 BOOLValue];
+            supportsFriendingViaPush = [v25 supportsFriendingViaPush];
+            bOOLValue = [supportsFriendingViaPush BOOLValue];
 
-            if (v27)
+            if (bOOLValue)
             {
-              v28 = [v25 handle];
-              v29 = [v15 objectForKeyedSubscript:v28];
+              handle = [v25 handle];
+              v29 = [v15 objectForKeyedSubscript:handle];
 
               if ([v29 length])
               {
@@ -2123,7 +2123,7 @@ LABEL_31:
 
       v13 = [v19 copy];
       v9 = v35;
-      v6 = v36;
+      dsCopy = v36;
       v14 = v34;
     }
 
@@ -2165,9 +2165,9 @@ LABEL_31:
   return v13;
 }
 
-- (void)connectionManagerReady:(id)a3
+- (void)connectionManagerReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -2177,36 +2177,36 @@ LABEL_31:
   if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = readyCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received callback that connection manager is ready: %@", buf, 0xCu);
   }
 
-  v7 = [(GKContactsIntegrationController *)self serialQueue];
+  serialQueue = [(GKContactsIntegrationController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100175CDC;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)updateIDSEntriesFromOldFriendEntries:(id)a3 againstServerRepresentation:(id)a4 withContext:(id)a5
+- (void)updateIDSEntriesFromOldFriendEntries:(id)entries againstServerRepresentation:(id)representation withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  entriesCopy = entries;
+  representationCopy = representation;
+  contextCopy = context;
+  if ([entriesCopy count])
   {
-    v37 = v9;
-    v39 = v7;
-    v41 = [v7 _gkMapDictionaryWithKeyPath:@"playerID"];
-    v40 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v8 count]);
+    v37 = contextCopy;
+    v39 = entriesCopy;
+    v41 = [entriesCopy _gkMapDictionaryWithKeyPath:@"playerID"];
+    v40 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [representationCopy count]);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v38 = v8;
-    v10 = v8;
+    v38 = representationCopy;
+    v10 = representationCopy;
     v11 = [v10 countByEnumeratingWithState:&v43 objects:v50 count:16];
     if (v11)
     {
@@ -2230,10 +2230,10 @@ LABEL_31:
           v21 = v20;
           if (v20)
           {
-            v22 = [v20 contactAssociationID];
-            if ([v22 length] && !objc_msgSend(v19, "length"))
+            contactAssociationID = [v20 contactAssociationID];
+            if ([contactAssociationID length] && !objc_msgSend(v19, "length"))
             {
-              [v40 addObject:v22];
+              [v40 addObject:contactAssociationID];
             }
           }
         }
@@ -2246,7 +2246,7 @@ LABEL_31:
 
     if ([v40 count])
     {
-      v9 = v37;
+      contextCopy = v37;
       if (!os_log_GKGeneral)
       {
         v23 = GKOSLoggers();
@@ -2275,8 +2275,8 @@ LABEL_31:
       v42 = 0;
       v29 = [v37 executeRequest:v24 error:&v42];
       v30 = v42;
-      v8 = v38;
-      v7 = v39;
+      representationCopy = v38;
+      entriesCopy = v39;
       if (v30)
       {
         if (!os_log_GKGeneral)
@@ -2303,15 +2303,15 @@ LABEL_31:
 
     else
     {
-      v8 = v38;
-      v7 = v39;
+      representationCopy = v38;
+      entriesCopy = v39;
       if (!os_log_GKGeneral)
       {
         v35 = GKOSLoggers();
       }
 
       v36 = os_log_GKContacts;
-      v9 = v37;
+      contextCopy = v37;
       if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -2336,18 +2336,18 @@ LABEL_31:
   }
 }
 
-- (id)expirationPredicateForCohort:(int)a3 matchingHandles:(id)a4 usingSettings:(id)a5
+- (id)expirationPredicateForCohort:(int)cohort matchingHandles:(id)handles usingSettings:(id)settings
 {
-  v6 = *&a3;
-  v7 = a4;
-  [a5 expirationTimeForCohort:v6];
+  v6 = *&cohort;
+  handlesCopy = handles;
+  [settings expirationTimeForCohort:v6];
   v9 = v8;
   v10 = +[NSDate date];
   v11 = [v10 dateByAddingTimeInterval:-v9];
 
-  if ([v7 count])
+  if ([handlesCopy count])
   {
-    [NSPredicate predicateWithFormat:@"handle IN %@ AND cohort == %ld AND timeStamp < %@", v7, v6, v11];
+    [NSPredicate predicateWithFormat:@"handle IN %@ AND cohort == %ld AND timeStamp < %@", handlesCopy, v6, v11];
   }
 
   else
@@ -2359,15 +2359,15 @@ LABEL_31:
   return v12;
 }
 
-- (id)expiredIDSEntriesWithFetchLimit:(int64_t)a3 matchingHandles:(id)a4 usingSettings:(id)a5 withContext:(id)a6
+- (id)expiredIDSEntriesWithFetchLimit:(int64_t)limit matchingHandles:(id)handles usingSettings:(id)settings withContext:(id)context
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  handlesCopy = handles;
+  contextCopy = context;
+  settingsCopy = settings;
   v13 = +[GKCDIDSInfo _gkFetchRequest];
-  if ([v10 count])
+  if ([handlesCopy count])
   {
-    [NSPredicate predicateWithFormat:@"handle IN %@ AND cohort == %ld", v10, -1];
+    [NSPredicate predicateWithFormat:@"handle IN %@ AND cohort == %ld", handlesCopy, -1];
   }
 
   else
@@ -2377,25 +2377,25 @@ LABEL_31:
   v14 = ;
   [v13 setPredicate:v14];
 
-  [v13 setFetchLimit:a3];
-  v15 = [GKCDIDSInfo _gkObjectsFromFetchRequest:v13 withContext:v11];
+  [v13 setFetchLimit:limit];
+  v15 = [GKCDIDSInfo _gkObjectsFromFetchRequest:v13 withContext:contextCopy];
   +[GKCDIDSInfo _gkFetchRequest];
-  v27 = a3;
-  v16 = v28 = v11;
-  v17 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:0 matchingHandles:v10 usingSettings:v12];
+  limitCopy = limit;
+  v16 = v28 = contextCopy;
+  v17 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:0 matchingHandles:handlesCopy usingSettings:settingsCopy];
   v29[0] = v17;
-  v18 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:1 matchingHandles:v10 usingSettings:v12];
+  v18 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:1 matchingHandles:handlesCopy usingSettings:settingsCopy];
   v29[1] = v18;
-  v19 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:2 matchingHandles:v10 usingSettings:v12];
+  v19 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:2 matchingHandles:handlesCopy usingSettings:settingsCopy];
   v29[2] = v19;
-  v20 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:3 matchingHandles:v10 usingSettings:v12];
+  v20 = [(GKContactsIntegrationController *)self expirationPredicateForCohort:3 matchingHandles:handlesCopy usingSettings:settingsCopy];
 
   v29[3] = v20;
   v21 = [NSArray arrayWithObjects:v29 count:4];
   v22 = [NSCompoundPredicate orPredicateWithSubpredicates:v21];
   [v16 setPredicate:v22];
 
-  [v16 setFetchLimit:{v27 - objc_msgSend(v15, "count")}];
+  [v16 setFetchLimit:{limitCopy - objc_msgSend(v15, "count")}];
   v23 = [GKCDIDSInfo _gkObjectsFromFetchRequest:v16 withContext:v28];
 
   v24 = [v15 arrayByAddingObjectsFromArray:v23];
@@ -2403,16 +2403,16 @@ LABEL_31:
   return v24;
 }
 
-- (void)fetchMessageTransportV2AvailabilityForUnprefixedHandles:(id)a3 completion:(id)a4
+- (void)fetchMessageTransportV2AvailabilityForUnprefixedHandles:(id)handles completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  completionCopy = completion;
   v8 = +[NSMutableSet set];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v6;
+  v9 = handlesCopy;
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v10)
   {
@@ -2433,14 +2433,14 @@ LABEL_3:
       }
 
       v14 = [IDSURI URIWithUnprefixedURI:v13];
-      v15 = [v14 prefixedURI];
+      prefixedURI = [v14 prefixedURI];
 
-      if (!v15)
+      if (!prefixedURI)
       {
         break;
       }
 
-      [v8 addObject:v15];
+      [v8 addObject:prefixedURI];
 
       if (v10 == ++v12)
       {
@@ -2484,8 +2484,8 @@ LABEL_3:
         sub_100293E6C();
       }
 
-      v21 = [NSError errorWithDomain:GKContactsIntegrationErrorDomain code:9 userInfo:&off_1003832A8];
-      (*(v7 + 2))(v7, 0, 0, v21);
+      error2 = [NSError errorWithDomain:GKContactsIntegrationErrorDomain code:9 userInfo:&off_1003832A8];
+      (*(completionCopy + 2))(completionCopy, 0, 0, error2);
     }
 
     else
@@ -2503,19 +2503,19 @@ LABEL_3:
         sub_100293EA0(v27, v28, buf, v26);
       }
 
-      v29 = [v19 error];
+      error = [v19 error];
 
-      if (v29)
+      if (error)
       {
-        v21 = [v19 error];
-        (*(v7 + 2))(v7, 0, 0, v21);
+        error2 = [v19 error];
+        (*(completionCopy + 2))(completionCopy, 0, 0, error2);
       }
 
       else
       {
-        v21 = [v19 objectForKeyedSubscript:@"availablePlayerHandles"];
+        error2 = [v19 objectForKeyedSubscript:@"availablePlayerHandles"];
         v30 = [v19 objectForKeyedSubscript:@"unavailablePlayerHandles"];
-        (*(v7 + 2))(v7, v21, v30, 0);
+        (*(completionCopy + 2))(completionCopy, error2, v30, 0);
       }
     }
 
@@ -2537,7 +2537,7 @@ LABEL_3:
     }
 
     v24 = [NSError errorWithDomain:GKContactsIntegrationErrorDomain code:10 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v24);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v24);
   }
 }
 

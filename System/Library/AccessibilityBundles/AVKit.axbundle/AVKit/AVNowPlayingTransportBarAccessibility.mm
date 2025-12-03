@@ -1,27 +1,27 @@
 @interface AVNowPlayingTransportBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_axStringForElapsedAndRemainingTime;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateRemainingTimeText;
-- (void)setHint:(int64_t)a3;
+- (void)setHint:(int64_t)hint;
 @end
 
 @implementation AVNowPlayingTransportBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVNowPlayingTransportBar" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"createViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"_updateRemainingTimeText" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"setHint:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_elapsedTimeLabel" withType:"AVAnimatingLabel"];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_startTimeLabel" withType:"UILabel"];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_remainingTimeLabel" withType:"AVAnimatingLabel"];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_clonedPlayer" withType:"AVPlayer"];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"frameSource" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"createViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"_updateRemainingTimeText" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"setHint:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_elapsedTimeLabel" withType:"AVAnimatingLabel"];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_startTimeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_remainingTimeLabel" withType:"AVAnimatingLabel"];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_clonedPlayer" withType:"AVPlayer"];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceMethod:@"frameSource" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -31,25 +31,25 @@
   v3 = __UIAccessibilityCastAsClass();
   if (UIAccessibilityIsVoiceOverRunning() && ([v3 _accessibilityViewIsVisible] & 1) != 0)
   {
-    v4 = 1;
+    isAccessibilityElement = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = AVNowPlayingTransportBarAccessibility;
-    v4 = [(AVNowPlayingTransportBarAccessibility *)&v6 isAccessibilityElement];
+    isAccessibilityElement = [(AVNowPlayingTransportBarAccessibility *)&v6 isAccessibilityElement];
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(AVNowPlayingTransportBarAccessibility *)self safeValueForKey:@"_remainingTimeLabel"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  if (v3)
+  if (_accessibilityViewIsVisible)
   {
     v4 = accessibilityLocalizedString(@"transport.bar.label");
   }
@@ -67,10 +67,10 @@
   v14.receiver = self;
   v14.super_class = AVNowPlayingTransportBarAccessibility;
   [(AVNowPlayingTransportBarAccessibility *)&v14 _updateRemainingTimeText];
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v4 = [v3 voiceOverPreferredTVInteractionMode];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  voiceOverPreferredTVInteractionMode = [mEMORY[0x29EDBDFA0] voiceOverPreferredTVInteractionMode];
 
-  if (v4 == 1)
+  if (voiceOverPreferredTVInteractionMode == 1)
   {
     Current = CFAbsoluteTimeGetCurrent();
     v6 = [(AVNowPlayingTransportBarAccessibility *)self _accessibilityValueForKey:@"kAXLastPlayStateAnnouncementTime"];
@@ -86,7 +86,7 @@
       [v10 rate];
       if (fabsf(v11) > 1.0)
       {
-        v12 = [(AVNowPlayingTransportBarAccessibility *)self _axStringForElapsedAndRemainingTime];
+        _axStringForElapsedAndRemainingTime = [(AVNowPlayingTransportBarAccessibility *)self _axStringForElapsedAndRemainingTime];
         UIAccessibilitySpeakIfNotSpeaking();
 
         v13 = [MEMORY[0x29EDBA070] numberWithDouble:CFAbsoluteTimeGetCurrent()];
@@ -131,11 +131,11 @@
   }
 
   v5 = [(AVNowPlayingTransportBarAccessibility *)self safeUIViewForKey:v4];
-  v6 = [v5 _accessibilityViewIsVisible];
-  v7 = [v5 accessibilityLabel];
-  if ([v7 length])
+  _accessibilityViewIsVisible = [v5 _accessibilityViewIsVisible];
+  accessibilityLabel = [v5 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v8 = v6 == 0;
+    v8 = _accessibilityViewIsVisible == 0;
   }
 
   else
@@ -161,7 +161,7 @@
     }
 
     v11 = accessibilityLocalizedString(v10);
-    v9 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v11, v7];
+    v9 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v11, accessibilityLabel];
   }
 
   if (v3)
@@ -175,11 +175,11 @@
   }
 
   v13 = [(AVNowPlayingTransportBarAccessibility *)self safeUIViewForKey:v12];
-  v14 = [v13 _accessibilityViewIsVisible];
-  v15 = [v13 accessibilityLabel];
-  if ([v15 length])
+  _accessibilityViewIsVisible2 = [v13 _accessibilityViewIsVisible];
+  accessibilityLabel2 = [v13 accessibilityLabel];
+  if ([accessibilityLabel2 length])
   {
-    v16 = v14 == 0;
+    v16 = _accessibilityViewIsVisible2 == 0;
   }
 
   else
@@ -205,7 +205,7 @@
     }
 
     v19 = accessibilityLocalizedString(v18);
-    v17 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v19, v15];
+    v17 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v19, accessibilityLabel2];
   }
 
   v20 = __UIAXStringForVariables();
@@ -213,28 +213,28 @@
   return v20;
 }
 
-- (void)setHint:(int64_t)a3
+- (void)setHint:(int64_t)hint
 {
   v5 = [(AVNowPlayingTransportBarAccessibility *)self safeValueForKey:@"_hint"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v13.receiver = self;
   v13.super_class = AVNowPlayingTransportBarAccessibility;
-  [(AVNowPlayingTransportBarAccessibility *)&v13 setHint:a3];
-  if (v6 != a3)
+  [(AVNowPlayingTransportBarAccessibility *)&v13 setHint:hint];
+  if (integerValue != hint)
   {
-    if (a3 <= 4)
+    if (hint <= 4)
     {
-      if (a3)
+      if (hint)
       {
-        if (a3 == 1)
+        if (hint == 1)
         {
           v7 = @"tv.player.fastforwarding";
         }
 
         else
         {
-          if (a3 != 2)
+          if (hint != 2)
           {
             return;
           }
@@ -257,9 +257,9 @@ LABEL_12:
       return;
     }
 
-    if (a3 <= 6)
+    if (hint <= 6)
     {
-      if (a3 == 5)
+      if (hint == 5)
       {
         v7 = @"next.track";
       }
@@ -272,9 +272,9 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    if (a3 != 8)
+    if (hint != 8)
     {
-      if (a3 != 7)
+      if (hint != 7)
       {
         return;
       }
@@ -285,8 +285,8 @@ LABEL_12:
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"tv.player.paused.with.remaining");
     v10 = [(AVNowPlayingTransportBarAccessibility *)self safeValueForKey:@"remainingTimeLabel"];
-    v11 = [v10 accessibilityLabel];
-    v12 = [v8 localizedStringWithFormat:v9, v11];
+    accessibilityLabel = [v10 accessibilityLabel];
+    v12 = [v8 localizedStringWithFormat:v9, accessibilityLabel];
 
     if (v12)
     {

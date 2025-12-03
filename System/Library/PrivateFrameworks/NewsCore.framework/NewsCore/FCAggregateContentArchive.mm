@@ -1,8 +1,8 @@
 @interface FCAggregateContentArchive
-- (FCAggregateContentArchive)initWithCoder:(id)a3;
+- (FCAggregateContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
 - (int64_t)storageSize;
 @end
 
@@ -65,14 +65,14 @@ void __51__FCAggregateContentArchive_initWithChildArchives___block_invoke(uint64
   v4 = FCCFArrayDescription(self->_childArchives);
   [(FCDescription *)v3 addField:@"childArchives" object:v4];
 
-  v5 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v5;
+  return descriptionString;
 }
 
-- (FCAggregateContentArchive)initWithCoder:(id)a3
+- (FCAggregateContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FCAggregateContentArchive;
   v5 = [(FCAggregateContentArchive *)&v9 init];
@@ -83,7 +83,7 @@ void __51__FCAggregateContentArchive_initWithChildArchives___block_invoke(uint64
       dispatch_once(&qword_1EDB26E38, &__block_literal_global_242);
     }
 
-    v6 = [v4 decodeObjectOfClasses:qword_1EDB26E30 forKey:@"childArchives"];
+    v6 = [coderCopy decodeObjectOfClasses:qword_1EDB26E30 forKey:@"childArchives"];
     childArchives = v5->_childArchives;
     v5->_childArchives = v6;
   }
@@ -102,16 +102,16 @@ uint64_t __43__FCAggregateContentArchive_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   childArchives = self->_childArchives;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__FCAggregateContentArchive_unarchiveIntoContentContext___block_invoke;
   v10[3] = &unk_1E7C37220;
-  v11 = v4;
-  v6 = v4;
+  v11 = contextCopy;
+  v6 = contextCopy;
   v7 = [(NSArray *)childArchives fc_arrayByTransformingWithBlock:v10];
   v8 = [[FCContentUnarchiveResult alloc] initWithInterestToken:v7 storageSize:[(FCAggregateContentArchive *)self storageSize]];
 

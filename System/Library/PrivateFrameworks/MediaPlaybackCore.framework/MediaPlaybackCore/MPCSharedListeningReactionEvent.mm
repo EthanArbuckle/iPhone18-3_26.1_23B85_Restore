@@ -1,28 +1,28 @@
 @interface MPCSharedListeningReactionEvent
-- (MPCSharedListeningReactionEvent)initWithReaction:(id)a3 reactionIdentifier:(id)a4 item:(id)a5;
+- (MPCSharedListeningReactionEvent)initWithReaction:(id)reaction reactionIdentifier:(id)identifier item:(id)item;
 @end
 
 @implementation MPCSharedListeningReactionEvent
 
-- (MPCSharedListeningReactionEvent)initWithReaction:(id)a3 reactionIdentifier:(id)a4 item:(id)a5
+- (MPCSharedListeningReactionEvent)initWithReaction:(id)reaction reactionIdentifier:(id)identifier item:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reactionCopy = reaction;
+  identifierCopy = identifier;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = MPCSharedListeningReactionEvent;
   v11 = [(MPCSharedListeningReactionEvent *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [reactionCopy copy];
     reaction = v11->_reaction;
     v11->_reaction = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     reactionIdentifier = v11->_reactionIdentifier;
     v11->_reactionIdentifier = v14;
 
-    objc_storeStrong(&v11->_item, a5);
+    objc_storeStrong(&v11->_item, item);
   }
 
   return v11;

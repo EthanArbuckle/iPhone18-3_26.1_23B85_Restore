@@ -1,23 +1,23 @@
 @interface _DASRequiresPluggedInPolicy
-+ (BOOL)isWirelessCharger:(id)a3;
++ (BOOL)isWirelessCharger:(id)charger;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (BOOL)isExternallyPowered;
-- (BOOL)requiresPluginForActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)requiresPluginForActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (NSDate)lastPredictionTimelineUpdate;
 - (_DASPredictionTimeline)pluginTimeline;
 - (_DASRequiresPluggedInPolicy)init;
-- (double)predictedScoreForActivity:(id)a3 atDate:(id)a4;
-- (double)scoreForActivity:(id)a3 isPluggedIn:(BOOL)a4;
-- (double)scoreForActivity:(id)a3 withBatteryStatus:(id)a4 withTopOffStatus:(unint64_t)a5 timeSincePluginStateChange:(double)a6 atDate:(id)a7 rationale:(id)a8;
-- (double)weightForActivity:(id)a3;
+- (double)predictedScoreForActivity:(id)activity atDate:(id)date;
+- (double)scoreForActivity:(id)activity isPluggedIn:(BOOL)in;
+- (double)scoreForActivity:(id)activity withBatteryStatus:(id)status withTopOffStatus:(unint64_t)offStatus timeSincePluginStateChange:(double)change atDate:(id)date rationale:(id)rationale;
+- (double)weightForActivity:(id)activity;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (unint64_t)notChargingReason;
-- (void)computeAndRecordPolicyDurationStatsWhilePluggedIn:(BOOL)a3 considerPluggedIn:(BOOL)a4 atDate:(id)a5;
-- (void)setLastPredictionTimelineUpdate:(id)a3;
-- (void)updateRationaleForTransferSize:(id)a3 withActivity:(id)a4;
+- (void)computeAndRecordPolicyDurationStatsWhilePluggedIn:(BOOL)in considerPluggedIn:(BOOL)pluggedIn atDate:(id)date;
+- (void)setLastPredictionTimelineUpdate:(id)update;
+- (void)updateRationaleForTransferSize:(id)size withActivity:(id)activity;
 @end
 
 @implementation _DASRequiresPluggedInPolicy
@@ -38,8 +38,8 @@
   predictionManager = self->_predictionManager;
   v4 = v14[5];
   v5 = +[NSDate now];
-  v6 = [(_DASRequiresPluggedInPolicy *)self lastPredictionTimelineUpdate];
-  LODWORD(predictionManager) = [(_DASPredictionManager *)predictionManager isPredictionTimeline:v4 validAtDate:v5 lastUpdatedAt:v6];
+  lastPredictionTimelineUpdate = [(_DASRequiresPluggedInPolicy *)self lastPredictionTimelineUpdate];
+  LODWORD(predictionManager) = [(_DASPredictionManager *)predictionManager isPredictionTimeline:v4 validAtDate:v5 lastUpdatedAt:lastPredictionTimelineUpdate];
 
   if (!predictionManager)
   {
@@ -75,10 +75,10 @@
 
 - (NSDate)lastPredictionTimelineUpdate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastPredictionTimelineUpdate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastPredictionTimelineUpdate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -163,7 +163,7 @@
     predictor = v3->_predictor;
     v3->_predictor = v11;
 
-    v13 = [(_DASRequiresPluggedInPolicy *)v3 pluginTimeline];
+    pluginTimeline = [(_DASRequiresPluggedInPolicy *)v3 pluginTimeline];
     v3->_isIpad = +[_DASConfig isiPad];
     v14 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
     byte_10020B3B0 = [v14 BOOLForKey:@"imposePluginDelay"];
@@ -200,9 +200,9 @@
       sub_100120A0C(v3, v25);
     }
 
-    v26 = [(_DASRequiresPluggedInPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASRequiresPluggedInPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v26;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -220,30 +220,30 @@
   return v3;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"])
+  triggerCopy = trigger;
+  stateCopy = state;
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"])
   {
     v8 = +[_CDContextQueries keyPathForPluginStatus];
-    v9 = [v7 objectForKeyedSubscript:v8];
-    v10 = [v9 BOOLValue];
+    v9 = [stateCopy objectForKeyedSubscript:v8];
+    bOOLValue = [v9 BOOLValue];
 
     self = +[_DASPLLogger sharedInstance];
-    [(_DASRequiresPluggedInPolicy *)self reportNewStatus:v10 forTrigger:off_10020ACD0];
+    [(_DASRequiresPluggedInPolicy *)self reportNewStatus:bOOLValue forTrigger:off_10020ACD0];
 
-    LOBYTE(self) = v10 ^ 1;
+    LOBYTE(self) = bOOLValue ^ 1;
   }
 
-  else if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.batteryStatus"])
+  else if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.batteryStatus"])
   {
     LOBYTE(self) = 1;
   }
 
-  else if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.watchispluggedin"])
+  else if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.watchispluggedin"])
   {
-    v11 = [v7 objectForKeyedSubscript:self->_watchIsPluggedInKeyPath];
+    v11 = [stateCopy objectForKeyedSubscript:self->_watchIsPluggedInKeyPath];
     LODWORD(self) = [v11 BOOLValue] ^ 1;
   }
 
@@ -255,12 +255,12 @@
   return self;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 fastPass];
+  activityCopy = activity;
+  fastPass = [activityCopy fastPass];
 
-  if (v4)
+  if (fastPass)
   {
     v5 = [_DASDaemonLogger logForCategory:@"pluggedinpolicy"];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -273,19 +273,19 @@
 
   else
   {
-    LODWORD(v5) = [v3 beforeDaysFirstActivity] ^ 1;
+    LODWORD(v5) = [activityCopy beforeDaysFirstActivity] ^ 1;
   }
 
   return v5;
 }
 
-- (double)weightForActivity:(id)a3
+- (double)weightForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = 20.0;
-  if (![(_DASRequiresPluggedInPolicy *)self requiresPluginForActivity:v4])
+  if (![(_DASRequiresPluggedInPolicy *)self requiresPluginForActivity:activityCopy])
   {
-    if (([v4 requestsApplicationLaunch] & 1) != 0 || (objc_msgSend(v4, "relatedApplications"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+    if (([activityCopy requestsApplicationLaunch] & 1) != 0 || (objc_msgSend(activityCopy, "relatedApplications"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
     {
       v5 = 2.0;
     }
@@ -299,12 +299,12 @@
   return v5;
 }
 
-- (double)scoreForActivity:(id)a3 isPluggedIn:(BOOL)a4
+- (double)scoreForActivity:(id)activity isPluggedIn:(BOOL)in
 {
   result = 1.0;
-  if (!a4)
+  if (!in)
   {
-    v5 = [(_DASRequiresPluggedInPolicy *)self requiresPluginForActivity:a3, 1.0];
+    v5 = [(_DASRequiresPluggedInPolicy *)self requiresPluginForActivity:activity, 1.0];
     result = 0.5;
     if (v5)
     {
@@ -315,18 +315,18 @@
   return result;
 }
 
-- (BOOL)requiresPluginForActivity:(id)a3
+- (BOOL)requiresPluginForActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requiresPlugin])
+  activityCopy = activity;
+  if ([activityCopy requiresPlugin])
   {
     v4 = 1;
   }
 
-  else if (+[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", v3) && [v3 transferSizeType] == 30)
+  else if (+[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", activityCopy) && [activityCopy transferSizeType] == 30)
   {
-    v5 = [v3 schedulingPriority];
-    v4 = v5 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v4 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   else
@@ -337,40 +337,40 @@
   return v4;
 }
 
-- (void)updateRationaleForTransferSize:(id)a3 withActivity:(id)a4
+- (void)updateRationaleForTransferSize:(id)size withActivity:(id)activity
 {
-  v5 = a3;
-  if ([a4 transferSizeType] == 30)
+  sizeCopy = size;
+  if ([activity transferSizeType] == 30)
   {
-    [v5 setResponseOptions:{objc_msgSend(v5, "responseOptions") | 1}];
+    [sizeCopy setResponseOptions:{objc_msgSend(sizeCopy, "responseOptions") | 1}];
   }
 }
 
-+ (BOOL)isWirelessCharger:(id)a3
++ (BOOL)isWirelessCharger:(id)charger
 {
-  v3 = a3;
+  chargerCopy = charger;
   v4 = +[_CDContextQueries batteryAdapterIsWirelessKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [chargerCopy objectForKeyedSubscript:v4];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(chargerCopy) = [v5 BOOLValue];
+  return chargerCopy;
 }
 
-- (void)computeAndRecordPolicyDurationStatsWhilePluggedIn:(BOOL)a3 considerPluggedIn:(BOOL)a4 atDate:(id)a5
+- (void)computeAndRecordPolicyDurationStatsWhilePluggedIn:(BOOL)in considerPluggedIn:(BOOL)pluggedIn atDate:(id)date
 {
-  v8 = a5;
+  dateCopy = date;
   v9 = os_transaction_create();
   statsRecordingQueue = self->_statsRecordingQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10006A368;
   v13[3] = &unk_1001B6C88;
-  v17 = a3;
-  v18 = a4;
+  inCopy = in;
+  pluggedInCopy = pluggedIn;
   v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
+  selfCopy = self;
+  v16 = dateCopy;
+  v11 = dateCopy;
   v12 = v9;
   dispatch_async(statsRecordingQueue, v13);
 }
@@ -384,7 +384,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
@@ -395,10 +395,10 @@
       sub_100120AFC(v4, v6);
     }
 
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isExternallyPowered
@@ -407,13 +407,13 @@
   v4 = [v3 objectForKeyedSubscript:self->_batteryStatusKeyPath];
   v5 = +[_CDContextQueries batteryExternalConnectedKey];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = +[_CDContextQueries batteryIsChargingKey];
     v9 = [v4 objectForKeyedSubscript:v8];
-    v10 = [v9 BOOLValue];
+    bOOLValue2 = [v9 BOOLValue];
 
     v11 = +[_CDContextQueries batteryFullyChargedKey];
     v12 = [v4 objectForKeyedSubscript:v11];
@@ -430,16 +430,16 @@
     }
 
     v17 = [v3 objectForKeyedSubscript:self->_topOffCheckpointKeypath];
-    v18 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-    if ((v18 - 2) < 3)
+    if ((unsignedIntegerValue - 2) < 3)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = v10;
+      v19 = bOOLValue2;
     }
 
     if ((v19 & 1) != 0 || v13)
@@ -448,7 +448,7 @@
       v14 = 1;
     }
 
-    else if ([_DASRequiresPluggedInPolicy isWirelessCharger:v4]&& [(_DASRequiresPluggedInPolicy *)self deviceIsToppingOff:v18])
+    else if ([_DASRequiresPluggedInPolicy isWirelessCharger:v4]&& [(_DASRequiresPluggedInPolicy *)self deviceIsToppingOff:unsignedIntegerValue])
     {
       v14 = 0;
     }
@@ -473,22 +473,22 @@
   return v14;
 }
 
-- (double)scoreForActivity:(id)a3 withBatteryStatus:(id)a4 withTopOffStatus:(unint64_t)a5 timeSincePluginStateChange:(double)a6 atDate:(id)a7 rationale:(id)a8
+- (double)scoreForActivity:(id)activity withBatteryStatus:(id)status withTopOffStatus:(unint64_t)offStatus timeSincePluginStateChange:(double)change atDate:(id)date rationale:(id)rationale
 {
-  v13 = a3;
-  v14 = a4;
-  v59 = a7;
-  v62 = a8;
+  activityCopy = activity;
+  statusCopy = status;
+  dateCopy = date;
+  rationaleCopy = rationale;
   v15 = +[_CDContextQueries batteryExternalConnectedKey];
-  v16 = [v14 objectForKeyedSubscript:v15];
-  v63 = [v16 BOOLValue];
+  v16 = [statusCopy objectForKeyedSubscript:v15];
+  bOOLValue = [v16 BOOLValue];
 
   v17 = +[_CDContextQueries batteryIsChargingKey];
-  v18 = [v14 objectForKeyedSubscript:v17];
-  v19 = [v18 BOOLValue];
+  v18 = [statusCopy objectForKeyedSubscript:v17];
+  bOOLValue2 = [v18 BOOLValue];
 
   v20 = +[_CDContextQueries batteryFullyChargedKey];
-  v21 = [v14 objectForKeyedSubscript:v20];
+  v21 = [statusCopy objectForKeyedSubscript:v20];
   if ([v21 BOOLValue])
   {
     v22 = 1;
@@ -497,67 +497,67 @@
   else
   {
     v23 = +[_CDContextQueries batteryPercentageKey];
-    v24 = [v14 objectForKeyedSubscript:v23];
+    v24 = [statusCopy objectForKeyedSubscript:v23];
     v22 = [v24 intValue] == 100;
   }
 
   v25 = +[_CDContextQueries batteryVoltageKey];
-  v26 = [v14 objectForKeyedSubscript:v25];
-  v27 = [v26 integerValue];
+  v26 = [statusCopy objectForKeyedSubscript:v25];
+  integerValue = [v26 integerValue];
 
   v28 = +[_CDContextQueries batteryTemperatureKey];
-  v29 = [v14 objectForKeyedSubscript:v28];
-  v30 = [v29 integerValue];
+  v29 = [statusCopy objectForKeyedSubscript:v28];
+  integerValue2 = [v29 integerValue];
 
   v31 = +[_CDContextQueries batteryPercentageKey];
-  v32 = [v14 objectForKeyedSubscript:v31];
-  v58 = [v32 integerValue];
+  v32 = [statusCopy objectForKeyedSubscript:v31];
+  integerValue3 = [v32 integerValue];
 
-  v33 = v63;
-  if (([v13 hasMagneticSensitivity] & v63) == 1)
+  v33 = bOOLValue;
+  if (([activityCopy hasMagneticSensitivity] & bOOLValue) == 1)
   {
     v34 = [NSPredicate predicateWithFormat:@"hasMagneticSensitivity == YES AND isPluggedIn == YES"];
-    v35 = v62;
-    [v62 addRationaleWithCondition:v34];
+    v35 = rationaleCopy;
+    [rationaleCopy addRationaleWithCondition:v34];
 
     v36 = 0.0;
-    v37 = v59;
+    v37 = dateCopy;
     goto LABEL_39;
   }
 
-  if (a5 - 2 < 3)
+  if (offStatus - 2 < 3)
   {
     v38 = @"topOffProtectionEngaged == %@";
-    v39 = v63;
+    v39 = bOOLValue;
 LABEL_8:
     v40 = [NSPredicate predicateWithFormat:v38, &__kCFBooleanTrue];
-    [v62 addRationaleWithCondition:v40];
+    [rationaleCopy addRationaleWithCondition:v40];
 
     goto LABEL_9;
   }
 
   ignoreIsCharging = self->_ignoreIsCharging;
-  if ([_DASRequiresPluggedInPolicy isWirelessCharger:v14]&& [(_DASRequiresPluggedInPolicy *)self deviceIsToppingOff:a5])
+  if ([_DASRequiresPluggedInPolicy isWirelessCharger:statusCopy]&& [(_DASRequiresPluggedInPolicy *)self deviceIsToppingOff:offStatus])
   {
     v39 = 0;
     v38 = @"deviceTopOff == %@";
     goto LABEL_8;
   }
 
-  v39 = v63;
-  if (!v63 || (v39 = v63, ignoreIsCharging))
+  v39 = bOOLValue;
+  if (!bOOLValue || (v39 = bOOLValue, ignoreIsCharging))
   {
 LABEL_9:
     v33 = +[_CDContextQueries batteryExternalConnectedKey];
     v41 = [NSNumber numberWithBool:v39];
     v42 = [NSPredicate predicateWithFormat:@"%@ == %@", v33, v41];
-    v35 = v62;
-    [v62 addRationaleWithCondition:v42];
+    v35 = rationaleCopy;
+    [rationaleCopy addRationaleWithCondition:v42];
 
-    LODWORD(v33) = v63;
-    v37 = v59;
-    v43 = self;
-    [(_DASRequiresPluggedInPolicy *)self computeAndRecordPolicyDurationStatsWhilePluggedIn:v63 considerPluggedIn:v39 atDate:v59];
+    LODWORD(v33) = bOOLValue;
+    v37 = dateCopy;
+    selfCopy6 = self;
+    [(_DASRequiresPluggedInPolicy *)self computeAndRecordPolicyDurationStatsWhilePluggedIn:bOOLValue considerPluggedIn:v39 atDate:dateCopy];
     v36 = 1.0;
     if (v39)
     {
@@ -567,42 +567,42 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((v22 | v19))
+  if ((v22 | bOOLValue2))
   {
-    v37 = v59;
-    v47 = self;
+    v37 = dateCopy;
+    selfCopy4 = self;
     self->_lastNotChargingReason = 0;
-    v48 = v63;
-    v35 = v62;
+    v48 = bOOLValue;
+    v35 = rationaleCopy;
   }
 
   else
   {
-    v37 = v59;
-    v47 = self;
+    v37 = dateCopy;
+    selfCopy4 = self;
     if (!self->_lastNotChargingReason)
     {
       self->_lastNotChargingReason = [(_DASRequiresPluggedInPolicy *)self notChargingReason];
     }
 
-    v48 = v63;
-    v35 = v62;
+    v48 = bOOLValue;
+    v35 = rationaleCopy;
     if (([objc_opt_class() isIgnorableNotChargingReason:self->_lastNotChargingReason] & 1) == 0)
     {
       v49 = [NSNumber numberWithUnsignedInteger:self->_lastNotChargingReason];
       v50 = [NSPredicate predicateWithFormat:@"isCharging == NO AND notChargingReason == %@", v49];
-      [v62 addRationaleWithCondition:v50];
+      [rationaleCopy addRationaleWithCondition:v50];
 
-      v47 = self;
-      v33 = v63;
+      selfCopy4 = self;
+      v33 = bOOLValue;
       v48 = 0;
     }
   }
 
-  if (v47->_isIpad && v27 >= 4200 && v30 >= 3500 && !v47->_deficitProcessing)
+  if (selfCopy4->_isIpad && integerValue >= 4200 && integerValue2 >= 3500 && !selfCopy4->_deficitProcessing)
   {
-    v51 = [v13 userInfo];
-    v52 = [v51 objectForKeyedSubscript:_DASCTSBypassBatteryAgingProtectionKey];
+    userInfo = [activityCopy userInfo];
+    v52 = [userInfo objectForKeyedSubscript:_DASCTSBypassBatteryAgingProtectionKey];
     if ([v52 BOOLValue])
     {
 LABEL_32:
@@ -610,35 +610,35 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v60 = [v13 backlogged];
+    backlogged = [activityCopy backlogged];
 
-    if ((v60 & 1) == 0)
+    if ((backlogged & 1) == 0)
     {
-      v53 = [NSNumber numberWithInteger:v27];
-      v35 = v62;
-      v52 = [NSNumber numberWithInteger:v30];
+      v53 = [NSNumber numberWithInteger:integerValue];
+      v35 = rationaleCopy;
+      v52 = [NSNumber numberWithInteger:integerValue2];
       v54 = [NSPredicate predicateWithFormat:@"voltage == %@ AND temperature == %@", v53, v52];
-      [v62 addRationaleWithCondition:v54];
+      [rationaleCopy addRationaleWithCondition:v54];
 
-      v51 = v53;
+      userInfo = v53;
       v48 = 0;
       goto LABEL_32;
     }
   }
 
 LABEL_33:
-  if (((byte_10020B3B0 & 1) != 0 || ([v13 backlogged] & 1) == 0 && +[_DASRequiresPluggedInPolicy isWirelessCharger:](_DASRequiresPluggedInPolicy, "isWirelessCharger:", v14) && v58 <= 79) && a6 > 0.0 && a6 < 900.0)
+  if (((byte_10020B3B0 & 1) != 0 || ([activityCopy backlogged] & 1) == 0 && +[_DASRequiresPluggedInPolicy isWirelessCharger:](_DASRequiresPluggedInPolicy, "isWirelessCharger:", statusCopy) && integerValue3 <= 79) && change > 0.0 && change < 900.0)
   {
-    v55 = [NSNumber numberWithDouble:a6 / 60.0];
+    v55 = [NSNumber numberWithDouble:change / 60.0];
     v56 = [NSPredicate predicateWithFormat:@"timeSincePlugin == %@", v55];
     [v35 addRationaleWithCondition:v56];
 
-    [(_DASRequiresPluggedInPolicy *)self computeAndRecordPolicyDurationStatsWhilePluggedIn:v63 considerPluggedIn:0 atDate:v37];
+    [(_DASRequiresPluggedInPolicy *)self computeAndRecordPolicyDurationStatsWhilePluggedIn:bOOLValue considerPluggedIn:0 atDate:v37];
 LABEL_11:
-    v44 = [v13 name];
-    v45 = [v44 containsString:@"spotlightknowledged.task.priority"];
+    name = [activityCopy name];
+    v45 = [name containsString:@"spotlightknowledged.task.priority"];
 
-    v43 = self;
+    selfCopy6 = self;
     v36 = 0.0;
     if (v45)
     {
@@ -648,7 +648,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v43 = self;
+  selfCopy6 = self;
   [(_DASRequiresPluggedInPolicy *)self computeAndRecordPolicyDurationStatsWhilePluggedIn:v33 considerPluggedIn:v48 atDate:v37];
   v36 = 1.0;
   if (v48)
@@ -664,9 +664,9 @@ LABEL_10:
 
 LABEL_12:
   v36 = 0.5;
-  if ([(_DASRequiresPluggedInPolicy *)v43 requiresPluginForActivity:v13])
+  if ([(_DASRequiresPluggedInPolicy *)selfCopy6 requiresPluginForActivity:activityCopy])
   {
-    [(_DASRequiresPluggedInPolicy *)v43 updateRationaleForTransferSize:v35 withActivity:v13];
+    [(_DASRequiresPluggedInPolicy *)selfCopy6 updateRationaleForTransferSize:v35 withActivity:activityCopy];
     v36 = 0.0;
   }
 
@@ -675,23 +675,23 @@ LABEL_39:
   return v36;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if ([v6 targetDevice])
+  if ([activityCopy targetDevice])
   {
     v9 = self->_watchIsPluggedInKeyPath;
-    v10 = [v7 objectForKeyedSubscript:v9];
-    v11 = [v10 BOOLValue];
+    v10 = [stateCopy objectForKeyedSubscript:v9];
+    bOOLValue = [v10 BOOLValue];
 
-    [(_DASRequiresPluggedInPolicy *)self scoreForActivity:v6 isPluggedIn:v11];
+    [(_DASRequiresPluggedInPolicy *)self scoreForActivity:activityCopy isPluggedIn:bOOLValue];
     v13 = v12;
     if (v12 == 0.0)
     {
-      [(_DASRequiresPluggedInPolicy *)self updateRationaleForTransferSize:v8 withActivity:v6];
-      v14 = [NSNumber numberWithBool:v11];
+      [(_DASRequiresPluggedInPolicy *)self updateRationaleForTransferSize:v8 withActivity:activityCopy];
+      v14 = [NSNumber numberWithBool:bOOLValue];
       v15 = [NSPredicate predicateWithFormat:@"%@ == %@", v9, v14];
 
       [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v15];
@@ -704,7 +704,7 @@ LABEL_39:
   {
     v9 = +[NSDate date];
     v17 = +[_CDContextQueries keyPathForPluginStatus];
-    v18 = [v7 lastModifiedDateForContextualKeyPath:v17];
+    v18 = [stateCopy lastModifiedDateForContextualKeyPath:v17];
 
     if (v18)
     {
@@ -717,20 +717,20 @@ LABEL_39:
       v20 = 901.0;
     }
 
-    v21 = [v7 objectForKeyedSubscript:self->_topOffCheckpointKeypath];
-    v22 = [v21 unsignedIntegerValue];
+    v21 = [stateCopy objectForKeyedSubscript:self->_topOffCheckpointKeypath];
+    unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-    v23 = [v7 objectForKeyedSubscript:self->_batteryStatusKeyPath];
-    if (+[_DASRequiresPluggedInPolicy isWirelessCharger:](_DASRequiresPluggedInPolicy, "isWirelessCharger:", v23) && (v24 = [v6 schedulingPriority], v24 < _DASSchedulingPriorityUtility) && -[_DASRequiresPluggedInPolicy deviceIsToppingOff:](self, "deviceIsToppingOff:", v22))
+    v23 = [stateCopy objectForKeyedSubscript:self->_batteryStatusKeyPath];
+    if (+[_DASRequiresPluggedInPolicy isWirelessCharger:](_DASRequiresPluggedInPolicy, "isWirelessCharger:", v23) && (v24 = [activityCopy schedulingPriority], v24 < _DASSchedulingPriorityUtility) && -[_DASRequiresPluggedInPolicy deviceIsToppingOff:](self, "deviceIsToppingOff:", unsignedIntegerValue))
     {
-      v25 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"priority == %llu && topOffStatus == %llu", [v6 schedulingPriority], v22);
+      v25 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"priority == %llu && topOffStatus == %llu", [activityCopy schedulingPriority], unsignedIntegerValue);
       [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v25];
       v16 = [_DASPolicyResponse policyResponseWithDecision:33 validityDuration:v8 rationale:0x384uLL];
     }
 
     else
     {
-      [(_DASRequiresPluggedInPolicy *)self scoreForActivity:v6 withBatteryStatus:v23 withTopOffStatus:v22 timeSincePluginStateChange:v9 atDate:v8 rationale:v20];
+      [(_DASRequiresPluggedInPolicy *)self scoreForActivity:activityCopy withBatteryStatus:v23 withTopOffStatus:unsignedIntegerValue timeSincePluginStateChange:v9 atDate:v8 rationale:v20];
       v16 = [_DASPolicyResponse policyResponseWithScore:"policyResponseWithScore:validityDuration:rationale:" validityDuration:v8 rationale:?];
     }
   }
@@ -738,27 +738,27 @@ LABEL_39:
   return v16;
 }
 
-- (double)predictedScoreForActivity:(id)a3 atDate:(id)a4
+- (double)predictedScoreForActivity:(id)activity atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  dateCopy = date;
   v8 = 0.5;
-  if ([v6 targetDevice] != 1 && objc_msgSend(v6, "targetDevice") != 2)
+  if ([activityCopy targetDevice] != 1 && objc_msgSend(activityCopy, "targetDevice") != 2)
   {
-    v9 = [(_DASRequiresPluggedInPolicy *)self pluginTimeline];
-    v10 = [v9 valueAtDate:v7];
+    pluginTimeline = [(_DASRequiresPluggedInPolicy *)self pluginTimeline];
+    v10 = [pluginTimeline valueAtDate:dateCopy];
 
     if (v10)
     {
       [v10 doubleValue];
       v12 = v11;
-      [(_DASRequiresPluggedInPolicy *)self scoreForActivity:v6 isPluggedIn:v11 > 0.0];
+      [(_DASRequiresPluggedInPolicy *)self scoreForActivity:activityCopy isPluggedIn:v11 > 0.0];
       v8 = v12 * v13;
     }
 
     else
     {
-      [(_DASRequiresPluggedInPolicy *)self scoreForActivity:v6 isPluggedIn:0];
+      [(_DASRequiresPluggedInPolicy *)self scoreForActivity:activityCopy isPluggedIn:0];
       v8 = v14;
     }
   }
@@ -766,13 +766,13 @@ LABEL_39:
   return v8;
 }
 
-- (void)setLastPredictionTimelineUpdate:(id)a3
+- (void)setLastPredictionTimelineUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   obj = self;
   objc_sync_enter(obj);
   lastPredictionTimelineUpdate = obj->_lastPredictionTimelineUpdate;
-  obj->_lastPredictionTimelineUpdate = v4;
+  obj->_lastPredictionTimelineUpdate = updateCopy;
 
   objc_sync_exit(obj);
 }

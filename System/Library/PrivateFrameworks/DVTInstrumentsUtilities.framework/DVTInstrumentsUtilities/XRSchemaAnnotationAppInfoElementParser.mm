@@ -1,6 +1,6 @@
 @interface XRSchemaAnnotationAppInfoElementParser
 + (id)_elementNameToClassMap;
-- (void)setValue:(id)a3 forElementName:(id)a4;
+- (void)setValue:(id)value forElementName:(id)name;
 @end
 
 @implementation XRSchemaAnnotationAppInfoElementParser
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (void)setValue:(id)a3 forElementName:(id)a4
+- (void)setValue:(id)value forElementName:(id)name
 {
-  v9 = a3;
-  v6 = a4;
+  valueCopy = value;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_textParserCompletedParsing_elementName_(self->super.parent, v7, v9, v6, v8);
+    objc_msgSend_textParserCompletedParsing_elementName_(self->super.parent, v7, valueCopy, nameCopy, v8);
   }
 }
 

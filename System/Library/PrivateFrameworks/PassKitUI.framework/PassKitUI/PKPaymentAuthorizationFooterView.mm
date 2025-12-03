@@ -1,63 +1,63 @@
 @interface PKPaymentAuthorizationFooterView
-- (BOOL)setConstraintState:(int64_t)a3;
-- (PKPaymentAuthorizationFooterView)initWithFrame:(CGRect)a3 layout:(id)a4;
+- (BOOL)setConstraintState:(int64_t)state;
+- (PKPaymentAuthorizationFooterView)initWithFrame:(CGRect)frame layout:(id)layout;
 - (PKPaymentAuthorizationFooterViewDelegate)delegate;
-- (id)_payWithPasscodeTitleForState:(int64_t)a3;
-- (id)_titleAttributedStringForState:(int64_t)a3;
-- (id)_titleLabelAttributedString:(id)a3;
-- (id)createDefaultHeightConstraintForConstraintState:(int64_t)a3;
+- (id)_payWithPasscodeTitleForState:(int64_t)state;
+- (id)_titleAttributedStringForState:(int64_t)state;
+- (id)_titleLabelAttributedString:(id)string;
+- (id)createDefaultHeightConstraintForConstraintState:(int64_t)state;
 - (void)_createSubviews;
 - (void)_payWithPasscodePressed;
 - (void)_prepareConstraints;
 - (void)dealloc;
-- (void)glyphView:(id)a3 revealingCheckmark:(BOOL)a4;
-- (void)glyphViewUserIntentEdgeDidChange:(id)a3;
-- (void)setConfirmationStyle:(unint64_t)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHidesSeparatorView:(BOOL)a3;
-- (void)setRequestType:(unint64_t)a3;
-- (void)setState:(int64_t)a3 string:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6;
+- (void)glyphView:(id)view revealingCheckmark:(BOOL)checkmark;
+- (void)glyphViewUserIntentEdgeDidChange:(id)change;
+- (void)setConfirmationStyle:(unint64_t)style;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHidesSeparatorView:(BOOL)view;
+- (void)setRequestType:(unint64_t)type;
+- (void)setState:(int64_t)state string:(id)string animated:(BOOL)animated withCompletion:(id)completion;
 - (void)updateConstraints;
 @end
 
 @implementation PKPaymentAuthorizationFooterView
 
-- (PKPaymentAuthorizationFooterView)initWithFrame:(CGRect)a3 layout:(id)a4
+- (PKPaymentAuthorizationFooterView)initWithFrame:(CGRect)frame layout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v23.receiver = self;
   v23.super_class = PKPaymentAuthorizationFooterView;
-  v11 = [(PKPaymentAuthorizationFooterView *)&v23 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(PKPaymentAuthorizationFooterView *)&v23 initWithFrame:x, y, width, height];
+  if (height)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    completionHandlers = v11->_completionHandlers;
-    v11->_completionHandlers = v12;
+    completionHandlers = height->_completionHandlers;
+    height->_completionHandlers = v12;
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    deferredCompletionHandlers = v11->_deferredCompletionHandlers;
-    v11->_deferredCompletionHandlers = v14;
+    deferredCompletionHandlers = height->_deferredCompletionHandlers;
+    height->_deferredCompletionHandlers = v14;
 
-    objc_storeStrong(&v11->_layout, a4);
-    v11->_constraintState = 0;
-    v11->_queuedConstraintState = 0;
-    v16 = [(PKPaymentAuthorizationFooterView *)v11 traitCollection];
-    v17 = [v16 userInterfaceIdiom];
+    objc_storeStrong(&height->_layout, layout);
+    height->_constraintState = 0;
+    height->_queuedConstraintState = 0;
+    traitCollection = [(PKPaymentAuthorizationFooterView *)height traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v11->_isPad = (v17 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    v11->_hasPearl = PKPearlIsAvailable();
+    height->_isPad = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    height->_hasPearl = PKPearlIsAvailable();
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    dynamicRegularConstraints = v11->_dynamicRegularConstraints;
-    v11->_dynamicRegularConstraints = v18;
+    dynamicRegularConstraints = height->_dynamicRegularConstraints;
+    height->_dynamicRegularConstraints = v18;
 
-    v11->_compact = [(PKPaymentAuthorizationFooterView *)v11 _shouldCompact];
-    v20 = [(PKPaymentAuthorizationLayout *)v11->_layout style];
-    v11->_compactUserIntent = v20 == 0;
-    if (v20)
+    height->_compact = [(PKPaymentAuthorizationFooterView *)height _shouldCompact];
+    style = [(PKPaymentAuthorizationLayout *)height->_layout style];
+    height->_compactUserIntent = style == 0;
+    if (style)
     {
       IsAvailable = 0;
     }
@@ -67,13 +67,13 @@
       IsAvailable = PKSystemApertureIsAvailable();
     }
 
-    v11->_compactBiometrics = IsAvailable;
-    [(PKPaymentAuthorizationFooterView *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PKPaymentAuthorizationFooterView *)v11 _createSubviews];
-    [(PKPaymentAuthorizationFooterView *)v11 _prepareConstraints];
+    height->_compactBiometrics = IsAvailable;
+    [(PKPaymentAuthorizationFooterView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(PKPaymentAuthorizationFooterView *)height _createSubviews];
+    [(PKPaymentAuthorizationFooterView *)height _prepareConstraints];
   }
 
-  return v11;
+  return height;
 }
 
 - (void)dealloc
@@ -85,15 +85,15 @@
   [(PKPaymentAuthorizationFooterView *)&v3 dealloc];
 }
 
-- (void)setRequestType:(unint64_t)a3
+- (void)setRequestType:(unint64_t)type
 {
-  if (self->_requestType != a3)
+  if (self->_requestType != type)
   {
-    self->_requestType = a3;
-    v5 = [(PKPaymentAuthorizationFooterView *)self _shouldCompact];
-    if (self->_compact != v5)
+    self->_requestType = type;
+    _shouldCompact = [(PKPaymentAuthorizationFooterView *)self _shouldCompact];
+    if (self->_compact != _shouldCompact)
     {
-      self->_compact = v5;
+      self->_compact = _shouldCompact;
       self->_constraintsDirty = 1;
       [(PKPaymentAuthorizationFooterView *)self setNeedsUpdateConstraints];
     }
@@ -104,23 +104,23 @@
   }
 }
 
-- (void)setConfirmationStyle:(unint64_t)a3
+- (void)setConfirmationStyle:(unint64_t)style
 {
-  if (self->_confirmationStyle != a3)
+  if (self->_confirmationStyle != style)
   {
-    self->_confirmationStyle = a3;
+    self->_confirmationStyle = style;
     [(PKPaymentAuthorizationFooterView *)self setState:self->_state];
   }
 }
 
-- (BOOL)setConstraintState:(int64_t)a3
+- (BOOL)setConstraintState:(int64_t)state
 {
-  if (self->_constraintState == a3 && self->_queuedConstraintState == a3)
+  if (self->_constraintState == state && self->_queuedConstraintState == state)
   {
     return 0;
   }
 
-  self->_queuedConstraintState = a3;
+  self->_queuedConstraintState = state;
   if (([(PKPaymentAuthorizationFooterView *)self isHidden]& 1) != 0)
   {
     return 0;
@@ -130,27 +130,27 @@
   return 1;
 }
 
-- (void)setState:(int64_t)a3 string:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6
+- (void)setState:(int64_t)state string:(id)string animated:(BOOL)animated withCompletion:(id)completion
 {
-  v7 = a5;
+  animatedCopy = animated;
   v143 = *MEMORY[0x1E69E9840];
-  v93 = a4;
-  v94 = a6;
+  stringCopy = string;
+  completionCopy = completion;
   if (self->_deferringState)
   {
-    if (a3 == 9)
+    if (state == 9)
     {
       v10 = 0;
       self->_deferredStateRequiresRetry = 1;
 LABEL_18:
-      v12 = [v93 copy];
+      v12 = [stringCopy copy];
       deferredStateString = self->_deferredStateString;
       self->_deferredStateString = v12;
 
-      if (v94)
+      if (completionCopy)
       {
         deferredCompletionHandlers = self->_deferredCompletionHandlers;
-        v15 = [v94 copy];
+        v15 = [completionCopy copy];
         v16 = _Block_copy(v15);
         [(NSMutableArray *)deferredCompletionHandlers addObject:v16];
       }
@@ -187,7 +187,7 @@ LABEL_18:
     }
 
 LABEL_13:
-    if (self->_state == a3)
+    if (self->_state == state)
     {
       v10 = 0;
     }
@@ -196,22 +196,22 @@ LABEL_13:
     {
       v10 = [(NSMutableArray *)self->_deferredCompletionHandlers copy];
       [(NSMutableArray *)self->_deferredCompletionHandlers removeAllObjects];
-      self->_state = a3;
+      self->_state = state;
     }
 
     goto LABEL_18;
   }
 
-  if (a3 == 9 || !self->_biometricSuccessOutstanding)
+  if (state == 9 || !self->_biometricSuccessOutstanding)
   {
-    if (a3 == 9)
+    if (state == 9)
     {
       v90 = 0;
       goto LABEL_32;
     }
   }
 
-  else if (self->_state != a3)
+  else if (self->_state != state)
   {
     self->_deferringState = 1;
     self->_deferredStateRequiresRetry = 0;
@@ -225,7 +225,7 @@ LABEL_13:
   }
 
   ++self->_stateTransitionIndex;
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     v90 = 0;
   }
@@ -243,13 +243,13 @@ LABEL_13:
       v90 = 0;
     }
 
-    self->_state = a3;
+    self->_state = state;
   }
 
-  if (v94)
+  if (completionCopy)
   {
     completionHandlers = self->_completionHandlers;
-    v23 = [v94 copy];
+    v23 = [completionCopy copy];
     v24 = _Block_copy(v23);
     [(NSMutableArray *)completionHandlers addObject:v24];
   }
@@ -296,7 +296,7 @@ LABEL_103:
   v27 = 1;
 LABEL_37:
   v89 = [(PKPaymentAuthorizationFooterView *)self setConstraintState:v27];
-  v28 = [v93 copy];
+  v28 = [stringCopy copy];
   overrideString = self->_overrideString;
   self->_overrideString = v28;
 
@@ -307,15 +307,15 @@ LABEL_37:
 
   else
   {
-    [(PKPaymentAuthorizationFooterView *)self _titleAttributedStringForState:a3];
+    [(PKPaymentAuthorizationFooterView *)self _titleAttributedStringForState:state];
   }
   v17 = ;
-  v91 = [(PKPaymentAuthorizationFooterView *)self _payWithPasscodeTitleForState:a3];
+  v91 = [(PKPaymentAuthorizationFooterView *)self _payWithPasscodeTitleForState:state];
   objc_initWeak(&location, self);
   stateTransitionIndex = self->_stateTransitionIndex;
-  if (a3 != 8)
+  if (state != 8)
   {
-    if (a3 == 9)
+    if (state == 9)
     {
       v30 = self->_state;
       if (v30 <= 5)
@@ -334,15 +334,15 @@ LABEL_37:
             v31 = 24;
           }
 
-          v32 = [*(&self->super.super.super.isa + OBJC_IVAR___PKPaymentAuthorizationFooterView__completionHandlers[v31]) layer];
-          v33 = [MEMORY[0x1E6979300] pkui_shakeAnimation];
-          v34 = [v32 pkui_addAdditiveAnimation:v33];
+          layer = [*(&self->super.super.super.isa + OBJC_IVAR___PKPaymentAuthorizationFooterView__completionHandlers[v31]) layer];
+          pkui_shakeAnimation = [MEMORY[0x1E6979300] pkui_shakeAnimation];
+          v34 = [layer pkui_addAdditiveAnimation:pkui_shakeAnimation];
         }
       }
 
-      if (v94)
+      if (completionCopy)
       {
-        (*(v94 + 2))(v94, v30 < 6);
+        (*(completionCopy + 2))(completionCopy, v30 < 6);
       }
 
       goto LABEL_138;
@@ -355,7 +355,7 @@ LABEL_37:
   v133 = &v132;
   v134 = 0x2020000000;
   v135 = 1;
-  v35 = a3 == 8 && v7;
+  v35 = state == 8 && animatedCopy;
   if (v35)
   {
     self->_biometricSuccessOutstanding = 1;
@@ -372,11 +372,11 @@ LABEL_37:
   v36 = _Block_copy(aBlock);
   v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3 > 4)
+  if (state > 4)
   {
-    if (a3 > 9)
+    if (state > 9)
     {
-      if ((a3 - 10) < 2)
+      if ((state - 10) < 2)
       {
         [(UIButton *)self->_payWithPasscodeButton alpha];
         if (v61 > 0.0)
@@ -403,11 +403,11 @@ LABEL_37:
         v125[2] = __76__PKPaymentAuthorizationFooterView_setState_string_animated_withCompletion___block_invoke_6;
         v125[3] = &unk_1E8010AD8;
         v125[4] = v36;
-        [(PKGlyphView *)glyphView setState:7 animated:v7 completionHandler:v125];
+        [(PKGlyphView *)glyphView setState:7 animated:animatedCopy completionHandler:v125];
         goto LABEL_132;
       }
 
-      if (a3 == 12)
+      if (state == 12)
       {
         [(UIButton *)self->_payWithPasscodeButton alpha];
         if (v66 > 0.0)
@@ -434,11 +434,11 @@ LABEL_37:
         v124[2] = __76__PKPaymentAuthorizationFooterView_setState_string_animated_withCompletion___block_invoke_7;
         v124[3] = &unk_1E8010AD8;
         v124[4] = v36;
-        [(PKGlyphView *)v68 setState:11 animated:v7 completionHandler:v124];
+        [(PKGlyphView *)v68 setState:11 animated:animatedCopy completionHandler:v124];
         goto LABEL_132;
       }
 
-      if (a3 == 13)
+      if (state == 13)
       {
         [(UIButton *)self->_payWithPasscodeButton alpha];
         if (v48 > 0.0)
@@ -457,7 +457,7 @@ LABEL_37:
           [v38 addObject:self->_labelView];
         }
 
-        [(PKGlyphView *)self->_glyphView setColorMode:3 animated:v7];
+        [(PKGlyphView *)self->_glyphView setColorMode:3 animated:animatedCopy];
         ++v133[3];
         v50 = self->_glyphView;
         v122[0] = MEMORY[0x1E69E9820];
@@ -465,18 +465,18 @@ LABEL_37:
         v122[2] = __76__PKPaymentAuthorizationFooterView_setState_string_animated_withCompletion___block_invoke_8;
         v122[3] = &unk_1E8010AD8;
         v123 = v36;
-        [(PKGlyphView *)v50 setState:10 animated:v7 completionHandler:v122];
+        [(PKGlyphView *)v50 setState:10 animated:animatedCopy completionHandler:v122];
         [(PKPaymentAuthorizationLayout *)self->_layout glyphDimension];
         v87 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:1 scale:v51 / 43.0 * 34.0];
         v52 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark" withConfiguration:?];
-        v53 = [(PKGlyphView *)self->_glyphView primaryColor];
-        v54 = [v52 _flatImageWithColor:v53];
+        primaryColor = [(PKGlyphView *)self->_glyphView primaryColor];
+        v54 = [v52 _flatImageWithColor:primaryColor];
 
         v55 = self->_glyphView;
         v56 = v54;
-        v57 = [v54 CGImage];
+        cGImage = [v54 CGImage];
         [v54 alignmentRectInsets];
-        [(PKGlyphView *)v55 setCustomImage:v57 withAlignmentEdgeInsets:?];
+        [(PKGlyphView *)v55 setCustomImage:cGImage withAlignmentEdgeInsets:?];
 
         v58 = &v123;
         goto LABEL_133;
@@ -485,11 +485,11 @@ LABEL_37:
       goto LABEL_134;
     }
 
-    if ((a3 - 5) >= 3)
+    if ((state - 5) >= 3)
     {
-      if (a3 == 8)
+      if (state == 8)
       {
-        if (v7)
+        if (animatedCopy)
         {
           self->_biometricSuccessOutstanding = 1;
         }
@@ -519,7 +519,7 @@ LABEL_37:
         v126[2] = __76__PKPaymentAuthorizationFooterView_setState_string_animated_withCompletion___block_invoke_5;
         v126[3] = &unk_1E8010AD8;
         v126[4] = v36;
-        [(PKGlyphView *)v41 setState:12 animated:v7 completionHandler:v126];
+        [(PKGlyphView *)v41 setState:12 animated:animatedCopy completionHandler:v126];
         goto LABEL_132;
       }
 
@@ -558,9 +558,9 @@ LABEL_72:
 LABEL_95:
         v59 = 0;
         v60 = 1;
-        if (a3 > 4)
+        if (state > 4)
         {
-          if ((a3 - 5) < 3)
+          if ((state - 5) < 3)
           {
             v59 = 4;
           }
@@ -568,7 +568,7 @@ LABEL_95:
 
         else
         {
-          switch(a3)
+          switch(state)
           {
             case 1:
               v59 = 3;
@@ -599,7 +599,7 @@ LABEL_95:
                 v85 = userIntentStyle == 1;
                 v60 = userIntentStyle != 1;
                 v59 = 2 * v85;
-                if (v84 && !v7)
+                if (v84 && !animatedCopy)
                 {
                   [(PKGlyphView *)self->_glyphView setState:6 animated:0 completionHandler:0];
                   v60 = 0;
@@ -619,7 +619,7 @@ LABEL_95:
         v128[2] = __76__PKPaymentAuthorizationFooterView_setState_string_animated_withCompletion___block_invoke_3;
         v128[3] = &unk_1E8010AD8;
         v128[4] = v36;
-        [(PKGlyphView *)v69 setState:v59 animated:v70 | v7 completionHandler:v128];
+        [(PKGlyphView *)v69 setState:v59 animated:v70 | animatedCopy completionHandler:v128];
         goto LABEL_132;
       }
 
@@ -631,12 +631,12 @@ LABEL_95:
     goto LABEL_95;
   }
 
-  if (a3 < 4)
+  if (state < 4)
   {
     goto LABEL_72;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
     [(PKGlyphView *)self->_glyphView alpha];
     if (v64 > 0.0)
@@ -661,7 +661,7 @@ LABEL_95:
       v127[2] = __76__PKPaymentAuthorizationFooterView_setState_string_animated_withCompletion___block_invoke_4;
       v127[3] = &unk_1E8010AD8;
       v127[4] = v36;
-      [(PKGlyphView *)v86 setState:0 animated:v7 completionHandler:v127];
+      [(PKGlyphView *)v86 setState:0 animated:animatedCopy completionHandler:v127];
 LABEL_132:
       v58 = (v42 + 4);
 LABEL_133:
@@ -682,7 +682,7 @@ LABEL_134:
   v116 = v88;
   v71 = v17;
   v117 = v71;
-  v120 = v7;
+  v120 = animatedCopy;
   v72 = v38;
   v118 = v72;
   v121 = v89;
@@ -712,9 +712,9 @@ LABEL_134:
   v106[1] = stateTransitionIndex;
   v77 = v36;
   v105 = v77;
-  v107 = v7;
+  v107 = animatedCopy;
   v78 = _Block_copy(v104);
-  if (v7)
+  if (animatedCopy)
   {
     v79 = MEMORY[0x1E69DD250];
     v99[0] = MEMORY[0x1E69E9820];
@@ -1209,9 +1209,9 @@ void __76__PKPaymentAuthorizationFooterView_setState_string_animated_withComplet
   v18 = [(PKPaymentAuthorizationFooterView *)self _payWithPasscodeTitleForState:self->_state];
   [(UIButton *)v17 setTitle:v18 forState:0];
 
-  v19 = [(UIButton *)self->_payWithPasscodeButton titleLabel];
-  [v19 setFont:v13];
-  [v19 setLineBreakMode:4];
+  titleLabel = [(UIButton *)self->_payWithPasscodeButton titleLabel];
+  [titleLabel setFont:v13];
+  [titleLabel setLineBreakMode:4];
   [(UIButton *)self->_payWithPasscodeButton sizeToFit];
   [(UIButton *)self->_payWithPasscodeButton setAlpha:0.0];
   [(PKPaymentAuthorizationFooterView *)self addSubview:self->_payWithPasscodeButton];
@@ -1231,13 +1231,13 @@ void __76__PKPaymentAuthorizationFooterView_setState_string_animated_withComplet
   [(UIView *)self->_lockupView addSubview:self->_labelView];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = PKPaymentAuthorizationFooterView;
   [(PKPaymentAuthorizationFooterView *)&v6 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_staticRegularConstraints];
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_dynamicRegularConstraints];
@@ -1260,23 +1260,23 @@ void __76__PKPaymentAuthorizationFooterView_setState_string_animated_withComplet
   [MEMORY[0x1E696ACD8] activateConstraints:*(&self->super.super.super.isa + *v5)];
 }
 
-- (void)setHidesSeparatorView:(BOOL)a3
+- (void)setHidesSeparatorView:(BOOL)view
 {
-  if (self->_hidesSeparatorView == !a3)
+  if (self->_hidesSeparatorView == !view)
   {
-    self->_hidesSeparatorView = a3;
+    self->_hidesSeparatorView = view;
     [(UIView *)self->_separatorView setHidden:?];
   }
 }
 
-- (id)createDefaultHeightConstraintForConstraintState:(int64_t)a3
+- (id)createDefaultHeightConstraintForConstraintState:(int64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      v6 = [(PKPaymentAuthorizationFooterView *)self heightAnchor];
-      v7 = v6;
+      heightAnchor = [(PKPaymentAuthorizationFooterView *)self heightAnchor];
+      bottomAnchor = heightAnchor;
       v8 = 0.0;
       goto LABEL_15;
     }
@@ -1288,7 +1288,7 @@ void __76__PKPaymentAuthorizationFooterView_setState_string_animated_withComplet
   {
     if ([(PKPaymentAuthorizationLayout *)self->_layout style])
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         v12 = 0.0;
         if (!self->_compact)
@@ -1298,9 +1298,9 @@ void __76__PKPaymentAuthorizationFooterView_setState_string_animated_withComplet
           v12 = v14;
         }
 
-        v7 = [(PKPaymentAuthorizationFooterView *)self bottomAnchor];
-        v15 = [(UILabel *)self->_labelView lastBaselineAnchor];
-        v9 = [v7 constraintEqualToAnchor:v15 constant:v12];
+        bottomAnchor = [(PKPaymentAuthorizationFooterView *)self bottomAnchor];
+        lastBaselineAnchor = [(UILabel *)self->_labelView lastBaselineAnchor];
+        v9 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v12];
 
         goto LABEL_16;
       }
@@ -1315,18 +1315,18 @@ void __76__PKPaymentAuthorizationFooterView_setState_string_animated_withComplet
         v5 = fmax(self->_minimumHeight, 101.0);
       }
 
-      v6 = [(PKPaymentAuthorizationFooterView *)self heightAnchor];
-      v7 = v6;
+      heightAnchor = [(PKPaymentAuthorizationFooterView *)self heightAnchor];
+      bottomAnchor = heightAnchor;
       v8 = v5;
 LABEL_15:
-      v9 = [v6 constraintEqualToConstant:v8];
+      v9 = [heightAnchor constraintEqualToConstant:v8];
 LABEL_16:
 
       return v9;
     }
 
-    v10 = [(PKPaymentAuthorizationFooterView *)self heightAnchor];
-    v9 = [v10 constraintEqualToConstant:201.0];
+    heightAnchor2 = [(PKPaymentAuthorizationFooterView *)self heightAnchor];
+    v9 = [heightAnchor2 constraintEqualToConstant:201.0];
 
     LODWORD(v11) = 1144750080;
     [v9 setPriority:v11];
@@ -1388,9 +1388,9 @@ LABEL_16:
 
   else
   {
-    v9 = [(UIView *)self->_separatorView leftAnchor];
-    v10 = [(PKPaymentAuthorizationFooterView *)self leftAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:v6];
+    leftAnchor = [(UIView *)self->_separatorView leftAnchor];
+    leftAnchor2 = [(PKPaymentAuthorizationFooterView *)self leftAnchor];
+    v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v6];
     v12 = self->_separatorLeftConstraint;
     self->_separatorLeftConstraint = v11;
   }
@@ -1398,7 +1398,7 @@ LABEL_16:
   [(NSMutableArray *)self->_dynamicRegularConstraints addObject:self->_separatorLeftConstraint];
   compact = self->_compact;
   dynamicRegularConstraints = self->_dynamicRegularConstraints;
-  v15 = [(UIView *)self->_lockupView bottomAnchor];
+  bottomAnchor = [(UIView *)self->_lockupView bottomAnchor];
   labelView = self->_labelView;
   if (compact)
   {
@@ -1410,7 +1410,7 @@ LABEL_16:
     [(UILabel *)labelView bottomAnchor];
   }
   v17 = ;
-  v18 = [v15 constraintEqualToAnchor:v17];
+  v18 = [bottomAnchor constraintEqualToAnchor:v17];
   [(NSMutableArray *)dynamicRegularConstraints addObject:v18];
 
   v19 = self->_dynamicRegularConstraints;
@@ -1431,9 +1431,9 @@ LABEL_16:
     payWithPasscodeButton = self->_payWithPasscodeButton;
     if (self->_compact)
     {
-      v24 = [(UIButton *)payWithPasscodeButton topAnchor];
-      v25 = [(PKPaymentAuthorizationFooterView *)self topAnchor];
-      v26 = [v24 constraintEqualToAnchor:v25 constant:34.0];
+      topAnchor = [(UIButton *)payWithPasscodeButton topAnchor];
+      topAnchor2 = [(PKPaymentAuthorizationFooterView *)self topAnchor];
+      v26 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:34.0];
 LABEL_27:
       v27 = v26;
       [(NSMutableArray *)v22 addObject:v26];
@@ -1442,9 +1442,9 @@ LABEL_27:
     }
 
 LABEL_26:
-    v24 = [(UIButton *)payWithPasscodeButton centerYAnchor];
-    v25 = [(PKPaymentAuthorizationFooterView *)self centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    topAnchor = [(UIButton *)payWithPasscodeButton centerYAnchor];
+    topAnchor2 = [(PKPaymentAuthorizationFooterView *)self centerYAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     goto LABEL_27;
   }
 
@@ -1472,25 +1472,25 @@ LABEL_28:
   v7 = PKPaymentAuthorizationFooterViewFontForAuthorizationLayoutStyle([(PKPaymentAuthorizationLayout *)self->_layout style]);
   [v7 _bodyLeading];
 
-  v8 = [(UIView *)self->_lockupView leadingAnchor];
-  v9 = [(PKPaymentAuthorizationFooterView *)self leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [(UIView *)self->_lockupView leadingAnchor];
+  leadingAnchor2 = [(PKPaymentAuthorizationFooterView *)self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v10];
 
-  v11 = [(UIView *)self->_lockupView trailingAnchor];
-  v12 = [(PKPaymentAuthorizationFooterView *)self trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor = [(UIView *)self->_lockupView trailingAnchor];
+  trailingAnchor2 = [(PKPaymentAuthorizationFooterView *)self trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v3 addObject:v13];
 
-  v14 = [(UIView *)self->_lockupView topAnchor];
-  v15 = [(PKPaymentAuthorizationFooterView *)self topAnchor];
+  topAnchor = [(UIView *)self->_lockupView topAnchor];
+  topAnchor2 = [(PKPaymentAuthorizationFooterView *)self topAnchor];
   PKFloatRoundToPixel();
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15 constant:?];
+  v16 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:?];
   [v3 addObject:v16];
 
-  v17 = [(UIView *)self->_lockupView centerYAnchor];
-  v18 = [(PKPaymentAuthorizationFooterView *)self centerYAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  centerYAnchor = [(UIView *)self->_lockupView centerYAnchor];
+  centerYAnchor2 = [(PKPaymentAuthorizationFooterView *)self centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   LODWORD(v20) = 1144750080;
   [v19 setPriority:v20];
@@ -1553,13 +1553,13 @@ LABEL_28:
   [(PKPaymentAuthorizationFooterView *)self setNeedsUpdateConstraints];
 }
 
-- (id)_titleLabelAttributedString:(id)a3
+- (id)_titleLabelAttributedString:(id)string
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DB7C8];
-  v5 = a3;
-  v6 = [v4 defaultParagraphStyle];
-  v7 = [v6 mutableCopy];
+  stringCopy = string;
+  defaultParagraphStyle = [v4 defaultParagraphStyle];
+  v7 = [defaultParagraphStyle mutableCopy];
 
   [v7 setAlignment:1];
   v15[0] = *MEMORY[0x1E69DB648];
@@ -1574,21 +1574,21 @@ LABEL_28:
   v16[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
-  v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v12];
+  v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:v12];
 
   return v13;
 }
 
-- (id)_titleAttributedStringForState:(int64_t)a3
+- (id)_titleAttributedStringForState:(int64_t)state
 {
   v4 = 0;
-  if (a3 > 6)
+  if (state > 6)
   {
-    if (a3 <= 9)
+    if (state <= 9)
     {
-      if (a3 != 7)
+      if (state != 7)
       {
-        if (a3 != 8)
+        if (state != 8)
         {
           if (self->_state == 1)
           {
@@ -1613,14 +1613,14 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    if (a3 == 10)
+    if (state == 10)
     {
       goto LABEL_44;
     }
 
-    if (a3 != 11)
+    if (state != 11)
     {
-      if (a3 != 12)
+      if (state != 12)
       {
         goto LABEL_49;
       }
@@ -1669,13 +1669,13 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 != 3)
+    if (state != 3)
     {
-      if (a3 != 5)
+      if (state != 5)
       {
-        if (a3 != 6)
+        if (state != 6)
         {
           goto LABEL_49;
         }
@@ -1734,7 +1734,7 @@ LABEL_34:
     goto LABEL_46;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0:
       goto LABEL_20;
@@ -1826,7 +1826,7 @@ LABEL_49:
   return v4;
 }
 
-- (id)_payWithPasscodeTitleForState:(int64_t)a3
+- (id)_payWithPasscodeTitleForState:(int64_t)state
 {
   confirmationTitle = self->_confirmationTitle;
   if (confirmationTitle)
@@ -1915,11 +1915,11 @@ LABEL_27:
   return v4;
 }
 
-- (void)glyphView:(id)a3 revealingCheckmark:(BOOL)a4
+- (void)glyphView:(id)view revealingCheckmark:(BOOL)checkmark
 {
   if (self->_state == 12)
   {
-    v5 = [(PKPaymentAuthorizationFooterView *)self window:a3];
+    v5 = [(PKPaymentAuthorizationFooterView *)self window:view];
 
     if (v5)
     {
@@ -1945,12 +1945,12 @@ LABEL_27:
   }
 }
 
-- (void)glyphViewUserIntentEdgeDidChange:(id)a3
+- (void)glyphViewUserIntentEdgeDidChange:(id)change
 {
-  v4 = [a3 userIntentEdge];
-  if (self->_emphasizedEdge != v4)
+  userIntentEdge = [change userIntentEdge];
+  if (self->_emphasizedEdge != userIntentEdge)
   {
-    self->_emphasizedEdge = v4;
+    self->_emphasizedEdge = userIntentEdge;
     if (self->_isPad)
     {
       state = self->_state;

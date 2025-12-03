@@ -1,15 +1,15 @@
 @interface CESRVocabularyLabel
-- (BOOL)isEqual:(id)a3;
-- (CESRVocabularyLabel)initWithLmeTemplate:(id)a3 lmeTag:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CESRVocabularyLabel)initWithLmeTemplate:(id)template lmeTag:(id)tag;
 - (unint64_t)hash;
 @end
 
 @implementation CESRVocabularyLabel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
     goto LABEL_22;
@@ -22,13 +22,13 @@
     goto LABEL_22;
   }
 
-  v7 = v6;
-  v8 = [(CESRVocabularyLabel *)self lmeTemplate];
-  if (v8 || ([(CESRVocabularyLabel *)v7 lmeTemplate], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  v7 = equalCopy;
+  lmeTemplate = [(CESRVocabularyLabel *)self lmeTemplate];
+  if (lmeTemplate || ([(CESRVocabularyLabel *)v7 lmeTemplate], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CESRVocabularyLabel *)self lmeTemplate];
-    v4 = [(CESRVocabularyLabel *)v7 lmeTemplate];
-    if (![v3 isEqualToString:v4])
+    lmeTemplate2 = [(CESRVocabularyLabel *)self lmeTemplate];
+    lmeTemplate3 = [(CESRVocabularyLabel *)v7 lmeTemplate];
+    if (![lmeTemplate2 isEqualToString:lmeTemplate3])
     {
       v10 = 0;
 LABEL_18:
@@ -45,14 +45,14 @@ LABEL_18:
     v9 = 0;
   }
 
-  v11 = [(CESRVocabularyLabel *)self lmeTag];
-  if (v11 || ([(CESRVocabularyLabel *)v7 lmeTag], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  lmeTag = [(CESRVocabularyLabel *)self lmeTag];
+  if (lmeTag || ([(CESRVocabularyLabel *)v7 lmeTag], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = [(CESRVocabularyLabel *)self lmeTag:v15];
-    v13 = [(CESRVocabularyLabel *)v7 lmeTag];
-    v10 = [v12 isEqualToString:v13];
+    lmeTag2 = [(CESRVocabularyLabel *)v7 lmeTag];
+    v10 = [v12 isEqualToString:lmeTag2];
 
-    if (v11)
+    if (lmeTag)
     {
       goto LABEL_17;
     }
@@ -71,7 +71,7 @@ LABEL_17:
   }
 
 LABEL_19:
-  if (!v8)
+  if (!lmeTemplate)
   {
   }
 
@@ -81,26 +81,26 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(CESRVocabularyLabel *)self lmeTemplate];
-  v4 = [v3 hash];
-  v5 = [(CESRVocabularyLabel *)self lmeTag];
-  v6 = [v5 hash];
+  lmeTemplate = [(CESRVocabularyLabel *)self lmeTemplate];
+  v4 = [lmeTemplate hash];
+  lmeTag = [(CESRVocabularyLabel *)self lmeTag];
+  v6 = [lmeTag hash];
 
   return v6 ^ v4;
 }
 
-- (CESRVocabularyLabel)initWithLmeTemplate:(id)a3 lmeTag:(id)a4
+- (CESRVocabularyLabel)initWithLmeTemplate:(id)template lmeTag:(id)tag
 {
-  v7 = a3;
-  v8 = a4;
+  templateCopy = template;
+  tagCopy = tag;
   v12.receiver = self;
   v12.super_class = CESRVocabularyLabel;
   v9 = [(CESRVocabularyLabel *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lmeTemplate, a3);
-    objc_storeStrong(&v10->_lmeTag, a4);
+    objc_storeStrong(&v9->_lmeTemplate, template);
+    objc_storeStrong(&v10->_lmeTag, tag);
   }
 
   return v10;

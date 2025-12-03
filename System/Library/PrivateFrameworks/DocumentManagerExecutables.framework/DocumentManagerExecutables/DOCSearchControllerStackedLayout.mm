@@ -1,23 +1,23 @@
 @interface DOCSearchControllerStackedLayout
 - (_TtC26DocumentManagerExecutables32DOCSearchControllerStackedLayout)init;
-- (void)_searchBarWillLayoutSubviews:(id)a3 inSearchFieldContainer:(id)a4 searchTextFieldFrame:(CGRect)a5 cancelButtonFrame:(CGRect)a6;
+- (void)_searchBarWillLayoutSubviews:(id)subviews inSearchFieldContainer:(id)container searchTextFieldFrame:(CGRect)frame cancelButtonFrame:(CGRect)buttonFrame;
 @end
 
 @implementation DOCSearchControllerStackedLayout
 
-- (void)_searchBarWillLayoutSubviews:(id)a3 inSearchFieldContainer:(id)a4 searchTextFieldFrame:(CGRect)a5 cancelButtonFrame:(CGRect)a6
+- (void)_searchBarWillLayoutSubviews:(id)subviews inSearchFieldContainer:(id)container searchTextFieldFrame:(CGRect)frame cancelButtonFrame:(CGRect)buttonFrame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5.size.height;
-  v11 = a5.size.width;
-  v12 = a5.origin.y;
-  v13 = a5.origin.x;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  height = buttonFrame.size.height;
+  width = buttonFrame.size.width;
+  y = buttonFrame.origin.y;
+  x = buttonFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  subviewsCopy = subviews;
+  containerCopy = container;
+  selfCopy = self;
   v21.origin.x = v13;
   v21.origin.y = v12;
   v21.size.width = v11;
@@ -26,7 +26,7 @@
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
-  DOCSearchControllerStackedLayout._searchBarWillLayoutSubviews(_:searchFieldContainer:searchTextFieldFrame:cancelButtonFrame:)(a3, a4, v21, v22);
+  DOCSearchControllerStackedLayout._searchBarWillLayoutSubviews(_:searchFieldContainer:searchTextFieldFrame:cancelButtonFrame:)(subviews, container, v21, v22);
 }
 
 - (_TtC26DocumentManagerExecutables32DOCSearchControllerStackedLayout)init

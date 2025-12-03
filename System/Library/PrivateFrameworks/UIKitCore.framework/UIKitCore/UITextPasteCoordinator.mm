@@ -1,25 +1,25 @@
 @interface UITextPasteCoordinator
-- (BOOL)performBlockingWait:(double)a3;
-- (UITextPasteCoordinator)initWithDelegate:(id)a3;
+- (BOOL)performBlockingWait:(double)wait;
+- (UITextPasteCoordinator)initWithDelegate:(id)delegate;
 - (UITextPasteCoordinatorDelegate)delegate;
 - (void)_determineFinished;
 - (void)_finish;
-- (void)addItem:(id)a3;
-- (void)setResult:(id)a3 forItem:(id)a4;
+- (void)addItem:(id)item;
+- (void)setResult:(id)result forItem:(id)item;
 @end
 
 @implementation UITextPasteCoordinator
 
-- (UITextPasteCoordinator)initWithDelegate:(id)a3
+- (UITextPasteCoordinator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = UITextPasteCoordinator;
   v5 = [(UITextPasteCoordinator *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_new();
     items = v6->_items;
     v6->_items = v7;
@@ -31,30 +31,30 @@
   return v6;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = v4;
+    v6 = itemCopy;
     v5 = self->_items;
     objc_sync_enter(v5);
     [(NSMutableArray *)self->_items addObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setResult:(id)a3 forItem:(id)a4
+- (void)setResult:(id)result forItem:(id)item
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  resultCopy = result;
+  itemCopy = item;
+  if (itemCopy)
   {
     v7 = self->_items;
     objc_sync_enter(v7);
-    v8 = [(NSMutableArray *)self->_items indexOfObject:v6];
+    v8 = [(NSMutableArray *)self->_items indexOfObject:itemCopy];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       objc_sync_exit(v7);
@@ -62,14 +62,14 @@
 
     else
     {
-      v9 = v10;
-      if (!v10)
+      null = resultCopy;
+      if (!resultCopy)
       {
-        v9 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      [(NSMutableArray *)self->_items setObject:v9 atIndexedSubscript:v8];
-      if (!v10)
+      [(NSMutableArray *)self->_items setObject:null atIndexedSubscript:v8];
+      if (!resultCopy)
       {
       }
 
@@ -80,7 +80,7 @@
   }
 }
 
-- (BOOL)performBlockingWait:(double)a3
+- (BOOL)performBlockingWait:(double)wait
 {
   wait = self->_wait;
   if (!wait)
@@ -93,7 +93,7 @@
     wait = self->_wait;
   }
 
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (wait * 1000000000.0));
   v9 = dispatch_group_wait(wait, v8);
   if (v9)
   {

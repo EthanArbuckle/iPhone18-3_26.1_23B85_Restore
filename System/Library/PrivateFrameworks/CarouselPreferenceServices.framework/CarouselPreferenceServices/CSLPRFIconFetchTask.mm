@@ -1,6 +1,6 @@
 @interface CSLPRFIconFetchTask
 - (CSLPRFIconFetchTask)init;
-- (void)completeWithImage:(id)a3 error:(id)a4;
+- (void)completeWithImage:(id)image error:(id)error;
 - (void)invalidate;
 @end
 
@@ -12,17 +12,17 @@
   [(CSLPRFIconFetchTask *)self completeWithImage:0 error:v3];
 }
 
-- (void)completeWithImage:(id)a3 error:(id)a4
+- (void)completeWithImage:(id)image error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  imageCopy = image;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(CSLPRFIconFetchTask *)self completion];
+  completion = [(CSLPRFIconFetchTask *)self completion];
   [(CSLPRFIconFetchTask *)self setCompletion:0];
   os_unfair_lock_unlock(&self->_lock);
-  if (v7)
+  if (completion)
   {
-    (v7)[2](v7, v8, v6);
+    (completion)[2](completion, imageCopy, errorCopy);
   }
 }
 

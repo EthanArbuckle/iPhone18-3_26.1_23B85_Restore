@@ -1,47 +1,47 @@
 @interface PHAPrivateFederatedLearningFiltersDecoder
-- (BOOL)validateFiltersForDatasetName:(id)a3 error:(id *)a4;
-- (PHAPrivateFederatedLearningFiltersDecoder)initWithFingeprintVersionString:(id)a3;
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4;
-- (id)featureExtractorFromName:(id)a3 error:(id *)a4;
-- (id)featureValidatorForFilterConfig:(id)a3 featureExtractor:(id)a4 featureValidatorType:(int64_t)a5 featureExtractorType:(int64_t)a6 error:(id *)a7;
-- (id)featureValidatorsForFilterConfigList:(id)a3 featureExtractor:(id)a4 featureValidatorType:(int64_t)a5 featureExtractorType:(int64_t)a6 error:(id *)a7;
-- (id)filtersByDatasetNameFromDictionary:(id)a3 error:(id *)a4;
-- (id)filtersFromDictionary:(id)a3 error:(id *)a4;
-- (int64_t)featureExtractorTypeForFeatureExtractorName:(id)a3;
-- (int64_t)featureValidatorTypeForFeatureExtractorName:(id)a3;
+- (BOOL)validateFiltersForDatasetName:(id)name error:(id *)error;
+- (PHAPrivateFederatedLearningFiltersDecoder)initWithFingeprintVersionString:(id)string;
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message;
+- (id)featureExtractorFromName:(id)name error:(id *)error;
+- (id)featureValidatorForFilterConfig:(id)config featureExtractor:(id)extractor featureValidatorType:(int64_t)type featureExtractorType:(int64_t)extractorType error:(id *)error;
+- (id)featureValidatorsForFilterConfigList:(id)list featureExtractor:(id)extractor featureValidatorType:(int64_t)type featureExtractorType:(int64_t)extractorType error:(id *)error;
+- (id)filtersByDatasetNameFromDictionary:(id)dictionary error:(id *)error;
+- (id)filtersFromDictionary:(id)dictionary error:(id *)error;
+- (int64_t)featureExtractorTypeForFeatureExtractorName:(id)name;
+- (int64_t)featureValidatorTypeForFeatureExtractorName:(id)name;
 @end
 
 @implementation PHAPrivateFederatedLearningFiltersDecoder
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v11 = *MEMORY[0x277CCA450];
-  v12[0] = a4;
+  v12[0] = message;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  messageCopy = message;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [v5 errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningFiltersDecoder" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningFiltersDecoder" code:code userInfo:v8];
 
   return v9;
 }
 
-- (BOOL)validateFiltersForDatasetName:(id)a3 error:(id *)a4
+- (BOOL)validateFiltersForDatasetName:(id)name error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = a3;
-  v25 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  nameCopy = name;
+  v25 = [nameCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v25)
   {
-    v24 = a4;
+    errorCopy = error;
     v7 = *v33;
-    v27 = v6;
-    v22 = self;
+    v27 = nameCopy;
+    selfCopy = self;
     v23 = *v33;
     do
     {
@@ -50,7 +50,7 @@
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nameCopy);
         }
 
         v26 = v8;
@@ -59,7 +59,7 @@
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v10 = [v6 objectForKeyedSubscript:{v9, v22}];
+        v10 = [nameCopy objectForKeyedSubscript:{v9, selfCopy}];
         v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v11)
         {
@@ -76,27 +76,27 @@
               }
 
               v16 = *(*(&v28 + 1) + 8 * i);
-              v17 = [v16 featureName];
-              if ([v17 isEqualToString:@"AssetPropertiesFilter"])
+              featureName = [v16 featureName];
+              if ([featureName isEqualToString:@"AssetPropertiesFilter"])
               {
                 v18 = 1;
               }
 
               else
               {
-                v19 = [v16 featureName];
-                v18 = [v19 isEqualToString:@"AssetInternalPropertiesFilter"];
+                featureName2 = [v16 featureName];
+                v18 = [featureName2 isEqualToString:@"AssetInternalPropertiesFilter"];
               }
 
               if ((v18 & v13) == 1)
               {
-                if (v24)
+                if (errorCopy)
                 {
-                  *v24 = [(PHAPrivateFederatedLearningFiltersDecoder *)v22 _generateErrorWithErrorCode:4 errorMessage:@"Invalid filters: setting multiple asset properties filters for the same dataset is not allowed."];
+                  *errorCopy = [(PHAPrivateFederatedLearningFiltersDecoder *)selfCopy _generateErrorWithErrorCode:4 errorMessage:@"Invalid filters: setting multiple asset properties filters for the same dataset is not allowed."];
                 }
 
                 v20 = 0;
-                v6 = v27;
+                nameCopy = v27;
                 goto LABEL_24;
               }
 
@@ -114,7 +114,7 @@
         }
 
         v8 = v26 + 1;
-        v6 = v27;
+        nameCopy = v27;
         v7 = v23;
       }
 
@@ -136,35 +136,35 @@ LABEL_24:
   return v20;
 }
 
-- (id)featureExtractorFromName:(id)a3 error:(id *)a4
+- (id)featureExtractorFromName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"PhotoLibraryAverage-" withString:&stru_2844B1BF0];
-  v8 = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetFeatureExtractorNameToClass];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  nameCopy = name;
+  v7 = [nameCopy stringByReplacingOccurrencesOfString:@"PhotoLibraryAverage-" withString:&stru_2844B1BF0];
+  assetFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetFeatureExtractorNameToClass];
+  v9 = [assetFeatureExtractorNameToClass objectForKeyedSubscript:v7];
 
-  v10 = [(PHAPrivateFederatedLearningFiltersDecoder *)self graphFeatureExtractorNameToClass];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  graphFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self graphFeatureExtractorNameToClass];
+  v11 = [graphFeatureExtractorNameToClass objectForKeyedSubscript:v7];
 
-  v12 = [(PHAPrivateFederatedLearningFiltersDecoder *)self facesFeatureExtractorNameToClass];
-  v13 = [v12 objectForKeyedSubscript:v7];
+  facesFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self facesFeatureExtractorNameToClass];
+  v13 = [facesFeatureExtractorNameToClass objectForKeyedSubscript:v7];
 
-  v14 = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetPhotoLibraryFeatureExtractorNameToClass];
-  v15 = [v14 objectForKeyedSubscript:v7];
+  assetPhotoLibraryFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetPhotoLibraryFeatureExtractorNameToClass];
+  v15 = [assetPhotoLibraryFeatureExtractorNameToClass objectForKeyedSubscript:v7];
 
   if (v9)
   {
     v16 = v9;
 LABEL_3:
-    v17 = [v16 featureExtractor];
+    featureExtractor = [v16 featureExtractor];
 LABEL_6:
-    v18 = v17;
+    v18 = featureExtractor;
     goto LABEL_7;
   }
 
   if (v11)
   {
-    v17 = [v11 featureExtractorWithError:a4];
+    featureExtractor = [v11 featureExtractorWithError:error];
     goto LABEL_6;
   }
 
@@ -180,10 +180,10 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid filters format: feature extractor name %@ is not valid.", v6];
-  if (a4)
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid filters format: feature extractor name %@ is not valid.", nameCopy];
+  if (error)
   {
-    *a4 = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:0 errorMessage:v20];
+    *error = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:0 errorMessage:nameCopy];
   }
 
   v18 = 0;
@@ -192,11 +192,11 @@ LABEL_7:
   return v18;
 }
 
-- (int64_t)featureExtractorTypeForFeatureExtractorName:(id)a3
+- (int64_t)featureExtractorTypeForFeatureExtractorName:(id)name
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"PhotoLibraryAverage-" withString:&stru_2844B1BF0];
-  v5 = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetFeatureExtractorNameToClass];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [name stringByReplacingOccurrencesOfString:@"PhotoLibraryAverage-" withString:&stru_2844B1BF0];
+  assetFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetFeatureExtractorNameToClass];
+  v6 = [assetFeatureExtractorNameToClass objectForKeyedSubscript:v4];
 
   if (v6)
   {
@@ -205,8 +205,8 @@ LABEL_7:
 
   else
   {
-    v8 = [(PHAPrivateFederatedLearningFiltersDecoder *)self graphFeatureExtractorNameToClass];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    graphFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self graphFeatureExtractorNameToClass];
+    v9 = [graphFeatureExtractorNameToClass objectForKeyedSubscript:v4];
 
     if (v9)
     {
@@ -215,8 +215,8 @@ LABEL_7:
 
     else
     {
-      v10 = [(PHAPrivateFederatedLearningFiltersDecoder *)self facesFeatureExtractorNameToClass];
-      v11 = [v10 objectForKeyedSubscript:v4];
+      facesFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self facesFeatureExtractorNameToClass];
+      v11 = [facesFeatureExtractorNameToClass objectForKeyedSubscript:v4];
 
       if (v11)
       {
@@ -233,18 +233,18 @@ LABEL_7:
   return v7;
 }
 
-- (int64_t)featureValidatorTypeForFeatureExtractorName:(id)a3
+- (int64_t)featureValidatorTypeForFeatureExtractorName:(id)name
 {
-  v4 = a3;
-  if ([v4 containsString:@"PhotoLibraryAverage-"])
+  nameCopy = name;
+  if ([nameCopy containsString:@"PhotoLibraryAverage-"])
   {
     v5 = 6;
   }
 
   else
   {
-    v6 = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetPhotoLibraryFeatureExtractorNameToClass];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    assetPhotoLibraryFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetPhotoLibraryFeatureExtractorNameToClass];
+    v7 = [assetPhotoLibraryFeatureExtractorNameToClass objectForKeyedSubscript:nameCopy];
 
     if (v7)
     {
@@ -254,8 +254,8 @@ LABEL_7:
     else
     {
       v8 = MEMORY[0x277D3B908];
-      v9 = [(PHAPrivateFederatedLearningFiltersDecoder *)self fingerprintVersionString];
-      v10 = [v8 fingerprintVersionForName:v9];
+      fingerprintVersionString = [(PHAPrivateFederatedLearningFiltersDecoder *)self fingerprintVersionString];
+      v10 = [v8 fingerprintVersionForName:fingerprintVersionString];
 
       if ([MEMORY[0x277D3B908] isMomentFingerprintVersion:v10] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3B908], "isMemoryFingerprintVersion:", v10))
       {
@@ -264,8 +264,8 @@ LABEL_7:
 
       else
       {
-        v12 = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetFeatureExtractorNameToClass];
-        v13 = [v12 objectForKeyedSubscript:v4];
+        assetFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self assetFeatureExtractorNameToClass];
+        v13 = [assetFeatureExtractorNameToClass objectForKeyedSubscript:nameCopy];
 
         if (v13)
         {
@@ -274,8 +274,8 @@ LABEL_7:
 
         else
         {
-          v14 = [(PHAPrivateFederatedLearningFiltersDecoder *)self graphFeatureExtractorNameToClass];
-          v15 = [v14 objectForKeyedSubscript:v4];
+          graphFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self graphFeatureExtractorNameToClass];
+          v15 = [graphFeatureExtractorNameToClass objectForKeyedSubscript:nameCopy];
 
           if (v15)
           {
@@ -284,8 +284,8 @@ LABEL_7:
 
           else
           {
-            v16 = [(PHAPrivateFederatedLearningFiltersDecoder *)self facesFeatureExtractorNameToClass];
-            v17 = [v16 objectForKeyedSubscript:v4];
+            facesFeatureExtractorNameToClass = [(PHAPrivateFederatedLearningFiltersDecoder *)self facesFeatureExtractorNameToClass];
+            v17 = [facesFeatureExtractorNameToClass objectForKeyedSubscript:nameCopy];
 
             if (v17)
             {
@@ -305,21 +305,21 @@ LABEL_7:
   return v5;
 }
 
-- (id)featureValidatorForFilterConfig:(id)a3 featureExtractor:(id)a4 featureValidatorType:(int64_t)a5 featureExtractorType:(int64_t)a6 error:(id *)a7
+- (id)featureValidatorForFilterConfig:(id)config featureExtractor:(id)extractor featureValidatorType:(int64_t)type featureExtractorType:(int64_t)extractorType error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
+  configCopy = config;
+  extractorCopy = extractor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 objectForKeyedSubscript:@"featureName"];
+    v14 = [configCopy objectForKeyedSubscript:@"featureName"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a7)
+      if (error)
       {
         [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filter config format: feature name is not a string."];
-        *a7 = self = 0;
+        *error = self = 0;
       }
 
       else
@@ -330,14 +330,14 @@ LABEL_7:
       goto LABEL_34;
     }
 
-    v15 = [v12 objectForKeyedSubscript:@"predicate"];
+    v15 = [configCopy objectForKeyedSubscript:@"predicate"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a7)
+      if (error)
       {
         [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filter config format: predicate is not a string."];
-        *a7 = self = 0;
+        *error = self = 0;
       }
 
       else
@@ -349,15 +349,15 @@ LABEL_7:
     }
 
     v16 = [MEMORY[0x277CCAC30] predicateWithFormat:v15];
-    if (a5 <= 2)
+    if (type <= 2)
     {
-      switch(a5)
+      switch(type)
       {
         case 0:
-          if (a7)
+          if (error)
           {
             [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:3 errorMessage:@"Unknown feature validator type is unsupported"];
-            *a7 = self = 0;
+            *error = self = 0;
           }
 
           else
@@ -377,13 +377,13 @@ LABEL_7:
 
     else
     {
-      if (a5 <= 4)
+      if (type <= 4)
       {
-        if (a5 != 3)
+        if (type != 3)
         {
           v17 = MEMORY[0x277D3B610];
 LABEL_24:
-          v19 = [[v17 alloc] initWithPredicate:v16 featureExtractor:v13 featureExtractorType:a6 featureName:v14];
+          v19 = [[v17 alloc] initWithPredicate:v16 featureExtractor:extractorCopy featureExtractorType:extractorType featureName:v14];
 LABEL_31:
           self = v19;
           goto LABEL_32;
@@ -391,17 +391,17 @@ LABEL_31:
 
         v18 = MEMORY[0x277D3B6C0];
 LABEL_30:
-        v19 = [[v18 alloc] initWithPredicate:v16 featureExtractor:v13 featureName:v14];
+        v19 = [[v18 alloc] initWithPredicate:v16 featureExtractor:extractorCopy featureName:v14];
         goto LABEL_31;
       }
 
-      if (a5 == 5)
+      if (type == 5)
       {
         v18 = MEMORY[0x277D3B628];
         goto LABEL_30;
       }
 
-      if (a5 == 6)
+      if (type == 6)
       {
         v17 = MEMORY[0x277D3BB48];
         goto LABEL_24;
@@ -416,10 +416,10 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a7)
+  if (error)
   {
     [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filter config format: filter configuration is not dictionary."];
-    *a7 = self = 0;
+    *error = self = 0;
   }
 
   else
@@ -432,11 +432,11 @@ LABEL_35:
   return self;
 }
 
-- (id)featureValidatorsForFilterConfigList:(id)a3 featureExtractor:(id)a4 featureValidatorType:(int64_t)a5 featureExtractorType:(int64_t)a6 error:(id *)a7
+- (id)featureValidatorsForFilterConfigList:(id)list featureExtractor:(id)extractor featureValidatorType:(int64_t)type featureExtractorType:(int64_t)extractorType error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  listCopy = list;
+  extractorCopy = extractor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -445,8 +445,8 @@ LABEL_35:
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v23 = v12;
-    obj = v12;
+    v23 = listCopy;
+    obj = listCopy;
     v15 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v15)
     {
@@ -461,7 +461,7 @@ LABEL_35:
             objc_enumerationMutation(obj);
           }
 
-          v19 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureValidatorForFilterConfig:*(*(&v25 + 1) + 8 * i) featureExtractor:v13 featureValidatorType:a5 featureExtractorType:a6 error:a7, v23];
+          v19 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureValidatorForFilterConfig:*(*(&v25 + 1) + 8 * i) featureExtractor:extractorCopy featureValidatorType:type featureExtractorType:extractorType error:error, v23];
           if (!v19)
           {
 
@@ -486,13 +486,13 @@ LABEL_35:
     v21 = v14;
 LABEL_14:
 
-    v12 = v23;
+    listCopy = v23;
   }
 
-  else if (a7)
+  else if (error)
   {
     [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filters format: value for filter config is not an array."];
-    *a7 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -503,10 +503,10 @@ LABEL_14:
   return v21;
 }
 
-- (id)filtersFromDictionary:(id)a3 error:(id *)a4
+- (id)filtersFromDictionary:(id)dictionary error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -515,12 +515,12 @@ LABEL_14:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v6;
+    v8 = dictionaryCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
       v10 = v9;
-      v22 = v6;
+      v22 = dictionaryCopy;
       v23 = *v25;
       while (2)
       {
@@ -535,15 +535,15 @@ LABEL_14:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
-              *a4 = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filters format: value for feature extractor name is not a string."];
+              *error = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filters format: value for feature extractor name is not a string."];
             }
 
             goto LABEL_19;
           }
 
-          v13 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureExtractorFromName:v12 error:a4];
+          v13 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureExtractorFromName:v12 error:error];
           v14 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureValidatorTypeForFeatureExtractorName:v12];
           v15 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureExtractorTypeForFeatureExtractorName:v12];
           if (!v13)
@@ -553,13 +553,13 @@ LABEL_14:
 
           v16 = v15;
           v17 = [v8 objectForKeyedSubscript:v12];
-          v18 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureValidatorsForFilterConfigList:v17 featureExtractor:v13 featureValidatorType:v14 featureExtractorType:v16 error:a4];
+          v18 = [(PHAPrivateFederatedLearningFiltersDecoder *)self featureValidatorsForFilterConfigList:v17 featureExtractor:v13 featureValidatorType:v14 featureExtractorType:v16 error:error];
           if (!v18)
           {
 
 LABEL_19:
             v20 = 0;
-            v6 = v22;
+            dictionaryCopy = v22;
             goto LABEL_20;
           }
 
@@ -568,7 +568,7 @@ LABEL_19:
         }
 
         v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
-        v6 = v22;
+        dictionaryCopy = v22;
         if (v10)
         {
           continue;
@@ -582,10 +582,10 @@ LABEL_19:
 LABEL_20:
   }
 
-  else if (a4)
+  else if (error)
   {
     [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filters format: value for feature extractor config is not a dictionary."];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -596,10 +596,10 @@ LABEL_20:
   return v20;
 }
 
-- (id)filtersByDatasetNameFromDictionary:(id)a3 error:(id *)a4
+- (id)filtersByDatasetNameFromDictionary:(id)dictionary error:(id *)error
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v29[0] = @"positive";
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29[1] = @"negative";
@@ -612,7 +612,7 @@ LABEL_20:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v5;
+  v9 = dictionaryCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v10)
   {
@@ -621,7 +621,7 @@ LABEL_20:
 
   v11 = v10;
   v12 = *v25;
-  v13 = a4;
+  errorCopy = error;
   while (2)
   {
     for (i = 0; i != v11; ++i)
@@ -635,9 +635,9 @@ LABEL_20:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
-          *v13 = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filters format: value for dataset name is not a string."];
+          *errorCopy = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid filters format: value for dataset name is not a string."];
         }
 
         goto LABEL_22;
@@ -646,9 +646,9 @@ LABEL_20:
       if (([(__CFString *)v15 isEqualToString:@"all"]& 1) == 0 && ([(__CFString *)v15 isEqualToString:@"positive"]& 1) == 0 && ([(__CFString *)v15 isEqualToString:@"negative"]& 1) == 0)
       {
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Dataset name %@ is not a supported.", v15];
-        if (a4)
+        if (error)
         {
-          *a4 = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:2 errorMessage:v21];
+          *error = [(PHAPrivateFederatedLearningFiltersDecoder *)self _generateErrorWithErrorCode:2 errorMessage:v21];
         }
 
 LABEL_22:
@@ -656,7 +656,7 @@ LABEL_22:
       }
 
       v16 = [v9 objectForKeyedSubscript:v15];
-      v17 = [(PHAPrivateFederatedLearningFiltersDecoder *)self filtersFromDictionary:v16 error:a4];
+      v17 = [(PHAPrivateFederatedLearningFiltersDecoder *)self filtersFromDictionary:v16 error:error];
 
       if (!v17)
       {
@@ -674,7 +674,7 @@ LABEL_22:
       v19 = [v8 objectForKeyedSubscript:v15];
       [v19 addObjectsFromArray:v17];
 
-      a4 = v13;
+      error = errorCopy;
     }
 
     v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -688,7 +688,7 @@ LABEL_22:
 
 LABEL_15:
 
-  if ([(PHAPrivateFederatedLearningFiltersDecoder *)self validateFiltersForDatasetName:v8 error:a4])
+  if ([(PHAPrivateFederatedLearningFiltersDecoder *)self validateFiltersForDatasetName:v8 error:error])
   {
     v20 = v8;
   }
@@ -702,17 +702,17 @@ LABEL_23:
   return v20;
 }
 
-- (PHAPrivateFederatedLearningFiltersDecoder)initWithFingeprintVersionString:(id)a3
+- (PHAPrivateFederatedLearningFiltersDecoder)initWithFingeprintVersionString:(id)string
 {
   v25[55] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = PHAPrivateFederatedLearningFiltersDecoder;
   v6 = [(PHAPrivateFederatedLearningFiltersDecoder *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fingerprintVersionString, a3);
+    objc_storeStrong(&v6->_fingerprintVersionString, string);
     v24[0] = *MEMORY[0x277D3BD98];
     v25[0] = objc_opt_class();
     v24[1] = *MEMORY[0x277D3BDF8];

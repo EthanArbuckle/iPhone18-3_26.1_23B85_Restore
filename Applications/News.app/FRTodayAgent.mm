@@ -1,23 +1,23 @@
 @interface FRTodayAgent
 - (BOOL)_mayWidgetsBeVisible;
-- (BOOL)_updateDropboxWithAccessors:(id)a3;
+- (BOOL)_updateDropboxWithAccessors:(id)accessors;
 - (FRTodayAgent)init;
-- (FRTodayAgent)initWithFeedPersonalizer:(id)a3 purchaseController:(id)a4 subscriptionController:(id)a5 localNewsChannelService:(id)a6 bundleSubscriptionManager:(id)a7 personalizationDataGenerator:(id)a8 privateDataContext:(id)a9 userEmbeddingGenerator:(id)a10;
+- (FRTodayAgent)initWithFeedPersonalizer:(id)personalizer purchaseController:(id)controller subscriptionController:(id)subscriptionController localNewsChannelService:(id)service bundleSubscriptionManager:(id)manager personalizationDataGenerator:(id)generator privateDataContext:(id)context userEmbeddingGenerator:(id)self0;
 - (id)_accessorToUpdateRecentlyReadItems;
 - (void)_didBecomeActive;
 - (void)_didEnterBackground;
 - (void)_historyDidClear;
-- (void)_markDirtyWithFlags:(unint64_t)a3 qualityOfService:(int64_t)a4;
+- (void)_markDirtyWithFlags:(unint64_t)flags qualityOfService:(int64_t)service;
 - (void)_markPurchasesDirty;
 - (void)_updateSuspensionState;
 - (void)_willResignActive;
 - (void)dealloc;
 - (void)enable;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithQualityOfService:(int64_t)a4 completion:(id)a5;
-- (void)privateDataControllerDidBecomeClean:(id)a3;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
-- (void)serviceWidgetIfNeededWithCompletion:(id)a3;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithQualityOfService:(int64_t)service completion:(id)completion;
+- (void)privateDataControllerDidBecomeClean:(id)clean;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
+- (void)serviceWidgetIfNeededWithCompletion:(id)completion;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
 @end
 
 @implementation FRTodayAgent
@@ -34,15 +34,15 @@
     v3 = 1;
   }
 
-  v4 = [(FRTodayAgent *)self operationThrottler];
-  [v4 setSuspended:v3];
+  operationThrottler = [(FRTodayAgent *)self operationThrottler];
+  [operationThrottler setSuspended:v3];
 }
 
 - (void)_didBecomeActive
 {
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(FRTodayAgent *)self fileCoordinatedTodayPrivateDataTransactionQueue];
+  fileCoordinatedTodayPrivateDataTransactionQueue = [(FRTodayAgent *)self fileCoordinatedTodayPrivateDataTransactionQueue];
   [(FRTodayAgent *)self privateDataContext];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
@@ -51,7 +51,7 @@
   v12 = v3;
   v5 = v3;
   v6 = v11;
-  [v4 dequeueTransactionsWithCompletion:&v7];
+  [fileCoordinatedTodayPrivateDataTransactionQueue dequeueTransactionsWithCompletion:&v7];
   [(FRTodayAgent *)self _markDirtyWithFlags:96, v7, v8, v9, v10];
   [(FRTodayAgent *)self _updateSuspensionState];
 }
@@ -79,51 +79,51 @@
   objc_exception_throw(v4);
 }
 
-- (FRTodayAgent)initWithFeedPersonalizer:(id)a3 purchaseController:(id)a4 subscriptionController:(id)a5 localNewsChannelService:(id)a6 bundleSubscriptionManager:(id)a7 personalizationDataGenerator:(id)a8 privateDataContext:(id)a9 userEmbeddingGenerator:(id)a10
+- (FRTodayAgent)initWithFeedPersonalizer:(id)personalizer purchaseController:(id)controller subscriptionController:(id)subscriptionController localNewsChannelService:(id)service bundleSubscriptionManager:(id)manager personalizationDataGenerator:(id)generator privateDataContext:(id)context userEmbeddingGenerator:(id)self0
 {
-  v17 = a3;
-  obj = a4;
-  v18 = a4;
-  v49 = a5;
-  v19 = a5;
-  v50 = a6;
-  v55 = a6;
-  v52 = a7;
-  v54 = a8;
-  v20 = a9;
-  v53 = a10;
-  if (!v17 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  personalizerCopy = personalizer;
+  obj = controller;
+  controllerCopy = controller;
+  subscriptionControllerCopy = subscriptionController;
+  subscriptionControllerCopy2 = subscriptionController;
+  serviceCopy = service;
+  serviceCopy2 = service;
+  managerCopy = manager;
+  generatorCopy = generator;
+  contextCopy = context;
+  embeddingGeneratorCopy = embeddingGenerator;
+  if (!personalizerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100071C28();
   }
 
-  v51 = v18;
-  if (!v18 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  v51 = controllerCopy;
+  if (!controllerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100071CEC();
   }
 
-  v21 = v19;
-  if (!v19 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  v21 = subscriptionControllerCopy2;
+  if (!subscriptionControllerCopy2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100071DB0();
   }
 
-  if (!v55 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!serviceCopy2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100071E74();
   }
 
-  if (!v54 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!generatorCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100071F38();
-    if (v20)
+    if (contextCopy)
     {
       goto LABEL_18;
     }
   }
 
-  else if (v20)
+  else if (contextCopy)
   {
     goto LABEL_18;
   }
@@ -134,7 +134,7 @@
   }
 
 LABEL_18:
-  if (!v53 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!embeddingGeneratorCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000720C0();
   }
@@ -145,8 +145,8 @@ LABEL_18:
   v23 = v22;
   if (v22)
   {
-    v47 = v17;
-    objc_storeStrong(&v22->_feedPersonalizer, a3);
+    v47 = personalizerCopy;
+    objc_storeStrong(&v22->_feedPersonalizer, personalizer);
     v24 = dispatch_group_create();
     transactionProcessingGroup = v23->_transactionProcessingGroup;
     v23->_transactionProcessingGroup = v24;
@@ -163,25 +163,25 @@ LABEL_18:
     fileCoordinatedTodayDropbox = v23->_fileCoordinatedTodayDropbox;
     v23->_fileCoordinatedTodayDropbox = v32;
 
-    objc_storeStrong(&v23->_personalizationDataGenerator, a8);
-    v34 = [v20 personalizationData];
-    [v34 addStateObserver:v23];
+    objc_storeStrong(&v23->_personalizationDataGenerator, generator);
+    personalizationData = [contextCopy personalizationData];
+    [personalizationData addStateObserver:v23];
     objc_storeStrong(&v23->_purchaseController, obj);
     v35 = +[NSNotificationCenter defaultCenter];
     [v35 addObserver:v23 selector:"_markPurchasesDirty" name:FCPurchaseListChangedNotificationName object:0];
-    v36 = [v20 readingHistory];
-    [v36 addObserver:v23];
-    [v36 addStateObserver:v23];
-    objc_storeStrong(&v23->_subscriptionController, v49);
-    [v19 addObserver:v23];
-    objc_storeStrong(&v23->_localNewsChannelService, v50);
-    objc_storeStrong(&v23->_bundleSubscriptionManager, a7);
-    [v52 addObserver:v23];
-    objc_storeStrong(&v23->_privateDataContext, a9);
-    v37 = [v20 userInfo];
-    [v37 addObserver:v23];
+    readingHistory = [contextCopy readingHistory];
+    [readingHistory addObserver:v23];
+    [readingHistory addStateObserver:v23];
+    objc_storeStrong(&v23->_subscriptionController, subscriptionControllerCopy);
+    [subscriptionControllerCopy2 addObserver:v23];
+    objc_storeStrong(&v23->_localNewsChannelService, serviceCopy);
+    objc_storeStrong(&v23->_bundleSubscriptionManager, manager);
+    [managerCopy addObserver:v23];
+    objc_storeStrong(&v23->_privateDataContext, context);
+    userInfo = [contextCopy userInfo];
+    [userInfo addObserver:v23];
 
-    objc_storeStrong(&v23->_userEmbeddingGenerator, a10);
+    objc_storeStrong(&v23->_userEmbeddingGenerator, embeddingGenerator);
     [v35 addObserver:v23 selector:"_didBecomeActive" name:UIApplicationDidBecomeActiveNotification object:0];
     [v35 addObserver:v23 selector:"_willResignActive" name:UIApplicationWillResignActiveNotification object:0];
     [v35 addObserver:v23 selector:"_didEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -211,7 +211,7 @@ LABEL_18:
     [(FRTodayAgent *)v23 _updateSuspensionState];
     [(FRTodayAgent *)v23 _markDirtyWithFlags:144];
 
-    v17 = v47;
+    personalizerCopy = v47;
   }
 
   return v23;
@@ -224,11 +224,11 @@ LABEL_18:
   [(FRTodayAgent *)self _updateSuspensionState];
 }
 
-- (void)serviceWidgetIfNeededWithCompletion:(id)a3
+- (void)serviceWidgetIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FRTodayAgent *)self operationThrottler];
-  [v5 tickleWithCompletion:v4];
+  completionCopy = completion;
+  operationThrottler = [(FRTodayAgent *)self operationThrottler];
+  [operationThrottler tickleWithCompletion:completionCopy];
 }
 
 - (void)dealloc
@@ -244,21 +244,21 @@ LABEL_18:
   [(FRTodayAgent *)&v4 dealloc];
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  v14 = a5;
-  v12 = a6;
-  v13 = a7;
-  if ([a4 count] || objc_msgSend(v14, "count") || objc_msgSend(v12, "count") || objc_msgSend(v13, "count"))
+  changeTagsCopy = changeTags;
+  moveTagsCopy = moveTags;
+  removeTagsCopy = removeTags;
+  if ([tags count] || objc_msgSend(changeTagsCopy, "count") || objc_msgSend(moveTagsCopy, "count") || objc_msgSend(removeTagsCopy, "count"))
   {
     [(FRTodayAgent *)self _markDirtyWithFlags:8];
   }
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
-  v6 = a3;
-  v7 = a4;
+  historyCopy = history;
+  articlesCopy = articles;
   +[NSThread isMainThread];
   v29 = 0;
   v30 = &v29;
@@ -268,7 +268,7 @@ LABEL_18:
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 9;
-  v8 = [v7 copy];
+  v8 = [articlesCopy copy];
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v19[0] = _NSConcreteStackBlock;
@@ -277,7 +277,7 @@ LABEL_18:
   v19[3] = &unk_1000C5750;
   v23 = &v29;
   v24 = &v25;
-  v11 = v6;
+  v11 = historyCopy;
   v20 = v11;
   v12 = v9;
   v21 = v12;
@@ -290,8 +290,8 @@ LABEL_18:
     v15 = [FCFileCoordinatedTodayDropboxTransaction transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:v14 deletedArticleIDs:v13];
     if (v15)
     {
-      v16 = [(FRTodayAgent *)self seenArticlesTransactions];
-      [v16 addObject:v15];
+      seenArticlesTransactions = [(FRTodayAgent *)self seenArticlesTransactions];
+      [seenArticlesTransactions addObject:v15];
     }
   }
 
@@ -317,31 +317,31 @@ LABEL_18:
   v4 = +[FCFileCoordinatedTodayDropboxTransaction transactionToClearSeenArticles];
   if (v4)
   {
-    v3 = [(FRTodayAgent *)self seenArticlesTransactions];
-    [v3 addObject:v4];
+    seenArticlesTransactions = [(FRTodayAgent *)self seenArticlesTransactions];
+    [seenArticlesTransactions addObject:v4];
   }
 
   [(FRTodayAgent *)self _markDirtyWithFlags:6];
 }
 
-- (void)privateDataControllerDidBecomeClean:(id)a3
+- (void)privateDataControllerDidBecomeClean:(id)clean
 {
-  v10 = a3;
-  v4 = [(FRTodayAgent *)self privateDataContext];
-  v5 = [v4 personalizationData];
+  cleanCopy = clean;
+  privateDataContext = [(FRTodayAgent *)self privateDataContext];
+  personalizationData = [privateDataContext personalizationData];
 
-  if (v5 == v10)
+  if (personalizationData == cleanCopy)
   {
     v9 = 64;
   }
 
   else
   {
-    v6 = [(FRTodayAgent *)self privateDataContext];
-    v7 = [v6 readingHistory];
+    privateDataContext2 = [(FRTodayAgent *)self privateDataContext];
+    readingHistory = [privateDataContext2 readingHistory];
 
-    v8 = v10;
-    if (v7 != v10)
+    v8 = cleanCopy;
+    if (readingHistory != cleanCopy)
     {
       goto LABEL_6;
     }
@@ -350,7 +350,7 @@ LABEL_18:
   }
 
   [(FRTodayAgent *)self _markDirtyWithFlags:v9];
-  v8 = v10;
+  v8 = cleanCopy;
 LABEL_6:
 }
 
@@ -365,12 +365,12 @@ LABEL_6:
 {
   [(FRTodayAgent *)self setEnabled:1];
   [(FRTodayAgent *)self _updateSuspensionState];
-  v3 = [(FRTodayAgent *)self operationThrottler];
-  v4 = [v3 allUnhandledMergedData];
+  operationThrottler = [(FRTodayAgent *)self operationThrottler];
+  allUnhandledMergedData = [operationThrottler allUnhandledMergedData];
 
-  if ((v4 & 2) != 0)
+  if ((allUnhandledMergedData & 2) != 0)
   {
-    v5 = [(FRTodayAgent *)self workQueue];
+    workQueue = [(FRTodayAgent *)self workQueue];
     FCDispatchAsyncWithQualityOfService();
   }
 }
@@ -390,7 +390,7 @@ LABEL_6:
   v11[4] = &v12;
   v4 = [v3 beginBackgroundTaskWithName:@"TodayAgentUpdate" expirationHandler:v11];
   v13[3] = v4;
-  v5 = [(FRTodayAgent *)self operationThrottler];
+  operationThrottler = [(FRTodayAgent *)self operationThrottler];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000539D4;
@@ -398,9 +398,9 @@ LABEL_6:
   v6 = v3;
   v9 = v6;
   v10 = &v12;
-  [v5 tickleWithQualityOfService:25 data:0 completion:v8];
+  [operationThrottler tickleWithQualityOfService:25 data:0 completion:v8];
 
-  v7 = [(FRTodayAgent *)self workQueue];
+  workQueue = [(FRTodayAgent *)self workQueue];
   FCDispatchAsyncWithQualityOfService();
 
   _Block_object_dispose(&v12, 8);
@@ -414,17 +414,17 @@ LABEL_6:
   return v3;
 }
 
-- (void)_markDirtyWithFlags:(unint64_t)a3 qualityOfService:(int64_t)a4
+- (void)_markDirtyWithFlags:(unint64_t)flags qualityOfService:(int64_t)service
 {
-  v6 = [(FRTodayAgent *)self operationThrottler];
-  [v6 tickleWithQualityOfService:a4 data:a3 completion:0];
+  operationThrottler = [(FRTodayAgent *)self operationThrottler];
+  [operationThrottler tickleWithQualityOfService:service data:flags completion:0];
 }
 
 - (id)_accessorToUpdateRecentlyReadItems
 {
-  v2 = [(FRTodayAgent *)self privateDataContext];
-  v3 = [v2 readingHistory];
-  v4 = [v3 mostRecentlyReadArticlesWithMaxCount:200];
+  privateDataContext = [(FRTodayAgent *)self privateDataContext];
+  readingHistory = [privateDataContext readingHistory];
+  v4 = [readingHistory mostRecentlyReadArticlesWithMaxCount:200];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -437,17 +437,17 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_updateDropboxWithAccessors:(id)a3
+- (BOOL)_updateDropboxWithAccessors:(id)accessors
 {
-  v4 = a3;
-  v5 = [(FRTodayAgent *)self fileCoordinatedTodayDropbox];
+  accessorsCopy = accessors;
+  fileCoordinatedTodayDropbox = [(FRTodayAgent *)self fileCoordinatedTodayDropbox];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100053D64;
   v15[3] = &unk_1000C5828;
-  v6 = v4;
+  v6 = accessorsCopy;
   v16 = v6;
-  v7 = [v5 depositSyncWithAccessor:v15];
+  v7 = [fileCoordinatedTodayDropbox depositSyncWithAccessor:v15];
 
   if (v7)
   {
@@ -463,32 +463,32 @@ LABEL_6:
   return v7;
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)operationThrottler:(id)throttler performAsyncOperationWithQualityOfService:(int64_t)service completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(FRTodayAgent *)self operationThrottler];
-  v8 = [v7 mergedData];
+  completionCopy = completion;
+  operationThrottler = [(FRTodayAgent *)self operationThrottler];
+  mergedData = [operationThrottler mergedData];
 
   v9 = FRTodayAgentLog;
   if (os_log_type_enabled(FRTodayAgentLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = v8;
+    v22 = mergedData;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Performing throttler operation with flags %ld", buf, 0xCu);
   }
 
-  if (v8)
+  if (mergedData)
   {
-    v10 = [(FRTodayAgent *)self transactionProcessingGroup];
+    transactionProcessingGroup = [(FRTodayAgent *)self transactionProcessingGroup];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100054034;
     v13[3] = &unk_1000C5940;
-    v14 = v6;
-    v15 = v8;
+    v14 = completionCopy;
+    v15 = mergedData;
     v13[4] = self;
-    v11 = v6;
-    dispatch_group_notify(v10, &_dispatch_main_q, v13);
+    v11 = completionCopy;
+    dispatch_group_notify(transactionProcessingGroup, &_dispatch_main_q, v13);
 
     v12 = v14;
   }
@@ -499,9 +499,9 @@ LABEL_6:
     v17 = 3221225472;
     v18 = sub_100054024;
     v19 = &unk_1000C3098;
-    v20 = v6;
-    v6[2](v6);
-    v12 = v6;
+    v20 = completionCopy;
+    completionCopy[2](completionCopy);
+    v12 = completionCopy;
   }
 }
 

@@ -11,18 +11,18 @@
   MEMORY[0x29ED3FF70](@"VideosUI.FlowcaseViewCell", a2);
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(VUIBaseCollectionViewCellAccessibility *)self _accessibilityStackingView];
-    v4 = [v3 accessibilityLabel];
+    _accessibilityStackingView = [(VUIBaseCollectionViewCellAccessibility *)self _accessibilityStackingView];
+    accessibilityLabel = [_accessibilityStackingView accessibilityLabel];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = VUIBaseCollectionViewCellAccessibility;
-    v4 = [(VUIBaseCollectionViewCellAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(VUIBaseCollectionViewCellAccessibility *)&v6 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

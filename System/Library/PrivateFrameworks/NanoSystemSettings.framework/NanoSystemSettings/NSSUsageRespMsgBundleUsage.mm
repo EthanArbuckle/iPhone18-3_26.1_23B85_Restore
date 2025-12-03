@@ -1,33 +1,33 @@
 @interface NSSUsageRespMsgBundleUsage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCategories:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCategories:(id)categories;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSUsageRespMsgBundleUsage
 
-- (void)addCategories:(id)a3
+- (void)addCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   categories = self->_categories;
-  v8 = v4;
+  v8 = categoriesCopy;
   if (!categories)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_categories;
     self->_categories = v6;
 
-    v4 = v8;
+    categoriesCopy = v8;
     categories = self->_categories;
   }
 
-  [(NSMutableArray *)categories addObject:v4];
+  [(NSMutableArray *)categories addObject:categoriesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NSSUsageRespMsgBundleUsage;
   v4 = [(NSSUsageRespMsgBundleUsage *)&v8 description];
-  v5 = [(NSSUsageRespMsgBundleUsage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSUsageRespMsgBundleUsage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   bundleIdentifier = self->_bundleIdentifier;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -105,10 +105,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   name = self->_name;
   PBDataWriterWriteStringField();
   bundleIdentifier = self->_bundleIdentifier;
@@ -154,42 +154,42 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setName:self->_name];
-  [v8 setBundleIdentifier:self->_bundleIdentifier];
+  toCopy = to;
+  [toCopy setName:self->_name];
+  [toCopy setBundleIdentifier:self->_bundleIdentifier];
   if ([(NSSUsageRespMsgBundleUsage *)self categoriesCount])
   {
-    [v8 clearCategories];
-    v4 = [(NSSUsageRespMsgBundleUsage *)self categoriesCount];
-    if (v4)
+    [toCopy clearCategories];
+    categoriesCount = [(NSSUsageRespMsgBundleUsage *)self categoriesCount];
+    if (categoriesCount)
     {
-      v5 = v4;
+      v5 = categoriesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSSUsageRespMsgBundleUsage *)self categoriesAtIndex:i];
-        [v8 addCategories:v7];
+        [toCopy addCategories:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v8[32] = self->_purgeable;
-    v8[36] |= 1u;
+    toCopy[32] = self->_purgeable;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -213,7 +213,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addCategories:v15];
 
         ++v14;
@@ -236,16 +236,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   name = self->_name;
-  if (name | *(v4 + 3))
+  if (name | *(equalCopy + 3))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -254,7 +254,7 @@
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -263,7 +263,7 @@
   }
 
   categories = self->_categories;
-  if (categories | *(v4 + 2))
+  if (categories | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)categories isEqual:?])
     {
@@ -271,10 +271,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
 LABEL_10:
       v8 = 0;
@@ -283,13 +283,13 @@ LABEL_10:
 
     if (self->_purgeable)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_10;
     }
@@ -320,16 +320,16 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(NSSUsageRespMsgBundleUsage *)self setName:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NSSUsageRespMsgBundleUsage *)self setBundleIdentifier:?];
   }
@@ -338,7 +338,7 @@ LABEL_11:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -362,9 +362,9 @@ LABEL_11:
     while (v7);
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_purgeable = *(v4 + 32);
+    self->_purgeable = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 

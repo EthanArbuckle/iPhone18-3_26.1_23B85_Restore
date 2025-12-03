@@ -1,80 +1,80 @@
 @interface IPAPhotoAdjustmentPipeline
-+ (id)pipelineForPlatform:(id)a3 version:(unint64_t)a4;
-+ (id)pipelineFromString:(id)a3;
++ (id)pipelineForPlatform:(id)platform version:(unint64_t)version;
++ (id)pipelineFromString:(id)string;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdjustmentPipeline:(id)a3;
-- (IPAPhotoAdjustmentPipeline)initWithPlatform:(id)a3 version:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdjustmentPipeline:(id)pipeline;
+- (IPAPhotoAdjustmentPipeline)initWithPlatform:(id)platform version:(unint64_t)version;
 - (unint64_t)hash;
 @end
 
 @implementation IPAPhotoAdjustmentPipeline
 
-- (BOOL)isEqualToAdjustmentPipeline:(id)a3
+- (BOOL)isEqualToAdjustmentPipeline:(id)pipeline
 {
-  v4 = a3;
-  v5 = [(IPAPhotoAdjustmentPipeline *)self string];
-  v6 = [v4 string];
+  pipelineCopy = pipeline;
+  string = [(IPAPhotoAdjustmentPipeline *)self string];
+  string2 = [pipelineCopy string];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(pipelineCopy) = [string isEqual:string2];
+  return pipelineCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAPhotoAdjustmentPipeline *)self isEqualToAdjustmentPipeline:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAPhotoAdjustmentPipeline *)self isEqualToAdjustmentPipeline:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IPAPhotoAdjustmentPipeline *)self string];
-  v3 = [v2 hash];
+  string = [(IPAPhotoAdjustmentPipeline *)self string];
+  v3 = [string hash];
 
   return v3;
 }
 
-- (IPAPhotoAdjustmentPipeline)initWithPlatform:(id)a3 version:(unint64_t)a4
+- (IPAPhotoAdjustmentPipeline)initWithPlatform:(id)platform version:(unint64_t)version
 {
-  v6 = a3;
+  platformCopy = platform;
   v11.receiver = self;
   v11.super_class = IPAPhotoAdjustmentPipeline;
   v7 = [(IPAPhotoAdjustmentPipeline *)&v11 init];
   if (v7)
   {
-    v8 = [IPAAdjustmentVersion validatePlatformString:v6];
+    v8 = [IPAAdjustmentVersion validatePlatformString:platformCopy];
     platform = v7->_platform;
     v7->_platform = v8;
 
-    v7->_version = a4;
+    v7->_version = version;
   }
 
   return v7;
 }
 
-+ (id)pipelineFromString:(id)a3
++ (id)pipelineFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = [v3 lowercaseString];
+    lowercaseString = [stringCopy lowercaseString];
 
-    v6 = [v5 length];
-    v7 = [s_pipelineRegex firstMatchInString:v5 options:0 range:{0, v6}];
+    v6 = [lowercaseString length];
+    v7 = [s_pipelineRegex firstMatchInString:lowercaseString options:0 range:{0, v6}];
     v8 = v7;
     if (v7)
     {
       v9 = [v7 rangeAtIndex:1];
-      v4 = [v5 substringWithRange:{v9, v10}];
+      v4 = [lowercaseString substringWithRange:{v9, v10}];
       v11 = [v8 rangeAtIndex:2];
-      v13 = [v5 substringWithRange:{v11, v12}];
-      v14 = [v13 integerValue];
+      v13 = [lowercaseString substringWithRange:{v11, v12}];
+      integerValue = [v13 integerValue];
 
-      v8 = [IPAPhotoAdjustmentPipeline pipelineForPlatform:v4 version:v14];
+      v8 = [IPAPhotoAdjustmentPipeline pipelineForPlatform:v4 version:integerValue];
     }
 
     else
@@ -85,17 +85,17 @@
 
   else
   {
-    v5 = 0;
+    lowercaseString = 0;
     v8 = 0;
   }
 
   return v8;
 }
 
-+ (id)pipelineForPlatform:(id)a3 version:(unint64_t)a4
++ (id)pipelineForPlatform:(id)platform version:(unint64_t)version
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithPlatform:v6 version:a4];
+  platformCopy = platform;
+  v7 = [[self alloc] initWithPlatform:platformCopy version:version];
 
   return v7;
 }

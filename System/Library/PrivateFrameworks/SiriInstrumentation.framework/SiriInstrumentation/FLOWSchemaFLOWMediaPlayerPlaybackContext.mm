@@ -1,21 +1,21 @@
 @interface FLOWSchemaFLOWMediaPlayerPlaybackContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithJSON:(id)n;
 - (FLOWSchemaFLOWMediaPlayerPlaylistContext)playlistContext;
 - (FLOWSchemaFLOWMediaPlayerRadioStationContext)radioStationContext;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deletePlaylistContext;
 - (void)deleteRadioStationContext;
-- (void)setHasContentSource:(BOOL)a3;
-- (void)setHasEndpoint:(BOOL)a3;
-- (void)setPlaylistContext:(id)a3;
-- (void)setRadioStationContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasContentSource:(BOOL)source;
+- (void)setHasEndpoint:(BOOL)endpoint;
+- (void)setPlaylistContext:(id)context;
+- (void)setRadioStationContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMediaPlayerPlaybackContext
@@ -50,15 +50,15 @@
   return v3;
 }
 
-- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = FLOWSchemaFLOWMediaPlayerPlaybackContext;
   v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,28 +66,28 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"executionSource"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"executionSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerPlaybackContext setExecutionSource:](v5, "setExecutionSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"endpoint"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"endpoint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerPlaybackContext setEndpoint:](v5, "setEndpoint:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contentSource"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contentSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerPlaybackContext setContentSource:](v5, "setContentSource:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"radioStationContext"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"radioStationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
       [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)v5 setRadioStationContext:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"playlistContext"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"playlistContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,30 +109,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMediaPlayerPlaybackContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -145,18 +145,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self contentSource];
+    contentSource = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self contentSource];
     v6 = @"FLOWMEDIAPLAYERCONTENTSOURCE_UNKNOWN";
-    if (v5 == 1)
+    if (contentSource == 1)
     {
       v6 = @"FLOWMEDIAPLAYERCONTENTSOURCE_LIBRARY";
     }
 
-    if (v5 == 2)
+    if (contentSource == 2)
     {
       v7 = @"FLOWMEDIAPLAYERCONTENTSOURCE_CATALOG";
     }
@@ -166,7 +166,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"contentSource"];
+    [dictionary setObject:v7 forKeyedSubscript:@"contentSource"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -196,7 +196,7 @@ LABEL_3:
     v9 = off_1E78D5EA8[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"endpoint"];
+  [dictionary setObject:v9 forKeyedSubscript:@"endpoint"];
   if (*&self->_has)
   {
 LABEL_15:
@@ -211,61 +211,61 @@ LABEL_15:
       v11 = off_1E78D5EE0[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"executionSource"];
+    [dictionary setObject:v11 forKeyedSubscript:@"executionSource"];
   }
 
 LABEL_19:
   if (self->_linkId)
   {
-    v12 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_playlistContext)
   {
-    v15 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    playlistContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+    dictionaryRepresentation2 = [playlistContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"playlistContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"playlistContext"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"playlistContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"playlistContext"];
     }
   }
 
   if (self->_radioStationContext)
   {
-    v18 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    radioStationContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+    dictionaryRepresentation3 = [radioStationContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"radioStationContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"radioStationContext"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"radioStationContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"radioStationContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,34 +311,34 @@ LABEL_8:
   return v7 ^ [(FLOWSchemaFLOWMediaPlayerPlaylistContext *)self->_playlistContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   whichContenttype = self->_whichContenttype;
-  if (whichContenttype != [v4 whichContenttype])
+  if (whichContenttype != [equalCopy whichContenttype])
   {
     goto LABEL_29;
   }
 
-  v6 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
-  v7 = [v4 linkId];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v8 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
-  if (v8)
+  linkId3 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+  if (linkId3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
-    v11 = [v4 linkId];
-    v12 = [v10 isEqual:v11];
+    v9 = linkId3;
+    linkId4 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v12 = [linkId4 isEqual:linkId5];
 
     if (!v12)
     {
@@ -351,7 +351,7 @@ LABEL_8:
   }
 
   has = self->_has;
-  v14 = v4[48];
+  v14 = equalCopy[48];
   if ((*&has & 1) != (v14 & 1))
   {
     goto LABEL_29;
@@ -360,13 +360,13 @@ LABEL_8:
   if (*&has)
   {
     executionSource = self->_executionSource;
-    if (executionSource != [v4 executionSource])
+    if (executionSource != [equalCopy executionSource])
     {
       goto LABEL_29;
     }
 
     has = self->_has;
-    v14 = v4[48];
+    v14 = equalCopy[48];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -378,13 +378,13 @@ LABEL_8:
   if (v16)
   {
     endpoint = self->_endpoint;
-    if (endpoint != [v4 endpoint])
+    if (endpoint != [equalCopy endpoint])
     {
       goto LABEL_29;
     }
 
     has = self->_has;
-    v14 = v4[48];
+    v14 = equalCopy[48];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -396,26 +396,26 @@ LABEL_8:
   if (v18)
   {
     contentSource = self->_contentSource;
-    if (contentSource != [v4 contentSource])
+    if (contentSource != [equalCopy contentSource])
     {
       goto LABEL_29;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
-  v7 = [v4 radioStationContext];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+  linkId2 = [equalCopy radioStationContext];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v20 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
-  if (v20)
+  radioStationContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+  if (radioStationContext)
   {
-    v21 = v20;
-    v22 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
-    v23 = [v4 radioStationContext];
-    v24 = [v22 isEqual:v23];
+    v21 = radioStationContext;
+    radioStationContext2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+    radioStationContext3 = [equalCopy radioStationContext];
+    v24 = [radioStationContext2 isEqual:radioStationContext3];
 
     if (!v24)
     {
@@ -427,17 +427,17 @@ LABEL_8:
   {
   }
 
-  v6 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
-  v7 = [v4 playlistContext];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+  linkId2 = [equalCopy playlistContext];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v25 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
-  if (!v25)
+  playlistContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+  if (!playlistContext)
   {
 
 LABEL_32:
@@ -445,10 +445,10 @@ LABEL_32:
     goto LABEL_30;
   }
 
-  v26 = v25;
-  v27 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
-  v28 = [v4 playlistContext];
-  v29 = [v27 isEqual:v28];
+  v26 = playlistContext;
+  playlistContext2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+  playlistContext3 = [equalCopy playlistContext];
+  v29 = [playlistContext2 isEqual:playlistContext3];
 
   if (v29)
   {
@@ -462,14 +462,14 @@ LABEL_30:
   return v30;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+  toCopy = to;
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+    linkId2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -503,23 +503,23 @@ LABEL_6:
   }
 
 LABEL_7:
-  v7 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+  radioStationContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
 
-  if (v7)
+  if (radioStationContext)
   {
-    v8 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+    radioStationContext2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+  playlistContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (playlistContext)
   {
-    v11 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+    playlistContext2 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
@@ -533,21 +533,21 @@ LABEL_7:
   }
 }
 
-- (void)setPlaylistContext:(id)a3
+- (void)setPlaylistContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   radioStationContext = self->_radioStationContext;
   self->_radioStationContext = 0;
 
   v6 = 6;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichContenttype = v6;
   playlistContext = self->_playlistContext;
-  self->_playlistContext = v4;
+  self->_playlistContext = contextCopy;
 }
 
 - (void)deleteRadioStationContext
@@ -560,26 +560,26 @@ LABEL_7:
   }
 }
 
-- (void)setRadioStationContext:(id)a3
+- (void)setRadioStationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   playlistContext = self->_playlistContext;
   self->_playlistContext = 0;
 
   v6 = 5;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichContenttype = v6;
   radioStationContext = self->_radioStationContext;
-  self->_radioStationContext = v4;
+  self->_radioStationContext = contextCopy;
 }
 
-- (void)setHasContentSource:(BOOL)a3
+- (void)setHasContentSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -592,9 +592,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEndpoint:(BOOL)a3
+- (void)setHasEndpoint:(BOOL)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
     v3 = 2;
   }
@@ -607,35 +607,35 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = FLOWSchemaFLOWMediaPlayerPlaybackContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self deleteLinkId];
   }
 
-  v9 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  radioStationContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self radioStationContext];
+  v10 = [radioStationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self deleteRadioStationContext];
   }
 
-  v12 = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  playlistContext = [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self playlistContext];
+  v13 = [playlistContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWMediaPlayerPlaybackContext *)self deletePlaylistContext];
   }

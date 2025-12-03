@@ -1,17 +1,17 @@
 @interface STAllowanceDetailListControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkSelectedSpecifier;
 @end
 
 @implementation STAllowanceDetailListControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STAllowanceDetailListController" hasInstanceMethod:@"_showOrHidePickerSpecifierForSpecifier:highlight:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"STAllowanceDetailListController" hasInstanceMethod:@"timeSpecifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STAllowanceDetailListController" hasInstanceMethod:@"selectedTimeSpecifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STAllowanceDetailListController" hasInstanceMethod:@"_showOrHidePickerSpecifierForSpecifier:highlight:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"STAllowanceDetailListController" hasInstanceMethod:@"timeSpecifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STAllowanceDetailListController" hasInstanceMethod:@"selectedTimeSpecifier" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityMarkSelectedSpecifier

@@ -1,20 +1,20 @@
 @interface AWDWiFiMetricsManagerNetworkTransitionRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)channelScanCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)channelScanCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEndedTimestamp:(BOOL)a3;
-- (void)setHasErrors:(BOOL)a3;
-- (void)setHasGotIPTimestamp:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTrigger:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasEndedTimestamp:(BOOL)timestamp;
+- (void)setHasErrors:(BOOL)errors;
+- (void)setHasGotIPTimestamp:(BOOL)timestamp;
+- (void)setHasState:(BOOL)state;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTrigger:(BOOL)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerNetworkTransitionRecord
@@ -27,9 +27,9 @@
   [(AWDWiFiMetricsManagerNetworkTransitionRecord *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEndedTimestamp:(BOOL)a3
+- (void)setHasEndedTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasGotIPTimestamp:(BOOL)a3
+- (void)setHasGotIPTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasErrors:(BOOL)a3
+- (void)setHasErrors:(BOOL)errors
 {
-  if (a3)
+  if (errors)
   {
     v3 = 16;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTrigger:(BOOL)a3
+- (void)setHasTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 64;
   }
@@ -117,16 +117,16 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (unsigned)channelScanCountAtIndex:(unint64_t)a3
+- (unsigned)channelScanCountAtIndex:(unint64_t)index
 {
   p_channelScanCounts = &self->_channelScanCounts;
   count = self->_channelScanCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_channelScanCounts->list[a3];
+  return p_channelScanCounts->list[index];
 }
 
 - (id)description
@@ -138,11 +138,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -161,7 +161,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beganTimestamp), @"beganTimestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beganTimestamp), @"beganTimestamp"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -175,7 +175,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_endedTimestamp), @"endedTimestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_endedTimestamp), @"endedTimestamp"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -189,7 +189,7 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_gotIPTimestamp), @"gotIPTimestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_gotIPTimestamp), @"gotIPTimestamp"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -200,7 +200,7 @@ LABEL_6:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_errors), @"errors"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_errors), @"errors"}];
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_9;
@@ -210,7 +210,7 @@ LABEL_15:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_state), @"state"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_state), @"state"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -221,15 +221,15 @@ LABEL_7:
   if ((has & 0x40) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_trigger), @"trigger"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_trigger), @"trigger"}];
   }
 
 LABEL_9:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"channelScanCount"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"channelScanCount"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -339,13 +339,13 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 7) = self->_timestamp;
-    *(a3 + 76) |= 8u;
+    *(to + 7) = self->_timestamp;
+    *(to + 76) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -364,8 +364,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_beganTimestamp;
-  *(a3 + 76) |= 1u;
+  *(to + 4) = self->_beganTimestamp;
+  *(to + 76) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -379,8 +379,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  *(a3 + 5) = self->_endedTimestamp;
-  *(a3 + 76) |= 2u;
+  *(to + 5) = self->_endedTimestamp;
+  *(to + 76) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -394,8 +394,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  *(a3 + 6) = self->_gotIPTimestamp;
-  *(a3 + 76) |= 4u;
+  *(to + 6) = self->_gotIPTimestamp;
+  *(to + 76) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -406,8 +406,8 @@ LABEL_6:
     }
 
 LABEL_19:
-    *(a3 + 16) = self->_errors;
-    *(a3 + 76) |= 0x10u;
+    *(to + 16) = self->_errors;
+    *(to + 76) |= 0x10u;
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_9;
@@ -417,8 +417,8 @@ LABEL_19:
   }
 
 LABEL_18:
-  *(a3 + 17) = self->_state;
-  *(a3 + 76) |= 0x20u;
+  *(to + 17) = self->_state;
+  *(to + 76) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -429,29 +429,29 @@ LABEL_7:
   if ((has & 0x40) != 0)
   {
 LABEL_8:
-    *(a3 + 18) = self->_trigger;
-    *(a3 + 76) |= 0x40u;
+    *(to + 18) = self->_trigger;
+    *(to + 76) |= 0x40u;
   }
 
 LABEL_9:
   if ([(AWDWiFiMetricsManagerNetworkTransitionRecord *)self channelScanCountsCount])
   {
-    [a3 clearChannelScanCounts];
-    v6 = [(AWDWiFiMetricsManagerNetworkTransitionRecord *)self channelScanCountsCount];
-    if (v6)
+    [to clearChannelScanCounts];
+    channelScanCountsCount = [(AWDWiFiMetricsManagerNetworkTransitionRecord *)self channelScanCountsCount];
+    if (channelScanCountsCount)
     {
-      v7 = v6;
+      v7 = channelScanCountsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addChannelScanCount:{-[AWDWiFiMetricsManagerNetworkTransitionRecord channelScanCountAtIndex:](self, "channelScanCountAtIndex:", i)}];
+        [to addChannelScanCount:{-[AWDWiFiMetricsManagerNetworkTransitionRecord channelScanCountAtIndex:](self, "channelScanCountAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 8) != 0)
@@ -550,101 +550,101 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 76);
+  v5 = *(equal + 76);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 76) & 8) == 0 || self->_timestamp != *(a3 + 7))
+    if ((*(equal + 76) & 8) == 0 || self->_timestamp != *(equal + 7))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 76) & 8) != 0)
+  else if ((*(equal + 76) & 8) != 0)
   {
     return 0;
   }
 
   if (*&self->_has)
   {
-    if ((*(a3 + 76) & 1) == 0 || self->_beganTimestamp != *(a3 + 4))
+    if ((*(equal + 76) & 1) == 0 || self->_beganTimestamp != *(equal + 4))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 76))
+  else if (*(equal + 76))
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 76) & 2) == 0 || self->_endedTimestamp != *(a3 + 5))
+    if ((*(equal + 76) & 2) == 0 || self->_endedTimestamp != *(equal + 5))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 76) & 2) != 0)
+  else if ((*(equal + 76) & 2) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 76) & 4) == 0 || self->_gotIPTimestamp != *(a3 + 6))
+    if ((*(equal + 76) & 4) == 0 || self->_gotIPTimestamp != *(equal + 6))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 76) & 4) != 0)
+  else if ((*(equal + 76) & 4) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(a3 + 76) & 0x20) == 0 || self->_state != *(a3 + 17))
+    if ((*(equal + 76) & 0x20) == 0 || self->_state != *(equal + 17))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 76) & 0x20) != 0)
+  else if ((*(equal + 76) & 0x20) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 76) & 0x10) == 0 || self->_errors != *(a3 + 16))
+    if ((*(equal + 76) & 0x10) == 0 || self->_errors != *(equal + 16))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 76) & 0x10) != 0)
+  else if ((*(equal + 76) & 0x10) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(a3 + 76) & 0x40) == 0 || self->_trigger != *(a3 + 18))
+    if ((*(equal + 76) & 0x40) == 0 || self->_trigger != *(equal + 18))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 76) & 0x40) != 0)
+  else if ((*(equal + 76) & 0x40) != 0)
   {
     return 0;
   }
@@ -748,14 +748,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 76);
+  v5 = *(from + 76);
   if ((v5 & 8) != 0)
   {
-    self->_timestamp = *(a3 + 7);
+    self->_timestamp = *(from + 7);
     *&self->_has |= 8u;
-    v5 = *(a3 + 76);
+    v5 = *(from + 76);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -768,14 +768,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 76) & 1) == 0)
+  else if ((*(from + 76) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_beganTimestamp = *(a3 + 4);
+  self->_beganTimestamp = *(from + 4);
   *&self->_has |= 1u;
-  v5 = *(a3 + 76);
+  v5 = *(from + 76);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -788,9 +788,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_endedTimestamp = *(a3 + 5);
+  self->_endedTimestamp = *(from + 5);
   *&self->_has |= 2u;
-  v5 = *(a3 + 76);
+  v5 = *(from + 76);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -803,9 +803,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_gotIPTimestamp = *(a3 + 6);
+  self->_gotIPTimestamp = *(from + 6);
   *&self->_has |= 4u;
-  v5 = *(a3 + 76);
+  v5 = *(from + 76);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -818,9 +818,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_state = *(a3 + 17);
+  self->_state = *(from + 17);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 76);
+  v5 = *(from + 76);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -833,23 +833,23 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_errors = *(a3 + 16);
+  self->_errors = *(from + 16);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 76) & 0x40) != 0)
+  if ((*(from + 76) & 0x40) != 0)
   {
 LABEL_8:
-    self->_trigger = *(a3 + 18);
+    self->_trigger = *(from + 18);
     *&self->_has |= 0x40u;
   }
 
 LABEL_9:
-  v6 = [a3 channelScanCountsCount];
-  if (v6)
+  channelScanCountsCount = [from channelScanCountsCount];
+  if (channelScanCountsCount)
   {
-    v7 = v6;
+    v7 = channelScanCountsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDWiFiMetricsManagerNetworkTransitionRecord addChannelScanCount:](self, "addChannelScanCount:", [a3 channelScanCountAtIndex:i]);
+      -[AWDWiFiMetricsManagerNetworkTransitionRecord addChannelScanCount:](self, "addChannelScanCount:", [from channelScanCountAtIndex:i]);
     }
   }
 }

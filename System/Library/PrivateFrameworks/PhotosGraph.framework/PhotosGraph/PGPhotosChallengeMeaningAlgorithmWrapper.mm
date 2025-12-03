@@ -1,56 +1,56 @@
 @interface PGPhotosChallengeMeaningAlgorithmWrapper
-- (PGPhotosChallengeMeaningAlgorithmWrapper)initWithEvaluationContext:(id)a3;
-- (id)debugInformationForMeaningIdentifier:(id)a3 assetUUID:(id)a4;
-- (unsigned)predictQuestionStateForMeaningIdentifier:(id)a3 assetUUID:(id)a4 params:(id)a5;
+- (PGPhotosChallengeMeaningAlgorithmWrapper)initWithEvaluationContext:(id)context;
+- (id)debugInformationForMeaningIdentifier:(id)identifier assetUUID:(id)d;
+- (unsigned)predictQuestionStateForMeaningIdentifier:(id)identifier assetUUID:(id)d params:(id)params;
 @end
 
 @implementation PGPhotosChallengeMeaningAlgorithmWrapper
 
-- (id)debugInformationForMeaningIdentifier:(id)a3 assetUUID:(id)a4
+- (id)debugInformationForMeaningIdentifier:(id)identifier assetUUID:(id)d
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  dCopy = d;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v7 = MEMORY[0x277CD97A8];
-  v38[0] = v5;
+  v38[0] = dCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-  v9 = [v7 fetchAssetsWithUUIDs:v8 options:v6];
-  v10 = [v9 firstObject];
+  v9 = [v7 fetchAssetsWithUUIDs:v8 options:librarySpecificFetchOptions];
+  firstObject = [v9 firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:v10 withType:3 options:v6];
-    v12 = [v11 firstObject];
+    v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:firstObject withType:3 options:librarySpecificFetchOptions];
+    firstObject2 = [v11 firstObject];
 
-    if (v12)
+    if (firstObject2)
     {
       v13 = MEMORY[0x277CBEB98];
-      v14 = [v12 uuid];
-      v15 = [v13 setWithObject:v14];
+      uuid = [firstObject2 uuid];
+      v15 = [v13 setWithObject:uuid];
       v16 = [PGGraphMomentNodeCollection momentNodesForUUIDs:v15 inGraph:self->_graph];
 
       if (v16)
       {
-        v17 = [v16 sceneNodes];
-        v18 = [v17 sceneNames];
-        v35 = [v18 allObjects];
+        sceneNodes = [v16 sceneNodes];
+        sceneNames = [sceneNodes sceneNames];
+        allObjects = [sceneNames allObjects];
 
-        v19 = [v16 reliableSceneNodes];
-        v20 = [v19 sceneNames];
-        v34 = [v20 allObjects];
+        reliableSceneNodes = [v16 reliableSceneNodes];
+        sceneNames2 = [reliableSceneNodes sceneNames];
+        allObjects2 = [sceneNames2 allObjects];
 
-        v21 = [v16 highConfidenceSceneNodes];
-        v22 = [v21 sceneNames];
-        v33 = [v22 allObjects];
+        highConfidenceSceneNodes = [v16 highConfidenceSceneNodes];
+        sceneNames3 = [highConfidenceSceneNodes sceneNames];
+        allObjects3 = [sceneNames3 allObjects];
 
-        v23 = [v16 searchConfidenceSceneNodes];
-        v24 = [v23 sceneNames];
-        v32 = [v24 allObjects];
+        searchConfidenceSceneNodes = [v16 searchConfidenceSceneNodes];
+        sceneNames4 = [searchConfidenceSceneNodes sceneNames];
+        allObjects4 = [sceneNames4 allObjects];
 
-        v25 = [v35 componentsJoinedByString:{@", "}];
-        v26 = [v34 componentsJoinedByString:{@", "}];
-        v27 = [v33 componentsJoinedByString:{@", "}];
-        v28 = [v32 componentsJoinedByString:{@", "}];
+        v25 = [allObjects componentsJoinedByString:{@", "}];
+        v26 = [allObjects2 componentsJoinedByString:{@", "}];
+        v27 = [allObjects3 componentsJoinedByString:{@", "}];
+        v28 = [allObjects4 componentsJoinedByString:{@", "}];
         v36[0] = @"sceneNames";
         v36[1] = @"reliableSceneNames";
         v37[0] = v25;
@@ -84,41 +84,41 @@
   return v29;
 }
 
-- (unsigned)predictQuestionStateForMeaningIdentifier:(id)a3 assetUUID:(id)a4 params:(id)a5
+- (unsigned)predictQuestionStateForMeaningIdentifier:(id)identifier assetUUID:(id)d params:(id)params
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifierCopy = identifier;
+  dCopy = d;
+  paramsCopy = params;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v12 = MEMORY[0x277CD97A8];
-  v32[0] = v9;
+  v32[0] = dCopy;
   v13 = 1;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v15 = [v12 fetchAssetsWithUUIDs:v14 options:v11];
-  v16 = [v15 firstObject];
+  v15 = [v12 fetchAssetsWithUUIDs:v14 options:librarySpecificFetchOptions];
+  firstObject = [v15 firstObject];
 
-  if (v16)
+  if (firstObject)
   {
-    v17 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:v16 withType:3 options:v11];
-    v18 = [v17 firstObject];
+    v17 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:firstObject withType:3 options:librarySpecificFetchOptions];
+    firstObject2 = [v17 firstObject];
 
-    if (v18)
+    if (firstObject2)
     {
-      v19 = [(PGGraph *)self->_graph momentNodeForMoment:v18];
+      v19 = [(PGGraph *)self->_graph momentNodeForMoment:firstObject2];
       if (v19)
       {
-        v29 = v8;
-        if ([v10 count])
+        v29 = identifierCopy;
+        if ([paramsCopy count])
         {
-          v30 = v8;
+          v30 = identifierCopy;
           v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-          v21 = [PGPhotosChallengeMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v20 inferenceType:0 graph:self->_graph sceneTaxonomy:self->_sceneTaxonomy params:v10];
+          v21 = [PGPhotosChallengeMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v20 inferenceType:0 graph:self->_graph sceneTaxonomy:self->_sceneTaxonomy params:paramsCopy];
         }
 
         else
         {
-          v31 = v8;
+          v31 = identifierCopy;
           v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
           v21 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v20 inferenceType:0 graph:self->_graph sceneTaxonomy:self->_sceneTaxonomy];
         }
@@ -126,8 +126,8 @@
         v28 = v21;
 
         v22 = [PGMeaningfulEventProcessorCache alloc];
-        v23 = [v19 collection];
-        v24 = [(PGMeaningfulEventProcessorCache *)v22 initWithMomentNodes:v23];
+        collection = [v19 collection];
+        v24 = [(PGMeaningfulEventProcessorCache *)v22 initWithMomentNodes:collection];
         v25 = [PGMeaningfulEventProcessor processRequiredCriteria:v28 forMoment:v19 meaningfulEventProcessorCache:v24 serviceManager:self->_serviceManager];
 
         if ([v25 count])
@@ -140,7 +140,7 @@
           v13 = 3;
         }
 
-        v8 = v29;
+        identifierCopy = v29;
       }
 
       else
@@ -159,29 +159,29 @@
   return v13;
 }
 
-- (PGPhotosChallengeMeaningAlgorithmWrapper)initWithEvaluationContext:(id)a3
+- (PGPhotosChallengeMeaningAlgorithmWrapper)initWithEvaluationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = PGPhotosChallengeMeaningAlgorithmWrapper;
   v5 = [(PGPhotosChallengeMeaningAlgorithmWrapper *)&v15 init];
   if (v5)
   {
-    v6 = [v4 photoLibrary];
+    photoLibrary = [contextCopy photoLibrary];
     photoLibrary = v5->_photoLibrary;
-    v5->_photoLibrary = v6;
+    v5->_photoLibrary = photoLibrary;
 
-    v8 = [v4 graph];
+    graph = [contextCopy graph];
     graph = v5->_graph;
-    v5->_graph = v8;
+    v5->_graph = graph;
 
-    v10 = [v4 sceneTaxonomy];
+    sceneTaxonomy = [contextCopy sceneTaxonomy];
     sceneTaxonomy = v5->_sceneTaxonomy;
-    v5->_sceneTaxonomy = v10;
+    v5->_sceneTaxonomy = sceneTaxonomy;
 
-    v12 = [v4 serviceManager];
+    serviceManager = [contextCopy serviceManager];
     serviceManager = v5->_serviceManager;
-    v5->_serviceManager = v12;
+    v5->_serviceManager = serviceManager;
   }
 
   return v5;

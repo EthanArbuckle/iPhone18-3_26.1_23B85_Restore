@@ -7,18 +7,18 @@
 
 - (uint64_t)needsQuotes
 {
-  v2 = [a1 isEqualToNumber:&unk_283A58F60];
-  v3 = v2 | [a1 isEqualToNumber:&unk_283A58F70];
-  return v3 | [a1 isEqualToNumber:&unk_283A58F80];
+  v2 = [self isEqualToNumber:&unk_283A58F60];
+  v3 = v2 | [self isEqualToNumber:&unk_283A58F70];
+  return v3 | [self isEqualToNumber:&unk_283A58F80];
 }
 
 - (void)atx_writeToFile:()ATXScoreLogSerializable
 {
-  v5 = *[a1 objCType];
+  v5 = *[self objCType];
   switch(v5)
   {
     case 'd':
-      if ([a1 needsQuotes])
+      if ([self needsQuotes])
       {
         v8 = "%0.16g";
       }
@@ -28,10 +28,10 @@
         v8 = "%0.16g";
       }
 
-      [a1 doubleValue];
+      [self doubleValue];
       goto LABEL_16;
     case 'f':
-      if ([a1 needsQuotes])
+      if ([self needsQuotes])
       {
         v8 = "%0.7g";
       }
@@ -41,14 +41,14 @@
         v8 = "%0.7g";
       }
 
-      [a1 floatValue];
+      [self floatValue];
       v10 = v9;
 LABEL_16:
       fprintf(a3, v8, *&v10);
       return;
     case 'i':
-      v6 = [a1 intValue];
-      if ([a1 needsQuotes])
+      intValue = [self intValue];
+      if ([self needsQuotes])
       {
         v7 = "%d";
       }
@@ -58,11 +58,11 @@ LABEL_16:
         v7 = "%d";
       }
 
-      fprintf(a3, v7, v6);
+      fprintf(a3, v7, intValue);
       break;
     default:
 
-      printStringRepresentation(a3, a1);
+      printStringRepresentation(a3, self);
       break;
   }
 }

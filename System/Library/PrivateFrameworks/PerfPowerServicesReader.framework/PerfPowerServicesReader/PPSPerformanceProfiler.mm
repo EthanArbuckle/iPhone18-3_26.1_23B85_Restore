@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (PPSPerformanceProfiler)init;
 - (id)getProfilingStatsForQuery;
-- (void)endProfilingForPhase:(id)a3;
-- (void)startProfilingForPhase:(id)a3;
+- (void)endProfilingForPhase:(id)phase;
+- (void)startProfilingForPhase:(id)phase;
 @end
 
 @implementation PPSPerformanceProfiler
@@ -46,37 +46,37 @@ uint64_t __40__PPSPerformanceProfiler_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)startProfilingForPhase:(id)a3
+- (void)startProfilingForPhase:(id)phase
 {
-  v8 = a3;
+  phaseCopy = phase;
   v4 = [(NSMutableDictionary *)self->_start_times objectForKeyedSubscript:?];
 
   if (!v4)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
-    [(NSMutableDictionary *)self->_start_times setObject:v7 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_start_times setObject:v7 forKeyedSubscript:phaseCopy];
   }
 }
 
-- (void)endProfilingForPhase:(id)a3
+- (void)endProfilingForPhase:(id)phase
 {
-  v12 = a3;
+  phaseCopy = phase;
   v4 = [(NSMutableDictionary *)self->_start_times objectForKeyedSubscript:?];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [v5 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v7 = v6;
-    v8 = [(NSMutableDictionary *)self->_start_times objectForKeyedSubscript:v12];
+    v8 = [(NSMutableDictionary *)self->_start_times objectForKeyedSubscript:phaseCopy];
     [v8 doubleValue];
     v10 = v7 - v9;
 
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:round(v10 * 1000.0) / 1000.0];
-    [(NSMutableDictionary *)self->_profilingStats setObject:v11 forKeyedSubscript:v12];
+    [(NSMutableDictionary *)self->_profilingStats setObject:v11 forKeyedSubscript:phaseCopy];
   }
 }
 

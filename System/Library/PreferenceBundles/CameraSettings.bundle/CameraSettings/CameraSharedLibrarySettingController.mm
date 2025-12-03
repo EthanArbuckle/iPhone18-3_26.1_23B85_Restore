@@ -1,10 +1,10 @@
 @interface CameraSharedLibrarySettingController
-- (id)_isShareAtHomeEnabled:(id)a3;
-- (id)_isShareFromCameraEnabled:(id)a3;
+- (id)_isShareAtHomeEnabled:(id)enabled;
+- (id)_isShareFromCameraEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_setShareAtHome:(id)a3 specifier:(id)a4;
-- (void)_setShareFromCamera:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setShareAtHome:(id)home specifier:(id)specifier;
+- (void)_setShareFromCamera:(id)camera specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CameraSharedLibrarySettingController
@@ -29,9 +29,9 @@
     [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:PSDefaultValueKey];
     [v5 addObject:v10];
     v12 = [(CameraSharedLibrarySettingController *)self _isShareFromCameraEnabled:v10];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       v32 = v11;
       v34 = v6;
@@ -98,43 +98,43 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = CameraSharedLibrarySettingController;
-  [(CameraSharedLibrarySettingController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CameraSharedLibrarySettingController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CameraSharedLibrarySettingController *)self specifierForID:@"autoShareBehaviorSelectionGroup"];
   if (v7)
   {
     v8 = [(CameraSharedLibrarySettingController *)self indexPathForSpecifier:v7];
-    v9 = [v8 section];
+    section = [v8 section];
   }
 
   else
   {
-    v9 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v9)
+  if ([pathCopy section] == section)
   {
-    [v6 row];
+    [pathCopy row];
     PXPreferencesSetCameraAutoShareEnabled();
     +[CAMUserPreferences removeSharedLibraryAlgorithmsPreferences];
     [(CameraSettingsBaseController *)self reloadSpecifiers];
   }
 }
 
-- (void)_setShareFromCamera:(id)a3 specifier:(id)a4
+- (void)_setShareFromCamera:(id)camera specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"CameraSharingEnabled", a3, @"com.apple.mobileslideshow");
+  CFPreferencesSetAppValue(@"CameraSharingEnabled", camera, @"com.apple.mobileslideshow");
   CFPreferencesAppSynchronize(@"com.apple.mobileslideshow");
   +[CAMUserPreferences removeSharedLibraryAlgorithmsPreferences];
 
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (id)_isShareFromCameraEnabled:(id)a3
+- (id)_isShareFromCameraEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CameraSharingEnabled", @"com.apple.mobileslideshow", &keyExistsAndHasValidFormat);
@@ -154,16 +154,16 @@
   return v6;
 }
 
-- (void)_setShareAtHome:(id)a3 specifier:(id)a4
+- (void)_setShareAtHome:(id)home specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"CameraShareFromHomeEnabled", a3, @"com.apple.mobileslideshow");
+  CFPreferencesSetAppValue(@"CameraShareFromHomeEnabled", home, @"com.apple.mobileslideshow");
   CFPreferencesAppSynchronize(@"com.apple.mobileslideshow");
   +[CAMUserPreferences removeSharedLibraryAlgorithmsPreferences];
 
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (id)_isShareAtHomeEnabled:(id)a3
+- (id)_isShareAtHomeEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   v3 = [NSNumber numberWithBool:CFPreferencesGetAppBooleanValue(@"CameraShareFromHomeEnabled", @"com.apple.mobileslideshow", &keyExistsAndHasValidFormat) != 0];

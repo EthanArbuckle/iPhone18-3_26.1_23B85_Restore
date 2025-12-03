@@ -1,12 +1,12 @@
 @interface CalACMigrationAccountStore
 + (id)sharedInstance;
-- (BOOL)removeAccount:(id)a3 error:(id *)a4;
-- (BOOL)saveAccount:(id)a3 withError:(id *)a4;
-- (id)accountWithIdentifier:(id)a3;
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4;
-- (id)createAccountWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
-- (id)createChildAccountOfParent:(id)a3 withAccountTypeIdentifier:(id)a4 error:(id *)a5;
-- (id)topLevelAccountsWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)removeAccount:(id)account error:(id *)error;
+- (BOOL)saveAccount:(id)account withError:(id *)error;
+- (id)accountWithIdentifier:(id)identifier;
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier;
+- (id)createAccountWithAccountTypeIdentifier:(id)identifier error:(id *)error;
+- (id)createChildAccountOfParent:(id)parent withAccountTypeIdentifier:(id)identifier error:(id *)error;
+- (id)topLevelAccountsWithAccountTypeIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation CalACMigrationAccountStore
@@ -32,12 +32,12 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)accountWithIdentifier:(id)a3
+- (id)accountWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E6992F00];
-  v4 = a3;
-  v5 = [v3 defaultProvider];
-  v6 = [v5 accountWithIdentifier:v4];
+  identifierCopy = identifier;
+  defaultProvider = [v3 defaultProvider];
+  v6 = [defaultProvider accountWithIdentifier:identifierCopy];
 
   if (v6)
   {
@@ -52,12 +52,12 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
   return v7;
 }
 
-- (id)topLevelAccountsWithAccountTypeIdentifier:(id)a3 error:(id *)a4
+- (id)topLevelAccountsWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E6992F00] defaultProvider];
-  v7 = [v6 accountsWithAccountTypeIdentifier:v5 error:a4];
+  identifierCopy = identifier;
+  defaultProvider = [MEMORY[0x1E6992F00] defaultProvider];
+  v7 = [defaultProvider accountsWithAccountTypeIdentifier:identifierCopy error:error];
 
   if (v7)
   {
@@ -82,9 +82,9 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 parentAccount];
+          parentAccount = [v14 parentAccount];
 
-          if (!v15)
+          if (!parentAccount)
           {
             v16 = [[CalACMigrationAccount alloc] initWithACAccount:v14];
             [v8 addObject:v16];
@@ -110,21 +110,21 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
   return v17;
 }
 
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 account];
-    v8 = [v7 accountStore];
-    v9 = [v8 childAccountsForAccount:v7 withTypeIdentifier:v6];
+    account = [accountCopy account];
+    accountStore = [account accountStore];
+    v9 = [accountStore childAccountsForAccount:account withTypeIdentifier:identifierCopy];
 
     if (v9)
     {
-      v20 = v7;
+      v20 = account;
       v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
       v21 = 0u;
       v22 = 0u;
@@ -156,7 +156,7 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
       }
 
       v17 = [v10 copy];
-      v7 = v20;
+      account = v20;
     }
 
     else
@@ -175,12 +175,12 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
   return v17;
 }
 
-- (id)createAccountWithAccountTypeIdentifier:(id)a3 error:(id *)a4
+- (id)createAccountWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
   v4 = MEMORY[0x1E6992F00];
-  v5 = a3;
-  v6 = [v4 defaultProvider];
-  v7 = [v6 accountTypeWithIdentifier:v5];
+  identifierCopy = identifier;
+  defaultProvider = [v4 defaultProvider];
+  v7 = [defaultProvider accountTypeWithIdentifier:identifierCopy];
 
   if (v7)
   {
@@ -197,29 +197,29 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
   return v9;
 }
 
-- (id)createChildAccountOfParent:(id)a3 withAccountTypeIdentifier:(id)a4 error:(id *)a5
+- (id)createChildAccountOfParent:(id)parent withAccountTypeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  parentCopy = parent;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 account];
-    v11 = [(CalACMigrationAccountStore *)self createAccountWithAccountTypeIdentifier:v9 error:a5];
+    account = [parentCopy account];
+    v11 = [(CalACMigrationAccountStore *)self createAccountWithAccountTypeIdentifier:identifierCopy error:error];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 account];
-      [v13 setParentAccount:v10];
+      account2 = [v11 account];
+      [account2 setParentAccount:account];
 
       v14 = v12;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.calendar.ACMigrationAccountStoreErrors" code:1 userInfo:0];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -230,14 +230,14 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
   return v12;
 }
 
-- (BOOL)removeAccount:(id)a3 error:(id *)a4
+- (BOOL)removeAccount:(id)account error:(id *)error
 {
-  v5 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 account];
+    v6 = accountCopy;
+    account = [v6 account];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -249,7 +249,7 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
     v19 = 0x2020000000;
     v20 = 0;
     v8 = dispatch_semaphore_create(0);
-    v9 = [v7 accountStore];
+    accountStore = [account accountStore];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __50__CalACMigrationAccountStore_removeAccount_error___block_invoke;
@@ -258,12 +258,12 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
     v16 = &v17;
     v10 = v8;
     v14 = v10;
-    [v9 removeAccount:v7 withDeleteSync:0 completion:v13];
+    [accountStore removeAccount:account withDeleteSync:0 completion:v13];
 
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
-      *a4 = v22[5];
+      *error = v22[5];
     }
 
     v11 = *(v18 + 24);
@@ -272,10 +272,10 @@ uint64_t __44__CalACMigrationAccountStore_sharedInstance__block_invoke()
     _Block_object_dispose(&v21, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.calendar.ACMigrationAccountStoreErrors" code:1 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -298,21 +298,21 @@ void __50__CalACMigrationAccountStore_removeAccount_error___block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)saveAccount:(id)a3 withError:(id *)a4
+- (BOOL)saveAccount:(id)account withError:(id *)error
 {
-  v5 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 account];
-    v7 = [MEMORY[0x1E6992F00] defaultProvider];
-    v8 = [v7 saveAccount:v6 verify:0 withError:a4];
+    account = [accountCopy account];
+    defaultProvider = [MEMORY[0x1E6992F00] defaultProvider];
+    v8 = [defaultProvider saveAccount:account verify:0 withError:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.calendar.ACMigrationAccountStoreErrors" code:1 userInfo:0];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else

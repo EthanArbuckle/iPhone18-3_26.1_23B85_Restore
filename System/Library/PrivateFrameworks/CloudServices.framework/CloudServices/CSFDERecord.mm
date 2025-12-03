@@ -1,12 +1,12 @@
 @interface CSFDERecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSFDERecord
@@ -48,83 +48,83 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_clientMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_timestamp)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_backupKeybagSHA256)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   clientMetadata = self->_clientMetadata;
-  v9 = v4;
+  v9 = toCopy;
   if (clientMetadata)
   {
-    objc_msgSend_setClientMetadata_(v4, v5, clientMetadata);
-    v4 = v9;
+    objc_msgSend_setClientMetadata_(toCopy, v5, clientMetadata);
+    toCopy = v9;
   }
 
   timestamp = self->_timestamp;
   if (timestamp)
   {
     objc_msgSend_setTimestamp_(v9, v5, timestamp);
-    v4 = v9;
+    toCopy = v9;
   }
 
   backupKeybagSHA256 = self->_backupKeybagSHA256;
   if (backupKeybagSHA256)
   {
     objc_msgSend_setBackupKeybagSHA256_(v9, v5, backupKeybagSHA256);
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_clientMetadata, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_clientMetadata, v11, zone);
   v13 = v10[2];
   v10[2] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_timestamp, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_timestamp, v14, zone);
   v16 = v10[3];
   v10[3] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_backupKeybagSHA256, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_backupKeybagSHA256, v17, zone);
   v19 = v10[1];
   v10[1] = v18;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((clientMetadata = self->_clientMetadata, v9 = v4[2], !(clientMetadata | v9)) || objc_msgSend_isEqual_(clientMetadata, v7, v9)) && ((timestamp = self->_timestamp, v11 = v4[3], !(timestamp | v11)) || objc_msgSend_isEqual_(timestamp, v7, v11)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((clientMetadata = self->_clientMetadata, v9 = equalCopy[2], !(clientMetadata | v9)) || objc_msgSend_isEqual_(clientMetadata, v7, v9)) && ((timestamp = self->_timestamp, v11 = equalCopy[3], !(timestamp | v11)) || objc_msgSend_isEqual_(timestamp, v7, v11)))
   {
     backupKeybagSHA256 = self->_backupKeybagSHA256;
-    v13 = v4[1];
+    v13 = equalCopy[1];
     if (backupKeybagSHA256 | v13)
     {
       isEqual = objc_msgSend_isEqual_(backupKeybagSHA256, v7, v13);
@@ -151,12 +151,12 @@
   return v7 ^ objc_msgSend_hash(self->_backupKeybagSHA256, v8, v9);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   clientMetadata = self->_clientMetadata;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (clientMetadata)
   {
     if (!v6)
@@ -164,7 +164,7 @@
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(clientMetadata, v4, v6);
+    objc_msgSend_mergeFrom_(clientMetadata, fromCopy, v6);
   }
 
   else
@@ -174,22 +174,22 @@
       goto LABEL_7;
     }
 
-    objc_msgSend_setClientMetadata_(self, v4, v6);
+    objc_msgSend_setClientMetadata_(self, fromCopy, v6);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  v7 = v4[3];
+  v7 = fromCopy[3];
   if (v7)
   {
-    objc_msgSend_setTimestamp_(self, v4, v7);
-    v4 = v9;
+    objc_msgSend_setTimestamp_(self, fromCopy, v7);
+    fromCopy = v9;
   }
 
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (v8)
   {
-    objc_msgSend_setBackupKeybagSHA256_(self, v4, v8);
+    objc_msgSend_setBackupKeybagSHA256_(self, fromCopy, v8);
   }
 
   MEMORY[0x2821F96F8]();

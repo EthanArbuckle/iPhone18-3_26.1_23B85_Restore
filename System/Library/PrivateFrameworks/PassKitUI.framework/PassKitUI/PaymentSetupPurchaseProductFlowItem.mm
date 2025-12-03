@@ -1,7 +1,7 @@
 @interface PaymentSetupPurchaseProductFlowItem
 - (_TtC9PassKitUI35PaymentSetupPurchaseProductFlowItem)init;
-- (void)purchaseViewController:(id)a3 didPerformPurchaseWithCredential:(id)a4;
-- (void)purchaseViewControllerDidRequestTransferBalance:(id)a3;
+- (void)purchaseViewController:(id)controller didPerformPurchaseWithCredential:(id)credential;
+- (void)purchaseViewControllerDidRequestTransferBalance:(id)balance;
 @end
 
 @implementation PaymentSetupPurchaseProductFlowItem
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)purchaseViewControllerDidRequestTransferBalance:(id)a3
+- (void)purchaseViewControllerDidRequestTransferBalance:(id)balance
 {
-  v4 = a3;
-  v5 = self;
+  balanceCopy = balance;
+  selfCopy = self;
   sub_1BD7F68D0();
 }
 
-- (void)purchaseViewController:(id)a3 didPerformPurchaseWithCredential:(id)a4
+- (void)purchaseViewController:(id)controller didPerformPurchaseWithCredential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD7F6680(v6, v7);
+  controllerCopy = controller;
+  credentialCopy = credential;
+  selfCopy = self;
+  sub_1BD7F6680(controllerCopy, credentialCopy);
 }
 
 @end

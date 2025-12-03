@@ -1,11 +1,11 @@
 @interface StockFeedViewOverlayView
-- (_TtC8StocksUI24StockFeedViewOverlayView)initWithCoder:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC8StocksUI24StockFeedViewOverlayView)initWithCoder:(id)coder;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation StockFeedViewOverlayView
 
-- (_TtC8StocksUI24StockFeedViewOverlayView)initWithCoder:(id)a3
+- (_TtC8StocksUI24StockFeedViewOverlayView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI24StockFeedViewOverlayView_onTap;
   sub_2205A6FB8(0, &qword_281297130, MEMORY[0x277D6EBB8]);
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_22087CB1C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_22087CB1C(event, x, y);
 
   return v10;
 }

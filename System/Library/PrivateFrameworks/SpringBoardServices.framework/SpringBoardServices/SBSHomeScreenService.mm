@@ -1,9 +1,9 @@
 @interface SBSHomeScreenService
 - (BOOL)addsNewIconsToHomeScreen;
-- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4;
-- (BOOL)debugContinuityWithBadgeType:(id)a3 deviceTypeIdentifier:(id)a4;
-- (BOOL)hasConfiguredFilesStackWithURL:(id)a3;
-- (BOOL)hasWidgetWithBundleIdentifier:(id)a3;
+- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier;
+- (BOOL)debugContinuityWithBadgeType:(id)type deviceTypeIdentifier:(id)identifier;
+- (BOOL)hasConfiguredFilesStackWithURL:(id)l;
+- (BOOL)hasWidgetWithBundleIdentifier:(id)identifier;
 - (BOOL)isHomeScreenLayoutAvailable;
 - (BOOL)isLargeIconLayoutEnabled;
 - (BOOL)isLargeIconSizeEnabled;
@@ -16,89 +16,89 @@
 - (SBSDebugActiveWidgetInfo)debuggingActiveWidgetInfo;
 - (SBSHomeScreenIconStyleConfiguration)homeScreenIconStyleConfiguration;
 - (SBSHomeScreenService)init;
-- (id)addHomeScreenApplicationsObserver:(id)a3;
-- (id)addHomeScreenIconStyleObserver:(id)a3;
-- (id)addHomeScreenLayoutAvailabilityObserver:(id)a3;
-- (id)addHomeScreenLayoutObserver:(id)a3;
-- (id)addIconBadgeValueObserver:(id)a3;
-- (id)addInstalledWebClipsObserver:(id)a3;
-- (id)badgeValueForIconWithApplicationBundleIdentifier:(id)a3;
-- (id)configureCategoryMapProviderToUseCategoryMapAtURL:(id)a3;
-- (id)folderPathToIconWithBundleIdentifier:(id)a3;
+- (id)addHomeScreenApplicationsObserver:(id)observer;
+- (id)addHomeScreenIconStyleObserver:(id)observer;
+- (id)addHomeScreenLayoutAvailabilityObserver:(id)observer;
+- (id)addHomeScreenLayoutObserver:(id)observer;
+- (id)addIconBadgeValueObserver:(id)observer;
+- (id)addInstalledWebClipsObserver:(id)observer;
+- (id)badgeValueForIconWithApplicationBundleIdentifier:(id)identifier;
+- (id)configureCategoryMapProviderToUseCategoryMapAtURL:(id)l;
+- (id)folderPathToIconWithBundleIdentifier:(id)identifier;
 - (id)iconTintColor;
 - (id)osMigrationDefaultHomeScreenLayout;
 - (id)osMigrationHomeScreenLayout;
-- (id)silhouetteLayoutForPageAtIndex:(unint64_t)a3;
-- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)a3;
-- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)a3 inPage:(unint64_t)a4 atPositionDescription:(id)a5;
-- (void)addDebugIconWithSizeClassDescription:(id)a3 inPage:(unint64_t)a4 atPositionDescription:(id)a5;
+- (id)silhouetteLayoutForPageAtIndex:(unint64_t)index;
+- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)identifier;
+- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)identifier inPage:(unint64_t)page atPositionDescription:(id)description;
+- (void)addDebugIconWithSizeClassDescription:(id)description inPage:(unint64_t)page atPositionDescription:(id)positionDescription;
 - (void)addEmptyPage;
-- (void)addFileStackWithURL:(id)a3;
-- (void)addPageOfApplicationIconsWithBundleIdentifier:(id)a3;
-- (void)addSuggestedPageWithPageType:(id)a3 focusModeIdentifier:(id)a4;
-- (void)addWidgetToTodayViewWithBundleIdentifier:(id)a3;
-- (void)applicationIconInfoChangedForBundleIdentifiers:(id)a3;
-- (void)badgeValueForIconWithApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)changeDisplayedDateOffsetOverride:(double)a3;
-- (void)changeDisplayedDateOverride:(id)a3;
-- (void)changeDisplayedDateWithAutoupdatingSecondsOverride:(id)a3;
+- (void)addFileStackWithURL:(id)l;
+- (void)addPageOfApplicationIconsWithBundleIdentifier:(id)identifier;
+- (void)addSuggestedPageWithPageType:(id)type focusModeIdentifier:(id)identifier;
+- (void)addWidgetToTodayViewWithBundleIdentifier:(id)identifier;
+- (void)applicationIconInfoChangedForBundleIdentifiers:(id)identifiers;
+- (void)badgeValueForIconWithApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)changeDisplayedDateOffsetOverride:(double)override;
+- (void)changeDisplayedDateOverride:(id)override;
+- (void)changeDisplayedDateWithAutoupdatingSecondsOverride:(id)override;
 - (void)clearAllOverflowSlotCounts;
 - (void)clearNewlyInstalledAndRecentlyUpdatedAppIndicators;
 - (void)clearTodayViewLayout;
 - (void)configureDeweyEachAppHasItsOwnCategory;
 - (void)configureDeweyOneCategoryWithAllApps;
-- (void)configureLibraryWithCategoryLimit:(int64_t)a3;
+- (void)configureLibraryWithCategoryLimit:(int64_t)limit;
 - (void)dealloc;
 - (void)deleteAllWebClips;
-- (void)dismissAppLibraryWithCompletion:(id)a3;
-- (void)forbidApplicationBundleIdentifierFromLibrary:(id)a3 withCompletion:(id)a4;
+- (void)dismissAppLibraryWithCompletion:(id)completion;
+- (void)forbidApplicationBundleIdentifierFromLibrary:(id)library withCompletion:(id)completion;
 - (void)homeScreenApplicationsDidChange;
-- (void)homeScreenIconStyleConfigurationDidChange:(id)a3;
-- (void)homeScreenLayoutAvailabilityDidChange:(id)a3;
+- (void)homeScreenIconStyleConfigurationDidChange:(id)change;
+- (void)homeScreenLayoutAvailabilityDidChange:(id)change;
 - (void)homeScreenLayoutDidChange;
 - (void)ignoreAllApps;
-- (void)importOSMigrationHomeScreenLayout:(id)a3;
-- (void)insertEmptyPageAtIndex:(unint64_t)a3;
+- (void)importOSMigrationHomeScreenLayout:(id)layout;
+- (void)insertEmptyPageAtIndex:(unint64_t)index;
 - (void)installedWebClipsDidChange;
-- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3;
-- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)a3;
-- (void)overrideBadgeValue:(id)a3 forBundleIdentifier:(id)a4;
-- (void)precacheIconLayersOnFirstPageWithAppearanceDescriptions:(id)a3;
-- (void)presentAppLibraryAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentAppLibraryCategoryPodForCategoryIdentifier:(id)a3 completion:(id)a4;
-- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3;
+- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)count;
+- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)count;
+- (void)overrideBadgeValue:(id)value forBundleIdentifier:(id)identifier;
+- (void)precacheIconLayersOnFirstPageWithAppearanceDescriptions:(id)descriptions;
+- (void)presentAppLibraryAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentAppLibraryCategoryPodForCategoryIdentifier:(id)identifier completion:(id)completion;
+- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)count;
 - (void)reloadHomeScreenLayout;
 - (void)removeAllWidgets;
-- (void)removeFileStackWithURL:(id)a3;
-- (void)removeHomeScreenApplicationsObservationAssertion:(id)a3;
-- (void)removeHomeScreenLayoutAvailabilityObservationAssertion:(id)a3;
-- (void)removeHomeScreenLayoutObservationAssertion:(id)a3;
-- (void)removeIconBadgeValueObservationAssertion:(id)a3;
-- (void)removeIconStyleObservationAssertion:(id)a3;
-- (void)removeInstalledWebClipsObservationAssertion:(id)a3;
+- (void)removeFileStackWithURL:(id)l;
+- (void)removeHomeScreenApplicationsObservationAssertion:(id)assertion;
+- (void)removeHomeScreenLayoutAvailabilityObservationAssertion:(id)assertion;
+- (void)removeHomeScreenLayoutObservationAssertion:(id)assertion;
+- (void)removeIconBadgeValueObservationAssertion:(id)assertion;
+- (void)removeIconStyleObservationAssertion:(id)assertion;
+- (void)removeInstalledWebClipsObservationAssertion:(id)assertion;
 - (void)removeWidgetsFromHomeScreen;
-- (void)requestAppLibraryUpdateSuggestionsAndRecentsPodWithReason:(id)a3 completionHandler:(id)a4;
-- (void)requestAppLibraryUpdateWithReason:(id)a3 completionHandler:(id)a4;
-- (void)requestSuggestedApplicationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)resetCategoriesLayoutWithCompletion:(id)a3;
-- (void)resetHomeScreenLayoutWithCompletion:(id)a3;
+- (void)requestAppLibraryUpdateSuggestionsAndRecentsPodWithReason:(id)reason completionHandler:(id)handler;
+- (void)requestAppLibraryUpdateWithReason:(id)reason completionHandler:(id)handler;
+- (void)requestSuggestedApplicationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)resetCategoriesLayoutWithCompletion:(id)completion;
+- (void)resetHomeScreenLayoutWithCompletion:(id)completion;
 - (void)resetTodayViewLayout;
 - (void)runDownloadingIconTest;
-- (void)runFloatingDockStressTestWithCompletion:(id)a3;
+- (void)runFloatingDockStressTestWithCompletion:(id)completion;
 - (void)runRemoveAndRestoreIconTest;
 - (void)runWidgetDiscoverabilityTest;
-- (void)setAddsNewIconsToHomeScreen:(BOOL)a3;
-- (void)setHomeScreenIconStyleConfiguration:(id)a3;
-- (void)setHomeScreenIconStyleConfiguration:(id)a3 wallpaperDimmed:(BOOL)a4;
-- (void)setIconListsHidden:(id)a3;
-- (void)setIconTintColor:(id)a3;
-- (void)setLargeIconLayoutEnabled:(BOOL)a3;
-- (void)setLargeIconSizeEnabled:(BOOL)a3;
-- (void)setShowsBadgesInAppLibrary:(BOOL)a3;
-- (void)setShowsHomeScreenSearchAffordance:(BOOL)a3;
+- (void)setAddsNewIconsToHomeScreen:(BOOL)screen;
+- (void)setHomeScreenIconStyleConfiguration:(id)configuration;
+- (void)setHomeScreenIconStyleConfiguration:(id)configuration wallpaperDimmed:(BOOL)dimmed;
+- (void)setIconListsHidden:(id)hidden;
+- (void)setIconTintColor:(id)color;
+- (void)setLargeIconLayoutEnabled:(BOOL)enabled;
+- (void)setLargeIconSizeEnabled:(BOOL)enabled;
+- (void)setShowsBadgesInAppLibrary:(BOOL)library;
+- (void)setShowsHomeScreenSearchAffordance:(BOOL)affordance;
 - (void)setupHomeScreenForWidgetScrollPerformanceTest;
-- (void)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4;
-- (void)unforbidApplicationBundleIdentifierFromLibrary:(id)a3 withCompletion:(id)a4;
+- (void)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier;
+- (void)unforbidApplicationBundleIdentifierFromLibrary:(id)library withCompletion:(id)completion;
 @end
 
 @implementation SBSHomeScreenService
@@ -117,9 +117,9 @@
     v3->_connectionQueue = Serial;
 
     v6 = MEMORY[0x1E698F498];
-    v7 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v8 = +[SBSHomeScreenServiceSpecification identifier];
-    v9 = [v6 endpointForMachName:v7 service:v8 instance:0];
+    v9 = [v6 endpointForMachName:defaultShellMachName service:v8 instance:0];
 
     objc_initWeak(&location, v3);
     v10 = [MEMORY[0x1E698F490] connectionWithEndpoint:v9];
@@ -178,8 +178,8 @@ void __28__SBSHomeScreenService_init__block_invoke_2(uint64_t a1, void *a2)
 
 - (NSArray)allHomeScreenApplicationBundleIdentifiers
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -188,16 +188,16 @@ void __28__SBSHomeScreenService_init__block_invoke_2(uint64_t a1, void *a2)
     }
   }
 
-  v4 = [v2 allHomeScreenApplicationBundleIdentifiers];
-  v5 = [v4 array];
+  allHomeScreenApplicationBundleIdentifiers = [remoteTarget allHomeScreenApplicationBundleIdentifiers];
+  array = [allHomeScreenApplicationBundleIdentifiers array];
 
-  return v5;
+  return array;
 }
 
 - (NSArray)allHomeScreenApplicationPlaceholderBundleIdentifiers
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -206,30 +206,30 @@ void __28__SBSHomeScreenService_init__block_invoke_2(uint64_t a1, void *a2)
     }
   }
 
-  v4 = [v2 allHomeScreenApplicationPlaceholderBundleIdentifiers];
-  v5 = [v4 array];
+  allHomeScreenApplicationPlaceholderBundleIdentifiers = [remoteTarget allHomeScreenApplicationPlaceholderBundleIdentifiers];
+  array = [allHomeScreenApplicationPlaceholderBundleIdentifiers array];
 
-  return v5;
+  return array;
 }
 
 - (SBSHomeScreenIconStyleConfiguration)homeScreenIconStyleConfiguration
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(SBSHomeScreenService *)self isCachedIconStyleConfigurationValid];
-  v4 = [(SBSHomeScreenService *)self cachedIconStyleConfiguration];
+  isCachedIconStyleConfigurationValid = [(SBSHomeScreenService *)self isCachedIconStyleConfigurationValid];
+  cachedIconStyleConfiguration = [(SBSHomeScreenService *)self cachedIconStyleConfiguration];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (isCachedIconStyleConfigurationValid)
   {
-    v5 = v4;
+    homeScreenIconStyleConfiguration = cachedIconStyleConfiguration;
   }
 
   else
   {
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    v7 = v6;
-    if (v6)
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    v7 = remoteTarget;
+    if (remoteTarget)
     {
-      v5 = [v6 homeScreenIconStyleConfiguration];
+      homeScreenIconStyleConfiguration = [remoteTarget homeScreenIconStyleConfiguration];
     }
 
     else
@@ -240,11 +240,11 @@ void __28__SBSHomeScreenService_init__block_invoke_2(uint64_t a1, void *a2)
         [SBSHomeScreenService homeScreenIconStyleConfiguration];
       }
 
-      v5 = 0;
+      homeScreenIconStyleConfiguration = 0;
     }
   }
 
-  return v5;
+  return homeScreenIconStyleConfiguration;
 }
 
 void __28__SBSHomeScreenService_init__block_invoke_7(uint64_t a1, void *a2)
@@ -302,19 +302,19 @@ void __28__SBSHomeScreenService_init__block_invoke_8(uint64_t a1, void *a2)
   [(SBSHomeScreenService *)&v3 dealloc];
 }
 
-- (void)resetHomeScreenLayoutWithCompletion:(id)a3
+- (void)resetHomeScreenLayoutWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v5)
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__SBSHomeScreenService_resetHomeScreenLayoutWithCompletion___block_invoke;
     v11[3] = &unk_1E735F0F8;
     v6 = &v12;
-    v12 = v4;
-    [v5 resetHomeScreenLayoutWithCompletion:v11];
+    v12 = completionCopy;
+    [remoteTarget resetHomeScreenLayoutWithCompletion:v11];
 LABEL_7:
 
     goto LABEL_8;
@@ -326,7 +326,7 @@ LABEL_7:
     [SBSHomeScreenService resetHomeScreenLayoutWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     connectionQueue = self->_connectionQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -334,7 +334,7 @@ LABEL_7:
     v9[2] = __60__SBSHomeScreenService_resetHomeScreenLayoutWithCompletion___block_invoke_15;
     v9[3] = &unk_1E735F148;
     v6 = &v10;
-    v10 = v4;
+    v10 = completionCopy;
     dispatch_async(connectionQueue, v9);
     goto LABEL_7;
   }
@@ -368,19 +368,19 @@ void __60__SBSHomeScreenService_resetHomeScreenLayoutWithCompletion___block_invo
   }
 }
 
-- (void)resetCategoriesLayoutWithCompletion:(id)a3
+- (void)resetCategoriesLayoutWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v5)
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__SBSHomeScreenService_resetCategoriesLayoutWithCompletion___block_invoke;
     v11[3] = &unk_1E735F0F8;
     v6 = &v12;
-    v12 = v4;
-    [v5 resetCategoriesLayoutWithCompletion:v11];
+    v12 = completionCopy;
+    [remoteTarget resetCategoriesLayoutWithCompletion:v11];
 LABEL_7:
 
     goto LABEL_8;
@@ -392,7 +392,7 @@ LABEL_7:
     [SBSHomeScreenService resetCategoriesLayoutWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     connectionQueue = self->_connectionQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -400,7 +400,7 @@ LABEL_7:
     v9[2] = __60__SBSHomeScreenService_resetCategoriesLayoutWithCompletion___block_invoke_17;
     v9[3] = &unk_1E735F148;
     v6 = &v10;
-    v10 = v4;
+    v10 = completionCopy;
     dispatch_async(connectionQueue, v9);
     goto LABEL_7;
   }
@@ -434,22 +434,22 @@ void __60__SBSHomeScreenService_resetCategoriesLayoutWithCompletion___block_invo
   }
 }
 
-- (void)forbidApplicationBundleIdentifierFromLibrary:(id)a3 withCompletion:(id)a4
+- (void)forbidApplicationBundleIdentifierFromLibrary:(id)library withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v8)
+  libraryCopy = library;
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __84__SBSHomeScreenService_forbidApplicationBundleIdentifierFromLibrary_withCompletion___block_invoke;
     v15[3] = &unk_1E735F5A8;
     v9 = &v16;
-    v10 = v6;
+    v10 = libraryCopy;
     v16 = v10;
-    v17 = v7;
-    [v8 forbidApplicationBundleIdentifierFromLibrary:v10 withCompletion:v15];
+    v17 = completionCopy;
+    [remoteTarget forbidApplicationBundleIdentifierFromLibrary:v10 withCompletion:v15];
 
 LABEL_7:
     goto LABEL_8;
@@ -461,7 +461,7 @@ LABEL_7:
     [SBSHomeScreenService forbidApplicationBundleIdentifierFromLibrary:withCompletion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     connectionQueue = self->_connectionQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -469,7 +469,7 @@ LABEL_7:
     block[2] = __84__SBSHomeScreenService_forbidApplicationBundleIdentifierFromLibrary_withCompletion___block_invoke_18;
     block[3] = &unk_1E735F148;
     v9 = &v14;
-    v14 = v7;
+    v14 = completionCopy;
     dispatch_async(connectionQueue, block);
     goto LABEL_7;
   }
@@ -506,22 +506,22 @@ void __84__SBSHomeScreenService_forbidApplicationBundleIdentifierFromLibrary_wit
   }
 }
 
-- (void)unforbidApplicationBundleIdentifierFromLibrary:(id)a3 withCompletion:(id)a4
+- (void)unforbidApplicationBundleIdentifierFromLibrary:(id)library withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v8)
+  libraryCopy = library;
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __86__SBSHomeScreenService_unforbidApplicationBundleIdentifierFromLibrary_withCompletion___block_invoke;
     v15[3] = &unk_1E735F5A8;
     v9 = &v16;
-    v10 = v6;
+    v10 = libraryCopy;
     v16 = v10;
-    v17 = v7;
-    [v8 unforbidApplicationBundleIdentifierFromLibrary:v10 withCompletion:v15];
+    v17 = completionCopy;
+    [remoteTarget unforbidApplicationBundleIdentifierFromLibrary:v10 withCompletion:v15];
 
 LABEL_7:
     goto LABEL_8;
@@ -533,7 +533,7 @@ LABEL_7:
     [SBSHomeScreenService unforbidApplicationBundleIdentifierFromLibrary:withCompletion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     connectionQueue = self->_connectionQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -541,7 +541,7 @@ LABEL_7:
     block[2] = __86__SBSHomeScreenService_unforbidApplicationBundleIdentifierFromLibrary_withCompletion___block_invoke_19;
     block[3] = &unk_1E735F148;
     v9 = &v14;
-    v14 = v7;
+    v14 = completionCopy;
     dispatch_async(connectionQueue, block);
     goto LABEL_7;
   }
@@ -578,19 +578,19 @@ void __86__SBSHomeScreenService_unforbidApplicationBundleIdentifierFromLibrary_w
   }
 }
 
-- (void)runFloatingDockStressTestWithCompletion:(id)a3
+- (void)runFloatingDockStressTestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v5)
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64__SBSHomeScreenService_runFloatingDockStressTestWithCompletion___block_invoke;
     v11[3] = &unk_1E735F0F8;
     v6 = &v12;
-    v12 = v4;
-    [v5 runFloatingDockStressTestWithCompletion:v11];
+    v12 = completionCopy;
+    [remoteTarget runFloatingDockStressTestWithCompletion:v11];
 LABEL_7:
 
     goto LABEL_8;
@@ -602,7 +602,7 @@ LABEL_7:
     [SBSHomeScreenService runFloatingDockStressTestWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     connectionQueue = self->_connectionQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -610,7 +610,7 @@ LABEL_7:
     v9[2] = __64__SBSHomeScreenService_runFloatingDockStressTestWithCompletion___block_invoke_20;
     v9[3] = &unk_1E735F148;
     v6 = &v10;
-    v10 = v4;
+    v10 = completionCopy;
     dispatch_async(connectionQueue, v9);
     goto LABEL_7;
   }
@@ -644,25 +644,25 @@ void __64__SBSHomeScreenService_runFloatingDockStressTestWithCompletion___block_
   }
 }
 
-- (void)requestSuggestedApplicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)requestSuggestedApplicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E698E6C0]);
   if ([v8 isUsable])
   {
     v9 = [objc_alloc(MEMORY[0x1E698E6C8]) initFromReceiveRight:v8];
-    v10 = [(BSServiceConnection *)self->_connection remoteTarget];
-    if (v10)
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    if (remoteTarget)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_completion___block_invoke_2;
       v18[3] = &unk_1E735FEC0;
       v11 = &v20;
-      v20 = v7;
+      v20 = completionCopy;
       v19 = v8;
-      [v10 requestSuggestedApplicationWithBundleIdentifier:v6 assertionPort:v9 completion:v18];
+      [remoteTarget requestSuggestedApplicationWithBundleIdentifier:identifierCopy assertionPort:v9 completion:v18];
     }
 
     else
@@ -679,7 +679,7 @@ void __64__SBSHomeScreenService_runFloatingDockStressTestWithCompletion___block_
       v16[2] = __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_completion___block_invoke_27;
       v16[3] = &unk_1E735F148;
       v11 = &v17;
-      v17 = v7;
+      v17 = completionCopy;
       dispatch_async(connectionQueue, v16);
     }
   }
@@ -697,7 +697,7 @@ void __64__SBSHomeScreenService_runFloatingDockStressTestWithCompletion___block_
     block[1] = 3221225472;
     block[2] = __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_completion___block_invoke;
     block[3] = &unk_1E735F148;
-    v22 = v7;
+    v22 = completionCopy;
     dispatch_async(v13, block);
     v9 = v22;
   }
@@ -725,11 +725,11 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
   }
 }
 
-- (id)folderPathToIconWithBundleIdentifier:(id)a3
+- (id)folderPathToIconWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -738,18 +738,18 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v7 = [v5 folderPathToIconWithBundleIdentifier:v4];
-  v8 = [v7 array];
+  v7 = [remoteTarget folderPathToIconWithBundleIdentifier:identifierCopy];
+  array = [v7 array];
 
-  return v8;
+  return array;
 }
 
-- (BOOL)debugContinuityWithBadgeType:(id)a3 deviceTypeIdentifier:(id)a4
+- (BOOL)debugContinuityWithBadgeType:(id)type deviceTypeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v8)
+  typeCopy = type;
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -758,15 +758,15 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v10 = [v8 debugContinuityWithBadgeType:v6 deviceTypeIdentifier:v7];
+  v10 = [remoteTarget debugContinuityWithBadgeType:typeCopy deviceTypeIdentifier:identifierCopy];
 
   return v10;
 }
 
 - (void)runDownloadingIconTest
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -775,13 +775,13 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v2 runDownloadingIconTest];
+  [remoteTarget runDownloadingIconTest];
 }
 
 - (void)configureDeweyEachAppHasItsOwnCategory
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -790,13 +790,13 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v2 configureDeweyEachAppHasItsOwnCategory];
+  [remoteTarget configureDeweyEachAppHasItsOwnCategory];
 }
 
 - (void)configureDeweyOneCategoryWithAllApps
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -805,13 +805,13 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v2 configureDeweyOneCategoryWithAllApps];
+  [remoteTarget configureDeweyOneCategoryWithAllApps];
 }
 
-- (void)configureLibraryWithCategoryLimit:(int64_t)a3
+- (void)configureLibraryWithCategoryLimit:(int64_t)limit
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -820,15 +820,15 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v4 configureLibraryWithCategoryLimit:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:limit];
+  [remoteTarget configureLibraryWithCategoryLimit:v6];
 }
 
-- (id)configureCategoryMapProviderToUseCategoryMapAtURL:(id)a3
+- (id)configureCategoryMapProviderToUseCategoryMapAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  lCopy = l;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -837,15 +837,15 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v7 = [v5 configureCategoryMapProviderToUseCategoryMapAtURL:v4];
+  v7 = [remoteTarget configureCategoryMapProviderToUseCategoryMapAtURL:lCopy];
 
   return v7;
 }
 
 - (void)runRemoveAndRestoreIconTest
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -854,14 +854,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v2 runRemoveAndRestoreIconTest];
+  [remoteTarget runRemoveAndRestoreIconTest];
 }
 
-- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)a3
+- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -870,16 +870,16 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v5 addApplicationIconToHomeScreenWithBundleIdentifier:v4];
+  [remoteTarget addApplicationIconToHomeScreenWithBundleIdentifier:identifierCopy];
 }
 
-- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)a3 inPage:(unint64_t)a4 atPositionDescription:(id)a5
+- (void)addApplicationIconToHomeScreenWithBundleIdentifier:(id)identifier inPage:(unint64_t)page atPositionDescription:(id)description
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v10)
+  descriptionCopy = description;
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v11 = SBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -888,15 +888,15 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v10 addApplicationIconToHomeScreenWithBundleIdentifier:v9 inPage:v12 atPositionDescription:v8];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:page];
+  [remoteTarget addApplicationIconToHomeScreenWithBundleIdentifier:identifierCopy inPage:v12 atPositionDescription:descriptionCopy];
 }
 
-- (void)addPageOfApplicationIconsWithBundleIdentifier:(id)a3
+- (void)addPageOfApplicationIconsWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -905,14 +905,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v5 addPageOfApplicationIconsWithBundleIdentifier:v4];
+  [remoteTarget addPageOfApplicationIconsWithBundleIdentifier:identifierCopy];
 }
 
-- (void)addWidgetToTodayViewWithBundleIdentifier:(id)a3
+- (void)addWidgetToTodayViewWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -921,13 +921,13 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v5 addWidgetToTodayViewWithBundleIdentifier:v4];
+  [remoteTarget addWidgetToTodayViewWithBundleIdentifier:identifierCopy];
 }
 
 - (BOOL)isLargeIconLayoutEnabled
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -936,17 +936,17 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v4 = [v2 largeIconLayoutEnabledValue];
-  v5 = [v4 BOOLValue];
+  largeIconLayoutEnabledValue = [remoteTarget largeIconLayoutEnabledValue];
+  bOOLValue = [largeIconLayoutEnabledValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setLargeIconLayoutEnabled:(BOOL)a3
+- (void)setLargeIconLayoutEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  enabledCopy = enabled;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -955,14 +955,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v4 setLargeIconLayoutEnabledValue:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [remoteTarget setLargeIconLayoutEnabledValue:v6];
 }
 
 - (BOOL)isLargeIconSizeEnabled
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -971,17 +971,17 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v4 = [v2 largeIconSizeEnabledValue];
-  v5 = [v4 BOOLValue];
+  largeIconSizeEnabledValue = [remoteTarget largeIconSizeEnabledValue];
+  bOOLValue = [largeIconSizeEnabledValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setLargeIconSizeEnabled:(BOOL)a3
+- (void)setLargeIconSizeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  enabledCopy = enabled;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -990,14 +990,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v4 setLargeIconSizeEnabledValue:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [remoteTarget setLargeIconSizeEnabledValue:v6];
 }
 
 - (BOOL)addsNewIconsToHomeScreen
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1006,17 +1006,17 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v4 = [v2 addsNewIconsToHomeScreenValue];
-  v5 = [v4 BOOLValue];
+  addsNewIconsToHomeScreenValue = [remoteTarget addsNewIconsToHomeScreenValue];
+  bOOLValue = [addsNewIconsToHomeScreenValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setAddsNewIconsToHomeScreen:(BOOL)a3
+- (void)setAddsNewIconsToHomeScreen:(BOOL)screen
 {
-  v3 = a3;
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  screenCopy = screen;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1025,16 +1025,16 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v4 setAddsNewIconsToHomeScreenValue:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:screenCopy];
+  [remoteTarget setAddsNewIconsToHomeScreenValue:v6];
 }
 
-- (void)setIconListsHidden:(id)a3
+- (void)setIconListsHidden:(id)hidden
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v5)
+  hiddenCopy = hidden;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1043,15 +1043,15 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v7 = [[SBSHomeScreenServiceArrayOfStrings alloc] initWithArray:v4];
+  v7 = [[SBSHomeScreenServiceArrayOfStrings alloc] initWithArray:hiddenCopy];
 
-  [v5 setIconListsHidden:v7];
+  [remoteTarget setIconListsHidden:v7];
 }
 
 - (BOOL)showsBadgesInAppLibrary
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1060,17 +1060,17 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v4 = [v2 showsBadgesInAppLibraryValue];
-  v5 = [v4 BOOLValue];
+  showsBadgesInAppLibraryValue = [remoteTarget showsBadgesInAppLibraryValue];
+  bOOLValue = [showsBadgesInAppLibraryValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setShowsBadgesInAppLibrary:(BOOL)a3
+- (void)setShowsBadgesInAppLibrary:(BOOL)library
 {
-  v3 = a3;
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  libraryCopy = library;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1079,14 +1079,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v4 setShowsBadgesInAppLibraryValue:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:libraryCopy];
+  [remoteTarget setShowsBadgesInAppLibraryValue:v6];
 }
 
 - (BOOL)showsHomeScreenSearchAffordance
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1095,17 +1095,17 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v4 = [v2 showsHomeScreenSearchAffordanceValue];
-  v5 = [v4 BOOLValue];
+  showsHomeScreenSearchAffordanceValue = [remoteTarget showsHomeScreenSearchAffordanceValue];
+  bOOLValue = [showsHomeScreenSearchAffordanceValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setShowsHomeScreenSearchAffordance:(BOOL)a3
+- (void)setShowsHomeScreenSearchAffordance:(BOOL)affordance
 {
-  v3 = a3;
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  affordanceCopy = affordance;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1114,16 +1114,16 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v4 setShowsHomeScreenSearchAffordanceValue:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:affordanceCopy];
+  [remoteTarget setShowsHomeScreenSearchAffordanceValue:v6];
 }
 
-- (id)addHomeScreenApplicationsObserver:(id)a3
+- (id)addHomeScreenApplicationsObserver:(id)observer
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v6)
+  observerCopy = observer;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1132,38 +1132,38 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v8 = [[SBSHomeScreenServiceHomeScreenApplicationsObservationAssertion alloc] initWithObserver:v5 service:self];
+  v8 = [[SBSHomeScreenServiceHomeScreenApplicationsObservationAssertion alloc] initWithObserver:observerCopy service:self];
 
   os_unfair_lock_lock(&self->_lock);
   homeScreenApplicationsObservers = self->_homeScreenApplicationsObservers;
   if (!homeScreenApplicationsObservers)
   {
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v11 = self->_homeScreenApplicationsObservers;
-    self->_homeScreenApplicationsObservers = v10;
+    self->_homeScreenApplicationsObservers = weakObjectsHashTable;
 
     homeScreenApplicationsObservers = self->_homeScreenApplicationsObservers;
   }
 
   [(NSHashTable *)homeScreenApplicationsObservers addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
-  [v6 setObservingHomeScreenApplications:MEMORY[0x1E695E118]];
+  [remoteTarget setObservingHomeScreenApplications:MEMORY[0x1E695E118]];
 
   return v8;
 }
 
-- (void)removeHomeScreenApplicationsObservationAssertion:(id)a3
+- (void)removeHomeScreenApplicationsObservationAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_homeScreenApplicationsObservers removeObject:v4];
+  [(NSHashTable *)self->_homeScreenApplicationsObservers removeObject:assertionCopy];
 
   v5 = [(NSHashTable *)self->_installedWebClipObservers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 setObservingHomeScreenApplications:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget setObservingHomeScreenApplications:MEMORY[0x1E695E110]];
   }
 }
 
@@ -1171,13 +1171,13 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
 {
   v20 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_homeScreenApplicationsObservers allObjects];
+  allObjects = [(NSHashTable *)self->_homeScreenApplicationsObservers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -1193,11 +1193,11 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 observer];
-        v11 = v10;
-        if (v10)
+        observer = [v9 observer];
+        v11 = observer;
+        if (observer)
         {
-          [v10 homeScreenServiceHomeScreenApplicationsDidChange:self];
+          [observer homeScreenServiceHomeScreenApplicationsDidChange:self];
         }
 
         else
@@ -1221,8 +1221,8 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
 
 - (NSString)allIconLists
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1231,16 +1231,16 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v4 = [v2 allIconLists];
+  allIconLists = [remoteTarget allIconLists];
 
-  return v4;
+  return allIconLists;
 }
 
-- (BOOL)hasWidgetWithBundleIdentifier:(id)a3
+- (BOOL)hasWidgetWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1249,27 +1249,27 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v7 = [v5 hasWidgetWithBundleIdentifier:v4];
+  v7 = [remoteTarget hasWidgetWithBundleIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)requestAppLibraryUpdateWithReason:(id)a3 completionHandler:(id)a4
+- (void)requestAppLibraryUpdateWithReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v9 = v8;
-  if (v8)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v9 = remoteTarget;
+  if (remoteTarget)
   {
-    if (v7)
+    if (handlerCopy)
     {
-      [v8 requestAppLibraryUpdate:&unk_1F05B4E68 reason:v6 completion:v7];
+      [remoteTarget requestAppLibraryUpdate:&unk_1F05B4E68 reason:reasonCopy completion:handlerCopy];
     }
 
     else
     {
-      [v8 refreshAppLibrary:&unk_1F05B4E68 reason:v6];
+      [remoteTarget refreshAppLibrary:&unk_1F05B4E68 reason:reasonCopy];
     }
   }
 
@@ -1283,22 +1283,22 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
   }
 }
 
-- (void)requestAppLibraryUpdateSuggestionsAndRecentsPodWithReason:(id)a3 completionHandler:(id)a4
+- (void)requestAppLibraryUpdateSuggestionsAndRecentsPodWithReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v9 = v8;
-  if (v8)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v9 = remoteTarget;
+  if (remoteTarget)
   {
-    if (v7)
+    if (handlerCopy)
     {
-      [v8 requestAppLibraryUpdate:&unk_1F05B4E80 reason:v6 completion:v7];
+      [remoteTarget requestAppLibraryUpdate:&unk_1F05B4E80 reason:reasonCopy completion:handlerCopy];
     }
 
     else
     {
-      [v8 refreshAppLibrary:&unk_1F05B4E80 reason:v6];
+      [remoteTarget refreshAppLibrary:&unk_1F05B4E80 reason:reasonCopy];
     }
   }
 
@@ -1312,10 +1312,10 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
   }
 }
 
-- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)a3
+- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)count
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1324,14 +1324,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v4 organizeAllIconsIntoFoldersWithPageCount:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+  [remoteTarget organizeAllIconsIntoFoldersWithPageCount:v6];
 }
 
-- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3
+- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)count
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1340,14 +1340,14 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v4 organizeAllIconsAcrossPagesWithPageCount:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+  [remoteTarget organizeAllIconsAcrossPagesWithPageCount:v6];
 }
 
-- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3
+- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)count
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1356,21 +1356,21 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v4 randomizeAllIconsAcrossPagesWithPageCount:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+  [remoteTarget randomizeAllIconsAcrossPagesWithPageCount:v6];
 }
 
 - (void)removeAllWidgets
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_0_1(&dword_19169D000, v2, v3, "SBSHomeScreenService: failed %{public}@ request (no target).", v4, v5, v6, v7, v8);
 }
 
 - (void)removeWidgetsFromHomeScreen
 {
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v3)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1379,15 +1379,15 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     }
   }
 
-  [v3 removeWidgetsFromHomeScreen];
+  [remoteTarget removeWidgetsFromHomeScreen];
 }
 
-- (void)addFileStackWithURL:(id)a3
+- (void)addFileStackWithURL:(id)l
 {
-  v5 = a3;
-  v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v7 = v6;
-  if (!v6)
+  lCopy = l;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v7 = remoteTarget;
+  if (!remoteTarget)
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1398,7 +1398,7 @@ void __83__SBSHomeScreenService_requestSuggestedApplicationWithBundleIdentifier_
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!lCopy)
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1411,16 +1411,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v6 addFileStackWithURL:v5];
+  [remoteTarget addFileStackWithURL:lCopy];
 LABEL_9:
 }
 
-- (void)removeFileStackWithURL:(id)a3
+- (void)removeFileStackWithURL:(id)l
 {
-  v5 = a3;
-  v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v7 = v6;
-  if (!v6)
+  lCopy = l;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v7 = remoteTarget;
+  if (!remoteTarget)
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1431,7 +1431,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!lCopy)
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1444,16 +1444,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v6 removeFileStackWithURL:v5];
+  [remoteTarget removeFileStackWithURL:lCopy];
 LABEL_9:
 }
 
-- (BOOL)hasConfiguredFilesStackWithURL:(id)a3
+- (BOOL)hasConfiguredFilesStackWithURL:(id)l
 {
-  v5 = a3;
-  v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v7 = v6;
-  if (!v6)
+  lCopy = l;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v7 = remoteTarget;
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1464,7 +1464,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!lCopy)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1478,7 +1478,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [v6 hasConfiguredFilesStackWithURL:v5];
+  v8 = [remoteTarget hasConfiguredFilesStackWithURL:lCopy];
 LABEL_9:
 
   return v8;
@@ -1486,8 +1486,8 @@ LABEL_9:
 
 - (void)ignoreAllApps
 {
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v3)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1496,13 +1496,13 @@ LABEL_9:
     }
   }
 
-  [v3 ignoreAllApps];
+  [remoteTarget ignoreAllApps];
 }
 
 - (void)deleteAllWebClips
 {
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v3)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1511,14 +1511,14 @@ LABEL_9:
     }
   }
 
-  [v3 deleteAllWebClips];
+  [remoteTarget deleteAllWebClips];
 }
 
-- (void)changeDisplayedDateOverride:(id)a3
+- (void)changeDisplayedDateOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  overrideCopy = override;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1527,13 +1527,13 @@ LABEL_9:
     }
   }
 
-  [v5 changeDisplayedDateOverride:v4];
+  [remoteTarget changeDisplayedDateOverride:overrideCopy];
 }
 
-- (void)changeDisplayedDateOffsetOverride:(double)a3
+- (void)changeDisplayedDateOffsetOverride:(double)override
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1542,15 +1542,15 @@ LABEL_9:
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v4 changeDisplayedDateOffsetOverride:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:override];
+  [remoteTarget changeDisplayedDateOffsetOverride:v6];
 }
 
-- (void)changeDisplayedDateWithAutoupdatingSecondsOverride:(id)a3
+- (void)changeDisplayedDateWithAutoupdatingSecondsOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  overrideCopy = override;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1559,13 +1559,13 @@ LABEL_9:
     }
   }
 
-  [v5 changeDisplayedDateWithAutoupdatingSecondsOverride:v4];
+  [remoteTarget changeDisplayedDateWithAutoupdatingSecondsOverride:overrideCopy];
 }
 
 - (void)reloadHomeScreenLayout
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1574,13 +1574,13 @@ LABEL_9:
     }
   }
 
-  [v2 reloadHomeScreenLayout];
+  [remoteTarget reloadHomeScreenLayout];
 }
 
 - (void)resetTodayViewLayout
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1589,13 +1589,13 @@ LABEL_9:
     }
   }
 
-  [v2 resetTodayViewLayout];
+  [remoteTarget resetTodayViewLayout];
 }
 
 - (void)clearTodayViewLayout
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1604,15 +1604,15 @@ LABEL_9:
     }
   }
 
-  [v2 clearTodayViewLayout];
+  [remoteTarget clearTodayViewLayout];
 }
 
-- (void)overrideBadgeValue:(id)a3 forBundleIdentifier:(id)a4
+- (void)overrideBadgeValue:(id)value forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v8)
+  valueCopy = value;
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1621,13 +1621,13 @@ LABEL_9:
     }
   }
 
-  [v8 overrideBadgeValue:v6 forBundleIdentifier:v7];
+  [remoteTarget overrideBadgeValue:valueCopy forBundleIdentifier:identifierCopy];
 }
 
 - (void)clearNewlyInstalledAndRecentlyUpdatedAppIndicators
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1636,15 +1636,15 @@ LABEL_9:
     }
   }
 
-  [v2 clearNewlyInstalledAndRecentlyUpdatedAppIndicators];
+  [remoteTarget clearNewlyInstalledAndRecentlyUpdatedAppIndicators];
 }
 
-- (void)presentAppLibraryCategoryPodForCategoryIdentifier:(id)a3 completion:(id)a4
+- (void)presentAppLibraryCategoryPodForCategoryIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1653,16 +1653,16 @@ LABEL_9:
     }
   }
 
-  [v8 presentAppLibraryCategoryPodForCategoryIdentifier:v6 completion:v7];
+  [remoteTarget presentAppLibraryCategoryPodForCategoryIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)presentAppLibraryAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAppLibraryAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   connection = self->_connection;
-  v6 = a4;
-  v7 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v7)
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1671,15 +1671,15 @@ LABEL_9:
     }
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [v7 presentAppLibraryAnimated:v9 completion:v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  [remoteTarget presentAppLibraryAnimated:v9 completion:completionCopy];
 }
 
-- (void)dismissAppLibraryWithCompletion:(id)a3
+- (void)dismissAppLibraryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  completionCopy = completion;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1688,16 +1688,16 @@ LABEL_9:
     }
   }
 
-  [v5 dismissAppLibraryWithCompletion:v4];
+  [remoteTarget dismissAppLibraryWithCompletion:completionCopy];
 }
 
-- (void)addDebugIconWithSizeClassDescription:(id)a3 inPage:(unint64_t)a4 atPositionDescription:(id)a5
+- (void)addDebugIconWithSizeClassDescription:(id)description inPage:(unint64_t)page atPositionDescription:(id)positionDescription
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v10)
+  positionDescriptionCopy = positionDescription;
+  descriptionCopy = description;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v11 = SBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1706,16 +1706,16 @@ LABEL_9:
     }
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v10 addDebugIconWithSizeClassDescription:v9 inPage:v12 atPositionDescription:v8];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:page];
+  [remoteTarget addDebugIconWithSizeClassDescription:descriptionCopy inPage:v12 atPositionDescription:positionDescriptionCopy];
 }
 
-- (id)addInstalledWebClipsObserver:(id)a3
+- (id)addInstalledWebClipsObserver:(id)observer
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v6)
+  observerCopy = observer;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1724,45 +1724,45 @@ LABEL_9:
     }
   }
 
-  v8 = [[SBSHomeScreenServiceInstalledWebClipsObservationAssertion alloc] initWithObserver:v5 service:self];
+  v8 = [[SBSHomeScreenServiceInstalledWebClipsObservationAssertion alloc] initWithObserver:observerCopy service:self];
 
   os_unfair_lock_lock(&self->_lock);
   installedWebClipObservers = self->_installedWebClipObservers;
   if (!installedWebClipObservers)
   {
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v11 = self->_installedWebClipObservers;
-    self->_installedWebClipObservers = v10;
+    self->_installedWebClipObservers = weakObjectsHashTable;
 
     installedWebClipObservers = self->_installedWebClipObservers;
   }
 
   [(NSHashTable *)installedWebClipObservers addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
-  [v6 setObservingInstalledWebClips:MEMORY[0x1E695E118]];
+  [remoteTarget setObservingInstalledWebClips:MEMORY[0x1E695E118]];
 
   return v8;
 }
 
-- (void)removeInstalledWebClipsObservationAssertion:(id)a3
+- (void)removeInstalledWebClipsObservationAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_installedWebClipObservers removeObject:v4];
+  [(NSHashTable *)self->_installedWebClipObservers removeObject:assertionCopy];
 
   v5 = [(NSHashTable *)self->_installedWebClipObservers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 setObservingInstalledWebClips:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget setObservingInstalledWebClips:MEMORY[0x1E695E110]];
   }
 }
 
 - (SBSDebugActiveWidgetInfo)debuggingActiveWidgetInfo
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1771,15 +1771,15 @@ LABEL_9:
     }
   }
 
-  v4 = [v2 debuggingActiveWidgetInfo];
+  debuggingActiveWidgetInfo = [remoteTarget debuggingActiveWidgetInfo];
 
-  return v4;
+  return debuggingActiveWidgetInfo;
 }
 
-- (void)insertEmptyPageAtIndex:(unint64_t)a3
+- (void)insertEmptyPageAtIndex:(unint64_t)index
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1788,14 +1788,14 @@ LABEL_9:
     }
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v4 insertEmptyPageAtIndex:v6];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [remoteTarget insertEmptyPageAtIndex:v6];
 }
 
 - (void)addEmptyPage
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1804,15 +1804,15 @@ LABEL_9:
     }
   }
 
-  [v2 addEmptyPage];
+  [remoteTarget addEmptyPage];
 }
 
-- (void)addSuggestedPageWithPageType:(id)a3 focusModeIdentifier:(id)a4
+- (void)addSuggestedPageWithPageType:(id)type focusModeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v8)
+  typeCopy = type;
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1821,19 +1821,19 @@ LABEL_9:
     }
   }
 
-  [v8 addSuggestedPageWithPageType:v6 focusModeIdentifier:v7];
+  [remoteTarget addSuggestedPageWithPageType:typeCopy focusModeIdentifier:identifierCopy];
 }
 
 - (BOOL)isHomeScreenLayoutAvailable
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(SBSHomeScreenService *)self isCachedHomeScreenLayoutAvailableValid];
-  v4 = [(SBSHomeScreenService *)self isCachedHomeScreenLayoutAvailable];
+  isCachedHomeScreenLayoutAvailableValid = [(SBSHomeScreenService *)self isCachedHomeScreenLayoutAvailableValid];
+  isCachedHomeScreenLayoutAvailable = [(SBSHomeScreenService *)self isCachedHomeScreenLayoutAvailable];
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3)
+  if (!isCachedHomeScreenLayoutAvailableValid)
   {
-    v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-    if (!v5)
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    if (!remoteTarget)
     {
       v6 = SBLogCommon();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1842,19 +1842,19 @@ LABEL_9:
       }
     }
 
-    v7 = [v5 homeScreenLayoutAvailability];
-    v4 = [v7 BOOLValue];
+    homeScreenLayoutAvailability = [remoteTarget homeScreenLayoutAvailability];
+    isCachedHomeScreenLayoutAvailable = [homeScreenLayoutAvailability BOOLValue];
   }
 
-  return v4;
+  return isCachedHomeScreenLayoutAvailable;
 }
 
-- (id)addHomeScreenLayoutAvailabilityObserver:(id)a3
+- (id)addHomeScreenLayoutAvailabilityObserver:(id)observer
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v6)
+  observerCopy = observer;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1863,47 +1863,47 @@ LABEL_9:
     }
   }
 
-  v8 = [[SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion alloc] initWithObserver:v5 service:self];
+  v8 = [[SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion alloc] initWithObserver:observerCopy service:self];
 
   os_unfair_lock_lock(&self->_lock);
   homeScreenLayoutAvailableObservers = self->_homeScreenLayoutAvailableObservers;
   if (!homeScreenLayoutAvailableObservers)
   {
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v11 = self->_homeScreenLayoutAvailableObservers;
-    self->_homeScreenLayoutAvailableObservers = v10;
+    self->_homeScreenLayoutAvailableObservers = weakObjectsHashTable;
 
     homeScreenLayoutAvailableObservers = self->_homeScreenLayoutAvailableObservers;
   }
 
   [(NSHashTable *)homeScreenLayoutAvailableObservers addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
-  [v6 setObservingHomeScreenLayoutAvailability:MEMORY[0x1E695E118]];
+  [remoteTarget setObservingHomeScreenLayoutAvailability:MEMORY[0x1E695E118]];
 
   return v8;
 }
 
-- (void)removeHomeScreenLayoutAvailabilityObservationAssertion:(id)a3
+- (void)removeHomeScreenLayoutAvailabilityObservationAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_homeScreenLayoutAvailableObservers removeObject:v4];
+  [(NSHashTable *)self->_homeScreenLayoutAvailableObservers removeObject:assertionCopy];
 
   v5 = [(NSHashTable *)self->_homeScreenLayoutAvailableObservers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 setObservingHomeScreenLayoutAvailability:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget setObservingHomeScreenLayoutAvailability:MEMORY[0x1E695E110]];
   }
 }
 
-- (id)addHomeScreenLayoutObserver:(id)a3
+- (id)addHomeScreenLayoutObserver:(id)observer
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v6)
+  observerCopy = observer;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1912,75 +1912,75 @@ LABEL_9:
     }
   }
 
-  v8 = [[SBSHomeScreenServiceHomeScreenLayoutObservationAssertion alloc] initWithObserver:v5 service:self];
+  v8 = [[SBSHomeScreenServiceHomeScreenLayoutObservationAssertion alloc] initWithObserver:observerCopy service:self];
 
   os_unfair_lock_lock(&self->_lock);
   homeScreenLayoutObservers = self->_homeScreenLayoutObservers;
   if (!homeScreenLayoutObservers)
   {
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v11 = self->_homeScreenLayoutObservers;
-    self->_homeScreenLayoutObservers = v10;
+    self->_homeScreenLayoutObservers = weakObjectsHashTable;
 
     homeScreenLayoutObservers = self->_homeScreenLayoutObservers;
   }
 
   [(NSHashTable *)homeScreenLayoutObservers addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
-  [v6 setObservingHomeScreenLayout:MEMORY[0x1E695E118]];
+  [remoteTarget setObservingHomeScreenLayout:MEMORY[0x1E695E118]];
 
   return v8;
 }
 
-- (void)removeHomeScreenLayoutObservationAssertion:(id)a3
+- (void)removeHomeScreenLayoutObservationAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_homeScreenLayoutObservers removeObject:v4];
+  [(NSHashTable *)self->_homeScreenLayoutObservers removeObject:assertionCopy];
 
   v5 = [(NSHashTable *)self->_homeScreenLayoutObservers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 setObservingHomeScreenLayout:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget setObservingHomeScreenLayout:MEMORY[0x1E695E110]];
   }
 }
 
 - (id)iconTintColor
 {
-  v2 = [(SBSHomeScreenService *)self homeScreenIconStyleConfiguration];
-  v3 = v2;
-  if (v2 && [v2 updatedConfigurationType] == 2)
+  homeScreenIconStyleConfiguration = [(SBSHomeScreenService *)self homeScreenIconStyleConfiguration];
+  v3 = homeScreenIconStyleConfiguration;
+  if (homeScreenIconStyleConfiguration && [homeScreenIconStyleConfiguration updatedConfigurationType] == 2)
   {
-    v4 = [v3 tintColor];
+    tintColor = [v3 tintColor];
   }
 
   else
   {
-    v4 = 0;
+    tintColor = 0;
   }
 
-  return v4;
+  return tintColor;
 }
 
-- (void)setIconTintColor:(id)a3
+- (void)setIconTintColor:(id)color
 {
-  v4 = a3;
-  v6 = [(SBSHomeScreenService *)self homeScreenIconStyleConfiguration];
-  v5 = -[SBSHomeScreenIconStyleConfiguration initWithConfigurationType:variant:tintColor:]([SBSHomeScreenIconStyleConfiguration alloc], "initWithConfigurationType:variant:tintColor:", 2, [v6 variant], v4);
+  colorCopy = color;
+  homeScreenIconStyleConfiguration = [(SBSHomeScreenService *)self homeScreenIconStyleConfiguration];
+  v5 = -[SBSHomeScreenIconStyleConfiguration initWithConfigurationType:variant:tintColor:]([SBSHomeScreenIconStyleConfiguration alloc], "initWithConfigurationType:variant:tintColor:", 2, [homeScreenIconStyleConfiguration variant], colorCopy);
 
   [(SBSHomeScreenService *)self setHomeScreenIconStyleConfiguration:v5];
 }
 
-- (void)setHomeScreenIconStyleConfiguration:(id)a3
+- (void)setHomeScreenIconStyleConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v6 = v5;
-  if (v5)
+  configurationCopy = configuration;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v6 = remoteTarget;
+  if (remoteTarget)
   {
-    [v5 setHomeScreenIconStyleConfiguration:v4];
+    [remoteTarget setHomeScreenIconStyleConfiguration:configurationCopy];
   }
 
   else
@@ -1993,15 +1993,15 @@ LABEL_9:
   }
 }
 
-- (void)setHomeScreenIconStyleConfiguration:(id)a3 wallpaperDimmed:(BOOL)a4
+- (void)setHomeScreenIconStyleConfiguration:(id)configuration wallpaperDimmed:(BOOL)dimmed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v7)
+  dimmedCopy = dimmed;
+  configurationCopy = configuration;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-    [v7 setHomeScreenIconStyleConfiguration:v6 wallpaperDimmed:v8];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:dimmedCopy];
+    [remoteTarget setHomeScreenIconStyleConfiguration:configurationCopy wallpaperDimmed:v8];
   }
 
   else
@@ -2014,11 +2014,11 @@ LABEL_9:
   }
 }
 
-- (id)addHomeScreenIconStyleObserver:(id)a3
+- (id)addHomeScreenIconStyleObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  observerCopy = observer;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2027,36 +2027,36 @@ LABEL_9:
     }
   }
 
-  v7 = [[SBSHomeScreenServiceIconStyleObservationAssertion alloc] initWithObserver:v4 service:self];
+  v7 = [[SBSHomeScreenServiceIconStyleObservationAssertion alloc] initWithObserver:observerCopy service:self];
   os_unfair_lock_lock(&self->_lock);
   iconStyleObservers = self->_iconStyleObservers;
   if (!iconStyleObservers)
   {
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v10 = self->_iconStyleObservers;
-    self->_iconStyleObservers = v9;
+    self->_iconStyleObservers = weakObjectsHashTable;
 
     iconStyleObservers = self->_iconStyleObservers;
   }
 
   [(NSHashTable *)iconStyleObservers addObject:v7];
-  v11 = [(SBSHomeScreenService *)self isCachedIconStyleConfigurationValid];
-  v12 = [(SBSHomeScreenService *)self cachedIconStyleConfiguration];
+  isCachedIconStyleConfigurationValid = [(SBSHomeScreenService *)self isCachedIconStyleConfigurationValid];
+  cachedIconStyleConfiguration = [(SBSHomeScreenService *)self cachedIconStyleConfiguration];
   os_unfair_lock_unlock(&self->_lock);
-  [v5 setObservingIconTintColor:MEMORY[0x1E695E118]];
-  if (v11)
+  [remoteTarget setObservingIconTintColor:MEMORY[0x1E695E118]];
+  if (isCachedIconStyleConfigurationValid)
   {
-    [v4 homeScreenService:self homeScreenIconStyleConfigurationDidChange:v12];
+    [observerCopy homeScreenService:self homeScreenIconStyleConfigurationDidChange:cachedIconStyleConfiguration];
   }
 
   return v7;
 }
 
-- (void)removeIconStyleObservationAssertion:(id)a3
+- (void)removeIconStyleObservationAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_iconStyleObservers removeObject:v4];
+  [(NSHashTable *)self->_iconStyleObservers removeObject:assertionCopy];
 
   if ([(NSHashTable *)self->_iconStyleObservers count])
   {
@@ -2068,18 +2068,18 @@ LABEL_9:
   {
     [(SBSHomeScreenService *)self setCachedIconStyleConfigurationValid:0];
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v5 setObservingIconTintColor:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget setObservingIconTintColor:MEMORY[0x1E695E110]];
   }
 }
 
-- (id)silhouetteLayoutForPageAtIndex:(unint64_t)a3
+- (id)silhouetteLayoutForPageAtIndex:(unint64_t)index
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v4)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v6 = [v4 silhouetteLayoutForPageAtIndex:v5];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    v6 = [remoteTarget silhouetteLayoutForPageAtIndex:v5];
   }
 
   else
@@ -2096,12 +2096,12 @@ LABEL_9:
   return v6;
 }
 
-- (id)addIconBadgeValueObserver:(id)a3
+- (id)addIconBadgeValueObserver:(id)observer
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v6)
+  observerCopy = observer;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -2110,50 +2110,50 @@ LABEL_9:
     }
   }
 
-  v8 = [[SBSHomeScreenServiceIconBadgeValueObservationAssertion alloc] initWithObserver:v5 service:self];
+  v8 = [[SBSHomeScreenServiceIconBadgeValueObservationAssertion alloc] initWithObserver:observerCopy service:self];
 
   os_unfair_lock_lock(&self->_lock);
   iconBadgeValueObservers = self->_iconBadgeValueObservers;
   if (!iconBadgeValueObservers)
   {
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v11 = self->_iconBadgeValueObservers;
-    self->_iconBadgeValueObservers = v10;
+    self->_iconBadgeValueObservers = weakObjectsHashTable;
 
     iconBadgeValueObservers = self->_iconBadgeValueObservers;
   }
 
   [(NSHashTable *)iconBadgeValueObservers addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
-  [v6 setObservingIconBadgeValue:MEMORY[0x1E695E118]];
+  [remoteTarget setObservingIconBadgeValue:MEMORY[0x1E695E118]];
 
   return v8;
 }
 
-- (void)removeIconBadgeValueObservationAssertion:(id)a3
+- (void)removeIconBadgeValueObservationAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_iconBadgeValueObservers removeObject:v4];
+  [(NSHashTable *)self->_iconBadgeValueObservers removeObject:assertionCopy];
 
   v5 = [(NSHashTable *)self->_iconBadgeValueObservers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 setObservingIconBadgeValue:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget setObservingIconBadgeValue:MEMORY[0x1E695E110]];
   }
 }
 
-- (id)badgeValueForIconWithApplicationBundleIdentifier:(id)a3
+- (id)badgeValueForIconWithApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  v6 = remoteTarget;
+  if (remoteTarget)
   {
-    v7 = [v5 badgeValueForIconWithApplicationBundleIdentifier:v4];
-    v8 = [v7 numberOrString];
+    v7 = [remoteTarget badgeValueForIconWithApplicationBundleIdentifier:identifierCopy];
+    numberOrString = [v7 numberOrString];
   }
 
   else
@@ -2164,18 +2164,18 @@ LABEL_9:
       [SBSHomeScreenService badgeValueForIconWithApplicationBundleIdentifier:];
     }
 
-    v8 = 0;
+    numberOrString = 0;
   }
 
-  return v8;
+  return numberOrString;
 }
 
-- (void)badgeValueForIconWithApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)badgeValueForIconWithApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     goto LABEL_2;
   }
@@ -2186,20 +2186,20 @@ LABEL_9:
     [SBSHomeScreenService badgeValueForIconWithApplicationBundleIdentifier:];
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
 LABEL_2:
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier_completionHandler___block_invoke;
     v10[3] = &unk_1E735FEE8;
-    v11 = v7;
-    [v8 badgeValueForIconWithApplicationBundleIdentifier:v6 completionHandler:v10];
+    v11 = handlerCopy;
+    [remoteTarget badgeValueForIconWithApplicationBundleIdentifier:identifierCopy completionHandler:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -2211,8 +2211,8 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
 
 - (void)clearAllOverflowSlotCounts
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2221,13 +2221,13 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  [v2 clearAllOverflowSlotCounts];
+  [remoteTarget clearAllOverflowSlotCounts];
 }
 
 - (NSArray)overflowSlotCounts
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2236,16 +2236,16 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  v4 = [v2 overflowSlotCounts];
-  v5 = [v4 array];
+  overflowSlotCounts = [remoteTarget overflowSlotCounts];
+  array = [overflowSlotCounts array];
 
-  return v5;
+  return array;
 }
 
 - (void)setupHomeScreenForWidgetScrollPerformanceTest
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2254,13 +2254,13 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  [v2 setupHomeScreenForWidgetScrollPerformanceTest];
+  [remoteTarget setupHomeScreenForWidgetScrollPerformanceTest];
 }
 
 - (void)runWidgetDiscoverabilityTest
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2269,15 +2269,15 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  [v2 runWidgetDiscoverabilityTest];
+  [remoteTarget runWidgetDiscoverabilityTest];
 }
 
-- (void)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4
+- (void)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v8)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2286,15 +2286,15 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  [v8 swapApplicationIconsInProminentPositionsWithBundleIdentifier:v6 withApplicationIconsWithWithBundleIdentifier:v7];
+  [remoteTarget swapApplicationIconsInProminentPositionsWithBundleIdentifier:identifierCopy withApplicationIconsWithWithBundleIdentifier:bundleIdentifierCopy];
 }
 
-- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4
+- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v8)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2303,15 +2303,15 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  v10 = [v8 canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:v6 withApplicationIconsWithWithBundleIdentifier:v7];
+  v10 = [remoteTarget canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:identifierCopy withApplicationIconsWithWithBundleIdentifier:bundleIdentifierCopy];
 
   return v10;
 }
 
 - (id)osMigrationHomeScreenLayout
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2320,15 +2320,15 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  v4 = [v2 osMigrationHomeScreenLayout];
+  osMigrationHomeScreenLayout = [remoteTarget osMigrationHomeScreenLayout];
 
-  return v4;
+  return osMigrationHomeScreenLayout;
 }
 
 - (id)osMigrationDefaultHomeScreenLayout
 {
-  v2 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v2)
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v3 = SBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2337,16 +2337,16 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  v4 = [v2 osMigrationDefaultHomeScreenLayout];
+  osMigrationDefaultHomeScreenLayout = [remoteTarget osMigrationDefaultHomeScreenLayout];
 
-  return v4;
+  return osMigrationDefaultHomeScreenLayout;
 }
 
-- (void)importOSMigrationHomeScreenLayout:(id)a3
+- (void)importOSMigrationHomeScreenLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  if (!v5)
+  layoutCopy = layout;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2355,15 +2355,15 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  [v5 importOSMigrationHomeScreenLayout:v4];
+  [remoteTarget importOSMigrationHomeScreenLayout:layoutCopy];
 }
 
-- (void)precacheIconLayersOnFirstPageWithAppearanceDescriptions:(id)a3
+- (void)precacheIconLayersOnFirstPageWithAppearanceDescriptions:(id)descriptions
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  if (!v5)
+  descriptionsCopy = descriptions;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  if (!remoteTarget)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2372,22 +2372,22 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
     }
   }
 
-  v7 = [[SBSHomeScreenServiceArrayOfStrings alloc] initWithArray:v4];
+  v7 = [[SBSHomeScreenServiceArrayOfStrings alloc] initWithArray:descriptionsCopy];
 
-  [v5 precacheIconLayersOnFirstPageWithAppearanceDescriptions:v7];
+  [remoteTarget precacheIconLayersOnFirstPageWithAppearanceDescriptions:v7];
 }
 
 - (void)installedWebClipsDidChange
 {
   v20 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_installedWebClipObservers allObjects];
+  allObjects = [(NSHashTable *)self->_installedWebClipObservers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -2403,11 +2403,11 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 observer];
-        v11 = v10;
-        if (v10)
+        observer = [v9 observer];
+        v11 = observer;
+        if (observer)
         {
-          [v10 installedWebClipsDidChange];
+          [observer installedWebClipsDidChange];
         }
 
         else
@@ -2429,20 +2429,20 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
   }
 }
 
-- (void)homeScreenLayoutAvailabilityDidChange:(id)a3
+- (void)homeScreenLayoutAvailabilityDidChange:(id)change
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_homeScreenLayoutAvailableObservers allObjects];
-  -[SBSHomeScreenService setCachedHomeScreenLayoutAvailable:](self, "setCachedHomeScreenLayoutAvailable:", [v4 BOOLValue]);
+  allObjects = [(NSHashTable *)self->_homeScreenLayoutAvailableObservers allObjects];
+  -[SBSHomeScreenService setCachedHomeScreenLayoutAvailable:](self, "setCachedHomeScreenLayoutAvailable:", [changeCopy BOOLValue]);
   [(SBSHomeScreenService *)self setCachedHomeScreenLayoutAvailableValid:1];
   os_unfair_lock_unlock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -2458,11 +2458,11 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 observer];
-        v13 = v12;
-        if (v12)
+        observer = [v11 observer];
+        v13 = observer;
+        if (observer)
         {
-          [v12 homeScreenServiceLayoutAvailabilityDidChange:self];
+          [observer homeScreenServiceLayoutAvailabilityDidChange:self];
         }
 
         else
@@ -2484,17 +2484,17 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
   }
 }
 
-- (void)applicationIconInfoChangedForBundleIdentifiers:(id)a3
+- (void)applicationIconInfoChangedForBundleIdentifiers:(id)identifiers
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_iconBadgeValueObservers allObjects];
+  allObjects = [(NSHashTable *)self->_iconBadgeValueObservers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v19 = v4;
-  v7 = [v4 array];
-  v8 = [v6 initWithArray:v7];
+  v19 = identifiersCopy;
+  array = [identifiersCopy array];
+  v8 = [v6 initWithArray:array];
 
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2506,7 +2506,7 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v5;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -2522,11 +2522,11 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 observer];
-        v17 = v16;
-        if (v16)
+        observer = [v15 observer];
+        v17 = observer;
+        if (observer)
         {
-          [v16 homeScreenService:self applicationIconInfoChangedForBundleIdentifiers:v8];
+          [observer homeScreenService:self applicationIconInfoChangedForBundleIdentifiers:v8];
         }
 
         else
@@ -2552,13 +2552,13 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
 {
   v20 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_homeScreenLayoutObservers allObjects];
+  allObjects = [(NSHashTable *)self->_homeScreenLayoutObservers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -2574,11 +2574,11 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 observer];
-        v11 = v10;
-        if (v10)
+        observer = [v9 observer];
+        v11 = observer;
+        if (observer)
         {
-          [v10 homeScreenServiceLayoutDidChange:self];
+          [observer homeScreenServiceLayoutDidChange:self];
         }
 
         else
@@ -2600,20 +2600,20 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
   }
 }
 
-- (void)homeScreenIconStyleConfigurationDidChange:(id)a3
+- (void)homeScreenIconStyleConfigurationDidChange:(id)change
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_iconStyleObservers allObjects];
-  [(SBSHomeScreenService *)self setCachedIconStyleConfiguration:v4];
+  allObjects = [(NSHashTable *)self->_iconStyleObservers allObjects];
+  [(SBSHomeScreenService *)self setCachedIconStyleConfiguration:changeCopy];
   [(SBSHomeScreenService *)self setCachedIconStyleConfigurationValid:1];
   os_unfair_lock_unlock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -2629,11 +2629,11 @@ void __91__SBSHomeScreenService_badgeValueForIconWithApplicationBundleIdentifier
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 observer];
-        v13 = v12;
-        if (v12)
+        observer = [v11 observer];
+        v13 = observer;
+        if (observer)
         {
-          [v12 homeScreenService:self homeScreenIconStyleConfigurationDidChange:v4];
+          [observer homeScreenService:self homeScreenIconStyleConfigurationDidChange:changeCopy];
         }
 
         else

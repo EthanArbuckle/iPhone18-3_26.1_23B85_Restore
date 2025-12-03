@@ -1,10 +1,10 @@
 @interface PRContactAllowlist
 - (PRContactAllowlist)init;
-- (void)addTrustedContact:(id)a3 withCompletionHandler:(id)a4;
-- (void)beaconListener:(id)a3 didChangeState:(unint64_t)a4;
-- (void)beaconListener:(id)a3 didFailWithError:(id)a4;
-- (void)clear:(id)a3;
-- (void)removeTrustedContact:(id)a3 withCompletionHandler:(id)a4;
+- (void)addTrustedContact:(id)contact withCompletionHandler:(id)handler;
+- (void)beaconListener:(id)listener didChangeState:(unint64_t)state;
+- (void)beaconListener:(id)listener didFailWithError:(id)error;
+- (void)clear:(id)clear;
+- (void)removeTrustedContact:(id)contact withCompletionHandler:(id)handler;
 @end
 
 @implementation PRContactAllowlist
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (void)addTrustedContact:(id)a3 withCompletionHandler:(id)a4
+- (void)addTrustedContact:(id)contact withCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  handlerCopy = handler;
   v8 = [PRRemoteDevice alloc];
-  v9 = [v6 contactKey];
-  v10 = [(PRRemoteDevice *)v8 initWithBTAdvAddress:v9];
+  contactKey = [contactCopy contactKey];
+  v10 = [(PRRemoteDevice *)v8 initWithBTAdvAddress:contactKey];
 
   if ([(NSMutableArray *)self->_allowlist containsObject:v10])
   {
@@ -52,13 +52,13 @@
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v12 = logger;
-      v13 = [v6 contactKey];
+      contactKey2 = [contactCopy contactKey];
       *buf = 138412290;
-      v22 = v13;
+      v22 = contactKey2;
       _os_log_impl(&dword_230EB5000, v12, OS_LOG_TYPE_DEFAULT, "Attempted to add existing contact: %@", buf, 0xCu);
     }
 
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -73,7 +73,7 @@
       }
 
       [(NSMutableArray *)self->_allowlist addObject:v10];
-      [(PRBeaconListener *)self->_nearbyDaemonSession pushBeaconAllowlist:self->_allowlist completionHandler:v7];
+      [(PRBeaconListener *)self->_nearbyDaemonSession pushBeaconAllowlist:self->_allowlist completionHandler:handlerCopy];
     }
 
     else
@@ -87,33 +87,33 @@
       v20 = @"Contact allowlist full";
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       v17 = PRErrorWithCodeAndUserInfo(400, v16);
-      (v7)[2](v7, 0, v17);
+      (handlerCopy)[2](handlerCopy, 0, v17);
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeTrustedContact:(id)a3 withCompletionHandler:(id)a4
+- (void)removeTrustedContact:(id)contact withCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  handlerCopy = handler;
   v8 = [PRRemoteDevice alloc];
-  v9 = [v6 contactKey];
-  v10 = [(PRRemoteDevice *)v8 initWithBTAdvAddress:v9];
+  contactKey = [contactCopy contactKey];
+  v10 = [(PRRemoteDevice *)v8 initWithBTAdvAddress:contactKey];
 
   if ([(NSMutableArray *)self->_allowlist containsObject:v10])
   {
     [(NSMutableArray *)self->_allowlist removeObject:v10];
     if ([(NSMutableArray *)self->_allowlist count])
     {
-      [(PRBeaconListener *)self->_nearbyDaemonSession pushBeaconAllowlist:self->_allowlist completionHandler:v7];
+      [(PRBeaconListener *)self->_nearbyDaemonSession pushBeaconAllowlist:self->_allowlist completionHandler:handlerCopy];
     }
 
     else
     {
-      [(PRContactAllowlist *)self clear:v7];
+      [(PRContactAllowlist *)self clear:handlerCopy];
     }
   }
 
@@ -123,9 +123,9 @@
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v12 = logger;
-      v13 = [v6 contactKey];
+      contactKey2 = [contactCopy contactKey];
       *buf = 138412290;
-      v20 = v13;
+      v20 = contactKey2;
       _os_log_impl(&dword_230EB5000, v12, OS_LOG_TYPE_DEFAULT, "Attempted to remove unknown contact: %@", buf, 0xCu);
     }
 
@@ -133,28 +133,28 @@
     v18 = @"Attempted to remove unknown contact";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v15 = PRErrorWithCodeAndUserInfo(401, v14);
-    v7[2](v7, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clear:(id)a3
+- (void)clear:(id)clear
 {
   allowlist = self->_allowlist;
-  v5 = a3;
+  clearCopy = clear;
   [(NSMutableArray *)allowlist removeAllObjects];
-  [(PRBeaconListener *)self->_nearbyDaemonSession clearBeaconAllowlistWithCompletionHandler:v5];
+  [(PRBeaconListener *)self->_nearbyDaemonSession clearBeaconAllowlistWithCompletionHandler:clearCopy];
 }
 
-- (void)beaconListener:(id)a3 didChangeState:(unint64_t)a4
+- (void)beaconListener:(id)listener didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  if (a4 <= 1)
+  listenerCopy = listener;
+  if (state <= 1)
   {
-    if (a4)
+    if (state)
     {
-      if (a4 == 1)
+      if (state == 1)
       {
         logger = self->_logger;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -231,7 +231,7 @@
     goto LABEL_24;
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
     v15 = self->_logger;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -247,7 +247,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a4 == 3)
+  if (state == 3)
   {
     v12 = self->_logger;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -308,7 +308,7 @@ void __52__PRContactAllowlist_beaconListener_didChangeState___block_invoke(uint6
   }
 }
 
-- (void)beaconListener:(id)a3 didFailWithError:(id)a4
+- (void)beaconListener:(id)listener didFailWithError:(id)error
 {
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))

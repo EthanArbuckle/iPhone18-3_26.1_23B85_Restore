@@ -3,18 +3,18 @@
 - (NSArray)messages;
 - (id)description;
 - (id)transportOptions;
-- (void)addMessage:(id)a3;
-- (void)setTransportOptions:(id)a3;
+- (void)addMessage:(id)message;
+- (void)setTransportOptions:(id)options;
 @end
 
 @implementation MRCompositeMessage
 
 - (NSArray)messages
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_messages copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_messages copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -37,10 +37,10 @@
 - (id)transportOptions
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  transportOptions = v2->_transportOptions;
-  obj = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  transportOptions = selfCopy->_transportOptions;
+  obj = selfCopy;
   if (transportOptions)
   {
     v4 = transportOptions;
@@ -52,7 +52,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = v2->_messages;
+    v5 = selfCopy->_messages;
     v6 = 0;
     v7 = 0;
     v8 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -69,27 +69,27 @@
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 transportOptions];
-          if ([v12 priority] < 1)
+          transportOptions = [v11 transportOptions];
+          if ([transportOptions priority] < 1)
           {
-            v14 = 3;
+            priority = 3;
           }
 
           else
           {
-            v13 = [v11 transportOptions];
-            v14 = [v13 priority];
+            transportOptions2 = [v11 transportOptions];
+            priority = [transportOptions2 priority];
           }
 
-          if (v14 > v7)
+          if (priority > v7)
           {
-            v7 = v14;
+            v7 = priority;
           }
 
-          v15 = [v11 transportOptions];
-          v16 = [v15 isWaking];
+          transportOptions3 = [v11 transportOptions];
+          isWaking = [transportOptions3 isWaking];
 
-          v6 |= v16;
+          v6 |= isWaking;
         }
 
         v8 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -118,28 +118,28 @@
   return v4;
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v4 = a3;
-  if (v4)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableArray *)v5->_messages addObject:v6];
-    objc_sync_exit(v5);
+    v6 = messageCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableArray *)selfCopy->_messages addObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    messageCopy = v6;
   }
 }
 
-- (void)setTransportOptions:(id)a3
+- (void)setTransportOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   obj = self;
   objc_sync_enter(obj);
   transportOptions = obj->_transportOptions;
-  obj->_transportOptions = v4;
+  obj->_transportOptions = optionsCopy;
 
   objc_sync_exit(obj);
 }

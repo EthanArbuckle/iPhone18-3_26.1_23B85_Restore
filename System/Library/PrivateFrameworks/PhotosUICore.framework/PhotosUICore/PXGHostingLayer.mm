@@ -1,27 +1,27 @@
 @interface PXGHostingLayer
 - (PXGHostingLayer)init;
 - (void)_updatePresenter;
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setHostingController:(id)a3;
-- (void)setVisibilityInfo:(id)a3;
+- (void)hostingController:(id)controller didRenderFrame:(id)frame;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsScale:(double)scale;
+- (void)setHostingController:(id)controller;
+- (void)setVisibilityInfo:(id)info;
 @end
 
 @implementation PXGHostingLayer
 
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4
+- (void)hostingController:(id)controller didRenderFrame:(id)frame
 {
-  v5 = [a4 pixelBuffer];
+  pixelBuffer = [frame pixelBuffer];
 
-  [(PXImageQueueLayer *)self setPixelBuffer:v5];
+  [(PXImageQueueLayer *)self setPixelBuffer:pixelBuffer];
 }
 
 - (void)_updatePresenter
 {
-  v3 = [(PXGHostingLayer *)self visibilityInfo];
-  v4 = v3;
-  if (v3 && ![v3 isVisible])
+  visibilityInfo = [(PXGHostingLayer *)self visibilityInfo];
+  v4 = visibilityInfo;
+  if (visibilityInfo && ![visibilityInfo isVisible])
   {
     presenter = self->_presenter;
     if (presenter)
@@ -34,9 +34,9 @@
   else if (!self->_presenter)
   {
     presenter = [(PXGHostingLayer *)self hostingController];
-    v6 = [presenter addPresenter];
+    addPresenter = [presenter addPresenter];
     v7 = self->_presenter;
-    self->_presenter = v6;
+    self->_presenter = addPresenter;
 
 LABEL_7:
   }
@@ -60,50 +60,50 @@ void __35__PXGHostingLayer__updatePresenter__block_invoke(uint64_t a1, void *a2)
   [v6 setDisplayScale:?];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v4.receiver = self;
   v4.super_class = PXGHostingLayer;
-  [(PXGHostingLayer *)&v4 setContentsScale:a3];
+  [(PXGHostingLayer *)&v4 setContentsScale:scale];
   [(PXGHostingLayer *)self _updatePresenter];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = PXGHostingLayer;
-  [(PXGHostingLayer *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXGHostingLayer *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(PXGHostingLayer *)self _updatePresenter];
 }
 
-- (void)setVisibilityInfo:(id)a3
+- (void)setVisibilityInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   visibilityInfo = self->_visibilityInfo;
-  if (visibilityInfo != v5)
+  if (visibilityInfo != infoCopy)
   {
-    v7 = v5;
+    v7 = infoCopy;
     [(PXGHostingLayerVisibilityInfo *)visibilityInfo setDelegate:0];
-    objc_storeStrong(&self->_visibilityInfo, a3);
+    objc_storeStrong(&self->_visibilityInfo, info);
     [(PXGHostingLayerVisibilityInfo *)v7 setDelegate:self];
     [(PXGHostingLayer *)self _updatePresenter];
-    v5 = v7;
+    infoCopy = v7;
   }
 }
 
-- (void)setHostingController:(id)a3
+- (void)setHostingController:(id)controller
 {
-  v5 = a3;
-  if (self->_hostingController != v5)
+  controllerCopy = controller;
+  if (self->_hostingController != controllerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_hostingController, a3);
-    v6 = [(PXGHostingController *)v7 lastFrame];
-    -[PXImageQueueLayer setPixelBuffer:](self, "setPixelBuffer:", [v6 pixelBuffer]);
+    v7 = controllerCopy;
+    objc_storeStrong(&self->_hostingController, controller);
+    lastFrame = [(PXGHostingController *)v7 lastFrame];
+    -[PXImageQueueLayer setPixelBuffer:](self, "setPixelBuffer:", [lastFrame pixelBuffer]);
 
     [(PXGHostingController *)v7 registerFrameObserver:self];
     [(PXGHostingLayer *)self _updatePresenter];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 

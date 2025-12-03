@@ -1,12 +1,12 @@
 @interface _HKMobileAssetDownloadOperation
-- (_HKMobileAssetDownloadOperation)initWithAsset:(id)a3 queue:(id)a4 downloadOptions:(id)a5 maxNumberOfRetriesAllowed:(int64_t)a6 completion:(id)a7;
+- (_HKMobileAssetDownloadOperation)initWithAsset:(id)asset queue:(id)queue downloadOptions:(id)options maxNumberOfRetriesAllowed:(int64_t)allowed completion:(id)completion;
 - (id)description;
 - (void)_queue_downloadAsset;
 - (void)_queue_run;
 - (void)_queue_transitionToCompleted;
 - (void)_queue_transitionToDownloadingAsset;
-- (void)_queue_transitionToFailureWithDownloadResult:(int64_t)a3;
-- (void)_queue_transitionToState:(int64_t)a3;
+- (void)_queue_transitionToFailureWithDownloadResult:(int64_t)result;
+- (void)_queue_transitionToState:(int64_t)state;
 - (void)run;
 @end
 
@@ -29,26 +29,26 @@
   if (!self->_state)
   {
     [(_HKMobileAssetDownloadOperation *)self _queue_transitionToDownloadingAsset];
-    v3 = [(MAAsset *)self->_asset state];
+    state = [(MAAsset *)self->_asset state];
     _HKInitializeLogging();
     v4 = HKLogMobileAsset;
     if (os_log_type_enabled(HKLogMobileAsset, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2048;
-      v9 = v3;
+      v9 = state;
       _os_log_impl(&dword_19197B000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Asset is in asset state %ld", &v6, 0x16u);
     }
 
-    if (v3 <= 6)
+    if (state <= 6)
     {
-      if (((1 << v3) & 0x6C) != 0)
+      if (((1 << state) & 0x6C) != 0)
       {
         [(_HKMobileAssetDownloadOperation *)self _queue_transitionToCompleted];
       }
 
-      else if (((1 << v3) & 0x12) != 0)
+      else if (((1 << state) & 0x12) != 0)
       {
         [(_HKMobileAssetDownloadOperation *)self _queue_downloadAsset];
       }
@@ -61,7 +61,7 @@
 - (void)_queue_transitionToDownloadingAsset
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:@"_state == _HKMobileAssetDownloadOperationStateInitialized" object:? file:? lineNumber:? description:?];
 }
@@ -69,20 +69,20 @@
 - (void)_queue_transitionToCompleted
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:@"_state == _HKMobileAssetDownloadOperationStateDownloadingAsset" object:? file:? lineNumber:? description:?];
 }
 
-- (_HKMobileAssetDownloadOperation)initWithAsset:(id)a3 queue:(id)a4 downloadOptions:(id)a5 maxNumberOfRetriesAllowed:(int64_t)a6 completion:(id)a7
+- (_HKMobileAssetDownloadOperation)initWithAsset:(id)asset queue:(id)queue downloadOptions:(id)options maxNumberOfRetriesAllowed:(int64_t)allowed completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (v13)
+  assetCopy = asset;
+  queueCopy = queue;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (assetCopy)
   {
-    if (v14)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -91,7 +91,7 @@
   else
   {
     [_HKMobileAssetDownloadOperation initWithAsset:queue:downloadOptions:maxNumberOfRetriesAllowed:completion:];
-    if (v14)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -106,14 +106,14 @@ LABEL_3:
   if (v17)
   {
     v17->_retryCount = 0;
-    objc_storeStrong(&v17->_asset, a3);
-    v19 = _Block_copy(v16);
+    objc_storeStrong(&v17->_asset, asset);
+    v19 = _Block_copy(completionCopy);
     completion = v18->_completion;
     v18->_completion = v19;
 
-    objc_storeStrong(&v18->_queue, a4);
-    objc_storeStrong(&v18->_downloadOptions, a5);
-    v18->_maxNumberOfRetriesAllowed = a6;
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v18->_downloadOptions, options);
+    v18->_maxNumberOfRetriesAllowed = allowed;
     [(_HKMobileAssetDownloadOperation *)v18 _queue_transitionToInitialized];
   }
 
@@ -124,20 +124,20 @@ LABEL_3:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MAAsset *)self->_asset assetType];
-  v6 = [v3 stringWithFormat:@"<%@:%p assetType:%@>", v4, self, v5];
+  assetType = [(MAAsset *)self->_asset assetType];
+  v6 = [v3 stringWithFormat:@"<%@:%p assetType:%@>", v4, self, assetType];
 
   return v6;
 }
 
-- (void)_queue_transitionToFailureWithDownloadResult:(int64_t)a3
+- (void)_queue_transitionToFailureWithDownloadResult:(int64_t)result
 {
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   [(_HKMobileAssetDownloadOperation *)self _queue_transitionToState:2];
   if (self->_retryCount >= self->_maxNumberOfRetriesAllowed)
   {
-    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MADownloadResult" code:a3 userInfo:0];
+    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MADownloadResult" code:result userInfo:0];
     [(_HKMobileAssetDownloadOperation *)self _queue_callCompletionWithSuccess:0 error:?];
     v7 = *MEMORY[0x1E69E9840];
   }
@@ -151,7 +151,7 @@ LABEL_3:
       retryCount = self->_retryCount;
       maxNumberOfRetriesAllowed = self->_maxNumberOfRetriesAllowed;
       *buf = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
       v14 = retryCount;
       v15 = 2048;
@@ -166,7 +166,7 @@ LABEL_3:
   }
 }
 
-- (void)_queue_transitionToState:(int64_t)a3
+- (void)_queue_transitionToState:(int64_t)state
 {
   v14 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -176,15 +176,15 @@ LABEL_3:
   {
     state = self->_state;
     v8 = 138543874;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = state;
+    stateCopy = state;
     v12 = 2048;
-    v13 = a3;
+    stateCopy2 = state;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Transitioning from state %ld to state %ld", &v8, 0x20u);
   }
 
-  self->_state = a3;
+  self->_state = state;
   v7 = *MEMORY[0x1E69E9840];
 }
 

@@ -1,34 +1,34 @@
 @interface _UITabBarContentLayoutManager
 - (BOOL)isLandscapeOnPhone;
 - (BOOL)showsCancelAction;
-- (CGRect)adjustedBoundsForHostedSearchField:(CGRect)a3 prefersFullSizeField:(BOOL)a4;
+- (CGRect)adjustedBoundsForHostedSearchField:(CGRect)field prefersFullSizeField:(BOOL)sizeField;
 - (CGSize)contentSizeForAllHostedElements;
 - (UIView)container;
 - (_TtC5UIKit26_UITabBarAnimationSettings)animationSettings;
 - (_UITabBarContentLayoutHost)host;
 - (_UITabBarContentLayoutManager)init;
-- (_UITabBarContentLayoutManager)initWithLayoutHost:(id)a3 container:(id)a4;
-- (double)interPlatterSpacingForHostedSearchFieldWithPrefersFullSizeField:(BOOL)a3;
+- (_UITabBarContentLayoutManager)initWithLayoutHost:(id)host container:(id)container;
+- (double)interPlatterSpacingForHostedSearchFieldWithPrefersFullSizeField:(BOOL)field;
 - (id)_currentSearchFieldConfiguration;
-- (id)_hostedSearchNavigationControllerFrom:(id)a3;
+- (id)_hostedSearchNavigationControllerFrom:(id)from;
 - (id)_searchControllerForHostedSearchField;
 - (void)_finalizeMagicMorphAnimationIfNeeded;
-- (void)_morphToHostedSearchFieldWithActivatesSearchIfPossible:(BOOL)a3;
+- (void)_morphToHostedSearchFieldWithActivatesSearchIfPossible:(BOOL)possible;
 - (void)_removeHostedSearchViewsIfNeeded;
-- (void)_updateHostedSearchFieldCancelActionVisibility:(id)a3;
-- (void)_updateKeyboardInfo:(id)a3;
+- (void)_updateHostedSearchFieldCancelActionVisibility:(id)visibility;
+- (void)_updateKeyboardInfo:(id)info;
 - (void)_updateNotificationObserversForSearch;
 - (void)dismissSearchIfNeeded;
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIsHostingSearchTextField:(BOOL)a3;
-- (void)setSearchContainerView:(id)a3;
-- (void)tabBarDidChange:(id)a3;
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setIsHostingSearchTextField:(BOOL)field;
+- (void)setSearchContainerView:(id)view;
+- (void)tabBarDidChange:(id)change;
 - (void)updateAccessoryDisplayStyle;
 - (void)updateAccessoryDisplayStyleIfNeeded;
 - (void)updateAccessoryLayoutIfNeeded;
-- (void)updateContentLayoutWithAnimated:(BOOL)a3;
-- (void)updateHostedAccessoryWithAnimated:(BOOL)a3;
-- (void)updateHostedElementsAnimated:(BOOL)a3;
+- (void)updateContentLayoutWithAnimated:(BOOL)animated;
+- (void)updateHostedAccessoryWithAnimated:(BOOL)animated;
+- (void)updateHostedElementsAnimated:(BOOL)animated;
 - (void)updateHostedSearchFieldIfNeeded;
 - (void)updateHostedSearchLayoutIfNeeded;
 - (void)updateLayout;
@@ -36,25 +36,25 @@
 
 @implementation _UITabBarContentLayoutManager
 
-- (_UITabBarContentLayoutManager)initWithLayoutHost:(id)a3 container:(id)a4
+- (_UITabBarContentLayoutManager)initWithLayoutHost:(id)host container:(id)container
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_188B7DFB0(v5, a4);
+  hostCopy = host;
+  containerCopy = container;
+  v7 = sub_188B7DFB0(hostCopy, container);
 
   return v7;
 }
 
-- (void)tabBarDidChange:(id)a3
+- (void)tabBarDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B7CC0C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_188B7CC0C(change);
 }
 
 - (CGSize)contentSizeForAllHostedElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188B7E478();
   v5 = v4;
 
@@ -74,63 +74,63 @@
 
 - (void)updateLayout
 {
-  v2 = self;
-  [(_UITabBarContentLayoutManager *)v2 updateHostedSearchLayoutIfNeeded];
-  [(_UITabBarContentLayoutManager *)v2 updateAccessoryLayoutIfNeeded];
-  [(_UITabBarContentLayoutHost *)[(_UITabBarContentLayoutManager *)v2 host] updateLayoutContentSize];
+  selfCopy = self;
+  [(_UITabBarContentLayoutManager *)selfCopy updateHostedSearchLayoutIfNeeded];
+  [(_UITabBarContentLayoutManager *)selfCopy updateAccessoryLayoutIfNeeded];
+  [(_UITabBarContentLayoutHost *)[(_UITabBarContentLayoutManager *)selfCopy host] updateLayoutContentSize];
   swift_unknownObjectRelease();
 }
 
 - (void)updateHostedSearchLayoutIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B81964();
 }
 
 - (void)updateAccessoryLayoutIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B81CBC();
 }
 
 - (id)_currentSearchFieldConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188B868D4();
 
   return v3;
 }
 
-- (void)setIsHostingSearchTextField:(BOOL)a3
+- (void)setIsHostingSearchTextField:(BOOL)field
 {
   v3 = *(self + OBJC_IVAR____UITabBarContentLayoutManager_isHostingSearchTextField);
-  *(self + OBJC_IVAR____UITabBarContentLayoutManager_isHostingSearchTextField) = a3;
-  v4 = self;
+  *(self + OBJC_IVAR____UITabBarContentLayoutManager_isHostingSearchTextField) = field;
+  selfCopy = self;
   sub_188B86AC4(v3);
 }
 
-- (void)updateHostedAccessoryWithAnimated:(BOOL)a3
+- (void)updateHostedAccessoryWithAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_188B86E18(a3);
+  selfCopy = self;
+  sub_188B86E18(animated);
 }
 
-- (void)updateHostedElementsAnimated:(BOOL)a3
+- (void)updateHostedElementsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = self;
-  if (![(_UITabBarContentLayoutManager *)v4 isUpdatingHostedElements])
+  animatedCopy = animated;
+  selfCopy = self;
+  if (![(_UITabBarContentLayoutManager *)selfCopy isUpdatingHostedElements])
   {
-    [(_UITabBarContentLayoutManager *)v4 setIsUpdatingHostedElements:1];
-    [(_UITabBarContentLayoutManager *)v4 updateHostedSearchFieldIfNeeded];
-    [(_UITabBarContentLayoutManager *)v4 updateHostedAccessoryWithAnimated:v3];
-    [(_UITabBarContentLayoutManager *)v4 setIsUpdatingHostedElements:0];
+    [(_UITabBarContentLayoutManager *)selfCopy setIsUpdatingHostedElements:1];
+    [(_UITabBarContentLayoutManager *)selfCopy updateHostedSearchFieldIfNeeded];
+    [(_UITabBarContentLayoutManager *)selfCopy updateHostedAccessoryWithAnimated:animatedCopy];
+    [(_UITabBarContentLayoutManager *)selfCopy setIsUpdatingHostedElements:0];
   }
 }
 
 - (void)updateHostedSearchFieldIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B85C18();
 }
 
@@ -143,23 +143,23 @@
 
 - (void)updateAccessoryDisplayStyle
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F3744C();
 }
 
 - (id)_searchControllerForHostedSearchField
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188CBAA0C();
 
   return v3;
 }
 
-- (void)setSearchContainerView:(id)a3
+- (void)setSearchContainerView:(id)view
 {
   v4 = *(self + OBJC_IVAR____UITabBarContentLayoutManager_searchContainerView);
-  *(self + OBJC_IVAR____UITabBarContentLayoutManager_searchContainerView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UITabBarContentLayoutManager_searchContainerView) = view;
+  viewCopy = view;
 }
 
 - (_TtC5UIKit26_UITabBarAnimationSettings)animationSettings
@@ -186,10 +186,10 @@
 
 - (void)updateAccessoryDisplayStyleIfNeeded
 {
-  v2 = self;
-  if ([(_UITabBarContentLayoutManager *)v2 needsAccessoryDisplayStateUpdate])
+  selfCopy = self;
+  if ([(_UITabBarContentLayoutManager *)selfCopy needsAccessoryDisplayStateUpdate])
   {
-    [(_UITabBarContentLayoutManager *)v2 updateAccessoryDisplayStyle];
+    [(_UITabBarContentLayoutManager *)selfCopy updateAccessoryDisplayStyle];
   }
 }
 
@@ -204,30 +204,30 @@
   return v2;
 }
 
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v6 = self;
-  sub_188F38188(a3, a4);
+  selfCopy = self;
+  sub_188F38188(hidden, animated);
 }
 
-- (void)updateContentLayoutWithAnimated:(BOOL)a3
+- (void)updateContentLayoutWithAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_188F38934(a3);
+  selfCopy = self;
+  sub_188F38934(animated);
 }
 
 - (BOOL)isLandscapeOnPhone
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F38BEC();
 
   return v3;
 }
 
-- (double)interPlatterSpacingForHostedSearchFieldWithPrefersFullSizeField:(BOOL)a3
+- (double)interPlatterSpacingForHostedSearchFieldWithPrefersFullSizeField:(BOOL)field
 {
   result = 12.0;
-  if (a3)
+  if (field)
   {
     return 8.0;
   }
@@ -235,14 +235,14 @@
   return result;
 }
 
-- (CGRect)adjustedBoundsForHostedSearchField:(CGRect)a3 prefersFullSizeField:(BOOL)a4
+- (CGRect)adjustedBoundsForHostedSearchField:(CGRect)field prefersFullSizeField:(BOOL)sizeField
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = self;
-  sub_188F38D04(a4, x, y, width, height);
+  height = field.size.height;
+  width = field.size.width;
+  y = field.origin.y;
+  x = field.origin.x;
+  selfCopy = self;
+  sub_188F38D04(sizeField, x, y, width, height);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -261,61 +261,61 @@
 
 - (void)dismissSearchIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F38FA4();
 }
 
-- (id)_hostedSearchNavigationControllerFrom:(id)a3
+- (id)_hostedSearchNavigationControllerFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_188F39A14(v4);
+  fromCopy = from;
+  selfCopy = self;
+  v6 = sub_188F39A14(fromCopy);
 
   return v6;
 }
 
-- (void)_updateHostedSearchFieldCancelActionVisibility:(id)a3
+- (void)_updateHostedSearchFieldCancelActionVisibility:(id)visibility
 {
   if ((*(self + OBJC_IVAR____UITabBarContentLayoutManager_currentDisplayState) & 0xFE) != 2)
   {
-    v5 = a3;
-    v6 = self;
-    sub_188F37598([v5 showsCancelAction]);
+    visibilityCopy = visibility;
+    selfCopy = self;
+    sub_188F37598([visibilityCopy showsCancelAction]);
   }
 }
 
 - (void)_finalizeMagicMorphAnimationIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F39EC0();
 }
 
-- (void)_morphToHostedSearchFieldWithActivatesSearchIfPossible:(BOOL)a3
+- (void)_morphToHostedSearchFieldWithActivatesSearchIfPossible:(BOOL)possible
 {
-  v4 = self;
-  sub_188F3A094(a3);
+  selfCopy = self;
+  sub_188F3A094(possible);
 }
 
 - (void)_removeHostedSearchViewsIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F3A440();
 }
 
 - (void)_updateNotificationObserversForSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F3A588();
 }
 
-- (void)_updateKeyboardInfo:(id)a3
+- (void)_updateKeyboardInfo:(id)info
 {
   v4 = sub_18A4A2458();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A2418();
-  v8 = self;
+  selfCopy = self;
   sub_188F3A794();
 
   (*(v5 + 8))(v7, v4);

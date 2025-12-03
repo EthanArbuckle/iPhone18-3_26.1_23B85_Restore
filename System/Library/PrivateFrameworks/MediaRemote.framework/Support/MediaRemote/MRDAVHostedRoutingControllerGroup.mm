@@ -1,28 +1,28 @@
 @interface MRDAVHostedRoutingControllerGroup
-- (MRDAVHostedRoutingControllerGroup)initWithEndpoint:(id)a3 externalDevice:(id)a4;
+- (MRDAVHostedRoutingControllerGroup)initWithEndpoint:(id)endpoint externalDevice:(id)device;
 - (id)description;
 @end
 
 @implementation MRDAVHostedRoutingControllerGroup
 
-- (MRDAVHostedRoutingControllerGroup)initWithEndpoint:(id)a3 externalDevice:(id)a4
+- (MRDAVHostedRoutingControllerGroup)initWithEndpoint:(id)endpoint externalDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = MRDAVHostedRoutingControllerGroup;
   v9 = [(MRDAVHostedRoutingControllerGroup *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_concreteEndpoint, a3);
-    objc_storeStrong(&v10->_externalDevice, a4);
+    objc_storeStrong(&v9->_concreteEndpoint, endpoint);
+    objc_storeStrong(&v10->_externalDevice, device);
     v11 = [MRAVDistantEndpoint alloc];
-    v12 = [v7 descriptor];
-    v13 = [v11 initWithDescriptor:v12];
+    descriptor = [endpointCopy descriptor];
+    v13 = [v11 initWithDescriptor:descriptor];
 
-    v14 = [v8 externalDeviceListenerEndpoint];
-    [v13 setExternalDeviceListenerEndpoint:v14];
+    externalDeviceListenerEndpoint = [deviceCopy externalDeviceListenerEndpoint];
+    [v13 setExternalDeviceListenerEndpoint:externalDeviceListenerEndpoint];
 
     distantEndpoint = v10->_distantEndpoint;
     v10->_distantEndpoint = v13;

@@ -1,25 +1,25 @@
 @interface BSMutableOrderedDictionary
 - (BSMutableOrderedDictionary)init;
-- (BSMutableOrderedDictionary)initWithCapacity:(unint64_t)a3 keyOrderingStrategy:(id)a4;
-- (BSMutableOrderedDictionary)initWithCoder:(id)a3;
-- (BSMutableOrderedDictionary)initWithDictionary:(id)a3 keyOrderingStrategy:(id)a4;
-- (BSMutableOrderedDictionary)initWithKeyOrderingStrategy:(id)a3;
-- (BSMutableOrderedDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (BSMutableOrderedDictionary)initWithCapacity:(unint64_t)capacity keyOrderingStrategy:(id)strategy;
+- (BSMutableOrderedDictionary)initWithCoder:(id)coder;
+- (BSMutableOrderedDictionary)initWithDictionary:(id)dictionary keyOrderingStrategy:(id)strategy;
+- (BSMutableOrderedDictionary)initWithKeyOrderingStrategy:(id)strategy;
+- (BSMutableOrderedDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (BSOrderedDictionaryKeyStrategy)keyOrderingStrategy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addEntriesFromDictionary:(id)a3;
-- (void)addEntriesFromOrderedDictionary:(id)a3;
-- (void)addObject:(id)a3 toCollectionClass:(Class)a4 forKey:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addEntriesFromDictionary:(id)dictionary;
+- (void)addEntriesFromOrderedDictionary:(id)dictionary;
+- (void)addObject:(id)object toCollectionClass:(Class)class forKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3 fromCollectionForKey:(id)a4;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)removeObjectsInRange:(_NSRange)a3;
-- (void)setKeyOrderingStrategy:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)removeObject:(id)object fromCollectionForKey:(id)key;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)removeObjectsInRange:(_NSRange)range;
+- (void)setKeyOrderingStrategy:(id)strategy;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation BSMutableOrderedDictionary
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (BSMutableOrderedDictionary)initWithKeyOrderingStrategy:(id)a3
+- (BSMutableOrderedDictionary)initWithKeyOrderingStrategy:(id)strategy
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  strategyCopy = strategy;
+  if (!strategyCopy)
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
@@ -53,7 +53,7 @@
       v34 = 2114;
       v35 = v19;
       v36 = 2048;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2114;
       v39 = @"BSOrderedDictionary.m";
       v40 = 1024;
@@ -73,13 +73,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [v6 classForCoder];
-    if (!v22)
+    classForCoder = [strategyCopy classForCoder];
+    if (!classForCoder)
     {
-      v22 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v23 = NSStringFromClass(v22);
+    v23 = NSStringFromClass(classForCoder);
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     v26 = [v21 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"strategy", v23, v25];
@@ -94,7 +94,7 @@
       v34 = 2114;
       v35 = v29;
       v36 = 2048;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2114;
       v39 = @"BSOrderedDictionary.m";
       v40 = 1024;
@@ -112,28 +112,28 @@
 
   v31.receiver = self;
   v31.super_class = BSMutableOrderedDictionary;
-  v7 = [(BSOrderedDictionary *)&v31 _initTabulaRasa];
-  if (v7)
+  _initTabulaRasa = [(BSOrderedDictionary *)&v31 _initTabulaRasa];
+  if (_initTabulaRasa)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    keys = v7->super._keys;
-    v7->super._keys = v8;
+    keys = _initTabulaRasa->super._keys;
+    _initTabulaRasa->super._keys = v8;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    values = v7->super._values;
-    v7->super._values = v10;
+    values = _initTabulaRasa->super._values;
+    _initTabulaRasa->super._values = v10;
 
-    objc_storeStrong(&v7->super._keyOrderingStrategy, a3);
+    objc_storeStrong(&_initTabulaRasa->super._keyOrderingStrategy, strategy);
   }
 
-  return v7;
+  return _initTabulaRasa;
 }
 
-- (BSMutableOrderedDictionary)initWithCapacity:(unint64_t)a3 keyOrderingStrategy:(id)a4
+- (BSMutableOrderedDictionary)initWithCapacity:(unint64_t)capacity keyOrderingStrategy:(id)strategy
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  strategyCopy = strategy;
+  if (!strategyCopy)
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = objc_opt_class();
@@ -150,7 +150,7 @@
       v36 = 2114;
       v37 = v21;
       v38 = 2048;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2114;
       v41 = @"BSOrderedDictionary.m";
       v42 = 1024;
@@ -170,13 +170,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [v8 classForCoder];
-    if (!v24)
+    classForCoder = [strategyCopy classForCoder];
+    if (!classForCoder)
     {
-      v24 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v25 = NSStringFromClass(v24);
+    v25 = NSStringFromClass(classForCoder);
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     v28 = [v23 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"strategy", v25, v27];
@@ -191,7 +191,7 @@
       v36 = 2114;
       v37 = v31;
       v38 = 2048;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2114;
       v41 = @"BSOrderedDictionary.m";
       v42 = 1024;
@@ -209,28 +209,28 @@
 
   v33.receiver = self;
   v33.super_class = BSMutableOrderedDictionary;
-  v9 = [(BSOrderedDictionary *)&v33 _initTabulaRasa];
-  if (v9)
+  _initTabulaRasa = [(BSOrderedDictionary *)&v33 _initTabulaRasa];
+  if (_initTabulaRasa)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-    keys = v9->super._keys;
-    v9->super._keys = v10;
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
+    keys = _initTabulaRasa->super._keys;
+    _initTabulaRasa->super._keys = v10;
 
-    v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
-    values = v9->super._values;
-    v9->super._values = v12;
+    v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
+    values = _initTabulaRasa->super._values;
+    _initTabulaRasa->super._values = v12;
 
-    objc_storeStrong(&v9->super._keyOrderingStrategy, a4);
+    objc_storeStrong(&_initTabulaRasa->super._keyOrderingStrategy, strategy);
   }
 
-  return v9;
+  return _initTabulaRasa;
 }
 
-- (BSMutableOrderedDictionary)initWithDictionary:(id)a3 keyOrderingStrategy:(id)a4
+- (BSMutableOrderedDictionary)initWithDictionary:(id)dictionary keyOrderingStrategy:(id)strategy
 {
   v70 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v17 = MEMORY[0x1E696AEC0];
     v18 = objc_opt_class();
@@ -247,7 +247,7 @@
       v60 = 2114;
       v61 = v23;
       v62 = 2048;
-      v63 = self;
+      selfCopy4 = self;
       v64 = 2114;
       v65 = @"BSOrderedDictionary.m";
       v66 = 1024;
@@ -267,13 +267,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [v7 classForCoder];
-    if (!v26)
+    classForCoder = [dictionaryCopy classForCoder];
+    if (!classForCoder)
     {
-      v26 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v27 = NSStringFromClass(v26);
+    v27 = NSStringFromClass(classForCoder);
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
     v30 = [v25 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"dictionary", v27, v29];
@@ -288,7 +288,7 @@
       v60 = 2114;
       v61 = v33;
       v62 = 2048;
-      v63 = self;
+      selfCopy4 = self;
       v64 = 2114;
       v65 = @"BSOrderedDictionary.m";
       v66 = 1024;
@@ -304,8 +304,8 @@
     JUMPOUT(0x18FF92C84);
   }
 
-  v8 = a4;
-  if (!v8)
+  strategyCopy = strategy;
+  if (!strategyCopy)
   {
     v35 = MEMORY[0x1E696AEC0];
     v36 = objc_opt_class();
@@ -322,7 +322,7 @@
       v60 = 2114;
       v61 = v41;
       v62 = 2048;
-      v63 = self;
+      selfCopy4 = self;
       v64 = 2114;
       v65 = @"BSOrderedDictionary.m";
       v66 = 1024;
@@ -342,13 +342,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v43 = MEMORY[0x1E696AEC0];
-    v44 = [v8 classForCoder];
-    if (!v44)
+    classForCoder2 = [strategyCopy classForCoder];
+    if (!classForCoder2)
     {
-      v44 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v45 = NSStringFromClass(v44);
+    v45 = NSStringFromClass(classForCoder2);
     v46 = objc_opt_class();
     v47 = NSStringFromClass(v46);
     v48 = [v43 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"strategy", v45, v47];
@@ -363,7 +363,7 @@
       v60 = 2114;
       v61 = v51;
       v62 = 2048;
-      v63 = self;
+      selfCopy4 = self;
       v64 = 2114;
       v65 = @"BSOrderedDictionary.m";
       v66 = 1024;
@@ -379,10 +379,10 @@
     JUMPOUT(0x18FF92EF8);
   }
 
-  v9 = -[BSMutableOrderedDictionary initWithCapacity:keyOrderingStrategy:](self, "initWithCapacity:keyOrderingStrategy:", [v7 count], v8);
+  v9 = -[BSMutableOrderedDictionary initWithCapacity:keyOrderingStrategy:](self, "initWithCapacity:keyOrderingStrategy:", [dictionaryCopy count], strategyCopy);
   if (v9)
   {
-    [v7 allKeys];
+    [dictionaryCopy allKeys];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -401,7 +401,7 @@
           }
 
           v14 = *(*(&v53 + 1) + 8 * i);
-          v15 = [v7 objectForKey:v14];
+          v15 = [dictionaryCopy objectForKey:v14];
           [(BSMutableOrderedDictionary *)v9 setObject:v15 forKey:v14];
         }
 
@@ -415,12 +415,12 @@
   return v9;
 }
 
-- (BSMutableOrderedDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (BSMutableOrderedDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!objects)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", a4, a5, @"objects != ((void*)0)"];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", keys, count, @"objects != ((void*)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v16 = NSStringFromSelector(a2);
@@ -431,7 +431,7 @@
       v32 = 2114;
       v33 = v18;
       v34 = 2048;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
       v37 = @"BSOrderedDictionary.m";
       v38 = 1024;
@@ -447,10 +447,10 @@
     JUMPOUT(0x18FF9322CLL);
   }
 
-  v7 = a4;
-  if (!a4)
+  keysCopy = keys;
+  if (!keys)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", 0, a5, @"keys != ((void*)0)"];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", 0, count, @"keys != ((void*)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v21 = NSStringFromSelector(a2);
@@ -461,7 +461,7 @@
       v32 = 2114;
       v33 = v23;
       v34 = 2048;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
       v37 = @"BSOrderedDictionary.m";
       v38 = 1024;
@@ -477,8 +477,8 @@
     JUMPOUT(0x18FF93334);
   }
 
-  v8 = a5;
-  if (!a5)
+  countCopy = count;
+  if (!count)
   {
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"count > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -491,7 +491,7 @@
       v32 = 2114;
       v33 = v28;
       v34 = 2048;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
       v37 = @"BSOrderedDictionary.m";
       v38 = 1024;
@@ -507,48 +507,48 @@
     JUMPOUT(0x18FF9343CLL);
   }
 
-  v9 = a3;
+  objectsCopy = objects;
   v10 = +[BSOrderedDictionaryKeyStrategy sortByInsertionOrder];
-  v11 = [(BSMutableOrderedDictionary *)self initWithCapacity:v8 keyOrderingStrategy:v10];
+  v11 = [(BSMutableOrderedDictionary *)self initWithCapacity:countCopy keyOrderingStrategy:v10];
 
   if (v11)
   {
     do
     {
-      v12 = *v7;
-      v13 = *v9;
+      v12 = *keysCopy;
+      v13 = *objectsCopy;
       [(BSMutableOrderedDictionary *)v11 setObject:v13 forKey:v12];
 
-      ++v9;
-      ++v7;
-      --v8;
+      ++objectsCopy;
+      ++keysCopy;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BSOrderedDictionary alloc];
 
   return [(BSOrderedDictionary *)v4 _initWithCopyOfOrderedDictionary:?];
 }
 
-- (BSMutableOrderedDictionary)initWithCoder:(id)a3
+- (BSMutableOrderedDictionary)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = BSMutableOrderedDictionary;
-  return [(BSOrderedDictionary *)&v4 initWithCoder:a3];
+  return [(BSOrderedDictionary *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = BSMutableOrderedDictionary;
-  [(BSOrderedDictionary *)&v3 encodeWithCoder:a3];
+  [(BSOrderedDictionary *)&v3 encodeWithCoder:coder];
 }
 
 - (BSOrderedDictionaryKeyStrategy)keyOrderingStrategy
@@ -567,25 +567,25 @@
   return v3;
 }
 
-- (void)setKeyOrderingStrategy:(id)a3
+- (void)setKeyOrderingStrategy:(id)strategy
 {
-  v4 = a3;
-  if (!v4)
+  strategyCopy = strategy;
+  if (!strategyCopy)
   {
-    v4 = +[BSOrderedDictionaryKeyStrategy sortByInsertionOrder];
+    strategyCopy = +[BSOrderedDictionaryKeyStrategy sortByInsertionOrder];
   }
 
-  if (self->super._keyOrderingStrategy != v4)
+  if (self->super._keyOrderingStrategy != strategyCopy)
   {
-    v11 = v4;
-    objc_storeStrong(&self->super._keyOrderingStrategy, v4);
-    v5 = [(BSOrderedDictionaryKeyStrategy *)v11 limitCount];
-    if (v5 >= 1 && ([(BSOrderedDictionary *)self count]- v5) >= 1)
+    v11 = strategyCopy;
+    objc_storeStrong(&self->super._keyOrderingStrategy, strategyCopy);
+    limitCount = [(BSOrderedDictionaryKeyStrategy *)v11 limitCount];
+    if (limitCount >= 1 && ([(BSOrderedDictionary *)self count]- limitCount) >= 1)
     {
       [(BSMutableOrderedDictionary *)self removeObjectsInRange:0];
     }
 
-    v4 = v11;
+    strategyCopy = v11;
     if (v11->_keyComparator)
     {
       v6 = [(BSOrderedDictionary *)self sortedDictionaryUsingComparator:?];
@@ -597,18 +597,18 @@
       values = self->super._values;
       self->super._values = v9;
 
-      v4 = v11;
+      strategyCopy = v11;
     }
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v46 = *MEMORY[0x1E69E9840];
   v7 = [(BSOrderedDictionary *)self count];
   if (self)
   {
-    if (!a4)
+    if (!key)
     {
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"inKey != ((void *)0)"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -621,7 +621,7 @@
         v36 = 2114;
         v37 = v21;
         v38 = 2048;
-        v39 = self;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = @"BSOrderedDictionary.m";
         v42 = 1024;
@@ -637,7 +637,7 @@
       JUMPOUT(0x18FF939D0);
     }
 
-    if (!a3)
+    if (!object)
     {
       v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"object != ((void *)0)"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -650,7 +650,7 @@
         v36 = 2114;
         v37 = v26;
         v38 = 2048;
-        v39 = self;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = @"BSOrderedDictionary.m";
         v42 = 1024;
@@ -681,7 +681,7 @@
         v36 = 2114;
         v37 = v31;
         v38 = 2048;
-        v39 = self;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = @"BSOrderedDictionary.m";
         v42 = 1024;
@@ -697,7 +697,7 @@
       JUMPOUT(0x18FF93BD8);
     }
 
-    v33 = [a4 copyWithZone:0];
+    v33 = [key copyWithZone:0];
     v10 = self->super._keys;
     v11 = self->super._values;
     v12 = [(NSDictionary *)v11 objectForKey:v33];
@@ -710,10 +710,10 @@
       v8 -= v13 <= v8;
     }
 
-    v14 = [(BSOrderedDictionaryKeyStrategy *)self->super._keyOrderingStrategy limitCount];
-    if (v14 >= 1)
+    limitCount = [(BSOrderedDictionaryKeyStrategy *)self->super._keyOrderingStrategy limitCount];
+    if (limitCount >= 1)
     {
-      v15 = v9 - v14 + 1;
+      v15 = v9 - limitCount + 1;
       if (v15 >= 1)
       {
         [(BSMutableOrderedDictionary *)self removeObjectsInRange:0, v15];
@@ -738,28 +738,28 @@
     }
 
     [(NSArray *)v10 insertObject:v33 atIndex:v8];
-    [(NSDictionary *)v11 setObject:a3 forKey:v33];
+    [(NSDictionary *)v11 setObject:object forKey:v33];
   }
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  if (a3)
+  if (object)
   {
-    [(BSMutableOrderedDictionary *)self setObject:a3 forKey:a4];
+    [(BSMutableOrderedDictionary *)self setObject:object forKey:subscript];
   }
 
   else
   {
-    [(BSMutableOrderedDictionary *)self removeObjectForKey:a4];
+    [(BSMutableOrderedDictionary *)self removeObjectForKey:subscript];
   }
 }
 
-- (void)addEntriesFromOrderedDictionary:(id)a3
+- (void)addEntriesFromOrderedDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
@@ -776,7 +776,7 @@
       v27 = 2114;
       v28 = v12;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSOrderedDictionary.m";
       v33 = 1024;
@@ -796,13 +796,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v5 classForCoder];
-    if (!v15)
+    classForCoder = [dictionaryCopy classForCoder];
+    if (!classForCoder)
     {
-      v15 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v16 = NSStringFromClass(v15);
+    v16 = NSStringFromClass(classForCoder);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = [v14 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"otherDictionary", v16, v18];
@@ -817,7 +817,7 @@
       v27 = 2114;
       v28 = v22;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSOrderedDictionary.m";
       v33 = 1024;
@@ -838,14 +838,14 @@
   v24[2] = __62__BSMutableOrderedDictionary_addEntriesFromOrderedDictionary___block_invoke;
   v24[3] = &unk_1E72CC5C8;
   v24[4] = self;
-  [v5 enumerateKeysAndObjectsWithIndexesUsingBlock:v24];
+  [dictionaryCopy enumerateKeysAndObjectsWithIndexesUsingBlock:v24];
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
@@ -862,7 +862,7 @@
       v27 = 2114;
       v28 = v12;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSOrderedDictionary.m";
       v33 = 1024;
@@ -882,13 +882,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v5 classForCoder];
-    if (!v15)
+    classForCoder = [dictionaryCopy classForCoder];
+    if (!classForCoder)
     {
-      v15 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v16 = NSStringFromClass(v15);
+    v16 = NSStringFromClass(classForCoder);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = [v14 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"otherDictionary", v16, v18];
@@ -903,7 +903,7 @@
       v27 = 2114;
       v28 = v22;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSOrderedDictionary.m";
       v33 = 1024;
@@ -924,15 +924,15 @@
   v24[2] = __55__BSMutableOrderedDictionary_addEntriesFromDictionary___block_invoke;
   v24[3] = &unk_1E72CC5F0;
   v24[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v24];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v24];
 }
 
-- (void)addObject:(id)a3 toCollectionClass:(Class)a4 forKey:(id)a5
+- (void)addObject:(id)object toCollectionClass:(Class)class forKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() != a4 && objc_opt_class() != a4 && objc_opt_class() != a4)
+  if (objc_opt_class() != class && objc_opt_class() != class && objc_opt_class() != class)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' must be NSMutableSet, NSMutableOrderedSet, or NSMutableArray, not (%@)", a5, a4];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' must be NSMutableSet, NSMutableOrderedSet, or NSMutableArray, not (%@)", key, class];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v11 = NSStringFromSelector(a2);
@@ -943,7 +943,7 @@
       v18 = 2114;
       v19 = v13;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
       v23 = @"BSOrderedDictionary.m";
       v24 = 1024;
@@ -959,27 +959,27 @@
     JUMPOUT(0x18FF94688);
   }
 
-  v15 = [(BSOrderedDictionary *)self objectForKey:a5];
+  v15 = [(BSOrderedDictionary *)self objectForKey:key];
   if (!v15)
   {
-    v15 = objc_alloc_init(a4);
-    [(BSMutableOrderedDictionary *)self setObject:v15 forKey:a5];
+    v15 = objc_alloc_init(class);
+    [(BSMutableOrderedDictionary *)self setObject:v15 forKey:key];
   }
 
-  [v15 addObject:a3];
+  [v15 addObject:object];
 }
 
-- (void)removeObject:(id)a3 fromCollectionForKey:(id)a4
+- (void)removeObject:(id)object fromCollectionForKey:(id)key
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    v13 = [(BSOrderedDictionary *)self objectForKey:a4];
+    v13 = [(BSOrderedDictionary *)self objectForKey:key];
     if (v13)
     {
       if ((_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0 && (_NSIsNSArray() & 1) == 0)
       {
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' must be NSMutableSet, NSMutableOrderedSet, or NSMutableArray, not (%@)", a4, objc_opt_class()];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' must be NSMutableSet, NSMutableOrderedSet, or NSMutableArray, not (%@)", key, objc_opt_class()];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           v9 = NSStringFromSelector(a2);
@@ -990,7 +990,7 @@
           v16 = 2114;
           v17 = v11;
           v18 = 2048;
-          v19 = self;
+          selfCopy = self;
           v20 = 2114;
           v21 = @"BSOrderedDictionary.m";
           v22 = 1024;
@@ -1006,44 +1006,44 @@
         JUMPOUT(0x18FF948D8);
       }
 
-      [v13 removeObject:a3];
+      [v13 removeObject:object];
       if (![v13 count])
       {
-        [(BSMutableOrderedDictionary *)self removeObjectForKey:a4];
+        [(BSMutableOrderedDictionary *)self removeObjectForKey:key];
       }
     }
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v6 = self->super._keys;
     v5 = self->super._values;
-    [(NSArray *)v6 removeObject:a3];
-    [(NSDictionary *)v5 removeObjectForKey:a3];
+    [(NSArray *)v6 removeObject:key];
+    [(NSDictionary *)v5 removeObjectForKey:key];
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v7 = self->super._keys;
   v5 = self->super._values;
-  v6 = [(NSArray *)v7 objectAtIndex:a3];
+  v6 = [(NSArray *)v7 objectAtIndex:index];
   [(NSArray *)v7 removeObject:v6];
   [(NSDictionary *)v5 removeObjectForKey:v6];
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3
+- (void)removeObjectsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v52 = *MEMORY[0x1E69E9840];
-  if (a3.location >= 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location >= 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = NSStringFromRange(a3);
+    v13 = NSStringFromRange(range);
     v14 = [v12 stringWithFormat:@"range.location too large: %@", v13];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1056,7 +1056,7 @@
       v42 = 2114;
       v43 = v17;
       v44 = 2048;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2114;
       v47 = @"BSOrderedDictionary.m";
       v48 = 1024;
@@ -1072,10 +1072,10 @@
     JUMPOUT(0x18FF94D24);
   }
 
-  if (a3.length >= 0x7FFFFFFFFFFFFFFFLL)
+  if (range.length >= 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x1E696AEC0];
-    v20 = NSStringFromRange(a3);
+    v20 = NSStringFromRange(range);
     v21 = [v19 stringWithFormat:@"range.length too large: %@", v20];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1088,7 +1088,7 @@
       v42 = 2114;
       v43 = v24;
       v44 = 2048;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2114;
       v47 = @"BSOrderedDictionary.m";
       v48 = 1024;
@@ -1124,7 +1124,7 @@
       v42 = 2114;
       v43 = v32;
       v44 = 2048;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2114;
       v47 = @"BSOrderedDictionary.m";
       v48 = 1024;
@@ -1169,7 +1169,7 @@
             v42 = 2114;
             v43 = v37;
             v44 = 2048;
-            v45 = self;
+            selfCopy4 = self;
             v46 = 2114;
             v47 = @"BSOrderedDictionary.m";
             v48 = 1024;
@@ -1212,15 +1212,15 @@
   [(NSDictionary *)v3 removeAllObjects];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  keysCopy = keys;
+  v5 = [keysCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -1231,14 +1231,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         [(BSMutableOrderedDictionary *)self removeObjectForKey:*(*(&v8 + 1) + 8 * v7++), v8];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [keysCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

@@ -1,17 +1,17 @@
 @interface NCDigestMosaicFeaturedNotificationContentView
 - (BOOL)_isAXSize;
-- (CGRect)_labelSizingBoundsForRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_imageHeightForBounds:(CGRect)a3;
+- (CGRect)_labelSizingBoundsForRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_imageHeightForBounds:(CGRect)bounds;
 - (double)imageAttachmentSizeRatio;
 - (unint64_t)_maximumNumberOfLinesForFooterText;
 - (unint64_t)_maximumNumberOfLinesForPrimarySubtitleText;
 - (unint64_t)_maximumNumberOfLinesForPrimaryText;
 - (unint64_t)_maximumNumberOfLinesForSecondaryText;
-- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)a3;
+- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)frame;
 - (void)_configureBackgroundColorViewIfNecessary;
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_configureClippingViewIfNecessary;
@@ -26,33 +26,33 @@
 - (void)_layoutSecondaryTextLabel;
 - (void)_layoutSubviews;
 - (void)_layoutThumbnailImageView;
-- (void)_updateBackgroundColorForIconImageDominantColor:(id)a3;
+- (void)_updateBackgroundColorForIconImageDominantColor:(id)color;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesForFooterTextLabel;
 - (void)_updateTextAttributesForPrimarySubtitleTextLabel;
 - (void)_updateTextAttributesForPrimaryTextLabel;
 - (void)_updateTextAttributesForSecondaryTextElement;
 - (void)_updateVisualStylingProviderForBackgroundColorView;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 - (void)layoutSubviews;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setContentViewStyle:(unint64_t)a3;
-- (void)setFooterText:(id)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setThumbnail:(id)a3;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setContentViewStyle:(unint64_t)style;
+- (void)setFooterText:(id)text;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimaryText:(id)text;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setThumbnail:(id)thumbnail;
 @end
 
 @implementation NCDigestMosaicFeaturedNotificationContentView
 
-- (void)setContentViewStyle:(unint64_t)a3
+- (void)setContentViewStyle:(unint64_t)style
 {
-  if (self->_contentViewStyle != a3)
+  if (self->_contentViewStyle != style)
   {
-    self->_contentViewStyle = a3;
+    self->_contentViewStyle = style;
     self->_hasUpdatedContent = 1;
     [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
   }
@@ -65,9 +65,9 @@
     return 0.6;
   }
 
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+  _isContentViewStyleMedium = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
   result = 0.666666667;
-  if (!v4)
+  if (!_isContentViewStyleMedium)
   {
     return 1.0;
   }
@@ -92,16 +92,16 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   thumbnailImageView = self->_thumbnailImageView;
   if (self->_imageBoundingView)
   {
     if (thumbnailImageView)
     {
-      [(NCDigestMosaicFeaturedNotificationContentView *)self _imageHeightForBounds:0.0, 0.0, a3.width, a3.height];
+      [(NCDigestMosaicFeaturedNotificationContentView *)self _imageHeightForBounds:0.0, 0.0, fits.width, fits.height];
       if (![(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge])
       {
         [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
@@ -132,20 +132,20 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleSmall]|| [(NCDigestMosaicFeaturedNotificationContentView *)self _isAXSize];
+  _isAXSize = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleSmall]|| [(NCDigestMosaicFeaturedNotificationContentView *)self _isAXSize];
   if (self->_primaryTextLabel && (![(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleSmall]|| !thumbnailImageView))
   {
     [(NCNotificationListBaseContentView *)self _sizeMeasuringHeightForLabel:self->_primaryTextLabel withNumberOfLines:[(NCDigestMosaicFeaturedNotificationContentView *)self _numberOfLinesForPrimaryTextInFrame:v8, v10, v12, v14]];
   }
 
   primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-  if (primarySubtitleTextLabel != 0 && !v15)
+  if (primarySubtitleTextLabel != 0 && !_isAXSize)
   {
     [(NCNotificationListBaseContentView *)self _sizeMeasuringHeightForLabel:primarySubtitleTextLabel withNumberOfLines:[(NCDigestMosaicFeaturedNotificationContentView *)self _numberOfLinesForPrimarySubtitleTextInFrame:v8, v10, v12, v14]];
   }
 
   secondaryTextLabel = self->_secondaryTextLabel;
-  if (secondaryTextLabel != 0 && !v15)
+  if (secondaryTextLabel != 0 && !_isAXSize)
   {
     [(NCNotificationListBaseContentView *)self _sizeMeasuringHeightForLabel:secondaryTextLabel withNumberOfLines:[(NCDigestMosaicFeaturedNotificationContentView *)self _numberOfLinesForSecondaryTextInFrame:v8, v10, v12, v14]];
     if (![(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge])
@@ -155,7 +155,7 @@
   }
 
   footerTextLabel = self->_footerTextLabel;
-  if (footerTextLabel != 0 && !v15)
+  if (footerTextLabel != 0 && !_isAXSize)
   {
     [(NCNotificationListBaseContentView *)self _sizeMeasuringHeightForLabel:footerTextLabel withNumberOfLines:[(NCDigestMosaicFeaturedNotificationContentView *)self _numberOfLinesForFooterTextInFrame:v8, v10, v12, v14]];
   }
@@ -171,32 +171,32 @@
   return result;
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v14 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(NCBadgedIconView *)self->_badgedIconView removeFromSuperview];
     badgedIconView = self->_badgedIconView;
     self->_badgedIconView = 0;
 
-    objc_storeStrong(&self->_badgedIconDescription, a3);
+    objc_storeStrong(&self->_badgedIconDescription, description);
     if (self->_badgedIconDescription)
     {
       v6 = [NCBadgedIconView alloc];
-      v7 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+      _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
       v8 = 30.0;
-      if (!v7)
+      if (!_isContentViewStyleLarge)
       {
-        v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+        _isContentViewStyleMedium = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
         v8 = 16.0;
-        if (v9)
+        if (_isContentViewStyleMedium)
         {
           v8 = 26.0;
         }
       }
 
-      v10 = [(NCBadgedIconView *)v6 initWithBadgedIconDescription:v14 pointSize:v8];
+      v10 = [(NCBadgedIconView *)v6 initWithBadgedIconDescription:descriptionCopy pointSize:v8];
       v11 = self->_badgedIconView;
       self->_badgedIconView = v10;
 
@@ -204,8 +204,8 @@
       [(UIView *)self->_imageBoundingView addSubview:self->_badgedIconView];
     }
 
-    v12 = [(NCBadgedIconView *)self->_badgedIconView dominantColor];
-    [(NCDigestMosaicFeaturedNotificationContentView *)self _updateBackgroundColorForIconImageDominantColor:v12];
+    dominantColor = [(NCBadgedIconView *)self->_badgedIconView dominantColor];
+    [(NCDigestMosaicFeaturedNotificationContentView *)self _updateBackgroundColorForIconImageDominantColor:dominantColor];
 
     if ([(NCBadgedIconView *)self->_badgedIconView isFeaturingSymbol])
     {
@@ -222,16 +222,16 @@
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v12 = a3;
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self primaryText];
+  textCopy = text;
+  primaryText = [(NCDigestMosaicFeaturedNotificationContentView *)self primaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     primaryTextLabel = self->_primaryTextLabel;
-    if (v12)
+    if (textCopy)
     {
       if (!primaryTextLabel)
       {
@@ -252,7 +252,7 @@
       }
 
       [(NCDigestMosaicFeaturedNotificationContentView *)self _updateTextAttributesForPrimaryTextLabel];
-      [(UILabel *)self->_primaryTextLabel setText:v12];
+      [(UILabel *)self->_primaryTextLabel setText:textCopy];
     }
 
     else
@@ -263,22 +263,22 @@
     }
 
     self->_hasUpdatedContent = 1;
-    v6 = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
+    setNeedsLayout = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F96F8](v6);
+  MEMORY[0x2821F96F8](setNeedsLayout);
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v12 = a3;
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCDigestMosaicFeaturedNotificationContentView *)self primarySubtitleText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-    if (v12)
+    if (textCopy)
     {
       if (!primarySubtitleTextLabel)
       {
@@ -294,7 +294,7 @@
       }
 
       [(NCDigestMosaicFeaturedNotificationContentView *)self _updateTextAttributesForPrimarySubtitleTextLabel];
-      [(UILabel *)self->_primarySubtitleTextLabel setText:v12];
+      [(UILabel *)self->_primarySubtitleTextLabel setText:textCopy];
     }
 
     else
@@ -305,22 +305,22 @@
     }
 
     self->_hasUpdatedContent = 1;
-    v6 = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
+    setNeedsLayout = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F96F8](v6);
+  MEMORY[0x2821F96F8](setNeedsLayout);
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v12 = a3;
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self secondaryText];
+  textCopy = text;
+  secondaryText = [(NCDigestMosaicFeaturedNotificationContentView *)self secondaryText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     secondaryTextLabel = self->_secondaryTextLabel;
-    if (v12)
+    if (textCopy)
     {
       if (!secondaryTextLabel)
       {
@@ -338,36 +338,36 @@
         secondaryTextLabel = self->_secondaryTextLabel;
       }
 
-      v11 = [(UILabel *)secondaryTextLabel textColor];
-      [(UILabel *)self->_secondaryTextLabel setAttributedText:v12];
-      [(UILabel *)self->_secondaryTextLabel setTextColor:v11];
+      textColor = [(UILabel *)secondaryTextLabel textColor];
+      [(UILabel *)self->_secondaryTextLabel setAttributedText:textCopy];
+      [(UILabel *)self->_secondaryTextLabel setTextColor:textColor];
       [(NCDigestMosaicFeaturedNotificationContentView *)self _updateTextAttributesForSecondaryTextElement];
     }
 
     else
     {
       [(UILabel *)secondaryTextLabel removeFromSuperview];
-      v11 = self->_secondaryTextLabel;
+      textColor = self->_secondaryTextLabel;
       self->_secondaryTextLabel = 0;
     }
 
     self->_hasUpdatedContent = 1;
-    v6 = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
+    setNeedsLayout = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F96F8](v6);
+  MEMORY[0x2821F96F8](setNeedsLayout);
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v12 = a3;
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self footerText];
+  textCopy = text;
+  footerText = [(NCDigestMosaicFeaturedNotificationContentView *)self footerText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     footerTextLabel = self->_footerTextLabel;
-    if (v12)
+    if (textCopy)
     {
       if (!footerTextLabel)
       {
@@ -382,7 +382,7 @@
       }
 
       [(NCDigestMosaicFeaturedNotificationContentView *)self _updateTextAttributesForFooterTextLabel];
-      [(UILabel *)self->_footerTextLabel setAttributedText:v12];
+      [(UILabel *)self->_footerTextLabel setAttributedText:textCopy];
     }
 
     else
@@ -393,19 +393,19 @@
     }
 
     self->_hasUpdatedContent = 1;
-    v6 = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
+    setNeedsLayout = [(NCDigestMosaicFeaturedNotificationContentView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F96F8](v6);
+  MEMORY[0x2821F96F8](setNeedsLayout);
 }
 
-- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)a3
+- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if (self->_secondaryTextMaximumNumberOfLines != a3)
+  if (self->_secondaryTextMaximumNumberOfLines != lines)
   {
-    self->_secondaryTextMaximumNumberOfLines = a3;
-    v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self secondaryText];
-    v5 = [v4 length];
+    self->_secondaryTextMaximumNumberOfLines = lines;
+    secondaryText = [(NCDigestMosaicFeaturedNotificationContentView *)self secondaryText];
+    v5 = [secondaryText length];
 
     if (v5)
     {
@@ -416,26 +416,26 @@
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  if (self->_screenCaptureProhibited != a3)
+  if (self->_screenCaptureProhibited != prohibited)
   {
-    self->_screenCaptureProhibited = a3;
+    self->_screenCaptureProhibited = prohibited;
     [(NCDigestMosaicFeaturedNotificationContentView *)self nc_setScreenCaptureProhibited:?];
   }
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v11 = a3;
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self thumbnail];
+  thumbnailCopy = thumbnail;
+  thumbnail = [(NCDigestMosaicFeaturedNotificationContentView *)self thumbnail];
   v5 = BSEqualObjects();
 
-  v6 = v11;
+  v6 = thumbnailCopy;
   if ((v5 & 1) == 0)
   {
     thumbnailImageView = self->_thumbnailImageView;
-    if (v11)
+    if (thumbnailCopy)
     {
       if (!thumbnailImageView)
       {
@@ -446,7 +446,7 @@
         [(UIImageView *)self->_thumbnailImageView setContentMode:2];
         [(NCDigestMosaicFeaturedNotificationContentView *)self _configureImageBoundingViewIfNecessary];
         [(UIView *)self->_imageBoundingView addSubview:self->_thumbnailImageView];
-        v6 = v11;
+        v6 = thumbnailCopy;
         thumbnailImageView = self->_thumbnailImageView;
       }
 
@@ -683,9 +683,9 @@
         v44.origin.y = v40;
         v44.size.height = rect;
         v21 = CGRectGetMaxX(v44) - v17;
-        v22 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+        _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
         v23 = 12.0;
-        if (!v22)
+        if (!_isContentViewStyleLarge)
         {
           [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
           v23 = 10.0;
@@ -705,8 +705,8 @@
       }
 
       v25 = MaxY + v20;
-      v26 = [(NCBadgedIconView *)self->_badgedIconView superview];
-      if (v26 == self)
+      superview = [(NCBadgedIconView *)self->_badgedIconView superview];
+      if (superview == self)
       {
         [(NCBadgedIconView *)self->_badgedIconView frame];
         UIRectCenteredYInRect();
@@ -789,13 +789,13 @@
           MaxY = CGRectGetMaxY(v38);
           if (self->_thumbnailImageView)
           {
-            v24 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+            _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
             v25 = 8.0;
-            if (!v24)
+            if (!_isContentViewStyleLarge)
             {
-              v26 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+              _isContentViewStyleMedium = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
               v25 = 4.0;
-              if (v26)
+              if (_isContentViewStyleMedium)
               {
                 v25 = 6.0;
               }
@@ -823,9 +823,9 @@
         v39.size.height = v32;
         v39.size.width = v33;
         v27 = CGRectGetMaxX(v39) - v18;
-        v28 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+        _isContentViewStyleLarge2 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
         v29 = 12.0;
-        if (!v28)
+        if (!_isContentViewStyleLarge2)
         {
           [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
           v29 = 10.0;
@@ -889,9 +889,9 @@
     {
       [(UILabel *)primarySubtitleTextLabel frame];
       MaxY = CGRectGetMaxY(v39);
-      v22 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+      _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
       v23 = 6.0;
-      if (!v22)
+      if (!_isContentViewStyleLarge)
       {
         v24 = ![(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
         v23 = 1.0;
@@ -913,9 +913,9 @@
       MaxY = CGRectGetMaxY(v42);
       if (self->_thumbnailImageView)
       {
-        v33 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+        _isContentViewStyleLarge2 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
         v23 = 8.0;
-        if (!v33)
+        if (!_isContentViewStyleLarge2)
         {
           v24 = ![(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
           v23 = 4.0;
@@ -943,9 +943,9 @@ LABEL_13:
       v40.size.height = v34;
       v40.size.width = v35;
       v27 = CGRectGetMaxX(v40) - v18;
-      v28 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+      _isContentViewStyleLarge3 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
       v29 = 12.0;
-      if (!v28)
+      if (!_isContentViewStyleLarge3)
       {
         [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
         v29 = 10.0;
@@ -1023,10 +1023,10 @@ LABEL_20:
         v33.size.width = v11;
         v33.size.height = v13;
         v21 = CGRectGetMaxX(v33) - v19;
-        v22 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+        _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
         v23 = 12.0;
         v24 = v19;
-        if (!v22)
+        if (!_isContentViewStyleLarge)
         {
           [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
           v23 = 10.0;
@@ -1075,9 +1075,9 @@ LABEL_20:
     [(UIView *)self->_clippingView setAutoresizingMask:18];
     [(UIView *)self->_clippingView setClipsToBounds:1];
     v6 = self->_clippingView;
-    v7 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+    _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
     v8 = 18.0;
-    if (!v7)
+    if (!_isContentViewStyleLarge)
     {
       [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
       v8 = 15.0;
@@ -1166,15 +1166,15 @@ LABEL_20:
 
 - (BOOL)_isAXSize
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
-- (double)_imageHeightForBounds:(CGRect)a3
+- (double)_imageHeightForBounds:(CGRect)bounds
 {
-  CGRectGetWidth(a3);
+  CGRectGetWidth(bounds);
   if (![(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge])
   {
     [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
@@ -1184,16 +1184,16 @@ LABEL_20:
   return result;
 }
 
-- (CGRect)_labelSizingBoundsForRect:(CGRect)a3
+- (CGRect)_labelSizingBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
-  v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect);
+  _isContentViewStyleLarge = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleLarge];
   v10 = 12.0;
-  if (!v9)
+  if (!_isContentViewStyleLarge)
   {
     [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
     v10 = 10.0;
@@ -1217,13 +1217,13 @@ LABEL_20:
   return result;
 }
 
-- (void)_updateBackgroundColorForIconImageDominantColor:(id)a3
+- (void)_updateBackgroundColorForIconImageDominantColor:(id)color
 {
-  v9 = a3;
+  colorCopy = color;
   [(NCDigestMosaicFeaturedNotificationContentView *)self _configureBackgroundViewIfNecessary];
   [(NCDigestMosaicFeaturedNotificationContentView *)self _configureBackgroundColorViewIfNecessary];
-  v4 = [(NCDigestMosaicFeaturedNotificationContentView *)self sectionIdentifier];
-  v5 = _NCNotificationBackgroundColorForSectionIdentifier(v4);
+  sectionIdentifier = [(NCDigestMosaicFeaturedNotificationContentView *)self sectionIdentifier];
+  v5 = _NCNotificationBackgroundColorForSectionIdentifier(sectionIdentifier);
 
   if (v5)
   {
@@ -1232,19 +1232,19 @@ LABEL_20:
 
   else
   {
-    v6 = v9;
+    v6 = colorCopy;
   }
 
-  v7 = v6;
+  systemBackgroundColor = v6;
 
-  if (!v7)
+  if (!systemBackgroundColor)
   {
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  [(MTStylingProvidingSolidColorView *)self->_backgroundColorView setBackgroundColor:v7];
+  [(MTStylingProvidingSolidColorView *)self->_backgroundColorView setBackgroundColor:systemBackgroundColor];
   backgroundColor = self->_backgroundColor;
-  self->_backgroundColor = v7;
+  self->_backgroundColor = systemBackgroundColor;
 
   [(NCDigestMosaicFeaturedNotificationContentView *)self _updateVisualStylingProviderForBackgroundColorView];
 }
@@ -1259,14 +1259,14 @@ LABEL_20:
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   badgedIconView = self->_badgedIconView;
-  v8 = a5;
-  v12 = a3;
+  providerCopy = provider;
+  changeCopy = change;
   if ([(NCBadgedIconView *)badgedIconView isFeaturingSymbol])
   {
-    v9 = v12;
+    v9 = changeCopy;
   }
 
   else
@@ -1276,18 +1276,18 @@ LABEL_20:
 
   v10 = self->_badgedIconView;
   v11 = v9;
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v10 style:0 visualStylingProvider:v11 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:0 visualStylingProvider:v12 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:[(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleSmall]^ 1 visualStylingProvider:v12 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:1 visualStylingProvider:v12 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_secondaryTextLabel style:0 visualStylingProvider:v12 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:1 visualStylingProvider:v12 outgoingProvider:v8];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v10 style:0 visualStylingProvider:v11 outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:[(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleSmall]^ 1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_secondaryTextLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 }
 
 - (unint64_t)_maximumNumberOfLinesForPrimaryText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v2))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = 0;
   }
@@ -1300,42 +1300,42 @@ LABEL_20:
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   primaryTextLabel = self->_primaryTextLabel;
-  v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForPrimaryText];
+  _maximumNumberOfLinesForPrimaryText = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForPrimaryText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primaryTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primaryTextLabel maximumNumberOfLines:_maximumNumberOfLinesForPrimaryText inFrame:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForPrimarySubtitleText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  v3 = !UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  v3 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-  v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForPrimarySubtitleText];
+  _maximumNumberOfLinesForPrimarySubtitleText = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForPrimarySubtitleText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primarySubtitleTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primarySubtitleTextLabel maximumNumberOfLines:_maximumNumberOfLinesForPrimarySubtitleText inFrame:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForSecondaryText
 {
-  v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v4 = 0;
   }
@@ -1366,36 +1366,36 @@ LABEL_20:
   return v4;
 }
 
-- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   secondaryTextLabel = self->_secondaryTextLabel;
-  v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForSecondaryText];
+  _maximumNumberOfLinesForSecondaryText = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForSecondaryText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:secondaryTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:secondaryTextLabel maximumNumberOfLines:_maximumNumberOfLinesForSecondaryText inFrame:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForFooterText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  v3 = !UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  v3 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   footerTextLabel = self->_footerTextLabel;
-  v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForFooterText];
+  _maximumNumberOfLinesForFooterText = [(NCDigestMosaicFeaturedNotificationContentView *)self _maximumNumberOfLinesForFooterText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:footerTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:footerTextLabel maximumNumberOfLines:_maximumNumberOfLinesForFooterText inFrame:x, y, width, height];
 }
 
 - (void)_updateTextAttributes
@@ -1413,8 +1413,8 @@ LABEL_20:
 {
   if (self->_primaryTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v4 = MEMORY[0x277D76918];
     }
@@ -1426,9 +1426,9 @@ LABEL_20:
 
     else
     {
-      v5 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+      _isContentViewStyleMedium = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
       v4 = MEMORY[0x277D76940];
-      if (!v5)
+      if (!_isContentViewStyleMedium)
       {
         v4 = MEMORY[0x277D76938];
       }
@@ -1444,9 +1444,9 @@ LABEL_20:
 
     else
     {
-      v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+      _isContentViewStyleMedium2 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
       v8 = MEMORY[0x277D74420];
-      if (!v9)
+      if (!_isContentViewStyleMedium2)
       {
         v8 = MEMORY[0x277D74418];
       }
@@ -1464,8 +1464,8 @@ LABEL_20:
 {
   if (self->_primarySubtitleTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v4 = MEMORY[0x277D76918];
     }
@@ -1477,9 +1477,9 @@ LABEL_20:
 
     else
     {
-      v5 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+      _isContentViewStyleMedium = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
       v4 = MEMORY[0x277D76940];
-      if (!v5)
+      if (!_isContentViewStyleMedium)
       {
         v4 = MEMORY[0x277D76938];
       }
@@ -1495,9 +1495,9 @@ LABEL_20:
 
     else
     {
-      v9 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+      _isContentViewStyleMedium2 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
       v8 = MEMORY[0x277D74420];
-      if (!v9)
+      if (!_isContentViewStyleMedium2)
       {
         v8 = MEMORY[0x277D74418];
       }
@@ -1515,8 +1515,8 @@ LABEL_20:
 {
   if (self->_secondaryTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v4 = MEMORY[0x277D76918];
     }
@@ -1542,9 +1542,9 @@ LABEL_20:
 
     else
     {
-      v8 = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
+      _isContentViewStyleMedium = [(NCDigestMosaicFeaturedNotificationContentView *)self _isContentViewStyleMedium];
       v7 = MEMORY[0x277D74420];
-      if (!v8)
+      if (!_isContentViewStyleMedium)
       {
         v7 = MEMORY[0x277D74418];
       }
@@ -1562,8 +1562,8 @@ LABEL_20:
 {
   if (self->_footerTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {

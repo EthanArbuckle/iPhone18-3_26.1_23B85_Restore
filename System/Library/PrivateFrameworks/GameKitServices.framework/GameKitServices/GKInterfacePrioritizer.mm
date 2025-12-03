@@ -1,6 +1,6 @@
 @interface GKInterfacePrioritizer
 + (id)bsdNameToInterfaceTypeMap;
-+ (id)prioritizeLocalInterfaces:(id)a3;
++ (id)prioritizeLocalInterfaces:(id)interfaces;
 + (void)initialize;
 @end
 
@@ -188,18 +188,18 @@ LABEL_15:
   return v3;
 }
 
-+ (id)prioritizeLocalInterfaces:(id)a3
++ (id)prioritizeLocalInterfaces:(id)interfaces
 {
   v42 = *MEMORY[0x277D85DE8];
-  if ([a3 count])
+  if ([interfaces count])
   {
     v4 = +[GKInterfacePrioritizer bsdNameToInterfaceTypeMap];
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(interfaces, "count")}];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v29 objects:v41 count:16];
+    v6 = [interfaces countByEnumeratingWithState:&v29 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
@@ -210,7 +210,7 @@ LABEL_15:
         {
           if (*v30 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(interfaces);
           }
 
           v10 = [GKInterface interfaceWithInterfaceIndex:*(*(&v29 + 1) + 8 * i)];
@@ -229,19 +229,19 @@ LABEL_15:
           v13 = [gkInterfacePrioritizerTypeToPriorityMap objectForKeyedSubscript:{-[GKInterface type](v10, "type")}];
           if (v13)
           {
-            v14 = [v13 unsignedIntValue];
+            unsignedIntValue = [v13 unsignedIntValue];
           }
 
           else
           {
-            v14 = gkInterfaceTypesCount;
+            unsignedIntValue = gkInterfaceTypesCount;
           }
 
-          [(GKInterface *)v10 setPriority:v14];
+          [(GKInterface *)v10 setPriority:unsignedIntValue];
           [v5 addObject:v10];
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        v7 = [interfaces countByEnumeratingWithState:&v29 objects:v41 count:16];
       }
 
       while (v7);

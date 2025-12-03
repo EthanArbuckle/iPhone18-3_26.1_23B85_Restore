@@ -1,45 +1,45 @@
 @interface PDCloudStoreTransactionSourceController
-- (PDCloudStoreTransactionSourceController)initWithDatabaseManager:(id)a3 accountManager:(id)a4 peerPaymentWebServiceCoordinator:(id)a5 cloudStoreNotificationCoordinator:(id)a6;
-- (void)_hasScheduledActivityWithCompletion:(id)a3;
-- (void)_queue_allRelevantTransactionSourceIdentifiersWithCompletion:(id)a3;
-- (void)_queue_backgroundRecordChangeSyncWithCompletion:(id)a3;
-- (void)_queue_filterRelevantTransactionSourceIdentifiersThatCanSyncWithCloudKit:(id)a3 completion:(id)a4;
-- (void)_queue_performDailyTransactionSyncFromDate:(id)a3 returnRecords:(BOOL)a4 formReport:(BOOL)a5 completion:(id)a6;
-- (void)_queue_relevantTransactionSourceIdentifiersToSyncForPaymentApplication:(id)a3 onPaymentPass:(id)a4 completion:(id)a5;
-- (void)_scheduleActivityWithIdentifier:(id)a3;
+- (PDCloudStoreTransactionSourceController)initWithDatabaseManager:(id)manager accountManager:(id)accountManager peerPaymentWebServiceCoordinator:(id)coordinator cloudStoreNotificationCoordinator:(id)notificationCoordinator;
+- (void)_hasScheduledActivityWithCompletion:(id)completion;
+- (void)_queue_allRelevantTransactionSourceIdentifiersWithCompletion:(id)completion;
+- (void)_queue_backgroundRecordChangeSyncWithCompletion:(id)completion;
+- (void)_queue_filterRelevantTransactionSourceIdentifiersThatCanSyncWithCloudKit:(id)kit completion:(id)completion;
+- (void)_queue_performDailyTransactionSyncFromDate:(id)date returnRecords:(BOOL)records formReport:(BOOL)report completion:(id)completion;
+- (void)_queue_relevantTransactionSourceIdentifiersToSyncForPaymentApplication:(id)application onPaymentPass:(id)pass completion:(id)completion;
+- (void)_scheduleActivityWithIdentifier:(id)identifier;
 - (void)_updateScheduledActivityIfNeccessary;
-- (void)accountManager:(id)a3 didAddAccount:(id)a4;
-- (void)accountManager:(id)a3 didRemoveAccount:(id)a4;
-- (void)accountManager:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5;
-- (void)didAddPaymentApplication:(id)a3 forPaymentPass:(id)a4 groupNameSuffix:(id)a5 ignoreExistingRecordHash:(BOOL)a6 completion:(id)a7;
-- (void)passDidDisappear:(id)a3;
-- (void)peerPaymentWebServiceCoordinator:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5;
-- (void)performBackgroundRecordChangesSyncWithCompletion:(id)a3;
-- (void)performBackgroundTransactionSyncFromDate:(id)a3 completion:(id)a4;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)a3 completion:(id)a4;
+- (void)accountManager:(id)manager didAddAccount:(id)account;
+- (void)accountManager:(id)manager didRemoveAccount:(id)account;
+- (void)accountManager:(id)manager didUpdateAccount:(id)account oldAccount:(id)oldAccount;
+- (void)didAddPaymentApplication:(id)application forPaymentPass:(id)pass groupNameSuffix:(id)suffix ignoreExistingRecordHash:(BOOL)hash completion:(id)completion;
+- (void)passDidDisappear:(id)disappear;
+- (void)peerPaymentWebServiceCoordinator:(id)coordinator didUpdateAccount:(id)account oldAccount:(id)oldAccount;
+- (void)performBackgroundRecordChangesSyncWithCompletion:(id)completion;
+- (void)performBackgroundTransactionSyncFromDate:(id)date completion:(id)completion;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation PDCloudStoreTransactionSourceController
 
-- (PDCloudStoreTransactionSourceController)initWithDatabaseManager:(id)a3 accountManager:(id)a4 peerPaymentWebServiceCoordinator:(id)a5 cloudStoreNotificationCoordinator:(id)a6
+- (PDCloudStoreTransactionSourceController)initWithDatabaseManager:(id)manager accountManager:(id)accountManager peerPaymentWebServiceCoordinator:(id)coordinator cloudStoreNotificationCoordinator:(id)notificationCoordinator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  coordinatorCopy = coordinator;
+  notificationCoordinatorCopy = notificationCoordinator;
   v22.receiver = self;
   v22.super_class = PDCloudStoreTransactionSourceController;
   v15 = [(PDCloudStoreTransactionSourceController *)&v22 init];
   if (v15)
   {
     v15->_isInternalBuild = os_variant_has_internal_ui();
-    objc_storeStrong(&v15->_databaseManager, a3);
-    objc_storeStrong(&v15->_accountManager, a4);
+    objc_storeStrong(&v15->_databaseManager, manager);
+    objc_storeStrong(&v15->_accountManager, accountManager);
     [(PDAccountManager *)v15->_accountManager registerObserver:v15];
-    objc_storeStrong(&v15->_peerPaymentWebServiceCoordinator, a5);
+    objc_storeStrong(&v15->_peerPaymentWebServiceCoordinator, coordinator);
     [(PDPeerPaymentWebServiceCoordinator *)v15->_peerPaymentWebServiceCoordinator registerObserver:v15];
-    objc_storeStrong(&v15->_cloudStoreNotificationCoordinator, a6);
+    objc_storeStrong(&v15->_cloudStoreNotificationCoordinator, notificationCoordinator);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("com.apple.passd.CloudStoreTransactionSourceController.work", v16);
     workQueue = v15->_workQueue;
@@ -58,9 +58,9 @@
 
 - (void)_updateScheduledActivityIfNeccessary
 {
-  v3 = [(PDDatabaseManager *)self->_databaseManager hasAnyAccount];
-  v4 = [(PDDatabaseManager *)self->_databaseManager hasPeerPaymentAccount];
-  if (v3 & 1) != 0 || (v4)
+  hasAnyAccount = [(PDDatabaseManager *)self->_databaseManager hasAnyAccount];
+  hasPeerPaymentAccount = [(PDDatabaseManager *)self->_databaseManager hasPeerPaymentAccount];
+  if (hasAnyAccount & 1) != 0 || (hasPeerPaymentAccount)
   {
     if ((PDScheduledActivityExists() & 1) == 0)
     {
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)_scheduleActivityWithIdentifier:(id)a3
+- (void)_scheduleActivityWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = PKRandomIntegerInRange();
   v5 = PKRandomIntegerInRange();
   v6 = +[NSDate date];
@@ -111,42 +111,42 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v3;
+    v11 = identifierCopy;
     v12 = 2114;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Scheduled %{public}@ with start time %{public}@", &v10, 0x16u);
   }
 }
 
-- (void)didAddPaymentApplication:(id)a3 forPaymentPass:(id)a4 groupNameSuffix:(id)a5 ignoreExistingRecordHash:(BOOL)a6 completion:(id)a7
+- (void)didAddPaymentApplication:(id)application forPaymentPass:(id)pass groupNameSuffix:(id)suffix ignoreExistingRecordHash:(BOOL)hash completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  applicationCopy = application;
+  passCopy = pass;
+  suffixCopy = suffix;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10010F7E0;
   v21[3] = &unk_100846C60;
-  v22 = v12;
-  v23 = v13;
-  v27 = a6;
-  v24 = self;
-  v25 = v14;
-  v26 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = applicationCopy;
+  v23 = passCopy;
+  hashCopy = hash;
+  selfCopy = self;
+  v25 = suffixCopy;
+  v26 = completionCopy;
+  v17 = completionCopy;
+  v18 = suffixCopy;
+  v19 = passCopy;
+  v20 = applicationCopy;
   dispatch_async(workQueue, v21);
 }
 
-- (void)passDidDisappear:(id)a3
+- (void)passDidDisappear:(id)disappear
 {
-  v4 = [a3 paymentPass];
-  v5 = [v4 associatedAccountServiceAccountIdentifier];
-  v6 = [v5 length];
+  paymentPass = [disappear paymentPass];
+  associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+  v6 = [associatedAccountServiceAccountIdentifier length];
 
   if (v6)
   {
@@ -160,69 +160,69 @@
   }
 }
 
-- (void)performBackgroundTransactionSyncFromDate:(id)a3 completion:(id)a4
+- (void)performBackgroundTransactionSyncFromDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011019C;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dateCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)performBackgroundRecordChangesSyncWithCompletion:(id)a3
+- (void)performBackgroundRecordChangesSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001104B4;
   v7[3] = &unk_10083DCB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)simulatePassProvisioningForPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100110584;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)accountManager:(id)a3 didAddAccount:(id)a4
+- (void)accountManager:(id)manager didAddAccount:(id)account
 {
-  v5 = a4;
+  accountCopy = account;
   workQueue = self->_workQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001106AC;
   v8[3] = &unk_10083C420;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = accountCopy;
+  v7 = accountCopy;
   dispatch_async(workQueue, v8);
 }
 
-- (void)accountManager:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5
+- (void)accountManager:(id)manager didUpdateAccount:(id)account oldAccount:(id)oldAccount
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -233,7 +233,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)accountManager:(id)a3 didRemoveAccount:(id)a4
+- (void)accountManager:(id)manager didRemoveAccount:(id)account
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -244,7 +244,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)peerPaymentWebServiceCoordinator:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5
+- (void)peerPaymentWebServiceCoordinator:(id)coordinator didUpdateAccount:(id)account oldAccount:(id)oldAccount
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -255,19 +255,19 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v6;
+    v31 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PDCloudStoreTransactionSourceController starting activity: %{public}@", buf, 0xCu);
   }
 
-  v9 = v6;
+  v9 = identifierCopy;
   v10 = v9;
   if (v9 == @"CloudStoreTransactionSourceSync")
   {
@@ -388,21 +388,21 @@ LABEL_22:
 LABEL_25:
 }
 
-- (void)_queue_performDailyTransactionSyncFromDate:(id)a3 returnRecords:(BOOL)a4 formReport:(BOOL)a5 completion:(id)a6
+- (void)_queue_performDailyTransactionSyncFromDate:(id)date returnRecords:(BOOL)records formReport:(BOOL)report completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  completionCopy = completion;
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = dateCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Running daily transaction sync task from date %{public}@", &buf, 0xCu);
   }
 
-  if (v10)
+  if (dateCopy)
   {
-    v13 = [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreNotificationCoordinator applePayContainer];
+    applePayContainer = [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreNotificationCoordinator applePayContainer];
     v14 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -424,12 +424,12 @@ LABEL_25:
     v19[3] = &unk_100846D28;
     v19[4] = self;
     p_buf = &buf;
-    v16 = v13;
+    v16 = applePayContainer;
     v20 = v16;
-    v21 = v10;
-    v24 = a4;
-    v25 = a5;
-    v22 = v11;
+    v21 = dateCopy;
+    recordsCopy = records;
+    reportCopy = report;
+    v22 = completionCopy;
     v17 = [v14 evaluateWithInput:v15 completion:v19];
 
     _Block_object_dispose(&buf, 8);
@@ -442,15 +442,15 @@ LABEL_25:
     block[1] = 3221225472;
     block[2] = sub_100111610;
     block[3] = &unk_10083D648;
-    v28 = v11;
+    v28 = completionCopy;
     dispatch_async(replyQueue, block);
     v16 = v28;
   }
 }
 
-- (void)_queue_backgroundRecordChangeSyncWithCompletion:(id)a3
+- (void)_queue_backgroundRecordChangeSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -458,7 +458,7 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Running background record change sync", buf, 2u);
   }
 
-  v6 = [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreNotificationCoordinator applePayContainer];
+  applePayContainer = [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreNotificationCoordinator applePayContainer];
   v7 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   *buf = 0;
   v23 = buf;
@@ -485,7 +485,7 @@ LABEL_25:
   v15[3] = &unk_100846DA0;
   v15[4] = self;
   v17 = buf;
-  v8 = v6;
+  v8 = applePayContainer;
   v16 = v8;
   v18 = v20;
   [v7 addOperation:v15];
@@ -496,7 +496,7 @@ LABEL_25:
   v12[3] = &unk_100846DC8;
   v12[4] = self;
   v14 = v20;
-  v10 = v4;
+  v10 = completionCopy;
   v13 = v10;
   v11 = [v7 evaluateWithInput:v9 completion:v12];
 
@@ -504,9 +504,9 @@ LABEL_25:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_queue_allRelevantTransactionSourceIdentifiersWithCompletion:(id)a3
+- (void)_queue_allRelevantTransactionSourceIdentifiersWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   v16 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v4 = [(PDDatabaseManager *)self->_databaseManager passesOfType:1];
   v29[0] = 0;
@@ -534,13 +534,13 @@ LABEL_25:
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 devicePrimaryPaymentApplication];
+        devicePrimaryPaymentApplication = [v8 devicePrimaryPaymentApplication];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100112A7C;
         v21[3] = &unk_100846BE8;
         v21[4] = self;
-        v10 = v9;
+        v10 = devicePrimaryPaymentApplication;
         v22 = v10;
         v23 = v8;
         v24 = v29;
@@ -567,25 +567,25 @@ LABEL_25:
   v17[3] = &unk_100846DC8;
   v17[4] = self;
   v19 = v29;
-  v12 = v14;
+  v12 = completionCopy;
   v18 = v12;
   v13 = [v16 evaluateWithInput:v11 completion:v17];
 
   _Block_object_dispose(v29, 8);
 }
 
-- (void)_queue_relevantTransactionSourceIdentifiersToSyncForPaymentApplication:(id)a3 onPaymentPass:(id)a4 completion:(id)a5
+- (void)_queue_relevantTransactionSourceIdentifiersToSyncForPaymentApplication:(id)application onPaymentPass:(id)pass completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  applicationCopy = application;
+  passCopy = pass;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (applicationCopy && passCopy)
     {
-      v32 = [v8 transactionSourceIdentifier];
-      v12 = [v9 associatedAccountServiceAccountIdentifier];
+      transactionSourceIdentifier = [applicationCopy transactionSourceIdentifier];
+      associatedAccountServiceAccountIdentifier = [passCopy associatedAccountServiceAccountIdentifier];
       v13 = objc_alloc_init(PKAsyncUnaryOperationComposer);
       v14 = objc_alloc_init(NSMutableDictionary);
       v64[0] = 0;
@@ -600,20 +600,20 @@ LABEL_25:
       v62[3] = sub_100005AE0;
       v62[4] = sub_10000B17C;
       v63 = 0;
-      v15 = [v9 uniqueID];
-      v16 = [v9 organizationName];
-      v31 = [NSString stringWithFormat:@"Payment Pass: %@, %@", v15, v16];
+      uniqueID = [passCopy uniqueID];
+      organizationName = [passCopy organizationName];
+      v31 = [NSString stringWithFormat:@"Payment Pass: %@, %@", uniqueID, organizationName];
 
-      [v14 safelySetObject:v31 forKey:v32];
+      [v14 safelySetObject:v31 forKey:transactionSourceIdentifier];
       v57[0] = _NSConcreteStackBlock;
       v57[1] = 3221225472;
       v57[2] = sub_100113800;
       v57[3] = &unk_100846EB8;
-      v17 = v12;
+      v17 = associatedAccountServiceAccountIdentifier;
       v58 = v17;
-      v59 = self;
+      selfCopy = self;
       v61 = v62;
-      v18 = v9;
+      v18 = passCopy;
       v60 = v18;
       [v13 addOperation:v57];
       v54[0] = _NSConcreteStackBlock;
@@ -622,7 +622,7 @@ LABEL_25:
       v54[3] = &unk_10083FAF8;
       v19 = v18;
       v55 = v19;
-      v56 = self;
+      selfCopy2 = self;
       [v13 addOperation:v54];
       v50[0] = _NSConcreteStackBlock;
       v50[1] = 3221225472;
@@ -630,7 +630,7 @@ LABEL_25:
       v50[3] = &unk_100841F68;
       v20 = v19;
       v51 = v20;
-      v52 = self;
+      selfCopy3 = self;
       v21 = v14;
       v53 = v21;
       [v13 addOperation:v50];
@@ -640,7 +640,7 @@ LABEL_25:
       v46[3] = &unk_100841F68;
       v22 = v17;
       v47 = v22;
-      v48 = self;
+      selfCopy4 = self;
       v23 = v21;
       v49 = v23;
       [v13 addOperation:v46];
@@ -651,7 +651,7 @@ LABEL_25:
       v24 = v22;
       v45 = v62;
       v42 = v24;
-      v43 = self;
+      selfCopy5 = self;
       v25 = v23;
       v44 = v25;
       [v13 addOperation:v41];
@@ -661,7 +661,7 @@ LABEL_25:
       v37[3] = &unk_10083E620;
       v26 = v25;
       v38 = v26;
-      v39 = self;
+      selfCopy6 = self;
       v40 = v64;
       [v13 addOperation:v37];
       v27 = +[NSNull null];
@@ -678,7 +678,7 @@ LABEL_25:
       _Block_object_dispose(v62, 8);
       _Block_object_dispose(v64, 8);
 
-      v29 = v32;
+      v29 = transactionSourceIdentifier;
     }
 
     else
@@ -688,19 +688,19 @@ LABEL_25:
       block[1] = 3221225472;
       block[2] = sub_1001137E4;
       block[3] = &unk_10083D648;
-      v67 = v10;
+      v67 = completionCopy;
       dispatch_async(replyQueue, block);
       v29 = v67;
     }
   }
 }
 
-- (void)_queue_filterRelevantTransactionSourceIdentifiersThatCanSyncWithCloudKit:(id)a3 completion:(id)a4
+- (void)_queue_filterRelevantTransactionSourceIdentifiersThatCanSyncWithCloudKit:(id)kit completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  completionCopy = completion;
   v8 = objc_alloc_init(PKAsyncUnaryOperationComposer);
-  v9 = [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreNotificationCoordinator applePayContainer];
+  applePayContainer = [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreNotificationCoordinator applePayContainer];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -713,18 +713,18 @@ LABEL_25:
   v18[3] = &unk_100847020;
   v10 = v8;
   v19 = v10;
-  v11 = v9;
+  v11 = applePayContainer;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v22 = v23;
-  [v6 enumerateKeysAndObjectsUsingBlock:v18];
+  [kitCopy enumerateKeysAndObjectsUsingBlock:v18];
   v12 = +[NSNull null];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001155E4;
   v15[3] = &unk_100847048;
   v15[4] = self;
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
   v17 = v23;
   v14 = [v10 evaluateWithInput:v12 completion:v15];
@@ -732,16 +732,16 @@ LABEL_25:
   _Block_object_dispose(v23, 8);
 }
 
-- (void)_hasScheduledActivityWithCompletion:(id)a3
+- (void)_hasScheduledActivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100115774;
   block[3] = &unk_10083D648;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, block);
 }
 

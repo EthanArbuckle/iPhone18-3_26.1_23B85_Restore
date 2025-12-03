@@ -7,14 +7,14 @@
 
 - (id)updatedServerChangedShare
 {
-  v1 = [a1 underlyingCKError];
-  v2 = [v1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E695B740]];
+  underlyingCKError = [self underlyingCKError];
+  domain = [underlyingCKError domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
-  if (v3 && [v1 code] == 14)
+  if (v3 && [underlyingCKError code] == 14)
   {
-    v4 = [v1 userInfo];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695B7C0]];
+    userInfo = [underlyingCKError userInfo];
+    v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B7C0]];
   }
 
   else
@@ -28,25 +28,25 @@
 - (id)underlyingCKError
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [a1 domain];
+  domain = [self domain];
   v3 = *MEMORY[0x1E695B740];
-  v4 = [v2 isEqualToString:*MEMORY[0x1E695B740]];
+  v4 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
   if (v4)
   {
 LABEL_15:
-    v11 = a1;
+    selfCopy = self;
     goto LABEL_18;
   }
 
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  v7 = [a1 userInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x1E696A750]];
+  userInfo2 = [self userInfo];
+  v8 = [userInfo2 objectForKey:*MEMORY[0x1E696A750]];
 
-  v9 = [v6 domain];
-  v10 = [v9 isEqual:v3];
+  domain2 = [v6 domain];
+  v10 = [domain2 isEqual:v3];
 
   if (!v10)
   {
@@ -73,12 +73,12 @@ LABEL_15:
             }
 
             v17 = *(*(&v22 + 1) + 8 * i);
-            v18 = [v17 domain];
-            v19 = [v18 isEqualToString:v3];
+            domain3 = [v17 domain];
+            v19 = [domain3 isEqualToString:v3];
 
             if (v19)
             {
-              v11 = v17;
+              selfCopy = v17;
 
               v8 = v21;
               goto LABEL_17;
@@ -101,12 +101,12 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v11 = v6;
+  selfCopy = v6;
 LABEL_17:
 
 LABEL_18:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

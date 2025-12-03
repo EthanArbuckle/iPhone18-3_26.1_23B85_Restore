@@ -3,7 +3,7 @@
 - (HLPReachabilityManager)init;
 - (HLPReachabilityManagerDelegate)delegate;
 - (void)dealloc;
-- (void)reachabilityChanged:(id)a3;
+- (void)reachabilityChanged:(id)changed;
 - (void)startNotifier;
 - (void)stopNotifier;
 @end
@@ -80,8 +80,8 @@ uint64_t __40__HLPReachabilityManager_defaultManager__block_invoke()
       self->_hostReachability = v8;
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel_reachabilityChanged_ name:kHLPReachabilityChangedNotification[0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_reachabilityChanged_ name:kHLPReachabilityChangedNotification[0] object:0];
 
     [(HLPReachability *)self->_internetReachability startNotifier];
     v11 = self->_hostReachability;
@@ -95,8 +95,8 @@ uint64_t __40__HLPReachabilityManager_defaultManager__block_invoke()
   if (self->_notifying)
   {
     self->_notifying = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     [(HLPReachability *)self->_internetReachability stopNotifier];
     [(HLPReachability *)self->_hostReachability stopNotifier];
@@ -105,19 +105,19 @@ uint64_t __40__HLPReachabilityManager_defaultManager__block_invoke()
   }
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
   [(HLPReachabilityManager *)self setReachabilityInitialized:1];
-  v4 = [(HLPReachability *)self->_internetReachability currentReachabilityStatus];
-  if (v4 <= 2)
+  currentReachabilityStatus = [(HLPReachability *)self->_internetReachability currentReachabilityStatus];
+  if (currentReachabilityStatus <= 2)
   {
-    self->_internetActive = 0x10100u >> (8 * v4);
+    self->_internetActive = 0x10100u >> (8 * currentReachabilityStatus);
   }
 
-  v5 = [(HLPReachability *)self->_hostReachability currentReachabilityStatus];
-  if (v5 <= 2)
+  currentReachabilityStatus2 = [(HLPReachability *)self->_hostReachability currentReachabilityStatus];
+  if (currentReachabilityStatus2 <= 2)
   {
-    self->_hostActive = 0x10100u >> (8 * v5);
+    self->_hostActive = 0x10100u >> (8 * currentReachabilityStatus2);
   }
 
   if (self->_internetActive)
@@ -140,8 +140,8 @@ uint64_t __40__HLPReachabilityManager_defaultManager__block_invoke()
   }
 
   [(HLPReachabilityManager *)self setConnected:hostActive];
-  v7 = [(HLPReachabilityManager *)self delegate];
-  [v7 reachabilityManagerConnectionStatusChanged:self connected:{-[HLPReachabilityManager connected](self, "connected")}];
+  delegate = [(HLPReachabilityManager *)self delegate];
+  [delegate reachabilityManagerConnectionStatusChanged:self connected:{-[HLPReachabilityManager connected](self, "connected")}];
 }
 
 - (HLPReachabilityManagerDelegate)delegate

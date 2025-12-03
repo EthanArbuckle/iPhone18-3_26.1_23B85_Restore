@@ -1,13 +1,13 @@
 @interface BufferWithTimestamp
-- (BufferWithTimestamp)initWithBuffer:(__CVBuffer *)a3 timstamp:(double)a4;
+- (BufferWithTimestamp)initWithBuffer:(__CVBuffer *)buffer timstamp:(double)timstamp;
 @end
 
 @implementation BufferWithTimestamp
 
-- (BufferWithTimestamp)initWithBuffer:(__CVBuffer *)a3 timstamp:(double)a4
+- (BufferWithTimestamp)initWithBuffer:(__CVBuffer *)buffer timstamp:(double)timstamp
 {
-  self->_timestamp = a4;
-  self->_pixelBuffer = a3;
+  self->_timestamp = timstamp;
+  self->_pixelBuffer = buffer;
   return self;
 }
 

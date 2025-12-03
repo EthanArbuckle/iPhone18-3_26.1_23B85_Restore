@@ -1,30 +1,30 @@
 @interface CUIKUserActivityNewEvent
-- (CUIKUserActivityNewEvent)eventWithEventStore:(id)a3;
-- (CUIKUserActivityNewEvent)initWithDictionary:(id)a3;
+- (CUIKUserActivityNewEvent)eventWithEventStore:(id)store;
+- (CUIKUserActivityNewEvent)initWithDictionary:(id)dictionary;
 - (id)dictionary;
 @end
 
 @implementation CUIKUserActivityNewEvent
 
-- (CUIKUserActivityNewEvent)initWithDictionary:(id)a3
+- (CUIKUserActivityNewEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = CUIKUserActivityNewEvent;
-  v5 = [(CUIKUserActivity *)&v49 initWithDictionary:v4];
+  v5 = [(CUIKUserActivity *)&v49 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_17;
   }
 
   v48 = 0;
-  v6 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.title" error:&v48];
+  v6 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.title" error:&v48];
   title = v5->_title;
   v5->_title = v6;
 
   if (v48 != 1)
   {
-    [objc_opt_class() _doubleFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.startDate" error:&v48];
+    [objc_opt_class() _doubleFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.startDate" error:&v48];
     if (v48 == 1)
     {
       v8 = +[CUIKLogSubsystem continuity];
@@ -40,7 +40,7 @@
     startDate = v5->_startDate;
     v5->_startDate = v24;
 
-    [objc_opt_class() _doubleFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.endDate" error:&v48];
+    [objc_opt_class() _doubleFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.endDate" error:&v48];
     if (v48 == 1)
     {
       v8 = +[CUIKLogSubsystem continuity];
@@ -56,16 +56,16 @@
     endDate = v5->_endDate;
     v5->_endDate = v35;
 
-    v5->_allDay = [objc_opt_class() _BOOLFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.allDay" error:0];
-    v37 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.location" error:0];
+    v5->_allDay = [objc_opt_class() _BOOLFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.allDay" error:0];
+    v37 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.location" error:0];
     location = v5->_location;
     v5->_location = v37;
 
-    v39 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.notes" error:0];
+    v39 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.notes" error:0];
     notes = v5->_notes;
     v5->_notes = v39;
 
-    v41 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.timeZone" error:0];
+    v41 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.timeZone" error:0];
     if (v41)
     {
       v42 = [MEMORY[0x1E695DFE8] timeZoneWithName:v41];
@@ -73,7 +73,7 @@
       v5->_timeZone = v42;
     }
 
-    v44 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.url" error:0];
+    v44 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.url" error:0];
     if (v44)
     {
       v45 = [MEMORY[0x1E695DFF8] URLWithString:v44];
@@ -100,30 +100,30 @@ LABEL_18:
   return v34;
 }
 
-- (CUIKUserActivityNewEvent)eventWithEventStore:(id)a3
+- (CUIKUserActivityNewEvent)eventWithEventStore:(id)store
 {
-  v4 = [MEMORY[0x1E6966A08] eventWithEventStore:a3];
-  v5 = [(CUIKUserActivityNewEvent *)self startDate];
-  [v4 setStartDate:v5];
+  v4 = [MEMORY[0x1E6966A08] eventWithEventStore:store];
+  startDate = [(CUIKUserActivityNewEvent *)self startDate];
+  [v4 setStartDate:startDate];
 
-  v6 = [(CUIKUserActivityNewEvent *)self endDate];
-  [v4 setEndDateUnadjustedForLegacyClients:v6];
+  endDate = [(CUIKUserActivityNewEvent *)self endDate];
+  [v4 setEndDateUnadjustedForLegacyClients:endDate];
 
-  v7 = [(CUIKUserActivityNewEvent *)self timeZone];
-  [v4 setTimeZone:v7];
+  timeZone = [(CUIKUserActivityNewEvent *)self timeZone];
+  [v4 setTimeZone:timeZone];
 
   [v4 setAllDay:{-[CUIKUserActivityNewEvent allDay](self, "allDay")}];
-  v8 = [(CUIKUserActivityNewEvent *)self title];
-  [v4 setTitle:v8];
+  title = [(CUIKUserActivityNewEvent *)self title];
+  [v4 setTitle:title];
 
   v9 = [(CUIKUserActivityNewEvent *)self url];
   [v4 setURL:v9];
 
-  v10 = [(CUIKUserActivityNewEvent *)self notes];
-  [v4 setNotes:v10];
+  notes = [(CUIKUserActivityNewEvent *)self notes];
+  [v4 setNotes:notes];
 
-  v11 = [(CUIKUserActivityNewEvent *)self location];
-  [v4 setLocation:v11];
+  location = [(CUIKUserActivityNewEvent *)self location];
+  [v4 setLocation:location];
 
   return v4;
 }
@@ -133,32 +133,32 @@ LABEL_18:
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v15.receiver = self;
   v15.super_class = CUIKUserActivityNewEvent;
-  v4 = [(CUIKUserActivity *)&v15 dictionary];
-  v5 = [v3 initWithDictionary:v4];
+  dictionary = [(CUIKUserActivity *)&v15 dictionary];
+  v5 = [v3 initWithDictionary:dictionary];
 
-  v6 = [(CUIKUserActivityNewEvent *)self startDate];
-  [v5 setObject:v6 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.startDate"];
+  startDate = [(CUIKUserActivityNewEvent *)self startDate];
+  [v5 setObject:startDate forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.startDate"];
 
-  v7 = [(CUIKUserActivityNewEvent *)self endDate];
-  [v5 setObject:v7 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.endDate"];
+  endDate = [(CUIKUserActivityNewEvent *)self endDate];
+  [v5 setObject:endDate forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.endDate"];
 
-  v8 = [(CUIKUserActivityNewEvent *)self timeZone];
-  [v5 setObject:v8 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.timeZone"];
+  timeZone = [(CUIKUserActivityNewEvent *)self timeZone];
+  [v5 setObject:timeZone forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.timeZone"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[CUIKUserActivityNewEvent allDay](self, "allDay")}];
   [v5 setObject:v9 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.allDay"];
 
-  v10 = [(CUIKUserActivityNewEvent *)self title];
-  [v5 setObject:v10 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.title"];
+  title = [(CUIKUserActivityNewEvent *)self title];
+  [v5 setObject:title forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.title"];
 
   v11 = [(CUIKUserActivityNewEvent *)self url];
   [v5 setObject:v11 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.url"];
 
-  v12 = [(CUIKUserActivityNewEvent *)self notes];
-  [v5 setObject:v12 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.notes"];
+  notes = [(CUIKUserActivityNewEvent *)self notes];
+  [v5 setObject:notes forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.notes"];
 
-  v13 = [(CUIKUserActivityNewEvent *)self location];
-  [v5 setObject:v13 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.location"];
+  location = [(CUIKUserActivityNewEvent *)self location];
+  [v5 setObject:location forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.location"];
 
   return v5;
 }

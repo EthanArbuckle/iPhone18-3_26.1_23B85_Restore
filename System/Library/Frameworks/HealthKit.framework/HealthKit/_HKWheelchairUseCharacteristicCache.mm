@@ -2,33 +2,33 @@
 - (BOOL)_lock_isWheelchairUser;
 - (BOOL)hasFetchedWheelchairUse;
 - (BOOL)isWheelchairUser;
-- (_HKWheelchairUseCharacteristicCache)initWithHealthStore:(id)a3;
+- (_HKWheelchairUseCharacteristicCache)initWithHealthStore:(id)store;
 - (void)_handleCharacteristicsDidChangeNotification;
-- (void)_handleFetchError:(id)a3;
-- (void)_handleFetchSuccess:(id)a3;
+- (void)_handleFetchError:(id)error;
+- (void)_handleFetchSuccess:(id)success;
 - (void)_lock_fetchWheelchairUse;
 - (void)_lock_fetchWheelchairUseIfNecessary;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _HKWheelchairUseCharacteristicCache
 
-- (_HKWheelchairUseCharacteristicCache)initWithHealthStore:(id)a3
+- (_HKWheelchairUseCharacteristicCache)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = _HKWheelchairUseCharacteristicCache;
   v6 = [(_HKWheelchairUseCharacteristicCache *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v7->_state = 0;
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     v10 = HKCreateSerialDispatchQueue(0, @"fetchingQueue");
     queue = v7->_queue;
@@ -71,20 +71,20 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -92,9 +92,9 @@
 - (BOOL)isWheelchairUser
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_HKWheelchairUseCharacteristicCache *)self _lock_isWheelchairUser];
+  _lock_isWheelchairUser = [(_HKWheelchairUseCharacteristicCache *)self _lock_isWheelchairUser];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_isWheelchairUser;
 }
 
 - (BOOL)_lock_isWheelchairUser
@@ -135,22 +135,22 @@
   dispatch_async(queue, block);
 }
 
-- (void)_handleFetchError:(id)a3
+- (void)_handleFetchError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ((HKIsUnitTesting() & 1) == 0)
   {
     _HKInitializeLogging();
     v5 = HKLogDefault;
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [(_HKWheelchairUseCharacteristicCache *)v4 _handleFetchError:v5];
+      [(_HKWheelchairUseCharacteristicCache *)errorCopy _handleFetchError:v5];
     }
   }
 
-  v6 = [v4 hk_isDatabaseAccessibilityError];
+  hk_isDatabaseAccessibilityError = [errorCopy hk_isDatabaseAccessibilityError];
   os_unfair_lock_lock(&self->_lock);
-  if (v6)
+  if (hk_isDatabaseAccessibilityError)
   {
     self->_state = 0;
     os_unfair_lock_unlock(&self->_lock);
@@ -179,16 +179,16 @@
   }
 }
 
-- (void)_handleFetchSuccess:(id)a3
+- (void)_handleFetchSuccess:(id)success
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  successCopy = success;
   os_unfair_lock_lock(&self->_lock);
   wheelchairUseObject = self->_wheelchairUseObject;
   self->_state = 2;
   self->_queryRetries = 0;
-  v7 = [(HKWheelchairUseObject *)wheelchairUseObject wheelchairUse];
-  if (v7 == [v5 wheelchairUse])
+  wheelchairUse = [(HKWheelchairUseObject *)wheelchairUseObject wheelchairUse];
+  if (wheelchairUse == [successCopy wheelchairUse])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -199,30 +199,30 @@
     v8 = HKLogDefault;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(HKWheelchairUseObject *)self->_wheelchairUseObject wheelchairUse];
-      if (v9 > HKWheelchairUseYes)
+      wheelchairUse2 = [(HKWheelchairUseObject *)self->_wheelchairUseObject wheelchairUse];
+      if (wheelchairUse2 > HKWheelchairUseYes)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = off_1E7383BF8[v9];
+        v10 = off_1E7383BF8[wheelchairUse2];
       }
 
-      v11 = [v5 wheelchairUse];
-      if (v11 > 2)
+      wheelchairUse3 = [successCopy wheelchairUse];
+      if (wheelchairUse3 > 2)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = off_1E7383BF8[v11];
+        v12 = off_1E7383BF8[wheelchairUse3];
       }
 
       v17 = 138412802;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v10;
       v21 = 2112;
@@ -230,13 +230,13 @@
       _os_log_impl(&dword_19197B000, v8, OS_LOG_TYPE_DEFAULT, "%@: Wheelchair Use changed from %@ to %@, notifying observers.", &v17, 0x20u);
     }
 
-    objc_storeStrong(&self->_wheelchairUseObject, a3);
-    v13 = [(_HKWheelchairUseCharacteristicCache *)self _lock_isWheelchairUser];
-    v14 = [(NSHashTable *)self->_observers allObjects];
-    v15 = [v14 copy];
+    objc_storeStrong(&self->_wheelchairUseObject, success);
+    _lock_isWheelchairUser = [(_HKWheelchairUseCharacteristicCache *)self _lock_isWheelchairUser];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v15 = [allObjects copy];
 
     os_unfair_lock_unlock(&self->_lock);
-    [(_HKWheelchairUseCharacteristicCache *)self _alertObservers:v15 didUpdateToWheelchairUser:v13];
+    [(_HKWheelchairUseCharacteristicCache *)self _alertObservers:v15 didUpdateToWheelchairUser:_lock_isWheelchairUser];
   }
 
   v16 = *MEMORY[0x1E69E9840];

@@ -1,5 +1,5 @@
 @interface CallRecordingPillViewController
-- (_TtC15ConversationKit31CallRecordingPillViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit31CallRecordingPillViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CallRecordingPillViewController.viewDidLoad()();
 }
 
-- (_TtC15ConversationKit31CallRecordingPillViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit31CallRecordingPillViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CallRecordingPillViewController.init(nibName:bundle:)();
 }
 

@@ -1,39 +1,39 @@
 @interface WeatherSettingsUnits
 - (NSUnitTemperature)preferredTemperatureUnit;
 - (void)refreshUnits;
-- (void)refreshUnitsWithCompletionHandler:(id)a3;
-- (void)setPreferredTemperatureUnit:(id)a3;
+- (void)refreshUnitsWithCompletionHandler:(id)handler;
+- (void)setPreferredTemperatureUnit:(id)unit;
 @end
 
 @implementation WeatherSettingsUnits
 
 - (void)refreshUnits
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000D0148();
 }
 
-- (void)refreshUnitsWithCompletionHandler:(id)a3
+- (void)refreshUnitsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_1000D05CC(&unk_1000FA820, v5);
 }
 
-- (void)setPreferredTemperatureUnit:(id)a3
+- (void)setPreferredTemperatureUnit:(id)unit
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000D06DC(a3);
+  unitCopy = unit;
+  selfCopy = self;
+  sub_1000D06DC(unit);
 }
 
 - (NSUnitTemperature)preferredTemperatureUnit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000D0888();
 
   return v3;

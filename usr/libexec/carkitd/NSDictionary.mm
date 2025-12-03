@@ -1,16 +1,16 @@
 @interface NSDictionary
-- (id)cr_dictionaryWithValuesForPresentKeys:(id)a3;
+- (id)cr_dictionaryWithValuesForPresentKeys:(id)keys;
 @end
 
 @implementation NSDictionary
 
-- (id)cr_dictionaryWithValuesForPresentKeys:(id)a3
+- (id)cr_dictionaryWithValuesForPresentKeys:(id)keys
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keysCopy = keys;
+  v5 = keysCopy;
+  if (keysCopy)
   {
-    v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+    v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [keysCopy count]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;

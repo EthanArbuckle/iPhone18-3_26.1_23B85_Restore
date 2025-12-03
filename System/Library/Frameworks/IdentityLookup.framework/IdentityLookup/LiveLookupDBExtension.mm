@@ -1,7 +1,7 @@
 @interface LiveLookupDBExtension
 - (_TtC14IdentityLookup21LiveLookupDBExtension)init;
-- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithContext:(id)a3;
-- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithContext:(id)context;
+- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation LiveLookupDBExtension
@@ -13,14 +13,14 @@
   return result;
 }
 
-- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LiveLookupDBExtension();
-  return [(LiveLookupDBExtension *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(LiveLookupDBExtension *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
-- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithContext:(id)a3
+- (_TtC14IdentityLookup21LiveLookupDBExtension)initWithContext:(id)context
 {
   result = sub_238A61DFC();
   __break(1u);

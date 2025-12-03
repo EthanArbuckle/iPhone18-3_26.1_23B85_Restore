@@ -1,13 +1,13 @@
 @interface PPHealthKitImporter
-- (PPHealthKitImporter)initWithDatabase:(id)a3;
-- (void)importHealthKitDataWithShouldContinueBlock:(id)a3;
+- (PPHealthKitImporter)initWithDatabase:(id)database;
+- (void)importHealthKitDataWithShouldContinueBlock:(id)block;
 @end
 
 @implementation PPHealthKitImporter
 
-- (void)importHealthKitDataWithShouldContinueBlock:(id)a3
+- (void)importHealthKitDataWithShouldContinueBlock:(id)block
 {
-  v21 = a3;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -57,7 +57,7 @@
 
       v8 = v7;
       _Block_object_dispose(&v30, 8);
-      v9 = [v7 workoutType];
+      workoutType = [v7 workoutType];
       if (self)
       {
         *buf = 0;
@@ -87,17 +87,17 @@
       v22[2] = __66__PPHealthKitImporter_importHealthKitDataWithShouldContinueBlock___block_invoke;
       v22[3] = &unk_278977E50;
       v25 = &v26;
-      v12 = v21;
+      v12 = blockCopy;
       v24 = v12;
       v22[4] = self;
       v13 = v20;
       v23 = v13;
-      v14 = [v6 initWithType:v9 predicate:0 anchor:v11 limit:50 resultsHandler:v22];
+      v14 = [v6 initWithType:workoutType predicate:0 anchor:v11 limit:50 resultsHandler:v22];
 
       [(HKHealthStore *)self->_healthStore executeQuery:v14];
       while ([MEMORY[0x277D425A0] waitForSemaphore:v13 timeoutSeconds:1.0] == 1)
       {
-        if ((v21[2](v12) & 1) == 0)
+        if ((blockCopy[2](v12) & 1) == 0)
         {
           v15 = pp_default_log_handle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -698,9 +698,9 @@ void __38__PPHealthKitImporter__getSavedAnchor__block_invoke(uint64_t a1, void *
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (PPHealthKitImporter)initWithDatabase:(id)a3
+- (PPHealthKitImporter)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = PPHealthKitImporter;
   v6 = [(PPHealthKitImporter *)&v12 init];
@@ -728,7 +728,7 @@ void __38__PPHealthKitImporter__getSavedAnchor__block_invoke(uint64_t a1, void *
     healthStore = v6->_healthStore;
     v6->_healthStore = v9;
 
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, database);
   }
 
   return v6;

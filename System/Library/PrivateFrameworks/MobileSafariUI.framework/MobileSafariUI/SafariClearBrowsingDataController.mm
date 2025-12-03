@@ -1,13 +1,13 @@
 @interface SafariClearBrowsingDataController
 - (SafariClearBrowsingDataController)init;
 - (TabGroupProvider)tabGroupProvider;
-- (int64_t)_analyticsClearBrowsingIntervalForDate:(id)a3;
-- (unint64_t)clearHistoryViewController:(id)a3 numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)a4;
+- (int64_t)_analyticsClearBrowsingIntervalForDate:(id)date;
+- (unint64_t)clearHistoryViewController:(id)controller numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers;
 - (void)_clearAllScribbleEdits;
-- (void)_clearBrowsingDataAddedAfterDate:(id)a3 profileIdentifiers:(id)a4 closeAllTabs:(BOOL)a5;
-- (void)clearDataAddedAfterDate:(id)a3 beforeDate:(id)a4 profileIdentifier:(id)a5 clearAllProfiles:(BOOL)a6 closeTabs:(BOOL)a7;
-- (void)showClearHistoryMenuFromViewController:(id)a3;
-- (void)showClearHistoryMenuFromViewController:(id)a3 profileIdentifier:(id)a4;
+- (void)_clearBrowsingDataAddedAfterDate:(id)date profileIdentifiers:(id)identifiers closeAllTabs:(BOOL)tabs;
+- (void)clearDataAddedAfterDate:(id)date beforeDate:(id)beforeDate profileIdentifier:(id)identifier clearAllProfiles:(BOOL)profiles closeTabs:(BOOL)tabs;
+- (void)showClearHistoryMenuFromViewController:(id)controller;
+- (void)showClearHistoryMenuFromViewController:(id)controller profileIdentifier:(id)identifier;
 @end
 
 @implementation SafariClearBrowsingDataController
@@ -54,54 +54,54 @@
   return v2;
 }
 
-- (void)showClearHistoryMenuFromViewController:(id)a3
+- (void)showClearHistoryMenuFromViewController:(id)controller
 {
   v4 = MEMORY[0x277D28C20];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [v4 alloc];
   v7 = +[Application sharedApplication];
-  v8 = [v7 tabGroupManager];
+  tabGroupManager = [v7 tabGroupManager];
   WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-  v10 = [WeakRetained activeProfileIdentifier];
-  v12 = [v6 initWithTabGroupManager:v8 activeProfileIdentifier:v10];
+  activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+  v12 = [v6 initWithTabGroupManager:tabGroupManager activeProfileIdentifier:activeProfileIdentifier];
 
   [v12 setDelegate:self];
   v11 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v12];
-  [v5 presentViewController:v11 animated:1 completion:0];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)showClearHistoryMenuFromViewController:(id)a3 profileIdentifier:(id)a4
+- (void)showClearHistoryMenuFromViewController:(id)controller profileIdentifier:(id)identifier
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
-    v8 = v6;
+    activeProfileIdentifier = identifierCopy;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-    v8 = [WeakRetained activeProfileIdentifier];
+    activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
   }
 
   v10 = objc_alloc(MEMORY[0x277D28C20]);
   v11 = +[Application sharedApplication];
-  v12 = [v11 tabGroupManager];
-  v13 = [v10 initWithTabGroupManager:v12 activeProfileIdentifier:v8];
+  tabGroupManager = [v11 tabGroupManager];
+  v13 = [v10 initWithTabGroupManager:tabGroupManager activeProfileIdentifier:activeProfileIdentifier];
 
   [v13 setDelegate:self];
   v14 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v13];
-  [v15 presentViewController:v14 animated:1 completion:0];
+  [controllerCopy presentViewController:v14 animated:1 completion:0];
 }
 
-- (int64_t)_analyticsClearBrowsingIntervalForDate:(id)a3
+- (int64_t)_analyticsClearBrowsingIntervalForDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
+  dateCopy = date;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
 
-  if (v4 == v3)
+  if (distantPast == dateCopy)
   {
     v7 = 3;
   }
@@ -110,7 +110,7 @@
   {
     v5 = [MEMORY[0x277CBEAA8] safari_dateOfMidnightNumberOfDaysAgo:1];
 
-    if (v5 == v3)
+    if (v5 == dateCopy)
     {
       v7 = 2;
     }
@@ -118,7 +118,7 @@
     else
     {
       v6 = [MEMORY[0x277CBEAA8] safari_dateOfMidnightNumberOfDaysAgo:0];
-      v7 = v6 == v3;
+      v7 = v6 == dateCopy;
     }
   }
 
@@ -128,12 +128,12 @@
 - (void)_clearAllScribbleEdits
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 userDefinedContentBlockerManagerForPrivateBrowsing];
-  [v3 deleteAllContentBlockersWithCompletionHandler:&__block_literal_global_56_1];
+  userDefinedContentBlockerManagerForPrivateBrowsing = [v2 userDefinedContentBlockerManagerForPrivateBrowsing];
+  [userDefinedContentBlockerManagerForPrivateBrowsing deleteAllContentBlockersWithCompletionHandler:&__block_literal_global_56_1];
 
   v5 = +[Application sharedApplication];
-  v4 = [v5 userDefinedContentBlockerManager];
-  [v4 deleteAllContentBlockersWithCompletionHandler:&__block_literal_global_58_0];
+  userDefinedContentBlockerManager = [v5 userDefinedContentBlockerManager];
+  [userDefinedContentBlockerManager deleteAllContentBlockersWithCompletionHandler:&__block_literal_global_58_0];
 }
 
 void __59__SafariClearBrowsingDataController__clearAllScribbleEdits__block_invoke_2()
@@ -177,26 +177,26 @@ void __59__SafariClearBrowsingDataController__clearAllScribbleEdits__block_invok
   }
 }
 
-- (void)clearDataAddedAfterDate:(id)a3 beforeDate:(id)a4 profileIdentifier:(id)a5 clearAllProfiles:(BOOL)a6 closeTabs:(BOOL)a7
+- (void)clearDataAddedAfterDate:(id)date beforeDate:(id)beforeDate profileIdentifier:(id)identifier clearAllProfiles:(BOOL)profiles closeTabs:(BOOL)tabs
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEAA8] distantPast];
-  v14 = [v11 isEqual:v13];
+  tabsCopy = tabs;
+  profilesCopy = profiles;
+  dateCopy = date;
+  identifierCopy = identifier;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v14 = [dateCopy isEqual:distantPast];
 
   if (v14)
   {
     [(SafariClearBrowsingDataController *)self _clearAllScribbleEdits];
   }
 
-  if (v8)
+  if (profilesCopy)
   {
     v15 = +[Application sharedApplication];
-    v16 = [v15 tabGroupManager];
-    v17 = [v16 allProfileIdentifiers];
-    v18 = [v17 mutableCopy];
+    tabGroupManager = [v15 tabGroupManager];
+    allProfileIdentifiers = [tabGroupManager allProfileIdentifiers];
+    v18 = [allProfileIdentifiers mutableCopy];
 
     v19 = MEMORY[0x277CE3868];
     v23 = MEMORY[0x277D85DD0];
@@ -204,21 +204,21 @@ void __59__SafariClearBrowsingDataController__clearAllScribbleEdits__block_invok
     v25 = __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_beforeDate_profileIdentifier_clearAllProfiles_closeTabs___block_invoke;
     v26 = &unk_2781D8D98;
     v27 = v18;
-    v28 = self;
-    v29 = v11;
-    v30 = v7;
+    selfCopy = self;
+    v29 = dateCopy;
+    v30 = tabsCopy;
     v20 = v18;
     [v19 _fetchAllIdentifiers:&v23];
   }
 
   else
   {
-    v21 = [MEMORY[0x277CBEB98] setWithObject:v12];
-    [(SafariClearBrowsingDataController *)self _clearBrowsingDataAddedAfterDate:v11 profileIdentifiers:v21 closeAllTabs:v7];
+    v21 = [MEMORY[0x277CBEB98] setWithObject:identifierCopy];
+    [(SafariClearBrowsingDataController *)self _clearBrowsingDataAddedAfterDate:dateCopy profileIdentifiers:v21 closeAllTabs:tabsCopy];
   }
 
-  v22 = [MEMORY[0x277D499B8] sharedLogger];
-  [v22 didClearBrowsingDataFromInterval:-[SafariClearBrowsingDataController _analyticsClearBrowsingIntervalForDate:](self withMethod:{"_analyticsClearBrowsingIntervalForDate:", v11), 0}];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didClearBrowsingDataFromInterval:-[SafariClearBrowsingDataController _analyticsClearBrowsingIntervalForDate:](self withMethod:{"_analyticsClearBrowsingIntervalForDate:", dateCopy), 0}];
 }
 
 uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_beforeDate_profileIdentifier_clearAllProfiles_closeTabs___block_invoke(uint64_t a1, void *a2)
@@ -235,32 +235,32 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
   return [v5 _clearBrowsingDataAddedAfterDate:v6 profileIdentifiers:v7 closeAllTabs:v8];
 }
 
-- (void)_clearBrowsingDataAddedAfterDate:(id)a3 profileIdentifiers:(id)a4 closeAllTabs:(BOOL)a5
+- (void)_clearBrowsingDataAddedAfterDate:(id)date profileIdentifiers:(id)identifiers closeAllTabs:(BOOL)tabs
 {
-  v5 = a5;
+  tabsCopy = tabs;
   v86 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v64 = [MEMORY[0x277CBEAA8] date];
-  v9 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-  v10 = [v9 linkPresentationMetadataProvider];
-  [v10 emptyCaches];
+  dateCopy = date;
+  identifiersCopy = identifiers;
+  date = [MEMORY[0x277CBEAA8] date];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  linkPresentationMetadataProvider = [mEMORY[0x277D28F58] linkPresentationMetadataProvider];
+  [linkPresentationMetadataProvider emptyCaches];
 
-  if (v5)
+  if (tabsCopy)
   {
     v11 = +[Application sharedApplication];
-    v12 = [v11 tabGroupManager];
-    [v12 closeAllTabsInProfilesWithIdentifiers:v8];
+    tabGroupManager = [v11 tabGroupManager];
+    [tabGroupManager closeAllTabsInProfilesWithIdentifiers:identifiersCopy];
   }
 
   v13 = +[Application sharedApplication];
-  v67 = [v13 historyController];
+  historyController = [v13 historyController];
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v8;
+  obj = identifiersCopy;
   v14 = [obj countByEnumeratingWithState:&v79 objects:v85 count:16];
   if (v14)
   {
@@ -277,10 +277,10 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
 
         v17 = *(*(&v79 + 1) + 8 * i);
         v18 = [MEMORY[0x277CE3868] safari_dataStoreForProfileWithIdentifierIfExists:v17];
-        v19 = [MEMORY[0x277CE3868] safari_allDataTypes];
-        [v18 removeDataOfTypes:v19 modifiedSince:v7 completionHandler:&__block_literal_global_69];
+        safari_allDataTypes = [MEMORY[0x277CE3868] safari_allDataTypes];
+        [v18 removeDataOfTypes:safari_allDataTypes modifiedSince:dateCopy completionHandler:&__block_literal_global_69];
 
-        v20 = [v67 frequentlyVisitedSitesControllerForProfileIdentifier:v17 loadIfNeeded:1];
+        v20 = [historyController frequentlyVisitedSitesControllerForProfileIdentifier:v17 loadIfNeeded:1];
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __102__SafariClearBrowsingDataController__clearBrowsingDataAddedAfterDate_profileIdentifiers_closeAllTabs___block_invoke_2;
@@ -288,9 +288,9 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
         v21 = v20;
         v78 = v21;
         v22 = _Block_copy(aBlock);
-        v23 = [v67 historyForProfileIdentifier:v17 loadIfNeeded:1];
-        v24 = [MEMORY[0x277CBEAA8] distantPast];
-        v25 = [v7 isEqual:v24];
+        v23 = [historyController historyForProfileIdentifier:v17 loadIfNeeded:1];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        v25 = [dateCopy isEqual:distantPast];
 
         if (v25)
         {
@@ -300,18 +300,18 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
 
         else
         {
-          [v23 clearHistoryVisitsAddedAfterDate:v7 beforeDate:v64 completionHandler:v22];
-          [MEMORY[0x277D49F28] deleteUsageHistoryFromDate:v7 toDate:v64 profileIdentifier:v17];
+          [v23 clearHistoryVisitsAddedAfterDate:dateCopy beforeDate:date completionHandler:v22];
+          [MEMORY[0x277D49F28] deleteUsageHistoryFromDate:dateCopy toDate:date profileIdentifier:v17];
         }
 
-        v26 = [MEMORY[0x277D28F00] sharedBrowserSavedState];
-        [v26 clearRecentlyClosedTabsForProfileWithIdentifier:v17];
+        mEMORY[0x277D28F00] = [MEMORY[0x277D28F00] sharedBrowserSavedState];
+        [mEMORY[0x277D28F00] clearRecentlyClosedTabsForProfileWithIdentifier:v17];
 
-        v27 = [MEMORY[0x277D4A060] sharedInstance];
-        [v27 removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:v17];
+        mEMORY[0x277D4A060] = [MEMORY[0x277D4A060] sharedInstance];
+        [mEMORY[0x277D4A060] removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:v17];
 
-        v28 = [MEMORY[0x277D49F90] sharedController];
-        [v28 removeIgnoredSiriSuggestedSitesInProfile:v17 afterDate:v7];
+        mEMORY[0x277D49F90] = [MEMORY[0x277D49F90] sharedController];
+        [mEMORY[0x277D49F90] removeIgnoredSiriSuggestedSitesInProfile:v17 afterDate:dateCopy];
       }
 
       v15 = [obj countByEnumeratingWithState:&v79 objects:v85 count:16];
@@ -322,8 +322,8 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
 
   [MEMORY[0x277D49FC8] clearAllParsecFeedbackAndEngagedCompletions];
   WBSContentBlockerStatisticsStoreClearStoresForProfilesWithIdentifiers();
-  v29 = [MEMORY[0x277CBEAA8] distantPast];
-  v30 = [v7 isEqual:v29];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+  v30 = [dateCopy isEqual:distantPast2];
 
   v31 = +[RecentWebSearchesController sharedController];
   v32 = v31;
@@ -334,22 +334,22 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
 
   else
   {
-    [v31 clearRecentSearchesAddedAfterDate:v7];
+    [v31 clearRecentSearchesAddedAfterDate:dateCopy];
   }
 
   if ([obj containsObject:*MEMORY[0x277D49BD8]])
   {
-    v33 = [MEMORY[0x277CBEAA8] distantPast];
-    v34 = [v7 isEqual:v33];
+    distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
+    v34 = [dateCopy isEqual:distantPast3];
 
-    v35 = [MEMORY[0x277D75D80] sharedPolicyDecider];
-    v36 = v35;
+    mEMORY[0x277D75D80] = [MEMORY[0x277D75D80] sharedPolicyDecider];
+    v36 = mEMORY[0x277D75D80];
     if (v34)
     {
-      [v35 clearCache];
+      [mEMORY[0x277D75D80] clearCache];
 
-      v37 = [MEMORY[0x277D4A028] sharedController];
-      [v37 clearWithCompletionHandler:0];
+      mEMORY[0x277D4A028] = [MEMORY[0x277D4A028] sharedController];
+      [mEMORY[0x277D4A028] clearWithCompletionHandler:0];
 
       v76 = 0;
       if (!SecTrustFlushResponseCache())
@@ -361,39 +361,39 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
         }
       }
 
-      v39 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-      v40 = [v39 linkPresentationIconCache];
-      [v40 emptyCaches];
+      mEMORY[0x277D28F58]2 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+      linkPresentationIconCache = [mEMORY[0x277D28F58]2 linkPresentationIconCache];
+      [linkPresentationIconCache emptyCaches];
 
-      v41 = [MEMORY[0x277CDB7E0] sharedManager];
-      [v41 removeAllTemporaryPermissions];
+      mEMORY[0x277CDB7E0] = [MEMORY[0x277CDB7E0] sharedManager];
+      [mEMORY[0x277CDB7E0] removeAllTemporaryPermissions];
     }
 
     else
     {
-      [v35 clearAuthorizationsAddedBetween:v7 and:v64];
+      [mEMORY[0x277D75D80] clearAuthorizationsAddedBetween:dateCopy and:date];
 
-      v42 = [MEMORY[0x277D4A028] sharedController];
-      [v42 removeProvidersAddedAfterDate:v7 beforeDate:v64];
+      mEMORY[0x277D4A028]2 = [MEMORY[0x277D4A028] sharedController];
+      [mEMORY[0x277D4A028]2 removeProvidersAddedAfterDate:dateCopy beforeDate:date];
 
-      v41 = [MEMORY[0x277CDB7E0] sharedManager];
-      [v41 removeTemporaryPermissionsAddedAfterDate:v7 completionHandler:0];
+      mEMORY[0x277CDB7E0] = [MEMORY[0x277CDB7E0] sharedManager];
+      [mEMORY[0x277CDB7E0] removeTemporaryPermissionsAddedAfterDate:dateCopy completionHandler:0];
     }
 
-    v43 = [MEMORY[0x277D49EA8] sharedManager];
-    [v43 clearCertificateBypassesCreatedAfterDate:v7];
+    mEMORY[0x277D49EA8] = [MEMORY[0x277D49EA8] sharedManager];
+    [mEMORY[0x277D49EA8] clearCertificateBypassesCreatedAfterDate:dateCopy];
 
-    v44 = [MEMORY[0x277CDB7A8] sharedManager];
-    [v44 removeDownloadsStartedAfterDate:v7];
+    mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+    [mEMORY[0x277CDB7A8] removeDownloadsStartedAfterDate:dateCopy];
 
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
     v45 = +[Application sharedApplication];
-    v46 = [v45 browserControllers];
+    browserControllers = [v45 browserControllers];
 
-    v47 = [v46 countByEnumeratingWithState:&v72 objects:v84 count:16];
+    v47 = [browserControllers countByEnumeratingWithState:&v72 objects:v84 count:16];
     if (v47)
     {
       v48 = v47;
@@ -404,7 +404,7 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
         {
           if (*v73 != v49)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(browserControllers);
           }
 
           v51 = *(*(&v72 + 1) + 8 * j);
@@ -412,10 +412,10 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
           v69 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v52 = [v51 tabController];
-          v53 = [v52 allTabDocuments];
+          tabController = [v51 tabController];
+          allTabDocuments = [tabController allTabDocuments];
 
-          v54 = [v53 countByEnumeratingWithState:&v68 objects:v83 count:16];
+          v54 = [allTabDocuments countByEnumeratingWithState:&v68 objects:v83 count:16];
           if (v54)
           {
             v55 = v54;
@@ -426,51 +426,51 @@ uint64_t __117__SafariClearBrowsingDataController_clearDataAddedAfterDate_before
               {
                 if (*v69 != v56)
                 {
-                  objc_enumerationMutation(v53);
+                  objc_enumerationMutation(allTabDocuments);
                 }
 
                 [*(*(&v68 + 1) + 8 * k) clearBackForwardListKeepingCurrentItem];
               }
 
-              v55 = [v53 countByEnumeratingWithState:&v68 objects:v83 count:16];
+              v55 = [allTabDocuments countByEnumeratingWithState:&v68 objects:v83 count:16];
             }
 
             while (v55);
           }
 
-          v58 = [v51 undoManager];
-          [v58 removeAllActions];
+          undoManager = [v51 undoManager];
+          [undoManager removeAllActions];
 
-          v59 = [v51 browserWindowController];
-          [v59 saveCloudTabs];
+          browserWindowController = [v51 browserWindowController];
+          [browserWindowController saveCloudTabs];
         }
 
-        v48 = [v46 countByEnumeratingWithState:&v72 objects:v84 count:16];
+        v48 = [browserControllers countByEnumeratingWithState:&v72 objects:v84 count:16];
       }
 
       while (v48);
     }
 
-    v60 = [MEMORY[0x277D49AD0] sharedStore];
-    [v60 synchronousyClearIdentifiersAddedAfterDate:v7];
+    mEMORY[0x277D49AD0] = [MEMORY[0x277D49AD0] sharedStore];
+    [mEMORY[0x277D49AD0] synchronousyClearIdentifiersAddedAfterDate:dateCopy];
 
-    v61 = [MEMORY[0x277D49A40] sharedStore];
-    [v61 synchronouslyRemoveGeneratedPasswordsNewerThanDate:v7];
+    mEMORY[0x277D49A40] = [MEMORY[0x277D49A40] sharedStore];
+    [mEMORY[0x277D49A40] synchronouslyRemoveGeneratedPasswordsNewerThanDate:dateCopy];
 
-    v62 = [MEMORY[0x277D49E30] sharedManager];
-    [v62 clearEventsDonatedSinceDate:v7];
+    mEMORY[0x277D49E30] = [MEMORY[0x277D49E30] sharedManager];
+    [mEMORY[0x277D49E30] clearEventsDonatedSinceDate:dateCopy];
 
-    v63 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v63 removeObjectForKey:*MEMORY[0x277D29280]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:*MEMORY[0x277D29280]];
   }
 }
 
-- (unint64_t)clearHistoryViewController:(id)a3 numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)a4
+- (unint64_t)clearHistoryViewController:(id)controller numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers
 {
-  v4 = a4;
+  identifiersCopy = identifiers;
   v5 = +[Application sharedApplication];
-  v6 = [v5 tabGroupManager];
-  v7 = [v6 numberOfTabsToBeClosedForProfilesWithIdentifiers:v4];
+  tabGroupManager = [v5 tabGroupManager];
+  v7 = [tabGroupManager numberOfTabsToBeClosedForProfilesWithIdentifiers:identifiersCopy];
 
   return v7;
 }

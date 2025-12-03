@@ -12,24 +12,24 @@
 
 - (uint64_t)dc_isRTL
 {
-  v1 = [a1 view];
-  v2 = [v1 dc_isRTL];
+  view = [self view];
+  dc_isRTL = [view dc_isRTL];
 
-  return v2;
+  return dc_isRTL;
 }
 
 + (void)dc_enableUIViewAnimations:()DC forBlock:
 {
   v7 = a4;
-  v5 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  if (v5 == a3)
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  if (areAnimationsEnabled == a3)
   {
     v7[2]();
   }
 
   else
   {
-    v6 = v5;
+    v6 = areAnimationsEnabled;
     [MEMORY[0x277D75D18] setAnimationsEnabled:a3];
     v7[2]();
     [MEMORY[0x277D75D18] setAnimationsEnabled:v6];
@@ -45,7 +45,7 @@
   v13[1] = 3221225472;
   v13[2] = __62__UIViewController_DC__dc_showViewController_animated_sender___block_invoke;
   v13[3] = &unk_278F93258;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v8;
   v15 = v9;
   v11 = v9;
@@ -55,11 +55,11 @@
 
 - (BOOL)dc_isViewVisible
 {
-  v2 = [a1 viewIfLoaded];
-  v3 = [v2 window];
-  if (v3)
+  viewIfLoaded = [self viewIfLoaded];
+  window = [viewIfLoaded window];
+  if (window)
   {
-    v4 = [a1 _appearState] != 3;
+    v4 = [self _appearState] != 3;
   }
 
   else
@@ -72,8 +72,8 @@
 
 - (double)dc_safeAreaDistanceFromTop
 {
-  v1 = [a1 dc_safeAreaLayoutGuide];
-  [v1 layoutFrame];
+  dc_safeAreaLayoutGuide = [self dc_safeAreaLayoutGuide];
+  [dc_safeAreaLayoutGuide layoutFrame];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -89,15 +89,15 @@
 
 - (double)dc_safeAreaDistanceFromBottom
 {
-  v2 = [a1 dc_safeAreaLayoutGuide];
-  [v2 layoutFrame];
+  dc_safeAreaLayoutGuide = [self dc_safeAreaLayoutGuide];
+  [dc_safeAreaLayoutGuide layoutFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [a1 view];
-  [v11 bounds];
+  view = [self view];
+  [view bounds];
   MaxY = CGRectGetMaxY(v15);
   v16.origin.x = v4;
   v16.origin.y = v6;
@@ -110,10 +110,10 @@
 
 - (id)dc_safeAreaLayoutGuide
 {
-  v1 = [a1 view];
-  v2 = [v1 safeAreaLayoutGuide];
+  view = [self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
 
-  return v2;
+  return safeAreaLayoutGuide;
 }
 
 @end

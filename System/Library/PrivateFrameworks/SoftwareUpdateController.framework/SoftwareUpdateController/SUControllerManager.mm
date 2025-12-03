@@ -1,60 +1,60 @@
 @interface SUControllerManager
-- (SUControllerManager)initWithExclusiveControl:(BOOL)a3 communalUponDisconnect:(BOOL)a4 withDelegate:(id)a5;
+- (SUControllerManager)initWithExclusiveControl:(BOOL)control communalUponDisconnect:(BOOL)disconnect withDelegate:(id)delegate;
 - (SUControllerManagerDelegate)delegate;
 - (id)_connectToServer;
 - (id)_serverConnection;
 - (id)_stateName;
 - (id)getTrainName;
-- (id)newDescriptorFromAsset:(id)a3;
-- (id)paramsForOTAScans:(id)a3;
+- (id)newDescriptorFromAsset:(id)asset;
+- (id)paramsForOTAScans:(id)scans;
 - (void)_addClient;
 - (void)_daemonLaunched;
-- (void)_forwardApplyProgress:(id)a3;
-- (void)_forwardAutoScanPerformed:(id)a3;
-- (void)_forwardConnectionError:(id)a3;
+- (void)_forwardApplyProgress:(id)progress;
+- (void)_forwardAutoScanPerformed:(id)performed;
+- (void)_forwardConnectionError:(id)error;
 - (void)_forwardConnectionRegained;
-- (void)_forwardDownloadProgress:(id)a3;
-- (void)_forwardInstallResult:(id)a3;
-- (void)_forwardScanPostponed:(id)a3;
-- (void)_forwardScanResult:(id)a3;
+- (void)_forwardDownloadProgress:(id)progress;
+- (void)_forwardInstallResult:(id)result;
+- (void)_forwardScanPostponed:(id)postponed;
+- (void)_forwardScanResult:(id)result;
 - (void)_handleStateReport;
-- (void)_handleXPCEvent:(id)a3 connection:(id)a4;
-- (void)_indicateConnectionError:(id)a3;
+- (void)_handleXPCEvent:(id)event connection:(id)connection;
+- (void)_indicateConnectionError:(id)error;
 - (void)_indicateConnectionRegained;
-- (void)_indicateMessageReceived:(id)a3 messageType:(const char *)a4;
+- (void)_indicateMessageReceived:(id)received messageType:(const char *)type;
 - (void)cancelCurrentConnection;
 - (void)dealloc;
-- (void)installUpdate:(id)a3;
-- (void)managerConfig:(id)a3;
-- (void)managerState:(id)a3;
-- (void)managerStatus:(id)a3;
-- (void)modifyConfig:(id)a3 modifying:(int64_t)a4 completion:(id)a5;
+- (void)installUpdate:(id)update;
+- (void)managerConfig:(id)config;
+- (void)managerState:(id)state;
+- (void)managerStatus:(id)status;
+- (void)modifyConfig:(id)config modifying:(int64_t)modifying completion:(id)completion;
 - (void)performMigration;
-- (void)purgeUpdate:(id)a3 completion:(id)a4;
+- (void)purgeUpdate:(id)update completion:(id)completion;
 - (void)scanForUpdates;
-- (void)scanForUpdates:(id)a3;
-- (void)scanForUpdatesFromNonTVOSDevice:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startDownload:(id)a3;
-- (void)updateAcceptingTermsAndConditions:(id)a3;
-- (void)updateAcceptingTermsAndConditions:(id)a3 usingPassword:(id)a4;
-- (void)useCredentialsToPersonalize:(id)a3 withAccountName:(id)a4 andPassword:(id)a5;
-- (void)useSSOTokenToPersonalize:(id)a3 withSSOToken:(id)a4;
-- (void)userDidAcceptTermsAndConditionsForUpdate:(id)a3;
+- (void)scanForUpdates:(id)updates;
+- (void)scanForUpdatesFromNonTVOSDevice:(id)device completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)startDownload:(id)download;
+- (void)updateAcceptingTermsAndConditions:(id)conditions;
+- (void)updateAcceptingTermsAndConditions:(id)conditions usingPassword:(id)password;
+- (void)useCredentialsToPersonalize:(id)personalize withAccountName:(id)name andPassword:(id)password;
+- (void)useSSOTokenToPersonalize:(id)personalize withSSOToken:(id)token;
+- (void)userDidAcceptTermsAndConditionsForUpdate:(id)update;
 @end
 
 @implementation SUControllerManager
 
-- (SUControllerManager)initWithExclusiveControl:(BOOL)a3 communalUponDisconnect:(BOOL)a4 withDelegate:(id)a5
+- (SUControllerManager)initWithExclusiveControl:(BOOL)control communalUponDisconnect:(BOOL)disconnect withDelegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = SUControllerManager;
   v9 = [(SUControllerManager *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v11 = dispatch_queue_create("com.apple.SUControllerManager.server", 0);
     serverQueue = v10->_serverQueue;
     v10->_serverQueue = v11;
@@ -63,14 +63,14 @@
     delegateQueue = v10->_delegateQueue;
     v10->_delegateQueue = v13;
 
-    v10->_exclusiveControl = a3;
-    v10->_communalUponDisconnect = a4;
+    v10->_exclusiveControl = control;
+    v10->_communalUponDisconnect = disconnect;
     *&v10->_disconnected = 257;
     scanner = v10->_scanner;
     v10->_scanner = 0;
 
     v10->_needToAddClientForXPCMessages = 1;
-    v16 = [@"com.apple.SoftwareUpdateController.Daemon.Launched" UTF8String];
+    uTF8String = [@"com.apple.SoftwareUpdateController.Daemon.Launched" UTF8String];
     v17 = v10->_serverQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -78,8 +78,8 @@
     handler[3] = &unk_279CA8718;
     v18 = v10;
     v30 = v18;
-    notify_register_dispatch(v16, &v10->_notifyDaemonStartedToken, v17, handler);
-    v19 = [@"com.apple.SoftwareUpdateController.State.change" UTF8String];
+    notify_register_dispatch(uTF8String, &v10->_notifyDaemonStartedToken, v17, handler);
+    uTF8String2 = [@"com.apple.SoftwareUpdateController.State.change" UTF8String];
     v20 = v10->_serverQueue;
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
@@ -87,8 +87,8 @@
     v27 = &unk_279CA8718;
     v21 = v18;
     v28 = v21;
-    notify_register_dispatch(v19, v18 + 4, v20, &v24);
-    v22 = [v21 _serverConnection];
+    notify_register_dispatch(uTF8String2, v18 + 4, v20, &v24);
+    _serverConnection = [v21 _serverConnection];
   }
 
   return v10;
@@ -106,13 +106,13 @@ uint64_t __84__SUControllerManager_initWithExclusiveControl_communalUponDisconne
 
 - (void)dealloc
 {
-  v3 = [(SUControllerManager *)self serverQueue];
+  serverQueue = [(SUControllerManager *)self serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__SUControllerManager_dealloc__block_invoke;
   block[3] = &unk_279CA8740;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serverQueue, block);
 
   objc_storeWeak(&self->_delegate, 0);
   serverQueue = self->_serverQueue;
@@ -142,13 +142,13 @@ void __30__SUControllerManager_dealloc__block_invoke(uint64_t a1)
 
 - (void)cancelCurrentConnection
 {
-  v3 = [(SUControllerManager *)self serverQueue];
+  serverQueue = [(SUControllerManager *)self serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SUControllerManager_cancelCurrentConnection__block_invoke;
   block[3] = &unk_279CA8740;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serverQueue, block);
 }
 
 void __46__SUControllerManager_cancelCurrentConnection__block_invoke(uint64_t a1)
@@ -163,18 +163,18 @@ void __46__SUControllerManager_cancelCurrentConnection__block_invoke(uint64_t a1
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SUControllerManager *)self serverQueue];
+  delegateCopy = delegate;
+  serverQueue = [(SUControllerManager *)self serverQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUControllerManager_setDelegate___block_invoke;
   v7[3] = &unk_279CA8768;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(serverQueue, v7);
 }
 
 - (SUControllerManagerDelegate)delegate
@@ -185,14 +185,14 @@ void __46__SUControllerManager_cancelCurrentConnection__block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(SUControllerManager *)self serverQueue];
+  serverQueue = [(SUControllerManager *)self serverQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__SUControllerManager_delegate__block_invoke;
   v6[3] = &unk_279CA8790;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serverQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -212,11 +212,11 @@ uint64_t __31__SUControllerManager_delegate__block_invoke(uint64_t a1)
 
 - (id)_connectToServer
 {
-  v3 = [(SUControllerManager *)self serverQueue];
-  dispatch_assert_queue_V2(v3);
+  serverQueue = [(SUControllerManager *)self serverQueue];
+  dispatch_assert_queue_V2(serverQueue);
 
-  v4 = [(SUControllerManager *)self serverXPCConnection];
-  if (!v4)
+  serverXPCConnection = [(SUControllerManager *)self serverXPCConnection];
+  if (!serverXPCConnection)
   {
     mach_service = xpc_connection_create_mach_service(SUControllerMachServiceName, 0, 2uLL);
     objc_initWeak(&location, self);
@@ -225,13 +225,13 @@ uint64_t __31__SUControllerManager_delegate__block_invoke(uint64_t a1)
     v10 = __39__SUControllerManager__connectToServer__block_invoke;
     v11 = &unk_279CA87B8;
     objc_copyWeak(&v13, &location);
-    v4 = mach_service;
-    v12 = v4;
-    xpc_connection_set_event_handler(v4, &handler);
-    [(SUControllerManager *)self setServerXPCConnection:v4];
-    xpc_connection_resume(v4);
+    serverXPCConnection = mach_service;
+    v12 = serverXPCConnection;
+    xpc_connection_set_event_handler(serverXPCConnection, &handler);
+    [(SUControllerManager *)self setServerXPCConnection:serverXPCConnection];
+    xpc_connection_resume(serverXPCConnection);
     v6 = +[SUControllerLogger sharedLogger];
-    [v6 logAtLevel:1 label:"-[SUControllerManager _connectToServer]" format:{@"SUCManager[CONNECTING] resumed server connection: %@", v4, handler, v9, v10, v11}];
+    [v6 logAtLevel:1 label:"-[SUControllerManager _connectToServer]" format:{@"SUCManager[CONNECTING] resumed server connection: %@", serverXPCConnection, handler, v9, v10, v11}];
 
     if ([(SUControllerManager *)self initializing])
     {
@@ -249,7 +249,7 @@ uint64_t __31__SUControllerManager_delegate__block_invoke(uint64_t a1)
     [(SUControllerManager *)self _addClient];
   }
 
-  return v4;
+  return serverXPCConnection;
 }
 
 void __39__SUControllerManager__connectToServer__block_invoke(uint64_t a1, void *a2)
@@ -277,14 +277,14 @@ void __39__SUControllerManager__connectToServer__block_invoke(uint64_t a1, void 
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(SUControllerManager *)self serverQueue];
+  serverQueue = [(SUControllerManager *)self serverQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__SUControllerManager__serverConnection__block_invoke;
   v6[3] = &unk_279CA8790;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serverQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -302,21 +302,21 @@ uint64_t __40__SUControllerManager__serverConnection__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_handleXPCEvent:(id)a3 connection:(id)a4
+- (void)_handleXPCEvent:(id)event connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUControllerManager *)self serverQueue];
+  eventCopy = event;
+  connectionCopy = connection;
+  serverQueue = [(SUControllerManager *)self serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SUControllerManager__handleXPCEvent_connection___block_invoke;
   block[3] = &unk_279CA87E0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = eventCopy;
+  dispatch_async(serverQueue, block);
 }
 
 void __50__SUControllerManager__handleXPCEvent_connection___block_invoke(uint64_t a1)
@@ -412,8 +412,8 @@ void __50__SUControllerManager__handleXPCEvent_connection___block_invoke(uint64_
 
 - (void)_daemonLaunched
 {
-  v3 = [(SUControllerManager *)self serverQueue];
-  dispatch_assert_queue_V2(v3);
+  serverQueue = [(SUControllerManager *)self serverQueue];
+  dispatch_assert_queue_V2(serverQueue);
 
   if ([(SUControllerManager *)self disconnected])
   {
@@ -431,7 +431,7 @@ void __50__SUControllerManager__handleXPCEvent_connection___block_invoke(uint64_
       v5 = +[SUControllerLogger sharedLogger];
       [v5 logAtLevel:1 label:"-[SUControllerManager _daemonLaunched]" format:{@"sucontrollerd is relaunched.  Connecting %s to get deletegate callback again.", getprogname()}];
 
-      v6 = [(SUControllerManager *)self _connectToServer];
+      _connectToServer = [(SUControllerManager *)self _connectToServer];
     }
 
     [(SUControllerManager *)self setDisconnected:0];
@@ -440,8 +440,8 @@ void __50__SUControllerManager__handleXPCEvent_connection___block_invoke(uint64_
 
 - (void)_addClient
 {
-  v3 = [(SUControllerManager *)self serverQueue];
-  dispatch_assert_queue_V2(v3);
+  serverQueue = [(SUControllerManager *)self serverQueue];
+  dispatch_assert_queue_V2(serverQueue);
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%s", getprogname()];
   v4 = xpc_dictionary_create(0, 0, 0);
@@ -454,14 +454,14 @@ void __50__SUControllerManager__handleXPCEvent_connection___block_invoke(uint64_
   v7 = +[SUControllerLogger sharedLogger];
   [v7 logAtLevel:1 label:"-[SUControllerManager _addClient]" format:{@"Sending add client message for client name %@", v9}];
 
-  v8 = [(SUControllerManager *)self serverXPCConnection];
-  xpc_connection_send_message(v8, v4);
+  serverXPCConnection = [(SUControllerManager *)self serverXPCConnection];
+  xpc_connection_send_message(serverXPCConnection, v4);
 }
 
 - (id)_stateName
 {
-  v3 = [(SUControllerManager *)self serverQueue];
-  dispatch_assert_queue_V2(v3);
+  serverQueue = [(SUControllerManager *)self serverQueue];
+  dispatch_assert_queue_V2(serverQueue);
 
   if ([(SUControllerManager *)self disconnected])
   {
@@ -474,44 +474,44 @@ void __50__SUControllerManager__handleXPCEvent_connection___block_invoke(uint64_
   }
 }
 
-- (void)_indicateConnectionError:(id)a3
+- (void)_indicateConnectionError:(id)error
 {
-  v4 = a3;
-  v5 = [(SUControllerManager *)self delegateQueue];
+  errorCopy = error;
+  delegateQueue = [(SUControllerManager *)self delegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SUControllerManager__indicateConnectionError___block_invoke;
   v7[3] = &unk_279CA8768;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(delegateQueue, v7);
 }
 
 - (void)_indicateConnectionRegained
 {
-  v3 = [(SUControllerManager *)self delegateQueue];
+  delegateQueue = [(SUControllerManager *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SUControllerManager__indicateConnectionRegained__block_invoke;
   block[3] = &unk_279CA8740;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(delegateQueue, block);
 }
 
-- (void)_indicateMessageReceived:(id)a3 messageType:(const char *)a4
+- (void)_indicateMessageReceived:(id)received messageType:(const char *)type
 {
-  v6 = a3;
-  v7 = [(SUControllerManager *)self delegateQueue];
+  receivedCopy = received;
+  delegateQueue = [(SUControllerManager *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SUControllerManager__indicateMessageReceived_messageType___block_invoke;
   block[3] = &unk_279CA8808;
-  v10 = v6;
-  v11 = a4;
+  v10 = receivedCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = receivedCopy;
+  dispatch_async(delegateQueue, block);
 }
 
 void __60__SUControllerManager__indicateMessageReceived_messageType___block_invoke(void *a1)
@@ -592,11 +592,11 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
   }
 }
 
-- (void)_forwardConnectionError:(id)a3
+- (void)_forwardConnectionError:(id)error
 {
-  v4 = a3;
-  v13 = [(SUControllerManager *)self delegate];
-  if (v4 == MEMORY[0x277D863F8] || v4 == MEMORY[0x277D863F0])
+  errorCopy = error;
+  delegate = [(SUControllerManager *)self delegate];
+  if (errorCopy == MEMORY[0x277D863F8] || errorCopy == MEMORY[0x277D863F0])
   {
     v10 = 34;
   }
@@ -606,11 +606,11 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
     v10 = 35;
   }
 
-  v11 = SUControllerError(@"SUControllerError", v10, 0, @"server connection error %@", v5, v6, v7, v8, v4);
+  v11 = SUControllerError(@"SUControllerError", v10, 0, @"server connection error %@", v5, v6, v7, v8, errorCopy);
 
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v13 manager:self connectionError:v11];
+    [delegate manager:self connectionError:v11];
   }
 
   else
@@ -622,10 +622,10 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
 
 - (void)_forwardConnectionRegained
 {
-  v4 = [(SUControllerManager *)self delegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SUControllerManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 connectionRegained:self];
+    [delegate connectionRegained:self];
   }
 
   else
@@ -635,22 +635,22 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
   }
 }
 
-- (void)_forwardScanResult:(id)a3
+- (void)_forwardScanResult:(id)result
 {
   v4 = SUControllerMessageTypeScanForUpdates;
   v5 = SUControllerMessageDescriptorKey;
-  v6 = a3;
+  resultCopy = result;
   v7 = objc_opt_class();
-  v14 = SUControllerIPCDecodeOptionalObjectForKey(v4, v6, v5, v7);
+  v14 = SUControllerIPCDecodeOptionalObjectForKey(v4, resultCopy, v5, v7);
   v8 = SUControllerMessageTypeScanForUpdates;
   v9 = SUControllerMessageErrorKey;
   v10 = objc_opt_class();
-  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, v6, v9, v10);
+  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, resultCopy, v9, v10);
 
-  v12 = [(SUControllerManager *)self delegate];
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SUControllerManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v12 manager:self scanRequestDidLocateUpdate:v14 error:v11];
+    [delegate manager:self scanRequestDidLocateUpdate:v14 error:v11];
   }
 
   else
@@ -660,22 +660,22 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
   }
 }
 
-- (void)_forwardScanPostponed:(id)a3
+- (void)_forwardScanPostponed:(id)postponed
 {
   v4 = SUControllerMessageTypeScanPostponed;
   v5 = SUControllerMessageDescriptorKey;
-  v6 = a3;
+  postponedCopy = postponed;
   v7 = objc_opt_class();
-  v14 = SUControllerIPCDecodeOptionalObjectForKey(v4, v6, v5, v7);
+  v14 = SUControllerIPCDecodeOptionalObjectForKey(v4, postponedCopy, v5, v7);
   v8 = SUControllerMessageTypeScanPostponed;
   v9 = SUControllerMessageErrorKey;
   v10 = objc_opt_class();
-  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, v6, v9, v10);
+  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, postponedCopy, v9, v10);
 
-  v12 = [(SUControllerManager *)self delegate];
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SUControllerManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v12 manager:self scanRequestPostponed:v14 error:v11];
+    [delegate manager:self scanRequestPostponed:v14 error:v11];
   }
 
   else
@@ -685,23 +685,23 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
   }
 }
 
-- (void)_forwardDownloadProgress:(id)a3
+- (void)_forwardDownloadProgress:(id)progress
 {
   v4 = SUControllerMessageTypeDownloadProgress;
   v5 = SUControllerMessageDownloadKey;
-  v6 = a3;
+  progressCopy = progress;
   v7 = objc_opt_class();
-  v28 = SUControllerIPCDecodeOptionalObjectForKey(v4, v6, v5, v7);
+  v28 = SUControllerIPCDecodeOptionalObjectForKey(v4, progressCopy, v5, v7);
   v8 = SUControllerMessageTypeDownloadProgress;
   v9 = SUControllerMessageErrorKey;
   v10 = objc_opt_class();
-  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, v6, v9, v10);
+  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, progressCopy, v9, v10);
 
-  v12 = [(SUControllerManager *)self delegate];
-  v13 = v12;
+  delegate = [(SUControllerManager *)self delegate];
+  v13 = delegate;
   if (v11)
   {
-    if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v13 manager:self didFailDownload:v28 withError:v11];
       goto LABEL_15;
@@ -713,10 +713,10 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
     goto LABEL_14;
   }
 
-  v17 = [v28 progress];
-  v18 = [v17 isDone];
+  progress = [v28 progress];
+  isDone = [progress isDone];
 
-  if (!v18)
+  if (!isDone)
   {
     if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -737,15 +737,15 @@ void __60__SUControllerManager__indicateMessageReceived_messageType___block_invo
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v28 descriptor];
-    v20 = [v19 willProceedWithInstallation];
-    v21 = [v28 descriptor];
-    v22 = [v21 isAwaitingAdmissionControlForInstallation];
+    descriptor = [v28 descriptor];
+    willProceedWithInstallation = [descriptor willProceedWithInstallation];
+    descriptor2 = [v28 descriptor];
+    isAwaitingAdmissionControlForInstallation = [descriptor2 isAwaitingAdmissionControlForInstallation];
     v23 = MEMORY[0x277CCABB0];
-    v24 = [v28 descriptor];
-    v25 = [v24 denialReasons];
-    v26 = [v23 numberWithInteger:{objc_msgSend(v25, "code")}];
-    [v13 manager:self didFinishDownload:v28 willProceedWithInstallation:v20 waitingForAdmissionControl:v22 denialReasons:v26];
+    descriptor3 = [v28 descriptor];
+    denialReasons = [descriptor3 denialReasons];
+    v26 = [v23 numberWithInteger:{objc_msgSend(denialReasons, "code")}];
+    [v13 manager:self didFinishDownload:v28 willProceedWithInstallation:willProceedWithInstallation waitingForAdmissionControl:isAwaitingAdmissionControlForInstallation denialReasons:v26];
 
 LABEL_20:
     goto LABEL_15;
@@ -753,10 +753,10 @@ LABEL_20:
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v28 descriptor];
-    v27 = [v19 willProceedWithInstallation];
-    v21 = [v28 descriptor];
-    [v13 manager:self didFinishDownload:v28 willProceedWithInstallation:v27 waitingForAdmissionControl:{objc_msgSend(v21, "isAwaitingAdmissionControlForInstallation")}];
+    descriptor = [v28 descriptor];
+    willProceedWithInstallation2 = [descriptor willProceedWithInstallation];
+    descriptor2 = [v28 descriptor];
+    [v13 manager:self didFinishDownload:v28 willProceedWithInstallation:willProceedWithInstallation2 waitingForAdmissionControl:{objc_msgSend(descriptor2, "isAwaitingAdmissionControlForInstallation")}];
     goto LABEL_20;
   }
 
@@ -775,52 +775,52 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_forwardApplyProgress:(id)a3
+- (void)_forwardApplyProgress:(id)progress
 {
   v4 = SUControllerMessageTypeApplyProgress;
   v5 = SUControllerMessageApplyKey;
-  v6 = a3;
+  progressCopy = progress;
   v7 = objc_opt_class();
-  v13 = SUControllerIPCDecodeOptionalObjectForKey(v4, v6, v5, v7);
+  v13 = SUControllerIPCDecodeOptionalObjectForKey(v4, progressCopy, v5, v7);
 
-  v8 = [(SUControllerManager *)self delegate];
-  v9 = [v13 progress];
-  v10 = [v9 isDone];
+  delegate = [(SUControllerManager *)self delegate];
+  progress = [v13 progress];
+  isDone = [progress isDone];
 
-  if ((v10 & 1) == 0)
+  if ((isDone & 1) == 0)
   {
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v11 = [v13 descriptor];
-      v12 = [v13 progress];
-      [v8 manager:self didChangeProgressOnApply:v11 progress:v12];
+      descriptor = [v13 descriptor];
+      progress2 = [v13 progress];
+      [delegate manager:self didChangeProgressOnApply:descriptor progress:progress2];
     }
 
     else
     {
-      v11 = +[SUControllerLogger sharedLogger];
-      [v11 logAtLevel:1 label:"-[SUControllerManager _forwardApplyProgress:]" format:@"[DELEGATE] delegate does not respond to didChangeProgressOnApply - not reporting apply progress"];
+      descriptor = +[SUControllerLogger sharedLogger];
+      [descriptor logAtLevel:1 label:"-[SUControllerManager _forwardApplyProgress:]" format:@"[DELEGATE] delegate does not respond to didChangeProgressOnApply - not reporting apply progress"];
     }
   }
 }
 
-- (void)_forwardInstallResult:(id)a3
+- (void)_forwardInstallResult:(id)result
 {
   v4 = SUControllerMessageTypeInstallResult;
   v5 = SUControllerMessageDescriptorKey;
-  v6 = a3;
+  resultCopy = result;
   v7 = objc_opt_class();
-  v17 = SUControllerIPCDecodeOptionalObjectForKey(v4, v6, v5, v7);
+  v17 = SUControllerIPCDecodeOptionalObjectForKey(v4, resultCopy, v5, v7);
   v8 = SUControllerMessageTypeInstallResult;
   v9 = SUControllerMessageErrorKey;
   v10 = objc_opt_class();
-  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, v6, v9, v10);
+  v11 = SUControllerIPCDecodeOptionalObjectForKey(v8, resultCopy, v9, v10);
 
-  v12 = [(SUControllerManager *)self delegate];
-  v13 = v12;
+  delegate = [(SUControllerManager *)self delegate];
+  v13 = delegate;
   if (v11)
   {
-    if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v13 manager:self didFailInstallation:v17 withError:v11];
       goto LABEL_11;
@@ -833,7 +833,7 @@ LABEL_15:
 
   else
   {
-    if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v13 manager:self didFinishInstallation:v17];
       goto LABEL_11;
@@ -849,12 +849,12 @@ LABEL_15:
 LABEL_11:
 }
 
-- (void)_forwardAutoScanPerformed:(id)a3
+- (void)_forwardAutoScanPerformed:(id)performed
 {
-  v5 = [(SUControllerManager *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SUControllerManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 autoScanPerformed:self];
+    [delegate autoScanPerformed:self];
   }
 
   else
@@ -864,19 +864,19 @@ LABEL_11:
   }
 }
 
-- (void)managerStatus:(id)a3
+- (void)managerStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUControllerMessageTypeKey, SUControllerMessageTypeQueryManagerStatus);
-  v6 = [(SUControllerManager *)self _serverConnection];
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __37__SUControllerManager_managerStatus___block_invoke;
   handler[3] = &unk_279CA8830;
-  v9 = v4;
-  v7 = v4;
-  xpc_connection_send_message_with_reply(v6, v5, 0, handler);
+  v9 = statusCopy;
+  v7 = statusCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v5, 0, handler);
 }
 
 void __37__SUControllerManager_managerStatus___block_invoke(uint64_t a1, void *a2)
@@ -924,19 +924,19 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)managerState:(id)a3
+- (void)managerState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUControllerMessageTypeKey, SUControllerMessageTypeQueryManagerState);
-  v6 = [(SUControllerManager *)self _serverConnection];
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __36__SUControllerManager_managerState___block_invoke;
   handler[3] = &unk_279CA8830;
-  v9 = v4;
-  v7 = v4;
-  xpc_connection_send_message_with_reply(v6, v5, 0, handler);
+  v9 = stateCopy;
+  v7 = stateCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v5, 0, handler);
 }
 
 void __36__SUControllerManager_managerState___block_invoke(uint64_t a1, void *a2)
@@ -981,19 +981,19 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)managerConfig:(id)a3
+- (void)managerConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUControllerMessageTypeKey, SUControllerMessageTypeQueryManagerConfig);
-  v6 = [(SUControllerManager *)self _serverConnection];
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __37__SUControllerManager_managerConfig___block_invoke;
   handler[3] = &unk_279CA8830;
-  v9 = v4;
-  v7 = v4;
-  xpc_connection_send_message_with_reply(v6, v5, 0, handler);
+  v9 = configCopy;
+  v7 = configCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v5, 0, handler);
 }
 
 void __37__SUControllerManager_managerConfig___block_invoke(uint64_t a1, void *a2)
@@ -1037,23 +1037,23 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)modifyConfig:(id)a3 modifying:(int64_t)a4 completion:(id)a5
+- (void)modifyConfig:(id)config modifying:(int64_t)modifying completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  configCopy = config;
   v10 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v10, SUControllerMessageTypeKey, SUControllerMessageTypeModifyManagerConfig);
-  SUControllerIPCEncodeObject(SUControllerMessageTypeModifyManagerConfig, v10, SUControllerMessageManagerConfigKey, v9);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeModifyManagerConfig, v10, SUControllerMessageManagerConfigKey, configCopy);
 
-  xpc_dictionary_set_int64(v10, SUControllerMessageManagerConfigChangeMaskKey, a4);
-  v11 = [(SUControllerManager *)self _serverConnection];
+  xpc_dictionary_set_int64(v10, SUControllerMessageManagerConfigChangeMaskKey, modifying);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __57__SUControllerManager_modifyConfig_modifying_completion___block_invoke;
   handler[3] = &unk_279CA8830;
-  v14 = v8;
-  v12 = v8;
-  xpc_connection_send_message_with_reply(v11, v10, 0, handler);
+  v14 = completionCopy;
+  v12 = completionCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v10, 0, handler);
 }
 
 void __57__SUControllerManager_modifyConfig_modifying_completion___block_invoke(uint64_t a1, void *a2)
@@ -1101,111 +1101,111 @@ LABEL_7:
 {
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUControllerMessageTypeKey, SUControllerMessageTypeScanForUpdates);
-  v3 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v3, message);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)scanForUpdates:(id)a3
+- (void)scanForUpdates:(id)updates
 {
-  v6 = a3;
+  updatesCopy = updates;
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, SUControllerMessageTypeKey, SUControllerMessageTypeScanForUpdates);
-  if (v6)
+  if (updatesCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypeScanForUpdates, v4, SUControllerMessageScanOptionsKey, v6);
+    SUControllerIPCEncodeObject(SUControllerMessageTypeScanForUpdates, v4, SUControllerMessageScanOptionsKey, updatesCopy);
   }
 
-  v5 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v5, v4);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, v4);
 }
 
-- (void)startDownload:(id)a3
+- (void)startDownload:(id)download
 {
-  v6 = a3;
+  downloadCopy = download;
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, SUControllerMessageTypeKey, SUControllerMessageTypeStartDownload);
-  if (v6)
+  if (downloadCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypeStartDownload, v4, SUControllerMessageDescriptorKey, v6);
+    SUControllerIPCEncodeObject(SUControllerMessageTypeStartDownload, v4, SUControllerMessageDescriptorKey, downloadCopy);
   }
 
-  v5 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v5, v4);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, v4);
 }
 
-- (void)installUpdate:(id)a3
+- (void)installUpdate:(id)update
 {
-  v6 = a3;
+  updateCopy = update;
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, SUControllerMessageTypeKey, SUControllerMessageTypeInstallUpdate);
-  if (v6)
+  if (updateCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypeInstallUpdate, v4, SUControllerMessageDescriptorKey, v6);
+    SUControllerIPCEncodeObject(SUControllerMessageTypeInstallUpdate, v4, SUControllerMessageDescriptorKey, updateCopy);
   }
 
-  v5 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v5, v4);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, v4);
 }
 
-- (void)userDidAcceptTermsAndConditionsForUpdate:(id)a3
+- (void)userDidAcceptTermsAndConditionsForUpdate:(id)update
 {
-  v6 = a3;
-  [v6 setUserDidAcceptTermsAndConditions:1];
+  updateCopy = update;
+  [updateCopy setUserDidAcceptTermsAndConditions:1];
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, SUControllerMessageTypeKey, SUControllerMessageTypeUserDidAcceptTermsAndConditions);
-  if (v6)
+  if (updateCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypeUserDidAcceptTermsAndConditions, v4, SUControllerMessageDescriptorKey, v6);
+    SUControllerIPCEncodeObject(SUControllerMessageTypeUserDidAcceptTermsAndConditions, v4, SUControllerMessageDescriptorKey, updateCopy);
   }
 
-  v5 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v5, v4);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, v4);
 }
 
-- (void)updateAcceptingTermsAndConditions:(id)a3
+- (void)updateAcceptingTermsAndConditions:(id)conditions
 {
-  v4 = a3;
+  conditionsCopy = conditions;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUControllerMessageTypeKey, SUControllerMessageTypeUpdateAcceptingTermsAndConditions);
-  SUControllerIPCEncodeObject(SUControllerMessageTypeUpdateAcceptingTermsAndConditions, message, SUControllerMessageSSOTokenKey, v4);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeUpdateAcceptingTermsAndConditions, message, SUControllerMessageSSOTokenKey, conditionsCopy);
 
-  v5 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v5, message);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)updateAcceptingTermsAndConditions:(id)a3 usingPassword:(id)a4
+- (void)updateAcceptingTermsAndConditions:(id)conditions usingPassword:(id)password
 {
-  v6 = a4;
-  v7 = a3;
+  passwordCopy = password;
+  conditionsCopy = conditions;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUControllerMessageTypeKey, SUControllerMessageTypeUpdateAcceptingTermsAndConditions);
-  SUControllerIPCEncodeObject(SUControllerMessageTypeUpdateAcceptingTermsAndConditions, message, SUControllerMessageAccountNameKey, v7);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeUpdateAcceptingTermsAndConditions, message, SUControllerMessageAccountNameKey, conditionsCopy);
 
-  SUControllerIPCEncodeObject(SUControllerMessageTypeUpdateAcceptingTermsAndConditions, message, SUControllerMessagePasswordKey, v6);
-  v8 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v8, message);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeUpdateAcceptingTermsAndConditions, message, SUControllerMessagePasswordKey, passwordCopy);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)purgeUpdate:(id)a3 completion:(id)a4
+- (void)purgeUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v8, SUControllerMessageTypeKey, SUControllerMessageTypePurgeUpdate);
-  if (v6)
+  if (updateCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypePurgeUpdate, v8, SUControllerMessageDescriptorKey, v6);
+    SUControllerIPCEncodeObject(SUControllerMessageTypePurgeUpdate, v8, SUControllerMessageDescriptorKey, updateCopy);
   }
 
-  v9 = [(SUControllerManager *)self _serverConnection];
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
   v10 = dispatch_get_global_queue(0, 0);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __46__SUControllerManager_purgeUpdate_completion___block_invoke;
   handler[3] = &unk_279CA8830;
-  v13 = v7;
-  v11 = v7;
-  xpc_connection_send_message_with_reply(v9, v8, v10, handler);
+  v13 = completionCopy;
+  v11 = completionCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v8, v10, handler);
 }
 
 void __46__SUControllerManager_purgeUpdate_completion___block_invoke(uint64_t a1, void *a2)
@@ -1227,48 +1227,48 @@ void __46__SUControllerManager_purgeUpdate_completion___block_invoke(uint64_t a1
 {
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUControllerMessageTypeKey, SUControllerMessageTypePerformMigration);
-  v3 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v3, message);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)useSSOTokenToPersonalize:(id)a3 withSSOToken:(id)a4
+- (void)useSSOTokenToPersonalize:(id)personalize withSSOToken:(id)token
 {
-  v9 = a3;
-  v6 = a4;
+  personalizeCopy = personalize;
+  tokenCopy = token;
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v7, SUControllerMessageTypeKey, SUControllerMessageTypeUseSSOTokenToPersonalize);
-  if (v9)
+  if (personalizeCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypeUseSSOTokenToPersonalize, v7, SUControllerMessageDescriptorKey, v9);
+    SUControllerIPCEncodeObject(SUControllerMessageTypeUseSSOTokenToPersonalize, v7, SUControllerMessageDescriptorKey, personalizeCopy);
   }
 
-  SUControllerIPCEncodeObject(SUControllerMessageTypeUseSSOTokenToPersonalize, v7, SUControllerMessageSSOTokenKey, v6);
-  v8 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v8, v7);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeUseSSOTokenToPersonalize, v7, SUControllerMessageSSOTokenKey, tokenCopy);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, v7);
 }
 
-- (void)useCredentialsToPersonalize:(id)a3 withAccountName:(id)a4 andPassword:(id)a5
+- (void)useCredentialsToPersonalize:(id)personalize withAccountName:(id)name andPassword:(id)password
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  personalizeCopy = personalize;
+  nameCopy = name;
+  passwordCopy = password;
   v10 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v10, SUControllerMessageTypeKey, SUControllerMessageTypeUseCredentialsToPersonalize);
-  if (v12)
+  if (personalizeCopy)
   {
-    SUControllerIPCEncodeObject(SUControllerMessageTypeUseCredentialsToPersonalize, v10, SUControllerMessageDescriptorKey, v12);
+    SUControllerIPCEncodeObject(SUControllerMessageTypeUseCredentialsToPersonalize, v10, SUControllerMessageDescriptorKey, personalizeCopy);
   }
 
-  SUControllerIPCEncodeObject(SUControllerMessageTypeUseCredentialsToPersonalize, v10, SUControllerMessageAccountNameKey, v8);
-  SUControllerIPCEncodeObject(SUControllerMessageTypeUseCredentialsToPersonalize, v10, SUControllerMessagePasswordKey, v9);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeUseCredentialsToPersonalize, v10, SUControllerMessageAccountNameKey, nameCopy);
+  SUControllerIPCEncodeObject(SUControllerMessageTypeUseCredentialsToPersonalize, v10, SUControllerMessagePasswordKey, passwordCopy);
 
-  v11 = [(SUControllerManager *)self _serverConnection];
-  xpc_connection_send_message(v11, v10);
+  _serverConnection = [(SUControllerManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, v10);
 }
 
-- (id)paramsForOTAScans:(id)a3
+- (id)paramsForOTAScans:(id)scans
 {
-  v4 = a3;
+  scansCopy = scans;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = MEMORY[0x26D6679E0](@"com.apple.MobileAsset.SoftwareUpdate");
   [v5 setSafeObject:v6 forKey:@"AssetAudienceUUID"];
@@ -1286,44 +1286,44 @@ void __46__SUControllerManager_purgeUpdate_completion___block_invoke(uint64_t a1
     [v7 logAtLevel:2 label:"-[SUControllerManager paramsForOTAScans:]" format:{@"MA audience: %@", @"None"}];
   }
 
-  v10 = [MEMORY[0x277D64418] sharedDevice];
-  v11 = [v10 buildVersion];
-  [v5 setSafeObject:v11 forKey:@"PrerequisiteBuildVersion"];
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  buildVersion = [mEMORY[0x277D64418] buildVersion];
+  [v5 setSafeObject:buildVersion forKey:@"PrerequisiteBuildVersion"];
 
-  v12 = [MEMORY[0x277D64418] sharedDevice];
-  v13 = [v12 productVersion];
-  [v5 setSafeObject:v13 forKey:@"PrerequisiteProductVersion"];
+  mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+  productVersion = [mEMORY[0x277D64418]2 productVersion];
+  [v5 setSafeObject:productVersion forKey:@"PrerequisiteProductVersion"];
 
-  v14 = [MEMORY[0x277D64418] sharedDevice];
-  v15 = [v14 restoreVersion];
-  [v5 setSafeObject:v15 forKey:@"PrerequisiteRestoreVersion"];
+  mEMORY[0x277D64418]3 = [MEMORY[0x277D64418] sharedDevice];
+  restoreVersion = [mEMORY[0x277D64418]3 restoreVersion];
+  [v5 setSafeObject:restoreVersion forKey:@"PrerequisiteRestoreVersion"];
 
-  v16 = [MEMORY[0x277D64418] sharedDevice];
-  v17 = [v16 deviceClass];
-  [v5 setSafeObject:v17 forKey:@"DeviceClass"];
+  mEMORY[0x277D64418]4 = [MEMORY[0x277D64418] sharedDevice];
+  deviceClass = [mEMORY[0x277D64418]4 deviceClass];
+  [v5 setSafeObject:deviceClass forKey:@"DeviceClass"];
 
-  v18 = [MEMORY[0x277D64418] sharedDevice];
-  v19 = [v18 hwModelString];
-  [v5 setSafeObject:v19 forKey:@"HWModelStr"];
+  mEMORY[0x277D64418]5 = [MEMORY[0x277D64418] sharedDevice];
+  hwModelString = [mEMORY[0x277D64418]5 hwModelString];
+  [v5 setSafeObject:hwModelString forKey:@"HWModelStr"];
 
-  v20 = [MEMORY[0x277D64418] sharedDevice];
-  v21 = [v20 productType];
-  [v5 setSafeObject:v21 forKey:@"ProductType"];
+  mEMORY[0x277D64418]6 = [MEMORY[0x277D64418] sharedDevice];
+  productType = [mEMORY[0x277D64418]6 productType];
+  [v5 setSafeObject:productType forKey:@"ProductType"];
 
-  v22 = [MEMORY[0x277D64418] sharedDevice];
-  v23 = [v22 releaseType];
-  [v5 setSafeObject:v23 forKey:@"ReleaseType"];
+  mEMORY[0x277D64418]7 = [MEMORY[0x277D64418] sharedDevice];
+  releaseType = [mEMORY[0x277D64418]7 releaseType];
+  [v5 setSafeObject:releaseType forKey:@"ReleaseType"];
 
   v24 = MEMORY[0x277CCABB0];
-  v25 = [MEMORY[0x277D64418] sharedDevice];
-  v26 = [v24 numberWithBool:{objc_msgSend(v25, "isInternal")}];
+  mEMORY[0x277D64418]8 = [MEMORY[0x277D64418] sharedDevice];
+  v26 = [v24 numberWithBool:{objc_msgSend(mEMORY[0x277D64418]8, "isInternal")}];
   [v5 setSafeObject:v26 forKey:@"IsInternal"];
 
-  v27 = [(SUControllerManager *)self getTrainName];
-  if (v27)
+  getTrainName = [(SUControllerManager *)self getTrainName];
+  if (getTrainName)
   {
-    [v5 setSafeObject:v27 forKey:@"TrainName"];
-    if (!v4)
+    [v5 setSafeObject:getTrainName forKey:@"TrainName"];
+    if (!scansCopy)
     {
       goto LABEL_15;
     }
@@ -1334,45 +1334,45 @@ void __46__SUControllerManager_purgeUpdate_completion___block_invoke(uint64_t a1
     v28 = +[SUControllerLogger sharedLogger];
     [v28 logAtLevel:2 label:"-[SUControllerManager paramsForOTAScans:]" format:@"paramsForOTAScans: Failed to get trainName"];
 
-    if (!v4)
+    if (!scansCopy)
     {
       goto LABEL_15;
     }
   }
 
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "restrictToFullReplacement")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(scansCopy, "restrictToFullReplacement")}];
   [v5 setSafeObject:v29 forKey:@"RestrictToFull"];
 
-  v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "allowSameVersionUpdates")}];
+  v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(scansCopy, "allowSameVersionUpdates")}];
   [v5 setSafeObject:v30 forKey:@"AllowSameVersion"];
 
-  v31 = [MEMORY[0x277D64418] sharedDevice];
-  v32 = [v31 isBootedOSSecureInternal];
+  mEMORY[0x277D64418]9 = [MEMORY[0x277D64418] sharedDevice];
+  isBootedOSSecureInternal = [mEMORY[0x277D64418]9 isBootedOSSecureInternal];
 
-  if (v32)
+  if (isBootedOSSecureInternal)
   {
-    v33 = [v4 prerequisiteBuildVersion];
+    prerequisiteBuildVersion = [scansCopy prerequisiteBuildVersion];
 
-    if (v33)
+    if (prerequisiteBuildVersion)
     {
-      v34 = [v4 prerequisiteBuildVersion];
-      [v5 setSafeObject:v34 forKey:@"PrerequisiteBuildVersion"];
+      prerequisiteBuildVersion2 = [scansCopy prerequisiteBuildVersion];
+      [v5 setSafeObject:prerequisiteBuildVersion2 forKey:@"PrerequisiteBuildVersion"];
     }
 
-    v35 = [v4 prerequisiteProductVersion];
+    prerequisiteProductVersion = [scansCopy prerequisiteProductVersion];
 
-    if (v35)
+    if (prerequisiteProductVersion)
     {
-      v36 = [v4 prerequisiteProductVersion];
-      [v5 setSafeObject:v36 forKey:@"PrerequisiteProductVersion"];
+      prerequisiteProductVersion2 = [scansCopy prerequisiteProductVersion];
+      [v5 setSafeObject:prerequisiteProductVersion2 forKey:@"PrerequisiteProductVersion"];
     }
 
-    v37 = [v4 asReleaseType];
+    asReleaseType = [scansCopy asReleaseType];
 
-    if (v37)
+    if (asReleaseType)
     {
-      v38 = [v4 asReleaseType];
-      [v5 setSafeObject:v38 forKey:@"ReleaseType"];
+      asReleaseType2 = [scansCopy asReleaseType];
+      [v5 setSafeObject:asReleaseType2 forKey:@"ReleaseType"];
     }
   }
 
@@ -1383,19 +1383,19 @@ LABEL_15:
   return v5;
 }
 
-- (void)scanForUpdatesFromNonTVOSDevice:(id)a3 completion:(id)a4
+- (void)scanForUpdatesFromNonTVOSDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  deviceCopy = device;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v10 = +[SUControllerLogger sharedLogger];
   v11 = v10;
   v12 = @"NONE";
-  if (v6)
+  if (deviceCopy)
   {
-    v12 = v6;
+    v12 = deviceCopy;
   }
 
   [v10 logAtLevel:2 label:"-[SUControllerManager scanForUpdatesFromNonTVOSDevice:completion:]" format:{@"Requesting a scan with the following params: %@", v12}];
@@ -1403,107 +1403,107 @@ LABEL_15:
   v13 = objc_alloc(MEMORY[0x277D641A8]);
   v14 = [v13 initWithSoftwareUpdateAssetType:*MEMORY[0x277D64310] documentationAssetType:*MEMORY[0x277D64320] usingPolicies:127 usingExtensions:0];
   v15 = @"AssetAudienceUUID";
-  v16 = [(__CFString *)v6 objectForKey:@"AssetAudienceUUID"];
+  v16 = [(__CFString *)deviceCopy objectForKey:@"AssetAudienceUUID"];
   [v14 setAssetAudienceUUID:v16];
 
-  v17 = [v14 assetAudienceUUID];
+  assetAudienceUUID = [v14 assetAudienceUUID];
 
-  if (!v17)
+  if (!assetAudienceUUID)
   {
     goto LABEL_13;
   }
 
   v15 = @"PrerequisiteBuildVersion";
-  v22 = [(__CFString *)v6 objectForKey:@"PrerequisiteBuildVersion"];
+  v22 = [(__CFString *)deviceCopy objectForKey:@"PrerequisiteBuildVersion"];
   [v14 setPrerequisiteBuildVersion:v22];
 
-  v23 = [v14 prerequisiteBuildVersion];
+  prerequisiteBuildVersion = [v14 prerequisiteBuildVersion];
 
-  if (!v23)
+  if (!prerequisiteBuildVersion)
   {
     goto LABEL_13;
   }
 
   v15 = @"PrerequisiteProductVersion";
-  v24 = [(__CFString *)v6 objectForKey:@"PrerequisiteProductVersion"];
+  v24 = [(__CFString *)deviceCopy objectForKey:@"PrerequisiteProductVersion"];
   [v14 setPrerequisiteProductVersion:v24];
 
-  v25 = [v14 prerequisiteProductVersion];
+  prerequisiteProductVersion = [v14 prerequisiteProductVersion];
 
-  if (!v25)
+  if (!prerequisiteProductVersion)
   {
     goto LABEL_13;
   }
 
   v15 = @"PrerequisiteRestoreVersion";
-  v26 = [(__CFString *)v6 objectForKey:@"PrerequisiteRestoreVersion"];
+  v26 = [(__CFString *)deviceCopy objectForKey:@"PrerequisiteRestoreVersion"];
   [v14 setPrerequisiteRestoreVersion:v26];
 
-  v27 = [v14 prerequisiteRestoreVersion];
+  prerequisiteRestoreVersion = [v14 prerequisiteRestoreVersion];
 
-  if (!v27)
+  if (!prerequisiteRestoreVersion)
   {
     goto LABEL_13;
   }
 
   v15 = @"DeviceClass";
-  v28 = [(__CFString *)v6 objectForKey:@"DeviceClass"];
+  v28 = [(__CFString *)deviceCopy objectForKey:@"DeviceClass"];
   [v14 setDeviceClass:v28];
 
-  v29 = [v14 deviceClass];
+  deviceClass = [v14 deviceClass];
 
-  if (!v29)
+  if (!deviceClass)
   {
     goto LABEL_13;
   }
 
   v15 = @"HWModelStr";
-  v30 = [(__CFString *)v6 objectForKey:@"HWModelStr"];
+  v30 = [(__CFString *)deviceCopy objectForKey:@"HWModelStr"];
   [v14 setHwModelStr:v30];
 
-  v31 = [v14 hwModelStr];
+  hwModelStr = [v14 hwModelStr];
 
-  if (!v31)
+  if (!hwModelStr)
   {
     goto LABEL_13;
   }
 
   v15 = @"ProductType";
-  v32 = [(__CFString *)v6 objectForKey:@"ProductType"];
+  v32 = [(__CFString *)deviceCopy objectForKey:@"ProductType"];
   [v14 setProductType:v32];
 
-  v33 = [v14 productType];
+  productType = [v14 productType];
 
-  if (v33)
+  if (productType)
   {
-    v34 = [(__CFString *)v6 objectForKey:@"ReleaseType"];
+    v34 = [(__CFString *)deviceCopy objectForKey:@"ReleaseType"];
     [v14 setReleaseType:v34];
 
-    v39 = [(__CFString *)v6 objectForKey:@"IsInternal"];
+    v39 = [(__CFString *)deviceCopy objectForKey:@"IsInternal"];
     if (v39)
     {
       [v14 setIsInternal:{-[SUControllerManager numToBool:](self, "numToBool:", v39)}];
       v40 = objc_alloc(MEMORY[0x277CCACA8]);
-      v41 = [v14 deviceClass];
-      v42 = [v14 assetAudienceUUID];
-      v43 = [v40 initWithFormat:@"tvOS-%@-%@", v41, v42];
+      deviceClass2 = [v14 deviceClass];
+      assetAudienceUUID2 = [v14 assetAudienceUUID];
+      v43 = [v40 initWithFormat:@"tvOS-%@-%@", deviceClass2, assetAudienceUUID2];
       [v14 setMobileAssetPurposeOverride:v43];
 
       [v14 setEnablePreSUStaging:0];
       [v14 setEnablePreSUStagingForOptionalAssets:0];
-      v44 = [v14 softwareUpdateScanPolicy];
-      [v44 setAllowsCellular:1];
+      softwareUpdateScanPolicy = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy setAllowsCellular:1];
 
-      v45 = [v14 softwareUpdateScanPolicy];
-      [v45 setDiscretionary:0];
+      softwareUpdateScanPolicy2 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy2 setDiscretionary:0];
 
-      v46 = [v14 softwareUpdateScanPolicy];
-      [v46 setRequiresPowerPluggedIn:0];
+      softwareUpdateScanPolicy3 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy3 setRequiresPowerPluggedIn:0];
 
-      v47 = [v14 softwareUpdateScanPolicy];
-      [v47 setRestrictToIncremental:0];
+      softwareUpdateScanPolicy4 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy4 setRestrictToIncremental:0];
 
-      v48 = [(__CFString *)v6 objectForKey:@"RestrictToFull"];
+      v48 = [(__CFString *)deviceCopy objectForKey:@"RestrictToFull"];
       v66 = v48;
       if (v48)
       {
@@ -1515,10 +1515,10 @@ LABEL_15:
         v49 = 0;
       }
 
-      v52 = [v14 softwareUpdateScanPolicy];
-      [v52 setRestrictToFull:v49];
+      softwareUpdateScanPolicy5 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy5 setRestrictToFull:v49];
 
-      v53 = [(__CFString *)v6 objectForKey:@"AllowSameVersion"];
+      v53 = [(__CFString *)deviceCopy objectForKey:@"AllowSameVersion"];
       if (v53)
       {
         v54 = [(SUControllerManager *)self numToBool:v53];
@@ -1529,59 +1529,59 @@ LABEL_15:
         v54 = 0;
       }
 
-      v55 = [v14 softwareUpdateScanPolicy];
-      [v55 setAllowSameVersion:v54];
+      softwareUpdateScanPolicy6 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy6 setAllowSameVersion:v54];
 
-      v56 = [v14 softwareUpdateScanPolicy];
-      [v56 setDownloadTimeoutSecs:60];
+      softwareUpdateScanPolicy7 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy7 setDownloadTimeoutSecs:60];
 
-      v57 = [v14 softwareUpdateScanPolicy];
-      [v57 setSessionId:v9];
+      softwareUpdateScanPolicy8 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy8 setSessionId:uUIDString];
 
-      v58 = [v14 softwareUpdateScanPolicy];
-      [v58 setRampingScanType:0];
+      softwareUpdateScanPolicy9 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy9 setRampingScanType:0];
 
-      v59 = [(__CFString *)v6 objectForKey:@"TrainName"];
+      v59 = [(__CFString *)deviceCopy objectForKey:@"TrainName"];
       if (v59)
       {
-        v60 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        [v60 setSafeObject:v59 forKey:@"TrainName"];
-        v61 = [v14 softwareUpdateScanPolicy];
-        [v61 setAdditionalServerParams:v60];
+        softwareUpdateScanPolicy11 = objc_alloc_init(MEMORY[0x277CBEB38]);
+        [softwareUpdateScanPolicy11 setSafeObject:v59 forKey:@"TrainName"];
+        softwareUpdateScanPolicy10 = [v14 softwareUpdateScanPolicy];
+        [softwareUpdateScanPolicy10 setAdditionalServerParams:softwareUpdateScanPolicy11];
       }
 
       else
       {
-        v60 = [v14 softwareUpdateScanPolicy];
-        [v60 setAdditionalServerParams:0];
+        softwareUpdateScanPolicy11 = [v14 softwareUpdateScanPolicy];
+        [softwareUpdateScanPolicy11 setAdditionalServerParams:0];
       }
 
-      v62 = [v14 softwareUpdateScanPolicy];
-      [v62 setAdditionalOptions:0];
+      softwareUpdateScanPolicy12 = [v14 softwareUpdateScanPolicy];
+      [softwareUpdateScanPolicy12 setAdditionalOptions:0];
 
-      v63 = [(SUControllerManager *)self scanner];
+      scanner = [(SUControllerManager *)self scanner];
 
-      if (!v63)
+      if (!scanner)
       {
-        v64 = [objc_alloc(MEMORY[0x277D641E0]) initWithUUID:v9];
+        v64 = [objc_alloc(MEMORY[0x277D641E0]) initWithUUID:uUIDString];
         [(SUControllerManager *)self setScanner:v64];
       }
 
-      v65 = [(SUControllerManager *)self scanner];
+      scanner2 = [(SUControllerManager *)self scanner];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __66__SUControllerManager_scanForUpdatesFromNonTVOSDevice_completion___block_invoke;
       v67[3] = &unk_279CA8880;
       v67[4] = self;
       v68 = v14;
-      v69 = v7;
-      [v65 locateAvailableUpdateWithPolicy:v68 completion:v67];
+      v69 = completionCopy;
+      [scanner2 locateAvailableUpdateWithPolicy:v68 completion:v67];
     }
 
     else
     {
       v51 = SUControllerError(@"SUControllerError", 60, 0, @"Provided scan parameter dictionary is missing required parameter for scanning: %@", v35, v36, v37, v38, @"IsInternal");
-      (*(v7 + 2))(v7, 0, v51);
+      (*(completionCopy + 2))(completionCopy, 0, v51);
     }
   }
 
@@ -1589,7 +1589,7 @@ LABEL_15:
   {
 LABEL_13:
     v50 = SUControllerError(@"SUControllerError", 60, 0, @"Provided scan parameter dictionary is missing required parameter for scanning: %@", v18, v19, v20, v21, v15);
-    (*(v7 + 2))(v7, 0, v50);
+    (*(completionCopy + 2))(completionCopy, 0, v50);
   }
 }
 
@@ -1729,42 +1729,42 @@ LABEL_9:
   return v10;
 }
 
-- (id)newDescriptorFromAsset:(id)a3
+- (id)newDescriptorFromAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  if (v4)
+  assetCopy = asset;
+  attributes = [assetCopy attributes];
+  if (attributes)
   {
     v5 = objc_alloc_init(SUControllerDescriptor);
-    [(SUControllerDescriptor *)v5 setSoftwareUpdateAsset:v3];
-    v6 = [v4 safeStringForKey:@"OSVersion"];
+    [(SUControllerDescriptor *)v5 setSoftwareUpdateAsset:assetCopy];
+    v6 = [attributes safeStringForKey:@"OSVersion"];
     v7 = [MEMORY[0x277D64180] cleanProductVersion:v6];
     [(SUControllerDescriptor *)v5 setProductVersion:v7];
 
-    v8 = [v4 safeStringForKey:@"Build"];
+    v8 = [attributes safeStringForKey:@"Build"];
     [(SUControllerDescriptor *)v5 setProductBuildVersion:v8];
 
     [(SUControllerDescriptor *)v5 setDocumentationID:0];
-    v9 = [v4 safeStringForKey:@"SUPublisher"];
+    v9 = [attributes safeStringForKey:@"SUPublisher"];
     [(SUControllerDescriptor *)v5 setPublisher:v9];
 
-    v10 = [v4 safeStringForKey:@"SUProductSystemName"];
+    v10 = [attributes safeStringForKey:@"SUProductSystemName"];
     [(SUControllerDescriptor *)v5 setProductSystemName:v10];
 
-    -[SUControllerDescriptor setDownloadSize:](v5, "setDownloadSize:", [v4 safeULLForKey:*MEMORY[0x277D28908]]);
-    -[SUControllerDescriptor setUnarchivedSize:](v5, "setUnarchivedSize:", [v4 safeULLForKey:*MEMORY[0x277D28920]]);
+    -[SUControllerDescriptor setDownloadSize:](v5, "setDownloadSize:", [attributes safeULLForKey:*MEMORY[0x277D28908]]);
+    -[SUControllerDescriptor setUnarchivedSize:](v5, "setUnarchivedSize:", [attributes safeULLForKey:*MEMORY[0x277D28920]]);
     [(SUControllerDescriptor *)v5 setMsuPrepareSize:0];
     [(SUControllerDescriptor *)v5 setInstallationSize:0];
     [(SUControllerDescriptor *)v5 setTotalRequiredFreeSpace:0];
-    v11 = [v4 safeStringForKey:@"PrerequisiteBuild"];
-    v12 = [v4 safeStringForKey:@"PrerequisiteOSVersion"];
+    v11 = [attributes safeStringForKey:@"PrerequisiteBuild"];
+    v12 = [attributes safeStringForKey:@"PrerequisiteOSVersion"];
     [(SUControllerDescriptor *)v5 setFullReplacement:(v11 | v12) == 0];
-    -[SUControllerDescriptor setRampEnabled:](v5, "setRampEnabled:", [v4 safeBooleanForKey:*MEMORY[0x277D642E8]]);
+    -[SUControllerDescriptor setRampEnabled:](v5, "setRampEnabled:", [attributes safeBooleanForKey:*MEMORY[0x277D642E8]]);
     [(SUControllerDescriptor *)v5 setReleaseDate:0];
-    v13 = [v4 safeStringForKey:@"ReleaseType"];
+    v13 = [attributes safeStringForKey:@"ReleaseType"];
     [(SUControllerDescriptor *)v5 setReleaseType:v13];
 
-    v14 = [v4 safeObjectForKey:*MEMORY[0x277D642B8] ofClass:objc_opt_class()];
+    v14 = [attributes safeObjectForKey:*MEMORY[0x277D642B8] ofClass:objc_opt_class()];
     if (v14)
     {
       [(SUControllerDescriptor *)v5 setMandatoryUpdateEligible:1];

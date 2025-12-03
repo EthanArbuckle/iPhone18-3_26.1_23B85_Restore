@@ -19,8 +19,8 @@
   {
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
-    v6 = self;
-    sub_1BD8659A4(v6, &off_1F3BCE0F0, ObjectType, v4);
+    selfCopy = self;
+    sub_1BD8659A4(selfCopy, &off_1F3BCE0F0, ObjectType, v4);
     swift_unknownObjectRelease();
   }
 }

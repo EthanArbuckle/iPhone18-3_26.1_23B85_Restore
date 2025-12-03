@@ -1,15 +1,15 @@
 @interface TTRIReminderCellQuickBarFlagViewController
 - (_TtC15RemindersUICore42TTRIReminderCellQuickBarFlagViewController)init;
-- (void)buttonAction:(id)a3;
+- (void)buttonAction:(id)action;
 @end
 
 @implementation TTRIReminderCellQuickBarFlagViewController
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -18,7 +18,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = OBJC_IVAR____TtC15RemindersUICore42TTRIReminderCellQuickBarFlagViewController_isFlagged;

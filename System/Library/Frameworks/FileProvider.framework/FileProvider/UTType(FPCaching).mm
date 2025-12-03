@@ -18,14 +18,14 @@
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v21 = 0;
-  [v7 getKnowledgeUUID:0 andSequenceNumber:&v21];
+  [defaultWorkspace getKnowledgeUUID:0 andSequenceNumber:&v21];
   v8 = v21;
 
   [v8 unsignedLongLongValue];
-  __swp(v7, &fp_cachedTypeWithIdentifier_alreadyAvailableType__lastDatabaseGeneration);
-  if (v7 != [v8 unsignedLongLongValue])
+  __swp(defaultWorkspace, &fp_cachedTypeWithIdentifier_alreadyAvailableType__lastDatabaseGeneration);
+  if (defaultWorkspace != [v8 unsignedLongLongValue])
   {
     [fp_cachedTypeWithIdentifier_alreadyAvailableType__cache removeAllObjects];
   }

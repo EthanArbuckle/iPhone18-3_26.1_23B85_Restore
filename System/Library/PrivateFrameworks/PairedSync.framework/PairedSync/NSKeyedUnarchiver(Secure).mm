@@ -9,8 +9,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v7];
 
   if (v9)
   {
@@ -36,7 +36,7 @@
 
     else
     {
-      v15 = [a1 secureUnarchiveObjectOfClasses:v6 withData:v10];
+      v15 = [self secureUnarchiveObjectOfClasses:v6 withData:v10];
     }
   }
 
@@ -53,7 +53,7 @@
   v13 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [[a1 alloc] initForReadingFromData:v7 error:0];
+  v8 = [[self alloc] initForReadingFromData:v7 error:0];
   v9 = [v8 decodeObjectOfClasses:v6 forKey:*MEMORY[0x277CCA308]];
   [v8 finishDecoding];
   v10 = v9;

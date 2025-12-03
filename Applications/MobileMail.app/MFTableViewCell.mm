@@ -1,8 +1,8 @@
 @interface MFTableViewCell
 - (double)accessoryWidth;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation MFTableViewCell
@@ -46,20 +46,20 @@ LABEL_6:
   [(MFTableViewCell *)self setDisabled:0];
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = MFTableViewCell;
   [(MFTableViewCell *)&v5 willTransitionToState:?];
   if ([(MFTableViewCell *)self shouldDisableWhileEditing])
   {
-    [(MFTableViewCell *)self setDisabled:a3 != 0];
+    [(MFTableViewCell *)self setDisabled:state != 0];
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v4 = !a3;
+  v4 = !disabled;
   [(MFTableViewCell *)self setUserInteractionEnabled:v4];
 
   [(MFTableViewCell *)self setSelectionStyle:v4];

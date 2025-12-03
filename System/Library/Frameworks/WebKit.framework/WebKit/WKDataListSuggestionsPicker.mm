@@ -1,18 +1,18 @@
 @interface WKDataListSuggestionsPicker
-- (WKDataListSuggestionsPicker)initWithInformation:(void *)a3 inView:(id)a4;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
+- (WKDataListSuggestionsPicker)initWithInformation:(void *)information inView:(id)view;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
 - (void)invalidate;
-- (void)showSuggestionsDropdown:(void *)a3 activationType:(unsigned __int8)a4;
-- (void)updateWithInformation:(void *)a3;
+- (void)showSuggestionsDropdown:(void *)dropdown activationType:(unsigned __int8)type;
+- (void)updateWithInformation:(void *)information;
 @end
 
 @implementation WKDataListSuggestionsPicker
 
-- (WKDataListSuggestionsPicker)initWithInformation:(void *)a3 inView:(id)a4
+- (WKDataListSuggestionsPicker)initWithInformation:(void *)information inView:(id)view
 {
   v16.receiver = self;
   v16.super_class = WKDataListSuggestionsPicker;
-  v5 = [(WKDataListSuggestionsControl *)&v16 initWithInformation:a3 inView:?];
+  v5 = [(WKDataListSuggestionsControl *)&v16 initWithInformation:information inView:?];
   if (v5)
   {
     v6 = [WKDataListSuggestionsPickerView alloc];
@@ -32,19 +32,19 @@
     [(WKDataListSuggestionsPickerView *)v5->_pickerView.m_ptr frame];
     v10 = v9;
     v12 = v11;
-    [a4 sizeForLegacyFormControlPickerViews];
+    [view sizeForLegacyFormControlPickerViews];
     [(WKDataListSuggestionsPickerView *)v5->_pickerView.m_ptr setFrame:v10, v12, v13, v14];
   }
 
   return v5;
 }
 
-- (void)updateWithInformation:(void *)a3
+- (void)updateWithInformation:(void *)information
 {
   v5.receiver = self;
   v5.super_class = WKDataListSuggestionsPicker;
   [(WKDataListSuggestionsControl *)&v5 updateWithInformation:?];
-  if (*a3 == 1)
+  if (*information == 1)
   {
     [(WKContentView *)[(WKDataListSuggestionsControl *)self view] setDataListTextSuggestionsInputView:self->_pickerView.m_ptr];
     [(WKDataListSuggestionsPickerView *)self->_pickerView.m_ptr reloadAllComponents];
@@ -58,13 +58,13 @@
   }
 }
 
-- (void)showSuggestionsDropdown:(void *)a3 activationType:(unsigned __int8)a4
+- (void)showSuggestionsDropdown:(void *)dropdown activationType:(unsigned __int8)type
 {
-  v4 = a4;
+  typeCopy = type;
   v6.receiver = self;
   v6.super_class = WKDataListSuggestionsPicker;
-  [(WKDataListSuggestionsControl *)&v6 showSuggestionsDropdown:a3 activationType:?];
-  if (v4 == 1)
+  [(WKDataListSuggestionsControl *)&v6 showSuggestionsDropdown:dropdown activationType:?];
+  if (typeCopy == 1)
   {
     [(WKContentView *)[(WKDataListSuggestionsControl *)self view] setDataListTextSuggestionsInputView:self->_pickerView.m_ptr];
     [(WKDataListSuggestionsPickerView *)self->_pickerView.m_ptr selectRow:0 inComponent:0 animated:0];
@@ -76,7 +76,7 @@
   }
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
   if (!self)
   {
@@ -84,7 +84,7 @@
     goto LABEL_6;
   }
 
-  [(WKDataListSuggestionsControl *)self suggestionAtIndex:a4];
+  [(WKDataListSuggestionsControl *)self suggestionAtIndex:row];
   if (!v11)
   {
 LABEL_6:
@@ -123,9 +123,9 @@ LABEL_7:
 
 - (void)invalidate
 {
-  v3 = [(WKContentView *)[(WKDataListSuggestionsControl *)self view] dataListTextSuggestionsInputView];
+  dataListTextSuggestionsInputView = [(WKContentView *)[(WKDataListSuggestionsControl *)self view] dataListTextSuggestionsInputView];
   m_ptr = self->_pickerView.m_ptr;
-  if (v3 == m_ptr)
+  if (dataListTextSuggestionsInputView == m_ptr)
   {
     [(WKContentView *)[(WKDataListSuggestionsControl *)self view] setDataListTextSuggestionsInputView:0];
     m_ptr = self->_pickerView.m_ptr;

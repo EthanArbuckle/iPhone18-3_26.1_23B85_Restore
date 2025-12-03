@@ -11,8 +11,8 @@
   [(MomentsIndicatorBubbleAccessibility *)&v6 start];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = [(MomentsIndicatorBubbleAccessibility *)self safeSwiftValueForKey:@"indicator"];
-  v5 = [v4 accessibilityLabel];
-  UIAccessibilityPostNotification(v3, v5);
+  accessibilityLabel = [v4 accessibilityLabel];
+  UIAccessibilityPostNotification(v3, accessibilityLabel);
 }
 
 @end

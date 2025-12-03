@@ -1,16 +1,16 @@
 @interface MRMCBlockAction
-+ (id)blockActionWithBlock:(id)a3;
++ (id)blockActionWithBlock:(id)block;
 - (id)description;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MRMCBlockAction
 
-+ (id)blockActionWithBlock:(id)a3
++ (id)blockActionWithBlock:(id)block
 {
   v4 = objc_alloc_init(MRMCBlockAction);
-  [(MRMCBlockAction *)v4 setBlock:a3];
+  [(MRMCBlockAction *)v4 setBlock:block];
 
   return v4;
 }
@@ -23,7 +23,7 @@
   [(MCAction *)&v3 demolish];
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MRMCBlockAction;
@@ -31,7 +31,7 @@
   block = self->_block;
   if (block)
   {
-    *(a3 + 3) = block;
+    *(snapshot + 3) = block;
   }
 }
 

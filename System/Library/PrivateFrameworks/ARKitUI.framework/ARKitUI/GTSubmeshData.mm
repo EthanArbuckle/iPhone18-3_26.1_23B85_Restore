@@ -1,11 +1,11 @@
 @interface GTSubmeshData
 - (id).cxx_construct;
-- (void)addIndex:(unsigned int)a3;
+- (void)addIndex:(unsigned int)index;
 @end
 
 @implementation GTSubmeshData
 
-- (void)addIndex:(unsigned int)a3
+- (void)addIndex:(unsigned int)index
 {
   end = self->_indexVector.__end_;
   cap = self->_indexVector.__cap_;
@@ -41,7 +41,7 @@
     v15 = end - begin;
     v16 = (4 * v10);
     v17 = (4 * v10 - 4 * v15);
-    *v16 = a3;
+    *v16 = index;
     v7 = v16 + 1;
     memcpy(v17, begin, v9);
     v18 = self->_indexVector.__begin_;
@@ -56,7 +56,7 @@
 
   else
   {
-    *end = a3;
+    *end = index;
     v7 = end + 1;
   }
 

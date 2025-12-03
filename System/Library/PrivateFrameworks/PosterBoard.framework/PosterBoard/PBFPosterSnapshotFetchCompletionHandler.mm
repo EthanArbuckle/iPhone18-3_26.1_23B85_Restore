@@ -1,29 +1,29 @@
 @interface PBFPosterSnapshotFetchCompletionHandler
-- (PBFPosterSnapshotFetchCompletionHandler)initWithRequest:(id)a3 completionHandler:(id)a4 queue:(id)a5;
+- (PBFPosterSnapshotFetchCompletionHandler)initWithRequest:(id)request completionHandler:(id)handler queue:(id)queue;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
-- (void)finishWithSuccess:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)finishWithSuccess:(id)success;
 @end
 
 @implementation PBFPosterSnapshotFetchCompletionHandler
 
-- (PBFPosterSnapshotFetchCompletionHandler)initWithRequest:(id)a3 completionHandler:(id)a4 queue:(id)a5
+- (PBFPosterSnapshotFetchCompletionHandler)initWithRequest:(id)request completionHandler:(id)handler queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  requestCopy = request;
+  handlerCopy = handler;
+  queueCopy = queue;
+  if (!handlerCopy)
   {
     [PBFPosterSnapshotFetchCompletionHandler initWithRequest:a2 completionHandler:? queue:?];
   }
 
-  if (!v10)
+  if (!requestCopy)
   {
     [PBFPosterSnapshotFetchCompletionHandler initWithRequest:a2 completionHandler:? queue:?];
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = queueCopy;
+  if (!queueCopy)
   {
     [PBFPosterSnapshotFetchCompletionHandler initWithRequest:a2 completionHandler:? queue:?];
   }
@@ -34,12 +34,12 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_request, a3);
-    v16 = [v11 copy];
+    objc_storeStrong(&v14->_request, request);
+    v16 = [handlerCopy copy];
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v16;
 
-    objc_storeStrong(&v15->_queue, a5);
+    objc_storeStrong(&v15->_queue, queue);
     v18 = [objc_alloc(MEMORY[0x277CF0B78]) initWithFlag:0];
     didFireCompletionHandler = v15->_didFireCompletionHandler;
     v15->_didFireCompletionHandler = v18;
@@ -51,16 +51,16 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   v3 = 138543362;
   v4 = v2;
   _os_log_fault_impl(&dword_21B526000, a2, OS_LOG_TYPE_FAULT, "Completion handler deallocated without being fired! Request: %{public}@", &v3, 0xCu);
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(BSAtomicFlag *)self->_didFireCompletionHandler setFlag:1])
   {
     v5 = _Block_copy(self->_completionHandler);
@@ -79,7 +79,7 @@
     v11[2] = __59__PBFPosterSnapshotFetchCompletionHandler_finishWithError___block_invoke;
     v11[3] = &unk_2782C6310;
     v13 = v5;
-    v12 = v4;
+    v12 = errorCopy;
     v9 = v5;
     dispatch_async(queue, v11);
   }
@@ -97,10 +97,10 @@
   }
 }
 
-- (void)finishWithSuccess:(id)a3
+- (void)finishWithSuccess:(id)success
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  successCopy = success;
   if ([(BSAtomicFlag *)self->_didFireCompletionHandler setFlag:1])
   {
     v5 = _Block_copy(self->_completionHandler);
@@ -119,7 +119,7 @@
     v11[2] = __61__PBFPosterSnapshotFetchCompletionHandler_finishWithSuccess___block_invoke;
     v11[3] = &unk_2782C6310;
     v13 = v5;
-    v12 = v4;
+    v12 = successCopy;
     v9 = v5;
     dispatch_async(queue, v11);
   }

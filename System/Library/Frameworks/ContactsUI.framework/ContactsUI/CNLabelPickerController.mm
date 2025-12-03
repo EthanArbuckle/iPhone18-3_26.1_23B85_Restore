@@ -1,8 +1,8 @@
 @interface CNLabelPickerController
 - (CNPropertyGroupItem)item;
-- (id)initForPropertyItem:(id)a3;
-- (void)pickedItem:(id)a3;
-- (void)removeCustomItem:(id)a3;
+- (id)initForPropertyItem:(id)item;
+- (void)pickedItem:(id)item;
+- (void)removeCustomItem:(id)item;
 @end
 
 @implementation CNLabelPickerController
@@ -14,18 +14,18 @@
   return WeakRetained;
 }
 
-- (void)pickedItem:(id)a3
+- (void)pickedItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(CNPickerController *)self delegate];
+  delegate = [(CNPickerController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(CNLabelPickerController *)self labelsToDeleteOnCommit];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  labelsToDeleteOnCommit = [(CNLabelPickerController *)self labelsToDeleteOnCommit];
+  v7 = [labelsToDeleteOnCommit countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -36,92 +36,92 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(labelsToDeleteOnCommit);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
         [MEMORY[0x1E695CEE0] deleteCustomLabel:v11];
         if (v5)
         {
-          v12 = [(CNPickerController *)self delegate];
-          [v12 picker:self didDeleteItem:v11];
+          delegate2 = [(CNPickerController *)self delegate];
+          [delegate2 picker:self didDeleteItem:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [labelsToDeleteOnCommit countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)removeCustomItem:(id)a3
+- (void)removeCustomItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNLabelPickerController *)self labelsToDeleteOnCommit];
-  [v5 addObject:v4];
+  itemCopy = item;
+  labelsToDeleteOnCommit = [(CNLabelPickerController *)self labelsToDeleteOnCommit];
+  [labelsToDeleteOnCommit addObject:itemCopy];
 }
 
-- (id)initForPropertyItem:(id)a3
+- (id)initForPropertyItem:(id)item
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = [(CNPickerController *)self initWithStyle:2];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_item, v4);
-    v7 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(&v5->_item, itemCopy);
+    array = [MEMORY[0x1E695DF70] array];
     labelsToDeleteOnCommit = v6->_labelsToDeleteOnCommit;
-    v6->_labelsToDeleteOnCommit = v7;
+    v6->_labelsToDeleteOnCommit = array;
 
-    v9 = [v4 standardLabels];
-    [(CNPickerController *)v6 setBuiltinItems:v9];
+    standardLabels = [itemCopy standardLabels];
+    [(CNPickerController *)v6 setBuiltinItems:standardLabels];
 
-    v10 = [v4 extendedLabels];
-    v11 = [(CNPickerController *)v6 builtinItems];
-    v12 = [v11 count];
-    v13 = [v10 count];
+    extendedLabels = [itemCopy extendedLabels];
+    builtinItems = [(CNPickerController *)v6 builtinItems];
+    v12 = [builtinItems count];
+    v13 = [extendedLabels count];
 
     if (v12 < v13)
     {
-      [(CNPickerController *)v6 setSupplementalItems:v10];
-      v14 = [v4 promotedExtendedLabels];
-      [(CNPickerController *)v6 setPromotedSupplementalItems:v14];
+      [(CNPickerController *)v6 setSupplementalItems:extendedLabels];
+      promotedExtendedLabels = [itemCopy promotedExtendedLabels];
+      [(CNPickerController *)v6 setPromotedSupplementalItems:promotedExtendedLabels];
 
-      v15 = [(CNPickerController *)v6 supplementalItems];
+      supplementalItems = [(CNPickerController *)v6 supplementalItems];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
       v54[2] = __47__CNLabelPickerController_initForPropertyItem___block_invoke;
       v54[3] = &unk_1E74E71A8;
       v16 = v6;
       v55 = v16;
-      v17 = [v15 _cn_filter:v54];
+      v17 = [supplementalItems _cn_filter:v54];
       [(CNPickerController *)v16 setRemainderSupplementalItems:v17];
     }
 
-    v18 = [v4 group];
-    v19 = [v18 policy];
-    v20 = [v4 property];
-    v21 = [v19 supportedLabelsForContactProperty:v20];
+    group = [itemCopy group];
+    policy = [group policy];
+    property = [itemCopy property];
+    v21 = [policy supportedLabelsForContactProperty:property];
     [(CNPickerController *)v6 setAllowsCustomItems:v21 == 0];
 
     if ([(CNPickerController *)v6 allowsCustomItems])
     {
-      v22 = [v4 group];
-      v23 = [v22 contactStore];
-      v24 = [v4 property];
-      v25 = [v23 usedLabelsForPropertyWithKey:v24 error:0];
+      group2 = [itemCopy group];
+      contactStore = [group2 contactStore];
+      property2 = [itemCopy property];
+      v25 = [contactStore usedLabelsForPropertyWithKey:property2 error:0];
       v26 = [v25 mutableCopy];
 
-      v27 = [v4 group];
-      v28 = [v27 labelsInUseByGroup];
+      group3 = [itemCopy group];
+      labelsInUseByGroup = [group3 labelsInUseByGroup];
 
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v29 = v28;
+      v29 = labelsInUseByGroup;
       v30 = [v29 countByEnumeratingWithState:&v50 objects:v56 count:16];
       if (v30)
       {
@@ -160,34 +160,34 @@
       [(CNPickerController *)v35 setCustomItems:v37];
     }
 
-    v38 = [v4 labeledValue];
-    v39 = [v38 label];
-    [(CNPickerController *)v6 setSelectedItem:v39];
+    labeledValue = [itemCopy labeledValue];
+    label = [labeledValue label];
+    [(CNPickerController *)v6 setSelectedItem:label];
 
-    v40 = [(CNPickerController *)v6 selectedItem];
+    selectedItem = [(CNPickerController *)v6 selectedItem];
 
-    if (!v40)
+    if (!selectedItem)
     {
-      v41 = [(CNLabelPickerController *)v6 navigationItem];
-      v42 = [v41 rightBarButtonItem];
-      [v42 setEnabled:0];
+      navigationItem = [(CNLabelPickerController *)v6 navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setEnabled:0];
     }
 
-    v43 = [(CNLabelPickerController *)v6 title];
+    title = [(CNLabelPickerController *)v6 title];
 
-    if (v43)
+    if (title)
     {
-      v44 = [(CNLabelPickerController *)v6 title];
-      v45 = [(CNLabelPickerController *)v6 navigationItem];
-      [v45 setTitle:v44];
+      title2 = [(CNLabelPickerController *)v6 title];
+      navigationItem2 = [(CNLabelPickerController *)v6 navigationItem];
+      [navigationItem2 setTitle:title2];
     }
 
     else
     {
-      v44 = CNContactsUIBundle();
-      v45 = [v44 localizedStringForKey:@"EDIT_ITEM_LABEL" value:&stru_1F0CE7398 table:@"Localized"];
-      v46 = [(CNLabelPickerController *)v6 navigationItem];
-      [v46 setTitle:v45];
+      title2 = CNContactsUIBundle();
+      navigationItem2 = [title2 localizedStringForKey:@"EDIT_ITEM_LABEL" value:&stru_1F0CE7398 table:@"Localized"];
+      navigationItem3 = [(CNLabelPickerController *)v6 navigationItem];
+      [navigationItem3 setTitle:navigationItem2];
     }
   }
 

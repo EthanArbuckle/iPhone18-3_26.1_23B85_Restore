@@ -1,28 +1,28 @@
 @interface VideoPlaybackCoordinator
 - (_TtC11AppStoreKit24VideoPlaybackCoordinator)init;
-- (void)didChangeAutoPlayVideoSetting:(id)a3;
+- (void)didChangeAutoPlayVideoSetting:(id)setting;
 - (void)didEnterBackground;
 - (void)willEnterForeground;
 @end
 
 @implementation VideoPlaybackCoordinator
 
-- (void)didChangeAutoPlayVideoSetting:(id)a3
+- (void)didChangeAutoPlayVideoSetting:(id)setting
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E140EB78(v4);
+  settingCopy = setting;
+  selfCopy = self;
+  sub_1E140EB78(settingCopy);
 }
 
 - (void)didEnterBackground
 {
-  v7 = self;
+  selfCopy = self;
   sub_1E140E144();
   sub_1E140ED70();
-  v2 = *(&v7->super.isa + OBJC_IVAR____TtC11AppStoreKit24VideoPlaybackCoordinator__activeVideo);
+  v2 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11AppStoreKit24VideoPlaybackCoordinator__activeVideo);
   if (v2)
   {
-    v3 = *&v7->visibilityTracker[OBJC_IVAR____TtC11AppStoreKit24VideoPlaybackCoordinator__activeVideo];
+    v3 = *&selfCopy->visibilityTracker[OBJC_IVAR____TtC11AppStoreKit24VideoPlaybackCoordinator__activeVideo];
     ObjectType = swift_getObjectType();
     v5 = *(v3 + 96);
     v6 = v2;
@@ -35,7 +35,7 @@
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E1412A6C();
 }
 

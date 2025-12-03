@@ -1,18 +1,18 @@
 @interface CSLScrollableUniformHexLayout
-- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)a3;
-- (Hex)hexAtPoint:(CGPoint)a3;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)hex;
+- (Hex)hexAtPoint:(CGPoint)point;
 @end
 
 @implementation CSLScrollableUniformHexLayout
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)a3
+- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)hex
 {
   v5 = v3;
   *v3->f32 = 0u;
   *v3[2].f32 = 0u;
   v9.receiver = self;
   v9.super_class = CSLScrollableUniformHexLayout;
-  [(CSLUniformHexLayout *)&v9 layoutAttributesForItemAtHex:a3];
+  [(CSLUniformHexLayout *)&v9 layoutAttributesForItemAtHex:hex];
   [(CSLHexLayout *)self scrolledPointFromContentPoint:vcvtq_f64_f32(*v5)];
   *&v8.var0 = v8.var0;
   v6 = *v5->f32;
@@ -24,9 +24,9 @@
   return v8;
 }
 
-- (Hex)hexAtPoint:(CGPoint)a3
+- (Hex)hexAtPoint:(CGPoint)point
 {
-  [(CSLHexLayout *)self contentPointFromScrolledPoint:a3.x, a3.y];
+  [(CSLHexLayout *)self contentPointFromScrolledPoint:point.x, point.y];
   v5.receiver = self;
   v5.super_class = CSLScrollableUniformHexLayout;
   return [(CSLUniformHexLayout *)&v5 hexAtPoint:?];

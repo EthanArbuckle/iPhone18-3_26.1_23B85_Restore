@@ -1,89 +1,89 @@
 @interface _EARSpeechRecognitionResultPackage
 - (BOOL)hasNonEmptyToken;
-- (id)_initWithRecognition:(id)a3 preITNRecognition:(id)a4 unrepairedRecognition:(id)a5 recognitionIsFormatted:(BOOL)a6 isFinal:(BOOL)a7 audioAnalytics:(id)a8 utteranceStart:(double)a9 latticeMitigatorResult:(id)a10 nBestVoiceCommandInterpretations:(id)a11 preITNNBestVoiceCommandInterpretations:(id)a12 recognitionPaused:(BOOL)a13 firstResultAfterResume:(BOOL)a14 endOfSentenceLikelihood:(id)a15 numTokensExcludingTriggerPhrase:(int64_t)a16 voiceCommandDebugInfo:(id)a17 performanceMarkers:(id)a18;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithRecognition:(id)recognition preITNRecognition:(id)nRecognition unrepairedRecognition:(id)unrepairedRecognition recognitionIsFormatted:(BOOL)formatted isFinal:(BOOL)final audioAnalytics:(id)analytics utteranceStart:(double)start latticeMitigatorResult:(id)self0 nBestVoiceCommandInterpretations:(id)self1 preITNNBestVoiceCommandInterpretations:(id)self2 recognitionPaused:(BOOL)self3 firstResultAfterResume:(BOOL)self4 endOfSentenceLikelihood:(id)self5 numTokensExcludingTriggerPhrase:(int64_t)self6 voiceCommandDebugInfo:(id)self7 performanceMarkers:(id)self8;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nBestResults;
-- (void)setCorrectPartialResultIndexList:(const void *)a3 oneBestFinalResult:(const void *)a4 partialResultIndexOffset:(int)a5;
+- (void)setCorrectPartialResultIndexList:(const void *)list oneBestFinalResult:(const void *)result partialResultIndexOffset:(int)offset;
 @end
 
 @implementation _EARSpeechRecognitionResultPackage
 
-- (id)_initWithRecognition:(id)a3 preITNRecognition:(id)a4 unrepairedRecognition:(id)a5 recognitionIsFormatted:(BOOL)a6 isFinal:(BOOL)a7 audioAnalytics:(id)a8 utteranceStart:(double)a9 latticeMitigatorResult:(id)a10 nBestVoiceCommandInterpretations:(id)a11 preITNNBestVoiceCommandInterpretations:(id)a12 recognitionPaused:(BOOL)a13 firstResultAfterResume:(BOOL)a14 endOfSentenceLikelihood:(id)a15 numTokensExcludingTriggerPhrase:(int64_t)a16 voiceCommandDebugInfo:(id)a17 performanceMarkers:(id)a18
+- (id)_initWithRecognition:(id)recognition preITNRecognition:(id)nRecognition unrepairedRecognition:(id)unrepairedRecognition recognitionIsFormatted:(BOOL)formatted isFinal:(BOOL)final audioAnalytics:(id)analytics utteranceStart:(double)start latticeMitigatorResult:(id)self0 nBestVoiceCommandInterpretations:(id)self1 preITNNBestVoiceCommandInterpretations:(id)self2 recognitionPaused:(BOOL)self3 firstResultAfterResume:(BOOL)self4 endOfSentenceLikelihood:(id)self5 numTokensExcludingTriggerPhrase:(int64_t)self6 voiceCommandDebugInfo:(id)self7 performanceMarkers:(id)self8
 {
-  v46 = a3;
-  v45 = a4;
-  v44 = a5;
-  v43 = a8;
-  v42 = a10;
-  v23 = a11;
-  v24 = a12;
-  v41 = a15;
-  v40 = a17;
-  v25 = a18;
+  recognitionCopy = recognition;
+  nRecognitionCopy = nRecognition;
+  unrepairedRecognitionCopy = unrepairedRecognition;
+  analyticsCopy = analytics;
+  resultCopy = result;
+  interpretationsCopy = interpretations;
+  commandInterpretationsCopy = commandInterpretations;
+  likelihoodCopy = likelihood;
+  infoCopy = info;
+  markersCopy = markers;
   v47.receiver = self;
   v47.super_class = _EARSpeechRecognitionResultPackage;
   v26 = [(_EARSpeechRecognitionResultPackage *)&v47 init];
   if (v26)
   {
-    v27 = [v46 copy];
+    v27 = [recognitionCopy copy];
     recognition = v26->_recognition;
     v26->_recognition = v27;
 
-    v29 = [v45 copy];
+    v29 = [nRecognitionCopy copy];
     preITNRecognition = v26->_preITNRecognition;
     v26->_preITNRecognition = v29;
 
-    v31 = [v44 copy];
+    v31 = [unrepairedRecognitionCopy copy];
     unrepairedRecognition = v26->_unrepairedRecognition;
     v26->_unrepairedRecognition = v31;
 
-    v26->_recognitionIsFormatted = a6;
-    v26->_isFinal = a7;
-    objc_storeStrong(&v26->_audioAnalytics, a8);
-    v26->_utteranceStart = a9;
-    objc_storeStrong(&v26->_latticeMitigatorResult, a10);
-    v33 = [v23 copy];
+    v26->_recognitionIsFormatted = formatted;
+    v26->_isFinal = final;
+    objc_storeStrong(&v26->_audioAnalytics, analytics);
+    v26->_utteranceStart = start;
+    objc_storeStrong(&v26->_latticeMitigatorResult, result);
+    v33 = [interpretationsCopy copy];
     nBestVoiceCommandInterpretations = v26->_nBestVoiceCommandInterpretations;
     v26->_nBestVoiceCommandInterpretations = v33;
 
-    v35 = [v24 copy];
+    v35 = [commandInterpretationsCopy copy];
     preITNNBestVoiceCommandInterpretations = v26->_preITNNBestVoiceCommandInterpretations;
     v26->_preITNNBestVoiceCommandInterpretations = v35;
 
-    v26->_recognitionPaused = a13;
-    v26->_firstResultAfterResume = a14;
-    objc_storeStrong(&v26->_endOfSentenceLikelihood, a15);
-    v26->_numTokensExcludingTriggerPhrase = a16;
-    objc_storeStrong(&v26->_voiceCommandDebugInfo, a17);
-    objc_storeStrong(&v26->_performanceMarkers, a18);
+    v26->_recognitionPaused = paused;
+    v26->_firstResultAfterResume = resume;
+    objc_storeStrong(&v26->_endOfSentenceLikelihood, likelihood);
+    v26->_numTokensExcludingTriggerPhrase = phrase;
+    objc_storeStrong(&v26->_voiceCommandDebugInfo, info);
+    objc_storeStrong(&v26->_performanceMarkers, markers);
   }
 
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = [_EARSpeechRecognitionResultPackage alloc];
-  v24 = [(_EARSpeechRecognitionResultPackage *)self recognition];
-  v23 = [(_EARSpeechRecognitionResultPackage *)self preITNRecognition];
-  v22 = [(_EARSpeechRecognitionResultPackage *)self unrepairedRecognition];
-  v4 = [(_EARSpeechRecognitionResultPackage *)self recognitionIsFormatted];
-  v5 = [(_EARSpeechRecognitionResultPackage *)self isFinal];
-  v21 = [(_EARSpeechRecognitionResultPackage *)self audioAnalytics];
+  recognition = [(_EARSpeechRecognitionResultPackage *)self recognition];
+  preITNRecognition = [(_EARSpeechRecognitionResultPackage *)self preITNRecognition];
+  unrepairedRecognition = [(_EARSpeechRecognitionResultPackage *)self unrepairedRecognition];
+  recognitionIsFormatted = [(_EARSpeechRecognitionResultPackage *)self recognitionIsFormatted];
+  isFinal = [(_EARSpeechRecognitionResultPackage *)self isFinal];
+  audioAnalytics = [(_EARSpeechRecognitionResultPackage *)self audioAnalytics];
   [(_EARSpeechRecognitionResultPackage *)self utteranceStart];
   v7 = v6;
-  v20 = [(_EARSpeechRecognitionResultPackage *)self latticeMitigatorResult];
-  v8 = [(_EARSpeechRecognitionResultPackage *)self nBestVoiceCommandInterpretations];
-  v17 = [(_EARSpeechRecognitionResultPackage *)self preITNNBestVoiceCommandInterpretations];
-  v9 = [(_EARSpeechRecognitionResultPackage *)self recognitionPaused];
-  v10 = [(_EARSpeechRecognitionResultPackage *)self firstResultAfterResume];
-  v16 = [(_EARSpeechRecognitionResultPackage *)self endOfSentenceLikelihood];
-  v11 = [(_EARSpeechRecognitionResultPackage *)self numTokensExcludingTriggerPhrase];
-  v12 = [(_EARSpeechRecognitionResultPackage *)self voiceCommandDebugInfo];
-  v13 = [(_EARSpeechRecognitionResultPackage *)self performanceMarkers];
-  BYTE1(v15) = v10;
-  LOBYTE(v15) = v9;
-  v19 = [(_EARSpeechRecognitionResultPackage *)v18 _initWithRecognition:v24 preITNRecognition:v23 unrepairedRecognition:v22 recognitionIsFormatted:v4 isFinal:v5 audioAnalytics:v21 utteranceStart:v7 latticeMitigatorResult:v20 nBestVoiceCommandInterpretations:v8 preITNNBestVoiceCommandInterpretations:v17 recognitionPaused:v15 firstResultAfterResume:v16 endOfSentenceLikelihood:v11 numTokensExcludingTriggerPhrase:v12 voiceCommandDebugInfo:v13 performanceMarkers:?];
+  latticeMitigatorResult = [(_EARSpeechRecognitionResultPackage *)self latticeMitigatorResult];
+  nBestVoiceCommandInterpretations = [(_EARSpeechRecognitionResultPackage *)self nBestVoiceCommandInterpretations];
+  preITNNBestVoiceCommandInterpretations = [(_EARSpeechRecognitionResultPackage *)self preITNNBestVoiceCommandInterpretations];
+  recognitionPaused = [(_EARSpeechRecognitionResultPackage *)self recognitionPaused];
+  firstResultAfterResume = [(_EARSpeechRecognitionResultPackage *)self firstResultAfterResume];
+  endOfSentenceLikelihood = [(_EARSpeechRecognitionResultPackage *)self endOfSentenceLikelihood];
+  numTokensExcludingTriggerPhrase = [(_EARSpeechRecognitionResultPackage *)self numTokensExcludingTriggerPhrase];
+  voiceCommandDebugInfo = [(_EARSpeechRecognitionResultPackage *)self voiceCommandDebugInfo];
+  performanceMarkers = [(_EARSpeechRecognitionResultPackage *)self performanceMarkers];
+  BYTE1(v15) = firstResultAfterResume;
+  LOBYTE(v15) = recognitionPaused;
+  v19 = [(_EARSpeechRecognitionResultPackage *)v18 _initWithRecognition:recognition preITNRecognition:preITNRecognition unrepairedRecognition:unrepairedRecognition recognitionIsFormatted:recognitionIsFormatted isFinal:isFinal audioAnalytics:audioAnalytics utteranceStart:v7 latticeMitigatorResult:latticeMitigatorResult nBestVoiceCommandInterpretations:nBestVoiceCommandInterpretations preITNNBestVoiceCommandInterpretations:preITNNBestVoiceCommandInterpretations recognitionPaused:v15 firstResultAfterResume:endOfSentenceLikelihood endOfSentenceLikelihood:numTokensExcludingTriggerPhrase numTokensExcludingTriggerPhrase:voiceCommandDebugInfo voiceCommandDebugInfo:performanceMarkers performanceMarkers:?];
 
   return v19;
 }
@@ -91,17 +91,17 @@
 - (id)nBestResults
 {
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(_EARSpeechRecognition *)self->_recognition nBest];
-  v4 = [(_EARSpeechRecognition *)self->_preITNRecognition nBest];
-  v5 = [v3 count];
-  if (v5 >= [v4 count])
+  nBest = [(_EARSpeechRecognition *)self->_recognition nBest];
+  nBest2 = [(_EARSpeechRecognition *)self->_preITNRecognition nBest];
+  v5 = [nBest count];
+  if (v5 >= [nBest2 count])
   {
-    v6 = v4;
+    v6 = nBest2;
   }
 
   else
   {
-    v6 = v3;
+    v6 = nBest;
   }
 
   v7 = [v6 count];
@@ -110,9 +110,9 @@
     for (i = 0; i != v7; ++i)
     {
       v9 = [_EARSpeechRecognitionResult alloc];
-      v10 = [v3 objectAtIndex:i];
+      v10 = [nBest objectAtIndex:i];
       EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v10, v16);
-      v11 = [v4 objectAtIndex:i];
+      v11 = [nBest2 objectAtIndex:i];
       EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v11, v15);
       v12 = [(_EARSpeechRecognitionResult *)v9 _initWithTokens:v16 preITNTokens:v15];
       v17 = v15;
@@ -128,9 +128,9 @@
   return v14;
 }
 
-- (void)setCorrectPartialResultIndexList:(const void *)a3 oneBestFinalResult:(const void *)a4 partialResultIndexOffset:(int)a5
+- (void)setCorrectPartialResultIndexList:(const void *)list oneBestFinalResult:(const void *)result partialResultIndexOffset:(int)offset
 {
-  if (*a4 == *(a4 + 1))
+  if (*result == *(result + 1))
   {
     if (quasar::gLogLevel >= 6)
     {
@@ -159,15 +159,15 @@
 
   else
   {
-    quasar::strictAlignTokensToFirstSeenPartialResults(a3, a4, a5, v47);
+    quasar::strictAlignTokensToFirstSeenPartialResults(list, result, offset, v47);
     v44 = 0;
     v45 = 0;
     v46 = 0;
-    std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(&v44, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+    std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(&v44, *list, *(list + 1), 0xAAAAAAAAAAAAAAABLL * ((*(list + 1) - *list) >> 3));
     v9 = v45;
     if (v45 >= v46)
     {
-      v10 = std::vector<std::vector<quasar::Token>>::__emplace_back_slow_path<std::vector<quasar::Token> const&>(&v44, a4);
+      v10 = std::vector<std::vector<quasar::Token>>::__emplace_back_slow_path<std::vector<quasar::Token> const&>(&v44, result);
     }
 
     else
@@ -175,22 +175,22 @@
       *v45 = 0;
       *(v9 + 8) = 0;
       *(v9 + 16) = 0;
-      std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v9, *a4, *(a4 + 1), 0x6DB6DB6DB6DB6DB7 * ((*(a4 + 1) - *a4) >> 5));
+      std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(v9, *result, *(result + 1), 0x6DB6DB6DB6DB6DB7 * ((*(result + 1) - *result) >> 5));
       v10 = v9 + 24;
     }
 
     v45 = v10;
-    quasar::alignTokensToFirstSeenPartialResultsV3(&v44, a4, a5, &v42);
+    quasar::alignTokensToFirstSeenPartialResultsV3(&v44, result, offset, &v42);
     v11 = v42;
     v12 = v43;
     if (v42 != v43)
     {
-      v13 = 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3);
+      v13 = 0xAAAAAAAAAAAAAAABLL * ((*(list + 1) - *list) >> 3);
       do
       {
         if (*v11 != -1)
         {
-          v14 = (*v11 - a5);
+          v14 = (*v11 - offset);
           if ((v14 & 0x80000000) != 0 || v13 < v14)
           {
             kaldi::KaldiWarnMessage::KaldiWarnMessage(&v48);
@@ -231,7 +231,7 @@
       v48 = 0u;
       kaldi::KaldiWarnMessage::KaldiWarnMessage(&v48);
       v15 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(&v48, "[TTAW] oneBestFinalResult: ", 27);
-      quasar::tokens2Str(a4, &v41);
+      quasar::tokens2Str(result, &v41);
       if ((v41.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
       {
         v16 = &v41;
@@ -357,11 +357,11 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v2 = [(_EARSpeechRecognitionResultPackage *)self recognition];
-  v3 = [v2 tokenSausage];
+  recognition = [(_EARSpeechRecognitionResultPackage *)self recognition];
+  tokenSausage = [recognition tokenSausage];
 
-  v24 = v3;
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v24 = tokenSausage;
+  v4 = [tokenSausage countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = *v34;
@@ -374,7 +374,7 @@
       {
         if (*v34 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tokenSausage);
         }
 
         v7 = *(*(&v33 + 1) + 8 * v6);
@@ -416,14 +416,14 @@
                       objc_enumerationMutation(v13);
                     }
 
-                    v17 = [*(*(&v25 + 1) + 8 * j) tokenName];
-                    v18 = [v17 length] == 0;
+                    tokenName = [*(*(&v25 + 1) + 8 * j) tokenName];
+                    v18 = [tokenName length] == 0;
 
                     if (!v18)
                     {
 
                       v19 = 1;
-                      v3 = v24;
+                      tokenSausage = v24;
                       goto LABEL_26;
                     }
                   }
@@ -449,7 +449,7 @@
 
         ++v6;
         v5 = v21;
-        v3 = v24;
+        tokenSausage = v24;
       }
 
       while (v6 != v22);

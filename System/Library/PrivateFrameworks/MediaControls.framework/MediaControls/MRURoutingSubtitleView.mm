@@ -1,12 +1,12 @@
 @interface MRURoutingSubtitleView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRURoutingSubtitleView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRURoutingSubtitleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setIcon:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setText:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setState:(int64_t)state;
+- (void)setStylingProvider:(id)provider;
+- (void)setText:(id)text;
 - (void)updateContentSizeCategory;
 - (void)updateVisibility;
 - (void)updateVisualStyling;
@@ -14,12 +14,12 @@
 
 @implementation MRURoutingSubtitleView
 
-- (MRURoutingSubtitleView)initWithFrame:(CGRect)a3
+- (MRURoutingSubtitleView)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = MRURoutingSubtitleView;
-  v3 = [(MRURoutingSubtitleView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRURoutingSubtitleView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[MRUEqualizerView alloc] initWithNumberOfBars:4 width:2.0 spacing:1.0];
@@ -63,13 +63,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UILabel *)self->_textLabel font];
-  [v11 descender];
+  font = [(UILabel *)self->_textLabel font];
+  [font descender];
   UIRoundToViewScale();
   v13 = v12;
 
-  v14 = [(UILabel *)self->_textLabel font];
-  [v14 capHeight];
+  font2 = [(UILabel *)self->_textLabel font];
+  [font2 capHeight];
   UIRoundToViewScale();
   v16 = v15;
 
@@ -101,11 +101,11 @@
 
   else
   {
-    v25 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
-    [v25 pointSize];
+    mru_routingSubtitleFont = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
+    [mru_routingSubtitleFont pointSize];
     v22 = v26;
-    v27 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
-    [v27 pointSize];
+    mru_routingSubtitleFont2 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
+    [mru_routingSubtitleFont2 pointSize];
     v24 = v28;
   }
 
@@ -169,10 +169,10 @@ LABEL_9:
   [(UILabel *)self->_textLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [(UILabel *)self->_textLabel font:a3.width];
+  width = fits.width;
+  v4 = [(UILabel *)self->_textLabel font:fits.width];
   [v4 lineHeight];
   UIRoundToViewScale();
   v6 = v5;
@@ -184,19 +184,19 @@ LABEL_9:
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  objc_storeStrong(&self->_text, a3);
-  v5 = a3;
-  [(UILabel *)self->_textLabel setText:v5];
+  objc_storeStrong(&self->_text, text);
+  textCopy = text;
+  [(UILabel *)self->_textLabel setText:textCopy];
 
   [(MRURoutingSubtitleView *)self setNeedsLayout];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  objc_storeStrong(&self->_icon, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_icon, icon);
+  iconCopy = icon;
   [(UIImageView *)self->_iconImageView setImage:self->_icon];
   if ([(UIImage *)self->_icon isSymbolImage])
   {
@@ -215,27 +215,27 @@ LABEL_9:
   [(MRURoutingSubtitleView *)self setNeedsLayout];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(MRURoutingSubtitleView *)self updateVisibility];
 
     [(MRURoutingSubtitleView *)self setNeedsLayout];
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRURoutingSubtitleView *)self updateVisualStyling];
     [(MRUEqualizerView *)self->_equalizerView setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -250,24 +250,24 @@ LABEL_9:
 {
   stylingProvider = self->_stylingProvider;
   textLabel = self->_textLabel;
-  v5 = [(MRURoutingSubtitleView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:textLabel traitCollection:v5];
+  traitCollection = [(MRURoutingSubtitleView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:textLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
-  v7 = [(UIImage *)self->_icon isSymbolImage];
+  isSymbolImage = [(UIImage *)self->_icon isSymbolImage];
   iconImageView = self->_iconImageView;
-  v9 = [(MRURoutingSubtitleView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:v7 toView:iconImageView traitCollection:v9];
+  traitCollection2 = [(MRURoutingSubtitleView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:isSymbolImage toView:iconImageView traitCollection:traitCollection2];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
-  [(UILabel *)self->_textLabel setFont:v3];
+  mru_routingSubtitleFont = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
+  [(UILabel *)self->_textLabel setFont:mru_routingSubtitleFont];
 
   v4 = MEMORY[0x1E69DCAD8];
-  v6 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
-  v5 = [v4 configurationWithFont:v6 scale:-1];
+  mru_routingSubtitleFont2 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
+  v5 = [v4 configurationWithFont:mru_routingSubtitleFont2 scale:-1];
   [(UIImageView *)self->_iconImageView setPreferredSymbolConfiguration:v5];
 }
 

@@ -1,12 +1,12 @@
 @interface DKCloudUploadViewController
 - (DKCloudUploadViewController)init;
-- (id)_timeRemainingString:(double)a3;
-- (void)_cancelTapped:(id)a3;
-- (void)_showUploadFailureAlertForResults:(id)a3;
-- (void)_skipTapped:(id)a3;
-- (void)setProgress:(double)a3;
-- (void)uploadDidComplete:(id)a3;
-- (void)uploadProgress:(float)a3 withTimeRemaining:(double)a4;
+- (id)_timeRemainingString:(double)string;
+- (void)_cancelTapped:(id)tapped;
+- (void)_showUploadFailureAlertForResults:(id)results;
+- (void)_skipTapped:(id)tapped;
+- (void)setProgress:(double)progress;
+- (void)uploadDidComplete:(id)complete;
+- (void)uploadProgress:(float)progress withTimeRemaining:(double)remaining;
 - (void)viewDidLoad;
 @end
 
@@ -44,8 +44,8 @@
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CANCEL" value:&stru_285BC2A70 table:@"Localizable"];
   v6 = [v3 initWithTitle:v5 style:0 target:self action:sel__cancelTapped_];
-  v7 = [(OBBaseWelcomeController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"TIME_REMAINING" value:&stru_285BC2A70 table:@"Localizable"];
@@ -55,63 +55,63 @@
   [(OBSetupAssistantProgressController *)self setProgressText:v12];
 
   [(DKCloudUploadViewController *)self setProgress:0.0];
-  v13 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"SKIP_BACKUP" value:&stru_285BC2A70 table:@"Localizable"];
-  [v13 setTitle:v15 forState:0];
+  [linkButton setTitle:v15 forState:0];
 
-  [v13 addTarget:self action:sel__skipTapped_ forControlEvents:64];
-  v16 = [(DKCloudUploadViewController *)self buttonTray];
-  [v16 addButton:v13];
+  [linkButton addTarget:self action:sel__skipTapped_ forControlEvents:64];
+  buttonTray = [(DKCloudUploadViewController *)self buttonTray];
+  [buttonTray addButton:linkButton];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (a3 < 0.02)
+  if (progress < 0.02)
   {
-    a3 = 0.02;
+    progress = 0.02;
   }
 
   v3.receiver = self;
   v3.super_class = DKCloudUploadViewController;
-  [(OBSetupAssistantProgressController *)&v3 setProgress:a3];
+  [(OBSetupAssistantProgressController *)&v3 setProgress:progress];
 }
 
-- (void)uploadProgress:(float)a3 withTimeRemaining:(double)a4
+- (void)uploadProgress:(float)progress withTimeRemaining:(double)remaining
 {
-  [(DKCloudUploadViewController *)self setProgress:a3];
-  v6 = [(DKCloudUploadViewController *)self _timeRemainingString:a4];
+  [(DKCloudUploadViewController *)self setProgress:progress];
+  v6 = [(DKCloudUploadViewController *)self _timeRemainingString:remaining];
   [(OBSetupAssistantProgressController *)self setProgressText:v6];
 }
 
-- (void)uploadDidComplete:(id)a3
+- (void)uploadDidComplete:(id)complete
 {
-  v6 = a3;
-  if ([v6 success])
+  completeCopy = complete;
+  if ([completeCopy success])
   {
     [DKCloudUploadViewController uploadDidComplete:];
   }
 
-  v4 = [(DKCloudUploadViewController *)self view];
-  v5 = [v4 window];
+  view = [(DKCloudUploadViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    [(DKCloudUploadViewController *)self _showUploadFailureAlertForResults:v6];
+    [(DKCloudUploadViewController *)self _showUploadFailureAlertForResults:completeCopy];
   }
 
   else
   {
-    [(DKCloudUploadViewController *)self setUploadResults:v6];
+    [(DKCloudUploadViewController *)self setUploadResults:completeCopy];
     [(DKCloudUploadViewController *)self setShowUploadFailureAlert:1];
   }
 }
 
-- (id)_timeRemainingString:(double)a3
+- (id)_timeRemainingString:(double)string
 {
-  if (a3 <= 604800.0)
+  if (string <= 604800.0)
   {
-    if (a3 > 0.0)
+    if (string > 0.0)
     {
       v6 = [(NSDateComponentsFormatter *)self->_durationFormatter stringFromTimeInterval:?];
       goto LABEL_7;
@@ -139,33 +139,33 @@ LABEL_7:
   return v9;
 }
 
-- (void)_showUploadFailureAlertForResults:(id)a3
+- (void)_showUploadFailureAlertForResults:(id)results
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  resultsCopy = results;
+  if (!resultsCopy)
   {
     [DKCloudUploadViewController _showUploadFailureAlertForResults:];
   }
 
-  v5 = v4;
-  v6 = [v4 syncResult];
-  v7 = [v6 success];
+  v5 = resultsCopy;
+  syncResult = [resultsCopy syncResult];
+  success = [syncResult success];
 
   v8 = 0x277CCA000uLL;
   v73 = v5;
-  if (v7)
+  if (success)
   {
-    v72 = self;
-    v9 = [v5 backupResults];
-    v10 = [v9 mutableCopy];
+    selfCopy = self;
+    backupResults = [v5 backupResults];
+    v10 = [backupResults mutableCopy];
 
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v11 = [v10 reverseObjectEnumerator];
-    v12 = [v11 countByEnumeratingWithState:&v80 objects:v85 count:16];
+    reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+    v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v80 objects:v85 count:16];
     if (v12)
     {
       v13 = v12;
@@ -176,7 +176,7 @@ LABEL_7:
         {
           if (*v81 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v16 = *(*(&v80 + 1) + 8 * i);
@@ -186,30 +186,30 @@ LABEL_7:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v80 objects:v85 count:16];
+        v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v80 objects:v85 count:16];
       }
 
       while (v13);
     }
 
     v17 = [v10 count];
-    v18 = [v10 firstObject];
-    v19 = v18;
+    firstObject = [v10 firstObject];
+    v19 = firstObject;
     v71 = v10;
     if (v17 == 1)
     {
-      v20 = [v18 isPrimaryAccount];
-      v21 = [v20 BOOLValue];
+      isPrimaryAccount = [firstObject isPrimaryAccount];
+      bOOLValue = [isPrimaryAccount BOOLValue];
 
-      v22 = [v19 error];
-      v23 = [v22 dkui_isBackupDisabled];
+      error = [v19 error];
+      dkui_isBackupDisabled = [error dkui_isBackupDisabled];
 
-      self = v72;
-      if (v21)
+      self = selfCopy;
+      if (bOOLValue)
       {
         v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v25 = v24;
-        if (v23)
+        if (dkui_isBackupDisabled)
         {
           v26 = [v24 localizedStringForKey:@"BACKUP_DISABLED_ALERT_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
 
@@ -232,11 +232,11 @@ LABEL_7:
       v45 = MEMORY[0x277CCACA8];
       v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v47 = v46;
-      if (v23)
+      if (dkui_isBackupDisabled)
       {
         v48 = [v46 localizedStringForKey:@"BACKUP_DISABLED_ALERT_SINGLE_ACCOUNT_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
-        v49 = [v19 username];
-        v26 = [v45 localizedStringWithFormat:v48, v49];
+        username = [v19 username];
+        v26 = [v45 localizedStringWithFormat:v48, username];
 
         v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v28 = [v27 localizedStringForKey:@"BACKUP_DISABLED_ALERT_SINGLE_ACCOUNT_MESSAGE" value:&stru_285BC2A70 table:@"Localizable"];
@@ -245,8 +245,8 @@ LABEL_7:
       else
       {
         v58 = [v46 localizedStringForKey:@"CLOUD_UPLOAD_GENERIC_FAILURE_ALERT_SINGLE_ACCOUNT_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
-        v59 = [v19 username];
-        v26 = [v45 localizedStringWithFormat:v58, v59];
+        username2 = [v19 username];
+        v26 = [v45 localizedStringWithFormat:v58, username2];
 
         v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v60 = SFLocalizableWAPIStringKeyForKey();
@@ -256,7 +256,7 @@ LABEL_7:
 
     else
     {
-      v32 = [v18 username];
+      username3 = [firstObject username];
 
       v78 = 0u;
       v79 = 0u;
@@ -279,20 +279,20 @@ LABEL_7:
             }
 
             v39 = *(*(&v76 + 1) + 8 * j);
-            v40 = [v39 error];
-            v41 = [v40 dkui_isBackupDisabled];
+            error2 = [v39 error];
+            dkui_isBackupDisabled2 = [error2 dkui_isBackupDisabled];
 
-            v42 = [v39 isPrimaryAccount];
-            v43 = [v42 BOOLValue];
+            isPrimaryAccount2 = [v39 isPrimaryAccount];
+            bOOLValue2 = [isPrimaryAccount2 BOOLValue];
 
-            if (v43)
+            if (bOOLValue2)
             {
-              v44 = [v39 username];
+              username4 = [v39 username];
 
-              v32 = v44;
+              username3 = username4;
             }
 
-            v37 &= v41;
+            v37 &= dkui_isBackupDisabled2;
           }
 
           v35 = [v33 countByEnumeratingWithState:&v76 objects:v84 count:16];
@@ -303,40 +303,40 @@ LABEL_7:
         if (!v37)
         {
           v53 = MEMORY[0x277CCACA8];
-          self = v72;
+          self = selfCopy;
           v54 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v55 = [v54 localizedStringForKey:@"CLOUD_UPLOAD_GENERIC_FAILURE_ALERT_MULTIPLE_ACCOUNT_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
-          v26 = [v53 localizedStringWithFormat:v55, v32, objc_msgSend(v33, "count") - 1];
+          v26 = [v53 localizedStringWithFormat:v55, username3, objc_msgSend(v33, "count") - 1];
 
           v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v56 = SFLocalizableWAPIStringKeyForKey();
           v10 = v71;
           v28 = [v27 localizedStringForKey:v56 value:&stru_285BC2A70 table:@"Localizable"];
 
-          v19 = v32;
+          v19 = username3;
 LABEL_36:
 
           goto LABEL_37;
         }
 
-        self = v72;
+        self = selfCopy;
         v8 = 0x277CCA000;
       }
 
       else
       {
 
-        self = v72;
+        self = selfCopy;
       }
 
       v50 = MEMORY[0x277CCACA8];
       v51 = [*(v8 + 2264) bundleForClass:objc_opt_class()];
       v52 = [v51 localizedStringForKey:@"BACKUP_DISABLED_ALERT_MULTIPLE_ACCOUNTS_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
-      v26 = [v50 localizedStringWithFormat:v52, v32, objc_msgSend(v33, "count") - 1];
+      v26 = [v50 localizedStringWithFormat:v52, username3, objc_msgSend(v33, "count") - 1];
 
       v27 = [*(v8 + 2264) bundleForClass:objc_opt_class()];
       v28 = [v27 localizedStringForKey:@"BACKUP_DISABLED_ALERT_MULTIPLE_ACCOUNTS_MESSAGE" value:&stru_285BC2A70 table:@"Localizable"];
-      v19 = v32;
+      v19 = username3;
     }
 
     v10 = v71;
@@ -400,25 +400,25 @@ void __65__DKCloudUploadViewController__showUploadFailureAlertForResults___block
   }
 }
 
-- (void)_skipTapped:(id)a3
+- (void)_skipTapped:(id)tapped
 {
-  v4 = [(DKCloudUploadViewController *)self skipBlock];
+  skipBlock = [(DKCloudUploadViewController *)self skipBlock];
 
-  if (v4)
+  if (skipBlock)
   {
-    v5 = [(DKCloudUploadViewController *)self skipBlock];
-    v5[2]();
+    skipBlock2 = [(DKCloudUploadViewController *)self skipBlock];
+    skipBlock2[2]();
   }
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
-  v4 = [(DKCloudUploadViewController *)self cancelBlock];
+  cancelBlock = [(DKCloudUploadViewController *)self cancelBlock];
 
-  if (v4)
+  if (cancelBlock)
   {
-    v5 = [(DKCloudUploadViewController *)self cancelBlock];
-    v5[2]();
+    cancelBlock2 = [(DKCloudUploadViewController *)self cancelBlock];
+    cancelBlock2[2]();
   }
 }
 

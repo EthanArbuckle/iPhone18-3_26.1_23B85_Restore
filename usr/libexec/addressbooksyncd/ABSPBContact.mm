@@ -1,92 +1,92 @@
 @interface ABSPBContact
-+ (id)toPBContact:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)toPBContact:(id)contact;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)toContact;
 - (unint64_t)hash;
-- (void)addAddresses:(id)a3;
-- (void)addEmails:(id)a3;
-- (void)addPhoneNumbers:(id)a3;
-- (void)addUrls:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAddresses:(id)addresses;
+- (void)addEmails:(id)emails;
+- (void)addPhoneNumbers:(id)numbers;
+- (void)addUrls:(id)urls;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBContact
 
-- (void)addPhoneNumbers:(id)a3
+- (void)addPhoneNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   phoneNumbers = self->_phoneNumbers;
-  v8 = v4;
+  v8 = numbersCopy;
   if (!phoneNumbers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_phoneNumbers;
     self->_phoneNumbers = v6;
 
-    v4 = v8;
+    numbersCopy = v8;
     phoneNumbers = self->_phoneNumbers;
   }
 
-  [(NSMutableArray *)phoneNumbers addObject:v4];
+  [(NSMutableArray *)phoneNumbers addObject:numbersCopy];
 }
 
-- (void)addUrls:(id)a3
+- (void)addUrls:(id)urls
 {
-  v4 = a3;
+  urlsCopy = urls;
   urls = self->_urls;
-  v8 = v4;
+  v8 = urlsCopy;
   if (!urls)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_urls;
     self->_urls = v6;
 
-    v4 = v8;
+    urlsCopy = v8;
     urls = self->_urls;
   }
 
-  [(NSMutableArray *)urls addObject:v4];
+  [(NSMutableArray *)urls addObject:urlsCopy];
 }
 
-- (void)addEmails:(id)a3
+- (void)addEmails:(id)emails
 {
-  v4 = a3;
+  emailsCopy = emails;
   emails = self->_emails;
-  v8 = v4;
+  v8 = emailsCopy;
   if (!emails)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_emails;
     self->_emails = v6;
 
-    v4 = v8;
+    emailsCopy = v8;
     emails = self->_emails;
   }
 
-  [(NSMutableArray *)emails addObject:v4];
+  [(NSMutableArray *)emails addObject:emailsCopy];
 }
 
-- (void)addAddresses:(id)a3
+- (void)addAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   addresses = self->_addresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!addresses)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_addresses;
     self->_addresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     addresses = self->_addresses;
   }
 
-  [(NSMutableArray *)addresses addObject:v4];
+  [(NSMutableArray *)addresses addObject:addressesCopy];
 }
 
 - (id)description
@@ -94,8 +94,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBContact;
   v3 = [(ABSPBContact *)&v7 description];
-  v4 = [(ABSPBContact *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBContact *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -179,15 +179,15 @@
   birthday = self->_birthday;
   if (birthday)
   {
-    v18 = [(ABSPBDate *)birthday dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"birthday"];
+    dictionaryRepresentation = [(ABSPBDate *)birthday dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"birthday"];
   }
 
   nonGregorianBirthday = self->_nonGregorianBirthday;
   if (nonGregorianBirthday)
   {
-    v20 = [(ABSPBDate *)nonGregorianBirthday dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"nonGregorianBirthday"];
+    dictionaryRepresentation2 = [(ABSPBDate *)nonGregorianBirthday dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"nonGregorianBirthday"];
   }
 
   phoneticOrganizationName = self->_phoneticOrganizationName;
@@ -235,15 +235,15 @@
   callAlert = self->_callAlert;
   if (callAlert)
   {
-    v29 = [(ABSPBAlert *)callAlert dictionaryRepresentation];
-    [v4 setObject:v29 forKey:@"callAlert"];
+    dictionaryRepresentation3 = [(ABSPBAlert *)callAlert dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"callAlert"];
   }
 
   textAlert = self->_textAlert;
   if (textAlert)
   {
-    v31 = [(ABSPBAlert *)textAlert dictionaryRepresentation];
-    [v4 setObject:v31 forKey:@"textAlert"];
+    dictionaryRepresentation4 = [(ABSPBAlert *)textAlert dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"textAlert"];
   }
 
   if ([(NSMutableArray *)self->_phoneNumbers count])
@@ -268,8 +268,8 @@
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v75 + 1) + 8 * i) dictionaryRepresentation];
-          [v32 addObject:v38];
+          dictionaryRepresentation5 = [*(*(&v75 + 1) + 8 * i) dictionaryRepresentation];
+          [v32 addObject:dictionaryRepresentation5];
         }
 
         v35 = [(NSMutableArray *)v33 countByEnumeratingWithState:&v75 objects:v82 count:16];
@@ -303,8 +303,8 @@
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v71 + 1) + 8 * j) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation6 = [*(*(&v71 + 1) + 8 * j) dictionaryRepresentation];
+          [v39 addObject:dictionaryRepresentation6];
         }
 
         v42 = [(NSMutableArray *)v40 countByEnumeratingWithState:&v71 objects:v81 count:16];
@@ -338,8 +338,8 @@
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v67 + 1) + 8 * k) dictionaryRepresentation];
-          [v46 addObject:v52];
+          dictionaryRepresentation7 = [*(*(&v67 + 1) + 8 * k) dictionaryRepresentation];
+          [v46 addObject:dictionaryRepresentation7];
         }
 
         v49 = [(NSMutableArray *)v47 countByEnumeratingWithState:&v67 objects:v80 count:16];
@@ -373,8 +373,8 @@
             objc_enumerationMutation(v54);
           }
 
-          v59 = [*(*(&v63 + 1) + 8 * m) dictionaryRepresentation];
-          [v53 addObject:v59];
+          dictionaryRepresentation8 = [*(*(&v63 + 1) + 8 * m) dictionaryRepresentation];
+          [v53 addObject:dictionaryRepresentation8];
         }
 
         v56 = [(NSMutableArray *)v54 countByEnumeratingWithState:&v63 objects:v79 count:16];
@@ -397,9 +397,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -649,282 +649,282 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v20 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if (self->_namePrefix)
   {
-    [v20 setNamePrefix:?];
+    [toCopy setNamePrefix:?];
   }
 
   if (self->_givenName)
   {
-    [v20 setGivenName:?];
+    [toCopy setGivenName:?];
   }
 
   if (self->_middleName)
   {
-    [v20 setMiddleName:?];
+    [toCopy setMiddleName:?];
   }
 
   if (self->_familyName)
   {
-    [v20 setFamilyName:?];
+    [toCopy setFamilyName:?];
   }
 
   if (self->_previousFamilyName)
   {
-    [v20 setPreviousFamilyName:?];
+    [toCopy setPreviousFamilyName:?];
   }
 
   if (self->_nameSuffix)
   {
-    [v20 setNameSuffix:?];
+    [toCopy setNameSuffix:?];
   }
 
   if (self->_nickname)
   {
-    [v20 setNickname:?];
+    [toCopy setNickname:?];
   }
 
   if (self->_organizationName)
   {
-    [v20 setOrganizationName:?];
+    [toCopy setOrganizationName:?];
   }
 
   if (self->_departmentName)
   {
-    [v20 setDepartmentName:?];
+    [toCopy setDepartmentName:?];
   }
 
   if (self->_jobTitle)
   {
-    [v20 setJobTitle:?];
+    [toCopy setJobTitle:?];
   }
 
   if (self->_note)
   {
-    [v20 setNote:?];
+    [toCopy setNote:?];
   }
 
   if (self->_birthday)
   {
-    [v20 setBirthday:?];
+    [toCopy setBirthday:?];
   }
 
   if (self->_nonGregorianBirthday)
   {
-    [v20 setNonGregorianBirthday:?];
+    [toCopy setNonGregorianBirthday:?];
   }
 
   if (self->_phoneticOrganizationName)
   {
-    [v20 setPhoneticOrganizationName:?];
+    [toCopy setPhoneticOrganizationName:?];
   }
 
   if (self->_phoneticFamilyName)
   {
-    [v20 setPhoneticFamilyName:?];
+    [toCopy setPhoneticFamilyName:?];
   }
 
   if (self->_phoneticGivenName)
   {
-    [v20 setPhoneticGivenName:?];
+    [toCopy setPhoneticGivenName:?];
   }
 
   if (self->_phoneticMiddleName)
   {
-    [v20 setPhoneticMiddleName:?];
+    [toCopy setPhoneticMiddleName:?];
   }
 
   if (self->_pronunciationGivenName)
   {
-    [v20 setPronunciationGivenName:?];
+    [toCopy setPronunciationGivenName:?];
   }
 
   if (self->_pronunciationFamilyName)
   {
-    [v20 setPronunciationFamilyName:?];
+    [toCopy setPronunciationFamilyName:?];
   }
 
   if (self->_phonemeData)
   {
-    [v20 setPhonemeData:?];
+    [toCopy setPhonemeData:?];
   }
 
   if (self->_callAlert)
   {
-    [v20 setCallAlert:?];
+    [toCopy setCallAlert:?];
   }
 
   if (self->_textAlert)
   {
-    [v20 setTextAlert:?];
+    [toCopy setTextAlert:?];
   }
 
   if ([(ABSPBContact *)self phoneNumbersCount])
   {
-    [v20 clearPhoneNumbers];
-    v4 = [(ABSPBContact *)self phoneNumbersCount];
-    if (v4)
+    [toCopy clearPhoneNumbers];
+    phoneNumbersCount = [(ABSPBContact *)self phoneNumbersCount];
+    if (phoneNumbersCount)
     {
-      v5 = v4;
+      v5 = phoneNumbersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ABSPBContact *)self phoneNumbersAtIndex:i];
-        [v20 addPhoneNumbers:v7];
+        [toCopy addPhoneNumbers:v7];
       }
     }
   }
 
   if ([(ABSPBContact *)self urlsCount])
   {
-    [v20 clearUrls];
-    v8 = [(ABSPBContact *)self urlsCount];
-    if (v8)
+    [toCopy clearUrls];
+    urlsCount = [(ABSPBContact *)self urlsCount];
+    if (urlsCount)
     {
-      v9 = v8;
+      v9 = urlsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ABSPBContact *)self urlsAtIndex:j];
-        [v20 addUrls:v11];
+        [toCopy addUrls:v11];
       }
     }
   }
 
   if ([(ABSPBContact *)self emailsCount])
   {
-    [v20 clearEmails];
-    v12 = [(ABSPBContact *)self emailsCount];
-    if (v12)
+    [toCopy clearEmails];
+    emailsCount = [(ABSPBContact *)self emailsCount];
+    if (emailsCount)
     {
-      v13 = v12;
+      v13 = emailsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(ABSPBContact *)self emailsAtIndex:k];
-        [v20 addEmails:v15];
+        [toCopy addEmails:v15];
       }
     }
   }
 
   if ([(ABSPBContact *)self addressesCount])
   {
-    [v20 clearAddresses];
-    v16 = [(ABSPBContact *)self addressesCount];
-    if (v16)
+    [toCopy clearAddresses];
+    addressesCount = [(ABSPBContact *)self addressesCount];
+    if (addressesCount)
     {
-      v17 = v16;
+      v17 = addressesCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(ABSPBContact *)self addressesAtIndex:m];
-        [v20 addAddresses:v19];
+        [toCopy addAddresses:v19];
       }
     }
   }
 
   if (self->_preferredChannel)
   {
-    [v20 setPreferredChannel:?];
+    [toCopy setPreferredChannel:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(NSString *)self->_namePrefix copyWithZone:a3];
+  v8 = [(NSString *)self->_namePrefix copyWithZone:zone];
   v9 = v5[11];
   v5[11] = v8;
 
-  v10 = [(NSString *)self->_givenName copyWithZone:a3];
+  v10 = [(NSString *)self->_givenName copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(NSString *)self->_middleName copyWithZone:a3];
+  v12 = [(NSString *)self->_middleName copyWithZone:zone];
   v13 = v5[10];
   v5[10] = v12;
 
-  v14 = [(NSString *)self->_familyName copyWithZone:a3];
+  v14 = [(NSString *)self->_familyName copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSString *)self->_previousFamilyName copyWithZone:a3];
+  v16 = [(NSString *)self->_previousFamilyName copyWithZone:zone];
   v17 = v5[24];
   v5[24] = v16;
 
-  v18 = [(NSString *)self->_nameSuffix copyWithZone:a3];
+  v18 = [(NSString *)self->_nameSuffix copyWithZone:zone];
   v19 = v5[12];
   v5[12] = v18;
 
-  v20 = [(NSString *)self->_nickname copyWithZone:a3];
+  v20 = [(NSString *)self->_nickname copyWithZone:zone];
   v21 = v5[13];
   v5[13] = v20;
 
-  v22 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v22 = [(NSString *)self->_organizationName copyWithZone:zone];
   v23 = v5[16];
   v5[16] = v22;
 
-  v24 = [(NSString *)self->_departmentName copyWithZone:a3];
+  v24 = [(NSString *)self->_departmentName copyWithZone:zone];
   v25 = v5[4];
   v5[4] = v24;
 
-  v26 = [(NSString *)self->_jobTitle copyWithZone:a3];
+  v26 = [(NSString *)self->_jobTitle copyWithZone:zone];
   v27 = v5[9];
   v5[9] = v26;
 
-  v28 = [(NSString *)self->_note copyWithZone:a3];
+  v28 = [(NSString *)self->_note copyWithZone:zone];
   v29 = v5[15];
   v5[15] = v28;
 
-  v30 = [(ABSPBDate *)self->_birthday copyWithZone:a3];
+  v30 = [(ABSPBDate *)self->_birthday copyWithZone:zone];
   v31 = v5[2];
   v5[2] = v30;
 
-  v32 = [(ABSPBDate *)self->_nonGregorianBirthday copyWithZone:a3];
+  v32 = [(ABSPBDate *)self->_nonGregorianBirthday copyWithZone:zone];
   v33 = v5[14];
   v5[14] = v32;
 
-  v34 = [(NSString *)self->_phoneticOrganizationName copyWithZone:a3];
+  v34 = [(NSString *)self->_phoneticOrganizationName copyWithZone:zone];
   v35 = v5[22];
   v5[22] = v34;
 
-  v36 = [(NSString *)self->_phoneticFamilyName copyWithZone:a3];
+  v36 = [(NSString *)self->_phoneticFamilyName copyWithZone:zone];
   v37 = v5[19];
   v5[19] = v36;
 
-  v38 = [(NSString *)self->_phoneticGivenName copyWithZone:a3];
+  v38 = [(NSString *)self->_phoneticGivenName copyWithZone:zone];
   v39 = v5[20];
   v5[20] = v38;
 
-  v40 = [(NSString *)self->_phoneticMiddleName copyWithZone:a3];
+  v40 = [(NSString *)self->_phoneticMiddleName copyWithZone:zone];
   v41 = v5[21];
   v5[21] = v40;
 
-  v42 = [(NSString *)self->_pronunciationGivenName copyWithZone:a3];
+  v42 = [(NSString *)self->_pronunciationGivenName copyWithZone:zone];
   v43 = v5[26];
   v5[26] = v42;
 
-  v44 = [(NSString *)self->_pronunciationFamilyName copyWithZone:a3];
+  v44 = [(NSString *)self->_pronunciationFamilyName copyWithZone:zone];
   v45 = v5[25];
   v5[25] = v44;
 
-  v46 = [(NSString *)self->_phonemeData copyWithZone:a3];
+  v46 = [(NSString *)self->_phonemeData copyWithZone:zone];
   v47 = v5[18];
   v5[18] = v46;
 
-  v48 = [(ABSPBAlert *)self->_callAlert copyWithZone:a3];
+  v48 = [(ABSPBAlert *)self->_callAlert copyWithZone:zone];
   v49 = v5[3];
   v5[3] = v48;
 
-  v50 = [(ABSPBAlert *)self->_textAlert copyWithZone:a3];
+  v50 = [(ABSPBAlert *)self->_textAlert copyWithZone:zone];
   v51 = v5[27];
   v5[27] = v50;
 
@@ -948,7 +948,7 @@
           objc_enumerationMutation(v52);
         }
 
-        v57 = [*(*(&v91 + 1) + 8 * v56) copyWithZone:a3];
+        v57 = [*(*(&v91 + 1) + 8 * v56) copyWithZone:zone];
         [v5 addPhoneNumbers:v57];
 
         v56 = v56 + 1;
@@ -981,7 +981,7 @@
           objc_enumerationMutation(v58);
         }
 
-        v63 = [*(*(&v87 + 1) + 8 * v62) copyWithZone:a3];
+        v63 = [*(*(&v87 + 1) + 8 * v62) copyWithZone:zone];
         [v5 addUrls:v63];
 
         v62 = v62 + 1;
@@ -1014,7 +1014,7 @@
           objc_enumerationMutation(v64);
         }
 
-        v69 = [*(*(&v83 + 1) + 8 * v68) copyWithZone:a3];
+        v69 = [*(*(&v83 + 1) + 8 * v68) copyWithZone:zone];
         [v5 addEmails:v69];
 
         v68 = v68 + 1;
@@ -1047,7 +1047,7 @@
           objc_enumerationMutation(v70);
         }
 
-        v75 = [*(*(&v79 + 1) + 8 * v74) copyWithZone:{a3, v79}];
+        v75 = [*(*(&v79 + 1) + 8 * v74) copyWithZone:{zone, v79}];
         [v5 addAddresses:v75];
 
         v74 = v74 + 1;
@@ -1060,23 +1060,23 @@
     while (v72);
   }
 
-  v76 = [(NSString *)self->_preferredChannel copyWithZone:a3];
+  v76 = [(NSString *)self->_preferredChannel copyWithZone:zone];
   v77 = v5[23];
   v5[23] = v76;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   identifier = self->_identifier;
-  if (identifier | v4[8])
+  if (identifier | equalCopy[8])
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -1085,123 +1085,123 @@
   }
 
   namePrefix = self->_namePrefix;
-  if (namePrefix | v4[11] && ![(NSString *)namePrefix isEqual:?])
+  if (namePrefix | equalCopy[11] && ![(NSString *)namePrefix isEqual:?])
   {
     goto LABEL_58;
   }
 
   givenName = self->_givenName;
-  if (givenName | v4[7] && ![(NSString *)givenName isEqual:?])
+  if (givenName | equalCopy[7] && ![(NSString *)givenName isEqual:?])
   {
     goto LABEL_58;
   }
 
   middleName = self->_middleName;
-  if (middleName | v4[10] && ![(NSString *)middleName isEqual:?])
+  if (middleName | equalCopy[10] && ![(NSString *)middleName isEqual:?])
   {
     goto LABEL_58;
   }
 
   familyName = self->_familyName;
-  if (familyName | v4[6] && ![(NSString *)familyName isEqual:?])
+  if (familyName | equalCopy[6] && ![(NSString *)familyName isEqual:?])
   {
     goto LABEL_58;
   }
 
   previousFamilyName = self->_previousFamilyName;
-  if (previousFamilyName | v4[24] && ![(NSString *)previousFamilyName isEqual:?])
+  if (previousFamilyName | equalCopy[24] && ![(NSString *)previousFamilyName isEqual:?])
   {
     goto LABEL_58;
   }
 
   nameSuffix = self->_nameSuffix;
-  if (nameSuffix | v4[12] && ![(NSString *)nameSuffix isEqual:?])
+  if (nameSuffix | equalCopy[12] && ![(NSString *)nameSuffix isEqual:?])
   {
     goto LABEL_58;
   }
 
   nickname = self->_nickname;
-  if (nickname | v4[13] && ![(NSString *)nickname isEqual:?])
+  if (nickname | equalCopy[13] && ![(NSString *)nickname isEqual:?])
   {
     goto LABEL_58;
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | v4[16] && ![(NSString *)organizationName isEqual:?])
+  if (organizationName | equalCopy[16] && ![(NSString *)organizationName isEqual:?])
   {
     goto LABEL_58;
   }
 
   departmentName = self->_departmentName;
-  if (departmentName | v4[4] && ![(NSString *)departmentName isEqual:?])
+  if (departmentName | equalCopy[4] && ![(NSString *)departmentName isEqual:?])
   {
     goto LABEL_58;
   }
 
   jobTitle = self->_jobTitle;
-  if (jobTitle | v4[9] && ![(NSString *)jobTitle isEqual:?])
+  if (jobTitle | equalCopy[9] && ![(NSString *)jobTitle isEqual:?])
   {
     goto LABEL_58;
   }
 
   note = self->_note;
-  if (note | v4[15] && ![(NSString *)note isEqual:?])
+  if (note | equalCopy[15] && ![(NSString *)note isEqual:?])
   {
     goto LABEL_58;
   }
 
   birthday = self->_birthday;
-  if (birthday | v4[2] && ![(ABSPBDate *)birthday isEqual:?])
+  if (birthday | equalCopy[2] && ![(ABSPBDate *)birthday isEqual:?])
   {
     goto LABEL_58;
   }
 
   nonGregorianBirthday = self->_nonGregorianBirthday;
-  if (nonGregorianBirthday | v4[14] && ![(ABSPBDate *)nonGregorianBirthday isEqual:?])
+  if (nonGregorianBirthday | equalCopy[14] && ![(ABSPBDate *)nonGregorianBirthday isEqual:?])
   {
     goto LABEL_58;
   }
 
   phoneticOrganizationName = self->_phoneticOrganizationName;
-  if (phoneticOrganizationName | v4[22] && ![(NSString *)phoneticOrganizationName isEqual:?])
+  if (phoneticOrganizationName | equalCopy[22] && ![(NSString *)phoneticOrganizationName isEqual:?])
   {
     goto LABEL_58;
   }
 
   phoneticFamilyName = self->_phoneticFamilyName;
-  if (phoneticFamilyName | v4[19] && ![(NSString *)phoneticFamilyName isEqual:?])
+  if (phoneticFamilyName | equalCopy[19] && ![(NSString *)phoneticFamilyName isEqual:?])
   {
     goto LABEL_58;
   }
 
   phoneticGivenName = self->_phoneticGivenName;
-  if (phoneticGivenName | v4[20] && ![(NSString *)phoneticGivenName isEqual:?])
+  if (phoneticGivenName | equalCopy[20] && ![(NSString *)phoneticGivenName isEqual:?])
   {
     goto LABEL_58;
   }
 
   phoneticMiddleName = self->_phoneticMiddleName;
-  if (phoneticMiddleName | v4[21] && ![(NSString *)phoneticMiddleName isEqual:?])
+  if (phoneticMiddleName | equalCopy[21] && ![(NSString *)phoneticMiddleName isEqual:?])
   {
     goto LABEL_58;
   }
 
   pronunciationGivenName = self->_pronunciationGivenName;
-  if (pronunciationGivenName | v4[26] && ![(NSString *)pronunciationGivenName isEqual:?])
+  if (pronunciationGivenName | equalCopy[26] && ![(NSString *)pronunciationGivenName isEqual:?])
   {
     goto LABEL_58;
   }
 
   pronunciationFamilyName = self->_pronunciationFamilyName;
-  if (pronunciationFamilyName | v4[25] && ![(NSString *)pronunciationFamilyName isEqual:?])
+  if (pronunciationFamilyName | equalCopy[25] && ![(NSString *)pronunciationFamilyName isEqual:?])
   {
     goto LABEL_58;
   }
 
-  if (((phonemeData = self->_phonemeData, !(phonemeData | v4[18])) || [(NSString *)phonemeData isEqual:?]) && ((callAlert = self->_callAlert, !(callAlert | v4[3])) || [(ABSPBAlert *)callAlert isEqual:?]) && ((textAlert = self->_textAlert, !(textAlert | v4[27])) || [(ABSPBAlert *)textAlert isEqual:?]) && ((phoneNumbers = self->_phoneNumbers, !(phoneNumbers | v4[17])) || [(NSMutableArray *)phoneNumbers isEqual:?]) && ((urls = self->_urls, !(urls | v4[28])) || [(NSMutableArray *)urls isEqual:?]) && ((emails = self->_emails, !(emails | v4[5])) || [(NSMutableArray *)emails isEqual:?]) && ((addresses = self->_addresses, !(addresses | v4[1])) || [(NSMutableArray *)addresses isEqual:?]))
+  if (((phonemeData = self->_phonemeData, !(phonemeData | equalCopy[18])) || [(NSString *)phonemeData isEqual:?]) && ((callAlert = self->_callAlert, !(callAlert | equalCopy[3])) || [(ABSPBAlert *)callAlert isEqual:?]) && ((textAlert = self->_textAlert, !(textAlert | equalCopy[27])) || [(ABSPBAlert *)textAlert isEqual:?]) && ((phoneNumbers = self->_phoneNumbers, !(phoneNumbers | equalCopy[17])) || [(NSMutableArray *)phoneNumbers isEqual:?]) && ((urls = self->_urls, !(urls | equalCopy[28])) || [(NSMutableArray *)urls isEqual:?]) && ((emails = self->_emails, !(emails | equalCopy[5])) || [(NSMutableArray *)emails isEqual:?]) && ((addresses = self->_addresses, !(addresses | equalCopy[1])) || [(NSMutableArray *)addresses isEqual:?]))
   {
     preferredChannel = self->_preferredChannel;
-    if (preferredChannel | v4[23])
+    if (preferredChannel | equalCopy[23])
     {
       v33 = [(NSString *)preferredChannel isEqual:?];
     }
@@ -1253,71 +1253,71 @@ LABEL_58:
   return v24 ^ v29 ^ [(NSString *)self->_preferredChannel hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(ABSPBContact *)self setIdentifier:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(ABSPBContact *)self setNamePrefix:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ABSPBContact *)self setGivenName:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(ABSPBContact *)self setMiddleName:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ABSPBContact *)self setFamilyName:?];
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(ABSPBContact *)self setPreviousFamilyName:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ABSPBContact *)self setNameSuffix:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(ABSPBContact *)self setNickname:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(ABSPBContact *)self setOrganizationName:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ABSPBContact *)self setDepartmentName:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ABSPBContact *)self setJobTitle:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(ABSPBContact *)self setNote:?];
   }
 
   birthday = self->_birthday;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (birthday)
   {
     if (v6)
@@ -1332,7 +1332,7 @@ LABEL_58:
   }
 
   nonGregorianBirthday = self->_nonGregorianBirthday;
-  v8 = *(v4 + 14);
+  v8 = *(fromCopy + 14);
   if (nonGregorianBirthday)
   {
     if (v8)
@@ -1346,43 +1346,43 @@ LABEL_58:
     [(ABSPBContact *)self setNonGregorianBirthday:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(ABSPBContact *)self setPhoneticOrganizationName:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(ABSPBContact *)self setPhoneticFamilyName:?];
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(ABSPBContact *)self setPhoneticGivenName:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(ABSPBContact *)self setPhoneticMiddleName:?];
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(ABSPBContact *)self setPronunciationGivenName:?];
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(ABSPBContact *)self setPronunciationFamilyName:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(ABSPBContact *)self setPhonemeData:?];
   }
 
   callAlert = self->_callAlert;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (callAlert)
   {
     if (v10)
@@ -1397,7 +1397,7 @@ LABEL_58:
   }
 
   textAlert = self->_textAlert;
-  v12 = *(v4 + 27);
+  v12 = *(fromCopy + 27);
   if (textAlert)
   {
     if (v12)
@@ -1415,7 +1415,7 @@ LABEL_58:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v13 = *(v4 + 17);
+  v13 = *(fromCopy + 17);
   v14 = [v13 countByEnumeratingWithState:&v45 objects:v52 count:16];
   if (v14)
   {
@@ -1443,7 +1443,7 @@ LABEL_58:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = *(v4 + 28);
+  v18 = *(fromCopy + 28);
   v19 = [v18 countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (v19)
   {
@@ -1471,7 +1471,7 @@ LABEL_58:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v23 = *(v4 + 5);
+  v23 = *(fromCopy + 5);
   v24 = [v23 countByEnumeratingWithState:&v37 objects:v50 count:16];
   if (v24)
   {
@@ -1499,7 +1499,7 @@ LABEL_58:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v28 = *(v4 + 1);
+  v28 = *(fromCopy + 1);
   v29 = [v28 countByEnumeratingWithState:&v33 objects:v49 count:16];
   if (v29)
   {
@@ -1523,7 +1523,7 @@ LABEL_58:
     while (v30);
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(ABSPBContact *)self setPreferredChannel:?];
   }
@@ -1532,95 +1532,95 @@ LABEL_58:
 - (id)toContact
 {
   v3 = [CNMutableContact alloc];
-  v4 = [(ABSPBContact *)self identifier];
-  v5 = [v3 initWithIdentifier:v4];
+  identifier = [(ABSPBContact *)self identifier];
+  v5 = [v3 initWithIdentifier:identifier];
 
-  v6 = [(ABSPBContact *)self namePrefix];
+  namePrefix = [(ABSPBContact *)self namePrefix];
 
-  if (v6)
+  if (namePrefix)
   {
-    v7 = [(ABSPBContact *)self namePrefix];
-    [v5 setNamePrefix:v7];
+    namePrefix2 = [(ABSPBContact *)self namePrefix];
+    [v5 setNamePrefix:namePrefix2];
   }
 
-  v8 = [(ABSPBContact *)self givenName];
+  givenName = [(ABSPBContact *)self givenName];
 
-  if (v8)
+  if (givenName)
   {
-    v9 = [(ABSPBContact *)self givenName];
-    [v5 setGivenName:v9];
+    givenName2 = [(ABSPBContact *)self givenName];
+    [v5 setGivenName:givenName2];
   }
 
-  v10 = [(ABSPBContact *)self middleName];
+  middleName = [(ABSPBContact *)self middleName];
 
-  if (v10)
+  if (middleName)
   {
-    v11 = [(ABSPBContact *)self middleName];
-    [v5 setMiddleName:v11];
+    middleName2 = [(ABSPBContact *)self middleName];
+    [v5 setMiddleName:middleName2];
   }
 
-  v12 = [(ABSPBContact *)self familyName];
+  familyName = [(ABSPBContact *)self familyName];
 
-  if (v12)
+  if (familyName)
   {
-    v13 = [(ABSPBContact *)self familyName];
-    [v5 setFamilyName:v13];
+    familyName2 = [(ABSPBContact *)self familyName];
+    [v5 setFamilyName:familyName2];
   }
 
-  v14 = [(ABSPBContact *)self previousFamilyName];
+  previousFamilyName = [(ABSPBContact *)self previousFamilyName];
 
-  if (v14)
+  if (previousFamilyName)
   {
-    v15 = [(ABSPBContact *)self previousFamilyName];
-    [v5 setPreviousFamilyName:v15];
+    previousFamilyName2 = [(ABSPBContact *)self previousFamilyName];
+    [v5 setPreviousFamilyName:previousFamilyName2];
   }
 
-  v16 = [(ABSPBContact *)self nameSuffix];
+  nameSuffix = [(ABSPBContact *)self nameSuffix];
 
-  if (v16)
+  if (nameSuffix)
   {
-    v17 = [(ABSPBContact *)self nameSuffix];
-    [v5 setNameSuffix:v17];
+    nameSuffix2 = [(ABSPBContact *)self nameSuffix];
+    [v5 setNameSuffix:nameSuffix2];
   }
 
-  v18 = [(ABSPBContact *)self nickname];
+  nickname = [(ABSPBContact *)self nickname];
 
-  if (v18)
+  if (nickname)
   {
-    v19 = [(ABSPBContact *)self nickname];
-    [v5 setNickname:v19];
+    nickname2 = [(ABSPBContact *)self nickname];
+    [v5 setNickname:nickname2];
   }
 
-  v20 = [(ABSPBContact *)self organizationName];
+  organizationName = [(ABSPBContact *)self organizationName];
 
-  if (v20)
+  if (organizationName)
   {
-    v21 = [(ABSPBContact *)self organizationName];
-    [v5 setOrganizationName:v21];
+    organizationName2 = [(ABSPBContact *)self organizationName];
+    [v5 setOrganizationName:organizationName2];
   }
 
-  v22 = [(ABSPBContact *)self departmentName];
+  departmentName = [(ABSPBContact *)self departmentName];
 
-  if (v22)
+  if (departmentName)
   {
-    v23 = [(ABSPBContact *)self departmentName];
-    [v5 setDepartmentName:v23];
+    departmentName2 = [(ABSPBContact *)self departmentName];
+    [v5 setDepartmentName:departmentName2];
   }
 
-  v24 = [(ABSPBContact *)self jobTitle];
+  jobTitle = [(ABSPBContact *)self jobTitle];
 
-  if (v24)
+  if (jobTitle)
   {
-    v25 = [(ABSPBContact *)self jobTitle];
-    [v5 setJobTitle:v25];
+    jobTitle2 = [(ABSPBContact *)self jobTitle];
+    [v5 setJobTitle:jobTitle2];
   }
 
-  v26 = [(ABSPBContact *)self note];
+  note = [(ABSPBContact *)self note];
 
-  if (v26)
+  if (note)
   {
-    v27 = [(ABSPBContact *)self note];
-    [v5 setNote:v27];
+    note2 = [(ABSPBContact *)self note];
+    [v5 setNote:note2];
   }
 
   if ([(ABSPBContact *)self hasBirthday])
@@ -1629,43 +1629,43 @@ LABEL_58:
     v29 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
     [v28 setCalendar:v29];
 
-    v30 = [(ABSPBContact *)self birthday];
-    if ([v30 hasYear])
+    birthday = [(ABSPBContact *)self birthday];
+    if ([birthday hasYear])
     {
-      v31 = [(ABSPBContact *)self birthday];
-      v32 = [v31 year];
+      birthday2 = [(ABSPBContact *)self birthday];
+      year = [birthday2 year];
 
-      if (v32 == -1)
+      if (year == -1)
       {
         goto LABEL_28;
       }
 
-      v30 = [(ABSPBContact *)self birthday];
-      [v28 setYear:{objc_msgSend(v30, "year")}];
+      birthday = [(ABSPBContact *)self birthday];
+      [v28 setYear:{objc_msgSend(birthday, "year")}];
     }
 
 LABEL_28:
-    v33 = [(ABSPBContact *)self birthday];
-    if ([v33 hasMonth])
+    birthday3 = [(ABSPBContact *)self birthday];
+    if ([birthday3 hasMonth])
     {
-      v34 = [(ABSPBContact *)self birthday];
-      v35 = [v34 month];
+      birthday4 = [(ABSPBContact *)self birthday];
+      month = [birthday4 month];
 
-      if (v35 == -1)
+      if (month == -1)
       {
         goto LABEL_32;
       }
 
-      v33 = [(ABSPBContact *)self birthday];
-      [v28 setMonth:{objc_msgSend(v33, "month")}];
+      birthday3 = [(ABSPBContact *)self birthday];
+      [v28 setMonth:{objc_msgSend(birthday3, "month")}];
     }
 
 LABEL_32:
-    v36 = [(ABSPBContact *)self birthday];
-    if ([v36 hasDay])
+    birthday5 = [(ABSPBContact *)self birthday];
+    if ([birthday5 hasDay])
     {
-      v37 = [(ABSPBContact *)self birthday];
-      v38 = [v37 day];
+      birthday6 = [(ABSPBContact *)self birthday];
+      v38 = [birthday6 day];
 
       if (v38 == -1)
       {
@@ -1675,8 +1675,8 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v36 = [(ABSPBContact *)self birthday];
-      [v28 setDay:{objc_msgSend(v36, "day")}];
+      birthday5 = [(ABSPBContact *)self birthday];
+      [v28 setDay:{objc_msgSend(birthday5, "day")}];
     }
 
     goto LABEL_36;
@@ -1689,157 +1689,157 @@ LABEL_37:
   }
 
   v39 = objc_alloc_init(NSDateComponents);
-  v40 = [(ABSPBContact *)self nonGregorianBirthday];
-  v41 = sub_10000697C([v40 calendar]);
+  nonGregorianBirthday = [(ABSPBContact *)self nonGregorianBirthday];
+  v41 = sub_10000697C([nonGregorianBirthday calendar]);
 
   v42 = [NSCalendar calendarWithIdentifier:v41];
   [v39 setCalendar:v42];
 
-  v43 = [(ABSPBContact *)self nonGregorianBirthday];
-  if ([v43 hasEra])
+  nonGregorianBirthday2 = [(ABSPBContact *)self nonGregorianBirthday];
+  if ([nonGregorianBirthday2 hasEra])
   {
-    v44 = [(ABSPBContact *)self nonGregorianBirthday];
-    v45 = [v44 era];
+    nonGregorianBirthday3 = [(ABSPBContact *)self nonGregorianBirthday];
+    v45 = [nonGregorianBirthday3 era];
 
     if (v45 == -1)
     {
       goto LABEL_42;
     }
 
-    v43 = [(ABSPBContact *)self nonGregorianBirthday];
-    [v39 setEra:{objc_msgSend(v43, "era")}];
+    nonGregorianBirthday2 = [(ABSPBContact *)self nonGregorianBirthday];
+    [v39 setEra:{objc_msgSend(nonGregorianBirthday2, "era")}];
   }
 
 LABEL_42:
-  v46 = [(ABSPBContact *)self nonGregorianBirthday];
-  if ([v46 hasYear])
+  nonGregorianBirthday4 = [(ABSPBContact *)self nonGregorianBirthday];
+  if ([nonGregorianBirthday4 hasYear])
   {
-    v47 = [(ABSPBContact *)self nonGregorianBirthday];
-    v48 = [v47 year];
+    nonGregorianBirthday5 = [(ABSPBContact *)self nonGregorianBirthday];
+    year2 = [nonGregorianBirthday5 year];
 
-    if (v48 == -1)
+    if (year2 == -1)
     {
       goto LABEL_46;
     }
 
-    v46 = [(ABSPBContact *)self nonGregorianBirthday];
-    [v39 setYear:{objc_msgSend(v46, "year")}];
+    nonGregorianBirthday4 = [(ABSPBContact *)self nonGregorianBirthday];
+    [v39 setYear:{objc_msgSend(nonGregorianBirthday4, "year")}];
   }
 
 LABEL_46:
-  v49 = [(ABSPBContact *)self nonGregorianBirthday];
-  if ([v49 hasMonth])
+  nonGregorianBirthday6 = [(ABSPBContact *)self nonGregorianBirthday];
+  if ([nonGregorianBirthday6 hasMonth])
   {
-    v50 = [(ABSPBContact *)self nonGregorianBirthday];
-    v51 = [v50 month];
+    nonGregorianBirthday7 = [(ABSPBContact *)self nonGregorianBirthday];
+    month2 = [nonGregorianBirthday7 month];
 
-    if (v51 == -1)
+    if (month2 == -1)
     {
       goto LABEL_50;
     }
 
-    v49 = [(ABSPBContact *)self nonGregorianBirthday];
-    [v39 setMonth:{objc_msgSend(v49, "month")}];
+    nonGregorianBirthday6 = [(ABSPBContact *)self nonGregorianBirthday];
+    [v39 setMonth:{objc_msgSend(nonGregorianBirthday6, "month")}];
   }
 
 LABEL_50:
-  v52 = [(ABSPBContact *)self nonGregorianBirthday];
-  if (![v52 hasDay])
+  nonGregorianBirthday8 = [(ABSPBContact *)self nonGregorianBirthday];
+  if (![nonGregorianBirthday8 hasDay])
   {
 LABEL_53:
 
     goto LABEL_54;
   }
 
-  v53 = [(ABSPBContact *)self nonGregorianBirthday];
-  v54 = [v53 day];
+  nonGregorianBirthday9 = [(ABSPBContact *)self nonGregorianBirthday];
+  v54 = [nonGregorianBirthday9 day];
 
   if (v54 != -1)
   {
-    v52 = [(ABSPBContact *)self nonGregorianBirthday];
-    [v39 setDay:{objc_msgSend(v52, "day")}];
+    nonGregorianBirthday8 = [(ABSPBContact *)self nonGregorianBirthday];
+    [v39 setDay:{objc_msgSend(nonGregorianBirthday8, "day")}];
     goto LABEL_53;
   }
 
 LABEL_54:
-  v55 = [(ABSPBContact *)self nonGregorianBirthday];
-  [v39 setLeapMonth:{objc_msgSend(v55, "isLeapMonth")}];
+  nonGregorianBirthday10 = [(ABSPBContact *)self nonGregorianBirthday];
+  [v39 setLeapMonth:{objc_msgSend(nonGregorianBirthday10, "isLeapMonth")}];
 
   [v5 setNonGregorianBirthday:v39];
 LABEL_55:
-  v56 = [(ABSPBContact *)self phoneticOrganizationName];
+  phoneticOrganizationName = [(ABSPBContact *)self phoneticOrganizationName];
 
-  if (v56)
+  if (phoneticOrganizationName)
   {
-    v57 = [(ABSPBContact *)self phoneticOrganizationName];
-    [v5 setPhoneticOrganizationName:v57];
+    phoneticOrganizationName2 = [(ABSPBContact *)self phoneticOrganizationName];
+    [v5 setPhoneticOrganizationName:phoneticOrganizationName2];
   }
 
-  v58 = [(ABSPBContact *)self phoneticFamilyName];
+  phoneticFamilyName = [(ABSPBContact *)self phoneticFamilyName];
 
-  if (v58)
+  if (phoneticFamilyName)
   {
-    v59 = [(ABSPBContact *)self phoneticFamilyName];
-    [v5 setPhoneticFamilyName:v59];
+    phoneticFamilyName2 = [(ABSPBContact *)self phoneticFamilyName];
+    [v5 setPhoneticFamilyName:phoneticFamilyName2];
   }
 
-  v60 = [(ABSPBContact *)self phoneticGivenName];
+  phoneticGivenName = [(ABSPBContact *)self phoneticGivenName];
 
-  if (v60)
+  if (phoneticGivenName)
   {
-    v61 = [(ABSPBContact *)self phoneticGivenName];
-    [v5 setPhoneticGivenName:v61];
+    phoneticGivenName2 = [(ABSPBContact *)self phoneticGivenName];
+    [v5 setPhoneticGivenName:phoneticGivenName2];
   }
 
-  v62 = [(ABSPBContact *)self phoneticMiddleName];
+  phoneticMiddleName = [(ABSPBContact *)self phoneticMiddleName];
 
-  if (v62)
+  if (phoneticMiddleName)
   {
-    v63 = [(ABSPBContact *)self phoneticMiddleName];
-    [v5 setPhoneticMiddleName:v63];
+    phoneticMiddleName2 = [(ABSPBContact *)self phoneticMiddleName];
+    [v5 setPhoneticMiddleName:phoneticMiddleName2];
   }
 
-  v64 = [(ABSPBContact *)self pronunciationGivenName];
+  pronunciationGivenName = [(ABSPBContact *)self pronunciationGivenName];
 
-  if (v64)
+  if (pronunciationGivenName)
   {
-    v65 = [(ABSPBContact *)self pronunciationGivenName];
-    [v5 setPronunciationGivenName:v65];
+    pronunciationGivenName2 = [(ABSPBContact *)self pronunciationGivenName];
+    [v5 setPronunciationGivenName:pronunciationGivenName2];
   }
 
-  v66 = [(ABSPBContact *)self pronunciationFamilyName];
+  pronunciationFamilyName = [(ABSPBContact *)self pronunciationFamilyName];
 
-  if (v66)
+  if (pronunciationFamilyName)
   {
-    v67 = [(ABSPBContact *)self pronunciationFamilyName];
-    [v5 setPronunciationFamilyName:v67];
+    pronunciationFamilyName2 = [(ABSPBContact *)self pronunciationFamilyName];
+    [v5 setPronunciationFamilyName:pronunciationFamilyName2];
   }
 
-  v68 = [(ABSPBContact *)self phonemeData];
+  phonemeData = [(ABSPBContact *)self phonemeData];
 
-  if (v68)
+  if (phonemeData)
   {
-    v69 = [(ABSPBContact *)self phonemeData];
-    [v5 setPhonemeData:v69];
+    phonemeData2 = [(ABSPBContact *)self phonemeData];
+    [v5 setPhonemeData:phonemeData2];
   }
 
-  v70 = [(ABSPBContact *)self preferredChannel];
+  preferredChannel = [(ABSPBContact *)self preferredChannel];
 
-  if (v70)
+  if (preferredChannel)
   {
-    v71 = [(ABSPBContact *)self preferredChannel];
-    [v5 setPreferredChannel:v71];
+    preferredChannel2 = [(ABSPBContact *)self preferredChannel];
+    [v5 setPreferredChannel:preferredChannel2];
   }
 
   if ([(ABSPBContact *)self hasCallAlert])
   {
     v72 = [CNActivityAlert alloc];
-    v73 = [(ABSPBContact *)self callAlert];
-    v74 = [v73 sound];
-    v75 = [(ABSPBContact *)self callAlert];
-    v76 = [v75 vibration];
-    v77 = [(ABSPBContact *)self callAlert];
-    v78 = [v72 initWithSound:v74 vibration:v76 ignoreMute:{objc_msgSend(v77, "ignoreMute")}];
+    callAlert = [(ABSPBContact *)self callAlert];
+    sound = [callAlert sound];
+    callAlert2 = [(ABSPBContact *)self callAlert];
+    vibration = [callAlert2 vibration];
+    callAlert3 = [(ABSPBContact *)self callAlert];
+    v78 = [v72 initWithSound:sound vibration:vibration ignoreMute:{objc_msgSend(callAlert3, "ignoreMute")}];
 
     [v5 setCallAlert:v78];
   }
@@ -1847,33 +1847,33 @@ LABEL_55:
   if ([(ABSPBContact *)self hasTextAlert])
   {
     v79 = [CNActivityAlert alloc];
-    v80 = [(ABSPBContact *)self textAlert];
-    v81 = [v80 sound];
-    v82 = [(ABSPBContact *)self textAlert];
-    v83 = [v82 vibration];
-    v84 = [(ABSPBContact *)self textAlert];
-    v85 = [v79 initWithSound:v81 vibration:v83 ignoreMute:{objc_msgSend(v84, "ignoreMute")}];
+    textAlert = [(ABSPBContact *)self textAlert];
+    sound2 = [textAlert sound];
+    textAlert2 = [(ABSPBContact *)self textAlert];
+    vibration2 = [textAlert2 vibration];
+    textAlert3 = [(ABSPBContact *)self textAlert];
+    v85 = [v79 initWithSound:sound2 vibration:vibration2 ignoreMute:{objc_msgSend(textAlert3, "ignoreMute")}];
 
     [v5 setTextAlert:v85];
   }
 
-  v86 = [(ABSPBContact *)self phoneNumbers];
-  v87 = [v86 count];
+  phoneNumbers = [(ABSPBContact *)self phoneNumbers];
+  v87 = [phoneNumbers count];
 
   v158 = v5;
-  v160 = self;
+  selfCopy = self;
   if (v87)
   {
     v88 = [NSMutableArray alloc];
-    v89 = [(ABSPBContact *)self phoneNumbers];
-    v90 = [v88 initWithCapacity:{objc_msgSend(v89, "count")}];
+    phoneNumbers2 = [(ABSPBContact *)self phoneNumbers];
+    v90 = [v88 initWithCapacity:{objc_msgSend(phoneNumbers2, "count")}];
 
     v175 = 0u;
     v176 = 0u;
     v173 = 0u;
     v174 = 0u;
-    v91 = [(ABSPBContact *)self phoneNumbers];
-    v92 = [v91 countByEnumeratingWithState:&v173 objects:v180 count:16];
+    phoneNumbers3 = [(ABSPBContact *)self phoneNumbers];
+    v92 = [phoneNumbers3 countByEnumeratingWithState:&v173 objects:v180 count:16];
     if (v92)
     {
       v93 = v92;
@@ -1884,22 +1884,22 @@ LABEL_55:
         {
           if (*v174 != v94)
           {
-            objc_enumerationMutation(v91);
+            objc_enumerationMutation(phoneNumbers3);
           }
 
           v96 = *(*(&v173 + 1) + 8 * i);
           v97 = [CNPhoneNumber alloc];
-          v98 = [v96 value];
-          v99 = [v97 initWithStringValue:v98];
+          value = [v96 value];
+          v99 = [v97 initWithStringValue:value];
 
           v100 = [CNLabeledValue alloc];
-          v101 = [v96 label];
-          v102 = [v100 initWithLabel:v101 value:v99];
+          label = [v96 label];
+          v102 = [v100 initWithLabel:label value:v99];
 
           [v90 addObject:v102];
         }
 
-        v93 = [v91 countByEnumeratingWithState:&v173 objects:v180 count:16];
+        v93 = [phoneNumbers3 countByEnumeratingWithState:&v173 objects:v180 count:16];
       }
 
       while (v93);
@@ -1909,21 +1909,21 @@ LABEL_55:
     [v158 setPhoneNumbers:v90];
   }
 
-  v103 = [(ABSPBContact *)self addresses];
-  v104 = [v103 count];
+  addresses = [(ABSPBContact *)self addresses];
+  v104 = [addresses count];
 
   if (v104)
   {
     v105 = [NSMutableArray alloc];
-    v106 = [(ABSPBContact *)self addresses];
-    v107 = [v105 initWithCapacity:{objc_msgSend(v106, "count")}];
+    addresses2 = [(ABSPBContact *)self addresses];
+    v107 = [v105 initWithCapacity:{objc_msgSend(addresses2, "count")}];
 
     v171 = 0u;
     v172 = 0u;
     v169 = 0u;
     v170 = 0u;
-    v108 = [(ABSPBContact *)self addresses];
-    v109 = [v108 countByEnumeratingWithState:&v169 objects:v179 count:16];
+    addresses3 = [(ABSPBContact *)self addresses];
+    v109 = [addresses3 countByEnumeratingWithState:&v169 objects:v179 count:16];
     if (v109)
     {
       v110 = v109;
@@ -1934,43 +1934,43 @@ LABEL_55:
         {
           if (*v170 != v111)
           {
-            objc_enumerationMutation(v108);
+            objc_enumerationMutation(addresses3);
           }
 
           v113 = *(*(&v169 + 1) + 8 * j);
           v114 = objc_alloc_init(CNMutablePostalAddress);
-          v115 = [v113 street];
-          [v114 setStreet:v115];
+          street = [v113 street];
+          [v114 setStreet:street];
 
-          v116 = [v113 city];
-          [v114 setCity:v116];
+          city = [v113 city];
+          [v114 setCity:city];
 
-          v117 = [v113 state];
-          [v114 setState:v117];
+          state = [v113 state];
+          [v114 setState:state];
 
-          v118 = [v113 postalCode];
-          [v114 setPostalCode:v118];
+          postalCode = [v113 postalCode];
+          [v114 setPostalCode:postalCode];
 
-          v119 = [v113 country];
-          [v114 setCountry:v119];
+          country = [v113 country];
+          [v114 setCountry:country];
 
-          v120 = [v113 iSOCountryCode];
-          [v114 setISOCountryCode:v120];
+          iSOCountryCode = [v113 iSOCountryCode];
+          [v114 setISOCountryCode:iSOCountryCode];
 
-          v121 = [v113 subLocality];
-          [v114 setSubLocality:v121];
+          subLocality = [v113 subLocality];
+          [v114 setSubLocality:subLocality];
 
-          v122 = [v113 subAdministrativeArea];
-          [v114 setSubAdministrativeArea:v122];
+          subAdministrativeArea = [v113 subAdministrativeArea];
+          [v114 setSubAdministrativeArea:subAdministrativeArea];
 
           v123 = [CNLabeledValue alloc];
-          v124 = [v113 label];
-          v125 = [v123 initWithLabel:v124 value:v114];
+          label2 = [v113 label];
+          v125 = [v123 initWithLabel:label2 value:v114];
 
           [v107 addObject:v125];
         }
 
-        v110 = [v108 countByEnumeratingWithState:&v169 objects:v179 count:16];
+        v110 = [addresses3 countByEnumeratingWithState:&v169 objects:v179 count:16];
       }
 
       while (v110);
@@ -1979,24 +1979,24 @@ LABEL_55:
     v5 = v159;
     [v159 setPostalAddresses:v107];
 
-    self = v160;
+    self = selfCopy;
   }
 
-  v126 = [(ABSPBContact *)self urls];
-  v127 = [v126 count];
+  urls = [(ABSPBContact *)self urls];
+  v127 = [urls count];
 
   if (v127)
   {
     v128 = [NSMutableArray alloc];
-    v129 = [(ABSPBContact *)self urls];
-    v130 = [v128 initWithCapacity:{objc_msgSend(v129, "count")}];
+    urls2 = [(ABSPBContact *)self urls];
+    v130 = [v128 initWithCapacity:{objc_msgSend(urls2, "count")}];
 
     v167 = 0u;
     v168 = 0u;
     v165 = 0u;
     v166 = 0u;
-    v131 = [(ABSPBContact *)self urls];
-    v132 = [v131 countByEnumeratingWithState:&v165 objects:v178 count:16];
+    urls3 = [(ABSPBContact *)self urls];
+    v132 = [urls3 countByEnumeratingWithState:&v165 objects:v178 count:16];
     if (v132)
     {
       v133 = v132;
@@ -2007,43 +2007,43 @@ LABEL_55:
         {
           if (*v166 != v134)
           {
-            objc_enumerationMutation(v131);
+            objc_enumerationMutation(urls3);
           }
 
           v136 = *(*(&v165 + 1) + 8 * k);
           v137 = [CNLabeledValue alloc];
-          v138 = [v136 label];
-          v139 = [v136 value];
-          v140 = [v137 initWithLabel:v138 value:v139];
+          label3 = [v136 label];
+          value2 = [v136 value];
+          v140 = [v137 initWithLabel:label3 value:value2];
 
           [v130 addObject:v140];
         }
 
-        v133 = [v131 countByEnumeratingWithState:&v165 objects:v178 count:16];
+        v133 = [urls3 countByEnumeratingWithState:&v165 objects:v178 count:16];
       }
 
       while (v133);
     }
 
     [v5 setUrlAddresses:v130];
-    self = v160;
+    self = selfCopy;
   }
 
-  v141 = [(ABSPBContact *)self emails];
-  v142 = [v141 count];
+  emails = [(ABSPBContact *)self emails];
+  v142 = [emails count];
 
   if (v142)
   {
     v143 = [NSMutableArray alloc];
-    v144 = [(ABSPBContact *)self emails];
-    v145 = [v143 initWithCapacity:{objc_msgSend(v144, "count")}];
+    emails2 = [(ABSPBContact *)self emails];
+    v145 = [v143 initWithCapacity:{objc_msgSend(emails2, "count")}];
 
     v163 = 0u;
     v164 = 0u;
     v161 = 0u;
     v162 = 0u;
-    v146 = [(ABSPBContact *)self emails];
-    v147 = [v146 countByEnumeratingWithState:&v161 objects:v177 count:16];
+    emails3 = [(ABSPBContact *)self emails];
+    v147 = [emails3 countByEnumeratingWithState:&v161 objects:v177 count:16];
     if (v147)
     {
       v148 = v147;
@@ -2054,19 +2054,19 @@ LABEL_55:
         {
           if (*v162 != v149)
           {
-            objc_enumerationMutation(v146);
+            objc_enumerationMutation(emails3);
           }
 
           v151 = *(*(&v161 + 1) + 8 * m);
           v152 = [CNLabeledValue alloc];
-          v153 = [v151 label];
-          v154 = [v151 value];
-          v155 = [v152 initWithLabel:v153 value:v154];
+          label4 = [v151 label];
+          value3 = [v151 value];
+          v155 = [v152 initWithLabel:label4 value:value3];
 
           [v145 addObject:v155];
         }
 
-        v148 = [v146 countByEnumeratingWithState:&v161 objects:v177 count:16];
+        v148 = [emails3 countByEnumeratingWithState:&v161 objects:v177 count:16];
       }
 
       while (v148);
@@ -2080,269 +2080,269 @@ LABEL_55:
   return v5;
 }
 
-+ (id)toPBContact:(id)a3
++ (id)toPBContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_alloc_init(ABSPBContact);
-  v5 = [v3 identifier];
+  identifier = [contactCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [v3 identifier];
-    [(ABSPBContact *)v4 setIdentifier:v6];
+    identifier2 = [contactCopy identifier];
+    [(ABSPBContact *)v4 setIdentifier:identifier2];
   }
 
-  v7 = [v3 namePrefix];
+  namePrefix = [contactCopy namePrefix];
 
-  if (v7)
+  if (namePrefix)
   {
-    v8 = [v3 namePrefix];
-    [(ABSPBContact *)v4 setNamePrefix:v8];
+    namePrefix2 = [contactCopy namePrefix];
+    [(ABSPBContact *)v4 setNamePrefix:namePrefix2];
   }
 
-  v9 = [v3 givenName];
+  givenName = [contactCopy givenName];
 
-  if (v9)
+  if (givenName)
   {
-    v10 = [v3 givenName];
-    [(ABSPBContact *)v4 setGivenName:v10];
+    givenName2 = [contactCopy givenName];
+    [(ABSPBContact *)v4 setGivenName:givenName2];
   }
 
-  v11 = [v3 middleName];
+  middleName = [contactCopy middleName];
 
-  if (v11)
+  if (middleName)
   {
-    v12 = [v3 middleName];
-    [(ABSPBContact *)v4 setMiddleName:v12];
+    middleName2 = [contactCopy middleName];
+    [(ABSPBContact *)v4 setMiddleName:middleName2];
   }
 
-  v13 = [v3 familyName];
+  familyName = [contactCopy familyName];
 
-  if (v13)
+  if (familyName)
   {
-    v14 = [v3 familyName];
-    [(ABSPBContact *)v4 setFamilyName:v14];
+    familyName2 = [contactCopy familyName];
+    [(ABSPBContact *)v4 setFamilyName:familyName2];
   }
 
-  v15 = [v3 previousFamilyName];
+  previousFamilyName = [contactCopy previousFamilyName];
 
-  if (v15)
+  if (previousFamilyName)
   {
-    v16 = [v3 previousFamilyName];
-    [(ABSPBContact *)v4 setPreviousFamilyName:v16];
+    previousFamilyName2 = [contactCopy previousFamilyName];
+    [(ABSPBContact *)v4 setPreviousFamilyName:previousFamilyName2];
   }
 
-  v17 = [v3 nameSuffix];
+  nameSuffix = [contactCopy nameSuffix];
 
-  if (v17)
+  if (nameSuffix)
   {
-    v18 = [v3 nameSuffix];
-    [(ABSPBContact *)v4 setNameSuffix:v18];
+    nameSuffix2 = [contactCopy nameSuffix];
+    [(ABSPBContact *)v4 setNameSuffix:nameSuffix2];
   }
 
-  v19 = [v3 nickname];
+  nickname = [contactCopy nickname];
 
-  if (v19)
+  if (nickname)
   {
-    v20 = [v3 nickname];
-    [(ABSPBContact *)v4 setNickname:v20];
+    nickname2 = [contactCopy nickname];
+    [(ABSPBContact *)v4 setNickname:nickname2];
   }
 
-  v21 = [v3 organizationName];
+  organizationName = [contactCopy organizationName];
 
-  if (v21)
+  if (organizationName)
   {
-    v22 = [v3 organizationName];
-    [(ABSPBContact *)v4 setOrganizationName:v22];
+    organizationName2 = [contactCopy organizationName];
+    [(ABSPBContact *)v4 setOrganizationName:organizationName2];
   }
 
-  v23 = [v3 departmentName];
+  departmentName = [contactCopy departmentName];
 
-  if (v23)
+  if (departmentName)
   {
-    v24 = [v3 departmentName];
-    [(ABSPBContact *)v4 setDepartmentName:v24];
+    departmentName2 = [contactCopy departmentName];
+    [(ABSPBContact *)v4 setDepartmentName:departmentName2];
   }
 
-  v25 = [v3 jobTitle];
+  jobTitle = [contactCopy jobTitle];
 
-  if (v25)
+  if (jobTitle)
   {
-    v26 = [v3 jobTitle];
-    [(ABSPBContact *)v4 setJobTitle:v26];
+    jobTitle2 = [contactCopy jobTitle];
+    [(ABSPBContact *)v4 setJobTitle:jobTitle2];
   }
 
-  v27 = [v3 note];
+  note = [contactCopy note];
 
-  if (v27)
+  if (note)
   {
-    v28 = [v3 note];
-    [(ABSPBContact *)v4 setNote:v28];
+    note2 = [contactCopy note];
+    [(ABSPBContact *)v4 setNote:note2];
   }
 
-  v29 = [v3 birthday];
+  birthday = [contactCopy birthday];
 
-  if (v29)
+  if (birthday)
   {
     v30 = objc_alloc_init(ABSPBDate);
     [(ABSPBDate *)v30 setCalendar:1];
-    v31 = [v3 birthday];
-    -[ABSPBDate setYear:](v30, "setYear:", [v31 year]);
+    birthday2 = [contactCopy birthday];
+    -[ABSPBDate setYear:](v30, "setYear:", [birthday2 year]);
 
-    v32 = [v3 birthday];
-    -[ABSPBDate setMonth:](v30, "setMonth:", [v32 month]);
+    birthday3 = [contactCopy birthday];
+    -[ABSPBDate setMonth:](v30, "setMonth:", [birthday3 month]);
 
-    v33 = [v3 birthday];
-    -[ABSPBDate setDay:](v30, "setDay:", [v33 day]);
+    birthday4 = [contactCopy birthday];
+    -[ABSPBDate setDay:](v30, "setDay:", [birthday4 day]);
 
     [(ABSPBContact *)v4 setBirthday:v30];
   }
 
-  v34 = [v3 nonGregorianBirthday];
+  nonGregorianBirthday = [contactCopy nonGregorianBirthday];
 
-  if (v34)
+  if (nonGregorianBirthday)
   {
     v35 = objc_alloc_init(ABSPBDate);
-    v36 = [v3 nonGregorianBirthday];
-    v37 = [v36 calendar];
-    v38 = [v37 calendarIdentifier];
-    [(ABSPBDate *)v35 setCalendar:sub_100016CEC(v38)];
+    nonGregorianBirthday2 = [contactCopy nonGregorianBirthday];
+    calendar = [nonGregorianBirthday2 calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    [(ABSPBDate *)v35 setCalendar:sub_100016CEC(calendarIdentifier)];
 
-    v39 = [v3 nonGregorianBirthday];
-    -[ABSPBDate setEra:](v35, "setEra:", [v39 era]);
+    nonGregorianBirthday3 = [contactCopy nonGregorianBirthday];
+    -[ABSPBDate setEra:](v35, "setEra:", [nonGregorianBirthday3 era]);
 
-    v40 = [v3 nonGregorianBirthday];
-    -[ABSPBDate setYear:](v35, "setYear:", [v40 year]);
+    nonGregorianBirthday4 = [contactCopy nonGregorianBirthday];
+    -[ABSPBDate setYear:](v35, "setYear:", [nonGregorianBirthday4 year]);
 
-    v41 = [v3 nonGregorianBirthday];
-    -[ABSPBDate setMonth:](v35, "setMonth:", [v41 month]);
+    nonGregorianBirthday5 = [contactCopy nonGregorianBirthday];
+    -[ABSPBDate setMonth:](v35, "setMonth:", [nonGregorianBirthday5 month]);
 
-    v42 = [v3 nonGregorianBirthday];
-    -[ABSPBDate setDay:](v35, "setDay:", [v42 day]);
+    nonGregorianBirthday6 = [contactCopy nonGregorianBirthday];
+    -[ABSPBDate setDay:](v35, "setDay:", [nonGregorianBirthday6 day]);
 
-    v43 = [v3 nonGregorianBirthday];
-    -[ABSPBDate setIsLeapMonth:](v35, "setIsLeapMonth:", [v43 isLeapMonth]);
+    nonGregorianBirthday7 = [contactCopy nonGregorianBirthday];
+    -[ABSPBDate setIsLeapMonth:](v35, "setIsLeapMonth:", [nonGregorianBirthday7 isLeapMonth]);
 
     [(ABSPBContact *)v4 setNonGregorianBirthday:v35];
   }
 
-  v44 = [v3 phoneticOrganizationName];
+  phoneticOrganizationName = [contactCopy phoneticOrganizationName];
 
-  if (v44)
+  if (phoneticOrganizationName)
   {
-    v45 = [v3 phoneticOrganizationName];
-    [(ABSPBContact *)v4 setPhoneticOrganizationName:v45];
+    phoneticOrganizationName2 = [contactCopy phoneticOrganizationName];
+    [(ABSPBContact *)v4 setPhoneticOrganizationName:phoneticOrganizationName2];
   }
 
-  v46 = [v3 phoneticFamilyName];
+  phoneticFamilyName = [contactCopy phoneticFamilyName];
 
-  if (v46)
+  if (phoneticFamilyName)
   {
-    v47 = [v3 phoneticFamilyName];
-    [(ABSPBContact *)v4 setPhoneticFamilyName:v47];
+    phoneticFamilyName2 = [contactCopy phoneticFamilyName];
+    [(ABSPBContact *)v4 setPhoneticFamilyName:phoneticFamilyName2];
   }
 
-  v48 = [v3 phoneticGivenName];
+  phoneticGivenName = [contactCopy phoneticGivenName];
 
-  if (v48)
+  if (phoneticGivenName)
   {
-    v49 = [v3 phoneticGivenName];
-    [(ABSPBContact *)v4 setPhoneticGivenName:v49];
+    phoneticGivenName2 = [contactCopy phoneticGivenName];
+    [(ABSPBContact *)v4 setPhoneticGivenName:phoneticGivenName2];
   }
 
-  v50 = [v3 phoneticMiddleName];
+  phoneticMiddleName = [contactCopy phoneticMiddleName];
 
-  if (v50)
+  if (phoneticMiddleName)
   {
-    v51 = [v3 phoneticMiddleName];
-    [(ABSPBContact *)v4 setPhoneticMiddleName:v51];
+    phoneticMiddleName2 = [contactCopy phoneticMiddleName];
+    [(ABSPBContact *)v4 setPhoneticMiddleName:phoneticMiddleName2];
   }
 
-  v52 = [v3 pronunciationGivenName];
+  pronunciationGivenName = [contactCopy pronunciationGivenName];
 
-  if (v52)
+  if (pronunciationGivenName)
   {
-    v53 = [v3 pronunciationGivenName];
-    [(ABSPBContact *)v4 setPronunciationGivenName:v53];
+    pronunciationGivenName2 = [contactCopy pronunciationGivenName];
+    [(ABSPBContact *)v4 setPronunciationGivenName:pronunciationGivenName2];
   }
 
-  v54 = [v3 pronunciationFamilyName];
+  pronunciationFamilyName = [contactCopy pronunciationFamilyName];
 
-  if (v54)
+  if (pronunciationFamilyName)
   {
-    v55 = [v3 pronunciationFamilyName];
-    [(ABSPBContact *)v4 setPronunciationFamilyName:v55];
+    pronunciationFamilyName2 = [contactCopy pronunciationFamilyName];
+    [(ABSPBContact *)v4 setPronunciationFamilyName:pronunciationFamilyName2];
   }
 
-  v56 = [v3 phonemeData];
+  phonemeData = [contactCopy phonemeData];
 
-  if (v56)
+  if (phonemeData)
   {
-    v57 = [v3 phonemeData];
-    [(ABSPBContact *)v4 setPhonemeData:v57];
+    phonemeData2 = [contactCopy phonemeData];
+    [(ABSPBContact *)v4 setPhonemeData:phonemeData2];
   }
 
-  v58 = [v3 preferredChannel];
+  preferredChannel = [contactCopy preferredChannel];
 
-  if (v58)
+  if (preferredChannel)
   {
-    v59 = [v3 preferredChannel];
-    [(ABSPBContact *)v4 setPreferredChannel:v59];
+    preferredChannel2 = [contactCopy preferredChannel];
+    [(ABSPBContact *)v4 setPreferredChannel:preferredChannel2];
   }
 
-  v60 = [v3 callAlert];
+  callAlert = [contactCopy callAlert];
 
-  if (v60)
+  if (callAlert)
   {
     v61 = objc_alloc_init(ABSPBAlert);
-    v62 = [v3 callAlert];
-    v63 = [v62 sound];
-    [(ABSPBAlert *)v61 setSound:v63];
+    callAlert2 = [contactCopy callAlert];
+    sound = [callAlert2 sound];
+    [(ABSPBAlert *)v61 setSound:sound];
 
-    v64 = [v3 callAlert];
-    v65 = [v64 vibration];
-    [(ABSPBAlert *)v61 setVibration:v65];
+    callAlert3 = [contactCopy callAlert];
+    vibration = [callAlert3 vibration];
+    [(ABSPBAlert *)v61 setVibration:vibration];
 
-    v66 = [v3 callAlert];
-    -[ABSPBAlert setIgnoreMute:](v61, "setIgnoreMute:", [v66 ignoreMute]);
+    callAlert4 = [contactCopy callAlert];
+    -[ABSPBAlert setIgnoreMute:](v61, "setIgnoreMute:", [callAlert4 ignoreMute]);
 
     [(ABSPBContact *)v4 setCallAlert:v61];
   }
 
-  v67 = [v3 textAlert];
+  textAlert = [contactCopy textAlert];
 
-  if (v67)
+  if (textAlert)
   {
     v68 = objc_alloc_init(ABSPBAlert);
-    v69 = [v3 textAlert];
-    v70 = [v69 sound];
-    [(ABSPBAlert *)v68 setSound:v70];
+    textAlert2 = [contactCopy textAlert];
+    sound2 = [textAlert2 sound];
+    [(ABSPBAlert *)v68 setSound:sound2];
 
-    v71 = [v3 textAlert];
-    v72 = [v71 vibration];
-    [(ABSPBAlert *)v68 setVibration:v72];
+    textAlert3 = [contactCopy textAlert];
+    vibration2 = [textAlert3 vibration];
+    [(ABSPBAlert *)v68 setVibration:vibration2];
 
-    v73 = [v3 textAlert];
-    -[ABSPBAlert setIgnoreMute:](v68, "setIgnoreMute:", [v73 ignoreMute]);
+    textAlert4 = [contactCopy textAlert];
+    -[ABSPBAlert setIgnoreMute:](v68, "setIgnoreMute:", [textAlert4 ignoreMute]);
 
     [(ABSPBContact *)v4 setTextAlert:v68];
   }
 
-  v74 = [v3 phoneNumbers];
+  phoneNumbers = [contactCopy phoneNumbers];
 
-  v146 = v3;
-  if (v74)
+  v146 = contactCopy;
+  if (phoneNumbers)
   {
     v75 = [NSMutableArray alloc];
-    v76 = [v3 phoneNumbers];
-    v77 = [v75 initWithCapacity:{objc_msgSend(v76, "count")}];
+    phoneNumbers2 = [contactCopy phoneNumbers];
+    v77 = [v75 initWithCapacity:{objc_msgSend(phoneNumbers2, "count")}];
 
     v161 = 0u;
     v162 = 0u;
     v159 = 0u;
     v160 = 0u;
-    v78 = [v3 phoneNumbers];
-    v79 = [v78 countByEnumeratingWithState:&v159 objects:v166 count:16];
+    phoneNumbers3 = [contactCopy phoneNumbers];
+    v79 = [phoneNumbers3 countByEnumeratingWithState:&v159 objects:v166 count:16];
     if (v79)
     {
       v80 = v79;
@@ -2353,22 +2353,22 @@ LABEL_55:
         {
           if (*v160 != v81)
           {
-            objc_enumerationMutation(v78);
+            objc_enumerationMutation(phoneNumbers3);
           }
 
           v83 = *(*(&v159 + 1) + 8 * i);
           v84 = objc_alloc_init(ABSPBLabeledString);
-          v85 = [v83 label];
-          [(ABSPBLabeledString *)v84 setLabel:v85];
+          label = [v83 label];
+          [(ABSPBLabeledString *)v84 setLabel:label];
 
-          v86 = [v83 value];
-          v87 = [v86 stringValue];
-          [(ABSPBLabeledString *)v84 setValue:v87];
+          value = [v83 value];
+          stringValue = [value stringValue];
+          [(ABSPBLabeledString *)v84 setValue:stringValue];
 
           [v77 addObject:v84];
         }
 
-        v80 = [v78 countByEnumeratingWithState:&v159 objects:v166 count:16];
+        v80 = [phoneNumbers3 countByEnumeratingWithState:&v159 objects:v166 count:16];
       }
 
       while (v80);
@@ -2377,22 +2377,22 @@ LABEL_55:
     [(ABSPBContact *)v4 setPhoneNumbers:v77];
   }
 
-  v88 = [v3 postalAddresses];
-  v89 = [v88 count];
+  postalAddresses = [contactCopy postalAddresses];
+  v89 = [postalAddresses count];
 
   if (v89)
   {
     v145 = v4;
     v90 = [NSMutableArray alloc];
-    v91 = [v3 postalAddresses];
-    v92 = [v90 initWithCapacity:{objc_msgSend(v91, "count")}];
+    postalAddresses2 = [contactCopy postalAddresses];
+    v92 = [v90 initWithCapacity:{objc_msgSend(postalAddresses2, "count")}];
 
     v157 = 0u;
     v158 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v93 = [v3 postalAddresses];
-    v94 = [v93 countByEnumeratingWithState:&v155 objects:v165 count:16];
+    postalAddresses3 = [contactCopy postalAddresses];
+    v94 = [postalAddresses3 countByEnumeratingWithState:&v155 objects:v165 count:16];
     if (v94)
     {
       v95 = v94;
@@ -2403,47 +2403,47 @@ LABEL_55:
         {
           if (*v156 != v96)
           {
-            objc_enumerationMutation(v93);
+            objc_enumerationMutation(postalAddresses3);
           }
 
           v98 = *(*(&v155 + 1) + 8 * j);
           v99 = objc_alloc_init(ABSPBPostalAddress);
-          v100 = [v98 value];
-          v101 = [v100 street];
-          [(ABSPBPostalAddress *)v99 setStreet:v101];
+          value2 = [v98 value];
+          street = [value2 street];
+          [(ABSPBPostalAddress *)v99 setStreet:street];
 
-          v102 = [v98 value];
-          v103 = [v102 city];
-          [(ABSPBPostalAddress *)v99 setCity:v103];
+          value3 = [v98 value];
+          city = [value3 city];
+          [(ABSPBPostalAddress *)v99 setCity:city];
 
-          v104 = [v98 value];
-          v105 = [v104 state];
-          [(ABSPBPostalAddress *)v99 setState:v105];
+          value4 = [v98 value];
+          state = [value4 state];
+          [(ABSPBPostalAddress *)v99 setState:state];
 
-          v106 = [v98 value];
-          v107 = [v106 postalCode];
-          [(ABSPBPostalAddress *)v99 setPostalCode:v107];
+          value5 = [v98 value];
+          postalCode = [value5 postalCode];
+          [(ABSPBPostalAddress *)v99 setPostalCode:postalCode];
 
-          v108 = [v98 value];
-          v109 = [v108 country];
-          [(ABSPBPostalAddress *)v99 setCountry:v109];
+          value6 = [v98 value];
+          country = [value6 country];
+          [(ABSPBPostalAddress *)v99 setCountry:country];
 
-          v110 = [v98 value];
-          v111 = [v110 ISOCountryCode];
-          [(ABSPBPostalAddress *)v99 setISOCountryCode:v111];
+          value7 = [v98 value];
+          iSOCountryCode = [value7 ISOCountryCode];
+          [(ABSPBPostalAddress *)v99 setISOCountryCode:iSOCountryCode];
 
-          v112 = [v98 value];
-          v113 = [v112 subLocality];
-          [(ABSPBPostalAddress *)v99 setSubLocality:v113];
+          value8 = [v98 value];
+          subLocality = [value8 subLocality];
+          [(ABSPBPostalAddress *)v99 setSubLocality:subLocality];
 
-          v114 = [v98 value];
-          v115 = [v114 subAdministrativeArea];
-          [(ABSPBPostalAddress *)v99 setSubAdministrativeArea:v115];
+          value9 = [v98 value];
+          subAdministrativeArea = [value9 subAdministrativeArea];
+          [(ABSPBPostalAddress *)v99 setSubAdministrativeArea:subAdministrativeArea];
 
           [v92 addObject:v99];
         }
 
-        v95 = [v93 countByEnumeratingWithState:&v155 objects:v165 count:16];
+        v95 = [postalAddresses3 countByEnumeratingWithState:&v155 objects:v165 count:16];
       }
 
       while (v95);
@@ -2452,24 +2452,24 @@ LABEL_55:
     v4 = v145;
     [(ABSPBContact *)v145 setAddresses:v92];
 
-    v3 = v146;
+    contactCopy = v146;
   }
 
-  v116 = [v3 urlAddresses];
-  v117 = [v116 count];
+  urlAddresses = [contactCopy urlAddresses];
+  v117 = [urlAddresses count];
 
   if (v117)
   {
     v118 = [NSMutableArray alloc];
-    v119 = [v3 urlAddresses];
-    v120 = [v118 initWithCapacity:{objc_msgSend(v119, "count")}];
+    urlAddresses2 = [contactCopy urlAddresses];
+    v120 = [v118 initWithCapacity:{objc_msgSend(urlAddresses2, "count")}];
 
     v153 = 0u;
     v154 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v121 = [v3 urlAddresses];
-    v122 = [v121 countByEnumeratingWithState:&v151 objects:v164 count:16];
+    urlAddresses3 = [contactCopy urlAddresses];
+    v122 = [urlAddresses3 countByEnumeratingWithState:&v151 objects:v164 count:16];
     if (v122)
     {
       v123 = v122;
@@ -2480,44 +2480,44 @@ LABEL_55:
         {
           if (*v152 != v124)
           {
-            objc_enumerationMutation(v121);
+            objc_enumerationMutation(urlAddresses3);
           }
 
           v126 = *(*(&v151 + 1) + 8 * k);
           v127 = objc_alloc_init(ABSPBLabeledString);
-          v128 = [v126 label];
-          [(ABSPBLabeledString *)v127 setLabel:v128];
+          label2 = [v126 label];
+          [(ABSPBLabeledString *)v127 setLabel:label2];
 
-          v129 = [v126 value];
-          [(ABSPBLabeledString *)v127 setValue:v129];
+          value10 = [v126 value];
+          [(ABSPBLabeledString *)v127 setValue:value10];
 
           [v120 addObject:v127];
         }
 
-        v123 = [v121 countByEnumeratingWithState:&v151 objects:v164 count:16];
+        v123 = [urlAddresses3 countByEnumeratingWithState:&v151 objects:v164 count:16];
       }
 
       while (v123);
     }
 
     [(ABSPBContact *)v4 setUrls:v120];
-    v3 = v146;
+    contactCopy = v146;
   }
 
-  v130 = [v3 emailAddresses];
+  emailAddresses = [contactCopy emailAddresses];
 
-  if (v130)
+  if (emailAddresses)
   {
     v131 = [NSMutableArray alloc];
-    v132 = [v3 emailAddresses];
-    v133 = [v131 initWithCapacity:{objc_msgSend(v132, "count")}];
+    emailAddresses2 = [contactCopy emailAddresses];
+    v133 = [v131 initWithCapacity:{objc_msgSend(emailAddresses2, "count")}];
 
     v149 = 0u;
     v150 = 0u;
     v147 = 0u;
     v148 = 0u;
-    v134 = [v3 emailAddresses];
-    v135 = [v134 countByEnumeratingWithState:&v147 objects:v163 count:16];
+    emailAddresses3 = [contactCopy emailAddresses];
+    v135 = [emailAddresses3 countByEnumeratingWithState:&v147 objects:v163 count:16];
     if (v135)
     {
       v136 = v135;
@@ -2528,28 +2528,28 @@ LABEL_55:
         {
           if (*v148 != v137)
           {
-            objc_enumerationMutation(v134);
+            objc_enumerationMutation(emailAddresses3);
           }
 
           v139 = *(*(&v147 + 1) + 8 * m);
           v140 = objc_alloc_init(ABSPBLabeledString);
-          v141 = [v139 label];
-          [(ABSPBLabeledString *)v140 setLabel:v141];
+          label3 = [v139 label];
+          [(ABSPBLabeledString *)v140 setLabel:label3];
 
-          v142 = [v139 value];
-          [(ABSPBLabeledString *)v140 setValue:v142];
+          value11 = [v139 value];
+          [(ABSPBLabeledString *)v140 setValue:value11];
 
           [v133 addObject:v140];
         }
 
-        v136 = [v134 countByEnumeratingWithState:&v147 objects:v163 count:16];
+        v136 = [emailAddresses3 countByEnumeratingWithState:&v147 objects:v163 count:16];
       }
 
       while (v136);
     }
 
     [(ABSPBContact *)v4 setEmails:v133];
-    v3 = v146;
+    contactCopy = v146;
   }
 
   v143 = v4;

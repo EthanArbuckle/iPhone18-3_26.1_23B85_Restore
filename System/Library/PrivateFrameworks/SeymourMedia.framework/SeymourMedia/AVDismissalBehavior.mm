@@ -1,12 +1,12 @@
 @interface AVDismissalBehavior
 - (_TtC12SeymourMedia19AVDismissalBehavior)init;
-- (void)seymourBehaviorContext:(id)a3 didRecieveDoneButtonTapWithDismissalBlock:(id)a4;
-- (void)willMoveToContext:(id)a3;
+- (void)seymourBehaviorContext:(id)context didRecieveDoneButtonTapWithDismissalBlock:(id)block;
+- (void)willMoveToContext:(id)context;
 @end
 
 @implementation AVDismissalBehavior
 
-- (void)willMoveToContext:(id)a3
+- (void)willMoveToContext:(id)context
 {
   objc_opt_self();
   swift_dynamicCastObjCClass();
@@ -14,9 +14,9 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (void)seymourBehaviorContext:(id)a3 didRecieveDoneButtonTapWithDismissalBlock:(id)a4
+- (void)seymourBehaviorContext:(id)context didRecieveDoneButtonTapWithDismissalBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = self + OBJC_IVAR____TtC12SeymourMedia19AVDismissalBehavior_delegate;
@@ -29,7 +29,7 @@
     *(v10 + 16) = sub_20C561EC4;
     *(v10 + 24) = v6;
     v11 = *(v8 + 8);
-    v12 = self;
+    selfCopy = self;
 
     v11(sub_20C561ED4, v10, ObjectType, v8);
 

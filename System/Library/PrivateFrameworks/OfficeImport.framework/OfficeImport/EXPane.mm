@@ -1,8 +1,8 @@
 @interface EXPane
 + (id)activePaneTypeEnumMap;
-+ (id)edPaneFromXMLPaneElement:(_xmlNode *)a3;
++ (id)edPaneFromXMLPaneElement:(_xmlNode *)element;
 + (id)paneStateEnumMap;
-+ (int)edActivePaneEnumFromString:(id)a3;
++ (int)edActivePaneEnumFromString:(id)string;
 + (void)activePaneTypeEnumMap;
 + (void)paneStateEnumMap;
 @end
@@ -55,11 +55,11 @@ void __26__EXPane_paneStateEnumMap__block_invoke()
   +[EXPane paneStateEnumMap]::sPaneStateEnumMap = v0;
 }
 
-+ (id)edPaneFromXMLPaneElement:(_xmlNode *)a3
++ (id)edPaneFromXMLPaneElement:(_xmlNode *)element
 {
   v5 = +[EDPane pane];
   v20 = 0;
-  v6 = CXOptionalStringAttribute(a3, CXNoNamespace, "topLeftCell", &v20);
+  v6 = CXOptionalStringAttribute(element, CXNoNamespace, "topLeftCell", &v20);
   v7 = v20;
   if (v6)
   {
@@ -68,23 +68,23 @@ void __26__EXPane_paneStateEnumMap__block_invoke()
   }
 
   v19 = 0.0;
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "xSplit", &v19))
+  if (CXOptionalDoubleAttribute(element, CXNoNamespace, "xSplit", &v19))
   {
     [v5 setXSplitPosition:v19];
   }
 
   v18 = 0.0;
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "ySplit", &v18))
+  if (CXOptionalDoubleAttribute(element, CXNoNamespace, "ySplit", &v18))
   {
     [v5 setYSplitPosition:v18];
   }
 
   v17 = 0;
-  v9 = CXOptionalStringAttribute(a3, CXNoNamespace, "activePane", &v17);
+  v9 = CXOptionalStringAttribute(element, CXNoNamespace, "activePane", &v17);
   v10 = v17;
   if (v9)
   {
-    v11 = [a1 edActivePaneEnumFromString:v10];
+    v11 = [self edActivePaneEnumFromString:v10];
   }
 
   else
@@ -94,12 +94,12 @@ void __26__EXPane_paneStateEnumMap__block_invoke()
 
   [v5 setActivePane:v11];
   v16 = 0;
-  v12 = CXOptionalStringAttribute(a3, CXNoNamespace, "state", &v16);
+  v12 = CXOptionalStringAttribute(element, CXNoNamespace, "state", &v16);
   v13 = v16;
   if (v12)
   {
-    v14 = [a1 paneStateEnumMap];
-    [v5 setPaneState:{objc_msgSend(v14, "valueForString:", v13)}];
+    paneStateEnumMap = [self paneStateEnumMap];
+    [v5 setPaneState:{objc_msgSend(paneStateEnumMap, "valueForString:", v13)}];
   }
 
   else
@@ -110,13 +110,13 @@ void __26__EXPane_paneStateEnumMap__block_invoke()
   return v5;
 }
 
-+ (int)edActivePaneEnumFromString:(id)a3
++ (int)edActivePaneEnumFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    if (![v3 caseInsensitiveCompare:@"bottomRight"])
+    if (![stringCopy caseInsensitiveCompare:@"bottomRight"])
     {
       v5 = 0;
       goto LABEL_10;

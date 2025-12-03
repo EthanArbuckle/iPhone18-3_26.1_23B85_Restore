@@ -2,34 +2,34 @@
 + (UIEdgeInsets)contentEdgeInsets;
 + (UIFont)buttonTitleFont;
 + (id)button;
-+ (id)buttonTitleWithChildAction:(id)a3;
-+ (id)buttonTitleWithChildItem:(id)a3;
++ (id)buttonTitleWithChildAction:(id)action;
++ (id)buttonTitleWithChildItem:(id)item;
 - (ChildItemButtonDelegate)delegate;
 - (void)_buttonAction;
 - (void)_setAttributes;
-- (void)setChildItem:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setChildItem:(id)item;
+- (void)setDelegate:(id)delegate;
 - (void)updateTheme;
 @end
 
 @implementation ChildItemButton
 
-+ (id)buttonTitleWithChildAction:(id)a3
++ (id)buttonTitleWithChildAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 childActionType];
+  actionCopy = action;
+  childActionType = [actionCopy childActionType];
   v5 = 0;
-  if (v4 > 4)
+  if (childActionType > 4)
   {
-    if (v4 > 6)
+    if (childActionType > 6)
     {
-      if (v4 == 7)
+      if (childActionType == 7)
       {
-        v14 = [v3 guideLocation];
-        v15 = [v14 numberOfGuides];
+        guideLocation = [actionCopy guideLocation];
+        numberOfGuides = [guideLocation numberOfGuides];
         v16 = +[NSBundle mainBundle];
         v17 = v16;
-        if (v15 == 1)
+        if (numberOfGuides == 1)
         {
           v18 = @"Guide_One [Autocomplete]";
         }
@@ -39,75 +39,75 @@
           v18 = @"Guide_Many [Autocomplete]";
         }
 
-        v9 = [v16 localizedStringForKey:v18 value:@"localized string not found" table:0];
+        childActionSearch = [v16 localizedStringForKey:v18 value:@"localized string not found" table:0];
 
-        v19 = [v3 guideLocation];
-        v5 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v9, [v19 numberOfGuides]);
+        guideLocation2 = [actionCopy guideLocation];
+        v5 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", childActionSearch, [guideLocation2 numberOfGuides]);
 
         goto LABEL_20;
       }
 
-      if (v4 != 8)
+      if (childActionType != 8)
       {
         goto LABEL_21;
       }
 
       v8 = +[NSBundle mainBundle];
-      v9 = v8;
+      childActionSearch = v8;
       v10 = @"[Autocomplete] Download Offline";
       v11 = @"Offline";
       goto LABEL_18;
     }
 
-    if (v4 == 5)
+    if (childActionType == 5)
     {
       v8 = +[NSBundle mainBundle];
-      v9 = v8;
+      childActionSearch = v8;
       v10 = @"Call [Autocomplete]";
     }
 
     else
     {
       v8 = +[NSBundle mainBundle];
-      v9 = v8;
+      childActionSearch = v8;
       v10 = @"Website [Autocomplete]";
     }
   }
 
-  else if (v4 > 2)
+  else if (childActionType > 2)
   {
-    if (v4 == 3)
+    if (childActionType == 3)
     {
-      v9 = [v3 childActionSearch];
-      v12 = [v9 displayString];
+      childActionSearch = [actionCopy childActionSearch];
+      displayString = [childActionSearch displayString];
       goto LABEL_19;
     }
 
     v8 = +[NSBundle mainBundle];
-    v9 = v8;
+    childActionSearch = v8;
     v10 = @"Look Around [Autocomplete]";
   }
 
-  else if (v4 == 1)
+  else if (childActionType == 1)
   {
     v8 = +[NSBundle mainBundle];
-    v9 = v8;
+    childActionSearch = v8;
     v10 = @"Directions [Autocomplete]";
   }
 
   else
   {
-    if (v4 != 2)
+    if (childActionType != 2)
     {
       goto LABEL_21;
     }
 
     v6 = +[VKPlatform sharedPlatform];
-    v7 = [v6 supportsARMode];
+    supportsARMode = [v6 supportsARMode];
 
     v8 = +[NSBundle mainBundle];
-    v9 = v8;
-    if (v7)
+    childActionSearch = v8;
+    if (supportsARMode)
     {
       v10 = @"Flyover [Autocomplete]";
     }
@@ -120,9 +120,9 @@
 
   v11 = 0;
 LABEL_18:
-  v12 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:v11];
+  displayString = [v8 localizedStringForKey:v10 value:@"localized string not found" table:v11];
 LABEL_19:
-  v5 = v12;
+  v5 = displayString;
 LABEL_20:
 
 LABEL_21:
@@ -130,22 +130,22 @@ LABEL_21:
   return v5;
 }
 
-+ (id)buttonTitleWithChildItem:(id)a3
++ (id)buttonTitleWithChildItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 childItemType];
-  if (v5 == 3)
+  itemCopy = item;
+  childItemType = [itemCopy childItemType];
+  if (childItemType == 3)
   {
-    v8 = [v4 publisherResult];
-    v9 = [v8 publisher];
-    v10 = [v9 totalCollectionCount];
+    publisherResult = [itemCopy publisherResult];
+    publisher = [publisherResult publisher];
+    totalCollectionCount = [publisher totalCollectionCount];
 
-    if (!v10)
+    if (!totalCollectionCount)
     {
       goto LABEL_13;
     }
 
-    if (v10 == 1)
+    if (totalCollectionCount == 1)
     {
       v11 = @"Guide_One [Autocomplete]";
     }
@@ -156,33 +156,33 @@ LABEL_21:
     }
 
     v12 = +[NSBundle mainBundle];
-    v6 = [v12 localizedStringForKey:v11 value:@"localized string not found" table:0];
+    childItemAction = [v12 localizedStringForKey:v11 value:@"localized string not found" table:0];
 
-    v7 = [NSString stringWithFormat:v6, v10];
+    name = [NSString stringWithFormat:childItemAction, totalCollectionCount];
     goto LABEL_11;
   }
 
-  if (v5 == 2)
+  if (childItemType == 2)
   {
-    v6 = [v4 childItemAction];
-    v7 = [a1 buttonTitleWithChildAction:v6];
+    childItemAction = [itemCopy childItemAction];
+    name = [self buttonTitleWithChildAction:childItemAction];
     goto LABEL_11;
   }
 
-  if (v5 == 1)
+  if (childItemType == 1)
   {
-    v6 = [v4 childItemPlace];
-    v7 = [v6 name];
+    childItemAction = [itemCopy childItemPlace];
+    name = [childItemAction name];
 LABEL_11:
-    v10 = v7;
+    totalCollectionCount = name;
 
     goto LABEL_13;
   }
 
-  v10 = 0;
+  totalCollectionCount = 0;
 LABEL_13:
 
-  return v10;
+  return totalCollectionCount;
 }
 
 + (UIFont)buttonTitleFont
@@ -216,7 +216,7 @@ LABEL_13:
 
 + (id)button
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___ChildItemButton;
   v2 = objc_msgSendSuper2(&v4, "buttonWithType:", 0);
   [v2 _setAttributes];
@@ -231,9 +231,9 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -244,49 +244,49 @@ LABEL_13:
   }
 }
 
-- (void)setChildItem:(id)a3
+- (void)setChildItem:(id)item
 {
-  v5 = a3;
-  if (self->_childItem != v5)
+  itemCopy = item;
+  if (self->_childItem != itemCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_childItem, a3);
+    v7 = itemCopy;
+    objc_storeStrong(&self->_childItem, item);
     v6 = [objc_opt_class() buttonTitleWithChildItem:v7];
     [(ChildItemButton *)self setTitle:v6 forState:0];
 
-    v5 = v7;
+    itemCopy = v7;
   }
 }
 
 - (void)_buttonAction
 {
-  v4 = [(ChildItemButton *)self delegate];
-  v3 = [(ChildItemButton *)self childItem];
-  [v4 didTapChildItemButtonForChildItem:v3];
+  delegate = [(ChildItemButton *)self delegate];
+  childItem = [(ChildItemButton *)self childItem];
+  [delegate didTapChildItemButtonForChildItem:childItem];
 }
 
 - (void)updateTheme
 {
-  v4 = [(ChildItemButton *)self theme];
-  v3 = [v4 childItemButtonBackgroundColor];
-  [(ChildItemButton *)self setBackgroundColor:v3];
+  theme = [(ChildItemButton *)self theme];
+  childItemButtonBackgroundColor = [theme childItemButtonBackgroundColor];
+  [(ChildItemButton *)self setBackgroundColor:childItemButtonBackgroundColor];
 }
 
 - (void)_setAttributes
 {
   [(ChildItemButton *)self setClipsToBounds:1];
-  v3 = [(ChildItemButton *)self layer];
-  [v3 setCornerRadius:8.0];
+  layer = [(ChildItemButton *)self layer];
+  [layer setCornerRadius:8.0];
 
-  v4 = [(ChildItemButton *)self titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v4 withFontProvider:&stru_101655510];
+  titleLabel = [(ChildItemButton *)self titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_101655510];
 
-  v5 = [(ChildItemButton *)self titleLabel];
-  [v5 setLineBreakMode:4];
+  titleLabel2 = [(ChildItemButton *)self titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
-  v6 = [(ChildItemButton *)self theme];
-  v7 = [v6 keyColor];
-  [(ChildItemButton *)self setTitleColor:v7 forState:0];
+  theme = [(ChildItemButton *)self theme];
+  keyColor = [theme keyColor];
+  [(ChildItemButton *)self setTitleColor:keyColor forState:0];
 
   [objc_opt_class() contentEdgeInsets];
   [(ChildItemButton *)self setContentEdgeInsets:?];

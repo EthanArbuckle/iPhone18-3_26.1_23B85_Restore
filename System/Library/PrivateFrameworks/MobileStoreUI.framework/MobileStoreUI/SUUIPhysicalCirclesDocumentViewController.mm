@@ -1,42 +1,42 @@
 @interface SUUIPhysicalCirclesDocumentViewController
-- (SUUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)a3;
-- (id)_affiliationItemsWithCircleItemElements:(id)a3;
+- (SUUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)element;
+- (id)_affiliationItemsWithCircleItemElements:(id)elements;
 - (id)_leftFooterButtonElement;
 - (id)_profileImageElement;
 - (id)_rightFooterButtonElement;
-- (void)_footerLeftButtonAction:(id)a3;
-- (void)_footerRightButtonAction:(id)a3;
-- (void)_loadImagesWithReason:(int64_t)a3;
-- (void)_reloadFooterViewAnimated:(BOOL)a3;
+- (void)_footerLeftButtonAction:(id)action;
+- (void)_footerRightButtonAction:(id)action;
+- (void)_loadImagesWithReason:(int64_t)reason;
+- (void)_reloadFooterViewAnimated:(BOOL)animated;
 - (void)_reloadInstructionsView;
-- (void)_styleAttributedString:(id)a3 withStyle:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_styleAttributedString:(id)string withStyle:(id)style;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)onboardingCircles:(id)a3 didRemoveAffiliationItem:(id)a4;
-- (void)onboardingCircles:(id)a3 didSelectAffiliationItem:(id)a4 atIndex:(int64_t)a5;
-- (void)physicalCirclesDOMFeature:(id)a3 didRequestAnimation:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)onboardingCircles:(id)circles didRemoveAffiliationItem:(id)item;
+- (void)onboardingCircles:(id)circles didSelectAffiliationItem:(id)item atIndex:(int64_t)index;
+- (void)physicalCirclesDOMFeature:(id)feature didRequestAnimation:(id)animation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUUIPhysicalCirclesDocumentViewController
 
-- (SUUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)a3
+- (SUUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIPhysicalCirclesDocumentViewController;
   v6 = [(SUUIPhysicalCirclesDocumentViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
-    v8 = [(SUUIPhysicalCirclesTemplateViewElement *)v7->_templateElement scriptInterface];
-    [v8 setDelegate:v7];
+    objc_storeStrong(&v6->_templateElement, element);
+    scriptInterface = [(SUUIPhysicalCirclesTemplateViewElement *)v7->_templateElement scriptInterface];
+    [scriptInterface setDelegate:v7];
   }
 
   return v7;
@@ -44,22 +44,22 @@
 
 - (void)dealloc
 {
-  v3 = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
+  delegate = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer setDelegate:0];
   }
 
   [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController setDelegate:0];
-  v4 = [(SUUIOnboardingFooterView *)self->_footerView leftButton];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  leftButton = [(SUUIOnboardingFooterView *)self->_footerView leftButton];
+  [leftButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v5 = [(SUUIOnboardingFooterView *)self->_footerView rightButton];
-  [v5 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  rightButton = [(SUUIOnboardingFooterView *)self->_footerView rightButton];
+  [rightButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
-  [v6 setDelegate:0];
+  scriptInterface = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
+  [scriptInterface setDelegate:0];
 
   v7.receiver = self;
   v7.super_class = SUUIPhysicalCirclesDocumentViewController;
@@ -69,16 +69,16 @@
 - (void)loadView
 {
   v24 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement style];
-  v4 = [v3 ikBackgroundColor];
-  v5 = [v4 color];
+  style = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (!v5)
+  if (!color)
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    color = [MEMORY[0x277D75348] whiteColor];
   }
 
-  [v24 setBackgroundColor:v5];
+  [v24 setBackgroundColor:color];
   [(SUUIPhysicalCirclesDocumentViewController *)self setView:v24];
   if (!self->_circlesViewController)
   {
@@ -87,13 +87,13 @@
     self->_circlesViewController = v6;
 
     v8 = self->_circlesViewController;
-    v9 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
-    v10 = [(SUUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:v9];
+    circleItemElements = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+    v10 = [(SUUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:circleItemElements];
     [(SUUIOnboardingAffiliationCirclesViewController *)v8 setAffiliationItems:v10];
 
     v11 = self->_circlesViewController;
-    v12 = [(SUUIViewController *)self clientContext];
-    [(SUUIOnboardingAffiliationCirclesViewController *)v11 setClientContext:v12];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIOnboardingAffiliationCirclesViewController *)v11 setClientContext:clientContext];
 
     [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController setDelegate:self];
     [(SUUIPhysicalCirclesDocumentViewController *)self addChildViewController:self->_circlesViewController];
@@ -107,14 +107,14 @@
     self->_footerView = v13;
 
     v15 = self->_footerView;
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIOnboardingFooterView *)v15 setBackgroundColor:v16];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIOnboardingFooterView *)v15 setBackgroundColor:clearColor];
 
-    v17 = [(SUUIOnboardingFooterView *)self->_footerView leftButton];
-    [v17 addTarget:self action:sel__footerLeftButtonAction_ forControlEvents:64];
+    leftButton = [(SUUIOnboardingFooterView *)self->_footerView leftButton];
+    [leftButton addTarget:self action:sel__footerLeftButtonAction_ forControlEvents:64];
 
-    v18 = [(SUUIOnboardingFooterView *)self->_footerView rightButton];
-    [v18 addTarget:self action:sel__footerRightButtonAction_ forControlEvents:64];
+    rightButton = [(SUUIOnboardingFooterView *)self->_footerView rightButton];
+    [rightButton addTarget:self action:sel__footerRightButtonAction_ forControlEvents:64];
 
     [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController setFooterView:self->_footerView];
   }
@@ -126,43 +126,43 @@
     self->_progressView = v19;
 
     v21 = self->_progressView;
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIOnboardingProgressView *)v21 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(SUUIOnboardingProgressView *)v21 setBackgroundColor:clearColor2];
 
-    [(SUUIOnboardingProgressView *)self->_progressView setFillColor:v5];
+    [(SUUIOnboardingProgressView *)self->_progressView setFillColor:color];
     [(SUUIOnboardingProgressView *)self->_progressView sizeToFit];
     [(SUUIOnboardingFooterView *)self->_footerView setProgressView:self->_progressView];
   }
 
   [(SUUIPhysicalCirclesDocumentViewController *)self _reloadFooterViewAnimated:0];
   [(SUUIPhysicalCirclesDocumentViewController *)self _reloadInstructionsView];
-  v23 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
-  [v23 setAutoresizingMask:18];
+  view = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
+  [view setAutoresizingMask:18];
   [v24 bounds];
-  [v23 setFrame:?];
-  [v24 addSubview:v23];
+  [view setFrame:?];
+  [v24 addSubview:view];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIResourceLoader *)self->_resourceLoader enterForeground];
   if (!self->_resourceLoader)
   {
     [(SUUIPhysicalCirclesDocumentViewController *)self _loadImagesWithReason:0];
   }
 
-  v5 = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
+  delegate = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
     [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer setDelegate:0];
   }
 
-  v6 = [(SUUIPhysicalCirclesDocumentViewController *)self navigationController];
-  v7 = [v6 interactivePopGestureRecognizer];
+  navigationController = [(SUUIPhysicalCirclesDocumentViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
   interactivePopGestureRecognizer = self->_interactivePopGestureRecognizer;
-  self->_interactivePopGestureRecognizer = v7;
+  self->_interactivePopGestureRecognizer = interactivePopGestureRecognizer;
 
   v9 = self->_interactivePopGestureRecognizer;
   if (v9)
@@ -172,15 +172,15 @@
 
   v10.receiver = self;
   v10.super_class = SUUIPhysicalCirclesDocumentViewController;
-  [(SUUIPhysicalCirclesDocumentViewController *)&v10 viewDidAppear:v3];
+  [(SUUIPhysicalCirclesDocumentViewController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
+  disappearCopy = disappear;
+  delegate = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
     [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer setDelegate:0];
   }
@@ -190,81 +190,81 @@
 
   v7.receiver = self;
   v7.super_class = SUUIPhysicalCirclesDocumentViewController;
-  [(SUUIPhysicalCirclesDocumentViewController *)&v7 viewWillDisappear:v3];
+  [(SUUIPhysicalCirclesDocumentViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SUUIPhysicalCirclesDocumentViewController;
-  [(SUUIPhysicalCirclesDocumentViewController *)&v4 viewDidDisappear:a3];
+  [(SUUIPhysicalCirclesDocumentViewController *)&v4 viewDidDisappear:disappear];
   [(SUUIResourceLoader *)self->_resourceLoader enterBackground];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SUUIPhysicalCirclesDocumentViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SUUIPhysicalCirclesDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v5 = v4;
 
-  v6 = [(SUUIPhysicalCirclesDocumentViewController *)self bottomLayoutGuide];
-  [v6 length];
+  bottomLayoutGuide = [(SUUIPhysicalCirclesDocumentViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v8 = v7;
 
-  v9 = [(SUUIPhysicalCirclesDocumentViewController *)self view];
-  [v9 bounds];
+  view = [(SUUIPhysicalCirclesDocumentViewController *)self view];
+  [view bounds];
   v10 = CGRectGetHeight(v15) - v5 - v8;
 
-  v11 = [(SUUIPhysicalCirclesDocumentViewController *)self view];
-  [v11 bounds];
+  view2 = [(SUUIPhysicalCirclesDocumentViewController *)self view];
+  [view2 bounds];
   Width = CGRectGetWidth(v16);
 
-  v13 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
-  [v13 setFrame:{0.0, v5, Width, v10}];
+  view3 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
+  [view3 setFrame:{0.0, v5, Width, v10}];
 
   v14.receiver = self;
   v14.super_class = SUUIPhysicalCirclesDocumentViewController;
   [(SUUIPhysicalCirclesDocumentViewController *)&v14 viewDidLayoutSubviews];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a4;
+  imageCopy = image;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a3;
+  requestCopy = request;
   v9 = [v7 alloc];
-  v10 = [v8 requestIdentifier];
+  requestIdentifier = [requestCopy requestIdentifier];
 
-  v11 = [v9 initWithUnsignedLongLong:v10];
-  v12 = [(SUUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
-  v13 = v12;
-  if (!v12)
+  v11 = [v9 initWithUnsignedLongLong:requestIdentifier];
+  _profileImageElement = [(SUUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
+  v13 = _profileImageElement;
+  if (!_profileImageElement)
   {
     goto LABEL_5;
   }
 
   imageRequests = self->_imageRequests;
-  v15 = [v12 resourceCacheKey];
-  v16 = [(NSMapTable *)imageRequests objectForKey:v15];
+  resourceCacheKey = [_profileImageElement resourceCacheKey];
+  v16 = [(NSMapTable *)imageRequests objectForKey:resourceCacheKey];
 
   if (![v16 isEqualToNumber:v11])
   {
 
 LABEL_5:
-    v17 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
+    affiliationItems = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __73__SUUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage___block_invoke;
     v18[3] = &unk_2798FCD00;
     v18[4] = self;
     v19 = v11;
-    v20 = v6;
-    [v17 enumerateObjectsUsingBlock:v18];
+    v20 = imageCopy;
+    [affiliationItems enumerateObjectsUsingBlock:v18];
 
     goto LABEL_6;
   }
 
-  [(SUUIOnboardingProgressView *)self->_progressView setImage:v6];
+  [(SUUIOnboardingProgressView *)self->_progressView setImage:imageCopy];
 
 LABEL_6:
 }
@@ -284,28 +284,28 @@ void __73__SUUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage
   }
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = dispatch_group_create();
-  v6 = [v4 templateElement];
+  templateElement = [updateCopy templateElement];
 
   templateElement = self->_templateElement;
-  if (templateElement != v6)
+  if (templateElement != templateElement)
   {
-    v8 = [(SUUIPhysicalCirclesTemplateViewElement *)templateElement scriptInterface];
-    [v8 setDelegate:0];
+    scriptInterface = [(SUUIPhysicalCirclesTemplateViewElement *)templateElement scriptInterface];
+    [scriptInterface setDelegate:0];
 
-    objc_storeStrong(&self->_templateElement, v6);
-    v9 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
-    [v9 setDelegate:self];
+    objc_storeStrong(&self->_templateElement, templateElement);
+    scriptInterface2 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
+    [scriptInterface2 setDelegate:self];
   }
 
   [(SUUIPhysicalCirclesDocumentViewController *)self _reloadFooterViewAnimated:1];
   [(SUUIPhysicalCirclesDocumentViewController *)self _reloadInstructionsView];
-  v10 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
-  v11 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
-  v12 = [(SUUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:v11];
+  affiliationItems = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
+  circleItemElements = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+  v12 = [(SUUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:circleItemElements];
 
   v13 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v26[0] = MEMORY[0x277D85DD0];
@@ -318,8 +318,8 @@ void __73__SUUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage
   v28 = v15;
   v16 = v5;
   v29 = v16;
-  v30 = self;
-  [v10 enumerateObjectsUsingBlock:v26];
+  selfCopy = self;
+  [affiliationItems enumerateObjectsUsingBlock:v26];
   if ([v15 count])
   {
     dispatch_group_enter(v16);
@@ -341,8 +341,8 @@ void __73__SUUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage
   v20 = 3221225472;
   v21 = __63__SUUIPhysicalCirclesDocumentViewController_documentDidUpdate___block_invoke_4;
   v22 = &unk_2798F5BE8;
-  v23 = v6;
-  v18 = v6;
+  v23 = templateElement;
+  v18 = templateElement;
   dispatch_group_notify(v16, MEMORY[0x277D85CD0], &v19);
   [(SUUIPhysicalCirclesDocumentViewController *)self _loadImagesWithReason:0, v19, v20, v21, v22];
 }
@@ -384,18 +384,18 @@ void __63__SUUIPhysicalCirclesDocumentViewController_documentDidUpdate___block_i
   [v1 finishDOMUpdates];
 }
 
-- (void)onboardingCircles:(id)a3 didRemoveAffiliationItem:(id)a4
+- (void)onboardingCircles:(id)circles didRemoveAffiliationItem:(id)item
 {
-  v5 = [a4 identifier];
-  v6 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+  identifier = [item identifier];
+  circleItemElements = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didRemoveAffiliationItem___block_invoke;
   v8[3] = &unk_2798FCD50;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = identifier;
+  selfCopy = self;
+  v7 = identifier;
+  [circleItemElements enumerateObjectsUsingBlock:v8];
 }
 
 void __88__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didRemoveAffiliationItem___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -411,17 +411,17 @@ void __88__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didRemove
   }
 }
 
-- (void)onboardingCircles:(id)a3 didSelectAffiliationItem:(id)a4 atIndex:(int64_t)a5
+- (void)onboardingCircles:(id)circles didSelectAffiliationItem:(id)item atIndex:(int64_t)index
 {
-  v6 = [a4 identifier];
-  v7 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+  identifier = [item identifier];
+  circleItemElements = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __96__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelectAffiliationItem_atIndex___block_invoke;
   v9[3] = &unk_2798FCD78;
-  v10 = v6;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = identifier;
+  v8 = identifier;
+  [circleItemElements enumerateObjectsUsingBlock:v9];
 }
 
 void __96__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelectAffiliationItem_atIndex___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -437,11 +437,11 @@ void __96__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelect
   }
 }
 
-- (void)physicalCirclesDOMFeature:(id)a3 didRequestAnimation:(id)a4
+- (void)physicalCirclesDOMFeature:(id)feature didRequestAnimation:(id)animation
 {
-  v5 = a4;
-  v6 = [v5 animationType];
-  if (v6 == 1)
+  animationCopy = animation;
+  animationType = [animationCopy animationType];
+  if (animationType == 1)
   {
     circlesViewController = self->_circlesViewController;
     v10[0] = MEMORY[0x277D85DD0];
@@ -449,12 +449,12 @@ void __96__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelect
     v10[2] = __91__SUUIPhysicalCirclesDocumentViewController_physicalCirclesDOMFeature_didRequestAnimation___block_invoke_2;
     v10[3] = &unk_2798F5D30;
     v8 = &v11;
-    v11 = v5;
+    v11 = animationCopy;
     [(SUUIOnboardingAffiliationCirclesViewController *)circlesViewController resetWithAffiliationItems:0 animated:1 completionBlock:v10];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!animationType)
   {
     v7 = self->_circlesViewController;
     v12[0] = MEMORY[0x277D85DD0];
@@ -462,36 +462,36 @@ void __96__SUUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelect
     v12[2] = __91__SUUIPhysicalCirclesDocumentViewController_physicalCirclesDOMFeature_didRequestAnimation___block_invoke;
     v12[3] = &unk_2798FCDA0;
     v8 = &v13;
-    v13 = v5;
+    v13 = animationCopy;
     [(SUUIOnboardingAffiliationCirclesViewController *)v7 performFinishAnimationWithCompletionBlock:v12];
 LABEL_5:
   }
 }
 
-- (void)_footerLeftButtonAction:(id)a3
+- (void)_footerLeftButtonAction:(id)action
 {
-  v3 = [(SUUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
-  [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  _leftFooterButtonElement = [(SUUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
+  [_leftFooterButtonElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)_footerRightButtonAction:(id)a3
+- (void)_footerRightButtonAction:(id)action
 {
-  v3 = [(SUUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
-  [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  _rightFooterButtonElement = [(SUUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
+  [_rightFooterButtonElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (id)_affiliationItemsWithCircleItemElements:(id)a3
+- (id)_affiliationItemsWithCircleItemElements:(id)elements
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  elementsCopy = elements;
+  array = [v3 array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__SUUIPhysicalCirclesDocumentViewController__affiliationItemsWithCircleItemElements___block_invoke;
   v8[3] = &unk_2798FCD78;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [elementsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -546,13 +546,13 @@ void __85__SUUIPhysicalCirclesDocumentViewController__affiliationItemsWithCircle
   v9 = __Block_byref_object_copy__82;
   v10 = __Block_byref_object_dispose__82;
   v11 = 0;
-  v2 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  footerPaletteElement = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __69__SUUIPhysicalCirclesDocumentViewController__leftFooterButtonElement__block_invoke;
   v5[3] = &unk_2798F5FB8;
   v5[4] = &v6;
-  [v2 enumerateChildrenUsingBlock:v5];
+  [footerPaletteElement enumerateChildrenUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -577,7 +577,7 @@ void __69__SUUIPhysicalCirclesDocumentViewController__leftFooterButtonElement__b
 LABEL_5:
 }
 
-- (void)_loadImagesWithReason:(int64_t)a3
+- (void)_loadImagesWithReason:(int64_t)reason
 {
   v55 = *MEMORY[0x277D85DE8];
   if (!self->_imageRequests)
@@ -590,32 +590,32 @@ LABEL_5:
   if (!self->_resourceLoader)
   {
     v6 = [SUUIResourceLoader alloc];
-    v7 = [(SUUIViewController *)self operationQueue];
-    v8 = [(SUUIViewController *)self clientContext];
-    v9 = [(SUUIResourceLoader *)v6 initWithOperationQueue:v7 clientContext:v8];
+    operationQueue = [(SUUIViewController *)self operationQueue];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v9 = [(SUUIResourceLoader *)v6 initWithOperationQueue:operationQueue clientContext:clientContext];
     resourceLoader = self->_resourceLoader;
     self->_resourceLoader = v9;
   }
 
-  v11 = [(SUUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
-  v12 = v11;
-  if (v11)
+  _profileImageElement = [(SUUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
+  v12 = _profileImageElement;
+  if (_profileImageElement)
   {
-    v13 = [v11 resourceCacheKey];
-    v14 = [(NSMapTable *)self->_imageRequests objectForKey:v13];
+    resourceCacheKey = [_profileImageElement resourceCacheKey];
+    v14 = [(NSMapTable *)self->_imageRequests objectForKey:resourceCacheKey];
     v15 = v14;
-    if (!v14 || !-[SUUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", a3, [v14 unsignedIntegerValue]))
+    if (!v14 || !-[SUUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", reason, [v14 unsignedIntegerValue]))
     {
       v16 = objc_alloc_init(SUUIArtworkRequest);
-      [(SUUIResourceRequest *)v16 setCacheKey:v13];
+      [(SUUIResourceRequest *)v16 setCacheKey:resourceCacheKey];
       [(SUUIArtworkRequest *)v16 setDelegate:self];
       v17 = [v12 URL];
       [(SUUIArtworkRequest *)v16 setURL:v17];
 
-      v18 = [(SUUIPhysicalCirclesDocumentViewController *)self traitCollection];
-      v19 = [v18 userInterfaceIdiom];
+      traitCollection = [(SUUIPhysicalCirclesDocumentViewController *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v19 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v20 = 120.0;
       }
@@ -630,15 +630,15 @@ LABEL_5:
       [(SUUIOnboardingCircleImageDataConsumer *)v21 setOutputSize:?];
       [(SUUIArtworkRequest *)v16 setDataConsumer:v21];
       v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{-[SUUIResourceRequest requestIdentifier](v16, "requestIdentifier")}];
-      [(NSMapTable *)self->_imageRequests setObject:v22 forKey:v13];
-      [(SUUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v16 reason:a3];
+      [(NSMapTable *)self->_imageRequests setObject:v22 forKey:resourceCacheKey];
+      [(SUUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v16 reason:reason];
     }
   }
 
   v44 = v12;
-  v23 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
-  v24 = [(SUUIPhysicalCirclesDocumentViewController *)self view];
-  v45 = [v24 tintColor];
+  affiliationItems = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
+  view = [(SUUIPhysicalCirclesDocumentViewController *)self view];
+  tintColor = [view tintColor];
 
   [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController maximumCircleDiameter];
   v26 = v25;
@@ -646,7 +646,7 @@ LABEL_5:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v23;
+  obj = affiliationItems;
   v48 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v48)
   {
@@ -661,42 +661,42 @@ LABEL_5:
         }
 
         v28 = *(*(&v50 + 1) + 8 * i);
-        v29 = [v28 identifier];
-        v30 = [(NSMapTable *)self->_imageRequests objectForKey:v29];
+        identifier = [v28 identifier];
+        v30 = [(NSMapTable *)self->_imageRequests objectForKey:identifier];
         v31 = v30;
-        if (!v30 || !-[SUUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", a3, [v30 unsignedIntegerValue]))
+        if (!v30 || !-[SUUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", reason, [v30 unsignedIntegerValue]))
         {
           v32 = objc_alloc_init(SUUIArtworkRequest);
           [(SUUIArtworkRequest *)v32 setDelegate:self];
-          v33 = [v28 imageName];
-          if (v33)
+          imageName = [v28 imageName];
+          if (imageName)
           {
-            [(SUUIArtworkRequest *)v32 setImageName:v33];
+            [(SUUIArtworkRequest *)v32 setImageName:imageName];
           }
 
           else
           {
-            v34 = [v28 imageURL];
-            [(SUUIArtworkRequest *)v32 setURL:v34];
+            imageURL = [v28 imageURL];
+            [(SUUIArtworkRequest *)v32 setURL:imageURL];
           }
 
           v35 = objc_alloc_init(SUUIOnboardingCircleImageDataConsumer);
           [(SUUIOnboardingCircleImageDataConsumer *)v35 setOutputSize:v26, v26];
-          v36 = [v28 imageTreatment];
-          v37 = [v36 isEqualToString:0x286B001A0];
+          imageTreatment = [v28 imageTreatment];
+          v37 = [imageTreatment isEqualToString:0x286B001A0];
 
           if (v37)
           {
-            v38 = [v28 fillColor];
-            v39 = v38;
-            if (v38)
+            fillColor = [v28 fillColor];
+            v39 = fillColor;
+            if (fillColor)
             {
-              v40 = v38;
+              v40 = fillColor;
             }
 
             else
             {
-              v40 = v45;
+              v40 = tintColor;
             }
 
             [(SUUIOnboardingCircleImageDataConsumer *)v35 setTintColor:v40];
@@ -707,10 +707,10 @@ LABEL_5:
           [(SUUIArtworkRequest *)v32 setDataConsumer:v35];
           v41 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{-[SUUIResourceRequest requestIdentifier](v32, "requestIdentifier")}];
           v42 = self->_imageRequests;
-          v43 = [v28 identifier];
-          [(NSMapTable *)v42 setObject:v41 forKey:v43];
+          identifier2 = [v28 identifier];
+          [(NSMapTable *)v42 setObject:v41 forKey:identifier2];
 
-          [(SUUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v32 reason:a3];
+          [(SUUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v32 reason:reason];
         }
       }
 
@@ -723,25 +723,25 @@ LABEL_5:
 
 - (id)_profileImageElement
 {
-  v2 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
-  v3 = [v2 firstChildForElementType:95];
+  footerPaletteElement = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  v3 = [footerPaletteElement firstChildForElementType:95];
 
   v4 = [v3 firstChildForElementType:49];
 
   return v4;
 }
 
-- (void)_reloadFooterViewAnimated:(BOOL)a3
+- (void)_reloadFooterViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SUUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
+  animatedCopy = animated;
+  _leftFooterButtonElement = [(SUUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
   footerView = self->_footerView;
-  v26 = v5;
-  if (v5)
+  v26 = _leftFooterButtonElement;
+  if (_leftFooterButtonElement)
   {
-    v7 = [v5 buttonText];
-    v8 = [v7 string];
-    if (v3)
+    buttonText = [_leftFooterButtonElement buttonText];
+    string = [buttonText string];
+    if (animatedCopy)
     {
       v9 = 2;
     }
@@ -751,25 +751,25 @@ LABEL_5:
       v9 = 1;
     }
 
-    [(SUUIOnboardingFooterView *)footerView showLeftButtonWithTitle:v8 animation:v9];
+    [(SUUIOnboardingFooterView *)footerView showLeftButtonWithTitle:string animation:v9];
 
-    v10 = [(SUUIOnboardingFooterView *)self->_footerView leftButton];
-    [v10 setEnabled:{objc_msgSend(v26, "isEnabled")}];
+    leftButton = [(SUUIOnboardingFooterView *)self->_footerView leftButton];
+    [leftButton setEnabled:{objc_msgSend(v26, "isEnabled")}];
   }
 
   else
   {
-    [(SUUIOnboardingFooterView *)footerView hideLeftButtonWithAnimation:v3 ^ 1];
+    [(SUUIOnboardingFooterView *)footerView hideLeftButtonWithAnimation:animatedCopy ^ 1];
   }
 
-  v11 = [(SUUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
-  v12 = v11;
+  _rightFooterButtonElement = [(SUUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
+  v12 = _rightFooterButtonElement;
   v13 = self->_footerView;
-  if (v11)
+  if (_rightFooterButtonElement)
   {
-    v14 = [v11 buttonText];
-    v15 = [v14 string];
-    if (v3)
+    buttonText2 = [_rightFooterButtonElement buttonText];
+    string2 = [buttonText2 string];
+    if (animatedCopy)
     {
       v16 = 2;
     }
@@ -779,43 +779,43 @@ LABEL_5:
       v16 = 1;
     }
 
-    [(SUUIOnboardingFooterView *)v13 showRightButtonWithTitle:v15 animation:v16];
+    [(SUUIOnboardingFooterView *)v13 showRightButtonWithTitle:string2 animation:v16];
 
-    v17 = [(SUUIOnboardingFooterView *)self->_footerView rightButton];
-    [v17 setEnabled:{objc_msgSend(v12, "isEnabled")}];
+    rightButton = [(SUUIOnboardingFooterView *)self->_footerView rightButton];
+    [rightButton setEnabled:{objc_msgSend(v12, "isEnabled")}];
   }
 
   else
   {
-    [(SUUIOnboardingFooterView *)self->_footerView hideRightButtonWithAnimation:v3 ^ 1];
+    [(SUUIOnboardingFooterView *)self->_footerView hideRightButtonWithAnimation:animatedCopy ^ 1];
   }
 
-  v18 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
-  v19 = [v18 firstChildForElementType:95];
+  footerPaletteElement = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  v19 = [footerPaletteElement firstChildForElementType:95];
 
   v20 = [v19 firstChildForElementType:138];
   progressView = self->_progressView;
   [v19 value];
-  [(SUUIOnboardingProgressView *)progressView setProgress:v3 animated:v22];
+  [(SUUIOnboardingProgressView *)progressView setProgress:animatedCopy animated:v22];
   v23 = self->_progressView;
-  v24 = [v20 text];
-  v25 = [v24 string];
-  [(SUUIOnboardingProgressView *)v23 setTitle:v25];
+  text = [v20 text];
+  string3 = [text string];
+  [(SUUIOnboardingProgressView *)v23 setTitle:string3];
 }
 
 - (void)_reloadInstructionsView
 {
-  v17 = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController instructionsView];
-  v3 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement titleElement];
-  if (v3)
+  instructionsView = [(SUUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController instructionsView];
+  titleElement = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement titleElement];
+  if (titleElement)
   {
     v4 = objc_opt_class();
-    v5 = [v3 text];
-    v6 = [v5 string];
-    v7 = [v4 titleAttributedStringWithString:v6];
+    text = [titleElement text];
+    string = [text string];
+    v7 = [v4 titleAttributedStringWithString:string];
 
-    v8 = [v3 style];
-    [(SUUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v7 withStyle:v8];
+    style = [titleElement style];
+    [(SUUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v7 withStyle:style];
   }
 
   else
@@ -823,19 +823,19 @@ LABEL_5:
     v7 = 0;
   }
 
-  v9 = [v17 titleLabel];
-  [v9 setAttributedText:v7];
+  titleLabel = [instructionsView titleLabel];
+  [titleLabel setAttributedText:v7];
 
-  v10 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement subtitleElement];
-  if (v10)
+  subtitleElement = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement subtitleElement];
+  if (subtitleElement)
   {
     v11 = objc_opt_class();
-    v12 = [v10 text];
-    v13 = [v12 string];
-    v14 = [v11 explanationAttributedStringWithString:v13];
+    text2 = [subtitleElement text];
+    string2 = [text2 string];
+    v14 = [v11 explanationAttributedStringWithString:string2];
 
-    v15 = [v10 style];
-    [(SUUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v14 withStyle:v15];
+    style2 = [subtitleElement style];
+    [(SUUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v14 withStyle:style2];
   }
 
   else
@@ -843,10 +843,10 @@ LABEL_5:
     v14 = 0;
   }
 
-  v16 = [v17 explanationLabel];
-  [v16 setAttributedText:v14];
+  explanationLabel = [instructionsView explanationLabel];
+  [explanationLabel setAttributedText:v14];
 
-  [v17 setNeedsLayout];
+  [instructionsView setNeedsLayout];
 }
 
 - (id)_rightFooterButtonElement
@@ -863,14 +863,14 @@ LABEL_5:
   v9 = __Block_byref_object_copy__82;
   v10 = __Block_byref_object_dispose__82;
   v11 = 0;
-  v2 = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  footerPaletteElement = [(SUUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__SUUIPhysicalCirclesDocumentViewController__rightFooterButtonElement__block_invoke;
   v5[3] = &unk_2798FCDC8;
   v5[4] = v12;
   v5[5] = &v6;
-  [v2 enumerateChildrenUsingBlock:v5];
+  [footerPaletteElement enumerateChildrenUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -897,24 +897,24 @@ void __70__SUUIPhysicalCirclesDocumentViewController__rightFooterButtonElement__
   }
 }
 
-- (void)_styleAttributedString:(id)a3 withStyle:(id)a4
+- (void)_styleAttributedString:(id)string withStyle:(id)style
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = SUUIViewElementFontWithStyle(v6);
+  stringCopy = string;
+  styleCopy = style;
+  v7 = SUUIViewElementFontWithStyle(styleCopy);
   if (v7)
   {
-    [v12 addAttribute:*MEMORY[0x277D740A8] value:v7 range:{0, objc_msgSend(v12, "length")}];
+    [stringCopy addAttribute:*MEMORY[0x277D740A8] value:v7 range:{0, objc_msgSend(stringCopy, "length")}];
   }
 
-  v8 = [v6 ikColor];
-  v9 = [(SUUIPhysicalCirclesDocumentViewController *)self view];
-  v10 = [v9 tintColor];
-  v11 = SUUIViewElementPlainColorWithIKColor(v8, v10);
+  ikColor = [styleCopy ikColor];
+  view = [(SUUIPhysicalCirclesDocumentViewController *)self view];
+  tintColor = [view tintColor];
+  v11 = SUUIViewElementPlainColorWithIKColor(ikColor, tintColor);
 
   if (v11)
   {
-    [v12 addAttribute:*MEMORY[0x277D740C0] value:v11 range:{0, objc_msgSend(v12, "length")}];
+    [stringCopy addAttribute:*MEMORY[0x277D740C0] value:v11 range:{0, objc_msgSend(stringCopy, "length")}];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface SKUIGiftTemplateViewElement
-- (SKUIGiftTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIGiftTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIItem)productItem;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIGiftTemplateViewElement
 
-- (SKUIGiftTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIGiftTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftTemplateViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,16 +18,16 @@
 
   v17.receiver = self;
   v17.super_class = SKUIGiftTemplateViewElement;
-  v11 = [(SKUIViewElement *)&v17 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v17 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"type"];
+    v12 = [elementCopy getAttribute:@"type"];
     v11->_giftType = [v12 isEqualToString:@"product"];
-    v13 = [v8 getAttribute:@"buyParams"];
+    v13 = [elementCopy getAttribute:@"buyParams"];
     productBuyParams = v11->_productBuyParams;
     v11->_productBuyParams = v13;
 
-    v15 = [v8 getAttribute:@"data-content-id"];
+    v15 = [elementCopy getAttribute:@"data-content-id"];
     v11->_productItemIdentifier = [v15 longLongValue];
   }
 
@@ -83,8 +83,8 @@
 
   if ([v26[5] count])
   {
-    v7 = [v26[5] firstObject];
-    [v3 setObject:v7 forKey:*MEMORY[0x277D6A2F0]];
+    firstObject = [v26[5] firstObject];
+    [v3 setObject:firstObject forKey:*MEMORY[0x277D6A2F0]];
   }
 
   if ([v26[5] count] >= 2)
@@ -241,21 +241,21 @@ void __42__SKUIGiftTemplateViewElement_productItem__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIGiftTemplateViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_giftType = [(SKUIGiftTemplateViewElement *)v4 giftType];
-    v7 = [(NSString *)v4->_productBuyParams copy];
+    self->_giftType = [(SKUIGiftTemplateViewElement *)elementCopy giftType];
+    v7 = [(NSString *)elementCopy->_productBuyParams copy];
     productBuyParams = self->_productBuyParams;
     self->_productBuyParams = v7;
 
-    self->_productItemIdentifier = v4->_productItemIdentifier;
+    self->_productItemIdentifier = elementCopy->_productItemIdentifier;
   }
 
   return v6;

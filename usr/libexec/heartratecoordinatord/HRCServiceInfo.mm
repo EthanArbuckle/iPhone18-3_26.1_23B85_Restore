@@ -1,16 +1,16 @@
 @interface HRCServiceInfo
-+ (id)makeDevice:(id)a3 aaDevice:(id)a4;
-+ (id)propertyForKey:(id)a3 service:(id)a4 withDefault:(id)a5;
++ (id)makeDevice:(id)device aaDevice:(id)aaDevice;
++ (id)propertyForKey:(id)key service:(id)service withDefault:(id)default;
 - (BOOL)streaming;
-- (HRCServiceInfo)initWithService:(id)a3;
+- (HRCServiceInfo)initWithService:(id)service;
 @end
 
 @implementation HRCServiceInfo
 
-+ (id)propertyForKey:(id)a3 service:(id)a4 withDefault:(id)a5
++ (id)propertyForKey:(id)key service:(id)service withDefault:(id)default
 {
-  v7 = a5;
-  v8 = [a4 propertyForKey:a3];
+  defaultCopy = default;
+  v8 = [service propertyForKey:key];
   if (v8)
   {
     objc_opt_class();
@@ -24,54 +24,54 @@
 
   else
   {
-    v8 = v7;
-    v7 = 0;
+    v8 = defaultCopy;
+    defaultCopy = 0;
   }
 
   return v8;
 }
 
-+ (id)makeDevice:(id)a3 aaDevice:(id)a4
++ (id)makeDevice:(id)device aaDevice:(id)aaDevice
 {
-  v5 = a3;
-  v6 = a4;
-  v28 = v5;
-  v29 = v6;
-  if (!v6)
+  deviceCopy = device;
+  aaDeviceCopy = aaDevice;
+  v28 = deviceCopy;
+  v29 = aaDeviceCopy;
+  if (!aaDeviceCopy)
   {
-    v15 = [HRCServiceInfo propertyForKey:@"Product" service:v5 withDefault:@"UNKNOWN"];
+    v15 = [HRCServiceInfo propertyForKey:@"Product" service:deviceCopy withDefault:@"UNKNOWN"];
     v16 = [NSString stringWithUTF8String:"kBTFirmwareRevisionKey"];
     v27 = v15;
-    v30 = [HRCServiceInfo propertyForKey:v16 service:v28 withDefault:0];
+    firmwareVersion = [HRCServiceInfo propertyForKey:v16 service:v28 withDefault:0];
 
     v17 = [v28 propertyForKey:@"ProductID"];
     v12 = sub_1000124CC([v17 unsignedIntValue]);
     v18 = [HRCServiceInfo propertyForKey:@"Manufacturer" service:v28 withDefault:0];
-    v11 = [HRCServiceInfo propertyForKey:@"BluetoothID" service:v28 withDefault:0];
+    identifier = [HRCServiceInfo propertyForKey:@"BluetoothID" service:v28 withDefault:0];
 
     v19 = 0;
     goto LABEL_74;
   }
 
-  v7 = [v6 name];
-  v8 = v7;
+  name = [aaDeviceCopy name];
+  v8 = name;
   v9 = @"UNKNOWN";
-  if (v7)
+  if (name)
   {
-    v9 = v7;
+    v9 = name;
   }
 
   v10 = v9;
 
-  v30 = [v29 firmwareVersion];
-  v11 = [v29 identifier];
+  firmwareVersion = [v29 firmwareVersion];
+  identifier = [v29 identifier];
   v12 = sub_1000124CC([v29 productID]);
-  v13 = [v29 productID];
-  if (v13 <= 21759)
+  productID = [v29 productID];
+  if (productID <= 21759)
   {
-    if (v13 > 8193)
+    if (productID > 8193)
     {
-      switch(v13)
+      switch(productID)
       {
         case 8194:
           v14 = "AirPods1,1";
@@ -185,7 +185,7 @@
       goto LABEL_73;
     }
 
-    switch(v13)
+    switch(productID)
     {
       case 0:
         v14 = "Invalid";
@@ -203,17 +203,17 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  if (v13 > 28943)
+  if (productID > 28943)
   {
-    if (v13 <= 29714)
+    if (productID <= 29714)
     {
-      if (v13 == 28944)
+      if (productID == 28944)
       {
         v14 = "AudioAccessory1,2";
         goto LABEL_73;
       }
 
-      if (v13 == 29455)
+      if (productID == 29455)
       {
         v14 = "AppleTV11,1";
         goto LABEL_73;
@@ -222,19 +222,19 @@ LABEL_72:
       goto LABEL_72;
     }
 
-    if (v13 == 29715)
+    if (productID == 29715)
     {
       v14 = "AudioAccessory5,1";
       goto LABEL_73;
     }
 
-    if (v13 == 65533)
+    if (productID == 65533)
     {
       v14 = "HeGn";
       goto LABEL_73;
     }
 
-    if (v13 != 65534)
+    if (productID != 65534)
     {
       goto LABEL_72;
     }
@@ -244,15 +244,15 @@ LABEL_72:
 
   else
   {
-    if (v13 <= 28419)
+    if (productID <= 28419)
     {
-      if (v13 == 21760)
+      if (productID == 21760)
       {
         v14 = "Device1,21760";
         goto LABEL_73;
       }
 
-      if (v13 == 22034)
+      if (productID == 22034)
       {
         v14 = "Device1,22034";
         goto LABEL_73;
@@ -261,19 +261,19 @@ LABEL_72:
       goto LABEL_72;
     }
 
-    if (v13 == 28420)
+    if (productID == 28420)
     {
       v14 = "AppleTV5,3";
       goto LABEL_73;
     }
 
-    if (v13 == 28936)
+    if (productID == 28936)
     {
       v14 = "AppleTV6,2";
       goto LABEL_73;
     }
 
-    if (v13 != 28943)
+    if (productID != 28943)
     {
       goto LABEL_72;
     }
@@ -286,37 +286,37 @@ LABEL_73:
   v18 = @"Apple Inc.";
   v27 = v10;
 LABEL_74:
-  v20 = [[HRCDevice alloc] initWithName:v27 manufacturer:v18 model:v12 hardwareVersion:v19 firmwareVersion:v30 softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:0 bluetoothIdentifier:v11];
+  v20 = [[HRCDevice alloc] initWithName:v27 manufacturer:v18 model:v12 hardwareVersion:v19 firmwareVersion:firmwareVersion softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:0 bluetoothIdentifier:identifier];
   v21 = sub_10000132C();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v20 name];
-    v23 = [v20 manufacturer];
-    v24 = [v20 hardwareVersion];
-    v25 = [v20 bluetoothIdentifier];
+    name2 = [v20 name];
+    manufacturer = [v20 manufacturer];
+    hardwareVersion = [v20 hardwareVersion];
+    bluetoothIdentifier = [v20 bluetoothIdentifier];
     *buf = 138544386;
-    v32 = v22;
+    v32 = name2;
     v33 = 2114;
-    v34 = v23;
+    v34 = manufacturer;
     v35 = 2114;
     v36 = v12;
     v37 = 2114;
-    v38 = v24;
+    v38 = hardwareVersion;
     v39 = 2114;
-    v40 = v25;
+    v40 = bluetoothIdentifier;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Creating device name:%{public}@, mfg:%{public}@, model:%{public}@, hwVer:%{public}@, id:%{public}@", buf, 0x34u);
   }
 
   return v20;
 }
 
-- (HRCServiceInfo)initWithService:(id)a3
+- (HRCServiceInfo)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v28.receiver = self;
   v28.super_class = HRCServiceInfo;
   v6 = [(HRCServiceInfo *)&v28 init];
-  objc_storeStrong(&v6->_service, a3);
+  objc_storeStrong(&v6->_service, service);
   v7 = objc_opt_new();
   uuid = v6->_uuid;
   v6->_uuid = v7;
@@ -363,7 +363,7 @@ LABEL_74:
     *buf = 138544130;
     v30 = v20;
     v31 = 2114;
-    v32 = v5;
+    v32 = serviceCopy;
     v33 = 2114;
     v34 = v21;
     v35 = 1024;
@@ -380,7 +380,7 @@ LABEL_74:
       if ([v23 BOOLValue])
       {
         v6->_simulator = 1;
-        v24 = [v5 propertyForKey:@"ProductID"];
+        v24 = [serviceCopy propertyForKey:@"ProductID"];
         v6->_simProductID = [v24 unsignedIntValue];
         v25 = sub_10000132C();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -399,11 +399,11 @@ LABEL_74:
 
 - (BOOL)streaming
 {
-  v2 = [(HRCServiceInfo *)self service];
-  v3 = [v2 propertyForKey:@"ReportInterval"];
+  service = [(HRCServiceInfo *)self service];
+  v3 = [service propertyForKey:@"ReportInterval"];
 
-  LOBYTE(v2) = [v3 isEqualToNumber:&off_1000432A0];
-  return v2;
+  LOBYTE(service) = [v3 isEqualToNumber:&off_1000432A0];
+  return service;
 }
 
 @end

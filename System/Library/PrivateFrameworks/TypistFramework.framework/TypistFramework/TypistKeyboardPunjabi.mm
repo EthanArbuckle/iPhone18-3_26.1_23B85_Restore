@@ -1,38 +1,38 @@
 @interface TypistKeyboardPunjabi
-- (id)addAccentKeyAction:(id)a3;
-- (id)getPostfixKey:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
+- (id)addAccentKeyAction:(id)action;
+- (id)getPostfixKey:(id)key;
+- (id)init:(id)init options:(id)options;
 @end
 
 @implementation TypistKeyboardPunjabi
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardPunjabi;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"pa"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"pa"];
 }
 
-- (id)getPostfixKey:(id)a3
+- (id)getPostfixKey:(id)key
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _referenceBounds];
+  keyCopy = key;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v10) <= 1194.0 || [(TypistKeyboard *)self isFloating])
   {
 
 LABEL_4:
-    v6 = v4;
+    v6 = keyCopy;
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"ਇ"])
+  if ([keyCopy isEqualToString:@"ਇ"])
   {
   }
 
   else
   {
-    v8 = [v4 isEqualToString:@"ਈ"];
+    v8 = [keyCopy isEqualToString:@"ਈ"];
 
     if ((v8 & 1) == 0)
     {
@@ -46,30 +46,30 @@ LABEL_5:
   return v6;
 }
 
-- (id)addAccentKeyAction:(id)a3
+- (id)addAccentKeyAction:(id)action
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _referenceBounds];
+  actionCopy = action;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v18) <= 1194.0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(TypistKeyboard *)self isFloating];
+  isFloating = [(TypistKeyboard *)self isFloating];
 
-  if (v6)
+  if (isFloating)
   {
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  if (![v4 isEqualToString:@"ਇ"])
+  if (![actionCopy isEqualToString:@"ਇ"])
   {
-    if ([v4 isEqualToString:@"ਈ"])
+    if ([actionCopy isEqualToString:@"ਈ"])
     {
       v14 = [(TypistKeyboard *)self findKeyOnAnyPlane:@"ੀ"];
       v8 = v14;

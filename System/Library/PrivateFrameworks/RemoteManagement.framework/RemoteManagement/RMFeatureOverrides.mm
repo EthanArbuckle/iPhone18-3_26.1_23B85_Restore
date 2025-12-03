@@ -1,41 +1,41 @@
 @interface RMFeatureOverrides
-+ (BOOL)BOOLForDefaultsKey:(id)a3;
-+ (BOOL)internalStatusForKey:(id)a3 defaultBool:(BOOL)a4;
++ (BOOL)BOOLForDefaultsKey:(id)key;
++ (BOOL)internalStatusForKey:(id)key defaultBool:(BOOL)bool;
 + (NSURL)bootstrapURL;
-+ (id)arrayForDefaultsKey:(id)a3;
-+ (id)defaultOverrideForKey:(id)a3;
-+ (id)dictionaryForDefaultsKey:(id)a3;
-+ (id)internalStatusForKey:(id)a3 defaultValue:(id)a4;
-+ (id)numberForDefaultsKey:(id)a3;
-+ (id)stringForDefaultsKey:(id)a3;
-+ (int64_t)batteryHealthServiceStateWithDefaultValue:(int64_t)a3;
++ (id)arrayForDefaultsKey:(id)key;
++ (id)defaultOverrideForKey:(id)key;
++ (id)dictionaryForDefaultsKey:(id)key;
++ (id)internalStatusForKey:(id)key defaultValue:(id)value;
++ (id)numberForDefaultsKey:(id)key;
++ (id)stringForDefaultsKey:(id)key;
++ (int64_t)batteryHealthServiceStateWithDefaultValue:(int64_t)value;
 @end
 
 @implementation RMFeatureOverrides
 
-+ (id)defaultOverrideForKey:(id)a3
++ (id)defaultOverrideForKey:(id)key
 {
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  keyCopy = key;
   v5 = [RMLocations defaultsOverrideFileURLCreateIfNeeded:1];
   v6 = [v3 dictionaryWithContentsOfURL:v5];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
 
-+ (id)dictionaryForDefaultsKey:(id)a3
++ (id)dictionaryForDefaultsKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[RMFeatureFlags isAppleInternal])
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 dictionaryForKey:v4];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults dictionaryForKey:keyCopy];
 
     if (!v6)
     {
-      v6 = [a1 defaultOverrideForKey:v4];
+      v6 = [self defaultOverrideForKey:keyCopy];
     }
   }
 
@@ -47,17 +47,17 @@
   return v6;
 }
 
-+ (id)arrayForDefaultsKey:(id)a3
++ (id)arrayForDefaultsKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[RMFeatureFlags isAppleInternal])
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 arrayForKey:v4];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults arrayForKey:keyCopy];
 
     if (!v6)
     {
-      v6 = [a1 defaultOverrideForKey:v4];
+      v6 = [self defaultOverrideForKey:keyCopy];
     }
   }
 
@@ -69,17 +69,17 @@
   return v6;
 }
 
-+ (id)stringForDefaultsKey:(id)a3
++ (id)stringForDefaultsKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[RMFeatureFlags isAppleInternal])
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 stringForKey:v4];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults stringForKey:keyCopy];
 
     if (!v6)
     {
-      v6 = [a1 defaultOverrideForKey:v4];
+      v6 = [self defaultOverrideForKey:keyCopy];
     }
   }
 
@@ -91,20 +91,20 @@
   return v6;
 }
 
-+ (BOOL)BOOLForDefaultsKey:(id)a3
++ (BOOL)BOOLForDefaultsKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (!+[RMFeatureFlags isAppleInternal])
   {
     goto LABEL_6;
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:keyCopy];
 
   if (!v6)
   {
-    v7 = [a1 defaultOverrideForKey:v4];
+    v7 = [self defaultOverrideForKey:keyCopy];
     if (v7)
     {
       v6 = v7;
@@ -112,24 +112,24 @@
     }
 
 LABEL_6:
-    v8 = 0;
+    bOOLValue = 0;
     goto LABEL_7;
   }
 
 LABEL_5:
-  v8 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
 LABEL_7:
-  return v8;
+  return bOOLValue;
 }
 
-+ (id)numberForDefaultsKey:(id)a3
++ (id)numberForDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[RMFeatureFlags isAppleInternal])
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:v3];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:keyCopy];
   }
 
   else
@@ -140,21 +140,21 @@ LABEL_7:
   return v5;
 }
 
-+ (int64_t)batteryHealthServiceStateWithDefaultValue:(int64_t)a3
++ (int64_t)batteryHealthServiceStateWithDefaultValue:(int64_t)value
 {
-  v4 = [a1 numberForDefaultsKey:@"RMBatteryServiceState"];
+  v4 = [self numberForDefaultsKey:@"RMBatteryServiceState"];
   v5 = v4;
   if (v4)
   {
-    a3 = [v4 integerValue];
+    value = [v4 integerValue];
   }
 
-  return a3;
+  return value;
 }
 
 + (NSURL)bootstrapURL
 {
-  v2 = [a1 stringForDefaultsKey:@"RMBootstrapURL"];
+  v2 = [self stringForDefaultsKey:@"RMBootstrapURL"];
   if (v2)
   {
     v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
@@ -168,12 +168,12 @@ LABEL_7:
   return v3;
 }
 
-+ (id)internalStatusForKey:(id)a3 defaultValue:(id)a4
++ (id)internalStatusForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 dictionaryForDefaultsKey:@"RMInternalStatus"];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  valueCopy = value;
+  keyCopy = key;
+  v8 = [self dictionaryForDefaultsKey:@"RMInternalStatus"];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
 
   if (v9)
   {
@@ -182,7 +182,7 @@ LABEL_7:
 
   else
   {
-    v10 = v6;
+    v10 = valueCopy;
   }
 
   v11 = v10;
@@ -190,18 +190,18 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)internalStatusForKey:(id)a3 defaultBool:(BOOL)a4
++ (BOOL)internalStatusForKey:(id)key defaultBool:(BOOL)bool
 {
-  v6 = a3;
-  v7 = [a1 dictionaryForDefaultsKey:@"RMInternalStatus"];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [self dictionaryForDefaultsKey:@"RMInternalStatus"];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
-    a4 = [v9 BOOLValue];
+    v9 = [v7 objectForKeyedSubscript:keyCopy];
+    bool = [v9 BOOLValue];
   }
 
-  return a4;
+  return bool;
 }
 
 @end

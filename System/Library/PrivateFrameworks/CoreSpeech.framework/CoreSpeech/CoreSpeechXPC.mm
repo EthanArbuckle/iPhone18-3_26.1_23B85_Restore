@@ -1,28 +1,28 @@
 @interface CoreSpeechXPC
-+ (id)accessoryModelTypeToString:(int64_t)a3;
-+ (void)logLanguageMismatchMetricWithJarvisSelectedLocale:(id)a3 jarvisTriggerMode:(int64_t)a4;
-- (CoreSpeechXPC)initWithFakeMonitor:(id)a3;
-- (id)getAccessoryFallbackFamilyLocal:(id)a3 fromLocaleMap:(id)a4;
++ (id)accessoryModelTypeToString:(int64_t)string;
++ (void)logLanguageMismatchMetricWithJarvisSelectedLocale:(id)locale jarvisTriggerMode:(int64_t)mode;
+- (CoreSpeechXPC)initWithFakeMonitor:(id)monitor;
+- (id)getAccessoryFallbackFamilyLocal:(id)local fromLocaleMap:(id)map;
 - (id)getAccessoryFallbackLocalTable;
-- (id)selectFallbackModelForLocale:(id)a3 downloadedModels:(id)a4 preinstalledModels:(id)a5 rtLocaleMap:(id)a6;
-- (void)_fetchVoiceTriggerInstalledAssetWithLanguage:(id)a3 completion:(id)a4;
-- (void)_handleFakeHearstModelRequest:(id)a3 majorVersion:(unint64_t)a4 minorVersion:(unint64_t)a5 downloadedModels:(id)a6 preinstalledModels:(id)a7 completion:(id)a8;
-- (void)fetchRemoteVoiceTriggerAssetForLanguageCode:(id)a3 completion:(id)a4;
-- (void)installedVoiceTriggerAssetForLanguageCode:(id)a3 completion:(id)a4;
-- (void)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)a3 engineMinorVersion:(id)a4 accessoryRTModelType:(id)a5 completion:(id)a6;
-- (void)voiceTriggerJarvisLanguageList:(id)a3 jarvisSelectedLanguage:(id)a4 completion:(id)a5;
-- (void)voiceTriggerRTModelWithRequestOptions:(id)a3 downloadedModels:(id)a4 preinstalledModels:(id)a5 completion:(id)a6;
+- (id)selectFallbackModelForLocale:(id)locale downloadedModels:(id)models preinstalledModels:(id)preinstalledModels rtLocaleMap:(id)map;
+- (void)_fetchVoiceTriggerInstalledAssetWithLanguage:(id)language completion:(id)completion;
+- (void)_handleFakeHearstModelRequest:(id)request majorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion downloadedModels:(id)models preinstalledModels:(id)preinstalledModels completion:(id)completion;
+- (void)fetchRemoteVoiceTriggerAssetForLanguageCode:(id)code completion:(id)completion;
+- (void)installedVoiceTriggerAssetForLanguageCode:(id)code completion:(id)completion;
+- (void)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)version engineMinorVersion:(id)minorVersion accessoryRTModelType:(id)type completion:(id)completion;
+- (void)voiceTriggerJarvisLanguageList:(id)list jarvisSelectedLanguage:(id)language completion:(id)completion;
+- (void)voiceTriggerRTModelWithRequestOptions:(id)options downloadedModels:(id)models preinstalledModels:(id)preinstalledModels completion:(id)completion;
 @end
 
 @implementation CoreSpeechXPC
 
-- (void)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)a3 engineMinorVersion:(id)a4 accessoryRTModelType:(id)a5 completion:(id)a6
+- (void)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)version engineMinorVersion:(id)minorVersion accessoryRTModelType:(id)type completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  versionCopy = version;
+  minorVersionCopy = minorVersion;
+  typeCopy = type;
+  completionCopy = completion;
   v13 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -31,55 +31,55 @@
     _os_log_impl(&dword_222E4D000, v13, OS_LOG_TYPE_DEFAULT, "%s ", &v16, 0xCu);
   }
 
-  v14 = [MEMORY[0x277D015F8] supportsMultiPhraseVoiceTriggerForEngineVersion:v9 engineMinorVersion:v10 accessoryRTModelType:v11];
-  if (v12)
+  v14 = [MEMORY[0x277D015F8] supportsMultiPhraseVoiceTriggerForEngineVersion:versionCopy engineMinorVersion:minorVersionCopy accessoryRTModelType:typeCopy];
+  if (completionCopy)
   {
-    v12[2](v12, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchVoiceTriggerInstalledAssetWithLanguage:(id)a3 completion:(id)a4
+- (void)_fetchVoiceTriggerInstalledAssetWithLanguage:(id)language completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   if (!CSIsInternalBuild())
   {
 LABEL_9:
-    v15 = [MEMORY[0x277D018D0] sharedInstance];
+    mEMORY[0x277D018D0] = [MEMORY[0x277D018D0] sharedInstance];
 
-    if (v15)
+    if (mEMORY[0x277D018D0])
     {
-      v16 = [MEMORY[0x277D018D0] sharedInstance];
+      mEMORY[0x277D018D0]2 = [MEMORY[0x277D018D0] sharedInstance];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __73__CoreSpeechXPC__fetchVoiceTriggerInstalledAssetWithLanguage_completion___block_invoke;
       v20[3] = &unk_2784C6B28;
-      v22 = v6;
-      v21 = v5;
-      [v16 getInstalledAssetofType:0 forLocale:v21 completion:v20];
+      v22 = completionCopy;
+      v21 = languageCopy;
+      [mEMORY[0x277D018D0]2 getInstalledAssetofType:0 forLocale:v21 completion:v20];
 
-      v8 = v22;
+      fakeVoiceTriggerAudioAccessoryFirstPassAssetPath = v22;
     }
 
     else
     {
-      v8 = +[CSAssetController sharedController];
-      [v8 installedAssetOfType:0 language:v5 completion:v6];
+      fakeVoiceTriggerAudioAccessoryFirstPassAssetPath = +[CSAssetController sharedController];
+      [fakeVoiceTriggerAudioAccessoryFirstPassAssetPath installedAssetOfType:0 language:languageCopy completion:completionCopy];
     }
 
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x277D01788] sharedPreferences];
-  v8 = [v7 fakeVoiceTriggerAudioAccessoryFirstPassAssetPath];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  fakeVoiceTriggerAudioAccessoryFirstPassAssetPath = [mEMORY[0x277D01788] fakeVoiceTriggerAudioAccessoryFirstPassAssetPath];
 
   v9 = MEMORY[0x277D015D8];
   v10 = *MEMORY[0x277D015D8];
   v11 = *MEMORY[0x277D015D8];
-  if (!v8)
+  if (!fakeVoiceTriggerAudioAccessoryFirstPassAssetPath)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -96,17 +96,17 @@ LABEL_9:
     *buf = 136315394;
     v24 = "[CoreSpeechXPC _fetchVoiceTriggerInstalledAssetWithLanguage:completion:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = fakeVoiceTriggerAudioAccessoryFirstPassAssetPath;
     _os_log_impl(&dword_222E4D000, v10, OS_LOG_TYPE_DEFAULT, "%s Overridden audio accessory first pass asset path: %@", buf, 0x16u);
   }
 
-  v12 = [v8 stringByDeletingLastPathComponent];
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v13 fileExistsAtPath:v8];
+  stringByDeletingLastPathComponent = [fakeVoiceTriggerAudioAccessoryFirstPassAssetPath stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v14 = [defaultManager fileExistsAtPath:fakeVoiceTriggerAudioAccessoryFirstPassAssetPath];
 
   if (v14)
   {
-    [MEMORY[0x277D015F8] assetForAssetType:0 resourcePath:v12 configVersion:@"override-asset" assetProvider:1];
+    [MEMORY[0x277D015F8] assetForAssetType:0 resourcePath:stringByDeletingLastPathComponent configVersion:@"override-asset" assetProvider:1];
   }
 
   else
@@ -124,9 +124,9 @@ LABEL_9:
     _os_log_impl(&dword_222E4D000, v18, OS_LOG_TYPE_DEFAULT, "%s Fake asset: %@", buf, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, v17, 0);
+    (*(completionCopy + 2))(completionCopy, v17, 0);
   }
 
 LABEL_18:
@@ -165,13 +165,13 @@ void __73__CoreSpeechXPC__fetchVoiceTriggerInstalledAssetWithLanguage_completion
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)selectFallbackModelForLocale:(id)a3 downloadedModels:(id)a4 preinstalledModels:(id)a5 rtLocaleMap:(id)a6
+- (id)selectFallbackModelForLocale:(id)locale downloadedModels:(id)models preinstalledModels:(id)preinstalledModels rtLocaleMap:(id)map
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v30 = a5;
-  v11 = a6;
-  v12 = [(CoreSpeechXPC *)self getAccessoryFallbackFamilyLocal:a3 fromLocaleMap:v11];
+  modelsCopy = models;
+  preinstalledModelsCopy = preinstalledModels;
+  mapCopy = map;
+  v12 = [(CoreSpeechXPC *)self getAccessoryFallbackFamilyLocal:locale fromLocaleMap:mapCopy];
   v36 = 0u;
   v37 = 0u;
   if (v12)
@@ -186,7 +186,7 @@ void __73__CoreSpeechXPC__fetchVoiceTriggerInstalledAssetWithLanguage_completion
 
   v38 = 0uLL;
   v39 = 0uLL;
-  v14 = v10;
+  v14 = modelsCopy;
   v15 = [v14 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v15)
   {
@@ -202,8 +202,8 @@ void __73__CoreSpeechXPC__fetchVoiceTriggerInstalledAssetWithLanguage_completion
         }
 
         v19 = *(*(&v36 + 1) + 8 * i);
-        v20 = [v19 modelLocale];
-        v21 = [(CoreSpeechXPC *)self getAccessoryFallbackFamilyLocal:v20 fromLocaleMap:v11];
+        modelLocale = [v19 modelLocale];
+        v21 = [(CoreSpeechXPC *)self getAccessoryFallbackFamilyLocal:modelLocale fromLocaleMap:mapCopy];
 
         if (([(__CFString *)v13 isEqualToString:v21]& 1) != 0)
         {
@@ -226,7 +226,7 @@ void __73__CoreSpeechXPC__fetchVoiceTriggerInstalledAssetWithLanguage_completion
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v30;
+  obj = preinstalledModelsCopy;
   v22 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v22)
   {
@@ -242,8 +242,8 @@ LABEL_14:
       }
 
       v19 = *(*(&v32 + 1) + 8 * v25);
-      v26 = [v19 modelLocale];
-      v21 = [(CoreSpeechXPC *)self getAccessoryFallbackFamilyLocal:v26 fromLocaleMap:v11];
+      modelLocale2 = [v19 modelLocale];
+      v21 = [(CoreSpeechXPC *)self getAccessoryFallbackFamilyLocal:modelLocale2 fromLocaleMap:mapCopy];
 
       if (([(__CFString *)v13 isEqualToString:v21]& 1) != 0)
       {
@@ -277,16 +277,16 @@ LABEL_20:
   return v27;
 }
 
-- (id)getAccessoryFallbackFamilyLocal:(id)a3 fromLocaleMap:(id)a4
+- (id)getAccessoryFallbackFamilyLocal:(id)local fromLocaleMap:(id)map
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  localCopy = local;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  mapCopy = map;
+  v7 = [mapCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -297,7 +297,7 @@ LABEL_20:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mapCopy);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -305,7 +305,7 @@ LABEL_20:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v6 objectForKeyedSubscript:{v11, 0}];
+        v12 = [mapCopy objectForKeyedSubscript:{v11, 0}];
         v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
@@ -320,7 +320,7 @@ LABEL_20:
                 objc_enumerationMutation(v12);
               }
 
-              if ([v5 isEqualToString:*(*(&v20 + 1) + 8 * j)])
+              if ([localCopy isEqualToString:*(*(&v20 + 1) + 8 * j)])
               {
                 v17 = v11;
 
@@ -339,7 +339,7 @@ LABEL_20:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [mapCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
       v17 = 0;
     }
 
@@ -376,22 +376,22 @@ void __47__CoreSpeechXPC_getAccessoryFallbackLocalTable__block_invoke()
   getAccessoryFallbackLocalTable_table = &unk_283667A30;
 }
 
-- (void)voiceTriggerJarvisLanguageList:(id)a3 jarvisSelectedLanguage:(id)a4 completion:(id)a5
+- (void)voiceTriggerJarvisLanguageList:(id)list jarvisSelectedLanguage:(id)language completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listCopy = list;
+  languageCopy = language;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __82__CoreSpeechXPC_voiceTriggerJarvisLanguageList_jarvisSelectedLanguage_completion___block_invoke;
   v24[3] = &unk_2784C5738;
-  v11 = v9;
+  v11 = languageCopy;
   v25 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v26 = v12;
   v13 = MEMORY[0x223DD26C0](v24);
-  if (v8 | v11)
+  if (listCopy | v11)
   {
     v16 = [MEMORY[0x277D018F8] getSiriLanguageWithFallback:@"en-US"];
     v17 = *MEMORY[0x277D015D8];
@@ -412,7 +412,7 @@ void __47__CoreSpeechXPC_getAccessoryFallbackLocalTable__block_invoke()
     v20 = v16;
     v21 = v11;
     v23 = v13;
-    v22 = v8;
+    v22 = listCopy;
     v15 = v16;
     [(CoreSpeechXPC *)self _fetchVoiceTriggerInstalledAssetWithLanguage:v15 completion:v19];
   }
@@ -638,58 +638,58 @@ LABEL_33:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)voiceTriggerRTModelWithRequestOptions:(id)a3 downloadedModels:(id)a4 preinstalledModels:(id)a5 completion:(id)a6
+- (void)voiceTriggerRTModelWithRequestOptions:(id)options downloadedModels:(id)models preinstalledModels:(id)preinstalledModels completion:(id)completion
 {
   v95 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v51 = a5;
-  v11 = a6;
-  v12 = [v9 accessoryModelType];
-  v13 = [v12 integerValue];
+  optionsCopy = options;
+  modelsCopy = models;
+  preinstalledModelsCopy = preinstalledModels;
+  completionCopy = completion;
+  accessoryModelType = [optionsCopy accessoryModelType];
+  integerValue = [accessoryModelType integerValue];
 
-  v14 = [v9 engineMajorVersion];
-  v15 = [v14 unsignedIntegerValue];
+  engineMajorVersion = [optionsCopy engineMajorVersion];
+  unsignedIntegerValue = [engineMajorVersion unsignedIntegerValue];
 
-  v16 = [v9 engineMinorVersion];
-  v17 = [v16 unsignedIntegerValue];
+  engineMinorVersion = [optionsCopy engineMinorVersion];
+  unsignedIntegerValue2 = [engineMinorVersion unsignedIntegerValue];
 
   v18 = MEMORY[0x277D015D8];
   v19 = *MEMORY[0x277D015D8];
-  v61 = v13;
+  v61 = integerValue;
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [CoreSpeechXPC accessoryModelTypeToString:v13];
-    v22 = [v9 accessoryInfo];
+    v21 = [CoreSpeechXPC accessoryModelTypeToString:integerValue];
+    accessoryInfo = [optionsCopy accessoryInfo];
     *buf = 136316162;
     v86 = "[CoreSpeechXPC voiceTriggerRTModelWithRequestOptions:downloadedModels:preinstalledModels:completion:]";
     v87 = 2114;
     v88 = v21;
     v89 = 1026;
-    v90 = v15;
+    v90 = unsignedIntegerValue;
     v91 = 1026;
-    v92 = v17;
+    v92 = unsignedIntegerValue2;
     v93 = 2112;
-    v94 = v22;
+    v94 = accessoryInfo;
     _os_log_impl(&dword_222E4D000, v20, OS_LOG_TYPE_DEFAULT, "%s Received a request for VoiceTriggerRTModel %{public}@ Firmware Version : %{public}d.%{public}d Accessory Info:%@", buf, 0x2Cu);
 
-    v13 = v61;
+    integerValue = v61;
   }
 
   v80[0] = MEMORY[0x277D85DD0];
   v80[1] = 3221225472;
   v80[2] = __102__CoreSpeechXPC_voiceTriggerRTModelWithRequestOptions_downloadedModels_preinstalledModels_completion___block_invoke;
   v80[3] = &unk_2784C56E8;
-  v82 = v13;
-  v56 = v11;
+  v82 = integerValue;
+  v56 = completionCopy;
   v81 = v56;
   v55 = MEMORY[0x223DD26C0](v80);
-  v23 = [v9 siriLocale];
-  v54 = v23;
-  if (v23)
+  siriLocale = [optionsCopy siriLocale];
+  v54 = siriLocale;
+  if (siriLocale)
   {
-    v24 = v23;
+    v24 = siriLocale;
   }
 
   else
@@ -710,7 +710,7 @@ LABEL_33:
   }
 
   v53 = v25;
-  v58 = v15;
+  v58 = unsignedIntegerValue;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
@@ -718,13 +718,13 @@ LABEL_33:
     _os_log_impl(&dword_222E4D000, v26, OS_LOG_TYPE_DEFAULT, "%s DownloadModel : ", buf, 0xCu);
   }
 
-  v57 = v17;
-  v60 = v9;
+  v57 = unsignedIntegerValue2;
+  v60 = optionsCopy;
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v27 = v10;
+  v27 = modelsCopy;
   v28 = [v27 countByEnumeratingWithState:&v76 objects:v84 count:16];
   if (v28)
   {
@@ -771,7 +771,7 @@ LABEL_33:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v35 = v51;
+  v35 = preinstalledModelsCopy;
   v36 = [v35 countByEnumeratingWithState:&v72 objects:v83 count:16];
   if (v36)
   {
@@ -818,7 +818,7 @@ LABEL_33:
     v45 = v53;
     v69 = v42;
     v64 = v53;
-    v65 = self;
+    selfCopy = self;
     v46 = v52;
     v66 = v52;
     v67 = v35;
@@ -1108,21 +1108,21 @@ LABEL_42:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFakeHearstModelRequest:(id)a3 majorVersion:(unint64_t)a4 minorVersion:(unint64_t)a5 downloadedModels:(id)a6 preinstalledModels:(id)a7 completion:(id)a8
+- (void)_handleFakeHearstModelRequest:(id)request majorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion downloadedModels:(id)models preinstalledModels:(id)preinstalledModels completion:(id)completion
 {
   v89 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(a7) = [v16 fileExistsAtPath:v12];
+  requestCopy = request;
+  modelsCopy = models;
+  preinstalledModelsCopy = preinstalledModels;
+  completionCopy = completion;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(preinstalledModels) = [defaultManager fileExistsAtPath:requestCopy];
 
-  if (a7)
+  if (preinstalledModels)
   {
-    v17 = [v12 stringByAppendingPathComponent:@"fakeModel.json"];
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [v18 fileExistsAtPath:v17];
+    v17 = [requestCopy stringByAppendingPathComponent:@"fakeModel.json"];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v19 = [defaultManager2 fileExistsAtPath:v17];
 
     if (v19)
     {
@@ -1136,14 +1136,14 @@ LABEL_42:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v69 = self;
+            selfCopy = self;
             v70 = v20;
             v71 = v17;
-            v72 = v15;
-            v73 = v14;
-            v74 = v13;
+            v72 = completionCopy;
+            v73 = preinstalledModelsCopy;
+            v74 = modelsCopy;
             v23 = v22;
-            v76 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v80 = 0u;
             v81 = 0u;
             v82 = 0u;
@@ -1165,16 +1165,16 @@ LABEL_42:
                   }
 
                   v29 = *(*(&v80 + 1) + 8 * i);
-                  v30 = v12;
-                  v31 = [v12 stringByAppendingPathComponent:{v29, v69}];
+                  v30 = requestCopy;
+                  v31 = [requestCopy stringByAppendingPathComponent:{v29, selfCopy}];
                   v32 = [MEMORY[0x277D015F8] assetForAssetType:0 resourcePath:v31 configVersion:v29];
                   v33 = [CSVoiceTriggerRTModelRequestOptions alloc];
                   v79[0] = MEMORY[0x277D85DD0];
                   v79[1] = 3221225472;
                   v79[2] = __120__CoreSpeechXPC__handleFakeHearstModelRequest_majorVersion_minorVersion_downloadedModels_preinstalledModels_completion___block_invoke;
                   v79[3] = &__block_descriptor_48_e56_v16__0___CSVoiceTriggerRTModelRequestOptionsMutablity__8l;
-                  v79[4] = a4;
-                  v79[5] = a5;
+                  v79[4] = version;
+                  v79[5] = minorVersion;
                   v34 = [(CSVoiceTriggerRTModelRequestOptions *)v33 initWithMutableBuilder:v79];
                   v35 = [v32 hearstRTModelWithRequestOptions:v34];
                   v36 = *MEMORY[0x277D015D8];
@@ -1189,7 +1189,7 @@ LABEL_42:
                       _os_log_impl(&dword_222E4D000, v36, OS_LOG_TYPE_DEFAULT, "%s Loading FakeModel : %{public}@", buf, 0x16u);
                     }
 
-                    [v76 addObject:v35];
+                    [array addObject:v35];
                   }
 
                   else if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
@@ -1201,7 +1201,7 @@ LABEL_42:
                     _os_log_error_impl(&dword_222E4D000, v36, OS_LOG_TYPE_ERROR, "%s Cannot create RTModel from %{public}@", buf, 0x16u);
                   }
 
-                  v12 = v30;
+                  requestCopy = v30;
                 }
 
                 v24 = obj;
@@ -1211,60 +1211,60 @@ LABEL_42:
               while (v26);
             }
 
-            if ([v76 count] > 2)
+            if ([array count] > 2)
             {
-              if ([v76 count])
+              if ([array count])
               {
-                v46 = [v76 firstObject];
-                v47 = [(CoreSpeechXPCFakeModelMonitor *)v69->_fakeAssetMonitor lastFakeModelUsedHash];
-                if (v47)
+                firstObject = [array firstObject];
+                lastFakeModelUsedHash = [(CoreSpeechXPCFakeModelMonitor *)selfCopy->_fakeAssetMonitor lastFakeModelUsedHash];
+                if (lastFakeModelUsedHash)
                 {
-                  v48 = [(CoreSpeechXPCFakeModelMonitor *)v69->_fakeAssetMonitor shouldRollFakeModel];
+                  shouldRollFakeModel = [(CoreSpeechXPCFakeModelMonitor *)selfCopy->_fakeAssetMonitor shouldRollFakeModel];
                   v17 = v71;
-                  if ([v76 count])
+                  if ([array count])
                   {
                     v49 = 0;
-                    v38 = v46;
+                    firstObject2 = firstObject;
                     while (1)
                     {
-                      v50 = [v76 objectAtIndexedSubscript:{v49, v69}];
-                      v51 = [v50 modelHash];
-                      v52 = [v47 isEqual:v51];
+                      v50 = [array objectAtIndexedSubscript:{v49, selfCopy}];
+                      modelHash = [v50 modelHash];
+                      v52 = [lastFakeModelUsedHash isEqual:modelHash];
 
                       if (v52)
                       {
-                        if (v48)
+                        if (shouldRollFakeModel)
                         {
-                          if (v49 < [v76 count] - 1)
+                          if (v49 < [array count] - 1)
                           {
-                            v57 = [v76 objectAtIndexedSubscript:v49 + 1];
+                            v57 = [array objectAtIndexedSubscript:v49 + 1];
 
-                            v38 = v57;
+                            firstObject2 = v57;
                             goto LABEL_53;
                           }
                         }
 
                         else
                         {
-                          v53 = [v76 objectAtIndexedSubscript:v49];
+                          v53 = [array objectAtIndexedSubscript:v49];
 
-                          v38 = v53;
+                          firstObject2 = v53;
                         }
                       }
 
-                      if (++v49 >= [v76 count])
+                      if (++v49 >= [array count])
                       {
                         goto LABEL_53;
                       }
                     }
                   }
 
-                  v38 = v46;
+                  firstObject2 = firstObject;
                 }
 
                 else
                 {
-                  v38 = [v76 firstObject];
+                  firstObject2 = [array firstObject];
 
                   v54 = *MEMORY[0x277D015D8];
                   v17 = v71;
@@ -1273,13 +1273,13 @@ LABEL_42:
                     *buf = 136315394;
                     v85 = "[CoreSpeechXPC _handleFakeHearstModelRequest:majorVersion:minorVersion:downloadedModels:preinstalledModels:completion:]";
                     v86 = 2114;
-                    v87[0] = v38;
+                    v87[0] = firstObject2;
                     _os_log_impl(&dword_222E4D000, v54, OS_LOG_TYPE_DEFAULT, "%s Using fake model for the first time : %{public}@", buf, 0x16u);
                   }
                 }
 
 LABEL_53:
-                if (v38)
+                if (firstObject2)
                 {
                   v58 = *MEMORY[0x277D015D8];
                   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -1287,29 +1287,29 @@ LABEL_53:
                     *buf = 136315394;
                     v85 = "[CoreSpeechXPC _handleFakeHearstModelRequest:majorVersion:minorVersion:downloadedModels:preinstalledModels:completion:]";
                     v86 = 2114;
-                    v87[0] = v38;
+                    v87[0] = firstObject2;
                     _os_log_impl(&dword_222E4D000, v58, OS_LOG_TYPE_DEFAULT, "%s Using fake model : %{public}@", buf, 0x16u);
                   }
 
-                  v59 = v69;
-                  [(CoreSpeechXPCFakeModelMonitor *)v69->_fakeAssetMonitor setShouldRollFakeModel:0, v69];
+                  v59 = selfCopy;
+                  [(CoreSpeechXPCFakeModelMonitor *)selfCopy->_fakeAssetMonitor setShouldRollFakeModel:0, selfCopy];
                   fakeAssetMonitor = v59->_fakeAssetMonitor;
-                  v61 = [v38 modelHash];
-                  [(CoreSpeechXPCFakeModelMonitor *)fakeAssetMonitor setLastFakeModelUsedHash:v61];
+                  modelHash2 = [firstObject2 modelHash];
+                  [(CoreSpeechXPCFakeModelMonitor *)fakeAssetMonitor setLastFakeModelUsedHash:modelHash2];
                 }
               }
 
               else
               {
-                v38 = 0;
+                firstObject2 = 0;
                 v17 = v71;
               }
 
-              v13 = v74;
+              modelsCopy = v74;
               v62 = [v74 count];
               v63 = v74;
-              v15 = v72;
-              v14 = v73;
+              completionCopy = v72;
+              preinstalledModelsCopy = v73;
               if (v62 || (v64 = [v73 count], v63 = v73, v64))
               {
                 v65 = [v63 objectAtIndex:0];
@@ -1327,7 +1327,7 @@ LABEL_53:
                 *buf = 136315394;
                 v85 = "[CoreSpeechXPC _handleFakeHearstModelRequest:majorVersion:minorVersion:downloadedModels:preinstalledModels:completion:]";
                 v86 = 2114;
-                v87[0] = v38;
+                v87[0] = firstObject2;
                 _os_log_impl(&dword_222E4D000, v67, OS_LOG_TYPE_DEFAULT, "%s %{public}@ fake model is selected for download", buf, 0x16u);
                 v67 = *v66;
               }
@@ -1342,18 +1342,18 @@ LABEL_53:
                 _os_log_impl(&dword_222E4D000, v67, OS_LOG_TYPE_DEFAULT, "%s %{public}@ model is selected for fallback", buf, 0x16u);
               }
 
-              (*(v72 + 2))(v72, v38, v65, @"fakeModel", 0);
+              (*(v72 + 2))(v72, firstObject2, v65, @"fakeModel", 0);
             }
 
             else
             {
               v37 = *MEMORY[0x277D015D8];
-              v14 = v73;
-              v13 = v74;
+              preinstalledModelsCopy = v73;
+              modelsCopy = v74;
               if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
               {
                 v55 = v37;
-                v56 = [v76 count];
+                v56 = [array count];
                 *buf = 136315650;
                 v85 = "[CoreSpeechXPC _handleFakeHearstModelRequest:majorVersion:minorVersion:downloadedModels:preinstalledModels:completion:]";
                 v86 = 1026;
@@ -1363,9 +1363,9 @@ LABEL_53:
                 _os_log_error_impl(&dword_222E4D000, v55, OS_LOG_TYPE_ERROR, "%s fake model number(%{public}d) is less than minimum fake model number((%{public}d)", buf, 0x18u);
               }
 
-              v38 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:410 userInfo:{0, v69}];
-              v15 = v72;
-              (*(v72 + 2))(v72, 0, 0, 0, v38);
+              firstObject2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:410 userInfo:{0, selfCopy}];
+              completionCopy = v72;
+              (*(v72 + 2))(v72, 0, 0, 0, firstObject2);
               v17 = v71;
             }
 
@@ -1385,7 +1385,7 @@ LABEL_53:
             }
 
             v45 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:409 userInfo:0];
-            (*(v15 + 2))(v15, 0, 0, 0, v45);
+            (*(completionCopy + 2))(completionCopy, 0, 0, 0, v45);
           }
         }
 
@@ -1402,7 +1402,7 @@ LABEL_53:
           }
 
           v43 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:409 userInfo:0];
-          (*(v15 + 2))(v15, 0, 0, 0, v43);
+          (*(completionCopy + 2))(completionCopy, 0, 0, 0, v43);
 
           v22 = 0;
         }
@@ -1421,7 +1421,7 @@ LABEL_53:
         }
 
         v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:409 userInfo:0];
-        (*(v15 + 2))(v15, 0, 0, 0, v22);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, v22);
       }
     }
 
@@ -1438,7 +1438,7 @@ LABEL_53:
       }
 
       v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:408 userInfo:0];
-      (*(v15 + 2))(v15, 0, 0, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, v20);
     }
   }
 
@@ -1450,12 +1450,12 @@ LABEL_53:
       *buf = 136315394;
       v85 = "[CoreSpeechXPC _handleFakeHearstModelRequest:majorVersion:minorVersion:downloadedModels:preinstalledModels:completion:]";
       v86 = 2114;
-      v87[0] = v12;
+      v87[0] = requestCopy;
       _os_log_error_impl(&dword_222E4D000, v39, OS_LOG_TYPE_ERROR, "%s Fake Model Path does not exist : %{public}@", buf, 0x16u);
     }
 
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:407 userInfo:0];
-    (*(v15 + 2))(v15, 0, 0, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v17);
   }
 
   v68 = *MEMORY[0x277D85DE8];
@@ -1475,88 +1475,88 @@ void __120__CoreSpeechXPC__handleFakeHearstModelRequest_majorVersion_minorVersio
   [v7 setSiriLocale:@"en-US"];
 }
 
-- (void)fetchRemoteVoiceTriggerAssetForLanguageCode:(id)a3 completion:(id)a4
+- (void)fetchRemoteVoiceTriggerAssetForLanguageCode:(id)code completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  codeCopy = code;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[CoreSpeechXPC fetchRemoteVoiceTriggerAssetForLanguageCode:completion:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = codeCopy;
     _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Received a request for VoiceTrigger Asset for language code : %{public}@", &v9, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installedVoiceTriggerAssetForLanguageCode:(id)a3 completion:(id)a4
+- (void)installedVoiceTriggerAssetForLanguageCode:(id)code completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  codeCopy = code;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[CoreSpeechXPC installedVoiceTriggerAssetForLanguageCode:completion:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = codeCopy;
     _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Received a request for VoiceTrigger Asset for language code : %{public}@", &v9, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (CoreSpeechXPC)initWithFakeMonitor:(id)a3
+- (CoreSpeechXPC)initWithFakeMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v8.receiver = self;
   v8.super_class = CoreSpeechXPC;
   v6 = [(CoreSpeechXPC *)&v8 init];
   if (v6)
   {
     CSLogInitIfNeeded();
-    objc_storeStrong(&v6->_fakeAssetMonitor, a3);
+    objc_storeStrong(&v6->_fakeAssetMonitor, monitor);
   }
 
   return v6;
 }
 
-+ (void)logLanguageMismatchMetricWithJarvisSelectedLocale:(id)a3 jarvisTriggerMode:(int64_t)a4
++ (void)logLanguageMismatchMetricWithJarvisSelectedLocale:(id)locale jarvisTriggerMode:(int64_t)mode
 {
-  if ((a4 + 1) > 3)
+  if ((mode + 1) > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = dword_222FB8340[a4 + 1];
+    v5 = dword_222FB8340[mode + 1];
   }
 
-  v6 = @"NA";
-  if (a3)
+  localeCopy = @"NA";
+  if (locale)
   {
-    v6 = a3;
+    localeCopy = locale;
   }
 
   v7 = MEMORY[0x277D587E0];
-  v8 = v6;
-  v16 = a3;
+  v8 = localeCopy;
+  localeCopy2 = locale;
   v9 = objc_alloc_init(v7);
   [v9 setHasCarHeadUnitSelectedLocale:1];
   [v9 setCarHeadUnitSelectedLocale:v8];
@@ -1566,25 +1566,25 @@ void __120__CoreSpeechXPC__handleFakeHearstModelRequest_majorVersion_minorVersio
   v10 = objc_alloc_init(MEMORY[0x277D587F0]);
   v11 = objc_alloc_init(MEMORY[0x277D587F8]);
   v12 = objc_alloc(MEMORY[0x277D5AC78]);
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v12 initWithNSUUID:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v14 = [v12 initWithNSUUID:uUID];
   [v11 setMhId:v14];
 
   [v10 setEventMetadata:v11];
   [v10 setCarPlayLangaugeMismatched:v9];
-  v15 = [MEMORY[0x277D552B8] sharedStream];
-  [v15 emitMessage:v10];
+  mEMORY[0x277D552B8] = [MEMORY[0x277D552B8] sharedStream];
+  [mEMORY[0x277D552B8] emitMessage:v10];
 }
 
-+ (id)accessoryModelTypeToString:(int64_t)a3
++ (id)accessoryModelTypeToString:(int64_t)string
 {
   v3 = @"default";
-  if (!a3)
+  if (!string)
   {
     v3 = @"Hearst";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"Remora";
   }

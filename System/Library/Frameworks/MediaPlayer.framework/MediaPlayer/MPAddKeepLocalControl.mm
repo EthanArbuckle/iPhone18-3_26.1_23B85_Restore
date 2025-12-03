@@ -1,16 +1,16 @@
 @interface MPAddKeepLocalControl
-+ (CGSize)_expectedSizeForControlStatusType:(int64_t)a3 controlTitle:(id)a4 hasControlImage:(BOOL)a5 displayScale:(double)a6 preferredHeight:(double)a7;
-+ (id)_imageNamed:(id)a3 compatibleWithTraitCollection:(id)a4;
++ (CGSize)_expectedSizeForControlStatusType:(int64_t)type controlTitle:(id)title hasControlImage:(BOOL)image displayScale:(double)scale preferredHeight:(double)height;
++ (id)_imageNamed:(id)named compatibleWithTraitCollection:(id)collection;
 + (id)_newControlTitleLabel;
-+ (id)controlTitleFontForControlStatusType:(int64_t)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)maximumSizeWithPreferredHeight:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPAddKeepLocalControl)initWithFrame:(CGRect)a3;
++ (id)controlTitleFontForControlStatusType:(int64_t)type;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)maximumSizeWithPreferredHeight:(double)height;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPAddKeepLocalControl)initWithFrame:(CGRect)frame;
 - (MPAddKeepLocalControlStatus)controlStatus;
 - (id)_currentContentSuperview;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)titleForControlStatusType:(int64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)titleForControlStatusType:(int64_t)type;
 - (void)_beginTransientContentViewTransaction;
 - (void)_endTransientContentViewTransaction;
 - (void)_updateBackgroundViewCornerRadius;
@@ -20,17 +20,17 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAllowsAddImage:(BOOL)a3;
-- (void)setContentHorizontalAlignment:(int64_t)a3;
-- (void)setControlStatus:(MPAddKeepLocalControlStatus)a3 animated:(BOOL)a4;
-- (void)setDisplayStyle:(int64_t)a3;
-- (void)setFilledTintColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4;
+- (void)setAllowsAddImage:(BOOL)image;
+- (void)setContentHorizontalAlignment:(int64_t)alignment;
+- (void)setControlStatus:(MPAddKeepLocalControlStatus)status animated:(BOOL)animated;
+- (void)setDisplayStyle:(int64_t)style;
+- (void)setFilledTintColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type;
 - (void)tintColorDidChange;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MPAddKeepLocalControl
@@ -50,23 +50,23 @@
   controlImageView = self->_controlImageView;
   if (controlImageView)
   {
-    v15 = [(UIImageView *)controlImageView layer];
+    layer = [(UIImageView *)controlImageView layer];
     if (self->_controlStatus.statusType == 3)
     {
       v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation.z"];
-      v5 = [v15 presentationLayer];
-      if (v5)
+      presentationLayer = [layer presentationLayer];
+      if (presentationLayer)
       {
-        v6 = v5;
+        v6 = presentationLayer;
       }
 
       else
       {
-        v6 = v15;
+        v6 = layer;
       }
 
-      v7 = [v4 keyPath];
-      v8 = [v6 valueForKeyPath:v7];
+      keyPath = [v4 keyPath];
+      v8 = [v6 valueForKeyPath:keyPath];
 
       [v4 setFromValue:v8];
       v9 = MEMORY[0x1E696AD98];
@@ -83,20 +83,20 @@
       v13 = CACurrentMediaTime();
       [v4 duration];
       [v4 setBeginTime:{(v13 - fmod(v13, v14))}];
-      [v15 addAnimation:v4 forKey:@"_MPAddKeepLocalControlWaitingSpinnerAnimationKey"];
+      [layer addAnimation:v4 forKey:@"_MPAddKeepLocalControlWaitingSpinnerAnimationKey"];
     }
 
     else
     {
-      [v15 removeAnimationForKey:@"_MPAddKeepLocalControlWaitingSpinnerAnimationKey"];
+      [layer removeAnimationForKey:@"_MPAddKeepLocalControlWaitingSpinnerAnimationKey"];
     }
   }
 }
 
 - (void)_updateControlStatusProperties
 {
-  v65 = [(MPAddKeepLocalControl *)self traitCollection];
-  [v65 displayScale];
+  traitCollection = [(MPAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
   v4 = v3;
   v5 = vabdd_f64(0.0, v3);
   if (v4 < 0.0 || v5 < 0.00000011920929)
@@ -104,8 +104,8 @@
     goto LABEL_49;
   }
 
-  v7 = [v65 preferredContentSizeCategory];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69DDC90]];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC90]];
 
   if (v8)
   {
@@ -118,7 +118,7 @@
   {
     if (!downloadProgressView)
     {
-      v11 = [objc_opt_class() _imageNamed:@"UniversalDownloadProgressStopButton" compatibleWithTraitCollection:v65];
+      v11 = [objc_opt_class() _imageNamed:@"UniversalDownloadProgressStopButton" compatibleWithTraitCollection:traitCollection];
       v12 = [MPDownloadProgressView alloc];
       [(MPAddKeepLocalControl *)self bounds];
       v13 = [(MPDownloadProgressView *)v12 initWithFrame:?];
@@ -127,11 +127,11 @@
 
       [(MPDownloadProgressView *)self->_downloadProgressView setCenterImage:v11];
       v15 = self->_downloadProgressView;
-      v16 = [MEMORY[0x1E69DC888] systemFillColor];
-      [(MPDownloadProgressView *)v15 setOuterRingColor:v16];
+      systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+      [(MPDownloadProgressView *)v15 setOuterRingColor:systemFillColor];
 
-      v17 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
-      [v17 addSubview:self->_downloadProgressView];
+      _currentContentSuperview = [(MPAddKeepLocalControl *)self _currentContentSuperview];
+      [_currentContentSuperview addSubview:self->_downloadProgressView];
 
       downloadProgressView = self->_downloadProgressView;
     }
@@ -194,8 +194,8 @@
 
           else
           {
-            v55 = [MEMORY[0x1E695E000] standardUserDefaults];
-            v56 = [v55 BOOLForKey:@"MPKeepLocalControlShouldShowDownloadedIndicator"];
+            standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+            v56 = [standardUserDefaults BOOLForKey:@"MPKeepLocalControlShouldShowDownloadedIndicator"];
 
             v20 = v59;
             v19 = v63;
@@ -205,7 +205,7 @@
             }
           }
 
-          v22 = [objc_opt_class() _imageNamed:@"UniversalAddControlDownloaded" compatibleWithTraitCollection:v65];
+          v22 = [objc_opt_class() _imageNamed:@"UniversalAddControlDownloaded" compatibleWithTraitCollection:traitCollection];
           v57 = -2.0;
           if (vabdd_f64(2.0, v4) < 0.00000011920929)
           {
@@ -243,7 +243,7 @@
       }
     }
 
-    v22 = [v32 _imageNamed:v33 compatibleWithTraitCollection:{v65, v58}];
+    v22 = [v32 _imageNamed:v33 compatibleWithTraitCollection:{traitCollection, v58}];
     v21 = 0;
     _Q1 = vextq_s8(v61, v60, 8uLL);
     v39 = vextq_s8(v60, v61, 8uLL);
@@ -254,7 +254,7 @@
   if (self->_displayStyle != 1)
   {
     [(UIView *)v24 removeFromSuperview];
-    v30 = self->_backgroundView;
+    _currentContentSuperview2 = self->_backgroundView;
     self->_backgroundView = 0;
     goto LABEL_23;
   }
@@ -268,13 +268,13 @@
     self->_backgroundView = v26;
 
     v28 = self->_backgroundView;
-    v29 = [(MPAddKeepLocalControl *)self tintColor];
-    [(UIView *)v28 setBackgroundColor:v29];
+    tintColor = [(MPAddKeepLocalControl *)self tintColor];
+    [(UIView *)v28 setBackgroundColor:tintColor];
 
     [(UIView *)self->_backgroundView setClipsToBounds:1];
     [(MPAddKeepLocalControl *)self _updateBackgroundViewCornerRadius];
-    v30 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
-    [v30 insertSubview:self->_backgroundView atIndex:0];
+    _currentContentSuperview2 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
+    [_currentContentSuperview2 insertSubview:self->_backgroundView atIndex:0];
 LABEL_23:
   }
 
@@ -290,15 +290,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v22 = [objc_opt_class() _imageNamed:@"UniversalAddControlAdd" compatibleWithTraitCollection:v65];
+  v22 = [objc_opt_class() _imageNamed:@"UniversalAddControlAdd" compatibleWithTraitCollection:traitCollection];
   __asm { FMOV            V1.2D, #3.0 }
 
   if (self->_displayStyle == 1)
   {
     v62 = _Q1;
-    v38 = [(MPAddKeepLocalControl *)self filledTintColor];
+    filledTintColor = [(MPAddKeepLocalControl *)self filledTintColor];
     _Q1 = v62;
-    v21 = v38;
+    v21 = filledTintColor;
   }
 
   else
@@ -321,8 +321,8 @@ LABEL_37:
       v44 = self->_controlImageView;
       self->_controlImageView = v43;
 
-      v45 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
-      [v45 addSubview:self->_controlImageView];
+      _currentContentSuperview3 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
+      [_currentContentSuperview3 addSubview:self->_controlImageView];
 
       controlImageView = self->_controlImageView;
     }
@@ -351,12 +351,12 @@ LABEL_43:
   {
     if (!controlTitleLabel)
     {
-      v49 = [objc_opt_class() _newControlTitleLabel];
+      _newControlTitleLabel = [objc_opt_class() _newControlTitleLabel];
       v50 = self->_controlTitleLabel;
-      self->_controlTitleLabel = v49;
+      self->_controlTitleLabel = _newControlTitleLabel;
 
-      v51 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
-      [v51 addSubview:self->_controlTitleLabel];
+      _currentContentSuperview4 = [(MPAddKeepLocalControl *)self _currentContentSuperview];
+      [_currentContentSuperview4 addSubview:self->_controlTitleLabel];
     }
 
     [(MPAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
@@ -398,8 +398,8 @@ LABEL_49:
   }
 
   v9 = v8 * 0.5;
-  v10 = [(UIView *)self->_backgroundView layer];
-  [v10 setCornerRadius:v9];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:v9];
 }
 
 - (void)_updateControlTitleLabelVisualProperties
@@ -407,7 +407,7 @@ LABEL_49:
   if (self->_controlStatus.statusType == 5)
   {
     controlTitleLabel = self->_controlTitleLabel;
-    v3 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
   else
@@ -422,10 +422,10 @@ LABEL_49:
     {
       [(MPAddKeepLocalControl *)self tintColor];
     }
-    v3 = ;
+    systemGrayColor = ;
   }
 
-  v4 = v3;
+  v4 = systemGrayColor;
   [(UILabel *)controlTitleLabel setTextColor:?];
 }
 
@@ -447,8 +447,8 @@ LABEL_49:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIView *)self->_transientContentView subviews];
-  v4 = [v3 copy];
+  subviews = [(UIView *)self->_transientContentView subviews];
+  v4 = [subviews copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -509,8 +509,8 @@ LABEL_49:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(MPAddKeepLocalControl *)self subviews];
-    v8 = [v7 copy];
+    subviews = [(MPAddKeepLocalControl *)self subviews];
+    v8 = [subviews copy];
 
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
@@ -545,21 +545,21 @@ LABEL_49:
   }
 }
 
-- (id)titleForControlStatusType:(int64_t)a3
+- (id)titleForControlStatusType:(int64_t)type
 {
   controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)controlStatusTypeToTitle objectForKey:v4];
 
   return v5;
 }
 
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type
 {
-  v11 = a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  titleCopy = title;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
-  if (v11)
+  if (titleCopy)
   {
     if (!controlStatusTypeToTitle)
     {
@@ -570,7 +570,7 @@ LABEL_49:
       controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
     }
 
-    [(NSMutableDictionary *)controlStatusTypeToTitle setObject:v11 forKey:v6];
+    [(NSMutableDictionary *)controlStatusTypeToTitle setObject:titleCopy forKey:v6];
   }
 
   else
@@ -583,15 +583,15 @@ LABEL_49:
     }
   }
 
-  if (self->_controlStatus.statusType == a4)
+  if (self->_controlStatus.statusType == type)
   {
     [(MPAddKeepLocalControl *)self _updateControlStatusProperties];
   }
 }
 
-- (void)setFilledTintColor:(id)a3
+- (void)setFilledTintColor:(id)color
 {
-  objc_storeStrong(&self->_filledTintColor, a3);
+  objc_storeStrong(&self->_filledTintColor, color);
   if (self->_displayStyle == 1)
   {
     [(MPAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
@@ -600,18 +600,18 @@ LABEL_49:
   }
 }
 
-- (void)setControlStatus:(MPAddKeepLocalControlStatus)a3 animated:(BOOL)a4
+- (void)setControlStatus:(MPAddKeepLocalControlStatus)status animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   p_controlStatus = &self->_controlStatus;
   statusType = self->_controlStatus.statusType;
-  if (statusType == a3.statusType && vabdd_f64(self->_controlStatus.downloadProgress, a3.downloadProgress) <= 0.00000011920929)
+  if (statusType == status.statusType && vabdd_f64(self->_controlStatus.downloadProgress, status.downloadProgress) <= 0.00000011920929)
   {
     return;
   }
 
-  p_controlStatus->statusType = a3.statusType;
-  self->_controlStatus.downloadProgress = a3.downloadProgress;
+  p_controlStatus->statusType = status.statusType;
+  self->_controlStatus.downloadProgress = status.downloadProgress;
   v8 = self->_controlStatusRevision + 1;
   self->_controlStatusRevision = v8;
   v9 = p_controlStatus->statusType;
@@ -624,7 +624,7 @@ LABEL_49:
     aBlock[4] = self;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:134 delay:v12 options:0 animations:0.25 completion:0.0];
     }
@@ -644,8 +644,8 @@ LABEL_49:
       goto LABEL_15;
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   else
@@ -655,16 +655,16 @@ LABEL_49:
       goto LABEL_15;
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
 LABEL_15:
-  v14 = [(MPAddKeepLocalControl *)self traitCollection];
-  v15 = [v14 preferredContentSizeCategory];
-  v16 = [v15 isEqualToString:*MEMORY[0x1E69DDC90]];
+  traitCollection = [(MPAddKeepLocalControl *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v16 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC90]];
 
-  v17 = statusType != 4 || !v4;
+  v17 = statusType != 4 || !animatedCopy;
   if (v17 || p_controlStatus->statusType != 5)
   {
     if ((v16 & 1) == 0)
@@ -717,22 +717,22 @@ void *__51__MPAddKeepLocalControl_setControlStatus_animated___block_invoke_4(uin
   return result;
 }
 
-- (void)setDisplayStyle:(int64_t)a3
+- (void)setDisplayStyle:(int64_t)style
 {
-  if (self->_displayStyle != a3)
+  if (self->_displayStyle != style)
   {
-    self->_displayStyle = a3;
+    self->_displayStyle = style;
     [(MPAddKeepLocalControl *)self _updateControlStatusProperties];
 
     [(MPAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
   }
 }
 
-- (void)setAllowsAddImage:(BOOL)a3
+- (void)setAllowsAddImage:(BOOL)image
 {
-  if (self->_allowsAddImage != a3)
+  if (self->_allowsAddImage != image)
   {
-    self->_allowsAddImage = a3;
+    self->_allowsAddImage = image;
     if (self->_controlStatus.statusType == 1)
     {
       [(MPAddKeepLocalControl *)self _updateControlStatusProperties];
@@ -740,19 +740,19 @@ void *__51__MPAddKeepLocalControl_setControlStatus_animated___block_invoke_4(uin
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(MPAddKeepLocalControl *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(MPAddKeepLocalControl *)self isHighlighted];
   v12.receiver = self;
   v12.super_class = MPAddKeepLocalControl;
-  [(MPAddKeepLocalControl *)&v12 setHighlighted:v3];
-  v6 = [(MPAddKeepLocalControl *)self isHighlighted];
-  if (v5 != v6)
+  [(MPAddKeepLocalControl *)&v12 setHighlighted:highlightedCopy];
+  isHighlighted2 = [(MPAddKeepLocalControl *)self isHighlighted];
+  if (isHighlighted != isHighlighted2)
   {
-    v7 = v6;
+    v7 = isHighlighted2;
     v8 = 1.0;
-    if (v6)
+    if (isHighlighted2)
     {
       [(MPAddKeepLocalControl *)self _beginTransientContentViewTransaction];
       v8 = 0.2;
@@ -797,45 +797,45 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MPAddKeepLocalControl;
-  [(MPAddKeepLocalControl *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MPAddKeepLocalControl *)&v5 touchesEnded:ended withEvent:event];
   self->_hadFirstTouchHighlight = 0;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MPAddKeepLocalControl;
-  [(MPAddKeepLocalControl *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MPAddKeepLocalControl *)&v5 touchesCancelled:cancelled withEvent:event];
   self->_hadFirstTouchHighlight = 0;
 }
 
-- (void)setContentHorizontalAlignment:(int64_t)a3
+- (void)setContentHorizontalAlignment:(int64_t)alignment
 {
-  v5 = [(MPAddKeepLocalControl *)self contentHorizontalAlignment];
+  contentHorizontalAlignment = [(MPAddKeepLocalControl *)self contentHorizontalAlignment];
   v6.receiver = self;
   v6.super_class = MPAddKeepLocalControl;
-  [(MPAddKeepLocalControl *)&v6 setContentHorizontalAlignment:a3];
-  if (v5 != [(MPAddKeepLocalControl *)self contentHorizontalAlignment])
+  [(MPAddKeepLocalControl *)&v6 setContentHorizontalAlignment:alignment];
+  if (contentHorizontalAlignment != [(MPAddKeepLocalControl *)self contentHorizontalAlignment])
   {
     [(MPAddKeepLocalControl *)self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = MPAddKeepLocalControl;
-  [(MPAddKeepLocalControl *)&v11 traitCollectionDidChange:v4];
-  v5 = [(MPAddKeepLocalControl *)self traitCollection];
-  [v5 displayScale];
+  [(MPAddKeepLocalControl *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MPAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
-  [v4 displayScale];
-  if (vabdd_f64(v8, v7) >= 0.00000011920929 || ([v5 preferredContentSizeCategory], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "preferredContentSizeCategory"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v9 != v10))
+  [changeCopy displayScale];
+  if (vabdd_f64(v8, v7) >= 0.00000011920929 || ([traitCollection preferredContentSizeCategory], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(changeCopy, "preferredContentSizeCategory"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v9 != v10))
   {
     [(MPAddKeepLocalControl *)self _updateControlStatusProperties];
   }
@@ -848,10 +848,10 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
   v4.receiver = self;
   v4.super_class = MPAddKeepLocalControl;
   [(MPAddKeepLocalControl *)&v4 tintColorDidChange];
-  v3 = [(MPAddKeepLocalControl *)self tintColor];
+  tintColor = [(MPAddKeepLocalControl *)self tintColor];
   if (self->_displayStyle == 1)
   {
-    [(UIView *)self->_backgroundView setBackgroundColor:v3];
+    [(UIView *)self->_backgroundView setBackgroundColor:tintColor];
   }
 
   [(MPAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
@@ -861,15 +861,15 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v5 = objc_opt_class();
   statusType = self->_controlStatus.statusType;
   v7 = [(MPAddKeepLocalControl *)self titleForControlStatusType:statusType];
   v8 = self->_allowsAddImage || self->_controlStatus.statusType != 1;
-  v9 = [(MPAddKeepLocalControl *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(MPAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
   [v5 _expectedSizeForControlStatusType:statusType controlTitle:v7 hasControlImage:v8 displayScale:MPFloatGetSafeScaleForValue(v10) preferredHeight:height];
   v12 = v11;
   v14 = v13;
@@ -881,7 +881,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
   return result;
 }
 
-- (CGSize)maximumSizeWithPreferredHeight:(double)a3
+- (CGSize)maximumSizeWithPreferredHeight:(double)height
 {
   v5 = [(MPAddKeepLocalControl *)self traitCollection:0];
   [v5 displayScale];
@@ -896,7 +896,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
     v12 = objc_opt_class();
     v13 = [(MPAddKeepLocalControl *)self titleForControlStatusType:v11];
     v14 = self->_allowsAddImage || self->_controlStatus.statusType != 1;
-    [v12 _expectedSizeForControlStatusType:v11 controlTitle:v13 hasControlImage:v14 displayScale:MPFloatGetSafeScaleForValue(SafeScaleForValue) preferredHeight:a3];
+    [v12 _expectedSizeForControlStatusType:v11 controlTitle:v13 hasControlImage:v14 displayScale:MPFloatGetSafeScaleForValue(SafeScaleForValue) preferredHeight:height];
     v16 = v15;
     v18 = v17;
 
@@ -931,8 +931,8 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MPAddKeepLocalControl *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MPAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
   SafeScaleForValue = MPFloatGetSafeScaleForValue(v12);
 
   [(UILabel *)self->_controlTitleLabel frame];
@@ -941,7 +941,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
   [(UILabel *)self->_controlTitleLabel sizeThatFits:1.79769313e308, 1.79769313e308];
   v18 = v17;
   v20 = v19;
-  v21 = [(MPAddKeepLocalControl *)self contentHorizontalAlignment];
+  contentHorizontalAlignment = [(MPAddKeepLocalControl *)self contentHorizontalAlignment];
   controlImageView = self->_controlImageView;
   v142 = SafeScaleForValue;
   if (controlImageView)
@@ -949,8 +949,8 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
     statusType = self->_controlStatus.statusType;
     [(UIImageView *)controlImageView frame];
     v141 = v4;
-    v24 = [(UILabel *)self->_controlTitleLabel text];
-    v25 = [v24 length];
+    text = [(UILabel *)self->_controlTitleLabel text];
+    v25 = [text length];
 
     v26 = fmin(v8, 45.0);
     v27 = fmin(v10, 45.0);
@@ -969,8 +969,8 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
     v33 = v32;
     rect_24 = v34;
     rect_8 = v35;
-    v36 = [(UILabel *)self->_controlTitleLabel text];
-    v37 = [v36 length];
+    text2 = [(UILabel *)self->_controlTitleLabel text];
+    v37 = [text2 length];
 
     if (v37)
     {
@@ -989,7 +989,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
       v133 = v33;
       v130 = v47;
       v122 = v6 + 0.0;
-      if (v21 == 2)
+      if (contentHorizontalAlignment == 2)
       {
         v148.origin.x = v4 + 5.0;
         v148.origin.y = v6 + 0.0;
@@ -1024,7 +1024,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
         v48 = v40;
         v49 = rect_8;
         v50 = rect_24;
-        if (v21 == 1)
+        if (contentHorizontalAlignment == 1)
         {
           v144.size.width = v130;
           v144.origin.x = v141 + 5.0;
@@ -1097,9 +1097,9 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
       v157.origin.y = v122;
       v157.size.height = v10;
       v75 = CGRectGetWidth(v157);
-      v76 = [(MPAddKeepLocalControl *)self traitCollection];
-      v77 = [v76 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v77);
+      traitCollection2 = [(MPAddKeepLocalControl *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (!IsAccessibilityCategory)
       {
@@ -1147,7 +1147,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
       goto LABEL_32;
     }
 
-    if (v21 == 2)
+    if (contentHorizontalAlignment == 2)
     {
       v161.origin.x = v4;
       v161.origin.y = v6;
@@ -1163,7 +1163,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
       v33 = v93;
     }
 
-    else if (v21 == 1)
+    else if (contentHorizontalAlignment == 1)
     {
       v147.origin.x = v4;
       v147.origin.y = v6;
@@ -1189,15 +1189,15 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
 
   else
   {
-    v54 = [(UILabel *)self->_controlTitleLabel text];
-    v55 = [v54 length];
+    text3 = [(UILabel *)self->_controlTitleLabel text];
+    v55 = [text3 length];
 
     if (!v55)
     {
       goto LABEL_33;
     }
 
-    if (v21 == 2)
+    if (contentHorizontalAlignment == 2)
     {
       v159.origin.x = v4;
       v159.origin.y = v6;
@@ -1214,7 +1214,7 @@ uint64_t __40__MPAddKeepLocalControl_setHighlighted___block_invoke_2(uint64_t re
       CGRectGetWidth(v160);
     }
 
-    else if (v21 == 1)
+    else if (contentHorizontalAlignment == 1)
     {
       v146.origin.x = v4;
       v146.origin.y = v6;
@@ -1291,7 +1291,7 @@ LABEL_33:
   [(MPDownloadProgressView *)self->_downloadProgressView frame];
   v111 = v110;
   v113 = v112;
-  if (v21 == 2)
+  if (contentHorizontalAlignment == 2)
   {
     v167.origin.x = v4;
     v167.origin.y = v6;
@@ -1309,7 +1309,7 @@ LABEL_33:
 
   else
   {
-    if (v21 != 1)
+    if (contentHorizontalAlignment != 1)
     {
       UIRectCenteredIntegralRectScale();
       v113 = v118;
@@ -1336,10 +1336,10 @@ LABEL_44:
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MPAddKeepLocalControl *)self bounds];
   v7 = v15.origin.x;
   v8 = v15.origin.y;
@@ -1367,8 +1367,8 @@ LABEL_44:
     return 1;
   }
 
-  v13 = [(UILabel *)self->_controlTitleLabel text];
-  if ([v13 length])
+  text = [(UILabel *)self->_controlTitleLabel text];
+  if ([text length])
   {
     v11 = 1;
   }
@@ -1381,19 +1381,19 @@ LABEL_44:
   return v11;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(MPAddKeepLocalControl *)self pointInside:a4 withEvent:a3.x, a3.y]&& [(MPAddKeepLocalControl *)self isEnabled])
+  if ([(MPAddKeepLocalControl *)self pointInside:event withEvent:test.x, test.y]&& [(MPAddKeepLocalControl *)self isEnabled])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)didMoveToWindow
@@ -1411,8 +1411,8 @@ LABEL_44:
 {
   if (self->_controlStatus.statusType == 3)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   v4.receiver = self;
@@ -1420,37 +1420,37 @@ LABEL_44:
   [(MPAddKeepLocalControl *)&v4 dealloc];
 }
 
-- (MPAddKeepLocalControl)initWithFrame:(CGRect)a3
+- (MPAddKeepLocalControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MPAddKeepLocalControl;
-  v3 = [(MPAddKeepLocalControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPAddKeepLocalControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_allowsAddImage = 1;
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     filledTintColor = v4->_filledTintColor;
-    v4->_filledTintColor = v5;
+    v4->_filledTintColor = whiteColor;
   }
 
   [(MPAddKeepLocalControl *)v4 setScaleImageForAccessibility:1];
   return v4;
 }
 
-+ (id)_imageNamed:(id)a3 compatibleWithTraitCollection:(id)a4
++ (id)_imageNamed:(id)named compatibleWithTraitCollection:(id)collection
 {
   v5 = MEMORY[0x1E69DCAB8];
   v6 = MEMORY[0x1E696AAE8];
-  v7 = a4;
-  v8 = a3;
+  collectionCopy = collection;
+  namedCopy = named;
   v9 = [v6 bundleForClass:objc_opt_class()];
-  v10 = [v5 imageNamed:v8 inBundle:v9 compatibleWithTraitCollection:v7];
+  v10 = [v5 imageNamed:namedCopy inBundle:v9 compatibleWithTraitCollection:collectionCopy];
 
   return v10;
 }
 
-+ (id)controlTitleFontForControlStatusType:(int64_t)a3
++ (id)controlTitleFontForControlStatusType:(int64_t)type
 {
   v3 = MEMORY[0x1E69DB878];
   [MEMORY[0x1E69DB878] smallSystemFontSize];
@@ -1462,41 +1462,41 @@ LABEL_44:
 {
   v2 = objc_alloc(MEMORY[0x1E69DCC10]);
   v3 = [v2 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   return v3;
 }
 
-+ (CGSize)_expectedSizeForControlStatusType:(int64_t)a3 controlTitle:(id)a4 hasControlImage:(BOOL)a5 displayScale:(double)a6 preferredHeight:(double)a7
++ (CGSize)_expectedSizeForControlStatusType:(int64_t)type controlTitle:(id)title hasControlImage:(BOOL)image displayScale:(double)scale preferredHeight:(double)height
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = v12;
+  imageCopy = image;
+  titleCopy = title;
+  v13 = titleCopy;
   v15 = *MEMORY[0x1E695F060];
-  v14 = *(MEMORY[0x1E695F060] + 8);
-  if (a3)
+  heightCopy2 = *(MEMORY[0x1E695F060] + 8);
+  if (type)
   {
-    if ([v12 length])
+    if ([titleCopy length])
     {
-      v16 = [a1 _newControlTitleLabel];
-      v17 = [a1 controlTitleFontForControlStatusType:a3];
-      [v16 setFont:v17];
+      _newControlTitleLabel = [self _newControlTitleLabel];
+      v17 = [self controlTitleFontForControlStatusType:type];
+      [_newControlTitleLabel setFont:v17];
 
-      [v16 setText:v13];
-      [v16 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+      [_newControlTitleLabel setText:v13];
+      [_newControlTitleLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
       v19 = v18;
       v21 = v20;
-      SafeScaleForValue = MPFloatGetSafeScaleForValue(a6);
+      SafeScaleForValue = MPFloatGetSafeScaleForValue(scale);
       v23 = ceil(SafeScaleForValue * v19) / SafeScaleForValue;
-      if (v9)
+      if (imageCopy)
       {
-        v14 = fmax(v21, 28.0);
+        heightCopy2 = fmax(v21, 28.0);
         v24 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
         [v24 _scaledValueForValue:8.0];
         v26 = v15 + v23 + 5.0 + v25;
 
-        v15 = v14 + v26;
+        v15 = heightCopy2 + v26;
       }
 
       else
@@ -1506,30 +1506,30 @@ LABEL_44:
         v15 = v15 + v23 + v28 * 2.0;
       }
 
-      if (v14 <= a7)
+      if (heightCopy2 <= height)
       {
-        v14 = a7;
+        heightCopy2 = height;
       }
     }
 
     else
     {
-      if (a7 >= 28.0)
+      if (height >= 28.0)
       {
-        v14 = a7;
+        heightCopy2 = height;
       }
 
       else
       {
-        v14 = 28.0;
+        heightCopy2 = 28.0;
       }
 
-      v15 = v14;
+      v15 = heightCopy2;
     }
   }
 
   v29 = v15;
-  v30 = v14;
+  v30 = heightCopy2;
   result.height = v30;
   result.width = v29;
   return result;

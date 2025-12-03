@@ -1,14 +1,14 @@
 @interface CACCustomCommandActionTextViewCell
-- (CACCustomCommandActionTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CACCustomCommandActionTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation CACCustomCommandActionTextViewCell
 
-- (CACCustomCommandActionTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CACCustomCommandActionTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v22.receiver = self;
   v22.super_class = CACCustomCommandActionTextViewCell;
-  v4 = [(CACCustomCommandActionTextViewCell *)&v22 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CACCustomCommandActionTextViewCell *)&v22 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75C40]);
@@ -24,25 +24,25 @@
     v10 = [v8 initWithString:v9];
     [(UITextView *)v4->_textView setAttributedPlaceholder:v10];
 
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v4->_textView setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v4->_textView setBackgroundColor:clearColor];
 
-    v12 = [(CACCustomCommandActionTextViewCell *)v4 contentView];
-    [v12 addSubview:v4->_textView];
+    contentView = [(CACCustomCommandActionTextViewCell *)v4 contentView];
+    [contentView addSubview:v4->_textView];
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = MEMORY[0x277CCAAD0];
     v15 = v4->_textView;
-    v16 = [(CACCustomCommandActionTextViewCell *)v4 contentView];
-    v17 = [v16 layoutMarginsGuide];
-    v18 = [v14 ax_constraintsToMakeItem:v15 sameDimensionsAsItem:v17];
-    [v13 addObjectsFromArray:v18];
+    contentView2 = [(CACCustomCommandActionTextViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    v18 = [v14 ax_constraintsToMakeItem:v15 sameDimensionsAsItem:layoutMarginsGuide];
+    [array addObjectsFromArray:v18];
 
-    v19 = [(UITextView *)v4->_textView heightAnchor];
-    v20 = [v19 constraintEqualToConstant:200.0];
-    [v13 addObject:v20];
+    heightAnchor = [(UITextView *)v4->_textView heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:200.0];
+    [array addObject:v20];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v13];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v4;

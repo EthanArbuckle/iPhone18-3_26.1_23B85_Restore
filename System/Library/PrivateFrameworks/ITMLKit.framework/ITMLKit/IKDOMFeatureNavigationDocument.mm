@@ -1,44 +1,44 @@
 @interface IKDOMFeatureNavigationDocument
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppContext)appContext;
-- (IKDOMFeatureNavigationDocument)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (IKDOMFeatureNavigationDocument)initWithDOMNode:(id)node featureName:(id)name;
 - (id)documents;
 - (void)clear;
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5;
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options;
 - (void)popDocument;
-- (void)popToDocument:(id)a3;
+- (void)popToDocument:(id)document;
 - (void)popToRootDocument;
-- (void)pushDocument:(id)a3 options:(id)a4;
-- (void)removeDocument:(id)a3;
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5;
-- (void)setNavigationController:(id)a3;
+- (void)pushDocument:(id)document options:(id)options;
+- (void)removeDocument:(id)document;
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options;
+- (void)setNavigationController:(id)controller;
 @end
 
 @implementation IKDOMFeatureNavigationDocument
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = [IKJSNavigationDocument alloc];
-  v5 = [v3 appContext];
-  v6 = [(IKJSNavigationDocument *)v4 initWithAppContext:v5 navigationController:v3];
+  appContext = [featureCopy appContext];
+  v6 = [(IKJSNavigationDocument *)v4 initWithAppContext:appContext navigationController:featureCopy];
 
   return v6;
 }
 
-- (IKDOMFeatureNavigationDocument)initWithDOMNode:(id)a3 featureName:(id)a4
+- (IKDOMFeatureNavigationDocument)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = IKDOMFeatureNavigationDocument;
   v8 = [(IKDOMFeatureNavigationDocument *)&v15 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v10;
 
@@ -50,68 +50,68 @@
   return v8;
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   p_appNavigationController = &self->_appNavigationController;
-  if (self->_appNavigationController != v5)
+  if (self->_appNavigationController != controllerCopy)
   {
-    objc_storeStrong(&self->_appNavigationController, a3);
+    objc_storeStrong(&self->_appNavigationController, controller);
     if ([(NSMutableArray *)self->_stackItems count])
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v7 = [(NSMutableArray *)self->_stackItems reverseObjectEnumerator];
-      v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      reverseObjectEnumerator = [(NSMutableArray *)self->_stackItems reverseObjectEnumerator];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
         v9 = v8;
-        v19 = self;
-        v20 = v5;
-        v10 = 0;
+        selfCopy = self;
+        v20 = controllerCopy;
+        document2 = 0;
         v11 = *v22;
         do
         {
           v12 = 0;
-          v13 = v10;
+          v13 = document2;
           do
           {
             if (*v22 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v14 = *(*(&v21 + 1) + 8 * v12);
             v15 = *p_appNavigationController;
-            v16 = [v14 document];
-            v17 = [v14 options];
+            document = [v14 document];
+            options = [v14 options];
             if (v13)
             {
-              [(IKAppNavigationController *)v15 insertDocument:v16 beforeDocument:v13 options:v17];
+              [(IKAppNavigationController *)v15 insertDocument:document beforeDocument:v13 options:options];
             }
 
             else
             {
-              [(IKAppNavigationController *)v15 pushDocument:v16 options:v17];
+              [(IKAppNavigationController *)v15 pushDocument:document options:options];
             }
 
-            v10 = [v14 document];
+            document2 = [v14 document];
 
             ++v12;
-            v13 = v10;
+            v13 = document2;
           }
 
           while (v9 != v12);
-          v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v9);
 
-        self = v19;
-        v5 = v20;
+        self = selfCopy;
+        controllerCopy = v20;
       }
 
       [(NSMutableArray *)self->_stackItems removeAllObjects];
@@ -121,36 +121,36 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pushDocument:(id)a3 options:(id)a4
+- (void)pushDocument:(id)document options:(id)options
 {
   appNavigationController = self->_appNavigationController;
   if (appNavigationController)
   {
-    v6 = a4;
-    v10 = a3;
+    optionsCopy = options;
+    documentCopy = document;
     [IKAppNavigationController pushDocument:"pushDocument:options:" options:?];
   }
 
   else
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [[IKNavigationItem alloc] initWithDocument:v9 presentationOptions:v8];
+    optionsCopy2 = options;
+    documentCopy2 = document;
+    documentCopy = [[IKNavigationItem alloc] initWithDocument:documentCopy2 presentationOptions:optionsCopy2];
 
-    [(NSMutableArray *)self->_stackItems addObject:v10];
+    [(NSMutableArray *)self->_stackItems addObject:documentCopy];
   }
 }
 
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options
 {
-  v8 = a4;
-  v9 = v8;
+  beforeDocumentCopy = beforeDocument;
+  v9 = beforeDocumentCopy;
   appNavigationController = self->_appNavigationController;
   if (appNavigationController)
   {
-    v11 = a5;
-    v12 = a3;
-    [(IKAppNavigationController *)appNavigationController insertDocument:v12 beforeDocument:v9 options:v11];
+    optionsCopy = options;
+    documentCopy = document;
+    [(IKAppNavigationController *)appNavigationController insertDocument:documentCopy beforeDocument:v9 options:optionsCopy];
   }
 
   else
@@ -160,11 +160,11 @@
     v19[1] = 3221225472;
     v19[2] = __72__IKDOMFeatureNavigationDocument_insertDocument_beforeDocument_options___block_invoke;
     v19[3] = &unk_279799360;
-    v20 = v8;
-    v14 = a5;
-    v15 = a3;
+    v20 = beforeDocumentCopy;
+    optionsCopy2 = options;
+    documentCopy2 = document;
     v16 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v19];
-    v17 = [[IKNavigationItem alloc] initWithDocument:v15 presentationOptions:v14];
+    v17 = [[IKNavigationItem alloc] initWithDocument:documentCopy2 presentationOptions:optionsCopy2];
 
     v18 = self->_stackItems;
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -177,7 +177,7 @@
       [(NSMutableArray *)v18 insertObject:v17 atIndex:v16];
     }
 
-    v12 = v20;
+    documentCopy = v20;
   }
 }
 
@@ -189,16 +189,16 @@ BOOL __72__IKDOMFeatureNavigationDocument_insertDocument_beforeDocument_options_
   return v4;
 }
 
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options
 {
-  v8 = a3;
-  v9 = v8;
+  documentCopy = document;
+  v9 = documentCopy;
   appNavigationController = self->_appNavigationController;
   if (appNavigationController)
   {
-    v11 = a5;
-    v12 = a4;
-    [(IKAppNavigationController *)appNavigationController replaceDocument:v9 withDocument:v12 options:v11];
+    optionsCopy = options;
+    withDocumentCopy = withDocument;
+    [(IKAppNavigationController *)appNavigationController replaceDocument:v9 withDocument:withDocumentCopy options:optionsCopy];
   }
 
   else
@@ -208,11 +208,11 @@ BOOL __72__IKDOMFeatureNavigationDocument_insertDocument_beforeDocument_options_
     v19[1] = 3221225472;
     v19[2] = __71__IKDOMFeatureNavigationDocument_replaceDocument_withDocument_options___block_invoke;
     v19[3] = &unk_279799360;
-    v20 = v8;
-    v14 = a5;
-    v15 = a4;
+    v20 = documentCopy;
+    optionsCopy2 = options;
+    withDocumentCopy2 = withDocument;
     v16 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v19];
-    v17 = [[IKNavigationItem alloc] initWithDocument:v15 presentationOptions:v14];
+    v17 = [[IKNavigationItem alloc] initWithDocument:withDocumentCopy2 presentationOptions:optionsCopy2];
 
     v18 = self->_stackItems;
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -225,7 +225,7 @@ BOOL __72__IKDOMFeatureNavigationDocument_insertDocument_beforeDocument_options_
       [(NSMutableArray *)v18 replaceObjectAtIndex:v16 withObject:v17];
     }
 
-    v12 = v20;
+    withDocumentCopy = v20;
   }
 }
 
@@ -251,13 +251,13 @@ BOOL __71__IKDOMFeatureNavigationDocument_replaceDocument_withDocument_options__
   }
 }
 
-- (void)popToDocument:(id)a3
+- (void)popToDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   appNavigationController = self->_appNavigationController;
   if (appNavigationController)
   {
-    [(IKAppNavigationController *)appNavigationController popToDocument:v4];
+    [(IKAppNavigationController *)appNavigationController popToDocument:documentCopy];
   }
 
   else
@@ -267,7 +267,7 @@ BOOL __71__IKDOMFeatureNavigationDocument_replaceDocument_withDocument_options__
     v8[1] = 3221225472;
     v8[2] = __48__IKDOMFeatureNavigationDocument_popToDocument___block_invoke;
     v8[3] = &unk_279799360;
-    v9 = v4;
+    v9 = documentCopy;
     v7 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v8];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -306,13 +306,13 @@ BOOL __48__IKDOMFeatureNavigationDocument_popToDocument___block_invoke(uint64_t 
   }
 }
 
-- (void)removeDocument:(id)a3
+- (void)removeDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   appNavigationController = self->_appNavigationController;
   if (appNavigationController)
   {
-    [(IKAppNavigationController *)appNavigationController removeDocument:v4];
+    [(IKAppNavigationController *)appNavigationController removeDocument:documentCopy];
   }
 
   else
@@ -322,7 +322,7 @@ BOOL __48__IKDOMFeatureNavigationDocument_popToDocument___block_invoke(uint64_t 
     v8[1] = 3221225472;
     v8[2] = __49__IKDOMFeatureNavigationDocument_removeDocument___block_invoke;
     v8[3] = &unk_279799360;
-    v9 = v4;
+    v9 = documentCopy;
     v7 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v8];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -345,12 +345,12 @@ BOOL __49__IKDOMFeatureNavigationDocument_removeDocument___block_invoke(uint64_t
   appNavigationController = self->_appNavigationController;
   if (appNavigationController)
   {
-    v4 = [(IKAppNavigationController *)appNavigationController documents];
+    documents = [(IKAppNavigationController *)appNavigationController documents];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    documents = [MEMORY[0x277CBEB18] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -370,8 +370,8 @@ BOOL __49__IKDOMFeatureNavigationDocument_removeDocument___block_invoke(uint64_t
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) document];
-          [v4 addObject:v10];
+          document = [*(*(&v13 + 1) + 8 * i) document];
+          [documents addObject:document];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -383,7 +383,7 @@ BOOL __49__IKDOMFeatureNavigationDocument_removeDocument___block_invoke(uint64_t
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return documents;
 }
 
 - (void)clear

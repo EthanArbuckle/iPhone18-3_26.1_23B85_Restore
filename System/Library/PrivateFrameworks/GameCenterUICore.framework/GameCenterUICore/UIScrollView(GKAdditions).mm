@@ -6,15 +6,15 @@
 
 - (double)_gkPercentScrolled
 {
-  [a1 contentSize];
-  [a1 frame];
+  [self contentSize];
+  [self frame];
   CGRectGetHeight(v7);
-  [a1 contentOffset];
-  [a1 contentSize];
+  [self contentOffset];
+  [self contentSize];
   v3 = v2;
-  [a1 frame];
+  [self frame];
   v4 = v3 - CGRectGetWidth(v8);
-  [a1 contentOffset];
+  [self contentOffset];
   return v5 / v4;
 }
 

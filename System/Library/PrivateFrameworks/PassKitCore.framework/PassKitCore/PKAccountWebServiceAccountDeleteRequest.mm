@@ -1,13 +1,13 @@
 @interface PKAccountWebServiceAccountDeleteRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAccountDeleteRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   if (!PKRunningInPassd())
   {
     v9 = 0;
@@ -35,7 +35,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@ LABEL_14:
   v15[0] = @"accounts";
   v15[1] = accountIdentifier;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v7 queryParameters:0 appleAccountInformation:v4];
+  v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v7 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v8 setHTTPMethod:@"DELETE"];
   v9 = [v8 copy];

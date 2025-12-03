@@ -1,6 +1,6 @@
 @interface ATXHeuristicBirthdayContact
-- (id)_spotlightActionWithName:(id)a3 email:(id)a4 identifier:(id)a5 startDate:(id)a6 endDate:(id)a7 subtitle:(id)a8;
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)_spotlightActionWithName:(id)name email:(id)email identifier:(id)identifier startDate:(id)date endDate:(id)endDate subtitle:(id)subtitle;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
 @end
 
@@ -17,14 +17,14 @@
   return v5;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  environmentCopy = environment;
   v4 = [ATXBirthdaysDataSource alloc];
-  v36 = v3;
-  v5 = [v3 heuristicDevice];
-  v6 = [(ATXBirthdaysDataSource *)v4 initWithDevice:v5];
+  v36 = environmentCopy;
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v6 = [(ATXBirthdaysDataSource *)v4 initWithDevice:heuristicDevice];
 
   v55 = 0;
   v56 = &v55;
@@ -89,11 +89,11 @@
         {
           v16 = [v13 obj];
           v17 = [v12 objectForKeyedSubscript:@"fullName"];
-          v18 = [v43 firstObject];
+          firstObject = [v43 firstObject];
           v19 = [v12 objectForKeyedSubscript:@"identifier"];
-          v20 = [v16 startDate];
-          v21 = [v16 endDate];
-          v22 = [(ATXHeuristicBirthdayContact *)self _spotlightActionWithName:v17 email:v18 identifier:v19 startDate:v20 endDate:v21 subtitle:0];
+          startDate = [v16 startDate];
+          endDate = [v16 endDate];
+          v22 = [(ATXHeuristicBirthdayContact *)self _spotlightActionWithName:v17 email:firstObject identifier:v19 startDate:startDate endDate:endDate subtitle:0];
 
           if (v22)
           {
@@ -170,41 +170,41 @@ void __62__ATXHeuristicBirthdayContact_heuristicResultWithEnvironment___block_in
   *(v9 + 40) = v6;
 }
 
-- (id)_spotlightActionWithName:(id)a3 email:(id)a4 identifier:(id)a5 startDate:(id)a6 endDate:(id)a7 subtitle:(id)a8
+- (id)_spotlightActionWithName:(id)name email:(id)email identifier:(id)identifier startDate:(id)date endDate:(id)endDate subtitle:(id)subtitle
 {
   v35 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  emailCopy = email;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  subtitleCopy = subtitle;
   v19 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138740995;
-    v26 = v13;
+    v26 = nameCopy;
     v27 = 2117;
-    v28 = v14;
+    v28 = emailCopy;
     v29 = 2112;
-    v30 = v15;
+    v30 = identifierCopy;
     v31 = 2117;
-    v32 = v16;
+    v32 = dateCopy;
     v33 = 2117;
-    v34 = v17;
+    v34 = endDateCopy;
     _os_log_impl(&dword_23E3EA000, v19, OS_LOG_TYPE_DEFAULT, "ATXHeuristicBirthdayContact: _spotlightActionWithName name %{sensitive}@, email %{sensitive}@, identifier %@, startDate %{sensitive}@, endDate %{sensitive}@", &v25, 0x34u);
   }
 
-  v20 = [objc_alloc(MEMORY[0x277CEB2D0]) initWithStartDate:v16 endDate:v17 lockScreenEligible:0 predicate:0];
-  if (v13 && v15)
+  v20 = [objc_alloc(MEMORY[0x277CEB2D0]) initWithStartDate:dateCopy endDate:endDateCopy lockScreenEligible:0 predicate:0];
+  if (nameCopy && identifierCopy)
   {
-    v21 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:v13 contactIdentifier:v15 subtitle:v18 criteria:v20];
+    v21 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:nameCopy contactIdentifier:identifierCopy subtitle:subtitleCopy criteria:v20];
     goto LABEL_14;
   }
 
-  if (v13 && v14)
+  if (nameCopy && emailCopy)
   {
-    v21 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:v13 contactEmail:v14 subtitle:v18 criteria:v20];
+    v21 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:nameCopy contactEmail:emailCopy subtitle:subtitleCopy criteria:v20];
     if (v21)
     {
       goto LABEL_14;

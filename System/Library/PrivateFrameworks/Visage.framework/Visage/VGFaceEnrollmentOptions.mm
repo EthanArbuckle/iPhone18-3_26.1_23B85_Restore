@@ -6,7 +6,7 @@
 - (BOOL)ensureEyesOpenOnFrontPose;
 - (BOOL)ensureEyesOpenOnNonFrontPose;
 - (BOOL)ensureNeutralExpressionOnFrontPose;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)sendMetrics;
 - (BOOL)useDepthFovFilter;
 - (BOOL)useDistanceFilter;
@@ -22,7 +22,7 @@
 - (NSArray)requiredExpressions;
 - (NSString)cameraImageColorSpaceName;
 - (VGFaceEnrollmentOptions)init;
-- (VGFaceEnrollmentOptions)initWithCoder:(id)a3;
+- (VGFaceEnrollmentOptions)initWithCoder:(id)coder;
 - (VGFaceSelectionFrustum)frontPoseSelectionFrustum;
 - (VGFaceSelectionFrustum)selectionFrustum;
 - (float)bottomMarginFrontPoseDelta;
@@ -48,34 +48,34 @@
 - (id)description;
 - (unint64_t)requiredPitchPoses;
 - (unint64_t)requiredYawPoses;
-- (void)_setDefaultsWithSuiteName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBottomMarginFrontPoseDelta:(float)a3;
-- (void)setBottomMarginHeadRatio:(float)a3;
-- (void)setBottomMarginPitchPoseDelta:(float)a3;
-- (void)setCameraImageColorSpaceName:(id)a3;
-- (void)setDistanceFilterCloseThreshold:(float)a3;
-- (void)setDistanceFilterFarThreshold:(float)a3;
-- (void)setEyesForwardPitchSensitivity:(float)a3;
-- (void)setEyesForwardYawSensitivity:(float)a3;
-- (void)setEyesOpenSensitivity:(float)a3;
-- (void)setFrontPoseSelectionFrustum:(id)a3;
-- (void)setLeftMarginFrontPoseHeadRatio:(float)a3;
-- (void)setLeftMarginHeadRatio:(float)a3;
-- (void)setNeutralExpressionLowerBound:(float)a3;
-- (void)setNeutralExpressionUpperBound:(float)a3;
-- (void)setPitchLimit:(float)a3;
-- (void)setRequiredExpressions:(id)a3;
-- (void)setRequiredPitchPoses:(unint64_t)a3;
-- (void)setRequiredYawPoses:(unint64_t)a3;
-- (void)setRightMarginFrontPoseHeadRatio:(float)a3;
-- (void)setRightMarginHeadRatio:(float)a3;
-- (void)setSelectionFrustum:(id)a3;
-- (void)setSimpleSelectorMaxOffsetAngle:(float)a3;
-- (void)setSimpleSelectorMinOffsetAngle:(float)a3;
-- (void)setTopMarginHeadRatio:(float)a3;
-- (void)setVnFrontPoseBlinkThreshold:(float)a3;
-- (void)setYawLimit:(float)a3;
+- (void)_setDefaultsWithSuiteName:(id)name;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBottomMarginFrontPoseDelta:(float)delta;
+- (void)setBottomMarginHeadRatio:(float)ratio;
+- (void)setBottomMarginPitchPoseDelta:(float)delta;
+- (void)setCameraImageColorSpaceName:(id)name;
+- (void)setDistanceFilterCloseThreshold:(float)threshold;
+- (void)setDistanceFilterFarThreshold:(float)threshold;
+- (void)setEyesForwardPitchSensitivity:(float)sensitivity;
+- (void)setEyesForwardYawSensitivity:(float)sensitivity;
+- (void)setEyesOpenSensitivity:(float)sensitivity;
+- (void)setFrontPoseSelectionFrustum:(id)frustum;
+- (void)setLeftMarginFrontPoseHeadRatio:(float)ratio;
+- (void)setLeftMarginHeadRatio:(float)ratio;
+- (void)setNeutralExpressionLowerBound:(float)bound;
+- (void)setNeutralExpressionUpperBound:(float)bound;
+- (void)setPitchLimit:(float)limit;
+- (void)setRequiredExpressions:(id)expressions;
+- (void)setRequiredPitchPoses:(unint64_t)poses;
+- (void)setRequiredYawPoses:(unint64_t)poses;
+- (void)setRightMarginFrontPoseHeadRatio:(float)ratio;
+- (void)setRightMarginHeadRatio:(float)ratio;
+- (void)setSelectionFrustum:(id)frustum;
+- (void)setSimpleSelectorMaxOffsetAngle:(float)angle;
+- (void)setSimpleSelectorMinOffsetAngle:(float)angle;
+- (void)setTopMarginHeadRatio:(float)ratio;
+- (void)setVnFrontPoseBlinkThreshold:(float)threshold;
+- (void)setYawLimit:(float)limit;
 @end
 
 @implementation VGFaceEnrollmentOptions
@@ -166,21 +166,21 @@
     v28 = objc_opt_new();
     [(VGFaceCaptureOptions *)v3->_captureOptions setFrontPoseSelectionFrustum:v28];
 
-    v29 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
+    frontPoseSelectionFrustum = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
     LODWORD(v30) = 7.0;
-    [v29 setYawOffsetLeft:v30];
+    [frontPoseSelectionFrustum setYawOffsetLeft:v30];
 
-    v31 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
+    frontPoseSelectionFrustum2 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
     LODWORD(v32) = 7.0;
-    [v31 setYawOffsetRight:v32];
+    [frontPoseSelectionFrustum2 setYawOffsetRight:v32];
 
-    v33 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
+    frontPoseSelectionFrustum3 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
     LODWORD(v34) = 7.0;
-    [v33 setPitchOffsetTop:v34];
+    [frontPoseSelectionFrustum3 setPitchOffsetTop:v34];
 
-    v35 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
+    frontPoseSelectionFrustum4 = [(VGFaceCaptureOptions *)v3->_captureOptions frontPoseSelectionFrustum];
     LODWORD(v36) = 7.0;
-    [v35 setPitchOffsetBottom:v36];
+    [frontPoseSelectionFrustum4 setPitchOffsetBottom:v36];
 
     [(VGFaceEnrollmentOptions *)v3 _setDefaultsWithSuiteName:@"com.apple.visage"];
     v37 = v3;
@@ -189,13 +189,13 @@
   return v3;
 }
 
-- (void)_setDefaultsWithSuiteName:(id)a3
+- (void)_setDefaultsWithSuiteName:(id)name
 {
   v39 = *MEMORY[0x277D85DE8];
   captureOptions = self->_captureOptions;
-  v5 = a3;
-  [(VGFaceCaptureOptions *)captureOptions setDefaultsWithSuiteName:v5];
-  v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v5];
+  nameCopy = name;
+  [(VGFaceCaptureOptions *)captureOptions setDefaultsWithSuiteName:nameCopy];
+  v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
 
   v7 = [v6 objectForKey:@"identityFittingOp"];
 
@@ -382,83 +382,83 @@
 
 - (unint64_t)requiredYawPoses
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 requiredYawPoses];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  requiredYawPoses = [captureOptions requiredYawPoses];
 
-  return v3;
+  return requiredYawPoses;
 }
 
-- (void)setRequiredYawPoses:(unint64_t)a3
+- (void)setRequiredYawPoses:(unint64_t)poses
 {
-  v4 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v4 setRequiredYawPoses:a3];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions setRequiredYawPoses:poses];
 }
 
 - (unint64_t)requiredPitchPoses
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 requiredPitchPoses];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  requiredPitchPoses = [captureOptions requiredPitchPoses];
 
-  return v3;
+  return requiredPitchPoses;
 }
 
-- (void)setRequiredPitchPoses:(unint64_t)a3
+- (void)setRequiredPitchPoses:(unint64_t)poses
 {
-  v4 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v4 setRequiredPitchPoses:a3];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions setRequiredPitchPoses:poses];
 }
 
 - (NSArray)requiredExpressions
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 requiredExpressions];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  requiredExpressions = [captureOptions requiredExpressions];
 
-  return v3;
+  return requiredExpressions;
 }
 
-- (void)setRequiredExpressions:(id)a3
+- (void)setRequiredExpressions:(id)expressions
 {
-  v4 = a3;
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v5 setRequiredExpressions:v4];
+  expressionsCopy = expressions;
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions setRequiredExpressions:expressionsCopy];
 }
 
 - (float)yawLimit
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 yawLimit];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions yawLimit];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setYawLimit:(float)a3
+- (void)setYawLimit:(float)limit
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setYawLimit:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = limit;
+  [captureOptions setYawLimit:v4];
 }
 
 - (float)pitchLimit
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 pitchLimit];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions pitchLimit];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPitchLimit:(float)a3
+- (void)setPitchLimit:(float)limit
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setPitchLimit:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = limit;
+  [captureOptions setPitchLimit:v4];
 }
 
 - (float)eyesForwardYawSensitivity
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 eyesForwardYawSensitivity];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions eyesForwardYawSensitivity];
   v4 = v3;
 
   return v4;
@@ -466,8 +466,8 @@
 
 - (float)eyesForwardPitchSensitivity
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 eyesForwardPitchSensitivity];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions eyesForwardPitchSensitivity];
   v4 = v3;
 
   return v4;
@@ -475,494 +475,494 @@
 
 - (float)eyesOpenSensitivity
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 eyesOpenSensitivity];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions eyesOpenSensitivity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setEyesForwardYawSensitivity:(float)a3
+- (void)setEyesForwardYawSensitivity:(float)sensitivity
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setEyesForwardYawSensitivity:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = sensitivity;
+  [captureOptions setEyesForwardYawSensitivity:v4];
 }
 
 - (float)neutralExpressionLowerBound
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 neutralExpressionLowerBound];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions neutralExpressionLowerBound];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setNeutralExpressionLowerBound:(float)a3
+- (void)setNeutralExpressionLowerBound:(float)bound
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setNeutralExpressionLowerBound:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = bound;
+  [captureOptions setNeutralExpressionLowerBound:v4];
 }
 
 - (float)neutralExpressionUpperBound
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 neutralExpressionUpperBound];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions neutralExpressionUpperBound];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setNeutralExpressionUpperBound:(float)a3
+- (void)setNeutralExpressionUpperBound:(float)bound
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setNeutralExpressionUpperBound:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = bound;
+  [captureOptions setNeutralExpressionUpperBound:v4];
 }
 
-- (void)setEyesForwardPitchSensitivity:(float)a3
+- (void)setEyesForwardPitchSensitivity:(float)sensitivity
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setEyesForwardPitchSensitivity:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = sensitivity;
+  [captureOptions setEyesForwardPitchSensitivity:v4];
 }
 
 - (BOOL)useFovMarginsFilterFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useFovMarginsFilterFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useFovMarginsFilterFrontPose = [captureOptions useFovMarginsFilterFrontPose];
 
-  return v3;
+  return useFovMarginsFilterFrontPose;
 }
 
 - (BOOL)useFovMarginsFilterNonFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useFovMarginsFilterNonFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useFovMarginsFilterNonFrontPose = [captureOptions useFovMarginsFilterNonFrontPose];
 
-  return v3;
+  return useFovMarginsFilterNonFrontPose;
 }
 
 - (float)leftMarginHeadRatio
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 leftMarginHeadRatio];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions leftMarginHeadRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLeftMarginHeadRatio:(float)a3
+- (void)setLeftMarginHeadRatio:(float)ratio
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setLeftMarginHeadRatio:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = ratio;
+  [captureOptions setLeftMarginHeadRatio:v4];
 }
 
 - (float)rightMarginHeadRatio
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 rightMarginHeadRatio];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions rightMarginHeadRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRightMarginHeadRatio:(float)a3
+- (void)setRightMarginHeadRatio:(float)ratio
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setRightMarginHeadRatio:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = ratio;
+  [captureOptions setRightMarginHeadRatio:v4];
 }
 
 - (float)topMarginHeadRatio
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 topMarginHeadRatio];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions topMarginHeadRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTopMarginHeadRatio:(float)a3
+- (void)setTopMarginHeadRatio:(float)ratio
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setTopMarginHeadRatio:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = ratio;
+  [captureOptions setTopMarginHeadRatio:v4];
 }
 
 - (float)bottomMarginHeadRatio
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 bottomMarginHeadRatio];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions bottomMarginHeadRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBottomMarginHeadRatio:(float)a3
+- (void)setBottomMarginHeadRatio:(float)ratio
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setBottomMarginHeadRatio:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = ratio;
+  [captureOptions setBottomMarginHeadRatio:v4];
 }
 
 - (float)leftMarginFrontPoseHeadRatio
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 leftMarginFrontPoseHeadRatio];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions leftMarginFrontPoseHeadRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLeftMarginFrontPoseHeadRatio:(float)a3
+- (void)setLeftMarginFrontPoseHeadRatio:(float)ratio
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setLeftMarginFrontPoseHeadRatio:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = ratio;
+  [captureOptions setLeftMarginFrontPoseHeadRatio:v4];
 }
 
 - (float)rightMarginFrontPoseHeadRatio
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 rightMarginFrontPoseHeadRatio];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions rightMarginFrontPoseHeadRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRightMarginFrontPoseHeadRatio:(float)a3
+- (void)setRightMarginFrontPoseHeadRatio:(float)ratio
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setRightMarginFrontPoseHeadRatio:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = ratio;
+  [captureOptions setRightMarginFrontPoseHeadRatio:v4];
 }
 
 - (float)bottomMarginFrontPoseDelta
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 bottomMarginFrontPoseDelta];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions bottomMarginFrontPoseDelta];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBottomMarginFrontPoseDelta:(float)a3
+- (void)setBottomMarginFrontPoseDelta:(float)delta
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setBottomMarginFrontPoseDelta:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = delta;
+  [captureOptions setBottomMarginFrontPoseDelta:v4];
 }
 
 - (float)bottomMarginPitchPoseDelta
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 bottomMarginPitchPoseDelta];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions bottomMarginPitchPoseDelta];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBottomMarginPitchPoseDelta:(float)a3
+- (void)setBottomMarginPitchPoseDelta:(float)delta
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setBottomMarginPitchPoseDelta:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = delta;
+  [captureOptions setBottomMarginPitchPoseDelta:v4];
 }
 
-- (void)setEyesOpenSensitivity:(float)a3
+- (void)setEyesOpenSensitivity:(float)sensitivity
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setEyesOpenSensitivity:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = sensitivity;
+  [captureOptions setEyesOpenSensitivity:v4];
 }
 
 - (BOOL)useLookAtForEyesForward
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useLookAtForEyesForward];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useLookAtForEyesForward = [captureOptions useLookAtForEyesForward];
 
-  return v3;
+  return useLookAtForEyesForward;
 }
 
 - (BOOL)ensureEyesForwardOnFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureEyesForwardOnFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureEyesForwardOnFrontPose = [captureOptions ensureEyesForwardOnFrontPose];
 
-  return v3;
+  return ensureEyesForwardOnFrontPose;
 }
 
 - (BOOL)ensureEyesOpenOnFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureEyesOpenOnFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureEyesOpenOnFrontPose = [captureOptions ensureEyesOpenOnFrontPose];
 
-  return v3;
+  return ensureEyesOpenOnFrontPose;
 }
 
 - (BOOL)ensureEyesOpenOnAllPoses
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureEyesOpenOnNonFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureEyesOpenOnNonFrontPose = [captureOptions ensureEyesOpenOnNonFrontPose];
 
-  return v3;
+  return ensureEyesOpenOnNonFrontPose;
 }
 
 - (BOOL)ensureEyesOpenOnNonFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureEyesOpenOnNonFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureEyesOpenOnNonFrontPose = [captureOptions ensureEyesOpenOnNonFrontPose];
 
-  return v3;
+  return ensureEyesOpenOnNonFrontPose;
 }
 
 - (BOOL)ensureAlmostNeutralExpressionOnAllPoses
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureAlmostNeutralExpressionOnNonFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureAlmostNeutralExpressionOnNonFrontPose = [captureOptions ensureAlmostNeutralExpressionOnNonFrontPose];
 
-  return v3;
+  return ensureAlmostNeutralExpressionOnNonFrontPose;
 }
 
 - (BOOL)ensureNeutralExpressionOnFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureNeutralExpressionOnFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureNeutralExpressionOnFrontPose = [captureOptions ensureNeutralExpressionOnFrontPose];
 
-  return v3;
+  return ensureNeutralExpressionOnFrontPose;
 }
 
 - (BOOL)ensureAlmostNeutralExpressionOnNonFrontPose
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 ensureAlmostNeutralExpressionOnNonFrontPose];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  ensureAlmostNeutralExpressionOnNonFrontPose = [captureOptions ensureAlmostNeutralExpressionOnNonFrontPose];
 
-  return v3;
+  return ensureAlmostNeutralExpressionOnNonFrontPose;
 }
 
 - (BOOL)useFaceTrackingDictionary
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useFaceTrackingDictionary];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useFaceTrackingDictionary = [captureOptions useFaceTrackingDictionary];
 
-  return v3;
+  return useFaceTrackingDictionary;
 }
 
 - (BOOL)useFKInternalFaceDetector
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useFKInternalFaceDetector];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useFKInternalFaceDetector = [captureOptions useFKInternalFaceDetector];
 
-  return v3;
+  return useFKInternalFaceDetector;
 }
 
 - (BOOL)useFKForceCPU
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useFKForceCPU];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useFKForceCPU = [captureOptions useFKForceCPU];
 
-  return v3;
+  return useFKForceCPU;
 }
 
 - (BOOL)sendMetrics
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 sendMetrics];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  sendMetrics = [captureOptions sendMetrics];
 
-  return v3;
+  return sendMetrics;
 }
 
 - (NSString)cameraImageColorSpaceName
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 cameraImageColorSpaceName];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  cameraImageColorSpaceName = [captureOptions cameraImageColorSpaceName];
 
-  return v3;
+  return cameraImageColorSpaceName;
 }
 
-- (void)setCameraImageColorSpaceName:(id)a3
+- (void)setCameraImageColorSpaceName:(id)name
 {
-  v4 = a3;
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v5 setCameraImageColorSpaceName:v4];
+  nameCopy = name;
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions setCameraImageColorSpaceName:nameCopy];
 }
 
 - (BOOL)useSimpleSelector
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useSimpleSelector];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useSimpleSelector = [captureOptions useSimpleSelector];
 
-  return v3;
+  return useSimpleSelector;
 }
 
 - (float)simpleSelectorMinOffsetAngle
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 simpleSelectorMinOffsetAngle];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions simpleSelectorMinOffsetAngle];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSimpleSelectorMinOffsetAngle:(float)a3
+- (void)setSimpleSelectorMinOffsetAngle:(float)angle
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setSimpleSelectorMinOffsetAngle:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = angle;
+  [captureOptions setSimpleSelectorMinOffsetAngle:v4];
 }
 
 - (float)simpleSelectorMaxOffsetAngle
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 simpleSelectorMaxOffsetAngle];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions simpleSelectorMaxOffsetAngle];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSimpleSelectorMaxOffsetAngle:(float)a3
+- (void)setSimpleSelectorMaxOffsetAngle:(float)angle
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setSimpleSelectorMaxOffsetAngle:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = angle;
+  [captureOptions setSimpleSelectorMaxOffsetAngle:v4];
 }
 
 - (BOOL)useDistanceFilter
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useDistanceFilter];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useDistanceFilter = [captureOptions useDistanceFilter];
 
-  return v3;
+  return useDistanceFilter;
 }
 
 - (float)distanceFilterCloseThreshold
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 distanceFilterCloseThreshold];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions distanceFilterCloseThreshold];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDistanceFilterCloseThreshold:(float)a3
+- (void)setDistanceFilterCloseThreshold:(float)threshold
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setDistanceFilterCloseThreshold:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = threshold;
+  [captureOptions setDistanceFilterCloseThreshold:v4];
 }
 
 - (float)distanceFilterFarThreshold
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 distanceFilterFarThreshold];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions distanceFilterFarThreshold];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDistanceFilterFarThreshold:(float)a3
+- (void)setDistanceFilterFarThreshold:(float)threshold
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setDistanceFilterFarThreshold:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = threshold;
+  [captureOptions setDistanceFilterFarThreshold:v4];
 }
 
 - (VGFaceSelectionFrustum)selectionFrustum
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 selectionFrustum];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  selectionFrustum = [captureOptions selectionFrustum];
 
-  return v3;
+  return selectionFrustum;
 }
 
-- (void)setSelectionFrustum:(id)a3
+- (void)setSelectionFrustum:(id)frustum
 {
-  v4 = a3;
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v5 setSelectionFrustum:v4];
+  frustumCopy = frustum;
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions setSelectionFrustum:frustumCopy];
 }
 
 - (VGFaceSelectionFrustum)frontPoseSelectionFrustum
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 frontPoseSelectionFrustum];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  frontPoseSelectionFrustum = [captureOptions frontPoseSelectionFrustum];
 
-  return v3;
+  return frontPoseSelectionFrustum;
 }
 
-- (void)setFrontPoseSelectionFrustum:(id)a3
+- (void)setFrontPoseSelectionFrustum:(id)frustum
 {
-  v4 = a3;
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v5 setSelectionFrustum:v4];
+  frustumCopy = frustum;
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions setSelectionFrustum:frustumCopy];
 }
 
 - (BOOL)useVNFilters
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useVNFilters];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useVNFilters = [captureOptions useVNFilters];
 
-  return v3;
+  return useVNFilters;
 }
 
 - (BOOL)useVNFiltersEnrollment
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useVNFiltersEnrollment];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useVNFiltersEnrollment = [captureOptions useVNFiltersEnrollment];
 
-  return v3;
+  return useVNFiltersEnrollment;
 }
 
 - (float)vnFrontPoseBlinkThreshold
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  [v2 vnFrontPoseBlinkThreshold];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  [captureOptions vnFrontPoseBlinkThreshold];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVnFrontPoseBlinkThreshold:(float)a3
+- (void)setVnFrontPoseBlinkThreshold:(float)threshold
 {
-  v5 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  *&v4 = a3;
-  [v5 setVnFrontPoseBlinkThreshold:v4];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  *&v4 = threshold;
+  [captureOptions setVnFrontPoseBlinkThreshold:v4];
 }
 
 - (BOOL)useDepthFovFilter
 {
-  v2 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v3 = [v2 useDepthFovFilter];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  useDepthFovFilter = [captureOptions useDepthFovFilter];
 
-  return v3;
+  return useDepthFovFilter;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(VGFaceEnrollmentOptions *)self captureOptions];
-  v5 = [v4 description];
+  captureOptions = [(VGFaceEnrollmentOptions *)self captureOptions];
+  v5 = [captureOptions description];
   v6 = [v3 stringWithFormat:@"%@ Deterministic mode %d Generate Pifu %d Generate Bacon Panel %d Use high-res camera image %d Apply Bacon Lighting %d ", v5, self->_deterministicMode, self->_generatePIFu, self->_generateBaconPanel, self->_useHighResCameraImage, self->_applyBaconLighting];
 
   return v6;
 }
 
-- (VGFaceEnrollmentOptions)initWithCoder:(id)a3
+- (VGFaceEnrollmentOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VGFaceEnrollmentOptions *)self init];
   if (v5)
   {
-    v5->_identityFittingOp = [v4 decodeIntegerForKey:@"identityFittingOp"];
-    v5->_useHighResCameraImage = [v4 decodeBoolForKey:@"useHighResCameraImage"];
-    v5->_applyBaconLighting = [v4 decodeBoolForKey:@"applyBaconLighting"];
-    v5->_generatePIFu = [v4 decodeBoolForKey:@"generatePIFu"];
-    if ([v4 containsValueForKey:@"generateBaconPanel"])
+    v5->_identityFittingOp = [coderCopy decodeIntegerForKey:@"identityFittingOp"];
+    v5->_useHighResCameraImage = [coderCopy decodeBoolForKey:@"useHighResCameraImage"];
+    v5->_applyBaconLighting = [coderCopy decodeBoolForKey:@"applyBaconLighting"];
+    v5->_generatePIFu = [coderCopy decodeBoolForKey:@"generatePIFu"];
+    if ([coderCopy containsValueForKey:@"generateBaconPanel"])
     {
-      v6 = [v4 decodeBoolForKey:@"generateBaconPanel"];
+      v6 = [coderCopy decodeBoolForKey:@"generateBaconPanel"];
     }
 
     else
@@ -971,44 +971,44 @@
     }
 
     v5->_generateBaconPanel = v6;
-    v5->_deterministicMode = [v4 decodeBoolForKey:@"deterministicMode"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saveDirectory"];
+    v5->_deterministicMode = [coderCopy decodeBoolForKey:@"deterministicMode"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saveDirectory"];
     saveDirectory = v5->_saveDirectory;
     v5->_saveDirectory = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"captureOptions"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"captureOptions"];
     captureOptions = v5->_captureOptions;
     v5->_captureOptions = v9;
 
-    v5->_enrollmentMode = [v4 decodeIntegerForKey:@"enrollmentMode"];
+    v5->_enrollmentMode = [coderCopy decodeIntegerForKey:@"enrollmentMode"];
     v11 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identityFittingOp = self->_identityFittingOp;
-  v5 = a3;
-  [v5 encodeInteger:identityFittingOp forKey:@"identityFittingOp"];
-  [v5 encodeBool:self->_useHighResCameraImage forKey:@"useHighResCameraImage"];
-  [v5 encodeBool:self->_applyBaconLighting forKey:@"applyBaconLighting"];
-  [v5 encodeBool:self->_generatePIFu forKey:@"generatePIFu"];
-  [v5 encodeBool:self->_generateBaconPanel forKey:@"generateBaconPanel"];
-  [v5 encodeBool:self->_deterministicMode forKey:@"deterministicMode"];
-  [v5 encodeObject:self->_saveDirectory forKey:@"saveDirectory"];
-  [v5 encodeObject:self->_captureOptions forKey:@"captureOptions"];
-  [v5 encodeInteger:self->_enrollmentMode forKey:@"enrollmentMode"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:identityFittingOp forKey:@"identityFittingOp"];
+  [coderCopy encodeBool:self->_useHighResCameraImage forKey:@"useHighResCameraImage"];
+  [coderCopy encodeBool:self->_applyBaconLighting forKey:@"applyBaconLighting"];
+  [coderCopy encodeBool:self->_generatePIFu forKey:@"generatePIFu"];
+  [coderCopy encodeBool:self->_generateBaconPanel forKey:@"generateBaconPanel"];
+  [coderCopy encodeBool:self->_deterministicMode forKey:@"deterministicMode"];
+  [coderCopy encodeObject:self->_saveDirectory forKey:@"saveDirectory"];
+  [coderCopy encodeObject:self->_captureOptions forKey:@"captureOptions"];
+  [coderCopy encodeInteger:self->_enrollmentMode forKey:@"enrollmentMode"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     identityFittingOp = self->_identityFittingOp;
     if (identityFittingOp != [v6 identityFittingOp] || (useHighResCameraImage = self->_useHighResCameraImage, useHighResCameraImage != objc_msgSend(v6, "useHighResCameraImage")) || (applyBaconLighting = self->_applyBaconLighting, applyBaconLighting != objc_msgSend(v6, "applyBaconLighting")) || (generatePIFu = self->_generatePIFu, generatePIFu != objc_msgSend(v6, "generatePIFu")) || (generateBaconPanel = self->_generateBaconPanel, generateBaconPanel != objc_msgSend(v6, "generateBaconPanel")) || (deterministicMode = self->_deterministicMode, deterministicMode != objc_msgSend(v6, "deterministicMode")))
     {
@@ -1032,8 +1032,8 @@ LABEL_15:
       v14 = self->_saveDirectory;
     }
 
-    v3 = [v6 saveDirectory];
-    if (![(NSString *)v14 isEqualToString:v3])
+    saveDirectory = [v6 saveDirectory];
+    if (![(NSString *)v14 isEqualToString:saveDirectory])
     {
       v16 = 0;
       goto LABEL_21;
@@ -1042,8 +1042,8 @@ LABEL_15:
     v15 = 1;
 LABEL_19:
     captureOptions = self->_captureOptions;
-    v19 = [v6 captureOptions];
-    if ([(VGFaceCaptureOptions *)captureOptions isEqual:v19])
+    captureOptions = [v6 captureOptions];
+    if ([(VGFaceCaptureOptions *)captureOptions isEqual:captureOptions])
     {
       enrollmentMode = self->_enrollmentMode;
       v16 = enrollmentMode == [v6 enrollmentMode];

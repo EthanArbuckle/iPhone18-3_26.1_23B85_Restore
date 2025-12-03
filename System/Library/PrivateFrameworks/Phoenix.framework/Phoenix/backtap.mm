@@ -1,25 +1,25 @@
 @interface backtap
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (backtap)init;
-- (backtap)initWithConfiguration:(id)a3 error:(id *)a4;
-- (backtap)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (backtap)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (backtap)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromModel_input:(id)a3 error:(id *)a4;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (backtap)initWithConfiguration:(id)configuration error:(id *)error;
+- (backtap)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (backtap)initWithContentsOfURL:(id)l error:(id *)error;
+- (backtap)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromModel_input:(id)model_input error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation backtap
 
 + (id)URLOfModelInThisBundle
 {
-  v10[2] = a1;
+  v10[2] = self;
   v10[1] = a2;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10[0] = [v6 pathForResource:@"backtap" ofType:@"mlmodelc"];
@@ -51,26 +51,26 @@
   return v2;
 }
 
-- (backtap)initWithMLModel:(id)a3
+- (backtap)initWithMLModel:(id)model
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   if (location[0])
   {
-    v3 = v8;
-    v8 = 0;
+    v3 = selfCopy;
+    selfCopy = 0;
     v5.receiver = v3;
     v5.super_class = backtap;
-    v8 = [(backtap *)&v5 init];
-    objc_storeStrong(&v8, v8);
-    if (v8)
+    selfCopy = [(backtap *)&v5 init];
+    objc_storeStrong(&selfCopy, selfCopy);
+    if (selfCopy)
     {
-      objc_storeStrong(v8 + 1, location[0]);
+      objc_storeStrong(selfCopy + 1, location[0]);
     }
 
-    v9 = MEMORY[0x277D82BE0](v8);
+    v9 = MEMORY[0x277D82BE0](selfCopy);
     v6 = 1;
   }
 
@@ -81,53 +81,53 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (backtap)init
 {
-  v6 = self;
-  v4 = [objc_opt_class() URLOfModelInThisBundle];
-  v6 = 0;
-  v6 = [backtap initWithContentsOfURL:"initWithContentsOfURL:error:" error:?];
-  v5 = MEMORY[0x277D82BE0](v6);
-  MEMORY[0x277D82BD8](v4);
-  objc_storeStrong(&v6, 0);
+  selfCopy = self;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  selfCopy = 0;
+  selfCopy = [backtap initWithContentsOfURL:"initWithContentsOfURL:error:" error:?];
+  v5 = MEMORY[0x277D82BE0](selfCopy);
+  MEMORY[0x277D82BD8](uRLOfModelInThisBundle);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (backtap)initWithConfiguration:(id)a3 error:(id *)a4
+- (backtap)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v9;
-  v6 = [objc_opt_class() URLOfModelInThisBundle];
-  v9 = 0;
-  v9 = [backtap initWithContentsOfURL:v5 configuration:"initWithContentsOfURL:configuration:error:" error:?];
-  v7 = MEMORY[0x277D82BE0](v9);
-  MEMORY[0x277D82BD8](v6);
+  objc_storeStrong(location, configuration);
+  v5 = selfCopy;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  selfCopy = 0;
+  selfCopy = [backtap initWithContentsOfURL:v5 configuration:"initWithContentsOfURL:configuration:error:" error:?];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
+  MEMORY[0x277D82BD8](uRLOfModelInThisBundle);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (backtap)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (backtap)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7[1] = a4;
-  v7[0] = [MEMORY[0x277CBFF20] modelWithContentsOfURL:location[0] error:a4];
+  objc_storeStrong(location, l);
+  v7[1] = error;
+  v7[0] = [MEMORY[0x277CBFF20] modelWithContentsOfURL:location[0] error:error];
   if (v7[0])
   {
-    v4 = v9;
-    v9 = 0;
-    v9 = [v4 initWithMLModel:v7[0]];
-    v10 = MEMORY[0x277D82BE0](v9);
+    v4 = selfCopy;
+    selfCopy = 0;
+    selfCopy = [v4 initWithMLModel:v7[0]];
+    v10 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   else
@@ -137,26 +137,26 @@
 
   objc_storeStrong(v7, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (backtap)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (backtap)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9[1] = a5;
-  v9[0] = [MEMORY[0x277CBFF20] modelWithContentsOfURL:location[0] configuration:v10 error:a5];
+  objc_storeStrong(&v10, configuration);
+  v9[1] = error;
+  v9[0] = [MEMORY[0x277CBFF20] modelWithContentsOfURL:location[0] configuration:v10 error:error];
   if (v9[0])
   {
-    v5 = v12;
-    v12 = 0;
-    v12 = [v5 initWithMLModel:v9[0]];
-    v13 = MEMORY[0x277D82BE0](v12);
+    v5 = selfCopy;
+    selfCopy = 0;
+    selfCopy = [v5 initWithMLModel:v9[0]];
+    v13 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   else
@@ -167,36 +167,36 @@
   objc_storeStrong(v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v5 = v9;
-  v6 = [v9 URLOfModelInThisBundle];
+  objc_storeStrong(&v7, handler);
+  v5 = selfCopy;
+  uRLOfModelInThisBundle = [selfCopy URLOfModelInThisBundle];
   [v5 loadContentsOfURL:? configuration:? completionHandler:?];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](uRLOfModelInThisBundle);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, configuration);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, handler);
   v9 = MEMORY[0x277CBFF20];
   v7 = location[0];
   v8 = v16;
@@ -212,13 +212,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = v10;
+  objc_storeStrong(location, features);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = objc_alloc_init(MEMORY[0x277CBFF68]);
   v8 = [backtap predictionFromFeatures:v6 options:"predictionFromFeatures:options:error:" error:v5];
@@ -228,25 +228,25 @@
   return v8;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13[1] = a5;
-  v12 = [(backtap *)v16 model];
-  v13[0] = [(MLModel *)v12 predictionFromFeatures:location[0] options:v14 error:a5];
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(&v14, options);
+  v13[1] = error;
+  model = [(backtap *)selfCopy model];
+  v13[0] = [(MLModel *)model predictionFromFeatures:location[0] options:v14 error:error];
+  MEMORY[0x277D82BD8](model);
   if (v13[0])
   {
     v7 = [backtapOutput alloc];
     v9 = [v13[0] featureValueForName:@"model_output"];
-    v8 = [v9 multiArrayValue];
+    multiArrayValue = [v9 multiArrayValue];
     v17 = [(backtapOutput *)v7 initWithModel_output:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](multiArrayValue);
     MEMORY[0x277D82BD8](v9);
   }
 
@@ -263,15 +263,15 @@
   return v5;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v6 = [(backtap *)v15 model];
+  objc_storeStrong(&v13, handler);
+  model = [(backtap *)selfCopy model];
   v5 = location[0];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
@@ -279,24 +279,24 @@
   v10 = __52__backtap_predictionFromFeatures_completionHandler___block_invoke;
   v11 = &unk_279A20CA0;
   v12 = MEMORY[0x277D82BE0](v13);
-  [(MLModel *)v6 predictionFromFeatures:v5 completionHandler:?];
-  MEMORY[0x277D82BD8](v6);
+  [(MLModel *)model predictionFromFeatures:v5 completionHandler:?];
+  MEMORY[0x277D82BD8](model);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, options);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v9 = [(backtap *)v18 model];
+  objc_storeStrong(&v15, handler);
+  model = [(backtap *)selfCopy model];
   v7 = location[0];
   v8 = v16;
   v10 = MEMORY[0x277D85DD0];
@@ -304,44 +304,44 @@
   v12 = __60__backtap_predictionFromFeatures_options_completionHandler___block_invoke;
   v13 = &unk_279A20CA0;
   v14 = MEMORY[0x277D82BE0](v15);
-  [(MLModel *)v9 predictionFromFeatures:v7 options:v8 completionHandler:?];
-  MEMORY[0x277D82BD8](v9);
+  [(MLModel *)model predictionFromFeatures:v7 options:v8 completionHandler:?];
+  MEMORY[0x277D82BD8](model);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)predictionFromModel_input:(id)a3 error:(id *)a4
+- (id)predictionFromModel_input:(id)model_input error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8[1] = a4;
+  objc_storeStrong(location, model_input);
+  v8[1] = error;
   v4 = [backtapInput alloc];
   v8[0] = [(backtapInput *)v4 initWithModel_input:location[0]];
-  v7 = [(backtap *)v10 predictionFromFeatures:v8[0] error:a4];
+  v7 = [(backtap *)selfCopy predictionFromFeatures:v8[0] error:error];
   objc_storeStrong(v8, 0);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, inputs);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21[1] = a5;
+  objc_storeStrong(&v22, options);
+  v21[1] = error;
   v5 = objc_alloc(MEMORY[0x277CBFEB0]);
   v21[0] = [v5 initWithFeatureProviderArray:location[0]];
-  v14 = [(backtap *)v24 model];
-  v20 = [(MLModel *)v14 predictionsFromBatch:v21[0] options:v22 error:a5];
-  MEMORY[0x277D82BD8](v14);
+  model = [(backtap *)selfCopy model];
+  v20 = [(MLModel *)model predictionsFromBatch:v21[0] options:v22 error:error];
+  MEMORY[0x277D82BD8](model);
   if (v20)
   {
     v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
@@ -356,9 +356,9 @@
       v16 = [v20 featuresAtIndex:i];
       v8 = [backtapOutput alloc];
       v10 = [v16 featureValueForName:@"model_output"];
-      v9 = [v10 multiArrayValue];
+      multiArrayValue = [v10 multiArrayValue];
       v15 = [(backtapOutput *)v8 initWithModel_output:?];
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](multiArrayValue);
       MEMORY[0x277D82BD8](v10);
       [v18 addObject:v15];
       objc_storeStrong(&v15, 0);

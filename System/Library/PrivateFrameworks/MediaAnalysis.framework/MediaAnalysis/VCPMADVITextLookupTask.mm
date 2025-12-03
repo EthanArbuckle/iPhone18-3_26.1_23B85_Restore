@@ -1,27 +1,27 @@
 @interface VCPMADVITextLookupTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADVITextLookupTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (id)createQueryContextWithError:(id *)a3;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADVITextLookupTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (id)createQueryContextWithError:(id *)error;
 - (int)run;
 - (void)cancel;
 @end
 
 @implementation VCPMADVITextLookupTask
 
-- (VCPMADVITextLookupTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVITextLookupTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVITextLookupTask;
   v12 = [(VCPMADVITextLookupTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVITextLookupTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -30,15 +30,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -80,62 +80,62 @@ uint64_t __32__VCPMADVITextLookupTask_cancel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)createQueryContextWithError:(id *)a3
+- (id)createQueryContextWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(MADVITextLookupRequest *)self->_request queryID];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  queryID = [(MADVITextLookupRequest *)self->_request queryID];
 
-  if (v6)
+  if (queryID)
   {
-    v7 = [(MADVITextLookupRequest *)self->_request queryID];
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69E0510]];
+    queryID2 = [(MADVITextLookupRequest *)self->_request queryID];
+    [dictionary setObject:queryID2 forKeyedSubscript:*MEMORY[0x1E69E0510]];
   }
 
-  v8 = [(MADVITextLookupRequest *)self->_request uiScale];
+  uiScale = [(MADVITextLookupRequest *)self->_request uiScale];
 
-  if (v8)
+  if (uiScale)
   {
-    v9 = [(MADVITextLookupRequest *)self->_request uiScale];
-    [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69E0528]];
+    uiScale2 = [(MADVITextLookupRequest *)self->_request uiScale];
+    [dictionary setObject:uiScale2 forKeyedSubscript:*MEMORY[0x1E69E0528]];
   }
 
-  v10 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
+  clientBundleID = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
 
-  if (v10)
+  if (clientBundleID)
   {
-    v11 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
-    [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69E04D0]];
+    clientBundleID2 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
+    [dictionary setObject:clientBundleID2 forKeyedSubscript:*MEMORY[0x1E69E04D0]];
   }
 
   preferredMetalDevice = self->_preferredMetalDevice;
   if (preferredMetalDevice)
   {
-    [v5 setObject:preferredMetalDevice forKeyedSubscript:*MEMORY[0x1E69E0508]];
+    [dictionary setObject:preferredMetalDevice forKeyedSubscript:*MEMORY[0x1E69E0508]];
   }
 
-  v13 = [(MADVITextLookupRequest *)self->_request engagementSuggestionType];
+  engagementSuggestionType = [(MADVITextLookupRequest *)self->_request engagementSuggestionType];
 
-  if (v13)
+  if (engagementSuggestionType)
   {
-    v14 = [(MADVITextLookupRequest *)self->_request engagementSuggestionType];
-    [v5 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69E04E0]];
+    engagementSuggestionType2 = [(MADVITextLookupRequest *)self->_request engagementSuggestionType];
+    [dictionary setObject:engagementSuggestionType2 forKeyedSubscript:*MEMORY[0x1E69E04E0]];
   }
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = dictionary;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Query context: %@", buf, 0xCu);
   }
 
   v19 = 0;
-  v15 = [MEMORY[0x1E69E0470] contextWithDictionary:v5 error:&v19];
+  v15 = [MEMORY[0x1E69E0470] contextWithDictionary:dictionary error:&v19];
   v16 = v19;
   v17 = v19;
-  if (a3)
+  if (error)
   {
-    objc_storeStrong(a3, v16);
+    objc_storeStrong(error, v16);
   }
 
   return v15;
@@ -164,7 +164,7 @@ uint64_t __32__VCPMADVITextLookupTask_cancel__block_invoke(uint64_t a1)
   v15 = 3221225472;
   v16 = __29__VCPMADVITextLookupTask_run__block_invoke;
   v17 = &unk_1E834DF40;
-  v18 = self;
+  selfCopy = self;
   v21 = buf;
   v8 = v6;
   v19 = v8;
@@ -172,8 +172,8 @@ uint64_t __32__VCPMADVITextLookupTask_cancel__block_invoke(uint64_t a1)
   v20 = v9;
   dispatch_sync(cancelQueue, &v14);
   dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  v10 = [v9 service];
-  [v10 clearCacheWithOption:56];
+  service = [v9 service];
+  [service clearCacheWithOption:56];
 
   [v5 reset];
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))

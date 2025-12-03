@@ -1,15 +1,15 @@
 @interface _MRVideoThumbnailRequestProtobuf
-- (BOOL)isEqual:(id)a3;
-- (double)timeIntervalsAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)timeIntervalsAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasThumbnailsWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasThumbnailsWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRVideoThumbnailRequestProtobuf
@@ -22,25 +22,25 @@
   [(_MRVideoThumbnailRequestProtobuf *)&v3 dealloc];
 }
 
-- (double)timeIntervalsAtIndex:(unint64_t)a3
+- (double)timeIntervalsAtIndex:(unint64_t)index
 {
   p_timeIntervals = &self->_timeIntervals;
   count = self->_timeIntervals.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_timeIntervals->list[a3];
+  return p_timeIntervals->list[index];
 }
 
-- (void)setHasThumbnailsWidth:(BOOL)a3
+- (void)setHasThumbnailsWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -59,24 +59,24 @@
   v8.receiver = self;
   v8.super_class = _MRVideoThumbnailRequestProtobuf;
   v4 = [(_MRVideoThumbnailRequestProtobuf *)&v8 description];
-  v5 = [(_MRVideoThumbnailRequestProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRVideoThumbnailRequestProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PBRepeatedDoubleNSArray();
-  [v3 setObject:v4 forKey:@"timeIntervals"];
+  [dictionary setObject:v4 forKey:@"timeIntervals"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     *&v5 = self->_thumbnailsWidth;
     v7 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-    [v3 setObject:v7 forKey:@"thumbnailsWidth"];
+    [dictionary setObject:v7 forKey:@"thumbnailsWidth"];
 
     has = self->_has;
   }
@@ -85,16 +85,16 @@
   {
     *&v5 = self->_thumbnailsHeight;
     v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-    [v3 setObject:v8 forKey:@"thumbnailsHeight"];
+    [dictionary setObject:v8 forKey:@"thumbnailsHeight"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_timeIntervals.count)
   {
     v5 = 0;
@@ -102,7 +102,7 @@
     {
       v6 = self->_timeIntervals.list[v5];
       PBDataWriterWriteDoubleField();
-      v4 = v10;
+      toCopy = v10;
       ++v5;
     }
 
@@ -114,7 +114,7 @@
   {
     thumbnailsWidth = self->_thumbnailsWidth;
     PBDataWriterWriteFloatField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -122,24 +122,24 @@
   {
     thumbnailsHeight = self->_thumbnailsHeight;
     PBDataWriterWriteFloatField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_MRVideoThumbnailRequestProtobuf *)self timeIntervalsCount])
   {
-    [v8 clearTimeIntervals];
-    v4 = [(_MRVideoThumbnailRequestProtobuf *)self timeIntervalsCount];
-    if (v4)
+    [toCopy clearTimeIntervals];
+    timeIntervalsCount = [(_MRVideoThumbnailRequestProtobuf *)self timeIntervalsCount];
+    if (timeIntervalsCount)
     {
-      v5 = v4;
+      v5 = timeIntervalsCount;
       for (i = 0; i != v5; ++i)
       {
         [(_MRVideoThumbnailRequestProtobuf *)self timeIntervalsAtIndex:i];
-        [v8 addTimeIntervals:?];
+        [toCopy addTimeIntervals:?];
       }
     }
   }
@@ -147,21 +147,21 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v8 + 9) = LODWORD(self->_thumbnailsWidth);
-    *(v8 + 40) |= 2u;
+    *(toCopy + 9) = LODWORD(self->_thumbnailsWidth);
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v8 + 8) = LODWORD(self->_thumbnailsHeight);
-    *(v8 + 40) |= 1u;
+    *(toCopy + 8) = LODWORD(self->_thumbnailsHeight);
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedDoubleCopy();
   has = self->_has;
   if ((has & 2) != 0)
@@ -180,33 +180,33 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedDoubleIsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedDoubleIsEqual())
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_thumbnailsWidth != *(v4 + 9))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_thumbnailsWidth != *(equalCopy + 9))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_12:
     v5 = 0;
     goto LABEL_13;
   }
 
-  v5 = (*(v4 + 40) & 1) == 0;
+  v5 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_thumbnailsHeight != *(v4 + 8))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_thumbnailsHeight != *(equalCopy + 8))
     {
       goto LABEL_12;
     }
@@ -292,31 +292,31 @@ LABEL_13:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v8 = a3;
-  v4 = [v8 timeIntervalsCount];
-  if (v4)
+  fromCopy = from;
+  timeIntervalsCount = [fromCopy timeIntervalsCount];
+  if (timeIntervalsCount)
   {
-    v5 = v4;
+    v5 = timeIntervalsCount;
     for (i = 0; i != v5; ++i)
     {
-      [v8 timeIntervalsAtIndex:i];
+      [fromCopy timeIntervalsAtIndex:i];
       [(_MRVideoThumbnailRequestProtobuf *)self addTimeIntervals:?];
     }
   }
 
-  v7 = *(v8 + 40);
+  v7 = *(fromCopy + 40);
   if ((v7 & 2) != 0)
   {
-    self->_thumbnailsWidth = v8[9];
+    self->_thumbnailsWidth = fromCopy[9];
     *&self->_has |= 2u;
-    v7 = *(v8 + 40);
+    v7 = *(fromCopy + 40);
   }
 
   if (v7)
   {
-    self->_thumbnailsHeight = v8[8];
+    self->_thumbnailsHeight = fromCopy[8];
     *&self->_has |= 1u;
   }
 }

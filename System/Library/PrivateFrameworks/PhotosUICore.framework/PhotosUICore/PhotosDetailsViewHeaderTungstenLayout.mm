@@ -1,8 +1,8 @@
 @interface PhotosDetailsViewHeaderTungstenLayout
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (NSIndexSet)axSpriteIndexes;
 - (_TtC12PhotosUICore37PhotosDetailsViewHeaderTungstenLayout)init;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)safeAreaInsetsDidChange;
 @end
 
@@ -19,9 +19,9 @@
   PXGLayout.invalidate<A>(updateFlags:with:)();
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  result = sub_1A43F79B0(a3);
+  result = sub_1A43F79B0(index);
   if (result)
   {
 
@@ -31,16 +31,16 @@
   return result;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
+  v4 = *&index;
   v6 = type metadata accessor for PhotosDetailsViewHeaderContainerView.Configuration(0);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
+  selfCopy = self;
   sub_1A43F7A80(v4);
   type metadata accessor for PhotosDetailsViewHeaderContainerView.UserData(0);
-  sub_1A43F7E60(v9 + OBJC_IVAR____TtC12PhotosUICore37PhotosDetailsViewHeaderTungstenLayout_containerViewConfiguration, v8, type metadata accessor for PhotosDetailsViewHeaderContainerView.Configuration);
+  sub_1A43F7E60(selfCopy + OBJC_IVAR____TtC12PhotosUICore37PhotosDetailsViewHeaderTungstenLayout_containerViewConfiguration, v8, type metadata accessor for PhotosDetailsViewHeaderContainerView.Configuration);
   v10 = sub_1A4842278(v8);
 
   return v10;

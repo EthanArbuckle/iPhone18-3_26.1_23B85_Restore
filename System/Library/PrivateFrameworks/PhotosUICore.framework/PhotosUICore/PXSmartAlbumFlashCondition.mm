@@ -1,13 +1,13 @@
 @interface PXSmartAlbumFlashCondition
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 - (NSArray)flashFiredValues;
 - (PXLabeledValue)flashFiredValue;
-- (void)setFlashFiredValue:(id)a3;
+- (void)setFlashFiredValue:(id)value;
 @end
 
 @implementation PXSmartAlbumFlashCondition
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:302];
@@ -17,30 +17,30 @@
   return v3;
 }
 
-- (void)setFlashFiredValue:(id)a3
+- (void)setFlashFiredValue:(id)value
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumFlashCondition.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"flashFiredValue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumFlashCondition.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"flashFiredValue"}];
   }
 
-  v6 = [(PXSmartAlbumFlashCondition *)self flashFiredValues];
-  v7 = [v6 containsObject:v5];
+  flashFiredValues = [(PXSmartAlbumFlashCondition *)self flashFiredValues];
+  v7 = [flashFiredValues containsObject:valueCopy];
 
   if ((v7 & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumFlashCondition.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"[self.flashFiredValues containsObject:flashFiredValue]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumFlashCondition.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"[self.flashFiredValues containsObject:flashFiredValue]"}];
   }
 
-  v8 = [v5 value];
-  v9 = [v8 BOOLValue];
-  v10 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v10 setBoolValue:1];
-  if (v9)
+  value = [valueCopy value];
+  bOOLValue = [value BOOLValue];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [singleQuery setBoolValue:1];
+  if (bOOLValue)
   {
     v11 = 1;
   }
@@ -50,12 +50,12 @@
     v11 = 2;
   }
 
-  [v10 setComparator:v11];
+  [singleQuery setComparator:v11];
   v12 = PLUIGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v13 = @"NO";
-    if (v9)
+    if (bOOLValue)
     {
       v13 = @"YES";
     }
@@ -66,15 +66,15 @@
     _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: flash fired value set to: %@", buf, 0xCu);
   }
 
-  v15 = [(PXSmartAlbumCondition *)self delegate];
-  [v15 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (PXLabeledValue)flashFiredValue
 {
-  v2 = [(PXSmartAlbumCondition *)self singleQuery];
-  v3 = [v2 comparator];
-  if ([v2 BOOLValue])
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  comparator = [singleQuery comparator];
+  if ([singleQuery BOOLValue])
   {
     v4 = 1;
   }
@@ -84,8 +84,8 @@
     v4 = 2;
   }
 
-  v5 = v3 == v4;
-  v6 = v3 == v4;
+  v5 = comparator == v4;
+  v6 = comparator == v4;
   if (v5)
   {
     v7 = @"PXSmartAlbumFlashDidFire";

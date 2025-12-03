@@ -1,30 +1,30 @@
 @interface OAXDrawable
-+ (id)readDrawableFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5;
-+ (id)readDrawablesFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5;
-+ (void)readNonVisualPropertiesFromDrawableXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 visualNodeName:(const char *)a5 toDrawable:(id)a6 drawingState:(id)a7;
++ (id)readDrawableFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state;
++ (id)readDrawablesFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state;
++ (void)readNonVisualPropertiesFromDrawableXmlNode:(_xmlNode *)node inNamespace:(id)namespace visualNodeName:(const char *)name toDrawable:(id)drawable drawingState:(id)state;
 @end
 
 @implementation OAXDrawable
 
-+ (void)readNonVisualPropertiesFromDrawableXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 visualNodeName:(const char *)a5 toDrawable:(id)a6 drawingState:(id)a7
++ (void)readNonVisualPropertiesFromDrawableXmlNode:(_xmlNode *)node inNamespace:(id)namespace visualNodeName:(const char *)name toDrawable:(id)drawable drawingState:(id)state
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v43 = v12;
-  v14 = OCXFindChild(a3, v11, a5);
+  namespaceCopy = namespace;
+  drawableCopy = drawable;
+  stateCopy = state;
+  v43 = drawableCopy;
+  v14 = OCXFindChild(node, namespaceCopy, name);
   if (v14)
   {
-    v15 = OCXFindChild(v14, v11, "cNvPr");
+    v15 = OCXFindChild(v14, namespaceCopy, "cNvPr");
   }
 
   else
   {
-    v16 = [v13 client];
-    v15 = [v16 genericNonVisualPropertiesNodeForDrawableNode:a3 inNamespace:v11 state:v13];
+    client = [stateCopy client];
+    v15 = [client genericNonVisualPropertiesNodeForDrawableNode:node inNamespace:namespaceCopy state:stateCopy];
   }
 
-  [v12 setHidden:{CXDefaultBoolAttribute(v15, CXNoNamespace, "hidden", 0)}];
+  [drawableCopy setHidden:{CXDefaultBoolAttribute(v15, CXNoNamespace, "hidden", 0)}];
   v45 = 0;
   v17 = CXOptionalStringAttribute(v15, CXNoNamespace, "title", &v45);
   v18 = v45;
@@ -32,8 +32,8 @@
   if (v17)
   {
     v19 = v18;
-    v20 = [v12 drawableProperties];
-    [v20 setAltTitle:v19];
+    drawableProperties = [drawableCopy drawableProperties];
+    [drawableProperties setAltTitle:v19];
   }
 
   v44 = 0;
@@ -43,41 +43,41 @@
   if (v21)
   {
     v23 = v22;
-    v24 = [v12 drawableProperties];
-    [v24 setAltDescription:v23];
+    drawableProperties2 = [drawableCopy drawableProperties];
+    [drawableProperties2 setAltDescription:v23];
   }
 
   v25 = CXRequiredUnsignedLongAttribute(v15, CXNoNamespace, "id");
-  v26 = [v13 drawableForShapeId:v25];
+  v26 = [stateCopy drawableForShapeId:v25];
 
   if (v26)
   {
-    v25 = [OADDrawable generateOADDrawableId:v12];
+    v25 = [OADDrawable generateOADDrawableId:drawableCopy];
   }
 
-  [v12 setId:v25];
-  v27 = [v13 OAXMainNamespace];
-  v28 = OCXFindChild(v15, v27, "hlinkClick");
+  [drawableCopy setId:v25];
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v28 = OCXFindChild(v15, oAXMainNamespace, "hlinkClick");
 
   if (v28)
   {
-    v29 = [OAXHyperlink readHyperlink:v28 state:v13];
-    v30 = [v12 drawableProperties];
-    [v30 setClickHyperlink:v29];
+    v29 = [OAXHyperlink readHyperlink:v28 state:stateCopy];
+    drawableProperties3 = [drawableCopy drawableProperties];
+    [drawableProperties3 setClickHyperlink:v29];
   }
 
-  v31 = [v13 OAXMainNamespace];
-  v32 = OCXFindChild(v15, v31, "hlinkHover");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v32 = OCXFindChild(v15, oAXMainNamespace2, "hlinkHover");
 
   if (v32)
   {
-    v33 = [OAXHyperlink readHyperlink:v32 state:v13];
-    v34 = [v12 drawableProperties];
-    [v34 setHoverHyperlink:v33];
+    v33 = [OAXHyperlink readHyperlink:v32 state:stateCopy];
+    drawableProperties4 = [drawableCopy drawableProperties];
+    [drawableProperties4 setHoverHyperlink:v33];
   }
 
-  v35 = [v13 OAXMainNamespace];
-  v36 = OCXFindChild(v15, v35, "extLst");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v36 = OCXFindChild(v15, oAXMainNamespace3, "extLst");
 
   if (v36)
   {
@@ -93,7 +93,7 @@
           v40 = CXDefaultStringAttribute(v39, CXNoNamespace, "spid", 0);
           if ([v40 length])
           {
-            [v13 setVmlShapeId:v40 forDrawableId:v25];
+            [stateCopy setVmlShapeId:v40 forDrawableId:v25];
 
             break;
           }
@@ -105,54 +105,54 @@
   }
 }
 
-+ (id)readDrawableFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5
++ (id)readDrawableFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  if (![v7 containsNode:a3])
+  namespaceCopy = namespace;
+  stateCopy = state;
+  if (![namespaceCopy containsNode:node])
   {
     goto LABEL_13;
   }
 
-  if (xmlStrEqual(a3->name, "sp"))
+  if (xmlStrEqual(node->name, "sp"))
   {
     v9 = off_2799C5788;
     goto LABEL_12;
   }
 
-  if (xmlStrEqual(a3->name, "cxnSp"))
+  if (xmlStrEqual(node->name, "cxnSp"))
   {
     v9 = off_2799C5768;
     goto LABEL_12;
   }
 
-  if (xmlStrEqual(a3->name, "pic"))
+  if (xmlStrEqual(node->name, "pic"))
   {
     v9 = off_2799C5780;
     goto LABEL_12;
   }
 
-  if (xmlStrEqual(a3->name, "graphicFrame"))
+  if (xmlStrEqual(node->name, "graphicFrame"))
   {
     v9 = off_2799C5770;
     goto LABEL_12;
   }
 
-  if (!xmlStrEqual(a3->name, "grpSp"))
+  if (!xmlStrEqual(node->name, "grpSp"))
   {
-    if (xmlStrEqual(a3->name, "contentPart"))
+    if (xmlStrEqual(node->name, "contentPart"))
     {
-      v29 = [v8 packagePart];
-      v30 = [v8 OCXReadRequiredRelationshipForNode:a3 packagePart:v29];
-      v31 = [v30 targetLocation];
-      v32 = [v31 relativeString];
+      packagePart = [stateCopy packagePart];
+      v30 = [stateCopy OCXReadRequiredRelationshipForNode:node packagePart:packagePart];
+      targetLocation = [v30 targetLocation];
+      relativeString = [targetLocation relativeString];
 
-      [TCMessageContext reportWarning:OAUnsupportedMediaType, v32];
+      [TCMessageContext reportWarning:OAUnsupportedMediaType, relativeString];
     }
 
 LABEL_13:
-    v11 = [v8 client];
-    v10 = [v11 readClientDrawableFromXmlNode:a3 state:v8];
+    client = [stateCopy client];
+    v10 = [client readClientDrawableFromXmlNode:node state:stateCopy];
 
     if (!v10)
     {
@@ -164,7 +164,7 @@ LABEL_13:
 
   v9 = off_2799C5778;
 LABEL_12:
-  v10 = [(__objc2_class *)*v9 readFromXmlNode:a3 inNamespace:v7 drawingState:v8];
+  v10 = [(__objc2_class *)*v9 readFromXmlNode:node inNamespace:namespaceCopy drawingState:stateCopy];
   if (!v10)
   {
     goto LABEL_13;
@@ -172,61 +172,61 @@ LABEL_12:
 
 LABEL_14:
   v12 = [v10 id];
-  v13 = [v8 vmlShapeIdForDrawableId:v12];
+  v13 = [stateCopy vmlShapeIdForDrawableId:v12];
   if (v13)
   {
-    v14 = [v8 oavState];
-    v15 = [v14 drawableForVmlShapeId:v13];
+    oavState = [stateCopy oavState];
+    v15 = [oavState drawableForVmlShapeId:v13];
 
     if (v15)
     {
-      v16 = [v8 oavState];
-      [v16 addDualDrawable:v15];
+      oavState2 = [stateCopy oavState];
+      [oavState2 addDualDrawable:v15];
 
       [v15 setId:v12];
-      v17 = [v10 drawableProperties];
-      v18 = [v17 orientedBounds];
-      v19 = [v15 drawableProperties];
-      [v19 setOrientedBounds:v18];
+      drawableProperties = [v10 drawableProperties];
+      orientedBounds = [drawableProperties orientedBounds];
+      drawableProperties2 = [v15 drawableProperties];
+      [drawableProperties2 setOrientedBounds:orientedBounds];
 
-      v20 = [v10 drawableProperties];
-      v21 = [v20 clickHyperlink];
-      v22 = [v15 drawableProperties];
-      [v22 setClickHyperlink:v21];
+      drawableProperties3 = [v10 drawableProperties];
+      clickHyperlink = [drawableProperties3 clickHyperlink];
+      drawableProperties4 = [v15 drawableProperties];
+      [drawableProperties4 setClickHyperlink:clickHyperlink];
 
-      v23 = [v10 drawableProperties];
-      v24 = [v23 hoverHyperlink];
-      v25 = [v15 drawableProperties];
-      [v25 setHoverHyperlink:v24];
+      drawableProperties5 = [v10 drawableProperties];
+      hoverHyperlink = [drawableProperties5 hoverHyperlink];
+      drawableProperties6 = [v15 drawableProperties];
+      [drawableProperties6 setHoverHyperlink:hoverHyperlink];
 
-      v26 = [v10 clientData];
-      [v15 setClientData:v26];
+      clientData = [v10 clientData];
+      [v15 setClientData:clientData];
 
       v27 = v15;
       v10 = v27;
     }
   }
 
-  [v8 setDrawable:v10 forShapeId:v12];
+  [stateCopy setDrawable:v10 forShapeId:v12];
 
 LABEL_19:
 
   return v10;
 }
 
-+ (id)readDrawablesFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5
++ (id)readDrawablesFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB18] array];
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  namespaceCopy = namespace;
+  stateCopy = state;
+  array = [MEMORY[0x277CBEB18] array];
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type != XML_ELEMENT_NODE)
     {
       continue;
     }
 
-    v12 = [a1 readDrawableFromXmlNode:i inNamespace:v8 drawingState:v9];
+    v12 = [self readDrawableFromXmlNode:i inNamespace:namespaceCopy drawingState:stateCopy];
     if (!v12)
     {
       v13 = OCXReplaceChoiceWithFallback(i);
@@ -236,7 +236,7 @@ LABEL_19:
         goto LABEL_6;
       }
 
-      [a1 readDrawableFromXmlNode:v13 inNamespace:v8 drawingState:v9];
+      [self readDrawableFromXmlNode:v13 inNamespace:namespaceCopy drawingState:stateCopy];
       v12 = i = v13;
       if (!v12)
       {
@@ -244,11 +244,11 @@ LABEL_19:
       }
     }
 
-    [v10 addObject:v12];
+    [array addObject:v12];
 LABEL_6:
   }
 
-  return v10;
+  return array;
 }
 
 @end

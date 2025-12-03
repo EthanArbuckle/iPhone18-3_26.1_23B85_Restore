@@ -17,28 +17,28 @@
 {
   v5.receiver = self;
   v5.super_class = PUAssignToContactActivity;
-  v3 = [(UIAssignToContactActivity *)&v5 activityViewController];
+  activityViewController = [(UIAssignToContactActivity *)&v5 activityViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setDelegate:self];
+    [activityViewController setDelegate:self];
   }
 
-  return v3;
+  return activityViewController;
 }
 
 - (id)_embeddedActivityViewController
 {
   v5.receiver = self;
   v5.super_class = PUAssignToContactActivity;
-  v3 = [(UIAssignToContactActivity *)&v5 _embeddedActivityViewController];
+  _embeddedActivityViewController = [(UIAssignToContactActivity *)&v5 _embeddedActivityViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setDelegate:self];
+    [_embeddedActivityViewController setDelegate:self];
   }
 
-  return v3;
+  return _embeddedActivityViewController;
 }
 
 @end

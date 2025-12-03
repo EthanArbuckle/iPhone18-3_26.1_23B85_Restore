@@ -1,20 +1,20 @@
 @interface NTKParameciumBackgroundEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKParameciumBackgroundEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"off";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }
@@ -27,14 +27,14 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKParameciumBackgroundEditOption *)self background];
+  background = [(NTKParameciumBackgroundEditOption *)self background];
   v3 = @"EDIT_OPTION_LABEL_PARAMECIUM_BACKGROUND_OFF";
-  if (v2 != 1)
+  if (background != 1)
   {
     v3 = 0;
   }
 
-  if (v2)
+  if (background)
   {
     v4 = v3;
   }

@@ -1,6 +1,6 @@
 @interface OptInOutMutation
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsMutation)idsMutation;
 - (OptInOutMutation)init;
 - (id)data;
@@ -29,8 +29,8 @@
 - (id)data
 {
   v3 = +[NSMutableData data];
-  v4 = [(OptInOutMutation *)self accountKeyHash];
-  v5 = [(TLSMessageClass *)self encodeHashValue:v4 buffer:v3];
+  accountKeyHash = [(OptInOutMutation *)self accountKeyHash];
+  v5 = [(TLSMessageClass *)self encodeHashValue:accountKeyHash buffer:v3];
 
   if (v5 && [(TLSMessageClass *)self encodeBool:[(OptInOutMutation *)self optIn] buffer:v3]&& [(TLSMessageClass *)self encodeUint64:[(OptInOutMutation *)self timestampMs] buffer:v3])
   {
@@ -39,8 +39,8 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(OptInOutMutation *)self devicesArray];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    devicesArray = [(OptInOutMutation *)self devicesArray];
+    v8 = [devicesArray countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -51,21 +51,21 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(devicesArray);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) data];
-          if (!v12)
+          data = [*(*(&v18 + 1) + 8 * i) data];
+          if (!data)
           {
 
             goto LABEL_20;
           }
 
-          v13 = v12;
-          [v6 appendData:v12];
+          v13 = data;
+          [v6 appendData:data];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [devicesArray countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           continue;
@@ -95,19 +95,19 @@ LABEL_20:
   return v16;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(objc_opt_class());
   v44 = 0;
-  v10 = [v9 parseHashValue:v6 end:&v8[v7] result:&v44];
+  v10 = [v9 parseHashValue:bytes end:&v8[bytes2] result:&v44];
   v11 = v44;
   if (!v10)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -117,16 +117,16 @@ LABEL_20:
     v26 = -242;
 LABEL_15:
     [TransparencyError errorWithDomain:v24 code:v26 description:v25];
-    *a4 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_30;
   }
 
   [v9 setAccountKeyHash:v11];
   v43 = 0;
-  v12 = [v9 parseBool:v10 end:&v8[v7] result:&v43];
+  v12 = [v9 parseBool:v10 end:&v8[bytes2] result:&v43];
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -140,10 +140,10 @@ LABEL_15:
   v13 = v12;
   [v9 setOptIn:v43];
   v42 = 0;
-  v14 = [v9 parseUint64:v13 end:&v8[v7] result:&v42];
+  v14 = [v9 parseUint64:v13 end:&v8[bytes2] result:&v42];
   if (!v14)
   {
-    if (a4)
+    if (error)
     {
       v24 = kTransparencyErrorDecode;
       v25 = @"failed to parse timestampMs from OptInOut";
@@ -159,12 +159,12 @@ LABEL_16:
   v15 = v14;
   [v9 setTimestampMs:v42];
   v41 = 0;
-  v16 = [v9 parseByteArray:v15 end:&v8[v7] minLength:0 maxLength:0xFFFFLL result:&v41];
+  v16 = [v9 parseByteArray:v15 end:&v8[bytes2] minLength:0 maxLength:0xFFFFLL result:&v41];
   v17 = v41;
   v18 = v17;
   if (v16)
   {
-    v35 = a4;
+    errorCopy = error;
     v34 = v15;
     v36 = v11;
     if ([v17 length])
@@ -180,8 +180,8 @@ LABEL_16:
           break;
         }
 
-        v22 = [v9 devicesArray];
-        [v22 addObject:v19];
+        devicesArray = [v9 devicesArray];
+        [devicesArray addObject:v19];
 
         v23 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v19 parsedLength] + objc_msgSend(v18, "bytes"), objc_msgSend(v18, "length") - objc_msgSend(v19, "parsedLength"));
 
@@ -192,10 +192,10 @@ LABEL_16:
         }
       }
 
-      if (v35 && v20)
+      if (errorCopy && v20)
       {
         v31 = v20;
-        *v35 = v21;
+        *errorCopy = v21;
       }
 
       goto LABEL_28;
@@ -204,7 +204,7 @@ LABEL_16:
     v23 = v18;
 LABEL_20:
     v39 = 0;
-    v28 = [v9 parseExtensions:v16 end:&v8[v7] result:&v39];
+    v28 = [v9 parseExtensions:v16 end:&v8[bytes2] result:&v39];
     v29 = v39;
     if (v28)
     {
@@ -212,15 +212,15 @@ LABEL_20:
     }
 
     v38 = 0;
-    v33 = [v9 parseByteArray:v34 end:&v8[v7] minLength:0 maxLength:0x10000 result:&v38];
+    v33 = [v9 parseByteArray:v34 end:&v8[bytes2] minLength:0 maxLength:0x10000 result:&v38];
     v23 = v38;
     if (!v33)
     {
-      if (v35)
+      if (errorCopy)
       {
         [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-360 description:@"failed to parse devices from OptInOut"];
         v27 = 0;
-        *v35 = v29 = 0;
+        *errorCopy = v29 = 0;
       }
 
       else
@@ -233,7 +233,7 @@ LABEL_20:
     }
 
     v37 = 0;
-    v28 = [v9 parseExtensions:v33 end:&v8[v7] result:&v37];
+    v28 = [v9 parseExtensions:v33 end:&v8[bytes2] result:&v37];
     v29 = v37;
     if (v28)
     {
@@ -241,14 +241,14 @@ LABEL_21:
       v30 = [NSMutableArray arrayWithArray:v29];
       [v9 setExtensions:v30];
 
-      [v9 setParsedLength:{v28 - objc_msgSend(v5, "bytes")}];
+      [v9 setParsedLength:{v28 - objc_msgSend(dataCopy, "bytes")}];
       v27 = v9;
     }
 
-    else if (v35)
+    else if (errorCopy)
     {
       [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-248 description:@"failed to parse extensions from OptInOut"];
-      *v35 = v27 = 0;
+      *errorCopy = v27 = 0;
     }
 
     else
@@ -263,7 +263,7 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_28:
     v27 = 0;
@@ -271,7 +271,7 @@ LABEL_28:
   }
 
   [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-360 description:@"failed to parse devices from OptInOut"];
-  *a4 = v27 = 0;
+  *error = v27 = 0;
 LABEL_29:
 
 LABEL_30:
@@ -281,8 +281,8 @@ LABEL_30:
 
 - (id)description
 {
-  v3 = [(OptInOutMutation *)self accountKeyHash];
-  v4 = [v3 kt_hexString];
+  accountKeyHash = [(OptInOutMutation *)self accountKeyHash];
+  kt_hexString = [accountKeyHash kt_hexString];
   if ([(OptInOutMutation *)self optIn])
   {
     v5 = @"YES";
@@ -293,17 +293,17 @@ LABEL_30:
     v5 = @"NO";
   }
 
-  v6 = [(OptInOutMutation *)self timestampMs];
-  v7 = [(OptInOutMutation *)self devicesArray];
-  v8 = [NSString stringWithFormat:@"accountKeyHash:%@, optIn:%@ timestampMs:%llu, devices: %@", v4, v5, v6, v7];;
+  timestampMs = [(OptInOutMutation *)self timestampMs];
+  devicesArray = [(OptInOutMutation *)self devicesArray];
+  v8 = [NSString stringWithFormat:@"accountKeyHash:%@, optIn:%@ timestampMs:%llu, devices: %@", kt_hexString, v5, timestampMs, devicesArray];;
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -313,11 +313,11 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(OptInOutMutation *)self data];
-      v7 = [(OptInOutMutation *)v5 data];
+      v5 = equalCopy;
+      data = [(OptInOutMutation *)self data];
+      data2 = [(OptInOutMutation *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else

@@ -1,24 +1,24 @@
 @interface MapsSuggestionsVirtualGarage
-- (BOOL)entriesForUnpairedVehiclesWithHandler:(id)a3;
-- (MapsSuggestionsVirtualGarage)initWithConnector:(id)a3;
-- (id)_q_entryForUnpairedVehicles:(uint64_t)a1;
-- (id)initFromResourceDepot:(id)a3;
+- (BOOL)entriesForUnpairedVehiclesWithHandler:(id)handler;
+- (MapsSuggestionsVirtualGarage)initWithConnector:(id)connector;
+- (id)_q_entryForUnpairedVehicles:(uint64_t)vehicles;
+- (id)initFromResourceDepot:(id)depot;
 - (void)closeConnection;
 - (void)openConnection;
-- (void)registerObserver:(id)a3;
-- (void)stateOfChargeForVehicleWithIdentifier:(id)a3 handler:(id)a4;
-- (void)unregisterObserver:(id)a3;
-- (void)virtualGarageDidUpdateUnpairedVehicles:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)stateOfChargeForVehicleWithIdentifier:(id)identifier handler:(id)handler;
+- (void)unregisterObserver:(id)observer;
+- (void)virtualGarageDidUpdateUnpairedVehicles:(id)vehicles;
 @end
 
 @implementation MapsSuggestionsVirtualGarage
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -38,13 +38,13 @@ LABEL_8:
 
 LABEL_9:
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v6 = [v4 oneVirtualGarageConnector];
+  oneVirtualGarageConnector = [depotCopy oneVirtualGarageConnector];
 
-  if (!v6)
+  if (!oneVirtualGarageConnector)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -64,20 +64,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = [v5 oneVirtualGarageConnector];
-  self = [(MapsSuggestionsVirtualGarage *)self initWithConnector:v7];
+  oneVirtualGarageConnector2 = [v5 oneVirtualGarageConnector];
+  self = [(MapsSuggestionsVirtualGarage *)self initWithConnector:oneVirtualGarageConnector2];
 
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (MapsSuggestionsVirtualGarage)initWithConnector:(id)a3
+- (MapsSuggestionsVirtualGarage)initWithConnector:(id)connector
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectorCopy = connector;
+  if (connectorCopy)
   {
     v15.receiver = self;
     v15.super_class = MapsSuggestionsVirtualGarage;
@@ -89,7 +89,7 @@ LABEL_10:
       queue = v6->_queue;
       v6->_queue = v8;
 
-      objc_storeStrong(&v6->_connector, a3);
+      objc_storeStrong(&v6->_connector, connector);
       [(MapsSuggestionsVirtualGarageConnector *)v6->_connector setDelegate:v6];
       v10 = [[MapsSuggestionsObservers alloc] initWithCallbackQueue:v6->_queue name:@"MapsSuggestionsVirtualGarageObservers"];
       observers = v6->_observers;
@@ -97,7 +97,7 @@ LABEL_10:
     }
 
     self = v6;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -116,17 +116,17 @@ LABEL_10:
       _os_log_impl(&dword_1C5126000, v13, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an virtualGarageConnector", buf, 0x26u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)entriesForUnpairedVehiclesWithHandler:(id)a3
+- (BOOL)entriesForUnpairedVehiclesWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -169,7 +169,7 @@ LABEL_10:
     }
 
     v9 = [MEMORY[0x1E696ABC0] GEOErrorWithCode:-8 reason:@"No results. EV Routing is not supported"];
-    v4[2](v4, MEMORY[0x1E695E0F0], v9);
+    handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], v9);
 LABEL_13:
 
     goto LABEL_14;
@@ -182,14 +182,14 @@ LABEL_13:
   v11[2] = __70__MapsSuggestionsVirtualGarage_entriesForUnpairedVehiclesWithHandler___block_invoke;
   v11[3] = &unk_1E81F5CB0;
   objc_copyWeak(&v13, location);
-  v12 = v4;
+  v12 = handlerCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(location);
 LABEL_14:
 
-  return v4 != 0;
+  return handlerCopy != 0;
 }
 
 void __70__MapsSuggestionsVirtualGarage_entriesForUnpairedVehiclesWithHandler___block_invoke(uint64_t a1)
@@ -421,9 +421,9 @@ void __47__MapsSuggestionsVirtualGarage_closeConnection__block_invoke(uint64_t a
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -431,7 +431,7 @@ void __47__MapsSuggestionsVirtualGarage_closeConnection__block_invoke(uint64_t a
   v6[2] = __49__MapsSuggestionsVirtualGarage_registerObserver___block_invoke;
   v6[3] = &unk_1E81F5EF0;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)observers registerObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)observers registerObserver:observerCopy handler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -465,9 +465,9 @@ void __49__MapsSuggestionsVirtualGarage_registerObserver___block_invoke(uint64_t
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -475,7 +475,7 @@ void __49__MapsSuggestionsVirtualGarage_registerObserver___block_invoke(uint64_t
   v6[2] = __51__MapsSuggestionsVirtualGarage_unregisterObserver___block_invoke;
   v6[3] = &unk_1E81F5EF0;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)observers unregisterObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)observers unregisterObserver:observerCopy handler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -509,17 +509,17 @@ void __51__MapsSuggestionsVirtualGarage_unregisterObserver___block_invoke(uint64
   }
 }
 
-- (void)virtualGarageDidUpdateUnpairedVehicles:(id)a3
+- (void)virtualGarageDidUpdateUnpairedVehicles:(id)vehicles
 {
-  v4 = a3;
+  vehiclesCopy = vehicles;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__MapsSuggestionsVirtualGarage_virtualGarageDidUpdateUnpairedVehicles___block_invoke;
   block[3] = &unk_1E81F6140;
-  v8 = v4;
-  v6 = v4;
+  v8 = vehiclesCopy;
+  v6 = vehiclesCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(queue, block);
   objc_destroyWeak(&v9);
@@ -643,10 +643,10 @@ void __71__MapsSuggestionsVirtualGarage_virtualGarageDidUpdateUnpairedVehicles__
   [v3 unpairedVehiclesChangedInVirtualGarage:{v4, v5, v6}];
 }
 
-- (void)stateOfChargeForVehicleWithIdentifier:(id)a3 handler:(id)a4
+- (void)stateOfChargeForVehicleWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -654,10 +654,10 @@ void __71__MapsSuggestionsVirtualGarage_virtualGarageDidUpdateUnpairedVehicles__
   v11[2] = __78__MapsSuggestionsVirtualGarage_stateOfChargeForVehicleWithIdentifier_handler___block_invoke;
   v11[3] = &unk_1E81F5DB0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -690,13 +690,13 @@ void __78__MapsSuggestionsVirtualGarage_stateOfChargeForVehicleWithIdentifier_ha
   }
 }
 
-- (id)_q_entryForUnpairedVehicles:(uint64_t)a1
+- (id)_q_entryForUnpairedVehicles:(uint64_t)vehicles
 {
   v46 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (vehicles)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(vehicles + 24));
     v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
     v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
     v37 = 0u;
@@ -719,17 +719,17 @@ void __78__MapsSuggestionsVirtualGarage_stateOfChargeForVehicleWithIdentifier_ha
           }
 
           v11 = *(*(&v37 + 1) + 8 * i);
-          v12 = [v11 pairedAppIdentifier];
-          v13 = [v12 length];
+          pairedAppIdentifier = [v11 pairedAppIdentifier];
+          v13 = [pairedAppIdentifier length];
 
           if (!v13)
           {
             v29 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              v34 = [v11 displayName];
+              displayName = [v11 displayName];
               *buf = 138412290;
-              v42 = v34;
+              v42 = displayName;
               _os_log_impl(&dword_1C5126000, v29, OS_LOG_TYPE_ERROR, "Vehicle %@ must have a pairedAppIdentifier", buf, 0xCu);
             }
 
@@ -737,11 +737,11 @@ void __78__MapsSuggestionsVirtualGarage_stateOfChargeForVehicleWithIdentifier_ha
             goto LABEL_16;
           }
 
-          v14 = [v11 identifier];
-          [v5 addObject:v14];
+          identifier = [v11 identifier];
+          [v5 addObject:identifier];
 
-          v15 = [v11 pairedAppIdentifier];
-          [v4 addObject:v15];
+          pairedAppIdentifier2 = [v11 pairedAppIdentifier];
+          [v4 addObject:pairedAppIdentifier2];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -757,28 +757,28 @@ void __78__MapsSuggestionsVirtualGarage_stateOfChargeForVehicleWithIdentifier_ha
     GEOConfigGetDouble();
     v17 = MapsSuggestionsNowWithOffset(v16);
     v18 = [v6 objectAtIndexedSubscript:0];
-    v19 = [v18 manufacturer];
+    manufacturer = [v18 manufacturer];
     v20 = [v6 objectAtIndexedSubscript:0];
-    v21 = [v20 model];
+    model = [v20 model];
     GEOConfigGetDouble();
     v36 = v17;
-    v22 = [MapsSuggestionsEntry entryWithType:20 title:v19 subtitle:v21 weight:v17 expires:0 sourceSpecificInfo:?];
+    v22 = [MapsSuggestionsEntry entryWithType:20 title:manufacturer subtitle:model weight:v17 expires:0 sourceSpecificInfo:?];
 
     [v22 setBoolean:objc_msgSend(v4 forKey:{"count") > 1, @"MapsSuggestionsVehicleSetupWithGenericIconKey"}];
     v23 = v5;
-    v24 = [v4 allObjects];
-    v25 = [v24 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    allObjects = [v4 allObjects];
+    v25 = [allObjects sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
-    v26 = [v23 allObjects];
+    allObjects2 = [v23 allObjects];
 
-    v27 = [v26 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    v27 = [allObjects2 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
     v28 = [v25 arrayByAddingObjectsFromArray:v27];
     v29 = [v28 componentsJoinedByString:@"_"];
 
     v30 = [v6 objectAtIndexedSubscript:0];
-    v31 = [v30 pairedAppIdentifier];
-    [v22 setString:v31 forKey:@"MapsSuggestionsOriginBundleIDKey"];
+    pairedAppIdentifier3 = [v30 pairedAppIdentifier];
+    [v22 setString:pairedAppIdentifier3 forKey:@"MapsSuggestionsOriginBundleIDKey"];
 
     [v22 setString:v29 forKey:@"MapsSuggestionsVirtualGaragePK"];
     [v22 setString:@"MapsSuggestionsVirtualGaragePK" forKey:@"MapsSuggestionsPrimaryKey"];

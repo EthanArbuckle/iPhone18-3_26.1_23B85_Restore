@@ -1,9 +1,9 @@
 @interface VCPRequest
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (BOOL)updateWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
 - (VCPRequest)init;
-- (VCPRequest)initWithOptions:(id)a3;
+- (VCPRequest)initWithOptions:(id)options;
 @end
 
 @implementation VCPRequest
@@ -19,159 +19,159 @@
   return 0;
 }
 
-- (VCPRequest)initWithOptions:(id)a3
+- (VCPRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v46.receiver = self;
   v46.super_class = VCPRequest;
   v5 = [(VCPRequest *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"forceCPU"];
+    v6 = [optionsCopy objectForKeyedSubscript:@"forceCPU"];
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"forceCPU"];
-      v8 = [v7 BOOLValue];
+      v7 = [optionsCopy objectForKeyedSubscript:@"forceCPU"];
+      bOOLValue = [v7 BOOLValue];
 
-      if (v8)
+      if (bOOLValue)
       {
         v5->_useCPUOnly = 1;
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"revision"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"revision"];
 
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"revision"];
+      v10 = [optionsCopy objectForKeyedSubscript:@"revision"];
       v5->_revision = [v10 intValue];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"frameWidth"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"frameWidth"];
 
     if (v11)
     {
-      v12 = [v4 objectForKeyedSubscript:@"frameWidth"];
+      v12 = [optionsCopy objectForKeyedSubscript:@"frameWidth"];
       v5->_width = [v12 intValue];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"frameHeight"];
+    v13 = [optionsCopy objectForKeyedSubscript:@"frameHeight"];
 
     if (v13)
     {
-      v14 = [v4 objectForKeyedSubscript:@"frameHeight"];
+      v14 = [optionsCopy objectForKeyedSubscript:@"frameHeight"];
       v5->_height = [v14 intValue];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"maxNumberHands"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"maxNumberHands"];
 
     if (v15)
     {
-      v16 = [v4 objectForKeyedSubscript:@"maxNumberHands"];
+      v16 = [optionsCopy objectForKeyedSubscript:@"maxNumberHands"];
       v5->_maxNumHands = [v16 intValue];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"maxNumberPets"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"maxNumberPets"];
 
     if (v17)
     {
-      v18 = [v4 objectForKeyedSubscript:@"maxNumberPets"];
+      v18 = [optionsCopy objectForKeyedSubscript:@"maxNumberPets"];
       v5->_maxNumPets = [v18 intValue];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"humanActionWindowSize"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"humanActionWindowSize"];
 
     if (v19)
     {
-      v20 = [v4 objectForKeyedSubscript:@"humanActionWindowSize"];
+      v20 = [optionsCopy objectForKeyedSubscript:@"humanActionWindowSize"];
       v5->_humanActionWindowSize = [v20 intValue];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
 
     if (v21)
     {
-      v22 = [v4 objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
+      v22 = [optionsCopy objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
       v5->_motionFlowComputationAccuracy = [v22 unsignedIntValue];
     }
 
     v5->_enableHandDetection = 1;
-    v23 = [v4 objectForKeyedSubscript:@"disableHandDetection"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"disableHandDetection"];
 
     if (v23)
     {
-      v24 = [v4 objectForKeyedSubscript:@"disableHandDetection"];
+      v24 = [optionsCopy objectForKeyedSubscript:@"disableHandDetection"];
       v5->_enableHandDetection = [v24 BOOLValue] ^ 1;
     }
 
     v5->_enableANSTHandDetection = 0;
-    v25 = [v4 objectForKeyedSubscript:@"enableANSTHandDetection"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"enableANSTHandDetection"];
 
     if (v25)
     {
-      v26 = [v4 objectForKeyedSubscript:@"enableANSTHandDetection"];
+      v26 = [optionsCopy objectForKeyedSubscript:@"enableANSTHandDetection"];
       v5->_enableANSTHandDetection = [v26 BOOLValue];
     }
 
     v5->_enableRejectHandsNearBoundaries = 0;
-    v27 = [v4 objectForKeyedSubscript:@"enableRejectHandsNearBoundaries"];
+    v27 = [optionsCopy objectForKeyedSubscript:@"enableRejectHandsNearBoundaries"];
 
     if (v27)
     {
-      v28 = [v4 objectForKeyedSubscript:@"enableRejectHandsNearBoundaries"];
+      v28 = [optionsCopy objectForKeyedSubscript:@"enableRejectHandsNearBoundaries"];
       v5->_enableRejectHandsNearBoundaries = [v28 BOOLValue];
     }
 
     v5->_maxNumOfPersons = 1;
-    v29 = [v4 objectForKeyedSubscript:@"maxNumOfPersons"];
+    v29 = [optionsCopy objectForKeyedSubscript:@"maxNumOfPersons"];
 
     if (v29)
     {
-      v30 = [v4 objectForKeyedSubscript:@"maxNumOfPersons"];
+      v30 = [optionsCopy objectForKeyedSubscript:@"maxNumOfPersons"];
       v5->_maxNumOfPersons = [v30 intValue];
     }
 
     v5->_maxNumOfPersonsForPose = 4;
-    v31 = [v4 objectForKeyedSubscript:@"maxNumOfPersons"];
+    v31 = [optionsCopy objectForKeyedSubscript:@"maxNumOfPersons"];
 
     if (v31)
     {
-      v32 = [v4 objectForKeyedSubscript:@"maxNumOfPersons"];
+      v32 = [optionsCopy objectForKeyedSubscript:@"maxNumOfPersons"];
       v5->_maxNumOfPersonsForPose = [v32 intValue];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"optimizeForDistance"];
+    v33 = [optionsCopy objectForKeyedSubscript:@"optimizeForDistance"];
 
     if (v33)
     {
-      v34 = [v4 objectForKeyedSubscript:@"optimizeForDistance"];
+      v34 = [optionsCopy objectForKeyedSubscript:@"optimizeForDistance"];
       v5->_optimizeForDistance = [v34 BOOLValue];
     }
 
     v5->_enableHandPoseLite = [objc_opt_class() useHandsLitePoseForVision];
-    v35 = [v4 objectForKeyedSubscript:@"handPoseLite"];
+    v35 = [optionsCopy objectForKeyedSubscript:@"handPoseLite"];
 
     if (v35)
     {
-      v36 = [v4 objectForKeyedSubscript:@"handPoseLite"];
+      v36 = [optionsCopy objectForKeyedSubscript:@"handPoseLite"];
       v5->_enableHandPoseLite = [v36 BOOLValue];
     }
 
     v5->_useAsync = 0;
-    v37 = [v4 objectForKeyedSubscript:@"useAsync"];
+    v37 = [optionsCopy objectForKeyedSubscript:@"useAsync"];
 
     if (v37)
     {
-      v38 = [v4 objectForKeyedSubscript:@"useAsync"];
+      v38 = [optionsCopy objectForKeyedSubscript:@"useAsync"];
       v5->_useAsync = [v38 BOOLValue];
     }
 
     v5->_minHandSize = 0.05;
-    v39 = [v4 objectForKeyedSubscript:@"minHandSize"];
+    v39 = [optionsCopy objectForKeyedSubscript:@"minHandSize"];
 
     if (v39)
     {
-      v40 = [v4 objectForKeyedSubscript:@"minHandSize"];
+      v40 = [optionsCopy objectForKeyedSubscript:@"minHandSize"];
       [v40 floatValue];
       v42 = 1.0;
       if (v41 < 1.0)
@@ -193,41 +193,41 @@
   return v5;
 }
 
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateWithOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"frameWidth"];
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:@"frameWidth"];
 
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"frameWidth"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"frameWidth"];
     self->_width = [v7 intValue];
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"frameWidth"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"frameWidth"];
 
   if (v8)
   {
-    v9 = [v5 objectForKeyedSubscript:@"frameHeight"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"frameHeight"];
     self->_height = [v9 intValue];
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
 
   if (v10)
   {
-    v11 = [v5 objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"motionFlowComputationAccuracy"];
     self->_motionFlowComputationAccuracy = [v11 unsignedIntValue];
   }
 
   return 1;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
   }
 
   v5 = *MEMORY[0x1E695F060];
@@ -237,11 +237,11 @@
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
   }
 
   return 0;

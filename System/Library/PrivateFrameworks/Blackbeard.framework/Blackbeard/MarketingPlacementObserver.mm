@@ -1,9 +1,9 @@
 @interface MarketingPlacementObserver
 - (_TtC24FitnessEngagementServiceP33_BEC6C0704903DD2FBF3B8EA6FBD9907426MarketingPlacementObserver)init;
-- (void)engagement:(AMSEngagement *)a3 didUpdateEngagementRequest:(AMSEngagementRequest *)a4 placement:(NSString *)a5 serviceType:(NSString *)a6 completion:(id)a7;
-- (void)engagement:(AMSEngagement *)a3 handleDialogRequest:(AMSDialogRequest *)a4 completion:(id)a5;
-- (void)engagement:(AMSEngagement *)a3 handleEngagementRequest:(AMSEngagementRequest *)a4 completion:(id)a5;
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6;
+- (void)engagement:(AMSEngagement *)engagement didUpdateEngagementRequest:(AMSEngagementRequest *)request placement:(NSString *)placement serviceType:(NSString *)type completion:(id)completion;
+- (void)engagement:(AMSEngagement *)engagement handleDialogRequest:(AMSDialogRequest *)request completion:(id)completion;
+- (void)engagement:(AMSEngagement *)engagement handleEngagementRequest:(AMSEngagementRequest *)request completion:(id)completion;
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type;
 @end
 
 @implementation MarketingPlacementObserver
@@ -15,28 +15,28 @@
   return result;
 }
 
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type
 {
   v9 = sub_1E65E5C78();
   v11 = v10;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_1E659AC58(a4, v9, v11);
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
+  sub_1E659AC58(request, v9, v11);
 }
 
-- (void)engagement:(AMSEngagement *)a3 didUpdateEngagementRequest:(AMSEngagementRequest *)a4 placement:(NSString *)a5 serviceType:(NSString *)a6 completion:(id)a7
+- (void)engagement:(AMSEngagement *)engagement didUpdateEngagementRequest:(AMSEngagementRequest *)request placement:(NSString *)placement serviceType:(NSString *)type completion:(id)completion
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ED0735B0, &qword_1E65EA000);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x1EEE9AC00](v13 - 8);
   v16 = &v27 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(completion);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = engagement;
+  v18[3] = request;
+  v18[4] = placement;
+  v18[5] = type;
   v18[6] = v17;
   v18[7] = self;
   v19 = sub_1E65E60A8();
@@ -51,24 +51,24 @@
   v21[3] = 0;
   v21[4] = &unk_1E660D280;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = self;
+  engagementCopy = engagement;
+  requestCopy = request;
+  placementCopy = placement;
+  typeCopy = type;
+  selfCopy = self;
   sub_1E6198E90(0, 0, v16, &unk_1E660D288, v21);
 }
 
-- (void)engagement:(AMSEngagement *)a3 handleDialogRequest:(AMSDialogRequest *)a4 completion:(id)a5
+- (void)engagement:(AMSEngagement *)engagement handleDialogRequest:(AMSDialogRequest *)request completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ED0735B0, &qword_1E65EA000);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = engagement;
+  v14[3] = request;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1E65E60A8();
@@ -83,22 +83,22 @@
   v17[3] = 0;
   v17[4] = &unk_1E660D260;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
   sub_1E6198E90(0, 0, v12, &unk_1E660D268, v17);
 }
 
-- (void)engagement:(AMSEngagement *)a3 handleEngagementRequest:(AMSEngagementRequest *)a4 completion:(id)a5
+- (void)engagement:(AMSEngagement *)engagement handleEngagementRequest:(AMSEngagementRequest *)request completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ED0735B0, &qword_1E65EA000);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = engagement;
+  v14[3] = request;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1E65E60A8();
@@ -113,9 +113,9 @@
   v17[3] = 0;
   v17[4] = &unk_1E660D220;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
   sub_1E6198E90(0, 0, v12, &unk_1E660D230, v17);
 }
 

@@ -1,9 +1,9 @@
 @interface MKLocalSearchCompletion
-- (BOOL)getCoordinate:(CLLocationCoordinate2D *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)getCoordinate:(CLLocationCoordinate2D *)coordinate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
 - (GEOStorageCompletion)geoStorageCompletion;
-- (MKLocalSearchCompletion)initWithGeoCompletionItem:(id)a3 serverSectionIndex:(unint64_t)a4 serverItemIndexInSection:(unint64_t)a5;
+- (MKLocalSearchCompletion)initWithGeoCompletionItem:(id)item serverSectionIndex:(unint64_t)index serverItemIndexInSection:(unint64_t)section;
 - (NSArray)childItems;
 - (NSArray)displayLines;
 - (NSArray)subtitleHighlightRanges;
@@ -12,7 +12,7 @@
 - (NSString)title;
 - (float)_disambiguationRadiusMeters;
 - (id)description;
-- (id)highlightsForLine:(unint64_t)a3;
+- (id)highlightsForLine:(unint64_t)line;
 - (int)_placeType;
 - (int64_t)_type;
 - (int64_t)autocompleteCellType;
@@ -21,33 +21,33 @@
 
 @implementation MKLocalSearchCompletion
 
-- (id)highlightsForLine:(unint64_t)a3
+- (id)highlightsForLine:(unint64_t)line
 {
-  if (a3 == 1)
+  if (line == 1)
   {
-    v3 = [(MKLocalSearchCompletion *)self subtitleHighlightRanges];
+    subtitleHighlightRanges = [(MKLocalSearchCompletion *)self subtitleHighlightRanges];
   }
 
-  else if (a3)
+  else if (line)
   {
-    v3 = 0;
+    subtitleHighlightRanges = 0;
   }
 
   else
   {
-    v3 = [(MKLocalSearchCompletion *)self titleHighlightRanges];
+    subtitleHighlightRanges = [(MKLocalSearchCompletion *)self titleHighlightRanges];
   }
 
-  return v3;
+  return subtitleHighlightRanges;
 }
 
 - (NSArray)displayLines
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MKLocalSearchCompletion *)self title];
-  v7[0] = v3;
-  v4 = [(MKLocalSearchCompletion *)self subtitle];
-  v7[1] = v4;
+  title = [(MKLocalSearchCompletion *)self title];
+  v7[0] = title;
+  subtitle = [(MKLocalSearchCompletion *)self subtitle];
+  v7[1] = subtitle;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -77,14 +77,14 @@
 
   else
   {
-    v5 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
 
-    if (v5)
+    if (_geoMapItem)
     {
-      v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-      v7 = [v6 _placeType];
+      _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+      _placeType = [_geoMapItem2 _placeType];
 
-      return v7;
+      return _placeType;
     }
 
     else
@@ -114,13 +114,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GEOCompletionItem *)self->_item isEqual:v4[1]];
+    v5 = [(GEOCompletionItem *)self->_item isEqual:equalCopy[1]];
   }
 
   else
@@ -136,13 +136,13 @@
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MKLocalSearchCompletion *)self title];
-  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v5, self, v6];
+  title = [(MKLocalSearchCompletion *)self title];
+  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v5, self, title];
 
-  v8 = [(MKLocalSearchCompletion *)self subtitle];
-  if ([v8 length])
+  subtitle = [(MKLocalSearchCompletion *)self subtitle];
+  if ([subtitle length])
   {
-    [v7 appendFormat:@" (%@)", v8];
+    [v7 appendFormat:@" (%@)", subtitle];
   }
 
   return v7;
@@ -151,25 +151,25 @@
 - (NSArray)childItems
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MKLocalSearchCompletion *)self publisherResult];
+  publisherResult = [(MKLocalSearchCompletion *)self publisherResult];
 
-  if (v3)
+  if (publisherResult)
   {
     v4 = objc_alloc(MEMORY[0x1E69A21A8]);
-    v5 = [(MKLocalSearchCompletion *)self publisherResult];
-    v6 = [v4 initWithPublisherResult:v5];
+    publisherResult2 = [(MKLocalSearchCompletion *)self publisherResult];
+    v6 = [v4 initWithPublisherResult:publisherResult2];
     v11[0] = v6;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
+    _childItems = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   }
 
   else
   {
-    v8 = [(MKLocalSearchCompletion *)self mapItem];
-    v9 = [v8 _geoMapItem];
-    v7 = [v9 _childItems];
+    mapItem = [(MKLocalSearchCompletion *)self mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    _childItems = [_geoMapItem _childItems];
   }
 
-  return v7;
+  return _childItems;
 }
 
 - (int64_t)autocompleteCellType
@@ -185,14 +185,14 @@
 
 - (GEOStorageCompletion)geoStorageCompletion
 {
-  v2 = [(MKLocalSearchCompletion *)self copyStorage];
+  copyStorage = [(MKLocalSearchCompletion *)self copyStorage];
 
-  return v2;
+  return copyStorage;
 }
 
-- (BOOL)getCoordinate:(CLLocationCoordinate2D *)a3
+- (BOOL)getCoordinate:(CLLocationCoordinate2D *)coordinate
 {
-  if (!a3)
+  if (!coordinate)
   {
     return 0;
   }
@@ -203,14 +203,14 @@
     return 0;
   }
 
-  *a3 = CLLocationCoordinate2DMake(*&v5, *(&v5 + 1));
+  *coordinate = CLLocationCoordinate2DMake(*&v5, *(&v5 + 1));
   return 1;
 }
 
 - (NSArray)subtitleHighlightRanges
 {
-  v3 = [(GEOCompletionItem *)self->_item displayLines];
-  if ([v3 count] < 2)
+  displayLines = [(GEOCompletionItem *)self->_item displayLines];
+  if ([displayLines count] < 2)
   {
     v4 = MEMORY[0x1E695E0F0];
   }
@@ -225,15 +225,15 @@
 
 - (NSString)subtitle
 {
-  v2 = [(GEOCompletionItem *)self->_item displayLines];
-  if ([v2 count] < 2)
+  displayLines = [(GEOCompletionItem *)self->_item displayLines];
+  if ([displayLines count] < 2)
   {
     v3 = &stru_1F15B23C0;
   }
 
   else
   {
-    v3 = [v2 objectAtIndexedSubscript:1];
+    v3 = [displayLines objectAtIndexedSubscript:1];
   }
 
   return v3;
@@ -241,8 +241,8 @@
 
 - (NSArray)titleHighlightRanges
 {
-  v3 = [(GEOCompletionItem *)self->_item displayLines];
-  if ([v3 count])
+  displayLines = [(GEOCompletionItem *)self->_item displayLines];
+  if ([displayLines count])
   {
     v4 = [(GEOCompletionItem *)self->_item highlightsForLine:0];
   }
@@ -257,10 +257,10 @@
 
 - (NSString)title
 {
-  v2 = [(GEOCompletionItem *)self->_item displayLines];
-  if ([v2 count])
+  displayLines = [(GEOCompletionItem *)self->_item displayLines];
+  if ([displayLines count])
   {
-    v3 = [v2 objectAtIndexedSubscript:0];
+    v3 = [displayLines objectAtIndexedSubscript:0];
   }
 
   else
@@ -271,34 +271,34 @@
   return v3;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = MKLocalSearchCompletion;
-  return [(MKLocalSearchCompletion *)&v6 isKindOfClass:a3];
+  return [(MKLocalSearchCompletion *)&v6 isKindOfClass:class];
 }
 
-- (MKLocalSearchCompletion)initWithGeoCompletionItem:(id)a3 serverSectionIndex:(unint64_t)a4 serverItemIndexInSection:(unint64_t)a5
+- (MKLocalSearchCompletion)initWithGeoCompletionItem:(id)item serverSectionIndex:(unint64_t)index serverItemIndexInSection:(unint64_t)section
 {
-  v9 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = MKLocalSearchCompletion;
   v10 = [(MKLocalSearchCompletion *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_item, a3);
-    v11->_serverSectionIndex = a4;
-    v11->_serverItemIndexInSection = a5;
-    v12 = [(GEOCompletionItem *)v11->_item geoMapItem];
-    if (v12)
+    objc_storeStrong(&v10->_item, item);
+    v11->_serverSectionIndex = index;
+    v11->_serverItemIndexInSection = section;
+    geoMapItem = [(GEOCompletionItem *)v11->_item geoMapItem];
+    if (geoMapItem)
     {
-      v13 = [MKMapItem _itemWithGeoMapItem:v12];
+      v13 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
       mapItem = v11->_mapItem;
       v11->_mapItem = v13;
     }

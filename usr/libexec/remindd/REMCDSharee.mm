@@ -1,14 +1,14 @@
 @interface REMCDSharee
-- (BOOL)isConnectedToAccountObject:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
 @end
 
 @implementation REMCDSharee
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCDSharee *)self list];
-  v6 = [v5 isConnectedToAccountObject:v4];
+  objectCopy = object;
+  list = [(REMCDSharee *)self list];
+  v6 = [list isConnectedToAccountObject:objectCopy];
 
   return v6;
 }

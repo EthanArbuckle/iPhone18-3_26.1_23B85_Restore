@@ -1,23 +1,23 @@
 @interface BMIndexField
-- (BMIndexField)initWithName:(id)a3 expression:(id)a4 dataType:(int64_t)a5;
+- (BMIndexField)initWithName:(id)name expression:(id)expression dataType:(int64_t)type;
 - (id)description;
 @end
 
 @implementation BMIndexField
 
-- (BMIndexField)initWithName:(id)a3 expression:(id)a4 dataType:(int64_t)a5
+- (BMIndexField)initWithName:(id)name expression:(id)expression dataType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  expressionCopy = expression;
   v14.receiver = self;
   v14.super_class = BMIndexField;
   v11 = [(BMIndexField *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    objc_storeStrong(&v12->_expression, a4);
-    v12->_dataType = a5;
+    objc_storeStrong(&v11->_name, name);
+    objc_storeStrong(&v12->_expression, expression);
+    v12->_dataType = type;
   }
 
   return v12;

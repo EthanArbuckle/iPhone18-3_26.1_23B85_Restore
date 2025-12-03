@@ -1,20 +1,20 @@
 @interface PXPhotoKitAssetCollectionSuggestPeopleActionPerformer
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionSuggestPeopleActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 - 1 >= 2)
+  referenceCopy = reference;
+  inputsCopy = inputs;
+  if (case - 1 >= 2)
   {
-    if (!a3)
+    if (!case)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionSuggestPeopleActionPerformer.m" lineNumber:47 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionSuggestPeopleActionPerformer.m" lineNumber:47 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -32,12 +32,12 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v6 = [v3 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v4 = [[PXPeopleSplitConfirmationViewController alloc] initWithPerson:v6];
+    v4 = [[PXPeopleSplitConfirmationViewController alloc] initWithPerson:firstObject];
     v5 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v4];
     [(PXPeopleSplitConfirmationViewController *)v4 setModalPresentationStyle:0];
     [(PXActionPerformer *)self presentViewController:v5];

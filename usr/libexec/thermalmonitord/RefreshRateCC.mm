@@ -1,13 +1,13 @@
 @interface RefreshRateCC
-- (RefreshRateCC)initWithParams:(__CFDictionary *)a3;
+- (RefreshRateCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)defaultAction;
-- (void)initRefreshRateTable:(__CFArray *)a3;
+- (void)initRefreshRateTable:(__CFArray *)table;
 @end
 
 @implementation RefreshRateCC
 
-- (RefreshRateCC)initWithParams:(__CFDictionary *)a3
+- (RefreshRateCC)initWithParams:(__CFDictionary *)params
 {
   v7.receiver = self;
   v7.super_class = RefreshRateCC;
@@ -23,7 +23,7 @@
     v4->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d RefreshRate ", 7);
     v5->super.previousValue = v5->super.currentLoadingIndex;
     v5->super.releaseMaxLI = 2;
-    sub_100002A20(a3, @"MaxReleaseRate", kCFNumberIntType, &v5->super.releaseMaxLI);
+    sub_100002A20(params, @"MaxReleaseRate", kCFNumberIntType, &v5->super.releaseMaxLI);
   }
 
   return v5;
@@ -82,42 +82,42 @@ LABEL_8:
   }
 }
 
-- (void)initRefreshRateTable:(__CFArray *)a3
+- (void)initRefreshRateTable:(__CFArray *)table
 {
-  if (a3 && (v5 = CFGetTypeID(a3), v5 == CFArrayGetTypeID()))
+  if (table && (v5 = CFGetTypeID(table), v5 == CFArrayGetTypeID()))
   {
     v18 = 0;
     valuePtr = 0;
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(table);
     *(&self->super.currentPower + 4) = Count;
     if (Count)
     {
       v7 = 0;
-      v8 = self;
+      selfCopy = self;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v7);
+        ValueAtIndex = CFArrayGetValueAtIndex(table, v7);
         if (ValueAtIndex && (v10 = ValueAtIndex, v11 = CFGetTypeID(ValueAtIndex), v11 == CFDictionaryGetTypeID()))
         {
           Value = CFDictionaryGetValue(v10, @"up");
           if (Value)
           {
             CFNumberGetValue(Value, kCFNumberSInt32Type, &valuePtr);
-            *(&v8->super.currentPower + 6) = valuePtr;
+            *(&selfCopy->super.currentPower + 6) = valuePtr;
           }
 
           v13 = CFDictionaryGetValue(v10, @"down");
           if (v13)
           {
             CFNumberGetValue(v13, kCFNumberSInt32Type, &v18);
-            v8->refreshRateLevels[0] = v18;
+            selfCopy->refreshRateLevels[0] = v18;
           }
 
           v14 = CFDictionaryGetValue(v10, @"level");
           if (v14)
           {
             CFNumberGetValue(v14, kCFNumberSInt32Type, &v18 + 4);
-            v8->refreshRateLevelUp[0] = BYTE4(v18);
+            selfCopy->refreshRateLevelUp[0] = BYTE4(v18);
           }
         }
 
@@ -133,7 +133,7 @@ LABEL_8:
         }
 
         ++v7;
-        v8 = (v8 + 1);
+        selfCopy = (selfCopy + 1);
       }
 
       while (v7 < *(&self->super.currentPower + 4));

@@ -1,10 +1,10 @@
 @interface CuratedCollectionActionCellModel
-- (CuratedCollectionActionCellModel)initWithCollection:(id)a3;
+- (CuratedCollectionActionCellModel)initWithCollection:(id)collection;
 - (CuratedCollectionActionDelegate)actionDelegate;
 - (CuratedCollectionActionManager)actionManager;
 - (void)_updateActionManagerState;
 - (void)dealloc;
-- (void)setActionDelegate:(id)a3;
+- (void)setActionDelegate:(id)delegate;
 @end
 
 @implementation CuratedCollectionActionCellModel
@@ -19,24 +19,24 @@
 - (void)_updateActionManagerState
 {
   v3 = +[CuratedCollectionSyncManager sharedManager];
-  v4 = [(CuratedCollectionActionCellModel *)self collection];
-  -[CuratedCollectionActionManager setCollectionIsSaved:](self->_actionManager, "setCollectionIsSaved:", [v3 collectionIsSaved:v4]);
+  collection = [(CuratedCollectionActionCellModel *)self collection];
+  -[CuratedCollectionActionManager setCollectionIsSaved:](self->_actionManager, "setCollectionIsSaved:", [v3 collectionIsSaved:collection]);
 
-  v6 = [(CuratedCollectionActionCellModel *)self collection];
-  v5 = [v6 publisherCollectionURL];
-  [(CuratedCollectionActionManager *)self->_actionManager setHasHomePage:v5 != 0];
+  collection2 = [(CuratedCollectionActionCellModel *)self collection];
+  publisherCollectionURL = [collection2 publisherCollectionURL];
+  [(CuratedCollectionActionManager *)self->_actionManager setHasHomePage:publisherCollectionURL != 0];
 }
 
-- (void)setActionDelegate:(id)a3
+- (void)setActionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
 
   if (WeakRetained != obj)
   {
     v5 = objc_storeWeak(&self->_actionDelegate, obj);
-    v6 = [(CuratedCollectionActionCellModel *)self actionManager];
-    [v6 setDelegate:obj];
+    actionManager = [(CuratedCollectionActionCellModel *)self actionManager];
+    [actionManager setDelegate:obj];
   }
 }
 
@@ -58,16 +58,16 @@
   [(CuratedCollectionActionCellModel *)&v4 dealloc];
 }
 
-- (CuratedCollectionActionCellModel)initWithCollection:(id)a3
+- (CuratedCollectionActionCellModel)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = CuratedCollectionActionCellModel;
   v6 = [(CuratedCollectionActionCellModel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
     v8 = objc_alloc_init(CuratedCollectionActionManager);
     actionManager = v7->_actionManager;
     v7->_actionManager = v8;

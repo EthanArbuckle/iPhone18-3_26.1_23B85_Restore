@@ -1,8 +1,8 @@
 @interface _PXPhotoKitSpotlightActionButton
-+ (id)_appIconForBundleIdentifier:(id)a3;
-- (_PXPhotoKitSpotlightActionButton)initWithAppBundleIdentifier:(id)a3;
++ (id)_appIconForBundleIdentifier:(id)identifier;
+- (_PXPhotoKitSpotlightActionButton)initWithAppBundleIdentifier:(id)identifier;
 - (void)_updateImage;
-- (void)setAppBundleIdentifier:(id)a3;
+- (void)setAppBundleIdentifier:(id)identifier;
 @end
 
 @implementation _PXPhotoKitSpotlightActionButton
@@ -10,20 +10,20 @@
 - (void)_updateImage
 {
   v3 = objc_opt_class();
-  v4 = [(_PXPhotoKitSpotlightActionButton *)self appBundleIdentifier];
-  v5 = [v3 _appIconForBundleIdentifier:v4];
+  appBundleIdentifier = [(_PXPhotoKitSpotlightActionButton *)self appBundleIdentifier];
+  v5 = [v3 _appIconForBundleIdentifier:appBundleIdentifier];
 
   [(_PXPhotoKitSpotlightActionButton *)self setImage:v5 forState:0];
 }
 
-- (void)setAppBundleIdentifier:(id)a3
+- (void)setAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_appBundleIdentifier != v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_appBundleIdentifier != identifierCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = identifierCopy;
+    v6 = [(NSString *)identifierCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -37,14 +37,14 @@
   }
 }
 
-- (_PXPhotoKitSpotlightActionButton)initWithAppBundleIdentifier:(id)a3
+- (_PXPhotoKitSpotlightActionButton)initWithAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [objc_opt_class() buttonWithType:0];
 
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     appBundleIdentifier = v5->_appBundleIdentifier;
     v5->_appBundleIdentifier = v6;
 
@@ -54,11 +54,11 @@
   return v5;
 }
 
-+ (id)_appIconForBundleIdentifier:(id)a3
++ (id)_appIconForBundleIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:identifierCopy];
   v5 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:32.0 scale:{32.0, 3.0}];
   v15[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -68,18 +68,18 @@
   if ([v7 placeholder])
   {
     v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"appstore.app"];
-    v9 = [v8 CGImage];
+    cGImage = [v8 CGImage];
   }
 
   else
   {
-    v9 = [v7 CGImage];
+    cGImage = [v7 CGImage];
   }
 
-  CGImageRetain(v9);
-  if (v9)
+  CGImageRetain(cGImage);
+  if (cGImage)
   {
-    v10 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v9];
+    v10 = [MEMORY[0x1E69DCAB8] imageWithCGImage:cGImage];
   }
 
   else
@@ -88,14 +88,14 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = identifierCopy;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "PXPhotoKitAssetSpotlightActionPerformer: Unable to retrieve app icon for app with bundle identifier: %@ for Spotlight 1Up", &v13, 0xCu);
     }
 
     v10 = 0;
   }
 
-  CGImageRelease(v9);
+  CGImageRelease(cGImage);
 
   return v10;
 }

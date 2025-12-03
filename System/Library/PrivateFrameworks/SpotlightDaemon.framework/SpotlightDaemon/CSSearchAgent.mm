@@ -1,34 +1,34 @@
 @interface CSSearchAgent
-+ (id)searchAgent:(BOOL)a3 serviceName:(id)a4;
-- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)a3;
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5;
-- (BOOL)lostClientConnection:(id)a3 error:(id)a4;
-- (id)searchConnection:(id)a3;
-- (void)_prepareQueryContext:(id)a3 searchConnection:(id)a4;
-- (void)addHiddenAppFiltersToQueryContext:(id)a3;
-- (void)cancelQuery:(id)a3;
-- (void)cancelSimpleQuery:(id)a3;
-- (void)handleEngagement:(id)a3 forConnection:(id)a4;
-- (void)pollResults:(id)a3;
-- (void)preheat:(id)a3;
-- (void)startQuery:(id)a3;
-- (void)startSimpleQuery:(id)a3;
++ (id)searchAgent:(BOOL)agent serviceName:(id)name;
+- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)configuration;
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection;
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection;
+- (BOOL)lostClientConnection:(id)connection error:(id)error;
+- (id)searchConnection:(id)connection;
+- (void)_prepareQueryContext:(id)context searchConnection:(id)connection;
+- (void)addHiddenAppFiltersToQueryContext:(id)context;
+- (void)cancelQuery:(id)query;
+- (void)cancelSimpleQuery:(id)query;
+- (void)handleEngagement:(id)engagement forConnection:(id)connection;
+- (void)pollResults:(id)results;
+- (void)preheat:(id)preheat;
+- (void)startQuery:(id)query;
+- (void)startSimpleQuery:(id)query;
 @end
 
 @implementation CSSearchAgent
 
-+ (id)searchAgent:(BOOL)a3 serviceName:(id)a4
++ (id)searchAgent:(BOOL)agent serviceName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__CSSearchAgent_searchAgent_serviceName___block_invoke;
   v11[3] = &unk_278934400;
-  v13 = a3;
-  v12 = v5;
+  agentCopy = agent;
+  v12 = nameCopy;
   v6 = searchAgent_serviceName__onceToken;
-  v7 = v5;
+  v7 = nameCopy;
   if (v6 != -1)
   {
     dispatch_once(&searchAgent_serviceName__onceToken, v11);
@@ -77,29 +77,29 @@ uint64_t __41__CSSearchAgent_searchAgent_serviceName___block_invoke(uint64_t a1)
   return MEMORY[0x282187210](CSSearchAgentFieldNameCallback);
 }
 
-- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[CSSearchClientConnection alloc] initWithConnectionConfiguration:v4];
-  v6 = [(CSSearchClientConnection *)v5 bundleID];
-  if (v6)
+  configurationCopy = configuration;
+  v5 = [[CSSearchClientConnection alloc] initWithConnectionConfiguration:configurationCopy];
+  bundleID = [(CSSearchClientConnection *)v5 bundleID];
+  if (bundleID)
   {
 
 LABEL_4:
-    v7 = [v4 connection];
-    v8 = [CSSearchClientConnectionKey keyWithConnection:v7];
+    connection = [configurationCopy connection];
+    v8 = [CSSearchClientConnectionKey keyWithConnection:connection];
 
-    v9 = [(CSSearchAgent *)self searchConnections];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    searchConnections = [(CSSearchAgent *)self searchConnections];
+    v10 = [searchConnections objectForKeyedSubscript:v8];
 
     if (v10)
     {
       v11 = logForCSLogCategoryQuery();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(CSSearchAgent *)self searchConnections];
-        v13 = [v12 objectForKeyedSubscript:v8];
+        searchConnections2 = [(CSSearchAgent *)self searchConnections];
+        v13 = [searchConnections2 objectForKeyedSubscript:v8];
         v18 = 138412546;
         v19 = v13;
         v20 = 2112;
@@ -110,8 +110,8 @@ LABEL_4:
 
     else
     {
-      v14 = [(CSSearchAgent *)self searchConnections];
-      [v14 setObject:v5 forKeyedSubscript:v8];
+      searchConnections3 = [(CSSearchAgent *)self searchConnections];
+      [searchConnections3 setObject:v5 forKeyedSubscript:v8];
     }
 
     v15 = 1;
@@ -126,7 +126,7 @@ LABEL_4:
   v8 = logForCSLogCategoryQuery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [CSSearchAgent addClientConnectionIfAllowedForConfiguration:v4];
+    [CSSearchAgent addClientConnectionIfAllowedForConfiguration:configurationCopy];
   }
 
   v15 = 0;
@@ -136,38 +136,38 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [SDConnectionConfiguration alloc];
-  v6 = [(SDConnectionConfiguration *)v5 initWithConnection:v4 isPrivate:sSearchAgentIsPrivate];
+  v6 = [(SDConnectionConfiguration *)v5 initWithConnection:connectionCopy isPrivate:sSearchAgentIsPrivate];
 
   LOBYTE(self) = [(CSSearchAgent *)self addClientConnectionIfAllowedForConfiguration:v6];
   return self;
 }
 
-- (BOOL)lostClientConnection:(id)a3 error:(id)a4
+- (BOOL)lostClientConnection:(id)connection error:(id)error
 {
-  v5 = [CSSearchClientConnectionKey keyWithConnection:a3, a4];
-  v6 = [(NSMutableDictionary *)self->_searchConnections objectForKeyedSubscript:v5];
-  v7 = [(CSSearchAgent *)self searchConnections];
-  [v7 setObject:0 forKeyedSubscript:v5];
+  error = [CSSearchClientConnectionKey keyWithConnection:connection, error];
+  v6 = [(NSMutableDictionary *)self->_searchConnections objectForKeyedSubscript:error];
+  searchConnections = [(CSSearchAgent *)self searchConnections];
+  [searchConnections setObject:0 forKeyedSubscript:error];
 
   [v6 cancelQueryTasks];
   return 0;
 }
 
-- (id)searchConnection:(id)a3
+- (id)searchConnection:(id)connection
 {
-  v4 = [CSSearchClientConnectionKey keyWithConnection:a3];
+  v4 = [CSSearchClientConnectionKey keyWithConnection:connection];
   v5 = [(NSMutableDictionary *)self->_searchConnections objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)cancelQuery:(id)a3
+- (void)cancelQuery:(id)query
 {
-  original = a3;
+  original = query;
   v4 = xpc_dictionary_get_remote_connection(original);
   reply = xpc_dictionary_create_reply(original);
   v6 = reply;
@@ -191,9 +191,9 @@ LABEL_10:
   }
 }
 
-- (void)pollResults:(id)a3
+- (void)pollResults:(id)results
 {
-  original = a3;
+  original = results;
   v4 = xpc_dictionary_get_remote_connection(original);
   reply = xpc_dictionary_create_reply(original);
   v6 = reply;
@@ -217,12 +217,12 @@ LABEL_10:
   }
 }
 
-- (void)preheat:(id)a3
+- (void)preheat:(id)preheat
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  preheatCopy = preheat;
   v5 = MEMORY[0x277CC3510];
-  v6 = xpc_dictionary_get_value(v4, "pcs");
+  v6 = xpc_dictionary_get_value(preheatCopy, "pcs");
   v7 = [v5 copyNSStringArrayFromXPCArray:v6];
 
   v8 = [v7 count];
@@ -270,10 +270,10 @@ LABEL_7:
     v15 = -1;
   }
 
-  v16 = xpc_dictionary_get_remote_connection(v4);
+  v16 = xpc_dictionary_get_remote_connection(preheatCopy);
   if (v16)
   {
-    reply = xpc_dictionary_create_reply(v4);
+    reply = xpc_dictionary_create_reply(preheatCopy);
     v18 = reply;
     if (reply)
     {
@@ -285,19 +285,19 @@ LABEL_7:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareQueryContext:(id)a3 searchConnection:(id)a4
+- (void)_prepareQueryContext:(id)context searchConnection:(id)connection
 {
   v103 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 bundleID];
-  v8 = [v5 internal];
-  v9 = [v5 bundleIDs];
-  v10 = v9;
+  contextCopy = context;
+  connectionCopy = connection;
+  bundleID = [connectionCopy bundleID];
+  internal = [contextCopy internal];
+  bundleIDs = [contextCopy bundleIDs];
+  v10 = bundleIDs;
   v11 = MEMORY[0x277CBEBF8];
-  if (v9)
+  if (bundleIDs)
   {
-    v12 = v9;
+    v12 = bundleIDs;
   }
 
   else
@@ -307,11 +307,11 @@ LABEL_7:
 
   v13 = v12;
 
-  v14 = [v5 additionalBundleIDs];
-  v15 = v14;
-  if (v14)
+  additionalBundleIDs = [contextCopy additionalBundleIDs];
+  v15 = additionalBundleIDs;
+  if (additionalBundleIDs)
   {
-    v16 = v14;
+    v16 = additionalBundleIDs;
   }
 
   else
@@ -319,13 +319,13 @@ LABEL_7:
     v16 = v11;
   }
 
-  v17 = v16;
+  bundleIDs8 = v16;
 
-  v18 = [v5 instantAnswersBundleIDs];
-  v19 = v18;
-  if (v18)
+  instantAnswersBundleIDs = [contextCopy instantAnswersBundleIDs];
+  v19 = instantAnswersBundleIDs;
+  if (instantAnswersBundleIDs)
   {
-    v20 = v18;
+    v20 = instantAnswersBundleIDs;
   }
 
   else
@@ -335,15 +335,15 @@ LABEL_7:
 
   v21 = v20;
 
-  v87 = v17;
-  v88 = v6;
+  v87 = bundleIDs8;
+  v88 = connectionCopy;
   v85 = v13;
   v86 = v21;
-  if (v8)
+  if (internal)
   {
-    if (([v5 includeUserActivities] & 1) == 0)
+    if (([contextCopy includeUserActivities] & 1) == 0)
     {
-      [v7 hasPrefix:@"com.apple.search"];
+      [bundleID hasPrefix:@"com.apple.search"];
     }
 
     goto LABEL_44;
@@ -351,25 +351,25 @@ LABEL_7:
 
   if (![v13 count])
   {
-    if ([v5 sourceOptions] & 1) != 0 && (objc_msgSend(v6, "configuration"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "allowMail"), v30, (v31))
+    if ([contextCopy sourceOptions] & 1) != 0 && (objc_msgSend(connectionCopy, "configuration"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "allowMail"), v30, (v31))
     {
       v32 = &unk_2846C9458;
     }
 
     else
     {
-      v99 = v7;
+      v99 = bundleID;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v99 count:1];
     }
 
-    [v5 setBundleIDs:v32];
+    [contextCopy setBundleIDs:v32];
 
 LABEL_44:
     v26 = 0;
     goto LABEL_49;
   }
 
-  v22 = [v6 allowedBundleIDs];
+  allowedBundleIDs = [connectionCopy allowedBundleIDs];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
@@ -391,9 +391,9 @@ LABEL_44:
         }
 
         v29 = *(*(&v93 + 1) + 8 * i);
-        if (([v7 isEqualToString:v29] & 1) == 0)
+        if (([bundleID isEqualToString:v29] & 1) == 0)
         {
-          if (([v22 containsObject:v29] & 1) == 0)
+          if (([allowedBundleIDs containsObject:v29] & 1) == 0)
           {
             v33 = logForCSLogCategoryDefault();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -424,9 +424,9 @@ LABEL_44:
                     }
 
                     v40 = *(*(&v89 + 1) + 8 * j);
-                    if (([v22 containsObject:v40] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", v40))
+                    if (([allowedBundleIDs containsObject:v40] & 1) != 0 || objc_msgSend(bundleID, "isEqualToString:", v40))
                     {
-                      [v34 addObject:v7];
+                      [v34 addObject:bundleID];
                     }
                   }
 
@@ -441,12 +441,12 @@ LABEL_44:
 
             else
             {
-              v100 = v7;
+              v100 = bundleID;
               v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v100 count:1];
               v26 = 0;
             }
 
-            [v5 setBundleIDs:v34];
+            [contextCopy setBundleIDs:v34];
             v23 = v34;
             goto LABEL_48;
           }
@@ -472,44 +472,44 @@ LABEL_44:
 
 LABEL_48:
 
-  v17 = v87;
-  v6 = v88;
+  bundleIDs8 = v87;
+  connectionCopy = v88;
   v21 = v86;
 LABEL_49:
-  if ([v5 generateSuggestions])
+  if ([contextCopy generateSuggestions])
   {
-    if ([v17 count])
+    if ([bundleIDs8 count])
     {
-      v41 = [v5 bundleIDs];
-      v42 = [v41 count];
+      bundleIDs2 = [contextCopy bundleIDs];
+      v42 = [bundleIDs2 count];
 
       if (v42)
       {
-        v43 = [v5 bundleIDs];
-        v44 = [v43 arrayByAddingObjectsFromArray:v17];
-        [v5 setBundleIDs:v44];
+        bundleIDs3 = [contextCopy bundleIDs];
+        v44 = [bundleIDs3 arrayByAddingObjectsFromArray:bundleIDs8];
+        [contextCopy setBundleIDs:v44];
       }
     }
   }
 
-  if ([v5 enableInstantAnswers] && objc_msgSend(v21, "count"))
+  if ([contextCopy enableInstantAnswers] && objc_msgSend(v21, "count"))
   {
-    v45 = [v5 bundleIDs];
-    if (![v45 count])
+    bundleIDs4 = [contextCopy bundleIDs];
+    if (![bundleIDs4 count])
     {
 LABEL_61:
 
       goto LABEL_62;
     }
 
-    v46 = v7;
+    v46 = bundleID;
     if (([v46 hasPrefix:@"com.apple.omniSearch"] & 1) != 0 || (objc_msgSend(v46, "hasPrefix:", @"com.apple.intelligenceflow") & 1) != 0 || objc_msgSend(v46, "hasPrefix:", @"com.apple.ondeviceeval"))
     {
 
 LABEL_60:
-      v45 = [v5 bundleIDs];
-      v47 = [v45 arrayByAddingObjectsFromArray:v21];
-      [v5 setBundleIDs:v47];
+      bundleIDs4 = [contextCopy bundleIDs];
+      v47 = [bundleIDs4 arrayByAddingObjectsFromArray:v21];
+      [contextCopy setBundleIDs:v47];
 
       goto LABEL_61;
     }
@@ -523,30 +523,30 @@ LABEL_60:
   }
 
 LABEL_62:
-  v48 = [v6 configuration];
-  [v5 setEntitledAttributes:{objc_msgSend(v48, "entitledAttributes")}];
+  configuration = [connectionCopy configuration];
+  [contextCopy setEntitledAttributes:{objc_msgSend(configuration, "entitledAttributes")}];
 
-  v49 = [v6 configuration];
-  v50 = [v49 allowNotifications];
+  configuration2 = [connectionCopy configuration];
+  allowNotifications = [configuration2 allowNotifications];
 
-  if (v50)
+  if (allowNotifications)
   {
     v51 = logForCSLogCategoryQuery();
-    v52 = self;
+    selfCopy2 = self;
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
     {
-      [CSSearchAgent _prepareQueryContext:v5 searchConnection:v51];
+      [CSSearchAgent _prepareQueryContext:contextCopy searchConnection:v51];
     }
   }
 
   else
   {
-    v53 = [v5 disableBundles];
-    v52 = self;
-    if (v53)
+    disableBundles = [contextCopy disableBundles];
+    selfCopy2 = self;
+    if (disableBundles)
     {
-      v54 = [v5 disableBundles];
-      v51 = [v54 arrayByAddingObject:@"com.apple.usernotificationsd"];
+      disableBundles2 = [contextCopy disableBundles];
+      v51 = [disableBundles2 arrayByAddingObject:@"com.apple.usernotificationsd"];
     }
 
     else
@@ -554,20 +554,20 @@ LABEL_62:
       v51 = &unk_2846C9470;
     }
 
-    [v5 setDisableBundles:v51];
+    [contextCopy setDisableBundles:v51];
   }
 
-  if (([v5 filterOutHiddenApps] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"com.apple.Preferences"))
+  if (([contextCopy filterOutHiddenApps] & 1) != 0 || objc_msgSend(bundleID, "isEqualToString:", @"com.apple.Preferences"))
   {
-    [v5 setFilterOutHiddenApps:1];
-    [(CSSearchAgent *)v52 addHiddenAppFiltersToQueryContext:v5];
+    [contextCopy setFilterOutHiddenApps:1];
+    [(CSSearchAgent *)selfCopy2 addHiddenAppFiltersToQueryContext:contextCopy];
   }
 
-  v55 = [v5 bundleIDs];
-  if ([v55 count])
+  bundleIDs5 = [contextCopy bundleIDs];
+  if ([bundleIDs5 count])
   {
-    v56 = [v5 bundleIDs];
-    v57 = [v56 containsObject:@"com.apple.mobileslideshow"];
+    bundleIDs6 = [contextCopy bundleIDs];
+    v57 = [bundleIDs6 containsObject:@"com.apple.mobileslideshow"];
 
     if (v57)
     {
@@ -579,11 +579,11 @@ LABEL_62:
   {
   }
 
-  v58 = [MEMORY[0x277CBEB18] array];
-  v59 = v58;
-  if ((v8 & 1) == 0)
+  array = [MEMORY[0x277CBEB18] array];
+  v59 = array;
+  if ((internal & 1) == 0)
   {
-    [v58 addObject:@"_kMDItemUserActivityType != *"];
+    [array addObject:@"_kMDItemUserActivityType != *"];
   }
 
   if (v26)
@@ -591,12 +591,12 @@ LABEL_62:
     [v59 addObject:@"kMDItemHashtags==*"];
   }
 
-  indexer = v52->_indexer;
+  indexer = selfCopy2->_indexer;
   if (objc_opt_respondsToSelector())
   {
-    v61 = [(MDIndexer *)v52->_indexer fileProviderDomainFilterQueries];
-    v62 = v61;
-    if (v61 && [v61 count])
+    fileProviderDomainFilterQueries = [(MDIndexer *)selfCopy2->_indexer fileProviderDomainFilterQueries];
+    v62 = fileProviderDomainFilterQueries;
+    if (fileProviderDomainFilterQueries && [fileProviderDomainFilterQueries count])
     {
       [v59 addObjectsFromArray:v62];
     }
@@ -604,36 +604,36 @@ LABEL_62:
 
   if ([v59 count])
   {
-    v63 = [v5 filterQueries];
-    if (v63)
+    filterQueries = [contextCopy filterQueries];
+    if (filterQueries)
     {
-      v64 = [v5 filterQueries];
-      v65 = [v64 arrayByAddingObjectsFromArray:v59];
-      [v5 setFilterQueries:v65];
+      filterQueries2 = [contextCopy filterQueries];
+      v65 = [filterQueries2 arrayByAddingObjectsFromArray:v59];
+      [contextCopy setFilterQueries:v65];
     }
 
     else
     {
-      [v5 setFilterQueries:v59];
+      [contextCopy setFilterQueries:v59];
     }
   }
 
 LABEL_91:
-  v66 = [v5 protectionClasses];
-  v67 = [v5 bundleIDs];
-  v68 = [v67 containsObject:@"com.apple.spotlight.events"];
+  protectionClasses = [contextCopy protectionClasses];
+  bundleIDs7 = [contextCopy bundleIDs];
+  v68 = [bundleIDs7 containsObject:@"com.apple.spotlight.events"];
   if ((v68 & 1) == 0)
   {
-    v17 = [v5 bundleIDs];
-    if (![v17 containsObject:@"com.apple.spotlight.contacts"])
+    bundleIDs8 = [contextCopy bundleIDs];
+    if (![bundleIDs8 containsObject:@"com.apple.spotlight.contacts"])
     {
       goto LABEL_99;
     }
   }
 
-  v69 = [v5 protectionClasses];
+  protectionClasses2 = [contextCopy protectionClasses];
   v70 = *MEMORY[0x277CCA1A0];
-  if ([v69 containsObject:*MEMORY[0x277CCA1A0]])
+  if ([protectionClasses2 containsObject:*MEMORY[0x277CCA1A0]])
   {
 LABEL_98:
 
@@ -651,31 +651,31 @@ LABEL_99:
     goto LABEL_100;
   }
 
-  v71 = [v5 clientBundleID];
-  if ([v71 hasPrefix:@"com.apple.omniSearch"])
+  clientBundleID = [contextCopy clientBundleID];
+  if ([clientBundleID hasPrefix:@"com.apple.omniSearch"])
   {
 LABEL_97:
 
     goto LABEL_98;
   }
 
-  v72 = [v5 clientBundleID];
-  if ([v72 hasPrefix:@"com.apple.ondeviceeval"])
+  clientBundleID2 = [contextCopy clientBundleID];
+  if ([clientBundleID2 hasPrefix:@"com.apple.ondeviceeval"])
   {
 
     goto LABEL_97;
   }
 
-  v82 = [v5 clientBundleID];
-  if ([v82 hasPrefix:@"com.apple.intelligenceflow"])
+  clientBundleID3 = [contextCopy clientBundleID];
+  if ([clientBundleID3 hasPrefix:@"com.apple.intelligenceflow"])
   {
     v84 = 0;
   }
 
   else
   {
-    v81 = [v5 clientBundleID];
-    v84 = [v81 hasPrefix:@"com.apple.SpotlightUITests"] ^ 1;
+    clientBundleID4 = [contextCopy clientBundleID];
+    v84 = [clientBundleID4 hasPrefix:@"com.apple.SpotlightUITests"] ^ 1;
   }
 
   if (v68)
@@ -690,9 +690,9 @@ LABEL_97:
 
 LABEL_113:
     v75 = v86;
-    if ([v66 count])
+    if ([protectionClasses count])
     {
-      [v66 arrayByAddingObject:v70];
+      [protectionClasses arrayByAddingObject:v70];
     }
 
     else
@@ -701,13 +701,13 @@ LABEL_113:
       [MEMORY[0x277CBEA60] arrayWithObjects:&v98 count:1];
     }
     v80 = ;
-    [v5 setProtectionClasses:v80];
+    [contextCopy setProtectionClasses:v80];
 
-    [v5 protectionClasses];
-    v66 = v67 = v66;
+    [contextCopy protectionClasses];
+    protectionClasses = bundleIDs7 = protectionClasses;
 LABEL_101:
 
-    if (!v66)
+    if (!protectionClasses)
     {
       goto LABEL_104;
     }
@@ -724,18 +724,18 @@ LABEL_101:
 
 LABEL_110:
   v75 = v86;
-  if (!v66)
+  if (!protectionClasses)
   {
     goto LABEL_104;
   }
 
 LABEL_102:
-  if (![v66 count])
+  if (![protectionClasses count])
   {
-    v76 = [v73 protectionClass];
-    v97 = v76;
+    protectionClass = [v73 protectionClass];
+    v97 = protectionClass;
     v77 = [MEMORY[0x277CBEA60] arrayWithObjects:&v97 count:1];
-    [v5 setProtectionClasses:v77];
+    [contextCopy setProtectionClasses:v77];
   }
 
 LABEL_104:
@@ -743,19 +743,19 @@ LABEL_104:
   v78 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startQuery:(id)a3
+- (void)startQuery:(id)query
 {
   v156[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = xpc_dictionary_get_remote_connection(v3);
-  reply = xpc_dictionary_create_reply(v3);
+  queryCopy = query;
+  v4 = xpc_dictionary_get_remote_connection(queryCopy);
+  reply = xpc_dictionary_create_reply(queryCopy);
   v6 = reply;
   if (v4 && reply)
   {
     val = [(CSSearchAgent *)self searchConnection:v4];
     if (val)
     {
-      uint64 = xpc_dictionary_get_uint64(v3, "qid");
+      uint64 = xpc_dictionary_get_uint64(queryCopy, "qid");
     }
 
     else
@@ -806,7 +806,7 @@ LABEL_104:
       }
     }
 
-    string = xpc_dictionary_get_string(v3, "query");
+    string = xpc_dictionary_get_string(queryCopy, "query");
     v18 = string;
     if (!string || !strcmp(string, "false"))
     {
@@ -815,38 +815,38 @@ LABEL_104:
 
     else
     {
-      v19 = xpc_dictionary_get_value(v3, "context");
+      v19 = xpc_dictionary_get_value(queryCopy, "context");
       v9 = [objc_alloc(MEMORY[0x277CC34A0]) initWithXPCDictionary:v19];
 
       if (v9)
       {
-        v77 = [val bundleID];
-        v79 = [val searchInternal];
-        v20 = [v9 playback];
+        bundleID = [val bundleID];
+        searchInternal = [val searchInternal];
+        playback = [v9 playback];
         v81 = [MEMORY[0x277CCACA8] stringWithUTF8String:v18];
-        if (v20)
+        if (playback)
         {
-          if (!v79)
+          if (!searchInternal)
           {
-            v79 = 0;
+            searchInternal = 0;
             goto LABEL_54;
           }
 
-          v21 = [v9 clientBundleID];
-          v22 = v21;
-          if (v21)
+          clientBundleID = [v9 clientBundleID];
+          v22 = clientBundleID;
+          if (clientBundleID)
           {
-            v23 = v21;
+            v23 = clientBundleID;
 
-            v77 = v23;
+            bundleID = v23;
           }
 
-          v79 = [v9 internal];
+          searchInternal = [v9 internal];
 LABEL_53:
 
 LABEL_54:
-          [v9 setClientBundleID:v77];
-          [v9 setInternal:v79];
+          [v9 setClientBundleID:bundleID];
+          [v9 setInternal:searchInternal];
           v37 = v81;
           v38 = [(__CFString *)v37 length];
           v39 = v37;
@@ -859,8 +859,8 @@ LABEL_54:
           v73 = v39;
 
           [(CSSearchAgent *)self _prepareQueryContext:v9 searchConnection:val];
-          v40 = [v9 clientBundleID];
-          v41 = [v40 hasPrefix:@"com.apple.omniSearch"];
+          clientBundleID2 = [v9 clientBundleID];
+          v41 = [clientBundleID2 hasPrefix:@"com.apple.omniSearch"];
 
           if (v41)
           {
@@ -885,8 +885,8 @@ LABEL_54:
             v71 = 0;
           }
 
-          v82 = [v9 live];
-          v70 = [v9 lowPriority];
+          live = [v9 live];
+          lowPriority = [v9 lowPriority];
           v69 = [v9 qos];
           v68 = [v9 copy];
           v147[0] = 0;
@@ -899,18 +899,18 @@ LABEL_54:
           v146 = 0;
           if ([v9 pommes])
           {
-            v65 = [v9 bundleIDs];
-            v45 = [v9 userQuery];
+            bundleIDs = [v9 bundleIDs];
+            userQuery = [v9 userQuery];
             v46 = self->_indexer;
             v47 = objc_opt_respondsToSelector();
-            v48 = [v9 counting];
-            v49 = [v9 queryEmbedding];
-            v75 = [SDPommesFeature usingRewritesForContextBundleIDs:v65 clientBundleID:v77 userQuery:v45 indexSupportsRewrites:v47 & 1 isCounting:v48 embeddingsEnabled:v49 != 0];
+            counting = [v9 counting];
+            queryEmbedding = [v9 queryEmbedding];
+            v75 = [SDPommesFeature usingRewritesForContextBundleIDs:bundleIDs clientBundleID:bundleID userQuery:userQuery indexSupportsRewrites:v47 & 1 isCounting:counting embeddingsEnabled:queryEmbedding != 0];
 
             v50 = logForCSLogCategoryQuery();
             if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
             {
-              v51 = [v9 rankingType];
+              rankingType = [v9 rankingType];
               v52 = @"NO";
               if (v75)
               {
@@ -924,7 +924,7 @@ LABEL_54:
 
               *buf = 134218754;
               *&buf[4] = uint64;
-              if (v51 == 1)
+              if (rankingType == 1)
               {
                 v54 = @"YES";
               }
@@ -937,7 +937,7 @@ LABEL_54:
               *&buf[14] = v53;
               *&buf[12] = 2112;
               *&buf[22] = 2112;
-              if (v82)
+              if (live)
               {
                 v52 = @"YES";
               }
@@ -986,7 +986,7 @@ LABEL_54:
           v125 = *buf;
           v126 = v55;
           v127 = v156[0];
-          v130 = v79;
+          v130 = searchInternal;
           objc_copyWeak(&v124, &location);
           v9 = v9;
           v131 = v75;
@@ -994,17 +994,17 @@ LABEL_54:
           v117 = v147;
           v118 = v143;
           v119 = v139;
-          v132 = v82;
+          v132 = live;
           v120 = v141;
           v121 = v135;
           v128 = uint64;
           v122 = v137;
-          v66 = v77;
+          v66 = bundleID;
           v114 = v66;
           v56 = v4;
           v115 = v56;
-          v116 = self;
-          v133 = v70;
+          selfCopy = self;
+          v133 = lowPriority;
           v129 = v69;
           v123 = v145;
           v57 = [v112 copy];
@@ -1016,7 +1016,7 @@ LABEL_54:
           v106 = *buf;
           v107 = *&buf[16];
           v108 = v156[0];
-          v110 = v82;
+          v110 = live;
           v58 = v57;
           v104 = v58;
           v102 = v6;
@@ -1044,8 +1044,8 @@ LABEL_54:
           v87 = v73;
           v76 = v68;
           v88 = v76;
-          v100 = v82;
-          v60 = v3;
+          v100 = live;
+          v60 = queryCopy;
           v89 = v60;
           v83 = v87;
           v61 = v91;
@@ -1094,21 +1094,21 @@ LABEL_54:
           goto LABEL_54;
         }
 
-        v22 = [MEMORY[0x277CC3510] copyPlistFromXPCObject:v3];
+        v22 = [MEMORY[0x277CC3510] copyPlistFromXPCObject:queryCopy];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_53;
         }
 
-        if (v77)
+        if (bundleID)
         {
           v32 = 1;
         }
 
         else
         {
-          v32 = v79;
+          v32 = searchInternal;
         }
 
         if (v32 != 1)
@@ -1116,7 +1116,7 @@ LABEL_54:
 LABEL_52:
           v35 = MEMORY[0x277CC3510];
           pid = xpc_connection_get_pid(v4);
-          [v35 journalDictionary:v22 toFolderPath:"/private/tmp" forPID:pid withLabel:"query" andID:{xpc_dictionary_get_uint64(v3, "qid")}];
+          [v35 journalDictionary:v22 toFolderPath:"/private/tmp" forPID:pid withLabel:"query" andID:{xpc_dictionary_get_uint64(queryCopy, "qid")}];
           goto LABEL_53;
         }
 
@@ -1127,12 +1127,12 @@ LABEL_52:
           goto LABEL_51;
         }
 
-        if (v77)
+        if (bundleID)
         {
-          [v74 setObject:v77 forKeyedSubscript:@"cbi"];
+          [v74 setObject:bundleID forKeyedSubscript:@"cbi"];
         }
 
-        if (!v79)
+        if (!searchInternal)
         {
 LABEL_51:
 
@@ -1143,8 +1143,8 @@ LABEL_51:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = [v72 unsignedIntValue];
-          if (v33)
+          unsignedIntValue = [v72 unsignedIntValue];
+          if (unsignedIntValue)
           {
             goto LABEL_50;
           }
@@ -1152,10 +1152,10 @@ LABEL_51:
 
         else
         {
-          v33 = 0;
+          unsignedIntValue = 0;
         }
 
-        v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v33 | 1u];
+        v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:unsignedIntValue | 1u];
         [v74 setObject:v34 forKeyedSubscript:@"f"];
 
 LABEL_50:
@@ -1189,7 +1189,7 @@ LABEL_32:
     v8 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CSSearchAgent startQuery:v3];
+      [CSSearchAgent startQuery:queryCopy];
     }
   }
 
@@ -1198,7 +1198,7 @@ LABEL_32:
     v9 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [CSSearchAgent startQuery:v3];
+      [CSSearchAgent startQuery:queryCopy];
     }
 
     goto LABEL_32;
@@ -2097,9 +2097,9 @@ void __28__CSSearchAgent_startQuery___block_invoke_182(uint64_t a1, void *a2)
   *(v3 + 32) = v21;
 }
 
-- (void)cancelSimpleQuery:(id)a3
+- (void)cancelSimpleQuery:(id)query
 {
-  original = a3;
+  original = query;
   v4 = xpc_dictionary_get_remote_connection(original);
   reply = xpc_dictionary_create_reply(original);
   v6 = reply;
@@ -2123,18 +2123,18 @@ void __28__CSSearchAgent_startQuery___block_invoke_182(uint64_t a1, void *a2)
   }
 }
 
-- (void)startSimpleQuery:(id)a3
+- (void)startSimpleQuery:(id)query
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  queryCopy = query;
+  v5 = xpc_dictionary_get_remote_connection(queryCopy);
+  reply = xpc_dictionary_create_reply(queryCopy);
   v7 = reply;
   if (v5 && reply)
   {
     v8 = [(CSSearchAgent *)self searchConnection:v5];
     if (v8)
     {
-      uint64 = xpc_dictionary_get_uint64(v4, "qid");
+      uint64 = xpc_dictionary_get_uint64(queryCopy, "qid");
     }
 
     else
@@ -2158,7 +2158,7 @@ void __28__CSSearchAgent_startQuery___block_invoke_182(uint64_t a1, void *a2)
     si_tracing_log_span_begin();
     if (uint64)
     {
-      string = xpc_dictionary_get_string(v4, "query");
+      string = xpc_dictionary_get_string(queryCopy, "query");
       v15 = string;
       if (!string || !strcmp(string, "false"))
       {
@@ -2167,16 +2167,16 @@ void __28__CSSearchAgent_startQuery___block_invoke_182(uint64_t a1, void *a2)
 
       else
       {
-        v16 = xpc_dictionary_get_value(v4, "context");
+        v16 = xpc_dictionary_get_value(queryCopy, "context");
         v17 = [objc_alloc(MEMORY[0x277CC34A0]) initWithXPCDictionary:v16];
 
         if (v17)
         {
-          v33 = [v8 bundleID];
-          v18 = [v8 searchInternal];
+          bundleID = [v8 bundleID];
+          searchInternal = [v8 searchInternal];
           [v17 setMaxCount:1];
-          [v17 setClientBundleID:v33];
-          [v17 setInternal:v18];
+          [v17 setClientBundleID:bundleID];
+          [v17 setInternal:searchInternal];
           v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:v15];
           if (![(__CFString *)v19 length])
           {
@@ -2356,58 +2356,58 @@ void __34__CSSearchAgent_startSimpleQuery___block_invoke_2(uint64_t a1, void *a2
   *(v3 + 32) = v23;
 }
 
-- (void)handleEngagement:(id)a3 forConnection:(id)a4
+- (void)handleEngagement:(id)engagement forConnection:(id)connection
 {
-  v17 = a3;
-  v6 = [(CSSearchAgent *)self searchConnection:a4];
-  v7 = [v6 searchInternal];
-  v8 = [v6 bundleID];
-  v9 = [MEMORY[0x277CC3510] copyNSStringForKey:"qenb" fromXPCDictionary:v17];
+  engagementCopy = engagement;
+  v6 = [(CSSearchAgent *)self searchConnection:connection];
+  searchInternal = [v6 searchInternal];
+  bundleID = [v6 bundleID];
+  v9 = [MEMORY[0x277CC3510] copyNSStringForKey:"qenb" fromXPCDictionary:engagementCopy];
   v10 = v9;
-  if (v7)
+  if (searchInternal)
   {
     goto LABEL_5;
   }
 
-  if (!v9 || [v8 isEqual:v9])
+  if (!v9 || [bundleID isEqual:v9])
   {
-    v11 = v8;
+    v11 = bundleID;
 
     v10 = v11;
 LABEL_5:
-    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v17];
-    v13 = [MEMORY[0x277CC3510] copyNSStringForKey:"userquery" fromXPCDictionary:v17];
-    v14 = [MEMORY[0x277CC3510] copyNSStringForKey:"qenr" fromXPCDictionary:v17];
+    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:engagementCopy];
+    v13 = [MEMORY[0x277CC3510] copyNSStringForKey:"userquery" fromXPCDictionary:engagementCopy];
+    v14 = [MEMORY[0x277CC3510] copyNSStringForKey:"qenr" fromXPCDictionary:engagementCopy];
     indexer = self->_indexer;
-    v16 = [MEMORY[0x277CBEAA8] date];
-    [(MDIndexer *)indexer recordEngagementForBundleID:v10 uniqueIdentifier:v14 protectionClass:v12 userQuery:v13 date:v16];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(MDIndexer *)indexer recordEngagementForBundleID:v10 uniqueIdentifier:v14 protectionClass:v12 userQuery:v13 date:date];
   }
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection
 {
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  connectionCopy = connection;
   v10 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *v70 = 136315394;
-    *&v70[4] = a3;
+    *&v70[4] = command;
     *&v70[12] = 1024;
-    *&v70[14] = xpc_connection_get_pid(v9);
+    *&v70[14] = xpc_connection_get_pid(connectionCopy);
     _os_log_impl(&dword_231A35000, v10, OS_LOG_TYPE_INFO, "search %s pid: %d", v70, 0x12u);
   }
 
-  if (!strcmp(a3, "startQuery"))
+  if (!strcmp(command, "startQuery"))
   {
-    [(CSSearchAgent *)self startQuery:v8];
+    [(CSSearchAgent *)self startQuery:infoCopy];
 LABEL_19:
     v11 = 1;
     goto LABEL_20;
   }
 
-  if (!strcmp(a3, "cancelQuery"))
+  if (!strcmp(command, "cancelQuery"))
   {
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
@@ -2423,7 +2423,7 @@ LABEL_19:
     *(v12 + 28) = 102;
     *(v12 + 32) = "csquery_command_cancel_query";
     si_tracing_log_span_begin();
-    [(CSSearchAgent *)self cancelQuery:v8];
+    [(CSSearchAgent *)self cancelQuery:infoCopy];
     v16 = *v12;
     v17 = *(v12 + 8);
     v18 = *(v12 + 16);
@@ -2439,7 +2439,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!strcmp(a3, "pollResults"))
+  if (!strcmp(command, "pollResults"))
   {
     v12 = (*MEMORY[0x277D286C8])();
     v22 = *(v12 + 16);
@@ -2455,7 +2455,7 @@ LABEL_18:
     *(v12 + 28) = 102;
     *(v12 + 32) = "csquery_command_poll_results";
     si_tracing_log_span_begin();
-    [(CSSearchAgent *)self pollResults:v8];
+    [(CSSearchAgent *)self pollResults:infoCopy];
     v25 = *v12;
     v26 = *(v12 + 8);
     v27 = *(v12 + 16);
@@ -2466,7 +2466,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!strcmp(a3, "simpleQuery"))
+  if (!strcmp(command, "simpleQuery"))
   {
     v12 = (*MEMORY[0x277D286C8])();
     v31 = *(v12 + 16);
@@ -2482,7 +2482,7 @@ LABEL_18:
     *(v12 + 28) = 102;
     *(v12 + 32) = "csquery_command_start_simple_query";
     si_tracing_log_span_begin();
-    [(CSSearchAgent *)self startSimpleQuery:v8];
+    [(CSSearchAgent *)self startSimpleQuery:infoCopy];
     v34 = *v12;
     v35 = *(v12 + 8);
     v36 = *(v12 + 16);
@@ -2493,7 +2493,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!strcmp(a3, "simpleCancel"))
+  if (!strcmp(command, "simpleCancel"))
   {
     v12 = (*MEMORY[0x277D286C8])();
     v40 = *(v12 + 16);
@@ -2509,7 +2509,7 @@ LABEL_18:
     *(v12 + 28) = 102;
     *(v12 + 32) = "csquery_command_cancel_simple_query";
     si_tracing_log_span_begin();
-    [(CSSearchAgent *)self cancelSimpleQuery:v8];
+    [(CSSearchAgent *)self cancelSimpleQuery:infoCopy];
     v43 = *v12;
     v44 = *(v12 + 8);
     v45 = *(v12 + 16);
@@ -2520,7 +2520,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!strcmp(a3, "userEngaged"))
+  if (!strcmp(command, "userEngaged"))
   {
     v12 = (*MEMORY[0x277D286C8])();
     v49 = *(v12 + 16);
@@ -2536,7 +2536,7 @@ LABEL_18:
     *(v12 + 28) = 102;
     *(v12 + 32) = "csquery_command_user_engaged";
     si_tracing_log_span_begin();
-    [(CSSearchAgent *)self handleEngagement:v8 forConnection:v9];
+    [(CSSearchAgent *)self handleEngagement:infoCopy forConnection:connectionCopy];
     v52 = *v12;
     v53 = *(v12 + 8);
     v54 = *(v12 + 16);
@@ -2547,7 +2547,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!strcmp(a3, "preheat"))
+  if (!strcmp(command, "preheat"))
   {
     v12 = (*MEMORY[0x277D286C8])();
     v58 = *(v12 + 16);
@@ -2563,7 +2563,7 @@ LABEL_18:
     *(v12 + 28) = 102;
     *(v12 + 32) = "csquery_command_preheat";
     si_tracing_log_span_begin();
-    [(CSSearchAgent *)self preheat:v8];
+    [(CSSearchAgent *)self preheat:infoCopy];
     v61 = *v12;
     v62 = *(v12 + 8);
     v63 = *(v12 + 16);
@@ -2581,19 +2581,19 @@ LABEL_20:
   return v11;
 }
 
-- (void)addHiddenAppFiltersToQueryContext:(id)a3
+- (void)addHiddenAppFiltersToQueryContext:(id)context
 {
   v89 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v66 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v63 = v3;
-  v5 = [v3 disableBundles];
-  v6 = [v5 countByEnumeratingWithState:&v75 objects:v85 count:16];
+  v63 = contextCopy;
+  disableBundles = [contextCopy disableBundles];
+  v6 = [disableBundles countByEnumeratingWithState:&v75 objects:v85 count:16];
   if (v6)
   {
     v7 = *v76;
@@ -2603,32 +2603,32 @@ LABEL_20:
       {
         if (*v76 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(disableBundles);
         }
 
         v9 = *(*(&v75 + 1) + 8 * i);
         v10 = logForCSLogCategoryDefault();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v11 = [v63 queryID];
-          v12 = [v63 clientBundleID];
-          v13 = v12;
-          v14 = [v12 UTF8String];
+          queryID = [v63 queryID];
+          clientBundleID = [v63 clientBundleID];
+          v13 = clientBundleID;
+          uTF8String = [clientBundleID UTF8String];
           v15 = v9;
-          v16 = [v9 UTF8String];
+          uTF8String2 = [v9 UTF8String];
           *buf = 134218498;
-          *&buf[4] = v11;
+          *&buf[4] = queryID;
           *&buf[12] = 2080;
-          *&buf[14] = v14;
+          *&buf[14] = uTF8String;
           *&buf[22] = 2080;
-          v87 = v16;
+          v87 = uTF8String2;
           _os_log_debug_impl(&dword_231A35000, v10, OS_LOG_TYPE_DEBUG, "(qid=%ld, bid=%s, context) Filtering out disabled bundle %s", buf, 0x20u);
         }
 
         [v66 addObject:v9];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v75 objects:v85 count:16];
+      v6 = [disableBundles countByEnumeratingWithState:&v75 objects:v85 count:16];
     }
 
     while (v6);
@@ -2656,24 +2656,24 @@ LABEL_20:
         v21 = logForCSLogCategoryDefault();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v23 = [v63 queryID];
-          v24 = [v63 clientBundleID];
-          v25 = v24;
-          v26 = [v24 UTF8String];
-          v27 = [v20 bundleIdentifier];
-          v28 = v27;
-          v29 = [v27 UTF8String];
+          queryID2 = [v63 queryID];
+          clientBundleID2 = [v63 clientBundleID];
+          v25 = clientBundleID2;
+          uTF8String3 = [clientBundleID2 UTF8String];
+          bundleIdentifier = [v20 bundleIdentifier];
+          v28 = bundleIdentifier;
+          uTF8String4 = [bundleIdentifier UTF8String];
           *buf = 134218498;
-          *&buf[4] = v23;
+          *&buf[4] = queryID2;
           *&buf[12] = 2080;
-          *&buf[14] = v26;
+          *&buf[14] = uTF8String3;
           *&buf[22] = 2080;
-          v87 = v29;
+          v87 = uTF8String4;
           _os_log_debug_impl(&dword_231A35000, v21, OS_LOG_TYPE_DEBUG, "(qid=%ld, bid=%s, AP) Filtering out hidden app %s", buf, 0x20u);
         }
 
-        v22 = [v20 bundleIdentifier];
-        [v4 addObject:v22];
+        bundleIdentifier2 = [v20 bundleIdentifier];
+        [v4 addObject:bundleIdentifier2];
       }
 
       v17 = [obj countByEnumeratingWithState:&v71 objects:v84 count:16];
@@ -2731,12 +2731,12 @@ LABEL_20:
   _Block_object_dispose(&v79, 8);
   if (v35 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v37 = [v35 applicationsExcludedFromUninstall];
+    applicationsExcludedFromUninstall = [v35 applicationsExcludedFromUninstall];
   }
 
   else
   {
-    v37 = 0;
+    applicationsExcludedFromUninstall = 0;
   }
 
   v69 = 0u;
@@ -2760,7 +2760,7 @@ LABEL_20:
         }
 
         v42 = *(*(&v67 + 1) + 8 * k);
-        v43 = [v37 containsObject:{v42, v62}];
+        v43 = [applicationsExcludedFromUninstall containsObject:{v42, v62}];
         v44 = logForCSLogCategoryDefault();
         v45 = os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG);
         if (v43)
@@ -2768,18 +2768,18 @@ LABEL_20:
           v46 = v4;
           if (v45)
           {
-            v47 = [v63 queryID];
-            v48 = [v63 clientBundleID];
-            v49 = v48;
-            v50 = [v48 UTF8String];
+            queryID3 = [v63 queryID];
+            clientBundleID3 = [v63 clientBundleID];
+            v49 = clientBundleID3;
+            uTF8String5 = [clientBundleID3 UTF8String];
             v51 = v42;
-            v52 = [v42 UTF8String];
+            uTF8String6 = [v42 UTF8String];
             *buf = v62;
-            *&buf[4] = v47;
+            *&buf[4] = queryID3;
             *&buf[12] = 2080;
-            *&buf[14] = v50;
+            *&buf[14] = uTF8String5;
             *&buf[22] = 2080;
-            v87 = v52;
+            v87 = uTF8String6;
             _os_log_debug_impl(&dword_231A35000, v44, OS_LOG_TYPE_DEBUG, "(qid=%ld, bid=%s, SP/E) Filtering out hidden app %s", buf, 0x20u);
 
             v46 = v4;
@@ -2791,18 +2791,18 @@ LABEL_20:
           v46 = v66;
           if (v45)
           {
-            v53 = [v63 queryID];
-            v54 = [v63 clientBundleID];
-            v55 = v54;
-            v56 = [v54 UTF8String];
+            queryID4 = [v63 queryID];
+            clientBundleID4 = [v63 clientBundleID];
+            v55 = clientBundleID4;
+            uTF8String7 = [clientBundleID4 UTF8String];
             v57 = v42;
-            v58 = [v42 UTF8String];
+            uTF8String8 = [v42 UTF8String];
             *buf = v62;
-            *&buf[4] = v53;
+            *&buf[4] = queryID4;
             *&buf[12] = 2080;
-            *&buf[14] = v56;
+            *&buf[14] = uTF8String7;
             *&buf[22] = 2080;
-            v87 = v58;
+            v87 = uTF8String8;
             _os_log_debug_impl(&dword_231A35000, v44, OS_LOG_TYPE_DEBUG, "(qid=%ld, bid=%s, SP) Filtering out hidden app %s", buf, 0x20u);
 
             v46 = v66;
@@ -2818,11 +2818,11 @@ LABEL_20:
     while (v38);
   }
 
-  v59 = [v66 allObjects];
-  [v63 setDisableBundles:v59];
+  allObjects = [v66 allObjects];
+  [v63 setDisableBundles:allObjects];
 
-  v60 = [v4 allObjects];
-  [v63 setPrefsDisabledBundles:v60];
+  allObjects2 = [v4 allObjects];
+  [v63 setPrefsDisabledBundles:allObjects2];
 
   v61 = *MEMORY[0x277D85DE8];
 }

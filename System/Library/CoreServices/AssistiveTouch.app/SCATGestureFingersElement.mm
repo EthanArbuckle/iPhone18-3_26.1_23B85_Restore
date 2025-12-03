@@ -1,27 +1,27 @@
 @interface SCATGestureFingersElement
-- (BOOL)scatPerformAction:(int)a3;
+- (BOOL)scatPerformAction:(int)action;
 - (SCATGestureFingersElementDelegate)delegate;
-- (void)scatDidBecomeFocused:(BOOL)a3;
+- (void)scatDidBecomeFocused:(BOOL)focused;
 @end
 
 @implementation SCATGestureFingersElement
 
-- (void)scatDidBecomeFocused:(BOOL)a3
+- (void)scatDidBecomeFocused:(BOOL)focused
 {
-  v3 = a3;
-  v5 = [(SCATGestureFingersElement *)self delegate];
-  [v5 fingersElement:self didBecomeFocused:v3];
+  focusedCopy = focused;
+  delegate = [(SCATGestureFingersElement *)self delegate];
+  [delegate fingersElement:self didBecomeFocused:focusedCopy];
 }
 
-- (BOOL)scatPerformAction:(int)a3
+- (BOOL)scatPerformAction:(int)action
 {
-  if (a3 == 2010)
+  if (action == 2010)
   {
-    v5 = [(SCATGestureFingersElement *)self delegate];
-    [v5 didActivateFingersElement:self];
+    delegate = [(SCATGestureFingersElement *)self delegate];
+    [delegate didActivateFingersElement:self];
   }
 
-  return a3 == 2010;
+  return action == 2010;
 }
 
 - (SCATGestureFingersElementDelegate)delegate

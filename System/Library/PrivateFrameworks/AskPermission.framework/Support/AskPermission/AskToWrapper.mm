@@ -1,8 +1,8 @@
 @interface AskToWrapper
 + (_TtC19AskPermissionDaemon12AskToWrapper)shared;
-+ (void)canAskWithCompletionHandler:(id)a3;
++ (void)canAskWithCompletionHandler:(id)handler;
 - (_TtC19AskPermissionDaemon12AskToWrapper)init;
-- (void)askWithUuid:(NSUUID *)a3 type:(int64_t)a4 title:(NSString *)a5 message:(NSString *)a6 bundleIdentifier:(NSString *)a7 preApprove:(NSString *)a8 postApprove:(NSString *)a9 preDecline:(NSString *)a10 postDecline:(NSString *)a11 responseBundleIdentifier:(NSString *)a12 metadata:(APAskToAgeRestrictionMetadata *)a13 fallbackURL:(NSURL *)a14 delegateCallback:(id)a15 completionHandler:;
+- (void)askWithUuid:(NSUUID *)uuid type:(int64_t)type title:(NSString *)title message:(NSString *)message bundleIdentifier:(NSString *)identifier preApprove:(NSString *)approve postApprove:(NSString *)postApprove preDecline:(NSString *)self0 postDecline:(NSString *)self1 responseBundleIdentifier:(NSString *)self2 metadata:(APAskToAgeRestrictionMetadata *)self3 fallbackURL:(NSURL *)self4 delegateCallback:(id)self5 completionHandler:;
 @end
 
 @implementation AskToWrapper
@@ -19,15 +19,15 @@
   return v3;
 }
 
-+ (void)canAskWithCompletionHandler:(id)a3
++ (void)canAskWithCompletionHandler:(id)handler
 {
   v5 = (*(*(sub_10002D464(&qword_100063AD8, &qword_100042A90) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = type metadata accessor for TaskPriority();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();
@@ -43,43 +43,43 @@
   sub_10002C91C(0, 0, v7, &unk_1000429C0, v12);
 }
 
-- (void)askWithUuid:(NSUUID *)a3 type:(int64_t)a4 title:(NSString *)a5 message:(NSString *)a6 bundleIdentifier:(NSString *)a7 preApprove:(NSString *)a8 postApprove:(NSString *)a9 preDecline:(NSString *)a10 postDecline:(NSString *)a11 responseBundleIdentifier:(NSString *)a12 metadata:(APAskToAgeRestrictionMetadata *)a13 fallbackURL:(NSURL *)a14 delegateCallback:(id)a15 completionHandler:
+- (void)askWithUuid:(NSUUID *)uuid type:(int64_t)type title:(NSString *)title message:(NSString *)message bundleIdentifier:(NSString *)identifier preApprove:(NSString *)approve postApprove:(NSString *)postApprove preDecline:(NSString *)self0 postDecline:(NSString *)self1 responseBundleIdentifier:(NSString *)self2 metadata:(APAskToAgeRestrictionMetadata *)self3 fallbackURL:(NSURL *)self4 delegateCallback:(id)self5 completionHandler:
 {
-  v51 = a6;
-  v52 = a8;
-  v44 = a4;
-  v45 = self;
-  v49 = a7;
-  v50 = a14;
-  v48 = a10;
-  v46 = a3;
-  v47 = a9;
+  messageCopy = message;
+  approveCopy = approve;
+  typeCopy = type;
+  selfCopy = self;
+  identifierCopy = identifier;
+  lCopy = l;
+  declineCopy = decline;
+  uuidCopy = uuid;
+  postApproveCopy = postApprove;
   v17 = (*(*(sub_10002D464(&qword_100063AD8, &qword_100042A90) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v43 = &v43 - v18;
-  v19 = _Block_copy(a15);
+  v19 = _Block_copy(callback);
   v20 = _Block_copy(v53);
   v21 = swift_allocObject();
-  v22 = v44;
-  v21[2] = a3;
+  v22 = typeCopy;
+  v21[2] = uuid;
   v21[3] = v22;
-  v23 = v51;
-  v21[4] = a5;
+  v23 = messageCopy;
+  v21[4] = title;
   v21[5] = v23;
-  v24 = v52;
-  v21[6] = v49;
+  v24 = approveCopy;
+  v21[6] = identifierCopy;
   v21[7] = v24;
-  v21[8] = a9;
-  v21[9] = a10;
-  v21[10] = a11;
-  v21[11] = a12;
-  v25 = v50;
-  v21[12] = a13;
+  v21[8] = postApprove;
+  v21[9] = decline;
+  v21[10] = postDecline;
+  v21[11] = bundleIdentifier;
+  v25 = lCopy;
+  v21[12] = metadata;
   v21[13] = v25;
   v21[14] = v19;
   v21[15] = v20;
-  v26 = v45;
-  v21[16] = v45;
+  v26 = selfCopy;
+  v21[16] = selfCopy;
   v27 = type metadata accessor for TaskPriority();
   v28 = v43;
   (*(*(v27 - 8) + 56))(v43, 1, 1, v27);
@@ -93,17 +93,17 @@
   v30[3] = 0;
   v30[4] = &unk_100042978;
   v30[5] = v29;
-  v31 = v46;
-  v32 = a5;
-  v33 = v51;
-  v34 = v49;
-  v35 = v52;
-  v36 = v47;
-  v37 = v48;
-  v38 = a11;
-  v39 = a12;
-  v40 = a13;
-  v41 = v50;
+  v31 = uuidCopy;
+  titleCopy = title;
+  v33 = messageCopy;
+  v34 = identifierCopy;
+  v35 = approveCopy;
+  v36 = postApproveCopy;
+  v37 = declineCopy;
+  postDeclineCopy = postDecline;
+  bundleIdentifierCopy = bundleIdentifier;
+  metadataCopy = metadata;
+  v41 = lCopy;
   v42 = v26;
   sub_10002C91C(0, 0, v28, &unk_100042988, v30);
 }

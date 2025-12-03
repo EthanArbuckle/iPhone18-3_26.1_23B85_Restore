@@ -1,17 +1,17 @@
 @interface NSTextCorrectionMarkerRendering
-+ (CGColor)_colorForSpellType_iOS:(int64_t)a3;
-+ (CGColor)colorForType:(int64_t)a3 font:(id)a4 dotSize:(double *)a5;
-+ (CGRect)boundsForCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 originalWidth:(double)a7;
-+ (id)textCorrectionAdjustmentAttributedString:(id)a3 range:(_NSRange)a4 glyphOrigin:(CGPoint)a5 yDelta:(double *)a6;
-+ (int64_t)textCorrectionMarkerTypeWithAttributes:(id)a3;
-+ (void)drawCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 cgContext:(CGContext *)a7;
-+ (void)drawCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 originalWidth:(double)a7 cgContext:(CGContext *)a8;
-+ (void)drawCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 originalWidth:(double)a7 graphicsContext:(id)a8;
++ (CGColor)_colorForSpellType_iOS:(int64_t)s;
++ (CGColor)colorForType:(int64_t)type font:(id)font dotSize:(double *)size;
++ (CGRect)boundsForCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width originalWidth:(double)originalWidth;
++ (id)textCorrectionAdjustmentAttributedString:(id)string range:(_NSRange)range glyphOrigin:(CGPoint)origin yDelta:(double *)delta;
++ (int64_t)textCorrectionMarkerTypeWithAttributes:(id)attributes;
++ (void)drawCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width cgContext:(CGContext *)context;
++ (void)drawCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width originalWidth:(double)originalWidth cgContext:(CGContext *)context;
++ (void)drawCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width originalWidth:(double)originalWidth graphicsContext:(id)context;
 @end
 
 @implementation NSTextCorrectionMarkerRendering
 
-+ (CGColor)_colorForSpellType_iOS:(int64_t)a3
++ (CGColor)_colorForSpellType_iOS:(int64_t)s
 {
   if (+[NSTextGraphicsContextProvider textGraphicsContextProviderClassRespondsToColorQuery])
   {
@@ -24,82 +24,82 @@
   }
 
   v5 = v4;
-  if (a3 == 1 || a3 == 3)
+  if (s == 1 || s == 3)
   {
-    v6 = [(objc_class *)v4 systemBlueColor];
+    systemBlueColor = [(objc_class *)v4 systemBlueColor];
   }
 
-  else if (a3 == 2)
+  else if (s == 2)
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(objc_class *)v5 textGrammarIndicatorColor];
+      systemBlueColor = [(objc_class *)v5 textGrammarIndicatorColor];
     }
 
     else
     {
-      v6 = [(objc_class *)v5 systemGreenColor];
+      systemBlueColor = [(objc_class *)v5 systemGreenColor];
     }
   }
 
   else
   {
-    v6 = [(objc_class *)v4 systemRedColor];
+    systemBlueColor = [(objc_class *)v4 systemRedColor];
   }
 
-  return [v6 CGColor];
+  return [systemBlueColor CGColor];
 }
 
-+ (int64_t)textCorrectionMarkerTypeWithAttributes:(id)a3
++ (int64_t)textCorrectionMarkerTypeWithAttributes:(id)attributes
 {
-  [a3 objectForKeyedSubscript:NSTemporaryTextCorrectionAttributeName];
+  [attributes objectForKeyedSubscript:NSTemporaryTextCorrectionAttributeName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 3;
   }
 
-  [a3 objectForKeyedSubscript:@"NSTextAlternatives"];
+  [attributes objectForKeyedSubscript:@"NSTextAlternatives"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 1;
   }
 
-  v5 = [a3 objectForKeyedSubscript:@"NSSpellingState"];
+  v5 = [attributes objectForKeyedSubscript:@"NSSpellingState"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v6 = [v5 integerValue]) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (integerValue = [v5 integerValue]) == 0)
   {
-    v7 = [a3 objectForKeyedSubscript:@"NSTextAlternativesDisplayStyle"];
+    v7 = [attributes objectForKeyedSubscript:@"NSTextAlternativesDisplayStyle"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       return -1;
     }
 
-    v6 = [v7 integerValue];
-    if (!v6)
+    integerValue = [v7 integerValue];
+    if (!integerValue)
     {
       return -1;
     }
   }
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
     return 1;
   }
 
-  return 2 * (v6 == 3);
+  return 2 * (integerValue == 3);
 }
 
-+ (CGColor)colorForType:(int64_t)a3 font:(id)a4 dotSize:(double *)a5
++ (CGColor)colorForType:(int64_t)type font:(id)font dotSize:(double *)size
 {
-  if (!a4)
+  if (!font)
   {
-    a4 = NSDefaultFont();
+    font = NSDefaultFont();
   }
 
-  [a4 pointSize];
+  [font pointSize];
   v9 = 20.0;
   if (v8 >= 20.0)
   {
@@ -110,38 +110,38 @@
     }
   }
 
-  if (a5)
+  if (size)
   {
     v8 = ceil(v9 * 0.13247);
-    *a5 = v8;
+    *size = v8;
   }
 
-  return [a1 _colorForSpellType_iOS:{a3, v8, v9}];
+  return [self _colorForSpellType_iOS:{type, v8, v9}];
 }
 
-+ (void)drawCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 originalWidth:(double)a7 graphicsContext:(id)a8
++ (void)drawCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width originalWidth:(double)originalWidth graphicsContext:(id)context
 {
-  if (a8)
+  if (context)
   {
-    y = a5.y;
-    x = a5.x;
+    y = origin.y;
+    x = origin.x;
     v24 = 0.0;
-    v13 = [a1 colorForType:a3 font:a4 dotSize:&v24];
+    v13 = [self colorForType:type font:font dotSize:&v24];
     if (v13)
     {
       v14 = v13;
       v15 = v24 + 1.0;
-      v16 = vcvtmd_s64_f64((a7 + 1.0) / (v24 + 1.0));
+      v16 = vcvtmd_s64_f64((originalWidth + 1.0) / (v24 + 1.0));
       if (v16 <= 1)
       {
         v16 = 1;
       }
 
-      v17 = (a7 + 1.0 - v16 * v15) * 0.5;
-      v18 = vcvtmd_s64_f64((a6 + 1.0 + v17 * -2.0) / v15);
-      v19 = [a8 CGContext];
-      CGContextSetFillColorWithColor(v19, v14);
-      CGContextBeginPath(v19);
+      v17 = (originalWidth + 1.0 - v16 * v15) * 0.5;
+      v18 = vcvtmd_s64_f64((width + 1.0 + v17 * -2.0) / v15);
+      cGContext = [context CGContext];
+      CGContextSetFillColorWithColor(cGContext, v14);
+      CGContextBeginPath(cGContext);
       v20 = 0;
       v21 = y + 0.0;
       v22 = v24;
@@ -157,65 +157,65 @@
         v25.origin.y = v21;
         v25.size.width = v22;
         v25.size.height = v22;
-        CGContextAddEllipseInRect(v19, v25);
+        CGContextAddEllipseInRect(cGContext, v25);
         ++v20;
       }
 
       while (v18 != v20);
-      CGContextClosePath(v19);
+      CGContextClosePath(cGContext);
       if (CGContextGetCompositeOperation() == 2)
       {
-        CGContextFillPath(v19);
+        CGContextFillPath(cGContext);
       }
 
       else
       {
         CGContextSetCompositeOperation();
-        CGContextFillPath(v19);
+        CGContextFillPath(cGContext);
         CGContextSetCompositeOperation();
       }
     }
   }
 }
 
-+ (CGRect)boundsForCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 originalWidth:(double)a7
++ (CGRect)boundsForCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width originalWidth:(double)originalWidth
 {
-  y = a5.y;
-  x = a5.x;
+  y = origin.y;
+  x = origin.x;
   v14 = 0.0;
-  [a1 colorForType:a3 font:a4 dotSize:{&v14, a5.x, a5.y, a6, a7}];
+  [self colorForType:type font:font dotSize:{&v14, origin.x, origin.y, width, originalWidth}];
   v10 = y + 0.0;
   v11 = v14;
   v12 = x;
-  v13 = a6;
+  widthCopy = width;
   result.size.height = v11;
-  result.size.width = v13;
+  result.size.width = widthCopy;
   result.origin.y = v10;
   result.origin.x = v12;
   return result;
 }
 
-+ (void)drawCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 cgContext:(CGContext *)a7
++ (void)drawCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width cgContext:(CGContext *)context
 {
-  y = a5.y;
-  x = a5.x;
-  v13 = [[_NSCGTextGraphicsContext alloc] initWithCGContext:a7];
-  [a1 drawCorrectionMarkerOfType:a3 font:a4 origin:v13 width:x graphicsContext:{y, a6}];
+  y = origin.y;
+  x = origin.x;
+  v13 = [[_NSCGTextGraphicsContext alloc] initWithCGContext:context];
+  [self drawCorrectionMarkerOfType:type font:font origin:v13 width:x graphicsContext:{y, width}];
 }
 
-+ (void)drawCorrectionMarkerOfType:(int64_t)a3 font:(id)a4 origin:(CGPoint)a5 width:(double)a6 originalWidth:(double)a7 cgContext:(CGContext *)a8
++ (void)drawCorrectionMarkerOfType:(int64_t)type font:(id)font origin:(CGPoint)origin width:(double)width originalWidth:(double)originalWidth cgContext:(CGContext *)context
 {
-  y = a5.y;
-  x = a5.x;
-  v15 = [[_NSCGTextGraphicsContext alloc] initWithCGContext:a8];
-  [a1 drawCorrectionMarkerOfType:a3 font:a4 origin:v15 width:x originalWidth:y graphicsContext:{a6, a7}];
+  y = origin.y;
+  x = origin.x;
+  v15 = [[_NSCGTextGraphicsContext alloc] initWithCGContext:context];
+  [self drawCorrectionMarkerOfType:type font:font origin:v15 width:x originalWidth:y graphicsContext:{width, originalWidth}];
 }
 
-+ (id)textCorrectionAdjustmentAttributedString:(id)a3 range:(_NSRange)a4 glyphOrigin:(CGPoint)a5 yDelta:(double *)a6
++ (id)textCorrectionAdjustmentAttributedString:(id)string range:(_NSRange)range glyphOrigin:(CGPoint)origin yDelta:(double *)delta
 {
-  y = a5.y;
-  length = a4.length;
-  location = a4.location;
+  y = origin.y;
+  length = range.length;
+  location = range.location;
   v11 = +[NSTypesetter defaultTypesetterBehavior];
   v27 = 0;
   v28 = &v27;
@@ -234,7 +234,7 @@
   v20[5] = &v27;
   v20[6] = v11;
   v20[4] = &v21;
-  [a3 enumerateAttribute:@"NSFont" inRange:location options:length usingBlock:{0, v20}];
+  [string enumerateAttribute:@"NSFont" inRange:location options:length usingBlock:{0, v20}];
   if (!v22[5])
   {
     v12 = NSDefaultFont();
@@ -243,7 +243,7 @@
     *(v28 + 3) = v13;
   }
 
-  if (a6)
+  if (delta)
   {
     v14 = v28[3];
     v15 = v14 - y;
@@ -254,7 +254,7 @@
       v17 = v15;
     }
 
-    *a6 = v17;
+    *delta = v17;
   }
 
   v18 = v22[5];

@@ -1,5 +1,5 @@
 @interface PHAssetCollection
-+ (BOOL)_defaultKeyAssetsAtEndForType:(int64_t)a3 subtype:(int64_t)a4;
++ (BOOL)_defaultKeyAssetsAtEndForType:(int64_t)type subtype:(int64_t)subtype;
 + (NSArray)defaultTitleFontNames;
 + (PHAssetCollection)transientAssetCollectionWithAssetFetchResult:(PHFetchResult *)fetchResult title:(NSString *)title;
 + (PHAssetCollection)transientAssetCollectionWithAssets:(NSArray *)assets title:(NSString *)title;
@@ -8,51 +8,51 @@
 + (PHFetchResult)fetchAssetCollectionsWithLocalIdentifiers:(NSArray *)identifiers options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchAssetCollectionsWithType:(PHAssetCollectionType)type subtype:(PHAssetCollectionSubtype)subtype options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchMomentsInMomentList:(PHCollectionList *)momentList options:(PHFetchOptions *)options;
-+ (id)_composePropertiesToFetchWithHint:(unint64_t)a3;
-+ (id)assetCollectionDuplicateTypeMappingForAssetCollectionUUIDs:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (id)assetsMetadataFromAssets:(id)a3;
++ (id)_composePropertiesToFetchWithHint:(unint64_t)hint;
++ (id)assetCollectionDuplicateTypeMappingForAssetCollectionUUIDs:(id)ds photoLibrary:(id)library error:(id *)error;
++ (id)assetsMetadataFromAssets:(id)assets;
 + (id)corePropertiesToFetch;
-+ (id)descriptionForSubtype:(int64_t)a3;
-+ (id)descriptionForType:(int64_t)a3;
-+ (id)descriptionOfTitleCategory:(int64_t)a3;
++ (id)descriptionForSubtype:(int64_t)subtype;
++ (id)descriptionForType:(int64_t)type;
++ (id)descriptionOfTitleCategory:(int64_t)category;
 + (id)entityKeyMap;
-+ (id)fetchAlbumIdentifiersContainingAsset:(id)a3 options:(id)a4;
-+ (id)fetchAllTripHighlightsContainingAssetsWithUUIDs:(id)a3 options:(id)a4;
-+ (id)fetchAssetCollectionsContainingAssets:(id)a3 withType:(int64_t)a4 options:(id)a5;
-+ (id)fetchAssetCollectionsForReferences:(id)a3 photoLibrary:(id)a4;
-+ (id)fetchAssetCollectionsWithObjectIDs:(id)a3 options:(id)a4;
-+ (id)fetchAssetCollectionsWithType:(int64_t)a3 localIdentifiers:(id)a4 options:(id)a5;
-+ (id)fetchMomentsBackingMemory:(id)a3 options:(id)a4;
-+ (id)fetchMomentsBackingSuggestion:(id)a3 options:(id)a4;
-+ (id)fetchMomentsInHighlight:(id)a3 options:(id)a4;
-+ (id)fetchMomentsNeedingThemeAnalysisWithAdapterVersion:(int64_t)a3 uemVersion:(int64_t)a4 options:(id)a5;
-+ (id)fetchPhotosHighlightsContainingMoments:(id)a3 options:(id)a4;
-+ (id)fetchRecentContentSyndicationAssetCollectionsWithOptions:(id)a3 maxNumberOfStacks:(int64_t)a4 maxNumberOfAssetsPerStack:(int64_t)a5;
-+ (id)fetchSuggestedContributionsForAssetsFetchResult:(id)a3 options:(id)a4;
-+ (id)fetchSuggestedContributionsForAssetsMetadata:(id)a3 options:(id)a4;
-+ (id)fetchSuggestedContributionsForFileURLs:(id)a3 options:(id)a4;
-+ (id)fetchUtilityCollectionsWithOptions:(id)a3;
-+ (id)fetchUtilityCollectionsWithType:(unsigned __int16)a3 options:(id)a4;
-+ (id)graphOptionsForTransientAssetCollection:(id)a3 needsCompleteMomentsInfo:(BOOL)a4 options:(id)a5;
-+ (id)pl_PHAssetCollectionForAssetContainer:(id)a3 photoLibrary:(id)a4 includeTrash:(BOOL)a5;
-+ (id)pl_albumsForAssetCollections:(id)a3;
-+ (id)posterImageForAssetCollection:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)titleFontNameForTitleCategory:(int64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 title:(id)a4 identifier:(id)a5;
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 title:(id)a4 subtitle:(id)a5 identifier:(id)a6 startDate:(id)a7 endDate:(id)a8;
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 title:(id)a4 subtype:(int64_t)a5;
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 type:(int64_t)a4 subtype:(int64_t)a5 title:(id)a6 subtitle:(id)a7 titleFontName:(id)a8;
-+ (id)transientAssetCollectionWithAssets:(id)a3 subtype:(int64_t)a4 identifier:(id)a5 startDate:(id)a6 endDate:(id)a7 title:(id)a8;
-+ (id)transientAssetCollectionWithAssets:(id)a3 title:(id)a4 identifier:(id)a5 photoLibrary:(id)a6;
-+ (id)transientAssetCollectionWithFetchOptions:(id)a3 title:(id)a4 subtitle:(id)a5 titleFontName:(id)a6 identifier:(id)a7;
-+ (id)transientAssetCollectionWithOptions:(id)a3;
-+ (int64_t)titleCategoryForTitleFontName:(id)a3;
-+ (unint64_t)titleFontNameHashFromString:(id)a3;
++ (id)fetchAlbumIdentifiersContainingAsset:(id)asset options:(id)options;
++ (id)fetchAllTripHighlightsContainingAssetsWithUUIDs:(id)ds options:(id)options;
++ (id)fetchAssetCollectionsContainingAssets:(id)assets withType:(int64_t)type options:(id)options;
++ (id)fetchAssetCollectionsForReferences:(id)references photoLibrary:(id)library;
++ (id)fetchAssetCollectionsWithObjectIDs:(id)ds options:(id)options;
++ (id)fetchAssetCollectionsWithType:(int64_t)type localIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchMomentsBackingMemory:(id)memory options:(id)options;
++ (id)fetchMomentsBackingSuggestion:(id)suggestion options:(id)options;
++ (id)fetchMomentsInHighlight:(id)highlight options:(id)options;
++ (id)fetchMomentsNeedingThemeAnalysisWithAdapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion options:(id)options;
++ (id)fetchPhotosHighlightsContainingMoments:(id)moments options:(id)options;
++ (id)fetchRecentContentSyndicationAssetCollectionsWithOptions:(id)options maxNumberOfStacks:(int64_t)stacks maxNumberOfAssetsPerStack:(int64_t)stack;
++ (id)fetchSuggestedContributionsForAssetsFetchResult:(id)result options:(id)options;
++ (id)fetchSuggestedContributionsForAssetsMetadata:(id)metadata options:(id)options;
++ (id)fetchSuggestedContributionsForFileURLs:(id)ls options:(id)options;
++ (id)fetchUtilityCollectionsWithOptions:(id)options;
++ (id)fetchUtilityCollectionsWithType:(unsigned __int16)type options:(id)options;
++ (id)graphOptionsForTransientAssetCollection:(id)collection needsCompleteMomentsInfo:(BOOL)info options:(id)options;
++ (id)pl_PHAssetCollectionForAssetContainer:(id)container photoLibrary:(id)library includeTrash:(BOOL)trash;
++ (id)pl_albumsForAssetCollections:(id)collections;
++ (id)posterImageForAssetCollection:(id)collection;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)titleFontNameForTitleCategory:(int64_t)category;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result title:(id)title identifier:(id)identifier;
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result title:(id)title subtitle:(id)subtitle identifier:(id)identifier startDate:(id)date endDate:(id)endDate;
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result title:(id)title subtype:(int64_t)subtype;
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result type:(int64_t)type subtype:(int64_t)subtype title:(id)title subtitle:(id)subtitle titleFontName:(id)name;
++ (id)transientAssetCollectionWithAssets:(id)assets subtype:(int64_t)subtype identifier:(id)identifier startDate:(id)date endDate:(id)endDate title:(id)title;
++ (id)transientAssetCollectionWithAssets:(id)assets title:(id)title identifier:(id)identifier photoLibrary:(id)library;
++ (id)transientAssetCollectionWithFetchOptions:(id)options title:(id)title subtitle:(id)subtitle titleFontName:(id)name identifier:(id)identifier;
++ (id)transientAssetCollectionWithOptions:(id)options;
++ (int64_t)titleCategoryForTitleFontName:(id)name;
++ (unint64_t)titleFontNameHashFromString:(id)string;
 - (BOOL)alwaysRecalculateCounts;
 - (BOOL)canContainCustomKeyAssets;
-- (BOOL)canPerformEditOperation:(int64_t)a3;
+- (BOOL)canPerformEditOperation:(int64_t)operation;
 - (BOOL)canShowComments;
 - (BOOL)collectionHasFixedOrder;
 - (BOOL)containsPrivateContent;
@@ -62,15 +62,15 @@
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (NSString)titleFontName;
-- (PHAssetCollection)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHAssetCollection)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)_fetchAggregateDatesForSmartAlbum;
 - (id)_fetchedEndDate;
 - (id)_fetchedStartDate;
-- (id)_initTransientWithAssets:(id)a3 orFetchResult:(id)a4 orQuery:(id)a5 title:(id)a6 subtitle:(id)a7 titleFontName:(id)a8 identifier:(id)a9 keyAssetsAtEnd:(BOOL)a10 albumKind:(int)a11 type:(int64_t)a12 subtype:(int64_t)a13 startDate:(id)a14 endDate:(id)a15 photoLibrary:(id)a16;
+- (id)_initTransientWithAssets:(id)assets orFetchResult:(id)result orQuery:(id)query title:(id)title subtitle:(id)subtitle titleFontName:(id)name identifier:(id)identifier keyAssetsAtEnd:(BOOL)self0 albumKind:(int)self1 type:(int64_t)self2 subtype:(int64_t)self3 startDate:(id)self4 endDate:(id)self5 photoLibrary:(id)self6;
 - (id)description;
 - (id)effectiveCustomSortDescriptors;
 - (id)identifier;
-- (id)initTransientWithAssets:(id)a3 orFetchResult:(id)a4 orQuery:(id)a5 title:(id)a6 subtitle:(id)a7 titleFontName:(id)a8 identifier:(id)a9 albumKind:(int)a10 subtype:(int64_t)a11 startDate:(id)a12 endDate:(id)a13 photoLibrary:(id)a14;
+- (id)initTransientWithAssets:(id)assets orFetchResult:(id)result orQuery:(id)query title:(id)title subtitle:(id)subtitle titleFontName:(id)name identifier:(id)identifier albumKind:(int)self0 subtype:(int64_t)self1 startDate:(id)self2 endDate:(id)self3 photoLibrary:(id)self4;
 - (id)localizedSubtitle;
 - (id)localizedTitle;
 - (id)pl_assetContainer;
@@ -118,13 +118,13 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
 
 - (BOOL)alwaysRecalculateCounts
 {
-  v3 = [(PHObject *)self isTransient];
-  if (v3)
+  isTransient = [(PHObject *)self isTransient];
+  if (isTransient)
   {
-    LOBYTE(v3) = self->_query != 0;
+    LOBYTE(isTransient) = self->_query != 0;
   }
 
-  return v3;
+  return isTransient;
 }
 
 - (id)identifier
@@ -132,17 +132,17 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
   transientIdentifier = self->_transientIdentifier;
   if (transientIdentifier)
   {
-    v3 = transientIdentifier;
+    identifier = transientIdentifier;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PHAssetCollection;
-    v3 = [(PHObject *)&v5 identifier];
+    identifier = [(PHObject *)&v5 identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)keyAssetsAtEnd
@@ -153,10 +153,10 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
   }
 
   v4 = objc_opt_class();
-  v5 = [(PHAssetCollection *)self assetCollectionType];
-  v6 = [(PHAssetCollection *)self assetCollectionSubtype];
+  assetCollectionType = [(PHAssetCollection *)self assetCollectionType];
+  assetCollectionSubtype = [(PHAssetCollection *)self assetCollectionSubtype];
 
-  return [v4 _defaultKeyAssetsAtEndForType:v5 subtype:v6];
+  return [v4 _defaultKeyAssetsAtEndForType:assetCollectionType subtype:assetCollectionSubtype];
 }
 
 - (BOOL)isPrivacySensitiveAlbum
@@ -173,9 +173,9 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
 - (BOOL)canContainCustomKeyAssets
 {
   v2 = MEMORY[0x1E69BE458];
-  v3 = [(PHAssetCollection *)self plAlbumKind];
+  plAlbumKind = [(PHAssetCollection *)self plAlbumKind];
 
-  return [v2 supportsCustomKeyAssetWithAlbumKind:v3];
+  return [v2 supportsCustomKeyAssetWithAlbumKind:plAlbumKind];
 }
 
 - (id)description
@@ -193,18 +193,18 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
   v12[1] = *MEMORY[0x1E69E9840];
   if (![(PHAssetCollection *)self _shouldFetchDatesIfNeeded]&& ([(PHAssetCollection *)self startDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || ([(PHCollection *)self creationDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
+    creationDate = v3;
   }
 
   else if ([(PHAssetCollection *)self assetCollectionType]== PHAssetCollectionTypeSmartAlbum)
   {
-    v5 = [(PHAssetCollection *)self assetCollectionSubtype];
-    if (v5)
+    assetCollectionSubtype = [(PHAssetCollection *)self assetCollectionSubtype];
+    if (assetCollectionSubtype)
     {
-      return v5;
+      return assetCollectionSubtype;
     }
 
-    v4 = 0;
+    creationDate = 0;
   }
 
   else
@@ -217,14 +217,14 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
 
     [v7 setFetchLimit:1];
     v10 = [PHAsset fetchAssetsInAssetCollection:self options:v7];
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
-    v4 = [v11 creationDate];
+    creationDate = [firstObject creationDate];
   }
 
-  v5 = [PHAssetCollection titleFontNameHashFromDate:v4];
+  assetCollectionSubtype = [PHAssetCollection titleFontNameHashFromDate:creationDate];
 
-  return v5;
+  return assetCollectionSubtype;
 }
 
 - (NSString)titleFontName
@@ -239,8 +239,8 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
     titleFontName = self->_titleFontName;
     if (!titleFontName)
     {
-      v6 = [objc_opt_class() defaultTitleFontNames];
-      v7 = [v6 objectAtIndexedSubscript:{-[PHAssetCollection titleFontNameHash](self, "titleFontNameHash") % objc_msgSend(v6, "count")}];
+      defaultTitleFontNames = [objc_opt_class() defaultTitleFontNames];
+      v7 = [defaultTitleFontNames objectAtIndexedSubscript:{-[PHAssetCollection titleFontNameHash](self, "titleFontNameHash") % objc_msgSend(defaultTitleFontNames, "count")}];
       v8 = self->_titleFontName;
       self->_titleFontName = v7;
 
@@ -251,40 +251,40 @@ void __42__PHAssetCollection_corePropertiesToFetch__block_invoke()
   return titleFontName;
 }
 
-- (id)_initTransientWithAssets:(id)a3 orFetchResult:(id)a4 orQuery:(id)a5 title:(id)a6 subtitle:(id)a7 titleFontName:(id)a8 identifier:(id)a9 keyAssetsAtEnd:(BOOL)a10 albumKind:(int)a11 type:(int64_t)a12 subtype:(int64_t)a13 startDate:(id)a14 endDate:(id)a15 photoLibrary:(id)a16
+- (id)_initTransientWithAssets:(id)assets orFetchResult:(id)result orQuery:(id)query title:(id)title subtitle:(id)subtitle titleFontName:(id)name identifier:(id)identifier keyAssetsAtEnd:(BOOL)self0 albumKind:(int)self1 type:(int64_t)self2 subtype:(int64_t)self3 startDate:(id)self4 endDate:(id)self5 photoLibrary:(id)self6
 {
   v96 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v88 = a6;
-  v87 = a7;
-  v24 = a8;
-  v25 = v22;
-  v85 = a9;
-  v26 = a14;
-  v84 = a15;
-  v90 = a16;
-  v27 = [v25 query];
-  v28 = v27;
-  if (v27)
+  assetsCopy = assets;
+  resultCopy = result;
+  queryCopy = query;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  nameCopy = name;
+  v25 = resultCopy;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  libraryCopy = library;
+  query = [v25 query];
+  v28 = query;
+  if (query)
   {
-    v29 = v27;
+    v29 = query;
   }
 
   else
   {
-    v29 = v23;
+    v29 = queryCopy;
   }
 
   v30 = v29;
 
-  v83 = v23;
-  v86 = v24;
+  v83 = queryCopy;
+  v86 = nameCopy;
   if (v30)
   {
-    v31 = [v30 fetchType];
-    v32 = [v31 isEqualToString:@"PHAsset"];
+    fetchType = [v30 fetchType];
+    v32 = [fetchType isEqualToString:@"PHAsset"];
 
     if (v32)
     {
@@ -303,8 +303,8 @@ LABEL_57:
 
   if (v25)
   {
-    v34 = [v25 firstObject];
-    if (v34)
+    firstObject = [v25 firstObject];
+    if (firstObject)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -313,10 +313,10 @@ LABEL_57:
       }
     }
 
-    v35 = [v25 fetchedObjects];
+    fetchedObjects = [v25 fetchedObjects];
 
     v33 = 1;
-    v21 = v35;
+    assetsCopy = fetchedObjects;
   }
 
   else
@@ -326,40 +326,40 @@ LABEL_57:
 
 LABEL_12:
   v89 = v30;
-  v36 = [MEMORY[0x1E695DF90] dictionary];
-  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a11];
-  [v36 setObject:v37 forKeyedSubscript:@"kind"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:kind];
+  [dictionary setObject:v37 forKeyedSubscript:@"kind"];
 
-  v38 = [MEMORY[0x1E696AFB0] UUID];
-  v39 = [v38 UUIDString];
-  [v36 setObject:v39 forKeyedSubscript:@"uuid"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"uuid"];
 
-  v40 = v88;
-  if (v88)
+  v40 = titleCopy;
+  if (titleCopy)
   {
-    [v36 setObject:v88 forKeyedSubscript:@"title"];
+    [dictionary setObject:titleCopy forKeyedSubscript:@"title"];
   }
 
-  v41 = [v21 firstObject];
+  firstObject2 = [assetsCopy firstObject];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v41 photoLibrary], (v42 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([firstObject2 photoLibrary], (v42 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v43 = [v25 photoLibrary];
-    v44 = v43;
-    if (v43)
+    photoLibrary = [v25 photoLibrary];
+    v44 = photoLibrary;
+    if (photoLibrary)
     {
-      v45 = v43;
+      photoLibrary2 = photoLibrary;
     }
 
     else
     {
-      v45 = [v89 photoLibrary];
+      photoLibrary2 = [v89 photoLibrary];
     }
 
-    v42 = v45;
+    v42 = photoLibrary2;
   }
 
-  if (v90 && v42 && v42 != v90)
+  if (libraryCopy && v42 && v42 != libraryCopy)
   {
     v74 = MEMORY[0x1E695DF30];
     v75 = *MEMORY[0x1E695D940];
@@ -371,8 +371,8 @@ LABEL_12:
   v80 = v46;
   if (!v42)
   {
-    v47 = v90;
-    if (!v90)
+    v47 = libraryCopy;
+    if (!libraryCopy)
     {
       v47 = +[PHPhotoLibrary sharedPhotoLibrary];
     }
@@ -380,8 +380,8 @@ LABEL_12:
     v46 = v47;
   }
 
-  v81 = v41;
-  v48 = [(PHAssetCollection *)self initWithFetchDictionary:v36 propertyHint:2 photoLibrary:v46];
+  v81 = firstObject2;
+  v48 = [(PHAssetCollection *)self initWithFetchDictionary:dictionary propertyHint:2 photoLibrary:v46];
   if (v48)
   {
     v49 = [v89 copy];
@@ -392,18 +392,18 @@ LABEL_12:
     {
       if (v33)
       {
-        v51 = [v25 fetchedObjectIDs];
+        fetchedObjectIDs = [v25 fetchedObjectIDs];
         assetOids = v48->_assetOids;
-        v48->_assetOids = v51;
+        v48->_assetOids = fetchedObjectIDs;
 LABEL_33:
 
         goto LABEL_34;
       }
 
-      if (v21)
+      if (assetsCopy)
       {
         assetOids = NSStringFromSelector(sel_objectID);
-        v53 = [v21 valueForKey:assetOids];
+        v53 = [assetsCopy valueForKey:assetOids];
         v54 = v48->_assetOids;
         v48->_assetOids = v53;
 
@@ -412,15 +412,15 @@ LABEL_33:
     }
 
 LABEL_34:
-    v55 = [v21 copy];
+    v55 = [assetsCopy copy];
     assets = v48->_assets;
     v48->_assets = v55;
 
-    v57 = [v85 copy];
+    v57 = [identifierCopy copy];
     transientIdentifier = v48->_transientIdentifier;
     v48->_transientIdentifier = v57;
 
-    v59 = [v87 copy];
+    v59 = [subtitleCopy copy];
     transientSubtitle = v48->_transientSubtitle;
     v48->_transientSubtitle = v59;
 
@@ -431,13 +431,13 @@ LABEL_34:
       v48->_titleFontName = v61;
     }
 
-    v48->_transientKeyAssetsAtEnd = a10;
-    v48->_assetCollectionType = a12;
-    v48->_assetCollectionSubtype = a13;
-    if (v26 && v84)
+    v48->_transientKeyAssetsAtEnd = end;
+    v48->_assetCollectionType = type;
+    v48->_assetCollectionSubtype = subtype;
+    if (dateCopy && endDateCopy)
     {
-      objc_storeStrong(&v48->_startDate, a14);
-      objc_storeStrong(&v48->_endDate, a15);
+      objc_storeStrong(&v48->_startDate, date);
+      objc_storeStrong(&v48->_endDate, endDate);
     }
 
     if (v48->_query)
@@ -451,21 +451,21 @@ LABEL_34:
       v48->_approximateCount = v63;
       v48->_approximatePhotosCount = 0x7FFFFFFFFFFFFFFFLL;
       v48->_approximateVideosCount = 0x7FFFFFFFFFFFFFFFLL;
-      v40 = v88;
+      v40 = titleCopy;
     }
 
     else
     {
       obj = v25;
-      v48->_approximateCount = [v21 count];
+      v48->_approximateCount = [assetsCopy count];
       v48->_approximatePhotosCount = 0;
       v48->_approximateVideosCount = 0;
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v79 = v21;
-      v64 = v21;
+      v79 = assetsCopy;
+      v64 = assetsCopy;
       v65 = [v64 countByEnumeratingWithState:&v91 objects:v95 count:16];
       if (v65)
       {
@@ -481,13 +481,13 @@ LABEL_34:
             }
 
             v69 = *(*(&v91 + 1) + 8 * i);
-            v70 = [v69 isPhoto];
+            isPhoto = [v69 isPhoto];
             p_approximatePhotosCount = &v48->_approximatePhotosCount;
-            if ((v70 & 1) == 0)
+            if ((isPhoto & 1) == 0)
             {
-              v72 = [v69 isVideo];
+              isVideo = [v69 isVideo];
               p_approximatePhotosCount = &v48->_approximateVideosCount;
-              if (!v72)
+              if (!isVideo)
               {
                 continue;
               }
@@ -503,49 +503,49 @@ LABEL_34:
       }
 
       v25 = obj;
-      v21 = v79;
-      v40 = v88;
+      assetsCopy = v79;
+      v40 = titleCopy;
     }
   }
 
   return v48;
 }
 
-- (id)initTransientWithAssets:(id)a3 orFetchResult:(id)a4 orQuery:(id)a5 title:(id)a6 subtitle:(id)a7 titleFontName:(id)a8 identifier:(id)a9 albumKind:(int)a10 subtype:(int64_t)a11 startDate:(id)a12 endDate:(id)a13 photoLibrary:(id)a14
+- (id)initTransientWithAssets:(id)assets orFetchResult:(id)result orQuery:(id)query title:(id)title subtitle:(id)subtitle titleFontName:(id)name identifier:(id)identifier albumKind:(int)self0 subtype:(int64_t)self1 startDate:(id)self2 endDate:(id)self3 photoLibrary:(id)self4
 {
-  v32 = a14;
-  v30 = a13;
-  v19 = a12;
-  v27 = a9;
-  v28 = a8;
-  v26 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  HIDWORD(v25) = a10;
-  LOBYTE(v25) = [objc_opt_class() _defaultKeyAssetsAtEndForType:2 subtype:a11];
-  v33 = [(PHAssetCollection *)self _initTransientWithAssets:v23 orFetchResult:v22 orQuery:v21 title:v20 subtitle:v26 titleFontName:v28 identifier:v27 keyAssetsAtEnd:v25 albumKind:2 type:a11 subtype:v19 startDate:v30 endDate:v32 photoLibrary:?];
+  libraryCopy = library;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifierCopy = identifier;
+  nameCopy = name;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  queryCopy = query;
+  resultCopy = result;
+  assetsCopy = assets;
+  HIDWORD(v25) = kind;
+  LOBYTE(v25) = [objc_opt_class() _defaultKeyAssetsAtEndForType:2 subtype:subtype];
+  v33 = [(PHAssetCollection *)self _initTransientWithAssets:assetsCopy orFetchResult:resultCopy orQuery:queryCopy title:titleCopy subtitle:subtitleCopy titleFontName:nameCopy identifier:identifierCopy keyAssetsAtEnd:v25 albumKind:2 type:subtype subtype:dateCopy startDate:endDateCopy endDate:libraryCopy photoLibrary:?];
 
   return v33;
 }
 
 - (BOOL)containsPrivateContent
 {
-  v2 = [(PHAssetCollection *)self isPrivacySensitiveAlbum];
-  if (v2)
+  isPrivacySensitiveAlbum = [(PHAssetCollection *)self isPrivacySensitiveAlbum];
+  if (isPrivacySensitiveAlbum)
   {
 
-    LOBYTE(v2) = PLIsContentPrivacyEnabled();
+    LOBYTE(isPrivacySensitiveAlbum) = PLIsContentPrivacyEnabled();
   }
 
-  return v2;
+  return isPrivacySensitiveAlbum;
 }
 
 - (BOOL)hasLocationInfo
 {
-  v2 = [(PHAssetCollection *)self localizedLocationNames];
-  v3 = [v2 count] != 0;
+  localizedLocationNames = [(PHAssetCollection *)self localizedLocationNames];
+  v3 = [localizedLocationNames count] != 0;
 
   return v3;
 }
@@ -562,12 +562,12 @@ LABEL_34:
   return result;
 }
 
-- (BOOL)canPerformEditOperation:(int64_t)a3
+- (BOOL)canPerformEditOperation:(int64_t)operation
 {
   assetCollectionType = self->_assetCollectionType;
   if ((assetCollectionType - 8) < 2)
   {
-    return a3 == 1;
+    return operation == 1;
   }
 
   if (assetCollectionType != 1)
@@ -579,10 +579,10 @@ LABEL_34:
 
     if (self->_assetCollectionSubtype == 1000000204)
     {
-      return (a3 & 0xFFFFFFFFFFFFFFFELL) == 6;
+      return (operation & 0xFFFFFFFFFFFFFFFELL) == 6;
     }
 
-    return a3 == 1;
+    return operation == 1;
   }
 
   result = 0;
@@ -596,7 +596,7 @@ LABEL_34:
 
     if (assetCollectionSubtype == 6)
     {
-      return a3 == 1;
+      return operation == 1;
     }
   }
 
@@ -604,12 +604,12 @@ LABEL_34:
   {
     if (assetCollectionSubtype == 100)
     {
-      return a3 == 1;
+      return operation == 1;
     }
 
     if (assetCollectionSubtype == 1000000212 || assetCollectionSubtype == 1000000601)
     {
-      return a3 == 1;
+      return operation == 1;
     }
   }
 
@@ -618,10 +618,10 @@ LABEL_34:
 
 - (id)effectiveCustomSortDescriptors
 {
-  v3 = [(PHCollection *)self customSortKey];
-  if (v3)
+  customSortKey = [(PHCollection *)self customSortKey];
+  if (customSortKey)
   {
-    v4 = [MEMORY[0x1E69BE458] sortDescriptorsForAssetsInAlbumWithSortKey:v3 ascending:{-[PHCollection customSortAscending](self, "customSortAscending")}];
+    v4 = [MEMORY[0x1E69BE458] sortDescriptorsForAssetsInAlbumWithSortKey:customSortKey ascending:{-[PHCollection customSortAscending](self, "customSortAscending")}];
   }
 
   else
@@ -635,47 +635,47 @@ LABEL_34:
 - (unint64_t)collectionFixedOrderPriority
 {
   v2 = MEMORY[0x1E69BE538];
-  v3 = [(PHAssetCollection *)self plAlbumKind];
+  plAlbumKind = [(PHAssetCollection *)self plAlbumKind];
 
-  return [v2 priorityForAlbumKind:v3];
+  return [v2 priorityForAlbumKind:plAlbumKind];
 }
 
 - (BOOL)collectionHasFixedOrder
 {
   v2 = MEMORY[0x1E69BE538];
-  v3 = [(PHAssetCollection *)self plAlbumKind];
+  plAlbumKind = [(PHAssetCollection *)self plAlbumKind];
 
-  return [v2 albumKindHasFixedOrder:v3];
+  return [v2 albumKindHasFixedOrder:plAlbumKind];
 }
 
 - (NSDate)endDate
 {
   if ([(PHAssetCollection *)self _shouldFetchDatesIfNeeded])
   {
-    v3 = [(PHAssetCollection *)self _fetchedEndDate];
+    _fetchedEndDate = [(PHAssetCollection *)self _fetchedEndDate];
   }
 
   else
   {
-    v3 = self->_endDate;
+    _fetchedEndDate = self->_endDate;
   }
 
-  return v3;
+  return _fetchedEndDate;
 }
 
 - (NSDate)startDate
 {
   if ([(PHAssetCollection *)self _shouldFetchDatesIfNeeded])
   {
-    v3 = [(PHAssetCollection *)self _fetchedStartDate];
+    _fetchedStartDate = [(PHAssetCollection *)self _fetchedStartDate];
   }
 
   else
   {
-    v3 = self->_startDate;
+    _fetchedStartDate = self->_startDate;
   }
 
-  return v3;
+  return _fetchedStartDate;
 }
 
 - (void)_datesLock_fetchDatesIfNeeded
@@ -684,12 +684,12 @@ LABEL_34:
   if (!self->_datesLock_didFetchDates && [(PHAssetCollection *)self _shouldFetchDatesIfNeeded])
   {
     self->_datesLock_didFetchDates = 1;
-    v7 = [(PHAssetCollection *)self _fetchAggregateDatesForSmartAlbum];
-    v3 = [v7 objectForKeyedSubscript:@"startDate"];
+    _fetchAggregateDatesForSmartAlbum = [(PHAssetCollection *)self _fetchAggregateDatesForSmartAlbum];
+    v3 = [_fetchAggregateDatesForSmartAlbum objectForKeyedSubscript:@"startDate"];
     datesLock_fetchedStartDate = self->_datesLock_fetchedStartDate;
     self->_datesLock_fetchedStartDate = v3;
 
-    v5 = [v7 objectForKeyedSubscript:@"endDate"];
+    v5 = [_fetchAggregateDatesForSmartAlbum objectForKeyedSubscript:@"endDate"];
     datesLock_fetchedEndDate = self->_datesLock_fetchedEndDate;
     self->_datesLock_fetchedEndDate = v5;
   }
@@ -732,33 +732,33 @@ LABEL_34:
   v53 = *MEMORY[0x1E69E9840];
   if ([(PHObject *)self isTransient]&& ([(PHAssetCollection *)self query], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(PHAssetCollection *)self query];
-    v6 = [v5 fetchRequest];
+    query = [(PHAssetCollection *)self query];
+    fetchRequest = [query fetchRequest];
   }
 
   else
   {
     if ([(PHObject *)self isTransient]&& ([(PHAssetCollection *)self assetOids], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
-      v8 = [(PHObject *)self photoLibrary];
-      v5 = [v8 librarySpecificFetchOptions];
+      photoLibrary = [(PHObject *)self photoLibrary];
+      query = [photoLibrary librarySpecificFetchOptions];
 
-      v9 = [(PHAssetCollection *)self assetOids];
-      v10 = [PHQuery queryForAssetsWithObjectIDs:v9 options:v5];
+      assetOids = [(PHAssetCollection *)self assetOids];
+      v10 = [PHQuery queryForAssetsWithObjectIDs:assetOids options:query];
 
-      v11 = [v10 fetchRequest];
+      fetchRequest2 = [v10 fetchRequest];
     }
 
     else
     {
-      v12 = [(PHObject *)self photoLibrary];
-      v5 = [v12 librarySpecificFetchOptions];
+      photoLibrary2 = [(PHObject *)self photoLibrary];
+      query = [photoLibrary2 librarySpecificFetchOptions];
 
-      v10 = [PHQuery queryForAssetsInAssetCollection:self options:v5];
-      v11 = [v10 fetchRequest];
+      v10 = [PHQuery queryForAssetsInAssetCollection:self options:query];
+      fetchRequest2 = [v10 fetchRequest];
     }
 
-    v6 = v11;
+    fetchRequest = fetchRequest2;
   }
 
   v38 = 0;
@@ -767,14 +767,14 @@ LABEL_34:
   v41 = __Block_byref_object_copy__3951;
   v42 = __Block_byref_object_dispose__3952;
   v43 = MEMORY[0x1E695E0F8];
-  if (v6)
+  if (fetchRequest)
   {
     v13 = MEMORY[0x1E695D5E0];
-    v14 = [v6 entityName];
-    v15 = [v13 fetchRequestWithEntityName:v14];
+    entityName = [fetchRequest entityName];
+    v15 = [v13 fetchRequestWithEntityName:entityName];
 
-    v16 = [v6 predicate];
-    [v15 setPredicate:v16];
+    predicate = [fetchRequest predicate];
+    [v15 setPredicate:predicate];
 
     v17 = [MEMORY[0x1E696ABC8] expressionWithFormat:@"@min.%K", @"dateCreated"];
     v18 = objc_alloc_init(MEMORY[0x1E695D5C8]);
@@ -792,20 +792,20 @@ LABEL_34:
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
     [v15 setPropertiesToFetch:v21];
 
-    v22 = [(PHObject *)self photoLibrary];
-    v23 = [v22 managedObjectContextForCurrentQueueQoS];
+    photoLibrary3 = [(PHObject *)self photoLibrary];
+    managedObjectContextForCurrentQueueQoS = [photoLibrary3 managedObjectContextForCurrentQueueQoS];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __54__PHAssetCollection__fetchAggregateDatesForSmartAlbum__block_invoke;
     v32[3] = &unk_1E75A9B78;
-    v24 = v23;
+    v24 = managedObjectContextForCurrentQueueQoS;
     v33 = v24;
     v25 = v15;
     v36 = &v38;
     v37 = a2;
     v34 = v25;
-    v35 = self;
+    selfCopy = self;
     [v24 performBlockAndWait:v32];
   }
 
@@ -814,23 +814,23 @@ LABEL_34:
     v17 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(PHObject *)self isTransient];
-      v27 = [(PHAssetCollection *)self query];
-      v28 = v27;
+      isTransient = [(PHObject *)self isTransient];
+      query2 = [(PHAssetCollection *)self query];
+      v28 = query2;
       v29 = @"NO";
       *buf = 138413058;
       v46 = 0;
       v47 = 2112;
-      if (v26)
+      if (isTransient)
       {
         v29 = @"YES";
       }
 
-      v48 = self;
+      selfCopy2 = self;
       v49 = 2112;
       v50 = v29;
       v51 = 2112;
-      v52 = v27;
+      v52 = query2;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "queryFetchRequest is nil. fetchRequest: %@ self : %@ isTransient : %@ query: %@", buf, 0x2Au);
     }
 
@@ -879,51 +879,51 @@ void __54__PHAssetCollection__fetchAggregateDatesForSmartAlbum__block_invoke(uin
 
 - (id)localizedSubtitle
 {
-  v3 = [(PHAssetCollection *)self transientSubtitle];
-  if (!v3)
+  transientSubtitle = [(PHAssetCollection *)self transientSubtitle];
+  if (!transientSubtitle)
   {
     v5.receiver = self;
     v5.super_class = PHAssetCollection;
-    v3 = [(PHCollection *)&v5 localizedSubtitle];
+    transientSubtitle = [(PHCollection *)&v5 localizedSubtitle];
   }
 
-  return v3;
+  return transientSubtitle;
 }
 
 - (id)localizedTitle
 {
-  v3 = [(PHAssetCollection *)self title];
-  if (!v3)
+  title = [(PHAssetCollection *)self title];
+  if (!title)
   {
     v4 = MEMORY[0x1E69BE458];
-    v5 = [(PHAssetCollection *)self plAlbumKind];
-    v6 = [(PHObject *)self photoLibrary];
-    v3 = [v4 localizedTitleForAlbumKind:v5 cplEnabled:{objc_msgSend(v6, "isCloudPhotoLibraryEnabled")}];
+    plAlbumKind = [(PHAssetCollection *)self plAlbumKind];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    title = [v4 localizedTitleForAlbumKind:plAlbumKind cplEnabled:{objc_msgSend(photoLibrary, "isCloudPhotoLibraryEnabled")}];
   }
 
-  return v3;
+  return title;
 }
 
-- (PHAssetCollection)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHAssetCollection)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = PHAssetCollection;
-  v9 = [(PHCollection *)&v41 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHCollection *)&v41 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (!v9)
   {
     goto LABEL_61;
   }
 
-  v10 = [v8 objectForKeyedSubscript:@"importSessionID"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"importSessionID"];
   importSessionID = v9->_importSessionID;
   v9->_importSessionID = v10;
 
-  v12 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"cloudGUID"];
   cloudGUID = v9->_cloudGUID;
   v9->_cloudGUID = v12;
 
-  v14 = [v8 objectForKeyedSubscript:@"kind"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
   v9->_plAlbumKind = [v14 shortValue];
 
   plAlbumKind = v9->_plAlbumKind;
@@ -1179,25 +1179,25 @@ LABEL_55:
 
   else
   {
-    v18 = [v8 objectForKeyedSubscript:@"cachedCount"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"cachedCount"];
     v9->_approximateCount = [v18 unsignedIntegerValue];
 
-    v19 = [v8 objectForKeyedSubscript:@"cachedPhotosCount"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"cachedPhotosCount"];
     v9->_approximatePhotosCount = [v19 unsignedIntegerValue];
 
-    v20 = [v8 objectForKeyedSubscript:@"cachedVideosCount"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"cachedVideosCount"];
     v9->_approximateVideosCount = [v20 unsignedIntegerValue];
   }
 
-  v21 = [v8 objectForKeyedSubscript:@"pendingItemsCount"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"pendingItemsCount"];
   v9->_pendingItemsCount = [v21 intValue];
 
-  v22 = [v8 objectForKeyedSubscript:@"pendingItemsType"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"pendingItemsType"];
   v9->_pendingItemsType = [v22 intValue];
 
   if ([(PHAssetCollection *)v9 plAlbumKind]!= 1500)
   {
-    v23 = [v8 objectForKeyedSubscript:@"title"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     title = v9->_title;
     v9->_title = v23;
   }
@@ -1205,24 +1205,24 @@ LABEL_55:
   localizedLocationNames = v9->_localizedLocationNames;
   v9->_localizedLocationNames = MEMORY[0x1E695E0F0];
 
-  v26 = [v8 objectForKeyedSubscript:@"userQueryData"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"userQueryData"];
   v27 = [MEMORY[0x1E69BE708] constructQueryFromData:v26];
   userQuery = v9->_userQuery;
   v9->_userQuery = v27;
 
-  v29 = [v8 objectForKeyedSubscript:@"parentFolder"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"parentFolder"];
   parentFolderObjectID = v9->_parentFolderObjectID;
   v9->_parentFolderObjectID = v29;
 
-  v31 = [v8 objectForKeyedSubscript:@"startDate"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
   startDate = v9->_startDate;
   v9->_startDate = v31;
 
-  v33 = [v8 objectForKeyedSubscript:@"endDate"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
   endDate = v9->_endDate;
   v9->_endDate = v33;
 
-  v35 = [v8 objectForKeyedSubscript:@"lastModifiedDate"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"lastModifiedDate"];
   modificationDate = v9->_modificationDate;
   v9->_modificationDate = v35;
 
@@ -1234,326 +1234,326 @@ LABEL_55:
   datesLock_fetchedEndDate = v9->_datesLock_fetchedEndDate;
   v9->_datesLock_fetchedEndDate = 0;
 
-  v39 = [v8 objectForKeyedSubscript:@"privacyState"];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"privacyState"];
   v9->_privacyState = [v39 intValue];
 
 LABEL_61:
   return v9;
 }
 
-+ (id)descriptionOfTitleCategory:(int64_t)a3
++ (id)descriptionOfTitleCategory:(int64_t)category
 {
-  if (a3 >= 7)
+  if (category >= 7)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%i)", a3];
+    category = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%i)", category];
   }
 
   else
   {
-    v4 = off_1E75A40B8[a3];
+    category = off_1E75A40B8[category];
   }
 
-  return v4;
+  return category;
 }
 
-+ (id)descriptionForSubtype:(int64_t)a3
++ (id)descriptionForSubtype:(int64_t)subtype
 {
-  if (a3 > 1000000000)
+  if (subtype > 1000000000)
   {
-    if (a3 > 1000000217)
+    if (subtype > 1000000217)
     {
-      if (a3 <= 1000000303)
+      if (subtype <= 1000000303)
       {
-        if (a3 <= 1000000300)
+        if (subtype <= 1000000300)
         {
-          if (a3 == 1000000218)
+          if (subtype == 1000000218)
           {
-            v4 = @"recentlySaved";
+            subtype = @"recentlySaved";
           }
 
           else
           {
-            if (a3 != 1000000219)
+            if (subtype != 1000000219)
             {
               goto LABEL_93;
             }
 
-            v4 = @"smartAlbumRecovered";
+            subtype = @"smartAlbumRecovered";
           }
         }
 
-        else if (a3 == 1000000301)
+        else if (subtype == 1000000301)
         {
-          v4 = @"photosHighlightDay";
+          subtype = @"photosHighlightDay";
         }
 
-        else if (a3 == 1000000302)
+        else if (subtype == 1000000302)
         {
-          v4 = @"photosHighlightMonth";
+          subtype = @"photosHighlightMonth";
         }
 
         else
         {
-          v4 = @"photosHighlightYear";
+          subtype = @"photosHighlightYear";
         }
 
-        return v4;
+        return subtype;
       }
 
-      if (a3 <= 1000000500)
+      if (subtype <= 1000000500)
       {
-        if (a3 == 1000000304)
+        if (subtype == 1000000304)
         {
-          v4 = @"photosHighlightDayGroup";
+          subtype = @"photosHighlightDayGroup";
         }
 
         else
         {
-          if (a3 != 1000000401)
+          if (subtype != 1000000401)
           {
             goto LABEL_93;
           }
 
-          v4 = @"screenSaverActivityCollection";
+          subtype = @"screenSaverActivityCollection";
         }
 
-        return v4;
+        return subtype;
       }
 
-      if (a3 == 1000000501)
+      if (subtype == 1000000501)
       {
-        v4 = @"contentSyndication";
+        subtype = @"contentSyndication";
 
-        return v4;
+        return subtype;
       }
 
-      if (a3 != 1000000601)
+      if (subtype != 1000000601)
       {
-        if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+        if (subtype != 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_93;
         }
 
-        v4 = @"any";
+        subtype = @"any";
 
-        return v4;
+        return subtype;
       }
     }
 
     else
     {
-      if (a3 <= 1000000205)
+      if (subtype <= 1000000205)
       {
-        if (a3 <= 1000000202)
+        if (subtype <= 1000000202)
         {
-          if (a3 == 1000000001)
+          if (subtype == 1000000001)
           {
-            v4 = @"albumCameraRoll";
+            subtype = @"albumCameraRoll";
           }
 
           else
           {
-            if (a3 != 1000000201)
+            if (subtype != 1000000201)
             {
               goto LABEL_93;
             }
 
-            v4 = @"smartAlbumTrashBin";
+            subtype = @"smartAlbumTrashBin";
           }
         }
 
-        else if (a3 == 1000000203)
+        else if (subtype == 1000000203)
         {
-          v4 = @"smartAlbumPlaces";
+          subtype = @"smartAlbumPlaces";
         }
 
-        else if (a3 == 1000000204)
+        else if (subtype == 1000000204)
         {
-          v4 = @"smartAlbumUserSmartAlbum";
+          subtype = @"smartAlbumUserSmartAlbum";
         }
 
         else
         {
-          v4 = @"smartAlbumAllPhotos";
+          subtype = @"smartAlbumAllPhotos";
         }
 
-        return v4;
+        return subtype;
       }
 
-      if (a3 <= 1000000211)
+      if (subtype <= 1000000211)
       {
-        if (a3 == 1000000206)
+        if (subtype == 1000000206)
         {
-          v4 = @"smartAlbumRecentlyEdited";
+          subtype = @"smartAlbumRecentlyEdited";
         }
 
         else
         {
-          if (a3 != 1000000211)
+          if (subtype != 1000000211)
           {
             goto LABEL_93;
           }
 
-          v4 = @"smartAlbumProRes";
+          subtype = @"smartAlbumProRes";
         }
 
-        return v4;
+        return subtype;
       }
 
-      if (a3 != 1000000212)
+      if (subtype != 1000000212)
       {
-        if (a3 == 1000000214)
+        if (subtype == 1000000214)
         {
-          v4 = @"smartAlbumSharedLibrarySharingSuggestions";
+          subtype = @"smartAlbumSharedLibrarySharingSuggestions";
         }
 
         else
         {
-          if (a3 != 1000000215)
+          if (subtype != 1000000215)
           {
             goto LABEL_93;
           }
 
-          v4 = @"smartAlbumActionCam";
+          subtype = @"smartAlbumActionCam";
         }
 
-        return v4;
+        return subtype;
       }
     }
 
-    v4 = @"duplicates";
+    subtype = @"duplicates";
 
-    return v4;
+    return subtype;
   }
 
-  if (a3 > 101)
+  if (subtype > 101)
   {
-    switch(a3)
+    switch(subtype)
     {
       case 200:
-        v4 = @"smartAlbumGeneric";
+        subtype = @"smartAlbumGeneric";
 
         break;
       case 201:
-        v4 = @"smartAlbumPanoramas";
+        subtype = @"smartAlbumPanoramas";
 
         break;
       case 202:
-        v4 = @"smartAlbumVideos";
+        subtype = @"smartAlbumVideos";
 
         break;
       case 203:
-        v4 = @"smartAlbumFavorites";
+        subtype = @"smartAlbumFavorites";
 
         break;
       case 204:
-        v4 = @"smartAlbumTimelapses";
+        subtype = @"smartAlbumTimelapses";
 
         break;
       case 205:
-        v4 = @"smartAlbumAllHidden";
+        subtype = @"smartAlbumAllHidden";
 
         break;
       case 206:
-        v4 = @"smartAlbumRecentlyAdded";
+        subtype = @"smartAlbumRecentlyAdded";
 
         break;
       case 207:
-        v4 = @"smartAlbumBursts";
+        subtype = @"smartAlbumBursts";
 
         break;
       case 208:
-        v4 = @"smartAlbumSlomoVideos";
+        subtype = @"smartAlbumSlomoVideos";
 
         break;
       case 209:
-        v4 = @"smartAlbumUserLibrary";
+        subtype = @"smartAlbumUserLibrary";
 
         break;
       case 210:
-        v4 = @"smartAlbumSelfPortraits";
+        subtype = @"smartAlbumSelfPortraits";
 
         break;
       case 211:
-        v4 = @"smartAlbumScreenshots";
+        subtype = @"smartAlbumScreenshots";
 
         break;
       case 212:
-        v4 = @"smartAlbumDepthEffect";
+        subtype = @"smartAlbumDepthEffect";
 
         break;
       case 213:
-        v4 = @"smartAlbumLivePhotos";
+        subtype = @"smartAlbumLivePhotos";
 
         break;
       case 214:
-        v4 = @"smartAlbumAnimated";
+        subtype = @"smartAlbumAnimated";
 
         break;
       case 215:
-        v4 = @"smartAlbumLongExposures";
+        subtype = @"smartAlbumLongExposures";
 
         break;
       case 216:
-        v4 = @"smartAlbumUnableToUpload";
+        subtype = @"smartAlbumUnableToUpload";
 
         break;
       case 217:
-        v4 = @"smartAlbumRAW";
+        subtype = @"smartAlbumRAW";
 
         break;
       case 218:
-        v4 = @"smartAlbumCinematic";
+        subtype = @"smartAlbumCinematic";
 
         break;
       case 219:
-        v4 = @"smartAlbumSpatial";
+        subtype = @"smartAlbumSpatial";
 
         break;
       case 220:
-        v4 = @"smartAlbumScreenRecordings";
+        subtype = @"smartAlbumScreenRecordings";
 
         break;
       case 221:
-        v4 = @"smartAlbumFrontBack";
+        subtype = @"smartAlbumFrontBack";
 
         break;
       default:
-        if (a3 == 102)
+        if (subtype == 102)
         {
-          v4 = @"albumCollectionShareSharedStream";
+          subtype = @"albumCollectionShareSharedStream";
         }
 
         else
         {
-          if (a3 != 103)
+          if (subtype != 103)
           {
             goto LABEL_93;
           }
 
-          v4 = @"albumCollectionShareCPL";
+          subtype = @"albumCollectionShareCPL";
         }
 
         break;
     }
 
-    return v4;
+    return subtype;
   }
 
-  if (a3 <= 4)
+  if (subtype <= 4)
   {
-    switch(a3)
+    switch(subtype)
     {
       case 2:
-        v4 = @"albumRegular";
+        subtype = @"albumRegular";
 
         break;
       case 3:
-        v4 = @"albumSyncedEvent";
+        subtype = @"albumSyncedEvent";
 
         break;
       case 4:
-        v4 = @"albumSyncedFaces";
+        subtype = @"albumSyncedFaces";
 
         break;
       default:
@@ -1561,85 +1561,85 @@ LABEL_61:
     }
   }
 
-  else if (a3 > 99)
+  else if (subtype > 99)
   {
-    if (a3 == 100)
+    if (subtype == 100)
     {
-      v4 = @"albumMyPhotoStream";
+      subtype = @"albumMyPhotoStream";
     }
 
     else
     {
-      v4 = @"albumCloudShared";
+      subtype = @"albumCloudShared";
     }
   }
 
   else
   {
-    if (a3 != 5)
+    if (subtype != 5)
     {
-      if (a3 == 6)
+      if (subtype == 6)
       {
-        v4 = @"albumImported";
+        subtype = @"albumImported";
 
-        return v4;
+        return subtype;
       }
 
 LABEL_93:
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unexpectedSubtype_%li", a3];
+      subtype = [MEMORY[0x1E696AEC0] stringWithFormat:@"unexpectedSubtype_%li", subtype];
 
-      return v4;
+      return subtype;
     }
 
-    v4 = @"albumSyncedAlbum";
+    subtype = @"albumSyncedAlbum";
   }
 
-  return v4;
+  return subtype;
 }
 
-+ (id)descriptionForType:(int64_t)a3
++ (id)descriptionForType:(int64_t)type
 {
-  if (a3 < 0xE && ((0x3FDFu >> a3) & 1) != 0)
+  if (type < 0xE && ((0x3FDFu >> type) & 1) != 0)
   {
-    v4 = off_1E75A4048[a3];
+    type = off_1E75A4048[type];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unexpectedType_%li", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"unexpectedType_%li", type];
   }
 
-  return v4;
+  return type;
 }
 
-+ (id)fetchUtilityCollectionsWithType:(unsigned __int16)a3 options:(id)a4
++ (id)fetchUtilityCollectionsWithType:(unsigned __int16)type options:(id)options
 {
-  v4 = a3;
+  typeCopy = type;
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [[PHUtilityCollection alloc] initWithType:v4 fetchOptions:v5];
+  optionsCopy = options;
+  v6 = [[PHUtilityCollection alloc] initWithType:typeCopy fetchOptions:optionsCopy];
   v7 = [PHManualFetchResult alloc];
   v12[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v9 = [v5 photoLibrary];
+  photoLibrary = [optionsCopy photoLibrary];
 
-  v10 = [(PHManualFetchResult *)v7 initWithObjects:v8 photoLibrary:v9 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  v10 = [(PHManualFetchResult *)v7 initWithObjects:v8 photoLibrary:photoLibrary fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
   return v10;
 }
 
-+ (id)fetchUtilityCollectionsWithOptions:(id)a3
++ (id)fetchUtilityCollectionsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = 1;
   do
   {
     v6 = v5;
-    v7 = [[PHUtilityCollection alloc] initWithType:v5 fetchOptions:v3];
+    v7 = [[PHUtilityCollection alloc] initWithType:v5 fetchOptions:optionsCopy];
     if (v7)
     {
-      [v4 addObject:v7];
+      [array addObject:v7];
     }
 
     ++v5;
@@ -1647,17 +1647,17 @@ LABEL_93:
 
   while (v6 < 6);
   v8 = [PHManualFetchResult alloc];
-  v9 = [v3 photoLibrary];
-  v10 = [(PHManualFetchResult *)v8 initWithObjects:v4 photoLibrary:v9 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  photoLibrary = [optionsCopy photoLibrary];
+  v10 = [(PHManualFetchResult *)v8 initWithObjects:array photoLibrary:photoLibrary fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
   return v10;
 }
 
-+ (id)assetCollectionDuplicateTypeMappingForAssetCollectionUUIDs:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (id)assetCollectionDuplicateTypeMappingForAssetCollectionUUIDs:(id)ds photoLibrary:(id)library error:(id *)error
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1670,14 +1670,14 @@ LABEL_93:
   v32 = __Block_byref_object_copy__3951;
   v33 = __Block_byref_object_dispose__3952;
   v34 = 0;
-  if ([v8 count])
+  if ([dsCopy count])
   {
     v10 = MEMORY[0x1E695D5E0];
-    v11 = [MEMORY[0x1E69BE3F8] entityName];
-    v12 = [v10 fetchRequestWithEntityName:v11];
+    entityName = [MEMORY[0x1E69BE3F8] entityName];
+    v12 = [v10 fetchRequestWithEntityName:entityName];
 
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"uuid", v8];
-    [v12 setPredicate:v13];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"uuid", dsCopy];
+    [v12 setPredicate:dsCopy];
 
     [v12 setResultType:2];
     v41[0] = @"uuid";
@@ -1685,12 +1685,12 @@ LABEL_93:
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
     [v12 setPropertiesToFetch:v14];
 
-    v15 = [v9 managedObjectContextForCurrentQueueQoS];
+    managedObjectContextForCurrentQueueQoS = [libraryCopy managedObjectContextForCurrentQueueQoS];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __99__PHAssetCollection_assetCollectionDuplicateTypeMappingForAssetCollectionUUIDs_photoLibrary_error___block_invoke;
     v23[3] = &unk_1E75AA420;
-    v16 = v15;
+    v16 = managedObjectContextForCurrentQueueQoS;
     v24 = v16;
     v17 = v12;
     v25 = v17;
@@ -1704,7 +1704,7 @@ LABEL_93:
   v19 = v18;
   if (v18)
   {
-    v20 = a5 == 0;
+    v20 = error == 0;
   }
 
   else
@@ -1715,7 +1715,7 @@ LABEL_93:
   if (!v20)
   {
     v19 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   v21 = v36[5];
@@ -1785,11 +1785,11 @@ void __99__PHAssetCollection_assetCollectionDuplicateTypeMappingForAssetCollecti
   }
 }
 
-+ (unint64_t)titleFontNameHashFromString:(id)a3
++ (unint64_t)titleFontNameHashFromString:(id)string
 {
   *&v19[54] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   v5 = v4;
   if (v4 >= 0x1E)
   {
@@ -1801,7 +1801,7 @@ void __99__PHAssetCollection_assetCollectionDuplicateTypeMappingForAssetCollecti
     v6 = v4;
   }
 
-  [v3 getCharacters:v18 range:{0, v6}];
+  [stringCopy getCharacters:v18 range:{0, v6}];
   v7 = 0;
   v8 = 0;
   if (v5 >= 5)
@@ -1840,35 +1840,35 @@ void __99__PHAssetCollection_assetCollectionDuplicateTypeMappingForAssetCollecti
   return v7;
 }
 
-+ (int64_t)titleCategoryForTitleFontName:(id)a3
++ (int64_t)titleCategoryForTitleFontName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Baskerville-Bold"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Baskerville-Bold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FaktSlabStencilPro-Medium"])
+  else if ([nameCopy isEqualToString:@"FaktSlabStencilPro-Medium"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Rockwell-Bold"])
+  else if ([nameCopy isEqualToString:@"Rockwell-Bold"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BebasNeue"])
+  else if ([nameCopy isEqualToString:@"BebasNeue"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AmericanTypewriter-Semibold"])
+  else if ([nameCopy isEqualToString:@"AmericanTypewriter-Semibold"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@".SFUIDisplay-Semibold"])
+  else if ([nameCopy isEqualToString:@".SFUIDisplay-Semibold"])
   {
     v4 = 6;
   }
@@ -1881,16 +1881,16 @@ void __99__PHAssetCollection_assetCollectionDuplicateTypeMappingForAssetCollecti
   return v4;
 }
 
-+ (id)titleFontNameForTitleCategory:(int64_t)a3
++ (id)titleFontNameForTitleCategory:(int64_t)category
 {
-  if ((a3 - 1) > 5)
+  if ((category - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E75A4018[a3 - 1];
+    return off_1E75A4018[category - 1];
   }
 }
 
@@ -1912,16 +1912,16 @@ void __42__PHAssetCollection_defaultTitleFontNames__block_invoke()
   defaultTitleFontNames_defaultTitleFontNames = &unk_1F102DE38;
 }
 
-+ (id)graphOptionsForTransientAssetCollection:(id)a3 needsCompleteMomentsInfo:(BOOL)a4 options:(id)a5
++ (id)graphOptionsForTransientAssetCollection:(id)collection needsCompleteMomentsInfo:(BOOL)info options:(id)options
 {
-  v6 = a4;
+  infoCopy = info;
   v54[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  collectionCopy = collection;
+  optionsCopy = options;
   v9 = objc_opt_new();
-  v10 = [v7 photoLibrary];
-  v43 = v8;
-  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v8 photoLibrary:v10];
+  photoLibrary = [collectionCopy photoLibrary];
+  v43 = optionsCopy;
+  v11 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
   v54[0] = @"PHAssetPropertySetIdentifier";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
@@ -1930,7 +1930,7 @@ void __42__PHAssetCollection_defaultTitleFontNames__block_invoke()
   [v11 setWantsIncrementalChangeDetails:0];
   [v11 setSortDescriptors:MEMORY[0x1E695E0F0]];
   [v11 setChunkSizeForFetch:2000];
-  v13 = [PHAsset fetchAssetsInAssetCollection:v7 options:v11];
+  v13 = [PHAsset fetchAssetsInAssetCollection:collectionCopy options:v11];
   v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
   v48 = 0u;
   v49 = 0u;
@@ -1951,8 +1951,8 @@ void __42__PHAssetCollection_defaultTitleFontNames__block_invoke()
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v48 + 1) + 8 * i) localIdentifier];
-        [v14 addObject:v20];
+        localIdentifier = [*(*(&v48 + 1) + 8 * i) localIdentifier];
+        [v14 addObject:localIdentifier];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
@@ -1966,26 +1966,26 @@ void __42__PHAssetCollection_defaultTitleFontNames__block_invoke()
     [v9 setObject:v14 forKeyedSubscript:@"PHPhotosGraphOptionAssetIdentifiers"];
   }
 
-  if (v6)
+  if (infoCopy)
   {
-    v21 = [v7 assetCollectionType];
+    assetCollectionType = [collectionCopy assetCollectionType];
     v22 = 0x1E696A000;
-    if (v21 != 1)
+    if (assetCollectionType != 1)
     {
-      v23 = v21;
-      if (v21 == 3)
+      v23 = assetCollectionType;
+      if (assetCollectionType == 3)
       {
-        v26 = 1;
+        bOOLValue = 1;
         goto LABEL_38;
       }
 
-      if (v21 != 2 || [v7 assetCollectionSubtype] == 200)
+      if (assetCollectionType != 2 || [collectionCopy assetCollectionSubtype] == 200)
       {
-        v24 = objc_getAssociatedObject(v7, "phIsCompleteMoments");
+        v24 = objc_getAssociatedObject(collectionCopy, "phIsCompleteMoments");
         v25 = v24;
         if (v24)
         {
-          v26 = [v24 BOOLValue];
+          bOOLValue = [v24 BOOLValue];
 LABEL_37:
 
           goto LABEL_38;
@@ -1993,11 +1993,11 @@ LABEL_37:
 
         if (v23 == 4)
         {
-          v27 = [v7 photosGraphProperties];
-          if (v27)
+          photosGraphProperties = [collectionCopy photosGraphProperties];
+          if (photosGraphProperties)
           {
-            v28 = v27;
-            v29 = [v27 objectForKeyedSubscript:@"info"];
+            v28 = photosGraphProperties;
+            v29 = [photosGraphProperties objectForKeyedSubscript:@"info"];
             v30 = [v29 objectForKeyedSubscript:@"sourceType"];
 
             if (v30)
@@ -2005,27 +2005,27 @@ LABEL_37:
               v42 = v28;
               if ([v30 isEqualToString:@"Moment"] & 1) != 0 || (objc_msgSend(v30, "isEqualToString:", @"Contiguous Moments"))
               {
-                v26 = 1;
+                bOOLValue = 1;
               }
 
               else
               {
-                v26 = [v30 isEqualToString:@"Disjoint Moments"] ^ 1;
+                bOOLValue = [v30 isEqualToString:@"Disjoint Moments"] ^ 1;
               }
 
 LABEL_36:
 
-              v39 = [*(v22 + 3480) numberWithBool:v26];
-              objc_setAssociatedObject(v7, "phIsCompleteMoments", v39, 1);
+              v39 = [*(v22 + 3480) numberWithBool:bOOLValue];
+              objc_setAssociatedObject(collectionCopy, "phIsCompleteMoments", v39, 1);
 
               goto LABEL_37;
             }
           }
         }
 
-        v31 = [v15 photoLibrary];
-        v32 = [v15 firstObject];
-        v33 = [PHFetchOptions fetchOptionsWithPhotoLibrary:v31 orObject:v32];
+        photoLibrary2 = [v15 photoLibrary];
+        firstObject = [v15 firstObject];
+        v33 = [PHFetchOptions fetchOptionsWithPhotoLibrary:photoLibrary2 orObject:firstObject];
 
         v42 = v33;
         v30 = [PHAssetCollection fetchAssetCollectionsContainingAssets:v15 withType:3 options:v33];
@@ -2062,93 +2062,93 @@ LABEL_36:
           v36 = 0;
         }
 
-        v26 = v36 == [v15 count];
+        bOOLValue = v36 == [v15 count];
         v22 = 0x1E696A000uLL;
         v25 = 0;
         goto LABEL_36;
       }
     }
 
-    v26 = 0;
+    bOOLValue = 0;
 LABEL_38:
-    v40 = [*(v22 + 3480) numberWithBool:v26];
+    v40 = [*(v22 + 3480) numberWithBool:bOOLValue];
     [v9 setObject:v40 forKeyedSubscript:@"PHPhotosGraphOptionIsCompleteMoments"];
   }
 
   return v9;
 }
 
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 title:(id)a4 identifier:(id)a5
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result title:(id)title identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PHAssetCollection alloc] initTransientWithAssets:0 orFetchResult:v9 title:v8 identifier:v7];
+  identifierCopy = identifier;
+  titleCopy = title;
+  resultCopy = result;
+  v10 = [[PHAssetCollection alloc] initTransientWithAssets:0 orFetchResult:resultCopy title:titleCopy identifier:identifierCopy];
 
   return v10;
 }
 
-+ (id)transientAssetCollectionWithAssets:(id)a3 title:(id)a4 identifier:(id)a5 photoLibrary:(id)a6
++ (id)transientAssetCollectionWithAssets:(id)assets title:(id)title identifier:(id)identifier photoLibrary:(id)library
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  libraryCopy = library;
+  identifierCopy = identifier;
+  titleCopy = title;
+  assetsCopy = assets;
   LODWORD(v15) = 2;
-  v13 = [[PHAssetCollection alloc] initTransientWithAssets:v12 orFetchResult:0 title:v11 subtitle:0 titleFontName:0 identifier:v10 albumKind:v15 subtype:200 photoLibrary:v9];
+  v13 = [[PHAssetCollection alloc] initTransientWithAssets:assetsCopy orFetchResult:0 title:titleCopy subtitle:0 titleFontName:0 identifier:identifierCopy albumKind:v15 subtype:200 photoLibrary:libraryCopy];
 
   return v13;
 }
 
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 title:(id)a4 subtype:(int64_t)a5
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result title:(id)title subtype:(int64_t)subtype
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[PHAssetCollection alloc] initTransientWithAssets:0 orFetchResult:v8 title:v7 identifier:0 albumKind:2 subtype:a5];
+  titleCopy = title;
+  resultCopy = result;
+  v9 = [[PHAssetCollection alloc] initTransientWithAssets:0 orFetchResult:resultCopy title:titleCopy identifier:0 albumKind:2 subtype:subtype];
 
   return v9;
 }
 
-+ (id)transientAssetCollectionWithFetchOptions:(id)a3 title:(id)a4 subtitle:(id)a5 titleFontName:(id)a6 identifier:(id)a7
++ (id)transientAssetCollectionWithFetchOptions:(id)options title:(id)title subtitle:(id)subtitle titleFontName:(id)name identifier:(id)identifier
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [PHQuery queryForAssetsWithOptions:a3];
+  identifierCopy = identifier;
+  nameCopy = name;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v15 = [PHQuery queryForAssetsWithOptions:options];
   LODWORD(v18) = 2;
-  v16 = [[PHAssetCollection alloc] initTransientWithAssets:0 orFetchResult:0 orQuery:v15 title:v14 subtitle:v13 titleFontName:v12 identifier:v11 albumKind:v18 subtype:200 photoLibrary:0];
+  v16 = [[PHAssetCollection alloc] initTransientWithAssets:0 orFetchResult:0 orQuery:v15 title:titleCopy subtitle:subtitleCopy titleFontName:nameCopy identifier:identifierCopy albumKind:v18 subtype:200 photoLibrary:0];
 
   return v16;
 }
 
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 type:(int64_t)a4 subtype:(int64_t)a5 title:(id)a6 subtitle:(id)a7 titleFontName:(id)a8
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result type:(int64_t)type subtype:(int64_t)subtype title:(id)title subtitle:(id)subtitle titleFontName:(id)name
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a3;
+  nameCopy = name;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  resultCopy = result;
   HIDWORD(v19) = 2;
-  LOBYTE(v19) = [objc_opt_class() _defaultKeyAssetsAtEndForType:a4 subtype:a5];
-  v17 = [[PHAssetCollection alloc] _initTransientWithAssets:0 orFetchResult:v16 orQuery:0 title:v15 subtitle:v14 titleFontName:v13 identifier:0 keyAssetsAtEnd:v19 albumKind:a4 type:a5 subtype:0 startDate:0 endDate:0 photoLibrary:?];
+  LOBYTE(v19) = [objc_opt_class() _defaultKeyAssetsAtEndForType:type subtype:subtype];
+  v17 = [[PHAssetCollection alloc] _initTransientWithAssets:0 orFetchResult:resultCopy orQuery:0 title:titleCopy subtitle:subtitleCopy titleFontName:nameCopy identifier:0 keyAssetsAtEnd:v19 albumKind:type type:subtype subtype:0 startDate:0 endDate:0 photoLibrary:?];
 
   return v17;
 }
 
-+ (id)transientAssetCollectionWithAssetFetchResult:(id)a3 title:(id)a4 subtitle:(id)a5 identifier:(id)a6 startDate:(id)a7 endDate:(id)a8
++ (id)transientAssetCollectionWithAssetFetchResult:(id)result title:(id)title subtitle:(id)subtitle identifier:(id)identifier startDate:(id)date endDate:(id)endDate
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifierCopy = identifier;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  resultCopy = result;
   v19 = [objc_opt_class() _defaultKeyAssetsAtEndForType:1 subtype:2];
   v20 = [PHAssetCollection alloc];
-  v21 = [v18 photoLibrary];
+  photoLibrary = [resultCopy photoLibrary];
   HIDWORD(v24) = 2;
   LOBYTE(v24) = v19;
-  v22 = [(PHAssetCollection *)v20 _initTransientWithAssets:0 orFetchResult:v18 orQuery:0 title:v17 subtitle:v16 titleFontName:0 identifier:v15 keyAssetsAtEnd:v24 albumKind:1 type:2 subtype:v14 startDate:v13 endDate:v21 photoLibrary:?];
+  v22 = [(PHAssetCollection *)v20 _initTransientWithAssets:0 orFetchResult:resultCopy orQuery:0 title:titleCopy subtitle:subtitleCopy titleFontName:0 identifier:identifierCopy keyAssetsAtEnd:v24 albumKind:1 type:2 subtype:dateCopy startDate:endDateCopy endDate:photoLibrary photoLibrary:?];
 
   return v22;
 }
@@ -2162,54 +2162,54 @@ LABEL_38:
   return v7;
 }
 
-+ (id)transientAssetCollectionWithOptions:(id)a3
++ (id)transientAssetCollectionWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 subtype];
-  v6 = [v3 keyAssetsPosition];
-  v21 = v5;
-  if (v6 == 2)
+  optionsCopy = options;
+  type = [optionsCopy type];
+  subtype = [optionsCopy subtype];
+  keyAssetsPosition = [optionsCopy keyAssetsPosition];
+  v21 = subtype;
+  if (keyAssetsPosition == 2)
   {
     v20 = 1;
   }
 
-  else if (v6)
+  else if (keyAssetsPosition)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = [objc_opt_class() _defaultKeyAssetsAtEndForType:v4 subtype:v5];
+    v20 = [objc_opt_class() _defaultKeyAssetsAtEndForType:type subtype:subtype];
   }
 
-  v19 = objc_alloc([v3 assetCollectionClass]);
-  v18 = [v3 fetchResult];
-  v7 = [v3 query];
-  v8 = [v3 title];
-  v9 = [v3 subtitle];
-  v10 = [v3 titleFontName];
-  v11 = [v3 identifier];
-  v12 = [v3 startDate];
-  v13 = [v3 endDate];
-  v14 = [v3 photoLibrary];
+  v19 = objc_alloc([optionsCopy assetCollectionClass]);
+  fetchResult = [optionsCopy fetchResult];
+  query = [optionsCopy query];
+  title = [optionsCopy title];
+  subtitle = [optionsCopy subtitle];
+  titleFontName = [optionsCopy titleFontName];
+  identifier = [optionsCopy identifier];
+  startDate = [optionsCopy startDate];
+  endDate = [optionsCopy endDate];
+  photoLibrary = [optionsCopy photoLibrary];
   HIDWORD(v17) = 2;
   LOBYTE(v17) = v20;
-  v15 = [v19 _initTransientWithAssets:0 orFetchResult:v18 orQuery:v7 title:v8 subtitle:v9 titleFontName:v10 identifier:v11 keyAssetsAtEnd:v17 albumKind:v4 type:v21 subtype:v12 startDate:v13 endDate:v14 photoLibrary:?];
+  v15 = [v19 _initTransientWithAssets:0 orFetchResult:fetchResult orQuery:query title:title subtitle:subtitle titleFontName:titleFontName identifier:identifier keyAssetsAtEnd:v17 albumKind:type type:v21 subtype:startDate startDate:endDate endDate:photoLibrary photoLibrary:?];
 
   return v15;
 }
 
-+ (id)transientAssetCollectionWithAssets:(id)a3 subtype:(int64_t)a4 identifier:(id)a5 startDate:(id)a6 endDate:(id)a7 title:(id)a8
++ (id)transientAssetCollectionWithAssets:(id)assets subtype:(int64_t)subtype identifier:(id)identifier startDate:(id)date endDate:(id)endDate title:(id)title
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
+  titleCopy = title;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifierCopy = identifier;
+  assetsCopy = assets;
   LODWORD(v20) = 2;
-  v18 = [[PHAssetCollection alloc] initTransientWithAssets:v17 orFetchResult:0 orQuery:0 title:v13 subtitle:0 titleFontName:0 identifier:v16 albumKind:v20 subtype:a4 startDate:v15 endDate:v14 photoLibrary:0];
+  v18 = [[PHAssetCollection alloc] initTransientWithAssets:assetsCopy orFetchResult:0 orQuery:0 title:titleCopy subtitle:0 titleFontName:0 identifier:identifierCopy albumKind:v20 subtype:subtype startDate:dateCopy endDate:endDateCopy photoLibrary:0];
 
   return v18;
 }
@@ -2223,17 +2223,17 @@ LABEL_38:
   return v7;
 }
 
-+ (id)fetchMomentsNeedingThemeAnalysisWithAdapterVersion:(int64_t)a3 uemVersion:(int64_t)a4 options:(id)a5
++ (id)fetchMomentsNeedingThemeAnalysisWithAdapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion options:(id)options
 {
-  v7 = a5;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__PHAssetCollection_fetchMomentsNeedingThemeAnalysisWithAdapterVersion_uemVersion_options___block_invoke;
   v11[3] = &unk_1E75A3FD0;
-  v13 = a3;
-  v14 = a4;
-  v12 = v7;
-  v8 = v7;
+  versionCopy = version;
+  uemVersionCopy = uemVersion;
+  v12 = optionsCopy;
+  v8 = optionsCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v8 fetchBlock:v11];
 
   return v9;
@@ -2289,48 +2289,48 @@ void __91__PHAssetCollection_fetchMomentsNeedingThemeAnalysisWithAdapterVersion_
   *(v4 + 40) = v3;
 }
 
-+ (id)fetchMomentsInHighlight:(id)a3 options:(id)a4
++ (id)fetchMomentsInHighlight:(id)highlight options:(id)options
 {
-  v5 = a4;
-  v6 = [PHQuery queryForMomentsInPhotosHighlight:a3];
-  [v6 setFetchOptions:v5];
+  optionsCopy = options;
+  v6 = [PHQuery queryForMomentsInPhotosHighlight:highlight];
+  [v6 setFetchOptions:optionsCopy];
 
-  v7 = [v6 executeQuery];
+  executeQuery = [v6 executeQuery];
 
-  return v7;
+  return executeQuery;
 }
 
-+ (id)fetchPhotosHighlightsContainingMoments:(id)a3 options:(id)a4
++ (id)fetchPhotosHighlightsContainingMoments:(id)moments options:(id)options
 {
-  v5 = a4;
-  v6 = [PHQuery queryForPhotosHighlightsContainingMoments:a3];
-  [v6 setFetchOptions:v5];
+  optionsCopy = options;
+  v6 = [PHQuery queryForPhotosHighlightsContainingMoments:moments];
+  [v6 setFetchOptions:optionsCopy];
 
-  v7 = [v6 executeQuery];
+  executeQuery = [v6 executeQuery];
 
-  return v7;
+  return executeQuery;
 }
 
-+ (id)fetchMomentsBackingSuggestion:(id)a3 options:(id)a4
++ (id)fetchMomentsBackingSuggestion:(id)suggestion options:(id)options
 {
-  v5 = a4;
-  v6 = [PHQuery queryForMomentsBackingSuggestion:a3];
-  [v6 setFetchOptions:v5];
+  optionsCopy = options;
+  v6 = [PHQuery queryForMomentsBackingSuggestion:suggestion];
+  [v6 setFetchOptions:optionsCopy];
 
-  v7 = [v6 executeQuery];
+  executeQuery = [v6 executeQuery];
 
-  return v7;
+  return executeQuery;
 }
 
-+ (id)fetchMomentsBackingMemory:(id)a3 options:(id)a4
++ (id)fetchMomentsBackingMemory:(id)memory options:(id)options
 {
-  v5 = a4;
-  v6 = [PHQuery queryForMomentsBackingMemory:a3];
-  [v6 setFetchOptions:v5];
+  optionsCopy = options;
+  v6 = [PHQuery queryForMomentsBackingMemory:memory];
+  [v6 setFetchOptions:optionsCopy];
 
-  v7 = [v6 executeQuery];
+  executeQuery = [v6 executeQuery];
 
-  return v7;
+  return executeQuery;
 }
 
 id __45__PHAssetCollection_fetchMomentsWithOptions___block_invoke(uint64_t a1, void *a2)
@@ -2383,41 +2383,41 @@ id __45__PHAssetCollection_fetchMomentsWithOptions___block_invoke(uint64_t a1, v
   {
     if (![(PHFetchOptions *)v6 chunkSizeForFetch])
     {
-      v8 = [(PHObject *)v5 photoLibrary];
-      v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v8];
+      photoLibrary = [(PHObject *)v5 photoLibrary];
+      v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:photoLibrary];
 
       [(PHFetchOptions *)v9 setChunkSizeForFetch:2000];
       v7 = v9;
     }
 
     v10 = [PHQuery queryForMomentsInMomentList:v5 options:v7];
-    v11 = [v10 executeQuery];
+    executeQuery = [v10 executeQuery];
   }
 
   else
   {
-    v11 = 0;
+    executeQuery = 0;
   }
 
-  return v11;
+  return executeQuery;
 }
 
-+ (id)fetchSuggestedContributionsForAssetsMetadata:(id)a3 options:(id)a4
++ (id)fetchSuggestedContributionsForAssetsMetadata:(id)metadata options:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 photoLibrary];
-  if (!v7)
+  metadataCopy = metadata;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
+  if (!photoLibrary)
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"You must specify a PHPhotoLibrary in the fetch options" userInfo:0];
     objc_exception_throw(v15);
   }
 
-  v8 = v7;
-  v9 = [v7 photoAnalysisClient];
+  v8 = photoLibrary;
+  photoAnalysisClient = [photoLibrary photoAnalysisClient];
   v16 = 0;
-  v10 = [v9 requestSuggestedContributionsForAssetsMetadata:v5 error:&v16];
+  v10 = [photoAnalysisClient requestSuggestedContributionsForAssetsMetadata:metadataCopy error:&v16];
   v11 = v16;
   if (v11)
   {
@@ -2425,7 +2425,7 @@ id __45__PHAssetCollection_fetchMomentsWithOptions___block_invoke(uint64_t a1, v
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v18 = v5;
+      v18 = metadataCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, "Can't request suggestion contributions for assets metadata %@: %@", buf, 0x16u);
@@ -2441,28 +2441,28 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v13 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v10 options:v6];
+  v13 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v10 options:optionsCopy];
 LABEL_9:
 
   return v13;
 }
 
-+ (id)fetchSuggestedContributionsForFileURLs:(id)a3 options:(id)a4
++ (id)fetchSuggestedContributionsForFileURLs:(id)ls options:(id)options
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v37 = a4;
-  v36 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  lsCopy = ls;
+  optionsCopy = options;
+  v36 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(lsCopy, "count")}];
   v7 = objc_alloc_init(PHValidator);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v6;
+  obj = lsCopy;
   v39 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v39)
   {
-    v34 = a1;
+    selfCopy = self;
     v8 = 0;
     v38 = *v44;
     while (1)
@@ -2484,37 +2484,37 @@ LABEL_9:
         {
           v8 = v12;
 LABEL_11:
-          v16 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v17 = objc_alloc(MEMORY[0x1E69C0718]);
-          v18 = [v37 photoLibrary];
-          v19 = [v18 photoLibraryBundle];
-          v20 = [v19 timeZoneLookup];
-          v21 = [v17 initWithMediaURL:v10 timeZoneLookup:v20];
+          photoLibrary = [optionsCopy photoLibrary];
+          photoLibraryBundle = [photoLibrary photoLibraryBundle];
+          timeZoneLookup = [photoLibraryBundle timeZoneLookup];
+          v21 = [v17 initWithMediaURL:v10 timeZoneLookup:timeZoneLookup];
 
-          v22 = [v21 utcCreationDate];
-          if (v22)
+          utcCreationDate = [v21 utcCreationDate];
+          if (utcCreationDate)
           {
-            [v16 setObject:v22 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataCreationDateKey"];
+            [dictionary setObject:utcCreationDate forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataCreationDateKey"];
           }
 
-          v23 = [v21 gpsLocation];
-          v24 = v23;
-          if (v23)
+          gpsLocation = [v21 gpsLocation];
+          v24 = gpsLocation;
+          if (gpsLocation)
           {
             v25 = MEMORY[0x1E696AD98];
-            [v23 coordinate];
+            [gpsLocation coordinate];
             v26 = [v25 numberWithDouble:?];
-            [v16 setObject:v26 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLatitudeKey"];
+            [dictionary setObject:v26 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLatitudeKey"];
 
             v27 = MEMORY[0x1E696AD98];
             [v24 coordinate];
             v29 = [v27 numberWithDouble:v28];
-            [v16 setObject:v29 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLongitudeKey"];
+            [dictionary setObject:v29 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLongitudeKey"];
           }
 
-          if ([v16 count])
+          if ([dictionary count])
           {
-            [v36 addObject:v16];
+            [v36 addObject:dictionary];
           }
 
           else
@@ -2550,12 +2550,12 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        v16 = PLPhotoKitGetLog();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        dictionary = PLPhotoKitGetLog();
+        if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v48 = v10;
-          _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "+[PHAssetCollection() fetchSuggestedContributionsForFileURLs:options:]: No valid asset for url: %@", buf, 0xCu);
+          _os_log_impl(&dword_19C86F000, dictionary, OS_LOG_TYPE_ERROR, "+[PHAssetCollection() fetchSuggestedContributionsForFileURLs:options:]: No valid asset for url: %@", buf, 0xCu);
         }
 
 LABEL_21:
@@ -2569,27 +2569,27 @@ LABEL_21:
       if (!v31)
       {
 
-        a1 = v34;
+        self = selfCopy;
         break;
       }
     }
   }
 
-  v32 = [a1 fetchSuggestedContributionsForAssetsMetadata:v36 options:v37];
+  v32 = [self fetchSuggestedContributionsForAssetsMetadata:v36 options:optionsCopy];
 
   return v32;
 }
 
-+ (id)assetsMetadataFromAssets:(id)a3
++ (id)assetsMetadataFromAssets:(id)assets
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v27 = [MEMORY[0x1E695DF70] array];
+  assetsCopy = assets;
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = assetsCopy;
   v4 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v4)
   {
@@ -2609,21 +2609,21 @@ LABEL_21:
         }
 
         v10 = *(*(&v28 + 1) + 8 * v9);
-        v11 = [*(v6 + 3984) dictionary];
-        v12 = [v10 location];
-        v13 = v12;
-        if (v12)
+        dictionary = [*(v6 + 3984) dictionary];
+        location = [v10 location];
+        v13 = location;
+        if (location)
         {
-          [v12 coordinate];
+          [location coordinate];
           latitude = v35.latitude;
           longitude = v35.longitude;
           if (CLLocationCoordinate2DIsValid(v35))
           {
             v16 = [MEMORY[0x1E696AD98] numberWithDouble:latitude];
-            [v11 setObject:v16 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLatitudeKey"];
+            [dictionary setObject:v16 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLatitudeKey"];
 
             v17 = [MEMORY[0x1E696AD98] numberWithDouble:longitude];
-            [v11 setObject:v17 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLongitudeKey"];
+            [dictionary setObject:v17 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataLongitudeKey"];
 
             v18 = MEMORY[0x1E696AD98];
             [v10 coarseLocationProperties];
@@ -2631,7 +2631,7 @@ LABEL_21:
             v21 = v20 = v6;
             [v21 gpsHorizontalAccuracy];
             v22 = [v18 numberWithDouble:?];
-            [v11 setObject:v22 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataHorizontalAccuracyKey"];
+            [dictionary setObject:v22 forKeyedSubscript:@"PHSuggestedContributionsAssetsMetadataHorizontalAccuracyKey"];
 
             v6 = v20;
             v8 = v19;
@@ -2639,9 +2639,9 @@ LABEL_21:
           }
         }
 
-        v23 = [v10 creationDate];
-        [v11 setObject:v23 forKeyedSubscript:v8];
-        [v27 addObject:v11];
+        creationDate = [v10 creationDate];
+        [dictionary setObject:creationDate forKeyedSubscript:v8];
+        [array addObject:dictionary];
 
         ++v9;
       }
@@ -2653,36 +2653,36 @@ LABEL_21:
     while (v5);
   }
 
-  return v27;
+  return array;
 }
 
-+ (id)fetchSuggestedContributionsForAssetsFetchResult:(id)a3 options:(id)a4
++ (id)fetchSuggestedContributionsForAssetsFetchResult:(id)result options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 assetsMetadataFromAssets:a3];
-  v8 = [a1 fetchSuggestedContributionsForAssetsMetadata:v7 options:v6];
+  optionsCopy = options;
+  v7 = [self assetsMetadataFromAssets:result];
+  v8 = [self fetchSuggestedContributionsForAssetsMetadata:v7 options:optionsCopy];
 
   return v8;
 }
 
-+ (id)fetchRecentContentSyndicationAssetCollectionsWithOptions:(id)a3 maxNumberOfStacks:(int64_t)a4 maxNumberOfAssetsPerStack:(int64_t)a5
++ (id)fetchRecentContentSyndicationAssetCollectionsWithOptions:(id)options maxNumberOfStacks:(int64_t)stacks maxNumberOfAssetsPerStack:(int64_t)stack
 {
   v77[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v55 = a4;
-  v8 = a5 * a4;
-  v53 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:0];
-  v54 = v7;
-  v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:?];
+  optionsCopy = options;
+  stacksCopy = stacks;
+  v8 = stack * stacks;
+  v53 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  v54 = optionsCopy;
+  v9 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:?];
   v10 = +[PHAsset filterPredicateToExcludeNoSyndicationAssets];
   v11 = +[PHAsset filterPredicateToIncludeOnlyReceivedSyndicatedAssets];
-  v12 = [v9 internalPredicate];
+  internalPredicate = [v9 internalPredicate];
   v13 = MEMORY[0x1E696AB28];
   v50 = v10;
-  if (v12)
+  if (internalPredicate)
   {
-    v14 = v12;
-    v77[0] = v12;
+    v14 = internalPredicate;
+    v77[0] = internalPredicate;
     v77[1] = v10;
     v77[2] = v11;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:3];
@@ -2716,15 +2716,15 @@ LABEL_21:
   [v9 setFetchLimit:v8];
   v52 = v9;
   v47 = [PHQuery queryForAssetsWithOptions:v9];
-  v20 = [v47 executeQuery];
-  v61 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v55];
+  executeQuery = [v47 executeQuery];
+  v61 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:stacksCopy];
   v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:v55];
+  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:stacksCopy];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v20;
+  obj = executeQuery;
   v22 = [obj countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (v22)
   {
@@ -2740,8 +2740,8 @@ LABEL_21:
         }
 
         v26 = *(*(&v68 + 1) + 8 * i);
-        v27 = [v26 curationProperties];
-        v28 = [v27 syndicationIdentifier];
+        curationProperties = [v26 curationProperties];
+        syndicationIdentifier = [curationProperties syndicationIdentifier];
 
         v29 = PLSearchableIdentifierFromMessagesSyndicationID();
         if (v29)
@@ -2751,20 +2751,20 @@ LABEL_21:
           {
             v31 = v30;
 LABEL_14:
-            if ([v31 count] < a5)
+            if ([v31 count] < stack)
             {
               [v31 addObject:v26];
             }
           }
 
-          else if ([v61 count] >= v55)
+          else if ([v61 count] >= stacksCopy)
           {
             v31 = 0;
           }
 
           else
           {
-            v31 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:a5];
+            v31 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:stack];
             [v61 setObject:v31 forKeyedSubscript:v29];
             [v21 addObject:v29];
             if (v31)
@@ -2781,7 +2781,7 @@ LABEL_14:
     while (v23);
   }
 
-  v51 = a5;
+  stackCopy = stack;
 
   v66 = 0u;
   v67 = 0u;
@@ -2803,19 +2803,19 @@ LABEL_14:
 
         v33 = *(*(&v64 + 1) + 8 * j);
         v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:PLSearchableUniqueIdentifierHashFromSearchableIdentifier()];
-        v62 = [v34 stringValue];
+        stringValue = [v34 stringValue];
 
         v63 = [v61 objectForKeyedSubscript:v33];
-        v35 = [v63 allObjects];
-        v36 = [v35 sortedArrayUsingComparator:&__block_literal_global_155];
+        allObjects = [v63 allObjects];
+        v36 = [allObjects sortedArrayUsingComparator:&__block_literal_global_155];
 
-        v37 = [v36 firstObject];
-        v38 = [v36 lastObject];
-        v39 = [v37 curationProperties];
-        v40 = [v39 addedDate];
-        v41 = [v38 curationProperties];
-        v42 = [v41 addedDate];
-        v43 = [PHAssetCollection transientAssetCollectionWithAssets:v36 subtype:1000000501 identifier:v62 startDate:v40 endDate:v42 title:0];
+        firstObject = [v36 firstObject];
+        lastObject = [v36 lastObject];
+        curationProperties2 = [firstObject curationProperties];
+        addedDate = [curationProperties2 addedDate];
+        curationProperties3 = [lastObject curationProperties];
+        addedDate2 = [curationProperties3 addedDate];
+        v43 = [PHAssetCollection transientAssetCollectionWithAssets:v36 subtype:1000000501 identifier:stringValue startDate:addedDate endDate:addedDate2 title:0];
 
         [v59 addObject:v43];
       }
@@ -2827,7 +2827,7 @@ LABEL_14:
   }
 
   LOBYTE(v46) = 1;
-  v44 = [[PHRecentContentSyndicationCollectionsResult alloc] initWithObjects:v59 photoLibrary:v53 fetchOptions:v52 maxNumberOfStacks:v55 maxNumberOfAssetsPerStack:v51 fetchType:@"PHAssetCollection" fetchPropertySets:0 identifier:0 registerIfNeeded:v46];
+  v44 = [[PHRecentContentSyndicationCollectionsResult alloc] initWithObjects:v59 photoLibrary:v53 fetchOptions:v52 maxNumberOfStacks:stacksCopy maxNumberOfAssetsPerStack:stackCopy fetchType:@"PHAssetCollection" fetchPropertySets:0 identifier:0 registerIfNeeded:v46];
 
   return v44;
 }
@@ -2851,16 +2851,16 @@ uint64_t __122__PHAssetCollection_fetchRecentContentSyndicationAssetCollectionsW
   return v13;
 }
 
-+ (id)fetchAssetCollectionsWithObjectIDs:(id)a3 options:(id)a4
++ (id)fetchAssetCollectionsWithObjectIDs:(id)ds options:(id)options
 {
-  v5 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__PHAssetCollection_fetchAssetCollectionsWithObjectIDs_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = dsCopy;
+  v6 = dsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -2943,7 +2943,7 @@ id __71__PHAssetCollection_fetchAssetCollectionsWithALAssetGroupURLs_options___b
   v7[3] = &__block_descriptor_56_e39___PHFetchResult_16__0__PHFetchOptions_8l;
   v7[4] = type;
   v7[5] = subtype;
-  v7[6] = a1;
+  v7[6] = self;
   v5 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v7];
 
   return v5;
@@ -2997,17 +2997,17 @@ id __71__PHAssetCollection_fetchAssetCollectionsWithLocalIdentifiers_options___b
   return v3;
 }
 
-+ (id)fetchAssetCollectionsWithType:(int64_t)a3 localIdentifiers:(id)a4 options:(id)a5
++ (id)fetchAssetCollectionsWithType:(int64_t)type localIdentifiers:(id)identifiers options:(id)options
 {
-  v7 = a4;
+  identifiersCopy = identifiers;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__PHAssetCollection_fetchAssetCollectionsWithType_localIdentifiers_options___block_invoke;
   v11[3] = &unk_1E75A3F40;
-  v12 = v7;
-  v13 = a3;
-  v8 = v7;
-  v9 = [PHObject authorizationAwareFetchResultWithOptions:a5 fetchBlock:v11];
+  v12 = identifiersCopy;
+  typeCopy = type;
+  v8 = identifiersCopy;
+  v9 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v11];
 
   return v9;
 }
@@ -3020,36 +3020,36 @@ id __76__PHAssetCollection_fetchAssetCollectionsWithType_localIdentifiers_option
   return v3;
 }
 
-+ (id)fetchAssetCollectionsContainingAssets:(id)a3 withType:(int64_t)a4 options:(id)a5
++ (id)fetchAssetCollectionsContainingAssets:(id)assets withType:(int64_t)type options:(id)options
 {
-  if (a3)
+  if (assets)
   {
-    v5 = [PHQuery queryForAssetCollectionsContainingAssets:a3 withType:a4 options:a5];
-    v6 = [v5 executeQuery];
+    v5 = [PHQuery queryForAssetCollectionsContainingAssets:assets withType:type options:options];
+    executeQuery = [v5 executeQuery];
   }
 
   else
   {
-    v6 = 0;
+    executeQuery = 0;
   }
 
-  return v6;
+  return executeQuery;
 }
 
-+ (id)fetchAlbumIdentifiersContainingAsset:(id)a3 options:(id)a4
++ (id)fetchAlbumIdentifiersContainingAsset:(id)asset options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [a1 fetchAssetCollectionsContainingAsset:v6 withType:1 options:v7];
+  assetCopy = asset;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  v9 = [self fetchAssetCollectionsContainingAsset:assetCopy withType:1 options:optionsCopy];
   if ([v9 count])
   {
     v10 = 0;
     do
     {
       v11 = [v9 objectAtIndexedSubscript:v10];
-      v12 = [v11 localIdentifier];
-      [v8 addObject:v12];
+      localIdentifier = [v11 localIdentifier];
+      [array addObject:localIdentifier];
 
       ++v10;
     }
@@ -3057,7 +3057,7 @@ id __76__PHAssetCollection_fetchAssetCollectionsWithType_localIdentifiers_option
     while ([v9 count] > v10);
   }
 
-  return v8;
+  return array;
 }
 
 + (PHFetchResult)fetchAssetCollectionsContainingAsset:(PHAsset *)asset withType:(PHAssetCollectionType)type options:(PHFetchOptions *)options
@@ -3065,81 +3065,81 @@ id __76__PHAssetCollection_fetchAssetCollectionsWithType_localIdentifiers_option
   if (asset)
   {
     v5 = [PHQuery queryForAssetCollectionsContainingAsset:asset withType:type options:options];
-    v6 = [v5 executeQuery];
+    executeQuery = [v5 executeQuery];
   }
 
   else
   {
-    v6 = 0;
+    executeQuery = 0;
   }
 
-  return v6;
+  return executeQuery;
 }
 
-+ (id)fetchAllTripHighlightsContainingAssetsWithUUIDs:(id)a3 options:(id)a4
++ (id)fetchAllTripHighlightsContainingAssetsWithUUIDs:(id)ds options:(id)options
 {
-  if (a3)
+  if (ds)
   {
-    v4 = [PHQuery queryForAllTripHighlightsContainingAssetUUIDs:a3 options:a4];
-    v5 = [v4 executeQuery];
+    v4 = [PHQuery queryForAllTripHighlightsContainingAssetUUIDs:ds options:options];
+    executeQuery = [v4 executeQuery];
   }
 
   else
   {
-    v5 = 0;
+    executeQuery = 0;
   }
 
-  return v5;
+  return executeQuery;
 }
 
-+ (BOOL)_defaultKeyAssetsAtEndForType:(int64_t)a3 subtype:(int64_t)a4
++ (BOOL)_defaultKeyAssetsAtEndForType:(int64_t)type subtype:(int64_t)subtype
 {
   result = 0;
-  if (a3 <= 8)
+  if (type <= 8)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      return (a4 & 0xFFFFFFFFFFFFFFFELL) == 100;
+      return (subtype & 0xFFFFFFFFFFFFFFFELL) == 100;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       return result;
     }
 
-    return a4 != 200;
+    return subtype != 200;
   }
 
-  if (a3 == 9)
+  if (type == 9)
   {
     return 1;
   }
 
-  if (a3 == 12)
+  if (type == 12)
   {
-    return a4 != 200;
+    return subtype != 200;
   }
 
   return result;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PHAssetCollection_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_4265 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_4265, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_4266 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_4266 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -3226,7 +3226,7 @@ void __33__PHAssetCollection_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_16_4274 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_4284 != -1)
   {
@@ -3280,23 +3280,23 @@ uint64_t __47__PHAssetCollection_propertiesToFetchWithHint___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_composePropertiesToFetchWithHint:(unint64_t)a3
++ (id)_composePropertiesToFetchWithHint:(unint64_t)hint
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (v3)
+  hintCopy = hint;
+  array = [MEMORY[0x1E695DF70] array];
+  if (hintCopy)
   {
-    v6 = [a1 identifierPropertiesToFetch];
-    [v5 addObjectsFromArray:v6];
+    identifierPropertiesToFetch = [self identifierPropertiesToFetch];
+    [array addObjectsFromArray:identifierPropertiesToFetch];
   }
 
-  if ((v3 & 2) != 0)
+  if ((hintCopy & 2) != 0)
   {
-    v7 = [a1 corePropertiesToFetch];
-    [v5 addObjectsFromArray:v7];
+    corePropertiesToFetch = [self corePropertiesToFetch];
+    [array addObjectsFromArray:corePropertiesToFetch];
   }
 
-  return v5;
+  return array;
 }
 
 - (id)pl_assetContainer
@@ -3304,23 +3304,23 @@ uint64_t __47__PHAssetCollection_propertiesToFetchWithHint___block_invoke()
   v26 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:70 description:@"This is only callable on the main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:70 description:@"This is only callable on the main thread"];
   }
 
   if ([(PHAssetCollection *)self assetCollectionType]== PHAssetCollectionTypeMoment)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PHObject *)self photoLibrary];
-    v6 = [v5 mainQueueConcurrencyPhotoLibrary];
-    v7 = [v6 managedObjectContext];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    mainQueueConcurrencyPhotoLibrary = [photoLibrary mainQueueConcurrencyPhotoLibrary];
+    managedObjectContext = [mainQueueConcurrencyPhotoLibrary managedObjectContext];
 
-    v8 = [(PHObject *)self objectID];
+    objectID = [(PHObject *)self objectID];
     v23 = 0;
-    v9 = [v7 existingObjectWithID:v8 error:&v23];
+    pl_photoLibraryObject = [managedObjectContext existingObjectWithID:objectID error:&v23];
     v10 = v23;
 
-    if (!v9 && v10)
+    if (!pl_photoLibraryObject && v10)
     {
       v11 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3336,55 +3336,55 @@ uint64_t __47__PHAssetCollection_propertiesToFetchWithHint___block_invoke()
 
   else if ([(PHObject *)self isTransient])
   {
-    v12 = [(PHObject *)self photoLibrary];
-    v13 = [v12 librarySpecificFetchOptions];
+    photoLibrary2 = [(PHObject *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
-    [v13 setIncludeHiddenAssets:1];
-    v14 = [PHAsset fetchAssetsInAssetCollection:self options:v13];
+    [librarySpecificFetchOptions setIncludeHiddenAssets:1];
+    v14 = [PHAsset fetchAssetsInAssetCollection:self options:librarySpecificFetchOptions];
     if ([v14 count])
     {
-      v9 = [v14 pl_photoLibraryObject];
+      pl_photoLibraryObject = [v14 pl_photoLibraryObject];
     }
 
     else
     {
       v19 = objc_alloc(MEMORY[0x1E69BE7E0]);
-      v20 = [MEMORY[0x1E695DFB8] orderedSet];
-      v9 = [v19 initWithTitle:&stru_1F0FC60C8 assets:v20];
+      orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+      pl_photoLibraryObject = [v19 initWithTitle:&stru_1F0FC60C8 assets:orderedSet];
     }
   }
 
   else
   {
     v15 = MEMORY[0x1E69BE458];
-    v16 = [(PHObject *)self objectID];
-    v17 = [(PHObject *)self photoLibrary];
-    v18 = [v17 mainQueueConcurrencyPhotoLibrary];
-    v9 = [v15 albumWithObjectID:v16 inLibrary:v18];
+    objectID2 = [(PHObject *)self objectID];
+    photoLibrary3 = [(PHObject *)self photoLibrary];
+    mainQueueConcurrencyPhotoLibrary2 = [photoLibrary3 mainQueueConcurrencyPhotoLibrary];
+    pl_photoLibraryObject = [v15 albumWithObjectID:objectID2 inLibrary:mainQueueConcurrencyPhotoLibrary2];
   }
 
-  return v9;
+  return pl_photoLibraryObject;
 }
 
-+ (id)posterImageForAssetCollection:(id)a3
++ (id)posterImageForAssetCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 assetCollectionType];
-  v5 = [v3 assetCollectionSubtype];
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 3)
+  collectionCopy = collection;
+  assetCollectionType = [collectionCopy assetCollectionType];
+  assetCollectionSubtype = [collectionCopy assetCollectionSubtype];
+  if ((assetCollectionType & 0xFFFFFFFFFFFFFFFBLL) == 3)
   {
-    v6 = 0;
+    posterImage = 0;
     goto LABEL_20;
   }
 
-  if (v4 == 1)
+  if (assetCollectionType == 1)
   {
-    if ((v5 - 100) < 2)
+    if ((assetCollectionSubtype - 100) < 2)
     {
-      if (![v3 estimatedAssetCount])
+      if (![collectionCopy estimatedAssetCount])
       {
         v7 = PLPhotoLibraryServicesFrameworkBundle();
-        v8 = v7;
+        pl_assetContainer = v7;
         v9 = @"PLEmptyPhotoStream";
         goto LABEL_10;
       }
@@ -3392,13 +3392,13 @@ uint64_t __47__PHAssetCollection_propertiesToFetchWithHint___block_invoke()
 
     else
     {
-      if (v5 == 4)
+      if (assetCollectionSubtype == 4)
       {
-        v8 = [v3 pl_assetContainer];
-        v6 = [v8 posterImage];
+        pl_assetContainer = [collectionCopy pl_assetContainer];
+        posterImage = [pl_assetContainer posterImage];
 LABEL_12:
 
-        if (v6)
+        if (posterImage)
         {
           goto LABEL_20;
         }
@@ -3406,14 +3406,14 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (v5 == 205)
+      if (assetCollectionSubtype == 205)
       {
         v7 = PLPhotoLibraryServicesFrameworkBundle();
-        v8 = v7;
+        pl_assetContainer = v7;
         v9 = @"PLEmptyAlbum";
 LABEL_10:
         v10 = [v7 pathForResource:v9 ofType:@"png"];
-        v6 = DCIM_newPLImageWithContentsOfFile();
+        posterImage = DCIM_newPLImageWithContentsOfFile();
 
         goto LABEL_12;
       }
@@ -3421,65 +3421,65 @@ LABEL_10:
   }
 
 LABEL_13:
-  if ([v3 estimatedAssetCount] || (PLPhotoLibraryServicesFrameworkBundle(), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "pathForResource:ofType:", @"PLEmptyAlbum", @"png"), v22 = objc_claimAutoreleasedReturnValue(), DCIM_newPLImageWithContentsOfFile(), v6 = objc_claimAutoreleasedReturnValue(), v22, v21, !v6))
+  if ([collectionCopy estimatedAssetCount] || (PLPhotoLibraryServicesFrameworkBundle(), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "pathForResource:ofType:", @"PLEmptyAlbum", @"png"), v22 = objc_claimAutoreleasedReturnValue(), DCIM_newPLImageWithContentsOfFile(), posterImage = objc_claimAutoreleasedReturnValue(), v22, v21, !posterImage))
   {
-    v11 = [v3 photoLibrary];
-    v12 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:v11];
-    v13 = [PHAsset fetchKeyAssetsInAssetCollection:v3 options:v12];
-    v14 = [v13 firstObject];
+    photoLibrary = [collectionCopy photoLibrary];
+    v12 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:photoLibrary];
+    v13 = [PHAsset fetchKeyAssetsInAssetCollection:collectionCopy options:v12];
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v15 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-      [v15 posterThumbnailSize];
+      defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+      [defaultFormatChooser posterThumbnailSize];
       v17 = v16;
       v19 = v18;
 
       v20 = +[PHImageManager defaultManager];
-      v6 = [v20 synchronousImageForAsset:v14 targetSize:0 contentMode:0 options:{v17, v19}];
+      posterImage = [v20 synchronousImageForAsset:firstObject targetSize:0 contentMode:0 options:{v17, v19}];
     }
 
     else
     {
-      v6 = 0;
+      posterImage = 0;
     }
   }
 
 LABEL_20:
 
-  return v6;
+  return posterImage;
 }
 
-+ (id)pl_PHAssetCollectionForAssetContainer:(id)a3 photoLibrary:(id)a4 includeTrash:(BOOL)a5
++ (id)pl_PHAssetCollectionForAssetContainer:(id)container photoLibrary:(id)library includeTrash:(BOOL)trash
 {
-  v5 = [PHFetchResult pl_fetchResultContainingAssetContainer:a3 photoLibrary:a4 includeTrash:a5];
-  v6 = [v5 firstObject];
+  v5 = [PHFetchResult pl_fetchResultContainingAssetContainer:container photoLibrary:library includeTrash:trash];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-+ (id)pl_albumsForAssetCollections:(id)a3
++ (id)pl_albumsForAssetCollections:(id)collections
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionsCopy = collections;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PHAdoptionUtilities.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"NSThread.isMainThread"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"NSThread.isMainThread"}];
   }
 
-  if ([v5 count])
+  if ([collectionsCopy count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 photoLibrary];
-    v8 = [v7 mainQueueConcurrencyPhotoLibrary];
+    firstObject = [collectionsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    mainQueueConcurrencyPhotoLibrary = [photoLibrary mainQueueConcurrencyPhotoLibrary];
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v5;
+    v10 = collectionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -3495,8 +3495,8 @@ LABEL_20:
           }
 
           v15 = MEMORY[0x1E69BE458];
-          v16 = [*(*(&v20 + 1) + 8 * i) objectID];
-          v17 = [v15 albumWithObjectID:v16 inLibrary:v8];
+          objectID = [*(*(&v20 + 1) + 8 * i) objectID];
+          v17 = [v15 albumWithObjectID:objectID inLibrary:mainQueueConcurrencyPhotoLibrary];
 
           if (v17)
           {
@@ -3519,18 +3519,18 @@ LABEL_20:
   return v9;
 }
 
-+ (id)fetchAssetCollectionsForReferences:(id)a3 photoLibrary:(id)a4
++ (id)fetchAssetCollectionsForReferences:(id)references photoLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
+  libraryCopy = library;
+  referencesCopy = references;
   v7 = +[PHAssetCollection fetchType];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PHAssetCollection_PHObjectReference__fetchAssetCollectionsForReferences_photoLibrary___block_invoke;
   v11[3] = &unk_1E75A8B48;
-  v12 = v5;
-  v8 = v5;
-  v9 = PHCollectionReferenceFetchCollectionsForReferences(v6, v8, v7, v11);
+  v12 = libraryCopy;
+  v8 = libraryCopy;
+  v9 = PHCollectionReferenceFetchCollectionsForReferences(referencesCopy, v8, v7, v11);
 
   return v9;
 }

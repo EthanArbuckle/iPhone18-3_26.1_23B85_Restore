@@ -1,15 +1,15 @@
 @interface ADDeviceCirclePeerData
-+ (id)newWithBuilder:(id)a3;
-- (ADDeviceCirclePeerData)initWithAceVersion:(id)a3 assistantIdentifier:(id)a4 buildVersion:(id)a5 productType:(id)a6 sharedUserIdentifier:(id)a7 userAssignedDeviceName:(id)a8 userInterfaceIdiom:(id)a9 isLocationSharingDevice:(id)a10 homeAccessoryInfo:(id)a11 isSiriCloudSyncEnabled:(id)a12 myriadTrialTreatment:(id)a13;
-- (ADDeviceCirclePeerData)initWithBuilder:(id)a3;
-- (ADDeviceCirclePeerData)initWithCoder:(id)a3;
-- (ADDeviceCirclePeerData)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADDeviceCirclePeerData)initWithAceVersion:(id)version assistantIdentifier:(id)identifier buildVersion:(id)buildVersion productType:(id)type sharedUserIdentifier:(id)userIdentifier userAssignedDeviceName:(id)name userInterfaceIdiom:(id)idiom isLocationSharingDevice:(id)self0 homeAccessoryInfo:(id)self1 isSiriCloudSyncEnabled:(id)self2 myriadTrialTreatment:(id)self3;
+- (ADDeviceCirclePeerData)initWithBuilder:(id)builder;
+- (ADDeviceCirclePeerData)initWithCoder:(id)coder;
+- (ADDeviceCirclePeerData)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADDeviceCirclePeerData
@@ -69,8 +69,8 @@
   homeAccessoryInfo = self->_homeAccessoryInfo;
   if (homeAccessoryInfo)
   {
-    v14 = [(AFHomeAccessoryInfo *)homeAccessoryInfo buildDictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"homeAccessoryInfo"];
+    buildDictionaryRepresentation = [(AFHomeAccessoryInfo *)homeAccessoryInfo buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation forKey:@"homeAccessoryInfo"];
   }
 
   isSiriCloudSyncEnabled = self->_isSiriCloudSyncEnabled;
@@ -90,13 +90,13 @@
   return v17;
 }
 
-- (ADDeviceCirclePeerData)initWithDictionaryRepresentation:(id)a3
+- (ADDeviceCirclePeerData)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"aceVersion"];
+    v6 = [representationCopy objectForKey:@"aceVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -242,46 +242,46 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   aceVersion = self->_aceVersion;
-  v5 = a3;
-  [v5 encodeObject:aceVersion forKey:@"ADDeviceCirclePeerData::aceVersion"];
-  [v5 encodeObject:self->_assistantIdentifier forKey:@"ADDeviceCirclePeerData::assistantIdentifier"];
-  [v5 encodeObject:self->_buildVersion forKey:@"ADDeviceCirclePeerData::buildVersion"];
-  [v5 encodeObject:self->_productType forKey:@"ADDeviceCirclePeerData::productType"];
-  [v5 encodeObject:self->_sharedUserIdentifier forKey:@"ADDeviceCirclePeerData::sharedUserIdentifier"];
-  [v5 encodeObject:self->_userAssignedDeviceName forKey:@"ADDeviceCirclePeerData::userAssignedDeviceName"];
-  [v5 encodeObject:self->_userInterfaceIdiom forKey:@"ADDeviceCirclePeerData::userInterfaceIdiom"];
-  [v5 encodeObject:self->_isLocationSharingDevice forKey:@"ADDeviceCirclePeerData::isLocationSharingDevice"];
-  [v5 encodeObject:self->_homeAccessoryInfo forKey:@"ADDeviceCirclePeerData::homeAccessoryInfo"];
-  [v5 encodeObject:self->_isSiriCloudSyncEnabled forKey:@"ADDeviceCirclePeerData::isSiriCloudSyncEnabled"];
-  [v5 encodeObject:self->_myriadTrialTreatment forKey:@"ADDeviceCirclePeerData::myriadTrialTreatment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:aceVersion forKey:@"ADDeviceCirclePeerData::aceVersion"];
+  [coderCopy encodeObject:self->_assistantIdentifier forKey:@"ADDeviceCirclePeerData::assistantIdentifier"];
+  [coderCopy encodeObject:self->_buildVersion forKey:@"ADDeviceCirclePeerData::buildVersion"];
+  [coderCopy encodeObject:self->_productType forKey:@"ADDeviceCirclePeerData::productType"];
+  [coderCopy encodeObject:self->_sharedUserIdentifier forKey:@"ADDeviceCirclePeerData::sharedUserIdentifier"];
+  [coderCopy encodeObject:self->_userAssignedDeviceName forKey:@"ADDeviceCirclePeerData::userAssignedDeviceName"];
+  [coderCopy encodeObject:self->_userInterfaceIdiom forKey:@"ADDeviceCirclePeerData::userInterfaceIdiom"];
+  [coderCopy encodeObject:self->_isLocationSharingDevice forKey:@"ADDeviceCirclePeerData::isLocationSharingDevice"];
+  [coderCopy encodeObject:self->_homeAccessoryInfo forKey:@"ADDeviceCirclePeerData::homeAccessoryInfo"];
+  [coderCopy encodeObject:self->_isSiriCloudSyncEnabled forKey:@"ADDeviceCirclePeerData::isSiriCloudSyncEnabled"];
+  [coderCopy encodeObject:self->_myriadTrialTreatment forKey:@"ADDeviceCirclePeerData::myriadTrialTreatment"];
 }
 
-- (ADDeviceCirclePeerData)initWithCoder:(id)a3
+- (ADDeviceCirclePeerData)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::aceVersion"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::assistantIdentifier"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::buildVersion"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::productType"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::sharedUserIdentifier"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::userAssignedDeviceName"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::userInterfaceIdiom"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::isLocationSharingDevice"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::homeAccessoryInfo"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::isSiriCloudSyncEnabled"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::myriadTrialTreatment"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::aceVersion"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::assistantIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::buildVersion"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::productType"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::sharedUserIdentifier"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::userAssignedDeviceName"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::userInterfaceIdiom"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::isLocationSharingDevice"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::homeAccessoryInfo"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::isSiriCloudSyncEnabled"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceCirclePeerData::myriadTrialTreatment"];
 
   v16 = [(ADDeviceCirclePeerData *)self initWithAceVersion:v4 assistantIdentifier:v5 buildVersion:v6 productType:v7 sharedUserIdentifier:v17 userAssignedDeviceName:v14 userInterfaceIdiom:v13 isLocationSharingDevice:v8 homeAccessoryInfo:v9 isSiriCloudSyncEnabled:v10 myriadTrialTreatment:v11];
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v30 = 1;
   }
@@ -291,58 +291,58 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ADDeviceCirclePeerData *)v5 aceVersion];
+      v5 = equalCopy;
+      aceVersion = [(ADDeviceCirclePeerData *)v5 aceVersion];
       aceVersion = self->_aceVersion;
-      if (aceVersion == v6 || [(NSString *)aceVersion isEqual:v6])
+      if (aceVersion == aceVersion || [(NSString *)aceVersion isEqual:aceVersion])
       {
-        v8 = [(ADDeviceCirclePeerData *)v5 assistantIdentifier];
+        assistantIdentifier = [(ADDeviceCirclePeerData *)v5 assistantIdentifier];
         assistantIdentifier = self->_assistantIdentifier;
-        if (assistantIdentifier == v8 || [(NSString *)assistantIdentifier isEqual:v8])
+        if (assistantIdentifier == assistantIdentifier || [(NSString *)assistantIdentifier isEqual:assistantIdentifier])
         {
-          v10 = [(ADDeviceCirclePeerData *)v5 buildVersion];
+          buildVersion = [(ADDeviceCirclePeerData *)v5 buildVersion];
           buildVersion = self->_buildVersion;
-          if (buildVersion == v10 || [(NSString *)buildVersion isEqual:v10])
+          if (buildVersion == buildVersion || [(NSString *)buildVersion isEqual:buildVersion])
           {
-            v12 = [(ADDeviceCirclePeerData *)v5 productType];
+            productType = [(ADDeviceCirclePeerData *)v5 productType];
             productType = self->_productType;
-            if (productType == v12 || [(NSString *)productType isEqual:v12])
+            if (productType == productType || [(NSString *)productType isEqual:productType])
             {
-              v14 = [(ADDeviceCirclePeerData *)v5 sharedUserIdentifier];
+              sharedUserIdentifier = [(ADDeviceCirclePeerData *)v5 sharedUserIdentifier];
               sharedUserIdentifier = self->_sharedUserIdentifier;
-              if (sharedUserIdentifier == v14 || [(NSString *)sharedUserIdentifier isEqual:v14])
+              if (sharedUserIdentifier == sharedUserIdentifier || [(NSString *)sharedUserIdentifier isEqual:sharedUserIdentifier])
               {
-                v16 = [(ADDeviceCirclePeerData *)v5 userAssignedDeviceName];
+                userAssignedDeviceName = [(ADDeviceCirclePeerData *)v5 userAssignedDeviceName];
                 userAssignedDeviceName = self->_userAssignedDeviceName;
-                if (userAssignedDeviceName == v16 || [(NSString *)userAssignedDeviceName isEqual:v16])
+                if (userAssignedDeviceName == userAssignedDeviceName || [(NSString *)userAssignedDeviceName isEqual:userAssignedDeviceName])
                 {
-                  v18 = [(ADDeviceCirclePeerData *)v5 userInterfaceIdiom];
+                  userInterfaceIdiom = [(ADDeviceCirclePeerData *)v5 userInterfaceIdiom];
                   userInterfaceIdiom = self->_userInterfaceIdiom;
-                  if (userInterfaceIdiom == v18 || [(NSString *)userInterfaceIdiom isEqual:v18])
+                  if (userInterfaceIdiom == userInterfaceIdiom || [(NSString *)userInterfaceIdiom isEqual:userInterfaceIdiom])
                   {
-                    v34 = v18;
-                    v20 = [(ADDeviceCirclePeerData *)v5 isLocationSharingDevice];
+                    v34 = userInterfaceIdiom;
+                    isLocationSharingDevice = [(ADDeviceCirclePeerData *)v5 isLocationSharingDevice];
                     isLocationSharingDevice = self->_isLocationSharingDevice;
-                    if (isLocationSharingDevice == v20 || [(NSNumber *)isLocationSharingDevice isEqual:v20])
+                    if (isLocationSharingDevice == isLocationSharingDevice || [(NSNumber *)isLocationSharingDevice isEqual:isLocationSharingDevice])
                     {
-                      v33 = v20;
-                      v22 = [(ADDeviceCirclePeerData *)v5 homeAccessoryInfo];
+                      v33 = isLocationSharingDevice;
+                      homeAccessoryInfo = [(ADDeviceCirclePeerData *)v5 homeAccessoryInfo];
                       homeAccessoryInfo = self->_homeAccessoryInfo;
-                      if (homeAccessoryInfo == v22 || [(AFHomeAccessoryInfo *)homeAccessoryInfo isEqual:v22])
+                      if (homeAccessoryInfo == homeAccessoryInfo || [(AFHomeAccessoryInfo *)homeAccessoryInfo isEqual:homeAccessoryInfo])
                       {
-                        v32 = v22;
-                        v24 = [(ADDeviceCirclePeerData *)v5 isSiriCloudSyncEnabled];
+                        v32 = homeAccessoryInfo;
+                        isSiriCloudSyncEnabled = [(ADDeviceCirclePeerData *)v5 isSiriCloudSyncEnabled];
                         isSiriCloudSyncEnabled = self->_isSiriCloudSyncEnabled;
-                        if (isSiriCloudSyncEnabled == v24 || [(NSNumber *)isSiriCloudSyncEnabled isEqual:v24])
+                        if (isSiriCloudSyncEnabled == isSiriCloudSyncEnabled || [(NSNumber *)isSiriCloudSyncEnabled isEqual:isSiriCloudSyncEnabled])
                         {
-                          v26 = [(ADDeviceCirclePeerData *)v5 myriadTrialTreatment];
+                          myriadTrialTreatment = [(ADDeviceCirclePeerData *)v5 myriadTrialTreatment];
                           myriadTrialTreatment = self->_myriadTrialTreatment;
                           v30 = 1;
-                          if (myriadTrialTreatment != v26)
+                          if (myriadTrialTreatment != myriadTrialTreatment)
                           {
-                            v28 = v26;
-                            v29 = [(NSString *)myriadTrialTreatment isEqual:v26];
-                            v26 = v28;
+                            v28 = myriadTrialTreatment;
+                            v29 = [(NSString *)myriadTrialTreatment isEqual:myriadTrialTreatment];
+                            myriadTrialTreatment = v28;
                             if (!v29)
                             {
                               v30 = 0;
@@ -355,7 +355,7 @@
                           v30 = 0;
                         }
 
-                        v22 = v32;
+                        homeAccessoryInfo = v32;
                       }
 
                       else
@@ -363,7 +363,7 @@
                         v30 = 0;
                       }
 
-                      v20 = v33;
+                      isLocationSharingDevice = v33;
                     }
 
                     else
@@ -371,7 +371,7 @@
                       v30 = 0;
                     }
 
-                    v18 = v34;
+                    userInterfaceIdiom = v34;
                   }
 
                   else
@@ -440,7 +440,7 @@
   return v9 ^ v12 ^ [(NSString *)self->_myriadTrialTreatment hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -451,104 +451,104 @@
   return v6;
 }
 
-- (ADDeviceCirclePeerData)initWithAceVersion:(id)a3 assistantIdentifier:(id)a4 buildVersion:(id)a5 productType:(id)a6 sharedUserIdentifier:(id)a7 userAssignedDeviceName:(id)a8 userInterfaceIdiom:(id)a9 isLocationSharingDevice:(id)a10 homeAccessoryInfo:(id)a11 isSiriCloudSyncEnabled:(id)a12 myriadTrialTreatment:(id)a13
+- (ADDeviceCirclePeerData)initWithAceVersion:(id)version assistantIdentifier:(id)identifier buildVersion:(id)buildVersion productType:(id)type sharedUserIdentifier:(id)userIdentifier userAssignedDeviceName:(id)name userInterfaceIdiom:(id)idiom isLocationSharingDevice:(id)self0 homeAccessoryInfo:(id)self1 isSiriCloudSyncEnabled:(id)self2 myriadTrialTreatment:(id)self3
 {
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10018335C;
   v32[3] = &unk_100514020;
-  v33 = a3;
-  v34 = a4;
-  v35 = a5;
-  v36 = a6;
-  v37 = a7;
-  v38 = a8;
-  v39 = a9;
-  v40 = a10;
-  v41 = a11;
-  v42 = a12;
-  v43 = a13;
-  v30 = v43;
-  v29 = v42;
-  v18 = v41;
-  v19 = v40;
-  v20 = v39;
-  v21 = v38;
-  v22 = v37;
-  v23 = v36;
-  v24 = v35;
-  v25 = v34;
-  v26 = v33;
+  versionCopy = version;
+  identifierCopy = identifier;
+  buildVersionCopy = buildVersion;
+  typeCopy = type;
+  userIdentifierCopy = userIdentifier;
+  nameCopy = name;
+  idiomCopy = idiom;
+  deviceCopy = device;
+  infoCopy = info;
+  enabledCopy = enabled;
+  treatmentCopy = treatment;
+  v30 = treatmentCopy;
+  v29 = enabledCopy;
+  v18 = infoCopy;
+  v19 = deviceCopy;
+  v20 = idiomCopy;
+  v21 = nameCopy;
+  v22 = userIdentifierCopy;
+  v23 = typeCopy;
+  v24 = buildVersionCopy;
+  v25 = identifierCopy;
+  v26 = versionCopy;
   v27 = [(ADDeviceCirclePeerData *)self initWithBuilder:v32];
 
   return v27;
 }
 
-- (ADDeviceCirclePeerData)initWithBuilder:(id)a3
+- (ADDeviceCirclePeerData)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v42.receiver = self;
   v42.super_class = ADDeviceCirclePeerData;
   v5 = [(ADDeviceCirclePeerData *)&v42 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADDeviceCirclePeerDataMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADDeviceCirclePeerDataMutation *)v7 isDirty])
     {
-      v8 = [(_ADDeviceCirclePeerDataMutation *)v7 getAceVersion];
-      v9 = [v8 copy];
+      getAceVersion = [(_ADDeviceCirclePeerDataMutation *)v7 getAceVersion];
+      v9 = [getAceVersion copy];
       aceVersion = v6->_aceVersion;
       v6->_aceVersion = v9;
 
-      v11 = [(_ADDeviceCirclePeerDataMutation *)v7 getAssistantIdentifier];
-      v12 = [v11 copy];
+      getAssistantIdentifier = [(_ADDeviceCirclePeerDataMutation *)v7 getAssistantIdentifier];
+      v12 = [getAssistantIdentifier copy];
       assistantIdentifier = v6->_assistantIdentifier;
       v6->_assistantIdentifier = v12;
 
-      v14 = [(_ADDeviceCirclePeerDataMutation *)v7 getBuildVersion];
-      v15 = [v14 copy];
+      getBuildVersion = [(_ADDeviceCirclePeerDataMutation *)v7 getBuildVersion];
+      v15 = [getBuildVersion copy];
       buildVersion = v6->_buildVersion;
       v6->_buildVersion = v15;
 
-      v17 = [(_ADDeviceCirclePeerDataMutation *)v7 getProductType];
-      v18 = [v17 copy];
+      getProductType = [(_ADDeviceCirclePeerDataMutation *)v7 getProductType];
+      v18 = [getProductType copy];
       productType = v6->_productType;
       v6->_productType = v18;
 
-      v20 = [(_ADDeviceCirclePeerDataMutation *)v7 getSharedUserIdentifier];
-      v21 = [v20 copy];
+      getSharedUserIdentifier = [(_ADDeviceCirclePeerDataMutation *)v7 getSharedUserIdentifier];
+      v21 = [getSharedUserIdentifier copy];
       sharedUserIdentifier = v6->_sharedUserIdentifier;
       v6->_sharedUserIdentifier = v21;
 
-      v23 = [(_ADDeviceCirclePeerDataMutation *)v7 getUserAssignedDeviceName];
-      v24 = [v23 copy];
+      getUserAssignedDeviceName = [(_ADDeviceCirclePeerDataMutation *)v7 getUserAssignedDeviceName];
+      v24 = [getUserAssignedDeviceName copy];
       userAssignedDeviceName = v6->_userAssignedDeviceName;
       v6->_userAssignedDeviceName = v24;
 
-      v26 = [(_ADDeviceCirclePeerDataMutation *)v7 getUserInterfaceIdiom];
-      v27 = [v26 copy];
+      getUserInterfaceIdiom = [(_ADDeviceCirclePeerDataMutation *)v7 getUserInterfaceIdiom];
+      v27 = [getUserInterfaceIdiom copy];
       userInterfaceIdiom = v6->_userInterfaceIdiom;
       v6->_userInterfaceIdiom = v27;
 
-      v29 = [(_ADDeviceCirclePeerDataMutation *)v7 getIsLocationSharingDevice];
-      v30 = [v29 copy];
+      getIsLocationSharingDevice = [(_ADDeviceCirclePeerDataMutation *)v7 getIsLocationSharingDevice];
+      v30 = [getIsLocationSharingDevice copy];
       isLocationSharingDevice = v6->_isLocationSharingDevice;
       v6->_isLocationSharingDevice = v30;
 
-      v32 = [(_ADDeviceCirclePeerDataMutation *)v7 getHomeAccessoryInfo];
-      v33 = [v32 copy];
+      getHomeAccessoryInfo = [(_ADDeviceCirclePeerDataMutation *)v7 getHomeAccessoryInfo];
+      v33 = [getHomeAccessoryInfo copy];
       homeAccessoryInfo = v6->_homeAccessoryInfo;
       v6->_homeAccessoryInfo = v33;
 
-      v35 = [(_ADDeviceCirclePeerDataMutation *)v7 getIsSiriCloudSyncEnabled];
-      v36 = [v35 copy];
+      getIsSiriCloudSyncEnabled = [(_ADDeviceCirclePeerDataMutation *)v7 getIsSiriCloudSyncEnabled];
+      v36 = [getIsSiriCloudSyncEnabled copy];
       isSiriCloudSyncEnabled = v6->_isSiriCloudSyncEnabled;
       v6->_isSiriCloudSyncEnabled = v36;
 
-      v38 = [(_ADDeviceCirclePeerDataMutation *)v7 getMyriadTrialTreatment];
-      v39 = [v38 copy];
+      getMyriadTrialTreatment = [(_ADDeviceCirclePeerDataMutation *)v7 getMyriadTrialTreatment];
+      v39 = [getMyriadTrialTreatment copy];
       myriadTrialTreatment = v6->_myriadTrialTreatment;
       v6->_myriadTrialTreatment = v39;
     }
@@ -557,76 +557,76 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADDeviceCirclePeerDataMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADDeviceCirclePeerDataMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADDeviceCirclePeerData);
-      v7 = [(_ADDeviceCirclePeerDataMutation *)v5 getAceVersion];
-      v8 = [v7 copy];
+      getAceVersion = [(_ADDeviceCirclePeerDataMutation *)v5 getAceVersion];
+      v8 = [getAceVersion copy];
       aceVersion = v6->_aceVersion;
       v6->_aceVersion = v8;
 
-      v10 = [(_ADDeviceCirclePeerDataMutation *)v5 getAssistantIdentifier];
-      v11 = [v10 copy];
+      getAssistantIdentifier = [(_ADDeviceCirclePeerDataMutation *)v5 getAssistantIdentifier];
+      v11 = [getAssistantIdentifier copy];
       assistantIdentifier = v6->_assistantIdentifier;
       v6->_assistantIdentifier = v11;
 
-      v13 = [(_ADDeviceCirclePeerDataMutation *)v5 getBuildVersion];
-      v14 = [v13 copy];
+      getBuildVersion = [(_ADDeviceCirclePeerDataMutation *)v5 getBuildVersion];
+      v14 = [getBuildVersion copy];
       buildVersion = v6->_buildVersion;
       v6->_buildVersion = v14;
 
-      v16 = [(_ADDeviceCirclePeerDataMutation *)v5 getProductType];
-      v17 = [v16 copy];
+      getProductType = [(_ADDeviceCirclePeerDataMutation *)v5 getProductType];
+      v17 = [getProductType copy];
       productType = v6->_productType;
       v6->_productType = v17;
 
-      v19 = [(_ADDeviceCirclePeerDataMutation *)v5 getSharedUserIdentifier];
-      v20 = [v19 copy];
+      getSharedUserIdentifier = [(_ADDeviceCirclePeerDataMutation *)v5 getSharedUserIdentifier];
+      v20 = [getSharedUserIdentifier copy];
       sharedUserIdentifier = v6->_sharedUserIdentifier;
       v6->_sharedUserIdentifier = v20;
 
-      v22 = [(_ADDeviceCirclePeerDataMutation *)v5 getUserAssignedDeviceName];
-      v23 = [v22 copy];
+      getUserAssignedDeviceName = [(_ADDeviceCirclePeerDataMutation *)v5 getUserAssignedDeviceName];
+      v23 = [getUserAssignedDeviceName copy];
       userAssignedDeviceName = v6->_userAssignedDeviceName;
       v6->_userAssignedDeviceName = v23;
 
-      v25 = [(_ADDeviceCirclePeerDataMutation *)v5 getUserInterfaceIdiom];
-      v26 = [v25 copy];
+      getUserInterfaceIdiom = [(_ADDeviceCirclePeerDataMutation *)v5 getUserInterfaceIdiom];
+      v26 = [getUserInterfaceIdiom copy];
       userInterfaceIdiom = v6->_userInterfaceIdiom;
       v6->_userInterfaceIdiom = v26;
 
-      v28 = [(_ADDeviceCirclePeerDataMutation *)v5 getIsLocationSharingDevice];
-      v29 = [v28 copy];
+      getIsLocationSharingDevice = [(_ADDeviceCirclePeerDataMutation *)v5 getIsLocationSharingDevice];
+      v29 = [getIsLocationSharingDevice copy];
       isLocationSharingDevice = v6->_isLocationSharingDevice;
       v6->_isLocationSharingDevice = v29;
 
-      v31 = [(_ADDeviceCirclePeerDataMutation *)v5 getHomeAccessoryInfo];
-      v32 = [v31 copy];
+      getHomeAccessoryInfo = [(_ADDeviceCirclePeerDataMutation *)v5 getHomeAccessoryInfo];
+      v32 = [getHomeAccessoryInfo copy];
       homeAccessoryInfo = v6->_homeAccessoryInfo;
       v6->_homeAccessoryInfo = v32;
 
-      v34 = [(_ADDeviceCirclePeerDataMutation *)v5 getIsSiriCloudSyncEnabled];
-      v35 = [v34 copy];
+      getIsSiriCloudSyncEnabled = [(_ADDeviceCirclePeerDataMutation *)v5 getIsSiriCloudSyncEnabled];
+      v35 = [getIsSiriCloudSyncEnabled copy];
       isSiriCloudSyncEnabled = v6->_isSiriCloudSyncEnabled;
       v6->_isSiriCloudSyncEnabled = v35;
 
-      v37 = [(_ADDeviceCirclePeerDataMutation *)v5 getMyriadTrialTreatment];
-      v38 = [v37 copy];
+      getMyriadTrialTreatment = [(_ADDeviceCirclePeerDataMutation *)v5 getMyriadTrialTreatment];
+      v38 = [getMyriadTrialTreatment copy];
       myriadTrialTreatment = v6->_myriadTrialTreatment;
       v6->_myriadTrialTreatment = v38;
     }

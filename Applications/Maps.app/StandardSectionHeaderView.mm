@@ -1,14 +1,14 @@
 @interface StandardSectionHeaderView
-- (_TtC4Maps25StandardSectionHeaderView)initWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActionHandler:(id)a3;
+- (_TtC4Maps25StandardSectionHeaderView)initWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActionHandler:(id)handler;
 @end
 
 @implementation StandardSectionHeaderView
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -28,7 +28,7 @@
   v10 = *(self + OBJC_IVAR____TtC4Maps25StandardSectionHeaderView_actionHandler + 8);
   *v8 = v7;
   v8[1] = v6;
-  v11 = self;
+  selfCopy = self;
   sub_1000CD9D4(v7);
   sub_1000D3B90(v9, v10);
   sub_100506AAC();
@@ -36,7 +36,7 @@
   sub_1000D3B90(v7, v6);
 }
 
-- (_TtC4Maps25StandardSectionHeaderView)initWithCoder:(id)a3
+- (_TtC4Maps25StandardSectionHeaderView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC4Maps25StandardSectionHeaderView_title);
   *v3 = 0;
@@ -51,11 +51,11 @@
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a4)
+  if (object)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v8 = self;
+    selfCopy2 = self;
   }
 
   sub_100506AAC();

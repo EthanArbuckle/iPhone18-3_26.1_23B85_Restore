@@ -1,17 +1,17 @@
 @interface TSCEAbortObject
-- (TSCEAbortObject)initWithSecondsTillAbort:(int)a3;
+- (TSCEAbortObject)initWithSecondsTillAbort:(int)abort;
 @end
 
 @implementation TSCEAbortObject
 
-- (TSCEAbortObject)initWithSecondsTillAbort:(int)a3
+- (TSCEAbortObject)initWithSecondsTillAbort:(int)abort
 {
   v10.receiver = self;
   v10.super_class = TSCEAbortObject;
   v4 = [(TSCEAbortObject *)&v10 init];
   if (v4)
   {
-    v5 = dispatch_time(0, 1000000000 * (a3 & ~(a3 >> 31)));
+    v5 = dispatch_time(0, 1000000000 * (abort & ~(abort >> 31)));
     v6 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

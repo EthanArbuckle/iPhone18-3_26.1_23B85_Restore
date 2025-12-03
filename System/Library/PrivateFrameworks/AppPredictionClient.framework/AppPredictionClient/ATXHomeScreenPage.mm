@@ -1,20 +1,20 @@
 @interface ATXHomeScreenPage
 - (ATXHomeScreenPage)init;
-- (ATXHomeScreenPage)initWithCoder:(id)a3;
-- (BOOL)_containsWidgetWithExtensionBundleId:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXHomeScreenPage)initWithCoder:(id)coder;
+- (BOOL)_containsWidgetWithExtensionBundleId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)leafAppIcons;
 - (NSArray)leafIcons;
 - (id)_leafIconsFromExistingData;
 - (id)description;
 - (id)dictionaryRepresentationForIntrospection;
-- (id)initFromDictionaryRepresentation:(id)a3;
+- (id)initFromDictionaryRepresentation:(id)representation;
 - (id)nonFolderAppsOnPage;
 - (unint64_t)numberOfLeafIconSpots;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAppsConsideringFolders:(BOOL)a3 block:(id)a4;
-- (void)setPanels:(id)a3;
-- (void)setStacks:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAppsConsideringFolders:(BOOL)folders block:(id)block;
+- (void)setPanels:(id)panels;
+- (void)setStacks:(id)stacks;
 @end
 
 @implementation ATXHomeScreenPage
@@ -206,24 +206,24 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
   leafIcons = self->_leafIcons;
   if (leafIcons)
   {
-    v3 = leafIcons;
+    _leafIconsFromExistingData = leafIcons;
   }
 
-  else if ([(NSDictionary *)self->_webClipLocations count]|| (v3 = [(NSDictionary *)self->_appLocations count]) != 0)
+  else if ([(NSDictionary *)self->_webClipLocations count]|| (_leafIconsFromExistingData = [(NSDictionary *)self->_appLocations count]) != 0)
   {
-    v3 = [(ATXHomeScreenPage *)self _leafIconsFromExistingData];
+    _leafIconsFromExistingData = [(ATXHomeScreenPage *)self _leafIconsFromExistingData];
   }
 
-  return v3;
+  return _leafIconsFromExistingData;
 }
 
 - (unint64_t)numberOfLeafIconSpots
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(ATXHomeScreenPage *)self maxPortraitRows];
-  if (v3)
+  maxPortraitRows = [(ATXHomeScreenPage *)self maxPortraitRows];
+  if (maxPortraitRows)
   {
-    v4 = v3;
+    v4 = maxPortraitRows;
   }
 
   else
@@ -231,11 +231,11 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
     v4 = 6;
   }
 
-  v5 = [(ATXHomeScreenPage *)self maxPortraitColumns];
+  maxPortraitColumns = [(ATXHomeScreenPage *)self maxPortraitColumns];
   v6 = 4;
-  if (v5)
+  if (maxPortraitColumns)
   {
-    v6 = v5;
+    v6 = maxPortraitColumns;
   }
 
   v14 = 0u;
@@ -243,8 +243,8 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
   v7 = v6 * v4;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(ATXHomeScreenPage *)self stacks];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  stacks = [(ATXHomeScreenPage *)self stacks];
+  v9 = [stacks countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -255,13 +255,13 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(stacks);
         }
 
         v7 -= [*(*(&v14 + 1) + 8 * i) numberOfLeafIconSpots];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [stacks countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -270,36 +270,36 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
   return v7;
 }
 
-- (ATXHomeScreenPage)initWithCoder:(id)a3
+- (ATXHomeScreenPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = ATXHomeScreenPage;
   v5 = [(ATXHomeScreenPage *)&v38 init];
   if (v5)
   {
-    -[ATXHomeScreenPage setSuggestedPageType:](v5, "setSuggestedPageType:", [v4 decodeIntegerForKey:@"suggestedPageType"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    -[ATXHomeScreenPage setSuggestedPageType:](v5, "setSuggestedPageType:", [coderCopy decodeIntegerForKey:@"suggestedPageType"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     [(ATXHomeScreenPage *)v5 setUniqueIdentifier:v6];
 
-    -[ATXHomeScreenPage setPageIndex:](v5, "setPageIndex:", [v4 decodeIntegerForKey:@"pageIndex"]);
-    -[ATXHomeScreenPage setHidden:](v5, "setHidden:", [v4 decodeBoolForKey:@"hidden"]);
-    -[ATXHomeScreenPage setMaxPortraitRows:](v5, "setMaxPortraitRows:", [v4 decodeIntegerForKey:@"portraitRows"]);
-    -[ATXHomeScreenPage setMaxPortraitColumns:](v5, "setMaxPortraitColumns:", [v4 decodeIntegerForKey:@"portraitColumns"]);
+    -[ATXHomeScreenPage setPageIndex:](v5, "setPageIndex:", [coderCopy decodeIntegerForKey:@"pageIndex"]);
+    -[ATXHomeScreenPage setHidden:](v5, "setHidden:", [coderCopy decodeBoolForKey:@"hidden"]);
+    -[ATXHomeScreenPage setMaxPortraitRows:](v5, "setMaxPortraitRows:", [coderCopy decodeIntegerForKey:@"portraitRows"]);
+    -[ATXHomeScreenPage setMaxPortraitColumns:](v5, "setMaxPortraitColumns:", [coderCopy decodeIntegerForKey:@"portraitColumns"]);
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"stacks"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"stacks"];
     [(ATXHomeScreenPage *)v5 setStacks:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"panels"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"panels"];
     [(ATXHomeScreenPage *)v5 setPanels:v14];
 
     v15 = allowedLeafIconClasses();
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"leafIcons"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"leafIcons"];
     [(ATXHomeScreenPage *)v5 setLeafIcons:v16];
 
     v17 = objc_autoreleasePoolPush();
@@ -307,7 +307,7 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
     v19 = objc_opt_class();
     v20 = [v18 initWithObjects:{v19, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v17);
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"associatedModeUUIDs"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"associatedModeUUIDs"];
     [(ATXHomeScreenPage *)v5 setAssociatedModeUUIDs:v21];
 
     v22 = objc_autoreleasePoolPush();
@@ -315,57 +315,57 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
     v24 = objc_opt_class();
     v25 = [v23 initWithObjects:{v24, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v22);
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"candidateApps"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"candidateApps"];
     [(ATXHomeScreenPage *)v5 setCandidateApps:v26];
 
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = objc_opt_class();
     v30 = [v27 setWithObjects:{v28, v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"appLocations"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"appLocations"];
     [(ATXHomeScreenPage *)v5 setAppLocations:v31];
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = objc_opt_class();
     v35 = [v32 setWithObjects:{v33, v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"webClipLocations"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"webClipLocations"];
     [(ATXHomeScreenPage *)v5 setWebClipLocations:v36];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeInteger:-[ATXHomeScreenPage pageIndex](self forKey:{"pageIndex"), @"pageIndex"}];
-  [v8 encodeBool:-[ATXHomeScreenPage isHidden](self forKey:{"isHidden"), @"hidden"}];
-  [v8 encodeInteger:-[ATXHomeScreenPage maxPortraitRows](self forKey:{"maxPortraitRows"), @"portraitRows"}];
-  [v8 encodeInteger:-[ATXHomeScreenPage maxPortraitColumns](self forKey:{"maxPortraitColumns"), @"portraitColumns"}];
-  v4 = [(ATXHomeScreenPage *)self stacks];
-  [v8 encodeObject:v4 forKey:@"stacks"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ATXHomeScreenPage pageIndex](self forKey:{"pageIndex"), @"pageIndex"}];
+  [coderCopy encodeBool:-[ATXHomeScreenPage isHidden](self forKey:{"isHidden"), @"hidden"}];
+  [coderCopy encodeInteger:-[ATXHomeScreenPage maxPortraitRows](self forKey:{"maxPortraitRows"), @"portraitRows"}];
+  [coderCopy encodeInteger:-[ATXHomeScreenPage maxPortraitColumns](self forKey:{"maxPortraitColumns"), @"portraitColumns"}];
+  stacks = [(ATXHomeScreenPage *)self stacks];
+  [coderCopy encodeObject:stacks forKey:@"stacks"];
 
-  v5 = [(ATXHomeScreenPage *)self panels];
-  [v8 encodeObject:v5 forKey:@"panels"];
+  panels = [(ATXHomeScreenPage *)self panels];
+  [coderCopy encodeObject:panels forKey:@"panels"];
 
-  [v8 encodeObject:self->_leafIcons forKey:@"leafIcons"];
-  v6 = [(ATXHomeScreenPage *)self appLocations];
-  [v8 encodeObject:v6 forKey:@"appLocations"];
+  [coderCopy encodeObject:self->_leafIcons forKey:@"leafIcons"];
+  appLocations = [(ATXHomeScreenPage *)self appLocations];
+  [coderCopy encodeObject:appLocations forKey:@"appLocations"];
 
-  v7 = [(ATXHomeScreenPage *)self webClipLocations];
-  [v8 encodeObject:v7 forKey:@"webClipLocations"];
+  webClipLocations = [(ATXHomeScreenPage *)self webClipLocations];
+  [coderCopy encodeObject:webClipLocations forKey:@"webClipLocations"];
 
-  [v8 encodeInteger:self->_suggestedPageType forKey:@"suggestedPageType"];
-  [v8 encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
-  [v8 encodeObject:self->_associatedModeUUIDs forKey:@"associatedModeUUIDs"];
-  [v8 encodeObject:self->_candidateApps forKey:@"candidateApps"];
+  [coderCopy encodeInteger:self->_suggestedPageType forKey:@"suggestedPageType"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:self->_associatedModeUUIDs forKey:@"associatedModeUUIDs"];
+  [coderCopy encodeObject:self->_candidateApps forKey:@"candidateApps"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -375,7 +375,7 @@ uint64_t __47__ATXHomeScreenPage__leafIconsFromExistingData__block_invoke(uint64
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(ATXHomeScreenPage *)v5 pageIndex]!= self->_pageIndex || self->_hidden != [(ATXHomeScreenPage *)v5 isHidden])
       {
         goto LABEL_25;
@@ -488,12 +488,12 @@ LABEL_27:
   return v9;
 }
 
-- (void)setPanels:(id)a3
+- (void)setPanels:(id)panels
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_panels != a3)
+  if (self->_panels != panels)
   {
-    v4 = [a3 copy];
+    v4 = [panels copy];
     panels = self->_panels;
     self->_panels = v4;
 
@@ -529,12 +529,12 @@ LABEL_27:
   }
 }
 
-- (void)setStacks:(id)a3
+- (void)setStacks:(id)stacks
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_stacks != a3)
+  if (self->_stacks != stacks)
   {
-    v4 = [a3 copy];
+    v4 = [stacks copy];
     stacks = self->_stacks;
     self->_stacks = v4;
 
@@ -584,17 +584,17 @@ LABEL_27:
   return v4;
 }
 
-- (void)enumerateAppsConsideringFolders:(BOOL)a3 block:(id)a4
+- (void)enumerateAppsConsideringFolders:(BOOL)folders block:(id)block
 {
-  v4 = a3;
+  foldersCopy = folders;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(ATXHomeScreenPage *)self leafIcons];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  leafIcons = [(ATXHomeScreenPage *)self leafIcons];
+  v8 = [leafIcons countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -606,22 +606,22 @@ LABEL_27:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(leafIcons);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6[2](v6, v12);
+          blockCopy[2](blockCopy, v12);
         }
 
-        else if (v4)
+        else if (foldersCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v12 enumerateApps:v6];
+            [v12 enumerateApps:blockCopy];
           }
         }
 
@@ -629,7 +629,7 @@ LABEL_27:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [leafIcons countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -649,8 +649,8 @@ LABEL_27:
   [v3 appendFormat:@"Panels: %@; ", self->_panels];
   if ([(NSSet *)self->_associatedModeUUIDs count])
   {
-    v4 = [(NSSet *)self->_associatedModeUUIDs allObjects];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_associatedModeUUIDs allObjects];
+    v5 = [allObjects componentsJoinedByString:{@", "}];
     [v3 appendFormat:@"Associated mode UUIDs: %@; ", v5];
   }
 
@@ -686,8 +686,8 @@ LABEL_27:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
-        [v4 addObject:v10];
+        dictionaryRepresentation = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+        [v4 addObject:dictionaryRepresentation];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -716,8 +716,8 @@ LABEL_27:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
-        [v11 addObject:v17];
+        dictionaryRepresentation2 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
+        [v11 addObject:dictionaryRepresentation2];
       }
 
       v14 = [(NSArray *)v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -726,8 +726,8 @@ LABEL_27:
     while (v14);
   }
 
-  v18 = [(NSSet *)self->_associatedModeUUIDs allObjects];
-  [v3 setObject:v18 forKeyedSubscript:@"associatedModeUUIDs"];
+  allObjects = [(NSSet *)self->_associatedModeUUIDs allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"associatedModeUUIDs"];
 
   [v3 setObject:self->_uniqueIdentifier forKeyedSubscript:@"uniqueIdentifier"];
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_pageIndex];
@@ -744,12 +744,12 @@ LABEL_27:
 
   [v3 setObject:v4 forKeyedSubscript:@"stacks"];
   [v3 setObject:v11 forKeyedSubscript:@"panels"];
-  v23 = [(ATXHomeScreenPage *)self leafIcons];
-  v24 = [v23 _pas_mappedArrayWithTransform:&__block_literal_global_339];
+  leafIcons = [(ATXHomeScreenPage *)self leafIcons];
+  v24 = [leafIcons _pas_mappedArrayWithTransform:&__block_literal_global_339];
   [v3 setObject:v24 forKeyedSubscript:@"leafIcons"];
 
-  v25 = [(ATXHomeScreenPage *)self candidateApps];
-  v26 = [v25 _pas_mappedArrayWithTransform:&__block_literal_global_342];
+  candidateApps = [(ATXHomeScreenPage *)self candidateApps];
+  v26 = [candidateApps _pas_mappedArrayWithTransform:&__block_literal_global_342];
   [v3 setObject:v26 forKeyedSubscript:@"candidateApps"];
 
   v27 = [v3 copy];
@@ -757,32 +757,32 @@ LABEL_27:
   return v27;
 }
 
-- (id)initFromDictionaryRepresentation:(id)a3
+- (id)initFromDictionaryRepresentation:(id)representation
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v44.receiver = self;
   v44.super_class = ATXHomeScreenPage;
   v5 = [(ATXHomeScreenPage *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pageIndex"];
+    v6 = [representationCopy objectForKeyedSubscript:@"pageIndex"];
     v5->_pageIndex = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"hidden"];
+    v7 = [representationCopy objectForKeyedSubscript:@"hidden"];
     v5->_hidden = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"portraitRows"];
+    v8 = [representationCopy objectForKeyedSubscript:@"portraitRows"];
     v5->_maxPortraitRows = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"portraitColumns"];
+    v9 = [representationCopy objectForKeyedSubscript:@"portraitColumns"];
     v5->_maxPortraitColumns = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"uniqueIdentifier"];
+    v10 = [representationCopy objectForKeyedSubscript:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"associatedModeUUIDs"];
+    v12 = [representationCopy objectForKeyedSubscript:@"associatedModeUUIDs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -791,7 +791,7 @@ LABEL_27:
       v5->_associatedModeUUIDs = v13;
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"stacks", v12}];
+    v15 = [representationCopy objectForKeyedSubscript:{@"stacks", v12}];
     v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
     v40 = 0u;
     v41 = 0u;
@@ -830,8 +830,8 @@ LABEL_27:
     }
 
     objc_storeStrong(&v5->_stacks, v16);
-    v35 = v4;
-    v23 = [v4 objectForKeyedSubscript:@"panels"];
+    v35 = representationCopy;
+    v23 = [representationCopy objectForKeyedSubscript:@"panels"];
     v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v23, "count")}];
     v36 = 0u;
     v37 = 0u;
@@ -873,22 +873,22 @@ LABEL_27:
     v5->_panels = v24;
 
     v32 = v5;
-    v4 = v35;
+    representationCopy = v35;
   }
 
   return v5;
 }
 
-- (BOOL)_containsWidgetWithExtensionBundleId:(id)a3
+- (BOOL)_containsWidgetWithExtensionBundleId:(id)id
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(ATXHomeScreenPage *)self stacks];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  stacks = [(ATXHomeScreenPage *)self stacks];
+  v6 = [stacks countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -900,7 +900,7 @@ LABEL_27:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stacks);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -908,8 +908,8 @@ LABEL_27:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v11 = [v10 widgets];
-        v12 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        widgets = [v10 widgets];
+        v12 = [widgets countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v12)
         {
           v13 = v12;
@@ -920,11 +920,11 @@ LABEL_27:
             {
               if (*v22 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(widgets);
               }
 
-              v16 = [*(*(&v21 + 1) + 8 * j) extensionBundleId];
-              v17 = [v16 isEqualToString:v4];
+              extensionBundleId = [*(*(&v21 + 1) + 8 * j) extensionBundleId];
+              v17 = [extensionBundleId isEqualToString:idCopy];
 
               if (v17)
               {
@@ -934,7 +934,7 @@ LABEL_27:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v13 = [widgets countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v13)
             {
               continue;
@@ -947,7 +947,7 @@ LABEL_27:
         v8 = v20;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v7 = [stacks countByEnumeratingWithState:&v25 objects:v30 count:16];
       v18 = 0;
     }
 

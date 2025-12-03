@@ -1,7 +1,7 @@
 @interface HDSPSleepLockScreenStateMachineState
 - (BOOL)_isSleepLockScreenDisabled;
 - (int64_t)sleepLockScreenState;
-- (void)_updateStateForSleepMode:(int64_t)a3 reason:(unint64_t)a4;
+- (void)_updateStateForSleepMode:(int64_t)mode reason:(unint64_t)reason;
 - (void)didEnter;
 - (void)presentAlertForGoodMorning;
 - (void)updateState;
@@ -11,27 +11,27 @@
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v3 currentContext];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
 
-  if ([v6 hasStateTransitionOrInitializing])
+  if ([currentContext hasStateTransitionOrInitializing])
   {
-    v4 = [v6 previousState];
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    [v5 sleepLockScreenStateDidChange:-[HDSPSleepLockScreenStateMachineState sleepLockScreenState](self previousState:{"sleepLockScreenState"), objc_msgSend(v4, "sleepLockScreenState")}];
+    previousState = [currentContext previousState];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 sleepLockScreenStateDidChange:-[HDSPSleepLockScreenStateMachineState sleepLockScreenState](self previousState:{"sleepLockScreenState"), objc_msgSend(previousState, "sleepLockScreenState")}];
   }
 }
 
 - (void)presentAlertForGoodMorning
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  v4 = [v3 isLockScreenActive];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  isLockScreenActive = [infoProvider isLockScreenActive];
 
   v5 = HKSPLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isLockScreenActive)
   {
     if (v6)
     {
@@ -41,7 +41,7 @@
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] presenting good morning alert", v12, 0xCu);
     }
 
-    v8 = [v2 greetingState];
+    greetingState = [stateMachine greetingState];
   }
 
   else
@@ -54,22 +54,22 @@
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] skipping good morning alert, lock screen isn't active", v12, 0xCu);
     }
 
-    v8 = [v2 offState];
+    greetingState = [stateMachine offState];
   }
 
-  v10 = v8;
-  [v2 enterState:{v8, *v12}];
+  v10 = greetingState;
+  [stateMachine enterState:{greetingState, *v12}];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (void)updateState
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v3 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v6 sleepMode];
-  if ([v6 inUnscheduledSleepMode])
+  sleepMode = [infoProvider sleepMode];
+  if ([infoProvider inUnscheduledSleepMode])
   {
     v5 = 1;
   }
@@ -79,42 +79,42 @@
     v5 = 10;
   }
 
-  [(HDSPSleepLockScreenStateMachineState *)self _updateStateForSleepMode:v4 reason:v5];
+  [(HDSPSleepLockScreenStateMachineState *)self _updateStateForSleepMode:sleepMode reason:v5];
 }
 
-- (void)_updateStateForSleepMode:(int64_t)a3 reason:(unint64_t)a4
+- (void)_updateStateForSleepMode:(int64_t)mode reason:(unint64_t)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   if (![(HDSPSleepLockScreenStateMachineState *)self _isSleepLockScreenDisabled])
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
-        v7 = [v6 bedtimeState];
+        bedtimeState = [stateMachine bedtimeState];
       }
 
       else
       {
-        if (a3 != 1)
+        if (mode != 1)
         {
           goto LABEL_5;
         }
 
-        v7 = [v6 windDownState];
+        bedtimeState = [stateMachine windDownState];
       }
 
       goto LABEL_3;
     }
 
-    v8 = [v6 infoProvider];
-    v10 = [v8 sleepScheduleModel];
-    if ([v10 goodMorningScreenEnabledWithLogObject:self])
+    infoProvider = [stateMachine infoProvider];
+    sleepScheduleModel = [infoProvider sleepScheduleModel];
+    if ([sleepScheduleModel goodMorningScreenEnabledWithLogObject:self])
     {
       v11 = HKSPSleepModeChangeReasonTreatedAsExpected();
-      v12 = HKSPLogForCategory();
-      v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
+      offState = HKSPLogForCategory();
+      v13 = os_log_type_enabled(offState, OS_LOG_TYPE_DEFAULT);
       if (v11)
       {
         if (v13)
@@ -122,7 +122,7 @@
           v18 = 138543362;
           v19 = objc_opt_class();
           v14 = v19;
-          _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode is off, waiting to be told to present greeting", &v18, 0xCu);
+          _os_log_impl(&dword_269B11000, offState, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode is off, waiting to be told to present greeting", &v18, 0xCu);
         }
 
         goto LABEL_19;
@@ -137,21 +137,21 @@
         v19 = v15;
         v20 = 2114;
         v21 = v17;
-        _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode is off, not presenting greeting (%{public}@)", &v18, 0x16u);
+        _os_log_impl(&dword_269B11000, offState, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode is off, not presenting greeting (%{public}@)", &v18, 0x16u);
       }
     }
 
-    v12 = [v6 offState];
-    [v6 enterState:v12];
+    offState = [stateMachine offState];
+    [stateMachine enterState:offState];
 LABEL_19:
 
     goto LABEL_4;
   }
 
-  v7 = [v6 offState];
+  bedtimeState = [stateMachine offState];
 LABEL_3:
-  v8 = v7;
-  [v6 enterState:v7];
+  infoProvider = bedtimeState;
+  [stateMachine enterState:bedtimeState];
 LABEL_4:
 
 LABEL_5:
@@ -168,12 +168,12 @@ LABEL_5:
 - (BOOL)_isSleepLockScreenDisabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  v4 = [v3 sleepScheduleModel];
-  v5 = [v4 sleepSettings];
-  v6 = [v5 sleepModeOptions];
-  if ((v6 & 0x4000) == 0)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  sleepModeOptions = [sleepSettings sleepModeOptions];
+  if ((sleepModeOptions & 0x4000) == 0)
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -186,7 +186,7 @@ LABEL_5:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return (v6 & 0x4000) == 0;
+  return (sleepModeOptions & 0x4000) == 0;
 }
 
 @end

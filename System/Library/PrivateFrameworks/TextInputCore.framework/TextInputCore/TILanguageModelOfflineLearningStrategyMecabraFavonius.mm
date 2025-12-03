@@ -1,17 +1,17 @@
 @interface TILanguageModelOfflineLearningStrategyMecabraFavonius
-- (BOOL)incrementUsageCountsForMessages:(id)a3 withAdaptationContext:(id)a4;
-- (BOOL)learnMessages:(id)a3 withRecipientRecords:(id)a4;
-- (TILanguageModelOfflineLearningStrategyMecabraFavonius)initWithClientIdentifier:(id)a3;
-- (id)filterMessages:(id)a3;
-- (id)identifyLanguagesForMessages:(id)a3;
+- (BOOL)incrementUsageCountsForMessages:(id)messages withAdaptationContext:(id)context;
+- (BOOL)learnMessages:(id)messages withRecipientRecords:(id)records;
+- (TILanguageModelOfflineLearningStrategyMecabraFavonius)initWithClientIdentifier:(id)identifier;
+- (id)filterMessages:(id)messages;
+- (id)identifyLanguagesForMessages:(id)messages;
 @end
 
 @implementation TILanguageModelOfflineLearningStrategyMecabraFavonius
 
-- (id)identifyLanguagesForMessages:(id)a3
+- (id)identifyLanguagesForMessages:(id)messages
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -29,7 +29,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v33 count:16];
   if (v6)
   {
@@ -45,11 +45,11 @@
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 body];
-        v36.length = [(__CFString *)v11 length];
+        body = [v10 body];
+        v36.length = [(__CFString *)body length];
         v12 = v28[5];
         v36.location = 0;
-        v13 = CFStringTokenizerCopyBestStringLanguage(v11, v36);
+        v13 = CFStringTokenizerCopyBestStringLanguage(body, v36);
         if (v13)
         {
           v14 = v13;
@@ -88,23 +88,23 @@ void __86__TILanguageModelOfflineLearningStrategyMecabraFavonius_identifyLanguag
   *(v4 + 40) = v3;
 }
 
-- (BOOL)learnMessages:(id)a3 withRecipientRecords:(id)a4
+- (BOOL)learnMessages:(id)messages withRecipientRecords:(id)records
 {
-  v24 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messagesCopy = messages;
+  recordsCopy = records;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 1;
-  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count") + 1}];
-  v26 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count") + 1}];
+  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(recordsCopy, "count") + 1}];
+  v26 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(recordsCopy, "count") + 1}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = messagesCopy;
   v8 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v8)
   {
@@ -120,8 +120,8 @@ void __86__TILanguageModelOfflineLearningStrategyMecabraFavonius_identifyLanguag
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 recipient];
-        v14 = [v6 objectForKey:v13];
+        recipient = [v12 recipient];
+        v14 = [recordsCopy objectForKey:recipient];
 
         v15 = [v14 objectForKey:@"compositeName"];
         v16 = v15;
@@ -158,7 +158,7 @@ void __86__TILanguageModelOfflineLearningStrategyMecabraFavonius_identifyLanguag
   v27[1] = 3221225472;
   v27[2] = __92__TILanguageModelOfflineLearningStrategyMecabraFavonius_learnMessages_withRecipientRecords___block_invoke;
   v27[3] = &unk_278733698;
-  v27[4] = v24;
+  v27[4] = selfCopy;
   v28 = v26;
   v29 = &v34;
   v20 = v26;
@@ -199,27 +199,27 @@ void __92__TILanguageModelOfflineLearningStrategyMecabraFavonius_learnMessages_w
   }
 }
 
-- (BOOL)incrementUsageCountsForMessages:(id)a3 withAdaptationContext:(id)a4
+- (BOOL)incrementUsageCountsForMessages:(id)messages withAdaptationContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v7 = [(TILanguageModelOfflineLearningStrategyMecabraFavonius *)self identifyLanguagesForMessages:a3];
+  v7 = [(TILanguageModelOfflineLearningStrategyMecabraFavonius *)self identifyLanguagesForMessages:messages];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __111__TILanguageModelOfflineLearningStrategyMecabraFavonius_incrementUsageCountsForMessages_withAdaptationContext___block_invoke;
   v10[3] = &unk_278733698;
-  v11 = v6;
+  v11 = contextCopy;
   v12 = &v13;
   v10[4] = self;
-  v8 = v6;
+  v8 = contextCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v10];
-  LOBYTE(v6) = *(v14 + 24);
+  LOBYTE(contextCopy) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return v6;
+  return contextCopy;
 }
 
 void __111__TILanguageModelOfflineLearningStrategyMecabraFavonius_incrementUsageCountsForMessages_withAdaptationContext___block_invoke(void *a1, void *a2, void *a3, _BYTE *a4)
@@ -237,13 +237,13 @@ void __111__TILanguageModelOfflineLearningStrategyMecabraFavonius_incrementUsage
   }
 }
 
-- (id)filterMessages:(id)a3
+- (id)filterMessages:(id)messages
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 dateByAddingUnit:8 value:-9 toDate:v5 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:8 value:-9 toDate:v5 options:0];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
@@ -253,8 +253,8 @@ void __111__TILanguageModelOfflineLearningStrategyMecabraFavonius_incrementUsage
   v18 = v7;
   v8 = v7;
   v9 = v5;
-  v10 = [v4 indexesOfObjectsPassingTest:&v13];
-  v11 = [v4 objectsAtIndexes:{v10, v13, v14, v15, v16}];
+  v10 = [messagesCopy indexesOfObjectsPassingTest:&v13];
+  v11 = [messagesCopy objectsAtIndexes:{v10, v13, v14, v15, v16}];
 
   return v11;
 }
@@ -280,15 +280,15 @@ BOOL __72__TILanguageModelOfflineLearningStrategyMecabraFavonius_filterMessages_
   return v9;
 }
 
-- (TILanguageModelOfflineLearningStrategyMecabraFavonius)initWithClientIdentifier:(id)a3
+- (TILanguageModelOfflineLearningStrategyMecabraFavonius)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TILanguageModelOfflineLearningStrategyMecabraFavonius;
   v5 = [(TILanguageModelOfflineLearningStrategyMecabraFavonius *)&v9 init];
   if (v5)
   {
-    v6 = [TILanguageModelOfflineLearningTask taskWithClientIdentifier:v4 oneTimeTask:1];
+    v6 = [TILanguageModelOfflineLearningTask taskWithClientIdentifier:identifierCopy oneTimeTask:1];
     learningTask = v5->_learningTask;
     v5->_learningTask = v6;
   }

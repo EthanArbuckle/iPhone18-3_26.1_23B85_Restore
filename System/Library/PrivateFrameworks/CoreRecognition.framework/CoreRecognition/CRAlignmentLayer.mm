@@ -1,15 +1,15 @@
 @interface CRAlignmentLayer
 + (id)layer;
 - (CGPoint)cardNumberHorizontalDefaultPos;
-- (CGPoint)pointOnInfoLayerForPointOnCard:(CGPoint)a3;
+- (CGPoint)pointOnInfoLayerForPointOnCard:(CGPoint)card;
 - (CGRect)alignmentRect;
 - (CGRect)cardNumberHorizontalDefaultBounds;
 - (CRAlignmentLayer)init;
-- (void)animateFoundCardRect:(id)a3;
-- (void)animateFoundCodeParts:(id)a3 codePartPositions:(id)a4 codeFrameIndex:(unint64_t)a5 cardHolder:(id)a6 cardholderPosition:(CGPoint)a7 cardholderFrameIndex:(unint64_t)a8 expDate:(id)a9 expdatePosition:(CGPoint)a10 expDateFrameIndex:(unint64_t)a11 completionBlock:(id)a12;
+- (void)animateFoundCardRect:(id)rect;
+- (void)animateFoundCodeParts:(id)parts codePartPositions:(id)positions codeFrameIndex:(unint64_t)index cardHolder:(id)holder cardholderPosition:(CGPoint)position cardholderFrameIndex:(unint64_t)frameIndex expDate:(id)date expdatePosition:(CGPoint)self0 expDateFrameIndex:(unint64_t)self1 completionBlock:(id)self2;
 - (void)layoutSublayers;
-- (void)makeTextLayer:(id)a3 matchWidthOfText:(id)a4;
-- (void)propogateMaskColor:(id)a3 outlineColor:(id)a4 placementTextColor:(id)a5 capturedTextColor:(id)a6;
+- (void)makeTextLayer:(id)layer matchWidthOfText:(id)text;
+- (void)propogateMaskColor:(id)color outlineColor:(id)outlineColor placementTextColor:(id)textColor capturedTextColor:(id)capturedTextColor;
 - (void)resetLayer;
 @end
 
@@ -34,81 +34,81 @@
     [(CRAlignmentLayer *)v2 setBounds:0.0, 0.0, 85.6, 54.0];
     [(CRAlignmentLayer *)v3 setFrame:0.0, 0.0, 85.6, 54.0];
     [(CRAlignmentLayer *)v3 setHidden:0];
-    v4 = [MEMORY[0x277CD9F90] layer];
-    [(CRAlignmentLayer *)v3 setMaskLayer:v4];
+    layer = [MEMORY[0x277CD9F90] layer];
+    [(CRAlignmentLayer *)v3 setMaskLayer:layer];
 
-    v5 = [(CRAlignmentLayer *)v3 maskLayer];
+    maskLayer = [(CRAlignmentLayer *)v3 maskLayer];
     LODWORD(v6) = 1050253722;
-    [v5 setOpacity:v6];
+    [maskLayer setOpacity:v6];
 
     v7 = +[CRColor blackColor];
     v8 = v7;
-    v9 = [v7 CGColor];
-    v10 = [(CRAlignmentLayer *)v3 maskLayer];
-    [v10 setFillColor:v9];
+    cGColor = [v7 CGColor];
+    maskLayer2 = [(CRAlignmentLayer *)v3 maskLayer];
+    [maskLayer2 setFillColor:cGColor];
 
-    v11 = [(CRAlignmentLayer *)v3 maskLayer];
-    [v11 setFillRule:@"even-odd"];
+    maskLayer3 = [(CRAlignmentLayer *)v3 maskLayer];
+    [maskLayer3 setFillRule:@"even-odd"];
 
-    v12 = [(CRAlignmentLayer *)v3 maskLayer];
-    [(CRAlignmentLayer *)v3 addSublayer:v12];
+    maskLayer4 = [(CRAlignmentLayer *)v3 maskLayer];
+    [(CRAlignmentLayer *)v3 addSublayer:maskLayer4];
 
-    v13 = [MEMORY[0x277CD9F90] layer];
-    [(CRAlignmentLayer *)v3 setOutlineLayer:v13];
+    layer2 = [MEMORY[0x277CD9F90] layer];
+    [(CRAlignmentLayer *)v3 setOutlineLayer:layer2];
 
     v14 = +[CRColor clearColor];
     v15 = v14;
-    v16 = [v14 CGColor];
-    v17 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v17 setFillColor:v16];
+    cGColor2 = [v14 CGColor];
+    outlineLayer = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer setFillColor:cGColor2];
 
     v18 = +[CRColor whiteColor];
     v19 = v18;
-    v20 = [v18 CGColor];
-    v21 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v21 setStrokeColor:v20];
+    cGColor3 = [v18 CGColor];
+    outlineLayer2 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer2 setStrokeColor:cGColor3];
 
-    v22 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v22 setLineWidth:1.0];
+    outlineLayer3 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer3 setLineWidth:1.0];
 
     v23 = +[CRColor blackColor];
     v24 = v23;
-    v25 = [v23 CGColor];
-    v26 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v26 setShadowColor:v25];
+    cGColor4 = [v23 CGColor];
+    outlineLayer4 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer4 setShadowColor:cGColor4];
 
     v27 = *MEMORY[0x277CBF3A8];
     v28 = *(MEMORY[0x277CBF3A8] + 8);
-    v29 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v29 setShadowOffset:{v27, v28}];
+    outlineLayer5 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer5 setShadowOffset:{v27, v28}];
 
-    v30 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v30 setShadowRadius:10.0];
+    outlineLayer6 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer6 setShadowRadius:10.0];
 
-    v31 = [(CRAlignmentLayer *)v3 outlineLayer];
+    outlineLayer7 = [(CRAlignmentLayer *)v3 outlineLayer];
     LODWORD(v32) = 1045220557;
-    [v31 setShadowOpacity:v32];
+    [outlineLayer7 setShadowOpacity:v32];
 
-    v33 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v33 setMasksToBounds:0];
+    outlineLayer8 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer8 setMasksToBounds:0];
 
-    v34 = [MEMORY[0x277CD9F90] layer];
-    [v34 setFillRule:@"even-odd"];
+    layer3 = [MEMORY[0x277CD9F90] layer];
+    [layer3 setFillRule:@"even-odd"];
     v35 = +[CRColor whiteColor];
     v36 = v35;
-    [v34 setFillColor:{objc_msgSend(v35, "CGColor")}];
+    [layer3 setFillColor:{objc_msgSend(v35, "CGColor")}];
 
-    v37 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [v37 setMask:v34];
+    outlineLayer9 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [outlineLayer9 setMask:layer3];
 
-    v38 = [(CRAlignmentLayer *)v3 outlineLayer];
-    [(CRAlignmentLayer *)v3 addSublayer:v38];
+    outlineLayer10 = [(CRAlignmentLayer *)v3 outlineLayer];
+    [(CRAlignmentLayer *)v3 addSublayer:outlineLayer10];
 
     v39 = MEMORY[0x277D74300];
     [MEMORY[0x277D74300] labelFontSize];
     v103 = [v39 systemFontOfSize:?];
-    v40 = [MEMORY[0x277D759A0] mainScreen];
-    [v40 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v42 = v41;
 
     v43 = *MEMORY[0x277D740A8];
@@ -125,41 +125,41 @@
     v49 = [v48 localizedStringForKey:@"Position Card in this Frame" value:&stru_2859636D0 table:0];
     v50 = [v47 initWithString:v49 attributes:v46];
 
-    v51 = [MEMORY[0x277CD9FC8] layer];
-    [(CRAlignmentLayer *)v3 setInstructionLayer:v51];
+    layer4 = [MEMORY[0x277CD9FC8] layer];
+    [(CRAlignmentLayer *)v3 setInstructionLayer:layer4];
 
-    v52 = [(CRAlignmentLayer *)v3 instructionLayer];
-    [v52 setWrapped:1];
+    instructionLayer = [(CRAlignmentLayer *)v3 instructionLayer];
+    [instructionLayer setWrapped:1];
 
-    v53 = [(CRAlignmentLayer *)v3 instructionLayer];
-    [v53 setAlignmentMode:@"center"];
+    instructionLayer2 = [(CRAlignmentLayer *)v3 instructionLayer];
+    [instructionLayer2 setAlignmentMode:@"center"];
 
-    v54 = [(CRAlignmentLayer *)v3 instructionLayer];
-    [v54 setString:v50];
+    instructionLayer3 = [(CRAlignmentLayer *)v3 instructionLayer];
+    [instructionLayer3 setString:v50];
 
-    v55 = [(CRAlignmentLayer *)v3 instructionLayer];
-    [v55 setContentsScale:v42];
+    instructionLayer4 = [(CRAlignmentLayer *)v3 instructionLayer];
+    [instructionLayer4 setContentsScale:v42];
 
-    v56 = [(CRAlignmentLayer *)v3 instructionLayer];
-    [(CRAlignmentLayer *)v3 addSublayer:v56];
+    instructionLayer5 = [(CRAlignmentLayer *)v3 instructionLayer];
+    [(CRAlignmentLayer *)v3 addSublayer:instructionLayer5];
 
-    v57 = [MEMORY[0x277CD9ED0] layer];
-    [(CRAlignmentLayer *)v3 setInfoLayer:v57];
+    layer5 = [MEMORY[0x277CD9ED0] layer];
+    [(CRAlignmentLayer *)v3 setInfoLayer:layer5];
 
-    v58 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v58 setBounds:{0.0, 0.0, 85.6, 54.0}];
+    infoLayer = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer setBounds:{0.0, 0.0, 85.6, 54.0}];
 
-    v59 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v59 setOpacity:0.0];
+    infoLayer2 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer2 setOpacity:0.0];
 
-    v60 = [(CRAlignmentLayer *)v3 infoLayer];
-    [(CRAlignmentLayer *)v3 addSublayer:v60];
+    infoLayer3 = [(CRAlignmentLayer *)v3 infoLayer];
+    [(CRAlignmentLayer *)v3 addSublayer:infoLayer3];
 
-    v61 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v61 bounds];
+    infoLayer4 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer4 bounds];
     MidX = CGRectGetMidX(v111);
-    v63 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v63 bounds];
+    infoLayer5 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer5 bounds];
     [(CRAlignmentLayer *)v3 setCardNumberHorizontalDefaultPos:MidX, CGRectGetMidY(v112) + 6.0];
 
     v64 = v42 * 4.0;
@@ -172,99 +172,99 @@
     v68 = 1.0 / v64;
     do
     {
-      v69 = [MEMORY[0x277CD9FC8] layer];
+      layer6 = [MEMORY[0x277CD9FC8] layer];
       [(CRAlignmentLayer *)v3 cardNumberHorizontalDefaultBounds];
-      [v69 setBounds:?];
+      [layer6 setBounds:?];
       [(CRAlignmentLayer *)v3 cardNumberHorizontalDefaultPos];
-      [v69 setPosition:?];
+      [layer6 setPosition:?];
       CATransform3DMakeScale(&v107, 1.0 / v64, 1.0 / v64, 1.0);
       v106 = v107;
-      [v69 setTransform:&v106];
-      [v69 setFont:@"Spendcardium-Regular"];
-      [v69 setFontSize:v64 * 6.0];
-      v70 = [(CRAlignmentLayer *)v3 infoLayer];
-      [v70 addSublayer:v69];
+      [layer6 setTransform:&v106];
+      [layer6 setFont:@"Spendcardium-Regular"];
+      [layer6 setFontSize:v64 * 6.0];
+      infoLayer6 = [(CRAlignmentLayer *)v3 infoLayer];
+      [infoLayer6 addSublayer:layer6];
 
-      v71 = [(CRAlignmentLayer *)v3 cardNumberLayers];
-      [v71 addObject:v69];
+      cardNumberLayers = [(CRAlignmentLayer *)v3 cardNumberLayers];
+      [cardNumberLayers addObject:layer6];
 
       --v67;
     }
 
     while (v67);
-    v72 = [MEMORY[0x277CD9FC8] layer];
-    [(CRAlignmentLayer *)v3 setCardholderNameLayer:v72];
+    layer7 = [MEMORY[0x277CD9FC8] layer];
+    [(CRAlignmentLayer *)v3 setCardholderNameLayer:layer7];
 
-    v73 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    cardholderNameLayer = [(CRAlignmentLayer *)v3 cardholderNameLayer];
     v74 = v64 * 4.25;
     v75 = ceil(v64 * 4.25);
-    [v73 setBounds:{0.0, 0.0, v65, v75}];
+    [cardholderNameLayer setBounds:{0.0, 0.0, v65, v75}];
 
     CATransform3DMakeScale(&v105, v68, v68, 1.0);
-    v76 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    cardholderNameLayer2 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
     v106 = v105;
-    [v76 setTransform:&v106];
+    [cardholderNameLayer2 setTransform:&v106];
 
-    v77 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
-    [v77 setFont:@"Menlo-Bold"];
+    cardholderNameLayer3 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    [cardholderNameLayer3 setFont:@"Menlo-Bold"];
 
-    v78 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
-    [v78 setFontSize:v74];
+    cardholderNameLayer4 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    [cardholderNameLayer4 setFontSize:v74];
 
-    v79 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v79 bounds];
+    infoLayer7 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer7 bounds];
     MinX = CGRectGetMinX(v113);
-    v81 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v81 bounds];
+    infoLayer8 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer8 bounds];
     MaxY = CGRectGetMaxY(v114);
-    v83 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
-    [v83 setPosition:{MinX + 8.56, MaxY + -2.7}];
+    cardholderNameLayer5 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    [cardholderNameLayer5 setPosition:{MinX + 8.56, MaxY + -2.7}];
 
-    v84 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
-    [v84 setAlignmentMode:@"left"];
+    cardholderNameLayer6 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    [cardholderNameLayer6 setAlignmentMode:@"left"];
 
-    v85 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
-    [v85 setAnchorPoint:{0.0, 1.0}];
+    cardholderNameLayer7 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    [cardholderNameLayer7 setAnchorPoint:{0.0, 1.0}];
 
-    v86 = [(CRAlignmentLayer *)v3 infoLayer];
-    v87 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
-    [v86 addSublayer:v87];
+    infoLayer9 = [(CRAlignmentLayer *)v3 infoLayer];
+    cardholderNameLayer8 = [(CRAlignmentLayer *)v3 cardholderNameLayer];
+    [infoLayer9 addSublayer:cardholderNameLayer8];
 
-    v88 = [MEMORY[0x277CD9FC8] layer];
-    [(CRAlignmentLayer *)v3 setExpirationDateLayer:v88];
+    layer8 = [MEMORY[0x277CD9FC8] layer];
+    [(CRAlignmentLayer *)v3 setExpirationDateLayer:layer8];
 
-    v89 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v89 setBounds:{0.0, 0.0, v65, v75}];
+    expirationDateLayer = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [expirationDateLayer setBounds:{0.0, 0.0, v65, v75}];
 
-    v90 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v90 bounds];
+    infoLayer10 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer10 bounds];
     v91 = CGRectGetMidX(v115);
-    v92 = [(CRAlignmentLayer *)v3 infoLayer];
-    [v92 bounds];
+    infoLayer11 = [(CRAlignmentLayer *)v3 infoLayer];
+    [infoLayer11 bounds];
     v93 = CGRectGetMaxY(v116);
-    v94 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v94 setPosition:{v91 + 8.56, v93 + -10.8}];
+    expirationDateLayer2 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [expirationDateLayer2 setPosition:{v91 + 8.56, v93 + -10.8}];
 
     CATransform3DMakeScale(&v104, v68, v68, 1.0);
-    v95 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    expirationDateLayer3 = [(CRAlignmentLayer *)v3 expirationDateLayer];
     v106 = v104;
-    [v95 setTransform:&v106];
+    [expirationDateLayer3 setTransform:&v106];
 
-    v96 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v96 setFont:@"Menlo-Bold"];
+    expirationDateLayer4 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [expirationDateLayer4 setFont:@"Menlo-Bold"];
 
-    v97 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v97 setFontSize:v74];
+    expirationDateLayer5 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [expirationDateLayer5 setFontSize:v74];
 
-    v98 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v98 setAlignmentMode:@"left"];
+    expirationDateLayer6 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [expirationDateLayer6 setAlignmentMode:@"left"];
 
-    v99 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v99 setAnchorPoint:{0.0, 1.0}];
+    expirationDateLayer7 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [expirationDateLayer7 setAnchorPoint:{0.0, 1.0}];
 
-    v100 = [(CRAlignmentLayer *)v3 infoLayer];
-    v101 = [(CRAlignmentLayer *)v3 expirationDateLayer];
-    [v100 addSublayer:v101];
+    infoLayer12 = [(CRAlignmentLayer *)v3 infoLayer];
+    expirationDateLayer8 = [(CRAlignmentLayer *)v3 expirationDateLayer];
+    [infoLayer12 addSublayer:expirationDateLayer8];
   }
 
   return v3;
@@ -277,45 +277,45 @@
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(CRAlignmentLayer *)self delegate];
+  delegate = [(CRAlignmentLayer *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [(CRAlignmentLayer *)self delegate];
-    v14 = v13;
-    if (v13)
+    delegate2 = [(CRAlignmentLayer *)self delegate];
+    v14 = delegate2;
+    if (delegate2)
     {
-      v15 = [v13 parentViewController];
-      v16 = [v15 presentingViewController];
-      if (v16)
+      parentViewController = [delegate2 parentViewController];
+      presentingViewController = [parentViewController presentingViewController];
+      if (presentingViewController)
       {
-        v17 = [v14 parentViewController];
-        v18 = [v17 modalPresentationStyle];
+        parentViewController2 = [v14 parentViewController];
+        modalPresentationStyle = [parentViewController2 modalPresentationStyle];
 
-        if (v18)
+        if (modalPresentationStyle)
         {
           v19 = 0.0;
           v20 = 0.0;
           do
           {
-            v21 = [v14 topLayoutGuide];
-            [v21 length];
+            topLayoutGuide = [v14 topLayoutGuide];
+            [topLayoutGuide length];
             v23 = v22;
 
-            v24 = [v14 bottomLayoutGuide];
-            [v24 length];
+            bottomLayoutGuide = [v14 bottomLayoutGuide];
+            [bottomLayoutGuide length];
             v26 = v25;
 
-            v27 = [v14 parentViewController];
+            parentViewController3 = [v14 parentViewController];
             v19 = fmax(v19, v23);
             v20 = fmax(v20, v26);
 
-            v14 = v27;
+            v14 = parentViewController3;
           }
 
-          while (v27);
+          while (parentViewController3);
           goto LABEL_11;
         }
       }
@@ -324,10 +324,10 @@
       {
       }
 
-      v28 = [v14 view];
-      [v28 safeAreaInsets];
+      view = [v14 view];
+      [view safeAreaInsets];
       v19 = v29;
-      [v28 safeAreaInsets];
+      [view safeAreaInsets];
       v20 = v30;
     }
 
@@ -356,18 +356,18 @@ LABEL_11:
     height = v154.size.height;
   }
 
-  v34 = [(CRAlignmentLayer *)self instructionLayer];
-  v35 = [v34 string];
-  [v35 boundingRectWithSize:3 options:0 context:{width, height}];
+  instructionLayer = [(CRAlignmentLayer *)self instructionLayer];
+  string = [instructionLayer string];
+  [string boundingRectWithSize:3 options:0 context:{width, height}];
   v141 = v37;
   v143 = v36;
   v137 = v39;
   v139 = v38;
 
-  v40 = [(CRAlignmentLayer *)self instructionLayer];
-  LOBYTE(v35) = [v40 isHidden];
+  instructionLayer2 = [(CRAlignmentLayer *)self instructionLayer];
+  LOBYTE(string) = [instructionLayer2 isHidden];
 
-  if ((v35 & 1) == 0)
+  if ((string & 1) == 0)
   {
     v155.origin.y = v141;
     v155.origin.x = v143;
@@ -376,16 +376,16 @@ LABEL_11:
     height = height - (CGRectGetHeight(v155) + 8.0);
   }
 
-  v41 = [MEMORY[0x277D75418] currentDevice];
-  v42 = [v41 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v42)
+  if (userInterfaceIdiom)
   {
     v43 = 1.0;
-    if (v42 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v44 = [MEMORY[0x277D759A0] mainScreen];
-      [v44 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v46 = v45;
       v48 = v47;
       v50 = v49;
@@ -513,8 +513,8 @@ LABEL_23:
   v80 = CGPathCreateWithRect(v173, 0);
   CGPathAddPath(Mutable, 0, v80);
   CGPathAddPath(Mutable, 0, v70);
-  v81 = [(CRAlignmentLayer *)self outlineLayer];
-  [v81 setBounds:{0.0, 0.0, v67, v68}];
+  outlineLayer = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer setBounds:{0.0, 0.0, v67, v68}];
 
   v174.origin.x = v146;
   v174.origin.y = v145;
@@ -526,19 +526,19 @@ LABEL_23:
   v175.size.width = v59;
   v175.size.height = v62;
   v83 = CGRectGetMidY(v175);
-  v84 = [(CRAlignmentLayer *)self outlineLayer];
-  [v84 setPosition:{v82, v83}];
+  outlineLayer2 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer2 setPosition:{v82, v83}];
 
-  v85 = [(CRAlignmentLayer *)self outlineLayer];
-  [v85 setPath:v70];
+  outlineLayer3 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer3 setPath:v70];
 
-  v86 = [(CRAlignmentLayer *)self outlineLayer];
-  [v86 setShadowPath:v70];
+  outlineLayer4 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer4 setShadowPath:v70];
 
-  v87 = [(CRAlignmentLayer *)self outlineLayer];
-  v88 = [v87 mask];
+  outlineLayer5 = [(CRAlignmentLayer *)self outlineLayer];
+  mask = [outlineLayer5 mask];
 
-  if (v88)
+  if (mask)
   {
     v176.origin.x = 0.0;
     v176.origin.y = 0.0;
@@ -556,7 +556,7 @@ LABEL_23:
     v178.size.height = v92;
     CGPathAddRect(v93, 0, v178);
     CGPathAddPath(v93, 0, v70);
-    [v88 setBounds:{v89, v90, v91, v92}];
+    [mask setBounds:{v89, v90, v91, v92}];
     v179.origin.x = 0.0;
     v179.origin.y = 0.0;
     v179.size.width = v67;
@@ -566,30 +566,30 @@ LABEL_23:
     v180.origin.y = 0.0;
     v180.size.width = v67;
     v180.size.height = v68;
-    [v88 setPosition:{v94, CGRectGetMidY(v180)}];
-    [v88 setPath:v93];
+    [mask setPosition:{v94, CGRectGetMidY(v180)}];
+    [mask setPath:v93];
     CGPathRelease(v93);
   }
 
   CGPathRelease(v70);
-  v95 = [(CRAlignmentLayer *)self outlineLayer];
-  [v95 bounds];
+  outlineLayer6 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer6 bounds];
   v97 = v96;
   v99 = v98;
   v101 = v100;
   v103 = v102;
-  v104 = [(CRAlignmentLayer *)self maskLayer];
-  [v104 setBounds:{v97, v99, v101, v103}];
+  maskLayer = [(CRAlignmentLayer *)self maskLayer];
+  [maskLayer setBounds:{v97, v99, v101, v103}];
 
-  v105 = [(CRAlignmentLayer *)self outlineLayer];
-  [v105 position];
+  outlineLayer7 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer7 position];
   v107 = v106;
   v109 = v108;
-  v110 = [(CRAlignmentLayer *)self maskLayer];
-  [v110 setPosition:{v107, v109}];
+  maskLayer2 = [(CRAlignmentLayer *)self maskLayer];
+  [maskLayer2 setPosition:{v107, v109}];
 
-  v111 = [(CRAlignmentLayer *)self maskLayer];
-  [v111 setPath:Mutable];
+  maskLayer3 = [(CRAlignmentLayer *)self maskLayer];
+  [maskLayer3 setPath:Mutable];
 
   CGPathRelease(Mutable);
   CGPathRelease(v80);
@@ -603,42 +603,42 @@ LABEL_23:
   v182.size.height = v138;
   v182.size.width = v140;
   v113 = CGRectGetHeight(v182);
-  v114 = [(CRAlignmentLayer *)self instructionLayer];
-  [v114 setBounds:{0.0, 0.0, v112, ceil(v113)}];
+  instructionLayer3 = [(CRAlignmentLayer *)self instructionLayer];
+  [instructionLayer3 setBounds:{0.0, 0.0, v112, ceil(v113)}];
 
-  v115 = [(CRAlignmentLayer *)self outlineLayer];
-  [v115 position];
+  outlineLayer8 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer8 position];
   v117 = v116;
-  v118 = [(CRAlignmentLayer *)self outlineLayer];
-  [v118 position];
+  outlineLayer9 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer9 position];
   v120 = v119;
-  v121 = [(CRAlignmentLayer *)self outlineLayer];
-  [v121 bounds];
+  outlineLayer10 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer10 bounds];
   v122 = CGRectGetHeight(v183);
-  v123 = [(CRAlignmentLayer *)self instructionLayer];
-  [v123 bounds];
+  instructionLayer4 = [(CRAlignmentLayer *)self instructionLayer];
+  [instructionLayer4 bounds];
   v124 = CGRectGetHeight(v184);
-  v125 = [(CRAlignmentLayer *)self instructionLayer];
-  [v125 setPosition:{v117, v120 + v122 * 0.5 + 8.0 + v124 * 0.5}];
+  instructionLayer5 = [(CRAlignmentLayer *)self instructionLayer];
+  [instructionLayer5 setPosition:{v117, v120 + v122 * 0.5 + 8.0 + v124 * 0.5}];
 
-  v126 = [(CRAlignmentLayer *)self outlineLayer];
-  [v126 bounds];
+  outlineLayer11 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer11 bounds];
   v127 = CGRectGetWidth(v185);
-  v128 = [(CRAlignmentLayer *)self infoLayer];
-  [v128 bounds];
+  infoLayer = [(CRAlignmentLayer *)self infoLayer];
+  [infoLayer bounds];
   v129 = CGRectGetWidth(v186);
 
-  v130 = [(CRAlignmentLayer *)self outlineLayer];
-  [v130 position];
+  outlineLayer12 = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer12 position];
   v132 = v131;
   v134 = v133;
-  v135 = [(CRAlignmentLayer *)self infoLayer];
-  [v135 setPosition:{v132, v134}];
+  infoLayer2 = [(CRAlignmentLayer *)self infoLayer];
+  [infoLayer2 setPosition:{v132, v134}];
 
   CATransform3DMakeScale(&v148, v127 / v129, v127 / v129, 1.0);
-  v136 = [(CRAlignmentLayer *)self infoLayer];
+  infoLayer3 = [(CRAlignmentLayer *)self infoLayer];
   v147 = v148;
-  [v136 setTransform:&v147];
+  [infoLayer3 setTransform:&v147];
 }
 
 - (void)resetLayer
@@ -648,8 +648,8 @@ LABEL_23:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CRAlignmentLayer *)self cardNumberLayers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  cardNumberLayers = [(CRAlignmentLayer *)self cardNumberLayers];
+  v4 = [cardNumberLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -660,43 +660,43 @@ LABEL_23:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cardNumberLayers);
         }
 
         [*(*(&v12 + 1) + 8 * v6++) setString:0];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [cardNumberLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [(CRAlignmentLayer *)self cardholderNameLayer];
-  [v7 setString:0];
+  cardholderNameLayer = [(CRAlignmentLayer *)self cardholderNameLayer];
+  [cardholderNameLayer setString:0];
 
-  v8 = [(CRAlignmentLayer *)self expirationDateLayer];
-  [v8 setString:0];
+  expirationDateLayer = [(CRAlignmentLayer *)self expirationDateLayer];
+  [expirationDateLayer setString:0];
 
-  v9 = [(CRAlignmentLayer *)self instructionLayer];
+  instructionLayer = [(CRAlignmentLayer *)self instructionLayer];
   LODWORD(v10) = 1.0;
-  [v9 setOpacity:v10];
+  [instructionLayer setOpacity:v10];
 
-  v11 = [(CRAlignmentLayer *)self infoLayer];
-  [v11 setOpacity:0.0];
+  infoLayer = [(CRAlignmentLayer *)self infoLayer];
+  [infoLayer setOpacity:0.0];
 }
 
 - (CGRect)alignmentRect
 {
-  v3 = [(CRAlignmentLayer *)self outlineLayer];
-  [v3 bounds];
+  outlineLayer = [(CRAlignmentLayer *)self outlineLayer];
+  [outlineLayer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CRAlignmentLayer *)self outlineLayer];
-  [(CRAlignmentLayer *)self convertRect:v12 fromLayer:v5, v7, v9, v11];
+  outlineLayer2 = [(CRAlignmentLayer *)self outlineLayer];
+  [(CRAlignmentLayer *)self convertRect:outlineLayer2 fromLayer:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -713,21 +713,21 @@ LABEL_23:
   return result;
 }
 
-- (CGPoint)pointOnInfoLayerForPointOnCard:(CGPoint)a3
+- (CGPoint)pointOnInfoLayerForPointOnCard:(CGPoint)card
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = card.y;
+  x = card.x;
+  if (card.x != *MEMORY[0x277CBF348] || card.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(CRAlignmentLayer *)self infoLayer];
-    [v7 bounds];
+    infoLayer = [(CRAlignmentLayer *)self infoLayer];
+    [infoLayer bounds];
     v9 = v8;
 
-    v10 = [(CRAlignmentLayer *)self infoLayer];
-    [v10 bounds];
+    infoLayer2 = [(CRAlignmentLayer *)self infoLayer];
+    [infoLayer2 bounds];
     MinX = CGRectGetMinX(v19);
-    v12 = [(CRAlignmentLayer *)self infoLayer];
-    [v12 bounds];
+    infoLayer3 = [(CRAlignmentLayer *)self infoLayer];
+    [infoLayer3 bounds];
     MaxY = CGRectGetMaxY(v20);
     v14 = v9 / 85.6;
     v15 = v14;
@@ -742,47 +742,47 @@ LABEL_23:
   return result;
 }
 
-- (void)makeTextLayer:(id)a3 matchWidthOfText:(id)a4
+- (void)makeTextLayer:(id)layer matchWidthOfText:(id)text
 {
-  v16 = a3;
-  v5 = a4;
+  layerCopy = layer;
+  textCopy = text;
   v6 = MEMORY[0x277D74300];
-  v7 = [v16 font];
-  [v16 fontSize];
-  v8 = [v6 fontWithName:v7 size:?];
+  font = [layerCopy font];
+  [layerCopy fontSize];
+  v8 = [v6 fontWithName:font size:?];
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v8 forKey:*MEMORY[0x277D740A8]];
-  [v5 sizeWithAttributes:v9];
+  [textCopy sizeWithAttributes:v9];
   v11 = v10;
 
-  [v16 bounds];
+  [layerCopy bounds];
   v13 = v12;
-  [v16 bounds];
+  [layerCopy bounds];
   v15 = v14;
-  [v16 bounds];
-  [v16 setBounds:{v13, v15, v11}];
+  [layerCopy bounds];
+  [layerCopy setBounds:{v13, v15, v11}];
 }
 
-- (void)animateFoundCodeParts:(id)a3 codePartPositions:(id)a4 codeFrameIndex:(unint64_t)a5 cardHolder:(id)a6 cardholderPosition:(CGPoint)a7 cardholderFrameIndex:(unint64_t)a8 expDate:(id)a9 expdatePosition:(CGPoint)a10 expDateFrameIndex:(unint64_t)a11 completionBlock:(id)a12
+- (void)animateFoundCodeParts:(id)parts codePartPositions:(id)positions codeFrameIndex:(unint64_t)index cardHolder:(id)holder cardholderPosition:(CGPoint)position cardholderFrameIndex:(unint64_t)frameIndex expDate:(id)date expdatePosition:(CGPoint)self0 expDateFrameIndex:(unint64_t)self1 completionBlock:(id)self2
 {
-  y = a10.y;
-  x = a10.x;
-  v16 = a7.y;
-  v17 = a7.x;
+  y = expdatePosition.y;
+  x = expdatePosition.x;
+  v16 = position.y;
+  v17 = position.x;
   v192 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v184 = a4;
-  v182 = a6;
-  v178 = a9;
-  v177 = a12;
+  partsCopy = parts;
+  positionsCopy = positions;
+  holderCopy = holder;
+  dateCopy = date;
+  blockCopy = block;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setValue:MEMORY[0x277CBEC38] forKey:@"disableActions"];
-  if ([v184 count] == 1)
+  if ([positionsCopy count] == 1)
   {
-    v22 = [v184 objectAtIndex:0];
+    v22 = [positionsCopy objectAtIndex:0];
     NSPointFromString(v22);
 
-    v23 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    cardNumberLayers = [(CRAlignmentLayer *)self cardNumberLayers];
+    v24 = [cardNumberLayers objectAtIndexedSubscript:0];
     [v24 setAlignmentMode:@"center"];
 
     [(CRAlignmentLayer *)self cardNumberHorizontalDefaultBounds];
@@ -790,31 +790,31 @@ LABEL_23:
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v34 = [v33 objectAtIndexedSubscript:0];
+    cardNumberLayers2 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v34 = [cardNumberLayers2 objectAtIndexedSubscript:0];
     [v34 setBounds:{v26, v28, v30, v32}];
 
-    v35 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v36 = [v35 objectAtIndexedSubscript:0];
+    cardNumberLayers3 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v36 = [cardNumberLayers3 objectAtIndexedSubscript:0];
     [v36 setAnchorPoint:{0.5, 0.5}];
 
     [(CRAlignmentLayer *)self cardNumberHorizontalDefaultPos];
     [(CRAlignmentLayer *)self pointOnInfoLayerForPointOnCard:?];
     v38 = v37;
     v40 = v39;
-    v41 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v42 = [v41 objectAtIndexedSubscript:0];
+    cardNumberLayers4 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v42 = [cardNumberLayers4 objectAtIndexedSubscript:0];
     [v42 setPosition:{v38, v40}];
   }
 
   else
   {
-    v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v184, "count")}];
+    v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(positionsCopy, "count")}];
     v189 = 0u;
     v190 = 0u;
     v187 = 0u;
     v188 = 0u;
-    v12 = v184;
+    v12 = positionsCopy;
     v44 = [v12 countByEnumeratingWithState:&v187 objects:v191 count:16];
     if (v44)
     {
@@ -859,19 +859,19 @@ LABEL_23:
       v56 = [v12 objectAtIndex:v53];
       v57 = NSPointFromString(v56).y;
 
-      v58 = [(CRAlignmentLayer *)self cardNumberLayers];
-      v59 = [v58 objectAtIndexedSubscript:v53];
+      cardNumberLayers5 = [(CRAlignmentLayer *)self cardNumberLayers];
+      v59 = [cardNumberLayers5 objectAtIndexedSubscript:v53];
       [v59 setAlignmentMode:@"left"];
 
-      v60 = [(CRAlignmentLayer *)self cardNumberLayers];
-      v61 = [v60 objectAtIndexedSubscript:v53];
+      cardNumberLayers6 = [(CRAlignmentLayer *)self cardNumberLayers];
+      v61 = [cardNumberLayers6 objectAtIndexedSubscript:v53];
       [v61 setAnchorPoint:{0.0, 1.0}];
 
       [(CRAlignmentLayer *)self pointOnInfoLayerForPointOnCard:v54, v57];
       v63 = v62;
       v65 = v64;
-      v66 = [(CRAlignmentLayer *)self cardNumberLayers];
-      v67 = [v66 objectAtIndexedSubscript:v53];
+      cardNumberLayers7 = [(CRAlignmentLayer *)self cardNumberLayers];
+      v67 = [cardNumberLayers7 objectAtIndexedSubscript:v53];
       [v67 setPosition:{v63, v65}];
 
       ++v53;
@@ -886,8 +886,8 @@ LABEL_23:
     [(CRAlignmentLayer *)self pointOnInfoLayerForPointOnCard:v17, v16];
     v73 = v72;
     v75 = v74;
-    v76 = [(CRAlignmentLayer *)self cardholderNameLayer];
-    [v76 setPosition:{v73, v75}];
+    cardholderNameLayer = [(CRAlignmentLayer *)self cardholderNameLayer];
+    [cardholderNameLayer setPosition:{v73, v75}];
 
     v69 = *v68;
     v70 = v68[1];
@@ -898,21 +898,21 @@ LABEL_23:
     [(CRAlignmentLayer *)self pointOnInfoLayerForPointOnCard:x, y];
     v79 = v78;
     v81 = v80;
-    v82 = [(CRAlignmentLayer *)self expirationDateLayer];
-    [v82 setPosition:{v79, v81}];
+    expirationDateLayer = [(CRAlignmentLayer *)self expirationDateLayer];
+    [expirationDateLayer setPosition:{v79, v81}];
   }
 
-  v83 = [(CRAlignmentLayer *)self infoLayer];
-  [v83 bounds];
+  infoLayer = [(CRAlignmentLayer *)self infoLayer];
+  [infoLayer bounds];
   v85 = v84;
-  v86 = [(CRAlignmentLayer *)self infoLayer];
-  [v86 bounds];
+  infoLayer2 = [(CRAlignmentLayer *)self infoLayer];
+  [infoLayer2 bounds];
   v88 = v87;
 
-  if ([v184 count] >= 2)
+  if ([positionsCopy count] >= 2)
   {
-    v89 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v90 = [v89 subarrayWithRange:{0, objc_msgSend(v184, "count")}];
+    cardNumberLayers8 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v90 = [cardNumberLayers8 subarrayWithRange:{0, objc_msgSend(positionsCopy, "count")}];
     v91 = [v90 mutableCopy];
 
     [v91 sortUsingComparator:&__block_literal_global_167];
@@ -942,35 +942,35 @@ LABEL_23:
   }
 
   v108 = objc_alloc(MEMORY[0x277CD9FC8]);
-  v109 = [(CRAlignmentLayer *)self cardNumberLayers];
-  v110 = [v109 objectAtIndex:0];
+  cardNumberLayers9 = [(CRAlignmentLayer *)self cardNumberLayers];
+  v110 = [cardNumberLayers9 objectAtIndex:0];
   v186 = [v108 initWithLayer:v110];
 
-  v111 = [(CRAlignmentLayer *)self infoLayer];
-  [v111 addSublayer:v186];
+  infoLayer3 = [(CRAlignmentLayer *)self infoLayer];
+  [infoLayer3 addSublayer:v186];
 
-  v112 = [(CRAlignmentLayer *)self cardNumberLayers];
-  v113 = [v112 objectAtIndex:0];
+  cardNumberLayers10 = [(CRAlignmentLayer *)self cardNumberLayers];
+  v113 = [cardNumberLayers10 objectAtIndex:0];
   [v113 frame];
   v115 = v114;
   v117 = v116;
   width = v118;
   height = v120;
 
-  v122 = a11;
+  dateFrameIndexCopy = dateFrameIndex;
   v123 = v88 + -1.0;
-  for (k = 1; k < [v21 count]; ++k)
+  for (k = 1; k < [partsCopy count]; ++k)
   {
-    v125 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v126 = k < [v125 count];
+    cardNumberLayers11 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v126 = k < [cardNumberLayers11 count];
 
     if (!v126)
     {
       break;
     }
 
-    v127 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v128 = [v127 objectAtIndex:k];
+    cardNumberLayers12 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v128 = [cardNumberLayers12 objectAtIndex:k];
     [v128 frame];
     v196.origin.x = v129;
     v196.origin.y = v130;
@@ -990,49 +990,49 @@ LABEL_23:
   [v186 setFrame:{v115, v117, width, height}];
   v183 = [MEMORY[0x277CBEB18] arrayWithObject:v186];
   v133 = MEMORY[0x277CBEB18];
-  v134 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v134 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v179 = [v133 arrayWithObject:v134];
 
-  if (a8 != -1)
+  if (frameIndex != -1)
   {
-    v135 = [(CRAlignmentLayer *)self cardholderNameLayer];
-    [v183 addObject:v135];
+    cardholderNameLayer2 = [(CRAlignmentLayer *)self cardholderNameLayer];
+    [v183 addObject:cardholderNameLayer2];
 
-    v136 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
+    v136 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:frameIndex];
     [v179 addObject:v136];
   }
 
-  if (a11 != -1)
+  if (dateFrameIndex != -1)
   {
-    v137 = [(CRAlignmentLayer *)self expirationDateLayer];
-    [v183 addObject:v137];
+    expirationDateLayer2 = [(CRAlignmentLayer *)self expirationDateLayer];
+    [v183 addObject:expirationDateLayer2];
 
-    v138 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a11];
+    v138 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:dateFrameIndex];
     [v179 addObject:v138];
   }
 
-  for (m = 0; m < [v21 count]; ++m)
+  for (m = 0; m < [partsCopy count]; ++m)
   {
-    v140 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v122 = m < [v140 count];
+    cardNumberLayers13 = [(CRAlignmentLayer *)self cardNumberLayers];
+    dateFrameIndexCopy = m < [cardNumberLayers13 count];
 
-    if ((v122 & 1) == 0)
+    if ((dateFrameIndexCopy & 1) == 0)
     {
       break;
     }
 
-    v141 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v122 = [v141 objectAtIndexedSubscript:m];
-    v142 = [v21 objectAtIndex:m];
-    [(CRAlignmentLayer *)self makeTextLayer:v122 matchWidthOfText:v142];
+    cardNumberLayers14 = [(CRAlignmentLayer *)self cardNumberLayers];
+    dateFrameIndexCopy = [cardNumberLayers14 objectAtIndexedSubscript:m];
+    v142 = [partsCopy objectAtIndex:m];
+    [(CRAlignmentLayer *)self makeTextLayer:dateFrameIndexCopy matchWidthOfText:v142];
   }
 
-  v143 = [(CRAlignmentLayer *)self cardholderNameLayer];
-  [(CRAlignmentLayer *)self makeTextLayer:v143 matchWidthOfText:v182];
+  cardholderNameLayer3 = [(CRAlignmentLayer *)self cardholderNameLayer];
+  [(CRAlignmentLayer *)self makeTextLayer:cardholderNameLayer3 matchWidthOfText:holderCopy];
 
-  v181 = [v178 stringByReplacingOccurrencesOfString:@"0" withString:@"O"];
-  v144 = [(CRAlignmentLayer *)self expirationDateLayer];
-  [(CRAlignmentLayer *)self makeTextLayer:v144 matchWidthOfText:v181];
+  v181 = [dateCopy stringByReplacingOccurrencesOfString:@"0" withString:@"O"];
+  expirationDateLayer3 = [(CRAlignmentLayer *)self expirationDateLayer];
+  [(CRAlignmentLayer *)self makeTextLayer:expirationDateLayer3 matchWidthOfText:v181];
 
   sortOverlappingCALayers(v183, v179, 0.0, 1.0, v85, v123);
   keepAllLayersWithinHorizontalBounds(v183, 0.0, 1.0, v85);
@@ -1042,18 +1042,18 @@ LABEL_23:
   v147 = 0;
   v148 = v146 - v115;
   v150 = v149 - v117;
-  while (v147 < [v21 count])
+  while (v147 < [partsCopy count])
   {
-    v151 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v122 = v147 < [v151 count];
+    cardNumberLayers15 = [(CRAlignmentLayer *)self cardNumberLayers];
+    dateFrameIndexCopy = v147 < [cardNumberLayers15 count];
 
-    if ((v122 & 1) == 0)
+    if ((dateFrameIndexCopy & 1) == 0)
     {
       break;
     }
 
-    v122 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v152 = [v122 objectAtIndexedSubscript:v147];
+    dateFrameIndexCopy = [(CRAlignmentLayer *)self cardNumberLayers];
+    v152 = [dateFrameIndexCopy objectAtIndexedSubscript:v147];
 
     [v152 position];
     v154 = v153;
@@ -1065,22 +1065,22 @@ LABEL_23:
 
   [v186 removeFromSuperlayer];
   [MEMORY[0x277CD9FF0] setValue:MEMORY[0x277CBEC28] forKey:@"disableActions"];
-  for (n = 0; n < [v21 count]; ++n)
+  for (n = 0; n < [partsCopy count]; ++n)
   {
-    v157 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v158 = n < [v157 count];
+    cardNumberLayers16 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v158 = n < [cardNumberLayers16 count];
 
     if (!v158)
     {
       break;
     }
 
-    v159 = [v21 objectAtIndexedSubscript:n];
+    v159 = [partsCopy objectAtIndexedSubscript:n];
     if (v159)
     {
       v160 = MEMORY[0x277CCACA8];
-      v122 = [v21 objectAtIndexedSubscript:n];
-      v12 = [v160 _newZStringWithString:v122];
+      dateFrameIndexCopy = [partsCopy objectAtIndexedSubscript:n];
+      v12 = [v160 _newZStringWithString:dateFrameIndexCopy];
       v161 = v12;
     }
 
@@ -1089,8 +1089,8 @@ LABEL_23:
       v161 = 0;
     }
 
-    v162 = [(CRAlignmentLayer *)self cardNumberLayers];
-    v163 = [v162 objectAtIndexedSubscript:n];
+    cardNumberLayers17 = [(CRAlignmentLayer *)self cardNumberLayers];
+    v163 = [cardNumberLayers17 objectAtIndexedSubscript:n];
     [v163 setString:v161];
 
     if (v159)
@@ -1098,7 +1098,7 @@ LABEL_23:
     }
   }
 
-  if (v182)
+  if (holderCopy)
   {
     v164 = [MEMORY[0x277CCACA8] _newZStringWithString:?];
   }
@@ -1108,10 +1108,10 @@ LABEL_23:
     v164 = 0;
   }
 
-  v165 = [(CRAlignmentLayer *)self cardholderNameLayer];
-  [v165 setString:v164];
+  cardholderNameLayer4 = [(CRAlignmentLayer *)self cardholderNameLayer];
+  [cardholderNameLayer4 setString:v164];
 
-  if (v182)
+  if (holderCopy)
   {
   }
 
@@ -1125,16 +1125,16 @@ LABEL_23:
     v166 = 0;
   }
 
-  v167 = [(CRAlignmentLayer *)self expirationDateLayer];
-  [v167 setString:v166];
+  expirationDateLayer4 = [(CRAlignmentLayer *)self expirationDateLayer];
+  [expirationDateLayer4 setString:v166];
 
   if (v181)
   {
   }
 
   [MEMORY[0x277CD9FF0] commit];
-  v168 = [(CRAlignmentLayer *)self instructionLayer];
-  [v168 setOpacity:0.0];
+  instructionLayer = [(CRAlignmentLayer *)self instructionLayer];
+  [instructionLayer setOpacity:0.0];
 
   [MEMORY[0x277CD9FF0] begin];
   v169 = MEMORY[0x277CD9FF0];
@@ -1142,19 +1142,19 @@ LABEL_23:
   v171 = [MEMORY[0x277CCABB0] numberWithFloat:v170];
   [v169 setValue:v171 forKey:@"animationDuration"];
 
-  v172 = [(CRAlignmentLayer *)self maskLayer];
-  BoundingBox = CGPathGetBoundingBox([v172 path]);
+  maskLayer = [(CRAlignmentLayer *)self maskLayer];
+  BoundingBox = CGPathGetBoundingBox([maskLayer path]);
   v173 = CGPathCreateWithRect(BoundingBox, 0);
 
-  v174 = [(CRAlignmentLayer *)self maskLayer];
-  [v174 setPath:v173];
+  maskLayer2 = [(CRAlignmentLayer *)self maskLayer];
+  [maskLayer2 setPath:v173];
 
   CGPathRelease(v173);
-  v175 = [(CRAlignmentLayer *)self infoLayer];
+  infoLayer4 = [(CRAlignmentLayer *)self infoLayer];
   LODWORD(v176) = 1.0;
-  [v175 setOpacity:v176];
+  [infoLayer4 setOpacity:v176];
 
-  [MEMORY[0x277CD9FF0] setCompletionBlock:v177];
+  [MEMORY[0x277CD9FF0] setCompletionBlock:blockCopy];
   [MEMORY[0x277CD9FF0] commit];
 }
 
@@ -1181,10 +1181,10 @@ uint64_t __184__CRAlignmentLayer_animateFoundCodeParts_codePartPositions_codeFra
   return v9;
 }
 
-- (void)animateFoundCardRect:(id)a3
+- (void)animateFoundCardRect:(id)rect
 {
   v75 = *MEMORY[0x277D85DE8];
-  *&v67.size.width = a3;
+  *&v67.size.width = rect;
   if (*&v67.size.width)
   {
     v4 = 0;
@@ -1264,14 +1264,14 @@ uint64_t __184__CRAlignmentLayer_animateFoundCodeParts_codePartPositions_codeFra
       v33 = atan((v31 - v29) / (v32 - v30)) * 180.0;
     }
 
-    v34 = [(CRAlignmentLayer *)self outlineLayer];
-    [v34 bounds];
+    outlineLayer = [(CRAlignmentLayer *)self outlineLayer];
+    [outlineLayer bounds];
     v36 = v35;
     v38 = v37;
     v40 = v39;
     v42 = v41;
-    v43 = [(CRAlignmentLayer *)self outlineLayer];
-    [(CRAlignmentLayer *)self convertRect:v43 fromLayer:v36, v38, v40, v42];
+    outlineLayer2 = [(CRAlignmentLayer *)self outlineLayer];
+    [(CRAlignmentLayer *)self convertRect:outlineLayer2 fromLayer:v36, v38, v40, v42];
     v81 = CGRectInset(v80, -38.0, -38.0);
     x = v81.origin.x;
     y = v81.origin.y;
@@ -1317,53 +1317,53 @@ uint64_t __184__CRAlignmentLayer_animateFoundCodeParts_codePartPositions_codeFra
     while (v51 != 64);
     if ((v48 & (fabs(v64) <= 15.0)) == 1)
     {
-      v54 = [(CRAlignmentLayer *)self instructionLayer];
-      [v54 opacity];
+      instructionLayer = [(CRAlignmentLayer *)self instructionLayer];
+      [instructionLayer opacity];
       v56 = v55;
 
       if (v56 != 0.0)
       {
-        v57 = [(CRAlignmentLayer *)self instructionLayer];
-        [v57 setOpacity:0.0];
+        instructionLayer2 = [(CRAlignmentLayer *)self instructionLayer];
+        [instructionLayer2 setOpacity:0.0];
       }
     }
   }
 }
 
-- (void)propogateMaskColor:(id)a3 outlineColor:(id)a4 placementTextColor:(id)a5 capturedTextColor:(id)a6
+- (void)propogateMaskColor:(id)color outlineColor:(id)outlineColor placementTextColor:(id)textColor capturedTextColor:(id)capturedTextColor
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
+  textColorCopy = textColor;
+  capturedTextColorCopy = capturedTextColor;
   v38 = 0.0;
-  [v10 getWhite:0 alpha:&v38];
-  v14 = [(CRAlignmentLayer *)self maskLayer];
+  [colorCopy getWhite:0 alpha:&v38];
+  maskLayer = [(CRAlignmentLayer *)self maskLayer];
   HIDWORD(v15) = HIDWORD(v38);
   *&v15 = v38;
-  [v14 setOpacity:v15];
+  [maskLayer setOpacity:v15];
 
-  v16 = [(CRAlignmentLayer *)self maskLayer];
-  v17 = [v10 colorWithAlphaComponent:1.0];
+  maskLayer2 = [(CRAlignmentLayer *)self maskLayer];
+  v17 = [colorCopy colorWithAlphaComponent:1.0];
   v18 = v17;
-  [v16 setFillColor:{objc_msgSend(v17, "CGColor")}];
+  [maskLayer2 setFillColor:{objc_msgSend(v17, "CGColor")}];
 
-  v19 = [(CRAlignmentLayer *)self outlineLayer];
-  v20 = [v11 colorWithAlphaComponent:1.0];
+  outlineLayer = [(CRAlignmentLayer *)self outlineLayer];
+  v20 = [outlineColorCopy colorWithAlphaComponent:1.0];
   v21 = v20;
-  [v19 setStrokeColor:{objc_msgSend(v20, "CGColor")}];
+  [outlineLayer setStrokeColor:{objc_msgSend(v20, "CGColor")}];
 
-  v22 = [(CRAlignmentLayer *)self instructionLayer];
-  v23 = v12;
-  [v22 setForegroundColor:{objc_msgSend(v12, "CGColor")}];
+  instructionLayer = [(CRAlignmentLayer *)self instructionLayer];
+  v23 = textColorCopy;
+  [instructionLayer setForegroundColor:{objc_msgSend(textColorCopy, "CGColor")}];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = [(CRAlignmentLayer *)self cardNumberLayers];
-  v25 = [v24 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  cardNumberLayers = [(CRAlignmentLayer *)self cardNumberLayers];
+  v25 = [cardNumberLayers countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v25)
   {
     v26 = *v35;
@@ -1374,29 +1374,29 @@ uint64_t __184__CRAlignmentLayer_animateFoundCodeParts_codePartPositions_codeFra
       {
         if (*v35 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(cardNumberLayers);
         }
 
         v28 = *(*(&v34 + 1) + 8 * v27);
-        v29 = v13;
-        [v28 setForegroundColor:{objc_msgSend(v13, "CGColor")}];
+        v29 = capturedTextColorCopy;
+        [v28 setForegroundColor:{objc_msgSend(capturedTextColorCopy, "CGColor")}];
         ++v27;
       }
 
       while (v25 != v27);
-      v25 = [v24 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v25 = [cardNumberLayers countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v25);
   }
 
-  v30 = [(CRAlignmentLayer *)self cardholderNameLayer];
-  v31 = v13;
-  [v30 setForegroundColor:{objc_msgSend(v13, "CGColor")}];
+  cardholderNameLayer = [(CRAlignmentLayer *)self cardholderNameLayer];
+  v31 = capturedTextColorCopy;
+  [cardholderNameLayer setForegroundColor:{objc_msgSend(capturedTextColorCopy, "CGColor")}];
 
-  v32 = [(CRAlignmentLayer *)self expirationDateLayer];
-  v33 = v13;
-  [v32 setForegroundColor:{objc_msgSend(v13, "CGColor")}];
+  expirationDateLayer = [(CRAlignmentLayer *)self expirationDateLayer];
+  v33 = capturedTextColorCopy;
+  [expirationDateLayer setForegroundColor:{objc_msgSend(capturedTextColorCopy, "CGColor")}];
 }
 
 - (CGPoint)cardNumberHorizontalDefaultPos

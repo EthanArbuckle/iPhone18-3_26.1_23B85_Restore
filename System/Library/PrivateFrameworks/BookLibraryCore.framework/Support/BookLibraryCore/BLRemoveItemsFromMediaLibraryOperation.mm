@@ -1,19 +1,19 @@
 @interface BLRemoveItemsFromMediaLibraryOperation
-- (BLRemoveItemsFromMediaLibraryOperation)initWithStoreIDsToRemove:(id)a3;
+- (BLRemoveItemsFromMediaLibraryOperation)initWithStoreIDsToRemove:(id)remove;
 - (void)run;
 @end
 
 @implementation BLRemoveItemsFromMediaLibraryOperation
 
-- (BLRemoveItemsFromMediaLibraryOperation)initWithStoreIDsToRemove:(id)a3
+- (BLRemoveItemsFromMediaLibraryOperation)initWithStoreIDsToRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   v9.receiver = self;
   v9.super_class = BLRemoveItemsFromMediaLibraryOperation;
   v5 = [(BLOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [removeCopy copy];
     storeIDsToRemove = v5->_storeIDsToRemove;
     v5->_storeIDsToRemove = v6;
   }
@@ -27,8 +27,8 @@
   v4 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyMediaType equalToValue:&off_1001299F8];
   v5 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyPurchaseHistoryID equalToInteger:0];
   v6 = ML3TrackPropertyStoreItemID;
-  v7 = [(BLRemoveItemsFromMediaLibraryOperation *)self storeIDsToRemove];
-  v8 = [ML3ContainsPredicate predicateWithProperty:v6 values:v7];
+  storeIDsToRemove = [(BLRemoveItemsFromMediaLibraryOperation *)self storeIDsToRemove];
+  v8 = [ML3ContainsPredicate predicateWithProperty:v6 values:storeIDsToRemove];
 
   v25[0] = v4;
   v25[1] = v8;

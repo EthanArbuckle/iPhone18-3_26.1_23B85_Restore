@@ -1,26 +1,26 @@
 @interface UIInputViewSetPlacement_FloatingAssistantApplicatorForNonKeyboard
 - (UIEdgeInsets)inputAssistantPadding;
-- (id)initForOwner:(id)a3 withPlacement:(id)a4;
+- (id)initForOwner:(id)owner withPlacement:(id)placement;
 - (void)invalidate;
 @end
 
 @implementation UIInputViewSetPlacement_FloatingAssistantApplicatorForNonKeyboard
 
-- (id)initForOwner:(id)a3 withPlacement:(id)a4
+- (id)initForOwner:(id)owner withPlacement:(id)placement
 {
-  v6 = a3;
-  v7 = [(UIInputViewSetPlacementWrapper *)UIInputViewSetPlacementAssistantOnScreenForNonKeyboard placementWithPlacement:a4];
+  ownerCopy = owner;
+  v7 = [(UIInputViewSetPlacementWrapper *)UIInputViewSetPlacementAssistantOnScreenForNonKeyboard placementWithPlacement:placement];
   v10.receiver = self;
   v10.super_class = UIInputViewSetPlacement_FloatingAssistantApplicatorForNonKeyboard;
-  v8 = [(UIInputViewSetPlacement_GenericApplicator *)&v10 initForOwner:v6 withPlacement:v7];
+  v8 = [(UIInputViewSetPlacement_GenericApplicator *)&v10 initForOwner:ownerCopy withPlacement:v7];
 
   return v8;
 }
 
 - (void)invalidate
 {
-  v3 = [(UIInputViewSetPlacement_FloatingAssistantApplicator *)self hostView];
-  [v3 setCompact:0];
+  hostView = [(UIInputViewSetPlacement_FloatingAssistantApplicator *)self hostView];
+  [hostView setCompact:0];
 
   v4.receiver = self;
   v4.super_class = UIInputViewSetPlacement_FloatingAssistantApplicatorForNonKeyboard;
@@ -30,22 +30,22 @@
 - (UIEdgeInsets)inputAssistantPadding
 {
   WeakRetained = objc_loadWeakRetained(&self->super.super.super._owner);
-  v4 = [WeakRetained placement];
-  v5 = [v4 isCompactAssistantView];
+  placement = [WeakRetained placement];
+  isCompactAssistantView = [placement isCompactAssistantView];
 
-  if (v5)
+  if (isCompactAssistantView)
   {
     v6 = objc_loadWeakRetained(&self->super.super.super._owner);
-    v7 = [v6 containerView];
-    [v7 frame];
+    containerView = [v6 containerView];
+    [containerView frame];
     v9 = v8;
 
     v10 = objc_loadWeakRetained(&self->super.super.super._owner);
-    v11 = [v10 placement];
+    placement2 = [v10 placement];
     objc_opt_class();
-    LOBYTE(v7) = objc_opt_isKindOfClass();
+    LOBYTE(containerView) = objc_opt_isKindOfClass();
 
-    if (v7)
+    if (containerView)
     {
       v12 = -16.0;
       v13 = v9 + -75.0 + -16.0;

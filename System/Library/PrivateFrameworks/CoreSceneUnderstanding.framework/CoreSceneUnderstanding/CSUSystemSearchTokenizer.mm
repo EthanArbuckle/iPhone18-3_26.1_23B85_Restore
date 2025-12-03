@@ -1,9 +1,9 @@
 @interface CSUSystemSearchTokenizer
-+ (id)SystemSearchTokenizerForRevision:(int64_t)a3 error:(id *)a4;
++ (id)SystemSearchTokenizerForRevision:(int64_t)revision error:(id *)error;
 + (id)availableRevisionsForSystemSearchTokenizer;
-- (CSUSystemSearchTokenizer)initWithRevision:(int64_t)a3 error:(id *)a4;
-- (id)getTokenIDsForText:(id)a3;
-- (id)getTokensForText:(id)a3;
+- (CSUSystemSearchTokenizer)initWithRevision:(int64_t)revision error:(id *)error;
+- (id)getTokenIDsForText:(id)text;
+- (id)getTokensForText:(id)text;
 @end
 
 @implementation CSUSystemSearchTokenizer
@@ -17,21 +17,21 @@
   return v10;
 }
 
-+ (id)SystemSearchTokenizerForRevision:(int64_t)a3 error:(id *)a4
++ (id)SystemSearchTokenizerForRevision:(int64_t)revision error:(id *)error
 {
   v6 = [CSUSystemSearchTokenizer alloc];
-  v9 = objc_msgSend_initWithRevision_error_(v6, v7, a3, a4, v8);
+  v9 = objc_msgSend_initWithRevision_error_(v6, v7, revision, error, v8);
 
   return v9;
 }
 
-- (CSUSystemSearchTokenizer)initWithRevision:(int64_t)a3 error:(id *)a4
+- (CSUSystemSearchTokenizer)initWithRevision:(int64_t)revision error:(id *)error
 {
-  self->_revision = a3;
-  *a4 = 0;
-  if (a3 == 5)
+  self->_revision = revision;
+  *error = 0;
+  if (revision == 5)
   {
-    v7 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 1, a4, v4);
+    v7 = objc_msgSend_TextEncoderE5MLConfigurationForRevision_error_(CSUTextEncoderE5MLConfiguration, a2, 1, error, v4);
     v12 = objc_msgSend_vocabularyModelPath(v7, v8, v9, v10, v11);
     v13 = v12;
     v18 = objc_msgSend_UTF8String(v13, v14, v15, v16, v17);
@@ -58,27 +58,27 @@
     sub_1AC060A04();
   }
 
-  if (a3 == 2)
+  if (revision == 2)
   {
-    objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, a2, @"tokenizer revision CSUSystemSearchTextEncoderV1ConfigurationRevision_v2_0_English not supported!", a4, v4);
+    objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, a2, @"tokenizer revision CSUSystemSearchTextEncoderV1ConfigurationRevision_v2_0_English not supported!", error, v4);
   }
 
   else
   {
-    objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, a2, @"tokenizer revision unknown!", a4, v4);
+    objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, a2, @"tokenizer revision unknown!", error, v4);
   }
-  *a4 = ;
+  *error = ;
 
   return 0;
 }
 
-- (id)getTokenIDsForText:(id)a3
+- (id)getTokenIDsForText:(id)text
 {
-  v4 = a3;
-  v9 = v4;
+  textCopy = text;
+  v9 = textCopy;
   if (self->_toLower)
   {
-    v10 = objc_msgSend_lowercaseString(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_lowercaseString(textCopy, v5, v6, v7, v8);
 
     v9 = v10;
   }
@@ -147,13 +147,13 @@
   return v24;
 }
 
-- (id)getTokensForText:(id)a3
+- (id)getTokensForText:(id)text
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  textCopy = text;
+  if (textCopy)
   {
-    v38 = objc_msgSend_getTokenIDsForText_(self, v4, v7, v5, v6);
+    v38 = objc_msgSend_getTokenIDsForText_(self, v4, textCopy, v5, v6);
     v8 = objc_opt_new();
     v44 = 0u;
     v45 = 0u;

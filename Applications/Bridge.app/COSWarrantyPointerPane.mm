@@ -16,13 +16,13 @@
 - (id)markupString
 {
   v2 = +[PBBridgeWatchAttributeController sharedDeviceController];
-  v3 = [UIApp activeWatch];
-  [v2 setDevice:v3];
+  activeWatch = [UIApp activeWatch];
+  [v2 setDevice:activeWatch];
 
-  LODWORD(v3) = [v2 hasTwoYearWarranty];
+  LODWORD(activeWatch) = [v2 hasTwoYearWarranty];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (activeWatch)
   {
     v6 = @"WARRANTY_POINTER_DETAIL_2Y";
   }

@@ -1,30 +1,30 @@
 @interface IMDMessageTranslator
-+ (BOOL)shouldTranslateMessageItems:(id)a3;
-+ (BOOL)shouldTranslateMessagesForChat:(id)a3;
-+ (void)translateMessageItems:(NSArray *)a3 forChat:(IMDChat *)a4 incoming:(BOOL)a5 completion:(id)a6;
++ (BOOL)shouldTranslateMessageItems:(id)items;
++ (BOOL)shouldTranslateMessagesForChat:(id)chat;
++ (void)translateMessageItems:(NSArray *)items forChat:(IMDChat *)chat incoming:(BOOL)incoming completion:(id)completion;
 - (IMDMessageTranslator)init;
 @end
 
 @implementation IMDMessageTranslator
 
-+ (BOOL)shouldTranslateMessagesForChat:(id)a3
++ (BOOL)shouldTranslateMessagesForChat:(id)chat
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 sharedFeatureFlags];
-  v7 = [v6 isAutomaticIncomingTranslationEnabled];
+  chatCopy = chat;
+  sharedFeatureFlags = [v4 sharedFeatureFlags];
+  isAutomaticIncomingTranslationEnabled = [sharedFeatureFlags isAutomaticIncomingTranslationEnabled];
 
-  if (v7 && [v5 isAutomaticallyTranslating])
+  if (isAutomaticIncomingTranslationEnabled && [chatCopy isAutomaticallyTranslating])
   {
-    v8 = [v5 translationLanguageIdentifier];
+    translationLanguageIdentifier = [chatCopy translationLanguageIdentifier];
 
-    if (!v8)
+    if (!translationLanguageIdentifier)
     {
       return 0;
     }
 
     v9 = 1;
-    v5 = v8;
+    chatCopy = translationLanguageIdentifier;
   }
 
   else
@@ -35,7 +35,7 @@
   return v9;
 }
 
-+ (BOOL)shouldTranslateMessageItems:(id)a3
++ (BOOL)shouldTranslateMessageItems:(id)items
 {
   sub_22B4D01A0(0, &qword_28141F288, 0x277D1AA70);
   v3 = sub_22B7DB918();
@@ -44,19 +44,19 @@
   return v4 & 1;
 }
 
-+ (void)translateMessageItems:(NSArray *)a3 forChat:(IMDChat *)a4 incoming:(BOOL)a5 completion:(id)a6
++ (void)translateMessageItems:(NSArray *)items forChat:(IMDChat *)chat incoming:(BOOL)incoming completion:(id)completion
 {
   v11 = sub_22B6F0AD4(&qword_27D8CD5C0, &qword_22B7F8CF0);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
+  *(v16 + 16) = items;
+  *(v16 + 24) = chat;
+  *(v16 + 32) = incoming;
   *(v16 + 40) = v15;
-  *(v16 + 48) = a1;
+  *(v16 + 48) = self;
   v17 = sub_22B7DBA58();
   (*(*(v17 - 8) + 56))(v14, 1, 1, v17);
   v18 = swift_allocObject();
@@ -69,8 +69,8 @@
   v19[3] = 0;
   v19[4] = &unk_22B7F8D08;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
+  itemsCopy = items;
+  chatCopy = chat;
   sub_22B7C0EFC(0, 0, v14, &unk_22B7F8D10, v19);
 }
 

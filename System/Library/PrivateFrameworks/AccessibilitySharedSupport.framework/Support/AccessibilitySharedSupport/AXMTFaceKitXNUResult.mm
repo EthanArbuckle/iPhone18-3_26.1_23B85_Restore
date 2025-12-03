@@ -1,41 +1,41 @@
 @interface AXMTFaceKitXNUResult
-- (AXMTFaceKitXNUResult)initWithFaceKitTrackedFaceDictionary:(id)a3 semanticsDictionary:(id)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5 expressions:(id)a6 referenceDimensionsValue:(id)a7;
+- (AXMTFaceKitXNUResult)initWithFaceKitTrackedFaceDictionary:(id)dictionary semanticsDictionary:(id)semanticsDictionary sampleBuffer:(opaqueCMSampleBuffer *)buffer expressions:(id)expressions referenceDimensionsValue:(id)value;
 - (CGPoint)projectedPoint;
 - (CGRect)boundingBoxInImageCoordinates;
 - (CGRect)boundingBoxNormalized;
 - (CGSize)referenceDimensions;
-- (__n128)setPose:(__n128)a3;
-- (id)pointForLandmark:(id)a3;
+- (__n128)setPose:(__n128)pose;
+- (id)pointForLandmark:(id)landmark;
 @end
 
 @implementation AXMTFaceKitXNUResult
 
-- (AXMTFaceKitXNUResult)initWithFaceKitTrackedFaceDictionary:(id)a3 semanticsDictionary:(id)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5 expressions:(id)a6 referenceDimensionsValue:(id)a7
+- (AXMTFaceKitXNUResult)initWithFaceKitTrackedFaceDictionary:(id)dictionary semanticsDictionary:(id)semanticsDictionary sampleBuffer:(opaqueCMSampleBuffer *)buffer expressions:(id)expressions referenceDimensionsValue:(id)value
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dictionaryCopy = dictionary;
+  semanticsDictionaryCopy = semanticsDictionary;
+  expressionsCopy = expressions;
+  valueCopy = value;
   v52.receiver = self;
   v52.super_class = AXMTFaceKitXNUResult;
   v16 = [(AXMTFaceKitXNUResult *)&v52 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [expressionsCopy copy];
     v18 = *(v16 + 7);
     *(v16 + 7) = v17;
 
-    if (v15)
+    if (valueCopy)
     {
-      [v15 sizeValue];
+      [valueCopy sizeValue];
       *(v16 + 10) = v19;
       *(v16 + 11) = v20;
     }
 
     v16[32] = 0;
-    v21 = [v12 objectForKeyedSubscript:sub_100025EC4()];
+    v21 = [dictionaryCopy objectForKeyedSubscript:sub_100025EC4()];
     v22 = v21;
-    if (v12)
+    if (dictionaryCopy)
     {
       size = NSZeroRect.size;
       rect.origin = NSZeroRect.origin;
@@ -50,9 +50,9 @@
       v24 = rect.size;
       *(v16 + 9) = rect.origin;
       *(v16 + 10) = v24;
-      if (a5)
+      if (buffer)
       {
-        ImageBuffer = CMSampleBufferGetImageBuffer(a5);
+        ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
         if (ImageBuffer)
         {
           v26 = ImageBuffer;
@@ -69,7 +69,7 @@
     }
 
     v50 = v22;
-    v29 = [v12 objectForKeyedSubscript:sub_1000230A0()];
+    v29 = [dictionaryCopy objectForKeyedSubscript:sub_1000230A0()];
     v30 = [v29 objectForKeyedSubscript:sub_100027528()];
 
     v31 = [v30 objectForKeyedSubscript:sub_100025A00()];
@@ -100,14 +100,14 @@
       *(v16 + 14) = v42;
     }
 
-    if (v13)
+    if (semanticsDictionaryCopy)
     {
-      v43 = [v13 copy];
+      v43 = [semanticsDictionaryCopy copy];
       v44 = *(v16 + 6);
       *(v16 + 6) = v43;
     }
 
-    v45 = [v12 objectForKeyedSubscript:sub_100025DD0()];
+    v45 = [dictionaryCopy objectForKeyedSubscript:sub_100025DD0()];
     [objc_opt_class() _projectZAxisVectorUsingRGBCameraDictionary:v45 pose:{*v34, *(v16 + 24), *(v16 + 26), *(v16 + 28)}];
     *(v16 + 12) = v46;
     *(v16 + 13) = v47;
@@ -119,10 +119,10 @@ LABEL_19:
   return v48;
 }
 
-- (id)pointForLandmark:(id)a3
+- (id)pointForLandmark:(id)landmark
 {
-  v4 = a3;
-  v5 = [(AXMTFaceKitXNUResult *)self semanticsDictionary];
+  landmarkCopy = landmark;
+  semanticsDictionary = [(AXMTFaceKitXNUResult *)self semanticsDictionary];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -144,12 +144,12 @@ LABEL_19:
     _Unwind_Resume(v16);
   }
 
-  v8 = [v5 objectForKeyedSubscript:*v6];
+  v8 = [semanticsDictionary objectForKeyedSubscript:*v6];
 
-  if ([v8 count] && objc_msgSend(v8, "containsObject:", v4) && (v9 = objc_msgSend(v8, "indexOfObject:", v4), v9 != 0x7FFFFFFFFFFFFFFFLL) && (v10 = v9, -[AXMTFaceKitXNUResult landmarkPointsInImageCoordinates](self, "landmarkPointsInImageCoordinates"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 < v12))
+  if ([v8 count] && objc_msgSend(v8, "containsObject:", landmarkCopy) && (v9 = objc_msgSend(v8, "indexOfObject:", landmarkCopy), v9 != 0x7FFFFFFFFFFFFFFFLL) && (v10 = v9, -[AXMTFaceKitXNUResult landmarkPointsInImageCoordinates](self, "landmarkPointsInImageCoordinates"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 < v12))
   {
-    v13 = [(AXMTFaceKitXNUResult *)self landmarkPointsInImageCoordinates];
-    v14 = [v13 objectAtIndexedSubscript:v10];
+    landmarkPointsInImageCoordinates = [(AXMTFaceKitXNUResult *)self landmarkPointsInImageCoordinates];
+    v14 = [landmarkPointsInImageCoordinates objectAtIndexedSubscript:v10];
   }
 
   else
@@ -186,10 +186,10 @@ LABEL_19:
   return result;
 }
 
-- (__n128)setPose:(__n128)a3
+- (__n128)setPose:(__n128)pose
 {
   result[11] = a2;
-  result[12] = a3;
+  result[12] = pose;
   result[13] = a4;
   result[14] = a5;
   return result;

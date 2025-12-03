@@ -1,52 +1,52 @@
 @interface ActionPanel
-- (ActionPanel)initWithTabDocument:(id)a3 activityDelegate:(id)a4 menuStyle:(int64_t)a5;
+- (ActionPanel)initWithTabDocument:(id)document activityDelegate:(id)delegate menuStyle:(int64_t)style;
 - (id)downloadsViewController;
 - (id)excludedActivityTypes;
 - (void)_executeActivity;
-- (void)_performActivity:(id)a3;
-- (void)_prepareActivity:(id)a3 completion:(id)a4;
-- (void)_prepareMail:(id)a3 completion:(id)a4;
-- (void)_preparePostToSocialNetwork:(id)a3;
+- (void)_performActivity:(id)activity;
+- (void)_prepareActivity:(id)activity completion:(id)completion;
+- (void)_prepareMail:(id)mail completion:(id)completion;
+- (void)_preparePostToSocialNetwork:(id)network;
 - (void)_reload;
-- (void)activityDidComplete:(id)a3 withReturnedItems:(id)a4 success:(BOOL)a5;
-- (void)setSharingURL:(id)a3;
+- (void)activityDidComplete:(id)complete withReturnedItems:(id)items success:(BOOL)success;
+- (void)setSharingURL:(id)l;
 - (void)updateReloadActivity;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ActionPanel
 
-- (ActionPanel)initWithTabDocument:(id)a3 activityDelegate:(id)a4 menuStyle:(int64_t)a5
+- (ActionPanel)initWithTabDocument:(id)document activityDelegate:(id)delegate menuStyle:(int64_t)style
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = customActivities(v9, a5, v10, 0);
-  if (([v9 isBlank] & 1) != 0 || objc_msgSend(v9, "isShowingStartPageOverriddenByExtension"))
+  documentCopy = document;
+  delegateCopy = delegate;
+  v11 = customActivities(documentCopy, style, delegateCopy, 0);
+  if (([documentCopy isBlank] & 1) != 0 || objc_msgSend(documentCopy, "isShowingStartPageOverriddenByExtension"))
   {
-    a5 = 1;
+    style = 1;
   }
 
-  v12 = itemProviderCollection(v9, a5);
-  v13 = [v9 cachedCanonicalURLOrURLForSharing];
-  v14 = [v9 urlForSharing];
+  v12 = itemProviderCollection(documentCopy, style);
+  cachedCanonicalURLOrURLForSharing = [documentCopy cachedCanonicalURLOrURLForSharing];
+  urlForSharing = [documentCopy urlForSharing];
   v32.receiver = self;
   v32.super_class = ActionPanel;
-  v15 = [(_SFActivityViewController *)&v32 initWithActivityItemProviderCollection:v12 applicationActivities:v11 sharingURL:v13 sourceURL:v14];
+  v15 = [(_SFActivityViewController *)&v32 initWithActivityItemProviderCollection:v12 applicationActivities:v11 sharingURL:cachedCanonicalURLOrURLForSharing sourceURL:urlForSharing];
 
   if (v15)
   {
-    objc_storeStrong(&v15->_tabDocument, a3);
-    objc_storeStrong(&v15->_activityDelegate, a4);
-    v16 = [v9 sharingExtensionController];
-    [(_SFActivityViewController *)v15 setSharingExtensionController:v16];
+    objc_storeStrong(&v15->_tabDocument, document);
+    objc_storeStrong(&v15->_activityDelegate, delegate);
+    sharingExtensionController = [documentCopy sharingExtensionController];
+    [(_SFActivityViewController *)v15 setSharingExtensionController:sharingExtensionController];
 
-    v17 = [(_SFActivityViewController *)v15 customizationController];
-    [v17 setDelegate:v15];
+    customizationController = [(_SFActivityViewController *)v15 customizationController];
+    [customizationController setDelegate:v15];
 
-    v15->_menuStyle = a5;
-    if (a5 == 1)
+    v15->_menuStyle = style;
+    if (style == 1)
     {
       [(ActionPanel *)v15 setSharingStyle:2];
       [(ActionPanel *)v15 setHideHeaderView:1];
@@ -84,7 +84,7 @@
           if (objc_opt_isKindOfClass())
           {
             [v23 setParentActivityViewController:v15];
-            [v23 setBrowserDocument:v9];
+            [v23 setBrowserDocument:documentCopy];
           }
 
           objc_opt_class();
@@ -113,8 +113,8 @@
       while (v20);
     }
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v15 selector:sel__reload name:*MEMORY[0x277D4A9A8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__reload name:*MEMORY[0x277D4A9A8] object:0];
 
     v25 = v15;
     v11 = v27;
@@ -123,43 +123,43 @@
   return v15;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ActionPanel;
-  [(ActionPanel *)&v5 viewDidAppear:a3];
+  [(ActionPanel *)&v5 viewDidAppear:appear];
   if (self->_containsDownloadsActivity)
   {
-    v4 = [MEMORY[0x277CDB7A8] sharedManager];
-    [v4 didBeginViewingDownloads];
+    mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+    [mEMORY[0x277CDB7A8] didBeginViewingDownloads];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ActionPanel;
-  [(ActionPanel *)&v5 viewWillDisappear:a3];
+  [(ActionPanel *)&v5 viewWillDisappear:disappear];
   if (self->_containsDownloadsActivity)
   {
-    v4 = [MEMORY[0x277CDB7A8] sharedManager];
-    [v4 didEndViewingDownloads];
+    mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+    [mEMORY[0x277CDB7A8] didEndViewingDownloads];
   }
 }
 
-- (void)setSharingURL:(id)a3
+- (void)setSharingURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_SFActivityViewController *)self sharingURL];
-  if (([v4 isEqual:v5] & 1) == 0)
+  lCopy = l;
+  sharingURL = [(_SFActivityViewController *)self sharingURL];
+  if (([lCopy isEqual:sharingURL] & 1) == 0)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(_SFActivityViewController *)self activityItemProviders];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    activityItemProviders = [(_SFActivityViewController *)self activityItemProviders];
+    v7 = [activityItemProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -170,20 +170,20 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(activityItemProviders);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
           v12 = [v11 url];
-          v13 = [v12 isEqual:v5];
+          v13 = [v12 isEqual:sharingURL];
 
           if (v13)
           {
-            [v11 setUrl:v4];
+            [v11 setUrl:lCopy];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [activityItemProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -191,37 +191,37 @@
 
     v14.receiver = self;
     v14.super_class = ActionPanel;
-    [(_SFActivityViewController *)&v14 setSharingURL:v4];
+    [(_SFActivityViewController *)&v14 setSharingURL:lCopy];
   }
 }
 
-- (void)activityDidComplete:(id)a3 withReturnedItems:(id)a4 success:(BOOL)a5
+- (void)activityDidComplete:(id)complete withReturnedItems:(id)items success:(BOOL)success
 {
-  v5 = a5;
-  v8 = a3;
+  successCopy = success;
+  completeCopy = complete;
   v10.receiver = self;
   v10.super_class = ActionPanel;
-  [(_SFActivityViewController *)&v10 activityDidComplete:v8 withReturnedItems:a4 success:v5];
-  if (v5 && [v8 isEqualToString:*MEMORY[0x277D54778]])
+  [(_SFActivityViewController *)&v10 activityDidComplete:completeCopy withReturnedItems:items success:successCopy];
+  if (successCopy && [completeCopy isEqualToString:*MEMORY[0x277D54778]])
   {
-    v9 = [MEMORY[0x277D499B8] sharedLogger];
-    [v9 didPrintPage];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didPrintPage];
   }
 }
 
 - (void)_executeActivity
 {
-  v3 = [(ActionPanel *)self activity];
-  v4 = [v3 activityType];
-  if ([v4 isEqualToString:*MEMORY[0x277D54708]])
+  activity = [(ActionPanel *)self activity];
+  activityType = [activity activityType];
+  if ([activityType isEqualToString:*MEMORY[0x277D54708]])
   {
-    v5 = [(_SFActivityViewController *)self delegate];
+    delegate = [(_SFActivityViewController *)self delegate];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __31__ActionPanel__executeActivity__block_invoke;
     v7[3] = &unk_2781D4B18;
-    v8 = v3;
-    [v5 actionPanelAddTabDocumentToReadingList:self activityDidFinish:v7];
+    v8 = activity;
+    [delegate actionPanelAddTabDocumentToReadingList:self activityDidFinish:v7];
   }
 
   else
@@ -232,13 +232,13 @@
   }
 }
 
-- (void)_prepareActivity:(id)a3 completion:(id)a4
+- (void)_prepareActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  activityCopy = activity;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -246,31 +246,31 @@
     v8 = &__block_literal_global;
   }
 
-  v9 = [v6 activityType];
+  activityType = [activityCopy activityType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ActionPanel *)self _preparePostToSocialNetwork:v6];
+    [(ActionPanel *)self _preparePostToSocialNetwork:activityCopy];
     v8[2](v8);
   }
 
-  else if ([v9 isEqualToString:*MEMORY[0x277D54728]])
+  else if ([activityType isEqualToString:*MEMORY[0x277D54728]])
   {
-    [(ActionPanel *)self _prepareMail:v6 completion:v8];
+    [(ActionPanel *)self _prepareMail:activityCopy completion:v8];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = ActionPanel;
-    [(_SFActivityViewController *)&v10 _prepareActivity:v6 completion:v8];
+    [(_SFActivityViewController *)&v10 _prepareActivity:activityCopy completion:v8];
   }
 }
 
-- (void)_preparePostToSocialNetwork:(id)a3
+- (void)_preparePostToSocialNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [v4 activityViewController];
+  networkCopy = network;
+  activityViewController = [networkCopy activityViewController];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -292,69 +292,69 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(TabDocument *)self->_tabDocument titleForSharing];
-    [v5 setInitialText:v8];
+    titleForSharing = [(TabDocument *)self->_tabDocument titleForSharing];
+    [activityViewController setInitialText:titleForSharing];
   }
 }
 
-- (void)_prepareMail:(id)a3 completion:(id)a4
+- (void)_prepareMail:(id)mail completion:(id)completion
 {
-  v10 = a4;
-  v6 = [a3 activityViewController];
-  if ([v6 _sf_isMFMailComposeViewController])
+  completionCopy = completion;
+  activityViewController = [mail activityViewController];
+  if ([activityViewController _sf_isMFMailComposeViewController])
   {
-    v7 = v6;
+    v7 = activityViewController;
     [v7 setKeyboardVisible:1];
-    v8 = [(TabDocument *)self->_tabDocument titleForSharing];
-    [v7 setSubject:v8];
+    titleForSharing = [(TabDocument *)self->_tabDocument titleForSharing];
+    [v7 setSubject:titleForSharing];
 
-    v9 = [(_SFActivityViewController *)self delegate];
-    [v9 actionPanel:self prepareForMailActivityWithMailController:v7 completionHandler:v10];
+    delegate = [(_SFActivityViewController *)self delegate];
+    [delegate actionPanel:self prepareForMailActivityWithMailController:v7 completionHandler:completionCopy];
   }
 
   else
   {
-    v10[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [v5 isEqualToString:@"SafariActivityTypeWebExtension"];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [activityType isEqualToString:@"SafariActivityTypeWebExtension"];
 
   if (v6)
   {
-    v7 = [(TabDocument *)self->_tabDocument browserController];
-    v8 = [v4 activityViewController];
-    [v7 presentModalViewController:v8 completion:0];
+    browserController = [(TabDocument *)self->_tabDocument browserController];
+    activityViewController = [activityCopy activityViewController];
+    [browserController presentModalViewController:activityViewController completion:0];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = ActionPanel;
-    [(_SFActivityViewController *)&v9 _performActivity:v4];
+    [(_SFActivityViewController *)&v9 _performActivity:activityCopy];
   }
 }
 
 - (void)_reload
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(_SFActivityViewController *)self printController];
-  [v3 printInteractionControllerDidFinish];
+  printController = [(_SFActivityViewController *)self printController];
+  [printController printInteractionControllerDidFinish];
 
   [(_SFActivityViewController *)self setPrintController:0];
   v4 = itemProviderCollection(self->_tabDocument, self->_menuStyle);
-  v5 = [(_SFActivityViewController *)self customizationController];
-  v19 = [v4 activityItemProvidersWithCustomizationController:v5];
+  customizationController = [(_SFActivityViewController *)self customizationController];
+  v19 = [v4 activityItemProvidersWithCustomizationController:customizationController];
 
-  v6 = [(ActionPanel *)self activityTypeOrder];
+  activityTypeOrder = [(ActionPanel *)self activityTypeOrder];
   tabDocument = self->_tabDocument;
   menuStyle = self->_menuStyle;
   activityDelegate = self->_activityDelegate;
-  v24 = v6;
+  v24 = activityTypeOrder;
   v10 = customActivities(tabDocument, menuStyle, activityDelegate, &v24);
   v11 = v24;
 
@@ -417,12 +417,12 @@
   v11[1] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = ActionPanel;
-  v3 = [(_SFActivityViewController *)&v10 excludedActivityTypes];
-  v4 = v3;
+  excludedActivityTypes = [(_SFActivityViewController *)&v10 excludedActivityTypes];
+  v4 = excludedActivityTypes;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (excludedActivityTypes)
   {
-    v5 = v3;
+    v5 = excludedActivityTypes;
   }
 
   v6 = v5;
@@ -441,8 +441,8 @@
 
 - (id)downloadsViewController
 {
-  v3 = [(_SFActivityViewController *)self delegate];
-  v4 = [v3 downloadsViewControllerForActionPanel:self];
+  delegate = [(_SFActivityViewController *)self delegate];
+  v4 = [delegate downloadsViewControllerForActionPanel:self];
 
   return v4;
 }

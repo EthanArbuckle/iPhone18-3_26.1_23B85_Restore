@@ -1,15 +1,15 @@
 @interface SleepScoreYAxis
-- (_TtC8HealthUI15SleepScoreYAxis)initWithConfiguration:(id)a3;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
+- (_TtC8HealthUI15SleepScoreYAxis)initWithConfiguration:(id)configuration;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation SleepScoreYAxis
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
-  v5 = self;
-  v6 = a3;
-  v7 = _s8HealthUI15SleepScoreYAxisC14findAxisLabels12inModelRange9zoomScaleSaySo11HKAxisLabelCGSgSo07HKValueK0CyyXlGSg_12CoreGraphics7CGFloatVtF_0(a3);
+  selfCopy = self;
+  rangeCopy = range;
+  v7 = _s8HealthUI15SleepScoreYAxisC14findAxisLabels12inModelRange9zoomScaleSaySo11HKAxisLabelCGSgSo07HKValueK0CyyXlGSg_12CoreGraphics7CGFloatVtF_0(range);
 
   if (v7)
   {
@@ -25,7 +25,7 @@
   return v8;
 }
 
-- (_TtC8HealthUI15SleepScoreYAxis)initWithConfiguration:(id)a3
+- (_TtC8HealthUI15SleepScoreYAxis)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

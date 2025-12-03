@@ -1,15 +1,15 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsIngestionState:(id)a3;
+- (int)StringAsIngestionState:(id)state;
 - (int)ingestionState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIngestionState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIngestionState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasIngestionState:(BOOL)a3
+- (void)setHasIngestionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -42,35 +42,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsIngestionState:(id)a3
+- (int)StringAsIngestionState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ReaderModeIngestionStateDefault"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"ReaderModeIngestionStateDefault"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestionStateCardNotFound"])
+  else if ([stateCopy isEqualToString:@"ReaderModeIngestionStateCardNotFound"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestionStateTransferValue"])
+  else if ([stateCopy isEqualToString:@"ReaderModeIngestionStateTransferValue"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestionStateTransferring"])
+  else if ([stateCopy isEqualToString:@"ReaderModeIngestionStateTransferring"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestionStateCardAdded"])
+  else if ([stateCopy isEqualToString:@"ReaderModeIngestionStateCardAdded"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestionStateCommuteCardAdded"])
+  else if ([stateCopy isEqualToString:@"ReaderModeIngestionStateCommuteCardAdded"])
   {
     v4 = 150;
   }
@@ -89,20 +89,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = dictionary;
   physicalCardImageURL = self->_physicalCardImageURL;
   if (physicalCardImageURL)
   {
-    [v3 setObject:physicalCardImageURL forKey:@"physicalCardImageURL"];
+    [dictionary setObject:physicalCardImageURL forKey:@"physicalCardImageURL"];
   }
 
   title = self->_title;
@@ -172,26 +172,26 @@ LABEL_23:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_physicalCardImageURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_subtitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -199,7 +199,7 @@ LABEL_23:
   {
     ingestionState = self->_ingestionState;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -207,59 +207,59 @@ LABEL_23:
   {
     ingestionProgress = self->_ingestionProgress;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_physicalCardImageURL)
   {
-    [v4 setPhysicalCardImageURL:?];
-    v4 = v6;
+    [toCopy setPhysicalCardImageURL:?];
+    toCopy = v6;
   }
 
   if (self->_title)
   {
     [v6 setTitle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_subtitle)
   {
     [v6 setSubtitle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 3) = self->_ingestionState;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 3) = self->_ingestionState;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = LODWORD(self->_ingestionProgress);
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = LODWORD(self->_ingestionProgress);
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_physicalCardImageURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_physicalCardImageURL copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -280,16 +280,16 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   physicalCardImageURL = self->_physicalCardImageURL;
-  if (physicalCardImageURL | *(v4 + 2))
+  if (physicalCardImageURL | *(equalCopy + 2))
   {
     if (![(NSString *)physicalCardImageURL isEqual:?])
     {
@@ -298,7 +298,7 @@ LABEL_23:
   }
 
   title = self->_title;
-  if (title | *(v4 + 4))
+  if (title | *(equalCopy + 4))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -307,7 +307,7 @@ LABEL_23:
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 3))
+  if (subtitle | *(equalCopy + 3))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -317,23 +317,23 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_ingestionState != *(v4 + 3))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_ingestionState != *(equalCopy + 3))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_17:
     v8 = 0;
     goto LABEL_18;
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_ingestionProgress != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_ingestionProgress != *(equalCopy + 2))
     {
       goto LABEL_17;
     }
@@ -399,39 +399,39 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self setPhysicalCardImageURL:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self setTitle:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self setSubtitle:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_ingestionState = *(v4 + 3);
+    self->_ingestionState = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_ingestionProgress = *(v4 + 2);
+    self->_ingestionProgress = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

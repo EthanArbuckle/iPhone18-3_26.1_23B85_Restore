@@ -1,18 +1,18 @@
 @interface QLImageItemAggregatedViewController
 - (id)_imageMarkupPreviewController;
 - (id)_imagePreviewController;
-- (id)_instantiatePreviewControllerWithContents:(id)a3 context:(id)a4;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (id)_instantiatePreviewControllerWithContents:(id)contents context:(id)context;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 @end
 
 @implementation QLImageItemAggregatedViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(QLImageItemAggregatedViewController *)self _instantiatePreviewControllerWithContents:v8 context:v9];
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
+  v11 = [(QLImageItemAggregatedViewController *)self _instantiatePreviewControllerWithContents:contentsCopy context:contextCopy];
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -21,23 +21,23 @@
   objc_copyWeak(&v17, &location);
   v12 = v11;
   v15 = v12;
-  v13 = v10;
+  v13 = handlerCopy;
   v16 = v13;
-  [v12 loadPreviewControllerIfNeededWithContents:v8 context:v9 completionHandler:v14];
+  [v12 loadPreviewControllerIfNeededWithContents:contentsCopy context:contextCopy completionHandler:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (id)_instantiatePreviewControllerWithContents:(id)a3 context:(id)a4
+- (id)_instantiatePreviewControllerWithContents:(id)contents context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 canBeEdited];
-  if ((v9 & 1) == 0)
+  contentsCopy = contents;
+  contextCopy = context;
+  canBeEdited = [contextCopy canBeEdited];
+  if ((canBeEdited & 1) == 0)
   {
-    v4 = [v8 item];
-    if (![v4 editingMode])
+    item = [contextCopy item];
+    if (![item editingMode])
     {
       v10 = 0;
       goto LABEL_6;
@@ -46,17 +46,17 @@
 
   objc_opt_class();
   v10 = objc_opt_isKindOfClass() ^ 1;
-  if ((v9 & 1) == 0)
+  if ((canBeEdited & 1) == 0)
   {
 LABEL_6:
   }
 
-  v11 = [v8 contentType];
+  contentType = [contextCopy contentType];
 
-  if (v11)
+  if (contentType)
   {
-    v12 = [v8 contentType];
-    v13 = [UTType typeWithIdentifier:v12];
+    contentType2 = [contextCopy contentType];
+    v13 = [UTType typeWithIdentifier:contentType2];
 
     _QLContentTypeConformsToRawImage();
   }

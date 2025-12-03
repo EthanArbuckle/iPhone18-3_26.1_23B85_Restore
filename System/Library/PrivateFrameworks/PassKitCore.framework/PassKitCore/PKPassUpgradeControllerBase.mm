@@ -1,25 +1,25 @@
 @interface PKPassUpgradeControllerBase
-- (PKPassUpgradeControllerBase)initWithWebService:(id)a3 addPaymentPassToLibrary:(id)a4;
+- (PKPassUpgradeControllerBase)initWithWebService:(id)service addPaymentPassToLibrary:(id)library;
 - (void)appletsDidUpdate;
-- (void)completePassUpgradeForPassUniqueID:(id)a3 withError:(id)a4;
-- (void)downloadUpgradedPassForPassUniqueID:(id)a3 atURL:(id)a4;
-- (void)requestPassUpgrade:(id)a3 pass:(id)a4 diagnosticReason:(id)a5 completion:(id)a6;
+- (void)completePassUpgradeForPassUniqueID:(id)d withError:(id)error;
+- (void)downloadUpgradedPassForPassUniqueID:(id)d atURL:(id)l;
+- (void)requestPassUpgrade:(id)upgrade pass:(id)pass diagnosticReason:(id)reason completion:(id)completion;
 @end
 
 @implementation PKPassUpgradeControllerBase
 
-- (PKPassUpgradeControllerBase)initWithWebService:(id)a3 addPaymentPassToLibrary:(id)a4
+- (PKPassUpgradeControllerBase)initWithWebService:(id)service addPaymentPassToLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = PKPassUpgradeControllerBase;
   v9 = [(PKPassUpgradeControllerBase *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_paymentWebService, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_paymentWebService, service);
+    v11 = _Block_copy(libraryCopy);
     addPaymentPassToLibrary = v10->_addPaymentPassToLibrary;
     v10->_addPaymentPassToLibrary = v11;
 
@@ -32,55 +32,55 @@
   return v10;
 }
 
-- (void)requestPassUpgrade:(id)a3 pass:(id)a4 diagnosticReason:(id)a5 completion:(id)a6
+- (void)requestPassUpgrade:(id)upgrade pass:(id)pass diagnosticReason:(id)reason completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  upgradeCopy = upgrade;
+  passCopy = pass;
+  reasonCopy = reason;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v14 = [v11 uniqueID];
+    uniqueID = [passCopy uniqueID];
     v15 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v26 = [v10 type];
+      type = [upgradeCopy type];
       v27 = 2112;
-      v28 = v14;
+      v28 = uniqueID;
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Requesting pass upgrade with reason %lu for pass %@", buf, 0x16u);
     }
 
     os_unfair_lock_lock(&self->_pass_upgrade_lock);
-    v16 = [(NSMutableDictionary *)self->_pendingPassUpgrades objectForKey:v14];
+    v16 = [(NSMutableDictionary *)self->_pendingPassUpgrades objectForKey:uniqueID];
     if (v16)
     {
       v17 = v16;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v14;
+        type = uniqueID;
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Coalescing pass upgrade requests for pass %@", buf, 0xCu);
       }
 
-      v18 = [(PKPendingPassUpgrade *)v17 completionHandlers];
-      v19 = _Block_copy(v13);
-      [v18 addObject:v19];
+      completionHandlers = [(PKPendingPassUpgrade *)v17 completionHandlers];
+      v19 = _Block_copy(completionCopy);
+      [completionHandlers addObject:v19];
 
       os_unfair_lock_unlock(&self->_pass_upgrade_lock);
     }
 
     else
     {
-      v17 = [[PKPendingPassUpgrade alloc] initWithRequest:v10 completionHandler:v13];
-      [(NSMutableDictionary *)self->_pendingPassUpgrades setObject:v17 forKeyedSubscript:v14];
+      v17 = [[PKPendingPassUpgrade alloc] initWithRequest:upgradeCopy completionHandler:completionCopy];
+      [(NSMutableDictionary *)self->_pendingPassUpgrades setObject:v17 forKeyedSubscript:uniqueID];
       os_unfair_lock_unlock(&self->_pass_upgrade_lock);
-      v20 = [[PKPaymentRequestPassUpdateRequest alloc] initWithPaymentPass:v11 updateRequest:v10];
+      v20 = [[PKPaymentRequestPassUpdateRequest alloc] initWithPaymentPass:passCopy updateRequest:upgradeCopy];
       v21 = v20;
-      if (v12)
+      if (reasonCopy)
       {
-        [(PKWebServiceRequest *)v20 addDiagnosticReason:v12];
+        [(PKWebServiceRequest *)v20 addDiagnosticReason:reasonCopy];
       }
 
       paymentWebService = self->_paymentWebService;
@@ -89,7 +89,7 @@
       v23[2] = __83__PKPassUpgradeControllerBase_requestPassUpgrade_pass_diagnosticReason_completion___block_invoke;
       v23[3] = &unk_1E79E27C8;
       v23[4] = self;
-      v24 = v14;
+      v24 = uniqueID;
       [(PKPaymentWebService *)paymentWebService passUpgradeWithRequest:v21 completion:v23];
     }
   }
@@ -217,18 +217,18 @@ void __83__PKPassUpgradeControllerBase_requestPassUpgrade_pass_diagnosticReason_
   }
 }
 
-- (void)downloadUpgradedPassForPassUniqueID:(id)a3 atURL:(id)a4
+- (void)downloadUpgradedPassForPassUniqueID:(id)d atURL:(id)l
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v6;
+    v14 = dCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = lCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Downloading new pass for pass upgrade (%@) at url: %@", buf, 0x16u);
   }
 
@@ -238,9 +238,9 @@ void __83__PKPassUpgradeControllerBase_requestPassUpgrade_pass_diagnosticReason_
   v11[2] = __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL___block_invoke;
   v11[3] = &unk_1E79E2818;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [(PKPaymentWebService *)paymentWebService passAtURL:v7 completion:v11];
+  v12 = dCopy;
+  v10 = dCopy;
+  [(PKPaymentWebService *)paymentWebService passAtURL:lCopy completion:v11];
 }
 
 void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -389,25 +389,25 @@ void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL
   }
 }
 
-- (void)completePassUpgradeForPassUniqueID:(id)a3 withError:(id)a4
+- (void)completePassUpgradeForPassUniqueID:(id)d withError:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_pass_upgrade_lock);
-  v8 = [(NSMutableDictionary *)self->_pendingPassUpgrades objectForKey:v6];
-  [(NSMutableDictionary *)self->_pendingPassUpgrades removeObjectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_pendingPassUpgrades objectForKey:dCopy];
+  [(NSMutableDictionary *)self->_pendingPassUpgrades removeObjectForKey:dCopy];
   os_unfair_lock_unlock(&self->_pass_upgrade_lock);
   v9 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 upgradedPass];
+    upgradedPass = [v8 upgradedPass];
     *buf = 138412802;
-    v22 = v6;
+    v22 = dCopy;
     v23 = 1024;
-    v24 = v10 != 0;
+    v24 = upgradedPass != 0;
     v25 = 1024;
-    v26 = [v8 appletDidUpgrade];
+    appletDidUpgrade = [v8 appletDidUpgrade];
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Pass upgrade (%@) failed: pass upgrade %d, applet updated %d", buf, 0x18u);
   }
 
@@ -415,8 +415,8 @@ void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [v8 completionHandlers];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  completionHandlers = [v8 completionHandlers];
+  v12 = [completionHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -428,14 +428,14 @@ void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(completionHandlers);
         }
 
         (*(*(*(&v16 + 1) + 8 * v15++) + 16))();
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [completionHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
@@ -489,9 +489,9 @@ void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL
             goto LABEL_19;
           }
 
-          v12 = self;
-          v13 = [v11 upgradePassURL];
-          if (v13 && (v14 = v13, [v11 upgradedPass], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15))
+          selfCopy = self;
+          upgradePassURL = [v11 upgradePassURL];
+          if (upgradePassURL && (v14 = upgradePassURL, [v11 upgradedPass], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15))
           {
             if (([v11 passUpgradeInProgress] & 1) == 0)
             {
@@ -500,7 +500,7 @@ void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL
               goto LABEL_17;
             }
 
-            self = v12;
+            self = selfCopy;
             if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
@@ -519,7 +519,7 @@ void __73__PKPassUpgradeControllerBase_downloadUpgradedPassForPassUniqueID_atURL
             }
 
 LABEL_17:
-            self = v12;
+            self = selfCopy;
           }
 
           v5 = v42;
@@ -541,12 +541,12 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_pass_upgrade_lock);
   if ([v45 count])
   {
-    v40 = self;
-    v17 = [v45 allKeys];
+    selfCopy2 = self;
+    allKeys = [v45 allKeys];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v66 = v17;
+      v66 = allKeys;
       _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Applet update occured for pass upgrades: %@", buf, 0xCu);
     }
 
@@ -554,7 +554,7 @@ LABEL_19:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = v17;
+    obj = allKeys;
     v18 = [obj countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (v18)
     {
@@ -584,8 +584,8 @@ LABEL_19:
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v24 = [v22 completionHandlers];
-          v25 = [v24 countByEnumeratingWithState:&v50 objects:v63 count:16];
+          completionHandlers = [v22 completionHandlers];
+          v25 = [completionHandlers countByEnumeratingWithState:&v50 objects:v63 count:16];
           if (v25)
           {
             v26 = v25;
@@ -596,15 +596,15 @@ LABEL_19:
               {
                 if (*v51 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(completionHandlers);
                 }
 
                 v29 = *(*(&v50 + 1) + 8 * j);
-                v30 = [v22 upgradedPass];
-                (*(v29 + 16))(v29, 0, v30);
+                upgradedPass = [v22 upgradedPass];
+                (*(v29 + 16))(v29, 0, upgradedPass);
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v50 objects:v63 count:16];
+              v26 = [completionHandlers countByEnumeratingWithState:&v50 objects:v63 count:16];
             }
 
             while (v26);
@@ -619,17 +619,17 @@ LABEL_19:
       while (v19);
     }
 
-    self = v40;
+    self = selfCopy2;
     v5 = v42;
   }
 
   if ([v41 count])
   {
-    v31 = [v41 allKeys];
+    allKeys2 = [v41 allKeys];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v66 = v31;
+      v66 = allKeys2;
       _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Starting new pass downloads for pass upgrades: %@", buf, 0xCu);
     }
 
@@ -637,7 +637,7 @@ LABEL_19:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v32 = v31;
+    v32 = allKeys2;
     v33 = [v32 countByEnumeratingWithState:&v46 objects:v62 count:16];
     if (v33)
     {
@@ -654,8 +654,8 @@ LABEL_19:
 
           v37 = *(*(&v46 + 1) + 8 * k);
           v38 = [v41 objectForKeyedSubscript:v37];
-          v39 = [v38 upgradePassURL];
-          [(PKPassUpgradeControllerBase *)self downloadUpgradedPassForPassUniqueID:v37 atURL:v39];
+          upgradePassURL2 = [v38 upgradePassURL];
+          [(PKPassUpgradeControllerBase *)self downloadUpgradedPassForPassUniqueID:v37 atURL:upgradePassURL2];
         }
 
         v34 = [v32 countByEnumeratingWithState:&v46 objects:v62 count:16];

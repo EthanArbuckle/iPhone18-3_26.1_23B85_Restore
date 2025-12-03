@@ -1,5 +1,5 @@
 @interface TLAlertActivationAssertion
-- (TLAlertActivationAssertion)initWithAlert:(id)a3;
+- (TLAlertActivationAssertion)initWithAlert:(id)alert;
 - (id)description;
 - (void)_acquire;
 - (void)_relinquish;
@@ -10,16 +10,16 @@
 
 @implementation TLAlertActivationAssertion
 
-- (TLAlertActivationAssertion)initWithAlert:(id)a3
+- (TLAlertActivationAssertion)initWithAlert:(id)alert
 {
-  v5 = a3;
+  alertCopy = alert;
   v9.receiver = self;
   v9.super_class = TLAlertActivationAssertion;
   v6 = [(TLAlertActivationAssertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alert, a3);
+    objc_storeStrong(&v6->_alert, alert);
     atomic_store(0, &v7->_activeAcquisitionCount);
   }
 
@@ -65,7 +65,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: -acquire.", &v5, 0xCu);
   }
 
@@ -84,7 +84,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: -relinquish.", &v5, 0xCu);
   }
 
@@ -103,7 +103,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: was acquired.", &v6, 0xCu);
   }
 
@@ -120,7 +120,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: was relinquished.", &v6, 0xCu);
   }
 

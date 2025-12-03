@@ -1,8 +1,8 @@
 @interface MediaTransportAudioStream
 - (_TtC16ScreenSharingKit25MediaTransportAudioStream)init;
 - (void)dealloc;
-- (void)streamDidRTCPTimeOut:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)streamDidRTCPTimeOut:(id)out;
+- (void)streamDidStop:(id)stop;
 @end
 
 @implementation MediaTransportAudioStream
@@ -31,17 +31,17 @@
   return result;
 }
 
-- (void)streamDidRTCPTimeOut:(id)a3
+- (void)streamDidRTCPTimeOut:(id)out
 {
-  v5 = a3;
-  v6 = self;
-  sub_264A2CBC4(a3);
+  outCopy = out;
+  selfCopy = self;
+  sub_264A2CBC4(out);
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v4 = a3;
-  v5 = self;
+  stopCopy = stop;
+  selfCopy = self;
   sub_264A2D7D8();
 }
 

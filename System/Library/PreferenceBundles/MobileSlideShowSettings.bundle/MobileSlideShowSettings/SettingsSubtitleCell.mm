@@ -1,19 +1,19 @@
 @interface SettingsSubtitleCell
-- (SettingsSubtitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SettingsSubtitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation SettingsSubtitleCell
 
-- (SettingsSubtitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SettingsSubtitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = SettingsSubtitleCell;
-  v4 = [(SettingsSubtitleCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SettingsSubtitleCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SettingsSubtitleCell *)v4 detailTextLabel];
-    [v6 setNumberOfLines:0];
+    detailTextLabel = [(SettingsSubtitleCell *)v4 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
   }
 
   return v5;

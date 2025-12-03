@@ -1,28 +1,28 @@
 @interface PEAdjustmentStyle
-- (PEAdjustmentStyle)initWithCast:(id)a3;
-- (PEAdjustmentStyle)initWithCast:(id)a3 tone:(double)a4 color:(double)a5 intensity:(double)a6;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentStyle)initWithCast:(id)cast;
+- (PEAdjustmentStyle)initWithCast:(id)cast tone:(double)tone color:(double)color intensity:(double)intensity;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentStyle
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
   if ((PISemanticStyleIsRenderSupported() & 1) == 0)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PEAdjustmentStyleErrorDomain" code:2 userInfo:0];
 LABEL_6:
-    v12[2](v12, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
 
     goto LABEL_7;
   }
 
-  v13 = [v11 semanticStyleStatistics];
-  v14 = [v13 count];
+  semanticStyleStatistics = [calculatorCopy semanticStyleStatistics];
+  v14 = [semanticStyleStatistics count];
 
   if (!v14)
   {
@@ -35,16 +35,16 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [v10 removeAdjustmentWithKey:*MEMORY[0x277D3AA90]];
+  [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA90]];
   v15 = *MEMORY[0x277D3AB10];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __120__PEAdjustmentStyle_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke;
   v19[3] = &unk_279A30C30;
-  v20 = v11;
-  v21 = self;
-  [v10 modifyAdjustmentWithKey:v15 modificationBlock:v19];
-  v12[2](v12, 1, 0);
+  v20 = calculatorCopy;
+  selfCopy = self;
+  [controllerCopy modifyAdjustmentWithKey:v15 modificationBlock:v19];
+  handlerCopy[2](handlerCopy, 1, 0);
 
 LABEL_7:
 }
@@ -66,11 +66,11 @@ void __120__PEAdjustmentStyle_applyToCompositionController_valuesCalculator_asse
   [v5 setColor:?];
 }
 
-- (PEAdjustmentStyle)initWithCast:(id)a3
+- (PEAdjustmentStyle)initWithCast:(id)cast
 {
   v4 = MEMORY[0x277D3A968];
-  v5 = a3;
-  v6 = [v4 defaultValuesForCast:v5];
+  castCopy = cast;
+  v6 = [v4 defaultValuesForCast:castCopy];
   v7 = [v6 objectAtIndex:0];
   [v7 floatValue];
   v9 = v8;
@@ -83,23 +83,23 @@ void __120__PEAdjustmentStyle_applyToCompositionController_valuesCalculator_asse
   [v13 floatValue];
   v15 = v14;
 
-  v16 = [(PEAdjustmentStyle *)self initWithCast:v5 tone:v9 color:v12 intensity:v15];
+  v16 = [(PEAdjustmentStyle *)self initWithCast:castCopy tone:v9 color:v12 intensity:v15];
   return v16;
 }
 
-- (PEAdjustmentStyle)initWithCast:(id)a3 tone:(double)a4 color:(double)a5 intensity:(double)a6
+- (PEAdjustmentStyle)initWithCast:(id)cast tone:(double)tone color:(double)color intensity:(double)intensity
 {
-  v11 = a3;
+  castCopy = cast;
   v15.receiver = self;
   v15.super_class = PEAdjustmentStyle;
   v12 = [(PEAdjustmentStyle *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_cast, a3);
-    v13->_tone = a4;
-    v13->_color = a5;
-    v13->_intensity = a6;
+    objc_storeStrong(&v12->_cast, cast);
+    v13->_tone = tone;
+    v13->_color = color;
+    v13->_intensity = intensity;
   }
 
   return v13;

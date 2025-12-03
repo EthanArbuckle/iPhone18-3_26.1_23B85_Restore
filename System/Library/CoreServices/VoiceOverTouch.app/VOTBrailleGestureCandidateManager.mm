@@ -3,7 +3,7 @@
 - (NSString)currentCandidateAnalysisString;
 - (NSString)currentCandidateSurfaceString;
 - (VOTBrailleGestureCandidateManager)init;
-- (void)analyzeString:(id)a3 language:(id)a4;
+- (void)analyzeString:(id)string language:(id)language;
 - (void)deactivate;
 - (void)didSelectCurrentCandidate;
 - (void)moveToNextCandidate;
@@ -27,22 +27,22 @@
   return v3;
 }
 
-- (void)analyzeString:(id)a3 language:(id)a4
+- (void)analyzeString:(id)string language:(id)language
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = v6;
+  stringCopy = string;
+  languageCopy = language;
+  v7 = languageCopy;
   self->_isActive = 1;
-  if (!self->_mecabra || !self->_language || ([v6 isEqualToString:?] & 1) == 0)
+  if (!self->_mecabra || !self->_language || ([languageCopy isEqualToString:?] & 1) == 0)
   {
     v8 = [[VOTBrailleGestureMecabraWrapper alloc] initWithLanguage:v7];
     mecabra = self->_mecabra;
     self->_mecabra = v8;
 
-    objc_storeStrong(&self->_language, a4);
+    objc_storeStrong(&self->_language, language);
   }
 
-  [(VOTBrailleGestureMecabraWrapper *)self->_mecabra anlayzeString:v19];
+  [(VOTBrailleGestureMecabraWrapper *)self->_mecabra anlayzeString:stringCopy];
   v10 = objc_alloc_init(NSMutableArray);
   analyzeStrings = self->_analyzeStrings;
   self->_analyzeStrings = v10;
@@ -51,21 +51,21 @@
   surfaceStrings = self->_surfaceStrings;
   self->_surfaceStrings = v12;
 
-  v14 = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra moveToNextCandidate];
+  moveToNextCandidate = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra moveToNextCandidate];
   v15 = self->_analyzeStrings;
-  if (v14)
+  if (moveToNextCandidate)
   {
-    v16 = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateAnalysisString];
-    [(NSMutableArray *)v15 addObject:v16];
+    currentCandidateAnalysisString = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateAnalysisString];
+    [(NSMutableArray *)v15 addObject:currentCandidateAnalysisString];
 
     v17 = self->_surfaceStrings;
-    v18 = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateSurfaceString];
-    [(NSMutableArray *)v17 addObject:v18];
+    currentCandidateSurfaceString = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateSurfaceString];
+    [(NSMutableArray *)v17 addObject:currentCandidateSurfaceString];
   }
 
   else
   {
-    [(NSMutableArray *)self->_analyzeStrings addObject:v19];
+    [(NSMutableArray *)self->_analyzeStrings addObject:stringCopy];
     [(NSMutableArray *)self->_surfaceStrings addObject:&stru_1001CBF90];
   }
 
@@ -102,12 +102,12 @@
   if ([(VOTBrailleGestureMecabraWrapper *)self->_mecabra moveToNextCandidate])
   {
     analyzeStrings = self->_analyzeStrings;
-    v7 = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateAnalysisString];
-    [(NSMutableArray *)analyzeStrings addObject:v7];
+    currentCandidateAnalysisString = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateAnalysisString];
+    [(NSMutableArray *)analyzeStrings addObject:currentCandidateAnalysisString];
 
     surfaceStrings = self->_surfaceStrings;
-    v9 = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateSurfaceString];
-    [(NSMutableArray *)surfaceStrings addObject:v9];
+    currentCandidateSurfaceString = [(VOTBrailleGestureMecabraWrapper *)self->_mecabra currentCandidateSurfaceString];
+    [(NSMutableArray *)surfaceStrings addObject:currentCandidateSurfaceString];
 
     return 1;
   }
@@ -179,8 +179,8 @@
   if (self->_isActive)
   {
     mecabra = self->_mecabra;
-    v4 = [(VOTBrailleGestureCandidateManager *)self currentCandidateSurfaceString];
-    [(VOTBrailleGestureMecabraWrapper *)mecabra didSelectCandidateWithSurfaceString:v4];
+    currentCandidateSurfaceString = [(VOTBrailleGestureCandidateManager *)self currentCandidateSurfaceString];
+    [(VOTBrailleGestureMecabraWrapper *)mecabra didSelectCandidateWithSurfaceString:currentCandidateSurfaceString];
   }
 }
 

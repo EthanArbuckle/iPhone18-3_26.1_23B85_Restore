@@ -1,17 +1,17 @@
 @interface TRIDeferralNotifier
-+ (void)forwardDeferralsFromMonitoredActivity:(id)a3 usingDarwinNotificationName:(const char *)a4 whileExecutingBlock:(id)a5;
++ (void)forwardDeferralsFromMonitoredActivity:(id)activity usingDarwinNotificationName:(const char *)name whileExecutingBlock:(id)block;
 @end
 
 @implementation TRIDeferralNotifier
 
-+ (void)forwardDeferralsFromMonitoredActivity:(id)a3 usingDarwinNotificationName:(const char *)a4 whileExecutingBlock:(id)a5
++ (void)forwardDeferralsFromMonitoredActivity:(id)activity usingDarwinNotificationName:(const char *)name whileExecutingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (a4)
+  activityCopy = activity;
+  blockCopy = block;
+  v11 = blockCopy;
+  if (name)
   {
-    if (v10)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -19,8 +19,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"TRIDeferralNotifier.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"notificationName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDeferralNotifier.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"notificationName"}];
 
     if (v11)
     {
@@ -28,21 +28,21 @@
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"TRIDeferralNotifier.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIDeferralNotifier.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  if (v9)
+  if (activityCopy)
   {
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __109__TRIDeferralNotifier_forwardDeferralsFromMonitoredActivity_usingDarwinNotificationName_whileExecutingBlock___block_invoke;
     v25 = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v26 = a4;
+    nameCopy = name;
     v12 = xpc_activity_add_eligibility_changed_handler();
     v13 = MEMORY[0x277D425A0];
     v14 = dispatch_get_global_queue(17, 0);
@@ -51,8 +51,8 @@ LABEL_3:
     v18[2] = __109__TRIDeferralNotifier_forwardDeferralsFromMonitoredActivity_usingDarwinNotificationName_whileExecutingBlock___block_invoke_2;
     v18[3] = &unk_279DE5450;
     v20 = &v27;
-    v19 = v9;
-    v21 = a4;
+    v19 = activityCopy;
+    nameCopy2 = name;
     [v13 runAsyncOnQueue:v14 afterDelaySeconds:v18 block:1.0];
   }
 

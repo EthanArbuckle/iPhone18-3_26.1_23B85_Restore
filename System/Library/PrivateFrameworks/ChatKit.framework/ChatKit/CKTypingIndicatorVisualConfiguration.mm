@@ -11,7 +11,7 @@
 - (CGRect)smallBubbleFrame;
 - (CGSize)defaultSize;
 - (_TtC7ChatKit36CKTypingIndicatorVisualConfiguration)init;
-- (id)initWithDefaultSize:(double)a3 defaultBackgroundLayerOutset:(double)a4 defaultBubbleColor:(double)a5 defaultThinkingDotColor:(uint64_t)a6 defaultThinkingDotOpacity:(uint64_t)a7 defaultBubbleOpacity:(void *)a8 smallBubbleFrame:(void *)a9 smallBubbleGrowOffset:(double)a10 mediumBubbleFrame:(double)a11 mediumBubbleGrowOffset:(double)a12 largeBubbleFrame:(uint64_t)a13 largeBubbleGrowOffset:(uint64_t)a14 largeBubbleAnchorPoint:(uint64_t)a15 iconImageFrame:(uint64_t)a16 iconImageSquareFrame:(double)a17 iconImageTrailingSpace:(double)a18 thinkingDotsOffset:(double)a19 thinkingDotDiameter:(uint64_t)a20 thinkingDotSpace:(uint64_t)a21;
+- (id)initWithDefaultSize:(double)size defaultBackgroundLayerOutset:(double)outset defaultBubbleColor:(double)color defaultThinkingDotColor:(uint64_t)dotColor defaultThinkingDotOpacity:(uint64_t)opacity defaultBubbleOpacity:(void *)bubbleOpacity smallBubbleFrame:(void *)frame smallBubbleGrowOffset:(double)self0 mediumBubbleFrame:(double)self1 mediumBubbleGrowOffset:(double)self2 largeBubbleFrame:(uint64_t)self3 largeBubbleGrowOffset:(uint64_t)self4 largeBubbleAnchorPoint:(uint64_t)self5 iconImageFrame:(uint64_t)self6 iconImageSquareFrame:(double)self7 iconImageTrailingSpace:(double)self8 thinkingDotsOffset:(double)self9 thinkingDotDiameter:(uint64_t)diameter thinkingDotSpace:(uint64_t)dotSpace;
 @end
 
 @implementation CKTypingIndicatorVisualConfiguration
@@ -135,11 +135,11 @@
   return result;
 }
 
-- (id)initWithDefaultSize:(double)a3 defaultBackgroundLayerOutset:(double)a4 defaultBubbleColor:(double)a5 defaultThinkingDotColor:(uint64_t)a6 defaultThinkingDotOpacity:(uint64_t)a7 defaultBubbleOpacity:(void *)a8 smallBubbleFrame:(void *)a9 smallBubbleGrowOffset:(double)a10 mediumBubbleFrame:(double)a11 mediumBubbleGrowOffset:(double)a12 largeBubbleFrame:(uint64_t)a13 largeBubbleGrowOffset:(uint64_t)a14 largeBubbleAnchorPoint:(uint64_t)a15 iconImageFrame:(uint64_t)a16 iconImageSquareFrame:(double)a17 iconImageTrailingSpace:(double)a18 thinkingDotsOffset:(double)a19 thinkingDotDiameter:(uint64_t)a20 thinkingDotSpace:(uint64_t)a21
+- (id)initWithDefaultSize:(double)size defaultBackgroundLayerOutset:(double)outset defaultBubbleColor:(double)color defaultThinkingDotColor:(uint64_t)dotColor defaultThinkingDotOpacity:(uint64_t)opacity defaultBubbleOpacity:(void *)bubbleOpacity smallBubbleFrame:(void *)frame smallBubbleGrowOffset:(double)self0 mediumBubbleFrame:(double)self1 mediumBubbleGrowOffset:(double)self2 largeBubbleFrame:(uint64_t)self3 largeBubbleGrowOffset:(uint64_t)self4 largeBubbleAnchorPoint:(uint64_t)self5 iconImageFrame:(uint64_t)self6 iconImageSquareFrame:(double)self7 iconImageTrailingSpace:(double)self8 thinkingDotsOffset:(double)self9 thinkingDotDiameter:(uint64_t)diameter thinkingDotSpace:(uint64_t)dotSpace
 {
-  v43 = a8;
-  v44 = a9;
-  return sub_1908258E0(v43, v44, a1, a2, a3, a4, a5, a17, a18, a19, v45, v46, v47, v48, v49, v50, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45);
+  bubbleOpacityCopy = bubbleOpacity;
+  frameCopy = frame;
+  return sub_1908258E0(bubbleOpacityCopy, frameCopy, self, a2, size, outset, color, squareFrame, space, dotsOffset, v45, v46, v47, v48, v49, v50, diameter, dotSpace, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45);
 }
 
 - (_TtC7ChatKit36CKTypingIndicatorVisualConfiguration)init

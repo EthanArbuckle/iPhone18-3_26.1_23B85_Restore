@@ -1,11 +1,11 @@
 @interface FigLearnedMattingMetalStage
-- (FigLearnedMattingMetalStage)initWithMetalContext:(id)a3;
-- (id)_runKernel:(void *)a3 sourceTexture:(void *)a4 destinationTexture:(__int128 *)a5 gridSize:(void *)a6 setParamsBlock:;
-- (id)_textureFromPixelBuffer:(uint64_t)a3 usage:;
-- (int)clearBuffer:(__CVBuffer *)a3;
-- (int)createTileFrom:(FigLearnedMattingMetalStage *)self to:(SEL)a2 withStart:(__CVBuffer *)a3 withScale:(__CVBuffer *)a4 outCommandBuffer:(id *)a5;
-- (int)createTileFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withStart:(id)a5 commandBuffer:;
-- (int)pasteTileFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withStart:(id *)a5 withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:;
+- (FigLearnedMattingMetalStage)initWithMetalContext:(id)context;
+- (id)_runKernel:(void *)kernel sourceTexture:(void *)texture destinationTexture:(__int128 *)destinationTexture gridSize:(void *)size setParamsBlock:;
+- (id)_textureFromPixelBuffer:(uint64_t)buffer usage:;
+- (int)clearBuffer:(__CVBuffer *)buffer;
+- (int)createTileFrom:(FigLearnedMattingMetalStage *)self to:(SEL)to withStart:(__CVBuffer *)start withScale:(__CVBuffer *)scale outCommandBuffer:(id *)buffer;
+- (int)createTileFrom:(__CVBuffer *)from to:(__CVBuffer *)to withStart:(id)start commandBuffer:;
+- (int)pasteTileFrom:(__CVBuffer *)from to:(__CVBuffer *)to withStart:(id *)start withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:;
 - (uint64_t)_compileShaders;
 - (void)dealloc;
 - (void)finishProcessing;
@@ -13,9 +13,9 @@
 
 @implementation FigLearnedMattingMetalStage
 
-- (FigLearnedMattingMetalStage)initWithMetalContext:(id)a3
+- (FigLearnedMattingMetalStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = FigLearnedMattingMetalStage;
   v6 = [(FigLearnedMattingMetalStage *)&v18 init];
@@ -25,7 +25,7 @@
     goto LABEL_2;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   if (!*(v7 + 8))
   {
     v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -50,8 +50,8 @@
   v17 = &unk_1F2242AA8;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v14 = *MEMORY[0x1E695E480];
-  v15 = [*(v7 + 8) device];
-  LODWORD(v13) = CVMetalTextureCacheCreate(v14, v13, v15, 0, (v7 + 40));
+  device = [*(v7 + 8) device];
+  LODWORD(v13) = CVMetalTextureCacheCreate(v14, v13, device, 0, (v7 + 40));
 
   if (v13)
   {
@@ -82,15 +82,15 @@ LABEL_3:
   [(FigLearnedMattingMetalStage *)&v4 dealloc];
 }
 
-- (int)clearBuffer:(__CVBuffer *)a3
+- (int)clearBuffer:(__CVBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     [FigLearnedMattingMetalStage clearBuffer:?];
     return v11;
   }
 
-  v4 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:a3 usage:2];
+  v4 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:buffer usage:2];
   if (!v4)
   {
     [FigLearnedMattingMetalStage clearBuffer:?];
@@ -98,11 +98,11 @@ LABEL_3:
   }
 
   v5 = v4;
-  v6 = [v4 width];
-  v7 = [v5 height];
+  width = [v4 width];
+  height = [v5 height];
   clearTextureKernel = self->_clearTextureKernel;
-  *&v11 = v6;
-  *(&v11 + 1) = v7;
+  *&v11 = width;
+  *(&v11 + 1) = height;
   v12 = 1;
   v9 = [(FigLearnedMattingMetalStage *)self _runKernel:v5 sourceTexture:0 destinationTexture:&v11 gridSize:0 setParamsBlock:?];
   [v9 commit];
@@ -110,11 +110,11 @@ LABEL_3:
   return 0;
 }
 
-- (int)createTileFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withStart:(id)a5 commandBuffer:
+- (int)createTileFrom:(__CVBuffer *)from to:(__CVBuffer *)to withStart:(id)start commandBuffer:
 {
-  v6 = a5;
+  startCopy = start;
   v10 = v5;
-  if (!a3)
+  if (!from)
   {
     [FigLearnedMattingMetalStage createTileFrom:v23 to:? withStart:? commandBuffer:?];
 LABEL_13:
@@ -122,13 +122,13 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!to)
   {
     [FigLearnedMattingMetalStage createTileFrom:v23 to:? withStart:? commandBuffer:?];
     goto LABEL_13;
   }
 
-  v11 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:a3 usage:1];
+  v11 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:from usage:1];
   if (!v11)
   {
     [FigLearnedMattingMetalStage createTileFrom:v23 to:? withStart:? commandBuffer:?];
@@ -136,7 +136,7 @@ LABEL_13:
   }
 
   v12 = v11;
-  v13 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:a4 usage:2];
+  v13 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:to usage:2];
   if (!v13)
   {
     [FigLearnedMattingMetalStage createTileFrom:v12 to:v23 withStart:? commandBuffer:?];
@@ -144,24 +144,24 @@ LABEL_13:
   }
 
   v14 = v13;
-  v15 = [v13 width];
-  v16 = [v14 height];
-  v17 = [v10 blitCommandEncoder];
-  if (!v17)
+  width = [v13 width];
+  height = [v14 height];
+  blitCommandEncoder = [v10 blitCommandEncoder];
+  if (!blitCommandEncoder)
   {
     [FigLearnedMattingMetalStage createTileFrom:v14 to:v12 withStart:v23 commandBuffer:?];
     goto LABEL_13;
   }
 
-  v18 = v17;
+  v18 = blitCommandEncoder;
   memset(v23, 0, sizeof(v23));
-  v22[0] = v6;
-  v22[1] = HIWORD(v6);
+  v22[0] = startCopy;
+  v22[1] = HIWORD(startCopy);
   v22[2] = 0;
-  v21[0] = v15;
-  v21[1] = v16;
+  v21[0] = width;
+  v21[1] = height;
   v21[2] = 1;
-  [v17 copyFromTexture:v12 sourceSlice:0 sourceLevel:0 sourceOrigin:v22 sourceSize:v21 toTexture:v14 destinationSlice:0 destinationLevel:0 destinationOrigin:v23];
+  [blitCommandEncoder copyFromTexture:v12 sourceSlice:0 sourceLevel:0 sourceOrigin:v22 sourceSize:v21 toTexture:v14 destinationSlice:0 destinationLevel:0 destinationOrigin:v23];
   [v18 endEncoding];
 
   v19 = 0;
@@ -170,18 +170,18 @@ LABEL_7:
   return v19;
 }
 
-- (int)createTileFrom:(FigLearnedMattingMetalStage *)self to:(SEL)a2 withStart:(__CVBuffer *)a3 withScale:(__CVBuffer *)a4 outCommandBuffer:(id *)a5
+- (int)createTileFrom:(FigLearnedMattingMetalStage *)self to:(SEL)to withStart:(__CVBuffer *)start withScale:(__CVBuffer *)scale outCommandBuffer:(id *)buffer
 {
-  if (!a3)
+  if (!start)
   {
     [FigLearnedMattingMetalStage createTileFrom:? to:? withStart:? withScale:? outCommandBuffer:?];
 LABEL_13:
-    v7 = 0;
+    scaleCopy = 0;
     goto LABEL_14;
   }
 
-  v7 = a4;
-  if (!a4)
+  scaleCopy = scale;
+  if (!scale)
   {
     [FigLearnedMattingMetalStage createTileFrom:? to:? withStart:? withScale:? outCommandBuffer:?];
 LABEL_14:
@@ -193,7 +193,7 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!buffer)
   {
     [FigLearnedMattingMetalStage createTileFrom:? to:? withStart:? withScale:? outCommandBuffer:?];
     goto LABEL_13;
@@ -201,24 +201,24 @@ LABEL_17:
 
   v9 = v6;
   v10 = v5;
-  v12 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:a3 usage:1];
+  v12 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:start usage:1];
   if (!v12)
   {
     [FigLearnedMattingMetalStage createTileFrom:? to:? withStart:? withScale:? outCommandBuffer:?];
-    v7 = 0;
+    scaleCopy = 0;
     goto LABEL_17;
   }
 
-  v13 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:v7 usage:2];
-  v7 = v13;
+  v13 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:scaleCopy usage:2];
+  scaleCopy = v13;
   if (!v13)
   {
     [FigLearnedMattingMetalStage createTileFrom:? to:? withStart:? withScale:? outCommandBuffer:?];
     goto LABEL_17;
   }
 
-  v14 = [(__CVBuffer *)v13 width];
-  v15 = [(__CVBuffer *)v7 height];
+  width = [(__CVBuffer *)v13 width];
+  height = [(__CVBuffer *)scaleCopy height];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__FigLearnedMattingMetalStage_createTileFrom_to_withStart_withScale_outCommandBuffer___block_invoke;
@@ -227,16 +227,16 @@ LABEL_17:
   aBlock[5] = v9;
   v16 = _Block_copy(aBlock);
   createTileWithScaleKernel = self->_createTileWithScaleKernel;
-  *&v23 = v14;
-  *(&v23 + 1) = v15;
+  *&v23 = width;
+  *(&v23 + 1) = height;
   v24 = 1;
-  v18 = [(FigLearnedMattingMetalStage *)self _runKernel:v12 sourceTexture:v7 destinationTexture:&v23 gridSize:v16 setParamsBlock:?];
+  v18 = [(FigLearnedMattingMetalStage *)self _runKernel:v12 sourceTexture:scaleCopy destinationTexture:&v23 gridSize:v16 setParamsBlock:?];
   v19 = v18;
   if (v18)
   {
     v20 = v18;
     v21 = 0;
-    *a5 = v19;
+    *buffer = v19;
   }
 
   else
@@ -256,12 +256,12 @@ void __86__FigLearnedMattingMetalStage_createTileFrom_to_withStart_withScale_out
   [v3 setBytes:a1 + 40 length:8 atIndex:1];
 }
 
-- (int)pasteTileFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 withStart:(id *)a5 withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:
+- (int)pasteTileFrom:(__CVBuffer *)from to:(__CVBuffer *)to withStart:(id *)start withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:
 {
-  if (!a3)
+  if (!from)
   {
     [FigLearnedMattingMetalStage pasteTileFrom:? to:? withStart:? withNoOverlapStart:? withNoOverlapEnd:? outCommandBuffer:?];
-    v8 = 0;
+    toCopy = 0;
 LABEL_11:
     v14 = 0;
 LABEL_14:
@@ -271,8 +271,8 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  v8 = a4;
-  if (!a4)
+  toCopy = to;
+  if (!to)
   {
     [FigLearnedMattingMetalStage pasteTileFrom:? to:? withStart:? withNoOverlapStart:? withNoOverlapEnd:? outCommandBuffer:?];
     goto LABEL_11;
@@ -281,37 +281,37 @@ LABEL_14:
   v9 = v7;
   v10 = v6;
   v11 = v5;
-  v12 = a5;
-  v14 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:a3 usage:1];
+  startCopy = start;
+  v14 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:from usage:1];
   if (!v14)
   {
     [FigLearnedMattingMetalStage pasteTileFrom:? to:? withStart:? withNoOverlapStart:? withNoOverlapEnd:? outCommandBuffer:?];
-    v8 = 0;
+    toCopy = 0;
     goto LABEL_14;
   }
 
-  v8 = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:v8 usage:2];
-  if (!v8)
+  toCopy = [(FigLearnedMattingMetalStage *)self _textureFromPixelBuffer:toCopy usage:2];
+  if (!toCopy)
   {
     [FigLearnedMattingMetalStage pasteTileFrom:? to:? withStart:? withNoOverlapStart:? withNoOverlapEnd:? outCommandBuffer:?];
     goto LABEL_14;
   }
 
-  v15 = [v14 width];
-  v16 = [v14 height];
+  width = [v14 width];
+  height = [v14 height];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __111__FigLearnedMattingMetalStage_pasteTileFrom_to_withStart_withNoOverlapStart_withNoOverlapEnd_outCommandBuffer___block_invoke;
   aBlock[3] = &__block_descriptor_44_e36_v16__0___MTLComputeCommandEncoder__8l;
-  v27 = v12;
+  v27 = startCopy;
   v28 = v11;
   v29 = v10;
   v17 = _Block_copy(aBlock);
   pasteTileKernel = self->_pasteTileKernel;
-  *&v24 = v15;
-  *(&v24 + 1) = v16;
+  *&v24 = width;
+  *(&v24 + 1) = height;
   v25 = 1;
-  v19 = [(FigLearnedMattingMetalStage *)self _runKernel:v14 sourceTexture:v8 destinationTexture:&v24 gridSize:v17 setParamsBlock:?];
+  v19 = [(FigLearnedMattingMetalStage *)self _runKernel:v14 sourceTexture:toCopy destinationTexture:&v24 gridSize:v17 setParamsBlock:?];
   v20 = v19;
   v21 = 0;
   if (v9 && v19)
@@ -345,28 +345,28 @@ void __111__FigLearnedMattingMetalStage_pasteTileFrom_to_withStart_withNoOverlap
 
 - (uint64_t)_compileShaders
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [*(a1 + 8) computePipelineStateFor:@"clearTexture" constants:0];
-  v3 = *(a1 + 32);
-  *(a1 + 32) = v2;
+  v2 = [*(self + 8) computePipelineStateFor:@"clearTexture" constants:0];
+  v3 = *(self + 32);
+  *(self + 32) = v2;
 
-  if (*(a1 + 32))
+  if (*(self + 32))
   {
-    v4 = [*(a1 + 8) computePipelineStateFor:@"createTileWithScale" constants:0];
-    v5 = *(a1 + 16);
-    *(a1 + 16) = v4;
+    v4 = [*(self + 8) computePipelineStateFor:@"createTileWithScale" constants:0];
+    v5 = *(self + 16);
+    *(self + 16) = v4;
 
-    if (*(a1 + 16))
+    if (*(self + 16))
     {
-      v6 = [*(a1 + 8) computePipelineStateFor:@"pasteTile" constants:0];
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v6 = [*(self + 8) computePipelineStateFor:@"pasteTile" constants:0];
+      v7 = *(self + 24);
+      *(self + 24) = v6;
 
-      if (*(a1 + 24))
+      if (*(self + 24))
       {
         return 0;
       }
@@ -382,9 +382,9 @@ void __111__FigLearnedMattingMetalStage_pasteTileFrom_to_withStart_withNoOverlap
   return FigSignalErrorAtGM();
 }
 
-- (id)_textureFromPixelBuffer:(uint64_t)a3 usage:
+- (id)_textureFromPixelBuffer:(uint64_t)buffer usage:
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_6;
   }
@@ -414,12 +414,12 @@ LABEL_9:
   WidthOfPlane = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
   HeightOfPlane = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
   v16 = *MEMORY[0x1E6966010];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:buffer];
   v17 = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
   image = 0;
-  v13 = CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x1E695E480], *(a1 + 40), pixelBuffer, v12, v7, WidthOfPlane, HeightOfPlane, 0, &image);
+  v13 = CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x1E695E480], *(self + 40), pixelBuffer, v12, v7, WidthOfPlane, HeightOfPlane, 0, &image);
   v8 = 0;
   if (!v13 && image)
   {
@@ -432,50 +432,50 @@ LABEL_12:
   return v8;
 }
 
-- (id)_runKernel:(void *)a3 sourceTexture:(void *)a4 destinationTexture:(__int128 *)a5 gridSize:(void *)a6 setParamsBlock:
+- (id)_runKernel:(void *)kernel sourceTexture:(void *)texture destinationTexture:(__int128 *)destinationTexture gridSize:(void *)size setParamsBlock:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  if (a1)
+  textureCopy = texture;
+  sizeCopy = size;
+  if (self)
   {
-    v14 = *(a1 + 8);
-    v15 = a3;
-    v16 = [v14 commandQueue];
-    v17 = [v16 commandBuffer];
+    v14 = *(self + 8);
+    kernelCopy = kernel;
+    commandQueue = [v14 commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_runKernel_%@", v11];
-    [v17 setLabel:v18];
+    [commandBuffer setLabel:v18];
 
-    v19 = [v17 computeCommandEncoder];
-    [v19 setComputePipelineState:v11];
-    [v19 setTexture:v15 atIndex:0];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:v11];
+    [computeCommandEncoder setTexture:kernelCopy atIndex:0];
 
-    if (v12)
+    if (textureCopy)
     {
-      [v19 setTexture:v12 atIndex:1];
+      [computeCommandEncoder setTexture:textureCopy atIndex:1];
     }
 
-    if (v13)
+    if (sizeCopy)
     {
-      v13[2](v13, v19);
+      sizeCopy[2](sizeCopy, computeCommandEncoder);
     }
 
     v23[0] = [v11 threadExecutionWidth];
     v23[1] = [v11 maxTotalThreadsPerThreadgroup] / v23[0];
     v23[2] = 1;
-    v21 = *a5;
-    v22 = *(a5 + 2);
-    [v19 dispatchThreads:&v21 threadsPerThreadgroup:v23];
-    [v19 endEncoding];
+    v21 = *destinationTexture;
+    v22 = *(destinationTexture + 2);
+    [computeCommandEncoder dispatchThreads:&v21 threadsPerThreadgroup:v23];
+    [computeCommandEncoder endEncoding];
   }
 
   else
   {
-    v17 = 0;
+    commandBuffer = 0;
   }
 
-  return v17;
+  return commandBuffer;
 }
 
 - (uint64_t)initWithMetalContext:.cold.1()

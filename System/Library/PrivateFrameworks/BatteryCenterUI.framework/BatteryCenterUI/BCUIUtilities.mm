@@ -1,16 +1,16 @@
 @interface BCUIUtilities
-+ (BOOL)isAX1PlusLayoutRequiredForContentSizeCategory:(id)a3;
++ (BOOL)isAX1PlusLayoutRequiredForContentSizeCategory:(id)category;
 @end
 
 @implementation BCUIUtilities
 
-+ (BOOL)isAX1PlusLayoutRequiredForContentSizeCategory:(id)a3
++ (BOOL)isAX1PlusLayoutRequiredForContentSizeCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = *MEMORY[0x1E69DDC40];
-  if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC40]))
+  if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC40]))
   {
-    v5 = UIContentSizeCategoryCompareToCategory(v3, v4) == NSOrderedDescending;
+    v5 = UIContentSizeCategoryCompareToCategory(categoryCopy, v4) == NSOrderedDescending;
   }
 
   else

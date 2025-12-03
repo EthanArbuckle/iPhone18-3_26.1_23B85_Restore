@@ -1,8 +1,8 @@
 @interface C2SessionTLSCache
 - (C2SessionTLSCache)init;
-- (id)sessionForOptions:(id)a3;
-- (void)C2Session:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)C2Session:(id)a3 originalHost:(id)a4 updatedRoute:(id)a5;
+- (id)sessionForOptions:(id)options;
+- (void)C2Session:(id)session didBecomeInvalidWithError:(id)error;
+- (void)C2Session:(id)session originalHost:(id)host updatedRoute:(id)route;
 @end
 
 @implementation C2SessionTLSCache
@@ -25,33 +25,33 @@
   return v3;
 }
 
-- (id)sessionForOptions:(id)a3
+- (id)sessionForOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 tlsPinning])
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([optionsCopy tlsPinning])
   {
-    p_pinnedSession = &v5->_pinnedSession;
-    pinnedSession = v5->_pinnedSession;
+    p_pinnedSession = &selfCopy->_pinnedSession;
+    pinnedSession = selfCopy->_pinnedSession;
     if (pinnedSession)
     {
       goto LABEL_7;
     }
 
-    v8 = [(C2SessionTLSCache *)v5 _createSessionWithTLSPinning:1];
+    v8 = [(C2SessionTLSCache *)selfCopy _createSessionWithTLSPinning:1];
   }
 
   else
   {
-    p_pinnedSession = &v5->_unpinnedSession;
-    pinnedSession = v5->_unpinnedSession;
+    p_pinnedSession = &selfCopy->_unpinnedSession;
+    pinnedSession = selfCopy->_unpinnedSession;
     if (pinnedSession)
     {
       goto LABEL_7;
     }
 
-    v8 = [(C2SessionTLSCache *)v5 _createSessionWithTLSPinning:0];
+    v8 = [(C2SessionTLSCache *)selfCopy _createSessionWithTLSPinning:0];
   }
 
   v9 = *p_pinnedSession;
@@ -60,18 +60,18 @@
   pinnedSession = *p_pinnedSession;
 LABEL_7:
   v10 = pinnedSession;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v11 = [v10 session];
+  session = [v10 session];
 
-  return v11;
+  return session;
 }
 
-- (void)C2Session:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)C2Session:(id)session didBecomeInvalidWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   if (C2_DEFAULT_LOG_BLOCK_2 != -1)
   {
     [C2SessionTLSCache C2Session:didBecomeInvalidWithError:];
@@ -81,12 +81,12 @@ LABEL_7:
   if (os_log_type_enabled(C2_DEFAULT_LOG_INTERNAL_2, OS_LOG_TYPE_ERROR))
   {
     v12 = 138412290;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_242158000, v9, OS_LOG_TYPE_ERROR, "Expected NSURLSession for TLS Cache to never become invalid but did with error %@", &v12, 0xCu);
   }
 
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"C2SessionTLSCache.m" lineNumber:57 description:@"Expected NSURLSession for TLS Cache to never become invalid"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"C2SessionTLSCache.m" lineNumber:57 description:@"Expected NSURLSession for TLS Cache to never become invalid"];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -98,10 +98,10 @@ uint64_t __57__C2SessionTLSCache_C2Session_didBecomeInvalidWithError___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)C2Session:(id)a3 originalHost:(id)a4 updatedRoute:(id)a5
+- (void)C2Session:(id)session originalHost:(id)host updatedRoute:(id)route
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"C2SessionTLSCache.m" lineNumber:61 description:@"Unexpected callback for task-less NSURLSession"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"C2SessionTLSCache.m" lineNumber:61 description:@"Unexpected callback for task-less NSURLSession"];
 }
 
 @end

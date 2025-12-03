@@ -1,6 +1,6 @@
 @interface SBLockScreenTemperatureWarningView
 - (BOOL)_statusBarOrientationIsPortrait;
-- (SBLockScreenTemperatureWarningView)initWithFrame:(CGRect)a3;
+- (SBLockScreenTemperatureWarningView)initWithFrame:(CGRect)frame;
 - (double)_iconYPosition;
 - (double)_subtitleBaseline;
 - (double)_titleBaseline;
@@ -11,19 +11,19 @@
 
 @implementation SBLockScreenTemperatureWarningView
 
-- (SBLockScreenTemperatureWarningView)initWithFrame:(CGRect)a3
+- (SBLockScreenTemperatureWarningView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SBLockScreenTemperatureWarningView;
-  v3 = [(SBUILockOverlayView *)&v11 initWithFrame:3 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUILockOverlayView *)&v11 initWithFrame:3 style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBUILockOverlayView *)v3 titleLabel];
-    [(SBLockScreenTemperatureWarningView *)v4 addSubview:v5];
+    titleLabel = [(SBUILockOverlayView *)v3 titleLabel];
+    [(SBLockScreenTemperatureWarningView *)v4 addSubview:titleLabel];
 
-    v6 = [(SBUILockOverlayView *)v4 subtitleLabel];
-    [(SBLockScreenTemperatureWarningView *)v4 addSubview:v6];
+    subtitleLabel = [(SBUILockOverlayView *)v4 subtitleLabel];
+    [(SBLockScreenTemperatureWarningView *)v4 addSubview:subtitleLabel];
 
     v7 = [SBDashBoardThermalStatusProvider thermometerGlyphForThermalStatus:1];
     v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7];
@@ -48,8 +48,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v2 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v6 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v7 = 36.0;
@@ -80,10 +80,10 @@ LABEL_3:
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
@@ -107,18 +107,18 @@ LABEL_6:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return 114.0;
     }
   }
 
-  v6 = [(SBLockScreenTemperatureWarningView *)self _statusBarOrientationIsPortrait];
+  _statusBarOrientationIsPortrait = [(SBLockScreenTemperatureWarningView *)self _statusBarOrientationIsPortrait];
   result = 241.0;
-  if (v6)
+  if (_statusBarOrientationIsPortrait)
   {
     return 256.0;
   }
@@ -138,18 +138,18 @@ LABEL_6:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return 320.0;
     }
   }
 
-  v6 = [(SBLockScreenTemperatureWarningView *)self _statusBarOrientationIsPortrait];
+  _statusBarOrientationIsPortrait = [(SBLockScreenTemperatureWarningView *)self _statusBarOrientationIsPortrait];
   result = 446.0;
-  if (v6)
+  if (_statusBarOrientationIsPortrait)
   {
     return 560.0;
   }
@@ -169,18 +169,18 @@ LABEL_6:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return 220.5;
     }
   }
 
-  v6 = [(SBLockScreenTemperatureWarningView *)self _statusBarOrientationIsPortrait];
+  _statusBarOrientationIsPortrait = [(SBLockScreenTemperatureWarningView *)self _statusBarOrientationIsPortrait];
   result = 296.0;
-  if (v6)
+  if (_statusBarOrientationIsPortrait)
   {
     return 410.0;
   }
@@ -195,28 +195,28 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v37 = [(SBUILockOverlayView *)self titleLabel];
-  v11 = [(SBLockScreenTemperatureWarningView *)self _titleFont];
-  [v37 sizeToFit];
-  [v37 frame];
+  titleLabel = [(SBUILockOverlayView *)self titleLabel];
+  _titleFont = [(SBLockScreenTemperatureWarningView *)self _titleFont];
+  [titleLabel sizeToFit];
+  [titleLabel frame];
   UIRectCenteredXInRectScale();
   v13 = v12;
   v15 = v14;
   v17 = v16;
   [(SBLockScreenTemperatureWarningView *)self _titleBaseline];
-  [v37 sb_yPositionForLabelWithContainerBounds:v11 baselineOffset:v4 font:{v6, v8, v10, v18}];
-  [v37 setFrame:{v13, v19, v15, v17}];
-  v20 = [(SBUILockOverlayView *)self subtitleLabel];
-  v21 = [(SBLockScreenTemperatureWarningView *)self _subtitleFont];
-  [v20 sizeToFit];
-  [v20 frame];
+  [titleLabel sb_yPositionForLabelWithContainerBounds:_titleFont baselineOffset:v4 font:{v6, v8, v10, v18}];
+  [titleLabel setFrame:{v13, v19, v15, v17}];
+  subtitleLabel = [(SBUILockOverlayView *)self subtitleLabel];
+  _subtitleFont = [(SBLockScreenTemperatureWarningView *)self _subtitleFont];
+  [subtitleLabel sizeToFit];
+  [subtitleLabel frame];
   UIRectCenteredXInRectScale();
   v23 = v22;
   v25 = v24;
   v27 = v26;
   [(SBLockScreenTemperatureWarningView *)self _subtitleBaseline];
-  [v20 sb_yPositionForLabelWithContainerBounds:v21 baselineOffset:v4 font:{v6, v8, v10, v28}];
-  [v20 setFrame:{v23, v29, v25, v27}];
+  [subtitleLabel sb_yPositionForLabelWithContainerBounds:_subtitleFont baselineOffset:v4 font:{v6, v8, v10, v28}];
+  [subtitleLabel setFrame:{v23, v29, v25, v27}];
   [(UIImageView *)self->_warningIconView frame];
   v31 = v30;
   v33 = v32;
@@ -228,11 +228,11 @@ LABEL_6:
 
 - (BOOL)_statusBarOrientationIsPortrait
 {
-  v2 = [(UIView *)self _sbWindowScene];
-  v3 = [v2 statusBarManager];
+  _sbWindowScene = [(UIView *)self _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
 
-  LOBYTE(v2) = ([v3 statusBarOrientation] - 1) < 2;
-  return v2;
+  LOBYTE(_sbWindowScene) = ([statusBarManager statusBarOrientation] - 1) < 2;
+  return _sbWindowScene;
 }
 
 @end

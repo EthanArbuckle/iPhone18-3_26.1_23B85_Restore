@@ -1,52 +1,52 @@
 @interface SBHIconManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_axSetCurrentFolderScrollEnabled:(BOOL)a3;
-- (void)closeFolderAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)pushExpandedIcon:(id)a3 location:(id)a4 context:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7;
-- (void)setEditing:(BOOL)a3 withFeedbackBehavior:(id)a4 location:(CGPoint)a5;
-- (void)setMainDisplayLibraryViewVisible:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_axSetCurrentFolderScrollEnabled:(BOOL)enabled;
+- (void)closeFolderAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)pushExpandedIcon:(id)icon location:(id)location context:(id)context animated:(BOOL)animated completionHandler:(id)handler;
+- (void)setEditing:(BOOL)editing withFeedbackBehavior:(id)behavior location:(CGPoint)location;
+- (void)setMainDisplayLibraryViewVisible:(BOOL)visible;
 @end
 
 @implementation SBHIconManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"openedFolder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"iconDragManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"setMainDisplayLibraryViewVisible:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"pushExpandedIcon:location:context:animated:completionHandler:" withFullSignature:{"v", "@", "@", "@", "B", "@?", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"setEditing:withFeedbackBehavior:location:" withFullSignature:{"v", "B", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"closeFolderAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"SBIconDragManager"];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"cancelAllDrags" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBFolder" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"openedFolder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"iconDragManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"setMainDisplayLibraryViewVisible:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"pushExpandedIcon:location:context:animated:completionHandler:" withFullSignature:{"v", "@", "@", "@", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"setEditing:withFeedbackBehavior:location:" withFullSignature:{"v", "B", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"closeFolderAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager"];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"cancelAllDrags" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBFolder" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
-- (void)pushExpandedIcon:(id)a3 location:(id)a4 context:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)pushExpandedIcon:(id)icon location:(id)location context:(id)context animated:(BOOL)animated completionHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a7 copy];
+  animatedCopy = animated;
+  iconCopy = icon;
+  contextCopy = context;
+  locationCopy = location;
+  v15 = [handler copy];
   v20[0] = MEMORY[0x29EDCA5F8];
   v20[1] = 3221225472;
   v20[2] = __92__SBHIconManagerAccessibility_pushExpandedIcon_location_context_animated_completionHandler___block_invoke;
   v20[3] = &unk_29F3003C8;
-  v23 = v8;
+  v23 = animatedCopy;
   v20[4] = self;
-  v21 = v12;
+  v21 = iconCopy;
   v22 = v15;
   v16 = v15;
-  v17 = v12;
+  v17 = iconCopy;
   v18 = MEMORY[0x29ED38BB0](v20);
   v19.receiver = self;
   v19.super_class = SBHIconManagerAccessibility;
-  [(SBHIconManagerAccessibility *)&v19 pushExpandedIcon:v17 location:v14 context:v13 animated:v8 completionHandler:v18];
+  [(SBHIconManagerAccessibility *)&v19 pushExpandedIcon:v17 location:locationCopy context:contextCopy animated:animatedCopy completionHandler:v18];
 }
 
 uint64_t __92__SBHIconManagerAccessibility_pushExpandedIcon_location_context_animated_completionHandler___block_invoke(uint64_t a1)
@@ -95,16 +95,16 @@ uint64_t __92__SBHIconManagerAccessibility_pushExpandedIcon_location_context_ani
   return result;
 }
 
-- (void)setEditing:(BOOL)a3 withFeedbackBehavior:(id)a4 location:(CGPoint)a5
+- (void)setEditing:(BOOL)editing withFeedbackBehavior:(id)behavior location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a3;
-  v9 = a4;
+  y = location.y;
+  x = location.x;
+  editingCopy = editing;
+  behaviorCopy = behavior;
   v10 = [(SBHIconManagerAccessibility *)self safeBoolForKey:@"isEditing"];
   v16.receiver = self;
   v16.super_class = SBHIconManagerAccessibility;
-  [(SBHIconManagerAccessibility *)&v16 setEditing:v7 withFeedbackBehavior:v9 location:x, y];
+  [(SBHIconManagerAccessibility *)&v16 setEditing:editingCopy withFeedbackBehavior:behaviorCopy location:x, y];
 
   if (v10 != [(SBHIconManagerAccessibility *)self safeBoolForKey:@"isEditing"])
   {
@@ -141,14 +141,14 @@ LABEL_8:
   SBAXIconOpenedFolderWhileJiggling = 0;
 }
 
-- (void)closeFolderAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)closeFolderAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(SBHIconManagerAccessibility *)self _axSetCurrentFolderScrollEnabled:1];
   v7 = [(SBHIconManagerAccessibility *)self safeValueForKey:@"openedFolder"];
   v8 = [v7 safeValueForKey:@"displayName"];
-  v9 = [v6 copy];
+  v9 = [completionCopy copy];
 
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
@@ -157,14 +157,14 @@ LABEL_8:
   v15 = v8;
   v16 = v9;
   v17 = v7 != 0;
-  v18 = v4;
+  v18 = animatedCopy;
   v14[4] = self;
   v10 = v8;
   v11 = v9;
   v12 = MEMORY[0x29ED38BB0](v14);
   v13.receiver = self;
   v13.super_class = SBHIconManagerAccessibility;
-  [(SBHIconManagerAccessibility *)&v13 closeFolderAnimated:v4 withCompletion:v12];
+  [(SBHIconManagerAccessibility *)&v13 closeFolderAnimated:animatedCopy withCompletion:v12];
 }
 
 void __66__SBHIconManagerAccessibility_closeFolderAnimated_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -198,18 +198,18 @@ void __66__SBHIconManagerAccessibility_closeFolderAnimated_withCompletion___bloc
   UIAccessibilityPostNotification(v15, 0);
 }
 
-- (void)setMainDisplayLibraryViewVisible:(BOOL)a3
+- (void)setMainDisplayLibraryViewVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v9.receiver = self;
   v9.super_class = SBHIconManagerAccessibility;
   [(SBHIconManagerAccessibility *)&v9 setMainDisplayLibraryViewVisible:?];
-  if (v3)
+  if (visibleCopy)
   {
     v4 = AXSBIconControllerSharedInstance();
-    v5 = [v4 _axDragManager];
-    v6 = [v5 _axGrabbedIcons];
-    v7 = [v6 count];
+    _axDragManager = [v4 _axDragManager];
+    _axGrabbedIcons = [_axDragManager _axGrabbedIcons];
+    v7 = [_axGrabbedIcons count];
 
     if (v7)
     {
@@ -222,17 +222,17 @@ void __66__SBHIconManagerAccessibility_closeFolderAnimated_withCompletion___bloc
   }
 }
 
-- (void)_axSetCurrentFolderScrollEnabled:(BOOL)a3
+- (void)_axSetCurrentFolderScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   objc_opt_class();
   v5 = [(SBHIconManagerAccessibility *)self safeValueForKey:@"_currentFolderController"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 view];
-  v8 = [v7 _accessibilityDescendantOfType:objc_opt_class()];
+  view = [v6 view];
+  v8 = [view _accessibilityDescendantOfType:objc_opt_class()];
 
-  [v8 setScrollEnabled:v3];
+  [v8 setScrollEnabled:enabledCopy];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface TUIDynamicRegistry
 - (TUIDynamicRegistry)init;
-- (id)progressProviderForKind:(id)a3;
-- (id)stateProviderForKind:(id)a3;
-- (void)registerProgressProvider:(id)a3 forKind:(id)a4;
-- (void)registerStateProvider:(id)a3 forKind:(id)a4;
-- (void)unregisterStateProviderForKind:(id)a3;
+- (id)progressProviderForKind:(id)kind;
+- (id)stateProviderForKind:(id)kind;
+- (void)registerProgressProvider:(id)provider forKind:(id)kind;
+- (void)registerStateProvider:(id)provider forKind:(id)kind;
+- (void)unregisterStateProviderForKind:(id)kind;
 @end
 
 @implementation TUIDynamicRegistry
@@ -28,25 +28,25 @@
   return v2;
 }
 
-- (void)registerStateProvider:(id)a3 forKind:(id)a4
+- (void)registerStateProvider:(id)provider forKind:(id)kind
 {
-  if (a4)
+  if (kind)
   {
-    [(NSMutableDictionary *)self->_stateProviders setObject:a3 forKey:?];
+    [(NSMutableDictionary *)self->_stateProviders setObject:provider forKey:?];
   }
 }
 
-- (void)unregisterStateProviderForKind:(id)a3
+- (void)unregisterStateProviderForKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     [(NSMutableDictionary *)self->_stateProviders removeObjectForKey:?];
   }
 }
 
-- (id)stateProviderForKind:(id)a3
+- (id)stateProviderForKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     v4 = [(NSMutableDictionary *)self->_stateProviders objectForKey:?];
   }
@@ -59,17 +59,17 @@
   return v4;
 }
 
-- (void)registerProgressProvider:(id)a3 forKind:(id)a4
+- (void)registerProgressProvider:(id)provider forKind:(id)kind
 {
-  if (a4)
+  if (kind)
   {
-    [(NSMutableDictionary *)self->_progressProviders setObject:a3 forKey:?];
+    [(NSMutableDictionary *)self->_progressProviders setObject:provider forKey:?];
   }
 }
 
-- (id)progressProviderForKind:(id)a3
+- (id)progressProviderForKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     v4 = [(NSMutableDictionary *)self->_progressProviders objectForKey:?];
   }

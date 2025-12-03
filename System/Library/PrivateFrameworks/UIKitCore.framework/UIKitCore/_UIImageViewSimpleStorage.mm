@@ -1,7 +1,7 @@
 @interface _UIImageViewSimpleStorage
 - (id)imageProperties;
-- (void)setImage:(id)a3;
-- (void)setResolvedImage:(id)a3;
+- (void)setImage:(id)image;
+- (void)setResolvedImage:(id)image;
 @end
 
 @implementation _UIImageViewSimpleStorage
@@ -21,27 +21,27 @@
   return imageProperties;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(_UIImageViewSimpleStorage *)self image];
+  imageCopy = image;
+  image = [(_UIImageViewSimpleStorage *)self image];
 
-  if (v4 != v6)
+  if (image != imageCopy)
   {
-    v5 = [(_UIImageViewSimpleStorage *)self imageProperties];
-    [v5 setImage:v6];
+    imageProperties = [(_UIImageViewSimpleStorage *)self imageProperties];
+    [imageProperties setImage:imageCopy];
   }
 }
 
-- (void)setResolvedImage:(id)a3
+- (void)setResolvedImage:(id)image
 {
-  v6 = a3;
-  v4 = [(_UIImageViewSimpleStorage *)self resolvedImage];
+  imageCopy = image;
+  resolvedImage = [(_UIImageViewSimpleStorage *)self resolvedImage];
 
-  if (v4 != v6)
+  if (resolvedImage != imageCopy)
   {
-    v5 = [(_UIImageViewSimpleStorage *)self imageProperties];
-    [v5 setResolvedImage:v6];
+    imageProperties = [(_UIImageViewSimpleStorage *)self imageProperties];
+    [imageProperties setResolvedImage:imageCopy];
   }
 }
 

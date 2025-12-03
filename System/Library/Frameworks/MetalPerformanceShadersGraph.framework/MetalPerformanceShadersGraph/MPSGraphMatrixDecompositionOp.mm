@@ -1,18 +1,18 @@
 @interface MPSGraphMatrixDecompositionOp
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphMatrixDecompositionOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphMatrixDecompositionOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphMatrixDecompositionOps.mm", __p);
-  v11 = v10;
+  v11 = nameCopy;
   v42 = 260;
   v41[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v41);
+  StringAttr = mlir::Builder::getStringAttr(builder, v41);
   v13 = mlir::FileLineColLoc::get(StringAttr, 0x35u, 0);
   if (!v11)
   {
@@ -20,8 +20,8 @@
   }
 
   v14 = v11;
-  v15 = [v11 UTF8String];
-  v16 = strlen(v15);
+  uTF8String = [v11 UTF8String];
+  v16 = strlen(uTF8String);
   if (v16 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -36,11 +36,11 @@
   HIBYTE(v40) = v16;
   if (v16)
   {
-    memmove(&__dst, v15, v16);
+    memmove(&__dst, uTF8String, v16);
   }
 
   *(&__dst + v18) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v17, &v36);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v17, &v36);
   v19 = v36.__r_.__value_.__r.__words[0];
   if ((v36.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -56,7 +56,7 @@
   }
 
   LOBYTE(v42) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v41);
+  v21 = mlir::Builder::getStringAttr(builder, v41);
   v22 = mlir::NameLoc::get(v21, v13);
   if (SHIBYTE(v36.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -80,8 +80,8 @@ LABEL_15:
     operator delete(__p[0]);
   }
 
-  v23 = *a5;
-  if (*(a5 + 1) == *a5)
+  v23 = *values;
+  if (*(values + 1) == *values)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -100,8 +100,8 @@ LABEL_15:
   }
 
   mlir::OperationState::OperationState(v41, v22, v25);
-  mlir::mps::MatrixDecompositionLUOp::build(a3, v41, *v23);
-  v27 = mlir::OpBuilder::create(a3, v41);
+  mlir::mps::MatrixDecompositionLUOp::build(builder, v41, *v23);
+  v27 = mlir::OpBuilder::create(builder, v41);
   v28 = *(*(v27 + 48) + 16);
   mlir::OperationState::~OperationState(v41);
   if (v28 == &mlir::detail::TypeIDResolver<mlir::mps::MatrixDecompositionLUOp,void>::id)

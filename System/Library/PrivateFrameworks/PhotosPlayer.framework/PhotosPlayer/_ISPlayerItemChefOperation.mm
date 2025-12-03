@@ -1,6 +1,6 @@
 @interface _ISPlayerItemChefOperation
 - ($542DF6A934A12223D4D27E794AA667E2)trimmedTimeRange;
-- (_ISPlayerItemChefOperation)initWithAsset:(id)a3 trimmedTimeRange:(id *)a4 photoTime:(id *)a5 includeAudio:(BOOL)a6 includeVideo:(BOOL)a7 resultHandler:(id)a8;
+- (_ISPlayerItemChefOperation)initWithAsset:(id)asset trimmedTimeRange:(id *)range photoTime:(id *)time includeAudio:(BOOL)audio includeVideo:(BOOL)video resultHandler:(id)handler;
 - (void)_handleValuesDidLoad;
 - (void)_preparePlayerItem;
 - (void)main;
@@ -20,11 +20,11 @@
 - (void)_preparePlayerItem
 {
   v100 = *MEMORY[0x277D85DE8];
-  v3 = [(_ISPlayerItemChefOperation *)self asset];
-  v4 = [(_ISPlayerItemChefOperation *)self includeAudio];
-  v5 = [(_ISPlayerItemChefOperation *)self resultHandler];
+  asset = [(_ISPlayerItemChefOperation *)self asset];
+  includeAudio = [(_ISPlayerItemChefOperation *)self includeAudio];
+  resultHandler = [(_ISPlayerItemChefOperation *)self resultHandler];
   v92 = 0;
-  v6 = [v3 statusOfValueForKey:@"tracks" error:&v92];
+  v6 = [asset statusOfValueForKey:@"tracks" error:&v92];
   v7 = v92;
   if (v6 == 3)
   {
@@ -38,23 +38,23 @@
       _os_log_error_impl(&dword_25E667000, v8, OS_LOG_TYPE_ERROR, "Property loading status:%ld error:%@", &buf, 0x16u);
     }
 
-    v9 = v5[2];
+    v9 = resultHandler[2];
     *&buf.start.value = *MEMORY[0x277CC0898];
     buf.start.epoch = *(MEMORY[0x277CC0898] + 16);
-    v9(v5, 0, 0, &buf, v7);
+    v9(resultHandler, 0, 0, &buf, v7);
   }
 
   else
   {
     v10 = *MEMORY[0x277CE5EA8];
-    v11 = [MEMORY[0x277D3B450] tracksWithMediaType:*MEMORY[0x277CE5EA8] forAsset:v3];
+    v11 = [MEMORY[0x277D3B450] tracksWithMediaType:*MEMORY[0x277CE5EA8] forAsset:asset];
     memset(&buf, 0, sizeof(buf));
-    v12 = [v11 firstObject];
-    v13 = v12;
-    v70 = v5;
-    if (v12)
+    firstObject = [v11 firstObject];
+    v13 = firstObject;
+    v70 = resultHandler;
+    if (firstObject)
     {
-      [v12 timeRange];
+      [firstObject timeRange];
     }
 
     else
@@ -110,8 +110,8 @@
     *&otherRange.start.value = *MEMORY[0x277CC0898];
     v67 = *(MEMORY[0x277CC0898] + 16);
     otherRange.start.epoch = v67;
-    v71 = v3;
-    v21 = [MEMORY[0x277D3B450] insertTimeRange:&v97 ofAsset:v3 atTime:&otherRange intoMutableComposition:v20 error:&v85];
+    v71 = asset;
+    v21 = [MEMORY[0x277D3B450] insertTimeRange:&v97 ofAsset:asset atTime:&otherRange intoMutableComposition:v20 error:&v85];
     v22 = v85;
 
     v23 = [v20 tracksWithMediaType:v10];
@@ -134,7 +134,7 @@
       LODWORD(v28) = 2139095039;
       [v27 setSpeedThresholdForIFrameOnlyPlayback:v28];
       [v27 setVideoApertureMode:*MEMORY[0x277CE62A8]];
-      if (v4)
+      if (includeAudio)
       {
         flags = buf.duration.flags;
         if ((buf.duration.flags & 0x1D) == 1)
@@ -219,12 +219,12 @@
 
       if ([(_ISPlayerItemChefOperation *)self isCancelled])
       {
-        v5 = v70;
+        resultHandler = v70;
         v44 = v70[2];
         *&v97.start.value = v68;
         v97.start.epoch = v67;
         v44(v70, 0, 0, &v97, 0);
-        v3 = v71;
+        asset = v71;
         v22 = v66;
       }
 
@@ -244,8 +244,8 @@
         v75 = 0u;
         v76 = 0u;
         v63 = v27;
-        v51 = [v27 tracks];
-        v52 = [v51 countByEnumeratingWithState:&v73 objects:v93 count:16];
+        tracks = [v27 tracks];
+        v52 = [tracks countByEnumeratingWithState:&v73 objects:v93 count:16];
         if (v52)
         {
           v53 = v52;
@@ -256,13 +256,13 @@
             {
               if (*v74 != v54)
               {
-                objc_enumerationMutation(v51);
+                objc_enumerationMutation(tracks);
               }
 
               v56 = *(*(&v73 + 1) + 8 * k);
-              v57 = [v56 assetTrack];
-              v58 = [v57 mediaType];
-              v59 = [v58 isEqualToString:v10];
+              assetTrack = [v56 assetTrack];
+              mediaType = [assetTrack mediaType];
+              v59 = [mediaType isEqualToString:v10];
 
               if (v59)
               {
@@ -270,7 +270,7 @@
               }
             }
 
-            v53 = [v51 countByEnumeratingWithState:&v73 objects:v93 count:16];
+            v53 = [tracks countByEnumeratingWithState:&v73 objects:v93 count:16];
           }
 
           while (v53);
@@ -281,8 +281,8 @@
           dispatch_once(&_preparePlayerItem_onceToken, &__block_literal_global_61);
         }
 
-        v5 = v70;
-        v3 = v71;
+        resultHandler = v70;
+        asset = v71;
         v20 = v65;
         v22 = v66;
         v27 = v63;
@@ -313,12 +313,12 @@
         _os_log_error_impl(&dword_25E667000, v45, OS_LOG_TYPE_ERROR, "Error inserting asset contents into composition: %@", &v97, 0xCu);
       }
 
-      v5 = v70;
+      resultHandler = v70;
       v46 = v70[2];
       *&v97.start.value = v68;
       v97.start.epoch = v67;
       v46(v70, 0, 0, &v97, v22);
-      v3 = v71;
+      asset = v71;
     }
 
     v7 = v22;
@@ -343,40 +343,40 @@
 
 - (void)main
 {
-  v3 = [(_ISPlayerItemChefOperation *)self asset];
+  asset = [(_ISPlayerItemChefOperation *)self asset];
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __34___ISPlayerItemChefOperation_main__block_invoke;
   v4[3] = &unk_279A2A3C0;
   objc_copyWeak(&v5, &location);
-  [v3 loadValuesAsynchronouslyForKeys:&unk_28705CEE0 completionHandler:v4];
+  [asset loadValuesAsynchronouslyForKeys:&unk_28705CEE0 completionHandler:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (_ISPlayerItemChefOperation)initWithAsset:(id)a3 trimmedTimeRange:(id *)a4 photoTime:(id *)a5 includeAudio:(BOOL)a6 includeVideo:(BOOL)a7 resultHandler:(id)a8
+- (_ISPlayerItemChefOperation)initWithAsset:(id)asset trimmedTimeRange:(id *)range photoTime:(id *)time includeAudio:(BOOL)audio includeVideo:(BOOL)video resultHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a8;
+  assetCopy = asset;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = _ISPlayerItemChefOperation;
   v17 = [(_ISPlayerItemChefOperation *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_asset, a3);
-    v20 = *&a4->var0.var3;
-    v19 = *&a4->var1.var1;
-    *&v18->_trimmedTimeRange.start.value = *&a4->var0.var0;
+    objc_storeStrong(&v17->_asset, asset);
+    v20 = *&range->var0.var3;
+    v19 = *&range->var1.var1;
+    *&v18->_trimmedTimeRange.start.value = *&range->var0.var0;
     *&v18->_trimmedTimeRange.start.epoch = v20;
     *&v18->_trimmedTimeRange.duration.timescale = v19;
-    v21 = *&a5->var0;
-    v18->_photoTime.epoch = a5->var3;
+    v21 = *&time->var0;
+    v18->_photoTime.epoch = time->var3;
     *&v18->_photoTime.value = v21;
-    v18->_includeAudio = a6;
-    v18->_includeVideo = a7;
-    v22 = [v16 copy];
+    v18->_includeAudio = audio;
+    v18->_includeVideo = video;
+    v22 = [handlerCopy copy];
     resultHandler = v18->_resultHandler;
     v18->_resultHandler = v22;
 

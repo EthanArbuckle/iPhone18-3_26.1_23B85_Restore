@@ -1,7 +1,7 @@
 @interface BLSBacklight
 + (id)defaultBacklightProxy;
 + (id)sharedBacklight;
-+ (void)setDefaultBacklightProxy:(id)a3;
++ (void)setDefaultBacklightProxy:(id)proxy;
 - (BLSBacklight)init;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __31__BLSBacklight_sharedBacklight__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedBacklight_onceToken != -1)
   {
     dispatch_once(&sharedBacklight_onceToken, block);
@@ -72,9 +72,9 @@ uint64_t __31__BLSBacklight_sharedBacklight__block_invoke(uint64_t a1)
   return v0;
 }
 
-+ (void)setDefaultBacklightProxy:(id)a3
++ (void)setDefaultBacklightProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   os_unfair_lock_lock(&_classLock_0);
   v5 = _defaultBacklightProxy;
   if (!v5)
@@ -88,7 +88,7 @@ uint64_t __31__BLSBacklight_sharedBacklight__block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!proxyCopy)
   {
     v6 = bls_backlight_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -99,19 +99,19 @@ uint64_t __31__BLSBacklight_sharedBacklight__block_invoke(uint64_t a1)
 
 LABEL_10:
 
-    objc_storeStrong(&_defaultBacklightProxy, a3);
+    objc_storeStrong(&_defaultBacklightProxy, proxy);
     os_unfair_lock_unlock(&_classLock_0);
     goto LABEL_11;
   }
 
-  objc_storeStrong(&_defaultBacklightProxy, a3);
+  objc_storeStrong(&_defaultBacklightProxy, proxy);
   os_unfair_lock_unlock(&_classLock_0);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"attempting to replace backlightProxy:%@ which does not respond to replaceWithBacklightProxy:", v5}];
   }
 
-  [v5 replaceWithBacklightProxy:v4];
+  [v5 replaceWithBacklightProxy:proxyCopy];
 LABEL_11:
 }
 

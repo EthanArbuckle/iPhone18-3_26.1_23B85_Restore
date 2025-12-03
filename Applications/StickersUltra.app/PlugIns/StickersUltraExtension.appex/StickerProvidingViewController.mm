@@ -1,23 +1,23 @@
 @interface StickerProvidingViewController
-- (_TtC22StickersUltraExtension30StickerProvidingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC22StickersUltraExtension30StickerProvidingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StickerProvidingViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for StickerProvidingViewController();
   v4 = v8.receiver;
-  [(StickerProvidingViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 view];
-  if (v5)
+  [(StickerProvidingViewController *)&v8 viewWillAppear:appearCopy];
+  view = [v4 view];
+  if (view)
   {
-    v6 = v5;
-    v7 = [objc_opt_self() clearColor];
-    [v6 setBackgroundColor:v7];
+    v6 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v6 setBackgroundColor:clearColor];
   }
 
   else
@@ -26,9 +26,9 @@
   }
 }
 
-- (_TtC22StickersUltraExtension30StickerProvidingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22StickersUltraExtension30StickerProvidingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10007D7D0();
     v7 = v6;
@@ -40,8 +40,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100058474(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100058474(v5, v7, bundle);
 }
 
 @end

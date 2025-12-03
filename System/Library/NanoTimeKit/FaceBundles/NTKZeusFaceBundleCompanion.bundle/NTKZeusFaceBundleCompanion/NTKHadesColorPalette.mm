@@ -26,35 +26,35 @@
 
 - (UIColor)swatch
 {
-  v3 = [(NTKHadesColorPalette *)self pigmentEditOption];
-  v4 = [v3 optionName];
-  v5 = [v4 isEqualToString:@"hades.noir"];
+  pigmentEditOption = [(NTKHadesColorPalette *)self pigmentEditOption];
+  optionName = [pigmentEditOption optionName];
+  v5 = [optionName isEqualToString:@"hades.noir"];
 
   if (v5)
   {
-    v6 = [(NTKHadesColorPalette *)self background];
+    background = [(NTKHadesColorPalette *)self background];
     v7 = NTKColorByBrightening();
   }
 
   else
   {
-    v8 = [(NTKHadesColorPalette *)self pigmentEditOption];
-    v9 = [v8 collectionName];
-    v10 = [v9 isEqual:@"hades.seasons.fall2021"];
+    pigmentEditOption2 = [(NTKHadesColorPalette *)self pigmentEditOption];
+    collectionName = [pigmentEditOption2 collectionName];
+    v10 = [collectionName isEqual:@"hades.seasons.fall2021"];
 
     if (v10)
     {
-      v11 = [(NTKHadesColorPalette *)self background];
+      background2 = [(NTKHadesColorPalette *)self background];
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = NTKHadesColorPalette;
-      v11 = [(NTKHadesColorPalette *)&v13 swatch];
+      background2 = [(NTKHadesColorPalette *)&v13 swatch];
     }
 
-    v7 = v11;
+    v7 = background2;
   }
 
   return v7;
@@ -62,8 +62,8 @@
 
 - (id)tritium_numbers
 {
-  v3 = [(NTKHadesColorPalette *)self numbers];
-  v4 = [(NTKHadesColorPalette *)self background];
+  numbers = [(NTKHadesColorPalette *)self numbers];
+  background = [(NTKHadesColorPalette *)self background];
   v5 = CLKUICompareColorsByLightness();
 
   if (v5 == -1)

@@ -16,12 +16,12 @@
 {
   v12 = a8;
   v13 = a7;
-  v14 = [a1 leadingAnchor];
-  v15 = [v14 constraintEqualToAnchor:v13 constant:a3];
+  leadingAnchor = [self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:v13 constant:a3];
 
   [v15 setActive:1];
-  v17 = [a1 trailingAnchor];
-  v16 = [v17 constraintEqualToAnchor:v12 constant:-a5];
+  trailingAnchor = [self trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:v12 constant:-a5];
 
   [v16 setActive:1];
 }
@@ -30,12 +30,12 @@
 {
   v11 = a7;
   v12 = a6;
-  v13 = [a1 topAnchor];
-  v14 = [v13 constraintEqualToAnchor:v12 constant:a2];
+  topAnchor = [self topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:v12 constant:a2];
 
   [v14 setActive:1];
-  v16 = [a1 bottomAnchor];
-  v15 = [v16 constraintEqualToAnchor:v11 constant:-a4];
+  bottomAnchor = [self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:v11 constant:-a4];
 
   [v15 setActive:1];
 }
@@ -43,78 +43,78 @@
 - (uint64_t)hrui_alignConstraintsWithView:()HeartRhythmUI insets:
 {
   v12 = a7;
-  v13 = [v12 topAnchor];
-  v14 = [v12 bottomAnchor];
-  [a1 hrui_alignConstraintsWithTopAnchor:v13 bottomAnchor:v14 insets:{a2, a3, a4, a5}];
+  topAnchor = [v12 topAnchor];
+  bottomAnchor = [v12 bottomAnchor];
+  [self hrui_alignConstraintsWithTopAnchor:topAnchor bottomAnchor:bottomAnchor insets:{a2, a3, a4, a5}];
 
-  v15 = [v12 leadingAnchor];
-  v16 = [v12 trailingAnchor];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
 
-  [a1 hrui_alignConstraintsWithLeadingAnchor:v15 trailingAnchor:v16 insets:{a2, a3, a4, a5}];
+  [self hrui_alignConstraintsWithLeadingAnchor:leadingAnchor trailingAnchor:trailingAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hrui_alignHorizontalConstraintsWithView:()HeartRhythmUI insets:
 {
   v12 = a7;
-  v13 = [v12 leadingAnchor];
-  v14 = [v12 trailingAnchor];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
 
-  [a1 hrui_alignConstraintsWithLeadingAnchor:v13 trailingAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hrui_alignConstraintsWithLeadingAnchor:leadingAnchor trailingAnchor:trailingAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hrui_alignVerticalConstraintsWithView:()HeartRhythmUI insets:
 {
   v12 = a7;
-  v13 = [v12 topAnchor];
-  v14 = [v12 bottomAnchor];
+  topAnchor = [v12 topAnchor];
+  bottomAnchor = [v12 bottomAnchor];
 
-  [a1 hrui_alignConstraintsWithTopAnchor:v13 bottomAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hrui_alignConstraintsWithTopAnchor:topAnchor bottomAnchor:bottomAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hrui_alignHorizontalConstraintsWithGuide:()HeartRhythmUI insets:
 {
   v12 = a7;
-  v13 = [v12 leadingAnchor];
-  v14 = [v12 trailingAnchor];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
 
-  [a1 hrui_alignConstraintsWithLeadingAnchor:v13 trailingAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hrui_alignConstraintsWithLeadingAnchor:leadingAnchor trailingAnchor:trailingAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hrui_alignVerticalConstraintsWithGuide:()HeartRhythmUI insets:
 {
   v12 = a7;
-  v13 = [v12 topAnchor];
-  v14 = [v12 bottomAnchor];
+  topAnchor = [v12 topAnchor];
+  bottomAnchor = [v12 bottomAnchor];
 
-  [a1 hrui_alignConstraintsWithTopAnchor:v13 bottomAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hrui_alignConstraintsWithTopAnchor:topAnchor bottomAnchor:bottomAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)hrui_constraintAspectRatioFromSize:()HeartRhythmUI
 {
-  v4 = [MEMORY[0x277CCAAD0] constraintWithItem:a1 attribute:8 relatedBy:0 toItem:a1 attribute:7 multiplier:a3 / a2 constant:0.0];
-  [a1 addConstraint:v4];
+  v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:8 relatedBy:0 toItem:self attribute:7 multiplier:a3 / a2 constant:0.0];
+  [self addConstraint:v4];
 }
 
 - (void)hrui_maskCorners:()HeartRhythmUI radius:
 {
-  v7 = [a1 layer];
-  [v7 setCornerRadius:a2];
+  layer = [self layer];
+  [layer setCornerRadius:a2];
 
-  v8 = [a1 layer];
-  [v8 setMaskedCorners:a4 & 0xF];
+  layer2 = [self layer];
+  [layer2 setMaskedCorners:a4 & 0xF];
 
-  v9 = [a1 layer];
-  [v9 setMasksToBounds:1];
+  layer3 = [self layer];
+  [layer3 setMasksToBounds:1];
 }
 
 @end

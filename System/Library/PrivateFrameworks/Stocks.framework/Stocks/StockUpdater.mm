@@ -1,34 +1,34 @@
 @interface StockUpdater
-- (BOOL)_updateStocks:(id)a3 comprehensive:(BOOL)a4 forceUpdate:(BOOL)a5;
+- (BOOL)_updateStocks:(id)stocks comprehensive:(BOOL)comprehensive forceUpdate:(BOOL)update;
 - (StockUpdaterDelegate)delegate;
-- (void)_parseExchangeDictionaries:(id)a3;
-- (void)_parseQuoteDictionaries:(id)a3 withDataSourceDictionaries:(id)a4;
+- (void)_parseExchangeDictionaries:(id)dictionaries;
+- (void)_parseQuoteDictionaries:(id)dictionaries withDataSourceDictionaries:(id)sourceDictionaries;
 - (void)didParseData;
-- (void)failWithError:(id)a3;
-- (void)parseData:(id)a3;
+- (void)failWithError:(id)error;
+- (void)parseData:(id)data;
 @end
 
 @implementation StockUpdater
 
-- (BOOL)_updateStocks:(id)a3 comprehensive:(BOOL)a4 forceUpdate:(BOOL)a5
+- (BOOL)_updateStocks:(id)stocks comprehensive:(BOOL)comprehensive forceUpdate:(BOOL)update
 {
-  v6 = a4;
+  comprehensiveCopy = comprehensive;
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [objc_opt_class() shouldGenerateOfflineData];
-  self->_isComprehensive = v6;
-  self->_forceUpdate = a5;
+  stocksCopy = stocks;
+  shouldGenerateOfflineData = [objc_opt_class() shouldGenerateOfflineData];
+  self->_isComprehensive = comprehensiveCopy;
+  self->_forceUpdate = update;
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  if (!self->_forceUpdate && (v9 & 1) == 0)
+  if (!self->_forceUpdate && (shouldGenerateOfflineData & 1) == 0)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v12 = v8;
+    v12 = stocksCopy;
     v13 = [v12 countByEnumeratingWithState:&v51 objects:v61 count:16];
     if (!v13)
     {
@@ -47,7 +47,7 @@
         }
 
         v17 = *(*(&v51 + 1) + 8 * i);
-        if (!v6)
+        if (!comprehensiveCopy)
         {
           if (![v17 isQuoteStale])
           {
@@ -55,7 +55,7 @@
           }
 
 LABEL_12:
-          [v11 addObject:v17];
+          [array addObject:v17];
           continue;
         }
 
@@ -75,17 +75,17 @@ LABEL_15:
     }
   }
 
-  v11 = v8;
+  array = stocksCopy;
 LABEL_17:
-  v18 = [v11 count];
+  v18 = [array count];
   if (v18)
   {
-    if ([v11 count] >= 0x65)
+    if ([array count] >= 0x65)
     {
-      v19 = [v11 subarrayWithRange:{100, objc_msgSend(v11, "count") - 100}];
+      v19 = [array subarrayWithRange:{100, objc_msgSend(array, "count") - 100}];
       [(StockUpdater *)self setPendingStocks:v19];
 
-      v20 = [v11 subarrayWithRange:{0, 100}];
+      v20 = [array subarrayWithRange:{0, 100}];
 
       v21 = StocksLogForCategory(0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -96,7 +96,7 @@ LABEL_17:
         _os_log_impl(&dword_26BAAD000, v21, OS_LOG_TYPE_DEFAULT, "#StockUpdater Splitting stocks update into multiple requests, %lu pending", buf, 0xCu);
       }
 
-      v11 = v20;
+      array = v20;
     }
 
     v23 = StocksLogForCategory(0);
@@ -115,17 +115,17 @@ LABEL_17:
       *buf = 136315394;
       v58 = v24;
       v59 = 2112;
-      v60 = v11;
+      v60 = array;
       _os_log_impl(&dword_26BAAD000, v23, OS_LOG_TYPE_DEFAULT, "#StockUpdater Performing %s update for stocks: %@", buf, 0x16u);
     }
 
-    [(StockUpdater *)self setRequestStocks:v11];
+    [(StockUpdater *)self setRequestStocks:array];
     v25 = [(NSArray *)self->_requestStocks valueForKey:@"symbol"];
     v26 = [v25 componentsJoinedByString:{@", "}];
 
     v27 = +[NetPreferences sharedPreferences];
-    v28 = [(YQLRequest *)self YQLLanguageCode];
-    v29 = [(YQLRequest *)self YQLCountryCode];
+    yQLLanguageCode = [(YQLRequest *)self YQLLanguageCode];
+    yQLCountryCode = [(YQLRequest *)self YQLCountryCode];
     v55[0] = @"format";
     v55[1] = @"crossProduct";
     v56[0] = @"json";
@@ -134,18 +134,18 @@ LABEL_17:
     v31 = [v30 mutableCopy];
 
     [v31 na_safeSetObject:v26 forKey:@"tickers"];
-    [v31 na_safeSetObject:v28 forKey:@"lang"];
-    v50 = v29;
-    [v31 na_safeSetObject:v29 forKey:@"region"];
-    v32 = [v27 stocksYQLBaseURL];
-    v33 = v32;
+    [v31 na_safeSetObject:yQLLanguageCode forKey:@"lang"];
+    v50 = yQLCountryCode;
+    [v31 na_safeSetObject:yQLCountryCode forKey:@"region"];
+    stocksYQLBaseURL = [v27 stocksYQLBaseURL];
+    v33 = stocksYQLBaseURL;
     v34 = YQLMetadataPath;
-    if (!v6)
+    if (!comprehensiveCopy)
     {
       v34 = YQLBasicDataPath;
     }
 
-    v35 = [v32 URLByAppendingPathComponent:*v34];
+    v35 = [stocksYQLBaseURL URLByAppendingPathComponent:*v34];
 
     v36 = [v27 signedRequestForURL:v35 parameters:v31];
     if ([v27 serviceDebugging])
@@ -155,12 +155,12 @@ LABEL_17:
       [v37 absoluteString];
       v38 = v35;
       v39 = v27;
-      v40 = v28;
+      v40 = yQLLanguageCode;
       v42 = v41 = v18;
       [YQLRequest appendDebugString:v42];
 
       v18 = v41;
-      v28 = v40;
+      yQLLanguageCode = v40;
       v27 = v39;
       v35 = v38;
 
@@ -171,11 +171,11 @@ LABEL_17:
     }
 
     [(YQLRequest *)self loadRequest:v36];
-    v44 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v44 postNotificationName:@"StocksUpdateLoadingStatusNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"StocksUpdateLoadingStatusNotification" object:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained stockUpdater:self didRequestUpdateForStocks:v11 isComprehensive:self->_isComprehensive];
+    [WeakRetained stockUpdater:self didRequestUpdateForStocks:array isComprehensive:self->_isComprehensive];
   }
 
   else
@@ -184,7 +184,7 @@ LABEL_17:
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v58) = v6;
+      LODWORD(v58) = comprehensiveCopy;
       _os_log_impl(&dword_26BAAD000, v46, OS_LOG_TYPE_DEFAULT, "#StockUpdater hit cache, comprehensive: %d", buf, 8u);
     }
 
@@ -199,16 +199,16 @@ LABEL_17:
   return v18 != 0;
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__StockUpdater_parseData___block_invoke;
   v6[3] = &unk_279D15DB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dataCopy;
+  v5 = dataCopy;
   [YahooResponseParser parseData:v5 resultsHandler:v6];
 }
 
@@ -231,23 +231,23 @@ void __26__StockUpdater_parseData___block_invoke(uint64_t a1, uint64_t a2, void 
   [*(a1 + 32) didParseData];
 }
 
-- (void)_parseQuoteDictionaries:(id)a3 withDataSourceDictionaries:(id)a4
+- (void)_parseQuoteDictionaries:(id)dictionaries withDataSourceDictionaries:(id)sourceDictionaries
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
-  v23 = v7;
-  v9 = [YahooResponseParser parseDataSourceMapFromDataSourceDictionaries:v7];
+  dictionariesCopy = dictionaries;
+  sourceDictionariesCopy = sourceDictionaries;
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dictionariesCopy, "count")}];
+  v23 = sourceDictionariesCopy;
+  v9 = [YahooResponseParser parseDataSourceMapFromDataSourceDictionaries:sourceDictionariesCopy];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __67__StockUpdater__parseQuoteDictionaries_withDataSourceDictionaries___block_invoke;
   v29[3] = &unk_279D15DE0;
   v10 = v8;
   v30 = v10;
-  v24 = v6;
+  v24 = dictionariesCopy;
   v22 = v9;
-  [YahooResponseParser parseStockQuoteDictionaries:v6 withDataSources:v9 parsedStockResult:v29];
+  [YahooResponseParser parseStockQuoteDictionaries:dictionariesCopy withDataSources:v9 parsedStockResult:v29];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -268,13 +268,13 @@ void __26__StockUpdater_parseData___block_invoke(uint64_t a1, uint64_t a2, void 
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 symbol];
-        v18 = [v10 objectForKeyedSubscript:v17];
+        symbol = [v16 symbol];
+        v18 = [v10 objectForKeyedSubscript:symbol];
 
         if (v18)
         {
           isComprehensive = self->_isComprehensive;
-          v20 = [v10 objectForKeyedSubscript:v17];
+          v20 = [v10 objectForKeyedSubscript:symbol];
           Current = CFAbsoluteTimeGetCurrent();
           if (isComprehensive)
           {
@@ -295,23 +295,23 @@ void __26__StockUpdater_parseData___block_invoke(uint64_t a1, uint64_t a2, void 
   }
 }
 
-- (void)_parseExchangeDictionaries:(id)a3
+- (void)_parseExchangeDictionaries:(id)dictionaries
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(StockUpdater *)self requestStocks];
-  v6 = [v5 count];
+  dictionariesCopy = dictionaries;
+  requestStocks = [(StockUpdater *)self requestStocks];
+  v6 = [requestStocks count];
   v7 = +[StockManager sharedManager];
-  v8 = [v7 stocksList];
-  if (v6 == [v8 count])
+  stocksList = [v7 stocksList];
+  if (v6 == [stocksList count])
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [(StockUpdater *)self requestStocks];
-    v11 = [v9 setWithArray:v10];
+    requestStocks2 = [(StockUpdater *)self requestStocks];
+    v11 = [v9 setWithArray:requestStocks2];
     v12 = MEMORY[0x277CBEB98];
     v13 = +[StockManager sharedManager];
-    v14 = [v13 stocksList];
-    v15 = [v12 setWithArray:v14];
+    stocksList2 = [v13 stocksList];
+    v15 = [v12 setWithArray:stocksList2];
     v16 = [v11 isEqualToSet:v15];
 
     if (v16)
@@ -335,12 +335,12 @@ LABEL_6:
   v36[3] = &unk_279D15DE0;
   v19 = v17;
   v37 = v19;
-  [YahooResponseParser parseExchangeDictionaries:v4 parsedExchangeResult:v36];
+  [YahooResponseParser parseExchangeDictionaries:dictionariesCopy parsedExchangeResult:v36];
   if (v18)
   {
     v20 = +[ExchangeManager sharedManager];
-    v21 = [v20 exchangeList];
-    v22 = [v21 copy];
+    exchangeList = [v20 exchangeList];
+    v22 = [exchangeList copy];
 
     v34 = 0u;
     v35 = 0u;
@@ -362,8 +362,8 @@ LABEL_6:
           }
 
           v28 = *(*(&v32 + 1) + 8 * i);
-          v29 = [v28 name];
-          v30 = [v19 containsObject:v29];
+          name = [v28 name];
+          v30 = [v19 containsObject:name];
 
           if ((v30 & 1) == 0)
           {
@@ -416,8 +416,8 @@ void __43__StockUpdater__parseExchangeDictionaries___block_invoke(uint64_t a1, v
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained stockUpdater:self didUpdateStocks:self->_requestStocks isComprehensive:self->_isComprehensive];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"StocksUpdateLoadingStatusNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"StocksUpdateLoadingStatusNotification" object:0];
 
   requestStocks = self->_requestStocks;
   self->_requestStocks = 0;
@@ -443,18 +443,18 @@ void __43__StockUpdater__parseExchangeDictionaries___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = StockUpdater;
-  [(YQLRequest *)&v10 failWithError:v5];
-  objc_storeStrong(&self->_lastError, a3);
+  [(YQLRequest *)&v10 failWithError:errorCopy];
+  objc_storeStrong(&self->_lastError, error);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained stockUpdater:self didFailWithError:v5 whileUpdatingStocks:self->_requestStocks comprehensive:self->_isComprehensive];
+  [WeakRetained stockUpdater:self didFailWithError:errorCopy whileUpdatingStocks:self->_requestStocks comprehensive:self->_isComprehensive];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"StocksUpdateLoadingStatusNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"StocksUpdateLoadingStatusNotification" object:0];
 
   requestStocks = self->_requestStocks;
   self->_requestStocks = 0;
@@ -462,7 +462,7 @@ void __43__StockUpdater__parseExchangeDictionaries___block_invoke(uint64_t a1, v
   updateCompletionHandler = self->_updateCompletionHandler;
   if (updateCompletionHandler)
   {
-    updateCompletionHandler[2](updateCompletionHandler, 0, v5);
+    updateCompletionHandler[2](updateCompletionHandler, 0, errorCopy);
     [(StockUpdater *)self setUpdateCompletionHandler:0];
   }
 }

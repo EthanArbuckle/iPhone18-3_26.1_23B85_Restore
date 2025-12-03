@@ -1,45 +1,45 @@
 @interface CUIKAlarmsViewModel
 + (id)_noneAlertTitle;
-+ (id)accessibilityIdentifierForIndex:(unint64_t)a3;
-+ (id)labelTextForIndex:(unint64_t)a3;
++ (id)accessibilityIdentifierForIndex:(unint64_t)index;
++ (id)labelTextForIndex:(unint64_t)index;
 + (void)subscribeToDarwinNotifications;
 + (void)unsubscribeFromDarwinNotifications;
-- (BOOL)_hasUIAlarmChangedFromUIAlarm:(id)a3 toUIAlarm:(id)a4;
-- (BOOL)isAlarmEffectivelyDisabled:(id)a3;
-- (BOOL)showDefaultAlarm:(id)a3;
+- (BOOL)_hasUIAlarmChangedFromUIAlarm:(id)alarm toUIAlarm:(id)iAlarm;
+- (BOOL)isAlarmEffectivelyDisabled:(id)disabled;
+- (BOOL)showDefaultAlarm:(id)alarm;
 - (CUIKAlarmsViewModel)init;
-- (CUIKAlarmsViewModel)initWithCalendarItem:(id)a3;
+- (CUIKAlarmsViewModel)initWithCalendarItem:(id)item;
 - (NSMutableArray)uiAlarms;
 - (id)_errorTitleForDisabledTTLAlarm;
-- (id)_menuForAlarmAtIndex:(unint64_t)a3 placeholder:(BOOL)a4 actionHandler:(id)a5;
+- (id)_menuForAlarmAtIndex:(unint64_t)index placeholder:(BOOL)placeholder actionHandler:(id)handler;
 - (id)presetAlarmsIntervals;
 - (void)_updateAlarms;
 - (void)_updateLeaveNowFlags;
 - (void)dealloc;
-- (void)reloadTTLLocationAuthorization:(id)a3;
+- (void)reloadTTLLocationAuthorization:(id)authorization;
 - (void)updateIfNeeded;
-- (void)updatedUIAlarmFromUIAlarm:(id)a3 toUIAlarm:(id)a4 atIndex:(unint64_t)a5 completion:(id)a6;
+- (void)updatedUIAlarmFromUIAlarm:(id)alarm toUIAlarm:(id)iAlarm atIndex:(unint64_t)index completion:(id)completion;
 @end
 
 @implementation CUIKAlarmsViewModel
 
 - (CUIKAlarmsViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CUIKAlarmsViewModel.m" lineNumber:54 description:@"Error: Must use designated initializer when initializing an CUIKAlarmsViewModel instance. Using init directly is not supported for the CUIKAlarmsViewModel since it guarantees that the CUIKAlarmsViewModel will be initialized with a nil calendarItem."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CUIKAlarmsViewModel.m" lineNumber:54 description:@"Error: Must use designated initializer when initializing an CUIKAlarmsViewModel instance. Using init directly is not supported for the CUIKAlarmsViewModel since it guarantees that the CUIKAlarmsViewModel will be initialized with a nil calendarItem."];
 
   return [(CUIKAlarmsViewModel *)self initWithCalendarItem:0];
 }
 
-- (CUIKAlarmsViewModel)initWithCalendarItem:(id)a3
+- (CUIKAlarmsViewModel)initWithCalendarItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CUIKAlarmsViewModel;
   v5 = [(CUIKAlarmsViewModel *)&v11 init];
   if (v5)
   {
-    if (!v4)
+    if (!itemCopy)
     {
       v6 = +[CUIKLogSubsystem alarms];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -48,14 +48,14 @@
       }
     }
 
-    [(CUIKAlarmsViewModel *)v5 setCalendarItem:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
+    [(CUIKAlarmsViewModel *)v5 setCalendarItem:itemCopy];
+    array = [MEMORY[0x1E695DF70] array];
     uiAlarms = v5->_uiAlarms;
-    v5->_uiAlarms = v7;
+    v5->_uiAlarms = array;
 
     +[CUIKAlarmsViewModel subscribeToDarwinNotifications];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel_reloadTTLLocationAuthorization_ name:@"CUIKAlarmsViewModelTTLLocationAuthorizationStatusNeedsReloadNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_reloadTTLLocationAuthorization_ name:@"CUIKAlarmsViewModelTTLLocationAuthorizationStatusNeedsReloadNotification" object:0];
 
     [(CUIKAlarmsViewModel *)v5 setNeedsUpdate];
   }
@@ -109,29 +109,29 @@
   os_unfair_lock_unlock(&notificationLock);
 }
 
-- (void)reloadTTLLocationAuthorization:(id)a3
+- (void)reloadTTLLocationAuthorization:(id)authorization
 {
   locationStatus = self->_locationStatus;
   [(CUIKAlarmsViewModel *)self _updateLeaveNowFlags];
   if (locationStatus != self->_locationStatus)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"CUIKAlarmsViewModelTTLLocationStatusChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CUIKAlarmsViewModelTTLLocationStatusChangedNotification" object:self];
   }
 }
 
-- (void)updatedUIAlarmFromUIAlarm:(id)a3 toUIAlarm:(id)a4 atIndex:(unint64_t)a5 completion:(id)a6
+- (void)updatedUIAlarmFromUIAlarm:(id)alarm toUIAlarm:(id)iAlarm atIndex:(unint64_t)index completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([(CUIKAlarmsViewModel *)self _hasUIAlarmChangedFromUIAlarm:v10 toUIAlarm:v11])
+  alarmCopy = alarm;
+  iAlarmCopy = iAlarm;
+  completionCopy = completion;
+  if ([(CUIKAlarmsViewModel *)self _hasUIAlarmChangedFromUIAlarm:alarmCopy toUIAlarm:iAlarmCopy])
   {
-    v13 = [(CUIKAlarmsViewModel *)self calendarItem];
+    calendarItem = [(CUIKAlarmsViewModel *)self calendarItem];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = calendarItem;
     }
 
     else
@@ -139,155 +139,155 @@
       v14 = 0;
     }
 
-    v15 = [(CUIKAlarmsViewModel *)self uiAlarms];
-    v16 = [v13 alarms];
-    if ([v15 count] <= a5)
+    uiAlarms = [(CUIKAlarmsViewModel *)self uiAlarms];
+    alarms = [calendarItem alarms];
+    if ([uiAlarms count] <= index)
     {
-      if (!v11)
+      if (!iAlarmCopy)
       {
 LABEL_19:
         v21 = 0;
-        v22 = 0;
+        initLeaveNowAlarm = 0;
         goto LABEL_46;
       }
 
-      if ([v11 isLeaveNowAlarm])
+      if ([iAlarmCopy isLeaveNowAlarm])
       {
         v21 = 1;
         [v14 setTravelAdvisoryBehavior:1];
-        v22 = [[CUIKUIAlarm alloc] initLeaveNowAlarm];
+        initLeaveNowAlarm = [[CUIKUIAlarm alloc] initLeaveNowAlarm];
 LABEL_46:
-        v12[2](v12, 1, v22, v21);
+        completionCopy[2](completionCopy, 1, initLeaveNowAlarm, v21);
 
         goto LABEL_47;
       }
 
-      v23 = [v11 alarm];
-      v24 = [v23 isAbsolute];
+      alarm = [iAlarmCopy alarm];
+      isAbsolute = [alarm isAbsolute];
 
-      if (v24)
+      if (isAbsolute)
       {
         v25 = MEMORY[0x1E6966950];
-        v26 = [v11 alarm];
-        v27 = v26;
+        alarm2 = [iAlarmCopy alarm];
+        defaultAlarms2 = alarm2;
         goto LABEL_22;
       }
 
-      if (![v11 isDefaultAlarm])
+      if (![iAlarmCopy isDefaultAlarm])
       {
         v25 = MEMORY[0x1E6966950];
-        v26 = [v11 alarm];
-        v27 = v26;
+        alarm2 = [iAlarmCopy alarm];
+        defaultAlarms2 = alarm2;
 LABEL_39:
-        [v26 relativeOffset];
-        v33 = [v25 alarmWithRelativeOffset:?];
+        [alarm2 relativeOffset];
+        anyObject2 = [v25 alarmWithRelativeOffset:?];
         goto LABEL_40;
       }
     }
 
     else
     {
-      if ([v16 count] > a5)
+      if ([alarms count] > index)
       {
-        v62 = [v13 sortedAlarms];
-        if (v10)
+        sortedAlarms = [calendarItem sortedAlarms];
+        if (alarmCopy)
         {
-          v17 = [v10 alarm];
-          v18 = [(CUIKAlarmsViewModel *)self calendarItem];
-          a5 = [v18 indexForAlarm:v17];
+          alarm3 = [alarmCopy alarm];
+          calendarItem2 = [(CUIKAlarmsViewModel *)self calendarItem];
+          index = [calendarItem2 indexForAlarm:alarm3];
         }
 
-        if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+        if (index == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v19 = [v10 alarm];
+          alarm4 = [alarmCopy alarm];
           v20 = +[CUIKLogSubsystem alarms];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            [CUIKAlarmsViewModel updatedUIAlarmFromUIAlarm:v19 toUIAlarm:v20 atIndex:? completion:?];
+            [CUIKAlarmsViewModel updatedUIAlarmFromUIAlarm:alarm4 toUIAlarm:v20 atIndex:? completion:?];
           }
 
           v21 = 0;
-          v22 = 0;
+          initLeaveNowAlarm = 0;
           goto LABEL_45;
         }
 
-        if (!v11 || ([v11 isLeaveNowAlarm] & 1) != 0 || objc_msgSend(v11, "isDefaultAlarm"))
+        if (!iAlarmCopy || ([iAlarmCopy isLeaveNowAlarm] & 1) != 0 || objc_msgSend(iAlarmCopy, "isDefaultAlarm"))
         {
-          v30 = [v62 mutableCopy];
-          [v30 removeObjectAtIndex:a5];
-          if ([v11 isLeaveNowAlarm])
+          v30 = [sortedAlarms mutableCopy];
+          [v30 removeObjectAtIndex:index];
+          if ([iAlarmCopy isLeaveNowAlarm])
           {
             [v14 setTravelAdvisoryBehavior:1];
-            v22 = [[CUIKUIAlarm alloc] initLeaveNowAlarm];
+            initLeaveNowAlarm = [[CUIKUIAlarm alloc] initLeaveNowAlarm];
           }
 
-          else if ([v11 isDefaultAlarm])
+          else if ([iAlarmCopy isDefaultAlarm])
           {
-            v34 = [v13 defaultAlarms];
-            v35 = [v34 anyObject];
+            defaultAlarms = [calendarItem defaultAlarms];
+            anyObject = [defaultAlarms anyObject];
 
-            if (v35)
+            if (anyObject)
             {
-              [v30 addObject:v35];
+              [v30 addObject:anyObject];
             }
 
-            v22 = [[CUIKUIAlarm alloc] initDefaultAlarm];
+            initLeaveNowAlarm = [[CUIKUIAlarm alloc] initDefaultAlarm];
           }
 
           else
           {
-            v22 = 0;
+            initLeaveNowAlarm = 0;
           }
 
           v36 = [v30 copy];
-          [v13 setAlarms:v36];
+          [calendarItem setAlarms:v36];
 
           v21 = 0;
           goto LABEL_45;
         }
 
-        v61 = [v62 objectAtIndexedSubscript:a5];
+        v61 = [sortedAlarms objectAtIndexedSubscript:index];
         if ([v61 isDefaultAlarm])
         {
-          v60 = [v62 mutableCopy];
-          v37 = [v11 alarm];
-          v38 = [v37 isAbsolute];
+          v60 = [sortedAlarms mutableCopy];
+          alarm5 = [iAlarmCopy alarm];
+          isAbsolute2 = [alarm5 isAbsolute];
 
           v39 = MEMORY[0x1E6966950];
-          v40 = [v11 alarm];
-          if (v38)
+          alarm6 = [iAlarmCopy alarm];
+          if (isAbsolute2)
           {
-            v41 = [v40 absoluteDate];
+            absoluteDate = [alarm6 absoluteDate];
             v42 = v39;
-            v43 = v41;
-            v44 = [v42 alarmWithAbsoluteDate:v41];
+            v43 = absoluteDate;
+            v44 = [v42 alarmWithAbsoluteDate:absoluteDate];
           }
 
           else
           {
-            [v40 relativeOffset];
+            [alarm6 relativeOffset];
             v44 = [v39 alarmWithRelativeOffset:?];
           }
 
-          [v60 replaceObjectAtIndex:a5 withObject:v44];
-          v22 = [[CUIKUIAlarm alloc] initWithAlarm:v44];
+          [v60 replaceObjectAtIndex:index withObject:v44];
+          initLeaveNowAlarm = [[CUIKUIAlarm alloc] initWithAlarm:v44];
           v53 = [v60 copy];
-          [v13 setAlarms:v53];
+          [calendarItem setAlarms:v53];
 
           v21 = 1;
           v50 = v61;
           goto LABEL_58;
         }
 
-        v45 = [v11 alarm];
-        v46 = [v45 isAbsolute];
+        alarm7 = [iAlarmCopy alarm];
+        isAbsolute3 = [alarm7 isAbsolute];
 
-        v47 = [v11 alarm];
-        v48 = v47;
-        if (v46)
+        alarm8 = [iAlarmCopy alarm];
+        v48 = alarm8;
+        if (isAbsolute3)
         {
-          v49 = [v47 absoluteDate];
-          [v61 setAbsoluteDate:v49];
+          absoluteDate2 = [alarm8 absoluteDate];
+          [v61 setAbsoluteDate:absoluteDate2];
 
           v50 = v61;
           v51 = [CUIKUIAlarm alloc];
@@ -296,7 +296,7 @@ LABEL_39:
 
         else
         {
-          [v47 relativeOffset];
+          [alarm8 relativeOffset];
           v55 = v54;
           v50 = v61;
           [v61 relativeOffset];
@@ -305,12 +305,12 @@ LABEL_39:
           if (v55 == v57)
           {
             v21 = 0;
-            v22 = 0;
+            initLeaveNowAlarm = 0;
             goto LABEL_58;
           }
 
-          v58 = [v11 alarm];
-          [v58 relativeOffset];
+          alarm9 = [iAlarmCopy alarm];
+          [alarm9 relativeOffset];
           [v61 setRelativeOffset:?];
 
           v50 = v61;
@@ -318,7 +318,7 @@ LABEL_39:
           v52 = v61;
         }
 
-        v22 = [(CUIKUIAlarm *)v51 initWithAlarm:v52];
+        initLeaveNowAlarm = [(CUIKUIAlarm *)v51 initWithAlarm:v52];
         v21 = 1;
 LABEL_58:
 
@@ -326,71 +326,71 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      if (!v11)
+      if (!iAlarmCopy)
       {
         [v14 setTravelAdvisoryBehavior:2];
-        v22 = 0;
+        initLeaveNowAlarm = 0;
 LABEL_42:
         v21 = 1;
         goto LABEL_46;
       }
 
-      if ([v11 isLeaveNowAlarm])
+      if ([iAlarmCopy isLeaveNowAlarm])
       {
         goto LABEL_19;
       }
 
       [v14 setTravelAdvisoryBehavior:2];
-      if (![v11 isDefaultAlarm])
+      if (![iAlarmCopy isDefaultAlarm])
       {
-        v31 = [v11 alarm];
-        v32 = [v31 isAbsolute];
+        alarm10 = [iAlarmCopy alarm];
+        isAbsolute4 = [alarm10 isAbsolute];
 
         v25 = MEMORY[0x1E6966950];
-        v26 = [v11 alarm];
-        v27 = v26;
-        if (!v32)
+        alarm2 = [iAlarmCopy alarm];
+        defaultAlarms2 = alarm2;
+        if (!isAbsolute4)
         {
           goto LABEL_39;
         }
 
 LABEL_22:
-        v28 = [v26 absoluteDate];
-        v29 = [v25 alarmWithAbsoluteDate:v28];
+        absoluteDate3 = [alarm2 absoluteDate];
+        v29 = [v25 alarmWithAbsoluteDate:absoluteDate3];
 
 LABEL_41:
-        [v13 addAlarm:v29];
-        v22 = [[CUIKUIAlarm alloc] initWithAlarm:v29];
+        [calendarItem addAlarm:v29];
+        initLeaveNowAlarm = [[CUIKUIAlarm alloc] initWithAlarm:v29];
 
         goto LABEL_42;
       }
     }
 
-    v27 = [v13 defaultAlarms];
-    v33 = [v27 anyObject];
+    defaultAlarms2 = [calendarItem defaultAlarms];
+    anyObject2 = [defaultAlarms2 anyObject];
 LABEL_40:
-    v29 = v33;
+    v29 = anyObject2;
     goto LABEL_41;
   }
 
-  v12[2](v12, 0, 0, 0);
+  completionCopy[2](completionCopy, 0, 0, 0);
 LABEL_47:
 }
 
-- (BOOL)_hasUIAlarmChangedFromUIAlarm:(id)a3 toUIAlarm:(id)a4
+- (BOOL)_hasUIAlarmChangedFromUIAlarm:(id)alarm toUIAlarm:(id)iAlarm
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  alarmCopy = alarm;
+  iAlarmCopy = iAlarm;
+  v7 = iAlarmCopy;
+  if (alarmCopy)
   {
-    v6 = v5;
+    iAlarmCopy = alarmCopy;
     v8 = v7;
   }
 
   else
   {
-    if (!v6)
+    if (!iAlarmCopy)
     {
       LOBYTE(v9) = 0;
       goto LABEL_6;
@@ -399,7 +399,7 @@ LABEL_47:
     v8 = 0;
   }
 
-  v9 = [v6 isEqualToUIAlarm:v8] ^ 1;
+  v9 = [iAlarmCopy isEqualToUIAlarm:v8] ^ 1;
 LABEL_6:
 
   return v9;
@@ -420,13 +420,13 @@ LABEL_6:
 {
   v19 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->_uiAlarms removeAllObjects];
-  v3 = [(CUIKAlarmsViewModel *)self calendarItem];
-  v4 = [v3 sortedAlarms];
+  calendarItem = [(CUIKAlarmsViewModel *)self calendarItem];
+  sortedAlarms = [calendarItem sortedAlarms];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [sortedAlarms countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -438,7 +438,7 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sortedAlarms);
         }
 
         uiAlarms = self->_uiAlarms;
@@ -449,7 +449,7 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [sortedAlarms countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -460,12 +460,12 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v3;
+      v11 = calendarItem;
       if ([v11 eligibleForTravelAdvisories] && objc_msgSend(v11, "travelAdvisoryBehaviorIsEffectivelyEnabled"))
       {
         v12 = self->_uiAlarms;
-        v13 = [[CUIKUIAlarm alloc] initLeaveNowAlarm];
-        [(NSMutableArray *)v12 addObject:v13];
+        initLeaveNowAlarm = [[CUIKUIAlarm alloc] initLeaveNowAlarm];
+        [(NSMutableArray *)v12 addObject:initLeaveNowAlarm];
       }
     }
   }
@@ -475,25 +475,25 @@ LABEL_6:
 {
   *&self->_canHaveLeaveNowAlarm = 0;
   self->_locationStatus = 0;
-  v6 = [(CUIKAlarmsViewModel *)self calendarItem];
+  calendarItem = [(CUIKAlarmsViewModel *)self calendarItem];
   if ([MEMORY[0x1E6966A30] isTravelAdvisorySupported])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v6;
-      v4 = [v3 eligibleForTravelAdvisories];
-      self->_canHaveLeaveNowAlarm = v4;
-      if (v4)
+      v3 = calendarItem;
+      eligibleForTravelAdvisories = [v3 eligibleForTravelAdvisories];
+      self->_canHaveLeaveNowAlarm = eligibleForTravelAdvisories;
+      if (eligibleForTravelAdvisories)
       {
-        LOBYTE(v4) = [v3 travelAdvisoryBehaviorIsEffectivelyEnabled];
+        LOBYTE(eligibleForTravelAdvisories) = [v3 travelAdvisoryBehaviorIsEffectivelyEnabled];
       }
 
-      self->_hasLeaveNowAlarm = v4;
+      self->_hasLeaveNowAlarm = eligibleForTravelAdvisories;
     }
 
-    v5 = [v6 eventStore];
-    self->_locationStatus = [v5 timeToLeaveLocationAuthorizationStatus];
+    eventStore = [calendarItem eventStore];
+    self->_locationStatus = [eventStore timeToLeaveLocationAuthorizationStatus];
   }
 }
 
@@ -505,10 +505,10 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)showDefaultAlarm:(id)a3
+- (BOOL)showDefaultAlarm:(id)alarm
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  alarmCopy = alarm;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -528,8 +528,8 @@ LABEL_6:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 isDefaultAlarm];
-        if (v9 != v4 && (v10 & 1) != 0)
+        isDefaultAlarm = [v9 isDefaultAlarm];
+        if (v9 != alarmCopy && (isDefaultAlarm & 1) != 0)
         {
           LOBYTE(v6) = 1;
           goto LABEL_12;
@@ -553,10 +553,10 @@ LABEL_12:
 
 - (id)presetAlarmsIntervals
 {
-  v2 = [(CUIKAlarmsViewModel *)self calendarItem];
-  v3 = [v2 isAllDay];
+  calendarItem = [(CUIKAlarmsViewModel *)self calendarItem];
+  isAllDay = [calendarItem isAllDay];
 
-  if (v3 && !presetAlarmsIntervals_sAllDayIntervals)
+  if (isAllDay && !presetAlarmsIntervals_sAllDayIntervals)
   {
     presetAlarmsIntervals_sAllDayIntervals = &unk_1F4ABECC0;
   }
@@ -569,7 +569,7 @@ LABEL_12:
 
   else
   {
-    v5 = v3;
+    v5 = isAllDay;
   }
 
   if ((v5 & 1) == 0)
@@ -579,7 +579,7 @@ LABEL_12:
     v4 = &unk_1F4ABECD8;
   }
 
-  if (v3)
+  if (isAllDay)
   {
     v6 = presetAlarmsIntervals_sAllDayIntervals;
   }
@@ -600,19 +600,19 @@ LABEL_12:
   return v3;
 }
 
-- (id)_menuForAlarmAtIndex:(unint64_t)a3 placeholder:(BOOL)a4 actionHandler:(id)a5
+- (id)_menuForAlarmAtIndex:(unint64_t)index placeholder:(BOOL)placeholder actionHandler:(id)handler
 {
-  v94 = a4;
+  placeholderCopy = placeholder;
   v123[1] = *MEMORY[0x1E69E9840];
-  v92 = a5;
+  handlerCopy = handler;
   v86 = +[CUIKPreferences sharedPreferences];
-  v5 = [v86 immediateAlarmCreation];
+  immediateAlarmCreation = [v86 immediateAlarmCreation];
   objc_initWeak(&location, self);
-  v6 = self;
-  if ([(NSMutableArray *)self->_uiAlarms count]<= a3)
+  selfCopy8 = self;
+  if ([(NSMutableArray *)self->_uiAlarms count]<= index)
   {
     v88 = 0;
-    if (v5)
+    if (immediateAlarmCreation)
     {
       goto LABEL_3;
     }
@@ -621,7 +621,7 @@ LABEL_12:
   else
   {
     v88 = [(NSMutableArray *)self->_uiAlarms objectAtIndexedSubscript:?];
-    if (v5)
+    if (immediateAlarmCreation)
     {
 LABEL_3:
       v7 = MEMORY[0x1E69DC628];
@@ -630,8 +630,8 @@ LABEL_3:
       v111[2] = __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___block_invoke;
       v111[3] = &unk_1E839A4D8;
       objc_copyWeak(v113, &location);
-      v113[1] = a3;
-      v112 = v92;
+      v113[1] = index;
+      v112 = handlerCopy;
       v8 = [v7 actionWithTitle:@"Five seconds from now" image:0 identifier:0 handler:v111];
       v9 = MEMORY[0x1E69DCC60];
       v123[0] = v8;
@@ -643,13 +643,13 @@ LABEL_3:
     }
   }
 
-  v85 = [(CUIKAlarmsViewModel *)self calendarItem];
-  v84 = [MEMORY[0x1E695DF70] array];
-  v90 = [v85 isAllDay];
+  calendarItem = [(CUIKAlarmsViewModel *)self calendarItem];
+  array = [MEMORY[0x1E695DF70] array];
+  isAllDay = [calendarItem isAllDay];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v85 travelTime];
+    [calendarItem travelTime];
     v89 = v12 > 0.0;
   }
 
@@ -658,9 +658,9 @@ LABEL_3:
     v89 = 0;
   }
 
-  v13 = [v85 defaultAlarm];
-  v82 = v13;
-  if (v13 && ([v13 isAbsolute] & 1) == 0)
+  defaultAlarm = [calendarItem defaultAlarm];
+  v82 = defaultAlarm;
+  if (defaultAlarm && ([defaultAlarm isAbsolute] & 1) == 0)
   {
     [v82 relativeOffset];
     v14 = v15;
@@ -671,28 +671,28 @@ LABEL_3:
     v14 = 9.22337204e18;
   }
 
-  if (v94 && ![v88 isDefaultAlarm] || -[CUIKAlarmsViewModel showDefaultAlarm:](self, "showDefaultAlarm:", v88))
+  if (placeholderCopy && ![v88 isDefaultAlarm] || -[CUIKAlarmsViewModel showDefaultAlarm:](self, "showDefaultAlarm:", v88))
   {
-    v16 = 0;
+    isDefaultAlarm = 0;
   }
 
   else
   {
-    v17 = [v85 defaultAlarms];
-    v18 = [v17 anyObject];
-    v19 = v18 == 0;
+    defaultAlarms = [calendarItem defaultAlarms];
+    anyObject = [defaultAlarms anyObject];
+    v19 = anyObject == 0;
 
     if (v19)
     {
-      v16 = 0;
+      isDefaultAlarm = 0;
     }
 
     else
     {
       v20 = MEMORY[0x1E696AEC0];
-      v21 = [MEMORY[0x1E6966950] cuik_defaultDesignator];
-      v22 = CUIKStringForRelativeOffset(v90, v89, v14);
-      v23 = [v20 localizedStringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:0, v22];
+      cuik_defaultDesignator = [MEMORY[0x1E6966950] cuik_defaultDesignator];
+      v22 = CUIKStringForRelativeOffset(isAllDay, v89, v14);
+      v23 = [v20 localizedStringWithValidatedFormat:cuik_defaultDesignator validFormatSpecifiers:@"%@" error:0, v22];
 
       v24 = MEMORY[0x1E69DC628];
       v108[0] = MEMORY[0x1E69E9820];
@@ -700,23 +700,23 @@ LABEL_3:
       v108[2] = __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___block_invoke_2;
       v108[3] = &unk_1E839A4D8;
       objc_copyWeak(v110, &location);
-      v110[1] = a3;
-      v109 = v92;
+      v110[1] = index;
+      v109 = handlerCopy;
       v25 = [v24 actionWithTitle:v23 image:0 identifier:0 handler:v108];
-      v16 = [v88 isDefaultAlarm];
-      if (v16)
+      isDefaultAlarm = [v88 isDefaultAlarm];
+      if (isDefaultAlarm)
       {
         [v25 setState:1];
       }
 
       v122 = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v122 count:1];
-      CUIKAddInlineMenuItemArrayToArray(v84, v26);
+      CUIKAddInlineMenuItemArrayToArray(array, v26);
 
       objc_destroyWeak(v110);
     }
 
-    v6 = self;
+    selfCopy8 = self;
   }
 
   if (v88)
@@ -726,46 +726,46 @@ LABEL_3:
 
   else
   {
-    v27 = v16;
+    v27 = isDefaultAlarm;
   }
 
-  if (!v94 || (v27 & 1) == 0)
+  if (!placeholderCopy || (v27 & 1) == 0)
   {
-    v28 = [objc_opt_class() _noneAlertTitle];
+    _noneAlertTitle = [objc_opt_class() _noneAlertTitle];
     v29 = MEMORY[0x1E69DC628];
     v105[0] = MEMORY[0x1E69E9820];
     v105[1] = 3221225472;
     v105[2] = __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___block_invoke_3;
     v105[3] = &unk_1E839A4D8;
     objc_copyWeak(v107, &location);
-    v107[1] = a3;
-    v106 = v92;
-    v30 = [v29 actionWithTitle:v28 image:0 identifier:0 handler:v105];
+    v107[1] = index;
+    v106 = handlerCopy;
+    v30 = [v29 actionWithTitle:_noneAlertTitle image:0 identifier:0 handler:v105];
     v31 = v30;
     if (!v88)
     {
       [v30 setState:1];
-      v16 = 1;
+      isDefaultAlarm = 1;
     }
 
     v121 = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v121 count:1];
-    CUIKAddInlineMenuItemArrayToArray(v84, v32);
+    CUIKAddInlineMenuItemArrayToArray(array, v32);
 
     objc_destroyWeak(v107);
-    v6 = self;
+    selfCopy8 = self;
   }
 
-  v33 = !v94;
-  if ((v16 & 1) == 0)
+  v33 = !placeholderCopy;
+  if ((isDefaultAlarm & 1) == 0)
   {
-    v34 = !v94;
+    isLeaveNowAlarm = !placeholderCopy;
     if ((v33 & 1) == 0)
     {
-      v34 = [v88 isLeaveNowAlarm];
+      isLeaveNowAlarm = [v88 isLeaveNowAlarm];
     }
 
-    if (!v34)
+    if (!isLeaveNowAlarm)
     {
       goto LABEL_45;
     }
@@ -776,7 +776,7 @@ LABEL_3:
   if (v33)
   {
 LABEL_36:
-    if (v6->_canHaveLeaveNowAlarm && (!v6->_hasLeaveNowAlarm || [v88 isLeaveNowAlarm]))
+    if (selfCopy8->_canHaveLeaveNowAlarm && (!selfCopy8->_hasLeaveNowAlarm || [v88 isLeaveNowAlarm]))
     {
       v35 = CUIKBundle();
       v36 = [v35 localizedStringForKey:@"Time to Leave" value:&stru_1F4AA8958 table:0];
@@ -787,69 +787,69 @@ LABEL_36:
       v102[2] = __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___block_invoke_4;
       v102[3] = &unk_1E839A4D8;
       objc_copyWeak(v104, &location);
-      v104[1] = a3;
-      v103 = v92;
+      v104[1] = index;
+      v103 = handlerCopy;
       v38 = [v37 actionWithTitle:v36 image:0 identifier:0 handler:v102];
       if ([v88 isLeaveNowAlarm])
       {
         [v38 setState:1];
-        v16 = 1;
+        isDefaultAlarm = 1;
       }
 
       if ([(CUIKAlarmsViewModel *)self locationStatusMakesTTLAlarmDisabled])
       {
         v39 = objc_alloc(MEMORY[0x1E696AAB0]);
         v119 = *MEMORY[0x1E69DB650];
-        v40 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        v120 = v40;
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        v120 = secondaryLabelColor;
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
         v42 = [v39 initWithString:v36 attributes:v41];
         [v38 setAttributedTitle:v42];
 
-        v43 = [(CUIKAlarmsViewModel *)self _errorTitleForDisabledTTLAlarm];
+        _errorTitleForDisabledTTLAlarm = [(CUIKAlarmsViewModel *)self _errorTitleForDisabledTTLAlarm];
         v118 = v38;
         v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v118 count:1];
-        CUIKAddInlineMenuItemArrayToArrayWithTitle(v84, v44, v43);
+        CUIKAddInlineMenuItemArrayToArrayWithTitle(array, v44, _errorTitleForDisabledTTLAlarm);
       }
 
       else
       {
         v117 = v38;
-        v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v117 count:1];
-        CUIKAddInlineMenuItemArrayToArray(v84, v43);
+        _errorTitleForDisabledTTLAlarm = [MEMORY[0x1E695DEC8] arrayWithObjects:&v117 count:1];
+        CUIKAddInlineMenuItemArrayToArray(array, _errorTitleForDisabledTTLAlarm);
       }
 
       objc_destroyWeak(v104);
-      v6 = self;
+      selfCopy8 = self;
     }
   }
 
 LABEL_45:
-  v83 = [(CUIKAlarmsViewModel *)v6 presetAlarmsIntervals];
-  v91 = [MEMORY[0x1E695DF70] array];
+  presetAlarmsIntervals = [(CUIKAlarmsViewModel *)selfCopy8 presetAlarmsIntervals];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v88)
   {
-    v45 = [v88 alarm];
-    v46 = [v45 isAbsolute];
+    alarm = [v88 alarm];
+    isAbsolute = [alarm isAbsolute];
 
-    if (v46)
+    if (isAbsolute)
     {
       v47 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v49 = [v88 alarm];
-      [v49 relativeOffset];
+      alarm2 = [v88 alarm];
+      [alarm2 relativeOffset];
       v51 = v50;
 
       v47 = v51;
     }
 
     v52 = [MEMORY[0x1E696AD98] numberWithInteger:v47];
-    v48 = [v83 containsObject:v52];
+    v48 = [presetAlarmsIntervals containsObject:v52];
 
-    v6 = self;
+    selfCopy8 = self;
   }
 
   else
@@ -858,25 +858,25 @@ LABEL_45:
     v48 = 1;
   }
 
-  if (v16 & v94)
+  if (isDefaultAlarm & placeholderCopy)
   {
-    v16 = 1;
+    isDefaultAlarm = 1;
   }
 
   else if (([v88 isLeaveNowAlarm] & 1) == 0 && ((objc_msgSend(v88, "isDefaultAlarm") | v48) & 1) == 0)
   {
-    v53 = [v88 localizedDescriptionAllDay:v90];
+    v53 = [v88 localizedDescriptionAllDay:isAllDay];
     v54 = [MEMORY[0x1E69DC628] actionWithTitle:v53 image:0 identifier:0 handler:&__block_literal_global_12];
     [v54 setState:1];
-    [v91 addObject:v54];
+    [array2 addObject:v54];
 
-    v16 = 1;
-    v6 = self;
+    isDefaultAlarm = 1;
+    selfCopy8 = self;
   }
 
-  if (v16 && v94)
+  if (isDefaultAlarm && placeholderCopy)
   {
-    v16 = 1;
+    isDefaultAlarm = 1;
   }
 
   else
@@ -885,7 +885,7 @@ LABEL_45:
     v101 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v55 = v83;
+    v55 = presetAlarmsIntervals;
     v56 = [v55 countByEnumeratingWithState:&v98 objects:v116 count:16];
     if (v56)
     {
@@ -899,34 +899,34 @@ LABEL_45:
             objc_enumerationMutation(v55);
           }
 
-          v59 = [*(*(&v98 + 1) + 8 * i) integerValue];
-          v60 = v59;
-          if (!v94 || v59 == v47)
+          integerValue = [*(*(&v98 + 1) + 8 * i) integerValue];
+          v60 = integerValue;
+          if (!placeholderCopy || integerValue == v47)
           {
-            v61 = CUIKStringForRelativeOffset(v90, v89, v59);
+            v61 = CUIKStringForRelativeOffset(isAllDay, v89, integerValue);
             v62 = MEMORY[0x1E69DC628];
             v95[0] = MEMORY[0x1E69E9820];
             v95[1] = 3221225472;
             v95[2] = __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___block_invoke_6;
             v95[3] = &unk_1E839A520;
             objc_copyWeak(v97, &location);
-            v97[1] = a3;
+            v97[1] = index;
             v97[2] = v60;
-            v96 = v92;
+            v96 = handlerCopy;
             v63 = [v62 actionWithTitle:v61 image:0 identifier:0 handler:v95];
             v64 = v63;
-            if (!((v60 != v47) | v16 & 1))
+            if (!((v60 != v47) | isDefaultAlarm & 1))
             {
-              v16 = 1;
+              isDefaultAlarm = 1;
               [v63 setState:1];
             }
 
-            [v91 addObject:v64];
+            [array2 addObject:v64];
 
             objc_destroyWeak(v97);
-            if (v94 & v16)
+            if (placeholderCopy & isDefaultAlarm)
             {
-              v16 = 1;
+              isDefaultAlarm = 1;
               goto LABEL_73;
             }
           }
@@ -944,11 +944,11 @@ LABEL_45:
 
 LABEL_73:
 
-    v6 = self;
+    selfCopy8 = self;
   }
 
-  CUIKAddInlineMenuItemArrayToArray(v84, v91);
-  if (((!v94 | v16) & 1) == 0)
+  CUIKAddInlineMenuItemArrayToArray(array, array2);
+  if (((!placeholderCopy | isDefaultAlarm) & 1) == 0)
   {
     v65 = +[CUIKLogSubsystem alarms];
     if (os_log_type_enabled(v65, OS_LOG_TYPE_FAULT))
@@ -956,25 +956,25 @@ LABEL_73:
       [CUIKAlarmsViewModel _menuForAlarmAtIndex:v88 placeholder:v65 actionHandler:?];
     }
 
-    v66 = [objc_opt_class() _noneAlertTitle];
-    v67 = [MEMORY[0x1E69DC628] actionWithTitle:v66 image:0 identifier:0 handler:&__block_literal_global_92];
+    _noneAlertTitle2 = [objc_opt_class() _noneAlertTitle];
+    v67 = [MEMORY[0x1E69DC628] actionWithTitle:_noneAlertTitle2 image:0 identifier:0 handler:&__block_literal_global_92];
     [v67 setState:1];
     v115 = v67;
     v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v115 count:1];
-    CUIKAddInlineMenuItemArrayToArray(v84, v68);
+    CUIKAddInlineMenuItemArrayToArray(array, v68);
 
-    v6 = self;
+    selfCopy8 = self;
   }
 
-  v69 = [(CUIKAlarmsViewModel *)v6 calendarItem];
-  v70 = [v69 calendar];
-  v71 = [v70 isIgnoringEventAlerts];
+  calendarItem2 = [(CUIKAlarmsViewModel *)selfCopy8 calendarItem];
+  calendar = [calendarItem2 calendar];
+  isIgnoringEventAlerts = [calendar isIgnoringEventAlerts];
 
-  if (v71)
+  if (isIgnoringEventAlerts)
   {
-    v72 = [(CUIKAlarmsViewModel *)self calendarItem];
-    v73 = [v72 calendar];
-    v74 = CUIKDisplayedTitleForCalendar(v73);
+    calendarItem3 = [(CUIKAlarmsViewModel *)self calendarItem];
+    calendar2 = [calendarItem3 calendar];
+    v74 = CUIKDisplayedTitleForCalendar(calendar2);
 
     v75 = CUIKBundle();
     v76 = [v75 localizedStringForKey:@"Event Alerts" value:&stru_1F4AA8958 table:0];
@@ -990,7 +990,7 @@ LABEL_73:
     v80 = &stru_1F4AA8958;
   }
 
-  v11 = [MEMORY[0x1E69DCC60] menuWithTitle:v80 image:0 identifier:0 options:1 children:v84];
+  v11 = [MEMORY[0x1E69DCC60] menuWithTitle:v80 image:0 identifier:0 options:1 children:array];
 
 LABEL_82:
   objc_destroyWeak(&location);
@@ -1100,11 +1100,11 @@ void __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)labelTextForIndex:(unint64_t)a3
++ (id)labelTextForIndex:(unint64_t)index
 {
   v4 = CUIKBundle();
   v5 = v4;
-  if (a3)
+  if (index)
   {
     v6 = @"Second Alert";
   }
@@ -1119,9 +1119,9 @@ void __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___
   return v7;
 }
 
-+ (id)accessibilityIdentifierForIndex:(unint64_t)a3
++ (id)accessibilityIdentifierForIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     return @"second-alert-cell";
   }
@@ -1132,29 +1132,29 @@ void __70__CUIKAlarmsViewModel__menuForAlarmAtIndex_placeholder_actionHandler___
   }
 }
 
-- (BOOL)isAlarmEffectivelyDisabled:(id)a3
+- (BOOL)isAlarmEffectivelyDisabled:(id)disabled
 {
-  v4 = a3;
-  v5 = [(CUIKAlarmsViewModel *)self calendarItem];
-  v6 = [v5 calendar];
-  v7 = [v6 isIgnoringEventAlerts];
+  disabledCopy = disabled;
+  calendarItem = [(CUIKAlarmsViewModel *)self calendarItem];
+  calendar = [calendarItem calendar];
+  isIgnoringEventAlerts = [calendar isIgnoringEventAlerts];
 
-  if (v7)
+  if (isIgnoringEventAlerts)
   {
-    v8 = 1;
+    locationStatusMakesTTLAlarmDisabled = 1;
   }
 
-  else if ([v4 isLeaveNowAlarm])
+  else if ([disabledCopy isLeaveNowAlarm])
   {
-    v8 = [(CUIKAlarmsViewModel *)self locationStatusMakesTTLAlarmDisabled];
+    locationStatusMakesTTLAlarmDisabled = [(CUIKAlarmsViewModel *)self locationStatusMakesTTLAlarmDisabled];
   }
 
   else
   {
-    v8 = 0;
+    locationStatusMakesTTLAlarmDisabled = 0;
   }
 
-  return v8;
+  return locationStatusMakesTTLAlarmDisabled;
 }
 
 - (id)_errorTitleForDisabledTTLAlarm

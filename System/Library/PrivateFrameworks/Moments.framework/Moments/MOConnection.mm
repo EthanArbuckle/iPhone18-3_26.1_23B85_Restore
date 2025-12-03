@@ -1,17 +1,17 @@
 @interface MOConnection
-- (BOOL)runBlockCompleted:(id)a3;
-- (MOConnection)initWithName:(id)a3;
+- (BOOL)runBlockCompleted:(id)completed;
+- (MOConnection)initWithName:(id)name;
 - (MOConnectionDelegate)delegate;
 - (id)onConnectionInterrupted;
-- (id)runBlockStarted:(id)a3 withConnectionError:(id)a4;
-- (void)callBlock:(id)a3 onInterruption:(id)a4;
+- (id)runBlockStarted:(id)started withConnectionError:(id)error;
+- (void)callBlock:(id)block onInterruption:(id)interruption;
 @end
 
 @implementation MOConnection
 
-- (MOConnection)initWithName:(id)a3
+- (MOConnection)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = MOConnection;
   v6 = [(MOConnection *)&v10 init];
@@ -22,33 +22,33 @@
     v6->_pendingRequests = v7;
 
     v6->_pendingRequestCounter = 0;
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v6->_interruptActive = 0;
   }
 
   return v6;
 }
 
-- (void)callBlock:(id)a3 onInterruption:(id)a4
+- (void)callBlock:(id)block onInterruption:(id)interruption
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOConnection *)self runBlockStarted:v6 withConnectionError:v7];
-  v9 = self;
-  objc_sync_enter(v9);
-  interruptActive = v9->_interruptActive;
-  objc_sync_exit(v9);
+  blockCopy = block;
+  interruptionCopy = interruption;
+  v8 = [(MOConnection *)self runBlockStarted:blockCopy withConnectionError:interruptionCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  interruptActive = selfCopy->_interruptActive;
+  objc_sync_exit(selfCopy);
 
   if (!interruptActive && v8)
   {
-    objc_initWeak(&location, v9);
+    objc_initWeak(&location, selfCopy);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__MOConnection_callBlock_onInterruption___block_invoke;
     v11[3] = &unk_278773980;
     objc_copyWeak(&v13, &location);
     v12 = v8;
-    v6[2](v6, v11);
+    blockCopy[2](blockCopy, v11);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -63,27 +63,27 @@ uint64_t __41__MOConnection_callBlock_onInterruption___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)runBlockStarted:(id)a3 withConnectionError:(id)a4
+- (id)runBlockStarted:(id)started withConnectionError:(id)error
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  startedCopy = started;
+  errorCopy = error;
+  if (startedCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    ++v8->_pendingRequestCounter;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    ++selfCopy->_pendingRequestCounter;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
     v15[0] = @"requestBlock";
-    v10 = MEMORY[0x2318D5790](v6);
+    v10 = MEMORY[0x2318D5790](startedCopy);
     v15[1] = @"interruptionBlock";
     v16[0] = v10;
-    v11 = MEMORY[0x2318D5790](v7);
+    v11 = MEMORY[0x2318D5790](errorCopy);
     v16[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
-    [(NSMutableDictionary *)v8->_pendingRequests setObject:v12 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)selfCopy->_pendingRequests setObject:v12 forKeyedSubscript:v9];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -96,18 +96,18 @@ uint64_t __41__MOConnection_callBlock_onInterruption___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)runBlockCompleted:(id)a3
+- (BOOL)runBlockCompleted:(id)completed
 {
-  v4 = a3;
-  if (v4)
+  completedCopy = completed;
+  if (completedCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_pendingRequests objectForKeyedSubscript:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_pendingRequests objectForKeyedSubscript:completedCopy];
 
-    [(NSMutableDictionary *)v5->_pendingRequests removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_pendingRequests removeObjectForKey:completedCopy];
     v7 = v6 != 0;
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else

@@ -1,63 +1,63 @@
 @interface WatchControlStringLookup
-+ (id)stringResouceForGreyEvent:(int64_t)a3;
-+ (id)stringResouceForMotionPointerEdge:(int64_t)a3;
-+ (id)stringResourceForAXHandGestures:(int64_t)a3;
-+ (id)stringResourceForEltonKey:(id)a3;
-+ (id)stringResourceForKey:(id)a3;
++ (id)stringResouceForGreyEvent:(int64_t)event;
++ (id)stringResouceForMotionPointerEdge:(int64_t)edge;
++ (id)stringResourceForAXHandGestures:(int64_t)gestures;
++ (id)stringResourceForEltonKey:(id)key;
++ (id)stringResourceForKey:(id)key;
 @end
 
 @implementation WatchControlStringLookup
 
-+ (id)stringResourceForKey:(id)a3
++ (id)stringResourceForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   if (([v4 isLoaded] & 1) == 0)
   {
     [v4 load];
   }
 
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
-  if (v5)
+  if (bundleURL)
   {
     v6 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v4 bundleURL];
-    v5 = [v6 initWithKey:v3 table:@"Localizable" locale:v7 bundleURL:v8];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    bundleURL2 = [v4 bundleURL];
+    bundleURL = [v6 initWithKey:keyCopy table:@"Localizable" locale:currentLocale bundleURL:bundleURL2];
   }
 
-  return v5;
+  return bundleURL;
 }
 
-+ (id)stringResourceForEltonKey:(id)a3
++ (id)stringResourceForEltonKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   if (([v4 isLoaded] & 1) == 0)
   {
     [v4 load];
   }
 
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
-  if (v5)
+  if (bundleURL)
   {
     v6 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v4 bundleURL];
-    v5 = [v6 initWithKey:v3 table:@"Localizable-elton" locale:v7 bundleURL:v8];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    bundleURL2 = [v4 bundleURL];
+    bundleURL = [v6 initWithKey:keyCopy table:@"Localizable-elton" locale:currentLocale bundleURL:bundleURL2];
   }
 
-  return v5;
+  return bundleURL;
 }
 
-+ (id)stringResouceForGreyEvent:(int64_t)a3
++ (id)stringResouceForGreyEvent:(int64_t)event
 {
   v3 = 0;
-  if (a3 > 1)
+  if (event > 1)
   {
-    if (a3 == 2)
+    if (event == 2)
     {
       v6 = objc_opt_class();
       v7 = @"grey.event.tap";
@@ -65,7 +65,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (event != 3)
       {
         goto LABEL_12;
       }
@@ -79,9 +79,9 @@
 
   else
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
         goto LABEL_12;
       }
@@ -104,22 +104,22 @@ LABEL_12:
   return v3;
 }
 
-+ (id)stringResouceForMotionPointerEdge:(int64_t)a3
++ (id)stringResouceForMotionPointerEdge:(int64_t)edge
 {
-  if (a3 > 3)
+  if (edge > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [objc_opt_class() stringResourceForKey:off_278B90BF0[a3]];
+    v4 = [objc_opt_class() stringResourceForKey:off_278B90BF0[edge]];
   }
 
   return v4;
 }
 
-+ (id)stringResourceForAXHandGestures:(int64_t)a3
++ (id)stringResourceForAXHandGestures:(int64_t)gestures
 {
   v3 = objc_opt_class();
   v4 = WCGreyEventForAXHandGestureEventUsage();

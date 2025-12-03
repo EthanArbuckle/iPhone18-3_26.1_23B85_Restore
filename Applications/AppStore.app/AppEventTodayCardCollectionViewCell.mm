@@ -8,7 +8,7 @@
 
 - (void)applySizeCategoryUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_10046C4F0();
 }
 
@@ -24,7 +24,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10046D7A0();
 }
 

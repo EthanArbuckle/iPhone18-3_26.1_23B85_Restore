@@ -1,67 +1,67 @@
 @interface WBSTabCompletionMatch
-+ (int64_t)_matchLocationForString:(id)a3 url:(id)a4 title:(id)a5;
-- (WBSTabCompletionMatch)initWithUserTypedString:(id)a3 url:(id)a4 title:(id)a5 forQueryID:(int64_t)a6;
++ (int64_t)_matchLocationForString:(id)string url:(id)url title:(id)title;
+- (WBSTabCompletionMatch)initWithUserTypedString:(id)string url:(id)url title:(id)title forQueryID:(int64_t)d;
 @end
 
 @implementation WBSTabCompletionMatch
 
-- (WBSTabCompletionMatch)initWithUserTypedString:(id)a3 url:(id)a4 title:(id)a5 forQueryID:(int64_t)a6
+- (WBSTabCompletionMatch)initWithUserTypedString:(id)string url:(id)url title:(id)title forQueryID:(int64_t)d
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v14 = [[WBSURLCompletionUserTypedString alloc] initWithString:v13];
+  urlCopy = url;
+  titleCopy = title;
+  stringCopy = string;
+  v14 = [[WBSURLCompletionUserTypedString alloc] initWithString:stringCopy];
 
-  v15 = [objc_opt_class() _matchLocationForString:v14 url:v11 title:v12];
-  if (v15 >= 5 && (v16 = v15, [(WBSURLCompletionUserTypedString *)v14 normalizedString], v17 = objc_claimAutoreleasedReturnValue(), v22.receiver = self, v22.super_class = WBSTabCompletionMatch, self = [(WBSURLCompletionMatch *)&v22 initWithMatchLocation:v16 userInput:v17 forQueryID:a6], v17, self))
+  v15 = [objc_opt_class() _matchLocationForString:v14 url:urlCopy title:titleCopy];
+  if (v15 >= 5 && (v16 = v15, [(WBSURLCompletionUserTypedString *)v14 normalizedString], v17 = objc_claimAutoreleasedReturnValue(), v22.receiver = self, v22.super_class = WBSTabCompletionMatch, self = [(WBSURLCompletionMatch *)&v22 initWithMatchLocation:v16 userInput:v17 forQueryID:d], v17, self))
   {
-    objc_storeStrong(&self->_url, a4);
-    v18 = [v12 copy];
+    objc_storeStrong(&self->_url, url);
+    v18 = [titleCopy copy];
     title = self->_title;
     self->_title = v18;
 
     self = self;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-+ (int64_t)_matchLocationForString:(id)a3 url:(id)a4 title:(id)a5
++ (int64_t)_matchLocationForString:(id)string url:(id)url title:(id)title
 {
-  v8 = a3;
-  v9 = a5;
-  if (!a4)
+  stringCopy = string;
+  titleCopy = title;
+  if (!url)
   {
     v13 = 0;
     goto LABEL_11;
   }
 
-  v10 = [a4 safari_userVisibleString];
-  v11 = [v8 normalizedString];
-  if ([v11 safari_isPrefixOfWwwDot])
+  safari_userVisibleString = [url safari_userVisibleString];
+  normalizedString = [stringCopy normalizedString];
+  if ([normalizedString safari_isPrefixOfWwwDot])
   {
-    v12 = [MEMORY[0x1E69C8880] isStreamlinedCompletionListEnabled];
+    isStreamlinedCompletionListEnabled = [MEMORY[0x1E69C8880] isStreamlinedCompletionListEnabled];
 
-    if (!v12)
+    if (!isStreamlinedCompletionListEnabled)
     {
       goto LABEL_6;
     }
 
-    [v10 safari_simplifiedUserVisibleURLStringWithSimplifications:8 forDisplayOnly:0 simplifiedStringOffset:0];
-    v10 = v11 = v10;
+    [safari_userVisibleString safari_simplifiedUserVisibleURLStringWithSimplifications:8 forDisplayOnly:0 simplifiedStringOffset:0];
+    safari_userVisibleString = normalizedString = safari_userVisibleString;
   }
 
 LABEL_6:
-  v13 = [a1 matchLocationForString:v8 inURLString:v10];
+  v13 = [self matchLocationForString:stringCopy inURLString:safari_userVisibleString];
   if ((v13 - 9) >= 2)
   {
-    v14 = [a1 matchLocationForString:v8 inTitle:v9];
+    v14 = [self matchLocationForString:stringCopy inTitle:titleCopy];
     if (v13 <= v14)
     {
       v13 = v14;

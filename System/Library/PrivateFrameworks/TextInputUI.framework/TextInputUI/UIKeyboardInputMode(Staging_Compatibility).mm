@@ -8,12 +8,12 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 extendedDisplayName];
+    [self extendedDisplayName];
   }
 
   else
   {
-    [a1 displayName];
+    [self displayName];
   }
   v2 = ;
 

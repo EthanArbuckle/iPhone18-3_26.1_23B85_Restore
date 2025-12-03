@@ -1,22 +1,22 @@
 @interface NotificationFromGEODHandler
-- (NotificationFromGEODHandler)initWithDelegate:(id)a3;
+- (NotificationFromGEODHandler)initWithDelegate:(id)delegate;
 - (NotificationFromGEODHandlerDelegate)delegate;
 - (void)clearIncompatibleOfflineDataNotification;
-- (void)expiredOfflineSubscriptions:(id)a3 withDisplayNames:(id)a4 forReason:(int64_t)a5;
-- (void)geoDInternalError:(int64_t)a3;
-- (void)notifyForIncompatibleOfflineDataVersionsForIdentifiers:(id)a3 displayNames:(id)a4 completionHandler:(id)a5;
-- (void)pairedDeviceHasInsufficientDiskSpace:(unint64_t)a3 forSubscriptions:(id)a4 withDisplayNames:(id)a5;
-- (void)pingWithReply:(id)a3;
-- (void)proxyAuthFailed:(int64_t)a3;
-- (void)willExpireOfflineSubscriptionsWithIdentifiers:(id)a3 displayNames:(id)a4 unlessUpdatedByDate:(id)a5 completionHandler:(id)a6;
+- (void)expiredOfflineSubscriptions:(id)subscriptions withDisplayNames:(id)names forReason:(int64_t)reason;
+- (void)geoDInternalError:(int64_t)error;
+- (void)notifyForIncompatibleOfflineDataVersionsForIdentifiers:(id)identifiers displayNames:(id)names completionHandler:(id)handler;
+- (void)pairedDeviceHasInsufficientDiskSpace:(unint64_t)space forSubscriptions:(id)subscriptions withDisplayNames:(id)names;
+- (void)pingWithReply:(id)reply;
+- (void)proxyAuthFailed:(int64_t)failed;
+- (void)willExpireOfflineSubscriptionsWithIdentifiers:(id)identifiers displayNames:(id)names unlessUpdatedByDate:(id)date completionHandler:(id)handler;
 @end
 
 @implementation NotificationFromGEODHandler
 
-- (NotificationFromGEODHandler)initWithDelegate:(id)a3
+- (NotificationFromGEODHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     goto LABEL_5;
   }
@@ -25,19 +25,19 @@
   v10.super_class = NotificationFromGEODHandler;
   v5 = [(NotificationFromGEODHandler *)&v10 init];
   self = v5;
-  if (!v5 || (objc_storeWeak(&v5->_delegate, v4), v6 = [[GEODaemonToMapsPushDaemonListener alloc] initWithMapsPushDaemon:self], geodListener = self->_geodListener, self->_geodListener = v6, geodListener, self->_geodListener))
+  if (!v5 || (objc_storeWeak(&v5->_delegate, delegateCopy), v6 = [[GEODaemonToMapsPushDaemonListener alloc] initWithMapsPushDaemon:self], geodListener = self->_geodListener, self->_geodListener = v6, geodListener, self->_geodListener))
   {
     self = self;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_5:
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NotificationFromGEODHandlerDelegate)delegate
@@ -47,7 +47,7 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)proxyAuthFailed:(int64_t)a3
+- (void)proxyAuthFailed:(int64_t)failed
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
@@ -55,18 +55,18 @@ LABEL_5:
     v6 = v5;
     GEOMachAbsoluteTimeGetCurrent();
     v8 = v7;
-    if (v7 - self->_lastProxyAuthEvent > v6 || self->_lastProxyAuthReason != a3)
+    if (v7 - self->_lastProxyAuthEvent > v6 || self->_lastProxyAuthReason != failed)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained geodProxyAuthFailedNotification:a3];
+      [WeakRetained geodProxyAuthFailedNotification:failed];
 
       self->_lastProxyAuthEvent = v8;
-      self->_lastProxyAuthReason = a3;
+      self->_lastProxyAuthReason = failed;
     }
   }
 }
 
-- (void)geoDInternalError:(int64_t)a3
+- (void)geoDInternalError:(int64_t)error
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
@@ -74,50 +74,50 @@ LABEL_5:
     v6 = v5;
     GEOMachAbsoluteTimeGetCurrent();
     v8 = v7;
-    if (v7 - self->_lastInternalErrorTime > v6 || self->_lastInternalErrorCode != a3)
+    if (v7 - self->_lastInternalErrorTime > v6 || self->_lastInternalErrorCode != error)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained geodInternalErrorNotification:a3];
+      [WeakRetained geodInternalErrorNotification:error];
 
       self->_lastInternalErrorTime = v8;
-      self->_lastInternalErrorCode = a3;
+      self->_lastInternalErrorCode = error;
     }
   }
 }
 
-- (void)pingWithReply:(id)a3
+- (void)pingWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    (*(a3 + 2))(a3);
+    (*(reply + 2))(reply);
   }
 }
 
-- (void)expiredOfflineSubscriptions:(id)a3 withDisplayNames:(id)a4 forReason:(int64_t)a5
+- (void)expiredOfflineSubscriptions:(id)subscriptions withDisplayNames:(id)names forReason:(int64_t)reason
 {
-  v8 = a4;
-  v9 = a3;
+  namesCopy = names;
+  subscriptionsCopy = subscriptions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained expiredOfflineSubscriptions:v9 withDisplayNames:v8 forReason:a5];
+  [WeakRetained expiredOfflineSubscriptions:subscriptionsCopy withDisplayNames:namesCopy forReason:reason];
 }
 
-- (void)willExpireOfflineSubscriptionsWithIdentifiers:(id)a3 displayNames:(id)a4 unlessUpdatedByDate:(id)a5 completionHandler:(id)a6
+- (void)willExpireOfflineSubscriptionsWithIdentifiers:(id)identifiers displayNames:(id)names unlessUpdatedByDate:(id)date completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  dateCopy = date;
+  namesCopy = names;
+  identifiersCopy = identifiers;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained willExpireOfflineSubscriptionsWithIdentifiers:v13 displayNames:v12 unlessUpdatedByDate:v11 completionHandler:v10];
+  [WeakRetained willExpireOfflineSubscriptionsWithIdentifiers:identifiersCopy displayNames:namesCopy unlessUpdatedByDate:dateCopy completionHandler:handlerCopy];
 }
 
-- (void)notifyForIncompatibleOfflineDataVersionsForIdentifiers:(id)a3 displayNames:(id)a4 completionHandler:(id)a5
+- (void)notifyForIncompatibleOfflineDataVersionsForIdentifiers:(id)identifiers displayNames:(id)names completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  namesCopy = names;
+  identifiersCopy = identifiers;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained notifyForIncompatibleOfflineDataVersionsForIdentifiers:v10 displayNames:v9 completionHandler:v8];
+  [WeakRetained notifyForIncompatibleOfflineDataVersionsForIdentifiers:identifiersCopy displayNames:namesCopy completionHandler:handlerCopy];
 }
 
 - (void)clearIncompatibleOfflineDataNotification
@@ -126,12 +126,12 @@ LABEL_5:
   [WeakRetained clearIncompatibleOfflineDataNotification];
 }
 
-- (void)pairedDeviceHasInsufficientDiskSpace:(unint64_t)a3 forSubscriptions:(id)a4 withDisplayNames:(id)a5
+- (void)pairedDeviceHasInsufficientDiskSpace:(unint64_t)space forSubscriptions:(id)subscriptions withDisplayNames:(id)names
 {
-  v8 = a5;
-  v9 = a4;
+  namesCopy = names;
+  subscriptionsCopy = subscriptions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pairedDeviceHasInsufficientDiskSpace:a3 forSubscriptions:v9 withDisplayNames:v8];
+  [WeakRetained pairedDeviceHasInsufficientDiskSpace:space forSubscriptions:subscriptionsCopy withDisplayNames:namesCopy];
 }
 
 @end

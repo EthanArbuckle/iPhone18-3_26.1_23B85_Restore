@@ -1,21 +1,21 @@
 @interface PKPaymentProvisioningPassData
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentProvisioningPassData)initWithCoder:(id)a3;
-- (PKPaymentProvisioningPassData)initWithDictionary:(id)a3;
-- (PKPaymentProvisioningPassData)initWithPassURL:(id)a3;
-- (PKPaymentProvisioningPassData)initWithSecureElementPass:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentProvisioningPassData)initWithCoder:(id)coder;
+- (PKPaymentProvisioningPassData)initWithDictionary:(id)dictionary;
+- (PKPaymentProvisioningPassData)initWithPassURL:(id)l;
+- (PKPaymentProvisioningPassData)initWithSecureElementPass:(id)pass;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentProvisioningPassData
 
-- (PKPaymentProvisioningPassData)initWithSecureElementPass:(id)a3
+- (PKPaymentProvisioningPassData)initWithSecureElementPass:(id)pass
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  passCopy = pass;
+  if (!passCopy)
   {
     p_super = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
@@ -33,7 +33,7 @@
   self = [(PKPaymentProvisioningPassData *)&v8 init];
   if (self)
   {
-    v5 = v4;
+    v5 = passCopy;
     p_super = &self->_secureElementPass->super.super.super;
     self->_secureElementPass = v5;
 LABEL_6:
@@ -42,16 +42,16 @@ LABEL_6:
   return self;
 }
 
-- (PKPaymentProvisioningPassData)initWithDictionary:(id)a3
+- (PKPaymentProvisioningPassData)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PKPaymentProvisioningPassData;
   v5 = [(PKPaymentProvisioningPassData *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"passURL"];
+    v6 = [dictionaryCopy objectForKey:@"passURL"];
     if (v6)
     {
       v7 = v6;
@@ -59,16 +59,16 @@ LABEL_6:
       passURL = v5->_passURL;
       v5->_passURL = v8;
 
-      v5->_willProvisionWithAuthenticationDisabled = [v4 PKBoolForKey:@"willProvisionWithAuthenticationDisabled"];
-      v10 = [v4 PKStringForKey:@"ownershipToken"];
+      v5->_willProvisionWithAuthenticationDisabled = [dictionaryCopy PKBoolForKey:@"willProvisionWithAuthenticationDisabled"];
+      v10 = [dictionaryCopy PKStringForKey:@"ownershipToken"];
       ownershipToken = v5->_ownershipToken;
       v5->_ownershipToken = v10;
 
-      v12 = [v4 PKStringForKey:@"ownershipTokenIdentifier"];
+      v12 = [dictionaryCopy PKStringForKey:@"ownershipTokenIdentifier"];
       ownershipTokenIdentifier = v5->_ownershipTokenIdentifier;
       v5->_ownershipTokenIdentifier = v12;
 
-      v5->_suppressMakeDefaultPaymentPassOffer = [v4 PKBoolForKey:@"suppressMakeDefaultPaymentPassOffer"];
+      v5->_suppressMakeDefaultPaymentPassOffer = [dictionaryCopy PKBoolForKey:@"suppressMakeDefaultPaymentPassOffer"];
     }
 
     else
@@ -91,16 +91,16 @@ LABEL_6:
   return v5;
 }
 
-- (PKPaymentProvisioningPassData)initWithPassURL:(id)a3
+- (PKPaymentProvisioningPassData)initWithPassURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PKPaymentProvisioningPassData;
   v6 = [(PKPaymentProvisioningPassData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_passURL, a3);
+    objc_storeStrong(&v6->_passURL, l);
   }
 
   return v7;
@@ -113,11 +113,11 @@ LABEL_6:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKObject *)self->_secureElementPass uniqueID];
-  [v6 appendFormat:@"pass identifier: '%@'; ", v7];
+  uniqueID = [(PKObject *)self->_secureElementPass uniqueID];
+  [v6 appendFormat:@"pass identifier: '%@'; ", uniqueID];
 
-  v8 = [(NSURL *)self->_passURL absoluteString];
-  [v6 appendFormat:@"pass url: '%@'; ", v8];
+  absoluteString = [(NSURL *)self->_passURL absoluteString];
+  [v6 appendFormat:@"pass url: '%@'; ", absoluteString];
 
   [v6 appendFormat:@"deviceCredential: %@; ", self->_deviceCredential];
   if (self->_willProvisionWithAuthenticationDisabled)
@@ -149,10 +149,10 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -162,10 +162,10 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKObject *)self->_secureElementPass uniqueID];
-      v6 = [(PKObject *)v4->_secureElementPass uniqueID];
-      v7 = v5;
-      v8 = v6;
+      uniqueID = [(PKObject *)self->_secureElementPass uniqueID];
+      uniqueID2 = [(PKObject *)equalCopy->_secureElementPass uniqueID];
+      v7 = uniqueID;
+      v8 = uniqueID2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -202,8 +202,8 @@ LABEL_6:
 
   else
   {
-    v3 = [(PKObject *)self->_secureElementPass uniqueID];
-    v6 = v3;
+    uniqueID = [(PKObject *)self->_secureElementPass uniqueID];
+    v6 = uniqueID;
     v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v6 count:1];
   }
 
@@ -212,52 +212,52 @@ LABEL_6:
   return v4;
 }
 
-- (PKPaymentProvisioningPassData)initWithCoder:(id)a3
+- (PKPaymentProvisioningPassData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPaymentProvisioningPassData;
   v5 = [(PKPaymentProvisioningPassData *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passURL"];
     passURL = v5->_passURL;
     v5->_passURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementPass"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementPass"];
     secureElementPass = v5->_secureElementPass;
     v5->_secureElementPass = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceCredential"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceCredential"];
     deviceCredential = v5->_deviceCredential;
     v5->_deviceCredential = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownershipToken"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownershipToken"];
     ownershipToken = v5->_ownershipToken;
     v5->_ownershipToken = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownershipTokenIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownershipTokenIdentifier"];
     ownershipTokenIdentifier = v5->_ownershipTokenIdentifier;
     v5->_ownershipTokenIdentifier = v14;
 
-    v5->_willProvisionWithAuthenticationDisabled = [v4 decodeBoolForKey:@"willProvisionWithAuthenticationDisabled"];
-    v5->_suppressMakeDefaultPaymentPassOffer = [v4 decodeBoolForKey:@"suppressMakeDefaultPaymentPassOffer"];
+    v5->_willProvisionWithAuthenticationDisabled = [coderCopy decodeBoolForKey:@"willProvisionWithAuthenticationDisabled"];
+    v5->_suppressMakeDefaultPaymentPassOffer = [coderCopy decodeBoolForKey:@"suppressMakeDefaultPaymentPassOffer"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passURL = self->_passURL;
-  v5 = a3;
-  [v5 encodeObject:passURL forKey:@"passURL"];
-  [v5 encodeObject:self->_secureElementPass forKey:@"secureElementPass"];
-  [v5 encodeObject:self->_deviceCredential forKey:@"deviceCredential"];
-  [v5 encodeObject:self->_ownershipToken forKey:@"ownershipToken"];
-  [v5 encodeObject:self->_ownershipTokenIdentifier forKey:@"ownershipTokenIdentifier"];
-  [v5 encodeBool:self->_willProvisionWithAuthenticationDisabled forKey:@"willProvisionWithAuthenticationDisabled"];
-  [v5 encodeBool:self->_suppressMakeDefaultPaymentPassOffer forKey:@"suppressMakeDefaultPaymentPassOffer"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passURL forKey:@"passURL"];
+  [coderCopy encodeObject:self->_secureElementPass forKey:@"secureElementPass"];
+  [coderCopy encodeObject:self->_deviceCredential forKey:@"deviceCredential"];
+  [coderCopy encodeObject:self->_ownershipToken forKey:@"ownershipToken"];
+  [coderCopy encodeObject:self->_ownershipTokenIdentifier forKey:@"ownershipTokenIdentifier"];
+  [coderCopy encodeBool:self->_willProvisionWithAuthenticationDisabled forKey:@"willProvisionWithAuthenticationDisabled"];
+  [coderCopy encodeBool:self->_suppressMakeDefaultPaymentPassOffer forKey:@"suppressMakeDefaultPaymentPassOffer"];
 }
 
 @end

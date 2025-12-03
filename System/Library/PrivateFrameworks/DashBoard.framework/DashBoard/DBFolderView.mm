@@ -1,8 +1,8 @@
 @interface DBFolderView
-+ (double)maximumPageControlHeightForInteractionAffordances:(unint64_t)a3;
++ (double)maximumPageControlHeightForInteractionAffordances:(unint64_t)affordances;
 - (BOOL)_showsButtons;
 - (DBEnvironment)environment;
-- (DBFolderView)initWithConfiguration:(id)a3;
+- (DBFolderView)initWithConfiguration:(id)configuration;
 - (UIEdgeInsets)_listViewVerticalInset;
 - (UIEdgeInsets)listViewInsets;
 - (double)_listViewSideInset;
@@ -12,54 +12,54 @@
 - (double)pageControlPlatterAlpha;
 - (id)_newPageControl;
 - (id)_pageControlBackgroundView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)pageControlOverrideUserInterfaceStyle;
 - (void)_layoutSubviews;
-- (void)_restartPageControlTimerWithTimeInterval:(double)a3;
-- (void)_scrollButtonPressed:(id)a3;
+- (void)_restartPageControlTimerWithTimeInterval:(double)interval;
+- (void)_scrollButtonPressed:(id)pressed;
 - (void)_updateIconListFrames;
-- (void)_updatePageControlToIndex:(int64_t)a3;
-- (void)_updateScrollButtonStatesForIndex:(int64_t)a3;
+- (void)_updatePageControlToIndex:(int64_t)index;
+- (void)_updateScrollButtonStatesForIndex:(int64_t)index;
 - (void)restartPageControlTimerIfNecessary;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setEnvironment:(id)a3;
-- (void)setLeadingCustomViewVisibilityProgress:(double)a3;
-- (void)setPageControlHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPageControlPlatterAlpha:(double)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setEnvironment:(id)environment;
+- (void)setLeadingCustomViewVisibilityProgress:(double)progress;
+- (void)setPageControlHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setPageControlPlatterAlpha:(double)alpha;
 @end
 
 @implementation DBFolderView
 
-- (DBFolderView)initWithConfiguration:(id)a3
+- (DBFolderView)initWithConfiguration:(id)configuration
 {
   v38[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v37.receiver = self;
   v37.super_class = DBFolderView;
-  v5 = [(SBRootFolderView *)&v37 initWithConfiguration:v4];
+  v5 = [(SBRootFolderView *)&v37 initWithConfiguration:configurationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SBFolderView *)v5 scalingView];
+    scalingView = [(SBFolderView *)v5 scalingView];
     v8 = [DBScrollButton buttonWithDirection:0];
     scrollLeftButton = v6->_scrollLeftButton;
     v6->_scrollLeftButton = v8;
 
     [(DBScrollButton *)v6->_scrollLeftButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DBScrollButton *)v6->_scrollLeftButton addTarget:v6 action:sel__scrollButtonPressed_ forControlEvents:64];
-    [v7 addSubview:v6->_scrollLeftButton];
+    [scalingView addSubview:v6->_scrollLeftButton];
     v10 = [DBScrollButton buttonWithDirection:1];
     scrollRightButton = v6->_scrollRightButton;
     v6->_scrollRightButton = v10;
 
     [(DBScrollButton *)v6->_scrollRightButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DBScrollButton *)v6->_scrollRightButton addTarget:v6 action:sel__scrollButtonPressed_ forControlEvents:64];
-    [v7 addSubview:v6->_scrollRightButton];
+    [scalingView addSubview:v6->_scrollRightButton];
     [(DBScrollButton *)v6->_scrollLeftButton setHidden:1];
     [(DBScrollButton *)v6->_scrollRightButton setHidden:1];
-    v12 = [v4 todayViewController];
+    todayViewController = [configurationCopy todayViewController];
 
-    if (v12)
+    if (todayViewController)
     {
       v13 = 0.0;
     }
@@ -69,53 +69,53 @@
       v13 = 1.0;
     }
 
-    v14 = [(DBFolderView *)v6 scrollLeftButton];
-    [v14 setAlpha:v13];
+    scrollLeftButton = [(DBFolderView *)v6 scrollLeftButton];
+    [scrollLeftButton setAlpha:v13];
 
-    v15 = [(DBFolderView *)v6 scrollRightButton];
-    [v15 setAlpha:v13];
+    scrollRightButton = [(DBFolderView *)v6 scrollRightButton];
+    [scrollRightButton setAlpha:v13];
 
-    v16 = [(DBScrollButton *)v6->_scrollLeftButton leadingAnchor];
-    v17 = [v7 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:12.0];
+    leadingAnchor = [(DBScrollButton *)v6->_scrollLeftButton leadingAnchor];
+    leadingAnchor2 = [scalingView leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     leadingScrollArrowLeadingConstraint = v6->_leadingScrollArrowLeadingConstraint;
     v6->_leadingScrollArrowLeadingConstraint = v18;
 
-    v20 = [(DBScrollButton *)v6->_scrollRightButton trailingAnchor];
-    v21 = [v7 trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:-12.0];
+    trailingAnchor = [(DBScrollButton *)v6->_scrollRightButton trailingAnchor];
+    trailingAnchor2 = [scalingView trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     trailingScrollArrowTrailingConstraint = v6->_trailingScrollArrowTrailingConstraint;
     v6->_trailingScrollArrowTrailingConstraint = v22;
 
     v24 = MEMORY[0x277CCAAD0];
     v38[0] = v6->_leadingScrollArrowLeadingConstraint;
     v38[1] = v6->_trailingScrollArrowTrailingConstraint;
-    v25 = [(DBScrollButton *)v6->_scrollLeftButton bottomAnchor];
-    v36 = v7;
-    v26 = [v7 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-8.5];
+    bottomAnchor = [(DBScrollButton *)v6->_scrollLeftButton bottomAnchor];
+    v36 = scalingView;
+    bottomAnchor2 = [scalingView bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.5];
     v38[2] = v27;
-    v28 = [(DBScrollButton *)v6->_scrollRightButton bottomAnchor];
-    v29 = [v7 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:-8.5];
+    bottomAnchor3 = [(DBScrollButton *)v6->_scrollRightButton bottomAnchor];
+    bottomAnchor4 = [scalingView bottomAnchor];
+    v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.5];
     v38[3] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:4];
     [v24 activateConstraints:v31];
 
-    v32 = [(SBFolderView *)v6 pageControl];
+    pageControl = [(SBFolderView *)v6 pageControl];
     v33 = [MEMORY[0x277D75210] effectWithStyle:7];
-    [v32 _setPlatterEffect:v33];
+    [pageControl _setPlatterEffect:v33];
 
-    v34 = [(SBFolderView *)v6 pageControl];
-    [v34 setBackgroundStyle:1];
+    pageControl2 = [(SBFolderView *)v6 pageControl];
+    [pageControl2 setBackgroundStyle:1];
   }
 
   return v6;
 }
 
-+ (double)maximumPageControlHeightForInteractionAffordances:(unint64_t)a3
++ (double)maximumPageControlHeightForInteractionAffordances:(unint64_t)affordances
 {
-  if ((a3 & 2) == 0)
+  if ((affordances & 2) == 0)
   {
     return 15.0;
   }
@@ -131,36 +131,36 @@
   return v3;
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  v4 = a3;
-  objc_storeWeak(&self->_environment, v4);
-  v5 = [v4 environmentConfiguration];
+  environmentCopy = environment;
+  objc_storeWeak(&self->_environment, environmentCopy);
+  environmentConfiguration = [environmentCopy environmentConfiguration];
 
-  v6 = [v5 interactionAffordances];
-  v7 = v6 & 2;
+  interactionAffordances = [environmentConfiguration interactionAffordances];
+  v7 = interactionAffordances & 2;
   if (self->_buttonUXEnabled != v7 >> 1)
   {
-    self->_buttonUXEnabled = (v6 & 2) >> 1;
+    self->_buttonUXEnabled = (interactionAffordances & 2) >> 1;
     [(DBScrollButton *)self->_scrollLeftButton setHidden:v7 == 0];
     [(DBScrollButton *)self->_scrollRightButton setHidden:v7 == 0];
     [(SBRootFolderView *)self setNeedsLayout];
   }
 
-  v8 = [(SBFolderView *)self pageControl];
-  [v8 setShowsButtons:v7 != 0];
+  pageControl = [(SBFolderView *)self pageControl];
+  [pageControl setShowsButtons:v7 != 0];
 }
 
-- (void)setPageControlPlatterAlpha:(double)a3
+- (void)setPageControlPlatterAlpha:(double)alpha
 {
-  v4 = [(DBFolderView *)self _pageControlBackgroundView];
-  [v4 setAlpha:a3];
+  _pageControlBackgroundView = [(DBFolderView *)self _pageControlBackgroundView];
+  [_pageControlBackgroundView setAlpha:alpha];
 }
 
 - (double)pageControlPlatterAlpha
 {
-  v2 = [(DBFolderView *)self _pageControlBackgroundView];
-  [v2 alpha];
+  _pageControlBackgroundView = [(DBFolderView *)self _pageControlBackgroundView];
+  [_pageControlBackgroundView alpha];
   v4 = v3;
 
   return v4;
@@ -168,33 +168,33 @@
 
 - (int64_t)pageControlOverrideUserInterfaceStyle
 {
-  v2 = [(DBFolderView *)self environment];
-  v3 = [v2 environmentConfiguration];
-  v4 = [v3 resolvedUserInterfaceStyle];
+  environment = [(DBFolderView *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  resolvedUserInterfaceStyle = [environmentConfiguration resolvedUserInterfaceStyle];
 
-  return v4;
+  return resolvedUserInterfaceStyle;
 }
 
 - (BOOL)_showsButtons
 {
-  v3 = [(DBFolderView *)self buttonUXEnabled];
-  if (v3)
+  buttonUXEnabled = [(DBFolderView *)self buttonUXEnabled];
+  if (buttonUXEnabled)
   {
-    LOBYTE(v3) = [(SBFolderView *)self iconListViewCount]> 1;
+    LOBYTE(buttonUXEnabled) = [(SBFolderView *)self iconListViewCount]> 1;
   }
 
-  return v3;
+  return buttonUXEnabled;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SBFolderView *)self pageControl];
-  v9 = [(SBFolderView *)self pageControl];
-  [v9 convertPoint:self fromView:{x, y}];
-  v10 = [v8 hitTest:v7 withEvent:?];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  pageControl = [(SBFolderView *)self pageControl];
+  pageControl2 = [(SBFolderView *)self pageControl];
+  [pageControl2 convertPoint:self fromView:{x, y}];
+  v10 = [pageControl hitTest:eventCopy withEvent:?];
 
   if (v10)
   {
@@ -205,7 +205,7 @@
   {
     v14.receiver = self;
     v14.super_class = DBFolderView;
-    v11 = [(SBRootFolderView *)&v14 hitTest:v7 withEvent:x, y];
+    v11 = [(SBRootFolderView *)&v14 hitTest:eventCopy withEvent:x, y];
   }
 
   v12 = v11;
@@ -220,26 +220,26 @@
   [(SBRootFolderView *)&v4 _layoutSubviews];
   [(DBFolderView *)self _listViewVerticalInset];
   [(DBFolderView *)self _listViewSideInset];
-  v3 = [(DBFolderView *)self layoutEngine];
-  [v3 folderViewAdditionalInsets];
+  layoutEngine = [(DBFolderView *)self layoutEngine];
+  [layoutEngine folderViewAdditionalInsets];
   UIEdgeInsetsAdd();
   [(DBFolderView *)self setListViewInsets:?];
 }
 
 - (id)_pageControlBackgroundView
 {
-  v2 = [(SBRootFolderView *)self scrollAccessoryView];
-  v3 = [v2 pageControl];
-  v4 = [v3 subviews];
-  v5 = [v4 firstObject];
+  scrollAccessoryView = [(SBRootFolderView *)self scrollAccessoryView];
+  pageControl = [scrollAccessoryView pageControl];
+  subviews = [pageControl subviews];
+  firstObject = [subviews firstObject];
 
-  v6 = [v5 subviews];
-  v7 = [v6 firstObject];
+  subviews2 = [firstObject subviews];
+  firstObject2 = [subviews2 firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = firstObject2;
   }
 
   else
@@ -254,13 +254,13 @@
 
 - (void)_updateIconListFrames
 {
-  v3 = [(SBFolderView *)self iconListViews];
+  iconListViews = [(SBFolderView *)self iconListViews];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __37__DBFolderView__updateIconListFrames__block_invoke;
   v5[3] = &unk_278F02720;
   v5[4] = self;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [iconListViews enumerateObjectsUsingBlock:v5];
 
   v4.receiver = self;
   v4.super_class = DBFolderView;
@@ -307,19 +307,19 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
   return v3;
 }
 
-- (void)_updatePageControlToIndex:(int64_t)a3
+- (void)_updatePageControlToIndex:(int64_t)index
 {
   v5.receiver = self;
   v5.super_class = DBFolderView;
   [(SBFolderView *)&v5 _updatePageControlToIndex:?];
-  [(DBFolderView *)self _updateScrollButtonStatesForIndex:a3];
+  [(DBFolderView *)self _updateScrollButtonStatesForIndex:index];
 }
 
 - (double)internalDockPageControlVerticalMargin
 {
-  v2 = [(DBFolderView *)self _showsButtons];
+  _showsButtons = [(DBFolderView *)self _showsButtons];
   result = 6.0;
-  if (v2)
+  if (_showsButtons)
   {
     return 9.0;
   }
@@ -329,11 +329,11 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
 
 - (double)internalDockPageControlHorizontalOffset
 {
-  v3 = [(DBFolderView *)self layoutEngine];
-  [v3 folderViewAdditionalInsets];
+  layoutEngine = [(DBFolderView *)self layoutEngine];
+  [layoutEngine folderViewAdditionalInsets];
   v5 = v4;
-  v6 = [(DBFolderView *)self layoutEngine];
-  [v6 folderViewAdditionalInsets];
+  layoutEngine2 = [(DBFolderView *)self layoutEngine];
+  [layoutEngine2 folderViewAdditionalInsets];
   v8 = v5 - v7;
 
   return v8 * 0.5;
@@ -341,9 +341,9 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
 
 - (double)pageControlAreaHeight
 {
-  v2 = [(DBFolderView *)self _showsButtons];
+  _showsButtons = [(DBFolderView *)self _showsButtons];
   result = 15.0;
-  if (v2)
+  if (_showsButtons)
   {
     return 34.0;
   }
@@ -351,16 +351,16 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (void)setLeadingCustomViewVisibilityProgress:(double)a3
+- (void)setLeadingCustomViewVisibilityProgress:(double)progress
 {
   v18.receiver = self;
   v18.super_class = DBFolderView;
   [(SBRootFolderView *)&v18 setLeadingCustomViewVisibilityProgress:?];
   if ([(DBFolderView *)self _showsButtons])
   {
-    if (a3 * -2.0 + 1.0 >= 0.0)
+    if (progress * -2.0 + 1.0 >= 0.0)
     {
-      v5 = a3 * -2.0 + 1.0;
+      v5 = progress * -2.0 + 1.0;
     }
 
     else
@@ -368,25 +368,25 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
       v5 = 0.0;
     }
 
-    v6 = [(DBFolderView *)self scrollLeftButton];
-    [v6 setAlpha:v5];
+    scrollLeftButton = [(DBFolderView *)self scrollLeftButton];
+    [scrollLeftButton setAlpha:v5];
 
-    v7 = [(DBFolderView *)self scrollRightButton];
-    [v7 setAlpha:v5];
+    scrollRightButton = [(DBFolderView *)self scrollRightButton];
+    [scrollRightButton setAlpha:v5];
 
-    v8 = [(SBFolderView *)self scalingView];
-    [v8 bounds];
-    v9 = CGRectGetWidth(v19) * a3;
+    scalingView = [(SBFolderView *)self scalingView];
+    [scalingView bounds];
+    v9 = CGRectGetWidth(v19) * progress;
 
-    v10 = [(DBFolderView *)self layoutEngine];
-    [v10 homeViewControllerInsetsWithContentUnderDock:0];
+    layoutEngine = [(DBFolderView *)self layoutEngine];
+    [layoutEngine homeViewControllerInsetsWithContentUnderDock:0];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(DBFolderView *)self traitCollection];
-    v16 = [v15 layoutDirection];
+    traitCollection = [(DBFolderView *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    if (v16 == 1)
+    if (layoutDirection == 1)
     {
       v17 = v14;
     }
@@ -396,7 +396,7 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
       v17 = v12;
     }
 
-    if (v16 != 1)
+    if (layoutDirection != 1)
     {
       v12 = v14;
     }
@@ -406,43 +406,43 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   v7.receiver = self;
   v7.super_class = DBFolderView;
-  [(SBFolderView *)&v7 scrollViewDidScroll:v4];
-  v5 = [(DBFolderView *)self didScrollHandler];
+  [(SBFolderView *)&v7 scrollViewDidScroll:scrollCopy];
+  didScrollHandler = [(DBFolderView *)self didScrollHandler];
 
-  if (v5)
+  if (didScrollHandler)
   {
-    v6 = [(DBFolderView *)self didScrollHandler];
-    [v4 contentOffset];
-    v6[2](v6);
+    didScrollHandler2 = [(DBFolderView *)self didScrollHandler];
+    [scrollCopy contentOffset];
+    didScrollHandler2[2](didScrollHandler2);
   }
 }
 
 - (double)_listViewSideInset
 {
-  v3 = [(SBFolderView *)self listLayoutProvider];
-  v4 = [(SBFolderView *)self iconLocation];
-  v5 = [v3 layoutForIconLocation:v4];
+  listLayoutProvider = [(SBFolderView *)self listLayoutProvider];
+  iconLocation = [(SBFolderView *)self iconLocation];
+  v5 = [listLayoutProvider layoutForIconLocation:iconLocation];
 
   [v5 iconImageInfo];
   v7 = v6;
-  v8 = [(DBFolderView *)self environment];
-  v9 = [v8 environmentConfiguration];
+  environment = [(DBFolderView *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
 
-  [v9 currentStatusBarInsetSafeViewAreaFrame];
+  [environmentConfiguration currentStatusBarInsetSafeViewAreaFrame];
   v11 = v10;
-  v12 = [v9 iconColumnCount];
-  v13 = v11 - ceil(v7 * v12);
+  iconColumnCount = [environmentConfiguration iconColumnCount];
+  v13 = v11 - ceil(v7 * iconColumnCount);
   if (v13 < 0.0)
   {
     v13 = 0.0;
   }
 
-  v14 = floor(v13 / (v12 + 1));
+  v14 = floor(v13 / (iconColumnCount + 1));
   if (v14 >= 0.0)
   {
     v15 = v14;
@@ -458,36 +458,36 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
 
 - (UIEdgeInsets)_listViewVerticalInset
 {
-  v3 = [(SBFolderView *)self listLayoutProvider];
-  v4 = [(SBFolderView *)self iconLocation];
-  v5 = [v3 layoutForIconLocation:v4];
+  listLayoutProvider = [(SBFolderView *)self listLayoutProvider];
+  iconLocation = [(SBFolderView *)self iconLocation];
+  v5 = [listLayoutProvider layoutForIconLocation:iconLocation];
 
   [v5 iconImageInfo];
   v7 = v6;
   v9 = v8;
-  v10 = [(DBFolderView *)self environment];
-  v11 = [v10 environmentConfiguration];
+  environment = [(DBFolderView *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
 
-  v12 = [(SBFolderView *)self scalingView];
-  [v12 bounds];
+  scalingView = [(SBFolderView *)self scalingView];
+  [scalingView bounds];
   Height = CGRectGetHeight(v31);
   [(DBFolderView *)self pageControlAreaHeight];
   v15 = Height - v14;
 
-  v16 = 2;
-  if ([v11 iconRowCount] >= 2)
+  iconRowCount = 2;
+  if ([environmentConfiguration iconRowCount] >= 2)
   {
-    v16 = [v11 iconRowCount];
+    iconRowCount = [environmentConfiguration iconRowCount];
   }
 
   [DBIconView maximumIconViewHeightForIconImageSize:v7, v9];
-  v18 = v15 - ceil(v17 * v16);
+  v18 = v15 - ceil(v17 * iconRowCount);
   if (v18 < 0.0)
   {
     v18 = 0.0;
   }
 
-  v19 = floor(v18 / (v16 + 1));
+  v19 = floor(v18 / (iconRowCount + 1));
   v20 = *(MEMORY[0x277D768C8] + 8);
   v21 = *(MEMORY[0x277D768C8] + 24);
   if (v19 <= 20.0)
@@ -500,15 +500,15 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
     v22 = v19;
   }
 
-  v23 = floor((v18 - v22) / v16);
+  v23 = floor((v18 - v22) / iconRowCount);
   v24 = -10.0;
   if (v23 >= 0.0)
   {
     if (v23 >= 5.0 || (v24 = 0.0, ![(DBFolderView *)self _showsButtons]))
     {
-      v25 = [(DBFolderView *)self _showsButtons];
+      _showsButtons = [(DBFolderView *)self _showsButtons];
       v26 = 0.0;
-      if (!v25)
+      if (!_showsButtons)
       {
         v26 = 0.0 + 10.0;
       }
@@ -536,39 +536,39 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (void)_updateScrollButtonStatesForIndex:(int64_t)a3
+- (void)_updateScrollButtonStatesForIndex:(int64_t)index
 {
-  v5 = [(DBFolderView *)self scrollLeftButton];
-  [v5 setEnabled:{-[SBFolderView minimumPageIndex](self, "minimumPageIndex") < a3}];
+  scrollLeftButton = [(DBFolderView *)self scrollLeftButton];
+  [scrollLeftButton setEnabled:{-[SBFolderView minimumPageIndex](self, "minimumPageIndex") < index}];
 
-  v6 = [(DBFolderView *)self scrollRightButton];
-  [v6 setEnabled:{-[SBFolderView maximumPageIndex](self, "maximumPageIndex") > a3}];
+  scrollRightButton = [(DBFolderView *)self scrollRightButton];
+  [scrollRightButton setEnabled:{-[SBFolderView maximumPageIndex](self, "maximumPageIndex") > index}];
 }
 
-- (void)_scrollButtonPressed:(id)a3
+- (void)_scrollButtonPressed:(id)pressed
 {
-  v8 = a3;
-  v4 = [(SBFolderView *)self currentPageIndex];
-  v5 = [(DBFolderView *)self scrollLeftButton];
+  pressedCopy = pressed;
+  currentPageIndex = [(SBFolderView *)self currentPageIndex];
+  scrollLeftButton = [(DBFolderView *)self scrollLeftButton];
 
-  if (v5 == v8)
+  if (scrollLeftButton == pressedCopy)
   {
     v7 = -1;
   }
 
   else
   {
-    v6 = [(DBFolderView *)self scrollRightButton];
-    v7 = v6 == v8;
+    scrollRightButton = [(DBFolderView *)self scrollRightButton];
+    v7 = scrollRightButton == pressedCopy;
   }
 
-  [(SBFolderView *)self setCurrentPageIndex:v4 + v7 animated:1];
-  [(DBFolderView *)self _updateScrollButtonStatesForIndex:v4 + v7];
+  [(SBFolderView *)self setCurrentPageIndex:currentPageIndex + v7 animated:1];
+  [(DBFolderView *)self _updateScrollButtonStatesForIndex:currentPageIndex + v7];
 }
 
-- (void)setPageControlHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setPageControlHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   pageControlHidingTimer = self->_pageControlHidingTimer;
   if (pageControlHidingTimer)
   {
@@ -577,9 +577,9 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
     self->_pageControlHidingTimer = 0;
   }
 
-  v9 = [(SBFolderView *)self pageControl];
-  v10 = v9;
-  if (v5)
+  pageControl = [(SBFolderView *)self pageControl];
+  v10 = pageControl;
+  if (hiddenCopy)
   {
     v11 = 0.0;
   }
@@ -589,13 +589,13 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
     v11 = 1.0;
   }
 
-  [v9 alpha];
+  [pageControl alpha];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    if (a4)
+    if (animated)
     {
       v12 = MEMORY[0x277D75D18];
-      if (v5)
+      if (hiddenCopy)
       {
         v13 = 0.6448;
       }
@@ -623,11 +623,11 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
 
 - (void)restartPageControlTimerIfNecessary
 {
-  v6 = [(SBFolderView *)self delegate];
-  if ([v6 isOnLeadingCustomPage])
+  delegate = [(SBFolderView *)self delegate];
+  if ([delegate isOnLeadingCustomPage])
   {
-    v3 = [(SBFolderView *)self pageControl];
-    [v3 alpha];
+    pageControl = [(SBFolderView *)self pageControl];
+    [pageControl alpha];
     v5 = v4;
 
     if (v5 >= 1.0)
@@ -637,7 +637,7 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_restartPageControlTimerWithTimeInterval:(double)a3
+- (void)_restartPageControlTimerWithTimeInterval:(double)interval
 {
   pageControlHidingTimer = self->_pageControlHidingTimer;
   if (pageControlHidingTimer)
@@ -654,7 +654,7 @@ void __37__DBFolderView__updateIconListFrames__block_invoke(uint64_t a1, void *a
   v10[2] = __57__DBFolderView__restartPageControlTimerWithTimeInterval___block_invoke;
   v10[3] = &unk_278F02770;
   objc_copyWeak(&v11, &location);
-  v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v10 block:a3];
+  v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v10 block:interval];
   v9 = self->_pageControlHidingTimer;
   self->_pageControlHidingTimer = v8;
 

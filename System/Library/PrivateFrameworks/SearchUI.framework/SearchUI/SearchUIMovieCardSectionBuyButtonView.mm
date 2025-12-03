@@ -1,30 +1,30 @@
 @interface SearchUIMovieCardSectionBuyButtonView
-- (SearchUIMovieCardSectionBuyButtonView)initWithTitle:(id)a3 subtitle:(id)a4 punchout:(id)a5 cardSectionView:(id)a6;
+- (SearchUIMovieCardSectionBuyButtonView)initWithTitle:(id)title subtitle:(id)subtitle punchout:(id)punchout cardSectionView:(id)view;
 - (SearchUIMovieCardSectionView)cardSectionView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)buttonPressed;
 @end
 
 @implementation SearchUIMovieCardSectionBuyButtonView
 
-- (SearchUIMovieCardSectionBuyButtonView)initWithTitle:(id)a3 subtitle:(id)a4 punchout:(id)a5 cardSectionView:(id)a6
+- (SearchUIMovieCardSectionBuyButtonView)initWithTitle:(id)title subtitle:(id)subtitle punchout:(id)punchout cardSectionView:(id)view
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  punchoutCopy = punchout;
+  viewCopy = view;
   v30.receiver = self;
   v30.super_class = SearchUIMovieCardSectionBuyButtonView;
   v14 = [(SearchUIMovieCardSectionBuyButtonView *)&v30 init];
   v15 = v14;
   if (v14)
   {
-    [(SearchUIMovieCardSectionBuyButtonView *)v14 setPunchout:v12];
-    [(SearchUIMovieCardSectionBuyButtonView *)v15 setCardSectionView:v13];
+    [(SearchUIMovieCardSectionBuyButtonView *)v14 setPunchout:punchoutCopy];
+    [(SearchUIMovieCardSectionBuyButtonView *)v15 setCardSectionView:viewCopy];
     [(TLKStackView *)v15 setAxis:1];
     v16 = objc_opt_new();
-    v17 = [v16 layer];
-    [v17 setAllowsGroupOpacity:0];
+    layer = [v16 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [v16 setAdjustsFontSizeToFitWidth:1];
     [v16 addTarget:v15 action:sel_buttonPressed forControlEvents:64];
@@ -32,9 +32,9 @@
     [v16 setContentHuggingPriority:1 forAxis:v18];
     LODWORD(v19) = 1148846080;
     [v16 setContentCompressionResistancePriority:1 forAxis:v19];
-    if (v10)
+    if (titleCopy)
     {
-      [v16 setTitle:v10];
+      [v16 setTitle:titleCopy];
     }
 
     else
@@ -53,7 +53,7 @@
     v27 = &unk_1E85B2540;
     v21 = v20;
     v28 = v21;
-    v29 = v11;
+    v29 = subtitleCopy;
     [v21 performBatchUpdates:&v24];
     if ([MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize])
     {
@@ -87,28 +87,28 @@ void __89__SearchUIMovieCardSectionBuyButtonView_initWithTitle_subtitle_punchout
 
 - (void)buttonPressed
 {
-  v4 = [(SearchUIMovieCardSectionBuyButtonView *)self cardSectionView];
-  v3 = [(SearchUIMovieCardSectionBuyButtonView *)self punchout];
-  [v4 openPunchout:v3 triggerEvent:2];
+  cardSectionView = [(SearchUIMovieCardSectionBuyButtonView *)self cardSectionView];
+  punchout = [(SearchUIMovieCardSectionBuyButtonView *)self punchout];
+  [cardSectionView openPunchout:punchout triggerEvent:2];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SearchUIMovieCardSectionBuyButtonView;
-  v5 = [(SearchUIMovieCardSectionBuyButtonView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SearchUIMovieCardSectionBuyButtonView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
-    v7 = [(SearchUIMovieCardSectionBuyButtonView *)self button];
+    button = [(SearchUIMovieCardSectionBuyButtonView *)self button];
   }
 
   else
   {
-    v7 = v5;
+    button = v5;
   }
 
-  v8 = v7;
+  v8 = button;
 
   return v8;
 }

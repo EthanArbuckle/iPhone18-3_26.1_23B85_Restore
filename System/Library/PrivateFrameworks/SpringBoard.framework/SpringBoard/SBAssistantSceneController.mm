@@ -1,5 +1,5 @@
 @interface SBAssistantSceneController
-- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)a3;
+- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)invocation;
 - (BOOL)isHomeAffordanceDoubleTapGestureEnabled;
 - (BOOL)isOccludingSystemContent;
 - (BOOL)isSystemAssistantExperienceAvailable;
@@ -8,25 +8,25 @@
 - (BOOL)isVisible;
 - (BOOL)isVisualSearchEnabled;
 - (SBAssistantRootViewController)assistantRootViewController;
-- (SBAssistantSceneController)initWithWindowScene:(id)a3;
+- (SBAssistantSceneController)initWithWindowScene:(id)scene;
 - (SBAssistantSessionPresentationContext)presentationContext;
 - (SBWindow)window;
 - (SBWindowScene)windowScene;
-- (void)addObserver:(id)a3;
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4;
-- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)a3;
-- (void)assistantDidChangePresentation:(id)a3 windowScene:(id)a4;
-- (void)assistantDidChangeSystemAssistantExperienceEnablement:(id)a3;
-- (void)assistantDidChangeSystemAssistantExperiencePersistentSiriEnablement:(id)a3;
-- (void)assistantDidDisappear:(id)a3 windowScene:(id)a4;
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4;
-- (void)assistantWillDisappear:(id)a3 windowScene:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene;
+- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)enablement;
+- (void)assistantDidChangePresentation:(id)presentation windowScene:(id)scene;
+- (void)assistantDidChangeSystemAssistantExperienceEnablement:(id)enablement;
+- (void)assistantDidChangeSystemAssistantExperiencePersistentSiriEnablement:(id)enablement;
+- (void)assistantDidDisappear:(id)disappear windowScene:(id)scene;
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene;
+- (void)assistantWillDisappear:(id)disappear windowScene:(id)scene;
 - (void)dismissAssistantViewIfNecessary;
-- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
-- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3;
-- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3 completion:(id)a4;
+- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
+- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation;
+- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation completion:(id)completion;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBAssistantSceneController
@@ -34,27 +34,27 @@
 - (BOOL)isHomeAffordanceDoubleTapGestureEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained isContinuityDisplayWindowScene];
+  isContinuityDisplayWindowScene = [WeakRetained isContinuityDisplayWindowScene];
 
-  if (v3)
+  if (isContinuityDisplayWindowScene)
   {
     return 0;
   }
 
   v5 = +[SBAssistantController sharedInstance];
-  v6 = [v5 isHomeAffordanceDoubleTapGestureEnabled];
+  isHomeAffordanceDoubleTapGestureEnabled = [v5 isHomeAffordanceDoubleTapGestureEnabled];
 
-  return v6;
+  return isHomeAffordanceDoubleTapGestureEnabled;
 }
 
 - (SBAssistantSessionPresentationContext)presentationContext
 {
   v3 = +[SBAssistantController sharedInstance];
-  v4 = [(SBAssistantSceneController *)self windowScene];
-  v5 = [v3 sessionForWindowScene:v4];
-  v6 = [v5 presentationContext];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  v5 = [v3 sessionForWindowScene:windowScene];
+  presentationContext = [v5 presentationContext];
 
-  return v6;
+  return presentationContext;
 }
 
 - (SBWindowScene)windowScene
@@ -67,8 +67,8 @@
 - (BOOL)isVisible
 {
   v3 = +[SBAssistantController sharedInstance];
-  v4 = [(SBAssistantSceneController *)self windowScene];
-  v5 = [v3 isVisibleInWindowScene:v4];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  v5 = [v3 isVisibleInWindowScene:windowScene];
 
   return v5;
 }
@@ -76,21 +76,21 @@
 - (BOOL)isSystemAssistantExperienceEnabled
 {
   v2 = +[SBAssistantController sharedInstance];
-  v3 = [v2 isSystemAssistantExperienceEnabled];
+  isSystemAssistantExperienceEnabled = [v2 isSystemAssistantExperienceEnabled];
 
-  return v3;
+  return isSystemAssistantExperienceEnabled;
 }
 
-- (SBAssistantSceneController)initWithWindowScene:(id)a3
+- (SBAssistantSceneController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = SBAssistantSceneController;
   v5 = [(SBAssistantSceneController *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     v7 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v6->_observers;
     v6->_observers = v7;
@@ -113,33 +113,33 @@
 - (BOOL)isSystemAssistantExperienceAvailable
 {
   v2 = +[SBAssistantController sharedInstance];
-  v3 = [v2 isSystemAssistantExperienceAvailable];
+  isSystemAssistantExperienceAvailable = [v2 isSystemAssistantExperienceAvailable];
 
-  return v3;
+  return isSystemAssistantExperienceAvailable;
 }
 
 - (BOOL)isSystemAssistantExperiencePersistentSiriEnabled
 {
   v2 = +[SBAssistantController sharedInstance];
-  v3 = [v2 isSystemAssistantExperiencePersistentSiriEnabled];
+  isSystemAssistantExperiencePersistentSiriEnabled = [v2 isSystemAssistantExperiencePersistentSiriEnabled];
 
-  return v3;
+  return isSystemAssistantExperiencePersistentSiriEnabled;
 }
 
 - (BOOL)isVisualSearchEnabled
 {
   v2 = +[SBAssistantController sharedInstance];
-  v3 = [v2 isVisualSearchEnabled];
+  isVisualSearchEnabled = [v2 isVisualSearchEnabled];
 
-  return v3;
+  return isVisualSearchEnabled;
 }
 
 - (BOOL)isOccludingSystemContent
 {
-  v2 = [(SBAssistantSceneController *)self presentationContext];
-  if ([v2 isAssistantPresented])
+  presentationContext = [(SBAssistantSceneController *)self presentationContext];
+  if ([presentationContext isAssistantPresented])
   {
-    v3 = [v2 allowsHDRContentBelow] ^ 1;
+    v3 = [presentationContext allowsHDRContentBelow] ^ 1;
   }
 
   else
@@ -153,101 +153,101 @@
 - (SBWindow)window
 {
   v3 = +[SBAssistantController sharedInstance];
-  v4 = [(SBAssistantSceneController *)self windowScene];
-  v5 = [v3 sessionForWindowScene:v4];
-  v6 = [v5 window];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  v5 = [v3 sessionForWindowScene:windowScene];
+  window = [v5 window];
 
-  return v6;
+  return window;
 }
 
 - (SBAssistantRootViewController)assistantRootViewController
 {
   v3 = +[SBAssistantController sharedInstance];
-  v4 = [(SBAssistantSceneController *)self windowScene];
-  v5 = [v3 sessionForWindowScene:v4];
-  v6 = [v5 assistantRootViewController];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  v5 = [v3 sessionForWindowScene:windowScene];
+  assistantRootViewController = [v5 assistantRootViewController];
 
-  return v6;
+  return assistantRootViewController;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v7;
+    v7 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v7;
     if (!v5)
     {
-      v6 = [(SBAssistantSceneController *)self observers];
-      [v6 addObject:v7];
+      observers = [(SBAssistantSceneController *)self observers];
+      [observers addObject:v7];
 
-      v4 = v7;
+      observerCopy = v7;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SBAssistantSceneController *)self observers];
-    [v5 removeObject:v4];
+    observerCopy = observer;
+    observers = [(SBAssistantSceneController *)self observers];
+    [observers removeObject:observerCopy];
   }
 }
 
 - (void)dismissAssistantViewIfNecessary
 {
   v4 = +[SBAssistantController sharedInstance];
-  v3 = [(SBAssistantSceneController *)self windowScene];
-  [v4 dismissAssistantViewIfNecessaryInWindowScene:v3];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  [v4 dismissAssistantViewIfNecessaryInWindowScene:windowScene];
 }
 
-- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = translation.y;
+  v7 = translation.x;
   v10 = +[SBAssistantController sharedInstance];
-  v9 = [(SBAssistantSceneController *)self windowScene];
-  [v10 dismissAssistantViewIfNecessaryForGestureTranslation:v9 velocity:v7 windowScene:{v6, x, y}];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  [v10 dismissAssistantViewIfNecessaryForGestureTranslation:windowScene velocity:v7 windowScene:{v6, x, y}];
 }
 
-- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3
+- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation
 {
   v6 = +[SBAssistantController sharedInstance];
-  v5 = [(SBAssistantSceneController *)self windowScene];
-  [v6 dismissAssistantViewIfNecessaryWithAnimation:a3 windowScene:v5];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  [v6 dismissAssistantViewIfNecessaryWithAnimation:animation windowScene:windowScene];
 }
 
-- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3 completion:(id)a4
+- (void)dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8 = +[SBAssistantController sharedInstance];
-  v7 = [(SBAssistantSceneController *)self windowScene];
-  [v8 dismissAssistantViewIfNecessaryWithAnimation:a3 windowScene:v7 completion:v6];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  [v8 dismissAssistantViewIfNecessaryWithAnimation:animation windowScene:windowScene completion:completionCopy];
 }
 
-- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)a3
+- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = +[SBAssistantController sharedInstance];
-  v6 = [(SBAssistantSceneController *)self windowScene];
-  v7 = [v5 commandeerCaptureDropletPreludeForVisionInvocation:v4 windowScene:v6];
+  windowScene = [(SBAssistantSceneController *)self windowScene];
+  v7 = [v5 commandeerCaptureDropletPreludeForVisionInvocation:invocationCopy windowScene:windowScene];
 
   return v7;
 }
 
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBAssistantSceneController *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSceneController *)self windowScene];
 
-  if (v6 == v5)
+  if (windowScene == sceneCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -287,13 +287,13 @@
   }
 }
 
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBAssistantSceneController *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSceneController *)self windowScene];
 
-  if (v6 == v5)
+  if (windowScene == sceneCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -333,13 +333,13 @@
   }
 }
 
-- (void)assistantWillDisappear:(id)a3 windowScene:(id)a4
+- (void)assistantWillDisappear:(id)disappear windowScene:(id)scene
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBAssistantSceneController *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSceneController *)self windowScene];
 
-  if (v6 == v5)
+  if (windowScene == sceneCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -379,13 +379,13 @@
   }
 }
 
-- (void)assistantDidDisappear:(id)a3 windowScene:(id)a4
+- (void)assistantDidDisappear:(id)disappear windowScene:(id)scene
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBAssistantSceneController *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSceneController *)self windowScene];
 
-  if (v6 == v5)
+  if (windowScene == sceneCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -425,13 +425,13 @@
   }
 }
 
-- (void)assistantDidChangePresentation:(id)a3 windowScene:(id)a4
+- (void)assistantDidChangePresentation:(id)presentation windowScene:(id)scene
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBAssistantSceneController *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSceneController *)self windowScene];
 
-  if (v6 == v5)
+  if (windowScene == sceneCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -471,14 +471,14 @@
   }
 }
 
-- (void)assistantDidChangeSystemAssistantExperienceEnablement:(id)a3
+- (void)assistantDidChangeSystemAssistantExperienceEnablement:(id)enablement
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:enablement];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -511,14 +511,14 @@
   }
 }
 
-- (void)assistantDidChangeSystemAssistantExperiencePersistentSiriEnablement:(id)a3
+- (void)assistantDidChangeSystemAssistantExperiencePersistentSiriEnablement:(id)enablement
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:enablement];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -551,14 +551,14 @@
   }
 }
 
-- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)a3
+- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)enablement
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:enablement];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

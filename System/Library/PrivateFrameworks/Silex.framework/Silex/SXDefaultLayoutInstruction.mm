@@ -1,23 +1,23 @@
 @interface SXDefaultLayoutInstruction
 + (id)instruction;
-- (BOOL)isFulfilledForBlueprint:(id)a3;
+- (BOOL)isFulfilledForBlueprint:(id)blueprint;
 @end
 
 @implementation SXDefaultLayoutInstruction
 
 + (id)instruction
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BOOL)isFulfilledForBlueprint:(id)a3
+- (BOOL)isFulfilledForBlueprint:(id)blueprint
 {
-  v3 = [a3 rootLayoutBlueprint];
-  v4 = [v3 isComplete];
+  rootLayoutBlueprint = [blueprint rootLayoutBlueprint];
+  isComplete = [rootLayoutBlueprint isComplete];
 
-  return v4;
+  return isComplete;
 }
 
 @end

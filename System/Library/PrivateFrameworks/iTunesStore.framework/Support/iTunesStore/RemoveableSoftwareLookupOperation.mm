@@ -46,23 +46,23 @@
 
         v12 = *(*(&v25 + 1) + 8 * v11);
         v13 = objc_alloc_init(SSSoftwareLibraryItem);
-        v14 = [v12 itemID];
-        [v13 _setValue:v14 forProperty:v6];
+        itemID = [v12 itemID];
+        [v13 _setValue:itemID forProperty:v6];
 
         [v13 setBeta:{objc_msgSend(v12, "isBetaApp")}];
         [v13 setPlaceholder:{objc_msgSend(v12, "isPlaceholder")}];
         [v13 setProfileValidated:{objc_msgSend(v12, "profileValidated")}];
-        v15 = [v12 bundleIdentifier];
-        [v13 _setValue:v15 forProperty:v7];
+        bundleIdentifier = [v12 bundleIdentifier];
+        [v13 _setValue:bundleIdentifier forProperty:v7];
 
-        v16 = [v12 bundleVersion];
-        [v13 _setValue:v16 forProperty:v8];
+        bundleVersion = [v12 bundleVersion];
+        [v13 _setValue:bundleVersion forProperty:v8];
 
-        v17 = [v12 purchaserDSID];
-        [v13 _setValue:v17 forProperty:v9];
+        purchaserDSID = [v12 purchaserDSID];
+        [v13 _setValue:purchaserDSID forProperty:v9];
 
-        v18 = [v12 familyID];
-        [v13 _setValue:v18 forProperty:v10];
+        familyID = [v12 familyID];
+        [v13 _setValue:familyID forProperty:v10];
 
         [v24 addObject:v13];
         v11 = v11 + 1;

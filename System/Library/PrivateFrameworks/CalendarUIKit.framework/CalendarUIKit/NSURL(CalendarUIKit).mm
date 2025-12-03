@@ -6,38 +6,38 @@
 
 - (id)cal_ShortDisplayStringForURL
 {
-  if ([a1 cal_hasSchemeTel])
+  if ([self cal_hasSchemeTel])
   {
-    v2 = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
-    v3 = [v2 formattedStringForTelURL:a1];
+    absoluteString = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
+    stringByURLUnescapingAllReservedCharacters = [absoluteString formattedStringForTelURL:self];
   }
 
   else
   {
-    v4 = [a1 cal_hostAfterGoogleRedirects];
-    if (v4)
+    cal_hostAfterGoogleRedirects = [self cal_hostAfterGoogleRedirects];
+    if (cal_hostAfterGoogleRedirects)
     {
-      v2 = v4;
-      v5 = [v4 lowercaseString];
-      v6 = [v5 hasPrefix:@"www."];
+      absoluteString = cal_hostAfterGoogleRedirects;
+      lowercaseString = [cal_hostAfterGoogleRedirects lowercaseString];
+      v6 = [lowercaseString hasPrefix:@"www."];
 
       if (v6)
       {
-        v7 = [v2 substringFromIndex:4];
+        v7 = [absoluteString substringFromIndex:4];
 
-        v2 = v7;
+        absoluteString = v7;
       }
     }
 
     else
     {
-      v2 = [a1 absoluteString];
+      absoluteString = [self absoluteString];
     }
 
-    v3 = [v2 stringByURLUnescapingAllReservedCharacters];
+    stringByURLUnescapingAllReservedCharacters = [absoluteString stringByURLUnescapingAllReservedCharacters];
   }
 
-  v8 = v3;
+  v8 = stringByURLUnescapingAllReservedCharacters;
 
   return v8;
 }

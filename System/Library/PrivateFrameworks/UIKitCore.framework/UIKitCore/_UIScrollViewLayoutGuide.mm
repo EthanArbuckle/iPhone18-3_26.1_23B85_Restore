@@ -3,48 +3,48 @@
 - (id)_boundsWidthVariable;
 - (id)nsli_boundsHeightVariable;
 - (id)nsli_boundsWidthVariable;
-- (void)_setOwningView:(id)a3;
+- (void)_setOwningView:(id)view;
 @end
 
 @implementation _UIScrollViewLayoutGuide
 
 - (id)nsli_boundsWidthVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_contentWidthVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_contentWidthVariable = [owningView nsli_contentWidthVariable];
 
-  return v3;
+  return nsli_contentWidthVariable;
 }
 
 - (id)nsli_boundsHeightVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 nsli_contentHeightVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  nsli_contentHeightVariable = [owningView nsli_contentHeightVariable];
 
-  return v3;
+  return nsli_contentHeightVariable;
 }
 
-- (void)_setOwningView:(id)a3
+- (void)_setOwningView:(id)view
 {
   v3.receiver = self;
   v3.super_class = _UIScrollViewLayoutGuide;
-  [(UILayoutGuide *)&v3 _setOwningView:a3];
+  [(UILayoutGuide *)&v3 _setOwningView:view];
 }
 
 - (id)_boundsWidthVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 _contentWidthVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  _contentWidthVariable = [owningView _contentWidthVariable];
 
-  return v3;
+  return _contentWidthVariable;
 }
 
 - (id)_boundsHeightVariable
 {
-  v2 = [(UILayoutGuide *)self owningView];
-  v3 = [v2 _contentHeightVariable];
+  owningView = [(UILayoutGuide *)self owningView];
+  _contentHeightVariable = [owningView _contentHeightVariable];
 
-  return v3;
+  return _contentHeightVariable;
 }
 
 @end

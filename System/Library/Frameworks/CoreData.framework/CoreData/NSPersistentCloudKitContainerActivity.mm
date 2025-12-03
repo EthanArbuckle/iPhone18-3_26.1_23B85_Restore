@@ -1,23 +1,23 @@
 @interface NSPersistentCloudKitContainerActivity
-- (id)_initWithIdentifier:(id)a3 forStore:(id)a4 activityType:(unint64_t)a5;
+- (id)_initWithIdentifier:(id)identifier forStore:(id)store activityType:(unint64_t)type;
 - (id)createDictionaryRepresentation;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation NSPersistentCloudKitContainerActivity
 
-- (id)_initWithIdentifier:(id)a3 forStore:(id)a4 activityType:(unint64_t)a5
+- (id)_initWithIdentifier:(id)identifier forStore:(id)store activityType:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = NSPersistentCloudKitContainerActivity;
   v8 = [(NSPersistentCloudKitContainerActivity *)&v11 init];
   if (v8)
   {
-    v8->_identifier = a3;
-    v8->_storeIdentifier = a4;
+    v8->_identifier = identifier;
+    v8->_storeIdentifier = store;
     v9 = objc_alloc_init(MEMORY[0x1E695DF00]);
-    v8->_activityType = a5;
+    v8->_activityType = type;
     v8->_startDate = v9;
   }
 
@@ -105,7 +105,7 @@
   return v3;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   if (self->_endDate)
@@ -114,7 +114,7 @@
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Illegal attempt to finish an activity multiple times: %@\n", &v8, 0xCu);
     }
 
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_18565F000, v5, OS_LOG_TYPE_FAULT, "CoreData: Illegal attempt to finish an activity multiple times: %@", &v8, 0xCu);
     }
   }
@@ -130,7 +130,7 @@
   else
   {
     self->_endDate = objc_alloc_init(MEMORY[0x1E695DF00]);
-    self->_error = a3;
+    self->_error = error;
   }
 
   v7 = *MEMORY[0x1E69E9840];

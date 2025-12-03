@@ -4,7 +4,7 @@
 - (id)assetTypes;
 - (id)debugDescription;
 - (void)clear;
-- (void)setProperties:(id)a3 client:(id)a4;
+- (void)setProperties:(id)properties client:(id)client;
 @end
 
 @implementation SRAssetConfiguration
@@ -82,20 +82,20 @@
         [(SRAssetType *)v8 setContentTypeMap:v12];
 
         [(SRAssetType *)v8 setDeliveryTypeMap:self->_deliveryTypeMap];
-        v13 = [(SRAssetType *)v8 contentTypeMap];
-        if (v13)
+        contentTypeMap = [(SRAssetType *)v8 contentTypeMap];
+        if (contentTypeMap)
         {
           v14 = objc_alloc(MEMORY[0x1E695DFD8]);
-          v15 = [(SRAssetType *)v8 contentTypeMap];
-          v16 = [v15 allKeys];
-          v17 = [v14 initWithArray:v16];
+          contentTypeMap2 = [(SRAssetType *)v8 contentTypeMap];
+          allKeys = [contentTypeMap2 allKeys];
+          v17 = [v14 initWithArray:allKeys];
           [(SRAssetType *)v8 setDeliveryTypes:v17];
         }
 
         else
         {
-          v15 = objc_alloc_init(MEMORY[0x1E695DFD8]);
-          [(SRAssetType *)v8 setDeliveryTypes:v15];
+          contentTypeMap2 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+          [(SRAssetType *)v8 setDeliveryTypes:contentTypeMap2];
         }
 
         v18 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:v7];
@@ -158,16 +158,16 @@
   return v4;
 }
 
-- (void)setProperties:(id)a3 client:(id)a4
+- (void)setProperties:(id)properties client:(id)client
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"AssetType"];
-  v9 = [v6 objectForKeyedSubscript:@"AssetProperties"];
+  propertiesCopy = properties;
+  clientCopy = client;
+  v8 = [propertiesCopy objectForKeyedSubscript:@"AssetType"];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"AssetProperties"];
   v10 = [v9 objectForKeyedSubscript:@"_XPCName"];
   v11 = [v9 objectForKeyedSubscript:@"_CompatibilityVersion"];
-  v12 = [v6 objectForKeyedSubscript:@"DeliveryTypes"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"DeliveryTypes"];
   v67 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   if (!v10)
   {
@@ -179,9 +179,9 @@
     v60 = v10;
     v61 = v9;
     v59 = v11;
-    v63 = v6;
+    v63 = propertiesCopy;
     v64 = v12;
-    v65 = v7;
+    v65 = clientCopy;
     if (v10 && v11)
     {
       v13 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:v8];
@@ -252,16 +252,16 @@
         while (obj);
       }
 
-      v7 = v65;
+      clientCopy = v65;
     }
 
     v62 = v8;
-    v34 = [(NSMutableDictionary *)self->_clientMap objectForKeyedSubscript:v7];
+    v34 = [(NSMutableDictionary *)self->_clientMap objectForKeyedSubscript:clientCopy];
 
     if (!v34)
     {
       v35 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [(NSMutableDictionary *)self->_clientMap setObject:v35 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_clientMap setObject:v35 forKeyedSubscript:clientCopy];
     }
 
     v82 = 0u;
@@ -338,7 +338,7 @@
     v73 = 0u;
     v48 = v67;
     v49 = [v48 countByEnumeratingWithState:&v72 objects:v88 count:16];
-    v7 = v65;
+    clientCopy = v65;
     if (v49)
     {
       v50 = v49;
@@ -375,7 +375,7 @@
     }
 
     v8 = v62;
-    v6 = v63;
+    propertiesCopy = v63;
     v10 = v60;
     v9 = v61;
     v11 = v59;

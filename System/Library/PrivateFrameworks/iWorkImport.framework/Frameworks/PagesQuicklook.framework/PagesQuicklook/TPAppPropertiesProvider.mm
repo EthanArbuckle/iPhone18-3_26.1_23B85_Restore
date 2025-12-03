@@ -4,11 +4,11 @@
 - (NSArray)wordDocumentTypes;
 - (id)appChartPropertyOverrides;
 - (id)applicationDisplayName;
-- (id)applicationTemplateVariantsForLocale:(id)a3;
+- (id)applicationTemplateVariantsForLocale:(id)locale;
 - (id)documentTypeDisplayName;
 - (id)documentTypeDisplayNameForSharingInvitation;
 - (id)importableDocumentTypes;
-- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)a3;
+- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)type;
 - (id)templateTypeDisplayName;
 @end
 
@@ -109,19 +109,19 @@
   return v18;
 }
 
-- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)a3
+- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)type
 {
   result = MEMORY[0x277CBEBF8];
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         return &unk_28850DC88;
       }
 
-      if (a3 != 5)
+      if (type != 5)
       {
         return result;
       }
@@ -130,19 +130,19 @@
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPAppPropertiesProvider strokeWidthsForFreehandDrawingToolType:]");
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPAppPropertiesProvider.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v18, v19, v20, v21, v22, v11, v17, 223, 0, "Unknown tool type %lu when generating stroke widths for freehand drawing.", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v18, v19, v20, v21, v22, v11, v17, 223, 0, "Unknown tool type %lu when generating stroke widths for freehand drawing.", type);
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v23, v24, v25, v26, v27);
     return MEMORY[0x277CBEBF8];
   }
 
   v9 = &unk_28850DC70;
-  if (a3 != 2)
+  if (type != 2)
   {
     v9 = MEMORY[0x277CBEBF8];
   }
 
-  if (a3 >= 2)
+  if (type >= 2)
   {
     return v9;
   }
@@ -153,11 +153,11 @@
   }
 }
 
-- (id)applicationTemplateVariantsForLocale:(id)a3
+- (id)applicationTemplateVariantsForLocale:(id)locale
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = @"Traditional";
-  if (a3 && TSUIsLocaleISO())
+  if (locale && TSUIsLocaleISO())
   {
     v3 = @"ISO";
   }

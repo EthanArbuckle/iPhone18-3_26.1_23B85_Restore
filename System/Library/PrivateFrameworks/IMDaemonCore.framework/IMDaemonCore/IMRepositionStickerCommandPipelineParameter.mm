@@ -1,50 +1,50 @@
 @interface IMRepositionStickerCommandPipelineParameter
-- (IMRepositionStickerCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4;
+- (IMRepositionStickerCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data;
 - (id)description;
 @end
 
 @implementation IMRepositionStickerCommandPipelineParameter
 
-- (IMRepositionStickerCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4
+- (IMRepositionStickerCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v26.receiver = self;
   v26.super_class = IMRepositionStickerCommandPipelineParameter;
   v8 = [(IMRepositionStickerCommandPipelineParameter *)&v26 init];
   if (v8)
   {
-    v9 = [v6 metadata];
-    v10 = [v7 fromIdentifier];
+    metadata = [messageCopy metadata];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v8->_fromIdentifier;
-    v8->_fromIdentifier = v10;
+    v8->_fromIdentifier = fromIdentifier;
 
-    v12 = [v7 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v8->_toIdentifier;
-    v8->_toIdentifier = v12;
+    v8->_toIdentifier = toIdentifier;
 
-    v14 = [v9 messageGUID];
-    v15 = [v14 UUIDString];
+    messageGUID = [metadata messageGUID];
+    uUIDString = [messageGUID UUIDString];
     GUID = v8->_GUID;
-    v8->_GUID = v15;
+    v8->_GUID = uUIDString;
 
-    v17 = [v6 stickerMetadata];
+    stickerMetadata = [messageCopy stickerMetadata];
     stickerAttachmentInfo = v8->_stickerAttachmentInfo;
-    v8->_stickerAttachmentInfo = v17;
+    v8->_stickerAttachmentInfo = stickerMetadata;
 
-    v19 = [v6 stickerEditedMessageGUID];
+    stickerEditedMessageGUID = [messageCopy stickerEditedMessageGUID];
     stickerEditedMessageGuid = v8->_stickerEditedMessageGuid;
-    v8->_stickerEditedMessageGuid = v19;
+    v8->_stickerEditedMessageGuid = stickerEditedMessageGUID;
 
-    v21 = [v9 storageContext];
-    v8->_isFromStorage = [v21 isFromStorage];
+    storageContext = [metadata storageContext];
+    v8->_isFromStorage = [storageContext isFromStorage];
 
-    v22 = [v9 storageContext];
-    v8->_isLastFromStorage = [v22 isLastFromStorage];
+    storageContext2 = [metadata storageContext];
+    v8->_isLastFromStorage = [storageContext2 isLastFromStorage];
 
-    v23 = [v7 batchContext];
+    batchContext = [dataCopy batchContext];
     batchContext = v8->_batchContext;
-    v8->_batchContext = v23;
+    v8->_batchContext = batchContext;
   }
 
   return v8;
@@ -53,8 +53,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMRepositionStickerCommandPipelineParameter *)self GUID];
-  v5 = [(IMRepositionStickerCommandPipelineParameter *)self stickerEditedMessageGuid];
+  gUID = [(IMRepositionStickerCommandPipelineParameter *)self GUID];
+  stickerEditedMessageGuid = [(IMRepositionStickerCommandPipelineParameter *)self stickerEditedMessageGuid];
   v6 = @"YES";
   if ([(IMRepositionStickerCommandPipelineParameter *)self isFromStorage])
   {
@@ -71,8 +71,8 @@
     v6 = @"NO";
   }
 
-  v8 = [(IMRepositionStickerCommandPipelineParameter *)self chat];
-  v9 = [v3 stringWithFormat:@"<IMRepositionStickerCommandPipelineParameter %p GUID = %@; stickerEditedMessageGUID = %@; isFromStorage = %@; isLastFromStorage = %@; OUTPUT chat = %@;", self, v4, v5, v7, v6, v8];;
+  chat = [(IMRepositionStickerCommandPipelineParameter *)self chat];
+  v9 = [v3 stringWithFormat:@"<IMRepositionStickerCommandPipelineParameter %p GUID = %@; stickerEditedMessageGUID = %@; isFromStorage = %@; isLastFromStorage = %@; OUTPUT chat = %@;", self, gUID, stickerEditedMessageGuid, v7, v6, chat];;
 
   return v9;
 }

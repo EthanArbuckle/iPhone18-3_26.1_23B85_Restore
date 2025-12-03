@@ -1,7 +1,7 @@
 @interface PHAssetLocationDataProperties
 + (id)propertiesToFetch;
 - (CLLocationCoordinate2D)coordinate;
-- (PHAssetLocationDataProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetLocationDataProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetLocationDataProperties
@@ -15,19 +15,19 @@
   return result;
 }
 
-- (PHAssetLocationDataProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetLocationDataProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v17.receiver = self;
   v17.super_class = PHAssetLocationDataProperties;
   v9 = [(PHAssetLocationDataProperties *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"locationData"];
-    if (v11 && ([v7 objectForKeyedSubscript:@"dateCreated"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(MEMORY[0x1E69BE540], "newLocationFromLocationData:timestampIfMissing:", v11, v12), v12, v13))
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"locationData"];
+    if (v11 && ([dictionaryCopy objectForKeyedSubscript:@"dateCreated"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(MEMORY[0x1E69BE540], "newLocationFromLocationData:timestampIfMissing:", v11, v12), v12, v13))
     {
       [v13 coordinate];
       v10->_coordinate.latitude = v14;

@@ -1,6 +1,6 @@
 @interface PXVideoSessionUIView
 - (CGRect)contentsRect;
-- (PXVideoSessionUIView)initWithFrame:(CGRect)a3;
+- (PXVideoSessionUIView)initWithFrame:(CGRect)frame;
 - (PXVideoSessionUIViewDelegate)delegate;
 - (UIView)viewForSnapshotting;
 - (id)generateSnapshotImage;
@@ -9,15 +9,15 @@
 - (void)_updateVideoViewFrame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPlaceholderVisible:(BOOL)a3;
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3;
-- (void)setVideoGravity:(id)a3;
-- (void)setVideoSession:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPlaceholderVisible:(BOOL)visible;
+- (void)setToneMapToStandardDynamicRange:(BOOL)range;
+- (void)setVideoGravity:(id)gravity;
+- (void)setVideoSession:(id)session;
 @end
 
 @implementation PXVideoSessionUIView
@@ -44,28 +44,28 @@
 
 - (void)_updateEdgeAntialiasing
 {
-  v3 = [(PXVideoSessionUIView *)self allowsEdgeAntialiasing];
-  v4 = [(UIImageView *)self->_placeholderImageView layer];
-  [v4 setAllowsEdgeAntialiasing:v3];
+  allowsEdgeAntialiasing = [(PXVideoSessionUIView *)self allowsEdgeAntialiasing];
+  layer = [(UIImageView *)self->_placeholderImageView layer];
+  [layer setAllowsEdgeAntialiasing:allowsEdgeAntialiasing];
 
-  v5 = [(PXVideoView *)self->_adoptedVideoView layer];
-  [v5 setAllowsEdgeAntialiasing:v3];
+  layer2 = [(PXVideoView *)self->_adoptedVideoView layer];
+  [layer2 setAllowsEdgeAntialiasing:allowsEdgeAntialiasing];
 }
 
-- (void)setPlaceholderVisible:(BOOL)a3
+- (void)setPlaceholderVisible:(BOOL)visible
 {
-  if (self->_placeholderVisible != a3)
+  if (self->_placeholderVisible != visible)
   {
-    self->_placeholderVisible = a3;
+    self->_placeholderVisible = visible;
     v5 = 0.0;
-    if (a3)
+    if (visible)
     {
       v5 = 1.0;
     }
 
     [(UIImageView *)self->_placeholderImageView setAlpha:v5];
-    v6 = [(PXVideoSessionUIView *)self delegate];
-    [v6 videoSessionViewPlaceholderVisibilityChanged:self];
+    delegate = [(PXVideoSessionUIView *)self delegate];
+    [delegate videoSessionViewPlaceholderVisibilityChanged:self];
   }
 }
 
@@ -76,9 +76,9 @@
   [(PXVideoSessionUIView *)self setPlaceholderVisible:v3];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 0x4000) != 0 && VideoSessionContext == a5)
+  if ((change & 0x4000) != 0 && VideoSessionContext == context)
   {
     px_dispatch_on_main_queue_sync();
   }
@@ -130,50 +130,50 @@ void __53__PXVideoSessionUIView_observable_didChange_context___block_invoke(uint
 {
   if ([(PXVideoSessionUIView *)self placeholderVisible])
   {
-    v3 = [(PXVideoSessionUIView *)self placeholderImage];
+    placeholderImage = [(PXVideoSessionUIView *)self placeholderImage];
   }
 
   else
   {
-    v4 = [(PXVideoSessionUIView *)self videoSession];
-    v5 = [v4 generateSnapshotImage];
+    videoSession = [(PXVideoSessionUIView *)self videoSession];
+    generateSnapshotImage = [videoSession generateSnapshotImage];
 
-    if (v5)
+    if (generateSnapshotImage)
     {
-      v3 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v5];
-      CGImageRelease(v5);
+      placeholderImage = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:generateSnapshotImage];
+      CGImageRelease(generateSnapshotImage);
     }
 
     else
     {
-      v3 = 0;
+      placeholderImage = 0;
     }
   }
 
-  return v3;
+  return placeholderImage;
 }
 
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing
 {
-  if (self->_allowsEdgeAntialiasing != a3)
+  if (self->_allowsEdgeAntialiasing != antialiasing)
   {
-    self->_allowsEdgeAntialiasing = a3;
+    self->_allowsEdgeAntialiasing = antialiasing;
     [(PXVideoSessionUIView *)self _updateEdgeAntialiasing];
   }
 }
 
 - (void)_updateVideoViewFrame
 {
-  v3 = [(PXVideoSessionUIView *)self videoSession];
-  v4 = [v3 contentProvider];
-  v19 = [v4 videoAspectRatio];
+  videoSession = [(PXVideoSessionUIView *)self videoSession];
+  contentProvider = [videoSession contentProvider];
+  videoAspectRatio = [contentProvider videoAspectRatio];
 
   [(PXVideoSessionUIView *)self contentsRect];
   [(PXVideoSessionUIView *)self bounds];
-  [v19 floatValue];
+  [videoAspectRatio floatValue];
   v6 = v5;
-  v7 = [(PXVideoSessionUIView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(PXVideoSessionUIView *)self traitCollection];
+  [traitCollection displayScale];
   v17 = v6;
   v18 = v8;
   PFFrameApplyingContentsRectInBounds();
@@ -185,41 +185,41 @@ void __53__PXVideoSessionUIView_observable_didChange_context___block_invoke(uint
   [(PXVideoView *)self->_adoptedVideoView setFrame:v10, v12, v14, v16, *&v17, v18];
 }
 
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapToStandardDynamicRange:(BOOL)range
 {
-  if (self->_toneMapToStandardDynamicRange != a3)
+  if (self->_toneMapToStandardDynamicRange != range)
   {
-    self->_toneMapToStandardDynamicRange = a3;
+    self->_toneMapToStandardDynamicRange = range;
     [(PXVideoView *)self->_adoptedVideoView setToneMapToStandardDynamicRange:?];
   }
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(a3, self->_contentsRect))
+  if (!CGRectEqualToRect(rect, self->_contentsRect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
     p_contentsRect->size.width = width;
     p_contentsRect->size.height = height;
-    v9 = [(UIImageView *)self->_placeholderImageView layer];
-    [v9 setContentsRect:{x, y, width, height}];
+    layer = [(UIImageView *)self->_placeholderImageView layer];
+    [layer setContentsRect:{x, y, width, height}];
 
     [(PXVideoSessionUIView *)self _updateVideoViewFrame];
   }
 }
 
-- (void)setVideoGravity:(id)a3
+- (void)setVideoGravity:(id)gravity
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_videoGravity] & 1) == 0)
+  gravityCopy = gravity;
+  if (([gravityCopy isEqualToString:self->_videoGravity] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [gravityCopy copy];
     videoGravity = self->_videoGravity;
     self->_videoGravity = v4;
 
@@ -227,25 +227,25 @@ void __53__PXVideoSessionUIView_observable_didChange_context___block_invoke(uint
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  if (self->_placeholderImage != v5)
+  imageCopy = image;
+  if (self->_placeholderImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_placeholderImage, image);
     [(UIImageView *)self->_placeholderImageView setImage:v6];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setVideoSession:(id)a3
+- (void)setVideoSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   videoSession = self->_videoSession;
-  if (videoSession != v5)
+  if (videoSession != sessionCopy)
   {
-    v12 = v5;
+    v12 = sessionCopy;
     [(PXVideoSession *)videoSession unregisterChangeObserver:self context:VideoSessionContext];
     adoptedVideoView = self->_adoptedVideoView;
     if (adoptedVideoView)
@@ -257,14 +257,14 @@ void __53__PXVideoSessionUIView_observable_didChange_context___block_invoke(uint
       self->_adoptedVideoView = 0;
     }
 
-    objc_storeStrong(&self->_videoSession, a3);
+    objc_storeStrong(&self->_videoSession, session);
     [(PXVideoSession *)self->_videoSession registerChangeObserver:self context:VideoSessionContext];
-    v9 = [(PXVideoSession *)v12 dequeueVideoView];
+    dequeueVideoView = [(PXVideoSession *)v12 dequeueVideoView];
     v10 = self->_adoptedVideoView;
-    self->_adoptedVideoView = v9;
+    self->_adoptedVideoView = dequeueVideoView;
 
-    v11 = [(PXVideoSessionUIView *)self videoGravity];
-    [(PXVideoView *)self->_adoptedVideoView setVideoGravity:v11];
+    videoGravity = [(PXVideoSessionUIView *)self videoGravity];
+    [(PXVideoView *)self->_adoptedVideoView setVideoGravity:videoGravity];
 
     [(PXVideoView *)self->_adoptedVideoView setContentMode:[(PXVideoSessionUIView *)self contentMode]];
     [(PXVideoView *)self->_adoptedVideoView setToneMapToStandardDynamicRange:[(PXVideoSessionUIView *)self toneMapToStandardDynamicRange]];
@@ -274,18 +274,18 @@ void __53__PXVideoSessionUIView_observable_didChange_context___block_invoke(uint
     [(PXVideoSessionUIView *)self _updateEdgeAntialiasing];
     [(PXVideoSessionUIView *)self _updatePlaceholderVisibility];
     [(PXVideoSessionUIView *)self _updateVideoViewFrame];
-    v5 = v12;
+    sessionCopy = v12;
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = PXVideoSessionUIView;
   [(PXVideoSessionUIView *)&v5 setContentMode:?];
-  [(PXVideoView *)self->_adoptedVideoView setContentMode:a3];
-  [(UIImageView *)self->_placeholderImageView setContentMode:a3];
-  [(UIView *)self->_videoContainerView setContentMode:a3];
+  [(PXVideoView *)self->_adoptedVideoView setContentMode:mode];
+  [(UIImageView *)self->_placeholderImageView setContentMode:mode];
+  [(UIView *)self->_videoContainerView setContentMode:mode];
 }
 
 - (void)layoutSubviews
@@ -303,11 +303,11 @@ void __53__PXVideoSessionUIView_observable_didChange_context___block_invoke(uint
   [(PXVideoSessionUIView *)self _updateVideoViewFrame];
 }
 
-- (PXVideoSessionUIView)initWithFrame:(CGRect)a3
+- (PXVideoSessionUIView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PXVideoSessionUIView;
-  v3 = [(PXVideoSessionUIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXVideoSessionUIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

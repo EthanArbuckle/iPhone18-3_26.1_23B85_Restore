@@ -1,5 +1,5 @@
 @interface UGCPhotoCarouselCell
-- (UGCPhotoCarouselCell)initWithFrame:(CGRect)a3;
+- (UGCPhotoCarouselCell)initWithFrame:(CGRect)frame;
 - (UGCPhotoCarouselController)carouselController;
 - (UIEdgeInsets)sectionInset;
 - (double)estimatedHeight;
@@ -9,8 +9,8 @@
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateConstraints;
-- (void)setCarouselController:(id)a3;
-- (void)setSectionInset:(UIEdgeInsets)a3;
+- (void)setCarouselController:(id)controller;
+- (void)setSectionInset:(UIEdgeInsets)inset;
 @end
 
 @implementation UGCPhotoCarouselCell
@@ -35,15 +35,15 @@
   return WeakRetained;
 }
 
-- (void)setCarouselController:(id)a3
+- (void)setCarouselController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_carouselController);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != controllerCopy)
   {
-    v6 = objc_storeWeak(&self->_carouselController, v4);
-    [v4 setupCollectionView:self->_collectionView];
+    v6 = objc_storeWeak(&self->_carouselController, controllerCopy);
+    [controllerCopy setupCollectionView:self->_collectionView];
 
     [(UGCPhotoCarouselCell *)self estimatedHeight];
     [(NSLayoutConstraint *)self->_heightConstraint setConstant:?];
@@ -65,15 +65,15 @@
   }
 }
 
-- (void)setSectionInset:(UIEdgeInsets)a3
+- (void)setSectionInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vcltz_s16(vshl_n_s16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_sectionInset.top, v3), vceqq_f64(*&self->_sectionInset.bottom, v4))), 0xFuLL))) & 1) == 0)
   {
-    self->_sectionInset = a3;
+    self->_sectionInset = inset;
     [(UGCPhotoCarouselCell *)self _contentSizeDidChange];
   }
 }
@@ -82,23 +82,23 @@
 {
   if (sub_10000FA08(self) == 5 && (MapsFeature_IsEnabled_SydneyARP() & 1) == 0)
   {
-    v3 = [(UGCPhotoCarouselCell *)self _horizontalGridLayout];
+    _horizontalGridLayout = [(UGCPhotoCarouselCell *)self _horizontalGridLayout];
   }
 
   else
   {
-    v3 = objc_alloc_init(UICollectionViewFlowLayout);
-    [v3 setScrollDirection:1];
-    [v3 setMinimumInteritemSpacing:2.0];
-    [v3 setSectionInset:{self->_sectionInset.top, self->_sectionInset.left, self->_sectionInset.bottom, self->_sectionInset.right}];
+    _horizontalGridLayout = objc_alloc_init(UICollectionViewFlowLayout);
+    [_horizontalGridLayout setScrollDirection:1];
+    [_horizontalGridLayout setMinimumInteritemSpacing:2.0];
+    [_horizontalGridLayout setSectionInset:{self->_sectionInset.top, self->_sectionInset.left, self->_sectionInset.bottom, self->_sectionInset.right}];
     v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
     [v4 _mapkit_scaledValueForValue:90.0];
     v6 = v5;
 
-    [v3 setItemSize:{v6, v6}];
+    [_horizontalGridLayout setItemSize:{v6, v6}];
   }
 
-  return v3;
+  return _horizontalGridLayout;
 }
 
 - (id)_horizontalGridLayout
@@ -109,8 +109,8 @@
 
   v5 = [NSCollectionLayoutItem itemWithLayoutSize:v4];
   v6 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v7 = [v4 heightDimension];
-  v8 = [NSCollectionLayoutSize sizeWithWidthDimension:v6 heightDimension:v7];
+  heightDimension = [v4 heightDimension];
+  v8 = [NSCollectionLayoutSize sizeWithWidthDimension:v6 heightDimension:heightDimension];
 
   v9 = [NSCollectionLayoutGroup horizontalGroupWithLayoutSize:v8 repeatingSubitem:v5 count:6];
   v10 = [NSCollectionLayoutSpacing fixedSpacing:1.0];
@@ -128,9 +128,9 @@
   if (sub_10000FA08(self) == 5 && MapsFeature_IsEnabled_SydneyARP())
   {
     WeakRetained = objc_loadWeakRetained(&self->_carouselController);
-    v4 = [WeakRetained photoSliderShouldEnablePagingScroll];
+    photoSliderShouldEnablePagingScroll = [WeakRetained photoSliderShouldEnablePagingScroll];
 
-    if (v4)
+    if (photoSliderShouldEnablePagingScroll)
     {
       [NSLayoutConstraint deactivateConstraints:self->_constraints];
       v5 = [[MUPagingScrollContainerView alloc] initWithHorizontalScrollView:self->_collectionView];
@@ -141,21 +141,21 @@
       v7 = self->_pagingScrollView;
       [(MUPagingScrollContainerView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UGCPhotoCarouselCell *)self addSubview:v7];
-      v22 = [(MUPagingScrollContainerView *)v7 leadingAnchor];
-      v21 = [(UGCPhotoCarouselCell *)self leadingAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21];
+      leadingAnchor = [(MUPagingScrollContainerView *)v7 leadingAnchor];
+      leadingAnchor2 = [(UGCPhotoCarouselCell *)self leadingAnchor];
+      v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v23[0] = v20;
-      v19 = [(MUPagingScrollContainerView *)v7 topAnchor];
-      v18 = [(UGCPhotoCarouselCell *)self topAnchor];
-      v8 = [v19 constraintEqualToAnchor:v18];
+      topAnchor = [(MUPagingScrollContainerView *)v7 topAnchor];
+      topAnchor2 = [(UGCPhotoCarouselCell *)self topAnchor];
+      v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v23[1] = v8;
-      v9 = [(MUPagingScrollContainerView *)v7 trailingAnchor];
-      v10 = [(UGCPhotoCarouselCell *)self trailingAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      trailingAnchor = [(MUPagingScrollContainerView *)v7 trailingAnchor];
+      trailingAnchor2 = [(UGCPhotoCarouselCell *)self trailingAnchor];
+      v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v23[2] = v11;
-      v12 = [(MUPagingScrollContainerView *)v7 bottomAnchor];
-      v13 = [(UGCPhotoCarouselCell *)self bottomAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      bottomAnchor = [(MUPagingScrollContainerView *)v7 bottomAnchor];
+      bottomAnchor2 = [(UGCPhotoCarouselCell *)self bottomAnchor];
+      v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       heightConstraint = self->_heightConstraint;
       v23[3] = v14;
       v23[4] = heightConstraint;
@@ -171,34 +171,34 @@
 - (void)_setupConstraints
 {
   [NSLayoutConstraint deactivateConstraints:self->_constraints];
-  v3 = self;
-  [(UGCPhotoCarouselCell *)v3 estimatedHeight];
-  if (!v3->_heightConstraint)
+  selfCopy = self;
+  [(UGCPhotoCarouselCell *)selfCopy estimatedHeight];
+  if (!selfCopy->_heightConstraint)
   {
     v5 = v4;
-    v6 = [(UICollectionView *)v3->_collectionView heightAnchor];
-    v7 = [v6 constraintEqualToConstant:v5];
-    heightConstraint = v3->_heightConstraint;
-    v3->_heightConstraint = v7;
+    heightAnchor = [(UICollectionView *)selfCopy->_collectionView heightAnchor];
+    v7 = [heightAnchor constraintEqualToConstant:v5];
+    heightConstraint = selfCopy->_heightConstraint;
+    selfCopy->_heightConstraint = v7;
   }
 
-  v22 = [(UICollectionView *)v3->_collectionView topAnchor];
-  v21 = [(UGCPhotoCarouselCell *)v3 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor = [(UICollectionView *)selfCopy->_collectionView topAnchor];
+  topAnchor2 = [(UGCPhotoCarouselCell *)selfCopy topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[0] = v20;
-  v19 = [(UICollectionView *)v3->_collectionView leadingAnchor];
-  v18 = [(UGCPhotoCarouselCell *)v3 leadingAnchor];
-  v9 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor = [(UICollectionView *)selfCopy->_collectionView leadingAnchor];
+  leadingAnchor2 = [(UGCPhotoCarouselCell *)selfCopy leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[1] = v9;
-  v10 = [(UICollectionView *)v3->_collectionView trailingAnchor];
-  v11 = [(UGCPhotoCarouselCell *)v3 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [(UICollectionView *)selfCopy->_collectionView trailingAnchor];
+  trailingAnchor2 = [(UGCPhotoCarouselCell *)selfCopy trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[2] = v12;
-  v13 = [(UICollectionView *)v3->_collectionView bottomAnchor];
-  v14 = [(UGCPhotoCarouselCell *)v3 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UICollectionView *)selfCopy->_collectionView bottomAnchor];
+  bottomAnchor2 = [(UGCPhotoCarouselCell *)selfCopy bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[3] = v15;
-  v23[4] = v3->_heightConstraint;
+  v23[4] = selfCopy->_heightConstraint;
   v16 = [NSArray arrayWithObjects:v23 count:5];
   constraints = self->_constraints;
   self->_constraints = v16;
@@ -209,8 +209,8 @@
 - (void)_setupSubviews
 {
   v3 = [UICollectionView alloc];
-  v4 = [(UGCPhotoCarouselCell *)self _horizontalCarouselLayout];
-  v5 = [v3 initWithFrame:v4 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  _horizontalCarouselLayout = [(UGCPhotoCarouselCell *)self _horizontalCarouselLayout];
+  v5 = [v3 initWithFrame:_horizontalCarouselLayout collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   collectionView = self->_collectionView;
   self->_collectionView = v5;
 
@@ -230,8 +230,8 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_carouselController);
-  v10 = [WeakRetained collectionViewBackgroundColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v10];
+  collectionViewBackgroundColor = [WeakRetained collectionViewBackgroundColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:collectionViewBackgroundColor];
 
   [(UICollectionView *)self->_collectionView _setCornerRadius:0.0];
   v11 = self->_collectionView;
@@ -243,8 +243,8 @@
 {
   if (!MapsFeature_IsEnabled_SydneyARP() || (WeakRetained = objc_loadWeakRetained(&self->_carouselController), v4 = [WeakRetained photoSliderShouldEnablePagingScroll], WeakRetained, (v4 & 1) == 0))
   {
-    v5 = [(UGCPhotoCarouselCell *)self _horizontalCarouselLayout];
-    [(UICollectionView *)self->_collectionView setCollectionViewLayout:v5];
+    _horizontalCarouselLayout = [(UGCPhotoCarouselCell *)self _horizontalCarouselLayout];
+    [(UICollectionView *)self->_collectionView setCollectionViewLayout:_horizontalCarouselLayout];
   }
 
   [(UGCPhotoCarouselCell *)self estimatedHeight];
@@ -260,9 +260,9 @@
   v5 = WeakRetained;
   if (v3 == 5)
   {
-    v6 = [WeakRetained totalNumberOfItems];
+    totalNumberOfItems = [WeakRetained totalNumberOfItems];
 
-    v7 = ((__PAIR128__(v6, __ROR8__(0xAAAAAAAAAAAAAAABLL * v6, 1)) - 0x2AAAAAAAAAAAAAABLL) >> 64) / 6;
+    v7 = ((__PAIR128__(totalNumberOfItems, __ROR8__(0xAAAAAAAAAAAAAAABLL * totalNumberOfItems, 1)) - 0x2AAAAAAAAAAAAAABLL) >> 64) / 6;
     v8 = objc_loadWeakRetained(&self->_carouselController);
     [v8 preferredCellHeight];
     v10 = v7 + v7 + v9 * (v7 + 1);
@@ -281,11 +281,11 @@
   return v10;
 }
 
-- (UGCPhotoCarouselCell)initWithFrame:(CGRect)a3
+- (UGCPhotoCarouselCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UGCPhotoCarouselCell;
-  v3 = [(UGCPhotoCarouselCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCPhotoCarouselCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

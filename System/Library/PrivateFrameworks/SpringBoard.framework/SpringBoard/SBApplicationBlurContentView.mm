@@ -1,28 +1,28 @@
 @interface SBApplicationBlurContentView
-- (SBApplicationBlurContentView)initWithCoder:(id)a3;
-- (SBApplicationBlurContentView)initWithFrame:(CGRect)a3;
-- (SBApplicationBlurContentView)initWithFrame:(CGRect)a3 bundleIdentifier:(id)a4 icon:(id)a5 targetViewToBlur:(id)a6 initialIconScale:(double)a7;
-- (SBApplicationBlurContentView)initWithFrame:(CGRect)a3 bundleIdentifier:(id)a4 targetViewToBlur:(id)a5 initialIconScale:(double)a6;
-- (void)_addCompletionBlock:(id)a3 forState:(unint64_t)a4;
-- (void)_doAnimationToBlurredSnapshotWithFactory:(id)a3 completion:(id)a4;
-- (void)_doBlurGenerationWithCompletion:(id)a3;
-- (void)_fireCompletionBlocksForState:(unint64_t)a3;
-- (void)_setState:(unint64_t)a3;
-- (void)animateToBlurredSnapshotWithFactory:(id)a3 completion:(id)a4;
+- (SBApplicationBlurContentView)initWithCoder:(id)coder;
+- (SBApplicationBlurContentView)initWithFrame:(CGRect)frame;
+- (SBApplicationBlurContentView)initWithFrame:(CGRect)frame bundleIdentifier:(id)identifier icon:(id)icon targetViewToBlur:(id)blur initialIconScale:(double)scale;
+- (SBApplicationBlurContentView)initWithFrame:(CGRect)frame bundleIdentifier:(id)identifier targetViewToBlur:(id)blur initialIconScale:(double)scale;
+- (void)_addCompletionBlock:(id)block forState:(unint64_t)state;
+- (void)_doAnimationToBlurredSnapshotWithFactory:(id)factory completion:(id)completion;
+- (void)_doBlurGenerationWithCompletion:(id)completion;
+- (void)_fireCompletionBlocksForState:(unint64_t)state;
+- (void)_setState:(unint64_t)state;
+- (void)animateToBlurredSnapshotWithFactory:(id)factory completion:(id)completion;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)generateAndAnimateToBlurredSnapshotWithAnimationFactory:(id)a3 completion:(id)a4;
-- (void)generateBlurredSnapshotWithCompletion:(id)a3;
+- (void)generateAndAnimateToBlurredSnapshotWithAnimationFactory:(id)factory completion:(id)completion;
+- (void)generateBlurredSnapshotWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setIconViewScale:(double)a3;
+- (void)setIconViewScale:(double)scale;
 @end
 
 @implementation SBApplicationBlurContentView
 
-- (SBApplicationBlurContentView)initWithCoder:(id)a3
+- (SBApplicationBlurContentView)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBApplicationBlurContentView.m" lineNumber:92 description:@"initWithCoder: is unavailable for this class."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationBlurContentView.m" lineNumber:92 description:@"initWithCoder: is unavailable for this class."];
 
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
@@ -32,46 +32,46 @@
   return [(SBApplicationBlurContentView *)self initWithFrame:0 bundleIdentifier:0 targetViewToBlur:v6, v7, v8, v9];
 }
 
-- (SBApplicationBlurContentView)initWithFrame:(CGRect)a3
+- (SBApplicationBlurContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"SBApplicationBlurContentView.m" lineNumber:97 description:@"initWithFrame: is unavailable for this class."];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationBlurContentView.m" lineNumber:97 description:@"initWithFrame: is unavailable for this class."];
 
   return [(SBApplicationBlurContentView *)self initWithFrame:0 bundleIdentifier:0 targetViewToBlur:x, y, width, height];
 }
 
-- (SBApplicationBlurContentView)initWithFrame:(CGRect)a3 bundleIdentifier:(id)a4 targetViewToBlur:(id)a5 initialIconScale:(double)a6
+- (SBApplicationBlurContentView)initWithFrame:(CGRect)frame bundleIdentifier:(id)identifier targetViewToBlur:(id)blur initialIconScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
-  v14 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  blurCopy = blur;
+  identifierCopy = identifier;
   v15 = +[SBIconController sharedIconRepository];
-  v16 = [v15 applicationIconForBundleIdentifier:v14];
-  v17 = [(SBApplicationBlurContentView *)self initWithFrame:v14 bundleIdentifier:v16 icon:v13 targetViewToBlur:x initialIconScale:y, width, height, a6];
+  v16 = [v15 applicationIconForBundleIdentifier:identifierCopy];
+  scale = [(SBApplicationBlurContentView *)self initWithFrame:identifierCopy bundleIdentifier:v16 icon:blurCopy targetViewToBlur:x initialIconScale:y, width, height, scale];
 
-  return v17;
+  return scale;
 }
 
-- (SBApplicationBlurContentView)initWithFrame:(CGRect)a3 bundleIdentifier:(id)a4 icon:(id)a5 targetViewToBlur:(id)a6 initialIconScale:(double)a7
+- (SBApplicationBlurContentView)initWithFrame:(CGRect)frame bundleIdentifier:(id)identifier icon:(id)icon targetViewToBlur:(id)blur initialIconScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v17;
-  if (v15)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
+  iconCopy = icon;
+  blurCopy = blur;
+  v18 = blurCopy;
+  if (identifierCopy)
   {
-    if (v17)
+    if (blurCopy)
     {
       goto LABEL_3;
     }
@@ -90,24 +90,24 @@
 LABEL_3:
   v63.receiver = self;
   v63.super_class = SBApplicationBlurContentView;
-  v19 = [(SBApplicationBlurContentView *)&v63 initWithFrame:x, y, width, height];
-  v20 = v19;
-  if (v19)
+  height = [(SBApplicationBlurContentView *)&v63 initWithFrame:x, y, width, height];
+  v20 = height;
+  if (height)
   {
-    [(SBApplicationBlurContentView *)v19 bounds];
+    [(SBApplicationBlurContentView *)height bounds];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    objc_storeStrong(&v20->_targetViewToBlur, a6);
+    objc_storeStrong(&v20->_targetViewToBlur, blur);
     p_width = &v20->_targetViewOriginalSize.width;
     [v18 bounds];
     v20->_targetViewOriginalSize.width = v30;
     v20->_targetViewOriginalSize.height = v31;
-    v20->_iconViewScale = a7;
-    v32 = [(UIView *)v20->_targetViewToBlur superview];
+    v20->_iconViewScale = scale;
+    superview = [(UIView *)v20->_targetViewToBlur superview];
 
-    if (!v32)
+    if (!superview)
     {
       [(SBApplicationBlurContentView *)v20 addSubview:v20->_targetViewToBlur];
     }
@@ -116,7 +116,7 @@ LABEL_3:
     mapStateToCompletionBlocks = v20->_mapStateToCompletionBlocks;
     v20->_mapStateToCompletionBlocks = v33;
 
-    v35 = [v15 copy];
+    v35 = [identifierCopy copy];
     bundleIdentifier = v20->_bundleIdentifier;
     v20->_bundleIdentifier = v35;
 
@@ -130,8 +130,8 @@ LABEL_3:
     v20->_unblurredRealSnapshotView = v41;
 
     [(UIView *)v20->_unblurredRealSnapshotView setContentMode:0];
-    v43 = [(_UIBackdropViewSettings *)[SBApplicationBlurContentViewBackdropSettings alloc] initWithDefaultValues];
-    v44 = [objc_alloc(MEMORY[0x277D75DE8]) initWithFrame:v43 settings:{v22, v24, v26, v28}];
+    initWithDefaultValues = [(_UIBackdropViewSettings *)[SBApplicationBlurContentViewBackdropSettings alloc] initWithDefaultValues];
+    v44 = [objc_alloc(MEMORY[0x277D75DE8]) initWithFrame:initWithDefaultValues settings:{v22, v24, v26, v28}];
     v45 = v44;
     v46 = *p_width;
     if (*p_width < v20->_targetViewOriginalSize.height)
@@ -141,8 +141,8 @@ LABEL_3:
 
     v47 = v28;
     v48 = fmin(fmax(v46 * 85.0 * 0.0009765625, 20.0), 85.0);
-    v49 = [(UIView *)v44 outputSettings];
-    [v49 setBlurRadius:v48];
+    outputSettings = [(UIView *)v44 outputSettings];
+    [outputSettings setBlurRadius:v48];
 
     liveBlurView = v20->_liveBlurView;
     v20->_liveBlurView = v45;
@@ -176,7 +176,7 @@ LABEL_3:
     [(UIView *)v20->_blurredSnapshotView setAlpha:0.0];
     [(UIView *)v20->_blurredSnapshotView setContentMode:0];
     [(SBApplicationBlurContentView *)v20 addSubview:v20->_blurredSnapshotView];
-    v59 = [[SBSceneViewAppIconView alloc] initWithIcon:v16];
+    v59 = [[SBSceneViewAppIconView alloc] initWithIcon:iconCopy];
     iconView = v20->_iconView;
     v20->_iconView = v59;
 
@@ -199,8 +199,8 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_mapStateToCompletionBlocks allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mapStateToCompletionBlocks allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -212,14 +212,14 @@ LABEL_3:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         -[SBApplicationBlurContentView _fireCompletionBlocksForState:](self, "_fireCompletionBlocksForState:", [*(*(&v9 + 1) + 8 * v7++) unsignedIntegerValue]);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -230,16 +230,16 @@ LABEL_3:
   [(SBApplicationBlurContentView *)&v8 dealloc];
 }
 
-- (void)generateBlurredSnapshotWithCompletion:(id)a3
+- (void)generateBlurredSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   state = self->_state;
   if (state > 2)
   {
-    if ((state - 3) < 3 && v4 != 0)
+    if ((state - 3) < 3 && completionCopy != 0)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -247,12 +247,12 @@ LABEL_3:
   {
     if (state == 1)
     {
-      [(SBApplicationBlurContentView *)self _doBlurGenerationWithCompletion:v4];
+      [(SBApplicationBlurContentView *)self _doBlurGenerationWithCompletion:completionCopy];
     }
 
     else if (state == 2)
     {
-      [(SBApplicationBlurContentView *)self _addCompletionBlock:v4 forState:2];
+      [(SBApplicationBlurContentView *)self _addCompletionBlock:completionCopy forState:2];
     }
   }
 
@@ -263,7 +263,7 @@ LABEL_3:
     v7[2] = __70__SBApplicationBlurContentView_generateBlurredSnapshotWithCompletion___block_invoke;
     v7[3] = &unk_2783AC308;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = completionCopy;
     [(SBApplicationBlurContentView *)self _addCompletionBlock:v7 forState:0];
 
     objc_destroyWeak(&v9);
@@ -278,27 +278,27 @@ void __70__SBApplicationBlurContentView_generateBlurredSnapshotWithCompletion___
   [WeakRetained generateBlurredSnapshotWithCompletion:*(a1 + 32)];
 }
 
-- (void)animateToBlurredSnapshotWithFactory:(id)a3 completion:(id)a4
+- (void)animateToBlurredSnapshotWithFactory:(id)factory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   state = self->_state;
   if (state > 2)
   {
     if (state == 3)
     {
-      [(SBApplicationBlurContentView *)self _doAnimationToBlurredSnapshotWithFactory:v6 completion:v7];
+      [(SBApplicationBlurContentView *)self _doAnimationToBlurredSnapshotWithFactory:factoryCopy completion:completionCopy];
     }
 
     else if (state == 4)
     {
-      [(SBApplicationBlurContentView *)self _addCompletionBlock:v7 forState:4];
+      [(SBApplicationBlurContentView *)self _addCompletionBlock:completionCopy forState:4];
     }
 
-    else if (state == 5 && v7 != 0)
+    else if (state == 5 && completionCopy != 0)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -311,8 +311,8 @@ void __70__SBApplicationBlurContentView_generateBlurredSnapshotWithCompletion___
       v10[2] = __79__SBApplicationBlurContentView_animateToBlurredSnapshotWithFactory_completion___block_invoke;
       v10[3] = &unk_2783AACB8;
       objc_copyWeak(&v13, &location);
-      v11 = v6;
-      v12 = v7;
+      v11 = factoryCopy;
+      v12 = completionCopy;
       [(SBApplicationBlurContentView *)self _addCompletionBlock:v10 forState:0];
 
       objc_destroyWeak(&v13);
@@ -321,7 +321,7 @@ void __70__SBApplicationBlurContentView_generateBlurredSnapshotWithCompletion___
 
   else
   {
-    [(SBApplicationBlurContentView *)self generateAndAnimateToBlurredSnapshotWithAnimationFactory:v6 completion:v7];
+    [(SBApplicationBlurContentView *)self generateAndAnimateToBlurredSnapshotWithAnimationFactory:factoryCopy completion:completionCopy];
   }
 
   objc_destroyWeak(&location);
@@ -333,27 +333,27 @@ void __79__SBApplicationBlurContentView_animateToBlurredSnapshotWithFactory_comp
   [WeakRetained animateToBlurredSnapshotWithFactory:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)generateAndAnimateToBlurredSnapshotWithAnimationFactory:(id)a3 completion:(id)a4
+- (void)generateAndAnimateToBlurredSnapshotWithAnimationFactory:(id)factory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __99__SBApplicationBlurContentView_generateAndAnimateToBlurredSnapshotWithAnimationFactory_completion___block_invoke;
   v10[3] = &unk_2783AA1E8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = factoryCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = factoryCopy;
   [(SBApplicationBlurContentView *)self generateBlurredSnapshotWithCompletion:v10];
 }
 
-- (void)setIconViewScale:(double)a3
+- (void)setIconViewScale:(double)scale
 {
-  if (self->_iconViewScale != a3)
+  if (self->_iconViewScale != scale)
   {
-    self->_iconViewScale = a3;
+    self->_iconViewScale = scale;
     [(SBApplicationBlurContentView *)self setNeedsLayout];
 
     [(SBApplicationBlurContentView *)self layoutIfNeeded];
@@ -368,10 +368,10 @@ void __79__SBApplicationBlurContentView_animateToBlurredSnapshotWithFactory_comp
   v9[3] = &unk_2783A8C18;
   v9[4] = self;
   v3 = MEMORY[0x223D6F7F0](v9, a2);
-  v4 = [(UIView *)self->_targetViewToBlur layer];
-  v5 = [v4 hasBeenCommitted];
+  layer = [(UIView *)self->_targetViewToBlur layer];
+  hasBeenCommitted = [layer hasBeenCommitted];
 
-  if (v5)
+  if (hasBeenCommitted)
   {
     v3[2](v3);
   }
@@ -486,11 +486,11 @@ void __47__SBApplicationBlurContentView_didMoveToWindow__block_invoke(uint64_t a
       v12 = 0.0;
     }
 
-    v13 = [(UIView *)self->_unblurredCopySnapshotView layer];
-    [v13 setContentsRect:{v12, 0.0, v11, 1.0}];
+    layer = [(UIView *)self->_unblurredCopySnapshotView layer];
+    [layer setContentsRect:{v12, 0.0, v11, 1.0}];
 
-    v14 = [(UIView *)self->_unblurredRealSnapshotView layer];
-    [v14 setContentsRect:{v12, 0.0, v11, 1.0}];
+    layer2 = [(UIView *)self->_unblurredRealSnapshotView layer];
+    [layer2 setContentsRect:{v12, 0.0, v11, 1.0}];
   }
 
   memset(&v18, 0, sizeof(v18));
@@ -510,12 +510,12 @@ void __47__SBApplicationBlurContentView_didMoveToWindow__block_invoke(uint64_t a
   [(SBSceneViewAppIconView *)v16 setCenter:?];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -526,32 +526,32 @@ void __47__SBApplicationBlurContentView_didMoveToWindow__block_invoke(uint64_t a
   }
 }
 
-- (void)_addCompletionBlock:(id)a3 forState:(unint64_t)a4
+- (void)_addCompletionBlock:(id)block forState:(unint64_t)state
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v13 = v6;
+    v13 = blockCopy;
     mapStateToCompletionBlocks = self->_mapStateToCompletionBlocks;
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     v9 = [(NSMutableDictionary *)mapStateToCompletionBlocks objectForKey:v8];
 
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v10 = self->_mapStateToCompletionBlocks;
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
       [(NSMutableDictionary *)v10 setObject:v9 forKey:v11];
     }
 
     v12 = MEMORY[0x223D6F7F0](v13);
     [v9 addObject:v12];
 
-    v6 = v13;
+    blockCopy = v13;
   }
 }
 
-- (void)_fireCompletionBlocksForState:(unint64_t)a3
+- (void)_fireCompletionBlocksForState:(unint64_t)state
 {
   v20 = *MEMORY[0x277D85DE8];
   mapStateToCompletionBlocks = self->_mapStateToCompletionBlocks;
@@ -589,20 +589,20 @@ void __47__SBApplicationBlurContentView_didMoveToWindow__block_invoke(uint64_t a
   }
 
   v13 = self->_mapStateToCompletionBlocks;
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
   [(NSMutableDictionary *)v13 removeObjectForKey:v14];
 }
 
-- (void)_doBlurGenerationWithCompletion:(id)a3
+- (void)_doBlurGenerationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_state != 1)
   {
     [SBApplicationBlurContentView _doBlurGenerationWithCompletion:];
   }
 
   [(SBApplicationBlurContentView *)self _setState:2];
-  [(SBApplicationBlurContentView *)self _addCompletionBlock:v4 forState:2];
+  [(SBApplicationBlurContentView *)self _addCompletionBlock:completionCopy forState:2];
   v5 = *MEMORY[0x277D76620];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -630,26 +630,26 @@ void __64__SBApplicationBlurContentView__doBlurGenerationWithCompletion___block_
   [*(a1 + 32) _setState:3];
 }
 
-- (void)_doAnimationToBlurredSnapshotWithFactory:(id)a3 completion:(id)a4
+- (void)_doAnimationToBlurredSnapshotWithFactory:(id)factory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  completionCopy = completion;
   if (self->_state != 3)
   {
     [SBApplicationBlurContentView _doAnimationToBlurredSnapshotWithFactory:completion:];
   }
 
   [(SBApplicationBlurContentView *)self _setState:4];
-  [(SBApplicationBlurContentView *)self _addCompletionBlock:v7 forState:4];
+  [(SBApplicationBlurContentView *)self _addCompletionBlock:completionCopy forState:4];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __84__SBApplicationBlurContentView__doAnimationToBlurredSnapshotWithFactory_completion___block_invoke;
   v20[3] = &unk_2783A8C18;
   v20[4] = self;
   v8 = MEMORY[0x223D6F7F0](v20);
-  v9 = [(SBApplicationBlurContentView *)self window];
-  v10 = v9;
-  if (v6 && v9 && ([v9 isHidden] & 1) == 0 && (-[SBApplicationBlurContentView isHiddenOrHasHiddenAncestor](self, "isHiddenOrHasHiddenAncestor") & 1) == 0)
+  window = [(SBApplicationBlurContentView *)self window];
+  v10 = window;
+  if (factoryCopy && window && ([window isHidden] & 1) == 0 && (-[SBApplicationBlurContentView isHiddenOrHasHiddenAncestor](self, "isHiddenOrHasHiddenAncestor") & 1) == 0)
   {
     v11 = MEMORY[0x277CF0D38];
     [(SBApplicationBlurContentView *)self blurDelay];
@@ -664,8 +664,8 @@ void __64__SBApplicationBlurContentView__doBlurGenerationWithCompletion___block_
     v17[2] = __84__SBApplicationBlurContentView__doAnimationToBlurredSnapshotWithFactory_completion___block_invoke_3;
     v17[3] = &unk_2783A9C70;
     v18 = v8;
-    [v11 animateWithFactory:v6 additionalDelay:v19 actions:v17 completion:v13];
-    [v6 duration];
+    [v11 animateWithFactory:factoryCopy additionalDelay:v19 actions:v17 completion:v13];
+    [factoryCopy duration];
     v15 = [MEMORY[0x277CF0D38] factoryWithDuration:v14 delay:v14 * 0.5];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;

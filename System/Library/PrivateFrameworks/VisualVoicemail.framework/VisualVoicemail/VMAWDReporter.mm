@@ -1,17 +1,17 @@
 @interface VMAWDReporter
 + (id)sharedInstance;
 - (VMAWDReporter)init;
-- (id)prepareConfidenceValue:(id)a3;
-- (void)powerlog:(id)a3 eventData:(id)a4;
-- (void)reportCustomGreetingFailedWithReason:(unint64_t)a3;
+- (id)prepareConfidenceValue:(id)value;
+- (void)powerlog:(id)powerlog eventData:(id)data;
+- (void)reportCustomGreetingFailedWithReason:(unint64_t)reason;
 - (void)reportCustomGreetingSaved;
-- (void)reportServiceAccountStateChanged:(int)a3;
-- (void)reportServiceBeaconMaxedOut:(unsigned int)a3 mcc:(id)a4 mnc:(id)a5;
-- (void)reportVoicemailProcessed:(id)a3 transcriptionSuccess:(BOOL)a4 transcriptionFailureReason:(id)a5 assetLocale:(id)a6 transcriptionConfidence:(id)a7 lidSuccess:(BOOL)a8 lidFailureReason:(id)a9 isEnglish:(BOOL)a10 dominantLocale:(id)a11 dominantLocaleConfidence:(id)a12 altLocaleDict:(id)a13;
+- (void)reportServiceAccountStateChanged:(int)changed;
+- (void)reportServiceBeaconMaxedOut:(unsigned int)out mcc:(id)mcc mnc:(id)mnc;
+- (void)reportVoicemailProcessed:(id)processed transcriptionSuccess:(BOOL)success transcriptionFailureReason:(id)reason assetLocale:(id)locale transcriptionConfidence:(id)confidence lidSuccess:(BOOL)lidSuccess lidFailureReason:(id)failureReason isEnglish:(BOOL)self0 dominantLocale:(id)self1 dominantLocaleConfidence:(id)self2 altLocaleDict:(id)self3;
 - (void)reportVoicemailTranscriptionAttempted;
 - (void)reportVoicemailTranscriptionCompleted;
-- (void)reportVoicemailTranscriptionFailedWithReason:(unint64_t)a3;
-- (void)reportVoicemailTranscriptionProcessed:(id)a3 success:(BOOL)a4 reason:(id)a5 assetLocale:(id)a6 confidence:(id)a7;
+- (void)reportVoicemailTranscriptionFailedWithReason:(unint64_t)reason;
+- (void)reportVoicemailTranscriptionProcessed:(id)processed success:(BOOL)success reason:(id)reason assetLocale:(id)locale confidence:(id)confidence;
 @end
 
 @implementation VMAWDReporter
@@ -43,35 +43,35 @@
   return v2;
 }
 
-- (void)powerlog:(id)a3 eventData:(id)a4
+- (void)powerlog:(id)powerlog eventData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  powerlogCopy = powerlog;
+  dataCopy = data;
   PLLogRegisteredEvent();
   v7 = vm_vmd_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = powerlogCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = dataCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Reporting powerlog event %@ with data %@", &v8, 0x16u);
   }
 }
 
-- (void)reportServiceAccountStateChanged:(int)a3
+- (void)reportServiceAccountStateChanged:(int)changed
 {
   if (!arc4random_uniform(0xAu))
   {
     v5 = objc_alloc_init(AWDVisualVoicemailServiceAccountStateUpdated);
-    [(AWDVisualVoicemailServiceAccountStateUpdated *)v5 setServiceState:a3];
+    [(AWDVisualVoicemailServiceAccountStateUpdated *)v5 setServiceState:changed];
     v6 = vm_vmd_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v10 = a3;
+      changedCopy = changed;
       v11 = 2048;
-      v12 = [(AWDVisualVoicemailServiceAccountStateUpdated *)v5 timestamp];
+      timestamp = [(AWDVisualVoicemailServiceAccountStateUpdated *)v5 timestamp];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Reporting metric for voicemail service account state changed: %d timestamp: %llu", buf, 0x12u);
     }
 
@@ -82,29 +82,29 @@
   }
 }
 
-- (void)reportServiceBeaconMaxedOut:(unsigned int)a3 mcc:(id)a4 mnc:(id)a5
+- (void)reportServiceBeaconMaxedOut:(unsigned int)out mcc:(id)mcc mnc:(id)mnc
 {
-  v8 = a4;
-  v9 = a5;
+  mccCopy = mcc;
+  mncCopy = mnc;
   v10 = objc_alloc_init(AWDVisualVoicemailBeaconMaxedOut);
   v11 = vm_vmd_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v16 = a3;
+    outCopy = out;
     v17 = 2112;
-    v18 = v8;
+    v18 = mccCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = mncCopy;
     v21 = 2048;
-    v22 = [(AWDVisualVoicemailBeaconMaxedOut *)v10 timestamp];
+    timestamp = [(AWDVisualVoicemailBeaconMaxedOut *)v10 timestamp];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Reporting metric for voicemail beacon maxed out for slot: %u mcc: '%@' mnc: '%@' timestamp: %llu", buf, 0x26u);
   }
 
   [(VMAWDReporter *)self _reportMetricWithID:4718595 metric:v10];
-  v14 = v8;
-  v12 = v9;
-  v13 = v8;
+  v14 = mccCopy;
+  v12 = mncCopy;
+  v13 = mccCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -115,24 +115,24 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = [(AWDVisualVoicemailCustomGreetingUpdated *)v3 timestamp];
+    timestamp = [(AWDVisualVoicemailCustomGreetingUpdated *)v3 timestamp];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Reporting metric for voicemail custom greeting saved timestamp: %llu", &v5, 0xCu);
   }
 
   [(VMAWDReporter *)self _reportMetricWithID:4718596 metric:v3];
 }
 
-- (void)reportCustomGreetingFailedWithReason:(unint64_t)a3
+- (void)reportCustomGreetingFailedWithReason:(unint64_t)reason
 {
   v5 = objc_alloc_init(AWDVisualVoicemailCustomGreetingUpdated);
-  [(AWDVisualVoicemailCustomGreetingUpdated *)v5 setFailureReason:a3];
+  [(AWDVisualVoicemailCustomGreetingUpdated *)v5 setFailureReason:reason];
   v6 = vm_vmd_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = [(AWDVisualVoicemailCustomGreetingUpdated *)v5 failureReason];
+    failureReason = [(AWDVisualVoicemailCustomGreetingUpdated *)v5 failureReason];
     v9 = 2048;
-    v10 = [(AWDVisualVoicemailCustomGreetingUpdated *)v5 timestamp];
+    timestamp = [(AWDVisualVoicemailCustomGreetingUpdated *)v5 timestamp];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Reporting metric for voicemail custom greeting failed with reason: %llu timestamp: %llu", &v7, 0x16u);
   }
 
@@ -173,16 +173,16 @@
   AnalyticsSendEventLazy();
 }
 
-- (void)reportVoicemailTranscriptionFailedWithReason:(unint64_t)a3
+- (void)reportVoicemailTranscriptionFailedWithReason:(unint64_t)reason
 {
   v5 = objc_alloc_init(AWDVisualVoicemailTranscriptionStatusChanged);
   [(AWDVisualVoicemailTranscriptionStatusChanged *)v5 setStatus:3];
-  [(AWDVisualVoicemailTranscriptionStatusChanged *)v5 setFailureReason:a3];
+  [(AWDVisualVoicemailTranscriptionStatusChanged *)v5 setFailureReason:reason];
   v6 = vm_vmd_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a3;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Reporting metric for transcription failed with reason %lu", buf, 0xCu);
   }
 
@@ -192,12 +192,12 @@
   AnalyticsSendEventLazy();
 }
 
-- (void)reportVoicemailTranscriptionProcessed:(id)a3 success:(BOOL)a4 reason:(id)a5 assetLocale:(id)a6 confidence:(id)a7
+- (void)reportVoicemailTranscriptionProcessed:(id)processed success:(BOOL)success reason:(id)reason assetLocale:(id)locale confidence:(id)confidence
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  processedCopy = processed;
+  reasonCopy = reason;
+  localeCopy = locale;
+  confidenceCopy = confidence;
   v16 = vm_vmd_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,33 +205,33 @@
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Reporting metric for voicemail transcription processed", buf, 2u);
   }
 
-  v17 = v12;
+  v17 = processedCopy;
   v22 = v17;
-  LOBYTE(v26) = a4;
-  v18 = v13;
+  LOBYTE(v26) = success;
+  v18 = reasonCopy;
   v23 = v18;
-  v19 = v14;
+  v19 = localeCopy;
   v24 = v19;
-  v20 = v15;
+  v20 = confidenceCopy;
   v25 = v20;
   AnalyticsSendEventLazy();
-  if (v18 && !a4 && [v18 intValue] == 5)
+  if (v18 && !success && [v18 intValue] == 5)
   {
     v21 = +[VMABCReporter sharedInstance];
     [v21 reportIssueType:@"VoicemailTranscription" description:@"VMTranscriptionFailureReasonOther"];
   }
 }
 
-- (void)reportVoicemailProcessed:(id)a3 transcriptionSuccess:(BOOL)a4 transcriptionFailureReason:(id)a5 assetLocale:(id)a6 transcriptionConfidence:(id)a7 lidSuccess:(BOOL)a8 lidFailureReason:(id)a9 isEnglish:(BOOL)a10 dominantLocale:(id)a11 dominantLocaleConfidence:(id)a12 altLocaleDict:(id)a13
+- (void)reportVoicemailProcessed:(id)processed transcriptionSuccess:(BOOL)success transcriptionFailureReason:(id)reason assetLocale:(id)locale transcriptionConfidence:(id)confidence lidSuccess:(BOOL)lidSuccess lidFailureReason:(id)failureReason isEnglish:(BOOL)self0 dominantLocale:(id)self1 dominantLocaleConfidence:(id)self2 altLocaleDict:(id)self3
 {
-  v29 = a3;
-  v28 = a5;
-  v27 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
+  processedCopy = processed;
+  reasonCopy = reason;
+  localeCopy = locale;
+  confidenceCopy = confidence;
+  failureReasonCopy = failureReason;
+  dominantLocaleCopy = dominantLocale;
+  localeConfidenceCopy = localeConfidence;
+  dictCopy = dict;
   v22 = vm_vmd_log();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
@@ -239,44 +239,44 @@
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Reporting metric for voicemail processed", buf, 2u);
   }
 
-  if (v21 && [v21 count] >= 4)
+  if (dictCopy && [dictCopy count] >= 4)
   {
-    v23 = [v21 keysSortedByValueWithOptions:16 usingComparator:&stru_1000ED608];
-    v37 = v29;
-    v38 = v28;
-    v39 = v27;
-    v40 = v17;
-    v41 = v18;
-    v42 = v19;
-    v43 = v20;
-    v44 = v21;
+    v23 = [dictCopy keysSortedByValueWithOptions:16 usingComparator:&stru_1000ED608];
+    v37 = processedCopy;
+    v38 = reasonCopy;
+    v39 = localeCopy;
+    v40 = confidenceCopy;
+    v41 = failureReasonCopy;
+    v42 = dominantLocaleCopy;
+    v43 = localeConfidenceCopy;
+    v44 = dictCopy;
     v24 = v23;
     AnalyticsSendEventLazy();
   }
 
   else
   {
-    v30 = v29;
-    v31 = v28;
-    v32 = v27;
-    v33 = v17;
-    v34 = v18;
-    v35 = v19;
-    v36 = v20;
+    v30 = processedCopy;
+    v31 = reasonCopy;
+    v32 = localeCopy;
+    v33 = confidenceCopy;
+    v34 = failureReasonCopy;
+    v35 = dominantLocaleCopy;
+    v36 = localeConfidenceCopy;
     AnalyticsSendEventLazy();
 
     v24 = v30;
   }
 
-  if (v18 && !a8)
+  if (failureReasonCopy && !lidSuccess)
   {
-    if ([v18 intValue] == 5)
+    if ([failureReasonCopy intValue] == 5)
     {
       v25 = +[VMABCReporter sharedInstance];
       [v25 reportIssueType:@"VoicemailLanguageID" description:@"VMLanguageIDFailureReasonOther"];
     }
 
-    if ([v18 intValue] == 1)
+    if ([failureReasonCopy intValue] == 1)
     {
       v26 = +[VMABCReporter sharedInstance];
       [v26 reportIssueType:@"VoicemailLanguageID" description:@"VMLanguageIDFailureReasonMissingModelAsset"];
@@ -284,11 +284,11 @@
   }
 }
 
-- (id)prepareConfidenceValue:(id)a3
+- (id)prepareConfidenceValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    [a3 floatValue];
+    [value floatValue];
     v5 = [NSNumber numberWithInt:(v4 * 1000000.0)];
   }
 

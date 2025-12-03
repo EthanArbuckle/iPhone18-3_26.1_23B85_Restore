@@ -17,7 +17,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgLukhnosPortmobileInvokeMethodHandles_publicLookupInstance_, [OrgLukhnosPortmobileInvokeMethodHandles_Lookup alloc]);
     atomic_store(1u, OrgLukhnosPortmobileInvokeMethodHandles__initialized);

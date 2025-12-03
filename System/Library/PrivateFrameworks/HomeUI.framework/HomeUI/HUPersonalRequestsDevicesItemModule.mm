@@ -1,30 +1,30 @@
 @interface HUPersonalRequestsDevicesItemModule
 - (BOOL)_showPersonalRequestsItems;
-- (BOOL)_voiceRecognitionLanguage:(id)a3 matchesMultiUserCapableAccessory:(id)a4;
-- (BOOL)isCurrentIOSDeviceOnSameVoiceRecognitionLanguageAsPersonalRequestsDeviceForItem:(id)a3;
-- (BOOL)isItemPersonalRequestsDevice:(id)a3;
-- (BOOL)isItemPersonalRequestsToggle:(id)a3;
+- (BOOL)_voiceRecognitionLanguage:(id)language matchesMultiUserCapableAccessory:(id)accessory;
+- (BOOL)isCurrentIOSDeviceOnSameVoiceRecognitionLanguageAsPersonalRequestsDeviceForItem:(id)item;
+- (BOOL)isItemPersonalRequestsDevice:(id)device;
+- (BOOL)isItemPersonalRequestsToggle:(id)toggle;
 - (BOOL)recognitionLanguageIsSupportedVRLanguageForCurrentDevice;
-- (BOOL)recognitionLanguageIsSupportedVRLanguageForItem:(id)a3;
+- (BOOL)recognitionLanguageIsSupportedVRLanguageForItem:(id)item;
 - (HMAssistantAccessControl)accessControl;
-- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)a3 userItem:(id)a4 home:(id)a5 onlyShowDeviceSwitches:(BOOL)a6;
-- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)a3 userItem:(id)a4 home:(id)a5 settingsController:(id)a6 onlyShowDeviceSwitches:(BOOL)a7;
+- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)updater userItem:(id)item home:(id)home onlyShowDeviceSwitches:(BOOL)switches;
+- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)updater userItem:(id)item home:(id)home settingsController:(id)controller onlyShowDeviceSwitches:(BOOL)switches;
 - (NAFuture)activeLocationDeviceFuture;
 - (NSArray)personalRequestsDevices;
 - (id)_attributedFooterTitle;
-- (id)_commitUpdateToAccessControl:(id)a3;
+- (id)_commitUpdateToAccessControl:(id)control;
 - (id)_createPersonalRequestProviderForMediaAccessories;
 - (id)_createPersonalRequestProviderForOtherAccessories;
-- (id)_transformItemForSourceItem:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)recognitionLanguageForItem:(id)a3;
+- (id)_transformItemForSourceItem:(id)item;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)recognitionLanguageForItem:(id)item;
 - (id)updateLocationDeviceToThisDevice;
 - (void)_createItemProviders;
-- (void)locationDeviceManager:(id)a3 didUpdateActiveLocationDevice:(id)a4;
+- (void)locationDeviceManager:(id)manager didUpdateActiveLocationDevice:(id)device;
 - (void)registerForExternalUpdates;
-- (void)setPersonalRequestsDevices:(id)a3;
-- (void)siriLanguageOptionsManager:(id)a3 availableLanguageOptionsDidChange:(id)a4;
-- (void)siriLanguageOptionsManager:(id)a3 selectedLanguageOptionDidChange:(id)a4;
+- (void)setPersonalRequestsDevices:(id)devices;
+- (void)siriLanguageOptionsManager:(id)manager availableLanguageOptionsDidChange:(id)change;
+- (void)siriLanguageOptionsManager:(id)manager selectedLanguageOptionDidChange:(id)change;
 - (void)toggleAllPersonalRequestsDevices;
 - (void)turnOnAllPersonalRequestsDevices;
 - (void)turnOnPersonalRequestsForAllVoiceRecognitionCapablePersonalRequestsDevices;
@@ -33,26 +33,26 @@
 
 @implementation HUPersonalRequestsDevicesItemModule
 
-- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)a3 userItem:(id)a4 home:(id)a5 onlyShowDeviceSwitches:(BOOL)a6
+- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)updater userItem:(id)item home:(id)home onlyShowDeviceSwitches:(BOOL)switches
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  updaterCopy = updater;
+  itemCopy = item;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsDevicesItemModule.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsDevicesItemModule.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
   v20.receiver = self;
   v20.super_class = HUPersonalRequestsDevicesItemModule;
-  v14 = [(HFItemModule *)&v20 initWithItemUpdater:v11];
+  v14 = [(HFItemModule *)&v20 initWithItemUpdater:updaterCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_home, a5);
-    objc_storeStrong(&v15->_sourceItem, a4);
-    v15->_onlyShowDeviceSwitches = a6;
+    objc_storeStrong(&v14->_home, home);
+    objc_storeStrong(&v15->_sourceItem, item);
+    v15->_onlyShowDeviceSwitches = switches;
     if (![(HUPersonalRequestsDevicesItemModule *)v15 onlyShowDeviceSwitches])
     {
       v16 = +[HULocationDeviceManager sharedInstance];
@@ -66,32 +66,32 @@
   return v15;
 }
 
-- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)a3 userItem:(id)a4 home:(id)a5 settingsController:(id)a6 onlyShowDeviceSwitches:(BOOL)a7
+- (HUPersonalRequestsDevicesItemModule)initWithItemUpdater:(id)updater userItem:(id)item home:(id)home settingsController:(id)controller onlyShowDeviceSwitches:(BOOL)switches
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v15)
+  updaterCopy = updater;
+  itemCopy = item;
+  homeCopy = home;
+  controllerCopy = controller;
+  if (!homeCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsDevicesItemModule.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsDevicesItemModule.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
   v31.receiver = self;
   v31.super_class = HUPersonalRequestsDevicesItemModule;
-  v17 = [(HFItemModule *)&v31 initWithItemUpdater:v13];
+  v17 = [(HFItemModule *)&v31 initWithItemUpdater:updaterCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_home, a5);
-    objc_storeStrong(&v18->_sourceItem, a4);
-    v19 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v17->_home, home);
+    objc_storeStrong(&v18->_sourceItem, item);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     mediaProfileToLanguageOptionsManagerMap = v18->_mediaProfileToLanguageOptionsManagerMap;
-    v18->_mediaProfileToLanguageOptionsManagerMap = v19;
+    v18->_mediaProfileToLanguageOptionsManagerMap = strongToStrongObjectsMapTable;
 
-    v21 = [(HUPersonalRequestsDevicesItemModule *)v18 home];
-    v22 = [v21 hf_personalRequestAccessories];
+    home = [(HUPersonalRequestsDevicesItemModule *)v18 home];
+    hf_personalRequestAccessories = [home hf_personalRequestAccessories];
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -100,8 +100,8 @@
     v23 = v18;
     v29 = v23;
     v30 = a2;
-    [v22 na_each:v28];
-    v23->_onlyShowDeviceSwitches = a7;
+    [hf_personalRequestAccessories na_each:v28];
+    v23->_onlyShowDeviceSwitches = switches;
     if (![(HUPersonalRequestsDevicesItemModule *)v23 onlyShowDeviceSwitches])
     {
       v24 = +[HULocationDeviceManager sharedInstance];
@@ -149,18 +149,18 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
   v15 = *MEMORY[0x277D85DE8];
   if (![(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
   {
-    v3 = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
-    [v3 addObserver:self];
+    locationDeviceManager = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
+    [locationDeviceManager addObserver:self];
   }
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(HUPersonalRequestsDevicesItemModule *)self mediaProfileToLanguageOptionsManagerMap];
-  v5 = [v4 objectEnumerator];
+  mediaProfileToLanguageOptionsManagerMap = [(HUPersonalRequestsDevicesItemModule *)self mediaProfileToLanguageOptionsManagerMap];
+  objectEnumerator = [mediaProfileToLanguageOptionsManagerMap objectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -172,14 +172,14 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) addObserver:self];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -191,18 +191,18 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
   v15 = *MEMORY[0x277D85DE8];
   if (![(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
   {
-    v3 = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
-    [v3 removeObserver:self];
+    locationDeviceManager = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
+    [locationDeviceManager removeObserver:self];
   }
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(HUPersonalRequestsDevicesItemModule *)self mediaProfileToLanguageOptionsManagerMap];
-  v5 = [v4 objectEnumerator];
+  mediaProfileToLanguageOptionsManagerMap = [(HUPersonalRequestsDevicesItemModule *)self mediaProfileToLanguageOptionsManagerMap];
+  objectEnumerator = [mediaProfileToLanguageOptionsManagerMap objectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -214,14 +214,14 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) removeObserver:self];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -230,10 +230,10 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
 
 - (HMAssistantAccessControl)accessControl
 {
-  v3 = [(HUPersonalRequestsDevicesItemModule *)self sourceItem];
-  v4 = [v3 user];
-  v5 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v6 = [v4 assistantAccessControlForHome:v5];
+  sourceItem = [(HUPersonalRequestsDevicesItemModule *)self sourceItem];
+  user = [sourceItem user];
+  home = [(HUPersonalRequestsDevicesItemModule *)self home];
+  v6 = [user assistantAccessControlForHome:home];
 
   return v6;
 }
@@ -248,25 +248,25 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
   else
   {
     objc_initWeak(&location, self);
-    v3 = [(HUPersonalRequestsDevicesItemModule *)self _createPersonalRequestProviderForMediaAccessories];
-    [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsMediaAccessoriesProvider:v3];
+    _createPersonalRequestProviderForMediaAccessories = [(HUPersonalRequestsDevicesItemModule *)self _createPersonalRequestProviderForMediaAccessories];
+    [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsMediaAccessoriesProvider:_createPersonalRequestProviderForMediaAccessories];
 
-    v4 = [(HUPersonalRequestsDevicesItemModule *)self _createPersonalRequestProviderForOtherAccessories];
-    [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsOtherAccessoriesProvider:v4];
+    _createPersonalRequestProviderForOtherAccessories = [(HUPersonalRequestsDevicesItemModule *)self _createPersonalRequestProviderForOtherAccessories];
+    [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsOtherAccessoriesProvider:_createPersonalRequestProviderForOtherAccessories];
 
     if ([(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
     {
       v5 = MEMORY[0x277CBEB98];
-      v6 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
-      v7 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
-      v8 = [v5 setWithObjects:{v6, v7, 0}];
+      personalRequestsMediaAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
+      personalRequestsOtherAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
+      v8 = [v5 setWithObjects:{personalRequestsMediaAccessoriesProvider, personalRequestsOtherAccessoriesProvider, 0}];
       itemProviders = self->_itemProviders;
       self->_itemProviders = v8;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB58] set];
+      personalRequestsMediaAccessoriesProvider = [MEMORY[0x277CBEB58] set];
       v10 = objc_alloc(MEMORY[0x277D14B38]);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -277,14 +277,14 @@ void __115__HUPersonalRequestsDevicesItemModule_initWithItemUpdater_userItem_hom
       personalRequestsToggleItem = self->_personalRequestsToggleItem;
       self->_personalRequestsToggleItem = v11;
 
-      v13 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsToggleItem];
-      [v6 addObject:v13];
+      personalRequestsToggleItem = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsToggleItem];
+      [personalRequestsMediaAccessoriesProvider addObject:personalRequestsToggleItem];
 
-      v14 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v6];
+      v14 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:personalRequestsMediaAccessoriesProvider];
       v15 = MEMORY[0x277CBEB98];
-      v16 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
-      v17 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
-      v18 = [v15 setWithObjects:{v16, v17, v14, 0}];
+      personalRequestsMediaAccessoriesProvider2 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
+      personalRequestsOtherAccessoriesProvider2 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
+      v18 = [v15 setWithObjects:{personalRequestsMediaAccessoriesProvider2, personalRequestsOtherAccessoriesProvider2, v14, 0}];
       v19 = self->_itemProviders;
       self->_itemProviders = v18;
 
@@ -323,14 +323,14 @@ id __59__HUPersonalRequestsDevicesItemModule__createItemProviders__block_invoke(
 
 - (BOOL)_showPersonalRequestsItems
 {
-  v3 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v4 = [v3 currentUser];
-  v5 = [(HUPersonalRequestsDevicesItemModule *)self sourceItem];
-  v6 = [v5 user];
-  if ([v4 isEqual:v6])
+  home = [(HUPersonalRequestsDevicesItemModule *)self home];
+  currentUser = [home currentUser];
+  sourceItem = [(HUPersonalRequestsDevicesItemModule *)self sourceItem];
+  user = [sourceItem user];
+  if ([currentUser isEqual:user])
   {
-    v7 = [(HUPersonalRequestsDevicesItemModule *)self accessControl];
-    v8 = v7 != 0;
+    accessControl = [(HUPersonalRequestsDevicesItemModule *)self accessControl];
+    v8 = accessControl != 0;
   }
 
   else
@@ -341,40 +341,40 @@ id __59__HUPersonalRequestsDevicesItemModule__createItemProviders__block_invoke(
   return v8;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count] && -[HUPersonalRequestsDevicesItemModule _showPersonalRequestsItems](self, "_showPersonalRequestsItems"))
+  itemsCopy = items;
+  if ([itemsCopy count] && -[HUPersonalRequestsDevicesItemModule _showPersonalRequestsItems](self, "_showPersonalRequestsItems"))
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = MEMORY[0x277CBEB18];
-    v7 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
-    v8 = [v7 items];
-    v9 = [v8 allObjects];
-    v10 = [v6 arrayWithArray:v9];
+    personalRequestsMediaAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
+    items = [personalRequestsMediaAccessoriesProvider items];
+    allObjects = [items allObjects];
+    v10 = [v6 arrayWithArray:allObjects];
 
-    v11 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
-    v12 = [v11 items];
-    v13 = [v12 allObjects];
-    [v10 addObjectsFromArray:v13];
+    personalRequestsOtherAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
+    items2 = [personalRequestsOtherAccessoriesProvider items];
+    allObjects2 = [items2 allObjects];
+    [v10 addObjectsFromArray:allObjects2];
 
     v14 = [v10 sortedArrayUsingComparator:&__block_literal_global_44];
     v15 = [MEMORY[0x277CBEB98] setWithArray:v14];
-    v16 = [v4 na_setByIntersectingWithSet:v15];
+    v16 = [itemsCopy na_setByIntersectingWithSet:v15];
 
     v17 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HOMEPOD_PERSONAL_REQUESTS_DEVICES"];
     v18 = _HULocalizedStringWithDefaultValue(@"HUUsersPersonalContentHomePodsSectionTitle", @"HUUsersPersonalContentHomePodsSectionTitle", 1);
     [v17 setHeaderTitle:v18];
 
-    v19 = [v16 allObjects];
+    allObjects3 = [v16 allObjects];
     v20 = [MEMORY[0x277D14CE8] comparatorWithSortedObjects:v14];
-    v21 = [v19 sortedArrayUsingComparator:v20];
+    v21 = [allObjects3 sortedArrayUsingComparator:v20];
     [v17 setItems:v21];
 
     if (![(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
     {
-      v22 = [(HUPersonalRequestsDevicesItemModule *)self _attributedFooterTitle];
-      [v17 setAttributedFooterTitle:v22];
+      _attributedFooterTitle = [(HUPersonalRequestsDevicesItemModule *)self _attributedFooterTitle];
+      [v17 setAttributedFooterTitle:_attributedFooterTitle];
     }
 
     [v5 addObject:v17];
@@ -402,30 +402,30 @@ uint64_t __71__HUPersonalRequestsDevicesItemModule_buildSectionsWithDisplayedIte
   return v10;
 }
 
-- (BOOL)isItemPersonalRequestsToggle:(id)a3
+- (BOOL)isItemPersonalRequestsToggle:(id)toggle
 {
-  v4 = a3;
-  v5 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsToggleItem];
-  v6 = [v4 isEqual:v5];
+  toggleCopy = toggle;
+  personalRequestsToggleItem = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsToggleItem];
+  v6 = [toggleCopy isEqual:personalRequestsToggleItem];
 
   return v6;
 }
 
-- (BOOL)isItemPersonalRequestsDevice:(id)a3
+- (BOOL)isItemPersonalRequestsDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
-  v6 = [v5 items];
-  if ([v6 containsObject:v4])
+  deviceCopy = device;
+  personalRequestsMediaAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
+  items = [personalRequestsMediaAccessoriesProvider items];
+  if ([items containsObject:deviceCopy])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
-    v9 = [v8 items];
-    v7 = [v9 containsObject:v4];
+    personalRequestsOtherAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
+    items2 = [personalRequestsOtherAccessoriesProvider items];
+    v7 = [items2 containsObject:deviceCopy];
   }
 
   return v7;
@@ -433,17 +433,17 @@ uint64_t __71__HUPersonalRequestsDevicesItemModule_buildSectionsWithDisplayedIte
 
 - (NSArray)personalRequestsDevices
 {
-  v2 = [(HUPersonalRequestsDevicesItemModule *)self accessControl];
-  v3 = [v2 accessories];
+  accessControl = [(HUPersonalRequestsDevicesItemModule *)self accessControl];
+  accessories = [accessControl accessories];
 
-  return v3;
+  return accessories;
 }
 
 - (void)toggleAllPersonalRequestsDevices
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsDevices];
-  v5 = [v4 count];
+  personalRequestsDevices = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsDevices];
+  v5 = [personalRequestsDevices count];
 
   if (v5)
   {
@@ -473,67 +473,67 @@ uint64_t __71__HUPersonalRequestsDevicesItemModule_buildSectionsWithDisplayedIte
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = NSStringFromSelector(a2);
-    v6 = [(HUPersonalRequestsDevicesItemModule *)self home];
-    v7 = [v6 hf_personalRequestAccessories];
+    home = [(HUPersonalRequestsDevicesItemModule *)self home];
+    hf_personalRequestAccessories = [home hf_personalRequestAccessories];
     v10 = 138412546;
     v11 = v5;
     v12 = 2112;
-    v13 = v7;
+    v13 = hf_personalRequestAccessories;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@ Setting Personal Request devices to %@", &v10, 0x16u);
   }
 
-  v8 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v9 = [v8 hf_personalRequestAccessories];
-  [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsDevices:v9];
+  home2 = [(HUPersonalRequestsDevicesItemModule *)self home];
+  hf_personalRequestAccessories2 = [home2 hf_personalRequestAccessories];
+  [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsDevices:hf_personalRequestAccessories2];
 }
 
-- (BOOL)_voiceRecognitionLanguage:(id)a3 matchesMultiUserCapableAccessory:(id)a4
+- (BOOL)_voiceRecognitionLanguage:(id)language matchesMultiUserCapableAccessory:(id)accessory
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [a4 mediaProfile];
-  v9 = [v8 accessory];
-  v10 = [v9 supportsMultiUser];
+  languageCopy = language;
+  mediaProfile = [accessory mediaProfile];
+  accessory = [mediaProfile accessory];
+  supportsMultiUser = [accessory supportsMultiUser];
 
-  if (v10)
+  if (supportsMultiUser)
   {
-    v11 = [MEMORY[0x277D14810] siriLanguageOptionFor:v8];
+    v11 = [MEMORY[0x277D14810] siriLanguageOptionFor:mediaProfile];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 recognitionLanguage];
-      v14 = [v13 isEqualToString:v7];
+      recognitionLanguage = [v11 recognitionLanguage];
+      v14 = [recognitionLanguage isEqualToString:languageCopy];
       v15 = HFLogForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = NSStringFromSelector(a2);
         v20 = 138413314;
-        v21 = self;
+        selfCopy3 = self;
         v22 = 2112;
         v23 = v16;
         v24 = 1024;
         *v25 = v14;
         *&v25[4] = 2112;
-        *&v25[6] = v13;
+        *&v25[6] = recognitionLanguage;
         v26 = 2112;
-        v27 = v8;
+        v27 = mediaProfile;
         _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@:%@ Supported voice recognition language matches Siri language?: %{BOOL}d: %@, on %@", &v20, 0x30u);
       }
     }
 
     else
     {
-      v13 = HFLogForCategory();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      recognitionLanguage = HFLogForCategory();
+      if (os_log_type_enabled(recognitionLanguage, OS_LOG_TYPE_DEFAULT))
       {
         v18 = NSStringFromSelector(a2);
         v20 = 138412802;
-        v21 = self;
+        selfCopy3 = self;
         v22 = 2112;
         v23 = v18;
         v24 = 2112;
-        *v25 = v8;
-        _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@ HomePod does not have Siri Language: %@", &v20, 0x20u);
+        *v25 = mediaProfile;
+        _os_log_impl(&dword_20CEB6000, recognitionLanguage, OS_LOG_TYPE_DEFAULT, "%@:%@ HomePod does not have Siri Language: %@", &v20, 0x20u);
       }
 
       LOBYTE(v14) = 0;
@@ -547,11 +547,11 @@ uint64_t __71__HUPersonalRequestsDevicesItemModule_buildSectionsWithDisplayedIte
     {
       v17 = NSStringFromSelector(a2);
       v20 = 138412802;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2112;
       v23 = v17;
       v24 = 2112;
-      *v25 = v8;
+      *v25 = mediaProfile;
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%@ Accessory does not support multi user features (voice recognition): %@", &v20, 0x20u);
     }
 
@@ -564,26 +564,26 @@ uint64_t __71__HUPersonalRequestsDevicesItemModule_buildSectionsWithDisplayedIte
 - (void)turnOnPersonalRequestsForAllVoiceRecognitionCapablePersonalRequestsDevices
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v4 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  v6 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v7 = [v6 hf_personalRequestAccessories];
+  home = [(HUPersonalRequestsDevicesItemModule *)self home];
+  hf_personalRequestAccessories = [home hf_personalRequestAccessories];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __113__HUPersonalRequestsDevicesItemModule_turnOnPersonalRequestsForAllVoiceRecognitionCapablePersonalRequestsDevices__block_invoke;
   v15 = &unk_277DB9588;
-  v16 = self;
-  v8 = v5;
+  selfCopy = self;
+  v8 = languageCode;
   v17 = v8;
-  v9 = [v7 na_filter:&v12];
+  v9 = [hf_personalRequestAccessories na_filter:&v12];
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
     *buf = 138413058;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
     v21 = v11;
     v22 = 2112;
@@ -593,7 +593,7 @@ uint64_t __71__HUPersonalRequestsDevicesItemModule_buildSectionsWithDisplayedIte
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ turning on Personal Requests for all HomePods on %@ & that support voice recognition: %@", buf, 0x2Au);
   }
 
-  [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsDevices:v9, v12, v13, v14, v15, v16];
+  [(HUPersonalRequestsDevicesItemModule *)self setPersonalRequestsDevices:v9, v12, v13, v14, v15, selfCopy];
 }
 
 uint64_t __113__HUPersonalRequestsDevicesItemModule_turnOnPersonalRequestsForAllVoiceRecognitionCapablePersonalRequestsDevices__block_invoke(uint64_t a1, void *a2)
@@ -621,15 +621,15 @@ uint64_t __113__HUPersonalRequestsDevicesItemModule_turnOnPersonalRequestsForAll
   return v9;
 }
 
-- (void)setPersonalRequestsDevices:(id)a3
+- (void)setPersonalRequestsDevices:(id)devices
 {
-  v5 = a3;
-  v6 = [(HUPersonalRequestsDevicesItemModule *)self accessControl];
-  v7 = [v6 mutableCopy];
+  devicesCopy = devices;
+  accessControl = [(HUPersonalRequestsDevicesItemModule *)self accessControl];
+  v7 = [accessControl mutableCopy];
 
   if (v7)
   {
-    [v7 setAccessories:v5];
+    [v7 setAccessories:devicesCopy];
     [v7 setAllowUnauthenticatedRequests:1];
     objc_initWeak(&location, self);
     v8 = [(HUPersonalRequestsDevicesItemModule *)self _commitUpdateToAccessControl:v7];
@@ -663,16 +663,16 @@ void __66__HUPersonalRequestsDevicesItemModule_setPersonalRequestsDevices___bloc
 {
   if ([(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
   {
-    v3 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
+    activeLocationDeviceFuture = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    v4 = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
-    v3 = [v4 activeLocationDeviceFuture];
+    locationDeviceManager = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
+    activeLocationDeviceFuture = [locationDeviceManager activeLocationDeviceFuture];
   }
 
-  return v3;
+  return activeLocationDeviceFuture;
 }
 
 - (id)updateLocationDeviceToThisDevice
@@ -684,7 +684,7 @@ void __66__HUPersonalRequestsDevicesItemModule_setPersonalRequestsDevices___bloc
 
   if ([(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
   {
-    v4 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -697,24 +697,24 @@ void __66__HUPersonalRequestsDevicesItemModule_setPersonalRequestsDevices___bloc
     }
 
     objc_initWeak(buf, self);
-    v6 = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
-    v7 = [v6 updateActiveLocationDeviceToThisDevice];
+    locationDeviceManager = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
+    updateActiveLocationDeviceToThisDevice = [locationDeviceManager updateActiveLocationDeviceToThisDevice];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice__block_invoke;
     v15 = &unk_277DB9D18;
     objc_copyWeak(v16, buf);
     v16[1] = a2;
-    v8 = [v7 addSuccessBlock:&v12];
+    v8 = [updateActiveLocationDeviceToThisDevice addSuccessBlock:&v12];
     v9 = [v8 addFailureBlock:{&__block_literal_global_47, v12, v13, v14, v15}];
-    v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v4 = [v9 reschedule:v10];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    futureWithNoResult = [v9 reschedule:mainThreadScheduler];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(buf);
   }
 
-  return v4;
+  return futureWithNoResult;
 }
 
 void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice__block_invoke(uint64_t a1)
@@ -747,24 +747,24 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
   }
 }
 
-- (BOOL)isCurrentIOSDeviceOnSameVoiceRecognitionLanguageAsPersonalRequestsDeviceForItem:(id)a3
+- (BOOL)isCurrentIOSDeviceOnSameVoiceRecognitionLanguageAsPersonalRequestsDeviceForItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(HUPersonalRequestsDevicesItemModule *)self recognitionLanguageForItem:a3];
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 languageCode];
+  v5 = [(HUPersonalRequestsDevicesItemModule *)self recognitionLanguageForItem:item];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  v8 = [v5 isEqualToString:v7];
+  v8 = [v5 isEqualToString:languageCode];
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     v12 = 138413314;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v10;
     v16 = 2112;
-    v17 = v7;
+    v17 = languageCode;
     v18 = 2112;
     v19 = v5;
     v20 = 1024;
@@ -775,11 +775,11 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
   return v8;
 }
 
-- (id)recognitionLanguageForItem:(id)a3
+- (id)recognitionLanguageForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -809,10 +809,10 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
 
     v9 = v8;
 
-    v10 = [v9 sourceItem];
+    sourceItem = [v9 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = sourceItem;
     }
 
     else
@@ -822,7 +822,7 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
 
     v12 = v11;
 
-    v13 = objc_opt_class();
+    anyObject = objc_opt_class();
     objc_opt_class();
     v14 = v7;
     if (objc_opt_isKindOfClass())
@@ -835,12 +835,12 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
       v15 = 0;
     }
 
-    v16 = v15;
+    accessories = v15;
 
-    v17 = [v16 sourceItem];
+    sourceItem2 = [accessories sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = sourceItem2;
     }
 
     else
@@ -866,11 +866,11 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
 
     v12 = v21;
 
-    v13 = objc_opt_class();
-    v16 = v20;
+    anyObject = objc_opt_class();
+    accessories = v20;
     if (objc_opt_isKindOfClass())
     {
-      v22 = v16;
+      v22 = accessories;
     }
 
     else
@@ -888,9 +888,9 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
 
   else
   {
-    v16 = [v19 accessories];
-    v13 = [v16 anyObject];
-    [v13 mediaProfile];
+    accessories = [v19 accessories];
+    anyObject = [accessories anyObject];
+    [anyObject mediaProfile];
   }
   v23 = ;
   v24 = v23;
@@ -909,30 +909,30 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
   if (!v12)
   {
 
-    v23 = v16;
+    v23 = accessories;
   }
 
   v27 = [MEMORY[0x277D14810] siriLanguageOptionFor:v26];
 
-  v28 = [v27 recognitionLanguage];
+  recognitionLanguage = [v27 recognitionLanguage];
 
-  return v28;
+  return recognitionLanguage;
 }
 
-- (BOOL)recognitionLanguageIsSupportedVRLanguageForItem:(id)a3
+- (BOOL)recognitionLanguageIsSupportedVRLanguageForItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUPersonalRequestsDevicesItemModule *)self supportedMULanguageCodes];
-  v7 = [(HUPersonalRequestsDevicesItemModule *)self recognitionLanguageForItem:v5];
+  itemCopy = item;
+  supportedMULanguageCodes = [(HUPersonalRequestsDevicesItemModule *)self supportedMULanguageCodes];
+  v7 = [(HUPersonalRequestsDevicesItemModule *)self recognitionLanguageForItem:itemCopy];
 
-  v8 = [v6 containsObject:v7];
+  v8 = [supportedMULanguageCodes containsObject:v7];
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     v12 = 138412802;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v10;
     v16 = 1024;
@@ -945,17 +945,17 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
 
 - (BOOL)recognitionLanguageIsSupportedVRLanguageForCurrentDevice
 {
-  v2 = [(HUPersonalRequestsDevicesItemModule *)self supportedMULanguageCodes];
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 languageCode];
-  v5 = [v2 containsObject:v4];
+  supportedMULanguageCodes = [(HUPersonalRequestsDevicesItemModule *)self supportedMULanguageCodes];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
+  v5 = [supportedMULanguageCodes containsObject:languageCode];
 
   return v5;
 }
 
-- (id)_commitUpdateToAccessControl:(id)a3
+- (id)_commitUpdateToAccessControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D2C900];
   v15[0] = MEMORY[0x277D85DD0];
@@ -963,7 +963,7 @@ void __71__HUPersonalRequestsDevicesItemModule_updateLocationDeviceToThisDevice_
   v15[2] = __68__HUPersonalRequestsDevicesItemModule__commitUpdateToAccessControl___block_invoke;
   v15[3] = &unk_277DB9D40;
   objc_copyWeak(&v17, &location);
-  v6 = v4;
+  v6 = controlCopy;
   v16 = v6;
   v7 = [v5 futureWithErrorOnlyHandlerAdapterBlock:v15];
   v12[0] = MEMORY[0x277D85DD0];
@@ -1045,8 +1045,8 @@ void __68__HUPersonalRequestsDevicesItemModule__commitUpdateToAccessControl___bl
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc(MEMORY[0x277D147F0]);
-  v4 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HUPersonalRequestsDevicesItemModule *)self home];
+  v5 = [v3 initWithHome:home];
 
   [v5 setFilter:&__block_literal_global_313];
   v6 = objc_alloc(MEMORY[0x277D14C38]);
@@ -1114,8 +1114,8 @@ id __88__HUPersonalRequestsDevicesItemModule__createPersonalRequestProviderForMe
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc(MEMORY[0x277D142F0]);
-  v4 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HUPersonalRequestsDevicesItemModule *)self home];
+  v5 = [v3 initWithHome:home];
 
   [v5 setFilter:&__block_literal_global_322];
   v6 = objc_alloc(MEMORY[0x277D14C38]);
@@ -1183,9 +1183,9 @@ id __88__HUPersonalRequestsDevicesItemModule__createPersonalRequestProviderForOt
   return v5;
 }
 
-- (id)_transformItemForSourceItem:(id)a3
+- (id)_transformItemForSourceItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D14C30]);
   v9[0] = MEMORY[0x277D85DD0];
@@ -1193,7 +1193,7 @@ id __88__HUPersonalRequestsDevicesItemModule__createPersonalRequestProviderForOt
   v9[2] = __67__HUPersonalRequestsDevicesItemModule__transformItemForSourceItem___block_invoke;
   v9[3] = &unk_277DB9E28;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = itemCopy;
   v10 = v6;
   v7 = [v5 initWithSourceItem:v6 transformationBlock:v9];
 
@@ -1490,19 +1490,19 @@ uint64_t __67__HUPersonalRequestsDevicesItemModule__transformItemForSourceItem__
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  v3 = [(HUPersonalRequestsDevicesItemModule *)self home];
-  v4 = [v3 hf_siriEndPointAccessories];
-  v5 = [v4 count] != 0;
+  home = [(HUPersonalRequestsDevicesItemModule *)self home];
+  hf_siriEndPointAccessories = [home hf_siriEndPointAccessories];
+  v5 = [hf_siriEndPointAccessories count] != 0;
 
-  v6 = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
-  v7 = [v6 activeLocationDeviceFuture];
+  locationDeviceManager = [(HUPersonalRequestsDevicesItemModule *)self locationDeviceManager];
+  activeLocationDeviceFuture = [locationDeviceManager activeLocationDeviceFuture];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__HUPersonalRequestsDevicesItemModule__attributedFooterTitle__block_invoke;
   v11[3] = &unk_277DB9E50;
   v12 = v5;
   v11[4] = &v13;
-  v8 = [v7 addCompletionBlock:v11];
+  v8 = [activeLocationDeviceFuture addCompletionBlock:v11];
 
   v9 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -1593,79 +1593,79 @@ LABEL_15:
   }
 }
 
-- (void)locationDeviceManager:(id)a3 didUpdateActiveLocationDevice:(id)a4
+- (void)locationDeviceManager:(id)manager didUpdateActiveLocationDevice:(id)device
 {
-  if ([(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches:a3])
+  if ([(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches:manager])
   {
     NSLog(&cfstr_WeShouldNeverC_0.isa);
   }
 
   if (![(HUPersonalRequestsDevicesItemModule *)self onlyShowDeviceSwitches])
   {
-    v10 = [(HFItemModule *)self itemUpdater];
+    itemUpdater = [(HFItemModule *)self itemUpdater];
     v6 = MEMORY[0x277D14788];
-    v7 = [(HFItemModule *)self allItems];
-    v8 = [v6 requestToUpdateItems:v7 senderSelector:a2];
-    v9 = [v10 performItemUpdateRequest:v8];
+    allItems = [(HFItemModule *)self allItems];
+    v8 = [v6 requestToUpdateItems:allItems senderSelector:a2];
+    v9 = [itemUpdater performItemUpdateRequest:v8];
   }
 }
 
-- (void)siriLanguageOptionsManager:(id)a3 availableLanguageOptionsDidChange:(id)a4
+- (void)siriLanguageOptionsManager:(id)manager availableLanguageOptionsDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  changeCopy = change;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v15 = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v6;
+    v20 = changeCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ Update items with available language options: %@", &v15, 0x20u);
   }
 
   v9 = [MEMORY[0x277CBEB58] set];
-  v10 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
-  [v9 na_safeAddObject:v10];
+  personalRequestsMediaAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
+  [v9 na_safeAddObject:personalRequestsMediaAccessoriesProvider];
 
-  v11 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
-  [v9 na_safeAddObject:v11];
+  personalRequestsOtherAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
+  [v9 na_safeAddObject:personalRequestsOtherAccessoriesProvider];
 
-  v12 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v13 = [MEMORY[0x277D14788] requestToReloadItemProviders:v9 senderSelector:a2];
-  v14 = [v12 performItemUpdateRequest:v13];
+  v14 = [itemUpdater performItemUpdateRequest:v13];
 }
 
-- (void)siriLanguageOptionsManager:(id)a3 selectedLanguageOptionDidChange:(id)a4
+- (void)siriLanguageOptionsManager:(id)manager selectedLanguageOptionDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  changeCopy = change;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v15 = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v6;
+    v20 = changeCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ Update items with selected language option: %@", &v15, 0x20u);
   }
 
   v9 = [MEMORY[0x277CBEB58] set];
-  v10 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
-  [v9 na_safeAddObject:v10];
+  personalRequestsMediaAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsMediaAccessoriesProvider];
+  [v9 na_safeAddObject:personalRequestsMediaAccessoriesProvider];
 
-  v11 = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
-  [v9 na_safeAddObject:v11];
+  personalRequestsOtherAccessoriesProvider = [(HUPersonalRequestsDevicesItemModule *)self personalRequestsOtherAccessoriesProvider];
+  [v9 na_safeAddObject:personalRequestsOtherAccessoriesProvider];
 
-  v12 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v13 = [MEMORY[0x277D14788] requestToReloadItemProviders:v9 senderSelector:a2];
-  v14 = [v12 performItemUpdateRequest:v13];
+  v14 = [itemUpdater performItemUpdateRequest:v13];
 }
 
 @end

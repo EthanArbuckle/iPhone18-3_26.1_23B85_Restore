@@ -1,7 +1,7 @@
 @interface EKDayTimeContentView
 - (EKDayTimeContentView)init;
 - (_NSRange)hourRange;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation EKDayTimeContentView
@@ -14,9 +14,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(EKDayTimeContentView *)v2 layer];
-    [v4 setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
-    [v4 setNeedsDisplay];
+    layer = [(EKDayTimeContentView *)v2 layer];
+    [layer setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
+    [layer setNeedsDisplay];
   }
 
   return v3;
@@ -32,16 +32,16 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   owner = self->_owner;
-  v10 = [(EKDayTimeContentView *)self hourRange];
+  hourRange = [(EKDayTimeContentView *)self hourRange];
 
-  [(EKDayTimeView *)owner drawRect:self forContentView:v10 withHourRange:v9, x, y, width, height];
+  [(EKDayTimeView *)owner drawRect:self forContentView:hourRange withHourRange:v9, x, y, width, height];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface SCRCPhotoEvaluatorResultColor
-- (SCRCPhotoEvaluatorResultColor)initWithRedLevel:(double)a3 blueLevel:(double)a4 greenLevel:(double)a5;
+- (SCRCPhotoEvaluatorResultColor)initWithRedLevel:(double)level blueLevel:(double)blueLevel greenLevel:(double)greenLevel;
 @end
 
 @implementation SCRCPhotoEvaluatorResultColor
 
-- (SCRCPhotoEvaluatorResultColor)initWithRedLevel:(double)a3 blueLevel:(double)a4 greenLevel:(double)a5
+- (SCRCPhotoEvaluatorResultColor)initWithRedLevel:(double)level blueLevel:(double)blueLevel greenLevel:(double)greenLevel
 {
   v12.receiver = self;
   v12.super_class = SCRCPhotoEvaluatorResultColor;
@@ -12,9 +12,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_redLevel = a3;
-    v8->_blueLevel = a4;
-    v8->_greenLevel = a5;
+    v8->_redLevel = level;
+    v8->_blueLevel = blueLevel;
+    v8->_greenLevel = greenLevel;
     v10 = v8;
   }
 

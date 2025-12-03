@@ -7,7 +7,7 @@
 - (id)timeZone
 {
   v2 = +[CLSTimeZones sharedInstance];
-  v3 = [v2 timeZoneWithLocation:a1];
+  v3 = [v2 timeZoneWithLocation:self];
 
   return v3;
 }

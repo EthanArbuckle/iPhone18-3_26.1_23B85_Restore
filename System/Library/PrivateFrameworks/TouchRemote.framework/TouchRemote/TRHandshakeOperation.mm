@@ -1,5 +1,5 @@
 @interface TRHandshakeOperation
-- (void)_handleResponse:(id)a3;
+- (void)_handleResponse:(id)response;
 - (void)execute;
 @end
 
@@ -10,8 +10,8 @@
   v13 = *MEMORY[0x277D85DE8];
   if ([(TRHandshakeOperation *)self isCancelled])
   {
-    v8 = [objc_opt_class() userCancelledError];
-    [(TROperation *)self finishWithError:v8];
+    userCancelledError = [objc_opt_class() userCancelledError];
+    [(TROperation *)self finishWithError:userCancelledError];
     v3 = *MEMORY[0x277D85DE8];
   }
 
@@ -31,13 +31,13 @@
     v5 = objc_alloc_init(TRHandshakeRequest);
     [(TRHandshakeRequest *)v5 setProtocolVersion:[(TRHandshakeOperation *)self protocolVersion]];
     objc_initWeak(buf, self);
-    v6 = [(TROperation *)self session];
+    session = [(TROperation *)self session];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __31__TRHandshakeOperation_execute__block_invoke;
     v9[3] = &unk_279DCECD0;
     objc_copyWeak(&v10, buf);
-    [v6 sendRequest:v5 withResponseHandler:v9];
+    [session sendRequest:v5 withResponseHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -68,10 +68,10 @@ void __31__TRHandshakeOperation_execute__block_invoke(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)_handleResponse:(id)a3
+- (void)_handleResponse:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -80,7 +80,7 @@ void __31__TRHandshakeOperation_execute__block_invoke(uint64_t a1, void *a2, voi
       *buf = 136315394;
       v14 = "[TRHandshakeOperation _handleResponse:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = responseCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "%s Handle Handshake Response: %@", buf, 0x16u);
     }
   }
@@ -88,9 +88,9 @@ void __31__TRHandshakeOperation_execute__block_invoke(uint64_t a1, void *a2, voi
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [v6 protocolVersion];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{v7, @"TRHandshakeOperationProtocolVersionKey"}];
+    v6 = responseCopy;
+    protocolVersion = [v6 protocolVersion];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{protocolVersion, @"TRHandshakeOperationProtocolVersionKey"}];
     v12 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 

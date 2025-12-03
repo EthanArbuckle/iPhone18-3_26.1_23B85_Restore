@@ -1,20 +1,20 @@
 @interface USKHelper
-+ (id)node:(id)a3 propertyWithName:(id)a4 type:(id)a5 role:(id)a6;
-+ (id)scene:(id)a3 nodeAtPath:(id)a4 type:(id)a5;
++ (id)node:(id)node propertyWithName:(id)name type:(id)type role:(id)role;
++ (id)scene:(id)scene nodeAtPath:(id)path type:(id)type;
 @end
 
 @implementation USKHelper
 
-+ (id)scene:(id)a3 nodeAtPath:(id)a4 type:(id)a5
++ (id)scene:(id)scene nodeAtPath:(id)path type:(id)type
 {
-  v5 = [a3 newNodeAtPath:a4 type:a5];
+  v5 = [scene newNodeAtPath:path type:type];
 
   return v5;
 }
 
-+ (id)node:(id)a3 propertyWithName:(id)a4 type:(id)a5 role:(id)a6
++ (id)node:(id)node propertyWithName:(id)name type:(id)type role:(id)role
 {
-  v6 = [a3 newPropertyWithName:a4 type:a5 role:a6];
+  v6 = [node newPropertyWithName:name type:type role:role];
 
   return v6;
 }

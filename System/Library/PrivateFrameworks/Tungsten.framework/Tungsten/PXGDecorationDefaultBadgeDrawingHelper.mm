@@ -1,10 +1,10 @@
 @interface PXGDecorationDefaultBadgeDrawingHelper
-- (CGImage)_sensitiveOverlayImageWithSizeClass:(int64_t)a3;
+- (CGImage)_sensitiveOverlayImageWithSizeClass:(int64_t)class;
 - (NSNumberFormatter)assetIndexFormatter;
-- (PXGDecorationBadgeInfo)decorationSpriteInfoForDecoratedSpriteIndex:(SEL)a3 decorationType:(unsigned int)a4 decoratingLayout:(int64_t)a5 assetDecorationInfo:(id)a6 overallSelectionOrder:(PXGAssetDecorationInfo *)a7 isItemSelected:(int64_t)a8 isItemHighlighted:(BOOL)a9 isItemDragged:(BOOL)a10;
+- (PXGDecorationBadgeInfo)decorationSpriteInfoForDecoratedSpriteIndex:(SEL)index decorationType:(unsigned int)type decoratingLayout:(int64_t)layout assetDecorationInfo:(id)info overallSelectionOrder:(PXGAssetDecorationInfo *)order isItemSelected:(int64_t)selected isItemHighlighted:(BOOL)highlighted isItemDragged:(BOOL)self0;
 - (PXGDecorationDefaultBadgeDrawingHelper)init;
-- (id)cacheKeyForDecorationInfo:(PXGDecorationBadgeInfo *)a3 solidColorOverlay:(id)a4 debugDecoration:(id)a5 targetSize:(CGSize)a6 cornerRadius:(id)a7 screenScale:(double)a8 viewEnvironment:(id)a9 userInterfaceDirection:(unint64_t)a10;
-- (void)drawWithDecorationInfo:(PXGDecorationBadgeInfo *)a3 solidColorOverlay:(id)a4 debugDecoration:(id)a5 cornerRadius:(id)a6 context:(CGContext *)a7 viewport:(CGRect)a8 screenScale:(double)a9 viewEnvironment:(id)a10 userInterfaceDirection:(unint64_t)a11;
+- (id)cacheKeyForDecorationInfo:(PXGDecorationBadgeInfo *)info solidColorOverlay:(id)overlay debugDecoration:(id)decoration targetSize:(CGSize)size cornerRadius:(id)radius screenScale:(double)scale viewEnvironment:(id)environment userInterfaceDirection:(unint64_t)self0;
+- (void)drawWithDecorationInfo:(PXGDecorationBadgeInfo *)info solidColorOverlay:(id)overlay debugDecoration:(id)decoration cornerRadius:(id)radius context:(CGContext *)context viewport:(CGRect)viewport screenScale:(double)scale viewEnvironment:(id)self0 userInterfaceDirection:(unint64_t)self1;
 @end
 
 @implementation PXGDecorationDefaultBadgeDrawingHelper
@@ -47,8 +47,8 @@
     self->_assetIndexFormatter = v4;
 
     [(NSNumberFormatter *)self->_assetIndexFormatter setNumberStyle:1];
-    v6 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [(NSNumberFormatter *)self->_assetIndexFormatter setLocale:v6];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [(NSNumberFormatter *)self->_assetIndexFormatter setLocale:autoupdatingCurrentLocale];
 
     assetIndexFormatter = self->_assetIndexFormatter;
   }
@@ -56,56 +56,56 @@
   return assetIndexFormatter;
 }
 
-- (CGImage)_sensitiveOverlayImageWithSizeClass:(int64_t)a3
+- (CGImage)_sensitiveOverlayImageWithSizeClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
-    v3 = [MEMORY[0x277D3CD18] sensitiveWarningBadgeImageMini];
+    sensitiveWarningBadgeImageMini = [MEMORY[0x277D3CD18] sensitiveWarningBadgeImageMini];
   }
 
   else
   {
-    if (a3)
+    if (class)
     {
       return self;
     }
 
-    v3 = [MEMORY[0x277D3CD18] sensitiveWarningBadgeImage];
+    sensitiveWarningBadgeImageMini = [MEMORY[0x277D3CD18] sensitiveWarningBadgeImage];
   }
 
-  v4 = v3;
+  v4 = sensitiveWarningBadgeImageMini;
   CGImage = PXImageGetCGImage();
   v6 = CGImageRetain(CGImage);
 
   return v6;
 }
 
-- (void)drawWithDecorationInfo:(PXGDecorationBadgeInfo *)a3 solidColorOverlay:(id)a4 debugDecoration:(id)a5 cornerRadius:(id)a6 context:(CGContext *)a7 viewport:(CGRect)a8 screenScale:(double)a9 viewEnvironment:(id)a10 userInterfaceDirection:(unint64_t)a11
+- (void)drawWithDecorationInfo:(PXGDecorationBadgeInfo *)info solidColorOverlay:(id)overlay debugDecoration:(id)decoration cornerRadius:(id)radius context:(CGContext *)context viewport:(CGRect)viewport screenScale:(double)scale viewEnvironment:(id)self0 userInterfaceDirection:(unint64_t)self1
 {
-  v15 = *&a6.var0.var1[2];
-  v16 = *&a6.var0.var0.var0;
+  v15 = *&radius.var0.var1[2];
+  v16 = *&radius.var0.var0.var0;
   v238 = v13;
   v19 = v12;
   v232 = v11;
-  v21 = *&a8.size.width;
+  v21 = *&viewport.size.width;
   v247[1] = *MEMORY[0x277D85DE8];
-  v24 = a4;
-  v25 = a5;
+  overlayCopy = overlay;
+  decorationCopy = decoration;
   v26 = v15;
-  var1 = a3->var1;
+  var1 = info->var1;
   if (_PXGDecorationDefaultPadding_onceToken != -1)
   {
     dispatch_once(&_PXGDecorationDefaultPadding_onceToken, &__block_literal_global_3562);
   }
 
-  v230 = a7;
+  contextCopy = context;
   if (var1)
   {
     if (var1 != 1)
     {
-      v209 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v210 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CGSize _PXGDecorationDefaultPadding(PXGDecorationSizeClass)"];
-      [v209 handleFailureInFunction:v210 file:@"PXGDecorationDefaultBadgeDrawingHelper.m" lineNumber:66 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v210 file:@"PXGDecorationDefaultBadgeDrawingHelper.m" lineNumber:66 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -125,35 +125,35 @@
   v218 = *(MEMORY[0x277CBF3A0] + 24);
   v219 = *(MEMORY[0x277CBF3A0] + 16);
   v29 = *v28;
-  v30 = [(PXGDecorationDefaultBadgeDrawingHelper *)self videoDurationFormatter];
-  v229 = [(PXGDecorationDefaultBadgeDrawingHelper *)self byteCountFormatter];
-  v226 = [(PXGDecorationDefaultBadgeDrawingHelper *)self selectionCountFormatter];
+  videoDurationFormatter = [(PXGDecorationDefaultBadgeDrawingHelper *)self videoDurationFormatter];
+  byteCountFormatter = [(PXGDecorationDefaultBadgeDrawingHelper *)self byteCountFormatter];
+  selectionCountFormatter = [(PXGDecorationDefaultBadgeDrawingHelper *)self selectionCountFormatter];
   v243[0] = MEMORY[0x277D85DD0];
   v243[1] = 3221225472;
   v243[2] = __180__PXGDecorationDefaultBadgeDrawingHelper_drawWithDecorationInfo_solidColorOverlay_debugDecoration_cornerRadius_context_viewport_screenScale_viewEnvironment_userInterfaceDirection___block_invoke;
   v243[3] = &__block_descriptor_40_e58_v64__0_CGRect__CGPoint_dd__CGSize_dd__8d40d48__CGColor__56l;
   v243[4] = v16;
-  v227 = v25;
+  v227 = decorationCopy;
   v228 = MEMORY[0x21CEE40A0](v243);
   v33 = 0;
-  var0 = a3->var0;
+  var0 = info->var0;
   rect = v19;
-  v233 = a9;
-  v224 = v24;
+  scaleCopy = scale;
+  v224 = overlayCopy;
   v225 = v26;
-  v223 = v30;
-  switch(a3->var0)
+  v223 = videoDurationFormatter;
+  switch(info->var0)
   {
     case 1:
       v33 = *MEMORY[0x277D3CF48];
       goto LABEL_56;
     case 2:
 LABEL_56:
-      v97 = a3->var1;
+      v97 = info->var1;
       if (v97 == 1)
       {
         v217 = 0.0;
-        v92 = [MEMORY[0x277D3CD18] favoriteBadgeImageMini];
+        favoriteBadgeImageMini = [MEMORY[0x277D3CD18] favoriteBadgeImageMini];
       }
 
       else
@@ -164,17 +164,17 @@ LABEL_56:
           goto LABEL_65;
         }
 
-        v92 = [MEMORY[0x277D3CD18] favoriteBadgeImage];
+        favoriteBadgeImageMini = [MEMORY[0x277D3CD18] favoriteBadgeImage];
       }
 
       goto LABEL_122;
     case 3:
       v217 = 0.0;
       v33 = *MEMORY[0x277D3CF48];
-      v91 = a3->var1;
+      v91 = info->var1;
       if (v91 == 1)
       {
-        v92 = [MEMORY[0x277D3CD18] contentSyndicationBadgeImageMini];
+        favoriteBadgeImageMini = [MEMORY[0x277D3CD18] contentSyndicationBadgeImageMini];
       }
 
       else
@@ -184,23 +184,23 @@ LABEL_56:
 LABEL_65:
           v54 = 0;
           v236 = 0;
-          v231 = 0;
-          v240 = 0;
+          whiteColor = 0;
+          tintColor = 0;
           v37 = 0;
           goto LABEL_123;
         }
 
-        v92 = [MEMORY[0x277D3CD18] contentSyndicationBadgeImage];
+        favoriteBadgeImageMini = [MEMORY[0x277D3CD18] contentSyndicationBadgeImage];
       }
 
 LABEL_122:
-      v147 = v92;
-      v37 = CGImageRetain([v92 CGImage]);
+      v147 = favoriteBadgeImageMini;
+      v37 = CGImageRetain([favoriteBadgeImageMini CGImage]);
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
 LABEL_123:
       v38 = 0;
       v68 = 6;
@@ -208,40 +208,40 @@ LABEL_123:
     case 4:
       v217 = 0.0;
       v33 = *MEMORY[0x277D3CF70];
-      v93 = a3->var1;
+      v93 = info->var1;
       if (v93 == 1)
       {
-        v94 = [MEMORY[0x277D3CD18] sharedLibraryBadgeImageMini];
+        mEMORY[0x277D3CD18] = [MEMORY[0x277D3CD18] sharedLibraryBadgeImageMini];
         goto LABEL_125;
       }
 
       if (!v93)
       {
-        v94 = [MEMORY[0x277D3CD18] sharedLibraryBadgeImage];
+        mEMORY[0x277D3CD18] = [MEMORY[0x277D3CD18] sharedLibraryBadgeImage];
 LABEL_125:
-        v148 = v94;
-        v37 = CGImageRetain([v94 CGImage]);
+        v148 = mEMORY[0x277D3CD18];
+        v37 = CGImageRetain([mEMORY[0x277D3CD18] CGImage]);
 
         v54 = 0;
         v236 = 0;
-        v231 = 0;
-        v240 = 0;
+        whiteColor = 0;
+        tintColor = 0;
         goto LABEL_140;
       }
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
 LABEL_140:
       v38 = 0;
       v68 = 9;
       goto LABEL_144;
     case 5:
-      if (a3->var5)
+      if (info->var5)
       {
-        v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3->var5];
+        v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", info->var5];
       }
 
       else
@@ -263,7 +263,7 @@ LABEL_140:
       }
 
       PXSizeScale();
-      if (v122 > v121 + *&a10 * 3.0)
+      if (v122 > v121 + *&environment * 3.0)
       {
         v120 = v120 + 3.0;
       }
@@ -276,7 +276,7 @@ LABEL_140:
       v54 = 2;
       PXEdgesFlippedVertically();
       v66 = v238;
-      a9 = v233;
+      scale = scaleCopy;
       PXRectWithSizeAlignedToRectEdgesWithPadding();
       PXRectGetCenter();
       PXRectWithCenterAndSize();
@@ -285,9 +285,9 @@ LABEL_140:
       v218 = v126;
       v219 = v125;
       v217 = 0.0;
-      v240 = [MEMORY[0x277D75348] colorWithWhite:? alpha:?];
+      tintColor = [MEMORY[0x277D75348] colorWithWhite:? alpha:?];
 
-      v231 = 0;
+      whiteColor = 0;
       v37 = 0;
       v33 = 0;
       v38 = 0;
@@ -298,63 +298,63 @@ LABEL_140:
       goto LABEL_62;
     case 7:
 LABEL_62:
-      v103 = a3->var1;
+      v103 = info->var1;
       if (v103 == 1)
       {
         v217 = 0.0;
-        v104 = [MEMORY[0x277D3CD18] panoramaBadgeImageMini];
+        panoramaBadgeImageMini = [MEMORY[0x277D3CD18] panoramaBadgeImageMini];
         goto LABEL_91;
       }
 
       v217 = 0.0;
       if (!v103)
       {
-        v104 = [MEMORY[0x277D3CD18] panoramaBadgeImage];
+        panoramaBadgeImageMini = [MEMORY[0x277D3CD18] panoramaBadgeImage];
 LABEL_91:
-        v117 = v104;
-        v37 = CGImageRetain([v104 CGImage]);
+        v117 = panoramaBadgeImageMini;
+        v37 = CGImageRetain([panoramaBadgeImageMini CGImage]);
 
         v54 = 0;
         v236 = 0;
-        v231 = 0;
-        v240 = 0;
+        whiteColor = 0;
+        tintColor = 0;
         goto LABEL_143;
       }
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
       goto LABEL_143;
     case 8:
-      v95 = a3->var1;
+      v95 = info->var1;
       if (v95 == 1)
       {
         v217 = 0.0;
-        v96 = [MEMORY[0x277D3CD18] cloudBadgeImageMini];
+        cloudBadgeImageMini = [MEMORY[0x277D3CD18] cloudBadgeImageMini];
         goto LABEL_127;
       }
 
       v217 = 0.0;
       if (!v95)
       {
-        v96 = [MEMORY[0x277D3CD18] cloudBadgeImage];
+        cloudBadgeImageMini = [MEMORY[0x277D3CD18] cloudBadgeImage];
 LABEL_127:
-        v149 = v96;
-        v37 = CGImageRetain([v96 CGImage]);
+        v149 = cloudBadgeImageMini;
+        v37 = CGImageRetain([cloudBadgeImageMini CGImage]);
 
         v54 = 0;
         v236 = 0;
-        v231 = 0;
-        v240 = 0;
+        whiteColor = 0;
+        tintColor = 0;
         goto LABEL_142;
       }
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
 LABEL_142:
       v33 = 0;
@@ -371,11 +371,11 @@ LABEL_145:
     case 0xALL:
       if (var0 == 9)
       {
-        var3 = a3->var3;
+        var3 = info->var3;
         if (var3 <= 0x7FFFFFFFFFFFFFFELL)
         {
           v47 = [MEMORY[0x277CCABB0] numberWithInteger:var3 + 1];
-          v48 = [v226 stringFromNumber:v47];
+          v48 = [selectionCountFormatter stringFromNumber:v47];
 
           v49 = v48;
           if (_PXSelectCountAttributedString_onceToken != -1)
@@ -384,9 +384,9 @@ LABEL_145:
           }
 
           v50 = v232;
-          if (v230)
+          if (contextCopy)
           {
-            if (v230 != 1)
+            if (contextCopy != 1)
             {
 LABEL_112:
               v135 = objc_alloc(MEMORY[0x277CCA898]);
@@ -406,9 +406,9 @@ LABEL_112:
               }
 
               PXSizeScale();
-              if (v141 > v140 + *&a10 * 3.0)
+              if (v141 > v140 + *&environment * 3.0)
               {
-                if (var3 >= [v226 selectionNumberLimit])
+                if (var3 >= [selectionCountFormatter selectionNumberLimit])
                 {
                   v142 = 4.0;
                 }
@@ -421,7 +421,7 @@ LABEL_112:
                 v139 = v139 + v142 * 0.5;
               }
 
-              v25 = v227;
+              decorationCopy = v227;
               PXSizeScale();
               PXSizeAdd();
               v68 = 12;
@@ -436,8 +436,8 @@ LABEL_112:
               v221 = v143;
               v218 = v146;
               v219 = v145;
-              v240 = [v225 tintColor];
-              v231 = [MEMORY[0x277D75348] whiteColor];
+              tintColor = [v225 tintColor];
+              whiteColor = [MEMORY[0x277D75348] whiteColor];
 
               v37 = 0;
               v33 = 0;
@@ -460,20 +460,20 @@ LABEL_112:
         }
       }
 
-      v59 = a3->var1;
+      v59 = info->var1;
       if (v59 == 1)
       {
         v217 = 0.0;
-        v60 = [MEMORY[0x277D3CD18] mediumSymbolConfiguration];
+        mediumSymbolConfiguration = [MEMORY[0x277D3CD18] mediumSymbolConfiguration];
         goto LABEL_109;
       }
 
       v217 = 0.0;
       if (!v59)
       {
-        v60 = [MEMORY[0x277D3CD18] largeSymbolConfiguration];
+        mediumSymbolConfiguration = [MEMORY[0x277D3CD18] largeSymbolConfiguration];
 LABEL_109:
-        v134 = v60;
+        v134 = mediumSymbolConfiguration;
         goto LABEL_129;
       }
 
@@ -499,16 +499,16 @@ LABEL_129:
         v153 = 0;
       }
 
-      v154 = [v26 tintColor];
-      v155 = v154;
+      tintColor2 = [v26 tintColor];
+      v155 = tintColor2;
       if (v150)
       {
-        v156 = [MEMORY[0x277D75348] blackColor];
-        [v155 px_contrastRatioToColor:v156];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [v155 px_contrastRatioToColor:blackColor];
         v158 = v157;
-        v159 = [v26 tintColor];
-        v160 = [MEMORY[0x277D75348] whiteColor];
-        [v159 px_contrastRatioToColor:v160];
+        tintColor3 = [v26 tintColor];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        [tintColor3 px_contrastRatioToColor:whiteColor2];
         if (v158 > v161)
         {
           [MEMORY[0x277D75348] blackColor];
@@ -523,7 +523,7 @@ LABEL_129:
 
       else
       {
-        [v154 px_luminance];
+        [tintColor2 px_luminance];
         if (v162 > 0.85)
         {
           [MEMORY[0x277D75348] blackColor];
@@ -544,22 +544,22 @@ LABEL_129:
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v33 = 0;
       v38 = 0;
       v68 = 12;
       v69 = v234;
       v222 = v235;
-      v25 = v227;
+      decorationCopy = v227;
       goto LABEL_147;
     case 0xBLL:
     case 0x1BLL:
     case 0x1CLL:
     case 0x1DLL:
       v33 = *MEMORY[0x277D3CF58];
-      v35 = a3->var0;
-      if (a3->var0 <= 27)
+      v35 = info->var0;
+      if (info->var0 <= 27)
       {
         if (v35 == 11)
         {
@@ -569,7 +569,7 @@ LABEL_129:
 
         if (v35 == 27)
         {
-          v36 = [v229 stringFromByteCount:a3->var4];
+          v36 = [byteCountFormatter stringFromByteCount:info->var4];
 LABEL_81:
           v44 = v36;
           v37 = 0;
@@ -577,14 +577,14 @@ LABEL_81:
         }
 
 LABEL_202:
-        v211 = [MEMORY[0x277CCA890] currentHandler];
-        v212 = v211;
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        v212 = currentHandler2;
         v213 = @"Code which should be unreachable has been reached";
         v214 = a2;
-        v215 = self;
+        selfCopy2 = self;
         v216 = 734;
 LABEL_203:
-        [v211 handleFailureInMethod:v214 object:v215 file:@"PXGDecorationDefaultBadgeDrawingHelper.m" lineNumber:v216 description:v213];
+        [currentHandler2 handleFailureInMethod:v214 object:selfCopy2 file:@"PXGDecorationDefaultBadgeDrawingHelper.m" lineNumber:v216 description:v213];
 
         abort();
       }
@@ -595,11 +595,11 @@ LABEL_203:
         {
           v40 = MEMORY[0x277CCACA8];
           v41 = PXLocalizedVideoDuration();
-          [v229 stringFromByteCount:a3->var4];
-          v43 = v42 = v25;
+          [byteCountFormatter stringFromByteCount:info->var4];
+          v43 = v42 = decorationCopy;
           v44 = [v40 stringWithFormat:@"%@\n%@", v41, v43];
 
-          v25 = v42;
+          decorationCopy = v42;
           v45 = *MEMORY[0x277D3CF60];
 
           v37 = 0;
@@ -612,12 +612,12 @@ LABEL_82:
         goto LABEL_202;
       }
 
-      v44 = [v229 stringFromByteCount:a3->var4];
-      v115 = a3->var1;
+      v44 = [byteCountFormatter stringFromByteCount:info->var4];
+      v115 = info->var1;
       if (v115 == 1)
       {
-        v204 = [MEMORY[0x277D3CD18] panoramaBadgeImageMini];
-        v37 = CGImageRetain([v204 CGImage]);
+        panoramaBadgeImageMini2 = [MEMORY[0x277D3CD18] panoramaBadgeImageMini];
+        v37 = CGImageRetain([panoramaBadgeImageMini2 CGImage]);
 
         goto LABEL_82;
       }
@@ -630,8 +630,8 @@ LABEL_82:
 
       else
       {
-        v116 = [MEMORY[0x277D3CD18] panoramaBadgeImage];
-        v37 = CGImageRetain([v116 CGImage]);
+        panoramaBadgeImage = [MEMORY[0x277D3CD18] panoramaBadgeImage];
+        v37 = CGImageRetain([panoramaBadgeImage CGImage]);
       }
 
 LABEL_83:
@@ -648,8 +648,8 @@ LABEL_83:
       v236 = v112;
       v222 = v29 + v114;
 
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v38 = 0;
       v68 = 12;
       v54 = 1;
@@ -657,15 +657,15 @@ LABEL_83:
 LABEL_146:
       v50 = v232;
 LABEL_147:
-      if (v25)
+      if (decorationCopy)
       {
-        v163 = [v25 objectForKeyedSubscript:PXGDebugDecorationBackgroundColorKey];
+        v163 = [decorationCopy objectForKeyedSubscript:PXGDebugDecorationBackgroundColorKey];
 
-        v164 = [v25 objectForKeyedSubscript:PXGDebugDecorationAttributedTextKey];
+        v164 = [decorationCopy objectForKeyedSubscript:PXGDebugDecorationAttributedTextKey];
 
-        v165 = [v25 objectForKeyedSubscript:PXGDebugDecorationBottomEdgeColorKey];
-        v166 = v25;
-        v25 = v165;
+        v165 = [decorationCopy objectForKeyedSubscript:PXGDebugDecorationBottomEdgeColorKey];
+        v166 = decorationCopy;
+        decorationCopy = v165;
         if (v164)
         {
           v54 = 2;
@@ -679,8 +679,8 @@ LABEL_147:
           {
             v168 = objc_alloc(MEMORY[0x277CCA898]);
             v246 = *MEMORY[0x277D740C0];
-            v169 = [MEMORY[0x277D75348] orangeColor];
-            v247[0] = v169;
+            orangeColor = [MEMORY[0x277D75348] orangeColor];
+            v247[0] = orangeColor;
             v170 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v247 forKeys:&v246 count:1];
             v236 = [v168 initWithString:v167 attributes:v170];
           }
@@ -699,8 +699,8 @@ LABEL_147:
         v163 = v38;
       }
 
-      v171 = v231;
-      if (v230 == 1)
+      v171 = whiteColor;
+      if (contextCopy == 1)
       {
         v68 = PXEdgesFlippedHorizontally();
         v172 = *MEMORY[0x277D3CF58];
@@ -719,25 +719,25 @@ LABEL_147:
         v183 = PXGCreateSRGBColorFromDisplayP3Color([v163 CGColor]);
         CGContextSetFillColorWithColor(v16, v183);
         CGColorRelease(v183);
-        v254.origin.x = a9;
+        v254.origin.x = scale;
         v254.origin.y = v50;
         v254.size.width = v19;
         v254.size.height = v66;
         CGContextFillRect(v16, v254);
       }
 
-      if (v25)
+      if (decorationCopy)
       {
-        v184 = PXGCreateSRGBColorFromDisplayP3Color([v25 CGColor]);
+        v184 = PXGCreateSRGBColorFromDisplayP3Color([decorationCopy CGColor]);
         CGContextSetFillColorWithColor(v16, v184);
         CGColorRelease(v184);
-        v255.origin.x = a9;
+        v255.origin.x = scale;
         v255.origin.y = v50;
         v255.size.width = v19;
         v255.size.height = v66;
-        v256 = CGRectInset(v255, *&a10 * 3.0, *&a10 * 3.0);
+        v256 = CGRectInset(v255, *&environment * 3.0, *&environment * 3.0);
         CGRectGetWidth(v256);
-        a9 = v233;
+        scale = scaleCopy;
         v66 = v238;
         PXRectWithSizeAlignedToRectEdges();
         CGContextFillRect(v16, v257);
@@ -762,7 +762,7 @@ LABEL_147:
         CGImageGetWidth(v186);
         CGImageGetHeight(v186);
         PXEdgesFlippedVertically();
-        a9 = v233;
+        scale = scaleCopy;
         PXRectWithSizeAlignedToRectEdgesWithPadding();
         v189 = v188;
         v191 = v190;
@@ -779,7 +779,7 @@ LABEL_147:
         v66 = v238;
         CGContextDrawImage(v16, v258, v186);
         CGContextRestoreGState(v16);
-        v171 = v231;
+        v171 = whiteColor;
       }
 
       if (v37)
@@ -790,36 +790,36 @@ LABEL_147:
         PXVisionScaledFloat();
         PXSizeScale();
         PXEdgesFlippedVertically();
-        a9 = v233;
+        scale = scaleCopy;
         v19 = rect;
         PXRectWithSizeAlignedToRectEdgesWithPadding();
         CGContextDrawImage(v16, v259, v37);
         CGImageRelease(v37);
       }
 
-      if (v240)
+      if (tintColor)
       {
         CGContextSaveGState(v16);
-        v196 = PXGCreateSRGBColorFromDisplayP3Color([v240 CGColor]);
+        v196 = PXGCreateSRGBColorFromDisplayP3Color([tintColor CGColor]);
         CGContextSetFillColorWithColor(v16, v196);
         CGColorRelease(v196);
         v197 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v221 cornerRadius:{v220, v219, v218, fmin(v219, v218) * 0.5}];
-        v198 = [v197 CGPath];
+        cGPath = [v197 CGPath];
 
-        CGPathRetain(v198);
-        CGContextAddPath(v16, v198);
+        CGPathRetain(cGPath);
+        CGContextAddPath(v16, cGPath);
         CGContextFillPath(v16);
         if (v171)
         {
           v199 = PXGCreateSRGBColorFromDisplayP3Color([v171 CGColor]);
           CGContextSetStrokeColorWithColor(v16, v199);
           CGColorRelease(v199);
-          CGContextSetLineWidth(v16, v217 * *&a10);
-          CGContextAddPath(v16, v198);
+          CGContextSetLineWidth(v16, v217 * *&environment);
+          CGContextAddPath(v16, cGPath);
           CGContextStrokePath(v16);
         }
 
-        CGPathRelease(v198);
+        CGPathRelease(cGPath);
         CGContextRestoreGState(v16);
       }
 
@@ -862,23 +862,23 @@ LABEL_147:
           v200 = v222;
         }
 
-        PXGDrawAttributedString(v236, 1, 0, v54, v16, v235, v234, v201, v203, v202, v200, v31, v32, a9, v50, v19, v66, *&a10);
+        PXGDrawAttributedString(v236, 1, 0, v54, v16, v235, v234, v201, v203, v202, v200, v31, v32, scale, v50, v19, v66, *&environment);
       }
 
       return;
     case 0xCLL:
-      v56 = a3->var1;
+      v56 = info->var1;
       if (v56 == 1)
       {
         v217 = 0.0;
-        v57 = v25;
-        v58 = [MEMORY[0x277D3CD18] mediumSymbolConfiguration];
+        v57 = decorationCopy;
+        mediumSymbolConfiguration2 = [MEMORY[0x277D3CD18] mediumSymbolConfiguration];
       }
 
       else
       {
         v217 = 0.0;
-        v57 = v25;
+        v57 = decorationCopy;
         if (v56)
         {
           v128 = 0;
@@ -887,48 +887,48 @@ LABEL_106:
           v130 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle"];
           v131 = [v130 px_imageWithSymbolConfiguration:v128];
 
-          v132 = [MEMORY[0x277D75348] whiteColor];
-          v133 = [v131 px_tintedCircularImageWithColor:v132 backgroundColor:v129];
+          whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+          v133 = [v131 px_tintedCircularImageWithColor:whiteColor3 backgroundColor:v129];
           v37 = CGImageRetain([v133 CGImage]);
 
           v54 = 0;
           v236 = 0;
-          v231 = 0;
-          v240 = 0;
+          whiteColor = 0;
+          tintColor = 0;
           v33 = 0;
           v38 = 0;
           v68 = 12;
           v69 = v234;
           v222 = v235;
-          v25 = v57;
+          decorationCopy = v57;
 LABEL_107:
           v66 = v238;
           v50 = v232;
           goto LABEL_147;
         }
 
-        v58 = [MEMORY[0x277D3CD18] largeSymbolConfiguration];
+        mediumSymbolConfiguration2 = [MEMORY[0x277D3CD18] largeSymbolConfiguration];
       }
 
-      v128 = v58;
+      v128 = mediumSymbolConfiguration2;
       goto LABEL_106;
     case 0xDLL:
       v217 = 0.0;
       v33 = *MEMORY[0x277D3CF58];
-      v88 = [MEMORY[0x277D3CD18] ocrAssetBadgeImage];
+      ocrAssetBadgeImage = [MEMORY[0x277D3CD18] ocrAssetBadgeImage];
       CGImage = PXImageGetCGImage();
       v37 = CGImageRetain(CGImage);
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v38 = 0;
       v68 = 12;
       goto LABEL_78;
     case 0xELL:
       v217 = 0.0;
-      v55 = [MEMORY[0x277D75348] colorWithWhite:? alpha:?];
+      systemOrangeColor = [MEMORY[0x277D75348] colorWithWhite:? alpha:?];
       goto LABEL_67;
     case 0xFLL:
       goto LABEL_36;
@@ -936,8 +936,8 @@ LABEL_107:
       goto LABEL_32;
     case 0x11:
       v217 = 0.0;
-      v100 = [v26 backgroundColor];
-      v101 = v100;
+      backgroundColor = [v26 backgroundColor];
+      v101 = backgroundColor;
       v102 = 0.25;
       goto LABEL_69;
     case 0x12:
@@ -950,24 +950,24 @@ LABEL_107:
       goto LABEL_70;
     case 0x13:
       v217 = 0.0;
-      v100 = [v26 backgroundColor];
-      v101 = v100;
+      backgroundColor = [v26 backgroundColor];
+      v101 = backgroundColor;
       v102 = 0.400000006;
 LABEL_69:
-      v38 = [v100 colorWithAlphaComponent:v102];
+      v38 = [backgroundColor colorWithAlphaComponent:v102];
 
       goto LABEL_70;
     case 0x14:
       v217 = 0.0;
-      v55 = v24;
+      systemOrangeColor = overlayCopy;
       goto LABEL_67;
     case 0x15:
       v217 = 0.0;
-      v37 = [(PXGDecorationDefaultBadgeDrawingHelper *)self _sensitiveOverlayImageWithSizeClass:a3->var1];
+      v37 = [(PXGDecorationDefaultBadgeDrawingHelper *)self _sensitiveOverlayImageWithSizeClass:info->var1];
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v33 = 0;
       v68 = 0;
       v38 = 0;
@@ -975,7 +975,7 @@ LABEL_69:
       v222 = v235;
       goto LABEL_145;
     case 0x16:
-      v33 = [(PXGDecorationDefaultBadgeDrawingHelper *)self _sensitiveOverlayImageWithSizeClass:a3->var1];
+      v33 = [(PXGDecorationDefaultBadgeDrawingHelper *)self _sensitiveOverlayImageWithSizeClass:info->var1];
 LABEL_36:
       v217 = 0.0;
       v242[0] = MEMORY[0x277D85DD0];
@@ -983,36 +983,36 @@ LABEL_36:
       v242[2] = __180__PXGDecorationDefaultBadgeDrawingHelper_drawWithDecorationInfo_solidColorOverlay_debugDecoration_cornerRadius_context_viewport_screenScale_viewEnvironment_userInterfaceDirection___block_invoke_23;
       v242[3] = &__block_descriptor_80_e24_v32__0d8__CGColor__16d24l;
       v50 = v232;
-      *&v242[4] = a9;
+      *&v242[4] = scale;
       *&v242[5] = v232;
       v66 = v238;
       *&v242[6] = v19;
       *&v242[7] = v238;
-      v242[8] = a10;
+      v242[8] = environment;
       v242[9] = v16;
       v71 = MEMORY[0x21CEE40A0](v242);
       if (v21 <= 0.0)
       {
         v71[2](v71, [v26 focusRingColor], 3.0, 0.0);
-        v83 = [v26 backgroundColor];
-        v71[2](v71, [v83 CGColor], 1.0, 3.0);
+        backgroundColor2 = [v26 backgroundColor];
+        v71[2](v71, [backgroundColor2 CGColor], 1.0, 3.0);
       }
 
       else
       {
-        v72 = *&a10 * 3.0;
-        v73 = v21 * *&a10;
-        v250.origin.x = v233;
+        v72 = *&environment * 3.0;
+        v73 = v21 * *&environment;
+        v250.origin.x = scaleCopy;
         v250.origin.y = v232;
         v250.size.width = v19;
         v250.size.height = v238;
-        v251 = CGRectInset(v250, *&a10 * 3.0 * 0.5, *&a10 * 3.0 * 0.5);
+        v251 = CGRectInset(v250, *&environment * 3.0 * 0.5, *&environment * 3.0 * 0.5);
         x = v251.origin.x;
         y = v251.origin.y;
         width = v251.size.width;
         height = v251.size.height;
-        v228[2](v228, [v26 focusRingColor], v251.origin.x, v251.origin.y, v251.size.width, v251.size.height, *&a10 * 3.0, v73);
-        if (v73 - *&a10 * 3.0 >= 0.0)
+        v228[2](v228, [v26 focusRingColor], v251.origin.x, v251.origin.y, v251.size.width, v251.size.height, *&environment * 3.0, v73);
+        if (v73 - *&environment * 3.0 >= 0.0)
         {
           v78 = v73 - v72;
         }
@@ -1026,26 +1026,26 @@ LABEL_36:
         v252.origin.y = y;
         v252.size.width = width;
         v252.size.height = height;
-        v253 = CGRectInset(v252, (v72 + *&a10) * 0.5, (v72 + *&a10) * 0.5);
+        v253 = CGRectInset(v252, (v72 + *&environment) * 0.5, (v72 + *&environment) * 0.5);
         v79 = v253.origin.x;
         v80 = v253.origin.y;
         v81 = v253.size.width;
         v82 = v253.size.height;
-        v83 = [v26 backgroundColor];
-        v84 = [v83 CGColor];
+        backgroundColor2 = [v26 backgroundColor];
+        cGColor = [backgroundColor2 CGColor];
         v85 = v80;
         v86 = v82;
         v66 = v238;
         v87 = v78;
         v50 = v232;
-        a9 = v233;
-        v228[2](v228, v84, v79, v85, v81, v86, *&a10, v87);
+        scale = scaleCopy;
+        v228[2](v228, cGColor, v79, v85, v81, v86, *&environment, v87);
       }
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v68 = 0;
       v38 = 0;
       v69 = v234;
@@ -1054,12 +1054,12 @@ LABEL_36:
       v33 = 0;
       goto LABEL_147;
     case 0x17:
-      v33 = [(PXGDecorationDefaultBadgeDrawingHelper *)self _sensitiveOverlayImageWithSizeClass:a3->var1];
+      v33 = [(PXGDecorationDefaultBadgeDrawingHelper *)self _sensitiveOverlayImageWithSizeClass:info->var1];
 LABEL_32:
       v217 = 0.0;
-      v61 = *&a10 * 3.0 * 0.5;
+      v61 = *&environment * 3.0 * 0.5;
       v50 = v232;
-      v248.origin.x = v233;
+      v248.origin.x = scaleCopy;
       v248.origin.y = v232;
       v248.size.width = v19;
       v248.size.height = v238;
@@ -1068,16 +1068,16 @@ LABEL_32:
       v62 = v249.origin.y;
       v63 = v249.size.width;
       v237 = v249.size.height;
-      v64 = [v26 focusRingColor];
+      focusRingColor = [v26 focusRingColor];
       v65 = v62;
       v66 = v238;
-      v67 = v61 + (v21 + 1.0) * *&a10;
-      a9 = v233;
-      v228[2](v228, v64, v241, v65, v63, v237, *&a10 * 3.0, v67);
+      v67 = v61 + (v21 + 1.0) * *&environment;
+      scale = scaleCopy;
+      v228[2](v228, focusRingColor, v241, v65, v63, v237, *&environment * 3.0, v67);
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v68 = 0;
       v38 = 0;
       v69 = v234;
@@ -1087,7 +1087,7 @@ LABEL_32:
       goto LABEL_147;
     case 0x18:
       v217 = 0.0;
-      v110 = [MEMORY[0x277D3CD18] livePhotoBadgeShadowedImage];
+      livePhotoBadgeShadowedImage = [MEMORY[0x277D3CD18] livePhotoBadgeShadowedImage];
       v111 = PXImageGetCGImage();
       v37 = CGImageRetain(v111);
 
@@ -1102,8 +1102,8 @@ LABEL_32:
 
         v54 = 0;
         v236 = 0;
-        v231 = 0;
-        v240 = 0;
+        whiteColor = 0;
+        tintColor = 0;
         v37 = 0;
         v33 = 0;
         v38 = 0;
@@ -1113,8 +1113,8 @@ LABEL_32:
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v33 = 0;
       v38 = 0;
 LABEL_77:
@@ -1125,53 +1125,53 @@ LABEL_78:
       goto LABEL_107;
     case 0x19:
       v217 = 0.0;
-      v52 = [MEMORY[0x277D3CD18] spatialBadgeImage];
+      spatialBadgeImage = [MEMORY[0x277D3CD18] spatialBadgeImage];
       v53 = PXImageGetCGImage();
       v37 = CGImageRetain(v53);
 
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v33 = 0;
       v38 = 0;
       goto LABEL_77;
     case 0x1ALL:
       v33 = *MEMORY[0x277D3CF68];
-      v105 = [(PXGDecorationDefaultBadgeDrawingHelper *)self assetIndexFormatter];
-      v106 = [MEMORY[0x277CCABB0] numberWithInteger:a3->var5];
-      [v105 stringFromNumber:v106];
-      v108 = v107 = v25;
+      assetIndexFormatter = [(PXGDecorationDefaultBadgeDrawingHelper *)self assetIndexFormatter];
+      v106 = [MEMORY[0x277CCABB0] numberWithInteger:info->var5];
+      [assetIndexFormatter stringFromNumber:v106];
+      v108 = v107 = decorationCopy;
 
       v236 = PXAttributedStringForBadgeText();
       v217 = 0.0;
       PXFloatFloorToPixel();
       v222 = v29 + v109;
 
-      v25 = v107;
-      v231 = 0;
-      v240 = 0;
+      decorationCopy = v107;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
       v38 = 0;
       goto LABEL_73;
     case 0x1ELL:
-      v211 = [MEMORY[0x277CCA890] currentHandler];
-      v212 = v211;
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      v212 = currentHandler2;
       v213 = @"Custom view decorations require presentationType == PXGPresentationTypeView";
       v214 = a2;
-      v215 = self;
+      selfCopy2 = self;
       v216 = 796;
       goto LABEL_203;
     case 0x1FLL:
       v217 = 0.0;
-      v55 = [MEMORY[0x277D75348] systemOrangeColor];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
 LABEL_67:
-      v38 = v55;
+      v38 = systemOrangeColor;
 LABEL_70:
       v54 = 0;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
       v33 = 0;
       v68 = 0;
@@ -1185,8 +1185,8 @@ LABEL_70:
       v33 = *MEMORY[0x277D3CF68];
       v217 = 0.0;
       PXFloatFloorToPixel();
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
       v38 = 0;
       v222 = v29 + v39;
@@ -1200,8 +1200,8 @@ LABEL_73:
       v33 = *MEMORY[0x277D3CF70];
       v217 = 0.0;
       PXFloatFloorToPixel();
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
       v38 = 0;
       v222 = v29 + v90;
@@ -1216,8 +1216,8 @@ LABEL_74:
       v69 = v234;
       v222 = v235;
       v236 = 0;
-      v231 = 0;
-      v240 = 0;
+      whiteColor = 0;
+      tintColor = 0;
       v37 = 0;
       v38 = 0;
       goto LABEL_107;
@@ -1267,27 +1267,27 @@ double __180__PXGDecorationDefaultBadgeDrawingHelper_drawWithDecorationInfo_soli
   return result;
 }
 
-- (id)cacheKeyForDecorationInfo:(PXGDecorationBadgeInfo *)a3 solidColorOverlay:(id)a4 debugDecoration:(id)a5 targetSize:(CGSize)a6 cornerRadius:(id)a7 screenScale:(double)a8 viewEnvironment:(id)a9 userInterfaceDirection:(unint64_t)a10
+- (id)cacheKeyForDecorationInfo:(PXGDecorationBadgeInfo *)info solidColorOverlay:(id)overlay debugDecoration:(id)decoration targetSize:(CGSize)size cornerRadius:(id)radius screenScale:(double)scale viewEnvironment:(id)environment userInterfaceDirection:(unint64_t)self0
 {
-  v12 = *&a7.var0.var0.var0;
+  v12 = *&radius.var0.var0.var0;
   v13 = v11;
   v14 = v10;
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v53[2] = *MEMORY[0x277D85DE8];
-  v19 = a4;
-  v20 = a5;
+  overlayCopy = overlay;
+  decorationCopy = decoration;
   v21 = v12;
   v22 = 0x277CCA000uLL;
-  v23 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:a3 objCType:"{PXGDecorationBadgeInfo=qqdqqq}"];
+  v23 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:info objCType:"{PXGDecorationBadgeInfo=qqdqqq}"];
   v53[0] = v23;
   v24 = 0x277CCA000uLL;
   v25 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   v53[1] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
 
-  var0 = a3->var0;
-  if (a3->var0 > 0x17uLL)
+  var0 = info->var0;
+  if (info->var0 > 0x17uLL)
   {
     goto LABEL_15;
   }
@@ -1315,7 +1315,7 @@ LABEL_6:
 
   if (var0 == 11)
   {
-    v28 = [MEMORY[0x277CCABB0] numberWithInteger:llround(a3->var2)];
+    v28 = [MEMORY[0x277CCABB0] numberWithInteger:llround(info->var2)];
     v51[0] = v28;
     *v47 = width;
     *&v47[1] = height;
@@ -1334,9 +1334,9 @@ LABEL_6:
 
   if (var0 == 20)
   {
-    if (v19)
+    if (overlayCopy)
     {
-      v32 = [v26 arrayByAddingObject:v19];
+      v32 = [v26 arrayByAddingObject:overlayCopy];
       goto LABEL_6;
     }
   }
@@ -1347,7 +1347,7 @@ LABEL_15:
     if (var0 == 9)
     {
       v50[0] = v21;
-      v28 = [MEMORY[0x277CCABB0] numberWithInteger:a3->var3];
+      v28 = [MEMORY[0x277CCABB0] numberWithInteger:info->var3];
       v50[1] = v28;
       v29 = MEMORY[0x277CBEA60];
       v30 = v50;
@@ -1356,9 +1356,9 @@ LABEL_15:
   }
 
 LABEL_7:
-  if (v20)
+  if (decorationCopy)
   {
-    v49[0] = v20;
+    v49[0] = decorationCopy;
     v38 = [*(v24 + 2992) numberWithDouble:v13];
     v49[1] = v38;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
@@ -1390,26 +1390,26 @@ LABEL_7:
   return v33;
 }
 
-- (PXGDecorationBadgeInfo)decorationSpriteInfoForDecoratedSpriteIndex:(SEL)a3 decorationType:(unsigned int)a4 decoratingLayout:(int64_t)a5 assetDecorationInfo:(id)a6 overallSelectionOrder:(PXGAssetDecorationInfo *)a7 isItemSelected:(int64_t)a8 isItemHighlighted:(BOOL)a9 isItemDragged:(BOOL)a10
+- (PXGDecorationBadgeInfo)decorationSpriteInfoForDecoratedSpriteIndex:(SEL)index decorationType:(unsigned int)type decoratingLayout:(int64_t)layout assetDecorationInfo:(id)info overallSelectionOrder:(PXGAssetDecorationInfo *)order isItemSelected:(int64_t)selected isItemHighlighted:(BOOL)highlighted isItemDragged:(BOOL)self0
 {
-  v11 = a9;
-  v16 = a6;
+  highlightedCopy = highlighted;
+  infoCopy = info;
   *retstr = *PXGDecorationBadgeInfoNull;
-  if (a5 > 4)
+  if (layout > 4)
   {
-    if ((a5 - 5) >= 2)
+    if ((layout - 5) >= 2)
     {
-      if (a5 == 7)
+      if (layout == 7)
       {
-        v37 = v16;
-        v21 = [v16 tapbackDecorationSource];
+        v37 = infoCopy;
+        tapbackDecorationSource = [infoCopy tapbackDecorationSource];
 
-        if (v21)
+        if (tapbackDecorationSource)
         {
           goto LABEL_39;
         }
 
-        if ((a7->var0 & 0x20000000) != 0)
+        if ((order->var0 & 0x20000000) != 0)
         {
           v26 = 31;
           goto LABEL_40;
@@ -1417,17 +1417,17 @@ LABEL_7:
 
         retstr->var0 = 0;
 LABEL_41:
-        v16 = v37;
+        infoCopy = v37;
         goto LABEL_82;
       }
 
-      if (a5 != 8)
+      if (layout != 8)
       {
         goto LABEL_82;
       }
 
-      var0 = a7->var0;
-      if ((a7->var0 & 0x400000000000) != 0)
+      var0 = order->var0;
+      if ((order->var0 & 0x400000000000) != 0)
       {
         v17 = 32;
         goto LABEL_81;
@@ -1448,7 +1448,7 @@ LABEL_41:
       if ((var0 & 0x200000000000) != 0)
       {
         retstr->var0 = 26;
-        retstr->var5 = a7->var2;
+        retstr->var5 = order->var2;
         goto LABEL_82;
       }
 
@@ -1469,12 +1469,12 @@ LABEL_41:
     goto LABEL_82;
   }
 
-  if (a5 <= 1)
+  if (layout <= 1)
   {
-    if (!a5)
+    if (!layout)
     {
-      v27 = a7->var0;
-      if (a7->var0)
+      v27 = order->var0;
+      if (order->var0)
       {
         if ((v27 & 0x20) != 0)
         {
@@ -1500,24 +1500,24 @@ LABEL_41:
       goto LABEL_81;
     }
 
-    if (a5 != 1)
+    if (layout != 1)
     {
       goto LABEL_82;
     }
 
-    v37 = v16;
-    v19 = [v16 selectionDecorationStyle];
-    v20 = v19;
-    if (v11 && _SelectionStyleUsesBadge(v19))
+    v37 = infoCopy;
+    selectionDecorationStyle = [infoCopy selectionDecorationStyle];
+    v20 = selectionDecorationStyle;
+    if (highlightedCopy && _SelectionStyleUsesBadge(selectionDecorationStyle))
     {
       retstr->var0 = 9;
-      retstr->var3 = a8;
+      retstr->var3 = selected;
       goto LABEL_41;
     }
 
-    v31 = a7->var0;
-    v16 = v37;
-    if ((a7->var0 & 0x200000000) != 0)
+    v31 = order->var0;
+    infoCopy = v37;
+    if ((order->var0 & 0x200000000) != 0)
     {
       v17 = 12;
       goto LABEL_81;
@@ -1556,7 +1556,7 @@ LABEL_81:
 
     else
     {
-      var1 = a7->var1;
+      var1 = order->var1;
       if (var1 != 0.0)
       {
         if ((v31 & 0x10000000000) == 0)
@@ -1581,22 +1581,22 @@ LABEL_81:
 
     retstr->var0 = v35;
 LABEL_96:
-    retstr->var4 = a7->var3;
+    retstr->var4 = order->var3;
     goto LABEL_82;
   }
 
-  if (a5 != 2)
+  if (layout != 2)
   {
-    if (a5 != 3)
+    if (layout != 3)
     {
-      if ((a7->var0 & 0x2000000000) != 0)
+      if ((order->var0 & 0x2000000000) != 0)
       {
         v17 = 4;
       }
 
       else
       {
-        if ((a7->var0 & 0x2000000000000) == 0)
+        if ((order->var0 & 0x2000000000000) == 0)
         {
           goto LABEL_82;
         }
@@ -1607,13 +1607,13 @@ LABEL_96:
       goto LABEL_81;
     }
 
-    v37 = v16;
-    v28 = [v16 selectionDecorationStyle];
-    v29 = [v37 selectionDecorationOptions];
-    if (v11)
+    v37 = infoCopy;
+    selectionDecorationStyle2 = [infoCopy selectionDecorationStyle];
+    selectionDecorationOptions = [v37 selectionDecorationOptions];
+    if (highlightedCopy)
     {
-      v30 = v29;
-      if (_SelectionStyleUsesBadge(v28))
+      v30 = selectionDecorationOptions;
+      if (_SelectionStyleUsesBadge(selectionDecorationStyle2))
       {
         if ((v30 & 2) != 0)
         {
@@ -1628,11 +1628,11 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v37 = v16;
-  v22 = [v16 selectionDecorationStyle];
-  v23 = [v37 selectionDecorationOptions];
-  v24 = a7->var0 & 0x20000000000000;
-  v25 = v22 == 2 && v11;
+  v37 = infoCopy;
+  selectionDecorationStyle3 = [infoCopy selectionDecorationStyle];
+  selectionDecorationOptions2 = [v37 selectionDecorationOptions];
+  v24 = order->var0 & 0x20000000000000;
+  v25 = selectionDecorationStyle3 == 2 && highlightedCopy;
   if (v25 && v24)
   {
     v26 = 23;
@@ -1641,20 +1641,20 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v32 = v22 == 1 && v11;
+  v32 = selectionDecorationStyle3 == 1 && highlightedCopy;
   if (v32 && v24)
   {
     v26 = 22;
     goto LABEL_40;
   }
 
-  if ((a7->var0 & 0x20000000000000) != 0)
+  if ((order->var0 & 0x20000000000000) != 0)
   {
     v26 = 21;
     goto LABEL_40;
   }
 
-  if (a10)
+  if (dragged)
   {
     v26 = 14;
     goto LABEL_40;
@@ -1672,35 +1672,35 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (v11 && v22 == 3)
+  if (highlightedCopy && selectionDecorationStyle3 == 3)
   {
     v26 = 17;
     goto LABEL_40;
   }
 
-  if (!v11 && (v23 & 1) != 0)
+  if (!highlightedCopy && (selectionDecorationOptions2 & 1) != 0)
   {
     v26 = 18;
     goto LABEL_40;
   }
 
-  if (v22 == 5)
+  if (selectionDecorationStyle3 == 5)
   {
     v26 = 19;
     goto LABEL_40;
   }
 
-  v16 = v37;
+  infoCopy = v37;
   if (a11)
   {
     v17 = 17;
     goto LABEL_81;
   }
 
-  v36 = [v37 solidColorOverlayDecorationSource];
+  solidColorOverlayDecorationSource = [v37 solidColorOverlayDecorationSource];
 
-  v16 = v37;
-  if (v36)
+  infoCopy = v37;
+  if (solidColorOverlayDecorationSource)
   {
     v17 = 20;
     goto LABEL_81;

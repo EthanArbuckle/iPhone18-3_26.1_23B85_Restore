@@ -1,16 +1,16 @@
 @interface _DT_GCDAsyncSocketPreBuffer
-- (_DT_GCDAsyncSocketPreBuffer)initWithCapacity:(unint64_t)a3;
+- (_DT_GCDAsyncSocketPreBuffer)initWithCapacity:(unint64_t)capacity;
 - (void)dealloc;
-- (void)didRead:(unint64_t)a3;
-- (void)ensureCapacityForWrite:(unint64_t)a3;
-- (void)getReadBuffer:(char *)a3 availableBytes:(unint64_t *)a4;
-- (void)getWriteBuffer:(char *)a3 availableSpace:(unint64_t *)a4;
+- (void)didRead:(unint64_t)read;
+- (void)ensureCapacityForWrite:(unint64_t)write;
+- (void)getReadBuffer:(char *)buffer availableBytes:(unint64_t *)bytes;
+- (void)getWriteBuffer:(char *)buffer availableSpace:(unint64_t *)space;
 - (void)reset;
 @end
 
 @implementation _DT_GCDAsyncSocketPreBuffer
 
-- (_DT_GCDAsyncSocketPreBuffer)initWithCapacity:(unint64_t)a3
+- (_DT_GCDAsyncSocketPreBuffer)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = _DT_GCDAsyncSocketPreBuffer;
@@ -18,8 +18,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->preBufferSize = a3;
-    v6 = malloc_type_malloc(a3, 0xB9023898uLL);
+    v4->preBufferSize = capacity;
+    v6 = malloc_type_malloc(capacity, 0xB9023898uLL);
     v5->preBuffer = v6;
     v5->readPointer = v6;
     v5->writePointer = v6;
@@ -41,12 +41,12 @@
   [(_DT_GCDAsyncSocketPreBuffer *)&v4 dealloc];
 }
 
-- (void)ensureCapacityForWrite:(unint64_t)a3
+- (void)ensureCapacityForWrite:(unint64_t)write
 {
-  v5 = [(_DT_GCDAsyncSocketPreBuffer *)self availableSpace];
-  if (a3 > v5)
+  availableSpace = [(_DT_GCDAsyncSocketPreBuffer *)self availableSpace];
+  if (write > availableSpace)
   {
-    v6 = self->preBufferSize + a3 - v5;
+    v6 = self->preBufferSize + write - availableSpace;
     v7 = malloc_type_realloc(self->preBuffer, v6, 0xBDD06E98uLL);
     preBuffer = self->preBuffer;
     writePointer = self->writePointer;
@@ -58,23 +58,23 @@
   }
 }
 
-- (void)getReadBuffer:(char *)a3 availableBytes:(unint64_t *)a4
+- (void)getReadBuffer:(char *)buffer availableBytes:(unint64_t *)bytes
 {
-  if (a3)
+  if (buffer)
   {
-    *a3 = self->readPointer;
+    *buffer = self->readPointer;
   }
 
-  if (a4)
+  if (bytes)
   {
-    *a4 = [(_DT_GCDAsyncSocketPreBuffer *)self availableBytes];
+    *bytes = [(_DT_GCDAsyncSocketPreBuffer *)self availableBytes];
   }
 }
 
-- (void)didRead:(unint64_t)a3
+- (void)didRead:(unint64_t)read
 {
   writePointer = self->writePointer;
-  v4 = &self->readPointer[a3];
+  v4 = &self->readPointer[read];
   self->readPointer = v4;
   if (v4 == writePointer)
   {
@@ -84,16 +84,16 @@
   }
 }
 
-- (void)getWriteBuffer:(char *)a3 availableSpace:(unint64_t *)a4
+- (void)getWriteBuffer:(char *)buffer availableSpace:(unint64_t *)space
 {
-  if (a3)
+  if (buffer)
   {
-    *a3 = self->writePointer;
+    *buffer = self->writePointer;
   }
 
-  if (a4)
+  if (space)
   {
-    *a4 = [(_DT_GCDAsyncSocketPreBuffer *)self availableSpace];
+    *space = [(_DT_GCDAsyncSocketPreBuffer *)self availableSpace];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface ThreeDimensionalArtworkGradientBackgroundView
-- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithCoder:(id)a3;
-- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithCoder:(id)coder;
+- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ThreeDimensionalArtworkGradientBackgroundView
 
-- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithCoder:(id)a3
+- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView_gradientLayer;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E6979380]) init];
@@ -31,7 +31,7 @@
   [v4 setFrame_];
 }
 
-- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC11AppStoreKit45ThreeDimensionalArtworkGradientBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

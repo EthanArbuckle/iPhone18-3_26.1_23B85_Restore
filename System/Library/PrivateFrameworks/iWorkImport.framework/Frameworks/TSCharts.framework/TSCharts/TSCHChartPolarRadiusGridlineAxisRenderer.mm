@@ -1,37 +1,37 @@
 @interface TSCHChartPolarRadiusGridlineAxisRenderer
-- (void)drawIntoLayer:(int)a3 inContext:(CGContext *)a4 visible:(CGRect)a5;
-- (void)p_addTickmarkPaths:(CGContext *)a3 axis:(id)a4 locations:(id)a5 stroke:(id)a6 width:(float)a7 isMinor:(BOOL)a8;
+- (void)drawIntoLayer:(int)layer inContext:(CGContext *)context visible:(CGRect)visible;
+- (void)p_addTickmarkPaths:(CGContext *)paths axis:(id)axis locations:(id)locations stroke:(id)stroke width:(float)width isMinor:(BOOL)minor;
 @end
 
 @implementation TSCHChartPolarRadiusGridlineAxisRenderer
 
-- (void)p_addTickmarkPaths:(CGContext *)a3 axis:(id)a4 locations:(id)a5 stroke:(id)a6 width:(float)a7 isMinor:(BOOL)a8
+- (void)p_addTickmarkPaths:(CGContext *)paths axis:(id)axis locations:(id)locations stroke:(id)stroke width:(float)width isMinor:(BOOL)minor
 {
-  v8 = a8;
-  v49 = a4;
-  v14 = a5;
-  v15 = a6;
+  minorCopy = minor;
+  axisCopy = axis;
+  locationsCopy = locations;
+  strokeCopy = stroke;
   v20 = objc_msgSend_axisLayoutItem(self, v16, v17, v18, v19);
   v26 = objc_msgSend_axisTickMarksLayoutItem(v20, v21, v22, v23, v24);
-  if (v26 && objc_msgSend_shouldRender(v15, v25, v27, v28, v29))
+  if (v26 && objc_msgSend_shouldRender(strokeCopy, v25, v27, v28, v29))
   {
 
-    if (a7 > 0.0)
+    if (width > 0.0)
     {
       v34 = objc_msgSend_chartInfo(self, v30, v31, v32, v33);
-      v39 = objc_msgSend_strokeEnabledForRenderingForAxis_chart_(TSCHRenderUtilities, v35, v36, v37, v38, v49, v34);
+      v39 = objc_msgSend_strokeEnabledForRenderingForAxis_chart_(TSCHRenderUtilities, v35, v36, v37, v38, axisCopy, v34);
 
       if ((v39 & 1) == 0)
       {
-        *&v41 = a7;
-        objc_msgSend_p_addPolarRadiusTickmarkPaths_axis_absoluteRadii_stroke_width_isMinor_includeFirstSpoke_includeSpokesOtherThanTheFirst_(self, v40, v41, v42, v43, a3, v49, v14, v15, v8, 1, 0);
+        *&v41 = width;
+        objc_msgSend_p_addPolarRadiusTickmarkPaths_axis_absoluteRadii_stroke_width_isMinor_includeFirstSpoke_includeSpokesOtherThanTheFirst_(self, v40, v41, v42, v43, paths, axisCopy, locationsCopy, strokeCopy, minorCopy, 1, 0);
       }
 
-      if (objc_msgSend_intValueForProperty_defaultValue_(v49, v40, v41, v42, v43, 1051, 0))
+      if (objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v40, v41, v42, v43, 1051, 0))
       {
         LOBYTE(v48) = 1;
-        *&v45 = a7;
-        objc_msgSend_p_addPolarRadiusTickmarkPaths_axis_absoluteRadii_stroke_width_isMinor_includeFirstSpoke_includeSpokesOtherThanTheFirst_(self, v44, v45, v46, v47, a3, v49, v14, v15, v8, 0, v48);
+        *&v45 = width;
+        objc_msgSend_p_addPolarRadiusTickmarkPaths_axis_absoluteRadii_stroke_width_isMinor_includeFirstSpoke_includeSpokesOtherThanTheFirst_(self, v44, v45, v46, v47, paths, axisCopy, locationsCopy, strokeCopy, minorCopy, 0, v48);
       }
     }
   }
@@ -41,9 +41,9 @@
   }
 }
 
-- (void)drawIntoLayer:(int)a3 inContext:(CGContext *)a4 visible:(CGRect)a5
+- (void)drawIntoLayer:(int)layer inContext:(CGContext *)context visible:(CGRect)visible
 {
-  v111 = objc_msgSend_axisLayoutItem(self, a2, a5.origin.x, a5.origin.y, a5.size.width, *&a3, a5.size.height);
+  v111 = objc_msgSend_axisLayoutItem(self, a2, visible.origin.x, visible.origin.y, visible.size.width, *&layer, visible.size.height);
   v11 = objc_msgSend_axisTickMarksLayoutItem(v111, v7, v8, v9, v10);
   v16 = objc_msgSend_model(self, v12, v13, v14, v15);
   v21 = objc_msgSend_axisID(v111, v17, v18, v19, v20);
@@ -63,26 +63,26 @@
       LODWORD(v57) = 1.0;
       objc_msgSend_floatValueForProperty_defaultValue_(v40, v56, v57, v58, v59, 1078);
       v61 = v60;
-      CGContextSaveGState(a4);
-      CGContextSetBlendMode(a4, kCGBlendModeCopy);
-      CGContextSetAlpha(a4, v61);
-      CGContextBeginPath(a4);
-      objc_msgSend_applyToContext_(v55, v62, v63, v64, v65, a4);
+      CGContextSaveGState(context);
+      CGContextSetBlendMode(context, kCGBlendModeCopy);
+      CGContextSetAlpha(context, v61);
+      CGContextBeginPath(context);
+      objc_msgSend_applyToContext_(v55, v62, v63, v64, v65, context);
       if (!objc_msgSend_cap(v55, v66, v67, v68, v69))
       {
-        CGContextSetLineCap(a4, kCGLineCapSquare);
+        CGContextSetLineCap(context, kCGLineCapSquare);
       }
 
       v74 = objc_msgSend_majorGridLocations(v26, v70, v71, v72, v73);
       objc_msgSend_majorTickmarkLength(v11, v75, v76, v77, v78);
-      objc_msgSend_p_addTickmarkPaths_axis_locations_stroke_width_isMinor_(self, v79, v80, v81, v82, a4, v26, v74, v55, 0);
+      objc_msgSend_p_addTickmarkPaths_axis_locations_stroke_width_isMinor_(self, v79, v80, v81, v82, context, v26, v74, v55, 0);
 
       v87 = objc_msgSend_minorGridLocations(v26, v83, v84, v85, v86);
       objc_msgSend_minorTickmarkLength(v11, v88, v89, v90, v91);
-      objc_msgSend_p_addTickmarkPaths_axis_locations_stroke_width_isMinor_(self, v92, v93, v94, v95, a4, v26, v87, v55, 1);
+      objc_msgSend_p_addTickmarkPaths_axis_locations_stroke_width_isMinor_(self, v92, v93, v94, v95, context, v26, v87, v55, 1);
 
-      CGContextStrokePath(a4);
-      CGContextRestoreGState(a4);
+      CGContextStrokePath(context);
+      CGContextRestoreGState(context);
     }
   }
 

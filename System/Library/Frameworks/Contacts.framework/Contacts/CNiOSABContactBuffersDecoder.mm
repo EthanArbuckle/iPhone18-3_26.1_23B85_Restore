@@ -1,34 +1,34 @@
 @interface CNiOSABContactBuffersDecoder
-- (BOOL)decodeContactsFromData:(id)a3 moreComing:(BOOL)a4 replyHandler:(id)a5 error:(id *)a6;
+- (BOOL)decodeContactsFromData:(id)data moreComing:(BOOL)coming replyHandler:(id)handler error:(id *)error;
 - (CNiOSABContactBuffersDecoder)init;
-- (CNiOSABContactBuffersDecoder)initWithDecoder:(id)a3 unifyResults:(BOOL)a4 unificationOptions:(id)a5 mutableResults:(BOOL)a6 decodeBatchLimit:(int64_t)a7;
-- (CNiOSABContactBuffersDecoder)initWithFetchRequest:(id)a3 posterDataStore:(id)a4;
-- (id)_contactMatchInfosFromABMatchInfos:(id)a3 contacts:(id)a4;
-- (id)contactMatchInfosFromABMatchInfos:(id)a3 contacts:(id)a4;
-- (id)unifyContacts:(id)a3 moreComing:(BOOL)a4;
-- (void)_addContactMatchInfoFromABMatchInfos:(id)a3 forContact:(id)a4 toDictionary:(id)a5;
+- (CNiOSABContactBuffersDecoder)initWithDecoder:(id)decoder unifyResults:(BOOL)results unificationOptions:(id)options mutableResults:(BOOL)mutableResults decodeBatchLimit:(int64_t)limit;
+- (CNiOSABContactBuffersDecoder)initWithFetchRequest:(id)request posterDataStore:(id)store;
+- (id)_contactMatchInfosFromABMatchInfos:(id)infos contacts:(id)contacts;
+- (id)contactMatchInfosFromABMatchInfos:(id)infos contacts:(id)contacts;
+- (id)unifyContacts:(id)contacts moreComing:(BOOL)coming;
+- (void)_addContactMatchInfoFromABMatchInfos:(id)infos forContact:(id)contact toDictionary:(id)dictionary;
 @end
 
 @implementation CNiOSABContactBuffersDecoder
 
 - (CNiOSABContactBuffersDecoder)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNiOSABContactBuffersDecoder)initWithDecoder:(id)a3 unifyResults:(BOOL)a4 unificationOptions:(id)a5 mutableResults:(BOOL)a6 decodeBatchLimit:(int64_t)a7
+- (CNiOSABContactBuffersDecoder)initWithDecoder:(id)decoder unifyResults:(BOOL)results unificationOptions:(id)options mutableResults:(BOOL)mutableResults decodeBatchLimit:(int64_t)limit
 {
-  v13 = a3;
-  v14 = a5;
+  decoderCopy = decoder;
+  optionsCopy = options;
   v26.receiver = self;
   v26.super_class = CNiOSABContactBuffersDecoder;
   v15 = [(CNiOSABContactBuffersDecoder *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_decoder, a3);
+    objc_storeStrong(&v15->_decoder, decoder);
     v17 = objc_opt_new();
     contactsWaitingForUnification = v16->_contactsWaitingForUnification;
     v16->_contactsWaitingForUnification = v17;
@@ -37,60 +37,60 @@
     matchInfosWaitingForUnification = v16->_matchInfosWaitingForUnification;
     v16->_matchInfosWaitingForUnification = v19;
 
-    v21 = 10;
-    if (a7 > 0)
+    limitCopy = 10;
+    if (limit > 0)
     {
-      v21 = a7;
+      limitCopy = limit;
     }
 
-    v16->_decodeBatchSize = v21;
-    v16->_unifyResults = a4;
-    v22 = [v14 copy];
+    v16->_decodeBatchSize = limitCopy;
+    v16->_unifyResults = results;
+    v22 = [optionsCopy copy];
     unificationOptions = v16->_unificationOptions;
     v16->_unificationOptions = v22;
 
-    v16->_mutableResults = a6;
+    v16->_mutableResults = mutableResults;
     v24 = v16;
   }
 
   return v16;
 }
 
-- (CNiOSABContactBuffersDecoder)initWithFetchRequest:(id)a3 posterDataStore:(id)a4
+- (CNiOSABContactBuffersDecoder)initWithFetchRequest:(id)request posterDataStore:(id)store
 {
-  v6 = a3;
-  v7 = [CNContactBufferDecoderFactory decoderForFetchRequest:v6 posterDataStore:a4];
-  v8 = [[CNContactUnificationOptions alloc] initWithContactFetchRequest:v6];
-  v9 = [v6 unifyResults];
-  v10 = [v6 mutableObjects];
-  v11 = [v6 decoderBatchSize];
+  requestCopy = request;
+  v7 = [CNContactBufferDecoderFactory decoderForFetchRequest:requestCopy posterDataStore:store];
+  v8 = [[CNContactUnificationOptions alloc] initWithContactFetchRequest:requestCopy];
+  unifyResults = [requestCopy unifyResults];
+  mutableObjects = [requestCopy mutableObjects];
+  decoderBatchSize = [requestCopy decoderBatchSize];
 
-  v12 = [(CNiOSABContactBuffersDecoder *)self initWithDecoder:v7 unifyResults:v9 unificationOptions:v8 mutableResults:v10 decodeBatchLimit:v11];
+  v12 = [(CNiOSABContactBuffersDecoder *)self initWithDecoder:v7 unifyResults:unifyResults unificationOptions:v8 mutableResults:mutableObjects decodeBatchLimit:decoderBatchSize];
   return v12;
 }
 
-- (BOOL)decodeContactsFromData:(id)a3 moreComing:(BOOL)a4 replyHandler:(id)a5 error:(id *)a6
+- (BOOL)decodeContactsFromData:(id)data moreComing:(BOOL)coming replyHandler:(id)handler error:(id *)error
 {
-  v10 = a5;
+  handlerCopy = handler;
   v11 = MEMORY[0x1E695DF70];
-  v12 = a3;
+  dataCopy = data;
   v13 = [v11 arrayWithCapacity:{-[CNiOSABContactBuffersDecoder decodeBatchSize](self, "decodeBatchSize")}];
-  v14 = [(CNiOSABContactBuffersDecoder *)self decoder];
+  decoder = [(CNiOSABContactBuffersDecoder *)self decoder];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyHandler_error___block_invoke;
   v22 = &unk_1E74123C8;
   v15 = v13;
   v23 = v15;
-  v24 = self;
-  v26 = a4;
-  v16 = v10;
+  selfCopy = self;
+  comingCopy = coming;
+  v16 = handlerCopy;
   v25 = v16;
-  v17 = [v14 decodeContactsFromBuffer:v12 replyHandler:&v19];
+  v17 = [decoder decodeContactsFromBuffer:dataCopy replyHandler:&v19];
 
-  if (a6 && (v17 & 1) == 0)
+  if (error && (v17 & 1) == 0)
   {
-    *a6 = [CNErrorFactory errorWithCode:1009, v19, v20, v21, v22, v23, v24];
+    *error = [CNErrorFactory errorWithCode:1009, v19, v20, v21, v22, v23, selfCopy];
   }
 
   return v17;
@@ -123,34 +123,34 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_addContactMatchInfoFromABMatchInfos:(id)a3 forContact:(id)a4 toDictionary:(id)a5
+- (void)_addContactMatchInfoFromABMatchInfos:(id)infos forContact:(id)contact toDictionary:(id)dictionary
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [v14 iOSLegacyIdentifier];
-  v10 = [MEMORY[0x1E696AD98] numberWithInt:v9];
-  v11 = [v8 objectForKey:v10];
+  contactCopy = contact;
+  dictionaryCopy = dictionary;
+  infosCopy = infos;
+  iOSLegacyIdentifier = [contactCopy iOSLegacyIdentifier];
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:iOSLegacyIdentifier];
+  v11 = [infosCopy objectForKey:v10];
 
   if (v11)
   {
     v12 = [CNiOSABConversions contactMatchInfoFromABMatchMetadataDictionary:v11];
-    v13 = [v14 identifier];
-    [v7 setObject:v12 forKey:v13];
+    identifier = [contactCopy identifier];
+    [dictionaryCopy setObject:v12 forKey:identifier];
   }
 }
 
-- (id)_contactMatchInfosFromABMatchInfos:(id)a3 contacts:(id)a4
+- (id)_contactMatchInfosFromABMatchInfos:(id)infos contacts:(id)contacts
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  infosCopy = infos;
+  contactsCopy = contacts;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v7;
+  obj = contactsCopy;
   v9 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -172,8 +172,8 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
           v24 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v14 = [v13 linkedContacts];
-          v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          linkedContacts = [v13 linkedContacts];
+          v15 = [linkedContacts countByEnumeratingWithState:&v21 objects:v29 count:16];
           if (v15)
           {
             v16 = v15;
@@ -184,13 +184,13 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
               {
                 if (*v22 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(linkedContacts);
                 }
 
-                [(CNiOSABContactBuffersDecoder *)self _addContactMatchInfoFromABMatchInfos:v6 forContact:*(*(&v21 + 1) + 8 * j) toDictionary:v8];
+                [(CNiOSABContactBuffersDecoder *)self _addContactMatchInfoFromABMatchInfos:infosCopy forContact:*(*(&v21 + 1) + 8 * j) toDictionary:dictionary];
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+              v16 = [linkedContacts countByEnumeratingWithState:&v21 objects:v29 count:16];
             }
 
             while (v16);
@@ -199,7 +199,7 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
 
         else
         {
-          [(CNiOSABContactBuffersDecoder *)self _addContactMatchInfoFromABMatchInfos:v6 forContact:v13 toDictionary:v8];
+          [(CNiOSABContactBuffersDecoder *)self _addContactMatchInfoFromABMatchInfos:infosCopy forContact:v13 toDictionary:dictionary];
         }
       }
 
@@ -209,28 +209,28 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
     while (v10);
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (id)contactMatchInfosFromABMatchInfos:(id)a3 contacts:(id)a4
+- (id)contactMatchInfosFromABMatchInfos:(id)infos contacts:(id)contacts
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CNiOSABContactBuffersDecoder *)self _contactMatchInfosFromABMatchInfos:a3 contacts:v6];
+  contactsCopy = contacts;
+  v7 = [(CNiOSABContactBuffersDecoder *)self _contactMatchInfosFromABMatchInfos:infos contacts:contactsCopy];
   if ([(CNiOSABContactBuffersDecoder *)self unifyResults])
   {
-    v41 = [MEMORY[0x1E695DF90] dictionary];
-    v8 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    matchInfosWaitingForUnification = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
     v9 = v7;
-    v10 = v8;
+    v10 = matchInfosWaitingForUnification;
     v36 = v9;
-    [v8 addEntriesFromDictionary:?];
+    [matchInfosWaitingForUnification addEntriesFromDictionary:?];
 
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v6;
+    obj = contactsCopy;
     v11 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (!v11)
     {
@@ -240,7 +240,7 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
     v12 = v11;
     v13 = *v49;
     v37 = *v49;
-    v38 = v6;
+    v38 = contactsCopy;
     while (1)
     {
       v14 = 0;
@@ -255,33 +255,33 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
         v15 = *(*(&v48 + 1) + 8 * v14);
         if (![v15 isUnified])
         {
-          v32 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
-          v33 = [v15 identifier];
-          v16 = [v32 objectForKey:v33];
+          matchInfosWaitingForUnification2 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
+          identifier = [v15 identifier];
+          dictionary2 = [matchInfosWaitingForUnification2 objectForKey:identifier];
 
-          if (!v16)
+          if (!dictionary2)
           {
             goto LABEL_23;
           }
 
-          v34 = [v15 identifier];
-          [v41 setObject:v16 forKey:v34];
+          identifier2 = [v15 identifier];
+          [dictionary setObject:dictionary2 forKey:identifier2];
 
-          v30 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
-          v31 = [v15 identifier];
-          [v30 removeObjectForKey:v31];
+          matchInfosWaitingForUnification3 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
+          identifier3 = [v15 identifier];
+          [matchInfosWaitingForUnification3 removeObjectForKey:identifier3];
           goto LABEL_21;
         }
 
         v43 = v14;
-        v16 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
         v42 = v15;
-        v17 = [v15 linkedContacts];
-        v18 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        linkedContacts = [v15 linkedContacts];
+        v18 = [linkedContacts countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v18)
         {
           v19 = v18;
@@ -292,40 +292,40 @@ void __85__CNiOSABContactBuffersDecoder_decodeContactsFromData_moreComing_replyH
             {
               if (*v45 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(linkedContacts);
               }
 
               v22 = *(*(&v44 + 1) + 8 * i);
-              v23 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
-              v24 = [v22 identifier];
-              v25 = [v23 objectForKey:v24];
+              matchInfosWaitingForUnification4 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
+              identifier4 = [v22 identifier];
+              v25 = [matchInfosWaitingForUnification4 objectForKey:identifier4];
 
               if (v25)
               {
-                v26 = [v22 identifier];
-                [v16 setObject:v25 forKey:v26];
+                identifier5 = [v22 identifier];
+                [dictionary2 setObject:v25 forKey:identifier5];
 
-                v27 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
-                v28 = [v22 identifier];
-                [v27 removeObjectForKey:v28];
+                matchInfosWaitingForUnification5 = [(CNiOSABContactBuffersDecoder *)self matchInfosWaitingForUnification];
+                identifier6 = [v22 identifier];
+                [matchInfosWaitingForUnification5 removeObjectForKey:identifier6];
               }
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
+            v19 = [linkedContacts countByEnumeratingWithState:&v44 objects:v52 count:16];
           }
 
           while (v19);
         }
 
-        if ([v16 count])
+        if ([dictionary2 count])
         {
-          v29 = [v42 linkedContacts];
-          v30 = [CN unifyContactMatchInfos:v16 linkedContacts:v29];
+          linkedContacts2 = [v42 linkedContacts];
+          matchInfosWaitingForUnification3 = [CN unifyContactMatchInfos:dictionary2 linkedContacts:linkedContacts2];
 
-          v31 = [v42 identifier];
-          [v41 setObject:v30 forKey:v31];
+          identifier3 = [v42 identifier];
+          [dictionary setObject:matchInfosWaitingForUnification3 forKey:identifier3];
           v13 = v37;
-          v6 = v38;
+          contactsCopy = v38;
           v12 = v39;
           v14 = v43;
 LABEL_21:
@@ -334,7 +334,7 @@ LABEL_21:
         }
 
         v13 = v37;
-        v6 = v38;
+        contactsCopy = v38;
         v12 = v39;
         v14 = v43;
 LABEL_23:
@@ -354,38 +354,38 @@ LABEL_25:
     }
   }
 
-  v41 = v7;
+  dictionary = v7;
 LABEL_27:
 
-  return v41;
+  return dictionary;
 }
 
-- (id)unifyContacts:(id)a3 moreComing:(BOOL)a4
+- (id)unifyContacts:(id)contacts moreComing:(BOOL)coming
 {
-  v6 = a3;
-  v7 = [(CNiOSABContactBuffersDecoder *)self mutableResults];
-  v8 = [(CNiOSABContactBuffersDecoder *)self unificationOptions];
+  contactsCopy = contacts;
+  mutableResults = [(CNiOSABContactBuffersDecoder *)self mutableResults];
+  unificationOptions = [(CNiOSABContactBuffersDecoder *)self unificationOptions];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__CNiOSABContactBuffersDecoder_unifyContacts_moreComing___block_invoke;
   aBlock[3] = &unk_1E74123F0;
-  v48 = v7;
-  v9 = v8;
+  v48 = mutableResults;
+  v9 = unificationOptions;
   v47 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count") + 1}];
-  v12 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
-  v13 = [v12 count];
-  v14 = [v6 count];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(contactsCopy, "count") + 1}];
+  contactsWaitingForUnification = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
+  v13 = [contactsWaitingForUnification count];
+  v14 = [contactsCopy count];
 
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x3032000000;
   v44[3] = __Block_byref_object_copy__1;
   v44[4] = __Block_byref_object_dispose__1;
-  v15 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
-  v16 = [v15 firstObject];
-  v45 = [v16 linkIdentifier];
+  contactsWaitingForUnification2 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
+  firstObject = [contactsWaitingForUnification2 firstObject];
+  linkIdentifier = [firstObject linkIdentifier];
 
   v38 = 0;
   v39 = &v38;
@@ -393,16 +393,16 @@ LABEL_27:
   v42 = 0;
   v43 = 0;
   v41 = &unk_1956A8101;
-  v17 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
-  v18 = [v17 count];
+  contactsWaitingForUnification3 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
+  v18 = [contactsWaitingForUnification3 count];
   v42 = 0;
   v43 = v18;
 
-  v19 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
-  [v19 addObjectsFromArray:v6];
+  contactsWaitingForUnification4 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
+  [contactsWaitingForUnification4 addObjectsFromArray:contactsCopy];
 
   v20 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v13, v14}];
-  v21 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
+  contactsWaitingForUnification5 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
   v29 = MEMORY[0x1E69E9820];
   v30 = 3221225472;
   v31 = __57__CNiOSABContactBuffersDecoder_unifyContacts_moreComing___block_invoke_13;
@@ -412,29 +412,29 @@ LABEL_27:
   v22 = v11;
   v33 = v22;
   v23 = v10;
-  v34 = self;
+  selfCopy = self;
   v35 = v23;
-  [v21 enumerateObjectsAtIndexes:v20 options:0 usingBlock:&v29];
+  [contactsWaitingForUnification5 enumerateObjectsAtIndexes:v20 options:0 usingBlock:&v29];
 
   if (v39[5])
   {
     v24 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification:v29];
     [v24 removeObjectsInRange:{0, v39[4]}];
 
-    if (a4)
+    if (coming)
     {
       goto LABEL_6;
     }
 
-    v25 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
-    v26 = (*(v23 + 2))(v23, v25);
+    contactsWaitingForUnification6 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification];
+    v26 = (*(v23 + 2))(v23, contactsWaitingForUnification6);
     [v22 addObject:v26];
   }
 
   else
   {
-    v25 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification:v29];
-    [v25 removeAllObjects];
+    contactsWaitingForUnification6 = [(CNiOSABContactBuffersDecoder *)self contactsWaitingForUnification:v29];
+    [contactsWaitingForUnification6 removeAllObjects];
   }
 
 LABEL_6:

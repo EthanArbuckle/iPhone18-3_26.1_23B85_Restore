@@ -1,15 +1,15 @@
 @interface NEOnDemandRuleIgnore
 - (NEOnDemandRuleIgnore)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NEOnDemandRuleIgnore
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = NEOnDemandRuleIgnore;
-  return [(NEOnDemandRule *)&v4 copyWithZone:a3];
+  return [(NEOnDemandRule *)&v4 copyWithZone:zone];
 }
 
 - (NEOnDemandRuleIgnore)init

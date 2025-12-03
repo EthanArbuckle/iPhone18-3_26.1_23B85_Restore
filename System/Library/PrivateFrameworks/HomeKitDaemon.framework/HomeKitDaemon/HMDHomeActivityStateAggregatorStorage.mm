@@ -2,14 +2,14 @@
 + (id)logCategory;
 + (unint64_t)activityType;
 - (HMDHome)home;
-- (HMDHomeActivityStateAggregatorStorage)initWithDataSource:(id)a3;
+- (HMDHomeActivityStateAggregatorStorage)initWithDataSource:(id)source;
 - (id)fetchUserActivityReportsOnManagedObjectContext;
 - (id)logIdentifier;
-- (id)userActivityReportWithActivityStatus:(id)a3 user:(id)a4;
-- (void)fetchUserActivityReportsWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)removeUserActivityStatusForUserUUID:(id)a3;
-- (void)storeUserActivityReport:(id)a3;
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4;
+- (id)userActivityReportWithActivityStatus:(id)status user:(id)user;
+- (void)fetchUserActivityReportsWithQueue:(id)queue completionHandler:(id)handler;
+- (void)removeUserActivityStatusForUserUUID:(id)d;
+- (void)storeUserActivityReport:(id)report;
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report;
 @end
 
 @implementation HMDHomeActivityStateAggregatorStorage
@@ -23,13 +23,13 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeActivityStateAggregatorStorage *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
-  v5 = v4;
-  if (v4)
+  home = [(HMDHomeActivityStateAggregatorStorage *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
+  v5 = uUIDString;
+  if (uUIDString)
   {
-    v6 = v4;
+    v6 = uUIDString;
   }
 
   else
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (id)userActivityReportWithActivityStatus:(id)a3 user:(id)a4
+- (id)userActivityReportWithActivityStatus:(id)status user:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  userCopy = user;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -57,10 +57,10 @@
   objc_exception_throw(v13);
 }
 
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  reportCopy = report;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -75,15 +75,15 @@
 - (id)fetchUserActivityReportsOnManagedObjectContext
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateAggregatorStorage *)self context];
-  [v3 assertIsExecuting];
+  context = [(HMDHomeActivityStateAggregatorStorage *)self context];
+  [context assertIsExecuting];
 
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(HMDHomeActivityStateAggregatorStorage *)self context];
-  v6 = [v5 managedObjectContext];
+  context2 = [(HMDHomeActivityStateAggregatorStorage *)self context];
+  managedObjectContext = [context2 managedObjectContext];
   v7 = +[_MKFUserActivityStatus fetchRequest];
   v54 = 0;
-  v8 = [v6 executeFetchRequest:v7 error:&v54];
+  v8 = [managedObjectContext executeFetchRequest:v7 error:&v54];
   v9 = v54;
 
   if (v8)
@@ -91,7 +91,7 @@
     v44 = v9;
     v45 = v8;
     v10 = [v8 na_map:&__block_literal_global_207695];
-    v48 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -117,8 +117,8 @@
           v16 = v15;
           if (self && ([v15 type], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "unsignedIntValue"), v19 = objc_msgSend(objc_opt_class(), "activityType"), v17, v19 == v18))
           {
-            v20 = [(HMDHomeActivityStateAggregatorStorage *)self home];
-            v21 = [v20 userForActivityStatus:v16];
+            home = [(HMDHomeActivityStateAggregatorStorage *)self home];
+            v21 = [home userForActivityStatus:v16];
 
             if (v21)
             {
@@ -132,7 +132,7 @@
               else
               {
                 v29 = objc_autoreleasePoolPush();
-                v30 = self;
+                selfCopy = self;
                 v31 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
                 {
@@ -154,7 +154,7 @@
             else
             {
               v25 = objc_autoreleasePoolPush();
-              v26 = self;
+              selfCopy2 = self;
               v27 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
               {
@@ -174,10 +174,10 @@
 
             if (v23)
             {
-              v33 = [v23 user];
-              v34 = [v33 uuid];
-              v35 = [v16 modelID];
-              [(NSMutableDictionary *)v48 setObject:v34 forKeyedSubscript:v35];
+              user = [v23 user];
+              uuid = [user uuid];
+              modelID = [v16 modelID];
+              [(NSMutableDictionary *)dictionary setObject:uuid forKeyedSubscript:modelID];
 
               [v4 addObject:v23];
             }
@@ -198,7 +198,7 @@
 
     os_unfair_lock_lock_with_options();
     userIDByActivityStatusModelID = self->_userIDByActivityStatusModelID;
-    self->_userIDByActivityStatusModelID = v48;
+    self->_userIDByActivityStatusModelID = dictionary;
 
     os_unfair_lock_unlock(&self->_lock);
     v37 = v4;
@@ -210,7 +210,7 @@
   else
   {
     v38 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy3 = self;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
@@ -249,21 +249,21 @@ void *__87__HMDHomeActivityStateAggregatorStorage_fetchUserActivityReportsOnMana
   return v3;
 }
 
-- (void)fetchUserActivityReportsWithQueue:(id)a3 completionHandler:(id)a4
+- (void)fetchUserActivityReportsWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeActivityStateAggregatorStorage *)self context];
+  queueCopy = queue;
+  handlerCopy = handler;
+  context = [(HMDHomeActivityStateAggregatorStorage *)self context];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __93__HMDHomeActivityStateAggregatorStorage_fetchUserActivityReportsWithQueue_completionHandler___block_invoke;
   v11[3] = &unk_278689F98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlock:v11];
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
+  [context performBlock:v11];
 }
 
 void __93__HMDHomeActivityStateAggregatorStorage_fetchUserActivityReportsWithQueue_completionHandler___block_invoke(uint64_t a1)
@@ -281,22 +281,22 @@ void __93__HMDHomeActivityStateAggregatorStorage_fetchUserActivityReportsWithQue
   dispatch_async(v3, v6);
 }
 
-- (void)removeUserActivityStatusForUserUUID:(id)a3
+- (void)removeUserActivityStatusForUserUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregatorStorage *)self context];
+  dCopy = d;
+  context = [(HMDHomeActivityStateAggregatorStorage *)self context];
 
-  if (v5)
+  if (context)
   {
-    v6 = [(HMDHomeActivityStateAggregatorStorage *)self context];
+    context2 = [(HMDHomeActivityStateAggregatorStorage *)self context];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__HMDHomeActivityStateAggregatorStorage_removeUserActivityStatusForUserUUID___block_invoke;
     v9[3] = &unk_27868A750;
-    v10 = v4;
-    v11 = self;
-    v7 = v4;
-    [v6 performBlock:v9];
+    v10 = dCopy;
+    selfCopy = self;
+    v7 = dCopy;
+    [context2 performBlock:v9];
   }
 
   else
@@ -422,35 +422,35 @@ void __77__HMDHomeActivityStateAggregatorStorage_removeUserActivityStatusForUser
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeUserActivityReport:(id)a3
+- (void)storeUserActivityReport:(id)report
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregatorStorage *)self context];
+  reportCopy = report;
+  context = [(HMDHomeActivityStateAggregatorStorage *)self context];
 
-  if (!v5)
+  if (!context)
   {
     _HMFPreconditionFailure();
   }
 
-  v6 = [v4 user];
-  if (v6)
+  user = [reportCopy user];
+  if (user)
   {
-    v7 = [(HMDHomeActivityStateAggregatorStorage *)self context];
+    context2 = [(HMDHomeActivityStateAggregatorStorage *)self context];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__HMDHomeActivityStateAggregatorStorage_storeUserActivityReport___block_invoke;
     v13[3] = &unk_27868A010;
-    v14 = v6;
-    v15 = self;
-    v16 = v4;
-    [v7 performBlock:v13];
+    v14 = user;
+    selfCopy = self;
+    v16 = reportCopy;
+    [context2 performBlock:v13];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -458,7 +458,7 @@ void __77__HMDHomeActivityStateAggregatorStorage_removeUserActivityStatusForUser
       *buf = 138543618;
       v18 = v11;
       v19 = 2112;
-      v20 = v4;
+      v20 = reportCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@User is unexpectedly nil in the user activity report: %@", buf, 0x16u);
     }
 
@@ -605,28 +605,28 @@ void __65__HMDHomeActivityStateAggregatorStorage_storeUserActivityReport___block
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeActivityStateAggregatorStorage)initWithDataSource:(id)a3
+- (HMDHomeActivityStateAggregatorStorage)initWithDataSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    v5 = v4;
+    v5 = sourceCopy;
     v15.receiver = self;
     v15.super_class = HMDHomeActivityStateAggregatorStorage;
     v6 = [(HMDHomeActivityStateAggregatorStorage *)&v15 init];
     if (v6)
     {
-      v7 = [v5 workingStoreContext];
+      workingStoreContext = [v5 workingStoreContext];
       context = v6->_context;
-      v6->_context = v7;
+      v6->_context = workingStoreContext;
 
-      v9 = [v5 home];
-      objc_storeWeak(&v6->_home, v9);
+      home = [v5 home];
+      objc_storeWeak(&v6->_home, home);
 
       v6->_lock._os_unfair_lock_opaque = 0;
-      v10 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       userIDByActivityStatusModelID = v6->_userIDByActivityStatusModelID;
-      v6->_userIDByActivityStatusModelID = v10;
+      v6->_userIDByActivityStatusModelID = dictionary;
     }
 
     return v6;

@@ -1,27 +1,27 @@
 @interface VCSessionBandwidthAllocationTableEntry
-+ (int64_t)compareAudioEntry:(id)a3 audioEntry:(id)a4;
-+ (int64_t)compareAudioEntry:(id)a3 videoEntry:(id)a4;
-+ (int64_t)compareVideoEntry:(id)a3 videoEntry:(id)a4;
-+ (unsigned)entryTypeForMediaType:(unsigned int)a3;
-- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)a3 type:(unsigned __int8)a4 streamToken:(int64_t)a5 minNetworkBitrate:(unsigned int)a6 maxNetworkBitrate:(unsigned int)a7 mediaBitrate:(unsigned int)a8 qualityIndex:(unsigned int)a9 streamID:(unsigned int)a10 hasRepairStreamID:(BOOL)a11 repairStreamID:(unsigned int)a12 repairMaxNetworkBitrate:(unsigned int)a13 subscribedTo:(BOOL)a14 startOnDemand:(BOOL)a15 streamGroupID:(unsigned int)a16 encoderGroupID:(unsigned int)a17 v2StreamID:(unsigned int)a18;
-- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)a3 type:(unsigned __int8)a4 streamToken:(int64_t)a5 networkBitrate:(unsigned int)a6 mediaBitrate:(unsigned int)a7 qualityIndex:(unsigned int)a8 streamID:(unsigned int)a9 streamGroupID:(unsigned int)a10 v2StreamID:(unsigned int)a11;
-- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)a3 type:(unsigned __int8)a4 streamToken:(int64_t)a5 streamID:(unsigned int)a6 streamGroupID:(unsigned int)a7;
-- (int64_t)compare:(id)a3;
++ (int64_t)compareAudioEntry:(id)entry audioEntry:(id)audioEntry;
++ (int64_t)compareAudioEntry:(id)entry videoEntry:(id)videoEntry;
++ (int64_t)compareVideoEntry:(id)entry videoEntry:(id)videoEntry;
++ (unsigned)entryTypeForMediaType:(unsigned int)type;
+- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)client type:(unsigned __int8)type streamToken:(int64_t)token minNetworkBitrate:(unsigned int)bitrate maxNetworkBitrate:(unsigned int)networkBitrate mediaBitrate:(unsigned int)mediaBitrate qualityIndex:(unsigned int)index streamID:(unsigned int)self0 hasRepairStreamID:(BOOL)self1 repairStreamID:(unsigned int)self2 repairMaxNetworkBitrate:(unsigned int)self3 subscribedTo:(BOOL)self4 startOnDemand:(BOOL)self5 streamGroupID:(unsigned int)self6 encoderGroupID:(unsigned int)self7 v2StreamID:(unsigned int)self8;
+- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)client type:(unsigned __int8)type streamToken:(int64_t)token networkBitrate:(unsigned int)bitrate mediaBitrate:(unsigned int)mediaBitrate qualityIndex:(unsigned int)index streamID:(unsigned int)d streamGroupID:(unsigned int)self0 v2StreamID:(unsigned int)self1;
+- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)client type:(unsigned __int8)type streamToken:(int64_t)token streamID:(unsigned int)d streamGroupID:(unsigned int)iD;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 @end
 
 @implementation VCSessionBandwidthAllocationTableEntry
 
-- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)a3 type:(unsigned __int8)a4 streamToken:(int64_t)a5 networkBitrate:(unsigned int)a6 mediaBitrate:(unsigned int)a7 qualityIndex:(unsigned int)a8 streamID:(unsigned int)a9 streamGroupID:(unsigned int)a10 v2StreamID:(unsigned int)a11
+- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)client type:(unsigned __int8)type streamToken:(int64_t)token networkBitrate:(unsigned int)bitrate mediaBitrate:(unsigned int)mediaBitrate qualityIndex:(unsigned int)index streamID:(unsigned int)d streamGroupID:(unsigned int)self0 v2StreamID:(unsigned int)self1
 {
-  LODWORD(v14) = a11;
+  LODWORD(v14) = streamID;
   WORD2(v13) = 1;
   LODWORD(v13) = 0;
   LOBYTE(v12) = 0;
-  return [VCSessionBandwidthAllocationTableEntry initWithClient:"initWithClient:type:streamToken:minNetworkBitrate:maxNetworkBitrate:mediaBitrate:qualityIndex:streamID:hasRepairStreamID:repairStreamID:repairMaxNetworkBitrate:subscribedTo:startOnDemand:streamGroupID:encoderGroupID:v2StreamID:" type:a3 streamToken:a4 minNetworkBitrate:a5 maxNetworkBitrate:*&a6 mediaBitrate:*&a6 qualityIndex:*&a7 streamID:__PAIR64__(a9 hasRepairStreamID:a8) repairStreamID:v12 repairMaxNetworkBitrate:v13 subscribedTo:a10 startOnDemand:v14 streamGroupID:? encoderGroupID:? v2StreamID:?];
+  return [VCSessionBandwidthAllocationTableEntry initWithClient:"initWithClient:type:streamToken:minNetworkBitrate:maxNetworkBitrate:mediaBitrate:qualityIndex:streamID:hasRepairStreamID:repairStreamID:repairMaxNetworkBitrate:subscribedTo:startOnDemand:streamGroupID:encoderGroupID:v2StreamID:" type:client streamToken:type minNetworkBitrate:token maxNetworkBitrate:*&bitrate mediaBitrate:*&bitrate qualityIndex:*&mediaBitrate streamID:__PAIR64__(d hasRepairStreamID:index) repairStreamID:v12 repairMaxNetworkBitrate:v13 subscribedTo:iD startOnDemand:v14 streamGroupID:? encoderGroupID:? v2StreamID:?];
 }
 
-- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)a3 type:(unsigned __int8)a4 streamToken:(int64_t)a5 minNetworkBitrate:(unsigned int)a6 maxNetworkBitrate:(unsigned int)a7 mediaBitrate:(unsigned int)a8 qualityIndex:(unsigned int)a9 streamID:(unsigned int)a10 hasRepairStreamID:(BOOL)a11 repairStreamID:(unsigned int)a12 repairMaxNetworkBitrate:(unsigned int)a13 subscribedTo:(BOOL)a14 startOnDemand:(BOOL)a15 streamGroupID:(unsigned int)a16 encoderGroupID:(unsigned int)a17 v2StreamID:(unsigned int)a18
+- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)client type:(unsigned __int8)type streamToken:(int64_t)token minNetworkBitrate:(unsigned int)bitrate maxNetworkBitrate:(unsigned int)networkBitrate mediaBitrate:(unsigned int)mediaBitrate qualityIndex:(unsigned int)index streamID:(unsigned int)self0 hasRepairStreamID:(BOOL)self1 repairStreamID:(unsigned int)self2 repairMaxNetworkBitrate:(unsigned int)self3 subscribedTo:(BOOL)self4 startOnDemand:(BOOL)self5 streamGroupID:(unsigned int)self6 encoderGroupID:(unsigned int)self7 v2StreamID:(unsigned int)self8
 {
   v28 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -30,29 +30,29 @@
   v25 = v24;
   if (v24)
   {
-    v24->_client = a3;
-    v24->_minNetworkBitrate = a6;
-    v24->_maxNetworkBitrate = a7;
-    v24->_maxMediaBitrate = a8;
-    v24->_qualityIndex = a9;
-    v24->_type = a4;
-    v24->_streamToken = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-    v25->_streamID = a10;
-    v25->_v2StreamID = a18;
-    v25->_actualNetworkBitrate = a7;
-    v25->_hasRepairStreamID = a11;
-    v25->_repairStreamID = a12;
-    v25->_repairMaxNetworkBitrate = a13;
-    v25->_subscribedTo = a14;
-    v25->_startOnDemand = a15;
-    v25->_streamGroupID = a16;
-    v25->_encoderGroupID = a17;
+    v24->_client = client;
+    v24->_minNetworkBitrate = bitrate;
+    v24->_maxNetworkBitrate = networkBitrate;
+    v24->_maxMediaBitrate = mediaBitrate;
+    v24->_qualityIndex = index;
+    v24->_type = type;
+    v24->_streamToken = [MEMORY[0x1E696AD98] numberWithInteger:token];
+    v25->_streamID = d;
+    v25->_v2StreamID = v2StreamID;
+    v25->_actualNetworkBitrate = networkBitrate;
+    v25->_hasRepairStreamID = iD;
+    v25->_repairStreamID = streamID;
+    v25->_repairMaxNetworkBitrate = maxNetworkBitrate;
+    v25->_subscribedTo = to;
+    v25->_startOnDemand = demand;
+    v25->_streamGroupID = groupID;
+    v25->_encoderGroupID = encoderGroupID;
   }
 
   return v25;
 }
 
-- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)a3 type:(unsigned __int8)a4 streamToken:(int64_t)a5 streamID:(unsigned int)a6 streamGroupID:(unsigned int)a7
+- (VCSessionBandwidthAllocationTableEntry)initWithClient:(id)client type:(unsigned __int8)type streamToken:(int64_t)token streamID:(unsigned int)d streamGroupID:(unsigned int)iD
 {
   v16 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -61,11 +61,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_uplinkClient = a3;
-    v12->_type = a4;
-    v12->_streamToken = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a5];
-    v13->_streamID = a6;
-    v13->_streamGroupID = a7;
+    v12->_uplinkClient = client;
+    v12->_type = type;
+    v12->_streamToken = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:token];
+    v13->_streamID = d;
+    v13->_streamGroupID = iD;
   }
 
   return v13;
@@ -80,47 +80,47 @@
   [(VCSessionBandwidthAllocationTableEntry *)&v3 dealloc];
 }
 
-+ (unsigned)entryTypeForMediaType:(unsigned int)a3
++ (unsigned)entryTypeForMediaType:(unsigned int)type
 {
-  if (a3 == 1835365473)
+  if (type == 1835365473)
   {
     return 3;
   }
 
-  if (a3 == 1936684398)
+  if (type == 1936684398)
   {
     return 1;
   }
 
-  if (a3 != 1986618469 && VRTraceGetErrorLogLevelForModule() >= 3)
+  if (type != 1986618469 && VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
     v5 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCSessionBandwidthAllocationTableEntry *)v4 entryTypeForMediaType:a3, v5];
+      [(VCSessionBandwidthAllocationTableEntry *)v4 entryTypeForMediaType:type, v5];
     }
   }
 
   return 2;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   if ([(VCSessionBandwidthAllocationTableEntry *)self type]== 1)
   {
-    if ([a3 type] == 1)
+    if ([compare type] == 1)
     {
-      result = [VCSessionBandwidthAllocationTableEntry compareAudioEntry:self audioEntry:a3];
+      result = [VCSessionBandwidthAllocationTableEntry compareAudioEntry:self audioEntry:compare];
       if (result)
       {
         return result;
       }
     }
 
-    else if ([a3 type] == 2 || objc_msgSend(a3, "type") == 3)
+    else if ([compare type] == 2 || objc_msgSend(compare, "type") == 3)
     {
-      result = [VCSessionBandwidthAllocationTableEntry compareAudioEntry:self videoEntry:a3];
+      result = [VCSessionBandwidthAllocationTableEntry compareAudioEntry:self videoEntry:compare];
       if (result)
       {
         return result;
@@ -130,18 +130,18 @@
 
   else if ([(VCSessionBandwidthAllocationTableEntry *)self type]== 2 || [(VCSessionBandwidthAllocationTableEntry *)self type]== 3)
   {
-    if ([a3 type] == 1)
+    if ([compare type] == 1)
     {
-      result = [VCSessionBandwidthAllocationTableEntry compareAudioEntry:a3];
+      result = [VCSessionBandwidthAllocationTableEntry compareAudioEntry:compare];
       if (result)
       {
         return result;
       }
     }
 
-    else if ([a3 type] == 2 || objc_msgSend(a3, "type") == 3)
+    else if ([compare type] == 2 || objc_msgSend(compare, "type") == 3)
     {
-      result = [VCSessionBandwidthAllocationTableEntry compareVideoEntry:self videoEntry:a3];
+      result = [VCSessionBandwidthAllocationTableEntry compareVideoEntry:self videoEntry:compare];
       if (result)
       {
         return result;
@@ -168,26 +168,26 @@
   return result;
 }
 
-+ (int64_t)compareAudioEntry:(id)a3 audioEntry:(id)a4
++ (int64_t)compareAudioEntry:(id)entry audioEntry:(id)audioEntry
 {
   v25 = *MEMORY[0x1E69E9840];
-  if ([a3 isLowestQuality] && !objc_msgSend(a4, "isLowestQuality"))
+  if ([entry isLowestQuality] && !objc_msgSend(audioEntry, "isLowestQuality"))
   {
     v6 = -1;
   }
 
-  else if (([a3 isLowestQuality] & 1) != 0 || (objc_msgSend(a4, "isLowestQuality") & 1) == 0)
+  else if (([entry isLowestQuality] & 1) != 0 || (objc_msgSend(audioEntry, "isLowestQuality") & 1) == 0)
   {
-    v7 = [a3 qualityIndex];
-    if (v7 == [a4 qualityIndex])
+    qualityIndex = [entry qualityIndex];
+    if (qualityIndex == [audioEntry qualityIndex])
     {
       v6 = 0;
     }
 
     else
     {
-      v8 = [a3 qualityIndex];
-      if (v8 < [a4 qualityIndex])
+      qualityIndex2 = [entry qualityIndex];
+      if (qualityIndex2 < [audioEntry qualityIndex])
       {
         v6 = -1;
       }
@@ -222,9 +222,9 @@
         v19 = 1024;
         v20 = v6;
         v21 = 2112;
-        v22 = a3;
+        entryCopy2 = entry;
         v23 = 2112;
-        v24 = a4;
+        audioEntryCopy2 = audioEntry;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d result=%d (%@ vs. %@)", &v13, 0x36u);
       }
     }
@@ -240,9 +240,9 @@
       v19 = 1024;
       v20 = v6;
       v21 = 2112;
-      v22 = a3;
+      entryCopy2 = entry;
       v23 = 2112;
-      v24 = a4;
+      audioEntryCopy2 = audioEntry;
       _os_log_debug_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEBUG, " [%s] %s:%d result=%d (%@ vs. %@)", &v13, 0x36u);
     }
   }
@@ -250,45 +250,45 @@
   return v6;
 }
 
-+ (int64_t)compareVideoEntry:(id)a3 videoEntry:(id)a4
++ (int64_t)compareVideoEntry:(id)entry videoEntry:(id)videoEntry
 {
   v35 = *MEMORY[0x1E69E9840];
-  if ([objc_msgSend(a3 "client")] && !objc_msgSend(objc_msgSend(a4, "client"), "isVisible"))
+  if ([objc_msgSend(entry "client")] && !objc_msgSend(objc_msgSend(videoEntry, "client"), "isVisible"))
   {
     v6 = -1;
     goto LABEL_19;
   }
 
-  if ([objc_msgSend(a3 "client")] & 1) == 0 && (objc_msgSend(objc_msgSend(a4, "client"), "isVisible"))
+  if ([objc_msgSend(entry "client")] & 1) == 0 && (objc_msgSend(objc_msgSend(videoEntry, "client"), "isVisible"))
   {
     v6 = 1;
     goto LABEL_19;
   }
 
-  if (![objc_msgSend(a3 "client")] || !objc_msgSend(objc_msgSend(a4, "client"), "isVisible"))
+  if (![objc_msgSend(entry "client")] || !objc_msgSend(objc_msgSend(videoEntry, "client"), "isVisible"))
   {
-    v12 = [objc_msgSend(a3 "client")];
-    if (v12 == [objc_msgSend(a4 "client")])
+    v12 = [objc_msgSend(entry "client")];
+    if (v12 == [objc_msgSend(videoEntry "client")])
     {
       goto LABEL_13;
     }
 
-    v10 = [objc_msgSend(a3 "client")];
-    v11 = [objc_msgSend(a4 "client")];
+    qualityIndex2 = [objc_msgSend(entry "client")];
+    qualityIndex3 = [objc_msgSend(videoEntry "client")];
     goto LABEL_16;
   }
 
-  v7 = [objc_msgSend(a4 "client")];
-  if (v7 == [objc_msgSend(a3 "client")])
+  v7 = [objc_msgSend(videoEntry "client")];
+  if (v7 == [objc_msgSend(entry "client")])
   {
-    v8 = [a3 qualityIndex];
-    if (v8 == [a4 qualityIndex])
+    qualityIndex = [entry qualityIndex];
+    if (qualityIndex == [videoEntry qualityIndex])
     {
-      v9 = [objc_msgSend(a3 "client")];
-      if (v9 != [objc_msgSend(a4 "client")])
+      v9 = [objc_msgSend(entry "client")];
+      if (v9 != [objc_msgSend(videoEntry "client")])
       {
-        v10 = [objc_msgSend(a3 "client")];
-        v11 = [objc_msgSend(a4 "client")];
+        qualityIndex2 = [objc_msgSend(entry "client")];
+        qualityIndex3 = [objc_msgSend(videoEntry "client")];
         goto LABEL_16;
       }
 
@@ -297,10 +297,10 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    v10 = [a3 qualityIndex];
-    v11 = [a4 qualityIndex];
+    qualityIndex2 = [entry qualityIndex];
+    qualityIndex3 = [videoEntry qualityIndex];
 LABEL_16:
-    if (v10 < v11)
+    if (qualityIndex2 < qualityIndex3)
     {
       v6 = -1;
     }
@@ -313,8 +313,8 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v17 = [objc_msgSend(a4 "client")];
-  v18 = [objc_msgSend(a3 "client")];
+  v17 = [objc_msgSend(videoEntry "client")];
+  v18 = [objc_msgSend(entry "client")];
   v19 = v17 >= v18;
   if (v17 < v18)
   {
@@ -328,28 +328,28 @@ LABEL_16:
 
   if (v19)
   {
-    v20 = a4;
+    entryCopy = videoEntry;
   }
 
   else
   {
-    v20 = a3;
+    entryCopy = entry;
   }
 
   if (v19)
   {
-    v21 = a3;
+    videoEntryCopy2 = entry;
   }
 
   else
   {
-    v21 = a4;
+    videoEntryCopy2 = videoEntry;
   }
 
-  if ([objc_msgSend(v20 "client")] == 5 && !objc_msgSend(objc_msgSend(v21, "client"), "videoQuality") && objc_msgSend(v21, "qualityIndex") <= 0x3E)
+  if ([objc_msgSend(entryCopy "client")] == 5 && !objc_msgSend(objc_msgSend(videoEntryCopy2, "client"), "videoQuality") && objc_msgSend(videoEntryCopy2, "qualityIndex") <= 0x3E)
   {
-    v22 = [v21 qualityIndex];
-    if (v22 < [v20 qualityIndex])
+    qualityIndex4 = [videoEntryCopy2 qualityIndex];
+    if (qualityIndex4 < [entryCopy qualityIndex])
     {
       v6 = -v6;
     }
@@ -374,9 +374,9 @@ LABEL_19:
         v29 = 1024;
         v30 = v6;
         v31 = 2112;
-        v32 = a3;
+        entryCopy4 = entry;
         v33 = 2112;
-        v34 = a4;
+        videoEntryCopy4 = videoEntry;
         _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d result=%d (%@ vs. %@)", &v23, 0x36u);
       }
     }
@@ -392,9 +392,9 @@ LABEL_19:
       v29 = 1024;
       v30 = v6;
       v31 = 2112;
-      v32 = a3;
+      entryCopy4 = entry;
       v33 = 2112;
-      v34 = a4;
+      videoEntryCopy4 = videoEntry;
       _os_log_debug_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEBUG, " [%s] %s:%d result=%d (%@ vs. %@)", &v23, 0x36u);
     }
   }
@@ -402,24 +402,24 @@ LABEL_19:
   return v6;
 }
 
-+ (int64_t)compareAudioEntry:(id)a3 videoEntry:(id)a4
++ (int64_t)compareAudioEntry:(id)entry videoEntry:(id)videoEntry
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a4 "client")])
+  if (![objc_msgSend(videoEntry "client")])
   {
     goto LABEL_13;
   }
 
-  v6 = [a3 qualityIndex];
-  if (v6 == [a4 qualityIndex])
+  qualityIndex = [entry qualityIndex];
+  if (qualityIndex == [videoEntry qualityIndex])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [a3 qualityIndex];
-    if (v8 < [a4 qualityIndex])
+    qualityIndex2 = [entry qualityIndex];
+    if (qualityIndex2 < [videoEntry qualityIndex])
     {
       v7 = -1;
     }
@@ -430,11 +430,11 @@ LABEL_19:
     }
   }
 
-  if ([a3 qualityIndex] == 200 && !objc_msgSend(objc_msgSend(a4, "client"), "videoQuality"))
+  if ([entry qualityIndex] == 200 && !objc_msgSend(objc_msgSend(videoEntry, "client"), "videoQuality"))
   {
-    if ([a4 streamGroupID] == 1667329381)
+    if ([videoEntry streamGroupID] == 1667329381)
     {
-      if ([a4 maxNetworkBitrate] < 0x7D01)
+      if ([videoEntry maxNetworkBitrate] < 0x7D01)
       {
         v7 = 1;
       }
@@ -470,9 +470,9 @@ LABEL_14:
         v19 = 1024;
         v20 = v7;
         v21 = 2112;
-        v22 = a3;
+        entryCopy2 = entry;
         v23 = 2112;
-        v24 = a4;
+        videoEntryCopy2 = videoEntry;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d result=%d (%@ vs. %@)", &v13, 0x36u);
       }
     }
@@ -488,9 +488,9 @@ LABEL_14:
       v19 = 1024;
       v20 = v7;
       v21 = 2112;
-      v22 = a3;
+      entryCopy2 = entry;
       v23 = 2112;
-      v24 = a4;
+      videoEntryCopy2 = videoEntry;
       _os_log_debug_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEBUG, " [%s] %s:%d result=%d (%@ vs. %@)", &v13, 0x36u);
     }
   }

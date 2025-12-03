@@ -1,7 +1,7 @@
 @interface ATXInferredModesAccumulator
 - (ATXInferredModesAccumulator)init;
 - (id)usageInsightsInferredATXModeEvents;
-- (void)recordInferredModeEndEvent:(id)a3;
+- (void)recordInferredModeEndEvent:(id)event;
 - (void)usageInsightsInferredATXModeEvents;
 @end
 
@@ -30,9 +30,9 @@
 {
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = BiomeLibrary();
-  v5 = [v4 UserFocus];
-  v6 = [v5 InferredMode];
-  v7 = [v6 atx_publisherFromStartDate:v3];
+  userFocus = [v4 UserFocus];
+  inferredMode = [userFocus InferredMode];
+  v7 = [inferredMode atx_publisherFromStartDate:v3];
 
   v14 = 0;
   v15[0] = &v14;
@@ -90,10 +90,10 @@ void __65__ATXInferredModesAccumulator_usageInsightsInferredATXModeEvents__block
   }
 }
 
-- (void)recordInferredModeEndEvent:(id)a3
+- (void)recordInferredModeEndEvent:(id)event
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [(NSMutableArray *)self->_inferredModeStartingEvents copy];
   v6 = MEMORY[0x277CBEB98];
   v7 = allModesForTraining();
@@ -122,19 +122,19 @@ void __65__ATXInferredModesAccumulator_usageInsightsInferredATXModeEvents__block
         }
 
         v14 = *(*(&v35 + 1) + 8 * v13);
-        v15 = [v4 modeType];
-        if (v15 == [v14 modeType])
+        modeType = [eventCopy modeType];
+        if (modeType == [v14 modeType])
         {
-          v16 = [v14 absoluteTimestamp];
-          [v16 timeIntervalSinceReferenceDate];
+          absoluteTimestamp = [v14 absoluteTimestamp];
+          [absoluteTimestamp timeIntervalSinceReferenceDate];
           v18 = v17;
-          v19 = [v4 absoluteTimestamp];
-          [v19 timeIntervalSinceReferenceDate];
+          absoluteTimestamp2 = [eventCopy absoluteTimestamp];
+          [absoluteTimestamp2 timeIntervalSinceReferenceDate];
           v21 = v20;
 
           if (v18 < v21)
           {
-            [v4 modeType];
+            [eventCopy modeType];
             BMUserFocusInferredModeTypeToActivity();
             v22 = ATXModeFromActivityType();
             v23 = [*(v12 + 2992) numberWithUnsignedInteger:v22];
@@ -143,12 +143,12 @@ void __65__ATXInferredModesAccumulator_usageInsightsInferredATXModeEvents__block
             if (v24)
             {
               v25 = objc_alloc(MEMORY[0x277CEB900]);
-              v26 = [v14 absoluteTimestamp];
-              [v4 absoluteTimestamp];
+              absoluteTimestamp3 = [v14 absoluteTimestamp];
+              [eventCopy absoluteTimestamp];
               v27 = v11;
               v28 = v8;
               v30 = v29 = self;
-              v31 = [v25 initWithATXMode:v22 startTime:v26 endTime:v30];
+              v31 = [v25 initWithATXMode:v22 startTime:absoluteTimestamp3 endTime:v30];
 
               self = v29;
               v8 = v28;
@@ -179,7 +179,7 @@ void __65__ATXInferredModesAccumulator_usageInsightsInferredATXModeEvents__block
 - (void)usageInsightsInferredATXModeEvents
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 136315394;
   v5 = "[ATXInferredModesAccumulator usageInsightsInferredATXModeEvents]";
   v6 = 2112;

@@ -1,26 +1,26 @@
 @interface PSDIDSServiceStatisticsCollection
 + (id)knownChannelNames;
-+ (id)statisticsCollectionWithChannelName:(id)a3 statisticsDictionary:(id)a4;
++ (id)statisticsCollectionWithChannelName:(id)name statisticsDictionary:(id)dictionary;
 - (PSDIDSServiceStatisticsCollection)init;
-- (PSDIDSServiceStatisticsCollection)initWithCoder:(id)a3;
+- (PSDIDSServiceStatisticsCollection)initWithCoder:(id)coder;
 - (id)description;
-- (id)statisticsCollectionByDiffingStatisticsCollection:(id)a3;
-- (void)addServiceStatistics:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateServiceStatisticsWithBlock:(id)a3;
+- (id)statisticsCollectionByDiffingStatisticsCollection:(id)collection;
+- (void)addServiceStatistics:(id)statistics;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateServiceStatisticsWithBlock:(id)block;
 @end
 
 @implementation PSDIDSServiceStatisticsCollection
 
-- (PSDIDSServiceStatisticsCollection)initWithCoder:(id)a3
+- (PSDIDSServiceStatisticsCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PSDIDSServiceStatisticsCollection;
   v5 = [(PSDIDSServiceStatisticsCollection *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channelName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channelName"];
     channelName = v5->_channelName;
     v5->_channelName = v6;
 
@@ -29,7 +29,7 @@
     v20[2] = objc_opt_class();
     v8 = [NSArray arrayWithObjects:v20 count:3];
     v9 = [NSSet setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"statistics"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"statistics"];
     v11 = [v10 mutableCopy];
     statistics = v5->_statistics;
     v5->_statistics = v11;
@@ -57,20 +57,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   channelName = self->_channelName;
-  v5 = a3;
-  [v5 encodeObject:channelName forKey:@"channelName"];
-  [v5 encodeObject:self->_statistics forKey:@"statistics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:channelName forKey:@"channelName"];
+  [coderCopy encodeObject:self->_statistics forKey:@"statistics"];
 }
 
-+ (id)statisticsCollectionWithChannelName:(id)a3 statisticsDictionary:(id)a4
++ (id)statisticsCollectionWithChannelName:(id)name statisticsDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setChannelName:v7];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v8 = objc_alloc_init(self);
+  [v8 setChannelName:nameCopy];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -78,7 +78,7 @@
   v11[3] = &unk_10002CAF0;
   v9 = v8;
   v12 = v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:v11];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   return v9;
 }
@@ -108,16 +108,16 @@
   return v2;
 }
 
-- (void)enumerateServiceStatisticsWithBlock:(id)a3
+- (void)enumerateServiceStatisticsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_statistics allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_statistics allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -128,10 +128,10 @@ LABEL_3:
     {
       if (*v11 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -139,7 +139,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -151,31 +151,31 @@ LABEL_3:
   }
 }
 
-- (void)addServiceStatistics:(id)a3
+- (void)addServiceStatistics:(id)statistics
 {
-  v5 = a3;
-  v4 = [v5 serviceName];
-  if (v4)
+  statisticsCopy = statistics;
+  serviceName = [statisticsCopy serviceName];
+  if (serviceName)
   {
-    [(NSMutableDictionary *)self->_statistics setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_statistics setObject:statisticsCopy forKeyedSubscript:serviceName];
   }
 }
 
-- (id)statisticsCollectionByDiffingStatisticsCollection:(id)a3
+- (id)statisticsCollectionByDiffingStatisticsCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_alloc_init(PSDIDSServiceStatisticsCollection);
-  v6 = [(PSDIDSServiceStatisticsCollection *)self channelName];
-  [(PSDIDSServiceStatisticsCollection *)v5 setChannelName:v6];
+  channelName = [(PSDIDSServiceStatisticsCollection *)self channelName];
+  [(PSDIDSServiceStatisticsCollection *)v5 setChannelName:channelName];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000CC30;
   v12[3] = &unk_10002C6F8;
-  v13 = v4;
+  v13 = collectionCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = collectionCopy;
   [(PSDIDSServiceStatisticsCollection *)self enumerateServiceStatisticsWithBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -187,8 +187,8 @@ LABEL_3:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PSDIDSServiceStatisticsCollection *)self channelName];
-  v6 = [NSMutableString stringWithFormat:@"<%@ %p channelName=%@;\n", v4, self, v5];;
+  channelName = [(PSDIDSServiceStatisticsCollection *)self channelName];
+  v6 = [NSMutableString stringWithFormat:@"<%@ %p channelName=%@;\n", v4, self, channelName];;
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;

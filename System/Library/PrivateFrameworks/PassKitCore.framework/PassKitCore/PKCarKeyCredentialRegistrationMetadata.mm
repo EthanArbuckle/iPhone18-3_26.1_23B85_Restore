@@ -1,22 +1,22 @@
 @interface PKCarKeyCredentialRegistrationMetadata
-- (PKCarKeyCredentialRegistrationMetadata)initWithMake:(id)a3 model:(id)a4 keyType:(int64_t)a5;
+- (PKCarKeyCredentialRegistrationMetadata)initWithMake:(id)make model:(id)model keyType:(int64_t)type;
 @end
 
 @implementation PKCarKeyCredentialRegistrationMetadata
 
-- (PKCarKeyCredentialRegistrationMetadata)initWithMake:(id)a3 model:(id)a4 keyType:(int64_t)a5
+- (PKCarKeyCredentialRegistrationMetadata)initWithMake:(id)make model:(id)model keyType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  makeCopy = make;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = PKCarKeyCredentialRegistrationMetadata;
   v11 = [(PKCredentialRegistrationMetadata *)&v14 initWithProductType:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_make, a3);
-    objc_storeStrong(&v12->_model, a4);
-    v12->_keyType = a5;
+    objc_storeStrong(&v11->_make, make);
+    objc_storeStrong(&v12->_model, model);
+    v12->_keyType = type;
   }
 
   return v12;

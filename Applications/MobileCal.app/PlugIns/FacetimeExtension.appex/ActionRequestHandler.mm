@@ -1,13 +1,13 @@
 @interface ActionRequestHandler
 - (BOOL)_requiredAppInstalled;
 - (id)_conversationManager;
-- (void)__findFullLinkForLink:(id)a3 completion:(id)a4;
-- (void)_getFullLinkFromLink:(id)a3 completion:(id)a4;
-- (void)_retrieveFullLinkFromLink:(id)a3 completion:(id)a4;
-- (void)extendExpirationOfURL:(id)a3 toExpirationDate:(id)a4 withCompletion:(id)a5;
-- (void)fetchAvailableRoomTypesWithCompletionHandler:(id)a3;
-- (void)fetchVirtualConferenceForIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)invalidateURL:(id)a3 withCompletionHandler:(id)a4;
+- (void)__findFullLinkForLink:(id)link completion:(id)completion;
+- (void)_getFullLinkFromLink:(id)link completion:(id)completion;
+- (void)_retrieveFullLinkFromLink:(id)link completion:(id)completion;
+- (void)extendExpirationOfURL:(id)l toExpirationDate:(id)date withCompletion:(id)completion;
+- (void)fetchAvailableRoomTypesWithCompletionHandler:(id)handler;
+- (void)fetchVirtualConferenceForIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)invalidateURL:(id)l withCompletionHandler:(id)handler;
 @end
 
 @implementation ActionRequestHandler
@@ -22,9 +22,9 @@
   return v4 != 0;
 }
 
-- (void)fetchAvailableRoomTypesWithCompletionHandler:(id)a3
+- (void)fetchAvailableRoomTypesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (![(ActionRequestHandler *)self _requiredAppInstalled])
   {
     v19 = NSLocalizedDescriptionKey;
@@ -38,7 +38,7 @@
 LABEL_6:
     v8 = [NSError errorWithDomain:v13 code:v14 userInfo:v12];
 
-    v4[2](v4, &__NSArray0__struct, v8);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, v8);
     goto LABEL_7;
   }
 
@@ -61,69 +61,69 @@ LABEL_6:
 
   v21 = v8;
   v9 = [NSArray arrayWithObjects:&v21 count:1];
-  v4[2](v4, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 
 LABEL_7:
 }
 
-- (void)fetchVirtualConferenceForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchVirtualConferenceForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"facetime_identifier"])
+  handlerCopy = handler;
+  if ([identifier isEqualToString:@"facetime_identifier"])
   {
-    v7 = [(ActionRequestHandler *)self _conversationManager];
+    _conversationManager = [(ActionRequestHandler *)self _conversationManager];
     v8 = +[NSSet set];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100000FD4;
     v10[3] = &unk_100004178;
-    v11 = v6;
-    [v7 generateLinkWithInvitedMemberHandles:v8 completionHandler:v10];
+    v11 = handlerCopy;
+    [_conversationManager generateLinkWithInvitedMemberHandles:v8 completionHandler:v10];
   }
 
   else
   {
     v9 = [NSError errorWithDomain:EKVirtualConferenceProviderErrorDomain code:3 userInfo:0];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 
-- (void)invalidateURL:(id)a3 withCompletionHandler:(id)a4
+- (void)invalidateURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [TUConversationLink conversationLinkForURL:a3];
+  handlerCopy = handler;
+  v7 = [TUConversationLink conversationLinkForURL:l];
   if (v7)
   {
-    v8 = [(ActionRequestHandler *)self _conversationManager];
+    _conversationManager = [(ActionRequestHandler *)self _conversationManager];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000128C;
     v10[3] = &unk_1000041A0;
-    v11 = v6;
-    [v8 invalidateLink:v7 completionHandler:v10];
+    v11 = handlerCopy;
+    [_conversationManager invalidateLink:v7 completionHandler:v10];
   }
 
   else
   {
     v9 = [NSError errorWithDomain:EKVirtualConferenceProviderErrorDomain code:4 userInfo:0];
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
-- (void)extendExpirationOfURL:(id)a3 toExpirationDate:(id)a4 withCompletion:(id)a5
+- (void)extendExpirationOfURL:(id)l toExpirationDate:(id)date withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [TUConversationLink conversationLinkForURL:a3];
+  dateCopy = date;
+  completionCopy = completion;
+  v10 = [TUConversationLink conversationLinkForURL:l];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100001408;
   v13[3] = &unk_1000041F0;
-  v14 = v8;
-  v15 = v9;
+  v14 = dateCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
+  v11 = dateCopy;
+  v12 = completionCopy;
   [(ActionRequestHandler *)self _retrieveFullLinkFromLink:v10 completion:v13];
 }
 
@@ -142,44 +142,44 @@ LABEL_7:
   return conversationManager;
 }
 
-- (void)_retrieveFullLinkFromLink:(id)a3 completion:(id)a4
+- (void)_retrieveFullLinkFromLink:(id)link completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001844;
   v7[3] = &unk_100004178;
-  v8 = a4;
-  v6 = v8;
-  [(ActionRequestHandler *)self _getFullLinkFromLink:a3 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(ActionRequestHandler *)self _getFullLinkFromLink:link completion:v7];
 }
 
-- (void)_getFullLinkFromLink:(id)a3 completion:(id)a4
+- (void)_getFullLinkFromLink:(id)link completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  completionCopy = completion;
   if (self->_linksOwnedByThisUser)
   {
-    [(ActionRequestHandler *)self __findFullLinkForLink:v6 completion:v7];
+    [(ActionRequestHandler *)self __findFullLinkForLink:linkCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = [(ActionRequestHandler *)self _conversationManager];
+    _conversationManager = [(ActionRequestHandler *)self _conversationManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100001958;
     v9[3] = &unk_100004218;
-    v11 = v7;
+    v11 = completionCopy;
     v9[4] = self;
-    v10 = v6;
-    [v8 getActiveLinksWithCreatedOnly:1 completionHandler:v9];
+    v10 = linkCopy;
+    [_conversationManager getActiveLinksWithCreatedOnly:1 completionHandler:v9];
   }
 }
 
-- (void)__findFullLinkForLink:(id)a3 completion:(id)a4
+- (void)__findFullLinkForLink:(id)link completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  completionCopy = completion;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -200,9 +200,9 @@ LABEL_7:
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
-        if ([v6 isEquivalentToConversationLink:{v13, v14}])
+        if ([linkCopy isEquivalentToConversationLink:{v13, v14}])
         {
-          v7[2](v7, v13, 0);
+          completionCopy[2](completionCopy, v13, 0);
 
           goto LABEL_11;
         }
@@ -218,7 +218,7 @@ LABEL_7:
     }
   }
 
-  v7[2](v7, 0, 0);
+  completionCopy[2](completionCopy, 0, 0);
 LABEL_11:
 }
 

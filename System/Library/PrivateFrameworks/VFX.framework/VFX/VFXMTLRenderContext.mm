@@ -1,11 +1,11 @@
 @interface VFXMTLRenderContext
 + (void)registerBindings;
-- ($56FBFA7F90079343FE03906F902E417E)bufferForBuiltin:(unsigned __int8)a3;
+- ($56FBFA7F90079343FE03906F902E417E)bufferForBuiltin:(unsigned __int8)builtin;
 - ($56FBFA7F90079343FE03906F902E417E)vfxCoreViewConstants;
-- (BOOL)_executeDeformerStackOfCommand:(id *)a3 dataKind:(unsigned __int8)a4 deformerStack:(__CFXDeformerStack *)a5 metalDeformedMesh:(id *)a6 skinner:(__CFXSkinner *)a7 skinnerCalculationMode:(int)a8;
-- (BOOL)_setupRenderPipelineOfCommand:(id *)a3 tessellator:(id)a4 useTessellation:(BOOL)a5;
-- (BOOL)constantOffsetAndSize:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
-- (BOOL)mapVolatileMesh:(__CFXMesh *)a3 verticesCount:(int64_t)a4;
+- (BOOL)_executeDeformerStackOfCommand:(id *)command dataKind:(unsigned __int8)kind deformerStack:(__CFXDeformerStack *)stack metalDeformedMesh:(id *)mesh skinner:(__CFXSkinner *)skinner skinnerCalculationMode:(int)mode;
+- (BOOL)_setupRenderPipelineOfCommand:(id *)command tessellator:(id)tessellator useTessellation:(BOOL)tessellation;
+- (BOOL)constantOffsetAndSize:(int)size :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
+- (BOOL)mapVolatileMesh:(__CFXMesh *)mesh verticesCount:(int64_t)count;
 - (CFXVFXRenderTargetInfo)renderTargetInfo;
 - (MTLCommandBuffer)resourceCommandBuffer;
 - (MTLCommandQueue)commandQueue;
@@ -13,105 +13,105 @@
 - (MTLRenderPassDescriptor)currentRenderPassDescriptor;
 - (RGCachedComputeCommandEncoder)resourceComputeEncoder;
 - (VFXMTLBlitCommandEncoder)resourceBlitEncoder;
-- (VFXMTLRenderContext)initWithEngineContext:(__CFXEngineContext *)a3 resourceManager:(id)a4 commandQueue:(id)a5;
+- (VFXMTLRenderContext)initWithEngineContext:(__CFXEngineContext *)context resourceManager:(id)manager commandQueue:(id)queue;
 - (VFXWorldBuffer)_nextWorldBuffer;
-- (VFXWorldBuffer)updateViewConstantsWithWorld:(__CFXWorld *)a3;
-- (__CFXMeshElement)createVolatileMeshElementOfType:(VFXMTLRenderContext *)self primitiveCount:(unsigned int)a2 bytesPerIndex:;
-- (__n128)setScreenTransform:(__n128)a3;
-- (const)constantData:(int)a3;
-- (float)_zFarForSkyboxRenderingProjectionMatrix:(id *)a3 defaultZFar:(float)a4;
+- (VFXWorldBuffer)updateViewConstantsWithWorld:(__CFXWorld *)world;
+- (__CFXMeshElement)createVolatileMeshElementOfType:(VFXMTLRenderContext *)self primitiveCount:(unsigned int)count bytesPerIndex:;
+- (__n128)setScreenTransform:(__n128)transform;
+- (const)constantData:(int)data;
+- (float)_zFarForSkyboxRenderingProjectionMatrix:(id *)matrix defaultZFar:(float)far;
 - (id).cxx_construct;
 - (id)_finalRenderTexture;
-- (id)_newMTLBufferFromPoolWithLength:(unint64_t)a3;
-- (id)_setupTessellatorOfCommand:(id *)a3 deformersDidMutateMeshForCurrentFrame:(BOOL)a4 tessellationPipelineStateHash:(char *)a5;
-- (id)allocateWithStagingBuffer:(id)a3 desc:(id *)a4 forceCPUBlit:(BOOL)a5;
-- (id)buffer:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
-- (id)deformedRaytraceableMeshForNode:(__CFXNode *)a3 fallbackModel:(__CFXModel *)a4;
-- (id)irradianceTextureForMaterialProperty:(__CFXMaterialProperty *)a3;
-- (id)makeRenderPipelineForResourceID:(unint64_t)a3;
-- (id)radianceTextureForMaterialProperty:(__CFXMaterialProperty *)a3;
-- (id)renderResourcesFor:(id)a3 renderPassFormat:(id *)a4;
-- (id)sampler:(int)a3 :(id)a4;
-- (id)texture:(int)a3 :(id)a4;
+- (id)_newMTLBufferFromPoolWithLength:(unint64_t)length;
+- (id)_setupTessellatorOfCommand:(id *)command deformersDidMutateMeshForCurrentFrame:(BOOL)frame tessellationPipelineStateHash:(char *)hash;
+- (id)allocateWithStagingBuffer:(id)buffer desc:(id *)desc forceCPUBlit:(BOOL)blit;
+- (id)buffer:(int)buffer :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
+- (id)deformedRaytraceableMeshForNode:(__CFXNode *)node fallbackModel:(__CFXModel *)model;
+- (id)irradianceTextureForMaterialProperty:(__CFXMaterialProperty *)property;
+- (id)makeRenderPipelineForResourceID:(unint64_t)d;
+- (id)radianceTextureForMaterialProperty:(__CFXMaterialProperty *)property;
+- (id)renderResourcesFor:(id)for renderPassFormat:(id *)format;
+- (id)sampler:(int)sampler :(id)a4;
+- (id)texture:(int)texture :(id)a4;
 - (int64_t)preferredFramesPerSecond;
-- (uint64_t)_fillProcessingContextWithCullingContext:(uint64_t)a3;
-- (uint64_t)unmapVolatileMeshElement:(uint64_t)a3;
+- (uint64_t)_fillProcessingContextWithCullingContext:(uint64_t)context;
+- (uint64_t)unmapVolatileMeshElement:(uint64_t)element;
 - (unint64_t)cubeArrayTypeIfSupported;
-- (void)_VFXWorldRendererMainPassCustomPostProcessSupportDrawSceneBackgroundUsingEncoder:(id)a3 commandBuffer:(id)a4 renderPassDesc:(id *)a5;
+- (void)_VFXWorldRendererMainPassCustomPostProcessSupportDrawSceneBackgroundUsingEncoder:(id)encoder commandBuffer:(id)buffer renderPassDesc:(id *)desc;
 - (void)_allowGPUBackgroundExecution;
-- (void)_beginRenderPass:(id *)a3 renderEncoder:(void *)a4;
-- (void)_bindRenderPipelineArgumentsOfCommand:(id *)a3 materialHashChanged:(BOOL)a4 modelWithShaderModifier:(__CFXModel *)a5 modelWithShaderModifierHasChanged:(BOOL)a6 nodeHasChanged:(BOOL)a7 programHasChanged:(BOOL)a8 projHasChanged:(BOOL)a9 viewHasChanged:(BOOL)a10;
+- (void)_beginRenderPass:(id *)pass renderEncoder:(void *)encoder;
+- (void)_bindRenderPipelineArgumentsOfCommand:(id *)command materialHashChanged:(BOOL)changed modelWithShaderModifier:(__CFXModel *)modifier modelWithShaderModifierHasChanged:(BOOL)hasChanged nodeHasChanged:(BOOL)nodeHasChanged programHasChanged:(BOOL)programHasChanged projHasChanged:(BOOL)projHasChanged viewHasChanged:(BOOL)self0;
 - (void)_clearRenderCaches;
 - (void)_clearUnusedBindingPoints;
 - (void)_commitResourceCommandBufferIfNeeded;
 - (void)_createResourceCommandBufferIfNeeded;
-- (void)_drawFullScreenTexture:(id)a3;
-- (void)_drawMeshElement:(id)a3 instanceCount:(unint64_t)a4;
+- (void)_drawFullScreenTexture:(id)texture;
+- (void)_drawMeshElement:(id)element instanceCount:(unint64_t)count;
 - (void)_drawPBRTextures;
-- (void)_drawPatchForMeshElement:(id)a3 instanceCount:(unint64_t)a4;
+- (void)_drawPatchForMeshElement:(id)element instanceCount:(unint64_t)count;
 - (void)_drawShadowMaps;
 - (void)_endResourceCommandBufferEncodingIfAny;
-- (void)_executeDrawCommand:(id *)a3;
-- (void)_fillFrameUniformsWithWorld:(__CFXWorld *)a3;
-- (void)_fillProcessingContextWithEngineIterationContext:(id *)a3;
+- (void)_executeDrawCommand:(id *)command;
+- (void)_fillFrameUniformsWithWorld:(__CFXWorld *)world;
+- (void)_fillProcessingContextWithEngineIterationContext:(id *)context;
 - (void)_fillVFXCoreRenderData;
-- (void)_installBindingsOfNode:(__CFXNode *)a3 probeCacheIndex:(unsigned int *)a4;
+- (void)_installBindingsOfNode:(__CFXNode *)node probeCacheIndex:(unsigned int *)index;
 - (void)_logLightingInformation;
-- (void)_prepareMaterialTextures:(__CFXMaterial *)a3;
-- (void)_recycleMTLBufferToPool:(id)a3;
-- (void)_setMeshBuffers:(id)a3;
-- (void)_setWorldBufferAtVertexIndex:(int64_t)a3 fragmentIndex:(int64_t)a4;
-- (void)_updateProjectionMatrixForOrthographicSkyboxRenderingIfNeeded:(id *)a3;
-- (void)_updateViewDependentConstants:(uint64_t)a3 world:(__n128 *)a4;
-- (void)addCommandBufferCompletedHandler:(id)a3;
-- (void)addCommandBufferScheduledHandler:(id)a3;
-- (void)addDrawablePresentedHandler:(id)a3;
-- (void)authoring_drawDeformersForNode:(__CFXNode *)a3 authoringEnvironment:(void *)a4;
-- (void)authoring_drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 instanceCount:(unint64_t)a7 vertexBuffers:(const void *)a8 offsets:(const unint64_t *)a9 range:(_NSRange)a10 vertexDescriptor:(id)a11 withProgram:(__CFXProgram *)a12 uniforms:(const void *)a13 uniformsLength:(unint64_t)a14 rasterizerStates:(__CFXRasterizerStates *)a15 blendStates:(__CFXBlendStates *)a16;
-- (void)authoring_drawPrimitives:(unint64_t)a3 vertexCount:(unint64_t)a4 instanceCount:(unint64_t)a5 vertexBuffers:(const void *)a6 offsets:(const unint64_t *)a7 range:(_NSRange)a8 vertexDescriptor:(id)a9 withProgram:(__CFXProgram *)a10 uniforms:(const void *)a11 uniformsLength:(unint64_t)a12 rasterizerStates:(__CFXRasterizerStates *)a13 blendStates:(__CFXBlendStates *)a14;
-- (void)authoring_renderMesh:(uint64_t)a3 meshElement:(uint64_t)a4 withProgram:(uint64_t)a5 uniforms:(const void *)a6 uniformsLength:(size_t)a7 rasterizerStates:(uint64_t)a8 blendStates:(uint64_t)a9 texture:(uint64_t)a10 sampler:(uint64_t)a11 depthBias:(char)a12;
-- (void)beginExternalFrameWithEncoder:(void *)a3 frameIndex:(unint64_t)a4;
-- (void)beginFrame:(id)a3;
-- (void)beginRenderPass:(id)a3 renderEncoder:(void *)a4;
-- (void)beginRenderPass:(id)a3 renderEncoder:(void *)a4 parameters:(id)a5;
+- (void)_prepareMaterialTextures:(__CFXMaterial *)textures;
+- (void)_recycleMTLBufferToPool:(id)pool;
+- (void)_setMeshBuffers:(id)buffers;
+- (void)_setWorldBufferAtVertexIndex:(int64_t)index fragmentIndex:(int64_t)fragmentIndex;
+- (void)_updateProjectionMatrixForOrthographicSkyboxRenderingIfNeeded:(id *)needed;
+- (void)_updateViewDependentConstants:(uint64_t)constants world:(__n128 *)world;
+- (void)addCommandBufferCompletedHandler:(id)handler;
+- (void)addCommandBufferScheduledHandler:(id)handler;
+- (void)addDrawablePresentedHandler:(id)handler;
+- (void)authoring_drawDeformersForNode:(__CFXNode *)node authoringEnvironment:(void *)environment;
+- (void)authoring_drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer instanceCount:(unint64_t)instanceCount vertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets range:(_NSRange)self0 vertexDescriptor:(id)self1 withProgram:(__CFXProgram *)self2 uniforms:(const void *)self3 uniformsLength:(unint64_t)self4 rasterizerStates:(__CFXRasterizerStates *)self5 blendStates:(__CFXBlendStates *)self6;
+- (void)authoring_drawPrimitives:(unint64_t)primitives vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount vertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets range:(_NSRange)range vertexDescriptor:(id)descriptor withProgram:(__CFXProgram *)self0 uniforms:(const void *)self1 uniformsLength:(unint64_t)self2 rasterizerStates:(__CFXRasterizerStates *)self3 blendStates:(__CFXBlendStates *)self4;
+- (void)authoring_renderMesh:(uint64_t)mesh meshElement:(uint64_t)element withProgram:(uint64_t)program uniforms:(const void *)uniforms uniformsLength:(size_t)length rasterizerStates:(uint64_t)states blendStates:(uint64_t)blendStates texture:(uint64_t)self0 sampler:(uint64_t)self1 depthBias:(char)self2;
+- (void)beginExternalFrameWithEncoder:(void *)encoder frameIndex:(unint64_t)index;
+- (void)beginFrame:(id)frame;
+- (void)beginRenderPass:(id)pass renderEncoder:(void *)encoder;
+- (void)beginRenderPass:(id)pass renderEncoder:(void *)encoder parameters:(id)parameters;
 - (void)dealloc;
 - (void)discardPendingCommandBufferCompletedHandlers;
 - (void)discardPendingCommandBufferScheduledHandlers;
 - (void)discardPendingDrawablePresentedHandlers;
-- (void)drawRenderElement:(__CFXRendererElement *)a3 withOverrides:(__CFXRenderingOverride *)a4;
-- (void)drawWireframeOverlayForElements:(id *)a3 range:(id)a4 store:(__CFXRendererElementStore *)a5 passInstance:(__CFXPassInstance *)a6;
+- (void)drawRenderElement:(__CFXRendererElement *)element withOverrides:(__CFXRenderingOverride *)overrides;
+- (void)drawWireframeOverlayForElements:(id *)elements range:(id)range store:(__CFXRendererElementStore *)store passInstance:(__CFXPassInstance *)instance;
 - (void)endExternalFrame;
-- (void)endFrameWaitingUntilCompleted:(BOOL)a3 status:(unint64_t *)a4 error:(id *)a5;
+- (void)endFrameWaitingUntilCompleted:(BOOL)completed status:(unint64_t *)status error:(id *)error;
 - (void)endFrameWorldSpecifics;
 - (void)endRenderPass;
-- (void)processRendererElements:(id *)a3 count:(unsigned int)a4 engineIterationContext:(id *)a5;
-- (void)renderBackground:(__CFXMaterialProperty *)a3 engineContext:(__CFXEngineContext *)a4 passInstance:(__CFXPassInstance *)a5;
-- (void)renderVideoBackground:(__CFXImageProxy *)a3 engineContext:(__CFXEngineContext *)a4 materialProperty:(__CFXMaterialProperty *)a5;
+- (void)processRendererElements:(id *)elements count:(unsigned int)count engineIterationContext:(id *)context;
+- (void)renderBackground:(__CFXMaterialProperty *)background engineContext:(__CFXEngineContext *)context passInstance:(__CFXPassInstance *)instance;
+- (void)renderVideoBackground:(__CFXImageProxy *)background engineContext:(__CFXEngineContext *)context materialProperty:(__CFXMaterialProperty *)property;
 - (void)resetVolatileMeshElements;
 - (void)resetVolatileMeshes;
-- (void)setAttachmentProvider:(id)a3;
-- (void)setCollectsCompilationErrors:(BOOL)a3;
-- (void)setCurrentExternalDrawCallContext:(id)a3;
-- (void)setEnableARMode:(BOOL)a3;
-- (void)setForceAsyncShaderCompilation:(BOOL)a3;
-- (void)setIsOpaque:(BOOL)a3;
-- (void)setPreferredFramesPerSecond:(int64_t)a3;
-- (void)setRasterizerStates:(__CFXRasterizerStates *)a3;
-- (void)setShouldDelegateARCompositing:(BOOL)a3;
-- (void)setWantsWideGamut:(BOOL)a3;
-- (void)startProcessingRendererElementsWithEngineIterationContext:(id *)a3;
-- (void)stopProcessingRendererElements:(BOOL)a3;
-- (void)unmapVolatileMesh:(__CFXMesh *)a3 modifiedVerticesCount:(int64_t)a4;
+- (void)setAttachmentProvider:(id)provider;
+- (void)setCollectsCompilationErrors:(BOOL)errors;
+- (void)setCurrentExternalDrawCallContext:(id)context;
+- (void)setEnableARMode:(BOOL)mode;
+- (void)setForceAsyncShaderCompilation:(BOOL)compilation;
+- (void)setIsOpaque:(BOOL)opaque;
+- (void)setPreferredFramesPerSecond:(int64_t)second;
+- (void)setRasterizerStates:(__CFXRasterizerStates *)states;
+- (void)setShouldDelegateARCompositing:(BOOL)compositing;
+- (void)setWantsWideGamut:(BOOL)gamut;
+- (void)startProcessingRendererElementsWithEngineIterationContext:(id *)context;
+- (void)stopProcessingRendererElements:(BOOL)elements;
+- (void)unmapVolatileMesh:(__CFXMesh *)mesh modifiedVerticesCount:(int64_t)count;
 - (void)updateFrameConstants;
-- (void)updateRenderPassDescriptor:(id *)a3;
-- (void)writeBytes:(const void *)a3 length:(unint64_t)a4;
+- (void)updateRenderPassDescriptor:(id *)descriptor;
+- (void)writeBytes:(const void *)bytes length:(unint64_t)length;
 @end
 
 @implementation VFXMTLRenderContext
 
-- (VFXMTLRenderContext)initWithEngineContext:(__CFXEngineContext *)a3 resourceManager:(id)a4 commandQueue:(id)a5
+- (VFXMTLRenderContext)initWithEngineContext:(__CFXEngineContext *)context resourceManager:(id)manager commandQueue:(id)queue
 {
-  v9 = sub_1AF13099C(a3);
+  v9 = sub_1AF13099C(context);
   MTLDevice = CFXGPUDeviceGetMTLDevice(v9);
   if (!v9)
   {
@@ -125,9 +125,9 @@
   }
 
   v14 = MTLDevice;
-  if (a5)
+  if (queue)
   {
-    v15 = objc_msgSend_device(a5, v11, v12, v13);
+    v15 = objc_msgSend_device(queue, v11, v12, v13);
     v19 = objc_msgSend_registryID(v15, v16, v17, v18);
     if (v19 != objc_msgSend_registryID(v14, v20, v21, v22))
     {
@@ -149,9 +149,9 @@
     return v23;
   }
 
-  v24 = a4;
-  *(v23 + 14) = v24;
-  v25 = sub_1AFDE323C(v24);
+  managerCopy = manager;
+  *(v23 + 14) = managerCopy;
+  v25 = sub_1AFDE323C(managerCopy);
   *(v23 + 15) = CFRetain(v25);
   if ((sub_1AF28A1D8() & 1) == 0)
   {
@@ -173,9 +173,9 @@
   }
 
 LABEL_8:
-  if (a5)
+  if (queue)
   {
-    *(v23 + 2534) = a5;
+    *(v23 + 2534) = queue;
   }
 
   *(v23 + 57) = objc_alloc_init(RGCachedComputeCommandEncoder);
@@ -186,7 +186,7 @@ LABEL_8:
   *(v23 + 4) = xmmword_1AFE48520;
   *(v23 + 5) = unk_1AFE48530;
   *(v23 + 104) = 0;
-  *(v23 + 17) = a3;
+  *(v23 + 17) = context;
   *(v23 + 33) |= 3u;
   if (j__objc_msgSend_supportsMSAADepthResolve(v14, v32, v33, v34))
   {
@@ -455,13 +455,13 @@ LABEL_8:
   }
 }
 
-- (void)setPreferredFramesPerSecond:(int64_t)a3
+- (void)setPreferredFramesPerSecond:(int64_t)second
 {
-  if (!a3)
+  if (!second)
   {
     v5 = objc_msgSend_mainScreen(MEMORY[0x1E69DCEB0], a2, 0, v3);
-    a3 = objc_msgSend_maximumFramesPerSecond(v5, v6, v7, v8);
-    if (!a3)
+    second = objc_msgSend_maximumFramesPerSecond(v5, v6, v7, v8);
+    if (!second)
     {
       v9 = sub_1AF0D5194();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -469,11 +469,11 @@ LABEL_8:
         sub_1AFDE6200();
       }
 
-      a3 = 120;
+      second = 120;
     }
   }
 
-  self->_targetedFrameInterval = 1.0 / a3;
+  self->_targetedFrameInterval = 1.0 / second;
 }
 
 - (int64_t)preferredFramesPerSecond
@@ -490,33 +490,33 @@ LABEL_8:
   }
 }
 
-- (__n128)setScreenTransform:(__n128)a3
+- (__n128)setScreenTransform:(__n128)transform
 {
   result[2] = a2;
-  result[3] = a3;
+  result[3] = transform;
   result[4] = a4;
   result[5] = a5;
   return result;
 }
 
-- (void)setWantsWideGamut:(BOOL)a3
+- (void)setWantsWideGamut:(BOOL)gamut
 {
   v4 = *(self + 144);
-  if ((v4 & 1) != a3)
+  if ((v4 & 1) != gamut)
   {
-    *(self + 144) = v4 & 0xFE | a3;
+    *(self + 144) = v4 & 0xFE | gamut;
     v5 = sub_1AF12DDCC(self->_engineContext);
 
     sub_1AF1BE334(@"kCFXNotificationEngineContextInvalidatePasses", v5, 0, 1u);
   }
 }
 
-- (void)setEnableARMode:(BOOL)a3
+- (void)setEnableARMode:(BOOL)mode
 {
   v3 = *(self + 144);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ mode) & 1) == 0)
   {
-    if (a3)
+    if (mode)
     {
       v4 = 4;
     }
@@ -530,12 +530,12 @@ LABEL_8:
   }
 }
 
-- (void)setShouldDelegateARCompositing:(BOOL)a3
+- (void)setShouldDelegateARCompositing:(BOOL)compositing
 {
   v3 = *(self + 144);
-  if (((((v3 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 8) == 0) ^ compositing) & 1) == 0)
   {
-    if (a3)
+    if (compositing)
     {
       v4 = 8;
     }
@@ -549,12 +549,12 @@ LABEL_8:
   }
 }
 
-- (void)setIsOpaque:(BOOL)a3
+- (void)setIsOpaque:(BOOL)opaque
 {
   v4 = *(self + 144);
-  if (((((v4 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 2) == 0) ^ opaque) & 1) == 0)
   {
-    if (a3)
+    if (opaque)
     {
       v5 = 2;
     }
@@ -639,7 +639,7 @@ LABEL_8:
   }
 }
 
-- (void)beginFrame:(id)a3
+- (void)beginFrame:(id)frame
 {
   v5 = self->_currentFrameIndex + 1;
   self->_currentFrameIndex = v5;
@@ -663,14 +663,14 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = a3;
-    self->_layerTarget = v12;
-    self->_shouldPresentWithTransaction = objc_msgSend_presentsWithTransaction(v12, v13, v14, v15);
+    frameCopy = frame;
+    self->_layerTarget = frameCopy;
+    self->_shouldPresentWithTransaction = objc_msgSend_presentsWithTransaction(frameCopy, v13, v14, v15);
   }
 
   else
   {
-    self->_textureTarget = a3;
+    self->_textureTarget = frame;
   }
 
   CFXBufferAllocatorPerFrameNextFrame(self->_frameConstantBufferPool.impl);
@@ -747,9 +747,9 @@ LABEL_8:
   }
 }
 
-- (void)endFrameWaitingUntilCompleted:(BOOL)a3 status:(unint64_t *)a4 error:(id *)a5
+- (void)endFrameWaitingUntilCompleted:(BOOL)completed status:(unint64_t *)status error:(id *)error
 {
-  v7 = a3;
+  completedCopy = completed;
   currentFrameIndex = self->_currentFrameIndex;
   prof_beginFlameSmallData("[VFXMTLRenderContext endFrameWaitingUntilCompleted:status:error:]", "/Library/Caches/com.apple.xbs/Sources/VFX/sources/VFX/CFX/NewRenderer/VFXMTLRenderContext.mm", 1330, currentFrameIndex | 0x300000000);
   objc_msgSend__commitResourceCommandBufferIfNeeded(self, v10, v11, v12);
@@ -845,17 +845,17 @@ LABEL_18:
   clientCommandBuffer = self->_clientCommandBuffer;
   if (clientCommandBuffer)
   {
-    if (v7)
+    if (completedCopy)
     {
       objc_msgSend_waitUntilCompleted(clientCommandBuffer, v41, v42, v43);
-      if (a4)
+      if (status)
       {
-        *a4 = objc_msgSend_status(self->_clientCommandBuffer, v41, v45, v43);
+        *status = objc_msgSend_status(self->_clientCommandBuffer, v41, v45, v43);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = 0;
+        *error = 0;
       }
     }
 
@@ -865,17 +865,17 @@ LABEL_18:
   else
   {
     objc_msgSend_commit(self->_currentCommandBuffer, v41, v42, v43);
-    if (v7)
+    if (completedCopy)
     {
       objc_msgSend_waitUntilCompleted(self->_currentCommandBuffer, v46, v48, v47);
-      if (a4)
+      if (status)
       {
-        *a4 = objc_msgSend_status(self->_currentCommandBuffer, v46, v49, v47);
+        *status = objc_msgSend_status(self->_currentCommandBuffer, v46, v49, v47);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = objc_msgSend_error(self->_currentCommandBuffer, v46, v49, v47);
+        *error = objc_msgSend_error(self->_currentCommandBuffer, v46, v49, v47);
       }
     }
   }
@@ -917,13 +917,13 @@ LABEL_18:
   return result;
 }
 
-- (id)allocateWithStagingBuffer:(id)a3 desc:(id *)a4 forceCPUBlit:(BOOL)a5
+- (id)allocateWithStagingBuffer:(id)buffer desc:(id *)desc forceCPUBlit:(BOOL)blit
 {
-  v5 = a5;
-  v7 = *&a3.var1;
-  var0 = a3.var0;
-  v10 = *(a4 + 12);
-  if (a5)
+  blitCopy = blit;
+  v7 = *&buffer.var1;
+  var0 = buffer.var0;
+  v10 = *(desc + 12);
+  if (blit)
   {
     v11 = v10 & 0xFFFF8FFFFFFFFFFFLL;
   }
@@ -933,19 +933,19 @@ LABEL_18:
     v11 = v10 & 0xFFFF8FFDFFFFFFFFLL | 0x200200000000;
   }
 
-  *(a4 + 12) = v11;
+  *(desc + 12) = v11;
   impl = self->_frameTexturePool.impl;
-  v59 = *&a4->var0.var0;
-  v60 = *(a4 + 2);
+  v59 = *&desc->var0.var0;
+  v60 = *(desc + 2);
   v13 = CFXTextureAllocatorPerFrameAllocate(impl, &v59);
   v14 = sub_1AF1F1AAC() >> 3;
-  v15 = *(a4 + 4);
+  v15 = *(desc + 4);
   v16 = v15 * v14;
   v17 = v16 * (v15 >> 16);
   v21 = objc_msgSend_width(v13, v18, v19, v20);
   v25 = objc_msgSend_height(v13, v22, v23, v24);
   v29 = objc_msgSend_depth(v13, v26, v27, v28);
-  if (v5)
+  if (blitCopy)
   {
     v59 = 0uLL;
     v60 = 0;
@@ -1087,10 +1087,10 @@ LABEL_18:
   return self->_resourceComputeEncoder;
 }
 
-- (void)_beginRenderPass:(id *)a3 renderEncoder:(void *)a4
+- (void)_beginRenderPass:(id *)pass renderEncoder:(void *)encoder
 {
-  self->_renderEncoder = a4;
-  objc_msgSend__clearRenderCaches(self, a2, a3, a4);
+  self->_renderEncoder = encoder;
+  objc_msgSend__clearRenderCaches(self, a2, pass, encoder);
   v6 = *&self->_currentRenderPassDesc.colorFormat[6];
   *&self->_originalRenderPassDesc.colorFormat[4] = *&self->_currentRenderPassDesc.colorFormat[4];
   *&self->_originalRenderPassDesc.colorFormat[6] = v6;
@@ -1099,13 +1099,13 @@ LABEL_18:
   v7 = *&self->_currentRenderPassDesc.colorFormat[2];
   *self->_originalRenderPassDesc.colorFormat = *self->_currentRenderPassDesc.colorFormat;
   *&self->_originalRenderPassDesc.colorFormat[2] = v7;
-  v8 = *a3->var0;
-  *&self->_currentRenderPassDesc.colorFormat[2] = *&a3->var0[2];
+  v8 = *pass->var0;
+  *&self->_currentRenderPassDesc.colorFormat[2] = *&pass->var0[2];
   *self->_currentRenderPassDesc.colorFormat = v8;
-  v9 = *&a3->var3;
-  v11 = *&a3->var0[6];
-  v10 = *&a3->var1;
-  *&self->_currentRenderPassDesc.colorFormat[4] = *&a3->var0[4];
+  v9 = *&pass->var3;
+  v11 = *&pass->var0[6];
+  v10 = *&pass->var1;
+  *&self->_currentRenderPassDesc.colorFormat[4] = *&pass->var0[4];
   *&self->_currentRenderPassDesc.colorFormat[6] = v11;
   *&self->_currentRenderPassDesc.depthFormat = v10;
   *&self->_currentRenderPassDesc.sampleCount = v9;
@@ -1113,20 +1113,20 @@ LABEL_18:
   bzero(self->_anon_4b00, 0x400uLL);
 }
 
-- (void)beginRenderPass:(id)a3 renderEncoder:(void *)a4
+- (void)beginRenderPass:(id)pass renderEncoder:(void *)encoder
 {
-  v7 = objc_msgSend_colorAttachments(a3, a2, a3, a4);
+  v7 = objc_msgSend_colorAttachments(pass, a2, pass, encoder);
   v10 = objc_msgSend_objectAtIndexedSubscript_(v7, v8, 0, v9);
   v17 = objc_msgSend_texture(v10, v11, v12, v13);
   if (!v17)
   {
-    v18 = objc_msgSend_depthAttachment(a3, v14, v15, v16);
+    v18 = objc_msgSend_depthAttachment(pass, v14, v15, v16);
     v17 = objc_msgSend_texture(v18, v19, v20, v21);
   }
 
   *self->_currentRenderSize = objc_msgSend_width(v17, v14, v15, v16);
   *&self->_currentRenderSize[4] = objc_msgSend_height(v17, v22, v23, v24);
-  v28 = objc_msgSend_colorAttachments(a3, v25, v26, v27);
+  v28 = objc_msgSend_colorAttachments(pass, v25, v26, v27);
   v31 = objc_msgSend_objectAtIndexedSubscript_(v28, v29, 0, v30);
   objc_msgSend_clearColor(v31, v32, v33, v34);
   self->_currentClearColor.red = v35;
@@ -1135,14 +1135,14 @@ LABEL_18:
   self->_currentClearColor.alpha = v38;
   v45 = 0;
   memset(v44, 0, sizeof(v44));
-  v42 = sub_1AF218EA4(a3, v39, v40, v41, v44);
-  objc_msgSend__beginRenderPass_renderEncoder_(self, v43, v44, a4, v42);
+  v42 = sub_1AF218EA4(pass, v39, v40, v41, v44);
+  objc_msgSend__beginRenderPass_renderEncoder_(self, v43, v44, encoder, v42);
 }
 
-- (void)beginRenderPass:(id)a3 renderEncoder:(void *)a4 parameters:(id)a5
+- (void)beginRenderPass:(id)pass renderEncoder:(void *)encoder parameters:(id)parameters
 {
-  v5 = *&a5.var0;
-  objc_msgSend_beginRenderPass_renderEncoder_(self, a2, a3, a4);
+  v5 = *&parameters.var0;
+  objc_msgSend_beginRenderPass_renderEncoder_(self, a2, pass, encoder);
 
   objc_msgSend_setRenderPassParameters_(self, v7, v5 & 0xFFFFFFFFFFFFLL, v8);
 }
@@ -1161,13 +1161,13 @@ LABEL_18:
   *&self->_currentRenderPassDesc.colorFormat[2] = v3;
 }
 
-- (void)beginExternalFrameWithEncoder:(void *)a3 frameIndex:(unint64_t)a4
+- (void)beginExternalFrameWithEncoder:(void *)encoder frameIndex:(unint64_t)index
 {
-  self->_renderEncoder = a3;
-  if (self->_currentFrameIndex != a4)
+  self->_renderEncoder = encoder;
+  if (self->_currentFrameIndex != index)
   {
-    self->_currentFrameIndex = a4;
-    objc_msgSend__clearRenderCaches(self, a2, a3, a4);
+    self->_currentFrameIndex = index;
+    objc_msgSend__clearRenderCaches(self, a2, encoder, index);
     bzero(self->_anon_4b00, 0x400uLL);
     CFXBufferAllocatorPerFrameNextFrame(self->_frameConstantBufferPool.impl);
     CFXBufferAllocatorPerFrameNextFrame(self->_frameVolatileBufferPool.impl);
@@ -1197,21 +1197,21 @@ LABEL_18:
   *&self->_anon_4190[672] = 0;
 }
 
-- (void)setAttachmentProvider:(id)a3
+- (void)setAttachmentProvider:(id)provider
 {
-  if (self->_attachmentProvider != a3)
+  if (self->_attachmentProvider != provider)
   {
-    v6 = a3;
+    providerCopy = provider;
     attachmentProvider = self->_attachmentProvider;
-    self->_attachmentProvider = a3;
+    self->_attachmentProvider = provider;
     v7 = sub_1AF12E8A4(self->_engineContext);
-    sub_1AF2709AC(v7, a3);
+    sub_1AF2709AC(v7, provider);
   }
 }
 
-- (id)irradianceTextureForMaterialProperty:(__CFXMaterialProperty *)a3
+- (id)irradianceTextureForMaterialProperty:(__CFXMaterialProperty *)property
 {
-  v5 = sub_1AF1676F4(a3);
+  v5 = sub_1AF1676F4(property);
   if (v5)
   {
     v8 = v5;
@@ -1222,7 +1222,7 @@ LABEL_18:
 
   else
   {
-    result = objc_msgSend_textureForMaterialProperty_(self, v6, a3, v7);
+    result = objc_msgSend_textureForMaterialProperty_(self, v6, property, v7);
     if (result)
     {
       v13 = result;
@@ -1253,9 +1253,9 @@ LABEL_18:
   return result;
 }
 
-- (id)radianceTextureForMaterialProperty:(__CFXMaterialProperty *)a3
+- (id)radianceTextureForMaterialProperty:(__CFXMaterialProperty *)property
 {
-  v5 = sub_1AF1676F4(a3);
+  v5 = sub_1AF1676F4(property);
   if (v5)
   {
     v8 = v5;
@@ -1266,7 +1266,7 @@ LABEL_18:
 
   else
   {
-    v10 = objc_msgSend_textureForMaterialProperty_(self, v6, a3, v7);
+    v10 = objc_msgSend_textureForMaterialProperty_(self, v6, property, v7);
     if (v10 && (v14 = v10, objc_msgSend_textureType(v10, v11, v12, v13) == 5))
     {
       v15 = self->_resourceManager;
@@ -1282,12 +1282,12 @@ LABEL_18:
   }
 }
 
-- (id)deformedRaytraceableMeshForNode:(__CFXNode *)a3 fallbackModel:(__CFXModel *)a4
+- (id)deformedRaytraceableMeshForNode:(__CFXNode *)node fallbackModel:(__CFXModel *)model
 {
   v134 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (node)
   {
-    v7 = sub_1AF1B75A0(a3);
+    v7 = sub_1AF1B75A0(node);
   }
 
   else
@@ -1297,36 +1297,36 @@ LABEL_18:
 
   if (v7)
   {
-    v8 = v7;
+    modelCopy = v7;
   }
 
   else
   {
-    v8 = a4;
+    modelCopy = model;
   }
 
-  v11 = sub_1AF174F44(v8, 0, 0);
+  v11 = sub_1AF174F44(modelCopy, 0, 0);
   v12 = v11 == 0;
-  if (a3)
+  if (node)
   {
-    v13 = sub_1AF1B7558(a3);
+    v13 = sub_1AF1B7558(node);
     if (v13)
     {
       v14 = v13;
       if (sub_1AF16B74C(v13))
       {
-        v15 = sub_1AF27DD4C(v8, 0);
-        v17 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v16, v14, a3, v12);
+        v15 = sub_1AF27DD4C(modelCopy, 0);
+        v17 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v16, v14, node, v12);
         if (sub_1AFDE22C0(v17))
         {
           v18 = sub_1AF12DDCC(self->_engineContext);
           v19 = sub_1AF1D0218(v18);
-          v20 = sub_1AF14CD4C(v19, a3->var4);
+          v20 = sub_1AF14CD4C(v19, node->var4);
           v102 = *v20;
           v104 = v20[1];
           v98 = v20[2];
           v100 = v20[3];
-          v21 = sub_1AF1B92C8(a3);
+          v21 = sub_1AF1B92C8(node);
           if (v21)
           {
             v22 = v21;
@@ -1501,7 +1501,7 @@ LABEL_18:
         v73 = sub_1AFDE22F0(v17, self, v15, &v118, v109, &v110);
         if (v11)
         {
-          return sub_1AF17780C(v8, self, v74, v75);
+          return sub_1AF17780C(modelCopy, self, v74, v75);
         }
 
         v33 = v73;
@@ -1510,7 +1510,7 @@ LABEL_18:
           v76 = sub_1AFDEA208(v73);
           if (!objc_msgSend_count(v76, v77, v78, v79))
           {
-            v80 = sub_1AF1B2C1C(v8);
+            v80 = sub_1AF1B2C1C(modelCopy);
             v81 = sub_1AF1A3CCC(v80);
             v82 = objc_alloc(MEMORY[0x1E695DF70]);
             v85 = objc_msgSend_initWithCapacity_(v82, v83, v81, v84);
@@ -1552,12 +1552,12 @@ LABEL_18:
   if (v11)
   {
 
-    return sub_1AF17780C(v8, self, v9, v10);
+    return sub_1AF17780C(modelCopy, self, v9, v10);
   }
 
   else
   {
-    v30 = sub_1AF1B2E04(v8);
+    v30 = sub_1AF1B2E04(modelCopy);
     if (!v30)
     {
       return 0;
@@ -1594,20 +1594,20 @@ LABEL_18:
   NSLog(&cfstr_LightingsetUpl_0.isa, v4);
 }
 
-- (void)setRasterizerStates:(__CFXRasterizerStates *)a3
+- (void)setRasterizerStates:(__CFXRasterizerStates *)states
 {
-  v3 = a3;
-  if (!a3)
+  statesCopy = states;
+  if (!states)
   {
-    v3 = sub_1AF1C45EC();
+    statesCopy = sub_1AF1C45EC();
   }
 
-  if (self->_cache.rasterizerStates != v3)
+  if (self->_cache.rasterizerStates != statesCopy)
   {
     v31 = 0;
     v32[0] = 0;
     *(v32 + 5) = 0;
-    sub_1AF1C458C(v3, &v31);
+    sub_1AF1C458C(statesCopy, &v31);
     rasterizerStates = self->_cache.rasterizerStates;
     if (rasterizerStates)
     {
@@ -1702,7 +1702,7 @@ LABEL_28:
       }
 
 LABEL_30:
-      self->_cache.rasterizerStates = v3;
+      self->_cache.rasterizerStates = statesCopy;
       return;
     }
 
@@ -1714,15 +1714,15 @@ LABEL_27:
   }
 }
 
-- (void)_setWorldBufferAtVertexIndex:(int64_t)a3 fragmentIndex:(int64_t)a4
+- (void)_setWorldBufferAtVertexIndex:(int64_t)index fragmentIndex:(int64_t)fragmentIndex
 {
-  v4 = a4;
-  v5 = a3;
+  fragmentIndexCopy = fragmentIndex;
+  indexCopy = index;
   if (sub_1AF12E2A0(self->_engineContext))
   {
     v7 = sub_1AF1310A0(self->_engineContext);
 
-    sub_1AF1FD200(v7, v5 | (v4 << 8), 3u);
+    sub_1AF1FD200(v7, indexCopy | (fragmentIndexCopy << 8), 3u);
   }
 
   else
@@ -1730,10 +1730,10 @@ LABEL_27:
     renderEncoder = self->_renderEncoder;
     MTLBuffer = CFXBufferSliceGetMTLBuffer(self->_worldUniforms.impl._buffer, *&self->_worldUniforms.impl._offset);
     offset = self->_worldUniforms.impl._offset;
-    v12 = v4 << 8;
-    if (v5 != 0xFF)
+    v12 = fragmentIndexCopy << 8;
+    if (indexCopy != 0xFF)
     {
-      objc_msgSend_setVertexBuffer_offset_atIndex_(renderEncoder->var3, v9, MTLBuffer, offset, v5);
+      objc_msgSend_setVertexBuffer_offset_atIndex_(renderEncoder->var3, v9, MTLBuffer, offset, indexCopy);
     }
 
     if (v12 != 65280)
@@ -1745,11 +1745,11 @@ LABEL_27:
   }
 }
 
-- (void)_setMeshBuffers:(id)a3
+- (void)_setMeshBuffers:(id)buffers
 {
   v16[14] = *MEMORY[0x1E69E9840];
   memset(v15, 0, sizeof(v15));
-  v5 = sub_1AFDEA1E8(a3);
+  v5 = sub_1AFDEA1E8(buffers);
   v9 = objc_msgSend_count(v5, v6, v7, v8);
   if (v9 >= 0xE)
   {
@@ -1761,12 +1761,12 @@ LABEL_27:
     v10 = v9;
   }
 
-  v11 = sub_1AFDEA1E8(a3);
+  v11 = sub_1AFDEA1E8(buffers);
   objc_msgSend_getObjects_range_(v11, v12, v16, 0, v10);
-  if (sub_1AFDEA228(a3))
+  if (sub_1AFDEA228(buffers))
   {
-    *(v15 + v10) = sub_1AFDEA248(a3);
-    v16[v10++] = sub_1AFDEA228(a3);
+    *(v15 + v10) = sub_1AFDEA248(buffers);
+    v16[v10++] = sub_1AFDEA228(buffers);
   }
 
   renderEncoder = self->_renderEncoder;
@@ -1781,10 +1781,10 @@ LABEL_27:
   }
 }
 
-- (void)_drawMeshElement:(id)a3 instanceCount:(unint64_t)a4
+- (void)_drawMeshElement:(id)element instanceCount:(unint64_t)count
 {
   ++self->__engineStats->drawCount;
-  if (!a3)
+  if (!element)
   {
     v7 = sub_1AF0D5194();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -1793,40 +1793,40 @@ LABEL_27:
     }
   }
 
-  if (sub_1AFDEA1E8(a3))
+  if (sub_1AFDEA1E8(element))
   {
     renderEncoder = self->_renderEncoder;
-    v16 = sub_1AFDE323C(a3);
-    v17 = sub_1AFDEA208(a3);
-    v18 = sub_1AFDE868C(a3);
+    v16 = sub_1AFDE323C(element);
+    v17 = sub_1AFDEA208(element);
+    v18 = sub_1AFDE868C(element);
     v22 = objc_msgSend_buffer(v18, v19, v20, v21);
-    v23 = sub_1AFDEA330(a3);
-    v24 = sub_1AFDE868C(a3);
+    v23 = sub_1AFDEA330(element);
+    v24 = sub_1AFDE868C(element);
     v28 = objc_msgSend_offset(v24, v25, v26, v27);
-    v29 = v23 + sub_1AFDE8614(a3);
-    v30 = sub_1AFDEA1E8(a3);
-    v31 = sub_1AFDEA248(a3);
+    v29 = v23 + sub_1AFDE8614(element);
+    v30 = sub_1AFDEA1E8(element);
+    v31 = sub_1AFDEA248(element);
     objc_msgSend_drawIndexedPrimitives_indexType_indexBuffer_indexBufferOffset_indirectBuffer_indirectBufferOffset_(renderEncoder->var3, v32, v16, v17, v22, v28 + v29, v30, v31);
   }
 
   else
   {
-    v37 = sub_1AFDE868C(a3);
+    v37 = sub_1AFDE868C(element);
     v38 = self->_renderEncoder;
-    v39 = sub_1AFDE323C(a3);
+    v39 = sub_1AFDE323C(element);
     if (v37)
     {
-      v40 = sub_1AFDEA228(a3);
-      v41 = sub_1AFDEA208(a3);
-      v42 = sub_1AFDE868C(a3);
+      v40 = sub_1AFDEA228(element);
+      v41 = sub_1AFDEA208(element);
+      v42 = sub_1AFDE868C(element);
       v46 = objc_msgSend_buffer(v42, v43, v44, v45);
-      v47 = sub_1AFDEA330(a3);
-      v48 = sub_1AFDE868C(a3);
+      v47 = sub_1AFDEA330(element);
+      v48 = sub_1AFDE868C(element);
       v52 = objc_msgSend_offset(v48, v49, v50, v51);
-      v54 = v47 + sub_1AFDE8614(a3);
+      v54 = v47 + sub_1AFDE8614(element);
       var3 = v38->var3;
       v56 = v52 + v54;
-      if (v38->var0 * a4 < 2)
+      if (v38->var0 * count < 2)
       {
         objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_(var3, v53, v39, v40, v41, v46, v56);
       }
@@ -1839,10 +1839,10 @@ LABEL_27:
 
     else
     {
-      v57 = sub_1AFDEA330(a3);
-      v59 = sub_1AFDEA228(a3);
+      v57 = sub_1AFDEA330(element);
+      v59 = sub_1AFDEA228(element);
       v60 = v38->var3;
-      if (v38->var0 * a4 < 2)
+      if (v38->var0 * count < 2)
       {
         objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v60, v58, v39, v57, v59);
       }
@@ -1854,13 +1854,13 @@ LABEL_27:
     }
   }
 
-  v33 = sub_1AFDEA5A8(a3);
+  v33 = sub_1AFDEA5A8(element);
   engineStats = self->__engineStats;
-  engineStats->primitivesProcessed += v33 * a4;
+  engineStats->primitivesProcessed += v33 * count;
   metalMesh = self->_cache.metalMesh;
   if (metalMesh)
   {
-    v36 = sub_1AFDEA290(metalMesh) * a4;
+    v36 = sub_1AFDEA290(metalMesh) * count;
     engineStats = self->__engineStats;
   }
 
@@ -1872,11 +1872,11 @@ LABEL_27:
   engineStats->verticesProcessed += v36;
 }
 
-- (void)_drawPatchForMeshElement:(id)a3 instanceCount:(unint64_t)a4
+- (void)_drawPatchForMeshElement:(id)element instanceCount:(unint64_t)count
 {
-  if (sub_1AFDEA208(a3) != 1)
+  if (sub_1AFDEA208(element) != 1)
   {
-    if (sub_1AFDEA208(a3))
+    if (sub_1AFDEA208(element))
     {
       v7 = sub_1AF0D5194();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -1886,7 +1886,7 @@ LABEL_27:
     }
   }
 
-  if (sub_1AFDE323C(a3) != 3)
+  if (sub_1AFDE323C(element) != 3)
   {
     v15 = sub_1AF0D5194();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -1897,20 +1897,20 @@ LABEL_27:
 
   ++self->__engineStats->drawCount;
   renderEncoder = self->_renderEncoder;
-  v24 = sub_1AFDEA534(a3);
-  v25 = sub_1AFDE868C(a3);
+  v24 = sub_1AFDEA534(element);
+  v25 = sub_1AFDE868C(element);
   v29 = objc_msgSend_buffer(v25, v26, v27, v28);
-  v30 = sub_1AFDE868C(a3);
+  v30 = sub_1AFDE868C(element);
   v34 = objc_msgSend_offset(v30, v31, v32, v33);
-  v35 = sub_1AFDE8614(a3);
-  objc_msgSend_drawIndexedPatches_patchStart_patchCount_patchIndexBuffer_patchIndexBufferOffset_controlPointIndexBuffer_controlPointIndexBufferOffset_instanceCount_baseInstance_(renderEncoder->var3, v36, 3, 0, v24, 0, 0, v29, v35 + v34, renderEncoder->var0 * a4, 0);
-  v37 = sub_1AFDEA534(a3);
+  v35 = sub_1AFDE8614(element);
+  objc_msgSend_drawIndexedPatches_patchStart_patchCount_patchIndexBuffer_patchIndexBufferOffset_controlPointIndexBuffer_controlPointIndexBufferOffset_instanceCount_baseInstance_(renderEncoder->var3, v36, 3, 0, v24, 0, 0, v29, v35 + v34, renderEncoder->var0 * count, 0);
+  v37 = sub_1AFDEA534(element);
   engineStats = self->__engineStats;
-  engineStats->primitivesProcessed += v37 * a4;
+  engineStats->primitivesProcessed += v37 * count;
   metalMesh = self->_cache.metalMesh;
   if (metalMesh)
   {
-    v40 = sub_1AFDEA290(metalMesh) * a4;
+    v40 = sub_1AFDEA290(metalMesh) * count;
     engineStats = self->__engineStats;
   }
 
@@ -1922,9 +1922,9 @@ LABEL_27:
   engineStats->verticesProcessed += v40;
 }
 
-- (void)_updateProjectionMatrixForOrthographicSkyboxRenderingIfNeeded:(id *)a3
+- (void)_updateProjectionMatrixForOrthographicSkyboxRenderingIfNeeded:(id *)needed
 {
-  v9 = *(a3 + 2);
+  v9 = *(needed + 2);
   if (*(&v9 + 3) == 0.0)
   {
     v32 = v8;
@@ -1933,7 +1933,7 @@ LABEL_27:
     v35 = v5;
     v36 = v3;
     v37 = v4;
-    v11 = *(a3 + 14);
+    v11 = *(needed + 14);
     v12 = (v11 + -1.0) / *(&v9 + 2);
     *&v12 = v12;
     *v13.i32 = v11 / *(&v9 + 2);
@@ -1994,42 +1994,42 @@ LABEL_27:
     v26 = v31[1];
     v27 = v31[2];
     v28 = v31[3];
-    *a3 = v31[0];
-    *(a3 + 1) = v26;
-    *(a3 + 2) = v27;
-    *(a3 + 3) = v28;
+    *needed = v31[0];
+    *(needed + 1) = v26;
+    *(needed + 2) = v27;
+    *(needed + 3) = v28;
   }
 }
 
-- (float)_zFarForSkyboxRenderingProjectionMatrix:(id *)a3 defaultZFar:(float)a4
+- (float)_zFarForSkyboxRenderingProjectionMatrix:(id *)matrix defaultZFar:(float)far
 {
-  v4 = 1000000.0;
-  if (fabsf(a4) != INFINITY)
+  farCopy = 1000000.0;
+  if (fabsf(far) != INFINITY)
   {
-    v4 = a4;
+    farCopy = far;
   }
 
-  v5 = a4 <= 0.0;
+  v5 = far <= 0.0;
   result = 1.0;
   if (!v5)
   {
-    return v4;
+    return farCopy;
   }
 
   return result;
 }
 
-- (void)renderBackground:(__CFXMaterialProperty *)a3 engineContext:(__CFXEngineContext *)a4 passInstance:(__CFXPassInstance *)a5
+- (void)renderBackground:(__CFXMaterialProperty *)background engineContext:(__CFXEngineContext *)context passInstance:(__CFXPassInstance *)instance
 {
   v183 = *MEMORY[0x1E69E9840];
   v170 = 0;
-  v10 = sub_1AF16679C(a3);
-  v11 = sub_1AF167578(a3);
-  v12 = sub_1AF130338(a4);
+  v10 = sub_1AF16679C(background);
+  v11 = sub_1AF167578(background);
+  v12 = sub_1AF130338(context);
   v15 = v12;
   if (v12 && sub_1AF121B74(v12) != v11)
   {
-    sub_1AF1302E4(a4, 0);
+    sub_1AF1302E4(context, 0);
     v15 = 0;
   }
 
@@ -2037,8 +2037,8 @@ LABEL_27:
   {
     if (!v15)
     {
-      v15 = sub_1AF276584(v11, v10, a4);
-      sub_1AF1302E4(a4, v15);
+      v15 = sub_1AF276584(v11, v10, context);
+      sub_1AF1302E4(context, v15);
       CFRelease(v15);
       if (!v15)
       {
@@ -2046,12 +2046,12 @@ LABEL_27:
       }
     }
 
-    v16 = sub_1AF276950(v15, a4, v10, &v161);
+    v16 = sub_1AF276950(v15, context, v10, &v161);
   }
 
   else
   {
-    v16 = objc_msgSend_textureForMaterialProperty_(self, v13, a3, v14);
+    v16 = objc_msgSend_textureForMaterialProperty_(self, v13, background, v14);
   }
 
   v17 = v16;
@@ -2061,20 +2061,20 @@ LABEL_27:
     return;
   }
 
-  v144 = sub_1AF12DDCC(a4);
+  v144 = sub_1AF12DDCC(context);
   if (objc_msgSend_textureType(v17, v18, v19, v20) == 5)
   {
-    v21 = sub_1AF12E014(a4);
+    v21 = sub_1AF12E014(context);
     v22 = self->_backgroundCubeProgram[self->_renderPassParameters.viewMapping];
-    v23 = sub_1AF13050C(a4, 1);
-    v24 = sub_1AF167434(a3);
+    v23 = sub_1AF13050C(context, 1);
+    v24 = sub_1AF167434(background);
     v151 = v23[2];
     v154 = *v23;
     v148 = v23[1];
     if (v24)
     {
       v145 = v23[3];
-      v25 = sub_1AF167220(a3);
+      v25 = sub_1AF167220(background);
       v26 = 0;
       v27 = v25[1];
       v28 = v25[2];
@@ -2129,9 +2129,9 @@ LABEL_27:
 
   else
   {
-    v30 = sub_1AF130340(a4);
+    v30 = sub_1AF130340(context);
     v22 = self->_background2DProgram[self->_renderPassParameters.viewMapping];
-    if (!sub_1AF167434(a3))
+    if (!sub_1AF167434(background))
     {
       v155 = xmmword_1AFE201A0;
       v152 = xmmword_1AFE20180;
@@ -2140,7 +2140,7 @@ LABEL_27:
       goto LABEL_22;
     }
 
-    v46 = sub_1AF167220(a3);
+    v46 = sub_1AF167220(background);
     v146 = *v46;
     v149 = v46[1];
     v45 = v46[2];
@@ -2207,7 +2207,7 @@ LABEL_22:
   }
 
   objc_msgSend_setRasterizerStates_(self, v64, *(&self->super.isa + v66), v65);
-  v169 = sub_1AF166598(a3);
+  v169 = sub_1AF166598(background);
   sub_1AF1F905C(self->_renderEncoder, &v169, 4uLL, 0);
   v67 = sub_1AFDE8554(self->_resourceManager);
   if (objc_msgSend_pixelFormat(v17, v68, v69, v70) == 520 || objc_msgSend_pixelFormat(v17, v71, v72, v73) == 500)
@@ -2226,7 +2226,7 @@ LABEL_22:
   if (self->_renderPassParameters.viewMapping)
   {
     v141 = v30;
-    if (!a5)
+    if (!instance)
     {
       v79 = sub_1AF0D5194();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_FAULT))
@@ -2249,15 +2249,15 @@ LABEL_22:
           }
         }
 
-        v89 = (&a5[15].var13 + 8 * v87);
-        v90 = sub_1AF167434(a3);
+        v89 = (&instance[15].var13 + 8 * v87);
+        v90 = sub_1AF167434(background);
         v153 = v89[1];
         v156 = *v89;
         v147 = v89[3];
         v150 = v89[2];
         if (v90)
         {
-          v93 = sub_1AF167220(a3);
+          v93 = sub_1AF167220(background);
           v94 = 0;
           v95 = v93[1];
           v96 = v93[2];
@@ -2279,7 +2279,7 @@ LABEL_22:
           v150 = v177;
         }
 
-        v98 = &a5[17].var5[8 * v87 + 12];
+        v98 = &instance[17].var5[8 * v87 + 12];
         v99 = v98[1];
         v157 = *v98;
         v158 = v99;
@@ -2324,7 +2324,7 @@ LABEL_22:
     }
 
     v115 = sub_1AF13050C(self->_engineContext, 0);
-    var12 = a5[27].var12;
+    var12 = instance[27].var12;
     *&var12 = *&var12;
     objc_msgSend__zFarForSkyboxRenderingProjectionMatrix_defaultZFar_(self, v117, v115, v118, *&var12);
     v168 = v119;
@@ -2344,7 +2344,7 @@ LABEL_22:
     v165[2] = v125;
     v165[3] = v126;
     v127 = sub_1AF13050C(self->_engineContext, 0);
-    v128 = a5[27].var12;
+    v128 = instance[27].var12;
     *&v128 = *&v128;
     objc_msgSend__zFarForSkyboxRenderingProjectionMatrix_defaultZFar_(self, v129, v127, v130, *&v128);
     v166 = v131;
@@ -2372,32 +2372,32 @@ LABEL_22:
   objc_msgSend_popDebugGroup(self, v138, v139, v140);
 }
 
-- (void)renderVideoBackground:(__CFXImageProxy *)a3 engineContext:(__CFXEngineContext *)a4 materialProperty:(__CFXMaterialProperty *)a5
+- (void)renderVideoBackground:(__CFXImageProxy *)background engineContext:(__CFXEngineContext *)context materialProperty:(__CFXMaterialProperty *)property
 {
   v86 = *MEMORY[0x1E69E9840];
-  objc_msgSend_pushDebugGroup_(self, a2, @"VFX - Draw video background", a4);
-  v9 = sub_1AF276754(a3);
-  v10 = sub_1AF130338(a4);
+  objc_msgSend_pushDebugGroup_(self, a2, @"VFX - Draw video background", context);
+  v9 = sub_1AF276754(background);
+  v10 = sub_1AF130338(context);
   if (!v10)
   {
     goto LABEL_4;
   }
 
   v11 = v10;
-  if (sub_1AF121B74(v10) != a3)
+  if (sub_1AF121B74(v10) != background)
   {
-    sub_1AF1302E4(a4, 0);
+    sub_1AF1302E4(context, 0);
 LABEL_4:
     v12 = sub_1AF1C4F6C();
-    v11 = sub_1AF276584(a3, v12, a4);
-    sub_1AF1302E4(a4, v11);
+    v11 = sub_1AF276584(background, v12, context);
+    sub_1AF1302E4(context, v11);
     CFRelease(v11);
     goto LABEL_6;
   }
 
   v12 = sub_1AF1C4F6C();
 LABEL_6:
-  v13 = sub_1AF276950(v11, a4, v12, v84);
+  v13 = sub_1AF276950(v11, context, v12, v84);
   v83 = v13;
   if (!v13)
   {
@@ -2405,8 +2405,8 @@ LABEL_6:
   }
 
   v14 = v13;
-  v67 = a5;
-  v15 = sub_1AF130340(a4);
+  propertyCopy = property;
+  v15 = sub_1AF130340(context);
   v68 = sub_1AF20E1F8(self->_resourceManager, v15, 1);
   *(v85 + 7) = 0;
   *&v85[0] = 0;
@@ -2513,7 +2513,7 @@ LABEL_6:
 
   if (v9 == 2)
   {
-    sub_1AF2014BC(a3, a4);
+    sub_1AF2014BC(background, context);
   }
 
   else if (v9 != 3)
@@ -2521,14 +2521,14 @@ LABEL_6:
     goto LABEL_35;
   }
 
-  *&v56 = sub_1AF2014BC(a3, a4);
+  *&v56 = sub_1AF2014BC(background, context);
   v70 = v56;
   v71 = v57;
   *&v72 = v58;
   *(&v72 + 1) = v59;
 LABEL_35:
   sub_1AF176E98(self->_renderEncoder, &v70, 0x20uLL, 0);
-  v69 = sub_1AF166598(v67);
+  v69 = sub_1AF166598(propertyCopy);
   sub_1AF1F905C(self->_renderEncoder, &v69, 4uLL, 0);
   if (self->_cache.geometry != v66)
   {
@@ -2540,13 +2540,13 @@ LABEL_35:
   objc_msgSend_popDebugGroup(self, v62, v63, v64);
 }
 
-- (void)authoring_renderMesh:(uint64_t)a3 meshElement:(uint64_t)a4 withProgram:(uint64_t)a5 uniforms:(const void *)a6 uniformsLength:(size_t)a7 rasterizerStates:(uint64_t)a8 blendStates:(uint64_t)a9 texture:(uint64_t)a10 sampler:(uint64_t)a11 depthBias:(char)a12
+- (void)authoring_renderMesh:(uint64_t)mesh meshElement:(uint64_t)element withProgram:(uint64_t)program uniforms:(const void *)uniforms uniformsLength:(size_t)length rasterizerStates:(uint64_t)states blendStates:(uint64_t)blendStates texture:(uint64_t)self0 sampler:(uint64_t)self1 depthBias:(char)self2
 {
-  if (sub_1AF218E70(a1 + 200))
+  if (sub_1AF218E70(self + 200))
   {
-    v59 = a7;
-    v19 = sub_1AF20E1F8(*(a1 + 112), a3, 1);
-    if (sub_1AF1A57DC(a3))
+    lengthCopy = length;
+    v19 = sub_1AF20E1F8(*(self + 112), mesh, 1);
+    if (sub_1AF1A57DC(mesh))
     {
       if (!sub_1AFDEA228(v19))
       {
@@ -2558,11 +2558,11 @@ LABEL_35:
       }
     }
 
-    v28 = sub_1AFDE7F98(*(a1 + 112));
-    v29 = sub_1AF1A73D4(a4);
+    v28 = sub_1AFDE7F98(*(self + 112));
+    v29 = sub_1AF1A73D4(element);
     v60 = v28;
     sub_1AFDEA4AC(v28, v29, v30);
-    if (*(a1 + 468) == 2)
+    if (*(self + 468) == 2)
     {
       v31 = 2;
     }
@@ -2572,15 +2572,15 @@ LABEL_35:
       v31 = 1;
     }
 
-    v32 = *(a1 + 465);
+    v32 = *(self + 465);
     v33 = sub_1AFDEA004(v19);
     v34 = sub_1AFDEA078(v19);
-    v35 = *(a1 + 467);
-    v36 = *(a1 + 112);
+    v35 = *(self + 467);
+    v36 = *(self + 112);
     v61[0] = 0;
-    v61[1] = a5;
+    v61[1] = program;
     memset(&v61[2], 0, 24);
-    v61[5] = a9;
+    v61[5] = blendStates;
     v62 = 15;
     v63 = v32;
     v64 = v31;
@@ -2590,40 +2590,40 @@ LABEL_35:
     v68 = v35;
     v69 = 0u;
     memset(v70, 0, sizeof(v70));
-    v38 = objc_msgSend_renderResourceForProgramDesc_renderPassDesc_(v36, v37, v61, a1 + 200);
-    v39 = *(a1 + 424);
+    v38 = objc_msgSend_renderResourceForProgramDesc_renderPassDesc_(v36, v37, v61, self + 200);
+    v39 = *(self + 424);
     v43 = objc_msgSend_state(v38, v40, v41, v42);
     objc_msgSend_setRenderPipelineState_(*(v39 + 16), v44, v43, v45);
-    *(a1 + 18896) = 0;
-    objc_msgSend_setRasterizerStates_(a1, v46, a8, v47);
-    if (a6)
+    *(self + 18896) = 0;
+    objc_msgSend_setRasterizerStates_(self, v46, states, v47);
+    if (uniforms)
     {
-      sub_1AF176E98(*(a1 + 424), a6, v59, 1);
+      sub_1AF176E98(*(self + 424), uniforms, lengthCopy, 1);
     }
 
-    if (a12)
+    if (bias)
     {
       LODWORD(v51) = -2.0;
       LODWORD(v52) = -2.0;
-      objc_msgSend_setDepthBias_slopeScale_clamp_(*(*(a1 + 424) + 16), v48, v49, v50, v51, v52, 0.0);
+      objc_msgSend_setDepthBias_slopeScale_clamp_(*(*(self + 424) + 16), v48, v49, v50, v51, v52, 0.0);
     }
 
-    if (a10)
+    if (texture)
     {
-      v53 = objc_msgSend_renderResourceForImage_sampler_options_engineContext_didFallbackToDefaultTexture_(*(a1 + 112), v48, a10, a11, 0, *(a1 + 136), 0);
-      sub_1AF1F8FCC(*(a1 + 424), v53, 0, v54);
+      v53 = objc_msgSend_renderResourceForImage_sampler_options_engineContext_didFallbackToDefaultTexture_(*(self + 112), v48, texture, sampler, 0, *(self + 136), 0);
+      sub_1AF1F8FCC(*(self + 424), v53, 0, v54);
     }
 
-    if (*(a1 + 18632) != a3)
+    if (*(self + 18632) != mesh)
     {
-      *(a1 + 18632) = a3;
-      objc_msgSend__setMeshBuffers_(a1, v48, v19, v50);
+      *(self + 18632) = mesh;
+      objc_msgSend__setMeshBuffers_(self, v48, v19, v50);
     }
 
-    objc_msgSend__drawMeshElement_instanceCount_(a1, v48, v60, 1, v59);
-    if (a12)
+    objc_msgSend__drawMeshElement_instanceCount_(self, v48, v60, 1, lengthCopy);
+    if (bias)
     {
-      objc_msgSend_setDepthBias_slopeScale_clamp_(*(*(a1 + 424) + 16), v55, v56, v57, 0.0, 0.0, 0.0);
+      objc_msgSend_setDepthBias_slopeScale_clamp_(*(*(self + 424) + 16), v55, v56, v57, 0.0, 0.0, 0.0);
     }
   }
 
@@ -2638,13 +2638,13 @@ LABEL_35:
   }
 }
 
-- (void)authoring_drawPrimitives:(unint64_t)a3 vertexCount:(unint64_t)a4 instanceCount:(unint64_t)a5 vertexBuffers:(const void *)a6 offsets:(const unint64_t *)a7 range:(_NSRange)a8 vertexDescriptor:(id)a9 withProgram:(__CFXProgram *)a10 uniforms:(const void *)a11 uniformsLength:(unint64_t)a12 rasterizerStates:(__CFXRasterizerStates *)a13 blendStates:(__CFXBlendStates *)a14
+- (void)authoring_drawPrimitives:(unint64_t)primitives vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount vertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets range:(_NSRange)range vertexDescriptor:(id)descriptor withProgram:(__CFXProgram *)self0 uniforms:(const void *)self1 uniformsLength:(unint64_t)self2 rasterizerStates:(__CFXRasterizerStates *)self3 blendStates:(__CFXBlendStates *)self4
 {
   if (sub_1AF218E70(&self->_currentRenderPassDesc))
   {
-    v46 = a5;
-    v47 = a3;
-    v48 = a4;
+    instanceCountCopy = instanceCount;
+    primitivesCopy = primitives;
+    countCopy = count;
     self->_cache.geometry = 0;
     if (self->_renderPassParameters.multiVertexOutputStreamGenerator == 2)
     {
@@ -2659,18 +2659,18 @@ LABEL_35:
     v59 = 0;
     v58 = 0;
     eyeCount = self->_renderPassParameters.eyeCount;
-    v25 = objc_msgSend_hash(a9, v20, v21, v22, a8.location, a8.length);
+    v25 = objc_msgSend_hash(descriptor, v20, v21, v22, range.location, range.length);
     viewMapping = self->_renderPassParameters.viewMapping;
     resourceManager = self->_resourceManager;
     v49[0] = 0;
-    v49[1] = a10;
+    v49[1] = program;
     memset(&v49[2], 0, 24);
-    v49[5] = a14;
+    v49[5] = blendStates;
     v50 = 15;
     v51 = eyeCount;
     v52 = v23;
     v53 = 0;
-    v54 = a9;
+    descriptorCopy = descriptor;
     v55 = v25;
     v56 = viewMapping;
     v57 = 0;
@@ -2680,23 +2680,23 @@ LABEL_35:
     renderEncoder = self->_renderEncoder;
     v34 = objc_msgSend_state(v29, v31, v32, v33);
     objc_msgSend_setRenderPipelineState_(renderEncoder->var3, v35, v34, v36);
-    objc_msgSend_setRasterizerStates_(self, v37, a13, v38);
-    if (a11)
+    objc_msgSend_setRasterizerStates_(self, v37, states, v38);
+    if (uniforms)
     {
-      sub_1AF176E98(self->_renderEncoder, a11, a12, 1);
+      sub_1AF176E98(self->_renderEncoder, uniforms, length, 1);
     }
 
-    objc_msgSend_setVertexBuffers_offsets_withRange_(self->_renderEncoder->var3, v39, a6, a7, v44, v45);
+    objc_msgSend_setVertexBuffers_offsets_withRange_(self->_renderEncoder->var3, v39, buffers, offsets, v44, v45);
     v41 = self->_renderEncoder;
     var3 = v41->var3;
-    if (v41->var0 * v46 < 2)
+    if (v41->var0 * instanceCountCopy < 2)
     {
-      objc_msgSend_drawPrimitives_vertexStart_vertexCount_(var3, v40, v47, 0, v48);
+      objc_msgSend_drawPrimitives_vertexStart_vertexCount_(var3, v40, primitivesCopy, 0, countCopy);
     }
 
     else
     {
-      objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_(var3, v40, v47, 0, v48);
+      objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_(var3, v40, primitivesCopy, 0, countCopy);
     }
   }
 
@@ -2711,13 +2711,13 @@ LABEL_35:
   }
 }
 
-- (void)authoring_drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 instanceCount:(unint64_t)a7 vertexBuffers:(const void *)a8 offsets:(const unint64_t *)a9 range:(_NSRange)a10 vertexDescriptor:(id)a11 withProgram:(__CFXProgram *)a12 uniforms:(const void *)a13 uniformsLength:(unint64_t)a14 rasterizerStates:(__CFXRasterizerStates *)a15 blendStates:(__CFXBlendStates *)a16
+- (void)authoring_drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer instanceCount:(unint64_t)instanceCount vertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets range:(_NSRange)self0 vertexDescriptor:(id)self1 withProgram:(__CFXProgram *)self2 uniforms:(const void *)self3 uniformsLength:(unint64_t)self4 rasterizerStates:(__CFXRasterizerStates *)self5 blendStates:(__CFXBlendStates *)self6
 {
   if (sub_1AF218E70(&self->_currentRenderPassDesc))
   {
-    v50 = a3;
-    v51 = a4;
-    v52 = a6;
+    primitivesCopy = primitives;
+    countCopy = count;
+    bufferCopy = buffer;
     self->_cache.geometry = 0;
     if (self->_renderPassParameters.multiVertexOutputStreamGenerator == 2)
     {
@@ -2732,18 +2732,18 @@ LABEL_35:
     v63 = 0;
     v62 = 0;
     eyeCount = self->_renderPassParameters.eyeCount;
-    v28 = objc_msgSend_hash(a11, v23, v24, v25, a9, a10.location, a10.length);
+    v28 = objc_msgSend_hash(descriptor, v23, v24, v25, offsets, range.location, range.length);
     viewMapping = self->_renderPassParameters.viewMapping;
     resourceManager = self->_resourceManager;
     v53[0] = 0;
-    v53[1] = a12;
+    v53[1] = program;
     memset(&v53[2], 0, 24);
-    v53[5] = a16;
+    v53[5] = blendStates;
     v54 = 15;
     v55 = eyeCount;
     v56 = v26;
     v57 = 0;
-    v58 = a11;
+    descriptorCopy = descriptor;
     v59 = v28;
     v60 = viewMapping;
     v61 = 0;
@@ -2753,23 +2753,23 @@ LABEL_35:
     renderEncoder = self->_renderEncoder;
     v37 = objc_msgSend_state(v32, v34, v35, v36);
     objc_msgSend_setRenderPipelineState_(renderEncoder->var3, v38, v37, v39);
-    objc_msgSend_setRasterizerStates_(self, v40, a15, v41);
-    if (a13)
+    objc_msgSend_setRasterizerStates_(self, v40, states, v41);
+    if (uniforms)
     {
-      sub_1AF176E98(self->_renderEncoder, a13, a14, 1);
+      sub_1AF176E98(self->_renderEncoder, uniforms, length, 1);
     }
 
-    objc_msgSend_setVertexBuffers_offsets_withRange_(self->_renderEncoder->var3, v42, a8, v47, v48, v49);
+    objc_msgSend_setVertexBuffers_offsets_withRange_(self->_renderEncoder->var3, v42, buffers, v47, v48, v49);
     v44 = self->_renderEncoder;
     var3 = v44->var3;
-    if (v44->var0 * a7 < 2)
+    if (v44->var0 * instanceCount < 2)
     {
-      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_(var3, v43, v50, v51, a5, v52, 0);
+      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_(var3, v43, primitivesCopy, countCopy, type, bufferCopy, 0);
     }
 
     else
     {
-      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_(var3, v43, v50, v51, a5, v52, 0);
+      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_(var3, v43, primitivesCopy, countCopy, type, bufferCopy, 0);
     }
   }
 
@@ -2784,41 +2784,41 @@ LABEL_35:
   }
 }
 
-- (void)authoring_drawDeformersForNode:(__CFXNode *)a3 authoringEnvironment:(void *)a4
+- (void)authoring_drawDeformersForNode:(__CFXNode *)node authoringEnvironment:(void *)environment
 {
-  if (a3)
+  if (node)
   {
-    v7 = sub_1AF1B7558(a3);
+    v7 = sub_1AF1B7558(node);
     if (v7)
     {
       v8 = v7;
       if (sub_1AF16B74C(v7))
       {
-        v9 = sub_1AF1B75A0(a3);
+        v9 = sub_1AF1B75A0(node);
         if (v9)
         {
           v11 = sub_1AF1B40A0(v9);
-          v13 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v12, v8, a3, v11);
+          v13 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v12, v8, node, v11);
         }
 
         else
         {
-          v13 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v10, v8, a3, 1);
+          v13 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v10, v8, node, 1);
         }
 
-        sub_1AFDE287C(v13, a4, self, v14);
+        sub_1AFDE287C(v13, environment, self, v14);
       }
     }
   }
 }
 
-- (void)processRendererElements:(id *)a3 count:(unsigned int)a4 engineIterationContext:(id *)a5
+- (void)processRendererElements:(id *)elements count:(unsigned int)count engineIterationContext:(id *)context
 {
-  LODWORD(i) = a4;
+  LODWORD(i) = count;
   *&v47[5] = *MEMORY[0x1E69E9840];
-  var1 = a5->var1;
-  var2 = a5->var2;
-  v43 = *(a5->var0 + 20);
+  var1 = context->var1;
+  var2 = context->var2;
+  v43 = *(context->var0 + 20);
   v42 = sub_1AF130504(var1);
   v41 = sub_1AF12EDD8(var1);
   if (self->_debugOptions & 2) != 0 && (BYTE2(var2[27].var5[4]))
@@ -2833,9 +2833,9 @@ LABEL_35:
     v12 = 0;
   }
 
-  v15 = a5;
-  objc_msgSend_startProcessingRendererElementsWithEngineIterationContext_(self, v10, a5, v11);
-  if (!a5->var10)
+  contextCopy = context;
+  objc_msgSend_startProcessingRendererElementsWithEngineIterationContext_(self, v10, context, v11);
+  if (!context->var10)
   {
     return;
   }
@@ -2863,15 +2863,15 @@ LABEL_35:
   v36 = v12;
   v20 = 0;
   v21 = 0;
-  v38 = a3;
+  elementsCopy = elements;
   v37 = i;
   for (i = i; i; --i)
   {
-    v22 = *a3++;
-    v15 = v15 & 0xFFFFFFFF00000000 | v22;
-    v23 = sub_1AF1474D8(v43, v15);
+    v22 = *elements++;
+    contextCopy = contextCopy & 0xFFFFFFFF00000000 | v22;
+    v23 = sub_1AF1474D8(v43, contextCopy);
     v24 = v23;
-    if (a5->var12 && !sub_1AF146200(v23))
+    if (context->var12 && !sub_1AF146200(v23))
     {
 LABEL_42:
       v27 = v21;
@@ -2938,7 +2938,7 @@ LABEL_43:
     v21 = v27;
   }
 
-  a3 = v38;
+  elements = elementsCopy;
   LODWORD(i) = v37;
   LODWORD(v12) = v36;
   if (v24)
@@ -2951,7 +2951,7 @@ LABEL_46:
   isMainPass = self->_processingContext.isMainPass;
   if ((objc_msgSend_debugOptions(self, v16, v17, v18, v36) & 4) != 0 && isMainPass)
   {
-    objc_msgSend_drawWireframeOverlayForElements_range_store_passInstance_(self, v31, a3, 0, i, v43, a5->var2);
+    objc_msgSend_drawWireframeOverlayForElements_range_store_passInstance_(self, v31, elements, 0, i, v43, context->var2);
   }
 
   if (v12)
@@ -2963,37 +2963,37 @@ LABEL_46:
   objc_msgSend_stopProcessingRendererElements_(self, v31, isMainPass, v33);
 }
 
-- (void)startProcessingRendererElementsWithEngineIterationContext:(id *)a3
+- (void)startProcessingRendererElementsWithEngineIterationContext:(id *)context
 {
-  v5 = sub_1AF12DDCC(a3->var1);
-  objc_msgSend__fillProcessingContextWithEngineIterationContext_(self, v6, a3, v7);
+  v5 = sub_1AF12DDCC(context->var1);
+  objc_msgSend__fillProcessingContextWithEngineIterationContext_(self, v6, context, v7);
   objc_msgSend__fillFrameUniformsWithWorld_(self, v8, v5, v9);
-  self->_renderGraphParticleMaterialOverride = a3->var5;
-  if (a3->var11)
+  self->_renderGraphParticleMaterialOverride = context->var5;
+  if (context->var11)
   {
 
     objc_msgSend__fillVFXCoreRenderData(self, v10, v11, v12);
   }
 }
 
-- (uint64_t)_fillProcessingContextWithCullingContext:(uint64_t)a3
+- (uint64_t)_fillProcessingContextWithCullingContext:(uint64_t)context
 {
-  v5 = *(a3 + 14688);
-  *(a1 + 640) = sub_1AF1D00F8(v5);
-  *(a1 + 688) = sub_1AF1D0218(v5);
+  v5 = *(context + 14688);
+  *(self + 640) = sub_1AF1D00F8(v5);
+  *(self + 688) = sub_1AF1D0218(v5);
   result = sub_1AF1D0188(v5);
-  *(a1 + 648) = result;
-  *(a1 + 664) = a3;
-  *(a1 + 656) = 0;
-  *(a1 + 672) = 0;
-  *(a1 + 680) = 256;
-  *(a1 + 696) = 0;
+  *(self + 648) = result;
+  *(self + 664) = context;
+  *(self + 656) = 0;
+  *(self + 672) = 0;
+  *(self + 680) = 256;
+  *(self + 696) = 0;
   return result;
 }
 
-- (void)_fillProcessingContextWithEngineIterationContext:(id *)a3
+- (void)_fillProcessingContextWithEngineIterationContext:(id *)context
 {
-  if (a3->var1 != self->_engineContext)
+  if (context->var1 != self->_engineContext)
   {
     v6 = sub_1AF0D5194();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -3002,7 +3002,7 @@ LABEL_46:
     }
   }
 
-  var2 = a3->var2;
+  var2 = context->var2;
   if (!var2)
   {
     v13 = sub_1AF0D5194();
@@ -3015,10 +3015,10 @@ LABEL_46:
   objc_msgSend__fillProcessingContextWithCullingContext_(self, a2, &var2->var7, v3);
   self->_processingContext.renderingOverrides = sub_1AF1D632C(var2);
   self->_processingContext.passInstance = var2;
-  var4 = a3->var4;
-  self->_processingContext.renderGraphPass = a3->var3;
-  self->_processingContext.passRequiresLighting = a3->var6;
-  self->_processingContext.isMainPass = a3->var9;
+  var4 = context->var4;
+  self->_processingContext.renderGraphPass = context->var3;
+  self->_processingContext.passRequiresLighting = context->var6;
+  self->_processingContext.isMainPass = context->var9;
   self->_processingContext.programHashCodeStoreKey = var4;
 }
 
@@ -3035,11 +3035,11 @@ LABEL_46:
   *&self->_anon_2d0[448] = v10;
 }
 
-- (void)_updateViewDependentConstants:(uint64_t)a3 world:(__n128 *)a4
+- (void)_updateViewDependentConstants:(uint64_t)constants world:(__n128 *)world
 {
-  if (*(a1 + 467))
+  if (*(self + 467))
   {
-    v4 = *(a1 + 465);
+    v4 = *(self + 465);
   }
 
   else
@@ -3050,20 +3050,20 @@ LABEL_46:
   if (v4)
   {
     v7 = 0;
-    v8 = (a1 + 720);
-    v61 = a3 + 7168;
-    v62 = a3 + 0x2000;
-    v9 = a3 + 10240;
-    v10 = a3 + 9216;
-    v59 = a3 + 11264;
+    v8 = (self + 720);
+    v61 = constants + 7168;
+    v62 = constants + 0x2000;
+    v9 = constants + 10240;
+    v10 = constants + 9216;
+    v59 = constants + 11264;
     v11 = v4;
     __asm { FMOV            V0.4S, #1.0 }
 
     v60 = _Q0;
-    v17 = a1 + 736;
+    v17 = self + 736;
     do
     {
-      v18 = *(a1 + 464);
+      v18 = *(self + 464);
       if (v7)
       {
         memcpy((v17 - 16), v8, 0x310uLL);
@@ -3114,7 +3114,7 @@ LABEL_46:
       v64.columns[1] = v22;
       v64.columns[2] = v23;
       v64.columns[3] = v24;
-      sub_1AF1D0B30(a4, &v64);
+      sub_1AF1D0B30(world, &v64);
       v42 = v64.columns[1];
       v43 = v64.columns[2];
       v44 = v64.columns[3];
@@ -3130,7 +3130,7 @@ LABEL_46:
       *(v17 + 128) = v46;
       *(v17 + 144) = v47;
       *(v17 + 160) = v48;
-      if (sub_1AF130540(*(a1 + 136)))
+      if (sub_1AF130540(*(self + 136)))
       {
         v49 = (v59 + (v19 << 6));
         v50 = v49[1];
@@ -3140,7 +3140,7 @@ LABEL_46:
         *(v17 + 320) = v50;
         *(v17 + 336) = v51;
         *(v17 + 352) = v52;
-        v53 = sub_1AF12F10C(*(a3 + 14696));
+        v53 = sub_1AF12F10C(*(constants + 14696));
         if (v53)
         {
           v54 = sub_1AF1BB260(v53);
@@ -3159,7 +3159,7 @@ LABEL_46:
       v57 = &v8[784 * v19];
       *(v17 + 512) = __invert_f4(v57[2]);
       *(v17 + 576) = __invert_f4(v57[3]);
-      v58 = sub_1AF125C8C(a3, v7);
+      v58 = sub_1AF125C8C(constants, v7);
       *(v17 + 656) = vextq_s8(v58, v58, 8uLL);
       ++v7;
       v17 += 784;
@@ -3169,7 +3169,7 @@ LABEL_46:
   }
 }
 
-- (void)_fillFrameUniformsWithWorld:(__CFXWorld *)a3
+- (void)_fillFrameUniformsWithWorld:(__CFXWorld *)world
 {
   v5 = sub_1AF1384DC(self->_processingContext.lightingSystem);
   *&self->_anon_2d0[392] = v6;
@@ -3178,7 +3178,7 @@ LABEL_46:
   v31 = *(v7 + 48);
   v32 = *(v7 + 32);
   v8 = sub_1AF12EF08(self->_engineContext);
-  *&self->_anon_2d0[400] = *sub_1AF1D048C(a3);
+  *&self->_anon_2d0[400] = *sub_1AF1D048C(world);
   if (*(&v32 + 3) == 0.0 && sub_1AF28A2DC())
   {
     v9 = xmmword_1AFE20180;
@@ -3186,7 +3186,7 @@ LABEL_46:
 
   else
   {
-    sub_1AF1D04D4(a3, v8);
+    sub_1AF1D04D4(world, v8);
   }
 
   *&self->_anon_2d0[416] = v9;
@@ -3197,7 +3197,7 @@ LABEL_46:
   __asm { FMOV            V1.2S, #1.0 }
 
   *&self->_anon_2d0[432] = vdiv_f32(_D1, v15);
-  v17 = sub_1AF1D005C(a3, 0);
+  v17 = sub_1AF1D005C(world, 0);
   if (v17)
   {
     v19 = v17;
@@ -3248,7 +3248,7 @@ LABEL_46:
     *&self->_anon_2d0[752] = *&self->_anon_4190[384];
   }
 
-  objc_msgSend__updateViewDependentConstants_world_(self, v18, self->_processingContext.cullingContext, a3, v31);
+  objc_msgSend__updateViewDependentConstants_world_(self, v18, self->_processingContext.cullingContext, world, v31);
   if ((sub_1AF13103C(self->_engineContext) & 1) == 0)
   {
     if (self->_renderPassParameters.viewMapping)
@@ -3613,15 +3613,15 @@ LABEL_46:
   *&self->_vfxViewUniforms.impl._offset = v100;
 }
 
-- (void)setCurrentExternalDrawCallContext:(id)a3
+- (void)setCurrentExternalDrawCallContext:(id)context
 {
-  self->_currentExternalDrawCallContext = a3;
+  self->_currentExternalDrawCallContext = context;
   reContext = self->_reContext;
 
   sub_1AFDEB10C(reContext);
 }
 
-- (VFXWorldBuffer)updateViewConstantsWithWorld:(__CFXWorld *)a3
+- (VFXWorldBuffer)updateViewConstantsWithWorld:(__CFXWorld *)world
 {
   *&STACK[0x880] = 0u;
   *&STACK[0x890] = 0u;
@@ -3655,7 +3655,7 @@ LABEL_46:
   v80 = 0u;
   __s1 = 0u;
   v78 = 0u;
-  sub_1AF22BB20(self->_reContext, a2, a3, v3, &__s1);
+  sub_1AF22BB20(self->_reContext, a2, world, v3, &__s1);
   anon_4b00 = self->_anon_4b00;
   if (!memcmp(&__s1, self->_anon_4b00, 0x400uLL))
   {
@@ -3767,7 +3767,7 @@ LABEL_46:
       *(v32 + 19) = v45;
       *(v32 + 16) = v47;
       *(v32 + 17) = v46;
-      sub_1AF1D0B30(a3, v32 + 4);
+      sub_1AF1D0B30(world, v32 + 4);
       v48 = *(v32 + 1);
       v49 = *(v32 + 2);
       v50 = *(v32 + 3);
@@ -3845,7 +3845,7 @@ LABEL_46:
   return objc_msgSend__currentWorldBuffer(self, v4, v5, v6);
 }
 
-- (void)updateRenderPassDescriptor:(id *)a3
+- (void)updateRenderPassDescriptor:(id *)descriptor
 {
   v3 = *&self->_currentRenderPassDesc.colorFormat[6];
   *&self->_originalRenderPassDesc.colorFormat[4] = *&self->_currentRenderPassDesc.colorFormat[4];
@@ -3855,22 +3855,22 @@ LABEL_46:
   *self->_originalRenderPassDesc.colorFormat = *self->_currentRenderPassDesc.colorFormat;
   *&self->_originalRenderPassDesc.colorFormat[2] = v4;
   *&self->_originalRenderPassDesc.depthFormat = *&self->_currentRenderPassDesc.depthFormat;
-  v5 = *a3->var0;
-  *&self->_currentRenderPassDesc.colorFormat[2] = *&a3->var0[2];
+  v5 = *descriptor->var0;
+  *&self->_currentRenderPassDesc.colorFormat[2] = *&descriptor->var0[2];
   *self->_currentRenderPassDesc.colorFormat = v5;
-  v7 = *&a3->var0[6];
-  v6 = *&a3->var1;
-  v8 = *&a3->var3;
-  *&self->_currentRenderPassDesc.colorFormat[4] = *&a3->var0[4];
+  v7 = *&descriptor->var0[6];
+  v6 = *&descriptor->var1;
+  v8 = *&descriptor->var3;
+  *&self->_currentRenderPassDesc.colorFormat[4] = *&descriptor->var0[4];
   *&self->_currentRenderPassDesc.sampleCount = v8;
   *&self->_currentRenderPassDesc.depthFormat = v6;
   *&self->_currentRenderPassDesc.colorFormat[6] = v7;
 }
 
-- (void)stopProcessingRendererElements:(BOOL)a3
+- (void)stopProcessingRendererElements:(BOOL)elements
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (elements)
   {
     if (self->_processingContext.passRequiresLighting)
     {
@@ -3907,13 +3907,13 @@ LABEL_46:
     debugOptions = self->_debugOptions;
     if ((debugOptions & 0x10) != 0)
     {
-      objc_msgSend__drawPBRTextures(self, a2, a3, v3);
+      objc_msgSend__drawPBRTextures(self, a2, elements, v3);
       debugOptions = self->_debugOptions;
     }
 
     if ((debugOptions & 8) != 0)
     {
-      objc_msgSend__drawShadowMaps(self, a2, a3, v3);
+      objc_msgSend__drawShadowMaps(self, a2, elements, v3);
     }
   }
 
@@ -3926,9 +3926,9 @@ LABEL_46:
   self->_renderGraphParticleMaterialOverride = -1;
 }
 
-- (void)_prepareMaterialTextures:(__CFXMaterial *)a3
+- (void)_prepareMaterialTextures:(__CFXMaterial *)textures
 {
-  v4 = sub_1AF1A1270(a3);
+  v4 = sub_1AF1A1270(textures);
   if (v4)
   {
     v5 = v4;
@@ -3962,14 +3962,14 @@ LABEL_46:
   }
 }
 
-- (BOOL)_executeDeformerStackOfCommand:(id *)a3 dataKind:(unsigned __int8)a4 deformerStack:(__CFXDeformerStack *)a5 metalDeformedMesh:(id *)a6 skinner:(__CFXSkinner *)a7 skinnerCalculationMode:(int)a8
+- (BOOL)_executeDeformerStackOfCommand:(id *)command dataKind:(unsigned __int8)kind deformerStack:(__CFXDeformerStack *)stack metalDeformedMesh:(id *)mesh skinner:(__CFXSkinner *)skinner skinnerCalculationMode:(int)mode
 {
-  v12 = a4;
-  v15 = sub_1AF16B74C(a5);
+  kindCopy = kind;
+  v15 = sub_1AF16B74C(stack);
   if (v15)
   {
-    v17 = a3->var12 || sub_1AF27DD4C(a3->var3, 0);
-    v18 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v16, a5, a3->var4, v12);
+    v17 = command->var12 || sub_1AF27DD4C(command->var3, 0);
+    v18 = objc_msgSend_renderResourceForDeformerStack_node_dataKind_(self->_resourceManager, v16, stack, command->var4, kindCopy);
     if ((sub_1AFDE22C0(v18) & 1) != 0 || self->_showsAuthoringEnvironment)
     {
       if (sub_1AFDE22C0(v18))
@@ -3986,7 +3986,7 @@ LABEL_46:
         }
       }
 
-      v27 = sub_1AF14CD4C(self->_processingContext.transformTree, a3->var4->var4);
+      v27 = sub_1AF14CD4C(self->_processingContext.transformTree, command->var4->var4);
       v28 = *v27;
       v29 = v27[1];
       v30 = v27[2];
@@ -3995,9 +3995,9 @@ LABEL_46:
       *&self->_nodeUniforms.probeCacheIndex = v29;
       *&self->_anon_3408[8] = v30;
       *&self->_anon_3408[24] = v31;
-      if (a7)
+      if (skinner)
       {
-        *v28.i64 = sub_1AF1CA3E8(a7, a8, v28, v29, v30, v31);
+        *v28.i64 = sub_1AF1CA3E8(skinner, mode, v28, v29, v30, v31);
         *&self->_nodeUniforms.instanceNode = v28;
         *&self->_nodeUniforms.probeCacheIndex = v29;
         *&self->_anon_3408[8] = v30;
@@ -4215,7 +4215,7 @@ LABEL_46:
     v98[1] = v113;
     v98[2] = v114;
     v98[3] = v115;
-    *a6 = sub_1AFDE22F0(v18, self, v17, &v99, v98, &v111);
+    *mesh = sub_1AFDE22F0(v18, self, v17, &v99, v98, &v111);
     self->__engineStats->mrphTime = CACurrentMediaTime() - v91 + self->__engineStats->mrphTime;
     prof_endFlame();
     if (self->_showsAuthoringEnvironment)
@@ -4242,9 +4242,9 @@ LABEL_46:
   return v15;
 }
 
-- (id)_setupTessellatorOfCommand:(id *)a3 deformersDidMutateMeshForCurrentFrame:(BOOL)a4 tessellationPipelineStateHash:(char *)a5
+- (id)_setupTessellatorOfCommand:(id *)command deformersDidMutateMeshForCurrentFrame:(BOOL)frame tessellationPipelineStateHash:(char *)hash
 {
-  if (!a4)
+  if (!frame)
   {
     goto LABEL_18;
   }
@@ -4378,21 +4378,21 @@ LABEL_18:
   *(&v67 + 1) = self;
   *&v68 = &v55;
   DWORD2(v68) = currentFrameIndex;
-  BYTE12(v68) = a4;
+  BYTE12(v68) = frame;
   objc_msgSend_update_(v50, v51, &v67, v52);
-  *a5 = objc_msgSend_pipelineStateHashForMeshElement_patchType_(v50, v53, self->_cache.metalMeshElement, *(a3 + 85) & 7);
+  *hash = objc_msgSend_pipelineStateHashForMeshElement_patchType_(v50, v53, self->_cache.metalMeshElement, *(command + 85) & 7);
   return v50;
 }
 
-- (BOOL)_setupRenderPipelineOfCommand:(id *)a3 tessellator:(id)a4 useTessellation:(BOOL)a5
+- (BOOL)_setupRenderPipelineOfCommand:(id *)command tessellator:(id)tessellator useTessellation:(BOOL)tessellation
 {
   v7 = &self->_anon_3408[3064];
-  if (a5)
+  if (tessellation)
   {
     metalMeshElement = self->_cache.metalMeshElement;
-    v10 = *(a3 + 85);
-    v11 = objc_msgSend_device(self, a2, a3, a4);
-    v66 = objc_msgSend_newPipelineStateConfiguratorForMeshElement_patchType_device_(a4, v12, metalMeshElement, v10 & 7, v11);
+    v10 = *(command + 85);
+    v11 = objc_msgSend_device(self, a2, command, tessellator);
+    v66 = objc_msgSend_newPipelineStateConfiguratorForMeshElement_patchType_device_(tessellator, v12, metalMeshElement, v10 & 7, v11);
   }
 
   else
@@ -4400,7 +4400,7 @@ LABEL_18:
     v66 = 0;
   }
 
-  var2 = a3->var2;
+  var2 = command->var2;
   v14 = sub_1AF1304FC(self->_engineContext);
   v58 = v14;
   if ((*(self + 144) & 0x10) != 0)
@@ -4459,9 +4459,9 @@ LABEL_18:
 
   v59 = 0;
 LABEL_18:
-  var1 = a3->var1;
+  var1 = command->var1;
   program = self->_cache.program;
-  var8 = a3->var8;
+  var8 = command->var8;
   blendStates = self->_cache.blendStates;
   v36 = v7[2328];
   v37 = v7[2329];
@@ -4541,14 +4541,14 @@ LABEL_18:
   return v50 != 0;
 }
 
-- (void)_installBindingsOfNode:(__CFXNode *)a3 probeCacheIndex:(unsigned int *)a4
+- (void)_installBindingsOfNode:(__CFXNode *)node probeCacheIndex:(unsigned int *)index
 {
-  v4 = a4;
-  v5 = a3;
+  indexCopy = index;
+  nodeCopy = node;
   v80 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (node)
   {
-    v7 = sub_1AF1B92C8(a3);
+    v7 = sub_1AF1B92C8(node);
     v8 = v7;
     if (v7)
     {
@@ -4568,14 +4568,14 @@ LABEL_6:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = objc_msgSend_nodeBufferBindings(*&self->_anon_4950[128], a2, a3, a4);
+  obj = objc_msgSend_nodeBufferBindings(*&self->_anon_4950[128], a2, node, index);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v73, v79, 16);
   if (v10)
   {
     v11 = v10;
     v12 = *v74;
-    v53 = v5;
-    v54 = v4;
+    v53 = nodeCopy;
+    v54 = indexCopy;
     v55 = *v74;
     v56 = v8;
     do
@@ -4612,11 +4612,11 @@ LABEL_6:
             v64 = sub_1AF2043F4;
             v65 = &unk_1E7A7CCE0;
             v68 = v8;
-            v69 = v4;
+            v69 = indexCopy;
             v71 = v57;
             v72 = eyeCount;
             v70 = v21;
-            v66 = self;
+            selfCopy = self;
             v67 = v14;
             v23 = sub_1AF12DC38(self->_processingContext.dynamicBatchingSystem, &v62);
             v24 = v21 * eyeCount;
@@ -4626,7 +4626,7 @@ LABEL_6:
               v48 = v47;
               v38 = v49;
               CPUPointer = CFXBufferSliceGetCPUPointer(v47, v49, v50, v51);
-              (v64)(v63, v5, CPUPointer);
+              (v64)(v63, nodeCopy, CPUPointer);
               renderEncoder = self->_renderEncoder;
               MTLBuffer = CFXBufferSliceGetMTLBuffer(v48, v38);
               v38 = v38;
@@ -4667,8 +4667,8 @@ LABEL_6:
               }
 
               v40 = (~v39 & 0xFF00) == 0;
-              v5 = v53;
-              v4 = v54;
+              nodeCopy = v53;
+              indexCopy = v54;
             }
 
             v11 = v58;
@@ -4708,15 +4708,15 @@ LABEL_6:
   }
 }
 
-- (void)_bindRenderPipelineArgumentsOfCommand:(id *)a3 materialHashChanged:(BOOL)a4 modelWithShaderModifier:(__CFXModel *)a5 modelWithShaderModifierHasChanged:(BOOL)a6 nodeHasChanged:(BOOL)a7 programHasChanged:(BOOL)a8 projHasChanged:(BOOL)a9 viewHasChanged:(BOOL)a10
+- (void)_bindRenderPipelineArgumentsOfCommand:(id *)command materialHashChanged:(BOOL)changed modelWithShaderModifier:(__CFXModel *)modifier modelWithShaderModifierHasChanged:(BOOL)hasChanged nodeHasChanged:(BOOL)nodeHasChanged programHasChanged:(BOOL)programHasChanged projHasChanged:(BOOL)projHasChanged viewHasChanged:(BOOL)self0
 {
-  v11 = a6;
+  hasChangedCopy = hasChanged;
   v143 = *MEMORY[0x1E69E9840];
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v15 = objc_msgSend_frameBufferBindings(*&self->_anon_4950[128], a2, a3, a4);
+  v15 = objc_msgSend_frameBufferBindings(*&self->_anon_4950[128], a2, command, changed);
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v127, v142, 16);
   if (v17)
   {
@@ -4742,10 +4742,10 @@ LABEL_6:
     while (v21);
   }
 
-  v26 = a3;
-  if (a4 || v11)
+  commandCopy2 = command;
+  if (changed || hasChangedCopy)
   {
-    v27 = self->_cache.material ? sub_1AF20ED1C(self->_resourceManager, a3->var2, a5, *&self->_anon_4950[128], self->_engineContext) : 0;
+    v27 = self->_cache.material ? sub_1AF20ED1C(self->_resourceManager, command->var2, modifier, *&self->_anon_4950[128], self->_engineContext) : 0;
     self->_cache.metalShadable = v27;
     v123 = 0u;
     v124 = 0u;
@@ -4781,7 +4781,7 @@ LABEL_6:
     }
   }
 
-  if (a3->var13)
+  if (command->var13)
   {
     cullingContext = self->_processingContext.cullingContext;
     v144 = __invert_f4(*(cullingContext + 128));
@@ -4790,7 +4790,7 @@ LABEL_6:
     v110 = v144.columns[3];
     v111 = v144.columns[2];
     v41 = *&self->_anon_4950[128];
-    v42 = *&a3->var7 ^ v41 ^ self->_renderPassParameters.eyeCount ^ self->_renderPassParameters.viewMapping;
+    v42 = *&command->var7 ^ v41 ^ self->_renderPassParameters.eyeCount ^ self->_renderPassParameters.viewMapping;
     v122 = v42;
     if (self->_lighting.currentLightingHashKey != v42)
     {
@@ -4798,7 +4798,7 @@ LABEL_6:
       obj = objc_msgSend_lightBufferBindings(v41, v18, v39, v40);
       if (obj)
       {
-        sub_1AF138864(self->_processingContext.lightingSystem, &a3->var7, &self->_lighting.currentLightingDesc);
+        sub_1AF138864(self->_processingContext.lightingSystem, &command->var7, &self->_lighting.currentLightingDesc);
         *&v135 = &v122;
         v109 = sub_1AF20B88C(&self->_lighting.frameLightingSetDatas.__table_.__bucket_list_.__ptr_, &v122);
         if (v109[3])
@@ -4978,15 +4978,15 @@ LABEL_6:
       }
     }
 
-    v26 = a3;
+    commandCopy2 = command;
   }
 
-  if (a7 || a10 || a9)
+  if (nodeHasChanged || viewHasChanged || projHasChanged)
   {
-    objc_msgSend__installBindingsOfNode_probeCacheIndex_(self, v18, v26->var4, v26->var9);
+    objc_msgSend__installBindingsOfNode_probeCacheIndex_(self, v18, commandCopy2->var4, commandCopy2->var9);
   }
 
-  if (a8 || a9)
+  if (programHasChanged || projHasChanged)
   {
     if (sub_1AF12E2A0(self->_engineContext))
     {
@@ -5014,13 +5014,13 @@ LABEL_6:
   }
 }
 
-- (void)_executeDrawCommand:(id *)a3
+- (void)_executeDrawCommand:(id *)command
 {
-  var3 = a3->var3;
-  var5 = a3->var5;
-  var6 = a3->var6;
-  var10 = a3->var10;
-  var11 = a3->var11;
+  var3 = command->var3;
+  var5 = command->var5;
+  var6 = command->var6;
+  var10 = command->var10;
+  var11 = command->var11;
   if (sub_1AF12E2A0(self->_engineContext))
   {
     objc_msgSend__clearRenderCaches(self, v9, v10, v11);
@@ -5028,7 +5028,7 @@ LABEL_6:
 
   if (var3 && sub_1AF1B402C(var3) && (self->_features & 0x10) != 0)
   {
-    v13 = (*(a3 + 85) & 7) != 0;
+    v13 = (*(command + 85) & 7) != 0;
     v12 = 1;
   }
 
@@ -5038,7 +5038,7 @@ LABEL_6:
     v13 = 0;
   }
 
-  if (a3->var0)
+  if (command->var0)
   {
     if (!var3)
     {
@@ -5058,7 +5058,7 @@ LABEL_6:
       }
     }
 
-    a3->var0 = objc_msgSend_defaultProgramUsingTessellation_(self->_resourceManager, v9, v12, v11);
+    command->var0 = objc_msgSend_defaultProgramUsingTessellation_(self->_resourceManager, v9, v12, v11);
     if (!var3)
     {
       goto LABEL_17;
@@ -5076,8 +5076,8 @@ LABEL_17:
 LABEL_18:
   v160 = var10;
   program = self->_cache.program;
-  var0 = a3->var0;
-  self->_cache.program = a3->var0;
+  var0 = command->var0;
+  self->_cache.program = command->var0;
   v165 = program;
   v166 = var0;
   v18 = self->_cache.geometry != var5 || program != var0;
@@ -5091,7 +5091,7 @@ LABEL_18:
     v19 = 1;
   }
 
-  var4 = a3->var4;
+  var4 = command->var4;
   if (!var4)
   {
     v158 = 0;
@@ -5113,7 +5113,7 @@ LABEL_18:
     v162 = -1;
   }
 
-  v23 = a3->var4;
+  v23 = command->var4;
   v177 = 0;
   if (!v23)
   {
@@ -5148,7 +5148,7 @@ LABEL_38:
   self->_cache.deformerStack = v24;
   if (v24)
   {
-    v25 = objc_msgSend__executeDeformerStackOfCommand_dataKind_deformerStack_metalDeformedMesh_skinner_skinnerCalculationMode_(self, v9, a3, v19, v24, &v177, v22, v162);
+    v25 = objc_msgSend__executeDeformerStackOfCommand_dataKind_deformerStack_metalDeformedMesh_skinner_skinnerCalculationMode_(self, v9, command, v19, v24, &v177, v22, v162);
     if (!v18)
     {
       v26 = 0;
@@ -5187,7 +5187,7 @@ LABEL_42:
       }
     }
 
-    if (a3->var12 && (v12 & v13 & 1) == 0)
+    if (command->var12 && (v12 & v13 & 1) == 0)
     {
       sub_1AF27DDF0(var5, v19);
     }
@@ -5211,7 +5211,7 @@ LABEL_58:
   v176 = 0;
   if (v12)
   {
-    v155 = objc_msgSend__setupTessellatorOfCommand_deformersDidMutateMeshForCurrentFrame_tessellationPipelineStateHash_(self, v9, a3, v25, &v176);
+    v155 = objc_msgSend__setupTessellatorOfCommand_deformersDidMutateMeshForCurrentFrame_tessellationPipelineStateHash_(self, v9, command, v25, &v176);
     v157 = self->_anon_4950[120] == v176;
     self->_anon_4950[120] = v176;
     if (v13)
@@ -5393,7 +5393,7 @@ LABEL_93:
 LABEL_97:
   primitiveTopologyClass = self->_cache.primitiveTopologyClass;
   self->_cache.primitiveTopologyClass = var6;
-  var2 = a3->var2;
+  var2 = command->var2;
   v91 = self->_cache.material != var2 || v39 != v166;
   v152 = v91;
   self->_cache.material = var2;
@@ -5407,7 +5407,7 @@ LABEL_97:
   self->_cache.model = var3;
   v93 = sub_1AF12DB9C(self->_processingContext.dynamicBatchingSystem);
   v97 = v93;
-  v98 = a3->var4;
+  v98 = command->var4;
   v99 = self->_cache.node != v98;
   v100 = v39 != v166 || v92;
   v151 = v100;
@@ -5474,7 +5474,7 @@ LABEL_97:
   *&self->_anon_4950[112] = v113;
   if ((v38 & 1) == 0)
   {
-    v119 = a3->var4;
+    v119 = command->var4;
     if (v119)
     {
       sub_1AF1BA79C(v119);
@@ -5482,7 +5482,7 @@ LABEL_97:
   }
 
   v175 = 0uLL;
-  v120 = a3->var2;
+  v120 = command->var2;
   if (v120)
   {
     v121 = objc_msgSend_enableARMode(self, v114, v115, v116);
@@ -5496,7 +5496,7 @@ LABEL_97:
       objc_msgSend_setBlendColorRed_green_blue_alpha_(self->_renderEncoder->var3, v114, v115, v116, *&v175, v124, v125, v126);
     }
 
-    v127 = a3->var2;
+    v127 = command->var2;
     v128 = v165;
     if (v127)
     {
@@ -5516,7 +5516,7 @@ LABEL_97:
     v128 = v165;
   }
 
-  if (a3->var14)
+  if (command->var14)
   {
     v130 = 0;
   }
@@ -5530,7 +5530,7 @@ LABEL_97:
   self->_cache.colorBufferWriteMask = v130;
   blendStates = self->_cache.blendStates;
   self->_cache.blendStates = v123;
-  if (v128 == v166 && v118 == v117 && blendStates == v123 && colorBufferWriteMask == v130 && v157 && primitiveTopologyClass == var6 || objc_msgSend__setupRenderPipelineOfCommand_tessellator_useTessellation_(self, v114, a3, v155, v156))
+  if (v128 == v166 && v118 == v117 && blendStates == v123 && colorBufferWriteMask == v130 && v157 && primitiveTopologyClass == var6 || objc_msgSend__setupRenderPipelineOfCommand_tessellator_useTessellation_(self, v114, command, v155, v156))
   {
     v133 = *&self->_anon_4950[128];
     if (v133)
@@ -5539,8 +5539,8 @@ LABEL_97:
       {
         HIBYTE(v150) = v159;
         LOBYTE(v150) = v107 >= 0;
-        objc_msgSend__bindRenderPipelineArgumentsOfCommand_materialHashChanged_modelWithShaderModifier_modelWithShaderModifierHasChanged_nodeHasChanged_programHasChanged_projHasChanged_viewHasChanged_(self, v134, a3, v152, v164, v151, v163, v128 != v166, v150);
-        if (a3->var4 && v97 <= 1)
+        objc_msgSend__bindRenderPipelineArgumentsOfCommand_materialHashChanged_modelWithShaderModifier_modelWithShaderModifierHasChanged_nodeHasChanged_programHasChanged_projHasChanged_viewHasChanged_(self, v134, command, v152, v164, v151, v163, v128 != v166, v150);
+        if (command->var4 && v97 <= 1)
         {
           v138 = *&self->_nodeUniforms.probeCacheIndex;
           v139 = *&self->_anon_3408[8];
@@ -5577,13 +5577,13 @@ LABEL_149:
                 v148 = v97;
               }
 
-              v149 = *(a3 + 85) & 7;
+              v149 = *(command + 85) & 7;
               v167 = v144;
               v168 = *&self->_cache.metalMesh;
               v169 = metalMeshElement;
               v170 = v148;
               v171 = 0;
-              v172 = self;
+              selfCopy = self;
               v173 = v149;
               objc_msgSend_draw_(v155, v145, &v167, v146);
             }
@@ -5610,7 +5610,7 @@ LABEL_149:
   }
 }
 
-- (void)drawRenderElement:(__CFXRendererElement *)a3 withOverrides:(__CFXRenderingOverride *)a4
+- (void)drawRenderElement:(__CFXRendererElement *)element withOverrides:(__CFXRenderingOverride *)overrides
 {
   v88 = *MEMORY[0x1E69E9840];
   if (!self->_engineContext)
@@ -5622,15 +5622,15 @@ LABEL_149:
     }
   }
 
-  v15 = sub_1AF146110(a3);
-  v16 = sub_1AF146118(a3);
-  v17 = sub_1AF146158(a3);
-  v18 = sub_1AF146178(a3);
+  v15 = sub_1AF146110(element);
+  v16 = sub_1AF146118(element);
+  v17 = sub_1AF146158(element);
+  v18 = sub_1AF146178(element);
   v70 = 0;
   v71 = 0;
   v69 = 0;
-  sub_1AF133CC8(a3, a4, self->_engineContext, &v71, &v69, &v70, 0);
-  v19 = sub_1AF146200(a3);
+  sub_1AF133CC8(element, overrides, self->_engineContext, &v71, &v69, &v70, 0);
+  v19 = sub_1AF146200(element);
   v20 = v69;
   if (!v19 || !v69)
   {
@@ -5693,7 +5693,7 @@ LABEL_18:
     v68 = 0;
 LABEL_23:
     v67 = 0;
-    if (!a4)
+    if (!overrides)
     {
       goto LABEL_26;
     }
@@ -5708,13 +5708,13 @@ LABEL_23:
   }
 
   v67 = sub_1AF13E510(v69);
-  if (!a4)
+  if (!overrides)
   {
     goto LABEL_26;
   }
 
 LABEL_24:
-  v25 = sub_1AF1D62E4(a4);
+  v25 = sub_1AF1D62E4(overrides);
   if (v25)
   {
     v28 = v25;
@@ -5723,7 +5723,7 @@ LABEL_24:
   }
 
 LABEL_26:
-  v28 = sub_1AF1461DC(a3);
+  v28 = sub_1AF1461DC(element);
   if (!v28)
   {
     v31 = 1;
@@ -5734,17 +5734,17 @@ LABEL_26:
 LABEL_28:
   v31 = 0;
 LABEL_30:
-  p_var5 = &a3->var5;
-  v33 = *(a3 + 40);
+  p_var5 = &element->var5;
+  v33 = *(element + 40);
   v34 = v22;
-  v35 = self;
+  selfCopy = self;
   v36 = (v33 & 0x40) != 0 && self->_processingContext.passRequiresLighting;
   v38 = v69;
   v37 = v70;
   v39 = v71;
   v40 = (v33 >> 14) & 1;
-  var3 = a3->var3;
-  if (v34 & 1) != 0 || (*(v35->_processingContext.cullingContext + 14650))
+  var3 = element->var3;
+  if (v34 & 1) != 0 || (*(selfCopy->_processingContext.cullingContext + 14650))
   {
     goto LABEL_39;
   }
@@ -5759,7 +5759,7 @@ LABEL_30:
     v76 = v66;
     v77 = v18;
     v78 = var3;
-    v79 = a4;
+    overridesCopy5 = overrides;
     v80 = p_var5;
     v81 = v34;
     v82 = v68;
@@ -5768,12 +5768,12 @@ LABEL_30:
     v85 = 1;
     v86 = (v33 >> 11) & 7;
     v87 = 0;
-    v52 = v35;
+    v52 = selfCopy;
     v60 = v34;
     v62 = v36;
     v58 = p_var5;
     v65 = v86;
-    objc_msgSend__executeDrawCommand_(v35, v29, &v72, v30);
+    objc_msgSend__executeDrawCommand_(selfCopy, v29, &v72, v30);
     v72 = v37;
     *&v73 = v38;
     *(&v73 + 1) = v39;
@@ -5782,7 +5782,7 @@ LABEL_30:
     v76 = v66;
     v77 = v18;
     v78 = var3;
-    v79 = a4;
+    overridesCopy5 = overrides;
     v80 = v58;
     v81 = v60;
     v82 = v68;
@@ -5806,7 +5806,7 @@ LABEL_39:
     v76 = v66;
     v77 = v18;
     v78 = var3;
-    v79 = a4;
+    overridesCopy5 = overrides;
     v80 = p_var5;
     v81 = v34;
     v82 = v68;
@@ -5815,18 +5815,18 @@ LABEL_39:
     v85 = (v33 & 0x4000) != 0;
     v86 = (v33 >> 11) & 7;
     v87 = 0;
-    objc_msgSend__executeDrawCommand_(v35, v29, &v72, v30);
+    objc_msgSend__executeDrawCommand_(selfCopy, v29, &v72, v30);
   }
 
   else
   {
-    v55 = v35;
+    v55 = selfCopy;
     v59 = v34;
     v61 = v36;
     v57 = p_var5;
     v64 = (v33 >> 11) & 7;
     v56 = v31;
-    objc_msgSend_setCullMode_(v35->_renderEncoder->var3, v29, 1, v30);
+    objc_msgSend_setCullMode_(selfCopy->_renderEncoder->var3, v29, 1, v30);
     v72 = v37;
     *&v73 = v38;
     *(&v73 + 1) = v39;
@@ -5835,7 +5835,7 @@ LABEL_39:
     v76 = v66;
     v77 = v18;
     v78 = var3;
-    v79 = a4;
+    overridesCopy5 = overrides;
     v80 = v57;
     v81 = v59;
     v82 = v68;
@@ -5854,7 +5854,7 @@ LABEL_39:
     v76 = v66;
     v77 = v18;
     v78 = var3;
-    v79 = a4;
+    overridesCopy5 = overrides;
     v80 = v57;
     v81 = v59;
     v82 = v68;
@@ -5877,9 +5877,9 @@ LABEL_39:
   }
 }
 
-- (void)setForceAsyncShaderCompilation:(BOOL)a3
+- (void)setForceAsyncShaderCompilation:(BOOL)compilation
 {
-  if (a3)
+  if (compilation)
   {
     v3 = 16;
   }
@@ -5892,11 +5892,11 @@ LABEL_39:
   *(self + 144) = *(self + 144) & 0xEF | v3;
 }
 
-- (void)setCollectsCompilationErrors:(BOOL)a3
+- (void)setCollectsCompilationErrors:(BOOL)errors
 {
-  self->_compilationIssues.collectEnabled = a3;
+  self->_compilationIssues.collectEnabled = errors;
   errors = self->_compilationIssues.errors;
-  if (a3)
+  if (errors)
   {
     if (!errors)
     {
@@ -5904,7 +5904,7 @@ LABEL_39:
       self->_compilationIssues.errors = errors;
     }
 
-    objc_msgSend_removeAllObjects(errors, a2, a3, v3);
+    objc_msgSend_removeAllObjects(errors, a2, errors, v3);
   }
 
   else
@@ -5914,29 +5914,29 @@ LABEL_39:
   }
 }
 
-- (void)drawWireframeOverlayForElements:(id *)a3 range:(id)a4 store:(__CFXRendererElementStore *)a5 passInstance:(__CFXPassInstance *)a6
+- (void)drawWireframeOverlayForElements:(id *)elements range:(id)range store:(__CFXRendererElementStore *)store passInstance:(__CFXPassInstance *)instance
 {
-  v8 = a5;
-  var1 = a4.var1;
-  var0 = a4.var0;
+  storeCopy = store;
+  var1 = range.var1;
+  var0 = range.var0;
   v53 = *MEMORY[0x1E69E9840];
-  objc_msgSend_pushDebugGroup_(self, a2, @"VFX - Draw wireframe", a4.var0, a4.var1, a5, a6, a7);
+  objc_msgSend_pushDebugGroup_(self, a2, @"VFX - Draw wireframe", range.var0, range.var1, store, instance, a7);
   LODWORD(v13) = -1138501878;
   LODWORD(v14) = -1194215657;
   LODWORD(v15) = -10.0;
   objc_msgSend_setDepthBias_slopeScale_clamp_(self->_renderEncoder->var3, v16, v17, v18, v15, v13, v14);
   if (var0 < var0 + var1)
   {
-    v23 = &a3[var0];
+    v23 = &elements[var0];
     *&v22 = 257;
     v44 = v22;
     v24 = var0 + var1 - var0;
-    v45 = v8;
+    v45 = storeCopy;
     do
     {
       v25 = *v23++;
-      a3 = (a3 & 0xFFFFFFFF00000000 | v25);
-      v26 = sub_1AF1474D8(v8, a3);
+      elements = (elements & 0xFFFFFFFF00000000 | v25);
+      v26 = sub_1AF1474D8(storeCopy, elements);
       v27 = sub_1AF146110(v26);
       v28 = sub_1AF146118(v26);
       v29 = sub_1AF146158(v26);
@@ -5947,7 +5947,7 @@ LABEL_39:
         if (v31)
         {
           v32 = v31;
-          v33 = sub_1AFDE8204(self->_resourceManager, v26, self->_engineContext, a6, self->_processingContext.programHashCodeStoreKey);
+          v33 = sub_1AFDE8204(self->_resourceManager, v26, self->_engineContext, instance, self->_processingContext.programHashCodeStoreKey);
           if (v33)
           {
             material = v33->material;
@@ -5959,7 +5959,7 @@ LABEL_39:
             v48[1] = 0;
             v48[2] = material;
             v48[3] = v28;
-            v8 = v45;
+            storeCopy = v45;
             v48[4] = v27;
             v48[5] = v30;
             v48[6] = v32;
@@ -6166,12 +6166,12 @@ LABEL_39:
   objc_msgSend_registerCustomProgramBindingBlockTrampoline_(VFXMTLShaderBindingsGenerator, v114, &unk_1F24E8BA0, v115);
 }
 
-- (BOOL)mapVolatileMesh:(__CFXMesh *)a3 verticesCount:(int64_t)a4
+- (BOOL)mapVolatileMesh:(__CFXMesh *)mesh verticesCount:(int64_t)count
 {
-  v7 = sub_1AF1A57DC(a3);
+  v7 = sub_1AF1A57DC(mesh);
   if (v7)
   {
-    v8 = sub_1AF20E1F8(self->_resourceManager, a3, 1);
+    v8 = sub_1AF20E1F8(self->_resourceManager, mesh, 1);
     if (!sub_1AFDEA260(v8))
     {
       v9 = sub_1AF0D5194();
@@ -6182,7 +6182,7 @@ LABEL_39:
     }
 
     sub_1AFDEA228(v8);
-    v17 = sub_1AFDEA260(v8) * a4;
+    v17 = sub_1AFDEA260(v8) * count;
     CFXBufferAllocatorPerFrameAllocateWithLength(self->_frameVolatileBufferPool.impl, v17);
     v19 = v18;
     v21 = v20;
@@ -6195,9 +6195,9 @@ LABEL_39:
     v37[1] = 3221225472;
     v37[2] = sub_1AF208E78;
     v37[3] = &unk_1E7A7CE10;
-    v37[4] = a4;
+    v37[4] = count;
     v37[5] = CPUPointer;
-    sub_1AF1A2BEC(a3, 1, v37);
+    sub_1AF1A2BEC(mesh, 1, v37);
     objc_msgSend_addObject_(self->_volatileMeshes, v26, v8, v27);
   }
 
@@ -6213,20 +6213,20 @@ LABEL_39:
   return v7;
 }
 
-- (void)unmapVolatileMesh:(__CFXMesh *)a3 modifiedVerticesCount:(int64_t)a4
+- (void)unmapVolatileMesh:(__CFXMesh *)mesh modifiedVerticesCount:(int64_t)count
 {
-  if (sub_1AF1A57DC(a3))
+  if (sub_1AF1A57DC(mesh))
   {
-    v7 = sub_1AF20E1F8(self->_resourceManager, a3, 1);
+    v7 = sub_1AF20E1F8(self->_resourceManager, mesh, 1);
     v8 = sub_1AFDEA278(v7);
-    if (a4 < 0)
+    if (count < 0)
     {
       v9 = v8;
     }
 
     else
     {
-      v9 = sub_1AFDEA260(v7) * a4;
+      v9 = sub_1AFDEA260(v7) * count;
     }
 
     if (!sub_1AFDEA228(v7))
@@ -6246,7 +6246,7 @@ LABEL_39:
       CFXBufferSliceDidModify(v26, v27);
     }
 
-    sub_1AF1A2BEC(a3, 1, &unk_1F24E8BC0);
+    sub_1AF1A2BEC(mesh, 1, &unk_1F24E8BC0);
   }
 
   else
@@ -6293,9 +6293,9 @@ LABEL_39:
   objc_msgSend_removeAllObjects(self->_volatileMeshes, v5, v6, v7);
 }
 
-- (id)_newMTLBufferFromPoolWithLength:(unint64_t)a3
+- (id)_newMTLBufferFromPoolWithLength:(unint64_t)length
 {
-  Object = objc_msgSend_lastObject(self->_bufferPool, a2, a3, v3);
+  Object = objc_msgSend_lastObject(self->_bufferPool, a2, length, v3);
   if (Object)
   {
     v7 = Object;
@@ -6308,7 +6308,7 @@ LABEL_39:
     v7 = objc_alloc_init(VFXMTLBuffer);
   }
 
-  CFXBufferAllocatorPerFrameAllocateWithLength(self->_frameVolatileBufferPool.impl, a3);
+  CFXBufferAllocatorPerFrameAllocateWithLength(self->_frameVolatileBufferPool.impl, length);
   v13 = v12;
   MTLBuffer = CFXBufferSliceGetMTLBuffer(v14, v12);
   objc_msgSend_setBuffer_(v7, v16, MTLBuffer, v17);
@@ -6322,9 +6322,9 @@ LABEL_39:
   return v7;
 }
 
-- (void)_recycleMTLBufferToPool:(id)a3
+- (void)_recycleMTLBufferToPool:(id)pool
 {
-  if (!a3)
+  if (!pool)
   {
     v6 = sub_1AF0D5194();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -6333,19 +6333,19 @@ LABEL_39:
     }
   }
 
-  objc_msgSend_addObject_(self->_bufferPool, a2, a3, v3);
-  objc_msgSend_setUsedCount_(a3, v12, 0, v13);
-  objc_msgSend_setBuffer_(a3, v14, 0, v15);
-  objc_msgSend_setOffset_(a3, v16, 0, v17);
-  objc_msgSend_setDataSource_(a3, v18, 0, v19);
+  objc_msgSend_addObject_(self->_bufferPool, a2, pool, v3);
+  objc_msgSend_setUsedCount_(pool, v12, 0, v13);
+  objc_msgSend_setBuffer_(pool, v14, 0, v15);
+  objc_msgSend_setOffset_(pool, v16, 0, v17);
+  objc_msgSend_setDataSource_(pool, v18, 0, v19);
 }
 
-- (__CFXMeshElement)createVolatileMeshElementOfType:(VFXMTLRenderContext *)self primitiveCount:(unsigned int)a2 bytesPerIndex:
+- (__CFXMeshElement)createVolatileMeshElementOfType:(VFXMTLRenderContext *)self primitiveCount:(unsigned int)count bytesPerIndex:
 {
   v5 = v4;
   v6 = v3;
   v7 = v2;
-  if (objc_msgSend_count(self->_freeVolatileMeshElements, *&a2, v2, v3))
+  if (objc_msgSend_count(self->_freeVolatileMeshElements, *&count, v2, v3))
   {
     Object = objc_msgSend_lastObject(self->_freeVolatileMeshElements, v9, v10, v11);
     objc_msgSend_addObject_(self->_usedVolatileMeshElements, v13, Object, v14);
@@ -6399,10 +6399,10 @@ LABEL_7:
   return Object;
 }
 
-- (uint64_t)unmapVolatileMeshElement:(uint64_t)a3
+- (uint64_t)unmapVolatileMeshElement:(uint64_t)element
 {
-  v4 = sub_1AFDE7F98(*(a1 + 112));
-  sub_1AF1A809C(a3);
+  v4 = sub_1AFDE7F98(*(self + 112));
+  sub_1AF1A809C(element);
   sub_1AFDEA004(v4);
   v5 = sub_1AFDE868C(v4);
   objc_msgSend_buffer(v5, v6, v7, v8);
@@ -6848,9 +6848,9 @@ LABEL_9:
   }
 }
 
-- (void)_drawFullScreenTexture:(id)a3
+- (void)_drawFullScreenTexture:(id)texture
 {
-  v6 = objc_msgSend_currentRenderPassDescriptor(self, a2, a3, v3);
+  v6 = objc_msgSend_currentRenderPassDescriptor(self, a2, texture, v3);
   v10 = objc_msgSend_depthAttachment(v6, v7, v8, v9);
   v14 = objc_msgSend_texture(v10, v11, v12, v13);
   v18 = objc_msgSend_pixelFormat(v14, v15, v16, v17);
@@ -6909,15 +6909,15 @@ LABEL_9:
   v70 = self->_renderEncoder;
   v74 = objc_msgSend_state(self->_compositeRendering[0].pipeline, v71, v72, v73);
   objc_msgSend_setRenderPipelineState_(v70->var3, v75, v74, v76);
-  sub_1AF1F8FCC(self->_renderEncoder, a3, 0, v77);
+  sub_1AF1F8FCC(self->_renderEncoder, texture, 0, v77);
   sub_1AF2010C8(self->_renderEncoder, v78);
 }
 
-- (void)writeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)writeBytes:(const void *)bytes length:(unint64_t)length
 {
   renderEncoder = self->_renderEncoder;
   currentStreamBufferIndices = self->_currentStreamBufferIndices;
-  v6 = CFXBufferAllocatorPerFrameAllocateWithBytes(renderEncoder->var5->impl, a3, a4);
+  v6 = CFXBufferAllocatorPerFrameAllocateWithBytes(renderEncoder->var5->impl, bytes, length);
   v8 = v7;
   MTLBuffer = CFXBufferSliceGetMTLBuffer(v6, v7);
   if (currentStreamBufferIndices != 0xFF)
@@ -6946,11 +6946,11 @@ LABEL_9:
   }
 }
 
-- (void)addCommandBufferScheduledHandler:(id)a3
+- (void)addCommandBufferScheduledHandler:(id)handler
 {
   v16[2] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_gpuHandlersLock);
-  v8 = objc_msgSend_copy(a3, v5, v6, v7);
+  v8 = objc_msgSend_copy(handler, v5, v6, v7);
   v9 = v8;
   if (self->_commandBufferScheduledHandlers)
   {
@@ -6979,11 +6979,11 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_gpuHandlersLock);
 }
 
-- (void)addCommandBufferCompletedHandler:(id)a3
+- (void)addCommandBufferCompletedHandler:(id)handler
 {
   v16[2] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_gpuHandlersLock);
-  v8 = objc_msgSend_copy(a3, v5, v6, v7);
+  v8 = objc_msgSend_copy(handler, v5, v6, v7);
   v9 = v8;
   if (self->_commandBufferCompletedHandlers)
   {
@@ -7012,11 +7012,11 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_gpuHandlersLock);
 }
 
-- (void)addDrawablePresentedHandler:(id)a3
+- (void)addDrawablePresentedHandler:(id)handler
 {
   v16[2] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_gpuHandlersLock);
-  v8 = objc_msgSend_copy(a3, v5, v6, v7);
+  v8 = objc_msgSend_copy(handler, v5, v6, v7);
   v9 = v8;
   if (self->_drawablePresentedHandlers)
   {
@@ -7102,14 +7102,14 @@ LABEL_9:
   }
 }
 
-- (void)_VFXWorldRendererMainPassCustomPostProcessSupportDrawSceneBackgroundUsingEncoder:(id)a3 commandBuffer:(id)a4 renderPassDesc:(id *)a5
+- (void)_VFXWorldRendererMainPassCustomPostProcessSupportDrawSceneBackgroundUsingEncoder:(id)encoder commandBuffer:(id)buffer renderPassDesc:(id *)desc
 {
   v7 = sub_1AF12DDCC(self->_engineContext);
   v8 = sub_1AF1D0008(v7, 0);
   if (v8)
   {
     v9 = v8;
-    if (sub_1AF20107C(self->_renderEncoder) != a3)
+    if (sub_1AF20107C(self->_renderEncoder) != encoder)
     {
       sub_1AF20B70C();
     }
@@ -7136,7 +7136,7 @@ LABEL_9:
   return self->_renderTargetInfo;
 }
 
-- ($56FBFA7F90079343FE03906F902E417E)bufferForBuiltin:(unsigned __int8)a3
+- ($56FBFA7F90079343FE03906F902E417E)bufferForBuiltin:(unsigned __int8)builtin
 {
   MEMORY[0x1EEE9AC00](self, a2);
   v5 = v3;
@@ -7253,9 +7253,9 @@ LABEL_9:
   return result;
 }
 
-- (id)makeRenderPipelineForResourceID:(unint64_t)a3
+- (id)makeRenderPipelineForResourceID:(unint64_t)d
 {
-  v5 = objc_msgSend_renderPipelineDescForResourceID_(self->_resourceManager, a2, a3, v3);
+  v5 = objc_msgSend_renderPipelineDescForResourceID_(self->_resourceManager, a2, d, v3);
   if (v5)
   {
     v9 = v5;
@@ -7399,7 +7399,7 @@ LABEL_9:
   return self;
 }
 
-- (id)texture:(int)a3 :(id)a4
+- (id)texture:(int)texture :(id)a4
 {
   if (!objc_msgSend_isEqualToString_(a4, a2, @"shadowMap", a4))
   {
@@ -7418,10 +7418,10 @@ LABEL_9:
   return sub_1AF130664(engineContext, v6);
 }
 
-- (id)buffer:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6
+- (id)buffer:(int)buffer :(id)a4 :(int64_t *)a5 :(int64_t *)a6
 {
-  v7 = *&a3;
-  v9 = objc_msgSend_engineContext(self, a2, *&a3, a4, a5, a6);
+  v7 = *&buffer;
+  v9 = objc_msgSend_engineContext(self, a2, *&buffer, a4, a5, a6);
   v10 = sub_1AF12E8A4(v9);
   if (!v10)
   {
@@ -7457,7 +7457,7 @@ LABEL_9:
   return v35;
 }
 
-- (id)sampler:(int)a3 :(id)a4
+- (id)sampler:(int)sampler :(id)a4
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -7468,15 +7468,15 @@ LABEL_9:
   return 0;
 }
 
-- (const)constantData:(int)a3
+- (const)constantData:(int)data
 {
   anon_4440 = self->_anon_4440;
-  if (a3 != 8)
+  if (data != 8)
   {
     anon_4440 = 0;
   }
 
-  if (a3 == 1)
+  if (data == 1)
   {
     return self->_anon_4440;
   }
@@ -7487,11 +7487,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)constantOffsetAndSize:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6
+- (BOOL)constantOffsetAndSize:(int)size :(id)a4 :(int64_t *)a5 :(int64_t *)a6
 {
-  if (a3 != 1)
+  if (size != 1)
   {
-    if (a3 == 8)
+    if (size == 8)
     {
       if (objc_msgSend_isEqualToString_(a4, a2, @"crWorldToViewArray", a4))
       {
@@ -7583,20 +7583,20 @@ LABEL_30:
   return result;
 }
 
-- (id)renderResourcesFor:(id)a3 renderPassFormat:(id *)a4
+- (id)renderResourcesFor:(id)for renderPassFormat:(id *)format
 {
-  var3 = a4->var3;
-  v6 = *&a4->var0[2];
-  v12[0] = *a4->var0;
+  var3 = format->var3;
+  v6 = *&format->var0[2];
+  v12[0] = *format->var0;
   v12[1] = v6;
-  v7 = *&a4->var0[6];
-  v12[2] = *&a4->var0[4];
+  v7 = *&format->var0[6];
+  v12[2] = *&format->var0[4];
   v12[3] = v7;
-  v12[4] = *&a4->var1;
+  v12[4] = *&format->var1;
   v13 = var3;
-  v8 = a3;
-  v9 = self;
-  v10 = sub_1AF70CCBC(v8, v12);
+  forCopy = for;
+  selfCopy = self;
+  v10 = sub_1AF70CCBC(forCopy, v12);
 
   return v10;
 }

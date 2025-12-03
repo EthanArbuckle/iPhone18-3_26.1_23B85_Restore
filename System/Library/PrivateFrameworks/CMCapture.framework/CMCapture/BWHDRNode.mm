@@ -1,6 +1,6 @@
 @interface BWHDRNode
 - (BOOL)_receivedExpectedNumberOfInputFramesOrErrors;
-- (id)_initWithClientPID:(int)a3 sensorIDDictionary:(id)a4 sbpCreationFunction:(void *)a5;
+- (id)_initWithClientPID:(int)d sensorIDDictionary:(id)dictionary sbpCreationFunction:(void *)function;
 - (uint64_t)_configureCaptureRequestStateWithStillImageCaptureSettings:(uint64_t)result;
 - (uint64_t)_setupSampleBufferProcessor;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
@@ -9,10 +9,10 @@
 - (void)_emitNodeErrorsIfNecessary;
 - (void)_hdrProcessorOutputReady:(CMAttachmentBearerRef)target sampleBuffer:;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWHDRNode
@@ -66,7 +66,7 @@
   [(BWNode *)&v11 dealloc];
 }
 
-- (id)_initWithClientPID:(int)a3 sensorIDDictionary:(id)a4 sbpCreationFunction:(void *)a5
+- (id)_initWithClientPID:(int)d sensorIDDictionary:(id)dictionary sbpCreationFunction:(void *)function
 {
   v16.receiver = self;
   v16.super_class = BWHDRNode;
@@ -74,12 +74,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_clientPID = a3;
-    v8->_sensorIDDictionary = a4;
+    v8->_clientPID = d;
+    v8->_sensorIDDictionary = dictionary;
     v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{&unk_1F224CAA0, &unk_1F224CAB0, &unk_1F224CAC0, 0}];
     v9->_exposureValues = v10;
     v9->_bracketCount = [(NSArray *)v10 count];
-    v9->_createSampleBufferProcessorFunction = a5;
+    v9->_createSampleBufferProcessorFunction = function;
     v11 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v9];
     [(BWNodeInput *)v11 setRetainedBufferCount:[(NSArray *)v9->_exposureValues count]];
     v12 = objc_alloc_init(BWVideoFormatRequirements);
@@ -99,17 +99,17 @@
   return v9;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v6 = objc_alloc_init(BWVideoFormatRequirements);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1]);
-  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [a3 width]);
-  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [a3 height]);
+  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [format width]);
+  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [format height]);
   [(BWVideoFormatRequirements *)v6 setSupportedCacheModes:+[BWVideoFormatRequirements cacheModesForOptimizedHWAccess]];
-  if ([a3 colorSpaceProperties])
+  if ([format colorSpaceProperties])
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
   }
 
@@ -138,10 +138,10 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v65 = 0;
-  if (!a3)
+  if (!buffer)
   {
     return;
   }
@@ -151,7 +151,7 @@
     goto LABEL_81;
   }
 
-  v6 = CMGetAttachment(a3, @"StillSettings", 0);
+  v6 = CMGetAttachment(buffer, @"StillSettings", 0);
   if (!v6)
   {
     [BWHDRNode renderSampleBuffer:forInput:];
@@ -160,7 +160,7 @@
 
   v7 = v6;
   v8 = *off_1E798A3C8;
-  v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v9)
   {
     fig_log_get_emitter();
@@ -185,7 +185,7 @@
     {
       output = self->super._output;
 
-      [(BWNodeOutput *)output emitSampleBuffer:a3];
+      [(BWNodeOutput *)output emitSampleBuffer:buffer];
       return;
     }
 
@@ -209,14 +209,14 @@
       if (!self->_supportsStereoFusionCaptures)
       {
         v17 = self->_pendingBracketBuffers[v15];
-        self->_pendingBracketBuffers[v15] = a3;
-        CFRetain(a3);
+        self->_pendingBracketBuffers[v15] = buffer;
+        CFRetain(buffer);
         if (v17)
         {
           CFRelease(v17);
         }
 
-        v18 = v11 == self->_bracketCount;
+        _receivedExpectedNumberOfInputFramesOrErrors = v11 == self->_bracketCount;
 LABEL_21:
         v19 = [v10 objectForKeyedSubscript:*off_1E798A830];
         if (v19)
@@ -232,13 +232,13 @@ LABEL_21:
               telephotoHDREV0DisparityBufferPool = self->_telephotoHDREV0DisparityBufferPool;
             }
 
-            v22 = [(BWPixelBufferPool *)telephotoHDREV0DisparityBufferPool newPixelBuffer];
+            newPixelBuffer = [(BWPixelBufferPool *)telephotoHDREV0DisparityBufferPool newPixelBuffer];
             cf[0].origin.x = 0.0;
-            if (v22)
+            if (newPixelBuffer)
             {
-              v23 = v22;
+              v23 = newPixelBuffer;
               telephotoHDREV0DisparityCopySession = self->_telephotoHDREV0DisparityCopySession;
-              ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+              ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
               v26 = VTPixelTransferSessionTransferImage(telephotoHDREV0DisparityCopySession, ImageBuffer, v23);
               if (v26)
               {
@@ -248,7 +248,7 @@ LABEL_21:
 
               else
               {
-                BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v23, &self->_telephotoHDREV0DisparityFormatDescription, cf);
+                BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v23, &self->_telephotoHDREV0DisparityFormatDescription, cf);
                 [(BWNodeOutput *)self->super._output emitSampleBuffer:*&cf[0].origin.x];
               }
 
@@ -267,7 +267,7 @@ LABEL_21:
           }
         }
 
-        if (!v18)
+        if (!_receivedExpectedNumberOfInputFramesOrErrors)
         {
           goto LABEL_81;
         }
@@ -362,36 +362,36 @@ LABEL_65:
 
         if (v11 != 2 && !CGRectIsNull(cf[0]))
         {
-          FormatDescription = CMSampleBufferGetFormatDescription(a3);
+          FormatDescription = CMSampleBufferGetFormatDescription(buffer);
           Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
           [(FigCapturePixelConverter *)self->_stereoFusionPixelConverter updateOutputPixelFormat:[(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelFormat] dimensions:Dimensions poolCapacity:2 colorSpaceProperties:[(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] colorSpaceProperties]];
           target[0] = 0;
-          [(FigCapturePixelConverter *)self->_stereoFusionPixelConverter convertSampleBuffer:a3 cropRect:target outputSampleBuffer:cf[0].origin.x * Dimensions.width, cf[0].origin.y * Dimensions.height, cf[0].size.width * Dimensions.width, cf[0].size.height * Dimensions.height];
+          [(FigCapturePixelConverter *)self->_stereoFusionPixelConverter convertSampleBuffer:buffer cropRect:target outputSampleBuffer:cf[0].origin.x * Dimensions.width, cf[0].origin.y * Dimensions.height, cf[0].size.width * Dimensions.width, cf[0].size.height * Dimensions.height];
           Dimensions.width = [(FigCaptureStillImageSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings requestedSettings] outputWidth];
-          v41 = [(FigCaptureStillImageSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings requestedSettings] outputHeight];
-          if (Dimensions.width && v41)
+          outputHeight = [(FigCaptureStillImageSettings *)[(BWStillImageSettings *)self->_currentStillImageSettings requestedSettings] outputHeight];
+          if (Dimensions.width && outputHeight)
           {
             Dimensions = Dimensions.width;
-            v42 = v41;
+            height = outputHeight;
           }
 
           else
           {
             Dimensions = [(BWVideoFormat *)[(BWNodeOutput *)self->super._output videoFormat] width];
-            v42 = [(BWVideoFormat *)[(BWNodeOutput *)self->super._output videoFormat] height];
+            height = [(BWVideoFormat *)[(BWNodeOutput *)self->super._output videoFormat] height];
           }
 
           v60 = CMGetAttachment(target[0], v8, 0);
-          v43 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] width];
-          v44 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
-          FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(v43, v44, cf[0].origin.x, cf[0].origin.y, cf[0].size.width, cf[0].size.height, *&Dimensions / v42);
+          width = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] width];
+          height2 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
+          FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(width, height2, cf[0].origin.x, cf[0].origin.y, cf[0].size.width, cf[0].size.height, *&Dimensions / height);
           v46 = v45;
           v48 = v47;
           v50 = v49;
           v52 = v51;
-          LODWORD(v43) = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] width];
-          v53 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
-          FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v60, v43 | (v53 << 32), Dimensions.width | (v42 << 32), v46, v48, v50, v52, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+          LODWORD(width) = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] width];
+          height3 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
+          FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v60, width | (height3 << 32), Dimensions.width | (height << 32), v46, v48, v50, v52, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
           FigCaptureMetadataUtilitiesPreventFurtherCropping(v60, v54);
           v55 = self->_pendingBracketBuffers[v15];
           v56 = target[0];
@@ -423,15 +423,15 @@ LABEL_65:
       }
 
       v34 = v30[v15];
-      v30[v15] = a3;
-      CFRetain(a3);
+      v30[v15] = buffer;
+      CFRetain(buffer);
       if (v34)
       {
         CFRelease(v34);
       }
 
 LABEL_44:
-      v18 = [(BWHDRNode *)self _receivedExpectedNumberOfInputFramesOrErrors];
+      _receivedExpectedNumberOfInputFramesOrErrors = [(BWHDRNode *)self _receivedExpectedNumberOfInputFramesOrErrors];
       goto LABEL_21;
     }
 
@@ -459,9 +459,9 @@ LABEL_81:
 LABEL_31:
   self->_preBracketedFrameReceived = 1;
   [v10 setObject:&unk_1F2246300 forKeyedSubscript:*off_1E798B370];
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(CMGetAttachment(a3, @"StillImageProcessingFlags", 0), "unsignedIntValue") | 1}];
-  CMSetAttachment(a3, @"StillImageProcessingFlags", v28, 1u);
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(CMGetAttachment(buffer, @"StillImageProcessingFlags", 0), "unsignedIntValue") | 1}];
+  CMSetAttachment(buffer, @"StillImageProcessingFlags", v28, 1u);
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
   v29 = 0;
   ++self->_emittedFrameOrErrorCount;
 LABEL_82:
@@ -484,21 +484,21 @@ LABEL_86:
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   supportsStereoFusionCaptures = self->_supportsStereoFusionCaptures;
   currentStillImageSettings = self->_currentStillImageSettings;
   if (supportsStereoFusionCaptures)
   {
-    [(BWHDRNode *)currentStillImageSettings == 0 handleNodeError:a3 forInput:?];
+    [(BWHDRNode *)currentStillImageSettings == 0 handleNodeError:error forInput:?];
   }
 
   else
   {
     if (currentStillImageSettings)
     {
-      v8 = [(BWStillImageSettings *)currentStillImageSettings requestedSettings:a3];
-      if (v8 == [objc_msgSend(a3 "stillImageSettings")])
+      v8 = [(BWStillImageSettings *)currentStillImageSettings requestedSettings:error];
+      if (v8 == [objc_msgSend(error "stillImageSettings")])
       {
         [(BWHDRNode *)self _clearCaptureRequestState];
       }
@@ -506,51 +506,51 @@ LABEL_86:
 
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitNodeError:a3, a4];
+    [(BWNodeOutput *)output emitNodeError:error, input];
   }
 }
 
 - (void)_clearCaptureRequestState
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 176) = 0;
-    if (*(a1 + 160) >= 1)
+    *(self + 176) = 0;
+    if (*(self + 160) >= 1)
     {
       v2 = 0;
-      v3 = a1;
+      selfCopy = self;
       do
       {
-        v4 = *(v3 + 184);
+        v4 = *(selfCopy + 184);
         if (v4)
         {
           CFRelease(v4);
-          *(v3 + 184) = 0;
+          *(selfCopy + 184) = 0;
         }
 
         ++v2;
-        v3 += 8;
+        selfCopy += 8;
       }
 
-      while (v2 < *(a1 + 160));
+      while (v2 < *(self + 160));
     }
 
-    *(a1 + 208) = 0;
-    *(a1 + 209) = 0;
+    *(self + 208) = 0;
+    *(self + 209) = 0;
 
-    *(a1 + 216) = 0;
-    *(a1 + 224) = 0;
+    *(self + 216) = 0;
+    *(self + 224) = 0;
   }
 }
 
 - (uint64_t)_setupSampleBufferProcessor
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v13 = 0;
-    v2 = *(a1 + 144);
+    v2 = *(self + 144);
     if (v2)
     {
       v11 = *off_1E798A9B0;
@@ -563,7 +563,7 @@ LABEL_86:
       v3 = 0;
     }
 
-    v4 = *(v1 + 128);
+    v4 = *(selfCopy + 128);
     if (!v4)
     {
       fig_log_get_emitter();
@@ -573,7 +573,7 @@ LABEL_86:
     }
 
     v4(*MEMORY[0x1E695E480], @"HDR", v3, &v13);
-    if (*(v1 + 136))
+    if (*(selfCopy + 136))
     {
       v5 = [MEMORY[0x1E696AD98] numberWithInt:?];
       FigBaseObject = FigSampleBufferProcessorGetFigBaseObject();
@@ -585,26 +585,26 @@ LABEL_86:
     }
 
     v8 = v13;
-    *(v1 + 152) = v13;
+    *(selfCopy + 152) = v13;
     v9 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (!v9)
     {
-      v1 = 4294954514;
+      selfCopy = 4294954514;
 LABEL_13:
       fig_log_get_emitter();
       OUTLINED_FUNCTION_1_11();
       FigDebugAssert3();
-      return v1;
+      return selfCopy;
     }
 
-    v1 = v9(v8, hdrn_processorOutputReadyCallback, v1);
-    if (v1)
+    selfCopy = v9(v8, hdrn_processorOutputReadyCallback, selfCopy);
+    if (selfCopy)
     {
       goto LABEL_13;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_configureCaptureRequestStateWithStillImageCaptureSettings:(uint64_t)result
@@ -656,26 +656,26 @@ LABEL_13:
 
 - (void)_emitNodeErrorToReportFailedOutputFrame
 {
-  if (a1)
+  if (self)
   {
-    if ([*(a1 + 216) count] < 2)
+    if ([*(self + 216) count] < 2)
     {
-      v2 = [BWNodeError newError:4294954516 sourceNode:a1 stillImageSettings:*(a1 + 176) metadata:0];
+      v2 = [BWNodeError newError:4294954516 sourceNode:self stillImageSettings:*(self + 176) metadata:0];
     }
 
     else
     {
-      v2 = [*(a1 + 216) objectAtIndex:0];
-      [*(a1 + 216) removeObjectAtIndex:0];
+      v2 = [*(self + 216) objectAtIndex:0];
+      [*(self + 216) removeObjectAtIndex:0];
     }
 
-    [*(a1 + 16) emitNodeError:v2];
+    [*(self + 16) emitNodeError:v2];
   }
 }
 
 - (void)_hdrProcessorOutputReady:(CMAttachmentBearerRef)target sampleBuffer:
 {
-  if (a1)
+  if (self)
   {
     v5 = CMGetAttachment(target, *off_1E798D0B8, 0);
     if (a2)
@@ -703,7 +703,7 @@ LABEL_13:
       v16 = OUTLINED_FUNCTION_82();
       FigCapturePleaseFileRadar(v16, v17, v18, 0, v19, 746, v20, v21, 0);
       free(v15);
-      v8 = *(a1 + 192);
+      v8 = *(self + 192);
     }
 
     else
@@ -736,14 +736,14 @@ LABEL_13:
         v25 = OUTLINED_FUNCTION_82();
         FigCapturePleaseFileRadar(v25, v26, v27, 0, v28, 754, v29, v30, 0);
         free(v24);
-        v31 = [BWNodeError newError:4294954510 sourceNode:a1 stillImageSettings:*(a1 + 176) metadata:0];
-        [*(a1 + 16) emitNodeError:v31];
+        v31 = [BWNodeError newError:4294954510 sourceNode:self stillImageSettings:*(self + 176) metadata:0];
+        [*(self + 16) emitNodeError:v31];
 
         goto LABEL_15;
       }
 
       v9 = CMGetAttachment(v5, *off_1E798A3C8, 0);
-      if ([objc_msgSend(*(a1 + 176) "requestedSettings")])
+      if ([objc_msgSend(*(self + 176) "requestedSettings")])
       {
         v10 = 3;
       }
@@ -761,17 +761,17 @@ LABEL_13:
       CMRemoveAttachment(v8, *off_1E798A448);
     }
 
-    [*(a1 + 16) emitSampleBuffer:v8];
+    [*(self + 16) emitSampleBuffer:v8];
 LABEL_15:
-    ++*(a1 + 224);
+    ++*(self + 224);
   }
 }
 
 - (void)_emitNodeErrorsIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 208) + 1 - *(a1 + 224);
+    v2 = *(self + 208) + 1 - *(self + 224);
     if (v2)
     {
       if (v2 <= 1)
@@ -781,12 +781,12 @@ LABEL_15:
 
       else
       {
-        v3 = *(a1 + 208) + 1 - *(a1 + 224);
+        v3 = *(self + 208) + 1 - *(self + 224);
       }
 
       do
       {
-        [(BWHDRNode *)a1 _emitNodeErrorToReportFailedOutputFrame];
+        [(BWHDRNode *)self _emitNodeErrorToReportFailedOutputFrame];
         --v3;
       }
 

@@ -1,16 +1,16 @@
 @interface WebViewWarmer
 - (_TtC17PromotedContentUIP33_F33E7C2993C44F3307C22CD11BA85E0E13WebViewWarmer)init;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation WebViewWarmer
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17PromotedContentUIP33_F33E7C2993C44F3307C22CD11BA85E0E13WebViewWarmer_finished);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = sub_1C19A2D24(v4);
     v4(v6);
 

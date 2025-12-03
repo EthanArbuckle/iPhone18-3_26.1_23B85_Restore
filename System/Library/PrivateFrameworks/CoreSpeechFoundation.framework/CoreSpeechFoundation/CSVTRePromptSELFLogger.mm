@@ -26,7 +26,7 @@ uint64_t __38__CSVTRePromptSELFLogger_sharedLogger__block_invoke()
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _voiceTriggerRePromptIsolatedStreamID = [MEMORY[0x1E696AFB0] UUID];
 

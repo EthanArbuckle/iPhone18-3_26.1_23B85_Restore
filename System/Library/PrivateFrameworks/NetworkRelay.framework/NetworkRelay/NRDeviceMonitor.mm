@@ -9,15 +9,15 @@
 - (BOOL)pluggedIn;
 - (NRDeviceIdentifier)deviceIdentifier;
 - (NRDeviceInfo)deviceInfo;
-- (NRDeviceMonitor)initWithDeviceIdentifier:(id)a3 delegate:(id)a4 queue:(id)a5;
+- (NRDeviceMonitor)initWithDeviceIdentifier:(id)identifier delegate:(id)delegate queue:(id)queue;
 - (NSString)proxyServiceInterfaceName;
 - (int)thermalPressureLevel;
 - (unsigned)linkSubtype;
 - (unsigned)linkType;
-- (void)checkInWithRetryCount:(uint64_t)a3;
+- (void)checkInWithRetryCount:(uint64_t)count;
 - (void)dealloc;
-- (void)setInternalProxySvcIntfName:(uint64_t)a1;
-- (void)updateStateFromResponse:(uint64_t)a1;
+- (void)setInternalProxySvcIntfName:(uint64_t)name;
+- (void)updateStateFromResponse:(uint64_t)response;
 @end
 
 @implementation NRDeviceMonitor
@@ -267,7 +267,7 @@
   if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_229, OS_LOG_TYPE_DEFAULT))
   {
     v3 = nrCopyLogObj_sNRLogObj_229;
-    v11 = [(NRDeviceMonitor *)self deviceIdentifier];
+    deviceIdentifier = [(NRDeviceMonitor *)self deviceIdentifier];
     _NRLogWithArgs(v3, 0, "%s%.30s:%-4d Dealloc %@ for %@", v4, v5, v6, v7, v8, "");
   }
 
@@ -287,13 +287,13 @@
   [(NRDeviceMonitor *)&v12 dealloc];
 }
 
-- (NRDeviceMonitor)initWithDeviceIdentifier:(id)a3 delegate:(id)a4 queue:(id)a5
+- (NRDeviceMonitor)initWithDeviceIdentifier:(id)identifier delegate:(id)delegate queue:(id)queue
 {
   location[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (!identifierCopy)
   {
     v40 = nrCopyLogObj_237();
     if (sNRCopyLogToStdErr == 1)
@@ -317,7 +317,7 @@
     goto LABEL_38;
   }
 
-  if (!v10)
+  if (!delegateCopy)
   {
     v41 = nrCopyLogObj_237();
     if (sNRCopyLogToStdErr == 1)
@@ -351,8 +351,8 @@ LABEL_38:
     _NRLogAbortWithPack(v70);
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = queueCopy;
+  if (!queueCopy)
   {
     v42 = nrCopyLogObj_237();
     if (sNRCopyLogToStdErr == 1)
@@ -412,9 +412,9 @@ LABEL_41:
     _NRLogAbortWithPack(v81);
   }
 
-  objc_storeStrong(&v13->_internalDeviceIdentifier, a3);
-  objc_storeWeak(&v14->_delegate, v10);
-  objc_storeStrong(&v14->_delegateQueue, a5);
+  objc_storeStrong(&v13->_internalDeviceIdentifier, identifier);
+  objc_storeWeak(&v14->_delegate, delegateCopy);
+  objc_storeStrong(&v14->_delegateQueue, queue);
   *&v14->_internalLinkType = 0;
   *&v14->_internalIsRegistered = 0;
   internalProxySvcIntfName = v14->_internalProxySvcIntfName;
@@ -562,12 +562,12 @@ LABEL_10:
 LABEL_24:
 }
 
-- (void)checkInWithRetryCount:(uint64_t)a3
+- (void)checkInWithRetryCount:(uint64_t)count
 {
   v53 = *MEMORY[0x277D85DE8];
   if (a2 < 6)
   {
-    if (!a1[9])
+    if (!self[9])
     {
       if (nrCopyLogObj_onceToken_227 != -1)
       {
@@ -592,10 +592,10 @@ LABEL_12:
     {
       v15 = v14;
       xpc_dictionary_set_uint64(v14, "Type", 0xAuLL);
-      v16 = a1[4];
-      v17 = [v16 nrDeviceIdentifier];
+      v16 = self[4];
+      nrDeviceIdentifier = [v16 nrDeviceIdentifier];
       v18 = v15;
-      v19 = v17;
+      v19 = nrDeviceIdentifier;
       v20 = v19;
       if (v19)
       {
@@ -605,9 +605,9 @@ LABEL_12:
         xpc_dictionary_set_uuid(v18, "DeviceIdentifier", uuid);
 LABEL_11:
 
-        objc_initWeak(uuid, a1);
-        v21 = a1[9];
-        v22 = a1[7];
+        objc_initWeak(uuid, self);
+        v21 = self[9];
+        v22 = self[7];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __41__NRDeviceMonitor_checkInWithRetryCount___block_invoke;
@@ -764,7 +764,7 @@ LABEL_10:
 LABEL_24:
 }
 
-- (void)updateStateFromResponse:(uint64_t)a1
+- (void)updateStateFromResponse:(uint64_t)response
 {
   v3 = a2;
   if (!v3)
@@ -791,21 +791,21 @@ LABEL_24:
     goto LABEL_154;
   }
 
-  os_unfair_lock_lock((a1 + 24));
-  v4.i32[0] = *(a1 + 9);
-  v4.i16[2] = *(a1 + 13);
+  os_unfair_lock_lock((response + 24));
+  v4.i32[0] = *(response + 9);
+  v4.i16[2] = *(response + 13);
   v213 = v4;
-  v211 = *(a1 + 15);
-  v219 = *(a1 + 17);
-  v220 = *(a1 + 18);
-  v224 = *(a1 + 40);
-  v5 = (a1 + 48);
-  v215 = *(a1 + 20);
-  v217 = *(a1 + 19);
-  v6 = *(a1 + 48);
+  v211 = *(response + 15);
+  v219 = *(response + 17);
+  v220 = *(response + 18);
+  v224 = *(response + 40);
+  v5 = (response + 48);
+  v215 = *(response + 20);
+  v217 = *(response + 19);
+  v6 = *(response + 48);
   v7 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsRegistered");
   p_inst_meths = &OBJC_PROTOCOL___NSCopying.inst_meths;
-  if (*(a1 + 9) != v7)
+  if (*(response + 9) != v7)
   {
     v14 = v7;
     if (nrCopyLogObj_onceToken_227 == -1)
@@ -828,19 +828,19 @@ LABEL_24:
     if (!os_log_type_enabled(nrCopyLogObj_sNRLogObj_229, OS_LOG_TYPE_INFO))
     {
 LABEL_7:
-      *(a1 + 9) = v14;
+      *(response + 9) = v14;
       goto LABEL_8;
     }
 
 LABEL_6:
-    v187 = *(a1 + 9);
+    v187 = *(response + 9);
     _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isRegistered: %d -> %d", v8, v9, v10, v11, v12, "");
     goto LABEL_7;
   }
 
 LABEL_8:
   v15 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsEnabled");
-  if (*(a1 + 10) == v15)
+  if (*(response + 10) == v15)
   {
     goto LABEL_14;
   }
@@ -851,7 +851,7 @@ LABEL_8:
     if (sNRCopyLogToStdErr)
     {
 LABEL_12:
-      v188 = *(a1 + 10);
+      v188 = *(response + 10);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isEnabled: %d -> %d", v16, v17, v18, v19, v20, "");
       goto LABEL_13;
     }
@@ -872,10 +872,10 @@ LABEL_12:
   }
 
 LABEL_13:
-  *(a1 + 10) = v21;
+  *(response + 10) = v21;
 LABEL_14:
   v22 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsNearby");
-  if (*(a1 + 11) == v22)
+  if (*(response + 11) == v22)
   {
     goto LABEL_20;
   }
@@ -886,7 +886,7 @@ LABEL_14:
     if (sNRCopyLogToStdErr)
     {
 LABEL_18:
-      v189 = *(a1 + 11);
+      v189 = *(response + 11);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isNearby: %d -> %d", v23, v24, v25, v26, v27, "");
       goto LABEL_19;
     }
@@ -907,10 +907,10 @@ LABEL_18:
   }
 
 LABEL_19:
-  *(a1 + 11) = v28;
+  *(response + 11) = v28;
 LABEL_20:
   v29 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsConnected");
-  if (*(a1 + 12) == v29)
+  if (*(response + 12) == v29)
   {
     goto LABEL_26;
   }
@@ -921,7 +921,7 @@ LABEL_20:
     if (sNRCopyLogToStdErr)
     {
 LABEL_24:
-      v190 = *(a1 + 12);
+      v190 = *(response + 12);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isConnected: %d -> %d", v30, v31, v32, v33, v34, "");
       goto LABEL_25;
     }
@@ -942,10 +942,10 @@ LABEL_24:
   }
 
 LABEL_25:
-  *(a1 + 12) = v35;
+  *(response + 12) = v35;
 LABEL_26:
   v36 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsCloudConnected");
-  if (*(a1 + 13) == v36)
+  if (*(response + 13) == v36)
   {
     goto LABEL_32;
   }
@@ -956,7 +956,7 @@ LABEL_26:
     if (sNRCopyLogToStdErr)
     {
 LABEL_30:
-      v191 = *(a1 + 13);
+      v191 = *(response + 13);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isCloudConnected: %d -> %d", v37, v38, v39, v40, v41, "");
       goto LABEL_31;
     }
@@ -977,10 +977,10 @@ LABEL_30:
   }
 
 LABEL_31:
-  *(a1 + 13) = v42;
+  *(response + 13) = v42;
 LABEL_32:
   v43 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsAsleep");
-  if (*(a1 + 14) == v43)
+  if (*(response + 14) == v43)
   {
     goto LABEL_38;
   }
@@ -991,7 +991,7 @@ LABEL_32:
     if (sNRCopyLogToStdErr)
     {
 LABEL_36:
-      v192 = *(a1 + 14);
+      v192 = *(response + 14);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isAsleep: %d -> %d", v44, v45, v46, v47, v48, "");
       goto LABEL_37;
     }
@@ -1012,10 +1012,10 @@ LABEL_36:
   }
 
 LABEL_37:
-  *(a1 + 14) = v49;
+  *(response + 14) = v49;
 LABEL_38:
   v50 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusIsClassCConnected");
-  if (*(a1 + 15) == v50)
+  if (*(response + 15) == v50)
   {
     goto LABEL_44;
   }
@@ -1026,7 +1026,7 @@ LABEL_38:
     if (sNRCopyLogToStdErr)
     {
 LABEL_42:
-      v193 = *(a1 + 15);
+      v193 = *(response + 15);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d isClassCConnected: %d -> %d", v51, v52, v53, v54, v55, "");
       goto LABEL_43;
     }
@@ -1047,10 +1047,10 @@ LABEL_42:
   }
 
 LABEL_43:
-  *(a1 + 15) = v56;
+  *(response + 15) = v56;
 LABEL_44:
   v57 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusHasUnpairedBluetooth");
-  if (*(a1 + 16) == v57)
+  if (*(response + 16) == v57)
   {
     goto LABEL_50;
   }
@@ -1061,7 +1061,7 @@ LABEL_44:
     if (sNRCopyLogToStdErr)
     {
 LABEL_48:
-      v194 = *(a1 + 16);
+      v194 = *(response + 16);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d hasUnpairedBluetooth: %d -> %d", v58, v59, v60, v61, v62, "");
       goto LABEL_49;
     }
@@ -1082,10 +1082,10 @@ LABEL_48:
   }
 
 LABEL_49:
-  *(a1 + 16) = v63;
+  *(response + 16) = v63;
 LABEL_50:
   uint64 = xpc_dictionary_get_uint64(v3, "DeviceMonitorStatusLinkType");
-  if (*(a1 + 17) == uint64)
+  if (*(response + 17) == uint64)
   {
     goto LABEL_56;
   }
@@ -1095,7 +1095,7 @@ LABEL_50:
     if (sNRCopyLogToStdErr)
     {
 LABEL_54:
-      v65 = *(a1 + 17);
+      v65 = *(response + 17);
       v66 = nrCopyLogObj_sNRLogObj_229;
       StringFromNRLinkType = createStringFromNRLinkType(v65);
       v198 = createStringFromNRLinkType(uint64);
@@ -1121,10 +1121,10 @@ LABEL_54:
   }
 
 LABEL_55:
-  *(a1 + 17) = uint64;
+  *(response + 17) = uint64;
 LABEL_56:
   v72 = xpc_dictionary_get_uint64(v3, "DeviceMonitorStatusLinkSubtype");
-  if (*(a1 + 18) == v72)
+  if (*(response + 18) == v72)
   {
     goto LABEL_62;
   }
@@ -1134,7 +1134,7 @@ LABEL_56:
     if (sNRCopyLogToStdErr)
     {
 LABEL_60:
-      v73 = *(a1 + 18);
+      v73 = *(response + 18);
       v74 = nrCopyLogObj_sNRLogObj_229;
       StringFromNRLinkSubtype = createStringFromNRLinkSubtype(v73);
       v199 = createStringFromNRLinkSubtype(v72);
@@ -1160,18 +1160,18 @@ LABEL_60:
   }
 
 LABEL_61:
-  *(a1 + 18) = v72;
+  *(response + 18) = v72;
 LABEL_62:
   string = xpc_dictionary_get_string(v3, "DeviceMonitorStatusProxySvcIntfName");
-  [(NRDeviceMonitor *)a1 setInternalProxySvcIntfName:?];
+  [(NRDeviceMonitor *)response setInternalProxySvcIntfName:?];
   if (string)
   {
     v81 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
-    [(NRDeviceMonitor *)a1 setInternalProxySvcIntfName:v81];
+    [(NRDeviceMonitor *)response setInternalProxySvcIntfName:v81];
   }
 
   v82 = xpc_dictionary_get_uint64(v3, "DeviceMonitorStatusThermalPressureLevel");
-  if (*(a1 + 20) != v82)
+  if (*(response + 20) != v82)
   {
     if (nrCopyLogObj_onceToken_227 == -1)
     {
@@ -1193,12 +1193,12 @@ LABEL_62:
     if (!os_log_type_enabled(nrCopyLogObj_sNRLogObj_229, OS_LOG_TYPE_INFO))
     {
 LABEL_101:
-      *(a1 + 20) = v82;
+      *(response + 20) = v82;
       goto LABEL_102;
     }
 
 LABEL_68:
-    v83 = *(a1 + 20);
+    v83 = *(response + 20);
     v89 = nrCopyLogObj_sNRLogObj_229;
     if (v83 > 29)
     {
@@ -1307,7 +1307,7 @@ LABEL_93:
 
 LABEL_102:
   v92 = xpc_dictionary_get_BOOL(v3, "DeviceMonitorStatusPluggedIn");
-  if (*(a1 + 19) != v92)
+  if (*(response + 19) != v92)
   {
     v98 = v92;
     if (nrCopyLogObj_onceToken_227 == -1)
@@ -1330,19 +1330,19 @@ LABEL_102:
     if (!os_log_type_enabled(nrCopyLogObj_sNRLogObj_229, OS_LOG_TYPE_INFO))
     {
 LABEL_107:
-      *(a1 + 19) = v98;
+      *(response + 19) = v98;
       goto LABEL_108;
     }
 
 LABEL_106:
-    v197 = *(a1 + 19);
+    v197 = *(response + 19);
     _NRLogWithArgs(nrCopyLogObj_sNRLogObj_229, 1, "%s%.30s:%-4d plugged in: %d -> %d", v93, v94, v95, v96, v97, "");
     goto LABEL_107;
   }
 
 LABEL_108:
   v223 = v6;
-  if ((*(a1 + 12) & 1) == 0 && *(a1 + 13) != 1)
+  if ((*(response + 12) & 1) == 0 && *(response + 13) != 1)
   {
     v110 = *v5;
     *v5 = 0;
@@ -1484,21 +1484,21 @@ LABEL_121:
   v109 = v220;
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong((a1 + 48), v108);
+    objc_storeStrong((response + 48), v108);
   }
 
 LABEL_123:
-  os_unfair_lock_unlock((a1 + 24));
-  v111.i32[0] = *(a1 + 9);
-  v111.i16[2] = *(a1 + 13);
-  v111.i8[6] = *(a1 + 15);
+  os_unfair_lock_unlock((response + 24));
+  v111.i32[0] = *(response + 9);
+  v111.i16[2] = *(response + 13);
+  v111.i8[6] = *(response + 15);
   v221 = v111;
-  v112 = v219 != *(a1 + 17);
-  v113 = v109 != *(a1 + 18);
-  v114 = v215 != *(a1 + 20);
-  v115 = v217 != *(a1 + 19);
+  v112 = v219 != *(response + 17);
+  v113 = v109 != *(response + 18);
+  v114 = v215 != *(response + 20);
+  v115 = v217 != *(response + 19);
   v116 = v224;
-  if (v224 | *(a1 + 40))
+  if (v224 | *(response + 40))
   {
     v117 = [v224 isEqualToString:?] ^ 1;
   }
@@ -1521,9 +1521,9 @@ LABEL_123:
     v118 = 0;
   }
 
-  v121 = *(a1 + 16);
+  v121 = *(response + 16);
   v222 = v3;
-  if (*(a1 + 8))
+  if (*(response + 8))
   {
     v122 = v213;
     *(v122.i16 + 1) = *(v213.i16 + 1);
@@ -1545,7 +1545,7 @@ LABEL_123:
   {
     v131 = 1;
     v113 = 1;
-    *(a1 + 8) = 1;
+    *(response + 8) = 1;
     v114 = 1;
     v115 = 1;
     LOBYTE(v117) = 1;
@@ -1582,49 +1582,49 @@ LABEL_123:
     goto LABEL_151;
   }
 
-  v133 = *(a1 + 17);
-  *(a1 + 9);
-  *(a1 + 10);
-  *(a1 + 11);
-  *(a1 + 12);
-  *(a1 + 13);
-  *(a1 + 15);
-  *(a1 + 16);
-  *(a1 + 14);
+  v133 = *(response + 17);
+  *(response + 9);
+  *(response + 10);
+  *(response + 11);
+  *(response + 12);
+  *(response + 13);
+  *(response + 15);
+  *(response + 16);
+  *(response + 14);
   v134 = p_inst_meths[63];
   v135 = createStringFromNRLinkType(v133);
-  v136 = createStringFromNRLinkSubtype(*(a1 + 18));
-  v137 = *(a1 + 20);
-  v138 = *(a1 + 40);
+  v136 = createStringFromNRLinkSubtype(*(response + 18));
+  v137 = *(response + 20);
+  v138 = *(response + 40);
   if (v137 > 29)
   {
     switch(v137)
     {
       case 0x1E:
-        v139 = @"Heavy";
+        v137 = @"Heavy";
         goto LABEL_150;
       case 0x28:
-        v139 = @"Trapping";
+        v137 = @"Trapping";
         goto LABEL_150;
       case 0x32:
-        v139 = @"Sleeping";
+        v137 = @"Sleeping";
         goto LABEL_150;
     }
 
 LABEL_147:
-    v139 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unknown(%d)", v137];
+    v137 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unknown(%d)", v137];
     goto LABEL_150;
   }
 
   if (!v137)
   {
-    v139 = @"Nominal";
+    v137 = @"Nominal";
     goto LABEL_150;
   }
 
   if (v137 == 10)
   {
-    v139 = @"Light";
+    v137 = @"Light";
     goto LABEL_150;
   }
 
@@ -1633,18 +1633,18 @@ LABEL_147:
     goto LABEL_147;
   }
 
-  v139 = @"Moderate";
+  v137 = @"Moderate";
 LABEL_150:
-  *(a1 + 19);
-  v200 = [a1 deviceInfo];
-  v201 = *(a1 + 32);
+  *(response + 19);
+  deviceInfo = [response deviceInfo];
+  v201 = *(response + 32);
   _NRLogWithArgs(v134, 0, "%s%.30s:%-4d Received %supdate %sregistered %sabled %snearby %sconnected %scloudConnected %sclassCConnected %shasUnpairedBluetooth %s %@(%@) prx %@ thermal %@ %spluggedIn deviceInfo(%@) for %@", v140, v141, v142, v143, v144, "");
 
   v116 = v224;
 LABEL_151:
   if (v132)
   {
-    v145 = *(a1 + 56);
+    v145 = *(response + 56);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     v146.i8[0] = v202;
@@ -1658,7 +1658,7 @@ LABEL_151:
     block[3] = &unk_27996AEC8;
     v147 = vand_s8(v146, 0x101010101010101);
     v228 = v147.i8[6];
-    block[4] = a1;
+    block[4] = response;
     v227 = v147.i16[2];
     v226 = v147.i32[0];
     v229 = v209;
@@ -1675,11 +1675,11 @@ LABEL_151:
 LABEL_154:
 }
 
-- (void)setInternalProxySvcIntfName:(uint64_t)a1
+- (void)setInternalProxySvcIntfName:(uint64_t)name
 {
   v4 = a2;
-  v6 = *(a1 + 40);
-  v5 = (a1 + 40);
+  v6 = *(name + 40);
+  v5 = (name + 40);
   v13 = v4;
   if (([v6 isEqualToString:?] & 1) == 0)
   {

@@ -2,9 +2,9 @@
 + (id)allowedOutputClasses;
 + (id)animatableContentTypes;
 - (double)_maximumDimension;
-- (id)_contentsFromCGImageSource:(CGImageSource *)a3 context:(id)a4 scale:(double)a5;
-- (id)transformedContentsFromData:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5;
+- (id)_contentsFromCGImageSource:(CGImageSource *)source context:(id)context scale:(double)scale;
+- (id)transformedContentsFromData:(id)data context:(id)context error:(id *)error;
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error;
 @end
 
 @implementation QLImageItemTransformer
@@ -16,14 +16,14 @@
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error
 {
-  v7 = a4;
-  v8 = CGImageSourceCreateWithURL(a3, 0);
+  contextCopy = context;
+  v8 = CGImageSourceCreateWithURL(l, 0);
   if (v8)
   {
     v9 = v8;
-    v10 = [(QLImageItemTransformer *)self _contentsFromCGImageSource:v8 context:v7 scale:1.0];
+    v10 = [(QLImageItemTransformer *)self _contentsFromCGImageSource:v8 context:contextCopy scale:1.0];
     CFRelease(v9);
   }
 
@@ -35,21 +35,21 @@
   return v10;
 }
 
-- (id)transformedContentsFromData:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromData:(id)data context:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 bitmapFormat];
+  dataCopy = data;
+  contextCopy = context;
+  bitmapFormat = [contextCopy bitmapFormat];
 
-  if (v9)
+  if (bitmapFormat)
   {
-    v10 = [v8 bitmapFormat];
-    v11 = [v10 colorSpace];
-    if (v11)
+    bitmapFormat2 = [contextCopy bitmapFormat];
+    colorSpace = [bitmapFormat2 colorSpace];
+    if (colorSpace)
     {
-      v12 = v11;
-      v13 = CGDataProviderCreateWithCFData(v7);
-      v14 = CGImageCreate([v10 width], objc_msgSend(v10, "height"), objc_msgSend(v10, "bitsPerComponent"), objc_msgSend(v10, "bitsPerPixel"), objc_msgSend(v10, "bytesPerRow"), v12, objc_msgSend(v10, "bitmapInfo"), v13, 0, 0, kCGRenderingIntentDefault);
+      v12 = colorSpace;
+      v13 = CGDataProviderCreateWithCFData(dataCopy);
+      v14 = CGImageCreate([bitmapFormat2 width], objc_msgSend(bitmapFormat2, "height"), objc_msgSend(bitmapFormat2, "bitsPerComponent"), objc_msgSend(bitmapFormat2, "bitsPerPixel"), objc_msgSend(bitmapFormat2, "bytesPerRow"), v12, objc_msgSend(bitmapFormat2, "bitmapInfo"), v13, 0, 0, kCGRenderingIntentDefault);
       CFRelease(v13);
     }
 
@@ -64,11 +64,11 @@
 
   else
   {
-    v15 = CGImageSourceCreateWithData(v7, 0);
+    v15 = CGImageSourceCreateWithData(dataCopy, 0);
     if (v15)
     {
       v16 = v15;
-      v17 = [(QLImageItemTransformer *)self _contentsFromCGImageSource:v15 context:v8 scale:1.0];
+      v17 = [(QLImageItemTransformer *)self _contentsFromCGImageSource:v15 context:contextCopy scale:1.0];
       CFRelease(v16);
     }
 
@@ -81,26 +81,26 @@
   return v17;
 }
 
-- (id)_contentsFromCGImageSource:(CGImageSource *)a3 context:(id)a4 scale:(double)a5
+- (id)_contentsFromCGImageSource:(CGImageSource *)source context:(id)context scale:(double)scale
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  Count = CGImageSourceGetCount(a3);
-  v10 = [v8 contentType];
+  contextCopy = context;
+  Count = CGImageSourceGetCount(source);
+  contentType = [contextCopy contentType];
 
-  if (v10)
+  if (contentType)
   {
-    v10 = MEMORY[0x277CE1CB8];
-    v12 = [v8 contentType];
-    v13 = [v10 typeWithIdentifier:v12];
+    contentType = MEMORY[0x277CE1CB8];
+    contentType2 = [contextCopy contentType];
+    v13 = [contentType typeWithIdentifier:contentType2];
 
-    v14 = [objc_opt_class() animatableContentTypes];
-    LODWORD(v10) = _QLContentTypeConformsToContentTypeInSet();
+    animatableContentTypes = [objc_opt_class() animatableContentTypes];
+    LODWORD(contentType) = _QLContentTypeConformsToContentTypeInSet();
   }
 
-  if (Count >= 2 && (Helper_x8__OBJC_CLASS___PFImageMetadata = gotLoadHelper_x8__OBJC_CLASS___PFImageMetadata(v11), (v10 & ([*(v16 + 1032) imageSourceIsMonoski:{a3, Helper_x8__OBJC_CLASS___PFImageMetadata}] ^ 1)) == 1))
+  if (Count >= 2 && (Helper_x8__OBJC_CLASS___PFImageMetadata = gotLoadHelper_x8__OBJC_CLASS___PFImageMetadata(v11), (contentType & ([*(v16 + 1032) imageSourceIsMonoski:{source, Helper_x8__OBJC_CLASS___PFImageMetadata}] ^ 1)) == 1))
   {
-    v17 = [[QLAnimatedImage alloc] initWithImageSource:a3];
+    v17 = [[QLAnimatedImage alloc] initWithImageSource:source];
   }
 
   else
@@ -108,9 +108,9 @@
     v56 = *MEMORY[0x277CD3648];
     v18 = MEMORY[0x277CBEC38];
     v57[0] = MEMORY[0x277CBEC38];
-    v19 = 1;
+    unsignedIntValue = 1;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
-    v21 = CGImageSourceCopyPropertiesAtIndex(a3, 0, v20);
+    v21 = CGImageSourceCopyPropertiesAtIndex(source, 0, v20);
     v22 = [(__CFDictionary *)v21 objectForKeyedSubscript:*MEMORY[0x277CD3450]];
     [v22 floatValue];
     v24 = v23;
@@ -123,7 +123,7 @@
     v29 = v28;
     if (v28)
     {
-      v19 = [v28 unsignedIntValue];
+      unsignedIntValue = [v28 unsignedIntValue];
     }
 
     if (v24 >= v27)
@@ -139,22 +139,22 @@
     v31 = v30;
     [(QLImageItemTransformer *)self _maximumDimension];
     v33 = v32;
-    v34 = [v8 viewDynamicRange];
+    viewDynamicRange = [contextCopy viewDynamicRange];
     if (v33 <= v31 * 0.5)
     {
       [(QLImageItemTransformer *)self _maximumDimension];
       v44 = QLScaledPlatformImageFromImageSource();
       v45 = MEMORY[0x277D755B8];
-      v46 = [v44 CGImage];
+      cGImage = [v44 CGImage];
       [v44 scale];
-      v17 = [v45 imageWithCGImage:v46 scale:UIImageOrientationFromCGImageOrientation(objc_msgSend(v44 orientation:{"orientation")), v47}];
+      v17 = [v45 imageWithCGImage:cGImage scale:UIImageOrientationFromCGImageOrientation(objc_msgSend(v44 orientation:{"orientation")), v47}];
 
       v48 = v20;
     }
 
     else
     {
-      v35 = v34;
+      v35 = viewDynamicRange;
       v36 = _os_feature_enabled_impl();
       v37 = *MEMORY[0x277CD3678];
       if (v36 && v35)
@@ -185,8 +185,8 @@
 
       v48 = [v40 dictionaryWithObjects:v41 forKeys:v42 count:v43];
 
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, v48);
-      v17 = [MEMORY[0x277D755B8] imageWithCGImage:ImageAtIndex scale:UIImageOrientationFromCGImageOrientation(v19) orientation:a5];
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, v48);
+      v17 = [MEMORY[0x277D755B8] imageWithCGImage:ImageAtIndex scale:UIImageOrientationFromCGImageOrientation(unsignedIntValue) orientation:scale];
       if (ImageAtIndex)
       {
         CFRelease(ImageAtIndex);
@@ -201,13 +201,13 @@
 
 - (double)_maximumDimension
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v9 = v8;
 
   if (v4 <= v6)

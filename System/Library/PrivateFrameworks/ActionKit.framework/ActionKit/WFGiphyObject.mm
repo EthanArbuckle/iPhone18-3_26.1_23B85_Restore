@@ -2,7 +2,7 @@
 + (id)JSONKeyPathsByPropertyKey;
 + (id)allowedSecureCodingClassesByPropertyKey;
 + (id)imagesJSONTransformer;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
 - (NSString)wfName;
 - (id)originalImage;
 - (id)smallestImage;
@@ -11,16 +11,16 @@
 
 @implementation WFGiphyObject
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  representationCopy = representation;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = representationCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -68,7 +68,7 @@
     while (v14);
   }
 
-  v15 = [MEMORY[0x277D7C070] modelOfClass:a1 fromJSONDictionary:v4 error:0];
+  v15 = [MEMORY[0x277D7C070] modelOfClass:self fromJSONDictionary:v4 error:0];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -199,7 +199,7 @@ id __38__WFGiphyObject_imagesJSONTransformer__block_invoke_2(uint64_t a1, void *
 
 + (id)JSONKeyPathsByPropertyKey
 {
-  v2 = [MEMORY[0x277CBEAC0] mtl_identityPropertyMapWithModel:a1];
+  v2 = [MEMORY[0x277CBEAC0] mtl_identityPropertyMapWithModel:self];
   v3 = [v2 mutableCopy];
 
   [v3 setObject:@"id" forKey:@"objectId"];
@@ -210,7 +210,7 @@ id __38__WFGiphyObject_imagesJSONTransformer__block_invoke_2(uint64_t a1, void *
 + (id)allowedSecureCodingClassesByPropertyKey
 {
   v9[3] = *MEMORY[0x277D85DE8];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___WFGiphyObject;
   v2 = objc_msgSendSuper2(&v8, sel_allowedSecureCodingClassesByPropertyKey);
   v3 = [v2 mutableCopy];
@@ -274,8 +274,8 @@ id __38__WFGiphyObject_imagesJSONTransformer__block_invoke_2(uint64_t a1, void *
 
 - (NSString)wfName
 {
-  v3 = [(WFGiphyObject *)self caption];
-  if ([v3 length])
+  caption = [(WFGiphyObject *)self caption];
+  if ([caption length])
   {
     [(WFGiphyObject *)self caption];
   }
@@ -292,50 +292,50 @@ id __38__WFGiphyObject_imagesJSONTransformer__block_invoke_2(uint64_t a1, void *
 - (id)smallestImage
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WFGiphyObject *)self images];
-  v3 = [v2 allValues];
+  images = [(WFGiphyObject *)self images];
+  allValues = [images allValues];
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"fileSize > 0"];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [allValues filteredArrayUsingPredicate:v4];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"fileSize" ascending:1];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v8 = [v5 sortedArrayUsingDescriptors:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return firstObject;
 }
 
 - (id)originalImage
 {
-  v3 = [(WFGiphyObject *)self images];
-  v4 = [v3 objectForKey:@"fixed_height"];
+  images = [(WFGiphyObject *)self images];
+  v4 = [images objectForKey:@"fixed_height"];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    firstObject = v4;
   }
 
   else
   {
-    v7 = [(WFGiphyObject *)self images];
-    v8 = [v7 objectForKey:@"fixed_height_small"];
+    images2 = [(WFGiphyObject *)self images];
+    v8 = [images2 objectForKey:@"fixed_height_small"];
     v9 = v8;
     if (v8)
     {
-      v6 = v8;
+      firstObject = v8;
     }
 
     else
     {
-      v10 = [(WFGiphyObject *)self images];
-      v11 = [v10 allValues];
-      v6 = [v11 firstObject];
+      images3 = [(WFGiphyObject *)self images];
+      allValues = [images3 allValues];
+      firstObject = [allValues firstObject];
     }
   }
 
-  return v6;
+  return firstObject;
 }
 
 @end

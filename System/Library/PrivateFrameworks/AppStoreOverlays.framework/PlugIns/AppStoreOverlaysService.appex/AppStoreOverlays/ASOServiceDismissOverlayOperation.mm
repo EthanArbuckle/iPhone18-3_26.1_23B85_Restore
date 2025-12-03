@@ -1,5 +1,5 @@
 @interface ASOServiceDismissOverlayOperation
-- (ASOServiceDismissOverlayOperation)initWithQueue:(id)a3;
+- (ASOServiceDismissOverlayOperation)initWithQueue:(id)queue;
 - (ASOServicePresentationQueue)queue;
 - (void)finishExecuting;
 - (void)start;
@@ -8,16 +8,16 @@
 
 @implementation ASOServiceDismissOverlayOperation
 
-- (ASOServiceDismissOverlayOperation)initWithQueue:(id)a3
+- (ASOServiceDismissOverlayOperation)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = ASOServiceDismissOverlayOperation;
   v5 = [(ASOServiceDismissOverlayOperation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_queue, v4);
+    objc_storeWeak(&v5->_queue, queueCopy);
   }
 
   return v6;
@@ -34,10 +34,10 @@
 
   else
   {
-    v3 = [(ASOServiceDismissOverlayOperation *)self queue];
-    v4 = [v3 delegate];
-    v5 = [(ASOServiceDismissOverlayOperation *)self queue];
-    v6 = [v4 presentationQueueDismissOverlay:v5];
+    queue = [(ASOServiceDismissOverlayOperation *)self queue];
+    delegate = [queue delegate];
+    queue2 = [(ASOServiceDismissOverlayOperation *)self queue];
+    v6 = [delegate presentationQueueDismissOverlay:queue2];
 
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;

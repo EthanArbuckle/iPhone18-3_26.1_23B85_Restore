@@ -1,22 +1,22 @@
 @interface CMAmbientPressureData
-- (CMAmbientPressureData)initWithCoder:(id)a3;
-- (CMAmbientPressureData)initWithPressure:(id)a3 andTimestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMAmbientPressureData)initWithCoder:(id)coder;
+- (CMAmbientPressureData)initWithPressure:(id)pressure andTimestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3;
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMAmbientPressureData
 
-- (CMAmbientPressureData)initWithPressure:(id)a3 andTimestamp:(double)a4
+- (CMAmbientPressureData)initWithPressure:(id)pressure andTimestamp:(double)timestamp
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = pressure.var1;
+  var0 = pressure.var0;
   v18.receiver = self;
   v18.super_class = CMAmbientPressureData;
-  v6 = [(CMLogItem *)&v18 initWithTimestamp:a4];
+  v6 = [(CMLogItem *)&v18 initWithTimestamp:timestamp];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E696AD28]);
@@ -30,7 +30,7 @@
   return v6;
 }
 
-- (CMAmbientPressureData)initWithCoder:(id)a3
+- (CMAmbientPressureData)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CMAmbientPressureData;
@@ -38,23 +38,23 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_pressure = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMAmbientPressureCodingKeyPressure");
+    v4->_pressure = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMAmbientPressureCodingKeyPressure");
     v7 = objc_opt_class();
-    v4->_temperature = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMAmbientPressureCodingKeyTemperature");
+    v4->_temperature = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMAmbientPressureCodingKeyTemperature");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = CMAmbientPressureData;
   [(CMLogItem *)&v13 encodeWithCoder:?];
   v7 = objc_msgSend_pressure(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(a3, v8, v7, @"kCMAmbientPressureCodingKeyPressure");
+  objc_msgSend_encodeObject_forKey_(coder, v8, v7, @"kCMAmbientPressureCodingKeyPressure");
   v11 = objc_msgSend_temperature(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(a3, v12, v11, @"kCMAmbientPressureCodingKeyTemperature");
+  objc_msgSend_encodeObject_forKey_(coder, v12, v11, @"kCMAmbientPressureCodingKeyTemperature");
 }
 
 - (void)dealloc
@@ -64,7 +64,7 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = CMAmbientPressureData;
@@ -72,9 +72,9 @@
   if (v7)
   {
     v8 = objc_msgSend_pressure(self, v5, v6);
-    v7[2] = objc_msgSend_copyWithZone_(v8, v9, a3);
+    v7[2] = objc_msgSend_copyWithZone_(v8, v9, zone);
     v12 = objc_msgSend_temperature(self, v10, v11);
-    v7[3] = objc_msgSend_copyWithZone_(v12, v13, a3);
+    v7[3] = objc_msgSend_copyWithZone_(v12, v13, zone);
   }
 
   return v7;
@@ -94,9 +94,9 @@
   return objc_msgSend_stringWithFormat_(v4, v15, @"Pressure %@ Temperature %@ @ %f", v9, v14, v16);
 }
 
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream
 {
-  v5 = objc_msgSend_pressure(self, a2, a3);
+  v5 = objc_msgSend_pressure(self, a2, stream);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
   v12 = objc_msgSend_temperature(self, v10, v11);
@@ -109,7 +109,7 @@
     return result;
   }
 
-  return MEMORY[0x1EEE66B58](a3, sel_write_maxLength_, byte_1EAFE38D4);
+  return MEMORY[0x1EEE66B58](stream, sel_write_maxLength_, byte_1EAFE38D4);
 }
 
 @end

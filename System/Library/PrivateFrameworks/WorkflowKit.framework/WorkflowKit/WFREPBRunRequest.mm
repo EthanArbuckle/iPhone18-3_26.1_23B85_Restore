@@ -1,31 +1,31 @@
 @interface WFREPBRunRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPayloadType:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (int)StringAsPayloadType:(id)type;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBRunRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_payloadType = *(a3 + 4);
-  if (*(a3 + 1))
+  self->_payloadType = *(from + 4);
+  if (*(from + 1))
   {
     [(WFREPBRunRequest *)self setPayload:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_payloadType == *(v4 + 4))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_payloadType == *(equalCopy + 4))
   {
     payload = self->_payload;
-    if (payload | v4[1])
+    if (payload | equalCopy[1])
     {
       v6 = [(NSData *)payload isEqual:?];
     }
@@ -44,22 +44,22 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_payloadType;
-  v6 = [(NSData *)self->_payload copyWithZone:a3];
+  v6 = [(NSData *)self->_payload copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   payloadType = self->_payloadType;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteInt32Field();
   if (!self->_payload)
   {
@@ -71,7 +71,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   payloadType = self->_payloadType;
   if (payloadType == 1)
   {
@@ -88,15 +88,15 @@
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_payloadType];
   }
 
-  [v3 setObject:v5 forKey:@"payloadType"];
+  [dictionary setObject:v5 forKey:@"payloadType"];
 
   payload = self->_payload;
   if (payload)
   {
-    [v3 setObject:payload forKey:@"payload"];
+    [dictionary setObject:payload forKey:@"payload"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -105,19 +105,19 @@
   v8.receiver = self;
   v8.super_class = WFREPBRunRequest;
   v4 = [(WFREPBRunRequest *)&v8 description];
-  v5 = [(WFREPBRunRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBRunRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsPayloadType:(id)a3
+- (int)StringAsPayloadType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"SingleActionExecution"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"SingleActionExecution"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"WorkflowExecution"])
+    if ([typeCopy isEqualToString:@"WorkflowExecution"])
     {
       v4 = 2;
     }

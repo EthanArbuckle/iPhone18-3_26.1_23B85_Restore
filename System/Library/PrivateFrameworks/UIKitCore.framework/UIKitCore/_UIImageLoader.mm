@@ -1,40 +1,40 @@
 @interface _UIImageLoader
-+ (id)_imageLoaderWithDataFromItemProvider:(id)a3 typeIdentifier:(id)a4;
-+ (id)_imageLoaderWithLoadingQueue:(id)a3 handler:(id)a4;
-+ (id)_imageLoaderWithURLRequest:(id)a3 session:(id)a4;
++ (id)_imageLoaderWithDataFromItemProvider:(id)provider typeIdentifier:(id)identifier;
++ (id)_imageLoaderWithLoadingQueue:(id)queue handler:(id)handler;
++ (id)_imageLoaderWithURLRequest:(id)request session:(id)session;
 - (NSError)_error;
 - (UIImage)_image;
 - (_UIImageLoader)init;
 - (void)_cancel;
-- (void)_loadImageWithCompletionQueue:(id)a3 handler:(id)a4;
-- (void)_really_loadImage:(id)a3;
+- (void)_loadImageWithCompletionQueue:(id)queue handler:(id)handler;
+- (void)_really_loadImage:(id)image;
 @end
 
 @implementation _UIImageLoader
 
-+ (id)_imageLoaderWithLoadingQueue:(id)a3 handler:(id)a4
++ (id)_imageLoaderWithLoadingQueue:(id)queue handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_UILoadingHandlerImageLoader alloc] initWithLoadingQueue:v6 handler:v5];
+  handlerCopy = handler;
+  queueCopy = queue;
+  v7 = [[_UILoadingHandlerImageLoader alloc] initWithLoadingQueue:queueCopy handler:handlerCopy];
 
   return v7;
 }
 
-+ (id)_imageLoaderWithURLRequest:(id)a3 session:(id)a4
++ (id)_imageLoaderWithURLRequest:(id)request session:(id)session
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_UINSURLRequestImageLoader alloc] initWithURLRequest:v6 session:v5];
+  sessionCopy = session;
+  requestCopy = request;
+  v7 = [[_UINSURLRequestImageLoader alloc] initWithURLRequest:requestCopy session:sessionCopy];
 
   return v7;
 }
 
-+ (id)_imageLoaderWithDataFromItemProvider:(id)a3 typeIdentifier:(id)a4
++ (id)_imageLoaderWithDataFromItemProvider:(id)provider typeIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_UINSItemProviderImageLoader alloc] initWithItemProvider:v6 typeIdentifier:v5];
+  identifierCopy = identifier;
+  providerCopy = provider;
+  v7 = [[_UINSItemProviderImageLoader alloc] initWithItemProvider:providerCopy typeIdentifier:identifierCopy];
 
   return v7;
 }
@@ -81,30 +81,30 @@
   }
 }
 
-- (void)_loadImageWithCompletionQueue:(id)a3 handler:(id)a4
+- (void)_loadImageWithCompletionQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (atomic_exchange(&self->_started._Value, 1u))
   {
     os_unfair_lock_lock(&self->_trampolineLock);
-    v8 = self;
-    v9 = v6;
-    v10 = v7;
+    selfCopy = self;
+    v9 = queueCopy;
+    v10 = handlerCopy;
     os_unfair_lock_assert_owner(&self->_trampolineLock);
-    if (atomic_load_explicit(&v8->_finished, memory_order_acquire))
+    if (atomic_load_explicit(&selfCopy->_finished, memory_order_acquire))
     {
       dispatch_async(v9, v10);
     }
 
     else
     {
-      v11 = v8->_completionTrampolines;
+      v11 = selfCopy->_completionTrampolines;
       if (!v11)
       {
         v11 = objc_opt_new();
-        completionTrampolines = v8->_completionTrampolines;
-        v8->_completionTrampolines = v11;
+        completionTrampolines = selfCopy->_completionTrampolines;
+        selfCopy->_completionTrampolines = v11;
       }
 
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -127,8 +127,8 @@
     v14[2] = __56___UIImageLoader__loadImageWithCompletionQueue_handler___block_invoke;
     v14[3] = &unk_1E70FCE28;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = queueCopy;
+    v16 = handlerCopy;
     [(_UIImageLoader *)self _really_loadImage:v14];
   }
 }
@@ -157,7 +157,7 @@
   os_unfair_lock_unlock(&self->_trampolineLock);
 }
 
-- (void)_really_loadImage:(id)a3
+- (void)_really_loadImage:(id)image
 {
   objc_opt_class();
 

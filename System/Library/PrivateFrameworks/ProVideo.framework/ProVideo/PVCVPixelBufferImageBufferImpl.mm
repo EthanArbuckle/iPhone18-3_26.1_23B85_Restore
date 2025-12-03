@@ -1,24 +1,24 @@
 @interface PVCVPixelBufferImageBufferImpl
 - (CGImage)cgImage;
 - (CGSize)size;
-- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)a3;
-- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)a3;
-- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)a3 withSourceColorSpace:(id)a4;
-- (PVCVPixelBufferImageBufferImpl)initWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)a3;
+- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)space;
+- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)buffer;
+- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)buffer withSourceColorSpace:(id)space;
+- (PVCVPixelBufferImageBufferImpl)initWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)buffer;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
 
 @implementation PVCVPixelBufferImageBufferImpl
 
-- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)a3
+- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)buffer
 {
   v9.receiver = self;
   v9.super_class = PVCVPixelBufferImageBufferImpl;
   v4 = [(PVCVPixelBufferImageBufferImpl *)&v9 init];
   if (v4)
   {
-    HGCVPixelBuffer::create(a3, &v8);
+    HGCVPixelBuffer::create(buffer, &v8);
     m_Obj = v4->_pixelBuffer.m_Obj;
     v6 = v8;
     if (m_Obj == v8)
@@ -44,7 +44,7 @@
   return v4;
 }
 
-- (PVCVPixelBufferImageBufferImpl)initWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)a3
+- (PVCVPixelBufferImageBufferImpl)initWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)buffer
 {
   v9.receiver = self;
   v9.super_class = PVCVPixelBufferImageBufferImpl;
@@ -53,13 +53,13 @@
   if (v4)
   {
     m_Obj = v4->_pixelBuffer.m_Obj;
-    v7 = *a3.m_Obj;
-    if (m_Obj != *a3.m_Obj)
+    v7 = *buffer.m_Obj;
+    if (m_Obj != *buffer.m_Obj)
     {
       if (m_Obj)
       {
         (*(*m_Obj + 24))(v5->_pixelBuffer.m_Obj);
-        v7 = *a3.m_Obj;
+        v7 = *buffer.m_Obj;
       }
 
       v5->_pixelBuffer.m_Obj = v7;
@@ -73,15 +73,15 @@
   return v5;
 }
 
-- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)a3 withSourceColorSpace:(id)a4
+- (PVCVPixelBufferImageBufferImpl)initWithCVPixelBuffer:(__CVBuffer *)buffer withSourceColorSpace:(id)space
 {
-  v7 = a4;
+  spaceCopy = space;
   v13.receiver = self;
   v13.super_class = PVCVPixelBufferImageBufferImpl;
   v8 = [(PVCVPixelBufferImageBufferImpl *)&v13 init];
   if (v8)
   {
-    HGCVPixelBuffer::create(a3, &v12);
+    HGCVPixelBuffer::create(buffer, &v12);
     m_Obj = v8->_pixelBuffer.m_Obj;
     v10 = v12;
     if (m_Obj == v12)
@@ -103,7 +103,7 @@
       v8->_pixelBuffer.m_Obj = v10;
     }
 
-    objc_storeStrong(&v8->_sourceColorSpace, a4);
+    objc_storeStrong(&v8->_sourceColorSpace, space);
   }
 
   return v8;
@@ -210,14 +210,14 @@ LABEL_13:
   return generatedCGImage;
 }
 
-- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)a3
+- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)space
 {
   v5 = v3;
-  v6 = a3;
-  v7 = v6;
+  spaceCopy = space;
+  v7 = spaceCopy;
   if (self->_pixelBuffer.m_Obj)
   {
-    if ([v6 isProResLogColorSpace])
+    if ([spaceCopy isProResLogColorSpace])
     {
       NSLog(&cfstr_ProResLogAsAnO.isa);
     }

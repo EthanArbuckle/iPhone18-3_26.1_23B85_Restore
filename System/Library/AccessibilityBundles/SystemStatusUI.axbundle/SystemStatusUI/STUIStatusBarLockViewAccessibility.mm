@@ -1,6 +1,6 @@
 @interface STUIStatusBarLockViewAccessibility
 - (unint64_t)accessibilityTraits;
-- (void)animateUnlockWithCompletionBlock:(id)a3;
+- (void)animateUnlockWithCompletionBlock:(id)block;
 @end
 
 @implementation STUIStatusBarLockViewAccessibility
@@ -12,17 +12,17 @@
   return *MEMORY[0x29EDC7580] | [(STUIStatusBarLockViewAccessibility *)&v3 accessibilityTraits]| *MEMORY[0x29EDC74F8];
 }
 
-- (void)animateUnlockWithCompletionBlock:(id)a3
+- (void)animateUnlockWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __71__STUIStatusBarLockViewAccessibility_animateUnlockWithCompletionBlock___block_invoke;
   v7[3] = &unk_29F306EC0;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = STUIStatusBarLockViewAccessibility;
-  v5 = v4;
+  v5 = blockCopy;
   [(STUIStatusBarLockViewAccessibility *)&v6 animateUnlockWithCompletionBlock:v7];
 }
 

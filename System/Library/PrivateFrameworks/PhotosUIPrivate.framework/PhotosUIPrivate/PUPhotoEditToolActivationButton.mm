@@ -1,103 +1,103 @@
 @interface PUPhotoEditToolActivationButton
-+ (id)buttonWithTitle:(id)a3;
++ (id)buttonWithTitle:(id)title;
 - (UIButtonConfiguration)selectedConfiguration;
 - (UIButtonConfiguration)unselectedConfiguration;
 - (id)baseConfiguration;
-- (id)imageConfigurationForSelectedState:(BOOL)a3;
+- (id)imageConfigurationForSelectedState:(BOOL)state;
 - (id)selectedTintedGlassConfiguration;
-- (void)buttonTouchUpAction:(id)a3;
-- (void)setOverrideButtonConfiguration:(id)a3;
-- (void)setSelectedGlyphName:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUnselectedGlyphName:(id)a3;
+- (void)buttonTouchUpAction:(id)action;
+- (void)setOverrideButtonConfiguration:(id)configuration;
+- (void)setSelectedGlyphName:(id)name;
+- (void)setTitle:(id)title;
+- (void)setUnselectedGlyphName:(id)name;
 - (void)updateConfiguration;
 @end
 
 @implementation PUPhotoEditToolActivationButton
 
-- (void)setOverrideButtonConfiguration:(id)a3
+- (void)setOverrideButtonConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_overrideButtonConfiguration, a3);
+  objc_storeStrong(&self->_overrideButtonConfiguration, configuration);
 
   [(PUPhotoEditToolActivationButton *)self setNeedsUpdateConfiguration];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
 
   [(PUPhotoEditToolActivationButton *)self setNeedsUpdateConfiguration];
 }
 
-- (void)setUnselectedGlyphName:(id)a3
+- (void)setUnselectedGlyphName:(id)name
 {
-  objc_storeStrong(&self->_unselectedGlyphName, a3);
+  objc_storeStrong(&self->_unselectedGlyphName, name);
 
   [(PUPhotoEditToolActivationButton *)self setNeedsUpdateConfiguration];
 }
 
-- (void)setSelectedGlyphName:(id)a3
+- (void)setSelectedGlyphName:(id)name
 {
-  objc_storeStrong(&self->_selectedGlyphName, a3);
+  objc_storeStrong(&self->_selectedGlyphName, name);
 
   [(PUPhotoEditToolActivationButton *)self setNeedsUpdateConfiguration];
 }
 
-- (void)buttonTouchUpAction:(id)a3
+- (void)buttonTouchUpAction:(id)action
 {
-  v4 = [(PUPhotoEditToolActivationButton *)self isSelectedBlock];
+  isSelectedBlock = [(PUPhotoEditToolActivationButton *)self isSelectedBlock];
 
-  if (!v4)
+  if (!isSelectedBlock)
   {
     [(PUPhotoEditToolActivationButton *)self setSelected:[(PUPhotoEditToolActivationButton *)self isSelected]^ 1];
   }
 
-  v5 = [(PUPhotoEditToolActivationButton *)self actionBlock];
+  actionBlock = [(PUPhotoEditToolActivationButton *)self actionBlock];
 
-  if (v5)
+  if (actionBlock)
   {
-    v6 = [(PUPhotoEditToolActivationButton *)self actionBlock];
-    (v6)[2](v6, self);
+    actionBlock2 = [(PUPhotoEditToolActivationButton *)self actionBlock];
+    (actionBlock2)[2](actionBlock2, self);
   }
 
-  v7 = [(PUPhotoEditToolActivationButton *)self isSelectedBlock];
+  isSelectedBlock2 = [(PUPhotoEditToolActivationButton *)self isSelectedBlock];
 
-  if (v7)
+  if (isSelectedBlock2)
   {
-    v8 = [(PUPhotoEditToolActivationButton *)self isSelectedBlock];
-    [(PUPhotoEditToolActivationButton *)self setSelected:v8[2](v8, self)];
+    isSelectedBlock3 = [(PUPhotoEditToolActivationButton *)self isSelectedBlock];
+    [(PUPhotoEditToolActivationButton *)self setSelected:isSelectedBlock3[2](isSelectedBlock3, self)];
   }
 }
 
 - (void)updateConfiguration
 {
   v3 = MEMORY[0x1B8C6D660](self, a2);
-  v4 = [(PUPhotoEditToolActivationButton *)self isSelected];
+  isSelected = [(PUPhotoEditToolActivationButton *)self isSelected];
   if (v3)
   {
-    if (v4)
+    if (isSelected)
     {
-      v5 = [(PUPhotoEditToolActivationButton *)self selectedTintedGlassConfiguration];
+      selectedTintedGlassConfiguration = [(PUPhotoEditToolActivationButton *)self selectedTintedGlassConfiguration];
       goto LABEL_7;
     }
   }
 
-  else if (v4)
+  else if (isSelected)
   {
-    v5 = [(PUPhotoEditToolActivationButton *)self selectedConfiguration];
+    selectedTintedGlassConfiguration = [(PUPhotoEditToolActivationButton *)self selectedConfiguration];
     goto LABEL_7;
   }
 
-  v5 = [(PUPhotoEditToolActivationButton *)self unselectedConfiguration];
+  selectedTintedGlassConfiguration = [(PUPhotoEditToolActivationButton *)self unselectedConfiguration];
 LABEL_7:
-  v9 = v5;
-  v6 = [(PUPhotoEditToolActivationButton *)self overrideButtonConfiguration];
+  v9 = selectedTintedGlassConfiguration;
+  overrideButtonConfiguration = [(PUPhotoEditToolActivationButton *)self overrideButtonConfiguration];
 
-  if (v6)
+  if (overrideButtonConfiguration)
   {
-    v7 = [(PUPhotoEditToolActivationButton *)self overrideButtonConfiguration];
+    overrideButtonConfiguration2 = [(PUPhotoEditToolActivationButton *)self overrideButtonConfiguration];
 
-    v8 = v7;
+    v8 = overrideButtonConfiguration2;
   }
 
   else
@@ -111,38 +111,38 @@ LABEL_7:
 
 - (UIButtonConfiguration)unselectedConfiguration
 {
-  v3 = [(PUPhotoEditToolActivationButton *)self baseConfiguration];
+  baseConfiguration = [(PUPhotoEditToolActivationButton *)self baseConfiguration];
   v4 = +[PUInterfaceManager currentTheme];
-  v5 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setBackgroundColor:v6];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [clearConfiguration setBackgroundColor:clearColor];
 
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v5 setStrokeColor:v7];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [clearConfiguration setStrokeColor:secondaryLabelColor];
 
-  [v5 setStrokeWidth:1.0];
-  [v3 setBackground:v5];
+  [clearConfiguration setStrokeWidth:1.0];
+  [baseConfiguration setBackground:clearConfiguration];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __58__PUPhotoEditToolActivationButton_unselectedConfiguration__block_invoke;
   v24[3] = &unk_1E7B7CD20;
   v8 = v4;
   v25 = v8;
-  [v3 setTitleTextAttributesTransformer:v24];
-  [v3 contentInsets];
+  [baseConfiguration setTitleTextAttributesTransformer:v24];
+  [baseConfiguration contentInsets];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PUPhotoEditToolActivationButton *)self unselectedGlyphName];
+  unselectedGlyphName = [(PUPhotoEditToolActivationButton *)self unselectedGlyphName];
 
-  if (v17)
+  if (unselectedGlyphName)
   {
     v18 = [(PUPhotoEditToolActivationButton *)self imageConfigurationForSelectedState:0];
     v19 = MEMORY[0x1E69DCAB8];
-    v20 = [(PUPhotoEditToolActivationButton *)self unselectedGlyphName];
-    v21 = [v19 systemImageNamed:v20 withConfiguration:v18];
-    [v3 setImage:v21];
+    unselectedGlyphName2 = [(PUPhotoEditToolActivationButton *)self unselectedGlyphName];
+    v21 = [v19 systemImageNamed:unselectedGlyphName2 withConfiguration:v18];
+    [baseConfiguration setImage:v21];
 
     v22 = v12 + -6.0;
   }
@@ -152,9 +152,9 @@ LABEL_7:
     v22 = v12 + -5.0;
   }
 
-  [v3 setContentInsets:{v10, v22, v14, v16 + -5.0}];
+  [baseConfiguration setContentInsets:{v10, v22, v14, v16 + -5.0}];
 
-  return v3;
+  return baseConfiguration;
 }
 
 id __58__PUPhotoEditToolActivationButton_unselectedConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -171,34 +171,34 @@ id __58__PUPhotoEditToolActivationButton_unselectedConfiguration__block_invoke(u
 
 - (UIButtonConfiguration)selectedConfiguration
 {
-  v3 = [(PUPhotoEditToolActivationButton *)self baseConfiguration];
+  baseConfiguration = [(PUPhotoEditToolActivationButton *)self baseConfiguration];
   v4 = +[PUInterfaceManager currentTheme];
-  v5 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  v6 = [MEMORY[0x1E69DC888] systemYellowColor];
-  [v5 setBackgroundColor:v6];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  [clearConfiguration setBackgroundColor:systemYellowColor];
 
-  [v3 setBackground:v5];
+  [baseConfiguration setBackground:clearConfiguration];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __56__PUPhotoEditToolActivationButton_selectedConfiguration__block_invoke;
   v23[3] = &unk_1E7B7CD20;
   v7 = v4;
   v24 = v7;
-  [v3 setTitleTextAttributesTransformer:v23];
-  [v3 contentInsets];
+  [baseConfiguration setTitleTextAttributesTransformer:v23];
+  [baseConfiguration contentInsets];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(PUPhotoEditToolActivationButton *)self selectedGlyphName];
+  selectedGlyphName = [(PUPhotoEditToolActivationButton *)self selectedGlyphName];
 
-  if (v16)
+  if (selectedGlyphName)
   {
     v17 = [(PUPhotoEditToolActivationButton *)self imageConfigurationForSelectedState:1];
     v18 = MEMORY[0x1E69DCAB8];
-    v19 = [(PUPhotoEditToolActivationButton *)self selectedGlyphName];
-    v20 = [v18 systemImageNamed:v19 withConfiguration:v17];
-    [v3 setImage:v20];
+    selectedGlyphName2 = [(PUPhotoEditToolActivationButton *)self selectedGlyphName];
+    v20 = [v18 systemImageNamed:selectedGlyphName2 withConfiguration:v17];
+    [baseConfiguration setImage:v20];
 
     v21 = v11 + -6.0;
   }
@@ -208,9 +208,9 @@ id __58__PUPhotoEditToolActivationButton_unselectedConfiguration__block_invoke(u
     v21 = v11 + -5.0;
   }
 
-  [v3 setContentInsets:{v9, v21, v13, v15 + -5.0}];
+  [baseConfiguration setContentInsets:{v9, v21, v13, v15 + -5.0}];
 
-  return v3;
+  return baseConfiguration;
 }
 
 id __56__PUPhotoEditToolActivationButton_selectedConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -227,39 +227,39 @@ id __56__PUPhotoEditToolActivationButton_selectedConfiguration__block_invoke(uin
 
 - (id)selectedTintedGlassConfiguration
 {
-  v3 = [(PUPhotoEditToolActivationButton *)self selectedConfiguration];
-  v4 = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
-  [v4 setCornerStyle:{objc_msgSend(v3, "cornerStyle")}];
-  v5 = [v3 title];
-  [v4 setTitle:v5];
+  selectedConfiguration = [(PUPhotoEditToolActivationButton *)self selectedConfiguration];
+  prominentGlassButtonConfiguration = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
+  [prominentGlassButtonConfiguration setCornerStyle:{objc_msgSend(selectedConfiguration, "cornerStyle")}];
+  title = [selectedConfiguration title];
+  [prominentGlassButtonConfiguration setTitle:title];
 
-  [v3 imagePadding];
-  [v4 setImagePadding:?];
-  v6 = [v3 image];
-  [v4 setImage:v6];
+  [selectedConfiguration imagePadding];
+  [prominentGlassButtonConfiguration setImagePadding:?];
+  image = [selectedConfiguration image];
+  [prominentGlassButtonConfiguration setImage:image];
 
-  [v4 setButtonSize:{objc_msgSend(v3, "buttonSize")}];
-  [v4 setTitleLineBreakMode:{objc_msgSend(v3, "titleLineBreakMode")}];
-  v7 = [v3 titleTextAttributesTransformer];
-  [v4 setTitleTextAttributesTransformer:v7];
+  [prominentGlassButtonConfiguration setButtonSize:{objc_msgSend(selectedConfiguration, "buttonSize")}];
+  [prominentGlassButtonConfiguration setTitleLineBreakMode:{objc_msgSend(selectedConfiguration, "titleLineBreakMode")}];
+  titleTextAttributesTransformer = [selectedConfiguration titleTextAttributesTransformer];
+  [prominentGlassButtonConfiguration setTitleTextAttributesTransformer:titleTextAttributesTransformer];
 
-  [v3 contentInsets];
-  [v4 setContentInsets:?];
-  v8 = [MEMORY[0x1E69DC888] systemYellowColor];
-  [(PUPhotoEditToolActivationButton *)self setTintColor:v8];
+  [selectedConfiguration contentInsets];
+  [prominentGlassButtonConfiguration setContentInsets:?];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  [(PUPhotoEditToolActivationButton *)self setTintColor:systemYellowColor];
 
-  return v4;
+  return prominentGlassButtonConfiguration;
 }
 
-- (id)imageConfigurationForSelectedState:(BOOL)a3
+- (id)imageConfigurationForSelectedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v16[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCAD8];
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0];
   v6 = [v4 configurationWithFont:v5];
 
-  if (v3)
+  if (stateCopy)
   {
     v7 = 5;
   }
@@ -271,16 +271,16 @@ id __56__PUPhotoEditToolActivationButton_selectedConfiguration__block_invoke(uin
 
   v8 = [MEMORY[0x1E69DCAD8] configurationWithWeight:v7];
   v9 = MEMORY[0x1E69DCAD8];
-  if (v3)
+  if (stateCopy)
   {
-    v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.7];
-    v11 = [v9 configurationWithHierarchicalColor:v10];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.7];
+    v11 = [v9 configurationWithHierarchicalColor:secondaryLabelColor];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v16[0] = v10;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v16[0] = secondaryLabelColor;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v11 = [v9 configurationWithPaletteColors:v12];
   }
@@ -293,28 +293,28 @@ id __56__PUPhotoEditToolActivationButton_selectedConfiguration__block_invoke(uin
 
 - (id)baseConfiguration
 {
-  v3 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v3 setCornerStyle:2];
-  [v3 setTitle:self->_title];
-  [v3 setImagePadding:3.0];
-  [v3 setButtonSize:2];
-  [v3 setTitleLineBreakMode:4];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setCornerStyle:2];
+  [plainButtonConfiguration setTitle:self->_title];
+  [plainButtonConfiguration setImagePadding:3.0];
+  [plainButtonConfiguration setButtonSize:2];
+  [plainButtonConfiguration setTitleLineBreakMode:4];
 
-  return v3;
+  return plainButtonConfiguration;
 }
 
-+ (id)buttonWithTitle:(id)a3
++ (id)buttonWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v5 = [PUPhotoEditToolActivationButton buttonWithConfiguration:v4 primaryAction:0];
+  titleCopy = title;
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  v5 = [PUPhotoEditToolActivationButton buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
   v6 = [MEMORY[0x1E69C3BF0] configurationWithCursorEffect:2];
   [v5 setPx_configuration:v6];
 
   [v5 setAutomaticallyUpdatesConfiguration:1];
   v7 = v5[95];
-  v5[95] = v3;
-  v8 = v3;
+  v5[95] = titleCopy;
+  v8 = titleCopy;
 
   [v5 addTarget:v5 action:sel_buttonTouchUpAction_ forControlEvents:64];
   if (MEMORY[0x1B8C6D660]())
@@ -327,8 +327,8 @@ id __56__PUPhotoEditToolActivationButton_selectedConfiguration__block_invoke(uin
     v9 = 23.0;
   }
 
-  v10 = [v5 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:v9];
+  heightAnchor = [v5 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:v9];
   [v11 setActive:1];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];

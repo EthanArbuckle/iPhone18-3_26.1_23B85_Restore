@@ -1,32 +1,32 @@
 @interface UIStackView
 + (Class)layerClass;
 - (BOOL)_ola_isCandidateForMultilineTextWidthDisambiguationWhenArranged;
-- (BOOL)_shouldRequestTallestBaselineViewForFirst:(BOOL)a3;
-- (CGSize)_systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5 hasIntentionallyCollapsedHeight:(BOOL *)a6;
+- (BOOL)_shouldRequestTallestBaselineViewForFirst:(BOOL)first;
+- (CGSize)_systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority hasIntentionallyCollapsedHeight:(BOOL *)height;
 - (NSArray)arrangedSubviews;
 - (UIStackView)initWithArrangedSubviews:(NSArray *)views;
 - (UIStackView)initWithCoder:(NSCoder *)coder;
 - (UIStackView)initWithFrame:(CGRect)frame;
 - (UIStackViewAlignment)alignment;
-- (double)_proportionalFillLengthForOrderedArrangement:(id)a3 relevantParentAxis:(int64_t)a4;
-- (id)_baselineViewForFirst:(BOOL)a3;
+- (double)_proportionalFillLengthForOrderedArrangement:(id)arrangement relevantParentAxis:(int64_t)axis;
+- (id)_baselineViewForFirst:(BOOL)first;
 - (id)description;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
-- (void)_commonStackViewInitializationWithArrangedSubviews:(id)a3;
-- (void)_vendedBaselineViewDidMoveForFirst:(BOOL)a3;
+- (void)_commonStackViewInitializationWithArrangedSubviews:(id)subviews;
+- (void)_vendedBaselineViewDidMoveForFirst:(BOOL)first;
 - (void)_vendedBaselineViewParametersDidChange;
 - (void)addArrangedSubview:(UIView *)view;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
 - (void)removeArrangedSubview:(UIView *)view;
 - (void)setAlignment:(UIStackViewAlignment)alignment;
-- (void)setArrangedSubviews:(id)a3;
+- (void)setArrangedSubviews:(id)subviews;
 - (void)setAxis:(UILayoutConstraintAxis)axis;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 - (void)setLayoutMarginsRelativeArrangement:(BOOL)layoutMarginsRelativeArrangement;
-- (void)setOpaque:(BOOL)a3;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
 - (void)updateConstraints;
 @end
 
@@ -36,7 +36,7 @@
 {
   if (dyld_program_sdk_at_least())
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___UIStackView;
     v3 = objc_msgSendSuper2(&v5, sel_layerClass);
   }
@@ -93,25 +93,25 @@ LABEL_8:
 
 - (UIStackViewAlignment)alignment
 {
-  v2 = [(_UIAlignedLayoutArrangement *)self->_alignmentArrangement alignment];
-  if ((v2 & 0x200) != 0)
+  alignment = [(_UIAlignedLayoutArrangement *)self->_alignmentArrangement alignment];
+  if ((alignment & 0x200) != 0)
   {
     return 3;
   }
 
-  if ((v2 & 0x1000) != 0)
+  if ((alignment & 0x1000) != 0)
   {
     return 2;
   }
 
-  if ((v2 & 0x800) != 0)
+  if ((alignment & 0x800) != 0)
   {
     return 5;
   }
 
-  if ((v2 & 8) != 0)
+  if ((alignment & 8) != 0)
   {
-    return ~(v2 >> 4) & 1;
+    return ~(alignment >> 4) & 1;
   }
 
   return 4;
@@ -119,26 +119,26 @@ LABEL_8:
 
 - (NSArray)arrangedSubviews
 {
-  v2 = [(_UILayoutArrangement *)self->_distributionArrangement items];
-  v3 = [v2 copy];
+  items = [(_UILayoutArrangement *)self->_distributionArrangement items];
+  v3 = [items copy];
 
   return v3;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(UIStackView *)self _baselineViewForFirst:0];
-  v4 = [v3 viewForLastBaselineLayout];
-  v5 = v4;
-  if (v4)
+  viewForLastBaselineLayout = [v3 viewForLastBaselineLayout];
+  v5 = viewForLastBaselineLayout;
+  if (viewForLastBaselineLayout)
   {
-    v2 = v4;
+    selfCopy = viewForLastBaselineLayout;
   }
 
-  v6 = v2;
+  v6 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)updateConstraints
@@ -237,18 +237,18 @@ BOOL __53__UIStackView__vendedBaselineViewParametersDidChange__block_invoke(uint
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(UIStackView *)self _baselineViewForFirst:1];
-  v4 = [v3 viewForFirstBaselineLayout];
-  v5 = v4;
-  if (v4)
+  viewForFirstBaselineLayout = [v3 viewForFirstBaselineLayout];
+  v5 = viewForFirstBaselineLayout;
+  if (viewForFirstBaselineLayout)
   {
-    v2 = v4;
+    selfCopy = viewForFirstBaselineLayout;
   }
 
-  v6 = v2;
+  v6 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 void __53__UIStackView__vendedBaselineViewParametersDidChange__block_invoke_2(uint64_t a1, void *a2)
@@ -320,8 +320,8 @@ LABEL_13:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(_UILayoutArrangement *)self->_distributionArrangement items];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    items = [(_UILayoutArrangement *)self->_distributionArrangement items];
+    v4 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -333,7 +333,7 @@ LABEL_13:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(items);
           }
 
           if ([*(*(&v10 + 1) + 8 * v7) _ola_isCandidateForMultilineTextWidthDisambiguationWhenArranged])
@@ -346,7 +346,7 @@ LABEL_13:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           continue;
@@ -382,16 +382,16 @@ LABEL_13:
   return v4;
 }
 
-- (void)_commonStackViewInitializationWithArrangedSubviews:(id)a3
+- (void)_commonStackViewInitializationWithArrangedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = subviewsCopy;
+  v5 = subviewsCopy;
   [UIView performWithoutAnimation:v6];
 }
 
@@ -481,15 +481,15 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = view;
-  v8 = [(_UILayoutArrangement *)self->_distributionArrangement items];
-  v9 = [v8 count];
+  items = [(_UILayoutArrangement *)self->_distributionArrangement items];
+  v9 = [items count];
   if (v9 < stackIndex)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"index out of bounds for arranged subview: index = %lu expected to be less than or equal to %lu", stackIndex, v9}];
   }
 
-  v10 = [(_UILayoutArrangement *)self->_alignmentArrangement items];
-  v11 = [v10 count];
+  items2 = [(_UILayoutArrangement *)self->_alignmentArrangement items];
+  v11 = [items2 count];
   if (v9 != v11)
   {
     if (os_variant_has_internal_diagnostics())
@@ -498,9 +498,9 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
       if (os_log_type_enabled(logb, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v22 = v8;
+        v22 = items;
         v23 = 2112;
-        v24 = v10;
+        v24 = items2;
         _os_log_fault_impl(&dword_188A29000, logb, OS_LOG_TYPE_FAULT, "number of items in the arrangements for the stack view have gotten out of sync. distribution items: %@ alignment items: %@", buf, 0x16u);
       }
     }
@@ -511,18 +511,18 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v22 = v8;
+        v22 = items;
         v23 = 2112;
-        v24 = v10;
+        v24 = items2;
         _os_log_impl(&dword_188A29000, log, OS_LOG_TYPE_ERROR, "number of items in the arrangements for the stack view have gotten out of sync. distribution items: %@ alignment items: %@", buf, 0x16u);
       }
     }
   }
 
   [(_UIOrderedLayoutArrangement *)self->_distributionArrangement insertItem:v7 atIndex:stackIndex];
-  v12 = [(_UILayoutArrangement *)self->_alignmentArrangement items];
+  items3 = [(_UILayoutArrangement *)self->_alignmentArrangement items];
 
-  v13 = [v12 count];
+  v13 = [items3 count];
   if (v13 != v11)
   {
     if (os_variant_has_internal_diagnostics())
@@ -578,17 +578,17 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
   [(_UILayoutArrangement *)self->_alignmentArrangement removeItem:v5];
 }
 
-- (void)setArrangedSubviews:(id)a3
+- (void)setArrangedSubviews:(id)subviews
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIStackView *)self arrangedSubviews];
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  subviewsCopy = subviews;
+  arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:subviewsCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = arrangedSubviews;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -621,7 +621,7 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
   v13[2] = __35__UIStackView_setArrangedSubviews___block_invoke;
   v13[3] = &unk_1E70F3F18;
   v13[4] = self;
-  [v4 enumerateObjectsWithOptions:2 usingBlock:v13];
+  [subviewsCopy enumerateObjectsWithOptions:2 usingBlock:v13];
 }
 
 - (void)setAxis:(UILayoutConstraintAxis)axis
@@ -637,9 +637,9 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
   alignmentArrangement = self->_alignmentArrangement;
   if (alignment >= (UIStackViewAlignmentBottom|UIStackViewAlignmentFirstBaseline))
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSLayoutFormatOptions _alignmentOptionsForStackViewAlignment(UIStackViewAlignment)"];
-    [v5 handleFailureInFunction:v6 file:@"UIStackView.m" lineNumber:223 description:@"failed to convert stackAlignment to alignmentOptions"];
+    [currentHandler handleFailureInFunction:v6 file:@"UIStackView.m" lineNumber:223 description:@"failed to convert stackAlignment to alignmentOptions"];
 
     v4 = 0;
   }
@@ -685,25 +685,25 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = UIStackView;
-  [(UIView *)&v6 encodeWithCoder:v4];
-  v5 = [(UIStackView *)self arrangedSubviews];
-  if ([v5 count])
+  [(UIView *)&v6 encodeWithCoder:coderCopy];
+  arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+  if ([arrangedSubviews count])
   {
-    [v4 encodeObject:v5 forKey:@"UIStackViewArrangedSubviews"];
+    [coderCopy encodeObject:arrangedSubviews forKey:@"UIStackViewArrangedSubviews"];
   }
 
-  [v4 encodeInteger:-[UIStackView axis](self forKey:{"axis"), @"UIStackViewAxis"}];
-  [v4 encodeInteger:-[UIStackView distribution](self forKey:{"distribution"), @"UIStackViewDistribution"}];
-  [v4 encodeInteger:-[UIStackView alignment](self forKey:{"alignment"), @"UIStackViewAlignment"}];
+  [coderCopy encodeInteger:-[UIStackView axis](self forKey:{"axis"), @"UIStackViewAxis"}];
+  [coderCopy encodeInteger:-[UIStackView distribution](self forKey:{"distribution"), @"UIStackViewDistribution"}];
+  [coderCopy encodeInteger:-[UIStackView alignment](self forKey:{"alignment"), @"UIStackViewAlignment"}];
   [(UIStackView *)self spacing];
-  [v4 encodeDouble:@"UIStackViewSpacing" forKey:?];
-  [v4 encodeBool:-[UIStackView isBaselineRelativeArrangement](self forKey:{"isBaselineRelativeArrangement"), @"UIStackViewBaselineRelative"}];
-  [v4 encodeBool:-[UIStackView isLayoutMarginsRelativeArrangement](self forKey:{"isLayoutMarginsRelativeArrangement"), @"UIStackViewLayoutMarginsRelative"}];
+  [coderCopy encodeDouble:@"UIStackViewSpacing" forKey:?];
+  [coderCopy encodeBool:-[UIStackView isBaselineRelativeArrangement](self forKey:{"isBaselineRelativeArrangement"), @"UIStackViewBaselineRelative"}];
+  [coderCopy encodeBool:-[UIStackView isLayoutMarginsRelativeArrangement](self forKey:{"isLayoutMarginsRelativeArrangement"), @"UIStackViewLayoutMarginsRelative"}];
 }
 
 - (void)setLayoutMarginsRelativeArrangement:(BOOL)layoutMarginsRelativeArrangement
@@ -719,20 +719,20 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
   }
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   if (dyld_program_sdk_at_least())
   {
     v5.receiver = self;
     v5.super_class = UIStackView;
-    [(UIView *)&v5 setOpaque:v3];
+    [(UIView *)&v5 setOpaque:opaqueCopy];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (dyld_program_sdk_at_least())
   {
     if (qword_1ED499F50 != -1)
@@ -744,7 +744,7 @@ uint64_t __66__UIStackView__commonStackViewInitializationWithArrangedSubviews___
     {
       v5.receiver = self;
       v5.super_class = UIStackView;
-      [(UIView *)&v5 setBackgroundColor:v4];
+      [(UIView *)&v5 setBackgroundColor:colorCopy];
     }
   }
 }
@@ -755,25 +755,25 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
   _MergedGlobals_17_6 = [v0 isEqualToString:@"com.apple.CarPlayApp"];
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  v3 = a3;
-  if (!a3)
+  constraintsCopy = constraints;
+  if (!constraints)
   {
     [(UIView *)self _setHostsLayoutEngine:0];
   }
 
   v5.receiver = self;
   v5.super_class = UIStackView;
-  [(UIView *)&v5 setTranslatesAutoresizingMaskIntoConstraints:v3];
+  [(UIView *)&v5 setTranslatesAutoresizingMaskIntoConstraints:constraintsCopy];
 }
 
-- (CGSize)_systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5 hasIntentionallyCollapsedHeight:(BOOL *)a6
+- (CGSize)_systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority hasIntentionallyCollapsedHeight:(BOOL *)height
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = [(UIView *)self _isInAnimatedLayout];
-  if (!v12 && +[UIView _isInAnimationBlockWithAnimationsEnabled])
+  height = size.height;
+  width = size.width;
+  _isInAnimatedLayout = [(UIView *)self _isInAnimatedLayout];
+  if (!_isInAnimatedLayout && +[UIView _isInAnimationBlockWithAnimationsEnabled])
   {
     [(UIView *)self _setInAnimatedLayout:1];
     [(UIView *)self _setNeedsUpdateConstraintsNeedingLayout:0];
@@ -781,12 +781,12 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
 
   v21.receiver = self;
   v21.super_class = UIStackView;
-  *&v13 = a4;
-  *&v14 = a5;
-  [(UIView *)&v21 _systemLayoutSizeFittingSize:a6 withHorizontalFittingPriority:width verticalFittingPriority:height hasIntentionallyCollapsedHeight:v13, v14];
+  *&v13 = priority;
+  *&v14 = fittingPriority;
+  [(UIView *)&v21 _systemLayoutSizeFittingSize:height withHorizontalFittingPriority:width verticalFittingPriority:height hasIntentionallyCollapsedHeight:v13, v14];
   v16 = v15;
   v18 = v17;
-  [(UIView *)self _setInAnimatedLayout:v12];
+  [(UIView *)self _setInAnimatedLayout:_isInAnimatedLayout];
   v19 = v16;
   v20 = v18;
   result.height = v20;
@@ -794,31 +794,31 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
   return result;
 }
 
-- (BOOL)_shouldRequestTallestBaselineViewForFirst:(BOOL)a3
+- (BOOL)_shouldRequestTallestBaselineViewForFirst:(BOOL)first
 {
-  v3 = a3;
-  v5 = [(UIStackView *)self alignment];
+  firstCopy = first;
+  alignment = [(UIStackView *)self alignment];
   if ([(UIStackView *)self axis])
   {
     return 0;
   }
 
-  if ((v5 - 3) >= 0xFFFFFFFFFFFFFFFELL && !v3)
+  if ((alignment - 3) >= 0xFFFFFFFFFFFFFFFELL && !firstCopy)
   {
     return 1;
   }
 
-  v7 = (v5 & 0xFFFFFFFFFFFFFFFELL) == 4 && v3;
-  return v5 == UIStackViewAlignmentCenter || v7;
+  v7 = (alignment & 0xFFFFFFFFFFFFFFFELL) == 4 && firstCopy;
+  return alignment == UIStackViewAlignmentCenter || v7;
 }
 
-- (id)_baselineViewForFirst:(BOOL)a3
+- (id)_baselineViewForFirst:(BOOL)first
 {
-  v3 = a3;
+  firstCopy = first;
   v5 = [(UIStackView *)self _shouldRequestTallestBaselineViewForFirst:?];
   v6 = v5;
   v7 = 5;
-  if (v3)
+  if (firstCopy)
   {
     v7 = 4;
   }
@@ -826,13 +826,13 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
   *(&self->super.super.super.isa + OBJC_IVAR___UIStackView__mutableLayoutArrangements[v7]) = v5;
   distributionArrangement = self->_distributionArrangement;
 
-  return [(_UIOrderedLayoutArrangement *)distributionArrangement _baselineViewVendTallest:v6 forFirstBaseline:v3];
+  return [(_UIOrderedLayoutArrangement *)distributionArrangement _baselineViewVendTallest:v6 forFirstBaseline:firstCopy];
 }
 
-- (void)_vendedBaselineViewDidMoveForFirst:(BOOL)a3
+- (void)_vendedBaselineViewDidMoveForFirst:(BOOL)first
 {
   v3 = 7;
-  if (a3)
+  if (first)
   {
     v3 = 6;
   }
@@ -840,11 +840,11 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
   *(&self->super.super.super.isa + OBJC_IVAR___UIStackView__mutableLayoutArrangements[v3]) = 1;
 }
 
-- (double)_proportionalFillLengthForOrderedArrangement:(id)a3 relevantParentAxis:(int64_t)a4
+- (double)_proportionalFillLengthForOrderedArrangement:(id)arrangement relevantParentAxis:(int64_t)axis
 {
-  v6 = [a3 canvas];
-  v7 = v6;
-  if (a4 == 1 && ![v6 alignment])
+  canvas = [arrangement canvas];
+  v7 = canvas;
+  if (axis == 1 && ![canvas alignment])
   {
     v12 = *MEMORY[0x1E695F058];
     v13 = *(MEMORY[0x1E695F058] + 8);
@@ -852,9 +852,9 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
     v15 = *(MEMORY[0x1E695F058] + 24);
     if (([v7 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
     {
-      v16 = [v7 _layoutEngine];
+      _layoutEngine = [v7 _layoutEngine];
 
-      if (v16)
+      if (_layoutEngine)
       {
         [v7 _nsis_bounds];
         v12 = v17;
@@ -884,8 +884,8 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
       v15 = v15 - (v27 + v29);
     }
 
-    v30 = [(UIView *)self _layoutEngine];
-    [(NSISEngine *)v30 _UIKitPerformPendingChangeNotifications];
+    _layoutEngine2 = [(UIView *)self _layoutEngine];
+    [(NSISEngine *)_layoutEngine2 _UIKitPerformPendingChangeNotifications];
 
     v34.origin.x = v12;
     v34.origin.y = v13;
@@ -902,7 +902,7 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
     [(UIView *)self systemLayoutSizeFittingSize:0.0, 0.0];
   }
 
-  if (a4)
+  if (axis)
   {
     v10 = v9;
   }
@@ -920,38 +920,38 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
   v32.receiver = self;
   v32.super_class = UIStackView;
   v3 = [(UIView *)&v32 description];
-  v4 = [(UIStackView *)self axis];
+  axis = [(UIStackView *)self axis];
   v5 = @"vert";
-  if (v4 == UILayoutConstraintAxisHorizontal)
+  if (axis == UILayoutConstraintAxisHorizontal)
   {
     v5 = @"horiz";
   }
 
   v6 = v5;
-  v7 = [(UIStackView *)self distribution];
-  if (v7 > UIStackViewDistributionEqualCentering)
+  distribution = [(UIStackView *)self distribution];
+  if (distribution > UIStackViewDistributionEqualCentering)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = off_1E7129438[v7];
+    v8 = off_1E7129438[distribution];
   }
 
-  v9 = [(UIStackView *)self alignment];
-  v10 = [(UIStackView *)self axis];
-  if (v9 > UIStackViewAlignmentFirstBaseline)
+  alignment = [(UIStackView *)self alignment];
+  axis2 = [(UIStackView *)self axis];
+  if (alignment > UIStackViewAlignmentFirstBaseline)
   {
-    if (v9 == UIStackViewAlignmentCenter)
+    if (alignment == UIStackViewAlignmentCenter)
     {
       v11 = @"center";
       goto LABEL_23;
     }
 
-    if (v9 != UIStackViewAlignmentTrailing)
+    if (alignment != UIStackViewAlignmentTrailing)
     {
-      if (v9 == UIStackViewAlignmentLastBaseline)
+      if (alignment == UIStackViewAlignmentLastBaseline)
       {
         v11 = @"lastBaseline";
         goto LABEL_23;
@@ -966,15 +966,15 @@ void __34__UIStackView_setBackgroundColor___block_invoke()
 
   else
   {
-    if (v9 == UIStackViewAlignmentFill)
+    if (alignment == UIStackViewAlignmentFill)
     {
       v11 = @"fill";
       goto LABEL_23;
     }
 
-    if (v9 != UIStackViewAlignmentLeading)
+    if (alignment != UIStackViewAlignmentLeading)
     {
-      if (v9 == UIStackViewAlignmentFirstBaseline)
+      if (alignment == UIStackViewAlignmentFirstBaseline)
       {
         v11 = @"firstBaseline";
         goto LABEL_23;
@@ -989,7 +989,7 @@ LABEL_17:
     v13 = @"top";
   }
 
-  if (v10 == UILayoutConstraintAxisHorizontal)
+  if (axis2 == UILayoutConstraintAxisHorizontal)
   {
     v12 = v13;
   }
@@ -1014,8 +1014,8 @@ LABEL_23:
 
   if (!os_variant_has_internal_diagnostics())
   {
-    v17 = [(UIStackView *)self arrangedSubviews];
-    v18 = [v17 count];
+    arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+    v18 = [arrangedSubviews count];
 
     if (v18)
     {
@@ -1026,38 +1026,38 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  v22 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
-  v23 = [v22 count];
+  _mutableItems = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
+  v23 = [_mutableItems count];
 
   if (v23)
   {
-    v24 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
-    v25 = [v14 stringByAppendingFormat:@" arrangedSubviews=%p distributionArrangement=%p alignmentArrangement=%p", v24, self->_distributionArrangement, self->_alignmentArrangement];
+    _mutableItems2 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
+    v25 = [v14 stringByAppendingFormat:@" arrangedSubviews=%p distributionArrangement=%p alignmentArrangement=%p", _mutableItems2, self->_distributionArrangement, self->_alignmentArrangement];
 
     v14 = v25;
   }
 
   else
   {
-    v24 = [v14 stringByAppendingString:@" NO ARRANGED SUBVIEWS"];
+    _mutableItems2 = [v14 stringByAppendingString:@" NO ARRANGED SUBVIEWS"];
 
-    v26 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
-    v27 = [(_UILayoutArrangement *)self->_alignmentArrangement _mutableItems];
-    v28 = _deferringTokenEqualToToken(v26, v27);
+    _mutableItems3 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
+    _mutableItems4 = [(_UILayoutArrangement *)self->_alignmentArrangement _mutableItems];
+    v28 = _deferringTokenEqualToToken(_mutableItems3, _mutableItems4);
 
     if (v28)
     {
-      v14 = v24;
+      v14 = _mutableItems2;
       goto LABEL_41;
     }
 
-    v14 = [v24 stringByAppendingFormat:@" distributionArrangement=%p alignmentArrangement=%p", self->_distributionArrangement, self->_alignmentArrangement];
+    v14 = [_mutableItems2 stringByAppendingFormat:@" distributionArrangement=%p alignmentArrangement=%p", self->_distributionArrangement, self->_alignmentArrangement];
   }
 
 LABEL_41:
-  v29 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
-  v30 = [(_UILayoutArrangement *)self->_alignmentArrangement _mutableItems];
-  v31 = _deferringTokenEqualToToken(v29, v30);
+  _mutableItems5 = [(_UILayoutArrangement *)self->_distributionArrangement _mutableItems];
+  _mutableItems6 = [(_UILayoutArrangement *)self->_alignmentArrangement _mutableItems];
+  v31 = _deferringTokenEqualToToken(_mutableItems5, _mutableItems6);
 
   if ((v31 & 1) == 0)
   {

@@ -1,6 +1,6 @@
 @interface TVUsageTableViewSectionHeaderView
-- (TVUsageTableViewSectionHeaderView)initWithReuseIdentifier:(id)a3;
-- (void)configureForUsageItem:(id)a3;
+- (TVUsageTableViewSectionHeaderView)initWithReuseIdentifier:(id)identifier;
+- (void)configureForUsageItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)updateConstraints;
@@ -8,22 +8,22 @@
 
 @implementation TVUsageTableViewSectionHeaderView
 
-- (TVUsageTableViewSectionHeaderView)initWithReuseIdentifier:(id)a3
+- (TVUsageTableViewSectionHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v77.receiver = self;
   v77.super_class = TVUsageTableViewSectionHeaderView;
-  v3 = [(TVUsageTableViewSectionHeaderView *)&v77 initWithReuseIdentifier:a3];
+  v3 = [(TVUsageTableViewSectionHeaderView *)&v77 initWithReuseIdentifier:identifier];
   if (v3)
   {
-    v4 = [[UIImageView alloc] initForAutolayout];
+    initForAutolayout = [[UIImageView alloc] initForAutolayout];
     imageView = v3->_imageView;
-    v3->_imageView = v4;
+    v3->_imageView = initForAutolayout;
 
     [(UIImageView *)v3->_imageView setContentMode:1];
     objc_storeStrong(&v3->_leadingView, v3->_imageView);
-    v6 = [[UILabel alloc] initForAutolayout];
+    initForAutolayout2 = [[UILabel alloc] initForAutolayout];
     titleLabel = v3->_titleLabel;
-    v3->_titleLabel = v6;
+    v3->_titleLabel = initForAutolayout2;
 
     LODWORD(v8) = 1144750080;
     [(UILabel *)v3->_titleLabel setContentHuggingPriority:1 forAxis:v8];
@@ -34,9 +34,9 @@
     [(UILabel *)v3->_titleLabel setFont:v10];
 
     [(UILabel *)v3->_titleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-    v11 = [[UILabel alloc] initForAutolayout];
+    initForAutolayout3 = [[UILabel alloc] initForAutolayout];
     subtitleLabel = v3->_subtitleLabel;
-    v3->_subtitleLabel = v11;
+    v3->_subtitleLabel = initForAutolayout3;
 
     LODWORD(v13) = 1144750080;
     [(UILabel *)v3->_subtitleLabel setContentHuggingPriority:1 forAxis:v13];
@@ -47,9 +47,9 @@
     [(UILabel *)v3->_subtitleLabel setFont:v15];
 
     [(UILabel *)v3->_subtitleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-    v16 = [[UILabel alloc] initForAutolayout];
+    initForAutolayout4 = [[UILabel alloc] initForAutolayout];
     sizeLabel = v3->_sizeLabel;
-    v3->_sizeLabel = v16;
+    v3->_sizeLabel = initForAutolayout4;
 
     LODWORD(v18) = 1144750080;
     [(UILabel *)v3->_sizeLabel setContentHuggingPriority:1 forAxis:v18];
@@ -60,68 +60,68 @@
     [(UILabel *)v3->_sizeLabel setFont:v20];
 
     [(UILabel *)v3->_sizeLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-    v21 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    [v21 addSubview:v3->_imageView];
+    contentView = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_imageView];
 
-    v22 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    [v22 addSubview:v3->_titleLabel];
+    contentView2 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    [contentView2 addSubview:v3->_titleLabel];
 
-    v23 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    [v23 addSubview:v3->_subtitleLabel];
+    contentView3 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    [contentView3 addSubview:v3->_subtitleLabel];
 
-    v24 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    [v24 addSubview:v3->_sizeLabel];
+    contentView4 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    [contentView4 addSubview:v3->_sizeLabel];
 
     v25 = v3->_imageView;
-    v26 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v72 = [NSLayoutConstraint constraintWithItem:v25 attribute:10 relatedBy:0 toItem:v26 attribute:10 multiplier:1.0 constant:0.0];
+    contentView5 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v72 = [NSLayoutConstraint constraintWithItem:v25 attribute:10 relatedBy:0 toItem:contentView5 attribute:10 multiplier:1.0 constant:0.0];
 
     v27 = v3->_imageView;
-    v28 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v71 = [NSLayoutConstraint constraintWithItem:v27 attribute:3 relatedBy:1 toItem:v28 attribute:3 multiplier:1.0 constant:0.0];
+    contentView6 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v71 = [NSLayoutConstraint constraintWithItem:v27 attribute:3 relatedBy:1 toItem:contentView6 attribute:3 multiplier:1.0 constant:0.0];
 
     v29 = v3->_imageView;
-    v30 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v70 = [NSLayoutConstraint constraintWithItem:v29 attribute:4 relatedBy:-1 toItem:v30 attribute:4 multiplier:1.0 constant:-8.0];
+    contentView7 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v70 = [NSLayoutConstraint constraintWithItem:v29 attribute:4 relatedBy:-1 toItem:contentView7 attribute:4 multiplier:1.0 constant:-8.0];
 
     v31 = [NSLayoutConstraint constraintsBySizingView:v3->_imageView toSize:CGSizeZero.width, CGSizeZero.height];
     imageSizeConstraints = v3->_imageSizeConstraints;
     v3->_imageSizeConstraints = v31;
 
-    v33 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    [v33 addConstraints:v3->_imageSizeConstraints];
+    contentView8 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    [contentView8 addConstraints:v3->_imageSizeConstraints];
 
     v34 = v3->_subtitleLabel;
-    v35 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v69 = [NSLayoutConstraint constraintWithItem:v34 attribute:4 relatedBy:0 toItem:v35 attribute:4 multiplier:1.0 constant:-8.0];
+    contentView9 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v69 = [NSLayoutConstraint constraintWithItem:v34 attribute:4 relatedBy:0 toItem:contentView9 attribute:4 multiplier:1.0 constant:-8.0];
 
     v68 = [NSLayoutConstraint constraintWithItem:v3->_subtitleLabel attribute:6 relatedBy:-1 toItem:v3->_sizeLabel attribute:5 multiplier:1.0 constant:-8.0];
     v36 = v3->_subtitleLabel;
-    v37 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v67 = [NSLayoutConstraint constraintWithItem:v36 attribute:3 relatedBy:1 toItem:v37 attribute:3 multiplier:1.0 constant:0.0];
+    contentView10 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v67 = [NSLayoutConstraint constraintWithItem:v36 attribute:3 relatedBy:1 toItem:contentView10 attribute:3 multiplier:1.0 constant:0.0];
 
     v38 = v3->_titleLabel;
-    v39 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v66 = [NSLayoutConstraint constraintWithItem:v38 attribute:3 relatedBy:1 toItem:v39 attribute:3 multiplier:1.0 constant:0.0];
+    contentView11 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v66 = [NSLayoutConstraint constraintWithItem:v38 attribute:3 relatedBy:1 toItem:contentView11 attribute:3 multiplier:1.0 constant:0.0];
 
     v65 = [NSLayoutConstraint constraintWithItem:v3->_titleLabel attribute:4 relatedBy:0 toItem:v3->_subtitleLabel attribute:3 multiplier:1.0 constant:0.0];
     v40 = [NSLayoutConstraint constraintWithItem:v3->_titleLabel attribute:6 relatedBy:-1 toItem:v3->_sizeLabel attribute:5 multiplier:1.0 constant:-8.0];
     v41 = [NSLayoutConstraint constraintWithItem:v3->_titleLabel attribute:5 relatedBy:0 toItem:v3->_subtitleLabel attribute:5 multiplier:1.0 constant:0.0];
     v42 = v3->_sizeLabel;
-    v43 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v44 = [NSLayoutConstraint constraintWithItem:v42 attribute:3 relatedBy:1 toItem:v43 attribute:3 multiplier:1.0 constant:0.0];
+    contentView12 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v44 = [NSLayoutConstraint constraintWithItem:v42 attribute:3 relatedBy:1 toItem:contentView12 attribute:3 multiplier:1.0 constant:0.0];
 
     v45 = v3->_sizeLabel;
-    v46 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v47 = [NSLayoutConstraint constraintWithItem:v45 attribute:4 relatedBy:-1 toItem:v46 attribute:4 multiplier:1.0 constant:-8.0];
+    contentView13 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v47 = [NSLayoutConstraint constraintWithItem:v45 attribute:4 relatedBy:-1 toItem:contentView13 attribute:4 multiplier:1.0 constant:-8.0];
 
     v48 = [NSLayoutConstraint constraintWithItem:v3->_sizeLabel attribute:11 relatedBy:0 toItem:v3->_subtitleLabel attribute:11 multiplier:1.0 constant:0.0];
     v49 = v3->_sizeLabel;
-    v50 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v51 = [NSLayoutConstraint constraintWithItem:v49 attribute:6 relatedBy:0 toItem:v50 attribute:6 multiplier:1.0 constant:-8.0];
+    contentView14 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v51 = [NSLayoutConstraint constraintWithItem:v49 attribute:6 relatedBy:0 toItem:contentView14 attribute:6 multiplier:1.0 constant:-8.0];
 
-    v52 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
-    v53 = [NSLayoutConstraint constraintWithItem:v52 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:34.0];
+    contentView15 = [(TVUsageTableViewSectionHeaderView *)v3 contentView];
+    v53 = [NSLayoutConstraint constraintWithItem:contentView15 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:34.0];
 
     v79[0] = v72;
     v79[1] = v71;
@@ -178,9 +178,9 @@
 
 - (void)updateConstraints
 {
-  v3 = [(TVUsageTableViewSectionHeaderView *)self traitCollection];
+  traitCollection = [(TVUsageTableViewSectionHeaderView *)self traitCollection];
   v4 = 8.0;
-  if ([v3 horizontalSizeClass] == &dword_0 + 2)
+  if ([traitCollection horizontalSizeClass] == &dword_0 + 2)
   {
     PSTableViewSideInset();
     v4 = v5 + 8.0;
@@ -192,13 +192,13 @@
     goto LABEL_7;
   }
 
-  v7 = [(NSLayoutConstraint *)leadingViewConstraint firstItem];
+  firstItem = [(NSLayoutConstraint *)leadingViewConstraint firstItem];
   leadingView = self->_leadingView;
 
-  if (v7 != leadingView)
+  if (firstItem != leadingView)
   {
-    v9 = [(TVUsageTableViewSectionHeaderView *)self contentView];
-    [v9 removeConstraint:self->_leadingViewConstraint];
+    contentView = [(TVUsageTableViewSectionHeaderView *)self contentView];
+    [contentView removeConstraint:self->_leadingViewConstraint];
 
     v10 = self->_leadingViewConstraint;
     self->_leadingViewConstraint = 0;
@@ -209,13 +209,13 @@
   {
 LABEL_7:
     v12 = self->_leadingView;
-    v13 = [(TVUsageTableViewSectionHeaderView *)self contentView];
-    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:5 relatedBy:0 toItem:v13 attribute:5 multiplier:1.0 constant:v4];
+    contentView2 = [(TVUsageTableViewSectionHeaderView *)self contentView];
+    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:v4];
     v15 = self->_leadingViewConstraint;
     self->_leadingViewConstraint = v14;
 
-    v16 = [(TVUsageTableViewSectionHeaderView *)self contentView];
-    [v16 addConstraint:self->_leadingViewConstraint];
+    contentView3 = [(TVUsageTableViewSectionHeaderView *)self contentView];
+    [contentView3 addConstraint:self->_leadingViewConstraint];
 
     v11 = self->_leadingViewConstraint;
   }
@@ -233,19 +233,19 @@ LABEL_14:
       v25 = self->_subtitleLeadingConstraint;
       self->_subtitleLeadingConstraint = v24;
 
-      v26 = [(TVUsageTableViewSectionHeaderView *)self contentView];
-      [v26 addConstraint:self->_subtitleLeadingConstraint];
+      contentView4 = [(TVUsageTableViewSectionHeaderView *)self contentView];
+      [contentView4 addConstraint:self->_subtitleLeadingConstraint];
 
       goto LABEL_15;
     }
 
-    v20 = [(NSLayoutConstraint *)subtitleLeadingConstraint secondItem];
+    secondItem = [(NSLayoutConstraint *)subtitleLeadingConstraint secondItem];
     v21 = self->_leadingView;
 
-    if (v20 != v21)
+    if (secondItem != v21)
     {
-      v22 = [(TVUsageTableViewSectionHeaderView *)self contentView];
-      [v22 removeConstraint:self->_subtitleLeadingConstraint];
+      contentView5 = [(TVUsageTableViewSectionHeaderView *)self contentView];
+      [contentView5 removeConstraint:self->_subtitleLeadingConstraint];
 
       v23 = self->_subtitleLeadingConstraint;
       self->_subtitleLeadingConstraint = 0;
@@ -274,18 +274,18 @@ LABEL_15:
   [(TVUsageTableViewSectionHeaderView *)self updateConstraintsIfNeeded];
 }
 
-- (void)configureForUsageItem:(id)a3
+- (void)configureForUsageItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 artworkCatalog];
+  itemCopy = item;
+  artworkCatalog = [itemCopy artworkCatalog];
   v6 = &OBJC_IVAR___TVUsageTableViewSectionHeaderView__imageView;
-  if (!v5)
+  if (!artworkCatalog)
   {
     v6 = &OBJC_IVAR___TVUsageTableViewSectionHeaderView__subtitleLabel;
   }
 
   objc_storeStrong(&self->_leadingView, *(&self->super.super.super.super.isa + *v6));
-  if (v5)
+  if (artworkCatalog)
   {
     v32 = 0uLL;
     v33 = 0uLL;
@@ -319,23 +319,23 @@ LABEL_15:
     v13 = PSPointImageOfColor();
     [(UIImageView *)self->_imageView setImage:v13];
 
-    v14 = [(TVUsageTableViewSectionHeaderView *)self window];
-    v15 = [v14 screen];
-    [v15 scale];
+    window = [(TVUsageTableViewSectionHeaderView *)self window];
+    screen = [window screen];
+    [screen scale];
     if (v16)
     {
-      [v5 setDestinationScale:v16];
+      [artworkCatalog setDestinationScale:v16];
     }
 
     else
     {
       v22 = +[UIScreen mainScreen];
       [v22 scale];
-      [v5 setDestinationScale:?];
+      [artworkCatalog setDestinationScale:?];
     }
 
-    [v5 setFittingSize:{44.0, 44.0}];
-    [v5 setDestination:self->_imageView configurationBlock:&stru_C400];
+    [artworkCatalog setFittingSize:{44.0, 44.0}];
+    [artworkCatalog setDestination:self->_imageView configurationBlock:&stru_C400];
   }
 
   else
@@ -369,14 +369,14 @@ LABEL_15:
     }
   }
 
-  v23 = [v4 title];
-  [(UILabel *)self->_titleLabel setText:v23];
+  title = [itemCopy title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v24 = [v4 subtitle];
-  [(UILabel *)self->_subtitleLabel setText:v24];
+  subtitle = [itemCopy subtitle];
+  [(UILabel *)self->_subtitleLabel setText:subtitle];
 
-  v25 = [v4 fileSizeString];
-  [(UILabel *)self->_sizeLabel setText:v25];
+  fileSizeString = [itemCopy fileSizeString];
+  [(UILabel *)self->_sizeLabel setText:fileSizeString];
 
   [(TVUsageTableViewSectionHeaderView *)self setNeedsUpdateConstraints];
 }

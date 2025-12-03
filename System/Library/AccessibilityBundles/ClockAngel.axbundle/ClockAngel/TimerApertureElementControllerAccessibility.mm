@@ -1,28 +1,28 @@
 @interface TimerApertureElementControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)playPausedAction;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TimerApertureElementControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ClockAngel.TimerApertureElementController" hasInstanceMethod:@"playPausedAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ClockAngel.TimerApertureElementController" hasInstanceMethod:@"viewWillTransitionToSize:withTransitionCoordinator:" withFullSignature:{"v", "{CGSize=dd}", "@", 0}];
-  [v3 validateClass:@"ClockAngel.TimerApertureElementController" isKindOfClass:@"SecureViewController"];
-  [v3 validateClass:@"SecureViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ClockAngel.TimerApertureElementController" hasSwiftField:@"playPauseButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"ClockAngel.TimerApertureElementController" hasSwiftField:@"stopButton" withSwiftType:"Optional<UIButton>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ClockAngel.TimerApertureElementController" hasInstanceMethod:@"playPausedAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ClockAngel.TimerApertureElementController" hasInstanceMethod:@"viewWillTransitionToSize:withTransitionCoordinator:" withFullSignature:{"v", "{CGSize=dd}", "@", 0}];
+  [validationsCopy validateClass:@"ClockAngel.TimerApertureElementController" isKindOfClass:@"SecureViewController"];
+  [validationsCopy validateClass:@"SecureViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ClockAngel.TimerApertureElementController" hasSwiftField:@"playPauseButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"ClockAngel.TimerApertureElementController" hasSwiftField:@"stopButton" withSwiftType:"Optional<UIButton>"];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
+  height = size.height;
   v8.receiver = self;
   v8.super_class = TimerApertureElementControllerAccessibility;
-  [(TimerApertureElementControllerAccessibility *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width];
+  [(TimerApertureElementControllerAccessibility *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width];
   v6 = [(TimerApertureElementControllerAccessibility *)self safeUIViewForKey:@"view"];
   [v6 frame];
   if (v7 < height)
@@ -50,16 +50,16 @@ void __98__TimerApertureElementControllerAccessibility_viewWillTransitionToSize_
 - (void)playPausedAction
 {
   v3 = [(TimerApertureElementControllerAccessibility *)self safeSwiftValueForKey:@"playPauseButton"];
-  v4 = [v3 accessibilityLabel];
-  if (!v4)
+  accessibilityLabel = [v3 accessibilityLabel];
+  if (!accessibilityLabel)
   {
     goto LABEL_4;
   }
 
-  v5 = v4;
-  v6 = [v3 accessibilityLabel];
+  v5 = accessibilityLabel;
+  accessibilityLabel2 = [v3 accessibilityLabel];
   v7 = accessibilityLocalizedString(@"pause.button");
-  v8 = [v6 isEqualToString:v7];
+  v8 = [accessibilityLabel2 isEqualToString:v7];
 
   if (v8)
   {

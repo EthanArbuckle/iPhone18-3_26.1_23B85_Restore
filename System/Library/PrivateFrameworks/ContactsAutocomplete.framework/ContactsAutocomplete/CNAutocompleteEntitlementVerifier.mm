@@ -1,5 +1,5 @@
 @interface CNAutocompleteEntitlementVerifier
-+ (BOOL)currentProcessHasBooleanEntitlement:(id)a3;
++ (BOOL)currentProcessHasBooleanEntitlement:(id)entitlement;
 + (BOOL)currentProcessHasContactsEntitlement;
 + (BOOL)currentProcessHasDuetEntitlement;
 + (BOOL)currentProcessHasSuggestionsEntitlement;
@@ -9,11 +9,11 @@
 
 + (BOOL)currentProcessHasDuetEntitlement
 {
-  v3 = [a1 currentProcessHasBooleanEntitlement:@"com.apple.coreduetd.allow"];
+  v3 = [self currentProcessHasBooleanEntitlement:@"com.apple.coreduetd.allow"];
   if (v3)
   {
 
-    LOBYTE(v3) = [a1 currentProcessHasBooleanEntitlement:@"com.apple.coreduetd.people"];
+    LOBYTE(v3) = [self currentProcessHasBooleanEntitlement:@"com.apple.coreduetd.people"];
   }
 
   return v3;
@@ -21,30 +21,30 @@
 
 + (BOOL)currentProcessHasSuggestionsEntitlement
 {
-  if ([a1 currentProcessHasBooleanEntitlement:@"com.apple.private.suggestions.contacts"])
+  if ([self currentProcessHasBooleanEntitlement:@"com.apple.private.suggestions.contacts"])
   {
     return 1;
   }
 
-  return [a1 currentProcessHasBooleanEntitlement:@"com.apple.private.suggestions"];
+  return [self currentProcessHasBooleanEntitlement:@"com.apple.private.suggestions"];
 }
 
 + (BOOL)currentProcessHasContactsEntitlement
 {
-  v2 = [MEMORY[0x277CFBDB8] sharedInstance];
-  v3 = [v2 isAccessGranted];
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+  isAccessGranted = [mEMORY[0x277CFBDB8] isAccessGranted];
 
-  return v3;
+  return isAccessGranted;
 }
 
-+ (BOOL)currentProcessHasBooleanEntitlement:(id)a3
++ (BOOL)currentProcessHasBooleanEntitlement:(id)entitlement
 {
   v3 = MEMORY[0x277CFBE10];
-  v4 = a3;
-  v5 = [v3 currentEnvironment];
-  v6 = [v5 entitlementVerifier];
+  entitlementCopy = entitlement;
+  currentEnvironment = [v3 currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
   v10 = 0;
-  v7 = [v6 currentProcessHasBooleanEntitlement:v4 error:&v10];
+  v7 = [entitlementVerifier currentProcessHasBooleanEntitlement:entitlementCopy error:&v10];
 
   v8 = v10;
   if (v8)

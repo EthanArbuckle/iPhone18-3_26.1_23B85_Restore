@@ -1,40 +1,40 @@
 @interface BWAdaptiveBracketingFrameParameters
-+ (id)frameParametersWithEVZeroRatio:(double)a3 integrationTimeInMicroseconds:(int)a4 gain:(float)a5 maxAGC:(int)a6;
-+ (id)frameParametersWithEVZeroRatio:(double)a3 integrationTimeInSeconds:(double)a4 gain:(float)a5 maxAGC:(int)a6;
-- (BWAdaptiveBracketingFrameParameters)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)frameParametersWithEVZeroRatio:(double)ratio integrationTimeInMicroseconds:(int)microseconds gain:(float)gain maxAGC:(int)c;
++ (id)frameParametersWithEVZeroRatio:(double)ratio integrationTimeInSeconds:(double)seconds gain:(float)gain maxAGC:(int)c;
+- (BWAdaptiveBracketingFrameParameters)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWAdaptiveBracketingFrameParameters
 
-- (BWAdaptiveBracketingFrameParameters)initWithCoder:(id)a3
+- (BWAdaptiveBracketingFrameParameters)initWithCoder:(id)coder
 {
   v4 = [(BWAdaptiveBracketingFrameParameters *)self init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"evZeroRatio"];
+    [coder decodeDoubleForKey:@"evZeroRatio"];
     v4->_evZeroRatio = v5;
-    v4->_integrationTimeInMicroseconds = [a3 decodeInt32ForKey:@"integrationTimeInMicroseconds"];
-    [a3 decodeFloatForKey:@"gain"];
+    v4->_integrationTimeInMicroseconds = [coder decodeInt32ForKey:@"integrationTimeInMicroseconds"];
+    [coder decodeFloatForKey:@"gain"];
     v4->_gain = v6;
-    v4->_maxAGC = [a3 decodeInt32ForKey:@"maxAGC"];
+    v4->_maxAGC = [coder decodeInt32ForKey:@"maxAGC"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"evZeroRatio" forKey:self->_evZeroRatio];
-  [a3 encodeInt32:self->_integrationTimeInMicroseconds forKey:@"integrationTimeInMicroseconds"];
+  [coder encodeDouble:@"evZeroRatio" forKey:self->_evZeroRatio];
+  [coder encodeInt32:self->_integrationTimeInMicroseconds forKey:@"integrationTimeInMicroseconds"];
   *&v5 = self->_gain;
-  [a3 encodeFloat:@"gain" forKey:v5];
+  [coder encodeFloat:@"gain" forKey:v5];
   maxAGC = self->_maxAGC;
 
-  [a3 encodeInt32:maxAGC forKey:@"maxAGC"];
+  [coder encodeInt32:maxAGC forKey:@"maxAGC"];
 }
 
-+ (id)frameParametersWithEVZeroRatio:(double)a3 integrationTimeInMicroseconds:(int)a4 gain:(float)a5 maxAGC:(int)a6
++ (id)frameParametersWithEVZeroRatio:(double)ratio integrationTimeInMicroseconds:(int)microseconds gain:(float)gain maxAGC:(int)c
 {
   v6 = [BWAdaptiveBracketingFrameParameters alloc];
   if (v6)
@@ -51,7 +51,7 @@
   return v6;
 }
 
-+ (id)frameParametersWithEVZeroRatio:(double)a3 integrationTimeInSeconds:(double)a4 gain:(float)a5 maxAGC:(int)a6
++ (id)frameParametersWithEVZeroRatio:(double)ratio integrationTimeInSeconds:(double)seconds gain:(float)gain maxAGC:(int)c
 {
   v10 = [BWAdaptiveBracketingFrameParameters alloc];
   if (v10)
@@ -61,10 +61,10 @@
     v10 = objc_msgSendSuper2(&v12, sel_init);
     if (v10)
     {
-      v10->_evZeroRatio = a3;
-      v10->_integrationTimeInMicroseconds = (a4 * 1000000.0);
-      v10->_gain = a5;
-      v10->_maxAGC = a6;
+      v10->_evZeroRatio = ratio;
+      v10->_integrationTimeInMicroseconds = (seconds * 1000000.0);
+      v10->_gain = gain;
+      v10->_maxAGC = c;
     }
   }
 

@@ -1,27 +1,27 @@
 @interface AWDWiFiActionFrameEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActionCode:(BOOL)a3;
-- (void)setHasBtmAbridged:(BOOL)a3;
-- (void)setHasBtmBssTerminationIncluded:(BOOL)a3;
-- (void)setHasBtmDisassociationImminent:(BOOL)a3;
-- (void)setHasBtmDisassociationTimeout:(BOOL)a3;
-- (void)setHasBtmEssTerminationIncluded:(BOOL)a3;
-- (void)setHasBtmHasPreferredCandidateList:(BOOL)a3;
-- (void)setHasBtmTerminationDuration:(BOOL)a3;
-- (void)setHasBtmValidityInterval:(BOOL)a3;
-- (void)setHasCategoryCode:(BOOL)a3;
-- (void)setHasDialogToken:(BOOL)a3;
-- (void)setHasEnvironmentType:(BOOL)a3;
-- (void)setHasFrameType:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasActionCode:(BOOL)code;
+- (void)setHasBtmAbridged:(BOOL)abridged;
+- (void)setHasBtmBssTerminationIncluded:(BOOL)included;
+- (void)setHasBtmDisassociationImminent:(BOOL)imminent;
+- (void)setHasBtmDisassociationTimeout:(BOOL)timeout;
+- (void)setHasBtmEssTerminationIncluded:(BOOL)included;
+- (void)setHasBtmHasPreferredCandidateList:(BOOL)list;
+- (void)setHasBtmTerminationDuration:(BOOL)duration;
+- (void)setHasBtmValidityInterval:(BOOL)interval;
+- (void)setHasCategoryCode:(BOOL)code;
+- (void)setHasDialogToken:(BOOL)token;
+- (void)setHasEnvironmentType:(BOOL)type;
+- (void)setHasFrameType:(BOOL)type;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiActionFrameEvent
@@ -34,9 +34,9 @@
   [(AWDWiFiActionFrameEvent *)&v3 dealloc];
 }
 
-- (void)setHasEnvironmentType:(BOOL)a3
+- (void)setHasEnvironmentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4096;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasCategoryCode:(BOOL)a3
+- (void)setHasCategoryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 1024;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasActionCode:(BOOL)a3
+- (void)setHasActionCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDialogToken:(BOOL)a3
+- (void)setHasDialogToken:(BOOL)token
 {
-  if (a3)
+  if (token)
   {
     v3 = 2048;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x4000;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasFrameType:(BOOL)a3
+- (void)setHasFrameType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x2000;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasBtmDisassociationTimeout:(BOOL)a3
+- (void)setHasBtmDisassociationTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 32;
   }
@@ -139,9 +139,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasBtmValidityInterval:(BOOL)a3
+- (void)setHasBtmValidityInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 512;
   }
@@ -154,9 +154,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasBtmTerminationDuration:(BOOL)a3
+- (void)setHasBtmTerminationDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -169,9 +169,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasBtmHasPreferredCandidateList:(BOOL)a3
+- (void)setHasBtmHasPreferredCandidateList:(BOOL)list
 {
-  if (a3)
+  if (list)
   {
     v3 = 128;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasBtmAbridged:(BOOL)a3
+- (void)setHasBtmAbridged:(BOOL)abridged
 {
-  if (a3)
+  if (abridged)
   {
     v3 = 4;
   }
@@ -199,9 +199,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasBtmDisassociationImminent:(BOOL)a3
+- (void)setHasBtmDisassociationImminent:(BOOL)imminent
 {
-  if (a3)
+  if (imminent)
   {
     v3 = 16;
   }
@@ -214,9 +214,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasBtmBssTerminationIncluded:(BOOL)a3
+- (void)setHasBtmBssTerminationIncluded:(BOOL)included
 {
-  if (a3)
+  if (included)
   {
     v3 = 8;
   }
@@ -229,9 +229,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBtmEssTerminationIncluded:(BOOL)a3
+- (void)setHasBtmEssTerminationIncluded:(BOOL)included
 {
-  if (a3)
+  if (included)
   {
     v3 = 64;
   }
@@ -253,22 +253,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   oui = self->_oui;
   if (oui)
   {
-    [v3 setObject:oui forKey:@"oui"];
+    [dictionary setObject:oui forKey:@"oui"];
   }
 
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_environmentType), @"environmentType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_environmentType), @"environmentType"}];
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -287,7 +287,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_categoryCode), @"categoryCode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_categoryCode), @"categoryCode"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -301,7 +301,7 @@ LABEL_8:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_actionCode), @"actionCode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_actionCode), @"actionCode"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -315,7 +315,7 @@ LABEL_9:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dialogToken), @"dialogToken"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dialogToken), @"dialogToken"}];
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -329,7 +329,7 @@ LABEL_10:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_status), @"status"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_status), @"status"}];
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -343,7 +343,7 @@ LABEL_11:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_frameType), @"frameType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_frameType), @"frameType"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -357,7 +357,7 @@ LABEL_12:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmDisassociationTimeout), @"btmDisassociationTimeout"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmDisassociationTimeout), @"btmDisassociationTimeout"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -371,7 +371,7 @@ LABEL_13:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmValidityInterval), @"btmValidityInterval"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmValidityInterval), @"btmValidityInterval"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -385,7 +385,7 @@ LABEL_14:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmTerminationDuration), @"btmTerminationDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmTerminationDuration), @"btmTerminationDuration"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -399,7 +399,7 @@ LABEL_15:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmHasPreferredCandidateList), @"btmHasPreferredCandidateList"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmHasPreferredCandidateList), @"btmHasPreferredCandidateList"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -413,7 +413,7 @@ LABEL_16:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmAbridged), @"btmAbridged"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmAbridged), @"btmAbridged"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -424,17 +424,17 @@ LABEL_17:
     }
 
 LABEL_33:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmBssTerminationIncluded), @"btmBssTerminationIncluded"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmBssTerminationIncluded), @"btmBssTerminationIncluded"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_19;
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmDisassociationImminent), @"btmDisassociationImminent"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmDisassociationImminent), @"btmDisassociationImminent"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -445,13 +445,13 @@ LABEL_18:
   if ((has & 0x40) != 0)
   {
 LABEL_19:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmEssTerminationIncluded), @"btmEssTerminationIncluded"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_btmEssTerminationIncluded), @"btmEssTerminationIncluded"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -665,24 +665,24 @@ LABEL_33:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 42) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 42) |= 1u;
   }
 
   if (self->_oui)
   {
-    [a3 setOui:?];
+    [to setOui:?];
   }
 
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
-    *(a3 + 15) = self->_environmentType;
-    *(a3 + 42) |= 0x1000u;
+    *(to + 15) = self->_environmentType;
+    *(to + 42) |= 0x1000u;
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -701,8 +701,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 13) = self->_categoryCode;
-  *(a3 + 42) |= 0x400u;
+  *(to + 13) = self->_categoryCode;
+  *(to + 42) |= 0x400u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -716,8 +716,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  *(a3 + 4) = self->_actionCode;
-  *(a3 + 42) |= 2u;
+  *(to + 4) = self->_actionCode;
+  *(to + 42) |= 2u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -731,8 +731,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  *(a3 + 14) = self->_dialogToken;
-  *(a3 + 42) |= 0x800u;
+  *(to + 14) = self->_dialogToken;
+  *(to + 42) |= 0x800u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -746,8 +746,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(a3 + 20) = self->_status;
-  *(a3 + 42) |= 0x4000u;
+  *(to + 20) = self->_status;
+  *(to + 42) |= 0x4000u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -761,8 +761,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  *(a3 + 16) = self->_frameType;
-  *(a3 + 42) |= 0x2000u;
+  *(to + 16) = self->_frameType;
+  *(to + 42) |= 0x2000u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -776,8 +776,8 @@ LABEL_12:
   }
 
 LABEL_27:
-  *(a3 + 8) = self->_btmDisassociationTimeout;
-  *(a3 + 42) |= 0x20u;
+  *(to + 8) = self->_btmDisassociationTimeout;
+  *(to + 42) |= 0x20u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -791,8 +791,8 @@ LABEL_13:
   }
 
 LABEL_28:
-  *(a3 + 12) = self->_btmValidityInterval;
-  *(a3 + 42) |= 0x200u;
+  *(to + 12) = self->_btmValidityInterval;
+  *(to + 42) |= 0x200u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -806,8 +806,8 @@ LABEL_14:
   }
 
 LABEL_29:
-  *(a3 + 11) = self->_btmTerminationDuration;
-  *(a3 + 42) |= 0x100u;
+  *(to + 11) = self->_btmTerminationDuration;
+  *(to + 42) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -821,8 +821,8 @@ LABEL_15:
   }
 
 LABEL_30:
-  *(a3 + 10) = self->_btmHasPreferredCandidateList;
-  *(a3 + 42) |= 0x80u;
+  *(to + 10) = self->_btmHasPreferredCandidateList;
+  *(to + 42) |= 0x80u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -836,8 +836,8 @@ LABEL_16:
   }
 
 LABEL_31:
-  *(a3 + 5) = self->_btmAbridged;
-  *(a3 + 42) |= 4u;
+  *(to + 5) = self->_btmAbridged;
+  *(to + 42) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -851,8 +851,8 @@ LABEL_17:
   }
 
 LABEL_32:
-  *(a3 + 7) = self->_btmDisassociationImminent;
-  *(a3 + 42) |= 0x10u;
+  *(to + 7) = self->_btmDisassociationImminent;
+  *(to + 42) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -866,21 +866,21 @@ LABEL_18:
   }
 
 LABEL_33:
-  *(a3 + 6) = self->_btmBssTerminationIncluded;
-  *(a3 + 42) |= 8u;
+  *(to + 6) = self->_btmBssTerminationIncluded;
+  *(to + 42) |= 8u;
   if ((*&self->_has & 0x40) == 0)
   {
     return;
   }
 
 LABEL_19:
-  *(a3 + 9) = self->_btmEssTerminationIncluded;
-  *(a3 + 42) |= 0x40u;
+  *(to + 9) = self->_btmEssTerminationIncluded;
+  *(to + 42) |= 0x40u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -888,7 +888,7 @@ LABEL_19:
     *(v5 + 84) |= 1u;
   }
 
-  *(v6 + 72) = [(NSData *)self->_oui copyWithZone:a3];
+  *(v6 + 72) = [(NSData *)self->_oui copyWithZone:zone];
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
@@ -1089,16 +1089,16 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 42);
+    v7 = *(equal + 42);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_79;
       }
@@ -1112,7 +1112,7 @@ LABEL_79:
     }
 
     oui = self->_oui;
-    if (oui | *(a3 + 9))
+    if (oui | *(equal + 9))
     {
       v5 = [(NSData *)oui isEqual:?];
       if (!v5)
@@ -1123,36 +1123,36 @@ LABEL_79:
       has = self->_has;
     }
 
-    v9 = *(a3 + 42);
+    v9 = *(equal + 42);
     if ((has & 0x1000) != 0)
     {
-      if ((*(a3 + 42) & 0x1000) == 0 || self->_environmentType != *(a3 + 15))
+      if ((*(equal + 42) & 0x1000) == 0 || self->_environmentType != *(equal + 15))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x1000) != 0)
+    else if ((*(equal + 42) & 0x1000) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 0x400) != 0)
     {
-      if ((*(a3 + 42) & 0x400) == 0 || self->_categoryCode != *(a3 + 13))
+      if ((*(equal + 42) & 0x400) == 0 || self->_categoryCode != *(equal + 13))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x400) != 0)
+    else if ((*(equal + 42) & 0x400) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 2) != 0)
     {
-      if ((v9 & 2) == 0 || self->_actionCode != *(a3 + 4))
+      if ((v9 & 2) == 0 || self->_actionCode != *(equal + 4))
       {
         goto LABEL_79;
       }
@@ -1165,46 +1165,46 @@ LABEL_79:
 
     if ((has & 0x800) != 0)
     {
-      if ((*(a3 + 42) & 0x800) == 0 || self->_dialogToken != *(a3 + 14))
+      if ((*(equal + 42) & 0x800) == 0 || self->_dialogToken != *(equal + 14))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x800) != 0)
+    else if ((*(equal + 42) & 0x800) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 0x4000) != 0)
     {
-      if ((*(a3 + 42) & 0x4000) == 0 || self->_status != *(a3 + 20))
+      if ((*(equal + 42) & 0x4000) == 0 || self->_status != *(equal + 20))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x4000) != 0)
+    else if ((*(equal + 42) & 0x4000) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 0x2000) != 0)
     {
-      if ((*(a3 + 42) & 0x2000) == 0 || self->_frameType != *(a3 + 16))
+      if ((*(equal + 42) & 0x2000) == 0 || self->_frameType != *(equal + 16))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x2000) != 0)
+    else if ((*(equal + 42) & 0x2000) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 0x20) != 0)
     {
-      if ((v9 & 0x20) == 0 || self->_btmDisassociationTimeout != *(a3 + 8))
+      if ((v9 & 0x20) == 0 || self->_btmDisassociationTimeout != *(equal + 8))
       {
         goto LABEL_79;
       }
@@ -1217,33 +1217,33 @@ LABEL_79:
 
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 42) & 0x200) == 0 || self->_btmValidityInterval != *(a3 + 12))
+      if ((*(equal + 42) & 0x200) == 0 || self->_btmValidityInterval != *(equal + 12))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x200) != 0)
+    else if ((*(equal + 42) & 0x200) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 42) & 0x100) == 0 || self->_btmTerminationDuration != *(a3 + 11))
+      if ((*(equal + 42) & 0x100) == 0 || self->_btmTerminationDuration != *(equal + 11))
       {
         goto LABEL_79;
       }
     }
 
-    else if ((*(a3 + 42) & 0x100) != 0)
+    else if ((*(equal + 42) & 0x100) != 0)
     {
       goto LABEL_79;
     }
 
     if ((has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_btmHasPreferredCandidateList != *(a3 + 10))
+      if ((v9 & 0x80) == 0 || self->_btmHasPreferredCandidateList != *(equal + 10))
       {
         goto LABEL_79;
       }
@@ -1256,7 +1256,7 @@ LABEL_79:
 
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_btmAbridged != *(a3 + 5))
+      if ((v9 & 4) == 0 || self->_btmAbridged != *(equal + 5))
       {
         goto LABEL_79;
       }
@@ -1269,7 +1269,7 @@ LABEL_79:
 
     if ((has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_btmDisassociationImminent != *(a3 + 7))
+      if ((v9 & 0x10) == 0 || self->_btmDisassociationImminent != *(equal + 7))
       {
         goto LABEL_79;
       }
@@ -1282,7 +1282,7 @@ LABEL_79:
 
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_btmBssTerminationIncluded != *(a3 + 6))
+      if ((v9 & 8) == 0 || self->_btmBssTerminationIncluded != *(equal + 6))
       {
         goto LABEL_79;
       }
@@ -1296,7 +1296,7 @@ LABEL_79:
     LOBYTE(v5) = (v9 & 0x40) == 0;
     if ((has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_btmEssTerminationIncluded != *(a3 + 9))
+      if ((v9 & 0x40) == 0 || self->_btmEssTerminationIncluded != *(equal + 9))
       {
         goto LABEL_79;
       }
@@ -1514,25 +1514,25 @@ LABEL_18:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 42))
+  if (*(from + 42))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(AWDWiFiActionFrameEvent *)self setOui:?];
   }
 
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x1000) != 0)
   {
-    self->_environmentType = *(a3 + 15);
+    self->_environmentType = *(from + 15);
     *&self->_has |= 0x1000u;
-    v5 = *(a3 + 42);
+    v5 = *(from + 42);
     if ((v5 & 0x400) == 0)
     {
 LABEL_7:
@@ -1545,14 +1545,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 42) & 0x400) == 0)
+  else if ((*(from + 42) & 0x400) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_categoryCode = *(a3 + 13);
+  self->_categoryCode = *(from + 13);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -1565,9 +1565,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_actionCode = *(a3 + 4);
+  self->_actionCode = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x800) == 0)
   {
 LABEL_9:
@@ -1580,9 +1580,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_dialogToken = *(a3 + 14);
+  self->_dialogToken = *(from + 14);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_10:
@@ -1595,9 +1595,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_status = *(a3 + 20);
+  self->_status = *(from + 20);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_11:
@@ -1610,9 +1610,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_frameType = *(a3 + 16);
+  self->_frameType = *(from + 16);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -1625,9 +1625,9 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_btmDisassociationTimeout = *(a3 + 8);
+  self->_btmDisassociationTimeout = *(from + 8);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x200) == 0)
   {
 LABEL_13:
@@ -1640,9 +1640,9 @@ LABEL_13:
   }
 
 LABEL_28:
-  self->_btmValidityInterval = *(a3 + 12);
+  self->_btmValidityInterval = *(from + 12);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x100) == 0)
   {
 LABEL_14:
@@ -1655,9 +1655,9 @@ LABEL_14:
   }
 
 LABEL_29:
-  self->_btmTerminationDuration = *(a3 + 11);
+  self->_btmTerminationDuration = *(from + 11);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x80) == 0)
   {
 LABEL_15:
@@ -1670,9 +1670,9 @@ LABEL_15:
   }
 
 LABEL_30:
-  self->_btmHasPreferredCandidateList = *(a3 + 10);
+  self->_btmHasPreferredCandidateList = *(from + 10);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 4) == 0)
   {
 LABEL_16:
@@ -1685,9 +1685,9 @@ LABEL_16:
   }
 
 LABEL_31:
-  self->_btmAbridged = *(a3 + 5);
+  self->_btmAbridged = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x10) == 0)
   {
 LABEL_17:
@@ -1700,9 +1700,9 @@ LABEL_17:
   }
 
 LABEL_32:
-  self->_btmDisassociationImminent = *(a3 + 7);
+  self->_btmDisassociationImminent = *(from + 7);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 8) == 0)
   {
 LABEL_18:
@@ -1715,15 +1715,15 @@ LABEL_18:
   }
 
 LABEL_33:
-  self->_btmBssTerminationIncluded = *(a3 + 6);
+  self->_btmBssTerminationIncluded = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 42) & 0x40) == 0)
+  if ((*(from + 42) & 0x40) == 0)
   {
     return;
   }
 
 LABEL_19:
-  self->_btmEssTerminationIncluded = *(a3 + 9);
+  self->_btmEssTerminationIncluded = *(from + 9);
   *&self->_has |= 0x40u;
 }
 

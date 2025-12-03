@@ -1,35 +1,35 @@
 @interface TUILayoutContainer
-- (BOOL)isDescendentOfLayout:(id)a3;
-- (TUILayoutContainer)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (BOOL)isDescendentOfLayout:(id)layout;
+- (TUILayoutContainer)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (TUILayoutContaining)parent;
 - (TUILayoutController)controller;
 - (id)layout;
-- (void)enumerateChildren:(id)a3;
+- (void)enumerateChildren:(id)children;
 - (void)notifyChildrenScaleDidChange;
-- (void)onChildInvalidate:(id)a3;
-- (void)onChildInvalidateIntrinsicSize:(id)a3;
-- (void)onChildRenderModelInvalidate:(id)a3;
-- (void)onChildTransformedSizeDidChange:(id)a3;
+- (void)onChildInvalidate:(id)invalidate;
+- (void)onChildInvalidateIntrinsicSize:(id)size;
+- (void)onChildRenderModelInvalidate:(id)invalidate;
+- (void)onChildTransformedSizeDidChange:(id)change;
 - (void)onContainersUpdated;
 - (void)onViewSafeAreaInsetsDidChange;
 @end
 
 @implementation TUILayoutContainer
 
-- (TUILayoutContainer)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUILayoutContainer)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  parentCopy = parent;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = TUILayoutContainer;
   v12 = [(TUILayoutContainer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_model, a3);
-    objc_storeWeak(&v13->_parent, v10);
-    objc_storeWeak(&v13->_controller, v11);
+    objc_storeStrong(&v12->_model, model);
+    objc_storeWeak(&v13->_parent, parentCopy);
+    objc_storeWeak(&v13->_controller, controllerCopy);
   }
 
   return v13;
@@ -38,9 +38,9 @@
 - (id)layout
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  v3 = [WeakRetained layout];
+  layout = [WeakRetained layout];
 
-  return v3;
+  return layout;
 }
 
 - (void)onContainersUpdated
@@ -49,47 +49,47 @@
   [WeakRetained onContainersUpdated];
 }
 
-- (void)onChildInvalidate:(id)a3
+- (void)onChildInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained onChildInvalidate:v4];
+  [WeakRetained onChildInvalidate:invalidateCopy];
 }
 
-- (void)onChildRenderModelInvalidate:(id)a3
+- (void)onChildRenderModelInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained onChildRenderModelInvalidate:v4];
+  [WeakRetained onChildRenderModelInvalidate:invalidateCopy];
 }
 
-- (void)onChildInvalidateIntrinsicSize:(id)a3
+- (void)onChildInvalidateIntrinsicSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained onChildInvalidateIntrinsicSize:v4];
+  [WeakRetained onChildInvalidateIntrinsicSize:sizeCopy];
 }
 
-- (void)onChildTransformedSizeDidChange:(id)a3
+- (void)onChildTransformedSizeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained onChildTransformedSizeDidChange:v4];
+  [WeakRetained onChildTransformedSizeDidChange:changeCopy];
 }
 
-- (BOOL)isDescendentOfLayout:(id)a3
+- (BOOL)isDescendentOfLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(TUILayoutContainer *)self parent];
-  if (v5 == v4)
+  layoutCopy = layout;
+  parent = [(TUILayoutContainer *)self parent];
+  if (parent == layoutCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(TUILayoutContainer *)self parent];
-    v7 = [v6 isDescendentOfLayout:v4];
+    parent2 = [(TUILayoutContainer *)self parent];
+    v7 = [parent2 isDescendentOfLayout:layoutCopy];
   }
 
   return v7;
@@ -161,9 +161,9 @@
   }
 }
 
-- (void)enumerateChildren:(id)a3
+- (void)enumerateChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) enumerateLayout:{v4, v9}];
+        [*(*(&v9 + 1) + 8 * v8) enumerateLayout:{childrenCopy, v9}];
         v8 = v8 + 1;
       }
 

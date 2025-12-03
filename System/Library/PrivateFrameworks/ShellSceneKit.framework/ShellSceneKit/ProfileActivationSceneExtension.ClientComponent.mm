@@ -1,7 +1,7 @@
 @interface ProfileActivationSceneExtension.ClientComponent
 - (_TtCC13ShellSceneKit31ProfileActivationSceneExtension15ClientComponent)init;
-- (_TtCC13ShellSceneKit31ProfileActivationSceneExtension15ClientComponent)initWithScene:(id)a3;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (_TtCC13ShellSceneKit31ProfileActivationSceneExtension15ClientComponent)initWithScene:(id)scene;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation ProfileActivationSceneExtension.ClientComponent
@@ -16,7 +16,7 @@
   return [(ProfileActivationSceneExtension.ClientComponent *)&v6 init];
 }
 
-- (_TtCC13ShellSceneKit31ProfileActivationSceneExtension15ClientComponent)initWithScene:(id)a3
+- (_TtCC13ShellSceneKit31ProfileActivationSceneExtension15ClientComponent)initWithScene:(id)scene
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtCC13ShellSceneKit31ProfileActivationSceneExtension15ClientComponent_activationObservers;
@@ -25,7 +25,7 @@
   *(&self->super.super.isa + v6) = [v7 weakObjectsHashTable];
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(FBSSceneComponent *)&v10 initWithScene:a3];
+  v8 = [(FBSSceneComponent *)&v10 initWithScene:scene];
   swift_unknownObjectRelease();
   if (v8)
   {
@@ -34,12 +34,12 @@
   return v8;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_265FE8828(v6, v7);
+  sceneCopy = scene;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_265FE8828(sceneCopy, settingsCopy);
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface SBSARecombinationTransitionProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSARecombinationTransitionProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -42,11 +42,11 @@
     v9 = 0;
   }
 
-  v10 = [v9 preferences];
-  if (v10)
+  preferences = [v9 preferences];
+  if (preferences)
   {
     v11 = objc_opt_self();
-    v12 = v10;
+    v12 = preferences;
     if (v11)
     {
       if (objc_opt_isKindOfClass())

@@ -7,7 +7,7 @@
 + (id)asParseRules;
 - (ASMailboxSearchResult)init;
 - (id)description;
-- (void)addClass:(id)a3;
+- (void)addClass:(id)class;
 @end
 
 @implementation ASMailboxSearchResult
@@ -21,7 +21,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_10 = v2;
     acceptsTopLevelLeaves___haveChecked_10 = 1;
   }
@@ -38,7 +38,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_10 = v2;
     parsingLeafNode___haveChecked_10 = 1;
   }
@@ -55,7 +55,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_10 = v2;
     parsingWithSubItems___haveChecked_10 = 1;
   }
@@ -72,7 +72,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_10 = v2;
     frontingBasicTypes___haveChecked_10 = 1;
   }
@@ -89,7 +89,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_10 = v2;
     notifyOfUnknownTokens___haveChecked_10 = 1;
   }
@@ -125,7 +125,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -144,7 +144,7 @@
     v48 = [MEMORY[0x277CCABB0] numberWithInt:546];
     v6 = [ASParseRule alloc];
     v7 = objc_opt_class();
-    v43 = a1;
+    selfCopy = self;
     v8 = MEMORY[0x277CBEAC0];
     v39 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:2 token:5 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v38 = [MEMORY[0x277CCABB0] numberWithInt:517];
@@ -177,26 +177,26 @@
     v5 = [v44 dictionaryWithObjectsAndKeys:{v52, v51, v50, v42, v41, v40, v19, v20, 0}];
 
     v21 = +[ASItem parseRuleCache];
-    v22 = NSStringFromClass(v43);
+    v22 = NSStringFromClass(selfCopy);
     [v21 setObject:v5 forKey:v22];
   }
 
   return v5;
 }
 
-- (void)addClass:(id)a3
+- (void)addClass:(id)class
 {
-  v4 = a3;
-  v5 = [(ASMailboxSearchResult *)self mClasses];
+  classCopy = class;
+  mClasses = [(ASMailboxSearchResult *)self mClasses];
 
-  if (!v5)
+  if (!mClasses)
   {
     v6 = objc_opt_new();
     [(ASMailboxSearchResult *)self setMClasses:v6];
   }
 
-  v7 = [(ASMailboxSearchResult *)self mClasses];
-  [v7 addObject:v4];
+  mClasses2 = [(ASMailboxSearchResult *)self mClasses];
+  [mClasses2 addObject:classCopy];
 }
 
 @end

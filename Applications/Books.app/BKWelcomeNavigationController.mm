@@ -3,71 +3,71 @@
 - (BOOL)shouldAutorotate;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BKWelcomeNavigationController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = BKWelcomeNavigationController;
-  [(BKWelcomeNavigationController *)&v3 viewDidAppear:a3];
+  [(BKWelcomeNavigationController *)&v3 viewDidAppear:appear];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(BKWelcomeNavigationController *)self topViewController];
-  if (v3)
+  topViewController = [(BKWelcomeNavigationController *)self topViewController];
+  if (topViewController)
   {
-    v4 = [(BKWelcomeNavigationController *)self topViewController];
-    v5 = [v4 supportedInterfaceOrientations];
+    topViewController2 = [(BKWelcomeNavigationController *)self topViewController];
+    supportedInterfaceOrientations = [topViewController2 supportedInterfaceOrientations];
   }
 
   else
   {
-    v5 = 30;
+    supportedInterfaceOrientations = 30;
   }
 
-  return v5;
+  return supportedInterfaceOrientations;
 }
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [(BKWelcomeNavigationController *)self topViewController];
-  if (v3)
+  topViewController = [(BKWelcomeNavigationController *)self topViewController];
+  if (topViewController)
   {
-    v4 = [(BKWelcomeNavigationController *)self topViewController];
-    v5 = [v4 shouldAutorotate];
+    topViewController2 = [(BKWelcomeNavigationController *)self topViewController];
+    shouldAutorotate = [topViewController2 shouldAutorotate];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BKWelcomeNavigationController;
-    v5 = [(BKWelcomeNavigationController *)&v7 shouldAutorotate];
+    shouldAutorotate = [(BKWelcomeNavigationController *)&v7 shouldAutorotate];
   }
 
-  return v5;
+  return shouldAutorotate;
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v3 = [(BKWelcomeNavigationController *)self topViewController];
-  if (v3)
+  topViewController = [(BKWelcomeNavigationController *)self topViewController];
+  if (topViewController)
   {
-    v4 = [(BKWelcomeNavigationController *)self topViewController];
-    v5 = [v4 preferredInterfaceOrientationForPresentation];
+    topViewController2 = [(BKWelcomeNavigationController *)self topViewController];
+    preferredInterfaceOrientationForPresentation = [topViewController2 preferredInterfaceOrientationForPresentation];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BKWelcomeNavigationController;
-    v5 = [(BKWelcomeNavigationController *)&v7 preferredInterfaceOrientationForPresentation];
+    preferredInterfaceOrientationForPresentation = [(BKWelcomeNavigationController *)&v7 preferredInterfaceOrientationForPresentation];
   }
 
-  return v5;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 - (BKWelcomeNavigationControllerDelegate)bkDelegate

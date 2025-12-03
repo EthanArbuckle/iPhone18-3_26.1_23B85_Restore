@@ -1,14 +1,14 @@
 @interface ACDOAuthSigner
 - (ACDOAuthSigner)init;
-- (ACDOAuthSigner)initWithClient:(id)a3 databaseConnection:(id)a4;
-- (BOOL)_permissionGrantedForBundleID:(id)a3 onAccountType:(id)a4;
-- (id)_signedRequest:(id)a3 withAccountObject:(id)a4 applicationID:(id)a5 timestamp:(id)a6;
-- (id)ckForAccountType:(id)a3;
-- (id)csForAccountType:(id)a3;
-- (id)signedRequest:(id)a3 withAccount:(id)a4 applicationID:(id)a5 timestamp:(id)a6;
-- (void)setClientBundleID:(id)a3 withHandler:(id)a4;
-- (void)signURLRequest:(id)a3 withAccount:(id)a4 applicationID:(id)a5 timestamp:(id)a6 handler:(id)a7;
-- (void)signURLRequest:(id)a3 withAccount:(id)a4 callingPID:(id)a5 timestamp:(id)a6 handler:(id)a7;
+- (ACDOAuthSigner)initWithClient:(id)client databaseConnection:(id)connection;
+- (BOOL)_permissionGrantedForBundleID:(id)d onAccountType:(id)type;
+- (id)_signedRequest:(id)request withAccountObject:(id)object applicationID:(id)d timestamp:(id)timestamp;
+- (id)ckForAccountType:(id)type;
+- (id)csForAccountType:(id)type;
+- (id)signedRequest:(id)request withAccount:(id)account applicationID:(id)d timestamp:(id)timestamp;
+- (void)setClientBundleID:(id)d withHandler:(id)handler;
+- (void)signURLRequest:(id)request withAccount:(id)account applicationID:(id)d timestamp:(id)timestamp handler:(id)handler;
+- (void)signURLRequest:(id)request withAccount:(id)account callingPID:(id)d timestamp:(id)timestamp handler:(id)handler;
 @end
 
 @implementation ACDOAuthSigner
@@ -20,18 +20,18 @@
   return 0;
 }
 
-- (ACDOAuthSigner)initWithClient:(id)a3 databaseConnection:(id)a4
+- (ACDOAuthSigner)initWithClient:(id)client databaseConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = ACDOAuthSigner;
   v9 = [(ACDOAuthSigner *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
-    objc_storeStrong(&v10->_databaseConnection, a4);
+    objc_storeStrong(&v9->_client, client);
+    objc_storeStrong(&v10->_databaseConnection, connection);
     v10->_shouldIncludeAppIdInRequest = 1;
     v11 = [[ACDClientAuthorizationManager alloc] initWithDatabaseConnection:v10->_databaseConnection];
     authorizationManager = v10->_authorizationManager;
@@ -41,54 +41,54 @@
   return v10;
 }
 
-- (void)setClientBundleID:(id)a3 withHandler:(id)a4
+- (void)setClientBundleID:(id)d withHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if ([(ACDClient *)self->_client hasEntitlement:*MEMORY[0x277CB9010]]&& (client = self->_client) != 0)
   {
-    [(ACDClient *)client setBundleID:v9];
-    v6[2](v6, 1, 0);
+    [(ACDClient *)client setBundleID:dCopy];
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:7 userInfo:0];
-    (v6)[2](v6, 0, v8);
+    (handlerCopy)[2](handlerCopy, 0, v8);
   }
 }
 
-- (id)_signedRequest:(id)a3 withAccountObject:(id)a4 applicationID:(id)a5 timestamp:(id)a6
+- (id)_signedRequest:(id)request withAccountObject:(id)object applicationID:(id)d timestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  objectCopy = object;
+  dCopy = d;
+  timestampCopy = timestamp;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__5;
   v35 = __Block_byref_object_dispose__5;
   v36 = 0;
-  v14 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __75__ACDOAuthSigner__signedRequest_withAccountObject_applicationID_timestamp___block_invoke;
   v26 = &unk_27848CA80;
-  v15 = v11;
+  v15 = objectCopy;
   v27 = v15;
   v30 = &v31;
-  v16 = v10;
+  v16 = requestCopy;
   v28 = v16;
-  v29 = self;
-  [v14 performBlockAndWait:&v23];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:&v23];
 
   v17 = objc_alloc(MEMORY[0x277D36A38]);
   v18 = [v17 initWithCredential:{v32[5], v23, v24, v25, v26}];
   v19 = v18;
   if (self->_shouldIncludeAppIdInRequest)
   {
-    v20 = v12;
+    v20 = dCopy;
   }
 
   else
@@ -96,7 +96,7 @@
     v20 = 0;
   }
 
-  v21 = [v18 signedURLRequestWithRequest:v16 applicationID:v20 timestamp:v13];
+  v21 = [v18 signedURLRequestWithRequest:v16 applicationID:v20 timestamp:timestampCopy];
 
   _Block_object_dispose(&v31, 8);
 
@@ -147,13 +147,13 @@ void __75__ACDOAuthSigner__signedRequest_withAccountObject_applicationID_timesta
   [*(*(*(a1 + 56) + 8) + 40) setOauthTokenSecret:v13];
 }
 
-- (void)signURLRequest:(id)a3 withAccount:(id)a4 callingPID:(id)a5 timestamp:(id)a6 handler:(id)a7
+- (void)signURLRequest:(id)request withAccount:(id)account callingPID:(id)d timestamp:(id)timestamp handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestCopy = request;
+  accountCopy = account;
+  dCopy = d;
+  timestampCopy = timestamp;
+  handlerCopy = handler;
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
@@ -166,26 +166,26 @@ void __75__ACDOAuthSigner__signedRequest_withAccountObject_applicationID_timesta
   v51 = __Block_byref_object_copy__5;
   v52 = __Block_byref_object_dispose__5;
   v53 = 0;
-  v17 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v40 = MEMORY[0x277D85DD0];
   v41 = 3221225472;
   v42 = __74__ACDOAuthSigner_signURLRequest_withAccount_callingPID_timestamp_handler___block_invoke;
   v43 = &unk_27848C130;
   v46 = &v54;
-  v44 = self;
-  v18 = v13;
+  selfCopy = self;
+  v18 = accountCopy;
   v45 = v18;
   v47 = &v48;
-  [v17 performBlockAndWait:&v40];
+  [managedObjectContext performBlockAndWait:&v40];
 
   if (!v55[5])
   {
-    v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:6 userInfo:{0, v40, v41, v42, v43, v44}];
-    v16[2](v16, 0, v20);
+    v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:6 userInfo:{0, v40, v41, v42, v43, selfCopy}];
+    handlerCopy[2](handlerCopy, 0, v20);
     goto LABEL_19;
   }
 
-  if (v14 && [v14 intValue] >= 1)
+  if (dCopy && [dCopy intValue] >= 1)
   {
     if (![(ACDClient *)self->_client hasEntitlement:*MEMORY[0x277CB9000]])
     {
@@ -199,7 +199,7 @@ void __75__ACDOAuthSigner__signedRequest_withAccountObject_applicationID_timesta
       goto LABEL_8;
     }
 
-    [v14 intValue];
+    [dCopy intValue];
     v19 = ACDGetAdamOrDisplayIDForPID();
   }
 
@@ -214,8 +214,8 @@ LABEL_8:
   {
     if (v20 || !self->_shouldIncludeAppIdInRequest)
     {
-      v23 = [(ACDOAuthSigner *)self _signedRequest:v12 withAccountObject:v55[5] applicationID:v20 timestamp:v15];
-      (v16)[2](v16, v23, 0);
+      v23 = [(ACDOAuthSigner *)self _signedRequest:requestCopy withAccountObject:v55[5] applicationID:v20 timestamp:timestampCopy];
+      (handlerCopy)[2](handlerCopy, v23, 0);
     }
 
     else
@@ -227,14 +227,14 @@ LABEL_8:
       }
 
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:1 userInfo:0];
-      v16[2](v16, 0, v23);
+      handlerCopy[2](handlerCopy, 0, v23);
     }
   }
 
   else
   {
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:7 userInfo:0];
-    v16[2](v16, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
   }
 
 LABEL_19:
@@ -263,30 +263,30 @@ void __74__ACDOAuthSigner_signURLRequest_withAccount_callingPID_timestamp_handle
   }
 }
 
-- (id)signedRequest:(id)a3 withAccount:(id)a4 applicationID:(id)a5 timestamp:(id)a6
+- (id)signedRequest:(id)request withAccount:(id)account applicationID:(id)d timestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  accountCopy = account;
+  dCopy = d;
+  timestampCopy = timestamp;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__5;
   v25 = __Block_byref_object_dispose__5;
   v26 = 0;
-  v14 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __68__ACDOAuthSigner_signedRequest_withAccount_applicationID_timestamp___block_invoke;
   v18[3] = &unk_27848BCD0;
   v20 = &v21;
   v18[4] = self;
-  v15 = v11;
+  v15 = accountCopy;
   v19 = v15;
-  [v14 performBlockAndWait:v18];
+  [managedObjectContext performBlockAndWait:v18];
 
-  v16 = [(ACDOAuthSigner *)self _signedRequest:v10 withAccountObject:v22[5] applicationID:v12 timestamp:v13];
+  v16 = [(ACDOAuthSigner *)self _signedRequest:requestCopy withAccountObject:v22[5] applicationID:dCopy timestamp:timestampCopy];
 
   _Block_object_dispose(&v21, 8);
 
@@ -303,13 +303,13 @@ void __68__ACDOAuthSigner_signedRequest_withAccount_applicationID_timestamp___bl
   *(v4 + 40) = v3;
 }
 
-- (void)signURLRequest:(id)a3 withAccount:(id)a4 applicationID:(id)a5 timestamp:(id)a6 handler:(id)a7
+- (void)signURLRequest:(id)request withAccount:(id)account applicationID:(id)d timestamp:(id)timestamp handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestCopy = request;
+  accountCopy = account;
+  dCopy = d;
+  timestampCopy = timestamp;
+  handlerCopy = handler;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -322,27 +322,27 @@ void __68__ACDOAuthSigner_signedRequest_withAccount_applicationID_timestamp___bl
   v42 = __Block_byref_object_copy__5;
   v43 = __Block_byref_object_dispose__5;
   v44 = 0;
-  v17 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v31 = MEMORY[0x277D85DD0];
   v32 = 3221225472;
   v33 = __77__ACDOAuthSigner_signURLRequest_withAccount_applicationID_timestamp_handler___block_invoke;
   v34 = &unk_27848C130;
   v37 = &v45;
-  v35 = self;
-  v18 = v13;
+  selfCopy = self;
+  v18 = accountCopy;
   v36 = v18;
   v38 = &v39;
-  [v17 performBlockAndWait:&v31];
+  [managedObjectContext performBlockAndWait:&v31];
 
   if (!v46[5])
   {
-    v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:6 userInfo:{0, v31, v32, v33, v34, v35}];
-    v16[2](v16, 0, v22);
+    v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:6 userInfo:{0, v31, v32, v33, v34, selfCopy}];
+    handlerCopy[2](handlerCopy, 0, v22);
     goto LABEL_11;
   }
 
-  v19 = [(ACDClient *)self->_client hasEntitlement:*MEMORY[0x277CB8FE0], v31, v32, v33, v34, v35];
-  if (!v14)
+  selfCopy = [(ACDClient *)self->_client hasEntitlement:*MEMORY[0x277CB8FE0], v31, v32, v33, v34, selfCopy];
+  if (!dCopy)
   {
     v23 = _ACDLogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -353,22 +353,22 @@ void __68__ACDOAuthSigner_signedRequest_withAccount_applicationID_timestamp___bl
     goto LABEL_10;
   }
 
-  if (!v19)
+  if (!selfCopy)
   {
-    v20 = [(ACDClient *)self->_client bundleID];
-    v21 = [(ACDOAuthSigner *)self _permissionGrantedForBundleID:v20 onAccountType:v40[5]];
+    bundleID = [(ACDClient *)self->_client bundleID];
+    v21 = [(ACDOAuthSigner *)self _permissionGrantedForBundleID:bundleID onAccountType:v40[5]];
 
     if (!v21)
     {
 LABEL_10:
       v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:1 userInfo:0];
-      v16[2](v16, 0, v22);
+      handlerCopy[2](handlerCopy, 0, v22);
       goto LABEL_11;
     }
   }
 
-  v22 = [(ACDOAuthSigner *)self _signedRequest:v12 withAccountObject:v46[5] applicationID:v14 timestamp:v15];
-  (v16)[2](v16, v22, 0);
+  v22 = [(ACDOAuthSigner *)self _signedRequest:requestCopy withAccountObject:v46[5] applicationID:dCopy timestamp:timestampCopy];
+  (handlerCopy)[2](handlerCopy, v22, 0);
 LABEL_11:
 
   _Block_object_dispose(&v39, 8);
@@ -395,17 +395,17 @@ void __77__ACDOAuthSigner_signURLRequest_withAccount_applicationID_timestamp_han
   }
 }
 
-- (BOOL)_permissionGrantedForBundleID:(id)a3 onAccountType:(id)a4
+- (BOOL)_permissionGrantedForBundleID:(id)d onAccountType:(id)type
 {
-  v6 = a4;
-  v7 = [ACDClient clientWithBundleID:a3];
-  v8 = [(ACDClientAuthorizationManager *)self->_authorizationManager authorizationForClient:v7 accountType:v6];
+  typeCopy = type;
+  v7 = [ACDClient clientWithBundleID:d];
+  v8 = [(ACDClientAuthorizationManager *)self->_authorizationManager authorizationForClient:v7 accountType:typeCopy];
 
-  v9 = [v8 isGranted];
-  return v9;
+  isGranted = [v8 isGranted];
+  return isGranted;
 }
 
-- (id)ckForAccountType:(id)a3
+- (id)ckForAccountType:(id)type
 {
   v15[6] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CB8D00];
@@ -424,11 +424,11 @@ void __77__ACDOAuthSigner_signURLRequest_withAccount_applicationID_timestamp_han
   v15[4] = @"97d4b8:a6350926e2ab4gedefa7432:2:88530f7";
   v15[5] = @"902265845";
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  typeCopy = type;
   v8 = [v6 dictionaryWithObjects:v15 forKeys:v14 count:6];
-  v9 = [v7 identifier];
+  identifier = [typeCopy identifier];
 
-  v10 = [v8 objectForKey:v9];
+  v10 = [v8 objectForKey:identifier];
 
   if (v10)
   {
@@ -445,7 +445,7 @@ void __77__ACDOAuthSigner_signURLRequest_withAccount_applicationID_timestamp_han
   return v11;
 }
 
-- (id)csForAccountType:(id)a3
+- (id)csForAccountType:(id)type
 {
   v15[6] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CB8D00];
@@ -464,11 +464,11 @@ void __77__ACDOAuthSigner_signURLRequest_withAccount_applicationID_timestamp_han
   v15[4] = @"33b67328e3fe8c697325g9d1666c672agbcagc1f";
   v15[5] = @"49b7ccffdbg14a5b234345cf1acc86c4";
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  typeCopy = type;
   v8 = [v6 dictionaryWithObjects:v15 forKeys:v14 count:6];
-  v9 = [v7 identifier];
+  identifier = [typeCopy identifier];
 
-  v10 = [v8 objectForKey:v9];
+  v10 = [v8 objectForKey:identifier];
 
   if (v10)
   {

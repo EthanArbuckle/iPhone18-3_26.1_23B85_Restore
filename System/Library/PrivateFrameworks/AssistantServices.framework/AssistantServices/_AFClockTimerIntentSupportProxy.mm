@@ -1,17 +1,17 @@
 @interface _AFClockTimerIntentSupportProxy
 - (NSString)description;
-- (_AFClockTimerIntentSupportProxy)initWithTimerID:(id)a3 state:(unint64_t)a4 duration:(double)a5 remainingTime:(double)a6 lastModifiedDate:(id)a7 title:(id)a8 siriContext:(id)a9;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (_AFClockTimerIntentSupportProxy)initWithTimerID:(id)d state:(unint64_t)state duration:(double)duration remainingTime:(double)time lastModifiedDate:(id)date title:(id)title siriContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)type;
-- (void)setDuration:(double)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setDuration:(double)duration;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation _AFClockTimerIntentSupportProxy
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [_AFClockTimerIntentSupportMutableProxy allocWithZone:a3];
+  v4 = [_AFClockTimerIntentSupportMutableProxy allocWithZone:zone];
   timerID = self->_timerID;
   state = self->_state;
   duration = self->_duration;
@@ -23,7 +23,7 @@
   return [(_AFClockTimerIntentSupportProxy *)v4 initWithTimerID:timerID state:state duration:lastModifiedDate remainingTime:title lastModifiedDate:siriContext title:duration siriContext:remainingTime];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   if (self->_state != 1)
   {
@@ -41,9 +41,9 @@ LABEL_9:
     return;
   }
 
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     return;
   }
 
@@ -57,16 +57,16 @@ LABEL_9:
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       self->_remainingTime = self->_duration;
     }
 
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
@@ -86,39 +86,39 @@ LABEL_9:
   v2 = [(NSDictionary *)self->_siriContext objectForKeyedSubscript:SOMTTimerIntentSupportSiriContextTimerTypeKey];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 1;
+    integerValue = 1;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (_AFClockTimerIntentSupportProxy)initWithTimerID:(id)a3 state:(unint64_t)a4 duration:(double)a5 remainingTime:(double)a6 lastModifiedDate:(id)a7 title:(id)a8 siriContext:(id)a9
+- (_AFClockTimerIntentSupportProxy)initWithTimerID:(id)d state:(unint64_t)state duration:(double)duration remainingTime:(double)time lastModifiedDate:(id)date title:(id)title siriContext:(id)context
 {
-  v17 = a3;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  dateCopy = date;
+  titleCopy = title;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = _AFClockTimerIntentSupportProxy;
   v21 = [(_AFClockTimerIntentSupportProxy *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_timerID, a3);
-    v22->_state = a4;
-    v22->_duration = a5;
-    v22->_remainingTime = a6;
-    objc_storeStrong(&v22->_lastModifiedDate, a7);
-    v23 = [v19 copy];
+    objc_storeStrong(&v21->_timerID, d);
+    v22->_state = state;
+    v22->_duration = duration;
+    v22->_remainingTime = time;
+    objc_storeStrong(&v22->_lastModifiedDate, date);
+    v23 = [titleCopy copy];
     title = v22->_title;
     v22->_title = v23;
 
-    objc_storeStrong(&v22->_siriContext, a9);
+    objc_storeStrong(&v22->_siriContext, context);
   }
 
   return v22;

@@ -1,32 +1,32 @@
 @interface PKEnhancedMerchantsShelfSectionController
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
-- (PKEnhancedMerchantsShelfSectionController)initWithSectionIdentifier:(id)a3 fetcher:(id)a4 delegate:(id)a5;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
+- (PKEnhancedMerchantsShelfSectionController)initWithSectionIdentifier:(id)identifier fetcher:(id)fetcher delegate:(id)delegate;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)_configureDataSource;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)didPressEnhancedMerchantsListButton;
-- (void)didSelectItem:(id)a3;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKEnhancedMerchantsShelfSectionController
 
-- (PKEnhancedMerchantsShelfSectionController)initWithSectionIdentifier:(id)a3 fetcher:(id)a4 delegate:(id)a5
+- (PKEnhancedMerchantsShelfSectionController)initWithSectionIdentifier:(id)identifier fetcher:(id)fetcher delegate:(id)delegate
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  fetcherCopy = fetcher;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = PKEnhancedMerchantsShelfSectionController;
   v11 = [(PKEnhancedMerchantsShelfSectionController *)&v23 init];
   if (v11)
   {
     v12 = @"PKRewardsHubSectionEnhancedMerchantShelf";
-    if (v8)
+    if (identifierCopy)
     {
-      v12 = v8;
+      v12 = identifierCopy;
     }
 
     v13 = v12;
@@ -35,8 +35,8 @@
     identifiers = v11->_identifiers;
     v11->_identifiers = v14;
 
-    objc_storeStrong(&v11->_fetcher, a4);
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeStrong(&v11->_fetcher, fetcher);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     [(PKEnhancedMerchantsShelfSectionController *)v11 _configureDataSource];
     objc_initWeak(&location, v11);
     fetcher = v11->_fetcher;
@@ -84,16 +84,16 @@ void __88__PKEnhancedMerchantsShelfSectionController_initWithSectionIdentifier_f
   [(PKEnhancedMerchantsShelfSectionController *)&v3 dealloc];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v6 = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchantsWithOrderingContext:1];
-  if (!v6)
+  enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchantsWithOrderingContext:1];
+  if (!enhancedMerchants)
   {
-    v6 = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchants];
+    enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchants];
   }
 
-  [v5 appendItems:v6];
+  [v5 appendItems:enhancedMerchants];
 
   return v5;
 }
@@ -197,10 +197,10 @@ LABEL_13:
 LABEL_15:
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v19 = [MEMORY[0x1E6995558] fractionalWidthDimension:{a3, a4, 1.0}];
+  v19 = [MEMORY[0x1E6995558] fractionalWidthDimension:{environment, identifier, 1.0}];
   v18 = [MEMORY[0x1E6995558] fractionalHeightDimension:1.0];
   v17 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v19 heightDimension:v18];
   v16 = [MEMORY[0x1E6995578] itemWithLayoutSize:v17];
@@ -225,11 +225,11 @@ LABEL_15:
   return v8;
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v7 = kindCopy;
   v8 = v7;
   if (v7 != @"PKEnhancedMerchantsShelfHeaderIdentifier" && v7)
   {
@@ -241,23 +241,23 @@ LABEL_15:
   return v9;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v11 = kindCopy;
   v12 = v11;
   if (v11 == @"PKEnhancedMerchantsShelfHeaderIdentifier" || v11 && (v13 = [(__CFString *)v11 isEqualToString:@"PKEnhancedMerchantsShelfHeaderIdentifier"], v12, v13))
   {
-    v14 = v8;
+    v14 = registrationCopy;
     v15 = PKLocalizedFeatureString();
     [v14 setTitle:v15];
 
     v16 = PKLocalizedFeatureString();
     [v14 setActionTitle:v16];
-    v17 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v14 setActionColor:v17];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v14 setActionColor:systemBlueColor];
 
     [v14 setActionStyle:1];
     [v14 setPreferTitleWrapOverStackedLayout:1];
@@ -279,9 +279,9 @@ void __110__PKEnhancedMerchantsShelfSectionController_configureSupplementaryRegi
   [WeakRetained didPressEnhancedMerchantsListButton];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -293,7 +293,7 @@ void __110__PKEnhancedMerchantsShelfSectionController_configureSupplementaryRegi
     v7 = WeakRetained;
     v9 = v7;
     dispatch_after(v6, MEMORY[0x1E69E96A0], block);
-    [v7 presentEnhancedMerchant:v4];
+    [v7 presentEnhancedMerchant:itemCopy];
   }
 }
 

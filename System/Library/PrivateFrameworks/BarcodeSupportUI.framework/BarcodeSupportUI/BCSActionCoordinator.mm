@@ -1,37 +1,37 @@
 @interface BCSActionCoordinator
 - (BCSActionCoordinator)init;
 - (BCSActionCoordinatorDelegate)delegate;
-- (BOOL)_handleActionPickerItemIfCalendarAction:(id)a3;
-- (BOOL)_handleActionPickerItemIfContactsAction:(id)a3;
-- (BOOL)_handleActionPickerItemIfHomeAction:(id)a3;
-- (BOOL)_handleActionPickerItemIfSpecialHandlingRequired:(id)a3;
-- (BOOL)_handleSpecialCodesForAction:(id)a3 presentingViewController:(id)a4;
-- (BOOL)_performActionAndReturnIfLogged:(id)a3;
+- (BOOL)_handleActionPickerItemIfCalendarAction:(id)action;
+- (BOOL)_handleActionPickerItemIfContactsAction:(id)action;
+- (BOOL)_handleActionPickerItemIfHomeAction:(id)action;
+- (BOOL)_handleActionPickerItemIfSpecialHandlingRequired:(id)required;
+- (BOOL)_handleSpecialCodesForAction:(id)action presentingViewController:(id)controller;
+- (BOOL)_performActionAndReturnIfLogged:(id)logged;
 - (id)_calendarAppIcon;
 - (id)_tempVCardFileURL;
-- (id)actionForVisualCode:(id)a3;
-- (id)centerGlyphImageForAction:(id)a3;
-- (id)homeScreenAppIconForAction:(id)a3;
-- (id)homeScreenAppIconWithIdentifier:(id)a3;
+- (id)actionForVisualCode:(id)code;
+- (id)centerGlyphImageForAction:(id)action;
+- (id)homeScreenAppIconForAction:(id)action;
+- (id)homeScreenAppIconWithIdentifier:(id)identifier;
 - (void)_calendarAppIcon;
-- (void)_handleCalendarICSString:(id)a3;
-- (void)_handleContactInfo:(id)a3;
-- (void)_launchBarcodeScannerAppFromLockscreenWithQueryOptions:(id)a3 completionBlock:(id)a4;
-- (void)_parseVisualCode:(id)a3;
-- (void)_resolveRedirectionForURL:(id)a3;
+- (void)_handleCalendarICSString:(id)string;
+- (void)_handleContactInfo:(id)info;
+- (void)_launchBarcodeScannerAppFromLockscreenWithQueryOptions:(id)options completionBlock:(id)block;
+- (void)_parseVisualCode:(id)code;
+- (void)_resolveRedirectionForURL:(id)l;
 - (void)_tempVCardFileURL;
-- (void)_updateParsedActionWithURL:(id)a3 appLink:(id)a4;
-- (void)alertController:(id)a3 didSelectActionItem:(id)a4;
-- (void)alertControllerDidAllow:(id)a3;
-- (void)alertControllerDidCancel:(id)a3;
-- (void)logActivatedEventForAction:(id)a3;
-- (void)performAction:(id)a3;
-- (void)performActionPickerItem:(id)a3;
-- (void)requestDeviceUnlockIfNeededWithCompletion:(id)a3;
-- (void)safariViewControllerDidFinish:(id)a3;
-- (void)showFirstTimePromptIfNecessary:(id)a3 completion:(id)a4;
-- (void)showItemsWithAction:(id)a3 completion:(id)a4;
-- (void)startParsingVisualCode:(id)a3;
+- (void)_updateParsedActionWithURL:(id)l appLink:(id)link;
+- (void)alertController:(id)controller didSelectActionItem:(id)item;
+- (void)alertControllerDidAllow:(id)allow;
+- (void)alertControllerDidCancel:(id)cancel;
+- (void)logActivatedEventForAction:(id)action;
+- (void)performAction:(id)action;
+- (void)performActionPickerItem:(id)item;
+- (void)requestDeviceUnlockIfNeededWithCompletion:(id)completion;
+- (void)safariViewControllerDidFinish:(id)finish;
+- (void)showFirstTimePromptIfNecessary:(id)necessary completion:(id)completion;
+- (void)showItemsWithAction:(id)action completion:(id)completion;
+- (void)startParsingVisualCode:(id)code;
 @end
 
 @implementation BCSActionCoordinator
@@ -54,17 +54,17 @@
   return v2;
 }
 
-- (void)startParsingVisualCode:(id)a3
+- (void)startParsingVisualCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   parsingQueue = self->_parsingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__BCSActionCoordinator_startParsingVisualCode___block_invoke;
   v7[3] = &unk_278D01C68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = codeCopy;
+  v6 = codeCopy;
   dispatch_async(parsingQueue, v7);
 }
 
@@ -77,9 +77,9 @@ uint64_t __47__BCSActionCoordinator_startParsingVisualCode___block_invoke(uint64
   return [v2 _parseVisualCode:v3];
 }
 
-- (id)actionForVisualCode:(id)a3
+- (id)actionForVisualCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -91,10 +91,10 @@ uint64_t __47__BCSActionCoordinator_startParsingVisualCode___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __44__BCSActionCoordinator_actionForVisualCode___block_invoke;
   block[3] = &unk_278D01F10;
-  v10 = v4;
-  v11 = self;
+  v10 = codeCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = codeCopy;
   dispatch_sync(parsingQueue, block);
   v7 = v14[5];
 
@@ -112,9 +112,9 @@ void __44__BCSActionCoordinator_actionForVisualCode___block_invoke(void *a1)
   }
 }
 
-- (void)_parseVisualCode:(id)a3
+- (void)_parseVisualCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   dispatch_assert_queue_V2(self->_parsingQueue);
   if (!self->_qrCodeParser)
   {
@@ -125,23 +125,23 @@ void __44__BCSActionCoordinator_actionForVisualCode___block_invoke(void *a1)
 
   v7 = BCS_LOG_CHANNEL_PREFIXBarcodeScanner();
   v8 = v7;
-  if (v4 + 1 >= 2 && os_signpost_enabled(v7))
+  if (codeCopy + 1 >= 2 && os_signpost_enabled(v7))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_2419E7000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v4, "Parsing", "start parsing", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_2419E7000, v8, OS_SIGNPOST_INTERVAL_BEGIN, codeCopy, "Parsing", "start parsing", buf, 2u);
   }
 
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __41__BCSActionCoordinator__parseVisualCode___block_invoke;
   v19 = &unk_278D02220;
-  v9 = v4;
+  v9 = codeCopy;
   v20 = v9;
-  v21 = self;
+  selfCopy = self;
   v10 = _Block_copy(&v16);
   if ([v9 codeType] == 1 && (objc_msgSend(v9, "rawPayload"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v12 = v11;
+    payloadString = v11;
     appClipCodeURLDecoder = self->_appClipCodeURLDecoder;
     if (!appClipCodeURLDecoder)
     {
@@ -152,15 +152,15 @@ void __44__BCSActionCoordinator_actionForVisualCode___block_invoke(void *a1)
       appClipCodeURLDecoder = self->_appClipCodeURLDecoder;
     }
 
-    -[BCSAppClipCodeURLDecoder parseEncodedURLData:version:completion:](appClipCodeURLDecoder, "parseEncodedURLData:version:completion:", v12, [v9 codeVersion], v10);
+    -[BCSAppClipCodeURLDecoder parseEncodedURLData:version:completion:](appClipCodeURLDecoder, "parseEncodedURLData:version:completion:", payloadString, [v9 codeVersion], v10);
   }
 
   else
   {
-    v12 = [v9 payloadString];
-    if (v12)
+    payloadString = [v9 payloadString];
+    if (payloadString)
     {
-      [(BCSQRCodeParser *)self->_qrCodeParser parseCodeFromString:v12 completionHandler:v10];
+      [(BCSQRCodeParser *)self->_qrCodeParser parseCodeFromString:payloadString completionHandler:v10];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -246,35 +246,35 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)_handleSpecialCodesForAction:(id)a3 presentingViewController:(id)a4
+- (BOOL)_handleSpecialCodesForAction:(id)action presentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isInvalidDataAction];
-  if (v8)
+  actionCopy = action;
+  controllerCopy = controller;
+  isInvalidDataAction = [actionCopy isInvalidDataAction];
+  if (isInvalidDataAction)
   {
     v9 = objc_alloc_init(BCSAlertController);
     [(BCSAlertController *)v9 setDelegate:self];
-    [(BCSAlertController *)v9 showInvalidDataAlertForAction:v6 fromViewController:v7];
+    [(BCSAlertController *)v9 showInvalidDataAlertForAction:actionCopy fromViewController:controllerCopy];
   }
 
-  return v8;
+  return isInvalidDataAction;
 }
 
-- (void)_updateParsedActionWithURL:(id)a3 appLink:(id)a4
+- (void)_updateParsedActionWithURL:(id)l appLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  linkCopy = link;
   parsingQueue = self->_parsingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__BCSActionCoordinator__updateParsedActionWithURL_appLink___block_invoke;
   block[3] = &unk_278D01D30;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = linkCopy;
+  selfCopy = self;
+  v9 = linkCopy;
+  v10 = lCopy;
   dispatch_async(parsingQueue, block);
 }
 
@@ -288,34 +288,34 @@ uint64_t __59__BCSActionCoordinator__updateParsedActionWithURL_appLink___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)showFirstTimePromptIfNecessary:(id)a3 completion:(id)a4
+- (void)showFirstTimePromptIfNecessary:(id)necessary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 conformsToProtocol:&unk_2853A31C0])
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  if ([necessaryCopy conformsToProtocol:&unk_2853A31C0])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = [WeakRetained actionCoordinatorPresentingViewController:self];
 
-    if ([(BCSActionCoordinator *)self _handleSpecialCodesForAction:v6 presentingViewController:v9])
+    if ([(BCSActionCoordinator *)self _handleSpecialCodesForAction:necessaryCopy presentingViewController:v9])
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
 
     else
     {
-      v10 = [v6 appLinks];
-      if ([v10 count])
+      appLinks = [necessaryCopy appLinks];
+      if ([appLinks count])
       {
-        v11 = [v10 firstObject];
-        v12 = [v11 targetApplicationProxy];
-        v13 = [v12 applicationIdentifier];
+        firstObject = [appLinks firstObject];
+        targetApplicationProxy = [firstObject targetApplicationProxy];
+        applicationIdentifier = [targetApplicationProxy applicationIdentifier];
 
-        v14 = [v11 browserSettings];
-        v15 = [v14 objectForKeyedSubscript:@"com.apple.BarcodeScanner.UserExplicitlyAllowsOpeningLinkInApp"];
+        browserSettings = [firstObject browserSettings];
+        v15 = [browserSettings objectForKeyedSubscript:@"com.apple.BarcodeScanner.UserExplicitlyAllowsOpeningLinkInApp"];
         if ([v15 BOOLValue])
         {
-          v7[2](v7);
+          completionCopy[2](completionCopy);
         }
 
         else
@@ -324,28 +324,28 @@ uint64_t __59__BCSActionCoordinator__updateParsedActionWithURL_appLink___block_i
           v20 = 3221225472;
           v21 = __66__BCSActionCoordinator_showFirstTimePromptIfNecessary_completion___block_invoke;
           v22 = &unk_278D02248;
-          v23 = v11;
-          v24 = v7;
+          v23 = firstObject;
+          v24 = completionCopy;
           v16 = _Block_copy(&v19);
           firstTimePromptBlock = self->_firstTimePromptBlock;
           self->_firstTimePromptBlock = v16;
 
           v18 = objc_alloc_init(BCSAlertController);
           [(BCSAlertController *)v18 setDelegate:self, v19, v20, v21, v22];
-          [(BCSAlertController *)v18 showFirstTimePromptToOpenApp:v13 fromViewController:v9];
+          [(BCSAlertController *)v18 showFirstTimePromptToOpenApp:applicationIdentifier fromViewController:v9];
         }
       }
 
       else
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
     }
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -387,17 +387,17 @@ void __66__BCSActionCoordinator_showFirstTimePromptIfNecessary_completion___bloc
   }
 }
 
-- (void)_resolveRedirectionForURL:(id)a3
+- (void)_resolveRedirectionForURL:(id)l
 {
   v4 = MEMORY[0x277CDB808];
-  v5 = a3;
+  lCopy = l;
   v6 = [v4 alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__BCSActionCoordinator__resolveRedirectionForURL___block_invoke;
   v9[3] = &unk_278D02270;
   v9[4] = self;
-  v7 = [v6 initWithURL:v5 completionHandler:v9];
+  v7 = [v6 initWithURL:lCopy completionHandler:v9];
 
   linkResolver = self->_linkResolver;
   self->_linkResolver = v7;
@@ -441,38 +441,38 @@ void __50__BCSActionCoordinator__resolveRedirectionForURL___block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showItemsWithAction:(id)a3 completion:(id)a4
+- (void)showItemsWithAction:(id)action completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v6 urlThatCanBeOpened];
-  v10 = [v9 _bcs_isUPIURL];
+  urlThatCanBeOpened = [actionCopy urlThatCanBeOpened];
+  _bcs_isUPIURL = [urlThatCanBeOpened _bcs_isUPIURL];
 
-  if (v10)
+  if (_bcs_isUPIURL)
   {
     v11 = objc_alloc_init(BCSContextMenuController);
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __55__BCSActionCoordinator_showItemsWithAction_completion___block_invoke;
     v19 = &unk_278D02298;
-    v20 = self;
-    v21 = v7;
+    selfCopy = self;
+    v21 = completionCopy;
     [(BCSContextMenuController *)v11 setFinishAction:&v16];
-    v12 = [WeakRetained actionCoordinatorViewForContextMenu:{self, v16, v17, v18, v19, v20}];
-    [(BCSContextMenuController *)v11 showMenuForAction:v6 fromView:v12];
+    v12 = [WeakRetained actionCoordinatorViewForContextMenu:{self, v16, v17, v18, v19, selfCopy}];
+    [(BCSContextMenuController *)v11 showMenuForAction:actionCopy fromView:v12];
   }
 
   else
   {
     v11 = [WeakRetained actionCoordinatorPresentingViewController:self];
-    v13 = _Block_copy(v7);
+    v13 = _Block_copy(completionCopy);
     actionPickerItemBlock = self->_actionPickerItemBlock;
     self->_actionPickerItemBlock = v13;
 
     v15 = objc_alloc_init(BCSAlertController);
     [(BCSAlertController *)v15 setDelegate:self];
-    [(BCSAlertController *)v15 showActionPickerViewForAction:v6 fromViewController:v11];
+    [(BCSAlertController *)v15 showActionPickerViewForAction:actionCopy fromViewController:v11];
   }
 }
 
@@ -496,40 +496,40 @@ uint64_t __55__BCSActionCoordinator_showItemsWithAction_completion___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)homeScreenAppIconForAction:(id)a3
+- (id)homeScreenAppIconForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [v4 urlThatCanBeOpened];
-  v7 = [v6 absoluteString];
+  urlThatCanBeOpened = [actionCopy urlThatCanBeOpened];
+  absoluteString = [urlThatCanBeOpened absoluteString];
 
-  v8 = [v7 lowercaseString];
-  if (([v8 hasPrefix:@"x-esim://"] & 1) != 0 || objc_msgSend(v8, "hasPrefix:", @"lpa:"))
+  lowercaseString = [absoluteString lowercaseString];
+  if (([lowercaseString hasPrefix:@"x-esim://"] & 1) != 0 || objc_msgSend(lowercaseString, "hasPrefix:", @"lpa:"))
   {
-    v9 = [MEMORY[0x277D755B8] imageNamed:@"CellularData" inBundle:v5];
-    v10 = [v9 _applicationIconImageForFormat:2 precomposed:1];
+    defaultActionTargetApplicationBundleIdentifier = [MEMORY[0x277D755B8] imageNamed:@"CellularData" inBundle:v5];
+    v10 = [defaultActionTargetApplicationBundleIdentifier _applicationIconImageForFormat:2 precomposed:1];
 LABEL_4:
     v11 = v10;
     goto LABEL_5;
   }
 
-  if (![v4 conformsToProtocol:&unk_2853A31C0])
+  if (![actionCopy conformsToProtocol:&unk_2853A31C0])
   {
     goto LABEL_17;
   }
 
-  v9 = v4;
-  if (![v9 isWiFiAction])
+  defaultActionTargetApplicationBundleIdentifier = actionCopy;
+  if (![defaultActionTargetApplicationBundleIdentifier isWiFiAction])
   {
-    v16 = [v9 clipMetadataRequest];
+    clipMetadataRequest = [defaultActionTargetApplicationBundleIdentifier clipMetadataRequest];
 
-    if (v16)
+    if (clipMetadataRequest)
     {
       v10 = [MEMORY[0x277D755B8] imageNamed:@"AppClips" inBundle:v5];
       goto LABEL_4;
     }
 
-    if ([v9 isContinuityCameraAction])
+    if ([defaultActionTargetApplicationBundleIdentifier isContinuityCameraAction])
     {
       v13 = MEMORY[0x277D755B8];
       v14 = @"AppleTV";
@@ -537,8 +537,8 @@ LABEL_4:
     }
 
 LABEL_17:
-    v9 = [v4 defaultActionTargetApplicationBundleIdentifier];
-    v10 = [(BCSActionCoordinator *)self homeScreenAppIconWithIdentifier:v9];
+    defaultActionTargetApplicationBundleIdentifier = [actionCopy defaultActionTargetApplicationBundleIdentifier];
+    v10 = [(BCSActionCoordinator *)self homeScreenAppIconWithIdentifier:defaultActionTargetApplicationBundleIdentifier];
     goto LABEL_4;
   }
 
@@ -574,9 +574,9 @@ LABEL_5:
   v3 = v2;
   _Block_object_dispose(&v24, 8);
   v4 = [v2 alloc];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v4 initWithDate:v5 calendar:v6 format:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [v4 initWithDate:date calendar:currentCalendar format:0];
 
   v24 = 0;
   v25 = &v24;
@@ -626,20 +626,20 @@ LABEL_5:
   [v13 setScale:?];
   v14 = [v7 imageForImageDescriptor:v13];
   v15 = MEMORY[0x277D755B8];
-  v16 = [v14 CGImage];
+  cGImage = [v14 CGImage];
   [v14 scale];
-  v17 = [v15 imageWithCGImage:v16 scale:0 orientation:?];
+  v17 = [v15 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v17;
 }
 
-- (id)homeScreenAppIconWithIdentifier:(id)a3
+- (id)homeScreenAppIconWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   if (homeScreenAppIconWithIdentifier__iconCache)
   {
-    if (v4)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -657,19 +657,19 @@ LABEL_5:
 LABEL_3:
       v6 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v5];
       v7 = homeScreenAppIconWithIdentifier__iconCache;
-      v8 = [v6 bundleIdentifier];
-      v9 = [v7 objectForKey:v8];
+      bundleIdentifier = [v6 bundleIdentifier];
+      v9 = [v7 objectForKey:bundleIdentifier];
 
       if (v9)
       {
-        v10 = v9;
+        _calendarAppIcon = v9;
         goto LABEL_25;
       }
 
       if ([v5 isEqualToString:@"com.apple.mobilecal"])
       {
-        v10 = [(BCSActionCoordinator *)self _calendarAppIcon];
-        if (!v10)
+        _calendarAppIcon = [(BCSActionCoordinator *)self _calendarAppIcon];
+        if (!_calendarAppIcon)
         {
           goto LABEL_25;
         }
@@ -713,16 +713,16 @@ LABEL_3:
         v19 = [v6 iconDataForVariant:v18];
         if (!v19)
         {
-          v10 = 0;
+          _calendarAppIcon = 0;
           goto LABEL_25;
         }
 
         v20 = v19;
         v21 = LICreateIconFromCachedBitmap();
-        v10 = [MEMORY[0x277D755B8] imageWithCGImage:v21 scale:0 orientation:v14];
+        _calendarAppIcon = [MEMORY[0x277D755B8] imageWithCGImage:v21 scale:0 orientation:v14];
         CGImageRelease(v21);
 
-        if (!v10)
+        if (!_calendarAppIcon)
         {
 LABEL_25:
 
@@ -731,8 +731,8 @@ LABEL_25:
       }
 
       v22 = homeScreenAppIconWithIdentifier__iconCache;
-      v23 = [v6 bundleIdentifier];
-      [v22 setObject:v10 forKey:v23];
+      bundleIdentifier2 = [v6 bundleIdentifier];
+      [v22 setObject:_calendarAppIcon forKey:bundleIdentifier2];
 
       goto LABEL_25;
     }
@@ -743,15 +743,15 @@ LABEL_25:
     [BCSActionCoordinator homeScreenAppIconWithIdentifier:];
   }
 
-  v10 = 0;
+  _calendarAppIcon = 0;
 LABEL_26:
 
-  return v10;
+  return _calendarAppIcon;
 }
 
-- (id)centerGlyphImageForAction:(id)a3
+- (id)centerGlyphImageForAction:(id)action
 {
-  if ([a3 isApplePayInitiateAction])
+  if ([action isApplePayInitiateAction])
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = [MEMORY[0x277D755B8] imageNamed:@"applePay-center-glyph" inBundle:v3];
@@ -765,64 +765,64 @@ LABEL_26:
   return v4;
 }
 
-- (void)logActivatedEventForAction:(id)a3
+- (void)logActivatedEventForAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v3 = v5;
+  originalAction = actionCopy;
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v5 originalAction];
+    originalAction = [actionCopy originalAction];
   }
 
-  v4 = [MEMORY[0x277CF0AF0] sharedLogger];
-  [v4 logBarcodeActivatedEventForAction:v3];
+  mEMORY[0x277CF0AF0] = [MEMORY[0x277CF0AF0] sharedLogger];
+  [mEMORY[0x277CF0AF0] logBarcodeActivatedEventForAction:originalAction];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (![(BCSActionCoordinator *)self _performActionAndReturnIfLogged:?])
   {
-    [(BCSActionCoordinator *)self logActivatedEventForAction:v4];
+    [(BCSActionCoordinator *)self logActivatedEventForAction:actionCopy];
   }
 }
 
-- (BOOL)_performActionAndReturnIfLogged:(id)a3
+- (BOOL)_performActionAndReturnIfLogged:(id)logged
 {
-  v4 = a3;
-  v5 = [v4 defaultActionTargetApplicationBundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.mobilesafari"];
+  loggedCopy = logged;
+  defaultActionTargetApplicationBundleIdentifier = [loggedCopy defaultActionTargetApplicationBundleIdentifier];
+  v6 = [defaultActionTargetApplicationBundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
   if (v6)
   {
-    v7 = [v4 clipMetadataRequest];
+    clipMetadataRequest = [loggedCopy clipMetadataRequest];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (!v7)
+    if (!clipMetadataRequest)
     {
-      v9 = objc_alloc_init(MEMORY[0x277CDB708]);
-      [v9 setEntersReaderIfAvailable:0];
-      [v9 _setEphemeral:1];
+      actionPickerItems = objc_alloc_init(MEMORY[0x277CDB708]);
+      [actionPickerItems setEntersReaderIfAvailable:0];
+      [actionPickerItems _setEphemeral:1];
       linkResolver = self->_linkResolver;
       if (linkResolver)
       {
-        v11 = [(_SFLinkRedirectionResolver *)linkResolver safariViewController];
+        safariViewController = [(_SFLinkRedirectionResolver *)linkResolver safariViewController];
       }
 
       else
       {
         v15 = objc_alloc(MEMORY[0x277CDB700]);
-        v16 = [v4 urlThatCanBeOpened];
-        v11 = [v15 initWithURL:v16 configuration:v9];
+        urlThatCanBeOpened = [loggedCopy urlThatCanBeOpened];
+        safariViewController = [v15 initWithURL:urlThatCanBeOpened configuration:actionPickerItems];
       }
 
-      [v11 setDelegate:self];
-      [v11 setDismissButtonStyle:1];
+      [safariViewController setDelegate:self];
+      [safariViewController setDismissButtonStyle:1];
       v17 = [WeakRetained actionCoordinatorPresentingViewController:self];
-      v18 = [v17 presentedViewController];
+      presentedViewController = [v17 presentedViewController];
 
-      if (!v18)
+      if (!presentedViewController)
       {
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
@@ -830,7 +830,7 @@ LABEL_26:
         v23[3] = &unk_278D01C68;
         v23[4] = self;
         v24 = v17;
-        [v24 presentViewController:v11 animated:1 completion:v23];
+        [v24 presentViewController:safariViewController animated:1 completion:v23];
       }
 
       goto LABEL_18;
@@ -842,9 +842,9 @@ LABEL_26:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v9 = [v4 actionPickerItems];
-  v11 = [v9 firstObject];
-  if ([(BCSActionCoordinator *)self _handleActionPickerItemIfSpecialHandlingRequired:v11])
+  actionPickerItems = [loggedCopy actionPickerItems];
+  safariViewController = [actionPickerItems firstObject];
+  if ([(BCSActionCoordinator *)self _handleActionPickerItemIfSpecialHandlingRequired:safariViewController])
   {
 LABEL_18:
     v12 = 0;
@@ -860,7 +860,7 @@ LABEL_18:
     v20[4] = self;
     WeakRetained = WeakRetained;
     v21 = WeakRetained;
-    v22 = v4;
+    v22 = loggedCopy;
     [v22 performDefaultActionWithCompletionHandler:v20];
 
     v12 = 1;
@@ -868,7 +868,7 @@ LABEL_18:
 
   else
   {
-    v13 = v4;
+    v13 = loggedCopy;
     if ([v13 isInvalidDataAction] && objc_msgSend(v13, "codeType") == 3)
     {
       v14 = [WeakRetained actionCoordinatorPresentingViewController:self];
@@ -917,26 +917,26 @@ void __56__BCSActionCoordinator__performActionAndReturnIfLogged___block_invoke_2
   }
 }
 
-- (void)performActionPickerItem:(id)a3
+- (void)performActionPickerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (![(BCSActionCoordinator *)self _handleActionPickerItemIfSpecialHandlingRequired:?])
   {
-    [v4 performActionInExternalApp];
+    [itemCopy performActionInExternalApp];
   }
 }
 
-- (BOOL)_handleActionPickerItemIfSpecialHandlingRequired:(id)a3
+- (BOOL)_handleActionPickerItemIfSpecialHandlingRequired:(id)required
 {
-  v4 = a3;
-  v5 = [(BCSActionCoordinator *)self _handleActionPickerItemIfContactsAction:v4]|| [(BCSActionCoordinator *)self _handleActionPickerItemIfCalendarAction:v4]|| [(BCSActionCoordinator *)self _handleActionPickerItemIfHomeAction:v4];
+  requiredCopy = required;
+  v5 = [(BCSActionCoordinator *)self _handleActionPickerItemIfContactsAction:requiredCopy]|| [(BCSActionCoordinator *)self _handleActionPickerItemIfCalendarAction:requiredCopy]|| [(BCSActionCoordinator *)self _handleActionPickerItemIfHomeAction:requiredCopy];
 
   return v5;
 }
 
-- (void)requestDeviceUnlockIfNeededWithCompletion:(id)a3
+- (void)requestDeviceUnlockIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (SBSGetScreenLockStatus())
   {
     self->_deviceIsBeingUnlocked = 1;
@@ -945,13 +945,13 @@ void __56__BCSActionCoordinator__performActionAndReturnIfLogged___block_invoke_2
     v5[2] = __66__BCSActionCoordinator_requestDeviceUnlockIfNeededWithCompletion___block_invoke;
     v5[3] = &unk_278D02310;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     [(BCSActionCoordinator *)self _launchBarcodeScannerAppFromLockscreenWithQueryOptions:0 completionBlock:v5];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -977,11 +977,11 @@ uint64_t __66__BCSActionCoordinator_requestDeviceUnlockIfNeededWithCompletion___
   return result;
 }
 
-- (BOOL)_handleActionPickerItemIfContactsAction:(id)a3
+- (BOOL)_handleActionPickerItemIfContactsAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 contact], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([actionCopy contact], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     [(BCSActionCoordinator *)self _handleContactInfo:v5];
@@ -999,9 +999,9 @@ uint64_t __66__BCSActionCoordinator_requestDeviceUnlockIfNeededWithCompletion___
 
 - (id)_tempVCardFileURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v3 = [v2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v10];
+  v3 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v10];
   v4 = v10;
 
   if (v4)
@@ -1017,9 +1017,9 @@ uint64_t __66__BCSActionCoordinator_requestDeviceUnlockIfNeededWithCompletion___
   else
   {
     v6 = [v3 URLByAppendingPathComponent:@"com.apple.BarcodeSupport.Notification" isDirectory:1];
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v9 = 0;
-    [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v9];
+    [defaultManager2 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v9];
     v4 = v9;
 
     if (v4)
@@ -1041,9 +1041,9 @@ uint64_t __66__BCSActionCoordinator_requestDeviceUnlockIfNeededWithCompletion___
   return v5;
 }
 
-- (void)_handleContactInfo:(id)a3
+- (void)_handleContactInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -1055,9 +1055,9 @@ uint64_t __66__BCSActionCoordinator_requestDeviceUnlockIfNeededWithCompletion___
   v7[1] = 3221225472;
   v7[2] = __43__BCSActionCoordinator__handleContactInfo___block_invoke;
   v7[3] = &unk_278D02338;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   [v5 requestAccessForEntityType:0 completionHandler:v7];
 }
 
@@ -1117,20 +1117,20 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handleActionPickerItemIfHomeAction:(id)a3
+- (BOOL)_handleActionPickerItemIfHomeAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 targetApplicationBundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.Home"];
+  actionCopy = action;
+  targetApplicationBundleIdentifier = [actionCopy targetApplicationBundleIdentifier];
+  v5 = [targetApplicationBundleIdentifier isEqualToString:@"com.apple.Home"];
 
   if (v5)
   {
-    v6 = [v3 actionURL];
-    if (([v6 _bcs_hasScheme:@"X-HM"] & 1) != 0 || objc_msgSend(v6, "_bcs_hasScheme:", @"com.apple.Home-private"))
+    actionURL = [actionCopy actionURL];
+    if (([actionURL _bcs_hasScheme:@"X-HM"] & 1) != 0 || objc_msgSend(actionURL, "_bcs_hasScheme:", @"com.apple.Home-private"))
     {
-      v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v9 = 0;
-      LOBYTE(v5) = [v7 openSensitiveURL:v6 withOptions:0 error:&v9];
+      LOBYTE(v5) = [defaultWorkspace openSensitiveURL:actionURL withOptions:0 error:&v9];
 
       if ((v5 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -1147,39 +1147,39 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)_handleActionPickerItemIfCalendarAction:(id)a3
+- (BOOL)_handleActionPickerItemIfCalendarAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 targetApplicationBundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.mobilecal"];
+  actionCopy = action;
+  targetApplicationBundleIdentifier = [actionCopy targetApplicationBundleIdentifier];
+  v6 = [targetApplicationBundleIdentifier isEqualToString:@"com.apple.mobilecal"];
 
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 icsString];
+      icsString = [actionCopy icsString];
     }
 
     else
     {
-      v7 = 0;
+      icsString = 0;
     }
 
-    v8 = [v7 length];
+    v8 = [icsString length];
     LOBYTE(v6) = v8 != 0;
     if (v8)
     {
-      [(BCSActionCoordinator *)self _handleCalendarICSString:v7];
+      [(BCSActionCoordinator *)self _handleCalendarICSString:icsString];
     }
   }
 
   return v6;
 }
 
-- (void)_handleCalendarICSString:(id)a3
+- (void)_handleCalendarICSString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -1192,8 +1192,8 @@ LABEL_13:
   v7[2] = __49__BCSActionCoordinator__handleCalendarICSString___block_invoke;
   v7[3] = &unk_278D02338;
   v8 = v4;
-  v9 = v3;
-  v5 = v3;
+  v9 = stringCopy;
+  v5 = stringCopy;
   v6 = v4;
   [v6 requestWriteOnlyAccessToEventsWithCompletion:v7];
 }
@@ -1277,10 +1277,10 @@ void __49__BCSActionCoordinator__handleCalendarICSString___block_invoke(uint64_t
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_launchBarcodeScannerAppFromLockscreenWithQueryOptions:(id)a3 completionBlock:(id)a4
+- (void)_launchBarcodeScannerAppFromLockscreenWithQueryOptions:(id)options completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -1300,8 +1300,8 @@ void __49__BCSActionCoordinator__handleCalendarICSString___block_invoke(uint64_t
   v8 = v7;
   _Block_object_dispose(&v27, 8);
   v9 = objc_alloc_init(v7);
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v12 = objc_opt_new();
   v27 = 0;
@@ -1360,9 +1360,9 @@ void __49__BCSActionCoordinator__handleCalendarICSString___block_invoke(uint64_t
   v20[1] = 3221225472;
   v20[2] = __95__BCSActionCoordinator__launchBarcodeScannerAppFromLockscreenWithQueryOptions_completionBlock___block_invoke;
   v20[3] = &unk_278D02388;
-  v21 = v6;
-  v19 = v6;
-  [v9 openApplication:v11 options:v12 withResult:v20];
+  v21 = blockCopy;
+  v19 = blockCopy;
+  [v9 openApplication:bundleIdentifier options:v12 withResult:v20];
 }
 
 void __95__BCSActionCoordinator__launchBarcodeScannerAppFromLockscreenWithQueryOptions_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -1404,31 +1404,31 @@ void __95__BCSActionCoordinator__launchBarcodeScannerAppFromLockscreenWithQueryO
   }
 }
 
-- (void)alertController:(id)a3 didSelectActionItem:(id)a4
+- (void)alertController:(id)controller didSelectActionItem:(id)item
 {
   actionPickerItemBlock = self->_actionPickerItemBlock;
   if (actionPickerItemBlock)
   {
-    actionPickerItemBlock[2](actionPickerItemBlock, a4, a3);
+    actionPickerItemBlock[2](actionPickerItemBlock, item, controller);
     actionPickerItemBlock = self->_actionPickerItemBlock;
   }
 
   self->_actionPickerItemBlock = 0;
 }
 
-- (void)alertControllerDidAllow:(id)a3
+- (void)alertControllerDidAllow:(id)allow
 {
   firstTimePromptBlock = self->_firstTimePromptBlock;
   if (firstTimePromptBlock)
   {
-    firstTimePromptBlock[2](firstTimePromptBlock, 1, a3);
+    firstTimePromptBlock[2](firstTimePromptBlock, 1, allow);
     firstTimePromptBlock = self->_firstTimePromptBlock;
   }
 
   self->_firstTimePromptBlock = 0;
 }
 
-- (void)alertControllerDidCancel:(id)a3
+- (void)alertControllerDidCancel:(id)cancel
 {
   firstTimePromptBlock = self->_firstTimePromptBlock;
   self->_firstTimePromptBlock = 0;
@@ -1440,11 +1440,11 @@ void __95__BCSActionCoordinator__launchBarcodeScannerAppFromLockscreenWithQueryO
   [WeakRetained actionCoordinator:self willDismissViewController:0];
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained actionCoordinator:self willDismissViewController:v4];
+  [WeakRetained actionCoordinator:self willDismissViewController:finishCopy];
 }
 
 - (BCSActionCoordinatorDelegate)delegate
@@ -1489,9 +1489,9 @@ void __50__BCSActionCoordinator__resolveRedirectionForURL___block_invoke_cold_1(
 
 - (void)_calendarAppIcon
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getkISImageDescriptorHomeScreen(void)"];
-  [v0 handleFailureInFunction:v1 file:@"BCSActionCoordinator.m" lineNumber:53 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"BCSActionCoordinator.m" lineNumber:53 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

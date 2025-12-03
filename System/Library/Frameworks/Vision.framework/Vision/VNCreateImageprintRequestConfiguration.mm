@@ -1,15 +1,15 @@
 @interface VNCreateImageprintRequestConfiguration
-- (VNCreateImageprintRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNCreateImageprintRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNCreateImageprintRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNCreateImageprintRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -19,11 +19,11 @@
   return v5;
 }
 
-- (VNCreateImageprintRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNCreateImageprintRequestConfiguration)initWithRequestClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = VNCreateImageprintRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:class];
   v4 = v3;
   if (v3)
   {

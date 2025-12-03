@@ -1,6 +1,6 @@
 @interface WebOptinFlowManager
 - (_TtC16NewsSubscription19WebOptinFlowManager)init;
-- (void)handledAction:(id)a3 state:(unint64_t)a4;
+- (void)handledAction:(id)action state:(unint64_t)state;
 @end
 
 @implementation WebOptinFlowManager
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)handledAction:(id)a3 state:(unint64_t)a4
+- (void)handledAction:(id)action state:(unint64_t)state
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16NewsSubscription19WebOptinFlowManager_postUpsellAction);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = sub_1D776AC18(v4);
     v4(v6);
 

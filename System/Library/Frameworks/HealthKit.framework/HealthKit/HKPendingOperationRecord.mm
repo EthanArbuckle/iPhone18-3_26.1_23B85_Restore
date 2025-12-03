@@ -1,20 +1,20 @@
 @interface HKPendingOperationRecord
-+ (id)pendingOperation:(id)a3 completion:(id)a4;
++ (id)pendingOperation:(id)operation completion:(id)completion;
 @end
 
 @implementation HKPendingOperationRecord
 
-+ (id)pendingOperation:(id)a3 completion:(id)a4
++ (id)pendingOperation:(id)operation completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  operationCopy = operation;
   v7 = objc_alloc_init(HKPendingOperationRecord);
-  v8 = [v6 copy];
+  v8 = [operationCopy copy];
 
   operationHandler = v7->_operationHandler;
   v7->_operationHandler = v8;
 
-  v10 = [v5 copy];
+  v10 = [completionCopy copy];
   completionHandler = v7->_completionHandler;
   v7->_completionHandler = v10;
 

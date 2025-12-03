@@ -1,14 +1,14 @@
 @interface UIScrollViewKnobLongPressGestureRecognizer
-- (UIScrollViewKnobLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIScrollViewKnobLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation UIScrollViewKnobLongPressGestureRecognizer
 
-- (UIScrollViewKnobLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIScrollViewKnobLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = UIScrollViewKnobLongPressGestureRecognizer;
-  v4 = [(UILongPressGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UILongPressGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

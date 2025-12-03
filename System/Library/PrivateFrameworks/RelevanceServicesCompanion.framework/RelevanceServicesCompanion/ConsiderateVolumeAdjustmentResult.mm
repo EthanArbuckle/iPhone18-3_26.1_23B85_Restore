@@ -1,15 +1,15 @@
 @interface ConsiderateVolumeAdjustmentResult
 - (_TtC26RelevanceServicesCompanion33ConsiderateVolumeAdjustmentResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ConsiderateVolumeAdjustmentResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ConsiderateVolumeAdjustmentResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ConsiderateVolumeAdjustmentResult.encode(with:)(coderCopy);
 }
 
 - (_TtC26RelevanceServicesCompanion33ConsiderateVolumeAdjustmentResult)init

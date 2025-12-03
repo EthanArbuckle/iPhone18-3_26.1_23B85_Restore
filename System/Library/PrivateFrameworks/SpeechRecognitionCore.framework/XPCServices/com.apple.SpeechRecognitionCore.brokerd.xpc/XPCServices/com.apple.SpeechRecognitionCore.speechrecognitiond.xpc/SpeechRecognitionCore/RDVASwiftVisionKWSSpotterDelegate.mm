@@ -1,13 +1,13 @@
 @interface RDVASwiftVisionKWSSpotterDelegate
-- (void)keywordSpotterDidDetectKeywordWithEvent:(id)a3;
+- (void)keywordSpotterDidDetectKeywordWithEvent:(id)event;
 @end
 
 @implementation RDVASwiftVisionKWSSpotterDelegate
 
-- (void)keywordSpotterDidDetectKeywordWithEvent:(id)a3
+- (void)keywordSpotterDidDetectKeywordWithEvent:(id)event
 {
   v3 = *(*self->_TtCs12_SwiftObject_opaque + 96);
-  v4 = a3;
+  eventCopy = event;
 
   v6 = v3(v5);
   if (v6)

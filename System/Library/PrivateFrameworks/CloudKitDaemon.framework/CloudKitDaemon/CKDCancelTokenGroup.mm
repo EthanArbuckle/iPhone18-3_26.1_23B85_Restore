@@ -1,9 +1,9 @@
 @interface CKDCancelTokenGroup
 - (CKDCancelTokenGroup)init;
-- (void)addCancelToken:(id)a3 withOperation:(id)a4;
+- (void)addCancelToken:(id)token withOperation:(id)operation;
 - (void)cancel;
 - (void)removeAllCancelTokens;
-- (void)removeCancelToken:(id)a3;
+- (void)removeCancelToken:(id)token;
 @end
 
 @implementation CKDCancelTokenGroup
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (void)addCancelToken:(id)a3 withOperation:(id)a4
+- (void)addCancelToken:(id)token withOperation:(id)operation
 {
-  v18 = a3;
-  v8 = a4;
-  if (v18)
+  tokenCopy = token;
+  operationCopy = operation;
+  if (tokenCopy)
   {
-    if (objc_msgSend_isCancelled(v8, v6, v7))
+    if (objc_msgSend_isCancelled(operationCopy, v6, v7))
     {
       goto LABEL_4;
     }
@@ -37,30 +37,30 @@
     v11 = objc_msgSend_cancelTokens(self, v9, v10);
     objc_sync_enter(v11);
     v14 = objc_msgSend_cancelTokens(self, v12, v13);
-    objc_msgSend_addObject_(v14, v15, v18);
+    objc_msgSend_addObject_(v14, v15, tokenCopy);
 
     objc_sync_exit(v11);
-    if (objc_msgSend_isCancelled(v8, v16, v17))
+    if (objc_msgSend_isCancelled(operationCopy, v16, v17))
     {
 LABEL_4:
-      objc_msgSend_cancel(v18, v9, v10);
+      objc_msgSend_cancel(tokenCopy, v9, v10);
     }
   }
 }
 
-- (void)removeCancelToken:(id)a3
+- (void)removeCancelToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v12 = v4;
+    v12 = tokenCopy;
     v7 = objc_msgSend_cancelTokens(self, v5, v6);
     objc_sync_enter(v7);
     v10 = objc_msgSend_cancelTokens(self, v8, v9);
     objc_msgSend_removeObject_(v10, v11, v12);
 
     objc_sync_exit(v7);
-    v4 = v12;
+    tokenCopy = v12;
   }
 }
 

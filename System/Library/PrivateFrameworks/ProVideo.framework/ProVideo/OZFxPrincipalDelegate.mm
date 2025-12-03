@@ -1,17 +1,17 @@
 @interface OZFxPrincipalDelegate
-- (OZFxPrincipalDelegate)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3;
+- (OZFxPrincipalDelegate)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock;
 - (id).cxx_construct;
 - (id)fxServiceProxy;
 @end
 
 @implementation OZFxPrincipalDelegate
 
-- (OZFxPrincipalDelegate)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3
+- (OZFxPrincipalDelegate)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock
 {
-  ptr = a3.__ptr_;
+  ptr = lock.__ptr_;
   v10.receiver = self;
   v10.super_class = OZFxPrincipalDelegate;
-  v4 = [(OZFxPrincipalDelegate *)&v10 init:a3.__ptr_];
+  v4 = [(OZFxPrincipalDelegate *)&v10 init:lock.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -52,16 +52,16 @@
 
   if (*v7[0])
   {
-    v3 = [objc_msgSend(*(*v7[0] + 16) pluginKitPlug];
+    pluginKitPlug = [objc_msgSend(*(*v7[0] + 16) pluginKitPlug];
   }
 
   else
   {
-    v3 = 0;
+    pluginKitPlug = 0;
   }
 
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v7);
-  return v3;
+  return pluginKitPlug;
 }
 
 - (id).cxx_construct

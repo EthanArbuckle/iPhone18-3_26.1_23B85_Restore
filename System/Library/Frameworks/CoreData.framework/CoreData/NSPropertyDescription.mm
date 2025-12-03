@@ -1,10 +1,10 @@
 @interface NSPropertyDescription
 + (void)initialize;
-- (BOOL)_comparePredicatesAndWarnings:(id)a3;
-- (BOOL)_epsilonEquals:(id)a3 rhs:(id)a4 withFlags:(int)a5;
-- (BOOL)_isEqual:(id)a3 skipIndexCheck:(BOOL)a4;
-- (BOOL)_isSchemaEqual:(id)a3;
-- (BOOL)_nonPredicateValidateValue:(id *)a3 forKey:(id)a4 inObject:(id)a5 error:(id *)a6;
+- (BOOL)_comparePredicatesAndWarnings:(id)warnings;
+- (BOOL)_epsilonEquals:(id)equals rhs:(id)rhs withFlags:(int)flags;
+- (BOOL)_isEqual:(id)equal skipIndexCheck:(BOOL)check;
+- (BOOL)_isSchemaEqual:(id)equal;
+- (BOOL)_nonPredicateValidateValue:(id *)value forKey:(id)key inObject:(id)object error:(id *)error;
 - (BOOL)isIndexed;
 - (BOOL)isIndexedBySpotlight;
 - (BOOL)isStoredInExternalRecord;
@@ -12,43 +12,43 @@
 - (NSArray)validationWarnings;
 - (NSData)versionHash;
 - (NSDictionary)userInfo;
-- (NSPropertyDescription)initWithCoder:(id)a3;
+- (NSPropertyDescription)initWithCoder:(id)coder;
 - (NSString)renamingIdentifier;
 - (_NSExtraPropertyIVars)_extraIVars;
 - (__CFString)_elementPath;
 - (__CFString)_rootName;
-- (id)_initWithName:(id)a3;
+- (id)_initWithName:(id)name;
 - (id)_namespace;
 - (id)_qualifiedName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)superCompositeAttribute;
 - (unint64_t)hash;
 - (unsigned)_swiftDataPropertyFlags;
-- (void)_appendPropertyFieldsToData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8;
+- (void)_appendPropertyFieldsToData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots;
 - (void)_createCachesAndOptimizeState;
 - (void)_initializeExtraIVars;
-- (void)_replaceValidationPredicates:(id)a3 andWarnings:(id)a4;
-- (void)_setEntityAndMaintainIndices:(id)a3;
-- (void)_setEntitysReferenceID:(int64_t)a3;
-- (void)_setNamespace:(unint64_t *)a1;
-- (void)_setOrdered:(BOOL)a3;
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4;
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9;
+- (void)_replaceValidationPredicates:(id)predicates andWarnings:(id)warnings;
+- (void)_setEntityAndMaintainIndices:(id)indices;
+- (void)_setEntitysReferenceID:(int64_t)d;
+- (void)_setNamespace:(unint64_t *)namespace;
+- (void)_setOrdered:(BOOL)ordered;
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style;
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setIndexed:(BOOL)indexed;
 - (void)setIndexedBySpotlight:(BOOL)indexedBySpotlight;
 - (void)setName:(NSString *)name;
 - (void)setOptional:(BOOL)optional;
 - (void)setRenamingIdentifier:(NSString *)renamingIdentifier;
 - (void)setStoredInExternalRecord:(BOOL)storedInExternalRecord;
-- (void)setSuperCompositeAttribute:(id)a3;
+- (void)setSuperCompositeAttribute:(id)attribute;
 - (void)setTransient:(BOOL)transient;
 - (void)setUserInfo:(NSDictionary *)userInfo;
 - (void)setValidationPredicates:(NSArray *)validationPredicates withValidationWarnings:(NSArray *)validationWarnings;
 - (void)setVersionHashModifier:(NSString *)versionHashModifier;
-- (void)set_swiftDataPropertyFlags:(unsigned int)a3;
+- (void)set_swiftDataPropertyFlags:(unsigned int)flags;
 @end
 
 @implementation NSPropertyDescription
@@ -103,10 +103,10 @@
 
 - (id)_qualifiedName
 {
-  v3 = [(NSPropertyDescription *)self _namespace];
-  if (v3)
+  _namespace = [(NSPropertyDescription *)self _namespace];
+  if (_namespace)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v3, -[NSPropertyDescription name](self, "name")];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", _namespace, -[NSPropertyDescription name](self, "name")];
   }
 
   return [(NSPropertyDescription *)self name];
@@ -277,9 +277,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSPropertyDescription *)self name];
+  name = [(NSPropertyDescription *)self name];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)name hash];
 }
 
 - (_NSExtraPropertyIVars)_extraIVars
@@ -339,10 +339,10 @@
 {
   if (result)
   {
-    v1 = [(__CFString *)result _namespace];
-    if (v1)
+    _namespace = [(__CFString *)result _namespace];
+    if (_namespace)
     {
-      v2 = [v1 componentsSeparatedByString:@"."];
+      v2 = [_namespace componentsSeparatedByString:@"."];
 
       return [v2 firstObject];
     }
@@ -356,11 +356,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ([(NSPropertyDescription *)self isOptional])
   {
-    [a3 encodeBool:1 forKey:@"NSIsOptional"];
+    [coder encodeBool:1 forKey:@"NSIsOptional"];
     v5 = 3;
   }
 
@@ -371,52 +371,52 @@
 
   if ([(NSPropertyDescription *)self isReadOnly])
   {
-    [a3 encodeBool:1 forKey:@"NSIsReadOnly"];
+    [coder encodeBool:1 forKey:@"NSIsReadOnly"];
     v5 = v5 | 4;
   }
 
   if ([(NSPropertyDescription *)self isTransient])
   {
-    [a3 encodeBool:1 forKey:@"NSIsTransient"];
+    [coder encodeBool:1 forKey:@"NSIsTransient"];
     v5 = v5 | 8;
   }
 
   if ([(NSPropertyDescription *)self isIndexedBySpotlight])
   {
-    [a3 encodeBool:1 forKey:@"NSIndexedBySpotlight"];
+    [coder encodeBool:1 forKey:@"NSIndexedBySpotlight"];
     v5 = v5 | 0x100;
   }
 
   if ([(NSPropertyDescription *)self isStoredInExternalRecord])
   {
-    [a3 encodeBool:1 forKey:@"NSIsStoredInTruth"];
+    [coder encodeBool:1 forKey:@"NSIsStoredInTruth"];
     v5 = v5 | 0x200;
   }
 
   if ([(NSPropertyDescription *)self _isOrdered])
   {
-    [a3 encodeBool:1 forKey:@"NSIsOrdered"];
+    [coder encodeBool:1 forKey:@"NSIsOrdered"];
     v5 = v5 | 0x400;
   }
 
   if ([(NSPropertyDescription *)self _allowsCloudEncryption])
   {
-    [a3 encodeBool:1 forKey:@"NSAllowsCloudEncryption"];
+    [coder encodeBool:1 forKey:@"NSAllowsCloudEncryption"];
     v5 = v5 | 0x800;
   }
 
-  v6 = [(NSPropertyDescription *)self renamingIdentifier];
-  if (v6)
+  renamingIdentifier = [(NSPropertyDescription *)self renamingIdentifier];
+  if (renamingIdentifier)
   {
-    [a3 encodeObject:v6 forKey:@"NSRenamingIdentifier"];
+    [coder encodeObject:renamingIdentifier forKey:@"NSRenamingIdentifier"];
   }
 
-  [a3 encodeObject:-[NSPropertyDescription name](self forKey:{"name"), @"NSPropertyName"}];
-  [a3 encodeConditionalObject:-[NSPropertyDescription entity](self forKey:{"entity"), @"NSEntity"}];
-  v7 = [(NSPropertyDescription *)self validationPredicates];
-  if ([(NSArray *)v7 count])
+  [coder encodeObject:-[NSPropertyDescription name](self forKey:{"name"), @"NSPropertyName"}];
+  [coder encodeConditionalObject:-[NSPropertyDescription entity](self forKey:{"entity"), @"NSEntity"}];
+  validationPredicates = [(NSPropertyDescription *)self validationPredicates];
+  if ([(NSArray *)validationPredicates count])
   {
-    [a3 encodeObject:v7 forKey:@"NSValidationPredicates"];
+    [coder encodeObject:validationPredicates forKey:@"NSValidationPredicates"];
   }
 
   else
@@ -424,10 +424,10 @@
     v5 = v5 | 0x10;
   }
 
-  v8 = [(NSPropertyDescription *)self validationWarnings];
-  if ([(NSArray *)v8 count])
+  validationWarnings = [(NSPropertyDescription *)self validationWarnings];
+  if ([(NSArray *)validationWarnings count])
   {
-    [a3 encodeObject:v8 forKey:@"NSValidationWarnings"];
+    [coder encodeObject:validationWarnings forKey:@"NSValidationWarnings"];
   }
 
   else
@@ -435,10 +435,10 @@
     v5 = v5 | 0x20;
   }
 
-  v9 = [(NSPropertyDescription *)self userInfo];
-  if ([(NSDictionary *)v9 count])
+  userInfo = [(NSPropertyDescription *)self userInfo];
+  if ([(NSDictionary *)userInfo count])
   {
-    [a3 encodeObject:v9 forKey:@"NSUserInfo"];
+    [coder encodeObject:userInfo forKey:@"NSUserInfo"];
   }
 
   else
@@ -446,10 +446,10 @@
     v5 = v5 | 0x40;
   }
 
-  v10 = [(NSPropertyDescription *)self versionHashModifier];
-  if ([(NSString *)v10 length])
+  versionHashModifier = [(NSPropertyDescription *)self versionHashModifier];
+  if ([(NSString *)versionHashModifier length])
   {
-    [a3 encodeObject:v10 forKey:@"NSVersionHashModifier"];
+    [coder encodeObject:versionHashModifier forKey:@"NSVersionHashModifier"];
   }
 
   else
@@ -459,10 +459,10 @@
 
   v11 = [(NSPropertyDescription *)self _encodedPropertyFlagsForFlags:v5];
 
-  [a3 encodeInt32:v11 forKey:@"_P"];
+  [coder encodeInt32:v11 forKey:@"_P"];
 }
 
-- (NSPropertyDescription)initWithCoder:(id)a3
+- (NSPropertyDescription)initWithCoder:(id)coder
 {
   v50 = *MEMORY[0x1E69E9840];
   v48.receiver = self;
@@ -477,7 +477,7 @@
     v45 = __39__NSPropertyDescription_initWithCoder___block_invoke;
     v46 = &unk_1E6EC16F0;
     v47 = v5;
-    v6 = [a3 decodeInt32ForKey:@"_P"];
+    v6 = [coder decodeInt32ForKey:@"_P"];
     v7 = v6;
     if (v6)
     {
@@ -490,7 +490,7 @@
 
     else
     {
-      if ([a3 decodeBoolForKey:@"NSIsOptional"])
+      if ([coder decodeBoolForKey:@"NSIsOptional"])
       {
         v8 = 4;
       }
@@ -501,8 +501,8 @@
       }
 
       *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFFFB | v8;
-      *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFFFE | [a3 decodeBoolForKey:@"NSIsReadOnly"];
-      if ([a3 decodeBoolForKey:@"NSIsTransient"])
+      *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFFFE | [coder decodeBoolForKey:@"NSIsReadOnly"];
+      if ([coder decodeBoolForKey:@"NSIsTransient"])
       {
         v9 = 2;
       }
@@ -513,7 +513,7 @@
       }
 
       *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFFFD | v9;
-      if ([a3 decodeBoolForKey:@"NSIndexedBySpotlight"])
+      if ([coder decodeBoolForKey:@"NSIndexedBySpotlight"])
       {
         v10 = 32;
       }
@@ -524,7 +524,7 @@
       }
 
       *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFFDF | v10;
-      if ([a3 decodeBoolForKey:@"NSIsStoredInTruth"])
+      if ([coder decodeBoolForKey:@"NSIsStoredInTruth"])
       {
         v11 = 64;
       }
@@ -535,7 +535,7 @@
       }
 
       *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFFBF | v11;
-      if ([a3 decodeBoolForKey:@"NSIsOrdered"])
+      if ([coder decodeBoolForKey:@"NSIsOrdered"])
       {
         v12 = 256;
       }
@@ -546,7 +546,7 @@
       }
 
       *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFEFF | v12;
-      if ([a3 decodeBoolForKey:@"NSAllowsCloudEncryption"])
+      if ([coder decodeBoolForKey:@"NSAllowsCloudEncryption"])
       {
         v13 = 0x8000;
       }
@@ -562,7 +562,7 @@
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
-    v17 = [a3 decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, v16, objc_opt_class(), 0), @"NSValidationPredicates"}];
+    v17 = [coder decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, v16, objc_opt_class(), 0), @"NSValidationPredicates"}];
     v4->_validationPredicates = v17;
     v40 = 0u;
     v41 = 0u;
@@ -593,7 +593,7 @@
 
           if ([v21 isNSArray])
           {
-            [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF4353F0)}];
+            [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF4353F0)}];
 
             goto LABEL_61;
           }
@@ -616,19 +616,19 @@ LABEL_35:
       v23 = objc_opt_class();
       v24 = objc_opt_class();
       v25 = objc_opt_class();
-      v4->_validationWarnings = [a3 decodeObjectOfClasses:objc_msgSend(v22 forKey:{"setWithObjects:", v23, v24, v25, objc_opt_class(), 0), @"NSValidationWarnings"}];
+      v4->_validationWarnings = [coder decodeObjectOfClasses:objc_msgSend(v22 forKey:{"setWithObjects:", v23, v24, v25, objc_opt_class(), 0), @"NSValidationWarnings"}];
     }
 
     if ((v7 & 0x40) == 0)
     {
-      v4->_userInfo = [a3 decodeObjectOfClasses:+[_PFRoutines plistClassesForSecureCoding]() forKey:@"NSUserInfo"];
+      v4->_userInfo = [coder decodeObjectOfClasses:+[_PFRoutines plistClassesForSecureCoding]() forKey:@"NSUserInfo"];
     }
 
     if ((v7 & 0x80) == 0)
     {
       v26 = MEMORY[0x1E695DFD8];
       v27 = objc_opt_class();
-      v28 = [a3 decodeObjectOfClasses:objc_msgSend(v26 forKey:{"setWithObjects:", v27, objc_opt_class(), 0), @"NSVersionHashModifier"}];
+      v28 = [coder decodeObjectOfClasses:objc_msgSend(v26 forKey:{"setWithObjects:", v27, objc_opt_class(), 0), @"NSVersionHashModifier"}];
       v4->_versionHashModifier = v28;
       if (v28)
       {
@@ -641,7 +641,7 @@ LABEL_35:
     }
 
     *&v4->_propertyDescriptionFlags &= ~0x10u;
-    v29 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPropertyName"];
+    v29 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPropertyName"];
     v4->_name = v29;
     if (v29 && ![(NSString *)v29 isNSString])
     {
@@ -649,7 +649,7 @@ LABEL_35:
       goto LABEL_60;
     }
 
-    v30 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSEntity"];
+    v30 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSEntity"];
     v4->_entity = v30;
     if (v30)
     {
@@ -691,7 +691,7 @@ LABEL_35:
 
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
-    -[NSPropertyDescription setRenamingIdentifier:](v4, "setRenamingIdentifier:", [a3 decodeObjectOfClasses:objc_msgSend(v35 forKey:{"setWithObjects:", v36, objc_opt_class(), 0), @"NSRenamingIdentifier"}]);
+    -[NSPropertyDescription setRenamingIdentifier:](v4, "setRenamingIdentifier:", [coder decodeObjectOfClasses:objc_msgSend(v35 forKey:{"setWithObjects:", v36, objc_opt_class(), 0), @"NSRenamingIdentifier"}]);
     if (![(NSPropertyDescription *)v4 renamingIdentifier]|| ([(NSString *)[(NSPropertyDescription *)v4 renamingIdentifier] isNSString]& 1) != 0)
     {
       [(NSPropertyDescription *)v4 _setNamespace:?];
@@ -704,7 +704,7 @@ LABEL_62:
 
     v34 = &unk_1EF4354B8;
 LABEL_60:
-    [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v34)}];
+    [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v34)}];
 
 LABEL_61:
     v4 = 0;
@@ -716,12 +716,12 @@ LABEL_63:
   return v4;
 }
 
-- (void)_setNamespace:(unint64_t *)a1
+- (void)_setNamespace:(unint64_t *)namespace
 {
-  if (a1)
+  if (namespace)
   {
-    v4 = a1 + 7;
-    if (atomic_load(a1 + 7))
+    v4 = namespace + 7;
+    if (atomic_load(namespace + 7))
     {
       v6 = atomic_load(v4);
 
@@ -731,10 +731,10 @@ LABEL_63:
 
     if (!atomic_load(v4))
     {
-      [a1 _initializeExtraIVars];
+      [namespace _initializeExtraIVars];
     }
 
-    v9 = a1 + 7;
+    v9 = namespace + 7;
     v10 = atomic_load(v9);
     v15 = *(v10 + 24);
     v11 = [a2 copy];
@@ -748,9 +748,9 @@ LABEL_63:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     *(v4 + 32) = [(NSString *)self->_name copy];
@@ -863,9 +863,9 @@ LABEL_15:
     return;
   }
 
-  v5 = [(NSPropertyDescription *)self entity];
-  v6 = v5;
-  if (v5 && [(NSDictionary *)[(NSEntityDescription *)v5 propertiesByName] objectForKey:name]&& ![(NSPropertyDescription *)self superCompositeAttribute])
+  entity = [(NSPropertyDescription *)self entity];
+  v6 = entity;
+  if (entity && [(NSDictionary *)[(NSEntityDescription *)entity propertiesByName] objectForKey:name]&& ![(NSPropertyDescription *)self superCompositeAttribute])
   {
 LABEL_19:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Can't change name of property from %@ to %@", self->_name, name), 0}]);
@@ -1078,11 +1078,11 @@ LABEL_8:
   if (result)
   {
     v1 = result;
-    v2 = [(__CFString *)result _namespace];
-    if (v2)
+    _namespace = [(__CFString *)result _namespace];
+    if (_namespace)
     {
-      v3 = v2;
-      v4 = [v2 rangeOfString:@"."];
+      v3 = _namespace;
+      v4 = [_namespace rangeOfString:@"."];
       if ((v4 - 1) > 0x7FFFFFFFFFFFFFFDLL)
       {
 
@@ -1105,7 +1105,7 @@ LABEL_8:
   return result;
 }
 
-- (void)setSuperCompositeAttribute:(id)a3
+- (void)setSuperCompositeAttribute:(id)attribute
 {
   p_extraIvars = &self->_extraIvars;
   if (!atomic_load(&self->_extraIvars))
@@ -1114,20 +1114,20 @@ LABEL_8:
   }
 
   v7 = atomic_load(p_extraIvars);
-  *(v7 + 32) = a3;
-  if (a3)
+  *(v7 + 32) = attribute;
+  if (attribute)
   {
-    if ([a3 _namespace])
+    if ([attribute _namespace])
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_msgSend(a3, "_namespace"), objc_msgSend(a3, "name")];
+      name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_msgSend(attribute, "_namespace"), objc_msgSend(attribute, "name")];
     }
 
     else
     {
-      v8 = [a3 name];
+      name = [attribute name];
     }
 
-    v9 = v8;
+    v9 = name;
   }
 
   else
@@ -1138,22 +1138,22 @@ LABEL_8:
   [(NSPropertyDescription *)self _setNamespace:v9];
 }
 
-- (BOOL)_epsilonEquals:(id)a3 rhs:(id)a4 withFlags:(int)a5
+- (BOOL)_epsilonEquals:(id)equals rhs:(id)rhs withFlags:(int)flags
 {
-  if (a3 == a4)
+  if (equals == rhs)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:a4];
+    return [equals isEqual:rhs];
   }
 }
 
-- (BOOL)_isSchemaEqual:(id)a3
+- (BOOL)_isSchemaEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -1164,30 +1164,30 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(NSPropertyDescription *)self name];
-  v6 = [a3 name];
-  if (v5 == v6)
+  name = [(NSPropertyDescription *)self name];
+  name2 = [equal name];
+  if (name == name2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = name2;
   result = 0;
-  if (v5 && v7)
+  if (name && v7)
   {
 
-    return [(NSString *)v5 isEqual:?];
+    return [(NSString *)name isEqual:?];
   }
 
   return result;
 }
 
-- (void)_replaceValidationPredicates:(id)a3 andWarnings:(id)a4
+- (void)_replaceValidationPredicates:(id)predicates andWarnings:(id)warnings
 {
   v18 = *MEMORY[0x1E69E9840];
 
-  self->_validationPredicates = a3;
-  self->_validationWarnings = a4;
+  self->_validationPredicates = predicates;
+  self->_validationWarnings = warnings;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1219,10 +1219,10 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style
 {
   memset(&c, 0, sizeof(c));
-  v6 = [(NSPropertyDescription *)self isOptional:a3];
+  v6 = [(NSPropertyDescription *)self isOptional:hash];
   if ([(NSPropertyDescription *)self isTransient])
   {
     v7 = 2;
@@ -1275,28 +1275,28 @@ LABEL_12:
   versionHashModifier = self->_versionHashModifier;
   if (versionHashModifier)
   {
-    v15 = CFStringGetCStringPtr(versionHashModifier, 0x8000100u);
-    if (!v15)
+    uTF8String = CFStringGetCStringPtr(versionHashModifier, 0x8000100u);
+    if (!uTF8String)
     {
-      v15 = [(NSString *)self->_versionHashModifier UTF8String];
+      uTF8String = [(NSString *)self->_versionHashModifier UTF8String];
     }
 
-    v16 = strlen(v15);
-    CC_SHA256_Update(&c, v15, v16);
+    v16 = strlen(uTF8String);
+    CC_SHA256_Update(&c, uTF8String, v16);
   }
 
-  CC_SHA256_Final(a3, &c);
+  CC_SHA256_Final(hash, &c);
 }
 
-- (BOOL)_isEqual:(id)a3 skipIndexCheck:(BOOL)a4
+- (BOOL)_isEqual:(id)equal skipIndexCheck:(BOOL)check
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v9) = 1;
-    return v9;
+    LOBYTE(name2) = 1;
+    return name2;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_16;
   }
@@ -1307,42 +1307,42 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v7 = [(NSPropertyDescription *)self _propertyType];
-  if (v7 != [a3 _propertyType])
+  _propertyType = [(NSPropertyDescription *)self _propertyType];
+  if (_propertyType != [equal _propertyType])
   {
     goto LABEL_16;
   }
 
-  v8 = [(NSPropertyDescription *)self name];
-  v9 = [a3 name];
-  if (v8 == v9 || (v10 = v9, LOBYTE(v9) = 0, v8) && v10 && (LODWORD(v9) = [(NSString *)v8 isEqual:?], v9))
+  name = [(NSPropertyDescription *)self name];
+  name2 = [equal name];
+  if (name == name2 || (v10 = name2, LOBYTE(name2) = 0, name) && v10 && (LODWORD(name2) = [(NSString *)name isEqual:?], name2))
   {
-    v11 = [(NSPropertyDescription *)self isOptional];
-    if (v11 != [a3 isOptional] || (v12 = -[NSPropertyDescription isTransient](self, "isTransient"), v12 != objc_msgSend(a3, "isTransient")) || (v13 = -[NSPropertyDescription _allowsCloudEncryption](self, "_allowsCloudEncryption"), v13 != objc_msgSend(a3, "_allowsCloudEncryption")) || !a4 && (v14 = -[NSPropertyDescription isIndexed](self, "isIndexed"), v14 != objc_msgSend(a3, "isIndexed")) || (v15 = -[NSPropertyDescription isIndexedBySpotlight](self, "isIndexedBySpotlight"), v15 != objc_msgSend(a3, "isIndexedBySpotlight")) || (v16 = -[NSPropertyDescription isStoredInExternalRecord](self, "isStoredInExternalRecord"), v16 != objc_msgSend(a3, "isStoredInExternalRecord")))
+    isOptional = [(NSPropertyDescription *)self isOptional];
+    if (isOptional != [equal isOptional] || (v12 = -[NSPropertyDescription isTransient](self, "isTransient"), v12 != objc_msgSend(equal, "isTransient")) || (v13 = -[NSPropertyDescription _allowsCloudEncryption](self, "_allowsCloudEncryption"), v13 != objc_msgSend(equal, "_allowsCloudEncryption")) || !check && (v14 = -[NSPropertyDescription isIndexed](self, "isIndexed"), v14 != objc_msgSend(equal, "isIndexed")) || (v15 = -[NSPropertyDescription isIndexedBySpotlight](self, "isIndexedBySpotlight"), v15 != objc_msgSend(equal, "isIndexedBySpotlight")) || (v16 = -[NSPropertyDescription isStoredInExternalRecord](self, "isStoredInExternalRecord"), v16 != objc_msgSend(equal, "isStoredInExternalRecord")))
     {
 LABEL_16:
-      LOBYTE(v9) = 0;
-      return v9;
+      LOBYTE(name2) = 0;
+      return name2;
     }
 
-    v17 = [(NSPropertyDescription *)self userInfo];
-    v9 = [a3 userInfo];
-    if (v17 == v9 || (v18 = v9, LOBYTE(v9) = 0, v17) && v18 && (LODWORD(v9) = [(NSDictionary *)v17 isEqual:?], v9))
+    userInfo = [(NSPropertyDescription *)self userInfo];
+    name2 = [equal userInfo];
+    if (userInfo == name2 || (v18 = name2, LOBYTE(name2) = 0, userInfo) && v18 && (LODWORD(name2) = [(NSDictionary *)userInfo isEqual:?], name2))
     {
-      v19 = [(NSPropertyDescription *)self versionHashModifier];
-      v9 = [a3 versionHashModifier];
-      if (v19 == v9 || (v20 = v9, LOBYTE(v9) = 0, v19) && v20 && (LODWORD(v9) = [(NSString *)v19 isEqual:?], v9))
+      versionHashModifier = [(NSPropertyDescription *)self versionHashModifier];
+      name2 = [equal versionHashModifier];
+      if (versionHashModifier == name2 || (v20 = name2, LOBYTE(name2) = 0, versionHashModifier) && v20 && (LODWORD(name2) = [(NSString *)versionHashModifier isEqual:?], name2))
       {
 
-        LOBYTE(v9) = [(NSPropertyDescription *)self _comparePredicatesAndWarnings:a3];
+        LOBYTE(name2) = [(NSPropertyDescription *)self _comparePredicatesAndWarnings:equal];
       }
     }
   }
 
-  return v9;
+  return name2;
 }
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = NSPropertyDescription;
@@ -1351,7 +1351,7 @@ LABEL_16:
   if (v4)
   {
     *&v4->_propertyDescriptionFlags = *&v4->_propertyDescriptionFlags & 0xFE80 | 4;
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
     v5->_entitysReferenceIDForProperty = -1;
     v5->_versionHashModifier = 0;
     v5->_versionHash = 0;
@@ -1360,10 +1360,10 @@ LABEL_16:
   return v5;
 }
 
-- (void)_setEntityAndMaintainIndices:(id)a3
+- (void)_setEntityAndMaintainIndices:(id)indices
 {
   entity = self->_entity;
-  if (entity == a3)
+  if (entity == indices)
   {
     return;
   }
@@ -1373,13 +1373,13 @@ LABEL_16:
     if ([(NSEntityDescription *)entity _hasIndexForProperty:?])
     {
       [(NSEntityDescription *)self->_entity _removeIndexForProperty:?];
-      self->_entity = a3;
+      self->_entity = indices;
       goto LABEL_6;
     }
 
-    self->_entity = a3;
+    self->_entity = indices;
 LABEL_11:
-    if (a3)
+    if (indices)
     {
       return;
     }
@@ -1389,14 +1389,14 @@ LABEL_11:
   }
 
   propertyDescriptionFlags = self->_propertyDescriptionFlags;
-  self->_entity = a3;
+  self->_entity = indices;
   if ((propertyDescriptionFlags & 8) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  if (!a3)
+  if (!indices)
   {
     v7 = *&self->_propertyDescriptionFlags | 8;
 LABEL_14:
@@ -1404,15 +1404,15 @@ LABEL_14:
     return;
   }
 
-  [(NSEntityDescription *)a3 _addIndexForProperty:?];
+  [(NSEntityDescription *)indices _addIndexForProperty:?];
 }
 
-- (void)_setEntitysReferenceID:(int64_t)a3
+- (void)_setEntitysReferenceID:(int64_t)d
 {
   entitysReferenceIDForProperty = self->_entitysReferenceIDForProperty;
-  if (entitysReferenceIDForProperty == -1 || entitysReferenceIDForProperty == a3)
+  if (entitysReferenceIDForProperty == -1 || entitysReferenceIDForProperty == d)
   {
-    self->_entitysReferenceIDForProperty = a3;
+    self->_entitysReferenceIDForProperty = d;
   }
 
   else
@@ -1421,9 +1421,9 @@ LABEL_14:
   }
 }
 
-- (void)_setOrdered:(BOOL)a3
+- (void)_setOrdered:(BOOL)ordered
 {
-  if (a3)
+  if (ordered)
   {
     v3 = 256;
   }
@@ -1436,109 +1436,109 @@ LABEL_14:
   *&self->_propertyDescriptionFlags = *&self->_propertyDescriptionFlags & 0xFEFF | v3;
 }
 
-- (BOOL)_nonPredicateValidateValue:(id *)a3 forKey:(id)a4 inObject:(id)a5 error:(id *)a6
+- (BOOL)_nonPredicateValidateValue:(id *)value forKey:(id)key inObject:(id)object error:(id *)error
 {
-  if ([(NSPropertyDescription *)self isOptional]|| *a3 || [(NSPropertyDescription *)self isTransient]&& z9dsptsiQ80etb9782fsrs98bfdle88 != 1)
+  if ([(NSPropertyDescription *)self isOptional]|| *value || [(NSPropertyDescription *)self isTransient]&& z9dsptsiQ80etb9782fsrs98bfdle88 != 1)
   {
     return 1;
   }
 
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
 
-  v12 = [(NSManagedObject *)a5 _generateErrorWithCode:0 andMessage:a4 forKey:*a3 andValue:0 additionalDetail:?];
+  v12 = [(NSManagedObject *)object _generateErrorWithCode:0 andMessage:key forKey:*value andValue:0 additionalDetail:?];
   result = 0;
-  *a6 = v12;
+  *error = v12;
   return result;
 }
 
-- (BOOL)_comparePredicatesAndWarnings:(id)a3
+- (BOOL)_comparePredicatesAndWarnings:(id)warnings
 {
-  v5 = [(NSPropertyDescription *)self _rawValidationPredicates];
-  v6 = [a3 _rawValidationPredicates];
-  if (v5 == v6 || (v7 = v6, LOBYTE(v6) = 0, v5) && v7 && (LODWORD(v6) = [v5 isEqual:?], v6))
+  _rawValidationPredicates = [(NSPropertyDescription *)self _rawValidationPredicates];
+  _rawValidationPredicates2 = [warnings _rawValidationPredicates];
+  if (_rawValidationPredicates == _rawValidationPredicates2 || (v7 = _rawValidationPredicates2, LOBYTE(_rawValidationPredicates2) = 0, _rawValidationPredicates) && v7 && (LODWORD(_rawValidationPredicates2) = [_rawValidationPredicates isEqual:?], _rawValidationPredicates2))
   {
-    v8 = [(NSPropertyDescription *)self _rawValidationWarnings];
-    v6 = [a3 _rawValidationWarnings];
-    if (v8 == v6)
+    _rawValidationWarnings = [(NSPropertyDescription *)self _rawValidationWarnings];
+    _rawValidationPredicates2 = [warnings _rawValidationWarnings];
+    if (_rawValidationWarnings == _rawValidationPredicates2)
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(_rawValidationPredicates2) = 1;
     }
 
     else
     {
-      v9 = v6;
-      LOBYTE(v6) = 0;
-      if (v8 && v9)
+      v9 = _rawValidationPredicates2;
+      LOBYTE(_rawValidationPredicates2) = 0;
+      if (_rawValidationWarnings && v9)
       {
 
-        LOBYTE(v6) = [v8 isEqual:?];
+        LOBYTE(_rawValidationPredicates2) = [_rawValidationWarnings isEqual:?];
       }
     }
   }
 
-  return v6;
+  return _rawValidationPredicates2;
 }
 
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)_appendPropertyFieldsToData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8
+- (void)_appendPropertyFieldsToData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots
 {
-  _writeInt32IntoData(a3, [(NSPropertyDescription *)self _propertyType:a3]);
-  _writeInt32IntoData(a3, *&self->_propertyDescriptionFlags);
-  _writeInt32IntoData(a3, [objc_msgSend(a6 valueForKey:{self->_versionHashModifier), "unsignedIntegerValue"}]);
-  _writeInt32IntoData(a3, [objc_msgSend(a7 objectForKey:{self->_versionHash), "unsignedIntegerValue"}]);
-  _writeInt32IntoData(a3, [a8 indexForKey:{-[NSEntityDescription name](self->_entity, "name")}]);
-  _writeInt32IntoData(a3, [objc_msgSend(a5 objectForKey:{self->_name), "unsignedIntegerValue"}]);
+  _writeInt32IntoData(data, [(NSPropertyDescription *)self _propertyType:data]);
+  _writeInt32IntoData(data, *&self->_propertyDescriptionFlags);
+  _writeInt32IntoData(data, [objc_msgSend(strings valueForKey:{self->_versionHashModifier), "unsignedIntegerValue"}]);
+  _writeInt32IntoData(data, [objc_msgSend(uniquedData objectForKey:{self->_versionHash), "unsignedIntegerValue"}]);
+  _writeInt32IntoData(data, [slots indexForKey:{-[NSEntityDescription name](self->_entity, "name")}]);
+  _writeInt32IntoData(data, [objc_msgSend(names objectForKey:{self->_name), "unsignedIntegerValue"}]);
   if ([(NSArray *)self->_validationWarnings count])
   {
-    _writeInt32IntoData(a3, 1u);
-    _writePFEncodedArrayShapeIntoData(a3, self->_validationPredicates, a7, 0);
-    _writePFEncodedArrayShapeIntoData(a3, self->_validationWarnings, a6, a7);
+    _writeInt32IntoData(data, 1u);
+    _writePFEncodedArrayShapeIntoData(data, self->_validationPredicates, uniquedData, 0);
+    _writePFEncodedArrayShapeIntoData(data, self->_validationWarnings, strings, uniquedData);
   }
 
   else
   {
-    _writeInt32IntoData(a3, 0);
+    _writeInt32IntoData(data, 0);
   }
 
   if (atomic_load(&self->_extraIvars))
   {
-    _writeInt32IntoData(a3, 1u);
+    _writeInt32IntoData(data, 1u);
     v15 = atomic_load(&self->_extraIvars);
     if (*v15)
     {
-      _writeInt32IntoData(a3, 1u);
+      _writeInt32IntoData(data, 1u);
       v16 = atomic_load(&self->_extraIvars);
-      _writeInt32IntoData(a3, [objc_msgSend(a6 objectForKey:{*v16), "unsignedIntegerValue"}]);
+      _writeInt32IntoData(data, [objc_msgSend(strings objectForKey:{*v16), "unsignedIntegerValue"}]);
     }
 
     else
     {
-      _writeInt64IntoData(a3, 0);
+      _writeInt64IntoData(data, 0);
     }
 
     v17 = atomic_load(&self->_extraIvars);
-    _writeInt64IntoData(a3, *(v17 + 8));
+    _writeInt64IntoData(data, *(v17 + 8));
     v18 = atomic_load(&self->_extraIvars);
-    _writeInt64IntoData(a3, *(v18 + 16));
+    _writeInt64IntoData(data, *(v18 + 16));
   }
 
   else
   {
-    _writeInt32IntoData(a3, 0);
+    _writeInt32IntoData(data, 0);
   }
 
   if (self->_userInfo)
   {
-    v19 = [objc_msgSend(a7 "objectForKey:"unsignedIntegerValue"")];
+    v19 = [objc_msgSend(uniquedData "objectForKey:"unsignedIntegerValue"")];
   }
 
   else
@@ -1546,13 +1546,13 @@ LABEL_14:
     v19 = 0;
   }
 
-  _writeInt32IntoData(a3, v19);
-  v20 = [(NSPropertyDescription *)self _entitysReferenceID];
+  _writeInt32IntoData(data, v19);
+  _entitysReferenceID = [(NSPropertyDescription *)self _entitysReferenceID];
 
-  _writeInt32IntoData(a3, v20);
+  _writeInt32IntoData(data, _entitysReferenceID);
 }
 
-- (void)set_swiftDataPropertyFlags:(unsigned int)a3
+- (void)set_swiftDataPropertyFlags:(unsigned int)flags
 {
   p_extraIvars = &self->_extraIvars;
   if (!atomic_load(&self->_extraIvars))
@@ -1561,7 +1561,7 @@ LABEL_14:
   }
 
   v6 = atomic_load(p_extraIvars);
-  *(v6 + 40) = a3;
+  *(v6 + 40) = flags;
 }
 
 - (unsigned)_swiftDataPropertyFlags

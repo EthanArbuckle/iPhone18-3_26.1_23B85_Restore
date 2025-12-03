@@ -1,7 +1,7 @@
 @interface BackgroundTaskAgentJob
-- (BackgroundTaskAgentJob)initWithName:(id)a3 startDelay:(double)a4;
+- (BackgroundTaskAgentJob)initWithName:(id)name startDelay:(double)delay;
 - (BackgroundTaskAgentJobDelegate)delegate;
-- (void)backgroundActivity:(id)a3 didBecomeSatisfied:(BOOL)a4;
+- (void)backgroundActivity:(id)activity didBecomeSatisfied:(BOOL)satisfied;
 - (void)dealloc;
 - (void)schedule;
 - (void)unschedule;
@@ -9,9 +9,9 @@
 
 @implementation BackgroundTaskAgentJob
 
-- (BackgroundTaskAgentJob)initWithName:(id)a3 startDelay:(double)a4
+- (BackgroundTaskAgentJob)initWithName:(id)name startDelay:(double)delay
 {
-  v6 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = BackgroundTaskAgentJob;
   v7 = [(BackgroundTaskAgentJob *)&v15 init];
@@ -19,12 +19,12 @@
   if (v7)
   {
     *&v7->_isSatisfied = 0;
-    v7->_startDelay = a4;
+    v7->_startDelay = delay;
     v9 = xpc_dictionary_create(0, 0, 0);
     requirements = v8->_requirements;
     v8->_requirements = v9;
 
-    v11 = [v6 copy];
+    v11 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v11;
 
@@ -66,13 +66,13 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "background activity [%{public}@] to be scheduled.", buf, 0xCu);
     }
 
-    v6 = [(NSString *)self->_name UTF8String];
+    uTF8String = [(NSString *)self->_name UTF8String];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100007150;
     handler[3] = &unk_10001C8D8;
     objc_copyWeak(&v8, &location);
-    xpc_activity_register(v6, XPC_ACTIVITY_CHECK_IN, handler);
+    xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, handler);
     self->_isScheduled = 1;
     objc_destroyWeak(&v8);
 
@@ -80,10 +80,10 @@
   }
 }
 
-- (void)backgroundActivity:(id)a3 didBecomeSatisfied:(BOOL)a4
+- (void)backgroundActivity:(id)activity didBecomeSatisfied:(BOOL)satisfied
 {
-  self->_isSatisfied = a4;
-  objc_storeStrong(&self->_activity, a3);
+  self->_isSatisfied = satisfied;
+  objc_storeStrong(&self->_activity, activity);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (self->_isSatisfied)

@@ -10,16 +10,16 @@
   v9 = v6;
   if (!v6 || a4)
   {
-    v7 = v6;
+    whiteColor = v6;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v8 = v7;
-  [a1 setTintColor:v7];
+  v8 = whiteColor;
+  [self setTintColor:whiteColor];
 }
 
 @end

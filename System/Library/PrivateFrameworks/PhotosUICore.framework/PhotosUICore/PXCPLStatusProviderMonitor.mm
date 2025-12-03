@@ -1,26 +1,26 @@
 @interface PXCPLStatusProviderMonitor
 - (PXCPLStatusProviderMonitor)init;
-- (PXCPLStatusProviderMonitor)initWithPhotoLibrary:(id)a3;
+- (PXCPLStatusProviderMonitor)initWithPhotoLibrary:(id)library;
 - (void)_updateStatusProvider;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setStatusProvider:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setStatusProvider:(id)provider;
 @end
 
 @implementation PXCPLStatusProviderMonitor
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXCPLPhotoLibrarySourceObservationContext_139684 == a5)
+  if ((change & 1) != 0 && PXCPLPhotoLibrarySourceObservationContext_139684 == context)
   {
     [(PXCPLStatusProviderMonitor *)self _updateStatusProvider];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &PXMockCPLStatusProviderShouldUseMockServiceDefaultsContext)
+  if (context == &PXMockCPLStatusProviderShouldUseMockServiceDefaultsContext)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -34,7 +34,7 @@
   {
     v6.receiver = self;
     v6.super_class = PXCPLStatusProviderMonitor;
-    [(PXCPLStatusProviderMonitor *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PXCPLStatusProviderMonitor *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -69,13 +69,13 @@ void __51__PXCPLStatusProviderMonitor__updateStatusProvider__block_invoke(uint64
   }
 }
 
-- (void)setStatusProvider:(id)a3
+- (void)setStatusProvider:(id)provider
 {
-  v8 = a3;
+  providerCopy = provider;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = self->_statusProvider;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == providerCopy)
   {
   }
 
@@ -85,7 +85,7 @@ void __51__PXCPLStatusProviderMonitor__updateStatusProvider__block_invoke(uint64
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_statusProvider, a3);
+      objc_storeStrong(&self->_statusProvider, provider);
       [(PXCPLStatusProviderMonitor *)self signalChange:1];
     }
   }
@@ -101,14 +101,14 @@ void __51__PXCPLStatusProviderMonitor__updateStatusProvider__block_invoke(uint64
   [(PXCPLStatusProviderMonitor *)&v4 dealloc];
 }
 
-- (PXCPLStatusProviderMonitor)initWithPhotoLibrary:(id)a3
+- (PXCPLStatusProviderMonitor)initWithPhotoLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProviderMonitor.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProviderMonitor.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v18.receiver = self;
@@ -117,8 +117,8 @@ void __51__PXCPLStatusProviderMonitor__updateStatusProvider__block_invoke(uint64
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
-    v9 = [[PXCPLPhotoLibrarySource alloc] initWithPhotoLibrary:v6];
+    objc_storeStrong(&v7->_photoLibrary, library);
+    v9 = [[PXCPLPhotoLibrarySource alloc] initWithPhotoLibrary:libraryCopy];
     photoLibrarySource = v8->_photoLibrarySource;
     v8->_photoLibrarySource = v9;
 
@@ -147,8 +147,8 @@ void __51__PXCPLStatusProviderMonitor__updateStatusProvider__block_invoke(uint64
 
 - (PXCPLStatusProviderMonitor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProviderMonitor.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXCPLStatusProviderMonitor init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProviderMonitor.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXCPLStatusProviderMonitor init]"}];
 
   abort();
 }

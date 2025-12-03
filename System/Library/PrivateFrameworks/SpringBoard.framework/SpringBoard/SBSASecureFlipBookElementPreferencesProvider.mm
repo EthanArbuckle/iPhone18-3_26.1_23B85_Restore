@@ -1,23 +1,23 @@
 @interface SBSASecureFlipBookElementPreferencesProvider
-- (BOOL)_isTimerExpiredWithIdentifier:(id)a3 context:(id)a4;
-- (BOOL)_isTransitionAllowedTo:(id)a3 givenContext:(id)a4 iterationStartTime:(double)a5 requestRetryAfterDelay:(double *)a6;
-- (BOOL)_isTransitionSecureFromState:(id)a3 toState:(id)a4 forComponent:(id)a5 indefinitely:(BOOL)a6 givenMap:(id)a7;
-- (id)_startTimerForDuration:(double)a3 preferencesMutator:(id)a4;
-- (id)preferencesFromContext:(id)a3;
-- (void)_fallbackUpdateSecureStateStatusForInitialTransitionsWithRenderingContext:(id)a3;
-- (void)_updateSecureStateStatusBeforeAnyTransitions:(id)a3 iterationStartTime:(double)a4;
-- (void)_updateSecureStateStatusWithRequestedTransitionToSecureElementContext:(id)a3 renderingContext:(id)a4;
+- (BOOL)_isTimerExpiredWithIdentifier:(id)identifier context:(id)context;
+- (BOOL)_isTransitionAllowedTo:(id)to givenContext:(id)context iterationStartTime:(double)time requestRetryAfterDelay:(double *)delay;
+- (BOOL)_isTransitionSecureFromState:(id)state toState:(id)toState forComponent:(id)component indefinitely:(BOOL)indefinitely givenMap:(id)map;
+- (id)_startTimerForDuration:(double)duration preferencesMutator:(id)mutator;
+- (id)preferencesFromContext:(id)context;
+- (void)_fallbackUpdateSecureStateStatusForInitialTransitionsWithRenderingContext:(id)context;
+- (void)_updateSecureStateStatusBeforeAnyTransitions:(id)transitions iterationStartTime:(double)time;
+- (void)_updateSecureStateStatusWithRequestedTransitionToSecureElementContext:(id)context renderingContext:(id)renderingContext;
 - (void)_updateSecureStateStatusWithTransitionToNilSecureElementContext;
 @end
 
 @implementation SBSASecureFlipBookElementPreferencesProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   BSContinuousMachTimeNow();
   v7 = v6;
-  v8 = v5;
+  v8 = contextCopy;
   if (v8)
   {
     v9 = objc_opt_self();
@@ -53,12 +53,12 @@
     v12 = 0;
   }
 
-  v13 = [v12 preferences];
-  v14 = [v13 lastChangingElementLayoutTransition];
+  preferences = [v12 preferences];
+  lastChangingElementLayoutTransition = [preferences lastChangingElementLayoutTransition];
 
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_lastChangingElementLayoutTransition, v14);
+    objc_storeStrong(&self->_lastChangingElementLayoutTransition, lastChangingElementLayoutTransition);
     self->_collisionPending = [(SBSAElementLayoutTransition *)self->_lastChangingElementLayoutTransition isCollisionRequired];
   }
 
@@ -80,11 +80,11 @@
     self->_pendingTimerIdentifier = 0;
   }
 
-  v17 = [v12 secureFlipBookRenderingContext];
-  v18 = [v17 activeSecureElementIdentity];
-  v19 = [v12 preferences];
+  secureFlipBookRenderingContext = [v12 secureFlipBookRenderingContext];
+  activeSecureElementIdentity = [secureFlipBookRenderingContext activeSecureElementIdentity];
+  preferences2 = [v12 preferences];
   v20 = objc_opt_class();
-  v21 = v19;
+  v21 = preferences2;
   if (v20)
   {
     if (objc_opt_isKindOfClass())
@@ -110,11 +110,11 @@
   v35[2] = __71__SBSASecureFlipBookElementPreferencesProvider_preferencesFromContext___block_invoke;
   v35[3] = &unk_2783B9BA0;
   v36 = v12;
-  v37 = self;
-  v24 = v17;
+  selfCopy = self;
+  v24 = secureFlipBookRenderingContext;
   v38 = v24;
   v40 = v7;
-  v25 = v18;
+  v25 = activeSecureElementIdentity;
   v39 = v25;
   v26 = v12;
   v27 = [v23 copyWithBlock:v35];
@@ -331,15 +331,15 @@ void __71__SBSASecureFlipBookElementPreferencesProvider_preferencesFromContext__
   [v6 setActiveLayoutMode:*(*(a1 + 48) + 96)];
 }
 
-- (void)_updateSecureStateStatusBeforeAnyTransitions:(id)a3 iterationStartTime:(double)a4
+- (void)_updateSecureStateStatusBeforeAnyTransitions:(id)transitions iterationStartTime:(double)time
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  transitionsCopy = transitions;
+  v7 = transitionsCopy;
   secureStateStatus = self->_secureStateStatus;
   if (secureStateStatus == 2)
   {
-    if (self->_secureStateDisplayStartTime + 1.1 - a4 <= 0.0)
+    if (self->_secureStateDisplayStartTime + 1.1 - time <= 0.0)
     {
       self->_secureStateDisplayStartTime = 0.0;
       self->_secureStateStatus = 3;
@@ -368,9 +368,9 @@ LABEL_31:
 
   else if (secureStateStatus == 1)
   {
-    log = [v6 activeComponentsToStates];
-    v36 = [v7 appliedComponentsToStates];
-    v38 = [MEMORY[0x277CBEB38] dictionary];
+    log = [transitionsCopy activeComponentsToStates];
+    appliedComponentsToStates = [v7 appliedComponentsToStates];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -383,7 +383,7 @@ LABEL_31:
       v11 = v10;
       v35 = v7;
       v12 = *v46;
-      v39 = self;
+      selfCopy = self;
       while (2)
       {
         for (i = 0; i != v11; ++i)
@@ -394,26 +394,26 @@ LABEL_31:
           }
 
           v14 = *(*(&v45 + 1) + 8 * i);
-          v15 = [v36 objectForKeyedSubscript:v14];
+          v15 = [appliedComponentsToStates objectForKeyedSubscript:v14];
           v16 = [*(&self->super.super.isa + v9) objectForKeyedSubscript:v14];
           if ([v15 isEqualToString:v16])
           {
             v18 = v9;
 
 LABEL_18:
-            v23 = [*(&v39->super.super.isa + v18) objectForKeyedSubscript:v14];
-            [v38 setObject:v23 forKey:v14];
+            v23 = [*(&selfCopy->super.super.isa + v18) objectForKeyedSubscript:v14];
+            [dictionary setObject:v23 forKey:v14];
 
-            v24 = *(&v39->super.super.isa + v18);
-            *(&v39->super.super.isa + v18) = 0;
+            v24 = *(&selfCopy->super.super.isa + v18);
+            *(&selfCopy->super.super.isa + v18) = 0;
 
-            v39->_secureStateDisplayStartTime = a4;
-            v39->_secureStateStatus = 2;
+            selfCopy->_secureStateDisplayStartTime = time;
+            selfCopy->_secureStateStatus = 2;
             v41 = 0u;
             v42 = 0u;
             v43 = 0u;
             v44 = 0u;
-            obj = [v38 allKeys];
+            obj = [dictionary allKeys];
             v25 = [obj countByEnumeratingWithState:&v41 objects:v55 count:16];
             if (v25)
             {
@@ -432,9 +432,9 @@ LABEL_18:
                   v30 = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                   {
-                    v31 = [v38 objectForKeyedSubscript:v29];
+                    v31 = [dictionary objectForKeyedSubscript:v29];
                     v32 = v31;
-                    v33 = v39->_secureStateStatus - 1;
+                    v33 = selfCopy->_secureStateStatus - 1;
                     v34 = @"Insecure";
                     if (v33 <= 2)
                     {
@@ -470,7 +470,7 @@ LABEL_18:
             goto LABEL_18;
           }
 
-          self = v39;
+          self = selfCopy;
           v9 = v18;
         }
 
@@ -491,26 +491,26 @@ LABEL_29:
   }
 }
 
-- (void)_updateSecureStateStatusWithRequestedTransitionToSecureElementContext:(id)a3 renderingContext:(id)a4
+- (void)_updateSecureStateStatusWithRequestedTransitionToSecureElementContext:(id)context renderingContext:(id)renderingContext
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 componentToSecureTransitionMapping];
-  v9 = [v7 activeComponentsToStates];
-  v59 = [v6 requestedComponentsToStates];
-  v60 = v8;
-  if (v8)
+  contextCopy = context;
+  renderingContextCopy = renderingContext;
+  componentToSecureTransitionMapping = [renderingContextCopy componentToSecureTransitionMapping];
+  activeComponentsToStates = [renderingContextCopy activeComponentsToStates];
+  requestedComponentsToStates = [contextCopy requestedComponentsToStates];
+  v60 = componentToSecureTransitionMapping;
+  if (componentToSecureTransitionMapping)
   {
-    v53 = v7;
-    v55 = v6;
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    v53 = renderingContextCopy;
+    v55 = contextCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v11 = [v9 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v69 objects:v81 count:16];
+    allKeys = [activeComponentsToStates allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v69 objects:v81 count:16];
     if (v12)
     {
       v13 = v12;
@@ -521,35 +521,35 @@ LABEL_29:
         {
           if (*v70 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = *(*(&v69 + 1) + 8 * i);
-          v17 = v9;
-          v18 = [v9 objectForKeyedSubscript:v16];
-          v19 = [v59 objectForKeyedSubscript:v16];
+          v17 = activeComponentsToStates;
+          v18 = [activeComponentsToStates objectForKeyedSubscript:v16];
+          v19 = [requestedComponentsToStates objectForKeyedSubscript:v16];
           if ([(SBSASecureFlipBookElementPreferencesProvider *)self _isTransitionSecureFromState:v18 toState:v19 forComponent:v16 indefinitely:0 givenMap:v60])
           {
-            [v10 setObject:v19 forKey:v16];
+            [dictionary setObject:v19 forKey:v16];
           }
 
-          v9 = v17;
+          activeComponentsToStates = v17;
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v69 objects:v81 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v69 objects:v81 count:16];
       }
 
       while (v13);
     }
 
-    v20 = v9;
+    v20 = activeComponentsToStates;
 
-    v21 = [v10 allKeys];
-    v22 = [v21 count];
+    allKeys2 = [dictionary allKeys];
+    v22 = [allKeys2 count];
 
     if (v22)
     {
-      v23 = [v10 copy];
+      v23 = [dictionary copy];
     }
 
     else
@@ -557,18 +557,18 @@ LABEL_29:
       v23 = 0;
     }
 
-    v7 = v53;
-    v6 = v55;
-    v9 = v20;
+    renderingContextCopy = v53;
+    contextCopy = v55;
+    activeComponentsToStates = v20;
   }
 
   else
   {
-    v10 = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    dictionary = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "Secure transition map is nil; cannot identify any possibly secure transitions", buf, 2u);
+      _os_log_impl(&dword_21ED4E000, dictionary, OS_LOG_TYPE_INFO, "Secure transition map is nil; cannot identify any possibly secure transitions", buf, 2u);
     }
 
     v23 = 0;
@@ -610,8 +610,8 @@ LABEL_53:
       {
         v29 = v28;
         v30 = v23;
-        v56 = v6;
-        v51 = v9;
+        v56 = contextCopy;
+        v51 = activeComponentsToStates;
         v31 = *v62;
         do
         {
@@ -649,8 +649,8 @@ LABEL_53:
         }
 
         while (v29);
-        v9 = v51;
-        v6 = v56;
+        activeComponentsToStates = v51;
+        contextCopy = v56;
         v23 = v30;
       }
 
@@ -687,9 +687,9 @@ LABEL_56:
     if (v39)
     {
       v40 = v39;
-      v54 = v7;
-      v57 = v6;
-      v52 = v9;
+      v54 = renderingContextCopy;
+      v57 = contextCopy;
+      v52 = activeComponentsToStates;
       v41 = *v66;
       do
       {
@@ -730,9 +730,9 @@ LABEL_56:
       }
 
       while (v40);
-      v9 = v52;
-      v7 = v54;
-      v6 = v57;
+      activeComponentsToStates = v52;
+      renderingContextCopy = v54;
+      contextCopy = v57;
     }
 
     goto LABEL_53;
@@ -741,24 +741,24 @@ LABEL_56:
 LABEL_54:
 }
 
-- (void)_fallbackUpdateSecureStateStatusForInitialTransitionsWithRenderingContext:(id)a3
+- (void)_fallbackUpdateSecureStateStatusForInitialTransitionsWithRenderingContext:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 componentToSecureTransitionMapping];
-  v32 = [v4 activeComponentsToStates];
-  v6 = [v4 appliedComponentsToStates];
-  v33 = v5;
-  if (v5)
+  contextCopy = context;
+  componentToSecureTransitionMapping = [contextCopy componentToSecureTransitionMapping];
+  activeComponentsToStates = [contextCopy activeComponentsToStates];
+  appliedComponentsToStates = [contextCopy appliedComponentsToStates];
+  v33 = componentToSecureTransitionMapping;
+  if (componentToSecureTransitionMapping)
   {
-    v29 = v4;
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    v29 = contextCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [v6 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v38 objects:v49 count:16];
+    allKeys = [appliedComponentsToStates allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v38 objects:v49 count:16];
     if (v9)
     {
       v10 = v9;
@@ -769,30 +769,30 @@ LABEL_54:
         {
           if (*v39 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v38 + 1) + 8 * i);
-          v14 = [v32 objectForKeyedSubscript:v13];
-          v15 = [v6 objectForKeyedSubscript:v13];
+          v14 = [activeComponentsToStates objectForKeyedSubscript:v13];
+          v15 = [appliedComponentsToStates objectForKeyedSubscript:v13];
           if ([(SBSASecureFlipBookElementPreferencesProvider *)self _isTransitionSecureFromState:v14 toState:v15 forComponent:v13 indefinitely:0 givenMap:v33])
           {
-            [v7 setObject:v15 forKey:v13];
+            [dictionary setObject:v15 forKey:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v38 objects:v49 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v38 objects:v49 count:16];
       }
 
       while (v10);
     }
 
-    v16 = [v7 allKeys];
-    v17 = [v16 count];
+    allKeys2 = [dictionary allKeys];
+    v17 = [allKeys2 count];
 
     if (v17)
     {
-      obj = [v7 copy];
+      obj = [dictionary copy];
     }
 
     else
@@ -800,7 +800,7 @@ LABEL_54:
       obj = 0;
     }
 
-    v4 = v29;
+    contextCopy = v29;
   }
 
   else
@@ -810,15 +810,15 @@ LABEL_54:
 
   if (!self->_secureStateStatus && [obj count])
   {
-    v30 = v4;
+    v30 = contextCopy;
     objc_storeStrong(&self->_pendingTransitionsOfComponentsToSecureStates, obj);
     self->_secureStateStatus = 1;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v18 = [obj allKeys];
-    v19 = [v18 countByEnumeratingWithState:&v34 objects:v48 count:16];
+    allKeys3 = [obj allKeys];
+    v19 = [allKeys3 countByEnumeratingWithState:&v34 objects:v48 count:16];
     if (v19)
     {
       v20 = v19;
@@ -829,7 +829,7 @@ LABEL_54:
         {
           if (*v35 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys3);
           }
 
           v23 = *(*(&v34 + 1) + 8 * j);
@@ -855,13 +855,13 @@ LABEL_54:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v34 objects:v48 count:16];
+        v20 = [allKeys3 countByEnumeratingWithState:&v34 objects:v48 count:16];
       }
 
       while (v20);
     }
 
-    v4 = v30;
+    contextCopy = v30;
   }
 }
 
@@ -896,25 +896,25 @@ LABEL_54:
   self->_pendingTransitionsOfComponentsToSecureStates = 0;
 }
 
-- (BOOL)_isTransitionAllowedTo:(id)a3 givenContext:(id)a4 iterationStartTime:(double)a5 requestRetryAfterDelay:(double *)a6
+- (BOOL)_isTransitionAllowedTo:(id)to givenContext:(id)context iterationStartTime:(double)time requestRetryAfterDelay:(double *)delay
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 activeSecureElementIdentity];
-  v12 = v11;
-  if (v9 && v11)
+  toCopy = to;
+  contextCopy = context;
+  activeSecureElementIdentity = [contextCopy activeSecureElementIdentity];
+  v12 = activeSecureElementIdentity;
+  if (toCopy && activeSecureElementIdentity)
   {
     if ((SAElementIdentityEqualToIdentity() & 1) == 0)
     {
       self->_requiresTransitionThroughEmpty = 1;
-      v13 = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      componentToSecureTransitionMapping = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
+      if (os_log_type_enabled(componentToSecureTransitionMapping, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v14 = "Transition not allowed. Existing rendered secure element different than requested, deferring transition";
 LABEL_10:
-        _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, v14, buf, 2u);
+        _os_log_impl(&dword_21ED4E000, componentToSecureTransitionMapping, OS_LOG_TYPE_DEFAULT, v14, buf, 2u);
         goto LABEL_11;
       }
 
@@ -922,23 +922,23 @@ LABEL_10:
     }
   }
 
-  else if (!v11)
+  else if (!activeSecureElementIdentity)
   {
     goto LABEL_15;
   }
 
-  if (![v10 transitionInProgress])
+  if (![contextCopy transitionInProgress])
   {
     if (SAElementIdentityEqualToIdentity())
     {
-      v16 = [v9 requestedConfigurationName];
-      v17 = [v10 activeConfigurationName];
-      v18 = [v16 isEqualToString:v17];
+      requestedConfigurationName = [toCopy requestedConfigurationName];
+      activeConfigurationName = [contextCopy activeConfigurationName];
+      v18 = [requestedConfigurationName isEqualToString:activeConfigurationName];
 
       if ((v18 & 1) == 0)
       {
-        v13 = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
-        if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        componentToSecureTransitionMapping = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
+        if (!os_log_type_enabled(componentToSecureTransitionMapping, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_11;
         }
@@ -967,31 +967,31 @@ LABEL_15:
       goto LABEL_21;
     }
 
-    if (!v9)
+    if (!toCopy)
     {
       v15 = 0;
       goto LABEL_21;
     }
 
-    v13 = [v10 componentToSecureTransitionMapping];
-    v22 = [v10 activeComponentsToStates];
-    [v9 requestedComponentsToStates];
-    v40 = v39 = v22;
+    componentToSecureTransitionMapping = [contextCopy componentToSecureTransitionMapping];
+    activeComponentsToStates = [contextCopy activeComponentsToStates];
+    [toCopy requestedComponentsToStates];
+    v40 = v39 = activeComponentsToStates;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v23 = [v22 allKeys];
-    v24 = [v23 countByEnumeratingWithState:&v41 objects:v47 count:16];
+    allKeys = [activeComponentsToStates allKeys];
+    v24 = [allKeys countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v24)
     {
       v25 = v24;
-      v35 = a6;
-      v26 = self;
-      v27 = v13;
+      delayCopy = delay;
+      selfCopy = self;
+      v27 = componentToSecureTransitionMapping;
       v36 = v12;
-      v37 = v10;
-      v38 = v9;
+      v37 = contextCopy;
+      v38 = toCopy;
       v28 = 0;
       v29 = *v42;
       do
@@ -1000,26 +1000,26 @@ LABEL_15:
         {
           if (*v42 != v29)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allKeys);
           }
 
           v31 = *(*(&v41 + 1) + 8 * i);
           v32 = [v39 objectForKeyedSubscript:v31];
           v33 = [v40 objectForKeyedSubscript:v31];
-          v28 |= [(SBSASecureFlipBookElementPreferencesProvider *)v26 _isTransitionSecureFromState:v32 toState:v33 forComponent:v31 indefinitely:1 givenMap:v27];
+          v28 |= [(SBSASecureFlipBookElementPreferencesProvider *)selfCopy _isTransitionSecureFromState:v32 toState:v33 forComponent:v31 indefinitely:1 givenMap:v27];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v41 objects:v47 count:16];
+        v25 = [allKeys countByEnumeratingWithState:&v41 objects:v47 count:16];
       }
 
       while (v25);
 
-      v10 = v37;
-      v9 = v38;
-      a6 = v35;
+      contextCopy = v37;
+      toCopy = v38;
+      delay = delayCopy;
       v12 = v36;
-      v13 = v27;
-      self = v26;
+      componentToSecureTransitionMapping = v27;
+      self = selfCopy;
       if (v28)
       {
         v15 = 1;
@@ -1035,9 +1035,9 @@ LABEL_43:
 
     if (self->_secureStateStatus == 2)
     {
-      if (a6)
+      if (delay)
       {
-        *a6 = 1.1;
+        *delay = 1.1;
       }
 
       v34 = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
@@ -1059,8 +1059,8 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v13 = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  componentToSecureTransitionMapping = SBLogSystemAperturePreferencesStackSecureFlipBookElements();
+  if (os_log_type_enabled(componentToSecureTransitionMapping, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     v14 = "Transition not allowed. Existing secure element transition in progress, deferring transition";
@@ -1075,23 +1075,23 @@ LABEL_21:
   return v15;
 }
 
-- (BOOL)_isTransitionSecureFromState:(id)a3 toState:(id)a4 forComponent:(id)a5 indefinitely:(BOOL)a6 givenMap:(id)a7
+- (BOOL)_isTransitionSecureFromState:(id)state toState:(id)toState forComponent:(id)component indefinitely:(BOOL)indefinitely givenMap:(id)map
 {
-  v8 = a6;
-  v11 = a5;
-  v12 = a7;
+  indefinitelyCopy = indefinitely;
+  componentCopy = component;
+  mapCopy = map;
   v13 = MEMORY[0x277CCACA8];
-  v14 = a4;
-  v15 = [v13 stringWithFormat:@"presented.%@", a3];
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"presented.%@", v14];
+  toStateCopy = toState;
+  state = [v13 stringWithFormat:@"presented.%@", state];
+  toStateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"presented.%@", toStateCopy];
 
-  v17 = [v12 objectForKeyedSubscript:v11];
-  v18 = [v17 objectForKeyedSubscript:v15];
+  v17 = [mapCopy objectForKeyedSubscript:componentCopy];
+  v18 = [v17 objectForKeyedSubscript:state];
 
-  v19 = [v18 containsObject:v16];
+  v19 = [v18 containsObject:toStateCopy];
   if (v19)
   {
-    v20 = !v8;
+    v20 = !indefinitelyCopy;
   }
 
   else
@@ -1101,27 +1101,27 @@ LABEL_21:
 
   if (!v20)
   {
-    v21 = [v12 objectForKeyedSubscript:v11];
-    v22 = [v21 objectForKeyedSubscript:v16];
+    v21 = [mapCopy objectForKeyedSubscript:componentCopy];
+    v22 = [v21 objectForKeyedSubscript:toStateCopy];
 
-    LOBYTE(v19) = [v22 containsObject:v16];
+    LOBYTE(v19) = [v22 containsObject:toStateCopy];
   }
 
   return v19;
 }
 
-- (BOOL)_isTimerExpiredWithIdentifier:(id)a3 context:(id)a4
+- (BOOL)_isTimerExpiredWithIdentifier:(id)identifier context:(id)context
 {
-  v5 = a3;
-  v6 = [a4 elapsedTimerDescriptions];
-  if ([v6 count])
+  identifierCopy = identifier;
+  elapsedTimerDescriptions = [context elapsedTimerDescriptions];
+  if ([elapsedTimerDescriptions count])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __86__SBSASecureFlipBookElementPreferencesProvider__isTimerExpiredWithIdentifier_context___block_invoke;
     v9[3] = &unk_2783B2950;
-    v10 = v5;
-    v7 = [v6 indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
+    v10 = identifierCopy;
+    v7 = [elapsedTimerDescriptions indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -1140,16 +1140,16 @@ uint64_t __86__SBSASecureFlipBookElementPreferencesProvider__isTimerExpiredWithI
   return v3;
 }
 
-- (id)_startTimerForDuration:(double)a3 preferencesMutator:(id)a4
+- (id)_startTimerForDuration:(double)duration preferencesMutator:(id)mutator
 {
-  v5 = a4;
-  v6 = [[SBSATimerDescription alloc] initWithTimeInterval:a3];
-  v7 = [(SBSATimerDescription *)v6 timerDescriptionIdentifier];
-  v8 = [v5 timerDescriptions];
-  if (v8)
+  mutatorCopy = mutator;
+  v6 = [[SBSATimerDescription alloc] initWithTimeInterval:duration];
+  timerDescriptionIdentifier = [(SBSATimerDescription *)v6 timerDescriptionIdentifier];
+  timerDescriptions = [mutatorCopy timerDescriptions];
+  if (timerDescriptions)
   {
-    v9 = [v5 timerDescriptions];
-    v10 = [v9 mutableCopy];
+    timerDescriptions2 = [mutatorCopy timerDescriptions];
+    v10 = [timerDescriptions2 mutableCopy];
   }
 
   else
@@ -1158,9 +1158,9 @@ uint64_t __86__SBSASecureFlipBookElementPreferencesProvider__isTimerExpiredWithI
   }
 
   [v10 addObject:v6];
-  [v5 setTimerDescriptions:v10];
+  [mutatorCopy setTimerDescriptions:v10];
 
-  return v7;
+  return timerDescriptionIdentifier;
 }
 
 - (void)preferencesFromContext:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

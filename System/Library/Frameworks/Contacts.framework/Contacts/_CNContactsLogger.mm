@@ -1,59 +1,59 @@
 @interface _CNContactsLogger
 - (_CNContactsLogger)init;
-- (void)SPIUsageLackingEntitlementGrantedForPID:(int)a3;
-- (void)SPIUsageLackingEntitlementRejectedForPID:(int)a3;
-- (void)XPCConnectionWasInterruptedForService:(id)a3;
-- (void)XPCConnectionWasInvalidatedForService:(id)a3;
-- (void)_commonFetchContactsMatchingPredicate:(id)a3 fetchType:(const char *)a4 unifyResults:(BOOL)a5 keysToFetch:(id)a6;
+- (void)SPIUsageLackingEntitlementGrantedForPID:(int)d;
+- (void)SPIUsageLackingEntitlementRejectedForPID:(int)d;
+- (void)XPCConnectionWasInterruptedForService:(id)service;
+- (void)XPCConnectionWasInvalidatedForService:(id)service;
+- (void)_commonFetchContactsMatchingPredicate:(id)predicate fetchType:(const char *)type unifyResults:(BOOL)results keysToFetch:(id)fetch;
 - (void)accessAuthorizationStatusWasDenied;
-- (void)addingContacts:(id)a3 toContainerWithIdentifier:(id)a4;
-- (void)applyContactUpdateOfKind:(const char *)a3 value:(id)a4 property:(id)a5;
-- (void)changedMeContact:(id)a3;
-- (void)changingMeContact:(id)a3;
-- (void)clearingChangeHistory:(id)a3;
-- (void)contactsAccessWasDeniedWithError:(id)a3;
+- (void)addingContacts:(id)contacts toContainerWithIdentifier:(id)identifier;
+- (void)applyContactUpdateOfKind:(const char *)kind value:(id)value property:(id)property;
+- (void)changedMeContact:(id)contact;
+- (void)changingMeContact:(id)contact;
+- (void)clearingChangeHistory:(id)history;
+- (void)contactsAccessWasDeniedWithError:(id)error;
 - (void)contactsAccessWasGranted;
-- (void)deleteImageRecentsMetadataRequestFailed:(id)a3;
-- (void)deletePosterRecentsMetadataRequestFailed:(id)a3;
-- (void)deletingContact:(id)a3;
-- (void)didFetchContacts:(id)a3 error:(id)a4;
-- (void)didFetchEncodedContacts:(id)a3 error:(id)a4;
-- (void)errorWhenQueryingTetheredSyncData:(id)a3;
-- (void)fetchingChangeHistory:(id)a3;
-- (void)fetchingContactCount:(id)a3;
-- (void)fetchingContactIdentifierWithMatchingDictionary:(id)a3;
-- (void)fetchingContactSectionCounts:(id)a3;
-- (void)fetchingContactWithUserActivity:(id)a3;
-- (void)fetchingContacts:(id)a3;
-- (void)fetchingContactsBatch:(id)a3;
-- (void)fetchingContainers:(id)a3;
-- (void)fetchingDefaultContainerIdentifier:(id)a3;
-- (void)fetchingGroups:(id)a3;
-- (void)fetchingMeContactIdentifier:(id)a3;
-- (void)gettingBackgroundColor:(id)a3;
-- (void)internalError:(id)a3;
-- (void)postingNotification:(id)a3;
-- (void)postingNotificationWithName:(id)a3;
-- (void)registeringForChangeHistory:(id)a3;
+- (void)deleteImageRecentsMetadataRequestFailed:(id)failed;
+- (void)deletePosterRecentsMetadataRequestFailed:(id)failed;
+- (void)deletingContact:(id)contact;
+- (void)didFetchContacts:(id)contacts error:(id)error;
+- (void)didFetchEncodedContacts:(id)contacts error:(id)error;
+- (void)errorWhenQueryingTetheredSyncData:(id)data;
+- (void)fetchingChangeHistory:(id)history;
+- (void)fetchingContactCount:(id)count;
+- (void)fetchingContactIdentifierWithMatchingDictionary:(id)dictionary;
+- (void)fetchingContactSectionCounts:(id)counts;
+- (void)fetchingContactWithUserActivity:(id)activity;
+- (void)fetchingContacts:(id)contacts;
+- (void)fetchingContactsBatch:(id)batch;
+- (void)fetchingContainers:(id)containers;
+- (void)fetchingDefaultContainerIdentifier:(id)identifier;
+- (void)fetchingGroups:(id)groups;
+- (void)fetchingMeContactIdentifier:(id)identifier;
+- (void)gettingBackgroundColor:(id)color;
+- (void)internalError:(id)error;
+- (void)postingNotification:(id)notification;
+- (void)postingNotificationWithName:(id)name;
+- (void)registeringForChangeHistory:(id)history;
 - (void)removeContactImageData;
 - (void)requestAuthorizationWasDenied;
-- (void)requestingAccessForContacts:(id)a3;
-- (void)requestingProviderDomainCommand:(id)a3;
-- (void)resettingSortDataIfNeeded:(id)a3;
-- (void)saveRequestFailed:(id)a3;
-- (void)saveRequestInvalid:(id)a3;
-- (void)saveRequestedZeroingHandleCounts:(id)a3;
-- (void)saveUpdatedSharedPhotoDisplayPreferenceFrom:(id)a3 to:(id)a4;
-- (void)saving:(id)a3;
-- (void)sendCommLimitsQuestionForHandles:(id)a3;
-- (void)serviceError:(id)a3;
-- (void)servicingContactsRequest:(id)a3;
-- (void)setContactImageData:(id)a3;
-- (void)setContactImageData:(id)a3 format:(const char *)a4 cropRect:(CGRect)a5;
-- (void)setContactImageDataZeroCropRect:(id)a3 format:(const char *)a4;
-- (void)settingDefaultAccount:(id)a3;
-- (void)unregisteringForChangeHistory:(id)a3;
-- (void)updatingContact:(id)a3;
+- (void)requestingAccessForContacts:(id)contacts;
+- (void)requestingProviderDomainCommand:(id)command;
+- (void)resettingSortDataIfNeeded:(id)needed;
+- (void)saveRequestFailed:(id)failed;
+- (void)saveRequestInvalid:(id)invalid;
+- (void)saveRequestedZeroingHandleCounts:(id)counts;
+- (void)saveUpdatedSharedPhotoDisplayPreferenceFrom:(id)from to:(id)to;
+- (void)saving:(id)saving;
+- (void)sendCommLimitsQuestionForHandles:(id)handles;
+- (void)serviceError:(id)error;
+- (void)servicingContactsRequest:(id)request;
+- (void)setContactImageData:(id)data;
+- (void)setContactImageData:(id)data format:(const char *)format cropRect:(CGRect)rect;
+- (void)setContactImageDataZeroCropRect:(id)rect format:(const char *)format;
+- (void)settingDefaultAccount:(id)account;
+- (void)unregisteringForChangeHistory:(id)history;
+- (void)updatingContact:(id)contact;
 @end
 
 @implementation _CNContactsLogger
@@ -85,9 +85,9 @@
   }
 }
 
-- (void)requestingAccessForContacts:(id)a3
+- (void)requestingAccessForContacts:(id)contacts
 {
-  v3 = a3;
+  contactsCopy = contacts;
   v4 = _os_activity_create(&dword_1954A0000, "RequestAccessForContacts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -100,16 +100,16 @@
   block[1] = 3221225472;
   block[2] = __49___CNContactsLogger_requestingAccessForContacts___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = contactsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = contactsCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingMeContactIdentifier:(id)a3
+- (void)fetchingMeContactIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingMeContactIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -122,16 +122,16 @@
   block[1] = 3221225472;
   block[2] = __49___CNContactsLogger_fetchingMeContactIdentifier___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = identifierCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = identifierCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)changingMeContact:(id)a3
+- (void)changingMeContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = _os_activity_create(&dword_1954A0000, "ChangingMeContact", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -144,16 +144,16 @@
   block[1] = 3221225472;
   block[2] = __39___CNContactsLogger_changingMeContact___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = contactCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = contactCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContactCount:(id)a3
+- (void)fetchingContactCount:(id)count
 {
-  v3 = a3;
+  countCopy = count;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingContactCount", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -166,16 +166,16 @@
   block[1] = 3221225472;
   block[2] = __42___CNContactsLogger_fetchingContactCount___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = countCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = countCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContactSectionCounts:(id)a3
+- (void)fetchingContactSectionCounts:(id)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingContactSectionCount", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -188,16 +188,16 @@
   block[1] = 3221225472;
   block[2] = __50___CNContactsLogger_fetchingContactSectionCounts___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = countsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = countsCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContacts:(id)a3
+- (void)fetchingContacts:(id)contacts
 {
-  v3 = a3;
+  contactsCopy = contacts;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingContacts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -210,16 +210,16 @@
   block[1] = 3221225472;
   block[2] = __38___CNContactsLogger_fetchingContacts___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = contactsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = contactsCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContactWithUserActivity:(id)a3
+- (void)fetchingContactWithUserActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingContactWithUserActivity", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -232,16 +232,16 @@
   block[1] = 3221225472;
   block[2] = __53___CNContactsLogger_fetchingContactWithUserActivity___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = activityCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = activityCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContactIdentifierWithMatchingDictionary:(id)a3
+- (void)fetchingContactIdentifierWithMatchingDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingContactIdentifierWithMatchingDictionary", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -254,16 +254,16 @@
   block[1] = 3221225472;
   block[2] = __69___CNContactsLogger_fetchingContactIdentifierWithMatchingDictionary___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = dictionaryCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = dictionaryCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContactsBatch:(id)a3
+- (void)fetchingContactsBatch:(id)batch
 {
-  v3 = a3;
+  batchCopy = batch;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingNextContactsBatch", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -276,16 +276,16 @@
   block[1] = 3221225472;
   block[2] = __43___CNContactsLogger_fetchingContactsBatch___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = batchCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = batchCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingGroups:(id)a3
+- (void)fetchingGroups:(id)groups
 {
-  v3 = a3;
+  groupsCopy = groups;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingGroups", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -298,16 +298,16 @@
   block[1] = 3221225472;
   block[2] = __36___CNContactsLogger_fetchingGroups___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = groupsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = groupsCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingContainers:(id)a3
+- (void)fetchingContainers:(id)containers
 {
-  v3 = a3;
+  containersCopy = containers;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingContainers", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -320,16 +320,16 @@
   block[1] = 3221225472;
   block[2] = __40___CNContactsLogger_fetchingContainers___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = containersCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = containersCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingDefaultContainerIdentifier:(id)a3
+- (void)fetchingDefaultContainerIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingDefaultContainerID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -342,16 +342,16 @@
   block[1] = 3221225472;
   block[2] = __56___CNContactsLogger_fetchingDefaultContainerIdentifier___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = identifierCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = identifierCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)saving:(id)a3
+- (void)saving:(id)saving
 {
-  v3 = a3;
+  savingCopy = saving;
   v4 = _os_activity_create(&dword_1954A0000, "Saving", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -364,16 +364,16 @@
   block[1] = 3221225472;
   block[2] = __28___CNContactsLogger_saving___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = savingCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = savingCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)registeringForChangeHistory:(id)a3
+- (void)registeringForChangeHistory:(id)history
 {
-  v3 = a3;
+  historyCopy = history;
   v4 = _os_activity_create(&dword_1954A0000, "RegisteringForChangeHistory", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -386,16 +386,16 @@
   block[1] = 3221225472;
   block[2] = __49___CNContactsLogger_registeringForChangeHistory___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = historyCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = historyCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)unregisteringForChangeHistory:(id)a3
+- (void)unregisteringForChangeHistory:(id)history
 {
-  v3 = a3;
+  historyCopy = history;
   v4 = _os_activity_create(&dword_1954A0000, "UnregisteringForChangeHistory", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -408,16 +408,16 @@
   block[1] = 3221225472;
   block[2] = __51___CNContactsLogger_unregisteringForChangeHistory___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = historyCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = historyCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingChangeHistory:(id)a3
+- (void)fetchingChangeHistory:(id)history
 {
-  v3 = a3;
+  historyCopy = history;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingChangeHistory", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -430,16 +430,16 @@
   block[1] = 3221225472;
   block[2] = __43___CNContactsLogger_fetchingChangeHistory___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = historyCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = historyCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)clearingChangeHistory:(id)a3
+- (void)clearingChangeHistory:(id)history
 {
-  v3 = a3;
+  historyCopy = history;
   v4 = _os_activity_create(&dword_1954A0000, "ClearingChangeHistory", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -452,16 +452,16 @@
   block[1] = 3221225472;
   block[2] = __43___CNContactsLogger_clearingChangeHistory___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = historyCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = historyCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)resettingSortDataIfNeeded:(id)a3
+- (void)resettingSortDataIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = _os_activity_create(&dword_1954A0000, "ResettingSortDataIfNeeded", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -474,16 +474,16 @@
   block[1] = 3221225472;
   block[2] = __47___CNContactsLogger_resettingSortDataIfNeeded___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = neededCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = neededCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)settingDefaultAccount:(id)a3
+- (void)settingDefaultAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = _os_activity_create(&dword_1954A0000, "SettingDefaultAccount", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -496,16 +496,16 @@
   block[1] = 3221225472;
   block[2] = __43___CNContactsLogger_settingDefaultAccount___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = accountCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = accountCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)servicingContactsRequest:(id)a3
+- (void)servicingContactsRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = _os_activity_create(&dword_1954A0000, "ServicingContactsRequest", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -518,16 +518,16 @@
   block[1] = 3221225472;
   block[2] = __46___CNContactsLogger_servicingContactsRequest___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = requestCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = requestCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)postingNotification:(id)a3
+- (void)postingNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = _os_activity_create(&dword_1954A0000, "PostingContactsNotification", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -540,16 +540,16 @@
   block[1] = 3221225472;
   block[2] = __41___CNContactsLogger_postingNotification___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = notificationCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = notificationCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)requestingProviderDomainCommand:(id)a3
+- (void)requestingProviderDomainCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   v4 = _os_activity_create(&dword_1954A0000, "RequestingProviderDomainCommand", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -562,16 +562,16 @@
   block[1] = 3221225472;
   block[2] = __53___CNContactsLogger_requestingProviderDomainCommand___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = commandCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = commandCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)gettingBackgroundColor:(id)a3
+- (void)gettingBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = _os_activity_create(&dword_1954A0000, "GettingBackgroundColor", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -584,10 +584,10 @@
   block[1] = 3221225472;
   block[2] = __44___CNContactsLogger_gettingBackgroundColor___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = colorCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = colorCopy;
   os_activity_apply(v5, block);
 }
 
@@ -610,50 +610,50 @@
   }
 }
 
-- (void)contactsAccessWasDeniedWithError:(id)a3
+- (void)contactsAccessWasDeniedWithError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Contacts access was denied, error: %@", &v6, 0xCu);
   }
 }
 
-- (void)_commonFetchContactsMatchingPredicate:(id)a3 fetchType:(const char *)a4 unifyResults:(BOOL)a5 keysToFetch:(id)a6
+- (void)_commonFetchContactsMatchingPredicate:(id)predicate fetchType:(const char *)type unifyResults:(BOOL)results keysToFetch:(id)fetch
 {
-  v7 = a5;
+  resultsCopy = results;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  predicateCopy = predicate;
+  fetchCopy = fetch;
   if (os_variant_has_internal_diagnostics())
   {
     if (objc_opt_respondsToSelector())
     {
-      [v10 shortDebugDescription];
+      [predicateCopy shortDebugDescription];
     }
 
     else
     {
-      [v10 description];
+      [predicateCopy description];
     }
     v12 = ;
     v13 = [(_CNContactsLogger *)self log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = 136316162;
-      v15 = a4;
+      typeCopy2 = type;
       v16 = 2112;
       ClassName = v12;
       v18 = 1024;
-      v19 = v7;
+      v19 = resultsCopy;
       v20 = 2048;
-      v21 = [v11 count];
+      v21 = [fetchCopy count];
       v22 = 2112;
-      v23 = v11;
+      v23 = fetchCopy;
       _os_log_impl(&dword_1954A0000, v13, OS_LOG_TYPE_INFO, "Fetching contacts %smatching predicate %@, unifyResults: %d, keysToFetch(%ld):%@", &v14, 0x30u);
     }
   }
@@ -664,31 +664,31 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 136446978;
-      v15 = a4;
+      typeCopy2 = type;
       v16 = 2082;
-      ClassName = object_getClassName(v10);
+      ClassName = object_getClassName(predicateCopy);
       v18 = 1024;
-      v19 = v7;
+      v19 = resultsCopy;
       v20 = 2048;
-      v21 = [v11 count];
+      v21 = [fetchCopy count];
       _os_log_impl(&dword_1954A0000, v12, OS_LOG_TYPE_INFO, "Fetching contacts %{public}smatching predicate of class %{public}s, unifyResults: %d, keysToFetch: %ld", &v14, 0x26u);
     }
   }
 }
 
-- (void)didFetchContacts:(id)a3 error:(id)a4
+- (void)didFetchContacts:(id)contacts error:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  errorCopy = error;
   v8 = [(_CNContactsLogger *)self log];
   v9 = v8;
-  if (v6)
+  if (contactsCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 134217984;
-      v11 = [v6 count];
+      v11 = [contactsCopy count];
       _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_INFO, "Did fetch %ld contacts", &v10, 0xCu);
     }
   }
@@ -699,19 +699,19 @@
   }
 }
 
-- (void)didFetchEncodedContacts:(id)a3 error:(id)a4
+- (void)didFetchEncodedContacts:(id)contacts error:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  errorCopy = error;
   v8 = [(_CNContactsLogger *)self log];
   v9 = v8;
-  if (v6)
+  if (contactsCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 134217984;
-      v11 = [v6 length];
+      v11 = [contactsCopy length];
       _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_INFO, "Did fetch contacts data, length: %ld", &v10, 0xCu);
     }
   }
@@ -722,9 +722,9 @@
   }
 }
 
-- (void)saveRequestInvalid:(id)a3
+- (void)saveRequestInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -732,9 +732,9 @@
   }
 }
 
-- (void)saveRequestFailed:(id)a3
+- (void)saveRequestFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -742,69 +742,69 @@
   }
 }
 
-- (void)addingContacts:(id)a3 toContainerWithIdentifier:(id)a4
+- (void)addingContacts:(id)contacts toContainerWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _cn_map:&__block_literal_global_140];
+  contactsCopy = contacts;
+  identifierCopy = identifier;
+  v8 = [contactsCopy _cn_map:&__block_literal_global_140];
   v9 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = 134218498;
-    v11 = [v6 count];
+    v11 = [contactsCopy count];
     v12 = 2112;
-    v13 = v7;
+    v13 = identifierCopy;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_INFO, "Adding %ld contacts to container with identifier %@: contact identifiers %@", &v10, 0x20u);
   }
 }
 
-- (void)deletingContact:(id)a3
+- (void)deletingContact:(id)contact
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [contactCopy identifier];
     v7 = 138412290;
-    v8 = v6;
+    v8 = identifier;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Deleting contact with identifier: %@", &v7, 0xCu);
   }
 }
 
-- (void)updatingContact:(id)a3
+- (void)updatingContact:(id)contact
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [contactCopy identifier];
     v7 = 138412290;
-    v8 = v6;
+    v8 = identifier;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Updating contact with identifier: %@", &v7, 0xCu);
   }
 }
 
-- (void)changedMeContact:(id)a3
+- (void)changedMeContact:(id)contact
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = contactCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Changed me contact: %@", &v6, 0xCu);
   }
 }
 
-- (void)serviceError:(id)a3
+- (void)serviceError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -812,27 +812,27 @@
   }
 }
 
-- (void)SPIUsageLackingEntitlementGrantedForPID:(int)a3
+- (void)SPIUsageLackingEntitlementGrantedForPID:(int)d
 {
   v4 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(_CNContactsLogger *)a3 SPIUsageLackingEntitlementGrantedForPID:v4];
+    [(_CNContactsLogger *)d SPIUsageLackingEntitlementGrantedForPID:v4];
   }
 }
 
-- (void)SPIUsageLackingEntitlementRejectedForPID:(int)a3
+- (void)SPIUsageLackingEntitlementRejectedForPID:(int)d
 {
   v4 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(_CNContactsLogger *)a3 SPIUsageLackingEntitlementRejectedForPID:v4];
+    [(_CNContactsLogger *)d SPIUsageLackingEntitlementRejectedForPID:v4];
   }
 }
 
-- (void)internalError:(id)a3
+- (void)internalError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -840,9 +840,9 @@
   }
 }
 
-- (void)errorWhenQueryingTetheredSyncData:(id)a3
+- (void)errorWhenQueryingTetheredSyncData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -850,9 +850,9 @@
   }
 }
 
-- (void)XPCConnectionWasInterruptedForService:(id)a3
+- (void)XPCConnectionWasInterruptedForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -860,37 +860,37 @@
   }
 }
 
-- (void)XPCConnectionWasInvalidatedForService:(id)a3
+- (void)XPCConnectionWasInvalidatedForService:(id)service
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = serviceCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Service connection to %@ was invalidated", &v6, 0xCu);
   }
 }
 
-- (void)postingNotificationWithName:(id)a3
+- (void)postingNotificationWithName:(id)name
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = nameCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Posting notification %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)applyContactUpdateOfKind:(const char *)a3 value:(id)a4 property:(id)a5
+- (void)applyContactUpdateOfKind:(const char *)kind value:(id)value property:(id)property
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  propertyCopy = property;
   v10 = objc_opt_respondsToSelector();
   v11 = [(_CNContactsLogger *)self log];
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -899,11 +899,11 @@
     if (v12)
     {
       v14 = 136446722;
-      v15 = a3;
+      kindCopy2 = kind;
       v16 = 2114;
-      v17 = v9;
+      v17 = propertyCopy;
       v18 = 2048;
-      ClassName = [v8 length];
+      ClassName = [valueCopy length];
       v13 = "Updating contact %{public}s, key: '%{public}@', value length %ld";
 LABEL_7:
       _os_log_debug_impl(&dword_1954A0000, v11, OS_LOG_TYPE_DEBUG, v13, &v14, 0x20u);
@@ -913,25 +913,25 @@ LABEL_7:
   else if (v12)
   {
     v14 = 136446722;
-    v15 = a3;
+    kindCopy2 = kind;
     v16 = 2114;
-    v17 = v9;
+    v17 = propertyCopy;
     v18 = 2082;
-    ClassName = object_getClassName(v8);
+    ClassName = object_getClassName(valueCopy);
     v13 = "Updating contact %{public}s, key: '%{public}@', value class <%{public}s>";
     goto LABEL_7;
   }
 }
 
-- (void)setContactImageData:(id)a3
+- (void)setContactImageData:(id)data
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = [v4 length];
+    v7 = [dataCopy length];
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Setting image data: %ld bytes with no cropRect specified", &v6, 0xCu);
   }
 }
@@ -946,19 +946,19 @@ LABEL_7:
   }
 }
 
-- (void)setContactImageData:(id)a3 format:(const char *)a4 cropRect:(CGRect)a5
+- (void)setContactImageData:(id)data format:(const char *)format cropRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  dataCopy = data;
   v12 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134219266;
-    v14 = [v11 length];
+    v14 = [dataCopy length];
     v15 = 2048;
     v16 = x;
     v17 = 2048;
@@ -968,29 +968,29 @@ LABEL_7:
     v21 = 2048;
     v22 = height;
     v23 = 2082;
-    v24 = a4;
+    formatCopy = format;
     _os_log_impl(&dword_1954A0000, v12, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Setting image data: %ld bytes with cropRect: {%.2f, %.2f, %.2f, %.2f}, %{public}s format", &v13, 0x3Eu);
   }
 }
 
-- (void)setContactImageDataZeroCropRect:(id)a3 format:(const char *)a4
+- (void)setContactImageDataZeroCropRect:(id)rect format:(const char *)format
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  rectCopy = rect;
   v7 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = [v6 length];
+    v9 = [rectCopy length];
     v10 = 2082;
-    v11 = a4;
+    formatCopy = format;
     _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Setting image data: %ld bytes with zero cropRect, %{public}s format", &v8, 0x16u);
   }
 }
 
-- (void)deleteImageRecentsMetadataRequestFailed:(id)a3
+- (void)deleteImageRecentsMetadataRequestFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -998,9 +998,9 @@ LABEL_7:
   }
 }
 
-- (void)deletePosterRecentsMetadataRequestFailed:(id)a3
+- (void)deletePosterRecentsMetadataRequestFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1008,29 +1008,29 @@ LABEL_7:
   }
 }
 
-- (void)saveRequestedZeroingHandleCounts:(id)a3
+- (void)saveRequestedZeroingHandleCounts:(id)counts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  countsCopy = counts;
+  v5 = countsCopy;
+  if (countsCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"emailAddresses"];
-    v7 = [v6 longValue];
+    v6 = [countsCopy objectForKeyedSubscript:@"emailAddresses"];
+    longValue = [v6 longValue];
 
     v8 = [v5 objectForKeyedSubscript:@"phoneNumbers"];
-    v9 = [v8 longValue];
+    longValue2 = [v8 longValue];
 
     v10 = [(_CNContactsLogger *)self log];
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v7 == -1 || v9 == -1)
+    if (longValue == -1 || longValue2 == -1)
     {
       if (v11)
       {
         v14 = 134218240;
-        v15 = -v9;
+        v15 = -longValue2;
         v16 = 2048;
-        v17 = -v7;
+        v17 = -longValue;
         v13 = "[Unusual Clearing of Contact] saving a CNContact which updated phone(%ld) or email(%ld) or both. May not in fact be clearing data; we don't know what the previous count was.";
 LABEL_11:
         _os_log_impl(&dword_1954A0000, v10, OS_LOG_TYPE_DEFAULT, v13, &v14, 0x16u);
@@ -1040,29 +1040,29 @@ LABEL_11:
     else if (v11)
     {
       v14 = 134218240;
-      v15 = v9;
+      v15 = longValue2;
       v16 = 2048;
-      v17 = v7;
+      v17 = longValue;
       v13 = "[Unusual Clearing of Contact] saving a CNContact leaving it with zero phone numbers or emails. Previous number of phone numbers: %ld, emails: %ld";
       goto LABEL_11;
     }
   }
 }
 
-- (void)saveUpdatedSharedPhotoDisplayPreferenceFrom:(id)a3 to:(id)a4
+- (void)saveUpdatedSharedPhotoDisplayPreferenceFrom:(id)from to:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 intValue];
+  fromCopy = from;
+  toCopy = to;
+  intValue = [fromCopy intValue];
   v9 = [(_CNContactsLogger *)self log];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8 == -1)
+  if (intValue == -1)
   {
     if (v10)
     {
       v14 = 134217984;
-      v15 = [v7 integerValue];
+      integerValue = [toCopy integerValue];
       v11 = "[Shared Photo Display Preference] Updating a CNContact with no snapshot to have a sharedPhotoDisplayPreference of %#lo";
       v12 = v9;
       v13 = 12;
@@ -1073,9 +1073,9 @@ LABEL_11:
   else if (v10)
   {
     v14 = 134218240;
-    v15 = [v6 integerValue];
+    integerValue = [fromCopy integerValue];
     v16 = 2048;
-    v17 = [v7 integerValue];
+    integerValue2 = [toCopy integerValue];
     v11 = "[Shared Photo Display Preference] Updating a CNContact with old sharedPhotoDisplayPreference: %#lo to: %#lo";
     v12 = v9;
     v13 = 22;
@@ -1084,17 +1084,17 @@ LABEL_6:
   }
 }
 
-- (void)sendCommLimitsQuestionForHandles:(id)a3
+- (void)sendCommLimitsQuestionForHandles:(id)handles
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlesCopy = handles;
   v5 = [(_CNContactsLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[_CNContactsLogger sendCommLimitsQuestionForHandles:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = handlesCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_DEFAULT, "%s: handles: '%@'", &v6, 0x16u);
   }
 }

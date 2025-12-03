@@ -1,28 +1,28 @@
 @interface WOWorkoutHealthPlugin
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)orderedSyncEntities;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation WOWorkoutHealthPlugin
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, daemon);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, profile);
   if ([location[0] profileType] == &dword_0 + 1)
   {
     v3 = [WOWorkoutHealthProfileExtension alloc];
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  classCopy = class;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [WOWorkoutHealthSchemaProvider registerMigrationStepsForProtectionClass:v5 migrator:location];
+  objc_storeStrong(&location, migrator);
+  [WOWorkoutHealthSchemaProvider registerMigrationStepsForProtectionClass:classCopy migrator:location];
   objc_storeStrong(&location, 0);
 }
 

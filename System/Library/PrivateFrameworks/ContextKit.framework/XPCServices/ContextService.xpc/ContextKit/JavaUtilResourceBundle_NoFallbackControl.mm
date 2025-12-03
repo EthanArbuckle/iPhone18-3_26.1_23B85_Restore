@@ -1,27 +1,27 @@
 @interface JavaUtilResourceBundle_NoFallbackControl
 + (void)initialize;
-- (JavaUtilResourceBundle_NoFallbackControl)initWithJavaUtilList:(id)a3;
-- (id)getFallbackLocaleWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
+- (JavaUtilResourceBundle_NoFallbackControl)initWithJavaUtilList:(id)list;
+- (id)getFallbackLocaleWithNSString:(id)string withJavaUtilLocale:(id)locale;
 @end
 
 @implementation JavaUtilResourceBundle_NoFallbackControl
 
-- (JavaUtilResourceBundle_NoFallbackControl)initWithJavaUtilList:(id)a3
+- (JavaUtilResourceBundle_NoFallbackControl)initWithJavaUtilList:(id)list
 {
   JavaUtilResourceBundle_Control_init(self);
-  JreStrongAssign(&self->super.format_, a3);
+  JreStrongAssign(&self->super.format_, list);
   return self;
 }
 
-- (id)getFallbackLocaleWithNSString:(id)a3 withJavaUtilLocale:(id)a4
+- (id)getFallbackLocaleWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
-  if (!a3)
+  if (!string)
   {
     v5 = @"baseName == null";
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!locale)
   {
     v5 = @"locale == null";
 LABEL_6:
@@ -34,7 +34,7 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaUtilResourceBundle_Control__initialized, memory_order_acquire) & 1) == 0)
     {

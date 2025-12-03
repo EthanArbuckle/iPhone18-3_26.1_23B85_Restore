@@ -1,22 +1,22 @@
 @interface AXMTScalarSampleSeriesStatistics
-- (AXMTScalarSampleSeriesStatistics)initWithQueue:(id)a3;
+- (AXMTScalarSampleSeriesStatistics)initWithQueue:(id)queue;
 - (BOOL)valid;
-- (void)queue:(id)a3 dequeuedValue:(id)a4;
-- (void)queue:(id)a3 enqueuedValue:(id)a4;
+- (void)queue:(id)queue dequeuedValue:(id)value;
+- (void)queue:(id)queue enqueuedValue:(id)value;
 @end
 
 @implementation AXMTScalarSampleSeriesStatistics
 
-- (AXMTScalarSampleSeriesStatistics)initWithQueue:(id)a3
+- (AXMTScalarSampleSeriesStatistics)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = AXMTScalarSampleSeriesStatistics;
   v6 = [(AXMTScalarSampleSeriesStatistics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__samplesQueue, a3);
+    objc_storeStrong(&v6->__samplesQueue, queue);
     [(AXMTQueue *)v7->__samplesQueue setDelegate:v7];
   }
 
@@ -25,18 +25,18 @@
 
 - (BOOL)valid
 {
-  v2 = [(AXMTScalarSampleSeriesStatistics *)self _samplesQueue];
-  v3 = [v2 filled];
+  _samplesQueue = [(AXMTScalarSampleSeriesStatistics *)self _samplesQueue];
+  filled = [_samplesQueue filled];
 
-  return v3;
+  return filled;
 }
 
-- (void)queue:(id)a3 enqueuedValue:(id)a4
+- (void)queue:(id)queue enqueuedValue:(id)value
 {
-  v14 = a3;
-  [a4 doubleValue];
+  queueCopy = queue;
+  [value doubleValue];
   v7 = v6;
-  v8 = [v14 count];
+  v8 = [queueCopy count];
   [(AXMTScalarSampleSeriesStatistics *)self setCount:v8];
   if (v8 == 1)
   {
@@ -64,29 +64,29 @@
     }
 
     [(AXMTScalarSampleSeriesStatistics *)self setMinimumValue:v11];
-    v12 = [v14 values];
+    values = [queueCopy values];
     [(AXMTScalarSampleSeriesStatistics *)self mean];
-    [(AXMTScalarSampleSeriesStatistics *)self setStandardDeviation:AXMTMathStandardDeviationOfValuesWithPrecalculatedMean(v12, v13)];
+    [(AXMTScalarSampleSeriesStatistics *)self setStandardDeviation:AXMTMathStandardDeviationOfValuesWithPrecalculatedMean(values, v13)];
   }
 }
 
-- (void)queue:(id)a3 dequeuedValue:(id)a4
+- (void)queue:(id)queue dequeuedValue:(id)value
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [v21 count];
+  queueCopy = queue;
+  valueCopy = value;
+  v7 = [queueCopy count];
   [(AXMTScalarSampleSeriesStatistics *)self setCount:v7];
   if (v7 > 1)
   {
-    [v6 doubleValue];
+    [valueCopy doubleValue];
     v13 = v12;
     [(AXMTScalarSampleSeriesStatistics *)self mean];
     [(AXMTScalarSampleSeriesStatistics *)self setMean:-(v13 - v14 * (v7 + 1)) / v7];
     [(AXMTScalarSampleSeriesStatistics *)self maximumValue];
     if (vabdd_f64(v13, v15) <= 0.00001)
     {
-      v17 = [v21 values];
-      v18 = [v17 valueForKeyPath:@"@max.doubleValue"];
+      values = [queueCopy values];
+      v18 = [values valueForKeyPath:@"@max.doubleValue"];
       [v18 doubleValue];
       [(AXMTScalarSampleSeriesStatistics *)self setMaximumValue:?];
     }
@@ -97,15 +97,15 @@
       if (vabdd_f64(v13, v16) > 0.00001)
       {
 LABEL_10:
-        v19 = [v21 values];
+        values2 = [queueCopy values];
         [(AXMTScalarSampleSeriesStatistics *)self mean];
-        [(AXMTScalarSampleSeriesStatistics *)self setStandardDeviation:AXMTMathStandardDeviationOfValuesWithPrecalculatedMean(v19, v20)];
+        [(AXMTScalarSampleSeriesStatistics *)self setStandardDeviation:AXMTMathStandardDeviationOfValuesWithPrecalculatedMean(values2, v20)];
 
         goto LABEL_11;
       }
 
-      v17 = [v21 values];
-      v18 = [v17 valueForKeyPath:@"@min.doubleValue"];
+      values = [queueCopy values];
+      v18 = [values valueForKeyPath:@"@min.doubleValue"];
       [v18 doubleValue];
       [(AXMTScalarSampleSeriesStatistics *)self setMinimumValue:?];
     }
@@ -116,9 +116,9 @@ LABEL_10:
   v8 = 0.0;
   if (v7 == 1)
   {
-    v9 = [v21 values];
-    v10 = [v9 firstObject];
-    [v10 doubleValue];
+    values3 = [queueCopy values];
+    firstObject = [values3 firstObject];
+    [firstObject doubleValue];
     v8 = v11;
   }
 

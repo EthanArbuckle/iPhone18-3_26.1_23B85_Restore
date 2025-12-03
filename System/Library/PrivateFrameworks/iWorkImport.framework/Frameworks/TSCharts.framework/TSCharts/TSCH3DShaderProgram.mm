@@ -1,59 +1,59 @@
 @interface TSCH3DShaderProgram
 - (BOOL)isMetal;
-- (BOOL)isSamplerVariable:(id)a3;
+- (BOOL)isSamplerVariable:(id)variable;
 - (NSMutableArray)sortedLinks;
 - (NSMutableDictionary)variableToVertexAttributeLocation;
 - (NSString)fragment;
 - (NSString)vertex;
 - (TSCH3DShaderProgram)init;
-- (TSCH3DShaderProgram)initWithVersion:(id)a3;
-- (TSCH3DShaderType)uniformLinkageFor:(id)a3;
-- (id)existingLinkageOfVariable:(id)a3;
+- (TSCH3DShaderProgram)initWithVersion:(id)version;
+- (TSCH3DShaderType)uniformLinkageFor:(id)for;
+- (id)existingLinkageOfVariable:(id)variable;
 - (id)interleavedLinkedVertexAttributeVariables;
-- (id)linkageOfVariable:(id)a3;
-- (id)linkedInputVariablesForType:(TSCH3DShaderType)a3 scope:(TSCH3DShaderVariableScopeType)a4;
+- (id)linkageOfVariable:(id)variable;
+- (id)linkedInputVariablesForType:(TSCH3DShaderType)type scope:(TSCH3DShaderVariableScopeType)scope;
 - (id)linkedTextureVariables;
-- (id)linkedUniformVariablesForType:(TSCH3DShaderType)a3 isTexture:(BOOL)a4;
-- (id)p_boundArgumentDeclarationForLinkedVariable:(id)a3 variableType:(id)a4 variableName:(id)a5 bindingType:(id)a6 bufferIndex:(unint64_t)a7;
-- (id)p_boundBufferArgumentDeclarationForLinkedVariable:(id)a3 variableType:(id)a4 variableName:(id)a5 bufferIndex:(unint64_t)a6;
-- (id)p_boundSamplerArgumentDeclarationForLinkedVariable:(id)a3 bufferIndex:(unint64_t)a4;
-- (id)p_boundTextureArgumentDeclarationForLinkedVariable:(id)a3 bufferIndex:(unint64_t)a4;
-- (id)p_generateType:(TSCH3DShaderType)a3;
+- (id)linkedUniformVariablesForType:(TSCH3DShaderType)type isTexture:(BOOL)texture;
+- (id)p_boundArgumentDeclarationForLinkedVariable:(id)variable variableType:(id)type variableName:(id)name bindingType:(id)bindingType bufferIndex:(unint64_t)index;
+- (id)p_boundBufferArgumentDeclarationForLinkedVariable:(id)variable variableType:(id)type variableName:(id)name bufferIndex:(unint64_t)index;
+- (id)p_boundSamplerArgumentDeclarationForLinkedVariable:(id)variable bufferIndex:(unint64_t)index;
+- (id)p_boundTextureArgumentDeclarationForLinkedVariable:(id)variable bufferIndex:(unint64_t)index;
+- (id)p_generateType:(TSCH3DShaderType)type;
 - (id)p_metalVertexInputLines;
-- (id)uniformVariablesForType:(TSCH3DShaderType)a3;
-- (id)usedAttributeNameForVariable:(id)a3;
-- (id)usedNameForVariable:(id)a3 type:(TSCH3DShaderType)a4 scope:(TSCH3DShaderVariableScopeType)a5;
-- (id)usedUniformNameForVariable:(id)a3;
-- (int64_t)uniformBufferIndexForType:(TSCH3DShaderType)a3;
+- (id)uniformVariablesForType:(TSCH3DShaderType)type;
+- (id)usedAttributeNameForVariable:(id)variable;
+- (id)usedNameForVariable:(id)variable type:(TSCH3DShaderType)type scope:(TSCH3DShaderVariableScopeType)scope;
+- (id)usedUniformNameForVariable:(id)variable;
+- (int64_t)uniformBufferIndexForType:(TSCH3DShaderType)type;
 - (int64_t)vertexUniformBufferIndex;
-- (pair<BOOL,)resultLinkageOfVariable:(id)a3;
-- (unint64_t)p_countOfAttributeBindingsForType:(TSCH3DShaderType)a3;
+- (pair<BOOL,)resultLinkageOfVariable:(id)variable;
+- (unint64_t)p_countOfAttributeBindingsForType:(TSCH3DShaderType)type;
 - (unint64_t)p_metalVertexBufferCount;
-- (unint64_t)processSection:(id)a3 accumulate:(id)a4 conclusions:(id)a5;
+- (unint64_t)processSection:(id)section accumulate:(id)accumulate conclusions:(id)conclusions;
 - (unint64_t)textureBindingsCount;
-- (unint64_t)vertexAttributeLocationForVariable:(id)a3;
-- (void)accumulateSection:(id)a3 intoArray:(id)a4;
-- (void)addAttributeVariable:(id)a3;
-- (void)addFunctionString:(id)a3 name:(id)a4;
-- (void)addToSection:(id)a3 statement:(id)a4 type:(TSCH3DShaderType)a5;
-- (void)addToSection:(id)a3 variable:(id)a4 space:(id)a5 type:(TSCH3DShaderType)a6 format:(id)a7 arguments:(char *)a8;
-- (void)addUniformVariable:(id)a3;
-- (void)assignVariable:(id)a3 statement:(id)a4 substitutes:(id)a5 type:(TSCH3DShaderType)a6 toSection:(int)a7;
-- (void)declareType:(id)a3 name:(id)a4;
+- (unint64_t)vertexAttributeLocationForVariable:(id)variable;
+- (void)accumulateSection:(id)section intoArray:(id)array;
+- (void)addAttributeVariable:(id)variable;
+- (void)addFunctionString:(id)string name:(id)name;
+- (void)addToSection:(id)section statement:(id)statement type:(TSCH3DShaderType)type;
+- (void)addToSection:(id)section variable:(id)variable space:(id)space type:(TSCH3DShaderType)type format:(id)format arguments:(char *)arguments;
+- (void)addUniformVariable:(id)variable;
+- (void)assignVariable:(id)variable statement:(id)statement substitutes:(id)substitutes type:(TSCH3DShaderType)type toSection:(int)section;
+- (void)declareType:(id)type name:(id)name;
 - (void)link;
 - (void)p_addCompatibilityFunctions;
-- (void)p_addToSection:(id)a3 variable:(id)a4 space:(id)a5 type:(TSCH3DShaderType)a6 format:(id)a7 substitutes:(id)a8;
+- (void)p_addToSection:(id)section variable:(id)variable space:(id)space type:(TSCH3DShaderType)type format:(id)format substitutes:(id)substitutes;
 - (void)p_generateFunctions;
-- (void)p_generateGlobalsForType:(TSCH3DShaderType)a3;
+- (void)p_generateGlobalsForType:(TSCH3DShaderType)type;
 - (void)p_generateMetalFragmentGlobals;
 - (void)p_generateMetalFragmentInputs;
 - (void)p_generateMetalFragmentTextureVariable;
 - (void)p_generateMetalVertexAttributes;
 - (void)p_generateMetalVertexGlobals;
 - (void)p_generateMetalVertexInputs;
-- (void)p_generatePreprocessorDefinitionsForType:(TSCH3DShaderType)a3;
-- (void)p_generateSection:(id)a3 type:(TSCH3DShaderType)a4;
-- (void)p_generateType:(TSCH3DShaderType)a3 globalType:(TSCH3DShaderVariableScopeType)a4 storageQualifier:(id)a5;
+- (void)p_generatePreprocessorDefinitionsForType:(TSCH3DShaderType)type;
+- (void)p_generateSection:(id)section type:(TSCH3DShaderType)type;
+- (void)p_generateType:(TSCH3DShaderType)type globalType:(TSCH3DShaderVariableScopeType)globalType storageQualifier:(id)qualifier;
 - (void)p_generateTypeDeclarations;
 @end
 
@@ -66,9 +66,9 @@
   return 0;
 }
 
-- (TSCH3DShaderProgram)initWithVersion:(id)a3
+- (TSCH3DShaderProgram)initWithVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v36.receiver = self;
   v36.super_class = TSCH3DShaderProgram;
   v6 = [(TSCH3DShaderProgram *)&v36 init];
@@ -128,7 +128,7 @@
     interleavedAttributeVariables = v6->_interleavedAttributeVariables;
     v6->_interleavedAttributeVariables = v29;
 
-    objc_storeStrong(&v6->_version, a3);
+    objc_storeStrong(&v6->_version, version);
     objc_msgSend_p_addCompatibilityFunctions(v6, v31, v32, v33, v34);
   }
 
@@ -152,9 +152,9 @@
   return objc_msgSend_isMetal(version, a2, v2, v3, v4);
 }
 
-- (id)existingLinkageOfVariable:(id)a3
+- (id)existingLinkageOfVariable:(id)variable
 {
-  v6 = objc_msgSend_objectForKey_(self->_links, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_objectForKey_(self->_links, a2, v3, v4, v5, variable);
 
   return v6;
 }
@@ -169,23 +169,23 @@
   return v21 + v16;
 }
 
-- (unint64_t)p_countOfAttributeBindingsForType:(TSCH3DShaderType)a3
+- (unint64_t)p_countOfAttributeBindingsForType:(TSCH3DShaderType)type
 {
-  v6 = objc_msgSend_linkedInputVariablesForType_scope_(self, a2, v3, v4, v5, a3._value, 8);
+  v6 = objc_msgSend_linkedInputVariablesForType_scope_(self, a2, v3, v4, v5, type._value, 8);
   v11 = objc_msgSend_count(v6, v7, v8, v9, v10);
 
   return v11;
 }
 
-- (pair<BOOL,)resultLinkageOfVariable:(id)a3
+- (pair<BOOL,)resultLinkageOfVariable:(id)variable
 {
   v5 = v3;
-  v74 = a3;
+  variableCopy = variable;
   v11 = objc_msgSend_existingLinkageOfVariable_(self, v6, v7, v8, v9);
   v15 = v11;
   if (!v11)
   {
-    v15 = objc_msgSend_linkageWithVariable_(TSCH3DShaderVariableLinkage, v10, v12, v13, v14, v74);
+    v15 = objc_msgSend_linkageWithVariable_(TSCH3DShaderVariableLinkage, v10, v12, v13, v14, variableCopy);
     if (self->_sortedLinks)
     {
       v20 = MEMORY[0x277D81150];
@@ -225,7 +225,7 @@
     linkedInputVariables = self->_linkedInputVariables;
     self->_linkedInputVariables = 0;
 
-    objc_msgSend_setObject_forKey_(self->_links, v68, v69, v70, v71, v15, v74);
+    objc_msgSend_setObject_forKey_(self->_links, v68, v69, v70, v71, v15, variableCopy);
   }
 
   *v5 = v11 != 0;
@@ -236,18 +236,18 @@
   return result;
 }
 
-- (id)linkageOfVariable:(id)a3
+- (id)linkageOfVariable:(id)variable
 {
-  objc_msgSend_resultLinkageOfVariable_(self, a2, v3, v4, v5, a3);
+  objc_msgSend_resultLinkageOfVariable_(self, a2, v3, v4, v5, variable);
   v6 = v8;
 
   return v6;
 }
 
-- (BOOL)isSamplerVariable:(id)a3
+- (BOOL)isSamplerVariable:(id)variable
 {
-  v3 = a3;
-  v8 = objc_msgSend_type(v3, v4, v5, v6, v7);
+  variableCopy = variable;
+  v8 = objc_msgSend_type(variableCopy, v4, v5, v6, v7);
   if (objc_msgSend_isEqual_(v8, v9, v10, v11, v12, @"sampler2D"))
   {
     isEqual = 1;
@@ -255,24 +255,24 @@
 
   else
   {
-    v18 = objc_msgSend_type(v3, v13, v14, v15, v16);
+    v18 = objc_msgSend_type(variableCopy, v13, v14, v15, v16);
     isEqual = objc_msgSend_isEqual_(v18, v19, v20, v21, v22, @"sampler3D");
   }
 
   return isEqual;
 }
 
-- (TSCH3DShaderType)uniformLinkageFor:(id)a3
+- (TSCH3DShaderType)uniformLinkageFor:(id)for
 {
-  v4 = a3;
-  if (objc_msgSend_isSamplerVariable_(self, v5, v6, v7, v8, v4))
+  forCopy = for;
+  if (objc_msgSend_isSamplerVariable_(self, v5, v6, v7, v8, forCopy))
   {
-    if (objc_msgSend_shaderType(v4, v9, v10, v11, v12) == 1)
+    if (objc_msgSend_shaderType(forCopy, v9, v10, v11, v12) == 1)
     {
       v17 = MEMORY[0x277D81150];
       v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "[TSCH3DShaderProgram uniformLinkageFor:]");
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, v20, v21, v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderProgram.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v24, v25, v26, v27, v18, v23, 604, 0, "cannot have vertex linkage for sampler %@", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v24, v25, v26, v27, v18, v23, 604, 0, "cannot have vertex linkage for sampler %@", forCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
     }
@@ -282,23 +282,23 @@
 
   else
   {
-    v32 = objc_msgSend_initialLinkType(v4, v9, v10, v11, v12);
+    v32 = objc_msgSend_initialLinkType(forCopy, v9, v10, v11, v12);
   }
 
   return v32;
 }
 
-- (void)addUniformVariable:(id)a3
+- (void)addUniformVariable:(id)variable
 {
-  v4 = a3;
-  objc_msgSend_resultLinkageOfVariable_(self, v5, v6, v7, v8, v4);
+  variableCopy = variable;
+  objc_msgSend_resultLinkageOfVariable_(self, v5, v6, v7, v8, variableCopy);
   v9 = v56;
   v14 = v9;
   if ((v55 & 1) == 0)
   {
     objc_msgSend_setShader_scope_(v9, v10, v11, v12, v13, 1, 4);
     objc_msgSend_setShader_scope_(v14, v15, v16, v17, v18, 2, 4);
-    v23 = objc_msgSend_uniformLinkageFor_(self, v19, v20, v21, v22, v4);
+    v23 = objc_msgSend_uniformLinkageFor_(self, v19, v20, v21, v22, variableCopy);
     objc_msgSend_setLinkage_(v14, v24, v25, v26, v27, v23);
     objc_msgSend_addDeclaredShader_scope_(v14, v28, v29, v30, v31, 1, 4);
     objc_msgSend_addDeclaredShader_scope_(v14, v32, v33, v34, v35, 2, 4);
@@ -315,9 +315,9 @@
   }
 }
 
-- (void)addAttributeVariable:(id)a3
+- (void)addAttributeVariable:(id)variable
 {
-  v40 = objc_msgSend_linkageOfVariable_(self, a2, v3, v4, v5, a3);
+  v40 = objc_msgSend_linkageOfVariable_(self, a2, v3, v4, v5, variable);
   if (objc_msgSend_isUniform(v40, v8, v9, v10, v11))
   {
     v16 = MEMORY[0x277D81150];
@@ -334,17 +334,17 @@
   objc_msgSend_addDeclaredShader_scope_(v40, v36, v37, v38, v39, 1, 8);
 }
 
-- (void)p_addToSection:(id)a3 variable:(id)a4 space:(id)a5 type:(TSCH3DShaderType)a6 format:(id)a7 substitutes:(id)a8
+- (void)p_addToSection:(id)section variable:(id)variable space:(id)space type:(TSCH3DShaderType)type format:(id)format substitutes:(id)substitutes
 {
-  v64 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v19 = a8;
-  if (v15)
+  sectionCopy = section;
+  variableCopy = variable;
+  spaceCopy = space;
+  formatCopy = format;
+  substitutesCopy = substitutes;
+  if (variableCopy)
   {
-    v63 = v16;
-    v23 = objc_msgSend_linkageOfVariable_(self, v18, v20, v21, v22, v15);
+    v63 = spaceCopy;
+    v23 = objc_msgSend_linkageOfVariable_(self, v18, v20, v21, v22, variableCopy);
     if (objc_msgSend_isUniform(v23, v24, v25, v26, v27))
     {
       v32 = MEMORY[0x277D81150];
@@ -356,38 +356,38 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45, v46, v47);
     }
 
-    v48 = objc_msgSend_assignmentWithAssignee_statement_dependees_program_(TSCH3DShaderAssignment, v28, v29, v30, v31, v23, v17, v19, self);
+    v48 = objc_msgSend_assignmentWithAssignee_statement_dependees_program_(TSCH3DShaderAssignment, v28, v29, v30, v31, v23, formatCopy, substitutesCopy, self);
 
-    v16 = v63;
+    spaceCopy = v63;
   }
 
   else
   {
-    v48 = objc_msgSend_statementWithFormat_dependees_program_(TSCH3DShaderStatement, v18, v20, v21, v22, v17, v19, self);
+    v48 = objc_msgSend_statementWithFormat_dependees_program_(TSCH3DShaderStatement, v18, v20, v21, v22, formatCopy, substitutesCopy, self);
   }
 
   v54 = objc_msgSend_array(MEMORY[0x277CBEA60], v49, v50, v51, v52);
-  if (LODWORD(a6._value) && LODWORD(a6._value) != 3)
+  if (LODWORD(type._value) && LODWORD(type._value) != 3)
   {
-    v58 = objc_msgSend_forceLinkageForType_(v48, v53, v55, v56, v57, a6._value);
+    v58 = objc_msgSend_forceLinkageForType_(v48, v53, v55, v56, v57, type._value);
 
     v54 = v58;
   }
 
-  objc_msgSend_addObject_(v64, v53, v55, v56, v57, v48);
+  objc_msgSend_addObject_(sectionCopy, v53, v55, v56, v57, v48);
   objc_msgSend_addObjectsFromArray_(self->_conclusionSection, v59, v60, v61, v62, v54);
 }
 
-- (void)addToSection:(id)a3 variable:(id)a4 space:(id)a5 type:(TSCH3DShaderType)a6 format:(id)a7 arguments:(char *)a8
+- (void)addToSection:(id)section variable:(id)variable space:(id)space type:(TSCH3DShaderType)type format:(id)format arguments:(char *)arguments
 {
-  v64 = a3;
-  v63 = a4;
-  v14 = a5;
-  v65 = a8;
-  v15 = a7;
-  v62 = v14;
-  v61 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v15, v16, v17, v18, v19, @"@@", @"@");
-  v24 = objc_msgSend_length(v15, v20, v21, v22, v23);
+  sectionCopy = section;
+  variableCopy = variable;
+  spaceCopy = space;
+  argumentsCopy = arguments;
+  formatCopy = format;
+  v62 = spaceCopy;
+  v61 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(formatCopy, v16, v17, v18, v19, @"@@", @"@");
+  v24 = objc_msgSend_length(formatCopy, v20, v21, v22, v23);
   v29 = objc_msgSend_length(v61, v25, v26, v27, v28);
   v30 = v24 - v29;
   v36 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v31, v32, v33, v34, v24 - v29);
@@ -395,15 +395,15 @@
   {
     do
     {
-      v40 = v65;
-      v65 += 8;
+      v40 = argumentsCopy;
+      argumentsCopy += 8;
       v42 = *v40;
       if (!v42 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v46 = MEMORY[0x277D81150];
         v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v41, v43, v44, v45, "[TSCH3DShaderProgram addToSection:variable:space:type:format:arguments:]");
         v52 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v48, v49, v50, v51, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderProgram.mm");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v46, v53, v54, v55, v56, v47, v52, 677, 0, "invalid statement argument %@, format %@", v42, v15);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v46, v53, v54, v55, v56, v47, v52, 677, 0, "invalid statement argument %@, format %@", v42, formatCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v57, v58, v59, v60);
       }
@@ -416,22 +416,22 @@
     while (v30);
   }
 
-  objc_msgSend_p_addToSection_variable_space_type_format_substitutes_(self, v35, v37, v38, v39, v64, v63, v62, a6._value, v15, v36);
+  objc_msgSend_p_addToSection_variable_space_type_format_substitutes_(self, v35, v37, v38, v39, sectionCopy, variableCopy, v62, type._value, formatCopy, v36);
 }
 
-- (void)addToSection:(id)a3 statement:(id)a4 type:(TSCH3DShaderType)a5
+- (void)addToSection:(id)section statement:(id)statement type:(TSCH3DShaderType)type
 {
-  v16 = a3;
-  v11 = objc_msgSend_statementWithString_linkageType_(TSCH3DShaderRawStatement, v7, v8, v9, v10, a4, a5._value);
-  objc_msgSend_addObject_(v16, v12, v13, v14, v15, v11);
+  sectionCopy = section;
+  v11 = objc_msgSend_statementWithString_linkageType_(TSCH3DShaderRawStatement, v7, v8, v9, v10, statement, type._value);
+  objc_msgSend_addObject_(sectionCopy, v12, v13, v14, v15, v11);
 }
 
-- (void)assignVariable:(id)a3 statement:(id)a4 substitutes:(id)a5 type:(TSCH3DShaderType)a6 toSection:(int)a7
+- (void)assignVariable:(id)variable statement:(id)statement substitutes:(id)substitutes type:(TSCH3DShaderType)type toSection:(int)section
 {
-  LODWORD(v7) = a7;
-  v33 = a3;
-  v12 = a4;
-  v14 = a5;
+  LODWORD(v7) = section;
+  variableCopy = variable;
+  statementCopy = statement;
+  substitutesCopy = substitutes;
   if (v7 > 5)
   {
     v18 = MEMORY[0x277D81150];
@@ -448,42 +448,42 @@
     v7 = v7;
   }
 
-  objc_msgSend_p_addToSection_variable_space_type_format_substitutes_(self, v13, v15, v16, v17, self->_sections[v7], v33, 0, a6._value, v12, v14);
+  objc_msgSend_p_addToSection_variable_space_type_format_substitutes_(self, v13, v15, v16, v17, self->_sections[v7], variableCopy, 0, type._value, statementCopy, substitutesCopy);
 }
 
-- (void)addFunctionString:(id)a3 name:(id)a4
+- (void)addFunctionString:(id)string name:(id)name
 {
-  v19 = a3;
-  v6 = a4;
-  if ((objc_msgSend_containsObject_(self->_functionNames, v7, v8, v9, v10, v6) & 1) == 0)
+  stringCopy = string;
+  nameCopy = name;
+  if ((objc_msgSend_containsObject_(self->_functionNames, v7, v8, v9, v10, nameCopy) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_functions, v11, v12, v13, v14, v19);
-    objc_msgSend_addObject_(self->_functionNames, v15, v16, v17, v18, v6);
+    objc_msgSend_addObject_(self->_functions, v11, v12, v13, v14, stringCopy);
+    objc_msgSend_addObject_(self->_functionNames, v15, v16, v17, v18, nameCopy);
   }
 }
 
-- (void)declareType:(id)a3 name:(id)a4
+- (void)declareType:(id)type name:(id)name
 {
-  v16 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_objectForKey_(self->_typeDeclarations, v7, v8, v9, v10, v6);
+  typeCopy = type;
+  nameCopy = name;
+  v11 = objc_msgSend_objectForKey_(self->_typeDeclarations, v7, v8, v9, v10, nameCopy);
 
   if (!v11)
   {
-    objc_msgSend_setObject_forKey_(self->_typeDeclarations, v12, v13, v14, v15, v16, v6);
+    objc_msgSend_setObject_forKey_(self->_typeDeclarations, v12, v13, v14, v15, typeCopy, nameCopy);
   }
 }
 
-- (void)accumulateSection:(id)a3 intoArray:(id)a4
+- (void)accumulateSection:(id)section intoArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  arrayCopy = array;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = sectionCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, v9, v10, v11, &v20, v24, 16);
   if (v13)
   {
@@ -500,7 +500,7 @@
         v19 = *(*(&v20 + 1) + 8 * i);
         if (objc_msgSend_isLinked(v19, v12, v14, v15, v16, v20))
         {
-          objc_msgSend_addObject_(v6, v12, v14, v15, v16, v19);
+          objc_msgSend_addObject_(arrayCopy, v12, v14, v15, v16, v19);
         }
       }
 
@@ -511,18 +511,18 @@
   }
 }
 
-- (unint64_t)processSection:(id)a3 accumulate:(id)a4 conclusions:(id)a5
+- (unint64_t)processSection:(id)section accumulate:(id)accumulate conclusions:(id)conclusions
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v54 = a4;
-  v52 = a5;
+  sectionCopy = section;
+  accumulateCopy = accumulate;
+  conclusionsCopy = conclusions;
   v55 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11, v12);
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v13 = v8;
+  v13 = sectionCopy;
   v18 = 0;
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, v15, v16, v17, &v56, v60, 16);
   if (v20)
@@ -555,7 +555,7 @@
 
           if (objc_msgSend_isLinked(v26, v38, v39, v40, v41))
           {
-            objc_msgSend_addObject_(v54, v27, v28, v29, v30, v26);
+            objc_msgSend_addObject_(accumulateCopy, v27, v28, v29, v30, v26);
           }
         }
 
@@ -569,7 +569,7 @@
   }
 
   v46 = objc_msgSend_count(v13, v42, v43, v44, v45);
-  objc_msgSend_addObjectsFromArray_(v52, v47, v48, v49, v50, v55);
+  objc_msgSend_addObjectsFromArray_(conclusionsCopy, v47, v48, v49, v50, v55);
 
   return v46 - v18;
 }
@@ -604,19 +604,19 @@
     v99 = self->_conclusionSection;
     v96 = 0u;
     memset(v95, 0, sizeof(v95));
-    v25 = self;
+    selfCopy = self;
     for (i = 0; i != 48; i += 8)
     {
       v30 = objc_msgSend_array(MEMORY[0x277CBEB18], v24, v26, v27, v28);
       v31 = *(v95 + i);
       *(v95 + i) = v30;
 
-      objc_msgSend_accumulateSection_intoArray_(v25, v32, v33, v34, v35, *(v97 + i), v30);
+      objc_msgSend_accumulateSection_intoArray_(selfCopy, v32, v33, v34, v35, *(v97 + i), v30);
     }
 
     aSelector = a2;
     p_declarationSection = &self->_declarationSection;
-    v86 = self;
+    selfCopy2 = self;
 
     v37 = *(&v96 + 1);
     v41 = 0;
@@ -633,7 +633,7 @@
     {
       for (j = 0; j != 6; ++j)
       {
-        v94[j] = objc_msgSend_processSection_accumulate_conclusions_(v25, v36, v38, v39, v40, *(v97 + j * 8), *(v95 + j * 8), v37);
+        v94[j] = objc_msgSend_processSection_accumulate_conclusions_(selfCopy, v36, v38, v39, v40, *(v97 + j * 8), *(v95 + j * 8), v37);
       }
 
       v45 = 0;
@@ -681,14 +681,14 @@
     {
       v77 = objc_opt_class();
       v78 = NSStringFromSelector(aSelector);
-      NSLog(&cfstr_PLinks.isa, v77, v25, v78, v25->_links);
+      NSLog(&cfstr_PLinks.isa, v77, selfCopy, v78, selfCopy->_links);
     }
 
-    vertex = v25->_vertex;
-    v25->_vertex = 0;
+    vertex = selfCopy->_vertex;
+    selfCopy->_vertex = 0;
 
-    fragment = v25->_fragment;
-    v25->_fragment = 0;
+    fragment = selfCopy->_fragment;
+    selfCopy->_fragment = 0;
 
     v81 = 0;
     v94[0] = p_declarationSection;
@@ -704,7 +704,7 @@
     }
 
     while (v81 != 6);
-    v86->_isLinked = 1;
+    selfCopy2->_isLinked = 1;
 
     for (n = 40; n != -8; n -= 8)
     {
@@ -716,10 +716,10 @@
   }
 }
 
-- (void)p_generateType:(TSCH3DShaderType)a3 globalType:(TSCH3DShaderVariableScopeType)a4 storageQualifier:(id)a5
+- (void)p_generateType:(TSCH3DShaderType)type globalType:(TSCH3DShaderVariableScopeType)globalType storageQualifier:(id)qualifier
 {
   v113 = *MEMORY[0x277D85DE8];
-  v104 = a5;
+  qualifierCopy = qualifier;
   if (!self->_accumulator)
   {
     v11 = MEMORY[0x277D81150];
@@ -730,7 +730,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  if (LODWORD(a3._value) != 2 || LODWORD(a4._value) != 8)
+  if (LODWORD(type._value) != 2 || LODWORD(globalType._value) != 8)
   {
     v110 = 0u;
     v111 = 0u;
@@ -740,9 +740,9 @@
     v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v26, v27, v28, v29, &v108, v112, 16);
     if (v31)
     {
-      if (a3._value)
+      if (type._value)
       {
-        value = a3._value;
+        value = type._value;
       }
 
       else
@@ -773,9 +773,9 @@
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v55, v56, v57, v58);
           }
 
-          if ((objc_msgSend_linked(v40, v39, v41, v42, v43) & v107) == a3._value)
+          if ((objc_msgSend_linked(v40, v39, v41, v42, v43) & v107) == type._value)
           {
-            v64 = objc_msgSend_globalNameForShader_scope_(v40, v59, v60, v61, v62, a3._value, a4._value);
+            v64 = objc_msgSend_globalNameForShader_scope_(v40, v59, v60, v61, v62, type._value, globalType._value);
             if (v64)
             {
               v68 = objc_msgSend_variable(v40, v63, v65, v66, v67);
@@ -793,7 +793,7 @@
 
               accumulator = self->_accumulator;
               isMetal = objc_msgSend_isMetal(self, v70, v71, v72, v73);
-              v95 = objc_msgSend_variableQualifiersWithStorageQualifier_isMetal_(v40, v91, v92, v93, v94, v104, isMetal);
+              v95 = objc_msgSend_variableQualifiersWithStorageQualifier_isMetal_(v40, v91, v92, v93, v94, qualifierCopy, isMetal);
               objc_msgSend_appendFormat_(accumulator, v96, v97, v98, v99, @"%@ %@;\n", v95, v64);
             }
           }
@@ -867,12 +867,12 @@
   objc_msgSend_appendString_(accumulator, v26, v27, v28, v29, @"tsch_mediump_vec4 fboTexture2DProj(TextureData t, tsch_vec4 texcoord)\n{\n  tsch_mediump_vec4 ndcTexcoord = texcoord / texcoord.w;\n  return fboTexture2D(t, ndcTexcoord.xy);\n}\n");
 }
 
-- (void)p_generateGlobalsForType:(TSCH3DShaderType)a3
+- (void)p_generateGlobalsForType:(TSCH3DShaderType)type
 {
-  value = a3._value;
-  v7 = self;
+  value = type._value;
+  selfCopy2 = self;
   v244 = *MEMORY[0x277D85DE8];
-  v241 = a3._value;
+  v241 = type._value;
   if (!self->_version)
   {
     v8 = MEMORY[0x277D81150];
@@ -881,24 +881,24 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 933, 0, "invalid nil value for '%{public}s'", "_version");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
-    value = a3._value;
-    v7 = self;
+    value = type._value;
+    selfCopy2 = self;
   }
 
-  if (objc_msgSend_isMetal(v7, a2, v3, v4, v5))
+  if (objc_msgSend_isMetal(selfCopy2, a2, v3, v4, v5))
   {
-    objc_msgSend_appendString_(v7->_accumulator, v23, v24, v25, v26, @"typedef struct {\n");
+    objc_msgSend_appendString_(selfCopy2->_accumulator, v23, v24, v25, v26, @"typedef struct {\n");
     v239 = 0u;
     v240 = 0u;
     v237 = 0u;
     v238 = 0u;
-    obj = v7->_links;
+    obj = selfCopy2->_links;
     v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v27, v28, v29, v30, &v237, v243, 16);
     if (v32)
     {
-      if (a3._value)
+      if (type._value)
       {
-        v36 = a3._value;
+        v36 = type._value;
       }
 
       else
@@ -928,9 +928,9 @@
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v56, v57, v58, v59);
           }
 
-          if ((v36 & objc_msgSend_linked(v41, v40, v42, v43, v44)) == a3._value)
+          if ((v36 & objc_msgSend_linked(v41, v40, v42, v43, v44)) == type._value)
           {
-            v65 = objc_msgSend_globalNameForShader_scope_(v41, v60, v61, v62, v63, a3._value, 16);
+            v65 = objc_msgSend_globalNameForShader_scope_(v41, v60, v61, v62, v63, type._value, 16);
             if (v65)
             {
               v69 = objc_msgSend_variable(v41, v64, v66, v67, v68);
@@ -980,7 +980,7 @@
     }
 
     objc_msgSend_appendString_(self->_accumulator, v117, v118, v119, v120, @"} RasterizerData;\n");
-    v135 = objc_msgSend_linkedUniformVariablesForType_isTexture_(self, v131, v132, v133, v134, a3._value, 0);
+    v135 = objc_msgSend_linkedUniformVariablesForType_isTexture_(self, v131, v132, v133, v134, type._value, 0);
     if (objc_msgSend_count(v135, v136, v137, v138, v139))
     {
       objc_msgSend_appendString_(self->_accumulator, v140, v141, v142, v143, @"\n");
@@ -1018,23 +1018,23 @@
       }
 
       accumulator = self->_accumulator;
-      if (LODWORD(a3._value) > 3)
+      if (LODWORD(type._value) > 3)
       {
         objc_msgSend_appendFormat_(accumulator, v176, v177, v178, v179, @"} %@Uniforms;\n", 0);
       }
 
       else
       {
-        objc_msgSend_appendFormat_(accumulator, v176, v177, v178, v179, @"} %@Uniforms;\n", off_27A6B6750[a3._value & 3]);
+        objc_msgSend_appendFormat_(accumulator, v176, v177, v178, v179, @"} %@Uniforms;\n", off_27A6B6750[type._value & 3]);
       }
     }
 
-    if (LODWORD(a3._value) == 2)
+    if (LODWORD(type._value) == 2)
     {
       objc_msgSend_p_generateMetalFragmentGlobals(self, v140, v141, v142, v143);
     }
 
-    else if (LODWORD(a3._value) == 1)
+    else if (LODWORD(type._value) == 1)
     {
       objc_msgSend_p_generateMetalVertexGlobals(self, v140, v141, v142, v143);
     }
@@ -1055,14 +1055,14 @@
 
   else
   {
-    objc_msgSend_p_generateType_globalType_storageQualifier_(v7, v23, v24, v25, v26, value, 4, @"uniform");
-    v185 = objc_msgSend_vertexAttributeQualifierForShaderType_(v7->_version, v181, v182, v183, v184, value);
-    objc_msgSend_p_generateType_globalType_storageQualifier_(self, v186, v187, v188, v189, a3._value, 8, v185);
+    objc_msgSend_p_generateType_globalType_storageQualifier_(selfCopy2, v23, v24, v25, v26, value, 4, @"uniform");
+    v185 = objc_msgSend_vertexAttributeQualifierForShaderType_(selfCopy2->_version, v181, v182, v183, v184, value);
+    objc_msgSend_p_generateType_globalType_storageQualifier_(self, v186, v187, v188, v189, type._value, 8, v185);
 
-    v194 = objc_msgSend_vertexVaryingQualifierForShaderType_(self->_version, v190, v191, v192, v193, a3._value);
-    objc_msgSend_p_generateType_globalType_storageQualifier_(self, v195, v196, v197, v198, a3._value, 16, v194);
+    v194 = objc_msgSend_vertexVaryingQualifierForShaderType_(self->_version, v190, v191, v192, v193, type._value);
+    objc_msgSend_p_generateType_globalType_storageQualifier_(self, v195, v196, v197, v198, type._value, 16, v194);
 
-    v203 = a3._value;
+    v203 = type._value;
   }
 
   v224 = self->_accumulator;
@@ -1139,16 +1139,16 @@
   }
 }
 
-- (void)p_generateSection:(id)a3 type:(TSCH3DShaderType)a4
+- (void)p_generateSection:(id)section type:(TSCH3DShaderType)type
 {
   v54 = *MEMORY[0x277D85DE8];
-  v48 = a3;
+  sectionCopy = section;
   if (!self->_accumulator)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCH3DShaderProgram p_generateSection:type:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderProgram.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 1012, 0, "invalid nil value for '%{public}s'", "_accumulator", v48);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 1012, 0, "invalid nil value for '%{public}s'", "_accumulator", sectionCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
@@ -1157,7 +1157,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v25 = v48;
+  v25 = sectionCopy;
   v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, v27, v28, v29, &v49, v53, 16);
   if (v31)
   {
@@ -1172,13 +1172,13 @@
         }
 
         v37 = *(*(&v49 + 1) + 8 * i);
-        if (objc_msgSend_linkageType(v37, v30, v32, v33, v34) == LODWORD(a4._value))
+        if (objc_msgSend_linkageType(v37, v30, v32, v33, v34) == LODWORD(type._value))
         {
           accumulator = self->_accumulator;
           v39 = objc_msgSend_string(v37, v30, v32, v33, v34);
           objc_msgSend_appendFormat_(accumulator, v40, v41, v42, v43, @"%@\n", v39);
 
-          objc_msgSend_setGeneratedForType_(v37, v44, v45, v46, v47, a4._value);
+          objc_msgSend_setGeneratedForType_(v37, v44, v45, v46, v47, type._value);
         }
       }
 
@@ -1266,7 +1266,7 @@
   return variableToVertexAttributeLocation;
 }
 
-- (id)linkedInputVariablesForType:(TSCH3DShaderType)a3 scope:(TSCH3DShaderVariableScopeType)a4
+- (id)linkedInputVariablesForType:(TSCH3DShaderType)type scope:(TSCH3DShaderVariableScopeType)scope
 {
   v143 = *MEMORY[0x277D85DE8];
   if (!self->_linkedInputVariables)
@@ -1276,8 +1276,8 @@
     self->_linkedInputVariables = v8;
   }
 
-  v133 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, v4, v5, v6, a3._value);
-  v132 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v10, v11, v12, v13, a4._value);
+  v133 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, v4, v5, v6, type._value);
+  v132 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v10, v11, v12, v13, scope._value);
   v18 = objc_msgSend_objectForKeyedSubscript_(self->_linkedInputVariables, v14, v15, v16, v17, v133);
   v23 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v20, v21, v22, v132);
 
@@ -1308,9 +1308,9 @@
     v54 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v49, v50, v51, v52, &v138, v142, 16);
     if (v54)
     {
-      if (a3._value)
+      if (type._value)
       {
-        value = a3._value;
+        value = type._value;
       }
 
       else
@@ -1340,15 +1340,15 @@
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v78, v79, v80, v81);
           }
 
-          if ((objc_msgSend_linked(v63, v62, v64, v65, v66) & value) == a3._value)
+          if ((objc_msgSend_linked(v63, v62, v64, v65, v66) & value) == type._value)
           {
-            v87 = objc_msgSend_globalNameForShader_scope_(v63, v82, v83, v84, v85, a3._value, a4._value);
+            v87 = objc_msgSend_globalNameForShader_scope_(v63, v82, v83, v84, v85, type._value, scope._value);
             if (v87)
             {
               v91 = objc_msgSend_linkedVariable(TSCH3DShaderLinkedVariable, v86, v88, v89, v90);
               objc_msgSend_setName_(v91, v92, v93, v94, v95, v87);
               objc_msgSend_setVariable_(v91, v96, v97, v98, v99, v61);
-              objc_msgSend_setScope_(v91, v100, v101, v102, v103, a4._value);
+              objc_msgSend_setScope_(v91, v100, v101, v102, v103, scope._value);
               objc_msgSend_addObject_(v134, v104, v105, v106, v107, v91);
             }
           }
@@ -1372,14 +1372,14 @@
   return v34;
 }
 
-- (id)linkedUniformVariablesForType:(TSCH3DShaderType)a3 isTexture:(BOOL)a4
+- (id)linkedUniformVariablesForType:(TSCH3DShaderType)type isTexture:(BOOL)texture
 {
-  v8 = objc_msgSend_linkedInputVariablesForType_scope_(self, a2, v4, v5, v6, a3._value, 4);
+  v8 = objc_msgSend_linkedInputVariablesForType_scope_(self, a2, v4, v5, v6, type._value, 4);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2761A8C34;
   v14[3] = &unk_27A6B6710;
-  v15 = a4;
+  textureCopy = texture;
   v12 = objc_msgSend_tsu_arrayOfObjectsPassingTest_(v8, v9, COERCE_DOUBLE(3221225472), v10, v11, v14);
 
   return v12;
@@ -1399,7 +1399,7 @@
   return v15;
 }
 
-- (void)p_generatePreprocessorDefinitionsForType:(TSCH3DShaderType)a3
+- (void)p_generatePreprocessorDefinitionsForType:(TSCH3DShaderType)type
 {
   version = self->_version;
   if (!version)
@@ -1414,7 +1414,7 @@
   }
 
   accumulator = self->_accumulator;
-  v28 = objc_msgSend_preprocessorDefinitions(version, a2, v3, v4, v5, a3._value);
+  v28 = objc_msgSend_preprocessorDefinitions(version, a2, v3, v4, v5, type._value);
   objc_msgSend_appendFormat_(accumulator, v23, v24, v25, v26, @"%@\n", v28);
 }
 
@@ -1586,53 +1586,53 @@
   }
 }
 
-- (id)p_boundTextureArgumentDeclarationForLinkedVariable:(id)a3 bufferIndex:(unint64_t)a4
+- (id)p_boundTextureArgumentDeclarationForLinkedVariable:(id)variable bufferIndex:(unint64_t)index
 {
-  v6 = a3;
+  variableCopy = variable;
   v7 = MEMORY[0x277CCACA8];
-  v12 = objc_msgSend_inputVariableName(v6, v8, v9, v10, v11);
+  v12 = objc_msgSend_inputVariableName(variableCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_stringWithFormat_(v7, v13, v14, v15, v16, @"%@Texture", v12);
 
-  v22 = objc_msgSend_p_boundArgumentDeclarationForLinkedVariable_variableType_variableName_bindingType_bufferIndex_(self, v18, v19, v20, v21, v6, @"texture2d<float>", v17, @"texture", a4);
+  v22 = objc_msgSend_p_boundArgumentDeclarationForLinkedVariable_variableType_variableName_bindingType_bufferIndex_(self, v18, v19, v20, v21, variableCopy, @"texture2d<float>", v17, @"texture", index);
 
   return v22;
 }
 
-- (id)p_boundSamplerArgumentDeclarationForLinkedVariable:(id)a3 bufferIndex:(unint64_t)a4
+- (id)p_boundSamplerArgumentDeclarationForLinkedVariable:(id)variable bufferIndex:(unint64_t)index
 {
-  v6 = a3;
+  variableCopy = variable;
   v7 = MEMORY[0x277CCACA8];
-  v12 = objc_msgSend_inputVariableName(v6, v8, v9, v10, v11);
+  v12 = objc_msgSend_inputVariableName(variableCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_stringWithFormat_(v7, v13, v14, v15, v16, @"%@Sampler", v12);
 
-  v22 = objc_msgSend_p_boundArgumentDeclarationForLinkedVariable_variableType_variableName_bindingType_bufferIndex_(self, v18, v19, v20, v21, v6, @"sampler", v17, @"sampler", a4);
+  v22 = objc_msgSend_p_boundArgumentDeclarationForLinkedVariable_variableType_variableName_bindingType_bufferIndex_(self, v18, v19, v20, v21, variableCopy, @"sampler", v17, @"sampler", index);
 
   return v22;
 }
 
-- (id)p_boundBufferArgumentDeclarationForLinkedVariable:(id)a3 variableType:(id)a4 variableName:(id)a5 bufferIndex:(unint64_t)a6
+- (id)p_boundBufferArgumentDeclarationForLinkedVariable:(id)variable variableType:(id)type variableName:(id)name bufferIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = a5;
-  v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, v13, v14, v15, @"const device %@ *", a4);
-  v21 = objc_msgSend_p_boundArgumentDeclarationForLinkedVariable_variableType_variableName_bindingType_bufferIndex_(self, v17, v18, v19, v20, v10, v16, v11, @"buffer", a6);
+  variableCopy = variable;
+  nameCopy = name;
+  v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, v13, v14, v15, @"const device %@ *", type);
+  v21 = objc_msgSend_p_boundArgumentDeclarationForLinkedVariable_variableType_variableName_bindingType_bufferIndex_(self, v17, v18, v19, v20, variableCopy, v16, nameCopy, @"buffer", index);
 
   return v21;
 }
 
-- (id)p_boundArgumentDeclarationForLinkedVariable:(id)a3 variableType:(id)a4 variableName:(id)a5 bindingType:(id)a6 bufferIndex:(unint64_t)a7
+- (id)p_boundArgumentDeclarationForLinkedVariable:(id)variable variableType:(id)type variableName:(id)name bindingType:(id)bindingType bufferIndex:(unint64_t)index
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  variableCopy = variable;
+  typeCopy = type;
+  nameCopy = name;
+  bindingTypeCopy = bindingType;
   variablesWithBackingResources = self->_variablesWithBackingResources;
-  v21 = objc_msgSend_variable(v12, v17, v18, v19, v20);
+  v21 = objc_msgSend_variable(variableCopy, v17, v18, v19, v20);
   LOBYTE(variablesWithBackingResources) = objc_msgSend_containsObject_(variablesWithBackingResources, v22, v23, v24, v25, v21);
 
   if (variablesWithBackingResources)
   {
-    v30 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v26, v27, v28, v29, @"%@ %@ [[%@(%lu)]]", v13, v14, v15, a7);
+    v30 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v26, v27, v28, v29, @"%@ %@ [[%@(%lu)]]", typeCopy, nameCopy, bindingTypeCopy, index);
   }
 
   else
@@ -1640,7 +1640,7 @@
     v31 = MEMORY[0x277D81150];
     v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v26, v27, v28, v29, "[TSCH3DShaderProgram p_boundArgumentDeclarationForLinkedVariable:variableType:variableName:bindingType:bufferIndex:]");
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, v34, v35, v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderProgram.mm");
-    v42 = objc_msgSend_variable(v12, v38, v39, v40, v41);
+    v42 = objc_msgSend_variable(variableCopy, v38, v39, v40, v41);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v31, v43, v44, v45, v46, v32, v37, 1211, 0, "Variable %@ does not have a backing resource associated with it. Do not create a binding for an Attribute Variable that is not used, since Metal requires all bindings to be used.", v42);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v47, v48, v49, v50);
@@ -1765,24 +1765,24 @@
   }
 }
 
-- (id)uniformVariablesForType:(TSCH3DShaderType)a3
+- (id)uniformVariablesForType:(TSCH3DShaderType)type
 {
-  v6 = objc_msgSend_linkedUniformVariablesForType_isTexture_(self, a2, v3, v4, v5, a3._value, 0);
+  v6 = objc_msgSend_linkedUniformVariablesForType_isTexture_(self, a2, v3, v4, v5, type._value, 0);
   v11 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v6, v7, v8, v9, v10, &unk_28851D018);
 
   return v11;
 }
 
-- (int64_t)uniformBufferIndexForType:(TSCH3DShaderType)a3
+- (int64_t)uniformBufferIndexForType:(TSCH3DShaderType)type
 {
-  value = a3._value;
-  if (LODWORD(a3._value) == 2)
+  value = type._value;
+  if (LODWORD(type._value) == 2)
   {
 
     return objc_msgSend_fragmentUniformBufferIndex(self, a2, v3, v4, v5);
   }
 
-  else if (LODWORD(a3._value) == 1)
+  else if (LODWORD(type._value) == 1)
   {
 
     return (MEMORY[0x2821F9670])(self, sel_vertexUniformBufferIndex);
@@ -1801,7 +1801,7 @@
   }
 }
 
-- (id)p_generateType:(TSCH3DShaderType)a3
+- (id)p_generateType:(TSCH3DShaderType)type
 {
   p_accumulator = &self->_accumulator;
   if (self->_accumulator)
@@ -1816,13 +1816,13 @@
 
   v24 = objc_msgSend_string(MEMORY[0x277CCAB68], a2, v3, v4, v5);
   objc_storeStrong(p_accumulator, v24);
-  objc_msgSend_p_generatePreprocessorDefinitionsForType_(self, v25, v26, v27, v28, a3._value);
-  objc_msgSend_p_generateGlobalsForType_(self, v29, v30, v31, v32, a3._value);
+  objc_msgSend_p_generatePreprocessorDefinitionsForType_(self, v25, v26, v27, v28, type._value);
+  objc_msgSend_p_generateGlobalsForType_(self, v29, v30, v31, v32, type._value);
   objc_msgSend_p_generateTypeDeclarations(self, v33, v34, v35, v36);
   objc_msgSend_p_generateFunctions(self, v37, v38, v39, v40);
   if (objc_msgSend_isMetal(self, v41, v42, v43, v44))
   {
-    if (LODWORD(a3._value) == 2)
+    if (LODWORD(type._value) == 2)
     {
       objc_msgSend_appendString_(*p_accumulator, v45, v46, v47, v48, @"fragment float4 fragmentShader(\n  RasterizerData dat [[stage_in]]");
       objc_msgSend_p_generateMetalFragmentInputs(self, v61, v62, v63, v64);
@@ -1830,7 +1830,7 @@
       objc_msgSend_p_generateMetalFragmentTextureVariable(self, v69, v70, v71, v72);
     }
 
-    else if (LODWORD(a3._value) == 1)
+    else if (LODWORD(type._value) == 1)
     {
       objc_msgSend_appendString_(*p_accumulator, v45, v46, v47, v48, @"vertex RasterizerData vertexShader(\n  uint vertexID [[vertex_id]]");
       objc_msgSend_p_generateMetalVertexInputs(self, v49, v50, v51, v52);
@@ -1844,14 +1844,14 @@
     objc_msgSend_appendString_(*p_accumulator, v45, v46, v47, v48, @"void main() {\n");
   }
 
-  objc_msgSend_p_generateSection_type_(self, v45, v46, v47, v48, self->_declarationSection, a3._value);
-  objc_msgSend_p_generateSection_type_(self, v73, v74, v75, v76, self->_temporarySection, a3._value);
-  objc_msgSend_p_generateSection_type_(self, v77, v78, v79, v80, self->_statementSection, a3._value);
-  objc_msgSend_p_generateSection_type_(self, v81, v82, v83, v84, self->_resolutionSection, a3._value);
-  objc_msgSend_p_generateSection_type_(self, v85, v86, v87, v88, self->_outcomeSection, a3._value);
-  objc_msgSend_p_generateSection_type_(self, v89, v90, v91, v92, self->_conclusionSection, a3._value);
+  objc_msgSend_p_generateSection_type_(self, v45, v46, v47, v48, self->_declarationSection, type._value);
+  objc_msgSend_p_generateSection_type_(self, v73, v74, v75, v76, self->_temporarySection, type._value);
+  objc_msgSend_p_generateSection_type_(self, v77, v78, v79, v80, self->_statementSection, type._value);
+  objc_msgSend_p_generateSection_type_(self, v81, v82, v83, v84, self->_resolutionSection, type._value);
+  objc_msgSend_p_generateSection_type_(self, v85, v86, v87, v88, self->_outcomeSection, type._value);
+  objc_msgSend_p_generateSection_type_(self, v89, v90, v91, v92, self->_conclusionSection, type._value);
   accumulator = self->_accumulator;
-  v98 = objc_msgSend_additionalConclusionsForShaderType_(self->_version, v94, v95, v96, v97, a3._value);
+  v98 = objc_msgSend_additionalConclusionsForShaderType_(self->_version, v94, v95, v96, v97, type._value);
   objc_msgSend_appendFormat_(accumulator, v99, v100, v101, v102, @"%@\n", v98);
 
   objc_msgSend_appendString_(*p_accumulator, v103, v104, v105, v106, @"}\n");
@@ -1893,12 +1893,12 @@
   return fragment;
 }
 
-- (id)usedNameForVariable:(id)a3 type:(TSCH3DShaderType)a4 scope:(TSCH3DShaderVariableScopeType)a5
+- (id)usedNameForVariable:(id)variable type:(TSCH3DShaderType)type scope:(TSCH3DShaderVariableScopeType)scope
 {
-  v10 = objc_msgSend_existingLinkageOfVariable_(self, a2, v5, v6, v7, a3);
+  v10 = objc_msgSend_existingLinkageOfVariable_(self, a2, v5, v6, v7, variable);
   if (objc_msgSend_isUsed(v10, v11, v12, v13, v14))
   {
-    v19 = objc_msgSend_nameForShader_scope_(v10, v15, v16, v17, v18, a4._value, a5._value);
+    v19 = objc_msgSend_nameForShader_scope_(v10, v15, v16, v17, v18, type._value, scope._value);
   }
 
   else
@@ -1909,32 +1909,32 @@
   return v19;
 }
 
-- (id)usedUniformNameForVariable:(id)a3
+- (id)usedUniformNameForVariable:(id)variable
 {
-  v6 = objc_msgSend_usedNameForVariable_type_scope_(self, a2, v3, v4, v5, a3, 1, 4);
+  v6 = objc_msgSend_usedNameForVariable_type_scope_(self, a2, v3, v4, v5, variable, 1, 4);
 
   return v6;
 }
 
-- (id)usedAttributeNameForVariable:(id)a3
+- (id)usedAttributeNameForVariable:(id)variable
 {
-  v6 = objc_msgSend_usedNameForVariable_type_scope_(self, a2, v3, v4, v5, a3, 1, 8);
+  v6 = objc_msgSend_usedNameForVariable_type_scope_(self, a2, v3, v4, v5, variable, 1, 8);
 
   return v6;
 }
 
-- (unint64_t)vertexAttributeLocationForVariable:(id)a3
+- (unint64_t)vertexAttributeLocationForVariable:(id)variable
 {
-  v4 = a3;
+  variableCopy = variable;
   v9 = objc_msgSend_variableToVertexAttributeLocation(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v11, v12, v13, variableCopy);
 
-  if (!v14 || (objc_msgSend_variableToVertexAttributeLocation(self, v15, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v19, v20, v21, v22, v23, v4), v24 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend_unsignedIntegerValue(v24, v25, v26, v27, v28), v24, v19, v29 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!v14 || (objc_msgSend_variableToVertexAttributeLocation(self, v15, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v19, v20, v21, v22, v23, variableCopy), v24 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend_unsignedIntegerValue(v24, v25, v26, v27, v28), v24, v19, v29 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v30 = MEMORY[0x277D81150];
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCH3DShaderProgram vertexAttributeLocationForVariable:]");
     v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, v33, v34, v35, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderProgram.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v30, v37, v38, v39, v40, v31, v36, 1359, 0, "variable %@ is not linked to shader program %@", v4, self);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v30, v37, v38, v39, v40, v31, v36, 1359, 0, "variable %@ is not linked to shader program %@", variableCopy, self);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v41, v42, v43, v44);
     v29 = 0x7FFFFFFFFFFFFFFFLL;

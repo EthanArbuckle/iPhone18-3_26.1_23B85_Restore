@@ -8,27 +8,27 @@
 
 - (void)updateState
 {
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v5 infoProvider];
-  if ([v3 isSystemReady])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  if ([infoProvider isSystemReady])
   {
-    v4 = [(HDSPEnvironmentNotReadyState *)self _nextSystemReadyState];
-    [v5 enterState:v4];
+    _nextSystemReadyState = [(HDSPEnvironmentNotReadyState *)self _nextSystemReadyState];
+    [stateMachine enterState:_nextSystemReadyState];
   }
 }
 
 - (id)_nextSystemReadyState
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  if ([v3 needsDataMigration])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  if ([infoProvider needsDataMigration])
   {
-    [v2 migrationState];
+    [stateMachine migrationState];
   }
 
   else
   {
-    [v2 readyState];
+    [stateMachine readyState];
   }
   v4 = ;
 
@@ -37,9 +37,9 @@
 
 - (void)systemDidBecomeReady
 {
-  v4 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [(HDSPEnvironmentNotReadyState *)self _nextSystemReadyState];
-  [v4 enterState:v3];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  _nextSystemReadyState = [(HDSPEnvironmentNotReadyState *)self _nextSystemReadyState];
+  [stateMachine enterState:_nextSystemReadyState];
 }
 
 @end

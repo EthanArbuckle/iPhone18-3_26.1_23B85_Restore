@@ -1,7 +1,7 @@
 @interface CRKClassKitAccountStateProvider
 - (CRKClassKitAccountStateProvider)init;
 - (int64_t)currentAccountState;
-- (void)accountStoreDidChange:(id)a3;
+- (void)accountStoreDidChange:(id)change;
 - (void)beginObservingAccountChanges;
 - (void)dealloc;
 - (void)endObservingAccountChanges;
@@ -25,9 +25,9 @@
   v2 = [(CRKClassKitAccountStateProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     accountStore = v2->_accountStore;
-    v2->_accountStore = v3;
+    v2->_accountStore = defaultStore;
 
     [(CRKClassKitAccountStateProvider *)v2 beginObservingAccountChanges];
     [(CRKClassKitAccountStateProvider *)v2 updateAccountState];
@@ -38,17 +38,17 @@
 
 - (void)beginObservingAccountChanges
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 addObserver:self selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
 }
 
 - (void)endObservingAccountChanges
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8DB8] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8DB8] object:0];
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -60,22 +60,22 @@
 
 - (void)updateAccountState
 {
-  v3 = [(CRKClassKitAccountStateProvider *)self accountState];
-  if (v3 != [(CRKClassKitAccountStateProvider *)self currentAccountState])
+  accountState = [(CRKClassKitAccountStateProvider *)self accountState];
+  if (accountState != [(CRKClassKitAccountStateProvider *)self currentAccountState])
   {
-    v4 = [(CRKClassKitAccountStateProvider *)self currentAccountState];
+    currentAccountState = [(CRKClassKitAccountStateProvider *)self currentAccountState];
 
-    [(CRKClassKitAccountStateProvider *)self setAccountState:v4];
+    [(CRKClassKitAccountStateProvider *)self setAccountState:currentAccountState];
   }
 }
 
 - (int64_t)currentAccountState
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 currentUser];
-  v4 = [v3 isLoginUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
+  isLoginUser = [currentUser isLoginUser];
 
-  if (v4)
+  if (isLoginUser)
   {
     return 1;
   }

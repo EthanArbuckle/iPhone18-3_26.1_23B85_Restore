@@ -22,7 +22,7 @@
 
 - (uint64_t)mf_caseInsensitiveCompareExcludingXDash:()MFStringUtils
 {
-  if (a1 == a3)
+  if (self == a3)
   {
     return 0;
   }
@@ -32,7 +32,7 @@
     return 1;
   }
 
-  v5 = [a1 rangeOfString:@"x-" options:9];
+  v5 = [self rangeOfString:@"x-" options:9];
   v7 = v6;
   v8 = [a3 rangeOfString:@"x-" options:9];
   if ((v7 != 0) != (v9 != 0))
@@ -40,12 +40,12 @@
     if (v7)
     {
       v10 = v5 + v7;
-      v11 = [a1 length] - v10;
+      v11 = [self length] - v10;
 
-      return [a1 compare:a3 options:9 range:{v10, v11}];
+      return [self compare:a3 options:9 range:{v10, v11}];
     }
 
-    result = [a3 compare:a1 options:9 range:{v8 + v9, objc_msgSend(a3, "length") - (v8 + v9)}];
+    result = [a3 compare:self options:9 range:{v8 + v9, objc_msgSend(a3, "length") - (v8 + v9)}];
     if (result != -1)
     {
       if (result == 1)
@@ -59,13 +59,13 @@
     return 1;
   }
 
-  return [a1 compare:a3 options:1];
+  return [self compare:a3 options:1];
 }
 
 - (void)mf_dataUsingEncoding:()MFStringUtils allowLossyConversion:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [(__CFString *)a1 length];
+  v7 = [(__CFString *)self length];
   v19 = 0xAAAAAAAAAAAAAAAALL;
   v8 = CFStringConvertNSStringEncodingToEncoding(a3);
   if (!CFStringIsEncodingAvailable(v8))
@@ -103,7 +103,7 @@
 
   v23.location = 0;
   v23.length = v7;
-  if (MFStringGetBytes(a1, v23, v8, v10, 1u, 0, 0, &v19) != v7)
+  if (MFStringGetBytes(self, v23, v8, v10, 1u, 0, 0, &v19) != v7)
   {
 LABEL_16:
     v13 = 0;
@@ -115,10 +115,10 @@ LABEL_16:
   v13 = v12;
   if (v19)
   {
-    v14 = [v12 mutableBytes];
+    mutableBytes = [v12 mutableBytes];
     v24.location = 0;
     v24.length = v7;
-    if (MFStringGetBytes(a1, v24, v8, v10, 1u, v14, v19, &v19) == v7)
+    if (MFStringGetBytes(self, v24, v8, v10, 1u, mutableBytes, v19, &v19) == v7)
     {
       [v13 setLength:v19];
       goto LABEL_12;
@@ -140,22 +140,22 @@ LABEL_17:
 {
   if (a3 != 0x7FFFFFFFFFFFFFFFLL && a4 != 0)
   {
-    v7 = [a1 substringWithRange:?];
-    v8 = [v7 _lp_userVisibleHost];
-    if (([v7 isEqualToString:v8] & 1) == 0)
+    v7 = [self substringWithRange:?];
+    _lp_userVisibleHost = [v7 _lp_userVisibleHost];
+    if (([v7 isEqualToString:_lp_userVisibleHost] & 1) == 0)
     {
-      return [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", objc_msgSend(a1, "substringWithRange:", 0, a3), v8];
+      return [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", objc_msgSend(self, "substringWithRange:", 0, a3), _lp_userVisibleHost];
     }
   }
 
-  return [a1 copy];
+  return [self copy];
 }
 
 - (uint64_t)mf_copyDisplayString
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 mf_copyDisplayStringInRange:{0, v2}];
+  return [self mf_copyDisplayStringInRange:{0, v2}];
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface MPSNDArrayMultiaryMultiDestinationKernel
-- (MPSNDArrayMultiaryMultiDestinationKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayMultiaryMultiDestinationKernel)initWithDevice:(id)a3 sourceCount:(unint64_t)a4 destinationCount:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeToCommandBuffer:(id)a3 sourceArrays:(id)a4 destinationArrays:(id)a5;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArrays:(id)a6;
-- (void)encodeToMPSCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArrays:(id)a6 activeDestinationMask:(unsigned int)a7;
+- (MPSNDArrayMultiaryMultiDestinationKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayMultiaryMultiDestinationKernel)initWithDevice:(id)device sourceCount:(unint64_t)count destinationCount:(unint64_t)destinationCount;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeToCommandBuffer:(id)buffer sourceArrays:(id)arrays destinationArrays:(id)destinationArrays;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays destinationArrays:(id)destinationArrays;
+- (void)encodeToMPSCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays destinationArrays:(id)destinationArrays activeDestinationMask:(unsigned int)mask;
 @end
 
 @implementation MPSNDArrayMultiaryMultiDestinationKernel
 
-- (MPSNDArrayMultiaryMultiDestinationKernel)initWithDevice:(id)a3 sourceCount:(unint64_t)a4 destinationCount:(unint64_t)a5
+- (MPSNDArrayMultiaryMultiDestinationKernel)initWithDevice:(id)device sourceCount:(unint64_t)count destinationCount:(unint64_t)destinationCount
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayMultiaryMultiDestinationKernel;
-  result = [(MPSNDArrayMultiaryMultiDestinationBase *)&v6 initWithDevice:a3 sourceCount:a4 destinationCount:a5];
+  result = [(MPSNDArrayMultiaryMultiDestinationBase *)&v6 initWithDevice:device sourceCount:count destinationCount:destinationCount];
   result->_encode = 0;
   return result;
 }
 
-- (MPSNDArrayMultiaryMultiDestinationKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayMultiaryMultiDestinationKernel)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayMultiaryMultiDestinationKernel;
-  result = [(MPSNDArrayMultiaryMultiDestinationBase *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayMultiaryMultiDestinationBase *)&v5 initWithCoder:coder device:device];
   result->_encode = 0;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayMultiaryMultiDestinationKernel;
-  result = [(MPSNDArrayMultiaryMultiDestinationBase *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryMultiDestinationBase *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 14) = self->_encode;
@@ -40,42 +40,42 @@
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceArrays:(id)a4 destinationArrays:(id)a5
+- (void)encodeToCommandBuffer:(id)buffer sourceArrays:(id)arrays destinationArrays:(id)destinationArrays
 {
-  v9 = [objc_alloc(MEMORY[0x277CD7210]) initWithCommandBuffer:a3 withDispatchType:0];
+  v9 = [objc_alloc(MEMORY[0x277CD7210]) initWithCommandBuffer:buffer withDispatchType:0];
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
   {
     v10 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
     if (v10 || (v11 = objc_opt_class(), v12 = NSStringFromClass(v11), [(MPSKernel *)self setLabel:v12, v9, self], (v10 = v12) != 0))
     {
-      [v9 setLabel:{v10, v13, v14}];
+      [v9 setLabel:{v10, v13, selfCopy}];
     }
   }
 
-  [(MPSNDArrayMultiaryMultiDestinationKernel *)self encodeToMPSCommandEncoder:v9 commandBuffer:a3 sourceArrays:a4 destinationArrays:a5, v13, v14];
+  [(MPSNDArrayMultiaryMultiDestinationKernel *)self encodeToMPSCommandEncoder:v9 commandBuffer:buffer sourceArrays:arrays destinationArrays:destinationArrays, v13, selfCopy];
   [v9 endEncoding];
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArrays:(id)a6
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays destinationArrays:(id)destinationArrays
 {
   v11 = objc_alloc(MEMORY[0x277CD7210]);
-  if (a3)
+  if (encoder)
   {
-    v12 = [v11 initWithComputeCommandEncoder:a3];
+    v12 = [v11 initWithComputeCommandEncoder:encoder];
   }
 
   else
   {
-    v12 = [v11 initWithCommandBuffer:a4 withDispatchType:0];
+    v12 = [v11 initWithCommandBuffer:buffer withDispatchType:0];
   }
 
   v13 = v12;
-  [(MPSNDArrayMultiaryMultiDestinationKernel *)self encodeToMPSCommandEncoder:v12 commandBuffer:a4 sourceArrays:a5 destinationArrays:a6];
+  [(MPSNDArrayMultiaryMultiDestinationKernel *)self encodeToMPSCommandEncoder:v12 commandBuffer:buffer sourceArrays:arrays destinationArrays:destinationArrays];
 }
 
-- (void)encodeToMPSCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArrays:(id)a6 activeDestinationMask:(unsigned int)a7
+- (void)encodeToMPSCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays destinationArrays:(id)destinationArrays activeDestinationMask:(unsigned int)mask
 {
   v54[7] = 0x2B2B032C2B2B0328;
   v55 = 0u;
@@ -93,12 +93,12 @@
   {
     while (1)
     {
-      if ((a7 >> v10))
+      if ((mask >> v10))
       {
-        [a6 objectAtIndexedSubscript:v10];
+        [destinationArrays objectAtIndexedSubscript:v10];
         objc_opt_class();
         objc_opt_isKindOfClass();
-        [a6 objectAtIndexedSubscript:v10];
+        [destinationArrays objectAtIndexedSubscript:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -110,7 +110,7 @@
         }
       }
 
-      [a6 objectAtIndexedSubscript:{v10, v43}];
+      [destinationArrays objectAtIndexedSubscript:{v10, v43}];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -124,14 +124,14 @@
       }
     }
 
-    v13 = [a6 objectAtIndexedSubscript:v10];
+    v13 = [destinationArrays objectAtIndexedSubscript:v10];
     v11 &= vmaxvq_u32(vorrq_s8(vorrq_s8(vceqzq_s32(*(v13 + *v12)), vceqzq_s32(*(v13 + *v12 + 32))), vorrq_s8(vceqzq_s32(*(v13 + *v12 + 16)), vceqzq_s32(*(v13 + *v12 + 48))))) >> 31;
     ++v10;
   }
 
   while (v10 < self->super._dstCount);
 LABEL_11:
-  if ((a7 == 0) | v11 & 1)
+  if ((mask == 0) | v11 & 1)
   {
     goto LABEL_60;
   }
@@ -154,7 +154,7 @@ LABEL_15:
       v15 = *MEMORY[0x277CD7360];
       if (!*(&self->super.super.super.isa + v15))
       {
-        *(&self->super.super.super.isa + v15) = [a3 label];
+        *(&self->super.super.super.isa + v15) = [encoder label];
       }
 
       goto LABEL_17;
@@ -167,13 +167,13 @@ LABEL_15:
   }
 
 LABEL_17:
-  v16 = [objc_msgSend(a5 objectAtIndexedSubscript:{0), "numberOfDimensions"}];
+  v16 = [objc_msgSend(arrays objectAtIndexedSubscript:{0), "numberOfDimensions"}];
   v17 = 0;
   v18 = MEMORY[0x277CD73F0];
   v19 = v16;
-  while (v17 < [a5 count])
+  while (v17 < [arrays count])
   {
-    v20 = [a5 objectAtIndexedSubscript:v17];
+    v20 = [arrays objectAtIndexedSubscript:v17];
     if (v19 <= *(v20 + *v18))
     {
       v19 = *(v20 + *v18);
@@ -207,16 +207,16 @@ LABEL_17:
   }
 
   v28 = 0;
-  while (v28 < [a6 count])
+  while (v28 < [destinationArrays count])
   {
-    [a6 objectAtIndexedSubscript:v28];
+    [destinationArrays objectAtIndexedSubscript:v28];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_29;
     }
 
-    v29 = [a6 objectAtIndexedSubscript:v28];
+    v29 = [destinationArrays objectAtIndexedSubscript:v28];
     if (v19 <= *(v29 + *v18))
     {
       v19 = *(v29 + *v18);
@@ -255,27 +255,27 @@ LABEL_29:
     }
   }
 
-  v44 = [(MPSNDArrayMultiaryMultiDestinationBase *)self kernelDimensionalityForSourceArrays:a5];
+  v44 = [(MPSNDArrayMultiaryMultiDestinationBase *)self kernelDimensionalityForSourceArrays:arrays];
   if (self->super._srcCount)
   {
-    is_mul_ok([a5 count], 0x50uLL);
+    is_mul_ok([arrays count], 0x50uLL);
     operator new[]();
   }
 
   if (self->super._dstCount)
   {
-    is_mul_ok([a6 count], 0x50uLL);
+    is_mul_ok([destinationArrays count], 0x50uLL);
     operator new[]();
   }
 
-  v54[5] = a6;
+  v54[5] = destinationArrays;
   v54[0] = 0;
   v54[1] = 0;
-  v54[2] = a5;
+  v54[2] = arrays;
   v54[3] = 0;
   v54[4] = 0;
-  v54[6] = a7;
-  if (a3)
+  v54[6] = mask;
+  if (encoder)
   {
     if (v16 <= 1)
     {
@@ -287,14 +287,14 @@ LABEL_29:
       v37 = v16;
     }
 
-    CallNDArrayEncodeMultiDestination(self, a3, a4, v37 - 1, v44, v54);
+    CallNDArrayEncodeMultiDestination(self, encoder, buffer, v37 - 1, v44, v54);
   }
 
   else
   {
-    v38 = [objc_alloc(MEMORY[0x277CD7210]) initWithCommandBuffer:a4 withDispatchType:0];
+    v38 = [objc_alloc(MEMORY[0x277CD7210]) initWithCommandBuffer:buffer withDispatchType:0];
     v52 = v38;
-    v53 = self;
+    selfCopy = self;
     if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
     {
       v39 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -304,13 +304,13 @@ LABEL_29:
       }
     }
 
-    CallNDArrayEncodeMultiDestination(self, v38, a4, v16 - 1, v44, v54);
+    CallNDArrayEncodeMultiDestination(self, v38, buffer, v16 - 1, v44, v54);
     [v38 endEncoding];
   }
 
-  for (k = 0; k < [a5 count]; ++k)
+  for (k = 0; k < [arrays count]; ++k)
   {
-    v42 = [a5 objectAtIndexedSubscript:k];
+    v42 = [arrays objectAtIndexedSubscript:k];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

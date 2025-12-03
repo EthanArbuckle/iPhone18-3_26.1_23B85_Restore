@@ -15,8 +15,8 @@
   v10 = a5;
   v11 = a6;
   v12 = a4;
-  v13 = [a1 columnIndexForIdentifier:a3];
-  v14 = [a1 rowIndexForIdentifier:v12];
+  v13 = [self columnIndexForIdentifier:a3];
+  v14 = [self rowIndexForIdentifier:v12];
 
   if (v13 == 0x7FFFFFFFFFFFFFFFLL || v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -31,7 +31,7 @@
 
   else
   {
-    v15 = [a1 textStorageForCellAtColumnIndex:v13 rowIndex:v14 undoTarget:v10 undoManager:v11];
+    v15 = [self textStorageForCellAtColumnIndex:v13 rowIndex:v14 undoTarget:v10 undoManager:v11];
   }
 
   return v15;
@@ -41,7 +41,7 @@
 {
   v10 = a5;
   v11 = a6;
-  v12 = [a1 documentForCellAtColumnIndex:a3 rowIndex:a4];
+  v12 = [self documentForCellAtColumnIndex:a3 rowIndex:a4];
   v13 = [[ICTableCellTextStorage alloc] initWithDocument:v12];
   v14 = v13;
   if (v11)
@@ -58,18 +58,18 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 mergeableStringForColumnID:v8 rowID:v9];
+  v10 = [self mergeableStringForColumnID:v8 rowID:v9];
   if (!v10)
   {
     if (a5)
     {
-      v11 = [a1 columnIndexForIdentifier:v8];
-      v12 = [a1 rowIndexForIdentifier:v9];
+      v11 = [self columnIndexForIdentifier:v8];
+      v12 = [self rowIndexForIdentifier:v9];
       v10 = 0;
       if (v11 != 0x7FFFFFFFFFFFFFFFLL && v12 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [a1 documentForCellAtColumnIndex:v11 rowIndex:v12];
-        v10 = [a1 mergeableStringForColumnID:v8 rowID:v9];
+        v13 = [self documentForCellAtColumnIndex:v11 rowIndex:v12];
+        v10 = [self mergeableStringForColumnID:v8 rowID:v9];
       }
     }
   }
@@ -79,8 +79,8 @@
 
 - (id)documentForCellAtColumnIndex:()UI rowIndex:
 {
-  v6 = a1;
-  v7 = [v6 objectForColumnIndex:a3 rowIndex:a4];
+  selfCopy = self;
+  v7 = [selfCopy objectForColumnIndex:a3 rowIndex:a4];
   v8 = objc_alloc(MEMORY[0x1E69B78B0]);
   v9 = v8;
   if (v7)
@@ -90,36 +90,36 @@
 
   else
   {
-    v11 = [v6 document];
-    v12 = [v11 replica];
-    if (v12)
+    document = [selfCopy document];
+    replica = [document replica];
+    if (replica)
     {
-      v10 = [v9 initWithData:0 replicaID:v12];
+      v10 = [v9 initWithData:0 replicaID:replica];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AFB0] UUID];
-      v10 = [v9 initWithData:0 replicaID:v13];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v10 = [v9 initWithData:0 replicaID:uUID];
     }
 
-    v14 = [v10 mergeableString];
-    [v6 setObject:v14 columnIndex:a3 rowIndex:a4];
+    mergeableString = [v10 mergeableString];
+    [selfCopy setObject:mergeableString columnIndex:a3 rowIndex:a4];
 
-    v15 = [v6 delegate];
+    delegate = [selfCopy delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [v6 delegate];
-      [v17 tableDidPopulateCellAtColumnIndex:a3 rowIndex:a4];
+      delegate2 = [selfCopy delegate];
+      [delegate2 tableDidPopulateCellAtColumnIndex:a3 rowIndex:a4];
     }
   }
 
-  v18 = [v6 ttDocument];
-  v19 = [v18 sharedTopotextTimestamp];
-  v20 = [v10 mergeableString];
-  [v20 setTimestamp:v19];
+  ttDocument = [selfCopy ttDocument];
+  sharedTopotextTimestamp = [ttDocument sharedTopotextTimestamp];
+  mergeableString2 = [v10 mergeableString];
+  [mergeableString2 setTimestamp:sharedTopotextTimestamp];
 
   return v10;
 }
@@ -138,7 +138,7 @@
 
   else
   {
-    v17 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(a1, "columnCount")}];
+    v17 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(self, "columnCount")}];
   }
 
   v18 = v17;
@@ -149,7 +149,7 @@
 
   else
   {
-    v19 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(a1, "rowCount")}];
+    v19 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(self, "rowCount")}];
   }
 
   v31[0] = 0;
@@ -163,7 +163,7 @@
   v20 = v19;
   v30 = v31;
   v25 = v20;
-  v26 = a1;
+  selfCopy = self;
   v21 = v14;
   v27 = v21;
   v22 = v15;
@@ -180,35 +180,35 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 columnTextStorages];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    columnTextStorages = [self columnTextStorages];
+    v6 = [columnTextStorages objectForKeyedSubscript:v4];
 
     if (!v6)
     {
       v7 = [ICTableColumnTextStorage alloc];
-      v8 = [a1 document];
-      v9 = [v8 replica];
-      if (v9)
+      document = [self document];
+      replica = [document replica];
+      if (replica)
       {
-        v6 = [(ICTableColumnTextStorage *)v7 initWithTable:a1 columnID:v4 replicaID:v9];
+        v6 = [(ICTableColumnTextStorage *)v7 initWithTable:self columnID:v4 replicaID:replica];
       }
 
       else
       {
-        v10 = [MEMORY[0x1E696AFB0] UUID];
-        v6 = [(ICTableColumnTextStorage *)v7 initWithTable:a1 columnID:v4 replicaID:v10];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        v6 = [(ICTableColumnTextStorage *)v7 initWithTable:self columnID:v4 replicaID:uUID];
       }
 
-      v11 = [a1 columnTextStorages];
-      [v11 setObject:v6 forKey:v4];
+      columnTextStorages2 = [self columnTextStorages];
+      [columnTextStorages2 setObject:v6 forKey:v4];
 
-      v12 = [a1 delegate];
+      delegate = [self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [a1 delegate];
-        [v14 tableDidCreateColumnTextStorage:v6];
+        delegate2 = [self delegate];
+        [delegate2 tableDidCreateColumnTextStorage:v6];
       }
     }
   }
@@ -245,7 +245,7 @@
   v24 = v18;
   v19 = v15;
   v25 = v19;
-  [a1 enumerateCellObjectsInCellSelectionContainingColumnIndices:v12 rowIndices:v13 copyItems:0 usingBlock:v22];
+  [self enumerateCellObjectsInCellSelectionContainingColumnIndices:v12 rowIndices:v13 copyItems:0 usingBlock:v22];
   v20 = [v17 copy];
 
   _Block_object_dispose(v28, 8);

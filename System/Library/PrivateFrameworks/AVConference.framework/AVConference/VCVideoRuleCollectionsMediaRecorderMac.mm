@@ -1,12 +1,12 @@
 @interface VCVideoRuleCollectionsMediaRecorderMac
-- (VCVideoRuleCollectionsMediaRecorderMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsMediaRecorderMac)initWithHardwareSettings:(id)settings;
 - (id)mediaRecorderImageTypes;
 - (id)mediaRecorderVideoCodecs;
 @end
 
 @implementation VCVideoRuleCollectionsMediaRecorderMac
 
-- (VCVideoRuleCollectionsMediaRecorderMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsMediaRecorderMac)initWithHardwareSettings:(id)settings
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -14,7 +14,7 @@
   result = [(VCVideoRuleCollectionsMediaRecorder *)&v5 init];
   if (result)
   {
-    result->_hardwareSettings = a3;
+    result->_hardwareSettings = settings;
   }
 
   return result;

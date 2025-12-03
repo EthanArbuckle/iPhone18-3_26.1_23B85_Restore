@@ -1,11 +1,11 @@
 @interface RWIDriverState
-+ (BOOL)isValidPayload:(id)a3;
++ (BOOL)isValidPayload:(id)payload;
 + (id)active;
-+ (id)decodeFromPayload:(id)a3;
++ (id)decodeFromPayload:(id)payload;
 + (id)inactive;
 - (RWIDriverState)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeToPayload:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeToPayload:(id)payload;
 @end
 
 @implementation RWIDriverState
@@ -40,31 +40,31 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setActive:{-[RWIDriverState isActive](self, "isActive")}];
-  v5 = [(RWIDriverState *)self sessionIdentifiers];
-  v6 = [v5 copy];
+  sessionIdentifiers = [(RWIDriverState *)self sessionIdentifiers];
+  v6 = [sessionIdentifiers copy];
   [v4 setSessionIdentifiers:v6];
 
   return v4;
 }
 
-+ (BOOL)isValidPayload:(id)a3
++ (BOOL)isValidPayload:(id)payload
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverIsActiveKey"];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverIsActiveKey"];
   v5 = objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (v5, v4, [v3 objectForKeyedSubscript:@"WIRDriverSessionListKey"], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v5 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (v5, v4, [payloadCopy objectForKeyedSubscript:@"WIRDriverSessionListKey"], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v5 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass()))
   {
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v3 objectForKeyedSubscript:{@"WIRDriverIdentifierKey", 0}];
+    v6 = [payloadCopy objectForKeyedSubscript:{@"WIRDriverIdentifierKey", 0}];
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -117,19 +117,19 @@ LABEL_14:
   return v13;
 }
 
-+ (id)decodeFromPayload:(id)a3
++ (id)decodeFromPayload:(id)payload
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverIsActiveKey"];
-  v5 = [v4 BOOLValue];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverIsActiveKey"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v3 objectForKeyedSubscript:{@"WIRDriverSessionListKey", 0}];
+  v7 = [payloadCopy objectForKeyedSubscript:{@"WIRDriverSessionListKey", 0}];
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -169,7 +169,7 @@ LABEL_14:
   }
 
   v14 = objc_opt_new();
-  [v14 setActive:v5];
+  [v14 setActive:bOOLValue];
   [v14 setSessionIdentifiers:v6];
 LABEL_11:
 
@@ -178,16 +178,16 @@ LABEL_11:
   return v14;
 }
 
-- (void)encodeToPayload:(id)a3
+- (void)encodeToPayload:(id)payload
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  payloadCopy = payload;
   v6 = [v4 numberWithBool:{-[RWIDriverState isActive](self, "isActive")}];
-  [v5 setObject:v6 forKeyedSubscript:@"WIRDriverIsActiveKey"];
+  [payloadCopy setObject:v6 forKeyedSubscript:@"WIRDriverIsActiveKey"];
 
-  v8 = [(RWIDriverState *)self sessionIdentifiers];
-  v7 = [v8 allObjects];
-  [v5 setObject:v7 forKeyedSubscript:@"WIRDriverSessionListKey"];
+  sessionIdentifiers = [(RWIDriverState *)self sessionIdentifiers];
+  allObjects = [sessionIdentifiers allObjects];
+  [payloadCopy setObject:allObjects forKeyedSubscript:@"WIRDriverSessionListKey"];
 }
 
 @end

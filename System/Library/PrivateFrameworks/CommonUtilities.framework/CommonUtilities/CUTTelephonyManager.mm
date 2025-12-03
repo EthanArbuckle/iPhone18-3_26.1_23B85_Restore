@@ -4,10 +4,10 @@
 - (CUTTelephonyManager)init;
 - (void)__adjustFastDormancyTokens;
 - (void)_adjustFastDormancyTokens;
-- (void)_setFastDormancySuspended:(BOOL)a3;
-- (void)addFastDormancyDisableToken:(id)a3;
+- (void)_setFastDormancySuspended:(BOOL)suspended;
+- (void)addFastDormancyDisableToken:(id)token;
 - (void)dealloc;
-- (void)removeFastDormancyDisableToken:(id)a3;
+- (void)removeFastDormancyDisableToken:(id)token;
 @end
 
 @implementation CUTTelephonyManager
@@ -81,9 +81,9 @@
   [(CUTTelephonyManager *)&v3 dealloc];
 }
 
-- (void)_setFastDormancySuspended:(BOOL)a3
+- (void)_setFastDormancySuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   v28 = *MEMORY[0x1E69E9840];
   if (self->_serverConnection)
   {
@@ -98,7 +98,7 @@
   }
 
   suspendDormancyAssertion = self->_suspendDormancyAssertion;
-  if (v3)
+  if (suspendedCopy)
   {
     if (suspendDormancyAssertion == 0 && !v5)
     {
@@ -188,11 +188,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)addFastDormancyDisableToken:(id)a3
+- (void)addFastDormancyDisableToken:(id)token
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     [(NSRecursiveLock *)self->_lock lock];
     disableFastDormancyTokens = self->_disableFastDormancyTokens;
@@ -205,13 +205,13 @@ LABEL_19:
       disableFastDormancyTokens = self->_disableFastDormancyTokens;
     }
 
-    [(NSMutableSet *)disableFastDormancyTokens addObject:v4];
+    [(NSMutableSet *)disableFastDormancyTokens addObject:tokenCopy];
     v8 = +[CUTLog network];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = self->_disableFastDormancyTokens;
       v11 = 138412546;
-      v12 = v4;
+      v12 = tokenCopy;
       v13 = 2112;
       v14 = v9;
       _os_log_impl(&dword_1B2321000, v8, OS_LOG_TYPE_DEFAULT, "Client token: %@ being added to fast dormancy clients (%@)", &v11, 0x16u);
@@ -224,25 +224,25 @@ LABEL_19:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFastDormancyDisableToken:(id)a3
+- (void)removeFastDormancyDisableToken:(id)token
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v5 = +[CUTLog network];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       disableFastDormancyTokens = self->_disableFastDormancyTokens;
       v8 = 138412546;
-      v9 = v4;
+      v9 = tokenCopy;
       v10 = 2112;
       v11 = disableFastDormancyTokens;
       _os_log_impl(&dword_1B2321000, v5, OS_LOG_TYPE_DEFAULT, "Client token: %@ being removed from fast dormancy clients (%@)", &v8, 0x16u);
     }
 
     [(NSRecursiveLock *)self->_lock lock];
-    [(NSMutableSet *)self->_disableFastDormancyTokens removeObject:v4];
+    [(NSMutableSet *)self->_disableFastDormancyTokens removeObject:tokenCopy];
     [(NSRecursiveLock *)self->_lock unlock];
     [(CUTTelephonyManager *)self _adjustFastDormancyTokens];
   }

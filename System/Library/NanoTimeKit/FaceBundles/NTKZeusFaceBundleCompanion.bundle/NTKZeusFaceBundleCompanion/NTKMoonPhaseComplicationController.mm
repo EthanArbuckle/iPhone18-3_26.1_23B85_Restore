@@ -1,15 +1,15 @@
 @interface NTKMoonPhaseComplicationController
 - (void)_activate;
-- (void)_afterEventTimerFired:(id)a3;
+- (void)_afterEventTimerFired:(id)fired;
 - (void)_asyncUpdateDisplay;
-- (void)_configureForLegacyDisplay:(id)a3;
+- (void)_configureForLegacyDisplay:(id)display;
 - (void)_deactivate;
 - (void)_invalidateEventTimer;
-- (void)_scheduleAfterEventTimer:(id)a3;
-- (void)_updateDisplayForced:(BOOL)a3;
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4;
-- (void)setShowsLockedUI:(BOOL)a3;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (void)_scheduleAfterEventTimer:(id)timer;
+- (void)_updateDisplayForced:(BOOL)forced;
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper;
+- (void)setShowsLockedUI:(BOOL)i;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NTKMoonPhaseComplicationController
@@ -31,9 +31,9 @@
   v6 = [v4 startLocationUpdatesWithIdentifier:@"ntk.moonPhaseComplication" handler:{v5, v9, v10, v11, v12}];
   [(NTKMoonPhaseComplicationController *)self setToken:v6];
 
-  v7 = [v4 currentLocation];
-  v8 = [v4 anyLocation];
-  (v5[2])(v5, v7, v8, 0);
+  currentLocation = [v4 currentLocation];
+  anyLocation = [v4 anyLocation];
+  (v5[2])(v5, currentLocation, anyLocation, 0);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -57,9 +57,9 @@
   [(NTKMoonPhaseComplicationController *)self _invalidateEventTimer];
 }
 
-- (void)_configureForLegacyDisplay:(id)a3
+- (void)_configureForLegacyDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   *&self->_displayFlags = *&self->_displayFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -111,17 +111,17 @@
   [(NTKMoonPhaseComplicationController *)self _updateDisplayForced:1];
 }
 
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper
 {
   v7.receiver = self;
   v7.super_class = NTKMoonPhaseComplicationController;
-  [(NTKMoonPhaseComplicationController *)&v7 setDisplayProperties:a3 forDisplayWrapper:a4];
-  v5 = [(NTKMoonPhaseComplicationController *)self effectiveFaceDataMode];
-  self->_paused = v5 != &dword_0 + 1;
+  [(NTKMoonPhaseComplicationController *)&v7 setDisplayProperties:properties forDisplayWrapper:wrapper];
+  effectiveFaceDataMode = [(NTKMoonPhaseComplicationController *)self effectiveFaceDataMode];
+  self->_paused = effectiveFaceDataMode != &dword_0 + 1;
   if ((*&self->_displayFlags & 0x10) != 0)
   {
-    v6 = [(NTKMoonPhaseComplicationController *)self legacyDisplay];
-    [v6 setPaused:self->_paused];
+    legacyDisplay = [(NTKMoonPhaseComplicationController *)self legacyDisplay];
+    [legacyDisplay setPaused:self->_paused];
 
     if (self->_paused)
     {
@@ -129,7 +129,7 @@
     }
   }
 
-  else if (v5 != &dword_0 + 1)
+  else if (effectiveFaceDataMode != &dword_0 + 1)
   {
     return;
   }
@@ -141,14 +141,14 @@
   }
 }
 
-- (void)setShowsLockedUI:(BOOL)a3
+- (void)setShowsLockedUI:(BOOL)i
 {
-  v3 = a3;
-  v5 = [(NTKMoonPhaseComplicationController *)self showsLockedUI];
+  iCopy = i;
+  showsLockedUI = [(NTKMoonPhaseComplicationController *)self showsLockedUI];
   v6.receiver = self;
   v6.super_class = NTKMoonPhaseComplicationController;
-  [(NTKMoonPhaseComplicationController *)&v6 setShowsLockedUI:v3];
-  if (v5 != [(NTKMoonPhaseComplicationController *)self showsLockedUI])
+  [(NTKMoonPhaseComplicationController *)&v6 setShowsLockedUI:iCopy];
+  if (showsLockedUI != [(NTKMoonPhaseComplicationController *)self showsLockedUI])
   {
     [(NTKMoonPhaseComplicationController *)self _updateDisplay];
   }
@@ -164,15 +164,15 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_updateDisplayForced:(BOOL)a3
+- (void)_updateDisplayForced:(BOOL)forced
 {
-  if (self->_paused && !a3)
+  if (self->_paused && !forced)
   {
     self->_missedUpdateWhilePaused = 1;
     return;
   }
 
-  v6 = [(NTKMoonPhaseComplicationController *)self legacyDisplay];
+  legacyDisplay = [(NTKMoonPhaseComplicationController *)self legacyDisplay];
   displayFlags = self->_displayFlags;
   if ((displayFlags & 1) == 0)
   {
@@ -182,7 +182,7 @@
     }
 
 LABEL_12:
-    [v6 setPhaseNumber:88 hemisphere:0];
+    [legacyDisplay setPhaseNumber:88 hemisphere:0];
     if ((*&self->_displayFlags & 8) == 0)
     {
       goto LABEL_8;
@@ -192,7 +192,7 @@ LABEL_12:
   }
 
   v5 = NUNILocalizedString();
-  [v6 setPhaseName:v5];
+  [legacyDisplay setPhaseName:v5];
 
   displayFlags = self->_displayFlags;
   if ((displayFlags & 2) != 0)
@@ -204,18 +204,18 @@ LABEL_6:
   if ((displayFlags & 8) != 0)
   {
 LABEL_7:
-    [v6 setLocked:{-[NTKMoonPhaseComplicationController showsLockedUI](self, "showsLockedUI")}];
+    [legacyDisplay setLocked:{-[NTKMoonPhaseComplicationController showsLockedUI](self, "showsLockedUI")}];
   }
 
 LABEL_8:
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v6 = a3;
-  if (([v6 isEqualToDate:self->_timeTravelDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqualToDate:self->_timeTravelDate] & 1) == 0)
   {
-    objc_storeStrong(&self->_timeTravelDate, a3);
+    objc_storeStrong(&self->_timeTravelDate, date);
     [(NTKMoonPhaseComplicationController *)self _updateDisplay];
   }
 }
@@ -230,13 +230,13 @@ LABEL_8:
   }
 }
 
-- (void)_scheduleAfterEventTimer:(id)a3
+- (void)_scheduleAfterEventTimer:(id)timer
 {
-  v12 = [a3 dateByAddingTimeInterval:60.0];
-  if (a3 && (*&self->_displayFlags & 4) != 0 && (+[NTKDate complicationDate](NTKDate, "complicationDate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v12 compare:v5], v5, v6 == &dword_0 + 1))
+  v12 = [timer dateByAddingTimeInterval:60.0];
+  if (timer && (*&self->_displayFlags & 4) != 0 && (+[NTKDate complicationDate](NTKDate, "complicationDate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v12 compare:v5], v5, v6 == &dword_0 + 1))
   {
-    v7 = [(NSTimer *)self->_afterEventTimer fireDate];
-    v8 = [v12 isEqualToDate:v7];
+    fireDate = [(NSTimer *)self->_afterEventTimer fireDate];
+    v8 = [v12 isEqualToDate:fireDate];
 
     if ((v8 & 1) == 0)
     {
@@ -256,7 +256,7 @@ LABEL_8:
   }
 }
 
-- (void)_afterEventTimerFired:(id)a3
+- (void)_afterEventTimerFired:(id)fired
 {
   if ((*&self->_displayFlags & 4) != 0)
   {

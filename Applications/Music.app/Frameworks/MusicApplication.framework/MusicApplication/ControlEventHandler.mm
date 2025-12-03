@@ -1,15 +1,15 @@
 @interface ControlEventHandler
-- (void)handleActionFromControl:(id)a3;
+- (void)handleActionFromControl:(id)control;
 @end
 
 @implementation ControlEventHandler
 
-- (void)handleActionFromControl:(id)a3
+- (void)handleActionFromControl:(id)control
 {
   v3 = *self->handler;
-  v4 = a3;
+  controlCopy = control;
 
-  v3(v4);
+  v3(controlCopy);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     operationalDataset = v2->_operationalDataset;
-    v2->_operationalDataset = v3;
+    v2->_operationalDataset = data;
 
     breadcrumb = v2->_breadcrumb;
     v2->_breadcrumb = 0;
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams);
-  v5 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self operationalDataset];
-  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setOperationalDataset:v5];
+  operationalDataset = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self operationalDataset];
+  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setOperationalDataset:operationalDataset];
 
-  v6 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self breadcrumb];
-  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setBreadcrumb:v6];
+  breadcrumb = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self breadcrumb];
+  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setBreadcrumb:breadcrumb];
 
-  v7 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self timedInvokeTimeoutMs];
-  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self timedInvokeTimeoutMs];
+  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self serverSideProcessingTimeout];
-  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self serverSideProcessingTimeout];
+  [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,25 +61,25 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v24 = 0uLL;
   v25 = 0;
   v23[0] = 0;
   v23[1] = 0;
   v22 = v23;
-  v5 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self operationalDataset];
-  sub_238DB6950(v16, [v5 bytes], objc_msgSend(v5, "length"));
+  operationalDataset = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self operationalDataset];
+  sub_238DB6950(v16, [operationalDataset bytes], objc_msgSend(operationalDataset, "length"));
 
   v24 = v16[0];
-  v6 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self breadcrumb];
+  breadcrumb = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self breadcrumb];
 
-  if (v6)
+  if (breadcrumb)
   {
     v25 = 1;
-    v26 = 0;
-    v7 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self breadcrumb];
-    v26 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = 0;
+    breadcrumb2 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self breadcrumb];
+    unsignedLongLongValue = [breadcrumb2 unsignedLongLongValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v21);
@@ -101,8 +101,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v21);
-      v8 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v21);
+      v8 = sub_2393C7114(reader, 21, 256);
       v11 = v15;
       v10 = v8;
     }
@@ -130,19 +130,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRNetworkCommissioningClusterAddOrUpdateThreadNetworkParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -153,7 +153,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x170000000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

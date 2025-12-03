@@ -1,36 +1,36 @@
 @interface CKAggregateAcknowledgmentTranscriptCell
 - (BOOL)_disableRasterizeInAnimations;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)performInsertion:(id)a3 animated:(BOOL)a4;
+- (void)performInsertion:(id)insertion animated:(BOOL)animated;
 - (void)prepareForReuse;
 @end
 
 @implementation CKAggregateAcknowledgmentTranscriptCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = CKAggregateAcknowledgmentTranscriptCell;
-  [(CKAssociatedMessageTranscriptCell *)&v20 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 balloonViewClass];
-  v14 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  [(CKAssociatedMessageTranscriptCell *)&v20 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  balloonViewClass = [itemCopy balloonViewClass];
+  balloonView = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
 
-  if (!v14)
+  if (!balloonView)
   {
-    v15 = CKBalloonViewForClass(v13);
+    v15 = CKBalloonViewForClass(balloonViewClass);
     [(CKAggregateAcknowledgmentTranscriptCell *)self setBalloonView:v15];
   }
 
   [(CKAssociatedMessageTranscriptCell *)self transcriptBackgroundLuminance];
   v17 = v16;
-  v18 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-  [v18 setTranscriptBackgroundLuminance:v17];
+  balloonView2 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  [balloonView2 setTranscriptBackgroundLuminance:v17];
 
-  v19 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-  [v19 configureForAggregateAcknowledgmentChatItem:v12];
+  balloonView3 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  [balloonView3 configureForAggregateAcknowledgmentChatItem:itemCopy];
 }
 
 - (void)layoutSubviewsForAlignmentContents
@@ -38,8 +38,8 @@
   v57.receiver = self;
   v57.super_class = CKAggregateAcknowledgmentTranscriptCell;
   [(CKAssociatedMessageTranscriptCell *)&v57 layoutSubviewsForAlignmentContents];
-  v3 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-  [v3 frame];
+  balloonView = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  [balloonView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -49,15 +49,15 @@
   [v11 messageAcknowledgmentTranscriptBalloonRelativePosition];
   v13 = v12;
 
-  v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v15 = [v14 isEmojiTapbacksEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEmojiTapbacksEnabled = [mEMORY[0x1E69A8070] isEmojiTapbacksEnabled];
 
-  if (v15)
+  if (isEmojiTapbacksEnabled)
   {
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 usesFannedBubbleStyle];
+    usesFannedBubbleStyle = [v16 usesFannedBubbleStyle];
 
-    if (v17)
+    if (usesFannedBubbleStyle)
     {
       +[CKTapbackPileTemplate topOfPileBubbleRadius];
       v13 = v9 - v18;
@@ -93,12 +93,12 @@
     v23 = v23 + v25;
   }
 
-  v26 = [(CKTranscriptMessageCell *)self failureButton];
+  failureButton = [(CKTranscriptMessageCell *)self failureButton];
 
-  if (v26)
+  if (failureButton)
   {
-    v27 = [(CKTranscriptMessageCell *)self failureButton];
-    [v27 frame];
+    failureButton2 = [(CKTranscriptMessageCell *)self failureButton];
+    [failureButton2 frame];
     v29 = v28;
     v31 = v30;
     v33 = v32;
@@ -131,8 +131,8 @@ LABEL_17:
         }
 
         v44 = round(v42 * v43) / v43;
-        v45 = [(CKTranscriptMessageCell *)self failureButton];
-        [v45 setFrame:{v29, v44, v33, v35}];
+        failureButton3 = [(CKTranscriptMessageCell *)self failureButton];
+        [failureButton3 setFrame:{v29, v44, v33, v35}];
 
         goto LABEL_22;
       }
@@ -163,8 +163,8 @@ LABEL_17:
   }
 
 LABEL_22:
-  v46 = [(CKAggregateAcknowledgmentTranscriptCell *)self traitCollection];
-  [v46 displayScale];
+  traitCollection = [(CKAggregateAcknowledgmentTranscriptCell *)self traitCollection];
+  [traitCollection displayScale];
   if (v47 == 0.0)
   {
     if (CKMainScreenScale_once_69 != -1)
@@ -209,20 +209,20 @@ LABEL_22:
   v53 = floor(v7 * v47) / v47;
   v54 = ceil(rect * v49) / v49;
 
-  v55 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-  [v55 setFrame:{v50, v53, v52, v54}];
+  balloonView2 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  [balloonView2 setFrame:{v50, v53, v52, v54}];
 }
 
-- (void)performInsertion:(id)a3 animated:(BOOL)a4
+- (void)performInsertion:(id)insertion animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  insertionCopy = insertion;
   [MEMORY[0x1E6979518] flush];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:2.0];
-  v7 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-  v8 = [v7 layer];
-  [v8 convertTime:0 fromLayer:CACurrentMediaTime()];
+  balloonView = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  layer = [balloonView layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v10 = v9;
 
   v11 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
@@ -235,23 +235,23 @@ LABEL_22:
   [v11 setSpeed:v12];
   [v11 setDuration:1.0];
   [v11 setFillMode:*MEMORY[0x1E69797E8]];
-  if (v4)
+  if (animatedCopy)
   {
-    v13 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-    v14 = [v13 layer];
-    [v14 addAnimation:v11 forKey:@"transform.scale.xy"];
+    balloonView2 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+    layer2 = [balloonView2 layer];
+    [layer2 addAnimation:v11 forKey:@"transform.scale.xy"];
 
-    v15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v14) = [v15 isEmojiTapbacksEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(layer2) = [mEMORY[0x1E69A8070] isEmojiTapbacksEnabled];
 
-    v16 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-    v17 = v16;
-    if (!v14)
+    balloonView3 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+    v17 = balloonView3;
+    if (!layer2)
     {
-      v19 = [v16 glyphView];
+      glyphView = [balloonView3 glyphView];
 
-      [v19 animationDuration];
-      [v19 animateWithBeginTime:0 completionDelay:v10 completion:v20];
+      [glyphView animationDuration];
+      [glyphView animateWithBeginTime:0 completionDelay:v10 completion:v20];
       goto LABEL_6;
     }
 
@@ -260,8 +260,8 @@ LABEL_22:
 
     if (isKindOfClass)
     {
-      v19 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-      [v19 playInsertionAnimationOnTopPlatter];
+      glyphView = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+      [glyphView playInsertionAnimationOnTopPlatter];
 LABEL_6:
     }
   }
@@ -271,8 +271,8 @@ LABEL_6:
   v23[1] = 3221225472;
   v23[2] = __69__CKAggregateAcknowledgmentTranscriptCell_performInsertion_animated___block_invoke;
   v23[3] = &unk_1E72EBDB8;
-  v24 = v6;
-  v22 = v6;
+  v24 = insertionCopy;
+  v22 = insertionCopy;
   [v21 setCompletionBlock:v23];
   [MEMORY[0x1E6979518] commit];
   [MEMORY[0x1E6979518] flush];
@@ -291,8 +291,8 @@ uint64_t __69__CKAggregateAcknowledgmentTranscriptCell_performInsertion_animated
 
 - (void)prepareForReuse
 {
-  v3 = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
-  CKBalloonViewReuse(v3);
+  balloonView = [(CKAggregateAcknowledgmentTranscriptCell *)self balloonView];
+  CKBalloonViewReuse(balloonView);
 
   v4.receiver = self;
   v4.super_class = CKAggregateAcknowledgmentTranscriptCell;
@@ -301,10 +301,10 @@ uint64_t __69__CKAggregateAcknowledgmentTranscriptCell_performInsertion_animated
 
 - (BOOL)_disableRasterizeInAnimations
 {
-  v2 = [(CKAggregateAcknowledgmentTranscriptCell *)self traitCollection];
-  v3 = [v2 isTranscriptBackgroundActive];
+  traitCollection = [(CKAggregateAcknowledgmentTranscriptCell *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  return v3;
+  return isTranscriptBackgroundActive;
 }
 
 @end

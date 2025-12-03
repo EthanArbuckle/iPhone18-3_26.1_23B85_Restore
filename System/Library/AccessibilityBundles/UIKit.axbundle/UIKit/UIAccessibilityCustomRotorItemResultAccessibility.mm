@@ -14,9 +14,9 @@
   v8 = [(UIAccessibilityCustomRotorItemResultAccessibility *)&v6 init];
   v7[0] = MEMORY[0x29EDC9748](v8);
   v3 = v7[0];
-  v4 = [MEMORY[0x29EDBA140] UUID];
+  uUID = [MEMORY[0x29EDBA140] UUID];
   [v3 setUuid:?];
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](uUID);
   v5 = MEMORY[0x29EDC9748](v7[0]);
   objc_storeStrong(v7, 0);
   objc_storeStrong(&v8, 0);
@@ -25,17 +25,17 @@
 
 - (id)description
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = MEMORY[0x29EDBA0F8];
   v8.receiver = self;
   v8.super_class = UIAccessibilityCustomRotorItemResultAccessibility;
   v6 = [(UIAccessibilityCustomRotorItemResultAccessibility *)&v8 description];
-  v5 = [(UIAccessibilityCustomRotorItemResultAccessibility *)v10 targetElement];
-  v4 = [(UIAccessibilityCustomRotorItemResultAccessibility *)v10 targetRange];
-  v7 = [v3 stringWithFormat:@"%@: targetElement: %@, targetRange: %@", v6, v5, v4];
-  MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
+  targetElement = [(UIAccessibilityCustomRotorItemResultAccessibility *)selfCopy targetElement];
+  targetRange = [(UIAccessibilityCustomRotorItemResultAccessibility *)selfCopy targetRange];
+  v7 = [v3 stringWithFormat:@"%@: targetElement: %@, targetRange: %@", v6, targetElement, targetRange];
+  MEMORY[0x29EDC9740](targetRange);
+  MEMORY[0x29EDC9740](targetElement);
   MEMORY[0x29EDC9740](v6);
 
   return v7;

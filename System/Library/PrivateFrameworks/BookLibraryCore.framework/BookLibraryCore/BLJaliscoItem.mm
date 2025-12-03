@@ -1,7 +1,7 @@
 @interface BLJaliscoItem
-+ (id)arrayWithServerItems:(id)a3;
-+ (id)itemWithServerItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)arrayWithServerItems:(id)items;
++ (id)itemWithServerItem:(id)item;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)duration;
 - (id)description;
 - (unint64_t)hash;
@@ -9,101 +9,101 @@
 
 @implementation BLJaliscoItem
 
-+ (id)itemWithServerItem:(id)a3
++ (id)itemWithServerItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_new();
-  v5 = [v3 storeID];
-  [v4 setStoreID:v5];
+  storeID = [itemCopy storeID];
+  [v4 setStoreID:storeID];
 
-  v6 = [v3 artist];
-  [v4 setArtist:v6];
+  artist = [itemCopy artist];
+  [v4 setArtist:artist];
 
-  v7 = [v3 artworkTokenCode];
-  [v4 setArtworkTokenCode:v7];
+  artworkTokenCode = [itemCopy artworkTokenCode];
+  [v4 setArtworkTokenCode:artworkTokenCode];
 
-  v8 = [v3 artworkURLString];
-  [v4 setArtworkURLString:v8];
+  artworkURLString = [itemCopy artworkURLString];
+  [v4 setArtworkURLString:artworkURLString];
 
-  v9 = [v3 cloudID];
-  [v4 setCloudID:v9];
+  cloudID = [itemCopy cloudID];
+  [v4 setCloudID:cloudID];
 
-  v10 = [v3 genre];
-  [v4 setGenre:v10];
+  genre = [itemCopy genre];
+  [v4 setGenre:genre];
 
-  v11 = [v3 isHidden];
-  [v4 setIsHidden:v11];
+  isHidden = [itemCopy isHidden];
+  [v4 setIsHidden:isHidden];
 
-  v12 = [v3 purchasedAt];
-  [v4 setPurchasedAt:v12];
+  purchasedAt = [itemCopy purchasedAt];
+  [v4 setPurchasedAt:purchasedAt];
 
-  v13 = [v3 purchasedTokenCode];
-  [v4 setPurchasedTokenCode:v13];
+  purchasedTokenCode = [itemCopy purchasedTokenCode];
+  [v4 setPurchasedTokenCode:purchasedTokenCode];
 
-  v14 = [v3 purchaseHistoryID];
-  [v4 setPurchaseHistoryID:v14];
+  purchaseHistoryID = [itemCopy purchaseHistoryID];
+  [v4 setPurchaseHistoryID:purchaseHistoryID];
 
-  v15 = [v3 title];
-  [v4 setTitle:v15];
+  title = [itemCopy title];
+  [v4 setTitle:title];
 
-  v16 = [v3 isExplicit];
-  [v4 setIsExplicit:v16];
+  isExplicit = [itemCopy isExplicit];
+  [v4 setIsExplicit:isExplicit];
 
-  v17 = [v3 isDisabled];
-  [v4 setIsDisabled:v17];
+  isDisabled = [itemCopy isDisabled];
+  [v4 setIsDisabled:isDisabled];
 
-  v18 = [v3 expectedDate];
-  [v4 setExpectedDate:v18];
+  expectedDate = [itemCopy expectedDate];
+  [v4 setExpectedDate:expectedDate];
 
-  v19 = [v3 sortedTitle];
-  [v4 setSortedTitle:v19];
+  sortedTitle = [itemCopy sortedTitle];
+  [v4 setSortedTitle:sortedTitle];
 
-  v20 = [v3 sortedAuthor];
-  [v4 setSortedAuthor:v20];
+  sortedAuthor = [itemCopy sortedAuthor];
+  [v4 setSortedAuthor:sortedAuthor];
 
-  v21 = [v3 displayVersion];
-  [v4 setDisplayVersion:v21];
+  displayVersion = [itemCopy displayVersion];
+  [v4 setDisplayVersion:displayVersion];
 
-  v22 = [v3 storeDownloadParameters];
-  [v4 setStoreDownloadParameters:v22];
+  storeDownloadParameters = [itemCopy storeDownloadParameters];
+  [v4 setStoreDownloadParameters:storeDownloadParameters];
 
-  v23 = [v3 fileExtension];
-  [v4 setFileExtension:v23];
+  fileExtension = [itemCopy fileExtension];
+  [v4 setFileExtension:fileExtension];
 
-  v24 = [v3 isPictureBook];
-  [v4 setIsPictureBook:v24];
+  isPictureBook = [itemCopy isPictureBook];
+  [v4 setIsPictureBook:isPictureBook];
 
-  v25 = [v3 containsAudio];
-  [v4 setContainsAudio:v25];
+  containsAudio = [itemCopy containsAudio];
+  [v4 setContainsAudio:containsAudio];
 
-  v26 = [v3 isReadAloud];
-  [v4 setIsReadAloud:v26];
+  isReadAloud = [itemCopy isReadAloud];
+  [v4 setIsReadAloud:isReadAloud];
 
-  v27 = [v3 chapterMetadataURLString];
-  [v4 setChapterMetadataURLString:v27];
+  chapterMetadataURLString = [itemCopy chapterMetadataURLString];
+  [v4 setChapterMetadataURLString:chapterMetadataURLString];
 
-  v28 = [v3 isAudiobook];
-  [v4 setIsAudiobook:v28];
+  isAudiobook = [itemCopy isAudiobook];
+  [v4 setIsAudiobook:isAudiobook];
 
-  v29 = [v3 hlsPlaylistURLString];
-  [v4 setHlsPlaylistURLString:v29];
+  hlsPlaylistURLString = [itemCopy hlsPlaylistURLString];
+  [v4 setHlsPlaylistURLString:hlsPlaylistURLString];
 
-  v30 = [v3 storeAccountID];
-  [v4 setStoreAccountID:v30];
+  storeAccountID = [itemCopy storeAccountID];
+  [v4 setStoreAccountID:storeAccountID];
 
-  v31 = [v3 additionalAudiobookInfo];
-  [v4 setAdditionalAudiobookInfo:v31];
+  additionalAudiobookInfo = [itemCopy additionalAudiobookInfo];
+  [v4 setAdditionalAudiobookInfo:additionalAudiobookInfo];
 
-  v32 = [v3 needsImport];
-  [v4 setNeedsImport:v32];
+  needsImport = [itemCopy needsImport];
+  [v4 setNeedsImport:needsImport];
 
-  v33 = [v3 booklets];
+  booklets = [itemCopy booklets];
 
-  if ([v33 count])
+  if ([booklets count])
   {
     v34 = MEMORY[0x277CBEB98];
-    v35 = [v33 allObjects];
-    v36 = [BLJaliscoBookletItem arrayWithServerBookletItems:v35];
+    allObjects = [booklets allObjects];
+    v36 = [BLJaliscoBookletItem arrayWithServerBookletItems:allObjects];
     v37 = [v34 setWithArray:v36];
     [v4 setBooklets:v37];
   }
@@ -113,8 +113,8 @@
 
 - (NSNumber)duration
 {
-  v2 = [(BLJaliscoItem *)self additionalAudiobookInfo];
-  v3 = [v2 objectForKeyedSubscript:@"daap.songtime"];
+  additionalAudiobookInfo = [(BLJaliscoItem *)self additionalAudiobookInfo];
+  v3 = [additionalAudiobookInfo objectForKeyedSubscript:@"daap.songtime"];
 
   objc_opt_class();
   v4 = BUDynamicCast();
@@ -136,16 +136,16 @@
   return v7;
 }
 
-+ (id)arrayWithServerItems:(id)a3
++ (id)arrayWithServerItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -175,14 +175,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(BLJaliscoItem *)self storeAccountID];
-  if (v5)
+  equalCopy = equal;
+  storeAccountID = [(BLJaliscoItem *)self storeAccountID];
+  if (storeAccountID)
   {
-    v6 = [v4 storeAccountID];
-    v7 = v6 == 0;
+    storeAccountID2 = [equalCopy storeAccountID];
+    v7 = storeAccountID2 == 0;
   }
 
   else
@@ -190,16 +190,16 @@
     v7 = 1;
   }
 
-  v8 = [(BLJaliscoItem *)self storeID];
-  if (v8 && ((v9 = v8, [v4 storeID], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10) ? (v11 = 1) : (v11 = v7), (v11 & 1) == 0))
+  storeID = [(BLJaliscoItem *)self storeID];
+  if (storeID && ((v9 = storeID, [equalCopy storeID], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10) ? (v11 = 1) : (v11 = v7), (v11 & 1) == 0))
   {
-    v13 = [v4 storeAccountID];
-    v14 = [(BLJaliscoItem *)self storeAccountID];
-    if ([v13 isEqualToNumber:v14])
+    storeAccountID3 = [equalCopy storeAccountID];
+    storeAccountID4 = [(BLJaliscoItem *)self storeAccountID];
+    if ([storeAccountID3 isEqualToNumber:storeAccountID4])
     {
-      v15 = [v4 storeID];
-      v16 = [(BLJaliscoItem *)self storeID];
-      v12 = [v15 isEqualToString:v16];
+      storeID2 = [equalCopy storeID];
+      storeID3 = [(BLJaliscoItem *)self storeID];
+      v12 = [storeID2 isEqualToString:storeID3];
     }
 
     else
@@ -218,10 +218,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BLJaliscoItem *)self storeID];
-  v4 = [v3 hash];
-  v5 = [(BLJaliscoItem *)self storeAccountID];
-  v6 = [v5 hash];
+  storeID = [(BLJaliscoItem *)self storeID];
+  v4 = [storeID hash];
+  storeAccountID = [(BLJaliscoItem *)self storeAccountID];
+  v6 = [storeAccountID hash];
 
   return v6 ^ v4;
 }
@@ -231,11 +231,11 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BLJaliscoItem *)self title];
-  v7 = [(BLJaliscoItem *)self artist];
-  v8 = [(BLJaliscoItem *)self storeID];
-  v9 = [(BLJaliscoItem *)self storeAccountID];
-  v10 = [v3 stringWithFormat:@"<%@:%p title=%@ author=%@ storeID=%@ storeAccountID=%@ >", v5, self, v6, v7, v8, v9];
+  title = [(BLJaliscoItem *)self title];
+  artist = [(BLJaliscoItem *)self artist];
+  storeID = [(BLJaliscoItem *)self storeID];
+  storeAccountID = [(BLJaliscoItem *)self storeAccountID];
+  v10 = [v3 stringWithFormat:@"<%@:%p title=%@ author=%@ storeID=%@ storeAccountID=%@ >", v5, self, title, artist, storeID, storeAccountID];
 
   return v10;
 }

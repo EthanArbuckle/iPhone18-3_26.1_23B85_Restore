@@ -1,10 +1,10 @@
 @interface SDAirDropReceiveConnectionManager
-- (void)contactHashsesChangedWithNotification:(id)a3;
+- (void)contactHashsesChangedWithNotification:(id)notification;
 @end
 
 @implementation SDAirDropReceiveConnectionManager
 
-- (void)contactHashsesChangedWithNotification:(id)a3
+- (void)contactHashsesChangedWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

@@ -3,13 +3,13 @@
 - (CLLocation)currentLocation;
 - (NSArray)locationsOfInterest;
 - (RCLocationsOfInterestManager)init;
-- (void)_didFetchPlaceInferences:(id)a3 location:(id)a4 error:(id)a5;
+- (void)_didFetchPlaceInferences:(id)inferences location:(id)location error:(id)error;
 - (void)_requestPlaceInferences;
 - (void)_startMonitoringLocation;
 - (void)_stopMonitoringLocation;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)prepare;
 - (void)start;
 - (void)stop;
@@ -81,8 +81,8 @@
 
 - (void)_requestPlaceInferences
 {
-  v3 = [(CLLocationManager *)self->_locationManager location];
-  if (v3 && !self->_isFetchingPlacesOfInterest && (objc_opt_respondsToSelector() & 1) != 0)
+  location = [(CLLocationManager *)self->_locationManager location];
+  if (location && !self->_isFetchingPlacesOfInterest && (objc_opt_respondsToSelector() & 1) != 0)
   {
     self->_isFetchingPlacesOfInterest = 1;
     locationManager = self->_locationManager;
@@ -92,7 +92,7 @@
     v6[2] = sub_100083DE0;
     v6[3] = &unk_10028B868;
     v6[4] = self;
-    v7 = v3;
+    v7 = location;
     [(CLLocationManager *)locationManager _fetchPlaceInferencesWithFidelityPolicy:placeInferencePolicy handler:v6];
   }
 }
@@ -139,18 +139,18 @@
   return v3;
 }
 
-- (void)_didFetchPlaceInferences:(id)a3 location:(id)a4 error:(id)a5
+- (void)_didFetchPlaceInferences:(id)inferences location:(id)location error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  inferencesCopy = inferences;
+  locationCopy = location;
+  errorCopy = error;
+  v11 = errorCopy;
   if (self->_active)
   {
-    if (v8)
+    if (inferencesCopy)
     {
-      objc_storeStrong(&self->_currentLocation, a4);
-      v12 = [v8 copy];
+      objc_storeStrong(&self->_currentLocation, location);
+      v12 = [inferencesCopy copy];
       locationsOfInterest = self->_locationsOfInterest;
       self->_locationsOfInterest = v12;
 
@@ -161,7 +161,7 @@
       }
     }
 
-    else if (v10)
+    else if (errorCopy)
     {
       v14 = OSLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -172,11 +172,11 @@
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 authorizationStatus];
-  v5 = v4;
-  if (v4 - 1 < 2)
+  authorizationStatus = [authorization authorizationStatus];
+  v5 = authorizationStatus;
+  if (authorizationStatus - 1 < 2)
   {
     [(RCLocationsOfInterestManager *)self _stopMonitoringLocation];
     currentLocation = self->_currentLocation;
@@ -186,9 +186,9 @@
     self->_locationsOfInterest = &__NSArray0__struct;
   }
 
-  else if (v4 - 3 >= 2)
+  else if (authorizationStatus - 3 >= 2)
   {
-    if (!v4)
+    if (!authorizationStatus)
     {
       [(CLLocationManager *)self->_locationManager requestWhenInUseAuthorization];
     }
@@ -202,15 +202,15 @@
   self->_authorizationStatus = v5;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:kCLErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:kCLErrorDomain])
   {
-    v7 = [v5 code];
+    code = [errorCopy code];
 
-    if (!v7)
+    if (!code)
     {
       [(CLLocationManager *)self->_locationManager requestLocation];
       goto LABEL_8;
@@ -230,10 +230,10 @@
 LABEL_8:
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v7 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if (self->_active && (self->_authorizationStatus - 3) <= 1)
   {
     [(RCLocationsOfInterestManager *)self _requestPlaceInferences];

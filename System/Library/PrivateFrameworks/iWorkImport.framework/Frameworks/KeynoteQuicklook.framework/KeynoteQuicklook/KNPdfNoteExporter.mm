@@ -1,10 +1,10 @@
 @interface KNPdfNoteExporter
-- (BOOL)drawMonoPageExtraContentInContext:(CGContext *)a3 scaledClipRect:(CGRect)a4;
+- (BOOL)drawMonoPageExtraContentInContext:(CGContext *)context scaledClipRect:(CGRect)rect;
 - (BOOL)incrementPage;
-- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)a3 outScaledClipRect:(CGRect *)a4;
+- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)rect outScaledClipRect:(CGRect *)clipRect;
 - (id)currentInfos;
-- (id)printHelper:(id)a3 noteSegmentsForSlideNode:(id)a4;
-- (id)slideNodesForPrintHelper:(id)a3;
+- (id)printHelper:(id)helper noteSegmentsForSlideNode:(id)node;
+- (id)slideNodesForPrintHelper:(id)helper;
 - (unint64_t)pageCount;
 - (void)p_preparePrintHelperIfNeeded;
 @end
@@ -22,23 +22,23 @@
     if (self->_isDrawingNote)
     {
       v9 = objc_msgSend_note(v6, v7, v8);
-      v11 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v10, v9);
+      currentInfos = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v10, v9);
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = KNPdfNoteExporter;
-      v11 = [(KNRenderingExporter *)&v13 currentInfos];
+      currentInfos = [(KNRenderingExporter *)&v13 currentInfos];
     }
   }
 
   else
   {
-    v11 = 0;
+    currentInfos = 0;
   }
 
-  return v11;
+  return currentInfos;
 }
 
 - (unint64_t)pageCount
@@ -88,13 +88,13 @@
   }
 }
 
-- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)a3 outScaledClipRect:(CGRect *)a4
+- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)rect outScaledClipRect:(CGRect *)clipRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = objc_msgSend_show(*(&self->super.super.super.super.isa + *MEMORY[0x277D7FFD8]), a2, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = objc_msgSend_show(*(&self->super.super.super.super.isa + *MEMORY[0x277D7FFD8]), a2, clipRect);
   objc_msgSend_size(v9, v10, v11);
   v12 = y + 9.0;
   v13 = height + -18.0;
@@ -106,13 +106,13 @@
   v17 = v25.origin.y;
   v18 = v25.size.width;
   v19 = v25.size.height;
-  if (a4)
+  if (clipRect)
   {
     v26.origin.x = v14;
     v26.origin.y = v12;
     v26.size.width = v15;
     v26.size.height = v13;
-    *a4 = CGRectIntegral(v26);
+    *clipRect = CGRectIntegral(v26);
   }
 
   v20 = v16;
@@ -126,13 +126,13 @@
   return result;
 }
 
-- (BOOL)drawMonoPageExtraContentInContext:(CGContext *)a3 scaledClipRect:(CGRect)a4
+- (BOOL)drawMonoPageExtraContentInContext:(CGContext *)context scaledClipRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = objc_msgSend_commentsPageIndex(self->_helper, a2, a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_commentsPageIndex(self->_helper, a2, context);
   v13 = objc_msgSend_notesIndex(self->_helper, v11, v12);
   if (self->super.super._currentBuildIndex)
   {
@@ -151,14 +151,14 @@
   }
 
   memset(&v76, 0, sizeof(v76));
-  CGContextGetTextMatrix(&v76, a3);
-  CGContextSaveGState(a3);
+  CGContextGetTextMatrix(&v76, context);
+  CGContextSaveGState(context);
   self->_isDrawingNote = 1;
   v20 = objc_msgSend_clearColor(MEMORY[0x277D81180], v18, v19);
   v21 = *MEMORY[0x277D7FFE8];
   objc_msgSend_setBackgroundColor_(*(&self->super.super.super.super.isa + v21), v22, v20);
 
-  CGContextTranslateCTM(a3, x, y);
+  CGContextTranslateCTM(context, x, y);
   if (v16)
   {
     v77.origin.x = x;
@@ -180,7 +180,7 @@
   }
 
   v29 = objc_msgSend_cyanColor(MEMORY[0x277D81180], v23, v24);
-  nullsub_1(a3, v29, 0.0, 0.0, width, v26);
+  nullsub_1(context, v29, 0.0, 0.0, width, v26);
 
   objc_opt_class();
   v32 = objc_msgSend_slide(self->super.super._currentSlideNode, v30, v31);
@@ -220,7 +220,7 @@
 
   v75.receiver = self;
   v75.super_class = KNPdfNoteExporter;
-  v27 = [(TSARenderingExporter *)&v75 drawCurrentPageInContext:a3 viewScale:0 unscaledClipRect:1.0 createPage:0.0, 0.0, width, v26];
+  v27 = [(TSARenderingExporter *)&v75 drawCurrentPageInContext:context viewScale:0 unscaledClipRect:1.0 createPage:0.0, 0.0, width, v26];
   if (!v27)
   {
     v60 = MEMORY[0x277D81150];
@@ -246,23 +246,23 @@
   objc_msgSend_setInfosToDisplay_(v73, v69, MEMORY[0x277CBEBF8]);
   self->_isDrawingNote = 0;
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
   v74 = v76;
-  CGContextSetTextMatrix(a3, &v74);
+  CGContextSetTextMatrix(context, &v74);
   return v27;
 }
 
-- (id)slideNodesForPrintHelper:(id)a3
+- (id)slideNodesForPrintHelper:(id)helper
 {
-  v3 = objc_msgSend_slidesForPrinting(self, a2, a3);
+  v3 = objc_msgSend_slidesForPrinting(self, a2, helper);
 
   return v3;
 }
 
-- (id)printHelper:(id)a3 noteSegmentsForSlideNode:(id)a4
+- (id)printHelper:(id)helper noteSegmentsForSlideNode:(id)node
 {
   v108[1] = *MEMORY[0x277D85DE8];
-  v106 = a4;
+  nodeCopy = node;
   v5 = *MEMORY[0x277D7FFE8];
   isPrinting = objc_msgSend_isPrinting(*(&self->super.super.super.super.isa + v5), v6, v7);
   objc_msgSend_setIsPrinting_(*(&self->super.super.super.super.isa + v5), v9, 0);
@@ -274,12 +274,12 @@
   v107.size.height = v15;
   objc_msgSend_setIsPrinting_(*(&self->super.super.super.super.isa + v5), v16, isPrinting);
   objc_msgSend_monoSlideRectFromScaledClipRect_outScaledClipRect_(self, v17, &v107, *&v107.origin, *&v107.size);
-  v102 = self;
+  selfCopy = self;
   v105 = objc_msgSend_array(MEMORY[0x277CBEB18], v18, v19);
-  if (objc_msgSend_hasNote(v106, v20, v21))
+  if (objc_msgSend_hasNote(nodeCopy, v20, v21))
   {
     objc_opt_class();
-    v26 = objc_msgSend_slide(v106, v24, v25);
+    v26 = objc_msgSend_slide(nodeCopy, v24, v25);
     v101 = TSUDynamicCast();
 
     v29 = objc_msgSend_note(v101, v27, v28);
@@ -307,7 +307,7 @@
       do
       {
         v52 = [KNPrintSegment alloc];
-        v54 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_span_(v52, v53, v106, 0, v50, v49);
+        v54 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_span_(v52, v53, nodeCopy, 0, v50, v49);
         objc_msgSend_addObject_(v105, v55, v54);
         objc_msgSend_setInitialCharacterIndexForExporting_(v29, v56, v50);
         if (v49)
@@ -383,7 +383,7 @@
 
     if ((v100 & 1) == 0)
     {
-      objc_msgSend_setIsPrinting_(*(&v102->super.super.super.super.isa + v103), v47, 0);
+      objc_msgSend_setIsPrinting_(*(&selfCopy->super.super.super.super.isa + v103), v47, 0);
     }
 
     objc_msgSend_setInitialCharacterIndexForExporting_(v29, v47, 0);

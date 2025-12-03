@@ -1,12 +1,12 @@
 @interface NDTaskMonitor
-- (NDTaskMonitor)initWithDelegate:(id)a3 taskInfo:(id)a4 clientBundleIdentifier:(id)a5 secondaryIdentifier:(id)a6 monitoredApplication:(id)a7 priority:(int64_t)a8 options:(unint64_t)a9 queue:(id)a10;
+- (NDTaskMonitor)initWithDelegate:(id)delegate taskInfo:(id)info clientBundleIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier monitoredApplication:(id)application priority:(int64_t)priority options:(unint64_t)options queue:(id)self0;
 - (NDTaskMonitorDelegate)delegate;
 - (int64_t)currentIntervalEndDelta;
-- (void)applicationEndedTransitionalDiscretionaryBackgroundPeriod:(id)a3;
-- (void)applicationEnteredForeground:(id)a3;
-- (void)applicationNoLongerInForeground:(id)a3;
-- (void)applicationWasQuitFromAppSwitcher:(id)a3;
-- (void)backgroundUpdatesDisabledForApplication:(id)a3;
+- (void)applicationEndedTransitionalDiscretionaryBackgroundPeriod:(id)period;
+- (void)applicationEnteredForeground:(id)foreground;
+- (void)applicationNoLongerInForeground:(id)foreground;
+- (void)applicationWasQuitFromAppSwitcher:(id)switcher;
+- (void)backgroundUpdatesDisabledForApplication:(id)application;
 - (void)calculateThroughput;
 - (void)cancel;
 - (void)setThroughputTimerForCurrentInterval;
@@ -41,8 +41,8 @@
 {
   if (self->_discretionary && !self->_explicitlyDiscretionary && [(NDApplication *)self->_monitoredApplication isForeground])
   {
-    v3 = [(NDTaskMonitor *)self delegate];
-    [v3 taskMonitor:self updateTaskPriority:-[__NSCFURLSessionTaskInfo identifier](self->_taskInfo reason:{"identifier"), 6}];
+    delegate = [(NDTaskMonitor *)self delegate];
+    [delegate taskMonitor:self updateTaskPriority:-[__NSCFURLSessionTaskInfo identifier](self->_taskInfo reason:{"identifier"), 6}];
   }
 }
 
@@ -72,9 +72,9 @@
   if (self->_discretionary || self->_performsNonDiscretionaryThrougputMonitoring && self->_basePriority == 300 && (monitoredApplication = self->_monitoredApplication) != 0 && ![(NDApplication *)monitoredApplication isForeground])
   {
     v3 = +[Daemon sharedDaemon];
-    v4 = [v3 isInSyncBubble];
+    isInSyncBubble = [v3 isInSyncBubble];
 
-    if (v4)
+    if (isInSyncBubble)
     {
       if (self->_powerMonitorToken == -1)
       {
@@ -160,7 +160,7 @@
   return WeakRetained;
 }
 
-- (void)applicationEndedTransitionalDiscretionaryBackgroundPeriod:(id)a3
+- (void)applicationEndedTransitionalDiscretionaryBackgroundPeriod:(id)period
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -171,7 +171,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)applicationNoLongerInForeground:(id)a3
+- (void)applicationNoLongerInForeground:(id)foreground
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -182,7 +182,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)applicationEnteredForeground:(id)a3
+- (void)applicationEnteredForeground:(id)foreground
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -193,31 +193,31 @@
   dispatch_async(queue, block);
 }
 
-- (void)backgroundUpdatesDisabledForApplication:(id)a3
+- (void)backgroundUpdatesDisabledForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006D774;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = applicationCopy;
+  v6 = applicationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)applicationWasQuitFromAppSwitcher:(id)a3
+- (void)applicationWasQuitFromAppSwitcher:(id)switcher
 {
-  v4 = a3;
+  switcherCopy = switcher;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006D8E0;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = switcherCopy;
+  v6 = switcherCopy;
   dispatch_async(queue, v7);
 }
 
@@ -257,11 +257,11 @@
     v8 = 0.0;
   }
 
-  v9 = [(NSMutableArray *)self->_progressTimestamps firstObject];
-  v10 = [(NSMutableArray *)self->_progressTimestamps lastObject];
-  [v10 doubleValue];
+  firstObject = [(NSMutableArray *)self->_progressTimestamps firstObject];
+  lastObject = [(NSMutableArray *)self->_progressTimestamps lastObject];
+  [lastObject doubleValue];
   v12 = v11;
-  [v9 doubleValue];
+  [firstObject doubleValue];
   v14 = v13;
   [(NDTaskMonitor *)self currentThroughputThreshold];
   v15 = v8 / (v12 - v14);
@@ -270,12 +270,12 @@
     v17 = qword_1000EB210;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(__NSCFURLSessionTaskInfo *)self->_taskInfo _loggableDescription];
+      _loggableDescription = [(__NSCFURLSessionTaskInfo *)self->_taskInfo _loggableDescription];
       [(NDTaskMonitor *)self currentThroughputThreshold];
       progressTimestamps = self->_progressTimestamps;
       progressValues = self->_progressValues;
       *buf = 138544386;
-      v28 = v19;
+      v28 = _loggableDescription;
       v29 = 2048;
       v30 = v15;
       v31 = 2048;
@@ -287,19 +287,19 @@
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@ canceling because of low throughput monitoring! Current throughput: %f bytes/sec, current threshold: %f bytes/sec, samples %@/%@", buf, 0x34u);
     }
 
-    v18 = [(NDTaskMonitor *)self delegate];
-    [v18 taskMonitor:self retryTask:-[__NSCFURLSessionTaskInfo identifier](self->_taskInfo reason:{"identifier"), 3}];
+    delegate = [(NDTaskMonitor *)self delegate];
+    [delegate taskMonitor:self retryTask:-[__NSCFURLSessionTaskInfo identifier](self->_taskInfo reason:{"identifier"), 3}];
   }
 }
 
-- (NDTaskMonitor)initWithDelegate:(id)a3 taskInfo:(id)a4 clientBundleIdentifier:(id)a5 secondaryIdentifier:(id)a6 monitoredApplication:(id)a7 priority:(int64_t)a8 options:(unint64_t)a9 queue:(id)a10
+- (NDTaskMonitor)initWithDelegate:(id)delegate taskInfo:(id)info clientBundleIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier monitoredApplication:(id)application priority:(int64_t)priority options:(unint64_t)options queue:(id)self0
 {
-  obj = a3;
-  v26 = a4;
-  v16 = a5;
-  v25 = a6;
-  v24 = a7;
-  v17 = a10;
+  obj = delegate;
+  infoCopy = info;
+  identifierCopy = identifier;
+  secondaryIdentifierCopy = secondaryIdentifier;
+  applicationCopy = application;
+  queueCopy = queue;
   v28.receiver = self;
   v28.super_class = NDTaskMonitor;
   v18 = [(NDTaskMonitor *)&v28 init];
@@ -307,19 +307,19 @@
   if (v18)
   {
     objc_storeWeak(&v18->_delegate, obj);
-    objc_storeStrong(&v19->_taskInfo, a4);
-    objc_storeStrong(&v19->_queue, a10);
-    objc_storeStrong(&v19->_clientBundleIdentifier, a5);
-    objc_storeStrong(&v19->_clientSecondaryIdentifier, a6);
-    objc_storeStrong(&v19->_monitoredApplication, a7);
-    v19->_basePriority = a8;
-    v19->_discretionary = a9 & 1;
-    v19->_explicitlyDiscretionary = (a9 & 2) != 0;
-    v19->_performsNonDiscretionaryThrougputMonitoring = (a9 & 4) != 0;
-    v19->_mayBeDemotedToDiscretionary = (a9 & 8) != 0;
-    [(NDApplication *)v19->_monitoredApplication addObserver:v19, v24, v25];
+    objc_storeStrong(&v19->_taskInfo, info);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v19->_clientBundleIdentifier, identifier);
+    objc_storeStrong(&v19->_clientSecondaryIdentifier, secondaryIdentifier);
+    objc_storeStrong(&v19->_monitoredApplication, application);
+    v19->_basePriority = priority;
+    v19->_discretionary = options & 1;
+    v19->_explicitlyDiscretionary = (options & 2) != 0;
+    v19->_performsNonDiscretionaryThrougputMonitoring = (options & 4) != 0;
+    v19->_mayBeDemotedToDiscretionary = (options & 8) != 0;
+    [(NDApplication *)v19->_monitoredApplication addObserver:v19, applicationCopy, secondaryIdentifierCopy];
     v20 = +[NDUserSyncStakeholder sharedStakeholder];
-    v21 = [v20 startUMTask:v16 taskInfo:v26];
+    v21 = [v20 startUMTask:identifierCopy taskInfo:infoCopy];
     UMSyncTask = v19->_UMSyncTask;
     v19->_UMSyncTask = v21;
 

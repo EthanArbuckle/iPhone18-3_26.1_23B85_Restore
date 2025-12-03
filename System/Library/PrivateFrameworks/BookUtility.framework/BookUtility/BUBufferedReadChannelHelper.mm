@@ -1,22 +1,22 @@
 @interface BUBufferedReadChannelHelper
 - (BUBufferedReadChannel)bufferedReadChannel;
 - (BUBufferedReadChannelHelper)init;
-- (BUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3;
-- (void)readWithHandler:(id)a3;
+- (BUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation BUBufferedReadChannelHelper
 
-- (BUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3
+- (BUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v8.receiver = self;
   v8.super_class = BUBufferedReadChannelHelper;
   v5 = [(BUBufferedReadChannelHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_bufferedReadChannel, v4);
+    objc_storeWeak(&v5->_bufferedReadChannel, channelCopy);
   }
 
   return v6;
@@ -33,11 +33,11 @@
   objc_exception_throw(v6);
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_bufferedReadChannel);
-  objc_msgSend_setStreamReadChannelSourceHandler_(WeakRetained, v5, v4);
+  objc_msgSend_setStreamReadChannelSourceHandler_(WeakRetained, v5, handlerCopy);
 }
 
 - (BUBufferedReadChannel)bufferedReadChannel

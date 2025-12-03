@@ -1,75 +1,75 @@
 @interface CDMNluLogUtil
-+ (BOOL)saveCLIResult:(id)a3 protobufFile:(id)a4 preprocess:(BOOL)a5 saveBinary:(BOOL)a6 error:(id *)a7;
-+ (BOOL)saveCdmPlannerResponseJson:(id)a3 toFile:(id)a4 error:(id *)a5;
-+ (BOOL)savePreprocessingWrapperJson:(id)a3 toFile:(id)a4 error:(id *)a5;
-+ (BOOL)saveProtoFile:(id)a3 protobufFile:(id)a4 error:(id *)a5;
-+ (BOOL)saveResponseToProtobuf2:(id)a3 protobufFile:(id)a4 error:(id *)a5;
-+ (BOOL)saveResponseToProtobuf:(id)a3 protobufFile:(id)a4 error:(id *)a5;
-+ (BOOL)saveSpanMatchResponseToProtobuf:(id)a3 protobufFile:(id)a4 error:(id *)a5;
-+ (BOOL)saveString:(id)a3 toFile:(id)a4 error:(id *)a5;
-+ (BOOL)saveSubwordEmbeddingResponseJson:(id)a3 toFile:(id)a4 error:(id *)a5;
++ (BOOL)saveCLIResult:(id)result protobufFile:(id)file preprocess:(BOOL)preprocess saveBinary:(BOOL)binary error:(id *)error;
++ (BOOL)saveCdmPlannerResponseJson:(id)json toFile:(id)file error:(id *)error;
++ (BOOL)savePreprocessingWrapperJson:(id)json toFile:(id)file error:(id *)error;
++ (BOOL)saveProtoFile:(id)file protobufFile:(id)protobufFile error:(id *)error;
++ (BOOL)saveResponseToProtobuf2:(id)protobuf2 protobufFile:(id)file error:(id *)error;
++ (BOOL)saveResponseToProtobuf:(id)protobuf protobufFile:(id)file error:(id *)error;
++ (BOOL)saveSpanMatchResponseToProtobuf:(id)protobuf protobufFile:(id)file error:(id *)error;
++ (BOOL)saveString:(id)string toFile:(id)file error:(id *)error;
++ (BOOL)saveSubwordEmbeddingResponseJson:(id)json toFile:(id)file error:(id *)error;
 + (id)getLogBasePath;
-+ (id)loadCdmPlannerRequestFromProtobuf2File:(id)a3 error:(id *)a4;
-+ (id)loadDataFromProtobuf2File:(id)a3 error:(id *)a4;
-+ (id)loadOverrideSpansFromProtobuf2File:(id)a3 error:(id *)a4;
-+ (id)loadRequestFromProtobuf2File:(id)a3 error:(id *)a4;
-+ (id)loadSubwordEmbeddingRequestFromProtobuf2File:(id)a3 error:(id *)a4;
-+ (id)prettyPrintProtoResponse:(id)a3;
-+ (id)prettyPrintResponse:(id)a3;
-+ (id)writeLVCRequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeLVCResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writeMDRequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeMDResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writeMRRequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeMRResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writeNlv4RequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeNlv4ResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writePSCRequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writePSCResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writeSNLCRequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeSNLCResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writeSSURequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeSSUResponseToDisk:(id)a3 error:(id *)a4;
-+ (id)writeUaaPRequestToDisk:(id)a3 error:(id *)a4;
-+ (id)writeUaaPResponseToDisk:(id)a3 error:(id *)a4;
-+ (void)populateErrorWithUserInfo:(id *)a3 errorMessage:(id)a4 errorCode:(int64_t)a5;
++ (id)loadCdmPlannerRequestFromProtobuf2File:(id)file error:(id *)error;
++ (id)loadDataFromProtobuf2File:(id)file error:(id *)error;
++ (id)loadOverrideSpansFromProtobuf2File:(id)file error:(id *)error;
++ (id)loadRequestFromProtobuf2File:(id)file error:(id *)error;
++ (id)loadSubwordEmbeddingRequestFromProtobuf2File:(id)file error:(id *)error;
++ (id)prettyPrintProtoResponse:(id)response;
++ (id)prettyPrintResponse:(id)response;
++ (id)writeLVCRequestToDisk:(id)disk error:(id *)error;
++ (id)writeLVCResponseToDisk:(id)disk error:(id *)error;
++ (id)writeMDRequestToDisk:(id)disk error:(id *)error;
++ (id)writeMDResponseToDisk:(id)disk error:(id *)error;
++ (id)writeMRRequestToDisk:(id)disk error:(id *)error;
++ (id)writeMRResponseToDisk:(id)disk error:(id *)error;
++ (id)writeNlv4RequestToDisk:(id)disk error:(id *)error;
++ (id)writeNlv4ResponseToDisk:(id)disk error:(id *)error;
++ (id)writePSCRequestToDisk:(id)disk error:(id *)error;
++ (id)writePSCResponseToDisk:(id)disk error:(id *)error;
++ (id)writeSNLCRequestToDisk:(id)disk error:(id *)error;
++ (id)writeSNLCResponseToDisk:(id)disk error:(id *)error;
++ (id)writeSSURequestToDisk:(id)disk error:(id *)error;
++ (id)writeSSUResponseToDisk:(id)disk error:(id *)error;
++ (id)writeUaaPRequestToDisk:(id)disk error:(id *)error;
++ (id)writeUaaPResponseToDisk:(id)disk error:(id *)error;
++ (void)populateErrorWithUserInfo:(id *)info errorMessage:(id)message errorCode:(int64_t)code;
 @end
 
 @implementation CDMNluLogUtil
 
-+ (BOOL)saveCLIResult:(id)a3 protobufFile:(id)a4 preprocess:(BOOL)a5 saveBinary:(BOOL)a6 error:(id *)a7
++ (BOOL)saveCLIResult:(id)result protobufFile:(id)file preprocess:(BOOL)preprocess saveBinary:(BOOL)binary error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
-  if (v8)
+  binaryCopy = binary;
+  preprocessCopy = preprocess;
+  resultCopy = result;
+  fileCopy = file;
+  if (binaryCopy)
   {
-    if (v9)
+    if (preprocessCopy)
     {
-      v13 = [v11 preprocessingWrapper];
+      preprocessingWrapper = [resultCopy preprocessingWrapper];
     }
 
     else
     {
       v18 = MEMORY[0x1E69D13F8];
-      v19 = [v11 nluResponse];
-      v13 = [v18 convertFromNluResponse:v19];
+      nluResponse = [resultCopy nluResponse];
+      preprocessingWrapper = [v18 convertFromNluResponse:nluResponse];
     }
 
-    v20 = [v13 data];
+    data = [preprocessingWrapper data];
 
-    v21 = [v20 writeToFile:v12 atomically:1];
+    v21 = [data writeToFile:fileCopy atomically:1];
     if (v21)
     {
-      printf("%s saved\n", [v12 UTF8String]);
+      printf("%s saved\n", [fileCopy UTF8String]);
     }
 
     else
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to save %@", v12];
-      puts([v29 UTF8String]);
-      [CDMNluLogUtil populateErrorWithUserInfo:a7 errorMessage:v29 errorCode:-4];
+      fileCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to save %@", fileCopy];
+      puts([fileCopy UTF8String]);
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:fileCopy errorCode:-4];
     }
 
     v16 = 0;
@@ -77,43 +77,43 @@
 
   else
   {
-    if (v9)
+    if (preprocessCopy)
     {
-      v14 = [v11 preprocessingWrapper];
-      v15 = [_TtC13CDMFoundation20CDMProtobufConverter serializePreprocessingWrapperWithWrapper:v14 formatType:@"json"];
+      preprocessingWrapper2 = [resultCopy preprocessingWrapper];
+      nluResponse3 = [_TtC13CDMFoundation20CDMProtobufConverter serializePreprocessingWrapperWithWrapper:preprocessingWrapper2 formatType:@"json"];
 
-      v16 = [CDMPlatformUtils prettyPrintJson:v15];
-      printf("%s result:%s\n", [v12 UTF8String], objc_msgSend(v16, "UTF8String"));
+      v16 = [CDMPlatformUtils prettyPrintJson:nluResponse3];
+      printf("%s result:%s\n", [fileCopy UTF8String], objc_msgSend(v16, "UTF8String"));
       v32 = 0;
       v17 = &v32;
-      [CDMNluLogUtil saveString:v16 toFile:v12 error:&v32];
+      [CDMNluLogUtil saveString:v16 toFile:fileCopy error:&v32];
     }
 
     else
     {
-      v22 = [v11 nluResponse];
-      v16 = [v22 description];
+      nluResponse2 = [resultCopy nluResponse];
+      v16 = [nluResponse2 description];
 
-      printf("%s result:%s\n", [v12 UTF8String], objc_msgSend(v16, "UTF8String"));
-      v15 = [v11 nluResponse];
+      printf("%s result:%s\n", [fileCopy UTF8String], objc_msgSend(v16, "UTF8String"));
+      nluResponse3 = [resultCopy nluResponse];
       v31 = 0;
       v17 = &v31;
-      [CDMNluLogUtil saveResponseToProtobuf:v15 protobufFile:v12 error:&v31];
+      [CDMNluLogUtil saveResponseToProtobuf:nluResponse3 protobufFile:fileCopy error:&v31];
     }
 
     v23 = *v17;
 
     if (v23)
     {
-      v24 = [v12 UTF8String];
-      v25 = [v23 localizedDescription];
-      printf("Error save %s:%s\n", v24, [v25 UTF8String]);
+      uTF8String = [fileCopy UTF8String];
+      localizedDescription = [v23 localizedDescription];
+      printf("Error save %s:%s\n", uTF8String, [localizedDescription UTF8String]);
 
       v26 = MEMORY[0x1E695DF20];
-      v27 = [v23 localizedDescription];
-      v28 = [v26 dictionaryWithObject:v27 forKey:*MEMORY[0x1E696A578]];
+      localizedDescription2 = [v23 localizedDescription];
+      v28 = [v26 dictionaryWithObject:localizedDescription2 forKey:*MEMORY[0x1E696A578]];
 
-      *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v28];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v28];
 
       v21 = 0;
     }
@@ -127,11 +127,11 @@
   return v21;
 }
 
-+ (BOOL)saveCdmPlannerResponseJson:(id)a3 toFile:(id)a4 error:(id *)a5
++ (BOOL)saveCdmPlannerResponseJson:(id)json toFile:(id)file error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalCdmPlannerResponseWithResponse:a3 formatType:@"json"];
+  fileCopy = file;
+  v8 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalCdmPlannerResponseWithResponse:json formatType:@"json"];
   v9 = v8;
   if (!v8)
   {
@@ -145,9 +145,9 @@
       _os_log_error_impl(&dword_1DC287000, v13, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:a5 errorMessage:@"Nil content when CdmPlannerResponse(proto) was serialized" errorCode:-1];
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:@"Nil content when CdmPlannerResponse(proto) was serialized" errorCode:-1];
     }
 
     v11 = 0;
@@ -155,18 +155,18 @@
   }
 
   v18 = 0;
-  v10 = [v8 writeToFile:v7 atomically:1 encoding:4 error:&v18];
+  v10 = [v8 writeToFile:fileCopy atomically:1 encoding:4 error:&v18];
   v11 = v18;
   if (v10)
   {
-    v12 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v20 = "+[CDMNluLogUtil saveCdmPlannerResponseJson:toFile:error:]";
       v21 = 2112;
-      v22 = v7;
-      _os_log_impl(&dword_1DC287000, v12, OS_LOG_TYPE_INFO, "%s CdmPlannerResponse(proto) logged to: %@", buf, 0x16u);
+      v22 = fileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s CdmPlannerResponse(proto) logged to: %@", buf, 0x16u);
     }
 
     goto LABEL_14;
@@ -182,7 +182,7 @@
     _os_log_impl(&dword_1DC287000, v14, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_15:
     v10 = 0;
@@ -190,8 +190,8 @@ LABEL_15:
   }
 
   v15 = MEMORY[0x1E696ABC0];
-  v12 = [(__CFString *)v11 userInfo];
-  *a5 = [v15 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v12];
+  userInfo = [(__CFString *)v11 userInfo];
+  *error = [v15 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_14:
 
 LABEL_16:
@@ -199,11 +199,11 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)saveSubwordEmbeddingResponseJson:(id)a3 toFile:(id)a4 error:(id *)a5
++ (BOOL)saveSubwordEmbeddingResponseJson:(id)json toFile:(id)file error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalSubwordEmbeddingResponseWithResponse:a3 formatType:@"json"];
+  fileCopy = file;
+  v8 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalSubwordEmbeddingResponseWithResponse:json formatType:@"json"];
   v9 = v8;
   if (!v8)
   {
@@ -217,9 +217,9 @@ LABEL_16:
       _os_log_error_impl(&dword_1DC287000, v13, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:a5 errorMessage:@"Nil content when SubwordEmbeddingResponse(proto) was serialized" errorCode:-1];
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:@"Nil content when SubwordEmbeddingResponse(proto) was serialized" errorCode:-1];
     }
 
     v11 = 0;
@@ -227,18 +227,18 @@ LABEL_16:
   }
 
   v18 = 0;
-  v10 = [v8 writeToFile:v7 atomically:1 encoding:4 error:&v18];
+  v10 = [v8 writeToFile:fileCopy atomically:1 encoding:4 error:&v18];
   v11 = v18;
   if (v10)
   {
-    v12 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v20 = "+[CDMNluLogUtil saveSubwordEmbeddingResponseJson:toFile:error:]";
       v21 = 2112;
-      v22 = v7;
-      _os_log_impl(&dword_1DC287000, v12, OS_LOG_TYPE_INFO, "%s SubwordEmbeddingResponse(proto) logged to: %@", buf, 0x16u);
+      v22 = fileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s SubwordEmbeddingResponse(proto) logged to: %@", buf, 0x16u);
     }
 
     goto LABEL_14;
@@ -254,7 +254,7 @@ LABEL_16:
     _os_log_impl(&dword_1DC287000, v14, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_15:
     v10 = 0;
@@ -262,8 +262,8 @@ LABEL_15:
   }
 
   v15 = MEMORY[0x1E696ABC0];
-  v12 = [(__CFString *)v11 userInfo];
-  *a5 = [v15 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v12];
+  userInfo = [(__CFString *)v11 userInfo];
+  *error = [v15 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_14:
 
 LABEL_16:
@@ -271,11 +271,11 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)savePreprocessingWrapperJson:(id)a3 toFile:(id)a4 error:(id *)a5
++ (BOOL)savePreprocessingWrapperJson:(id)json toFile:(id)file error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [_TtC13CDMFoundation20CDMProtobufConverter serializePreprocessingWrapperWithWrapper:a3 formatType:@"json"];
+  fileCopy = file;
+  v8 = [_TtC13CDMFoundation20CDMProtobufConverter serializePreprocessingWrapperWithWrapper:json formatType:@"json"];
   v9 = v8;
   if (!v8)
   {
@@ -289,9 +289,9 @@ LABEL_16:
       _os_log_error_impl(&dword_1DC287000, v13, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:a5 errorMessage:@"Nil content when PreprocessingWrapper(proto) was serialized" errorCode:-1];
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:@"Nil content when PreprocessingWrapper(proto) was serialized" errorCode:-1];
     }
 
     v11 = 0;
@@ -299,18 +299,18 @@ LABEL_16:
   }
 
   v18 = 0;
-  v10 = [v8 writeToFile:v7 atomically:1 encoding:4 error:&v18];
+  v10 = [v8 writeToFile:fileCopy atomically:1 encoding:4 error:&v18];
   v11 = v18;
   if (v10)
   {
-    v12 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v20 = "+[CDMNluLogUtil savePreprocessingWrapperJson:toFile:error:]";
       v21 = 2112;
-      v22 = v7;
-      _os_log_impl(&dword_1DC287000, v12, OS_LOG_TYPE_INFO, "%s CDMPreprocessingWrapper(proto) logged to: %@", buf, 0x16u);
+      v22 = fileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s CDMPreprocessingWrapper(proto) logged to: %@", buf, 0x16u);
     }
 
     goto LABEL_14;
@@ -326,7 +326,7 @@ LABEL_16:
     _os_log_impl(&dword_1DC287000, v14, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_15:
     v10 = 0;
@@ -334,8 +334,8 @@ LABEL_15:
   }
 
   v15 = MEMORY[0x1E696ABC0];
-  v12 = [(__CFString *)v11 userInfo];
-  *a5 = [v15 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v12];
+  userInfo = [(__CFString *)v11 userInfo];
+  *error = [v15 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_14:
 
 LABEL_16:
@@ -343,35 +343,35 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)saveString:(id)a3 toFile:(id)a4 error:(id *)a5
++ (BOOL)saveString:(id)string toFile:(id)file error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  stringCopy = string;
+  fileCopy = file;
+  if (!fileCopy)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v13 = [v10 stringWithFormat:@"CDMNluResponse-%f.json", v12];
 
-    v14 = [a1 getLogBasePath];
-    v9 = [v14 stringByAppendingPathComponent:v13];
+    getLogBasePath = [self getLogBasePath];
+    fileCopy = [getLogBasePath stringByAppendingPathComponent:v13];
   }
 
   v22 = 0;
-  v15 = [v8 writeToFile:v9 atomically:1 encoding:4 error:&v22];
+  v15 = [stringCopy writeToFile:fileCopy atomically:1 encoding:4 error:&v22];
   v16 = v22;
   if (v15)
   {
-    v17 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v24 = "+[CDMNluLogUtil saveString:toFile:error:]";
       v25 = 2112;
-      v26 = v9;
-      _os_log_impl(&dword_1DC287000, v17, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
+      v26 = fileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
     }
 
     goto LABEL_10;
@@ -387,11 +387,11 @@ LABEL_16:
     _os_log_impl(&dword_1DC287000, v18, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v19 = MEMORY[0x1E696ABC0];
-    v17 = [v16 userInfo];
-    *a5 = [v19 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v17];
+    userInfo = [v16 userInfo];
+    *error = [v19 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_10:
   }
 
@@ -399,24 +399,24 @@ LABEL_10:
   return v15;
 }
 
-+ (BOOL)saveProtoFile:(id)a3 protobufFile:(id)a4 error:(id *)a5
++ (BOOL)saveProtoFile:(id)file protobufFile:(id)protobufFile error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  fileCopy = file;
+  protobufFileCopy = protobufFile;
   v16 = 0;
-  v9 = [v7 writeToFile:v8 atomically:1 encoding:4 error:&v16];
+  v9 = [fileCopy writeToFile:protobufFileCopy atomically:1 encoding:4 error:&v16];
   v10 = v16;
   if (v9)
   {
-    v11 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v18 = "+[CDMNluLogUtil saveProtoFile:protobufFile:error:]";
       v19 = 2112;
-      v20 = v8;
-      _os_log_impl(&dword_1DC287000, v11, OS_LOG_TYPE_INFO, "%s Successfully logged protobuf to: %@", buf, 0x16u);
+      v20 = protobufFileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s Successfully logged protobuf to: %@", buf, 0x16u);
     }
 
     goto LABEL_8;
@@ -432,11 +432,11 @@ LABEL_10:
     _os_log_impl(&dword_1DC287000, v12, OS_LOG_TYPE_INFO, "%s [WARN]: error writing proto file: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v13 = MEMORY[0x1E696ABC0];
-    v11 = [v10 userInfo];
-    *a5 = [v13 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v11];
+    userInfo = [v10 userInfo];
+    *error = [v13 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_8:
   }
 
@@ -444,38 +444,38 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)saveResponseToProtobuf2:(id)a3 protobufFile:(id)a4 error:(id *)a5
++ (BOOL)saveResponseToProtobuf2:(id)protobuf2 protobufFile:(id)file error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  protobuf2Copy = protobuf2;
+  fileCopy = file;
+  if (!fileCopy)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v13 = [v10 stringWithFormat:@"CDMSIRINLUEXTERNALCDMNluResponse-%f.json", v12];
 
-    v14 = [a1 getLogBasePath];
-    v9 = [v14 stringByAppendingPathComponent:v13];
+    getLogBasePath = [self getLogBasePath];
+    fileCopy = [getLogBasePath stringByAppendingPathComponent:v13];
   }
 
-  v15 = [v9 pathExtension];
-  v16 = [_TtC13CDMFoundation20CDMProtobufConverter nluResponseFromSIRINLUEXTERNALCDMNluResponseWithResponse:v8 formatType:v15];
+  pathExtension = [fileCopy pathExtension];
+  v16 = [_TtC13CDMFoundation20CDMProtobufConverter nluResponseFromSIRINLUEXTERNALCDMNluResponseWithResponse:protobuf2Copy formatType:pathExtension];
 
   v24 = 0;
-  v17 = [v16 writeToFile:v9 atomically:1 encoding:4 error:&v24];
+  v17 = [v16 writeToFile:fileCopy atomically:1 encoding:4 error:&v24];
   v18 = v24;
   if (v17)
   {
-    v19 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v26 = "+[CDMNluLogUtil saveResponseToProtobuf2:protobufFile:error:]";
       v27 = 2112;
-      v28 = v9;
-      _os_log_impl(&dword_1DC287000, v19, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
+      v28 = fileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
     }
 
     goto LABEL_10;
@@ -491,11 +491,11 @@ LABEL_8:
     _os_log_impl(&dword_1DC287000, v20, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
-    v19 = [v18 userInfo];
-    *a5 = [v21 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v19];
+    userInfo = [v18 userInfo];
+    *error = [v21 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_10:
   }
 
@@ -503,38 +503,38 @@ LABEL_10:
   return v17;
 }
 
-+ (BOOL)saveResponseToProtobuf:(id)a3 protobufFile:(id)a4 error:(id *)a5
++ (BOOL)saveResponseToProtobuf:(id)protobuf protobufFile:(id)file error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  protobufCopy = protobuf;
+  fileCopy = file;
+  if (!fileCopy)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v13 = [v10 stringWithFormat:@"CDMNluResponse-%f.json", v12];
 
-    v14 = [a1 getLogBasePath];
-    v9 = [v14 stringByAppendingPathComponent:v13];
+    getLogBasePath = [self getLogBasePath];
+    fileCopy = [getLogBasePath stringByAppendingPathComponent:v13];
   }
 
-  v15 = [v9 pathExtension];
-  v16 = [_TtC13CDMFoundation20CDMProtobufConverter nluResponseFromSIRINLUWithResponse:v8 formatType:v15];
+  pathExtension = [fileCopy pathExtension];
+  v16 = [_TtC13CDMFoundation20CDMProtobufConverter nluResponseFromSIRINLUWithResponse:protobufCopy formatType:pathExtension];
 
   v24 = 0;
-  v17 = [v16 writeToFile:v9 atomically:1 encoding:4 error:&v24];
+  v17 = [v16 writeToFile:fileCopy atomically:1 encoding:4 error:&v24];
   v18 = v24;
   if (v17)
   {
-    v19 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    userInfo = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v26 = "+[CDMNluLogUtil saveResponseToProtobuf:protobufFile:error:]";
       v27 = 2112;
-      v28 = v9;
-      _os_log_impl(&dword_1DC287000, v19, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
+      v28 = fileCopy;
+      _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
     }
 
     goto LABEL_10;
@@ -550,11 +550,11 @@ LABEL_10:
     _os_log_impl(&dword_1DC287000, v20, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
-    v19 = [v18 userInfo];
-    *a5 = [v21 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v19];
+    userInfo = [v18 userInfo];
+    *error = [v21 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
 LABEL_10:
   }
 
@@ -562,40 +562,40 @@ LABEL_10:
   return v17;
 }
 
-+ (BOOL)saveSpanMatchResponseToProtobuf:(id)a3 protobufFile:(id)a4 error:(id *)a5
++ (BOOL)saveSpanMatchResponseToProtobuf:(id)protobuf protobufFile:(id)file error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  protobufCopy = protobuf;
+  fileCopy = file;
+  if (!fileCopy)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v13 = [v10 stringWithFormat:@"CDMSpanMatchResponse-%f.json", v12];
 
-    v14 = [a1 getLogBasePath];
-    v9 = [v14 stringByAppendingPathComponent:v13];
+    getLogBasePath = [self getLogBasePath];
+    fileCopy = [getLogBasePath stringByAppendingPathComponent:v13];
   }
 
-  v15 = [v9 pathExtension];
-  v16 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSpanMatchResponseWithResponse:v8 formatType:v15];
+  pathExtension = [fileCopy pathExtension];
+  v16 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSpanMatchResponseWithResponse:protobufCopy formatType:pathExtension];
 
   if (v16)
   {
     v25 = 0;
-    v17 = [v16 writeToFile:v9 atomically:1 encoding:4 error:&v25];
+    v17 = [v16 writeToFile:fileCopy atomically:1 encoding:4 error:&v25];
     v18 = v25;
     if (v17)
     {
-      v19 = CDMOSLoggerForCategory(0);
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      userInfo = CDMOSLoggerForCategory(0);
+      if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v27 = "+[CDMNluLogUtil saveSpanMatchResponseToProtobuf:protobufFile:error:]";
         v28 = 2112;
-        v29 = v9;
-        _os_log_impl(&dword_1DC287000, v19, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
+        v29 = fileCopy;
+        _os_log_impl(&dword_1DC287000, userInfo, OS_LOG_TYPE_INFO, "%s CDMNluResponse(proto) logged to: %@", buf, 0x16u);
       }
     }
 
@@ -611,14 +611,14 @@ LABEL_10:
         _os_log_impl(&dword_1DC287000, v21, OS_LOG_TYPE_INFO, "%s [WARN]: error writing (response proto) file: %@", buf, 0x16u);
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_13;
       }
 
       v22 = MEMORY[0x1E696ABC0];
-      v19 = [v18 userInfo];
-      *a5 = [v22 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v19];
+      userInfo = [v18 userInfo];
+      *error = [v22 errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:userInfo];
     }
 
 LABEL_13:
@@ -626,7 +626,7 @@ LABEL_13:
   }
 
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"nil file data. Not saving file.", @"errorDescription", 0}];
-  *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v20];
+  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:-4 userInfo:v20];
 
   v17 = 0;
 LABEL_14:
@@ -635,10 +635,10 @@ LABEL_14:
   return v17;
 }
 
-+ (id)loadOverrideSpansFromProtobuf2File:(id)a3 error:(id *)a4
++ (id)loadOverrideSpansFromProtobuf2File:(id)file error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  fileCopy = file;
   v25 = [CDMNluLogUtil loadDataFromProtobuf2File:"loadDataFromProtobuf2File:error:" error:?];
   if (!v25)
   {
@@ -646,10 +646,10 @@ LABEL_14:
     goto LABEL_34;
   }
 
-  v24 = [v26 pathExtension];
-  if ([v24 isEqualToString:@"json"])
+  pathExtension = [fileCopy pathExtension];
+  if ([pathExtension isEqualToString:@"json"])
   {
-    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v25 options:4 error:a4];
+    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v25 options:4 error:error];
     if (v5)
     {
       v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count", v5)}];
@@ -671,8 +671,8 @@ LABEL_14:
               objc_enumerationMutation(obj);
             }
 
-            v9 = a4;
-            v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:*(*(&v29 + 1) + 8 * i) options:0 error:a4];
+            errorCopy = error;
+            v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:*(*(&v29 + 1) + 8 * i) options:0 error:error];
             v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v10 encoding:4];
             v12 = [_TtC13CDMFoundation20CDMProtobufConverter siriInternalMatchingSpanJsonToObjWithProto2Json:v11];
             if (v12)
@@ -691,7 +691,7 @@ LABEL_14:
               }
             }
 
-            a4 = v9;
+            error = errorCopy;
           }
 
           v6 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -700,7 +700,7 @@ LABEL_14:
         while (v6);
       }
 
-      v14 = a4;
+      errorCopy3 = error;
 
       if (v28)
       {
@@ -710,7 +710,7 @@ LABEL_14:
 
     else
     {
-      v14 = a4;
+      errorCopy3 = error;
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"error serializing array of MatchingSpans from JSON", 0];
       v19 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -722,10 +722,10 @@ LABEL_14:
         _os_log_error_impl(&dword_1DC287000, v19, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
       }
 
-      if (v14)
+      if (errorCopy3)
       {
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObject:v18 forKey:*MEMORY[0x1E696A578]];
-        *v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:-3 userInfo:v20];
+        *errorCopy3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:-3 userInfo:v20];
       }
     }
 
@@ -740,15 +740,15 @@ LABEL_14:
       _os_log_error_impl(&dword_1DC287000, v21, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (v14)
+    if (errorCopy3)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:v14 errorMessage:v16 errorCode:-3];
+      [CDMNluLogUtil populateErrorWithUserInfo:errorCopy3 errorMessage:v16 errorCode:-3];
     }
   }
 
   else
   {
-    v15 = a4;
+    errorCopy4 = error;
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unhandled path extension"];
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -760,9 +760,9 @@ LABEL_14:
       _os_log_error_impl(&dword_1DC287000, v17, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (v15)
+    if (errorCopy4)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:v15 errorMessage:v16 errorCode:-2];
+      [CDMNluLogUtil populateErrorWithUserInfo:errorCopy4 errorMessage:v16 errorCode:-2];
     }
   }
 
@@ -775,19 +775,19 @@ LABEL_34:
   return v28;
 }
 
-+ (id)loadCdmPlannerRequestFromProtobuf2File:(id)a3 error:(id *)a4
++ (id)loadCdmPlannerRequestFromProtobuf2File:(id)file error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [CDMNluLogUtil loadDataFromProtobuf2File:v5 error:a4];
+  fileCopy = file;
+  v6 = [CDMNluLogUtil loadDataFromProtobuf2File:fileCopy error:error];
   if (!v6)
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  v7 = [v5 pathExtension];
-  if ([v7 isEqualToString:@"json"])
+  pathExtension = [fileCopy pathExtension];
+  if ([pathExtension isEqualToString:@"json"])
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
     v9 = [_TtC13CDMFoundation20CDMProtobufConverter siriExternalCdmPlannerRequestJsonToObjWithProto2Json:v8];
@@ -795,13 +795,13 @@ LABEL_34:
 
   else
   {
-    if ([v7 isEqualToString:@"pb"])
+    if ([pathExtension isEqualToString:@"pb"])
     {
       v10 = [objc_alloc(MEMORY[0x1E69D1160]) initWithData:v6];
       goto LABEL_15;
     }
 
-    if (![v7 isEqualToString:@"base64"])
+    if (![pathExtension isEqualToString:@"base64"])
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unhandled path extension"];
       v12 = CDMOSLoggerForCategory(0);
@@ -814,9 +814,9 @@ LABEL_34:
         _os_log_error_impl(&dword_1DC287000, v12, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", &v15, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        [CDMNluLogUtil populateErrorWithUserInfo:a4 errorMessage:v11 errorCode:-2];
+        [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:v11 errorCode:-2];
       }
 
       v10 = 0;
@@ -837,28 +837,28 @@ LABEL_16:
   return v10;
 }
 
-+ (id)loadSubwordEmbeddingRequestFromProtobuf2File:(id)a3 error:(id *)a4
++ (id)loadSubwordEmbeddingRequestFromProtobuf2File:(id)file error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [CDMNluLogUtil loadDataFromProtobuf2File:v5 error:a4];
+  fileCopy = file;
+  v6 = [CDMNluLogUtil loadDataFromProtobuf2File:fileCopy error:error];
   if (!v6)
   {
     v10 = 0;
     goto LABEL_21;
   }
 
-  v7 = [v5 pathExtension];
-  if ([v7 isEqualToString:@"json"])
+  pathExtension = [fileCopy pathExtension];
+  if ([pathExtension isEqualToString:@"json"])
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
     v9 = [_TtC13CDMFoundation20CDMProtobufConverter siriExternalSubwordEmbeddingRequestJsonToObjWithProto2Json:v8];
     goto LABEL_4;
   }
 
-  if (![v7 isEqualToString:@"pb"])
+  if (![pathExtension isEqualToString:@"pb"])
   {
-    if (![v7 isEqualToString:@"base64"])
+    if (![pathExtension isEqualToString:@"base64"])
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unhandled path extension"];
       v13 = CDMOSLoggerForCategory(0);
@@ -871,9 +871,9 @@ LABEL_16:
         _os_log_error_impl(&dword_1DC287000, v13, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", &v16, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        [CDMNluLogUtil populateErrorWithUserInfo:a4 errorMessage:v11 errorCode:-2];
+        [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:v11 errorCode:-2];
       }
 
       goto LABEL_19;
@@ -907,9 +907,9 @@ LABEL_9:
       _os_log_error_impl(&dword_1DC287000, v12, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", &v16, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:a4 errorMessage:v11 errorCode:-3];
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:v11 errorCode:-3];
     }
 
 LABEL_19:
@@ -925,28 +925,28 @@ LABEL_21:
   return v10;
 }
 
-+ (id)loadRequestFromProtobuf2File:(id)a3 error:(id *)a4
++ (id)loadRequestFromProtobuf2File:(id)file error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [CDMNluLogUtil loadDataFromProtobuf2File:v5 error:a4];
+  fileCopy = file;
+  v6 = [CDMNluLogUtil loadDataFromProtobuf2File:fileCopy error:error];
   if (!v6)
   {
     v10 = 0;
     goto LABEL_21;
   }
 
-  v7 = [v5 pathExtension];
-  if ([v7 isEqualToString:@"json"])
+  pathExtension = [fileCopy pathExtension];
+  if ([pathExtension isEqualToString:@"json"])
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
     v9 = [_TtC13CDMFoundation20CDMProtobufConverter siriExternalNluRequestJsonToObjWithProto2Json:v8];
     goto LABEL_4;
   }
 
-  if (![v7 isEqualToString:@"pb"])
+  if (![pathExtension isEqualToString:@"pb"])
   {
-    if (![v7 isEqualToString:@"base64"])
+    if (![pathExtension isEqualToString:@"base64"])
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unhandled path extension"];
       v13 = CDMOSLoggerForCategory(0);
@@ -959,9 +959,9 @@ LABEL_21:
         _os_log_error_impl(&dword_1DC287000, v13, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", &v16, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        [CDMNluLogUtil populateErrorWithUserInfo:a4 errorMessage:v11 errorCode:-2];
+        [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:v11 errorCode:-2];
       }
 
       goto LABEL_19;
@@ -995,9 +995,9 @@ LABEL_9:
       _os_log_error_impl(&dword_1DC287000, v12, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", &v16, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:a4 errorMessage:v11 errorCode:-3];
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:v11 errorCode:-3];
     }
 
 LABEL_19:
@@ -1013,11 +1013,11 @@ LABEL_21:
   return v10;
 }
 
-+ (id)loadDataFromProtobuf2File:(id)a3 error:(id *)a4
++ (id)loadDataFromProtobuf2File:(id)file error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v5];
+  fileCopy = file;
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:fileCopy];
   v7 = v6;
   if (v6)
   {
@@ -1026,20 +1026,20 @@ LABEL_21:
 
   else
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"error reading file: %@", v5];
+    fileCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"error reading file: %@", fileCopy];
     v10 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v14 = "+[CDMNluLogUtil loadDataFromProtobuf2File:error:]";
       v15 = 2112;
-      v16 = v9;
+      v16 = fileCopy;
       _os_log_error_impl(&dword_1DC287000, v10, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      [CDMNluLogUtil populateErrorWithUserInfo:a4 errorMessage:v9 errorCode:-1];
+      [CDMNluLogUtil populateErrorWithUserInfo:error errorMessage:fileCopy errorCode:-1];
     }
   }
 
@@ -1048,27 +1048,27 @@ LABEL_21:
   return v7;
 }
 
-+ (void)populateErrorWithUserInfo:(id *)a3 errorMessage:(id)a4 errorCode:(int64_t)a5
++ (void)populateErrorWithUserInfo:(id *)info errorMessage:(id)message errorCode:(int64_t)code
 {
-  v7 = a4;
+  messageCopy = message;
   v8 = *MEMORY[0x1E696A578];
-  v10 = v7;
+  v10 = messageCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:? forKey:?];
-  *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:a5 userInfo:v9];
+  *info = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDMNluLogUtil" code:code userInfo:v9];
 }
 
-+ (id)prettyPrintProtoResponse:(id)a3
++ (id)prettyPrintProtoResponse:(id)response
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  responseCopy = response;
   std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream[abi:ne200100](v52);
-  v38 = v3;
-  v4 = [v3 requestId];
-  v5 = [v4 idA];
+  v38 = responseCopy;
+  requestId = [responseCopy requestId];
+  v5 = [requestId idA];
   v6 = v5;
-  v7 = [v5 UTF8String];
-  v8 = strlen(v7);
-  std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(&v53, v7, v8);
+  uTF8String = [v5 UTF8String];
+  v8 = strlen(uTF8String);
+  std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(&v53, uTF8String, v8);
   std::ios_base::getloc((&v53 + *(v53 - 24)));
   v9 = std::locale::use_facet(v58, MEMORY[0x1E69E5318]);
   (v9->__vftable[2].~facet_0)(v9, 10);
@@ -1080,8 +1080,8 @@ LABEL_21:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = [v38 parses];
-  v11 = [v10 countByEnumeratingWithState:&v48 objects:v63 count:16];
+  parses = [v38 parses];
+  v11 = [parses countByEnumeratingWithState:&v48 objects:v63 count:16];
   if (!v11)
   {
     goto LABEL_52;
@@ -1098,27 +1098,27 @@ LABEL_21:
     {
       if (*v49 != v41)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(parses);
       }
 
       v14 = *(*(&v48 + 1) + 8 * v13);
-      v15 = [v14 userDialogActs];
-      v16 = [v15 count] == 0;
+      userDialogActs = [v14 userDialogActs];
+      v16 = [userDialogActs count] == 0;
 
       if (v16)
       {
         goto LABEL_45;
       }
 
-      v17 = [v14 userDialogActs];
-      v18 = [v17 firstObject];
+      userDialogActs2 = [v14 userDialogActs];
+      firstObject = [userDialogActs2 firstObject];
 
-      if ([v18 hasAccepted])
+      if ([firstObject hasAccepted])
       {
-        v19 = [v18 accepted];
-        v20 = [v19 reference];
+        accepted = [firstObject accepted];
+        reference = [accepted reference];
 LABEL_23:
-        v21 = v20;
+        v21 = reference;
 
         if (!v21)
         {
@@ -1218,52 +1218,52 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      if ([v18 hasRejected])
+      if ([firstObject hasRejected])
       {
-        v19 = [v18 rejected];
-        v20 = [v19 reference];
+        accepted = [firstObject rejected];
+        reference = [accepted reference];
         goto LABEL_23;
       }
 
-      if ([v18 hasCancelled])
+      if ([firstObject hasCancelled])
       {
-        v19 = [v18 cancelled];
-        v20 = [v19 reference];
+        accepted = [firstObject cancelled];
+        reference = [accepted reference];
         goto LABEL_23;
       }
 
-      if ([v18 hasUserStatedTask])
+      if ([firstObject hasUserStatedTask])
       {
-        v19 = [v18 userStatedTask];
-        v20 = [v19 task];
+        accepted = [firstObject userStatedTask];
+        reference = [accepted task];
         goto LABEL_23;
       }
 
-      if ([v18 hasWantedToRepeat])
+      if ([firstObject hasWantedToRepeat])
       {
-        v19 = [v18 wantedToRepeat];
-        v20 = [v19 reference];
+        accepted = [firstObject wantedToRepeat];
+        reference = [accepted reference];
         goto LABEL_23;
       }
 
-      if ([v18 hasAcknowledged])
+      if ([firstObject hasAcknowledged])
       {
-        v19 = [v18 acknowledged];
-        v20 = [v19 reference];
+        accepted = [firstObject acknowledged];
+        reference = [accepted reference];
         goto LABEL_23;
       }
 
-      if ([v18 hasWantedToProceed])
+      if ([firstObject hasWantedToProceed])
       {
-        v19 = [v18 wantedToProceed];
-        v20 = [v19 reference];
+        accepted = [firstObject wantedToProceed];
+        reference = [accepted reference];
         goto LABEL_23;
       }
 
-      if ([v18 hasWantedToPause])
+      if ([firstObject hasWantedToPause])
       {
-        v19 = [v18 wantedToPause];
-        v20 = [v19 reference];
+        accepted = [firstObject wantedToPause];
+        reference = [accepted reference];
         goto LABEL_23;
       }
 
@@ -1273,7 +1273,7 @@ LABEL_45:
         *v58 = 136315394;
         *&v58[4] = "+[CDMNluLogUtil prettyPrintProtoResponse:]";
         *&v58[12] = 2112;
-        *&v58[14] = v18;
+        *&v58[14] = firstObject;
         _os_log_error_impl(&dword_1DC287000, v30, OS_LOG_TYPE_ERROR, "%s [ERR]: Unhandled SIRINLUExternalUserDialogAct type: %@", v58, 0x16u);
       }
 
@@ -1282,7 +1282,7 @@ LABEL_46:
     }
 
     while (v11 != v13);
-    v31 = [v10 countByEnumeratingWithState:&v48 objects:v63 count:16];
+    v31 = [parses countByEnumeratingWithState:&v48 objects:v63 count:16];
     v11 = v31;
   }
 
@@ -1327,18 +1327,18 @@ LABEL_52:
   return v34;
 }
 
-+ (id)prettyPrintResponse:(id)a3
++ (id)prettyPrintResponse:(id)response
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  responseCopy = response;
   std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream[abi:ne200100](v53);
-  v40 = v3;
-  v4 = [v3 requestId];
-  v5 = [v4 idAsString];
-  v6 = v5;
-  v7 = [v5 UTF8String];
-  v8 = strlen(v7);
-  std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(&v54, v7, v8);
+  v40 = responseCopy;
+  requestId = [responseCopy requestId];
+  idAsString = [requestId idAsString];
+  v6 = idAsString;
+  uTF8String = [idAsString UTF8String];
+  v8 = strlen(uTF8String);
+  std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(&v54, uTF8String, v8);
   std::ios_base::getloc((&v54 + *(v54 - 24)));
   v9 = std::locale::use_facet(v59, MEMORY[0x1E69E5318]);
   (v9->__vftable[2].~facet_0)(v9, 10);
@@ -1350,8 +1350,8 @@ LABEL_52:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v10 = [v40 parses];
-  v11 = [v10 countByEnumeratingWithState:&v49 objects:v64 count:16];
+  parses = [v40 parses];
+  v11 = [parses countByEnumeratingWithState:&v49 objects:v64 count:16];
   if (v11)
   {
     v12 = 0;
@@ -1365,27 +1365,27 @@ LABEL_52:
       {
         if (*v50 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(parses);
         }
 
         v15 = *(*(&v49 + 1) + 8 * v14);
-        v16 = [v15 userDialogActs];
-        v17 = [v16 count] == 0;
+        userDialogActs = [v15 userDialogActs];
+        v17 = [userDialogActs count] == 0;
 
         if (v17)
         {
           goto LABEL_39;
         }
 
-        v18 = [v15 userDialogActs];
-        v19 = [v18 firstObject];
+        userDialogActs2 = [v15 userDialogActs];
+        firstObject = [userDialogActs2 firstObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v20 = [v19 reference];
+          reference = [firstObject reference];
 LABEL_20:
-          v21 = v20;
+          v21 = reference;
 
           if (!v21)
           {
@@ -1478,14 +1478,14 @@ LABEL_39:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v19 task];
+          reference = [firstObject task];
           goto LABEL_20;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v30 = v19;
+          v30 = firstObject;
           v35 = [v30 description];
 
           v36 = v40;
@@ -1498,7 +1498,7 @@ LABEL_39:
           *v59 = 136315394;
           *&v59[4] = "+[CDMNluLogUtil prettyPrintResponse:]";
           *&v59[12] = 2112;
-          *&v59[14] = v19;
+          *&v59[14] = firstObject;
           _os_log_error_impl(&dword_1DC287000, v31, OS_LOG_TYPE_ERROR, "%s [ERR]: Unhandled SIRINLUUserDialogAct type: %@", v59, 0x16u);
         }
 
@@ -1507,7 +1507,7 @@ LABEL_40:
       }
 
       while (v11 != v14);
-      v32 = [v10 countByEnumeratingWithState:&v49 objects:v64 count:16];
+      v32 = [parses countByEnumeratingWithState:&v49 objects:v64 count:16];
       v11 = v32;
     }
 
@@ -1554,20 +1554,20 @@ LABEL_54:
   return v35;
 }
 
-+ (id)writeUaaPResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeUaaPResponseToDisk:(id)disk error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"UaaPResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserResponseWithResponse:diskCopy formatType:pathExtension];
 
   v23 = 0;
   v15 = [CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:&v23];
@@ -1599,11 +1599,11 @@ LABEL_54:
       _os_log_impl(&dword_1DC287000, v19, OS_LOG_TYPE_INFO, "%s [WARN]: error writing file: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v16;
       v18 = 0;
-      *a4 = v16;
+      *error = v16;
     }
 
     else
@@ -1617,20 +1617,20 @@ LABEL_54:
   return v18;
 }
 
-+ (id)writeUaaPRequestToDisk:(id)a3 error:(id *)a4
++ (id)writeUaaPRequestToDisk:(id)disk error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"UaaPRequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserRequestWithRequest:diskCopy formatType:pathExtension];
 
   v23 = 0;
   v15 = [CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:&v23];
@@ -1662,11 +1662,11 @@ LABEL_54:
       _os_log_impl(&dword_1DC287000, v19, OS_LOG_TYPE_INFO, "%s [WARN]: error writing file: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v16;
       v18 = 0;
-      *a4 = v16;
+      *error = v16;
     }
 
     else
@@ -1680,22 +1680,22 @@ LABEL_54:
   return v18;
 }
 
-+ (id)writeSSUResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeSSUResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"SSUResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSSUResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSSUResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1715,7 +1715,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeSSUResponseToDisk:error:]";
       v23 = 2112;
@@ -1731,22 +1731,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeSSURequestToDisk:(id)a3 error:(id *)a4
++ (id)writeSSURequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"SSURequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSSURequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSSURequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1766,7 +1766,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeSSURequestToDisk:error:]";
       v23 = 2112;
@@ -1782,22 +1782,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeLVCResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeLVCResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"LVCResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1817,7 +1817,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeLVCResponseToDisk:error:]";
       v23 = 2112;
@@ -1833,22 +1833,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeLVCRequestToDisk:(id)a3 error:(id *)a4
++ (id)writeLVCRequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"LVCRequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1868,7 +1868,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeLVCRequestToDisk:error:]";
       v23 = 2112;
@@ -1884,22 +1884,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writePSCResponseToDisk:(id)a3 error:(id *)a4
++ (id)writePSCResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"PSCResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializePSCParserResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializePSCParserResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1919,7 +1919,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writePSCResponseToDisk:error:]";
       v23 = 2112;
@@ -1935,22 +1935,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writePSCRequestToDisk:(id)a3 error:(id *)a4
++ (id)writePSCRequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"PSCRequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializePSCParserRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializePSCParserRequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1970,7 +1970,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writePSCRequestToDisk:error:]";
       v23 = 2112;
@@ -1986,22 +1986,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeSNLCResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeSNLCResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"SNLCResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2021,7 +2021,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeSNLCResponseToDisk:error:]";
       v23 = 2112;
@@ -2037,22 +2037,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeSNLCRequestToDisk:(id)a3 error:(id *)a4
++ (id)writeSNLCRequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"SNLCRequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2072,7 +2072,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeSNLCRequestToDisk:error:]";
       v23 = 2112;
@@ -2088,22 +2088,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeMRResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeMRResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"MRResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2123,7 +2123,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeMRResponseToDisk:error:]";
       v23 = 2112;
@@ -2139,22 +2139,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeMRRequestToDisk:(id)a3 error:(id *)a4
++ (id)writeMRRequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"MRRequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRRequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2174,7 +2174,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeMRRequestToDisk:error:]";
       v23 = 2112;
@@ -2190,22 +2190,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeMDResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeMDResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"MDResponse-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2225,7 +2225,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeMDResponseToDisk:error:]";
       v23 = 2112;
@@ -2241,22 +2241,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeMDRequestToDisk:(id)a3 error:(id *)a4
++ (id)writeMDRequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"MDRequest-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDRequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2276,7 +2276,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeMDRequestToDisk:error:]";
       v23 = 2112;
@@ -2292,22 +2292,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeNlv4ResponseToDisk:(id)a3 error:(id *)a4
++ (id)writeNlv4ResponseToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"Nlv4Response-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserResponseWithResponse:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserResponseWithResponse:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2327,7 +2327,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeNlv4ResponseToDisk:error:]";
       v23 = 2112;
@@ -2343,22 +2343,22 @@ LABEL_54:
   return v16;
 }
 
-+ (id)writeNlv4RequestToDisk:(id)a3 error:(id *)a4
++ (id)writeNlv4RequestToDisk:(id)disk error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  diskCopy = disk;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v10 = [v7 stringWithFormat:@"Nlv4Request-%f.json", v9];
 
-  v11 = [a1 getLogBasePath];
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  getLogBasePath = [self getLogBasePath];
+  v12 = [getLogBasePath stringByAppendingPathComponent:v10];
 
-  v13 = [v12 pathExtension];
-  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserRequestWithRequest:v6 formatType:v13];
+  pathExtension = [v12 pathExtension];
+  v14 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserRequestWithRequest:diskCopy formatType:pathExtension];
 
-  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:a4])
+  if ([CDMNluLogUtil saveProtoFile:v14 protobufFile:v12 error:error])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2378,7 +2378,7 @@ LABEL_54:
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 136315394;
       v22 = "+[CDMNluLogUtil writeNlv4RequestToDisk:error:]";
       v23 = 2112;

@@ -1,10 +1,10 @@
 @interface TUReplyWithMessageStore
 - (TUReplyWithMessageStore)init;
-- (id)_defaultRepliesForSending:(BOOL)a3;
+- (id)_defaultRepliesForSending:(BOOL)sending;
 - (id)cannedReplyActionSheetOptions;
 - (id)customReplies;
 - (void)dealloc;
-- (void)setCustomReply:(id)a3 atIndex:(unint64_t)a4;
+- (void)setCustomReply:(id)reply atIndex:(unint64_t)index;
 @end
 
 @implementation TUReplyWithMessageStore
@@ -33,16 +33,16 @@
   [(TUReplyWithMessageStore *)&v4 dealloc];
 }
 
-- (id)_defaultRepliesForSending:(BOOL)a3
+- (id)_defaultRepliesForSending:(BOOL)sending
 {
   v4 = @"CANNED_REPLY_%d";
-  if (a3)
+  if (sending)
   {
     v4 = @"CANNED_REPLY_SENDING_%d";
   }
 
   v5 = v4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(TUReplyWithMessageStore *)self count]>= 1)
   {
     v7 = 0;
@@ -51,7 +51,7 @@
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v7];
       v9 = TUBundle();
       v10 = [v9 localizedStringForKey:v8 value:&stru_1F098C218 table:@"TelephonyUtilities"];
-      [v6 addObject:v10];
+      [array addObject:v10];
 
       v7 = (v7 + 1);
     }
@@ -59,7 +59,7 @@
     while (v7 < [(TUReplyWithMessageStore *)self count]);
   }
 
-  v11 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
+  v11 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v11;
 }
@@ -73,9 +73,9 @@
     v5 = CFGetTypeID(v3);
     if (v5 == CFArrayGetTypeID())
     {
-      v6 = [MEMORY[0x1E695DF70] arrayWithArray:v4];
+      array = [MEMORY[0x1E695DF70] arrayWithArray:v4];
       CFRelease(v4);
-      if (v6)
+      if (array)
       {
         goto LABEL_7;
       }
@@ -87,21 +87,21 @@
     }
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
 LABEL_7:
-  v7 = [v6 count];
+  v7 = [array count];
   if (v7 < [(TUReplyWithMessageStore *)self count])
   {
     do
     {
-      [v6 addObject:&stru_1F098C218];
-      v8 = [v6 count];
+      [array addObject:&stru_1F098C218];
+      v8 = [array count];
     }
 
     while (v8 < [(TUReplyWithMessageStore *)self count]);
   }
 
-  v9 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
+  v9 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v9;
 }
@@ -109,8 +109,8 @@ LABEL_7:
 - (id)cannedReplyActionSheetOptions
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(TUReplyWithMessageStore *)self cannedReplies];
-  v5 = [v3 arrayWithArray:v4];
+  cannedReplies = [(TUReplyWithMessageStore *)self cannedReplies];
+  v5 = [v3 arrayWithArray:cannedReplies];
 
   if ([(TUReplyWithMessageStore *)self count]>= 1)
   {
@@ -132,9 +132,9 @@ LABEL_7:
   return v9;
 }
 
-- (void)setCustomReply:(id)a3 atIndex:(unint64_t)a4
+- (void)setCustomReply:(id)reply atIndex:(unint64_t)index
 {
-  v6 = a3;
+  replyCopy = reply;
   v7 = CFPreferencesCopyAppValue(@"TUReplyWithMessageStoreReplyArray", TUMobilePhoneDomain);
   if (v7)
   {
@@ -170,9 +170,9 @@ LABEL_7:
   }
 
 LABEL_9:
-  if (v6)
+  if (replyCopy)
   {
-    v12 = v6;
+    v12 = replyCopy;
   }
 
   else
@@ -181,7 +181,7 @@ LABEL_9:
   }
 
   v14 = v12;
-  [v10 replaceObjectAtIndex:a4 withObject:?];
+  [v10 replaceObjectAtIndex:index withObject:?];
   CFPreferencesSetAppValue(@"TUReplyWithMessageStoreReplyArray", v10, TUMobilePhoneDomain);
   CFPreferencesAppSynchronize(TUMobilePhoneDomain);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

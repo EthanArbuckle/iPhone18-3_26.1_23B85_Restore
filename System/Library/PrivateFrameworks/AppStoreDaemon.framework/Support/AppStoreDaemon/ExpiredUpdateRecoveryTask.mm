@@ -1,12 +1,12 @@
 @interface ExpiredUpdateRecoveryTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation ExpiredUpdateRecoveryTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -30,7 +30,7 @@
     v10[2] = sub_10022FE20;
     v10[3] = &unk_10051DF30;
     v10[4] = self;
-    v11 = v4;
+    v11 = handlerCopy;
     v12 = &v14;
     [v6 upToDateBagWithCompletionHandler:v10];
 
@@ -62,7 +62,7 @@
     }
 
     v7 = ASDErrorWithDescription();
-    (*(v4 + 2))(v4, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
   }
 
   _Block_object_dispose(&v14, 8);

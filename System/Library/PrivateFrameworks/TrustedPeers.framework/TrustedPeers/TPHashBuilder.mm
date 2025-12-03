@@ -1,46 +1,46 @@
 @interface TPHashBuilder
-+ (id)hashWithAlgo:(int64_t)a3 ofBytes:(const void *)a4 len:(unint64_t)a5;
-+ (id)hashWithAlgo:(int64_t)a3 ofData:(id)a4;
-+ (id)keyedHashWithAlgo:(int64_t)a3 key:(id)a4 data:(id)a5;
-+ (int64_t)algoOfHash:(id)a3;
++ (id)hashWithAlgo:(int64_t)algo ofBytes:(const void *)bytes len:(unint64_t)len;
++ (id)hashWithAlgo:(int64_t)algo ofData:(id)data;
++ (id)keyedHashWithAlgo:(int64_t)algo key:(id)key data:(id)data;
++ (int64_t)algoOfHash:(id)hash;
 - (CC_SHA256state_st)ctxSHA256;
 - (CC_SHA512state_st)ctxSHA512;
 - (TPHashBuilder)init;
-- (TPHashBuilder)initWithAlgo:(int64_t)a3;
-- (TPHashBuilder)initWithKeyedAlgo:(int64_t)a3 key:(id)a4;
+- (TPHashBuilder)initWithAlgo:(int64_t)algo;
+- (TPHashBuilder)initWithKeyedAlgo:(int64_t)algo key:(id)key;
 - (id)finalHash;
 - (id)finalKeyedHash;
-- (void)resetWithAlgo:(int64_t)a3;
-- (void)setCtxSHA256:(CC_SHA256state_st *)a3;
-- (void)setCtxSHA512:(CC_SHA512state_st *)a3;
+- (void)resetWithAlgo:(int64_t)algo;
+- (void)setCtxSHA256:(CC_SHA256state_st *)a256;
+- (void)setCtxSHA512:(CC_SHA512state_st *)a512;
 - (void)throwInvalidAlgo;
-- (void)updateWithBytes:(const void *)a3 len:(unint64_t)a4;
-- (void)updateWithData:(id)a3;
+- (void)updateWithBytes:(const void *)bytes len:(unint64_t)len;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation TPHashBuilder
 
-- (void)setCtxSHA512:(CC_SHA512state_st *)a3
+- (void)setCtxSHA512:(CC_SHA512state_st *)a512
 {
-  *self->_ctxSHA512.count = *a3->count;
-  v3 = *a3->hash;
-  v4 = *&a3->hash[2];
-  v5 = *&a3->hash[6];
-  *&self->_ctxSHA512.hash[4] = *&a3->hash[4];
+  *self->_ctxSHA512.count = *a512->count;
+  v3 = *a512->hash;
+  v4 = *&a512->hash[2];
+  v5 = *&a512->hash[6];
+  *&self->_ctxSHA512.hash[4] = *&a512->hash[4];
   *&self->_ctxSHA512.hash[6] = v5;
   *self->_ctxSHA512.hash = v3;
   *&self->_ctxSHA512.hash[2] = v4;
-  v6 = *a3->wbuf;
-  v7 = *&a3->wbuf[2];
-  v8 = *&a3->wbuf[6];
-  *&self->_ctxSHA512.wbuf[4] = *&a3->wbuf[4];
+  v6 = *a512->wbuf;
+  v7 = *&a512->wbuf[2];
+  v8 = *&a512->wbuf[6];
+  *&self->_ctxSHA512.wbuf[4] = *&a512->wbuf[4];
   *&self->_ctxSHA512.wbuf[6] = v8;
   *self->_ctxSHA512.wbuf = v6;
   *&self->_ctxSHA512.wbuf[2] = v7;
-  v9 = *&a3->wbuf[8];
-  v10 = *&a3->wbuf[10];
-  v11 = *&a3->wbuf[14];
-  *&self->_ctxSHA512.wbuf[12] = *&a3->wbuf[12];
+  v9 = *&a512->wbuf[8];
+  v10 = *&a512->wbuf[10];
+  v11 = *&a512->wbuf[14];
+  *&self->_ctxSHA512.wbuf[12] = *&a512->wbuf[12];
   *&self->_ctxSHA512.wbuf[14] = v11;
   *&self->_ctxSHA512.wbuf[8] = v9;
   *&self->_ctxSHA512.wbuf[10] = v10;
@@ -70,17 +70,17 @@
   return self;
 }
 
-- (void)setCtxSHA256:(CC_SHA256state_st *)a3
+- (void)setCtxSHA256:(CC_SHA256state_st *)a256
 {
-  v3 = *a3->count;
-  v4 = *&a3->hash[2];
-  *&self->_ctxSHA256.hash[6] = *&a3->hash[6];
+  v3 = *a256->count;
+  v4 = *&a256->hash[2];
+  *&self->_ctxSHA256.hash[6] = *&a256->hash[6];
   *&self->_ctxSHA256.hash[2] = v4;
   *self->_ctxSHA256.count = v3;
-  v5 = *&a3->wbuf[2];
-  v6 = *&a3->wbuf[6];
-  v7 = *&a3->wbuf[10];
-  *&self->_ctxSHA256.wbuf[14] = *&a3->wbuf[14];
+  v5 = *&a256->wbuf[2];
+  v6 = *&a256->wbuf[6];
+  v7 = *&a256->wbuf[10];
+  *&self->_ctxSHA256.wbuf[14] = *&a256->wbuf[14];
   *&self->_ctxSHA256.wbuf[10] = v7;
   *&self->_ctxSHA256.wbuf[6] = v6;
   *&self->_ctxSHA256.wbuf[2] = v5;
@@ -129,12 +129,12 @@
 - (id)finalHash
 {
   v3 = objc_alloc(MEMORY[0x277CBEB28]);
-  v4 = [(TPHashBuilder *)self algo];
-  if (v4 > 1)
+  algo = [(TPHashBuilder *)self algo];
+  if (algo > 1)
   {
-    if (v4 != 2)
+    if (algo != 2)
     {
-      if (v4 == 3)
+      if (algo == 3)
       {
         v3 = [v3 initWithLength:64];
         CC_SHA512_Final([v3 mutableBytes], &self->_ctxSHA512);
@@ -152,9 +152,9 @@
 
   else
   {
-    if (v4)
+    if (algo)
     {
-      if (v4 == 1)
+      if (algo == 1)
       {
         v3 = [v3 initWithLength:32];
         CC_SHA256_Final([v3 mutableBytes], &self->_ctxSHA256);
@@ -183,15 +183,15 @@ LABEL_11:
   return v8;
 }
 
-- (void)updateWithBytes:(const void *)a3 len:(unint64_t)a4
+- (void)updateWithBytes:(const void *)bytes len:(unint64_t)len
 {
-  v4 = a4;
-  v7 = [(TPHashBuilder *)self algo];
-  if (v7 <= 1)
+  lenCopy = len;
+  algo = [(TPHashBuilder *)self algo];
+  if (algo <= 1)
   {
-    if (v7)
+    if (algo)
     {
-      if (v7 != 1)
+      if (algo != 1)
       {
 LABEL_22:
 
@@ -199,31 +199,31 @@ LABEL_22:
         return;
       }
 
-      CC_SHA256_Update(&self->_ctxSHA256, a3, v4);
+      CC_SHA256_Update(&self->_ctxSHA256, bytes, lenCopy);
     }
 
     else
     {
 
-      CC_SHA224_Update(&self->_ctxSHA256, a3, v4);
+      CC_SHA224_Update(&self->_ctxSHA256, bytes, lenCopy);
     }
   }
 
   else
   {
-    switch(v7)
+    switch(algo)
     {
       case 2:
 
-        CC_SHA384_Update(&self->_ctxSHA512, a3, v4);
+        CC_SHA384_Update(&self->_ctxSHA512, bytes, lenCopy);
         break;
       case 3:
 
-        CC_SHA512_Update(&self->_ctxSHA512, a3, v4);
+        CC_SHA512_Update(&self->_ctxSHA512, bytes, lenCopy);
         break;
       case 4:
 
-        CCHmacUpdate(&self->_ctxHMAC, a3, v4);
+        CCHmacUpdate(&self->_ctxHMAC, bytes, lenCopy);
         return;
       default:
         goto LABEL_22;
@@ -231,28 +231,28 @@ LABEL_22:
   }
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  [(TPHashBuilder *)self updateWithBytes:v7 len:v8];
+  [(TPHashBuilder *)self updateWithBytes:bytes len:v8];
 }
 
-- (void)resetWithAlgo:(int64_t)a3
+- (void)resetWithAlgo:(int64_t)algo
 {
-  self->_algo = a3;
-  if (a3 > 1)
+  self->_algo = algo;
+  if (algo > 1)
   {
-    if (a3 == 2)
+    if (algo == 2)
     {
       CC_SHA384_Init(&self->_ctxSHA512);
       goto LABEL_13;
     }
 
-    if (a3 == 3)
+    if (algo == 3)
     {
       CC_SHA512_Init(&self->_ctxSHA512);
       goto LABEL_13;
@@ -261,13 +261,13 @@ LABEL_22:
 
   else
   {
-    if (!a3)
+    if (!algo)
     {
       CC_SHA224_Init(&self->_ctxSHA256);
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (algo == 1)
     {
       CC_SHA256_Init(&self->_ctxSHA256);
 LABEL_13:
@@ -279,15 +279,15 @@ LABEL_13:
   [(TPHashBuilder *)self throwInvalidAlgo];
 }
 
-- (TPHashBuilder)initWithKeyedAlgo:(int64_t)a3 key:(id)a4
+- (TPHashBuilder)initWithKeyedAlgo:(int64_t)algo key:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v7 = [(TPHashBuilder *)self init];
   v8 = v7;
-  v7->_algo = a3;
-  if (a3 == 4)
+  v7->_algo = algo;
+  if (algo == 4)
   {
-    CCHmacInit(&v7->_ctxHMAC, 2u, [v6 bytes], objc_msgSend(v6, "length"));
+    CCHmacInit(&v7->_ctxHMAC, 2u, [keyCopy bytes], objc_msgSend(keyCopy, "length"));
     v8->_keyed = 1;
   }
 
@@ -299,10 +299,10 @@ LABEL_13:
   return v8;
 }
 
-- (TPHashBuilder)initWithAlgo:(int64_t)a3
+- (TPHashBuilder)initWithAlgo:(int64_t)algo
 {
   v4 = [(TPHashBuilder *)self init];
-  [(TPHashBuilder *)v4 resetWithAlgo:a3];
+  [(TPHashBuilder *)v4 resetWithAlgo:algo];
   return v4;
 }
 
@@ -320,55 +320,55 @@ LABEL_13:
   return result;
 }
 
-+ (id)keyedHashWithAlgo:(int64_t)a3 key:(id)a4 data:(id)a5
++ (id)keyedHashWithAlgo:(int64_t)algo key:(id)key data:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[TPHashBuilder alloc] initWithKeyedAlgo:a3 key:v8];
+  dataCopy = data;
+  keyCopy = key;
+  v9 = [[TPHashBuilder alloc] initWithKeyedAlgo:algo key:keyCopy];
 
-  [(TPHashBuilder *)v9 updateWithData:v7];
-  v10 = [(TPHashBuilder *)v9 finalKeyedHash];
+  [(TPHashBuilder *)v9 updateWithData:dataCopy];
+  finalKeyedHash = [(TPHashBuilder *)v9 finalKeyedHash];
 
-  return v10;
+  return finalKeyedHash;
 }
 
-+ (id)hashWithAlgo:(int64_t)a3 ofBytes:(const void *)a4 len:(unint64_t)a5
++ (id)hashWithAlgo:(int64_t)algo ofBytes:(const void *)bytes len:(unint64_t)len
 {
-  v7 = [[TPHashBuilder alloc] initWithAlgo:a3];
-  [(TPHashBuilder *)v7 updateWithBytes:a4 len:a5];
-  v8 = [(TPHashBuilder *)v7 finalHash];
+  v7 = [[TPHashBuilder alloc] initWithAlgo:algo];
+  [(TPHashBuilder *)v7 updateWithBytes:bytes len:len];
+  finalHash = [(TPHashBuilder *)v7 finalHash];
 
-  return v8;
+  return finalHash;
 }
 
-+ (id)hashWithAlgo:(int64_t)a3 ofData:(id)a4
++ (id)hashWithAlgo:(int64_t)algo ofData:(id)data
 {
-  v5 = a4;
-  v6 = [v5 bytes];
-  v7 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
 
-  return [TPHashBuilder hashWithAlgo:a3 ofBytes:v6 len:v7];
+  return [TPHashBuilder hashWithAlgo:algo ofBytes:bytes len:v7];
 }
 
-+ (int64_t)algoOfHash:(id)a3
++ (int64_t)algoOfHash:(id)hash
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"SHA224:"])
+  hashCopy = hash;
+  if ([hashCopy hasPrefix:@"SHA224:"])
   {
     v4 = 0;
   }
 
-  else if ([v3 hasPrefix:@"SHA256:"])
+  else if ([hashCopy hasPrefix:@"SHA256:"])
   {
     v4 = 1;
   }
 
-  else if ([v3 hasPrefix:@"SHA384:"])
+  else if ([hashCopy hasPrefix:@"SHA384:"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasPrefix:@"SHA512:"])
+  else if ([hashCopy hasPrefix:@"SHA512:"])
   {
     v4 = 3;
   }

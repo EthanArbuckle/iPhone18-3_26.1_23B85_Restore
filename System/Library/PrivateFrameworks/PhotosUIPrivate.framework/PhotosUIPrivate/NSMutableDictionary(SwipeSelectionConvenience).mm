@@ -8,7 +8,7 @@
 {
   v4 = a3;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "section")}];
-  v6 = [a1 objectForKey:v5];
+  v6 = [self objectForKey:v5];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

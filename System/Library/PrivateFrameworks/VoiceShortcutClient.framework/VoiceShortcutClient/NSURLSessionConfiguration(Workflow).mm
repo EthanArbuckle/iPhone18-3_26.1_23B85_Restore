@@ -6,10 +6,10 @@
 
 + (id)wf_defaultSessionConfiguration
 {
-  v1 = [a1 defaultSessionConfiguration];
-  [v1 set_sourceApplicationBundleIdentifier:@"com.apple.shortcuts"];
+  defaultSessionConfiguration = [self defaultSessionConfiguration];
+  [defaultSessionConfiguration set_sourceApplicationBundleIdentifier:@"com.apple.shortcuts"];
 
-  return v1;
+  return defaultSessionConfiguration;
 }
 
 @end

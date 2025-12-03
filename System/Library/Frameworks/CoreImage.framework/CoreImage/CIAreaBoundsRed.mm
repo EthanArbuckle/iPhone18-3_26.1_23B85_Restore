@@ -25,8 +25,8 @@
 - (id)outputImage
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CIReductionFilter *)self offsetAndCrop];
-  if (v2 && (v3 = v2, [v2 extent], !CGRectIsEmpty(v71)))
+  offsetAndCrop = [(CIReductionFilter *)self offsetAndCrop];
+  if (offsetAndCrop && (v3 = offsetAndCrop, [offsetAndCrop extent], !CGRectIsEmpty(v71)))
   {
     v5 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_redThreshold];
     [v3 extent];

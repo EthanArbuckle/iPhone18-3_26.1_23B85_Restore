@@ -1,12 +1,12 @@
 @interface BSMachPortTaskNameRight
-+ (id)taskNameForPID:(int)a3;
++ (id)taskNameForPID:(int)d;
 - (BSAuditToken)auditToken;
-- (BSMachPortTaskNameRight)initWithCoder:(id)a3;
-- (BSMachPortTaskNameRight)initWithPID:(int)a3;
-- (BSMachPortTaskNameRight)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (BSMachPortTaskNameRight)initWithCoder:(id)coder;
+- (BSMachPortTaskNameRight)initWithPID:(int)d;
+- (BSMachPortTaskNameRight)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BSMachPortTaskNameRight
@@ -54,19 +54,19 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
   }
 }
 
-+ (id)taskNameForPID:(int)a3
++ (id)taskNameForPID:(int)d
 {
-  if (a3 < 1)
+  if (d < 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = *&a3;
-    if (BSSandboxCanGetMachTaskName(a3))
+    v4 = *&d;
+    if (BSSandboxCanGetMachTaskName(d))
     {
-      v6 = [[a1 alloc] initWithPID:v4];
+      v6 = [[self alloc] initWithPID:v4];
     }
 
     else
@@ -78,10 +78,10 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
   return v6;
 }
 
-- (BSMachPortTaskNameRight)initWithPID:(int)a3
+- (BSMachPortTaskNameRight)initWithPID:(int)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 >= 1 && (v4 = *&a3, (BSSandboxCanGetMachTaskName(a3) & 1) != 0))
+  if (d >= 1 && (v4 = *&d, (BSSandboxCanGetMachTaskName(d) & 1) != 0))
   {
     tn = 0;
     v5 = task_name_for_pid(*MEMORY[0x1E69E9A60], v4, &tn);
@@ -100,7 +100,7 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
         _os_log_error_impl(&dword_18FEF6000, v6, OS_LOG_TYPE_ERROR, "Unable to obtain a task name port right for pid %i: %{public}s (0x%x)", buf, 0x18u);
       }
 
-      v7 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -118,23 +118,23 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
       }
 
       self = v11;
-      v7 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = BSMachPortTaskNameRight;
-  v4 = [(BSMachPortSendRight *)&v7 copyWithZone:a3];
+  v4 = [(BSMachPortSendRight *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -147,15 +147,15 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
   return v5;
 }
 
-- (BSMachPortTaskNameRight)initWithXPCDictionary:(id)a3
+- (BSMachPortTaskNameRight)initWithXPCDictionary:(id)dictionary
 {
   v8.receiver = self;
   v8.super_class = BSMachPortTaskNameRight;
   v4 = [(BSMachPortRight *)&v8 initWithXPCDictionary:?];
   if (v4)
   {
-    v4->_pid = xpc_dictionary_get_int64(a3, "pid");
-    v5 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey(a3, "auditToken");
+    v4->_pid = xpc_dictionary_get_int64(dictionary, "pid");
+    v5 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey(dictionary, "auditToken");
     lock_auditToken = v4->_lock_auditToken;
     v4->_lock_auditToken = v5;
   }
@@ -163,26 +163,26 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
   return v4;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v5.receiver = self;
   v5.super_class = BSMachPortTaskNameRight;
   [(BSMachPortRight *)&v5 encodeWithXPCDictionary:?];
-  xpc_dictionary_set_int64(a3, "pid", self->_pid);
+  xpc_dictionary_set_int64(dictionary, "pid", self->_pid);
   os_unfair_lock_lock(&self->_lock);
-  BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey(self->_lock_auditToken, a3, "auditToken");
+  BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey(self->_lock_auditToken, dictionary, "auditToken");
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BSMachPortTaskNameRight)initWithCoder:(id)a3
+- (BSMachPortTaskNameRight)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = BSMachPortTaskNameRight;
   v4 = [(BSMachPortRight *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_pid = [a3 decodeIntForKey:@"pid"];
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+    v4->_pid = [coder decodeIntForKey:@"pid"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
     lock_auditToken = v4->_lock_auditToken;
     v4->_lock_auditToken = v5;
   }
@@ -190,14 +190,14 @@ void __37__BSMachPortTaskNameRight_auditToken__block_invoke(uint64_t a1, task_na
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BSMachPortTaskNameRight;
   [(BSMachPortRight *)&v5 encodeWithCoder:?];
-  [a3 encodeInt:self->_pid forKey:@"pid"];
+  [coder encodeInt:self->_pid forKey:@"pid"];
   os_unfair_lock_lock(&self->_lock);
-  [a3 encodeObject:self->_lock_auditToken forKey:@"auditToken"];
+  [coder encodeObject:self->_lock_auditToken forKey:@"auditToken"];
   os_unfair_lock_unlock(&self->_lock);
 }
 

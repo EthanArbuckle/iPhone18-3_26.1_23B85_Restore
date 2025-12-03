@@ -1,13 +1,13 @@
 @interface W5NetUsageManager
-+ (void)copyPeriodicNetUsageToDir:(id)a3 uuid:(id)a4;
-+ (void)writeProcNetUsage:(id)a3 ToFile:(id)a4;
++ (void)copyPeriodicNetUsageToDir:(id)dir uuid:(id)uuid;
++ (void)writeProcNetUsage:(id)usage ToFile:(id)file;
 - (W5NetUsageManager)init;
 - (id)_getCurrentUsage;
-- (id)_getProcNetUsageWithName:(id)a3 inUsageData:(id)a4;
-- (id)calculateUsageDelta:(id)a3;
-- (void)recordUsageToDate:(id)a3;
-- (void)startPeriodicUsageMonitor:(double)a3 maxEntries:(unint64_t)a4 uuid:(id)a5;
-- (void)stopPeriodicUsageMonitor:(id)a3;
+- (id)_getProcNetUsageWithName:(id)name inUsageData:(id)data;
+- (id)calculateUsageDelta:(id)delta;
+- (void)recordUsageToDate:(id)date;
+- (void)startPeriodicUsageMonitor:(double)monitor maxEntries:(unint64_t)entries uuid:(id)uuid;
+- (void)stopPeriodicUsageMonitor:(id)monitor;
 @end
 
 @implementation W5NetUsageManager
@@ -127,44 +127,44 @@
   return v10;
 }
 
-- (void)recordUsageToDate:(id)a3
+- (void)recordUsageToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_usageSnaphots objectForKey:v4];
+  dateCopy = date;
+  v5 = [(NSMutableDictionary *)self->_usageSnaphots objectForKey:dateCopy];
 
   if (!v5)
   {
     v6 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->_usageSnaphots setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_usageSnaphots setObject:v6 forKeyedSubscript:dateCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:dateCopy];
   v8 = [v7 count];
 
   if (v8 <= 1)
   {
-    v9 = [(W5NetUsageManager *)self _getCurrentUsage];
+    _getCurrentUsage = [(W5NetUsageManager *)self _getCurrentUsage];
     v10 = +[NSDate date];
-    v11 = [[W5WiFiNetUsageRecord alloc] init:v10 usageData:v9];
-    if (v9)
+    v11 = [[W5WiFiNetUsageRecord alloc] init:v10 usageData:_getCurrentUsage];
+    if (_getCurrentUsage)
     {
       v12 = sub_100098A04();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        [v9 count];
+        [_getCurrentUsage count];
         _os_log_send_and_compose_impl();
       }
 
-      v13 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:v4];
+      v13 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:dateCopy];
       [v13 addObject:v11];
     }
   }
 }
 
-- (void)startPeriodicUsageMonitor:(double)a3 maxEntries:(unint64_t)a4 uuid:(id)a5
+- (void)startPeriodicUsageMonitor:(double)monitor maxEntries:(unint64_t)entries uuid:(id)uuid
 {
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_netUsageTimer objectForKey:v8];
+  uuidCopy = uuid;
+  v9 = [(NSMutableDictionary *)self->_netUsageTimer objectForKey:uuidCopy];
 
   if (v9)
   {
@@ -178,17 +178,17 @@
       v35 = 1024;
       v36 = 133;
       v37 = 2112;
-      v38 = v8;
+      v38 = uuidCopy;
       _os_log_send_and_compose_impl();
     }
 
-    v11 = [(NSMutableDictionary *)self->_netUsageTimer objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)self->_netUsageTimer objectForKeyedSubscript:uuidCopy];
     [v11 invalidate];
   }
 
   v12 = [NSURL alloc];
-  v13 = [v8 UUIDString];
-  v14 = [NSString stringWithFormat:@"/tmp/com.apple.wifivelocity/%@/netusage", v13];
+  uUIDString = [uuidCopy UUIDString];
+  v14 = [NSString stringWithFormat:@"/tmp/com.apple.wifivelocity/%@/netusage", uUIDString];
   v15 = [v12 initFileURLWithPath:v14];
 
   v16 = +[NSFileManager defaultManager];
@@ -214,11 +214,11 @@
     _os_log_send_and_compose_impl();
   }
 
-  v20 = [[NSMutableArray alloc] initWithCapacity:a4];
-  [(NSMutableDictionary *)self->_periodicUsageFiles setObject:v20 forKeyedSubscript:v8];
+  v20 = [[NSMutableArray alloc] initWithCapacity:entries];
+  [(NSMutableDictionary *)self->_periodicUsageFiles setObject:v20 forKeyedSubscript:uuidCopy];
 
   v21 = [NSNumber numberWithUnsignedInteger:0];
-  [(NSMutableDictionary *)self->_periodicBufferHead setObject:v21 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_periodicBufferHead setObject:v21 forKeyedSubscript:uuidCopy];
 
   v22 = sub_100098A04();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -230,7 +230,7 @@
     v35 = 1024;
     v36 = 149;
     v37 = 2112;
-    v38 = v8;
+    v38 = uuidCopy;
     _os_log_send_and_compose_impl();
   }
 
@@ -239,19 +239,19 @@
   block[2] = sub_100010D94;
   block[3] = &unk_1000E1460;
   block[4] = self;
-  v26 = v8;
-  v28 = a3;
+  v26 = uuidCopy;
+  monitorCopy = monitor;
   v27 = v15;
-  v29 = a4;
+  entriesCopy = entries;
   v23 = v15;
-  v24 = v8;
+  v24 = uuidCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)stopPeriodicUsageMonitor:(id)a3
+- (void)stopPeriodicUsageMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_netUsageTimer objectForKey:v4];
+  monitorCopy = monitor;
+  v5 = [(NSMutableDictionary *)self->_netUsageTimer objectForKey:monitorCopy];
 
   if (v5)
   {
@@ -261,27 +261,27 @@
       _os_log_send_and_compose_impl();
     }
 
-    v7 = [(NSMutableDictionary *)self->_netUsageTimer objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_netUsageTimer objectForKeyedSubscript:monitorCopy];
     [v7 invalidate];
 
-    [(NSMutableDictionary *)self->_netUsageTimer removeObjectForKey:v4];
-    v8 = [(NSMutableDictionary *)self->_periodicUsageFiles objectForKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_netUsageTimer removeObjectForKey:monitorCopy];
+    v8 = [(NSMutableDictionary *)self->_periodicUsageFiles objectForKeyedSubscript:monitorCopy];
     [v8 removeAllObjects];
 
-    [(NSMutableDictionary *)self->_periodicUsageFiles removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_periodicBufferHead removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_periodicUsageFiles removeObjectForKey:monitorCopy];
+    [(NSMutableDictionary *)self->_periodicBufferHead removeObjectForKey:monitorCopy];
   }
 }
 
-- (id)_getProcNetUsageWithName:(id)a3 inUsageData:(id)a4
+- (id)_getProcNetUsageWithName:(id)name inUsageData:(id)data
 {
-  v5 = a3;
+  nameCopy = name;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  dataCopy = data;
+  v7 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -292,12 +292,12 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dataCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 objectForKey:{@"procName", v16}];
-        v13 = [v12 isEqualToString:v5];
+        v13 = [v12 isEqualToString:nameCopy];
 
         if (v13)
         {
@@ -306,7 +306,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -322,10 +322,10 @@ LABEL_11:
   return v14;
 }
 
-- (id)calculateUsageDelta:(id)a3
+- (id)calculateUsageDelta:(id)delta
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_usageSnaphots objectForKey:v4];
+  deltaCopy = delta;
+  v5 = [(NSMutableDictionary *)self->_usageSnaphots objectForKey:deltaCopy];
 
   if (!v5)
   {
@@ -339,14 +339,14 @@ LABEL_11:
       v46 = 1024;
       v47 = 214;
       v48 = 2112;
-      v49 = v4;
+      v49 = deltaCopy;
       _os_log_send_and_compose_impl();
     }
 
     goto LABEL_21;
   }
 
-  v6 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:deltaCopy];
   v7 = [v6 count];
 
   if (v7 != 2)
@@ -354,7 +354,7 @@ LABEL_11:
     v29 = sub_100098A04();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:v4];
+      v30 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:deltaCopy];
       v43 = "[W5NetUsageManager calculateUsageDelta:]";
       v44 = 2080;
       v42 = 136316162;
@@ -364,7 +364,7 @@ LABEL_11:
       v48 = 2048;
       v49 = [v30 count];
       v50 = 2112;
-      v51 = v4;
+      v51 = deltaCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -378,12 +378,12 @@ LABEL_21:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v8 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:deltaCopy];
   v9 = [v8 objectAtIndex:1];
-  v10 = [v9 usageData];
+  usageData = [v9 usageData];
 
-  obj = v10;
-  v11 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  obj = usageData;
+  v11 = [usageData countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v11)
   {
     v12 = v11;
@@ -399,12 +399,12 @@ LABEL_21:
 
         v14 = *(*(&v37 + 1) + 8 * i);
         v15 = [v14 objectForKey:@"procName"];
-        v16 = v4;
-        v17 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:v4];
+        v16 = deltaCopy;
+        v17 = [(NSMutableDictionary *)self->_usageSnaphots objectForKeyedSubscript:deltaCopy];
         v18 = [v17 objectAtIndex:0];
-        v19 = [v18 usageData];
-        v20 = self;
-        v21 = [(W5NetUsageManager *)self _getProcNetUsageWithName:v15 inUsageData:v19];
+        usageData2 = [v18 usageData];
+        selfCopy = self;
+        v21 = [(W5NetUsageManager *)self _getProcNetUsageWithName:v15 inUsageData:usageData2];
 
         if (v21)
         {
@@ -427,8 +427,8 @@ LABEL_21:
           [v33 addObject:v23];
         }
 
-        v4 = v16;
-        self = v20;
+        deltaCopy = v16;
+        self = selfCopy;
       }
 
       v12 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -450,7 +450,7 @@ LABEL_21:
     v48 = 2048;
     v49 = v25;
     v50 = 2112;
-    v51 = v4;
+    v51 = deltaCopy;
     _os_log_send_and_compose_impl();
   }
 
@@ -464,23 +464,23 @@ LABEL_21:
     v46 = 1024;
     v47 = 251;
     v48 = 2112;
-    v49 = v4;
+    v49 = deltaCopy;
     _os_log_send_and_compose_impl();
   }
 
-  [(NSMutableDictionary *)self->_usageSnaphots removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_usageSnaphots removeObjectForKey:deltaCopy];
 LABEL_22:
 
   return v33;
 }
 
-+ (void)copyPeriodicNetUsageToDir:(id)a3 uuid:(id)a4
++ (void)copyPeriodicNetUsageToDir:(id)dir uuid:(id)uuid
 {
-  v35 = a3;
-  v5 = a4;
+  dirCopy = dir;
+  uuidCopy = uuid;
   v6 = [NSURL alloc];
-  v7 = [v5 UUIDString];
-  v8 = [NSString stringWithFormat:@"/tmp/com.apple.wifivelocity/%@/netusage", v7];
+  uUIDString = [uuidCopy UUIDString];
+  v8 = [NSString stringWithFormat:@"/tmp/com.apple.wifivelocity/%@/netusage", uUIDString];
   v9 = [v6 initFileURLWithPath:v8];
 
   v10 = +[NSFileManager defaultManager];
@@ -515,7 +515,7 @@ LABEL_22:
   {
     v16 = v15;
     v32 = v9;
-    v33 = v5;
+    v33 = uuidCopy;
     v17 = 0;
     v18 = *v39;
     do
@@ -530,8 +530,8 @@ LABEL_22:
         }
 
         v21 = *(*(&v38 + 1) + 8 * v19);
-        v22 = [v21 lastPathComponent];
-        v23 = [v35 URLByAppendingPathComponent:v22];
+        lastPathComponent = [v21 lastPathComponent];
+        v23 = [dirCopy URLByAppendingPathComponent:lastPathComponent];
 
         v24 = +[NSFileManager defaultManager];
         v37 = v20;
@@ -571,7 +571,7 @@ LABEL_22:
 
     while (v16);
     v9 = v32;
-    v5 = v33;
+    uuidCopy = v33;
   }
 
   else
@@ -612,10 +612,10 @@ LABEL_22:
   }
 }
 
-+ (void)writeProcNetUsage:(id)a3 ToFile:(id)a4
++ (void)writeProcNetUsage:(id)usage ToFile:(id)file
 {
-  v5 = a3;
-  v6 = a4;
+  usageCopy = usage;
+  fileCopy = file;
   v7 = sub_100098A04();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -626,13 +626,13 @@ LABEL_22:
     v20 = 1024;
     v21 = 287;
     v22 = 2048;
-    v23 = [v5 count];
+    v23 = [usageCopy count];
     v24 = 2114;
-    v25 = v6;
+    v25 = fileCopy;
     _os_log_send_and_compose_impl();
   }
 
-  if ([v5 count])
+  if ([usageCopy count])
   {
     +[NSMutableString string];
     v14[0] = _NSConcreteStackBlock;
@@ -640,11 +640,11 @@ LABEL_22:
     v14[2] = sub_100012460;
     v8 = v14[3] = &unk_1000E14B0;
     v15 = v8;
-    [v5 enumerateObjectsUsingBlock:v14];
+    [usageCopy enumerateObjectsUsingBlock:v14];
     v9 = +[NSFileManager defaultManager];
-    v10 = [v6 path];
+    path = [fileCopy path];
     v11 = [v8 dataUsingEncoding:4];
-    v12 = [v9 createFileAtPath:v10 contents:v11 attributes:0];
+    v12 = [v9 createFileAtPath:path contents:v11 attributes:0];
 
     if (v12)
     {
@@ -658,7 +658,7 @@ LABEL_22:
         v20 = 1024;
         v21 = 303;
         v22 = 2114;
-        v23 = v6;
+        v23 = fileCopy;
         _os_log_send_and_compose_impl();
       }
     }

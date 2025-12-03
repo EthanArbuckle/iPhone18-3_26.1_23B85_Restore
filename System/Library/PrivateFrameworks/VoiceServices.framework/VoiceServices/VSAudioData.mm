@@ -1,24 +1,24 @@
 @interface VSAudioData
 - (AudioStreamBasicDescription)asbd;
 - (VSAudioData)init;
-- (VSAudioData)initWithCoder:(id)a3;
+- (VSAudioData)initWithCoder:(id)coder;
 - (double)duration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)totalFrames;
-- (void)concatenateWithAudio:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
-- (void)setAudioData:(id)a3;
-- (void)setPacketDescriptions:(id)a3;
+- (void)concatenateWithAudio:(id)audio;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
+- (void)setAudioData:(id)data;
+- (void)setPacketDescriptions:(id)descriptions;
 @end
 
 @implementation VSAudioData
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mSampleRate = v3;
   *&self->_asbd.mBytesPerPacket = v4;
 }
@@ -32,26 +32,26 @@
   return self;
 }
 
-- (VSAudioData)initWithCoder:(id)a3
+- (VSAudioData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = VSAudioData;
   v5 = [(VSAudioData *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioData"];
     v7 = [v6 mutableCopy];
     mutableAudioData = v5->_mutableAudioData;
     v5->_mutableAudioData = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"packetDescription"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"packetDescription"];
     v10 = [v9 mutableCopy];
     mutableDescription = v5->_mutableDescription;
     v5->_mutableDescription = v10;
 
-    v5->_packetCount = [v4 decodeIntegerForKey:@"packetCount"];
-    v12 = [v4 decodeBytesForKey:@"asbd" returnedLength:0];
+    v5->_packetCount = [coderCopy decodeIntegerForKey:@"packetCount"];
+    v12 = [coderCopy decodeBytesForKey:@"asbd" returnedLength:0];
     v13 = *(v12 + 32);
     v14 = *(v12 + 16);
     *&v5->_asbd.mSampleRate = *v12;
@@ -62,39 +62,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mutableAudioData = self->_mutableAudioData;
-  v5 = a3;
-  [v5 encodeObject:mutableAudioData forKey:@"audioData"];
-  [v5 encodeObject:self->_mutableDescription forKey:@"packetDescription"];
-  [v5 encodeInteger:self->_packetCount forKey:@"packetCount"];
-  [v5 encodeBytes:&self->_asbd length:40 forKey:@"asbd"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mutableAudioData forKey:@"audioData"];
+  [coderCopy encodeObject:self->_mutableDescription forKey:@"packetDescription"];
+  [coderCopy encodeInteger:self->_packetCount forKey:@"packetCount"];
+  [coderCopy encodeBytes:&self->_asbd length:40 forKey:@"asbd"];
 }
 
-- (void)setPacketDescriptions:(id)a3
+- (void)setPacketDescriptions:(id)descriptions
 {
-  v4 = a3;
-  v5 = [(VSAudioData *)self mutableDescription];
-  [v5 setData:v4];
+  descriptionsCopy = descriptions;
+  mutableDescription = [(VSAudioData *)self mutableDescription];
+  [mutableDescription setData:descriptionsCopy];
 }
 
-- (void)setAudioData:(id)a3
+- (void)setAudioData:(id)data
 {
-  v4 = a3;
-  v5 = [(VSAudioData *)self mutableAudioData];
-  [v5 setData:v4];
+  dataCopy = data;
+  mutableAudioData = [(VSAudioData *)self mutableAudioData];
+  [mutableAudioData setData:dataCopy];
 }
 
-- (void)concatenateWithAudio:(id)a3
+- (void)concatenateWithAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   [(VSAudioData *)self asbd];
   if (!v22)
   {
-    if (v4)
+    if (audioCopy)
     {
-      [v4 asbd];
+      [audioCopy asbd];
     }
 
     else
@@ -110,45 +110,45 @@
     [(VSAudioData *)self setAsbd:v17];
   }
 
-  v5 = [(VSAudioData *)self audioData];
-  v6 = [v5 length];
+  audioData = [(VSAudioData *)self audioData];
+  v6 = [audioData length];
 
-  v7 = [(VSAudioData *)self packetCount];
-  v8 = [(VSAudioData *)self mutableAudioData];
-  v9 = [v4 audioData];
-  [v8 appendData:v9];
+  packetCount = [(VSAudioData *)self packetCount];
+  mutableAudioData = [(VSAudioData *)self mutableAudioData];
+  audioData2 = [audioCopy audioData];
+  [mutableAudioData appendData:audioData2];
 
-  -[VSAudioData setPacketCount:](self, "setPacketCount:", -[VSAudioData packetCount](self, "packetCount") + [v4 packetCount]);
-  v10 = [(VSAudioData *)self mutableDescription];
-  v11 = [v4 packetDescriptions];
-  [v10 appendData:v11];
+  -[VSAudioData setPacketCount:](self, "setPacketCount:", -[VSAudioData packetCount](self, "packetCount") + [audioCopy packetCount]);
+  mutableDescription = [(VSAudioData *)self mutableDescription];
+  packetDescriptions = [audioCopy packetDescriptions];
+  [mutableDescription appendData:packetDescriptions];
 
-  v12 = [(VSAudioData *)self mutableDescription];
-  v13 = [v12 mutableBytes];
+  mutableDescription2 = [(VSAudioData *)self mutableDescription];
+  mutableBytes = [mutableDescription2 mutableBytes];
 
-  if (v7 < [(VSAudioData *)self packetCount])
+  if (packetCount < [(VSAudioData *)self packetCount])
   {
-    v14 = 16 * v7;
+    v14 = 16 * packetCount;
     do
     {
-      v15 = [(VSAudioData *)self mutableDescription];
-      v16 = [v15 length];
+      mutableDescription3 = [(VSAudioData *)self mutableDescription];
+      v16 = [mutableDescription3 length];
 
       if (v14 >= v16)
       {
         break;
       }
 
-      *(v13 + v14) += v6;
-      ++v7;
+      *(mutableBytes + v14) += v6;
+      ++packetCount;
       v14 += 16;
     }
 
-    while (v7 < [(VSAudioData *)self packetCount]);
+    while (packetCount < [(VSAudioData *)self packetCount]);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VSAudioData allocWithZone:?]];
   if (v4)
@@ -158,13 +158,13 @@
     v10[1] = v13;
     v11 = v14;
     [(VSAudioData *)v4 setAsbd:v10];
-    v5 = [(VSAudioData *)self audioData];
-    v6 = [v5 copy];
+    audioData = [(VSAudioData *)self audioData];
+    v6 = [audioData copy];
     [(VSAudioData *)v4 setAudioData:v6];
 
     [(VSAudioData *)v4 setPacketCount:[(VSAudioData *)self packetCount]];
-    v7 = [(VSAudioData *)self packetDescriptions];
-    v8 = [v7 copy];
+    packetDescriptions = [(VSAudioData *)self packetDescriptions];
+    v8 = [packetDescriptions copy];
     [(VSAudioData *)v4 setPacketDescriptions:v8];
   }
 
@@ -176,8 +176,8 @@
   [(VSAudioData *)self asbd];
   if (v11 == 1819304813)
   {
-    v3 = [(VSAudioData *)self audioData];
-    v4 = [v3 length];
+    audioData = [(VSAudioData *)self audioData];
+    v4 = [audioData length];
     [(VSAudioData *)self asbd];
     v5 = v4 / v10;
   }
@@ -187,9 +187,9 @@
     [(VSAudioData *)self asbd];
     if (v9 == 1869641075)
     {
-      v6 = [(VSAudioData *)self packetCount];
+      packetCount = [(VSAudioData *)self packetCount];
       [(VSAudioData *)self asbd];
-      return v8 * v6;
+      return v8 * packetCount;
     }
 
     else
@@ -212,8 +212,8 @@
     v4 = 0.0;
     if (v19 * v3 != 0.0)
     {
-      v5 = [(VSAudioData *)self audioData];
-      v6 = [v5 length];
+      audioData = [(VSAudioData *)self audioData];
+      v6 = [audioData length];
       [(VSAudioData *)self asbd];
       [(VSAudioData *)self asbd];
       LODWORD(v7) = v16;
@@ -230,10 +230,10 @@
       [(VSAudioData *)self asbd];
       if (v14 != 0.0)
       {
-        v8 = [(VSAudioData *)self packetCount];
+        packetCount = [(VSAudioData *)self packetCount];
         [(VSAudioData *)self asbd];
         LODWORD(v9) = v13;
-        v10 = v8 * v9;
+        v10 = packetCount * v9;
         [(VSAudioData *)self asbd];
         return v10 / v12;
       }
@@ -250,13 +250,13 @@
   v2 = [(VSAudioData *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     mutableAudioData = v2->_mutableAudioData;
-    v2->_mutableAudioData = v3;
+    v2->_mutableAudioData = data;
 
-    v5 = [MEMORY[0x277CBEB28] data];
+    data2 = [MEMORY[0x277CBEB28] data];
     mutableDescription = v2->_mutableDescription;
-    v2->_mutableDescription = v5;
+    v2->_mutableDescription = data2;
   }
 
   return v2;

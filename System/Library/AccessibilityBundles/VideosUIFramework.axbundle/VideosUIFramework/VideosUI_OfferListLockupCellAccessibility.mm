@@ -1,5 +1,5 @@
 @interface VideosUI_OfferListLockupCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axASCLockupView;
 - (id)_axContainerPrimaryButton;
@@ -11,15 +11,15 @@
 
 @implementation VideosUI_OfferListLockupCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.OfferListLockupCell" hasSwiftField:@"containerView" withSwiftType:"Optional<VUIBaseView>"];
-  [v3 validateClass:@"FocusableTextView" hasInstanceVariable:@"_auxilliaryTextView" withType:"VUITextView"];
-  [v3 validateClass:@"VideosUI.ASCListItem"];
-  [v3 validateClass:@"ASCLockupContentView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCLockupContentView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCLockupContentView" hasInstanceMethod:@"offerButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.OfferListLockupCell" hasSwiftField:@"containerView" withSwiftType:"Optional<VUIBaseView>"];
+  [validationsCopy validateClass:@"FocusableTextView" hasInstanceVariable:@"_auxilliaryTextView" withType:"VUITextView"];
+  [validationsCopy validateClass:@"VideosUI.ASCListItem"];
+  [validationsCopy validateClass:@"ASCLockupContentView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCLockupContentView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCLockupContentView" hasInstanceMethod:@"offerButton" withFullSignature:{"@", 0}];
 }
 
 - (id)_axContainerView
@@ -65,8 +65,8 @@
 - (id)_axContainerPrimaryButton
 {
   objc_opt_class();
-  v3 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerView];
-  v4 = [v3 safeSwiftValueForKey:@"primaryButton"];
+  _axContainerView = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerView];
+  v4 = [_axContainerView safeSwiftValueForKey:@"primaryButton"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
@@ -75,8 +75,8 @@
 - (id)_axContainerSecondaryButton
 {
   objc_opt_class();
-  v3 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerView];
-  v4 = [v3 safeSwiftValueForKey:@"secondaryButton"];
+  _axContainerView = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerView];
+  v4 = [_axContainerView safeSwiftValueForKey:@"secondaryButton"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
@@ -84,80 +84,80 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerView];
-  v4 = [(VideosUI_OfferListLockupCellAccessibility *)self _axASCLockupView];
-  v5 = [MEMORY[0x29EDB8DE8] array];
-  if (v3)
+  _axContainerView = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerView];
+  _axASCLockupView = [(VideosUI_OfferListLockupCellAccessibility *)self _axASCLockupView];
+  array = [MEMORY[0x29EDB8DE8] array];
+  if (_axContainerView)
   {
-    v6 = [v3 safeSwiftValueForKey:@"titleLabel"];
-    v7 = [v6 accessibilityLabel];
-    [v5 axSafelyAddObject:v7];
+    v6 = [_axContainerView safeSwiftValueForKey:@"titleLabel"];
+    accessibilityLabel = [v6 accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel];
 
-    v8 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerPrimaryButton];
-    v9 = [v8 accessibilityLabel];
-    [v5 axSafelyAddObject:v9];
+    _axContainerPrimaryButton = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerPrimaryButton];
+    accessibilityLabel2 = [_axContainerPrimaryButton accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel2];
 
-    v10 = [v3 safeSwiftValueForKey:@"descriptionTextView"];
+    v10 = [_axContainerView safeSwiftValueForKey:@"descriptionTextView"];
     v11 = [v10 safeValueForKey:@"_auxilliaryTextView"];
     v12 = [v11 safeValueForKey:@"_accessibilityGetValue"];
-    [v5 axSafelyAddObject:v12];
+    [array axSafelyAddObject:v12];
 
-    v13 = [v3 safeSwiftValueForKey:@"subBodyLabel"];
-    v14 = [v13 accessibilityLabel];
-    [v5 axSafelyAddObject:v14];
+    v13 = [_axContainerView safeSwiftValueForKey:@"subBodyLabel"];
+    accessibilityLabel3 = [v13 accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel3];
 
-    v15 = [v3 safeSwiftValueForKey:@"mediaTagsView"];
-    v16 = [v15 accessibilityLabel];
-    [v5 axSafelyAddObject:v16];
+    v15 = [_axContainerView safeSwiftValueForKey:@"mediaTagsView"];
+    accessibilityLabel4 = [v15 accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel4];
   }
 
-  if (v4)
+  if (_axASCLockupView)
   {
-    v17 = [v4 safeValueForKey:@"titleLabel"];
-    v18 = [v17 accessibilityLabel];
-    [v5 axSafelyAddObject:v18];
+    v17 = [_axASCLockupView safeValueForKey:@"titleLabel"];
+    accessibilityLabel5 = [v17 accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel5];
 
-    v19 = [v4 safeValueForKey:@"subtitleLabel"];
-    v20 = [v19 accessibilityLabel];
-    [v5 axSafelyAddObject:v20];
+    v19 = [_axASCLockupView safeValueForKey:@"subtitleLabel"];
+    accessibilityLabel6 = [v19 accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel6];
 
-    v21 = [v4 safeValueForKey:@"offerButton"];
-    v22 = [v21 accessibilityLabel];
-    [v5 axSafelyAddObject:v22];
+    v21 = [_axASCLockupView safeValueForKey:@"offerButton"];
+    accessibilityLabel7 = [v21 accessibilityLabel];
+    [array axSafelyAddObject:accessibilityLabel7];
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v23 = [v5 componentsJoinedByString:{@", "}];
+    accessibilityLabel8 = [array componentsJoinedByString:{@", "}];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = VideosUI_OfferListLockupCellAccessibility;
-    v23 = [(VideosUI_OfferListLockupCellAccessibility *)&v26 accessibilityLabel];
+    accessibilityLabel8 = [(VideosUI_OfferListLockupCellAccessibility *)&v26 accessibilityLabel];
   }
 
-  v24 = v23;
+  v24 = accessibilityLabel8;
 
   return v24;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerPrimaryButton];
-  v4 = v3;
-  if (v3)
+  _axContainerPrimaryButton = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerPrimaryButton];
+  v4 = _axContainerPrimaryButton;
+  if (_axContainerPrimaryButton)
   {
-    [v3 accessibilityActivationPoint];
+    [_axContainerPrimaryButton accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(VideosUI_OfferListLockupCellAccessibility *)self _axASCLockupView];
-    v10 = [v9 safeValueForKey:@"offerButton"];
+    _axASCLockupView = [(VideosUI_OfferListLockupCellAccessibility *)self _axASCLockupView];
+    v10 = [_axASCLockupView safeValueForKey:@"offerButton"];
 
     if (v10)
     {
@@ -186,18 +186,18 @@
 {
   v19.receiver = self;
   v19.super_class = VideosUI_OfferListLockupCellAccessibility;
-  v3 = [(VideosUI_OfferListLockupCellAccessibility *)&v19 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(VideosUI_OfferListLockupCellAccessibility *)&v19 accessibilityCustomActions];
+  array = [accessibilityCustomActions mutableCopy];
 
-  if (!v4)
+  if (!array)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v5 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerPrimaryButton];
-  if (v5)
+  _axContainerPrimaryButton = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerPrimaryButton];
+  if (_axContainerPrimaryButton)
   {
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, _axContainerPrimaryButton);
     v6 = objc_alloc(MEMORY[0x29EDC78E0]);
     v7 = accessibilityLocalizedString(@"offer.cell.purchase");
     v16[0] = MEMORY[0x29EDCA5F8];
@@ -207,30 +207,30 @@
     objc_copyWeak(&v17, &location);
     v8 = [v6 initWithName:v7 actionHandler:v16];
 
-    [v4 axSafelyAddObject:v8];
+    [array axSafelyAddObject:v8];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
-  v9 = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerSecondaryButton];
-  if (v9)
+  _axContainerSecondaryButton = [(VideosUI_OfferListLockupCellAccessibility *)self _axContainerSecondaryButton];
+  if (_axContainerSecondaryButton)
   {
-    objc_initWeak(&location, v9);
+    objc_initWeak(&location, _axContainerSecondaryButton);
     v10 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v11 = [v9 accessibilityLabel];
+    accessibilityLabel = [_axContainerSecondaryButton accessibilityLabel];
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
     v14[2] = __71__VideosUI_OfferListLockupCellAccessibility_accessibilityCustomActions__block_invoke_2;
     v14[3] = &unk_29F31C0A8;
     objc_copyWeak(&v15, &location);
-    v12 = [v10 initWithName:v11 actionHandler:v14];
+    v12 = [v10 initWithName:accessibilityLabel actionHandler:v14];
 
-    [v4 axSafelyAddObject:v12];
+    [array axSafelyAddObject:v12];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  return v4;
+  return array;
 }
 
 @end

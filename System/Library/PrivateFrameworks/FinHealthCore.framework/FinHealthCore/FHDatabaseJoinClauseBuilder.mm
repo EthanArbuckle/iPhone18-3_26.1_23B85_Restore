@@ -1,6 +1,6 @@
 @interface FHDatabaseJoinClauseBuilder
 - (FHDatabaseJoinClauseBuilder)init;
-- (void)addKeyPairsWithJoinType:(id)a3 leftEntity:(id)a4 leftJoinKey:(id)a5 rightEntity:(id)a6 rightJoinKey:(id)a7;
+- (void)addKeyPairsWithJoinType:(id)type leftEntity:(id)entity leftJoinKey:(id)key rightEntity:(id)rightEntity rightJoinKey:(id)joinKey;
 @end
 
 @implementation FHDatabaseJoinClauseBuilder
@@ -24,21 +24,21 @@
   return v2;
 }
 
-- (void)addKeyPairsWithJoinType:(id)a3 leftEntity:(id)a4 leftJoinKey:(id)a5 rightEntity:(id)a6 rightJoinKey:(id)a7
+- (void)addKeyPairsWithJoinType:(id)type leftEntity:(id)entity leftJoinKey:(id)key rightEntity:(id)rightEntity rightJoinKey:(id)joinKey
 {
   v12 = MEMORY[0x277CCACA8];
-  v13 = a6;
-  v14 = a4;
-  v19 = [v12 stringWithFormat:@" %@ join %@ on %@.%@ = %@.%@", a3, v13, v14, a5, v13, a7];
+  rightEntityCopy = rightEntity;
+  entityCopy = entity;
+  joinKey = [v12 stringWithFormat:@" %@ join %@ on %@.%@ = %@.%@", type, rightEntityCopy, entityCopy, key, rightEntityCopy, joinKey];
   entities = self->_entities;
-  v16 = [v14 lowercaseString];
+  lowercaseString = [entityCopy lowercaseString];
 
-  [(NSMutableArray *)entities addObject:v16];
+  [(NSMutableArray *)entities addObject:lowercaseString];
   v17 = self->_entities;
-  v18 = [v13 lowercaseString];
+  lowercaseString2 = [rightEntityCopy lowercaseString];
 
-  [(NSMutableArray *)v17 addObject:v18];
-  [(NSMutableArray *)self->_clauses addObject:v19];
+  [(NSMutableArray *)v17 addObject:lowercaseString2];
+  [(NSMutableArray *)self->_clauses addObject:joinKey];
 }
 
 @end

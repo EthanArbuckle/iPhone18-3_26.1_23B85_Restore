@@ -1,15 +1,15 @@
 @interface SRButtonTrayCell
-- (SRButtonTrayCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SRButtonTrayCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation SRButtonTrayCell
 
-- (SRButtonTrayCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SRButtonTrayCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = SRButtonTrayCell;
-  v4 = [(SRButtonTrayCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SRButtonTrayCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

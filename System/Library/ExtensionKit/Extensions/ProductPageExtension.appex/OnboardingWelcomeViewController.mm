@@ -1,6 +1,6 @@
 @interface OnboardingWelcomeViewController
-- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)didTapContinue;
 @end
@@ -9,11 +9,11 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(OnboardingWelcomeViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(OnboardingWelcomeViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -27,18 +27,18 @@
 - (void)didTapContinue
 {
   v2 = *&self->OBWelcomeController_opaque[OBJC_IVAR____TtC20ProductPageExtension31OnboardingWelcomeViewController_primaryButtonCallback];
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC20ProductPageExtension31OnboardingWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

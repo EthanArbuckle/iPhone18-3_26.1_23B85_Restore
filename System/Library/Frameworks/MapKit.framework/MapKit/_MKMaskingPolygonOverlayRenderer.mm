@@ -1,60 +1,60 @@
 @interface _MKMaskingPolygonOverlayRenderer
-- (BOOL)_canPossiblyDrawMapRect:(id)a3 zoomScale:(double)a4;
-- (BOOL)canDrawMapRect:(id)a3 zoomScale:(double)a4;
+- (BOOL)_canPossiblyDrawMapRect:(id)rect zoomScale:(double)scale;
+- (BOOL)canDrawMapRect:(id)rect zoomScale:(double)scale;
 - (id)_vectorGeometry;
-- (id)vectorDataForOverlay:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (id)vectorDataForOverlay:(id)overlay;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation _MKMaskingPolygonOverlayRenderer
 
-- (BOOL)_canPossiblyDrawMapRect:(id)a3 zoomScale:(double)a4
+- (BOOL)_canPossiblyDrawMapRect:(id)rect zoomScale:(double)scale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v7 = a3.var0.var1;
-  v8 = a3.var0.var0;
-  v10 = [(_MKMaskingPolygonOverlayRenderer *)self style];
-  if (v10 != 1)
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
+  style = [(_MKMaskingPolygonOverlayRenderer *)self style];
+  if (style != 1)
   {
     v12.receiver = self;
     v12.super_class = _MKMaskingPolygonOverlayRenderer;
-    LOBYTE(v10) = [(MKOverlayRenderer *)&v12 _canPossiblyDrawMapRect:v8 zoomScale:v7, var0, var1, a4];
+    LOBYTE(style) = [(MKOverlayRenderer *)&v12 _canPossiblyDrawMapRect:v8 zoomScale:v7, var0, var1, scale];
   }
 
-  return v10;
+  return style;
 }
 
-- (BOOL)canDrawMapRect:(id)a3 zoomScale:(double)a4
+- (BOOL)canDrawMapRect:(id)rect zoomScale:(double)scale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v7 = a3.var0.var1;
-  v8 = a3.var0.var0;
-  v10 = [(_MKMaskingPolygonOverlayRenderer *)self style];
-  if (v10 != 1)
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
+  style = [(_MKMaskingPolygonOverlayRenderer *)self style];
+  if (style != 1)
   {
     v12.receiver = self;
     v12.super_class = _MKMaskingPolygonOverlayRenderer;
-    LOBYTE(v10) = [(MKOverlayRenderer *)&v12 canDrawMapRect:v8 zoomScale:v7, var0, var1, a4];
+    LOBYTE(style) = [(MKOverlayRenderer *)&v12 canDrawMapRect:v8 zoomScale:v7, var0, var1, scale];
   }
 
-  return v10;
+  return style;
 }
 
-- (id)vectorDataForOverlay:(id)a3
+- (id)vectorDataForOverlay:(id)overlay
 {
   if ([(_MKMaskingPolygonOverlayRenderer *)self _canProvideVectorGeometry])
   {
-    v4 = [(_MKMaskingPolygonOverlayRenderer *)self _vectorGeometry];
+    _vectorGeometry = [(_MKMaskingPolygonOverlayRenderer *)self _vectorGeometry];
   }
 
   else
   {
-    v4 = 0;
+    _vectorGeometry = 0;
   }
 
-  return v4;
+  return _vectorGeometry;
 }
 
 - (id)_vectorGeometry
@@ -64,18 +64,18 @@
   if (!vectorData)
   {
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(MKOverlayRenderer *)self overlay];
-    v6 = [v5 polygons];
-    v7 = [v4 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    overlay = [(MKOverlayRenderer *)self overlay];
+    polygons = [overlay polygons];
+    v7 = [v4 arrayWithCapacity:{objc_msgSend(polygons, "count")}];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(MKOverlayRenderer *)self overlay];
-    v9 = [v8 polygons];
+    overlay2 = [(MKOverlayRenderer *)self overlay];
+    polygons2 = [overlay2 polygons];
 
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v10 = [polygons2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -86,14 +86,14 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(polygons2);
           }
 
           v14 = [objc_alloc(MEMORY[0x1E69DF4C8]) initWithMapPoints:objc_msgSend(*(*(&v18 + 1) + 8 * i) count:{"points"), objc_msgSend(*(*(&v18 + 1) + 8 * i), "pointCount")}];
           [v7 addObject:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [polygons2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -112,12 +112,12 @@
   return vectorData;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    [(VKVectorOverlayMaskingPolygonGroup *)self->_vectorData setStyle:a3 == 1];
+    self->_style = style;
+    [(VKVectorOverlayMaskingPolygonGroup *)self->_vectorData setStyle:style == 1];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface PLAssetsdSystemLibraryURLReadOnlyClient
-- (id)systemPhotoLibraryURLWithError:(id *)a3;
+- (id)systemPhotoLibraryURLWithError:(id *)error;
 @end
 
 @implementation PLAssetsdSystemLibraryURLReadOnlyClient
 
-- (id)systemPhotoLibraryURLWithError:(id *)a3
+- (id)systemPhotoLibraryURLWithError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   v32 = 0u;
@@ -47,13 +47,13 @@
   v28 = __Block_byref_object_copy__11779;
   v29 = __Block_byref_object_dispose__11780;
   v30 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __74__PLAssetsdSystemLibraryURLReadOnlyClient_systemPhotoLibraryURLWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &v25;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __74__PLAssetsdSystemLibraryURLReadOnlyClient_systemPhotoLibraryURLWithError___block_invoke_2;
@@ -62,12 +62,12 @@
   v23[5] = &v25;
   [v15 systemPhotoLibraryURL:v23];
 
-  if (a3)
+  if (error)
   {
     v16 = v26[5];
     if (v16)
     {
-      *a3 = v16;
+      *error = v16;
     }
   }
 

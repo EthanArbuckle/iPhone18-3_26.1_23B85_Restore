@@ -16,7 +16,7 @@
 
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_269D872F4();
 
     swift_unknownObjectRelease();

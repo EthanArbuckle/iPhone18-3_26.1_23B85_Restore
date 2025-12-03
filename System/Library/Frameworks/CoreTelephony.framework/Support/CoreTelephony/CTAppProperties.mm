@@ -6,17 +6,17 @@
 - (BOOL)isSystemService;
 - (BOOL)isUninstalledApp;
 - (id)bundleId;
-- (id)init:(id)a3;
-- (id)localizedName:(id)a3;
-- (id)remoteLocalizedName:(id)a3;
+- (id)init:(id)init;
+- (id)localizedName:(id)name;
+- (id)remoteLocalizedName:(id)name;
 @end
 
 @implementation CTAppProperties
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v3 = a3;
-  v44 = a3;
+  initCopy = init;
+  initCopy2 = init;
   v49.receiver = self;
   v49.super_class = CTAppProperties;
   v5 = [(CTAppProperties *)&v49 init];
@@ -25,7 +25,7 @@
     goto LABEL_42;
   }
 
-  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v44 allowPlaceholder:1 error:0];
+  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:initCopy2 allowPlaceholder:1 error:0];
   lsAppRecord = v5->_lsAppRecord;
   v5->_lsAppRecord = v6;
 
@@ -41,8 +41,8 @@
     goto LABEL_15;
   }
 
-  v11 = [(LSApplicationRecord *)v9 entitlements];
-  v12 = [v11 objectForKey:@"com.apple.private.data-usage-classification-override" ofClass:objc_opt_class()];
+  entitlements = [(LSApplicationRecord *)v9 entitlements];
+  v12 = [entitlements objectForKey:@"com.apple.private.data-usage-classification-override" ofClass:objc_opt_class()];
 
   if (!v12)
   {
@@ -79,12 +79,12 @@ LABEL_14:
 
 LABEL_15:
   v5->_bucketOverride = v13;
-  objc_storeStrong(&v5->_givenBundleId, v3);
+  objc_storeStrong(&v5->_givenBundleId, initCopy);
   v15 = v5->_lsAppRecord;
   if (v15)
   {
-    v3 = [(LSApplicationRecord *)v5->_lsAppRecord applicationState];
-    if ([v3 isValid])
+    initCopy = [(LSApplicationRecord *)v5->_lsAppRecord applicationState];
+    if ([initCopy isValid])
     {
       goto LABEL_41;
     }
@@ -105,15 +105,15 @@ LABEL_15:
     }
 
 LABEL_23:
-    v3 = +[ACXDeviceConnection sharedDeviceConnection];
+    initCopy = +[ACXDeviceConnection sharedDeviceConnection];
     v17 = +[NRPairedDeviceRegistry sharedInstance];
-    v18 = [v17 getPairedDevices];
+    getPairedDevices = [v17 getPairedDevices];
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v19 = v18;
+    v19 = getPairedDevices;
     v20 = [v19 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (!v20)
     {
@@ -133,11 +133,11 @@ LABEL_25:
 
       v24 = *(*(&v45 + 1) + 8 * v23);
       v25 = [v24 valueForProperty:v22];
-      v26 = [v25 BOOLValue];
+      bOOLValue = [v25 BOOLValue];
 
-      if ((v26 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v27 = [v3 applicationOnPairedDevice:v24 withBundleID:v44 error:0];
+        v27 = [initCopy applicationOnPairedDevice:v24 withBundleID:initCopy2 error:0];
         if (v27)
         {
           break;
@@ -154,7 +154,7 @@ LABEL_25:
 
 LABEL_32:
         v27 = 0;
-        v28 = v19;
+        lsAppRecord = v19;
 LABEL_39:
 
         goto LABEL_40;
@@ -162,41 +162,41 @@ LABEL_39:
     }
 
     objc_storeStrong(location, v27);
-    v29 = [*location companionAppBundleID];
-    v30 = v29 == 0;
+    companionAppBundleID = [*location companionAppBundleID];
+    v30 = companionAppBundleID == 0;
 
     if (!v30)
     {
       v31 = [LSApplicationRecord alloc];
-      v32 = [*location companionAppBundleID];
-      v33 = [v31 initWithBundleIdentifier:v32 allowPlaceholder:1 error:0];
+      companionAppBundleID2 = [*location companionAppBundleID];
+      v33 = [v31 initWithBundleIdentifier:companionAppBundleID2 allowPlaceholder:1 error:0];
       v34 = v5->_lsAppRecord;
       v5->_lsAppRecord = v33;
 
-      v28 = [(CTAppProperties *)v5 lsAppRecord];
-      v35 = [v28 applicationState];
-      if ([v35 isValid])
+      lsAppRecord = [(CTAppProperties *)v5 lsAppRecord];
+      applicationState = [lsAppRecord applicationState];
+      if ([applicationState isValid])
       {
-        v36 = [(CTAppProperties *)v5 lsAppRecord];
-        v37 = [v36 applicationState];
-        if ([v37 isInstalled])
+        lsAppRecord2 = [(CTAppProperties *)v5 lsAppRecord];
+        applicationState2 = [lsAppRecord2 applicationState];
+        if ([applicationState2 isInstalled])
         {
 
           goto LABEL_39;
         }
 
-        v39 = [(CTAppProperties *)v5 lsAppRecord];
-        if ([v39 isPlaceholder])
+        lsAppRecord3 = [(CTAppProperties *)v5 lsAppRecord];
+        if ([lsAppRecord3 isPlaceholder])
         {
 
           goto LABEL_39;
         }
 
         locationa = [(CTAppProperties *)v5 lsAppRecord];
-        v40 = [locationa applicationState];
-        v41 = [v40 isPlaceholder];
+        applicationState3 = [locationa applicationState];
+        isPlaceholder = [applicationState3 isPlaceholder];
 
-        if (v41)
+        if (isPlaceholder)
         {
 LABEL_40:
 
@@ -210,7 +210,7 @@ LABEL_41:
       }
     }
 
-    v28 = v5->_lsAppRecord;
+    lsAppRecord = v5->_lsAppRecord;
     v5->_lsAppRecord = 0;
     goto LABEL_39;
   }
@@ -227,41 +227,41 @@ LABEL_42:
 
 - (BOOL)isInstalledApp
 {
-  v3 = [(CTAppProperties *)self bucketOverride];
-  v4 = v3 == 1;
-  v5 = [(CTAppProperties *)self bucketOverride];
-  v6 = [(CTAppProperties *)self lsAppRecord];
-  if (v6)
+  bucketOverride = [(CTAppProperties *)self bucketOverride];
+  v4 = bucketOverride == 1;
+  bucketOverride2 = [(CTAppProperties *)self bucketOverride];
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
+  if (lsAppRecord)
   {
-    v7 = v6;
-    v8 = [(CTAppProperties *)self lsAppRecord];
-    v9 = [v8 applicationState];
-    v10 = [v9 isValid];
+    v7 = lsAppRecord;
+    lsAppRecord2 = [(CTAppProperties *)self lsAppRecord];
+    applicationState = [lsAppRecord2 applicationState];
+    isValid = [applicationState isValid];
 
-    if (v10)
+    if (isValid)
     {
-      v11 = [(CTAppProperties *)self lsAppRecord];
-      v12 = [v11 compatibilityObject];
-      if (v12)
+      lsAppRecord3 = [(CTAppProperties *)self lsAppRecord];
+      compatibilityObject = [lsAppRecord3 compatibilityObject];
+      if (compatibilityObject)
       {
-        v13 = [(CTAppProperties *)self lsAppRecord];
-        v27 = [v13 compatibilityObject];
-        v14 = [v27 applicationType];
-        if ([v14 isEqual:LSUserApplicationType])
+        lsAppRecord4 = [(CTAppProperties *)self lsAppRecord];
+        compatibilityObject2 = [lsAppRecord4 compatibilityObject];
+        applicationType = [compatibilityObject2 applicationType];
+        if ([applicationType isEqual:LSUserApplicationType])
         {
           v15 = 1;
         }
 
         else
         {
-          v26 = [(CTAppProperties *)self lsAppRecord];
-          v25 = [v26 compatibilityObject];
-          v24 = [v25 applicationType];
-          if ([v24 isEqual:LSSystemApplicationType])
+          lsAppRecord5 = [(CTAppProperties *)self lsAppRecord];
+          compatibilityObject3 = [lsAppRecord5 compatibilityObject];
+          applicationType2 = [compatibilityObject3 applicationType];
+          if ([applicationType2 isEqual:LSSystemApplicationType])
           {
-            v23 = [(CTAppProperties *)self lsAppRecord];
-            v16 = [v23 appTags];
-            v15 = !sub_10000AA00(v16);
+            lsAppRecord6 = [(CTAppProperties *)self lsAppRecord];
+            appTags = [lsAppRecord6 appTags];
+            v15 = !sub_10000AA00(appTags);
           }
 
           else
@@ -276,18 +276,18 @@ LABEL_42:
         v15 = 0;
       }
 
-      if (v3 != 1 && !v5)
+      if (bucketOverride != 1 && !bucketOverride2)
       {
-        v17 = [(CTAppProperties *)self lsAppRecord];
-        v18 = [v17 applicationState];
-        if (([v18 isInstalled] & 1) == 0)
+        lsAppRecord7 = [(CTAppProperties *)self lsAppRecord];
+        applicationState2 = [lsAppRecord7 applicationState];
+        if (([applicationState2 isInstalled] & 1) == 0)
         {
-          v19 = [(CTAppProperties *)self lsAppRecord];
-          if (([v19 isPlaceholder] & 1) == 0)
+          lsAppRecord8 = [(CTAppProperties *)self lsAppRecord];
+          if (([lsAppRecord8 isPlaceholder] & 1) == 0)
           {
-            v20 = [(CTAppProperties *)self lsAppRecord];
-            v21 = [v20 applicationState];
-            v15 &= [v21 isPlaceholder];
+            lsAppRecord9 = [(CTAppProperties *)self lsAppRecord];
+            applicationState3 = [lsAppRecord9 applicationState];
+            v15 &= [applicationState3 isPlaceholder];
           }
         }
 
@@ -301,48 +301,48 @@ LABEL_42:
 
 - (BOOL)isUninstalledApp
 {
-  v3 = [(CTAppProperties *)self bucketOverride];
-  v4 = [(CTAppProperties *)self lsAppRecord];
-  if (!v4)
+  bucketOverride = [(CTAppProperties *)self bucketOverride];
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
+  if (!lsAppRecord)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(CTAppProperties *)self lsAppRecord];
-  v7 = [v6 applicationState];
-  v8 = [v7 isValid];
+  v5 = lsAppRecord;
+  lsAppRecord2 = [(CTAppProperties *)self lsAppRecord];
+  applicationState = [lsAppRecord2 applicationState];
+  isValid = [applicationState isValid];
 
-  if (v8)
+  if (isValid)
   {
-    v9 = [(CTAppProperties *)self lsAppRecord];
-    v10 = [v9 applicationState];
-    if ([v10 isInstalled])
+    lsAppRecord3 = [(CTAppProperties *)self lsAppRecord];
+    applicationState2 = [lsAppRecord3 applicationState];
+    if ([applicationState2 isInstalled])
     {
-      v11 = 0;
+      isDeletable = 0;
     }
 
     else
     {
-      v12 = [(CTAppProperties *)self lsAppRecord];
-      if ([v12 isPlaceholder])
+      lsAppRecord4 = [(CTAppProperties *)self lsAppRecord];
+      if ([lsAppRecord4 isPlaceholder])
       {
-        v11 = 0;
+        isDeletable = 0;
       }
 
       else
       {
-        v13 = [(CTAppProperties *)self lsAppRecord];
-        v14 = [v13 applicationState];
-        if ([v14 isPlaceholder])
+        lsAppRecord5 = [(CTAppProperties *)self lsAppRecord];
+        applicationState3 = [lsAppRecord5 applicationState];
+        if ([applicationState3 isPlaceholder])
         {
-          v11 = 0;
+          isDeletable = 0;
         }
 
         else
         {
-          v15 = [(CTAppProperties *)self lsAppRecord];
-          v11 = [v15 isDeletable];
+          lsAppRecord6 = [(CTAppProperties *)self lsAppRecord];
+          isDeletable = [lsAppRecord6 isDeletable];
         }
       }
     }
@@ -351,49 +351,49 @@ LABEL_42:
   else
   {
 LABEL_5:
-    v11 = 1;
+    isDeletable = 1;
   }
 
-  v16 = [(CTAppProperties *)self remoteAppInfo];
+  remoteAppInfo = [(CTAppProperties *)self remoteAppInfo];
 
-  v17 = [(CTAppProperties *)self isSystemService];
-  if (v3)
+  isSystemService = [(CTAppProperties *)self isSystemService];
+  if (bucketOverride)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = v16 == 0;
+    v18 = remoteAppInfo == 0;
   }
 
   v19 = !v18;
-  return v11 & ~(v19 | v17) & 1;
+  return isDeletable & ~(v19 | isSystemService) & 1;
 }
 
 - (BOOL)isInternalApp
 {
-  v3 = [(CTAppProperties *)self bucketOverride];
-  v4 = v3 == 2;
-  v5 = [(CTAppProperties *)self bucketOverride];
-  v6 = [(CTAppProperties *)self lsAppRecord];
-  if (v6)
+  bucketOverride = [(CTAppProperties *)self bucketOverride];
+  v4 = bucketOverride == 2;
+  bucketOverride2 = [(CTAppProperties *)self bucketOverride];
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
+  if (lsAppRecord)
   {
-    v7 = v6;
-    v8 = [(CTAppProperties *)self lsAppRecord];
-    v9 = [v8 applicationState];
-    v10 = [v9 isValid];
+    v7 = lsAppRecord;
+    lsAppRecord2 = [(CTAppProperties *)self lsAppRecord];
+    applicationState = [lsAppRecord2 applicationState];
+    isValid = [applicationState isValid];
 
-    if (v10)
+    if (isValid)
     {
-      v11 = [(CTAppProperties *)self lsAppRecord];
-      v12 = [v11 compatibilityObject];
-      if (v12)
+      lsAppRecord3 = [(CTAppProperties *)self lsAppRecord];
+      compatibilityObject = [lsAppRecord3 compatibilityObject];
+      if (compatibilityObject)
       {
-        v13 = [(CTAppProperties *)self lsAppRecord];
-        v14 = [v13 compatibilityObject];
-        v15 = [v14 applicationType];
-        v16 = [v15 isEqual:LSInternalApplicationType];
+        lsAppRecord4 = [(CTAppProperties *)self lsAppRecord];
+        compatibilityObject2 = [lsAppRecord4 compatibilityObject];
+        applicationType = [compatibilityObject2 applicationType];
+        v16 = [applicationType isEqual:LSInternalApplicationType];
       }
 
       else
@@ -401,18 +401,18 @@ LABEL_5:
         v16 = 0;
       }
 
-      if (v3 != 2 && !v5)
+      if (bucketOverride != 2 && !bucketOverride2)
       {
-        v17 = [(CTAppProperties *)self lsAppRecord];
-        v18 = [v17 applicationState];
-        if (([v18 isInstalled] & 1) == 0)
+        lsAppRecord5 = [(CTAppProperties *)self lsAppRecord];
+        applicationState2 = [lsAppRecord5 applicationState];
+        if (([applicationState2 isInstalled] & 1) == 0)
         {
-          v19 = [(CTAppProperties *)self lsAppRecord];
-          if (([v19 isPlaceholder] & 1) == 0)
+          lsAppRecord6 = [(CTAppProperties *)self lsAppRecord];
+          if (([lsAppRecord6 isPlaceholder] & 1) == 0)
           {
-            v20 = [(CTAppProperties *)self lsAppRecord];
-            v21 = [v20 applicationState];
-            v16 &= [v21 isPlaceholder];
+            lsAppRecord7 = [(CTAppProperties *)self lsAppRecord];
+            applicationState3 = [lsAppRecord7 applicationState];
+            v16 &= [applicationState3 isPlaceholder];
           }
         }
 
@@ -431,16 +431,16 @@ LABEL_5:
     return 0;
   }
 
-  v4 = [(CTAppProperties *)self lsAppRecord];
-  if (v4)
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
+  if (lsAppRecord)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(CTAppProperties *)self remoteAppInfo];
-    v3 = v5 != 0;
+    remoteAppInfo = [(CTAppProperties *)self remoteAppInfo];
+    v3 = remoteAppInfo != 0;
   }
 
   return v3;
@@ -448,42 +448,42 @@ LABEL_5:
 
 - (BOOL)isSystemService
 {
-  v3 = [(CTAppProperties *)self bucketOverride];
-  v4 = [(CTAppProperties *)self bucketOverride];
-  v5 = [(CTAppProperties *)self remoteAppInfo];
+  bucketOverride = [(CTAppProperties *)self bucketOverride];
+  bucketOverride2 = [(CTAppProperties *)self bucketOverride];
+  remoteAppInfo = [(CTAppProperties *)self remoteAppInfo];
 
-  v6 = [(CTAppProperties *)self lsAppRecord];
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
 
-  if (v6)
+  if (lsAppRecord)
   {
-    v7 = [(CTAppProperties *)self lsAppRecord];
-    v8 = [v7 applicationState];
-    v9 = [v8 isValid];
+    lsAppRecord2 = [(CTAppProperties *)self lsAppRecord];
+    applicationState = [lsAppRecord2 applicationState];
+    isValid = [applicationState isValid];
 
-    v10 = [(CTAppProperties *)self lsAppRecord];
-    v11 = v10;
-    if (v9)
+    lsAppRecord3 = [(CTAppProperties *)self lsAppRecord];
+    v11 = lsAppRecord3;
+    if (isValid)
     {
-      v12 = [v10 applicationState];
-      v31 = [v12 isInstalled];
-      if (v31)
+      applicationState2 = [lsAppRecord3 applicationState];
+      isInstalled = [applicationState2 isInstalled];
+      if (isInstalled)
       {
         v30 = 0;
       }
 
       else
       {
-        v26 = [(CTAppProperties *)self lsAppRecord];
-        if ([v26 isPlaceholder])
+        lsAppRecord4 = [(CTAppProperties *)self lsAppRecord];
+        if ([lsAppRecord4 isPlaceholder])
         {
           v30 = 0;
         }
 
         else
         {
-          v25 = [(CTAppProperties *)self lsAppRecord];
-          v24 = [v25 applicationState];
-          if (([v24 isPlaceholder] & 1) == 0)
+          lsAppRecord5 = [(CTAppProperties *)self lsAppRecord];
+          applicationState3 = [lsAppRecord5 applicationState];
+          if (([applicationState3 isPlaceholder] & 1) == 0)
           {
 
             v14 = 0;
@@ -496,28 +496,28 @@ LABEL_27:
         }
       }
 
-      v15 = [(CTAppProperties *)self lsAppRecord];
-      v16 = [v15 compatibilityObject];
-      if (v16)
+      lsAppRecord6 = [(CTAppProperties *)self lsAppRecord];
+      compatibilityObject = [lsAppRecord6 compatibilityObject];
+      if (compatibilityObject)
       {
-        v29 = [(CTAppProperties *)self lsAppRecord];
-        v28 = [v29 compatibilityObject];
-        v27 = [v28 applicationType];
-        if ([v27 isEqual:LSHiddenAppType])
+        lsAppRecord7 = [(CTAppProperties *)self lsAppRecord];
+        compatibilityObject2 = [lsAppRecord7 compatibilityObject];
+        applicationType = [compatibilityObject2 applicationType];
+        if ([applicationType isEqual:LSHiddenAppType])
         {
           v14 = 1;
         }
 
         else
         {
-          v23 = [(CTAppProperties *)self lsAppRecord];
-          v22 = [v23 compatibilityObject];
-          v21 = [v22 applicationType];
-          if ([v21 isEqual:LSSystemApplicationType])
+          lsAppRecord8 = [(CTAppProperties *)self lsAppRecord];
+          compatibilityObject3 = [lsAppRecord8 compatibilityObject];
+          applicationType2 = [compatibilityObject3 applicationType];
+          if ([applicationType2 isEqual:LSSystemApplicationType])
           {
-            v20 = [(CTAppProperties *)self lsAppRecord];
-            v17 = [v20 appTags];
-            v14 = sub_10000AA00(v17);
+            lsAppRecord9 = [(CTAppProperties *)self lsAppRecord];
+            appTags = [lsAppRecord9 appTags];
+            v14 = sub_10000AA00(appTags);
           }
 
           else
@@ -542,7 +542,7 @@ LABEL_23:
         }
       }
 
-      if (v31)
+      if (isInstalled)
       {
         goto LABEL_28;
       }
@@ -550,30 +550,30 @@ LABEL_23:
       goto LABEL_27;
     }
 
-    v12 = [v10 bundleIdentifier];
+    applicationState2 = [lsAppRecord3 bundleIdentifier];
   }
 
   else
   {
-    v12 = [(CTAppProperties *)self givenBundleId];
-    v11 = v12;
+    applicationState2 = [(CTAppProperties *)self givenBundleId];
+    v11 = applicationState2;
   }
 
-  v13 = sub_10000A0C8(v12);
+  v13 = sub_10000A0C8(applicationState2);
   v14 = v13 != 0;
 
-  if (v6)
+  if (lsAppRecord)
   {
 LABEL_28:
   }
 
-  v18 = v5 == 0 && v14;
-  if (v4)
+  v18 = remoteAppInfo == 0 && v14;
+  if (bucketOverride2)
   {
-    v18 = v3 == 3;
+    v18 = bucketOverride == 3;
   }
 
-  return v3 == 3 || v18;
+  return bucketOverride == 3 || v18;
 }
 
 - (BOOL)isHiddenApp
@@ -596,8 +596,8 @@ LABEL_28:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) bundleIdentifier];
-        v8 = [v7 isEqualToString:self->_givenBundleId];
+        bundleIdentifier = [*(*(&v11 + 1) + 8 * i) bundleIdentifier];
+        v8 = [bundleIdentifier isEqualToString:self->_givenBundleId];
 
         if (v8)
         {
@@ -622,33 +622,33 @@ LABEL_11:
   return v9;
 }
 
-- (id)localizedName:(id)a3
+- (id)localizedName:(id)name
 {
-  v4 = a3;
-  v5 = [(CTAppProperties *)self lsAppRecord];
-  if (!v5)
+  nameCopy = name;
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
+  if (!lsAppRecord)
   {
     goto LABEL_4;
   }
 
-  v6 = [(CTAppProperties *)self lsAppRecord];
-  v7 = [v6 applicationState];
-  v8 = [v7 isValid];
+  lsAppRecord2 = [(CTAppProperties *)self lsAppRecord];
+  applicationState = [lsAppRecord2 applicationState];
+  isValid = [applicationState isValid];
 
-  if (v8)
+  if (isValid)
   {
-    v9 = [(CTAppProperties *)self lsAppRecord];
-    v10 = [v9 localizedNameWithPreferredLocalizations:v4];
+    lsAppRecord3 = [(CTAppProperties *)self lsAppRecord];
+    v10 = [lsAppRecord3 localizedNameWithPreferredLocalizations:nameCopy];
   }
 
   else
   {
 LABEL_4:
-    v11 = [(CTAppProperties *)self remoteAppInfo];
+    remoteAppInfo = [(CTAppProperties *)self remoteAppInfo];
 
-    if (v11)
+    if (remoteAppInfo)
     {
-      v10 = [(CTAppProperties *)self remoteLocalizedName:v4];
+      v10 = [(CTAppProperties *)self remoteLocalizedName:nameCopy];
     }
 
     else
@@ -662,47 +662,47 @@ LABEL_4:
 
 - (id)bundleId
 {
-  v3 = [(CTAppProperties *)self lsAppRecord];
-  if (v3)
+  lsAppRecord = [(CTAppProperties *)self lsAppRecord];
+  if (lsAppRecord)
   {
-    v4 = v3;
-    v5 = [(CTAppProperties *)self lsAppRecord];
-    v6 = [v5 applicationState];
-    v7 = [v6 isValid];
+    v4 = lsAppRecord;
+    lsAppRecord2 = [(CTAppProperties *)self lsAppRecord];
+    applicationState = [lsAppRecord2 applicationState];
+    isValid = [applicationState isValid];
 
-    if (v7)
+    if (isValid)
     {
-      v8 = [(CTAppProperties *)self lsAppRecord];
-      v9 = [v8 bundleIdentifier];
+      lsAppRecord3 = [(CTAppProperties *)self lsAppRecord];
+      bundleIdentifier = [lsAppRecord3 bundleIdentifier];
 LABEL_6:
-      v11 = v9;
+      givenBundleId = bundleIdentifier;
 
       goto LABEL_8;
     }
   }
 
-  v10 = [(CTAppProperties *)self remoteAppInfo];
+  remoteAppInfo = [(CTAppProperties *)self remoteAppInfo];
 
-  if (v10)
+  if (remoteAppInfo)
   {
-    v8 = [(CTAppProperties *)self remoteAppInfo];
-    v9 = [v8 bundleIdentifier];
+    lsAppRecord3 = [(CTAppProperties *)self remoteAppInfo];
+    bundleIdentifier = [lsAppRecord3 bundleIdentifier];
     goto LABEL_6;
   }
 
-  v11 = [(CTAppProperties *)self givenBundleId];
+  givenBundleId = [(CTAppProperties *)self givenBundleId];
 LABEL_8:
 
-  return v11;
+  return givenBundleId;
 }
 
-- (id)remoteLocalizedName:(id)a3
+- (id)remoteLocalizedName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = _kCFBundleDisplayNameKey;
   v6 = [NSSet setWithObject:_kCFBundleDisplayNameKey];
-  v7 = [(CTAppProperties *)self remoteAppInfo];
-  v8 = [v7 localizedInfoPlistStringsForKeys:v6 fetchingFirstMatchingLocalizationInList:v4];
+  remoteAppInfo = [(CTAppProperties *)self remoteAppInfo];
+  v8 = [remoteAppInfo localizedInfoPlistStringsForKeys:v6 fetchingFirstMatchingLocalizationInList:nameCopy];
 
   if (v8)
   {

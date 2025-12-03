@@ -1,17 +1,17 @@
 @interface PPTNotificationCenter
-+ (void)addOnceObserverForName:(id)a3 object:(id)a4 usingBlock:(id)a5;
-+ (void)postNotificationIfNeededWithName:(id)a3 object:(id)a4 userInfo:(id)a5;
++ (void)addOnceObserverForName:(id)name object:(id)object usingBlock:(id)block;
++ (void)postNotificationIfNeededWithName:(id)name object:(id)object userInfo:(id)info;
 @end
 
 @implementation PPTNotificationCenter
 
-+ (void)addOnceObserverForName:(id)a3 object:(id)a4 usingBlock:(id)a5
++ (void)addOnceObserverForName:(id)name object:(id)object usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 isEnabled];
-  if (v10 && v11)
+  nameCopy = name;
+  objectCopy = object;
+  blockCopy = block;
+  isEnabled = [self isEnabled];
+  if (blockCopy && isEnabled)
   {
     v19 = 0;
     v20 = &v19;
@@ -26,8 +26,8 @@
     v16[2] = sub_10074FC84;
     v16[3] = &unk_101638E90;
     v18 = &v19;
-    v17 = v10;
-    v14 = [v12 addObserverForName:v8 object:v9 queue:v13 usingBlock:v16];
+    v17 = blockCopy;
+    v14 = [v12 addObserverForName:nameCopy object:objectCopy queue:v13 usingBlock:v16];
     v15 = v20[5];
     v20[5] = v14;
 
@@ -35,15 +35,15 @@
   }
 }
 
-+ (void)postNotificationIfNeededWithName:(id)a3 object:(id)a4 userInfo:(id)a5
++ (void)postNotificationIfNeededWithName:(id)name object:(id)object userInfo:(id)info
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([a1 isEnabled])
+  nameCopy = name;
+  objectCopy = object;
+  infoCopy = info;
+  if ([self isEnabled])
   {
     v10 = +[NSNotificationCenter defaultCenter];
-    [v10 postNotificationName:v11 object:v8 userInfo:v9];
+    [v10 postNotificationName:nameCopy object:objectCopy userInfo:infoCopy];
   }
 }
 

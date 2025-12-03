@@ -1,32 +1,32 @@
 @interface CoreCECBusClient
-- (BOOL)injectRXMessage:(id)a3 error:(id *)a4;
-- (BOOL)injectTXMessage:(id)a3 error:(id *)a4;
-- (BOOL)setOSDName:(id)a3 error:(id *)a4;
-- (BOOL)setTvLanguageCode:(id)a3 error:(id *)a4;
-- (id)addDeviceWithAttributes:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)removeDeviceWithType:(unint64_t)a3;
+- (BOOL)injectRXMessage:(id)message error:(id *)error;
+- (BOOL)injectTXMessage:(id)message error:(id *)error;
+- (BOOL)setOSDName:(id)name error:(id *)error;
+- (BOOL)setTvLanguageCode:(id)code error:(id *)error;
+- (id)addDeviceWithAttributes:(id)attributes error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)removeDeviceWithType:(unint64_t)type;
 @end
 
 @implementation CoreCECBusClient
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CoreCECBusClient;
-  return [(CoreRCBus *)&v4 copyWithZone:a3];
+  return [(CoreRCBus *)&v4 copyWithZone:zone];
 }
 
-- (id)addDeviceWithAttributes:(id)a3 error:(id *)a4
+- (id)addDeviceWithAttributes:(id)attributes error:(id *)error
 {
-  v8 = [(CoreRCBus *)self manager];
+  manager = [(CoreRCBus *)self manager];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3052000000;
   v17 = __Block_byref_object_copy__4;
   v18 = __Block_byref_object_dispose__4;
   v19 = 0;
-  if (!v8)
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -40,11 +40,11 @@
   v13[1] = 3221225472;
   v13[2] = __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke;
   v13[3] = &unk_278EA3478;
-  v13[4] = v8;
-  v13[5] = a3;
+  v13[4] = manager;
+  v13[5] = attributes;
   v13[6] = self;
   v13[7] = &v14;
-  v9 = CoreRCWaitForAsyncOperation(a4, v13);
+  v9 = CoreRCWaitForAsyncOperation(error, v13);
   v10 = v15[5];
   if (v9)
   {
@@ -92,10 +92,10 @@ uint64_t __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke_2(u
   return v4();
 }
 
-- (void)removeDeviceWithType:(unint64_t)a3
+- (void)removeDeviceWithType:(unint64_t)type
 {
-  v5 = [(CoreRCBus *)self manager];
-  if (!v5)
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [CoreCECBusClient removeDeviceWithType:];
   }
@@ -110,18 +110,18 @@ uint64_t __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke_2(u
   v6[2] = __41__CoreCECBusClient_removeDeviceWithType___block_invoke;
   v6[3] = &unk_278EA4348;
   v6[5] = self;
-  v6[6] = a3;
-  v6[4] = v5;
+  v6[6] = type;
+  v6[4] = manager;
   if ((CoreRCWaitForAsyncOperation(0, v6) & 1) == 0)
   {
     [CoreCECBusClient removeDeviceWithType:];
   }
 }
 
-- (BOOL)setTvLanguageCode:(id)a3 error:(id *)a4
+- (BOOL)setTvLanguageCode:(id)code error:(id *)error
 {
-  v7 = [(CoreRCBus *)self manager];
-  if (!v7)
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [CoreCECBusClient setTvLanguageCode:error:];
   }
@@ -130,16 +130,16 @@ uint64_t __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke_2(u
   v9[1] = 3221225472;
   v9[2] = __44__CoreCECBusClient_setTvLanguageCode_error___block_invoke;
   v9[3] = &unk_278EA2910;
-  v9[4] = v7;
-  v9[5] = a3;
+  v9[4] = manager;
+  v9[5] = code;
   v9[6] = self;
-  return CoreRCWaitForAsyncOperation(a4, v9);
+  return CoreRCWaitForAsyncOperation(error, v9);
 }
 
-- (BOOL)injectRXMessage:(id)a3 error:(id *)a4
+- (BOOL)injectRXMessage:(id)message error:(id *)error
 {
-  v7 = [(CoreRCBus *)self manager];
-  if (!v7)
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [CoreCECBusClient injectRXMessage:error:];
   }
@@ -148,16 +148,16 @@ uint64_t __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke_2(u
   v9[1] = 3221225472;
   v9[2] = __42__CoreCECBusClient_injectRXMessage_error___block_invoke;
   v9[3] = &unk_278EA2910;
-  v9[4] = v7;
-  v9[5] = a3;
+  v9[4] = manager;
+  v9[5] = message;
   v9[6] = self;
-  return CoreRCWaitForAsyncOperation(a4, v9);
+  return CoreRCWaitForAsyncOperation(error, v9);
 }
 
-- (BOOL)injectTXMessage:(id)a3 error:(id *)a4
+- (BOOL)injectTXMessage:(id)message error:(id *)error
 {
-  v7 = [(CoreRCBus *)self manager];
-  if (!v7)
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [CoreCECBusClient injectTXMessage:error:];
   }
@@ -166,16 +166,16 @@ uint64_t __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke_2(u
   v9[1] = 3221225472;
   v9[2] = __42__CoreCECBusClient_injectTXMessage_error___block_invoke;
   v9[3] = &unk_278EA2910;
-  v9[4] = v7;
-  v9[5] = a3;
+  v9[4] = manager;
+  v9[5] = message;
   v9[6] = self;
-  return CoreRCWaitForAsyncOperation(a4, v9);
+  return CoreRCWaitForAsyncOperation(error, v9);
 }
 
-- (BOOL)setOSDName:(id)a3 error:(id *)a4
+- (BOOL)setOSDName:(id)name error:(id *)error
 {
-  v8 = [(CoreRCBus *)self manager];
-  if (!v8)
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -184,10 +184,10 @@ uint64_t __50__CoreCECBusClient_addDeviceWithAttributes_error___block_invoke_2(u
   v13[1] = 3221225472;
   v13[2] = __37__CoreCECBusClient_setOSDName_error___block_invoke;
   v13[3] = &unk_278EA2910;
-  v13[4] = v8;
-  v13[5] = a3;
+  v13[4] = manager;
+  v13[5] = name;
   v13[6] = self;
-  v9 = CoreRCWaitForAsyncOperation(a4, v13);
+  v9 = CoreRCWaitForAsyncOperation(error, v13);
   if (v9)
   {
     OUTLINED_FUNCTION_0_6();

@@ -1,27 +1,27 @@
 @interface SKAStatusPublishingServiceClient
-+ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)a3;
-+ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)a3;
++ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)identifier;
++ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)identifier;
 + (id)logger;
 - (NSString)description;
-- (SKAStatusPublishingServiceClient)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 databaseManager:(id)a6 invitationManager:(id)a7 publishingManager:(id)a8 channelManager:(id)a9 daemonProtocolDelegate:(id)a10;
+- (SKAStatusPublishingServiceClient)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate databaseManager:(id)manager invitationManager:(id)invitationManager publishingManager:(id)publishingManager channelManager:(id)channelManager daemonProtocolDelegate:(id)self0;
 - (SKAStatusPublishingServiceClientDelegate)delegate;
-- (double)_delayForStatusPublishRequest:(id)a3;
+- (double)_delayForStatusPublishRequest:(id)request;
 - (double)_randomSecondaryDeviceRepublishDelay;
-- (double)_serverBagTimeIntervalForKey:(id)a3 withDefaultValue:(double)a4;
-- (id)_serverBagNumberForKey:(id)a3;
-- (void)accountIsStatusKitCapableWithCompletion:(id)a3;
-- (void)fetchHandleInvitability:(id)a3 fromHandle:(id)a4 forStatusTypeIdentifier:(id)a5 completion:(id)a6;
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withInvitationPayload:(id)a5 statusTypeIdentifier:(id)a6 completion:(id)a7;
-- (void)invitedHandlesForStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)isHandleInviteable:(id)a3 fromHandle:(id)a4 forStatusTypeIdentifier:(id)a5 completion:(id)a6;
-- (void)isHandleInvited:(id)a3 fromSenderHandle:(id)a4 forStatusTypeIdentifier:(id)a5 completion:(id)a6;
-- (void)provisionPayloads:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)publishStatusRequest:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)publishingServiceClientConnectionWasInterrupted:(id)a3;
-- (void)publishingServiceClientConnectionWasInvalidated:(id)a3;
-- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(id)a3 completion:(id)a4;
-- (void)removeInvitedHandles:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
+- (double)_serverBagTimeIntervalForKey:(id)key withDefaultValue:(double)value;
+- (id)_serverBagNumberForKey:(id)key;
+- (void)accountIsStatusKitCapableWithCompletion:(id)completion;
+- (void)fetchHandleInvitability:(id)invitability fromHandle:(id)handle forStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withInvitationPayload:(id)payload statusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)invitedHandlesForStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)isHandleInviteable:(id)inviteable fromHandle:(id)handle forStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)isHandleInvited:(id)invited fromSenderHandle:(id)handle forStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)provisionPayloads:(id)payloads statusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)publishStatusRequest:(id)request statusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)publishingServiceClientConnectionWasInterrupted:(id)interrupted;
+- (void)publishingServiceClientConnectionWasInvalidated:(id)invalidated;
+- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)removeInvitedHandles:(id)handles statusTypeIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SKAStatusPublishingServiceClient
@@ -38,62 +38,62 @@
   return v3;
 }
 
-- (SKAStatusPublishingServiceClient)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 databaseManager:(id)a6 invitationManager:(id)a7 publishingManager:(id)a8 channelManager:(id)a9 daemonProtocolDelegate:(id)a10
+- (SKAStatusPublishingServiceClient)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate databaseManager:(id)manager invitationManager:(id)invitationManager publishingManager:(id)publishingManager channelManager:(id)channelManager daemonProtocolDelegate:(id)self0
 {
-  v27 = a3;
-  v16 = a4;
-  v17 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v18 = a9;
-  v19 = a10;
-  dispatch_assert_queue_V2(v16);
+  connectionCopy = connection;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  invitationManagerCopy = invitationManager;
+  publishingManagerCopy = publishingManager;
+  channelManagerCopy = channelManager;
+  protocolDelegateCopy = protocolDelegate;
+  dispatch_assert_queue_V2(queueCopy);
   v28.receiver = self;
   v28.super_class = SKAStatusPublishingServiceClient;
   v20 = [(SKAStatusPublishingServiceClient *)&v28 init];
   if (v20)
   {
-    v21 = [[SKAStatusPublishingServiceClientConnection alloc] initWithXPCConnection:v27 queue:v16 daemonProtocolDelegate:v19 connectionLifecycleDelegate:v20, v24, v25, v26];
+    managerCopy = [[SKAStatusPublishingServiceClientConnection alloc] initWithXPCConnection:connectionCopy queue:queueCopy daemonProtocolDelegate:protocolDelegateCopy connectionLifecycleDelegate:v20, publishingManagerCopy, invitationManagerCopy, managerCopy];
     clientConnection = v20->_clientConnection;
-    v20->_clientConnection = v21;
+    v20->_clientConnection = managerCopy;
 
-    objc_storeWeak(&v20->_delegate, v17);
-    objc_storeStrong(&v20->_databaseManager, a6);
-    objc_storeStrong(&v20->_invitationManager, a7);
-    objc_storeStrong(&v20->_channelManager, a9);
-    objc_storeStrong(&v20->_publishingManager, a8);
-    objc_storeStrong(&v20->_queue, a4);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeStrong(&v20->_databaseManager, manager);
+    objc_storeStrong(&v20->_invitationManager, invitationManager);
+    objc_storeStrong(&v20->_channelManager, channelManager);
+    objc_storeStrong(&v20->_publishingManager, publishingManager);
+    objc_storeStrong(&v20->_queue, queue);
   }
 
   return v20;
 }
 
-+ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)a3
++ (id)_missingEntitlmentErrorForStatusTypeIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client is not entitled to publish information for status of type %@. Missing entitlement %@", a3, @"com.apple.StatusKit.publish.types"];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client is not entitled to publish information for status of type %@. Missing entitlement %@", identifier, @"com.apple.StatusKit.publish.types"];
   v4 = [SKAError errorWithCode:202 customDescription:v3];
 
   return v4;
 }
 
-+ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)a3
++ (id)_serverDisabledErrorForStatusTypeIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Status type %@ has been disabled by the server", a3];
-  v4 = [SKAError errorWithCode:101 customDescription:v3];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"Status type %@ has been disabled by the server", identifier];
+  v4 = [SKAError errorWithCode:101 customDescription:identifier];
 
   return v4;
 }
 
-- (void)publishingServiceClientConnectionWasInterrupted:(id)a3
+- (void)publishingServiceClientConnectionWasInterrupted:(id)interrupted
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = interruptedCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Publishing service client connection was interrupted: %@", &v8, 0xCu);
   }
 
@@ -103,15 +103,15 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishingServiceClientConnectionWasInvalidated:(id)a3
+- (void)publishingServiceClientConnectionWasInvalidated:(id)invalidated
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = invalidatedCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Publishing service client connection was invalidated: %@", &v8, 0xCu);
   }
 
@@ -128,23 +128,23 @@ uint64_t __42__SKAStatusPublishingServiceClient_logger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)publishStatusRequest:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)publishStatusRequest:(id)request statusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v8;
+    v25 = requestCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Received request to publish status: %@", buf, 0xCu);
   }
 
-  v12 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v13 = [v12 clientIsEntitledForPublishingWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v13 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v13 & 1) == 0)
   {
@@ -154,11 +154,11 @@ uint64_t __42__SKAStatusPublishingServiceClient_logger__block_invoke()
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v16 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_12;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v17 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -166,10 +166,10 @@ uint64_t __42__SKAStatusPublishingServiceClient_logger__block_invoke()
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v16 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_12:
     v14 = v16;
-    v10[2](v10, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     goto LABEL_13;
   }
 
@@ -177,10 +177,10 @@ LABEL_12:
   v19[1] = 3221225472;
   v19[2] = __89__SKAStatusPublishingServiceClient_publishStatusRequest_statusTypeIdentifier_completion___block_invoke;
   v19[3] = &unk_27843F1A0;
-  v23 = v10;
-  v20 = v8;
-  v21 = self;
-  v22 = v9;
+  v23 = completionCopy;
+  v20 = requestCopy;
+  selfCopy = self;
+  v22 = identifierCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v19];
 
   v14 = v23;
@@ -267,26 +267,26 @@ void __89__SKAStatusPublishingServiceClient_publishStatusRequest_statusTypeIdent
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionPayloads:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)provisionPayloads:(id)payloads statusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadsCopy = payloads;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v12 = [v11 clientIsEntitledForPublishingWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v12 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v13 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v15 = v13;
-    v10[2](v10, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v14 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -294,7 +294,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v13 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v13 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -302,10 +302,10 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = __86__SKAStatusPublishingServiceClient_provisionPayloads_statusTypeIdentifier_completion___block_invoke;
   v16[3] = &unk_27843F1A0;
-  v19 = v10;
+  v19 = completionCopy;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
+  v17 = payloadsCopy;
+  v18 = identifierCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v16];
 
 LABEL_9:
@@ -332,25 +332,25 @@ void __86__SKAStatusPublishingServiceClient_provisionPayloads_statusTypeIdentifi
   }
 }
 
-- (void)invitedHandlesForStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)invitedHandlesForStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v9 = [v8 clientIsEntitledForPublishingWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v9 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v12 = v10;
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v11 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -358,7 +358,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v10 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -366,9 +366,9 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __85__SKAStatusPublishingServiceClient_invitedHandlesForStatusTypeIdentifier_completion___block_invoke;
   v13[3] = &unk_27843F128;
-  v15 = v7;
+  v15 = completionCopy;
   v13[4] = self;
-  v14 = v6;
+  v14 = identifierCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v13];
 
 LABEL_9:
@@ -458,37 +458,37 @@ void __85__SKAStatusPublishingServiceClient_invitedHandlesForStatusTypeIdentifie
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isHandleInvited:(id)a3 fromSenderHandle:(id)a4 forStatusTypeIdentifier:(id)a5 completion:(id)a6
+- (void)isHandleInvited:(id)invited fromSenderHandle:(id)handle forStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitedCopy = invited;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v14 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v10;
+    v27 = invitedCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = handleCopy;
     _os_log_impl(&dword_220099000, v14, OS_LOG_TYPE_DEFAULT, "Attempting to determine if handle %@ has already been invited from handle: %@", buf, 0x16u);
   }
 
-  v15 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v16 = [v15 clientIsEntitledForPublishingWithStatusTypeIdentifier:v12];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v16 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v16 & 1) == 0)
   {
-    v18 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v12];
+    v18 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v17 = v18;
-    v13[2](v13, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     goto LABEL_11;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v12])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v19 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -496,7 +496,7 @@ LABEL_10:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v18 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v12];
+    v18 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
@@ -504,11 +504,11 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = __104__SKAStatusPublishingServiceClient_isHandleInvited_fromSenderHandle_forStatusTypeIdentifier_completion___block_invoke;
   v21[3] = &unk_27843F100;
-  v25 = v13;
+  v25 = completionCopy;
   v21[4] = self;
-  v22 = v12;
-  v23 = v11;
-  v24 = v10;
+  v22 = identifierCopy;
+  v23 = handleCopy;
+  v24 = invitedCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v21];
 
   v17 = v25;
@@ -654,27 +654,27 @@ LABEL_34:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isHandleInviteable:(id)a3 fromHandle:(id)a4 forStatusTypeIdentifier:(id)a5 completion:(id)a6
+- (void)isHandleInviteable:(id)inviteable fromHandle:(id)handle forStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  inviteableCopy = inviteable;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v14 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v15 = [v14 clientIsEntitledForPublishingWithStatusTypeIdentifier:v12];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v15 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v12];
+    v16 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v18 = v16;
-    v13[2](v13, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v12])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v17 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -682,7 +682,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v12];
+    v16 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -690,10 +690,10 @@ LABEL_8:
   v19[1] = 3221225472;
   v19[2] = __101__SKAStatusPublishingServiceClient_isHandleInviteable_fromHandle_forStatusTypeIdentifier_completion___block_invoke;
   v19[3] = &unk_27843F1A0;
-  v22 = v13;
+  v22 = completionCopy;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
+  v20 = inviteableCopy;
+  v21 = handleCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v19];
 
 LABEL_9:
@@ -729,27 +729,27 @@ void __101__SKAStatusPublishingServiceClient_isHandleInviteable_fromHandle_forSt
   }
 }
 
-- (void)fetchHandleInvitability:(id)a3 fromHandle:(id)a4 forStatusTypeIdentifier:(id)a5 completion:(id)a6
+- (void)fetchHandleInvitability:(id)invitability fromHandle:(id)handle forStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitabilityCopy = invitability;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v14 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v15 = [v14 clientIsEntitledForPublishingWithStatusTypeIdentifier:v12];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v15 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v12];
+    v16 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v18 = v16;
-    v13[2](v13, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v12])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v17 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -757,7 +757,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v16 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v12];
+    v16 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -765,11 +765,11 @@ LABEL_8:
   v19[1] = 3221225472;
   v19[2] = __106__SKAStatusPublishingServiceClient_fetchHandleInvitability_fromHandle_forStatusTypeIdentifier_completion___block_invoke;
   v19[3] = &unk_27843F100;
-  v23 = v13;
+  v23 = completionCopy;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
+  v20 = invitabilityCopy;
+  v21 = handleCopy;
+  v22 = identifierCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v19];
 
 LABEL_9:
@@ -806,38 +806,38 @@ void __106__SKAStatusPublishingServiceClient_fetchHandleInvitability_fromHandle_
   }
 }
 
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withInvitationPayload:(id)a5 statusTypeIdentifier:(id)a6 completion:(id)a7
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withInvitationPayload:(id)payload statusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  handlesCopy = handles;
+  handleCopy = handle;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v17 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v15;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = v12;
+    v33 = handlesCopy;
     _os_log_impl(&dword_220099000, v17, OS_LOG_TYPE_DEFAULT, "Received request to send invitation for personal channel with statusTypeIdentifier %@ to handles: %@", buf, 0x16u);
   }
 
-  v18 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v19 = [v18 clientIsEntitledForPublishingWithStatusTypeIdentifier:v15];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v19 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v19 & 1) == 0)
   {
-    v21 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v15];
+    v21 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v20 = v21;
-    v16[2](v16, v21);
+    completionCopy[2](completionCopy, v21);
     goto LABEL_11;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v15])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v22 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -845,7 +845,7 @@ LABEL_10:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v21 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v15];
+    v21 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
@@ -853,12 +853,12 @@ LABEL_10:
   v24[1] = 3221225472;
   v24[2] = __121__SKAStatusPublishingServiceClient_inviteHandles_fromSenderHandle_withInvitationPayload_statusTypeIdentifier_completion___block_invoke;
   v24[3] = &unk_27843F420;
-  v29 = v16;
+  v29 = completionCopy;
   v24[4] = self;
-  v25 = v15;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
+  v25 = identifierCopy;
+  v26 = handlesCopy;
+  v27 = handleCopy;
+  v28 = payloadCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v24];
 
   v20 = v29;
@@ -926,36 +926,36 @@ void __121__SKAStatusPublishingServiceClient_inviteHandles_fromSenderHandle_with
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeInvitedHandles:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)removeInvitedHandles:(id)handles statusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlesCopy = handles;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v9;
+    v23 = identifierCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = handlesCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Received request to remove invitation from personal channel with statusTypeIdentifier %@ for handles: %@", buf, 0x16u);
   }
 
-  v12 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v13 = [v12 clientIsEntitledForPublishingWithStatusTypeIdentifier:v9];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v13 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v13 & 1) == 0)
   {
-    v15 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v14 = v15;
-    v10[2](v10, v15);
+    completionCopy[2](completionCopy, v15);
     goto LABEL_11;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v9])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v16 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -963,7 +963,7 @@ LABEL_10:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v15 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v9];
+    v15 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
@@ -971,10 +971,10 @@ LABEL_10:
   v18[1] = 3221225472;
   v18[2] = __89__SKAStatusPublishingServiceClient_removeInvitedHandles_statusTypeIdentifier_completion___block_invoke;
   v18[3] = &unk_27843F1A0;
-  v21 = v10;
+  v21 = completionCopy;
   v18[4] = self;
-  v19 = v9;
-  v20 = v8;
+  v19 = identifierCopy;
+  v20 = handlesCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v18];
 
   v14 = v21;
@@ -1040,33 +1040,33 @@ void __89__SKAStatusPublishingServiceClient_removeInvitedHandles_statusTypeIdent
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v8 = +[SKAStatusPublishingServiceClient logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Received request to remove all invitations from personal channel with statusTypeIdentifier %@", buf, 0xCu);
   }
 
-  v9 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v10 = [v9 clientIsEntitledForPublishingWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v10 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v10 & 1) == 0)
   {
-    v12 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v12 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_10:
     v11 = v12;
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
     goto LABEL_11;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v13 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1074,7 +1074,7 @@ LABEL_10:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v12 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v12 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
@@ -1082,9 +1082,9 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __114__SKAStatusPublishingServiceClient_removeAllInvitedHandlesFromPersonalChannelWithStatusTypeIdentifier_completion___block_invoke;
   v15[3] = &unk_27843F128;
-  v17 = v7;
+  v17 = completionCopy;
   v15[4] = self;
-  v16 = v6;
+  v16 = identifierCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v15];
 
   v11 = v17;
@@ -1144,25 +1144,25 @@ void __114__SKAStatusPublishingServiceClient_removeAllInvitedHandlesFromPersonal
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)a3 completion:(id)a4
+- (void)registerForDelegateCallbacksWithStatusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAStatusPublishingServiceClient *)self clientConnection];
-  v9 = [v8 clientIsEntitledForPublishingWithStatusTypeIdentifier:v6];
+  clientConnection = [(SKAStatusPublishingServiceClient *)self clientConnection];
+  v9 = [clientConnection clientIsEntitledForPublishingWithStatusTypeIdentifier:identifierCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusPublishingServiceClient _missingEntitlmentErrorForStatusTypeIdentifier:identifierCopy];
 LABEL_8:
     v12 = v10;
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
 
     goto LABEL_9;
   }
 
-  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:v6])
+  if (![SKAServerBag statusEnabledByServerForStatusTypeIdentifier:identifierCopy])
   {
     v11 = +[SKAStatusPublishingServiceClient logger];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1170,7 +1170,7 @@ LABEL_8:
       [SKAStatusPublishingServiceClient publishStatusRequest:statusTypeIdentifier:completion:];
     }
 
-    v10 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:v6];
+    v10 = [SKAStatusPublishingServiceClient _serverDisabledErrorForStatusTypeIdentifier:identifierCopy];
     goto LABEL_8;
   }
 
@@ -1178,9 +1178,9 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __100__SKAStatusPublishingServiceClient_registerForDelegateCallbacksWithStatusTypeIdentifier_completion___block_invoke;
   v13[3] = &unk_27843F128;
-  v15 = v7;
+  v15 = completionCopy;
   v13[4] = self;
-  v14 = v6;
+  v14 = identifierCopy;
   [(SKAStatusPublishingServiceClient *)self accountIsStatusKitCapableWithCompletion:v13];
 
 LABEL_9:
@@ -1239,22 +1239,22 @@ void __100__SKAStatusPublishingServiceClient_registerForDelegateCallbacksWithSta
   return v6;
 }
 
-- (void)accountIsStatusKitCapableWithCompletion:(id)a3
+- (void)accountIsStatusKitCapableWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SKAStatusPublishingServiceClient *)v5 databaseManager];
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  databaseManager = [(SKAStatusPublishingServiceClient *)selfCopy databaseManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SKAStatusPublishingServiceClient_accountIsStatusKitCapableWithCompletion___block_invoke;
   v8[3] = &unk_27843DE28;
-  v8[4] = v5;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v7 = completionCopy;
   v9 = v7;
-  [v6 deviceToDeviceEncryptedDatabaseCapableWithCompletion:v8];
+  [databaseManager deviceToDeviceEncryptedDatabaseCapableWithCompletion:v8];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __76__SKAStatusPublishingServiceClient_accountIsStatusKitCapableWithCompletion___block_invoke(uint64_t a1, char a2)
@@ -1269,11 +1269,11 @@ void __76__SKAStatusPublishingServiceClient_accountIsStatusKitCapableWithComplet
   dispatch_async(v4, v5);
 }
 
-- (id)_serverBagNumberForKey:(id)a3
+- (id)_serverBagNumberForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
   if (v5)
   {
     objc_opt_class();
@@ -1296,17 +1296,17 @@ LABEL_8:
   return v6;
 }
 
-- (double)_serverBagTimeIntervalForKey:(id)a3 withDefaultValue:(double)a4
+- (double)_serverBagTimeIntervalForKey:(id)key withDefaultValue:(double)value
 {
-  v5 = [(SKAStatusPublishingServiceClient *)self _serverBagNumberForKey:a3];
+  v5 = [(SKAStatusPublishingServiceClient *)self _serverBagNumberForKey:key];
   v6 = v5;
   if (v5)
   {
     [v5 doubleValue];
-    a4 = v7;
+    value = v7;
   }
 
-  return a4;
+  return value;
 }
 
 - (double)_randomSecondaryDeviceRepublishDelay
@@ -1333,15 +1333,15 @@ LABEL_8:
   return v7;
 }
 
-- (double)_delayForStatusPublishRequest:(id)a3
+- (double)_delayForStatusPublishRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 isSecondaryDeviceRepublish])
+  requestCopy = request;
+  if ([requestCopy isSecondaryDeviceRepublish])
   {
     [(SKAStatusPublishingServiceClient *)self _randomSecondaryDeviceRepublishDelay];
   }
 
-  else if ([v4 isScheduledRequest])
+  else if ([requestCopy isScheduledRequest])
   {
     [(SKAStatusPublishingServiceClient *)self _randomScheduledPublishDelay];
   }

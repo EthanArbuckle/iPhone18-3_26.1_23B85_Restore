@@ -1,29 +1,29 @@
 @interface DIUploadAsset
-- (DIUploadAsset)initWithCoder:(id)a3;
-- (DIUploadAsset)initWithData:(id)a3 assetType:(int64_t)a4;
+- (DIUploadAsset)initWithCoder:(id)coder;
+- (DIUploadAsset)initWithData:(id)data assetType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIUploadAsset
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DIUploadAsset *)self data];
-  [v4 encodeObject:v5 forKey:@"assetData"];
+  coderCopy = coder;
+  data = [(DIUploadAsset *)self data];
+  [coderCopy encodeObject:data forKey:@"assetData"];
 
-  [v4 encodeInteger:-[DIUploadAsset type](self forKey:{"type"), @"assetType"}];
-  v6 = [(DIUploadAsset *)self assetID];
-  [v4 encodeObject:v6 forKey:@"assetID"];
+  [coderCopy encodeInteger:-[DIUploadAsset type](self forKey:{"type"), @"assetType"}];
+  assetID = [(DIUploadAsset *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"assetID"];
 }
 
-- (DIUploadAsset)initWithCoder:(id)a3
+- (DIUploadAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetData"];
-  v6 = [v4 decodeIntegerForKey:@"assetType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetData"];
+  v6 = [coderCopy decodeIntegerForKey:@"assetType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
 
   if (v5)
   {
@@ -37,7 +37,7 @@
 
   if (v8)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -45,23 +45,23 @@
     v9 = [(DIUploadAsset *)self initWithData:v5 assetType:v6];
     [(DIUploadAsset *)v9 setAssetID:v7];
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (DIUploadAsset)initWithData:(id)a3 assetType:(int64_t)a4
+- (DIUploadAsset)initWithData:(id)data assetType:(int64_t)type
 {
-  v7 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = DIUploadAsset;
   v8 = [(DIUploadAsset *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_data, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_data, data);
+    v9->_type = type;
     v10 = objc_alloc_init(MEMORY[0x277CCAD78]);
     assetID = v9->_assetID;
     v9->_assetID = v10;
@@ -73,12 +73,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DIUploadAsset *)self type];
-  v5 = [(DIUploadAsset *)self assetID];
-  v6 = [v5 UUIDString];
-  v7 = [(DIUploadAsset *)self data];
-  v8 = [v7 description];
-  v9 = [v3 stringWithFormat:@"DIUploadAsset: type=%ld assetID=%@, data=%@", v4, v6, v8];
+  type = [(DIUploadAsset *)self type];
+  assetID = [(DIUploadAsset *)self assetID];
+  uUIDString = [assetID UUIDString];
+  data = [(DIUploadAsset *)self data];
+  v8 = [data description];
+  v9 = [v3 stringWithFormat:@"DIUploadAsset: type=%ld assetID=%@, data=%@", type, uUIDString, v8];
 
   return v9;
 }

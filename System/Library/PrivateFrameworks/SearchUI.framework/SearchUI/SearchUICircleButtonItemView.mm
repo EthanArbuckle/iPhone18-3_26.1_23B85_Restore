@@ -18,17 +18,17 @@
     {
       [MEMORY[0x1E69D9138] cachedFontForTextStyle:*MEMORY[0x1E69DDD08]];
     }
-    v3 = ;
+    defaultButtonFont = ;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SearchUICircleButtonItemView;
-    v3 = [(SearchUIButtonItemView *)&v5 defaultButtonFont];
+    defaultButtonFont = [(SearchUIButtonItemView *)&v5 defaultButtonFont];
   }
 
-  return v3;
+  return defaultButtonFont;
 }
 
 - (int64_t)symbolScale

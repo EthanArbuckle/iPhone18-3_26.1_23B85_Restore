@@ -42,50 +42,50 @@
 
 - (__CFString)vcp_typeDescription
 {
-  if ([a1 mediaType] == 1)
+  if ([self mediaType] == 1)
   {
-    if (([a1 mediaSubtypes] & 8) != 0)
+    if (([self mediaSubtypes] & 8) != 0)
     {
       return @"Live Photo";
     }
 
-    if ([a1 mediaSubtypes])
+    if ([self mediaSubtypes])
     {
       return @"Pano Photo";
     }
 
-    if (([a1 mediaSubtypes] & 4) != 0)
+    if (([self mediaSubtypes] & 4) != 0)
     {
       return @"Screenshot";
     }
 
-    if (([a1 mediaSubtypes] & 2) != 0)
+    if (([self mediaSubtypes] & 2) != 0)
     {
       return @"HDR Photo";
     }
 
-    v2 = [a1 mediaSubtypes];
+    mediaSubtypes = [self mediaSubtypes];
     v3 = @"SDOF Photo";
     v4 = @"Photo";
-    v5 = (v2 & 0x10) == 0;
+    v5 = (mediaSubtypes & 0x10) == 0;
   }
 
   else
   {
-    if ([a1 mediaType] != 2)
+    if ([self mediaType] != 2)
     {
       return @"Unknown";
     }
 
-    if (([a1 mediaSubtypes] & 0x20000) != 0)
+    if (([self mediaSubtypes] & 0x20000) != 0)
     {
       return @"Slow-mo Movie";
     }
 
-    v6 = [a1 mediaSubtypes];
+    mediaSubtypes2 = [self mediaSubtypes];
     v3 = @"Timelapse Movie";
     v4 = @"Movie";
-    v5 = (v6 & 0x40000) == 0;
+    v5 = (mediaSubtypes2 & 0x40000) == 0;
   }
 
   if (v5)
@@ -101,72 +101,72 @@
 
 - (double)vcp_originalSize
 {
-  v2 = [a1 pixelWidth];
-  [a1 pixelHeight];
-  return v2;
+  pixelWidth = [self pixelWidth];
+  [self pixelHeight];
+  return pixelWidth;
 }
 
 - (id)vcp_modificationDate
 {
-  v2 = [a1 adjustmentTimestamp];
-  if (v2)
+  adjustmentTimestamp = [self adjustmentTimestamp];
+  if (adjustmentTimestamp)
   {
-    v3 = [a1 adjustmentTimestamp];
+    adjustmentTimestamp2 = [self adjustmentTimestamp];
   }
 
   else
   {
-    v4 = [a1 creationDate];
-    if (v4)
+    creationDate = [self creationDate];
+    if (creationDate)
     {
-      [a1 creationDate];
+      [self creationDate];
     }
 
     else
     {
       [MEMORY[0x1E695DF00] distantPast];
     }
-    v3 = ;
+    adjustmentTimestamp2 = ;
   }
 
-  return v3;
+  return adjustmentTimestamp2;
 }
 
 - (uint64_t)vcp_eligibleForVideoDownload:()MediaAnalysis
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if (([a1 isVideo] & 1) != 0 || (objc_msgSend(a1, "vcp_isLivePhoto")) && (objc_msgSend(a1, "vcp_isVideoSlowmo") & 1) == 0)
+  if (([self isVideo] & 1) != 0 || (objc_msgSend(self, "vcp_isLivePhoto")) && (objc_msgSend(self, "vcp_isVideoSlowmo") & 1) == 0)
   {
     if (!v4)
     {
-      v4 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:a1];
+      v4 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:self];
     }
 
-    v6 = [v4 vcp_smallMovieDerivativeResource];
-    if (!v6)
+    vcp_smallMovieDerivativeResource = [v4 vcp_smallMovieDerivativeResource];
+    if (!vcp_smallMovieDerivativeResource)
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [a1 localIdentifier];
+        localIdentifier = [self localIdentifier];
         v12 = 138412290;
-        v13 = v9;
+        v13 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Asset has no small video derivative; skipping", &v12, 0xCu);
       }
 
       goto LABEL_16;
     }
 
-    if ([a1 isVideo])
+    if ([self isVideo])
     {
-      v7 = [v6 fileSize];
-      if (v7 > +[VCPDownloadManager maxSizeBytes])
+      fileSize = [vcp_smallMovieDerivativeResource fileSize];
+      if (fileSize > +[VCPDownloadManager maxSizeBytes])
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v8 = [a1 localIdentifier];
+          localIdentifier2 = [self localIdentifier];
           v12 = 138412290;
-          v13 = v8;
+          v13 = localIdentifier2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] File size exceeds streaming threshold; skipping", &v12, 0xCu);
         }
 
@@ -177,13 +177,13 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      if (!v7 && [a1 vcp_isLongMovie])
+      if (!fileSize && [self vcp_isLongMovie])
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v10 = [a1 localIdentifier];
+          localIdentifier3 = [self localIdentifier];
           v12 = 138412290;
-          v13 = v10;
+          v13 = localIdentifier3;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Duration exceeds streaming threshold; skipping", &v12, 0xCu);
         }
 
@@ -277,13 +277,13 @@ LABEL_15:
 LABEL_16:
   if ([MEMORY[0x1E69789B0] isMultiLibraryModeEnabled])
   {
-    v10 = v5;
+    vcp_defaultPhotoLibrary = v5;
     if (!v5)
     {
-      v10 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+      vcp_defaultPhotoLibrary = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
     }
 
-    [v8 setPhotoLibrary:v10];
+    [v8 setPhotoLibrary:vcp_defaultPhotoLibrary];
     if (!v5)
     {
     }
@@ -478,12 +478,12 @@ LABEL_53:
 
 - (uint64_t)vcp_hasAdjustments
 {
-  if ([a1 vcp_isVideoSlowmo])
+  if ([self vcp_isVideoSlowmo])
   {
-    return [a1 adjustmentsState] == 2;
+    return [self adjustmentsState] == 2;
   }
 
-  return [a1 hasAdjustments];
+  return [self hasAdjustments];
 }
 
 - (uint64_t)vcp_targetMajorDimensionForImageWithWidth:()MediaAnalysis height:andMinPreferredMinorDimension:
@@ -518,9 +518,9 @@ LABEL_53:
       v16 = (sqrt(a4 * 3048192.0 / v14) + 0.5) & 0xFFFFFFFE;
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v17 = [a1 localIdentifier];
+        localIdentifier = [self localIdentifier];
         v23 = 138412802;
-        v24 = v17;
+        v24 = localIdentifier;
         v25 = 1024;
         v26 = v15;
         v27 = 1024;
@@ -544,9 +544,9 @@ LABEL_53:
     {
       if (v19 >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v20 = [a1 localIdentifier];
+        localIdentifier2 = [self localIdentifier];
         v23 = 138412802;
-        v24 = v20;
+        v24 = localIdentifier2;
         v25 = 1024;
         v26 = v12;
         v27 = 1024;
@@ -567,9 +567,9 @@ LABEL_53:
 
     if (v19 >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v22 = [a1 localIdentifier];
+      localIdentifier3 = [self localIdentifier];
       v23 = 138412802;
-      v24 = v22;
+      v24 = localIdentifier3;
       v25 = 1024;
       v26 = a3;
       v27 = 1024;
@@ -590,48 +590,48 @@ LABEL_53:
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v25 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v30 = 138412546;
-      v31 = v25;
+      v31 = localIdentifier;
       v32 = 1024;
-      v33 = 0;
+      type = 0;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Invalid target resolution (%d)", &v30, 0x12u);
     }
 
     goto LABEL_39;
   }
 
-  v8 = [v6 pixelWidth];
-  v9 = [v7 pixelHeight];
-  v10 = v9;
-  if (!v8 || !v9)
+  pixelWidth = [v6 pixelWidth];
+  pixelHeight = [v7 pixelHeight];
+  v10 = pixelHeight;
+  if (!pixelWidth || !pixelHeight)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v11 = [a1 localIdentifier];
+      localIdentifier2 = [self localIdentifier];
       v30 = 138413058;
-      v31 = v11;
+      v31 = localIdentifier2;
       v32 = 1024;
-      v33 = [v7 type];
+      type = [v7 type];
       v34 = 1024;
-      v35 = v8;
+      v35 = pixelWidth;
       v36 = 1024;
       v37 = v10;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Resource (%d) has invalid dimensions (%dx%d); falling back to asset", &v30, 0x1Eu);
     }
 
-    v8 = [a1 pixelWidth];
-    v12 = [a1 pixelHeight];
-    v10 = v12;
-    if (!v8 || !v12)
+    pixelWidth = [self pixelWidth];
+    pixelHeight2 = [self pixelHeight];
+    v10 = pixelHeight2;
+    if (!pixelWidth || !pixelHeight2)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v26 = [a1 localIdentifier];
+        localIdentifier3 = [self localIdentifier];
         v30 = 138412802;
-        v31 = v26;
+        v31 = localIdentifier3;
         v32 = 1024;
-        v33 = v8;
+        type = pixelWidth;
         v34 = 1024;
         v35 = v10;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Asset has invalid dimensions (%dx%d)", &v30, 0x18u);
@@ -641,7 +641,7 @@ LABEL_53:
     }
   }
 
-  if (v8 * v10 <= a4)
+  if (pixelWidth * v10 <= a4)
   {
     if (MediaAnalysisLogLevel() < 7 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -649,11 +649,11 @@ LABEL_53:
     }
 
 LABEL_38:
-    v28 = [a1 localIdentifier];
+    localIdentifier4 = [self localIdentifier];
     v30 = 138412802;
-    v31 = v28;
+    v31 = localIdentifier4;
     v32 = 1024;
-    v33 = v8;
+    type = pixelWidth;
     v34 = 1024;
     v35 = v10;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Processing image at full resolution (%dx%d)", &v30, 0x18u);
@@ -663,17 +663,17 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v13 = v8;
+  v13 = pixelWidth;
   v14 = v10;
   v15 = a4;
-  v16 = vcvtmd_u64_f64(log2(sqrt(v10 * v8 / (a4 * 0.9))));
+  v16 = vcvtmd_u64_f64(log2(sqrt(v10 * pixelWidth / (a4 * 0.9))));
   v17 = 1 << (v16 - 1);
   if (!v16)
   {
     v17 = 0;
   }
 
-  v18 = ((v17 + v8) >> v16) & 0xFFFFFFFFFFFFFFFELL;
+  v18 = ((v17 + pixelWidth) >> v16) & 0xFFFFFFFFFFFFFFFELL;
   v19 = ((v17 + v10) >> v16) & 0xFFFFFFFFFFFFFFFELL;
   if (v18 * v19 > (v15 * 6.0 / 5.0))
   {
@@ -681,11 +681,11 @@ LABEL_39:
     v21 = (sqrt(v15 * v14 / v13) + 0.5) & 0xFFFFFFFE;
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v22 = [a1 localIdentifier];
+      localIdentifier5 = [self localIdentifier];
       v30 = 138412802;
-      v31 = v22;
+      v31 = localIdentifier5;
       v32 = 1024;
-      v33 = v20;
+      type = v20;
       v34 = 1024;
       v35 = v21;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Processing image at scaled resolution (%dx%d)", &v30, 0x18u);
@@ -717,11 +717,11 @@ LABEL_39:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v27 = [a1 localIdentifier];
+    localIdentifier6 = [self localIdentifier];
     v30 = 138412802;
-    v31 = v27;
+    v31 = localIdentifier6;
     v32 = 1024;
-    v33 = v18;
+    type = v18;
     v34 = 1024;
     v35 = v19;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Processing image at subsampled resolution (%dx%d)", &v30, 0x18u);
@@ -744,8 +744,8 @@ LABEL_40:
 
 - (uint64_t)vcp_needsFullAnalysisProcessing:()MediaAnalysis
 {
-  v5 = [a1 mediaAnalysisProperties];
-  if (![a1 mad_isNonLivePhotoImage])
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (![self mad_isNonLivePhotoImage])
   {
     if (a3)
     {
@@ -755,10 +755,10 @@ LABEL_40:
         goto LABEL_24;
       }
 
-      v11 = [a1 vcp_needsImageCaptionProcessing];
-      if (v5)
+      vcp_needsImageCaptionProcessing = [self vcp_needsImageCaptionProcessing];
+      if (mediaAnalysisProperties)
       {
-        v12 = v11;
+        v12 = vcp_needsImageCaptionProcessing;
       }
 
       else
@@ -766,17 +766,17 @@ LABEL_40:
         v12 = 1;
       }
 
-      if ((v12 & 1) == 0 && [v5 mediaAnalysisImageVersion] >= 75)
+      if ((v12 & 1) == 0 && [mediaAnalysisProperties mediaAnalysisImageVersion] >= 75)
       {
         goto LABEL_7;
       }
     }
 
-    else if (([a1 vcp_needsImageCaptionProcessing] & 1) == 0)
+    else if (([self vcp_needsImageCaptionProcessing] & 1) == 0)
     {
-      v13 = [a1 vcp_needsVideoCaptionProcessing];
-      v14 = v5 ? v13 : 1;
-      if ((v14 & 1) == 0 && [v5 mediaAnalysisVersion] >= 0x4B && objc_msgSend(v5, "mediaAnalysisImageVersion") >= 75)
+      vcp_needsVideoCaptionProcessing = [self vcp_needsVideoCaptionProcessing];
+      v14 = mediaAnalysisProperties ? vcp_needsVideoCaptionProcessing : 1;
+      if ((v14 & 1) == 0 && [mediaAnalysisProperties mediaAnalysisVersion] >= 0x4B && objc_msgSend(mediaAnalysisProperties, "mediaAnalysisImageVersion") >= 75)
       {
         goto LABEL_7;
       }
@@ -787,10 +787,10 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v6 = [a1 vcp_needsImageCaptionProcessing];
-  if (v5)
+  vcp_needsImageCaptionProcessing2 = [self vcp_needsImageCaptionProcessing];
+  if (mediaAnalysisProperties)
   {
-    v7 = v6;
+    v7 = vcp_needsImageCaptionProcessing2;
   }
 
   else
@@ -798,15 +798,15 @@ LABEL_23:
     v7 = 1;
   }
 
-  if ((v7 & 1) != 0 || [v5 mediaAnalysisImageVersion] < 75)
+  if ((v7 & 1) != 0 || [mediaAnalysisProperties mediaAnalysisImageVersion] < 75)
   {
     goto LABEL_23;
   }
 
 LABEL_7:
-  v8 = [v5 mediaAnalysisTimeStamp];
-  v9 = [a1 vcp_modificationDate];
-  v10 = [v8 isEqualToDate:v9] ^ 1;
+  mediaAnalysisTimeStamp = [mediaAnalysisProperties mediaAnalysisTimeStamp];
+  vcp_modificationDate = [self vcp_modificationDate];
+  v10 = [mediaAnalysisTimeStamp isEqualToDate:vcp_modificationDate] ^ 1;
 
 LABEL_24:
   return v10;
@@ -819,11 +819,11 @@ LABEL_24:
     return 0;
   }
 
-  v2 = [a1 mediaAnalysisProperties];
-  v3 = v2;
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  v3 = mediaAnalysisProperties;
+  if (mediaAnalysisProperties)
   {
-    v4 = [v2 imageCaptionVersion] < 73;
+    v4 = [mediaAnalysisProperties imageCaptionVersion] < 73;
   }
 
   else
@@ -841,15 +841,15 @@ LABEL_24:
     return 0;
   }
 
-  v2 = [a1 mediaAnalysisProperties];
-  if ([a1 mad_isNonLivePhotoImage])
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if ([self mad_isNonLivePhotoImage])
   {
     v3 = 0;
   }
 
-  else if (v2)
+  else if (mediaAnalysisProperties)
   {
-    v3 = [v2 videoCaptionVersion] < 73;
+    v3 = [mediaAnalysisProperties videoCaptionVersion] < 73;
   }
 
   else
@@ -868,17 +868,17 @@ LABEL_24:
     if (a3 == 10)
     {
 
-      return [a1 vcp_needsOCRProcessing];
+      return [self vcp_needsOCRProcessing];
     }
 
     if (a3 == 12)
     {
-      if ([a1 vcp_needsVisualSearchProcessing])
+      if ([self vcp_needsVisualSearchProcessing])
       {
         return 1;
       }
 
-      return [a1 vcp_needsStickerGatingProcessing];
+      return [self vcp_needsStickerGatingProcessing];
     }
 
     if (a3 != 255)
@@ -889,7 +889,7 @@ LABEL_24:
     v6 = 1;
 LABEL_13:
 
-    return [a1 vcp_needsFullAnalysisProcessing:v6];
+    return [self vcp_needsFullAnalysisProcessing:v6];
   }
 
   if (a3 == 1)
@@ -903,7 +903,7 @@ LABEL_13:
     if (a3 == 3)
     {
 
-      return [a1 vcp_needsFaceProcessing];
+      return [self vcp_needsFaceProcessing];
     }
 
 LABEL_19:
@@ -924,15 +924,15 @@ LABEL_19:
     return 0;
   }
 
-  return [a1 vcp_needSceneProcessing];
+  return [self vcp_needSceneProcessing];
 }
 
 - (uint64_t)vcp_isLongMovie
 {
-  result = [a1 isVideo];
+  result = [self isVideo];
   if (result)
   {
-    [a1 duration];
+    [self duration];
     return v3 > [objc_opt_class() vcp_longMovieDurationThreshold];
   }
 
@@ -941,12 +941,12 @@ LABEL_19:
 
 - (uint64_t)mad_isShared
 {
-  if ([a1 isCloudSharedAsset])
+  if ([self isCloudSharedAsset])
   {
     return 1;
   }
 
-  return [a1 isCollectionShareAsset];
+  return [self isCollectionShareAsset];
 }
 
 @end

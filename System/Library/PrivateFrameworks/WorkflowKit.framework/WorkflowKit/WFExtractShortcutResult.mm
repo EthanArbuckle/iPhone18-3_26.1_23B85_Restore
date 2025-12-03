@@ -1,32 +1,32 @@
 @interface WFExtractShortcutResult
-- (WFExtractShortcutResult)initWithRecord:(id)a3 fileContentType:(int64_t)a4 iCloudIdentifier:(id)a5 sourceApplicationIdentifier:(id)a6 sharedDate:(id)a7;
+- (WFExtractShortcutResult)initWithRecord:(id)record fileContentType:(int64_t)type iCloudIdentifier:(id)identifier sourceApplicationIdentifier:(id)applicationIdentifier sharedDate:(id)date;
 @end
 
 @implementation WFExtractShortcutResult
 
-- (WFExtractShortcutResult)initWithRecord:(id)a3 fileContentType:(int64_t)a4 iCloudIdentifier:(id)a5 sourceApplicationIdentifier:(id)a6 sharedDate:(id)a7
+- (WFExtractShortcutResult)initWithRecord:(id)record fileContentType:(int64_t)type iCloudIdentifier:(id)identifier sourceApplicationIdentifier:(id)applicationIdentifier sharedDate:(id)date
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  recordCopy = record;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  dateCopy = date;
   v25.receiver = self;
   v25.super_class = WFExtractShortcutResult;
   v17 = [(WFExtractShortcutResult *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_record, a3);
-    v18->_fileContentType = a4;
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_record, record);
+    v18->_fileContentType = type;
+    v19 = [identifierCopy copy];
     iCloudIdentifier = v18->_iCloudIdentifier;
     v18->_iCloudIdentifier = v19;
 
-    v21 = [v15 copy];
+    v21 = [applicationIdentifierCopy copy];
     sourceApplicationIdentifier = v18->_sourceApplicationIdentifier;
     v18->_sourceApplicationIdentifier = v21;
 
-    objc_storeStrong(&v18->_sharedDate, a7);
+    objc_storeStrong(&v18->_sharedDate, date);
     v23 = v18;
   }
 

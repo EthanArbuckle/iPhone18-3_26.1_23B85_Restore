@@ -1,15 +1,15 @@
 @interface PHAudioCallControlArrangement
-+ (id)controlTypesOnIpadShouldUseLargeUIFormat:(BOOL)a3 inMultiCall:(BOOL)a4;
++ (id)controlTypesOnIpadShouldUseLargeUIFormat:(BOOL)format inMultiCall:(BOOL)call;
 + (id)defaultControlTypes;
 + (id)defaultMultipleCallControlTypes;
 + (id)defaultPhoneControlTypes;
 + (id)iPadAudioCallWithPosterControlTypes;
-- (PHAudioCallControlArrangement)initWithControlTypes:(id)a3;
-- (id)_replaceControlsOfType:(unint64_t)a3 withControlOfType:(unint64_t)a4;
+- (PHAudioCallControlArrangement)initWithControlTypes:(id)types;
+- (id)_replaceControlsOfType:(unint64_t)type withControlOfType:(unint64_t)ofType;
 - (unint64_t)columns;
-- (unint64_t)controlTypeAtRow:(unint64_t)a3 column:(unint64_t)a4;
+- (unint64_t)controlTypeAtRow:(unint64_t)row column:(unint64_t)column;
 - (unint64_t)rows;
-- (void)replaceControlsOfType:(unint64_t)a3 withControlOfType:(unint64_t)a4;
+- (void)replaceControlsOfType:(unint64_t)type withControlOfType:(unint64_t)ofType;
 @end
 
 @implementation PHAudioCallControlArrangement
@@ -17,57 +17,57 @@
 + (id)defaultControlTypes
 {
   v3 = +[PHInCallUtilities sharedInstance];
-  v4 = [v3 isIPadIdiom];
+  isIPadIdiom = [v3 isIPadIdiom];
 
-  if (v4 && ([a1 features], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isiPadPostersEnabledForCall:", 0), v5, !v6))
+  if (isIPadIdiom && ([self features], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isiPadPostersEnabledForCall:", 0), v5, !v6))
   {
-    v9 = [a1 features];
-    v10 = [v9 isMoreMenuEnabled];
+    features = [self features];
+    isMoreMenuEnabled = [features isMoreMenuEnabled];
 
-    if (v10)
+    if (isMoreMenuEnabled)
     {
-      v7 = &off_10036AA78;
+      defaultPhoneControlTypes = &off_10036AA78;
     }
 
     else
     {
-      v11 = [a1 features];
-      v12 = [v11 sharePlayInCallsEnabled];
+      features2 = [self features];
+      sharePlayInCallsEnabled = [features2 sharePlayInCallsEnabled];
 
-      if (v12)
+      if (sharePlayInCallsEnabled)
       {
-        v7 = &off_10036AAC0;
+        defaultPhoneControlTypes = &off_10036AAC0;
       }
 
       else
       {
-        v7 = +[PHAudioCallControlArrangement baselineiPadControlTypes];
+        defaultPhoneControlTypes = +[PHAudioCallControlArrangement baselineiPadControlTypes];
       }
     }
   }
 
   else
   {
-    v7 = [a1 defaultPhoneControlTypes];
+    defaultPhoneControlTypes = [self defaultPhoneControlTypes];
   }
 
-  return v7;
+  return defaultPhoneControlTypes;
 }
 
 + (id)defaultPhoneControlTypes
 {
-  v3 = [a1 features];
-  v4 = [v3 isMoreMenuEnabled];
+  features = [self features];
+  isMoreMenuEnabled = [features isMoreMenuEnabled];
 
-  if (v4)
+  if (isMoreMenuEnabled)
   {
     return &off_10036AB50;
   }
 
-  v6 = [a1 features];
-  v7 = [v6 sharePlayInCallsEnabled];
+  features2 = [self features];
+  sharePlayInCallsEnabled = [features2 sharePlayInCallsEnabled];
 
-  if (v7)
+  if (sharePlayInCallsEnabled)
   {
     return &off_10036AB98;
   }
@@ -80,8 +80,8 @@
 
 - (unint64_t)rows
 {
-  v2 = [(PHAudioCallControlArrangement *)self controlTypes];
-  v3 = [v2 count];
+  controlTypes = [(PHAudioCallControlArrangement *)self controlTypes];
+  v3 = [controlTypes count];
 
   return v3;
 }
@@ -91,8 +91,8 @@
   result = [(PHAudioCallControlArrangement *)self rows];
   if (result)
   {
-    v4 = [(PHAudioCallControlArrangement *)self controlTypes];
-    v5 = [v4 objectAtIndex:0];
+    controlTypes = [(PHAudioCallControlArrangement *)self controlTypes];
+    v5 = [controlTypes objectAtIndex:0];
     v6 = [v5 count];
 
     return v6;
@@ -101,13 +101,13 @@
   return result;
 }
 
-+ (id)controlTypesOnIpadShouldUseLargeUIFormat:(BOOL)a3 inMultiCall:(BOOL)a4
++ (id)controlTypesOnIpadShouldUseLargeUIFormat:(BOOL)format inMultiCall:(BOOL)call
 {
-  if (a3)
+  if (format)
   {
-    if (a4)
+    if (call)
     {
-      [a1 defaultMultipleCallControlTypes];
+      [self defaultMultipleCallControlTypes];
     }
 
     else
@@ -119,7 +119,7 @@
 
   else
   {
-    v4 = [PHAudioCallControlArrangement baselineiPadControlTypes:a3];
+    v4 = [PHAudioCallControlArrangement baselineiPadControlTypes:format];
   }
 
   return v4;
@@ -128,8 +128,8 @@
 + (id)iPadAudioCallWithPosterControlTypes
 {
   v9[0] = &off_10036ABF8;
-  v2 = [a1 features];
-  if ([v2 isMoreMenuEnabled])
+  features = [self features];
+  if ([features isMoreMenuEnabled])
   {
     v3 = 20;
   }
@@ -153,12 +153,12 @@
 + (id)defaultMultipleCallControlTypes
 {
   v3 = +[PHInCallUtilities sharedInstance];
-  v4 = [v3 isIPadIdiom];
+  isIPadIdiom = [v3 isIPadIdiom];
 
-  if (v4)
+  if (isIPadIdiom)
   {
-    v5 = [a1 features];
-    v6 = [v5 isiPadPostersEnabledForCall:0];
+    features = [self features];
+    v6 = [features isiPadPostersEnabledForCall:0];
 
     if (v6)
     {
@@ -171,10 +171,10 @@
     }
   }
 
-  else if ((SBUIIsSystemApertureEnabled() & 1) != 0 || ([a1 features], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isNewCallSwapNonJindoEnabled"), v8, (v9 & 1) == 0))
+  else if ((SBUIIsSystemApertureEnabled() & 1) != 0 || ([self features], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isNewCallSwapNonJindoEnabled"), v8, (v9 & 1) == 0))
   {
-    v10 = [a1 features];
-    if ([v10 callManagerEnabled])
+    features2 = [self features];
+    if ([features2 callManagerEnabled])
     {
       v11 = 5;
     }
@@ -201,15 +201,15 @@
   return v7;
 }
 
-- (PHAudioCallControlArrangement)initWithControlTypes:(id)a3
+- (PHAudioCallControlArrangement)initWithControlTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = PHAudioCallControlArrangement;
   v5 = [(PHAudioCallControlArrangement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     controlTypes = v5->_controlTypes;
     v5->_controlTypes = v6;
   }
@@ -217,28 +217,28 @@
   return v5;
 }
 
-- (unint64_t)controlTypeAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (unint64_t)controlTypeAtRow:(unint64_t)row column:(unint64_t)column
 {
-  v6 = [(PHAudioCallControlArrangement *)self controlTypes];
-  v7 = [v6 objectAtIndexedSubscript:a3];
-  v8 = [v7 objectAtIndexedSubscript:a4];
-  v9 = [v8 unsignedIntegerValue];
+  controlTypes = [(PHAudioCallControlArrangement *)self controlTypes];
+  v7 = [controlTypes objectAtIndexedSubscript:row];
+  v8 = [v7 objectAtIndexedSubscript:column];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
-- (void)replaceControlsOfType:(unint64_t)a3 withControlOfType:(unint64_t)a4
+- (void)replaceControlsOfType:(unint64_t)type withControlOfType:(unint64_t)ofType
 {
-  v5 = [(PHAudioCallControlArrangement *)self _replaceControlsOfType:a3 withControlOfType:a4];
+  v5 = [(PHAudioCallControlArrangement *)self _replaceControlsOfType:type withControlOfType:ofType];
   [(PHAudioCallControlArrangement *)self setControlTypes:v5];
 }
 
-- (id)_replaceControlsOfType:(unint64_t)a3 withControlOfType:(unint64_t)a4
+- (id)_replaceControlsOfType:(unint64_t)type withControlOfType:(unint64_t)ofType
 {
   v21 = +[NSMutableArray array];
-  v7 = [(PHAudioCallControlArrangement *)self controlTypes];
+  controlTypes = [(PHAudioCallControlArrangement *)self controlTypes];
 
-  if (v7)
+  if (controlTypes)
   {
     v29 = 0u;
     v30 = 0u;
@@ -280,9 +280,9 @@
                 }
 
                 v16 = *(*(&v23 + 1) + 8 * j);
-                if ([v16 unsignedIntegerValue] == a3)
+                if ([v16 unsignedIntegerValue] == type)
                 {
-                  v17 = [NSNumber numberWithUnsignedInteger:a4];
+                  v17 = [NSNumber numberWithUnsignedInteger:ofType];
                   [v10 addObject:v17];
                 }
 

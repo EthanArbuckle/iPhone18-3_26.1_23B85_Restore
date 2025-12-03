@@ -1,119 +1,119 @@
 @interface UIPickerView
 + (CGSize)defaultSizeForMainScreenTraits;
-+ (CGSize)defaultSizeForTraits:(id)a3;
-+ (CGSize)sizeForMainScreenTraitsThatFits:(CGSize)a3;
-+ (CGSize)sizeThatFits:(CGSize)a3 forTraits:(id)a4;
-+ (id)_styleForIdiom:(int64_t)a3;
++ (CGSize)defaultSizeForTraits:(id)traits;
++ (CGSize)sizeForMainScreenTraitsThatFits:(CGSize)fits;
++ (CGSize)sizeThatFits:(CGSize)fits forTraits:(id)traits;
++ (id)_styleForIdiom:(int64_t)idiom;
 + (void)_prepareStyleStorageIfNecessary;
-+ (void)_registerStyle:(id)a3 forIdiom:(int64_t)a4;
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3;
++ (void)_registerStyle:(id)style forIdiom:(int64_t)idiom;
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior;
 + (void)initialize;
 - (BOOL)_usesDynamicRowHeight;
 - (CATransform3D)_perspectiveTransform;
-- (CGRect)_effectiveTableViewFrameForColumn:(int64_t)a3;
-- (CGRect)_selectionBarRectForHeight:(double)a3;
-- (CGSize)_contentSizeForRow:(int64_t)a3 inComponent:(int64_t)a4;
-- (CGSize)_sizeThatFits:(CGSize)a3;
+- (CGRect)_effectiveTableViewFrameForColumn:(int64_t)column;
+- (CGRect)_selectionBarRectForHeight:(double)height;
+- (CGSize)_contentSizeForRow:(int64_t)row inComponent:(int64_t)component;
+- (CGSize)_sizeThatFits:(CGSize)fits;
 - (CGSize)defaultSize;
 - (CGSize)rowSizeForComponent:(NSInteger)component;
 - (NSInteger)numberOfComponents;
 - (NSInteger)numberOfRowsInComponent:(NSInteger)component;
 - (NSInteger)selectedRowInComponent:(NSInteger)component;
-- (UIPickerView)initWithCoder:(id)a3;
-- (UIPickerView)initWithFrame:(CGRect)a3;
+- (UIPickerView)initWithCoder:(id)coder;
+- (UIPickerView)initWithFrame:(CGRect)frame;
 - (UIView)viewForRow:(NSInteger)row forComponent:(NSInteger)component;
-- (_NSRange)visibleRowsForColumn:(int)a3;
+- (_NSRange)visibleRowsForColumn:(int)column;
 - (_UIPickerViewStyle)_style;
-- (double)_delegateRowHeightForComponent:(int64_t)a3;
-- (double)_delegateWidthForComponent:(int64_t)a3 ofCount:(int)a4 withSizeLeft:(double)a5;
+- (double)_delegateRowHeightForComponent:(int64_t)component;
+- (double)_delegateWidthForComponent:(int64_t)component ofCount:(int)count withSizeLeft:(double)left;
 - (double)_rowHeightForDefaultFont;
 - (double)_selectionBarSideInset;
 - (double)_tableRowHeight;
-- (id)_createColumnWithTableFrame:(CGRect)a3 rowHeight:(double)a4 paddingAroundWheels:(double)a5;
-- (id)_createTableWithFrame:(CGRect)a3 forComponent:(int64_t)a4;
-- (id)_delegateAttributedTitleForRow:(int64_t)a3 forComponent:(int64_t)a4;
-- (id)_delegateTitleForRow:(int64_t)a3 forComponent:(int64_t)a4;
+- (id)_createColumnWithTableFrame:(CGRect)frame rowHeight:(double)height paddingAroundWheels:(double)wheels;
+- (id)_createTableWithFrame:(CGRect)frame forComponent:(int64_t)component;
+- (id)_delegateAttributedTitleForRow:(int64_t)row forComponent:(int64_t)component;
+- (id)_delegateTitleForRow:(int64_t)row forComponent:(int64_t)component;
 - (id)_scalarStatisticsForUserValueChangedEvent;
 - (id)_selectionBarSuffix;
 - (id)_systemDefaultFocusGroupIdentifier;
 - (id)dataSource;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableViewForColumn:(int64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableViewForColumn:(int64_t)column;
 - (int64_t)_delegateNumberOfComponents;
-- (int64_t)_delegateNumberOfRowsInComponent:(int64_t)a3;
-- (int64_t)columnForTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addHighlightRectForRowHeight:(double)a3;
-- (void)_addMagnifierForRowHeight:(double)a3;
-- (void)_addMagnifierLinesForRowHeight:(double)a3;
+- (int64_t)_delegateNumberOfRowsInComponent:(int64_t)component;
+- (int64_t)columnForTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addHighlightRectForRowHeight:(double)height;
+- (void)_addMagnifierForRowHeight:(double)height;
+- (void)_addMagnifierLinesForRowHeight:(double)height;
 - (void)_completeCurrentTest;
 - (void)_iterateOnCurrentTest;
-- (void)_noteScrollingFinishedForComponent:(int64_t)a3;
-- (void)_performScrollTest:(id)a3 withIterations:(int64_t)a4 rowsToScroll:(int64_t)a5 inComponent:(int64_t)a6;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_noteScrollingFinishedForComponent:(int64_t)component;
+- (void)_performScrollTest:(id)test withIterations:(int64_t)iterations rowsToScroll:(int64_t)scroll inComponent:(int64_t)component;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_resetSelectionOfTables;
-- (void)_selectRow:(int64_t)a3 inComponent:(int64_t)a4 animated:(BOOL)a5 notify:(BOOL)a6;
-- (void)_sendCheckedRow:(int64_t)a3 inTableView:(id)a4 checked:(BOOL)a5;
-- (void)_sendSelectionChangedForComponent:(int64_t)a3 notify:(BOOL)a4;
-- (void)_sendSelectionChangedFromTable:(id)a3 notify:(BOOL)a4;
-- (void)_setColumnView:(id)a3 enabled:(BOOL)a4;
-- (void)_setDrawsBackground:(BOOL)a3;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setHighlightColor:(id)a3;
-- (void)_setMagnifierLineColor:(id)a3;
-- (void)_setSelectionBarIgnoresInset:(BOOL)a3;
-- (void)_setTextColor:(id)a3;
-- (void)_setTextShadowColor:(id)a3;
-- (void)_setUsesCheckedSelection:(BOOL)a3;
-- (void)_setUsesDynamicRowHeight:(BOOL)a3;
+- (void)_selectRow:(int64_t)row inComponent:(int64_t)component animated:(BOOL)animated notify:(BOOL)notify;
+- (void)_sendCheckedRow:(int64_t)row inTableView:(id)view checked:(BOOL)checked;
+- (void)_sendSelectionChangedForComponent:(int64_t)component notify:(BOOL)notify;
+- (void)_sendSelectionChangedFromTable:(id)table notify:(BOOL)notify;
+- (void)_setColumnView:(id)view enabled:(BOOL)enabled;
+- (void)_setDrawsBackground:(BOOL)background;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setHighlightColor:(id)color;
+- (void)_setMagnifierLineColor:(id)color;
+- (void)_setSelectionBarIgnoresInset:(BOOL)inset;
+- (void)_setTextColor:(id)color;
+- (void)_setTextShadowColor:(id)color;
+- (void)_setUsesCheckedSelection:(BOOL)selection;
+- (void)_setUsesDynamicRowHeight:(BOOL)height;
 - (void)_updateSelectedRows;
 - (void)_willPlayClickSound;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)reloadAllComponents;
 - (void)reloadAllPickerPieces;
 - (void)reloadComponent:(NSInteger)component;
-- (void)setAllowsMultipleSelection:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)setAllowsMultipleSelection:(BOOL)selection;
+- (void)setBackgroundColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
 - (void)setDataSource:(id)dataSource;
 - (void)setDelegate:(id)delegate;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setNeedsLayout;
 - (void)setShowsSelectionIndicator:(BOOL)showsSelectionIndicator;
-- (void)setSoundsEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSoundsEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIPickerView
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && (dyld_program_sdk_at_least() & 1) == 0)
+  if (objc_opt_class() == self && (dyld_program_sdk_at_least() & 1) == 0)
   {
 
     [UIView _performSystemAppearanceModifications:&__block_literal_global_475];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = UIPickerView;
-  [(UIView *)&v3 setBackgroundColor:a3];
+  [(UIView *)&v3 setBackgroundColor:color];
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 forTraits:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits forTraits:(id)traits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
-  v7 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v6 userInterfaceIdiom]);
-  [v7 sizeThatFits:v6 forTraitCollection:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  traitsCopy = traits;
+  v7 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitsCopy userInterfaceIdiom]);
+  [v7 sizeThatFits:traitsCopy forTraitCollection:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -124,13 +124,13 @@
   return result;
 }
 
-+ (CGSize)sizeForMainScreenTraitsThatFits:(CGSize)a3
++ (CGSize)sizeForMainScreenTraitsThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [objc_opt_self() mainScreen];
-  v7 = [v6 traitCollection];
-  [a1 sizeThatFits:v7 forTraits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  mainScreen = [objc_opt_self() mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [self sizeThatFits:traitCollection forTraits:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -141,11 +141,11 @@
   return result;
 }
 
-+ (CGSize)defaultSizeForTraits:(id)a3
++ (CGSize)defaultSizeForTraits:(id)traits
 {
-  v3 = a3;
-  v4 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v3 userInterfaceIdiom]);
-  [v4 defaultSizeForTraitCollection:v3];
+  traitsCopy = traits;
+  v4 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitsCopy userInterfaceIdiom]);
+  [v4 defaultSizeForTraitCollection:traitsCopy];
   v6 = v5;
   v8 = v7;
 
@@ -158,9 +158,9 @@
 
 + (CGSize)defaultSizeForMainScreenTraits
 {
-  v3 = [objc_opt_self() mainScreen];
-  v4 = [v3 traitCollection];
-  [a1 defaultSizeForTraits:v4];
+  mainScreen = [objc_opt_self() mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [self defaultSizeForTraits:traitCollection];
   v6 = v5;
   v8 = v7;
 
@@ -178,8 +178,8 @@
   v5 = v4;
   if (v3)
   {
-    v6 = [(UIView *)self traitCollection];
-    [v5 defaultSizeForTraits:v6];
+    traitCollection = [(UIView *)self traitCollection];
+    [v5 defaultSizeForTraits:traitCollection];
     v8 = v7;
     v10 = v9;
 
@@ -198,11 +198,11 @@
   return result;
 }
 
-- (void)_setUsesDynamicRowHeight:(BOOL)a3
+- (void)_setUsesDynamicRowHeight:(BOOL)height
 {
-  v3 = a3;
-  v5 = [(UIPickerView *)self _usesDynamicRowHeight];
-  if (v3)
+  heightCopy = height;
+  _usesDynamicRowHeight = [(UIPickerView *)self _usesDynamicRowHeight];
+  if (heightCopy)
   {
     v6 = 0x10000;
   }
@@ -213,7 +213,7 @@
   }
 
   self->_pickerViewFlags = (*&self->_pickerViewFlags & 0xFFFEFFFF | v6);
-  if (v5 != v3)
+  if (_usesDynamicRowHeight != heightCopy)
   {
 
     [(UIPickerView *)self reloadAllComponents];
@@ -260,9 +260,9 @@
 
 - (double)_rowHeightForDefaultFont
 {
-  v3 = [(UIPickerView *)self _style];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v3 centerCellFontWithTraitCollection:v4];
+  _style = [(UIPickerView *)self _style];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = [_style centerCellFontWithTraitCollection:traitCollection];
 
   CTFontGetLanguageAwareOutsets();
   [v5 ascender];
@@ -283,9 +283,9 @@
 
   else
   {
-    v4 = [(UIPickerView *)self _style];
+    _style = [(UIPickerView *)self _style];
     [(UIView *)self bounds];
-    [v4 defaultRowHeightForSize:{v5, v6}];
+    [_style defaultRowHeightForSize:{v5, v6}];
     v8 = v7;
 
     return v8;
@@ -294,9 +294,9 @@
   return result;
 }
 
-- (void)setSoundsEnabled:(BOOL)a3
+- (void)setSoundsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0;
   }
@@ -330,12 +330,12 @@ void __26__UIPickerView_initialize__block_invoke()
   [v2 _setMagnifierLineColor:v6];
 }
 
-- (UIPickerView)initWithFrame:(CGRect)a3
+- (UIPickerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (!dyld_program_sdk_at_least() || (*MEMORY[0x1E695F060] == width ? (v8 = *(MEMORY[0x1E695F060] + 8) == height) : (v8 = 0), v8))
   {
     [objc_opt_class() sizeForMainScreenTraitsThatFits:{width, height}];
@@ -345,29 +345,29 @@ void __26__UIPickerView_initialize__block_invoke()
 
   v14.receiver = self;
   v14.super_class = UIPickerView;
-  v11 = [(UIView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(UIView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    *&v11->_pickerViewFlags |= 0x800u;
-    _UIPickerViewCommonInit(v11);
+    *&height->_pickerViewFlags |= 0x800u;
+    _UIPickerViewCommonInit(height);
   }
 
   return v12;
 }
 
-- (UIPickerView)initWithCoder:(id)a3
+- (UIPickerView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = UIPickerView;
-  v5 = [(UIView *)&v11 initWithCoder:v4];
+  v5 = [(UIView *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIDelegate"];
+    v6 = [coderCopy decodeObjectForKey:@"UIDelegate"];
     objc_storeWeak(&v5->_delegate, v6);
 
-    if ([v4 decodeBoolForKey:@"UIShowsSelectionBar"])
+    if ([coderCopy decodeBoolForKey:@"UIShowsSelectionBar"])
     {
       v7 = 512;
     }
@@ -378,7 +378,7 @@ void __26__UIPickerView_initialize__block_invoke()
     }
 
     v5->_pickerViewFlags = (*&v5->_pickerViewFlags & 0xFFFFFDFF | v7);
-    if ([v4 decodeBoolForKey:@"UIAllowSelectingCells"])
+    if ([coderCopy decodeBoolForKey:@"UIAllowSelectingCells"])
     {
       v8 = 2048;
     }
@@ -389,9 +389,9 @@ void __26__UIPickerView_initialize__block_invoke()
     }
 
     v5->_pickerViewFlags = (*&v5->_pickerViewFlags & 0xFFFFF7FF | v8);
-    if ([v4 containsValueForKey:@"UISkipsBackground"])
+    if ([coderCopy containsValueForKey:@"UISkipsBackground"])
     {
-      if ([v4 decodeBoolForKey:@"UISkipsBackground"])
+      if ([coderCopy decodeBoolForKey:@"UISkipsBackground"])
       {
         v9 = 0x4000;
       }
@@ -410,13 +410,13 @@ void __26__UIPickerView_initialize__block_invoke()
   return v5;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subviewsCopy = subviews;
   v8.receiver = self;
   v8.super_class = UIPickerView;
-  [(UIView *)&v8 _populateArchivedSubviews:v4];
+  [(UIView *)&v8 _populateArchivedSubviews:subviewsCopy];
   v9[0] = self->_foregroundView;
   v9[1] = self->_topLineOrFillView;
   v5 = self->_bottomLineView;
@@ -426,7 +426,7 @@ void __26__UIPickerView_initialize__block_invoke()
   {
     if (v9[v6])
     {
-      [v4 removeObject:?];
+      [subviewsCopy removeObject:?];
     }
 
     ++v6;
@@ -438,16 +438,16 @@ void __26__UIPickerView_initialize__block_invoke()
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIPickerView;
-  [(UIView *)&v7 encodeWithCoder:v4];
+  [(UIView *)&v7 encodeWithCoder:coderCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    [v4 encodeObject:WeakRetained forKey:@"UIDelegate"];
+    [coderCopy encodeObject:WeakRetained forKey:@"UIDelegate"];
   }
 
   pickerViewFlags = self->_pickerViewFlags;
@@ -459,7 +459,7 @@ void __26__UIPickerView_initialize__block_invoke()
     }
 
 LABEL_9:
-    [v4 encodeBool:1 forKey:@"UIAllowSelectingCells"];
+    [coderCopy encodeBool:1 forKey:@"UIAllowSelectingCells"];
     if ((*&self->_pickerViewFlags & 0x4000) == 0)
     {
       goto LABEL_7;
@@ -468,7 +468,7 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  [v4 encodeBool:1 forKey:@"UIShowsSelectionBar"];
+  [coderCopy encodeBool:1 forKey:@"UIShowsSelectionBar"];
   pickerViewFlags = self->_pickerViewFlags;
   if ((*&pickerViewFlags & 0x800) != 0)
   {
@@ -479,7 +479,7 @@ LABEL_5:
   if ((*&pickerViewFlags & 0x4000) != 0)
   {
 LABEL_6:
-    [v4 encodeBool:1 forKey:@"UISkipsBackground"];
+    [coderCopy encodeBool:1 forKey:@"UISkipsBackground"];
   }
 
 LABEL_7:
@@ -495,12 +495,12 @@ LABEL_7:
   [(UIView *)&v4 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   if ((UIViewIgnoresTouchEvents(self) & 1) == 0 && [(UIPickerView *)self _enabled]&& ([(UIView *)self bounds], v37.x = x, v37.y = y, CGRectContainsPoint(v38, v37)))
   {
     v31 = 0u;
@@ -529,8 +529,8 @@ LABEL_7:
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v14 = [v13 _allVisibleCells];
-          v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          _allVisibleCells = [v13 _allVisibleCells];
+          v15 = [_allVisibleCells countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v15)
           {
             v16 = v15;
@@ -541,20 +541,20 @@ LABEL_7:
               {
                 if (*v26 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(_allVisibleCells);
                 }
 
                 v19 = *(*(&v25 + 1) + 8 * j);
                 [v19 convertPoint:self fromView:{x, y}];
-                if ([v19 pointInside:v7 withEvent:?] && !objc_msgSend(v19, "isHidden"))
+                if ([v19 pointInside:eventCopy withEvent:?] && !objc_msgSend(v19, "isHidden"))
                 {
-                  v20 = v19;
+                  _preferredTable = v19;
                   v8 = v24;
                   goto LABEL_27;
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v16 = [_allVisibleCells countByEnumeratingWithState:&v25 objects:v33 count:16];
               if (v16)
               {
                 continue;
@@ -570,14 +570,14 @@ LABEL_7:
             v8 = v24;
             if (v22)
             {
-              v14 = v22;
-              v20 = v14;
+              _allVisibleCells = v22;
+              _preferredTable = _allVisibleCells;
             }
 
             else
             {
-              v20 = [v13 _preferredTable];
-              v14 = 0;
+              _preferredTable = [v13 _preferredTable];
+              _allVisibleCells = 0;
             }
 
 LABEL_27:
@@ -590,7 +590,7 @@ LABEL_27:
         }
 
         v10 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v29 objects:v34 count:16];
-        v20 = 0;
+        _preferredTable = 0;
         if (v10)
         {
           continue;
@@ -602,7 +602,7 @@ LABEL_27:
 
     else
     {
-      v20 = 0;
+      _preferredTable = 0;
     }
 
 LABEL_29:
@@ -610,10 +610,10 @@ LABEL_29:
 
   else
   {
-    v20 = 0;
+    _preferredTable = 0;
   }
 
-  return v20;
+  return _preferredTable;
 }
 
 - (void)setNeedsLayout
@@ -647,20 +647,20 @@ LABEL_29:
   v4.receiver = self;
   v4.super_class = UIPickerView;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(UIPickerView *)self _updateSelectedRows];
   }
 }
 
-- (void)_setColumnView:(id)a3 enabled:(BOOL)a4
+- (void)_setColumnView:(id)view enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = v5;
-  if (v4)
+  enabledCopy = enabled;
+  viewCopy = view;
+  v7 = viewCopy;
+  if (enabledCopy)
   {
     v6 = 1.0;
   }
@@ -670,17 +670,17 @@ LABEL_29:
     v6 = 0.4;
   }
 
-  [v5 setUserInteractionEnabled:v4];
+  [viewCopy setUserInteractionEnabled:enabledCopy];
   [v7 setAlpha:v6];
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x1E69E9840];
-  if ([(UIPickerView *)self _enabled]!= a3)
+  if ([(UIPickerView *)self _enabled]!= enabled)
   {
-    self->_enabled = v3;
+    self->_enabled = enabledCopy;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -701,7 +701,7 @@ LABEL_29:
             objc_enumerationMutation(v5);
           }
 
-          [(UIPickerView *)self _setColumnView:*(*(&v10 + 1) + 8 * v9++) enabled:v3, v10];
+          [(UIPickerView *)self _setColumnView:*(*(&v10 + 1) + 8 * v9++) enabled:enabledCopy, v10];
         }
 
         while (v7 != v9);
@@ -716,10 +716,10 @@ LABEL_29:
 - (void)reloadAllComponents
 {
   v3 = [(NSMutableArray *)self->_tables count];
-  v4 = [(UIPickerView *)self _delegateNumberOfComponents];
+  _delegateNumberOfComponents = [(UIPickerView *)self _delegateNumberOfComponents];
   if (v3)
   {
-    v5 = v3 == v4;
+    v5 = v3 == _delegateNumberOfComponents;
   }
 
   else
@@ -768,7 +768,7 @@ LABEL_29:
   }
 }
 
-- (CGRect)_selectionBarRectForHeight:(double)a3
+- (CGRect)_selectionBarRectForHeight:(double)height
 {
   [(UIView *)self bounds];
   v6 = v5;
@@ -776,8 +776,8 @@ LABEL_29:
   v8 = v7;
   v9 = 0.0;
   v10 = v6;
-  v11 = a3;
-  result.size.height = v11;
+  heightCopy = height;
+  result.size.height = heightCopy;
   result.size.width = v10;
   result.origin.y = v8;
   result.origin.x = v9;
@@ -791,19 +791,19 @@ LABEL_29:
     return 0.0;
   }
 
-  v2 = [(UIPickerView *)self _style];
-  [v2 selectionBarSideInset];
+  _style = [(UIPickerView *)self _style];
+  [_style selectionBarSideInset];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_setSelectionBarIgnoresInset:(BOOL)a3
+- (void)_setSelectionBarIgnoresInset:(BOOL)inset
 {
   pickerViewFlags = self->_pickerViewFlags;
-  if (((((*&pickerViewFlags & 0x20000) == 0) ^ a3) & 1) == 0)
+  if (((((*&pickerViewFlags & 0x20000) == 0) ^ inset) & 1) == 0)
   {
-    if (a3)
+    if (inset)
     {
       v4 = 0x20000;
     }
@@ -818,17 +818,17 @@ LABEL_29:
   }
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3
+- (CGSize)_sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = dyld_program_sdk_at_least();
   v7 = objc_opt_class();
   v8 = v7;
   if (v6)
   {
-    v9 = [(UIView *)self traitCollection];
-    [v8 sizeThatFits:v9 forTraits:{width, height}];
+    traitCollection = [(UIView *)self traitCollection];
+    [v8 sizeThatFits:traitCollection forTraits:{width, height}];
     v11 = v10;
     v13 = v12;
 
@@ -847,7 +847,7 @@ LABEL_29:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   if (dyld_program_sdk_at_least())
   {
@@ -856,14 +856,14 @@ LABEL_29:
   }
 }
 
-- (void)_sendCheckedRow:(int64_t)a3 inTableView:(id)a4 checked:(BOOL)a5
+- (void)_sendCheckedRow:(int64_t)row inTableView:(id)view checked:(BOOL)checked
 {
-  v5 = a5;
-  v9 = a4;
+  checkedCopy = checked;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained pickerView:self row:a3 column:-[UIPickerView columnForTableView:](self checked:{"columnForTableView:", v9), v5}];
+    [WeakRetained pickerView:self row:row column:-[UIPickerView columnForTableView:](self checked:{"columnForTableView:", viewCopy), checkedCopy}];
   }
 }
 
@@ -890,19 +890,19 @@ LABEL_29:
   return v5;
 }
 
-- (int64_t)_delegateNumberOfRowsInComponent:(int64_t)a3
+- (int64_t)_delegateNumberOfRowsInComponent:(int64_t)component
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained pickerView:self numberOfRowsInComponent:a3];
+    v7 = [WeakRetained pickerView:self numberOfRowsInComponent:component];
   }
 
   else if ((*&self->_pickerViewFlags & 4) != 0)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v8 pickerView:self numberOfRowsInComponent:a3];
+    v7 = [v8 pickerView:self numberOfRowsInComponent:component];
   }
 
   else
@@ -913,12 +913,12 @@ LABEL_29:
   return v7;
 }
 
-- (id)_delegateTitleForRow:(int64_t)a3 forComponent:(int64_t)a4
+- (id)_delegateTitleForRow:(int64_t)row forComponent:(int64_t)component
 {
   if ((*&self->_pickerViewFlags & 0x20) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v4 = [WeakRetained pickerView:self titleForRow:a3 forComponent:a4];
+    v4 = [WeakRetained pickerView:self titleForRow:row forComponent:component];
   }
 
   else
@@ -929,12 +929,12 @@ LABEL_29:
   return v4;
 }
 
-- (id)_delegateAttributedTitleForRow:(int64_t)a3 forComponent:(int64_t)a4
+- (id)_delegateAttributedTitleForRow:(int64_t)row forComponent:(int64_t)component
 {
   if ((*&self->_pickerViewFlags & 0x40) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v4 = [WeakRetained pickerView:self attributedTitleForRow:a3 forComponent:a4];
+    v4 = [WeakRetained pickerView:self attributedTitleForRow:row forComponent:component];
   }
 
   else
@@ -945,26 +945,26 @@ LABEL_29:
   return v4;
 }
 
-- (double)_delegateWidthForComponent:(int64_t)a3 ofCount:(int)a4 withSizeLeft:(double)a5
+- (double)_delegateWidthForComponent:(int64_t)component ofCount:(int)count withSizeLeft:(double)left
 {
   if ((*&self->_pickerViewFlags & 0x80) == 0)
   {
-    return round(a5 / (a4 - a3));
+    return round(left / (count - component));
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pickerView:self widthForComponent:a3];
+  [WeakRetained pickerView:self widthForComponent:component];
   v10 = v9;
 
   return v10;
 }
 
-- (double)_delegateRowHeightForComponent:(int64_t)a3
+- (double)_delegateRowHeightForComponent:(int64_t)component
 {
   if (*(&self->_pickerViewFlags + 1))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained pickerView:self rowHeightForComponent:a3];
+    [WeakRetained pickerView:self rowHeightForComponent:component];
     v8 = v7;
 
     return v8;
@@ -979,34 +979,34 @@ LABEL_29:
   return result;
 }
 
-- (void)_addMagnifierForRowHeight:(double)a3
+- (void)_addMagnifierForRowHeight:(double)height
 {
   if ([(UIPickerView *)self _magnifierEnabled])
   {
     if ([(UIPickerView *)self _magnifierStyle])
     {
 
-      [(UIPickerView *)self _addHighlightRectForRowHeight:a3];
+      [(UIPickerView *)self _addHighlightRectForRowHeight:height];
     }
 
     else
     {
 
-      [(UIPickerView *)self _addMagnifierLinesForRowHeight:a3];
+      [(UIPickerView *)self _addMagnifierLinesForRowHeight:height];
     }
   }
 }
 
-- (void)_addHighlightRectForRowHeight:(double)a3
+- (void)_addHighlightRectForRowHeight:(double)height
 {
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIPickerView *)self _style];
-  [v13 verticalPaddingForCenterHighlightView];
-  v15 = v14 + a3;
+  _style = [(UIPickerView *)self _style];
+  [_style verticalPaddingForCenterHighlightView];
+  v15 = v14 + height;
 
   v31.origin.x = v6;
   v31.origin.y = v8;
@@ -1018,8 +1018,8 @@ LABEL_29:
   v18 = 0.0;
   if ((*(&self->_pickerViewFlags + 2) & 2) == 0)
   {
-    v19 = [(UIPickerView *)self _style];
-    [v19 horizontalPaddingForCenterHighlightView];
+    _style2 = [(UIPickerView *)self _style];
+    [_style2 horizontalPaddingForCenterHighlightView];
     v18 = v20;
   }
 
@@ -1031,10 +1031,10 @@ LABEL_29:
   topLineOrFillView = self->_topLineOrFillView;
   if (!topLineOrFillView)
   {
-    v23 = [(UIPickerView *)self _style];
-    v24 = [v23 createCenterHighlightView];
+    _style3 = [(UIPickerView *)self _style];
+    createCenterHighlightView = [_style3 createCenterHighlightView];
     v25 = self->_topLineOrFillView;
-    self->_topLineOrFillView = v24;
+    self->_topLineOrFillView = createCenterHighlightView;
 
     topLineOrFillView = self->_topLineOrFillView;
   }
@@ -1042,10 +1042,10 @@ LABEL_29:
   [(UIView *)topLineOrFillView setFrame:v18, v17, v21, v15];
   if (self->_topLineOrFillView)
   {
-    v26 = [(UIPickerView *)self _style];
-    v27 = [v26 highlightViewIsOverlay];
+    _style4 = [(UIPickerView *)self _style];
+    highlightViewIsOverlay = [_style4 highlightViewIsOverlay];
 
-    if (v27)
+    if (highlightViewIsOverlay)
     {
       v28 = self->_topLineOrFillView;
 
@@ -1054,19 +1054,19 @@ LABEL_29:
 
     else
     {
-      v29 = [(UIPickerView *)self _contentView];
-      [v29 addSubview:self->_topLineOrFillView];
+      _contentView = [(UIPickerView *)self _contentView];
+      [_contentView addSubview:self->_topLineOrFillView];
     }
   }
 }
 
-- (void)_addMagnifierLinesForRowHeight:(double)a3
+- (void)_addMagnifierLinesForRowHeight:(double)height
 {
   UIRoundToViewScale(self);
   v5 = v4;
   [(UIView *)self bounds];
-  v6 = [(UIPickerView *)self _style];
-  [v6 verticalPaddingForCenterHighlightView];
+  _style = [(UIPickerView *)self _style];
+  [_style verticalPaddingForCenterHighlightView];
   v8 = v7;
 
   UIRoundToViewScale(self);
@@ -1107,22 +1107,22 @@ LABEL_29:
   [(UIView *)self bringSubviewToFront:v23];
 }
 
-- (void)_setMagnifierLineColor:(id)a3
+- (void)_setMagnifierLineColor:(id)color
 {
-  objc_storeStrong(&self->_magnifierLineColor, a3);
-  v5 = a3;
-  [(UIView *)self->_topLineOrFillView setBackgroundColor:v5];
-  [(UIView *)self->_bottomLineView setBackgroundColor:v5];
+  objc_storeStrong(&self->_magnifierLineColor, color);
+  colorCopy = color;
+  [(UIView *)self->_topLineOrFillView setBackgroundColor:colorCopy];
+  [(UIView *)self->_bottomLineView setBackgroundColor:colorCopy];
 }
 
-- (id)_createColumnWithTableFrame:(CGRect)a3 rowHeight:(double)a4 paddingAroundWheels:(double)a5
+- (id)_createColumnWithTableFrame:(CGRect)frame rowHeight:(double)height paddingAroundWheels:(double)wheels
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(UIPickerView *)self _style];
-  [v9 verticalPaddingForCenterHighlightView];
+  width = frame.size.width;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _style = [(UIPickerView *)self _style];
+  [_style verticalPaddingForCenterHighlightView];
   v11 = v10;
 
   v12 = 0.0;
@@ -1139,7 +1139,7 @@ LABEL_29:
   v21 = v20 + 0.0;
   v22 = [UIPickerColumnView alloc];
   [(UIPickerView *)self _perspectiveTransform];
-  v23 = [(UIPickerColumnView *)v22 initWithFrame:self tableFrame:v28 middleBarHeight:v17 rowHeight:v21 paddingAroundWheels:v19 pickerView:v15 transform:x, y, width, height, v11 + a4, *&a4, *&a5];
+  v23 = [(UIPickerColumnView *)v22 initWithFrame:self tableFrame:v28 middleBarHeight:v17 rowHeight:v21 paddingAroundWheels:v19 pickerView:v15 transform:x, y, width, height, v11 + height, *&height, *&wheels];
   [(NSMutableArray *)self->_tables addObject:v23];
   [(UIView *)v23 setAutoresizingMask:26];
   [(UIPickerColumnView *)v23 _setTextColor:self->_textColor];
@@ -1148,17 +1148,17 @@ LABEL_29:
   return v23;
 }
 
-- (id)_createTableWithFrame:(CGRect)a3 forComponent:(int64_t)a4
+- (id)_createTableWithFrame:(CGRect)frame forComponent:(int64_t)component
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = [UIPickerTableView alloc];
   v11 = [(UIPickerTableView *)v10 initWithFrame:0 style:x visibleRect:y, width, height, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(NSMutableArray *)self->_tables addObject:v11];
   [(UITableView *)v11 setDataSource:self];
-  [(UIPickerView *)self _delegateRowHeightForComponent:a4];
+  [(UIPickerView *)self _delegateRowHeightForComponent:component];
   [(UITableView *)v11 setRowHeight:?];
   [(UITableView *)v11 setEstimatedRowHeight:0.0];
   [(UIScrollView *)v11 setShowsVerticalScrollIndicator:0];
@@ -1238,15 +1238,15 @@ LABEL_29:
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v11 wrappedView];
+      wrappedView = [v11 wrappedView];
     }
 
     else
     {
-      v12 = v11;
+      wrappedView = v11;
     }
 
-    v8 = v12;
+    v8 = wrappedView;
   }
 
   else
@@ -1277,12 +1277,12 @@ LABEL_29:
   if (*&pickerViewFlags)
   {
     self->_pickerViewFlags = (*&pickerViewFlags | 0x8000);
-    v4 = [(UIPickerView *)self _style];
-    [v4 paddingBetweenWheels];
+    _style = [(UIPickerView *)self _style];
+    [_style paddingBetweenWheels];
     v6 = v5;
-    [v4 paddingAroundWheels];
+    [_style paddingAroundWheels];
     v8 = v7;
-    [v4 horizontalPaddingForContents];
+    [_style horizontalPaddingForContents];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __30__UIPickerView_layoutSubviews__block_invoke;
@@ -1864,10 +1864,10 @@ LABEL_87:
 
 - (void)_resetSelectionOfTables
 {
-  v3 = [(UIPickerView *)self _delegateNumberOfComponents];
-  if (v3 >= 1)
+  _delegateNumberOfComponents = [(UIPickerView *)self _delegateNumberOfComponents];
+  if (_delegateNumberOfComponents >= 1)
   {
-    v4 = v3;
+    v4 = _delegateNumberOfComponents;
     for (i = 0; i != v4; ++i)
     {
       if ([(UIPickerView *)self _delegateNumberOfRowsInComponent:i]>= 1 && (*(&self->_pickerViewFlags + 1) & 0x20) == 0)
@@ -1879,14 +1879,14 @@ LABEL_87:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIPickerView *)self _style];
-  v9 = [v8 sizeIsValid:{width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _style = [(UIPickerView *)self _style];
+  v9 = [_style sizeIsValid:{width, height}];
 
   if ((v9 & 1) == 0)
   {
@@ -1917,12 +1917,12 @@ LABEL_87:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     [objc_opt_class() sizeForMainScreenTraitsThatFits:{width, height}];
@@ -2132,21 +2132,21 @@ LABEL_87:
   }
 }
 
-- (void)_sendSelectionChangedForComponent:(int64_t)a3 notify:(BOOL)a4
+- (void)_sendSelectionChangedForComponent:(int64_t)component notify:(BOOL)notify
 {
-  if ((*&self->_pickerViewFlags & 8) != 0 && a4)
+  if ((*&self->_pickerViewFlags & 8) != 0 && notify)
   {
-    v6 = [(UIPickerView *)self selectedRowInComponent:a3];
+    v6 = [(UIPickerView *)self selectedRowInComponent:component];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained pickerView:self didSelectRow:v6 inComponent:a3];
+    [WeakRetained pickerView:self didSelectRow:v6 inComponent:component];
   }
 
-  [(UIPickerView *)self _noteScrollingFinishedForComponent:a3, a4];
+  [(UIPickerView *)self _noteScrollingFinishedForComponent:component, notify];
 }
 
-- (void)setAllowsMultipleSelection:(BOOL)a3
+- (void)setAllowsMultipleSelection:(BOOL)selection
 {
-  if (a3)
+  if (selection)
   {
     v3 = 1024;
   }
@@ -2162,24 +2162,24 @@ LABEL_87:
   v5[1] = 3221225472;
   v5[2] = __43__UIPickerView_setAllowsMultipleSelection___block_invoke;
   v5[3] = &__block_descriptor_33_e15_v32__0_8Q16_B24l;
-  v6 = a3;
+  selectionCopy = selection;
   [(NSMutableArray *)tables enumerateObjectsUsingBlock:v5];
 }
 
-- (void)_sendSelectionChangedFromTable:(id)a3 notify:(BOOL)a4
+- (void)_sendSelectionChangedFromTable:(id)table notify:(BOOL)notify
 {
-  v4 = a4;
-  v6 = [(UIPickerView *)self columnForTableView:a3];
+  notifyCopy = notify;
+  v6 = [(UIPickerView *)self columnForTableView:table];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(UIPickerView *)self _sendSelectionChangedForComponent:v6 notify:v4];
+    [(UIPickerView *)self _sendSelectionChangedForComponent:v6 notify:notifyCopy];
   }
 }
 
-- (void)_setUsesCheckedSelection:(BOOL)a3
+- (void)_setUsesCheckedSelection:(BOOL)selection
 {
-  if (a3)
+  if (selection)
   {
     v3 = 0x2000;
   }
@@ -2192,9 +2192,9 @@ LABEL_87:
   self->_pickerViewFlags = (*&self->_pickerViewFlags & 0xFFFFDFFF | v3);
 }
 
-- (void)_setDrawsBackground:(BOOL)a3
+- (void)_setDrawsBackground:(BOOL)background
 {
-  if (a3)
+  if (background)
   {
     v4 = 0;
   }
@@ -2205,7 +2205,7 @@ LABEL_87:
   }
 
   self->_pickerViewFlags = (*&self->_pickerViewFlags & 0xFFFFBFFF | v4);
-  if (a3)
+  if (background)
   {
     v5 = +[UIColor clearColor];
     [(UIPickerView *)self setBackgroundColor:v5];
@@ -2219,22 +2219,22 @@ LABEL_87:
   [(UIPickerView *)self setNeedsLayout];
 }
 
-- (CGSize)_contentSizeForRow:(int64_t)a3 inComponent:(int64_t)a4
+- (CGSize)_contentSizeForRow:(int64_t)row inComponent:(int64_t)component
 {
-  if ([(UIPickerView *)self numberOfComponents]<= a4)
+  if ([(UIPickerView *)self numberOfComponents]<= component)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1263 description:{@"Invalid parameter not satisfying: %@", @"component < [self numberOfComponents]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1263 description:{@"Invalid parameter not satisfying: %@", @"component < [self numberOfComponents]"}];
   }
 
-  if ([(UIPickerView *)self numberOfRowsInComponent:a4]<= a3)
+  if ([(UIPickerView *)self numberOfRowsInComponent:component]<= row)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1264 description:{@"Invalid parameter not satisfying: %@", @"row < [self numberOfRowsInComponent:component]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1264 description:{@"Invalid parameter not satisfying: %@", @"row < [self numberOfRowsInComponent:component]"}];
   }
 
-  v8 = [(UIPickerView *)self tableViewForColumn:a4];
-  v9 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+  v8 = [(UIPickerView *)self tableViewForColumn:component];
+  v9 = [MEMORY[0x1E696AC88] indexPathForRow:row inSection:0];
   [v8 rectForRowAtIndexPath:v9];
   v11 = v10;
   v13 = v12;
@@ -2246,23 +2246,23 @@ LABEL_87:
   return result;
 }
 
-- (_NSRange)visibleRowsForColumn:(int)a3
+- (_NSRange)visibleRowsForColumn:(int)column
 {
-  v3 = [(NSMutableArray *)self->_tables objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_tables objectAtIndex:column];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _visibleGlobalRows];
+    _visibleGlobalRows = [v3 _visibleGlobalRows];
     v7 = v6;
   }
 
   else
   {
-    v5 = 0;
+    _visibleGlobalRows = 0;
     v7 = 0;
   }
 
-  v8 = v5;
+  v8 = _visibleGlobalRows;
   v9 = v7;
   result.length = v9;
   result.location = v8;
@@ -2278,26 +2278,26 @@ LABEL_87:
 
   if ([(NSMutableArray *)self->_tables count]<= component)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1290 description:{@"Tried to fetch selected row in component %ld, but there are only %ld tables.", component, -[NSMutableArray count](self->_tables, "count")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1290 description:{@"Tried to fetch selected row in component %ld, but there are only %ld tables.", component, -[NSMutableArray count](self->_tables, "count")}];
   }
 
   v6 = [(NSMutableArray *)self->_tables objectAtIndex:component];
-  v7 = [v6 selectionBarRow];
+  selectionBarRow = [v6 selectionBarRow];
 
-  return v7;
+  return selectionBarRow;
 }
 
-- (int64_t)columnForTableView:(id)a3
+- (int64_t)columnForTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(NSMutableArray *)self->_tables count])
   {
     v5 = 0;
     while (1)
     {
       v6 = [(NSMutableArray *)self->_tables objectAtIndex:v5];
-      v7 = [v6 _containsTable:v4];
+      v7 = [v6 _containsTable:viewCopy];
 
       if (v7)
       {
@@ -2320,17 +2320,17 @@ LABEL_5:
   return v5;
 }
 
-- (id)tableViewForColumn:(int64_t)a3
+- (id)tableViewForColumn:(int64_t)column
 {
-  v3 = [(NSMutableArray *)self->_tables objectAtIndex:a3];
-  v4 = [v3 _preferredTable];
+  v3 = [(NSMutableArray *)self->_tables objectAtIndex:column];
+  _preferredTable = [v3 _preferredTable];
 
-  return v4;
+  return _preferredTable;
 }
 
-- (CGRect)_effectiveTableViewFrameForColumn:(int64_t)a3
+- (CGRect)_effectiveTableViewFrameForColumn:(int64_t)column
 {
-  v3 = [(NSMutableArray *)self->_tables objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_tables objectAtIndex:column];
   [v3 _tableFrame];
   v5 = v4;
   v7 = v6;
@@ -2348,13 +2348,13 @@ LABEL_5:
   return result;
 }
 
-- (void)_selectRow:(int64_t)a3 inComponent:(int64_t)a4 animated:(BOOL)a5 notify:(BOOL)a6
+- (void)_selectRow:(int64_t)row inComponent:(int64_t)component animated:(BOOL)animated notify:(BOOL)notify
 {
-  v6 = a6;
-  v7 = a5;
+  notifyCopy = notify;
+  animatedCopy = animated;
   pickerViewFlags = self->_pickerViewFlags;
   v12 = pickerViewFlags;
-  if (!a5)
+  if (!animated)
   {
     v12 = self->_pickerViewFlags;
     self->_pickerViewFlags = (*&pickerViewFlags | 0x1000);
@@ -2365,49 +2365,49 @@ LABEL_5:
     [(UIPickerView *)self layoutSubviews];
   }
 
-  v13 = [(NSMutableArray *)self->_tables objectAtIndex:a4];
-  -[UIPickerView _sendSelectionChangedFromTable:notify:](self, "_sendSelectionChangedFromTable:notify:", v13, v6 & ~[v13 selectRow:a3 animated:v7 notify:v6]);
+  v13 = [(NSMutableArray *)self->_tables objectAtIndex:component];
+  -[UIPickerView _sendSelectionChangedFromTable:notify:](self, "_sendSelectionChangedFromTable:notify:", v13, notifyCopy & ~[v13 selectRow:row animated:animatedCopy notify:notifyCopy]);
   self->_pickerViewFlags = (*&self->_pickerViewFlags & 0xFFFFEFFF | (((*&pickerViewFlags >> 12) & 1) << 12));
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(UIPickerView *)self columnForTableView:a3, a4];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  section = [(UIPickerView *)self columnForTableView:view, section];
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1352 description:@"column should exist in tables array"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1352 description:@"column should exist in tables array"];
   }
 
-  return [(UIPickerView *)self _delegateNumberOfRowsInComponent:v6];
+  return [(UIPickerView *)self _delegateNumberOfRowsInComponent:section];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPickerView *)self columnForTableView:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(UIPickerView *)self columnForTableView:viewCopy];
   if ((*&self->_pickerViewFlags & 0x10) != 0)
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"UIPickerTableViewWrapperCell"];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"UIPickerTableViewWrapperCell"];
     if (!v9)
     {
       v9 = [[UIPickerTableViewWrapperCell alloc] initWithStyle:0 reuseIdentifier:@"UIPickerTableViewWrapperCell"];
     }
 
-    v14 = [(UIPickerTableViewWrapperCell *)v9 wrappedView];
-    if (([v14 _canBeReusedInPickerView] & 1) == 0)
+    wrappedView = [(UIPickerTableViewWrapperCell *)v9 wrappedView];
+    if (([wrappedView _canBeReusedInPickerView] & 1) == 0)
     {
 
-      v14 = 0;
+      wrappedView = 0;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v16 = [WeakRetained pickerView:self viewForRow:objc_msgSend(v7 forComponent:"row") reusingView:{v8, v14}];
+    v16 = [WeakRetained pickerView:self viewForRow:objc_msgSend(pathCopy forComponent:"row") reusingView:{v8, wrappedView}];
 
     [(UIPickerTableViewWrapperCell *)v9 setWrappedView:v16];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 isRowChecked:{objc_msgSend(v7, "row")}])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [viewCopy isRowChecked:{objc_msgSend(pathCopy, "row")}])
     {
       [v16 setChecked:1];
     }
@@ -2415,21 +2415,21 @@ LABEL_5:
     goto LABEL_15;
   }
 
-  v9 = [v6 dequeueReusableCellWithIdentifier:@"UIPickerTableViewTitledCell"];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:@"UIPickerTableViewTitledCell"];
   if (!v9)
   {
     v10 = [UIPickerTableViewTitledCell alloc];
-    v11 = [(UIPickerView *)self _textColor];
-    v9 = [(UIPickerTableViewTitledCell *)v10 initWithStyle:0 reuseIdentifier:@"UIPickerTableViewTitledCell" textColor:v11 forceTextAlignmentCentered:[(UIPickerView *)self _forceTextAlignmentCentered]];
+    _textColor = [(UIPickerView *)self _textColor];
+    v9 = [(UIPickerTableViewTitledCell *)v10 initWithStyle:0 reuseIdentifier:@"UIPickerTableViewTitledCell" textColor:_textColor forceTextAlignmentCentered:[(UIPickerView *)self _forceTextAlignmentCentered]];
   }
 
   pickerViewFlags = self->_pickerViewFlags;
   if ((*&pickerViewFlags & 0x40) != 0)
   {
-    v13 = -[UIPickerView _delegateAttributedTitleForRow:forComponent:](self, "_delegateAttributedTitleForRow:forComponent:", [v7 row], v8);
+    v13 = -[UIPickerView _delegateAttributedTitleForRow:forComponent:](self, "_delegateAttributedTitleForRow:forComponent:", [pathCopy row], v8);
     if (v13)
     {
-      v14 = v13;
+      wrappedView = v13;
       [(UIPickerTableViewWrapperCell *)v9 setAttributedTitle:v13];
 LABEL_15:
 
@@ -2441,7 +2441,7 @@ LABEL_15:
 
   if ((*&pickerViewFlags & 0x20) != 0)
   {
-    v17 = -[UIPickerView _delegateTitleForRow:forComponent:](self, "_delegateTitleForRow:forComponent:", [v7 row], v8);
+    v17 = -[UIPickerView _delegateTitleForRow:forComponent:](self, "_delegateTitleForRow:forComponent:", [pathCopy row], v8);
     [(UIPickerTableViewWrapperCell *)v9 setTitle:v17];
   }
 
@@ -2455,41 +2455,41 @@ LABEL_20:
   return v9;
 }
 
-- (void)_setHighlightColor:(id)a3
+- (void)_setHighlightColor:(id)color
 {
-  [(UIView *)self _setInteractionTintColor:a3];
+  [(UIView *)self _setInteractionTintColor:color];
 
   [(UIPickerView *)self setNeedsLayout];
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_textColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_textColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     [(UIPickerView *)self setNeedsLayout];
   }
 }
 
-- (void)_setTextShadowColor:(id)a3
+- (void)_setTextShadowColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_textColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_textColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_textShadowColor, a3);
+    objc_storeStrong(&self->_textShadowColor, color);
     [(UIPickerView *)self setNeedsLayout];
   }
 }
 
 - (CATransform3D)_perspectiveTransform
 {
-  v4 = [(UIPickerView *)self _style];
-  if (v4)
+  _style = [(UIPickerView *)self _style];
+  if (_style)
   {
-    v6 = v4;
-    [v4 perspectiveTransform];
-    v4 = v6;
+    v6 = _style;
+    [_style perspectiveTransform];
+    _style = v6;
   }
 
   else
@@ -2509,8 +2509,8 @@ LABEL_20:
 
 - (void)_willPlayClickSound
 {
-  v2 = [(UIPickerView *)self _scalarStatisticsForUserValueChangedEvent];
-  [v2 incrementValueBy:1];
+  _scalarStatisticsForUserValueChangedEvent = [(UIPickerView *)self _scalarStatisticsForUserValueChangedEvent];
+  [_scalarStatisticsForUserValueChangedEvent incrementValueBy:1];
 }
 
 - (id)_scalarStatisticsForUserValueChangedEvent
@@ -2524,22 +2524,22 @@ LABEL_20:
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x10) != 0)
+  if ((focusGroupContainmentBehavior & 0x10) != 0)
   {
-    v5 = 0;
+    _systemDefaultFocusGroupIdentifier = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIPickerView;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
 + (void)_prepareStyleStorageIfNecessary
@@ -2557,20 +2557,20 @@ void __47__UIPickerView__prepareStyleStorageIfNecessary__block_invoke()
   __pickerViewIdiomsToStyles = v0;
 }
 
-+ (void)_registerStyle:(id)a3 forIdiom:(int64_t)a4
++ (void)_registerStyle:(id)style forIdiom:(int64_t)idiom
 {
-  v6 = a3;
-  [a1 _prepareStyleStorageIfNecessary];
+  styleCopy = style;
+  [self _prepareStyleStorageIfNecessary];
   v7 = __pickerViewIdiomsToStyles;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKey:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v7 setObject:styleCopy forKey:v8];
 }
 
-+ (id)_styleForIdiom:(int64_t)a3
++ (id)_styleForIdiom:(int64_t)idiom
 {
-  [a1 _prepareStyleStorageIfNecessary];
+  [self _prepareStyleStorageIfNecessary];
   v4 = __pickerViewIdiomsToStyles;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v6 = [v4 objectForKey:v5];
 
   if (v6)
@@ -2593,8 +2593,8 @@ void __47__UIPickerView__prepareStyleStorageIfNecessary__block_invoke()
   style = self->_style;
   if (!style)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v4 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
     v6 = self->_style;
     self->_style = v5;
@@ -2619,26 +2619,26 @@ void __47__UIPickerView__prepareStyleStorageIfNecessary__block_invoke()
   return WeakRetained;
 }
 
-- (void)_performScrollTest:(id)a3 withIterations:(int64_t)a4 rowsToScroll:(int64_t)a5 inComponent:(int64_t)a6
+- (void)_performScrollTest:(id)test withIterations:(int64_t)iterations rowsToScroll:(int64_t)scroll inComponent:(int64_t)component
 {
-  v11 = a3;
+  testCopy = test;
   if (self->_currentTestParameters)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1518 description:@"Picker Testing: Only one test may be run at a time"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1518 description:@"Picker Testing: Only one test may be run at a time"];
   }
 
-  if ([(UIPickerView *)self numberOfComponents]<= a6)
+  if ([(UIPickerView *)self numberOfComponents]<= component)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1519 description:@"Picker Testing: Component specified does not exist"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1519 description:@"Picker Testing: Component specified does not exist"];
   }
 
-  v12 = [(UIPickerView *)self selectedRowInComponent:a6]+ a5 * a4;
-  if (v12 >= [(UIPickerView *)self _delegateNumberOfRowsInComponent:a6])
+  v12 = [(UIPickerView *)self selectedRowInComponent:component]+ scroll * iterations;
+  if (v12 >= [(UIPickerView *)self _delegateNumberOfRowsInComponent:component])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1521 description:@"Picker Testing: Rows to scroll would go past the end of the component"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIPickerView.m" lineNumber:1521 description:@"Picker Testing: Rows to scroll would go past the end of the component"];
   }
 
   v13 = objc_alloc_init(_UIPickerViewTestParameters);
@@ -2647,12 +2647,12 @@ void __47__UIPickerView__prepareStyleStorageIfNecessary__block_invoke()
 
   v15 = self->_currentTestParameters;
   testName = v15->_testName;
-  v15->_testName = v11;
-  v17 = v11;
+  v15->_testName = testCopy;
+  v17 = testCopy;
 
-  self->_currentTestParameters->_remainingIterations = a4;
-  self->_currentTestParameters->_rowsToScroll = a5;
-  self->_currentTestParameters->_componentToScroll = a6;
+  self->_currentTestParameters->_remainingIterations = iterations;
+  self->_currentTestParameters->_rowsToScroll = scroll;
+  self->_currentTestParameters->_componentToScroll = component;
   [UIApp startedTest:v17];
 
   [(UIPickerView *)self _iterateOnCurrentTest];
@@ -2686,12 +2686,12 @@ void __47__UIPickerView__prepareStyleStorageIfNecessary__block_invoke()
   [UIApp finishedTest:v4];
 }
 
-- (void)_noteScrollingFinishedForComponent:(int64_t)a3
+- (void)_noteScrollingFinishedForComponent:(int64_t)component
 {
   currentTestParameters = self->_currentTestParameters;
   if (currentTestParameters)
   {
-    if (currentTestParameters->_componentToScroll == a3)
+    if (currentTestParameters->_componentToScroll == component)
     {
       --currentTestParameters->_remainingIterations;
       [(UIPickerView *)self _iterateOnCurrentTest];
@@ -2699,9 +2699,9 @@ void __47__UIPickerView__prepareStyleStorageIfNecessary__block_invoke()
   }
 }
 
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior
 {
-  if (a3)
+  if (behavior)
   {
     v3 = 4;
   }

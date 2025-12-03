@@ -1,38 +1,38 @@
 @interface _UITabBarItemData
-+ (id)decodeFromCoder:(id)a3 prefix:(id)a4;
-+ (id)standardItemDataForStyle:(int64_t)a3;
-- (BOOL)checkEqualTo:(id)a3;
-- (BOOL)titleTextAttributesSpecifyColorForState:(int64_t)a3;
++ (id)decodeFromCoder:(id)coder prefix:(id)prefix;
++ (id)standardItemDataForStyle:(int64_t)style;
+- (BOOL)checkEqualTo:(id)to;
+- (BOOL)titleTextAttributesSpecifyColorForState:(int64_t)state;
 - (UIImageSymbolConfiguration)preferredSymbolConfiguration;
-- (UIOffset)badgePositionAdjustmentForState:(int64_t)a3;
-- (UIOffset)badgeTitlePositionAdjustmentForState:(int64_t)a3;
-- (UIOffset)titlePositionAdjustmentForState:(int64_t)a3;
-- (id)_fallbackBadgeTitleColorForState:(int64_t)a3;
-- (id)_fallbackBadgeTitleFontForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4;
-- (id)_fallbackTitleColorForState:(int64_t)a3;
-- (id)_fallbackTitleFontForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4;
-- (id)badgeBackgroundColorForState:(int64_t)a3;
-- (id)badgeTextAttributesForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4;
-- (id)iconColorForState:(int64_t)a3;
+- (UIOffset)badgePositionAdjustmentForState:(int64_t)state;
+- (UIOffset)badgeTitlePositionAdjustmentForState:(int64_t)state;
+- (UIOffset)titlePositionAdjustmentForState:(int64_t)state;
+- (id)_fallbackBadgeTitleColorForState:(int64_t)state;
+- (id)_fallbackBadgeTitleFontForState:(int64_t)state compatibleWithTraitCollection:(id)collection;
+- (id)_fallbackTitleColorForState:(int64_t)state;
+- (id)_fallbackTitleFontForState:(int64_t)state compatibleWithTraitCollection:(id)collection;
+- (id)badgeBackgroundColorForState:(int64_t)state;
+- (id)badgeTextAttributesForState:(int64_t)state compatibleWithTraitCollection:(id)collection;
+- (id)iconColorForState:(int64_t)state;
 - (id)replicate;
-- (id)titleTextAttributesForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4;
-- (int64_t)hashInto:(int64_t)a3;
-- (void)_decodeBadgeBackgroundColorFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeBadgePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeBadgeTextAttributesFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeBadgeTitlePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeIconColorFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeTitleTextAttributesFromCoder:(id)a3 prefix:(id)a4;
-- (void)describeInto:(id)a3;
-- (void)encodeToCoder:(id)a3 prefix:(id)a4;
-- (void)setBadgeBackgroundColor:(id)a3 forState:(int64_t)a4;
-- (void)setBadgePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4;
-- (void)setBadgeTextAttributes:(id)a3 forState:(int64_t)a4;
-- (void)setBadgeTitlePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4;
-- (void)setIconColor:(id)a3 forState:(int64_t)a4;
-- (void)setTitlePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4;
-- (void)setTitleTextAttributes:(id)a3 forState:(int64_t)a4;
+- (id)titleTextAttributesForState:(int64_t)state compatibleWithTraitCollection:(id)collection;
+- (int64_t)hashInto:(int64_t)into;
+- (void)_decodeBadgeBackgroundColorFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeBadgePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeBadgeTextAttributesFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeBadgeTitlePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeIconColorFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeTitleTextAttributesFromCoder:(id)coder prefix:(id)prefix;
+- (void)describeInto:(id)into;
+- (void)encodeToCoder:(id)coder prefix:(id)prefix;
+- (void)setBadgeBackgroundColor:(id)color forState:(int64_t)state;
+- (void)setBadgePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state;
+- (void)setBadgeTextAttributes:(id)attributes forState:(int64_t)state;
+- (void)setBadgeTitlePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state;
+- (void)setIconColor:(id)color forState:(int64_t)state;
+- (void)setTitlePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state;
+- (void)setTitleTextAttributes:(id)attributes forState:(int64_t)state;
 @end
 
 @implementation _UITabBarItemData
@@ -101,43 +101,43 @@ LABEL_17:
   return v4;
 }
 
-+ (id)standardItemDataForStyle:(int64_t)a3
++ (id)standardItemDataForStyle:(int64_t)style
 {
-  if (a3 >= 5)
+  if (style >= 5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"_UITabBarItemData.m" lineNumber:45 description:{@"Unsupported style %li", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITabBarItemData.m" lineNumber:45 description:{@"Unsupported style %li", style}];
   }
 
-  v5 = _UITabBarItemStyleData[a3];
+  v5 = _UITabBarItemStyleData[style];
   if (!v5)
   {
     v6 = objc_opt_new();
-    v7 = _UITabBarItemStyleData[a3];
-    _UITabBarItemStyleData[a3] = v6;
+    v7 = _UITabBarItemStyleData[style];
+    _UITabBarItemStyleData[style] = v6;
 
-    v8 = _UITabBarItemStyleData[a3];
-    v8[2] = a3;
-    v9 = [v8 markReadOnly];
-    v5 = _UITabBarItemStyleData[a3];
+    v8 = _UITabBarItemStyleData[style];
+    v8[2] = style;
+    markReadOnly = [v8 markReadOnly];
+    v5 = _UITabBarItemStyleData[style];
   }
 
   return v5;
 }
 
-- (void)_decodeTitleTextAttributesFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeTitleTextAttributesFromCoder:(id)coder prefix:(id)prefix
 {
-  v39 = a3;
-  v6 = a4;
-  if (v6)
+  coderCopy = coder;
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Normal.TitleTextAttributes"];
-    v8 = [v39 _ui_decodeTextAttributesForKey:v7];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.TitleTextAttributes"];
+    v8 = [coderCopy _ui_decodeTextAttributesForKey:v7];
   }
 
   else
   {
-    v8 = [v39 _ui_decodeTextAttributesForKey:@"Normal.TitleTextAttributes"];
+    v8 = [coderCopy _ui_decodeTextAttributesForKey:@"Normal.TitleTextAttributes"];
   }
 
   titleTextAttributes = self->_titleTextAttributes;
@@ -158,15 +158,15 @@ LABEL_17:
   v15 = [v8 objectForKeyedSubscript:*off_1E70EC920];
   *stateFlags = *stateFlags & 0xFFFD | (2 * (v15 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Highlighted.TitleTextAttributes"];
-    v17 = [v39 _ui_decodeTextAttributesForKey:v16];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.TitleTextAttributes"];
+    v17 = [coderCopy _ui_decodeTextAttributesForKey:v16];
   }
 
   else
   {
-    v17 = [v39 _ui_decodeTextAttributesForKey:@"Highlighted.TitleTextAttributes"];
+    v17 = [coderCopy _ui_decodeTextAttributesForKey:@"Highlighted.TitleTextAttributes"];
   }
 
   objc_storeStrong(titleTextAttributes + 1, v17);
@@ -182,15 +182,15 @@ LABEL_17:
   v20 = [v17 objectForKeyedSubscript:v14];
   *&stateFlags[2] = *&stateFlags[2] & 0xFFFD | (2 * (v20 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Selected.TitleTextAttributes"];
-    v22 = [v39 _ui_decodeTextAttributesForKey:v21];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.TitleTextAttributes"];
+    v22 = [coderCopy _ui_decodeTextAttributesForKey:v21];
   }
 
   else
   {
-    v22 = [v39 _ui_decodeTextAttributesForKey:@"Selected.TitleTextAttributes"];
+    v22 = [coderCopy _ui_decodeTextAttributesForKey:@"Selected.TitleTextAttributes"];
   }
 
   objc_storeStrong(titleTextAttributes + 2, v22);
@@ -206,15 +206,15 @@ LABEL_17:
   v25 = [v22 objectForKeyedSubscript:v14];
   *&stateFlags[4] = *&stateFlags[4] & 0xFFFD | (2 * (v25 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Disabled.TitleTextAttributes"];
-    v27 = [v39 _ui_decodeTextAttributesForKey:v26];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.TitleTextAttributes"];
+    v27 = [coderCopy _ui_decodeTextAttributesForKey:v26];
   }
 
   else
   {
-    v27 = [v39 _ui_decodeTextAttributesForKey:@"Disabled.TitleTextAttributes"];
+    v27 = [coderCopy _ui_decodeTextAttributesForKey:@"Disabled.TitleTextAttributes"];
   }
 
   objc_storeStrong(titleTextAttributes + 3, v27);
@@ -230,15 +230,15 @@ LABEL_17:
   v30 = [v27 objectForKeyedSubscript:v14];
   *&stateFlags[6] = *&stateFlags[6] & 0xFFFD | (2 * (v30 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Focused.TitleTextAttributes"];
-    v32 = [v39 _ui_decodeTextAttributesForKey:v31];
+    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.TitleTextAttributes"];
+    v32 = [coderCopy _ui_decodeTextAttributesForKey:v31];
   }
 
   else
   {
-    v32 = [v39 _ui_decodeTextAttributesForKey:@"Focused.TitleTextAttributes"];
+    v32 = [coderCopy _ui_decodeTextAttributesForKey:@"Focused.TitleTextAttributes"];
   }
 
   v33 = titleTextAttributes[4];
@@ -259,19 +259,19 @@ LABEL_17:
   *&stateFlags[8] = *&stateFlags[8] & 0xFFFD | (2 * (v37 != 0));
 }
 
-- (void)_decodeBadgeTextAttributesFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeBadgeTextAttributesFromCoder:(id)coder prefix:(id)prefix
 {
-  v33 = a3;
-  v6 = a4;
-  if (v6)
+  coderCopy = coder;
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Normal.BadgeTextAttributes"];
-    v8 = [v33 _ui_decodeTextAttributesForKey:v7];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.BadgeTextAttributes"];
+    v8 = [coderCopy _ui_decodeTextAttributesForKey:v7];
   }
 
   else
   {
-    v8 = [v33 _ui_decodeTextAttributesForKey:@"Normal.BadgeTextAttributes"];
+    v8 = [coderCopy _ui_decodeTextAttributesForKey:@"Normal.BadgeTextAttributes"];
   }
 
   badgeTextAttributes = self->_badgeTextAttributes;
@@ -286,15 +286,15 @@ LABEL_17:
   v14 = [v8 objectForKeyedSubscript:*off_1E70EC920];
   *stateFlags = *stateFlags & 0xFF7F | ((v14 != 0) << 7);
 
-  if (v6)
+  if (prefixCopy)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Highlighted.BadgeTextAttributes"];
-    v16 = [v33 _ui_decodeTextAttributesForKey:v15];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.BadgeTextAttributes"];
+    v16 = [coderCopy _ui_decodeTextAttributesForKey:v15];
   }
 
   else
   {
-    v16 = [v33 _ui_decodeTextAttributesForKey:@"Highlighted.BadgeTextAttributes"];
+    v16 = [coderCopy _ui_decodeTextAttributesForKey:@"Highlighted.BadgeTextAttributes"];
   }
 
   objc_storeStrong(badgeTextAttributes + 1, v16);
@@ -304,15 +304,15 @@ LABEL_17:
   v18 = [v16 objectForKeyedSubscript:v13];
   *&stateFlags[2] = *&stateFlags[2] & 0xFF7F | ((v18 != 0) << 7);
 
-  if (v6)
+  if (prefixCopy)
   {
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Selected.BadgeTextAttributes"];
-    v20 = [v33 _ui_decodeTextAttributesForKey:v19];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.BadgeTextAttributes"];
+    v20 = [coderCopy _ui_decodeTextAttributesForKey:v19];
   }
 
   else
   {
-    v20 = [v33 _ui_decodeTextAttributesForKey:@"Selected.BadgeTextAttributes"];
+    v20 = [coderCopy _ui_decodeTextAttributesForKey:@"Selected.BadgeTextAttributes"];
   }
 
   objc_storeStrong(badgeTextAttributes + 2, v20);
@@ -322,15 +322,15 @@ LABEL_17:
   v22 = [v20 objectForKeyedSubscript:v13];
   *&stateFlags[4] = *&stateFlags[4] & 0xFF7F | ((v22 != 0) << 7);
 
-  if (v6)
+  if (prefixCopy)
   {
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Disabled.BadgeTextAttributes"];
-    v24 = [v33 _ui_decodeTextAttributesForKey:v23];
+    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.BadgeTextAttributes"];
+    v24 = [coderCopy _ui_decodeTextAttributesForKey:v23];
   }
 
   else
   {
-    v24 = [v33 _ui_decodeTextAttributesForKey:@"Disabled.BadgeTextAttributes"];
+    v24 = [coderCopy _ui_decodeTextAttributesForKey:@"Disabled.BadgeTextAttributes"];
   }
 
   objc_storeStrong(badgeTextAttributes + 3, v24);
@@ -340,15 +340,15 @@ LABEL_17:
   v26 = [v24 objectForKeyedSubscript:v13];
   *&stateFlags[6] = *&stateFlags[6] & 0xFF7F | ((v26 != 0) << 7);
 
-  if (v6)
+  if (prefixCopy)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Focused.BadgeTextAttributes"];
-    v28 = [v33 _ui_decodeTextAttributesForKey:v27];
+    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.BadgeTextAttributes"];
+    v28 = [coderCopy _ui_decodeTextAttributesForKey:v27];
   }
 
   else
   {
-    v28 = [v33 _ui_decodeTextAttributesForKey:@"Focused.BadgeTextAttributes"];
+    v28 = [coderCopy _ui_decodeTextAttributesForKey:@"Focused.BadgeTextAttributes"];
   }
 
   v29 = badgeTextAttributes[4];
@@ -361,20 +361,20 @@ LABEL_17:
   *&stateFlags[6] = *&stateFlags[6] & 0xFF7F | ((v31 != 0) << 7);
 }
 
-- (void)_decodeIconColorFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeIconColorFromCoder:(id)coder prefix:(id)prefix
 {
-  v28 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v7 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Normal.IconColor"];
-    v9 = [v28 decodeObjectOfClass:v7 forKey:v8];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.IconColor"];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
   }
 
   else
   {
-    v9 = [v28 decodeObjectOfClass:v7 forKey:@"Normal.IconColor"];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:@"Normal.IconColor"];
   }
 
   iconColor = self->_iconColor;
@@ -382,15 +382,15 @@ LABEL_17:
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xFFF7 | (8 * (v9 != 0));
   v12 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Highlighted.IconColor"];
-    v14 = [v28 decodeObjectOfClass:v12 forKey:v13];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.IconColor"];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
   }
 
   else
   {
-    v14 = [v28 decodeObjectOfClass:v12 forKey:@"Highlighted.IconColor"];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:@"Highlighted.IconColor"];
   }
 
   if (v14)
@@ -406,15 +406,15 @@ LABEL_17:
   objc_storeStrong(iconColor + 1, v15);
   *&stateFlags[2] = *&stateFlags[2] & 0xFFF7 | (8 * (v14 != 0));
   v16 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Selected.IconColor"];
-    v18 = [v28 decodeObjectOfClass:v16 forKey:v17];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.IconColor"];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
   }
 
   else
   {
-    v18 = [v28 decodeObjectOfClass:v16 forKey:@"Selected.IconColor"];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:@"Selected.IconColor"];
   }
 
   if (v18)
@@ -430,15 +430,15 @@ LABEL_17:
   objc_storeStrong(iconColor + 2, v19);
   *&stateFlags[4] = *&stateFlags[4] & 0xFFF7 | (8 * (v18 != 0));
   v20 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Disabled.IconColor"];
-    v22 = [v28 decodeObjectOfClass:v20 forKey:v21];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.IconColor"];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
   }
 
   else
   {
-    v22 = [v28 decodeObjectOfClass:v20 forKey:@"Disabled.IconColor"];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:@"Disabled.IconColor"];
   }
 
   if (v22)
@@ -454,15 +454,15 @@ LABEL_17:
   objc_storeStrong(iconColor + 3, v23);
   *&stateFlags[6] = *&stateFlags[6] & 0xFFF7 | (8 * (v22 != 0));
   v24 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Focused.IconColor"];
-    v26 = [v28 decodeObjectOfClass:v24 forKey:v25];
+    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.IconColor"];
+    v26 = [coderCopy decodeObjectOfClass:v24 forKey:v25];
   }
 
   else
   {
-    v26 = [v28 decodeObjectOfClass:v24 forKey:@"Focused.IconColor"];
+    v26 = [coderCopy decodeObjectOfClass:v24 forKey:@"Focused.IconColor"];
   }
 
   if (v26)
@@ -479,20 +479,20 @@ LABEL_17:
   *&stateFlags[8] = *&stateFlags[8] & 0xFFF7 | (8 * (v26 != 0));
 }
 
-- (void)_decodeBadgeBackgroundColorFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeBadgeBackgroundColorFromCoder:(id)coder prefix:(id)prefix
 {
-  v28 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v7 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Normal.BadgeBackgroundColor"];
-    v9 = [v28 decodeObjectOfClass:v7 forKey:v8];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.BadgeBackgroundColor"];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
   }
 
   else
   {
-    v9 = [v28 decodeObjectOfClass:v7 forKey:@"Normal.BadgeBackgroundColor"];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:@"Normal.BadgeBackgroundColor"];
   }
 
   badgeBackgroundColor = self->_badgeBackgroundColor;
@@ -500,15 +500,15 @@ LABEL_17:
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xFFDF | (32 * (v9 != 0));
   v12 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Highlighted.BadgeBackgroundColor"];
-    v14 = [v28 decodeObjectOfClass:v12 forKey:v13];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.BadgeBackgroundColor"];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
   }
 
   else
   {
-    v14 = [v28 decodeObjectOfClass:v12 forKey:@"Highlighted.BadgeBackgroundColor"];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:@"Highlighted.BadgeBackgroundColor"];
   }
 
   if (v14)
@@ -524,15 +524,15 @@ LABEL_17:
   objc_storeStrong(badgeBackgroundColor + 1, v15);
   *&stateFlags[2] = *&stateFlags[2] & 0xFFDF | (32 * (v14 != 0));
   v16 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Selected.BadgeBackgroundColor"];
-    v18 = [v28 decodeObjectOfClass:v16 forKey:v17];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.BadgeBackgroundColor"];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
   }
 
   else
   {
-    v18 = [v28 decodeObjectOfClass:v16 forKey:@"Selected.BadgeBackgroundColor"];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:@"Selected.BadgeBackgroundColor"];
   }
 
   if (v18)
@@ -548,15 +548,15 @@ LABEL_17:
   objc_storeStrong(badgeBackgroundColor + 2, v19);
   *&stateFlags[4] = *&stateFlags[4] & 0xFFDF | (32 * (v18 != 0));
   v20 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Disabled.BadgeBackgroundColor"];
-    v22 = [v28 decodeObjectOfClass:v20 forKey:v21];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.BadgeBackgroundColor"];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
   }
 
   else
   {
-    v22 = [v28 decodeObjectOfClass:v20 forKey:@"Disabled.BadgeBackgroundColor"];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:@"Disabled.BadgeBackgroundColor"];
   }
 
   if (v22)
@@ -572,15 +572,15 @@ LABEL_17:
   objc_storeStrong(badgeBackgroundColor + 3, v23);
   *&stateFlags[6] = *&stateFlags[6] & 0xFFDF | (32 * (v22 != 0));
   v24 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Focused.BadgeBackgroundColor"];
-    v26 = [v28 decodeObjectOfClass:v24 forKey:v25];
+    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.BadgeBackgroundColor"];
+    v26 = [coderCopy decodeObjectOfClass:v24 forKey:v25];
   }
 
   else
   {
-    v26 = [v28 decodeObjectOfClass:v24 forKey:@"Focused.BadgeBackgroundColor"];
+    v26 = [coderCopy decodeObjectOfClass:v24 forKey:@"Focused.BadgeBackgroundColor"];
   }
 
   if (v26)
@@ -597,17 +597,17 @@ LABEL_17:
   *&stateFlags[8] = *&stateFlags[8] & 0xFFDF | (32 * (v26 != 0));
 }
 
-- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"Normal.TitlePosition";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Normal.TitlePosition"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.TitlePosition"];
   }
 
-  v9 = v6;
+  v9 = coderCopy;
   v10 = v8;
   if ([v9 containsValueForKey:v10])
   {
@@ -626,13 +626,13 @@ LABEL_17:
 
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xFFFB | v15;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment = self->_titlePositionAdjustment;
     self->_titlePositionAdjustment[0].horizontal = v12;
     self->_titlePositionAdjustment[0].vertical = v14;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Highlighted.TitlePosition"];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.TitlePosition"];
   }
 
   else
@@ -661,12 +661,12 @@ LABEL_17:
   }
 
   *&stateFlags[2] = *&stateFlags[2] & 0xFFFB | v25;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment[1].horizontal = v22;
     titlePositionAdjustment[1].vertical = v24;
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Selected.TitlePosition"];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.TitlePosition"];
   }
 
   else
@@ -694,12 +694,12 @@ LABEL_17:
   }
 
   *&stateFlags[4] = *&stateFlags[4] & 0xFFFB | v33;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment[2].horizontal = v30;
     titlePositionAdjustment[2].vertical = v32;
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Disabled.TitlePosition"];
+    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.TitlePosition"];
   }
 
   else
@@ -725,12 +725,12 @@ LABEL_17:
   }
 
   *&stateFlags[6] = *&stateFlags[6] & 0xFFFB | v39;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment[3].horizontal = v12;
     titlePositionAdjustment[3].vertical = v14;
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Focused.TitlePosition"];
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.TitlePosition"];
   }
 
   else
@@ -756,7 +756,7 @@ LABEL_17:
   }
 
   *&stateFlags[8] = *&stateFlags[8] & 0xFFFB | v44;
-  if (v7)
+  if (prefixCopy)
   {
   }
 
@@ -764,17 +764,17 @@ LABEL_17:
   titlePositionAdjustment[4].vertical = v24;
 }
 
-- (void)_decodeBadgePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeBadgePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"Normal.BadgePosition";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Normal.BadgePosition"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.BadgePosition"];
   }
 
-  v9 = v6;
+  v9 = coderCopy;
   v10 = v8;
   if ([v9 containsValueForKey:v10])
   {
@@ -793,13 +793,13 @@ LABEL_17:
 
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xFFEF | v15;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgePositionAdjustment = self->_badgePositionAdjustment;
     self->_badgePositionAdjustment[0].horizontal = v12;
     self->_badgePositionAdjustment[0].vertical = v14;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Highlighted.BadgePosition"];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.BadgePosition"];
   }
 
   else
@@ -828,12 +828,12 @@ LABEL_17:
   }
 
   *&stateFlags[2] = *&stateFlags[2] & 0xFFEF | v25;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgePositionAdjustment[1].horizontal = v22;
     badgePositionAdjustment[1].vertical = v24;
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Selected.BadgePosition"];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.BadgePosition"];
   }
 
   else
@@ -861,12 +861,12 @@ LABEL_17:
   }
 
   *&stateFlags[4] = *&stateFlags[4] & 0xFFEF | v33;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgePositionAdjustment[2].horizontal = v30;
     badgePositionAdjustment[2].vertical = v32;
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Disabled.BadgePosition"];
+    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.BadgePosition"];
   }
 
   else
@@ -892,12 +892,12 @@ LABEL_17:
   }
 
   *&stateFlags[6] = *&stateFlags[6] & 0xFFEF | v39;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgePositionAdjustment[3].horizontal = v12;
     badgePositionAdjustment[3].vertical = v14;
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Focused.BadgePosition"];
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.BadgePosition"];
   }
 
   else
@@ -923,7 +923,7 @@ LABEL_17:
   }
 
   *&stateFlags[8] = *&stateFlags[8] & 0xFFEF | v44;
-  if (v7)
+  if (prefixCopy)
   {
   }
 
@@ -931,17 +931,17 @@ LABEL_17:
   badgePositionAdjustment[4].vertical = v24;
 }
 
-- (void)_decodeBadgeTitlePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeBadgeTitlePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"Normal.BadgeTitlePosition";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Normal.BadgeTitlePosition"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.BadgeTitlePosition"];
   }
 
-  v9 = v6;
+  v9 = coderCopy;
   v10 = v8;
   if ([v9 containsValueForKey:v10])
   {
@@ -960,13 +960,13 @@ LABEL_17:
 
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xFEFF | v15;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgeTitlePositionAdjustment = self->_badgeTitlePositionAdjustment;
     self->_badgeTitlePositionAdjustment[0].horizontal = v12;
     self->_badgeTitlePositionAdjustment[0].vertical = v14;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Highlighted.BadgeTitlePosition"];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.BadgeTitlePosition"];
   }
 
   else
@@ -995,12 +995,12 @@ LABEL_17:
   }
 
   *&stateFlags[2] = *&stateFlags[2] & 0xFEFF | v25;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgeTitlePositionAdjustment[1].horizontal = v22;
     badgeTitlePositionAdjustment[1].vertical = v24;
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Selected.BadgeTitlePosition"];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Selected.BadgeTitlePosition"];
   }
 
   else
@@ -1028,12 +1028,12 @@ LABEL_17:
   }
 
   *&stateFlags[4] = *&stateFlags[4] & 0xFEFF | v33;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgeTitlePositionAdjustment[2].horizontal = v30;
     badgeTitlePositionAdjustment[2].vertical = v32;
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Disabled.BadgeTitlePosition"];
+    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.BadgeTitlePosition"];
   }
 
   else
@@ -1059,12 +1059,12 @@ LABEL_17:
   }
 
   *&stateFlags[6] = *&stateFlags[6] & 0xFEFF | v39;
-  if (v7)
+  if (prefixCopy)
   {
 
     badgeTitlePositionAdjustment[3].horizontal = v12;
     badgeTitlePositionAdjustment[3].vertical = v14;
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Focused.BadgeTitlePosition"];
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.BadgeTitlePosition"];
   }
 
   else
@@ -1090,7 +1090,7 @@ LABEL_17:
   }
 
   *&stateFlags[8] = *&stateFlags[8] & 0xFEFF | v44;
-  if (v7)
+  if (prefixCopy)
   {
   }
 
@@ -1098,66 +1098,66 @@ LABEL_17:
   badgeTitlePositionAdjustment[4].vertical = v24;
 }
 
-+ (id)decodeFromCoder:(id)a3 prefix:(id)a4
++ (id)decodeFromCoder:(id)coder prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"DefaultStyle";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"DefaultStyle"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"DefaultStyle"];
   }
 
-  if ([v6 containsValueForKey:v8])
+  if ([coderCopy containsValueForKey:v8])
   {
-    v9 = [a1 standardItemDataForStyle:{objc_msgSend(v6, "decodeIntegerForKey:", v8)}];
+    v9 = [self standardItemDataForStyle:{objc_msgSend(coderCopy, "decodeIntegerForKey:", v8)}];
   }
 
   else
   {
     v9 = objc_opt_new();
-    if (v7)
+    if (prefixCopy)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"CustomizedStyle"];
-      v9[2] = [v6 decodeIntegerForKey:v10];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"CustomizedStyle"];
+      v9[2] = [coderCopy decodeIntegerForKey:v10];
     }
 
     else
     {
-      v9[2] = [v6 decodeIntegerForKey:@"CustomizedStyle"];
+      v9[2] = [coderCopy decodeIntegerForKey:@"CustomizedStyle"];
     }
 
-    [v9 _decodeTitleTextAttributesFromCoder:v6 prefix:v7];
-    [v9 _decodeBadgeTextAttributesFromCoder:v6 prefix:v7];
-    [v9 _decodeIconColorFromCoder:v6 prefix:v7];
-    [v9 _decodeBadgeBackgroundColorFromCoder:v6 prefix:v7];
-    [v9 _decodeTitlePositionAdjustmentsFromCoder:v6 prefix:v7];
-    [v9 _decodeBadgePositionAdjustmentsFromCoder:v6 prefix:v7];
-    [v9 _decodeBadgeTitlePositionAdjustmentsFromCoder:v6 prefix:v7];
+    [v9 _decodeTitleTextAttributesFromCoder:coderCopy prefix:prefixCopy];
+    [v9 _decodeBadgeTextAttributesFromCoder:coderCopy prefix:prefixCopy];
+    [v9 _decodeIconColorFromCoder:coderCopy prefix:prefixCopy];
+    [v9 _decodeBadgeBackgroundColorFromCoder:coderCopy prefix:prefixCopy];
+    [v9 _decodeTitlePositionAdjustmentsFromCoder:coderCopy prefix:prefixCopy];
+    [v9 _decodeBadgePositionAdjustmentsFromCoder:coderCopy prefix:prefixCopy];
+    [v9 _decodeBadgeTitlePositionAdjustmentsFromCoder:coderCopy prefix:prefixCopy];
   }
 
   return v9;
 }
 
-- (void)encodeToCoder:(id)a3 prefix:(id)a4
+- (void)encodeToCoder:(id)coder prefix:(id)prefix
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  coderCopy = coder;
+  prefixCopy = prefix;
+  v8 = prefixCopy;
   style = self->_style;
   if (_UITabBarItemStyleData[style] != self)
   {
     v10 = 0x1E696A000uLL;
-    if (v7)
+    if (prefixCopy)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"CustomizedStyle"];
-      [v6 encodeInteger:style forKey:v11];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"CustomizedStyle"];
+      [coderCopy encodeInteger:style forKey:v11];
     }
 
     else
     {
-      [v6 encodeInteger:self->_style forKey:@"CustomizedStyle"];
+      [coderCopy encodeInteger:self->_style forKey:@"CustomizedStyle"];
     }
 
     v13 = 0;
@@ -1189,14 +1189,14 @@ LABEL_17:
         break;
       }
 
-      [v6 _ui_encodeTextAttributes:self->_titleTextAttributes[v13 / 8] forKey:@"TitleTextAttributes"];
+      [coderCopy _ui_encodeTextAttributes:self->_titleTextAttributes[v13 / 8] forKey:@"TitleTextAttributes"];
       v21 = self->_badgeTextAttributes[v13 / 8];
       if (!v21)
       {
         goto LABEL_21;
       }
 
-      v22 = v6;
+      v22 = coderCopy;
 LABEL_20:
       [v22 _ui_encodeTextAttributes:v21 forKey:@"BadgeTextAttributes"];
 LABEL_21:
@@ -1212,7 +1212,7 @@ LABEL_21:
       if (v16)
       {
         v27 = [*(v23 + 3776) stringWithFormat:@"%@.%@", v16, @"IconColor"];
-        [v6 encodeObject:v26 forKey:v27];
+        [coderCopy encodeObject:v26 forKey:v27];
 
         v25 = stateFlags[v13 / 4];
 LABEL_24:
@@ -1225,24 +1225,24 @@ LABEL_24:
         if (v16)
         {
           v29 = [*(v23 + 3776) stringWithFormat:@"%@.%@", v16, @"BadgeBackgroundColor"];
-          [v6 encodeObject:v28 forKey:v29];
+          [coderCopy encodeObject:v28 forKey:v29];
 
           goto LABEL_31;
         }
 
-        v31 = v6;
+        v31 = coderCopy;
         v30 = self->_badgeBackgroundColor[v13 / 8];
         goto LABEL_30;
       }
 
-      [v6 encodeObject:self->_iconColor[v13 / 8] forKey:@"IconColor"];
+      [coderCopy encodeObject:self->_iconColor[v13 / 8] forKey:@"IconColor"];
       if ((*&stateFlags[v13 / 4] & 0x20) == 0)
       {
         goto LABEL_31;
       }
 
       v30 = self->_badgeBackgroundColor[v13 / 8];
-      v31 = v6;
+      v31 = coderCopy;
 LABEL_30:
       [v31 encodeObject:v30 forKey:@"BadgeBackgroundColor"];
 LABEL_31:
@@ -1263,7 +1263,7 @@ LABEL_31:
         v33 = @"TitlePosition";
       }
 
-      [v6 encodeUIOffset:v33 forKey:{*&self->_badgeBackgroundColor[v14 / 8 + 4], *(&self->_titlePositionAdjustment[0].horizontal + v14)}];
+      [coderCopy encodeUIOffset:v33 forKey:{*&self->_badgeBackgroundColor[v14 / 8 + 4], *(&self->_titlePositionAdjustment[0].horizontal + v14)}];
       if (v16)
       {
 
@@ -1285,7 +1285,7 @@ LABEL_43:
             v35 = @"BadgePosition";
           }
 
-          [v6 encodeUIOffset:v35 forKey:{*(&self->_titlePositionAdjustment[4].vertical + v14), *(&self->_badgePositionAdjustment[0].horizontal + v14)}];
+          [coderCopy encodeUIOffset:v35 forKey:{*(&self->_titlePositionAdjustment[4].vertical + v14), *(&self->_badgePositionAdjustment[0].horizontal + v14)}];
           if ((v34 & 1) == 0)
           {
           }
@@ -1308,7 +1308,7 @@ LABEL_43:
           }
 
 LABEL_51:
-          [v6 encodeUIOffset:v37 forKey:{*(&self->_badgePositionAdjustment[4].vertical + v14), *(&self->_badgeTitlePositionAdjustment[0].horizontal + v14)}];
+          [coderCopy encodeUIOffset:v37 forKey:{*(&self->_badgePositionAdjustment[4].vertical + v14), *(&self->_badgeTitlePositionAdjustment[0].horizontal + v14)}];
           if ((v36 & 1) == 0)
           {
           }
@@ -1349,7 +1349,7 @@ LABEL_53:
     }
 
     v18 = [*(v10 + 3776) stringWithFormat:@"%@.%@", v15, @"TitleTextAttributes"];
-    [v6 _ui_encodeTextAttributes:v17 forKey:v18];
+    [coderCopy _ui_encodeTextAttributes:v17 forKey:v18];
 
 LABEL_14:
     v19 = self->_badgeTextAttributes[v13 / 8];
@@ -1361,36 +1361,36 @@ LABEL_14:
     if (v16)
     {
       v20 = [*(v10 + 3776) stringWithFormat:@"%@.%@", v16, @"BadgeTextAttributes"];
-      [v6 _ui_encodeTextAttributes:v19 forKey:v20];
+      [coderCopy _ui_encodeTextAttributes:v19 forKey:v20];
 
       goto LABEL_21;
     }
 
-    v22 = v6;
+    v22 = coderCopy;
     v21 = self->_badgeTextAttributes[v13 / 8];
     goto LABEL_20;
   }
 
-  if (v7)
+  if (prefixCopy)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"DefaultStyle"];
-    [v6 encodeInteger:style forKey:v12];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"DefaultStyle"];
+    [coderCopy encodeInteger:style forKey:v12];
   }
 
   else
   {
-    [v6 encodeInteger:self->_style forKey:@"DefaultStyle"];
+    [coderCopy encodeInteger:self->_style forKey:@"DefaultStyle"];
   }
 
 LABEL_56:
 }
 
-- (void)describeInto:(id)a3
+- (void)describeInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   v15.receiver = self;
   v15.super_class = _UITabBarItemData;
-  [(_UIBarAppearanceData *)&v15 describeInto:v4];
+  [(_UIBarAppearanceData *)&v15 describeInto:intoCopy];
   style = self->_style;
   if (style >= 5)
   {
@@ -1402,7 +1402,7 @@ LABEL_56:
     v6 = off_1E7127CD8[style];
   }
 
-  [v4 appendFormat:@" baseStyle=%@", v6];
+  [intoCopy appendFormat:@" baseStyle=%@", v6];
 
   v7 = 0;
   v8 = 0;
@@ -1447,32 +1447,32 @@ LABEL_12:
     }
 
 LABEL_15:
-    objc_msgSend(v4, "appendFormat:", @" %@=(titleTextAttributes="), v10;
+    objc_msgSend(intoCopy, "appendFormat:", @" %@=(titleTextAttributes="), v10;
 
-    _UIBADPrettyPrintTextAttributes(v4, self->_titleTextAttributes[v8]);
+    _UIBADPrettyPrintTextAttributes(intoCopy, self->_titleTextAttributes[v8]);
     stateFlags = self->_stateFlags;
     if ((*&self->_stateFlags[v7] & 4) != 0)
     {
       v12 = NSStringFromUIOffset(*&self->_badgeBackgroundColor[v9 + 4]);
-      [v4 appendFormat:@", titlePositionAdjustment=%@", v12];
+      [intoCopy appendFormat:@", titlePositionAdjustment=%@", v12];
     }
 
-    [v4 appendFormat:@", iconColor=%@", self->_iconColor[v8]];
+    [intoCopy appendFormat:@", iconColor=%@", self->_iconColor[v8]];
     if ((*&stateFlags[v7] & 0x10) != 0)
     {
       v13 = NSStringFromUIOffset(*(&self->_titlePositionAdjustment[4].vertical + v9 * 8));
-      [v4 appendFormat:@", badgePositionAdjustment=%@", v13];
+      [intoCopy appendFormat:@", badgePositionAdjustment=%@", v13];
     }
 
-    [v4 appendFormat:@", badgeBackgroundColor=%@, badgeTextAttributes=", self->_badgeBackgroundColor[v8]];
-    _UIBADPrettyPrintTextAttributes(v4, self->_badgeTextAttributes[v8]);
+    [intoCopy appendFormat:@", badgeBackgroundColor=%@, badgeTextAttributes=", self->_badgeBackgroundColor[v8]];
+    _UIBADPrettyPrintTextAttributes(intoCopy, self->_badgeTextAttributes[v8]);
     if ((*&stateFlags[v7] & 0x100) != 0)
     {
       v14 = NSStringFromUIOffset(*(&self->_badgePositionAdjustment[4].vertical + v9 * 8));
-      [v4 appendFormat:@", badgeTitlePositionAdjustment=%@", v14];
+      [intoCopy appendFormat:@", badgeTitlePositionAdjustment=%@", v14];
     }
 
-    [v4 appendString:@""]);
+    [intoCopy appendString:@""]);
 LABEL_22:
     ++v8;
     v7 += 2;
@@ -1482,11 +1482,11 @@ LABEL_22:
   while (v8 != 5);
 }
 
-- (int64_t)hashInto:(int64_t)a3
+- (int64_t)hashInto:(int64_t)into
 {
   v9.receiver = self;
   v9.super_class = _UITabBarItemData;
-  v4 = [(_UIBarAppearanceData *)&v9 hashInto:a3];
+  v4 = [(_UIBarAppearanceData *)&v9 hashInto:into];
   v5 = self->_titleTextAttributes[0];
   if (v5)
   {
@@ -1503,35 +1503,35 @@ LABEL_22:
   return v6 << 8;
 }
 
-- (BOOL)checkEqualTo:(id)a3
+- (BOOL)checkEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v26.receiver = self;
   v26.super_class = _UITabBarItemData;
-  if ([(_UIBarAppearanceData *)&v26 checkEqualTo:v4]&& self->_style == v4[2])
+  if ([(_UIBarAppearanceData *)&v26 checkEqualTo:toCopy]&& self->_style == toCopy[2])
   {
     v5 = 0;
     while (1)
     {
-      v6 = vmovn_s64(vceqq_f64(self->_titlePositionAdjustment[v5], *&v4[2 * v5 + 23]));
+      v6 = vmovn_s64(vceqq_f64(self->_titlePositionAdjustment[v5], *&toCopy[2 * v5 + 23]));
       if ((v6.i32[0] & v6.i32[1] & 1) == 0)
       {
         break;
       }
 
-      v7 = vmovn_s64(vceqq_f64(self->_badgePositionAdjustment[v5], *&v4[2 * v5 + 33]));
+      v7 = vmovn_s64(vceqq_f64(self->_badgePositionAdjustment[v5], *&toCopy[2 * v5 + 33]));
       if ((v7.i32[0] & v7.i32[1] & 1) == 0)
       {
         break;
       }
 
-      v8 = vmovn_s64(vceqq_f64(self->_badgeTitlePositionAdjustment[v5], *&v4[2 * v5 + 43]));
+      v8 = vmovn_s64(vceqq_f64(self->_badgeTitlePositionAdjustment[v5], *&toCopy[2 * v5 + 43]));
       if ((v8.i32[0] & v8.i32[1] & 1) == 0)
       {
         break;
       }
 
-      v9 = v4[v5 + 13];
+      v9 = toCopy[v5 + 13];
       v10 = self->_iconColor[v5];
       v11 = v9;
       v12 = v11;
@@ -1566,7 +1566,7 @@ LABEL_35:
         }
       }
 
-      v15 = v4[v5 + 18];
+      v15 = toCopy[v5 + 18];
       v10 = self->_badgeBackgroundColor[v5];
       v16 = v15;
       v12 = v16;
@@ -1589,7 +1589,7 @@ LABEL_35:
         }
       }
 
-      v18 = v4[v5 + 3];
+      v18 = toCopy[v5 + 3];
       v10 = self->_titleTextAttributes[v5];
       v19 = v18;
       v12 = v19;
@@ -1612,7 +1612,7 @@ LABEL_35:
         }
       }
 
-      v21 = v4[v5 + 8];
+      v21 = toCopy[v5 + 8];
       v10 = self->_badgeTextAttributes[v5];
       v22 = v21;
       v12 = v22;
@@ -1653,11 +1653,11 @@ LABEL_37:
 {
   v12.receiver = self;
   v12.super_class = _UITabBarItemData;
-  v3 = [(_UIBarAppearanceData *)&v12 replicate];
+  replicate = [(_UIBarAppearanceData *)&v12 replicate];
   v4 = 0;
   v5 = 0;
-  v3[2] = self->_style;
-  v6 = v3 + 3;
+  replicate[2] = self->_style;
+  v6 = replicate + 3;
   do
   {
     v7 = [(NSDictionary *)self->_titleTextAttributes[v5 / 2] copy];
@@ -1665,28 +1665,28 @@ LABEL_37:
     v6[v5 / 2] = v7;
 
     v9 = [(NSDictionary *)self->_badgeTextAttributes[v5 / 2] copy];
-    v10 = v3[v5 / 2 + 8];
-    v3[v5 / 2 + 8] = v9;
+    v10 = replicate[v5 / 2 + 8];
+    replicate[v5 / 2 + 8] = v9;
 
-    objc_storeStrong(&v3[v5 / 2 + 13], self->_iconColor[v5 / 2]);
-    objc_storeStrong(&v3[v5 / 2 + 18], self->_badgeBackgroundColor[v5 / 2]);
-    *&v3[v4 / 8 + 23] = self->_titlePositionAdjustment[v4 / 0x10];
-    *&v3[v4 / 8 + 33] = self->_badgePositionAdjustment[v4 / 0x10];
-    *&v3[v4 / 8 + 43] = self->_badgeTitlePositionAdjustment[v4 / 0x10];
-    v3[v5 / 2 + 53] = *&self->_stateFlags[v5];
+    objc_storeStrong(&replicate[v5 / 2 + 13], self->_iconColor[v5 / 2]);
+    objc_storeStrong(&replicate[v5 / 2 + 18], self->_badgeBackgroundColor[v5 / 2]);
+    *&replicate[v4 / 8 + 23] = self->_titlePositionAdjustment[v4 / 0x10];
+    *&replicate[v4 / 8 + 33] = self->_badgePositionAdjustment[v4 / 0x10];
+    *&replicate[v4 / 8 + 43] = self->_badgeTitlePositionAdjustment[v4 / 0x10];
+    replicate[v5 / 2 + 53] = *&self->_stateFlags[v5];
     v5 += 2;
     v4 += 16;
   }
 
   while (v5 != 10);
 
-  return v3;
+  return replicate;
 }
 
-- (id)_fallbackTitleFontForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4
+- (id)_fallbackTitleFontForState:(int64_t)state compatibleWithTraitCollection:(id)collection
 {
-  v6 = a4;
-  if (a3 == 4 && (*&self->_stateFlags[2] & 1) != 0)
+  collectionCopy = collection;
+  if (state == 4 && (*&self->_stateFlags[2] & 1) != 0)
   {
     v7 = [(NSDictionary *)self->_titleTextAttributes[1] objectForKeyedSubscript:*off_1E70EC918];
   }
@@ -1704,7 +1704,7 @@ LABEL_37:
     if (v10)
     {
 LABEL_7:
-      if (!v6)
+      if (!collectionCopy)
       {
         goto LABEL_9;
       }
@@ -1719,7 +1719,7 @@ LABEL_7:
   }
 
   v11 = _UISolariumEnabled();
-  if (a3 == 2)
+  if (state == 2)
   {
     v12 = v11;
   }
@@ -1762,26 +1762,26 @@ LABEL_28:
 
       else
       {
-        [v14 preferredFontForTextStyle:v19 compatibleWithTraitCollection:v6];
+        [v14 preferredFontForTextStyle:v19 compatibleWithTraitCollection:collectionCopy];
       }
       v20 = ;
       goto LABEL_34;
     }
 
 LABEL_22:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_UITabBarItemData _fallbackTitleFontForState:compatibleWithTraitCollection:]"];
-    [v16 handleFailureInFunction:v17 file:@"_UITabBarItemData.m" lineNumber:439 description:{@"Unknown title style %li", self->_style}];
+    [currentHandler handleFailureInFunction:v17 file:@"_UITabBarItemData.m" lineNumber:439 description:{@"Unknown title style %li", self->_style}];
 
 LABEL_23:
     v7 = 0;
-    if (!v6)
+    if (!collectionCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    v8 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+    v8 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:collectionCopy];
 
     v7 = v8;
     goto LABEL_9;
@@ -1800,7 +1800,7 @@ LABEL_8:
   v20 = [off_1E70ECC18 systemFontOfSize:10.0 weight:*v18];
 LABEL_34:
   v7 = v20;
-  if (v6)
+  if (collectionCopy)
   {
     goto LABEL_8;
   }
@@ -1810,9 +1810,9 @@ LABEL_9:
   return v7;
 }
 
-- (id)_fallbackTitleColorForState:(int64_t)a3
+- (id)_fallbackTitleColorForState:(int64_t)state
 {
-  if (a3 == 4 && (*&self->_stateFlags[2] & 2) != 0)
+  if (state == 4 && (*&self->_stateFlags[2] & 2) != 0)
   {
     titleTextAttributes = &self->_titleTextAttributes[1];
   }
@@ -1834,10 +1834,10 @@ LABEL_9:
   return v5;
 }
 
-- (id)_fallbackBadgeTitleFontForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4
+- (id)_fallbackBadgeTitleFontForState:(int64_t)state compatibleWithTraitCollection:(id)collection
 {
-  v6 = a4;
-  if (a3 == 4 && (*&self->_stateFlags[2] & 0x40) != 0)
+  collectionCopy = collection;
+  if (state == 4 && (*&self->_stateFlags[2] & 0x40) != 0)
   {
     v7 = [(NSDictionary *)self->_badgeTextAttributes[1] objectForKeyedSubscript:*off_1E70EC918];
   }
@@ -1889,17 +1889,17 @@ LABEL_19:
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_UITabBarItemData _fallbackBadgeTitleFontForState:compatibleWithTraitCollection:]"];
-    [v15 handleFailureInFunction:v16 file:@"_UITabBarItemData.m" lineNumber:490 description:{@"Unknown title style %li", self->_style}];
+    [currentHandler handleFailureInFunction:v16 file:@"_UITabBarItemData.m" lineNumber:490 description:{@"Unknown title style %li", self->_style}];
 
     v7 = 0;
     goto LABEL_21;
   }
 
-  if (v6)
+  if (collectionCopy)
   {
-    v9 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+    v9 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:collectionCopy];
 
     v7 = v9;
   }
@@ -1909,9 +1909,9 @@ LABEL_21:
   return v7;
 }
 
-- (id)_fallbackBadgeTitleColorForState:(int64_t)a3
+- (id)_fallbackBadgeTitleColorForState:(int64_t)state
 {
-  if (a3 == 4 && (*&self->_stateFlags[2] & 0x80) != 0)
+  if (state == 4 && (*&self->_stateFlags[2] & 0x80) != 0)
   {
     v4 = self->_badgeTextAttributes[1];
   }
@@ -1933,16 +1933,16 @@ LABEL_8:
   return v3;
 }
 
-- (id)titleTextAttributesForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4
+- (id)titleTextAttributesForState:(int64_t)state compatibleWithTraitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = &self->_stateFlags[2 * a3];
+  collectionCopy = collection;
+  v7 = collectionCopy;
+  v8 = &self->_stateFlags[2 * state];
   if (*v8)
   {
-    if (v6)
+    if (collectionCopy)
     {
-      v10 = [(NSDictionary *)self->_titleTextAttributes[a3] objectForKeyedSubscript:*off_1E70EC918];
+      v10 = [(NSDictionary *)self->_titleTextAttributes[state] objectForKeyedSubscript:*off_1E70EC918];
       v11 = [v10 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v7];
       v12 = v11;
       if (v10 == v11)
@@ -1964,31 +1964,31 @@ LABEL_8:
 
   else
   {
-    v9 = [(_UITabBarItemData *)self _fallbackTitleFontForState:a3 compatibleWithTraitCollection:v6];
+    v9 = [(_UITabBarItemData *)self _fallbackTitleFontForState:state compatibleWithTraitCollection:collectionCopy];
   }
 
   v13 = 0;
-  if (a3 != 2 && (*v8 & 2) == 0)
+  if (state != 2 && (*v8 & 2) == 0)
   {
-    v13 = [(_UITabBarItemData *)self _fallbackTitleColorForState:a3];
+    v13 = [(_UITabBarItemData *)self _fallbackTitleColorForState:state];
   }
 
-  v14 = self->_titleTextAttributes[a3];
+  v14 = self->_titleTextAttributes[state];
   if (v9 | v13)
   {
     v15 = [(NSDictionary *)v14 mutableCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = v15;
+      dictionary = v15;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v18 = v17;
+    v18 = dictionary;
 
     if (v9)
     {
@@ -2009,39 +2009,39 @@ LABEL_8:
   return v18;
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(int64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(int64_t)state
 {
-  v7 = a3;
+  attributesCopy = attributes;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = [v7 objectForKeyedSubscript:*off_1E70EC918];
+  v8 = [attributesCopy objectForKeyedSubscript:*off_1E70EC918];
   stateFlags = self->_stateFlags;
-  v10 = *&self->_stateFlags[2 * a4] & 0xFFFE;
+  v10 = *&self->_stateFlags[2 * state] & 0xFFFE;
   if (v8)
   {
     ++v10;
   }
 
-  *&stateFlags[2 * a4] = v10;
+  *&stateFlags[2 * state] = v10;
 
-  v11 = [v7 objectForKeyedSubscript:*off_1E70EC920];
-  *&stateFlags[2 * a4] = *&stateFlags[2 * a4] & 0xFFFD | (2 * (v11 != 0));
+  v11 = [attributesCopy objectForKeyedSubscript:*off_1E70EC920];
+  *&stateFlags[2 * state] = *&stateFlags[2 * state] & 0xFFFD | (2 * (v11 != 0));
 
-  v12 = [v7 copy];
-  v13 = self->_titleTextAttributes[a4];
-  self->_titleTextAttributes[a4] = v12;
+  v12 = [attributesCopy copy];
+  v13 = self->_titleTextAttributes[state];
+  self->_titleTextAttributes[state] = v12;
 }
 
-- (BOOL)titleTextAttributesSpecifyColorForState:(int64_t)a3
+- (BOOL)titleTextAttributesSpecifyColorForState:(int64_t)state
 {
-  if ((a3 - 1) >= 3)
+  if ((state - 1) >= 3)
   {
-    if (!a3)
+    if (!state)
     {
       stateFlags = self->_stateFlags;
       return (*stateFlags >> 1) & 1;
     }
 
-    if (a3 != 4)
+    if (state != 4)
     {
       LOBYTE(v4) = 0;
       return v4;
@@ -2057,7 +2057,7 @@ LABEL_8:
   else
   {
     stateFlags = self->_stateFlags;
-    if ((*&self->_stateFlags[2 * a3] & 2) == 0)
+    if ((*&self->_stateFlags[2 * state] & 2) == 0)
     {
       return (*stateFlags >> 1) & 1;
     }
@@ -2067,16 +2067,16 @@ LABEL_8:
   return v4;
 }
 
-- (UIOffset)titlePositionAdjustmentForState:(int64_t)a3
+- (UIOffset)titlePositionAdjustmentForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 4) != 0)
+  if ((*&self->_stateFlags[2 * state] & 4) != 0)
   {
-    titlePositionAdjustment = &self->_titlePositionAdjustment[a3];
+    titlePositionAdjustment = &self->_titlePositionAdjustment[state];
   }
 
   else
   {
-    if (a3 == 4 && (*&self->_stateFlags[2] & 4) != 0)
+    if (state == 4 && (*&self->_stateFlags[2] & 4) != 0)
     {
       titlePositionAdjustment = &self->_titlePositionAdjustment[1];
       p_vertical = &self->_titlePositionAdjustment[1].vertical;
@@ -2103,25 +2103,25 @@ LABEL_9:
   return result;
 }
 
-- (void)setTitlePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4
+- (void)setTitlePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = &self->_titlePositionAdjustment[a4];
+  v8 = &self->_titlePositionAdjustment[state];
   v8->horizontal = horizontal;
   v8->vertical = vertical;
-  *&self->_stateFlags[2 * a4] |= 4u;
+  *&self->_stateFlags[2 * state] |= 4u;
 }
 
-- (id)iconColorForState:(int64_t)a3
+- (id)iconColorForState:(int64_t)state
 {
-  if (a3 == 2 || (*&self->_stateFlags[2 * a3] & 8) != 0)
+  if (state == 2 || (*&self->_stateFlags[2 * state] & 8) != 0)
   {
-    iconColor = &self->_iconColor[a3];
+    iconColor = &self->_iconColor[state];
   }
 
-  else if (a3 == 4 && (*&self->_stateFlags[2] & 8) != 0)
+  else if (state == 4 && (*&self->_stateFlags[2] & 8) != 0)
   {
     iconColor = &self->_iconColor[1];
   }
@@ -2143,26 +2143,26 @@ LABEL_9:
   return v4;
 }
 
-- (void)setIconColor:(id)a3 forState:(int64_t)a4
+- (void)setIconColor:(id)color forState:(int64_t)state
 {
-  v7 = a3;
+  colorCopy = color;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = self->_iconColor[a4];
-  self->_iconColor[a4] = v7;
+  v8 = self->_iconColor[state];
+  self->_iconColor[state] = colorCopy;
 
-  *&self->_stateFlags[2 * a4] = *&self->_stateFlags[2 * a4] & 0xFFF7 | (8 * (v7 != 0));
+  *&self->_stateFlags[2 * state] = *&self->_stateFlags[2 * state] & 0xFFF7 | (8 * (colorCopy != 0));
 }
 
-- (UIOffset)badgePositionAdjustmentForState:(int64_t)a3
+- (UIOffset)badgePositionAdjustmentForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 0x10) != 0)
+  if ((*&self->_stateFlags[2 * state] & 0x10) != 0)
   {
-    badgePositionAdjustment = &self->_badgePositionAdjustment[a3];
+    badgePositionAdjustment = &self->_badgePositionAdjustment[state];
   }
 
   else
   {
-    if (a3 == 4 && (*&self->_stateFlags[2] & 0x10) != 0)
+    if (state == 4 && (*&self->_stateFlags[2] & 0x10) != 0)
     {
       badgePositionAdjustment = &self->_badgePositionAdjustment[1];
       p_vertical = &self->_badgePositionAdjustment[1].vertical;
@@ -2189,25 +2189,25 @@ LABEL_9:
   return result;
 }
 
-- (void)setBadgePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4
+- (void)setBadgePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = &self->_badgePositionAdjustment[a4];
+  v8 = &self->_badgePositionAdjustment[state];
   v8->horizontal = horizontal;
   v8->vertical = vertical;
-  *&self->_stateFlags[2 * a4] |= 0x10u;
+  *&self->_stateFlags[2 * state] |= 0x10u;
 }
 
-- (id)badgeBackgroundColorForState:(int64_t)a3
+- (id)badgeBackgroundColorForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 0x20) != 0)
+  if ((*&self->_stateFlags[2 * state] & 0x20) != 0)
   {
-    v4 = self->_badgeBackgroundColor[a3];
+    v4 = self->_badgeBackgroundColor[state];
   }
 
-  else if (a3 == 4 && (*&self->_stateFlags[2] & 0x20) != 0)
+  else if (state == 4 && (*&self->_stateFlags[2] & 0x20) != 0)
   {
     v4 = self->_badgeBackgroundColor[1];
   }
@@ -2238,26 +2238,26 @@ LABEL_12:
   return v3;
 }
 
-- (void)setBadgeBackgroundColor:(id)a3 forState:(int64_t)a4
+- (void)setBadgeBackgroundColor:(id)color forState:(int64_t)state
 {
-  v7 = a3;
+  colorCopy = color;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = self->_badgeBackgroundColor[a4];
-  self->_badgeBackgroundColor[a4] = v7;
+  v8 = self->_badgeBackgroundColor[state];
+  self->_badgeBackgroundColor[state] = colorCopy;
 
-  *&self->_stateFlags[2 * a4] = *&self->_stateFlags[2 * a4] & 0xFFDF | (32 * (v7 != 0));
+  *&self->_stateFlags[2 * state] = *&self->_stateFlags[2 * state] & 0xFFDF | (32 * (colorCopy != 0));
 }
 
-- (id)badgeTextAttributesForState:(int64_t)a3 compatibleWithTraitCollection:(id)a4
+- (id)badgeTextAttributesForState:(int64_t)state compatibleWithTraitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = &self->_stateFlags[2 * a3];
+  collectionCopy = collection;
+  v7 = collectionCopy;
+  v8 = &self->_stateFlags[2 * state];
   if ((*v8 & 0x40) != 0)
   {
-    if (v6)
+    if (collectionCopy)
     {
-      v10 = [(NSDictionary *)self->_badgeTextAttributes[a3] objectForKeyedSubscript:*off_1E70EC918];
+      v10 = [(NSDictionary *)self->_badgeTextAttributes[state] objectForKeyedSubscript:*off_1E70EC918];
       v11 = [v10 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v7];
       v12 = v11;
       if (v10 == v11)
@@ -2279,7 +2279,7 @@ LABEL_12:
 
   else
   {
-    v9 = [(_UITabBarItemData *)self _fallbackBadgeTitleFontForState:a3 compatibleWithTraitCollection:v6];
+    v9 = [(_UITabBarItemData *)self _fallbackBadgeTitleFontForState:state compatibleWithTraitCollection:collectionCopy];
   }
 
   if ((*v8 & 0x80) != 0)
@@ -2289,25 +2289,25 @@ LABEL_12:
 
   else
   {
-    v13 = [(_UITabBarItemData *)self _fallbackBadgeTitleColorForState:a3];
+    v13 = [(_UITabBarItemData *)self _fallbackBadgeTitleColorForState:state];
   }
 
-  v14 = self->_badgeTextAttributes[a3];
+  v14 = self->_badgeTextAttributes[state];
   if (v9 | v13)
   {
     v15 = [(NSDictionary *)v14 mutableCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = v15;
+      dictionary = v15;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v18 = v17;
+    v18 = dictionary;
 
     if (v9)
     {
@@ -2328,31 +2328,31 @@ LABEL_12:
   return v18;
 }
 
-- (void)setBadgeTextAttributes:(id)a3 forState:(int64_t)a4
+- (void)setBadgeTextAttributes:(id)attributes forState:(int64_t)state
 {
-  v7 = a3;
+  attributesCopy = attributes;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = [v7 objectForKeyedSubscript:*off_1E70EC918];
-  *&self->_stateFlags[2 * a4] = *&self->_stateFlags[2 * a4] & 0xFFBF | ((v8 != 0) << 6);
+  v8 = [attributesCopy objectForKeyedSubscript:*off_1E70EC918];
+  *&self->_stateFlags[2 * state] = *&self->_stateFlags[2 * state] & 0xFFBF | ((v8 != 0) << 6);
 
-  v9 = [v7 objectForKeyedSubscript:*off_1E70EC920];
-  *&self->_stateFlags[2 * a4] = *&self->_stateFlags[2 * a4] & 0xFF7F | ((v9 != 0) << 7);
+  v9 = [attributesCopy objectForKeyedSubscript:*off_1E70EC920];
+  *&self->_stateFlags[2 * state] = *&self->_stateFlags[2 * state] & 0xFF7F | ((v9 != 0) << 7);
 
-  v10 = [v7 copy];
-  v11 = self->_badgeTextAttributes[a4];
-  self->_badgeTextAttributes[a4] = v10;
+  v10 = [attributesCopy copy];
+  v11 = self->_badgeTextAttributes[state];
+  self->_badgeTextAttributes[state] = v10;
 }
 
-- (UIOffset)badgeTitlePositionAdjustmentForState:(int64_t)a3
+- (UIOffset)badgeTitlePositionAdjustmentForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 0x100) != 0)
+  if ((*&self->_stateFlags[2 * state] & 0x100) != 0)
   {
-    badgeTitlePositionAdjustment = &self->_badgeTitlePositionAdjustment[a3];
+    badgeTitlePositionAdjustment = &self->_badgeTitlePositionAdjustment[state];
   }
 
   else
   {
-    if (a3 == 4 && (*&self->_stateFlags[2] & 0x100) != 0)
+    if (state == 4 && (*&self->_stateFlags[2] & 0x100) != 0)
     {
       badgeTitlePositionAdjustment = &self->_badgeTitlePositionAdjustment[1];
       p_vertical = &self->_badgeTitlePositionAdjustment[1].vertical;
@@ -2379,15 +2379,15 @@ LABEL_9:
   return result;
 }
 
-- (void)setBadgeTitlePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4
+- (void)setBadgeTitlePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = &self->_badgeTitlePositionAdjustment[a4];
+  v8 = &self->_badgeTitlePositionAdjustment[state];
   v8->horizontal = horizontal;
   v8->vertical = vertical;
-  *&self->_stateFlags[2 * a4] |= 0x100u;
+  *&self->_stateFlags[2 * state] |= 0x100u;
 }
 
 @end

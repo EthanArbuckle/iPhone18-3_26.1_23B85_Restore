@@ -6,9 +6,9 @@
 
 - (REMObjectID)remObjectID
 {
-  v2 = [*self->modelObject & 0x7FFFFFFFFFFFFFFFLL remObjectID];
+  remObjectID = [*self->modelObject & 0x7FFFFFFFFFFFFFFFLL remObjectID];
 
-  return v2;
+  return remObjectID;
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface MicrophoneTestViewController
-- (MicrophoneTestViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (MicrophoneTestViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation MicrophoneTestViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100011B3C(a3, a4);
+  selfCopy = self;
+  sub_100011B3C(inputs, responder);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100011D94();
 }
 
 - (void)teardown
 {
   v2 = *&self->DKDiagnosticViewController_opaque[OBJC_IVAR___MicrophoneTestViewController_headphonesDetector];
-  v4 = self;
+  selfCopy = self;
   [v2 stop];
   sub_100012D6C();
-  if (*&v4->DKDiagnosticViewController_opaque[OBJC_IVAR___MicrophoneTestViewController_responder])
+  if (*&selfCopy->DKDiagnosticViewController_opaque[OBJC_IVAR___MicrophoneTestViewController_responder])
   {
-    v3 = *&v4->DKDiagnosticViewController_opaque[OBJC_IVAR___MicrophoneTestViewController_responder];
+    v3 = *&selfCopy->DKDiagnosticViewController_opaque[OBJC_IVAR___MicrophoneTestViewController_responder];
     [swift_unknownObjectRetain() enableVolumeHUD:1];
     swift_unknownObjectRelease();
   }
 }
 
-- (MicrophoneTestViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MicrophoneTestViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100014D0C();
     v7 = v6;
@@ -51,8 +51,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100012EDC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100012EDC(v5, v7, bundle);
 }
 
 @end

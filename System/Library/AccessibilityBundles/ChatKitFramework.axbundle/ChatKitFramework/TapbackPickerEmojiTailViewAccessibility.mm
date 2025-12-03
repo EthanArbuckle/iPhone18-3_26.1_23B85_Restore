@@ -7,7 +7,7 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TapbackPickerEmojiTailViewAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(TapbackPickerEmojiTailViewAccessibility *)self accessibilityContainer];
   NSClassFromString(&cfstr_ChatkitTapback.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 

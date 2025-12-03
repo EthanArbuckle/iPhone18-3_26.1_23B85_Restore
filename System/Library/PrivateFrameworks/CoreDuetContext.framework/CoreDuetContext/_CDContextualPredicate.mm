@@ -1,48 +1,48 @@
 @interface _CDContextualPredicate
-+ (id)andPredicateWithSubpredicates:(id)a3;
-+ (id)contextualPredicateForKeyPaths:(id)a3 withPredicate:(id)a4;
-+ (id)notPredicateWithSubpredicate:(id)a3;
-+ (id)orPredicateWithSubpredicates:(id)a3;
-+ (id)predicateForChangeAtKeyPath:(id)a3;
-+ (id)predicateForChangeAtKeyPath:(id)a3 withMinimumDurationInPreviousState:(double)a4;
-+ (id)predicateForChangeAtKeyPaths:(id)a3;
-+ (id)predicateForKeyPath:(id)a3 equalToValue:(id)a4;
-+ (id)predicateForKeyPath:(id)a3 equalToValue:(id)a4 withMinimumDurationInPreviousState:(double)a5;
-+ (id)predicateForKeyPath:(id)a3 withFormat:(id)a4;
-+ (id)predicateForKeyPath:(id)a3 withPredicate:(id)a4;
-+ (id)predicateForKeyPath:(id)a3 withPredicate:(id)a4 withPredicateForPreviousState:(id)a5 withMinimumDurationInPreviousState:(double)a6;
-- (BOOL)evaluateWithObject:(id)a3;
-- (BOOL)evaluateWithState:(id)a3 previousValue:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_CDContextualPredicate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)andPredicateWithSubpredicates:(id)subpredicates;
++ (id)contextualPredicateForKeyPaths:(id)paths withPredicate:(id)predicate;
++ (id)notPredicateWithSubpredicate:(id)subpredicate;
++ (id)orPredicateWithSubpredicates:(id)subpredicates;
++ (id)predicateForChangeAtKeyPath:(id)path;
++ (id)predicateForChangeAtKeyPath:(id)path withMinimumDurationInPreviousState:(double)state;
++ (id)predicateForChangeAtKeyPaths:(id)paths;
++ (id)predicateForKeyPath:(id)path equalToValue:(id)value;
++ (id)predicateForKeyPath:(id)path equalToValue:(id)value withMinimumDurationInPreviousState:(double)state;
++ (id)predicateForKeyPath:(id)path withFormat:(id)format;
++ (id)predicateForKeyPath:(id)path withPredicate:(id)predicate;
++ (id)predicateForKeyPath:(id)path withPredicate:(id)predicate withPredicateForPreviousState:(id)state withMinimumDurationInPreviousState:(double)previousState;
+- (BOOL)evaluateWithObject:(id)object;
+- (BOOL)evaluateWithState:(id)state previousValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (_CDContextualPredicate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForChangeAtKeyPath:(id)a3;
-- (id)initForChangeAtKeyPath:(id)a3 equalToValue:(id)a4;
-- (id)initForChangeAtKeyPaths:(id)a3;
+- (id)initForChangeAtKeyPath:(id)path;
+- (id)initForChangeAtKeyPath:(id)path equalToValue:(id)value;
+- (id)initForChangeAtKeyPaths:(id)paths;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDContextualPredicate
 
-+ (id)predicateForChangeAtKeyPath:(id)a3
++ (id)predicateForChangeAtKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initForChangeAtKeyPath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initForChangeAtKeyPath:pathCopy];
 
   return v5;
 }
 
-- (id)initForChangeAtKeyPath:(id)a3
+- (id)initForChangeAtKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _CDContextualPredicate;
   v5 = [(_CDContextualPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+    v6 = [MEMORY[0x1E695DFD8] setWithObject:pathCopy];
     keyPaths = v5->_keyPaths;
     v5->_keyPaths = v6;
   }
@@ -50,23 +50,23 @@
   return v5;
 }
 
-+ (id)predicateForChangeAtKeyPaths:(id)a3
++ (id)predicateForChangeAtKeyPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initForChangeAtKeyPaths:v4];
+  pathsCopy = paths;
+  v5 = [[self alloc] initForChangeAtKeyPaths:pathsCopy];
 
   return v5;
 }
 
-- (id)initForChangeAtKeyPaths:(id)a3
+- (id)initForChangeAtKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v9.receiver = self;
   v9.super_class = _CDContextualPredicate;
   v5 = [(_CDContextualPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+    v6 = [MEMORY[0x1E695DFD8] setWithArray:pathsCopy];
     keyPaths = v5->_keyPaths;
     v5->_keyPaths = v6;
   }
@@ -74,125 +74,125 @@
   return v5;
 }
 
-+ (id)predicateForKeyPath:(id)a3 equalToValue:(id)a4
++ (id)predicateForKeyPath:(id)path equalToValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initForChangeAtKeyPath:v7 equalToValue:v6];
+  valueCopy = value;
+  pathCopy = path;
+  v8 = [[self alloc] initForChangeAtKeyPath:pathCopy equalToValue:valueCopy];
 
   return v8;
 }
 
-- (id)initForChangeAtKeyPath:(id)a3 equalToValue:(id)a4
+- (id)initForChangeAtKeyPath:(id)path equalToValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = _CDContextualPredicate;
   v8 = [(_CDContextualPredicate *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DFD8] setWithObject:v6];
+    v9 = [MEMORY[0x1E695DFD8] setWithObject:pathCopy];
     keyPaths = v8->_keyPaths;
     v8->_keyPaths = v9;
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.%@.value == %@", v6, v7];
+    valueCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.%@.value == %@", pathCopy, valueCopy];
     predicate = v8->_predicate;
-    v8->_predicate = v11;
+    v8->_predicate = valueCopy;
   }
 
   return v8;
 }
 
-+ (id)predicateForKeyPath:(id)a3 withPredicate:(id)a4
++ (id)predicateForKeyPath:(id)path withPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  v9 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+  predicateCopy = predicate;
+  pathCopy = path;
+  v8 = objc_alloc_init(self);
+  v9 = [MEMORY[0x1E695DFD8] setWithObject:pathCopy];
 
   [v8 setKeyPaths:v9];
-  [v8 setPredicate:v6];
+  [v8 setPredicate:predicateCopy];
 
   return v8;
 }
 
-+ (id)contextualPredicateForKeyPaths:(id)a3 withPredicate:(id)a4
++ (id)contextualPredicateForKeyPaths:(id)paths withPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setKeyPaths:v7];
+  predicateCopy = predicate;
+  pathsCopy = paths;
+  v8 = objc_alloc_init(self);
+  [v8 setKeyPaths:pathsCopy];
 
-  [v8 setPredicate:v6];
+  [v8 setPredicate:predicateCopy];
 
   return v8;
 }
 
-+ (id)predicateForKeyPath:(id)a3 withFormat:(id)a4
++ (id)predicateForKeyPath:(id)path withFormat:(id)format
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a3;
-  v7 = [v5 predicateWithFormat:a4 arguments:&v11];
-  v8 = [_CDContextualPredicate predicateForKeyPath:v6 withPredicate:v7];
+  pathCopy = path;
+  v7 = [v5 predicateWithFormat:format arguments:&v11];
+  v8 = [_CDContextualPredicate predicateForKeyPath:pathCopy withPredicate:v7];
 
   return v8;
 }
 
-+ (id)predicateForChangeAtKeyPath:(id)a3 withMinimumDurationInPreviousState:(double)a4
++ (id)predicateForChangeAtKeyPath:(id)path withMinimumDurationInPreviousState:(double)state
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
-  v8 = [MEMORY[0x1E695DFD8] setWithObject:v6];
+  pathCopy = path;
+  v7 = objc_alloc_init(self);
+  v8 = [MEMORY[0x1E695DFD8] setWithObject:pathCopy];
 
   [v7 setKeyPaths:v8];
-  [v7 setMinimumDurationInPreviousState:a4];
+  [v7 setMinimumDurationInPreviousState:state];
 
   return v7;
 }
 
-+ (id)predicateForKeyPath:(id)a3 equalToValue:(id)a4 withMinimumDurationInPreviousState:(double)a5
++ (id)predicateForKeyPath:(id)path equalToValue:(id)value withMinimumDurationInPreviousState:(double)state
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  v11 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+  valueCopy = value;
+  pathCopy = path;
+  v10 = objc_alloc_init(self);
+  v11 = [MEMORY[0x1E695DFD8] setWithObject:pathCopy];
   [v10 setKeyPaths:v11];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.%@.value == %@", v9, v8];
+  valueCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self.%@.value == %@", pathCopy, valueCopy];
 
-  [v10 setPredicate:v12];
-  [v10 setMinimumDurationInPreviousState:a5];
+  [v10 setPredicate:valueCopy];
+  [v10 setMinimumDurationInPreviousState:state];
 
   return v10;
 }
 
-+ (id)predicateForKeyPath:(id)a3 withPredicate:(id)a4 withPredicateForPreviousState:(id)a5 withMinimumDurationInPreviousState:(double)a6
++ (id)predicateForKeyPath:(id)path withPredicate:(id)predicate withPredicateForPreviousState:(id)state withMinimumDurationInPreviousState:(double)previousState
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = objc_alloc_init(a1);
-  v14 = [MEMORY[0x1E695DFD8] setWithObject:v12];
+  stateCopy = state;
+  predicateCopy = predicate;
+  pathCopy = path;
+  v13 = objc_alloc_init(self);
+  v14 = [MEMORY[0x1E695DFD8] setWithObject:pathCopy];
 
   [v13 setKeyPaths:v14];
-  [v13 setPredicate:v11];
+  [v13 setPredicate:predicateCopy];
 
-  [v13 setPredicateForPreviousState:v10];
-  [v13 setMinimumDurationInPreviousState:a6];
+  [v13 setPredicateForPreviousState:stateCopy];
+  [v13 setMinimumDurationInPreviousState:previousState];
 
   return v13;
 }
 
-+ (id)notPredicateWithSubpredicate:(id)a3
++ (id)notPredicateWithSubpredicate:(id)subpredicate
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 predicate];
-  v34 = v5;
-  if (v5)
+  subpredicateCopy = subpredicate;
+  predicate = [subpredicateCopy predicate];
+  v34 = predicate;
+  if (predicate)
   {
-    [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v5];
+    [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:predicate];
   }
 
   else
@@ -200,24 +200,24 @@
     [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
   v6 = ;
-  v7 = [v4 keyPaths];
-  v8 = [v7 copy];
+  keyPaths = [subpredicateCopy keyPaths];
+  v8 = [keyPaths copy];
 
   v32 = v8;
   v33 = v6;
-  v9 = [a1 contextualPredicateForKeyPaths:v8 withPredicate:v6];
-  v10 = [v4 circularLocationRegions];
-  [v9 setCircularLocationRegions:v10];
+  v9 = [self contextualPredicateForKeyPaths:v8 withPredicate:v6];
+  circularLocationRegions = [subpredicateCopy circularLocationRegions];
+  [v9 setCircularLocationRegions:circularLocationRegions];
 
-  v35 = v4;
-  v11 = [v4 timeBasedPredicateEvaluationIntervals];
-  v12 = [MEMORY[0x1E695DF00] distantPast];
+  v35 = subpredicateCopy;
+  timeBasedPredicateEvaluationIntervals = [subpredicateCopy timeBasedPredicateEvaluationIntervals];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v13 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v14 = v11;
+  v14 = timeBasedPredicateEvaluationIntervals;
   v15 = [v14 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v15)
   {
@@ -226,7 +226,7 @@
     do
     {
       v18 = 0;
-      v19 = v12;
+      v19 = distantPast;
       do
       {
         if (*v37 != v17)
@@ -236,8 +236,8 @@
 
         v20 = *(*(&v36 + 1) + 8 * v18);
         v21 = objc_alloc(MEMORY[0x1E696AB80]);
-        v22 = [v20 startDate];
-        v23 = [v21 initWithStartDate:v19 endDate:v22];
+        startDate = [v20 startDate];
+        v23 = [v21 initWithStartDate:v19 endDate:startDate];
 
         [v23 duration];
         if (v24 > 0.0)
@@ -245,10 +245,10 @@
           [v13 addObject:v23];
         }
 
-        v12 = [v20 endDate];
+        distantPast = [v20 endDate];
 
         ++v18;
-        v19 = v12;
+        v19 = distantPast;
       }
 
       while (v16 != v18);
@@ -259,8 +259,8 @@
   }
 
   v25 = objc_alloc(MEMORY[0x1E696AB80]);
-  v26 = [MEMORY[0x1E695DF00] distantFuture];
-  v27 = [v25 initWithStartDate:v12 endDate:v26];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v27 = [v25 initWithStartDate:distantPast endDate:distantFuture];
 
   [v27 duration];
   if (v28 > 0.0)
@@ -276,12 +276,12 @@
   return v9;
 }
 
-+ (id)andPredicateWithSubpredicates:(id)a3
++ (id)andPredicateWithSubpredicates:(id)subpredicates
 {
   v61 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v45 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  subpredicatesCopy = subpredicates;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v5 = [MEMORY[0x1E695DFA8] set];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -294,12 +294,12 @@
   v50[2] = __56___CDContextualPredicate_andPredicateWithSubpredicates___block_invoke;
   v50[3] = &unk_1E7886400;
   v50[4] = &v51;
-  [v3 enumerateObjectsUsingBlock:v50];
+  [subpredicatesCopy enumerateObjectsUsingBlock:v50];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v3;
+  obj = subpredicatesCopy;
   v8 = [obj countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (!v8)
   {
@@ -317,20 +317,20 @@
       }
 
       v11 = *(*(&v46 + 1) + 8 * i);
-      v12 = [v11 predicate];
+      predicate = [v11 predicate];
 
-      if (v12)
+      if (predicate)
       {
-        v13 = [v11 predicate];
-        [v45 addObject:v13];
+        predicate2 = [v11 predicate];
+        [array addObject:predicate2];
       }
 
-      v14 = [v11 predicateForPreviousState];
+      predicateForPreviousState = [v11 predicateForPreviousState];
 
-      if (v14)
+      if (predicateForPreviousState)
       {
-        v15 = [v11 predicateForPreviousState];
-        [v4 addObject:v15];
+        predicateForPreviousState2 = [v11 predicateForPreviousState];
+        [array2 addObject:predicateForPreviousState2];
       }
 
       else
@@ -340,30 +340,30 @@
           goto LABEL_13;
         }
 
-        v15 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-        [v4 addObject:v15];
+        predicateForPreviousState2 = [MEMORY[0x1E696AE18] predicateWithValue:1];
+        [array2 addObject:predicateForPreviousState2];
       }
 
 LABEL_13:
-      v16 = [v11 keyPaths];
-      [v5 unionSet:v16];
+      keyPaths = [v11 keyPaths];
+      [v5 unionSet:keyPaths];
 
-      v17 = [v11 timeBasedPredicateEvaluationIntervals];
-      v18 = [v17 array];
+      timeBasedPredicateEvaluationIntervals = [v11 timeBasedPredicateEvaluationIntervals];
+      array3 = [timeBasedPredicateEvaluationIntervals array];
 
-      if (v18)
+      if (array3)
       {
-        [v6 addObjectsFromArray:v18];
+        [v6 addObjectsFromArray:array3];
       }
 
-      v19 = [v11 circularLocationRegions];
-      v20 = v19 == 0;
+      circularLocationRegions = [v11 circularLocationRegions];
+      v20 = circularLocationRegions == 0;
 
       if (!v20)
       {
-        v21 = [v11 circularLocationRegions];
-        v22 = [v21 allObjects];
-        [v7 addObjectsFromArray:v22];
+        circularLocationRegions2 = [v11 circularLocationRegions];
+        allObjects = [circularLocationRegions2 allObjects];
+        [v7 addObjectsFromArray:allObjects];
       }
     }
 
@@ -373,10 +373,10 @@ LABEL_13:
   while (v8);
 LABEL_19:
 
-  v40 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v45];
-  if ([v4 count])
+  v40 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
+  if ([array2 count])
   {
-    [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v4];
+    [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array2];
     [MEMORY[0x1E695DFD8] setWithSet:{v5, objc_claimAutoreleasedReturnValue()}];
   }
 
@@ -385,15 +385,15 @@ LABEL_19:
     [MEMORY[0x1E695DFD8] setWithSet:{v5, 0}];
   }
   v23 = ;
-  v43 = [a1 contextualPredicateForKeyPaths:v23 withPredicate:v40];
+  v43 = [self contextualPredicateForKeyPaths:v23 withPredicate:v40];
 
   v41 = [v6 copy];
   if ([v41 count])
   {
     v24 = objc_alloc(MEMORY[0x1E696AB80]);
-    v25 = [MEMORY[0x1E695DF00] distantPast];
-    v26 = [MEMORY[0x1E695DF00] distantFuture];
-    v27 = [v24 initWithStartDate:v25 endDate:v26];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    v27 = [v24 initWithStartDate:distantPast endDate:distantFuture];
 
     v57 = 0u;
     v58 = 0u;
@@ -458,12 +458,12 @@ LABEL_19:
   return v43;
 }
 
-+ (id)orPredicateWithSubpredicates:(id)a3
++ (id)orPredicateWithSubpredicates:(id)subpredicates
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v53 = [MEMORY[0x1E695DF70] array];
-  v55 = [MEMORY[0x1E695DF70] array];
+  subpredicatesCopy = subpredicates;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v56 = [MEMORY[0x1E695DFA8] set];
   v52 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v51 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -476,12 +476,12 @@ LABEL_19:
   v62[2] = __55___CDContextualPredicate_orPredicateWithSubpredicates___block_invoke;
   v62[3] = &unk_1E7886400;
   v62[4] = &v63;
-  [v4 enumerateObjectsUsingBlock:v62];
+  [subpredicatesCopy enumerateObjectsUsingBlock:v62];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v4;
+  obj = subpredicatesCopy;
   v5 = [obj countByEnumeratingWithState:&v58 objects:v75 count:16];
   if (v5)
   {
@@ -496,20 +496,20 @@ LABEL_19:
         }
 
         v8 = *(*(&v58 + 1) + 8 * i);
-        v9 = [v8 predicate];
+        predicate = [v8 predicate];
 
-        if (v9)
+        if (predicate)
         {
-          v10 = [v8 predicate];
-          [v53 addObject:v10];
+          predicate2 = [v8 predicate];
+          [array addObject:predicate2];
         }
 
-        v11 = [v8 predicateForPreviousState];
+        predicateForPreviousState = [v8 predicateForPreviousState];
 
-        if (v11)
+        if (predicateForPreviousState)
         {
-          v12 = [v8 predicateForPreviousState];
-          [v55 addObject:v12];
+          predicateForPreviousState2 = [v8 predicateForPreviousState];
+          [array2 addObject:predicateForPreviousState2];
         }
 
         else
@@ -519,30 +519,30 @@ LABEL_19:
             goto LABEL_13;
           }
 
-          v12 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-          [v55 addObject:v12];
+          predicateForPreviousState2 = [MEMORY[0x1E696AE18] predicateWithValue:1];
+          [array2 addObject:predicateForPreviousState2];
         }
 
 LABEL_13:
-        v13 = [v8 keyPaths];
-        [v56 unionSet:v13];
+        keyPaths = [v8 keyPaths];
+        [v56 unionSet:keyPaths];
 
-        v14 = [v8 timeBasedPredicateEvaluationIntervals];
-        v15 = [v14 array];
+        timeBasedPredicateEvaluationIntervals = [v8 timeBasedPredicateEvaluationIntervals];
+        array3 = [timeBasedPredicateEvaluationIntervals array];
 
-        if (v15)
+        if (array3)
         {
-          [v52 addObjectsFromArray:v15];
+          [v52 addObjectsFromArray:array3];
         }
 
-        v16 = [v8 circularLocationRegions];
-        v17 = v16 == 0;
+        circularLocationRegions = [v8 circularLocationRegions];
+        v17 = circularLocationRegions == 0;
 
         if (!v17)
         {
-          v18 = [v8 circularLocationRegions];
-          v19 = [v18 allObjects];
-          [v51 addObjectsFromArray:v19];
+          circularLocationRegions2 = [v8 circularLocationRegions];
+          allObjects = [circularLocationRegions2 allObjects];
+          [v51 addObjectsFromArray:allObjects];
         }
       }
 
@@ -552,9 +552,9 @@ LABEL_13:
     while (v5);
   }
 
-  if ([v53 count])
+  if ([array count])
   {
-    v46 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v53];
+    v46 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array];
   }
 
   else
@@ -562,9 +562,9 @@ LABEL_13:
     v46 = 0;
   }
 
-  if ([v55 count])
+  if ([array2 count])
   {
-    v44 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v55];
+    v44 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array2];
   }
 
   else
@@ -573,10 +573,10 @@ LABEL_13:
   }
 
   v20 = [MEMORY[0x1E695DFD8] setWithSet:v56];
-  v45 = [a1 contextualPredicateForKeyPaths:v20 withPredicate:v46];
+  v45 = [self contextualPredicateForKeyPaths:v20 withPredicate:v46];
 
   v43 = [v52 copy];
-  v21 = [v43 copy];
+  allObjects2 = [v43 copy];
   do
   {
     v57 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -584,7 +584,7 @@ LABEL_13:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v47 = v21;
+    v47 = allObjects2;
     v49 = [v47 countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v49)
     {
@@ -620,13 +620,13 @@ LABEL_13:
                 v27 = *(*(&v67 + 1) + 8 * k);
                 if ([v22 intersectsDateInterval:v27])
                 {
-                  v28 = [v22 startDate];
-                  v29 = [v27 startDate];
-                  v30 = [v28 earlierDate:v29];
+                  startDate = [v22 startDate];
+                  startDate2 = [v27 startDate];
+                  v30 = [startDate earlierDate:startDate2];
 
-                  v31 = [v22 endDate];
-                  v32 = [v27 endDate];
-                  v33 = [v31 laterDate:v32];
+                  endDate = [v22 endDate];
+                  endDate2 = [v27 endDate];
+                  v33 = [endDate laterDate:endDate2];
 
                   v34 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v30 endDate:v33];
                   [v57 removeObject:v27];
@@ -656,11 +656,11 @@ LABEL_13:
 
     v36 = [v57 count];
     v37 = [v47 count];
-    v21 = [v57 allObjects];
+    allObjects2 = [v57 allObjects];
   }
 
   while (v36 != v37);
-  v38 = [v21 sortedArrayUsingSelector:sel_compare_];
+  v38 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
   v39 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v38];
 
   [v45 setTimeBasedPredicateEvaluationIntervals:v39];
@@ -675,25 +675,25 @@ LABEL_13:
   return v45;
 }
 
-- (BOOL)evaluateWithObject:(id)a3
+- (BOOL)evaluateWithObject:(id)object
 {
-  v4 = a3;
-  LOBYTE(self) = [(NSPredicate *)self->_predicate evaluateWithObject:v4];
+  objectCopy = object;
+  LOBYTE(self) = [(NSPredicate *)self->_predicate evaluateWithObject:objectCopy];
 
   return self;
 }
 
-- (BOOL)evaluateWithState:(id)a3 previousValue:(id)a4
+- (BOOL)evaluateWithState:(id)state previousValue:(id)value
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  valueCopy = value;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = [(_CDContextualPredicate *)self keyPaths];
-  v9 = [v8 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  keyPaths = [(_CDContextualPredicate *)self keyPaths];
+  v9 = [keyPaths countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v9)
   {
     v10 = *v45;
@@ -703,10 +703,10 @@ LABEL_13:
       {
         if (*v45 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyPaths);
         }
 
-        v12 = [v6 objectForKeyedSubscript:*(*(&v44 + 1) + 8 * i)];
+        v12 = [stateCopy objectForKeyedSubscript:*(*(&v44 + 1) + 8 * i)];
         v13 = v12 == 0;
 
         if (v13)
@@ -716,40 +716,40 @@ LABEL_13:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v9 = [keyPaths countByEnumeratingWithState:&v44 objects:v48 count:16];
     }
 
     while (v9);
   }
 
-  if (!v7)
+  if (!valueCopy)
   {
     goto LABEL_20;
   }
 
-  v14 = [(_CDContextualPredicate *)self predicateForPreviousState];
+  predicateForPreviousState = [(_CDContextualPredicate *)self predicateForPreviousState];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0 || (-[_CDContextualPredicate predicateForPreviousState](self, "predicateForPreviousState"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 compoundPredicateType] == 0, v16, v17))
   {
 LABEL_20:
-    v26 = [(_CDContextualPredicate *)self predicate];
-    v27 = [v26 evaluateWithObject:v6];
+    predicate = [(_CDContextualPredicate *)self predicate];
+    v27 = [predicate evaluateWithObject:stateCopy];
 
     if (v27)
     {
-      v28 = v7 != 0;
-      v29 = [(_CDContextualPredicate *)self predicateForPreviousState];
-      if (!v29)
+      v28 = valueCopy != 0;
+      predicateForPreviousState2 = [(_CDContextualPredicate *)self predicateForPreviousState];
+      if (!predicateForPreviousState2)
       {
         v28 = 0;
       }
 
       if (v28)
       {
-        v30 = [(_CDContextualPredicate *)self predicateForPreviousState];
-        v25 = [v30 evaluateWithObject:v7];
+        predicateForPreviousState3 = [(_CDContextualPredicate *)self predicateForPreviousState];
+        v25 = [predicateForPreviousState3 evaluateWithObject:valueCopy];
       }
 
       else
@@ -765,8 +765,8 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  v18 = [(_CDContextualPredicate *)self predicate];
-  v19 = [(_CDContextualPredicate *)self predicateForPreviousState];
+  predicate2 = [(_CDContextualPredicate *)self predicate];
+  predicateForPreviousState4 = [(_CDContextualPredicate *)self predicateForPreviousState];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -779,22 +779,22 @@ LABEL_47:
     goto LABEL_26;
   }
 
-  v20 = [v18 compoundPredicateType];
-  if (v20 != [v19 compoundPredicateType])
+  compoundPredicateType = [predicate2 compoundPredicateType];
+  if (compoundPredicateType != [predicateForPreviousState4 compoundPredicateType])
   {
     goto LABEL_26;
   }
 
-  v21 = [v18 subpredicates];
-  v22 = [v21 count];
-  v23 = [v19 subpredicates];
-  LOBYTE(v22) = v22 == [v23 count];
+  subpredicates = [predicate2 subpredicates];
+  v22 = [subpredicates count];
+  subpredicates2 = [predicateForPreviousState4 subpredicates];
+  LOBYTE(v22) = v22 == [subpredicates2 count];
 
   if ((v22 & 1) == 0)
   {
 LABEL_26:
-    v31 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_FAULT))
     {
       [_CDContextualPredicate evaluateWithState:previousValue:];
     }
@@ -802,20 +802,20 @@ LABEL_26:
     goto LABEL_28;
   }
 
-  v24 = [v18 compoundPredicateType];
-  v43 = v24;
-  if (v24 == 2)
+  compoundPredicateType2 = [predicate2 compoundPredicateType];
+  v43 = compoundPredicateType2;
+  if (compoundPredicateType2 == 2)
   {
     v25 = 0;
     goto LABEL_32;
   }
 
-  if (v24 != 1)
+  if (compoundPredicateType2 != 1)
   {
-    v31 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_FAULT))
     {
-      [_CDContextualPredicate evaluateWithState:v18 previousValue:?];
+      [_CDContextualPredicate evaluateWithState:predicate2 previousValue:?];
     }
 
 LABEL_28:
@@ -825,8 +825,8 @@ LABEL_28:
 
   v25 = 1;
 LABEL_32:
-  v32 = [v18 subpredicates];
-  v33 = [v32 count] == 0;
+  subpredicates3 = [predicate2 subpredicates];
+  v33 = [subpredicates3 count] == 0;
 
   if (v33)
   {
@@ -836,13 +836,13 @@ LABEL_32:
   v34 = 0;
   while (1)
   {
-    v35 = [v18 subpredicates];
-    v31 = [v35 objectAtIndexedSubscript:v34];
+    subpredicates4 = [predicate2 subpredicates];
+    contextChannel = [subpredicates4 objectAtIndexedSubscript:v34];
 
-    v36 = [v19 subpredicates];
-    v37 = [v36 objectAtIndexedSubscript:v34];
+    subpredicates5 = [predicateForPreviousState4 subpredicates];
+    v37 = [subpredicates5 objectAtIndexedSubscript:v34];
 
-    if ([v31 evaluateWithObject:v6])
+    if ([contextChannel evaluateWithObject:stateCopy])
     {
       break;
     }
@@ -854,8 +854,8 @@ LABEL_32:
 
 LABEL_41:
 
-    v39 = [v18 subpredicates];
-    v40 = [v39 count];
+    subpredicates6 = [predicate2 subpredicates];
+    v40 = [subpredicates6 count];
 
     if (++v34 >= v40)
     {
@@ -863,7 +863,7 @@ LABEL_41:
     }
   }
 
-  v38 = [v37 evaluateWithObject:v7];
+  v38 = [v37 evaluateWithObject:valueCopy];
   if (v43 == 2)
   {
     if (v38)
@@ -892,40 +892,40 @@ LABEL_48:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_keyPaths forKey:@"keyPaths"];
-  [v4 encodeObject:self->_predicate forKey:@"predicate"];
-  [v4 encodeObject:self->_predicateForPreviousState forKey:@"predicateForPreviousState"];
-  [v4 encodeObject:self->_timeBasedPredicateEvaluationIntervals forKey:@"timeBasedPredicateEvaluationIntervals"];
-  [v4 encodeObject:self->_circularLocationRegions forKey:@"circularLocationRegions"];
-  [v4 encodeBool:self->_evaluateOnEveryKeyPathUpdate forKey:@"evaluateOnEveryKeyPathUpdate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_keyPaths forKey:@"keyPaths"];
+  [coderCopy encodeObject:self->_predicate forKey:@"predicate"];
+  [coderCopy encodeObject:self->_predicateForPreviousState forKey:@"predicateForPreviousState"];
+  [coderCopy encodeObject:self->_timeBasedPredicateEvaluationIntervals forKey:@"timeBasedPredicateEvaluationIntervals"];
+  [coderCopy encodeObject:self->_circularLocationRegions forKey:@"circularLocationRegions"];
+  [coderCopy encodeBool:self->_evaluateOnEveryKeyPathUpdate forKey:@"evaluateOnEveryKeyPathUpdate"];
   if (self->_minimumDurationInPreviousState > 2.22507386e-308)
   {
-    [v4 encodeDouble:@"duration" forKey:?];
+    [coderCopy encodeDouble:@"duration" forKey:?];
   }
 }
 
-- (_CDContextualPredicate)initWithCoder:(id)a3
+- (_CDContextualPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"keyPaths"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"keyPaths"];
   if (v8)
   {
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"predicate"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"predicate"];
     if (v12)
     {
       if (![_CDPredicateValidator validatePredicate:v12 allowedKeys:0 error:0])
       {
-        v13 = [MEMORY[0x1E6997908] contextChannel];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+        contextChannel = [MEMORY[0x1E6997908] contextChannel];
+        if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_FAULT))
         {
           [_CDContextualPredicate initWithCoder:];
         }
@@ -936,27 +936,27 @@ LABEL_48:
       [v12 allowEvaluation];
     }
 
-    v13 = [v4 decodeObjectOfClasses:v11 forKey:@"predicateForPreviousState"];
-    if (!v13)
+    contextChannel = [coderCopy decodeObjectOfClasses:v11 forKey:@"predicateForPreviousState"];
+    if (!contextChannel)
     {
 LABEL_8:
       v14 = MEMORY[0x1E695DFD8];
       v15 = objc_opt_class();
       v24 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-      [v4 decodeObjectOfClasses:v24 forKey:@"timeBasedPredicateEvaluationIntervals"];
+      [coderCopy decodeObjectOfClasses:v24 forKey:@"timeBasedPredicateEvaluationIntervals"];
       v16 = v25 = self;
       v17 = MEMORY[0x1E695DFD8];
       v18 = objc_opt_class();
       v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-      v20 = [v4 decodeObjectOfClasses:v19 forKey:@"circularLocationRegions"];
+      v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"circularLocationRegions"];
       v21 = objc_alloc_init(_CDContextualPredicate);
       [(_CDContextualPredicate *)v21 setKeyPaths:v8];
       [(_CDContextualPredicate *)v21 setPredicate:v12];
-      [(_CDContextualPredicate *)v21 setPredicateForPreviousState:v13];
+      [(_CDContextualPredicate *)v21 setPredicateForPreviousState:contextChannel];
       [(_CDContextualPredicate *)v21 setTimeBasedPredicateEvaluationIntervals:v16];
       [(_CDContextualPredicate *)v21 setCircularLocationRegions:v20];
-      -[_CDContextualPredicate setEvaluateOnEveryKeyPathUpdate:](v21, "setEvaluateOnEveryKeyPathUpdate:", [v4 decodeBoolForKey:@"evaluateOnEveryKeyPathUpdate"]);
-      [v4 decodeDoubleForKey:@"duration"];
+      -[_CDContextualPredicate setEvaluateOnEveryKeyPathUpdate:](v21, "setEvaluateOnEveryKeyPathUpdate:", [coderCopy decodeBoolForKey:@"evaluateOnEveryKeyPathUpdate"]);
+      [coderCopy decodeDoubleForKey:@"duration"];
       [(_CDContextualPredicate *)v21 setMinimumDurationInPreviousState:?];
 
       self = v25;
@@ -965,14 +965,14 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if ([_CDPredicateValidator validatePredicate:v13 allowedKeys:0 error:0])
+    if ([_CDPredicateValidator validatePredicate:contextChannel allowedKeys:0 error:0])
     {
-      [v13 allowEvaluation];
+      [contextChannel allowEvaluation];
       goto LABEL_8;
     }
 
-    v22 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
+    contextChannel2 = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel2, OS_LOG_TYPE_FAULT))
     {
       [_CDContextualPredicate initWithCoder:];
     }
@@ -988,9 +988,9 @@ LABEL_17:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSSet *)self->_keyPaths copy];
   [v4 setKeyPaths:v5];
 
@@ -1003,10 +1003,10 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -1016,10 +1016,10 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       keyPaths = self->_keyPaths;
-      v8 = [(_CDContextualPredicate *)v6 keyPaths];
-      if (![(NSSet *)keyPaths isEqual:v8])
+      keyPaths = [(_CDContextualPredicate *)v6 keyPaths];
+      if (![(NSSet *)keyPaths isEqual:keyPaths])
       {
         v13 = 0;
 LABEL_22:
@@ -1031,20 +1031,20 @@ LABEL_22:
       v10 = predicate;
       if (!predicate)
       {
-        v11 = [(_CDContextualPredicate *)v6 predicate];
-        if (!v11)
+        predicate = [(_CDContextualPredicate *)v6 predicate];
+        if (!predicate)
         {
           v22 = 0;
           v12 = 0;
           goto LABEL_14;
         }
 
-        v22 = v11;
+        v22 = predicate;
         v10 = self->_predicate;
       }
 
-      v3 = [(_CDContextualPredicate *)v6 predicate];
-      if (([(NSPredicate *)v10 isEqual:v3]& 1) == 0)
+      predicate2 = [(_CDContextualPredicate *)v6 predicate];
+      if (([(NSPredicate *)v10 isEqual:predicate2]& 1) == 0)
       {
 
         v13 = 0;
@@ -1057,15 +1057,15 @@ LABEL_14:
       v15 = predicateForPreviousState;
       if (!predicateForPreviousState)
       {
-        v16 = [(_CDContextualPredicate *)v6 predicateForPreviousState];
-        if (!v16)
+        predicateForPreviousState = [(_CDContextualPredicate *)v6 predicateForPreviousState];
+        if (!predicateForPreviousState)
         {
           v19 = 0;
           v13 = 1;
           goto LABEL_26;
         }
 
-        v20 = v16;
+        v20 = predicateForPreviousState;
         v15 = self->_predicateForPreviousState;
       }
 

@@ -1,38 +1,38 @@
 @interface PXTilingDebugUIView
 - (PXTilingDebugUIView)init;
-- (void)_setDebugInfo:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)tilingControllerDidUpdateDebugInfo:(id)a3;
+- (void)_setDebugInfo:(id)info;
+- (void)drawRect:(CGRect)rect;
+- (void)tilingControllerDidUpdateDebugInfo:(id)info;
 @end
 
 @implementation PXTilingDebugUIView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [(PXTilingDebugUIView *)self _debugInfo];
-  [v9 drawInRect:CurrentContext inContext:{x, y, width, height}];
+  _debugInfo = [(PXTilingDebugUIView *)self _debugInfo];
+  [_debugInfo drawInRect:CurrentContext inContext:{x, y, width, height}];
 }
 
-- (void)tilingControllerDidUpdateDebugInfo:(id)a3
+- (void)tilingControllerDidUpdateDebugInfo:(id)info
 {
-  v4 = [a3 debugInfo];
-  [(PXTilingDebugUIView *)self _setDebugInfo:v4];
+  debugInfo = [info debugInfo];
+  [(PXTilingDebugUIView *)self _setDebugInfo:debugInfo];
 }
 
-- (void)_setDebugInfo:(id)a3
+- (void)_setDebugInfo:(id)info
 {
-  v5 = a3;
-  if (self->__debugInfo != v5)
+  infoCopy = info;
+  if (self->__debugInfo != infoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__debugInfo, a3);
+    v6 = infoCopy;
+    objc_storeStrong(&self->__debugInfo, info);
     [(PXTilingDebugUIView *)self setNeedsDisplay];
-    v5 = v6;
+    infoCopy = v6;
   }
 }
 

@@ -1,53 +1,53 @@
 @interface AMSChar
-+ (id)charWithChar:(char)a3;
-- (AMSChar)initWithChar:(char)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChar:(id)a3;
++ (id)charWithChar:(char)char;
+- (AMSChar)initWithChar:(char)char;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChar:(id)char;
 @end
 
 @implementation AMSChar
 
-- (AMSChar)initWithChar:(char)a3
+- (AMSChar)initWithChar:(char)char
 {
   v5.receiver = self;
   v5.super_class = AMSChar;
   result = [(AMSChar *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = char;
   }
 
   return result;
 }
 
-+ (id)charWithChar:(char)a3
++ (id)charWithChar:(char)char
 {
-  v3 = [[a1 alloc] initWithChar:a3];
+  v3 = [[self alloc] initWithChar:char];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSChar *)self isEqualToChar:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSChar *)self isEqualToChar:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToChar:(id)a3
+- (BOOL)isEqualToChar:(id)char
 {
-  if (!a3)
+  if (!char)
   {
     return 0;
   }
 
-  v4 = a3;
+  charCopy = char;
   LODWORD(self) = [(AMSChar *)self value];
-  v5 = [v4 value];
+  value = [charCopy value];
 
-  return self == v5;
+  return self == value;
 }
 
 @end

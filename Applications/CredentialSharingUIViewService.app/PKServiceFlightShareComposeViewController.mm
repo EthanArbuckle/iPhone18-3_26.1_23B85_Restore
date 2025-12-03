@@ -1,10 +1,10 @@
 @interface PKServiceFlightShareComposeViewController
 - (PKServiceFlightShareComposeViewController)init;
 - (id)_placeholderActivityItem;
-- (void)interceptableActivityViewController:(id)a3 didInterceptActivitySelectionOfType:(id)a4;
+- (void)interceptableActivityViewController:(id)controller didInterceptActivitySelectionOfType:(id)type;
 - (void)loadView;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
-- (void)setInvitation:(id)a3 completion:(id)a4;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
+- (void)setInvitation:(id)invitation completion:(id)completion;
 @end
 
 @implementation PKServiceFlightShareComposeViewController
@@ -23,10 +23,10 @@
   [(PKServiceFlightShareComposeViewController *)&v2 loadView];
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,39 +36,39 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)setInvitation:(id)a3 completion:(id)a4
+- (void)setInvitation:(id)invitation completion:(id)completion
 {
-  objc_storeStrong(&self->_invitation, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_invitation, invitation);
+  invitationCopy = invitation;
+  completionCopy = completion;
   v9 = [PKInterceptableActivityViewController alloc];
-  v10 = [(PKServiceFlightShareComposeViewController *)self _placeholderActivityItem];
-  v14 = v10;
+  _placeholderActivityItem = [(PKServiceFlightShareComposeViewController *)self _placeholderActivityItem];
+  v14 = _placeholderActivityItem;
   v11 = [NSArray arrayWithObjects:&v14 count:1];
   v12 = [v9 initWithItems:v11 delegate:self];
   activityViewController = self->_activityViewController;
   self->_activityViewController = v12;
 
   [(PKServiceFlightShareComposeViewController *)self presentViewController:self->_activityViewController animated:1 completion:0];
-  v8[2](v8, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)interceptableActivityViewController:(id)a3 didInterceptActivitySelectionOfType:(id)a4
+- (void)interceptableActivityViewController:(id)controller didInterceptActivitySelectionOfType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   if (PKEqualObjects() && PKSharingUseIMessageExtension())
   {
     objc_initWeak(&location, self);
-    v8 = [(PKInterceptableActivityViewController *)self->_activityViewController view];
-    [v8 setUserInteractionEnabled:0];
+    view = [(PKInterceptableActivityViewController *)self->_activityViewController view];
+    [view setUserInteractionEnabled:0];
 
     invitation = self->_invitation;
     v10[0] = _NSConcreteStackBlock;

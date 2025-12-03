@@ -1,13 +1,13 @@
 @interface AWDWifiMetricWiFiTetheredDeviceOUI
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWifiMetricWiFiTetheredDeviceOUI
@@ -29,12 +29,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   tetheredOUI = self->_tetheredOUI;
   if (tetheredOUI)
   {
-    [v3 setObject:tetheredOUI forKey:@"tetheredOUI"];
+    [dictionary setObject:tetheredOUI forKey:@"tetheredOUI"];
   }
 
   if (*&self->_has)
@@ -45,7 +45,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_tetheredOUI)
   {
@@ -60,25 +60,25 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_tetheredOUI)
   {
-    [a3 setTetheredOUI:?];
+    [to setTetheredOUI:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 16) = [(NSData *)self->_tetheredOUI copyWithZone:a3];
+  *(v5 + 16) = [(NSData *)self->_tetheredOUI copyWithZone:zone];
   if (*&self->_has)
   {
     *(v5 + 8) = self->_timestamp;
@@ -88,18 +88,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     tetheredOUI = self->_tetheredOUI;
-    if (!(tetheredOUI | *(a3 + 2)) || (v5 = [(NSData *)tetheredOUI isEqual:?]) != 0)
+    if (!(tetheredOUI | *(equal + 2)) || (v5 = [(NSData *)tetheredOUI isEqual:?]) != 0)
     {
-      LOBYTE(v5) = (*(a3 + 24) & 1) == 0;
+      LOBYTE(v5) = (*(equal + 24) & 1) == 0;
       if (*&self->_has)
       {
-        LOBYTE(v5) = (*(a3 + 24) & 1) != 0 && self->_timestamp == *(a3 + 1);
+        LOBYTE(v5) = (*(equal + 24) & 1) != 0 && self->_timestamp == *(equal + 1);
       }
     }
   }
@@ -123,16 +123,16 @@
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDWifiMetricWiFiTetheredDeviceOUI *)self setTetheredOUI:?];
   }
 
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 }

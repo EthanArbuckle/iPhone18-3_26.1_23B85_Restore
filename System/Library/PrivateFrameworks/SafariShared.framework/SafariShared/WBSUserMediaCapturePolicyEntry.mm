@@ -1,58 +1,58 @@
 @interface WBSUserMediaCapturePolicyEntry
-- (BOOL)_isValidUserMediaPermission:(unint64_t)a3;
+- (BOOL)_isValidUserMediaPermission:(unint64_t)permission;
 - (BOOL)isValid;
-- (WBSUserMediaCapturePolicyEntry)initWithDictionaryRepresentation:(id)a3;
-- (WBSUserMediaCapturePolicyEntry)initWithPermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4 forOrigin:(id)a5 topLevelOrigin:(id)a6;
+- (WBSUserMediaCapturePolicyEntry)initWithDictionaryRepresentation:(id)representation;
+- (WBSUserMediaCapturePolicyEntry)initWithPermission:(unint64_t)permission expirationPolicy:(unint64_t)policy forOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
 - (id)dictionaryRepresentation;
-- (void)updatePermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4;
+- (void)updatePermission:(unint64_t)permission expirationPolicy:(unint64_t)policy;
 @end
 
 @implementation WBSUserMediaCapturePolicyEntry
 
-- (WBSUserMediaCapturePolicyEntry)initWithPermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4 forOrigin:(id)a5 topLevelOrigin:(id)a6
+- (WBSUserMediaCapturePolicyEntry)initWithPermission:(unint64_t)permission expirationPolicy:(unint64_t)policy forOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v11 = a5;
-  v12 = a6;
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
   v17.receiver = self;
   v17.super_class = WBSUserMediaCapturePolicyEntry;
   v13 = [(WBSUserMediaCapturePolicyEntry *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_origin, a5);
-    objc_storeStrong(&v14->_topLevelOrigin, a6);
+    objc_storeStrong(&v13->_origin, origin);
+    objc_storeStrong(&v14->_topLevelOrigin, levelOrigin);
     v14->_permissionGrantDate = CFAbsoluteTimeGetCurrent();
-    [(WBSUserMediaCapturePolicyEntry *)v14 updatePermission:a3 expirationPolicy:a4];
+    [(WBSUserMediaCapturePolicyEntry *)v14 updatePermission:permission expirationPolicy:policy];
     v15 = v14;
   }
 
   return v14;
 }
 
-- (WBSUserMediaCapturePolicyEntry)initWithDictionaryRepresentation:(id)a3
+- (WBSUserMediaCapturePolicyEntry)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v25.receiver = self;
   v25.super_class = WBSUserMediaCapturePolicyEntry;
   v5 = [(WBSUserMediaCapturePolicyEntry *)&v25 init];
-  if (v5 && ([v4 safari_numberForKey:@"permissionExpirationDate"], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, CFAbsoluteTimeGetCurrent() <= v8) && (v5->_permissionExpirationDate = v8, objc_msgSend(v4, "safari_numberForKey:", @"permissionGrantDateKey"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "doubleValue"), v11 = v10, v9, v11 != 0.0) && v11 <= CFAbsoluteTimeGetCurrent())
+  if (v5 && ([representationCopy safari_numberForKey:@"permissionExpirationDate"], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, CFAbsoluteTimeGetCurrent() <= v8) && (v5->_permissionExpirationDate = v8, objc_msgSend(representationCopy, "safari_numberForKey:", @"permissionGrantDateKey"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "doubleValue"), v11 = v10, v9, v11 != 0.0) && v11 <= CFAbsoluteTimeGetCurrent())
   {
     v5->_permissionGrantDate = v11;
-    v14 = [v4 safari_stringForKey:@"origin"];
+    v14 = [representationCopy safari_stringForKey:@"origin"];
     if ([v14 length])
     {
       v15 = [v14 copy];
       origin = v5->_origin;
       v5->_origin = v15;
 
-      v17 = [v4 safari_stringForKey:@"topLevelOrigin"];
+      v17 = [representationCopy safari_stringForKey:@"topLevelOrigin"];
       if ([v17 length])
       {
         v18 = [v17 copy];
         topLevelOrigin = v5->_topLevelOrigin;
         v5->_topLevelOrigin = v18;
 
-        v20 = [v4 safari_stringForKey:@"salt"];
+        v20 = [representationCopy safari_stringForKey:@"salt"];
         if ([v20 length])
         {
           v21 = [v20 copy];
@@ -60,12 +60,12 @@
           v5->_persistentSalt = v21;
         }
 
-        v23 = [v4 safari_numberForKey:@"permission"];
-        v24 = [v23 integerValue];
+        v23 = [representationCopy safari_numberForKey:@"permission"];
+        integerValue = [v23 integerValue];
 
-        if ([(WBSUserMediaCapturePolicyEntry *)v5 _isValidUserMediaPermission:v24])
+        if ([(WBSUserMediaCapturePolicyEntry *)v5 _isValidUserMediaPermission:integerValue])
         {
-          v5->_permission = v24;
+          v5->_permission = integerValue;
         }
 
         v12 = v5;
@@ -137,29 +137,29 @@
   return [(WBSUserMediaCapturePolicyEntry *)self _isValidUserMediaPermission:permission];
 }
 
-- (void)updatePermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4
+- (void)updatePermission:(unint64_t)permission expirationPolicy:(unint64_t)policy
 {
   if ([(WBSUserMediaCapturePolicyEntry *)self _isValidUserMediaPermission:?])
   {
-    v7 = a3;
+    permissionCopy = permission;
   }
 
   else
   {
-    v7 = 0;
+    permissionCopy = 0;
   }
 
-  self->_permission = v7;
-  if (a4)
+  self->_permission = permissionCopy;
+  if (policy)
   {
-    if (a4 == 1)
+    if (policy == 1)
     {
       v8 = 86400.0;
     }
 
     else
     {
-      if (a4 != 2)
+      if (policy != 2)
       {
         return;
       }
@@ -178,11 +178,11 @@
   self->_permissionExpirationDate = v9;
 }
 
-- (BOOL)_isValidUserMediaPermission:(unint64_t)a3
+- (BOOL)_isValidUserMediaPermission:(unint64_t)permission
 {
-  if (a3)
+  if (permission)
   {
-    v3 = a3 >= 0x100;
+    v3 = permission >= 0x100;
   }
 
   else

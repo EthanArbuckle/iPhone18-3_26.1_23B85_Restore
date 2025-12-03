@@ -2,12 +2,12 @@
 - (CSAudioPreprocessorDelegate)delegate;
 - (id)_fetchCurrentMetrics;
 - (void)_reportMetrics;
-- (void)beepCancellerDidCancelSamples:(id)a3 buffer:(id)a4 timestamp:(unint64_t)a5;
+- (void)beepCancellerDidCancelSamples:(id)samples buffer:(id)buffer timestamp:(unint64_t)timestamp;
 - (void)flush;
-- (void)processBuffer:(id)a3 atTime:(unint64_t)a4 arrivalTimestampToAudioRecorder:(unint64_t)a5;
-- (void)reportMetricsForSiriRequestWithUUID:(id)a3;
-- (void)willBeepWithRecordRoute:(id)a3 playbackRoute:(id)a4;
-- (void)zeroFilter:(id)a3 zeroFilteredBufferAvailable:(id)a4 atHostTime:(unint64_t)a5;
+- (void)processBuffer:(id)buffer atTime:(unint64_t)time arrivalTimestampToAudioRecorder:(unint64_t)recorder;
+- (void)reportMetricsForSiriRequestWithUUID:(id)d;
+- (void)willBeepWithRecordRoute:(id)route playbackRoute:(id)playbackRoute;
+- (void)zeroFilter:(id)filter zeroFilteredBufferAvailable:(id)available atHostTime:(unint64_t)time;
 @end
 
 @implementation CSAudioPreprocessor
@@ -30,11 +30,11 @@
     _os_log_impl(&dword_1DDA4B000, v3, OS_LOG_TYPE_DEFAULT, "%s Flushing audio preprocessor", &v9, 0xCu);
   }
 
-  v4 = [(CSAudioPreprocessor *)self zeroFilter];
-  [v4 flush];
+  zeroFilter = [(CSAudioPreprocessor *)self zeroFilter];
+  [zeroFilter flush];
 
-  v5 = [(CSAudioPreprocessor *)self beepCanceller];
-  [v5 flush];
+  beepCanceller = [(CSAudioPreprocessor *)self beepCanceller];
+  [beepCanceller flush];
 
   zeroCounter = self->_zeroCounter;
   v7 = +[CSVoiceTriggerStatAggregator sharedAggregator];
@@ -46,153 +46,153 @@
 
 - (void)_reportMetrics
 {
-  v2 = [(CSAudioPreprocessor *)self _fetchCurrentMetrics];
-  if (v2)
+  _fetchCurrentMetrics = [(CSAudioPreprocessor *)self _fetchCurrentMetrics];
+  if (_fetchCurrentMetrics)
   {
-    v4 = v2;
-    v3 = [MEMORY[0x1E698D0C0] sharedAnalytics];
-    [v3 logEventWithType:241 context:v4];
+    v4 = _fetchCurrentMetrics;
+    mEMORY[0x1E698D0C0] = [MEMORY[0x1E698D0C0] sharedAnalytics];
+    [mEMORY[0x1E698D0C0] logEventWithType:241 context:v4];
 
-    v2 = v4;
+    _fetchCurrentMetrics = v4;
   }
 }
 
 - (id)_fetchCurrentMetrics
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(CSVoiceTriggerAwareZeroFilter *)self->_zeroFilter metrics];
-  if (v4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  metrics = [(CSVoiceTriggerAwareZeroFilter *)self->_zeroFilter metrics];
+  if (metrics)
   {
-    [v3 setObject:v4 forKey:@"ZeroFilterMetrics"];
+    [dictionary setObject:metrics forKey:@"ZeroFilterMetrics"];
     v5 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315394;
       v12 = "[CSAudioPreprocessor _fetchCurrentMetrics]";
       v13 = 2114;
-      v14 = v4;
+      v14 = metrics;
       _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s Zero Filter Metrics: %{public}@", &v11, 0x16u);
     }
   }
 
-  v6 = [(CSBeepCanceller *)self->_beepCanceller metrics];
-  if (v6)
+  metrics2 = [(CSBeepCanceller *)self->_beepCanceller metrics];
+  if (metrics2)
   {
-    [v3 setObject:v6 forKey:@"BeepCancellerMetrics"];
+    [dictionary setObject:metrics2 forKey:@"BeepCancellerMetrics"];
     v7 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315394;
       v12 = "[CSAudioPreprocessor _fetchCurrentMetrics]";
       v13 = 2114;
-      v14 = v6;
+      v14 = metrics2;
       _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s Beep Canceller Metrics : %{public}@", &v11, 0x16u);
     }
   }
 
-  v8 = [v3 mutableCopy];
+  v8 = [dictionary mutableCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (void)beepCancellerDidCancelSamples:(id)a3 buffer:(id)a4 timestamp:(unint64_t)a5
+- (void)beepCancellerDidCancelSamples:(id)samples buffer:(id)buffer timestamp:(unint64_t)timestamp
 {
-  v7 = a4;
-  v8 = [(CSAudioPreprocessor *)self delegate];
-  [v8 audioPreprocessor:self hasAvailableBuffer:v7 atTime:a5 arrivalTimestampToAudioRecorder:0 numberOfChannels:self->_numChannels];
+  bufferCopy = buffer;
+  delegate = [(CSAudioPreprocessor *)self delegate];
+  [delegate audioPreprocessor:self hasAvailableBuffer:bufferCopy atTime:timestamp arrivalTimestampToAudioRecorder:0 numberOfChannels:self->_numChannels];
 }
 
-- (void)zeroFilter:(id)a3 zeroFilteredBufferAvailable:(id)a4 atHostTime:(unint64_t)a5
+- (void)zeroFilter:(id)filter zeroFilteredBufferAvailable:(id)available atHostTime:(unint64_t)time
 {
-  v7 = a4;
-  v8 = [(CSAudioPreprocessor *)self beepCanceller];
+  availableCopy = available;
+  beepCanceller = [(CSAudioPreprocessor *)self beepCanceller];
 
-  if (v8)
+  if (beepCanceller)
   {
-    v9 = [(CSAudioPreprocessor *)self beepCanceller];
-    [v9 cancelBeepFromSamples:v7 timestamp:a5];
+    beepCanceller2 = [(CSAudioPreprocessor *)self beepCanceller];
+    [beepCanceller2 cancelBeepFromSamples:availableCopy timestamp:time];
   }
 
   else
   {
-    v9 = [(CSAudioPreprocessor *)self delegate];
-    [v9 audioPreprocessor:self hasAvailableBuffer:v7 atTime:a5 arrivalTimestampToAudioRecorder:0 numberOfChannels:self->_numChannels];
+    beepCanceller2 = [(CSAudioPreprocessor *)self delegate];
+    [beepCanceller2 audioPreprocessor:self hasAvailableBuffer:availableCopy atTime:time arrivalTimestampToAudioRecorder:0 numberOfChannels:self->_numChannels];
   }
 }
 
-- (void)reportMetricsForSiriRequestWithUUID:(id)a3
+- (void)reportMetricsForSiriRequestWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v8 = [[v4 alloc] initWithUUIDString:v5];
+  dCopy = d;
+  v8 = [[v4 alloc] initWithUUIDString:dCopy];
 
   if (v8)
   {
-    v6 = [(CSAudioPreprocessor *)self _fetchCurrentMetrics];
-    if (v6)
+    _fetchCurrentMetrics = [(CSAudioPreprocessor *)self _fetchCurrentMetrics];
+    if (_fetchCurrentMetrics)
     {
       v7 = +[CSFAudioMetricsSelfLogger sharedLogger];
-      [v7 logCoreSpeechPreprocessorCompletedWithMHUUID:v8 withMetricsDictionary:v6];
+      [v7 logCoreSpeechPreprocessorCompletedWithMHUUID:v8 withMetricsDictionary:_fetchCurrentMetrics];
     }
   }
 }
 
-- (void)willBeepWithRecordRoute:(id)a3 playbackRoute:(id)a4
+- (void)willBeepWithRecordRoute:(id)route playbackRoute:(id)playbackRoute
 {
-  if (![CSUtils isHeadphoneDeviceWithRecordRoute:a3 playbackRoute:a4])
+  if (![CSUtils isHeadphoneDeviceWithRecordRoute:route playbackRoute:playbackRoute])
   {
-    v5 = [(CSAudioPreprocessor *)self beepCanceller];
-    [v5 willBeep];
+    beepCanceller = [(CSAudioPreprocessor *)self beepCanceller];
+    [beepCanceller willBeep];
   }
 }
 
-- (void)processBuffer:(id)a3 atTime:(unint64_t)a4 arrivalTimestampToAudioRecorder:(unint64_t)a5
+- (void)processBuffer:(id)buffer atTime:(unint64_t)time arrivalTimestampToAudioRecorder:(unint64_t)recorder
 {
-  v8 = a3;
-  v14 = v8;
+  bufferCopy = buffer;
+  v14 = bufferCopy;
   if (self->_numChannels > 1)
   {
-    v12 = [(CSAudioPreprocessor *)self delegate];
-    [v12 audioPreprocessor:self hasAvailableBuffer:v14 atTime:a4 arrivalTimestampToAudioRecorder:a5 numberOfChannels:self->_numChannels];
+    delegate = [(CSAudioPreprocessor *)self delegate];
+    [delegate audioPreprocessor:self hasAvailableBuffer:v14 atTime:time arrivalTimestampToAudioRecorder:recorder numberOfChannels:self->_numChannels];
     v10 = v14;
   }
 
   else
   {
-    -[CSAudioZeroCounter getZeroStatisticsFromBuffer:entireSamples:](self->_zeroCounter, "getZeroStatisticsFromBuffer:entireSamples:", v8, ([v8 length] >> 1) / +[CSConfig inputRecordingNumberOfChannels](CSConfig, "inputRecordingNumberOfChannels"));
-    v9 = [(CSAudioPreprocessor *)self upsampler];
+    -[CSAudioZeroCounter getZeroStatisticsFromBuffer:entireSamples:](self->_zeroCounter, "getZeroStatisticsFromBuffer:entireSamples:", bufferCopy, ([bufferCopy length] >> 1) / +[CSConfig inputRecordingNumberOfChannels](CSConfig, "inputRecordingNumberOfChannels"));
+    upsampler = [(CSAudioPreprocessor *)self upsampler];
 
     v10 = v14;
-    if (v9)
+    if (upsampler)
     {
       v10 = [(CSAudioSampleRateConverter *)self->_upsampler convertSampleRateOfBuffer:v14];
     }
 
-    v11 = [(CSAudioPreprocessor *)self zeroFilter];
+    zeroFilter = [(CSAudioPreprocessor *)self zeroFilter];
 
-    if (v11)
+    if (zeroFilter)
     {
-      v12 = [(CSAudioPreprocessor *)self zeroFilter];
-      [v12 processBuffer:v10 atTime:a4];
+      delegate = [(CSAudioPreprocessor *)self zeroFilter];
+      [delegate processBuffer:v10 atTime:time];
     }
 
     else
     {
-      v13 = [(CSAudioPreprocessor *)self beepCanceller];
+      beepCanceller = [(CSAudioPreprocessor *)self beepCanceller];
 
-      if (v13)
+      if (beepCanceller)
       {
-        v12 = [(CSAudioPreprocessor *)self beepCanceller];
-        [v12 cancelBeepFromSamples:v10 timestamp:a4];
+        delegate = [(CSAudioPreprocessor *)self beepCanceller];
+        [delegate cancelBeepFromSamples:v10 timestamp:time];
       }
 
       else
       {
-        v12 = [(CSAudioPreprocessor *)self delegate];
-        [v12 audioPreprocessor:self hasAvailableBuffer:v10 atTime:a4 arrivalTimestampToAudioRecorder:a5 numberOfChannels:self->_numChannels];
+        delegate = [(CSAudioPreprocessor *)self delegate];
+        [delegate audioPreprocessor:self hasAvailableBuffer:v10 atTime:time arrivalTimestampToAudioRecorder:recorder numberOfChannels:self->_numChannels];
       }
     }
   }

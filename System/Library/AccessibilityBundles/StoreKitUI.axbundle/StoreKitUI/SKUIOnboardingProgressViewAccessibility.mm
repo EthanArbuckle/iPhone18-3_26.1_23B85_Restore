@@ -1,5 +1,5 @@
 @interface SKUIOnboardingProgressViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
 - (id)accessibilityValue;
@@ -7,11 +7,11 @@
 
 @implementation SKUIOnboardingProgressViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIOnboardingProgressView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIOnboardingProgressView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIOnboardingProgressView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIOnboardingProgressView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityPath

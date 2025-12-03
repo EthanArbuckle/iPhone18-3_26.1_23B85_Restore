@@ -1,14 +1,14 @@
 @interface DIDiskArbEmulation
-- (BOOL)ejectWithBSDName:(id)a3 error:(id *)a4;
-- (BOOL)mountWithDeviceName:(id)a3 args:(id)a4 filesystem:(id)a5 mountURL:(id)a6 error:(id *)a7;
-- (BOOL)unmountWithMountPoint:(id)a3 error:(id *)a4;
+- (BOOL)ejectWithBSDName:(id)name error:(id *)error;
+- (BOOL)mountWithDeviceName:(id)name args:(id)args filesystem:(id)filesystem mountURL:(id)l error:(id *)error;
+- (BOOL)unmountWithMountPoint:(id)point error:(id *)error;
 @end
 
 @implementation DIDiskArbEmulation
 
-- (BOOL)ejectWithBSDName:(id)a3 error:(id *)a4
+- (BOOL)ejectWithBSDName:(id)name error:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = *__error();
   if (sub_1000E95F0())
   {
@@ -19,7 +19,7 @@
     v25 = 2080;
     v26 = "[DIDiskArbEmulation ejectWithBSDName:error:]";
     v27 = 2112;
-    v28 = v5;
+    v28 = nameCopy;
     v8 = _os_log_send_and_compose_impl();
 
     if (v8)
@@ -39,14 +39,14 @@
       v25 = 2080;
       v26 = "[DIDiskArbEmulation ejectWithBSDName:error:]";
       v27 = 2112;
-      v28 = v5;
+      v28 = nameCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%.*s: Ejecting %@", buf, 0x1Cu);
     }
   }
 
   *__error() = v6;
-  v10 = [NSString stringWithFormat:@"/dev/%@", v5];
-  v11 = open([v10 fileSystemRepresentation], 0);
+  nameCopy = [NSString stringWithFormat:@"/dev/%@", nameCopy];
+  v11 = open([nameCopy fileSystemRepresentation], 0);
   if (v11 < 0)
   {
     v16 = *__error();
@@ -63,7 +63,7 @@
     v15 = @"Failed to eject";
     v16 = v14;
 LABEL_11:
-    v17 = [DIError failWithPOSIXCode:v16 verboseInfo:v15 error:a4];
+    v17 = [DIError failWithPOSIXCode:v16 verboseInfo:v15 error:error];
     goto LABEL_19;
   }
 
@@ -77,7 +77,7 @@ LABEL_11:
     v25 = 2080;
     v26 = "[DIDiskArbEmulation ejectWithBSDName:error:]";
     v27 = 2112;
-    v28 = v5;
+    v28 = nameCopy;
     v20 = _os_log_send_and_compose_impl();
 
     if (v20)
@@ -97,7 +97,7 @@ LABEL_11:
       v25 = 2080;
       v26 = "[DIDiskArbEmulation ejectWithBSDName:error:]";
       v27 = 2112;
-      v28 = v5;
+      v28 = nameCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%.*s: %@ ejected successfully", buf, 0x1Cu);
     }
   }
@@ -109,35 +109,35 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)mountWithDeviceName:(id)a3 args:(id)a4 filesystem:(id)a5 mountURL:(id)a6 error:(id *)a7
+- (BOOL)mountWithDeviceName:(id)name args:(id)args filesystem:(id)filesystem mountURL:(id)l error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [NSString stringWithFormat:@"/dev/%@", a3];
+  argsCopy = args;
+  filesystemCopy = filesystem;
+  lCopy = l;
+  name = [NSString stringWithFormat:@"/dev/%@", name];
   v15 = +[NSMutableArray array];
-  if (v11 && [v11 count])
+  if (argsCopy && [argsCopy count])
   {
     [v15 addObject:@"-o"];
-    v16 = [v11 componentsJoinedByString:{@", "}];
+    v16 = [argsCopy componentsJoinedByString:{@", "}];
     [v15 addObject:v16];
   }
 
   v21[0] = @"-t";
-  v21[1] = v12;
-  v21[2] = v14;
-  v17 = [v13 path];
-  v21[3] = v17;
+  v21[1] = filesystemCopy;
+  v21[2] = name;
+  path = [lCopy path];
+  v21[3] = path;
   v18 = [NSArray arrayWithObjects:v21 count:4];
   [v15 addObjectsFromArray:v18];
 
-  v19 = [DIHelpers executeWithPath:@"/sbin/mount" arguments:v15 error:a7];
+  v19 = [DIHelpers executeWithPath:@"/sbin/mount" arguments:v15 error:error];
   return v19;
 }
 
-- (BOOL)unmountWithMountPoint:(id)a3 error:(id *)a4
+- (BOOL)unmountWithMountPoint:(id)point error:(id *)error
 {
-  v5 = a3;
+  pointCopy = point;
   v6 = *__error();
   if (sub_1000E95F0())
   {
@@ -148,7 +148,7 @@ LABEL_19:
     v16 = 2080;
     v17 = "[DIDiskArbEmulation unmountWithMountPoint:error:]";
     v18 = 2113;
-    v19 = v5;
+    v19 = pointCopy;
     v8 = _os_log_send_and_compose_impl();
 
     if (v8)
@@ -168,15 +168,15 @@ LABEL_19:
       v16 = 2080;
       v17 = "[DIDiskArbEmulation unmountWithMountPoint:error:]";
       v18 = 2113;
-      v19 = v5;
+      v19 = pointCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%.*s: Unmounting %{private}@", buf, 0x1Cu);
     }
   }
 
   *__error() = v6;
-  v13 = v5;
+  v13 = pointCopy;
   v10 = [NSArray arrayWithObjects:&v13 count:1];
-  v11 = [DIHelpers executeWithPath:@"/sbin/umount" arguments:v10 error:a4];
+  v11 = [DIHelpers executeWithPath:@"/sbin/umount" arguments:v10 error:error];
 
   return v11;
 }

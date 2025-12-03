@@ -1,8 +1,8 @@
 @interface CameraRecordingEventDailySummaryLogEvent
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
-- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithHomeUUID:(id)a3;
-- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithHomeUUID:(id)d;
+- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 @end
 
 @implementation CameraRecordingEventDailySummaryLogEvent
@@ -17,7 +17,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   CameraRecordingEventDailySummaryLogEvent.coreAnalyticsEventDictionary.getter();
 
   sub_253200644(0, &qword_281530D00, 0x277D82BB8);
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithHomeUUID:(id)a3
+- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithHomeUUID:(id)d
 {
   v3 = sub_253CCFF58();
   v4 = *(*(v3 - 8) + 64);
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtC19HomeKitDaemonLegacy40CameraRecordingEventDailySummaryLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v4 = sub_253CCFF58();
   v5 = *(*(v4 - 8) + 64);

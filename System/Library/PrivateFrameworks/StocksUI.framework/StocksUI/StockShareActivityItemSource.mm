@@ -1,9 +1,9 @@
 @interface StockShareActivityItemSource
 - (_TtC8StocksUI28StockShareActivityItemSource)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation StockShareActivityItemSource
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = sub_220884E9C();
   v5 = *(v4 - 8);
@@ -23,7 +23,7 @@
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v9, v10);
   v12 = &v16 - v11;
-  v13 = self;
+  selfCopy = self;
   sub_22088678C();
 
   (*(v5 + 16))(v8, v12, v4);
@@ -33,12 +33,12 @@
   return v14;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2205F6D0C(a4, v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_2205F6D0C(type, v17);
 
   v9 = v18;
   if (v18)
@@ -61,9 +61,9 @@
   return v15;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v4 = self;
+  selfCopy = self;
   sub_22088684C();
 
   MEMORY[0x223D89680](548913696, 0xA400000000000000);
@@ -78,10 +78,10 @@
   return v8;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_2205F72B0();
 
   return v6;

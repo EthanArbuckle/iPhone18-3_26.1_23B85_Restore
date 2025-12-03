@@ -1,11 +1,11 @@
 @interface PPSocialHighlightStaticFeatureProvider
-- (id)valueForHighlight:(id)a3;
-- (void)initWithComputedFeatures:(void *)a3 highlightKeyBlock:;
+- (id)valueForHighlight:(id)highlight;
+- (void)initWithComputedFeatures:(void *)features highlightKeyBlock:;
 @end
 
 @implementation PPSocialHighlightStaticFeatureProvider
 
-- (id)valueForHighlight:(id)a3
+- (id)valueForHighlight:(id)highlight
 {
   v4 = (*(self->_keyBlock + 2))();
   if (v4)
@@ -21,26 +21,26 @@
   return v5;
 }
 
-- (void)initWithComputedFeatures:(void *)a3 highlightKeyBlock:
+- (void)initWithComputedFeatures:(void *)features highlightKeyBlock:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  featuresCopy = features;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PPSocialHighlightStaticFeatureProvider;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      v9 = [v7 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [featuresCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

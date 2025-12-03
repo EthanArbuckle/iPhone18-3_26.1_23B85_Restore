@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __33__PSLaunchTracker_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -43,8 +43,8 @@ void __33__PSLaunchTracker_sharedInstance__block_invoke()
     }
 
     self->_launchHasCompleted = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"PSLaunchHasCompletedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PSLaunchHasCompletedNotification" object:0];
   }
 }
 

@@ -1,46 +1,46 @@
 @interface GondolaDecoder
-+ (id)decodeAutoTopThresholdAmount:(id)a3;
-+ (id)decodeAutoTopUpAmount:(id)a3;
-+ (id)decodeCardNumberFromBlock0:(id)a3 andBlock1:(id)a4;
-+ (id)decodeEnrollmentDateAfterDelivery:(id)a3;
-+ (id)decodeHistoryBlock1:(id)a3 andWithBlock2:(id)a4;
-+ (id)decodeLastTransactionDate:(id)a3;
-+ (id)decodeLoyaltyPointBalancesAndExpiration:(id)a3 withActivationDate:(id)a4;
-+ (id)decodeTotalPointsUntil1YearAgo:(id)a3;
-+ (id)decodeTotalPointsUntil2YearsAgo:(id)a3;
-+ (id)decodeTransactionTopupCategory:(unint64_t)a3;
-+ (id)decodeTransactionType:(unint64_t)a3;
-+ (id)getPurseBalance:(id)a3;
++ (id)decodeAutoTopThresholdAmount:(id)amount;
++ (id)decodeAutoTopUpAmount:(id)amount;
++ (id)decodeCardNumberFromBlock0:(id)block0 andBlock1:(id)block1;
++ (id)decodeEnrollmentDateAfterDelivery:(id)delivery;
++ (id)decodeHistoryBlock1:(id)block1 andWithBlock2:(id)block2;
++ (id)decodeLastTransactionDate:(id)date;
++ (id)decodeLoyaltyPointBalancesAndExpiration:(id)expiration withActivationDate:(id)date;
++ (id)decodeTotalPointsUntil1YearAgo:(id)ago;
++ (id)decodeTotalPointsUntil2YearsAgo:(id)ago;
++ (id)decodeTransactionTopupCategory:(unint64_t)category;
++ (id)decodeTransactionType:(unint64_t)type;
++ (id)getPurseBalance:(id)balance;
 @end
 
 @implementation GondolaDecoder
 
-+ (id)decodeCardNumberFromBlock0:(id)a3 andBlock1:(id)a4
++ (id)decodeCardNumberFromBlock0:(id)block0 andBlock1:(id)block1
 {
   v5 = MEMORY[0x277CBEB28];
-  v6 = a4;
-  v7 = a3;
+  block1Copy = block1;
+  block0Copy = block0;
   v8 = [v5 dataWithCapacity:8];
-  v9 = [v7 bytes];
+  bytes = [block0Copy bytes];
 
-  v10 = [v6 bytes];
-  [v8 appendBytes:v9 + 12 length:4];
-  [v8 appendBytes:v10 length:4];
+  bytes2 = [block1Copy bytes];
+  [v8 appendBytes:bytes + 12 length:4];
+  [v8 appendBytes:bytes2 length:4];
 
   return v8;
 }
 
-+ (id)decodeEnrollmentDateAfterDelivery:(id)a3
++ (id)decodeEnrollmentDateAfterDelivery:(id)delivery
 {
   v3 = MEMORY[0x277CBEAB8];
-  v4 = a3;
+  deliveryCopy = delivery;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 decodeBCDAtOffset:3 length:1];
+  v7 = [deliveryCopy decodeBCDAtOffset:3 length:1];
   v8 = [v6 numberWithInt:{objc_msgSend(v7, "intValue") + 2000}];
 
-  v9 = [v4 decodeBCDAtOffset:4 length:1];
-  v10 = [v4 decodeBCDAtOffset:5 length:1];
+  v9 = [deliveryCopy decodeBCDAtOffset:4 length:1];
+  v10 = [deliveryCopy decodeBCDAtOffset:5 length:1];
 
   [v5 setDay:{objc_msgSend(v10, "intValue")}];
   [v5 setMonth:{objc_msgSend(v9, "intValue")}];
@@ -49,66 +49,66 @@
   return v5;
 }
 
-+ (id)decodeLastTransactionDate:(id)a3
++ (id)decodeLastTransactionDate:(id)date
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = a3;
-  v5 = [v4 decodeBCDAtOffset:11 length:1];
+  dateCopy = date;
+  v5 = [dateCopy decodeBCDAtOffset:11 length:1];
   v6 = [v3 numberWithInt:{objc_msgSend(v5, "intValue") + 2000}];
 
-  v7 = [v4 decodeBCDAtOffset:12 length:1];
-  v8 = [v4 decodeBCDAtOffset:13 length:1];
+  v7 = [dateCopy decodeBCDAtOffset:12 length:1];
+  v8 = [dateCopy decodeBCDAtOffset:13 length:1];
 
   v9 = [MEMORY[0x277CBEAB8] dateWithYear:objc_msgSend(v6 month:"intValue") day:{objc_msgSend(v7, "intValue"), objc_msgSend(v8, "intValue")}];
 
   return v9;
 }
 
-+ (id)decodeHistoryBlock1:(id)a3 andWithBlock2:(id)a4
++ (id)decodeHistoryBlock1:(id)block1 andWithBlock2:(id)block2
 {
   v62[7] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v56 = [v7 subdataWithRange:{0, 13}];
-  v51 = [v7 u16BE:13];
+  block2Copy = block2;
+  block1Copy = block1;
+  v56 = [block1Copy subdataWithRange:{0, 13}];
+  v51 = [block1Copy u16BE:13];
 
-  v8 = [v6 readBinaryValueAtBit:8 numberOfBits:7] >> 1;
-  v46 = [a1 decodeTransactionType:v8];
+  v8 = [block2Copy readBinaryValueAtBit:8 numberOfBits:7] >> 1;
+  v46 = [self decodeTransactionType:v8];
   v9 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  LODWORD(v7) = [v6 readBinaryValueAtBit:14 numberOfBits:7];
-  v10 = [v6 readBinaryValueAtBit:21 numberOfBits:4];
-  v11 = [v6 readBinaryValueAtBit:25 numberOfBits:5];
-  v12 = [v6 readBinaryValueAtBit:30 numberOfBits:5];
-  v13 = [v6 readBinaryValueAtBit:35 numberOfBits:6];
+  LODWORD(block1Copy) = [block2Copy readBinaryValueAtBit:14 numberOfBits:7];
+  v10 = [block2Copy readBinaryValueAtBit:21 numberOfBits:4];
+  v11 = [block2Copy readBinaryValueAtBit:25 numberOfBits:5];
+  v12 = [block2Copy readBinaryValueAtBit:30 numberOfBits:5];
+  v13 = [block2Copy readBinaryValueAtBit:35 numberOfBits:6];
   [v9 setDay:v11];
   [v9 setMonth:v10];
-  [v9 setYear:v7 + 2005];
+  [v9 setYear:block1Copy + 2005];
   [v9 setHour:v12];
   [v9 setMinute:v13];
-  v14 = [v6 readBinaryValueAtBit:41 numberOfBits:18];
+  v14 = [block2Copy readBinaryValueAtBit:41 numberOfBits:18];
   v15 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:v14 exponent:0 isNegative:0];
-  v16 = [v6 readBinaryValueAtBit:59 numberOfBits:18];
+  v16 = [block2Copy readBinaryValueAtBit:59 numberOfBits:18];
   v17 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:v16 exponent:0 isNegative:v8 == 10];
-  v18 = [v6 readBinaryValueAtBit:77 numberOfBits:17];
+  v18 = [block2Copy readBinaryValueAtBit:77 numberOfBits:17];
   v53 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:v18 exponent:0 isNegative:v8 != 5];
-  v45 = a1;
-  v49 = [v6 readBinaryValueAtBit:94 numberOfBits:4];
-  v54 = [a1 decodeTransactionTopupCategory:?];
+  selfCopy = self;
+  v49 = [block2Copy readBinaryValueAtBit:94 numberOfBits:4];
+  v54 = [self decodeTransactionTopupCategory:?];
   v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:7];
   v20 = [MEMORY[0x277CBEB28] dataWithCapacity:32];
-  v21 = [v6 bytes];
+  bytes = [block2Copy bytes];
 
   v22 = v20;
   v47 = v20;
   v23 = v46;
-  CC_SHA256(v21, 8u, [v22 mutableBytes]);
+  CC_SHA256(bytes, 8u, [v22 mutableBytes]);
   v48 = v17;
   v43 = v16;
   if (v16)
   {
     v61[0] = @"TerminalIdentifier";
-    v24 = [v56 asHexString];
-    v62[0] = v24;
+    asHexString = [v56 asHexString];
+    v62[0] = asHexString;
     v61[1] = @"SerialNumber";
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v51];
     v62[1] = v25;
@@ -134,7 +134,7 @@
   v29 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{9, v43}];
   if (v18)
   {
-    if ([v45 isTransactionTypePaymentWithReload:v8])
+    if ([selfCopy isTransactionTypePaymentWithReload:v8])
     {
 
       v23 = @"TopUpAuto";
@@ -152,8 +152,8 @@
     }
 
     v59[0] = @"TerminalIdentifier";
-    v34 = [v56 asHexString];
-    v60[0] = v34;
+    asHexString2 = [v56 asHexString];
+    v60[0] = asHexString2;
     v59[1] = @"SerialNumber";
     v35 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v51];
     v60[1] = v35;
@@ -215,89 +215,89 @@
   return v40;
 }
 
-+ (id)getPurseBalance:(id)a3
++ (id)getPurseBalance:(id)balance
 {
-  v3 = *[a3 bytes];
+  v3 = *[balance bytes];
   v4 = MEMORY[0x277CCA980];
 
   return [v4 decimalNumberWithMantissa:v3 exponent:0 isNegative:0];
 }
 
-+ (id)decodeTotalPointsUntil1YearAgo:(id)a3
++ (id)decodeTotalPointsUntil1YearAgo:(id)ago
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [a3 s24BE:0];
+  v4 = [ago s24BE:0];
 
   return [v3 numberWithInt:v4];
 }
 
-+ (id)decodeTotalPointsUntil2YearsAgo:(id)a3
++ (id)decodeTotalPointsUntil2YearsAgo:(id)ago
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [a3 s24BE:3];
+  v4 = [ago s24BE:3];
 
   return [v3 numberWithInt:v4];
 }
 
-+ (id)decodeAutoTopUpAmount:(id)a3
++ (id)decodeAutoTopUpAmount:(id)amount
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [a3 readBinaryValueAtBit:34 numberOfBits:17];
+  v4 = [amount readBinaryValueAtBit:34 numberOfBits:17];
 
   return [v3 numberWithUnsignedLongLong:v4];
 }
 
-+ (id)decodeAutoTopThresholdAmount:(id)a3
++ (id)decodeAutoTopThresholdAmount:(id)amount
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [a3 readBinaryValueAtBit:51 numberOfBits:17];
+  v4 = [amount readBinaryValueAtBit:51 numberOfBits:17];
 
   return [v3 numberWithUnsignedLongLong:v4];
 }
 
-+ (id)decodeTransactionTopupCategory:(unint64_t)a3
++ (id)decodeTransactionTopupCategory:(unint64_t)category
 {
-  if (a3 - 1 > 5)
+  if (category - 1 > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278874880[a3 - 1];
+    return off_278874880[category - 1];
   }
 }
 
-+ (id)decodeTransactionType:(unint64_t)a3
++ (id)decodeTransactionType:(unint64_t)type
 {
   v4 = +[AppletConfigurationData getSlalomSettings];
   v5 = [v4 objectForKeyedSubscript:@"gondola"];
   v6 = [v5 objectForKeyedSubscript:@"transactionType"];
 
-  if (!v6 || ([MEMORY[0x277CCACA8] stringWithFormat:@"%llu", a3], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "valueForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if (!v6 || ([MEMORY[0x277CCACA8] stringWithFormat:@"%llu", type], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "valueForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    if (a3 - 1 > 0x25)
+    if (type - 1 > 0x25)
     {
       v8 = @"Unknown";
     }
 
     else
     {
-      v8 = off_2788748B0[a3 - 1];
+      v8 = off_2788748B0[type - 1];
     }
   }
 
   return v8;
 }
 
-+ (id)decodeLoyaltyPointBalancesAndExpiration:(id)a3 withActivationDate:(id)a4
++ (id)decodeLoyaltyPointBalancesAndExpiration:(id)expiration withActivationDate:(id)date
 {
   v29[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 decodeTotalPointsUntil1YearAgo:v7];
-  v9 = [a1 decodeTotalPointsUntil2YearsAgo:v7];
-  v10 = [a1 decodeLastTransactionDate:v7];
+  dateCopy = date;
+  expirationCopy = expiration;
+  v8 = [self decodeTotalPointsUntil1YearAgo:expirationCopy];
+  v9 = [self decodeTotalPointsUntil2YearsAgo:expirationCopy];
+  v10 = [self decodeLastTransactionDate:expirationCopy];
 
   if ([v10 year] == 2000)
   {
@@ -307,15 +307,15 @@
   else
   {
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [MEMORY[0x277CBEAB8] dateWithYear:objc_msgSend(v6 month:"year") + 1 day:{objc_msgSend(v6, "month") % 12 + 1, 1}];
-    v14 = [v12 dateFromComponents:v13];
-    v15 = [v12 dateFromComponents:v10];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v13 = [MEMORY[0x277CBEAB8] dateWithYear:objc_msgSend(dateCopy month:"year") + 1 day:{objc_msgSend(dateCopy, "month") % 12 + 1, 1}];
+    v14 = [currentCalendar dateFromComponents:v13];
+    v15 = [currentCalendar dateFromComponents:v10];
     v23 = v9;
     if ([v15 compare:v14] == 1)
     {
       [v13 setYear:{objc_msgSend(v10, "year")}];
-      v16 = [v12 dateFromComponents:v13];
+      v16 = [currentCalendar dateFromComponents:v13];
 
       v22 = v16;
       if ([v15 compare:v16] == 1)

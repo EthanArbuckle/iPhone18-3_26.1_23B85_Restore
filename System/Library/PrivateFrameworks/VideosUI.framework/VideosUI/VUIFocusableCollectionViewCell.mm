@@ -1,17 +1,17 @@
 @interface VUIFocusableCollectionViewCell
-- (VUIFocusableCollectionViewCell)initWithFrame:(CGRect)a3;
+- (VUIFocusableCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_updateBackgroundAndHighlightColor;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation VUIFocusableCollectionViewCell
 
-- (VUIFocusableCollectionViewCell)initWithFrame:(CGRect)a3
+- (VUIFocusableCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUIFocusableCollectionViewCell;
-  v3 = [(VUIFocusableCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIFocusableCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,9 +29,9 @@
   [(VUIFocusableCollectionViewCell *)&v2 prepareForReuse];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VUIFocusableCollectionViewCell;
@@ -40,10 +40,10 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(VUIFocusableCollectionViewCell *)self contentView];
-  v6 = [v5 subviews];
+  contentView = [(VUIFocusableCollectionViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -55,20 +55,20 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 setHighlighted:v3];
+          [v11 setHighlighted:highlightedCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);

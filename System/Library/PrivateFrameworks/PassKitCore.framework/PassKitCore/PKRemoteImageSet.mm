@@ -1,25 +1,25 @@
 @interface PKRemoteImageSet
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteImageSet:(id)a3;
-- (PKRemoteImageSet)initWithCoder:(id)a3;
-- (PKRemoteImageSet)initWithName:(id)a3 dictionaries:(id)a4;
-- (PKRemoteImageSet)initWithName:(id)a3 images:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteImageSet:(id)set;
+- (PKRemoteImageSet)initWithCoder:(id)coder;
+- (PKRemoteImageSet)initWithName:(id)name dictionaries:(id)dictionaries;
+- (PKRemoteImageSet)initWithName:(id)name images:(id)images;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)imageForScaleFactor:(unint64_t)a3;
-- (id)imageForScaleFactorValue:(double)a3;
+- (id)imageForScaleFactor:(unint64_t)factor;
+- (id)imageForScaleFactorValue:(double)value;
 - (unint64_t)hash;
-- (void)addURL:(id)a3 forScaleFactor:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addURL:(id)l forScaleFactor:(unint64_t)factor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKRemoteImageSet
 
-- (PKRemoteImageSet)initWithName:(id)a3 dictionaries:(id)a4
+- (PKRemoteImageSet)initWithName:(id)name dictionaries:(id)dictionaries
 {
-  v6 = a3;
-  v7 = [a4 pk_arrayBySafelyApplyingBlock:&__block_literal_global_140];
-  v8 = [(PKRemoteImageSet *)self initWithName:v6 images:v7];
+  nameCopy = name;
+  v7 = [dictionaries pk_arrayBySafelyApplyingBlock:&__block_literal_global_140];
+  v8 = [(PKRemoteImageSet *)self initWithName:nameCopy images:v7];
 
   return v8;
 }
@@ -32,10 +32,10 @@ PKRemoteImage *__46__PKRemoteImageSet_initWithName_dictionaries___block_invoke(u
   return v3;
 }
 
-- (PKRemoteImageSet)initWithName:(id)a3 images:(id)a4
+- (PKRemoteImageSet)initWithName:(id)name images:(id)images
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  imagesCopy = images;
   v17.receiver = self;
   v17.super_class = PKRemoteImageSet;
   v9 = [(PKRemoteImageSet *)&v17 init];
@@ -47,10 +47,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v9->_name, a3);
-  if (v8)
+  objc_storeStrong(&v9->_name, name);
+  if (imagesCopy)
   {
-    v11 = [MEMORY[0x1E695DFD8] setWithArray:v8];
+    v11 = [MEMORY[0x1E695DFD8] setWithArray:imagesCopy];
     v12 = v11;
     if (v11)
     {
@@ -74,11 +74,11 @@ LABEL_9:
   return v14;
 }
 
-- (id)imageForScaleFactor:(unint64_t)a3
+- (id)imageForScaleFactor:(unint64_t)factor
 {
-  v3 = a3;
+  factorCopy = factor;
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (factor)
   {
     v13 = 0u;
     v14 = 0u;
@@ -100,9 +100,9 @@ LABEL_9:
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if ([v9 scaleFactor] == v3)
+          if ([v9 scaleFactor] == factorCopy)
           {
-            v3 = v9;
+            factorCopy = v9;
             goto LABEL_12;
           }
         }
@@ -117,16 +117,16 @@ LABEL_9:
       }
     }
 
-    v3 = 0;
+    factorCopy = 0;
 LABEL_12:
   }
 
-  return v3;
+  return factorCopy;
 }
 
-- (id)imageForScaleFactorValue:(double)a3
+- (id)imageForScaleFactorValue:(double)value
 {
-  if (a3 <= 2.0)
+  if (value <= 2.0)
   {
     v3 = 2;
   }
@@ -139,12 +139,12 @@ LABEL_12:
   return [(PKRemoteImageSet *)self imageForScaleFactor:v3];
 }
 
-- (void)addURL:(id)a3 forScaleFactor:(unint64_t)a4
+- (void)addURL:(id)l forScaleFactor:(unint64_t)factor
 {
-  if (a3 && a4)
+  if (l && factor)
   {
-    v6 = a3;
-    v12 = [(PKRemoteImageSet *)self imageForScaleFactor:a4];
+    lCopy = l;
+    v12 = [(PKRemoteImageSet *)self imageForScaleFactor:factor];
     if (v12)
     {
       v7 = [(NSSet *)self->_images pk_setByRemovingObject:v12];
@@ -152,7 +152,7 @@ LABEL_12:
       self->_images = v7;
     }
 
-    v9 = [[PKRemoteImage alloc] initWithRemoteURL:v6 scaleFactor:a4];
+    v9 = [[PKRemoteImage alloc] initWithRemoteURL:lCopy scaleFactor:factor];
 
     if (v9)
     {
@@ -213,33 +213,33 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteImageSet *)self isEqualToRemoteImageSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteImageSet *)self isEqualToRemoteImageSet:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRemoteImageSet:(id)a3
+- (BOOL)isEqualToRemoteImageSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (!setCopy)
   {
     goto LABEL_11;
   }
 
-  v6 = *(v4 + 1);
+  v6 = *(setCopy + 1);
   v7 = self->_name;
   v8 = v6;
   v9 = v8;
@@ -291,15 +291,15 @@ LABEL_12:
   return v4;
 }
 
-- (PKRemoteImageSet)initWithCoder:(id)a3
+- (PKRemoteImageSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKRemoteImageSet;
   v5 = [(PKRemoteImageSet *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
@@ -307,7 +307,7 @@ LABEL_12:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"images"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"images"];
     images = v5->_images;
     v5->_images = v12;
   }
@@ -315,28 +315,28 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_images forKey:@"images"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_images forKey:@"images"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSSet *)self->_images allObjects];
+  allObjects = [(NSSet *)self->_images allObjects];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __33__PKRemoteImageSet_copyWithZone___block_invoke;
   v13[3] = &__block_descriptor_40_e23__16__0__PKRemoteImage_8l;
-  v13[4] = a3;
-  v9 = [v8 pk_arrayBySafelyApplyingBlock:v13];
+  v13[4] = zone;
+  v9 = [allObjects pk_arrayBySafelyApplyingBlock:v13];
 
   if (v9)
   {

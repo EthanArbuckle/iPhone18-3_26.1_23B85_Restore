@@ -38,8 +38,8 @@
 {
   v9 = a3;
   v6 = a4;
-  v7 = [a1 tv_layout];
-  v8 = [v7 tv_layoutPropertySetterForStyle:v6];
+  tv_layout = [self tv_layout];
+  v8 = [tv_layout tv_layoutPropertySetterForStyle:v6];
 
   if (v8)
   {
@@ -50,11 +50,11 @@
 - (id)valueForTVViewStyle:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = [a1 tv_layout];
-  v6 = v5;
-  if (v5)
+  tv_layout = [self tv_layout];
+  v6 = tv_layout;
+  if (tv_layout)
   {
-    v7 = [v5 tv_layoutPropertyGetterForStyle:v4];
+    v7 = [tv_layout tv_layoutPropertyGetterForStyle:v4];
     v8 = v7;
     if (v7)
     {
@@ -79,15 +79,15 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 layer];
-  [v8 setValue:v7 forKey:v6];
+  layer = [self layer];
+  [layer setValue:v7 forKey:v6];
 }
 
 - (id)tv_valueForTVViewTag:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = [a1 layer];
-  v6 = [v5 valueForKey:v4];
+  layer = [self layer];
+  v6 = [layer valueForKey:v4];
 
   return v6;
 }
@@ -100,7 +100,7 @@
     [UIView(TVMLKitAdditions) tv_disableAnimation:forProperty:];
   }
 
-  v6 = objc_getAssociatedObject(a1, "TVMLDisabledAnimations");
+  v6 = objc_getAssociatedObject(self, "TVMLDisabledAnimations");
   v7 = [v6 mutableCopy];
   v8 = v7;
   if (v7)
@@ -126,13 +126,13 @@
   }
 
   v11 = [v10 copy];
-  objc_setAssociatedObject(a1, "TVMLDisabledAnimations", v11, 0x301);
+  objc_setAssociatedObject(self, "TVMLDisabledAnimations", v11, 0x301);
 }
 
 - (uint64_t)tv_isAnimationDisabledForProperty:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = objc_getAssociatedObject(a1, "TVMLDisabledAnimations");
+  v5 = objc_getAssociatedObject(self, "TVMLDisabledAnimations");
   v6 = [v5 containsObject:v4];
 
   return v6;
@@ -145,15 +145,15 @@
   {
     v9 = v4;
     v5 = [TVViewLayout layoutClassForElement:v4];
-    v6 = [a1 tv_layout];
-    v7 = [(objc_class *)v5 layoutWithLayout:v6 element:v9];
+    tv_layout = [self tv_layout];
+    v7 = [(objc_class *)v5 layoutWithLayout:tv_layout element:v9];
 
     if (v7)
     {
-      [a1 tv_setLayout:v7];
+      [self tv_setLayout:v7];
     }
 
-    [a1 _transferAttributesFromElement:v9];
+    [self _transferAttributesFromElement:v9];
   }
 
   return MEMORY[0x2821F96F8]();
@@ -165,7 +165,7 @@
   if (objc_opt_isKindOfClass())
   {
 
-    return [a1 tv_textSizeForSize:{a2, a3}];
+    return [self tv_textSizeForSize:{a2, a3}];
   }
 
   else
@@ -174,24 +174,24 @@
     v7[1] = 3221225472;
     v7[2] = __44__UIView_TVMLKitAdditions__tv_sizeThatFits___block_invoke;
     v7[3] = &unk_279D6E518;
-    v7[4] = a1;
-    return [a1 tv_sizeThatFits:v7 withSizeCalculation:{a2, a3}];
+    v7[4] = self;
+    return [self tv_sizeThatFits:v7 withSizeCalculation:{a2, a3}];
   }
 }
 
 - (double)tv_sizeThatFits:()TVMLKitAdditions withSizeCalculation:
 {
   v7 = a5;
-  [a1 tv_minWidth];
+  [self tv_minWidth];
   v9 = v8;
-  [a1 tv_minHeight];
-  [a1 tv_maxWidth];
+  [self tv_minHeight];
+  [self tv_maxWidth];
   v11 = v10;
-  [a1 tv_maxHeight];
+  [self tv_maxHeight];
   v13 = v12;
-  [a1 tv_itemWidth];
+  [self tv_itemWidth];
   v15 = v14;
-  [a1 tv_itemHeight];
+  [self tv_itemHeight];
   v17 = v16;
   if (v15 <= 0.0 || v16 <= 0.0)
   {
@@ -268,7 +268,7 @@
 
 - (uint64_t)tv_shouldReuseCachedSizeThatFits:()TVMLKitAdditions previousTargetSize:newTargetSize:
 {
-  if (a1 == *MEMORY[0x277CBF3A8] && a2 == *(MEMORY[0x277CBF3A8] + 8))
+  if (self == *MEMORY[0x277CBF3A8] && a2 == *(MEMORY[0x277CBF3A8] + 8))
   {
     return 1;
   }
@@ -280,13 +280,13 @@
 
   if (a5 > a3)
   {
-    v8 = a1 < a3;
+    v8 = self < a3;
     return !v8;
   }
 
   if (a5 < a3)
   {
-    v8 = a1 < a5;
+    v8 = self < a5;
     return !v8;
   }
 
@@ -320,7 +320,7 @@
 
 - (double)tv_margin
 {
-  v1 = [a1 valueForTVViewStyle:@"margin"];
+  v1 = [self valueForTVViewStyle:@"margin"];
   if (objc_opt_respondsToSelector())
   {
     [v1 UIEdgeInsetsValue];
@@ -337,15 +337,15 @@
 
 - (double)tv_nonDirectionalMargin
 {
-  [a1 tv_margin];
+  [self tv_margin];
   v3 = v2;
-  [a1 effectiveUserInterfaceLayoutDirection];
+  [self effectiveUserInterfaceLayoutDirection];
   return v3;
 }
 
 - (double)tv_focusMargin
 {
-  v1 = [a1 valueForTVViewStyle:@"tv-focus-margin"];
+  v1 = [self valueForTVViewStyle:@"tv-focus-margin"];
   if (objc_opt_respondsToSelector())
   {
     [v1 UIEdgeInsetsValue];
@@ -362,7 +362,7 @@
 
 - (double)tv_padding
 {
-  v1 = [a1 valueForTVViewStyle:@"padding"];
+  v1 = [self valueForTVViewStyle:@"padding"];
   if (objc_opt_respondsToSelector())
   {
     [v1 UIEdgeInsetsValue];
@@ -379,31 +379,31 @@
 
 - (int64_t)tv_alignment
 {
-  v2 = [a1 valueForTVViewStyle:@"tv-align"];
-  v3 = +[TVMLUtilities semanticAlignmentForAlignment:semanticContentAttribute:](TVMLUtilities, "semanticAlignmentForAlignment:semanticContentAttribute:", [v2 unsignedIntegerValue], objc_msgSend(a1, "semanticContentAttribute"));
+  v2 = [self valueForTVViewStyle:@"tv-align"];
+  v3 = +[TVMLUtilities semanticAlignmentForAlignment:semanticContentAttribute:](TVMLUtilities, "semanticAlignmentForAlignment:semanticContentAttribute:", [v2 unsignedIntegerValue], objc_msgSend(self, "semanticContentAttribute"));
 
   return v3;
 }
 
 - (uint64_t)tv_contentAlignment
 {
-  v1 = [a1 valueForTVViewStyle:@"tv-content-align"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self valueForTVViewStyle:@"tv-content-align"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)tv_position
 {
-  v2 = [a1 valueForTVViewStyle:@"tv-position"];
-  v3 = +[TVMLUtilities semanticPositionForPosition:semanticContentAttribute:](TVMLUtilities, "semanticPositionForPosition:semanticContentAttribute:", [v2 unsignedIntegerValue], objc_msgSend(a1, "semanticContentAttribute"));
+  v2 = [self valueForTVViewStyle:@"tv-position"];
+  v3 = +[TVMLUtilities semanticPositionForPosition:semanticContentAttribute:](TVMLUtilities, "semanticPositionForPosition:semanticContentAttribute:", [v2 unsignedIntegerValue], objc_msgSend(self, "semanticContentAttribute"));
 
   return v3;
 }
 
 - (double)tv_itemWidth
 {
-  v1 = [a1 valueForTVViewStyle:@"width"];
+  v1 = [self valueForTVViewStyle:@"width"];
   [v1 floatValue];
   v3 = v2;
 
@@ -412,7 +412,7 @@
 
 - (double)tv_itemHeight
 {
-  v1 = [a1 valueForTVViewStyle:@"height"];
+  v1 = [self valueForTVViewStyle:@"height"];
   [v1 floatValue];
   v3 = v2;
 
@@ -421,7 +421,7 @@
 
 - (double)tv_maxHeight
 {
-  v1 = [a1 valueForTVViewStyle:@"max-height"];
+  v1 = [self valueForTVViewStyle:@"max-height"];
   [v1 floatValue];
   v3 = v2;
 
@@ -430,7 +430,7 @@
 
 - (double)tv_maxWidth
 {
-  v1 = [a1 valueForTVViewStyle:@"max-width"];
+  v1 = [self valueForTVViewStyle:@"max-width"];
   [v1 floatValue];
   v3 = v2;
 
@@ -439,7 +439,7 @@
 
 - (double)tv_minHeight
 {
-  v1 = [a1 valueForTVViewStyle:@"min-height"];
+  v1 = [self valueForTVViewStyle:@"min-height"];
   [v1 floatValue];
   v3 = v2;
 
@@ -448,7 +448,7 @@
 
 - (double)tv_minWidth
 {
-  v1 = [a1 valueForTVViewStyle:@"min-width"];
+  v1 = [self valueForTVViewStyle:@"min-width"];
   [v1 floatValue];
   v3 = v2;
 
@@ -457,7 +457,7 @@
 
 - (double)tv_interitemSpacing
 {
-  v1 = [a1 valueForTVViewStyle:@"tv-interitem-spacing"];
+  v1 = [self valueForTVViewStyle:@"tv-interitem-spacing"];
   [v1 floatValue];
   v3 = v2;
 
@@ -466,7 +466,7 @@
 
 - (double)tv_lineSpacing
 {
-  v1 = [a1 valueForTVViewStyle:@"tv-line-spacing"];
+  v1 = [self valueForTVViewStyle:@"tv-line-spacing"];
   [v1 floatValue];
   v3 = v2;
 
@@ -475,41 +475,41 @@
 
 - (uint64_t)tv_elementType
 {
-  v1 = [a1 tv_valueForTVViewTag:@"TVMLElementTypeTag"];
+  v1 = [self tv_valueForTVViewTag:@"TVMLElementTypeTag"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 unsignedIntegerValue];
+    unsignedIntegerValue = [v1 unsignedIntegerValue];
   }
 
   else
   {
-    v2 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_isPrototypeView
 {
-  v1 = [a1 tv_valueForTVViewTag:@"TVMLElementIsPrototypeViewTag"];
+  v1 = [self tv_valueForTVViewTag:@"TVMLElementIsPrototypeViewTag"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)tv_showOnHighlight
 {
-  v2 = [a1 valueForTVViewStyle:@"tv-highlight-style"];
+  v2 = [self valueForTVViewStyle:@"tv-highlight-style"];
   if ([v2 isEqualToString:@"show-on-highlight"])
   {
     v3 = 1;
@@ -520,7 +520,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [a1 valueForTVViewStyle:@"tv-text-highlight-style"];
+      v4 = [self valueForTVViewStyle:@"tv-text-highlight-style"];
 
       if ([v4 isEqualToString:@"show-on-highlight"])
       {
@@ -546,7 +546,7 @@
 
 - (uint64_t)tv_marqueeOnHighlight
 {
-  v1 = [a1 valueForTVViewStyle:@"tv-text-highlight-style"];
+  v1 = [self valueForTVViewStyle:@"tv-text-highlight-style"];
   if ([v1 isEqualToString:@"marquee-on-highlight"])
   {
     v2 = 1;
@@ -563,14 +563,14 @@
 - (uint64_t)tv_shouldAnimatePropertyWithKey:()TVMLKitAdditions
 {
   v4 = a3;
-  if ([a1 tv_isAnimationDisabledForProperty:v4])
+  if ([self tv_isAnimationDisabledForProperty:v4])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 tv_shouldAnimatePropertyWithKey:v4];
+    v5 = [self tv_shouldAnimatePropertyWithKey:v4];
   }
 
   return v5;
@@ -579,18 +579,18 @@
 - (void)_transferAttributesFromElement:()TVMLKitAdditions
 {
   v4 = a3;
-  [a1 setSemanticContentAttribute:{objc_msgSend(v4, "tv_semanticContentAttribute")}];
+  [self setSemanticContentAttribute:{objc_msgSend(v4, "tv_semanticContentAttribute")}];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "tv_elementType")}];
-  [a1 tv_setValue:v5 forTVViewTag:@"TVMLElementTypeTag"];
+  [self tv_setValue:v5 forTVViewTag:@"TVMLElementTypeTag"];
 
-  v6 = [v4 elementName];
-  [a1 tv_setValue:v6 forTVViewTag:@"TVMLElementTypeName"];
+  elementName = [v4 elementName];
+  [self tv_setValue:elementName forTVViewTag:@"TVMLElementTypeName"];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 isPartOfPrototypeElement];
+  isPartOfPrototypeElement = [v4 isPartOfPrototypeElement];
 
-  v9 = [v7 numberWithBool:v8];
-  [a1 tv_setValue:v9 forTVViewTag:@"TVMLElementIsPrototypeViewTag"];
+  v9 = [v7 numberWithBool:isPartOfPrototypeElement];
+  [self tv_setValue:v9 forTVViewTag:@"TVMLElementIsPrototypeViewTag"];
 }
 
 @end

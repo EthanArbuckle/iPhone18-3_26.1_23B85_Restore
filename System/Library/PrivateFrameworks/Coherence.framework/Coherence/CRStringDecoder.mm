@@ -1,19 +1,19 @@
 @interface CRStringDecoder
 - (_TtC9Coherence15CRStringDecoder)init;
-- (id)storageWithError:(id *)a3;
-- (id)substringCharReplicaWithError:(id *)a3;
-- (unsigned)substringAddedByCounter:(int64_t)a3;
+- (id)storageWithError:(id *)error;
+- (id)substringCharReplicaWithError:(id *)error;
+- (unsigned)substringAddedByCounter:(int64_t)counter;
 - (unsigned)substringCharClock;
-- (unsigned)substringChild:(int64_t)a3;
-- (unsigned)substringRemovedAddedByCounter:(int64_t)a3;
-- (void)decodeSubstring:(int64_t)a3;
+- (unsigned)substringChild:(int64_t)child;
+- (unsigned)substringRemovedAddedByCounter:(int64_t)counter;
+- (void)decodeSubstring:(int64_t)substring;
 @end
 
 @implementation CRStringDecoder
 
-- (void)decodeSubstring:(int64_t)a3
+- (void)decodeSubstring:(int64_t)substring
 {
-  if (a3 < 0)
+  if (substring < 0)
   {
     __break(1u);
   }
@@ -21,11 +21,11 @@
   else
   {
     v5 = *&self->encoded[OBJC_IVAR____TtC9Coherence15CRStringDecoder_encoded + 16];
-    if (*(v5 + 16) > a3)
+    if (*(v5 + 16) > substring)
     {
       v26 = v3;
       v27 = v4;
-      v6 = v5 + 72 * a3;
+      v6 = v5 + 72 * substring;
       v19 = *(v6 + 32);
       v7 = *(v6 + 48);
       v8 = *(v6 + 64);
@@ -51,7 +51,7 @@
       *(v10 + 3) = v16;
       *v10 = v13;
       *(v10 + 1) = v14;
-      v17 = self;
+      selfCopy = self;
       sub_1ADE5218C(&v19, v18);
       sub_1ADE521E8(v24);
 
@@ -62,7 +62,7 @@
   __break(1u);
 }
 
-- (id)substringCharReplicaWithError:(id *)a3
+- (id)substringCharReplicaWithError:(id *)error
 {
   v3 = sub_1AE23BFEC();
   v4 = *(v3 - 8);
@@ -102,43 +102,43 @@
   return v2;
 }
 
-- (unsigned)substringChild:(int64_t)a3
+- (unsigned)substringChild:(int64_t)child
 {
-  if (a3 < 0)
+  if (child < 0)
   {
     __break(1u);
     goto LABEL_5;
   }
 
   v3 = *&self->encoded[OBJC_IVAR____TtC9Coherence15CRStringDecoder_subsequence + 8];
-  if (*(v3 + 16) <= a3)
+  if (*(v3 + 16) <= child)
   {
 LABEL_5:
     __break(1u);
     return self;
   }
 
-  LODWORD(self) = *(v3 + 4 * a3 + 32);
+  LODWORD(self) = *(v3 + 4 * child + 32);
   return self;
 }
 
-- (unsigned)substringAddedByCounter:(int64_t)a3
+- (unsigned)substringAddedByCounter:(int64_t)counter
 {
-  if (a3 < 0)
+  if (counter < 0)
   {
     __break(1u);
     goto LABEL_7;
   }
 
   v3 = *&self->encoded[OBJC_IVAR____TtC9Coherence15CRStringDecoder_subsequence];
-  if (*(v3 + 16) <= a3)
+  if (*(v3 + 16) <= counter)
   {
 LABEL_7:
     __break(1u);
     goto LABEL_8;
   }
 
-  self = *(v3 + 16 * a3 + 40);
+  self = *(v3 + 16 * counter + 40);
   if ((self & 0x8000000000000000) == 0)
   {
     if (!(self >> 32))
@@ -156,37 +156,37 @@ LABEL_9:
   return self;
 }
 
-- (id)storageWithError:(id *)a3
+- (id)storageWithError:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9Coherence15CRStringDecoder_encoded);
   v5 = *&self->encoded[OBJC_IVAR____TtC9Coherence15CRStringDecoder_encoded];
   v6 = objc_allocWithZone(MEMORY[0x1E696AD60]);
-  v7 = self;
+  selfCopy = self;
 
   v8 = sub_1AE23CCDC();
 
-  v9 = [v6 initWithString_];
+  initWithString_ = [v6 initWithString_];
 
-  return v9;
+  return initWithString_;
 }
 
-- (unsigned)substringRemovedAddedByCounter:(int64_t)a3
+- (unsigned)substringRemovedAddedByCounter:(int64_t)counter
 {
-  if (a3 < 0)
+  if (counter < 0)
   {
     __break(1u);
     goto LABEL_7;
   }
 
   v3 = *&self->encoded[OBJC_IVAR____TtC9Coherence15CRStringDecoder_subsequence + 16];
-  if (*(v3 + 16) <= a3)
+  if (*(v3 + 16) <= counter)
   {
 LABEL_7:
     __break(1u);
     goto LABEL_8;
   }
 
-  self = *(v3 + 16 * a3 + 40);
+  self = *(v3 + 16 * counter + 40);
   if ((self & 0x8000000000000000) == 0)
   {
     if (!(self >> 32))

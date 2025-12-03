@@ -1,25 +1,25 @@
 @interface IMDIndexableMessageRecord
 - (BOOL)isKnownSender;
-- (IMDIndexableMessageRecord)initWithDictionaryRepresentation:(id)a3;
-- (IMDIndexableMessageRecord)initWithMessageRecord:(id)a3;
+- (IMDIndexableMessageRecord)initWithDictionaryRepresentation:(id)representation;
+- (IMDIndexableMessageRecord)initWithMessageRecord:(id)record;
 - (id)dictionaryRepresentation;
-- (id)formattedGUIDWithPart:(id)a3;
+- (id)formattedGUIDWithPart:(id)part;
 - (id)messageDescriptor;
 @end
 
 @implementation IMDIndexableMessageRecord
 
-- (IMDIndexableMessageRecord)initWithMessageRecord:(id)a3
+- (IMDIndexableMessageRecord)initWithMessageRecord:(id)record
 {
   v149 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   v147.receiver = self;
   v147.super_class = IMDIndexableMessageRecord;
   v7 = [(IMDIndexableMessageRecord *)&v147 init];
   if (v7)
   {
-    v7->_rowID = objc_msgSend_rowID(v4, v5, v6);
-    v10 = objc_msgSend_date(v4, v8, v9);
+    v7->_rowID = objc_msgSend_rowID(recordCopy, v5, v6);
+    v10 = objc_msgSend_date(recordCopy, v8, v9);
     v13 = v10;
     if (v10)
     {
@@ -34,59 +34,59 @@
     time = v7->_time;
     v7->_time = v14;
 
-    v18 = objc_msgSend_dateRead(v4, v16, v17);
+    v18 = objc_msgSend_dateRead(recordCopy, v16, v17);
     timeRead = v7->_timeRead;
     v7->_timeRead = v18;
 
-    v22 = objc_msgSend_guid(v4, v20, v21);
+    v22 = objc_msgSend_guid(recordCopy, v20, v21);
     guid = v7->_guid;
     v7->_guid = v22;
 
-    v26 = objc_msgSend_text(v4, v24, v25);
+    v26 = objc_msgSend_text(recordCopy, v24, v25);
     plainBody = v7->_plainBody;
     v7->_plainBody = v26;
 
-    v30 = objc_msgSend_attributedBodyText(v4, v28, v29);
+    v30 = objc_msgSend_attributedBodyText(recordCopy, v28, v29);
     attributedBody = v7->_attributedBody;
     v7->_attributedBody = v30;
 
-    v34 = objc_msgSend_subject(v4, v32, v33);
+    v34 = objc_msgSend_subject(recordCopy, v32, v33);
     subject = v7->_subject;
     v7->_subject = v34;
 
-    v38 = objc_msgSend_serviceName(v4, v36, v37);
+    v38 = objc_msgSend_serviceName(recordCopy, v36, v37);
     service = v7->_service;
     v7->_service = v38;
 
-    v7->_flags = objc_msgSend_flags(v4, v40, v41);
-    v7->_hasAttachments = objc_msgSend_cacheHasAttachments(v4, v42, v43);
-    v7->_type = objc_msgSend_itemType(v4, v44, v45);
-    v48 = objc_msgSend_balloonBundleID(v4, v46, v47);
+    v7->_flags = objc_msgSend_flags(recordCopy, v40, v41);
+    v7->_hasAttachments = objc_msgSend_cacheHasAttachments(recordCopy, v42, v43);
+    v7->_type = objc_msgSend_itemType(recordCopy, v44, v45);
+    v48 = objc_msgSend_balloonBundleID(recordCopy, v46, v47);
     balloonBundleID = v7->_balloonBundleID;
     v7->_balloonBundleID = v48;
 
-    v52 = objc_msgSend_payloadData(v4, v50, v51);
+    v52 = objc_msgSend_payloadData(recordCopy, v50, v51);
     payloadData = v7->_payloadData;
     v7->_payloadData = v52;
 
-    v56 = objc_msgSend_expressiveSendStyleID(v4, v54, v55);
+    v56 = objc_msgSend_expressiveSendStyleID(recordCopy, v54, v55);
     expressiveSendStyleID = v7->_expressiveSendStyleID;
     v7->_expressiveSendStyleID = v56;
 
-    v7->_associatedMessageType = objc_msgSend_associatedMessageType(v4, v58, v59);
-    v62 = objc_msgSend_associatedMessageGUID(v4, v60, v61);
+    v7->_associatedMessageType = objc_msgSend_associatedMessageType(recordCopy, v58, v59);
+    v62 = objc_msgSend_associatedMessageGUID(recordCopy, v60, v61);
     associatedMessageGUID = v7->_associatedMessageGUID;
     v7->_associatedMessageGUID = v62;
 
-    v66 = objc_msgSend_syndicationRanges(v4, v64, v65);
+    v66 = objc_msgSend_syndicationRanges(recordCopy, v64, v65);
     syndicationRanges = v7->_syndicationRanges;
     v7->_syndicationRanges = v66;
 
-    v70 = objc_msgSend_destinationCallerID(v4, v68, v69);
+    v70 = objc_msgSend_destinationCallerID(recordCopy, v68, v69);
     destinationCallerID = v7->_destinationCallerID;
     v7->_destinationCallerID = v70;
 
-    v74 = objc_msgSend_threadOriginatorGUID(v4, v72, v73);
+    v74 = objc_msgSend_threadOriginatorGUID(recordCopy, v72, v73);
     if (objc_msgSend_length(v74, v75, v76))
     {
       v79 = IMDMessageRecordCopyMessageForGUID(v74);
@@ -98,26 +98,26 @@
         v7->_threadOriginator = v82;
 
         v86 = objc_msgSend_threadOriginator(v7, v84, v85);
-        v89 = objc_msgSend_threadOriginatorPart(v4, v87, v88);
+        v89 = objc_msgSend_threadOriginatorPart(recordCopy, v87, v88);
         v91 = objc_msgSend_formattedGUIDWithPart_(v86, v90, v89);
         threadOriginatorFormattedGUID = v7->_threadOriginatorFormattedGUID;
         v7->_threadOriginatorFormattedGUID = v91;
       }
     }
 
-    v93 = objc_msgSend_biaReferenceID(v4, v77, v78);
+    v93 = objc_msgSend_biaReferenceID(recordCopy, v77, v78);
     biaReferenceID = v7->_biaReferenceID;
     v7->_biaReferenceID = v93;
 
-    v97 = objc_msgSend_associatedMessageEmoji(v4, v95, v96);
+    v97 = objc_msgSend_associatedMessageEmoji(recordCopy, v95, v96);
     associatedEmoji = v7->_associatedEmoji;
     v7->_associatedEmoji = v97;
 
-    v101 = objc_msgSend_messageSummaryInfo(v4, v99, v100);
+    v101 = objc_msgSend_messageSummaryInfo(recordCopy, v99, v100);
     messageSummaryInfo = v7->_messageSummaryInfo;
     v7->_messageSummaryInfo = v101;
 
-    v105 = objc_msgSend_handleRecord(v4, v103, v104);
+    v105 = objc_msgSend_handleRecord(recordCopy, v103, v104);
     v108 = v105;
     if (v105)
     {
@@ -130,10 +130,10 @@
       v7->_uncanonicalizedHandle = v113;
     }
 
-    if (objc_msgSend_cacheHasAttachments(v4, v106, v107))
+    if (objc_msgSend_cacheHasAttachments(recordCopy, v106, v107))
     {
       v142 = v74;
-      v117 = objc_msgSend_attachmentRecords(v4, v115, v116);
+      v117 = objc_msgSend_attachmentRecords(recordCopy, v115, v116);
       v118 = MEMORY[0x1E695DF70];
       v121 = objc_msgSend_count(v117, v119, v120);
       v123 = objc_msgSend_arrayWithCapacity_(v118, v122, v121);
@@ -180,111 +180,111 @@
   return v7;
 }
 
-- (IMDIndexableMessageRecord)initWithDictionaryRepresentation:(id)a3
+- (IMDIndexableMessageRecord)initWithDictionaryRepresentation:(id)representation
 {
   v120 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v118.receiver = self;
   v118.super_class = IMDIndexableMessageRecord;
   v6 = [(IMDIndexableMessageRecord *)&v118 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"rowID");
+    v7 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v5, @"rowID");
     v6->_rowID = objc_msgSend_integerValue(v7, v8, v9);
 
-    v11 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"time");
+    v11 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v10, @"time");
     time = v6->_time;
     v6->_time = v11;
 
-    v14 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"timeRead");
+    v14 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v13, @"timeRead");
     timeRead = v6->_timeRead;
     v6->_timeRead = v14;
 
-    v17 = objc_msgSend_objectForKeyedSubscript_(v4, v16, @"guid");
+    v17 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v16, @"guid");
     guid = v6->_guid;
     v6->_guid = v17;
 
-    v20 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"plainBody");
+    v20 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v19, @"plainBody");
     plainBody = v6->_plainBody;
     v6->_plainBody = v20;
 
-    v23 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"attributedBody");
+    v23 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v22, @"attributedBody");
     attributedBody = v6->_attributedBody;
     v6->_attributedBody = v23;
 
-    v26 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"subject");
+    v26 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v25, @"subject");
     subject = v6->_subject;
     v6->_subject = v26;
 
-    v29 = objc_msgSend_objectForKeyedSubscript_(v4, v28, @"service");
+    v29 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v28, @"service");
     service = v6->_service;
     v6->_service = v29;
 
-    v32 = objc_msgSend_objectForKeyedSubscript_(v4, v31, @"flags");
+    v32 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v31, @"flags");
     v6->_flags = objc_msgSend_integerValue(v32, v33, v34);
 
-    v36 = objc_msgSend_objectForKeyedSubscript_(v4, v35, @"hasAttachments");
+    v36 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v35, @"hasAttachments");
     v6->_hasAttachments = objc_msgSend_BOOLValue(v36, v37, v38);
 
-    v40 = objc_msgSend_objectForKeyedSubscript_(v4, v39, @"type");
+    v40 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v39, @"type");
     v6->_type = objc_msgSend_integerValue(v40, v41, v42);
 
-    v44 = objc_msgSend_objectForKeyedSubscript_(v4, v43, @"balloonBundleID");
+    v44 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v43, @"balloonBundleID");
     balloonBundleID = v6->_balloonBundleID;
     v6->_balloonBundleID = v44;
 
-    v47 = objc_msgSend_objectForKeyedSubscript_(v4, v46, @"payloadData");
+    v47 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v46, @"payloadData");
     payloadData = v6->_payloadData;
     v6->_payloadData = v47;
 
-    v50 = objc_msgSend_objectForKeyedSubscript_(v4, v49, @"expressiveSendStyleID");
+    v50 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v49, @"expressiveSendStyleID");
     expressiveSendStyleID = v6->_expressiveSendStyleID;
     v6->_expressiveSendStyleID = v50;
 
-    v53 = objc_msgSend_objectForKeyedSubscript_(v4, v52, @"associatedMessageType");
+    v53 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v52, @"associatedMessageType");
     v6->_associatedMessageType = objc_msgSend_integerValue(v53, v54, v55);
 
-    v57 = objc_msgSend_objectForKeyedSubscript_(v4, v56, @"associatedMessageGUID");
+    v57 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v56, @"associatedMessageGUID");
     associatedMessageGUID = v6->_associatedMessageGUID;
     v6->_associatedMessageGUID = v57;
 
-    v60 = objc_msgSend_objectForKeyedSubscript_(v4, v59, @"syndicationRanges");
+    v60 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v59, @"syndicationRanges");
     syndicationRanges = v6->_syndicationRanges;
     v6->_syndicationRanges = v60;
 
-    v63 = objc_msgSend_objectForKeyedSubscript_(v4, v62, @"destinationCallerID");
+    v63 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v62, @"destinationCallerID");
     destinationCallerID = v6->_destinationCallerID;
     v6->_destinationCallerID = v63;
 
-    v66 = objc_msgSend_objectForKeyedSubscript_(v4, v65, @"threadOriginator");
+    v66 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v65, @"threadOriginator");
     threadOriginator = v6->_threadOriginator;
     v6->_threadOriginator = v66;
 
-    v69 = objc_msgSend_objectForKeyedSubscript_(v4, v68, @"threadOriginatorFormattedGUID");
+    v69 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v68, @"threadOriginatorFormattedGUID");
     threadOriginatorFormattedGUID = v6->_threadOriginatorFormattedGUID;
     v6->_threadOriginatorFormattedGUID = v69;
 
-    v72 = objc_msgSend_objectForKeyedSubscript_(v4, v71, @"biaReferenceID");
+    v72 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v71, @"biaReferenceID");
     biaReferenceID = v6->_biaReferenceID;
     v6->_biaReferenceID = v72;
 
-    v75 = objc_msgSend_objectForKeyedSubscript_(v4, v74, @"associatedMessageEmoji");
+    v75 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v74, @"associatedMessageEmoji");
     associatedEmoji = v6->_associatedEmoji;
     v6->_associatedEmoji = v75;
 
-    v78 = objc_msgSend_objectForKeyedSubscript_(v4, v77, @"messageSummaryInfo");
+    v78 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v77, @"messageSummaryInfo");
     messageSummaryInfo = v6->_messageSummaryInfo;
     v6->_messageSummaryInfo = v78;
 
-    v81 = objc_msgSend_objectForKeyedSubscript_(v4, v80, @"uncanonicalizedHandle");
+    v81 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v80, @"uncanonicalizedHandle");
     uncanonicalizedHandle = v6->_uncanonicalizedHandle;
     v6->_uncanonicalizedHandle = v81;
 
-    v84 = objc_msgSend_objectForKeyedSubscript_(v4, v83, @"handle");
+    v84 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v83, @"handle");
     handle = v6->_handle;
     v6->_handle = v84;
 
-    v87 = objc_msgSend_objectForKeyedSubscript_(v4, v86, @"attachments");
+    v87 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v86, @"attachments");
     if (objc_msgSend_count(v87, v88, v89))
     {
       v92 = MEMORY[0x1E695DF70];
@@ -345,12 +345,12 @@
   return v11;
 }
 
-- (id)formattedGUIDWithPart:(id)a3
+- (id)formattedGUIDWithPart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v7 = objc_msgSend_messageDescriptor(self, v5, v6);
   v10 = v7;
-  if (v4 && (objc_msgSend_messageParts(v7, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_count(v11, v12, v13), v11, v14 >= 2))
+  if (partCopy && (objc_msgSend_messageParts(v7, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_count(v11, v12, v13), v11, v14 >= 2))
   {
     v15 = objc_msgSend_guid(self, v8, v9);
     ThreadIdentifierWithComponents = IMMessageCreateThreadIdentifierWithComponents();

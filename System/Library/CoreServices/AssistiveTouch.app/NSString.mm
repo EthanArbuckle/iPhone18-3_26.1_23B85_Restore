@@ -1,40 +1,40 @@
 @interface NSString
-+ (id)at_deviceIconNameForIdentifier:(id)a3;
++ (id)at_deviceIconNameForIdentifier:(id)identifier;
 + (id)getIconSuffix;
-+ (id)sc_deviceIconNameForIdentifier:(id)a3;
-+ (id)sc_tvIconNameForDevice:(id)a3 isHome:(BOOL)a4;
++ (id)sc_deviceIconNameForIdentifier:(id)identifier;
++ (id)sc_tvIconNameForDevice:(id)device isHome:(BOOL)home;
 @end
 
 @implementation NSString
 
-+ (id)at_deviceIconNameForIdentifier:(id)a3
++ (id)at_deviceIconNameForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NSString getIconSuffix];
-  v5 = [NSString stringWithFormat:@"%@%@", v3, v4];
+  v5 = [NSString stringWithFormat:@"%@%@", identifierCopy, v4];
 
   return v5;
 }
 
-+ (id)sc_deviceIconNameForIdentifier:(id)a3
++ (id)sc_deviceIconNameForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NSString getIconSuffix];
-  v5 = [NSString stringWithFormat:@"SCATIcon_%@%@", v3, v4];
+  v5 = [NSString stringWithFormat:@"SCATIcon_%@%@", identifierCopy, v4];
 
   return v5;
 }
 
-+ (id)sc_tvIconNameForDevice:(id)a3 isHome:(BOOL)a4
++ (id)sc_tvIconNameForDevice:(id)device isHome:(BOOL)home
 {
-  if (a4)
+  if (home)
   {
     v6 = @"SCATIcon_device_home_tv";
   }
 
   else
   {
-    v6 = [NSString sc_deviceIconNameForIdentifier:a3, v4];
+    v6 = [NSString sc_deviceIconNameForIdentifier:device, v4];
   }
 
   return v6;

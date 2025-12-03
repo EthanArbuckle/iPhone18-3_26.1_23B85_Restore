@@ -1,26 +1,26 @@
 @interface HUStepperCell
-- (HUStepperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUStepperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUStepperCellDelegate)stepperCellDelegate;
 - (id)_valueDescription;
-- (void)_stepperValueDidChange:(id)a3;
-- (void)_toggleValueChange:(id)a3;
+- (void)_stepperValueDidChange:(id)change;
+- (void)_toggleValueChange:(id)change;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
-- (void)setMaximumValue:(id)a3;
-- (void)setMinimumValue:(id)a3;
-- (void)setStepValue:(id)a3;
-- (void)setStepperValue:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setMaximumValue:(id)value;
+- (void)setMinimumValue:(id)value;
+- (void)setStepValue:(id)value;
+- (void)setStepperValue:(id)value;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUStepperCell
 
-- (HUStepperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUStepperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v61 = *MEMORY[0x277D85DE8];
   v57.receiver = self;
   v57.super_class = HUStepperCell;
-  v4 = [(HUStepperCell *)&v57 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(HUStepperCell *)&v57 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -80,8 +80,8 @@
 
           v26 = *(*(&v53 + 1) + 8 * i);
           [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-          v27 = [(HUStepperCell *)v4 contentView];
-          [v27 addSubview:v26];
+          contentView = [(HUStepperCell *)v4 contentView];
+          [contentView addSubview:v26];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v53 objects:v60 count:16];
@@ -90,32 +90,32 @@
       while (v23);
     }
 
-    v28 = [(UIStepper *)v4->_stepper centerYAnchor];
-    v29 = [(HUStepperCell *)v4 contentView];
-    v30 = [v29 centerYAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    centerYAnchor = [(UIStepper *)v4->_stepper centerYAnchor];
+    contentView2 = [(HUStepperCell *)v4 contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-    v32 = [(HUStepperCell *)v4 valueLabel];
-    v33 = [v32 centerYAnchor];
-    v34 = [(HUStepperCell *)v4 contentView];
-    v35 = [v34 centerYAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    valueLabel = [(HUStepperCell *)v4 valueLabel];
+    centerYAnchor3 = [valueLabel centerYAnchor];
+    contentView3 = [(HUStepperCell *)v4 contentView];
+    centerYAnchor4 = [contentView3 centerYAnchor];
+    v36 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
 
-    v37 = [(HUStepperCell *)v4 valueLabel];
-    v38 = [v37 trailingAnchor];
-    v39 = [(HUStepperCell *)v4 stepper];
-    v40 = [v39 leadingAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40 constant:-7.0];
+    valueLabel2 = [(HUStepperCell *)v4 valueLabel];
+    trailingAnchor = [valueLabel2 trailingAnchor];
+    stepper = [(HUStepperCell *)v4 stepper];
+    leadingAnchor = [stepper leadingAnchor];
+    v41 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-7.0];
 
-    v42 = [(UIStepper *)v4->_stepper trailingAnchor];
-    v43 = [(HUStepperCell *)v4 contentView];
-    v44 = [v43 readableContentGuide];
-    v45 = [v44 trailingAnchor];
-    v46 = [v42 constraintEqualToAnchor:v45];
+    trailingAnchor2 = [(UIStepper *)v4->_stepper trailingAnchor];
+    contentView4 = [(HUStepperCell *)v4 contentView];
+    readableContentGuide = [contentView4 readableContentGuide];
+    trailingAnchor3 = [readableContentGuide trailingAnchor];
+    v46 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
 
-    v47 = [(HUStepperCell *)v4 contentView];
-    v48 = [v47 heightAnchor];
-    v49 = [v48 constraintGreaterThanOrEqualToConstant:*MEMORY[0x277D76F38]];
+    contentView5 = [(HUStepperCell *)v4 contentView];
+    heightAnchor = [contentView5 heightAnchor];
+    v49 = [heightAnchor constraintGreaterThanOrEqualToConstant:*MEMORY[0x277D76F38]];
 
     v50 = MEMORY[0x277CCAAD0];
     v58[0] = v36;
@@ -139,12 +139,12 @@
   [(HUStepperCell *)self setSelectionStyle:0];
 }
 
-- (void)setMaximumValue:(id)a3
+- (void)setMaximumValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_maximumValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     maximumValue = self->_maximumValue;
     self->_maximumValue = v4;
 
@@ -152,12 +152,12 @@
   }
 }
 
-- (void)setMinimumValue:(id)a3
+- (void)setMinimumValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_minimumValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     minimumValue = self->_minimumValue;
     self->_minimumValue = v4;
 
@@ -165,12 +165,12 @@
   }
 }
 
-- (void)setStepValue:(id)a3
+- (void)setStepValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_stepValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     stepValue = self->_stepValue;
     self->_stepValue = v4;
 
@@ -178,12 +178,12 @@
   }
 }
 
-- (void)setStepperValue:(id)a3
+- (void)setStepperValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_stepperValue isEqualToNumber:?])
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     stepperValue = self->_stepperValue;
     self->_stepperValue = v4;
 
@@ -191,22 +191,22 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(HUStepperCell *)self updateUIWithAnimation:0];
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUStepperCell *)self item];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v7 = [(HUStepperCell *)self textLabel];
-  [v7 setText:v6];
+  item = [(HUStepperCell *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [(HUStepperCell *)self textLabel];
+  [textLabel setText:v6];
 
   if ([(HUStepperCell *)self isDisabled])
   {
@@ -218,12 +218,12 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v8 = ;
-  v9 = [(HUStepperCell *)self textLabel];
-  [v9 setTextColor:v8];
+  textLabel2 = [(HUStepperCell *)self textLabel];
+  [textLabel2 setTextColor:v8];
 
-  v10 = [(HUStepperCell *)self _valueDescription];
-  v11 = [(HUStepperCell *)self valueLabel];
-  [v11 setText:v10];
+  _valueDescription = [(HUStepperCell *)self _valueDescription];
+  valueLabel = [(HUStepperCell *)self valueLabel];
+  [valueLabel setText:_valueDescription];
 
   if ([(HUStepperCell *)self isDisabled])
   {
@@ -235,43 +235,43 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v12 = ;
-  v13 = [(HUStepperCell *)self valueLabel];
-  [v13 setTextColor:v12];
+  valueLabel2 = [(HUStepperCell *)self valueLabel];
+  [valueLabel2 setTextColor:v12];
 
-  v14 = [(HUStepperCell *)self valueLabel];
-  [v14 sizeToFit];
+  valueLabel3 = [(HUStepperCell *)self valueLabel];
+  [valueLabel3 sizeToFit];
 
-  LODWORD(v14) = [(HUStepperCell *)self isDisabled];
-  v15 = [(HUStepperCell *)self stepper];
-  [v15 setUserInteractionEnabled:v14 ^ 1];
+  LODWORD(valueLabel3) = [(HUStepperCell *)self isDisabled];
+  stepper = [(HUStepperCell *)self stepper];
+  [stepper setUserInteractionEnabled:valueLabel3 ^ 1];
 
-  LODWORD(v14) = [(HUStepperCell *)self isDisabled];
-  v16 = [(HUStepperCell *)self stepper];
-  [v16 setEnabled:v14 ^ 1];
+  LODWORD(valueLabel3) = [(HUStepperCell *)self isDisabled];
+  stepper2 = [(HUStepperCell *)self stepper];
+  [stepper2 setEnabled:valueLabel3 ^ 1];
 
-  v17 = [(HUStepperCell *)self minimumValue];
-  [v17 doubleValue];
+  minimumValue = [(HUStepperCell *)self minimumValue];
+  [minimumValue doubleValue];
   v19 = v18;
-  v20 = [(HUStepperCell *)self stepper];
-  [v20 setMinimumValue:v19];
+  stepper3 = [(HUStepperCell *)self stepper];
+  [stepper3 setMinimumValue:v19];
 
-  v21 = [(HUStepperCell *)self maximumValue];
-  [v21 doubleValue];
+  maximumValue = [(HUStepperCell *)self maximumValue];
+  [maximumValue doubleValue];
   v23 = v22;
-  v24 = [(HUStepperCell *)self stepper];
-  [v24 setMaximumValue:v23];
+  stepper4 = [(HUStepperCell *)self stepper];
+  [stepper4 setMaximumValue:v23];
 
-  v25 = [(HUStepperCell *)self stepValue];
-  [v25 doubleValue];
+  stepValue = [(HUStepperCell *)self stepValue];
+  [stepValue doubleValue];
   v27 = v26;
-  v28 = [(HUStepperCell *)self stepper];
-  [v28 setStepValue:v27];
+  stepper5 = [(HUStepperCell *)self stepper];
+  [stepper5 setStepValue:v27];
 
-  v29 = [(HUStepperCell *)self stepperValue];
-  [v29 doubleValue];
+  stepperValue = [(HUStepperCell *)self stepperValue];
+  [stepperValue doubleValue];
   v31 = v30;
-  v32 = [(HUStepperCell *)self stepper];
-  [v32 setValue:v31];
+  stepper6 = [(HUStepperCell *)self stepper];
+  [stepper6 setValue:v31];
 
   if ([(HUStepperCell *)self isDisabled])
   {
@@ -283,21 +283,21 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v34 = ;
-  v33 = [(HUStepperCell *)self stepper];
-  [v33 setTintColor:v34];
+  stepper7 = [(HUStepperCell *)self stepper];
+  [stepper7 setTintColor:v34];
 }
 
-- (void)_stepperValueDidChange:(id)a3
+- (void)_stepperValueDidChange:(id)change
 {
   if (![(HUStepperCell *)self isDisabled])
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(HUStepperCell *)self stepper];
-    [v5 value];
+    stepper = [(HUStepperCell *)self stepper];
+    [stepper value];
     v8 = [v4 numberWithDouble:?];
 
-    v6 = [(HUStepperCell *)self stepperValue];
-    v7 = [v6 compare:v8];
+    stepperValue = [(HUStepperCell *)self stepperValue];
+    v7 = [stepperValue compare:v8];
 
     if (v7)
     {
@@ -308,25 +308,25 @@
   }
 }
 
-- (void)_toggleValueChange:(id)a3
+- (void)_toggleValueChange:(id)change
 {
-  v7 = [(HUStepperCell *)self stepperCellDelegate];
+  stepperCellDelegate = [(HUStepperCell *)self stepperCellDelegate];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HUStepperCell *)self stepper];
-  [v5 value];
+  stepper = [(HUStepperCell *)self stepper];
+  [stepper value];
   v6 = [v4 numberWithDouble:?];
-  [v7 stepperCell:self steppedToValue:v6];
+  [stepperCellDelegate stepperCell:self steppedToValue:v6];
 }
 
 - (id)_valueDescription
 {
-  v3 = [(HUStepperCell *)self stepperValue];
+  stepperValue = [(HUStepperCell *)self stepperValue];
 
-  if (v3)
+  if (stepperValue)
   {
     v4 = MEMORY[0x277CCABB8];
-    v5 = [(HUStepperCell *)self stepperValue];
-    v6 = [v4 localizedStringFromNumber:v5 numberStyle:1];
+    stepperValue2 = [(HUStepperCell *)self stepperValue];
+    v6 = [v4 localizedStringFromNumber:stepperValue2 numberStyle:1];
   }
 
   else

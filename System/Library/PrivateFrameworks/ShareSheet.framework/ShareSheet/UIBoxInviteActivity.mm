@@ -1,5 +1,5 @@
 @interface UIBoxInviteActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_actionImage;
 - (id)_activityFooterText;
 - (id)activityTitle;
@@ -12,17 +12,17 @@
   if ([(UIBoxInviteActivity *)self isiWorkFile])
   {
     v3 = _ShareSheetBundle();
-    v4 = [v3 localizedStringForKey:@"BoxInvite[Activity]" value:@"Invite People on Box" table:@"Localizable"];
+    activityTitle = [v3 localizedStringForKey:@"BoxInvite[Activity]" value:@"Invite People on Box" table:@"Localizable"];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIBoxInviteActivity;
-    v4 = [(UIApplicationExtensionActivity *)&v6 activityTitle];
+    activityTitle = [(UIApplicationExtensionActivity *)&v6 activityTitle];
   }
 
-  return v4;
+  return activityTitle;
 }
 
 - (id)_actionImage
@@ -34,18 +34,18 @@
     v5 = [v3 imageNamed:@"Box" inBundle:v4];
 
     v6 = objc_opt_class();
-    v7 = [(UIActivity *)self contentSizeCategory];
-    v8 = [v6 _actionImageForActionRepresentationImage:v5 contentSizeCategory:v7];
+    contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+    _actionImage = [v6 _actionImageForActionRepresentationImage:v5 contentSizeCategory:contentSizeCategory];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIBoxInviteActivity;
-    v8 = [(UIApplicationExtensionActivity *)&v10 _actionImage];
+    _actionImage = [(UIApplicationExtensionActivity *)&v10 _actionImage];
   }
 
-  return v8;
+  return _actionImage;
 }
 
 - (id)_activityFooterText
@@ -53,11 +53,11 @@
   v28[2] = *MEMORY[0x1E69E9840];
   if ([(UIBoxInviteActivity *)self isiWorkFile])
   {
-    v3 = [(UIBoxInviteActivity *)self boxFooterText];
+    boxFooterText = [(UIBoxInviteActivity *)self boxFooterText];
 
-    if (v3)
+    if (boxFooterText)
     {
-      v4 = [(UIBoxInviteActivity *)self boxFooterText];
+      boxFooterText2 = [(UIBoxInviteActivity *)self boxFooterText];
     }
 
     else
@@ -78,8 +78,8 @@
       v28[0] = v12;
       v27 = *MEMORY[0x1E69DB650];
       v13 = v27;
-      v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v28[1] = v14;
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v28[1] = secondaryLabelColor;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v26 count:2];
 
       [v9 setAttributes:v15 range:{0, objc_msgSend(v9, "length") - v8}];
@@ -90,35 +90,35 @@
       v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v11];
       v25[1] = v17;
       v24[2] = v13;
-      v18 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v25[2] = v18;
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v25[2] = systemBlueColor;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
       [v9 setAttributes:v19 range:{objc_msgSend(v9, "length") - v8, v8}];
       v20 = [v9 copy];
       [(UIBoxInviteActivity *)self setBoxFooterText:v20];
 
-      v4 = [(UIBoxInviteActivity *)self boxFooterText];
+      boxFooterText2 = [(UIBoxInviteActivity *)self boxFooterText];
     }
   }
 
   else
   {
-    v4 = 0;
+    boxFooterText2 = 0;
   }
 
-  return v4;
+  return boxFooterText2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  itemsCopy = items;
+  v5 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -129,7 +129,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -141,7 +141,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -155,7 +155,7 @@ LABEL_12:
 
   v12.receiver = self;
   v12.super_class = UIBoxInviteActivity;
-  v10 = [(UIFileProviderApplicationExtensionActivity *)&v12 canPerformWithActivityItems:v4];
+  v10 = [(UIFileProviderApplicationExtensionActivity *)&v12 canPerformWithActivityItems:itemsCopy];
 
   return v10;
 }

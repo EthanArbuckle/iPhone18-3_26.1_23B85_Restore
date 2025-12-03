@@ -1,17 +1,17 @@
 @interface TPPillView
 - (NSString)badgeText;
 - (NSString)title;
-- (TPPillView)initWithTitle:(id)a3 frame:(CGRect)a4 theme:(unint64_t)a5;
+- (TPPillView)initWithTitle:(id)title frame:(CGRect)frame theme:(unint64_t)theme;
 - (TPPillViewDelegate)delegate;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)commonInit;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)loadConstraints;
-- (void)setBadgeSymbolName:(id)a3;
-- (void)setBadgeText:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setTheme:(unint64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setBadgeSymbolName:(id)name;
+- (void)setBadgeText:(id)text;
+- (void)setDelegate:(id)delegate;
+- (void)setTheme:(unint64_t)theme;
+- (void)setTitle:(id)title;
 - (void)unloadConstraints;
 - (void)updateFonts;
 - (void)updateTheme;
@@ -19,21 +19,21 @@
 
 @implementation TPPillView
 
-- (TPPillView)initWithTitle:(id)a3 frame:(CGRect)a4 theme:(unint64_t)a5
+- (TPPillView)initWithTitle:(id)title frame:(CGRect)frame theme:(unint64_t)theme
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titleCopy = title;
   v15.receiver = self;
   v15.super_class = TPPillView;
-  v12 = [(TPControl *)&v15 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(TPControl *)&v15 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    v12->_theme = a5;
-    [(UILabel *)v12->_textLabel setText:v11];
+    height->_theme = theme;
+    [(UILabel *)height->_textLabel setText:titleCopy];
     [(TPPillView *)v13 updateTheme];
   }
 
@@ -48,8 +48,8 @@
   v19.receiver = self;
   v19.super_class = TPPillView;
   [(TPControl *)&v19 commonInit];
-  v3 = [(TPPillView *)self layer];
-  [v3 setCornerRadius:12.5];
+  layer = [(TPPillView *)self layer];
+  [layer setCornerRadius:12.5];
 
   v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTap_];
   gestureRecognizer = self->_gestureRecognizer;
@@ -60,8 +60,8 @@
   badgeImageView = self->_badgeImageView;
   self->_badgeImageView = v6;
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIImageView *)self->_badgeImageView setTintColor:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UIImageView *)self->_badgeImageView setTintColor:labelColor];
 
   [(UIImageView *)self->_badgeImageView setHidden:1];
   v9 = [[TPBadgeView alloc] initWithTitle:&stru_1F2CA8008];
@@ -95,17 +95,17 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
     v5 = objc_opt_respondsToSelector();
-    v6 = [(TPPillView *)self gestureRecognizer];
-    [v6 setEnabled:(v5 & 1) == 0];
+    gestureRecognizer = [(TPPillView *)self gestureRecognizer];
+    [gestureRecognizer setEnabled:(v5 & 1) == 0];
 
     [(TPPillView *)self setContextMenuEnabled:v5 & 1];
     [(TPPillView *)self setContextMenuIsPrimary:v5 & 1];
@@ -117,40 +117,40 @@
   v23.receiver = self;
   v23.super_class = TPPillView;
   [(TPControl *)&v23 loadConstraints];
-  v3 = [(TPPillView *)self stackView];
-  v4 = [v3 leftAnchor];
-  v5 = [(TPPillView *)self leftAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  stackView = [(TPPillView *)self stackView];
+  leftAnchor = [stackView leftAnchor];
+  leftAnchor2 = [(TPPillView *)self leftAnchor];
+  v6 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
   [v6 setActive:1];
   v7 = NSStringFromSelector(sel_stackViewLeftAnchorLayoutConstraint);
   [v6 setIdentifier:v7];
 
   [(TPPillView *)self setStackViewLeftAnchorLayoutConstraint:v6];
-  v8 = [(TPPillView *)self rightAnchor];
-  v9 = [(TPPillView *)self stackView];
-  v10 = [v9 rightAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  rightAnchor = [(TPPillView *)self rightAnchor];
+  stackView2 = [(TPPillView *)self stackView];
+  rightAnchor2 = [stackView2 rightAnchor];
+  v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
   [v11 setActive:1];
   v12 = NSStringFromSelector(sel_stackViewRightAnchorLayoutConstraint);
   [v11 setIdentifier:v12];
 
   [(TPPillView *)self setStackViewRightAnchorLayoutConstraint:v11];
-  v13 = [(TPPillView *)self stackView];
-  v14 = [v13 topAnchor];
-  v15 = [(TPPillView *)self topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  stackView3 = [(TPPillView *)self stackView];
+  topAnchor = [stackView3 topAnchor];
+  topAnchor2 = [(TPPillView *)self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
   [v16 setActive:1];
   v17 = NSStringFromSelector(sel_stackViewTopAnchorLayoutConstraint);
   [v16 setIdentifier:v17];
 
   [(TPPillView *)self setStackViewTopAnchorLayoutConstraint:v16];
-  v18 = [(TPPillView *)self stackView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(TPPillView *)self bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  stackView4 = [(TPPillView *)self stackView];
+  bottomAnchor = [stackView4 bottomAnchor];
+  bottomAnchor2 = [(TPPillView *)self bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   [v21 setActive:1];
   v22 = NSStringFromSelector(sel_stackViewBottomAnchorLayoutConstraint);
@@ -161,20 +161,20 @@
 
 - (void)unloadConstraints
 {
-  v3 = [(TPPillView *)self stackViewLeftAnchorLayoutConstraint];
-  [v3 setActive:0];
+  stackViewLeftAnchorLayoutConstraint = [(TPPillView *)self stackViewLeftAnchorLayoutConstraint];
+  [stackViewLeftAnchorLayoutConstraint setActive:0];
 
   [(TPPillView *)self setStackViewLeftAnchorLayoutConstraint:0];
-  v4 = [(TPPillView *)self stackViewRightAnchorLayoutConstraint];
-  [v4 setActive:0];
+  stackViewRightAnchorLayoutConstraint = [(TPPillView *)self stackViewRightAnchorLayoutConstraint];
+  [stackViewRightAnchorLayoutConstraint setActive:0];
 
   [(TPPillView *)self setStackViewRightAnchorLayoutConstraint:0];
-  v5 = [(TPPillView *)self stackViewTopAnchorLayoutConstraint];
-  [v5 setActive:0];
+  stackViewTopAnchorLayoutConstraint = [(TPPillView *)self stackViewTopAnchorLayoutConstraint];
+  [stackViewTopAnchorLayoutConstraint setActive:0];
 
   [(TPPillView *)self setStackViewTopAnchorLayoutConstraint:0];
-  v6 = [(TPPillView *)self stackViewBottomAnchorLayoutConstraint];
-  [v6 setActive:0];
+  stackViewBottomAnchorLayoutConstraint = [(TPPillView *)self stackViewBottomAnchorLayoutConstraint];
+  [stackViewBottomAnchorLayoutConstraint setActive:0];
 
   [(TPPillView *)self setStackViewBottomAnchorLayoutConstraint:0];
   v7.receiver = self;
@@ -188,90 +188,90 @@
   v5.super_class = TPPillView;
   [(TPControl *)&v5 updateFonts];
   v3 = [MEMORY[0x1E69DB878] systemFontOfSize:18.0];
-  v4 = [(TPPillView *)self textLabel];
-  [v4 setFont:v3];
+  textLabel = [(TPPillView *)self textLabel];
+  [textLabel setFont:v3];
 }
 
 - (void)updateTheme
 {
-  v3 = [(TPPillView *)self theme];
-  if (v3 <= 1)
+  theme = [(TPPillView *)self theme];
+  if (theme <= 1)
   {
-    if (!v3)
+    if (!theme)
     {
-      v20 = [MEMORY[0x1E69DC888] _tp_defaultPillColor];
-      [(TPPillView *)self setBackgroundColor:v20];
+      _tp_defaultPillColor = [MEMORY[0x1E69DC888] _tp_defaultPillColor];
+      [(TPPillView *)self setBackgroundColor:_tp_defaultPillColor];
 
-      v21 = [(TPPillView *)self badgeView];
-      [v21 setTheme:0];
+      badgeView = [(TPPillView *)self badgeView];
+      [badgeView setTheme:0];
 
-      v22 = [MEMORY[0x1E69DC888] dynamicLabelColor];
+      dynamicLabelColor = [MEMORY[0x1E69DC888] dynamicLabelColor];
 LABEL_15:
-      v24 = v22;
-      v19 = [(TPPillView *)self textLabel];
-      [v19 setTextColor:v24];
+      v24 = dynamicLabelColor;
+      textLabel = [(TPPillView *)self textLabel];
+      [textLabel setTextColor:v24];
       goto LABEL_16;
     }
 
-    if (v3 != 1)
+    if (theme != 1)
     {
       return;
     }
 
-    v4 = [MEMORY[0x1E69DC888] _tp_bluePillColor];
-    [(TPPillView *)self setBackgroundColor:v4];
+    _tp_bluePillColor = [MEMORY[0x1E69DC888] _tp_bluePillColor];
+    [(TPPillView *)self setBackgroundColor:_tp_bluePillColor];
 
-    v5 = [(TPPillView *)self badgeView];
-    v6 = v5;
+    badgeView2 = [(TPPillView *)self badgeView];
+    v6 = badgeView2;
     v7 = 3;
 LABEL_14:
-    [v5 setTheme:v7];
+    [badgeView2 setTheme:v7];
 
-    v22 = [MEMORY[0x1E69DC888] whiteColor];
+    dynamicLabelColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_15;
   }
 
-  if (v3 == 2)
+  if (theme == 2)
   {
-    v23 = [MEMORY[0x1E69DC888] _tp_greenPillColor];
-    [(TPPillView *)self setBackgroundColor:v23];
+    _tp_greenPillColor = [MEMORY[0x1E69DC888] _tp_greenPillColor];
+    [(TPPillView *)self setBackgroundColor:_tp_greenPillColor];
 
-    v5 = [(TPPillView *)self badgeView];
-    v6 = v5;
+    badgeView2 = [(TPPillView *)self badgeView];
+    v6 = badgeView2;
     v7 = 4;
     goto LABEL_14;
   }
 
-  if (v3 != 3)
+  if (theme != 3)
   {
     return;
   }
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(TPPillView *)self setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(TPPillView *)self setBackgroundColor:clearColor];
 
-  v9 = [(TPPillView *)self badgeView];
-  [v9 setTheme:8];
+  badgeView3 = [(TPPillView *)self badgeView];
+  [badgeView3 setTheme:8];
 
-  v10 = [(TPPillView *)self badgeView];
-  [v10 setSizeCategory:3];
+  badgeView4 = [(TPPillView *)self badgeView];
+  [badgeView4 setSizeCategory:3];
 
-  v11 = [(TPPillView *)self textLabel];
-  [v11 setHidden:1];
+  textLabel2 = [(TPPillView *)self textLabel];
+  [textLabel2 setHidden:1];
 
   v12 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.up.chevron.down"];
   v24 = [v12 initWithImage:v13];
 
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v24 setTintColor:v14];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v24 setTintColor:secondaryLabelColor];
 
-  v15 = [(TPPillView *)self stackView];
-  [v15 insertArrangedSubview:v24 atIndex:1];
+  stackView = [(TPPillView *)self stackView];
+  [stackView insertArrangedSubview:v24 atIndex:1];
 
-  v16 = [(TPPillView *)self stackView];
-  v17 = [(TPPillView *)self badgeView];
-  [v16 setCustomSpacing:v17 afterView:2.0];
+  stackView2 = [(TPPillView *)self stackView];
+  badgeView5 = [(TPPillView *)self badgeView];
+  [stackView2 setCustomSpacing:badgeView5 afterView:2.0];
 
   if (+[TPUIConfiguration screenSize])
   {
@@ -283,103 +283,103 @@ LABEL_14:
     v18 = 5.0;
   }
 
-  v19 = [(TPPillView *)self stackView];
-  [v19 setLayoutMargins:{v18, v18, v18, v18}];
+  textLabel = [(TPPillView *)self stackView];
+  [textLabel setLayoutMargins:{v18, v18, v18, v18}];
 LABEL_16:
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    v4 = [(TPPillView *)self delegate];
+    delegate = [(TPPillView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(TPPillView *)self delegate];
-      [v6 pillViewWasTapped:self];
+      delegate2 = [(TPPillView *)self delegate];
+      [delegate2 pillViewWasTapped:self];
     }
   }
 }
 
 - (NSString)badgeText
 {
-  v2 = [(TPPillView *)self badgeView];
-  v3 = [v2 title];
+  badgeView = [(TPPillView *)self badgeView];
+  title = [badgeView title];
 
-  return v3;
+  return title;
 }
 
-- (void)setBadgeText:(id)a3
+- (void)setBadgeText:(id)text
 {
-  v9 = a3;
-  v4 = [(TPPillView *)self badgeView];
-  v5 = [v4 title];
+  textCopy = text;
+  badgeView = [(TPPillView *)self badgeView];
+  title = [badgeView title];
 
-  if (v5 != v9)
+  if (title != textCopy)
   {
-    v6 = [(TPPillView *)self badgeView];
-    [v6 setTitle:v9];
+    badgeView2 = [(TPPillView *)self badgeView];
+    [badgeView2 setTitle:textCopy];
   }
 
-  v7 = [v9 length] == 0;
-  v8 = [(TPPillView *)self badgeView];
-  [v8 setHidden:v7];
+  v7 = [textCopy length] == 0;
+  badgeView3 = [(TPPillView *)self badgeView];
+  [badgeView3 setHidden:v7];
 }
 
-- (void)setBadgeSymbolName:(id)a3
+- (void)setBadgeSymbolName:(id)name
 {
-  v10 = a3;
-  if (self->_badgeSymbolName != v10)
+  nameCopy = name;
+  if (self->_badgeSymbolName != nameCopy)
   {
     v4 = MEMORY[0x1E69DCAB8];
     v5 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDD28] scale:1];
-    v6 = [v4 systemImageNamed:v10 withConfiguration:v5];
-    v7 = [(TPPillView *)self badgeImageView];
-    [v7 setImage:v6];
+    v6 = [v4 systemImageNamed:nameCopy withConfiguration:v5];
+    badgeImageView = [(TPPillView *)self badgeImageView];
+    [badgeImageView setImage:v6];
   }
 
-  v8 = [(NSString *)v10 length]== 0;
-  v9 = [(TPPillView *)self badgeImageView];
-  [v9 setHidden:v8];
+  v8 = [(NSString *)nameCopy length]== 0;
+  badgeImageView2 = [(TPPillView *)self badgeImageView];
+  [badgeImageView2 setHidden:v8];
 }
 
-- (void)setTheme:(unint64_t)a3
+- (void)setTheme:(unint64_t)theme
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    self->_theme = a3;
+    self->_theme = theme;
     [(TPPillView *)self updateTheme];
   }
 }
 
 - (NSString)title
 {
-  v2 = [(TPPillView *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(TPPillView *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
-  v4 = [(TPPillView *)self textLabel];
-  v5 = [v4 text];
-  v6 = [v5 isEqualToString:v9];
+  titleCopy = title;
+  textLabel = [(TPPillView *)self textLabel];
+  text = [textLabel text];
+  v6 = [text isEqualToString:titleCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(TPPillView *)self textLabel];
-    [v7 setText:v9];
+    textLabel2 = [(TPPillView *)self textLabel];
+    [textLabel2 setText:titleCopy];
 
-    v8 = [(TPPillView *)self textLabel];
-    [v8 sizeToFit];
+    textLabel3 = [(TPPillView *)self textLabel];
+    [textLabel3 sizeToFit];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;

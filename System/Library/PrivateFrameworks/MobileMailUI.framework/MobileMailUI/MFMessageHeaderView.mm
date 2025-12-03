@@ -2,23 +2,23 @@
 + (id)log;
 - (CGRect)draggableArea;
 - (ConversationSearchOverlayView)findOverlayView;
-- (MFMessageHeaderView)initWithFrame:(CGRect)a3;
+- (MFMessageHeaderView)initWithFrame:(CGRect)frame;
 - (MFMessageHeaderViewDelegate)delegate;
-- (id)_animationConstraintsForBlockAtIndex:(unint64_t)a3;
+- (id)_animationConstraintsForBlockAtIndex:(unint64_t)index;
 - (int64_t)_pinnedBlockIndex;
 - (void)_updateSeparators;
 - (void)addConversationSearchOverlay;
-- (void)displayMessageUsingViewModel:(id)a3;
-- (void)drawRect:(CGRect)a3 forViewPrintFormatter:(id)a4;
-- (void)insertHeaderBlock:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
+- (void)displayMessageUsingViewModel:(id)model;
+- (void)drawRect:(CGRect)rect forViewPrintFormatter:(id)formatter;
+- (void)insertHeaderBlock:(id)block atIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)removeAllHeaderBlocksAnimated:(BOOL)a3;
+- (void)removeAllHeaderBlocksAnimated:(BOOL)animated;
 - (void)removeConversationSearchOverlay;
-- (void)removeHeaderBlock:(id)a3 animated:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setDisplayMetrics:(id)a3;
-- (void)setMessageFlags:(unint64_t)a3 conversationFlags:(unint64_t)a4;
-- (void)setPinnedBlock:(id)a3;
+- (void)removeHeaderBlock:(id)block animated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDisplayMetrics:(id)metrics;
+- (void)setMessageFlags:(unint64_t)flags conversationFlags:(unint64_t)conversationFlags;
+- (void)setPinnedBlock:(id)block;
 @end
 
 @implementation MFMessageHeaderView
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __26__MFMessageHeaderView_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_6 != -1)
   {
     dispatch_once(&log_onceToken_6, block);
@@ -48,15 +48,15 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
   log_log_6 = v1;
 }
 
-- (MFMessageHeaderView)initWithFrame:(CGRect)a3
+- (MFMessageHeaderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MFMessageHeaderView;
-  v3 = [(MFMessageHeaderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFMessageHeaderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(MFMessageHeaderView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MFMessageHeaderView *)v3 setBackgroundColor:clearColor];
 
     [(MFMessageHeaderView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MFMessageHeaderView *)v3 setPreservesSuperviewLayoutMargins:1];
@@ -96,9 +96,9 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
 
 - (void)layoutSubviews
 {
-  v3 = [(MFMessageHeaderView *)self displayMetrics];
+  displayMetrics = [(MFMessageHeaderView *)self displayMetrics];
 
-  if (v3)
+  if (displayMetrics)
   {
     v13.receiver = self;
     v13.super_class = MFMessageHeaderView;
@@ -111,20 +111,20 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
       v7 = v6;
       v9 = v8;
       v11 = v10;
-      v12 = [(MFMessageHeaderView *)self findOverlayView];
-      [v12 setFrame:{v5, v7, v9, v11}];
+      findOverlayView = [(MFMessageHeaderView *)self findOverlayView];
+      [findOverlayView setFrame:{v5, v7, v9, v11}];
     }
 
     [(MFMessageHeaderView *)self setDraggableArea:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MFMessageHeaderView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -150,14 +150,14 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
 
   if (v17 >= 2.22044605e-16)
   {
-    v18 = [(MFMessageHeaderView *)self delegate];
-    [v18 headerViewDidChangeHeight:self];
+    delegate = [(MFMessageHeaderView *)self delegate];
+    [delegate headerViewDidChangeHeight:self];
   }
 }
 
-- (void)drawRect:(CGRect)a3 forViewPrintFormatter:(id)a4
+- (void)drawRect:(CGRect)rect forViewPrintFormatter:(id)formatter
 {
-  v4 = [(MFMessageHeaderView *)self layer:a4];
+  v4 = [(MFMessageHeaderView *)self layer:formatter];
   [v4 renderInContext:UIGraphicsGetCurrentContext()];
 }
 
@@ -166,13 +166,13 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
   p_draggableArea = &self->_draggableArea;
   if (CGRectIsEmpty(self->_draggableArea))
   {
-    v4 = [(MFMessageHeaderView *)self headerBlocks];
-    v5 = [v4 ef_firstObjectPassingTest:&__block_literal_global_8];
+    headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+    v5 = [headerBlocks ef_firstObjectPassingTest:&__block_literal_global_8];
 
     if (v5)
     {
-      v6 = [v5 bottomSeparator];
-      [v6 frame];
+      bottomSeparator = [v5 bottomSeparator];
+      [bottomSeparator frame];
       [(MFMessageHeaderView *)self convertRect:v5 fromView:?];
       v8 = v7;
       v10 = v9;
@@ -203,25 +203,25 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)insertHeaderBlock:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)insertHeaderBlock:(id)block atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(MFMessageHeaderView *)self headerBlocks];
-  v10 = [v9 containsObject:v8];
+  blockCopy = block;
+  headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+  v10 = [headerBlocks containsObject:blockCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(MFMessageHeaderView *)self _pinnedBlockIndex];
-    v12 = [(MFMessageHeaderView *)self headerBlocks];
-    if ([v12 count] > a4 && (-[MFMessageHeaderView pinnedBlock](self, "pinnedBlock"), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    _pinnedBlockIndex = [(MFMessageHeaderView *)self _pinnedBlockIndex];
+    headerBlocks2 = [(MFMessageHeaderView *)self headerBlocks];
+    if ([headerBlocks2 count] > index && (-[MFMessageHeaderView pinnedBlock](self, "pinnedBlock"), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = [(MFMessageHeaderView *)self pinnedBlock];
+      pinnedBlock = [(MFMessageHeaderView *)self pinnedBlock];
 
-      if (v11 <= a4 && v14 != v8)
+      if (_pinnedBlockIndex <= index && pinnedBlock != blockCopy)
       {
-        a4 = v11 + 1;
+        index = _pinnedBlockIndex + 1;
       }
     }
 
@@ -229,26 +229,26 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
     {
     }
 
-    [(NSMutableArray *)self->_headerBlocks insertObject:v8 atIndex:a4];
-    v16 = [(MFMessageHeaderView *)self displayMetrics];
-    [v8 setDisplayMetrics:v16];
+    [(NSMutableArray *)self->_headerBlocks insertObject:blockCopy atIndex:index];
+    displayMetrics = [(MFMessageHeaderView *)self displayMetrics];
+    [blockCopy setDisplayMetrics:displayMetrics];
 
-    v17 = [(MFMessageHeaderView *)self viewModel];
+    viewModel = [(MFMessageHeaderView *)self viewModel];
 
-    if (v17)
+    if (viewModel)
     {
-      v18 = [(MFMessageHeaderView *)self viewModel];
-      [v8 displayMessageUsingViewModel:v18];
+      viewModel2 = [(MFMessageHeaderView *)self viewModel];
+      [blockCopy displayMessageUsingViewModel:viewModel2];
     }
 
-    if (v5)
+    if (animatedCopy)
     {
-      [(MFMessageHeaderView *)self insertSubview:v8 atIndex:0];
-      v19 = [(MFMessageHeaderView *)self _animationConstraintsForBlockAtIndex:a4];
+      [(MFMessageHeaderView *)self insertSubview:blockCopy atIndex:0];
+      v19 = [(MFMessageHeaderView *)self _animationConstraintsForBlockAtIndex:index];
       [MEMORY[0x277CCAAD0] activateConstraints:v19];
       [(MFMessageHeaderView *)self layoutIfNeeded];
       [MEMORY[0x277CCAAD0] deactivateConstraints:v19];
-      [(MFMessageHeaderView *)self insertArrangedSubview:v8 atIndex:a4];
+      [(MFMessageHeaderView *)self insertArrangedSubview:blockCopy atIndex:index];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __58__MFMessageHeaderView_insertHeaderBlock_atIndex_animated___block_invoke;
@@ -259,21 +259,21 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
 
     else
     {
-      [(MFMessageHeaderView *)self insertArrangedSubview:v8 atIndex:a4];
+      [(MFMessageHeaderView *)self insertArrangedSubview:blockCopy atIndex:index];
     }
 
     v20 = +[MFMessageHeaderView log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = objc_opt_class();
-      v22 = [(MFMessageHeaderView *)self viewModel];
-      v23 = [v22 itemID];
+      viewModel3 = [(MFMessageHeaderView *)self viewModel];
+      itemID = [viewModel3 itemID];
       *buf = 138412802;
       v27 = v21;
       v28 = 2048;
-      v29 = v8;
+      v29 = blockCopy;
       v30 = 2114;
-      v31 = v23;
+      v31 = itemID;
       _os_log_impl(&dword_2149C9000, v20, OS_LOG_TYPE_DEFAULT, "Inserting headerView block <%@: %p> for itemID: %{public}@", buf, 0x20u);
     }
   }
@@ -281,30 +281,30 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeHeaderBlock:(id)a3 animated:(BOOL)a4
+- (void)removeHeaderBlock:(id)block animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MFMessageHeaderView *)self headerBlocks];
-  v8 = [v7 containsObject:v6];
+  animatedCopy = animated;
+  blockCopy = block;
+  headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+  v8 = [headerBlocks containsObject:blockCopy];
 
   if (v8)
   {
-    v9 = [(MFMessageHeaderView *)self pinnedBlock];
+    pinnedBlock = [(MFMessageHeaderView *)self pinnedBlock];
 
-    if (v9 == v6)
+    if (pinnedBlock == blockCopy)
     {
       [(MFMessageHeaderView *)self setPinnedBlock:0];
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __50__MFMessageHeaderView_removeHeaderBlock_animated___block_invoke;
       v12[3] = &unk_278181710;
       v12[4] = self;
-      v13 = v6;
+      v13 = blockCopy;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __50__MFMessageHeaderView_removeHeaderBlock_animated___block_invoke_2;
@@ -316,9 +316,9 @@ void __26__MFMessageHeaderView_log__block_invoke(uint64_t a1)
 
     else
     {
-      [(NSMutableArray *)self->_headerBlocks removeObject:v6];
-      [(MFMessageHeaderView *)self removeArrangedSubview:v6];
-      [v6 removeFromSuperview];
+      [(NSMutableArray *)self->_headerBlocks removeObject:blockCopy];
+      [(MFMessageHeaderView *)self removeArrangedSubview:blockCopy];
+      [blockCopy removeFromSuperview];
     }
   }
 }
@@ -332,7 +332,7 @@ uint64_t __50__MFMessageHeaderView_removeHeaderBlock_animated___block_invoke(uin
   return [v2 layoutIfNeeded];
 }
 
-- (void)removeAllHeaderBlocksAnimated:(BOOL)a3
+- (void)removeAllHeaderBlocksAnimated:(BOOL)animated
 {
   v15 = *MEMORY[0x277D85DE8];
   [(MFMessageHeaderView *)self setPinnedBlock:0];
@@ -340,8 +340,8 @@ uint64_t __50__MFMessageHeaderView_removeHeaderBlock_animated___block_invoke(uin
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(MFMessageHeaderView *)self headerBlocks];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+  v5 = [headerBlocks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -351,7 +351,7 @@ uint64_t __50__MFMessageHeaderView_removeHeaderBlock_animated___block_invoke(uin
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(headerBlocks);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -359,7 +359,7 @@ uint64_t __50__MFMessageHeaderView_removeHeaderBlock_animated___block_invoke(uin
         [(MFMessageHeaderView *)self removeArrangedSubview:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [headerBlocks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -378,21 +378,21 @@ void __48__MFMessageHeaderView_setHeaderBlocks_animated___block_invoke(uint64_t 
   [v4 removeHeaderBlock:v5 animated:*(a1 + 40)];
 }
 
-- (void)setPinnedBlock:(id)a3
+- (void)setPinnedBlock:(id)block
 {
-  v9 = a3;
-  if (self->_pinnedBlock != v9)
+  blockCopy = block;
+  if (self->_pinnedBlock != blockCopy)
   {
-    objc_storeStrong(&self->_pinnedBlock, a3);
+    objc_storeStrong(&self->_pinnedBlock, block);
     if (self->_pinnedBlock)
     {
-      v6 = [(MFMessageHeaderView *)self headerBlocks];
-      v7 = [v6 indexOfObject:self->_pinnedBlock];
+      headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+      v7 = [headerBlocks indexOfObject:self->_pinnedBlock];
 
       if (v7 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"MFMessageHeaderView.m" lineNumber:262 description:@"Blocks must be added to MFMessageHeaderViewBlock before they can be pinned."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageHeaderView.m" lineNumber:262 description:@"Blocks must be added to MFMessageHeaderViewBlock before they can be pinned."];
       }
 
       else if (v7 < 1)
@@ -418,19 +418,19 @@ LABEL_6:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(MFMessageHeaderView *)self headerBlocks];
-  v4 = [v3 indexOfObject:self->_pinnedBlock];
+  headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+  v4 = [headerBlocks indexOfObject:self->_pinnedBlock];
 
   return v4;
 }
 
-- (id)_animationConstraintsForBlockAtIndex:(unint64_t)a3
+- (id)_animationConstraintsForBlockAtIndex:(unint64_t)index
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (index)
   {
-    v5 = [(MFMessageHeaderView *)self headerBlocks];
-    v6 = [v5 objectAtIndexedSubscript:a3 - 1];
+    headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+    v6 = [headerBlocks objectAtIndexedSubscript:index - 1];
 
     v25 = v6;
     [v6 bottomAnchor];
@@ -442,30 +442,30 @@ LABEL_6:
     [(MFMessageHeaderView *)self topAnchor];
   }
   v24 = ;
-  v7 = [(MFMessageHeaderView *)self headerBlocks];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  headerBlocks2 = [(MFMessageHeaderView *)self headerBlocks];
+  v8 = [headerBlocks2 objectAtIndexedSubscript:index];
 
-  v23 = [v8 bottomAnchor];
-  v9 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor = [v8 bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:v24];
   v26[0] = v9;
-  v10 = [v8 leadingAnchor];
-  v11 = [(MFMessageHeaderView *)self leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor = [v8 leadingAnchor];
+  leadingAnchor2 = [(MFMessageHeaderView *)self leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[1] = v12;
-  v13 = [v8 trailingAnchor];
-  v14 = [(MFMessageHeaderView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [v8 trailingAnchor];
+  trailingAnchor2 = [(MFMessageHeaderView *)self trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[2] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   v17 = [v16 mutableCopy];
 
-  v18 = [v25 backgroundColor];
-  LOBYTE(v13) = [v18 mf_isTranslucent];
+  backgroundColor = [v25 backgroundColor];
+  LOBYTE(trailingAnchor) = [backgroundColor mf_isTranslucent];
 
-  if (v13)
+  if (trailingAnchor)
   {
-    v19 = [v8 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:0.0];
+    heightAnchor = [v8 heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:0.0];
     [v17 addObject:v20];
   }
 
@@ -474,26 +474,26 @@ LABEL_6:
   return v17;
 }
 
-- (void)displayMessageUsingViewModel:(id)a3
+- (void)displayMessageUsingViewModel:(id)model
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFMessageHeaderView *)self viewModel];
+  modelCopy = model;
+  viewModel = [(MFMessageHeaderView *)self viewModel];
 
-  if (v5 != v4)
+  if (viewModel != modelCopy)
   {
-    [(MFMessageHeaderView *)self setViewModel:v4];
+    [(MFMessageHeaderView *)self setViewModel:modelCopy];
     v6 = +[MFMessageHeaderView log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [v4 itemID];
+      itemID = [modelCopy itemID];
       *buf = 138412802;
       v20 = v7;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v8;
+      v24 = itemID;
       _os_log_impl(&dword_2149C9000, v6, OS_LOG_TYPE_DEFAULT, "<%@: %p> Setting up view model for itemID: %{public}@", buf, 0x20u);
     }
 
@@ -501,8 +501,8 @@ LABEL_6:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(MFMessageHeaderView *)self headerBlocks];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+    v10 = [headerBlocks countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = *v15;
@@ -513,14 +513,14 @@ LABEL_6:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(headerBlocks);
           }
 
-          [*(*(&v14 + 1) + 8 * v12++) displayMessageUsingViewModel:v4];
+          [*(*(&v14 + 1) + 8 * v12++) displayMessageUsingViewModel:modelCopy];
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [headerBlocks countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -532,16 +532,16 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMessageFlags:(unint64_t)a3 conversationFlags:(unint64_t)a4
+- (void)setMessageFlags:(unint64_t)flags conversationFlags:(unint64_t)conversationFlags
 {
-  v7 = [(MFMessageHeaderView *)self viewModel];
+  viewModel = [(MFMessageHeaderView *)self viewModel];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__MFMessageHeaderView_setMessageFlags_conversationFlags___block_invoke;
   v9[3] = &__block_descriptor_48_e44_v16__0___MessageItemFlagsViewModelBuilder__8l;
-  v9[4] = a3;
-  v9[5] = a4;
-  v8 = [v7 updatedFlagsModelWithBuilder:v9];
+  v9[4] = flags;
+  v9[5] = conversationFlags;
+  v8 = [viewModel updatedFlagsModelWithBuilder:v9];
   [(MFMessageHeaderView *)self setViewModel:v8];
 }
 
@@ -559,19 +559,19 @@ void __57__MFMessageHeaderView_setMessageFlags_conversationFlags___block_invoke(
   [v3 setMute:(*(a1 + 40) >> 2) & 1];
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(MFMessageDisplayMetrics *)self->_displayMetrics isEqual:v5])
+  metricsCopy = metrics;
+  if (![(MFMessageDisplayMetrics *)self->_displayMetrics isEqual:metricsCopy])
   {
-    objc_storeStrong(&self->_displayMetrics, a3);
+    objc_storeStrong(&self->_displayMetrics, metrics);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(MFMessageHeaderView *)self headerBlocks];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+    v7 = [headerBlocks countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = *v14;
@@ -582,18 +582,18 @@ void __57__MFMessageHeaderView_setMessageFlags_conversationFlags___block_invoke(
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(headerBlocks);
           }
 
           v10 = *(*(&v13 + 1) + 8 * v9);
-          v11 = [(MFMessageHeaderView *)self displayMetrics];
-          [v10 setDisplayMetrics:v11];
+          displayMetrics = [(MFMessageHeaderView *)self displayMetrics];
+          [v10 setDisplayMetrics:displayMetrics];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [headerBlocks countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -608,8 +608,8 @@ void __57__MFMessageHeaderView_setMessageFlags_conversationFlags___block_invoke(
 
 - (void)_updateSeparators
 {
-  v3 = [(MFMessageHeaderView *)self displayMetrics];
-  if ([v3 hasCompactLayout])
+  displayMetrics = [(MFMessageHeaderView *)self displayMetrics];
+  if ([displayMetrics hasCompactLayout])
   {
     v4 = 0;
   }
@@ -619,16 +619,16 @@ void __57__MFMessageHeaderView_setMessageFlags_conversationFlags___block_invoke(
     v4 = ![(MFMessageHeaderView *)self bottomSeparatorDrawsFlushWithLeadingEdge];
   }
 
-  v5 = [(MFMessageHeaderView *)self headerBlocks];
-  v6 = [v5 lastObject];
+  headerBlocks = [(MFMessageHeaderView *)self headerBlocks];
+  lastObject = [headerBlocks lastObject];
 
-  v7 = [(MFMessageHeaderView *)self headerBlocks];
-  v8 = [v7 ef_firstObjectPassingTest:&__block_literal_global_44];
+  headerBlocks2 = [(MFMessageHeaderView *)self headerBlocks];
+  v8 = [headerBlocks2 ef_firstObjectPassingTest:&__block_literal_global_44];
 
   if (v8)
   {
-    v9 = [(MFMessageHeaderView *)self headerBlocks];
-    v10 = [v9 indexOfObject:v8];
+    headerBlocks3 = [(MFMessageHeaderView *)self headerBlocks];
+    v10 = [headerBlocks3 indexOfObject:v8];
   }
 
   else
@@ -640,18 +640,18 @@ void __57__MFMessageHeaderView_setMessageFlags_conversationFlags___block_invoke(
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v19 = 0;
-  v11 = [(MFMessageHeaderView *)self headerBlocks];
+  headerBlocks4 = [(MFMessageHeaderView *)self headerBlocks];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__MFMessageHeaderView__updateSeparators__block_invoke_2;
   v13[3] = &unk_278182350;
   v13[4] = self;
-  v12 = v6;
+  v12 = lastObject;
   v17 = v4;
   v15 = v18;
   v16 = v10;
   v14 = v12;
-  [v11 enumerateObjectsUsingBlock:v13];
+  [headerBlocks4 enumerateObjectsUsingBlock:v13];
 
   _Block_object_dispose(v18, 8);
 }
@@ -757,19 +757,19 @@ uint64_t __40__MFMessageHeaderView__updateSeparators__block_invoke_3(uint64_t a1
 
 - (void)addConversationSearchOverlay
 {
-  v3 = [(MFMessageHeaderView *)self findOverlayView];
+  findOverlayView = [(MFMessageHeaderView *)self findOverlayView];
   [(MFMessageHeaderView *)self bringSubviewToFront:?];
 
-  v4 = [(MFMessageHeaderView *)self findOverlayView];
-  [v4 show];
+  findOverlayView2 = [(MFMessageHeaderView *)self findOverlayView];
+  [findOverlayView2 show];
 }
 
 - (void)removeConversationSearchOverlay
 {
-  v3 = [(MFMessageHeaderView *)self findOverlayView];
-  [v3 hide];
+  findOverlayView = [(MFMessageHeaderView *)self findOverlayView];
+  [findOverlayView hide];
 
-  v4 = [(MFMessageHeaderView *)self findOverlayView];
+  findOverlayView2 = [(MFMessageHeaderView *)self findOverlayView];
   [(MFMessageHeaderView *)self sendSubviewToBack:?];
 }
 

@@ -1,13 +1,13 @@
 @interface _DKBatteryPercentageQuantity
-+ (id)withBatteryPercentage:(double)a3;
++ (id)withBatteryPercentage:(double)percentage;
 @end
 
 @implementation _DKBatteryPercentageQuantity
 
-+ (id)withBatteryPercentage:(double)a3
++ (id)withBatteryPercentage:(double)percentage
 {
-  v4 = [a1 type];
-  v5 = [_DKQuantity quantityWithDouble:v4 type:a3];
+  type = [self type];
+  v5 = [_DKQuantity quantityWithDouble:type type:percentage];
 
   return v5;
 }

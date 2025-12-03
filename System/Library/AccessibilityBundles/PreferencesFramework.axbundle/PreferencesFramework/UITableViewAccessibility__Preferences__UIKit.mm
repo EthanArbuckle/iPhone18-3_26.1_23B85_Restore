@@ -1,25 +1,25 @@
 @interface UITableViewAccessibility__Preferences__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsDynamicTypeTable;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityFooterElement;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)accessibilityElementCount;
 @end
 
 @implementation UITableViewAccessibility__Preferences__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITableViewCellAccessibilityElement"];
-  [v3 validateClass:@"UITableViewCellAccessibilityElement" hasInstanceMethod:@"realTableViewCell" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITableViewCellAccessibilityElement"];
+  [validationsCopy validateClass:@"UITableViewCellAccessibilityElement" hasInstanceMethod:@"realTableViewCell" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_axIsDynamicTypeTable
 {
-  v2 = [(UITableViewAccessibility__Preferences__UIKit *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"DynamicTypeTable"];
+  accessibilityIdentifier = [(UITableViewAccessibility__Preferences__UIKit *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"DynamicTypeTable"];
 
   return v3;
 }
@@ -48,11 +48,11 @@
   return [(UITableViewAccessibility__Preferences__UIKit *)&v4 isAccessibilityElement];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITableViewAccessibility__Preferences__UIKit;
-  v5 = [(UITableViewAccessibility__Preferences__UIKit *)&v8 _accessibilityHitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UITableViewAccessibility__Preferences__UIKit *)&v8 _accessibilityHitTest:event withEvent:test.x, test.y];
   if ([(UITableViewAccessibility__Preferences__UIKit *)self _axIsDynamicTypeTable])
   {
     NSClassFromString(&cfstr_Uitableviewcel_3.isa);
@@ -69,13 +69,13 @@
 
 - (id)_accessibilityFooterElement
 {
-  v3 = [(UITableViewAccessibility__Preferences__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"KeychainSynchTable"];
+  accessibilityIdentification = [(UITableViewAccessibility__Preferences__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"KeychainSynchTable"];
 
   if (v4)
   {
-    v5 = [(UITableViewAccessibility__Preferences__UIKit *)self _accessibilityValueForKey:@"Footer"];
-    if ([v5 _accessibilityViewIsVisible])
+    _accessibilityFooterElement = [(UITableViewAccessibility__Preferences__UIKit *)self _accessibilityValueForKey:@"Footer"];
+    if ([_accessibilityFooterElement _accessibilityViewIsVisible])
     {
       goto LABEL_5;
     }
@@ -83,10 +83,10 @@
 
   v7.receiver = self;
   v7.super_class = UITableViewAccessibility__Preferences__UIKit;
-  v5 = [(UITableViewAccessibility__Preferences__UIKit *)&v7 _accessibilityFooterElement];
+  _accessibilityFooterElement = [(UITableViewAccessibility__Preferences__UIKit *)&v7 _accessibilityFooterElement];
 LABEL_5:
 
-  return v5;
+  return _accessibilityFooterElement;
 }
 
 @end

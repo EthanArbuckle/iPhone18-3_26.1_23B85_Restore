@@ -1,43 +1,43 @@
 @interface VNFaceLandmarkDetector
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (_Geometry2D_point2D_)computeCentroidUsingPoints:(const _Geometry2D_point2D_ *)a3 indicies:(const int *)a4 numberOfIndicies:(int)a5;
-+ (const)allLandmarksPointsIndexesForConstellation:(unint64_t)a3;
-+ (const)landmarksMeshPartsForConstellation:(unint64_t)a3;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
++ (_Geometry2D_point2D_)computeCentroidUsingPoints:(const _Geometry2D_point2D_ *)points indicies:(const int *)indicies numberOfIndicies:(int)ofIndicies;
++ (const)allLandmarksPointsIndexesForConstellation:(unint64_t)constellation;
++ (const)landmarksMeshPartsForConstellation:(unint64_t)constellation;
 + (id)configurationOptionKeysForDetectorKey;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)detectBlinkOnFaceImage:(const vImage_Buffer *)a3 faceObservation:(id)a4 lumaRec2DInImageCoordinates:(_Geometry2D_rect2D_ *)a5 landmarks:(const void *)a6 warningRecorder:(id)a7 error:(id *)a8;
-- (BOOL)loadRefinersAndReturnError:(id *)a3;
-- (BOOL)postprocessLandmarkResultsForLandmarks:(const void *)a3 imageBuffer:(id)a4 outputFace:(id)a5 options:(id)a6 warningRecorder:(id)a7 error:(id *)a8;
-- (CGRect)normalizedFaceBBoxForLandmarks:(id)a3;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)detectBlinkOnFaceImage:(const vImage_Buffer *)image faceObservation:(id)observation lumaRec2DInImageCoordinates:(_Geometry2D_rect2D_ *)coordinates landmarks:(const void *)landmarks warningRecorder:(id)recorder error:(id *)error;
+- (BOOL)loadRefinersAndReturnError:(id *)error;
+- (BOOL)postprocessLandmarkResultsForLandmarks:(const void *)landmarks imageBuffer:(id)buffer outputFace:(id)face options:(id)options warningRecorder:(id)recorder error:(id *)error;
+- (CGRect)normalizedFaceBBoxForLandmarks:(id)landmarks;
 - (id).cxx_construct;
-- (id)computeLandmarksScoreOnImage:(const vImage_Buffer *)a3 withFaceBoundingBox:(const _Geometry2D_rect2D_ *)a4 andLandmarks:(const void *)a5 error:(id *)a6;
-- (void)calculatePupilLocationAndUpdateLandmarkPoints:(void *)a3;
+- (id)computeLandmarksScoreOnImage:(const vImage_Buffer *)image withFaceBoundingBox:(const _Geometry2D_rect2D_ *)box andLandmarks:(const void *)landmarks error:(id *)error;
+- (void)calculatePupilLocationAndUpdateLandmarkPoints:(void *)points;
 - (void)dealloc;
 @end
 
 @implementation VNFaceLandmarkDetector
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 specifyingRequestClass:objc_opt_class() error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_11;
   }
 
-  v8 = [v6 requestRevision];
-  if ((v8 - 1) < 2 || (v8 != 3 ? (v9 = v8 == 3737841664) : (v9 = 1), v9))
+  requestRevision = [v6 requestRevision];
+  if ((requestRevision - 1) < 2 || (requestRevision != 3 ? (v9 = requestRevision == 3737841664) : (v9 = 1), v9))
   {
     v10 = objc_opt_class();
     goto LABEL_12;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v7];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -57,7 +57,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __63__VNFaceLandmarkDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNFaceLandmarkDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNFaceLandmarkDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -82,29 +82,29 @@ void __63__VNFaceLandmarkDetector_configurationOptionKeysForDetectorKey__block_i
   +[VNFaceLandmarkDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (_Geometry2D_point2D_)computeCentroidUsingPoints:(const _Geometry2D_point2D_ *)a3 indicies:(const int *)a4 numberOfIndicies:(int)a5
++ (_Geometry2D_point2D_)computeCentroidUsingPoints:(const _Geometry2D_point2D_ *)points indicies:(const int *)indicies numberOfIndicies:(int)ofIndicies
 {
-  if (a5 < 1)
+  if (ofIndicies < 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = a5;
+    ofIndiciesCopy = ofIndicies;
     v7 = 0;
     do
     {
-      v8 = *a4++;
-      v5 = a3[v8];
+      v8 = *indicies++;
+      v5 = points[v8];
       v7 = vadd_f32(v7, v5);
-      --v6;
+      --ofIndiciesCopy;
     }
 
-    while (v6);
+    while (ofIndiciesCopy);
   }
 
-  v5.f32[0] = a5;
+  v5.f32[0] = ofIndicies;
   v9 = vdiv_f32(v7, vdup_lane_s32(v5, 0));
   v10 = v9.f32[1];
   result.x = v9.f32[0];
@@ -112,12 +112,12 @@ void __63__VNFaceLandmarkDetector_configurationOptionKeysForDetectorKey__block_i
   return result;
 }
 
-+ (const)allLandmarksPointsIndexesForConstellation:(unint64_t)a3
++ (const)allLandmarksPointsIndexesForConstellation:(unint64_t)constellation
 {
-  if (a3 - 1 > 1)
+  if (constellation - 1 > 1)
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown constellation type: %lu", a3];
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v10 userInfo:0];
+    constellation = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown constellation type: %lu", constellation];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:constellation userInfo:0];
     objc_exception_throw(v11);
   }
 
@@ -136,8 +136,8 @@ void __63__VNFaceLandmarkDetector_configurationOptionKeysForDetectorKey__block_i
   do
   {
     v6 = *(v4 + 32);
-    v7 = v6 >= a3;
-    v8 = v6 < a3;
+    v7 = v6 >= constellation;
+    v8 = v6 < constellation;
     if (v7)
     {
       v5 = v4;
@@ -147,7 +147,7 @@ void __63__VNFaceLandmarkDetector_configurationOptionKeysForDetectorKey__block_i
   }
 
   while (v4);
-  if (v5 == +[VNFaceLandmarkDetector allLandmarksPointsIndexesForConstellation:]::allLandmarksPointsIndexesToConstellationMap + 8 || *(v5 + 32) > a3)
+  if (v5 == +[VNFaceLandmarkDetector allLandmarksPointsIndexesForConstellation:]::allLandmarksPointsIndexesToConstellationMap + 8 || *(v5 + 32) > constellation)
   {
 LABEL_12:
     v5 = +[VNFaceLandmarkDetector allLandmarksPointsIndexesForConstellation:]::allLandmarksPointsIndexesToConstellationMap + 8;
@@ -156,12 +156,12 @@ LABEL_12:
   return (v5 + 40);
 }
 
-+ (const)landmarksMeshPartsForConstellation:(unint64_t)a3
++ (const)landmarksMeshPartsForConstellation:(unint64_t)constellation
 {
-  if (a3 - 1 > 1)
+  if (constellation - 1 > 1)
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown constellation type: %lu", a3];
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v10 userInfo:0];
+    constellation = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown constellation type: %lu", constellation];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:constellation userInfo:0];
     objc_exception_throw(v11);
   }
 
@@ -180,8 +180,8 @@ LABEL_12:
   do
   {
     v6 = *(v4 + 32);
-    v7 = v6 >= a3;
-    v8 = v6 < a3;
+    v7 = v6 >= constellation;
+    v8 = v6 < constellation;
     if (v7)
     {
       v5 = v4;
@@ -191,7 +191,7 @@ LABEL_12:
   }
 
   while (v4);
-  if (v5 == +[VNFaceLandmarkDetector landmarksMeshPartsForConstellation:]::meshPartsToConstellationMap + 8 || *(v5 + 32) > a3)
+  if (v5 == +[VNFaceLandmarkDetector landmarksMeshPartsForConstellation:]::meshPartsToConstellationMap + 8 || *(v5 + 32) > constellation)
   {
 LABEL_12:
     v5 = +[VNFaceLandmarkDetector landmarksMeshPartsForConstellation:]::meshPartsToConstellationMap + 8;
@@ -207,14 +207,14 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)detectBlinkOnFaceImage:(const vImage_Buffer *)a3 faceObservation:(id)a4 lumaRec2DInImageCoordinates:(_Geometry2D_rect2D_ *)a5 landmarks:(const void *)a6 warningRecorder:(id)a7 error:(id *)a8
+- (BOOL)detectBlinkOnFaceImage:(const vImage_Buffer *)image faceObservation:(id)observation lumaRec2DInImageCoordinates:(_Geometry2D_rect2D_ *)coordinates landmarks:(const void *)landmarks warningRecorder:(id)recorder error:(id *)error
 {
   v87[3] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a7;
-  if (a3)
+  observationCopy = observation;
+  recorderCopy = recorder;
+  if (image)
   {
-    _ZF = v14 == 0;
+    _ZF = observationCopy == 0;
   }
 
   else
@@ -222,13 +222,13 @@ LABEL_12:
     _ZF = 1;
   }
 
-  v18 = _ZF || a5 == 0 || a6 == 0;
+  v18 = _ZF || coordinates == 0 || landmarks == 0;
   v19 = !v18;
   if (v18)
   {
-    if (a8)
+    if (error)
     {
-      *a8 = [VNError errorForInternalErrorWithLocalizedDescription:@"Invalid parameters passed to blink score computation"];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Invalid parameters passed to blink score computation"];
     }
   }
 
@@ -254,27 +254,27 @@ LABEL_12:
     std::vector<float>::vector[abi:ne200100](v84, 0x2A8uLL);
     LODWORD(src.data) = 0;
     std::vector<float>::vector[abi:ne200100](v87, 0x2A8uLL);
-    y = a5->origin.y;
-    v22 = a5->origin.x + *(*a6 + 128);
-    v23 = a5->origin.x + *(*a6 + 160);
-    v24 = (a5->origin.x + *(*a6 + 96)) - (*(*a6 + 64) + a5->origin.x);
-    data = a3->data;
-    rowBytes = a3->rowBytes;
-    v27 = vmovn_s64(*&a3->height);
-    height = a3->height;
-    v29.f32[0] = height - (*(*a6 + 68) + y);
-    v30.f32[0] = height - (y + *(*a6 + 100));
-    v31.f32[0] = height - (y + *(*a6 + 132));
-    v32.f32[0] = height - (y + *(*a6 + 164));
-    v29.f32[1] = *(*a6 + 64) + a5->origin.x;
-    v30.f32[1] = a5->origin.x + *(*a6 + 96);
+    y = coordinates->origin.y;
+    v22 = coordinates->origin.x + *(*landmarks + 128);
+    v23 = coordinates->origin.x + *(*landmarks + 160);
+    v24 = (coordinates->origin.x + *(*landmarks + 96)) - (*(*landmarks + 64) + coordinates->origin.x);
+    data = image->data;
+    rowBytes = image->rowBytes;
+    v27 = vmovn_s64(*&image->height);
+    height = image->height;
+    v29.f32[0] = height - (*(*landmarks + 68) + y);
+    v30.f32[0] = height - (y + *(*landmarks + 100));
+    v31.f32[0] = height - (y + *(*landmarks + 132));
+    v32.f32[0] = height - (y + *(*landmarks + 164));
+    v29.f32[1] = *(*landmarks + 64) + coordinates->origin.x;
+    v30.f32[1] = coordinates->origin.x + *(*landmarks + 96);
     v33 = vmul_f32(vadd_f32(v29, v30), 0x3F0000003F000000);
     v29.f32[0] = sqrtf(((v30.f32[0] - v29.f32[0]) * (v30.f32[0] - v29.f32[0])) + (v24 * v24)) * 0.5;
     *v34.i32 = sqrtf(((v32.f32[0] - v31.f32[0]) * (v32.f32[0] - v31.f32[0])) + ((v23 - v22) * (v23 - v22))) * 0.5;
     v35 = vdup_lane_s32(v29, 0);
     v36 = vcvt_f32_u32(vmax_s32(vcvt_s32_f32(vrndp_f32(vsub_f32(v33, v35))), 0x100000001));
     v37 = v36.f32[1];
-    v38 = a3->data + rowBytes * v36.f32[0] + v36.f32[1];
+    v38 = image->data + rowBytes * v36.f32[0] + v36.f32[1];
     v74 = v36.f32[0];
     v39 = vsub_f32(vcvt_f32_s32(vmin_s32(vcvt_s32_f32(vrndp_f32(vadd_f32(v33, v35))), v27)), v36);
     __asm { FMOV            V6.2S, #1.0 }
@@ -314,11 +314,11 @@ LABEL_12:
         v52 = 0.5;
       }
 
-      v54 = a5->origin.y;
-      v55 = (v47 + (v82.width * v52)) - a5->origin.x;
-      *&v86 = (v37 + (src.width * v49)) - a5->origin.x;
+      v54 = coordinates->origin.y;
+      v55 = (v47 + (v82.width * v52)) - coordinates->origin.x;
+      *&v86 = (v37 + (src.width * v49)) - coordinates->origin.x;
       *(&v86 + 1) = v55;
-      v56 = a3->height;
+      v56 = image->height;
       *&v85 = (v56 - (v74 + (src.height * v51))) - v54;
       *(&v85 + 1) = (v56 - (v73 + (v82.height * v53))) - v54;
       std::vector<float>::push_back[abi:ne200100](v79, &v86);
@@ -352,7 +352,7 @@ LABEL_12:
     v82.height = 0;
     v82.width = 0;
     v82.data = &v82.height;
-    vision::mod::LandmarkAttributes::computePixelDistanceFeature(&src, a5, a6);
+    vision::mod::LandmarkAttributes::computePixelDistanceFeature(&src, coordinates, landmarks);
     v63 = src.height;
     src.height -= 4;
     v64 = v63 - src.data - 4;
@@ -406,11 +406,11 @@ LABEL_12:
 
     LODWORD(v84[0]) = 1;
     src.data = v84;
-    [v14 setIsBlinking:{*(std::__tree<std::__value_type<vision::mod::_blinkType, float>, std::__map_value_compare<vision::mod::_blinkType, std::__value_type<vision::mod::_blinkType, float>, std::less<vision::mod::_blinkType>, true>, std::allocator<std::__value_type<vision::mod::_blinkType, float>>>::__emplace_unique_key_args<vision::mod::_blinkType, std::piecewise_construct_t const&, std::tuple<vision::mod::_blinkType&&>, std::tuple<>>(&v82, 1) + 8) > 0.1, &v86 + 4, v72}];
+    [observationCopy setIsBlinking:{*(std::__tree<std::__value_type<vision::mod::_blinkType, float>, std::__map_value_compare<vision::mod::_blinkType, std::__value_type<vision::mod::_blinkType, float>, std::less<vision::mod::_blinkType>, true>, std::allocator<std::__value_type<vision::mod::_blinkType, float>>>::__emplace_unique_key_args<vision::mod::_blinkType, std::piecewise_construct_t const&, std::tuple<vision::mod::_blinkType&&>, std::tuple<>>(&v82, 1) + 8) > 0.1, &v86 + 4, v72}];
     LODWORD(v84[0]) = 1;
     src.data = v84;
     LODWORD(v69) = *(std::__tree<std::__value_type<vision::mod::_blinkType,float>,std::__map_value_compare<vision::mod::_blinkType,std::__value_type<vision::mod::_blinkType,float>,std::less<vision::mod::_blinkType>,true>,std::allocator<std::__value_type<vision::mod::_blinkType,float>>>::__emplace_unique_key_args<vision::mod::_blinkType,std::piecewise_construct_t const&,std::tuple<vision::mod::_blinkType&&>,std::tuple<>>(&v82, 1) + 8);
-    [v14 setBlinkScore:v69];
+    [observationCopy setBlinkScore:v69];
     std::__tree<std::__value_type<long long,int>,std::__map_value_compare<long long,std::__value_type<long long,int>,std::less<long long>,true>,std::allocator<std::__value_type<long long,int>>>::destroy(v82.height);
     if (__p[0])
     {
@@ -439,17 +439,17 @@ LABEL_12:
   return v19;
 }
 
-- (CGRect)normalizedFaceBBoxForLandmarks:(id)a3
+- (CGRect)normalizedFaceBBoxForLandmarks:(id)landmarks
 {
-  v3 = a3;
-  [v3 alignedBoundingBoxAsCGRect];
+  landmarksCopy = landmarks;
+  [landmarksCopy alignedBoundingBoxAsCGRect];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
   height = v16.size.height;
   if (CGRectEqualToRect(v16, *MEMORY[0x1E695F058]))
   {
-    [v3 boundingBox];
+    [landmarksCopy boundingBox];
     x = v8;
     y = v9;
     width = v10;
@@ -467,18 +467,18 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)postprocessLandmarkResultsForLandmarks:(const void *)a3 imageBuffer:(id)a4 outputFace:(id)a5 options:(id)a6 warningRecorder:(id)a7 error:(id *)a8
+- (BOOL)postprocessLandmarkResultsForLandmarks:(const void *)landmarks imageBuffer:(id)buffer outputFace:(id)face options:(id)options warningRecorder:(id)recorder error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  bufferCopy = buffer;
+  faceCopy = face;
+  optionsCopy = options;
+  recorderCopy = recorder;
   v43 = 0;
-  if ([VNValidationUtilities getBOOLValue:&v43 forKey:@"VNFaceLandmarkDetectorProcessOption_BlinkDetection" inOptions:v16 withDefaultValue:0 error:a8])
+  if ([VNValidationUtilities getBOOLValue:&v43 forKey:@"VNFaceLandmarkDetectorProcessOption_BlinkDetection" inOptions:optionsCopy withDefaultValue:0 error:error])
   {
     v42 = 0;
-    if ([VNValidationUtilities getBOOLValue:&v42 forKey:@"VNFaceLandmarkDetectorProcessOption_CalculateLandmarkScore" inOptions:v16 withDefaultValue:0 error:a8])
+    if ([VNValidationUtilities getBOOLValue:&v42 forKey:@"VNFaceLandmarkDetectorProcessOption_CalculateLandmarkScore" inOptions:optionsCopy withDefaultValue:0 error:error])
     {
       if ((v43 & 1) == 0 && v42 != 1)
       {
@@ -487,26 +487,26 @@ LABEL_12:
       }
 
       self->_requireFaceAttributesPupilRefiner = 1;
-      if ([(VNFaceLandmarkDetector *)self loadRefinersAndReturnError:a8])
+      if ([(VNFaceLandmarkDetector *)self loadRefinersAndReturnError:error])
       {
         v41 = -1;
-        if ([v15 getFaceEXIFOrientation:&v41 error:a8])
+        if ([faceCopy getFaceEXIFOrientation:&v41 error:error])
         {
           v44 = @"VNImageBufferOption_FeatureOrientationRelativeToUpRight";
           v18 = [MEMORY[0x1E696AD98] numberWithInt:v41];
           v45[0] = v18;
           v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
 
-          v19 = [(VNEspressoModelFileBasedDetector *)self networkRequiredInputImageWidth];
-          v20 = [(VNEspressoModelFileBasedDetector *)self networkRequiredInputImageHeight];
-          [(VNFaceLandmarkDetector *)self normalizedFaceBBoxForLandmarks:v15];
+          networkRequiredInputImageWidth = [(VNEspressoModelFileBasedDetector *)self networkRequiredInputImageWidth];
+          networkRequiredInputImageHeight = [(VNEspressoModelFileBasedDetector *)self networkRequiredInputImageHeight];
+          [(VNFaceLandmarkDetector *)self normalizedFaceBBoxForLandmarks:faceCopy];
           v22 = v21;
           v24 = v23;
           v26 = v25;
           v28 = v27;
-          v29 = [v14 width];
-          v30 = [v14 height];
-          v31 = [v14 croppedBufferWithWidth:v19 height:v20 format:1278226488 cropRect:v36 options:a8 error:{v22 * v29, v24 * v30, v26 * v29, v28 * v30}];
+          width = [bufferCopy width];
+          height = [bufferCopy height];
+          v31 = [bufferCopy croppedBufferWithWidth:networkRequiredInputImageWidth height:networkRequiredInputImageHeight format:1278226488 cropRect:v36 options:error error:{v22 * width, v24 * height, v26 * width, v28 * height}];
           v32 = v31;
           if (!v31)
           {
@@ -522,11 +522,11 @@ LABEL_20:
           v40[2] = CVPixelBufferGetWidth(v32);
           v40[3] = CVPixelBufferGetBytesPerRow(v32);
           v37 = 0;
-          v38 = v20;
-          v39 = v19;
+          v38 = networkRequiredInputImageHeight;
+          v39 = networkRequiredInputImageWidth;
           if (v42 == 1)
           {
-            v33 = [(VNFaceLandmarkDetector *)self computeLandmarksScoreOnImage:v40 withFaceBoundingBox:&v37 andLandmarks:a3 error:a8];
+            v33 = [(VNFaceLandmarkDetector *)self computeLandmarksScoreOnImage:v40 withFaceBoundingBox:&v37 andLandmarks:landmarks error:error];
             v34 = v33;
             if (!v33)
             {
@@ -537,10 +537,10 @@ LABEL_19:
             }
 
             [v33 floatValue];
-            [v15 setLandmarkScore:?];
+            [faceCopy setLandmarkScore:?];
           }
 
-          LOBYTE(v34) = v43 != 1 || [(VNFaceLandmarkDetector *)self detectBlinkOnFaceImage:v40 faceObservation:v15 lumaRec2DInImageCoordinates:&v37 landmarks:a3 warningRecorder:v17 error:a8];
+          LOBYTE(v34) = v43 != 1 || [(VNFaceLandmarkDetector *)self detectBlinkOnFaceImage:v40 faceObservation:faceCopy lumaRec2DInImageCoordinates:&v37 landmarks:landmarks warningRecorder:recorderCopy error:error];
           goto LABEL_19;
         }
       }
@@ -553,16 +553,16 @@ LABEL_15:
   return v34;
 }
 
-- (id)computeLandmarksScoreOnImage:(const vImage_Buffer *)a3 withFaceBoundingBox:(const _Geometry2D_rect2D_ *)a4 andLandmarks:(const void *)a5 error:(id *)a6
+- (id)computeLandmarksScoreOnImage:(const vImage_Buffer *)image withFaceBoundingBox:(const _Geometry2D_rect2D_ *)box andLandmarks:(const void *)landmarks error:(id *)error
 {
-  if (!a3 || !a4 || !a5)
+  if (!image || !box || !landmarks)
   {
-    if (a6)
+    if (error)
     {
-      v27 = [VNError errorForInternalErrorWithLocalizedDescription:@"Invalid parameters passed to landmark score computation", a4, a5];
-      v28 = v27;
+      landmarks = [VNError errorForInternalErrorWithLocalizedDescription:@"Invalid parameters passed to landmark score computation", box, landmarks];
+      v28 = landmarks;
       v29 = 0;
-      *a6 = v27;
+      *error = landmarks;
     }
 
     else
@@ -574,16 +574,16 @@ LABEL_15:
   }
 
   ptr = self->_faceAttributesPupilRefiner.__ptr_;
-  v11 = (*(a5 + 1) - *a5) >> 3;
+  v11 = (*(landmarks + 1) - *landmarks) >> 3;
   LODWORD(__p[0]) = 0;
   std::vector<float>::vector[abi:ne200100](&v47, (((v11 - 1) * v11) >> 1) + 1);
-  v12 = (*(a5 + 1) - *a5) >> 3;
+  v12 = (*(landmarks + 1) - *landmarks) >> 3;
   v49 = 0;
   std::vector<unsigned char>::vector[abi:ne200100](__p, v12);
-  v13 = *a5;
-  if (*a5 == *(a5 + 1))
+  v13 = *landmarks;
+  if (*landmarks == *(landmarks + 1))
   {
-    v26 = *a5;
+    v26 = *landmarks;
   }
 
   else
@@ -591,14 +591,14 @@ LABEL_15:
     v14 = 0;
     do
     {
-      height = a3->height;
+      height = image->height;
       v16 = *v13;
       v17 = v13[1];
       v13 += 2;
-      v18 = llroundf(v16 + a4->origin.x);
-      v19 = llroundf(height - (v17 + a4->origin.y));
+      v18 = llroundf(v16 + box->origin.x);
+      v19 = llroundf(height - (v17 + box->origin.y));
       v20 = v18 & ~(v18 >> 31);
-      width = a3->width;
+      width = image->width;
       v22 = v20 < width;
       v23 = width - 1;
       if (!v22)
@@ -617,11 +617,11 @@ LABEL_15:
         v25 = v24;
       }
 
-      *(__p[0] + v14++) = *(a3->data + a3->rowBytes * v25 + v20);
+      *(__p[0] + v14++) = *(image->data + image->rowBytes * v25 + v20);
     }
 
-    while (v13 != *(a5 + 1));
-    v26 = *a5;
+    while (v13 != *(landmarks + 1));
+    v26 = *landmarks;
   }
 
   v30 = v13 - v26;
@@ -693,14 +693,14 @@ LABEL_30:
   return v29;
 }
 
-- (void)calculatePupilLocationAndUpdateLandmarkPoints:(void *)a3
+- (void)calculatePupilLocationAndUpdateLandmarkPoints:(void *)points
 {
-  [VNFaceLandmarkDetector computeCentroidUsingPoints:*a3 indicies:&unk_1A6050F90 numberOfIndicies:8];
+  [VNFaceLandmarkDetector computeCentroidUsingPoints:*points indicies:&unk_1A6050F90 numberOfIndicies:8];
   v8 = __PAIR64__(v5, v4);
-  std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](a3, &v8);
-  [VNFaceLandmarkDetector computeCentroidUsingPoints:*a3 indicies:&unk_1A6051110 numberOfIndicies:8];
+  std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](points, &v8);
+  [VNFaceLandmarkDetector computeCentroidUsingPoints:*points indicies:&unk_1A6051110 numberOfIndicies:8];
   v8 = __PAIR64__(v7, v6);
-  std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](a3, &v8);
+  std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](points, &v8);
 }
 
 - (void)dealloc
@@ -717,7 +717,7 @@ LABEL_30:
   [(VNDetector *)&v5 dealloc];
 }
 
-- (BOOL)loadRefinersAndReturnError:(id *)a3
+- (BOOL)loadRefinersAndReturnError:(id *)error
 {
   if (self->_faceAttributesPupilRefiner.__ptr_)
   {
@@ -726,8 +726,8 @@ LABEL_30:
 
   if (!self->_requireFaceAttributesPupilRefiner)
   {
-    v6 = [(VNDetector *)self configurationOptions];
-    v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 specifyingRequestClass:objc_opt_class() error:a3];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:configurationOptions specifyingRequestClass:objc_opt_class() error:error];
     v8 = v7;
     v3 = v7 != 0;
     if (!v7 || ([v7 requestRevision] - 1) >= 2)
@@ -749,7 +749,7 @@ LABEL_30:
   v14 = v9;
   v10 = v9;
   v11 = _Block_copy(v13);
-  v3 = VNExecuteBlock(v11, a3);
+  v3 = VNExecuteBlock(v11, error);
 
   return v3;
 }
@@ -783,17 +783,17 @@ uint64_t __53__VNFaceLandmarkDetector_loadRefinersAndReturnError___block_invoke(
   return 0;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = VNFaceLandmarkDetector;
-  if (![(VNEspressoModelFileBasedDetector *)&v9 completeInitializationForSession:a3 error:?])
+  if (![(VNEspressoModelFileBasedDetector *)&v9 completeInitializationForSession:session error:?])
   {
     return 0;
   }
 
-  v6 = [(VNDetector *)self configurationOptions];
-  v7 = [VNValidationUtilities getBOOLValue:&self->_requireFaceAttributesPupilRefiner forKey:@"VNFaceLandmarkDetectorOption_LoadRefinersModel" inOptions:v6 withDefaultValue:0 error:a4]&& [(VNFaceLandmarkDetector *)self loadRefinersAndReturnError:a4];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v7 = [VNValidationUtilities getBOOLValue:&self->_requireFaceAttributesPupilRefiner forKey:@"VNFaceLandmarkDetectorOption_LoadRefinersModel" inOptions:configurationOptions withDefaultValue:0 error:error]&& [(VNFaceLandmarkDetector *)self loadRefinersAndReturnError:error];
 
   return v7;
 }

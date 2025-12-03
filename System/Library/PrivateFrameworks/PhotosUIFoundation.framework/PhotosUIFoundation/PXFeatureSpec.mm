@@ -1,19 +1,19 @@
 @interface PXFeatureSpec
 - (CGSize)layoutReferenceSize;
 - (PXExtendedTraitCollection)rootExtendedTraitCollection;
-- (PXFeatureSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
-- (UIEdgeInsets)_fullscreenContentInsetsForWidth:(double)a3;
-- (UIEdgeInsets)contentGuideInsetsForScrollAxis:(int64_t)a3;
+- (PXFeatureSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
+- (UIEdgeInsets)_fullscreenContentInsetsForWidth:(double)width;
+- (UIEdgeInsets)contentGuideInsetsForScrollAxis:(int64_t)axis;
 - (UIEdgeInsets)curatedLibraryEdgeToEdgeContentDefaultPadding;
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)safeAreaInsets;
 - (double)defaultCornerRadius;
-- (id)_textAttributesForFontName:(id)a3 fontSize:(double)a4 lineHeight:(double)a5 tracking:(double)a6 stroke:(double)a7;
+- (id)_textAttributesForFontName:(id)name fontSize:(double)size lineHeight:(double)height tracking:(double)tracking stroke:(double)stroke;
 - (id)collectionTileImageOverlayColorHighlighted;
-- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)a3;
-- (id)viewSpecWithDescriptor:(PXViewSpecDescriptor *)a3;
+- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor;
+- (id)viewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor;
 - (int64_t)localizedLeadingTextAlignment;
-- (void)configureViewSpec:(id)a3;
+- (void)configureViewSpec:(id)spec;
 @end
 
 @implementation PXFeatureSpec
@@ -55,10 +55,10 @@
 
 - (UIEdgeInsets)curatedLibraryEdgeToEdgeContentDefaultPadding
 {
-  v3 = [(PXFeatureSpec *)self sizeClass];
+  sizeClass = [(PXFeatureSpec *)self sizeClass];
   v4 = 20.0;
   v5 = 20.0;
-  if (v3 != 2)
+  if (sizeClass != 2)
   {
     [(PXFeatureSpec *)self contentGuideInsetsForScrollAxis:1];
   }
@@ -89,14 +89,14 @@ uint64_t __46__PXFeatureSpec_localizedLeadingTextAlignment__block_invoke()
   return result;
 }
 
-- (id)_textAttributesForFontName:(id)a3 fontSize:(double)a4 lineHeight:(double)a5 tracking:(double)a6 stroke:(double)a7
+- (id)_textAttributesForFontName:(id)name fontSize:(double)size lineHeight:(double)height tracking:(double)tracking stroke:(double)stroke
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  nameCopy = name;
   v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
-  if (v11)
+  if (nameCopy)
   {
-    v13 = PXFontCreate(v11, a4);
+    v13 = PXFontCreate(nameCopy, size);
     if (v13)
     {
       goto LABEL_10;
@@ -112,39 +112,39 @@ uint64_t __46__PXFeatureSpec_localizedLeadingTextAlignment__block_invoke()
       v14 = _textAttributesForFontName_fontSize_lineHeight_tracking_stroke__reportedFontNames;
     }
 
-    if (([v14 containsObject:v11] & 1) == 0)
+    if (([v14 containsObject:nameCopy] & 1) == 0)
     {
-      [_textAttributesForFontName_fontSize_lineHeight_tracking_stroke__reportedFontNames addObject:v11];
+      [_textAttributesForFontName_fontSize_lineHeight_tracking_stroke__reportedFontNames addObject:nameCopy];
       v17 = PFUIGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v22 = 138412290;
-        v23 = v11;
+        v23 = nameCopy;
         _os_log_impl(&dword_1B3F73000, v17, OS_LOG_TYPE_ERROR, "Couldn't find font with name %@", &v22, 0xCu);
       }
     }
   }
 
-  v13 = [MEMORY[0x1E69DB878] systemFontOfSize:a4];
+  v13 = [MEMORY[0x1E69DB878] systemFontOfSize:size];
 LABEL_10:
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69DB648]];
-  if (a5 != 0.0)
+  if (height != 0.0)
   {
     v18 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
-    [v18 setMinimumLineHeight:a5];
-    [v18 setMaximumLineHeight:a5];
+    [v18 setMinimumLineHeight:height];
+    [v18 setMaximumLineHeight:height];
     [v12 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69DB688]];
   }
 
-  if (a6 != 0.0)
+  if (tracking != 0.0)
   {
-    v19 = [MEMORY[0x1E696AD98] numberWithDouble:a4 * a6 / 1000.0];
+    v19 = [MEMORY[0x1E696AD98] numberWithDouble:size * tracking / 1000.0];
     [v12 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69DB660]];
   }
 
-  if (a7 > 0.0)
+  if (stroke > 0.0)
   {
-    v20 = [MEMORY[0x1E696AD98] numberWithDouble:-a7];
+    v20 = [MEMORY[0x1E696AD98] numberWithDouble:-stroke];
     [v12 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69DB6C8]];
   }
 
@@ -180,16 +180,16 @@ LABEL_10:
 
 - (PXExtendedTraitCollection)rootExtendedTraitCollection
 {
-  v2 = [(PXFeatureSpec *)self extendedTraitCollection];
-  v3 = [v2 rootExtendedTraitCollection];
+  extendedTraitCollection = [(PXFeatureSpec *)self extendedTraitCollection];
+  rootExtendedTraitCollection = [extendedTraitCollection rootExtendedTraitCollection];
 
-  return v3;
+  return rootExtendedTraitCollection;
 }
 
-- (UIEdgeInsets)_fullscreenContentInsetsForWidth:(double)a3
+- (UIEdgeInsets)_fullscreenContentInsetsForWidth:(double)width
 {
-  v3 = a3 / 667.0;
-  v4 = a3 / 667.0 * 0.0;
+  v3 = width / 667.0;
+  v4 = width / 667.0 * 0.0;
   v5 = v3 * 62.0;
   v6 = v3 * 32.0;
   v7 = v5;
@@ -200,22 +200,22 @@ LABEL_10:
   return result;
 }
 
-- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)a3
+- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor
 {
-  if ((a3->var0 - 1900) > 0x63)
+  if ((descriptor->var0 - 1900) > 0x63)
   {
-    if (a3->var0 != 1000)
+    if (descriptor->var0 != 1000)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXFeatureSpec.m" lineNumber:196 description:{@"unknown context %li", a3->var0}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeatureSpec.m" lineNumber:196 description:{@"unknown context %li", descriptor->var0}];
 
       abort();
     }
 
     v7 = objc_alloc_init(PXViewSpec);
     [(PXFeatureSpec *)self configureViewSpec:v7];
-    v8 = [(PXFeatureSpec *)self defaultPlaceholderColor];
-    [(PXViewSpec *)v7 setBackgroundColor:v8];
+    defaultPlaceholderColor = [(PXFeatureSpec *)self defaultPlaceholderColor];
+    [(PXViewSpec *)v7 setBackgroundColor:defaultPlaceholderColor];
 
     [(PXFeatureSpec *)self defaultCornerRadius];
     [(PXViewSpec *)v7 setCornerRadius:?];
@@ -225,12 +225,12 @@ LABEL_10:
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXFeatureSpec.m" lineNumber:181 description:@"Missing support for memories in PXFeatureSpec"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXFeatureSpec.m" lineNumber:181 description:@"Missing support for memories in PXFeatureSpec"];
     }
 
-    var2 = a3->var2;
-    v12[0] = *&a3->var0;
+    var2 = descriptor->var2;
+    v12[0] = *&descriptor->var0;
     v12[1] = var2;
     v7 = [(PXFeatureSpec *)self createViewSpecForMemoryDescriptor:v12];
   }
@@ -238,41 +238,41 @@ LABEL_10:
   return v7;
 }
 
-- (void)configureViewSpec:(id)a3
+- (void)configureViewSpec:(id)spec
 {
-  v4 = a3;
+  specCopy = spec;
   [(PXFeatureSpec *)self displayScale];
-  [v4 setDisplayScale:?];
+  [specCopy setDisplayScale:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setShouldEnableFocus:self->_userInterfaceIdiom == 3];
+    [specCopy setShouldEnableFocus:self->_userInterfaceIdiom == 3];
   }
 }
 
-- (id)viewSpecWithDescriptor:(PXViewSpecDescriptor *)a3
+- (id)viewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor
 {
-  var2 = a3->var2;
-  v12 = *&a3->var0;
+  var2 = descriptor->var2;
+  v12 = *&descriptor->var0;
   v13 = var2;
   v6 = [MEMORY[0x1E696B098] px_valueWithViewSpecDescriptor:&v12];
-  v7 = [(PXFeatureSpec *)self _viewSpecCache];
-  v8 = [v7 objectForKey:v6];
+  _viewSpecCache = [(PXFeatureSpec *)self _viewSpecCache];
+  v8 = [_viewSpecCache objectForKey:v6];
 
   if (!v8)
   {
-    v9 = a3->var2;
-    v12 = *&a3->var0;
+    v9 = descriptor->var2;
+    v12 = *&descriptor->var0;
     v13 = v9;
     v8 = [(PXFeatureSpec *)self createViewSpecWithDescriptor:&v12];
-    v10 = [(PXFeatureSpec *)self _viewSpecCache];
-    [v10 setObject:v8 forKey:v6];
+    _viewSpecCache2 = [(PXFeatureSpec *)self _viewSpecCache];
+    [_viewSpecCache2 setObject:v8 forKey:v6];
   }
 
   return v8;
 }
 
-- (UIEdgeInsets)contentGuideInsetsForScrollAxis:(int64_t)a3
+- (UIEdgeInsets)contentGuideInsetsForScrollAxis:(int64_t)axis
 {
   [(PXFeatureSpec *)self safeAreaInsets];
   v7 = v6;
@@ -281,7 +281,7 @@ LABEL_10:
   v13 = v12;
   [(PXFeatureSpec *)self layoutReferenceSize];
   v16 = 0.0;
-  if (a3 == 1)
+  if (axis == 1)
   {
     v21 = v14 - (v9 + v13);
     if (self->_userInterfaceIdiom == 4)
@@ -311,29 +311,29 @@ LABEL_10:
 
     else
     {
-      v22 = [(PXFeatureSpec *)self _shouldUseMiniMargins];
+      _shouldUseMiniMargins = [(PXFeatureSpec *)self _shouldUseMiniMargins];
       v17 = 16.0;
-      if (v22)
+      if (_shouldUseMiniMargins)
       {
         v18 = 16.0;
       }
 
       else
       {
-        v26 = [(PXFeatureSpec *)self _horizontalContentGuideInsetsInterpolator];
-        [v26 valueForMetric:v21];
+        _horizontalContentGuideInsetsInterpolator = [(PXFeatureSpec *)self _horizontalContentGuideInsetsInterpolator];
+        [_horizontalContentGuideInsetsInterpolator valueForMetric:v21];
         v18 = v27;
 
         [(PXFeatureSpec *)self layoutMargins];
         if (self->_userInterfaceFeature == 5)
         {
-          v29 = [(PXFeatureSpec *)self extendedTraitCollection];
-          v30 = [v29 userInterfaceIdiom];
+          extendedTraitCollection = [(PXFeatureSpec *)self extendedTraitCollection];
+          userInterfaceIdiom = [extendedTraitCollection userInterfaceIdiom];
 
-          if (v30 == 1 && self->_layoutOrientation == 2 && ([MEMORY[0x1E69DC938] currentDevice], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "orientation"), v31, v32 == 4))
+          if (userInterfaceIdiom == 1 && self->_layoutOrientation == 2 && ([MEMORY[0x1E69DC938] currentDevice], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "orientation"), v31, v32 == 4))
           {
-            v33 = [(PXFeatureSpec *)self rootExtendedTraitCollection];
-            [v33 layoutMargins];
+            rootExtendedTraitCollection = [(PXFeatureSpec *)self rootExtendedTraitCollection];
+            [rootExtendedTraitCollection layoutMargins];
             v35 = v34;
 
             if (v18 >= v35)
@@ -375,7 +375,7 @@ LABEL_10:
     }
   }
 
-  else if (a3 == 2)
+  else if (axis == 2)
   {
     v20 = v15 - (v7 + v11);
     v16 = 12.0;
@@ -400,10 +400,10 @@ LABEL_10:
   {
     v17 = 0.0;
     v18 = 0.0;
-    if (!a3)
+    if (!axis)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PXFeatureSpec.m" lineNumber:118 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeatureSpec.m" lineNumber:118 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -419,10 +419,10 @@ LABEL_10:
   return result;
 }
 
-- (PXFeatureSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXFeatureSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  collectionCopy = collection;
   v52.receiver = self;
   v52.super_class = PXFeatureSpec;
   v8 = [(PXFeatureSpec *)&v52 init];
@@ -431,31 +431,31 @@ LABEL_10:
     goto LABEL_36;
   }
 
-  [v7 displayScale];
+  [collectionCopy displayScale];
   v10 = v9;
   v11 = 1.0;
   if (v10 > 0.0)
   {
-    [v7 displayScale];
+    [collectionCopy displayScale];
   }
 
   *(v8 + 12) = v11;
-  *(v8 + 2) = a4;
-  *(v8 + 3) = [v7 layoutSizeClass];
-  *(v8 + 4) = [v7 layoutSizeSubclass];
-  *(v8 + 5) = [v7 layoutOrientation];
-  *(v8 + 6) = [v7 layoutDirection];
-  if (v7)
+  *(v8 + 2) = options;
+  *(v8 + 3) = [collectionCopy layoutSizeClass];
+  *(v8 + 4) = [collectionCopy layoutSizeSubclass];
+  *(v8 + 5) = [collectionCopy layoutOrientation];
+  *(v8 + 6) = [collectionCopy layoutDirection];
+  if (collectionCopy)
   {
-    [v7 layoutReferenceSize];
+    [collectionCopy layoutReferenceSize];
     *(v8 + 19) = v12;
     *(v8 + 20) = v13;
-    [v7 safeAreaInsets];
+    [collectionCopy safeAreaInsets];
     *(v8 + 21) = v14;
     *(v8 + 22) = v15;
     *(v8 + 23) = v16;
     *(v8 + 24) = v17;
-    [v7 layoutMargins];
+    [collectionCopy layoutMargins];
     *(v8 + 25) = v18;
     *(v8 + 26) = v19;
     *(v8 + 27) = v20;
@@ -471,19 +471,19 @@ LABEL_10:
     *(v8 + 216) = 0u;
   }
 
-  *(v8 + 7) = [v7 userInterfaceIdiom];
-  *(v8 + 9) = [v7 userInterfaceStyle];
-  *(v8 + 10) = [v7 userInterfaceLevel];
-  *(v8 + 11) = [v7 contentSizeCategory];
+  *(v8 + 7) = [collectionCopy userInterfaceIdiom];
+  *(v8 + 9) = [collectionCopy userInterfaceStyle];
+  *(v8 + 10) = [collectionCopy userInterfaceLevel];
+  *(v8 + 11) = [collectionCopy contentSizeCategory];
   v22 = objc_alloc_init(MEMORY[0x1E695DEE0]);
   v23 = *(v8 + 16);
   *(v8 + 16) = v22;
 
-  *(v8 + 8) = [v7 userInterfaceFeature];
-  objc_storeStrong(v8 + 18, a3);
-  v24 = [v7 layoutSizeClass] == 2 || objc_msgSend(v7, "layoutOrientation") == 2;
+  *(v8 + 8) = [collectionCopy userInterfaceFeature];
+  objc_storeStrong(v8 + 18, collection);
+  v24 = [collectionCopy layoutSizeClass] == 2 || objc_msgSend(collectionCopy, "layoutOrientation") == 2;
   v8[8] = v24;
-  *(v8 + 13) = [v7 windowOrientation];
+  *(v8 + 13) = [collectionCopy windowOrientation];
   v25 = *(v8 + 8);
   if ((v25 - 3) >= 2)
   {
@@ -507,7 +507,7 @@ LABEL_16:
 
   v28 = objc_alloc_init(PXViewSpec);
   v29 = MEMORY[0x1E69DC888];
-  if (a4)
+  if (options)
   {
     v40 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.200000003];
     [(PXViewSpec *)v28 setBackgroundColor:v40];
@@ -555,7 +555,7 @@ LABEL_16:
     *(v8 + 15) = v38;
   }
 
-  if ((a4 & 0x10) != 0)
+  if ((options & 0x10) != 0)
   {
     v45 = *(v8 + 6);
     v46 = *(v8 + 22);
@@ -596,7 +596,7 @@ LABEL_16:
     *(v8 + 28) = v49;
   }
 
-  v50 = [v7 layoutSizeClass] == 1 && objc_msgSend(v7, "layoutSizeSubclass") == 1 && objc_msgSend(v7, "layoutOrientation") == 1;
+  v50 = [collectionCopy layoutSizeClass] == 1 && objc_msgSend(collectionCopy, "layoutSizeSubclass") == 1 && objc_msgSend(collectionCopy, "layoutOrientation") == 1;
   v8[9] = v50;
 LABEL_36:
 

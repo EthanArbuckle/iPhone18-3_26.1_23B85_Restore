@@ -1,31 +1,31 @@
 @interface APSKStreamVideo
-- (APSKStreamVideo)initWithDelegate:(id)a3 delegateQueue:(id)a4 options:(id)a5;
+- (APSKStreamVideo)initWithDelegate:(id)delegate delegateQueue:(id)queue options:(id)options;
 - (BOOL)active;
 - (int)displayHeight;
 - (int)displayRefreshRate;
 - (int)displayWidth;
-- (int)enqueueFrame:(__CVBuffer *)a3 forTime:(int64_t)a4;
-- (void)setDisplayWidth:(int)a3 height:(int)a4 refreshRate:(int)a5;
-- (void)setError:(int)a3;
-- (void)setFrameSender:(id)a3;
+- (int)enqueueFrame:(__CVBuffer *)frame forTime:(int64_t)time;
+- (void)setDisplayWidth:(int)width height:(int)height refreshRate:(int)rate;
+- (void)setError:(int)error;
+- (void)setFrameSender:(id)sender;
 @end
 
 @implementation APSKStreamVideo
 
-- (APSKStreamVideo)initWithDelegate:(id)a3 delegateQueue:(id)a4 options:(id)a5
+- (APSKStreamVideo)initWithDelegate:(id)delegate delegateQueue:(id)queue options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = APSKStreamVideo;
   v11 = [(APSKStreamVideo *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_delegateQueue, a4);
-    objc_storeStrong(&v12->_options, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_delegateQueue, queue);
+    objc_storeStrong(&v12->_options, options);
     objc_storeWeak(&v12->_frameSender, 0);
     v13 = dispatch_queue_create("com.apple.apskstreamvideo.stateq", 0);
     queue = v12->_queue;
@@ -53,7 +53,7 @@
   return v12;
 }
 
-- (int)enqueueFrame:(__CVBuffer *)a3 forTime:(int64_t)a4
+- (int)enqueueFrame:(__CVBuffer *)frame forTime:(int64_t)time
 {
   v11 = 0;
   v12 = &v11;
@@ -72,7 +72,7 @@
   v7 = v12[5];
   if (v7)
   {
-    v8 = [v7 sendFrame:a3 forTime:a4];
+    v8 = [v7 sendFrame:frame forTime:time];
   }
 
   else
@@ -177,17 +177,17 @@ void __25__APSKStreamVideo_active__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setFrameSender:(id)a3
+- (void)setFrameSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__APSKStreamVideo_setFrameSender___block_invoke;
   v7[3] = &unk_278C65990;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = senderCopy;
+  selfCopy = self;
+  v6 = senderCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -272,9 +272,9 @@ void __34__APSKStreamVideo_setFrameSender___block_invoke_3(uint64_t a1)
   [WeakRetained videoStreamDidStop:*(a1 + 32)];
 }
 
-- (void)setError:(int)a3
+- (void)setError:(int)error
 {
-  if (a3)
+  if (error)
   {
     if (gLogCategory_AirPlaySenderKit <= 90 && (gLogCategory_AirPlaySenderKit != -1 || _LogCategory_Initialize()))
     {
@@ -292,7 +292,7 @@ void __34__APSKStreamVideo_setFrameSender___block_invoke_3(uint64_t a1)
       block[2] = __28__APSKStreamVideo_setError___block_invoke;
       block[3] = &unk_278C659B8;
       block[4] = self;
-      v9 = a3;
+      errorCopy = error;
       dispatch_async(delegateQueue, block);
     }
   }
@@ -304,7 +304,7 @@ void __28__APSKStreamVideo_setError___block_invoke(uint64_t a1)
   [WeakRetained videoStreamDidFail:*(a1 + 32) withError:*(a1 + 40)];
 }
 
-- (void)setDisplayWidth:(int)a3 height:(int)a4 refreshRate:(int)a5
+- (void)setDisplayWidth:(int)width height:(int)height refreshRate:(int)rate
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -312,9 +312,9 @@ void __28__APSKStreamVideo_setError___block_invoke(uint64_t a1)
   block[2] = __54__APSKStreamVideo_setDisplayWidth_height_refreshRate___block_invoke;
   block[3] = &unk_278C659E0;
   block[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  widthCopy = width;
+  heightCopy = height;
+  rateCopy = rate;
   dispatch_sync(queue, block);
 }
 

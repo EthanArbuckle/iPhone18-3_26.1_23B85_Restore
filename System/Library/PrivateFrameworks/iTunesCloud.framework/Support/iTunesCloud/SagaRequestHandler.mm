@@ -1,101 +1,101 @@
 @interface SagaRequestHandler
-- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)a3;
+- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)import;
 - (SagaRequestHandler)init;
-- (SagaRequestHandler)initWithConfiguration:(id)a3 progressObserver:(id)a4;
+- (SagaRequestHandler)initWithConfiguration:(id)configuration progressObserver:(id)observer;
 - (float)updateProgress;
 - (id)_library;
-- (void)_handleCloudLibraryUpdateOperationFinishedWithError:(id)a3;
-- (void)_handleLibraryEditOperationCompletionUpdatingLibrary:(BOOL)a3 andSubscribedPlaylist:(unint64_t)a4 completion:(id)a5;
-- (void)_updateLibraryForFailedLibraryPinsOperationWithCompletion:(id)a3;
-- (void)addGeniusPlaylistWithPersistentID:(int64_t)a3 name:(id)a4 seedItemIDs:(id)a5 itemIDs:(id)a6 clientIdentity:(id)a7 completionHandler:(id)a8;
-- (void)addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 requestingBundleID:(id)a5 clientIdentity:(id)a6 completionHandler:(id)a7;
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 toPlaylistWithPersistentID:(int64_t)a5 clientIdentity:(id)a6 completionHandler:(id)a7;
-- (void)addStoreItemWithOpaqueID:(id)a3 requestingBundleID:(id)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)addStoreItemWithOpaqueID:(id)a3 toPlaylistWithPersistentID:(int64_t)a4 requestingBundleID:(id)a5 clientIdentity:(id)a6 completionHandler:(id)a7;
-- (void)addStoreItemsWithAdamIDs:(id)a3 referral:(id)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)addStoreItemsWithAdamIDs:(id)a3 referral:(id)a4 toPlaylistWithPersistentID:(int64_t)a5 clientIdentity:(id)a6 completionHandler:(id)a7;
-- (void)addStorePlaylistWithGlobalID:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)a3 sharingMode:(unint64_t)a4 completion:(id)a5;
+- (void)_handleCloudLibraryUpdateOperationFinishedWithError:(id)error;
+- (void)_handleLibraryEditOperationCompletionUpdatingLibrary:(BOOL)library andSubscribedPlaylist:(unint64_t)playlist completion:(id)completion;
+- (void)_updateLibraryForFailedLibraryPinsOperationWithCompletion:(id)completion;
+- (void)addGeniusPlaylistWithPersistentID:(int64_t)d name:(id)name seedItemIDs:(id)ds itemIDs:(id)iDs clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(int64_t)iD clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(int64_t)iD requestingBundleID:(id)bundleID clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral toPlaylistWithPersistentID:(int64_t)iD clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStoreItemWithOpaqueID:(id)d requestingBundleID:(id)iD clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStoreItemWithOpaqueID:(id)d toPlaylistWithPersistentID:(int64_t)iD requestingBundleID:(id)bundleID clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStoreItemsWithAdamIDs:(id)ds referral:(id)referral clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStoreItemsWithAdamIDs:(id)ds referral:(id)referral toPlaylistWithPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)addStorePlaylistWithGlobalID:(id)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)d sharingMode:(unint64_t)mode completion:(id)completion;
 - (void)cancelOperations;
-- (void)cancelOperationsWithCompletionHandler:(id)a3;
-- (void)cancelPendingChangesWithCompletion:(id)a3;
-- (void)createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 trackList:(id)a5 clientIdentity:(id)a6 completionHandler:(id)a7;
-- (void)createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 trackList:(id)a5 requestingBundleID:(id)a6 clientIdentity:(id)a7 completionHandler:(id)a8;
+- (void)cancelOperationsWithCompletionHandler:(id)handler;
+- (void)cancelPendingChangesWithCompletion:(id)completion;
+- (void)createPlaylistWithPersistentID:(int64_t)d properties:(id)properties trackList:(id)list clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)createPlaylistWithPersistentID:(int64_t)d properties:(id)properties trackList:(id)list requestingBundleID:(id)iD clientIdentity:(id)identity completionHandler:(id)handler;
 - (void)dealloc;
 - (void)decreasePriorityForAllOperations;
-- (void)editCollaborationWithPersistentID:(int64_t)a3 properties:(id)a4 trackEdits:(id)a5 completion:(id)a6;
-- (void)endCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4;
-- (void)environmentMonitorDidChangePower:(id)a3;
-- (void)favoriteAlbumWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)favoriteArtistWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 sagaID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7;
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 storeID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7;
-- (void)favoritePlaylistWithPersistentID:(int64_t)a3 globalID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)importContainerArtworkForSagaID:(unint64_t)a3 artworkVariantType:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)importItemArtworkForSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)importScreenshotForSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
+- (void)editCollaborationWithPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits completion:(id)completion;
+- (void)endCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)environmentMonitorDidChangePower:(id)power;
+- (void)favoriteAlbumWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)favoriteArtistWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)favoriteEntityWithPersistentID:(int64_t)d sagaID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler;
+- (void)favoriteEntityWithPersistentID:(int64_t)d storeID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler;
+- (void)favoritePlaylistWithPersistentID:(int64_t)d globalID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)importContainerArtworkForSagaID:(unint64_t)d artworkVariantType:(int64_t)type clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)importItemArtworkForSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)importScreenshotForSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
 - (void)increasePriorityForAllOperations;
-- (void)joinCollaborationWithGlobalPlaylistID:(id)a3 invitationURL:(id)a4 completion:(id)a5;
-- (void)loadArtworkInfoForContainerSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)loadArtworkInfoForSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)loadGeniusItemsForSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)loadScreenshotInfoForSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)movePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6;
-- (void)movePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6;
-- (void)movePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 toPosition:(int64_t)a6 completion:(id)a7;
-- (void)pinLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)pinLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)pinLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7;
-- (void)publishPlaylistWithSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removeCollaborators:(id)a3 fromCollaborationWithPersistentID:(int64_t)a4 completion:(id)a5;
-- (void)removeItemsWithSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 completion:(id)a5;
-- (void)removePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 completion:(id)a5;
-- (void)removePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 completion:(id)a6;
-- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4;
-- (void)setAlbumArtistProperties:(id)a3 withArtistPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)setAlbumEntityProperties:(id)a3 withAlbumPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)setAlbumProperties:(id)a3 forItemsWithAlbumPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)setItemProperties:(id)a3 forSagaID:(unint64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 clientIdentity:(id)a6 completionHandler:(id)a7;
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 clientIdentity:(id)a6 requestingBundleID:(id)a7 completionHandler:(id)a8;
-- (void)updateItemPlayDataWithClientIdentity:(id)a3 completionHandler:(id)a4;
-- (void)updateLibraryWithClientIdentity:(id)a3 reason:(int64_t)a4 allowNoisyAuthPrompt:(BOOL)a5 isExplicitUserAction:(BOOL)a6 reconcileLibraryPins:(BOOL)a7 completionHandler:(id)a8;
-- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7;
-- (void)updatePlaylistPlayDataWithClientIdentity:(id)a3 completionHandler:(id)a4;
-- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)uploadItemPropertiesWithClientIdentity:(id)a3 minimumTimeInterval:(double)a4;
-- (void)uploadPlaylistPropertiesWithClientIdentity:(id)a3 minimumTimeInterval:(double)a4;
+- (void)joinCollaborationWithGlobalPlaylistID:(id)d invitationURL:(id)l completion:(id)completion;
+- (void)loadArtworkInfoForContainerSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)loadArtworkInfoForSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)loadGeniusItemsForSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)loadScreenshotInfoForSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)movePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD toPosition:(int64_t)position completion:(id)completion;
+- (void)movePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD toPosition:(int64_t)position completion:(id)completion;
+- (void)movePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type toPosition:(int64_t)position completion:(id)completion;
+- (void)pinLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)pinLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)pinLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion;
+- (void)publishPlaylistWithSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeCollaborators:(id)collaborators fromCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)removeItemsWithSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)removePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion;
+- (void)removePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion;
+- (void)removePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion;
+- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)setAlbumArtistProperties:(id)properties withArtistPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setAlbumEntityProperties:(id)properties withAlbumPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setAlbumProperties:(id)properties forItemsWithAlbumPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setItemProperties:(id)properties forSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d clientIdentity:(id)identity requestingBundleID:(id)iD completionHandler:(id)handler;
+- (void)updateItemPlayDataWithClientIdentity:(id)identity completionHandler:(id)handler;
+- (void)updateLibraryWithClientIdentity:(id)identity reason:(int64_t)reason allowNoisyAuthPrompt:(BOOL)prompt isExplicitUserAction:(BOOL)action reconcileLibraryPins:(BOOL)pins completionHandler:(id)handler;
+- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePlaylistPlayDataWithClientIdentity:(id)identity completionHandler:(id)handler;
+- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)uploadItemPropertiesWithClientIdentity:(id)identity minimumTimeInterval:(double)interval;
+- (void)uploadPlaylistPropertiesWithClientIdentity:(id)identity minimumTimeInterval:(double)interval;
 @end
 
 @implementation SagaRequestHandler
 
-- (void)_updateLibraryForFailedLibraryPinsOperationWithCompletion:(id)a3
+- (void)_updateLibraryForFailedLibraryPinsOperationWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)_handleLibraryEditOperationCompletionUpdatingLibrary:(BOOL)a3 andSubscribedPlaylist:(unint64_t)a4 completion:(id)a5
+- (void)_handleLibraryEditOperationCompletionUpdatingLibrary:(BOOL)library andSubscribedPlaylist:(unint64_t)playlist completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(ICConnectionConfiguration *)self->_configuration clientIdentity];
-  if (v6)
+  libraryCopy = library;
+  completionCopy = completion;
+  clientIdentity = [(ICConnectionConfiguration *)self->_configuration clientIdentity];
+  if (libraryCopy)
   {
     v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Requesting library update because the response contained update-required flag", buf, 0xCu);
     }
 
@@ -104,9 +104,9 @@
     v17[2] = sub_100086864;
     v17[3] = &unk_1001DC4E8;
     v17[4] = self;
-    v20 = a4;
-    v19 = v8;
-    v18 = v9;
+    playlistCopy = playlist;
+    v19 = completionCopy;
+    v18 = clientIdentity;
     [(SagaRequestHandler *)self updateLibraryWithClientIdentity:v18 reason:8 allowNoisyAuthPrompt:1 isExplicitUserAction:0 reconcileLibraryPins:0 completionHandler:v17];
 
     v11 = v19;
@@ -114,9 +114,9 @@
 
   else
   {
-    if (!a4)
+    if (!playlist)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
       goto LABEL_10;
     }
 
@@ -124,13 +124,13 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2048;
-      v25 = a4;
+      playlistCopy2 = playlist;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Requesting subscribed playlist update for %lld", buf, 0x16u);
     }
 
-    v13 = [NSNumber numberWithUnsignedLongLong:a4];
+    v13 = [NSNumber numberWithUnsignedLongLong:playlist];
     v21 = v13;
     v14 = [NSArray arrayWithObjects:&v21 count:1];
     v15[0] = _NSConcreteStackBlock;
@@ -138,8 +138,8 @@
     v15[2] = sub_100086AF4;
     v15[3] = &unk_1001DFC28;
     v15[4] = self;
-    v16 = v8;
-    [(SagaRequestHandler *)self updateSubscribedPlaylistsWithSagaIDs:v14 ignoreMinRefreshInterval:1 requestReason:8 pinnedOnly:0 clientIdentity:v9 completionHandler:v15];
+    v16 = completionCopy;
+    [(SagaRequestHandler *)self updateSubscribedPlaylistsWithSagaIDs:v14 ignoreMinRefreshInterval:1 requestReason:8 pinnedOnly:0 clientIdentity:clientIdentity completionHandler:v15];
 
     v11 = v16;
   }
@@ -147,9 +147,9 @@
 LABEL_10:
 }
 
-- (void)_handleCloudLibraryUpdateOperationFinishedWithError:(id)a3
+- (void)_handleCloudLibraryUpdateOperationFinishedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(NSMutableArray *)self->_updateLibraryCompletionHandlers copy];
   if ([v5 count])
   {
@@ -159,7 +159,7 @@ LABEL_10:
     v11 = sub_100086EF8;
     v12 = &unk_1001DF618;
     v13 = v5;
-    v14 = v4;
+    v14 = errorCopy;
     dispatch_async(calloutQueue, &v9);
   }
 
@@ -171,57 +171,57 @@ LABEL_10:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - Posting Saga update in progress changed notification", buf, 0xCu);
   }
 }
 
-- (void)updateLibraryWithClientIdentity:(id)a3 reason:(int64_t)a4 allowNoisyAuthPrompt:(BOOL)a5 isExplicitUserAction:(BOOL)a6 reconcileLibraryPins:(BOOL)a7 completionHandler:(id)a8
+- (void)updateLibraryWithClientIdentity:(id)identity reason:(int64_t)reason allowNoisyAuthPrompt:(BOOL)prompt isExplicitUserAction:(BOOL)action reconcileLibraryPins:(BOOL)pins completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a8;
+  pinsCopy = pins;
+  actionCopy = action;
+  promptCopy = prompt;
+  identityCopy = identity;
+  handlerCopy = handler;
   v16 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = ICCloudClientGetStringForRequestReason();
     *buf = 138544386;
-    v73 = self;
+    selfCopy8 = self;
     v74 = 2114;
     *v75 = v17;
     *&v75[8] = 1024;
-    *v76 = v11;
+    *v76 = promptCopy;
     *&v76[4] = 1024;
-    *&v76[6] = v10;
+    *&v76[6] = actionCopy;
     v77 = 1024;
-    v78 = v9;
+    v78 = pinsCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to update cloud library (requestReason = %{public}@), allowNoisyAuthPrompt=%{BOOL}u, isExplicitUserAction=%{BOOL}u, reconcileLibraryPins=%{BOOL}u", buf, 0x28u);
   }
 
   v18 = +[ICCloudAvailabilityController sharedController];
-  v19 = [v18 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v18 shouldProhibitMusicActionForCurrentNetworkConditions];
 
-  if (!v19)
+  if (!shouldProhibitMusicActionForCurrentNetworkConditions)
   {
-    v51 = v14;
-    v24 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-    v25 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v24];
-    v26 = [v25 shouldBlockPersonalizedNetworkRequestsForMedia];
+    v51 = identityCopy;
+    userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+    v25 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:userIdentity];
+    shouldBlockPersonalizedNetworkRequestsForMedia = [v25 shouldBlockPersonalizedNetworkRequestsForMedia];
 
-    if (v26)
+    if (shouldBlockPersonalizedNetworkRequestsForMedia)
     {
       v27 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v73 = self;
+        selfCopy8 = self;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ - Skipping update because privacy acknowledgement is required", buf, 0xCu);
       }
 
-      v14 = v51;
-      if (!v15)
+      identityCopy = v51;
+      if (!handlerCopy)
       {
         goto LABEL_45;
       }
@@ -231,72 +231,72 @@ LABEL_10:
       v68[1] = 3221225472;
       v68[2] = sub_1000878DC;
       v68[3] = &unk_1001DF5C8;
-      v69 = v15;
+      v69 = handlerCopy;
       dispatch_async(calloutQueue, v68);
       v29 = v69;
       goto LABEL_44;
     }
 
-    v30 = [(SagaRequestHandler *)self _library];
-    v29 = v30;
-    if (!v30)
+    _library = [(SagaRequestHandler *)self _library];
+    v29 = _library;
+    if (!_library)
     {
       v41 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v73 = self;
+        selfCopy8 = self;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ - Could not initialize saga library", buf, 0xCu);
       }
 
-      v14 = v51;
-      if (!v15)
+      identityCopy = v51;
+      if (!handlerCopy)
       {
         v29 = 0;
         goto LABEL_44;
       }
 
-      v50 = v24;
+      v50 = userIdentity;
       v42 = self->_calloutQueue;
       v66[0] = _NSConcreteStackBlock;
       v66[1] = 3221225472;
       v66[2] = sub_100087954;
       v66[3] = &unk_1001DF5C8;
-      v67 = v15;
+      v67 = handlerCopy;
       dispatch_async(v42, v66);
       v34 = v67;
 LABEL_43:
 
-      v24 = v50;
+      userIdentity = v50;
 LABEL_44:
 
       goto LABEL_45;
     }
 
-    v49 = v30;
-    v50 = v24;
-    v31 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-    v32 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+    v49 = _library;
+    v50 = userIdentity;
+    userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+    userIdentity2 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
     v65 = 0;
-    v33 = [v31 getPropertiesForUserIdentity:v32 error:&v65];
+    v33 = [userIdentityStore getPropertiesForUserIdentity:userIdentity2 error:&v65];
     v34 = v65;
 
     v48 = v33;
     if (!v33 || v34)
     {
       v43 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
-      v14 = v51;
+      identityCopy = v51;
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v73 = self;
+        selfCopy8 = self;
         v74 = 2114;
         *v75 = v34;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%{public}@ - Could not load user identity properties. error=%{public}@", buf, 0x16u);
       }
 
       v29 = v49;
-      if (!v15)
+      if (!handlerCopy)
       {
         goto LABEL_42;
       }
@@ -306,7 +306,7 @@ LABEL_44:
       v62[1] = 3221225472;
       v62[2] = sub_1000879C0;
       v62[3] = &unk_1001DF5A0;
-      v64 = v15;
+      v64 = handlerCopy;
       v63 = v34;
       dispatch_async(v44, v62);
 
@@ -316,20 +316,20 @@ LABEL_44:
     else if ([v33 isActiveLocker])
     {
       [(ML3MusicLibrary *)self->_musicLibrary setClientIdentity:v51];
-      v35 = [v33 DSID];
-      v36 = [(ML3MusicLibrary *)self->_musicLibrary sagaAccountID];
-      v47 = v35;
-      if (v35 != v36 && ([v35 isEqual:v36] & 1) == 0)
+      dSID = [v33 DSID];
+      sagaAccountID = [(ML3MusicLibrary *)self->_musicLibrary sagaAccountID];
+      v47 = dSID;
+      if (dSID != sagaAccountID && ([dSID isEqual:sagaAccountID] & 1) == 0)
       {
-        if (v36)
+        if (sagaAccountID)
         {
           v37 = sub_10010275C();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
           {
             *buf = 138543874;
-            v73 = self;
+            selfCopy8 = self;
             v74 = 2114;
-            *v75 = v36;
+            *v75 = sagaAccountID;
             *&v75[8] = 2114;
             *v76 = v47;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_FAULT, "%{public}@ - CloudIds are different. oldValue=%{public}@, currentValue=%{public}@}", buf, 0x20u);
@@ -346,13 +346,13 @@ LABEL_44:
       v52[1] = 3221225472;
       v52[2] = sub_100087A40;
       v52[3] = &unk_1001DC4C0;
-      v55 = v15;
-      v56 = a4;
+      v55 = handlerCopy;
+      reasonCopy = reason;
       v52[4] = self;
       v53 = v51;
-      v57 = v11;
-      v58 = v10;
-      v59 = v9;
+      v57 = promptCopy;
+      v58 = actionCopy;
+      v59 = pinsCopy;
       v54 = v49;
       v39 = updateCloudLibraryQueue;
       v29 = v49;
@@ -367,17 +367,17 @@ LABEL_44:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v73 = self;
+        selfCopy8 = self;
         v74 = 1024;
-        *v75 = a4;
+        *v75 = reason;
         *&v75[4] = 1024;
-        *&v75[6] = v11;
+        *&v75[6] = promptCopy;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "%{public}@ - Locker bit is not set on the account. Will not updateLibrary for reason=%d, allowNoisyAuthPrompt=%{BOOL}u", buf, 0x18u);
       }
 
-      v14 = v51;
+      identityCopy = v51;
       v29 = v49;
-      if (!v15)
+      if (!handlerCopy)
       {
         goto LABEL_42;
       }
@@ -387,12 +387,12 @@ LABEL_44:
       v60[1] = 3221225472;
       v60[2] = sub_1000879D4;
       v60[3] = &unk_1001DF5C8;
-      v61 = v15;
+      v61 = handlerCopy;
       dispatch_async(v46, v60);
       v40 = v61;
     }
 
-    v14 = v51;
+    identityCopy = v51;
 LABEL_42:
 
     goto LABEL_43;
@@ -403,35 +403,35 @@ LABEL_42:
   {
     v21 = ICCloudClientGetStringForRequestReason();
     *buf = 138543618;
-    v73 = self;
+    selfCopy8 = self;
     v74 = 2114;
     *v75 = v21;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - No WiFi connection, skipping update (requestReason = %{public}@)", buf, 0x16u);
   }
 
-  if (a4 == 2)
+  if (reason == 2)
   {
     v22 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v73 = self;
+      selfCopy8 = self;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ - Rescheduling push notification triggered update when WiFi becomes available.", buf, 0xCu);
     }
 
     [(ICDCloudMusicLibrarySagaUpdateTaskHelper *)self->_updateTaskHelper scheduleBackgroundTaskToUpdateLibraryType:1];
   }
 
-  if (v15)
+  if (handlerCopy)
   {
     v23 = self->_calloutQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000878C8;
     block[3] = &unk_1001DF5C8;
-    v71 = v15;
+    v71 = handlerCopy;
     dispatch_async(v23, block);
-    v24 = v71;
+    userIdentity = v71;
 LABEL_45:
   }
 }
@@ -451,29 +451,29 @@ LABEL_45:
   return v6;
 }
 
-- (void)environmentMonitorDidChangePower:(id)a3
+- (void)environmentMonitorDidChangePower:(id)power
 {
-  v4 = a3;
+  powerCopy = power;
   v5 = +[ICDeviceInfo currentDeviceInfo];
-  v6 = [v5 isWatch];
+  isWatch = [v5 isWatch];
 
-  if (v6)
+  if (isWatch)
   {
-    v7 = [v4 isCharging];
+    isCharging = [powerCopy isCharging];
     v8 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (isCharging)
     {
       if (v9)
       {
         v12 = 138543362;
-        v13 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - Device is plugged in - checking for artwork to download", &v12, 0xCu);
       }
 
       artworkImporter = self->_artworkImporter;
-      v11 = [(ICConnectionConfiguration *)self->_configuration clientIdentity];
-      [(SagaArtworkImporter *)artworkImporter importAllItemArtworkWithClientIdentity:v11];
+      clientIdentity = [(ICConnectionConfiguration *)self->_configuration clientIdentity];
+      [(SagaArtworkImporter *)artworkImporter importAllItemArtworkWithClientIdentity:clientIdentity];
     }
 
     else
@@ -481,7 +481,7 @@ LABEL_45:
       if (v9)
       {
         v12 = 138543362;
-        v13 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - Device was unplugged from power - cancelling artwork downloads", &v12, 0xCu);
       }
 
@@ -490,127 +490,127 @@ LABEL_45:
   }
 }
 
-- (void)movePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6
+- (void)movePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD toPosition:(int64_t)position completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [[SagaMoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudAlbumID:v11 newPosition:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  v12 = [[SagaMoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudAlbumID:iDCopy newPosition:position completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v12 priority:2 noLibraryHandler:0];
 }
 
-- (void)movePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6
+- (void)movePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD toPosition:(int64_t)position completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [[SagaMoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudArtistID:v11 newPosition:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  v12 = [[SagaMoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudArtistID:iDCopy newPosition:position completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v12 priority:2 noLibraryHandler:0];
 }
 
-- (void)movePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 toPosition:(int64_t)a6 completion:(id)a7
+- (void)movePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type toPosition:(int64_t)position completion:(id)completion
 {
-  v12 = a7;
-  v13 = [[SagaMoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudID:a4 type:a5 newPosition:a6 completion:v12];
+  completionCopy = completion;
+  v13 = [[SagaMoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudID:iD type:type newPosition:position completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v13 priority:2 noLibraryHandler:0];
 }
 
-- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [[SagaUpdateLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudAlbumID:v11 defaultAction:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  v12 = [[SagaUpdateLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudAlbumID:iDCopy defaultAction:action completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v12 priority:2 noLibraryHandler:0];
 }
 
-- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [[SagaUpdateLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudArtistID:v11 defaultAction:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  v12 = [[SagaUpdateLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudArtistID:iDCopy defaultAction:action completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v12 priority:2 noLibraryHandler:0];
 }
 
-- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7
+- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion
 {
-  v12 = a7;
-  v13 = [[SagaUpdateLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudID:a4 type:a5 defaultAction:a6 completion:v12];
+  completionCopy = completion;
+  v13 = [[SagaUpdateLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudID:iD type:type defaultAction:action completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v13 priority:2 noLibraryHandler:0];
 }
 
-- (void)removePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 completion:(id)a5
+- (void)removePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[SagaRemoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudAlbumID:v9 completion:v8];
+  completionCopy = completion;
+  iDCopy = iD;
+  v10 = [[SagaRemoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudAlbumID:iDCopy completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v10 priority:2 noLibraryHandler:0];
 }
 
-- (void)removePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 completion:(id)a5
+- (void)removePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[SagaRemoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudArtistID:v9 completion:v8];
+  completionCopy = completion;
+  iDCopy = iD;
+  v10 = [[SagaRemoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudArtistID:iDCopy completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v10 priority:2 noLibraryHandler:0];
 }
 
-- (void)removePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 completion:(id)a6
+- (void)removePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
-  v11 = [[SagaRemoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudID:a4 type:a5 completion:v10];
+  completionCopy = completion;
+  v11 = [[SagaRemoveLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudID:iD type:type completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v11 priority:2 noLibraryHandler:0];
 }
 
-- (void)pinLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)pinLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [[SagaAddLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudAlbumID:v11 defaultAction:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  v12 = [[SagaAddLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudAlbumID:iDCopy defaultAction:action completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v12 priority:2 noLibraryHandler:0];
 }
 
-- (void)pinLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)pinLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [[SagaAddLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudArtistID:v11 defaultAction:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  v12 = [[SagaAddLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudArtistID:iDCopy defaultAction:action completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v12 priority:2 noLibraryHandler:0];
 }
 
-- (void)pinLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7
+- (void)pinLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion
 {
-  v12 = a7;
-  v13 = [[SagaAddLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:a3 cloudID:a4 type:a5 defaultAction:a6 completion:v12];
+  completionCopy = completion;
+  v13 = [[SagaAddLibraryPinOperation alloc] initWithConfiguration:self->_configuration persistentID:d cloudID:iD type:type defaultAction:action completion:completionCopy];
 
   [(SagaRequestHandler *)self _addLibraryOperation:v13 priority:2 noLibraryHandler:0];
 }
 
-- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4
+- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - resetting invitation link for persistentID %lld", buf, 0x16u);
   }
 
   v8 = [SagaCollaborationResetInvitationURLOperation alloc];
   configuration = self->_configuration;
-  v10 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v11 = [(SagaCollaborationResetInvitationURLOperation *)v8 initWithConfiguration:configuration clientIdentity:v10 persistentID:a3];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v11 = [(SagaCollaborationResetInvitationURLOperation *)v8 initWithConfiguration:configuration clientIdentity:clientIdentity persistentID:d];
 
   objc_initWeak(buf, v11);
   v13[0] = _NSConcreteStackBlock;
@@ -618,7 +618,7 @@ LABEL_45:
   v13[2] = sub_100089388;
   v13[3] = &unk_1001DD5D0;
   objc_copyWeak(&v15, buf);
-  v12 = v6;
+  v12 = completionCopy;
   v13[4] = self;
   v14 = v12;
   [(SagaCollaborationResetInvitationURLOperation *)v11 setCompletionBlock:v13];
@@ -628,27 +628,27 @@ LABEL_45:
   objc_destroyWeak(buf);
 }
 
-- (void)removeCollaborators:(id)a3 fromCollaborationWithPersistentID:(int64_t)a4 completion:(id)a5
+- (void)removeCollaborators:(id)collaborators fromCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  collaboratorsCopy = collaborators;
+  completionCopy = completion;
   v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 componentsJoinedByString:{@", "}];
+    v11 = [collaboratorsCopy componentsJoinedByString:{@", "}];
     *buf = 138543874;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v11;
     v24 = 2048;
-    v25 = a4;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - removing users (%{public}@) for persistendID %lld", buf, 0x20u);
   }
 
   v12 = [SagaCollaborationRemoveCollaboratorsOperation alloc];
   configuration = self->_configuration;
-  v14 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v15 = [(SagaCollaborationRemoveCollaboratorsOperation *)v12 initWithConfiguration:configuration clientIdentity:v14 persistentID:a4 socialProfileIDs:v8];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v15 = [(SagaCollaborationRemoveCollaboratorsOperation *)v12 initWithConfiguration:configuration clientIdentity:clientIdentity persistentID:d socialProfileIDs:collaboratorsCopy];
 
   objc_initWeak(buf, v15);
   v17[0] = _NSConcreteStackBlock;
@@ -656,7 +656,7 @@ LABEL_45:
   v17[2] = sub_100089758;
   v17[3] = &unk_1001DD5D0;
   objc_copyWeak(&v19, buf);
-  v16 = v9;
+  v16 = completionCopy;
   v17[4] = self;
   v18 = v16;
   [(SagaCollaborationRemoveCollaboratorsOperation *)v15 setCompletionBlock:v17];
@@ -666,25 +666,25 @@ LABEL_45:
   objc_destroyWeak(buf);
 }
 
-- (void)joinCollaborationWithGlobalPlaylistID:(id)a3 invitationURL:(id)a4 completion:(id)a5
+- (void)joinCollaborationWithGlobalPlaylistID:(id)d invitationURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  lCopy = l;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v8;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - joining collaboration for playlist with cloud ID %{public}@", buf, 0x16u);
   }
 
   v12 = [SagaCollaborationJoinOperation alloc];
   configuration = self->_configuration;
-  v14 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v15 = [(SagaCollaborationJoinOperation *)v12 initWithConfiguration:configuration clientIdentity:v14 globalPlaylistID:v8 invitationURL:v9];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v15 = [(SagaCollaborationJoinOperation *)v12 initWithConfiguration:configuration clientIdentity:clientIdentity globalPlaylistID:dCopy invitationURL:lCopy];
 
   objc_initWeak(buf, v15);
   v17[0] = _NSConcreteStackBlock;
@@ -692,7 +692,7 @@ LABEL_45:
   v17[2] = sub_100089E60;
   v17[3] = &unk_1001DD5D0;
   objc_copyWeak(&v19, buf);
-  v16 = v10;
+  v16 = completionCopy;
   v17[4] = self;
   v18 = v16;
   [(SagaCollaborationJoinOperation *)v15 setCompletionBlock:v17];
@@ -702,25 +702,25 @@ LABEL_45:
   objc_destroyWeak(buf);
 }
 
-- (void)editCollaborationWithPersistentID:(int64_t)a3 properties:(id)a4 trackEdits:(id)a5 completion:(id)a6
+- (void)editCollaborationWithPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  propertiesCopy = properties;
+  editsCopy = edits;
+  completionCopy = completion;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - editing a collaboration with persistentID %lld", buf, 0x16u);
   }
 
   v14 = [SagaCollaborationEditOperation alloc];
   configuration = self->_configuration;
-  v16 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v17 = [(SagaCollaborationEditOperation *)v14 initWithConfiguration:configuration clientIdentity:v16 collaborationPersistentID:a3 properties:v10 trackEdits:v11];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v17 = [(SagaCollaborationEditOperation *)v14 initWithConfiguration:configuration clientIdentity:clientIdentity collaborationPersistentID:d properties:propertiesCopy trackEdits:editsCopy];
 
   objc_initWeak(buf, v17);
   v19[0] = _NSConcreteStackBlock;
@@ -728,7 +728,7 @@ LABEL_45:
   v19[2] = sub_10008A1F0;
   v19[3] = &unk_1001DD5D0;
   objc_copyWeak(&v21, buf);
-  v18 = v12;
+  v18 = completionCopy;
   v19[4] = self;
   v20 = v18;
   [(SagaCollaborationEditOperation *)v17 setCompletionBlock:v19];
@@ -738,23 +738,23 @@ LABEL_45:
   objc_destroyWeak(buf);
 }
 
-- (void)endCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4
+- (void)endCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - ending collaboration for playlist with persistent ID %lld", buf, 0x16u);
   }
 
   v8 = [SagaCollaborationEndOperation alloc];
   configuration = self->_configuration;
-  v10 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v11 = [(SagaCollaborationEndOperation *)v8 initWithConfiguration:configuration clientIdentity:v10 collaborationPersistentID:a3];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v11 = [(SagaCollaborationEndOperation *)v8 initWithConfiguration:configuration clientIdentity:clientIdentity collaborationPersistentID:d];
 
   objc_initWeak(buf, v11);
   v13[0] = _NSConcreteStackBlock;
@@ -762,7 +762,7 @@ LABEL_45:
   v13[2] = sub_10008A548;
   v13[3] = &unk_1001DD5D0;
   objc_copyWeak(&v15, buf);
-  v12 = v6;
+  v12 = completionCopy;
   v13[4] = self;
   v14 = v12;
   [(SagaCollaborationEndOperation *)v11 setCompletionBlock:v13];
@@ -772,29 +772,29 @@ LABEL_45:
   objc_destroyWeak(buf);
 }
 
-- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)a3 sharingMode:(unint64_t)a4 completion:(id)a5
+- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)d sharingMode:(unint64_t)mode completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - starting collaboration using playlist with persistentID %lld", buf, 0x16u);
   }
 
   v10 = self->_configuration;
-  v11 = [(ICConnectionConfiguration *)self->_configuration clientIdentity];
-  v12 = [[SagaCollaborationBeginOperation alloc] initWithConfiguration:v10 clientIdentity:v11 playlistPersistentID:a3 sharingMode:a4];
+  clientIdentity = [(ICConnectionConfiguration *)self->_configuration clientIdentity];
+  v12 = [[SagaCollaborationBeginOperation alloc] initWithConfiguration:v10 clientIdentity:clientIdentity playlistPersistentID:d sharingMode:mode];
   objc_initWeak(buf, v12);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10008A8B4;
   v14[3] = &unk_1001DD5D0;
   objc_copyWeak(&v16, buf);
-  v13 = v8;
+  v13 = completionCopy;
   v14[4] = self;
   v15 = v13;
   [(SagaCollaborationBeginOperation *)v12 setCompletionBlock:v14];
@@ -804,12 +804,12 @@ LABEL_45:
   objc_destroyWeak(buf);
 }
 
-- (void)favoriteArtistWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoriteArtistWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 length];
+  iDCopy = iD;
+  timeCopy = time;
+  handlerCopy = handler;
+  v13 = [iDCopy length];
   v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v15 = v14;
   if (v13)
@@ -817,16 +817,16 @@ LABEL_45:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2114;
-      v33 = v10;
+      v33 = iDCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - favoriting artist with cloudID=%{public}@}", buf, 0x16u);
     }
 
     v16 = [SagaFavoriteEntityOperation alloc];
     configuration = self->_configuration;
-    v18 = [(ICConnectionConfiguration *)configuration clientIdentity];
-    v19 = [(SagaFavoriteEntityOperation *)v16 initWithConfiguration:configuration clientIdentity:v18 persistentID:a3 artistCloudLibraryID:v10 time:v11];
+    clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+    v19 = [(SagaFavoriteEntityOperation *)v16 initWithConfiguration:configuration clientIdentity:clientIdentity persistentID:d artistCloudLibraryID:iDCopy time:timeCopy];
 
     [(SagaFavoriteEntityOperation *)v19 setName:@"com.apple.itunescloudd.SagaRequestHandler.favoriteCloudArtistEntityOperation"];
     objc_initWeak(buf, v19);
@@ -834,7 +834,7 @@ LABEL_45:
     v23 = 3221225472;
     v24 = sub_10008AD5C;
     v25 = &unk_1001DCA10;
-    v26 = v12;
+    v26 = handlerCopy;
     objc_copyWeak(&v27, buf);
     [(SagaFavoriteEntityOperation *)v19 setCompletionBlock:&v22];
     [(SagaRequestHandler *)self _addLibraryOperation:v19 priority:2 noLibraryHandler:0, v22, v23, v24, v25];
@@ -847,15 +847,15 @@ LABEL_45:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2114;
-    v33 = v10;
+    v33 = iDCopy;
     v34 = 2114;
-    v35 = v11;
+    v35 = timeCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@ - cannot favorite album artist with invalid cloud-library-id=%{public}@, timeStamp=%{public}@", buf, 0x20u);
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v28[0] = @"entityType";
     v19 = NSStringFromICFavoriteMediaEntityType();
@@ -864,18 +864,18 @@ LABEL_45:
     v29[1] = @"favorite";
     v20 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     v21 = [NSError errorWithDomain:ICErrorDomain code:-7101 userInfo:v20];
-    (*(v12 + 2))(v12, v21);
+    (*(handlerCopy + 2))(handlerCopy, v21);
 
 LABEL_9:
   }
 }
 
-- (void)favoriteAlbumWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoriteAlbumWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 length];
+  iDCopy = iD;
+  timeCopy = time;
+  handlerCopy = handler;
+  v13 = [iDCopy length];
   v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v15 = v14;
   if (v13)
@@ -883,16 +883,16 @@ LABEL_9:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2114;
-      v33 = v10;
+      v33 = iDCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - favoriting album with cloudID=%{public}@}", buf, 0x16u);
     }
 
     v16 = [SagaFavoriteEntityOperation alloc];
     configuration = self->_configuration;
-    v18 = [(ICConnectionConfiguration *)configuration clientIdentity];
-    v19 = [(SagaFavoriteEntityOperation *)v16 initWithConfiguration:configuration clientIdentity:v18 persistentID:a3 albumCloudLibraryID:v10 time:v11];
+    clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+    v19 = [(SagaFavoriteEntityOperation *)v16 initWithConfiguration:configuration clientIdentity:clientIdentity persistentID:d albumCloudLibraryID:iDCopy time:timeCopy];
 
     [(SagaFavoriteEntityOperation *)v19 setName:@"com.apple.itunescloudd.SagaRequestHandler.favoriteCloudAlbumEntityOperation"];
     objc_initWeak(buf, v19);
@@ -900,7 +900,7 @@ LABEL_9:
     v23 = 3221225472;
     v24 = sub_10008B108;
     v25 = &unk_1001DCA10;
-    v26 = v12;
+    v26 = handlerCopy;
     objc_copyWeak(&v27, buf);
     [(SagaFavoriteEntityOperation *)v19 setCompletionBlock:&v22];
     [(SagaRequestHandler *)self _addLibraryOperation:v19 priority:2 noLibraryHandler:0, v22, v23, v24, v25];
@@ -913,15 +913,15 @@ LABEL_9:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2114;
-    v33 = v10;
+    v33 = iDCopy;
     v34 = 2114;
-    v35 = v11;
+    v35 = timeCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@ - cannot favorite album with invalid cloud-library-id=%{public}@ timeStamp=%{public}@", buf, 0x20u);
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v28[0] = @"entityType";
     v19 = NSStringFromICFavoriteMediaEntityType();
@@ -930,33 +930,33 @@ LABEL_9:
     v29[1] = @"favorite";
     v20 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     v21 = [NSError errorWithDomain:ICErrorDomain code:-7101 userInfo:v20];
-    (*(v12 + 2))(v12, v21);
+    (*(handlerCopy + 2))(handlerCopy, v21);
 
 LABEL_9:
   }
 }
 
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 sagaID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7
+- (void)favoriteEntityWithPersistentID:(int64_t)d sagaID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler
 {
-  v11 = a6;
-  v12 = a7;
+  timeCopy = time;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v14 = v13;
-  if (a5 <= 1)
+  if (type <= 1)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = NSStringFromICFavoriteMediaEntityType();
       *buf = 138543874;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2048;
-      v41 = a4;
+      iDCopy = iD;
       v42 = 2114;
-      v43 = v15;
+      iDCopy2 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - favoriting entity with cloudID=%lld, entityType=%{public}@", buf, 0x20u);
     }
 
-    v16 = a5 == 0;
+    v16 = type == 0;
 
     v17 = &ML3TrackPropertyLikedState;
     if (!v16)
@@ -980,19 +980,19 @@ LABEL_9:
     v36[0] = v20;
     v36[1] = v21;
     v37[0] = &off_1001ED5A0;
-    v37[1] = v11;
+    v37[1] = timeCopy;
     v22 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
     v23 = [SagaSetItemPropertyOperation alloc];
     configuration = self->_configuration;
-    v25 = [(ICConnectionConfiguration *)configuration clientIdentity];
-    v26 = [(SagaSetItemPropertyOperation *)v23 initWithConfiguration:configuration clientIdentity:v25 sagaID:a4 properties:v22];
+    clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+    v26 = [(SagaSetItemPropertyOperation *)v23 initWithConfiguration:configuration clientIdentity:clientIdentity sagaID:iD properties:v22];
 
     objc_initWeak(buf, v26);
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_10008B590;
     v31 = &unk_1001DCA10;
-    v32 = v12;
+    v32 = handlerCopy;
     objc_copyWeak(&v33, buf);
     [(SagaSetItemPropertyOperation *)v26 setCompletionBlock:&v28];
     [(SagaSetItemPropertyOperation *)v26 setName:@"com.apple.itunescloudd.SagaRequestHandler.setItemPropertyOperation", v28, v29, v30, v31];
@@ -1007,50 +1007,50 @@ LABEL_9:
   {
     v27 = NSStringFromICFavoriteMediaEntityType();
     *buf = 138543874;
-    v39 = self;
+    selfCopy2 = self;
     v40 = 2114;
-    v41 = v27;
+    iDCopy = v27;
     v42 = 2048;
-    v43 = a4;
+    iDCopy2 = iD;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@ - unsupported entityType=%{public}@ to favorite with entity with sagaID=%lld", buf, 0x20u);
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v34[0] = @"entityType";
     v20 = NSStringFromICFavoriteMediaEntityType();
     v35[0] = v20;
     v34[1] = @"sagaID";
-    v21 = [NSNumber numberWithLongLong:a4];
+    v21 = [NSNumber numberWithLongLong:iD];
     v35[1] = v21;
     v34[2] = @"action";
     v35[2] = @"favorite";
     v22 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
     v26 = [NSError errorWithDomain:ICErrorDomain code:-7101 userInfo:v22];
-    (*(v12 + 2))(v12, v26);
+    (*(handlerCopy + 2))(handlerCopy, v26);
 LABEL_14:
   }
 }
 
-- (void)favoritePlaylistWithPersistentID:(int64_t)a3 globalID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoritePlaylistWithPersistentID:(int64_t)d globalID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  iDCopy = iD;
+  timeCopy = time;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v10;
+    v28 = iDCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - favoriting playlist with globalID=%{public}@}", buf, 0x16u);
   }
 
   v14 = [SagaFavoriteEntityOperation alloc];
   configuration = self->_configuration;
-  v16 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v17 = [(SagaFavoriteEntityOperation *)v14 initWithConfiguration:configuration clientIdentity:v16 persistentID:a3 globalPlaylistID:v10 time:v11];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v17 = [(SagaFavoriteEntityOperation *)v14 initWithConfiguration:configuration clientIdentity:clientIdentity persistentID:d globalPlaylistID:iDCopy time:timeCopy];
 
   [(SagaFavoriteEntityOperation *)v17 setName:@"com.apple.itunescloudd.SagaRequestHandler.favoritePlaylistEntityOperation"];
   objc_initWeak(buf, v17);
@@ -1058,7 +1058,7 @@ LABEL_14:
   v20 = 3221225472;
   v21 = sub_10008B834;
   v22 = &unk_1001DCA10;
-  v18 = v12;
+  v18 = handlerCopy;
   v23 = v18;
   objc_copyWeak(&v24, buf);
   [(SagaFavoriteEntityOperation *)v17 setCompletionBlock:&v19];
@@ -1068,18 +1068,18 @@ LABEL_14:
   objc_destroyWeak(buf);
 }
 
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 storeID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7
+- (void)favoriteEntityWithPersistentID:(int64_t)d storeID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
+  timeCopy = time;
+  handlerCopy = handler;
   v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = NSStringFromICFavoriteMediaEntityType();
     *buf = 138543874;
-    v28 = self;
+    selfCopy = self;
     v29 = 2048;
-    v30 = a4;
+    iDCopy = iD;
     v31 = 2114;
     v32 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - favoriting entity with storeID=%lld, entityType=%{public}@", buf, 0x20u);
@@ -1087,8 +1087,8 @@ LABEL_14:
 
   v16 = [SagaFavoriteEntityOperation alloc];
   configuration = self->_configuration;
-  v18 = [(ICConnectionConfiguration *)configuration clientIdentity];
-  v19 = [(SagaFavoriteEntityOperation *)v16 initWithConfiguration:configuration clientIdentity:v18 persistentID:a3 storeID:a4 entityType:a5 time:v12];
+  clientIdentity = [(ICConnectionConfiguration *)configuration clientIdentity];
+  v19 = [(SagaFavoriteEntityOperation *)v16 initWithConfiguration:configuration clientIdentity:clientIdentity persistentID:d storeID:iD entityType:type time:timeCopy];
 
   [(SagaFavoriteEntityOperation *)v19 setName:@"com.apple.itunescloudd.SagaRequestHandler.favoriteEntityOperation"];
   objc_initWeak(buf, v19);
@@ -1096,7 +1096,7 @@ LABEL_14:
   v22 = 3221225472;
   v23 = sub_10008BAFC;
   v24 = &unk_1001DCA10;
-  v20 = v13;
+  v20 = handlerCopy;
   v25 = v20;
   objc_copyWeak(&v26, buf);
   [(SagaFavoriteEntityOperation *)v19 setCompletionBlock:&v21];
@@ -1125,25 +1125,25 @@ LABEL_14:
   return v3;
 }
 
-- (void)setItemProperties:(id)a3 forSagaID:(unint64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)setItemProperties:(id)properties forSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2048;
-    v27 = a4;
+    dCopy = d;
     v28 = 2114;
-    v29 = v10;
+    v29 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating item properties for sagaID %lld. properties=%{public}@", buf, 0x20u);
   }
 
-  v14 = [v10 objectForKey:@"daap.incrementplaycount"];
-  if (v14 || ([v10 objectForKey:@"daap.incrementskipcount"], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v10, "objectForKey:", @"daap.songdateadded"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v10, "objectForKey:", ML3TrackPropertyDatePlayed), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  v14 = [propertiesCopy objectForKey:@"daap.incrementplaycount"];
+  if (v14 || ([propertiesCopy objectForKey:@"daap.incrementskipcount"], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(propertiesCopy, "objectForKey:", @"daap.songdateadded"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(propertiesCopy, "objectForKey:", ML3TrackPropertyDatePlayed), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_8:
@@ -1151,13 +1151,13 @@ LABEL_8:
     v22[1] = 3221225472;
     v22[2] = sub_10008BFB4;
     v22[3] = &unk_1001DD8F0;
-    v23 = v12;
-    [(SagaRequestHandler *)self updateItemPlayDataWithClientIdentity:v11 completionHandler:v22];
+    v23 = handlerCopy;
+    [(SagaRequestHandler *)self updateItemPlayDataWithClientIdentity:identityCopy completionHandler:v22];
     v15 = v23;
     goto LABEL_9;
   }
 
-  v16 = [v10 objectForKey:ML3TrackPropertyDateSkipped];
+  v16 = [propertiesCopy objectForKey:ML3TrackPropertyDateSkipped];
   v17 = v16 == 0;
 
   if (!v17)
@@ -1169,19 +1169,19 @@ LABEL_8:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2114;
-    v27 = v10;
+    dCopy = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - Issuing immediate property change: %{public}@", buf, 0x16u);
   }
 
-  v15 = [[SagaSetItemPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v11 sagaID:a4 properties:v10];
+  v15 = [[SagaSetItemPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy sagaID:d properties:propertiesCopy];
   objc_initWeak(buf, v15);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10008BFCC;
   v19[3] = &unk_1001DCA10;
-  v20 = v12;
+  v20 = handlerCopy;
   objc_copyWeak(&v21, buf);
   [(SagaSetItemPropertyOperation *)v15 setCompletionBlock:v19];
   [(SagaSetItemPropertyOperation *)v15 setName:@"com.apple.itunescloudd.SagaRequestHandler.setItemPropertyOperation"];
@@ -1192,27 +1192,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)loadGeniusItemsForSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)loadGeniusItemsForSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Get genius items for saga ID: %llu", buf, 0x16u);
   }
 
-  v11 = [[SagaGetGeniusItemsOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v8 seedID:a3 numberOfItems:25];
+  v11 = [[SagaGetGeniusItemsOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy seedID:d numberOfItems:25];
   objc_initWeak(buf, v11);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10008C28C;
   v16[3] = &unk_1001DCA10;
-  v12 = v9;
+  v12 = handlerCopy;
   v17 = v12;
   objc_copyWeak(&v18, buf);
   [(SagaGetGeniusItemsOperation *)v11 setCompletionBlock:v16];
@@ -1229,17 +1229,17 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)loadScreenshotInfoForSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)loadScreenshotInfoForSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = objc_alloc_init(NSMutableArray);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v7;
+  v11 = dsCopy;
   v35 = [v11 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (!v35)
   {
@@ -1252,7 +1252,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v29 = v9;
+  v29 = handlerCopy;
   v32 = 0;
   v34 = *v42;
   v33 = ML3TrackPropertyStoreSagaID;
@@ -1268,7 +1268,7 @@ LABEL_3:
     }
 
     v13 = *(*(&v41 + 1) + 8 * v12);
-    [(ML3MusicLibrary *)self->_musicLibrary setClientIdentity:v8];
+    [(ML3MusicLibrary *)self->_musicLibrary setClientIdentity:identityCopy];
     v14 = [ML3ComparisonPredicate predicateWithProperty:v33 equalToValue:v13];
     v15 = [ML3Track anyInLibrary:self->_musicLibrary predicate:v14];
     v16 = [[ML3ArtworkTokenSet alloc] initWithEntity:v15 artworkType:2];
@@ -1282,13 +1282,13 @@ LABEL_3:
 
     else
     {
-      v20 = v8;
+      v20 = identityCopy;
       v21 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v15 persistentID];
+        persistentID = [v15 persistentID];
         *buf = 134217984;
-        v48 = v22;
+        v48 = persistentID;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "No saga artwork_token for screenshot item with persistent-id = %lld", buf, 0xCu);
       }
 
@@ -1299,7 +1299,7 @@ LABEL_3:
       v24 = [NSError ic_cloudClientErrorWithCode:2021 userInfo:v23];
 
       v32 = v24;
-      v8 = v20;
+      identityCopy = v20;
       v11 = v30;
       v10 = v31;
     }
@@ -1324,7 +1324,7 @@ LABEL_3:
   v25 = v10;
   v10 = 0;
   v26 = 0;
-  v9 = v29;
+  handlerCopy = v29;
   v27 = v32;
   if (v32)
   {
@@ -1332,47 +1332,47 @@ LABEL_3:
   }
 
 LABEL_18:
-  if (v9)
+  if (handlerCopy)
   {
     calloutQueue = self->_calloutQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10008C70C;
     block[3] = &unk_1001DF5F0;
-    v40 = v9;
+    v40 = handlerCopy;
     v38 = v31;
     v39 = v26;
     dispatch_async(calloutQueue, block);
   }
 }
 
-- (void)loadArtworkInfoForContainerSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)loadArtworkInfoForContainerSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2114;
-    v25 = v8;
+    v25 = dsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - Got load artwork info request for container saga IDs: %{public}@", buf, 0x16u);
   }
 
   v12 = +[ICCloudAvailabilityController sharedController];
-  v13 = [v12 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v12 shouldProhibitMusicActionForCurrentNetworkConditions];
 
-  if (!v13)
+  if (!shouldProhibitMusicActionForCurrentNetworkConditions)
   {
-    v15 = [(CloudLoadBulkArtworkInfoOperation *)[SagaLoadBulkContainerArtworkInfoOperation alloc] initWithConfiguration:self->_configuration cloudIDs:v8];
+    v15 = [(CloudLoadBulkArtworkInfoOperation *)[SagaLoadBulkContainerArtworkInfoOperation alloc] initWithConfiguration:self->_configuration cloudIDs:dsCopy];
     objc_initWeak(buf, v15);
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10008CA38;
     v19[3] = &unk_1001DCA10;
-    v16 = v10;
+    v16 = handlerCopy;
     v20 = v16;
     objc_copyWeak(&v21, buf);
     [(SagaLoadBulkContainerArtworkInfoOperation *)v15 setCompletionBlock:v19];
@@ -1393,45 +1393,45 @@ LABEL_18:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - No WiFi connection, skipping artwork info load.", buf, 0xCu);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v15 = [NSError errorWithDomain:NSURLErrorDomain code:-999 userInfo:0];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
 LABEL_9:
   }
 }
 
-- (void)loadArtworkInfoForSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)loadArtworkInfoForSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
-    v28 = v8;
+    v28 = dsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - Got load artwork info request for saga IDs: %{public}@", buf, 0x16u);
   }
 
   v12 = +[ICCloudAvailabilityController sharedController];
-  v13 = [v12 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v12 shouldProhibitMusicActionForCurrentNetworkConditions];
 
-  if (!v13)
+  if (!shouldProhibitMusicActionForCurrentNetworkConditions)
   {
-    v16 = [(CloudLoadBulkArtworkInfoOperation *)[SagaLoadBulkItemArtworkInfoOperation alloc] initWithConfiguration:self->_configuration cloudIDs:v8];
+    v16 = [(CloudLoadBulkArtworkInfoOperation *)[SagaLoadBulkItemArtworkInfoOperation alloc] initWithConfiguration:self->_configuration cloudIDs:dsCopy];
     objc_initWeak(buf, v16);
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10008CE90;
     v20[3] = &unk_1001DCA10;
-    v17 = v10;
+    v17 = handlerCopy;
     v21 = v17;
     objc_copyWeak(&v22, buf);
     [(SagaLoadBulkItemArtworkInfoOperation *)v16 setCompletionBlock:v20];
@@ -1452,32 +1452,32 @@ LABEL_9:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - No WiFi connection, skipping artwork info load.", buf, 0xCu);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     calloutQueue = self->_calloutQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10008CE14;
     block[3] = &unk_1001DF5C8;
-    v24 = v10;
+    v24 = handlerCopy;
     dispatch_async(calloutQueue, block);
     v16 = v24;
 LABEL_9:
   }
 }
 
-- (void)importContainerArtworkForSagaID:(unint64_t)a3 artworkVariantType:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)importContainerArtworkForSagaID:(unint64_t)d artworkVariantType:(int64_t)type clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v13 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v23 = 0;
-  v14 = [v12 getPropertiesForUserIdentity:v13 error:&v23];
+  v14 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v23];
   v15 = v23;
 
   if (v15)
@@ -1485,21 +1485,21 @@ LABEL_9:
     v16 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-      v18 = [v15 msv_description];
+      userIdentity2 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+      msv_description = [v15 msv_description];
       *buf = 138543874;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
-      v27 = v17;
+      dCopy = userIdentity2;
       v28 = 2114;
-      v29 = v18;
+      v29 = msv_description;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load properties for identity %{public}@ error=%{public}@", buf, 0x20u);
     }
   }
 
   if (v14)
   {
-    [(SagaArtworkImporter *)self->_artworkImporter importContainerArtworkForSagaID:a3 variantType:a4 clientIdentity:v10 completionHandler:v11];
+    [(SagaArtworkImporter *)self->_artworkImporter importContainerArtworkForSagaID:d variantType:type clientIdentity:identityCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1508,33 +1508,33 @@ LABEL_9:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2048;
-      v27 = a3;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - No active locker account, skipping import container artwork for saga ID: %llu", buf, 0x16u);
     }
 
-    if (v11)
+    if (handlerCopy)
     {
       calloutQueue = self->_calloutQueue;
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10008D1D4;
       v21[3] = &unk_1001DF5C8;
-      v22 = v11;
+      v22 = handlerCopy;
       dispatch_async(calloutQueue, v21);
     }
   }
 }
 
-- (void)importScreenshotForSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)importScreenshotForSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v21 = 0;
-  v12 = [v10 getPropertiesForUserIdentity:v11 error:&v21];
+  v12 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v21];
   v13 = v21;
 
   if (v13)
@@ -1542,21 +1542,21 @@ LABEL_9:
     v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-      v16 = [v13 msv_description];
+      userIdentity2 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+      msv_description = [v13 msv_description];
       *buf = 138543874;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
-      v25 = v15;
+      dCopy = userIdentity2;
       v26 = 2114;
-      v27 = v16;
+      v27 = msv_description;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load properties for identity %{public}@ error=%{public}@", buf, 0x20u);
     }
   }
 
   if (v12)
   {
-    [(SagaArtworkImporter *)self->_artworkImporter importScreenshotForSagaID:a3 clientIdentity:v8 completionHandler:v9];
+    [(SagaArtworkImporter *)self->_artworkImporter importScreenshotForSagaID:d clientIdentity:identityCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1565,33 +1565,33 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2048;
-      v25 = a3;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ - No active locker account, skipping import screenshot for saga ID: %llu", buf, 0x16u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
       calloutQueue = self->_calloutQueue;
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_10008D4C4;
       v19[3] = &unk_1001DF5C8;
-      v20 = v9;
+      v20 = handlerCopy;
       dispatch_async(calloutQueue, v19);
     }
   }
 }
 
-- (void)importItemArtworkForSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)importItemArtworkForSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v21 = 0;
-  v12 = [v10 getPropertiesForUserIdentity:v11 error:&v21];
+  v12 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v21];
   v13 = v21;
 
   if (v13)
@@ -1599,21 +1599,21 @@ LABEL_9:
     v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-      v16 = [v13 msv_description];
+      userIdentity2 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+      msv_description = [v13 msv_description];
       *buf = 138543874;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
-      v25 = v15;
+      dCopy = userIdentity2;
       v26 = 2114;
-      v27 = v16;
+      v27 = msv_description;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load properties for identity %{public}@ error=%{public}@", buf, 0x20u);
     }
   }
 
   if (v12)
   {
-    [(SagaArtworkImporter *)self->_artworkImporter importItemArtworkForSagaID:a3 clientIdentity:v8 completionHandler:v9];
+    [(SagaArtworkImporter *)self->_artworkImporter importItemArtworkForSagaID:d clientIdentity:identityCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1622,26 +1622,26 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2048;
-      v25 = a3;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ - No active locker account, skipping import item artwork for saga ID: %llu", buf, 0x16u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
       calloutQueue = self->_calloutQueue;
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_10008D7A4;
       v19[3] = &unk_1001DF5C8;
-      v20 = v9;
+      v20 = handlerCopy;
       dispatch_async(calloutQueue, v19);
     }
   }
 }
 
-- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)a3
+- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)import
 {
   v12 = 0;
   v13 = &v12;
@@ -1660,9 +1660,9 @@ LABEL_9:
   block[5] = &v12;
   block[6] = &v8;
   dispatch_sync(updateCloudLibraryQueue, block);
-  if (a3)
+  if (import)
   {
-    *a3 = *(v9 + 24);
+    *import = *(v9 + 24);
   }
 
   v5 = *(v13 + 24);
@@ -1671,30 +1671,30 @@ LABEL_9:
   return v5;
 }
 
-- (void)setAlbumArtistProperties:(id)a3 withArtistPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)setAlbumArtistProperties:(id)properties withArtistPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v10;
+    v25 = propertiesCopy;
     v26 = 2048;
-    v27 = a4;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting album artist properties %{public}@ on items with album artist persistent ID: %lld", buf, 0x20u);
   }
 
-  v14 = [[SagaSetAlbumArtistPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v11 persistentID:a4 properties:v10];
+  v14 = [[SagaSetAlbumArtistPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy persistentID:d properties:propertiesCopy];
   objc_initWeak(buf, v14);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10008DBA0;
   v19[3] = &unk_1001DCA10;
-  v15 = v12;
+  v15 = handlerCopy;
   v20 = v15;
   objc_copyWeak(&v21, buf);
   [(SagaSetAlbumArtistPropertyOperation *)v14 setCompletionBlock:v19];
@@ -1711,30 +1711,30 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)setAlbumEntityProperties:(id)a3 withAlbumPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)setAlbumEntityProperties:(id)properties withAlbumPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v10;
+    v25 = propertiesCopy;
     v26 = 2048;
-    v27 = a4;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting album properties %{public}@ with album persistent ID: %lld", buf, 0x20u);
   }
 
-  v14 = [[SagaSetAlbumPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v11 albumPersistentID:a4 properties:v10];
+  v14 = [[SagaSetAlbumPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy albumPersistentID:d properties:propertiesCopy];
   objc_initWeak(buf, v14);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10008DE98;
   v19[3] = &unk_1001DCA10;
-  v15 = v12;
+  v15 = handlerCopy;
   v20 = v15;
   objc_copyWeak(&v21, buf);
   [(SagaSetAlbumPropertyOperation *)v14 setCompletionBlock:v19];
@@ -1751,30 +1751,30 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)setAlbumProperties:(id)a3 forItemsWithAlbumPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)setAlbumProperties:(id)properties forItemsWithAlbumPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v10;
+    v25 = propertiesCopy;
     v26 = 2048;
-    v27 = a4;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting album properties %{public}@ on items with album persistent ID: %lld", buf, 0x20u);
   }
 
-  v14 = [[SagaSetAlbumItemPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v11 albumPersistentID:a4 albumItemProperties:v10];
+  v14 = [[SagaSetAlbumItemPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy albumPersistentID:d albumItemProperties:propertiesCopy];
   objc_initWeak(buf, v14);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10008E190;
   v19[3] = &unk_1001DCA10;
-  v15 = v12;
+  v15 = handlerCopy;
   v20 = v15;
   objc_copyWeak(&v21, buf);
   [(SagaSetAlbumItemPropertyOperation *)v14 setCompletionBlock:v19];
@@ -1791,28 +1791,28 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = ICCloudClientGetStringForAddToLibraryBehavior();
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting cloud add to library behavior to: %{public}@", buf, 0x16u);
   }
 
-  v12 = [[CloudSetFavoriteSongAddToLibraryBehaviorOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v8 addToLibraryBehavior:a3];
+  v12 = [[CloudSetFavoriteSongAddToLibraryBehaviorOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy addToLibraryBehavior:behavior];
   objc_initWeak(buf, v12);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10008E47C;
   v17[3] = &unk_1001DCA10;
-  v13 = v9;
+  v13 = handlerCopy;
   v18 = v13;
   objc_copyWeak(&v19, buf);
   [(CloudSetFavoriteSongAddToLibraryBehaviorOperation *)v12 setCompletionBlock:v17];
@@ -1829,28 +1829,28 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = ICCloudClientGetStringForAddToPlaylistBehavior();
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting cloud add to playlist behavior to: %{public}@", buf, 0x16u);
   }
 
-  v12 = [[CloudSetAddToPlaylistBehaviorOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v8 addToPlaylistBehavior:a3];
+  v12 = [[CloudSetAddToPlaylistBehaviorOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy addToPlaylistBehavior:behavior];
   objc_initWeak(buf, v12);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10008E764;
   v17[3] = &unk_1001DCA10;
-  v13 = v9;
+  v13 = handlerCopy;
   v18 = v13;
   objc_copyWeak(&v19, buf);
   [(CloudSetAddToPlaylistBehaviorOperation *)v12 setCompletionBlock:v17];
@@ -1867,22 +1867,22 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)addStorePlaylistWithGlobalID:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)addStorePlaylistWithGlobalID:(id)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  identityCopy = identity;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v8;
+    v27 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store playlist with global ID: %{public}@", buf, 0x16u);
   }
 
-  v12 = [[SagaCloudAddPlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v9 playlistGlobalID:v8];
+  v12 = [[SagaCloudAddPlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy playlistGlobalID:dCopy];
   objc_initWeak(buf, v12);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -1890,9 +1890,9 @@ LABEL_9:
   v20[3] = &unk_1001DC420;
   objc_copyWeak(&v23, buf);
   v20[4] = self;
-  v13 = v8;
+  v13 = dCopy;
   v21 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v22 = v14;
   [(SagaCloudAddPlaylistOperation *)v12 setCompletionBlock:v20];
   [(SagaCloudAddPlaylistOperation *)v12 setName:@"com.apple.itunescloudd.SagaRequestHandler.cloudAddOperation"];
@@ -1910,30 +1910,30 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)addStoreItemWithOpaqueID:(id)a3 requestingBundleID:(id)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)addStoreItemWithOpaqueID:(id)d requestingBundleID:(id)iD clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
+  identityCopy = identity;
   v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v10;
+    v25 = dCopy;
     v26 = 2114;
-    v27 = v11;
+    v27 = iDCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with opaque ID: %{public}@ from %{public}@", buf, 0x20u);
   }
 
-  v15 = [[SagaCloudSDKAddOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v13 opaqueID:v10 bundleID:v11];
+  v15 = [[SagaCloudSDKAddOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy opaqueID:dCopy bundleID:iDCopy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10008F134;
   v20[3] = &unk_1001DC6E0;
-  v16 = v12;
+  v16 = handlerCopy;
   v21 = v16;
   [(SagaCloudSDKAddOperation *)v15 setUpdateCompletionBlock:v20];
   [(SagaCloudSDKAddOperation *)v15 setName:@"com.apple.itunescloudd.SagaRequestHandler.cloudAddOperation"];
@@ -1946,34 +1946,34 @@ LABEL_9:
   [(SagaRequestHandler *)self _addLibraryOperation:v15 priority:2 noLibraryHandler:v18];
 }
 
-- (void)addStoreItemsWithAdamIDs:(id)a3 referral:(id)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)addStoreItemsWithAdamIDs:(id)ds referral:(id)referral clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 albumAdamID])
+  dsCopy = ds;
+  referralCopy = referral;
+  identityCopy = identity;
+  handlerCopy = handler;
+  if ([referralCopy albumAdamID])
   {
     v14 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v33 = self;
+      selfCopy3 = self;
       v34 = 2114;
-      v35 = v10;
+      v35 = dsCopy;
       v36 = 2048;
-      v37 = [v11 albumAdamID];
+      albumAdamID = [referralCopy albumAdamID];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with adam IDs: %{public}@ (referral albumAdamID = %lld)", buf, 0x20u);
     }
 
-    v15 = -[SagaCloudAddItemOperation initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:]([SagaCloudAddItemOperation alloc], "initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:", self->_configuration, v10, [v11 albumAdamID], v12);
+    v15 = -[SagaCloudAddItemOperation initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:]([SagaCloudAddItemOperation alloc], "initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:", self->_configuration, dsCopy, [referralCopy albumAdamID], identityCopy);
 LABEL_5:
     v16 = v15;
     goto LABEL_10;
   }
 
-  v17 = [v11 playlistGlobalID];
-  v18 = [v17 length];
+  playlistGlobalID = [referralCopy playlistGlobalID];
+  v18 = [playlistGlobalID length];
 
   v19 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
@@ -1982,32 +1982,32 @@ LABEL_5:
     if (v20)
     {
       *buf = 138543618;
-      v33 = self;
+      selfCopy3 = self;
       v34 = 2114;
-      v35 = v10;
+      v35 = dsCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with adam ID: %{public}@", buf, 0x16u);
     }
 
-    v15 = [[SagaCloudAddItemOperation alloc] initWithConfiguration:self->_configuration adamIDs:v10 clientIdentity:v12];
+    v15 = [[SagaCloudAddItemOperation alloc] initWithConfiguration:self->_configuration adamIDs:dsCopy clientIdentity:identityCopy];
     goto LABEL_5;
   }
 
   if (v20)
   {
-    v21 = [v11 playlistGlobalID];
+    playlistGlobalID2 = [referralCopy playlistGlobalID];
     *buf = 138543874;
-    v33 = self;
+    selfCopy3 = self;
     v34 = 2114;
-    v35 = v10;
+    v35 = dsCopy;
     v36 = 2114;
-    v37 = v21;
+    albumAdamID = playlistGlobalID2;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with adam ID: %{public}@ (referral playlistGlobalID = %{public}@)", buf, 0x20u);
   }
 
   v22 = [SagaCloudAddItemOperation alloc];
   configuration = self->_configuration;
-  v24 = [v11 playlistGlobalID];
-  v16 = [(SagaCloudAddItemOperation *)v22 initWithConfiguration:configuration adamIDs:v10 referralPlaylistGlobalID:v24 clientIdentity:v12];
+  playlistGlobalID3 = [referralCopy playlistGlobalID];
+  v16 = [(SagaCloudAddItemOperation *)v22 initWithConfiguration:configuration adamIDs:dsCopy referralPlaylistGlobalID:playlistGlobalID3 clientIdentity:identityCopy];
 
 LABEL_10:
   objc_initWeak(buf, v16);
@@ -2017,7 +2017,7 @@ LABEL_10:
   v29[3] = &unk_1001DD5D0;
   objc_copyWeak(&v31, buf);
   v29[4] = self;
-  v25 = v13;
+  v25 = handlerCopy;
   v30 = v25;
   [(SagaCloudAddItemOperation *)v16 setCompletionBlock:v29];
   [(SagaCloudAddItemOperation *)v16 setName:@"com.apple.itunescloudd.SagaRequestHandler.cloudAddOperation"];
@@ -2033,38 +2033,38 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 albumAdamID])
+  referralCopy = referral;
+  identityCopy = identity;
+  handlerCopy = handler;
+  if ([referralCopy albumAdamID])
   {
     v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2048;
-      v43 = a3;
+      dCopy3 = d;
       v44 = 2048;
-      v45 = [v10 albumAdamID];
+      albumAdamID = [referralCopy albumAdamID];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with adam ID: %lld (referral albumAdamID = %lld)", buf, 0x20u);
     }
 
     v14 = [SagaCloudAddItemOperation alloc];
     configuration = self->_configuration;
-    v16 = [NSNumber numberWithLongLong:a3];
+    v16 = [NSNumber numberWithLongLong:d];
     v39 = v16;
     v17 = [NSArray arrayWithObjects:&v39 count:1];
-    v18 = -[SagaCloudAddItemOperation initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:](v14, "initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:", configuration, v17, [v10 albumAdamID], v11);
+    v18 = -[SagaCloudAddItemOperation initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:](v14, "initWithConfiguration:adamIDs:referralAlbumAdamID:clientIdentity:", configuration, v17, [referralCopy albumAdamID], identityCopy);
 LABEL_5:
     v19 = v18;
     goto LABEL_10;
   }
 
-  v20 = [v10 playlistGlobalID];
-  v21 = [v20 length];
+  playlistGlobalID = [referralCopy playlistGlobalID];
+  v21 = [playlistGlobalID length];
 
   v22 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -2073,40 +2073,40 @@ LABEL_5:
     if (v23)
     {
       *buf = 138543618;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2048;
-      v43 = a3;
+      dCopy3 = d;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with adam ID: %lld", buf, 0x16u);
     }
 
     v30 = [SagaCloudAddItemOperation alloc];
     v31 = self->_configuration;
-    v16 = [NSNumber numberWithLongLong:a3];
+    v16 = [NSNumber numberWithLongLong:d];
     v37 = v16;
     v17 = [NSArray arrayWithObjects:&v37 count:1];
-    v18 = [(SagaCloudAddItemOperation *)v30 initWithConfiguration:v31 adamIDs:v17 clientIdentity:v11];
+    v18 = [(SagaCloudAddItemOperation *)v30 initWithConfiguration:v31 adamIDs:v17 clientIdentity:identityCopy];
     goto LABEL_5;
   }
 
   if (v23)
   {
-    v24 = [v10 playlistGlobalID];
+    playlistGlobalID2 = [referralCopy playlistGlobalID];
     *buf = 138543874;
-    v41 = self;
+    selfCopy3 = self;
     v42 = 2048;
-    v43 = a3;
+    dCopy3 = d;
     v44 = 2114;
-    v45 = v24;
+    albumAdamID = playlistGlobalID2;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to add store item with adam ID: %lld (referral playlistGlobalID = %{public}@)", buf, 0x20u);
   }
 
   v25 = [SagaCloudAddItemOperation alloc];
   v26 = self->_configuration;
-  v16 = [NSNumber numberWithLongLong:a3];
+  v16 = [NSNumber numberWithLongLong:d];
   v38 = v16;
   v17 = [NSArray arrayWithObjects:&v38 count:1];
-  v27 = [v10 playlistGlobalID];
-  v19 = [(SagaCloudAddItemOperation *)v25 initWithConfiguration:v26 adamIDs:v17 referralPlaylistGlobalID:v27 clientIdentity:v11];
+  playlistGlobalID3 = [referralCopy playlistGlobalID];
+  v19 = [(SagaCloudAddItemOperation *)v25 initWithConfiguration:v26 adamIDs:v17 referralPlaylistGlobalID:playlistGlobalID3 clientIdentity:identityCopy];
 
 LABEL_10:
   objc_initWeak(buf, v19);
@@ -2116,7 +2116,7 @@ LABEL_10:
   v34[3] = &unk_1001DD5D0;
   objc_copyWeak(&v36, buf);
   v34[4] = self;
-  v28 = v12;
+  v28 = handlerCopy;
   v35 = v28;
   [(SagaCloudAddItemOperation *)v19 setCompletionBlock:v34];
   [(SagaCloudAddItemOperation *)v19 setName:@"com.apple.itunescloudd.SagaRequestHandler.cloudAddOperation"];
@@ -2132,29 +2132,29 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting artwork on saga playlist (pid = %lld)", buf, 0x16u);
   }
 
-  v11 = [[SagaUploadPlaylistArtworkOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v8 playlistPersistentID:a3];
+  v11 = [[SagaUploadPlaylistArtworkOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy playlistPersistentID:d];
   objc_initWeak(buf, v11);
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000902E4;
   v18 = &unk_1001DC368;
-  v19 = self;
-  v21[1] = a3;
-  v12 = v9;
+  selfCopy2 = self;
+  v21[1] = d;
+  v12 = handlerCopy;
   v20 = v12;
   objc_copyWeak(v21, buf);
   [(SagaUploadPlaylistArtworkOperation *)v11 setCompletionBlock:&v15];
@@ -2175,28 +2175,28 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)removeItemsWithSagaIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)removeItemsWithSagaIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v8;
+    v23 = dsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - Removing items with cloud ids = %{public}@", buf, 0x16u);
   }
 
-  v12 = [[SagaRemoveItemOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v9 itemSagaIDs:v8];
+  v12 = [[SagaRemoveItemOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy itemSagaIDs:dsCopy];
   objc_initWeak(buf, v12);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100090B08;
   v17[3] = &unk_1001DCA10;
-  v13 = v10;
+  v13 = handlerCopy;
   v18 = v13;
   objc_copyWeak(&v19, buf);
   [(SagaRemoveItemOperation *)v12 setCompletionBlock:v17];
@@ -2213,29 +2213,29 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)publishPlaylistWithSagaID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)publishPlaylistWithSagaID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
-    v23 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Publishing playlist with cloud id = %llu.", buf, 0x16u);
   }
 
-  v11 = [[SagaPublishPlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v8 sagaID:a3];
+  v11 = [[SagaPublishPlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy sagaID:d];
   objc_initWeak(buf, v11);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100090DEC;
   v17[3] = &unk_1001DC368;
   v17[4] = self;
-  v19[1] = a3;
-  v12 = v9;
+  v19[1] = d;
+  v12 = handlerCopy;
   v18 = v12;
   objc_copyWeak(v19, buf);
   [(SagaPublishPlaylistOperation *)v11 setCompletionBlock:v17];
@@ -2244,7 +2244,7 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = sub_100090F44;
   v14[3] = &unk_1001DC390;
-  v16 = a3;
+  dCopy2 = d;
   v13 = v12;
   v15 = v13;
   [(SagaRequestHandler *)self _addLibraryOperation:v11 priority:2 noLibraryHandler:v14];
@@ -2253,24 +2253,24 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 clientIdentity:(id)a6 requestingBundleID:(id)a7 completionHandler:(id)a8
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d clientIdentity:(id)identity requestingBundleID:(id)iD completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  propertiesCopy = properties;
+  listCopy = list;
+  identityCopy = identity;
+  iDCopy = iD;
+  handlerCopy = handler;
   v19 = os_log_create("com.apple.amp.itunescloudd", "CloudSync_Oversize");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2048;
-    v32 = a5;
+    dCopy = d;
     v33 = 2114;
-    v34 = v17;
+    v34 = iDCopy;
     v35 = 2114;
-    v36 = v14;
+    v36 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating cloud playlist (pid = %lld) for %{public}@, setting properties: %{public}@", buf, 0x2Au);
   }
 
@@ -2278,19 +2278,19 @@ LABEL_10:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2114;
-    v32 = v15;
+    dCopy = listCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - ... with cloud tracks: %{public}@", buf, 0x16u);
   }
 
-  v21 = [[SagaSDKUpdatePlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v16 playlistPersistentID:a5 properties:v14 trackList:v15 requestingBundleID:v17];
+  v21 = [[SagaSDKUpdatePlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy playlistPersistentID:d properties:propertiesCopy trackList:listCopy requestingBundleID:iDCopy];
   objc_initWeak(buf, v21);
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100091364;
   v26[3] = &unk_1001DD5D0;
-  v22 = v18;
+  v22 = handlerCopy;
   v27 = v22;
   objc_copyWeak(&v28, buf);
   v26[4] = self;
@@ -2308,21 +2308,21 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 clientIdentity:(id)a6 completionHandler:(id)a7
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  propertiesCopy = properties;
+  listCopy = list;
+  identityCopy = identity;
+  handlerCopy = handler;
   v16 = os_log_create("com.apple.amp.itunescloudd", "CloudSync_Oversize");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2048;
-    v29 = a5;
+    dCopy = d;
     v30 = 2114;
-    v31 = v12;
+    v31 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating cloud playlist (pid = %lld), setting properties: %{public}@", buf, 0x20u);
   }
 
@@ -2330,19 +2330,19 @@ LABEL_10:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
-    v29 = v13;
+    dCopy = listCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ - ... with cloud tracks: %{public}@", buf, 0x16u);
   }
 
-  v18 = [[SagaUpdatePlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v14 playlistPersistentID:a5 properties:v12 trackList:v13];
+  v18 = [[SagaUpdatePlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy playlistPersistentID:d properties:propertiesCopy trackList:listCopy];
   objc_initWeak(buf, v18);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100091794;
   v23[3] = &unk_1001DD5D0;
-  v19 = v15;
+  v19 = handlerCopy;
   v24 = v19;
   objc_copyWeak(&v25, buf);
   v23[4] = self;
@@ -2360,30 +2360,30 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 requestingBundleID:(id)a5 clientIdentity:(id)a6 completionHandler:(id)a7
+- (void)addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(int64_t)iD requestingBundleID:(id)bundleID clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  bundleIDCopy = bundleID;
+  identityCopy = identity;
+  handlerCopy = handler;
   v15 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2048;
-    v27 = a3;
+    dCopy = d;
     v28 = 2048;
-    v29 = a4;
+    iDCopy = iD;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding item with saga ID: %llu to cloud playlist (pid = %lld)", buf, 0x20u);
   }
 
-  v16 = [[SagaSDKAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration itemSagaID:a3 playlistPersistentID:a4 clientIdentity:v13 requestingBundleID:v12];
+  v16 = [[SagaSDKAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration itemSagaID:d playlistPersistentID:iD clientIdentity:identityCopy requestingBundleID:bundleIDCopy];
   objc_initWeak(buf, v16);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100091AE8;
   v21[3] = &unk_1001DCA10;
-  v17 = v14;
+  v17 = handlerCopy;
   v22 = v17;
   objc_copyWeak(&v23, buf);
   [(SagaSDKAddItemToPlaylistOperation *)v16 setCompletionBlock:v21];
@@ -2400,30 +2400,30 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)addStoreItemWithOpaqueID:(id)a3 toPlaylistWithPersistentID:(int64_t)a4 requestingBundleID:(id)a5 clientIdentity:(id)a6 completionHandler:(id)a7
+- (void)addStoreItemWithOpaqueID:(id)d toPlaylistWithPersistentID:(int64_t)iD requestingBundleID:(id)bundleID clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
+  dCopy = d;
+  handlerCopy = handler;
+  identityCopy = identity;
+  bundleIDCopy = bundleID;
   v16 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v12;
+    v27 = dCopy;
     v28 = 2048;
-    v29 = a4;
+    iDCopy = iD;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with opaque ID: %{public}@ to cloud playlist (pid = %lld)", buf, 0x20u);
   }
 
-  v17 = [[SagaCloudSDKAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v14 opaqueID:v12 bundleID:v15 playlistPersistentID:a4];
+  v17 = [[SagaCloudSDKAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy opaqueID:dCopy bundleID:bundleIDCopy playlistPersistentID:iD];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100091DAC;
   v22[3] = &unk_1001DC6E0;
-  v18 = v13;
+  v18 = handlerCopy;
   v23 = v18;
   [(SagaCloudSDKAddOperation *)v17 setUpdateCompletionBlock:v22];
   [(SagaCloudSDKAddItemToPlaylistOperation *)v17 setName:@"com.apple.itunescloudd.SagaRequestHandler.addItemToPlaylistOperation"];
@@ -2436,29 +2436,29 @@ LABEL_10:
   [(SagaRequestHandler *)self _addLibraryOperation:v17 priority:2 noLibraryHandler:v20];
 }
 
-- (void)addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(int64_t)iD clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  identityCopy = identity;
+  handlerCopy = handler;
   v12 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v22 = self;
+    selfCopy = self;
     v23 = 2048;
-    v24 = a3;
+    dCopy = d;
     v25 = 2048;
-    v26 = a4;
+    iDCopy = iD;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding item with saga ID: %llu to cloud playlist (pid = %lld)", buf, 0x20u);
   }
 
-  v13 = [[SagaAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration itemSagaID:a3 playlistPersistentID:a4 clientIdentity:v10];
+  v13 = [[SagaAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration itemSagaID:d playlistPersistentID:iD clientIdentity:identityCopy];
   objc_initWeak(buf, v13);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100092034;
   v18[3] = &unk_1001DCA10;
-  v14 = v11;
+  v14 = handlerCopy;
   v19 = v14;
   objc_copyWeak(&v20, buf);
   [(SagaAddItemToPlaylistOperation *)v13 setCompletionBlock:v18];
@@ -2475,36 +2475,36 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)addStoreItemsWithAdamIDs:(id)a3 referral:(id)a4 toPlaylistWithPersistentID:(int64_t)a5 clientIdentity:(id)a6 completionHandler:(id)a7
+- (void)addStoreItemsWithAdamIDs:(id)ds referral:(id)referral toPlaylistWithPersistentID:(int64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([v13 albumAdamID])
+  dsCopy = ds;
+  referralCopy = referral;
+  identityCopy = identity;
+  handlerCopy = handler;
+  if ([referralCopy albumAdamID])
   {
     v16 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
-      v37 = v12;
+      v37 = dsCopy;
       v38 = 2048;
-      v39 = a5;
+      dCopy3 = d;
       v40 = 2048;
-      v41 = [v13 albumAdamID];
+      albumAdamID = [referralCopy albumAdamID];
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with adam ID: %{public}@ to cloud playlist (pid = %lld, referral albumAdamID = %lld)", buf, 0x2Au);
     }
 
-    v17 = -[SagaCloudAddItemToPlaylistOperation initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:]([SagaCloudAddItemToPlaylistOperation alloc], "initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:", self->_configuration, v12, a5, [v13 albumAdamID], v14);
+    v17 = -[SagaCloudAddItemToPlaylistOperation initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:]([SagaCloudAddItemToPlaylistOperation alloc], "initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:", self->_configuration, dsCopy, d, [referralCopy albumAdamID], identityCopy);
 LABEL_5:
     v18 = v17;
     goto LABEL_10;
   }
 
-  v19 = [v13 playlistGlobalID];
-  v20 = [v19 length];
+  playlistGlobalID = [referralCopy playlistGlobalID];
+  v20 = [playlistGlobalID length];
 
   v21 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -2513,36 +2513,36 @@ LABEL_5:
     if (v22)
     {
       *buf = 138543874;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
-      v37 = v12;
+      v37 = dsCopy;
       v38 = 2048;
-      v39 = a5;
+      dCopy3 = d;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with adam ID: %{public}@ to cloud playlist (pid = %lld)", buf, 0x20u);
     }
 
-    v17 = [[SagaCloudAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration adamIDs:v12 playlistPersistentID:a5 clientIdentity:v14];
+    v17 = [[SagaCloudAddItemToPlaylistOperation alloc] initWithConfiguration:self->_configuration adamIDs:dsCopy playlistPersistentID:d clientIdentity:identityCopy];
     goto LABEL_5;
   }
 
   if (v22)
   {
-    v23 = [v13 playlistGlobalID];
+    playlistGlobalID2 = [referralCopy playlistGlobalID];
     *buf = 138544130;
-    v35 = self;
+    selfCopy3 = self;
     v36 = 2114;
-    v37 = v12;
+    v37 = dsCopy;
     v38 = 2048;
-    v39 = a5;
+    dCopy3 = d;
     v40 = 2114;
-    v41 = v23;
+    albumAdamID = playlistGlobalID2;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with adam ID:%{public}@ to cloud playlist (pid = %lld, referral playlistGlobalID = %{public}@)", buf, 0x2Au);
   }
 
   v24 = [SagaCloudAddItemToPlaylistOperation alloc];
   configuration = self->_configuration;
-  v26 = [v13 playlistGlobalID];
-  v18 = [(SagaCloudAddItemToPlaylistOperation *)v24 initWithConfiguration:configuration adamIDs:v12 playlistPersistentID:a5 referralPlaylistGlobalID:v26 clientIdentity:v14];
+  playlistGlobalID3 = [referralCopy playlistGlobalID];
+  v18 = [(SagaCloudAddItemToPlaylistOperation *)v24 initWithConfiguration:configuration adamIDs:dsCopy playlistPersistentID:d referralPlaylistGlobalID:playlistGlobalID3 clientIdentity:identityCopy];
 
 LABEL_10:
   objc_initWeak(buf, v18);
@@ -2552,7 +2552,7 @@ LABEL_10:
   v31[3] = &unk_1001DD5D0;
   objc_copyWeak(&v33, buf);
   v31[4] = self;
-  v27 = v15;
+  v27 = handlerCopy;
   v32 = v27;
   [(SagaCloudAddItemToPlaylistOperation *)v18 setCompletionBlock:v31];
   [(SagaCloudAddItemToPlaylistOperation *)v18 setName:@"com.apple.itunescloudd.SagaRequestHandler.addItemToPlaylistOperation"];
@@ -2568,40 +2568,40 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 toPlaylistWithPersistentID:(int64_t)a5 clientIdentity:(id)a6 completionHandler:(id)a7
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral toPlaylistWithPersistentID:(int64_t)iD clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if ([v12 albumAdamID])
+  referralCopy = referral;
+  identityCopy = identity;
+  handlerCopy = handler;
+  if ([referralCopy albumAdamID])
   {
     v15 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2048;
-      v45 = a3;
+      dCopy3 = d;
       v46 = 2048;
-      v47 = a5;
+      iDCopy3 = iD;
       v48 = 2048;
-      v49 = [v12 albumAdamID];
+      albumAdamID = [referralCopy albumAdamID];
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with adam ID: %lld to cloud playlist (pid = %lld, referral albumAdamID = %lld)", buf, 0x2Au);
     }
 
     v16 = [SagaCloudAddItemToPlaylistOperation alloc];
     configuration = self->_configuration;
-    v18 = [NSNumber numberWithLongLong:a3];
+    v18 = [NSNumber numberWithLongLong:d];
     v41 = v18;
     v19 = [NSArray arrayWithObjects:&v41 count:1];
-    v20 = -[SagaCloudAddItemToPlaylistOperation initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:](v16, "initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:", configuration, v19, a5, [v12 albumAdamID], v13);
+    v20 = -[SagaCloudAddItemToPlaylistOperation initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:](v16, "initWithConfiguration:adamIDs:playlistPersistentID:referralAlbumAdamID:clientIdentity:", configuration, v19, iD, [referralCopy albumAdamID], identityCopy);
 LABEL_5:
     v21 = v20;
     goto LABEL_10;
   }
 
-  v22 = [v12 playlistGlobalID];
-  v23 = [v22 length];
+  playlistGlobalID = [referralCopy playlistGlobalID];
+  v23 = [playlistGlobalID length];
 
   v24 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -2610,44 +2610,44 @@ LABEL_5:
     if (v25)
     {
       *buf = 138543874;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2048;
-      v45 = a3;
+      dCopy3 = d;
       v46 = 2048;
-      v47 = a5;
+      iDCopy3 = iD;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with adam ID: %lld to cloud playlist (pid = %lld)", buf, 0x20u);
     }
 
     v32 = [SagaCloudAddItemToPlaylistOperation alloc];
     v33 = self->_configuration;
-    v18 = [NSNumber numberWithLongLong:a3];
+    v18 = [NSNumber numberWithLongLong:d];
     v39 = v18;
     v19 = [NSArray arrayWithObjects:&v39 count:1];
-    v20 = [(SagaCloudAddItemToPlaylistOperation *)v32 initWithConfiguration:v33 adamIDs:v19 playlistPersistentID:a5 clientIdentity:v13];
+    v20 = [(SagaCloudAddItemToPlaylistOperation *)v32 initWithConfiguration:v33 adamIDs:v19 playlistPersistentID:iD clientIdentity:identityCopy];
     goto LABEL_5;
   }
 
   if (v25)
   {
-    v26 = [v12 playlistGlobalID];
+    playlistGlobalID2 = [referralCopy playlistGlobalID];
     *buf = 138544130;
-    v43 = self;
+    selfCopy3 = self;
     v44 = 2048;
-    v45 = a3;
+    dCopy3 = d;
     v46 = 2048;
-    v47 = a5;
+    iDCopy3 = iD;
     v48 = 2114;
-    v49 = v26;
+    albumAdamID = playlistGlobalID2;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ - Adding store item with adam ID: %lld to cloud playlist (pid = %lld, referral playlistGlobalID = %{public}@)", buf, 0x2Au);
   }
 
   v27 = [SagaCloudAddItemToPlaylistOperation alloc];
   v28 = self->_configuration;
-  v18 = [NSNumber numberWithLongLong:a3];
+  v18 = [NSNumber numberWithLongLong:d];
   v40 = v18;
   v19 = [NSArray arrayWithObjects:&v40 count:1];
-  v29 = [v12 playlistGlobalID];
-  v21 = [(SagaCloudAddItemToPlaylistOperation *)v27 initWithConfiguration:v28 adamIDs:v19 playlistPersistentID:a5 referralPlaylistGlobalID:v29 clientIdentity:v13];
+  playlistGlobalID3 = [referralCopy playlistGlobalID];
+  v21 = [(SagaCloudAddItemToPlaylistOperation *)v27 initWithConfiguration:v28 adamIDs:v19 playlistPersistentID:iD referralPlaylistGlobalID:playlistGlobalID3 clientIdentity:identityCopy];
 
 LABEL_10:
   objc_initWeak(buf, v21);
@@ -2657,7 +2657,7 @@ LABEL_10:
   v36[3] = &unk_1001DD5D0;
   objc_copyWeak(&v38, buf);
   v36[4] = self;
-  v30 = v14;
+  v30 = handlerCopy;
   v37 = v30;
   [(SagaCloudAddItemToPlaylistOperation *)v21 setCompletionBlock:v36];
   [(SagaCloudAddItemToPlaylistOperation *)v21 setName:@"com.apple.itunescloudd.SagaRequestHandler.addItemToPlaylistOperation"];
@@ -2673,33 +2673,33 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)addGeniusPlaylistWithPersistentID:(int64_t)a3 name:(id)a4 seedItemIDs:(id)a5 itemIDs:(id)a6 clientIdentity:(id)a7 completionHandler:(id)a8
+- (void)addGeniusPlaylistWithPersistentID:(int64_t)d name:(id)name seedItemIDs:(id)ds itemIDs:(id)iDs clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  identityCopy = identity;
+  handlerCopy = handler;
   v19 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v15 firstObject];
+    firstObject = [dsCopy firstObject];
     *buf = 138543874;
-    v30 = self;
+    selfCopy = self;
     v31 = 2048;
-    v32 = a3;
+    dCopy = d;
     v33 = 2048;
-    v34 = [v20 unsignedLongLongValue];
+    unsignedLongLongValue = [firstObject unsignedLongLongValue];
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - Creating Genius playlist (pid = %lld) with seed ID: %lld", buf, 0x20u);
   }
 
-  v21 = [[SagaCreateGeniusPlaylistOperation alloc] initWithConfiguration:self->_configuration geniusPlaylistPersistentID:a3 playlistName:v14 seedItemIDs:v15 itemIDs:v16 clientIdentity:v17];
+  v21 = [[SagaCreateGeniusPlaylistOperation alloc] initWithConfiguration:self->_configuration geniusPlaylistPersistentID:d playlistName:nameCopy seedItemIDs:dsCopy itemIDs:iDsCopy clientIdentity:identityCopy];
   objc_initWeak(buf, v21);
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100092DF0;
   v26[3] = &unk_1001DCA10;
-  v22 = v18;
+  v22 = handlerCopy;
   v27 = v22;
   objc_copyWeak(&v28, buf);
   [(SagaCreateGeniusPlaylistOperation *)v21 setCompletionBlock:v26];
@@ -2716,22 +2716,22 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 trackList:(id)a5 requestingBundleID:(id)a6 clientIdentity:(id)a7 completionHandler:(id)a8
+- (void)createPlaylistWithPersistentID:(int64_t)d properties:(id)properties trackList:(id)list requestingBundleID:(id)iD clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  propertiesCopy = properties;
+  listCopy = list;
+  iDCopy = iD;
+  identityCopy = identity;
+  handlerCopy = handler;
   v19 = os_log_create("com.apple.amp.itunescloudd", "CloudSync_Oversize");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2114;
-    v32 = v16;
+    v32 = iDCopy;
     v33 = 2114;
-    v34 = v14;
+    v34 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - Creating cloud playlist for %{public}@ with initial properties: %{public}@", buf, 0x20u);
   }
 
@@ -2739,19 +2739,19 @@ LABEL_10:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2114;
-    v32 = v15;
+    v32 = listCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - ... with cloud tracks: %{public}@", buf, 0x16u);
   }
 
-  v21 = [[SagaSDKCreatePlaylistOperation alloc] initWithConfiguration:self->_configuration playlistPersistentID:a3 properties:v14 trackList:v15 requestingBundleID:v16 clientIdentity:v17];
+  v21 = [[SagaSDKCreatePlaylistOperation alloc] initWithConfiguration:self->_configuration playlistPersistentID:d properties:propertiesCopy trackList:listCopy requestingBundleID:iDCopy clientIdentity:identityCopy];
   objc_initWeak(buf, v21);
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10009319C;
   v26[3] = &unk_1001DD5D0;
-  v22 = v18;
+  v22 = handlerCopy;
   v27 = v22;
   objc_copyWeak(&v28, buf);
   v26[4] = self;
@@ -2769,19 +2769,19 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 trackList:(id)a5 clientIdentity:(id)a6 completionHandler:(id)a7
+- (void)createPlaylistWithPersistentID:(int64_t)d properties:(id)properties trackList:(id)list clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  propertiesCopy = properties;
+  listCopy = list;
+  identityCopy = identity;
+  handlerCopy = handler;
   v16 = os_log_create("com.apple.amp.itunescloudd", "CloudSync_Oversize");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
-    v29 = v12;
+    v29 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - Creating cloud playlist with initial properties: %{public}@", buf, 0x16u);
   }
 
@@ -2789,19 +2789,19 @@ LABEL_10:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
-    v29 = v13;
+    v29 = listCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ - ... with cloud tracks: %{public}@", buf, 0x16u);
   }
 
-  v18 = [[SagaCreatePlaylistOperation alloc] initWithConfiguration:self->_configuration playlistPersistentID:a3 properties:v12 trackList:v13 clientIdentity:v14];
+  v18 = [[SagaCreatePlaylistOperation alloc] initWithConfiguration:self->_configuration playlistPersistentID:d properties:propertiesCopy trackList:listCopy clientIdentity:identityCopy];
   objc_initWeak(buf, v18);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10009362C;
   v23[3] = &unk_1001DCA10;
-  v19 = v15;
+  v19 = handlerCopy;
   v24 = v19;
   objc_copyWeak(&v25, buf);
   [(SagaCreatePlaylistOperation *)v18 setCompletionBlock:v23];
@@ -2818,89 +2818,89 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)uploadPlaylistPropertiesWithClientIdentity:(id)a3 minimumTimeInterval:(double)a4
+- (void)uploadPlaylistPropertiesWithClientIdentity:(id)identity minimumTimeInterval:(double)interval
 {
-  v6 = a3;
+  identityCopy = identity;
   uploadPlaylistPropertiesQueue = self->_uploadPlaylistPropertiesQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100093788;
   block[3] = &unk_1001DE600;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = identityCopy;
+  intervalCopy = interval;
+  v8 = identityCopy;
   dispatch_async(uploadPlaylistPropertiesQueue, block);
 }
 
-- (void)uploadItemPropertiesWithClientIdentity:(id)a3 minimumTimeInterval:(double)a4
+- (void)uploadItemPropertiesWithClientIdentity:(id)identity minimumTimeInterval:(double)interval
 {
-  v6 = a3;
+  identityCopy = identity;
   uploadItemPropertiesQueue = self->_uploadItemPropertiesQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100093D30;
   block[3] = &unk_1001DE600;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = identityCopy;
+  intervalCopy = interval;
+  v8 = identityCopy;
   dispatch_async(uploadItemPropertiesQueue, block);
 }
 
-- (void)updatePlaylistPlayDataWithClientIdentity:(id)a3 completionHandler:(id)a4
+- (void)updatePlaylistPlayDataWithClientIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating playlist play data", buf, 0xCu);
   }
 
   v9 = +[ICURLBagProvider sharedBagProvider];
   v10 = [ICStoreRequestContext alloc];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-  v12 = [v10 initWithIdentity:v11];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  v12 = [v10 initWithIdentity:userIdentity];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100094490;
   v15[3] = &unk_1001DE218;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = identityCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = identityCopy;
   [v9 getBagForRequestContext:v12 withCompletionHandler:v15];
 }
 
-- (void)updateItemPlayDataWithClientIdentity:(id)a3 completionHandler:(id)a4
+- (void)updateItemPlayDataWithClientIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating item play data", buf, 0xCu);
   }
 
   v9 = +[ICURLBagProvider sharedBagProvider];
   v10 = [ICStoreRequestContext alloc];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-  v12 = [v10 initWithIdentity:v11];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  v12 = [v10 initWithIdentity:userIdentity];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000947D4;
   v15[3] = &unk_1001DE218;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = identityCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = identityCopy;
   [v9 getBagForRequestContext:v12 withCompletionHandler:v15];
 }
 
@@ -2910,7 +2910,7 @@ LABEL_10:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - increasePriorityForAllOperations:", buf, 0xCu);
   }
 
@@ -2937,7 +2937,7 @@ LABEL_10:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - decreasePriorityForAllOperations:", buf, 0xCu);
   }
 
@@ -2964,7 +2964,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ - cancelOperations: - Starting...", buf, 0xCu);
   }
 
@@ -2976,14 +2976,14 @@ LABEL_10:
   [(SagaRequestHandler *)self cancelPendingChangesWithCompletion:v4];
 }
 
-- (void)cancelOperationsWithCompletionHandler:(id)a3
+- (void)cancelOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - cancelOperationsWithCompletion: - Starting...", buf, 0xCu);
   }
 
@@ -2992,58 +2992,58 @@ LABEL_10:
   v7[2] = sub_10009509C;
   v7[3] = &unk_1001DF5A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(SagaRequestHandler *)self cancelPendingChangesWithCompletion:v7];
 }
 
-- (void)cancelPendingChangesWithCompletion:(id)a3
+- (void)cancelPendingChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     library = self->_library;
-    v7 = [(CloudLibrary *)library pendingChangesCoordinator];
+    pendingChangesCoordinator = [(CloudLibrary *)library pendingChangesCoordinator];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = library;
     v15 = 2112;
-    v16 = v7;
+    v16 = pendingChangesCoordinator;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - cancelPendingChangesWithCompletion: - Library=%@ - PendingChangesCoordinator:%@", &v11, 0x20u);
   }
 
   v8 = self->_library;
   if (v8 && ([(CloudLibrary *)v8 pendingChangesCoordinator], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(CloudLibrary *)self->_library pendingChangesCoordinator];
-    [v10 removeAllPendingChangesWithCompletion:v4];
+    pendingChangesCoordinator2 = [(CloudLibrary *)self->_library pendingChangesCoordinator];
+    [pendingChangesCoordinator2 removeAllPendingChangesWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (SagaRequestHandler)initWithConfiguration:(id)a3 progressObserver:(id)a4
+- (SagaRequestHandler)initWithConfiguration:(id)configuration progressObserver:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  observerCopy = observer;
   v35.receiver = self;
   v35.super_class = SagaRequestHandler;
   v9 = [(SagaRequestHandler *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v11 = [v7 userIdentity];
-    v12 = [ML3MusicLibrary musicLibraryForUserAccount:v11];
+    objc_storeStrong(&v9->_configuration, configuration);
+    userIdentity = [configurationCopy userIdentity];
+    v12 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
     musicLibrary = v10->_musicLibrary;
     v10->_musicLibrary = v12;
 
-    v14 = [[SagaArtworkImporter alloc] initWithConfiguration:v7];
+    v14 = [[SagaArtworkImporter alloc] initWithConfiguration:configurationCopy];
     artworkImporter = v10->_artworkImporter;
     v10->_artworkImporter = v14;
 
@@ -3051,7 +3051,7 @@ LABEL_10:
     v33[1] = 3221225472;
     v33[2] = sub_10009576C;
     v33[3] = &unk_1001DC2B8;
-    v34 = v7;
+    v34 = configurationCopy;
     v16 = objc_retainBlock(v33);
     v17 = (v16[2])(v16, @"com.apple.itunescloudd.sagaUploadItemPropertiesQueue");
     v18 = dispatch_queue_create([v17 UTF8String], 0);
@@ -3080,7 +3080,7 @@ LABEL_10:
     v31 = +[ICEnvironmentMonitor sharedMonitor];
     [v31 registerObserver:v10];
 
-    objc_storeStrong(&v10->_updateTaskHelper, a4);
+    objc_storeStrong(&v10->_updateTaskHelper, observer);
     v10->_performCloudUpdateToReconcilePins = 0;
   }
 
@@ -3100,7 +3100,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%{public}@ - dealloc", buf, 0xCu);
   }
 

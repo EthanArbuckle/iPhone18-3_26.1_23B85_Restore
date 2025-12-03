@@ -11,21 +11,21 @@
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)peripheryInsets;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)a3;
+- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)feature;
 - (id)createTraitCollection;
 - (int64_t)preferredBackgroundStyle;
 - (void)_invalidateAllAppearingProperties;
-- (void)_setLayoutOrientation:(int64_t)a3;
-- (void)_setLayoutSizeClass:(int64_t)a3;
-- (void)_setLayoutSizeSubclass:(int64_t)a3;
-- (void)_setPendingViewTransitionSize:(CGSize)a3;
-- (void)_setTraitCollection:(id)a3;
-- (void)_setUserInterfaceIdiom:(int64_t)a3;
-- (void)_setUserInterfaceLevel:(int64_t)a3;
-- (void)_setUserInterfaceStyle:(int64_t)a3;
-- (void)_setViewSize:(CGSize)a3;
-- (void)_setWindowOrientation:(int64_t)a3;
-- (void)_setWindowReferenceSize:(CGSize)a3;
+- (void)_setLayoutOrientation:(int64_t)orientation;
+- (void)_setLayoutSizeClass:(int64_t)class;
+- (void)_setLayoutSizeSubclass:(int64_t)subclass;
+- (void)_setPendingViewTransitionSize:(CGSize)size;
+- (void)_setTraitCollection:(id)collection;
+- (void)_setUserInterfaceIdiom:(int64_t)idiom;
+- (void)_setUserInterfaceLevel:(int64_t)level;
+- (void)_setUserInterfaceStyle:(int64_t)style;
+- (void)_setViewSize:(CGSize)size;
+- (void)_setWindowOrientation:(int64_t)orientation;
+- (void)_setWindowReferenceSize:(CGSize)size;
 - (void)_updateContentSizeCategoryIfNeeded;
 - (void)_updateDisplayScaleIfNeeded;
 - (void)_updateIfNeeded;
@@ -47,21 +47,21 @@
 - (void)backingViewDidLoad;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)getContentSizeCategory:(int64_t *)a3;
-- (void)getLayoutDirection:(int64_t *)a3;
-- (void)getSizeClass:(int64_t *)a3 sizeSubclass:(int64_t *)a4;
-- (void)getUserInterfaceIdiom:(int64_t *)a3;
-- (void)getUserInterfaceLevel:(int64_t *)a3;
-- (void)getUserInterfaceStyle:(int64_t *)a3;
+- (void)getContentSizeCategory:(int64_t *)category;
+- (void)getLayoutDirection:(int64_t *)direction;
+- (void)getSizeClass:(int64_t *)class sizeSubclass:(int64_t *)subclass;
+- (void)getUserInterfaceIdiom:(int64_t *)idiom;
+- (void)getUserInterfaceLevel:(int64_t *)level;
+- (void)getUserInterfaceStyle:(int64_t *)style;
 - (void)peripheryInsetsNeedsUpdate;
-- (void)setContentSizeCategory:(int64_t)a3;
-- (void)setDisplayScale:(double)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)setLayoutReferenceSize:(CGSize)a3;
-- (void)setPeripheryInsets:(UIEdgeInsets)a3;
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)viewControllerDidMoveToParentViewController:(id)a3;
+- (void)setContentSizeCategory:(int64_t)category;
+- (void)setDisplayScale:(double)scale;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)setLayoutReferenceSize:(CGSize)size;
+- (void)setPeripheryInsets:(UIEdgeInsets)insets;
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)viewControllerDidMoveToParentViewController:(id)controller;
 - (void)viewControllerLayoutOrientationDidChange;
 - (void)viewControllerTraitCollectionDidChange;
 - (void)viewControllerViewDidAppear;
@@ -69,7 +69,7 @@
 - (void)viewControllerViewLayoutMarginsDidChange;
 - (void)viewControllerViewSafeAreaInsetsDidChange;
 - (void)viewControllerViewWillAppear;
-- (void)viewControllerViewWillTransitionToSize:(CGSize)a3;
+- (void)viewControllerViewWillTransitionToSize:(CGSize)size;
 @end
 
 @implementation PXExtendedTraitCollection
@@ -111,11 +111,11 @@
   if (self->_needsUpdateFlags.viewSize)
   {
     self->_needsUpdateFlags.viewSize = 0;
-    v4 = [(PXExtendedTraitCollection *)self viewIfLoaded];
-    v9 = v4;
-    if (v4)
+    viewIfLoaded = [(PXExtendedTraitCollection *)self viewIfLoaded];
+    v9 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v4 bounds];
+      [viewIfLoaded bounds];
       v6 = v5;
       v8 = v7;
     }
@@ -150,8 +150,8 @@
   if (self->_needsUpdateFlags.traitCollection)
   {
     self->_needsUpdateFlags.traitCollection = 0;
-    v4 = [(PXExtendedTraitCollection *)self createTraitCollection];
-    [(PXExtendedTraitCollection *)self _setTraitCollection:v4];
+    createTraitCollection = [(PXExtendedTraitCollection *)self createTraitCollection];
+    [(PXExtendedTraitCollection *)self _setTraitCollection:createTraitCollection];
   }
 }
 
@@ -240,8 +240,8 @@
   if (self->_needsUpdateFlags.displayScale)
   {
     self->_needsUpdateFlags.displayScale = 0;
-    v4 = [(PXExtendedTraitCollection *)self traitCollection];
-    [(PXExtendedTraitCollection *)self displayScaleFromTraitCollection:v4];
+    traitCollection = [(PXExtendedTraitCollection *)self traitCollection];
+    [(PXExtendedTraitCollection *)self displayScaleFromTraitCollection:traitCollection];
     v6 = v5;
 
     [(PXExtendedTraitCollection *)self setDisplayScale:v6];
@@ -253,8 +253,8 @@
   if (self->_needsUpdateFlags.safeAreaInsets)
   {
     self->_needsUpdateFlags.safeAreaInsets = 0;
-    v4 = [(PXExtendedTraitCollection *)self viewIfLoaded];
-    [v4 px_safeAreaInsets];
+    viewIfLoaded = [(PXExtendedTraitCollection *)self viewIfLoaded];
+    [viewIfLoaded px_safeAreaInsets];
     [(PXExtendedTraitCollection *)self setSafeAreaInsets:?];
   }
 }
@@ -264,11 +264,11 @@
   if (self->_needsUpdateFlags.peripheryInsets)
   {
     self->_needsUpdateFlags.peripheryInsets = 0;
-    v4 = [(PXExtendedTraitCollection *)self viewIfLoaded];
-    v17 = v4;
-    if (v4)
+    viewIfLoaded = [(PXExtendedTraitCollection *)self viewIfLoaded];
+    v17 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v4 px_peripheryInsets];
+      [viewIfLoaded px_peripheryInsets];
       v6 = v5;
       v8 = v7;
       v10 = v9;
@@ -293,8 +293,8 @@
   if (self->_needsUpdateFlags.layoutMargins)
   {
     self->_needsUpdateFlags.layoutMargins = 0;
-    v4 = [(PXExtendedTraitCollection *)self viewIfLoaded];
-    [v4 px_layoutMargins];
+    viewIfLoaded = [(PXExtendedTraitCollection *)self viewIfLoaded];
+    [viewIfLoaded px_layoutMargins];
     [(PXExtendedTraitCollection *)self setLayoutMargins:?];
   }
 }
@@ -343,8 +343,8 @@
   if (self->_needsUpdateFlags.windowReferenceSize)
   {
     self->_needsUpdateFlags.windowReferenceSize = 0;
-    v4 = [(PXExtendedTraitCollection *)self viewIfLoaded];
-    [v4 px_windowReferenceSize];
+    viewIfLoaded = [(PXExtendedTraitCollection *)self viewIfLoaded];
+    [viewIfLoaded px_windowReferenceSize];
     v6 = v5;
     v8 = v7;
 
@@ -435,10 +435,10 @@
 
 - (id)createTraitCollection
 {
-  v2 = [(PXExtendedTraitCollection *)self traitEnvironment];
-  v3 = [v2 traitCollection];
+  traitEnvironment = [(PXExtendedTraitCollection *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
 - (CGSize)layoutReferenceSize
@@ -660,7 +660,7 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
 
 - (int64_t)preferredBackgroundStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3F961E4();
 
   return v3;
@@ -668,7 +668,7 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
 
 - (BOOL)insideCollectionDetailsView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3F96270();
 
   return v3 & 1;
@@ -687,49 +687,49 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
   return result;
 }
 
-- (void)_setWindowOrientation:(int64_t)a3
+- (void)_setWindowOrientation:(int64_t)orientation
 {
-  if (self->_windowOrientation != a3)
+  if (self->_windowOrientation != orientation)
   {
-    self->_windowOrientation = a3;
+    self->_windowOrientation = orientation;
     [(PXObservable *)self signalChange:0x40000];
   }
 }
 
-- (void)_setWindowReferenceSize:(CGSize)a3
+- (void)_setWindowReferenceSize:(CGSize)size
 {
-  if (a3.width != self->_windowReferenceSize.width || a3.height != self->_windowReferenceSize.height)
+  if (size.width != self->_windowReferenceSize.width || size.height != self->_windowReferenceSize.height)
   {
-    self->_windowReferenceSize = a3;
+    self->_windowReferenceSize = size;
     [(PXObservable *)self signalChange:0x20000];
 
     [(PXExtendedTraitCollection *)self _invalidateWindowOrientation];
   }
 }
 
-- (void)setContentSizeCategory:(int64_t)a3
+- (void)setContentSizeCategory:(int64_t)category
 {
-  if (self->_contentSizeCategory != a3)
+  if (self->_contentSizeCategory != category)
   {
-    self->_contentSizeCategory = a3;
+    self->_contentSizeCategory = category;
     [(PXObservable *)self signalChange:2048];
   }
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
   p_layoutMargins = &self->_layoutMargins;
   top = self->_layoutMargins.top;
   left = self->_layoutMargins.left;
   bottom = self->_layoutMargins.bottom;
   right = self->_layoutMargins.right;
-  if (a3.left != left || a3.top != top || a3.right != right || a3.bottom != bottom)
+  if (margins.left != left || margins.top != top || margins.right != right || margins.bottom != bottom)
   {
-    v11 = a3.right;
-    v12 = a3.bottom;
-    v13 = a3.left;
-    v14 = a3.top;
-    if (PXEdgeInsetsEqualToEdgeInsetsForEdges(10, self->_layoutMargins.top, self->_layoutMargins.left, self->_layoutMargins.bottom, self->_layoutMargins.right, a3.top, a3.left, a3.bottom, a3.right))
+    v11 = margins.right;
+    v12 = margins.bottom;
+    v13 = margins.left;
+    v14 = margins.top;
+    if (PXEdgeInsetsEqualToEdgeInsetsForEdges(10, self->_layoutMargins.top, self->_layoutMargins.left, self->_layoutMargins.bottom, self->_layoutMargins.right, margins.top, margins.left, margins.bottom, margins.right))
     {
       v16 = 512;
     }
@@ -759,30 +759,30 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
   }
 }
 
-- (void)setPeripheryInsets:(UIEdgeInsets)a3
+- (void)setPeripheryInsets:(UIEdgeInsets)insets
 {
-  v4 = a3.left == self->_peripheryInsets.left && a3.top == self->_peripheryInsets.top && a3.right == self->_peripheryInsets.right;
-  if (!v4 || a3.bottom != self->_peripheryInsets.bottom)
+  v4 = insets.left == self->_peripheryInsets.left && insets.top == self->_peripheryInsets.top && insets.right == self->_peripheryInsets.right;
+  if (!v4 || insets.bottom != self->_peripheryInsets.bottom)
   {
-    self->_peripheryInsets = a3;
+    self->_peripheryInsets = insets;
     [(PXObservable *)self signalChange:0x80000];
   }
 }
 
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_safeAreaInsets = &self->_safeAreaInsets;
   v9 = self->_safeAreaInsets.bottom;
   v10 = self->_safeAreaInsets.right;
   v12 = self->_safeAreaInsets.top;
   v11 = self->_safeAreaInsets.left;
-  if (vabdd_f64(a3.left, v11) > 0.00000999999975 || vabdd_f64(a3.top, v12) > 0.00000999999975 || vabdd_f64(a3.right, v10) > 0.00000999999975 || vabdd_f64(a3.bottom, v9) > 0.00000999999975)
+  if (vabdd_f64(insets.left, v11) > 0.00000999999975 || vabdd_f64(insets.top, v12) > 0.00000999999975 || vabdd_f64(insets.right, v10) > 0.00000999999975 || vabdd_f64(insets.bottom, v9) > 0.00000999999975)
   {
-    if (PXEdgeInsetsEqualToEdgeInsetsForEdges(10, self->_safeAreaInsets.top, self->_safeAreaInsets.left, self->_safeAreaInsets.bottom, self->_safeAreaInsets.right, a3.top, a3.left, a3.bottom, a3.right))
+    if (PXEdgeInsetsEqualToEdgeInsetsForEdges(10, self->_safeAreaInsets.top, self->_safeAreaInsets.left, self->_safeAreaInsets.bottom, self->_safeAreaInsets.right, insets.top, insets.left, insets.bottom, insets.right))
     {
       v13 = 256;
     }
@@ -812,65 +812,65 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
   }
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
     [(PXObservable *)self signalChange:32];
   }
 }
 
-- (void)_setUserInterfaceLevel:(int64_t)a3
+- (void)_setUserInterfaceLevel:(int64_t)level
 {
-  if (self->_userInterfaceLevel != a3)
+  if (self->_userInterfaceLevel != level)
   {
-    self->_userInterfaceLevel = a3;
+    self->_userInterfaceLevel = level;
     [(PXObservable *)self signalChange:4096];
   }
 }
 
-- (void)_setUserInterfaceStyle:(int64_t)a3
+- (void)_setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(PXObservable *)self signalChange:1024];
   }
 }
 
-- (void)_setUserInterfaceIdiom:(int64_t)a3
+- (void)_setUserInterfaceIdiom:(int64_t)idiom
 {
-  if (self->_userInterfaceIdiom != a3)
+  if (self->_userInterfaceIdiom != idiom)
   {
-    self->_userInterfaceIdiom = a3;
+    self->_userInterfaceIdiom = idiom;
     [(PXObservable *)self signalChange:64];
   }
 }
 
-- (void)_setLayoutOrientation:(int64_t)a3
+- (void)_setLayoutOrientation:(int64_t)orientation
 {
-  if (self->_layoutOrientation != a3)
+  if (self->_layoutOrientation != orientation)
   {
-    self->_layoutOrientation = a3;
+    self->_layoutOrientation = orientation;
     [(PXObservable *)self signalChange:8];
   }
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  if (self->_layoutDirection != a3)
+  if (self->_layoutDirection != direction)
   {
-    self->_layoutDirection = a3;
+    self->_layoutDirection = direction;
     [(PXObservable *)self signalChange:128];
   }
 }
 
-- (void)setLayoutReferenceSize:(CGSize)a3
+- (void)setLayoutReferenceSize:(CGSize)size
 {
-  if (a3.width != self->_layoutReferenceSize.width || a3.height != self->_layoutReferenceSize.height)
+  if (size.width != self->_layoutReferenceSize.width || size.height != self->_layoutReferenceSize.height)
   {
-    self->_layoutReferenceSize = a3;
+    self->_layoutReferenceSize = size;
     [(PXObservable *)self signalChange:16];
     [(PXExtendedTraitCollection *)self invalidateLayoutSizeClass];
 
@@ -878,30 +878,30 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
   }
 }
 
-- (void)_setPendingViewTransitionSize:(CGSize)a3
+- (void)_setPendingViewTransitionSize:(CGSize)size
 {
-  if (a3.width != self->__pendingViewTransitionSize.width || a3.height != self->__pendingViewTransitionSize.height)
+  if (size.width != self->__pendingViewTransitionSize.width || size.height != self->__pendingViewTransitionSize.height)
   {
-    self->__pendingViewTransitionSize = a3;
+    self->__pendingViewTransitionSize = size;
     [(PXExtendedTraitCollection *)self _invalidateLayoutReferenceSize];
   }
 }
 
-- (void)_setViewSize:(CGSize)a3
+- (void)_setViewSize:(CGSize)size
 {
-  if (a3.width != self->__viewSize.width || a3.height != self->__viewSize.height)
+  if (size.width != self->__viewSize.width || size.height != self->__viewSize.height)
   {
-    self->__viewSize = a3;
+    self->__viewSize = size;
     [(PXExtendedTraitCollection *)self _invalidateLayoutReferenceSize];
   }
 }
 
-- (void)_setTraitCollection:(id)a3
+- (void)_setTraitCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_traitCollection != v5 && ([(PXAnonymousTraitCollection *)v5 isEqual:?]& 1) == 0)
+  collectionCopy = collection;
+  if (self->_traitCollection != collectionCopy && ([(PXAnonymousTraitCollection *)collectionCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_traitCollection, a3);
+    objc_storeStrong(&self->_traitCollection, collection);
     [(PXObservable *)self signalChange:1];
     [(PXExtendedTraitCollection *)self invalidateLayoutSizeClass];
     [(PXExtendedTraitCollection *)self invalidateUserInterfaceIdiom];
@@ -914,25 +914,25 @@ uint64_t __56__PXExtendedTraitCollection_viewControllerViewDidAppear__block_invo
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setLayoutSizeSubclass:(int64_t)a3
+- (void)_setLayoutSizeSubclass:(int64_t)subclass
 {
-  if (self->_layoutSizeSubclass != a3)
+  if (self->_layoutSizeSubclass != subclass)
   {
-    self->_layoutSizeSubclass = a3;
+    self->_layoutSizeSubclass = subclass;
     [(PXObservable *)self signalChange:4];
   }
 }
 
-- (void)_setLayoutSizeClass:(int64_t)a3
+- (void)_setLayoutSizeClass:(int64_t)class
 {
-  if (self->_layoutSizeClass != a3)
+  if (self->_layoutSizeClass != class)
   {
-    self->_layoutSizeClass = a3;
+    self->_layoutSizeClass = class;
     [(PXObservable *)self signalChange:2];
   }
 }
 
-- (void)viewControllerDidMoveToParentViewController:(id)a3
+- (void)viewControllerDidMoveToParentViewController:(id)controller
 {
   if ([(PXExtendedTraitCollection *)self isEnabled])
   {
@@ -967,10 +967,10 @@ uint64_t __73__PXExtendedTraitCollection_viewControllerDidMoveToParentViewContro
   }
 }
 
-- (void)viewControllerViewWillTransitionToSize:(CGSize)a3
+- (void)viewControllerViewWillTransitionToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(PXExtendedTraitCollection *)self isEnabled])
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -1016,7 +1016,7 @@ uint64_t __47__PXExtendedTraitCollection_backingViewDidLoad__block_invoke(uint64
   [(PXExtendedTraitCollection *)&v3 dealloc];
 }
 
-- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)a3
+- (id)_initForSubclassWithUserInterfaceFeature:(int64_t)feature
 {
   v10.receiver = self;
   v10.super_class = PXExtendedTraitCollection;
@@ -1033,7 +1033,7 @@ uint64_t __47__PXExtendedTraitCollection_backingViewDidLoad__block_invoke(uint64
     v4->_displayScale = 1.0;
     v4->__viewSize = PXSizeNull;
     v4->__pendingViewTransitionSize = PXSizeNull;
-    v4->_userInterfaceFeature = a3;
+    v4->_userInterfaceFeature = feature;
     v4->_userInterfaceStyle = 0;
     v4->_userInterfaceLevel = -1;
     v8[0] = MEMORY[0x1E69E9820];
@@ -1051,8 +1051,8 @@ uint64_t __47__PXExtendedTraitCollection_backingViewDidLoad__block_invoke(uint64
 
 - (PXExtendedTraitCollection)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXExtendedTraitCollection.m" lineNumber:98 description:{@"%s is not available as initializer", "-[PXExtendedTraitCollection init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXExtendedTraitCollection.m" lineNumber:98 description:{@"%s is not available as initializer", "-[PXExtendedTraitCollection init]"}];
 
   abort();
 }
@@ -1066,8 +1066,8 @@ uint64_t __47__PXExtendedTraitCollection_backingViewDidLoad__block_invoke(uint64
 
 - (CGRect)platformSpecificFullScreenReferenceRect
 {
-  v2 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v2 bounds];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1084,32 +1084,32 @@ uint64_t __47__PXExtendedTraitCollection_backingViewDidLoad__block_invoke(uint64
   return result;
 }
 
-- (void)getContentSizeCategory:(int64_t *)a3
+- (void)getContentSizeCategory:(int64_t *)category
 {
-  v4 = [(PXExtendedTraitCollection *)self traitEnvironment];
-  v6 = [v4 traitCollection];
+  traitEnvironment = [(PXExtendedTraitCollection *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
-  v5 = v6;
-  if (v6)
+  v5 = traitCollection;
+  if (traitCollection)
   {
-    v5 = PXPreferredContentSizeCategoryFromUITraitCollection(v6);
+    v5 = PXPreferredContentSizeCategoryFromUITraitCollection(traitCollection);
   }
 
-  if (a3)
+  if (category)
   {
-    *a3 = v5;
+    *category = v5;
   }
 }
 
-- (void)getSizeClass:(int64_t *)a3 sizeSubclass:(int64_t *)a4
+- (void)getSizeClass:(int64_t *)class sizeSubclass:(int64_t *)subclass
 {
   [(PXExtendedTraitCollection *)self layoutReferenceSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(PXExtendedTraitCollection *)self traitEnvironment];
-  v15 = [v11 traitCollection];
+  traitEnvironment = [(PXExtendedTraitCollection *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
-  v12 = PXUserInterfaceSizeClassFromUITraitCollection(v15);
+  v12 = PXUserInterfaceSizeClassFromUITraitCollection(traitCollection);
   v13 = v12;
   if (v12 == 2)
   {
@@ -1131,7 +1131,7 @@ uint64_t __47__PXExtendedTraitCollection_backingViewDidLoad__block_invoke(uint64
     }
 
 LABEL_7:
-    if (!a3)
+    if (!class)
     {
       goto LABEL_9;
     }
@@ -1140,89 +1140,89 @@ LABEL_7:
   }
 
   v13 = 0;
-  if (a3)
+  if (class)
   {
 LABEL_8:
-    *a3 = v12;
+    *class = v12;
   }
 
 LABEL_9:
-  if (a4)
+  if (subclass)
   {
-    *a4 = v13;
+    *subclass = v13;
   }
 }
 
-- (void)getUserInterfaceLevel:(int64_t *)a3
+- (void)getUserInterfaceLevel:(int64_t *)level
 {
-  v4 = [(PXExtendedTraitCollection *)self traitEnvironment];
-  v7 = [v4 traitCollection];
+  traitEnvironment = [(PXExtendedTraitCollection *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
-  v5 = [v7 userInterfaceLevel];
-  if (a3)
+  userInterfaceLevel = [traitCollection userInterfaceLevel];
+  if (level)
   {
-    v6 = v5 == 1;
-    if (v5 == -1)
+    v6 = userInterfaceLevel == 1;
+    if (userInterfaceLevel == -1)
     {
       v6 = -1;
     }
 
-    *a3 = v6;
+    *level = v6;
   }
 }
 
-- (void)getUserInterfaceStyle:(int64_t *)a3
+- (void)getUserInterfaceStyle:(int64_t *)style
 {
-  v4 = [(PXExtendedTraitCollection *)self traitEnvironment];
-  v7 = [v4 traitCollection];
+  traitEnvironment = [(PXExtendedTraitCollection *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
-  v5 = [v7 userInterfaceStyle];
-  if (a3)
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  if (style)
   {
-    v6 = v5 == 1;
-    if (v5 == 2)
+    v6 = userInterfaceStyle == 1;
+    if (userInterfaceStyle == 2)
     {
       v6 = 2;
     }
 
-    *a3 = v6;
+    *style = v6;
   }
 }
 
-- (void)getLayoutDirection:(int64_t *)a3
+- (void)getLayoutDirection:(int64_t *)direction
 {
-  v4 = [(PXExtendedTraitCollection *)self traitEnvironment];
-  v7 = [v4 traitCollection];
+  traitEnvironment = [(PXExtendedTraitCollection *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
-  v5 = [v7 layoutDirection];
-  if (a3)
+  layoutDirection = [traitCollection layoutDirection];
+  if (direction)
   {
-    v6 = 2 * (v5 == 1);
-    if (!v5)
+    v6 = 2 * (layoutDirection == 1);
+    if (!layoutDirection)
     {
       v6 = 1;
     }
 
-    *a3 = v6;
+    *direction = v6;
   }
 }
 
-- (void)getUserInterfaceIdiom:(int64_t *)a3
+- (void)getUserInterfaceIdiom:(int64_t *)idiom
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 > 6)
+  if (userInterfaceIdiom > 6)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_1B40752C8[v5];
+    v6 = qword_1B40752C8[userInterfaceIdiom];
   }
 
-  *a3 = v6;
+  *idiom = v6;
 }
 
 @end

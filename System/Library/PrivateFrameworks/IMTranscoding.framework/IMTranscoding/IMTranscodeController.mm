@@ -3,23 +3,23 @@
 - (BOOL)_connect;
 - (IMTranscodeController)init;
 - (int64_t)maxTimeForTranscriptionInSeconds;
-- (void)_decodeiMessageAppPayload:(id)a3 senderContext:(id)a4 bundleID:(id)a5 retries:(unint64_t)a6 completionBlock:(id)a7 blockUntilReply:(BOOL)a8;
+- (void)_decodeiMessageAppPayload:(id)payload senderContext:(id)context bundleID:(id)d retries:(unint64_t)retries completionBlock:(id)block blockUntilReply:(BOOL)reply;
 - (void)_disconnected;
-- (void)_generateMetadata:(id)a3 metadataURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 retries:(unint64_t)a7 completionBlock:(id)a8 blockUntilReply:(BOOL)a9;
-- (void)_generatePreview:(id)a3 previewURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 retries:(unint64_t)a7 balloonBundleID:(id)a8 transferGUID:(id)a9 completionBlock:(id)a10 blockUntilReply:(BOOL)a11;
-- (void)_generateSafeRender:(id)a3 constraints:(IMPreviewConstraints *)a4 retries:(int)a5 completionBlock:(id)a6;
-- (void)_transcodeFileTransferPayloadData:(id)a3 balloonBundleID:(id)a4 attachments:(id)a5 retries:(unint64_t)a6 fallBack:(BOOL)a7 completionBlock:(id)a8;
-- (void)generateMetadata:(id)a3 metadataURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 completionBlock:(id)a7;
-- (void)generateMetadata:(id)a3 metadataURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 completionBlock:(id)a7 blockUntilReply:(BOOL)a8;
-- (void)generatePosterConfigFromSource:(id)a3 destination:(id)a4 senderContext:(id)a5 completionBlock:(id)a6 blockUntilReply:(BOOL)a7;
-- (void)generatePreview:(id)a3 previewURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 balloonBundleID:(id)a7 transferGUID:(id)a8 completionBlock:(id)a9 blockUntilReply:(BOOL)a10;
-- (void)generateReadOnlyPosterConfig:(id)a3 completionBlock:(id)a4;
-- (void)generateSafeRender:(id)a3 completionBlock:(id)a4;
-- (void)generateSafeRender:(id)a3 constraints:(IMPreviewConstraints *)a4 completionBlock:(id)a5;
-- (void)generateSnapshotForMessageGUID:(id)a3 payloadURL:(id)a4 balloonBundleID:(id)a5 senderContext:(id)a6 completionBlock:(id)a7;
-- (void)replaceTransferWithSafeTransfer:(id)a3 constraints:(IMPreviewConstraints *)a4 completionBlock:(id)a5;
-- (void)transcodeFallbackFileTransferContents:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13;
-- (void)transcribeAudioForAudioTransferURL:(id)a3 withCompletion:(id)a4;
+- (void)_generateMetadata:(id)metadata metadataURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints retries:(unint64_t)retries completionBlock:(id)block blockUntilReply:(BOOL)reply;
+- (void)_generatePreview:(id)preview previewURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints retries:(unint64_t)retries balloonBundleID:(id)d transferGUID:(id)iD completionBlock:(id)self0 blockUntilReply:(BOOL)self1;
+- (void)_generateSafeRender:(id)render constraints:(IMPreviewConstraints *)constraints retries:(int)retries completionBlock:(id)block;
+- (void)_transcodeFileTransferPayloadData:(id)data balloonBundleID:(id)d attachments:(id)attachments retries:(unint64_t)retries fallBack:(BOOL)back completionBlock:(id)block;
+- (void)generateMetadata:(id)metadata metadataURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block;
+- (void)generateMetadata:(id)metadata metadataURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block blockUntilReply:(BOOL)reply;
+- (void)generatePosterConfigFromSource:(id)source destination:(id)destination senderContext:(id)context completionBlock:(id)block blockUntilReply:(BOOL)reply;
+- (void)generatePreview:(id)preview previewURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints balloonBundleID:(id)d transferGUID:(id)iD completionBlock:(id)block blockUntilReply:(BOOL)self0;
+- (void)generateReadOnlyPosterConfig:(id)config completionBlock:(id)block;
+- (void)generateSafeRender:(id)render completionBlock:(id)block;
+- (void)generateSafeRender:(id)render constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block;
+- (void)generateSnapshotForMessageGUID:(id)d payloadURL:(id)l balloonBundleID:(id)iD senderContext:(id)context completionBlock:(id)block;
+- (void)replaceTransferWithSafeTransfer:(id)transfer constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block;
+- (void)transcodeFallbackFileTransferContents:(id)contents utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3;
+- (void)transcribeAudioForAudioTransferURL:(id)l withCompletion:(id)completion;
 @end
 
 @implementation IMTranscodeController
@@ -113,47 +113,47 @@
   return self->_connection != 0;
 }
 
-- (void)generateSafeRender:(id)a3 completionBlock:(id)a4
+- (void)generateSafeRender:(id)render completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  renderCopy = render;
   IMClientPreviewConstraints();
-  [(IMTranscodeController *)self generateSafeRender:v7 constraints:v8 completionBlock:v6];
+  [(IMTranscodeController *)self generateSafeRender:renderCopy constraints:v8 completionBlock:blockCopy];
 }
 
-- (void)generateSafeRender:(id)a3 constraints:(IMPreviewConstraints *)a4 completionBlock:(id)a5
+- (void)generateSafeRender:(id)render constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  renderCopy = render;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       LODWORD(v13[0]) = 138412290;
-      *(v13 + 4) = v8;
+      *(v13 + 4) = renderCopy;
       _os_log_impl(&dword_254843000, v10, OS_LOG_TYPE_INFO, "Generating safe render for file transfer: %@", v13, 0xCu);
     }
   }
 
-  v11 = *&a4->var1.height;
-  v13[0] = *&a4->var0;
+  v11 = *&constraints->var1.height;
+  v13[0] = *&constraints->var0;
   v13[1] = v11;
-  v14 = *&a4->var3;
-  [(IMTranscodeController *)self _generateSafeRender:v8 constraints:v13 retries:0 completionBlock:v9];
+  v14 = *&constraints->var3;
+  [(IMTranscodeController *)self _generateSafeRender:renderCopy constraints:v13 retries:0 completionBlock:blockCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)replaceTransferWithSafeTransfer:(id)a3 constraints:(IMPreviewConstraints *)a4 completionBlock:(id)a5
+- (void)replaceTransferWithSafeTransfer:(id)transfer constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  if (!v7)
+  transferCopy = transfer;
+  blockCopy = block;
+  if (!transferCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-    v8[2](v8, 0, v9);
+    blockCopy[2](blockCopy, 0, v9);
   }
 
   v10 = +[IMTranscodeController sharedInstance];
@@ -161,57 +161,57 @@
   v16[1] = 3221225472;
   v16[2] = sub_254844638;
   v16[3] = &unk_27978C268;
-  v17 = v7;
-  v18 = v8;
-  v11 = *&a4->var1.height;
-  v14[0] = *&a4->var0;
+  v17 = transferCopy;
+  v18 = blockCopy;
+  v11 = *&constraints->var1.height;
+  v14[0] = *&constraints->var0;
   v14[1] = v11;
-  v15 = *&a4->var3;
-  v12 = v8;
-  v13 = v7;
+  v15 = *&constraints->var3;
+  v12 = blockCopy;
+  v13 = transferCopy;
   [v10 generateSafeRender:v13 constraints:v14 completionBlock:v16];
 }
 
-- (void)_generateSafeRender:(id)a3 constraints:(IMPreviewConstraints *)a4 retries:(int)a5 completionBlock:(id)a6
+- (void)_generateSafeRender:(id)render constraints:(IMPreviewConstraints *)constraints retries:(int)retries completionBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  renderCopy = render;
+  blockCopy = block;
   if ([(IMTranscodeController *)self _connect])
   {
-    v28 = v11;
+    v28 = blockCopy;
     v12 = xpc_dictionary_create(0, 0, 0);
     IMInsertCodableObjectsToXPCDictionary();
-    v13 = *&a4->var1.height;
-    *buf = *&a4->var0;
+    v13 = *&constraints->var1.height;
+    *buf = *&constraints->var0;
     v38 = v13;
-    v39 = *&a4->var3;
+    v39 = *&constraints->var3;
     v14 = IMPreviewConstraintsDictionaryFromConstraint();
     IMInsertDictionariesToXPCDictionary();
 
     IMInsertIntsToXPCDictionary();
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v10 URLByDeletingPathExtension];
-    v18 = [v17 lastPathComponent];
-    v19 = [v16 stringWithFormat:@"%@.safe-render", v18];
-    v20 = [v15 im_randomTemporaryFileURLWithFileName:v19];
+    uRLByDeletingPathExtension = [renderCopy URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
+    v19 = [v16 stringWithFormat:@"%@.safe-render", lastPathComponent];
+    v20 = [defaultManager im_randomTemporaryFileURLWithFileName:v19];
 
     IMInsertCodableObjectsToXPCDictionary();
     IMInsertSandboxExtensionIntoXPCMessageWithKeyForFileURL();
-    [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v12 withKey:@"read-extension" forFileURL:v10 readOnly:1, v20, 0];
+    [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v12 withKey:@"read-extension" forFileURL:renderCopy readOnly:1, v20, 0];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = sub_254844C0C;
     v29[3] = &unk_27978C2B8;
-    v36 = a5;
-    v21 = v10;
+    retriesCopy = retries;
+    v21 = renderCopy;
     v30 = v21;
-    v31 = self;
-    v22 = *&a4->var1.height;
-    v33 = *&a4->var0;
+    selfCopy = self;
+    v22 = *&constraints->var1.height;
+    v33 = *&constraints->var0;
     v34 = v22;
-    v35 = *&a4->var3;
+    v35 = *&constraints->var3;
     v32 = v28;
     v23 = MEMORY[0x259C1BC50](v29);
     if (IMOSLoggingEnabled())
@@ -228,7 +228,7 @@
     v25 = xpc_connection_send_message_with_reply_sync(self->_connection, v12);
     (v23)[2](v23, v25);
 
-    v11 = v28;
+    blockCopy = v28;
   }
 
   else if (IMOSLoggingEnabled())
@@ -244,28 +244,28 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transcodeFallbackFileTransferContents:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13
+- (void)transcodeFallbackFileTransferContents:(id)contents utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3
 {
-  LOBYTE(v14) = a12;
+  LOBYTE(v14) = enabled;
   LOBYTE(v13) = 1;
-  [(IMTranscodeController *)self _transcodeFileTransferContents:a3 utiType:a4 isSticker:0 allowUnfilteredUTIs:a5 target:a6 sizes:a7 commonCapabilities:a8 maxDimension:a9 transcoderUserInfo:a10 representations:a11 fallBack:v13 retries:v14 isLQMEnabled:a13 completionBlock:?];
+  [(IMTranscodeController *)self _transcodeFileTransferContents:contents utiType:type isSticker:0 allowUnfilteredUTIs:is target:target sizes:sizes commonCapabilities:capabilities maxDimension:dimension transcoderUserInfo:info representations:representations fallBack:v13 retries:v14 isLQMEnabled:block completionBlock:?];
 }
 
-- (void)_transcodeFileTransferPayloadData:(id)a3 balloonBundleID:(id)a4 attachments:(id)a5 retries:(unint64_t)a6 fallBack:(BOOL)a7 completionBlock:(id)a8
+- (void)_transcodeFileTransferPayloadData:(id)data balloonBundleID:(id)d attachments:(id)attachments retries:(unint64_t)retries fallBack:(BOOL)back completionBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v14 && v15)
+  dataCopy = data;
+  dCopy = d;
+  attachmentsCopy = attachments;
+  blockCopy = block;
+  if (dataCopy && dCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v18 = xpc_dictionary_create(0, 0, 0);
       IMInsertDatasToXPCDictionary();
       IMInsertArraysToXPCDictionary();
-      [v15 UTF8String];
+      [dCopy UTF8String];
       IMInsertStringsToXPCDictionary();
       IMInsertBoolsToXPCDictionary();
       IMInsertIntsToXPCDictionary();
@@ -273,15 +273,15 @@
       v28[1] = 3221225472;
       v28[2] = sub_254846AA8;
       v28[3] = &unk_27978C380;
-      v34 = a6;
-      v19 = v15;
+      retriesCopy = retries;
+      v19 = dCopy;
       v29 = v19;
-      v30 = self;
-      v20 = v14;
+      selfCopy = self;
+      v20 = dataCopy;
       v31 = v20;
-      v32 = v16;
-      v35 = a7;
-      v33 = v17;
+      v32 = attachmentsCopy;
+      backCopy = back;
+      v33 = blockCopy;
       v21 = MEMORY[0x259C1BC50](v28);
       if (IMOSLoggingEnabled())
       {
@@ -319,54 +319,54 @@
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 134218242;
-        v37 = [v14 length];
+        v37 = [dataCopy length];
         v38 = 2112;
-        v39 = v15;
+        v39 = dCopy;
         _os_log_impl(&dword_254843000, v24, OS_LOG_TYPE_INFO, "request error in TranscodingPayloadData: nil data (len=%lu) or balloonBundleID %@", buf, 0x16u);
       }
     }
 
-    if (v17)
+    if (blockCopy)
     {
       v25 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v17 + 2))(v17, 0, 0, v25, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0, v25, 0, 0);
     }
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateSnapshotForMessageGUID:(id)a3 payloadURL:(id)a4 balloonBundleID:(id)a5 senderContext:(id)a6 completionBlock:(id)a7
+- (void)generateSnapshotForMessageGUID:(id)d payloadURL:(id)l balloonBundleID:(id)iD senderContext:(id)context completionBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13 && v14)
+  dCopy = d;
+  lCopy = l;
+  iDCopy = iD;
+  contextCopy = context;
+  blockCopy = block;
+  if (lCopy && iDCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v17 = xpc_dictionary_create(0, 0, 0);
-      v26 = [v12 UTF8String];
+      uTF8String = [dCopy UTF8String];
       IMInsertStringsToXPCDictionary();
-      v18 = [v13 absoluteString];
-      v27 = [v18 UTF8String];
+      absoluteString = [lCopy absoluteString];
+      uTF8String2 = [absoluteString UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      [v14 UTF8String];
+      [iDCopy UTF8String];
       IMInsertStringsToXPCDictionary();
       IMInsertKeyedCodableObjectsToXPCDictionary();
       IMInsertIntsToXPCDictionary();
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v17 withKey:@"read-extension" forFileURL:v13 readOnly:1, 2, 0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v17 withKey:@"read-extension" forFileURL:lCopy readOnly:1, 2, 0];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = sub_254847664;
       v28[3] = &unk_27978C3A8;
-      v19 = v13;
+      v19 = lCopy;
       v29 = v19;
-      v30 = v16;
+      v30 = blockCopy;
       v20 = MEMORY[0x259C1BC50](v28);
       if (IMOSLoggingEnabled())
       {
@@ -401,116 +401,116 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v32 = v13;
+        v32 = lCopy;
         v33 = 2112;
-        v34 = v14;
+        v34 = iDCopy;
         _os_log_impl(&dword_254843000, v22, OS_LOG_TYPE_INFO, "request error in GenerateSnapshot, nil payloadURL %@ or balloonBundleID %@", buf, 0x16u);
       }
     }
 
-    if (v16)
+    if (blockCopy)
     {
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v16 + 2))(v16, 0, v23);
+      (*(blockCopy + 2))(blockCopy, 0, v23);
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generatePreview:(id)a3 previewURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 balloonBundleID:(id)a7 transferGUID:(id)a8 completionBlock:(id)a9 blockUntilReply:(BOOL)a10
+- (void)generatePreview:(id)preview previewURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints balloonBundleID:(id)d transferGUID:(id)iD completionBlock:(id)block blockUntilReply:(BOOL)self0
 {
-  v16 = a10;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = v22;
-  if (v21)
+  replyCopy2 = reply;
+  previewCopy = preview;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
+  iDCopy = iD;
+  blockCopy = block;
+  v23 = blockCopy;
+  if (iDCopy)
   {
-    v24 = self;
-    v25 = MEMORY[0x259C1BC50](v22);
+    selfCopy = self;
+    v25 = MEMORY[0x259C1BC50](blockCopy);
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = sub_254847B5C;
     v32[3] = &unk_27978C3D0;
-    v33 = v21;
+    v33 = iDCopy;
     v34 = v25;
     v26 = v25;
     v27 = MEMORY[0x259C1BC50](v32);
 
-    self = v24;
-    v16 = a10;
+    self = selfCopy;
+    replyCopy2 = reply;
     v23 = v27;
   }
 
-  v28 = *&a6->var1.height;
-  v30[0] = *&a6->var0;
+  v28 = *&constraints->var1.height;
+  v30[0] = *&constraints->var0;
   v30[1] = v28;
-  v31 = *&a6->var3;
-  LOBYTE(v29) = v16;
-  [(IMTranscodeController *)self _generatePreview:v17 previewURL:v18 senderContext:v19 constraints:v30 retries:0 balloonBundleID:v20 transferGUID:v21 completionBlock:v23 blockUntilReply:v29];
+  v31 = *&constraints->var3;
+  LOBYTE(v29) = replyCopy2;
+  [(IMTranscodeController *)self _generatePreview:previewCopy previewURL:lCopy senderContext:contextCopy constraints:v30 retries:0 balloonBundleID:dCopy transferGUID:iDCopy completionBlock:v23 blockUntilReply:v29];
 }
 
-- (void)_generatePreview:(id)a3 previewURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 retries:(unint64_t)a7 balloonBundleID:(id)a8 transferGUID:(id)a9 completionBlock:(id)a10 blockUntilReply:(BOOL)a11
+- (void)_generatePreview:(id)preview previewURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints retries:(unint64_t)retries balloonBundleID:(id)d transferGUID:(id)iD completionBlock:(id)self0 blockUntilReply:(BOOL)self1
 {
   v56 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v40 = a5;
-  v19 = a8;
-  v39 = a9;
-  v20 = a10;
-  if (v17 && v18)
+  previewCopy = preview;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
+  iDCopy = iD;
+  blockCopy = block;
+  if (previewCopy && lCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v21 = xpc_dictionary_create(0, 0, 0);
       IMInsertIntsToXPCDictionary();
-      v22 = [v17 absoluteString];
-      v35 = [v22 UTF8String];
+      absoluteString = [previewCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      v23 = [v18 absoluteString];
-      v36 = [v23 UTF8String];
+      absoluteString2 = [lCopy absoluteString];
+      uTF8String2 = [absoluteString2 UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      if (v19)
+      if (dCopy)
       {
-        [v19 UTF8String];
+        [dCopy UTF8String];
         IMInsertStringsToXPCDictionary();
       }
 
       IMInsertKeyedCodableObjectsToXPCDictionary();
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v21 withKey:@"read-extension" forFileURL:v17 readOnly:1, v40, 0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v21 withKey:@"read-extension" forFileURL:previewCopy readOnly:1, contextCopy, 0];
       v38 = IMCachesDirectoryURL();
       [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v21 withKey:@"write-extension" forFileURL:v38 readOnly:0];
-      v24 = *&a6->var1.height;
-      *buf = *&a6->var0;
+      v24 = *&constraints->var1.height;
+      *buf = *&constraints->var0;
       *&buf[16] = v24;
-      v55 = *&a6->var3;
+      v55 = *&constraints->var3;
       v37 = IMPreviewConstraintsDictionaryFromConstraint();
       IMInsertDictionariesToXPCDictionary();
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = sub_254848250;
       v41[3] = &unk_27978C3F8;
-      v49 = a7;
-      v25 = v17;
+      retriesCopy = retries;
+      v25 = previewCopy;
       v42 = v25;
-      v43 = self;
-      v44 = v18;
-      v45 = v40;
-      v26 = *&a6->var1.height;
-      v50 = *&a6->var0;
+      selfCopy = self;
+      v44 = lCopy;
+      v45 = contextCopy;
+      v26 = *&constraints->var1.height;
+      v50 = *&constraints->var0;
       v51 = v26;
-      v52 = *&a6->var3;
-      v46 = v19;
-      v47 = v39;
-      v48 = v20;
-      v53 = a11;
+      v52 = *&constraints->var3;
+      v46 = dCopy;
+      v47 = iDCopy;
+      v48 = blockCopy;
+      replyCopy = reply;
       v27 = MEMORY[0x259C1BC50](v41);
       if (IMOSLoggingEnabled())
       {
@@ -524,7 +524,7 @@
       }
 
       connection = self->_connection;
-      if (a11)
+      if (reply)
       {
         v30 = xpc_connection_send_message_with_reply_sync(connection, v21);
         (v27)[2](v27, v30);
@@ -556,37 +556,37 @@
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = previewCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v18;
+        *&buf[14] = lCopy;
         _os_log_impl(&dword_254843000, v31, OS_LOG_TYPE_INFO, "request error in GeneratePreview, nil sourceURL %@ or previewURL %@", buf, 0x16u);
       }
     }
 
-    if (v20)
+    if (blockCopy)
     {
       v32 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v20 + 2))(v20, 0, v32, 0.0, 0.0);
+      (*(blockCopy + 2))(blockCopy, 0, v32, 0.0, 0.0);
     }
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateMetadata:(id)a3 metadataURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 completionBlock:(id)a7
+- (void)generateMetadata:(id)metadata metadataURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  metadataCopy = metadata;
+  lCopy = l;
+  contextCopy = context;
+  blockCopy = block;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v16 = *&a6->var1.height;
-    v27[0] = *&a6->var0;
+    v16 = *&constraints->var1.height;
+    v27[0] = *&constraints->var0;
     v27[1] = v16;
-    v28 = *&a6->var3;
+    v28 = *&constraints->var3;
     LOBYTE(v18) = 0;
-    [(IMTranscodeController *)self _generateMetadata:v12 metadataURL:v13 senderContext:v14 constraints:v27 retries:0 completionBlock:v15 blockUntilReply:v18];
+    [(IMTranscodeController *)self _generateMetadata:metadataCopy metadataURL:lCopy senderContext:contextCopy constraints:v27 retries:0 completionBlock:blockCopy blockUntilReply:v18];
   }
 
   else
@@ -596,75 +596,75 @@
     block[2] = sub_254848930;
     block[3] = &unk_27978C420;
     block[4] = self;
-    v20 = v12;
-    v21 = v13;
-    v22 = v14;
-    v17 = *&a6->var1.height;
-    v24 = *&a6->var0;
+    v20 = metadataCopy;
+    v21 = lCopy;
+    v22 = contextCopy;
+    v17 = *&constraints->var1.height;
+    v24 = *&constraints->var0;
     v25 = v17;
-    v26 = *&a6->var3;
-    v23 = v15;
+    v26 = *&constraints->var3;
+    v23 = blockCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)generateMetadata:(id)a3 metadataURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 completionBlock:(id)a7 blockUntilReply:(BOOL)a8
+- (void)generateMetadata:(id)metadata metadataURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints completionBlock:(id)block blockUntilReply:(BOOL)reply
 {
-  v8 = *&a6->var1.height;
-  v10[0] = *&a6->var0;
+  v8 = *&constraints->var1.height;
+  v10[0] = *&constraints->var0;
   v10[1] = v8;
-  v11 = *&a6->var3;
-  LOBYTE(v9) = a8;
-  [(IMTranscodeController *)self _generateMetadata:a3 metadataURL:a4 senderContext:a5 constraints:v10 retries:0 completionBlock:a7 blockUntilReply:v9];
+  v11 = *&constraints->var3;
+  LOBYTE(v9) = reply;
+  [(IMTranscodeController *)self _generateMetadata:metadata metadataURL:l senderContext:context constraints:v10 retries:0 completionBlock:block blockUntilReply:v9];
 }
 
-- (void)_generateMetadata:(id)a3 metadataURL:(id)a4 senderContext:(id)a5 constraints:(IMPreviewConstraints *)a6 retries:(unint64_t)a7 completionBlock:(id)a8 blockUntilReply:(BOOL)a9
+- (void)_generateMetadata:(id)metadata metadataURL:(id)l senderContext:(id)context constraints:(IMPreviewConstraints *)constraints retries:(unint64_t)retries completionBlock:(id)block blockUntilReply:(BOOL)reply
 {
   v49 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (v15 && v16)
+  metadataCopy = metadata;
+  lCopy = l;
+  contextCopy = context;
+  blockCopy = block;
+  if (metadataCopy && lCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v19 = xpc_dictionary_create(0, 0, 0);
       IMInsertIntsToXPCDictionary();
-      v20 = [v15 absoluteString];
-      v33 = [v20 UTF8String];
+      absoluteString = [metadataCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      v21 = [v16 absoluteString];
-      [v21 UTF8String];
+      absoluteString2 = [lCopy absoluteString];
+      [absoluteString2 UTF8String];
       IMInsertStringsToXPCDictionary();
 
       IMInsertKeyedCodableObjectsToXPCDictionary();
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v19 withKey:@"read-extension" forFileURL:v15 readOnly:1, v17, 0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v19 withKey:@"read-extension" forFileURL:metadataCopy readOnly:1, contextCopy, 0];
       v35 = IMCachesDirectoryURL();
       [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v19 withKey:@"write-extension" forFileURL:v35 readOnly:0];
-      v22 = *&a6->var1.height;
-      *buf = *&a6->var0;
+      v22 = *&constraints->var1.height;
+      *buf = *&constraints->var0;
       *&buf[16] = v22;
-      v48 = *&a6->var3;
+      v48 = *&constraints->var3;
       v34 = IMPreviewConstraintsDictionaryFromConstraint();
       IMInsertDictionariesToXPCDictionary();
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = sub_254848E90;
       v36[3] = &unk_27978C470;
-      v42 = a7;
-      v23 = v15;
+      retriesCopy = retries;
+      v23 = metadataCopy;
       v37 = v23;
-      v38 = self;
-      v39 = v16;
-      v40 = v17;
-      v24 = *&a6->var1.height;
-      v43 = *&a6->var0;
+      selfCopy = self;
+      v39 = lCopy;
+      v40 = contextCopy;
+      v24 = *&constraints->var1.height;
+      v43 = *&constraints->var0;
       v44 = v24;
-      v45 = *&a6->var3;
-      v41 = v18;
-      v46 = a9;
+      v45 = *&constraints->var3;
+      v41 = blockCopy;
+      replyCopy = reply;
       v25 = MEMORY[0x259C1BC50](v36);
       if (IMOSLoggingEnabled())
       {
@@ -678,7 +678,7 @@
       }
 
       connection = self->_connection;
-      if (a9)
+      if (reply)
       {
         v28 = xpc_connection_send_message_with_reply_sync(self->_connection, v19);
         (v25)[2](v25, v28);
@@ -710,58 +710,58 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *&buf[4] = v15;
+        *&buf[4] = metadataCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v16;
+        *&buf[14] = lCopy;
         _os_log_impl(&dword_254843000, v29, OS_LOG_TYPE_INFO, "request error in GenerateMetadata, nil sourceURL %@ or destinationURL %@", buf, 0x16u);
       }
     }
 
-    if (v18)
+    if (blockCopy)
     {
       v30 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v18 + 2))(v18, 0, v30, 0.0, 0.0);
+      (*(blockCopy + 2))(blockCopy, 0, v30, 0.0, 0.0);
     }
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_decodeiMessageAppPayload:(id)a3 senderContext:(id)a4 bundleID:(id)a5 retries:(unint64_t)a6 completionBlock:(id)a7 blockUntilReply:(BOOL)a8
+- (void)_decodeiMessageAppPayload:(id)payload senderContext:(id)context bundleID:(id)d retries:(unint64_t)retries completionBlock:(id)block blockUntilReply:(BOOL)reply
 {
-  v8 = a8;
+  replyCopy = reply;
   v43 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v30 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (v14 && v15)
+  payloadCopy = payload;
+  contextCopy = context;
+  dCopy = d;
+  blockCopy = block;
+  if (payloadCopy && dCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v17 = xpc_dictionary_create(0, 0, 0);
       IMInsertIntsToXPCDictionary();
-      v18 = [v14 absoluteString];
-      v29 = [v18 UTF8String];
+      absoluteString = [payloadCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      [v15 UTF8String];
+      [dCopy UTF8String];
       IMInsertStringsToXPCDictionary();
       IMInsertKeyedCodableObjectsToXPCDictionary();
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v17 withKey:@"read-extension" forFileURL:v14 readOnly:1, v30, 0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v17 withKey:@"read-extension" forFileURL:payloadCopy readOnly:1, contextCopy, 0];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = sub_254849954;
       v31[3] = &unk_27978C380;
-      v37 = a6;
-      v19 = v14;
+      retriesCopy = retries;
+      v19 = payloadCopy;
       v32 = v19;
-      v20 = v15;
+      v20 = dCopy;
       v33 = v20;
-      v34 = self;
-      v35 = v30;
-      v36 = v16;
-      v38 = v8;
+      selfCopy = self;
+      v35 = contextCopy;
+      v36 = blockCopy;
+      v38 = replyCopy;
       v21 = MEMORY[0x259C1BC50](v31);
       if (IMOSLoggingEnabled())
       {
@@ -777,7 +777,7 @@
       }
 
       connection = self->_connection;
-      if (v8)
+      if (replyCopy)
       {
         v24 = xpc_connection_send_message_with_reply_sync(connection, v17);
         (v21)[2](v21, v24);
@@ -809,59 +809,59 @@
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v40 = v14;
+        v40 = payloadCopy;
         v41 = 2112;
-        v42 = v15;
+        v42 = dCopy;
         _os_log_impl(&dword_254843000, v25, OS_LOG_TYPE_INFO, "request error in DecodeiMessageAppPayload: nil sourceURL %@ or bundleID %@", buf, 0x16u);
       }
     }
 
-    if (v16)
+    if (blockCopy)
     {
       v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v16 + 2))(v16, 0, 0, 0, v26);
+      (*(blockCopy + 2))(blockCopy, 0, 0, 0, v26);
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generatePosterConfigFromSource:(id)a3 destination:(id)a4 senderContext:(id)a5 completionBlock:(id)a6 blockUntilReply:(BOOL)a7
+- (void)generatePosterConfigFromSource:(id)source destination:(id)destination senderContext:(id)context completionBlock:(id)block blockUntilReply:(BOOL)reply
 {
-  v7 = a7;
+  replyCopy = reply;
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v30 = a5;
-  v14 = a6;
-  if (v12 && v13)
+  sourceCopy = source;
+  destinationCopy = destination;
+  contextCopy = context;
+  blockCopy = block;
+  if (sourceCopy && destinationCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v15 = xpc_dictionary_create(0, 0, 0);
       IMInsertIntsToXPCDictionary();
-      v16 = [v12 absoluteString];
-      v29 = [v16 UTF8String];
+      absoluteString = [sourceCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      v17 = [v13 absoluteString];
-      [v17 UTF8String];
+      absoluteString2 = [destinationCopy absoluteString];
+      [absoluteString2 UTF8String];
       IMInsertStringsToXPCDictionary();
 
       IMInsertKeyedCodableObjectsToXPCDictionary();
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v15 withKey:@"read-extension" forFileURL:v12 readOnly:1, v30, 0];
-      v18 = [v13 URLByDeletingLastPathComponent];
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v15 withKey:@"write-extension" forFileURL:v18 readOnly:0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v15 withKey:@"read-extension" forFileURL:sourceCopy readOnly:1, contextCopy, 0];
+      uRLByDeletingLastPathComponent = [destinationCopy URLByDeletingLastPathComponent];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v15 withKey:@"write-extension" forFileURL:uRLByDeletingLastPathComponent readOnly:0];
 
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = sub_25484A420;
       v31[3] = &unk_27978C4B8;
-      v19 = v12;
+      v19 = sourceCopy;
       v32 = v19;
-      v20 = v13;
+      v20 = destinationCopy;
       v33 = v20;
-      v34 = v14;
+      v34 = blockCopy;
       v21 = MEMORY[0x259C1BC50](v31);
       if (IMOSLoggingEnabled())
       {
@@ -877,7 +877,7 @@
       }
 
       connection = self->_connection;
-      if (v7)
+      if (replyCopy)
       {
         v24 = xpc_connection_send_message_with_reply_sync(connection, v15);
         (v21)[2](v21, v24);
@@ -909,47 +909,47 @@
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v36 = v12;
+        v36 = sourceCopy;
         v37 = 2112;
-        v38 = v13;
+        v38 = destinationCopy;
         _os_log_impl(&dword_254843000, v25, OS_LOG_TYPE_INFO, "request error in generatePosterConfig: nil sourceConfig %@ or destinationConfig %@", buf, 0x16u);
       }
     }
 
-    if (v14)
+    if (blockCopy)
     {
       v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v14 + 2))(v14, 0, v26);
+      (*(blockCopy + 2))(blockCopy, 0, v26);
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateReadOnlyPosterConfig:(id)a3 completionBlock:(id)a4
+- (void)generateReadOnlyPosterConfig:(id)config completionBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  configCopy = config;
+  blockCopy = block;
+  if (configCopy)
   {
     if ([(IMTranscodeController *)self _connect])
     {
       v8 = xpc_dictionary_create(0, 0, 0);
       IMInsertIntsToXPCDictionary();
-      v9 = [v6 absoluteString];
-      v19 = [v9 UTF8String];
+      absoluteString = [configCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
       IMInsertStringsToXPCDictionary();
 
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v8 withKey:@"read-extension" forFileURL:v6 readOnly:1, v19, 0];
-      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v8 withKey:@"write-extension" forFileURL:v6 readOnly:0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v8 withKey:@"read-extension" forFileURL:configCopy readOnly:1, uTF8String, 0];
+      [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v8 withKey:@"write-extension" forFileURL:configCopy readOnly:0];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = sub_25484AB24;
       v20[3] = &unk_27978C3A8;
-      v10 = v6;
+      v10 = configCopy;
       v21 = v10;
-      v22 = v7;
+      v22 = blockCopy;
       v11 = MEMORY[0x259C1BC50](v20);
       if (IMOSLoggingEnabled())
       {
@@ -991,10 +991,10 @@
       }
     }
 
-    if (v7)
+    if (blockCopy)
     {
       v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMTranscodeErrorDomain" code:-2 userInfo:0];
-      (*(v7 + 2))(v7, 0, 0, v16);
+      (*(blockCopy + 2))(blockCopy, 0, 0, v16);
     }
   }
 
@@ -1011,36 +1011,36 @@
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 longLongValue];
+      longLongValue = [v4 longLongValue];
     }
 
     else
     {
-      v6 = 120;
+      longLongValue = 120;
     }
   }
 
   else
   {
-    v6 = 120;
+    longLongValue = 120;
   }
 
-  return v6;
+  return longLongValue;
 }
 
-- (void)transcribeAudioForAudioTransferURL:(id)a3 withCompletion:(id)a4
+- (void)transcribeAudioForAudioTransferURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if ([(IMTranscodeController *)self _connect])
   {
     v8 = xpc_dictionary_create(0, 0, 0);
     IMInsertIntsToXPCDictionary();
-    v9 = [v6 absoluteString];
-    v16 = [v9 UTF8String];
+    absoluteString = [lCopy absoluteString];
+    uTF8String = [absoluteString UTF8String];
     IMInsertStringsToXPCDictionary();
 
-    [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v8 withKey:@"read-extension" forFileURL:v6 readOnly:1, v16, 0];
+    [(IMTranscodeController *)self _insertSandboxExtensionIntoXPCMessage:v8 withKey:@"read-extension" forFileURL:lCopy readOnly:1, uTF8String, 0];
     v28[0] = 0;
     v28[1] = v28;
     v28[2] = 0x2020000000;
@@ -1054,17 +1054,17 @@
     v21[2] = sub_25484B1EC;
     v21[3] = &unk_27978C4E0;
     v24 = v26;
-    v22 = v6;
+    v22 = lCopy;
     v25 = v28;
-    v10 = v7;
+    v10 = completionCopy;
     v23 = v10;
     v11 = MEMORY[0x259C1BC50](v21);
-    v12 = [(IMTranscodeController *)self maxTimeForTranscriptionInSeconds];
+    maxTimeForTranscriptionInSeconds = [(IMTranscodeController *)self maxTimeForTranscriptionInSeconds];
     connection = self->_connection;
     v14 = im_primary_queue();
     xpc_connection_send_message_with_reply(connection, v8, v14, v11);
 
-    v15 = dispatch_time(0, 1000000000 * v12);
+    v15 = dispatch_time(0, 1000000000 * maxTimeForTranscriptionInSeconds);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_25484B444;

@@ -1,6 +1,6 @@
 @interface NTKVictoryAnalogStyleEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
 + (id)_stylesInGlory;
 + (id)_stylesInGrace;
 - (id)_valueToFaceBundleStringDict;
@@ -8,16 +8,16 @@
 
 @implementation NTKVictoryAnalogStyleEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  if ([a3 isRunningGraceOrLater])
+  if ([device isRunningGraceOrLater])
   {
-    [a1 _stylesInGrace];
+    [self _stylesInGrace];
   }
 
   else
   {
-    [a1 _stylesInGlory];
+    [self _stylesInGlory];
   }
   v4 = ;
 
@@ -48,10 +48,10 @@
   return v3;
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3 + 1, a4];
-  v5 = [NSString localizedStringWithFormat:@"%@", v4];
+  device = [NSNumber numberWithUnsignedInteger:value + 1, device];
+  v5 = [NSString localizedStringWithFormat:@"%@", device];
 
   return v5;
 }

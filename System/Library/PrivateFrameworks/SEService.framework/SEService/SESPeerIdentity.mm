@@ -1,38 +1,38 @@
 @interface SESPeerIdentity
-+ (id)withOTPeerIdentity:(id)a3;
-+ (id)withPeerIdentifier:(id)a3 peerData:(id)a4;
++ (id)withOTPeerIdentity:(id)identity;
++ (id)withPeerIdentifier:(id)identifier peerData:(id)data;
 - (id)asOTPeerIdentity;
 @end
 
 @implementation SESPeerIdentity
 
-+ (id)withPeerIdentifier:(id)a3 peerData:(id)a4
++ (id)withPeerIdentifier:(id)identifier peerData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v7 = objc_opt_new();
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = identifierCopy;
+  v9 = identifierCopy;
 
   v10 = v7[2];
-  v7[2] = v6;
+  v7[2] = dataCopy;
 
   return v7;
 }
 
-+ (id)withOTPeerIdentity:(id)a3
++ (id)withOTPeerIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = objc_opt_new();
-  v5 = [v3 peerIdentifier];
+  peerIdentifier = [identityCopy peerIdentifier];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = peerIdentifier;
 
-  v7 = [v3 peerData];
+  peerData = [identityCopy peerData];
 
   v8 = v4[2];
-  v4[2] = v7;
+  v4[2] = peerData;
 
   return v4;
 }

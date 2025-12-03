@@ -10,23 +10,23 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (NSString)transitBalanceCurrencyCode
 {
-  v2 = [(PKStoredValuePassProperties *)self balanceAmount];
-  v3 = [v2 currency];
+  balanceAmount = [(PKStoredValuePassProperties *)self balanceAmount];
+  currency = [balanceAmount currency];
 
-  return v3;
+  return currency;
 }
 
 @end

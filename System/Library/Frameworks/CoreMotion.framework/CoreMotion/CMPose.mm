@@ -1,32 +1,32 @@
 @interface CMPose
 - ($1AB5FA073B851C12C2339EC22442E995)translation;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPose:(id)a3;
-- (CMPose)initWithCoder:(id)a3;
-- (CMPose)initWithPose:(id *)a3 timestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPose:(id)pose;
+- (CMPose)initWithCoder:(id)coder;
+- (CMPose)initWithPose:(id *)pose timestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMPose
 
-- (CMPose)initWithPose:(id *)a3 timestamp:(double)a4
+- (CMPose)initWithPose:(id *)pose timestamp:(double)timestamp
 {
   v13.receiver = self;
   v13.super_class = CMPose;
-  v5 = [(CMLogItem *)&v13 initWithTimestamp:a4];
+  v5 = [(CMLogItem *)&v13 initWithTimestamp:timestamp];
   if (v5)
   {
     v6 = [CMPoseInternal alloc];
-    v7 = *&a3->var1.var2;
-    v11[2] = *&a3->var1.var0;
+    v7 = *&pose->var1.var2;
+    v11[2] = *&pose->var1.var0;
     v11[3] = v7;
-    v11[4] = *&a3->var3;
-    var5 = a3->var5;
-    v8 = *&a3->var0.var2;
-    v11[0] = *&a3->var0.var0;
+    v11[4] = *&pose->var3;
+    var5 = pose->var5;
+    v8 = *&pose->var0.var2;
+    v11[0] = *&pose->var0.var0;
     v11[1] = v8;
     v5->_internal = objc_msgSend_initWithPose_(v6, v9, v11);
   }
@@ -34,32 +34,32 @@
   return v5;
 }
 
-- (CMPose)initWithCoder:(id)a3
+- (CMPose)initWithCoder:(id)coder
 {
   v39.receiver = self;
   v39.super_class = CMPose;
   v5 = [(CMLogItem *)&v39 initWithCoder:?];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kCMPoseCodingKeyQuaternionW");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kCMPoseCodingKeyQuaternionW");
     v37 = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMPoseCodingKeyQuaternionX");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMPoseCodingKeyQuaternionX");
     v36 = v8;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kCMPoseCodingKeyQuaternionY");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kCMPoseCodingKeyQuaternionY");
     v11 = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v12, @"kCMPoseCodingKeyQuaternionZ");
+    objc_msgSend_decodeDoubleForKey_(coder, v12, @"kCMPoseCodingKeyQuaternionZ");
     v14 = v13;
-    objc_msgSend_decodeDoubleForKey_(a3, v15, @"kCMPoseCodingKeyTranslationX");
+    objc_msgSend_decodeDoubleForKey_(coder, v15, @"kCMPoseCodingKeyTranslationX");
     v17 = v16;
-    objc_msgSend_decodeDoubleForKey_(a3, v18, @"kCMPoseCodingKeyTranslationY");
+    objc_msgSend_decodeDoubleForKey_(coder, v18, @"kCMPoseCodingKeyTranslationY");
     v20 = v19;
-    objc_msgSend_decodeDoubleForKey_(a3, v21, @"kCMPoseCodingKeyTranslationZ");
+    objc_msgSend_decodeDoubleForKey_(coder, v21, @"kCMPoseCodingKeyTranslationZ");
     v23 = v22;
-    objc_msgSend_decodeDoubleForKey_(a3, v24, @"kCMPoseCodingKeyConsumedAuxTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v24, @"kCMPoseCodingKeyConsumedAuxTimestamp");
     v26 = v25;
-    objc_msgSend_decodeDoubleForKey_(a3, v27, @"kCMPoseCodingKeyReceivedAuxTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v27, @"kCMPoseCodingKeyReceivedAuxTimestamp");
     v29 = v28;
-    objc_msgSend_decodeDoubleForKey_(a3, v30, @"kCMPoseCodingKeyMachAbsTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v30, @"kCMPoseCodingKeyMachAbsTimestamp");
     v32 = v31;
     v33 = [CMPoseInternal alloc];
     v38[0] = v37;
@@ -79,7 +79,7 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25.receiver = self;
   v25.super_class = CMPose;
@@ -89,17 +89,17 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  objc_msgSend_encodeDouble_forKey_(a3, v14, @"kCMPoseCodingKeyQuaternionX");
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"kCMPoseCodingKeyQuaternionY", v9);
-  objc_msgSend_encodeDouble_forKey_(a3, v16, @"kCMPoseCodingKeyQuaternionZ", v11);
-  objc_msgSend_encodeDouble_forKey_(a3, v17, @"kCMPoseCodingKeyQuaternionW", v13);
-  objc_msgSend_encodeDouble_forKey_(a3, v18, @"kCMPoseCodingKeyTranslationX", *(internal + 2));
-  objc_msgSend_encodeDouble_forKey_(a3, v19, @"kCMPoseCodingKeyTranslationY", *(internal + 3));
-  objc_msgSend_encodeDouble_forKey_(a3, v20, @"kCMPoseCodingKeyTranslationZ", *(internal + 4));
-  objc_msgSend_encodeDouble_forKey_(a3, v21, @"kCMPoseCodingKeyConsumedAuxTimestamp", *(internal + 5));
-  objc_msgSend_encodeDouble_forKey_(a3, v22, @"kCMPoseCodingKeyReceivedAuxTimestamp", *(internal + 6));
-  objc_msgSend_encodeDouble_forKey_(a3, v23, @"kCMPoseCodingKeyMachAbsTimestamp", *(internal + 7));
-  objc_msgSend_encodeDouble_forKey_(a3, v24, @"kCMPoseCodingKeyPresentationTimestamp", *(internal + 8));
+  objc_msgSend_encodeDouble_forKey_(coder, v14, @"kCMPoseCodingKeyQuaternionX");
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"kCMPoseCodingKeyQuaternionY", v9);
+  objc_msgSend_encodeDouble_forKey_(coder, v16, @"kCMPoseCodingKeyQuaternionZ", v11);
+  objc_msgSend_encodeDouble_forKey_(coder, v17, @"kCMPoseCodingKeyQuaternionW", v13);
+  objc_msgSend_encodeDouble_forKey_(coder, v18, @"kCMPoseCodingKeyTranslationX", *(internal + 2));
+  objc_msgSend_encodeDouble_forKey_(coder, v19, @"kCMPoseCodingKeyTranslationY", *(internal + 3));
+  objc_msgSend_encodeDouble_forKey_(coder, v20, @"kCMPoseCodingKeyTranslationZ", *(internal + 4));
+  objc_msgSend_encodeDouble_forKey_(coder, v21, @"kCMPoseCodingKeyConsumedAuxTimestamp", *(internal + 5));
+  objc_msgSend_encodeDouble_forKey_(coder, v22, @"kCMPoseCodingKeyReceivedAuxTimestamp", *(internal + 6));
+  objc_msgSend_encodeDouble_forKey_(coder, v23, @"kCMPoseCodingKeyMachAbsTimestamp", *(internal + 7));
+  objc_msgSend_encodeDouble_forKey_(coder, v24, @"kCMPoseCodingKeyPresentationTimestamp", *(internal + 8));
 }
 
 - (void)dealloc
@@ -109,43 +109,43 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CMPose;
   v6 = [(CMLogItem *)&v8 copyWithZone:?];
   if (v6)
   {
-    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, a3);
+    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, zone);
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPose:(id)a3
+- (BOOL)isEqualToPose:(id)pose
 {
-  if (!a3)
+  if (!pose)
   {
     return 0;
   }
 
-  objc_msgSend_timestamp(self, a2, a3);
+  objc_msgSend_timestamp(self, a2, pose);
   v6 = v5;
-  objc_msgSend_timestamp(a3, v7, v8);
+  objc_msgSend_timestamp(pose, v7, v8);
   if (v6 != v10)
   {
     return 0;
   }
 
   internal = self->_internal;
-  v12 = *(a3 + 2);
+  v12 = *(pose + 2);
 
   return objc_msgSend_isEqual_(internal, v9, v12);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -156,7 +156,7 @@
     return 0;
   }
 
-  return MEMORY[0x1EEE66B58](self, sel_isEqualToPose_, a3);
+  return MEMORY[0x1EEE66B58](self, sel_isEqualToPose_, equal);
 }
 
 - (id)description

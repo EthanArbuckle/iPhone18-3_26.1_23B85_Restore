@@ -2,8 +2,8 @@
 - (AggregatedData)aggData;
 - (AggregatedDataWrapper)init;
 - (id).cxx_construct;
-- (void)setAggData:(AggregatedData *)a3;
-- (void)setAggPoints:(AggregatedData *)a3;
+- (void)setAggData:(AggregatedData *)data;
+- (void)setAggPoints:(AggregatedData *)points;
 @end
 
 @implementation AggregatedDataWrapper
@@ -16,14 +16,14 @@
   return self;
 }
 
-- (void)setAggData:(AggregatedData *)a3
+- (void)setAggData:(AggregatedData *)data
 {
   p_aggData = &self->_aggData;
-  if (p_aggData != a3)
+  if (p_aggData != data)
   {
-    std::vector<jpc::IIFABlock::IFAPearlJasperCorrespondence>::__assign_with_size[abi:ne200100]<jpc::IIFABlock::IFAPearlJasperCorrespondence*,jpc::IIFABlock::IFAPearlJasperCorrespondence*>(p_aggData, a3->pearlJasperCorrespondences.__begin_, a3->pearlJasperCorrespondences.__end_, 0x6DB6DB6DB6DB6DB7 * ((a3->pearlJasperCorrespondences.__end_ - a3->pearlJasperCorrespondences.__begin_) >> 3));
-    begin = a3->pearlCorrespondences.__begin_;
-    end = a3->pearlCorrespondences.__end_;
+    std::vector<jpc::IIFABlock::IFAPearlJasperCorrespondence>::__assign_with_size[abi:ne200100]<jpc::IIFABlock::IFAPearlJasperCorrespondence*,jpc::IIFABlock::IFAPearlJasperCorrespondence*>(p_aggData, data->pearlJasperCorrespondences.__begin_, data->pearlJasperCorrespondences.__end_, 0x6DB6DB6DB6DB6DB7 * ((data->pearlJasperCorrespondences.__end_ - data->pearlJasperCorrespondences.__begin_) >> 3));
+    begin = data->pearlCorrespondences.__begin_;
+    end = data->pearlCorrespondences.__end_;
 
     std::vector<jpc::IIFABlock::IFAPearlCorrespondence>::__assign_with_size[abi:ne200100]<jpc::IIFABlock::IFAPearlCorrespondence*,jpc::IIFABlock::IFAPearlCorrespondence*>(&self->_aggData.pearlCorrespondences, begin, end, 0xAAAAAAAAAAAAAAABLL * ((end - begin) >> 4));
   }
@@ -64,14 +64,14 @@
   return self;
 }
 
-- (void)setAggPoints:(AggregatedData *)a3
+- (void)setAggPoints:(AggregatedData *)points
 {
   p_aggData = &self->_aggData;
-  if (p_aggData != a3)
+  if (p_aggData != points)
   {
-    std::vector<jpc::IIFABlock::IFAPearlJasperCorrespondence>::__assign_with_size[abi:ne200100]<jpc::IIFABlock::IFAPearlJasperCorrespondence*,jpc::IIFABlock::IFAPearlJasperCorrespondence*>(p_aggData, a3->pearlJasperCorrespondences.__begin_, a3->pearlJasperCorrespondences.__end_, 0x6DB6DB6DB6DB6DB7 * ((a3->pearlJasperCorrespondences.__end_ - a3->pearlJasperCorrespondences.__begin_) >> 3));
-    begin = a3->pearlCorrespondences.__begin_;
-    end = a3->pearlCorrespondences.__end_;
+    std::vector<jpc::IIFABlock::IFAPearlJasperCorrespondence>::__assign_with_size[abi:ne200100]<jpc::IIFABlock::IFAPearlJasperCorrespondence*,jpc::IIFABlock::IFAPearlJasperCorrespondence*>(p_aggData, points->pearlJasperCorrespondences.__begin_, points->pearlJasperCorrespondences.__end_, 0x6DB6DB6DB6DB6DB7 * ((points->pearlJasperCorrespondences.__end_ - points->pearlJasperCorrespondences.__begin_) >> 3));
+    begin = points->pearlCorrespondences.__begin_;
+    end = points->pearlCorrespondences.__end_;
 
     std::vector<jpc::IIFABlock::IFAPearlCorrespondence>::__assign_with_size[abi:ne200100]<jpc::IIFABlock::IFAPearlCorrespondence*,jpc::IIFABlock::IFAPearlCorrespondence*>(&self->_aggData.pearlCorrespondences, begin, end, 0xAAAAAAAAAAAAAAABLL * ((end - begin) >> 4));
   }

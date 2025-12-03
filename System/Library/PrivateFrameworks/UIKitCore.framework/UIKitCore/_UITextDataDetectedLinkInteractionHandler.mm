@@ -1,7 +1,7 @@
 @interface _UITextDataDetectedLinkInteractionHandler
 - (BOOL)_useDataDetectorsContextMenuConfiguration;
 - (CGRect)rect;
-- (_UITextDataDetectedLinkInteractionHandler)initWithItem:(id)a3 textContentView:(id)a4;
+- (_UITextDataDetectedLinkInteractionHandler)initWithItem:(id)item textContentView:(id)view;
 - (id)_defaultContextMenuConfiguration;
 - (id)_defaultDataDetectorsPrimaryAction;
 - (id)_defaultPrimaryActionForInteractableItem;
@@ -9,24 +9,24 @@
 
 @implementation _UITextDataDetectedLinkInteractionHandler
 
-- (_UITextDataDetectedLinkInteractionHandler)initWithItem:(id)a3 textContentView:(id)a4
+- (_UITextDataDetectedLinkInteractionHandler)initWithItem:(id)item textContentView:(id)view
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v31.receiver = self;
   v31.super_class = _UITextDataDetectedLinkInteractionHandler;
-  v7 = [(_UITextItemInteractionHandler *)&v31 initWithItem:v6 textContentView:a4];
+  v7 = [(_UITextItemInteractionHandler *)&v31 initWithItem:itemCopy textContentView:view];
   v8 = v7;
   if (v7)
   {
     p_x = &v7->_rect.origin.x;
-    v10 = v6;
+    v10 = itemCopy;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = [v10 rects];
-    v12 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    rects = [v10 rects];
+    v12 = [rects countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v12)
     {
       v13 = v12;
@@ -38,7 +38,7 @@
         {
           if (*v33 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(rects);
           }
 
           [*(*(&v32 + 1) + 8 * v15) CGRectValue];
@@ -63,7 +63,7 @@
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v13 = [rects countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v13)
         {
           continue;
@@ -91,12 +91,12 @@ LABEL_12:
 
 - (BOOL)_useDataDetectorsContextMenuConfiguration
 {
-  v3 = [(_UITextItemInteractionHandler *)self item];
-  v4 = [v3 link];
+  item = [(_UITextItemInteractionHandler *)self item];
+  link = [item link];
 
-  v5 = v4;
-  v6 = [v5 scheme];
-  v7 = [v6 hasPrefix:@"x-apple-data-detectors"];
+  v5 = link;
+  scheme = [v5 scheme];
+  v7 = [scheme hasPrefix:@"x-apple-data-detectors"];
 
   if (v7)
   {
@@ -113,24 +113,24 @@ LABEL_12:
   {
 LABEL_4:
     v8 = 0;
-    v9 = v5;
+    item2 = v5;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v10 = [v5 dd_isAnySimpleTelephonyScheme];
+  dd_isAnySimpleTelephonyScheme = [v5 dd_isAnySimpleTelephonyScheme];
 
-  if ((v10 & 1) == 0)
+  if ((dd_isAnySimpleTelephonyScheme & 1) == 0)
   {
 LABEL_8:
-    v9 = [(_UITextItemInteractionHandler *)self item];
-    v11 = [(_UITextItemInteractionHandler *)self textContentView];
-    v12 = [v9 range];
-    v13 = [v12 asRange];
+    item2 = [(_UITextItemInteractionHandler *)self item];
+    textContentView = [(_UITextItemInteractionHandler *)self textContentView];
+    range = [item2 range];
+    asRange = [range asRange];
 
-    v14 = [v11 textStorage];
-    v15 = [v14 attribute:@"DDResultAttributeName" atIndex:v13 effectiveRange:0];
+    textStorage = [textContentView textStorage];
+    v15 = [textStorage attribute:@"DDResultAttributeName" atIndex:asRange effectiveRange:0];
     v8 = v15 == 0;
 
     goto LABEL_9;
@@ -138,13 +138,13 @@ LABEL_8:
 
   v8 = 0;
 LABEL_10:
-  v16 = [(_UITextItemInteractionHandler *)self _menuForInteractableItem];
-  v17 = v16;
+  _menuForInteractableItem = [(_UITextItemInteractionHandler *)self _menuForInteractableItem];
+  v17 = _menuForInteractableItem;
   v18 = 1;
-  if (v8 && v16)
+  if (v8 && _menuForInteractableItem)
   {
-    v19 = [v16 identifier];
-    v18 = [v19 isEqualToString:@"UITextItemDefaultMenuIdentifier"];
+    identifier = [_menuForInteractableItem identifier];
+    v18 = [identifier isEqualToString:@"UITextItemDefaultMenuIdentifier"];
   }
 
   return v18;
@@ -152,8 +152,8 @@ LABEL_10:
 
 - (id)_defaultContextMenuConfiguration
 {
-  v3 = [(_UITextItemInteractionHandler *)self textContentView];
-  v4 = [v3 textStorage];
+  textContentView = [(_UITextItemInteractionHandler *)self textContentView];
+  textStorage = [textContentView textStorage];
 
   v26 = 0;
   v27 = &v26;
@@ -173,7 +173,7 @@ LABEL_10:
 
   v6 = v5;
   _Block_object_dispose(&v26, 8);
-  v7 = [v4 dd_contextAtLocation:{-[_UITextItemInteractionHandler range](self, "range")}];
+  v7 = [textStorage dd_contextAtLocation:{-[_UITextItemInteractionHandler range](self, "range")}];
   v8 = [v7 mutableCopy];
 
   size = self->_rect.size;
@@ -204,18 +204,18 @@ LABEL_10:
   {
     [v8 setObject:v10 forKeyedSubscript:*v11];
 
-    v14 = [(_UITextItemInteractionHandler *)self range];
-    v15 = [(_UITextItemInteractionHandler *)self textContentView];
-    v16 = [v5 contextMenuConfigurationAtIndex:v14 inTextStorage:v4 inView:v15 context:v8 menuIdentifier:0];
+    range = [(_UITextItemInteractionHandler *)self range];
+    textContentView2 = [(_UITextItemInteractionHandler *)self textContentView];
+    v16 = [v5 contextMenuConfigurationAtIndex:range inTextStorage:textStorage inView:textContentView2 context:v8 menuIdentifier:0];
 
     return v16;
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsSourceRectKey(void)"];
-    [v18 handleFailureInFunction:v19 file:@"_UITextItemInteractionHandler.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v19 file:@"_UITextItemInteractionHandler.m" lineNumber:43 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -225,26 +225,26 @@ LABEL_10:
 
 - (id)_defaultPrimaryActionForInteractableItem
 {
-  v3 = [(_UITextDataDetectedLinkInteractionHandler *)self _dataDetectorsRevealControllerAction];
-  if (!v3)
+  _dataDetectorsRevealControllerAction = [(_UITextDataDetectedLinkInteractionHandler *)self _dataDetectorsRevealControllerAction];
+  if (!_dataDetectorsRevealControllerAction)
   {
-    v3 = [(_UITextDataDetectedLinkInteractionHandler *)self _defaultDataDetectorsPrimaryAction];
-    if (!v3)
+    _dataDetectorsRevealControllerAction = [(_UITextDataDetectedLinkInteractionHandler *)self _defaultDataDetectorsPrimaryAction];
+    if (!_dataDetectorsRevealControllerAction)
     {
       v5.receiver = self;
       v5.super_class = _UITextDataDetectedLinkInteractionHandler;
-      v3 = [(_UITextLinkInteractionHandler *)&v5 _defaultPrimaryActionForInteractableItem];
+      _dataDetectorsRevealControllerAction = [(_UITextLinkInteractionHandler *)&v5 _defaultPrimaryActionForInteractableItem];
     }
   }
 
-  return v3;
+  return _dataDetectorsRevealControllerAction;
 }
 
 - (id)_defaultDataDetectorsPrimaryAction
 {
-  v3 = [(_UITextItemInteractionHandler *)self range];
-  v4 = [(_UITextItemInteractionHandler *)self textContentView];
-  v5 = [v4 textStorage];
+  range = [(_UITextItemInteractionHandler *)self range];
+  textContentView = [(_UITextItemInteractionHandler *)self textContentView];
+  textStorage = [textContentView textStorage];
 
   v37 = 0;
   v38 = &v37;
@@ -264,27 +264,27 @@ LABEL_10:
 
   v7 = v6;
   _Block_object_dispose(&v37, 8);
-  v8 = [v5 dd_contextAtLocation:v3];
-  v9 = [v6 sharedController];
-  v10 = [v9 shouldImmediatelyShowActionSheetForTapAtIndex:v3 ofStorage:v5];
+  v8 = [textStorage dd_contextAtLocation:range];
+  sharedController = [v6 sharedController];
+  v10 = [sharedController shouldImmediatelyShowActionSheetForTapAtIndex:range ofStorage:textStorage];
 
-  v11 = [v6 sharedController];
-  v12 = v11;
+  sharedController2 = [v6 sharedController];
+  v12 = sharedController2;
   if (v10)
   {
-    v13 = [v11 titleForResultAtIndex:v3 ofStorage:v5 context:v8];
+    v13 = [sharedController2 titleForResultAtIndex:range ofStorage:textStorage context:v8];
 
     if (![v13 length])
     {
-      v14 = [(_UITextItemInteractionHandler *)self range];
-      v16 = [v5 attributedSubstringFromRange:{v14, v15}];
-      v17 = [v16 string];
+      range2 = [(_UITextItemInteractionHandler *)self range];
+      v16 = [textStorage attributedSubstringFromRange:{range2, v15}];
+      string = [v16 string];
 
-      v13 = v17;
+      v13 = string;
     }
 
-    v18 = [(_UITextItemInteractionHandler *)self item];
-    v19 = [v18 contextMenuInteraction];
+    item = [(_UITextItemInteractionHandler *)self item];
+    contextMenuInteraction = [item contextMenuInteraction];
 
     p_rect = &self->_rect;
     MidX = CGRectGetMidX(*p_rect);
@@ -294,21 +294,21 @@ LABEL_10:
     v34[2] = __79___UITextDataDetectedLinkInteractionHandler__defaultDataDetectorsPrimaryAction__block_invoke;
     v34[3] = &unk_1E70F4780;
     v23 = v35;
-    v35[0] = v19;
+    v35[0] = contextMenuInteraction;
     *&v35[1] = MidX;
     *&v35[2] = MidY;
-    v24 = v19;
+    v24 = contextMenuInteraction;
     v25 = [UIAction actionWithTitle:v13 image:0 identifier:@"_UITextItemInteractionHandler.presentMenu.action" handler:v34];
     goto LABEL_9;
   }
 
-  v13 = [v11 defaultActionAtIndex:v3 ofStorage:v5 context:v8];
+  v13 = [sharedController2 defaultActionAtIndex:range ofStorage:textStorage context:v8];
 
   if (v13)
   {
-    v26 = [(_UITextItemInteractionHandler *)self textContentView];
-    v27 = [v13 localizedName];
-    v28 = [v13 icon];
+    textContentView2 = [(_UITextItemInteractionHandler *)self textContentView];
+    localizedName = [v13 localizedName];
+    icon = [v13 icon];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __79___UITextDataDetectedLinkInteractionHandler__defaultDataDetectorsPrimaryAction__block_invoke_2;
@@ -317,9 +317,9 @@ LABEL_10:
     v23 = &v31;
     v13 = v13;
     v31 = v13;
-    v32 = v26;
-    v24 = v26;
-    v25 = [UIAction actionWithTitle:v27 image:v28 identifier:0 handler:v30];
+    v32 = textContentView2;
+    v24 = textContentView2;
+    v25 = [UIAction actionWithTitle:localizedName image:icon identifier:0 handler:v30];
 
 LABEL_9:
     goto LABEL_10;

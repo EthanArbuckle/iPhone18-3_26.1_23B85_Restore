@@ -1,6 +1,6 @@
 @interface WLDChannelManager
 + (id)defaultChannelManager;
-- (void)vppaConsentedBundleIDsWithCompletion:(id)a3;
+- (void)vppaConsentedBundleIDsWithCompletion:(id)completion;
 @end
 
 @implementation WLDChannelManager
@@ -24,13 +24,13 @@ void __42__WLDChannelManager_defaultChannelManager__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)vppaConsentedBundleIDsWithCompletion:(id)a3
+- (void)vppaConsentedBundleIDsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[WLKSettingsStore sharedSettings];
-  v5 = [v4 consentedBrands];
+  consentedBrands = [v4 consentedBrands];
 
-  if (![v5 count])
+  if (![consentedBrands count])
   {
     v6 = dispatch_semaphore_create(0);
     v7 = +[WLKSettingsStore sharedSettings];
@@ -45,14 +45,14 @@ void __42__WLDChannelManager_defaultChannelManager__block_invoke(id a1)
     v9 = dispatch_time(0, 10000000000);
     dispatch_semaphore_wait(v8, v9);
     v10 = +[WLKSettingsStore sharedSettings];
-    v11 = [v10 consentedBrands];
+    consentedBrands2 = [v10 consentedBrands];
 
-    v5 = v11;
+    consentedBrands = consentedBrands2;
   }
 
-  if (v5)
+  if (consentedBrands)
   {
-    v12 = [NSSet setWithArray:v5];
+    v12 = [NSSet setWithArray:consentedBrands];
     NSLog(@"Consented Channel IDs: %@", v12);
     v13 = +[WLKChannelUtilities sharedInstance];
     v16[0] = _NSConcreteStackBlock;
@@ -60,7 +60,7 @@ void __42__WLDChannelManager_defaultChannelManager__block_invoke(id a1)
     v16[2] = __58__WLDChannelManager_vppaConsentedBundleIDsWithCompletion___block_invoke_2;
     v16[3] = &unk_100044EB0;
     v17 = v12;
-    v18 = v3;
+    v18 = completionCopy;
     v14 = v12;
     [v13 loadIfNeededWithCompletion:v16];
 
@@ -71,7 +71,7 @@ void __42__WLDChannelManager_defaultChannelManager__block_invoke(id a1)
   {
     v14 = objc_alloc_init(NSSet);
     v15 = WLKError();
-    (*(v3 + 2))(v3, v14, v15);
+    (*(completionCopy + 2))(completionCopy, v14, v15);
   }
 }
 

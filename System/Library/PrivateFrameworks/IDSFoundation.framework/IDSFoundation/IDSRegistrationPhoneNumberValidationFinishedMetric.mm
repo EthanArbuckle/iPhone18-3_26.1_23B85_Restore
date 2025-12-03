@@ -1,5 +1,5 @@
 @interface IDSRegistrationPhoneNumberValidationFinishedMetric
-- (IDSRegistrationPhoneNumberValidationFinishedMetric)initWithGuid:(id)a3 registrationError:(unsigned int)a4 validationDuration:(id)a5 numberOfSMSSent:(id)a6;
+- (IDSRegistrationPhoneNumberValidationFinishedMetric)initWithGuid:(id)guid registrationError:(unsigned int)error validationDuration:(id)duration numberOfSMSSent:(id)sent;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)self guid];
-  if (v4)
+  guid = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IDSRegistrationPhoneNumberValidationFinishedMetric registrationError](self, "registrationError")}];
@@ -20,36 +20,36 @@
     CFDictionarySetValue(v3, @"registrationError", v5);
   }
 
-  v6 = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)self validationDuration];
-  if (v6)
+  validationDuration = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)self validationDuration];
+  if (validationDuration)
   {
-    CFDictionarySetValue(v3, @"validationDuration", v6);
+    CFDictionarySetValue(v3, @"validationDuration", validationDuration);
   }
 
-  v7 = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)self numberOfSMSSent];
-  if (v7)
+  numberOfSMSSent = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)self numberOfSMSSent];
+  if (numberOfSMSSent)
   {
-    CFDictionarySetValue(v3, @"numberOfSMSSent", v7);
+    CFDictionarySetValue(v3, @"numberOfSMSSent", numberOfSMSSent);
   }
 
   return v3;
 }
 
-- (IDSRegistrationPhoneNumberValidationFinishedMetric)initWithGuid:(id)a3 registrationError:(unsigned int)a4 validationDuration:(id)a5 numberOfSMSSent:(id)a6
+- (IDSRegistrationPhoneNumberValidationFinishedMetric)initWithGuid:(id)guid registrationError:(unsigned int)error validationDuration:(id)duration numberOfSMSSent:(id)sent
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  guidCopy = guid;
+  durationCopy = duration;
+  sentCopy = sent;
   v17.receiver = self;
   v17.super_class = IDSRegistrationPhoneNumberValidationFinishedMetric;
   v14 = [(IDSRegistrationPhoneNumberValidationFinishedMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_guid, a3);
-    v15->_registrationError = a4;
-    objc_storeStrong(&v15->_validationDuration, a5);
-    objc_storeStrong(&v15->_numberOfSMSSent, a6);
+    objc_storeStrong(&v14->_guid, guid);
+    v15->_registrationError = error;
+    objc_storeStrong(&v15->_validationDuration, duration);
+    objc_storeStrong(&v15->_numberOfSMSSent, sent);
   }
 
   return v15;

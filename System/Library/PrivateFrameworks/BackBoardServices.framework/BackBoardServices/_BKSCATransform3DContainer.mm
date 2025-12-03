@@ -2,26 +2,26 @@
 + (id)protobufSchema;
 - (CATransform3D)transform;
 - (_BKSCATransform3DContainer)init;
-- (_BKSCATransform3DContainer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTransform:(CATransform3D *)a3;
+- (_BKSCATransform3DContainer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTransform:(CATransform3D *)transform;
 @end
 
 @implementation _BKSCATransform3DContainer
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m21;
-  *&self->_transform.m23 = *&a3->m23;
+  v3 = *&transform->m11;
+  v4 = *&transform->m13;
+  v5 = *&transform->m21;
+  *&self->_transform.m23 = *&transform->m23;
   *&self->_transform.m21 = v5;
   *&self->_transform.m13 = v4;
   *&self->_transform.m11 = v3;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m41;
-  *&self->_transform.m43 = *&a3->m43;
+  v6 = *&transform->m31;
+  v7 = *&transform->m33;
+  v8 = *&transform->m41;
+  *&self->_transform.m43 = *&transform->m43;
   *&self->_transform.m41 = v8;
   *&self->_transform.m33 = v7;
   *&self->_transform.m31 = v6;
@@ -44,10 +44,10 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   v14 = 0;
   v6 = [MEMORY[0x1E698E750] encodeObject:self error:&v14];
   v7 = v14;
@@ -66,7 +66,7 @@
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BKSTouchEventService.m";
       v23 = 1024;
@@ -82,16 +82,16 @@
     JUMPOUT(0x1863B4D18);
   }
 
-  [v5 encodeObject:v8 forKey:@"backboarddSelfData"];
+  [coderCopy encodeObject:v8 forKey:@"backboarddSelfData"];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (_BKSCATransform3DContainer)initWithCoder:(id)a3
+- (_BKSCATransform3DContainer)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
 
   if (!v5)
   {
@@ -154,7 +154,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __44___BKSCATransform3DContainer_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_13467 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_13467, block);

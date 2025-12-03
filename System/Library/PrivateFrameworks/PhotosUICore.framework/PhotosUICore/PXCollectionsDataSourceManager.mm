@@ -1,22 +1,22 @@
 @interface PXCollectionsDataSourceManager
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
 @end
 
 @implementation PXCollectionsDataSourceManager
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
   v4.receiver = self;
   v4.super_class = PXCollectionsDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v4 unregisterChangeObserver:a3 context:a4];
+  [(PXSectionedDataSourceManager *)&v4 unregisterChangeObserver:observer context:context];
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
   v4.receiver = self;
   v4.super_class = PXCollectionsDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v4 registerChangeObserver:a3 context:a4];
+  [(PXSectionedDataSourceManager *)&v4 registerChangeObserver:observer context:context];
 }
 
 @end

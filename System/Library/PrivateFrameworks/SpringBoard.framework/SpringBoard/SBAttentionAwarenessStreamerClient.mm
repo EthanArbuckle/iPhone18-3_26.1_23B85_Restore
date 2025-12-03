@@ -2,10 +2,10 @@
 - (AWAttentionAwarenessConfiguration)configuration;
 - (SBAttentionAwarenessStreamerClient)init;
 - (SBAttentionAwarenessStreamerClientDelegate)delegate;
-- (void)_handleAttentionAwarenessEvent:(id)a3;
+- (void)_handleAttentionAwarenessEvent:(id)event;
 - (void)invalidate;
 - (void)resume;
-- (void)setConfiguration:(id)a3 shouldReset:(BOOL)a4;
+- (void)setConfiguration:(id)configuration shouldReset:(BOOL)reset;
 @end
 
 @implementation SBAttentionAwarenessStreamerClient
@@ -126,18 +126,18 @@ void __48__SBAttentionAwarenessStreamerClient_invalidate__block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setConfiguration:(id)a3 shouldReset:(BOOL)a4
+- (void)setConfiguration:(id)configuration shouldReset:(BOOL)reset
 {
-  v6 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__SBAttentionAwarenessStreamerClient_setConfiguration_shouldReset___block_invoke;
   block[3] = &unk_2783A97D8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = configurationCopy;
+  resetCopy = reset;
+  v8 = configurationCopy;
   dispatch_sync(queue, block);
 }
 
@@ -178,13 +178,13 @@ void __44__SBAttentionAwarenessStreamerClient_resume__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleAttentionAwarenessEvent:(id)a3
+- (void)_handleAttentionAwarenessEvent:(id)event
 {
-  v12 = a3;
-  if (([v12 eventMask] & 0x80) != 0)
+  eventCopy = event;
+  if (([eventCopy eventMask] & 0x80) != 0)
   {
     v4 = objc_opt_class();
-    v5 = v12;
+    v5 = eventCopy;
     if (v4)
     {
       if (objc_opt_isKindOfClass())

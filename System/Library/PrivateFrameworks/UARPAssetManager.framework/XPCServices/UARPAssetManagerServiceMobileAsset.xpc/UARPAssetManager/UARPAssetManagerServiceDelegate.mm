@@ -1,54 +1,54 @@
 @interface UARPAssetManagerServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcConnectionHasEntitlement:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement;
 @end
 
 @implementation UARPAssetManagerServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(UARPAssetManagerServiceDelegate *)self xpcConnectionHasEntitlement:v5];
+  connectionCopy = connection;
+  v6 = [(UARPAssetManagerServiceDelegate *)self xpcConnectionHasEntitlement:connectionCopy];
   if (v6)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPAsyncAssetManagerDelegate];
-    [v5 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [NSSet setWithObjects:v8, v9, v10, objc_opt_class(), 0];
-    v12 = [v5 remoteObjectInterface];
-    [v12 setClasses:v11 forSelector:"assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:" argumentIndex:0 ofReply:0];
+    remoteObjectInterface = [connectionCopy remoteObjectInterface];
+    [remoteObjectInterface setClasses:v11 forSelector:"assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:" argumentIndex:0 ofReply:0];
 
-    v13 = [v5 remoteObjectInterface];
-    [v13 setClasses:v11 forSelector:"assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:" argumentIndex:1 ofReply:0];
+    remoteObjectInterface2 = [connectionCopy remoteObjectInterface];
+    [remoteObjectInterface2 setClasses:v11 forSelector:"assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:" argumentIndex:1 ofReply:0];
 
     v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPAssetManagerServiceProtocol];
-    [v5 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
-    v15 = [[UARPAssetManagerServiceMobileAssetDispatcher alloc] initWithConnection:v5];
-    [v5 setExportedObject:v15];
-    [v5 resume];
+    v15 = [[UARPAssetManagerServiceMobileAssetDispatcher alloc] initWithConnection:connectionCopy];
+    [connectionCopy setExportedObject:v15];
+    [connectionCopy resume];
   }
 
   return v6;
 }
 
-- (BOOL)xpcConnectionHasEntitlement:(id)a3
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.uarpassetmanagerservice.uarp"];
+  v3 = [entitlement valueForEntitlement:@"com.apple.uarpassetmanagerservice.uarp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

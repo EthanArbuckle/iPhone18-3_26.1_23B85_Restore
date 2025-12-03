@@ -1,52 +1,52 @@
 @interface SPPeripheralConnectionMaterial
-- (SPPeripheralConnectionMaterial)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPPeripheralConnectionMaterial)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPPeripheralConnectionMaterial
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SPPeripheralConnectionMaterial *)self irkData];
-  v6 = [v5 copy];
+  irkData = [(SPPeripheralConnectionMaterial *)self irkData];
+  v6 = [irkData copy];
   [v4 setIrkData:v6];
 
-  v7 = [(SPPeripheralConnectionMaterial *)self btAddressData];
-  v8 = [v7 copy];
+  btAddressData = [(SPPeripheralConnectionMaterial *)self btAddressData];
+  v8 = [btAddressData copy];
   [v4 setBtAddressData:v8];
 
-  v9 = [(SPPeripheralConnectionMaterial *)self btAddressWithTypeData];
-  v10 = [v9 copy];
+  btAddressWithTypeData = [(SPPeripheralConnectionMaterial *)self btAddressWithTypeData];
+  v10 = [btAddressWithTypeData copy];
   [v4 setBtAddressWithTypeData:v10];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   irkData = self->_irkData;
   v5 = irkDataKey;
-  v6 = a3;
-  [v6 encodeObject:irkData forKey:v5];
-  [v6 encodeObject:self->_btAddressData forKey:btAddressDataKey];
-  [v6 encodeObject:self->_btAddressWithTypeData forKey:btAddressWithTypeDataKey];
+  coderCopy = coder;
+  [coderCopy encodeObject:irkData forKey:v5];
+  [coderCopy encodeObject:self->_btAddressData forKey:btAddressDataKey];
+  [coderCopy encodeObject:self->_btAddressWithTypeData forKey:btAddressWithTypeDataKey];
 }
 
-- (SPPeripheralConnectionMaterial)initWithCoder:(id)a3
+- (SPPeripheralConnectionMaterial)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:irkDataKey];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:irkDataKey];
   irkData = self->_irkData;
   self->_irkData = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:btAddressDataKey];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:btAddressDataKey];
   btAddressData = self->_btAddressData;
   self->_btAddressData = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:btAddressWithTypeDataKey];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:btAddressWithTypeDataKey];
 
   btAddressWithTypeData = self->_btAddressWithTypeData;
   self->_btAddressWithTypeData = v9;
@@ -58,10 +58,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPPeripheralConnectionMaterial *)self irkData];
-  v6 = [(SPPeripheralConnectionMaterial *)self btAddressData];
-  v7 = [(SPPeripheralConnectionMaterial *)self btAddressWithTypeData];
-  v8 = [v3 stringWithFormat:@"<%@: %p irkData: %@ btAddressData: %@ btAddressWithTypeData: %@>", v4, self, v5, v6, v7];
+  irkData = [(SPPeripheralConnectionMaterial *)self irkData];
+  btAddressData = [(SPPeripheralConnectionMaterial *)self btAddressData];
+  btAddressWithTypeData = [(SPPeripheralConnectionMaterial *)self btAddressWithTypeData];
+  v8 = [v3 stringWithFormat:@"<%@: %p irkData: %@ btAddressData: %@ btAddressWithTypeData: %@>", v4, self, irkData, btAddressData, btAddressWithTypeData];
 
   return v8;
 }

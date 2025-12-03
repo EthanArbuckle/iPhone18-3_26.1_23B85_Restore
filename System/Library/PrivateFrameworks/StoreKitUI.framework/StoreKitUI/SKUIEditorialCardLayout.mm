@@ -1,14 +1,14 @@
 @interface SKUIEditorialCardLayout
 - (CGSize)primaryLockupSize;
-- (SKUIEditorialCardLayout)initWithCard:(id)a3 width:(double)a4 context:(id)a5;
+- (SKUIEditorialCardLayout)initWithCard:(id)card width:(double)width context:(id)context;
 @end
 
 @implementation SKUIEditorialCardLayout
 
-- (SKUIEditorialCardLayout)initWithCard:(id)a3 width:(double)a4 context:(id)a5
+- (SKUIEditorialCardLayout)initWithCard:(id)card width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  cardCopy = card;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorialCardLayout initWithCard:width:context:];
@@ -31,12 +31,12 @@
     v21[1] = 3221225472;
     v21[2] = __54__SKUIEditorialCardLayout_initWithCard_width_context___block_invoke;
     v21[3] = &unk_2781FBE08;
-    v13 = v9;
+    v13 = contextCopy;
     v22 = v13;
     v24 = v25;
     v14 = v10;
     v23 = v14;
-    [v8 enumerateChildrenUsingBlock:v21];
+    [cardCopy enumerateChildrenUsingBlock:v21];
     v15 = [(NSMutableArray *)v10->_allLockups count];
     primaryLockup = v14->_primaryLockup;
     if (primaryLockup)
@@ -44,13 +44,13 @@
       [SKUIVerticalLockupView preferredSizeForViewElement:primaryLockup context:v13];
       v14->_primaryLockupSize.width = v17;
       v14->_primaryLockupSize.height = v18;
-      a4 = a4 - (v17 + 15.0);
+      width = width - (v17 + 15.0);
       --v15;
     }
 
     if (v15 >= 1)
     {
-      v19 = (a4 + (v15 - 1) * -15.0) / v15;
+      v19 = (width + (v15 - 1) * -15.0) / v15;
       v14->_secondaryLockupWidth = floorf(v19);
     }
 

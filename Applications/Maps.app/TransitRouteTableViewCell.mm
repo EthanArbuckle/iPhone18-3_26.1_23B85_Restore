@@ -1,8 +1,8 @@
 @interface TransitRouteTableViewCell
 - (BOOL)_isShieldListViewOverlappingWithBadge;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSArray)_indexedContentSubviewOrNullArray;
-- (TransitRouteTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TransitRouteTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)contentHorizontalMargins;
 - (id)_autolayoutConstraints;
 - (id)_buttonConstraintsController;
@@ -13,15 +13,15 @@
 - (void)_updateRouteBadge;
 - (void)_updateShieldListView;
 - (void)layoutSubviews;
-- (void)setShowDisclosureButton:(BOOL)a3;
+- (void)setShowDisclosureButton:(BOOL)button;
 @end
 
 @implementation TransitRouteTableViewCell
 
 - (NSArray)_indexedContentSubviewOrNullArray
 {
-  v3 = [(TransitArtworkListView *)self->_shieldListView window];
-  if (v3)
+  window = [(TransitArtworkListView *)self->_shieldListView window];
+  if (window)
   {
     shieldListView = self->_shieldListView;
   }
@@ -33,8 +33,8 @@
 
   v17 = shieldListView;
   v18[0] = shieldListView;
-  v5 = [(_MKUILabel *)self->super._primaryLabel window];
-  if (v5)
+  window2 = [(_MKUILabel *)self->super._primaryLabel window];
+  if (window2)
   {
     primaryLabel = self->super._primaryLabel;
   }
@@ -45,8 +45,8 @@
   }
 
   v18[1] = primaryLabel;
-  v7 = [(_MKUILabel *)self->super._secondaryLabel window];
-  if (v7)
+  window3 = [(_MKUILabel *)self->super._secondaryLabel window];
+  if (window3)
   {
     secondaryLabel = self->super._secondaryLabel;
   }
@@ -57,9 +57,9 @@
   }
 
   v18[2] = secondaryLabel;
-  v9 = [(RouteTableViewCell *)self disclosureButton];
-  v10 = [v9 window];
-  if (v10)
+  disclosureButton = [(RouteTableViewCell *)self disclosureButton];
+  window4 = [disclosureButton window];
+  if (window4)
   {
     [(RouteTableViewCell *)self disclosureButton];
   }
@@ -70,8 +70,8 @@
   }
   v11 = ;
   v18[3] = v11;
-  v12 = [(_MKUILabel *)self->_badgeLabel window];
-  if (v12)
+  window5 = [(_MKUILabel *)self->_badgeLabel window];
+  if (window5)
   {
     badgeLabel = self->_badgeLabel;
   }
@@ -83,19 +83,19 @@
 
   v18[4] = badgeLabel;
   v14 = [NSArray arrayWithObjects:v18 count:5];
-  if (!v12)
+  if (!window5)
   {
   }
 
-  if (!v7)
+  if (!window3)
   {
   }
 
-  if (!v5)
+  if (!window2)
   {
   }
 
-  if (!v3)
+  if (!window)
   {
   }
 
@@ -107,28 +107,28 @@
   UIRoundToViewScale();
   v4 = v3;
   v5 = [RouteTableViewCellButtonConstraintsController alloc];
-  v6 = [(TransitArtworkListView *)self->_shieldListView trailingAnchor];
-  v7 = [(TransitRouteTableViewCell *)self contentView];
-  v8 = [v7 trailingAnchor];
-  v9 = [(TransitRouteTableViewCell *)self contentView];
-  v10 = [v9 topAnchor];
-  v11 = [(RouteTableViewCellButtonConstraintsController *)v5 initWithLeadingAnchor:v6 trailingAnchor:v8 firstBaselineAnchor:v10 leadingDistance:4.0 firstBaselineDistance:v4];
+  trailingAnchor = [(TransitArtworkListView *)self->_shieldListView trailingAnchor];
+  contentView = [(TransitRouteTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView trailingAnchor];
+  contentView2 = [(TransitRouteTableViewCell *)self contentView];
+  topAnchor = [contentView2 topAnchor];
+  v11 = [(RouteTableViewCellButtonConstraintsController *)v5 initWithLeadingAnchor:trailingAnchor trailingAnchor:trailingAnchor2 firstBaselineAnchor:topAnchor leadingDistance:4.0 firstBaselineDistance:v4];
 
   return v11;
 }
 
-- (void)setShowDisclosureButton:(BOOL)a3
+- (void)setShowDisclosureButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v8.receiver = self;
   v8.super_class = TransitRouteTableViewCell;
   [(RouteTableViewCell *)&v8 setShowDisclosureButton:?];
-  if (v3)
+  if (buttonCopy)
   {
-    v5 = [(RouteTableViewCell *)self disclosureButton];
+    disclosureButton = [(RouteTableViewCell *)self disclosureButton];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"More Routes Prompt" value:@"localized string not found" table:0];
-    [v5 setTitle:v7 forState:0];
+    [disclosureButton setTitle:v7 forState:0];
 
     [(TransitRouteTableViewCell *)self _updateConstraintValues];
   }
@@ -153,51 +153,51 @@
     v8 = +[UIColor systemGrayColor];
     [(_MKUILabel *)self->_badgeLabel setTextColor:v8];
 
-    v9 = [(TransitRouteTableViewCell *)self _badgeLabelFont];
-    [(_MKUILabel *)self->_badgeLabel setFont:v9];
+    _badgeLabelFont = [(TransitRouteTableViewCell *)self _badgeLabelFont];
+    [(_MKUILabel *)self->_badgeLabel setFont:_badgeLabelFont];
 
     badgeLabel = self->_badgeLabel;
   }
 
-  v10 = [(_MKUILabel *)badgeLabel superview];
+  superview = [(_MKUILabel *)badgeLabel superview];
 
-  if (!v10)
+  if (!superview)
   {
-    v11 = [(TransitRouteTableViewCell *)self contentView];
-    [v11 addSubview:self->_badgeLabel];
+    contentView = [(TransitRouteTableViewCell *)self contentView];
+    [contentView addSubview:self->_badgeLabel];
 
     if (!self->_badgeLabelTrailingConstraint)
     {
-      v12 = [(TransitRouteTableViewCell *)self trailingAnchor];
-      v13 = [(_MKUILabel *)self->_badgeLabel trailingAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      trailingAnchor = [(TransitRouteTableViewCell *)self trailingAnchor];
+      trailingAnchor2 = [(_MKUILabel *)self->_badgeLabel trailingAnchor];
+      v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       badgeLabelTrailingConstraint = self->_badgeLabelTrailingConstraint;
       self->_badgeLabelTrailingConstraint = v14;
     }
 
     if (!self->_topShieldViewToBadgeLabelConstraint)
     {
-      v16 = [(_MKUILabel *)self->_badgeLabel firstBaselineAnchor];
-      v17 = [(TransitArtworkListView *)self->_shieldListView topAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      firstBaselineAnchor = [(_MKUILabel *)self->_badgeLabel firstBaselineAnchor];
+      topAnchor = [(TransitArtworkListView *)self->_shieldListView topAnchor];
+      v18 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
       topShieldViewToBadgeLabelConstraint = self->_topShieldViewToBadgeLabelConstraint;
       self->_topShieldViewToBadgeLabelConstraint = v18;
     }
 
     if (!self->_secondaryLabelBaselineAlignWithBadgeConstraint)
     {
-      v20 = [(_MKUILabel *)self->super._secondaryLabel lastBaselineAnchor];
-      v21 = [(_MKUILabel *)self->_badgeLabel firstBaselineAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      lastBaselineAnchor = [(_MKUILabel *)self->super._secondaryLabel lastBaselineAnchor];
+      firstBaselineAnchor2 = [(_MKUILabel *)self->_badgeLabel firstBaselineAnchor];
+      v22 = [lastBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
       secondaryLabelBaselineAlignWithBadgeConstraint = self->_secondaryLabelBaselineAlignWithBadgeConstraint;
       self->_secondaryLabelBaselineAlignWithBadgeConstraint = v22;
     }
 
     if (!self->_secondaryLabelTrailingToBadgeLeadingConstraint)
     {
-      v24 = [(_MKUILabel *)self->_badgeLabel leadingAnchor];
-      v25 = [(_MKUILabel *)self->super._secondaryLabel trailingAnchor];
-      v26 = [v24 constraintEqualToAnchor:v25 constant:16.0];
+      leadingAnchor = [(_MKUILabel *)self->_badgeLabel leadingAnchor];
+      trailingAnchor3 = [(_MKUILabel *)self->super._secondaryLabel trailingAnchor];
+      v26 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3 constant:16.0];
       secondaryLabelTrailingToBadgeLeadingConstraint = self->_secondaryLabelTrailingToBadgeLeadingConstraint;
       self->_secondaryLabelTrailingToBadgeLeadingConstraint = v26;
     }
@@ -212,13 +212,13 @@
 
 - (void)_updateRouteBadge
 {
-  v3 = [(RouteTableViewCell *)self route];
-  v4 = [v3 transitRouteBadge];
+  route = [(RouteTableViewCell *)self route];
+  transitRouteBadge = [route transitRouteBadge];
   v8 = NSFontAttributeName;
-  v5 = [(TransitRouteTableViewCell *)self _badgeLabelFont];
-  v9 = v5;
+  _badgeLabelFont = [(TransitRouteTableViewCell *)self _badgeLabelFont];
+  v9 = _badgeLabelFont;
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v7 = [NSAttributedString _mapkit_attributedTransitStringForServerFormattedString:v4 defaultAttributes:v6];
+  v7 = [NSAttributedString _mapkit_attributedTransitStringForServerFormattedString:transitRouteBadge defaultAttributes:v6];
 
   if (-[RouteTableViewCell showDisclosureButton](self, "showDisclosureButton") || ![v7 length])
   {
@@ -234,12 +234,12 @@
 
 - (void)_updateShieldListView
 {
-  v5 = [(RouteTableViewCell *)self route];
-  if (v5)
+  route = [(RouteTableViewCell *)self route];
+  if (route)
   {
-    v3 = [(RouteTableViewCell *)self route];
-    v4 = [v3 routePlanningArtworks];
-    [(TransitArtworkListView *)self->_shieldListView setArtworkData:v4];
+    route2 = [(RouteTableViewCell *)self route];
+    routePlanningArtworks = [route2 routePlanningArtworks];
+    [(TransitArtworkListView *)self->_shieldListView setArtworkData:routePlanningArtworks];
 
     [(TransitRouteTableViewCell *)self _mapkit_setNeedsLayout];
   }
@@ -255,9 +255,9 @@
   v4.receiver = self;
   v4.super_class = TransitRouteTableViewCell;
   [(RouteTableViewCell *)&v4 _updateCellLabels];
-  v3 = [(RouteTableViewCell *)self route];
+  route = [(RouteTableViewCell *)self route];
 
-  if (v3)
+  if (route)
   {
     [(TransitRouteTableViewCell *)self _updateShieldListView];
     [(TransitRouteTableViewCell *)self _updateRouteBadge];
@@ -269,41 +269,41 @@
   v18.receiver = self;
   v18.super_class = TransitRouteTableViewCell;
   [(RouteTableViewCell *)&v18 _updateConstraintValues];
-  v3 = [(RouteTableViewCell *)self disclosureButton];
-  v4 = [v3 titleLabel];
-  v5 = [v4 font];
-  [v5 _scaledValueForValue:24.0];
+  disclosureButton = [(RouteTableViewCell *)self disclosureButton];
+  titleLabel = [disclosureButton titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:24.0];
 
   UIRoundToViewScale();
   v7 = v6;
-  v8 = [(RouteTableViewCell *)self buttonConstraintsController];
-  [v8 setFirstBaselineDistance:v7];
+  buttonConstraintsController = [(RouteTableViewCell *)self buttonConstraintsController];
+  [buttonConstraintsController setFirstBaselineDistance:v7];
 
   if ([(TransitRouteTableViewCell *)self _shouldHaveFullLengthTopSeparator])
   {
-    v9 = self;
-    v10 = [(TransitRouteTableViewCell *)v9 window];
-    v11 = [v10 screen];
-    if (v11)
+    selfCopy = self;
+    window = [(TransitRouteTableViewCell *)selfCopy window];
+    screen = [window screen];
+    if (screen)
     {
-      v12 = [(TransitRouteTableViewCell *)v9 window];
+      window2 = [(TransitRouteTableViewCell *)selfCopy window];
 
-      v13 = [v12 screen];
-      [v13 nativeScale];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
     }
 
     else
     {
-      v12 = +[UIScreen mainScreen];
+      window2 = +[UIScreen mainScreen];
 
-      [v12 nativeScale];
+      [window2 nativeScale];
     }
   }
 
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_topToShieldListViewConstraint setConstant:?];
-  v14 = [(_MKUILabel *)self->_badgeLabel font];
-  [v14 capHeight];
+  font2 = [(_MKUILabel *)self->_badgeLabel font];
+  [font2 capHeight];
   [(NSLayoutConstraint *)self->_topShieldViewToBadgeLabelConstraint setConstant:?];
 
   [(TransitRouteTableViewCell *)self separatorInset];
@@ -317,15 +317,15 @@
   [(NSLayoutConstraint *)self->_badgeLabelTrailingConstraint setConstant:v15];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TransitRouteTableViewCell *)self layoutIfNeeded];
   v14.receiver = self;
   v14.super_class = TransitRouteTableViewCell;
-  *&v10 = a4;
-  *&v11 = a5;
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [(TransitRouteTableViewCell *)&v14 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
   result.height = v13;
   result.width = v12;
@@ -363,8 +363,8 @@
 
   else
   {
-    v13 = [(TransitRouteTableViewCell *)self _tableView];
-    [v13 separatorInset];
+    _tableView = [(TransitRouteTableViewCell *)self _tableView];
+    [_tableView separatorInset];
     v10 = v14;
     v9 = v15;
     v11 = v16;
@@ -384,9 +384,9 @@
 
 - (BOOL)_isShieldListViewOverlappingWithBadge
 {
-  v3 = [(_MKUILabel *)self->_badgeLabel superview];
+  superview = [(_MKUILabel *)self->_badgeLabel superview];
 
-  if (!v3)
+  if (!superview)
   {
     return 0;
   }
@@ -424,20 +424,20 @@
   v25.receiver = self;
   v25.super_class = TransitRouteTableViewCell;
   [(TransitRouteTableViewCell *)&v25 layoutSubviews];
-  v3 = [(TransitRouteTableViewCell *)self contentView];
-  [v3 layoutIfNeeded];
+  contentView = [(TransitRouteTableViewCell *)self contentView];
+  [contentView layoutIfNeeded];
 
-  v4 = [(RouteTableViewCell *)self disclosureButton];
-  [v4 frame];
+  disclosureButton = [(RouteTableViewCell *)self disclosureButton];
+  [disclosureButton frame];
   v6 = v5;
-  v7 = [(RouteTableViewCell *)self disclosureButton];
-  [v7 frame];
+  disclosureButton2 = [(RouteTableViewCell *)self disclosureButton];
+  [disclosureButton2 frame];
   v9 = v8 + v6;
   [(TransitRouteTableViewCell *)self frame];
   v11 = v9 - v10;
 
-  v12 = [(RouteTableViewCell *)self disclosureButton];
-  [v12 setTouchInsets:{0.0, 0.0, v11, 0.0}];
+  disclosureButton3 = [(RouteTableViewCell *)self disclosureButton];
+  [disclosureButton3 setTouchInsets:{0.0, 0.0, v11, 0.0}];
 
   [(TransitRouteTableViewCell *)self contentHorizontalMargins];
   [(RouteTableViewCell *)self setSeparatorInset:?];
@@ -445,11 +445,11 @@
   {
     [(TransitArtworkListView *)self->_shieldListView singleLineWidth];
     v14 = v13;
-    v15 = [(TransitRouteTableViewCell *)self accessoryView];
-    v16 = v15;
-    if (v15)
+    accessoryView = [(TransitRouteTableViewCell *)self accessoryView];
+    v16 = accessoryView;
+    if (accessoryView)
     {
-      [v15 frame];
+      [accessoryView frame];
       v17 = CGRectGetWidth(v26) + 16.0;
     }
 
@@ -471,12 +471,12 @@
     self->_inRecursiveLayout = 0;
   }
 
-  v19 = [(_MKUILabel *)self->_badgeLabel superview];
+  superview = [(_MKUILabel *)self->_badgeLabel superview];
 
-  if (v19)
+  if (superview)
   {
-    v20 = [(TransitRouteTableViewCell *)self _isShieldListViewOverlappingWithBadge];
-    if (v20)
+    _isShieldListViewOverlappingWithBadge = [(TransitRouteTableViewCell *)self _isShieldListViewOverlappingWithBadge];
+    if (_isShieldListViewOverlappingWithBadge)
     {
       v21 = &OBJC_IVAR___TransitRouteTableViewCell__topShieldViewToBadgeLabelConstraint;
     }
@@ -486,7 +486,7 @@
       v21 = &OBJC_IVAR___TransitRouteTableViewCell__secondaryLabelBaselineAlignWithBadgeConstraint;
     }
 
-    if (v20)
+    if (_isShieldListViewOverlappingWithBadge)
     {
       v22 = &OBJC_IVAR___RouteTableViewCell__secondaryLabelToContentViewConstraint;
     }
@@ -496,7 +496,7 @@
       v22 = &OBJC_IVAR___TransitRouteTableViewCell__secondaryLabelTrailingToBadgeLeadingConstraint;
     }
 
-    if (v20)
+    if (_isShieldListViewOverlappingWithBadge)
     {
       v23 = &OBJC_IVAR___TransitRouteTableViewCell__secondaryLabelBaselineAlignWithBadgeConstraint;
     }
@@ -506,7 +506,7 @@
       v23 = &OBJC_IVAR___TransitRouteTableViewCell__topShieldViewToBadgeLabelConstraint;
     }
 
-    if (v20)
+    if (_isShieldListViewOverlappingWithBadge)
     {
       v24 = &OBJC_IVAR___TransitRouteTableViewCell__secondaryLabelTrailingToBadgeLeadingConstraint;
     }
@@ -527,33 +527,33 @@
 {
   v19.receiver = self;
   v19.super_class = TransitRouteTableViewCell;
-  v3 = [(RouteTableViewCell *)&v19 _autolayoutConstraints];
-  v4 = [(_MKUILabel *)self->super._primaryLabel trailingAnchor];
-  v5 = [(TransitRouteTableViewCell *)self contentView];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintLessThanOrEqualToAnchor:v6];
-  [v3 addObject:v7];
+  _autolayoutConstraints = [(RouteTableViewCell *)&v19 _autolayoutConstraints];
+  trailingAnchor = [(_MKUILabel *)self->super._primaryLabel trailingAnchor];
+  contentView = [(TransitRouteTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v7 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+  [_autolayoutConstraints addObject:v7];
 
-  v8 = [(TransitArtworkListView *)self->_shieldListView topAnchor];
-  v9 = [(TransitRouteTableViewCell *)self contentView];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:0.0];
+  topAnchor = [(TransitArtworkListView *)self->_shieldListView topAnchor];
+  contentView2 = [(TransitRouteTableViewCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   topToShieldListViewConstraint = self->_topToShieldListViewConstraint;
   self->_topToShieldListViewConstraint = v11;
 
   LODWORD(v13) = 1148829696;
   [(NSLayoutConstraint *)self->_topToShieldListViewConstraint setPriority:v13];
   v20[0] = self->_topToShieldListViewConstraint;
-  v14 = [(TransitArtworkListView *)self->_shieldListView leadingAnchor];
-  v15 = [(_MKUILabel *)self->super._primaryLabel leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  leadingAnchor = [(TransitArtworkListView *)self->_shieldListView leadingAnchor];
+  leadingAnchor2 = [(_MKUILabel *)self->super._primaryLabel leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[1] = v16;
   v17 = [NSArray arrayWithObjects:v20 count:2];
-  [v3 addObjectsFromArray:v17];
+  [_autolayoutConstraints addObjectsFromArray:v17];
 
   [(TransitRouteTableViewCell *)self _updateConstraintValues];
 
-  return v3;
+  return _autolayoutConstraints;
 }
 
 - (void)_createSubviews
@@ -566,15 +566,15 @@
   self->_shieldListView = v3;
 
   [(TransitArtworkListView *)self->_shieldListView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(TransitRouteTableViewCell *)self contentView];
-  [v5 addSubview:self->_shieldListView];
+  contentView = [(TransitRouteTableViewCell *)self contentView];
+  [contentView addSubview:self->_shieldListView];
 }
 
-- (TransitRouteTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TransitRouteTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = TransitRouteTableViewCell;
-  v4 = [(RouteTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RouteTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

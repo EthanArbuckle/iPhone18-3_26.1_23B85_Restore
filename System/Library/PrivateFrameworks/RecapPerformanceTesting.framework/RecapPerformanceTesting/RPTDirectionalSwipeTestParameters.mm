@@ -1,26 +1,26 @@
 @interface RPTDirectionalSwipeTestParameters
 - (CGRect)scrollingBounds;
-- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)a3 scrollingBounds:(CGRect)a4 swipeCount:(int64_t)a5 direction:(int64_t)a6 completionHandler:(id)a7;
-- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)a3 scrollingBounds:(CGRect)a4 swipeCount:(int64_t)a5 reverse:(BOOL)a6 direction:(int64_t)a7 completionHandler:(id)a8;
-- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)a3 testType:(unint64_t)a4 scrollView:(id)a5 completionHandler:(id)a6;
+- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)name scrollingBounds:(CGRect)bounds swipeCount:(int64_t)count direction:(int64_t)direction completionHandler:(id)handler;
+- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)name scrollingBounds:(CGRect)bounds swipeCount:(int64_t)count reverse:(BOOL)reverse direction:(int64_t)direction completionHandler:(id)handler;
+- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)name testType:(unint64_t)type scrollView:(id)view completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 swipeDuration:(double)a6;
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint swipeDuration:(double)duration;
 @end
 
 @implementation RPTDirectionalSwipeTestParameters
 
-- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)a3 testType:(unint64_t)a4 scrollView:(id)a5 completionHandler:(id)a6
+- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)name testType:(unint64_t)type scrollView:(id)view completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = RPTDefaultScrollDirection(v11);
-  v14 = RPTContentSizeInDirection(v11, v13);
-  x = RPTGetBoundsForView(v11);
+  nameCopy = name;
+  viewCopy = view;
+  handlerCopy = handler;
+  v13 = RPTDefaultScrollDirection(viewCopy);
+  v14 = RPTContentSizeInDirection(viewCopy, v13);
+  x = RPTGetBoundsForView(viewCopy);
   y = v16;
   width = v18;
   height = v20;
-  if (a4 == 2)
+  if (type == 2)
   {
     v22 = 1;
 LABEL_8:
@@ -65,12 +65,12 @@ LABEL_8:
   }
 
   v22 = 0;
-  if (a4 == 1)
+  if (type == 1)
   {
     goto LABEL_8;
   }
 
-  if (a4)
+  if (type)
   {
     v25 = 1;
   }
@@ -89,50 +89,50 @@ LABEL_8:
   }
 
 LABEL_14:
-  v38 = [(RPTDirectionalSwipeTestParameters *)self initWithTestName:v10 scrollingBounds:v25 swipeCount:v22 reverse:v13 direction:v12 completionHandler:x, y, width, height];
-  v39 = [v11 window];
-  v40 = [v11 window];
-  v41 = [v40 screen];
-  v42 = [RPTCoordinateSpaceConverter converterFromWindow:v39 toScreen:v41];
-  [(RPTDirectionalSwipeTestParameters *)v38 setConversion:v42];
+  height = [(RPTDirectionalSwipeTestParameters *)self initWithTestName:nameCopy scrollingBounds:v25 swipeCount:v22 reverse:v13 direction:handlerCopy completionHandler:x, y, width, height];
+  window = [viewCopy window];
+  window2 = [viewCopy window];
+  screen = [window2 screen];
+  v42 = [RPTCoordinateSpaceConverter converterFromWindow:window toScreen:screen];
+  [(RPTDirectionalSwipeTestParameters *)height setConversion:v42];
 
-  return v38;
+  return height;
 }
 
-- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)a3 scrollingBounds:(CGRect)a4 swipeCount:(int64_t)a5 direction:(int64_t)a6 completionHandler:(id)a7
+- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)name scrollingBounds:(CGRect)bounds swipeCount:(int64_t)count direction:(int64_t)direction completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = a3;
-  v17 = [(RPTDirectionalSwipeTestParameters *)self initWithTestName:v16 scrollingBounds:a5 swipeCount:0 reverse:_RPTScrollDirectionFromUIScrollDirection(a6) direction:v15 completionHandler:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  handlerCopy = handler;
+  nameCopy = name;
+  height = [(RPTDirectionalSwipeTestParameters *)self initWithTestName:nameCopy scrollingBounds:count swipeCount:0 reverse:_RPTScrollDirectionFromUIScrollDirection(direction) direction:handlerCopy completionHandler:x, y, width, height];
 
-  return v17;
+  return height;
 }
 
-- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)a3 scrollingBounds:(CGRect)a4 swipeCount:(int64_t)a5 reverse:(BOOL)a6 direction:(int64_t)a7 completionHandler:(id)a8
+- (RPTDirectionalSwipeTestParameters)initWithTestName:(id)name scrollingBounds:(CGRect)bounds swipeCount:(int64_t)count reverse:(BOOL)reverse direction:(int64_t)direction completionHandler:(id)handler
 {
-  v10 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  v18 = a8;
+  reverseCopy = reverse;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nameCopy = name;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = RPTDirectionalSwipeTestParameters;
   v19 = [(RPTDirectionalSwipeTestParameters *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    [(RPTDirectionalSwipeTestParameters *)v19 setTestName:v17];
+    [(RPTDirectionalSwipeTestParameters *)v19 setTestName:nameCopy];
     [(RPTDirectionalSwipeTestParameters *)v20 setScrollingBounds:x, y, width, height];
-    [(RPTDirectionalSwipeTestParameters *)v20 setSwipeCount:a5];
-    [(RPTDirectionalSwipeTestParameters *)v20 setReverse:v10];
-    [(RPTDirectionalSwipeTestParameters *)v20 setDirection:_UIScrollDirectionFromRPTScrollDirection(a7)];
-    [(RPTDirectionalSwipeTestParameters *)v20 setCompletionHandler:v18];
+    [(RPTDirectionalSwipeTestParameters *)v20 setSwipeCount:count];
+    [(RPTDirectionalSwipeTestParameters *)v20 setReverse:reverseCopy];
+    [(RPTDirectionalSwipeTestParameters *)v20 setDirection:_UIScrollDirectionFromRPTScrollDirection(direction)];
+    [(RPTDirectionalSwipeTestParameters *)v20 setCompletionHandler:handlerCopy];
     [(RPTDirectionalSwipeTestParameters *)v20 setSwipeSpeedFactor:&unk_28742EA48];
     v21 = +[RPTCoordinateSpaceConverter identityConverter];
     [(RPTDirectionalSwipeTestParameters *)v20 setConversion:v21];
@@ -234,35 +234,35 @@ void __50__RPTDirectionalSwipeTestParameters_composerBlock__block_invoke(uint64_
   }
 }
 
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 swipeDuration:(double)a6
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint swipeDuration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v30 = a3;
-  if (self->_shouldFlick && ([v30 interactionOptions], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "prefersPointer"), v12, (v13 & 1) == 0))
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  composerCopy = composer;
+  if (self->_shouldFlick && ([composerCopy interactionOptions], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "prefersPointer"), v12, (v13 & 1) == 0))
   {
-    v22 = [(RPTDirectionalSwipeTestParameters *)self conversion];
-    [v22 convertPoint:{v10, v9}];
+    conversion = [(RPTDirectionalSwipeTestParameters *)self conversion];
+    [conversion convertPoint:{v10, v9}];
     v24 = v23;
     v26 = v25;
-    v27 = [(RPTDirectionalSwipeTestParameters *)self conversion];
-    [v27 convertPoint:{x, y}];
-    [v30 sendFlickWithStartPoint:v24 endPoint:v26 duration:{v28, v29, a6 * 0.7}];
+    conversion2 = [(RPTDirectionalSwipeTestParameters *)self conversion];
+    [conversion2 convertPoint:{x, y}];
+    [composerCopy sendFlickWithStartPoint:v24 endPoint:v26 duration:{v28, v29, duration * 0.7}];
 
-    [v30 advanceTime:a6 * 0.3];
+    [composerCopy advanceTime:duration * 0.3];
   }
 
   else
   {
-    v14 = [(RPTDirectionalSwipeTestParameters *)self conversion];
-    [v14 convertPoint:{v10, v9}];
+    conversion3 = [(RPTDirectionalSwipeTestParameters *)self conversion];
+    [conversion3 convertPoint:{v10, v9}];
     v16 = v15;
     v18 = v17;
-    v19 = [(RPTDirectionalSwipeTestParameters *)self conversion];
-    [v19 convertVector:{x - v10, y - v9}];
-    [v30 pointerOrFingerScrollAt:v16 byDelta:v18 duration:{v20, v21, a6}];
+    conversion4 = [(RPTDirectionalSwipeTestParameters *)self conversion];
+    [conversion4 convertVector:{x - v10, y - v9}];
+    [composerCopy pointerOrFingerScrollAt:v16 byDelta:v18 duration:{v20, v21, duration}];
   }
 }
 

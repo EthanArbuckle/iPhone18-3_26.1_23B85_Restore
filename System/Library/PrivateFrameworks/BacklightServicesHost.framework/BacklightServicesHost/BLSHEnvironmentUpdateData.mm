@@ -1,25 +1,25 @@
 @interface BLSHEnvironmentUpdateData
-- (BLSHEnvironmentUpdateData)initWithEnvironmentIdentifier:(id)a3 newBacklightState:(int64_t)a4 pendingTransitionStateCount:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BLSHEnvironmentUpdateData)initWithEnvironmentIdentifier:(id)identifier newBacklightState:(int64_t)state pendingTransitionStateCount:(unint64_t)count;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation BLSHEnvironmentUpdateData
 
-- (BLSHEnvironmentUpdateData)initWithEnvironmentIdentifier:(id)a3 newBacklightState:(int64_t)a4 pendingTransitionStateCount:(unint64_t)a5
+- (BLSHEnvironmentUpdateData)initWithEnvironmentIdentifier:(id)identifier newBacklightState:(int64_t)state pendingTransitionStateCount:(unint64_t)count
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = BLSHEnvironmentUpdateData;
   v9 = [(BLSHEnvironmentUpdateData *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     environmentIdentifier = v9->_environmentIdentifier;
     v9->_environmentIdentifier = v10;
 
-    v9->_newBacklightState = a4;
-    v9->_pendingTransitionStateCount = a5;
+    v9->_newBacklightState = state;
+    v9->_pendingTransitionStateCount = count;
     v9->_timeStamp = mach_continuous_time();
   }
 
@@ -35,22 +35,22 @@
   pendingTransitionStateCount = self->_pendingTransitionStateCount;
   v8 = objc_alloc(MEMORY[0x277CBEAA8]);
   v9 = [v8 bls_initWithMachContinuousTime:self->_timeStamp];
-  v10 = [v9 bls_shortLoggingString];
-  v11 = [v3 stringWithFormat:@"update %@ %@ %lu %@", environmentIdentifier, v6, pendingTransitionStateCount, v10];
+  bls_shortLoggingString = [v9 bls_shortLoggingString];
+  v11 = [v3 stringWithFormat:@"update %@ %@ %lu %@", environmentIdentifier, v6, pendingTransitionStateCount, bls_shortLoggingString];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   environmentIdentifier = self->_environmentIdentifier;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __37__BLSHEnvironmentUpdateData_isEqual___block_invoke;
   v20[3] = &unk_27841F810;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendString:environmentIdentifier counterpart:v20];
   newBacklightState = self->_newBacklightState;

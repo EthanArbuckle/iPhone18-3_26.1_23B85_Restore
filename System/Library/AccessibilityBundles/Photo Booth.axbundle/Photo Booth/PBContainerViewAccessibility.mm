@@ -1,14 +1,14 @@
 @interface PBContainerViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PBContainerViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = PBContainerViewAccessibility;
-  v5 = [(PBContainerViewAccessibility *)&v10 _accessibilityHitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PBContainerViewAccessibility *)&v10 _accessibilityHitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

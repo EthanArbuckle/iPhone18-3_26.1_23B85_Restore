@@ -1,31 +1,31 @@
 @interface FCCAtypicalDayConfiguration
-- (FCCAtypicalDayConfiguration)initWithIdentifier:(id)a3 minimumAheadPercentage:(double)a4 minimumBehindPercentage:(double)a5 percentageOfDayRule:(id)a6 allowedGoalTypes:(id)a7;
-- (FCCAtypicalDayConfiguration)initWithProtobuf:(id)a3;
-- (FCCAtypicalDayConfiguration)initWithTransportData:(id)a3;
+- (FCCAtypicalDayConfiguration)initWithIdentifier:(id)identifier minimumAheadPercentage:(double)percentage minimumBehindPercentage:(double)behindPercentage percentageOfDayRule:(id)rule allowedGoalTypes:(id)types;
+- (FCCAtypicalDayConfiguration)initWithProtobuf:(id)protobuf;
+- (FCCAtypicalDayConfiguration)initWithTransportData:(id)data;
 - (id)protobuf;
 - (id)transportData;
 @end
 
 @implementation FCCAtypicalDayConfiguration
 
-- (FCCAtypicalDayConfiguration)initWithIdentifier:(id)a3 minimumAheadPercentage:(double)a4 minimumBehindPercentage:(double)a5 percentageOfDayRule:(id)a6 allowedGoalTypes:(id)a7
+- (FCCAtypicalDayConfiguration)initWithIdentifier:(id)identifier minimumAheadPercentage:(double)percentage minimumBehindPercentage:(double)behindPercentage percentageOfDayRule:(id)rule allowedGoalTypes:(id)types
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  ruleCopy = rule;
+  typesCopy = types;
   v21.receiver = self;
   v21.super_class = FCCAtypicalDayConfiguration;
   v15 = [(FCCAtypicalDayConfiguration *)&v21 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v15->_minimumAheadPercentage = a4;
-    v15->_minimumBehindPercentage = a5;
-    objc_storeStrong(&v15->_percentageOfDayRule, a6);
-    v18 = [v14 copy];
+    v15->_minimumAheadPercentage = percentage;
+    v15->_minimumBehindPercentage = behindPercentage;
+    objc_storeStrong(&v15->_percentageOfDayRule, rule);
+    v18 = [typesCopy copy];
     allowedGoalTypes = v15->_allowedGoalTypes;
     v15->_allowedGoalTypes = v18;
   }
@@ -33,32 +33,32 @@
   return v15;
 }
 
-- (FCCAtypicalDayConfiguration)initWithProtobuf:(id)a3
+- (FCCAtypicalDayConfiguration)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  [v4 minimumAheadPercentage];
+  protobufCopy = protobuf;
+  identifier = [protobufCopy identifier];
+  [protobufCopy minimumAheadPercentage];
   v7 = v6;
-  [v4 minimumBehindPercentage];
+  [protobufCopy minimumBehindPercentage];
   v9 = v8;
   v10 = [FCCPercentageOfDayRule alloc];
-  v11 = [v4 percentageOfDayRule];
-  v12 = [(FCCPercentageOfDayRule *)v10 initWithProtobuf:v11];
+  percentageOfDayRule = [protobufCopy percentageOfDayRule];
+  v12 = [(FCCPercentageOfDayRule *)v10 initWithProtobuf:percentageOfDayRule];
 
-  if ([v4 allowedGoalTypesCount])
+  if ([protobufCopy allowedGoalTypesCount])
   {
     v13 = 0;
     v14 = MEMORY[0x277CBEBF8];
     do
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "allowedGoalTypesAtIndex:", v13)}];
+      v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(protobufCopy, "allowedGoalTypesAtIndex:", v13)}];
       v16 = [v14 arrayByAddingObject:v15];
 
       ++v13;
       v14 = v16;
     }
 
-    while ([v4 allowedGoalTypesCount] > v13);
+    while ([protobufCopy allowedGoalTypesCount] > v13);
   }
 
   else
@@ -66,7 +66,7 @@
     v16 = MEMORY[0x277CBEBF8];
   }
 
-  v17 = [(FCCAtypicalDayConfiguration *)self initWithIdentifier:v5 minimumAheadPercentage:v12 minimumBehindPercentage:v16 percentageOfDayRule:v7 allowedGoalTypes:v9];
+  v17 = [(FCCAtypicalDayConfiguration *)self initWithIdentifier:identifier minimumAheadPercentage:v12 minimumBehindPercentage:v16 percentageOfDayRule:v7 allowedGoalTypes:v9];
 
   return v17;
 }
@@ -78,8 +78,8 @@
   [(FCCAtypicalDayConfigurationProtobuf *)v3 setIdentifier:self->_identifier];
   [(FCCAtypicalDayConfigurationProtobuf *)v3 setMinimumAheadPercentage:self->_minimumAheadPercentage];
   [(FCCAtypicalDayConfigurationProtobuf *)v3 setMinimumBehindPercentage:self->_minimumBehindPercentage];
-  v4 = [(FCCPercentageOfDayRule *)self->_percentageOfDayRule protobuf];
-  [(FCCAtypicalDayConfigurationProtobuf *)v3 setPercentageOfDayRule:v4];
+  protobuf = [(FCCPercentageOfDayRule *)self->_percentageOfDayRule protobuf];
+  [(FCCAtypicalDayConfigurationProtobuf *)v3 setPercentageOfDayRule:protobuf];
 
   v14 = 0u;
   v15 = 0u;
@@ -114,10 +114,10 @@
   return v3;
 }
 
-- (FCCAtypicalDayConfiguration)initWithTransportData:(id)a3
+- (FCCAtypicalDayConfiguration)initWithTransportData:(id)data
 {
-  v4 = a3;
-  v5 = [[FCCAtypicalDayConfigurationProtobuf alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[FCCAtypicalDayConfigurationProtobuf alloc] initWithData:dataCopy];
 
   v6 = [(FCCAtypicalDayConfiguration *)self initWithProtobuf:v5];
   return v6;
@@ -125,10 +125,10 @@
 
 - (id)transportData
 {
-  v2 = [(FCCAtypicalDayConfiguration *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(FCCAtypicalDayConfiguration *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 @end

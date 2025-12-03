@@ -7,7 +7,7 @@
 
 + (id)flashlightUnavailableAlert
 {
-  v2 = [[a1 alloc] initWithStyle:1 state:2];
+  v2 = [[self alloc] initWithStyle:1 state:2];
 
   return v2;
 }

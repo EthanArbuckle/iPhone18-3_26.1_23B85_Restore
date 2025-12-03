@@ -1,9 +1,9 @@
 @interface NRBabelInterface
 - (NRBabelInstance)instance;
-- (NRBabelInterface)initWithInstance:(id)a3;
+- (NRBabelInterface)initWithInstance:(id)instance;
 - (in6_addr)localAddressInner;
 - (void)dealloc;
-- (void)sendPacket:(iovec *)a3 iovLen:(unsigned int)a4 toAddr:(const in6_addr *)a5;
+- (void)sendPacket:(iovec *)packet iovLen:(unsigned int)len toAddr:(const in6_addr *)addr;
 @end
 
 @implementation NRBabelInterface
@@ -24,7 +24,7 @@
   return WeakRetained;
 }
 
-- (void)sendPacket:(iovec *)a3 iovLen:(unsigned int)a4 toAddr:(const in6_addr *)a5
+- (void)sendPacket:(iovec *)packet iovLen:(unsigned int)len toAddr:(const in6_addr *)addr
 {
   v5 = &qword_100229000;
   if (qword_100229100 != -1)
@@ -72,9 +72,9 @@ LABEL_7:
   [(NRBabelInterface *)&v5 dealloc];
 }
 
-- (NRBabelInterface)initWithInstance:(id)a3
+- (NRBabelInterface)initWithInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v20.receiver = self;
   v20.super_class = NRBabelInterface;
   v5 = [(NRBabelInterface *)&v20 init];
@@ -100,11 +100,11 @@ LABEL_7:
   }
 
   v6 = v5;
-  [(NRBabelInterface *)v5 setInstance:v4];
+  [(NRBabelInterface *)v5 setInstance:instanceCopy];
   v6->_outgoingPublicHelloSeqno = arc4random_uniform(0x10000u);
   v6->_mtu = 1452;
-  v7 = [v4 queue];
-  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v7);
+  queue = [instanceCopy queue];
+  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   outgoingPublicHelloTimer = v6->_outgoingPublicHelloTimer;
   v6->_outgoingPublicHelloTimer = v8;
 

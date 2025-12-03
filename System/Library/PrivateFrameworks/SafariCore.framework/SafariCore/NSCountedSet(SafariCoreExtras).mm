@@ -11,8 +11,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [a1 allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects = [self allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -25,11 +25,11 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [a1 countForObject:v9];
+        v10 = [self countForObject:v9];
         if (v10 > v6)
         {
           v11 = v10;
@@ -40,7 +40,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);

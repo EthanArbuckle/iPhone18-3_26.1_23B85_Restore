@@ -1,24 +1,24 @@
 @interface HMDResidentCommunicationHandler
-+ (id)createResponseSubset:(id)a3 overallError:(id)a4 readRequest:(id)a5 error:(id *)a6;
++ (id)createResponseSubset:(id)subset overallError:(id)error readRequest:(id)request error:(id *)a6;
 + (id)logCategory;
-+ (void)_clearAllGeneratedRequests:(id)a3 error:(id)a4;
-+ (void)_clearAllPendingRequests:(id)a3 error:(id)a4;
-+ (void)_processResponseForMultireadRequest:(id)a3 overallError:(id)a4 response:(id)a5;
-- (BOOL)containsDevice:(id)a3;
++ (void)_clearAllGeneratedRequests:(id)requests error:(id)error;
++ (void)_clearAllPendingRequests:(id)requests error:(id)error;
++ (void)_processResponseForMultireadRequest:(id)request overallError:(id)error response:(id)response;
+- (BOOL)containsDevice:(id)device;
 - (HMDDevice)preferredDevice;
 - (HMDMessageDispatcher)remoteDispatcher;
-- (HMDResidentCommunicationHandler)initWithHome:(id)a3 remoteDispatcher:(id)a4;
+- (HMDResidentCommunicationHandler)initWithHome:(id)home remoteDispatcher:(id)dispatcher;
 - (NSString)description;
-- (id)deviceForType:(int64_t)a3;
+- (id)deviceForType:(int64_t)type;
 - (id)logIdentifier;
 - (int64_t)preferredDeviceType;
-- (void)_processResponse:(id)a3 overallError:(id)a4 messageIdentifier:(id)a5;
+- (void)_processResponse:(id)response overallError:(id)error messageIdentifier:(id)identifier;
 - (void)_sendMultipleCharacteristicRead;
 - (void)dealloc;
-- (void)redispatchMessage:(id)a3 target:(id)a4 responseQueue:(id)a5;
-- (void)removeDeviceForType:(int64_t)a3;
-- (void)setDevice:(id)a3 forType:(int64_t)a4;
-- (void)timerDidFire:(id)a3;
+- (void)redispatchMessage:(id)message target:(id)target responseQueue:(id)queue;
+- (void)removeDeviceForType:(int64_t)type;
+- (void)setDevice:(id)device forType:(int64_t)type;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDResidentCommunicationHandler
@@ -32,27 +32,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentCommunicationHandler *)self homeUUID];
-  v3 = [v2 UUIDString];
+  homeUUID = [(HMDResidentCommunicationHandler *)self homeUUID];
+  uUIDString = [homeUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_processResponse:(id)a3 overallError:(id)a4 messageIdentifier:(id)a5
+- (void)_processResponse:(id)response overallError:(id)error messageIdentifier:(id)identifier
 {
   v46 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDResidentCommunicationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  responseCopy = response;
+  errorCopy = error;
+  identifierCopy = identifier;
+  workQueue = [(HMDResidentCommunicationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
-  v12 = [v11 copy];
+  dispatchedReadRequests = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
+  v12 = [dispatchedReadRequests copy];
 
   v13 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v13)
@@ -69,8 +69,8 @@ LABEL_3:
       }
 
       v17 = *(*(&v37 + 1) + 8 * v16);
-      v18 = [v17 identifier];
-      v19 = [v18 isEqual:v9];
+      identifier = [v17 identifier];
+      v19 = [identifier isEqual:identifierCopy];
 
       if (v19)
       {
@@ -89,29 +89,29 @@ LABEL_3:
       }
     }
 
-    v20 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
-    v21 = [v20 objectForKey:v17];
+    dispatchedReadRequests2 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
+    v21 = [dispatchedReadRequests2 objectForKey:v17];
 
-    v22 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
-    [v22 removeObjectForKey:v17];
+    dispatchedReadRequests3 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
+    [dispatchedReadRequests3 removeObjectForKey:v17];
 
     if (!v21)
     {
       goto LABEL_16;
     }
 
-    v23 = v36;
-    [HMDResidentCommunicationHandler _processResponseForMultireadRequest:v21 overallError:v8 response:v36];
+    v23 = responseCopy;
+    [HMDResidentCommunicationHandler _processResponseForMultireadRequest:v21 overallError:errorCopy response:responseCopy];
     numOutstandingReadRequests = self->_numOutstandingReadRequests;
     self->_numOutstandingReadRequests = numOutstandingReadRequests - 1;
     if (numOutstandingReadRequests == 1)
     {
-      v34 = [(HMDResidentCommunicationHandler *)self multiReadCoalesceTimer];
+      multiReadCoalesceTimer = [(HMDResidentCommunicationHandler *)self multiReadCoalesceTimer];
 
-      if (v34)
+      if (multiReadCoalesceTimer)
       {
-        v35 = [(HMDResidentCommunicationHandler *)self multiReadCoalesceTimer];
-        [v35 cancel];
+        multiReadCoalesceTimer2 = [(HMDResidentCommunicationHandler *)self multiReadCoalesceTimer];
+        [multiReadCoalesceTimer2 cancel];
 
         [(HMDResidentCommunicationHandler *)self setMultiReadCoalesceTimer:0];
         [(HMDResidentCommunicationHandler *)self _sendMultipleCharacteristicRead];
@@ -121,7 +121,7 @@ LABEL_3:
     else if (numOutstandingReadRequests <= 0)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -142,16 +142,16 @@ LABEL_9:
 
 LABEL_16:
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
-    v23 = v36;
+    v23 = responseCopy;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v32 = HMFGetLogIdentifier();
       *buf = 138543618;
       v42 = v32;
       v43 = 2112;
-      v44 = v9;
+      v44 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_INFO, "%{public}@Cannot find the message with identifier %@ in the dispatched multi-read requests", buf, 0x16u);
     }
 
@@ -165,21 +165,21 @@ LABEL_16:
 - (void)_sendMultipleCharacteristicRead
 {
   v93 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDResidentCommunicationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v2);
+  workQueue = [(HMDResidentCommunicationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v3 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
-  v4 = [v3 count];
+  pendingReadRequests = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
+  v4 = [pendingReadRequests count];
 
   if (v4)
   {
-    v74 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v5 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
-    v6 = [v5 copy];
+    pendingReadRequests2 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
+    v6 = [pendingReadRequests2 copy];
 
     obj = v6;
     v76 = [v6 countByEnumeratingWithState:&v82 objects:v92 count:16];
@@ -188,7 +188,7 @@ LABEL_16:
       v75 = *v83;
       v72 = *MEMORY[0x277CD25F8];
       v71 = *MEMORY[0x277CD2140];
-      v73 = 9;
+      qualityOfService = 9;
       *&v7 = 138543362;
       v68 = v7;
       do
@@ -201,58 +201,58 @@ LABEL_16:
           }
 
           v9 = *(*(&v82 + 1) + 8 * i);
-          v10 = [v9 accessoryUUID];
-          v11 = [v10 UUIDString];
+          accessoryUUID = [v9 accessoryUUID];
+          uUIDString = [accessoryUUID UUIDString];
 
-          if (v11)
+          if (uUIDString)
           {
-            v12 = [v74 hmf_mutableDictionaryForKey:v11];
-            if (!v12)
+            dictionary2 = [dictionary hmf_mutableDictionaryForKey:uUIDString];
+            if (!dictionary2)
             {
-              v12 = [MEMORY[0x277CBEB38] dictionary];
-              [v74 setObject:v12 forKey:v11];
+              dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+              [dictionary setObject:dictionary2 forKey:uUIDString];
             }
 
-            v13 = [v9 readMessage];
-            v14 = [v13 messagePayload];
-            v15 = [v14 hmf_numberForKey:v72];
+            readMessage = [v9 readMessage];
+            messagePayload = [readMessage messagePayload];
+            v15 = [messagePayload hmf_numberForKey:v72];
             v16 = HAPInstanceIDFromValue();
 
-            v17 = [v16 stringValue];
-            v18 = [(HMDAssertionLogEvent *)v12 hmf_mutableArrayForKey:v17];
+            stringValue = [v16 stringValue];
+            array = [(HMDAssertionLogEvent *)dictionary2 hmf_mutableArrayForKey:stringValue];
 
-            if (!v18)
+            if (!array)
             {
-              v18 = [MEMORY[0x277CBEB18] array];
-              v19 = [v16 stringValue];
-              [(HMDAssertionLogEvent *)v12 setObject:v18 forKey:v19];
+              array = [MEMORY[0x277CBEB18] array];
+              stringValue2 = [v16 stringValue];
+              [(HMDAssertionLogEvent *)dictionary2 setObject:array forKey:stringValue2];
             }
 
-            v20 = [v9 readMessage];
-            v21 = [v20 messagePayload];
-            v22 = [v21 hmf_numberForKey:v71];
+            readMessage2 = [v9 readMessage];
+            messagePayload2 = [readMessage2 messagePayload];
+            v22 = [messagePayload2 hmf_numberForKey:v71];
             v23 = HAPInstanceIDFromValue();
 
-            if (([v18 containsObject:v23] & 1) == 0)
+            if (([array containsObject:v23] & 1) == 0)
             {
-              [v18 addObject:v23];
+              [array addObject:v23];
             }
 
-            v24 = [v9 readMessage];
-            [v24 qualityOfService];
+            readMessage3 = [v9 readMessage];
+            [readMessage3 qualityOfService];
             v25 = HMFQualityOfServiceCompare() == -1;
 
             if (v25)
             {
-              v26 = [v9 readMessage];
-              v73 = [v26 qualityOfService];
+              readMessage4 = [v9 readMessage];
+              qualityOfService = [readMessage4 qualityOfService];
             }
           }
 
           else
           {
             v27 = objc_autoreleasePoolPush();
-            v28 = self;
+            selfCopy = self;
             v29 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
@@ -266,7 +266,7 @@ LABEL_16:
 
             objc_autoreleasePoolPop(v27);
             v31 = objc_autoreleasePoolPush();
-            v32 = v28;
+            v32 = selfCopy;
             v33 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
             {
@@ -277,9 +277,9 @@ LABEL_16:
             }
 
             objc_autoreleasePoolPop(v31);
-            v12 = [[HMDAssertionLogEvent alloc] initWithReason:@"Accessory UUID cannot be nil"];
+            dictionary2 = [[HMDAssertionLogEvent alloc] initWithReason:@"Accessory UUID cannot be nil"];
             v16 = +[HMDMetricsManager sharedLogEventSubmitter];
-            [v16 submitLogEvent:v12];
+            [v16 submitLogEvent:dictionary2];
           }
         }
 
@@ -291,56 +291,56 @@ LABEL_16:
 
     else
     {
-      v73 = 9;
+      qualityOfService = 9;
     }
 
     v86[0] = *MEMORY[0x277CCE7A8];
-    v39 = [v74 copy];
+    v39 = [dictionary copy];
     v87[0] = v39;
     v86[1] = *MEMORY[0x277CD0640];
-    v40 = [(HMDResidentCommunicationHandler *)self homeUUID];
-    v41 = [v40 UUIDString];
-    v87[1] = v41;
+    homeUUID = [(HMDResidentCommunicationHandler *)self homeUUID];
+    uUIDString2 = [homeUUID UUIDString];
+    v87[1] = uUIDString2;
     v77 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:2];
 
-    v42 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v43 = objc_alloc(MEMORY[0x277D0F820]);
-    v44 = [(HMDResidentCommunicationHandler *)self homeUUID];
-    v45 = [v43 initWithTarget:v44];
+    homeUUID2 = [(HMDResidentCommunicationHandler *)self homeUUID];
+    v45 = [v43 initWithTarget:homeUUID2];
 
-    v46 = [MEMORY[0x277D0F848] messageWithName:@"kMultipleCharacteristicReadRequestKey" qualityOfService:v73 destination:v45 payload:v77];
-    [v46 setIdentifier:v42];
+    v46 = [MEMORY[0x277D0F848] messageWithName:@"kMultipleCharacteristicReadRequestKey" qualityOfService:qualityOfService destination:v45 payload:v77];
+    [v46 setIdentifier:uUID];
     objc_initWeak(&location, self);
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __66__HMDResidentCommunicationHandler__sendMultipleCharacteristicRead__block_invoke;
     v78[3] = &unk_279733AE8;
     objc_copyWeak(&v80, &location);
-    v47 = v42;
+    v47 = uUID;
     v79 = v47;
     [v46 setResponseHandler:v78];
-    v48 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
-    v49 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
-    v50 = [v49 copy];
-    [v48 setObject:v50 forKey:v46];
+    dispatchedReadRequests = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
+    pendingReadRequests3 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
+    v50 = [pendingReadRequests3 copy];
+    [dispatchedReadRequests setObject:v50 forKey:v46];
 
-    v51 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
-    [v51 removeAllObjects];
+    pendingReadRequests4 = [(HMDResidentCommunicationHandler *)self pendingReadRequests];
+    [pendingReadRequests4 removeAllObjects];
 
-    v52 = [(HMDResidentCommunicationHandler *)self remoteDispatcher];
-    if (v52)
+    remoteDispatcher = [(HMDResidentCommunicationHandler *)self remoteDispatcher];
+    if (remoteDispatcher)
     {
       ++self->_numOutstandingReadRequests;
-      v53 = [(HMDResidentCommunicationHandler *)self preferredDevice];
-      v54 = [(HMDResidentCommunicationHandler *)self homeUUID];
-      v55 = [v53 remoteDestinationString];
-      v56 = [v53 remoteDestinationString];
-      v57 = [(HMDResidentCommunicationHandler *)self workQueue];
-      v58 = [v46 responseHandler];
-      [v52 sendSecureMessage:v46 target:v54 userID:v55 destination:v56 responseQueue:v57 responseHandler:v58];
+      preferredDevice = [(HMDResidentCommunicationHandler *)self preferredDevice];
+      homeUUID3 = [(HMDResidentCommunicationHandler *)self homeUUID];
+      remoteDestinationString = [preferredDevice remoteDestinationString];
+      remoteDestinationString2 = [preferredDevice remoteDestinationString];
+      workQueue2 = [(HMDResidentCommunicationHandler *)self workQueue];
+      responseHandler = [v46 responseHandler];
+      [remoteDispatcher sendSecureMessage:v46 target:homeUUID3 userID:remoteDestinationString destination:remoteDestinationString2 responseQueue:workQueue2 responseHandler:responseHandler];
 
       v59 = objc_autoreleasePoolPush();
-      v60 = self;
+      selfCopy2 = self;
       v61 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
       {
@@ -358,7 +358,7 @@ LABEL_16:
     else
     {
       v63 = objc_autoreleasePoolPush();
-      v64 = self;
+      selfCopy3 = self;
       v65 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
       {
@@ -369,8 +369,8 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(v63);
-      v53 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
-      [(HMDResidentCommunicationHandler *)v64 _processResponse:0 overallError:v53 messageIdentifier:v47];
+      preferredDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
+      [(HMDResidentCommunicationHandler *)selfCopy3 _processResponse:0 overallError:preferredDevice messageIdentifier:v47];
     }
 
     objc_destroyWeak(&v80);
@@ -380,7 +380,7 @@ LABEL_16:
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy4 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -415,18 +415,18 @@ void __66__HMDResidentCommunicationHandler__sendMultipleCharacteristicRead__bloc
   dispatch_async(v8, v11);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDResidentCommunicationHandler *)self workQueue];
+  fireCopy = fire;
+  workQueue = [(HMDResidentCommunicationHandler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HMDResidentCommunicationHandler_timerDidFire___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = fireCopy;
+  selfCopy = self;
+  v6 = fireCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __48__HMDResidentCommunicationHandler_timerDidFire___block_invoke(uint64_t a1)
@@ -462,24 +462,24 @@ void __48__HMDResidentCommunicationHandler_timerDidFire___block_invoke(uint64_t 
   }
 }
 
-- (void)redispatchMessage:(id)a3 target:(id)a4 responseQueue:(id)a5
+- (void)redispatchMessage:(id)message target:(id)target responseQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDResidentCommunicationHandler *)self workQueue];
+  messageCopy = message;
+  targetCopy = target;
+  queueCopy = queue;
+  workQueue = [(HMDResidentCommunicationHandler *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__HMDResidentCommunicationHandler_redispatchMessage_target_responseQueue___block_invoke;
   v15[3] = &unk_279734870;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = messageCopy;
+  v17 = targetCopy;
+  selfCopy = self;
+  v19 = queueCopy;
+  v12 = queueCopy;
+  v13 = targetCopy;
+  v14 = messageCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __74__HMDResidentCommunicationHandler_redispatchMessage_target_responseQueue___block_invoke(uint64_t a1)
@@ -649,50 +649,50 @@ void __74__HMDResidentCommunicationHandler_redispatchMessage_target_responseQueu
 
 - (int64_t)preferredDeviceType
 {
-  v3 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-  v4 = [v3 count];
+  deviceMapping = [(HMDResidentCommunicationHandler *)self deviceMapping];
+  v4 = [deviceMapping count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-  v6 = [v5 objectForKey:&unk_286627AD8];
+  deviceMapping2 = [(HMDResidentCommunicationHandler *)self deviceMapping];
+  v6 = [deviceMapping2 objectForKey:&unk_286627AD8];
 
   if (v6)
   {
     return 2;
   }
 
-  v8 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-  v9 = [v8 objectForKey:&unk_286627AF0];
+  deviceMapping3 = [(HMDResidentCommunicationHandler *)self deviceMapping];
+  v9 = [deviceMapping3 objectForKey:&unk_286627AF0];
 
   return v9 != 0;
 }
 
 - (HMDDevice)preferredDevice
 {
-  v3 = [(HMDResidentCommunicationHandler *)self preferredDeviceType];
+  preferredDeviceType = [(HMDResidentCommunicationHandler *)self preferredDeviceType];
 
-  return [(HMDResidentCommunicationHandler *)self deviceForType:v3];
+  return [(HMDResidentCommunicationHandler *)self deviceForType:preferredDeviceType];
 }
 
-- (id)deviceForType:(int64_t)a3
+- (id)deviceForType:(int64_t)type
 {
-  v4 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  deviceMapping = [(HMDResidentCommunicationHandler *)self deviceMapping];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v6 = [deviceMapping objectForKey:v5];
 
   return v6;
 }
 
-- (BOOL)containsDevice:(id)a3
+- (BOOL)containsDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-  v6 = [v5 copy];
+  deviceCopy = device;
+  deviceMapping = [(HMDResidentCommunicationHandler *)self deviceMapping];
+  v6 = [deviceMapping copy];
 
   v17 = 0u;
   v18 = 0u;
@@ -713,7 +713,7 @@ void __74__HMDResidentCommunicationHandler_redispatchMessage_target_responseQueu
         }
 
         v11 = [v7 objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
-        v12 = [v11 isEqual:v4];
+        v12 = [v11 isEqual:deviceCopy];
 
         if (v12)
         {
@@ -738,48 +738,48 @@ LABEL_11:
   return v8;
 }
 
-- (void)removeDeviceForType:(int64_t)a3
+- (void)removeDeviceForType:(int64_t)type
 {
-  v5 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  deviceMapping = [(HMDResidentCommunicationHandler *)self deviceMapping];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v7 = [deviceMapping objectForKey:v6];
 
   if (v7)
   {
-    if ([(HMDResidentCommunicationHandler *)self preferredDeviceType]== a3)
+    if ([(HMDResidentCommunicationHandler *)self preferredDeviceType]== type)
     {
-      v8 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
-      v9 = [v8 copy];
+      dispatchedReadRequests = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
+      v9 = [dispatchedReadRequests copy];
 
-      v10 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
-      [v10 removeAllObjects];
+      dispatchedReadRequests2 = [(HMDResidentCommunicationHandler *)self dispatchedReadRequests];
+      [dispatchedReadRequests2 removeAllObjects];
 
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
       [HMDResidentCommunicationHandler _clearAllGeneratedRequests:v9 error:v11];
     }
 
-    v13 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v13 removeObjectForKey:v12];
+    deviceMapping2 = [(HMDResidentCommunicationHandler *)self deviceMapping];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    [deviceMapping2 removeObjectForKey:v12];
   }
 }
 
-- (void)setDevice:(id)a3 forType:(int64_t)a4
+- (void)setDevice:(id)device forType:(int64_t)type
 {
-  v9 = a3;
-  v6 = [(HMDResidentCommunicationHandler *)self deviceForType:a4];
-  if (([v6 isEqual:v9] & 1) == 0)
+  deviceCopy = device;
+  v6 = [(HMDResidentCommunicationHandler *)self deviceForType:type];
+  if (([v6 isEqual:deviceCopy] & 1) == 0)
   {
     if (v6)
     {
-      [(HMDResidentCommunicationHandler *)self removeDeviceForType:a4];
+      [(HMDResidentCommunicationHandler *)self removeDeviceForType:type];
     }
 
-    if (v9)
+    if (deviceCopy)
     {
-      v7 = [(HMDResidentCommunicationHandler *)self deviceMapping];
-      v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-      [v7 setObject:v9 forKey:v8];
+      deviceMapping = [(HMDResidentCommunicationHandler *)self deviceMapping];
+      v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+      [deviceMapping setObject:deviceCopy forKey:v8];
     }
   }
 }
@@ -787,9 +787,9 @@ LABEL_11:
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDResidentCommunicationHandler *)self homeUUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringWithFormat:@"[RCH %@]", v4];
+  homeUUID = [(HMDResidentCommunicationHandler *)self homeUUID];
+  uUIDString = [homeUUID UUIDString];
+  v5 = [v2 stringWithFormat:@"[RCH %@]", uUIDString];
 
   return v5;
 }
@@ -798,7 +798,7 @@ LABEL_11:
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -809,52 +809,52 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDResidentCommunicationHandler *)v4 pendingReadRequests];
-  v8 = [v7 copy];
+  pendingReadRequests = [(HMDResidentCommunicationHandler *)selfCopy pendingReadRequests];
+  v8 = [pendingReadRequests copy];
 
-  v9 = [(HMDResidentCommunicationHandler *)v4 dispatchedReadRequests];
-  v10 = [v9 copy];
+  dispatchedReadRequests = [(HMDResidentCommunicationHandler *)selfCopy dispatchedReadRequests];
+  v10 = [dispatchedReadRequests copy];
 
   v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
   [HMDResidentCommunicationHandler _clearAllGeneratedRequests:v10 error:v11];
   [HMDResidentCommunicationHandler _clearAllPendingRequests:v8 error:v11];
 
-  v13.receiver = v4;
+  v13.receiver = selfCopy;
   v13.super_class = HMDResidentCommunicationHandler;
   [(HMDResidentCommunicationHandler *)&v13 dealloc];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDResidentCommunicationHandler)initWithHome:(id)a3 remoteDispatcher:(id)a4
+- (HMDResidentCommunicationHandler)initWithHome:(id)home remoteDispatcher:(id)dispatcher
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
   v20.receiver = self;
   v20.super_class = HMDResidentCommunicationHandler;
   v8 = [(HMDResidentCommunicationHandler *)&v20 init];
   if (v8)
   {
-    v9 = [v6 uuid];
+    uuid = [homeCopy uuid];
     homeUUID = v8->_homeUUID;
-    v8->_homeUUID = v9;
+    v8->_homeUUID = uuid;
 
-    v8->_ownerUser = [v6 isOwnerUser];
-    v11 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    v8->_ownerUser = [homeCopy isOwnerUser];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     deviceMapping = v8->_deviceMapping;
-    v8->_deviceMapping = v11;
+    v8->_deviceMapping = strongToStrongObjectsMapTable;
 
-    v13 = [v7 workQueue];
+    workQueue = [dispatcherCopy workQueue];
     workQueue = v8->_workQueue;
-    v8->_workQueue = v13;
+    v8->_workQueue = workQueue;
 
-    objc_storeWeak(&v8->_remoteDispatcher, v7);
-    v15 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v8->_remoteDispatcher, dispatcherCopy);
+    array = [MEMORY[0x277CBEB18] array];
     pendingReadRequests = v8->_pendingReadRequests;
-    v8->_pendingReadRequests = v15;
+    v8->_pendingReadRequests = array;
 
-    v17 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     dispatchedReadRequests = v8->_dispatchedReadRequests;
-    v8->_dispatchedReadRequests = v17;
+    v8->_dispatchedReadRequests = strongToStrongObjectsMapTable2;
 
     v8->_numOutstandingReadRequests = 0;
   }
@@ -884,13 +884,13 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (void)_clearAllPendingRequests:(id)a3 error:(id)a4
++ (void)_clearAllPendingRequests:(id)requests error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -898,23 +898,23 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Clearing off all pending read requests with error: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  [HMDResidentCommunicationHandler _processResponseForMultireadRequest:v6 overallError:v7 response:0];
+  [HMDResidentCommunicationHandler _processResponseForMultireadRequest:requestsCopy overallError:errorCopy response:0];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_clearAllGeneratedRequests:(id)a3 error:(id)a4
++ (void)_clearAllGeneratedRequests:(id)requests error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -922,7 +922,7 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
     *buf = 138543618;
     v25 = v11;
     v26 = 2112;
-    v27 = v7;
+    v27 = errorCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Clearing off all pending dispatched multi-read requests with error: %@", buf, 0x16u);
   }
 
@@ -931,7 +931,7 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = v6;
+  v12 = requestsCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -948,7 +948,7 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
         }
 
         v17 = [v12 objectForKey:{*(*(&v19 + 1) + 8 * v16), v19}];
-        [HMDResidentCommunicationHandler _processResponseForMultireadRequest:v17 overallError:v7 response:0];
+        [HMDResidentCommunicationHandler _processResponseForMultireadRequest:v17 overallError:errorCopy response:0];
 
         ++v16;
       }
@@ -963,15 +963,15 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createResponseSubset:(id)a3 overallError:(id)a4 readRequest:(id)a5 error:(id *)a6
++ (id)createResponseSubset:(id)subset overallError:(id)error readRequest:(id)request error:(id *)a6
 {
   v86 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  subsetCopy = subset;
+  errorCopy = error;
+  requestCopy = request;
+  if (errorCopy)
   {
-    v13 = v11;
+    v13 = errorCopy;
   }
 
   else
@@ -980,46 +980,46 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
   }
 
   v14 = v13;
-  if (v10)
+  if (subsetCopy)
   {
-    v15 = [v12 readMessage];
-    v16 = [v15 messagePayload];
+    readMessage = [requestCopy readMessage];
+    messagePayload = [readMessage messagePayload];
 
-    v77 = v12;
-    v17 = [v12 accessoryUUID];
+    v77 = requestCopy;
+    accessoryUUID = [requestCopy accessoryUUID];
     v18 = *MEMORY[0x277CD25F8];
-    v19 = [v16 hmf_numberForKey:*MEMORY[0x277CD25F8]];
+    v19 = [messagePayload hmf_numberForKey:*MEMORY[0x277CD25F8]];
     v20 = HAPInstanceIDFromValue();
 
     v21 = *MEMORY[0x277CD2140];
-    v78 = v16;
-    v22 = [v16 hmf_numberForKey:*MEMORY[0x277CD2140]];
+    v78 = messagePayload;
+    v22 = [messagePayload hmf_numberForKey:*MEMORY[0x277CD2140]];
     v79 = HAPInstanceIDFromValue();
 
-    v23 = [v10 hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
+    v23 = [subsetCopy hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
     v76 = v23;
     if (v23)
     {
       v24 = v23;
       v74 = a6;
-      v25 = [v17 UUIDString];
-      v26 = [v24 hmf_dictionaryForKey:v25];
+      uUIDString = [accessoryUUID UUIDString];
+      v26 = [v24 hmf_dictionaryForKey:uUIDString];
 
-      v75 = v17;
+      v75 = accessoryUUID;
       if (v26)
       {
         v27 = v20;
-        v28 = [v20 stringValue];
+        stringValue = [v20 stringValue];
         v73 = v26;
-        v29 = [v26 hmf_dictionaryForKey:v28];
+        v29 = [v26 hmf_dictionaryForKey:stringValue];
 
         v72 = v29;
         if (v29)
         {
-          v30 = [v79 stringValue];
-          v31 = [v29 hmf_dictionaryForKey:v30];
+          stringValue2 = [v79 stringValue];
+          v31 = [v29 hmf_dictionaryForKey:stringValue2];
 
-          v12 = v77;
+          requestCopy = v77;
           v71 = v31;
           if (v31)
           {
@@ -1041,35 +1041,35 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
               v68 = *MEMORY[0x277CD21B8];
               v70 = [v31 objectForKeyedSubscript:?];
               v67 = *MEMORY[0x277CD21D0];
-              v69 = [v31 objectForKeyedSubscript:?];
-              if (!v69)
+              null = [v31 objectForKeyedSubscript:?];
+              if (!null)
               {
-                v69 = [MEMORY[0x277CBEB68] null];
+                null = [MEMORY[0x277CBEB68] null];
               }
 
               a6 = v74;
               if (v70)
               {
-                v56 = [v10 objectForKeyedSubscript:@"kRemoteMessageTransportAttributionKey"];
+                v56 = [subsetCopy objectForKeyedSubscript:@"kRemoteMessageTransportAttributionKey"];
                 if (!v56)
                 {
                   v56 = [MEMORY[0x277CCABB0] numberWithInt:0];
                 }
 
                 v80[0] = *MEMORY[0x277CCF0B0];
-                v57 = [v75 UUIDString];
-                v81[0] = v57;
+                uUIDString2 = [v75 UUIDString];
+                v81[0] = uUIDString2;
                 v81[1] = v27;
                 v80[1] = v18;
                 v80[2] = v21;
-                v59 = v69;
+                v59 = null;
                 v58 = v70;
                 v81[2] = v79;
                 v81[3] = v70;
                 v80[3] = v68;
                 v80[4] = v67;
                 v80[5] = @"kRemoteMessageTransportAttributionKey";
-                v81[4] = v69;
+                v81[4] = null;
                 v81[5] = v56;
                 v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v81 forKeys:v80 count:6];
 
@@ -1080,7 +1080,7 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
               else
               {
                 v60 = objc_autoreleasePoolPush();
-                v61 = a1;
+                selfCopy = self;
                 v62 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
                 {
@@ -1094,7 +1094,7 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
 
                 objc_autoreleasePoolPop(v60);
                 v35 = 0;
-                v59 = v69;
+                v59 = null;
                 v58 = 0;
               }
 
@@ -1107,7 +1107,7 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
           else
           {
             v52 = objc_autoreleasePoolPush();
-            v53 = a1;
+            selfCopy2 = self;
             v54 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
             {
@@ -1130,9 +1130,9 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
         else
         {
           v48 = objc_autoreleasePoolPush();
-          v49 = a1;
+          selfCopy3 = self;
           v50 = HMFGetOSLogHandle();
-          v12 = v77;
+          requestCopy = v77;
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
             v51 = HMFGetLogIdentifier();
@@ -1153,18 +1153,18 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
       else
       {
         v42 = objc_autoreleasePoolPush();
-        v43 = a1;
+        selfCopy4 = self;
         v44 = HMFGetOSLogHandle();
         v27 = v20;
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
           v46 = v45 = v42;
-          v47 = [v75 UUIDString];
+          uUIDString3 = [v75 UUIDString];
           *buf = 138543618;
           v83 = v46;
           v84 = 2112;
-          v85 = v47;
+          v85 = uUIDString3;
           _os_log_impl(&dword_2531F8000, v44, OS_LOG_TYPE_ERROR, "%{public}@Could not find the accessory %@ in the accessory list", buf, 0x16u);
 
           v42 = v45;
@@ -1174,14 +1174,14 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
         v35 = 0;
         a6 = v74;
         v36 = v75;
-        v12 = v77;
+        requestCopy = v77;
       }
     }
 
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = a1;
+      selfCopy5 = self;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1196,9 +1196,9 @@ uint64_t __46__HMDResidentCommunicationHandler_logCategory__block_invoke()
 
       objc_autoreleasePoolPop(v37);
       v35 = 0;
-      v36 = v17;
+      v36 = accessoryUUID;
       v27 = v20;
-      v12 = v77;
+      requestCopy = v77;
     }
 
     if (a6)
@@ -1223,17 +1223,17 @@ LABEL_40:
   return v35;
 }
 
-+ (void)_processResponseForMultireadRequest:(id)a3 overallError:(id)a4 response:(id)a5
++ (void)_processResponseForMultireadRequest:(id)request overallError:(id)error response:(id)response
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v36 = a4;
-  v35 = a5;
+  requestCopy = request;
+  errorCopy = error;
+  responseCopy = response;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v7;
+  obj = requestCopy;
   v8 = [obj countByEnumeratingWithState:&v44 objects:v56 count:16];
   if (v8)
   {
@@ -1251,18 +1251,18 @@ LABEL_40:
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
-        v13 = [v12 readMessage];
-        v14 = [v13 responseHandler];
+        readMessage = [v12 readMessage];
+        responseHandler = [readMessage responseHandler];
 
-        if (v14)
+        if (responseHandler)
         {
-          v43 = v36;
-          v15 = v36;
-          v16 = [HMDResidentCommunicationHandler createResponseSubset:v35 overallError:v15 readRequest:v12 error:&v43];
+          v43 = errorCopy;
+          v15 = errorCopy;
+          v16 = [HMDResidentCommunicationHandler createResponseSubset:responseCopy overallError:v15 readRequest:v12 error:&v43];
           v17 = v43;
 
           v18 = objc_autoreleasePoolPush();
-          v19 = a1;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
@@ -1279,34 +1279,34 @@ LABEL_40:
           }
 
           objc_autoreleasePoolPop(v18);
-          v22 = [v12 responseQueue];
+          responseQueue = [v12 responseQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __93__HMDResidentCommunicationHandler__processResponseForMultireadRequest_overallError_response___block_invoke;
           block[3] = &unk_2797355D0;
-          v23 = v14;
+          v23 = responseHandler;
           v41 = v16;
           v42 = v23;
           v40 = v17;
           v24 = v17;
           v25 = v16;
-          dispatch_async(v22, block);
+          dispatch_async(responseQueue, block);
         }
 
         else
         {
           v26 = objc_autoreleasePoolPush();
-          v27 = a1;
+          selfCopy2 = self;
           v28 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
             v29 = HMFGetLogIdentifier();
-            v30 = [v12 readMessage];
-            v31 = [v30 identifier];
+            readMessage2 = [v12 readMessage];
+            identifier = [readMessage2 identifier];
             *buf = v33;
             v49 = v29;
             v50 = 2112;
-            v51 = v31;
+            v51 = identifier;
             _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@Response handler is not set for the request %@, skipping", buf, 0x16u);
           }
 

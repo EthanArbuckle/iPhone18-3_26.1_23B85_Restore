@@ -1,8 +1,8 @@
 @interface BWZoomDelayBuffer
-- (_DWORD)initWithMaxZoomDelay:(int)a3 currentZoomDelay:;
-- (uint64_t)addZoomRequest:(uint64_t)a3;
+- (_DWORD)initWithMaxZoomDelay:(int)delay currentZoomDelay:;
+- (uint64_t)addZoomRequest:(uint64_t)request;
 - (uint64_t)updateZoomDelay:(uint64_t)result;
-- (uint64_t)zoomRequestForISPAppliedZoomFactor:(float)a3 earlySwitchOverScaleFactorForZoomIn:;
+- (uint64_t)zoomRequestForISPAppliedZoomFactor:(float)factor earlySwitchOverScaleFactorForZoomIn:;
 - (void)dealloc;
 @end
 
@@ -16,14 +16,14 @@
   [(BWZoomDelayBuffer *)&v3 dealloc];
 }
 
-- (_DWORD)initWithMaxZoomDelay:(int)a3 currentZoomDelay:
+- (_DWORD)initWithMaxZoomDelay:(int)delay currentZoomDelay:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = BWZoomDelayBuffer;
   v5 = objc_msgSendSuper2(&v16, sel_init);
   v6 = v5;
@@ -33,7 +33,7 @@
   }
 
   v5[5] = a2;
-  v5[6] = a3;
+  v5[6] = delay;
   v5[7] = 2;
   v7 = malloc_type_malloc(16 * (a2 + 1), 0x10000408B6DE1C6uLL);
   *(v6 + 1) = v7;
@@ -130,7 +130,7 @@
   return result;
 }
 
-- (uint64_t)addZoomRequest:(uint64_t)a3
+- (uint64_t)addZoomRequest:(uint64_t)request
 {
   if (result)
   {
@@ -149,7 +149,7 @@
     v6 = *(v5 + 16 * v4);
     v7 = (v5 + 16 * v3);
     *v7 = a2;
-    v7[1] = a3;
+    v7[1] = request;
     v8 = *(result + 16);
     v9 = *(result + 24);
     v10 = *(result + 28);
@@ -204,7 +204,7 @@ LABEL_29:
   return result;
 }
 
-- (uint64_t)zoomRequestForISPAppliedZoomFactor:(float)a3 earlySwitchOverScaleFactorForZoomIn:
+- (uint64_t)zoomRequestForISPAppliedZoomFactor:(float)factor earlySwitchOverScaleFactorForZoomIn:
 {
   if (result)
   {
@@ -223,7 +223,7 @@ LABEL_29:
     v6 = *(result + 32);
     if (*(result + 28) == 2)
     {
-      if (v6 && (v6 != 2 || (*(v5 + 16 * v4) / a3) < a2))
+      if (v6 && (v6 != 2 || (*(v5 + 16 * v4) / factor) < a2))
       {
         v4 = *(result + 16);
       }

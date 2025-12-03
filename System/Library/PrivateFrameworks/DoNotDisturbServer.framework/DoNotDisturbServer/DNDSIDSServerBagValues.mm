@@ -1,6 +1,6 @@
 @interface DNDSIDSServerBagValues
 + (BOOL)resolvedActivityUpdateDisabled;
-+ (id)_numberForKey:(id)a3;
++ (id)_numberForKey:(id)key;
 + (unint64_t)resolvedActivityUpdateCoalescingSeconds;
 + (unint64_t)resolvedScheduledActivityUpdateFuzzMilliseconds;
 + (void)resolvedScheduledActivityUpdateFuzzMilliseconds;
@@ -8,12 +8,12 @@
 
 @implementation DNDSIDSServerBagValues
 
-+ (id)_numberForKey:(id)a3
++ (id)_numberForKey:(id)key
 {
   v3 = MEMORY[0x277D18A10];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 sharedInstanceForBagType:1];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -30,8 +30,8 @@
 
 + (unint64_t)resolvedScheduledActivityUpdateFuzzMilliseconds
 {
-  v3 = [a1 _numberForKey:@"act-update-fuzz-floor"];
-  v4 = [a1 _numberForKey:@"act-update-fuzz-ceiling"];
+  v3 = [self _numberForKey:@"act-update-fuzz-floor"];
+  v4 = [self _numberForKey:@"act-update-fuzz-ceiling"];
   v5 = v4;
   if (v3)
   {
@@ -67,42 +67,42 @@ LABEL_6:
 
 + (BOOL)resolvedActivityUpdateDisabled
 {
-  v2 = [a1 _numberForKey:@"act-update-disabled"];
+  v2 = [self _numberForKey:@"act-update-disabled"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (unint64_t)resolvedActivityUpdateCoalescingSeconds
 {
-  v2 = [a1 _numberForKey:@"act-update-coalescing-interval"];
+  v2 = [self _numberForKey:@"act-update-coalescing-interval"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v4 = 1;
+    unsignedIntValue = 1;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 + (void)resolvedScheduledActivityUpdateFuzzMilliseconds
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a1];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a2];
   v6 = 138412546;
   v7 = v3;

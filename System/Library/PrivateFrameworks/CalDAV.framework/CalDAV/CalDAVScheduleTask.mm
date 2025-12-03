@@ -1,29 +1,29 @@
 @interface CalDAVScheduleTask
-- (CalDAVScheduleTask)initWithOriginator:(id)a3 attendees:(id)a4 outboxURL:(id)a5 payload:(id)a6;
-- (id)copyDefaultParserForContentType:(id)a3;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (CalDAVScheduleTask)initWithOriginator:(id)originator attendees:(id)attendees outboxURL:(id)l payload:(id)payload;
+- (id)copyDefaultParserForContentType:(id)type;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CalDAVScheduleTask
 
-- (CalDAVScheduleTask)initWithOriginator:(id)a3 attendees:(id)a4 outboxURL:(id)a5 payload:(id)a6
+- (CalDAVScheduleTask)initWithOriginator:(id)originator attendees:(id)attendees outboxURL:(id)l payload:(id)payload
 {
-  v10 = a3;
-  v11 = a4;
+  originatorCopy = originator;
+  attendeesCopy = attendees;
   v15.receiver = self;
   v15.super_class = CalDAVScheduleTask;
-  v12 = [(CoreDAVPostTask *)&v15 initWithDataPayload:a6 dataContentType:@"text/calendar" atURL:a5 previousETag:0];
+  v12 = [(CoreDAVPostTask *)&v15 initWithDataPayload:payload dataContentType:@"text/calendar" atURL:l previousETag:0];
   v13 = v12;
   if (v12)
   {
-    [(CalDAVScheduleTask *)v12 setOriginator:v10];
-    [(CalDAVScheduleTask *)v13 setAttendees:v11];
+    [(CalDAVScheduleTask *)v12 setOriginator:originatorCopy];
+    [(CalDAVScheduleTask *)v13 setAttendees:attendeesCopy];
   }
 
   return v13;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = objc_alloc(MEMORY[0x277CFDCA8]);
   v5 = *MEMORY[0x277CFDDC0];
@@ -34,23 +34,23 @@
   return v8;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
-    v7 = [MEMORY[0x277CFDC18] sharedLogging];
+    code = [errorCopy code];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277CFDD38]));
-    v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
+    rootElement = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
-      if (v9)
+      if (rootElement)
       {
-        v10 = v9;
+        v10 = rootElement;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
@@ -70,9 +70,9 @@ LABEL_10:
       }
     }
 
-    else if (v9)
+    else if (rootElement)
     {
-      v10 = v9;
+      v10 = rootElement;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
@@ -93,9 +93,9 @@ LABEL_11:
 
   else
   {
-    v7 = [(CalDAVScheduleTask *)self responseBodyParser];
-    v9 = [v7 rootElement];
-    [(CalDAVScheduleTask *)self setScheduleResponse:v9];
+    mEMORY[0x277CFDC18] = [(CalDAVScheduleTask *)self responseBodyParser];
+    rootElement = [mEMORY[0x277CFDC18] rootElement];
+    [(CalDAVScheduleTask *)self setScheduleResponse:rootElement];
   }
 
   v17.receiver = self;

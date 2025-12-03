@@ -1,13 +1,13 @@
 @interface ML3TerminationCoordinator
 + (ML3TerminationCoordinator)sharedCoordinator;
 - (BOOL)isSigned;
-- (BOOL)isSignedForReason:(int64_t)a3;
+- (BOOL)isSignedForReason:(int64_t)reason;
 - (ML3TerminationCoordinator)init;
 - (void)_performTermination;
 - (void)dealloc;
 - (void)execute;
-- (void)secedeForReason:(int64_t)a3;
-- (void)signForReason:(int64_t)a3;
+- (void)secedeForReason:(int64_t)reason;
+- (void)signForReason:(int64_t)reason;
 @end
 
 @implementation ML3TerminationCoordinator
@@ -110,17 +110,17 @@ uint64_t __37__ML3TerminationCoordinator_isSigned__block_invoke(uint64_t a1)
   v2 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     v5 = 138543362;
-    v6 = v4;
+    v6 = processName;
     _os_log_impl(&dword_22D2FA000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@ is requesting coordinated termination", &v5, 0xCu);
   }
 
   notify_post("com.apple.MusicLibrary.execute-coordinated-termination");
 }
 
-- (BOOL)isSignedForReason:(int64_t)a3
+- (BOOL)isSignedForReason:(int64_t)reason
 {
   v7 = 0;
   v8 = &v7;
@@ -133,7 +133,7 @@ uint64_t __37__ML3TerminationCoordinator_isSigned__block_invoke(uint64_t a1)
   block[3] = &unk_2787656D0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = reason;
   dispatch_sync(serialQueue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -147,7 +147,7 @@ void __47__ML3TerminationCoordinator_isSignedForReason___block_invoke(void *a1)
   *(*(a1[5] + 8) + 24) = [v2 containsObject:v3];
 }
 
-- (void)secedeForReason:(int64_t)a3
+- (void)secedeForReason:(int64_t)reason
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -155,7 +155,7 @@ void __47__ML3TerminationCoordinator_isSignedForReason___block_invoke(void *a1)
   v4[2] = __45__ML3TerminationCoordinator_secedeForReason___block_invoke;
   v4[3] = &unk_278760290;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -166,7 +166,7 @@ void __45__ML3TerminationCoordinator_secedeForReason___block_invoke(uint64_t a1)
   [v1 removeObject:v2];
 }
 
-- (void)signForReason:(int64_t)a3
+- (void)signForReason:(int64_t)reason
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -174,7 +174,7 @@ void __45__ML3TerminationCoordinator_secedeForReason___block_invoke(uint64_t a1)
   v4[2] = __43__ML3TerminationCoordinator_signForReason___block_invoke;
   v4[3] = &unk_278760290;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_sync(serialQueue, v4);
 }
 

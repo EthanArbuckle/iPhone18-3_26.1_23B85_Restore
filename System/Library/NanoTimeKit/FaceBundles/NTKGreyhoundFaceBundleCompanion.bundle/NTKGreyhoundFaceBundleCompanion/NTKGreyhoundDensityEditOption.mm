@@ -1,20 +1,20 @@
 @interface NTKGreyhoundDensityEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKGreyhoundDensityEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"detailed";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }
@@ -39,14 +39,14 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKGreyhoundDensityEditOption *)self density];
+  density = [(NTKGreyhoundDensityEditOption *)self density];
   v3 = @"EDIT_OPTION_LABEL_DENSITY_DETAILED";
-  if (v2 != 1)
+  if (density != 1)
   {
     v3 = 0;
   }
 
-  if (v2)
+  if (density)
   {
     v4 = v3;
   }

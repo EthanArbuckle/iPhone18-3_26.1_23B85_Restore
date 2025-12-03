@@ -1,28 +1,28 @@
 @interface HDSPSleepLockScreenStateMachine
 - (BOOL)inUnscheduledSleepMode;
 - (BOOL)isLockScreenActive;
-- (HDSPSleepLockScreenStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPSleepLockScreenStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (id)allStates;
 - (int64_t)sleepMode;
 - (void)dismissAlertForGoodMorning;
 - (void)presentAlertForGoodMorning;
-- (void)sleepLockScreenStateDidChange:(int64_t)a3 previousState:(int64_t)a4;
-- (void)sleepModeDidChange:(int64_t)a3 reason:(unint64_t)a4;
+- (void)sleepLockScreenStateDidChange:(int64_t)change previousState:(int64_t)state;
+- (void)sleepModeDidChange:(int64_t)change reason:(unint64_t)reason;
 @end
 
 @implementation HDSPSleepLockScreenStateMachine
 
-- (HDSPSleepLockScreenStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPSleepLockScreenStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v35[4] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v35[0] = objc_opt_class();
   v35[1] = objc_opt_class();
   v35[2] = objc_opt_class();
@@ -32,7 +32,7 @@
 
   v34.receiver = self;
   v34.super_class = HDSPSleepLockScreenStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v34 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v34 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -52,9 +52,9 @@
     greetingState = v20->_greetingState;
     v20->_greetingState = v27;
 
-    v29 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v30 = v29;
-    if (!v29)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v30 = persistedState;
+    if (!persistedState)
     {
       v30 = v20->_offState;
     }
@@ -85,71 +85,71 @@
 
 - (void)presentAlertForGoodMorning
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 presentAlertForGoodMorning];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState presentAlertForGoodMorning];
 }
 
 - (void)dismissAlertForGoodMorning
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 dismissAlertForGoodMorning];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState dismissAlertForGoodMorning];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 reason:(unint64_t)a4
+- (void)sleepModeDidChange:(int64_t)change reason:(unint64_t)reason
 {
-  v6 = [(HKSPStateMachine *)self currentState];
-  [v6 sleepModeDidChange:a3 reason:a4];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepModeDidChange:change reason:reason];
 }
 
-- (void)sleepLockScreenStateDidChange:(int64_t)a3 previousState:(int64_t)a4
+- (void)sleepLockScreenStateDidChange:(int64_t)change previousState:(int64_t)state
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __79__HDSPSleepLockScreenStateMachine_sleepLockScreenStateDidChange_previousState___block_invoke;
   v4[3] = &__block_descriptor_48_e51_v16__0___HDSPSleepLockScreenStateMachineDelegate__8l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = change;
+  v4[5] = state;
   [(HKSPStateMachine *)self notifyDelegateWithBlock:v4];
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (int64_t)sleepMode
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepMode];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepMode = [infoProvider sleepMode];
 
-  return v3;
+  return sleepMode;
 }
 
 - (BOOL)inUnscheduledSleepMode
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 inUnscheduledSleepMode];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  inUnscheduledSleepMode = [infoProvider inUnscheduledSleepMode];
 
-  return v3;
+  return inUnscheduledSleepMode;
 }
 
 - (BOOL)isLockScreenActive
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isLockScreenActive];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isLockScreenActive = [infoProvider isLockScreenActive];
 
-  return v3;
+  return isLockScreenActive;
 }
 
 @end

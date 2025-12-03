@@ -1,6 +1,6 @@
 @interface _UIWindowSceneLiveResizeDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsLiveResizeDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIWindowSceneLiveResizeDiffAction
@@ -21,26 +21,26 @@
   return sceneSettingsLiveResizeDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v11 = a3;
-  v12 = a5;
+  sceneCopy = scene;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneLiveResizeDiffAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneLiveResizeDiffAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
-  v13 = v11;
+  v13 = sceneCopy;
   v17 = 0;
-  v14 = [(_UIWindowSceneLiveResizeDiffAction *)self sceneSettingsLiveResizeDiffInspector];
-  [v14 inspectDiff:v12 withContext:&v17];
+  sceneSettingsLiveResizeDiffInspector = [(_UIWindowSceneLiveResizeDiffAction *)self sceneSettingsLiveResizeDiffInspector];
+  [sceneSettingsLiveResizeDiffInspector inspectDiff:diffCopy withContext:&v17];
 
   if (v17)
   {
-    v15 = [v13 _effectiveUISettings];
-    [v15 inLiveResize];
+    _effectiveUISettings = [v13 _effectiveUISettings];
+    [_effectiveUISettings inLiveResize];
 
     kdebug_trace();
     [v13 _updateEffectiveGeometryIfNeeded];

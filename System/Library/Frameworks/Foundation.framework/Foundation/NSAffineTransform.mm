@@ -1,23 +1,23 @@
 @interface NSAffineTransform
 + (NSAffineTransform)transform;
-+ (NSAffineTransform)transformWithFlipUsingHeight:(double)a3;
-+ (NSAffineTransform)transformWithRotationInDegrees:(double)a3;
-+ (NSAffineTransform)transformWithRotationInRadians:(double)a3;
-+ (NSAffineTransform)transformWithScale:(double)a3;
-+ (NSAffineTransform)transformWithTransformStruct:(id *)a3;
-+ (NSAffineTransform)transformWithXScale:(double)a3 yScale:(double)a4;
-+ (NSAffineTransform)transformWithXTranslation:(double)a3 yTranslation:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (NSAffineTransform)transformWithFlipUsingHeight:(double)height;
++ (NSAffineTransform)transformWithRotationInDegrees:(double)degrees;
++ (NSAffineTransform)transformWithRotationInRadians:(double)radians;
++ (NSAffineTransform)transformWithScale:(double)scale;
++ (NSAffineTransform)transformWithTransformStruct:(id *)struct;
++ (NSAffineTransform)transformWithXScale:(double)scale yScale:(double)yScale;
++ (NSAffineTransform)transformWithXTranslation:(double)translation yTranslation:(double)yTranslation;
+- (BOOL)isEqual:(id)equal;
 - (NSAffineTransform)init;
-- (NSAffineTransform)initWithCoder:(id)a3;
+- (NSAffineTransform)initWithCoder:(id)coder;
 - (NSAffineTransform)initWithTransform:(NSAffineTransform *)transform;
 - (NSAffineTransformStruct)transformStruct;
 - (NSPoint)transformPoint:(NSPoint)aPoint;
 - (NSSize)transformSize:(NSSize)aSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (void)appendTransform:(NSAffineTransform *)transform;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invert;
 - (void)prependTransform:(NSAffineTransform *)transform;
 - (void)rotateByDegrees:(CGFloat)angle;
@@ -29,7 +29,7 @@
 
 + (NSAffineTransform)transform
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -64,25 +64,25 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithTransform:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (equal)
     {
-      [a3 transformStruct];
+      [equal transformStruct];
     }
 
     if (self->_transformStruct.m11 == 0.0 && self->_transformStruct.m12 == 0.0 && self->_transformStruct.m21 == 0.0 && self->_transformStruct.m22 == 0.0 && self->_transformStruct.tX == 0.0)
@@ -249,14 +249,14 @@
   *&self->_transformStruct.m11 = v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     v19 = vcvt_hight_f32_f64(vcvt_f32_f64(*&self->_transformStruct.m11), *&self->_transformStruct.m21);
     v20[0] = vcvt_f32_f64(*&self->_transformStruct.tX);
-    [a3 encodeArrayOfObjCType:"f" count:6 at:&v19];
+    [coder encodeArrayOfObjCType:"f" count:6 at:&v19];
     return;
   }
 
@@ -274,7 +274,7 @@
 LABEL_14:
     *&v16 = tY;
     *v13 = bswap32(v16);
-    [a3 encodeBytes:&v19 length:v14 forKey:@"NSTransformStruct"];
+    [coder encodeBytes:&v19 length:v14 forKey:@"NSTransformStruct"];
     return;
   }
 
@@ -323,14 +323,14 @@ LABEL_14:
   }
 }
 
-- (NSAffineTransform)initWithCoder:(id)a3
+- (NSAffineTransform)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = [(NSAffineTransform *)self init];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v15[0] = 0;
-    v5 = [a3 decodeBytesForKey:@"NSTransformStruct" returnedLength:v15];
+    v5 = [coder decodeBytesForKey:@"NSTransformStruct" returnedLength:v15];
     if (v5 && *v15)
     {
       switch(v15[0])
@@ -395,14 +395,14 @@ LABEL_13:
           break;
       }
 
-      [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v10, "dictionaryWithObjects:forKeys:count:", v11, v12, 1))}];
+      [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v10, "dictionaryWithObjects:forKeys:count:", v11, v12, 1))}];
       return 0;
     }
   }
 
   else
   {
-    [a3 decodeArrayOfObjCType:"f" count:6 at:v15];
+    [coder decodeArrayOfObjCType:"f" count:6 at:v15];
     *&v4->_transformStruct.m11 = vcvtq_f64_f32(v15[0]);
     v7 = v15[2];
     *&v4->_transformStruct.m21 = vcvtq_f64_f32(v15[1]);
@@ -420,53 +420,53 @@ LABEL_13:
   return [NSString stringWithFormat:@"%@ {m11:%g m12:%g m21:%g m22:%g tX:%g tY:%g\n"], [(NSAffineTransform *)&v3 debugDescription], *&self->_transformStruct.m11, *&self->_transformStruct.m12, *&self->_transformStruct.m21, *&self->_transformStruct.m22, *&self->_transformStruct.tX, *&self->_transformStruct.tY);
 }
 
-+ (NSAffineTransform)transformWithScale:(double)a3
++ (NSAffineTransform)transformWithScale:(double)scale
 {
   v6[6] = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
-  *v6 = a3;
+  v4 = objc_alloc_init(self);
+  *v6 = scale;
   v6[1] = 0;
   v6[2] = 0;
-  *&v6[3] = a3;
+  *&v6[3] = scale;
   v6[4] = 0;
   v6[5] = 0;
   [v4 setTransformStruct:v6];
   return v4;
 }
 
-+ (NSAffineTransform)transformWithXScale:(double)a3 yScale:(double)a4
++ (NSAffineTransform)transformWithXScale:(double)scale yScale:(double)yScale
 {
   v8[6] = *MEMORY[0x1E69E9840];
-  v6 = objc_alloc_init(a1);
-  *v8 = a3;
+  v6 = objc_alloc_init(self);
+  *v8 = scale;
   v8[1] = 0;
   v8[2] = 0;
-  *&v8[3] = a4;
+  *&v8[3] = yScale;
   v8[4] = 0;
   v8[5] = 0;
   [v6 setTransformStruct:v8];
   return v6;
 }
 
-+ (NSAffineTransform)transformWithXTranslation:(double)a3 yTranslation:(double)a4
++ (NSAffineTransform)transformWithXTranslation:(double)translation yTranslation:(double)yTranslation
 {
   v8[6] = *MEMORY[0x1E69E9840];
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v8[0] = 0x3FF0000000000000;
   v8[1] = 0;
   v8[2] = 0;
   v8[3] = 0x3FF0000000000000;
-  *&v8[4] = a3;
-  *&v8[5] = a4;
+  *&v8[4] = translation;
+  *&v8[5] = yTranslation;
   [v6 setTransformStruct:v8];
   return v6;
 }
 
-+ (NSAffineTransform)transformWithRotationInDegrees:(double)a3
++ (NSAffineTransform)transformWithRotationInDegrees:(double)degrees
 {
   v7[6] = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
-  v5 = __sincos_stret(a3 * 3.14159265 / 180.0);
+  v4 = objc_alloc_init(self);
+  v5 = __sincos_stret(degrees * 3.14159265 / 180.0);
   v7[0] = *&v5.__cosval;
   v7[1] = *&v5.__sinval;
   *&v7[2] = -v5.__sinval;
@@ -477,11 +477,11 @@ LABEL_13:
   return v4;
 }
 
-+ (NSAffineTransform)transformWithRotationInRadians:(double)a3
++ (NSAffineTransform)transformWithRotationInRadians:(double)radians
 {
   v7[6] = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
-  v5 = __sincos_stret(a3);
+  v4 = objc_alloc_init(self);
+  v5 = __sincos_stret(radians);
   v7[0] = *&v5.__cosval;
   v7[1] = *&v5.__sinval;
   *&v7[2] = -v5.__sinval;
@@ -492,27 +492,27 @@ LABEL_13:
   return v4;
 }
 
-+ (NSAffineTransform)transformWithTransformStruct:(id *)a3
++ (NSAffineTransform)transformWithTransformStruct:(id *)struct
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0;
+  v4 = objc_alloc_init(self);
+  v5 = *&struct->var2;
+  v7[0] = *&struct->var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&struct->var4;
   [v4 setTransformStruct:v7];
   return v4;
 }
 
-+ (NSAffineTransform)transformWithFlipUsingHeight:(double)a3
++ (NSAffineTransform)transformWithFlipUsingHeight:(double)height
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   v6[1] = 0;
   v6[2] = 0;
   v6[0] = 0x3FF0000000000000;
   v7 = xmmword_181302530;
-  v8 = a3;
+  heightCopy = height;
   [v4 setTransformStruct:v6];
   return v4;
 }

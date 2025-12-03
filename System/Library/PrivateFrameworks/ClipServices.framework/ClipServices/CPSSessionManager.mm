@@ -2,12 +2,12 @@
 + (CPSSessionManager)sharedManager;
 - (CPSSessionManager)init;
 - (NSArray)allSessions;
-- (id)sessionWithURL:(id)a3 createIfNoExist:(BOOL)a4;
-- (void)_handleMemoryPressure:(unint64_t)a3;
-- (void)_localeChanged:(id)a3;
+- (id)sessionWithURL:(id)l createIfNoExist:(BOOL)exist;
+- (void)_handleMemoryPressure:(unint64_t)pressure;
+- (void)_localeChanged:(id)changed;
 - (void)_setUpMemoryPressureHandler;
-- (void)clearSessionWithURL:(id)a3;
-- (void)getSessionWithURL:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (void)clearSessionWithURL:(id)l;
+- (void)getSessionWithURL:(id)l configuration:(id)configuration completion:(id)completion;
 - (void)handleManagedConfigurationChanged;
 @end
 
@@ -39,9 +39,9 @@ uint64_t __34__CPSSessionManager_sharedManager__block_invoke()
   v2 = [(CPSSessionManager *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessions = v2->_sessions;
-    v2->_sessions = v3;
+    v2->_sessions = dictionary;
 
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v6 = dispatch_queue_create("com.apple.ClipServices.clipserviced.CPSSessionManager", v5);
@@ -61,8 +61,8 @@ uint64_t __34__CPSSessionManager_sharedManager__block_invoke()
     v2->_clipInstaller = v12;
 
     [(CPSSessionManager *)v2 _setUpMemoryPressureHandler];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x277CBE620] object:0];
 
     v15 = v2;
   }
@@ -114,7 +114,7 @@ void __48__CPSSessionManager__setUpMemoryPressureHandler__block_invoke(uint64_t 
   }
 }
 
-- (void)_handleMemoryPressure:(unint64_t)a3
+- (void)_handleMemoryPressure:(unint64_t)pressure
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = CPS_LOG_CHANNEL_PREFIXClipServices();
@@ -124,12 +124,12 @@ void __48__CPSSessionManager__setUpMemoryPressureHandler__block_invoke(uint64_t 
     _os_log_impl(&dword_2436ED000, v4, OS_LOG_TYPE_DEFAULT, "Handling memory pressure (warning) by purging cached sessions.", buf, 2u);
   }
 
-  v5 = [(NSMutableDictionary *)self->_sessions allValues];
+  allValues = [(NSMutableDictionary *)self->_sessions allValues];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -140,7 +140,7 @@ void __48__CPSSessionManager__setUpMemoryPressureHandler__block_invoke(uint64_t 
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -152,7 +152,7 @@ void __48__CPSSessionManager__setUpMemoryPressureHandler__block_invoke(uint64_t 
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
@@ -248,9 +248,9 @@ uint64_t __32__CPSSessionManager_allSessions__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sessionWithURL:(id)a3 createIfNoExist:(BOOL)a4
+- (id)sessionWithURL:(id)l createIfNoExist:(BOOL)exist
 {
-  v6 = a3;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -262,11 +262,11 @@ uint64_t __32__CPSSessionManager_allSessions__block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __52__CPSSessionManager_sessionWithURL_createIfNoExist___block_invoke;
   v11[3] = &unk_278DCE2F0;
-  v12 = v6;
+  v12 = lCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  existCopy = exist;
+  v8 = lCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -299,17 +299,17 @@ void __52__CPSSessionManager_sessionWithURL_createIfNoExist___block_invoke(uint6
   }
 }
 
-- (void)clearSessionWithURL:(id)a3
+- (void)clearSessionWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__CPSSessionManager_clearSessionWithURL___block_invoke;
   v7[3] = &unk_278DCDE58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_async(queue, v7);
 }
 
@@ -336,23 +336,23 @@ uint64_t __41__CPSSessionManager_clearSessionWithURL___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getSessionWithURL:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)getSessionWithURL:(id)l configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  configurationCopy = configuration;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__CPSSessionManager_getSessionWithURL_configuration_completion___block_invoke;
   v15[3] = &unk_278DCE070;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = lCopy;
+  v17 = configurationCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = configurationCopy;
+  v14 = lCopy;
   dispatch_async(queue, v15);
 }
 
@@ -479,7 +479,7 @@ LABEL_25:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

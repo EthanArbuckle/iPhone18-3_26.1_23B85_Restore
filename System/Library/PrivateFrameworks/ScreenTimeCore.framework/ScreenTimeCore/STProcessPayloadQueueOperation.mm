@@ -1,5 +1,5 @@
 @interface STProcessPayloadQueueOperation
-- (id)_dequeuePayloadsFromPayloads:(id)a3 fromUser:(id)a4 inContext:(id)a5;
+- (id)_dequeuePayloadsFromPayloads:(id)payloads fromUser:(id)user inContext:(id)context;
 - (void)_endWithoutSaving;
 - (void)_processPayloadQueue;
 - (void)main;
@@ -40,26 +40,26 @@
 
 - (void)_processPayloadQueue
 {
-  v3 = [(STPersistenceOperation *)self persistenceController];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005AF90;
   v4[3] = &unk_1001A3BF0;
   v4[4] = self;
-  [v3 performBackgroundTask:v4];
+  [persistenceController performBackgroundTask:v4];
 }
 
-- (id)_dequeuePayloadsFromPayloads:(id)a3 fromUser:(id)a4 inContext:(id)a5
+- (id)_dequeuePayloadsFromPayloads:(id)payloads fromUser:(id)user inContext:(id)context
 {
-  v7 = a3;
-  v26 = a4;
-  v8 = a5;
+  payloadsCopy = payloads;
+  userCopy = user;
+  contextCopy = context;
   v25 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v7;
+  obj = payloadsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v9)
   {
@@ -77,22 +77,22 @@
 
         v13 = *(*(&v28 + 1) + 8 * v12);
         v14 = objc_opt_class();
-        v15 = [v13 payloadData];
+        payloadData = [v13 payloadData];
         v27 = 0;
-        v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:v15 error:&v27];
+        v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:payloadData error:&v27];
         v17 = v27;
 
         if (v16)
         {
-          v18 = [v26 appleID];
-          v19 = [v16 userInfo];
-          [v19 setObject:v18 forKeyedSubscript:@"FromID"];
+          appleID = [userCopy appleID];
+          userInfo = [v16 userInfo];
+          [userInfo setObject:appleID forKeyedSubscript:@"FromID"];
 
-          v20 = [v13 identifier];
-          [v16 setUUID:v20];
+          identifier = [v13 identifier];
+          [v16 setUUID:identifier];
 
-          v21 = [v13 destinations];
-          [v16 setDestinations:v21];
+          destinations = [v13 destinations];
+          [v16 setDestinations:destinations];
 
           [v25 addObject:v16];
           v22 = +[STLog payloadQueue];
@@ -117,7 +117,7 @@
           }
         }
 
-        [v8 deleteObject:v13];
+        [contextCopy deleteObject:v13];
         v12 = v12 + 1;
       }
 

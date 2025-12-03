@@ -1,26 +1,26 @@
 @interface IMSwizzledMethod
 - (BOOL)isSwizzled;
-- (BOOL)swizzleWithMethod:(id)a3;
+- (BOOL)swizzleWithMethod:(id)method;
 - (BOOL)unswizzle;
-- (IMSwizzledMethod)initWithClass:(Class)a3 selector:(SEL)a4;
+- (IMSwizzledMethod)initWithClass:(Class)class selector:(SEL)selector;
 - (id)description;
 @end
 
 @implementation IMSwizzledMethod
 
-- (IMSwizzledMethod)initWithClass:(Class)a3 selector:(SEL)a4
+- (IMSwizzledMethod)initWithClass:(Class)class selector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = IMSwizzledMethod;
   v6 = [(IMSwizzledMethod *)&v9 init];
   if (v6)
   {
-    InstanceMethod = class_getInstanceMethod(a3, a4);
+    InstanceMethod = class_getInstanceMethod(class, selector);
     v6->_method = InstanceMethod;
     v6->_implementation = method_getImplementation(InstanceMethod);
     v6->_typeEncoding = method_getTypeEncoding(v6->_method);
-    objc_storeStrong(&v6->_swizzledClass, a3);
-    v6->_swizzledSelector = a4;
+    objc_storeStrong(&v6->_swizzledClass, class);
+    v6->_swizzledSelector = selector;
   }
 
   return v6;
@@ -28,15 +28,15 @@
 
 - (BOOL)isSwizzled
 {
-  v2 = [(IMSwizzledMethod *)self swizzledWithMethod];
-  v3 = v2 != 0;
+  swizzledWithMethod = [(IMSwizzledMethod *)self swizzledWithMethod];
+  v3 = swizzledWithMethod != 0;
 
   return v3;
 }
 
-- (BOOL)swizzleWithMethod:(id)a3
+- (BOOL)swizzleWithMethod:(id)method
 {
-  v4 = a3;
+  methodCopy = method;
   if ([(IMSwizzledMethod *)self isSwizzled])
   {
     v5 = IMLogHandleForCategory("IMSwizzledMethod");
@@ -48,22 +48,22 @@
 
   else
   {
-    if ([v4 isSwizzled])
+    if ([methodCopy isSwizzled])
     {
       v6 = IMLogHandleForCategory("IMSwizzledMethod");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        sub_1A88C3A48(v4);
+        sub_1A88C3A48(methodCopy);
       }
     }
 
     else
     {
-      if (!strcmp(-[IMSwizzledMethod typeEncoding](self, "typeEncoding"), [v4 typeEncoding]))
+      if (!strcmp(-[IMSwizzledMethod typeEncoding](self, "typeEncoding"), [methodCopy typeEncoding]))
       {
-        method_setImplementation(-[IMSwizzledMethod method](self, "method"), [v4 implementation]);
-        [(IMSwizzledMethod *)self setSwizzledWithMethod:v4];
-        [v4 setSwizzledWithMethod:self];
+        method_setImplementation(-[IMSwizzledMethod method](self, "method"), [methodCopy implementation]);
+        [(IMSwizzledMethod *)self setSwizzledWithMethod:methodCopy];
+        [methodCopy setSwizzledWithMethod:self];
         v7 = 1;
         goto LABEL_13;
       }
@@ -84,12 +84,12 @@ LABEL_13:
 
 - (BOOL)unswizzle
 {
-  v3 = [(IMSwizzledMethod *)self isSwizzled];
-  if (v3)
+  isSwizzled = [(IMSwizzledMethod *)self isSwizzled];
+  if (isSwizzled)
   {
     method_setImplementation([(IMSwizzledMethod *)self method], [(IMSwizzledMethod *)self implementation]);
-    v4 = [(IMSwizzledMethod *)self swizzledWithMethod];
-    [v4 setSwizzledWithMethod:0];
+    swizzledWithMethod = [(IMSwizzledMethod *)self swizzledWithMethod];
+    [swizzledWithMethod setSwizzledWithMethod:0];
 
     [(IMSwizzledMethod *)self setSwizzledWithMethod:0];
   }
@@ -103,7 +103,7 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return isSwizzled;
 }
 
 - (id)description
@@ -121,11 +121,11 @@ LABEL_13:
     v6 = @"NO";
   }
 
-  v7 = [(IMSwizzledMethod *)self swizzledWithMethod];
-  if (v7)
+  swizzledWithMethod = [(IMSwizzledMethod *)self swizzledWithMethod];
+  if (swizzledWithMethod)
   {
-    v8 = [(IMSwizzledMethod *)self swizzledWithMethod];
-    v9 = NSStringFromSelector([v8 swizzledSelector]);
+    swizzledWithMethod2 = [(IMSwizzledMethod *)self swizzledWithMethod];
+    v9 = NSStringFromSelector([swizzledWithMethod2 swizzledSelector]);
     v10 = [v3 stringWithFormat:@"<IMSwizzledMethod: swizzled class: %@, selector: %@, isSwizzled: %@, swizzled with method: %@>", v4, v5, v6, v9];
   }
 

@@ -1,26 +1,26 @@
 @interface MTSKeychainStore
 + (id)logCategory;
-- (BOOL)removeAllDataWithError:(id *)a3;
-- (BOOL)removeDataForKey:(id)a3 error:(id *)a4;
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (MTSKeychainStore)initWithScope:(id)a3;
-- (MTSKeychainStore)initWithScope:(id)a3 dataSource:(id)a4;
+- (BOOL)removeAllDataWithError:(id *)error;
+- (BOOL)removeDataForKey:(id)key error:(id *)error;
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error;
+- (MTSKeychainStore)initWithScope:(id)scope;
+- (MTSKeychainStore)initWithScope:(id)scope dataSource:(id)source;
 - (NSDictionary)allDataByKey;
-- (id)attributeDictionaryForAddingData:(id)a3 forKey:(id)a4;
-- (id)attributeDictionaryForUpdatingData:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)queryDictionaryForKey:(id)a3 isExpectingReturnData:(BOOL)a4;
+- (id)attributeDictionaryForAddingData:(id)data forKey:(id)key;
+- (id)attributeDictionaryForUpdatingData:(id)data;
+- (id)dataForKey:(id)key;
+- (id)queryDictionaryForKey:(id)key isExpectingReturnData:(BOOL)data;
 @end
 
 @implementation MTSKeychainStore
 
-- (id)attributeDictionaryForUpdatingData:(id)a3
+- (id)attributeDictionaryForUpdatingData:(id)data
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277CDC5E8];
-  v9[0] = a3;
+  v9[0] = data;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -28,7 +28,7 @@
   return v5;
 }
 
-- (id)attributeDictionaryForAddingData:(id)a3 forKey:(id)a4
+- (id)attributeDictionaryForAddingData:(id)data forKey:(id)key
 {
   v18[8] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CDC238];
@@ -38,11 +38,11 @@
   v18[0] = v6;
   v18[1] = @"com.apple.matter.support";
   v17[2] = *MEMORY[0x277CDC120];
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MTSKeychainStore *)self scope];
+  keyCopy = key;
+  dataCopy = data;
+  scope = [(MTSKeychainStore *)self scope];
   v11 = *MEMORY[0x277CDC140];
-  v18[2] = v10;
+  v18[2] = scope;
   v18[3] = MEMORY[0x277CBEC38];
   v12 = *MEMORY[0x277CDBED8];
   v17[3] = v11;
@@ -53,8 +53,8 @@
   v17[5] = *MEMORY[0x277CDBFC0];
   v17[6] = v13;
   v17[7] = *MEMORY[0x277CDC5E8];
-  v18[6] = v8;
-  v18[7] = v9;
+  v18[6] = keyCopy;
+  v18[7] = dataCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:8];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -62,44 +62,44 @@
   return v14;
 }
 
-- (id)queryDictionaryForKey:(id)a3 isExpectingReturnData:(BOOL)a4
+- (id)queryDictionaryForKey:(id)key isExpectingReturnData:(BOOL)data
 {
-  v4 = a4;
+  dataCopy = data;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionary];
-  [v8 setObject:*MEMORY[0x277CDC238] forKeyedSubscript:*MEMORY[0x277CDC228]];
-  [v8 setObject:@"com.apple.matter.support" forKeyedSubscript:*MEMORY[0x277CDBEC8]];
-  v9 = [(MTSKeychainStore *)self scope];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277CDC120]];
+  keyCopy = key;
+  dictionary = [v6 dictionary];
+  [dictionary setObject:*MEMORY[0x277CDC238] forKeyedSubscript:*MEMORY[0x277CDC228]];
+  [dictionary setObject:@"com.apple.matter.support" forKeyedSubscript:*MEMORY[0x277CDBEC8]];
+  scope = [(MTSKeychainStore *)self scope];
+  [dictionary setObject:scope forKeyedSubscript:*MEMORY[0x277CDC120]];
 
-  [v8 setObject:*MEMORY[0x277CDC148] forKeyedSubscript:*MEMORY[0x277CDC140]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x277CDBF20]];
+  [dictionary setObject:*MEMORY[0x277CDC148] forKeyedSubscript:*MEMORY[0x277CDC140]];
+  [dictionary setObject:keyCopy forKeyedSubscript:*MEMORY[0x277CDBF20]];
 
-  if (v4)
+  if (dataCopy)
   {
     v10 = MEMORY[0x277CBEC38];
-    [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC558]];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CDC550]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC558]];
+    [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x277CDC550]];
     v11 = MEMORY[0x277CDC438];
-    if (!v7)
+    if (!keyCopy)
     {
       v11 = MEMORY[0x277CDC430];
     }
 
-    [v8 setObject:*v11 forKeyedSubscript:*MEMORY[0x277CDC428]];
+    [dictionary setObject:*v11 forKeyedSubscript:*MEMORY[0x277CDC428]];
   }
 
-  v12 = [v8 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }
 
-- (BOOL)removeAllDataWithError:(id *)a3
+- (BOOL)removeAllDataWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -110,9 +110,9 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(MTSKeychainStore *)v6 queryDictionaryForKey:0 isExpectingReturnData:0];
+  v9 = [(MTSKeychainStore *)selfCopy queryDictionaryForKey:0 isExpectingReturnData:0];
   v10 = objc_autoreleasePoolPush();
-  v11 = v6;
+  v11 = selfCopy;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -125,9 +125,9 @@
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(MTSKeychainStore *)v11 dataSource];
+  dataSource = [(MTSKeychainStore *)v11 dataSource];
   v25 = 0;
-  v15 = [v14 removeItemsMatchingQuery:v9 error:&v25];
+  v15 = [dataSource removeItemsMatchingQuery:v9 error:&v25];
   v16 = v25;
 
   if ((v15 & 1) != 0 || [v16 code] == -25300)
@@ -153,11 +153,11 @@
     }
 
     objc_autoreleasePoolPop(v20);
-    if (a3)
+    if (error)
     {
       v24 = v16;
       v17 = 0;
-      *a3 = v16;
+      *error = v16;
     }
 
     else
@@ -170,12 +170,12 @@
   return v17;
 }
 
-- (BOOL)removeDataForKey:(id)a3 error:(id *)a4
+- (BOOL)removeDataForKey:(id)key error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keyCopy = key;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -183,14 +183,14 @@
     *buf = 138543618;
     v29 = v10;
     v30 = 2112;
-    v31 = v6;
+    v31 = keyCopy;
     _os_log_impl(&dword_239824000, v9, OS_LOG_TYPE_INFO, "%{public}@Removing data for key: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(MTSKeychainStore *)v8 queryDictionaryForKey:v6 isExpectingReturnData:0];
+  v11 = [(MTSKeychainStore *)selfCopy queryDictionaryForKey:keyCopy isExpectingReturnData:0];
   v12 = objc_autoreleasePoolPush();
-  v13 = v8;
+  v13 = selfCopy;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -203,9 +203,9 @@
   }
 
   objc_autoreleasePoolPop(v12);
-  v16 = [(MTSKeychainStore *)v13 dataSource];
+  dataSource = [(MTSKeychainStore *)v13 dataSource];
   v27 = 0;
-  v17 = [v16 removeItemsMatchingQuery:v11 error:&v27];
+  v17 = [dataSource removeItemsMatchingQuery:v11 error:&v27];
   v18 = v27;
 
   if ((v17 & 1) != 0 || [v18 code] == -25300)
@@ -231,11 +231,11 @@
     }
 
     objc_autoreleasePoolPop(v22);
-    if (a4)
+    if (error)
     {
       v26 = v18;
       v19 = 0;
-      *a4 = v18;
+      *error = v18;
     }
 
     else
@@ -248,13 +248,13 @@
   return v19;
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -262,14 +262,14 @@
     *buf = 138543618;
     v44 = v13;
     v45 = 2112;
-    v46 = v9;
+    v46 = keyCopy;
     _os_log_impl(&dword_239824000, v12, OS_LOG_TYPE_INFO, "%{public}@Setting data for key: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(MTSKeychainStore *)v11 attributeDictionaryForAddingData:v8 forKey:v9];
+  v14 = [(MTSKeychainStore *)selfCopy attributeDictionaryForAddingData:dataCopy forKey:keyCopy];
   v15 = objc_autoreleasePoolPush();
-  v16 = v11;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -282,9 +282,9 @@
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [(MTSKeychainStore *)v16 dataSource];
+  dataSource = [(MTSKeychainStore *)v16 dataSource];
   v42 = 0;
-  v20 = [v19 addItemWithAttributes:v14 error:&v42];
+  v20 = [dataSource addItemWithAttributes:v14 error:&v42];
   v21 = v42;
 
   if (v20)
@@ -313,11 +313,11 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v28);
-    if (a5)
+    if (error)
     {
       v32 = v21;
       v22 = 0;
-      *a5 = v21;
+      *error = v21;
     }
 
     else
@@ -328,12 +328,12 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v23 = [(MTSKeychainStore *)v16 queryDictionaryForKey:v9 isExpectingReturnData:0];
-  v24 = [(MTSKeychainStore *)v16 attributeDictionaryForUpdatingData:v8];
+  v23 = [(MTSKeychainStore *)v16 queryDictionaryForKey:keyCopy isExpectingReturnData:0];
+  v24 = [(MTSKeychainStore *)v16 attributeDictionaryForUpdatingData:dataCopy];
 
-  v25 = [(MTSKeychainStore *)v16 dataSource];
+  dataSource2 = [(MTSKeychainStore *)v16 dataSource];
   v41 = 0;
-  v26 = [v25 updateItemMatchingQuery:v23 withAttributes:v24 error:&v41];
+  v26 = [dataSource2 updateItemMatchingQuery:v23 withAttributes:v24 error:&v41];
   v27 = v41;
 
   if (v26)
@@ -365,10 +365,10 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v33);
-    if (a5)
+    if (error)
     {
       v37 = v27;
-      *a5 = v27;
+      *error = v27;
     }
 
     v22 = 0;
@@ -384,9 +384,9 @@ LABEL_21:
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = [(MTSKeychainStore *)self queryDictionaryForKey:0 isExpectingReturnData:1];
-  v4 = [(MTSKeychainStore *)self dataSource];
+  dataSource = [(MTSKeychainStore *)self dataSource];
   v41 = 0;
-  v5 = [v4 resultMatchingQuery:v3 error:&v41];
+  v5 = [dataSource resultMatchingQuery:v3 error:&v41];
   v6 = v41;
 
   if (v5)
@@ -451,7 +451,7 @@ LABEL_21:
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -480,7 +480,7 @@ LABEL_21:
     if ([v6 code] != -25300)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -503,14 +503,14 @@ LABEL_21:
   return v21;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTSKeychainStore *)self queryDictionaryForKey:v4 isExpectingReturnData:1];
-  v6 = [(MTSKeychainStore *)self dataSource];
+  keyCopy = key;
+  v5 = [(MTSKeychainStore *)self queryDictionaryForKey:keyCopy isExpectingReturnData:1];
+  dataSource = [(MTSKeychainStore *)self dataSource];
   v26 = 0;
-  v7 = [v6 resultMatchingQuery:v5 error:&v26];
+  v7 = [dataSource resultMatchingQuery:v5 error:&v26];
   v8 = v26;
 
   if (v7)
@@ -538,7 +538,7 @@ LABEL_21:
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -547,7 +547,7 @@ LABEL_21:
         *buf = 138544130;
         v28 = v21;
         v29 = 2112;
-        v30 = v4;
+        v30 = keyCopy;
         v31 = 2112;
         v32 = v22;
         v33 = 2112;
@@ -566,7 +566,7 @@ LABEL_21:
     if ([v8 code] != -25300)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -574,7 +574,7 @@ LABEL_21:
         *buf = 138543874;
         v28 = v17;
         v29 = 2112;
-        v30 = v4;
+        v30 = keyCopy;
         v31 = 2112;
         v32 = v8;
         _os_log_impl(&dword_239824000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to query keychain item for key %@: %@", buf, 0x20u);
@@ -591,18 +591,18 @@ LABEL_21:
   return v13;
 }
 
-- (MTSKeychainStore)initWithScope:(id)a3 dataSource:(id)a4
+- (MTSKeychainStore)initWithScope:(id)scope dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  scopeCopy = scope;
+  sourceCopy = source;
+  if (!scopeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -614,22 +614,22 @@ LABEL_7:
   v9 = [(MTSKeychainStore *)&v16 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [scopeCopy copy];
     scope = v9->_scope;
     v9->_scope = v10;
 
-    objc_storeStrong(&v9->_dataSource, a4);
+    objc_storeStrong(&v9->_dataSource, source);
   }
 
   return v9;
 }
 
-- (MTSKeychainStore)initWithScope:(id)a3
+- (MTSKeychainStore)initWithScope:(id)scope
 {
-  v4 = a3;
-  if (v4)
+  scopeCopy = scope;
+  if (scopeCopy)
   {
-    v5 = v4;
+    v5 = scopeCopy;
     v6 = objc_alloc_init(MTSKeychainStoreDataSource);
     v7 = [(MTSKeychainStore *)self initWithScope:v5 dataSource:v6];
 

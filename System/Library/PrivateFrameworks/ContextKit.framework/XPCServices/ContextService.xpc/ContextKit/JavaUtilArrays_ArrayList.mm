@@ -1,20 +1,20 @@
 @interface JavaUtilArrays_ArrayList
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)containsWithId:(id)id;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
 - (int)size;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilArrays_ArrayList
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   a = self->a_;
-  if (a3)
+  if (id)
   {
     if (a)
     {
@@ -31,7 +31,7 @@
         v8 = *p_elementType++;
       }
 
-      while (([a3 isEqual:v8] & 1) == 0);
+      while (([id isEqual:v8] & 1) == 0);
       return v7;
     }
 
@@ -59,17 +59,17 @@ LABEL_12:
   return v7;
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
   a = self->a_;
-  if (a3)
+  if (id)
   {
     if (a)
     {
       v6 = 0;
       while (v6 < a->super.size_)
       {
-        if ([a3 isEqual:(&a->elementType_)[v6]])
+        if ([id isEqual:(&a->elementType_)[v6]])
         {
           LODWORD(v8) = v6;
           return v8;
@@ -117,10 +117,10 @@ LABEL_13:
   return v8;
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   a = self->a_;
-  if (a3)
+  if (id)
   {
     if (a)
     {
@@ -141,7 +141,7 @@ LABEL_13:
           IOSArray_throwOutOfBoundsWithMsg(size, v6);
         }
 
-        v10 = [a3 isEqual:(&v8->elementType_)[v7-- & 0x7FFFFFFF]];
+        v10 = [id isEqual:(&v8->elementType_)[v7-- & 0x7FFFFFFF]];
         if (v10)
         {
           return v6;
@@ -210,20 +210,20 @@ LABEL_16:
   return [(IOSArray *)a clone];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   v5 = [(JavaUtilArrays_ArrayList *)self size];
-  if (!a3)
+  if (!array)
   {
     goto LABEL_9;
   }
 
   v6 = v5;
-  if (v5 > *(a3 + 2))
+  if (v5 > *(array + 2))
   {
-    a3 = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(a3 "getClass")], v5);
+    array = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(array "getClass")], v5);
     objc_opt_class();
-    if (a3)
+    if (array)
     {
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -232,19 +232,19 @@ LABEL_16:
     }
   }
 
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(self->a_, 0, a3, 0, v6);
-  if (!a3)
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(self->a_, 0, array, 0, v6);
+  if (!array)
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  if (v6 < *(a3 + 2))
+  if (v6 < *(array + 2))
   {
-    IOSObjectArray_Set(a3, v6, 0);
+    IOSObjectArray_Set(array, v6, 0);
   }
 
-  return a3;
+  return array;
 }
 
 - (void)dealloc
@@ -254,17 +254,17 @@ LABEL_9:
   [(JavaUtilArrays_ArrayList *)&v3 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
-  a3->var2 = &self->super.modCount_;
+  state->var2 = &self->super.modCount_;
   p_elementType = &self->a_->elementType_;
-  a3->var0 = 1;
-  a3->var1 = p_elementType;
+  state->var0 = 1;
+  state->var1 = p_elementType;
   return self->a_->super.size_;
 }
 

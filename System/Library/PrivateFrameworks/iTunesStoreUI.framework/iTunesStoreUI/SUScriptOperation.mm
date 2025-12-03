@@ -1,70 +1,70 @@
 @interface SUScriptOperation
-+ (Class)postOperationClassForType:(id)a3;
-+ (void)registerPostOperationClass:(Class)a3 forType:(id)a4;
-- (SUScriptOperation)initWithOperation:(id)a3 callback:(id)a4;
-- (SUScriptOperation)initWithOperation:(id)a3 options:(id)a4;
-- (SUScriptOperation)initWithPostType:(id)a3 options:(id)a4;
++ (Class)postOperationClassForType:(id)type;
++ (void)registerPostOperationClass:(Class)class forType:(id)type;
+- (SUScriptOperation)initWithOperation:(id)operation callback:(id)callback;
+- (SUScriptOperation)initWithOperation:(id)operation options:(id)options;
+- (SUScriptOperation)initWithPostType:(id)type options:(id)options;
 - (id)_scriptOptions;
 - (void)_sendCompletionCallback;
 - (void)dealloc;
 - (void)run;
-- (void)setScriptOptions:(id)a3;
+- (void)setScriptOptions:(id)options;
 @end
 
 @implementation SUScriptOperation
 
-- (SUScriptOperation)initWithOperation:(id)a3 options:(id)a4
+- (SUScriptOperation)initWithOperation:(id)operation options:(id)options
 {
   v6 = [(SUScriptOperation *)self init];
   if (v6)
   {
-    v6->_options = a4;
-    v7 = a3;
-    v6->_wrappedOperation = v7;
-    [(ISOperation *)v7 setScriptOptions:v6->_options];
+    v6->_options = options;
+    operationCopy = operation;
+    v6->_wrappedOperation = operationCopy;
+    [(ISOperation *)operationCopy setScriptOptions:v6->_options];
   }
 
   return v6;
 }
 
-- (SUScriptOperation)initWithOperation:(id)a3 callback:(id)a4
+- (SUScriptOperation)initWithOperation:(id)operation callback:(id)callback
 {
-  v5 = [(SUScriptOperation *)self initWithOperation:a3 options:0];
+  v5 = [(SUScriptOperation *)self initWithOperation:operation options:0];
   if (v5)
   {
-    v5->_callbackFunction = a4;
+    v5->_callbackFunction = callback;
   }
 
   return v5;
 }
 
-- (SUScriptOperation)initWithPostType:(id)a3 options:(id)a4
+- (SUScriptOperation)initWithPostType:(id)type options:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = [objc_opt_class() postOperationClassForType:a3];
+  v7 = [objc_opt_class() postOperationClassForType:type];
   if (v7)
   {
     v8 = objc_alloc_init(v7);
-    v9 = [(SUScriptOperation *)self initWithOperation:v8 options:a4];
+    v9 = [(SUScriptOperation *)self initWithOperation:v8 options:options];
 
     return v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v13 &= 2u;
     }
@@ -74,7 +74,7 @@
       v17 = 138412546;
       v18 = objc_opt_class();
       v19 = 2112;
-      v20 = a3;
+      typeCopy = type;
       LODWORD(v16) = 22;
       v14 = _os_log_send_and_compose_impl();
       if (v14)
@@ -101,24 +101,24 @@
   [(SUScriptOperation *)&v3 dealloc];
 }
 
-+ (Class)postOperationClassForType:(id)a3
++ (Class)postOperationClassForType:(id)type
 {
   _os_nospin_lock_lock();
-  v4 = [__OperationClasses objectForKey:a3];
+  v4 = [__OperationClasses objectForKey:type];
   _os_nospin_lock_unlock();
   return v4;
 }
 
-+ (void)registerPostOperationClass:(Class)a3 forType:(id)a4
++ (void)registerPostOperationClass:(Class)class forType:(id)type
 {
   _os_nospin_lock_lock();
   v6 = __OperationClasses;
   if (__OperationClasses)
   {
-    if (a3)
+    if (class)
     {
 LABEL_3:
-      [v6 setObject:a3 forKey:a4];
+      [v6 setObject:class forKey:type];
       goto LABEL_6;
     }
   }
@@ -127,13 +127,13 @@ LABEL_3:
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     __OperationClasses = v6;
-    if (a3)
+    if (class)
     {
       goto LABEL_3;
     }
   }
 
-  [v6 removeObjectForKey:a4];
+  [v6 removeObjectForKey:type];
 LABEL_6:
 
   _os_nospin_lock_unlock();
@@ -142,19 +142,19 @@ LABEL_6:
 - (void)run
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v5 &= 2u;
   }
@@ -188,19 +188,19 @@ LABEL_6:
 
   else
   {
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog2 | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v13 &= 2u;
     }
@@ -231,14 +231,14 @@ LABEL_6:
   [(SUScriptOperation *)self performSelectorOnMainThread:sel__sendCompletionCallback withObject:0 waitUntilDone:1];
 }
 
-- (void)setScriptOptions:(id)a3
+- (void)setScriptOptions:(id)options
 {
   [(SUScriptOperation *)self lock];
   options = self->_options;
-  if (options != a3)
+  if (options != options)
   {
 
-    self->_options = a3;
+    self->_options = options;
   }
 
   [(SUScriptOperation *)self unlock];
@@ -255,25 +255,25 @@ LABEL_6:
 - (void)_sendCompletionCallback
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(SUScriptOperation *)self _scriptOptions];
+  _scriptOptions = [(SUScriptOperation *)self _scriptOptions];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     if (!self->_callbackFunction)
     {
-      v4 = [MEMORY[0x1E69D4938] sharedConfig];
-      v5 = [v4 shouldLog];
-      if ([v4 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v6 = v5 | 2;
+        v6 = shouldLog | 2;
       }
 
       else
       {
-        v6 = v5;
+        v6 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
       {
         v6 &= 2u;
       }
@@ -295,24 +295,24 @@ LABEL_6:
         }
       }
 
-      self->_callbackFunction = [v3 safeValueForKey:{@"completionCallback", v26}];
+      self->_callbackFunction = [_scriptOptions safeValueForKey:{@"completionCallback", v26}];
     }
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog2 | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v13 &= 2u;
     }
@@ -322,11 +322,11 @@ LABEL_6:
       if (v13)
       {
         v14 = objc_opt_class();
-        v15 = [(SUScriptOperation *)self success];
+        success = [(SUScriptOperation *)self success];
         *v28 = 138412546;
         *&v28[4] = v14;
         *&v28[12] = 1024;
-        *&v28[14] = v15;
+        *&v28[14] = success;
         LODWORD(v27) = 18;
         v26 = v28;
         v16 = _os_log_send_and_compose_impl();
@@ -362,19 +362,19 @@ LABEL_6:
     goto LABEL_34;
   }
 
-  v21 = [MEMORY[0x1E69D4938] sharedConfig];
-  v22 = [v21 shouldLog];
-  if ([v21 shouldLogToDisk])
+  mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+  if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
   {
-    v23 = v22 | 2;
+    v23 = shouldLog3 | 2;
   }
 
   else
   {
-    v23 = v22;
+    v23 = shouldLog3;
   }
 
-  if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v23 &= 2u;
   }

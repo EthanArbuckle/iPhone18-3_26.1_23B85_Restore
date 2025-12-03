@@ -1,16 +1,16 @@
 @interface NSTemporaryObjectID
-+ (Class)classForStore:(id)a3;
-+ (unsigned)allocateBatch:(id *)a3 forEntity:(id)a4 count:(unsigned int)a5;
++ (Class)classForStore:(id)store;
++ (unsigned)allocateBatch:(id *)batch forEntity:(id)entity count:(unsigned int)count;
 + (void)_storeDeallocated;
 + (void)initialize;
-+ (void)setObjectStoreIdentifier:(id)a3;
++ (void)setObjectStoreIdentifier:(id)identifier;
 - (BOOL)_isPersistentStoreAlive;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)URIRepresentation;
 - (id)_retainedURIString;
 - (id)_storeIdentifier;
 - (id)persistentStore;
-- (void)_setPersistentStore:(id)a3;
+- (void)_setPersistentStore:(id)store;
 - (void)dealloc;
 - (void)release;
 @end
@@ -20,7 +20,7 @@
 + (void)initialize
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_getClass("NSTemporaryObjectID") == a1)
+  if (objc_getClass("NSTemporaryObjectID") == self)
   {
     objc_opt_self();
     memset(out, 0, sizeof(out));
@@ -39,9 +39,9 @@
 
     qword_1ED4BE848 = v3;
     _CoreDataProcessInstanceTempIDCounter = 1;
-    object_getIndexedIvars(a1);
+    object_getIndexedIvars(self);
     qword_1ED4BE850 = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-    _NSTemporaryObjectID_Default_Class = objc_allocateClassPair(a1, "NSTemporaryObjectID_default", 0x18uLL);
+    _NSTemporaryObjectID_Default_Class = objc_allocateClassPair(self, "NSTemporaryObjectID_default", 0x18uLL);
     objc_registerClassPair(_NSTemporaryObjectID_Default_Class);
   }
 
@@ -97,7 +97,7 @@
 
 + (void)_storeDeallocated
 {
-  IndexedIvars = object_getIndexedIvars(a1);
+  IndexedIvars = object_getIndexedIvars(self);
   if (IndexedIvars)
   {
     IndexedIvars[1] = 0;
@@ -105,31 +105,31 @@
   }
 }
 
-+ (void)setObjectStoreIdentifier:(id)a3
++ (void)setObjectStoreIdentifier:(id)identifier
 {
-  IndexedIvars = object_getIndexedIvars(a1);
+  IndexedIvars = object_getIndexedIvars(self);
   v5 = IndexedIvars[2];
-  if (v5 != a3)
+  if (v5 != identifier)
   {
     if (v5)
     {
       CFRelease(v5);
     }
 
-    v6 = CFRetain([a3 copy]);
+    v6 = CFRetain([identifier copy]);
     IndexedIvars[2] = v6;
   }
 }
 
-+ (Class)classForStore:(id)a3
++ (Class)classForStore:(id)store
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!store)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Store must not be nil." userInfo:0]);
   }
 
-  Name = class_getName(a1);
+  Name = class_getName(self);
   snprintf(__str, 0x100uLL, "%s_%x", Name, 0);
   os_unfair_lock_lock(&_MergedGlobals_7);
   v38 = 0u;
@@ -211,19 +211,19 @@ LABEL_21:
         }
       }
 
-      v22 = class_getName(a1);
+      v22 = class_getName(self);
       snprintf(__str, 0x100uLL, "%s_%x", v22, i);
     }
 
     while (1)
     {
-      ClassPair = objc_allocateClassPair(a1, __str, 0x18uLL);
+      ClassPair = objc_allocateClassPair(self, __str, 0x18uLL);
       if (ClassPair)
       {
         break;
       }
 
-      v17 = class_getName(a1);
+      v17 = class_getName(self);
       v18 = i + 1;
       snprintf(__str, 0x100uLL, "%s_%x", v17, i);
       v19 = objc_getClass(__str);
@@ -255,8 +255,8 @@ LABEL_21:
   {
     v31 = v30;
     *v30 = 0;
-    v30[1] = a3;
-    v32 = [objc_msgSend(a3 "identifier")];
+    v30[1] = store;
+    v32 = [objc_msgSend(store "identifier")];
     if (v32)
     {
       v33 = v32;
@@ -269,25 +269,25 @@ LABEL_21:
   return v11;
 }
 
-+ (unsigned)allocateBatch:(id *)a3 forEntity:(id)a4 count:(unsigned int)a5
++ (unsigned)allocateBatch:(id *)batch forEntity:(id)entity count:(unsigned int)count
 {
-  v5 = a5;
-  v7 = a3;
-  if (_PFAllocateObjects(_NSTemporaryObjectID_Default_Class, a3, a5, 0) != a5)
+  countCopy = count;
+  batchCopy = batch;
+  if (_PFAllocateObjects(_NSTemporaryObjectID_Default_Class, batch, count, 0) != count)
   {
     return 0;
   }
 
-  add_explicit = atomic_fetch_add_explicit(&_CoreDataProcessInstanceTempIDCounter, v5, memory_order_relaxed);
-  if (v5)
+  add_explicit = atomic_fetch_add_explicit(&_CoreDataProcessInstanceTempIDCounter, countCopy, memory_order_relaxed);
+  if (countCopy)
   {
     v9 = add_explicit + 1;
-    v10 = v5;
+    v10 = countCopy;
     do
     {
-      v11 = *v7++;
+      v11 = *batchCopy++;
       *(v11 + 12) = v9;
-      *(v11 + 16) = a4;
+      *(v11 + 16) = entity;
       ++v9;
       --v10;
     }
@@ -295,35 +295,35 @@ LABEL_21:
     while (v10);
   }
 
-  return v5;
+  return countCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return self->_counter == *(a3 + 3);
+      return self->_counter == *(equal + 3);
     }
   }
 
   return 0;
 }
 
-- (void)_setPersistentStore:(id)a3
+- (void)_setPersistentStore:(id)store
 {
   Class = object_getClass(self);
   IndexedIvars = object_getIndexedIvars(Class);
-  if (a3 && IndexedIvars[1] != a3)
+  if (store && IndexedIvars[1] != store)
   {
-    v7 = _PFFastStoreTemporaryIDClass(a3);
+    v7 = _PFFastStoreTemporaryIDClass(store);
     atomic_fetch_add_explicit(object_getIndexedIvars(v7), 1u, memory_order_relaxed);
 
     object_setClass(self, v7);
@@ -350,10 +350,10 @@ LABEL_21:
 
 - (id)_retainedURIString
 {
-  v3 = [(NSTemporaryObjectID *)self _storeIdentifier];
-  if (v3)
+  _storeIdentifier = [(NSTemporaryObjectID *)self _storeIdentifier];
+  if (_storeIdentifier)
   {
-    v4 = v3;
+    v4 = _storeIdentifier;
   }
 
   else
@@ -364,23 +364,23 @@ LABEL_21:
   counter = self->_counter;
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = [-[NSTemporaryObjectID entity](self "entity")];
-  v8 = [(NSTemporaryObjectID *)self _referenceData];
+  _referenceData = [(NSTemporaryObjectID *)self _referenceData];
   if (counter)
   {
-    return [v6 initWithFormat:@"%@://%@/%@/t%@%d", @"x-coredata", v4, v7, v8, self->_counter];
+    return [v6 initWithFormat:@"%@://%@/%@/t%@%d", @"x-coredata", v4, v7, _referenceData, self->_counter];
   }
 
   else
   {
-    return [v6 initWithFormat:@"%@://%@/%@/t%@", @"x-coredata", v4, v7, v8, v10];
+    return [v6 initWithFormat:@"%@://%@/%@/t%@", @"x-coredata", v4, v7, _referenceData, v10];
   }
 }
 
 - (id)URIRepresentation
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSTemporaryObjectID *)self _retainedURIString];
-  v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+  _retainedURIString = [(NSTemporaryObjectID *)self _retainedURIString];
+  v5 = [MEMORY[0x1E695DFF8] URLWithString:_retainedURIString];
 
   v6 = v5;
   objc_autoreleasePoolPop(v3);

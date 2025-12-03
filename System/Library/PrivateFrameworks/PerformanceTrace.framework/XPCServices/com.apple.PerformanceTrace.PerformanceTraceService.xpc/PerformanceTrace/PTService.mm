@@ -1,47 +1,47 @@
 @interface PTService
-- (BOOL)_appendLogContentToKtraceFile:(id)a3 withError:(id *)a4;
-- (BOOL)_aspSamplingInitFilter:(kperf_kdebug_filter *)a3 withSamplers:(unsigned int *)a4;
-- (BOOL)_configureKtraceSession:(id)a3 withError:(id *)a4;
-- (BOOL)_connectionIsEntitled:(id)a3 toEntitlement:(id)a4;
-- (BOOL)_faultSamplingInitFilter:(kperf_kdebug_filter *)a3 withSamplers:(unsigned int *)a4;
+- (BOOL)_appendLogContentToKtraceFile:(id)file withError:(id *)error;
+- (BOOL)_aspSamplingInitFilter:(kperf_kdebug_filter *)filter withSamplers:(unsigned int *)samplers;
+- (BOOL)_configureKtraceSession:(id)session withError:(id *)error;
+- (BOOL)_connectionIsEntitled:(id)entitled toEntitlement:(id)entitlement;
+- (BOOL)_faultSamplingInitFilter:(kperf_kdebug_filter *)filter withSamplers:(unsigned int *)samplers;
 - (BOOL)_graphicsSamplingInit;
-- (BOOL)_postProcessKtraceFile:(id)a3 withError:(id *)a4;
-- (BOOL)_syscallSamplingInitFilter:(kperf_kdebug_filter *)a3 withSamplers:(unsigned int *)a4;
+- (BOOL)_postProcessKtraceFile:(id)file withError:(id *)error;
+- (BOOL)_syscallSamplingInitFilter:(kperf_kdebug_filter *)filter withSamplers:(unsigned int *)samplers;
 - (BOOL)_validSymbolicationPreferences;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSXPCConnection)recordingConnectionPointer;
 - (PTService)init;
-- (id)_generateToken:(id)a3;
-- (id)_traceRecordArgsArrayFromConfig:(id)a3 outputFilePath:(id)a4 xpcConnection:(id)a5 error:(id *)a6;
+- (id)_generateToken:(id)token;
+- (id)_traceRecordArgsArrayFromConfig:(id)config outputFilePath:(id)path xpcConnection:(id)connection error:(id *)error;
 - (void)_graphicsSamplingTeardown;
-- (void)_startPerformanceTrace:(id)a3;
-- (void)_startPerformanceTraceLegacy:(id)a3;
+- (void)_startPerformanceTrace:(id)trace;
+- (void)_startPerformanceTraceLegacy:(id)legacy;
 - (void)_stopPerformanceTrace;
 - (void)_stopPerformanceTraceLegacy;
-- (void)_symbolicateKtraceFile:(id)a3;
-- (void)_updateRecordingStatus:(BOOL)a3;
-- (void)applyConfig:(id)a3 withError:(id)a4;
-- (void)getCurrentStoredConfig:(id)a3;
-- (void)isInRecordingWorkflow:(id)a3;
-- (void)pingService:(id)a3;
-- (void)resetConfig:(id)a3;
-- (void)startPerformanceTrace:(id)a3;
+- (void)_symbolicateKtraceFile:(id)file;
+- (void)_updateRecordingStatus:(BOOL)status;
+- (void)applyConfig:(id)config withError:(id)error;
+- (void)getCurrentStoredConfig:(id)config;
+- (void)isInRecordingWorkflow:(id)workflow;
+- (void)pingService:(id)service;
+- (void)resetConfig:(id)config;
+- (void)startPerformanceTrace:(id)trace;
 - (void)stopPerformanceTrace;
 @end
 
 @implementation PTService
 
-- (void)_updateRecordingStatus:(BOOL)a3
+- (void)_updateRecordingStatus:(BOOL)status
 {
-  v3 = a3;
-  if ([(PTService *)self isInRecordingWorkflow]!= a3)
+  statusCopy = status;
+  if ([(PTService *)self isInRecordingWorkflow]!= status)
   {
-    self->_isInRecordingWorkflow = v3;
+    self->_isInRecordingWorkflow = statusCopy;
     v5 = sub_1000022A8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "Not recording";
-      if (v3)
+      if (statusCopy)
       {
         v6 = "Recording";
       }
@@ -69,23 +69,23 @@
   return result;
 }
 
-- (BOOL)_connectionIsEntitled:(id)a3 toEntitlement:(id)a4
+- (BOOL)_connectionIsEntitled:(id)entitled toEntitlement:(id)entitlement
 {
-  v4 = [a3 valueForEntitlement:a4];
+  v4 = [entitled valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)_syscallSamplingInitFilter:(kperf_kdebug_filter *)a3 withSamplers:(unsigned int *)a4
+- (BOOL)_syscallSamplingInitFilter:(kperf_kdebug_filter *)filter withSamplers:(unsigned int *)samplers
 {
   [(PTService *)self ktraceSession];
   ktrace_events_range();
@@ -115,11 +115,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *a4 |= 8u;
+  *samplers |= 8u;
   return 1;
 }
 
-- (BOOL)_faultSamplingInitFilter:(kperf_kdebug_filter *)a3 withSamplers:(unsigned int *)a4
+- (BOOL)_faultSamplingInitFilter:(kperf_kdebug_filter *)filter withSamplers:(unsigned int *)samplers
 {
   [(PTService *)self ktraceSession];
   ktrace_events_range();
@@ -135,7 +135,7 @@ LABEL_7:
 
   else
   {
-    *a4 |= 8u;
+    *samplers |= 8u;
   }
 
   return v5 == 0;
@@ -164,16 +164,16 @@ LABEL_7:
   }
 }
 
-- (BOOL)_aspSamplingInitFilter:(kperf_kdebug_filter *)a3 withSamplers:(unsigned int *)a4
+- (BOOL)_aspSamplingInitFilter:(kperf_kdebug_filter *)filter withSamplers:(unsigned int *)samplers
 {
-  [(PTService *)self ktraceSession:a3];
+  [(PTService *)self ktraceSession:filter];
   ktrace_events_range();
   return 1;
 }
 
-- (BOOL)_configureKtraceSession:(id)a3 withError:(id *)a4
+- (BOOL)_configureKtraceSession:(id)session withError:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   [(PTService *)self ktraceSession];
   ktrace_set_thread_groups_enabled();
   kperf_reset();
@@ -181,7 +181,7 @@ LABEL_7:
   v7 = kperf_kdebug_filter_create();
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v17 = @"Unable to create kdebug filter for kperf";
       goto LABEL_48;
@@ -193,12 +193,12 @@ LABEL_65:
   }
 
   v8 = v7;
-  v9 = [v6 traceGroups];
-  v10 = [v9 containsObject:&off_10001A5B0];
+  traceGroups = [sessionCopy traceGroups];
+  v10 = [traceGroups containsObject:&off_10001A5B0];
 
   if (v10 && ![(PTService *)self _graphicsSamplingInit])
   {
-    if (a4)
+    if (error)
     {
       v17 = @"Unable to init graphics sampling";
       goto LABEL_48;
@@ -208,12 +208,12 @@ LABEL_65:
   }
 
   v50 = 0;
-  v11 = [v6 traceGroups];
-  v12 = [v11 containsObject:&off_10001A5C8];
+  traceGroups2 = [sessionCopy traceGroups];
+  v12 = [traceGroups2 containsObject:&off_10001A5C8];
 
   if (v12 && ![(PTService *)self _syscallSamplingInitFilter:v8 withSamplers:&v50])
   {
-    if (a4)
+    if (error)
     {
       v17 = @"Unable to init syscall sampling";
       goto LABEL_48;
@@ -222,8 +222,8 @@ LABEL_65:
     goto LABEL_65;
   }
 
-  v13 = [v6 traceGroups];
-  v14 = [v13 containsObject:&off_10001A5E0];
+  traceGroups3 = [sessionCopy traceGroups];
+  v14 = [traceGroups3 containsObject:&off_10001A5E0];
 
   if (!v14)
   {
@@ -232,7 +232,7 @@ LABEL_65:
 
   if (![(PTService *)self _faultSamplingInitFilter:v8 withSamplers:&v50])
   {
-    if (a4)
+    if (error)
     {
       v17 = @"Unable to init vmfault sampling";
       goto LABEL_48;
@@ -243,8 +243,8 @@ LABEL_65:
 
   v12 = 1;
 LABEL_9:
-  v15 = [v6 traceGroups];
-  v16 = [v15 containsObject:&off_10001A5F8];
+  traceGroups4 = [sessionCopy traceGroups];
+  v16 = [traceGroups4 containsObject:&off_10001A5F8];
 
   if (!v16)
   {
@@ -262,7 +262,7 @@ LABEL_18:
     if (kperf_kdebug_filter_set())
     {
       desc = kperf_kdebug_filter_create_desc();
-      if (!a4)
+      if (!error)
       {
         goto LABEL_65;
       }
@@ -279,7 +279,7 @@ LABEL_18:
     v20 = kperf_kdebug_action_set();
     if (v20)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_65;
       }
@@ -291,7 +291,7 @@ LABEL_18:
     v21 = kperf_action_samplers_set();
     if (v21)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_65;
       }
@@ -302,8 +302,8 @@ LABEL_18:
 
 LABEL_33:
     kperf_kdebug_filter_destroy();
-    v22 = [v6 traceGroups];
-    v23 = [v22 containsObject:&off_10001A610];
+    traceGroups5 = [sessionCopy traceGroups];
+    v23 = [traceGroups5 containsObject:&off_10001A610];
 
     if (v23)
     {
@@ -331,8 +331,8 @@ LABEL_33:
 
     else
     {
-      v30 = [v6 traceGroups];
-      v31 = [v30 containsObject:&off_10001A628];
+      traceGroups6 = [sessionCopy traceGroups];
+      v31 = [traceGroups6 containsObject:&off_10001A628];
 
       if (v31)
       {
@@ -361,15 +361,15 @@ LABEL_33:
       }
     }
 
-    v40 = [v6 traceGroups];
-    v41 = [v40 containsObject:&off_10001A640];
+    traceGroups7 = [sessionCopy traceGroups];
+    v41 = [traceGroups7 containsObject:&off_10001A640];
 
     if (v41)
     {
-      [v6 includeKernelStacks];
+      [sessionCopy includeKernelStacks];
       if (kperf_action_samplers_set())
       {
-        if (a4)
+        if (error)
         {
           v17 = @"Unable to set samplers for kperf timer action";
           goto LABEL_48;
@@ -379,11 +379,11 @@ LABEL_33:
       }
 
       kperf_timer_count_set();
-      v43 = 1000000 * [v6 callstackSamplingRateMS];
+      v43 = 1000000 * [sessionCopy callstackSamplingRateMS];
       kperf_ns_to_ticks();
       if (kperf_timer_period_set())
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_65;
         }
@@ -394,21 +394,21 @@ LABEL_33:
 
       if (kperf_timer_period_get())
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_65;
         }
 
         v44 = @"Unable to retrieve kperf timer period";
 LABEL_55:
-        *a4 = [NSError error:0 description:v44];
+        *error = [NSError error:0 description:v44];
         goto LABEL_65;
       }
 
       v45 = kperf_ticks_to_ns();
       if (v45 != v43)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_65;
         }
@@ -420,7 +420,7 @@ LABEL_55:
 
       if (kperf_timer_action_set())
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_65;
         }
@@ -439,7 +439,7 @@ LABEL_55:
       goto LABEL_66;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_65;
     }
@@ -448,12 +448,12 @@ LABEL_55:
     v47 = LABEL_63:;
     v48 = 0;
 LABEL_64:
-    *a4 = [NSError error:v48 description:v47];
+    *error = [NSError error:v48 description:v47];
 
     goto LABEL_65;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_65;
   }
@@ -461,7 +461,7 @@ LABEL_64:
   v17 = @"Unable to init asp sampling";
 LABEL_48:
   [NSError error:0 description:v17];
-  *a4 = v42 = 0;
+  *error = v42 = 0;
 LABEL_66:
 
   return v42;
@@ -517,9 +517,9 @@ LABEL_66:
   return v2;
 }
 
-- (void)_symbolicateKtraceFile:(id)a3
+- (void)_symbolicateKtraceFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v5 = sub_1000022A8();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -540,8 +540,8 @@ LABEL_66:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Symbolicating Performance Trace", v10, 2u);
   }
 
-  v7 = [v3 path];
-  [v7 UTF8String];
+  path = [fileCopy path];
+  [path UTF8String];
   v8 = ktrace_file_open();
 
   if (!v8)
@@ -569,13 +569,13 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)_appendLogContentToKtraceFile:(id)a3 withError:(id *)a4
+- (BOOL)_appendLogContentToKtraceFile:(id)file withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(PTService *)self activeConfig];
-  v8 = [v7 includeOSLogs];
+  fileCopy = file;
+  activeConfig = [(PTService *)self activeConfig];
+  includeOSLogs = [activeConfig includeOSLogs];
 
-  if (v8)
+  if (includeOSLogs)
   {
     v9 = 71;
   }
@@ -585,10 +585,10 @@ LABEL_11:
     v9 = 0;
   }
 
-  v10 = [(PTService *)self activeConfig];
-  v11 = [v10 includeOSSignposts];
+  activeConfig2 = [(PTService *)self activeConfig];
+  includeOSSignposts = [activeConfig2 includeOSSignposts];
 
-  if (v11)
+  if (includeOSSignposts)
   {
     v12 = v9 | 0x20;
   }
@@ -606,7 +606,7 @@ LABEL_11:
       sub_10000E984();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -614,22 +614,22 @@ LABEL_11:
     v23 = @"Failed to append logs due to missing flags.";
 LABEL_26:
     [NSError error:0 description:v23];
-    *a4 = v24 = 0;
+    *error = v24 = 0;
     goto LABEL_32;
   }
 
-  v13 = [(PTService *)self startTime];
+  startTime = [(PTService *)self startTime];
 
   v14 = sub_1000022A8();
   v15 = v14;
-  if (!v13)
+  if (!startTime)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       sub_10000E948();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -644,8 +644,8 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Starting to append logs.", buf, 2u);
   }
 
-  v16 = [v6 path];
-  [v16 UTF8String];
+  path = [fileCopy path];
+  [path UTF8String];
   v17 = ktrace_file_open();
 
   if (!v17)
@@ -657,16 +657,16 @@ LABEL_26:
       sub_10000E8D8();
     }
 
-    if (a4)
+    if (error)
     {
       v27 = [NSString stringWithFormat:@"Failed to open file to append logs: %{errno}d", v25];
-      *a4 = [NSError error:0 description:v27];
+      *error = [NSError error:0 description:v27];
     }
 
     goto LABEL_31;
   }
 
-  v18 = [(PTService *)self startTime];
+  startTime2 = [(PTService *)self startTime];
   appended = ktrace_file_append_local_log_content();
 
   if (appended)
@@ -677,10 +677,10 @@ LABEL_26:
       sub_10000E868();
     }
 
-    if (a4)
+    if (error)
     {
-      v21 = [NSString stringWithFormat:@"Failed to append logs: %{errno}d", appended];
-      *a4 = [NSError error:0 description:v21];
+      appended = [NSString stringWithFormat:@"Failed to append logs: %{errno}d", appended];
+      *error = [NSError error:0 description:appended];
     }
 
     ktrace_file_close();
@@ -703,11 +703,11 @@ LABEL_32:
   return v24;
 }
 
-- (BOOL)_postProcessKtraceFile:(id)a3 withError:(id *)a4
+- (BOOL)_postProcessKtraceFile:(id)file withError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 path];
-  [v7 UTF8String];
+  fileCopy = file;
+  path = [fileCopy path];
+  [path UTF8String];
   v8 = ktrace_file_open();
 
   if (v8)
@@ -733,18 +733,18 @@ LABEL_32:
       ktrace_events_all();
       v9 = dispatch_semaphore_create(0);
       ktrace_set_completion_handler();
-      v10 = [v6 path];
-      [v10 UTF8String];
+      path2 = [fileCopy path];
+      [path2 UTF8String];
       v11 = ktrace_set_file();
 
       if (v11)
       {
-        if (a4)
+        if (error)
         {
           v12 = [NSString stringWithFormat:@"Failed to open trace file for post-processing: %{errno}d", v11];
           v13 = [NSError error:0 description:v12];
 LABEL_15:
-          *a4 = v13;
+          *error = v13;
 
           goto LABEL_16;
         }
@@ -757,7 +757,7 @@ LABEL_15:
 
       if (v17)
       {
-        if (a4)
+        if (error)
         {
           v12 = [NSString stringWithFormat:@"Failed to parse trace file for post-processing: %{errno}d", v17];
           v13 = [NSError error:0 description:v12];
@@ -773,10 +773,10 @@ LABEL_16:
       ktrace_session_destroy();
       if (v28[3])
       {
-        if (a4)
+        if (error)
         {
           [NSError error:6 description:@"Events were lost during tracing. Trace will be unreadable"];
-          *a4 = v15 = 0;
+          *error = v15 = 0;
           goto LABEL_18;
         }
 
@@ -790,41 +790,41 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v19 = [(PTService *)self activeConfig];
-      if ([v19 includeOSLogs])
+      activeConfig = [(PTService *)self activeConfig];
+      if ([activeConfig includeOSLogs])
       {
       }
 
       else
       {
-        v20 = [(PTService *)self activeConfig];
-        v21 = [v20 includeOSSignposts];
+        activeConfig2 = [(PTService *)self activeConfig];
+        includeOSSignposts = [activeConfig2 includeOSSignposts];
 
-        if (!v21)
+        if (!includeOSSignposts)
         {
           goto LABEL_28;
         }
       }
 
-      if (![(PTService *)self _appendLogContentToKtraceFile:v6 withError:a4]|| *a4)
+      if (![(PTService *)self _appendLogContentToKtraceFile:fileCopy withError:error]|| *error)
       {
         goto LABEL_17;
       }
 
 LABEL_28:
-      v22 = [(PTService *)self activeConfig];
-      v23 = [v22 symbolicate];
+      activeConfig3 = [(PTService *)self activeConfig];
+      symbolicate = [activeConfig3 symbolicate];
 
-      if (v23)
+      if (symbolicate)
       {
-        [(PTService *)self _symbolicateKtraceFile:v6];
+        [(PTService *)self _symbolicateKtraceFile:fileCopy];
       }
 
       v15 = 1;
       goto LABEL_18;
     }
 
-    if (a4)
+    if (error)
     {
       v14 = @"Failed to create the tracing session for post-processing";
       goto LABEL_10;
@@ -835,7 +835,7 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -843,18 +843,18 @@ LABEL_11:
   v14 = @"Failed to open the trace file to append specs";
 LABEL_10:
   [NSError error:0 description:v14];
-  *a4 = v15 = 0;
+  *error = v15 = 0;
 LABEL_19:
 
   return v15;
 }
 
-- (id)_generateToken:(id)a3
+- (id)_generateToken:(id)token
 {
-  v4 = [a3 path];
-  [v4 UTF8String];
-  v5 = [(PTService *)self activeConfig];
-  [v5 ownerPID];
+  path = [token path];
+  [path UTF8String];
+  activeConfig = [(PTService *)self activeConfig];
+  [activeConfig ownerPID];
   v6 = sandbox_extension_issue_file_to_process_by_pid();
 
   if (v6)
@@ -877,41 +877,41 @@ LABEL_19:
   return v7;
 }
 
-- (void)startPerformanceTrace:(id)a3
+- (void)startPerformanceTrace:(id)trace
 {
-  v4 = a3;
+  traceCopy = trace;
   [(PTService *)self _updateRecordingStatus:1];
-  if ([v4 useTraceRecord])
+  if ([traceCopy useTraceRecord])
   {
-    [(PTService *)self _startPerformanceTrace:v4];
+    [(PTService *)self _startPerformanceTrace:traceCopy];
   }
 
   else
   {
-    [(PTService *)self _startPerformanceTraceLegacy:v4];
+    [(PTService *)self _startPerformanceTraceLegacy:traceCopy];
   }
 }
 
-- (void)_startPerformanceTrace:(id)a3
+- (void)_startPerformanceTrace:(id)trace
 {
-  v4 = a3;
+  traceCopy = trace;
   v5 = +[NSXPCConnection currentConnection];
   v6 = sub_1000022A8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 ownerName];
+    ownerName = [traceCopy ownerName];
     *buf = 138543618;
-    v100 = v7;
+    v100 = ownerName;
     v101 = 1024;
-    v102 = [v4 ownerPID];
+    ownerPID = [traceCopy ownerPID];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting PerformanceTrace for %{public}@ [%d]", buf, 0x12u);
   }
 
   if (![(PTService *)self ktraceRecording]&& ![(PTService *)self ktraceSession])
   {
     os_variant_has_internal_content();
-    v16 = [v4 ownerName];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"PerformanceTrace: %@ [%d]", v16, [v4 ownerPID]);
+    ownerName2 = [traceCopy ownerName];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"PerformanceTrace: %@ [%d]", ownerName2, [traceCopy ownerPID]);
 
     if (v13)
     {
@@ -932,12 +932,12 @@ LABEL_19:
             v14 = [NSError error:3 description:v18];
 
             ktrace_config_destroy();
-            v19 = [(PTService *)self activeConfig];
+            activeConfig = [(PTService *)self activeConfig];
 
-            if (v19)
+            if (activeConfig)
             {
-              v20 = [(PTService *)self activeConfig];
-              [v20 setTracingActiveTransaction:0];
+              activeConfig2 = [(PTService *)self activeConfig];
+              [activeConfig2 setTracingActiveTransaction:0];
 
               [(PTService *)self setActiveConfig:0];
               [(PTService *)self setRecordingConnectionPointer:0];
@@ -976,12 +976,12 @@ LABEL_19:
             v14 = [NSError error:0 description:v25];
 
             ktrace_config_destroy();
-            v26 = [(PTService *)self activeConfig];
+            activeConfig3 = [(PTService *)self activeConfig];
 
-            if (v26)
+            if (activeConfig3)
             {
-              v27 = [(PTService *)self activeConfig];
-              [v27 setTracingActiveTransaction:0];
+              activeConfig4 = [(PTService *)self activeConfig];
+              [activeConfig4 setTracingActiveTransaction:0];
 
               [(PTService *)self setActiveConfig:0];
               [(PTService *)self setRecordingConnectionPointer:0];
@@ -1014,12 +1014,12 @@ LABEL_19:
             v14 = [NSError error:0 description:v29];
 
             ktrace_config_destroy();
-            v30 = [(PTService *)self activeConfig];
+            activeConfig5 = [(PTService *)self activeConfig];
 
-            if (v30)
+            if (activeConfig5)
             {
-              v31 = [(PTService *)self activeConfig];
-              [v31 setTracingActiveTransaction:0];
+              activeConfig6 = [(PTService *)self activeConfig];
+              [activeConfig6 setTracingActiveTransaction:0];
 
               [(PTService *)self setActiveConfig:0];
               [(PTService *)self setRecordingConnectionPointer:0];
@@ -1049,7 +1049,7 @@ LABEL_19:
         ktrace_config_destroy();
       }
 
-      [(PTService *)self setActiveConfig:v4];
+      [(PTService *)self setActiveConfig:traceCopy];
       [(PTService *)self setRecordingConnectionPointer:v5];
       v32 = +[NSDate date];
       [(PTService *)self setStartTime:v32];
@@ -1057,27 +1057,27 @@ LABEL_19:
       v14 = objc_alloc_init(NSDateFormatter);
       [v14 setDateStyle:1];
       [v14 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-      v33 = [v4 traceName];
-      v34 = v33;
-      if (v33)
+      traceName = [traceCopy traceName];
+      v34 = traceName;
+      if (traceName)
       {
-        v21 = v33;
+        v21 = traceName;
       }
 
       else
       {
-        v35 = [(PTService *)self startTime];
-        v36 = [v14 stringFromDate:v35];
+        startTime = [(PTService *)self startTime];
+        v36 = [v14 stringFromDate:startTime];
         v21 = [NSString stringWithFormat:@"trace_%@.atrc", v36];
       }
 
-      v37 = [v4 traceDirectoryURL];
-      v38 = [v37 path];
-      v39 = v38;
+      traceDirectoryURL = [traceCopy traceDirectoryURL];
+      path = [traceDirectoryURL path];
+      v39 = path;
       v40 = @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/PerformanceTraces/";
-      if (v38)
+      if (path)
       {
-        v40 = v38;
+        v40 = path;
       }
 
       v41 = v40;
@@ -1085,12 +1085,12 @@ LABEL_19:
       v42 = PTServicesCreateTraceDirectory(v41);
       if (v42)
       {
-        v43 = [(PTService *)self activeConfig];
+        activeConfig7 = [(PTService *)self activeConfig];
 
-        if (v43)
+        if (activeConfig7)
         {
-          v44 = [(PTService *)self activeConfig];
-          [v44 setTracingActiveTransaction:0];
+          activeConfig8 = [(PTService *)self activeConfig];
+          [activeConfig8 setTracingActiveTransaction:0];
 
           [(PTService *)self setActiveConfig:0];
           [(PTService *)self setRecordingConnectionPointer:0];
@@ -1120,17 +1120,17 @@ LABEL_19:
       {
         v45 = [(__CFString *)v41 stringByAppendingPathComponent:v21];
         v97 = 0;
-        v47 = [(PTService *)self _traceRecordArgsArrayFromConfig:v4 outputFilePath:v45 xpcConnection:v5 error:&v97];
+        v47 = [(PTService *)self _traceRecordArgsArrayFromConfig:traceCopy outputFilePath:v45 xpcConnection:v5 error:&v97];
         v76 = v97;
         v77 = v47;
         if (v76)
         {
-          v48 = [(PTService *)self activeConfig];
+          activeConfig9 = [(PTService *)self activeConfig];
 
-          if (v48)
+          if (activeConfig9)
           {
-            v49 = [(PTService *)self activeConfig];
-            [v49 setTracingActiveTransaction:0];
+            activeConfig10 = [(PTService *)self activeConfig];
+            [activeConfig10 setTracingActiveTransaction:0];
 
             [(PTService *)self setActiveConfig:0];
             [(PTService *)self setRecordingConnectionPointer:0];
@@ -1164,17 +1164,17 @@ LABEL_19:
           [(PTService *)self ktraceRecording];
           ktrace_recording_set_streams();
           v53 = os_transaction_create();
-          [v4 setTracingActiveTransaction:v53];
+          [traceCopy setTracingActiveTransaction:v53];
 
           [(PTService *)self ktraceRecording];
           v89 = _NSConcreteStackBlock;
           v90 = 3221225472;
           v91 = sub_1000048FC;
           v92 = &unk_100018900;
-          v93 = self;
+          selfCopy = self;
           v75 = v5;
           v94 = v5;
-          v95 = v4;
+          v95 = traceCopy;
           v72 = v45;
           v96 = v45;
           ktrace_recording_follow_notifications();
@@ -1287,14 +1287,14 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v8 = [(PTService *)self activeConfig];
+  activeConfig11 = [(PTService *)self activeConfig];
 
-  if (v8)
+  if (activeConfig11)
   {
-    v9 = [(PTService *)self activeConfig];
-    v10 = [v9 ownerName];
-    v11 = [(PTService *)self activeConfig];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Tracing is already in progress by another PerformanceTrace client: %@ [%i]", v10, [v11 ownerPID]);
+    activeConfig12 = [(PTService *)self activeConfig];
+    ownerName3 = [activeConfig12 ownerName];
+    activeConfig13 = [(PTService *)self activeConfig];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Tracing is already in progress by another PerformanceTrace client: %@ [%i]", ownerName3, [activeConfig13 ownerPID]);
     v13 = [NSError error:3 description:v12];
 
     v14 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&stru_100018778];
@@ -1321,36 +1321,36 @@ LABEL_9:
 LABEL_11:
 }
 
-- (id)_traceRecordArgsArrayFromConfig:(id)a3 outputFilePath:(id)a4 xpcConnection:(id)a5 error:(id *)a6
+- (id)_traceRecordArgsArrayFromConfig:(id)config outputFilePath:(id)path xpcConnection:(id)connection error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  configCopy = config;
+  pathCopy = path;
+  connectionCopy = connection;
   v13 = [NSMutableArray arrayWithObject:@"record"];
-  v53 = v11;
+  v53 = pathCopy;
   v14 = [NSArray arrayWithObjects:&v53 count:1];
   [v13 addObjectsFromArray:v14];
 
-  v15 = [v10 traceRecordArgs];
+  traceRecordArgs = [configCopy traceRecordArgs];
 
-  if (v15)
+  if (traceRecordArgs)
   {
-    v16 = [v10 traceRecordArgs];
-    [v13 addObjectsFromArray:v16];
+    traceRecordArgs2 = [configCopy traceRecordArgs];
+    [v13 addObjectsFromArray:traceRecordArgs2];
   }
 
-  v17 = [v10 planNameOrPath];
+  planNameOrPath = [configCopy planNameOrPath];
 
-  if (v17)
+  if (planNameOrPath)
   {
     v52[0] = @"--plan";
-    v18 = [v10 planNameOrPath];
-    v52[1] = v18;
+    planNameOrPath2 = [configCopy planNameOrPath];
+    v52[1] = planNameOrPath2;
     v19 = [NSArray arrayWithObjects:v52 count:2];
     [v13 addObjectsFromArray:v19];
 
-    v20 = [v10 planNameOrPath];
-    LODWORD(v19) = [v20 isAbsolutePath];
+    planNameOrPath3 = [configCopy planNameOrPath];
+    LODWORD(v19) = [planNameOrPath3 isAbsolutePath];
 
     if (v19)
     {
@@ -1358,49 +1358,49 @@ LABEL_11:
     }
   }
 
-  v21 = [v10 traceGroups];
-  v22 = [v21 containsObject:&off_10001A5B0];
+  traceGroups = [configCopy traceGroups];
+  v22 = [traceGroups containsObject:&off_10001A5B0];
 
   if (v22)
   {
     [v13 addObjectsFromArray:&off_10001A7C0];
   }
 
-  v23 = [v10 traceGroups];
-  v24 = [v23 containsObject:&off_10001A5C8];
+  traceGroups2 = [configCopy traceGroups];
+  v24 = [traceGroups2 containsObject:&off_10001A5C8];
 
   if (v24)
   {
     [v13 addObjectsFromArray:&off_10001A7D8];
   }
 
-  v25 = [v10 traceGroups];
-  v26 = [v25 containsObject:&off_10001A5E0];
+  traceGroups3 = [configCopy traceGroups];
+  v26 = [traceGroups3 containsObject:&off_10001A5E0];
 
   if (v26)
   {
     [v13 addObjectsFromArray:&off_10001A7F0];
   }
 
-  v27 = [v10 traceGroups];
-  v28 = [v27 containsObject:&off_10001A5F8];
+  traceGroups4 = [configCopy traceGroups];
+  v28 = [traceGroups4 containsObject:&off_10001A5F8];
 
   if (v28)
   {
     [v13 addObjectsFromArray:&off_10001A808];
   }
 
-  v29 = [v10 traceGroups];
-  v30 = [v29 containsObject:&off_10001A640];
+  traceGroups5 = [configCopy traceGroups];
+  v30 = [traceGroups5 containsObject:&off_10001A640];
 
-  if (!v30 || [v10 callstackSamplingRateMS] == 1)
+  if (!v30 || [configCopy callstackSamplingRateMS] == 1)
   {
-    v31 = [v10 traceType];
-    if (v31 == 2)
+    traceType = [configCopy traceType];
+    if (traceType == 2)
     {
-      if (![v10 traceDurationSecs])
+      if (![configCopy traceDurationSecs])
       {
-        if (a6)
+        if (error)
         {
           v37 = @"Non-zero traceDurationSecs must be specified when using ringbuffer mode";
 LABEL_40:
@@ -1414,18 +1414,18 @@ LABEL_43:
       }
 
       v50[0] = @"--trailing-duration";
-      v33 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lus", [v10 traceDurationSecs]);
+      v33 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lus", [configCopy traceDurationSecs]);
       v50[1] = v33;
       v34 = v50;
     }
 
     else
     {
-      if (v31 != 1)
+      if (traceType != 1)
       {
-        if (a6)
+        if (error)
         {
-          +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Cannot start tracing as an unknown trace type is used: %lu", [v10 traceType]);
+          +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Cannot start tracing as an unknown trace type is used: %lu", [configCopy traceType]);
           v35 = LABEL_41:;
           v36 = 4;
           goto LABEL_42;
@@ -1434,19 +1434,19 @@ LABEL_43:
         goto LABEL_43;
       }
 
-      v32 = [v10 traceDurationSecs];
-      if ((v32 - 31) <= 0xFFFFFFFFFFFFFFE1)
+      traceDurationSecs = [configCopy traceDurationSecs];
+      if ((traceDurationSecs - 31) <= 0xFFFFFFFFFFFFFFE1)
       {
-        if (v12 && [(PTService *)self _connectionIsEntitled:v12 toEntitlement:@"com.apple.PerformanceTrace.OverrideTimeout"])
+        if (connectionCopy && [(PTService *)self _connectionIsEntitled:connectionCopy toEntitlement:@"com.apple.PerformanceTrace.OverrideTimeout"])
         {
-          if (!v32)
+          if (!traceDurationSecs)
           {
 LABEL_36:
-            if ([v10 kernelBufferSizeMB])
+            if ([configCopy kernelBufferSizeMB])
             {
-              if ([v10 kernelBufferSizeMB] >= 0x401)
+              if ([configCopy kernelBufferSizeMB] >= 0x401)
               {
-                if (a6)
+                if (error)
                 {
                   v47 = 1024;
                   v37 = @"Cannot start tracing as PerformanceTrace cannot have a kernel buffer size larger than %dMB.";
@@ -1458,30 +1458,30 @@ LABEL_36:
 
               v49[0] = @"--unsafe";
               v49[1] = @"--kdebug-buffer-size";
-              v41 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lumb", [v10 kernelBufferSizeMB]);
+              v41 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lumb", [configCopy kernelBufferSizeMB]);
               v49[2] = v41;
               v42 = [NSArray arrayWithObjects:v49 count:3];
               [v13 addObjectsFromArray:v42];
             }
 
-            if ([v10 enableSwiftUITracing])
+            if ([configCopy enableSwiftUITracing])
             {
               [v13 addObjectsFromArray:&off_10001A820];
             }
 
-            if ([v10 overrideIncludeOSLogs] && objc_msgSend(v10, "includeOSLogs"))
+            if ([configCopy overrideIncludeOSLogs] && objc_msgSend(configCopy, "includeOSLogs"))
             {
               [v13 addObjectsFromArray:&off_10001A838];
             }
 
-            if ([v10 overrideIncludeOSSignposts] && (objc_msgSend(v10, "includeOSSignposts") & 1) == 0)
+            if ([configCopy overrideIncludeOSSignposts] && (objc_msgSend(configCopy, "includeOSSignposts") & 1) == 0)
             {
               [v13 addObjectsFromArray:&off_10001A850];
             }
 
-            if ([v10 overrideSymbolicate])
+            if ([configCopy overrideSymbolicate])
             {
-              if ([v10 symbolicate])
+              if ([configCopy symbolicate])
               {
                 v43 = &off_10001A868;
               }
@@ -1506,7 +1506,7 @@ LABEL_36:
             v45 = [NSArray arrayWithObjects:v48 count:2];
             [v13 addObjectsFromArray:v45];
 
-            [v10 setTraceRecordEndNotificationName:v35];
+            [configCopy setTraceRecordEndNotificationName:v35];
             v40 = [v13 copy];
             goto LABEL_59;
           }
@@ -1520,12 +1520,12 @@ LABEL_36:
             sub_10000ECD8();
           }
 
-          v32 = 30;
+          traceDurationSecs = 30;
         }
       }
 
       v51[0] = @"--end-after-duration";
-      v33 = [NSString stringWithFormat:@"%lus", v32];
+      v33 = [NSString stringWithFormat:@"%lus", traceDurationSecs];
       v51[1] = v33;
       v34 = v51;
     }
@@ -1536,7 +1536,7 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_43;
   }
@@ -1545,7 +1545,7 @@ LABEL_36:
   v36 = 0;
 LABEL_42:
   [NSError error:v36 description:v35];
-  *a6 = v40 = 0;
+  *error = v40 = 0;
 LABEL_59:
 
 LABEL_60:
@@ -1553,18 +1553,18 @@ LABEL_60:
   return v40;
 }
 
-- (void)_startPerformanceTraceLegacy:(id)a3
+- (void)_startPerformanceTraceLegacy:(id)legacy
 {
-  v4 = a3;
+  legacyCopy = legacy;
   v5 = +[NSXPCConnection currentConnection];
   v6 = sub_1000022A8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 ownerName];
+    ownerName = [legacyCopy ownerName];
     *buf = 138543618;
-    v79 = v7;
+    v79 = ownerName;
     v80 = 1024;
-    v81 = [v4 ownerPID];
+    ownerPID = [legacyCopy ownerPID];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting PerformanceTrace (legacy) for %{public}@ [%d]", buf, 0x12u);
   }
 
@@ -1599,9 +1599,9 @@ LABEL_60:
           v13 = [NSError error:3 description:v17];
 
           ktrace_config_destroy();
-          v18 = [(PTService *)self activeConfig];
+          activeConfig = [(PTService *)self activeConfig];
 
-          if (v18)
+          if (activeConfig)
           {
             [(PTService *)self setActiveConfig:0];
             [(PTService *)self setRecordingConnectionPointer:0];
@@ -1640,9 +1640,9 @@ LABEL_60:
           v13 = [NSError error:0 description:v21];
 
           ktrace_config_destroy();
-          v22 = [(PTService *)self activeConfig];
+          activeConfig2 = [(PTService *)self activeConfig];
 
-          if (v22)
+          if (activeConfig2)
           {
             [(PTService *)self setActiveConfig:0];
             [(PTService *)self setRecordingConnectionPointer:0];
@@ -1675,9 +1675,9 @@ LABEL_60:
           v13 = [NSError error:0 description:v24];
 
           ktrace_config_destroy();
-          v25 = [(PTService *)self activeConfig];
+          activeConfig3 = [(PTService *)self activeConfig];
 
-          if (v25)
+          if (activeConfig3)
           {
             [(PTService *)self setActiveConfig:0];
             [(PTService *)self setRecordingConnectionPointer:0];
@@ -1707,7 +1707,7 @@ LABEL_60:
       ktrace_config_destroy();
     }
 
-    [(PTService *)self setActiveConfig:v4];
+    [(PTService *)self setActiveConfig:legacyCopy];
     [(PTService *)self setRecordingConnectionPointer:v5];
     v26 = +[NSDate date];
     [(PTService *)self setStartTime:v26];
@@ -1715,27 +1715,27 @@ LABEL_60:
     v13 = objc_alloc_init(NSDateFormatter);
     [v13 setDateStyle:1];
     [v13 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-    v27 = [v4 traceName];
-    v28 = v27;
-    if (v27)
+    traceName = [legacyCopy traceName];
+    v28 = traceName;
+    if (traceName)
     {
-      v14 = v27;
+      v14 = traceName;
     }
 
     else
     {
-      v29 = [(PTService *)self startTime];
-      v30 = [v13 stringFromDate:v29];
+      startTime = [(PTService *)self startTime];
+      v30 = [v13 stringFromDate:startTime];
       v14 = [NSString stringWithFormat:@"trace_%@.ktrace", v30];
     }
 
-    v31 = [v4 traceDirectoryURL];
-    v32 = [v31 path];
-    v33 = v32;
+    traceDirectoryURL = [legacyCopy traceDirectoryURL];
+    path = [traceDirectoryURL path];
+    v33 = path;
     v34 = @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/PerformanceTraces/";
-    if (v32)
+    if (path)
     {
-      v34 = v32;
+      v34 = path;
     }
 
     v35 = v34;
@@ -1743,9 +1743,9 @@ LABEL_60:
     v36 = PTServicesCreateTraceDirectory(v35);
     if (v36)
     {
-      v37 = [(PTService *)self activeConfig];
+      activeConfig4 = [(PTService *)self activeConfig];
 
-      if (v37)
+      if (activeConfig4)
       {
         [(PTService *)self setActiveConfig:0];
         [(PTService *)self setRecordingConnectionPointer:0];
@@ -1774,13 +1774,13 @@ LABEL_60:
 
     v38 = [(__CFString *)v35 stringByAppendingPathComponent:v14];
     v77 = 0;
-    v40 = [(PTService *)self _configureKtraceSession:v4 withError:&v77];
+    v40 = [(PTService *)self _configureKtraceSession:legacyCopy withError:&v77];
     v41 = v77;
     if (v41 || (v40 & 1) == 0)
     {
-      v47 = [(PTService *)self activeConfig];
+      activeConfig5 = [(PTService *)self activeConfig];
 
-      if (v47)
+      if (activeConfig5)
       {
         [(PTService *)self setActiveConfig:0];
         [(PTService *)self setRecordingConnectionPointer:0];
@@ -1807,14 +1807,14 @@ LABEL_60:
       goto LABEL_103;
     }
 
-    if ([v4 kernelBufferSizeMB] >= 0x401)
+    if ([legacyCopy kernelBufferSizeMB] >= 0x401)
     {
-      v42 = [NSString stringWithFormat:@"Cannot start tracing as PerformanceTrace cannot have a kernel buffer size larger than %dMB.", 1024];
-      v69 = [NSError error:4 description:v42];
+      1024 = [NSString stringWithFormat:@"Cannot start tracing as PerformanceTrace cannot have a kernel buffer size larger than %dMB.", 1024];
+      v69 = [NSError error:4 description:1024];
 
-      v43 = [(PTService *)self activeConfig];
+      activeConfig6 = [(PTService *)self activeConfig];
 
-      if (v43)
+      if (activeConfig6)
       {
         [(PTService *)self setActiveConfig:0];
         [(PTService *)self setRecordingConnectionPointer:0];
@@ -1845,13 +1845,13 @@ LABEL_60:
     }
 
     [(PTService *)self ktraceSession];
-    [v4 kernelBufferSizeMB];
+    [legacyCopy kernelBufferSizeMB];
     ktrace_set_buffer_size();
     [(PTService *)self ktraceSession];
-    [v4 kernelBufferDrainQoS];
+    [legacyCopy kernelBufferDrainQoS];
     ktrace_set_collection_qos();
     [(PTService *)self ktraceSession];
-    [v4 kernelBufferDrainRateMS];
+    [legacyCopy kernelBufferDrainRateMS];
     ktrace_set_collection_interval();
     v70 = os_transaction_create();
     [(PTService *)self ktraceSession];
@@ -1862,15 +1862,15 @@ LABEL_60:
     handler[9] = self;
     v49 = v38;
     v73 = v49;
-    v50 = v4;
+    v50 = legacyCopy;
     v74 = v50;
     v68 = v5;
     v75 = v68;
     v71 = v70;
     v76 = v71;
     ktrace_set_completion_handler();
-    v51 = [v50 traceType];
-    if (v51 == 2)
+    traceType = [v50 traceType];
+    if (traceType == 2)
     {
       [(PTService *)self ktraceSession];
       started = ktrace_configure();
@@ -1878,14 +1878,14 @@ LABEL_60:
 
     else
     {
-      if (v51 != 1)
+      if (traceType != 1)
       {
         v57 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Cannot start tracing as an unknown trace type is used: %lu", [v50 traceType]);
         v65 = [NSError error:4 description:v57];
 
-        v58 = [(PTService *)self activeConfig];
+        activeConfig7 = [(PTService *)self activeConfig];
 
-        if (v58)
+        if (activeConfig7)
         {
           [(PTService *)self setActiveConfig:0];
           [(PTService *)self setRecordingConnectionPointer:0];
@@ -1931,12 +1931,12 @@ LABEL_104:
 
     if (started)
     {
-      v53 = [NSString stringWithFormat:@"Cannot start tracing as Performance Trace failed to write to the expected output path: %{errno}d", started];
-      v65 = [NSError error:4 description:v53];
+      started = [NSString stringWithFormat:@"Cannot start tracing as Performance Trace failed to write to the expected output path: %{errno}d", started];
+      v65 = [NSError error:4 description:started];
 
-      v54 = [(PTService *)self activeConfig];
+      activeConfig8 = [(PTService *)self activeConfig];
 
-      if (v54)
+      if (activeConfig8)
       {
         [(PTService *)self setActiveConfig:0];
         [(PTService *)self setRecordingConnectionPointer:0];
@@ -1963,12 +1963,12 @@ LABEL_104:
       goto LABEL_87;
     }
 
-    v66 = [v50 traceTimeoutS];
+    traceTimeoutS = [v50 traceTimeoutS];
     v41 = 0;
     if ([v50 traceTimeoutS] && objc_msgSend(v50, "traceTimeoutS") < 0x1F || v68 && -[PTService _connectionIsEntitled:toEntitlement:](self, "_connectionIsEntitled:toEntitlement:", v68, @"com.apple.PerformanceTrace.OverrideTimeout"))
     {
-      v60 = v66;
-      if (!v66)
+      v60 = traceTimeoutS;
+      if (!traceTimeoutS)
       {
         goto LABEL_99;
       }
@@ -2011,14 +2011,14 @@ LABEL_99:
     goto LABEL_102;
   }
 
-  v8 = [(PTService *)self activeConfig];
+  activeConfig9 = [(PTService *)self activeConfig];
 
-  if (v8)
+  if (activeConfig9)
   {
-    v9 = [(PTService *)self activeConfig];
-    v10 = [v9 ownerName];
-    v11 = [(PTService *)self activeConfig];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Tracing is already in progress by another PerformanceTrace client: %@ [%i]", v10, [v11 ownerPID]);
+    activeConfig10 = [(PTService *)self activeConfig];
+    ownerName2 = [activeConfig10 ownerName];
+    activeConfig11 = [(PTService *)self activeConfig];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Tracing is already in progress by another PerformanceTrace client: %@ [%i]", ownerName2, [activeConfig11 ownerPID]);
     v13 = [NSError error:3 description:v12];
 
     v14 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&stru_1000189B0];
@@ -2049,14 +2049,14 @@ LABEL_11:
 
 - (void)stopPerformanceTrace
 {
-  v3 = [(PTService *)self activeConfig];
+  activeConfig = [(PTService *)self activeConfig];
 
-  if (v3)
+  if (activeConfig)
   {
-    v4 = [(PTService *)self activeConfig];
-    v5 = [v4 useTraceRecord];
+    activeConfig2 = [(PTService *)self activeConfig];
+    useTraceRecord = [activeConfig2 useTraceRecord];
 
-    if (v5)
+    if (useTraceRecord)
     {
 
       [(PTService *)self _stopPerformanceTrace];
@@ -2076,13 +2076,13 @@ LABEL_11:
   v4 = sub_1000022A8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PTService *)self activeConfig];
-    v6 = [v5 ownerName];
-    v7 = [(PTService *)self activeConfig];
+    activeConfig = [(PTService *)self activeConfig];
+    ownerName = [activeConfig ownerName];
+    activeConfig2 = [(PTService *)self activeConfig];
     v20 = 138543618;
-    v21 = v6;
+    v21 = ownerName;
     v22 = 1024;
-    v23 = [v7 ownerPID];
+    ownerPID = [activeConfig2 ownerPID];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping Performance Trace for %{public}@ [%d]", &v20, 0x12u);
   }
 
@@ -2112,13 +2112,13 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v9 = [(PTService *)self activeConfig];
-  v10 = [v9 traceRecordEndNotificationName];
-  v11 = [v10 UTF8String];
+  activeConfig3 = [(PTService *)self activeConfig];
+  traceRecordEndNotificationName = [activeConfig3 traceRecordEndNotificationName];
+  uTF8String = [traceRecordEndNotificationName UTF8String];
 
   v12 = sub_1000022A8();
   v13 = v12;
-  if (!v11)
+  if (!uTF8String)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -2141,7 +2141,7 @@ LABEL_19:
     sub_10000EDE0();
   }
 
-  if (notify_post(v11))
+  if (notify_post(uTF8String))
   {
     v14 = sub_1000022A8();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2168,31 +2168,31 @@ LABEL_20:
   v4 = sub_1000022A8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PTService *)self activeConfig];
-    v6 = [v5 ownerName];
-    v7 = [(PTService *)self activeConfig];
+    activeConfig = [(PTService *)self activeConfig];
+    ownerName = [activeConfig ownerName];
+    activeConfig2 = [(PTService *)self activeConfig];
     *buf = 138543618;
-    *&buf[4] = v6;
+    *&buf[4] = ownerName;
     *&buf[12] = 1024;
-    *&buf[14] = [v7 ownerPID];
+    *&buf[14] = [activeConfig2 ownerPID];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping PerformanceTrace (legacy) for %{public}@ [%d]", buf, 0x12u);
   }
 
-  v8 = [(PTService *)self activeTimer];
-  v9 = v8 == 0;
+  activeTimer = [(PTService *)self activeTimer];
+  v9 = activeTimer == 0;
 
   if (!v9)
   {
-    v10 = [(PTService *)self activeTimer];
-    dispatch_source_cancel(v10);
+    activeTimer2 = [(PTService *)self activeTimer];
+    dispatch_source_cancel(activeTimer2);
 
     [(PTService *)self setActiveTimer:0];
   }
 
   if ([(PTService *)self ktraceSession])
   {
-    v11 = [(PTService *)self activeConfig];
-    v12 = [v11 traceType] == 1;
+    activeConfig3 = [(PTService *)self activeConfig];
+    v12 = [activeConfig3 traceType] == 1;
 
     if (v12)
     {
@@ -2212,8 +2212,8 @@ LABEL_61:
       goto LABEL_64;
     }
 
-    v17 = [(PTService *)self activeConfig];
-    v18 = [v17 traceType] == 2;
+    activeConfig4 = [(PTService *)self activeConfig];
+    v18 = [activeConfig4 traceType] == 2;
 
     if (!v18)
     {
@@ -2227,12 +2227,12 @@ LABEL_61:
     v19 = objc_alloc_init(NSDateFormatter);
     [v19 setDateStyle:1];
     [v19 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-    v20 = [(PTService *)self activeConfig];
-    v21 = [v20 traceName];
-    v22 = v21;
-    if (v21)
+    activeConfig5 = [(PTService *)self activeConfig];
+    traceName = [activeConfig5 traceName];
+    v22 = traceName;
+    if (traceName)
     {
-      v75 = v21;
+      v75 = traceName;
     }
 
     else
@@ -2242,14 +2242,14 @@ LABEL_61:
       v75 = [NSString stringWithFormat:@"trace_%@.ktrace", v24];
     }
 
-    v25 = [(PTService *)self activeConfig];
-    v26 = [v25 traceDirectoryURL];
-    v27 = [v26 path];
-    v28 = v27;
+    activeConfig6 = [(PTService *)self activeConfig];
+    traceDirectoryURL = [activeConfig6 traceDirectoryURL];
+    path = [traceDirectoryURL path];
+    v28 = path;
     v29 = @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/PerformanceTraces/";
-    if (v27)
+    if (path)
     {
-      v29 = v27;
+      v29 = path;
     }
 
     v30 = v29;
@@ -2264,12 +2264,12 @@ LABEL_61:
     v34 = v33;
     if ((v32 & 1) == 0)
     {
-      v46 = [v33 localizedDescription];
-      v47 = [NSString stringWithFormat:@"Cannot dump ringbuffer trace as Performance Trace cannot write to the target directory: %@", v46];
+      localizedDescription = [v33 localizedDescription];
+      v47 = [NSString stringWithFormat:@"Cannot dump ringbuffer trace as Performance Trace cannot write to the target directory: %@", localizedDescription];
       v48 = [NSError error:4 description:v47 underlyingError:v34];
 
-      v49 = [(PTService *)self activeConfig];
-      v50 = v49 == 0;
+      activeConfig7 = [(PTService *)self activeConfig];
+      v50 = activeConfig7 == 0;
 
       if (!v50)
       {
@@ -2315,8 +2315,8 @@ LABEL_61:
     if (!*(*&buf[8] + 24))
     {
       v40 = [NSError error:0 description:@"Cannot stop ringbuffer tracing as Performance Trace was unable to generate a ktrace session"];
-      v54 = [(PTService *)self activeConfig];
-      v55 = v54 == 0;
+      activeConfig8 = [(PTService *)self activeConfig];
+      v55 = activeConfig8 == 0;
 
       if (!v55)
       {
@@ -2365,8 +2365,8 @@ LABEL_61:
       v39 = [NSString stringWithFormat:@"Cannot write ringbuffer trace due to failure to find existing session: %{errno}d", v38];
       v40 = [NSError error:0 description:v39];
 
-      v41 = [(PTService *)self activeConfig];
-      v42 = v41 == 0;
+      activeConfig9 = [(PTService *)self activeConfig];
+      v42 = activeConfig9 == 0;
 
       if (!v42)
       {
@@ -2428,11 +2428,11 @@ LABEL_49:
     started = ktrace_start_writing_path();
     if (started)
     {
-      v63 = [NSString stringWithFormat:@"Cannot write ringbuffer trace due to failure to start writing out buffer: %{errno}d", started];
-      v64 = [NSError error:0 description:v63];
+      started = [NSString stringWithFormat:@"Cannot write ringbuffer trace due to failure to start writing out buffer: %{errno}d", started];
+      v64 = [NSError error:0 description:started];
 
-      v65 = [(PTService *)self activeConfig];
-      v66 = v65 == 0;
+      activeConfig10 = [(PTService *)self activeConfig];
+      v66 = activeConfig10 == 0;
 
       if (!v66)
       {
@@ -2502,9 +2502,9 @@ LABEL_49:
 LABEL_64:
 }
 
-- (void)getCurrentStoredConfig:(id)a3
+- (void)getCurrentStoredConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = sub_1000022A8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2540,7 +2540,7 @@ LABEL_64:
       sub_10000F06C(v22);
     }
 
-    (*(v4 + 2))(v4, *(v22[0] + 40), 0);
+    (*(configCopy + 2))(configCopy, *(v22[0] + 40), 0);
   }
 
   else
@@ -2556,7 +2556,7 @@ LABEL_64:
         sub_10000F13C(v22);
       }
 
-      (*(v4 + 2))(v4, *(v22[0] + 40), 0);
+      (*(configCopy + 2))(configCopy, *(v22[0] + 40), 0);
     }
 
     else
@@ -2584,17 +2584,17 @@ LABEL_64:
         v15 = v13;
       }
 
-      (*(v4 + 2))(v4, v16, v15);
+      (*(configCopy + 2))(configCopy, v16, v15);
     }
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)applyConfig:(id)a3 withError:(id)a4
+- (void)applyConfig:(id)config withError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  configCopy = config;
   v7 = sub_1000022A8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2602,9 +2602,9 @@ LABEL_64:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Applying Config", buf, 2u);
   }
 
-  [v6 setSource:3];
+  [configCopy setSource:3];
   v14 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:configCopy requiringSecureCoding:1 error:&v14];
 
   v9 = v14;
   if (v9)
@@ -2618,7 +2618,7 @@ LABEL_64:
 
 LABEL_11:
 
-    v5[2](v5, v10);
+    errorCopy[2](errorCopy, v10);
     goto LABEL_12;
   }
 
@@ -2636,13 +2636,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5[2](v5, 0);
+  errorCopy[2](errorCopy, 0);
 LABEL_12:
 }
 
-- (void)resetConfig:(id)a3
+- (void)resetConfig:(id)config
 {
-  v79 = a3;
+  configCopy = config;
   v3 = sub_1000022A8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
@@ -2660,8 +2660,8 @@ LABEL_12:
   v7 = [NSArray arrayWithObjects:v95 count:3];
   v8 = [NSURL fileURLWithPathComponents:v7];
 
-  v9 = [v8 path];
-  v10 = [NSDictionary dictionaryWithContentsOfFile:v9];
+  path = [v8 path];
+  v10 = [NSDictionary dictionaryWithContentsOfFile:path];
 
   if (v10)
   {
@@ -2705,15 +2705,15 @@ LABEL_12:
   v17 = [NSArray arrayWithObjects:v94 count:3];
   v18 = [NSURL fileURLWithPathComponents:v17];
 
-  v19 = [v18 path];
-  v20 = [NSDictionary dictionaryWithContentsOfFile:v19];
+  path2 = [v18 path];
+  v20 = [NSDictionary dictionaryWithContentsOfFile:path2];
 
   v89 = 0u;
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v21 = [v20 allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v87 objects:v93 count:16];
+  allKeys = [v20 allKeys];
+  v22 = [allKeys countByEnumeratingWithState:&v87 objects:v93 count:16];
   if (v22)
   {
     v23 = v22;
@@ -2724,7 +2724,7 @@ LABEL_12:
       {
         if (*v88 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys);
         }
 
         v26 = *(*(&v87 + 1) + 8 * i);
@@ -2737,7 +2737,7 @@ LABEL_12:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v87 objects:v93 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v87 objects:v93 count:16];
     }
 
     while (v23);
@@ -2960,8 +2960,8 @@ LABEL_12:
 
 LABEL_73:
 
-    v76 = v79;
-    (*(v79 + 2))(v79, v73);
+    v76 = configCopy;
+    (*(configCopy + 2))(configCopy, v73);
 
     goto LABEL_74;
   }
@@ -2980,14 +2980,14 @@ LABEL_73:
     goto LABEL_73;
   }
 
-  v76 = v79;
-  (*(v79 + 2))(v79, 0);
+  v76 = configCopy;
+  (*(configCopy + 2))(configCopy, 0);
 LABEL_74:
 }
 
-- (void)pingService:(id)a3
+- (void)pingService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[NSXPCConnection currentConnection];
   proc_name([v4 processIdentifier], buffer, 0x21u);
   v5 = [NSString stringWithCString:buffer encoding:4];
@@ -3000,11 +3000,11 @@ LABEL_74:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412802;
-    v9 = v3;
+    v9 = serviceCopy;
     v10 = 2114;
     v11 = v5;
     v12 = 1024;
-    v13 = [v4 processIdentifier];
+    processIdentifier = [v4 processIdentifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received Ping: %@ from Client: %{public}@ [%i]", &v8, 0x1Cu);
   }
 
@@ -3012,59 +3012,59 @@ LABEL_74:
   [v7 _didPingService:0];
 }
 
-- (void)isInRecordingWorkflow:(id)a3
+- (void)isInRecordingWorkflow:(id)workflow
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(PTService *)self isInRecordingWorkflow], 0);
+  workflowCopy = workflow;
+  (*(workflow + 2))(workflowCopy, [(PTService *)self isInRecordingWorkflow], 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 processIdentifier];
-  proc_name(v6, buffer, 0x20u);
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  proc_name(processIdentifier, buffer, 0x20u);
   v7 = [NSString stringWithUTF8String:buffer];
-  v8 = [(PTService *)self _connectionIsEntitled:v5 toEntitlement:@"com.apple.PerformanceTrace.Tracing"];
+  v8 = [(PTService *)self _connectionIsEntitled:connectionCopy toEntitlement:@"com.apple.PerformanceTrace.Tracing"];
   if (v8)
   {
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PTServiceInterface];
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PTTraceSessionDelegatePrivate];
-    [v5 setRemoteObjectInterface:v10];
+    [connectionCopy setRemoteObjectInterface:v10];
 
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10000A1E0;
     v24[3] = &unk_100018990;
     v11 = v7;
-    v28 = v6;
+    v28 = processIdentifier;
     v25 = v11;
-    v26 = self;
-    v27 = v5;
-    [v5 setInvalidationHandler:v24];
+    selfCopy = self;
+    v27 = connectionCopy;
+    [connectionCopy setInvalidationHandler:v24];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_10000A31C;
     v19 = &unk_100018990;
     v12 = v11;
-    v23 = v6;
+    v23 = processIdentifier;
     v20 = v12;
-    v21 = self;
-    v22 = v5;
-    [v5 setInterruptionHandler:&v16];
+    selfCopy2 = self;
+    v22 = connectionCopy;
+    [connectionCopy setInterruptionHandler:&v16];
     v13 = sub_1000022A8();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v30 = v12;
       v31 = 1024;
-      v32 = v6;
+      v32 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received and accepted new connection from %{public}@ [%d]", buf, 0x12u);
     }
 
-    [v5 resume];
+    [connectionCopy resume];
     v14 = v25;
   }
 

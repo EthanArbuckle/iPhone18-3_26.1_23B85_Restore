@@ -1,16 +1,16 @@
 @interface PSAccountsLinkSpecifier
-- (PSAccountsLinkSpecifier)initWithDetailClass:(Class)a3;
-- (id)_accountsCount:(id)a3;
+- (PSAccountsLinkSpecifier)initWithDetailClass:(Class)class;
+- (id)_accountsCount:(id)count;
 @end
 
 @implementation PSAccountsLinkSpecifier
 
-- (PSAccountsLinkSpecifier)initWithDetailClass:(Class)a3
+- (PSAccountsLinkSpecifier)initWithDetailClass:(Class)class
 {
   v5 = PS_LocalizedStringForSystemPolicy(@"ACCOUNTS");
   v9.receiver = self;
   v9.super_class = PSAccountsLinkSpecifier;
-  v6 = [(PSSpecifier *)&v9 initWithName:v5 target:self set:0 get:sel__accountsCount_ detail:a3 cell:2 edit:0];
+  v6 = [(PSSpecifier *)&v9 initWithName:v5 target:self set:0 get:sel__accountsCount_ detail:class cell:2 edit:0];
 
   if (v6)
   {
@@ -20,7 +20,7 @@
   return v6;
 }
 
-- (id)_accountsCount:(id)a3
+- (id)_accountsCount:(id)count
 {
   v3 = MEMORY[0x1E696ADA0];
   v4 = MEMORY[0x1E696AD98];

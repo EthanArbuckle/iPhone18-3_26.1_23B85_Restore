@@ -1,11 +1,11 @@
 @interface CTLazuliMessageChatBotFontStyle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliMessageChatBotFontStyle:(id)a3;
-- (CTLazuliMessageChatBotFontStyle)initWithCoder:(id)a3;
-- (CTLazuliMessageChatBotFontStyle)initWithReflection:(const MessageChatBotFontStyle *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliMessageChatBotFontStyle:(id)style;
+- (CTLazuliMessageChatBotFontStyle)initWithCoder:(id)coder;
+- (CTLazuliMessageChatBotFontStyle)initWithReflection:(const MessageChatBotFontStyle *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliMessageChatBotFontStyle
@@ -21,14 +21,14 @@
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliMessageChatBotFontStyle:(id)a3
+- (BOOL)isEqualToCTLazuliMessageChatBotFontStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CTLazuliMessageChatBotFontStyle *)self bold];
-  if (v5 == [v4 bold] && (v6 = -[CTLazuliMessageChatBotFontStyle italics](self, "italics"), v6 == objc_msgSend(v4, "italics")))
+  styleCopy = style;
+  bold = [(CTLazuliMessageChatBotFontStyle *)self bold];
+  if (bold == [styleCopy bold] && (v6 = -[CTLazuliMessageChatBotFontStyle italics](self, "italics"), v6 == objc_msgSend(styleCopy, "italics")))
   {
-    v8 = [(CTLazuliMessageChatBotFontStyle *)self underline];
-    v7 = v8 ^ [v4 underline] ^ 1;
+    underline = [(CTLazuliMessageChatBotFontStyle *)self underline];
+    v7 = underline ^ [styleCopy underline] ^ 1;
   }
 
   else
@@ -39,66 +39,66 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliMessageChatBotFontStyle *)self isEqualToCTLazuliMessageChatBotFontStyle:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliMessageChatBotFontStyle *)self isEqualToCTLazuliMessageChatBotFontStyle:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CTLazuliMessageChatBotFontStyle allocWithZone:a3];
+  v4 = [CTLazuliMessageChatBotFontStyle allocWithZone:zone];
   [(CTLazuliMessageChatBotFontStyle *)v4 setBold:self->_bold];
   [(CTLazuliMessageChatBotFontStyle *)v4 setItalics:self->_italics];
   [(CTLazuliMessageChatBotFontStyle *)v4 setUnderline:self->_underline];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_bold forKey:@"kBoldKey"];
-  [v4 encodeBool:self->_italics forKey:@"kItalicsKey"];
-  [v4 encodeBool:self->_underline forKey:@"kUnderlineKey"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_bold forKey:@"kBoldKey"];
+  [coderCopy encodeBool:self->_italics forKey:@"kItalicsKey"];
+  [coderCopy encodeBool:self->_underline forKey:@"kUnderlineKey"];
 }
 
-- (CTLazuliMessageChatBotFontStyle)initWithCoder:(id)a3
+- (CTLazuliMessageChatBotFontStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTLazuliMessageChatBotFontStyle;
   v5 = [(CTLazuliMessageChatBotFontStyle *)&v7 init];
   if (v5)
   {
-    v5->_bold = [v4 decodeBoolForKey:@"kBoldKey"];
-    v5->_italics = [v4 decodeBoolForKey:@"kItalicsKey"];
-    v5->_underline = [v4 decodeBoolForKey:@"kUnderlineKey"];
+    v5->_bold = [coderCopy decodeBoolForKey:@"kBoldKey"];
+    v5->_italics = [coderCopy decodeBoolForKey:@"kItalicsKey"];
+    v5->_underline = [coderCopy decodeBoolForKey:@"kUnderlineKey"];
   }
 
   return v5;
 }
 
-- (CTLazuliMessageChatBotFontStyle)initWithReflection:(const MessageChatBotFontStyle *)a3
+- (CTLazuliMessageChatBotFontStyle)initWithReflection:(const MessageChatBotFontStyle *)reflection
 {
   v5.receiver = self;
   v5.super_class = CTLazuliMessageChatBotFontStyle;
   result = [(CTLazuliMessageChatBotFontStyle *)&v5 init];
   if (result)
   {
-    result->_bold = a3->var0;
-    result->_italics = a3->var1;
-    result->_underline = a3->var2;
+    result->_bold = reflection->var0;
+    result->_italics = reflection->var1;
+    result->_underline = reflection->var2;
   }
 
   return result;

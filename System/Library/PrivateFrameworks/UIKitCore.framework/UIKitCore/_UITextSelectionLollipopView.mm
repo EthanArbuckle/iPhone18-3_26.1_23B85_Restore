@@ -1,24 +1,24 @@
 @interface _UITextSelectionLollipopView
 + (id)_visualStyle;
 - ($2BD9DB369DDD0E9E489A8699A184AD3B)originShadow;
-- ($59ECE587B56CBF78EA342F243490147C)originShape:(SEL)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)_dotCenterForDotBounds:(CGRect)a3 stemPoint:(unint64_t)a4;
+- ($59ECE587B56CBF78EA342F243490147C)originShape:(SEL)shape;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)_dotCenterForDotBounds:(CGRect)bounds stemPoint:(unint64_t)point;
 - (CGRect)dotViewFrame;
-- (CGRect)preferredFrameForRect:(CGRect)a3;
+- (CGRect)preferredFrameForRect:(CGRect)rect;
 - (CGSize)_dotSize;
-- (_UITextSelectionLollipopView)initWithFrame:(CGRect)a3;
+- (_UITextSelectionLollipopView)initWithFrame:(CGRect)frame;
 - (id)accessibilityIdentifier;
 - (id)visualStyle;
 - (void)_layoutDotView;
 - (void)_layoutStemView;
-- (void)_updateFillColorsForTintColor:(id)a3;
+- (void)_updateFillColorsForTintColor:(id)color;
 - (void)_usePlainViewForStemView;
 - (void)_useShapeViewForStemView;
 - (void)layoutSubviews;
-- (void)setCustomShape:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setPortalsDotToContainerWindow:(BOOL)a3;
+- (void)setCustomShape:(id)shape;
+- (void)setHidden:(BOOL)hidden;
+- (void)setPortalsDotToContainerWindow:(BOOL)window;
 - (void)tintColorDidChange;
 @end
 
@@ -40,8 +40,8 @@
   v15.size.width = v7;
   v15.size.height = v9;
   v10 = CGRectGetWidth(v15) * 0.5;
-  v11 = [(UIView *)self->_dotView layer];
-  [v11 setCornerRadius:v10];
+  layer = [(UIView *)self->_dotView layer];
+  [layer setCornerRadius:v10];
 
   if (self->_hiddenForLoupeAnimation)
   {
@@ -52,16 +52,16 @@
 
   else
   {
-    v13 = [(_UITextSelectionLollipopView *)self visualStyle];
-    [v13 grabberOpacity];
+    visualStyle = [(_UITextSelectionLollipopView *)self visualStyle];
+    [visualStyle grabberOpacity];
     [(UIView *)self->_dotView setAlpha:?];
   }
 }
 
 - (CGSize)_dotSize
 {
-  v3 = [(_UITextSelectionLollipopView *)self visualStyle];
-  [v3 dotSizeWithEngagedEffect:{-[_UITextSelectionLollipopView isEngaged](self, "isEngaged")}];
+  visualStyle = [(_UITextSelectionLollipopView *)self visualStyle];
+  [visualStyle dotSizeWithEngagedEffect:{-[_UITextSelectionLollipopView isEngaged](self, "isEngaged")}];
   v5 = v4;
 
   v6 = v5;
@@ -78,8 +78,8 @@
   [(UIView *)&v4 layoutSubviews];
   [(_UITextSelectionLollipopView *)self _layoutStemView];
   [(_UITextSelectionLollipopView *)self _layoutDotView];
-  v3 = [(UIView *)self tintColor];
-  [(_UITextSelectionLollipopView *)self _updateFillColorsForTintColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  [(_UITextSelectionLollipopView *)self _updateFillColorsForTintColor:tintColor];
 }
 
 - (void)_layoutStemView
@@ -89,12 +89,12 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UITextSelectionLollipopView *)self isVertical];
-  v12 = [(_UITextSelectionLollipopView *)self visualStyle];
-  [v12 stemWidth];
+  isVertical = [(_UITextSelectionLollipopView *)self isVertical];
+  visualStyle = [(_UITextSelectionLollipopView *)self visualStyle];
+  [visualStyle stemWidth];
   v14 = v13;
 
-  if (v11)
+  if (isVertical)
   {
     v8 = v14;
   }
@@ -108,9 +108,9 @@
   if (v15)
   {
     [(UIView *)self->_stemView setFrame:v4, v6, v8, v10];
-    v16 = [(UIBezierPath *)v15 CGPath];
-    v17 = [(UIView *)self->_stemView shapeLayer];
-    [v17 setPath:v16];
+    cGPath = [(UIBezierPath *)v15 CGPath];
+    shapeLayer = [(UIView *)self->_stemView shapeLayer];
+    [shapeLayer setPath:cGPath];
   }
 
   else
@@ -126,27 +126,27 @@
     }
 
     direction = self->_direction;
-    v20 = [(_UITextSelectionLollipopView *)self isVertical];
+    isVertical2 = [(_UITextSelectionLollipopView *)self isVertical];
     v21 = 4;
-    if (v20)
+    if (isVertical2)
     {
       v21 = 8;
     }
 
     v22 = 10;
-    if (v20)
+    if (isVertical2)
     {
       v22 = 3;
     }
 
     v23 = 1;
-    if (v20)
+    if (isVertical2)
     {
       v23 = 2;
     }
 
     v24 = 5;
-    if (v20)
+    if (isVertical2)
     {
       v24 = 12;
     }
@@ -170,12 +170,12 @@
 
     if (fabs(self->_shapeScale + -1.0) >= 2.22044605e-16)
     {
-      v28 = [(_UITextSelectionLollipopView *)self isVertical];
+      isVertical3 = [(_UITextSelectionLollipopView *)self isVertical];
       shapeScale = self->_shapeScale;
       v30 = v10 * shapeScale;
       v31 = v8 / shapeScale;
       v32 = v8 * shapeScale;
-      if (v28)
+      if (isVertical3)
       {
         v8 = v32;
       }
@@ -185,7 +185,7 @@
         v8 = v31;
       }
 
-      if (v28)
+      if (isVertical3)
       {
         v4 = 0.0;
       }
@@ -201,11 +201,11 @@
     }
 
     [(UIView *)self->_stemView setFrame:v4, v6, v8, v10];
-    v33 = [(UIView *)self->_stemView layer];
-    [v33 setMaskedCorners:v27];
+    layer = [(UIView *)self->_stemView layer];
+    [layer setMaskedCorners:v27];
 
-    v17 = [(UIView *)self->_stemView layer];
-    [v17 setCornerRadius:v18];
+    shapeLayer = [(UIView *)self->_stemView layer];
+    [shapeLayer setCornerRadius:v18];
   }
 }
 
@@ -237,11 +237,11 @@
   self->_stemView = v4;
 
   v6 = *MEMORY[0x1E69796E8];
-  v7 = [(UIView *)self->_stemView layer];
-  [v7 setCornerCurve:v6];
+  layer = [(UIView *)self->_stemView layer];
+  [layer setCornerCurve:v6];
 
-  v8 = [(UIView *)self->_stemView layer];
-  [v8 setAllowsEdgeAntialiasing:1];
+  layer2 = [(UIView *)self->_stemView layer];
+  [layer2 setAllowsEdgeAntialiasing:1];
 
   [(UIView *)self addSubview:self->_stemView];
 
@@ -253,15 +253,15 @@
   v4.receiver = self;
   v4.super_class = _UITextSelectionLollipopView;
   [(UIView *)&v4 tintColorDidChange];
-  v3 = [(UIView *)self tintColor];
-  [(_UITextSelectionLollipopView *)self _updateFillColorsForTintColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  [(_UITextSelectionLollipopView *)self _updateFillColorsForTintColor:tintColor];
 }
 
-- (_UITextSelectionLollipopView)initWithFrame:(CGRect)a3
+- (_UITextSelectionLollipopView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = _UITextSelectionLollipopView;
-  v3 = [(UIView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -277,32 +277,32 @@
     v4->_dotView = v7;
 
     v9 = +[UIColor blackColor];
-    v10 = [v9 CGColor];
-    v11 = [(UIView *)v4->_dotView layer];
-    [v11 setShadowColor:v10];
+    cGColor = [v9 CGColor];
+    layer = [(UIView *)v4->_dotView layer];
+    [layer setShadowColor:cGColor];
 
-    v12 = [(_UITextSelectionLollipopView *)v4 visualStyle];
-    [v12 shadowRadius];
+    visualStyle = [(_UITextSelectionLollipopView *)v4 visualStyle];
+    [visualStyle shadowRadius];
     v14 = v13;
-    v15 = [(UIView *)v4->_dotView layer];
-    [v15 setShadowRadius:v14];
+    layer2 = [(UIView *)v4->_dotView layer];
+    [layer2 setShadowRadius:v14];
 
-    v16 = [(_UITextSelectionLollipopView *)v4 visualStyle];
-    [v16 shadowOffset];
+    visualStyle2 = [(_UITextSelectionLollipopView *)v4 visualStyle];
+    [visualStyle2 shadowOffset];
     v18 = v17;
     v20 = v19;
-    v21 = [(UIView *)v4->_dotView layer];
-    [v21 setShadowOffset:{v18, v20}];
+    layer3 = [(UIView *)v4->_dotView layer];
+    [layer3 setShadowOffset:{v18, v20}];
 
-    v22 = [(_UITextSelectionLollipopView *)v4 visualStyle];
-    [v22 shadowOpacity];
+    visualStyle3 = [(_UITextSelectionLollipopView *)v4 visualStyle];
+    [visualStyle3 shadowOpacity];
     *&v18 = v23;
-    v24 = [(UIView *)v4->_dotView layer];
+    layer4 = [(UIView *)v4->_dotView layer];
     LODWORD(v25) = LODWORD(v18);
-    [v24 setShadowOpacity:v25];
+    [layer4 setShadowOpacity:v25];
 
-    v26 = [(UIView *)v4->_dotView layer];
-    [v26 setShadowPathIsBounds:1];
+    layer5 = [(UIView *)v4->_dotView layer];
+    [layer5 setShadowPathIsBounds:1];
 
     [(UIView *)v4 addSubview:v4->_dotView];
   }
@@ -310,14 +310,14 @@
   return v4;
 }
 
-- (void)setPortalsDotToContainerWindow:(BOOL)a3
+- (void)setPortalsDotToContainerWindow:(BOOL)window
 {
-  if (a3)
+  if (window)
   {
-    v4 = [(UIView *)self isHidden];
+    isHidden = [(UIView *)self isHidden];
     p_portalsDotToContainerWindow = &self->_portalsDotToContainerWindow;
-    self->_portalsDotToContainerWindow = !v4;
-    if (v4)
+    self->_portalsDotToContainerWindow = !isHidden;
+    if (isHidden)
     {
       v6 = 0;
     }
@@ -330,15 +330,15 @@
     else
     {
       p_super = self->_dotView;
-      v8 = [(_UITextSelectionLollipopView *)self visualStyle];
-      [v8 minimumStemLength];
+      visualStyle = [(_UITextSelectionLollipopView *)self visualStyle];
+      [visualStyle minimumStemLength];
       v10 = v9;
 
       if (v10 > 0.0)
       {
-        v11 = self;
+        selfCopy = self;
 
-        p_super = &v11->super;
+        p_super = &selfCopy->super;
       }
 
       v12 = objc_alloc_init(_UIContainerWindowPortalInteraction);
@@ -369,20 +369,20 @@
   }
 }
 
-- (void)setCustomShape:(id)a3
+- (void)setCustomShape:(id)shape
 {
-  v5 = a3;
+  shapeCopy = shape;
   customShape = self->_customShape;
-  if (customShape != v5)
+  if (customShape != shapeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_customShape, a3);
-    v5 = v7;
+    v7 = shapeCopy;
+    objc_storeStrong(&self->_customShape, shape);
+    shapeCopy = v7;
     if (v7 && !customShape)
     {
       [(_UITextSelectionLollipopView *)self _useShapeViewForStemView];
 LABEL_8:
-      v5 = v7;
+      shapeCopy = v7;
       goto LABEL_9;
     }
 
@@ -409,13 +409,13 @@ LABEL_9:
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = _UITextSelectionLollipopView;
   [(UIView *)&v5 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
     [(_UITextSelectionLollipopView *)self setPortalsDotToContainerWindow:0];
   }
@@ -431,11 +431,11 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UITextSelectionLollipopView;
-  return [(UIView *)&v5 pointInside:a4 withEvent:a3.x, a3.y];
+  return [(UIView *)&v5 pointInside:event withEvent:inside.x, inside.y];
 }
 
 - (id)accessibilityIdentifier
@@ -452,60 +452,60 @@ LABEL_9:
   }
 }
 
-- (void)_updateFillColorsForTintColor:(id)a3
+- (void)_updateFillColorsForTintColor:(id)color
 {
   dotPortalInteraction = self->_dotPortalInteraction;
-  v5 = a3;
-  v6 = [(_UIContainerWindowPortalInteraction *)dotPortalInteraction isEnabled];
+  colorCopy = color;
+  isEnabled = [(_UIContainerWindowPortalInteraction *)dotPortalInteraction isEnabled];
   v7 = 1.0;
-  if (!v6)
+  if (!isEnabled)
   {
-    [v5 alphaComponent];
+    [colorCopy alphaComponent];
   }
 
   [(UIView *)self setAlpha:v7];
-  v19 = [v5 colorWithAlphaComponent:1.0];
+  v19 = [colorCopy colorWithAlphaComponent:1.0];
 
   v8 = v19;
-  v9 = [v19 CGColor];
-  v10 = [(UIView *)self->_dotView layer];
-  [v10 setBackgroundColor:v9];
+  cGColor = [v19 CGColor];
+  layer = [(UIView *)self->_dotView layer];
+  [layer setBackgroundColor:cGColor];
 
   if (self->_customShape)
   {
-    v11 = self->_stemView;
-    v12 = [v19 CGColor];
-    v13 = [(UIView *)v11 shapeLayer];
-    [v13 setFillColor:v12];
+    layer2 = self->_stemView;
+    cGColor2 = [v19 CGColor];
+    shapeLayer = [(UIView *)layer2 shapeLayer];
+    [shapeLayer setFillColor:cGColor2];
 
-    v14 = [(_UITextSelectionLollipopView *)self customShape];
-    [v14 lineWidth];
+    customShape = [(_UITextSelectionLollipopView *)self customShape];
+    [customShape lineWidth];
     if (v15 <= 0.0)
     {
-      v16 = 0;
+      cGColor3 = 0;
     }
 
     else
     {
-      v16 = [v19 CGColor];
+      cGColor3 = [v19 CGColor];
     }
 
-    v18 = [(UIView *)v11 shapeLayer];
-    [v18 setStrokeColor:v16];
+    shapeLayer2 = [(UIView *)layer2 shapeLayer];
+    [shapeLayer2 setStrokeColor:cGColor3];
   }
 
   else
   {
-    v17 = [v19 CGColor];
-    v11 = [(UIView *)self->_stemView layer];
-    [(UIView *)v11 setBackgroundColor:v17];
+    cGColor4 = [v19 CGColor];
+    layer2 = [(UIView *)self->_stemView layer];
+    [(UIView *)layer2 setBackgroundColor:cGColor4];
   }
 }
 
-- (CGPoint)_dotCenterForDotBounds:(CGRect)a3 stemPoint:(unint64_t)a4
+- (CGPoint)_dotCenterForDotBounds:(CGRect)bounds stemPoint:(unint64_t)point
 {
-  width = a3.size.width;
-  v7 = [(_UITextSelectionLollipopView *)self visualStyle:a3.origin.x];
+  width = bounds.size.width;
+  v7 = [(_UITextSelectionLollipopView *)self visualStyle:bounds.origin.x];
   [v7 dotOverlapOffset];
   v9 = v8 * self->_shapeScale;
 
@@ -515,13 +515,13 @@ LABEL_9:
   customShape = self->_customShape;
   if (customShape)
   {
-    v14 = [(UIBezierPath *)customShape CGPath];
+    cGPath = [(UIBezierPath *)customShape CGPath];
     if (![(_UITextSelectionLollipopView *)self isVertical])
     {
-      if (a4)
+      if (point)
       {
         v25 = -v10;
-        v15 = v14;
+        v15 = cGPath;
         v16 = 4;
 LABEL_17:
         MidX = CornerPointFromPath(v15, v16, v25);
@@ -529,24 +529,24 @@ LABEL_17:
         goto LABEL_21;
       }
 
-      v15 = v14;
+      v15 = cGPath;
       v16 = 2;
 LABEL_15:
       v25 = v10;
       goto LABEL_17;
     }
 
-    if (a4 == 1)
+    if (point == 1)
     {
       v25 = -v10;
-      v15 = v14;
+      v15 = cGPath;
       v16 = 8;
       goto LABEL_17;
     }
 
-    if (!a4)
+    if (!point)
     {
-      v15 = v14;
+      v15 = cGPath;
       v16 = 1;
       goto LABEL_15;
     }
@@ -561,7 +561,7 @@ LABEL_15:
     v24 = v23;
     if ([(_UITextSelectionLollipopView *)self isVertical])
     {
-      if (a4 == 1)
+      if (point == 1)
       {
         v33.origin.x = v18;
         v33.origin.y = v20;
@@ -575,7 +575,7 @@ LABEL_15:
         MidY = v10 + CGRectGetHeight(v34);
       }
 
-      else if (!a4)
+      else if (!point)
       {
         v30.origin.x = v18;
         v30.origin.y = v20;
@@ -588,7 +588,7 @@ LABEL_15:
 
     else
     {
-      if (a4)
+      if (point)
       {
         MidX = -v10;
       }
@@ -618,18 +618,18 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)preferredFrameForRect:(CGRect)a3
+- (CGRect)preferredFrameForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITextSelectionLollipopView *)self isVertical];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  isVertical = [(_UITextSelectionLollipopView *)self isVertical];
   v9 = x;
   v10 = y;
   v11 = width;
   v12 = height;
-  if (v8)
+  if (isVertical)
   {
     v13 = CGRectGetHeight(*&v9);
   }
@@ -640,14 +640,14 @@ LABEL_21:
   }
 
   v14 = v13;
-  v15 = [(_UITextSelectionLollipopView *)self visualStyle];
-  [v15 minimumStemLength];
+  visualStyle = [(_UITextSelectionLollipopView *)self visualStyle];
+  [visualStyle minimumStemLength];
   v17 = v16;
 
   if (v14 < v17)
   {
-    v18 = [(_UITextSelectionLollipopView *)self visualStyle];
-    [v18 minimumStemLength];
+    visualStyle2 = [(_UITextSelectionLollipopView *)self visualStyle];
+    [visualStyle2 minimumStemLength];
     v20 = v19 - v14;
 
     v14 = v14 + v20;
@@ -667,8 +667,8 @@ LABEL_21:
 
   [(_UITextSelectionLollipopView *)self _dotSize];
   v22 = v21;
-  v23 = [(_UITextSelectionLollipopView *)self isVertical];
-  if (v23)
+  isVertical2 = [(_UITextSelectionLollipopView *)self isVertical];
+  if (isVertical2)
   {
     v24 = v22;
   }
@@ -678,7 +678,7 @@ LABEL_21:
     v24 = v14;
   }
 
-  if (v23)
+  if (isVertical2)
   {
     v25 = v14;
   }
@@ -697,7 +697,7 @@ LABEL_21:
   return result;
 }
 
-- ($59ECE587B56CBF78EA342F243490147C)originShape:(SEL)a3
+- ($59ECE587B56CBF78EA342F243490147C)originShape:(SEL)shape
 {
   v4 = a4;
   [(UIView *)self layoutIfNeeded];
@@ -741,14 +741,14 @@ LABEL_21:
 - ($2BD9DB369DDD0E9E489A8699A184AD3B)originShadow
 {
   retstr->var0 = +[UIColor blackColor];
-  v12 = [(_UITextSelectionLollipopView *)self visualStyle];
-  [v12 shadowOpacity];
+  visualStyle = [(_UITextSelectionLollipopView *)self visualStyle];
+  [visualStyle shadowOpacity];
   retstr->var1 = v5;
-  v6 = [(_UITextSelectionLollipopView *)self visualStyle];
-  [v6 shadowRadius];
+  visualStyle2 = [(_UITextSelectionLollipopView *)self visualStyle];
+  [visualStyle2 shadowRadius];
   retstr->var2 = v7;
-  v8 = [(_UITextSelectionLollipopView *)self visualStyle];
-  [v8 shadowOffset];
+  visualStyle3 = [(_UITextSelectionLollipopView *)self visualStyle];
+  [visualStyle3 shadowOffset];
   retstr->var3.width = v9;
   retstr->var3.height = v10;
 

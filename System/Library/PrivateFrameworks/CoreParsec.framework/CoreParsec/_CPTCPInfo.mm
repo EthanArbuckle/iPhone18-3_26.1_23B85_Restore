@@ -1,8 +1,8 @@
 @interface _CPTCPInfo
-- (BOOL)isEqual:(id)a3;
-- (_CPTCPInfo)initWithTelemetryDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPTCPInfo)initWithTelemetryDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPTCPInfo
@@ -14,84 +14,84 @@
   return v2 ^ v3 ^ [(NSString *)self->_statsType hash]^ (2654435761u * self->_txRetransmitBytes);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     avgRTT = self->_avgRTT;
-    if (avgRTT == [v4 avgRTT])
+    if (avgRTT == [equalCopy avgRTT])
     {
       cellRXPackets = self->_cellRXPackets;
-      if (cellRXPackets == [v4 cellRXPackets])
+      if (cellRXPackets == [equalCopy cellRXPackets])
       {
         cellTXPackets = self->_cellTXPackets;
-        if (cellTXPackets == [v4 cellTXPackets])
+        if (cellTXPackets == [equalCopy cellTXPackets])
         {
           connectAttempts = self->_connectAttempts;
-          if (connectAttempts == [v4 connectAttempts])
+          if (connectAttempts == [equalCopy connectAttempts])
           {
             connectSuccesses = self->_connectSuccesses;
-            if (connectSuccesses == [v4 connectSuccesses])
+            if (connectSuccesses == [equalCopy connectSuccesses])
             {
               minRTT = self->_minRTT;
-              if (minRTT == [v4 minRTT])
+              if (minRTT == [equalCopy minRTT])
               {
                 rxBytes = self->_rxBytes;
-                if (rxBytes == [v4 rxBytes])
+                if (rxBytes == [equalCopy rxBytes])
                 {
                   rxDuplicateBytes = self->_rxDuplicateBytes;
-                  if (rxDuplicateBytes == [v4 rxDuplicateBytes])
+                  if (rxDuplicateBytes == [equalCopy rxDuplicateBytes])
                   {
                     rxOutOfOrderBytes = self->_rxOutOfOrderBytes;
-                    if (rxOutOfOrderBytes == [v4 rxOutOfOrderBytes])
+                    if (rxOutOfOrderBytes == [equalCopy rxOutOfOrderBytes])
                     {
                       rxPackets = self->_rxPackets;
-                      if (rxPackets == [v4 rxPackets])
+                      if (rxPackets == [equalCopy rxPackets])
                       {
                         txBytes = self->_txBytes;
-                        if (txBytes == [v4 txBytes])
+                        if (txBytes == [equalCopy txBytes])
                         {
                           txPackets = self->_txPackets;
-                          if (txPackets == [v4 txPackets])
+                          if (txPackets == [equalCopy txPackets])
                           {
                             txRetransmitPackets = self->_txRetransmitPackets;
-                            if (txRetransmitPackets == [v4 txRetransmitPackets])
+                            if (txRetransmitPackets == [equalCopy txRetransmitPackets])
                             {
                               varRTT = self->_varRTT;
-                              if (varRTT == [v4 varRTT])
+                              if (varRTT == [equalCopy varRTT])
                               {
                                 wifiRXPackets = self->_wifiRXPackets;
-                                if (wifiRXPackets == [v4 wifiRXPackets])
+                                if (wifiRXPackets == [equalCopy wifiRXPackets])
                                 {
                                   wifiTXPackets = self->_wifiTXPackets;
-                                  if (wifiTXPackets == [v4 wifiTXPackets])
+                                  if (wifiTXPackets == [equalCopy wifiTXPackets])
                                   {
                                     wiredRXPackets = self->_wiredRXPackets;
-                                    if (wiredRXPackets == [v4 wiredRXPackets])
+                                    if (wiredRXPackets == [equalCopy wiredRXPackets])
                                     {
                                       wiredTXPackets = self->_wiredTXPackets;
-                                      if (wiredTXPackets == [v4 wiredTXPackets])
+                                      if (wiredTXPackets == [equalCopy wiredTXPackets])
                                       {
-                                        v23 = [(_CPTCPInfo *)self statsType];
-                                        v24 = [v4 statsType];
-                                        v25 = v24;
-                                        if ((v23 != 0) != (v24 == 0))
+                                        statsType = [(_CPTCPInfo *)self statsType];
+                                        statsType2 = [equalCopy statsType];
+                                        v25 = statsType2;
+                                        if ((statsType != 0) != (statsType2 == 0))
                                         {
-                                          v26 = [(_CPTCPInfo *)self statsType];
-                                          if (!v26)
+                                          statsType3 = [(_CPTCPInfo *)self statsType];
+                                          if (!statsType3)
                                           {
 
 LABEL_28:
                                             txRetransmitBytes = self->_txRetransmitBytes;
-                                            v31 = txRetransmitBytes == [v4 txRetransmitBytes];
+                                            v31 = txRetransmitBytes == [equalCopy txRetransmitBytes];
                                             goto LABEL_26;
                                           }
 
-                                          v27 = v26;
-                                          v28 = [(_CPTCPInfo *)self statsType];
-                                          v29 = [v4 statsType];
-                                          v30 = [v28 isEqual:v29];
+                                          v27 = statsType3;
+                                          statsType4 = [(_CPTCPInfo *)self statsType];
+                                          statsType5 = [equalCopy statsType];
+                                          v30 = [statsType4 isEqual:statsType5];
 
                                           if (v30)
                                           {
@@ -128,9 +128,9 @@ LABEL_26:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPTCPInfo *)self avgRTT])
   {
     avgRTT = self->_avgRTT;
@@ -239,9 +239,9 @@ LABEL_26:
     PBDataWriterWriteUint64Field();
   }
 
-  v22 = [(_CPTCPInfo *)self statsType];
+  statsType = [(_CPTCPInfo *)self statsType];
 
-  if (v22)
+  if (statsType)
   {
     statsType = self->_statsType;
     PBDataWriterWriteStringField();
@@ -256,10 +256,10 @@ LABEL_26:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPTCPInfo)initWithTelemetryDictionary:(id)a3
+- (_CPTCPInfo)initWithTelemetryDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_CPTCPInfo *)self init];
   if (v5)
   {
@@ -267,8 +267,8 @@ LABEL_26:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v4;
-    v6 = v4;
+    v18 = dictionaryCopy;
+    v6 = dictionaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
@@ -678,62 +678,62 @@ LABEL_26:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 unsignedIntegerValue];
+            unsignedIntegerValue = [v13 unsignedIntegerValue];
             switch(v12)
             {
               case 7:
-                [(_CPTCPInfo *)v5 setRxPackets:v14];
+                [(_CPTCPInfo *)v5 setRxPackets:unsignedIntegerValue];
                 break;
               case 8:
-                [(_CPTCPInfo *)v5 setRxBytes:v14];
+                [(_CPTCPInfo *)v5 setRxBytes:unsignedIntegerValue];
                 break;
               case 9:
-                [(_CPTCPInfo *)v5 setTxPackets:v14];
+                [(_CPTCPInfo *)v5 setTxPackets:unsignedIntegerValue];
                 break;
               case 10:
-                [(_CPTCPInfo *)v5 setTxBytes:v14];
+                [(_CPTCPInfo *)v5 setTxBytes:unsignedIntegerValue];
                 break;
               case 11:
-                [(_CPTCPInfo *)v5 setRxDuplicateBytes:v14];
+                [(_CPTCPInfo *)v5 setRxDuplicateBytes:unsignedIntegerValue];
                 break;
               case 12:
-                [(_CPTCPInfo *)v5 setRxOutOfOrderBytes:v14];
+                [(_CPTCPInfo *)v5 setRxOutOfOrderBytes:unsignedIntegerValue];
                 break;
               case 13:
-                [(_CPTCPInfo *)v5 setTxRetransmitPackets:v14];
+                [(_CPTCPInfo *)v5 setTxRetransmitPackets:unsignedIntegerValue];
                 break;
               case 14:
-                [(_CPTCPInfo *)v5 setConnectAttempts:v14];
+                [(_CPTCPInfo *)v5 setConnectAttempts:unsignedIntegerValue];
                 break;
               case 15:
-                [(_CPTCPInfo *)v5 setConnectSuccesses:v14];
+                [(_CPTCPInfo *)v5 setConnectSuccesses:unsignedIntegerValue];
                 break;
               case 16:
-                [(_CPTCPInfo *)v5 setMinRTT:v14];
+                [(_CPTCPInfo *)v5 setMinRTT:unsignedIntegerValue];
                 break;
               case 17:
-                [(_CPTCPInfo *)v5 setAvgRTT:v14];
+                [(_CPTCPInfo *)v5 setAvgRTT:unsignedIntegerValue];
                 break;
               case 18:
-                [(_CPTCPInfo *)v5 setVarRTT:v14];
+                [(_CPTCPInfo *)v5 setVarRTT:unsignedIntegerValue];
                 break;
               case 19:
-                [(_CPTCPInfo *)v5 setCellRXPackets:v14];
+                [(_CPTCPInfo *)v5 setCellRXPackets:unsignedIntegerValue];
                 break;
               case 20:
-                [(_CPTCPInfo *)v5 setCellTXPackets:v14];
+                [(_CPTCPInfo *)v5 setCellTXPackets:unsignedIntegerValue];
                 break;
               case 21:
-                [(_CPTCPInfo *)v5 setWifiRXPackets:v14];
+                [(_CPTCPInfo *)v5 setWifiRXPackets:unsignedIntegerValue];
                 break;
               case 22:
-                [(_CPTCPInfo *)v5 setWifiTXPackets:v14];
+                [(_CPTCPInfo *)v5 setWifiTXPackets:unsignedIntegerValue];
                 break;
               case 23:
-                [(_CPTCPInfo *)v5 setWiredRXPackets:v14];
+                [(_CPTCPInfo *)v5 setWiredRXPackets:unsignedIntegerValue];
                 break;
               case 24:
-                [(_CPTCPInfo *)v5 setWiredTXPackets:v14];
+                [(_CPTCPInfo *)v5 setWiredTXPackets:unsignedIntegerValue];
                 break;
               default:
                 break;
@@ -748,7 +748,7 @@ LABEL_26:
     }
 
     v15 = v5;
-    v4 = v18;
+    dictionaryCopy = v18;
   }
 
   v16 = *MEMORY[0x1E69E9840];

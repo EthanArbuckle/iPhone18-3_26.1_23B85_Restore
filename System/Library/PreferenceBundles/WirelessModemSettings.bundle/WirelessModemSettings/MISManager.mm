@@ -4,11 +4,11 @@
 - (void)attachMIS;
 - (void)authenticate;
 - (void)detachMIS;
-- (void)getState:(int *)a3 andReason:(int *)a4;
+- (void)getState:(int *)state andReason:(int *)reason;
 - (void)init;
-- (void)readMISState:(int *)a3 andReason:(int *)a4;
+- (void)readMISState:(int *)state andReason:(int *)reason;
 - (void)sendStateUpdate;
-- (void)setState:(int)a3;
+- (void)setState:(int)state;
 - (void)stopService;
 @end
 
@@ -19,7 +19,7 @@
   v3 = sharedInstance;
   if (!sharedInstance)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedInstance;
     sharedInstance = v4;
 
@@ -70,11 +70,11 @@
     CFRunLoopAddSource(Current, v4->_scRunLoopSource, *MEMORY[0x277CBF048]);
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:v4 selector:sel_applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel_applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 addObserver:v4 selector:sel_applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v4 selector:sel_applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
 
   CTTelephonyCenterGetDefault();
   CTTelephonyCenterAddObserver();
@@ -174,7 +174,7 @@ void __23__MISManager_attachMIS__block_invoke_22(uint64_t a1)
 - (void)authenticate
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v4 = *a2;
   v5[0] = 67109376;
   v5[1] = v3;
@@ -183,9 +183,9 @@ void __23__MISManager_attachMIS__block_invoke_22(uint64_t a1)
   _os_log_error_impl(&dword_23C15F000, log, OS_LOG_TYPE_ERROR, "Skipping authentication check (state: %u, reason: %u)", v5, 0xEu);
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if ((a3 & 0xFFFFFFFE) != 0x3FE)
+  if ((state & 0xFFFFFFFE) != 0x3FE)
   {
     [(MISManager *)a2 setState:?];
   }
@@ -195,14 +195,14 @@ void __23__MISManager_attachMIS__block_invoke_22(uint64_t a1)
     v5 = WMSLogComponent();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(MISManager *)a3 == 1023 setState:v5];
+      [(MISManager *)state == 1023 setState:v5];
     }
 
     _NETRBClientSetGlobalServiceState();
   }
 }
 
-- (void)getState:(int *)a3 andReason:(int *)a4
+- (void)getState:(int *)state andReason:(int *)reason
 {
   if (self->_needStateUpdate)
   {
@@ -210,18 +210,18 @@ void __23__MISManager_attachMIS__block_invoke_22(uint64_t a1)
     self->_needStateUpdate = 0;
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = self->_state;
+    *state = self->_state;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = self->_reason;
+    *reason = self->_reason;
   }
 }
 
-- (void)readMISState:(int *)a3 andReason:(int *)a4
+- (void)readMISState:(int *)state andReason:(int *)reason
 {
   state = self->_state;
   reason = self->_reason;
@@ -236,14 +236,14 @@ void __23__MISManager_attachMIS__block_invoke_22(uint64_t a1)
     reason = [v10 intValue];
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = state;
+    *state = state;
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = reason;
+    *reason = reason;
   }
 }
 
@@ -283,8 +283,8 @@ LABEL_5:
     v11 = v13;
     self->_state = HIDWORD(v13);
     self->_reason = v11;
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 postNotificationName:@"MISManagerStateChangedNotification" object:0 userInfo:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"MISManagerStateChangedNotification" object:0 userInfo:v10];
   }
 }
 

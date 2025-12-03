@@ -1,6 +1,6 @@
 @interface NTNewsModuleDescriptorsOperationPrefetchedContent
 - (NTNewsModuleDescriptorsOperationPrefetchedContent)init;
-- (NTNewsModuleDescriptorsOperationPrefetchedContent)initWithAppConfiguration:(id)a3 privateData:(id)a4 todayConfigsByRequestID:(id)a5 prefetchedHeldRecordsByType:(id)a6;
+- (NTNewsModuleDescriptorsOperationPrefetchedContent)initWithAppConfiguration:(id)configuration privateData:(id)data todayConfigsByRequestID:(id)d prefetchedHeldRecordsByType:(id)type;
 @end
 
 @implementation NTNewsModuleDescriptorsOperationPrefetchedContent
@@ -31,22 +31,22 @@
   objc_exception_throw(v6);
 }
 
-- (NTNewsModuleDescriptorsOperationPrefetchedContent)initWithAppConfiguration:(id)a3 privateData:(id)a4 todayConfigsByRequestID:(id)a5 prefetchedHeldRecordsByType:(id)a6
+- (NTNewsModuleDescriptorsOperationPrefetchedContent)initWithAppConfiguration:(id)configuration privateData:(id)data todayConfigsByRequestID:(id)d prefetchedHeldRecordsByType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  dataCopy = data;
+  dCopy = d;
+  typeCopy = type;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsModuleDescriptorsOperationPrefetchedContent initWithAppConfiguration:privateData:todayConfigsByRequestID:prefetchedHeldRecordsByType:];
-    if (v12)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v12)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -57,7 +57,7 @@
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!typeCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsModuleDescriptorsOperationPrefetchedContent initWithAppConfiguration:privateData:todayConfigsByRequestID:prefetchedHeldRecordsByType:];
   }
@@ -67,19 +67,19 @@ LABEL_6:
   v14 = [(NTNewsModuleDescriptorsOperationPrefetchedContent *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [configurationCopy copy];
     appConfiguration = v14->_appConfiguration;
     v14->_appConfiguration = v15;
 
-    v17 = [v11 copy];
+    v17 = [dataCopy copy];
     privateData = v14->_privateData;
     v14->_privateData = v17;
 
-    v19 = [v12 copy];
+    v19 = [dCopy copy];
     todayConfigsByRequestID = v14->_todayConfigsByRequestID;
     v14->_todayConfigsByRequestID = v19;
 
-    v21 = [v13 copy];
+    v21 = [typeCopy copy];
     prefetchedHeldRecordsByType = v14->_prefetchedHeldRecordsByType;
     v14->_prefetchedHeldRecordsByType = v21;
   }

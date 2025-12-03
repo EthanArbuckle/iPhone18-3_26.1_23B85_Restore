@@ -1,10 +1,10 @@
 @interface CLEEDRequestHelper
-- (CLEEDRequestHelper)initWithDelegate:(id)a3 andQueue:(id)a4;
+- (CLEEDRequestHelper)initWithDelegate:(id)delegate andQueue:(id)queue;
 @end
 
 @implementation CLEEDRequestHelper
 
-- (CLEEDRequestHelper)initWithDelegate:(id)a3 andQueue:(id)a4
+- (CLEEDRequestHelper)initWithDelegate:(id)delegate andQueue:(id)queue
 {
   v29 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -18,9 +18,9 @@
     *buf = 136446722;
     v24 = "[CLEEDRequestHelper initWithDelegate:andQueue:]";
     v25 = 2114;
-    v26 = a3;
+    delegateCopy = delegate;
     v27 = 2114;
-    v28 = a4;
+    queueCopy = queue;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[Delegate:%{public}@,Queue:%{public}@]", buf, 0x20u);
   }
 
@@ -36,9 +36,9 @@
     v17 = 136446722;
     v18 = "[CLEEDRequestHelper initWithDelegate:andQueue:]";
     v19 = 2114;
-    v20 = a3;
+    delegateCopy2 = delegate;
     v21 = 2114;
-    v22 = a4;
+    queueCopy2 = queue;
     v9 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDRequestHelper initWithDelegate:andQueue:]", "CoreLocation: %s\n", v9);
     if (v9 != buf)
@@ -49,7 +49,7 @@
 
   v16.receiver = self;
   v16.super_class = CLEEDRequestHelper;
-  v10 = [(CLEEDHelper *)&v16 initWithDelegate:a3 queue:a4];
+  v10 = [(CLEEDHelper *)&v16 initWithDelegate:delegate queue:queue];
   if (v10)
   {
     if (qword_1EAFE46E0 != -1)

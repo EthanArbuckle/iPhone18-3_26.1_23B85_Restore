@@ -8,7 +8,7 @@
 + (void)startVTP
 {
   v14 = *MEMORY[0x1E69E9840];
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v3 = vtpRefCount;
   if (!vtpRefCount)
   {
@@ -35,13 +35,13 @@
     }
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 }
 
 + (void)stopVTP
 {
   v13 = *MEMORY[0x1E69E9840];
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (vtpRefCount >= 1)
   {
     --vtpRefCount;
@@ -69,7 +69,7 @@
     }
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 }
 
 @end

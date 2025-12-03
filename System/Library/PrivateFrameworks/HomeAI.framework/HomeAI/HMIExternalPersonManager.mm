@@ -1,41 +1,41 @@
 @interface HMIExternalPersonManager
-- (HMIExternalPersonManager)initWithUUID:(id)a3 homeUUID:(id)a4;
-- (HMIExternalPersonManager)initWithUUID:(id)a3 homeUUID:(id)a4 watchdogTimer:(id)a5;
+- (HMIExternalPersonManager)initWithUUID:(id)d homeUUID:(id)iD;
+- (HMIExternalPersonManager)initWithUUID:(id)d homeUUID:(id)iD watchdogTimer:(id)timer;
 - (HMIExternalPersonManagerDataSource)dataSource;
 - (HMIExternalPersonManagerSettings)settings;
 - (id)logIdentifier;
-- (void)_updateSettings:(id)a3;
+- (void)_updateSettings:(id)settings;
 - (void)handleDataChanged;
-- (void)handleRemovedFaceCropWithUUID:(id)a3;
-- (void)handleRemovedFaceprintWithUUID:(id)a3;
-- (void)handleRemovedPersonWithUUID:(id)a3;
-- (void)handleUpdatedFaceprint:(id)a3;
-- (void)handleUpdatedPerson:(id)a3;
-- (void)handleUpdatedPersonFaceCrop:(id)a3;
-- (void)handleUpdatedSettings:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)handleRemovedFaceCropWithUUID:(id)d;
+- (void)handleRemovedFaceprintWithUUID:(id)d;
+- (void)handleRemovedPersonWithUUID:(id)d;
+- (void)handleUpdatedFaceprint:(id)faceprint;
+- (void)handleUpdatedPerson:(id)person;
+- (void)handleUpdatedPersonFaceCrop:(id)crop;
+- (void)handleUpdatedSettings:(id)settings;
+- (void)setDataSource:(id)source;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIExternalPersonManager
 
-- (HMIExternalPersonManager)initWithUUID:(id)a3 homeUUID:(id)a4
+- (HMIExternalPersonManager)initWithUUID:(id)d homeUUID:(id)iD
 {
   v6 = MEMORY[0x277D0F920];
-  v7 = a4;
-  v8 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v9 = [[v6 alloc] initWithTimeInterval:28 options:5.0];
-  v10 = [(HMIExternalPersonManager *)self initWithUUID:v8 homeUUID:v7 watchdogTimer:v9];
+  v10 = [(HMIExternalPersonManager *)self initWithUUID:dCopy homeUUID:iDCopy watchdogTimer:v9];
 
   return v10;
 }
 
-- (HMIExternalPersonManager)initWithUUID:(id)a3 homeUUID:(id)a4 watchdogTimer:(id)a5
+- (HMIExternalPersonManager)initWithUUID:(id)d homeUUID:(id)iD watchdogTimer:(id)timer
 {
-  v9 = a5;
+  timerCopy = timer;
   v14.receiver = self;
   v14.super_class = HMIExternalPersonManager;
-  v10 = [(HMIPersonManager *)&v14 initWithUUID:a3 homeUUID:a4];
+  v10 = [(HMIPersonManager *)&v14 initWithUUID:d homeUUID:iD];
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -43,7 +43,7 @@
     v10->_operationQueue = v11;
 
     [(NSOperationQueue *)v10->_operationQueue setMaxConcurrentOperationCount:1];
-    objc_storeStrong(&v10->_watchdogTimer, a5);
+    objc_storeStrong(&v10->_watchdogTimer, timer);
     [(HMFTimer *)v10->_watchdogTimer setDelegate:v10];
     v10->_lock._os_unfair_lock_opaque = 0;
   }
@@ -51,14 +51,14 @@
   return v10;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_dataSource, v4);
+  objc_storeWeak(&self->_dataSource, sourceCopy);
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (sourceCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:0.0];
     objc_initWeak(location, v5);
@@ -68,10 +68,10 @@
     v11[3] = &unk_278752AC0;
     objc_copyWeak(&v13, location);
     v11[4] = self;
-    v12 = v4;
+    v12 = sourceCopy;
     [v5 addExecutionBlock:v11];
-    v6 = [(HMIExternalPersonManager *)self operationQueue];
-    [v6 addOperation:v5];
+    operationQueue = [(HMIExternalPersonManager *)self operationQueue];
+    [operationQueue addOperation:v5];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -80,7 +80,7 @@
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -168,7 +168,7 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -179,16 +179,16 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMIExternalPersonManager *)v4 watchdogTimer];
-  [v7 resume];
+  watchdogTimer = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleUpdatedPerson:(id)a3
+- (void)handleUpdatedPerson:(id)person
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personCopy = person;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -196,21 +196,21 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = personCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedPerson: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIExternalPersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleUpdatedPersonFaceCrop:(id)a3
+- (void)handleUpdatedPersonFaceCrop:(id)crop
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cropCopy = crop;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -218,21 +218,21 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = cropCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedPersonFaceCrop: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIExternalPersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleUpdatedFaceprint:(id)a3
+- (void)handleUpdatedFaceprint:(id)faceprint
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  faceprintCopy = faceprint;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -240,19 +240,19 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = faceprintCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedFaceprint: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)handleUpdatedSettings:(id)a3
+- (void)handleUpdatedSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -260,20 +260,20 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = settingsCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@handleUpdatedSettings: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMIExternalPersonManager *)v6 _updateSettings:v4];
+  [(HMIExternalPersonManager *)selfCopy _updateSettings:settingsCopy];
 }
 
-- (void)handleRemovedPersonWithUUID:(id)a3
+- (void)handleRemovedPersonWithUUID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -281,21 +281,21 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleRemovedPersonWithUUID: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIExternalPersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleRemovedFaceCropWithUUID:(id)a3
+- (void)handleRemovedFaceCropWithUUID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -303,21 +303,21 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleRemovedFaceCropWithUUID: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIExternalPersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleRemovedFaceprintWithUUID:(id)a3
+- (void)handleRemovedFaceprintWithUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -325,24 +325,24 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleRemovedFaceprintWithUUID: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(HMIPersonManager *)self isPersonDataAvailableViaHomeKit];
+  isPersonDataAvailableViaHomeKit = [(HMIPersonManager *)self isPersonDataAvailableViaHomeKit];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (isPersonDataAvailableViaHomeKit)
   {
     if (v10)
     {
@@ -354,15 +354,15 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
 
     objc_autoreleasePoolPop(v7);
     v12 = [HMIUpdatePersonsModelOperation alloc];
-    v13 = [(HMIPersonManager *)v8 UUID];
-    v14 = [(HMIPersonManager *)v8 homeUUID];
-    v15 = [(HMIUpdatePersonsModelOperation *)v12 initWithSourceUUID:v13 homeUUID:v14 external:1];
+    uUID = [(HMIPersonManager *)selfCopy UUID];
+    homeUUID = [(HMIPersonManager *)selfCopy homeUUID];
+    watchdogTimer2 = [(HMIUpdatePersonsModelOperation *)v12 initWithSourceUUID:uUID homeUUID:homeUUID external:1];
 
-    v16 = [(HMIExternalPersonManager *)v8 operationQueue];
-    [v16 addOperation:v15];
+    operationQueue = [(HMIExternalPersonManager *)selfCopy operationQueue];
+    [operationQueue addOperation:watchdogTimer2];
 
-    v17 = [(HMIExternalPersonManager *)v8 watchdogTimer];
-    [v17 suspend];
+    watchdogTimer = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+    [watchdogTimer suspend];
   }
 
   else
@@ -376,8 +376,8 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v7);
-    v15 = [(HMIExternalPersonManager *)v8 watchdogTimer];
-    [(HMIUpdatePersonsModelOperation *)v15 resume];
+    watchdogTimer2 = [(HMIExternalPersonManager *)selfCopy watchdogTimer];
+    [(HMIUpdatePersonsModelOperation *)watchdogTimer2 resume];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -386,19 +386,19 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMIPersonManager *)self UUID];
-  v5 = [(HMIPersonManager *)self homeUUID];
-  v6 = [v3 stringWithFormat:@"UUID:%@ HomeUUID:%@", v4, v5];
+  uUID = [(HMIPersonManager *)self UUID];
+  homeUUID = [(HMIPersonManager *)self homeUUID];
+  v6 = [v3 stringWithFormat:@"UUID:%@ HomeUUID:%@", uUID, homeUUID];
 
   return v6;
 }
 
-- (void)_updateSettings:(id)a3
+- (void)_updateSettings:(id)settings
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  settingsCopy = settings;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -406,18 +406,18 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     v23 = 138543618;
     v24 = v9;
     v25 = 2112;
-    v26 = v5;
+    v26 = settingsCopy;
     _os_log_impl(&dword_22D12F000, v8, OS_LOG_TYPE_INFO, "%{public}@Updating with settings: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   os_unfair_lock_lock_with_options();
-  objc_storeStrong(&v7->_settings, a3);
-  os_unfair_lock_unlock(&v7->_lock);
-  if (v5 && ([v5 isImportingFromPhotoLibraryEnabled] & 1) != 0)
+  objc_storeStrong(&selfCopy->_settings, settings);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (settingsCopy && ([settingsCopy isImportingFromPhotoLibraryEnabled] & 1) != 0)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v7;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -428,14 +428,14 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMIExternalPersonManager *)v11 watchdogTimer];
-    [(HMIRemovePersonsModelOperation *)v14 resume];
+    watchdogTimer = [(HMIExternalPersonManager *)v11 watchdogTimer];
+    [(HMIRemovePersonsModelOperation *)watchdogTimer resume];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v7;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -447,12 +447,12 @@ void __42__HMIExternalPersonManager_setDataSource___block_invoke_3(uint64_t a1, 
 
     objc_autoreleasePoolPop(v15);
     v19 = [HMIRemovePersonsModelOperation alloc];
-    v20 = [(HMIPersonManager *)v16 UUID];
-    v21 = [(HMIPersonManager *)v16 homeUUID];
-    v14 = [(HMIRemovePersonsModelOperation *)v19 initWithSourceUUID:v20 homeUUID:v21 external:1];
+    uUID = [(HMIPersonManager *)v16 UUID];
+    homeUUID = [(HMIPersonManager *)v16 homeUUID];
+    watchdogTimer = [(HMIRemovePersonsModelOperation *)v19 initWithSourceUUID:uUID homeUUID:homeUUID external:1];
 
-    v22 = [(HMIExternalPersonManager *)v16 operationQueue];
-    [v22 addOperation:v14];
+    operationQueue = [(HMIExternalPersonManager *)v16 operationQueue];
+    [operationQueue addOperation:watchdogTimer];
   }
 }
 

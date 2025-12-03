@@ -1,25 +1,25 @@
 @interface PHACoreDuetDatasetSample
-- (PHACoreDuetDatasetSample)initWithIdentifier:(id)a3 andDate:(id)a4 forSubset:(id)a5;
+- (PHACoreDuetDatasetSample)initWithIdentifier:(id)identifier andDate:(id)date forSubset:(id)subset;
 @end
 
 @implementation PHACoreDuetDatasetSample
 
-- (PHACoreDuetDatasetSample)initWithIdentifier:(id)a3 andDate:(id)a4 forSubset:(id)a5
+- (PHACoreDuetDatasetSample)initWithIdentifier:(id)identifier andDate:(id)date forSubset:(id)subset
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
+  subsetCopy = subset;
   v15.receiver = self;
   v15.super_class = PHACoreDuetDatasetSample;
   v11 = [(PHACoreDuetDatasetSample *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(PHACoreDuetDatasetSample *)v11 setIdentifier:v8];
-    [(PHACoreDuetDatasetSample *)v12 setDate:v9];
-    if (v10)
+    [(PHACoreDuetDatasetSample *)v11 setIdentifier:identifierCopy];
+    [(PHACoreDuetDatasetSample *)v12 setDate:dateCopy];
+    if (subsetCopy)
     {
-      v13 = v10;
+      v13 = subsetCopy;
     }
 
     else

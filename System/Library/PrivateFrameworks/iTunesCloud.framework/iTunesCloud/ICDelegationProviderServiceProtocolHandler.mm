@@ -1,32 +1,32 @@
 @interface ICDelegationProviderServiceProtocolHandler
-- (ICDelegationProviderServiceProtocolHandler)initWithUserIdentityStore:(id)a3 requestContext:(id)a4;
-- (void)_getPlayInfoRequestWithStartDelegationResponse:(id)a3 streamContexts:(id)a4 completionHandler:(id)a5;
-- (void)getFinishDelegationRequestsWithStartDelegationResponse:(id)a3 streamContexts:(id)a4 replyHandler:(id)a5;
-- (void)getStartDelegationRequestForAccountIDs:(id)a3 withCompletionHandler:(id)a4;
+- (ICDelegationProviderServiceProtocolHandler)initWithUserIdentityStore:(id)store requestContext:(id)context;
+- (void)_getPlayInfoRequestWithStartDelegationResponse:(id)response streamContexts:(id)contexts completionHandler:(id)handler;
+- (void)getFinishDelegationRequestsWithStartDelegationResponse:(id)response streamContexts:(id)contexts replyHandler:(id)handler;
+- (void)getStartDelegationRequestForAccountIDs:(id)ds withCompletionHandler:(id)handler;
 @end
 
 @implementation ICDelegationProviderServiceProtocolHandler
 
-- (void)_getPlayInfoRequestWithStartDelegationResponse:(id)a3 streamContexts:(id)a4 completionHandler:(id)a5
+- (void)_getPlayInfoRequestWithStartDelegationResponse:(id)response streamContexts:(id)contexts completionHandler:(id)handler
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v49 = a4;
-  v44 = a5;
+  responseCopy = response;
+  contextsCopy = contexts;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v61 = self;
+    selfCopy3 = self;
     v62 = 2114;
-    v63 = v7;
+    v63 = responseCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: _getPlayInfoRequestWithStartDelegationResponse - Starting - response=%{public}@", buf, 0x16u);
   }
 
-  v45 = v7;
-  if (v7)
+  v45 = responseCopy;
+  if (responseCopy)
   {
-    v9 = v7[3];
+    v9 = responseCopy[3];
   }
 
   else
@@ -70,7 +70,7 @@
         }
 
         v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v17];
-        v19 = [v49 objectForKey:v18];
+        v19 = [contextsCopy objectForKey:v18];
 
         if (v19)
         {
@@ -94,7 +94,7 @@
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v61 = self;
+              selfCopy3 = self;
               v62 = 2114;
               v63 = v23;
               _os_log_impl(&dword_1B4491000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: _getPlayInfoRequestWithStartDelegationResponse - Failed [Generating streamer info context] - error=%{public}@", buf, 0x16u);
@@ -134,14 +134,14 @@
 
     v32 = v31;
     v33 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(v32, "length")}];
-    v34 = [v32 bytes];
+    bytes = [v32 bytes];
     v35 = [v32 length];
     if (v35 >= 1)
     {
       v36 = v35;
       do
       {
-        v37 = *v34++;
+        v37 = *bytes++;
         [v33 appendFormat:@"%02X", v37];
         --v36;
       }
@@ -149,8 +149,8 @@
       while (v36);
     }
 
-    v38 = [v33 lowercaseString];
-    [v28 setPlayerDeviceGUID:v38];
+    lowercaseString = [v33 lowercaseString];
+    [v28 setPlayerDeviceGUID:lowercaseString];
 
     if (v45)
     {
@@ -162,7 +162,7 @@
       v39 = 0;
     }
 
-    v40 = v44;
+    v40 = handlerCopy;
     v41 = v39;
     [v28 setPlayerUserAgent:v41];
 
@@ -179,7 +179,7 @@
     v50[4] = v28;
     v50[5] = v47;
     v50[6] = self;
-    v51 = v44;
+    v51 = handlerCopy;
     [(ICUserIdentityStore *)identityStore enumerateDelegateTokensWithType:1 usingBlock:v52 completionHandler:v50];
   }
 
@@ -187,18 +187,18 @@
   {
     v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7503 userInfo:0];
     v43 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
-    v40 = v44;
+    v40 = handlerCopy;
     v29 = v45;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v61 = self;
+      selfCopy3 = self;
       v62 = 2114;
       v63 = v28;
       _os_log_impl(&dword_1B4491000, v43, OS_LOG_TYPE_ERROR, "%{public}@: _getPlayInfoRequestWithStartDelegationResponse - Failed [no tokens] - error=%{public}@", buf, 0x16u);
     }
 
-    (*(v44 + 2))(v44, 0, v28);
+    (*(handlerCopy + 2))(handlerCopy, 0, v28);
   }
 }
 
@@ -236,20 +236,20 @@ uint64_t __126__ICDelegationProviderServiceProtocolHandler__getPlayInfoRequestWi
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)getStartDelegationRequestForAccountIDs:(id)a3 withCompletionHandler:(id)a4
+- (void)getStartDelegationRequestForAccountIDs:(id)ds withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = [ICAsyncBlockOperation alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __107__ICDelegationProviderServiceProtocolHandler_getStartDelegationRequestForAccountIDs_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF8BE8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = dsCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v12];
   [(NSOperationQueue *)self->_operationQueue addOperation:v11];
 }
@@ -499,25 +499,25 @@ LABEL_48:
   [v2 finishWithError:v43];
 }
 
-- (void)getFinishDelegationRequestsWithStartDelegationResponse:(id)a3 streamContexts:(id)a4 replyHandler:(id)a5
+- (void)getFinishDelegationRequestsWithStartDelegationResponse:(id)response streamContexts:(id)contexts replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  contextsCopy = contexts;
+  handlerCopy = handler;
   v11 = [ICAsyncBlockOperation alloc];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __129__ICDelegationProviderServiceProtocolHandler_getFinishDelegationRequestsWithStartDelegationResponse_streamContexts_replyHandler___block_invoke;
   v19 = &unk_1E7BF8BC0;
-  v20 = self;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  selfCopy = self;
+  v21 = responseCopy;
+  v22 = contextsCopy;
+  v23 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contextsCopy;
+  v14 = responseCopy;
   v15 = [(ICAsyncBlockOperation *)v11 initWithStartHandler:&v16];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v15, v16, v17, v18, v19, v20];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v15, v16, v17, v18, v19, selfCopy];
 }
 
 void __129__ICDelegationProviderServiceProtocolHandler_getFinishDelegationRequestsWithStartDelegationResponse_streamContexts_replyHandler___block_invoke(uint64_t a1, void *a2)
@@ -840,18 +840,18 @@ void __129__ICDelegationProviderServiceProtocolHandler_getFinishDelegationReques
   }
 }
 
-- (ICDelegationProviderServiceProtocolHandler)initWithUserIdentityStore:(id)a3 requestContext:(id)a4
+- (ICDelegationProviderServiceProtocolHandler)initWithUserIdentityStore:(id)store requestContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = ICDelegationProviderServiceProtocolHandler;
   v9 = [(ICDelegationProviderServiceProtocolHandler *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identityStore, a3);
-    objc_storeStrong(&v10->_requestContext, a4);
+    objc_storeStrong(&v9->_identityStore, store);
+    objc_storeStrong(&v10->_requestContext, context);
     v11 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     operationQueue = v10->_operationQueue;
     v10->_operationQueue = v11;

@@ -18,14 +18,14 @@
     v3 = [[HGAudioFeedbackConfigurationInternal alloc] initWithEnableAudioFeedback:0 enableWaitingTone:0 audioSessionID:0];
     [(HGAudioFeedbackConfiguration *)v2 setInternal:v3];
 
-    v4 = [(HGAudioFeedbackConfiguration *)v2 internal];
-    -[HGAudioFeedbackConfiguration setAudioSessionID:](v2, "setAudioSessionID:", [v4 audioSessionID]);
+    internal = [(HGAudioFeedbackConfiguration *)v2 internal];
+    -[HGAudioFeedbackConfiguration setAudioSessionID:](v2, "setAudioSessionID:", [internal audioSessionID]);
 
-    v5 = [(HGAudioFeedbackConfiguration *)v2 internal];
-    -[HGAudioFeedbackConfiguration setEnableAudioFeedback:](v2, "setEnableAudioFeedback:", [v5 enableAudioFeedback]);
+    internal2 = [(HGAudioFeedbackConfiguration *)v2 internal];
+    -[HGAudioFeedbackConfiguration setEnableAudioFeedback:](v2, "setEnableAudioFeedback:", [internal2 enableAudioFeedback]);
 
-    v6 = [(HGAudioFeedbackConfiguration *)v2 internal];
-    -[HGAudioFeedbackConfiguration setEnableWaitingTone:](v2, "setEnableWaitingTone:", [v6 enableWaitingTone]);
+    internal3 = [(HGAudioFeedbackConfiguration *)v2 internal];
+    -[HGAudioFeedbackConfiguration setEnableWaitingTone:](v2, "setEnableWaitingTone:", [internal3 enableWaitingTone]);
   }
 
   return v2;
@@ -33,34 +33,34 @@
 
 - (BOOL)enableWaitingTone
 {
-  v2 = [(HGAudioFeedbackConfiguration *)self internal];
-  v3 = [v2 enableWaitingTone];
+  internal = [(HGAudioFeedbackConfiguration *)self internal];
+  enableWaitingTone = [internal enableWaitingTone];
 
-  return v3;
+  return enableWaitingTone;
 }
 
 - (BOOL)enableAudioFeedback
 {
-  v2 = [(HGAudioFeedbackConfiguration *)self internal];
-  v3 = [v2 enableAudioFeedback];
+  internal = [(HGAudioFeedbackConfiguration *)self internal];
+  enableAudioFeedback = [internal enableAudioFeedback];
 
-  return v3;
+  return enableAudioFeedback;
 }
 
 - (unsigned)audioSessionID
 {
-  v2 = [(HGAudioFeedbackConfiguration *)self internal];
-  v3 = [v2 audioSessionID];
+  internal = [(HGAudioFeedbackConfiguration *)self internal];
+  audioSessionID = [internal audioSessionID];
 
-  return v3;
+  return audioSessionID;
 }
 
 - (BOOL)invertedConfirmationAudioFeedbackMode
 {
-  v2 = [(HGAudioFeedbackConfiguration *)self internal];
-  v3 = [v2 invertedConfirmationAudioFeedbackMode];
+  internal = [(HGAudioFeedbackConfiguration *)self internal];
+  invertedConfirmationAudioFeedbackMode = [internal invertedConfirmationAudioFeedbackMode];
 
-  return v3;
+  return invertedConfirmationAudioFeedbackMode;
 }
 
 @end

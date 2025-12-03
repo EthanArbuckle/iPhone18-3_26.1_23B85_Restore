@@ -4,14 +4,14 @@
 + (ICURLSession)unlimitedHighPrioritySession;
 + (ICURLSessionManager)sharedSessionManager;
 - (ICURLSessionManager)init;
-- (id)_defaultSessionIdentifierWithQualityOfService:(int64_t)a3 maxConcurrentRequests:(unint64_t)a4;
-- (id)_defaultSessionWithQualityOfService:(int64_t)a3 maxConcurrentRequests:(unint64_t)a4;
-- (id)sessionWithIdentifier:(id)a3;
-- (id)sessionWithIdentifier:(id)a3 configuration:(id)a4;
-- (id)sessionWithIdentifier:(id)a3 creationBlock:(id)a4;
-- (id)sessionWithQualityOfService:(int64_t)a3;
-- (void)addSession:(id)a3 withIdentifier:(id)a4;
-- (void)removeSessionWithIdentifier:(id)a3;
+- (id)_defaultSessionIdentifierWithQualityOfService:(int64_t)service maxConcurrentRequests:(unint64_t)requests;
+- (id)_defaultSessionWithQualityOfService:(int64_t)service maxConcurrentRequests:(unint64_t)requests;
+- (id)sessionWithIdentifier:(id)identifier;
+- (id)sessionWithIdentifier:(id)identifier configuration:(id)configuration;
+- (id)sessionWithIdentifier:(id)identifier creationBlock:(id)block;
+- (id)sessionWithQualityOfService:(int64_t)service;
+- (void)addSession:(id)session withIdentifier:(id)identifier;
+- (void)removeSessionWithIdentifier:(id)identifier;
 @end
 
 @implementation ICURLSessionManager
@@ -36,49 +36,49 @@
   return v3;
 }
 
-- (id)_defaultSessionIdentifierWithQualityOfService:(int64_t)a3 maxConcurrentRequests:(unint64_t)a4
+- (id)_defaultSessionIdentifierWithQualityOfService:(int64_t)service maxConcurrentRequests:(unint64_t)requests
 {
-  if (a3 <= 16)
+  if (service <= 16)
   {
-    if (a3 == -1)
+    if (service == -1)
     {
       v6 = @"Default";
-      return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, a4, v4, v5];
+      return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, requests, v4, v5];
     }
 
-    if (a3 == 9)
+    if (service == 9)
     {
       v6 = @"Background";
-      return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, a4, v4, v5];
+      return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, requests, v4, v5];
     }
 
 LABEL_12:
     v6 = @"Unknown";
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, a4, v4, v5];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, requests, v4, v5];
   }
 
-  if (a3 == 17)
+  if (service == 17)
   {
     v6 = @"Utility";
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, a4, v4, v5];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, requests, v4, v5];
   }
 
-  if (a3 == 33)
+  if (service == 33)
   {
     v6 = @"UserInteractive";
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, a4, v4, v5];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, requests, v4, v5];
   }
 
-  if (a3 != 25)
+  if (service != 25)
   {
     goto LABEL_12;
   }
 
   v6 = @"UserInitiated";
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, a4, v4, v5];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud.ICURLSessionManager.%@.max%lu", v6, requests, v4, v5];
 }
 
-- (id)_defaultSessionWithQualityOfService:(int64_t)a3 maxConcurrentRequests:(unint64_t)a4
+- (id)_defaultSessionWithQualityOfService:(int64_t)service maxConcurrentRequests:(unint64_t)requests
 {
   v7 = [ICURLSessionManager _defaultSessionIdentifierWithQualityOfService:"_defaultSessionIdentifierWithQualityOfService:maxConcurrentRequests:" maxConcurrentRequests:?];
   v11[0] = MEMORY[0x1E69E9820];
@@ -87,8 +87,8 @@ LABEL_12:
   v11[3] = &unk_1E7BF3F80;
   v11[4] = self;
   v12 = v7;
-  v13 = a3;
-  v14 = a4;
+  serviceCopy = service;
+  requestsCopy = requests;
   v8 = v7;
   v9 = [(ICURLSessionManager *)self sessionWithIdentifier:v8 creationBlock:v11];
 
@@ -151,33 +151,33 @@ LABEL_14:
   return v14;
 }
 
-- (void)addSession:(id)a3 withIdentifier:(id)a4
+- (void)addSession:(id)session withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__ICURLSessionManager_addSession_withIdentifier___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = sessionCopy;
   dispatch_sync(accessQueue, block);
 }
 
-- (id)sessionWithIdentifier:(id)a3 configuration:(id)a4
+- (id)sessionWithIdentifier:(id)identifier configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__ICURLSessionManager_sessionWithIdentifier_configuration___block_invoke;
   v10[3] = &unk_1E7BF3F58;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(ICURLSessionManager *)self sessionWithIdentifier:a3 creationBlock:v10];
+  v11 = configurationCopy;
+  v7 = configurationCopy;
+  v8 = [(ICURLSessionManager *)self sessionWithIdentifier:identifier creationBlock:v10];
 
   return v8;
 }
@@ -189,9 +189,9 @@ ICURLSession *__59__ICURLSessionManager_sessionWithIdentifier_configuration___bl
   return v1;
 }
 
-- (id)sessionWithIdentifier:(id)a3
+- (id)sessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -203,10 +203,10 @@ ICURLSession *__59__ICURLSessionManager_sessionWithIdentifier_configuration___bl
   block[1] = 3221225472;
   block[2] = __45__ICURLSessionManager_sessionWithIdentifier___block_invoke;
   block[3] = &unk_1E7BF97E8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -225,24 +225,24 @@ uint64_t __45__ICURLSessionManager_sessionWithIdentifier___block_invoke(void *a1
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)removeSessionWithIdentifier:(id)a3
+- (void)removeSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__ICURLSessionManager_removeSessionWithIdentifier___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (id)sessionWithIdentifier:(id)a3 creationBlock:(id)a4
+- (id)sessionWithIdentifier:(id)identifier creationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -255,11 +255,11 @@ uint64_t __45__ICURLSessionManager_sessionWithIdentifier___block_invoke(void *a1
   v13[2] = __59__ICURLSessionManager_sessionWithIdentifier_creationBlock___block_invoke;
   v13[3] = &unk_1E7BF99D8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = blockCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = blockCopy;
+  v10 = identifierCopy;
   dispatch_sync(accessQueue, v13);
   v11 = v18[5];
 
@@ -290,11 +290,11 @@ void __59__ICURLSessionManager_sessionWithIdentifier_creationBlock___block_invok
   }
 }
 
-- (id)sessionWithQualityOfService:(int64_t)a3
+- (id)sessionWithQualityOfService:(int64_t)service
 {
   v5 = +[ICURLSession defaultMaximumConcurrentRequests];
 
-  return [(ICURLSessionManager *)self _defaultSessionWithQualityOfService:a3 maxConcurrentRequests:v5];
+  return [(ICURLSessionManager *)self _defaultSessionWithQualityOfService:service maxConcurrentRequests:v5];
 }
 
 - (ICURLSessionManager)init
@@ -308,9 +308,9 @@ void __59__ICURLSessionManager_sessionWithIdentifier_creationBlock___block_invok
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cachedSessions = v2->_cachedSessions;
-    v2->_cachedSessions = v5;
+    v2->_cachedSessions = dictionary;
   }
 
   return v2;

@@ -22,27 +22,27 @@
   {
     v5 = MEMORY[0x277CBEAA8];
     v6 = v4;
-    v7 = [v5 dateFormatter];
-    v8 = [v7 dateFromString:v6];
+    dateFormatter = [v5 dateFormatter];
+    v8 = [dateFormatter dateFromString:v6];
 
     [v8 timeIntervalSince1970];
-    a1 = [a1 initWithTimeIntervalSince1970:?];
+    self = [self initWithTimeIntervalSince1970:?];
 
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)jsonObject
 {
-  v2 = [MEMORY[0x277CBEAA8] dateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  dateFormatter = [MEMORY[0x277CBEAA8] dateFormatter];
+  v3 = [dateFormatter stringFromDate:self];
 
   return v3;
 }

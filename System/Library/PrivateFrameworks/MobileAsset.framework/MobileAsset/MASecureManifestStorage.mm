@@ -1,9 +1,9 @@
 @interface MASecureManifestStorage
-- (BOOL)commitStagedManifestsForSelectors:(id)a3 error:(id *)a4;
-- (BOOL)invalidateManifestForAssetType:(id)a3 specifier:(id)a4 error:(id *)a5;
-- (id)_errorWithCode:(unint64_t)a3 underlyingError:(id)a4;
-- (id)_manifestPathForAssetType:(id)a3 specifier:(id)a4 stage:(BOOL)a5;
-- (id)_serviceConnectionWithError:(id *)a3;
+- (BOOL)commitStagedManifestsForSelectors:(id)selectors error:(id *)error;
+- (BOOL)invalidateManifestForAssetType:(id)type specifier:(id)specifier error:(id *)error;
+- (id)_errorWithCode:(unint64_t)code underlyingError:(id)error;
+- (id)_manifestPathForAssetType:(id)type specifier:(id)specifier stage:(BOOL)stage;
+- (id)_serviceConnectionWithError:(id *)error;
 @end
 
 @implementation MASecureManifestStorage
@@ -18,20 +18,20 @@ uint64_t __77__MASecureManifestStorage__storeManifest_manifestType_infoPlist_sta
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)commitStagedManifestsForSelectors:(id)a3 error:(id *)a4
+- (BOOL)commitStagedManifestsForSelectors:(id)selectors error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v19 = self;
-  v22 = [(MASecureManifestStorage *)self _serviceConnectionWithError:a4];
+  selectorsCopy = selectors;
+  selfCopy = self;
+  v22 = [(MASecureManifestStorage *)self _serviceConnectionWithError:error];
   if (v22)
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v21, "count")}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(selectorsCopy, "count")}];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = v21;
+    v6 = selectorsCopy;
     v7 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v7)
     {
@@ -47,9 +47,9 @@ uint64_t __77__MASecureManifestStorage__storeManifest_manifestType_infoPlist_sta
 
           v10 = *(*(&v31 + 1) + 8 * i);
           v11 = MEMORY[0x1E696AEC0];
-          v12 = [v10 assetType];
-          v13 = [v10 assetSpecifier];
-          v14 = [v11 stringWithFormat:@"%@:%@", v12, v13];
+          assetType = [v10 assetType];
+          assetSpecifier = [v10 assetSpecifier];
+          v14 = [v11 stringWithFormat:@"%@:%@", assetType, assetSpecifier];
 
           [v5 addObject:v14];
         }
@@ -70,7 +70,7 @@ uint64_t __77__MASecureManifestStorage__storeManifest_manifestType_infoPlist_sta
     v24[1] = 3221225472;
     v24[2] = __67__MASecureManifestStorage_commitStagedManifestsForSelectors_error___block_invoke;
     v24[3] = &unk_1E74CA9F0;
-    v24[4] = v19;
+    v24[4] = selfCopy;
     v24[5] = &v25;
     v15 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v24];
     v23[0] = MEMORY[0x1E69E9820];
@@ -80,9 +80,9 @@ uint64_t __77__MASecureManifestStorage__storeManifest_manifestType_infoPlist_sta
     v23[4] = &v25;
     [v15 commitStagedManifestsForSelectors:v5 completion:v23];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v26[5];
+      *error = v26[5];
     }
 
     [v22 invalidate];
@@ -109,11 +109,11 @@ uint64_t __67__MASecureManifestStorage_commitStagedManifestsForSelectors_error__
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)invalidateManifestForAssetType:(id)a3 specifier:(id)a4 error:(id *)a5
+- (BOOL)invalidateManifestForAssetType:(id)type specifier:(id)specifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MASecureManifestStorage *)self _serviceConnectionWithError:a5];
+  typeCopy = type;
+  specifierCopy = specifier;
+  v10 = [(MASecureManifestStorage *)self _serviceConnectionWithError:error];
   v11 = v10;
   if (v10)
   {
@@ -135,11 +135,11 @@ uint64_t __67__MASecureManifestStorage_commitStagedManifestsForSelectors_error__
     v15[2] = __74__MASecureManifestStorage_invalidateManifestForAssetType_specifier_error___block_invoke_2;
     v15[3] = &unk_1E74CAA18;
     v15[4] = &v17;
-    [v12 invalidateManifestForAssetType:v8 specifier:v9 completion:v15];
+    [v12 invalidateManifestForAssetType:typeCopy specifier:specifierCopy completion:v15];
 
-    if (a5)
+    if (error)
     {
-      *a5 = v18[5];
+      *error = v18[5];
     }
 
     [v11 invalidate];
@@ -165,25 +165,25 @@ uint64_t __74__MASecureManifestStorage_invalidateManifestForAssetType_specifier_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_manifestPathForAssetType:(id)a3 specifier:(id)a4 stage:(BOOL)a5
+- (id)_manifestPathForAssetType:(id)type specifier:(id)specifier stage:(BOOL)stage
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  stageCopy = stage;
+  typeCopy = type;
+  specifierCopy = specifier;
   v9 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2");
   v10 = [v9 stringByAppendingPathComponent:@"manifests"];
 
-  if (v5)
+  if (stageCopy)
   {
     v11 = [v10 stringByAppendingPathComponent:@"staged"];
 
     v10 = v11;
   }
 
-  v12 = normalizedAssetType(v7);
+  v12 = normalizedAssetType(typeCopy);
   v13 = [v10 stringByAppendingPathComponent:v12];
 
-  v14 = normalizedAssetType(v8);
+  v14 = normalizedAssetType(specifierCopy);
 
   v15 = [v13 stringByAppendingPathComponent:v14];
 
@@ -192,7 +192,7 @@ uint64_t __74__MASecureManifestStorage_invalidateManifestForAssetType_specifier_
   return v16;
 }
 
-- (id)_serviceConnectionWithError:(id *)a3
+- (id)_serviceConnectionWithError:(id *)error
 {
   v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.MobileAsset.ManifestStorageService"];
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0C49540];
@@ -212,24 +212,24 @@ uint64_t __74__MASecureManifestStorage_invalidateManifestForAssetType_specifier_
       _os_log_impl(&dword_197AD5000, v8, OS_LOG_TYPE_ERROR, "Failed to connect to service", v10, 2u);
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [(MASecureManifestStorage *)self _errorWithCode:1 underlyingError:0];
+      *error = [(MASecureManifestStorage *)self _errorWithCode:1 underlyingError:0];
     }
   }
 
   return v5;
 }
 
-- (id)_errorWithCode:(unint64_t)a3 underlyingError:(id)a4
+- (id)_errorWithCode:(unint64_t)code underlyingError:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
     v11 = *MEMORY[0x1E696AA08];
-    v12[0] = v5;
+    v12[0] = errorCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
@@ -238,7 +238,7 @@ uint64_t __74__MASecureManifestStorage_invalidateManifestForAssetType_specifier_
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ManifestStorageServiceErrorDomain" code:a3 userInfo:v7];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ManifestStorageServiceErrorDomain" code:code userInfo:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 

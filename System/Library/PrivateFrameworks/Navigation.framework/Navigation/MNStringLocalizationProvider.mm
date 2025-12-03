@@ -10,8 +10,8 @@
 {
   v2 = MEMORY[0x1E695DF58];
   v3 = +[MNUserOptionsEngine sharedInstance];
-  v4 = [v3 currentVoiceLanguage];
-  v5 = [v2 localeWithLocaleIdentifier:v4];
+  currentVoiceLanguage = [v3 currentVoiceLanguage];
+  v5 = [v2 localeWithLocaleIdentifier:currentVoiceLanguage];
 
   return v5;
 }
@@ -23,9 +23,9 @@
   v2 = [(MNStringLocalizationProvider *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
     locale = v2->_locale;
-    v2->_locale = v3;
+    v2->_locale = autoupdatingCurrentLocale;
 
     v5 = v2;
   }

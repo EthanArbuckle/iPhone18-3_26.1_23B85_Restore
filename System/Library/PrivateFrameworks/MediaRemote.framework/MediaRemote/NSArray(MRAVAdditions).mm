@@ -11,7 +11,7 @@
   v4 = MEMORY[0x1E695DFD8];
   v5 = a3;
   v6 = NSStringFromSelector("uid");
-  v7 = [a1 valueForKeyPath:v6];
+  v7 = [self valueForKeyPath:v6];
   v8 = [v4 setWithArray:v7];
 
   v9 = MEMORY[0x1E695DFD8];
@@ -28,13 +28,13 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -45,7 +45,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -65,7 +65,7 @@
         [v5 addObject:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -80,13 +80,13 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -97,12 +97,12 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 uniqueIdentifier];
-        v13 = [v4 objectForKeyedSubscript:v12];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v13 = [v4 objectForKeyedSubscript:uniqueIdentifier];
 
         if (v13)
         {
@@ -117,7 +117,7 @@
         [v5 addObject:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);

@@ -1,16 +1,16 @@
 @interface HMDXPCMessagePolicy
-+ (id)policyWithEntitlements:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)policyWithEntitlements:(unint64_t)entitlements;
+- (BOOL)isEqual:(id)equal;
 - (HMDXPCMessagePolicy)init;
-- (id)__initWithEntitlements:(unint64_t)a3;
+- (id)__initWithEntitlements:(unint64_t)entitlements;
 @end
 
 @implementation HMDXPCMessagePolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -31,8 +31,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDXPCMessagePolicy *)self entitlements];
-      v8 = v7 == [(HMDXPCMessagePolicy *)v6 entitlements];
+      entitlements = [(HMDXPCMessagePolicy *)self entitlements];
+      v8 = entitlements == [(HMDXPCMessagePolicy *)v6 entitlements];
     }
 
     else
@@ -44,14 +44,14 @@
   return v8;
 }
 
-- (id)__initWithEntitlements:(unint64_t)a3
+- (id)__initWithEntitlements:(unint64_t)entitlements
 {
-  v3 = a3;
+  entitlementsCopy = entitlements;
   v14 = *MEMORY[0x277D85DE8];
-  if ((a3 & 1) == 0)
+  if ((entitlements & 1) == 0)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -62,7 +62,7 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v3 |= 1uLL;
+    entitlementsCopy |= 1uLL;
   }
 
   v11.receiver = self;
@@ -70,7 +70,7 @@
   result = [(HMDXPCMessagePolicy *)&v11 init];
   if (result)
   {
-    *(result + 1) = v3;
+    *(result + 1) = entitlementsCopy;
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -90,9 +90,9 @@
   objc_exception_throw(v7);
 }
 
-+ (id)policyWithEntitlements:(unint64_t)a3
++ (id)policyWithEntitlements:(unint64_t)entitlements
 {
-  v3 = [[a1 alloc] __initWithEntitlements:a3];
+  v3 = [[self alloc] __initWithEntitlements:entitlements];
 
   return v3;
 }

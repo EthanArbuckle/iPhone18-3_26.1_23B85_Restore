@@ -1,39 +1,39 @@
 @interface WFDialogNotificationManager
 + (id)categoryIdentifiers;
 + (id)dialogNotificationConfirmationCategory;
-- (WFDialogNotificationManager)initWithUserNotificationManager:(id)a3;
-- (void)handleRemovedIgnoredNotifications:(id)a3;
-- (void)postNotificationWithRequest:(id)a3 presentationMode:(unint64_t)a4 runningContext:(id)a5;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (WFDialogNotificationManager)initWithUserNotificationManager:(id)manager;
+- (void)handleRemovedIgnoredNotifications:(id)notifications;
+- (void)postNotificationWithRequest:(id)request presentationMode:(unint64_t)mode runningContext:(id)context;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WFDialogNotificationManager
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  (*(a5 + 2))(a5);
-  v7 = [v6 notification];
-  v8 = [v7 request];
-  v9 = [v8 content];
+  responseCopy = response;
+  (*(handler + 2))(handler);
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
 
-  v10 = [v9 userInfo];
-  v11 = [v10 objectForKey:@"runningContext"];
+  userInfo = [content userInfo];
+  v11 = [userInfo objectForKey:@"runningContext"];
 
   v21 = 0;
   v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v21];
   v13 = v21;
   if (v12)
   {
-    v14 = [v6 actionIdentifier];
-    if (([v14 isEqualToString:*MEMORY[0x277CE20F0]]& 1) == 0)
+    actionIdentifier = [responseCopy actionIdentifier];
+    if (([actionIdentifier isEqualToString:*MEMORY[0x277CE20F0]]& 1) == 0)
     {
-      v15 = [v9 userInfo];
-      v16 = [v15 objectForKey:@"presentationMode"];
+      userInfo2 = [content userInfo];
+      v16 = [userInfo2 objectForKey:@"presentationMode"];
 
-      v17 = [v16 integerValue];
-      v18 = [objc_alloc(MEMORY[0x277D7A200]) initWithInput:0 presentationMode:v17];
+      integerValue = [v16 integerValue];
+      v18 = [objc_alloc(MEMORY[0x277D7A200]) initWithInput:0 presentationMode:integerValue];
       v19 = [objc_alloc(MEMORY[0x277D7C4D8]) initWithRunningContext:v12 runRequest:v18];
       [v19 start];
     }
@@ -41,52 +41,52 @@
 
   else
   {
-    v14 = getWFDialogLogObject();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    actionIdentifier = getWFDialogLogObject();
+    if (os_log_type_enabled(actionIdentifier, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v23 = "[WFDialogNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]";
       v24 = 2112;
       v25 = v13;
-      _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_ERROR, "%s Unable to get context from notification userInfo: %@", buf, 0x16u);
+      _os_log_impl(&dword_23103C000, actionIdentifier, OS_LOG_TYPE_ERROR, "%s Unable to get context from notification userInfo: %@", buf, 0x16u);
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postNotificationWithRequest:(id)a3 presentationMode:(unint64_t)a4 runningContext:(id)a5
+- (void)postNotificationWithRequest:(id)request presentationMode:(unint64_t)mode runningContext:(id)context
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 workflowIdentifier];
-  if (!v10)
+  requestCopy = request;
+  contextCopy = context;
+  workflowIdentifier = [contextCopy workflowIdentifier];
+  if (!workflowIdentifier)
   {
     goto LABEL_4;
   }
 
-  v11 = v10;
-  v12 = [MEMORY[0x277D7C2F0] defaultDatabase];
-  v13 = [v9 workflowIdentifier];
-  v14 = [v12 referenceForWorkflowID:v13];
+  v11 = workflowIdentifier;
+  defaultDatabase = [MEMORY[0x277D7C2F0] defaultDatabase];
+  workflowIdentifier2 = [contextCopy workflowIdentifier];
+  v14 = [defaultDatabase referenceForWorkflowID:workflowIdentifier2];
 
   if (v14)
   {
     v15 = MEMORY[0x277CFC538];
-    v16 = [v9 identifier];
-    v17 = [v15 proposedTemporaryFileURLForFilename:v16];
+    identifier = [contextCopy identifier];
+    v17 = [v15 proposedTemporaryFileURLForFilename:identifier];
 
-    v18 = [MEMORY[0x277D79F18] currentDevice];
-    [v18 screenScale];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    [currentDevice screenScale];
     v20 = [v14 attributionIconWithSize:0 scale:20.0 rounded:{20.0, v19}];
 
-    v21 = [v20 PNGRepresentation];
-    [v21 writeToURL:v17 atomically:0];
+    pNGRepresentation = [v20 PNGRepresentation];
+    [pNGRepresentation writeToURL:v17 atomically:0];
 
     v22 = MEMORY[0x277CE1FB0];
-    v23 = [v17 path];
-    v24 = [v22 iconAtPath:v23];
+    path = [v17 path];
+    v24 = [v22 iconAtPath:path];
   }
 
   else
@@ -99,8 +99,8 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v8 message];
-    [v25 setBody:v26];
+    message = [requestCopy message];
+    [v25 setBody:message];
 
     [v25 setShouldSuppressDefaultAction:1];
     v27 = MEMORY[0x277D7A408];
@@ -119,46 +119,46 @@ LABEL_4:
   [v25 setInterruptionLevel:2];
   [v25 setShouldAuthenticateDefaultAction:1];
   [v25 setShouldIgnoreDoNotDisturb:1];
-  v29 = [v8 attribution];
-  v30 = [v29 title];
-  [v25 setTitle:v30];
+  attribution = [requestCopy attribution];
+  title = [attribution title];
+  [v25 setTitle:title];
 
   [v25 setIcon:v24];
-  v31 = [v8 promptForDisplay];
-  [v25 setSubtitle:v31];
+  promptForDisplay = [requestCopy promptForDisplay];
+  [v25 setSubtitle:promptForDisplay];
 
   v48[0] = @"runningContext";
-  v32 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+  v32 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:0];
   v48[1] = @"presentationMode";
   v49[0] = v32;
-  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mode];
   v49[1] = v33;
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
   [v25 setUserInfo:v34];
 
-  v35 = [v9 workflowIdentifier];
+  workflowIdentifier3 = [contextCopy workflowIdentifier];
 
-  if (v35)
+  if (workflowIdentifier3)
   {
     v36 = MEMORY[0x277CCACA8];
-    v37 = [v9 workflowIdentifier];
-    v38 = [v36 stringWithFormat:@"workflow-identifier:%@", v37];
+    workflowIdentifier4 = [contextCopy workflowIdentifier];
+    v38 = [v36 stringWithFormat:@"workflow-identifier:%@", workflowIdentifier4];
     [v25 setThreadIdentifier:v38];
   }
 
   v39 = MEMORY[0x277CE1FC0];
-  v40 = [v9 identifier];
-  v41 = [v39 requestWithIdentifier:v40 content:v25 trigger:0 destinations:15];
+  identifier2 = [contextCopy identifier];
+  v41 = [v39 requestWithIdentifier:identifier2 content:v25 trigger:0 destinations:15];
 
-  v42 = [(WFDialogNotificationManager *)self userNotificationManager];
-  v43 = [v42 notificationCenter];
+  userNotificationManager = [(WFDialogNotificationManager *)self userNotificationManager];
+  notificationCenter = [userNotificationManager notificationCenter];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __91__WFDialogNotificationManager_postNotificationWithRequest_presentationMode_runningContext___block_invoke;
   v46[3] = &unk_2788FEEC0;
-  v47 = v8;
-  v44 = v8;
-  [v43 addNotificationRequest:v41 withCompletionHandler:v46];
+  v47 = requestCopy;
+  v44 = requestCopy;
+  [notificationCenter addNotificationRequest:v41 withCompletionHandler:v46];
 
   v45 = *MEMORY[0x277D85DE8];
 }
@@ -186,10 +186,10 @@ void __91__WFDialogNotificationManager_postNotificationWithRequest_presentationM
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemovedIgnoredNotifications:(id)a3
+- (void)handleRemovedIgnoredNotifications:(id)notifications
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v38[0] = MEMORY[0x277D85DD0];
@@ -200,16 +200,16 @@ void __91__WFDialogNotificationManager_postNotificationWithRequest_presentationM
   v39 = v7;
   v8 = v5;
   v40 = v8;
-  [v4 enumerateObjectsUsingBlock:v38];
+  [notificationsCopy enumerateObjectsUsingBlock:v38];
   if ([v8 count])
   {
-    v9 = [(WFDialogNotificationManager *)self userNotificationManager];
-    [v9 removeNotificationsWithIdentifiers:v8];
+    userNotificationManager = [(WFDialogNotificationManager *)self userNotificationManager];
+    [userNotificationManager removeNotificationsWithIdentifiers:v8];
   }
 
-  v10 = [MEMORY[0x277CBEBC0] wf_savedShortcutStatesURL];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  if (!v10)
+  wf_savedShortcutStatesURL = [MEMORY[0x277CBEBC0] wf_savedShortcutStatesURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (!wf_savedShortcutStatesURL)
   {
     v14 = 0;
     v13 = 0;
@@ -228,9 +228,9 @@ LABEL_9:
     if (v16)
     {
       v17 = v16;
-      v31 = v11;
+      v31 = defaultManager;
       v29 = v8;
-      v30 = v4;
+      v30 = notificationsCopy;
       v18 = *v34;
       v19 = v15;
       do
@@ -246,8 +246,8 @@ LABEL_9:
           if (([v7 containsObject:{v21, v29, v30}] & 1) == 0)
           {
             v22 = v19;
-            v23 = v10;
-            v24 = [v10 URLByAppendingPathComponent:v21];
+            v23 = wf_savedShortcutStatesURL;
+            v24 = [wf_savedShortcutStatesURL URLByAppendingPathComponent:v21];
             v32 = v14;
             v25 = [v31 removeItemAtURL:v24 error:&v32];
             v26 = v32;
@@ -268,7 +268,7 @@ LABEL_9:
             }
 
             v14 = v26;
-            v10 = v23;
+            wf_savedShortcutStatesURL = v23;
             v19 = v22;
           }
         }
@@ -279,9 +279,9 @@ LABEL_9:
       while (v17);
       v13 = v19;
       v8 = v29;
-      v4 = v30;
+      notificationsCopy = v30;
       v15 = v19;
-      v11 = v31;
+      defaultManager = v31;
     }
 
     else
@@ -292,9 +292,9 @@ LABEL_9:
     goto LABEL_24;
   }
 
-  v12 = [v10 path];
+  path = [wf_savedShortcutStatesURL path];
   v37 = 0;
-  v13 = [v11 contentsOfDirectoryAtPath:v12 error:&v37];
+  v13 = [defaultManager contentsOfDirectoryAtPath:path error:&v37];
   v14 = v37;
 
   if ([v13 count])
@@ -381,14 +381,14 @@ void __65__WFDialogNotificationManager_handleRemovedIgnoredNotifications___block
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (WFDialogNotificationManager)initWithUserNotificationManager:(id)a3
+- (WFDialogNotificationManager)initWithUserNotificationManager:(id)manager
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFDialogNotificationManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"userNotificationManager"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDialogNotificationManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"userNotificationManager"}];
   }
 
   v21.receiver = self;
@@ -397,7 +397,7 @@ void __65__WFDialogNotificationManager_handleRemovedIgnoredNotifications___block
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_userNotificationManager, a3);
+    objc_storeStrong(&v7->_userNotificationManager, manager);
     userNotificationManager = v8->_userNotificationManager;
     v10 = +[WFDialogNotificationManager dialogNotificationCategory];
     v22[0] = v10;

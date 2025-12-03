@@ -1,18 +1,18 @@
 @interface PurchaseBatch
-- (PurchaseBatch)initWithPurchaseInfos:(id)a3;
+- (PurchaseBatch)initWithPurchaseInfos:(id)infos;
 @end
 
 @implementation PurchaseBatch
 
-- (PurchaseBatch)initWithPurchaseInfos:(id)a3
+- (PurchaseBatch)initWithPurchaseInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v28.receiver = self;
   v28.super_class = PurchaseBatch;
   v5 = [(PurchaseBatch *)&v28 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infosCopy copy];
     purchaseInfo = v5->_purchaseInfo;
     v5->_purchaseInfo = v6;
 
@@ -20,16 +20,16 @@
     responseItems = v5->_responseItems;
     v5->_responseItems = v8;
 
-    v10 = [v4 firstObject];
-    v11 = [v10 isMachineBased];
-    if (v11)
+    firstObject = [infosCopy firstObject];
+    isMachineBased = [firstObject isMachineBased];
+    if (isMachineBased)
     {
       v12 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 logKey];
+        logKey = [firstObject logKey];
         *buf = 138412290;
-        v31 = v13;
+        v31 = logKey;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%@] Created batch for machine based purchases", buf, 0xCu);
       }
     }
@@ -54,14 +54,14 @@
           }
 
           v19 = *(*(&v24 + 1) + 8 * i);
-          if (v11 != [v19 isMachineBased])
+          if (isMachineBased != [v19 isMachineBased])
           {
             v21 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
             {
-              v22 = [v19 logKey];
+              logKey2 = [v19 logKey];
               *buf = 138412290;
-              v31 = v22;
+              v31 = logKey2;
               _os_log_fault_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "[%@] Cannot mix machine based and non-machine based purchases", buf, 0xCu);
             }
 

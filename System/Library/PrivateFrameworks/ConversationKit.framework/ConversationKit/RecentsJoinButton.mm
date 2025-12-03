@@ -1,14 +1,14 @@
 @interface RecentsJoinButton
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation RecentsJoinButton
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v9 = RecentsJoinButton.contextMenuInteraction(_:configurationForMenuAtLocation:)(v6, __PAIR128__(v8, v7));
+  interactionCopy = interaction;
+  selfCopy = self;
+  v9 = RecentsJoinButton.contextMenuInteraction(_:configurationForMenuAtLocation:)(selfCopy, __PAIR128__(v8, v7));
 
   return v9;
 }

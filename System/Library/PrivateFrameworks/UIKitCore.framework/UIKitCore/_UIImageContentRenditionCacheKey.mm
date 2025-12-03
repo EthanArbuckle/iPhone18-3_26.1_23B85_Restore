@@ -1,31 +1,31 @@
 @interface _UIImageContentRenditionCacheKey
-+ (_UIImageContentRenditionCacheKey)keyWithSize:(uint64_t)a3 unresolvedTintColor:(void *)a4 traitCollection:(void *)a5 bold:(char)a6 drawMode:(unsigned int)a7;
-- (BOOL)isEqual:(id)a3;
++ (_UIImageContentRenditionCacheKey)keyWithSize:(uint64_t)size unresolvedTintColor:(void *)color traitCollection:(void *)collection bold:(char)bold drawMode:(unsigned int)mode;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _UIImageContentRenditionCacheKey
 
-+ (_UIImageContentRenditionCacheKey)keyWithSize:(uint64_t)a3 unresolvedTintColor:(void *)a4 traitCollection:(void *)a5 bold:(char)a6 drawMode:(unsigned int)a7
++ (_UIImageContentRenditionCacheKey)keyWithSize:(uint64_t)size unresolvedTintColor:(void *)color traitCollection:(void *)collection bold:(char)bold drawMode:(unsigned int)mode
 {
-  v12 = a5;
-  v13 = a4;
+  collectionCopy = collection;
+  colorCopy = color;
   objc_opt_self();
   v14 = objc_alloc_init(_UIImageContentRenditionCacheKey);
-  v15 = [v13 resolvedColorWithTraitCollection:v12];
+  v15 = [colorCopy resolvedColorWithTraitCollection:collectionCopy];
 
   resolvedTintColor = v14->resolvedTintColor;
   v14->resolvedTintColor = v15;
 
-  v17 = [(UITraitCollection *)v12 _styleEffectAppearanceName];
+  _styleEffectAppearanceName = [(UITraitCollection *)collectionCopy _styleEffectAppearanceName];
 
   appearanceName = v14->appearanceName;
-  v14->appearanceName = v17;
+  v14->appearanceName = _styleEffectAppearanceName;
 
-  v14->_size.width = a1;
+  v14->_size.width = self;
   v14->_size.height = a2;
-  v14->_drawMode = a7;
-  *&v14->_flags = *&v14->_flags & 0xFE | a6;
+  v14->_drawMode = mode;
+  *&v14->_flags = *&v14->_flags & 0xFE | bold;
 
   return v14;
 }
@@ -37,9 +37,9 @@
   return v3 ^ v4 ^ [(UIColor *)self->resolvedTintColor hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -47,7 +47,7 @@
   }
 
   resolvedTintColor = self->resolvedTintColor;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   v7 = resolvedTintColor;
   v8 = v7;
   if (v6 == v7)
@@ -80,7 +80,7 @@
   }
 
   appearanceName = self->appearanceName;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   v12 = appearanceName;
   v8 = v12;
   if (v6 != v12)
@@ -106,11 +106,11 @@ LABEL_15:
 
 LABEL_19:
   v14 = 0;
-  if (*(v4 + 3) == self->_size.width && *(v4 + 4) == self->_size.height)
+  if (*(equalCopy + 3) == self->_size.width && *(equalCopy + 4) == self->_size.height)
   {
-    if (*(v4 + 10) == self->_drawMode)
+    if (*(equalCopy + 10) == self->_drawMode)
     {
-      v14 = ((*&self->_flags ^ *(v4 + 44)) & 1) == 0;
+      v14 = ((*&self->_flags ^ *(equalCopy + 44)) & 1) == 0;
       goto LABEL_17;
     }
 

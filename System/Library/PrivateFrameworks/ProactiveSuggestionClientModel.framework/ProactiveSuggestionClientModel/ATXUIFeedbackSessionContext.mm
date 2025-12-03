@@ -1,12 +1,12 @@
 @interface ATXUIFeedbackSessionContext
 - (ATXUIFeedbackSessionContext)init;
-- (ATXUIFeedbackSessionContext)initWithCoder:(id)a3;
-- (ATXUIFeedbackSessionContext)initWithSessions:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUIFeedbackSessionContext:(id)a3;
+- (ATXUIFeedbackSessionContext)initWithCoder:(id)coder;
+- (ATXUIFeedbackSessionContext)initWithSessions:(id)sessions;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUIFeedbackSessionContext:(id)context;
 - (NSDictionary)sessions;
-- (id)returnAndRemoveUIFeedbackSessionWithSessionIdentifier:(id)a3 endDate:(id)a4;
-- (void)trackNewUIFeedbackSessionWithSessionIdentifier:(id)a3 startDate:(id)a4;
+- (id)returnAndRemoveUIFeedbackSessionWithSessionIdentifier:(id)identifier endDate:(id)date;
+- (void)trackNewUIFeedbackSessionWithSessionIdentifier:(id)identifier startDate:(id)date;
 @end
 
 @implementation ATXUIFeedbackSessionContext
@@ -19,51 +19,51 @@
   return v4;
 }
 
-- (ATXUIFeedbackSessionContext)initWithSessions:(id)a3
+- (ATXUIFeedbackSessionContext)initWithSessions:(id)sessions
 {
-  v5 = a3;
+  sessionsCopy = sessions;
   v9.receiver = self;
   v9.super_class = ATXUIFeedbackSessionContext;
   v6 = [(ATXUIFeedbackSessionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessions, a3);
+    objc_storeStrong(&v6->_sessions, sessions);
   }
 
   return v7;
 }
 
-- (void)trackNewUIFeedbackSessionWithSessionIdentifier:(id)a3 startDate:(id)a4
+- (void)trackNewUIFeedbackSessionWithSessionIdentifier:(id)identifier startDate:(id)date
 {
-  v6 = a3;
+  identifierCopy = identifier;
   sessions = self->_sessions;
-  v8 = a4;
+  dateCopy = date;
   if ([(NSMutableDictionary *)sessions count]>= 0xA)
   {
     v9 = __atxlog_handle_blending_ecosystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ATXUIFeedbackSessionContext *)self trackNewUIFeedbackSessionWithSessionIdentifier:v6 startDate:v9];
+      [(ATXUIFeedbackSessionContext *)self trackNewUIFeedbackSessionWithSessionIdentifier:identifierCopy startDate:v9];
     }
 
     [(NSMutableDictionary *)self->_sessions removeAllObjects];
   }
 
-  v10 = [[ATXProactiveSuggestionUIFeedbackSession alloc] initWithSessionIdentifier:v6];
-  [(ATXProactiveSuggestionUIFeedbackSession *)v10 updateSessionStartDateIfUnset:v8];
+  v10 = [[ATXProactiveSuggestionUIFeedbackSession alloc] initWithSessionIdentifier:identifierCopy];
+  [(ATXProactiveSuggestionUIFeedbackSession *)v10 updateSessionStartDateIfUnset:dateCopy];
 
-  [(NSMutableDictionary *)self->_sessions setValue:v10 forKey:v6];
+  [(NSMutableDictionary *)self->_sessions setValue:v10 forKey:identifierCopy];
 }
 
-- (id)returnAndRemoveUIFeedbackSessionWithSessionIdentifier:(id)a3 endDate:(id)a4
+- (id)returnAndRemoveUIFeedbackSessionWithSessionIdentifier:(id)identifier endDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXUIFeedbackSessionContext *)self uiFeedbackSessionWithSessionIdentifier:v7];
-  [v8 updateSessionEndDateIfUnset:v6];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v8 = [(ATXUIFeedbackSessionContext *)self uiFeedbackSessionWithSessionIdentifier:identifierCopy];
+  [v8 updateSessionEndDateIfUnset:dateCopy];
 
-  [(NSMutableDictionary *)self->_sessions removeObjectForKey:v7];
+  [(NSMutableDictionary *)self->_sessions removeObjectForKey:identifierCopy];
 
   return v8;
 }
@@ -75,9 +75,9 @@
   return v2;
 }
 
-- (ATXUIFeedbackSessionContext)initWithCoder:(id)a3
+- (ATXUIFeedbackSessionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
@@ -86,44 +86,44 @@
   objc_autoreleasePoolPop(v5);
   v10 = MEMORY[0x1E69C5D78];
   v11 = __atxlog_handle_blending_ecosystem();
-  v12 = [v10 robustDecodeObjectOfClasses:v9 forKey:@"sessions" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionUIFeedbackSession" errorCode:-1 logHandle:v11];
+  v12 = [v10 robustDecodeObjectOfClasses:v9 forKey:@"sessions" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionUIFeedbackSession" errorCode:-1 logHandle:v11];
 
-  if (v12 && ([v4 error], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  if (v12 && ([coderCopy error], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     self = [(ATXUIFeedbackSessionContext *)self initWithSessions:v12];
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackSessionContext *)self isEqualToATXUIFeedbackSessionContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackSessionContext *)self isEqualToATXUIFeedbackSessionContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUIFeedbackSessionContext:(id)a3
+- (BOOL)isEqualToATXUIFeedbackSessionContext:(id)context
 {
   v4 = self->_sessions;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(context + 1))
   {
     v6 = 1;
   }

@@ -1,45 +1,45 @@
 @interface CUIMutableStructuredThemeStore
-- (CUIMutableStructuredThemeStore)initWithIdentifier:(id)a3;
-- (_renditionkeytoken)renditionKeyForAssetWithName:(id)a3 withDescription:(id)a4;
+- (CUIMutableStructuredThemeStore)initWithIdentifier:(id)identifier;
+- (_renditionkeytoken)renditionKeyForAssetWithName:(id)name withDescription:(id)description;
 - (const)keyFormat;
-- (const)renditionKeyForName:(id)a3;
+- (const)renditionKeyForName:(id)name;
 - (id)allImageNames;
 - (id)appearances;
 - (id)defaultAppearanceName;
 - (id)deploymentPlatformString;
-- (id)imagesWithName:(id)a3;
-- (id)nameForAppearanceIdentifier:(unsigned __int16)a3;
-- (id)renditionInfoForIdentifier:(unsigned __int16)a3;
-- (id)renditionWithKey:(const _renditionkeytoken *)a3;
-- (id)renditionWithKey:(const _renditionkeytoken *)a3 usingKeySignature:(id)a4;
-- (unsigned)appearanceIdentifierForName:(id)a3;
-- (void)_addRenditionInfoForImageWithName:(id)a3 andKey:(_renditionkeytoken *)a4;
-- (void)_removeRenditionInfoForImageWithName:(id)a3;
+- (id)imagesWithName:(id)name;
+- (id)nameForAppearanceIdentifier:(unsigned __int16)identifier;
+- (id)renditionInfoForIdentifier:(unsigned __int16)identifier;
+- (id)renditionWithKey:(const _renditionkeytoken *)key;
+- (id)renditionWithKey:(const _renditionkeytoken *)key usingKeySignature:(id)signature;
+- (unsigned)appearanceIdentifierForName:(id)name;
+- (void)_addRenditionInfoForImageWithName:(id)name andKey:(_renditionkeytoken *)key;
+- (void)_removeRenditionInfoForImageWithName:(id)name;
 - (void)clearRenditionCache;
 - (void)dealloc;
-- (void)insertCGImage:(CGImage *)a3 withName:(id)a4 andDescription:(id)a5;
-- (void)removeImageNamed:(id)a3 withDescription:(id)a4;
-- (void)removeImagesNamed:(id)a3;
+- (void)insertCGImage:(CGImage *)image withName:(id)name andDescription:(id)description;
+- (void)removeImageNamed:(id)named withDescription:(id)description;
+- (void)removeImagesNamed:(id)named;
 @end
 
 @implementation CUIMutableStructuredThemeStore
 
 - (const)keyFormat
 {
-  v4 = [(CUIMutableStructuredThemeStore *)self deploymentPlatform];
-  if ((v4 - 1) < 4)
+  deploymentPlatform = [(CUIMutableStructuredThemeStore *)self deploymentPlatform];
+  if ((deploymentPlatform - 1) < 4)
   {
     goto LABEL_2;
   }
 
-  if (v4 == 5)
+  if (deploymentPlatform == 5)
   {
     v11 = 4;
   }
 
   else
   {
-    if (v4 == -1)
+    if (deploymentPlatform == -1)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"CUIMutableStructuredThemeStore.m" description:64, @"Unknown platform kCUIThemeSchemaPlatformUnknown."];
 LABEL_2:
@@ -76,12 +76,12 @@ LABEL_3:
   return appearanceNameIdentifierStore;
 }
 
-- (CUIMutableStructuredThemeStore)initWithIdentifier:(id)a3
+- (CUIMutableStructuredThemeStore)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = CUIMutableStructuredThemeStore;
   v4 = [(CUIMutableStructuredThemeStore *)&v6 init];
-  v4->_identifier = a3;
+  v4->_identifier = identifier;
   v4->_memoryStore = objc_alloc_init(NSMutableDictionary);
   v4->_nameIdentifierStore = objc_alloc_init(NSMutableDictionary);
   v4->_renditionInfoStore = objc_alloc_init(NSMutableDictionary);
@@ -99,15 +99,15 @@ LABEL_3:
 - (id)allImageNames
 {
   objc_sync_enter(self);
-  v3 = [(NSMutableDictionary *)self->_nameIdentifierStore allKeys];
+  allKeys = [(NSMutableDictionary *)self->_nameIdentifierStore allKeys];
   objc_sync_exit(self);
-  return v3;
+  return allKeys;
 }
 
-- (const)renditionKeyForName:(id)a3
+- (const)renditionKeyForName:(id)name
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:name];
   if (v5)
   {
     v6 = (*([(CUIMutableStructuredThemeStore *)self keyFormat]+ 2) + 1);
@@ -125,16 +125,16 @@ LABEL_3:
   return v8;
 }
 
-- (id)imagesWithName:(id)a3
+- (id)imagesWithName:(id)name
 {
   objc_sync_enter(self);
   v5 = +[NSMutableArray array];
-  v6 = [(NSMutableDictionary *)self->_memoryStore objectForKey:[NSNumber numberWithInteger:CUIRenditionKeyValueForAttribute([(CUIMutableStructuredThemeStore *)self renditionKeyForName:a3], 17)]];
+  v6 = [(NSMutableDictionary *)self->_memoryStore objectForKey:[NSNumber numberWithInteger:CUIRenditionKeyValueForAttribute([(CUIMutableStructuredThemeStore *)self renditionKeyForName:name], 17)]];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke;
   v8[3] = &unk_1E724A6B0;
-  v8[4] = a3;
+  v8[4] = name;
   v8[5] = self;
   v8[6] = v5;
   [v6 enumerateKeysAndObjectsUsingBlock:v8];
@@ -149,26 +149,26 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
   [*(a1 + 48) addObject:v4];
 }
 
-- (id)renditionWithKey:(const _renditionkeytoken *)a3
+- (id)renditionWithKey:(const _renditionkeytoken *)key
 {
-  v5 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:a3 withBytesNoCopy:v8 length:256];
-  v6 = [(CUIMutableStructuredThemeStore *)self renditionWithKey:a3 usingKeySignature:v5];
+  v5 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:key withBytesNoCopy:v8 length:256];
+  v6 = [(CUIMutableStructuredThemeStore *)self renditionWithKey:key usingKeySignature:v5];
 
   return v6;
 }
 
-- (id)renditionWithKey:(const _renditionkeytoken *)a3 usingKeySignature:(id)a4
+- (id)renditionWithKey:(const _renditionkeytoken *)key usingKeySignature:(id)signature
 {
   objc_sync_enter(self);
-  v7 = [-[NSMutableDictionary objectForKey:](self->_memoryStore objectForKey:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", CUIRenditionKeyValueForAttribute(&a3->identifier, 17))), "objectForKey:", a4}];
+  v7 = [-[NSMutableDictionary objectForKey:](self->_memoryStore objectForKey:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", CUIRenditionKeyValueForAttribute(&key->identifier, 17))), "objectForKey:", signature}];
   objc_sync_exit(self);
   return v7;
 }
 
-- (_renditionkeytoken)renditionKeyForAssetWithName:(id)a3 withDescription:(id)a4
+- (_renditionkeytoken)renditionKeyForAssetWithName:(id)name withDescription:(id)description
 {
   objc_sync_enter(self);
-  v7 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:name];
   v8 = *([(CUIMutableStructuredThemeStore *)self keyFormat]+ 2) + 1;
   v9 = malloc_type_calloc(v8, 4uLL, 0x100004052888210uLL);
   v10 = 0;
@@ -182,19 +182,19 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
   {
     ++self->_maxNameIdentifier;
     v7 = [NSNumber numberWithInteger:?];
-    [(NSMutableDictionary *)self->_nameIdentifierStore setObject:v7 forKey:a3];
+    [(NSMutableDictionary *)self->_nameIdentifierStore setObject:v7 forKey:name];
   }
 
-  v12 = [a4 appearanceName];
-  if (!v12)
+  appearanceName = [description appearanceName];
+  if (!appearanceName)
   {
-    v12 = [(CUIMutableStructuredThemeStore *)self defaultAppearanceName];
+    appearanceName = [(CUIMutableStructuredThemeStore *)self defaultAppearanceName];
   }
 
-  v13 = [(NSMutableDictionary *)self->_appearanceNameIdentifierStore objectForKey:v12];
+  v13 = [(NSMutableDictionary *)self->_appearanceNameIdentifierStore objectForKey:appearanceName];
   if (!v13)
   {
-    if ([v12 isEqualToString:{-[CUIMutableStructuredThemeStore defaultAppearanceName](self, "defaultAppearanceName")}])
+    if ([appearanceName isEqualToString:{-[CUIMutableStructuredThemeStore defaultAppearanceName](self, "defaultAppearanceName")}])
     {
       v13 = &unk_1F00F7C40;
     }
@@ -205,29 +205,29 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
       v13 = [NSNumber numberWithInteger:?];
     }
 
-    [(NSMutableDictionary *)self->_appearanceNameIdentifierStore setObject:v13 forKey:v12];
+    [(NSMutableDictionary *)self->_appearanceNameIdentifierStore setObject:v13 forKey:appearanceName];
   }
 
-  v23 = [a4 subtype];
-  v14 = [a4 idiom];
-  CUIValidateIdiomSubtypes(v14, &v23, v15, v16, v17, v18, v19, v20);
+  subtype = [description subtype];
+  idiom = [description idiom];
+  CUIValidateIdiomSubtypes(idiom, &subtype, v15, v16, v17, v18, v19, v20);
   CUIRenditionKeySetValueForAttribute(&v9->identifier, 17, [(NSNumber *)v7 integerValue], v8);
-  CUIRenditionKeySetValueForAttribute(&v9->identifier, 15, [a4 idiom], v8);
-  [a4 scale];
+  CUIRenditionKeySetValueForAttribute(&v9->identifier, 15, [description idiom], v8);
+  [description scale];
   CUIRenditionKeySetValueForAttribute(&v9->identifier, 12, v21, v8);
-  CUIRenditionKeySetValueForAttribute(&v9->identifier, 16, v23, v8);
-  CUIRenditionKeySetValueForAttribute(&v9->identifier, 24, [a4 displayGamut], v8);
-  CUIRenditionKeySetValueForAttribute(&v9->identifier, 4, [a4 layoutDirection], v8);
-  CUIRenditionKeySetValueForAttribute(&v9->identifier, 20, [a4 sizeClassHorizontal], v8);
-  CUIRenditionKeySetValueForAttribute(&v9->identifier, 21, [a4 sizeClassVertical], v8);
+  CUIRenditionKeySetValueForAttribute(&v9->identifier, 16, subtype, v8);
+  CUIRenditionKeySetValueForAttribute(&v9->identifier, 24, [description displayGamut], v8);
+  CUIRenditionKeySetValueForAttribute(&v9->identifier, 4, [description layoutDirection], v8);
+  CUIRenditionKeySetValueForAttribute(&v9->identifier, 20, [description sizeClassHorizontal], v8);
+  CUIRenditionKeySetValueForAttribute(&v9->identifier, 21, [description sizeClassVertical], v8);
   CUIRenditionKeySetValueForAttribute(&v9->identifier, 7, [(NSNumber *)v13 integerValue], v8);
   objc_sync_exit(self);
   return v9;
 }
 
-- (void)_addRenditionInfoForImageWithName:(id)a3 andKey:(_renditionkeytoken *)a4
+- (void)_addRenditionInfoForImageWithName:(id)name andKey:(_renditionkeytoken *)key
 {
-  v6 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:name];
   if (v6)
   {
     v7 = v6;
@@ -244,14 +244,14 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
 
     v10 = v9;
     v14 = v9;
-    if (__PAIR64__(a4->value, a4->identifier))
+    if (__PAIR64__(key->value, key->identifier))
     {
       v11 = 1;
       do
       {
         [CUINamedRenditionInfo setAttributePresent:v10 withValue:"setAttributePresent:withValue:"];
         v10 = v14;
-        v12 = &a4[v11++];
+        v12 = &key[v11++];
         if (v12->value)
         {
           v13 = 0;
@@ -270,9 +270,9 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
   }
 }
 
-- (void)_removeRenditionInfoForImageWithName:(id)a3
+- (void)_removeRenditionInfoForImageWithName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:name];
   if (v4)
   {
     v5 = v4;
@@ -282,19 +282,19 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
   }
 }
 
-- (void)insertCGImage:(CGImage *)a3 withName:(id)a4 andDescription:(id)a5
+- (void)insertCGImage:(CGImage *)image withName:(id)name andDescription:(id)description
 {
   objc_sync_enter(self);
-  v9 = [(CUIMutableStructuredThemeStore *)self renditionKeyForAssetWithName:a4 withDescription:a5];
-  v10 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a4];
+  v9 = [(CUIMutableStructuredThemeStore *)self renditionKeyForAssetWithName:name withDescription:description];
+  v10 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:name];
   v11 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:v9 withBytesNoCopy:v17 length:256];
   if (!self->_memoryStore)
   {
     self->_memoryStore = objc_alloc_init(NSMutableDictionary);
   }
 
-  v12 = [[CUIMutableThemeRendition alloc] initWithCGImage:a3 withDescription:a5 forKey:v9];
-  [(CUIMutableThemeRendition *)v12 setName:a4];
+  v12 = [[CUIMutableThemeRendition alloc] initWithCGImage:image withDescription:description forKey:v9];
+  [(CUIMutableThemeRendition *)v12 setName:name];
   v13 = [v11 copy];
   v14 = [(NSMutableDictionary *)self->_memoryStore objectForKey:v10];
   v15 = v14;
@@ -311,18 +311,18 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
     [(NSMutableDictionary *)self->_memoryStore setObject:v16 forKey:v10];
   }
 
-  [(CUIMutableStructuredThemeStore *)self _addRenditionInfoForImageWithName:a4 andKey:v9];
+  [(CUIMutableStructuredThemeStore *)self _addRenditionInfoForImageWithName:name andKey:v9];
   free(v9);
   objc_sync_exit(self);
 }
 
-- (void)removeImageNamed:(id)a3 withDescription:(id)a4
+- (void)removeImageNamed:(id)named withDescription:(id)description
 {
   objc_sync_enter(self);
-  v7 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:named];
   if (v7)
   {
-    v8 = [(CUIMutableStructuredThemeStore *)self renditionKeyForAssetWithName:a3 withDescription:a4];
+    v8 = [(CUIMutableStructuredThemeStore *)self renditionKeyForAssetWithName:named withDescription:description];
     v9 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:v8 withBytesNoCopy:v11 length:256];
     v10 = [(NSMutableDictionary *)self->_memoryStore objectForKey:v7];
     [v10 removeObjectForKey:v9];
@@ -330,24 +330,24 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
 
     if (![v10 count])
     {
-      [(CUIMutableStructuredThemeStore *)self _removeRenditionInfoForImageWithName:a3];
+      [(CUIMutableStructuredThemeStore *)self _removeRenditionInfoForImageWithName:named];
       [(NSMutableDictionary *)self->_memoryStore removeObjectForKey:v7];
-      [(NSMutableDictionary *)self->_nameIdentifierStore removeObjectForKey:a3];
+      [(NSMutableDictionary *)self->_nameIdentifierStore removeObjectForKey:named];
     }
   }
 
   objc_sync_exit(self);
 }
 
-- (void)removeImagesNamed:(id)a3
+- (void)removeImagesNamed:(id)named
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_nameIdentifierStore objectForKey:named];
   if (v5)
   {
     [(NSMutableDictionary *)self->_memoryStore removeObjectForKey:v5];
-    [(NSMutableDictionary *)self->_nameIdentifierStore removeObjectForKey:a3];
-    [(CUIMutableStructuredThemeStore *)self _removeRenditionInfoForImageWithName:a3];
+    [(NSMutableDictionary *)self->_nameIdentifierStore removeObjectForKey:named];
+    [(CUIMutableStructuredThemeStore *)self _removeRenditionInfoForImageWithName:named];
   }
 
   objc_sync_exit(self);
@@ -369,11 +369,11 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
   objc_sync_exit(self);
 }
 
-- (id)renditionInfoForIdentifier:(unsigned __int16)a3
+- (id)renditionInfoForIdentifier:(unsigned __int16)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_renditionInfoStore objectForKey:[NSNumber numberWithUnsignedShort:v3]];
+  v5 = [(NSMutableDictionary *)self->_renditionInfoStore objectForKey:[NSNumber numberWithUnsignedShort:identifierCopy]];
   objc_sync_exit(self);
   return v5;
 }
@@ -385,17 +385,17 @@ void __49__CUIMutableStructuredThemeStore_imagesWithName___block_invoke(uint64_t
   return CUIPlatformNameForPlatform(v2);
 }
 
-- (unsigned)appearanceIdentifierForName:(id)a3
+- (unsigned)appearanceIdentifierForName:(id)name
 {
   objc_sync_enter(self);
-  LOWORD(a3) = [-[NSMutableDictionary objectForKey:](self->_appearanceNameIdentifierStore objectForKey:{a3), "unsignedShortValue"}];
+  LOWORD(name) = [-[NSMutableDictionary objectForKey:](self->_appearanceNameIdentifierStore objectForKey:{name), "unsignedShortValue"}];
   objc_sync_exit(self);
-  return a3;
+  return name;
 }
 
-- (id)nameForAppearanceIdentifier:(unsigned __int16)a3
+- (id)nameForAppearanceIdentifier:(unsigned __int16)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_sync_enter(self);
   v11 = 0u;
   v12 = 0u;
@@ -416,7 +416,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
-      if ([-[NSMutableDictionary objectForKey:](self->_appearanceNameIdentifierStore objectForKey:{v9), "unsignedShortValue"}] == v3)
+      if ([-[NSMutableDictionary objectForKey:](self->_appearanceNameIdentifierStore objectForKey:{v9), "unsignedShortValue"}] == identifierCopy)
       {
         break;
       }

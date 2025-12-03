@@ -1,13 +1,13 @@
 @interface TPLayoutState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutState:(id)state;
 - (TPLayoutState)init;
-- (TPLayoutState)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)archivedLayoutStateInContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPLayoutState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)archivedLayoutStateInContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)reset;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 context:(id)a5;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver context:(id)context;
 @end
 
 @implementation TPLayoutState
@@ -41,15 +41,15 @@
   self->_missingFonts = 0;
 }
 
-- (BOOL)isEqualToLayoutState:(id)a3
+- (BOOL)isEqualToLayoutState:(id)state
 {
-  v4 = a3;
-  v5 = *(v4 + 5);
+  stateCopy = state;
+  v5 = *(stateCopy + 5);
   v6 = self->_sectionHints;
   v7 = v5;
-  if ((!(v6 | v7) || (v13 = v7, isEqual = objc_msgSend_isEqual_(v6, v8, v9, v10, v11, v12, v7), v13, v6, isEqual)) && self->_lastPageCount == *(v4 + 4) && self->_sectionIndex == *(v4 + 1) && self->_sectionPageIndex == *(v4 + 2) && self->_documentPageIndex == *(v4 + 3) && self->_bodyLength == *(v4 + 6))
+  if ((!(v6 | v7) || (v13 = v7, isEqual = objc_msgSend_isEqual_(v6, v8, v9, v10, v11, v12, v7), v13, v6, isEqual)) && self->_lastPageCount == *(stateCopy + 4) && self->_sectionIndex == *(stateCopy + 1) && self->_sectionPageIndex == *(stateCopy + 2) && self->_documentPageIndex == *(stateCopy + 3) && self->_bodyLength == *(stateCopy + 6))
   {
-    v15 = sub_2760047FC(self->_missingFonts, *(v4 + 7));
+    v15 = sub_2760047FC(self->_missingFonts, *(stateCopy + 7));
   }
 
   else
@@ -60,22 +60,22 @@
   return v15;
 }
 
-- (id)archivedLayoutStateInContext:(id)a3
+- (id)archivedLayoutStateInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [TPArchivedLayoutState alloc];
-  v11 = objc_msgSend_initWithContext_layoutState_(v5, v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithContext_layoutState_(v5, v6, v7, v8, v9, v10, contextCopy, self);
 
   return v11;
 }
 
-- (TPLayoutState)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TPLayoutState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v12 = objc_msgSend_init(self, v6, v7, v8, v9, v10);
-  if (v12 && objc_msgSend_documentHasCurrentFileFormatVersion(v5, v11, v13, v14, v15, v16))
+  if (v12 && objc_msgSend_documentHasCurrentFileFormatVersion(unarchiverCopy, v11, v13, v14, v15, v16))
   {
-    v17 = v5;
+    v17 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v23 = objc_msgSend_messageWithDescriptor_(v17, v18, v19, v20, v21, v22, off_2812F85B8[50]);
 
@@ -120,11 +120,11 @@
   return v12;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 context:(id)a5
+- (void)saveToArchive:(void *)archive archiver:(id)archiver context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  v165 = v7;
+  archiverCopy = archiver;
+  contextCopy = context;
+  v165 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v14 = objc_msgSend_messageWithNewFunction_descriptor_(v165, v9, v10, v11, v12, v13, sub_2760055B4, off_2812F85B8[50]);
 
@@ -253,10 +253,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToLayoutState = 1;
   }
@@ -266,7 +266,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToLayoutState = objc_msgSend_isEqualToLayoutState_(self, v5, v6, v7, v8, v9, v4);
+      isEqualToLayoutState = objc_msgSend_isEqualToLayoutState_(self, v5, v6, v7, v8, v9, equalCopy);
     }
 
     else
@@ -289,9 +289,9 @@
   return objc_msgSend_hash(self->_missingFonts, v8, v9, v10, v11, v12) ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v8 = objc_msgSend_allocWithZone_(TPLayoutState, a2, v3, v4, v5, v6, a3);
+  v8 = objc_msgSend_allocWithZone_(TPLayoutState, a2, v3, v4, v5, v6, zone);
   v14 = objc_msgSend_init(v8, v9, v10, v11, v12, v13);
   v15 = v14;
   if (v14)

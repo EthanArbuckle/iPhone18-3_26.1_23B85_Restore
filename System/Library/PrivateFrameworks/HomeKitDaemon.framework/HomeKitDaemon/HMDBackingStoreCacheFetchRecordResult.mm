@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheFetchRecordResult
-- (HMDBackingStoreCacheFetchRecordResult)initWithGroup:(id)a3 record:(id)a4 data:(id)a5 encoding:(unint64_t)a6 uuid:(id)a7;
+- (HMDBackingStoreCacheFetchRecordResult)initWithGroup:(id)group record:(id)record data:(id)data encoding:(unint64_t)encoding uuid:(id)uuid;
 - (id)description;
 @end
 
@@ -8,38 +8,38 @@
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v3 = [(HMDBackingStoreCacheFetchRecordResult *)self group];
-  v4 = [v3 zone];
-  v5 = [v4 zoneName];
-  v6 = [(HMDBackingStoreCacheFetchRecordResult *)self group];
-  v7 = [v6 rootRecordName];
-  v8 = [(HMDBackingStoreCacheFetchRecordResult *)self record];
-  v9 = [v8 recordID];
-  v10 = [v9 recordName];
-  v11 = [(HMDBackingStoreCacheFetchRecordResult *)self encoding];
-  v12 = [(HMDBackingStoreCacheFetchRecordResult *)self data];
-  v13 = [v15 stringWithFormat:@"<Record: zone: %@  group: %@  record.recordName: %@  encoding: %lu data: <%lu bytes>>", v5, v7, v10, v11, objc_msgSend(v12, "length")];
+  group = [(HMDBackingStoreCacheFetchRecordResult *)self group];
+  v4 = [group zone];
+  zoneName = [v4 zoneName];
+  group2 = [(HMDBackingStoreCacheFetchRecordResult *)self group];
+  rootRecordName = [group2 rootRecordName];
+  record = [(HMDBackingStoreCacheFetchRecordResult *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  encoding = [(HMDBackingStoreCacheFetchRecordResult *)self encoding];
+  data = [(HMDBackingStoreCacheFetchRecordResult *)self data];
+  v13 = [v15 stringWithFormat:@"<Record: zone: %@  group: %@  record.recordName: %@  encoding: %lu data: <%lu bytes>>", zoneName, rootRecordName, recordName, encoding, objc_msgSend(data, "length")];
 
   return v13;
 }
 
-- (HMDBackingStoreCacheFetchRecordResult)initWithGroup:(id)a3 record:(id)a4 data:(id)a5 encoding:(unint64_t)a6 uuid:(id)a7
+- (HMDBackingStoreCacheFetchRecordResult)initWithGroup:(id)group record:(id)record data:(id)data encoding:(unint64_t)encoding uuid:(id)uuid
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  groupCopy = group;
+  recordCopy = record;
+  dataCopy = data;
+  uuidCopy = uuid;
   v21.receiver = self;
   v21.super_class = HMDBackingStoreCacheFetchRecordResult;
   v17 = [(HMDBackingStoreCacheFetchRecordResult *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_group, a3);
-    objc_storeStrong(&v18->_record, a4);
-    objc_storeStrong(&v18->_data, a5);
-    v18->_encoding = a6;
-    objc_storeStrong(&v18->_uuid, a7);
+    objc_storeStrong(&v17->_group, group);
+    objc_storeStrong(&v18->_record, record);
+    objc_storeStrong(&v18->_data, data);
+    v18->_encoding = encoding;
+    objc_storeStrong(&v18->_uuid, uuid);
     v19 = v18;
   }
 

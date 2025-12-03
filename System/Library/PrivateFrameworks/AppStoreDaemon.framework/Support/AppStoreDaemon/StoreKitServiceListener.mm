@@ -1,7 +1,7 @@
 @interface StoreKitServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (StoreKitServiceListener)init;
-- (void)eventMonitor:(id)a3 receivedEventWithName:(id)a4 userInfo:(id)a5;
+- (void)eventMonitor:(id)monitor receivedEventWithName:(id)name userInfo:(id)info;
 @end
 
 @implementation StoreKitServiceListener
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)eventMonitor:(id)a3 receivedEventWithName:(id)a4 userInfo:(id)a5
+- (void)eventMonitor:(id)monitor receivedEventWithName:(id)name userInfo:(id)info
 {
-  v6 = a5;
-  if ([a4 isEqualToString:SSEventNamePurchaseSucceeded])
+  infoCopy = info;
+  if ([name isEqualToString:SSEventNamePurchaseSucceeded])
   {
     v7 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -37,7 +37,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Received purchase success event", buf, 0xCu);
     }
 
-    v9 = sub_100237B38(v6, @"response");
+    v9 = sub_100237B38(infoCopy, @"response");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,12 +45,12 @@
       v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
       v54 = 0;
       v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v11 fromData:v9 error:&v54];
-      v13 = v54;
+      purchase = v54;
 
-      if (v13)
+      if (purchase)
       {
-        v14 = ASDLogHandleForCategory();
-        if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        bodyData = ASDLogHandleForCategory();
+        if (!os_log_type_enabled(bodyData, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_7;
         }
@@ -59,10 +59,10 @@
         *buf = 138543618;
         v56 = v35;
         v57 = 2114;
-        v58 = v13;
+        v58 = purchase;
         v28 = v35;
         v29 = "%{public}@: Failed to unarchive event data - %{public}@";
-        v30 = v14;
+        v30 = bodyData;
         v31 = 22;
         goto LABEL_29;
       }
@@ -70,16 +70,16 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 purchase];
-        if (v13)
+        purchase = [v12 purchase];
+        if (purchase)
         {
-          v15 = [v12 URLResponse];
-          v14 = [v15 bodyData];
+          uRLResponse = [v12 URLResponse];
+          bodyData = [uRLResponse bodyData];
 
-          if ([v14 length])
+          if ([bodyData length])
           {
             v53 = 0;
-            v52 = [NSPropertyListSerialization propertyListWithData:v14 options:0 format:0 error:&v53];
+            v52 = [NSPropertyListSerialization propertyListWithData:bodyData options:0 format:0 error:&v53];
             v16 = v53;
             if (v16)
             {
@@ -99,25 +99,25 @@
             else
             {
               v17 = objc_alloc_init(_TtC9appstored6LogKey);
-              v36 = [v13 buyParameters];
-              v37 = [AMSBuyParams buyParamsWithString:v36];
+              buyParameters = [purchase buyParameters];
+              v37 = [AMSBuyParams buyParamsWithString:buyParameters];
 
-              v38 = [v37 dictionary];
-              v39 = sub_10023790C(v38, @"salableAdamId");
+              dictionary = [v37 dictionary];
+              v39 = sub_10023790C(dictionary, @"salableAdamId");
 
-              v40 = [v37 dictionary];
-              v50 = sub_1002380D8(v40, AMSBuyParamPropertyBundleId);
+              dictionary2 = [v37 dictionary];
+              v50 = sub_1002380D8(dictionary2, AMSBuyParamPropertyBundleId);
 
               v51 = v39;
               if (v39)
               {
                 v49 = v37;
-                v41 = [v12 URLResponse];
+                uRLResponse2 = [v12 URLResponse];
 
-                if (v41)
+                if (uRLResponse2)
                 {
-                  v42 = [v12 URLResponse];
-                  v48 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v42 statusCode]);
+                  uRLResponse3 = [v12 URLResponse];
+                  v48 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [uRLResponse3 statusCode]);
                 }
 
                 else
@@ -169,8 +169,8 @@
           goto LABEL_7;
         }
 
-        v14 = ASDLogHandleForCategory();
-        if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        bodyData = ASDLogHandleForCategory();
+        if (!os_log_type_enabled(bodyData, OS_LOG_TYPE_ERROR))
         {
 LABEL_7:
 
@@ -182,7 +182,7 @@ LABEL_7:
         v56 = v27;
         v28 = v27;
         v29 = "%{public}@: Event payload has no original purchase";
-        v30 = v14;
+        v30 = bodyData;
         v31 = 12;
 LABEL_29:
         _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, v29, buf, v31);
@@ -193,7 +193,7 @@ LABEL_29:
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v21 = ASDLogHandleForCategory();
-      v13 = v21;
+      purchase = v21;
       if ((isKindOfClass & 1) == 0)
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -206,7 +206,7 @@ LABEL_29:
           v57 = 2114;
           v58 = v25;
           v26 = v25;
-          _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@: Event payload has invalid response. Expected: [SSPurchaseResponse | NSDictionary], Received: %{public}@", buf, 0x16u);
+          _os_log_error_impl(&_mh_execute_header, purchase, OS_LOG_TYPE_ERROR, "%{public}@: Event payload has invalid response. Expected: [SSPurchaseResponse | NSDictionary], Received: %{public}@", buf, 0x16u);
         }
 
         goto LABEL_8;
@@ -219,8 +219,8 @@ LABEL_29:
         v56 = v22;
         v57 = 2114;
         v58 = v12;
-        v14 = v22;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring purchase success event because the response is a dictionary. Likely from a code redemption. Response: %{public}@", buf, 0x16u);
+        bodyData = v22;
+        _os_log_impl(&_mh_execute_header, purchase, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring purchase success event because the response is a dictionary. Likely from a code redemption. Response: %{public}@", buf, 0x16u);
         goto LABEL_7;
       }
     }
@@ -236,7 +236,7 @@ LABEL_29:
       v32 = objc_opt_class();
       *buf = 138543362;
       v56 = v32;
-      v13 = v32;
+      purchase = v32;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@: No payload data in event", buf, 0xCu);
     }
 
@@ -246,12 +246,12 @@ LABEL_10:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 processIdentifier];
-  if (proc_name(v8, buffer, 0x20u) < 1)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  if (proc_name(processIdentifier, buffer, 0x20u) < 1)
   {
     v9 = 0;
   }
@@ -262,7 +262,7 @@ LABEL_10:
   }
 
   v10 = getpid();
-  if (v8 == v10)
+  if (processIdentifier == v10)
   {
     [NSException raise:@"SKServiceDelegateLocalConnection" format:@"%@ received a connection from itself", self];
   }
@@ -277,24 +277,24 @@ LABEL_10:
       *&buf[12] = 2114;
       *&buf[14] = v9;
       *&buf[22] = 2114;
-      v24 = v7;
+      v24 = connectionCopy;
       v12 = *&buf[4];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Accepting new connection (%{public}@) %{public}@", buf, 0x20u);
     }
 
     objc_opt_self();
     v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___StoreKitServiceConnection];
-    [v7 setExportedInterface:v13];
+    [connectionCopy setExportedInterface:v13];
 
     v14 = objc_alloc_init(StoreKitServiceConnection);
-    [v7 setExportedObject:v14];
+    [connectionCopy setExportedObject:v14];
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v24 = sub_1003CA394;
     v25 = sub_1003CA3A4;
-    v15 = v7;
+    v15 = connectionCopy;
     v26 = v15;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -317,7 +317,7 @@ LABEL_10:
     _Block_object_dispose(buf, 8);
   }
 
-  return v8 != v10;
+  return processIdentifier != v10;
 }
 
 @end

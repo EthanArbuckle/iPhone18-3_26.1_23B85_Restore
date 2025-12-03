@@ -1,30 +1,30 @@
 @interface FMSongAsset
 - (BOOL)localURLExists;
-- (BOOL)updateDownloadProgress:(double)a3;
-- (FMSongAsset)initWithAssetID:(id)a3 assetStatus:(unint64_t)a4 localURL:(id)a5 contentVersion:(int64_t)a6 compatibilityVersion:(int64_t)a7;
+- (BOOL)updateDownloadProgress:(double)progress;
+- (FMSongAsset)initWithAssetID:(id)d assetStatus:(unint64_t)status localURL:(id)l contentVersion:(int64_t)version compatibilityVersion:(int64_t)compatibilityVersion;
 - (double)downloadProgress;
-- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)a3;
-- (int64_t)contentVersionForAssetLocation:(unint64_t)a3;
+- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)location;
+- (int64_t)contentVersionForAssetLocation:(unint64_t)location;
 @end
 
 @implementation FMSongAsset
 
-- (FMSongAsset)initWithAssetID:(id)a3 assetStatus:(unint64_t)a4 localURL:(id)a5 contentVersion:(int64_t)a6 compatibilityVersion:(int64_t)a7
+- (FMSongAsset)initWithAssetID:(id)d assetStatus:(unint64_t)status localURL:(id)l contentVersion:(int64_t)version compatibilityVersion:(int64_t)compatibilityVersion
 {
-  v13 = a3;
-  v14 = a5;
+  dCopy = d;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = FMSongAsset;
   v15 = [(FMSongAsset *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_assetID, a3);
-    v16->_assetStatus = a4;
-    objc_storeStrong(&v16->_localURL, a5);
+    objc_storeStrong(&v15->_assetID, d);
+    v16->_assetStatus = status;
+    objc_storeStrong(&v16->_localURL, l);
     v16->_downloadProgress = 0.0;
-    v16->_contentVersion = a6;
-    v16->_compatibilityVersion = a7;
+    v16->_contentVersion = version;
+    v16->_compatibilityVersion = compatibilityVersion;
   }
 
   return v16;
@@ -47,35 +47,35 @@
   return v25;
 }
 
-- (BOOL)updateDownloadProgress:(double)a3
+- (BOOL)updateDownloadProgress:(double)progress
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  downloadProgress = v4->_downloadProgress;
-  if (downloadProgress != a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  downloadProgress = selfCopy->_downloadProgress;
+  if (downloadProgress != progress)
   {
-    v4->_downloadProgress = a3;
+    selfCopy->_downloadProgress = progress;
   }
 
-  v6 = downloadProgress != a3;
-  objc_sync_exit(v4);
+  v6 = downloadProgress != progress;
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (double)downloadProgress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  downloadProgress = v2->_downloadProgress;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  downloadProgress = selfCopy->_downloadProgress;
+  objc_sync_exit(selfCopy);
 
   return downloadProgress;
 }
 
-- (int64_t)contentVersionForAssetLocation:(unint64_t)a3
+- (int64_t)contentVersionForAssetLocation:(unint64_t)location
 {
-  if (a3)
+  if (location)
   {
     return 0;
   }
@@ -86,9 +86,9 @@
   }
 }
 
-- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)a3
+- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)location
 {
-  if (a3)
+  if (location)
   {
     return 0;
   }

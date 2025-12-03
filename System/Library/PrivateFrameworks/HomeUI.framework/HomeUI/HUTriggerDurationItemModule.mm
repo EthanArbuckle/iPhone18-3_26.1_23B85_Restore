@@ -1,27 +1,27 @@
 @interface HUTriggerDurationItemModule
 - (BOOL)_shouldShowDurationItems;
 - (HFItemManager)itemManager;
-- (HUTriggerDurationItemModule)initWithTriggerBuilder:(id)a3 itemUpdater:(id)a4;
+- (HUTriggerDurationItemModule)initWithTriggerBuilder:(id)builder itemUpdater:(id)updater;
 - (id)_buildItemProviders;
-- (id)_itemsToHideInSet:(id)a3;
+- (id)_itemsToHideInSet:(id)set;
 - (id)_staticItems;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
-- (void)setDurationPickerShown:(BOOL)a3;
+- (void)setDurationPickerShown:(BOOL)shown;
 @end
 
 @implementation HUTriggerDurationItemModule
 
-- (HUTriggerDurationItemModule)initWithTriggerBuilder:(id)a3 itemUpdater:(id)a4
+- (HUTriggerDurationItemModule)initWithTriggerBuilder:(id)builder itemUpdater:(id)updater
 {
-  v7 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = HUTriggerDurationItemModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a4];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_triggerBuilder, a3);
+    objc_storeStrong(&v8->_triggerBuilder, builder);
   }
 
   return v9;
@@ -31,12 +31,12 @@
 {
   v3 = [MEMORY[0x277CBEB58] set];
   v4 = objc_alloc(MEMORY[0x277D14C50]);
-  v5 = [(HUTriggerDurationItemModule *)self triggerBuilder];
-  v6 = [v4 initWithTriggerBuilder:v5];
+  triggerBuilder = [(HUTriggerDurationItemModule *)self triggerBuilder];
+  v6 = [v4 initWithTriggerBuilder:triggerBuilder];
   [(HUTriggerDurationItemModule *)self setDurationSummaryItem:v6];
 
-  v7 = [(HUTriggerDurationItemModule *)self durationSummaryItem];
-  [v3 na_safeAddObject:v7];
+  durationSummaryItem = [(HUTriggerDurationItemModule *)self durationSummaryItem];
+  [v3 na_safeAddObject:durationSummaryItem];
 
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x277D14B38]);
@@ -48,8 +48,8 @@
   v9 = [v8 initWithResultsBlock:&v12];
   [(HUTriggerDurationItemModule *)self setDurationPickerItem:v9, v12, v13, v14, v15];
 
-  v10 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-  [v3 na_safeAddObject:v10];
+  durationPickerItem = [(HUTriggerDurationItemModule *)self durationPickerItem];
+  [v3 na_safeAddObject:durationPickerItem];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -87,9 +87,9 @@ id __43__HUTriggerDurationItemModule__staticItems__block_invoke(uint64_t a1)
   itemProviders = self->_itemProviders;
   if (!itemProviders)
   {
-    v4 = [(HUTriggerDurationItemModule *)self _buildItemProviders];
+    _buildItemProviders = [(HUTriggerDurationItemModule *)self _buildItemProviders];
     v5 = self->_itemProviders;
-    self->_itemProviders = v4;
+    self->_itemProviders = _buildItemProviders;
 
     itemProviders = self->_itemProviders;
   }
@@ -97,17 +97,17 @@ id __43__HUTriggerDurationItemModule__staticItems__block_invoke(uint64_t a1)
   return itemProviders;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  itemsCopy = items;
+  array = [v4 array];
   v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerDurationItemModuleSection"];
-  v8 = [(HUTriggerDurationItemModule *)self durationSummaryItem];
-  v15[0] = v8;
-  v9 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-  v15[1] = v9;
+  durationSummaryItem = [(HUTriggerDurationItemModule *)self durationSummaryItem];
+  v15[0] = durationSummaryItem;
+  durationPickerItem = [(HUTriggerDurationItemModule *)self durationPickerItem];
+  v15[1] = durationPickerItem;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   [v7 setItems:v10];
 
@@ -119,8 +119,8 @@ id __43__HUTriggerDurationItemModule__staticItems__block_invoke(uint64_t a1)
   v11 = __63__HUTriggerDurationItemModule_buildSectionsWithDisplayedItems___block_invoke(v14);
   [v7 setFooterTitle:v11];
 
-  [v6 addObject:v7];
-  v12 = [MEMORY[0x277D14778] filterSections:v6 toDisplayedItems:v5];
+  [array addObject:v7];
+  v12 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:itemsCopy];
 
   return v12;
 }
@@ -165,46 +165,46 @@ LABEL_7:
   return v19;
 }
 
-- (void)setDurationPickerShown:(BOOL)a3
+- (void)setDurationPickerShown:(BOOL)shown
 {
-  if (self->_durationPickerShown != a3)
+  if (self->_durationPickerShown != shown)
   {
-    self->_durationPickerShown = a3;
-    v5 = [(HFItemModule *)self allItems];
-    v6 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-    v7 = [v5 containsObject:v6];
+    self->_durationPickerShown = shown;
+    allItems = [(HFItemModule *)self allItems];
+    durationPickerItem = [(HUTriggerDurationItemModule *)self durationPickerItem];
+    v7 = [allItems containsObject:durationPickerItem];
 
     if (v7)
     {
       v8 = MEMORY[0x277D14788];
       v9 = MEMORY[0x277CBEB98];
-      v10 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-      v11 = [v9 setWithObject:v10];
+      durationPickerItem2 = [(HUTriggerDurationItemModule *)self durationPickerItem];
+      v11 = [v9 setWithObject:durationPickerItem2];
       v14 = [v8 requestToUpdateItems:v11 senderSelector:a2];
 
-      v12 = [(HFItemModule *)self itemUpdater];
-      v13 = [v12 performItemUpdateRequest:v14];
+      itemUpdater = [(HFItemModule *)self itemUpdater];
+      v13 = [itemUpdater performItemUpdateRequest:v14];
     }
   }
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [MEMORY[0x277CBEB58] set];
   if (![(HUTriggerDurationItemModule *)self durationPickerShown]|| ![(HUTriggerDurationItemModule *)self _shouldShowDurationItems])
   {
-    v6 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-    if (v6)
+    durationPickerItem = [(HUTriggerDurationItemModule *)self durationPickerItem];
+    if (durationPickerItem)
     {
-      v7 = v6;
-      v8 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-      v9 = [v4 containsObject:v8];
+      v7 = durationPickerItem;
+      durationPickerItem2 = [(HUTriggerDurationItemModule *)self durationPickerItem];
+      v9 = [setCopy containsObject:durationPickerItem2];
 
       if (v9)
       {
-        v10 = [(HUTriggerDurationItemModule *)self durationPickerItem];
-        [v5 addObject:v10];
+        durationPickerItem3 = [(HUTriggerDurationItemModule *)self durationPickerItem];
+        [v5 addObject:durationPickerItem3];
       }
     }
   }
@@ -214,36 +214,36 @@ LABEL_7:
 
 - (BOOL)_shouldShowDurationItems
 {
-  v3 = [(HUTriggerDurationItemModule *)self triggerBuilder];
-  v4 = [v3 context];
-  if ([v4 allowDurationEditing])
+  triggerBuilder = [(HUTriggerDurationItemModule *)self triggerBuilder];
+  context = [triggerBuilder context];
+  if ([context allowDurationEditing])
   {
-    v5 = [(HUTriggerDurationItemModule *)self triggerBuilder];
-    v6 = [v5 supportsEndEvents];
+    triggerBuilder2 = [(HUTriggerDurationItemModule *)self triggerBuilder];
+    supportsEndEvents = [triggerBuilder2 supportsEndEvents];
 
-    if (!v6)
+    if (!supportsEndEvents)
     {
       return 0;
     }
 
-    v3 = [(HUTriggerDurationItemModule *)self triggerBuilder];
-    v7 = [v3 areActionsAffectedByEndEvents];
+    triggerBuilder = [(HUTriggerDurationItemModule *)self triggerBuilder];
+    areActionsAffectedByEndEvents = [triggerBuilder areActionsAffectedByEndEvents];
   }
 
   else
   {
 
-    v7 = 0;
+    areActionsAffectedByEndEvents = 0;
   }
 
-  return v7;
+  return areActionsAffectedByEndEvents;
 }
 
 - (id)_buildItemProviders
 {
   v3 = objc_alloc(MEMORY[0x277D14B40]);
-  v4 = [(HUTriggerDurationItemModule *)self _staticItems];
-  v5 = [v3 initWithItems:v4];
+  _staticItems = [(HUTriggerDurationItemModule *)self _staticItems];
+  v5 = [v3 initWithItems:_staticItems];
 
   v6 = [MEMORY[0x277CBEB98] setWithObject:v5];
 

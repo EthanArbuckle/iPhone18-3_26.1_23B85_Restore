@@ -1,16 +1,16 @@
 @interface MusicKit_SoftLinking_MPCPlaybackEngine
-- (MusicKit_SoftLinking_MPCPlaybackEngine)initWithPlayerID:(id)a3 options:(unint64_t)a4 fallbackPlaybackIntent:(id)a5;
+- (MusicKit_SoftLinking_MPCPlaybackEngine)initWithPlayerID:(id)d options:(unint64_t)options fallbackPlaybackIntent:(id)intent;
 - (MusicKit_SoftLinking_MPCPlaybackIntent)fallbackPlaybackIntent;
-- (void)musicKit_setFallbackPlaybackIntent:(id)a3;
+- (void)musicKit_setFallbackPlaybackIntent:(id)intent;
 @end
 
 @implementation MusicKit_SoftLinking_MPCPlaybackEngine
 
-- (MusicKit_SoftLinking_MPCPlaybackEngine)initWithPlayerID:(id)a3 options:(unint64_t)a4 fallbackPlaybackIntent:(id)a5
+- (MusicKit_SoftLinking_MPCPlaybackEngine)initWithPlayerID:(id)d options:(unint64_t)options fallbackPlaybackIntent:(id)intent
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  dCopy = d;
+  intentCopy = intent;
   v18.receiver = self;
   v18.super_class = MusicKit_SoftLinking_MPCPlaybackEngine;
   v10 = [(MusicKit_SoftLinking_MPCPlaybackEngine *)&v18 init];
@@ -34,17 +34,17 @@
 
     v12 = v11;
     _Block_object_dispose(&v20, 8);
-    v13 = [[v11 alloc] initWithPlayerID:v8];
+    v13 = [[v11 alloc] initWithPlayerID:dCopy];
     underlyingPlaybackEngine = v10->_underlyingPlaybackEngine;
     v10->_underlyingPlaybackEngine = v13;
 
-    if (v6)
+    if (optionsCopy)
     {
       [(MPCPlaybackEngine *)v10->_underlyingPlaybackEngine setSystemMusicApplication:1];
-      if ((v6 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
 LABEL_6:
-        if ((v6 & 4) == 0)
+        if ((optionsCopy & 4) == 0)
         {
           goto LABEL_7;
         }
@@ -53,16 +53,16 @@ LABEL_6:
       }
     }
 
-    else if ((v6 & 2) == 0)
+    else if ((optionsCopy & 2) == 0)
     {
       goto LABEL_6;
     }
 
     [(MPCPlaybackEngine *)v10->_underlyingPlaybackEngine setAudioAnalyzerEnabled:1];
-    if ((v6 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_7:
-      if ((v6 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_8;
       }
@@ -72,15 +72,15 @@ LABEL_7:
 
 LABEL_14:
     [(MPCPlaybackEngine *)v10->_underlyingPlaybackEngine setPictureInPictureSupported:1];
-    if ((v6 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
 LABEL_8:
-      if ((v6 & 0x10) == 0)
+      if ((optionsCopy & 0x10) == 0)
       {
 LABEL_10:
         v15 = v10->_underlyingPlaybackEngine;
-        v16 = [v9 _underlyingPlaybackIntent];
-        [(MPCPlaybackEngine *)v15 setFallbackPlaybackIntent:v16];
+        _underlyingPlaybackIntent = [intentCopy _underlyingPlaybackIntent];
+        [(MPCPlaybackEngine *)v15 setFallbackPlaybackIntent:_underlyingPlaybackIntent];
 
         goto LABEL_11;
       }
@@ -92,7 +92,7 @@ LABEL_9:
 
 LABEL_15:
     [(MPCPlaybackEngine *)v10->_underlyingPlaybackEngine setVideoSupported:1];
-    if ((v6 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_10;
     }
@@ -107,13 +107,13 @@ LABEL_11:
 
 - (MusicKit_SoftLinking_MPCPlaybackIntent)fallbackPlaybackIntent
 {
-  v3 = [(MPCPlaybackEngine *)self->_underlyingPlaybackEngine fallbackPlaybackIntent];
+  fallbackPlaybackIntent = [(MPCPlaybackEngine *)self->_underlyingPlaybackEngine fallbackPlaybackIntent];
 
-  if (v3)
+  if (fallbackPlaybackIntent)
   {
     v4 = [MusicKit_SoftLinking_MPCPlaybackIntent alloc];
-    v5 = [(MPCPlaybackEngine *)self->_underlyingPlaybackEngine fallbackPlaybackIntent];
-    v6 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)v4 initWithUnderlyingPlaybackIntent:v5];
+    fallbackPlaybackIntent2 = [(MPCPlaybackEngine *)self->_underlyingPlaybackEngine fallbackPlaybackIntent];
+    v6 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)v4 initWithUnderlyingPlaybackIntent:fallbackPlaybackIntent2];
   }
 
   else
@@ -124,11 +124,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)musicKit_setFallbackPlaybackIntent:(id)a3
+- (void)musicKit_setFallbackPlaybackIntent:(id)intent
 {
   underlyingPlaybackEngine = self->_underlyingPlaybackEngine;
-  v4 = [a3 _underlyingPlaybackIntent];
-  [(MPCPlaybackEngine *)underlyingPlaybackEngine setFallbackPlaybackIntent:v4];
+  _underlyingPlaybackIntent = [intent _underlyingPlaybackIntent];
+  [(MPCPlaybackEngine *)underlyingPlaybackEngine setFallbackPlaybackIntent:_underlyingPlaybackIntent];
 }
 
 @end

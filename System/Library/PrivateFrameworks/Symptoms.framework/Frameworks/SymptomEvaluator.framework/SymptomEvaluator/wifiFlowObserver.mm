@@ -1,13 +1,13 @@
 @interface wifiFlowObserver
-- (BOOL)addClassification:(id)a3 context:(wifiPropertyCounts *)a4;
-- (BOOL)removeClassification:(id)a3 context:(wifiPropertyCounts *)a4;
+- (BOOL)addClassification:(id)classification context:(wifiPropertyCounts *)context;
+- (BOOL)removeClassification:(id)classification context:(wifiPropertyCounts *)context;
 - (NSString)description;
 - (id)infoDir;
-- (unsigned)noteFlow:(id)a3 snapshot:(id)a4 present:(BOOL)a5 trackedBy:(id)a6;
+- (unsigned)noteFlow:(id)flow snapshot:(id)snapshot present:(BOOL)present trackedBy:(id)by;
 - (void)_noteNewUsage;
-- (void)configurePolicies:(id)a3;
-- (void)noteForegroundState:(BOOL)a3 forApp:(id)a4 hasForegroundApps:(BOOL)a5;
-- (void)setEnabled:(BOOL)a3;
+- (void)configurePolicies:(id)policies;
+- (void)noteForegroundState:(BOOL)state forApp:(id)app hasForegroundApps:(BOOL)apps;
+- (void)setEnabled:(BOOL)enabled;
 - (wifiFlowObserver)init;
 @end
 
@@ -102,89 +102,89 @@
 - (id)infoDir
 {
   v98 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_foregroundCounts.currentCombinedFlags];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyForegroundCombinedFlowProperties];
-  [v3 setObject:v4 forKeyedSubscript:v5];
+  [dictionary setObject:v4 forKeyedSubscript:v5];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_foregroundCounts.classFlags];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyForegroundSpecificFlowClassifications];
-  [v3 setObject:v6 forKeyedSubscript:v7];
+  [dictionary setObject:v6 forKeyedSubscript:v7];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_backgroundCounts.currentCombinedFlags];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyBackgroundCombinedFlowProperties];
-  [v3 setObject:v8 forKeyedSubscript:v9];
+  [dictionary setObject:v8 forKeyedSubscript:v9];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_backgroundCounts.classFlags];
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyBackgroundSpecificFlowClassifications];
-  [v3 setObject:v10 forKeyedSubscript:v11];
+  [dictionary setObject:v10 forKeyedSubscript:v11];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:0];
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyRelevantState];
-  [v3 setObject:v12 forKeyedSubscript:v13];
+  [dictionary setObject:v12 forKeyedSubscript:v13];
 
   v14 = [FlowClassification classFlagsToString:self->_foregroundCounts.classFlags];
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundSpecificFlowClassifications];
-  [v3 setObject:v14 forKeyedSubscript:v15];
+  [dictionary setObject:v14 forKeyedSubscript:v15];
 
   v16 = [FlowClassification classFlagsToString:self->_backgroundCounts.classFlags];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundSpecificFlowClassifications];
-  [v3 setObject:v16 forKeyedSubscript:v17];
+  [dictionary setObject:v16 forKeyedSubscript:v17];
 
   v18 = [FlowClassification propertyFlagsToString:LOBYTE(self->_foregroundCounts.currentCombinedFlags)];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundLatencyValues];
-  [v3 setObject:v18 forKeyedSubscript:v19];
+  [dictionary setObject:v18 forKeyedSubscript:v19];
 
   v20 = [FlowClassification propertyFlagsToString:BYTE1(self->_foregroundCounts.currentCombinedFlags)];
   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundJitterValues];
-  [v3 setObject:v20 forKeyedSubscript:v21];
+  [dictionary setObject:v20 forKeyedSubscript:v21];
 
   v22 = [FlowClassification propertyFlagsToString:BYTE3(self->_foregroundCounts.currentCombinedFlags)];
   v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundDurationValues];
-  [v3 setObject:v22 forKeyedSubscript:v23];
+  [dictionary setObject:v22 forKeyedSubscript:v23];
 
   v24 = [FlowClassification propertyFlagsToString:BYTE2(self->_foregroundCounts.currentCombinedFlags)];
   v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundLossToleranceValues];
-  [v3 setObject:v24 forKeyedSubscript:v25];
+  [dictionary setObject:v24 forKeyedSubscript:v25];
 
   v26 = [FlowClassification propertyFlagsToString:BYTE4(self->_foregroundCounts.currentCombinedFlags)];
   v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundReqdBandwidthValues];
-  [v3 setObject:v26 forKeyedSubscript:v27];
+  [dictionary setObject:v26 forKeyedSubscript:v27];
 
   v28 = [FlowClassification propertyFlagsToString:(WORD2(self->_foregroundCounts.currentCombinedFlags) >> 8)];
   v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableForegroundPrefBandwidthValues];
-  [v3 setObject:v28 forKeyedSubscript:v29];
+  [dictionary setObject:v28 forKeyedSubscript:v29];
 
   v30 = [FlowClassification propertyFlagsToString:LOBYTE(self->_backgroundCounts.currentCombinedFlags)];
   v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundLatencyValues];
-  [v3 setObject:v30 forKeyedSubscript:v31];
+  [dictionary setObject:v30 forKeyedSubscript:v31];
 
   v32 = [FlowClassification propertyFlagsToString:BYTE1(self->_backgroundCounts.currentCombinedFlags)];
   v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundJitterValues];
-  [v3 setObject:v32 forKeyedSubscript:v33];
+  [dictionary setObject:v32 forKeyedSubscript:v33];
 
   v34 = [FlowClassification propertyFlagsToString:BYTE3(self->_backgroundCounts.currentCombinedFlags)];
   v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundDurationValues];
-  [v3 setObject:v34 forKeyedSubscript:v35];
+  [dictionary setObject:v34 forKeyedSubscript:v35];
 
   v36 = [FlowClassification propertyFlagsToString:BYTE2(self->_backgroundCounts.currentCombinedFlags)];
   v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundLossToleranceValues];
-  [v3 setObject:v36 forKeyedSubscript:v37];
+  [dictionary setObject:v36 forKeyedSubscript:v37];
 
   v38 = [FlowClassification propertyFlagsToString:BYTE4(self->_backgroundCounts.currentCombinedFlags)];
   v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundReqdBandwidthValues];
-  [v3 setObject:v38 forKeyedSubscript:v39];
+  [dictionary setObject:v38 forKeyedSubscript:v39];
 
   v40 = [FlowClassification propertyFlagsToString:(WORD2(self->_backgroundCounts.currentCombinedFlags) >> 8)];
   v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyHumanReadableBackgroundPrefBandwidthValues];
-  [v3 setObject:v40 forKeyedSubscript:v41];
+  [dictionary setObject:v40 forKeyedSubscript:v41];
 
   v42 = +[AppStateMonitor foregroundAppKeys];
   v43 = v42;
   if (v42 && [v42 count])
   {
     v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:kManagedEventKeyForegroundApps];
-    [v3 setObject:v43 forKeyedSubscript:v44];
+    [dictionary setObject:v43 forKeyedSubscript:v44];
   }
 
   classFlags = self->_foregroundCounts.classFlags;
@@ -311,17 +311,17 @@
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_INFO))
   {
     v84 = 138543362;
-    *v85 = v3;
+    *v85 = dictionary;
     _os_log_impl(&dword_23255B000, v79, OS_LOG_TYPE_INFO, "WiFi observer Info dir %{public}@", &v84, 0xCu);
   }
 
-  v80 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastReportTimestamp = self->_lastReportTimestamp;
-  self->_lastReportTimestamp = v80;
+  self->_lastReportTimestamp = date;
 
   v82 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)description
@@ -361,9 +361,9 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x277D85DE8];
   v5 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -372,25 +372,25 @@
     v8[0] = 67109376;
     v8[1] = enabled;
     v9 = 1024;
-    v10 = v3;
+    v10 = enabledCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Entry, _enabled = %d new value %d", v8, 0xEu);
   }
 
-  self->_enabled = v3;
+  self->_enabled = enabledCopy;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configurePolicies:(id)a3
+- (void)configurePolicies:(id)policies
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  policiesCopy = policies;
   v5 = configurationLogHandle;
   if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     v7 = [(wifiFlowObserver *)self description];
     v9 = 138412546;
-    v10 = v4;
+    v10 = policiesCopy;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "Entry with ignored params %@, self %@", &v9, 0x16u);
@@ -399,11 +399,11 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addClassification:(id)a3 context:(wifiPropertyCounts *)a4
+- (BOOL)addClassification:(id)classification context:(wifiPropertyCounts *)context
 {
-  v5 = a3;
-  v6 = [v5 disposition];
-  if (v6 > 0x1F || (v7 = a4->classCounter[v6], a4->classCounter[v6] = v7 + 1, v7))
+  classificationCopy = classification;
+  disposition = [classificationCopy disposition];
+  if (disposition > 0x1F || (v7 = context->classCounter[disposition], context->classCounter[disposition] = v7 + 1, v7))
   {
     v8 = 0;
   }
@@ -411,11 +411,11 @@
   else
   {
     v8 = 1;
-    *&a4->classFlags = vorr_s8(*&a4->classFlags, vdup_n_s32(1 << v6));
+    *&context->classFlags = vorr_s8(*&context->classFlags, vdup_n_s32(1 << disposition));
   }
 
-  v9 = [v5 latency];
-  v10 = &a4->classCounter[v9];
+  latency = [classificationCopy latency];
+  v10 = &context->classCounter[latency];
   v11 = v10[36];
   v10[36] = v11 + 1;
   if (v11)
@@ -425,22 +425,22 @@
 
   else
   {
-    v12 = 1 << v9;
+    v12 = 1 << latency;
   }
 
-  v13 = [v5 jitter];
-  v14 = &a4->classCounter[v13];
+  jitter = [classificationCopy jitter];
+  v14 = &context->classCounter[jitter];
   v15 = v14[44];
   v14[44] = v15 + 1;
-  v16 = 1 << (v13 + 8);
+  v16 = 1 << (jitter + 8);
   if (v15)
   {
     v16 = 0;
   }
 
   v17 = v16 | v12;
-  v18 = [v5 duration];
-  v19 = &a4->classCounter[v18];
+  duration = [classificationCopy duration];
+  v19 = &context->classCounter[duration];
   v20 = v19[60];
   v19[60] = v20 + 1;
   if (v20)
@@ -450,22 +450,22 @@
 
   else
   {
-    v21 = 1 << (v18 + 24);
+    v21 = 1 << (duration + 24);
   }
 
-  v22 = [v5 requiredBandwidth];
-  v23 = &a4->classCounter[v22];
+  requiredBandwidth = [classificationCopy requiredBandwidth];
+  v23 = &context->classCounter[requiredBandwidth];
   v24 = v23[68];
   v23[68] = v24 + 1;
-  v25 = 1 << (v22 + 32);
+  v25 = 1 << (requiredBandwidth + 32);
   if (v24)
   {
     v25 = 0;
   }
 
   v26 = v17 | v21 | v25;
-  v27 = [v5 lossTolerance];
-  v28 = &a4->classCounter[v27];
+  lossTolerance = [classificationCopy lossTolerance];
+  v28 = &context->classCounter[lossTolerance];
   v29 = v28[52];
   v28[52] = v29 + 1;
   if (v29)
@@ -475,15 +475,15 @@
 
   else
   {
-    v30 = 1 << (v27 + 16);
+    v30 = 1 << (lossTolerance + 16);
   }
 
-  v31 = [v5 preferredBandwidth];
+  preferredBandwidth = [classificationCopy preferredBandwidth];
 
-  v32 = &a4->classCounter[v31];
+  v32 = &context->classCounter[preferredBandwidth];
   v33 = v32[76];
   v32[76] = v33 + 1;
-  v34 = 1 << (v31 + 40);
+  v34 = 1 << (preferredBandwidth + 40);
   if (v33)
   {
     v34 = 0;
@@ -492,29 +492,29 @@
   v35 = v26 | v30 | v34;
   if (v35)
   {
-    a4->currentCombinedFlags |= v35;
+    context->currentCombinedFlags |= v35;
     return 1;
   }
 
   return v8;
 }
 
-- (BOOL)removeClassification:(id)a3 context:(wifiPropertyCounts *)a4
+- (BOOL)removeClassification:(id)classification context:(wifiPropertyCounts *)context
 {
-  v5 = a3;
-  v6 = [v5 disposition];
-  if (v6 <= 0x1F)
+  classificationCopy = classification;
+  disposition = [classificationCopy disposition];
+  if (disposition <= 0x1F)
   {
-    v7 = a4->classCounter[v6] - 1;
-    a4->classCounter[v6] = v7;
+    v7 = context->classCounter[disposition] - 1;
+    context->classCounter[disposition] = v7;
     if (!v7)
     {
-      a4->classFlags &= ~(1 << v6);
+      context->classFlags &= ~(1 << disposition);
     }
   }
 
-  v8 = [v5 latency];
-  v9 = &a4->classCounter[v8];
+  latency = [classificationCopy latency];
+  v9 = &context->classCounter[latency];
   v10 = v9[36] - 1;
   v9[36] = v10;
   if (v10)
@@ -524,22 +524,22 @@
 
   else
   {
-    v11 = 1 << v8;
+    v11 = 1 << latency;
   }
 
-  v12 = [v5 jitter];
-  v13 = &a4->classCounter[v12];
+  jitter = [classificationCopy jitter];
+  v13 = &context->classCounter[jitter];
   v14 = v13[44] - 1;
   v13[44] = v14;
-  v15 = 1 << (v12 + 8);
+  v15 = 1 << (jitter + 8);
   if (v14)
   {
     v15 = 0;
   }
 
   v16 = v15 | v11;
-  v17 = [v5 lossTolerance];
-  v18 = &a4->classCounter[v17];
+  lossTolerance = [classificationCopy lossTolerance];
+  v18 = &context->classCounter[lossTolerance];
   v19 = v18[52] - 1;
   v18[52] = v19;
   if (v19)
@@ -549,22 +549,22 @@
 
   else
   {
-    v20 = 1 << (v17 + 16);
+    v20 = 1 << (lossTolerance + 16);
   }
 
-  v21 = [v5 duration];
-  v22 = &a4->classCounter[v21];
+  duration = [classificationCopy duration];
+  v22 = &context->classCounter[duration];
   v23 = v22[60] - 1;
   v22[60] = v23;
-  v24 = 1 << (v21 + 24);
+  v24 = 1 << (duration + 24);
   if (v23)
   {
     v24 = 0;
   }
 
   v25 = v16 | v20 | v24;
-  v26 = [v5 requiredBandwidth];
-  v27 = &a4->classCounter[v26];
+  requiredBandwidth = [classificationCopy requiredBandwidth];
+  v27 = &context->classCounter[requiredBandwidth];
   v28 = v27[68] - 1;
   v27[68] = v28;
   if (v28)
@@ -574,15 +574,15 @@
 
   else
   {
-    v29 = 1 << (v26 + 32);
+    v29 = 1 << (requiredBandwidth + 32);
   }
 
-  v30 = [v5 preferredBandwidth];
+  preferredBandwidth = [classificationCopy preferredBandwidth];
 
-  v31 = &a4->classCounter[v30];
+  v31 = &context->classCounter[preferredBandwidth];
   v32 = v31[76] - 1;
   v31[76] = v32;
-  v33 = 1 << (v30 + 40);
+  v33 = 1 << (preferredBandwidth + 40);
   if (v32)
   {
     v33 = 0;
@@ -591,29 +591,29 @@
   v34 = v25 | v29 | v33;
   if (v34)
   {
-    a4->currentCombinedFlags &= ~v34;
+    context->currentCombinedFlags &= ~v34;
   }
 
   return v34 != 0;
 }
 
-- (unsigned)noteFlow:(id)a3 snapshot:(id)a4 present:(BOOL)a5 trackedBy:(id)a6
+- (unsigned)noteFlow:(id)flow snapshot:(id)snapshot present:(BOOL)present trackedBy:(id)by
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11 && [v11 startAppStateIsForeground])
+  presentCopy = present;
+  flowCopy = flow;
+  snapshotCopy = snapshot;
+  byCopy = by;
+  if (snapshotCopy && [snapshotCopy startAppStateIsForeground])
   {
-    [v10 setFlags:{objc_msgSend(v10, "flags") | 0x800}];
+    [flowCopy setFlags:{objc_msgSend(flowCopy, "flags") | 0x800}];
   }
 
-  if (v7)
+  if (presentCopy)
   {
-    [v10 setFlags:{objc_msgSend(v10, "flags") | 0x1000}];
+    [flowCopy setFlags:{objc_msgSend(flowCopy, "flags") | 0x1000}];
   }
 
-  if (([v10 flags] & 0x800) != 0)
+  if (([flowCopy flags] & 0x800) != 0)
   {
     v13 = 8;
   }
@@ -623,11 +623,11 @@
     v13 = 376;
   }
 
-  v14 = [v10 classification];
+  classification = [flowCopy classification];
   v15 = self + v13;
-  if (v7)
+  if (presentCopy)
   {
-    v16 = [(wifiFlowObserver *)self addClassification:v14 context:v15];
+    v16 = [(wifiFlowObserver *)self addClassification:classification context:v15];
 
     if (!v16)
     {
@@ -639,7 +639,7 @@ LABEL_11:
 
   else
   {
-    v18 = [(wifiFlowObserver *)self removeClassification:v14 context:v15];
+    v18 = [(wifiFlowObserver *)self removeClassification:classification context:v15];
 
     if (!v18)
     {
@@ -648,12 +648,12 @@ LABEL_11:
   }
 
   [(wifiFlowObserver *)self _noteNewUsage];
-  v19 = [v10 classification];
-  v20 = [v19 disposition];
+  classification2 = [flowCopy classification];
+  disposition = [classification2 disposition];
 
-  if (v7 && v20 < 0x20)
+  if (presentCopy && disposition < 0x20)
   {
-    v17 = 1 << v20;
+    v17 = 1 << disposition;
   }
 
   else
@@ -666,12 +666,12 @@ LABEL_16:
   return v17;
 }
 
-- (void)noteForegroundState:(BOOL)a3 forApp:(id)a4 hasForegroundApps:(BOOL)a5
+- (void)noteForegroundState:(BOOL)state forApp:(id)app hasForegroundApps:(BOOL)apps
 {
-  v5 = a5;
+  appsCopy = apps;
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v5)
+  appCopy = app;
+  if (!appsCopy)
   {
     if (!self->_foreground)
     {

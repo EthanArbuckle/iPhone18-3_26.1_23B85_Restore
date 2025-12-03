@@ -1,19 +1,19 @@
 @interface ExampleEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ExampleEvent)initWithFoo:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ExampleEvent)initWithFoo:(id)foo;
 @end
 
 @implementation ExampleEvent
 
-- (ExampleEvent)initWithFoo:(id)a3
+- (ExampleEvent)initWithFoo:(id)foo
 {
-  v4 = a3;
+  fooCopy = foo;
   v9.receiver = self;
   v9.super_class = ExampleEvent;
   v5 = [(ExampleEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [fooCopy copy];
     foo = v5->_foo;
     v5->_foo = v6;
   }
@@ -21,10 +21,10 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithFoo:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithFoo:dataCopy];
 
   return v6;
 }

@@ -1,5 +1,5 @@
 @interface PDAnimationChartTarget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PDAnimationChartTarget)init;
 - (unint64_t)hash;
 @end
@@ -23,14 +23,14 @@
   return &v5[[(PDAnimationChartTarget *)self buildStep]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = PDAnimationChartTarget, -[PDAnimationShapeTarget isEqual:](&v10, sel_isEqual_, v4)) && (v5 = -[PDAnimationChartTarget catagoryIndex](self, "catagoryIndex"), v5 == [v4 catagoryIndex]) && (v6 = -[PDAnimationChartTarget seriesIndex](self, "seriesIndex"), v6 == objc_msgSend(v4, "seriesIndex")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = PDAnimationChartTarget, -[PDAnimationShapeTarget isEqual:](&v10, sel_isEqual_, equalCopy)) && (v5 = -[PDAnimationChartTarget catagoryIndex](self, "catagoryIndex"), v5 == [equalCopy catagoryIndex]) && (v6 = -[PDAnimationChartTarget seriesIndex](self, "seriesIndex"), v6 == objc_msgSend(equalCopy, "seriesIndex")))
   {
-    v7 = [(PDAnimationChartTarget *)self buildStep];
-    v8 = v7 == [v4 buildStep];
+    buildStep = [(PDAnimationChartTarget *)self buildStep];
+    v8 = buildStep == [equalCopy buildStep];
   }
 
   else

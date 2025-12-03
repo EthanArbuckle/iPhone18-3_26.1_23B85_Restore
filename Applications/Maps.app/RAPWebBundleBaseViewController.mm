@@ -1,26 +1,26 @@
 @interface RAPWebBundleBaseViewController
 - (BOOL)_shouldShowNutritionLabel;
-- (RAPWebBundleBaseViewController)initWithReport:(id)a3;
+- (RAPWebBundleBaseViewController)initWithReport:(id)report;
 - (RAPWebBundleQuestion)webBundleQuestion;
 - (RAPWebBundleViewControllerDelegate)delegate;
 - (WKWebView)webView;
-- (id)_photoPickerAnchoringViewForBoundingBox:(CGRect)a3;
-- (id)_photoPickerReplyHandler:(id)a3;
-- (void)_addAnalyticsEventToCombinedUserPath:(id)a3;
+- (id)_photoPickerAnchoringViewForBoundingBox:(CGRect)box;
+- (id)_photoPickerReplyHandler:(id)handler;
+- (void)_addAnalyticsEventToCombinedUserPath:(id)path;
 - (void)_presentPrivacyView;
-- (void)_removePhotoWithId:(id)a3;
-- (void)_saveInlineCardHeightIfNeeded:(double)a3;
+- (void)_removePhotoWithId:(id)id;
+- (void)_saveInlineCardHeightIfNeeded:(double)needed;
 - (void)_setupConstraints;
-- (void)_submitButtonEnabled:(BOOL)a3;
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5;
-- (void)presentAccessoryViewController:(id)a3;
+- (void)_submitButtonEnabled:(BOOL)enabled;
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler;
+- (void)presentAccessoryViewController:(id)controller;
 - (void)removeAllPhotos;
-- (void)saveImage:(id)a3 withIdentifier:(id)a4;
-- (void)saveImageData:(id)a3 withIdentifier:(id)a4;
+- (void)saveImage:(id)image withIdentifier:(id)identifier;
+- (void)saveImageData:(id)data withIdentifier:(id)identifier;
 - (void)setupViews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RAPWebBundleBaseViewController
@@ -39,16 +39,16 @@
   return WeakRetained;
 }
 
-- (id)_photoPickerReplyHandler:(id)a3
+- (id)_photoPickerReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[RAPPhotoPickerController alloc] initWithInitialPhoto:0];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = sub_100A4DAFC;
   v10[4] = sub_100A4DB28;
-  v11 = objc_retainBlock(v4);
+  v11 = objc_retainBlock(handlerCopy);
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -64,39 +64,39 @@
   return v5;
 }
 
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:@"name"];
+  messageCopy = message;
+  handlerCopy = handler;
+  v9 = [messageCopy objectForKeyedSubscript:@"name"];
   v10 = [v9 isEqualToString:@"setValid"];
 
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"isValid"];
-    -[RAPWebBundleBaseViewController _submitButtonEnabled:](self, "_submitButtonEnabled:", [v11 BOOLValue]);
+    view = [messageCopy objectForKeyedSubscript:@"isValid"];
+    -[RAPWebBundleBaseViewController _submitButtonEnabled:](self, "_submitButtonEnabled:", [view BOOLValue]);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [v7 objectForKeyedSubscript:@"name"];
+  v12 = [messageCopy objectForKeyedSubscript:@"name"];
   v13 = [v12 isEqualToString:@"getPhotos"];
 
   if (v13)
   {
-    v11 = [(RAPWebBundleBaseViewController *)self view];
-    v14 = [v7 objectForKeyedSubscript:@"boundingBox"];
+    view = [(RAPWebBundleBaseViewController *)self view];
+    v14 = [messageCopy objectForKeyedSubscript:@"boundingBox"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v7 objectForKeyedSubscript:@"boundingBox"];
+      v15 = [messageCopy objectForKeyedSubscript:@"boundingBox"];
 
       if (!v15)
       {
 LABEL_8:
-        v29 = [(RAPWebBundleBaseViewController *)self _photoPickerReplyHandler:v8];
-        [(RAPPhotoPickerController *)v29 setAnchoringView:v11];
+        v29 = [(RAPWebBundleBaseViewController *)self _photoPickerReplyHandler:handlerCopy];
+        [(RAPPhotoPickerController *)v29 setAnchoringView:view];
         [(RAPPhotoPickerController *)v29 setPresentingViewController:self];
         [(RAPPhotoPickerController *)v29 startPicking];
         photoPicker = self->_photoPicker;
@@ -105,7 +105,7 @@ LABEL_8:
         goto LABEL_11;
       }
 
-      v14 = [v7 objectForKeyedSubscript:@"boundingBox"];
+      v14 = [messageCopy objectForKeyedSubscript:@"boundingBox"];
       v16 = [v14 objectForKeyedSubscript:@"xCoordinate"];
       [v16 doubleValue];
       v18 = v17;
@@ -121,23 +121,23 @@ LABEL_8:
 
       v28 = [(RAPWebBundleBaseViewController *)self _photoPickerAnchoringViewForBoundingBox:v18, v21, v24, v27];
 
-      v11 = v28;
+      view = v28;
     }
 
     goto LABEL_8;
   }
 
-  v31 = [v7 objectForKeyedSubscript:@"name"];
+  v31 = [messageCopy objectForKeyedSubscript:@"name"];
   v32 = [v31 isEqualToString:@"removePhoto"];
 
   if (v32)
   {
-    v11 = [v7 objectForKeyedSubscript:@"id"];
-    [(RAPWebBundleBaseViewController *)self _removePhotoWithId:v11];
+    view = [messageCopy objectForKeyedSubscript:@"id"];
+    [(RAPWebBundleBaseViewController *)self _removePhotoWithId:view];
     goto LABEL_11;
   }
 
-  v33 = [v7 objectForKeyedSubscript:@"name"];
+  v33 = [messageCopy objectForKeyedSubscript:@"name"];
   v34 = [v33 isEqualToString:@"showPrivacy"];
 
   if (v34)
@@ -146,17 +146,17 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v35 = [v7 objectForKeyedSubscript:@"name"];
+  v35 = [messageCopy objectForKeyedSubscript:@"name"];
   v36 = [v35 isEqualToString:@"sendAnalyticsEvent"];
 
   if (v36)
   {
-    v11 = [v7 objectForKeyedSubscript:@"values"];
+    view = [messageCopy objectForKeyedSubscript:@"values"];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v37 = [v11 countByEnumeratingWithState:&v68 objects:v74 count:16];
+    v37 = [view countByEnumeratingWithState:&v68 objects:v74 count:16];
     if (v37)
     {
       v38 = v37;
@@ -167,13 +167,13 @@ LABEL_8:
         {
           if (*v69 != v39)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(view);
           }
 
           [(RAPWebBundleBaseViewController *)self _addAnalyticsEventToCombinedUserPath:*(*(&v68 + 1) + 8 * i)];
         }
 
-        v38 = [v11 countByEnumeratingWithState:&v68 objects:v74 count:16];
+        v38 = [view countByEnumeratingWithState:&v68 objects:v74 count:16];
       }
 
       while (v38);
@@ -182,30 +182,30 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v41 = [v7 objectForKeyedSubscript:@"name"];
+  v41 = [messageCopy objectForKeyedSubscript:@"name"];
   v42 = [v41 isEqualToString:@"pageShown"];
 
   if (v42)
   {
-    v43 = [v7 objectForKeyedSubscript:@"success"];
-    v44 = [v43 BOOLValue];
+    v43 = [messageCopy objectForKeyedSubscript:@"success"];
+    bOOLValue = [v43 BOOLValue];
 
-    [(WebBundleManager *)self->_webBundleManager didLoadPageWithSuccess:v44];
+    [(WebBundleManager *)self->_webBundleManager didLoadPageWithSuccess:bOOLValue];
     self->_needsCardHeightSave = 1;
     goto LABEL_12;
   }
 
-  v45 = [v7 objectForKeyedSubscript:@"name"];
+  v45 = [messageCopy objectForKeyedSubscript:@"name"];
   v46 = [v45 isEqualToString:@"pageResized"];
 
   if (!v46)
   {
-    v55 = [v7 objectForKeyedSubscript:@"name"];
+    v55 = [messageCopy objectForKeyedSubscript:@"name"];
     v56 = [v55 isEqualToString:@"logWebBundleMsg"];
 
     if (v56)
     {
-      v57 = [v7 objectForKeyedSubscript:@"value"];
+      v57 = [messageCopy objectForKeyedSubscript:@"value"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -214,7 +214,7 @@ LABEL_8:
         goto LABEL_12;
       }
 
-      v59 = [v7 objectForKeyedSubscript:@"value"];
+      v59 = [messageCopy objectForKeyedSubscript:@"value"];
       v60 = sub_100038318();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
       {
@@ -230,7 +230,7 @@ LABEL_43:
 
     else
     {
-      v64 = [v7 objectForKeyedSubscript:@"name"];
+      v64 = [messageCopy objectForKeyedSubscript:@"name"];
       v65 = [v64 isEqualToString:@"logWebBundleError"];
 
       if (!v65)
@@ -238,7 +238,7 @@ LABEL_43:
         goto LABEL_12;
       }
 
-      v66 = [v7 objectForKeyedSubscript:@"value"];
+      v66 = [messageCopy objectForKeyedSubscript:@"value"];
       objc_opt_class();
       v67 = objc_opt_isKindOfClass();
 
@@ -247,7 +247,7 @@ LABEL_43:
         goto LABEL_12;
       }
 
-      v59 = [v7 objectForKeyedSubscript:@"value"];
+      v59 = [messageCopy objectForKeyedSubscript:@"value"];
       v60 = sub_100038318();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
@@ -263,18 +263,18 @@ LABEL_43:
     goto LABEL_12;
   }
 
-  v47 = [v7 objectForKeyedSubscript:@"pageHeight"];
+  v47 = [messageCopy objectForKeyedSubscript:@"pageHeight"];
   [v47 cgFloatValue];
   v49 = v48;
 
   if ((MapsFeature_IsEnabled_RAPCommunityID() & 1) == 0)
   {
-    v50 = self;
+    selfCopy = self;
     objc_opt_class();
-    v51 = (objc_opt_isKindOfClass() & 1) != 0 ? v50 : 0;
+    v51 = (objc_opt_isKindOfClass() & 1) != 0 ? selfCopy : 0;
     v52 = v51;
 
-    nutritionLabelView = v50->_nutritionLabelView;
+    nutritionLabelView = selfCopy->_nutritionLabelView;
     if (nutritionLabelView)
     {
       if (!v52)
@@ -285,19 +285,19 @@ LABEL_43:
     }
   }
 
-  v54 = [(RAPWebBundleBaseViewController *)self delegate];
-  [v54 updateCardHeight:v49];
+  delegate = [(RAPWebBundleBaseViewController *)self delegate];
+  [delegate updateCardHeight:v49];
 
   [(RAPWebBundleBaseViewController *)self _saveInlineCardHeightIfNeeded:v49];
 LABEL_12:
 }
 
-- (id)_photoPickerAnchoringViewForBoundingBox:(CGRect)a3
+- (id)_photoPickerAnchoringViewForBoundingBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   if (!self->_photoPickerAnchoringView)
   {
     v8 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -305,13 +305,13 @@ LABEL_12:
     self->_photoPickerAnchoringView = v8;
 
     [(UIView *)self->_photoPickerAnchoringView setUserInteractionEnabled:0];
-    v10 = [(RAPWebBundleBaseViewController *)self view];
-    [v10 addSubview:self->_photoPickerAnchoringView];
+    view = [(RAPWebBundleBaseViewController *)self view];
+    [view addSubview:self->_photoPickerAnchoringView];
   }
 
-  v11 = [(RAPWebBundleBaseViewController *)self view];
-  v12 = [(RAPWebBundleBaseViewController *)self webView];
-  [v11 convertRect:v12 fromView:{x, y, width, height}];
+  view2 = [(RAPWebBundleBaseViewController *)self view];
+  webView = [(RAPWebBundleBaseViewController *)self webView];
+  [view2 convertRect:webView fromView:{x, y, width, height}];
   [(UIView *)self->_photoPickerAnchoringView setFrame:?];
 
   v13 = self->_photoPickerAnchoringView;
@@ -319,22 +319,22 @@ LABEL_12:
   return v13;
 }
 
-- (void)_saveInlineCardHeightIfNeeded:(double)a3
+- (void)_saveInlineCardHeightIfNeeded:(double)needed
 {
   if (self->_needsCardHeightSave)
   {
     self->_needsCardHeightSave = 0;
-    v5 = [(RAPWebBundleBaseViewController *)self delegate];
-    [v5 saveInitialCardHeight:a3];
+    delegate = [(RAPWebBundleBaseViewController *)self delegate];
+    [delegate saveInitialCardHeight:needed];
   }
 }
 
-- (void)_addAnalyticsEventToCombinedUserPath:(id)a3
+- (void)_addAnalyticsEventToCombinedUserPath:(id)path
 {
   report = self->_report;
-  v4 = a3;
-  v5 = [(RAPReport *)report combinedUserPath];
-  [v5 addWebPath:v4];
+  pathCopy = path;
+  combinedUserPath = [(RAPReport *)report combinedUserPath];
+  [combinedUserPath addWebPath:pathCopy];
 }
 
 - (void)_presentPrivacyView
@@ -344,19 +344,19 @@ LABEL_12:
   [v3 present];
 }
 
-- (void)_submitButtonEnabled:(BOOL)a3
+- (void)_submitButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(RAPWebBundleBaseViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  navigationItem = [(RAPWebBundleBaseViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)_removePhotoWithId:(id)a3
+- (void)_removePhotoWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
-  v6 = [RAPImageStorage removeImageWithImageIdentifier:v4 directory:v5];
+  idCopy = id;
+  webBundleDirectory = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
+  v6 = [RAPImageStorage removeImageWithImageIdentifier:idCopy directory:webBundleDirectory];
 
   if ((v6 & 1) == 0)
   {
@@ -364,13 +364,13 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = idCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Cannot remove image from device with id: %@", &v15, 0xCu);
     }
   }
 
-  v8 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
-  v9 = [RAPImageStorage removeImageWithImageIdentifier:v4 directory:v8];
+  absoluteCachedWebBundleDirectory = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
+  v9 = [RAPImageStorage removeImageWithImageIdentifier:idCopy directory:absoluteCachedWebBundleDirectory];
 
   if ((v9 & 1) == 0)
   {
@@ -378,14 +378,14 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = idCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Cannot remove image in on-device directory from device with id: %@", &v15, 0xCu);
     }
   }
 
-  v11 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v12 = [v11 geotaggedPhotoCommentQuestion];
-  v13 = [v12 removePhotoForIdentifier:v4];
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  geotaggedPhotoCommentQuestion = [webBundleQuestion geotaggedPhotoCommentQuestion];
+  v13 = [geotaggedPhotoCommentQuestion removePhotoForIdentifier:idCopy];
 
   if ((v13 & 1) == 0)
   {
@@ -393,7 +393,7 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = idCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Cannot remove image from rap question with id: %@", &v15, 0xCu);
     }
   }
@@ -402,80 +402,80 @@ LABEL_12:
 - (void)_setupConstraints
 {
   v117 = objc_alloc_init(NSMutableArray);
-  v111 = [(UIVisualEffectView *)self->_blurView topAnchor];
-  v115 = [(RAPWebBundleBaseViewController *)self view];
-  v109 = [v115 topAnchor];
-  v105 = [v111 constraintEqualToAnchor:v109];
+  topAnchor = [(UIVisualEffectView *)self->_blurView topAnchor];
+  view = [(RAPWebBundleBaseViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v105 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v124[0] = v105;
-  v99 = [(UIVisualEffectView *)self->_blurView leadingAnchor];
-  v102 = [(RAPWebBundleBaseViewController *)self view];
-  v96 = [v102 leadingAnchor];
-  v93 = [v99 constraintEqualToAnchor:v96];
+  leadingAnchor = [(UIVisualEffectView *)self->_blurView leadingAnchor];
+  view2 = [(RAPWebBundleBaseViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v93 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v124[1] = v93;
-  v88 = [(UIVisualEffectView *)self->_blurView trailingAnchor];
-  v90 = [(RAPWebBundleBaseViewController *)self view];
-  v86 = [v90 trailingAnchor];
-  v84 = [v88 constraintEqualToAnchor:v86];
+  trailingAnchor = [(UIVisualEffectView *)self->_blurView trailingAnchor];
+  view3 = [(RAPWebBundleBaseViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v84 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v124[2] = v84;
-  v80 = [(UIVisualEffectView *)self->_blurView bottomAnchor];
-  v82 = [(RAPWebBundleBaseViewController *)self view];
-  v78 = [v82 bottomAnchor];
-  v76 = [v80 constraintEqualToAnchor:v78];
+  bottomAnchor = [(UIVisualEffectView *)self->_blurView bottomAnchor];
+  view4 = [(RAPWebBundleBaseViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v76 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v124[3] = v76;
-  v74 = [(RAPWebBundleBaseViewController *)self webView];
-  v70 = [v74 topAnchor];
-  v72 = [(RAPWebBundleBaseViewController *)self view];
-  v68 = [v72 safeAreaLayoutGuide];
-  v66 = [v68 topAnchor];
-  v64 = [v70 constraintEqualToAnchor:v66];
+  webView = [(RAPWebBundleBaseViewController *)self webView];
+  topAnchor3 = [webView topAnchor];
+  view5 = [(RAPWebBundleBaseViewController *)self view];
+  safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v124[4] = v64;
-  v62 = [(RAPWebBundleBaseViewController *)self webView];
-  v60 = [v62 leadingAnchor];
-  v3 = [(RAPWebBundleBaseViewController *)self view];
-  v4 = [v3 leadingAnchor];
-  v5 = [v60 constraintEqualToAnchor:v4];
+  webView2 = [(RAPWebBundleBaseViewController *)self webView];
+  leadingAnchor3 = [webView2 leadingAnchor];
+  view6 = [(RAPWebBundleBaseViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v5 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v124[5] = v5;
-  v6 = [(RAPWebBundleBaseViewController *)self webView];
-  v7 = [v6 trailingAnchor];
-  v8 = [(RAPWebBundleBaseViewController *)self view];
-  v9 = [v8 trailingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  webView3 = [(RAPWebBundleBaseViewController *)self webView];
+  trailingAnchor3 = [webView3 trailingAnchor];
+  view7 = [(RAPWebBundleBaseViewController *)self view];
+  trailingAnchor4 = [view7 trailingAnchor];
+  v10 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v124[6] = v10;
   v11 = [NSArray arrayWithObjects:v124 count:7];
   [v117 addObjectsFromArray:v11];
 
   v12 = sub_10000FA08(self);
-  v13 = [(RAPWebBundleBaseViewController *)self view];
-  v14 = v13;
+  view8 = [(RAPWebBundleBaseViewController *)self view];
+  v14 = view8;
   if (v12 == 5)
   {
-    v15 = [v13 safeAreaLayoutGuide];
-    v16 = [v15 bottomAnchor];
+    safeAreaLayoutGuide2 = [view8 safeAreaLayoutGuide];
+    bottomAnchor3 = [safeAreaLayoutGuide2 bottomAnchor];
   }
 
   else
   {
-    v16 = [v13 bottomAnchor];
+    bottomAnchor3 = [view8 bottomAnchor];
   }
 
   if (MapsFeature_IsEnabled_RAPCommunityID() && ![(RAPWebBundleBaseViewController *)self _shouldShowNutritionLabel])
   {
-    v19 = [(RAPWebBundleBaseViewController *)self webView];
-    v30 = [(RAPWebBundleBaseViewController *)v19 bottomAnchor];
-    v34 = [v30 constraintEqualToAnchor:v16];
-    v123 = v34;
-    v32 = [NSArray arrayWithObjects:&v123 count:1];
+    webView4 = [(RAPWebBundleBaseViewController *)self webView];
+    bottomAnchor4 = [(RAPWebBundleBaseViewController *)webView4 bottomAnchor];
+    view12 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor3];
+    v123 = view12;
+    safeAreaLayoutGuide6 = [NSArray arrayWithObjects:&v123 count:1];
     v33 = v117;
-    [v117 addObjectsFromArray:v32];
+    [v117 addObjectsFromArray:safeAreaLayoutGuide6];
   }
 
   else
   {
-    v17 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = selfCopy;
     }
 
     else
@@ -483,100 +483,100 @@ LABEL_12:
       v18 = 0;
     }
 
-    v19 = v18;
+    webView4 = v18;
 
-    nutritionLabelView = v17->_nutritionLabelView;
+    nutritionLabelView = selfCopy->_nutritionLabelView;
     if (nutritionLabelView)
     {
-      v116 = v16;
-      if (v19)
+      v116 = bottomAnchor3;
+      if (webView4)
       {
-        v81 = [(RAPWebBundleBaseViewController *)v17 webView];
-        v112 = [v81 bottomAnchor];
-        v83 = [(RAPWebBundleBaseViewController *)v17 view];
-        v75 = [v83 safeAreaLayoutGuide];
-        v110 = [v75 bottomAnchor];
-        v106 = [v112 constraintEqualToAnchor:v110];
+        webView5 = [(RAPWebBundleBaseViewController *)selfCopy webView];
+        bottomAnchor5 = [webView5 bottomAnchor];
+        view9 = [(RAPWebBundleBaseViewController *)selfCopy view];
+        safeAreaLayoutGuide3 = [view9 safeAreaLayoutGuide];
+        bottomAnchor6 = [safeAreaLayoutGuide3 bottomAnchor];
+        v106 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
         v121[0] = v106;
-        v100 = [(UGCUserInformationCell *)v17->_nutritionLabelView leadingAnchor];
-        v103 = [(RAPWebBundleBaseViewController *)v19 footerView];
-        v97 = [v103 accessoryView];
-        v94 = [v97 leadingAnchor];
-        v91 = [v100 constraintEqualToAnchor:v94];
+        leadingAnchor5 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView leadingAnchor];
+        footerView = [(RAPWebBundleBaseViewController *)webView4 footerView];
+        accessoryView = [footerView accessoryView];
+        leadingAnchor6 = [accessoryView leadingAnchor];
+        v91 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
         v121[1] = v91;
-        v87 = [(UGCUserInformationCell *)v17->_nutritionLabelView trailingAnchor];
-        v89 = [(RAPWebBundleBaseViewController *)v19 footerView];
-        v85 = [v89 accessoryView];
-        v79 = [v85 trailingAnchor];
-        v77 = [v87 constraintEqualToAnchor:v79];
+        trailingAnchor5 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView trailingAnchor];
+        footerView2 = [(RAPWebBundleBaseViewController *)webView4 footerView];
+        accessoryView2 = [footerView2 accessoryView];
+        trailingAnchor6 = [accessoryView2 trailingAnchor];
+        v77 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
         v121[2] = v77;
-        v73 = [(UGCUserInformationCell *)v17->_nutritionLabelView layoutMarginsGuide];
-        v69 = [v73 topAnchor];
-        v71 = [(RAPWebBundleBaseViewController *)v19 footerView];
-        v67 = [v71 accessoryView];
-        v65 = [v67 topAnchor];
-        v63 = [v69 constraintGreaterThanOrEqualToAnchor:v65];
+        layoutMarginsGuide = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView layoutMarginsGuide];
+        topAnchor5 = [layoutMarginsGuide topAnchor];
+        footerView3 = [(RAPWebBundleBaseViewController *)webView4 footerView];
+        accessoryView3 = [footerView3 accessoryView];
+        topAnchor6 = [accessoryView3 topAnchor];
+        v63 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
         v121[3] = v63;
-        v61 = [(UGCUserInformationCell *)v17->_nutritionLabelView layoutMarginsGuide];
-        v58 = [v61 bottomAnchor];
-        v59 = [(RAPWebBundleBaseViewController *)v19 footerView];
-        v57 = [v59 accessoryView];
-        v56 = [v57 bottomAnchor];
-        v21 = [v58 constraintLessThanOrEqualToAnchor:v56];
+        layoutMarginsGuide2 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView layoutMarginsGuide];
+        bottomAnchor7 = [layoutMarginsGuide2 bottomAnchor];
+        footerView4 = [(RAPWebBundleBaseViewController *)webView4 footerView];
+        accessoryView4 = [footerView4 accessoryView];
+        bottomAnchor8 = [accessoryView4 bottomAnchor];
+        v21 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
         v121[4] = v21;
-        v22 = [(UGCUserInformationCell *)v17->_nutritionLabelView layoutMarginsGuide];
-        v23 = [v22 centerYAnchor];
-        v24 = [(RAPWebBundleBaseViewController *)v19 footerView];
-        [v24 accessoryView];
-        v26 = v25 = v19;
-        v27 = [v26 centerYAnchor];
-        v28 = [v23 constraintEqualToAnchor:v27];
+        layoutMarginsGuide3 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView layoutMarginsGuide];
+        centerYAnchor = [layoutMarginsGuide3 centerYAnchor];
+        footerView5 = [(RAPWebBundleBaseViewController *)webView4 footerView];
+        [footerView5 accessoryView];
+        v26 = v25 = webView4;
+        centerYAnchor2 = [v26 centerYAnchor];
+        v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v121[5] = v28;
         v29 = [NSArray arrayWithObjects:v121 count:6];
         [v117 addObjectsFromArray:v29];
 
-        v30 = v81;
-        v31 = v75;
+        bottomAnchor4 = webView5;
+        bottomAnchor10 = safeAreaLayoutGuide3;
 
-        v19 = v25;
-        v32 = v83;
+        webView4 = v25;
+        safeAreaLayoutGuide6 = view9;
 
         v33 = v117;
-        v34 = v112;
+        view12 = bottomAnchor5;
       }
 
       else
       {
-        v107 = [(UGCUserInformationCell *)nutritionLabelView topAnchor];
-        v113 = [(RAPWebBundleBaseViewController *)v17 webView];
-        v104 = [v113 bottomAnchor];
-        v101 = [v107 constraintEqualToAnchor:v104 constant:8.0];
+        topAnchor7 = [(UGCUserInformationCell *)nutritionLabelView topAnchor];
+        webView6 = [(RAPWebBundleBaseViewController *)selfCopy webView];
+        bottomAnchor9 = [webView6 bottomAnchor];
+        v101 = [topAnchor7 constraintEqualToAnchor:bottomAnchor9 constant:8.0];
         v120[0] = v101;
-        v95 = [(UGCUserInformationCell *)v17->_nutritionLabelView leadingAnchor];
-        v98 = [(RAPWebBundleBaseViewController *)v17 view];
-        v92 = [v98 safeAreaLayoutGuide];
-        v35 = [v92 leadingAnchor];
-        v36 = [v95 constraintEqualToAnchor:v35];
+        leadingAnchor7 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView leadingAnchor];
+        view10 = [(RAPWebBundleBaseViewController *)selfCopy view];
+        safeAreaLayoutGuide4 = [view10 safeAreaLayoutGuide];
+        leadingAnchor8 = [safeAreaLayoutGuide4 leadingAnchor];
+        v36 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
         v120[1] = v36;
-        v37 = [(UGCUserInformationCell *)v17->_nutritionLabelView trailingAnchor];
-        v38 = [(RAPWebBundleBaseViewController *)v17 view];
-        v39 = [v38 safeAreaLayoutGuide];
-        v40 = [v39 trailingAnchor];
-        v41 = [v37 constraintEqualToAnchor:v40];
+        trailingAnchor7 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView trailingAnchor];
+        view11 = [(RAPWebBundleBaseViewController *)selfCopy view];
+        safeAreaLayoutGuide5 = [view11 safeAreaLayoutGuide];
+        trailingAnchor8 = [safeAreaLayoutGuide5 trailingAnchor];
+        v41 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
         v120[2] = v41;
         v42 = [NSArray arrayWithObjects:v120 count:3];
         [v117 addObjectsFromArray:v42];
 
-        v43 = [(RAPWebBundleBaseViewController *)v17 webBundleQuestion];
-        v44 = [v43 questionType] - 13;
+        webBundleQuestion = [(RAPWebBundleBaseViewController *)selfCopy webBundleQuestion];
+        v44 = [webBundleQuestion questionType] - 13;
 
-        v30 = [(UGCUserInformationCell *)v17->_nutritionLabelView bottomAnchor];
-        v34 = [(RAPWebBundleBaseViewController *)v17 view];
-        v32 = [v34 safeAreaLayoutGuide];
-        v31 = [v32 bottomAnchor];
+        bottomAnchor4 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView bottomAnchor];
+        view12 = [(RAPWebBundleBaseViewController *)selfCopy view];
+        safeAreaLayoutGuide6 = [view12 safeAreaLayoutGuide];
+        bottomAnchor10 = [safeAreaLayoutGuide6 bottomAnchor];
         if (v44 > 7)
         {
-          v54 = [v30 constraintEqualToAnchor:v31];
+          v54 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor10];
           v118 = v54;
           v55 = [NSArray arrayWithObjects:&v118 count:1];
           [v117 addObjectsFromArray:v55];
@@ -586,42 +586,42 @@ LABEL_12:
 
         else
         {
-          v108 = [v30 constraintLessThanOrEqualToAnchor:v31];
+          v108 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor10];
           v119[0] = v108;
-          v45 = [(UGCUserInformationCell *)v17->_nutritionLabelView bottomAnchor];
-          [(RAPWebBundleBaseViewController *)v17 view];
-          v46 = v114 = v34;
-          v47 = [v46 keyboardLayoutGuide];
-          [v47 topAnchor];
-          v49 = v48 = v32;
+          bottomAnchor11 = [(UGCUserInformationCell *)selfCopy->_nutritionLabelView bottomAnchor];
+          [(RAPWebBundleBaseViewController *)selfCopy view];
+          v46 = v114 = view12;
+          keyboardLayoutGuide = [v46 keyboardLayoutGuide];
+          [keyboardLayoutGuide topAnchor];
+          v49 = v48 = safeAreaLayoutGuide6;
           LODWORD(v50) = 1144750080;
-          v51 = [v45 constraintEqualToAnchor:v49 constant:-8.0 priority:v50];
+          v51 = [bottomAnchor11 constraintEqualToAnchor:v49 constant:-8.0 priority:v50];
           v119[1] = v51;
           [NSArray arrayWithObjects:v119 count:2];
-          v53 = v52 = v31;
+          v53 = v52 = bottomAnchor10;
           v33 = v117;
           [v117 addObjectsFromArray:v53];
 
-          v31 = v52;
-          v32 = v48;
+          bottomAnchor10 = v52;
+          safeAreaLayoutGuide6 = v48;
 
-          v34 = v114;
+          view12 = v114;
         }
 
-        v16 = v116;
-        v19 = 0;
+        bottomAnchor3 = v116;
+        webView4 = 0;
       }
     }
 
     else
     {
-      v30 = [(RAPWebBundleBaseViewController *)v17 webView];
-      v34 = [v30 bottomAnchor];
-      v32 = [v34 constraintEqualToAnchor:v16];
-      v122 = v32;
-      v31 = [NSArray arrayWithObjects:&v122 count:1];
+      bottomAnchor4 = [(RAPWebBundleBaseViewController *)selfCopy webView];
+      view12 = [bottomAnchor4 bottomAnchor];
+      safeAreaLayoutGuide6 = [view12 constraintEqualToAnchor:bottomAnchor3];
+      v122 = safeAreaLayoutGuide6;
+      bottomAnchor10 = [NSArray arrayWithObjects:&v122 count:1];
       v33 = v117;
-      [v117 addObjectsFromArray:v31];
+      [v117 addObjectsFromArray:bottomAnchor10];
     }
   }
 
@@ -632,19 +632,19 @@ LABEL_12:
 {
   if (sub_10074262C())
   {
-    v3 = 0;
+    loggedIn = 0;
   }
 
   else
   {
     v4 = +[UserInformationManager sharedInstance];
-    v3 = [v4 loggedIn];
+    loggedIn = [v4 loggedIn];
   }
 
-  v5 = [(RAPReport *)self->_report initialQuestion];
-  v6 = [v5 isAnonymous];
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
+  isAnonymous = [initialQuestion isAnonymous];
 
-  return (v6 ^ 1) & v3;
+  return (isAnonymous ^ 1) & loggedIn;
 }
 
 - (void)setupViews
@@ -654,21 +654,21 @@ LABEL_12:
   self->_blurView = v3;
 
   [(UIVisualEffectView *)self->_blurView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(RAPWebBundleBaseViewController *)self view];
-  [v5 addSubview:self->_blurView];
+  view = [(RAPWebBundleBaseViewController *)self view];
+  [view addSubview:self->_blurView];
 
-  v6 = [(WebBundleManager *)self->_webBundleManager webView];
-  [(RAPWebBundleBaseViewController *)self setWebView:v6];
+  webView = [(WebBundleManager *)self->_webBundleManager webView];
+  [(RAPWebBundleBaseViewController *)self setWebView:webView];
 
-  v7 = [(RAPWebBundleBaseViewController *)self webView];
-  [v7 setAccessibilityIdentifier:@"RAPWebView"];
+  webView2 = [(RAPWebBundleBaseViewController *)self webView];
+  [webView2 setAccessibilityIdentifier:@"RAPWebView"];
 
-  v8 = [(RAPWebBundleBaseViewController *)self webView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  webView3 = [(RAPWebBundleBaseViewController *)self webView];
+  [webView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(RAPWebBundleBaseViewController *)self view];
-  v10 = [(RAPWebBundleBaseViewController *)self webView];
-  [v9 addSubview:v10];
+  view2 = [(RAPWebBundleBaseViewController *)self view];
+  webView4 = [(RAPWebBundleBaseViewController *)self webView];
+  [view2 addSubview:webView4];
 
   v31 = +[UserInformationManager sharedInstance];
   if ([(RAPWebBundleBaseViewController *)self _shouldShowNutritionLabel])
@@ -688,11 +688,11 @@ LABEL_12:
     v18 = +[UIColor secondaryLabelColor];
     [(UGCUserInformationCell *)v16 setOverallFont:v17 overallColor:v18];
 
-    v19 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v19;
+      v20 = selfCopy;
     }
 
     else
@@ -704,30 +704,30 @@ LABEL_12:
 
     if (v21)
     {
-      v22 = [(RAPWebBundleBaseViewController *)v21 footerView];
-      v23 = [v22 accessoryView];
-      [v23 addSubview:self->_nutritionLabelView];
+      footerView = [(RAPWebBundleBaseViewController *)v21 footerView];
+      accessoryView = [footerView accessoryView];
+      [accessoryView addSubview:self->_nutritionLabelView];
     }
 
     else
     {
-      v22 = [(RAPWebBundleBaseViewController *)v19 view];
-      [v22 addSubview:self->_nutritionLabelView];
+      footerView = [(RAPWebBundleBaseViewController *)selfCopy view];
+      [footerView addSubview:self->_nutritionLabelView];
     }
 
     v24 = objc_alloc_init(UGCUserInformationViewModel);
     v25 = +[NSBundle mainBundle];
     v26 = [v25 localizedStringForKey:@"[RAP Web UI] Reporting As User's Information" value:@"localized string not found" table:0];
 
-    v27 = [v31 userName];
-    v28 = [NSString stringWithFormat:v26, v27];
+    userName = [v31 userName];
+    v28 = [NSString stringWithFormat:v26, userName];
     [(UGCUserInformationViewModel *)v24 setUserName:v28];
 
-    v29 = [v31 userEmail];
-    [(UGCUserInformationViewModel *)v24 setUserEmail:v29];
+    userEmail = [v31 userEmail];
+    [(UGCUserInformationViewModel *)v24 setUserEmail:userEmail];
 
-    v30 = [v31 userIcon];
-    [(UGCUserInformationViewModel *)v24 setUserIcon:v30];
+    userIcon = [v31 userIcon];
+    [(UGCUserInformationViewModel *)v24 setUserIcon:userIcon];
 
     [(UGCUserInformationCell *)self->_nutritionLabelView setViewModel:v24];
   }
@@ -741,11 +741,11 @@ LABEL_12:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
-  v4 = [v3 geotaggedPhotoCommentQuestion];
-  v5 = [v4 photos];
+  webBundleQuestion = [(RAPWebBundleBaseViewController *)self webBundleQuestion];
+  geotaggedPhotoCommentQuestion = [webBundleQuestion geotaggedPhotoCommentQuestion];
+  photos = [geotaggedPhotoCommentQuestion photos];
 
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v6 = [photos countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -756,19 +756,19 @@ LABEL_12:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(photos);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [(RAPWebBundleBaseViewController *)self _removePhotoWithId:v11];
+        identifier = [v10 identifier];
+        [(RAPWebBundleBaseViewController *)self _removePhotoWithId:identifier];
 
         photoIdentifiers = self->_photoIdentifiers;
-        v13 = [v10 identifier];
-        [(NSMutableSet *)photoIdentifiers removeObject:v13];
+        identifier2 = [v10 identifier];
+        [(NSMutableSet *)photoIdentifiers removeObject:identifier2];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [photos countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
@@ -803,14 +803,14 @@ LABEL_12:
   }
 }
 
-- (void)saveImage:(id)a3 withIdentifier:(id)a4
+- (void)saveImage:(id)image withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = UIImagePNGRepresentation(v6);
+  imageCopy = image;
+  identifierCopy = identifier;
+  v8 = UIImagePNGRepresentation(imageCopy);
   if (v8)
   {
-    [(RAPWebBundleBaseViewController *)self saveImageData:v8 withIdentifier:v7];
+    [(RAPWebBundleBaseViewController *)self saveImageData:v8 withIdentifier:identifierCopy];
   }
 
   else
@@ -819,33 +819,33 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = imageCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to create imageData from image: %@.", &v10, 0xCu);
     }
   }
 }
 
-- (void)saveImageData:(id)a3 withIdentifier:(id)a4
+- (void)saveImageData:(id)data withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v8 = sub_100038318();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
-    v10 = [v9 absoluteString];
-    v11 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
+    webBundleDirectory = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
+    absoluteString = [webBundleDirectory absoluteString];
+    absoluteCachedWebBundleDirectory = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
     v18 = 138412802;
-    v19 = v6;
+    v19 = dataCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = absoluteString;
     v22 = 2112;
-    v23 = v11;
+    v23 = absoluteCachedWebBundleDirectory;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Will try to save icon with data: %@, at path: %@ and path: %@", &v18, 0x20u);
   }
 
-  v12 = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
-  v13 = [RAPImageStorage saveImageWithImageIdentifier:v7 imageData:v6 directory:v12];
+  webBundleDirectory2 = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
+  v13 = [RAPImageStorage saveImageWithImageIdentifier:identifierCopy imageData:dataCopy directory:webBundleDirectory2];
 
   if ((v13 & 1) == 0)
   {
@@ -857,8 +857,8 @@ LABEL_12:
     }
   }
 
-  v15 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
-  v16 = [RAPImageStorage saveImageWithImageIdentifier:v7 imageData:v6 directory:v15];
+  absoluteCachedWebBundleDirectory2 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
+  v16 = [RAPImageStorage saveImageWithImageIdentifier:identifierCopy imageData:dataCopy directory:absoluteCachedWebBundleDirectory2];
 
   if ((v16 & 1) == 0)
   {
@@ -870,52 +870,52 @@ LABEL_12:
     }
   }
 
-  [(NSMutableSet *)self->_photoIdentifiers addObject:v7];
+  [(NSMutableSet *)self->_photoIdentifiers addObject:identifierCopy];
 }
 
 - (RAPWebBundleQuestion)webBundleQuestion
 {
-  v3 = [(RAPReport *)self->_report initialQuestion];
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(RAPReport *)self->_report initialQuestion];
+    initialQuestion2 = [(RAPReport *)self->_report initialQuestion];
   }
 
   else
   {
-    v5 = 0;
+    initialQuestion2 = 0;
   }
 
-  return v5;
+  return initialQuestion2;
 }
 
-- (void)presentAccessoryViewController:(id)a3
+- (void)presentAccessoryViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(RAPWebBundleBaseViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  controllerCopy = controller;
+  traitCollection = [(RAPWebBundleBaseViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v9 = [(RAPWebBundleBaseViewController *)self navigationController];
-    [v9 pushViewController:v4 animated:1];
+    navigationController = [(RAPWebBundleBaseViewController *)self navigationController];
+    [navigationController pushViewController:controllerCopy animated:1];
   }
 
   else
   {
-    [v4 setModalInPresentation:1];
-    v9 = [[UINavigationController alloc] initWithRootViewController:v4];
-    [v9 setModalPresentationStyle:2];
-    v7 = [(RAPWebBundleBaseViewController *)self navigationController];
-    [v9 setOverrideUserInterfaceStyle:{objc_msgSend(v7, "overrideUserInterfaceStyle")}];
+    [controllerCopy setModalInPresentation:1];
+    navigationController = [[UINavigationController alloc] initWithRootViewController:controllerCopy];
+    [navigationController setModalPresentationStyle:2];
+    navigationController2 = [(RAPWebBundleBaseViewController *)self navigationController];
+    [navigationController setOverrideUserInterfaceStyle:{objc_msgSend(navigationController2, "overrideUserInterfaceStyle")}];
 
-    v8 = [(RAPWebBundleBaseViewController *)self navigationController];
-    [v4 setOverrideUserInterfaceStyle:{objc_msgSend(v8, "overrideUserInterfaceStyle")}];
+    navigationController3 = [(RAPWebBundleBaseViewController *)self navigationController];
+    [controllerCopy setOverrideUserInterfaceStyle:{objc_msgSend(navigationController3, "overrideUserInterfaceStyle")}];
 
-    [(RAPWebBundleBaseViewController *)self presentViewController:v9 animated:1 completion:0];
+    [(RAPWebBundleBaseViewController *)self presentViewController:navigationController animated:1 completion:0];
   }
 }
 
@@ -924,15 +924,15 @@ LABEL_12:
   v4.receiver = self;
   v4.super_class = RAPWebBundleBaseViewController;
   [(RAPWebBundleBaseViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(RAPWebBundleBaseViewController *)self delegate];
-  [v3 updatePreferredContentSize];
+  delegate = [(RAPWebBundleBaseViewController *)self delegate];
+  [delegate updatePreferredContentSize];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = RAPWebBundleBaseViewController;
-  [(RAPWebBundleBaseViewController *)&v4 viewWillDisappear:a3];
+  [(RAPWebBundleBaseViewController *)&v4 viewWillDisappear:disappear];
   [(WebBundleManager *)self->_webBundleManager cancelLoadRequest];
 }
 
@@ -942,22 +942,22 @@ LABEL_12:
   v14.super_class = RAPWebBundleBaseViewController;
   [(RAPWebBundleBaseViewController *)&v14 viewDidLoad];
   v3 = objc_alloc_init(RAPWebBundleConfigurationManager);
-  v4 = [(RAPWebBundleConfigurationManager *)v3 configuration];
+  configuration = [(RAPWebBundleConfigurationManager *)v3 configuration];
   configuration = self->_configuration;
-  self->_configuration = v4;
+  self->_configuration = configuration;
 
   v6 = [WebBundleManager alloc];
-  v7 = [(RAPWebBundleConfigurationManager *)v3 configuration];
-  v8 = [(WebBundleManager *)v6 initWithConfiguration:v7 delegate:self];
+  configuration2 = [(RAPWebBundleConfigurationManager *)v3 configuration];
+  v8 = [(WebBundleManager *)v6 initWithConfiguration:configuration2 delegate:self];
   webBundleManager = self->_webBundleManager;
   self->_webBundleManager = v8;
 
-  v10 = [(RAPWebBundleBaseViewController *)self entryPointString];
+  entryPointString = [(RAPWebBundleBaseViewController *)self entryPointString];
 
-  if (v10)
+  if (entryPointString)
   {
-    v11 = [(RAPWebBundleBaseViewController *)self entryPointString];
-    [(WebBundleManager *)self->_webBundleManager setEntryPointString:v11];
+    entryPointString2 = [(RAPWebBundleBaseViewController *)self entryPointString];
+    [(WebBundleManager *)self->_webBundleManager setEntryPointString:entryPointString2];
   }
 
   [(RAPWebBundleBaseViewController *)self setupViews];
@@ -967,16 +967,16 @@ LABEL_12:
   self->_photoIdentifiers = v12;
 }
 
-- (RAPWebBundleBaseViewController)initWithReport:(id)a3
+- (RAPWebBundleBaseViewController)initWithReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v9.receiver = self;
   v9.super_class = RAPWebBundleBaseViewController;
   v6 = [(RAPWebBundleBaseViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_report, a3);
+    objc_storeStrong(&v6->_report, report);
   }
 
   return v7;

@@ -1,6 +1,6 @@
 @interface PKAddressEditorViewController
-- (PKAddressEditorViewController)initWithContact:(id)a3 requiredKeys:(id)a4 highlightedKeys:(id)a5 errors:(id)a6 style:(int64_t)a7;
-- (PKAddressEditorViewController)initWithContact:(id)a3 style:(int64_t)a4;
+- (PKAddressEditorViewController)initWithContact:(id)contact requiredKeys:(id)keys highlightedKeys:(id)highlightedKeys errors:(id)errors style:(int64_t)style;
+- (PKAddressEditorViewController)initWithContact:(id)contact style:(int64_t)style;
 - (PKAddressEditorViewControllerDelegate)delegate;
 - (PKAddressTextField)countryTextField;
 - (PKAddressTextField)familyNameTextField;
@@ -9,52 +9,52 @@
 - (PKAddressTextField)phoneticGivenNameTextField;
 - (PKAddressTextField)street1TextField;
 - (PKAddressTextField)street2TextField;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_fieldIndexForNameComponent:(unint64_t)a3;
-- (unint64_t)_nameComponentForFieldIndex:(unint64_t)a3;
-- (void)_checkFormatOfAddressTextField:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_fieldIndexForNameComponent:(unint64_t)component;
+- (unint64_t)_nameComponentForFieldIndex:(unint64_t)index;
+- (void)_checkFormatOfAddressTextField:(id)field;
 - (void)_presentCountryPickerIfEditable;
-- (void)_presentPickerForAddressTextField:(id)a3;
-- (void)_updateUniqueAddressField:(id)a3 withNewString:(id)a4;
-- (void)_updateWithPostalAddress:(id)a3;
+- (void)_presentPickerForAddressTextField:(id)field;
+- (void)_updateUniqueAddressField:(id)field withNewString:(id)string;
+- (void)_updateWithPostalAddress:(id)address;
 - (void)_validateAddressRequirements;
-- (void)addressTextField:(id)a3 didEndEditing:(id)a4;
-- (void)addressTextField:(id)a3 textDidChange:(id)a4;
-- (void)assignErrorToField:(id)a3;
+- (void)addressTextField:(id)field didEndEditing:(id)editing;
+- (void)addressTextField:(id)field textDidChange:(id)change;
+- (void)assignErrorToField:(id)field;
 - (void)cancel;
-- (void)completer:(id)a3 didFailWithError:(id)a4;
-- (void)completerDidUpdateResults:(id)a3;
-- (void)countryPicker:(id)a3 didPickCountryCode:(id)a4;
+- (void)completer:(id)completer didFailWithError:(id)error;
+- (void)completerDidUpdateResults:(id)results;
+- (void)countryPicker:(id)picker didPickCountryCode:(id)code;
 - (void)donePressed;
 - (void)recomputeEditingFields;
-- (void)setContactFormatValidator:(id)a3;
-- (void)setReadOnly:(BOOL)a3;
-- (void)textDidChange:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setContactFormatValidator:(id)validator;
+- (void)setReadOnly:(BOOL)only;
+- (void)textDidChange:(id)change;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PKAddressEditorViewController
 
-- (PKAddressEditorViewController)initWithContact:(id)a3 style:(int64_t)a4
+- (PKAddressEditorViewController)initWithContact:(id)contact style:(int64_t)style
 {
-  v6 = a3;
+  contactCopy = contact;
   v7 = [(PKAddressEditorViewController *)self initWithStyle:0];
   if (v7)
   {
-    if (v6)
+    if (contactCopy)
     {
-      v8 = [v6 givenName];
+      givenName = [contactCopy givenName];
       originalGivenName = v7->_originalGivenName;
-      v7->_originalGivenName = v8;
+      v7->_originalGivenName = givenName;
 
-      v10 = [v6 familyName];
+      familyName = [contactCopy familyName];
       originalFamilyName = v7->_originalFamilyName;
-      v7->_originalFamilyName = v10;
+      v7->_originalFamilyName = familyName;
 
       v12 = [(NSString *)v7->_originalGivenName copy];
       givenName = v7->_givenName;
@@ -64,17 +64,17 @@
       familyName = v7->_familyName;
       v7->_familyName = v14;
 
-      v16 = [v6 nameComponents];
-      v17 = [v16 phoneticRepresentation];
-      v18 = [v17 givenName];
+      nameComponents = [contactCopy nameComponents];
+      phoneticRepresentation = [nameComponents phoneticRepresentation];
+      givenName2 = [phoneticRepresentation givenName];
       originalPhoneticGivenName = v7->_originalPhoneticGivenName;
-      v7->_originalPhoneticGivenName = v18;
+      v7->_originalPhoneticGivenName = givenName2;
 
-      v20 = [v6 nameComponents];
-      v21 = [v20 phoneticRepresentation];
-      v22 = [v21 familyName];
+      nameComponents2 = [contactCopy nameComponents];
+      phoneticRepresentation2 = [nameComponents2 phoneticRepresentation];
+      familyName2 = [phoneticRepresentation2 familyName];
       originalPhoneticFamilyName = v7->_originalPhoneticFamilyName;
-      v7->_originalPhoneticFamilyName = v22;
+      v7->_originalPhoneticFamilyName = familyName2;
 
       v24 = [(NSString *)v7->_originalPhoneticGivenName copy];
       phoneticGivenName = v7->_phoneticGivenName;
@@ -89,29 +89,29 @@
       v7->_displayGivenNameFirst = [v28 nameOrderForContact:v29] == 1;
     }
 
-    v30 = [v6 postalAddresses];
-    v31 = [v30 count];
+    postalAddresses = [contactCopy postalAddresses];
+    v31 = [postalAddresses count];
 
     if (v31)
     {
-      v32 = [v6 postalAddresses];
-      v33 = [v32 firstObject];
+      postalAddresses2 = [contactCopy postalAddresses];
+      firstObject = [postalAddresses2 firstObject];
 
-      v34 = [v6 postalAddresses];
-      v35 = [v34 firstObject];
-      v36 = [v35 value];
-      v37 = [v36 mutableCopy];
+      postalAddresses3 = [contactCopy postalAddresses];
+      firstObject2 = [postalAddresses3 firstObject];
+      value = [firstObject2 value];
+      v37 = [value mutableCopy];
       originalAddress = v7->_originalAddress;
       v7->_originalAddress = v37;
 
-      v39 = [v33 value];
-      v40 = [v39 mutableCopy];
+      value2 = [firstObject value];
+      v40 = [value2 mutableCopy];
       inputAddress = v7->_inputAddress;
       v7->_inputAddress = v40;
 
-      v42 = [v33 label];
+      label = [firstObject label];
       inputLabel = v7->_inputLabel;
-      v7->_inputLabel = v42;
+      v7->_inputLabel = label;
     }
 
     else
@@ -126,9 +126,9 @@
       objc_storeStrong(&v7->_inputLabel, *MEMORY[0x1E695CB60]);
     }
 
-    v46 = [MEMORY[0x1E695DF58] currentLocale];
-    v47 = [(CNMutablePostalAddress *)v7->_inputAddress ISOCountryCode];
-    v48 = [v47 length];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    iSOCountryCode = [(CNMutablePostalAddress *)v7->_inputAddress ISOCountryCode];
+    v48 = [iSOCountryCode length];
 
     if (v48 == 2)
     {
@@ -140,13 +140,13 @@
       PKCurrentRegion();
     }
     v49 = ;
-    v50 = [v46 displayNameForKey:*MEMORY[0x1E695D978] value:v49];
+    v50 = [currentLocale displayNameForKey:*MEMORY[0x1E695D978] value:v49];
     v51 = v7->_originalAddress;
     if (v51)
     {
-      v52 = [(CNMutablePostalAddress *)v51 country];
+      country = [(CNMutablePostalAddress *)v51 country];
       originalCountry = v7->_originalCountry;
-      v7->_originalCountry = v52;
+      v7->_originalCountry = country;
 
       v54 = v7->_originalAddress;
       v55 = [v50 copy];
@@ -180,13 +180,13 @@
     requiredFieldKeys = v7->_requiredFieldKeys;
     v7->_requiredFieldKeys = v63;
 
-    v7->_style = a4;
+    v7->_style = style;
     v7->_countryIsEditable = 1;
     v7->_isEditingBlankField = 0;
     v65 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v7 action:sel_donePressed];
     [v65 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    v66 = [(PKAddressEditorViewController *)v7 navigationItem];
-    [v66 setRightBarButtonItem:v65];
+    navigationItem = [(PKAddressEditorViewController *)v7 navigationItem];
+    [navigationItem setRightBarButtonItem:v65];
 
     [(PKAddressEditorViewController *)v7 recomputeEditingFields];
   }
@@ -194,24 +194,24 @@
   return v7;
 }
 
-- (PKAddressEditorViewController)initWithContact:(id)a3 requiredKeys:(id)a4 highlightedKeys:(id)a5 errors:(id)a6 style:(int64_t)a7
+- (PKAddressEditorViewController)initWithContact:(id)contact requiredKeys:(id)keys highlightedKeys:(id)highlightedKeys errors:(id)errors style:(int64_t)style
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(PKAddressEditorViewController *)self initWithContact:a3 style:a7];
+  keysCopy = keys;
+  highlightedKeysCopy = highlightedKeys;
+  errorsCopy = errors;
+  v15 = [(PKAddressEditorViewController *)self initWithContact:contact style:style];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [highlightedKeysCopy copy];
     highlightedFieldKeys = v15->_highlightedFieldKeys;
     v15->_highlightedFieldKeys = v16;
 
-    v18 = [v12 copy];
+    v18 = [keysCopy copy];
     requiredFieldKeys = v15->_requiredFieldKeys;
     v15->_requiredFieldKeys = v18;
 
     v15->_displayPhoneticName = [(NSArray *)v15->_requiredFieldKeys containsObject:*MEMORY[0x1E69BB7D0]];
-    v20 = [v14 copy];
+    v20 = [errorsCopy copy];
     errors = v15->_errors;
     v15->_errors = v20;
 
@@ -226,57 +226,57 @@
   v5.receiver = self;
   v5.super_class = PKAddressEditorViewController;
   [(PKAddressEditorViewController *)&v5 viewDidLoad];
-  v3 = [(PKAddressEditorViewController *)self tableView];
-  [v3 setContentInsetAdjustmentBehavior:0];
-  [v3 setKeyboardDismissMode:1];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  tableView = [(PKAddressEditorViewController *)self tableView];
+  [tableView setContentInsetAdjustmentBehavior:0];
+  [tableView setKeyboardDismissMode:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [tableView setBackgroundColor:clearColor];
 
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v3 setEstimatedRowHeight:44.0];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9418]];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView setEstimatedRowHeight:44.0];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9418]];
   [(PKAddressEditorViewController *)self _validateAddressRequirements];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = PKAddressEditorViewController;
-  [(PKAddressEditorViewController *)&v9 willMoveToParentViewController:a3];
-  v4 = [(PKAddressEditorViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 count];
+  [(PKAddressEditorViewController *)&v9 willMoveToParentViewController:controller];
+  navigationController = [(PKAddressEditorViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers count];
 
   if (v6 == 1)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
     [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    v8 = [(PKAddressEditorViewController *)self navigationItem];
-    [v8 setLeftBarButtonItem:v7 animated:1];
+    navigationItem = [(PKAddressEditorViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v7 animated:1];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKAddressEditorViewController;
-  [(PKAddressEditorViewController *)&v7 viewWillAppear:a3];
-  v4 = [(PKAddressEditorViewController *)self tableView];
-  [v4 beginUpdates];
+  [(PKAddressEditorViewController *)&v7 viewWillAppear:appear];
+  tableView = [(PKAddressEditorViewController *)self tableView];
+  [tableView beginUpdates];
 
-  v5 = [(PKAddressEditorViewController *)self tableView];
-  [v5 endUpdates];
+  tableView2 = [(PKAddressEditorViewController *)self tableView];
+  [tableView2 endUpdates];
 
-  v6 = [(PKAddressEditorViewController *)self tableView];
-  [v6 contentSize];
+  tableView3 = [(PKAddressEditorViewController *)self tableView];
+  [tableView3 contentSize];
   [(PKAddressEditorViewController *)self setPreferredContentSize:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKAddressEditorViewController;
-  [(PKAddressEditorViewController *)&v6 viewDidAppear:a3];
+  [(PKAddressEditorViewController *)&v6 viewDidAppear:appear];
   if (self->_presentedCountrySelector)
   {
     self->_presentedCountrySelector = 0;
@@ -373,24 +373,24 @@
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     v12 = [v10 pkContactWithNameComponents:v4 postalAddresses:v11 emailAddresses:0 phoneNumbers:0];
 
-    v13 = [(PKAddressEditorViewController *)self delegate];
-    [v13 addressEditorViewController:self selectedContact:v12];
+    delegate = [(PKAddressEditorViewController *)self delegate];
+    [delegate addressEditorViewController:self selectedContact:v12];
   }
 }
 
 - (void)cancel
 {
-  v3 = [(PKAddressEditorViewController *)self delegate];
-  [v3 addressEditorViewControllerDidCancel:self];
+  delegate = [(PKAddressEditorViewController *)self delegate];
+  [delegate addressEditorViewControllerDidCancel:self];
 }
 
 - (void)recomputeEditingFields
 {
   v54 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695CF68];
-  v4 = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
-  v5 = [v4 lowercaseString];
-  v6 = [v3 specificationForCountry:v5];
+  iSOCountryCode = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
+  lowercaseString = [iSOCountryCode lowercaseString];
+  v6 = [v3 specificationForCountry:lowercaseString];
   addressFormatter = self->_addressFormatter;
   self->_addressFormatter = v6;
 
@@ -586,16 +586,16 @@ LABEL_27:
   self->_editingFields = v35;
 }
 
-- (void)assignErrorToField:(id)a3
+- (void)assignErrorToField:(id)field
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 key];
+  fieldCopy = field;
+  v5 = [fieldCopy key];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v36 = self;
+  selfCopy = self;
   obj = self->_errors;
   v6 = [(NSArray *)obj countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (!v6)
@@ -610,7 +610,7 @@ LABEL_27:
   v39 = *MEMORY[0x1E69BC088];
   v40 = *MEMORY[0x1E69BC080];
   v10 = *MEMORY[0x1E695CC10];
-  v37 = v4;
+  v37 = fieldCopy;
   v38 = *MEMORY[0x1E695CC08];
   v43 = v5;
   while (2)
@@ -623,8 +623,8 @@ LABEL_27:
       }
 
       v12 = *(*(&v45 + 1) + 8 * i);
-      v13 = [v12 domain];
-      if (![v13 isEqualToString:v9])
+      domain = [v12 domain];
+      if (![domain isEqualToString:v9])
       {
         goto LABEL_18;
       }
@@ -633,16 +633,16 @@ LABEL_27:
       {
 
 LABEL_11:
-        v16 = [v12 userInfo];
-        v13 = [v16 objectForKey:v41];
+        userInfo = [v12 userInfo];
+        domain = [userInfo objectForKey:v41];
 
-        v17 = [v12 userInfo];
-        v18 = [v17 objectForKey:v40];
+        userInfo2 = [v12 userInfo];
+        v18 = [userInfo2 objectForKey:v40];
 
-        v19 = [v12 userInfo];
-        v20 = [v19 PKBoolForKey:v39];
+        userInfo3 = [v12 userInfo];
+        v20 = [userInfo3 PKBoolForKey:v39];
 
-        if ([v13 isEqualToString:v10])
+        if ([domain isEqualToString:v10])
         {
           v21 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -652,18 +652,18 @@ LABEL_11:
           }
 
           v22 = v38;
-          v13 = v22;
+          domain = v22;
         }
 
         v5 = v43;
-        if ([v13 isEqualToString:v43] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", v43))
+        if ([domain isEqualToString:v43] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", v43))
         {
-          v4 = v37;
+          fieldCopy = v37;
           [v37 setError:v12];
           v23 = *MEMORY[0x1E69BB7C0];
           if (([v43 isEqualToString:*MEMORY[0x1E69BB7C0]] & 1) != 0 || objc_msgSend(v43, "isEqualToString:", *MEMORY[0x1E69BB7D0]))
           {
-            v24 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](v36, "_nameComponentForFieldIndex:", [v37 index]);
+            v24 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](selfCopy, "_nameComponentForFieldIndex:", [v37 index]);
             if ([v43 isEqualToString:v23])
             {
               if (v24)
@@ -679,10 +679,10 @@ LABEL_32:
 LABEL_33:
                 v5 = v43;
 LABEL_41:
-                [v4 setInvalidText:v26];
+                [fieldCopy setInvalidText:v26];
 LABEL_42:
 
-                [v4 setFormatIsInvalid:v20];
+                [fieldCopy setFormatIsInvalid:v20];
                 goto LABEL_43;
               }
 
@@ -714,11 +714,11 @@ LABEL_42:
 
 LABEL_40:
             v5 = v43;
-            v26 = *(&v36->super.super.super.super.isa + *v25);
+            v26 = *(&selfCopy->super.super.super.super.isa + *v25);
             goto LABEL_41;
           }
 
-          originalAddress = v36->_originalAddress;
+          originalAddress = selfCopy->_originalAddress;
           v28 = [v37 key];
           v26 = [(CNMutablePostalAddress *)originalAddress valueForKey:v28];
 
@@ -737,27 +737,27 @@ LABEL_40:
             goto LABEL_33;
           }
 
-          v31 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-          v32 = [v26 componentsSeparatedByCharactersInSet:v31];
+          newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+          v32 = [v26 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
           if (![v37 index] && objc_msgSend(v32, "count"))
           {
-            v35 = [v32 firstObject];
+            firstObject = [v32 firstObject];
             goto LABEL_53;
           }
 
           if ([v37 index] == 1 && objc_msgSend(v32, "count") >= 2)
           {
-            v33 = [v32 firstObject];
-            v34 = [v32 pk_arrayByRemovingObject:v33];
+            firstObject2 = [v32 firstObject];
+            v34 = [v32 pk_arrayByRemovingObject:firstObject2];
 
-            v35 = [v34 componentsJoinedByString:@"\n"];
+            firstObject = [v34 componentsJoinedByString:@"\n"];
             v32 = v34;
-            v4 = v37;
+            fieldCopy = v37;
 LABEL_53:
 
             v5 = v43;
-            if ([v4 index] == 1 && (!v35 || !objc_msgSend(v35, "length")))
+            if ([fieldCopy index] == 1 && (!firstObject || !objc_msgSend(firstObject, "length")))
             {
 LABEL_56:
               v20 = 0;
@@ -767,7 +767,7 @@ LABEL_56:
           else
           {
 
-            v35 = 0;
+            firstObject = 0;
             v5 = v43;
             if ([v37 index] == 1)
             {
@@ -775,7 +775,7 @@ LABEL_56:
             }
           }
 
-          v26 = v35;
+          v26 = firstObject;
           goto LABEL_41;
         }
 
@@ -783,9 +783,9 @@ LABEL_18:
         continue;
       }
 
-      v14 = [v12 code];
+      code = [v12 code];
 
-      v15 = v14 == 2;
+      v15 = code == 2;
       v5 = v43;
       if (v15)
       {
@@ -794,7 +794,7 @@ LABEL_18:
     }
 
     v7 = [(NSArray *)obj countByEnumeratingWithState:&v45 objects:v49 count:16];
-    v4 = v37;
+    fieldCopy = v37;
     if (v7)
     {
       continue;
@@ -806,30 +806,30 @@ LABEL_18:
 LABEL_43:
 }
 
-- (void)setContactFormatValidator:(id)a3
+- (void)setContactFormatValidator:(id)validator
 {
-  v5 = a3;
-  if (self->_contactFormatValidator != v5)
+  validatorCopy = validator;
+  if (self->_contactFormatValidator != validatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contactFormatValidator, a3);
-    v5 = v6;
+    v6 = validatorCopy;
+    objc_storeStrong(&self->_contactFormatValidator, validator);
+    validatorCopy = v6;
   }
 }
 
-- (void)_updateWithPostalAddress:(id)a3
+- (void)_updateWithPostalAddress:(id)address
 {
-  objc_storeStrong(&self->_inputAddress, a3);
-  v5 = a3;
-  v6 = [(PKAddressEditorViewController *)self tableView];
-  [v6 beginUpdates];
+  objc_storeStrong(&self->_inputAddress, address);
+  addressCopy = address;
+  tableView = [(PKAddressEditorViewController *)self tableView];
+  [tableView beginUpdates];
 
-  v7 = [(PKAddressEditorViewController *)self tableView];
+  tableView2 = [(PKAddressEditorViewController *)self tableView];
   v8 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
 
-  [v7 reloadSections:v8 withRowAnimation:100];
-  v9 = [(PKAddressEditorViewController *)self tableView];
-  [v9 endUpdates];
+  [tableView2 reloadSections:v8 withRowAnimation:100];
+  tableView3 = [(PKAddressEditorViewController *)self tableView];
+  [tableView3 endUpdates];
 }
 
 - (void)_presentCountryPickerIfEditable
@@ -839,50 +839,50 @@ LABEL_43:
     self->_presentedCountrySelector = 1;
     v4 = [[PKCountryPickerViewController alloc] initWithStyle:self->_style];
     [(PKCountryPickerViewController *)v4 setDelegate:self];
-    v3 = [(PKAddressEditorViewController *)self navigationController];
-    [v3 pushViewController:v4 animated:1];
+    navigationController = [(PKAddressEditorViewController *)self navigationController];
+    [navigationController pushViewController:v4 animated:1];
   }
 }
 
-- (void)_presentPickerForAddressTextField:(id)a3
+- (void)_presentPickerForAddressTextField:(id)field
 {
-  v4 = a3;
-  v5 = [v4 contactFieldConfiguration];
-  if ([v5 type] == 2)
+  fieldCopy = field;
+  contactFieldConfiguration = [fieldCopy contactFieldConfiguration];
+  if ([contactFieldConfiguration type] == 2)
   {
-    v6 = v5;
-    v7 = [v4 text];
-    v8 = [v6 pickerItems];
+    v6 = contactFieldConfiguration;
+    text = [fieldCopy text];
+    pickerItems = [v6 pickerItems];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy__69;
     v25 = __Block_byref_object_dispose__69;
     v26 = 0;
-    if (v7)
+    if (text)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __67__PKAddressEditorViewController__presentPickerForAddressTextField___block_invoke;
       v18[3] = &unk_1E8025AC0;
-      v19 = v7;
+      v19 = text;
       v20 = &v21;
-      [v8 enumerateObjectsUsingBlock:v18];
+      [pickerItems enumerateObjectsUsingBlock:v18];
     }
 
-    v9 = [v6 pickerItems];
+    pickerItems2 = [v6 pickerItems];
     v10 = v22[5];
-    v11 = [v4 isInvalid];
+    isInvalid = [fieldCopy isInvalid];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__PKAddressEditorViewController__presentPickerForAddressTextField___block_invoke_2;
     v15[3] = &unk_1E8025AE8;
-    v16 = v4;
-    v17 = self;
-    v12 = [_TtC9PassKitUI31PKAddressFieldPickerViewHosting loadViewControllerWithAllowedValues:v9 selectedValue:v10 isValid:v11 ^ 1u onCommit:v15];
+    v16 = fieldCopy;
+    selfCopy = self;
+    v12 = [_TtC9PassKitUI31PKAddressFieldPickerViewHosting loadViewControllerWithAllowedValues:pickerItems2 selectedValue:v10 isValid:isInvalid ^ 1u onCommit:v15];
 
-    v13 = [(PKAddressEditorViewController *)self navigationController];
-    [v13 pushViewController:v12 animated:1];
+    navigationController = [(PKAddressEditorViewController *)self navigationController];
+    [navigationController pushViewController:v12 animated:1];
 
     _Block_object_dispose(&v21, 8);
   }
@@ -915,16 +915,16 @@ void __67__PKAddressEditorViewController__presentPickerForAddressTextField___blo
   v8 = [v7 popViewControllerAnimated:1];
 }
 
-- (unint64_t)_nameComponentForFieldIndex:(unint64_t)a3
+- (unint64_t)_nameComponentForFieldIndex:(unint64_t)index
 {
   result = 0;
   displayPhoneticName = self->_displayPhoneticName;
   displayGivenNameFirst = self->_displayGivenNameFirst;
   v7 = !displayGivenNameFirst && displayPhoneticName + 1;
   v8 = displayGivenNameFirst && displayPhoneticName + 1;
-  if (v7 != a3)
+  if (v7 != index)
   {
-    if (v8 == a3)
+    if (v8 == index)
     {
       result = 1;
     }
@@ -934,14 +934,14 @@ void __67__PKAddressEditorViewController__presentPickerForAddressTextField___blo
       result = 4;
     }
 
-    if (v8 != a3 && displayPhoneticName)
+    if (v8 != index && displayPhoneticName)
     {
-      if (v7 + 1 == a3)
+      if (v7 + 1 == index)
       {
         return 2;
       }
 
-      else if (v8 + 1 == a3)
+      else if (v8 + 1 == index)
       {
         return 3;
       }
@@ -956,18 +956,18 @@ void __67__PKAddressEditorViewController__presentPickerForAddressTextField___blo
   return result;
 }
 
-- (int64_t)_fieldIndexForNameComponent:(unint64_t)a3
+- (int64_t)_fieldIndexForNameComponent:(unint64_t)component
 {
   displayPhoneticName = self->_displayPhoneticName;
   v4 = !self->_displayGivenNameFirst && displayPhoneticName + 1;
   v5 = self->_displayGivenNameFirst && displayPhoneticName + 1;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 == 2)
+  if (component == 2)
   {
     v6 = v4 + 1;
   }
 
-  if (a3 == 3)
+  if (component == 3)
   {
     v6 = v5 + 1;
   }
@@ -982,12 +982,12 @@ void __67__PKAddressEditorViewController__presentPickerForAddressTextField___blo
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 == 1)
+  if (component == 1)
   {
     v7 = v5;
   }
 
-  if (a3)
+  if (component)
   {
     return v7;
   }
@@ -1084,7 +1084,7 @@ LABEL_19:
 LABEL_21:
 
   v17 = 1096;
-  v18 = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
+  iSOCountryCode = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
   v19 = PKContactFormatRequiredPostalAddressKeysForCountryCode();
 
   v53 = 0u;
@@ -1164,9 +1164,9 @@ LABEL_31:
 
       v31 = *(*(&v47 + 1) + 8 * v30);
       v32 = [v31 key];
-      v33 = [v31 error];
+      error = [v31 error];
 
-      if (!v33)
+      if (!error)
       {
         goto LABEL_47;
       }
@@ -1241,36 +1241,36 @@ LABEL_45:
 LABEL_52:
 
   self->_requirementsMet = v16;
-  v41 = [(PKAddressEditorViewController *)self navigationItem];
-  v42 = [v41 rightBarButtonItem];
-  [v42 setEnabled:v16];
+  navigationItem = [(PKAddressEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v16];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v109[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"field"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"field"];
   if (!v7)
   {
     v7 = [[PKAddressEditorTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"field"];
   }
 
-  v8 = [(PKAddressEditorTableViewCell *)v7 stackView];
-  v9 = -[NSArray objectAtIndex:](self->_editingFields, "objectAtIndex:", [v6 row]);
+  stackView = [(PKAddressEditorTableViewCell *)v7 stackView];
+  v9 = -[NSArray objectAtIndex:](self->_editingFields, "objectAtIndex:", [pathCopy row]);
   v10 = [v9 key];
-  v11 = [v6 row];
+  v11 = [pathCopy row];
 
-  v12 = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
+  iSOCountryCode = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
   v105 = *MEMORY[0x1E69BB7C0];
-  v103 = v12;
+  v103 = iSOCountryCode;
   if ([v10 isEqualToString:?])
   {
     if (v11 != [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:0])
     {
       if (v11 == [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:1])
       {
-        v13 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForFamilyNameForCountryCode:v12];
+        v13 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForFamilyNameForCountryCode:iSOCountryCode];
 LABEL_10:
         v14 = v13;
 LABEL_15:
@@ -1290,7 +1290,7 @@ LABEL_15:
     {
       if (v11 == [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:3])
       {
-        v13 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForPhoneticFamilyNameForCountryCode:v12];
+        v13 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForPhoneticFamilyNameForCountryCode:iSOCountryCode];
         goto LABEL_10;
       }
 
@@ -1301,11 +1301,11 @@ LABEL_38:
     }
 
 LABEL_9:
-    v13 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForGivenNameForCountryCode:v12];
+    v13 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForGivenNameForCountryCode:iSOCountryCode];
     goto LABEL_10;
   }
 
-  v14 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForPostalField:v10 forCountryCode:v12];
+  v14 = [(PKContactFormatValidator *)self->_contactFormatValidator contactFieldConfigurationForPostalField:v10 forCountryCode:iSOCountryCode];
   v15 = [(CNMutablePostalAddress *)self->_inputAddress valueForKey:v10];
   v16 = v15;
   if (!v15 || (v107 = v15, v17 = [v15 length], v16 = v107, !v17) || (v18 = objc_msgSend(v107, "isEqualToString:", @"\n"), v16 = v107, (v18 & 1) != 0))
@@ -1316,34 +1316,34 @@ LABEL_9:
 
   if ([v10 isEqualToString:*MEMORY[0x1E695CC30]])
   {
-    v43 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v44 = [v107 componentsSeparatedByCharactersInSet:v43];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v44 = [v107 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
     if ([v9 index] || !objc_msgSend(v44, "count"))
     {
       if ([v9 index] == 1 && objc_msgSend(v44, "count") >= 2)
       {
-        v45 = [v44 firstObject];
-        [v44 pk_arrayByRemovingObject:v45];
+        firstObject = [v44 firstObject];
+        [v44 pk_arrayByRemovingObject:firstObject];
         v47 = v46 = v14;
 
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        firstObject2 = [v47 componentsJoinedByString:@"\n"];
         v44 = v47;
         v14 = v46;
       }
 
       else
       {
-        v48 = 0;
+        firstObject2 = 0;
       }
     }
 
     else
     {
-      v48 = [v44 firstObject];
+      firstObject2 = [v44 firstObject];
     }
 
-    v107 = v48;
+    v107 = firstObject2;
   }
 
 LABEL_16:
@@ -1352,15 +1352,15 @@ LABEL_16:
   v104 = v10;
   if ([v19 isEqualToString:?])
   {
-    v101 = [(PKAddressEditorViewController *)self _canChangeCountry];
+    _canChangeCountry = [(PKAddressEditorViewController *)self _canChangeCountry];
   }
 
   else
   {
-    v101 = 0;
+    _canChangeCountry = 0;
   }
 
-  v106 = [v14 type];
+  type = [v14 type];
   v20 = [PKAddressTextField alloc];
   v21 = [(PKAddressTextField *)v20 initWithFrame:self->_style style:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(PKAddressTextField *)v21 setDelegate:self];
@@ -1369,8 +1369,8 @@ LABEL_16:
   [(PKAddressTextField *)v21 setAddressField:v9];
   [(PKAddressTextField *)v21 setContactFieldConfiguration:v14];
   [(PKAddressTextField *)v21 setEnabled:!self->_readOnly];
-  v22 = [MEMORY[0x1E69DC888] clearColor];
-  [(PKAddressTextField *)v21 setBackgroundColor:v22];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PKAddressTextField *)v21 setBackgroundColor:clearColor];
 
   [(PKAddressTextField *)v21 setAutocorrectionType:1];
   [(PKAddressTextField *)v21 addTarget:self action:sel_textDidChange_ forControlEvents:0x20000];
@@ -1454,7 +1454,7 @@ LABEL_28:
     [(PKAddressTextField *)v21 setPlaceholder:v36];
 
     [(PKAddressTextField *)v21 setText:v107];
-    v37 = v106 == 2 || v101;
+    v37 = type == 2 || _canChangeCountry;
     if (v37 == 1)
     {
       if (self->_style == 2)
@@ -1478,13 +1478,13 @@ LABEL_28:
 
       else
       {
-        v49 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-        [v42 setTintColor:v49];
+        tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+        [v42 setTintColor:tertiaryLabelColor];
       }
 
       [(PKAddressTextField *)v21 setRightViewMode:3];
       [(PKAddressTextField *)v21 setRightView:v42];
-      if (v101)
+      if (_canChangeCountry)
       {
         objc_storeWeak(&self->_countryTextField, v21);
       }
@@ -1514,19 +1514,19 @@ LABEL_28:
     v54 = [v9 key];
     if ([(NSArray *)highlightedFieldKeys containsObject:v54])
     {
-      v55 = [v9 index];
+      index = [v9 index];
 
-      if (!v55)
+      if (!index)
       {
         v108 = *MEMORY[0x1E69DB650];
-        v56 = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
-        v57 = [v56 colorWithAlphaComponent:0.7];
+        pkui_osloErrorColor = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
+        v57 = [pkui_osloErrorColor colorWithAlphaComponent:0.7];
         v109[0] = v57;
         v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v109 forKeys:&v108 count:1];
 
         v59 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v60 = [(PKAddressTextField *)v21 placeholder];
-        v61 = [v59 initWithString:v60 attributes:v58];
+        placeholder = [(PKAddressTextField *)v21 placeholder];
+        v61 = [v59 initWithString:placeholder attributes:v58];
 
         [(PKAddressTextField *)v21 setAttributedPlaceholder:v61];
       }
@@ -1583,37 +1583,37 @@ LABEL_28:
   }
 
 LABEL_71:
-  v71 = [v9 invalidText];
-  if (!v71)
+  invalidText = [v9 invalidText];
+  if (!invalidText)
   {
     goto LABEL_78;
   }
 
-  v72 = v71;
-  v73 = [v9 invalidText];
-  v74 = [(PKAddressTextField *)v21 text];
-  if (([v73 isEqualToString:v74] & 1) == 0)
+  v72 = invalidText;
+  invalidText2 = [v9 invalidText];
+  text = [(PKAddressTextField *)v21 text];
+  if (([invalidText2 isEqualToString:text] & 1) == 0)
   {
-    v78 = [v9 invalidText];
-    if ([v78 length])
+    invalidText3 = [v9 invalidText];
+    if ([invalidText3 length])
     {
     }
 
     else
     {
-      v99 = v8;
-      v91 = [(PKAddressTextField *)v21 text];
-      if (!v91)
+      v99 = stackView;
+      text2 = [(PKAddressTextField *)v21 text];
+      if (!text2)
       {
 
         goto LABEL_73;
       }
 
-      v92 = v91;
-      v93 = [(PKAddressTextField *)v21 text];
-      v98 = [v93 length];
+      v92 = text2;
+      text3 = [(PKAddressTextField *)v21 text];
+      v98 = [text3 length];
 
-      v8 = v99;
+      stackView = v99;
       if (!v98)
       {
         goto LABEL_74;
@@ -1622,7 +1622,7 @@ LABEL_71:
 
 LABEL_78:
     [(PKAddressTextField *)v21 setIsInvalid:0 showErrorGlyph:0];
-    v79 = v106 == 2 || v101;
+    v79 = type == 2 || _canChangeCountry;
     if (v79 != 1)
     {
       goto LABEL_99;
@@ -1635,7 +1635,7 @@ LABEL_78:
 LABEL_73:
 
 LABEL_74:
-  v75 = [v9 index];
+  index2 = [v9 index];
   v76 = [v9 key];
   if ([v76 isEqualToString:v105])
   {
@@ -1647,7 +1647,7 @@ LABEL_74:
     v80 = [v9 key];
     v81 = [v80 isEqualToString:*MEMORY[0x1E69BB7D0]];
 
-    if (v75)
+    if (index2)
     {
       v77 = v81;
     }
@@ -1692,14 +1692,14 @@ LABEL_74:
 
   [(PKAddressTextField *)v88 setIsInvalid:v89 showErrorGlyph:v90];
 LABEL_97:
-  if (v106 == 2)
+  if (type == 2)
   {
     [(PKAddressTextField *)v21 setSecureTextEntry:1];
     [(PKAddressTextField *)v21 setDisplaySecureTextUsingPlainText:1];
   }
 
 LABEL_99:
-  [v8 addArrangedSubview:v21];
+  [stackView addArrangedSubview:v21];
   if (self->_style == 2)
   {
     v94 = PKBridgeAppearanceGetAppearanceSpecifier();
@@ -1715,67 +1715,67 @@ LABEL_99:
   return v7;
 }
 
-- (void)setReadOnly:(BOOL)a3
+- (void)setReadOnly:(BOOL)only
 {
-  self->_readOnly = a3;
-  v3 = [(PKAddressEditorViewController *)self tableView];
-  [v3 reloadData];
+  self->_readOnly = only;
+  tableView = [(PKAddressEditorViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 text];
-    [(PKAddressEditorViewController *)self addressTextField:v5 textDidChange:v4];
+    text = [changeCopy text];
+    [(PKAddressEditorViewController *)self addressTextField:changeCopy textDidChange:text];
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v9 = a3;
+  editingCopy = editing;
   WeakRetained = objc_loadWeakRetained(&self->_countryTextField);
 
-  if (WeakRetained == v9)
+  if (WeakRetained == editingCopy)
   {
-    [v9 resignFirstResponder];
+    [editingCopy resignFirstResponder];
     [(PKAddressEditorViewController *)self _presentCountryPickerIfEditable];
   }
 
   else
   {
-    v6 = [v9 contactFieldConfiguration];
-    v7 = [v6 type];
+    contactFieldConfiguration = [editingCopy contactFieldConfiguration];
+    type = [contactFieldConfiguration type];
 
-    if (v7 == 2)
+    if (type == 2)
     {
-      [v9 resignFirstResponder];
-      [(PKAddressEditorViewController *)self _presentPickerForAddressTextField:v9];
+      [editingCopy resignFirstResponder];
+      [(PKAddressEditorViewController *)self _presentPickerForAddressTextField:editingCopy];
     }
 
     else
     {
-      objc_storeStrong(&self->_currentlySelectedField, a3);
-      v8 = [(PKAddressTextField *)self->_currentlySelectedField text];
-      self->_isEditingBlankField = [v8 length] == 0;
+      objc_storeStrong(&self->_currentlySelectedField, editing);
+      text = [(PKAddressTextField *)self->_currentlySelectedField text];
+      self->_isEditingBlankField = [text length] == 0;
     }
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v11 = a3;
+  editingCopy = editing;
   WeakRetained = objc_loadWeakRetained(&self->_countryTextField);
 
-  v5 = v11;
-  if (WeakRetained != v11)
+  v5 = editingCopy;
+  if (WeakRetained != editingCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v11;
+      v6 = editingCopy;
     }
 
     else
@@ -1783,10 +1783,10 @@ LABEL_99:
       v6 = 0;
     }
 
-    v7 = [v6 contactFieldConfiguration];
-    v8 = [v7 type];
+    contactFieldConfiguration = [v6 contactFieldConfiguration];
+    type = [contactFieldConfiguration type];
 
-    if (v8 != 2)
+    if (type != 2)
     {
       objc_storeStrong(&self->_previouslySelectedField, self->_currentlySelectedField);
       currentlySelectedField = self->_currentlySelectedField;
@@ -1795,42 +1795,42 @@ LABEL_99:
       self->_isEditingBlankField = 0;
       if (v6)
       {
-        v10 = [v6 text];
-        [(PKAddressEditorViewController *)self addressTextField:v6 didEndEditing:v10];
+        text = [v6 text];
+        [(PKAddressEditorViewController *)self addressTextField:v6 didEndEditing:text];
       }
     }
 
-    v5 = v11;
+    v5 = editingCopy;
   }
 }
 
-- (void)addressTextField:(id)a3 textDidChange:(id)a4
+- (void)addressTextField:(id)field textDidChange:(id)change
 {
-  v23 = a4;
-  v6 = a3;
-  v7 = [v6 addressField];
-  v8 = [v7 key];
-  [(PKAddressEditorViewController *)self _updateUniqueAddressField:v7 withNewString:v23];
+  changeCopy = change;
+  fieldCopy = field;
+  addressField = [fieldCopy addressField];
+  v8 = [addressField key];
+  [(PKAddressEditorViewController *)self _updateUniqueAddressField:addressField withNewString:changeCopy];
   if ([v8 isEqualToString:*MEMORY[0x1E695CC30]])
   {
     searchCompleter = self->_searchCompleter;
-    v10 = [(CNMutablePostalAddress *)self->_inputAddress street];
-    [(MKLocalSearchCompleter *)searchCompleter setQueryFragment:v10];
+    street = [(CNMutablePostalAddress *)self->_inputAddress street];
+    [(MKLocalSearchCompleter *)searchCompleter setQueryFragment:street];
   }
 
-  v11 = [v7 invalidText];
-  v12 = [v11 isEqualToString:v23];
+  invalidText = [addressField invalidText];
+  v12 = [invalidText isEqualToString:changeCopy];
 
-  v13 = [v7 index];
+  index = [addressField index];
   if (![v8 isEqualToString:*MEMORY[0x1E69BB7C0]])
   {
     if (![v8 isEqualToString:*MEMORY[0x1E69BB7D0]])
     {
-      [v6 setIsInvalid:v12 showErrorGlyph:v12];
+      [fieldCopy setIsInvalid:v12 showErrorGlyph:v12];
       goto LABEL_27;
     }
 
-    if (v13 == [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:2])
+    if (index == [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:2])
     {
       if ((v12 & 1) == 0)
       {
@@ -1844,8 +1844,8 @@ LABEL_99:
     else
     {
       v20 = [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:3];
-      v17 = v13 == v20;
-      v18 = (v13 != v20) & v12;
+      v17 = index == v20;
+      v18 = (index != v20) & v12;
       if (!v17 || ((v12 ^ 1) & 1) != 0)
       {
         goto LABEL_25;
@@ -1860,7 +1860,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v13 == [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:0])
+  if (index == [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:0])
   {
     if ((v12 & 1) == 0)
     {
@@ -1874,8 +1874,8 @@ LABEL_25:
   else
   {
     v16 = [(PKAddressEditorViewController *)self _fieldIndexForNameComponent:1];
-    v17 = v13 == v16;
-    v18 = (v13 != v16) & v12;
+    v17 = index == v16;
+    v18 = (index != v16) & v12;
     if (!v17 || ((v12 ^ 1) & 1) != 0)
     {
       goto LABEL_18;
@@ -1895,33 +1895,33 @@ LABEL_26:
   [v22 setIsInvalid:v18 showErrorGlyph:v18];
 
 LABEL_27:
-  [(PKAddressEditorViewController *)self _checkFormatOfAddressTextField:v6];
+  [(PKAddressEditorViewController *)self _checkFormatOfAddressTextField:fieldCopy];
 
   [(PKAddressEditorViewController *)self _validateAddressRequirements];
 }
 
-- (void)addressTextField:(id)a3 didEndEditing:(id)a4
+- (void)addressTextField:(id)field didEndEditing:(id)editing
 {
-  [(PKAddressEditorViewController *)self _checkFormatOfAddressTextField:a3, a4];
+  [(PKAddressEditorViewController *)self _checkFormatOfAddressTextField:field, editing];
 
   [(PKAddressEditorViewController *)self _validateAddressRequirements];
 }
 
-- (void)_checkFormatOfAddressTextField:(id)a3
+- (void)_checkFormatOfAddressTextField:(id)field
 {
-  v28 = a3;
-  v4 = [v28 addressField];
-  v5 = [v4 key];
-  v6 = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
+  fieldCopy = field;
+  addressField = [fieldCopy addressField];
+  v5 = [addressField key];
+  iSOCountryCode = [(CNMutablePostalAddress *)self->_inputAddress ISOCountryCode];
   if ([v5 isEqualToString:*MEMORY[0x1E69BB7C0]])
   {
-    v7 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [v4 index]);
+    v7 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [addressField index]);
     if (v7 == 1)
     {
       contactFormatValidator = self->_contactFormatValidator;
       if (contactFormatValidator)
       {
-        v9 = [(PKContactFormatValidator *)contactFormatValidator isFamilyName:self->_familyName validFormatForCountryCode:v6];
+        v9 = [(PKContactFormatValidator *)contactFormatValidator isFamilyName:self->_familyName validFormatForCountryCode:iSOCountryCode];
         goto LABEL_22;
       }
     }
@@ -1931,7 +1931,7 @@ LABEL_27:
       v8 = self->_contactFormatValidator;
       if (v8)
       {
-        v9 = [(PKContactFormatValidator *)v8 isGivenName:self->_givenName validFormatForCountryCode:v6];
+        v9 = [(PKContactFormatValidator *)v8 isGivenName:self->_givenName validFormatForCountryCode:iSOCountryCode];
 LABEL_22:
         v14 = (v9 ^ 1u);
         goto LABEL_24;
@@ -1943,13 +1943,13 @@ LABEL_22:
 
   if ([v5 isEqualToString:*MEMORY[0x1E69BB7D0]])
   {
-    v10 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [v4 index]);
+    v10 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [addressField index]);
     if (v10 == 3)
     {
       v27 = self->_contactFormatValidator;
       if (v27)
       {
-        v9 = [(PKContactFormatValidator *)v27 isPhoneticFamilyName:self->_phoneticFamilyName validFormatForCountryCode:v6];
+        v9 = [(PKContactFormatValidator *)v27 isPhoneticFamilyName:self->_phoneticFamilyName validFormatForCountryCode:iSOCountryCode];
         goto LABEL_22;
       }
     }
@@ -1959,7 +1959,7 @@ LABEL_22:
       v11 = self->_contactFormatValidator;
       if (v11)
       {
-        v9 = [(PKContactFormatValidator *)v11 isPhoneticGivenName:self->_phoneticGivenName validFormatForCountryCode:v6];
+        v9 = [(PKContactFormatValidator *)v11 isPhoneticGivenName:self->_phoneticGivenName validFormatForCountryCode:iSOCountryCode];
         goto LABEL_22;
       }
     }
@@ -1967,10 +1967,10 @@ LABEL_22:
 LABEL_23:
     v14 = 0;
 LABEL_24:
-    [v4 setFormatIsInvalid:v14];
+    [addressField setFormatIsInvalid:v14];
     if (!self->_isEditingBlankField)
     {
-      [v28 setIsInvalid:v14 showErrorGlyph:v14];
+      [fieldCopy setIsInvalid:v14 showErrorGlyph:v14];
     }
 
     goto LABEL_26;
@@ -1984,7 +1984,7 @@ LABEL_24:
     if (v14)
     {
       v26 = [(CNMutablePostalAddress *)self->_inputAddress valueForKey:v5];
-      v14 = ([(PKContactFormatValidator *)v14 isPostalAddressFieldEntry:v26 validForPostalFieldKey:v5 forCountryCode:v6]^ 1);
+      v14 = ([(PKContactFormatValidator *)v14 isPostalAddressFieldEntry:v26 validForPostalFieldKey:v5 forCountryCode:iSOCountryCode]^ 1);
     }
 
     goto LABEL_24;
@@ -1992,21 +1992,21 @@ LABEL_24:
 
   if (v14)
   {
-    v15 = [(CNMutablePostalAddress *)self->_inputAddress street];
-    v14 = ([(PKContactFormatValidator *)v14 isPostalAddressFieldEntry:v15 validForPostalFieldKey:v12 forCountryCode:v6]^ 1);
+    street = [(CNMutablePostalAddress *)self->_inputAddress street];
+    v14 = ([(PKContactFormatValidator *)v14 isPostalAddressFieldEntry:street validForPostalFieldKey:v12 forCountryCode:iSOCountryCode]^ 1);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_street2TextField);
-  v17 = [WeakRetained text];
-  v18 = [v17 length] != 0;
+  text = [WeakRetained text];
+  v18 = [text length] != 0;
 
   v19 = objc_loadWeakRetained(&self->_street1TextField);
-  v20 = [v19 addressField];
-  [v20 setFormatIsInvalid:v14];
+  addressField2 = [v19 addressField];
+  [addressField2 setFormatIsInvalid:v14];
 
   v21 = objc_loadWeakRetained(&self->_street2TextField);
-  v22 = [v21 addressField];
-  [v22 setFormatIsInvalid:v18 & v14];
+  addressField3 = [v21 addressField];
+  [addressField3 setFormatIsInvalid:v18 & v14];
 
   if (!self->_isEditingBlankField)
   {
@@ -2020,15 +2020,15 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)_updateUniqueAddressField:(id)a3 withNewString:(id)a4
+- (void)_updateUniqueAddressField:(id)field withNewString:(id)string
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 key];
+  fieldCopy = field;
+  stringCopy = string;
+  v8 = [fieldCopy key];
   if ([v8 isEqualToString:*MEMORY[0x1E69BB7C0]])
   {
-    v9 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [v6 index]);
+    v9 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [fieldCopy index]);
     if (v9 == 1)
     {
       v10 = 1072;
@@ -2039,13 +2039,13 @@ LABEL_26:
     {
       v10 = 1064;
 LABEL_15:
-      objc_storeStrong((&self->super.super.super.super.isa + v10), a4);
+      objc_storeStrong((&self->super.super.super.super.isa + v10), string);
     }
   }
 
   else if ([v8 isEqualToString:*MEMORY[0x1E69BB7D0]])
   {
-    v11 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [v6 index]);
+    v11 = -[PKAddressEditorViewController _nameComponentForFieldIndex:](self, "_nameComponentForFieldIndex:", [fieldCopy index]);
     if (v11 == 3)
     {
       v10 = 1088;
@@ -2065,22 +2065,22 @@ LABEL_15:
     inputAddress = self->_inputAddress;
     if (v12)
     {
-      v14 = [(CNMutablePostalAddress *)inputAddress street];
-      v15 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v16 = [v14 componentsSeparatedByCharactersInSet:v15];
+      street = [(CNMutablePostalAddress *)inputAddress street];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v16 = [street componentsSeparatedByCharactersInSet:newlineCharacterSet];
       v17 = [v16 mutableCopy];
 
-      if ([v6 index] == 1)
+      if ([fieldCopy index] == 1)
       {
         v18 = [v17 count] - 1;
-        v21[0] = v7;
+        v21[0] = stringCopy;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
         [v17 replaceObjectsInRange:1 withObjectsFromArray:{v18, v19}];
       }
 
       else
       {
-        [v17 replaceObjectAtIndex:0 withObject:v7];
+        [v17 replaceObjectAtIndex:0 withObject:stringCopy];
       }
 
       v20 = [v17 componentsJoinedByString:@"\n"];
@@ -2089,19 +2089,19 @@ LABEL_15:
 
     else
     {
-      [(CNMutablePostalAddress *)inputAddress setValue:v7 forKey:v8];
+      [(CNMutablePostalAddress *)inputAddress setValue:stringCopy forKey:v8];
     }
   }
 }
 
-- (void)completerDidUpdateResults:(id)a3
+- (void)completerDidUpdateResults:(id)results
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v20 = [(PKAddressTextField *)self->_currentlySelectedField inputDelegate];
-  v21 = v4;
-  v5 = [v4 results];
-  v6 = [v5 pk_objectsPassingTest:&__block_literal_global_251];
+  resultsCopy = results;
+  inputDelegate = [(PKAddressTextField *)self->_currentlySelectedField inputDelegate];
+  v21 = resultsCopy;
+  results = [resultsCopy results];
+  v6 = [results pk_objectsPassingTest:&__block_literal_global_251];
 
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v22 = 0u;
@@ -2127,16 +2127,16 @@ LABEL_15:
         v14 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 mapItem];
-          v16 = [v15 description];
+          mapItem = [v13 mapItem];
+          v16 = [mapItem description];
           *buf = 138412290;
           v27 = v16;
           _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Search completion item map item: %@", buf, 0xCu);
         }
 
         v17 = MEMORY[0x1E69DD158];
-        v18 = [v13 title];
-        v19 = [v17 textSuggestionWithInputText:v18];
+        title = [v13 title];
+        v19 = [v17 textSuggestionWithInputText:title];
 
         [v7 addObject:v19];
       }
@@ -2147,7 +2147,7 @@ LABEL_15:
     while (v10);
   }
 
-  [v20 setSuggestions:v7];
+  [inputDelegate setSuggestions:v7];
 }
 
 BOOL __59__PKAddressEditorViewController_completerDidUpdateResults___block_invoke(uint64_t a1, void *a2, unint64_t a3, _BYTE *a4)
@@ -2160,11 +2160,11 @@ BOOL __59__PKAddressEditorViewController_completerDidUpdateResults___block_invok
   return [a2 _type] == 2;
 }
 
-- (void)completer:(id)a3 didFailWithError:(id)a4
+- (void)completer:(id)completer didFailWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  completerCopy = completer;
+  errorCopy = error;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2174,29 +2174,29 @@ BOOL __59__PKAddressEditorViewController_completerDidUpdateResults___block_invok
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v9 = 138412290;
-    v10 = v8;
+    v10 = localizedDescription;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
   }
 }
 
-- (void)countryPicker:(id)a3 didPickCountryCode:(id)a4
+- (void)countryPicker:(id)picker didPickCountryCode:(id)code
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
+  codeCopy = code;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v7 = PKLocalizedStringForCountryCode();
 
   v8 = 1096;
   [(CNMutablePostalAddress *)self->_inputAddress setCountry:v7];
-  [(CNMutablePostalAddress *)self->_inputAddress setISOCountryCode:v5];
+  [(CNMutablePostalAddress *)self->_inputAddress setISOCountryCode:codeCopy];
   [(PKAddressEditorViewController *)self recomputeEditingFields];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v43 = self;
+  selfCopy = self;
   obj = self->_editingFields;
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v9)
@@ -2206,7 +2206,7 @@ BOOL __59__PKAddressEditorViewController_completerDidUpdateResults___block_invok
     v12 = *MEMORY[0x1E695CC08];
     v13 = *MEMORY[0x1E695CC10];
     v40 = v7;
-    v41 = v5;
+    v41 = codeCopy;
     while (2)
     {
       for (i = 0; i != v10; ++i)
@@ -2223,14 +2223,14 @@ BOOL __59__PKAddressEditorViewController_completerDidUpdateResults___block_invok
         {
 
 LABEL_12:
-          v45 = [MEMORY[0x1E695DF58] currentLocale];
+          currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
           [MEMORY[0x1E695DF58] ISOCountryCodes];
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
           v44 = v49 = 0u;
           v20 = [v44 countByEnumeratingWithState:&v46 objects:v54 count:16];
-          v21 = v43;
+          v21 = selfCopy;
           if (v20)
           {
             v22 = v20;
@@ -2246,30 +2246,30 @@ LABEL_12:
                 }
 
                 v26 = *(*(&v46 + 1) + 8 * j);
-                v27 = [v45 displayNameForKey:v24 value:v26];
-                v28 = [*(&v21->super.super.super.super.isa + v15) country];
-                if ([v28 compare:v27 options:129])
+                v27 = [currentLocale2 displayNameForKey:v24 value:v26];
+                country = [*(&v21->super.super.super.super.isa + v15) country];
+                if ([country compare:v27 options:129])
                 {
                 }
 
                 else
                 {
-                  v29 = [*(&v21->super.super.super.super.isa + v15) ISOCountryCode];
-                  v30 = [v29 compare:v26 options:129];
+                  iSOCountryCode = [*(&v21->super.super.super.super.isa + v15) ISOCountryCode];
+                  v30 = [iSOCountryCode compare:v26 options:129];
 
-                  v21 = v43;
+                  v21 = selfCopy;
                   if (!v30)
                   {
                     [v16 setFormatIsInvalid:0];
-                    v31 = [v16 error];
-                    v32 = [(PKAddressEditorViewController *)v43 errors];
-                    v33 = [v32 pk_arrayByRemovingObject:v31];
-                    [(PKAddressEditorViewController *)v43 setErrors:v33];
+                    error = [v16 error];
+                    errors = [(PKAddressEditorViewController *)selfCopy errors];
+                    v33 = [errors pk_arrayByRemovingObject:error];
+                    [(PKAddressEditorViewController *)selfCopy setErrors:v33];
 
                     [v16 setError:0];
-                    v34 = [*(&v43->super.super.super.super.isa + v15) country];
-                    originalCountry = v43->_originalCountry;
-                    v43->_originalCountry = v34;
+                    country2 = [*(&selfCopy->super.super.super.super.isa + v15) country];
+                    originalCountry = selfCopy->_originalCountry;
+                    selfCopy->_originalCountry = country2;
 
                     goto LABEL_24;
                   }
@@ -2289,7 +2289,7 @@ LABEL_12:
 LABEL_24:
 
           v7 = v40;
-          v5 = v41;
+          codeCopy = v41;
           goto LABEL_25;
         }
 
@@ -2306,7 +2306,7 @@ LABEL_24:
 
       v10 = [(NSArray *)obj countByEnumeratingWithState:&v50 objects:v55 count:16];
       v7 = v40;
-      v5 = v41;
+      codeCopy = v41;
       if (v10)
       {
         continue;
@@ -2318,15 +2318,15 @@ LABEL_24:
 
 LABEL_25:
 
-  [(PKAddressEditorViewController *)v43 _validateAddressRequirements];
-  previouslySelectedField = v43->_previouslySelectedField;
-  v43->_previouslySelectedField = 0;
+  [(PKAddressEditorViewController *)selfCopy _validateAddressRequirements];
+  previouslySelectedField = selfCopy->_previouslySelectedField;
+  selfCopy->_previouslySelectedField = 0;
 
-  v37 = [(PKAddressEditorViewController *)v43 tableView];
-  [v37 reloadData];
+  tableView = [(PKAddressEditorViewController *)selfCopy tableView];
+  [tableView reloadData];
 
-  v38 = [(PKAddressEditorViewController *)v43 navigationController];
-  v39 = [v38 popViewControllerAnimated:1];
+  navigationController = [(PKAddressEditorViewController *)selfCopy navigationController];
+  v39 = [navigationController popViewControllerAnimated:1];
 }
 
 - (PKAddressEditorViewControllerDelegate)delegate

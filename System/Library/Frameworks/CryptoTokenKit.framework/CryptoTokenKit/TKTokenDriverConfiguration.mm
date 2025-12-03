@@ -1,30 +1,30 @@
 @interface TKTokenDriverConfiguration
 + (NSDictionary)driverConfigurations;
-+ (id)_connectionWithCTKDConnection:(id)a3;
-+ (id)_driverConfigurationsWithConnection:(id)a3;
-+ (id)driverConfigurationsWithCTKDConnection:(id)a3;
-+ (id)driverConfigurationsWithClient:(id)a3;
++ (id)_connectionWithCTKDConnection:(id)connection;
++ (id)_driverConfigurationsWithConnection:(id)connection;
++ (id)driverConfigurationsWithCTKDConnection:(id)connection;
++ (id)driverConfigurationsWithClient:(id)client;
 - (NSDictionary)tokenConfigurations;
-- (TKTokenDriverConfiguration)initWithClassID:(id)a3 configurationConnection:(id)a4;
+- (TKTokenDriverConfiguration)initWithClassID:(id)d configurationConnection:(id)connection;
 - (id)beginTransaction;
 - (void)removeTokenConfigurationForTokenInstanceID:(TKTokenInstanceID)instanceID;
 @end
 
 @implementation TKTokenDriverConfiguration
 
-+ (id)driverConfigurationsWithClient:(id)a3
++ (id)driverConfigurationsWithClient:(id)client
 {
-  v3 = [a3 ctkdConnection];
-  v4 = [TKTokenDriverConfiguration _connectionWithCTKDConnection:v3];
+  ctkdConnection = [client ctkdConnection];
+  v4 = [TKTokenDriverConfiguration _connectionWithCTKDConnection:ctkdConnection];
 
   v5 = [TKTokenDriverConfiguration _driverConfigurationsWithConnection:v4];
 
   return v5;
 }
 
-+ (id)driverConfigurationsWithCTKDConnection:(id)a3
++ (id)driverConfigurationsWithCTKDConnection:(id)connection
 {
-  v3 = [TKTokenDriverConfiguration _connectionWithCTKDConnection:a3];
+  v3 = [TKTokenDriverConfiguration _connectionWithCTKDConnection:connection];
   v4 = [TKTokenDriverConfiguration _driverConfigurationsWithConnection:v3];
 
   return v4;
@@ -39,7 +39,7 @@
 
   v3 = driverConfigurations_connection;
 
-  return [a1 _driverConfigurationsWithConnection:v3];
+  return [self _driverConfigurationsWithConnection:v3];
 }
 
 uint64_t __50__TKTokenDriverConfiguration_driverConfigurations__block_invoke()
@@ -49,18 +49,18 @@ uint64_t __50__TKTokenDriverConfiguration_driverConfigurations__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_connectionWithCTKDConnection:(id)a3
++ (id)_connectionWithCTKDConnection:(id)connection
 {
-  v3 = a3;
-  if (!v3)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
-    v3 = objc_alloc_init(TKCTKDConnection);
+    connectionCopy = objc_alloc_init(TKCTKDConnection);
   }
 
-  v4 = [(TKCTKDConnection *)v3 configurationEndpoint];
-  if (v4)
+  configurationEndpoint = [(TKCTKDConnection *)connectionCopy configurationEndpoint];
+  if (configurationEndpoint)
   {
-    v5 = [[TKTokenConfigurationConnection alloc] initWithEndpoint:v4];
+    v5 = [[TKTokenConfigurationConnection alloc] initWithEndpoint:configurationEndpoint];
   }
 
   else
@@ -71,10 +71,10 @@ uint64_t __50__TKTokenDriverConfiguration_driverConfigurations__block_invoke()
   return v5;
 }
 
-+ (id)_driverConfigurationsWithConnection:(id)a3
++ (id)_driverConfigurationsWithConnection:(id)connection
 {
-  v3 = a3;
-  if (v3)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -82,14 +82,14 @@ uint64_t __50__TKTokenDriverConfiguration_driverConfigurations__block_invoke()
     v17 = __Block_byref_object_copy__2;
     v18 = __Block_byref_object_dispose__2;
     v19 = [MEMORY[0x1E695E0F8] mutableCopy];
-    v4 = [v3 configurationProtocol];
+    configurationProtocol = [connectionCopy configurationProtocol];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __66__TKTokenDriverConfiguration__driverConfigurationsWithConnection___block_invoke;
     v11 = &unk_1E86B75C0;
-    v12 = v3;
+    v12 = connectionCopy;
     v13 = &v14;
-    [v4 getClassIDsWithReply:&v8];
+    [configurationProtocol getClassIDsWithReply:&v8];
 
     v5 = [v15[5] copy];
     _Block_object_dispose(&v14, 8);
@@ -149,18 +149,18 @@ void __66__TKTokenDriverConfiguration__driverConfigurationsWithConnection___bloc
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (TKTokenDriverConfiguration)initWithClassID:(id)a3 configurationConnection:(id)a4
+- (TKTokenDriverConfiguration)initWithClassID:(id)d configurationConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = TKTokenDriverConfiguration;
   v9 = [(TKTokenDriverConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_classID, a3);
-    objc_storeStrong(&v10->_configurationConnection, a4);
+    objc_storeStrong(&v9->_classID, d);
+    objc_storeStrong(&v10->_configurationConnection, connection);
   }
 
   return v10;
@@ -169,16 +169,16 @@ void __66__TKTokenDriverConfiguration__driverConfigurationsWithConnection___bloc
 - (NSDictionary)tokenConfigurations
 {
   v3 = [MEMORY[0x1E695E0F8] mutableCopy];
-  v4 = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
-  v5 = [(TKTokenDriverConfiguration *)self classID];
+  configurationProtocol = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
+  classID = [(TKTokenDriverConfiguration *)self classID];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __49__TKTokenDriverConfiguration_tokenConfigurations__block_invoke;
   v12 = &unk_1E86B75E8;
-  v13 = self;
+  selfCopy = self;
   v14 = v3;
   v6 = v3;
-  [v4 getTokenIDsForClassID:v5 reply:&v9];
+  [configurationProtocol getTokenIDsForClassID:classID reply:&v9];
 
   v7 = [v6 copy];
 
@@ -229,8 +229,8 @@ void __49__TKTokenDriverConfiguration_tokenConfigurations__block_invoke(uint64_t
 
 - (id)beginTransaction
 {
-  v3 = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
-  [v3 beginTransactionWithReply:&__block_literal_global_196];
+  configurationProtocol = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
+  [configurationProtocol beginTransactionWithReply:&__block_literal_global_196];
 
   v4 = [[TKTokenConfigurationTransaction alloc] initWithConfigurationConnection:self->_configurationConnection];
 
@@ -252,8 +252,8 @@ uint64_t __80__TKTokenDriverConfiguration_createTokenConfigurationWithInstanceID
   v4 = instanceID;
   v6 = [[TKTokenID alloc] initWithClassID:self->_classID instanceID:v4];
 
-  v5 = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
-  [v5 removeTokenID:v6 reply:&__block_literal_global_198];
+  configurationProtocol = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
+  [configurationProtocol removeTokenID:v6 reply:&__block_literal_global_198];
 }
 
 @end

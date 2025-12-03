@@ -1,23 +1,23 @@
 @interface CKSQLiteDatabaseManagerTimer
-- (CKSQLiteDatabaseManagerTimer)initWithDatabase:(id)a3;
+- (CKSQLiteDatabaseManagerTimer)initWithDatabase:(id)database;
 - (id)nextActivityDate;
 - (void)dealloc;
 - (void)runActivities;
-- (void)scheduleActivityDate:(id)a3;
+- (void)scheduleActivityDate:(id)date;
 @end
 
 @implementation CKSQLiteDatabaseManagerTimer
 
-- (CKSQLiteDatabaseManagerTimer)initWithDatabase:(id)a3
+- (CKSQLiteDatabaseManagerTimer)initWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = CKSQLiteDatabaseManagerTimer;
   v5 = [(CKSQLiteDatabaseManagerTimer *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_db, v4);
+    objc_storeWeak(&v5->_db, databaseCopy);
     v6->_timerLock._os_unfair_lock_opaque = 0;
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_UTILITY, 0);
@@ -81,17 +81,17 @@
   }
 }
 
-- (void)scheduleActivityDate:(id)a3
+- (void)scheduleActivityDate:(id)date
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_timerLock);
-  if (v5)
+  if (dateCopy)
   {
     nextActivityDate = self->_nextActivityDate;
-    if (!nextActivityDate || objc_msgSend_compare_(v5, v6, nextActivityDate) == -1)
+    if (!nextActivityDate || objc_msgSend_compare_(dateCopy, v6, nextActivityDate) == -1)
     {
-      objc_storeStrong(&self->_nextActivityDate, a3);
+      objc_storeStrong(&self->_nextActivityDate, date);
       activityTimer = self->_activityTimer;
       if (!activityTimer)
       {

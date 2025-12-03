@@ -1,12 +1,12 @@
 @interface CKTapbackGlyphView
 - (BOOL)isSelected;
-- (CKTapbackGlyphView)initWithCoder:(id)a3;
-- (CKTapbackGlyphView)initWithFrame:(CGRect)a3;
+- (CKTapbackGlyphView)initWithCoder:(id)coder;
+- (CKTapbackGlyphView)initWithFrame:(CGRect)frame;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4;
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected;
 - (void)performViewControllerAppearingAnimation;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation CKTapbackGlyphView
@@ -39,14 +39,14 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR___CKTapbackGlyphView_isSelected;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = selected;
 }
 
-- (CKTapbackGlyphView)initWithCoder:(id)a3
+- (CKTapbackGlyphView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___CKTapbackGlyphView_attributionScaleFactor) = 0x3FE6A09E667F3BCDLL;
   v4 = (self + OBJC_IVAR___CKTapbackGlyphView_platterEdgeInsets);
@@ -61,39 +61,39 @@
   return result;
 }
 
-- (CKTapbackGlyphView)initWithFrame:(CGRect)a3
+- (CKTapbackGlyphView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected
 {
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
   if (v6)
   {
     v7 = v6;
-    v8 = a3;
-    v9 = self;
-    v10 = [v7 associatedMessageEmoji];
-    if (!v10)
+    tapbackCopy = tapback;
+    selfCopy = self;
+    associatedMessageEmoji = [v7 associatedMessageEmoji];
+    if (!associatedMessageEmoji)
     {
       sub_190D56F10();
       v11 = sub_190D56ED0();
 
-      v10 = v11;
+      associatedMessageEmoji = v11;
     }
 
-    v12 = v10;
-    [(CKTapbackGlyphView *)v9 setText:?];
+    v12 = associatedMessageEmoji;
+    [(CKTapbackGlyphView *)selfCopy setText:?];
   }
 }
 
 - (void)performViewControllerAppearingAnimation
 {
-  v2 = self;
+  selfCopy = self;
   TapbackGlyphView.performViewControllerAppearingAnimation()();
 }
 

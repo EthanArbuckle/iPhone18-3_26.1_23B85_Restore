@@ -1,7 +1,7 @@
 @interface SBHCompoundAssertion
 - (NSString)description;
-- (SBHCompoundAssertion)initWithReason:(id)a3 assertions:(id)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (SBHCompoundAssertion)initWithReason:(id)reason assertions:(id)assertions;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)invalidate;
 @end
 
@@ -41,20 +41,20 @@
   }
 }
 
-- (SBHCompoundAssertion)initWithReason:(id)a3 assertions:(id)a4
+- (SBHCompoundAssertion)initWithReason:(id)reason assertions:(id)assertions
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  assertionsCopy = assertions;
   v14.receiver = self;
   v14.super_class = SBHCompoundAssertion;
   v8 = [(SBHCompoundAssertion *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    v11 = [v7 mutableCopy];
+    v11 = [assertionsCopy mutableCopy];
     assertions = v8->_assertions;
     v8->_assertions = v11;
   }
@@ -69,7 +69,7 @@
   v8 = 3221225472;
   v9 = __35__SBHCompoundAssertion_description__block_invoke;
   v10 = &unk_1E8088F18;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -78,13 +78,13 @@
   return v5;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [(SBHCompoundAssertion *)self reason];
-  [v6 appendString:v4 withName:@"reason"];
+  formatterCopy = formatter;
+  reason = [(SBHCompoundAssertion *)self reason];
+  [formatterCopy appendString:reason withName:@"reason"];
 
-  v5 = [v6 appendObject:self->_assertions withName:@"assertions"];
+  v5 = [formatterCopy appendObject:self->_assertions withName:@"assertions"];
 }
 
 @end

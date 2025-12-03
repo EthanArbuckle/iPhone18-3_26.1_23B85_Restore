@@ -1,24 +1,24 @@
 @interface PFDeviceTimeRectCollection
-- (CGRect)_timeRectInImageSpaceFromPointSpaceRect:(CGRect)a3 screenScale:(double)a4;
-- (CGRect)imageSpaceTimeRectForPointSpaceTimeRect:(CGRect)a3;
+- (CGRect)_timeRectInImageSpaceFromPointSpaceRect:(CGRect)rect screenScale:(double)scale;
+- (CGRect)imageSpaceTimeRectForPointSpaceTimeRect:(CGRect)rect;
 - (CGRect)maxTimeRect;
 - (CGRect)maxTimeRectInImageSpace;
 - (CGRect)minTimeRect;
 - (CGRect)minTimeRectInImageSpace;
-- (CGRect)nearestRectForPointSpaceHeight:(double)a3;
-- (CGRect)rectForPointSpaceHeight:(double)a3;
+- (CGRect)nearestRectForPointSpaceHeight:(double)height;
+- (CGRect)rectForPointSpaceHeight:(double)height;
 - (PFDeviceTimeRectCollection)initWithInvalidCollection;
-- (PFDeviceTimeRectCollection)initWithPointSpaceSortedTimeRects:(id)a3 screenScale:(double)a4;
-- (void)addTimeRectInOrder:(id)a3;
+- (PFDeviceTimeRectCollection)initWithPointSpaceSortedTimeRects:(id)rects screenScale:(double)scale;
+- (void)addTimeRectInOrder:(id)order;
 @end
 
 @implementation PFDeviceTimeRectCollection
 
-- (void)addTimeRectInOrder:(id)a3
+- (void)addTimeRectInOrder:(id)order
 {
   sortedTimeRects = self->_sortedTimeRects;
-  v5 = a3;
-  [(NSMutableArray *)self->_sortedTimeRects insertObject:v5 atIndex:[(NSMutableArray *)sortedTimeRects indexOfObject:v5 inSortedRange:0 options:[(NSMutableArray *)sortedTimeRects count] usingComparator:1024, &__block_literal_global_5_11708]];
+  orderCopy = order;
+  [(NSMutableArray *)self->_sortedTimeRects insertObject:orderCopy atIndex:[(NSMutableArray *)sortedTimeRects indexOfObject:orderCopy inSortedRange:0 options:[(NSMutableArray *)sortedTimeRects count] usingComparator:1024, &__block_literal_global_5_11708]];
 }
 
 uint64_t __49__PFDeviceTimeRectCollection_addTimeRectInOrder___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -40,13 +40,13 @@ uint64_t __49__PFDeviceTimeRectCollection_addTimeRectInOrder___block_invoke(uint
   }
 }
 
-- (CGRect)rectForPointSpaceHeight:(double)a3
+- (CGRect)rectForPointSpaceHeight:(double)height
 {
   sortedTimeRects = self->_sortedTimeRects;
   v34[0] = 0;
   v34[1] = 0;
   v34[2] = 0x3FF0000000000000;
-  *&v34[3] = a3;
+  *&v34[3] = height;
   v5 = [MEMORY[0x1E696B098] valueWithBytes:v34 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   v6 = [(NSMutableArray *)sortedTimeRects indexOfObject:v5 inSortedRange:0 options:[(NSMutableArray *)self->_sortedTimeRects count] usingComparator:1024, &__block_literal_global_3_11713];
 
@@ -80,7 +80,7 @@ uint64_t __49__PFDeviceTimeRectCollection_addTimeRectInOrder___block_invoke(uint
   v28 = 1.0;
   if (vabdd_f64(v26, v17) > 0.00000999999975)
   {
-    v28 = (a3 - v17) / v27;
+    v28 = (height - v17) / v27;
   }
 
   v29 = v11 + v28 * (v20 - v11);
@@ -113,13 +113,13 @@ uint64_t __54__PFDeviceTimeRectCollection_rectForPointSpaceHeight___block_invoke
   }
 }
 
-- (CGRect)nearestRectForPointSpaceHeight:(double)a3
+- (CGRect)nearestRectForPointSpaceHeight:(double)height
 {
   sortedTimeRects = self->_sortedTimeRects;
   v20[0] = 0;
   v20[1] = 0;
   v20[2] = 0x3FF0000000000000;
-  *&v20[3] = a3;
+  *&v20[3] = height;
   v5 = [MEMORY[0x1E696B098] valueWithBytes:v20 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   v6 = [(NSMutableArray *)sortedTimeRects indexOfObject:v5 inSortedRange:0 options:[(NSMutableArray *)self->_sortedTimeRects count] usingComparator:1024, &__block_literal_global_11715];
 
@@ -165,13 +165,13 @@ uint64_t __61__PFDeviceTimeRectCollection_nearestRectForPointSpaceHeight___block
   }
 }
 
-- (CGRect)imageSpaceTimeRectForPointSpaceTimeRect:(CGRect)a3
+- (CGRect)imageSpaceTimeRectForPointSpaceTimeRect:(CGRect)rect
 {
   screenScale = self->_screenScale;
-  v4 = a3.origin.x * screenScale;
-  v5 = a3.origin.y * screenScale;
-  v6 = a3.size.width * screenScale;
-  v7 = a3.size.height * screenScale;
+  v4 = rect.origin.x * screenScale;
+  v5 = rect.origin.y * screenScale;
+  v6 = rect.size.width * screenScale;
+  v7 = rect.size.height * screenScale;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -179,12 +179,12 @@ uint64_t __61__PFDeviceTimeRectCollection_nearestRectForPointSpaceHeight___block
   return result;
 }
 
-- (CGRect)_timeRectInImageSpaceFromPointSpaceRect:(CGRect)a3 screenScale:(double)a4
+- (CGRect)_timeRectInImageSpaceFromPointSpaceRect:(CGRect)rect screenScale:(double)scale
 {
-  v4 = a3.origin.x * a4;
-  v5 = a3.origin.y * a4;
-  v6 = a3.size.width * a4;
-  v7 = a3.size.height * a4;
+  v4 = rect.origin.x * scale;
+  v5 = rect.origin.y * scale;
+  v6 = rect.size.width * scale;
+  v7 = rect.size.height * scale;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -206,8 +206,8 @@ uint64_t __61__PFDeviceTimeRectCollection_nearestRectForPointSpaceHeight___block
 
 - (CGRect)maxTimeRect
 {
-  v2 = [(NSMutableArray *)self->_sortedTimeRects lastObject];
-  [v2 rectValue];
+  lastObject = [(NSMutableArray *)self->_sortedTimeRects lastObject];
+  [lastObject rectValue];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -238,8 +238,8 @@ uint64_t __61__PFDeviceTimeRectCollection_nearestRectForPointSpaceHeight___block
 
 - (CGRect)minTimeRect
 {
-  v2 = [(NSMutableArray *)self->_sortedTimeRects firstObject];
-  [v2 rectValue];
+  firstObject = [(NSMutableArray *)self->_sortedTimeRects firstObject];
+  [firstObject rectValue];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -263,18 +263,18 @@ uint64_t __61__PFDeviceTimeRectCollection_nearestRectForPointSpaceHeight___block
   return result;
 }
 
-- (PFDeviceTimeRectCollection)initWithPointSpaceSortedTimeRects:(id)a3 screenScale:(double)a4
+- (PFDeviceTimeRectCollection)initWithPointSpaceSortedTimeRects:(id)rects screenScale:(double)scale
 {
   v10.receiver = self;
   v10.super_class = PFDeviceTimeRectCollection;
-  v5 = a3;
+  rectsCopy = rects;
   v6 = [(PFDeviceTimeRectCollection *)&v10 init];
-  v7 = [v5 mutableCopy];
+  v7 = [rectsCopy mutableCopy];
 
   sortedTimeRects = v6->_sortedTimeRects;
   v6->_sortedTimeRects = v7;
 
-  v6->_screenScale = a4;
+  v6->_screenScale = scale;
   v6->_invalid = 0;
   return v6;
 }

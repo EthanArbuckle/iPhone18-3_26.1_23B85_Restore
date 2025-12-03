@@ -19,14 +19,14 @@
   v37[4] = *MEMORY[0x1E69E9840];
   v27 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   v36[0] = v27;
-  HIDWORD(v4) = a1.n128_u32[1];
-  LODWORD(v4) = a1.n128_u32[1];
+  HIDWORD(v4) = self.n128_u32[1];
+  LODWORD(v4) = self.n128_u32[1];
   v26 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
   v36[1] = v26;
-  v25 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
+  v25 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
   v36[2] = v25;
-  a1.n128_u64[0] = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[3]))}];
-  v36[3] = a1.n128_u64[0];
+  self.n128_u64[0] = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[3]))}];
+  v36[3] = self.n128_u64[0];
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
   v37[0] = v24;
   v23 = [MEMORY[0x1E696AD98] numberWithFloat:a2.n128_f64[0]];
@@ -77,16 +77,16 @@
   v42[4] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
   v8 = a7;
-  v33 = [v7 avt_numberWithFloat:v8 roundingBehavior:a1.n128_f64[0]];
+  v33 = [v7 avt_numberWithFloat:v8 roundingBehavior:self.n128_f64[0]];
   v41[0] = v33;
-  HIDWORD(v9) = a1.n128_u32[1];
-  LODWORD(v9) = a1.n128_u32[1];
+  HIDWORD(v9) = self.n128_u32[1];
+  LODWORD(v9) = self.n128_u32[1];
   v32 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v8 roundingBehavior:v9];
   v41[1] = v32;
-  v31 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v8 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
+  v31 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v8 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
   v41[2] = v31;
-  a1.n128_u64[0] = [MEMORY[0x1E696AD98] avt_numberWithFloat:v8 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[3]))}];
-  v41[3] = a1.n128_u64[0];
+  self.n128_u64[0] = [MEMORY[0x1E696AD98] avt_numberWithFloat:v8 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[3]))}];
+  v41[3] = self.n128_u64[0];
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
   v42[0] = v30;
   v29 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v8 roundingBehavior:a2.n128_f64[0]];
@@ -135,61 +135,61 @@
 
 - (__n128)avt_float4x4
 {
-  if ([a1 count] == 4)
+  if ([self count] == 4)
   {
-    v2 = a1;
-    v43 = [v2 objectAtIndexedSubscript:0];
+    selfCopy = self;
+    v43 = [selfCopy objectAtIndexedSubscript:0];
     v42 = [v43 objectAtIndexedSubscript:0];
     [v42 floatValue];
     v46 = v3;
-    v41 = [v2 objectAtIndexedSubscript:0];
+    v41 = [selfCopy objectAtIndexedSubscript:0];
     v40 = [v41 objectAtIndexedSubscript:1];
     [v40 floatValue];
     v45 = v4;
-    v39 = [v2 objectAtIndexedSubscript:0];
+    v39 = [selfCopy objectAtIndexedSubscript:0];
     v38 = [v39 objectAtIndexedSubscript:2];
     [v38 floatValue];
     v44 = v5;
-    v37 = [v2 objectAtIndexedSubscript:0];
+    v37 = [selfCopy objectAtIndexedSubscript:0];
     v36 = [v37 objectAtIndexedSubscript:3];
     [v36 floatValue];
     *&v6 = __PAIR64__(v45, v46);
     *(&v6 + 1) = __PAIR64__(v7, v44);
     v47 = v6;
-    v35 = [v2 objectAtIndexedSubscript:1];
+    v35 = [selfCopy objectAtIndexedSubscript:1];
     v34 = [v35 objectAtIndexedSubscript:0];
     [v34 floatValue];
-    v33 = [v2 objectAtIndexedSubscript:1];
+    v33 = [selfCopy objectAtIndexedSubscript:1];
     v32 = [v33 objectAtIndexedSubscript:1];
     [v32 floatValue];
-    v31 = [v2 objectAtIndexedSubscript:1];
+    v31 = [selfCopy objectAtIndexedSubscript:1];
     v30 = [v31 objectAtIndexedSubscript:2];
     [v30 floatValue];
-    v29 = [v2 objectAtIndexedSubscript:1];
+    v29 = [selfCopy objectAtIndexedSubscript:1];
     v28 = [v29 objectAtIndexedSubscript:3];
     [v28 floatValue];
-    v27 = [v2 objectAtIndexedSubscript:2];
+    v27 = [selfCopy objectAtIndexedSubscript:2];
     v26 = [v27 objectAtIndexedSubscript:0];
     [v26 floatValue];
-    v25 = [v2 objectAtIndexedSubscript:2];
+    v25 = [selfCopy objectAtIndexedSubscript:2];
     v24 = [v25 objectAtIndexedSubscript:1];
     [v24 floatValue];
-    v23 = [v2 objectAtIndexedSubscript:2];
+    v23 = [selfCopy objectAtIndexedSubscript:2];
     v22 = [v23 objectAtIndexedSubscript:2];
     [v22 floatValue];
-    v8 = [v2 objectAtIndexedSubscript:2];
+    v8 = [selfCopy objectAtIndexedSubscript:2];
     v9 = [v8 objectAtIndexedSubscript:3];
     [v9 floatValue];
-    v10 = [v2 objectAtIndexedSubscript:3];
+    v10 = [selfCopy objectAtIndexedSubscript:3];
     v11 = [v10 objectAtIndexedSubscript:0];
     [v11 floatValue];
-    v12 = [v2 objectAtIndexedSubscript:3];
+    v12 = [selfCopy objectAtIndexedSubscript:3];
     v13 = [v12 objectAtIndexedSubscript:1];
     [v13 floatValue];
-    v14 = [v2 objectAtIndexedSubscript:3];
+    v14 = [selfCopy objectAtIndexedSubscript:3];
     v15 = [v14 objectAtIndexedSubscript:2];
     [v15 floatValue];
-    v16 = [v2 objectAtIndexedSubscript:3];
+    v16 = [selfCopy objectAtIndexedSubscript:3];
 
     v17 = [v16 objectAtIndexedSubscript:3];
     [v17 floatValue];
@@ -213,11 +213,11 @@
   v9[3] = *MEMORY[0x1E69E9840];
   v1 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   v9[0] = v1;
-  HIDWORD(v2) = a1.n128_u32[1];
-  LODWORD(v2) = a1.n128_u32[1];
+  HIDWORD(v2) = self.n128_u32[1];
+  LODWORD(v2) = self.n128_u32[1];
   v3 = [MEMORY[0x1E696AD98] numberWithFloat:v2];
   v9[1] = v3;
-  v4 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
+  v4 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
   v9[2] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
 
@@ -231,13 +231,13 @@
   v14[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD98];
   v5 = a4;
-  v6 = [v4 avt_numberWithFloat:v5 roundingBehavior:a1.n128_f64[0]];
+  v6 = [v4 avt_numberWithFloat:v5 roundingBehavior:self.n128_f64[0]];
   v14[0] = v6;
-  HIDWORD(v7) = a1.n128_u32[1];
-  LODWORD(v7) = a1.n128_u32[1];
+  HIDWORD(v7) = self.n128_u32[1];
+  LODWORD(v7) = self.n128_u32[1];
   v8 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:v7];
   v14[1] = v8;
-  v9 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
+  v9 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
 
   v14[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
@@ -252,13 +252,13 @@
   v10[4] = *MEMORY[0x1E69E9840];
   v1 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   v10[0] = v1;
-  HIDWORD(v2) = a1.n128_u32[1];
-  LODWORD(v2) = a1.n128_u32[1];
+  HIDWORD(v2) = self.n128_u32[1];
+  LODWORD(v2) = self.n128_u32[1];
   v3 = [MEMORY[0x1E696AD98] numberWithFloat:v2];
   v10[1] = v3;
-  v4 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
+  v4 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
   v10[2] = v4;
-  v5 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[3]))}];
+  v5 = [MEMORY[0x1E696AD98] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[3]))}];
   v10[3] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:4];
 
@@ -272,15 +272,15 @@
   v15[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD98];
   v5 = a4;
-  v6 = [v4 avt_numberWithFloat:v5 roundingBehavior:a1.n128_f64[0]];
+  v6 = [v4 avt_numberWithFloat:v5 roundingBehavior:self.n128_f64[0]];
   v15[0] = v6;
-  HIDWORD(v7) = a1.n128_u32[1];
-  LODWORD(v7) = a1.n128_u32[1];
+  HIDWORD(v7) = self.n128_u32[1];
+  LODWORD(v7) = self.n128_u32[1];
   v8 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:v7];
   v15[1] = v8;
-  v9 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
+  v9 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
   v15[2] = v9;
-  v10 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[3]))}];
+  v10 = [MEMORY[0x1E696AD98] avt_numberWithFloat:v5 roundingBehavior:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[3]))}];
 
   v15[3] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:4];
@@ -292,18 +292,18 @@
 
 - (__n128)avt_float3
 {
-  v2 = [a1 count];
+  v2 = [self count];
   result.n128_u64[0] = 0;
   if (v2 >= 3)
   {
-    v4 = a1;
-    v5 = [v4 objectAtIndexedSubscript:0];
+    selfCopy = self;
+    v5 = [selfCopy objectAtIndexedSubscript:0];
     [v5 floatValue];
     v13 = v6;
-    v7 = [v4 objectAtIndexedSubscript:1];
+    v7 = [selfCopy objectAtIndexedSubscript:1];
     [v7 floatValue];
     v12 = v8;
-    v9 = [v4 objectAtIndexedSubscript:2];
+    v9 = [selfCopy objectAtIndexedSubscript:2];
 
     [v9 floatValue];
     v10 = v13;
@@ -319,21 +319,21 @@
 
 - (__n128)avt_float4
 {
-  v2 = [a1 count];
+  v2 = [self count];
   result.n128_u64[0] = 0;
   if (v2 >= 4)
   {
-    v4 = a1;
-    v5 = [v4 objectAtIndexedSubscript:0];
+    selfCopy = self;
+    v5 = [selfCopy objectAtIndexedSubscript:0];
     [v5 floatValue];
     v16 = v6;
-    v7 = [v4 objectAtIndexedSubscript:1];
+    v7 = [selfCopy objectAtIndexedSubscript:1];
     [v7 floatValue];
     v15 = v8;
-    v9 = [v4 objectAtIndexedSubscript:2];
+    v9 = [selfCopy objectAtIndexedSubscript:2];
     [v9 floatValue];
     v14 = v10;
-    v11 = [v4 objectAtIndexedSubscript:3];
+    v11 = [selfCopy objectAtIndexedSubscript:3];
 
     [v11 floatValue];
     *&v12 = __PAIR64__(v15, v16);
@@ -348,10 +348,10 @@
 
 - (id)avt_randomObject
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v2 = [a1 objectAtIndexedSubscript:arc4random_uniform(v2)];
+    v2 = [self objectAtIndexedSubscript:arc4random_uniform(v2)];
   }
 
   return v2;
@@ -359,14 +359,14 @@
 
 - (id)avt_mutableContainersCopy
 {
-  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__NSArray_AVTExtension__avt_mutableContainersCopy__block_invoke;
   v5[3] = &unk_1E7F48E18;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateObjectsUsingBlock:v5];
+  [self enumerateObjectsUsingBlock:v5];
 
   return v3;
 }

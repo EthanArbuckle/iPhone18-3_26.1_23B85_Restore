@@ -1,10 +1,10 @@
 @interface SGObject
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSuggestion:(id)a3;
-- (SGObject)initWithCoder:(id)a3;
-- (SGObject)initWithRecordId:(id)a3 origin:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSuggestion:(id)suggestion;
+- (SGObject)initWithCoder:(id)coder;
+- (SGObject)initWithRecordId:(id)id origin:(id)origin;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGObject
@@ -16,12 +16,12 @@
   return v2;
 }
 
-- (BOOL)isEqualToSuggestion:(id)a3
+- (BOOL)isEqualToSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = self->_recordId;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == suggestionCopy[1])
   {
   }
 
@@ -38,7 +38,7 @@
 
   v9 = self->_origin;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == suggestionCopy[2])
   {
     v8 = 1;
   }
@@ -52,41 +52,41 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGObject *)self isEqualToSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGObject *)self isEqualToSuggestion:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recordId = self->_recordId;
-  v5 = a3;
-  [v5 encodeObject:recordId forKey:@"recordId"];
-  [v5 encodeObject:self->_origin forKey:@"origin"];
+  coderCopy = coder;
+  [coderCopy encodeObject:recordId forKey:@"recordId"];
+  [coderCopy encodeObject:self->_origin forKey:@"origin"];
 }
 
-- (SGObject)initWithCoder:(id)a3
+- (SGObject)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SGObject;
   v6 = [(SGObject *)&v16 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"recordId"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"recordId"];
 
     if (v8)
     {
@@ -102,7 +102,7 @@ LABEL_9:
     }
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"origin"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"origin"];
 
     if (v12)
     {
@@ -121,25 +121,25 @@ LABEL_9:
   return v6;
 }
 
-- (SGObject)initWithRecordId:(id)a3 origin:(id)a4
+- (SGObject)initWithRecordId:(id)id origin:(id)origin
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  originCopy = origin;
   v17.receiver = self;
   v17.super_class = SGObject;
   v9 = [(SGObject *)&v17 init];
   if (v9)
   {
-    if (v7)
+    if (idCopy)
     {
-      if (v8)
+      if (originCopy)
       {
 LABEL_4:
-        v10 = [v7 copy];
+        v10 = [idCopy copy];
         recordId = v9->_recordId;
         v9->_recordId = v10;
 
-        v12 = [v8 copy];
+        v12 = [originCopy copy];
         origin = v9->_origin;
         v9->_origin = v12;
 
@@ -149,17 +149,17 @@ LABEL_4:
 
     else
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v9 file:@"SGObject.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"SGObject.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
 
-      if (v8)
+      if (originCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:v9 file:@"SGObject.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"origin"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v9 file:@"SGObject.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"origin"}];
 
     goto LABEL_4;
   }

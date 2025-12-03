@@ -21,53 +21,53 @@
 
 - (id)pk_absoluteValue
 {
-  v2 = [MEMORY[0x1E696AB90] zero];
-  v3 = [a1 compare:v2];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v3 = [self compare:zero];
 
   if (v3 == -1)
   {
-    v4 = [a1 pk_negativeValue];
+    selfCopy = [self pk_negativeValue];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)pk_negativeValue
 {
-  v2 = [MEMORY[0x1E696AB90] zero];
-  if ([a1 isEqualToNumber:v2])
+  zero = [MEMORY[0x1E696AB90] zero];
+  if ([self isEqualToNumber:zero])
   {
 
 LABEL_4:
-    v5 = a1;
+    selfCopy = self;
     goto LABEL_6;
   }
 
-  v3 = [MEMORY[0x1E696AB90] notANumber];
-  v4 = [a1 isEqualToNumber:v3];
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  v4 = [self isEqualToNumber:notANumber];
 
   if (v4)
   {
     goto LABEL_4;
   }
 
-  v6 = [MEMORY[0x1E696AB90] pk_negativeOne];
-  v5 = [a1 decimalNumberByMultiplyingBy:v6];
+  pk_negativeOne = [MEMORY[0x1E696AB90] pk_negativeOne];
+  selfCopy = [self decimalNumberByMultiplyingBy:pk_negativeOne];
 
 LABEL_6:
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)pk_isLessThanOrEqualToInteger:()PKDecimalNumberAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  v3 = [a1 compare:v2];
+  v3 = [self compare:v2];
 
   return (v3 + 1) < 2;
 }

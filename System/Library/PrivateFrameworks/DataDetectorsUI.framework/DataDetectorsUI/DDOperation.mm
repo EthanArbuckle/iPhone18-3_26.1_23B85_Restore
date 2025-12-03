@@ -1,20 +1,20 @@
 @interface DDOperation
-+ (id)shouldUrlifyBlockForTypes:(unint64_t)a3;
-+ (id)urlificationBlockForTypes:(unint64_t)a3;
++ (id)shouldUrlifyBlockForTypes:(unint64_t)types;
++ (id)urlificationBlockForTypes:(unint64_t)types;
 - (BOOL)doURLificationOnDocument;
 - (BOOL)needsFullScanner;
-- (DDOperation)initWithContainer:(id)a3;
+- (DDOperation)initWithContainer:(id)container;
 - (__DDScanQuery)_createScanQueryForBackend;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newOperationForStartingOver;
 - (int)_createScanQuery;
 - (void)_createScanQuery;
-- (void)_setScanQuery:(__DDScanQuery *)a3;
+- (void)_setScanQuery:(__DDScanQuery *)query;
 - (void)cancel;
 - (void)cleanup;
 - (void)dealloc;
-- (void)dispatchContainerModificationBlock:(id)a3;
-- (void)dispatchScanQueryCreationWithCompletionBlock:(id)a3;
+- (void)dispatchContainerModificationBlock:(id)block;
+- (void)dispatchScanQueryCreationWithCompletionBlock:(id)block;
 - (void)main;
 - (void)newOperationForStartingOver;
 @end
@@ -29,12 +29,12 @@
   }
 
   [(DDOperation *)self setIsDiscarded:1];
-  v3 = self;
-  objc_sync_enter(v3);
-  [MEMORY[0x277D04220] cancelJob:v3->_jobIdentifier];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [MEMORY[0x277D04220] cancelJob:selfCopy->_jobIdentifier];
+  objc_sync_exit(selfCopy);
 
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = DDOperation;
   [(DDOperation *)&v4 cancel];
 }
@@ -123,11 +123,11 @@ LABEL_26:
     [DDOperation _createScanQuery];
   }
 
-  v6 = [(DDOperation *)self _createScanQueryForBackend];
-  [(DDOperation *)self _setScanQuery:v6];
-  if (v6)
+  _createScanQueryForBackend = [(DDOperation *)self _createScanQueryForBackend];
+  [(DDOperation *)self _setScanQuery:_createScanQueryForBackend];
+  if (_createScanQueryForBackend)
   {
-    CFRelease(v6);
+    CFRelease(_createScanQueryForBackend);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -168,8 +168,8 @@ LABEL_26:
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"DDOperation.m" lineNumber:281 description:@"Scan query should already be nil"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DDOperation.m" lineNumber:281 description:@"Scan query should already be nil"];
 }
 
 - (BOOL)needsFullScanner
@@ -182,19 +182,19 @@ LABEL_26:
 
 - (__DDScanQuery)_createScanQueryForBackend
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DDOperation.m" lineNumber:84 description:@"_createScanQueryForBackend has to be overridden by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DDOperation.m" lineNumber:84 description:@"_createScanQueryForBackend has to be overridden by subclasses"];
 
   return 0;
 }
 
-+ (id)shouldUrlifyBlockForTypes:(unint64_t)a3
++ (id)shouldUrlifyBlockForTypes:(unint64_t)types
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__DDOperation_shouldUrlifyBlockForTypes___block_invoke;
   aBlock[3] = &__block_descriptor_40_e206_B32__0____DDResult____CFRuntimeBase_QAQ____DDQueryRange____DDQueryOffset_b16b16b32____DDQueryOffset_b16b16b32_____qq_q____CFArray_____CFString_____CFString__v____CFDictionary_qCf_8__NSDate_16__NSTimeZone_24l;
-  aBlock[4] = a3;
+  aBlock[4] = types;
   v3 = _Block_copy(aBlock);
   v4 = [v3 copy];
 
@@ -396,13 +396,13 @@ LABEL_53:
   return v12;
 }
 
-+ (id)urlificationBlockForTypes:(unint64_t)a3
++ (id)urlificationBlockForTypes:(unint64_t)types
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__DDOperation_urlificationBlockForTypes___block_invoke;
   aBlock[3] = &__block_descriptor_40_e229___NSString_40__0____DDResult____CFRuntimeBase_QAQ____DDQueryRange____DDQueryOffset_b16b16b32____DDQueryOffset_b16b16b32_____qq_q____CFArray_____CFString_____CFString__v____CFDictionary_qCf_8__NSString_16__NSDate_24__NSTimeZone_32l;
-  aBlock[4] = a3;
+  aBlock[4] = types;
   v3 = _Block_copy(aBlock);
   v4 = [v3 copy];
 
@@ -431,22 +431,22 @@ id __41__DDOperation_urlificationBlockForTypes___block_invoke(uint64_t a1, uint6
 
 - (BOOL)doURLificationOnDocument
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DDOperation.m" lineNumber:252 description:@"_doURLificationOnDocument must be overridden by DDOperation subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DDOperation.m" lineNumber:252 description:@"_doURLificationOnDocument must be overridden by DDOperation subclasses"];
 
   return 0;
 }
 
-- (DDOperation)initWithContainer:(id)a3
+- (DDOperation)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v10.receiver = self;
   v10.super_class = DDOperation;
   v6 = [(DDOperation *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
     v7->_query = 0;
     results = v7->_results;
     v7->_results = 0;
@@ -459,16 +459,16 @@ id __41__DDOperation_urlificationBlockForTypes___block_invoke(uint64_t a1, uint6
   return v7;
 }
 
-- (void)dispatchContainerModificationBlock:(id)a3
+- (void)dispatchContainerModificationBlock:(id)block
 {
   v4 = dispatch_get_global_queue(0, 0);
-  dispatch_async(v4, a3);
+  dispatch_async(v4, block);
 }
 
-- (void)_setScanQuery:(__DDScanQuery *)a3
+- (void)_setScanQuery:(__DDScanQuery *)query
 {
   query = self->_query;
-  if (query != a3)
+  if (query != query)
   {
     if (query)
     {
@@ -476,22 +476,22 @@ id __41__DDOperation_urlificationBlockForTypes___block_invoke(uint64_t a1, uint6
       self->_query = 0;
     }
 
-    if (a3)
+    if (query)
     {
-      self->_query = CFRetain(a3);
+      self->_query = CFRetain(query);
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(DDOperation *)self container];
-  v6 = [v4 initWithContainer:v5];
+  container = [(DDOperation *)self container];
+  v6 = [v4 initWithContainer:container];
 
   [v6 setDetectionTypes:{-[DDOperation detectionTypes](self, "detectionTypes")}];
-  v7 = [(DDOperation *)self context];
-  [v6 setContext:v7];
+  context = [(DDOperation *)self context];
+  [v6 setContext:context];
 
   [v6 setTryCount:{-[DDOperation tryCount](self, "tryCount")}];
   return v6;
@@ -509,18 +509,18 @@ id __41__DDOperation_urlificationBlockForTypes___block_invoke(uint64_t a1, uint6
   return v3;
 }
 
-- (void)dispatchScanQueryCreationWithCompletionBlock:(id)a3
+- (void)dispatchScanQueryCreationWithCompletionBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __60__DDOperation_dispatchScanQueryCreationWithCompletionBlock___block_invoke;
   v10 = &unk_2782910B0;
-  v11 = self;
+  selfCopy = self;
   v12 = v4;
   v5 = v4;
   v6 = _Block_copy(&v7);
-  [(DDOperation *)self dispatchContainerModificationBlock:v6, v7, v8, v9, v10, v11];
+  [(DDOperation *)self dispatchContainerModificationBlock:v6, v7, v8, v9, v10, selfCopy];
 }
 
 void __60__DDOperation_dispatchScanQueryCreationWithCompletionBlock___block_invoke(uint64_t a1)
@@ -561,7 +561,7 @@ void __60__DDOperation_dispatchScanQueryCreationWithCompletionBlock___block_invo
 - (void)newOperationForStartingOver
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = [a1 container];
+  container = [self container];
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
 

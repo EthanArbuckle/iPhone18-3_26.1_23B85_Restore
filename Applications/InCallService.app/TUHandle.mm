@@ -6,11 +6,11 @@
 
 - (CNGeminiHandle)cnHandle
 {
-  v3 = [(TUHandle *)self value];
-  if (v3)
+  value = [(TUHandle *)self value];
+  if (value)
   {
-    v4 = [(TUHandle *)self type];
-    if (v4 == 2)
+    type = [(TUHandle *)self type];
+    if (type == 2)
     {
       v5 = 0;
     }
@@ -20,7 +20,7 @@
       v5 = -1;
     }
 
-    if (v4 == 3)
+    if (type == 3)
     {
       v6 = 1;
     }
@@ -30,7 +30,7 @@
       v6 = v5;
     }
 
-    v7 = [[CNGeminiHandle alloc] initWithString:v3 type:v6];
+    v7 = [[CNGeminiHandle alloc] initWithString:value type:v6];
   }
 
   else

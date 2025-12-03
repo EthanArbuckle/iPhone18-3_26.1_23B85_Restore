@@ -1,12 +1,12 @@
 @interface NSDictionary
-+ (NSDictionary)dictionaryWithContentsOfPlistData:(id)a3;
++ (NSDictionary)dictionaryWithContentsOfPlistData:(id)data;
 @end
 
 @implementation NSDictionary
 
-+ (NSDictionary)dictionaryWithContentsOfPlistData:(id)a3
++ (NSDictionary)dictionaryWithContentsOfPlistData:(id)data
 {
-  v3 = CFPropertyListCreateWithData(kCFAllocatorDefault, a3, 0, 0, 0);
+  v3 = CFPropertyListCreateWithData(kCFAllocatorDefault, data, 0, 0, 0);
   if (!v3)
   {
     return 0;

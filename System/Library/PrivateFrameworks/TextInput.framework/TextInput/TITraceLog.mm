@@ -1,20 +1,20 @@
 @interface TITraceLog
 - (NSMutableDictionary)recordEntryCache;
-- (TITraceLog)initWithLogContents:(id)a3;
-- (id)recordStringMatchingTypologyRecord:(id)a3;
-- (id)recordStringMatchingUUID:(id)a3;
-- (void)enumerateRecordsWithBlock:(id)a3;
-- (void)enumerateTextRecordEntriesUsingBlock:(id)a3;
+- (TITraceLog)initWithLogContents:(id)contents;
+- (id)recordStringMatchingTypologyRecord:(id)record;
+- (id)recordStringMatchingUUID:(id)d;
+- (void)enumerateRecordsWithBlock:(id)block;
+- (void)enumerateTextRecordEntriesUsingBlock:(id)block;
 @end
 
 @implementation TITraceLog
 
-- (void)enumerateTextRecordEntriesUsingBlock:(id)a3
+- (void)enumerateTextRecordEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E696AE88]);
-  v6 = [(TITraceLog *)self logContents];
-  v7 = [v5 initWithString:v6];
+  logContents = [(TITraceLog *)self logContents];
+  v7 = [v5 initWithString:logContents];
 
   v21 = 0;
   v20 = 0;
@@ -49,7 +49,7 @@
 
       if (v18 && v9)
       {
-        v4[2](v4, v18, v9, &v21);
+        blockCopy[2](blockCopy, v18, v9, &v21);
       }
 
       v19 = v18;
@@ -88,9 +88,9 @@
   return recordEntryCache;
 }
 
-- (void)enumerateRecordsWithBlock:(id)a3
+- (void)enumerateRecordsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -99,9 +99,9 @@
   v6[1] = 3221225472;
   v6[2] = __40__TITraceLog_enumerateRecordsWithBlock___block_invoke;
   v6[3] = &unk_1E6F4C008;
-  v7 = v4;
+  v7 = blockCopy;
   v8 = v9;
-  v5 = v4;
+  v5 = blockCopy;
   [(TITraceLog *)self enumerateTextRecordEntriesUsingBlock:v6];
 
   _Block_object_dispose(v9, 8);
@@ -117,32 +117,32 @@ uint64_t __40__TITraceLog_enumerateRecordsWithBlock___block_invoke(uint64_t resu
   return result;
 }
 
-- (id)recordStringMatchingTypologyRecord:(id)a3
+- (id)recordStringMatchingTypologyRecord:(id)record
 {
-  v4 = [a3 recordID];
-  v5 = [(TITraceLog *)self recordStringMatchingUUID:v4];
+  recordID = [record recordID];
+  v5 = [(TITraceLog *)self recordStringMatchingUUID:recordID];
 
   return v5;
 }
 
-- (id)recordStringMatchingUUID:(id)a3
+- (id)recordStringMatchingUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TITraceLog *)self recordEntryCache];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  recordEntryCache = [(TITraceLog *)self recordEntryCache];
+  v6 = [recordEntryCache objectForKey:dCopy];
 
   return v6;
 }
 
-- (TITraceLog)initWithLogContents:(id)a3
+- (TITraceLog)initWithLogContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v9.receiver = self;
   v9.super_class = TITraceLog;
   v5 = [(TITraceLog *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contentsCopy copy];
     logContents = v5->_logContents;
     v5->_logContents = v6;
   }

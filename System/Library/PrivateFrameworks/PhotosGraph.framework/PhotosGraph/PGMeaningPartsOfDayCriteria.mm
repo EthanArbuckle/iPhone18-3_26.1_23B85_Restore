@@ -1,27 +1,27 @@
 @interface PGMeaningPartsOfDayCriteria
-+ (id)_partsOfDayAsNumbersFromStrings:(id)a3;
-+ (id)criteriaWithDictionary:(id)a3;
-- (BOOL)_passesPartsOfDayWithMomentNodePartsOfDay:(unint64_t)a3 positivePartsOfDay:(id)a4 negativePartsOfDay:(id)a5;
++ (id)_partsOfDayAsNumbersFromStrings:(id)strings;
++ (id)criteriaWithDictionary:(id)dictionary;
+- (BOOL)_passesPartsOfDayWithMomentNodePartsOfDay:(unint64_t)day positivePartsOfDay:(id)ofDay negativePartsOfDay:(id)partsOfDay;
 - (BOOL)isValid;
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4;
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)description;
 @end
 
 @implementation PGMeaningPartsOfDayCriteria
 
-+ (id)_partsOfDayAsNumbersFromStrings:(id)a3
++ (id)_partsOfDayAsNumbersFromStrings:(id)strings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  stringsCopy = strings;
+  if ([stringsCopy count])
   {
-    v5 = [a1 _partsOfDayNumbersByString];
-    v6 = [MEMORY[0x277CBEB18] array];
+    _partsOfDayNumbersByString = [self _partsOfDayNumbersByString];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v4;
+    v7 = stringsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -36,10 +36,10 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [v5 objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
+          v12 = [_partsOfDayNumbersByString objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
           if (v12)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -52,54 +52,54 @@
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-+ (id)criteriaWithDictionary:(id)a3
++ (id)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"positiveSignificantPartsOfDay"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"positiveSignificantPartsOfDay"];
   [v5 setPositiveSignificantPartsOfDayStrings:v6];
-  v7 = [a1 _partsOfDayAsNumbersFromStrings:v6];
+  v7 = [self _partsOfDayAsNumbersFromStrings:v6];
   [v5 setPositiveSignificantPartsOfDay:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"negativeSignificantPartsOfDay"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"negativeSignificantPartsOfDay"];
   [v5 setNegativeSignificantPartsOfDayStrings:v8];
-  v9 = [a1 _partsOfDayAsNumbersFromStrings:v8];
+  v9 = [self _partsOfDayAsNumbersFromStrings:v8];
   [v5 setNegativeSignificantPartsOfDay:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"positivePartsOfDay"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"positivePartsOfDay"];
   [v5 setPositivePartsOfDayStrings:v10];
-  v11 = [a1 _partsOfDayAsNumbersFromStrings:v10];
+  v11 = [self _partsOfDayAsNumbersFromStrings:v10];
   [v5 setPositivePartsOfDay:v11];
 
-  v12 = [v4 objectForKeyedSubscript:@"negativePartsOfDay"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"negativePartsOfDay"];
 
   [v5 setNegativePartsOfDayStrings:v12];
-  v13 = [a1 _partsOfDayAsNumbersFromStrings:v12];
+  v13 = [self _partsOfDayAsNumbersFromStrings:v12];
   [v5 setNegativePartsOfDay:v13];
 
   return v5;
 }
 
-- (BOOL)_passesPartsOfDayWithMomentNodePartsOfDay:(unint64_t)a3 positivePartsOfDay:(id)a4 negativePartsOfDay:(id)a5
+- (BOOL)_passesPartsOfDayWithMomentNodePartsOfDay:(unint64_t)day positivePartsOfDay:(id)ofDay negativePartsOfDay:(id)partsOfDay
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if ([v7 count] || objc_msgSend(v8, "count"))
+  ofDayCopy = ofDay;
+  partsOfDayCopy = partsOfDay;
+  if ([ofDayCopy count] || objc_msgSend(partsOfDayCopy, "count"))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = v7;
+    v9 = ofDayCopy;
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v10)
     {
@@ -114,7 +114,7 @@ LABEL_5:
           objc_enumerationMutation(v9);
         }
 
-        if (([*(*(&v25 + 1) + 8 * v13) unsignedIntegerValue] & a3) != 0)
+        if (([*(*(&v25 + 1) + 8 * v13) unsignedIntegerValue] & day) != 0)
         {
           break;
         }
@@ -135,7 +135,7 @@ LABEL_5:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = v8;
+      v9 = partsOfDayCopy;
       v15 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (!v15)
       {
@@ -154,7 +154,7 @@ LABEL_14:
           objc_enumerationMutation(v9);
         }
 
-        if (([*(*(&v21 + 1) + 8 * v18) unsignedIntegerValue] & a3) != 0)
+        if (([*(*(&v21 + 1) + 8 * v18) unsignedIntegerValue] & day) != 0)
         {
           break;
         }
@@ -189,35 +189,35 @@ LABEL_22:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(PGMeaningPartsOfDayCriteria *)self positiveSignificantPartsOfDayStrings];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  string = [MEMORY[0x277CCAB68] string];
+  positiveSignificantPartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)self positiveSignificantPartsOfDayStrings];
+  v5 = [positiveSignificantPartsOfDayStrings componentsJoinedByString:{@", "}];
 
-  v6 = [(PGMeaningPartsOfDayCriteria *)self negativeSignificantPartsOfDayStrings];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  negativeSignificantPartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)self negativeSignificantPartsOfDayStrings];
+  v7 = [negativeSignificantPartsOfDayStrings componentsJoinedByString:{@", "}];
 
-  [v3 appendFormat:@"positiveSignificantPartsOfDay: %@\n", v5];
-  [v3 appendFormat:@"negativeSignificantPartsOfDay: %@\n", v7];
-  v8 = [(PGMeaningPartsOfDayCriteria *)self positivePartsOfDayStrings];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  [string appendFormat:@"positiveSignificantPartsOfDay: %@\n", v5];
+  [string appendFormat:@"negativeSignificantPartsOfDay: %@\n", v7];
+  positivePartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)self positivePartsOfDayStrings];
+  v9 = [positivePartsOfDayStrings componentsJoinedByString:{@", "}];
 
-  v10 = [(PGMeaningPartsOfDayCriteria *)self negativePartsOfDayStrings];
-  v11 = [v10 componentsJoinedByString:{@", "}];
+  negativePartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)self negativePartsOfDayStrings];
+  v11 = [negativePartsOfDayStrings componentsJoinedByString:{@", "}];
 
-  [v3 appendFormat:@"positivePartsOfDay: %@\n", v9];
-  [v3 appendFormat:@"negativePartsOfDay: %@\n", v11];
+  [string appendFormat:@"positivePartsOfDay: %@\n", v9];
+  [string appendFormat:@"negativePartsOfDay: %@\n", v11];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)isValid
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _partsOfDayNumbersByString];
-  v4 = [(PGMeaningPartsOfDayCriteria *)self positiveSignificantPartsOfDayStrings];
-  v31 = self;
-  v5 = [(PGMeaningPartsOfDayCriteria *)self negativeSignificantPartsOfDayStrings];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  _partsOfDayNumbersByString = [objc_opt_class() _partsOfDayNumbersByString];
+  positiveSignificantPartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)self positiveSignificantPartsOfDayStrings];
+  selfCopy = self;
+  negativeSignificantPartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)self negativeSignificantPartsOfDayStrings];
+  v6 = [positiveSignificantPartsOfDayStrings arrayByAddingObjectsFromArray:negativeSignificantPartsOfDayStrings];
 
   v38 = 0u;
   v39 = 0u;
@@ -240,18 +240,18 @@ LABEL_22:
         }
 
         v13 = *(*(&v36 + 1) + 8 * i);
-        v14 = [v3 objectForKeyedSubscript:v13];
+        v14 = [_partsOfDayNumbersByString objectForKeyedSubscript:v13];
 
         if (!v14)
         {
           v15 = +[PGLogging sharedLogging];
-          v16 = [v15 loggingConnection];
+          loggingConnection = [v15 loggingConnection];
 
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
             v42 = v13;
-            _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid significant part of day %@", buf, 0xCu);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid significant part of day %@", buf, 0xCu);
           }
 
           v11 = 0;
@@ -269,9 +269,9 @@ LABEL_22:
     v11 = 1;
   }
 
-  v17 = [(PGMeaningPartsOfDayCriteria *)v31 positivePartsOfDayStrings];
-  v18 = [(PGMeaningPartsOfDayCriteria *)v31 negativePartsOfDayStrings];
-  v19 = [v17 arrayByAddingObjectsFromArray:v18];
+  positivePartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)selfCopy positivePartsOfDayStrings];
+  negativePartsOfDayStrings = [(PGMeaningPartsOfDayCriteria *)selfCopy negativePartsOfDayStrings];
+  v19 = [positivePartsOfDayStrings arrayByAddingObjectsFromArray:negativePartsOfDayStrings];
 
   v34 = 0u;
   v35 = 0u;
@@ -293,18 +293,18 @@ LABEL_22:
         }
 
         v25 = *(*(&v32 + 1) + 8 * j);
-        v26 = [v3 objectForKeyedSubscript:v25];
+        v26 = [_partsOfDayNumbersByString objectForKeyedSubscript:v25];
 
         if (!v26)
         {
           v27 = +[PGLogging sharedLogging];
-          v28 = [v27 loggingConnection];
+          loggingConnection2 = [v27 loggingConnection];
 
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
             v42 = v25;
-            _os_log_impl(&dword_22F0FC000, v28, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid part of day %@", buf, 0xCu);
+            _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid part of day %@", buf, 0xCu);
           }
 
           v11 = 0;
@@ -321,20 +321,20 @@ LABEL_22:
   return v11 & 1;
 }
 
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache
 {
-  v5 = a4;
-  v6 = [v5 significantPartsOfDay];
-  v7 = [(PGMeaningPartsOfDayCriteria *)self positiveSignificantPartsOfDay];
-  v8 = [(PGMeaningPartsOfDayCriteria *)self negativeSignificantPartsOfDay];
-  LODWORD(v6) = [(PGMeaningPartsOfDayCriteria *)self _passesPartsOfDayWithMomentNodePartsOfDay:v6 positivePartsOfDay:v7 negativePartsOfDay:v8];
+  cacheCopy = cache;
+  significantPartsOfDay = [cacheCopy significantPartsOfDay];
+  positiveSignificantPartsOfDay = [(PGMeaningPartsOfDayCriteria *)self positiveSignificantPartsOfDay];
+  negativeSignificantPartsOfDay = [(PGMeaningPartsOfDayCriteria *)self negativeSignificantPartsOfDay];
+  LODWORD(significantPartsOfDay) = [(PGMeaningPartsOfDayCriteria *)self _passesPartsOfDayWithMomentNodePartsOfDay:significantPartsOfDay positivePartsOfDay:positiveSignificantPartsOfDay negativePartsOfDay:negativeSignificantPartsOfDay];
 
-  if (v6)
+  if (significantPartsOfDay)
   {
-    v9 = [v5 partsOfDay];
-    v10 = [(PGMeaningPartsOfDayCriteria *)self positivePartsOfDay];
-    v11 = [(PGMeaningPartsOfDayCriteria *)self negativePartsOfDay];
-    v12 = [(PGMeaningPartsOfDayCriteria *)self _passesPartsOfDayWithMomentNodePartsOfDay:v9 positivePartsOfDay:v10 negativePartsOfDay:v11];
+    partsOfDay = [cacheCopy partsOfDay];
+    positivePartsOfDay = [(PGMeaningPartsOfDayCriteria *)self positivePartsOfDay];
+    negativePartsOfDay = [(PGMeaningPartsOfDayCriteria *)self negativePartsOfDay];
+    v12 = [(PGMeaningPartsOfDayCriteria *)self _passesPartsOfDayWithMomentNodePartsOfDay:partsOfDay positivePartsOfDay:positivePartsOfDay negativePartsOfDay:negativePartsOfDay];
   }
 
   else

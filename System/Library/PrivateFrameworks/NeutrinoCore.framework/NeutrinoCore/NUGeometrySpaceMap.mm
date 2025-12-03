@@ -1,21 +1,21 @@
 @interface NUGeometrySpaceMap
-+ (BOOL)_canReduceSpaces:(id)a3 withSpaces:(id)a4;
-+ (id)_reduceSpaces:(id)a3 withSpaces:(id)a4;
++ (BOOL)_canReduceSpaces:(id)spaces withSpaces:(id)withSpaces;
++ (id)_reduceSpaces:(id)spaces withSpaces:(id)withSpaces;
 - (NUGeometrySpaceMap)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)spaceForKey:(id)a3;
-- (id)spacesForKey:(id)a3;
-- (id)taggedSpacesForKey:(id)a3;
-- (id)transformWithSourceSpace:(id)a3 destinationSpace:(id)a4 error:(id *)a5;
+- (id)spaceForKey:(id)key;
+- (id)spacesForKey:(id)key;
+- (id)taggedSpacesForKey:(id)key;
+- (id)transformWithSourceSpace:(id)space destinationSpace:(id)destinationSpace error:(id *)error;
 - (unint64_t)count;
-- (void)addTagNode:(id)a3;
-- (void)applyTransform:(id)a3;
-- (void)enumerateSpacesUsingBlock:(id)a3;
-- (void)mergeWithSpaceMap:(id)a3;
-- (void)setSpace:(id)a3 forKey:(id)a4;
-- (void)setSpaces:(id)a3 forKey:(id)a4;
-- (void)setSpacesFromMap:(id)a3 andPruneAgainstTagNode:(id)a4 withPath:(id)a5;
+- (void)addTagNode:(id)node;
+- (void)applyTransform:(id)transform;
+- (void)enumerateSpacesUsingBlock:(id)block;
+- (void)mergeWithSpaceMap:(id)map;
+- (void)setSpace:(id)space forKey:(id)key;
+- (void)setSpaces:(id)spaces forKey:(id)key;
+- (void)setSpacesFromMap:(id)map andPruneAgainstTagNode:(id)node withPath:(id)path;
 @end
 
 @implementation NUGeometrySpaceMap
@@ -38,12 +38,12 @@
   return [v3 stringWithFormat:@"<%@:%p spaces (%lu)  :: %@>", v4, self, v5, spaces];
 }
 
-- (id)transformWithSourceSpace:(id)a3 destinationSpace:(id)a4 error:(id *)a5
+- (id)transformWithSourceSpace:(id)space destinationSpace:(id)destinationSpace error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  spaceCopy = space;
+  destinationSpaceCopy = destinationSpace;
+  if (!spaceCopy)
   {
     v26 = NUAssertLogger_9883();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -64,8 +64,8 @@
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v51 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v47;
         v76 = 2114;
@@ -76,8 +76,8 @@
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v75 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -86,8 +86,8 @@
     _NUAssertFailHandler("[NUGeometrySpaceMap transformWithSourceSpace:destinationSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 418, @"Invalid parameter not satisfying: %s", v52, v53, v54, v55, "srcSpaceName != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = destinationSpaceCopy;
+  if (!destinationSpaceCopy)
   {
     v33 = NUAssertLogger_9883();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -108,8 +108,8 @@
         v56 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v57 = MEMORY[0x1E696AF00];
         v58 = v56;
-        v59 = [v57 callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v57 callStackSymbols];
+        v60 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v56;
         v76 = 2114;
@@ -120,8 +120,8 @@
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v75 = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -130,7 +130,7 @@
     _NUAssertFailHandler("[NUGeometrySpaceMap transformWithSourceSpace:destinationSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 419, @"Invalid parameter not satisfying: %s", v61, v62, v63, v64, "dstSpaceName != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v40 = NUAssertLogger_9883();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -151,8 +151,8 @@
         v65 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v66 = MEMORY[0x1E696AF00];
         v67 = v65;
-        v68 = [v66 callStackSymbols];
-        v69 = [v68 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v66 callStackSymbols];
+        v69 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v65;
         v76 = 2114;
@@ -163,8 +163,8 @@
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v75 = v46;
       _os_log_error_impl(&dword_1C0184000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -173,14 +173,14 @@
     _NUAssertFailHandler("[NUGeometrySpaceMap transformWithSourceSpace:destinationSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 420, @"Invalid parameter not satisfying: %s", v70, v71, v72, v73, "error != NULL");
   }
 
-  v11 = [(NUGeometrySpaceMap *)self taggedSpacesForKey:v8];
+  v11 = [(NUGeometrySpaceMap *)self taggedSpacesForKey:spaceCopy];
   v12 = v11;
   if (!v11)
   {
-    v23 = [NUError missingError:@"No such space" object:v8];
+    v23 = [NUError missingError:@"No such space" object:spaceCopy];
 LABEL_11:
     v22 = 0;
-    *a5 = v23;
+    *error = v23;
     goto LABEL_16;
   }
 
@@ -197,7 +197,7 @@ LABEL_11:
     v24 = [NUError missingError:@"No such space" object:v10];
 LABEL_14:
     v22 = 0;
-    *a5 = v24;
+    *error = v24;
     goto LABEL_15;
   }
 
@@ -208,15 +208,15 @@ LABEL_14:
   }
 
   v15 = [v12 objectAtIndexedSubscript:0];
-  v16 = [v15 space];
+  space = [v15 space];
 
   v17 = [v14 objectAtIndexedSubscript:0];
-  v18 = [v17 space];
+  space2 = [v17 space];
 
   v19 = [NUCompoundTransform alloc];
-  v20 = [v16 transformStack];
-  v21 = [v18 transformStack];
-  v22 = [(NUCompoundTransform *)v19 initWithSrcTransforms:v20 dstTransforms:v21];
+  transformStack = [space transformStack];
+  transformStack2 = [space2 transformStack];
+  v22 = [(NUCompoundTransform *)v19 initWithSrcTransforms:transformStack dstTransforms:transformStack2];
 
 LABEL_15:
 LABEL_16:
@@ -224,11 +224,11 @@ LABEL_16:
   return v22;
 }
 
-- (void)mergeWithSpaceMap:(id)a3
+- (void)mergeWithSpaceMap:(id)map
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  mapCopy = map;
+  if (!mapCopy)
   {
     v7 = NUAssertLogger_9883();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -249,8 +249,8 @@ LABEL_16:
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v14;
         v28 = 2114;
@@ -261,8 +261,8 @@ LABEL_16:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -276,9 +276,9 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __40__NUGeometrySpaceMap_mergeWithSpaceMap___block_invoke;
   block[3] = &unk_1E810B958;
-  v24 = v4;
-  v25 = self;
-  v6 = v4;
+  v24 = mapCopy;
+  selfCopy = self;
+  v6 = mapCopy;
   dispatch_sync(queue, block);
 }
 
@@ -331,35 +331,35 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)enumerateSpacesUsingBlock:(id)a3
+- (void)enumerateSpacesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__NUGeometrySpaceMap_enumerateSpacesUsingBlock___block_invoke;
   v7[3] = &unk_1E810BA70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setSpacesFromMap:(id)a3 andPruneAgainstTagNode:(id)a4 withPath:(id)a5
+- (void)setSpacesFromMap:(id)map andPruneAgainstTagNode:(id)node withPath:(id)path
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 geometryNode];
-  if (!v11)
+  mapCopy = map;
+  nodeCopy = node;
+  pathCopy = path;
+  geometryNode = [nodeCopy geometryNode];
+  if (!geometryNode)
   {
     v35 = NUAssertLogger_9883();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot find the node for the given tag '%@' in the map", v10];
+      pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot find the node for the given tag '%@' in the map", pathCopy];
       *buf = 138543362;
-      v66 = v36;
+      v66 = pathCopy;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -373,8 +373,8 @@ LABEL_9:
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v43 callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v42;
         v67 = 2114;
@@ -385,26 +385,26 @@ LABEL_9:
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v41;
       _os_log_error_impl(&dword_1C0184000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    _NUAssertFailHandler("[NUGeometrySpaceMap setSpacesFromMap:andPruneAgainstTagNode:withPath:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 292, @"Cannot find the node for the given tag '%@' in the map", v47, v48, v49, v50, v10);
+    _NUAssertFailHandler("[NUGeometrySpaceMap setSpacesFromMap:andPruneAgainstTagNode:withPath:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 292, @"Cannot find the node for the given tag '%@' in the map", v47, v48, v49, v50, pathCopy);
   }
 
-  v12 = v11;
-  v13 = [v11 spaceMapKey];
-  v14 = [v8 taggedSpacesForKey:v13];
+  v12 = geometryNode;
+  spaceMapKey = [geometryNode spaceMapKey];
+  v14 = [mapCopy taggedSpacesForKey:spaceMapKey];
 
   if (v14)
   {
     v51 = v12;
-    v52 = self;
-    v53 = v8;
-    v54 = v10;
+    selfCopy = self;
+    v53 = mapCopy;
+    v54 = pathCopy;
     v15 = objc_opt_new();
     v59 = 0u;
     v60 = 0u;
@@ -426,12 +426,12 @@ LABEL_9:
           }
 
           v21 = *(*(&v59 + 1) + 8 * i);
-          v22 = [v21 tagNodes];
-          if ([v22 containsObject:v9])
+          tagNodes = [v21 tagNodes];
+          if ([tagNodes containsObject:nodeCopy])
           {
             v23 = [_NUTaggedSpace alloc];
-            v24 = [v21 space];
-            v25 = [(_NUTaggedSpace *)v23 initWithSpace:v24];
+            space = [v21 space];
+            v25 = [(_NUTaggedSpace *)v23 initWithSpace:space];
 
             [v15 addObject:v25];
           }
@@ -466,8 +466,8 @@ LABEL_9:
 
             v31 = *(*(&v55 + 1) + 8 * j);
             v32 = [_NUTaggedSpace alloc];
-            v33 = [v31 space];
-            v34 = [(_NUTaggedSpace *)v32 initWithSpace:v33];
+            space2 = [v31 space];
+            v34 = [(_NUTaggedSpace *)v32 initWithSpace:space2];
 
             [v15 addObject:v34];
           }
@@ -479,20 +479,20 @@ LABEL_9:
       }
     }
 
-    v10 = v54;
-    [(NUGeometrySpaceMap *)v52 setSpaces:v15 forKey:v54];
+    pathCopy = v54;
+    [(NUGeometrySpaceMap *)selfCopy setSpaces:v15 forKey:v54];
 
-    v8 = v53;
+    mapCopy = v53;
     v12 = v51;
   }
 }
 
-- (void)setSpaces:(id)a3 forKey:(id)a4
+- (void)setSpaces:(id)spaces forKey:(id)key
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  spacesCopy = spaces;
+  keyCopy = key;
+  if (!spacesCopy)
   {
     v11 = NUAssertLogger_9883();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -513,8 +513,8 @@ LABEL_9:
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v25;
         v48 = 2114;
@@ -525,8 +525,8 @@ LABEL_9:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -535,7 +535,7 @@ LABEL_9:
     _NUAssertFailHandler("[NUGeometrySpaceMap setSpaces:forKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 276, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "spaces != nil");
   }
 
-  if (!v7)
+  if (!keyCopy)
   {
     v18 = NUAssertLogger_9883();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -556,8 +556,8 @@ LABEL_9:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v34;
         v48 = 2114;
@@ -568,8 +568,8 @@ LABEL_9:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -584,10 +584,10 @@ LABEL_9:
   block[2] = __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v44 = v6;
-  v45 = v7;
-  v9 = v7;
-  v10 = v6;
+  v44 = spacesCopy;
+  v45 = keyCopy;
+  v9 = keyCopy;
+  v10 = spacesCopy;
   dispatch_sync(queue, block);
 }
 
@@ -598,12 +598,12 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
   [v2 setObject:v3 forKey:*(a1 + 48)];
 }
 
-- (void)setSpace:(id)a3 forKey:(id)a4
+- (void)setSpace:(id)space forKey:(id)key
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  spaceCopy = space;
+  keyCopy = key;
+  if (!spaceCopy)
   {
     v11 = NUAssertLogger_9883();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -624,8 +624,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -636,8 +636,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -646,8 +646,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUGeometrySpaceMap setSpace:forKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 267, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "space != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = keyCopy;
+  if (!keyCopy)
   {
     v18 = NUAssertLogger_9883();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -668,8 +668,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v34;
         v46 = 2114;
@@ -680,8 +680,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -690,17 +690,17 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUGeometrySpaceMap setSpace:forKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 268, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "key != nil");
   }
 
-  v9 = [[_NUTaggedSpace alloc] initWithSpace:v6];
+  v9 = [[_NUTaggedSpace alloc] initWithSpace:spaceCopy];
   v43 = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
   [(NUGeometrySpaceMap *)self setSpaces:v10 forKey:v8];
 }
 
-- (id)spaceForKey:(id)a3
+- (id)spaceForKey:(id)key
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v10 = NUAssertLogger_9883();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -721,8 +721,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v17;
         v28 = 2114;
@@ -733,8 +733,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -743,27 +743,27 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUGeometrySpaceMap spaceForKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 255, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "key != nil");
   }
 
-  v5 = v4;
-  v6 = [(NUGeometrySpaceMap *)self taggedSpacesForKey:v4];
+  v5 = keyCopy;
+  v6 = [(NUGeometrySpaceMap *)self taggedSpacesForKey:keyCopy];
   if ([v6 count] == 1)
   {
     v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 space];
+    space = [v7 space];
   }
 
   else
   {
-    v8 = 0;
+    space = 0;
   }
 
-  return v8;
+  return space;
 }
 
-- (id)spacesForKey:(id)a3
+- (id)spacesForKey:(id)key
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v16 = NUAssertLogger_9883();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -784,8 +784,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v23;
         v39 = 2114;
@@ -796,8 +796,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -806,8 +806,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUGeometrySpaceMap spacesForKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 238, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "key != nil");
   }
 
-  v5 = v4;
-  v6 = [(NUGeometrySpaceMap *)self taggedSpacesForKey:v4];
+  v5 = keyCopy;
+  v6 = [(NUGeometrySpaceMap *)self taggedSpacesForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -831,8 +831,8 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v32 + 1) + 8 * i) space];
-          [v8 addObject:v14];
+          space = [*(*(&v32 + 1) + 8 * i) space];
+          [v8 addObject:space];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -850,9 +850,9 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)taggedSpacesForKey:(id)a3
+- (id)taggedSpacesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -864,10 +864,10 @@ void __39__NUGeometrySpaceMap_setSpaces_forKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__NUGeometrySpaceMap_taggedSpacesForKey___block_invoke;
   block[3] = &unk_1E810B500;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -883,21 +883,21 @@ uint64_t __41__NUGeometrySpaceMap_taggedSpacesForKey___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addTagNode:(id)a3
+- (void)addTagNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 geometryNode];
-  v6 = [v5 spaceMapKey];
+  nodeCopy = node;
+  geometryNode = [nodeCopy geometryNode];
+  spaceMapKey = [geometryNode spaceMapKey];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__NUGeometrySpaceMap_addTagNode___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = spaceMapKey;
+  v12 = nodeCopy;
+  v8 = nodeCopy;
+  v9 = spaceMapKey;
   dispatch_sync(queue, block);
 }
 
@@ -935,17 +935,17 @@ void __33__NUGeometrySpaceMap_addTagNode___block_invoke(void *a1)
   }
 }
 
-- (void)applyTransform:(id)a3
+- (void)applyTransform:(id)transform
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  transformCopy = transform;
+  v5 = transformCopy;
+  if (transformCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __37__NUGeometrySpaceMap_applyTransform___block_invoke;
     v6[3] = &unk_1E8109FD0;
-    v7 = v4;
+    v7 = transformCopy;
     [(NUGeometrySpaceMap *)self enumerateSpacesUsingBlock:v6];
   }
 }
@@ -1013,7 +1013,7 @@ uint64_t __27__NUGeometrySpaceMap_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[NUGeometrySpaceMap allocWithZone:](NUGeometrySpaceMap init];
   queue = self->_queue;
@@ -1023,8 +1023,8 @@ uint64_t __27__NUGeometrySpaceMap_count__block_invoke(uint64_t a1)
   block[3] = &unk_1E810B750;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  v13 = a3;
+  selfCopy = self;
+  zoneCopy = zone;
   dispatch_sync(queue, block);
   v8 = v7;
 
@@ -1055,41 +1055,41 @@ uint64_t __35__NUGeometrySpaceMap_copyWithZone___block_invoke(void *a1)
   return v2;
 }
 
-+ (id)_reduceSpaces:(id)a3 withSpaces:(id)a4
++ (id)_reduceSpaces:(id)spaces withSpaces:(id)withSpaces
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  if ([v5 count])
+  withSpacesCopy = withSpaces;
+  v6 = [spaces mutableCopy];
+  if ([withSpacesCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:v7];
+      v8 = [withSpacesCopy objectAtIndexedSubscript:v7];
       v9 = [v6 objectAtIndexedSubscript:v7];
       [v9 mergeSpace:v8];
 
       ++v7;
     }
 
-    while (v7 < [v5 count]);
+    while (v7 < [withSpacesCopy count]);
   }
 
   return v6;
 }
 
-+ (BOOL)_canReduceSpaces:(id)a3 withSpaces:(id)a4
++ (BOOL)_canReduceSpaces:(id)spaces withSpaces:(id)withSpaces
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  spacesCopy = spaces;
+  withSpacesCopy = withSpaces;
+  v7 = [spacesCopy count];
+  if (v7 == [withSpacesCopy count])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v5;
+    v8 = spacesCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v9)
     {
@@ -1130,7 +1130,7 @@ LABEL_10:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = v6;
+      v8 = withSpacesCopy;
       v13 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (!v13)
       {

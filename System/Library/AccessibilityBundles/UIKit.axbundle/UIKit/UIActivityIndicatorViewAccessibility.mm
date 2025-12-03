@@ -8,7 +8,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIActivityIndicatorViewAccessibility;
@@ -17,7 +17,7 @@
 
 - (id)accessibilityLabel
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   v6.receiver = self;
   v6.super_class = UIActivityIndicatorViewAccessibility;
@@ -29,10 +29,10 @@
 
   else
   {
-    v4 = [(UIActivityIndicatorViewAccessibility *)v8 safeValueForKey:@"isAnimating"];
-    v5 = [v4 BOOLValue];
+    v4 = [(UIActivityIndicatorViewAccessibility *)selfCopy safeValueForKey:@"isAnimating"];
+    bOOLValue = [v4 BOOLValue];
     MEMORY[0x29EDC9740](v4);
-    if (v5)
+    if (bOOLValue)
     {
       v9 = accessibilityLocalizedString(@"activity.indicator.inprogress.label");
     }
@@ -51,7 +51,7 @@
 
 - (id)accessibilityValue
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   v6.receiver = self;
   v6.super_class = UIActivityIndicatorViewAccessibility;
@@ -69,7 +69,7 @@
   else
   {
     v4 = MEMORY[0x29EDBA0F8];
-    v5 = [(UIActivityIndicatorViewAccessibility *)v8 safeValueForKey:@"isAnimating"];
+    v5 = [(UIActivityIndicatorViewAccessibility *)selfCopy safeValueForKey:@"isAnimating"];
     v9 = [v4 stringWithFormat:@"%d", objc_msgSend(v5, "BOOLValue") & 1];
     MEMORY[0x29EDC9740](v5);
   }

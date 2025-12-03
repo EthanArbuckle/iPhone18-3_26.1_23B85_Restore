@@ -9,21 +9,21 @@
 {
   v7.receiver = self;
   v7.super_class = SUUIBarRatingViewAccessibility;
-  v3 = [(SUUIBarRatingViewAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(SUUIBarRatingViewAccessibility *)&v7 accessibilityLabel];
 
-  if (v3)
+  if (accessibilityLabel)
   {
     v6.receiver = self;
     v6.super_class = SUUIBarRatingViewAccessibility;
-    v4 = [(SUUIBarRatingViewAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel2 = [(SUUIBarRatingViewAccessibility *)&v6 accessibilityLabel];
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(@"bar.rating");
+    accessibilityLabel2 = accessibilityLocalizedString(@"bar.rating");
   }
 
-  return v4;
+  return accessibilityLabel2;
 }
 
 - (id)accessibilityValue

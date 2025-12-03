@@ -1,15 +1,15 @@
 @interface PKPaletteToolViewAnimation
-+ (void)performSelectionAnimations:(void *)a3 completion:;
++ (void)performSelectionAnimations:(void *)animations completion:;
 @end
 
 @implementation PKPaletteToolViewAnimation
 
-+ (void)performSelectionAnimations:(void *)a3 completion:
++ (void)performSelectionAnimations:(void *)animations completion:
 {
-  v4 = a3;
+  animationsCopy = animations;
   v5 = a2;
   objc_opt_self();
-  [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v5 usingSpringWithDamping:v4 initialSpringVelocity:0.55 options:0.0 animations:0.65 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v5 usingSpringWithDamping:animationsCopy initialSpringVelocity:0.55 options:0.0 animations:0.65 completion:0.0];
 }
 
 @end

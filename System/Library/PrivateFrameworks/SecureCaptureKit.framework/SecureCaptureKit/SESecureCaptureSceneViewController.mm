@@ -1,25 +1,25 @@
 @interface SESecureCaptureSceneViewController
 - (LCSExtensionDescribing)extensionProvider;
-- (SESecureCaptureSceneViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SESecureCaptureSceneViewController)initWithProvider:(id)a3;
-- (SESecureCaptureSceneViewController)initWithProvider:(id)a3 launchActions:(id)a4;
+- (SESecureCaptureSceneViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SESecureCaptureSceneViewController)initWithProvider:(id)provider;
+- (SESecureCaptureSceneViewController)initWithProvider:(id)provider launchActions:(id)actions;
 - (SESecureCaptureSceneViewControllerDelegate)delegate;
 - (unint64_t)presentationMode;
 - (void)dealloc;
-- (void)extensionAppProtectionAssistantShouldShieldDidChange:(id)a3;
+- (void)extensionAppProtectionAssistantShouldShieldDidChange:(id)change;
 - (void)invalidate;
-- (void)reactivateWithLaunchActions:(id)a3;
-- (void)scene:(id)a3 didReceiveActions:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
-- (void)sceneDidInvalidate:(id)a3;
-- (void)sceneLayerManagerDidStartTrackingLayers:(id)a3;
-- (void)sceneLayerManagerDidStopTrackingLayers:(id)a3;
-- (void)sceneLayerManagerDidUpdateLayers:(id)a3;
-- (void)setExtensionProvider:(id)a3;
-- (void)setPresentationMode:(unint64_t)a3;
+- (void)reactivateWithLaunchActions:(id)actions;
+- (void)scene:(id)scene didReceiveActions:(id)actions;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
+- (void)sceneDidInvalidate:(id)invalidate;
+- (void)sceneLayerManagerDidStartTrackingLayers:(id)layers;
+- (void)sceneLayerManagerDidStopTrackingLayers:(id)layers;
+- (void)sceneLayerManagerDidUpdateLayers:(id)layers;
+- (void)setExtensionProvider:(id)provider;
+- (void)setPresentationMode:(unint64_t)mode;
 - (void)viewDidLoad;
 @end
 
@@ -33,24 +33,24 @@
   }
 
   v4 = *(self + OBJC_IVAR___SESecureCaptureSceneViewController__presentationMode);
-  v3 = self;
+  selfCopy = self;
   result = sub_264F13714();
   __break(1u);
   return result;
 }
 
-- (void)setPresentationMode:(unint64_t)a3
+- (void)setPresentationMode:(unint64_t)mode
 {
-  v5 = self;
+  selfCopy = self;
   BSDispatchQueueAssertMain();
-  if (a3 == 2)
+  if (mode == 2)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = a3 == 1;
+    v4 = mode == 1;
   }
 
   sub_264F04BE8(v4, 0);
@@ -74,17 +74,17 @@
   return v5;
 }
 
-- (void)setExtensionProvider:(id)a3
+- (void)setExtensionProvider:(id)provider
 {
   v5 = OBJC_IVAR___SESecureCaptureSceneViewController_extensionProvider;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = provider;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (SESecureCaptureSceneViewController)initWithProvider:(id)a3
+- (SESecureCaptureSceneViewController)initWithProvider:(id)provider
 {
   if (MEMORY[0x277D84F90] >> 62 && sub_264F13584())
   {
@@ -101,13 +101,13 @@
   sub_264EFB470();
   v5 = sub_264F13364();
 
-  v6 = [(SESecureCaptureSceneViewController *)self initWithProvider:a3 launchActions:v5];
+  v6 = [(SESecureCaptureSceneViewController *)self initWithProvider:provider launchActions:v5];
 
   swift_unknownObjectRelease();
   return v6;
 }
 
-- (SESecureCaptureSceneViewController)initWithProvider:(id)a3 launchActions:(id)a4
+- (SESecureCaptureSceneViewController)initWithProvider:(id)provider launchActions:(id)actions
 {
   sub_264EFB608(0, &unk_27FFBDAD0, 0x277CF0B58);
   sub_264EFB470();
@@ -122,115 +122,115 @@
 {
   sub_264F13314();
   v4[2] = self;
-  v3 = self;
+  selfCopy = self;
   sub_264F05A8C(sub_264F0E71C, v4);
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = SESecureCaptureSceneViewController;
   [(SESecureCaptureSceneViewController *)&v5 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SESecureCaptureSceneViewController.viewDidLoad()();
 }
 
-- (void)reactivateWithLaunchActions:(id)a3
+- (void)reactivateWithLaunchActions:(id)actions
 {
   sub_264EFB608(0, &unk_27FFBDAD0, 0x277CF0B58);
   sub_264EFB470();
   v4 = sub_264F13374();
-  v5 = self;
+  selfCopy = self;
   SESecureCaptureSceneViewController.reactivate(launchActions:)(v4);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   SESecureCaptureSceneViewController.invalidate()();
 }
 
-- (SESecureCaptureSceneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SESecureCaptureSceneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  SESecureCaptureSceneViewController.sceneDidActivate(_:)(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  SESecureCaptureSceneViewController.sceneDidActivate(_:)(activateCopy);
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   _sSo34SESecureCaptureSceneViewControllerC06SecureB3KitE18sceneDidInvalidateyySo7FBSceneCF_0();
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  SESecureCaptureSceneViewController.sceneDidDeactivate(_:withError:)(v6, a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  SESecureCaptureSceneViewController.sceneDidDeactivate(_:withError:)(deactivateCopy, error);
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  SESecureCaptureSceneViewController.sceneContentStateDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  SESecureCaptureSceneViewController.sceneContentStateDidChange(_:)(changeCopy);
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4
+- (void)scene:(id)scene didReceiveActions:(id)actions
 {
   sub_264EFB608(0, &unk_27FFBDAD0, 0x277CF0B58);
   sub_264EFB470();
   v6 = sub_264F13374();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_264F0D4B8(v6);
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  _sSo34SESecureCaptureSceneViewControllerC06SecureB3KitE5scene_27didUpdateClientSettingsWith03oldkL017transitionContextySo7FBSceneC_So08FBSScenekL4DiffCSo0rkL0CSo0r10TransitionP0CSgtF_0(v10, v11);
+  sceneCopy = scene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  selfCopy = self;
+  _sSo34SESecureCaptureSceneViewControllerC06SecureB3KitE5scene_27didUpdateClientSettingsWith03oldkL017transitionContextySo7FBSceneC_So08FBSScenekL4DiffCSo0rkL0CSo0r10TransitionP0CSgtF_0(sceneCopy, diffCopy);
 }
 
-- (void)sceneLayerManagerDidUpdateLayers:(id)a3
+- (void)sceneLayerManagerDidUpdateLayers:(id)layers
 {
-  v4 = a3;
-  v5 = self;
+  layersCopy = layers;
+  selfCopy = self;
   sub_264F0E138("[%{public}s] Capture Scene sceneLayerManagerDidUpdateLayers");
 }
 
-- (void)sceneLayerManagerDidStopTrackingLayers:(id)a3
+- (void)sceneLayerManagerDidStopTrackingLayers:(id)layers
 {
-  v4 = a3;
-  v5 = self;
+  layersCopy = layers;
+  selfCopy = self;
   sub_264F0E138("[%{public}s] Capture Scene sceneLayerManagerDidStopTrackingLayers");
 }
 
-- (void)sceneLayerManagerDidStartTrackingLayers:(id)a3
+- (void)sceneLayerManagerDidStartTrackingLayers:(id)layers
 {
-  v4 = a3;
-  v5 = self;
+  layersCopy = layers;
+  selfCopy = self;
   sub_264F0E138("[%{public}s] Capture Scene sceneLayerManagerDidStartTrackingLayers");
 }
 
-- (void)extensionAppProtectionAssistantShouldShieldDidChange:(id)a3
+- (void)extensionAppProtectionAssistantShouldShieldDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   _sSo34SESecureCaptureSceneViewControllerC06SecureB3KitE52extensionAppProtectionAssistantShouldShieldDidChangeyySo012LCSExtensionijK0CF_0();
 }
 

@@ -1,30 +1,30 @@
 @interface STKAlertSession
 - (BOOL)hasSentResponse;
 - (SBSRemoteAlertHandle)alertHandle;
-- (STKAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 options:(id)a5 sound:(id)a6;
-- (void)_lock_sendResponse:(int64_t)a3;
+- (STKAlertSession)initWithLogger:(id)logger responseProvider:(id)provider options:(id)options sound:(id)sound;
+- (void)_lock_sendResponse:(int64_t)response;
 - (void)dealloc;
 - (void)invalidate;
-- (void)presentRemoteAlertHandle:(id)a3 withAction:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)sendResponse:(int64_t)a3;
-- (void)sendResponse:(int64_t)a3 withStringResult:(id)a4;
+- (void)presentRemoteAlertHandle:(id)handle withAction:(id)action;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)sendResponse:(int64_t)response;
+- (void)sendResponse:(int64_t)response withStringResult:(id)result;
 @end
 
 @implementation STKAlertSession
 
-- (STKAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 options:(id)a5 sound:(id)a6
+- (STKAlertSession)initWithLogger:(id)logger responseProvider:(id)provider options:(id)options sound:(id)sound
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [objc_opt_class() _requiresResponseProvider];
-  if (!v12 && v15)
+  loggerCopy = logger;
+  providerCopy = provider;
+  optionsCopy = options;
+  soundCopy = sound;
+  _requiresResponseProvider = [objc_opt_class() _requiresResponseProvider];
+  if (!providerCopy && _requiresResponseProvider)
   {
     [STKAlertSession initWithLogger:responseProvider:options:sound:];
-    if (v13)
+    if (optionsCopy)
     {
       goto LABEL_4;
     }
@@ -34,7 +34,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v13)
+  if (!optionsCopy)
   {
     goto LABEL_9;
   }
@@ -46,11 +46,11 @@ LABEL_4:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_logger, a3);
+    objc_storeStrong(&v16->_logger, logger);
     v17->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v17->_responseProvider, a4);
-    objc_storeStrong(&v17->_options, a5);
-    objc_storeStrong(&v17->_sound, a6);
+    objc_storeStrong(&v17->_responseProvider, provider);
+    objc_storeStrong(&v17->_options, options);
+    objc_storeStrong(&v17->_sound, sound);
     logger = v17->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
@@ -67,7 +67,7 @@ LABEL_4:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_2();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -93,20 +93,20 @@ LABEL_4:
   return v2;
 }
 
-- (void)presentRemoteAlertHandle:(id)a3 withAction:(id)a4
+- (void)presentRemoteAlertHandle:(id)handle withAction:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  actionCopy = action;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__STKAlertSession_presentRemoteAlertHandle_withAction___block_invoke;
   v11[3] = &unk_279B4C4A0;
   v11[4] = self;
-  v12 = v8;
-  v13 = v7;
+  v12 = actionCopy;
+  v13 = handleCopy;
   v14 = a2;
-  v9 = v7;
-  v10 = v8;
+  v9 = handleCopy;
+  v10 = actionCopy;
   _STKWithLock(self, v11);
 }
 
@@ -248,28 +248,28 @@ void __29__STKAlertSession_invalidate__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendResponse:(int64_t)a3
+- (void)sendResponse:(int64_t)response
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __32__STKAlertSession_sendResponse___block_invoke;
   v3[3] = &unk_279B4C390;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = response;
   _STKWithLock(self, v3);
 }
 
-- (void)sendResponse:(int64_t)a3 withStringResult:(id)a4
+- (void)sendResponse:(int64_t)response withStringResult:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__STKAlertSession_sendResponse_withStringResult___block_invoke;
   v8[3] = &unk_279B4C3B8;
-  v9 = v6;
-  v10 = a3;
+  v9 = resultCopy;
+  responseCopy = response;
   v8[4] = self;
-  v7 = v6;
+  v7 = resultCopy;
   _STKWithLock(self, v8);
 }
 
@@ -304,13 +304,13 @@ uint64_t __49__STKAlertSession_sendResponse_withStringResult___block_invoke(uint
   return result;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v3 = [(STKAlertSession *)self sound];
-  [v3 playSound];
+  sound = [(STKAlertSession *)self sound];
+  [sound playSound];
 }
 
-- (void)_lock_sendResponse:(int64_t)a3
+- (void)_lock_sendResponse:(int64_t)response
 {
   v13 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
@@ -320,15 +320,15 @@ uint64_t __49__STKAlertSession_sendResponse_withStringResult___block_invoke(uint
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v6 = logger;
-      v7 = NSStringFromSTKSessionResponseType(a3);
+      v7 = NSStringFromSTKSessionResponseType(response);
       v9 = 134218242;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v7;
       _os_log_impl(&dword_262BB4000, v6, OS_LOG_TYPE_DEFAULT, "Session <%p> - Sending response with type: %{public}@", &v9, 0x16u);
     }
 
-    [(STKAlertSessionResponseProvider *)self->_responseProvider sendResponse:a3];
+    [(STKAlertSessionResponseProvider *)self->_responseProvider sendResponse:response];
   }
 
   v8 = *MEMORY[0x277D85DE8];

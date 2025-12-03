@@ -1,10 +1,10 @@
 @interface CNLinkedCardsCell
 - (CNPropertyCellDelegate)delegate;
 - (id)labelView;
-- (id)titleForContact:(id)a3;
+- (id)titleForContact:(id)contact;
 - (id)valueView;
 - (void)performDefaultAction;
-- (void)setCardGroupItem:(id)a3;
+- (void)setCardGroupItem:(id)item;
 - (void)updateConstraints;
 @end
 
@@ -26,61 +26,61 @@
   -[UILabel setNumberOfLines:](self->_nameLabel, "setNumberOfLines:", [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] ^ 1);
 }
 
-- (id)titleForContact:(id)a3
+- (id)titleForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNLinkedCardsCell *)self delegate];
-  v6 = [v5 contactViewCache];
+  contactCopy = contact;
+  delegate = [(CNLinkedCardsCell *)self delegate];
+  contactViewCache = [delegate contactViewCache];
 
-  v7 = [v6 containerForContact:v4];
+  v7 = [contactViewCache containerForContact:contactCopy];
   if ([v7 type] == 1003 || objc_msgSend(v7, "type") == 1004)
   {
-    v8 = [v7 name];
+    name = [v7 name];
   }
 
   else
   {
-    v9 = [v6 accountForContact:v4];
-    v8 = [MEMORY[0x1E695CD10] _cnui_displayNameForACAccount:v9];
+    v9 = [contactViewCache accountForContact:contactCopy];
+    name = [MEMORY[0x1E695CD10] _cnui_displayNameForACAccount:v9];
   }
 
-  return v8;
+  return name;
 }
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = CNLinkedCardsCell;
-  v5 = [(CNContactCell *)&v13 cardGroupItem];
+  cardGroupItem = [(CNContactCell *)&v13 cardGroupItem];
 
-  if (v5 != v4)
+  if (cardGroupItem != itemCopy)
   {
     v12.receiver = self;
     v12.super_class = CNLinkedCardsCell;
-    [(CNContactCell *)&v12 setCardGroupItem:v4];
-    v6 = [v4 contact];
-    if (v6)
+    [(CNContactCell *)&v12 setCardGroupItem:itemCopy];
+    contact = [itemCopy contact];
+    if (contact)
     {
-      v7 = [(CNLinkedCardsCell *)self titleForContact:v6];
-      v8 = [(CNLinkedCardsCell *)self sourceLabel];
-      [v8 setText:v7];
+      v7 = [(CNLinkedCardsCell *)self titleForContact:contact];
+      sourceLabel = [(CNLinkedCardsCell *)self sourceLabel];
+      [sourceLabel setText:v7];
 
       v9 = objc_alloc_init(MEMORY[0x1E695CD80]);
       [v9 setStyle:0];
       [v9 setFallbackStyle:-1];
-      v10 = [v9 stringFromContact:v6];
-      v11 = [(CNLinkedCardsCell *)self nameLabel];
-      [v11 setText:v10];
+      v10 = [v9 stringFromContact:contact];
+      nameLabel = [(CNLinkedCardsCell *)self nameLabel];
+      [nameLabel setText:v10];
     }
   }
 }
 
 - (void)performDefaultAction
 {
-  v4 = [(CNLinkedCardsCell *)self delegate];
-  v3 = [(CNContactCell *)self cardGroupItem];
-  [v4 propertyCell:self performActionForItem:v3 withTransportType:0];
+  delegate = [(CNLinkedCardsCell *)self delegate];
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
+  [delegate propertyCell:self performActionForItem:cardGroupItem withTransportType:0];
 }
 
 - (id)valueView
@@ -88,9 +88,9 @@
   nameLabel = self->_nameLabel;
   if (!nameLabel)
   {
-    v4 = [(CNLabeledCell *)self standardValueView];
+    standardValueView = [(CNLabeledCell *)self standardValueView];
     v5 = self->_nameLabel;
-    self->_nameLabel = v4;
+    self->_nameLabel = standardValueView;
 
     nameLabel = self->_nameLabel;
   }
@@ -103,9 +103,9 @@
   sourceLabel = self->_sourceLabel;
   if (!sourceLabel)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_sourceLabel;
-    self->_sourceLabel = v4;
+    self->_sourceLabel = standardLabelView;
 
     sourceLabel = self->_sourceLabel;
   }

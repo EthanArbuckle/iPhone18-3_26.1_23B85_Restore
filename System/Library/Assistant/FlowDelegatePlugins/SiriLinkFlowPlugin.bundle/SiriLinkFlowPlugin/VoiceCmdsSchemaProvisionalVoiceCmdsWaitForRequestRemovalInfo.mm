@@ -1,21 +1,21 @@
 @interface VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithDictionary:(id)a3;
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithJSON:(id)a3;
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithDictionary:(id)dictionary;
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
+  toCopy = to;
+  shortcutName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
 
-  if (v4)
+  if (shortcutName)
   {
     shortcutName = self->_shortcutName;
     PBDataWriterWriteStringField();
@@ -27,39 +27,39 @@
     PBDataWriterWriteFloatField();
   }
 
-  v7 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
+  wfRunnerEventName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (wfRunnerEventName)
   {
     wfRunnerEventName = self->_wfRunnerEventName;
     PBDataWriterWriteStringField();
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
-  v6 = [v4 shortcutName];
-  if ((v5 != 0) == (v6 == 0))
+  shortcutName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
+  shortcutName2 = [equalCopy shortcutName];
+  if ((shortcutName != 0) == (shortcutName2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
-  if (v7)
+  shortcutName3 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
+  if (shortcutName3)
   {
-    v8 = v7;
-    v9 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
-    v10 = [v4 shortcutName];
-    v11 = [v9 isEqual:v10];
+    v8 = shortcutName3;
+    shortcutName4 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
+    shortcutName5 = [equalCopy shortcutName];
+    v11 = [shortcutName4 isEqual:shortcutName5];
 
     if (!v11)
     {
@@ -71,7 +71,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -79,19 +79,19 @@
   if (*&self->_has)
   {
     clockSeconds = self->_clockSeconds;
-    [v4 clockSeconds];
+    [equalCopy clockSeconds];
     if (clockSeconds != v13)
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
-  v6 = [v4 wfRunnerEventName];
-  if ((v5 != 0) != (v6 == 0))
+  shortcutName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
+  shortcutName2 = [equalCopy wfRunnerEventName];
+  if ((shortcutName != 0) != (shortcutName2 == 0))
   {
-    v14 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
-    if (!v14)
+    wfRunnerEventName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
+    if (!wfRunnerEventName)
     {
 
 LABEL_18:
@@ -99,10 +99,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v15 = v14;
-    v16 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
-    v17 = [v4 wfRunnerEventName];
-    v18 = [v16 isEqual:v17];
+    v15 = wfRunnerEventName;
+    wfRunnerEventName2 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
+    wfRunnerEventName3 = [equalCopy wfRunnerEventName];
+    v18 = [wfRunnerEventName2 isEqual:wfRunnerEventName3];
 
     if (v18)
     {
@@ -178,15 +178,15 @@ LABEL_16:
 
   if (self->_shortcutName)
   {
-    v5 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
-    v6 = [v5 copy];
+    shortcutName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self shortcutName];
+    v6 = [shortcutName copy];
     [v3 setObject:v6 forKeyedSubscript:@"shortcutName"];
   }
 
   if (self->_wfRunnerEventName)
   {
-    v7 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
-    v8 = [v7 copy];
+    wfRunnerEventName = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self wfRunnerEventName];
+    v8 = [wfRunnerEventName copy];
     [v3 setObject:v8 forKeyedSubscript:@"wfRunnerEventName"];
   }
 
@@ -197,10 +197,10 @@ LABEL_16:
 
 - (NSData)jsonData
 {
-  v2 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -211,33 +211,33 @@ LABEL_16:
   return v3;
 }
 
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithJSON:(id)a3
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithDictionary:(id)a3
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo;
   v5 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"shortcutName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"shortcutName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -245,7 +245,7 @@ LABEL_16:
       [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)v5 setShortcutName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"clockSeconds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"clockSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -253,7 +253,7 @@ LABEL_16:
       [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestRemovalInfo *)v5 setClockSeconds:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"wfRunnerEventName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"wfRunnerEventName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

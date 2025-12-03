@@ -1,54 +1,54 @@
 @interface DUXPCClient
 + (id)sharedInstance;
 - (DUXPCClient)init;
-- (void)addOrUpdateSearchableItems:(id)a3 bundleID:(id)a4 completion:(id)a5;
-- (void)addSerializedDocument:(id)a3 documentType:(int64_t)a4 completion:(id)a5;
-- (void)foundInEventResultWithSerializedDocument:(id)a3 documentType:(int64_t)a4 completion:(id)a5;
+- (void)addOrUpdateSearchableItems:(id)items bundleID:(id)d completion:(id)completion;
+- (void)addSerializedDocument:(id)document documentType:(int64_t)type completion:(id)completion;
+- (void)foundInEventResultWithSerializedDocument:(id)document documentType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation DUXPCClient
 
-- (void)foundInEventResultWithSerializedDocument:(id)a3 documentType:(int64_t)a4 completion:(id)a5
+- (void)foundInEventResultWithSerializedDocument:(id)document documentType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  documentCopy = document;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v11 = 0;
     _os_log_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DocumentUnderstandingClient initiating call to textunderstandingd - foundInEventResultWithSerializedDocument", v11, 2u);
   }
 
-  v10 = [(DUXPCClient *)self _syncRemoteObjectProxy];
-  [v10 foundInEventResultWithSerializedDocument:v8 documentType:a4 completion:v9];
+  _syncRemoteObjectProxy = [(DUXPCClient *)self _syncRemoteObjectProxy];
+  [_syncRemoteObjectProxy foundInEventResultWithSerializedDocument:documentCopy documentType:type completion:completionCopy];
 }
 
-- (void)addSerializedDocument:(id)a3 documentType:(int64_t)a4 completion:(id)a5
+- (void)addSerializedDocument:(id)document documentType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  documentCopy = document;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v11 = 0;
     _os_log_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DocumentUnderstandingClient initiating call to textunderstandingd - addSerializedDocument", v11, 2u);
   }
 
-  v10 = [(DUXPCClient *)self _syncRemoteObjectProxy];
-  [v10 addSerializedDocument:v8 documentType:a4 completion:v9];
+  _syncRemoteObjectProxy = [(DUXPCClient *)self _syncRemoteObjectProxy];
+  [_syncRemoteObjectProxy addSerializedDocument:documentCopy documentType:type completion:completionCopy];
 }
 
-- (void)addOrUpdateSearchableItems:(id)a3 bundleID:(id)a4 completion:(id)a5
+- (void)addOrUpdateSearchableItems:(id)items bundleID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  dCopy = d;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 0;
     _os_log_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DocumentUnderstandingClient initiating call to textunderstandingd - addOrUpdateSearchableItems", v12, 2u);
   }
 
-  v11 = [(DUXPCClient *)self _syncRemoteObjectProxy];
-  [v11 addOrUpdateSearchableItems:v8 bundleID:v9 completion:v10];
+  _syncRemoteObjectProxy = [(DUXPCClient *)self _syncRemoteObjectProxy];
+  [_syncRemoteObjectProxy addOrUpdateSearchableItems:itemsCopy bundleID:dCopy completion:completionCopy];
 }
 
 - (DUXPCClient)init
@@ -88,7 +88,7 @@
   block[1] = 3221225472;
   block[2] = sub_249D21718;
   block[3] = &unk_278FB56E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D9DE38 != -1)
   {
     dispatch_once(&qword_280D9DE38, block);

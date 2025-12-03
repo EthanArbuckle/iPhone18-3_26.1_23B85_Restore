@@ -1,6 +1,6 @@
 @interface ARCubemapGenerator
 - (ARCubemapGenerator)init;
-- (void)cubemapWithTransform:(__n128)a3 extent:(__n128)a4 lastHistogram:(__n128)a5 fromMeshes:(__n128)a6 cameraImage:(uint64_t)a7 cameraTransform:(const void *)a8 cameraIntrinsics:(void *)a9 cameraExposure:(__CVBuffer *)a10 cameraExposureOffset:(void *)a11 completionHandler:(uint64_t)a12;
+- (void)cubemapWithTransform:(__n128)transform extent:(__n128)extent lastHistogram:(__n128)histogram fromMeshes:(__n128)meshes cameraImage:(uint64_t)image cameraTransform:(const void *)cameraTransform cameraIntrinsics:(void *)intrinsics cameraExposure:(__CVBuffer *)self0 cameraExposureOffset:(void *)self1 completionHandler:(uint64_t)self2;
 @end
 
 @implementation ARCubemapGenerator
@@ -45,25 +45,25 @@ LABEL_7:
   return v13;
 }
 
-- (void)cubemapWithTransform:(__n128)a3 extent:(__n128)a4 lastHistogram:(__n128)a5 fromMeshes:(__n128)a6 cameraImage:(uint64_t)a7 cameraTransform:(const void *)a8 cameraIntrinsics:(void *)a9 cameraExposure:(__CVBuffer *)a10 cameraExposureOffset:(void *)a11 completionHandler:(uint64_t)a12
+- (void)cubemapWithTransform:(__n128)transform extent:(__n128)extent lastHistogram:(__n128)histogram fromMeshes:(__n128)meshes cameraImage:(uint64_t)image cameraTransform:(const void *)cameraTransform cameraIntrinsics:(void *)intrinsics cameraExposure:(__CVBuffer *)self0 cameraExposureOffset:(void *)self1 completionHandler:(uint64_t)self2
 {
-  v26 = a9;
-  v27 = a11;
-  CVPixelBufferRetain(a10);
-  v28 = *(a1 + 40);
+  intrinsicsCopy = intrinsics;
+  offsetCopy = offset;
+  CVPixelBufferRetain(exposure);
+  v28 = *(self + 40);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __174__ARCubemapGenerator_cubemapWithTransform_extent_lastHistogram_fromMeshes_cameraImage_cameraTransform_cameraIntrinsics_cameraExposure_cameraExposureOffset_completionHandler___block_invoke;
   block[3] = &unk_1E817D890;
-  v49 = v26;
-  v50 = a1;
+  v49 = intrinsicsCopy;
+  selfCopy = self;
   v37 = a2;
-  v38 = a3;
-  v39 = a4;
-  v40 = a5;
-  v52 = a10;
+  transformCopy = transform;
+  extentCopy = extent;
+  histogramCopy = histogram;
+  exposureCopy = exposure;
   v54 = a22;
-  v41 = a6;
+  meshesCopy = meshes;
   v42 = a18;
   v43 = a19;
   v44 = a20;
@@ -71,11 +71,11 @@ LABEL_7:
   v46 = a15;
   v47 = a16;
   v48 = a17;
-  memcpy(v55, a8, sizeof(v55));
-  v51 = v27;
+  memcpy(v55, cameraTransform, sizeof(v55));
+  v51 = offsetCopy;
   v53 = a21;
-  v29 = v27;
-  v30 = v26;
+  v29 = offsetCopy;
+  v30 = intrinsicsCopy;
   dispatch_async(v28, block);
 }
 

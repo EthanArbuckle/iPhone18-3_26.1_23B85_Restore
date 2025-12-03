@@ -3,19 +3,19 @@
 - (BOOL)blocksTouches;
 - (BOOL)isActive;
 - (BOOL)isVisible;
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5;
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view;
 - (CGRect)_contentViewFrame;
 - (CGRect)contentClippingFrame;
 - (CGSize)fullyPresentedSize;
 - (CGSize)overlayViewSize;
-- (SBAppSwitcherPageView)initWithFrame:(CGRect)a3;
+- (SBAppSwitcherPageView)initWithFrame:(CGRect)frame;
 - (SBAppSwitcherPageViewDelegate)delegate;
 - (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributes;
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3;
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view;
 - (UIRectCornerRadii)cornerRadii;
 - (UIView)slideOverTonguePortalSourceView;
-- (id)regionAtLocation:(CGPoint)a3 forView:(id)a4;
-- (id)styleForRegion:(id)a3 forView:(id)a4;
+- (id)regionAtLocation:(CGPoint)location forView:(id)view;
+- (id)styleForRegion:(id)region forView:(id)view;
 - (void)_createOrDestroyWallpaperGradientView;
 - (void)_createOrDestroyWallpaperOverlayView;
 - (void)_layoutOverlayView;
@@ -30,39 +30,39 @@
 - (void)invalidate;
 - (void)layoutSubviews;
 - (void)pointerWillExitRegion;
-- (void)setActive:(BOOL)a3;
-- (void)setBlocksTouches:(BOOL)a3;
-- (void)setContentClippingFrame:(CGRect)a3;
-- (void)setCornerRadii:(UIRectCornerRadii)a3;
-- (void)setDimmingAlpha:(double)a3;
-- (void)setFullyPresentedSize:(CGSize)a3;
-- (void)setHighlightType:(unint64_t)a3;
-- (void)setLighteningAlpha:(double)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setNeedsBackgroundWallpaperTreatment:(BOOL)a3;
-- (void)setNeedsWallpaperGradientTreatment:(BOOL)a3;
-- (void)setOccludedInContinuousExposeStage:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOverlay:(id)a3 animated:(BOOL)a4;
-- (void)setOverlayViewSize:(CGSize)a3;
-- (void)setResizingAllowed:(BOOL)a3;
-- (void)setShadowAlpha:(double)a3;
-- (void)setShadowOffset:(double)a3;
-- (void)setShadowStyle:(int64_t)a3;
-- (void)setShouldClipContentView:(BOOL)a3;
-- (void)setShouldScaleOverlayToFillBounds:(BOOL)a3;
-- (void)setSlideOverBorderWidth:(double)a3;
-- (void)setSlideOverTonguePortalSourceView:(id)a3;
-- (void)setSwitcherCardScale:(double)a3;
-- (void)setTintStyle:(int64_t)a3;
-- (void)setView:(id)a3 animated:(BOOL)a4;
-- (void)setVisible:(BOOL)a3;
-- (void)setVisibleTouchResizeCorners:(unint64_t)a3;
-- (void)setWallpaperGradientAttributes:(SBSwitcherWallpaperGradientAttributes)a3;
-- (void)setWallpaperOverlayAlpha:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setBlocksTouches:(BOOL)touches;
+- (void)setContentClippingFrame:(CGRect)frame;
+- (void)setCornerRadii:(UIRectCornerRadii)radii;
+- (void)setDimmingAlpha:(double)alpha;
+- (void)setFullyPresentedSize:(CGSize)size;
+- (void)setHighlightType:(unint64_t)type;
+- (void)setLighteningAlpha:(double)alpha;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setNeedsBackgroundWallpaperTreatment:(BOOL)treatment;
+- (void)setNeedsWallpaperGradientTreatment:(BOOL)treatment;
+- (void)setOccludedInContinuousExposeStage:(BOOL)stage;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOverlay:(id)overlay animated:(BOOL)animated;
+- (void)setOverlayViewSize:(CGSize)size;
+- (void)setResizingAllowed:(BOOL)allowed;
+- (void)setShadowAlpha:(double)alpha;
+- (void)setShadowOffset:(double)offset;
+- (void)setShadowStyle:(int64_t)style;
+- (void)setShouldClipContentView:(BOOL)view;
+- (void)setShouldScaleOverlayToFillBounds:(BOOL)bounds;
+- (void)setSlideOverBorderWidth:(double)width;
+- (void)setSlideOverTonguePortalSourceView:(id)view;
+- (void)setSwitcherCardScale:(double)scale;
+- (void)setTintStyle:(int64_t)style;
+- (void)setView:(id)view animated:(BOOL)animated;
+- (void)setVisible:(BOOL)visible;
+- (void)setVisibleTouchResizeCorners:(unint64_t)corners;
+- (void)setWallpaperGradientAttributes:(SBSwitcherWallpaperGradientAttributes)attributes;
+- (void)setWallpaperOverlayAlpha:(double)alpha;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SBAppSwitcherPageView
@@ -154,8 +154,8 @@
       bottomRight = p_cornerRadii->bottomRight;
     }
 
-    v12 = [(SBAppSwitcherPageView *)self view];
-    v13 = [v12 layer];
+    view = [(SBAppSwitcherPageView *)self view];
+    layer = [view layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -164,9 +164,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v13 setCornerRadii:&v38];
+    [layer setCornerRadii:&v38];
 
-    v14 = [(UIView *)self->_contentContainerView layer];
+    layer2 = [(UIView *)self->_contentContainerView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -175,9 +175,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v14 setCornerRadii:&v38];
+    [layer2 setCornerRadii:&v38];
 
-    v15 = [(UIView *)self->_overlayClippingView layer];
+    layer3 = [(UIView *)self->_overlayClippingView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -186,9 +186,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v15 setCornerRadii:&v38];
+    [layer3 setCornerRadii:&v38];
 
-    v16 = [(SBAppSwitcherPageShadowView *)self->_shadowView layer];
+    layer4 = [(SBAppSwitcherPageShadowView *)self->_shadowView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -197,9 +197,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v16 setCornerRadii:&v38];
+    [layer4 setCornerRadii:&v38];
 
-    v17 = [(UIView *)self->_overlayView layer];
+    layer5 = [(UIView *)self->_overlayView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -208,9 +208,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v17 setCornerRadii:&v38];
+    [layer5 setCornerRadii:&v38];
 
-    v18 = [(UIView *)self->_viewClippingView layer];
+    layer6 = [(UIView *)self->_viewClippingView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -219,9 +219,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v18 setCornerRadii:&v38];
+    [layer6 setCornerRadii:&v38];
 
-    v19 = [(UIView *)self->_dimmingView layer];
+    layer7 = [(UIView *)self->_dimmingView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -230,9 +230,9 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v19 setCornerRadii:&v38];
+    [layer7 setCornerRadii:&v38];
 
-    v20 = [(SBWallpaperEffectView *)self->_wallpaperOverlayView layer];
+    layer8 = [(SBWallpaperEffectView *)self->_wallpaperOverlayView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -241,7 +241,7 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v20 setCornerRadii:&v38];
+    [layer8 setCornerRadii:&v38];
 
     wallpaperGradientView = self->_wallpaperGradientView;
     *&v38 = bottomLeft;
@@ -253,7 +253,7 @@
     v42 = topLeft;
     v43 = topLeft;
     [(SBAppSwitcherWallpaperGradientView *)wallpaperGradientView setCornerRadii:&v38];
-    v22 = [(UIView *)self->_tintView layer];
+    layer9 = [(UIView *)self->_tintView layer];
     *&v38 = bottomLeft;
     *(&v38 + 1) = bottomLeft;
     *&v39 = bottomRight;
@@ -262,21 +262,21 @@
     v41 = topRight;
     v42 = topLeft;
     v43 = topLeft;
-    [v22 setCornerRadii:&v38];
+    [layer9 setCornerRadii:&v38];
 
     [(SBSDFElementView *)self->_destinationSDFElementView _setContinuousCornerRadius:v37 + self->_slideOverBorderWidth];
   }
 
   else
   {
-    v23 = [(UIView *)self->_contentContainerView layer];
-    [v23 setMaskedCorners:self->_maskedCorners];
+    layer10 = [(UIView *)self->_contentContainerView layer];
+    [layer10 setMaskedCorners:self->_maskedCorners];
 
-    v24 = [(SBAppSwitcherPageView *)self view];
-    [v24 setMaskedCorners:self->_maskedCorners];
+    view2 = [(SBAppSwitcherPageView *)self view];
+    [view2 setMaskedCorners:self->_maskedCorners];
 
-    v25 = [(SBAppSwitcherPageView *)self view];
-    [v25 setCornerRadius:v37];
+    view3 = [(SBAppSwitcherPageView *)self view];
+    [view3 setCornerRadius:v37];
 
     [(UIView *)self->_dimmingView _setContinuousCornerRadius:v37];
     [(SBWallpaperEffectView *)self->_wallpaperOverlayView _setContinuousCornerRadius:v37];
@@ -284,11 +284,11 @@
     [(UIView *)self->_tintView _setContinuousCornerRadius:v37];
     [(UIView *)self->_overlayClippingView _setContinuousCornerRadius:v37];
     [(SBAppSwitcherPageShadowView *)self->_shadowView _setContinuousCornerRadius:v37];
-    v26 = [(SBAppSwitcherPageShadowView *)self->_shadowView layer];
-    [v26 setMaskedCorners:self->_maskedCorners];
+    layer11 = [(SBAppSwitcherPageShadowView *)self->_shadowView layer];
+    [layer11 setMaskedCorners:self->_maskedCorners];
 
-    v27 = [(UIView *)self->_overlayClippingView layer];
-    [v27 setMaskedCorners:self->_maskedCorners];
+    layer12 = [(UIView *)self->_overlayClippingView layer];
+    [layer12 setMaskedCorners:self->_maskedCorners];
 
     [(SBSDFElementView *)self->_destinationSDFElementView _setContinuousCornerRadius:v37 + self->_slideOverBorderWidth];
     if (self->_shouldClipContentView)
@@ -303,32 +303,32 @@
         v28 = 5;
       }
 
-      v29 = [(UIView *)self->_dimmingView layer];
-      [v29 setMaskedCorners:v28];
+      layer13 = [(UIView *)self->_dimmingView layer];
+      [layer13 setMaskedCorners:v28];
 
-      v30 = [(SBWallpaperEffectView *)self->_wallpaperOverlayView layer];
-      [v30 setMaskedCorners:v28];
+      layer14 = [(SBWallpaperEffectView *)self->_wallpaperOverlayView layer];
+      [layer14 setMaskedCorners:v28];
 
-      v31 = [(SBAppSwitcherWallpaperGradientView *)self->_wallpaperGradientView layer];
-      [v31 setMaskedCorners:v28];
+      layer15 = [(SBAppSwitcherWallpaperGradientView *)self->_wallpaperGradientView layer];
+      [layer15 setMaskedCorners:v28];
 
-      v32 = [(UIView *)self->_tintView layer];
-      [v32 setMaskedCorners:v28];
+      layer16 = [(UIView *)self->_tintView layer];
+      [layer16 setMaskedCorners:v28];
     }
 
     else
     {
-      v33 = [(UIView *)self->_dimmingView layer];
-      [v33 setMaskedCorners:self->_maskedCorners];
+      layer17 = [(UIView *)self->_dimmingView layer];
+      [layer17 setMaskedCorners:self->_maskedCorners];
 
-      v34 = [(SBWallpaperEffectView *)self->_wallpaperOverlayView layer];
-      [v34 setMaskedCorners:self->_maskedCorners];
+      layer18 = [(SBWallpaperEffectView *)self->_wallpaperOverlayView layer];
+      [layer18 setMaskedCorners:self->_maskedCorners];
 
-      v35 = [(SBAppSwitcherWallpaperGradientView *)self->_wallpaperGradientView layer];
-      [v35 setMaskedCorners:self->_maskedCorners];
+      layer19 = [(SBAppSwitcherWallpaperGradientView *)self->_wallpaperGradientView layer];
+      [layer19 setMaskedCorners:self->_maskedCorners];
 
-      v36 = [(UIView *)self->_tintView layer];
-      [v36 setMaskedCorners:self->_maskedCorners];
+      layer20 = [(UIView *)self->_tintView layer];
+      [layer20 setMaskedCorners:self->_maskedCorners];
     }
   }
 
@@ -345,8 +345,8 @@
     return SBFEffectiveDeviceClass() == 2;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v2 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v2 = [currentDevice userInterfaceIdiom] == 1;
 
   return v2;
 }
@@ -405,9 +405,9 @@
   [(SBWallpaperEffectView *)self->_wallpaperOverlayView setFrame:v49, v48, v15, v47];
   [(SBAppSwitcherWallpaperGradientView *)self->_wallpaperGradientView setFrame:v49, v48, v15, v47];
   view = self->_view;
-  v32 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   v33 = v15 - v8;
-  if (v32 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v33 = 0.0;
   }
@@ -497,7 +497,7 @@
   [(SBAppSwitcherPageView *)self bringSubviewToFront:self->_bottomLeftResizeGrabberPillView];
   [(SBAppSwitcherPageView *)self bringSubviewToFront:self->_bottomRightResizeGrabberPillView];
   [(SBAppSwitcherPageView *)self bringSubviewToFront:self->_pointerHitTestBlocker];
-  v5 = [(UIView *)self->_contentContainerView subviews];
+  subviews = [(UIView *)self->_contentContainerView subviews];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:8];
   v4 = v3;
   if (self->_overlayClippingView)
@@ -555,7 +555,7 @@
     [v4 addObject:?];
   }
 
-  if (([v5 isEqual:v4] & 1) == 0)
+  if (([subviews isEqual:v4] & 1) == 0)
   {
     [(UIView *)self->_contentContainerView bringSubviewToFront:self->_overlayClippingView];
     [(UIView *)self->_contentContainerView bringSubviewToFront:self->_viewClippingView];
@@ -689,7 +689,7 @@
 
       p_tintView = &self->_tintView;
       tintView = self->_tintView;
-      v6 = [MEMORY[0x277D75348] systemBlackColor];
+      systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
       [v10 tintStyleDimmingAlphaInFocusForLightMode];
       goto LABEL_11;
     }
@@ -701,10 +701,10 @@
     {
       p_tintView = &self->_tintView;
       tintView = self->_tintView;
-      v6 = [MEMORY[0x277D75348] systemGray2Color];
+      systemBlackColor = [MEMORY[0x277D75348] systemGray2Color];
       [v10 tintStyleDimmingAlphaInFocusForDarkMode];
 LABEL_11:
-      v9 = [v6 colorWithAlphaComponent:?];
+      v9 = [systemBlackColor colorWithAlphaComponent:?];
       [(UIView *)tintView setBackgroundColor:v9];
 
       v8 = 1.0;
@@ -720,7 +720,7 @@ LABEL_11:
 
       p_tintView = &self->_tintView;
       tintView = self->_tintView;
-      v6 = [MEMORY[0x277D75348] systemGrayColor];
+      systemBlackColor = [MEMORY[0x277D75348] systemGrayColor];
       [v10 tintStyleDimmingAlphaUnFocusForDarkMode];
       goto LABEL_11;
     }
@@ -728,8 +728,8 @@ LABEL_11:
 
   p_tintView = &self->_tintView;
   v7 = self->_tintView;
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v7 setBackgroundColor:v6];
+  systemBlackColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v7 setBackgroundColor:systemBlackColor];
   v8 = 0.0;
 LABEL_12:
 
@@ -802,21 +802,21 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
   return [v8 _updateCornerRadius];
 }
 
-- (SBAppSwitcherPageView)initWithFrame:(CGRect)a3
+- (SBAppSwitcherPageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v59.receiver = self;
   v59.super_class = SBAppSwitcherPageView;
-  v5 = [(SBHitTestExtendedView *)&v59 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(SBHitTestExtendedView *)&v59 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = +[SBAppSwitcherDomain rootSettings];
     settings = v5->_settings;
     v5->_settings = v6;
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(SBAppSwitcherPageView *)v5 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBAppSwitcherPageView *)v5 setBackgroundColor:clearColor];
 
     [(SBHitTestExtendedView *)v5 setHitTestsSubviewsOutsideBounds:0];
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -829,14 +829,14 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
     v5->_hitTestBlocker = v11;
 
     v13 = v5->_hitTestBlocker;
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v13 setBackgroundColor:v14];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v13 setBackgroundColor:clearColor2];
 
-    v15 = [(UIView *)v5->_hitTestBlocker layer];
-    [v15 setHitTestsAsOpaque:1];
+    layer = [(UIView *)v5->_hitTestBlocker layer];
+    [layer setHitTestsAsOpaque:1];
 
-    v16 = [(UIView *)v5->_hitTestBlocker layer];
-    [v16 setAllowsHitTesting:1];
+    layer2 = [(UIView *)v5->_hitTestBlocker layer];
+    [layer2 setAllowsHitTesting:1];
 
     [(SBAppSwitcherPageView *)v5 _addContentView:v5->_hitTestBlocker];
     v17 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -844,12 +844,12 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
     v5->_dimmingView = v17;
 
     v19 = v5->_dimmingView;
-    v20 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v19 setBackgroundColor:v20];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v19 setBackgroundColor:blackColor];
 
     [(UIView *)v5->_dimmingView setClipsToBounds:1];
-    v21 = [(UIView *)v5->_dimmingView layer];
-    [v21 setAllowsHitTesting:0];
+    layer3 = [(UIView *)v5->_dimmingView layer];
+    [layer3 setAllowsHitTesting:0];
 
     [(SBAppSwitcherPageView *)v5 _addContentView:v5->_dimmingView];
     v22 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -857,11 +857,11 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
     v5->_tintView = v22;
 
     v24 = v5->_tintView;
-    v25 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v24 setBackgroundColor:v25];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v24 setBackgroundColor:whiteColor];
 
-    v26 = [(UIView *)v5->_tintView layer];
-    [v26 setAllowsHitTesting:0];
+    layer4 = [(UIView *)v5->_tintView layer];
+    [layer4 setAllowsHitTesting:0];
 
     [(UIView *)v5->_tintView setClipsToBounds:1];
     v5->_tintStyle = 0;
@@ -918,14 +918,14 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
       v5->_pointerHitTestBlocker = v41;
 
       v43 = v5->_pointerHitTestBlocker;
-      v44 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v43 setBackgroundColor:v44];
+      clearColor3 = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v43 setBackgroundColor:clearColor3];
 
-      v45 = [(UIView *)v5->_pointerHitTestBlocker layer];
-      [v45 setHitTestsAsOpaque:1];
+      layer5 = [(UIView *)v5->_pointerHitTestBlocker layer];
+      [layer5 setHitTestsAsOpaque:1];
 
-      v46 = [(UIView *)v5->_pointerHitTestBlocker layer];
-      [v46 setAllowsHitTesting:1];
+      layer6 = [(UIView *)v5->_pointerHitTestBlocker layer];
+      [layer6 setAllowsHitTesting:1];
 
       [(SBAppSwitcherPageView *)v5 addSubview:v5->_pointerHitTestBlocker];
       v47 = [SBSlideOverGlassMaterialView alloc];
@@ -959,37 +959,37 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
   return v5;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v8 = a3;
+  windowCopy = window;
   if ((SBFIsChamoisWindowingUIAvailable() & 1) != 0 || SBFIsFlexibleWindowingUIAvailable())
   {
-    v4 = [(UIView *)self _sbWindowScene];
-    v5 = [v4 systemPointerInteractionManager];
+    _sbWindowScene = [(UIView *)self _sbWindowScene];
+    systemPointerInteractionManager = [_sbWindowScene systemPointerInteractionManager];
 
-    v6 = [v8 _sbWindowScene];
-    v7 = [v6 systemPointerInteractionManager];
+    _sbWindowScene2 = [windowCopy _sbWindowScene];
+    systemPointerInteractionManager2 = [_sbWindowScene2 systemPointerInteractionManager];
 
-    if (v5 != v7)
+    if (systemPointerInteractionManager != systemPointerInteractionManager2)
     {
-      [v5 unregisterView:self];
-      [v7 registerView:self delegate:self];
-      objc_storeWeak(&self->_systemPointerInteractionManager, v7);
+      [systemPointerInteractionManager unregisterView:self];
+      [systemPointerInteractionManager2 registerView:self delegate:self];
+      objc_storeWeak(&self->_systemPointerInteractionManager, systemPointerInteractionManager2);
     }
   }
 }
 
-- (void)setView:(id)a3 animated:(BOOL)a4
+- (void)setView:(id)view animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = v7;
+  viewCopy = view;
+  v8 = viewCopy;
   view = self->_view;
-  if (view != v7)
+  if (view != viewCopy)
   {
-    if (a4)
+    if (animated)
     {
-      v10 = view;
-      objc_storeStrong(&self->_view, a3);
+      viewCopy2 = view;
+      objc_storeStrong(&self->_view, view);
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __42__SBAppSwitcherPageView_setView_animated___block_invoke_2;
@@ -997,7 +997,7 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
       v17[4] = self;
       [MEMORY[0x277D75D18] performWithoutAnimation:v17];
       v11 = MEMORY[0x277D75D18];
-      v15 = v10;
+      v15 = viewCopy2;
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __42__SBAppSwitcherPageView_setView_animated___block_invoke_3;
@@ -1007,7 +1007,7 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
       v14[1] = 3221225472;
       v14[2] = __42__SBAppSwitcherPageView_setView_animated___block_invoke_4;
       v14[3] = &unk_2783A9398;
-      v12 = v10;
+      v12 = viewCopy2;
       [v11 animateWithDuration:v16 animations:v14 completion:0.35];
     }
 
@@ -1019,7 +1019,7 @@ uint64_t __61__SBAppSwitcherPageView__createOrDestroyWallpaperOverlayView__block
       v18[2] = __42__SBAppSwitcherPageView_setView_animated___block_invoke;
       v18[3] = &unk_2783A92D8;
       v18[4] = self;
-      v19 = v7;
+      v19 = viewCopy;
       [v13 performWithoutAnimation:v18];
     }
   }
@@ -1069,103 +1069,103 @@ uint64_t __42__SBAppSwitcherPageView_setView_animated___block_invoke_4(uint64_t 
   return [v2 setTransform:v5];
 }
 
-- (void)setTintStyle:(int64_t)a3
+- (void)setTintStyle:(int64_t)style
 {
-  if (self->_tintStyle != a3)
+  if (self->_tintStyle != style)
   {
-    self->_tintStyle = a3;
+    self->_tintStyle = style;
     [(SBAppSwitcherPageView *)self _updateTintStyle];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(SBAppSwitcherPageView *)self view];
-  [v4 setActive:v3];
+  activeCopy = active;
+  view = [(SBAppSwitcherPageView *)self view];
+  [view setActive:activeCopy];
 }
 
 - (BOOL)isActive
 {
-  v2 = [(SBAppSwitcherPageView *)self view];
-  v3 = [v2 isActive];
+  view = [(SBAppSwitcherPageView *)self view];
+  isActive = [view isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(SBAppSwitcherPageView *)self view];
-  [v4 setVisible:v3];
+  visibleCopy = visible;
+  view = [(SBAppSwitcherPageView *)self view];
+  [view setVisible:visibleCopy];
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(SBAppSwitcherPageView *)self view];
-  v3 = [v2 isVisible];
+  view = [(SBAppSwitcherPageView *)self view];
+  isVisible = [view isVisible];
 
-  return v3;
+  return isVisible;
 }
 
-- (void)setOccludedInContinuousExposeStage:(BOOL)a3
+- (void)setOccludedInContinuousExposeStage:(BOOL)stage
 {
-  if (self->_occludedInContinuousExposeStage != a3)
+  if (self->_occludedInContinuousExposeStage != stage)
   {
-    self->_occludedInContinuousExposeStage = a3;
+    self->_occludedInContinuousExposeStage = stage;
   }
 }
 
-- (void)setVisibleTouchResizeCorners:(unint64_t)a3
+- (void)setVisibleTouchResizeCorners:(unint64_t)corners
 {
-  if (self->_visibleTouchResizeCorners != a3)
+  if (self->_visibleTouchResizeCorners != corners)
   {
-    self->_visibleTouchResizeCorners = a3;
+    self->_visibleTouchResizeCorners = corners;
     [(SBAppSwitcherPageView *)self _updateGrabberVisibilities];
   }
 }
 
-- (void)setResizingAllowed:(BOOL)a3
+- (void)setResizingAllowed:(BOOL)allowed
 {
-  if (self->_resizingAllowed != a3)
+  if (self->_resizingAllowed != allowed)
   {
-    self->_resizingAllowed = a3;
+    self->_resizingAllowed = allowed;
   }
 }
 
 - (BOOL)blocksTouches
 {
-  v3 = [(UIView *)self->_hitTestBlocker layer];
-  if ([v3 hitTestsAsOpaque])
+  layer = [(UIView *)self->_hitTestBlocker layer];
+  if ([layer hitTestsAsOpaque])
   {
-    v4 = [(UIView *)self->_hitTestBlocker isUserInteractionEnabled];
+    isUserInteractionEnabled = [(UIView *)self->_hitTestBlocker isUserInteractionEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isUserInteractionEnabled = 0;
   }
 
-  return v4;
+  return isUserInteractionEnabled;
 }
 
-- (void)setBlocksTouches:(BOOL)a3
+- (void)setBlocksTouches:(BOOL)touches
 {
-  v3 = a3;
-  v5 = [(UIView *)self->_hitTestBlocker layer];
-  [v5 setAllowsHitTesting:v3];
+  touchesCopy = touches;
+  layer = [(UIView *)self->_hitTestBlocker layer];
+  [layer setAllowsHitTesting:touchesCopy];
 
   hitTestBlocker = self->_hitTestBlocker;
 
-  [(UIView *)hitTestBlocker setUserInteractionEnabled:v3];
+  [(UIView *)hitTestBlocker setUserInteractionEnabled:touchesCopy];
 }
 
-- (void)setOverlay:(id)a3 animated:(BOOL)a4
+- (void)setOverlay:(id)overlay animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  overlayCopy = overlay;
   overlayView = self->_overlayView;
-  if (overlayView != v7)
+  if (overlayView != overlayCopy)
   {
     v9 = *(MEMORY[0x277CBF2C0] + 16);
     v19[0] = *MEMORY[0x277CBF2C0];
@@ -1173,7 +1173,7 @@ uint64_t __42__SBAppSwitcherPageView_setView_animated___block_invoke_4(uint64_t 
     v19[2] = *(MEMORY[0x277CBF2C0] + 32);
     [(UIView *)overlayView setTransform:v19];
     v10 = self->_overlayView;
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, overlay);
     if (self->_overlayView)
     {
       [(UIView *)self->_overlayClippingView addSubview:?];
@@ -1186,10 +1186,10 @@ uint64_t __42__SBAppSwitcherPageView_setView_animated___block_invoke_4(uint64_t 
     }
 
     v11 = 0.0;
-    if (v4)
+    if (animatedCopy)
     {
-      v12 = [(SBAppSwitcherPageContentView *)self->_view layer];
-      [v12 setAllowsGroupOpacity:{-[SBAppSwitcherPageContentView contentRequiresGroupOpacity](self->_view, "contentRequiresGroupOpacity")}];
+      layer = [(SBAppSwitcherPageContentView *)self->_view layer];
+      [layer setAllowsGroupOpacity:{-[SBAppSwitcherPageContentView contentRequiresGroupOpacity](self->_view, "contentRequiresGroupOpacity")}];
 
       v11 = 0.35;
     }
@@ -1260,95 +1260,95 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
   return result;
 }
 
-- (void)setCornerRadii:(UIRectCornerRadii)a3
+- (void)setCornerRadii:(UIRectCornerRadii)radii
 {
-  v3.f64[0] = a3.topLeft;
-  v3.f64[1] = a3.bottomLeft;
-  v4.f64[0] = a3.bottomRight;
-  v4.f64[1] = a3.topRight;
+  v3.f64[0] = radii.topLeft;
+  v3.f64[1] = radii.bottomLeft;
+  v4.f64[0] = radii.bottomRight;
+  v4.f64[1] = radii.topRight;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_cornerRadii.topLeft), vceqq_f64(v4, *&self->_cornerRadii.bottomRight)))) & 1) == 0)
   {
-    self->_cornerRadii = a3;
+    self->_cornerRadii = radii;
     [(SBAppSwitcherPageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  if (self->_maskedCorners != a3)
+  if (self->_maskedCorners != corners)
   {
-    self->_maskedCorners = a3;
+    self->_maskedCorners = corners;
     [(SBAppSwitcherPageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setShadowStyle:(int64_t)a3
+- (void)setShadowStyle:(int64_t)style
 {
-  if (self->_shadowStyle != a3)
+  if (self->_shadowStyle != style)
   {
-    self->_shadowStyle = a3;
+    self->_shadowStyle = style;
     [(SBAppSwitcherPageShadowView *)self->_shadowView setStyle:?];
   }
 }
 
-- (void)setShadowAlpha:(double)a3
+- (void)setShadowAlpha:(double)alpha
 {
-  if (self->_shadowAlpha != a3)
+  if (self->_shadowAlpha != alpha)
   {
-    self->_shadowAlpha = a3;
+    self->_shadowAlpha = alpha;
     [(SBAppSwitcherPageShadowView *)self->_shadowView setAlpha:?];
   }
 }
 
-- (void)setShadowOffset:(double)a3
+- (void)setShadowOffset:(double)offset
 {
-  if (self->_shadowOffset != a3)
+  if (self->_shadowOffset != offset)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
     [(SBAppSwitcherPageShadowView *)self->_shadowView setShadowOffset:?];
   }
 }
 
-- (void)setDimmingAlpha:(double)a3
+- (void)setDimmingAlpha:(double)alpha
 {
-  if (self->_dimmingAlpha != a3)
+  if (self->_dimmingAlpha != alpha)
   {
-    self->_dimmingAlpha = a3;
+    self->_dimmingAlpha = alpha;
     [(SBAppSwitcherPageView *)self _updateDimmingViewAlpha];
   }
 }
 
-- (void)setNeedsBackgroundWallpaperTreatment:(BOOL)a3
+- (void)setNeedsBackgroundWallpaperTreatment:(BOOL)treatment
 {
-  if (self->_needsBackgroundWallpaperTreatment != a3)
+  if (self->_needsBackgroundWallpaperTreatment != treatment)
   {
-    self->_needsBackgroundWallpaperTreatment = a3;
+    self->_needsBackgroundWallpaperTreatment = treatment;
     [(SBAppSwitcherPageView *)self _createOrDestroyWallpaperOverlayView];
   }
 }
 
-- (void)setWallpaperOverlayAlpha:(double)a3
+- (void)setWallpaperOverlayAlpha:(double)alpha
 {
-  if (self->_wallpaperOverlayAlpha != a3)
+  if (self->_wallpaperOverlayAlpha != alpha)
   {
-    self->_wallpaperOverlayAlpha = a3;
+    self->_wallpaperOverlayAlpha = alpha;
     [(SBAppSwitcherPageView *)self _updateWallpaperOverlayAlpha];
   }
 }
 
-- (void)setNeedsWallpaperGradientTreatment:(BOOL)a3
+- (void)setNeedsWallpaperGradientTreatment:(BOOL)treatment
 {
-  if (self->_needsWallpaperGradientTreatment != a3)
+  if (self->_needsWallpaperGradientTreatment != treatment)
   {
-    self->_needsWallpaperGradientTreatment = a3;
+    self->_needsWallpaperGradientTreatment = treatment;
     [(SBAppSwitcherPageView *)self _createOrDestroyWallpaperGradientView];
   }
 }
 
-- (void)setWallpaperGradientAttributes:(SBSwitcherWallpaperGradientAttributes)a3
+- (void)setWallpaperGradientAttributes:(SBSwitcherWallpaperGradientAttributes)attributes
 {
-  trailingAlpha = a3.trailingAlpha;
-  leadingAlpha = a3.leadingAlpha;
+  trailingAlpha = attributes.trailingAlpha;
+  leadingAlpha = attributes.leadingAlpha;
   p_wallpaperGradientAttributes = &self->_wallpaperGradientAttributes;
   if ((SBSwitcherWallpaperGradientAttributesEqual() & 1) == 0)
   {
@@ -1359,41 +1359,41 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
   }
 }
 
-- (void)setLighteningAlpha:(double)a3
+- (void)setLighteningAlpha:(double)alpha
 {
-  if (self->_lighteningAlpha != a3)
+  if (self->_lighteningAlpha != alpha)
   {
-    self->_lighteningAlpha = a3;
+    self->_lighteningAlpha = alpha;
     [(SBAppSwitcherPageView *)self _updateTintViewAlpha];
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    v4 = [(SBAppSwitcherPageView *)self view];
-    [v4 setOrientation:self->_orientation];
+    self->_orientation = orientation;
+    view = [(SBAppSwitcherPageView *)self view];
+    [view setOrientation:self->_orientation];
 
     [(SBAppSwitcherPageView *)self setNeedsLayout];
   }
 }
 
-- (void)setHighlightType:(unint64_t)a3
+- (void)setHighlightType:(unint64_t)type
 {
-  if (self->_highlightType != a3)
+  if (self->_highlightType != type)
   {
-    self->_highlightType = a3;
+    self->_highlightType = type;
     [(SBAppSwitcherPageShadowView *)self->_shadowView setHighlightType:?];
   }
 }
 
-- (void)setShouldClipContentView:(BOOL)a3
+- (void)setShouldClipContentView:(BOOL)view
 {
-  if (self->_shouldClipContentView != a3)
+  if (self->_shouldClipContentView != view)
   {
-    self->_shouldClipContentView = a3;
+    self->_shouldClipContentView = view;
     [(SBAppSwitcherPageView *)self _updateCornerRadius];
     [(SBAppSwitcherPageView *)self setNeedsLayout];
 
@@ -1401,14 +1401,14 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
   }
 }
 
-- (void)setContentClippingFrame:(CGRect)a3
+- (void)setContentClippingFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_contentClippingFrame = &self->_contentClippingFrame;
-  if (!CGRectEqualToRect(self->_contentClippingFrame, a3))
+  if (!CGRectEqualToRect(self->_contentClippingFrame, frame))
   {
     p_contentClippingFrame->origin.x = x;
     p_contentClippingFrame->origin.y = y;
@@ -1420,49 +1420,49 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
   }
 }
 
-- (void)setOverlayViewSize:(CGSize)a3
+- (void)setOverlayViewSize:(CGSize)size
 {
-  if (self->_overlayViewSize.width != a3.width || self->_overlayViewSize.height != a3.height)
+  if (self->_overlayViewSize.width != size.width || self->_overlayViewSize.height != size.height)
   {
-    self->_overlayViewSize = a3;
+    self->_overlayViewSize = size;
     [(SBAppSwitcherPageView *)self setNeedsLayout];
   }
 }
 
-- (void)setFullyPresentedSize:(CGSize)a3
+- (void)setFullyPresentedSize:(CGSize)size
 {
-  if (self->_fullyPresentedSize.width != a3.width || self->_fullyPresentedSize.height != a3.height)
+  if (self->_fullyPresentedSize.width != size.width || self->_fullyPresentedSize.height != size.height)
   {
-    self->_fullyPresentedSize = a3;
+    self->_fullyPresentedSize = size;
     [(SBAppSwitcherPageView *)self setNeedsLayout];
   }
 }
 
-- (void)setSwitcherCardScale:(double)a3
+- (void)setSwitcherCardScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_switcherCardScale = a3;
+    self->_switcherCardScale = scale;
     shadowView = self->_shadowView;
 
-    [(SBAppSwitcherPageShadowView *)shadowView setSwitcherCardScale:a3];
+    [(SBAppSwitcherPageShadowView *)shadowView setSwitcherCardScale:scale];
   }
 }
 
-- (void)setShouldScaleOverlayToFillBounds:(BOOL)a3
+- (void)setShouldScaleOverlayToFillBounds:(BOOL)bounds
 {
-  if (self->_shouldScaleOverlayToFillBounds != a3)
+  if (self->_shouldScaleOverlayToFillBounds != bounds)
   {
-    self->_shouldScaleOverlayToFillBounds = a3;
+    self->_shouldScaleOverlayToFillBounds = bounds;
     [(SBAppSwitcherPageView *)self setNeedsLayout];
   }
 }
 
-- (void)setSlideOverBorderWidth:(double)a3
+- (void)setSlideOverBorderWidth:(double)width
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_slideOverBorderWidth = a3;
+    self->_slideOverBorderWidth = width;
     [(SBAppSwitcherPageView *)self _updateCornerRadius];
     if (![(SBAppSwitcherPageView *)self _inSlideOver])
     {
@@ -1477,10 +1477,10 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
 
 - (UIView)slideOverTonguePortalSourceView
 {
-  v2 = [(UIView *)self->_slideOverTonguePortalView layer];
-  v3 = [v2 sourceLayer];
+  layer = [(UIView *)self->_slideOverTonguePortalView layer];
+  sourceLayer = [layer sourceLayer];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = sourceLayer;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -1501,31 +1501,31 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
 
   v7 = v6;
 
-  v8 = [v7 delegate];
+  delegate = [v7 delegate];
 
-  return v8;
+  return delegate;
 }
 
-- (void)setSlideOverTonguePortalSourceView:(id)a3
+- (void)setSlideOverTonguePortalSourceView:(id)view
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 layer];
-  v6 = [(UIView *)self->_slideOverTonguePortalView layer];
-  v7 = [v6 sourceLayer];
-  v8 = [v4 layer];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  layer2 = [(UIView *)self->_slideOverTonguePortalView layer];
+  sourceLayer = [layer2 sourceLayer];
+  layer3 = [viewCopy layer];
 
-  if (v7 != v8)
+  if (sourceLayer != layer3)
   {
     [(UIView *)self->_slideOverTonguePortalView removeFromSuperview];
     slideOverTonguePortalView = self->_slideOverTonguePortalView;
     self->_slideOverTonguePortalView = 0;
 
-    if (v5)
+    if (layer)
     {
       v10 = objc_alloc_init(MEMORY[0x277D76180]);
-      v11 = [(UIView *)v10 layer];
-      [v11 setSourceLayer:v5];
+      layer4 = [(UIView *)v10 layer];
+      [layer4 setSourceLayer:layer];
 
       [(UIView *)v10 setHidesSourceView:1];
       [(UIView *)v10 setMatchesPosition:0];
@@ -1537,24 +1537,24 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
       v13 = v10;
 
       [(SBAppSwitcherPageView *)self _addContentView:self->_slideOverTonguePortalView];
-      v14 = [MEMORY[0x277CD9EE8] animation];
-      v15 = [(UIView *)self->_contentContainerView layer];
-      [v14 setSourceLayer:v15];
+      animation = [MEMORY[0x277CD9EE8] animation];
+      layer5 = [(UIView *)self->_contentContainerView layer];
+      [animation setSourceLayer:layer5];
 
-      [v14 setDuration:INFINITY];
-      [v14 setFillMode:*MEMORY[0x277CDA230]];
-      [v14 setRemovedOnCompletion:0];
-      [v14 setAppliesX:1];
-      [v14 setAppliesY:1];
-      [v14 setUsesNormalizedCoordinates:1];
+      [animation setDuration:INFINITY];
+      [animation setFillMode:*MEMORY[0x277CDA230]];
+      [animation setRemovedOnCompletion:0];
+      [animation setAppliesX:1];
+      [animation setAppliesY:1];
+      [animation setUsesNormalizedCoordinates:1];
       v16 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.5, 0.5}];
       v19[0] = v16;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-      [v14 setSourcePoints:v17];
+      [animation setSourcePoints:v17];
 
-      v18 = [(UIView *)self->_slideOverTonguePortalView layer];
+      layer6 = [(UIView *)self->_slideOverTonguePortalView layer];
 
-      [v18 addAnimation:v14 forKey:@"MatchMove"];
+      [layer6 addAnimation:animation forKey:@"MatchMove"];
     }
 
     [(SBAppSwitcherPageView *)self _updateSlideOverGlass];
@@ -1582,8 +1582,8 @@ void *__45__SBAppSwitcherPageView_setOverlay_animated___block_invoke_3(uint64_t 
 
 - (void)invalidate
 {
-  v3 = [(SBAppSwitcherPageView *)self view];
-  [v3 invalidate];
+  view = [(SBAppSwitcherPageView *)self view];
+  [view invalidate];
 
   [(SBAppSwitcherPageView *)self setView:0];
   [(SBAppSwitcherPageView *)self pointerWillExitRegion];
@@ -1636,25 +1636,25 @@ void __62__SBAppSwitcherPageView__createOrDestroyWallpaperGradientView__block_in
   [*(a1 + 32) _updateCornerRadius];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = SBAppSwitcherPageView;
-  v4 = a3;
-  [(SBAppSwitcherPageView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SBAppSwitcherPageView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(SBAppSwitcherPageView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(SBAppSwitcherPageView *)self _updateEffectOverlayViews];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_settings == a3)
+  if (self->_settings == settings)
   {
     block[5] = v4;
     block[6] = v5;
@@ -1675,10 +1675,10 @@ uint64_t __53__SBAppSwitcherPageView_settings_changedValueForKey___block_invoke(
   return [v2 _updateEffectOverlayViews];
 }
 
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v37 = 0;
   v9 = *MEMORY[0x277CBF3A0];
@@ -1697,13 +1697,13 @@ uint64_t __53__SBAppSwitcherPageView_settings_changedValueForKey___block_invoke(
 
   v33 = v10;
   v34 = v9;
-  v11 = [(SBAppSwitcherPageView *)self window];
-  [v11 convertPoint:self fromView:{x, y}];
+  window = [(SBAppSwitcherPageView *)self window];
+  [window convertPoint:self fromView:{x, y}];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(SBAppSwitcherPageView *)self window];
-  v17 = [WeakRetained appSwitcherPageView:self shouldBeginPointerInteractionAtLocation:v16 window:{v13, v15}];
+  window2 = [(SBAppSwitcherPageView *)self window];
+  v17 = [WeakRetained appSwitcherPageView:self shouldBeginPointerInteractionAtLocation:window2 window:{v13, v15}];
 
   v10 = v33;
   v9 = v34;
@@ -1733,10 +1733,10 @@ uint64_t __53__SBAppSwitcherPageView_settings_changedValueForKey___block_invoke(
   [(SBAppSwitcherSettings *)self->_settings liveResizePointerInteractionRegionInnerLength];
   v27 = v26;
   [(SBAppSwitcherSettings *)self->_settings liveResizePointerInteractionRegionOuterLength];
-  v29 = [SBEdgeResizeSystemPointerInteractionHelper shouldBeginPointerInteractionAtLocation:[(SBAppSwitcherPageView *)self visibleTouchResizeCorners] frame:&v37 innerLengthOfInteractionRegion:&v35 outerLengthOfInteractionRegion:x cornerLengthOfInteractionRegion:y occupiedCorners:v19 hoveringOverEdge:v21 pointerRegion:width, height, v27, v28, 0x4039000000000000];
+  0x4039000000000000 = [SBEdgeResizeSystemPointerInteractionHelper shouldBeginPointerInteractionAtLocation:[(SBAppSwitcherPageView *)self visibleTouchResizeCorners] frame:&v37 innerLengthOfInteractionRegion:&v35 outerLengthOfInteractionRegion:x cornerLengthOfInteractionRegion:y occupiedCorners:v19 hoveringOverEdge:v21 pointerRegion:width, height, v27, v28, 0x4039000000000000];
   v10 = v33;
   v9 = v34;
-  if (v29)
+  if (0x4039000000000000)
   {
     self->_hoveringOverEdge = v37;
     v30 = v36;
@@ -1771,7 +1771,7 @@ LABEL_8:
   [WeakRetained appSwitcherPageView:self pointerIsHoveringOverEdge:self->_hoveringOverEdge];
 }
 
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view
 {
   [(SBAppSwitcherPageView *)self _inSlideOver];
 
@@ -1783,7 +1783,7 @@ LABEL_8:
   return result;
 }
 
-- (id)regionAtLocation:(CGPoint)a3 forView:(id)a4
+- (id)regionAtLocation:(CGPoint)location forView:(id)view
 {
   v5 = MEMORY[0x277D75880];
   p_pointerRegion = &self->_pointerRegion;
@@ -1796,10 +1796,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)styleForRegion:(id)a3 forView:(id)a4
+- (id)styleForRegion:(id)region forView:(id)view
 {
   pointerHitTestBlocker = self->_pointerHitTestBlocker;
-  [a3 rect];
+  [region rect];
   [(UIView *)pointerHitTestBlocker setFrame:?];
   hoveringOverEdge = self->_hoveringOverEdge;
   [(SBAppSwitcherSettings *)self->_settings liveResizePointerInteractionRegionInnerLength];

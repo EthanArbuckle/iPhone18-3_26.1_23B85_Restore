@@ -1,5 +1,5 @@
 @interface _NSXPCBoost
-- (void)_initWithEvent:(void *)a1;
+- (void)_initWithEvent:(void *)event;
 - (void)dealloc;
 @end
 
@@ -14,15 +14,15 @@
   [(_NSXPCBoost *)&v3 dealloc];
 }
 
-- (void)_initWithEvent:(void *)a1
+- (void)_initWithEvent:(void *)event
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!event)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = event;
   v5.super_class = _NSXPCBoost;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   v3[1] = xpc_retain(a2);

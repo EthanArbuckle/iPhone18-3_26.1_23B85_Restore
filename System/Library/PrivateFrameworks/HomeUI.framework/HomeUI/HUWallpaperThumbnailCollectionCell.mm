@@ -1,27 +1,27 @@
 @interface HUWallpaperThumbnailCollectionCell
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (CGSize)imageSize;
 - (HUWallpaperThumbnailCellDelegate)delegate;
-- (HUWallpaperThumbnailCollectionCell)initWithFrame:(CGRect)a3;
+- (HUWallpaperThumbnailCollectionCell)initWithFrame:(CGRect)frame;
 - (UIImage)image;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 - (void)prepareForReuse;
-- (void)setContentMode:(int64_t)a3;
-- (void)setImage:(id)a3;
-- (void)setImageSize:(CGSize)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setImage:(id)image;
+- (void)setImageSize:(CGSize)size;
 @end
 
 @implementation HUWallpaperThumbnailCollectionCell
 
-- (HUWallpaperThumbnailCollectionCell)initWithFrame:(CGRect)a3
+- (HUWallpaperThumbnailCollectionCell)initWithFrame:(CGRect)frame
 {
   v44.receiver = self;
   v44.super_class = HUWallpaperThumbnailCollectionCell;
-  v3 = [(HUWallpaperThumbnailCollectionCell *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUWallpaperThumbnailCollectionCell *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,63 +37,63 @@
     [(UIImageView *)v4->_imageThumbnailView setContentMode:v4->_contentMode];
     [(UIImageView *)v4->_imageThumbnailView setClipsToBounds:1];
     [(HUWallpaperThumbnailCollectionCell *)v4 addSubview:v4->_imageThumbnailView];
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [(UIImageView *)v4->_imageThumbnailView centerXAnchor];
-    v11 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
-    v12 = [v11 centerXAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
-    [v9 addObject:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    centerXAnchor = [(UIImageView *)v4->_imageThumbnailView centerXAnchor];
+    layoutMarginsGuide = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
+    centerXAnchor2 = [layoutMarginsGuide centerXAnchor];
+    v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v13];
 
-    v14 = [(UIImageView *)v4->_imageThumbnailView leadingAnchor];
-    v15 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
-    v16 = [v15 leadingAnchor];
-    v17 = [v14 constraintGreaterThanOrEqualToAnchor:v16];
-    [v9 addObject:v17];
+    leadingAnchor = [(UIImageView *)v4->_imageThumbnailView leadingAnchor];
+    layoutMarginsGuide2 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+    v17 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+    [array addObject:v17];
 
-    v18 = [(UIImageView *)v4->_imageThumbnailView trailingAnchor];
-    v19 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
-    v20 = [v19 trailingAnchor];
-    v21 = [v18 constraintLessThanOrEqualToAnchor:v20];
-    [v9 addObject:v21];
+    trailingAnchor = [(UIImageView *)v4->_imageThumbnailView trailingAnchor];
+    layoutMarginsGuide3 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+    v21 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+    [array addObject:v21];
 
-    v22 = [(UIImageView *)v4->_imageThumbnailView heightAnchor];
-    v23 = [v22 constraintEqualToConstant:v4->_imageSize.height];
+    heightAnchor = [(UIImageView *)v4->_imageThumbnailView heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:v4->_imageSize.height];
     imageHeightConstraint = v4->_imageHeightConstraint;
     v4->_imageHeightConstraint = v23;
 
     LODWORD(v25) = 1144750080;
     [(NSLayoutConstraint *)v4->_imageHeightConstraint setPriority:v25];
-    [v9 addObject:v4->_imageHeightConstraint];
-    v26 = [(UIImageView *)v4->_imageThumbnailView widthAnchor];
-    v27 = [v26 constraintEqualToConstant:*p_width];
+    [array addObject:v4->_imageHeightConstraint];
+    widthAnchor = [(UIImageView *)v4->_imageThumbnailView widthAnchor];
+    v27 = [widthAnchor constraintEqualToConstant:*p_width];
     imageWidthConstraint = v4->_imageWidthConstraint;
     v4->_imageWidthConstraint = v27;
 
-    [v9 addObject:v4->_imageWidthConstraint];
-    v29 = [(UIImageView *)v4->_imageThumbnailView centerYAnchor];
-    v30 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
-    v31 = [v30 centerYAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
-    [v9 addObject:v32];
+    [array addObject:v4->_imageWidthConstraint];
+    centerYAnchor = [(UIImageView *)v4->_imageThumbnailView centerYAnchor];
+    layoutMarginsGuide4 = [(HUWallpaperThumbnailCollectionCell *)v4 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide4 centerYAnchor];
+    v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v32];
 
-    v33 = [(UIImageView *)v4->_imageThumbnailView topAnchor];
-    v34 = [(HUWallpaperThumbnailCollectionCell *)v4 topAnchor];
-    v35 = [v33 constraintGreaterThanOrEqualToAnchor:v34 constant:16.0];
-    [v9 addObject:v35];
+    topAnchor = [(UIImageView *)v4->_imageThumbnailView topAnchor];
+    topAnchor2 = [(HUWallpaperThumbnailCollectionCell *)v4 topAnchor];
+    v35 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:16.0];
+    [array addObject:v35];
 
-    v36 = [(UIImageView *)v4->_imageThumbnailView bottomAnchor];
-    v37 = [(HUWallpaperThumbnailCollectionCell *)v4 bottomAnchor];
-    v38 = [v36 constraintLessThanOrEqualToAnchor:v37 constant:16.0];
-    [v9 addObject:v38];
+    bottomAnchor = [(UIImageView *)v4->_imageThumbnailView bottomAnchor];
+    bottomAnchor2 = [(HUWallpaperThumbnailCollectionCell *)v4 bottomAnchor];
+    v38 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:16.0];
+    [array addObject:v38];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v9];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
     v39 = [objc_alloc(MEMORY[0x277D754A0]) initWithDelegate:v4];
     dropInteraction = v4->_dropInteraction;
     v4->_dropInteraction = v39;
 
-    v41 = [(HUWallpaperThumbnailCollectionCell *)v4 contentView];
-    v42 = [(HUWallpaperThumbnailCollectionCell *)v4 dropInteraction];
-    [v41 addInteraction:v42];
+    contentView = [(HUWallpaperThumbnailCollectionCell *)v4 contentView];
+    dropInteraction = [(HUWallpaperThumbnailCollectionCell *)v4 dropInteraction];
+    [contentView addInteraction:dropInteraction];
   }
 
   return v4;
@@ -108,36 +108,36 @@
   [(HUWallpaperThumbnailCollectionCell *)self setImageSize:50.0, 50.0];
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v4 = a4;
-  v5 = [v4 canLoadObjectsOfClass:objc_opt_class()];
+  sessionCopy = session;
+  v5 = [sessionCopy canLoadObjectsOfClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v4 = [a4 items];
-  v5 = [v4 count] < 2;
+  items = [update items];
+  v5 = [items count] < 2;
 
   v6 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:2 * v5];
 
   return v6;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = [a4 items];
-  v6 = [v5 firstObject];
-  v7 = [v6 itemProvider];
+  items = [drop items];
+  firstObject = [items firstObject];
+  itemProvider = [firstObject itemProvider];
   v8 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__HUWallpaperThumbnailCollectionCell_dropInteraction_performDrop___block_invoke;
   v10[3] = &unk_277DB8998;
   v10[4] = self;
-  v9 = [v7 loadObjectOfClass:v8 completionHandler:v10];
+  v9 = [itemProvider loadObjectOfClass:v8 completionHandler:v10];
 }
 
 void __66__HUWallpaperThumbnailCollectionCell_dropInteraction_performDrop___block_invoke(uint64_t a1, void *a2)
@@ -169,66 +169,66 @@ void __66__HUWallpaperThumbnailCollectionCell_dropInteraction_performDrop___bloc
   [v2 wallpaperThumbnailCell:*(a1 + 32) didReceiveDroppedImage:*(a1 + 40)];
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v5 = [a4 items];
-  v6 = [v5 count];
+  items = [enter items];
+  v6 = [items count];
 
   if (v6 == 1)
   {
-    v7 = [(HUWallpaperThumbnailCollectionCell *)self configurationState];
-    [v7 setSelected:1];
-    [(HUWallpaperThumbnailCollectionCell *)self updateConfigurationUsingState:v7];
+    configurationState = [(HUWallpaperThumbnailCollectionCell *)self configurationState];
+    [configurationState setSelected:1];
+    [(HUWallpaperThumbnailCollectionCell *)self updateConfigurationUsingState:configurationState];
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v5 = [(HUWallpaperThumbnailCollectionCell *)self configurationState:a3];
+  v5 = [(HUWallpaperThumbnailCollectionCell *)self configurationState:interaction];
   [v5 setSelected:0];
   [(HUWallpaperThumbnailCollectionCell *)self updateConfigurationUsingState:v5];
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v5 = [(HUWallpaperThumbnailCollectionCell *)self configurationState:a3];
+  v5 = [(HUWallpaperThumbnailCollectionCell *)self configurationState:interaction];
   [v5 setSelected:0];
   [(HUWallpaperThumbnailCollectionCell *)self updateConfigurationUsingState:v5];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   p_imageSize = &self->_imageSize;
-  self->_imageSize = a3;
-  v6 = [(HUWallpaperThumbnailCollectionCell *)self imageHeightConstraint];
-  [v6 setConstant:height];
+  self->_imageSize = size;
+  imageHeightConstraint = [(HUWallpaperThumbnailCollectionCell *)self imageHeightConstraint];
+  [imageHeightConstraint setConstant:height];
 
   width = p_imageSize->width;
-  v8 = [(HUWallpaperThumbnailCollectionCell *)self imageWidthConstraint];
-  [v8 setConstant:width];
+  imageWidthConstraint = [(HUWallpaperThumbnailCollectionCell *)self imageWidthConstraint];
+  [imageWidthConstraint setConstant:width];
 }
 
 - (UIImage)image
 {
-  v2 = [(HUWallpaperThumbnailCollectionCell *)self imageThumbnailView];
-  v3 = [v2 image];
+  imageThumbnailView = [(HUWallpaperThumbnailCollectionCell *)self imageThumbnailView];
+  image = [imageThumbnailView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HUWallpaperThumbnailCollectionCell *)self imageThumbnailView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageThumbnailView = [(HUWallpaperThumbnailCollectionCell *)self imageThumbnailView];
+  [imageThumbnailView setImage:imageCopy];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  self->_contentMode = a3;
-  v4 = [(HUWallpaperThumbnailCollectionCell *)self imageThumbnailView];
-  [v4 setContentMode:a3];
+  self->_contentMode = mode;
+  imageThumbnailView = [(HUWallpaperThumbnailCollectionCell *)self imageThumbnailView];
+  [imageThumbnailView setContentMode:mode];
 }
 
 - (CGSize)imageSize

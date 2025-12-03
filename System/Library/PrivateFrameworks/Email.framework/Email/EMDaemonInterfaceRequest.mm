@@ -40,7 +40,7 @@ void __50__EMDaemonInterfaceRequest_systemScopeSignpostLog__block_invoke()
   block[1] = 3221225472;
   block[2] = __39__EMDaemonInterfaceRequest_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_0 != -1)
   {
     dispatch_once(&signpostLog_onceToken_0, block);
@@ -61,8 +61,8 @@ void __39__EMDaemonInterfaceRequest_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }

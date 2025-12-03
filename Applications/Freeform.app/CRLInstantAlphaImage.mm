@@ -1,14 +1,14 @@
 @interface CRLInstantAlphaImage
-- (CRLInstantAlphaImage)initWithWidth:(int64_t)a3 height:(int64_t)a4;
-- (unsigned)averageColorAtXPosition:(int64_t)a3 yPosition:(int64_t)a4;
+- (CRLInstantAlphaImage)initWithWidth:(int64_t)width height:(int64_t)height;
+- (unsigned)averageColorAtXPosition:(int64_t)position yPosition:(int64_t)yPosition;
 - (void)dealloc;
 @end
 
 @implementation CRLInstantAlphaImage
 
-- (CRLInstantAlphaImage)initWithWidth:(int64_t)a3 height:(int64_t)a4
+- (CRLInstantAlphaImage)initWithWidth:(int64_t)width height:(int64_t)height
 {
-  if (a3 < 1 || a4 <= 0)
+  if (width < 1 || height <= 0)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -44,9 +44,9 @@
   v13 = v12;
   if (v12)
   {
-    v12->mWidth = a3;
-    v12->mHeight = a4;
-    v14 = malloc_type_calloc(1uLL, 4 * a3 * a4, 0x100004052888210uLL);
+    v12->mWidth = width;
+    v12->mHeight = height;
+    v14 = malloc_type_calloc(1uLL, 4 * width * height, 0x100004052888210uLL);
     v13->mImageData = v14;
     if (!v14)
     {
@@ -71,25 +71,25 @@
   [(CRLInstantAlphaImage *)&v4 dealloc];
 }
 
-- (unsigned)averageColorAtXPosition:(int64_t)a3 yPosition:(int64_t)a4
+- (unsigned)averageColorAtXPosition:(int64_t)position yPosition:(int64_t)yPosition
 {
   v5 = 0;
   v6 = 0;
   v7 = 0;
   for (i = -1; i != 2; ++i)
   {
-    v9 = (i + a4);
+    v9 = (i + yPosition);
     v10 = -1;
     v32 = i;
     do
     {
-      v11 = sub_1004C3240((a3 + v10), 0.0, (self->mWidth - 1));
+      v11 = sub_1004C3240((position + v10), 0.0, (self->mWidth - 1));
       v12 = sub_1004C3240(v9, 0.0, (self->mHeight - 1));
-      v13 = self;
+      selfCopy = self;
       if (v11 < 0 || v12 < 0 || (v14 = self->mWidth, v14 <= v11) || self->mHeight <= v12)
       {
         v16 = +[CRLAssertionHandler _atomicIncrementAssertCount];
-        v34 = v13;
+        v34 = selfCopy;
         if (qword_101AD5A10 != -1)
         {
           sub_101368A14();
@@ -141,7 +141,7 @@
 
         v15 = 0;
         i = v32;
-        v13 = v34;
+        selfCopy = v34;
       }
 
       else

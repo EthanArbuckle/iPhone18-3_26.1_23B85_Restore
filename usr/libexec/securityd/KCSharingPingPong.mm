@@ -1,6 +1,6 @@
 @interface KCSharingPingPong
 - (_TtC9securityd17KCSharingPingPong)init;
-- (_TtC9securityd17KCSharingPingPong)initWithPing:(id)a3 pong:(id)a4;
+- (_TtC9securityd17KCSharingPingPong)initWithPing:(id)ping pong:(id)pong;
 - (void)printPingPong;
 @end
 
@@ -19,7 +19,7 @@
   return [(KCSharingPingPong *)&v5 init];
 }
 
-- (_TtC9securityd17KCSharingPingPong)initWithPing:(id)a3 pong:(id)a4
+- (_TtC9securityd17KCSharingPingPong)initWithPing:(id)ping pong:(id)pong
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -37,7 +37,7 @@
 
 - (void)printPingPong
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002CC8C();
 }
 

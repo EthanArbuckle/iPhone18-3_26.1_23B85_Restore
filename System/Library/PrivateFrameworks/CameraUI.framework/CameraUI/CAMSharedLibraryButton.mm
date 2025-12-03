@@ -1,17 +1,17 @@
 @interface CAMSharedLibraryButton
-- (CAMSharedLibraryButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMSharedLibraryButton)initWithLayoutStyle:(int64_t)style;
 - (id)imageForAccessibilityHUD;
 - (void)_updateImageForCurrentState;
-- (void)setSharedLibraryMode:(int64_t)a3;
+- (void)setSharedLibraryMode:(int64_t)mode;
 @end
 
 @implementation CAMSharedLibraryButton
 
-- (CAMSharedLibraryButton)initWithLayoutStyle:(int64_t)a3
+- (CAMSharedLibraryButton)initWithLayoutStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = CAMSharedLibraryButton;
-  v3 = [(CAMExpandableMenuButton *)&v9 initWithLayoutStyle:a3];
+  v3 = [(CAMExpandableMenuButton *)&v9 initWithLayoutStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (void)setSharedLibraryMode:(int64_t)a3
+- (void)setSharedLibraryMode:(int64_t)mode
 {
-  if (self->_sharedLibraryMode != a3)
+  if (self->_sharedLibraryMode != mode)
   {
-    self->_sharedLibraryMode = a3;
+    self->_sharedLibraryMode = mode;
     [(CAMExpandableMenuButton *)self setSelectedIndex:[(CAMSharedLibraryButton *)self _indexForSharedLibraryMode:?]];
 
     [(CAMSharedLibraryButton *)self _updateImageForCurrentState];
@@ -62,8 +62,8 @@
   v10 = CAMCameraUIFrameworkBundle();
   v7 = [v6 imageNamed:v5 inBundle:v10];
   v8 = [v7 imageWithRenderingMode:2];
-  v9 = [(CAMSharedLibraryButton *)self _glyphView];
-  [v9 setImage:v8];
+  _glyphView = [(CAMSharedLibraryButton *)self _glyphView];
+  [_glyphView setImage:v8];
 }
 
 - (id)imageForAccessibilityHUD

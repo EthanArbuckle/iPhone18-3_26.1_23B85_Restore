@@ -1,21 +1,21 @@
 @interface CarSearchCategoryButton
-- (CarSearchCategoryButton)initWithFrame:(CGRect)a3;
+- (CarSearchCategoryButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityUserInputLabels;
 - (void)_updateLableColor;
-- (void)focusDidChange:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3 image:(id)a4;
+- (void)focusDidChange:(BOOL)change;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title image:(id)image;
 @end
 
 @implementation CarSearchCategoryButton
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [(UILabel *)self->_label text];
-  if (v3)
+  text = [(UILabel *)self->_label text];
+  if (text)
   {
-    v4 = [(UILabel *)self->_label text];
-    v7 = v4;
+    text2 = [(UILabel *)self->_label text];
+    v7 = text2;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -27,12 +27,12 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3 image:(id)a4
+- (void)setTitle:(id)title image:(id)image
 {
   label = self->_label;
-  v7 = a4;
-  [(UILabel *)label setText:a3];
-  [(UIImageView *)self->_imageView setImage:v7];
+  imageCopy = image;
+  [(UILabel *)label setText:title];
+  [(UIImageView *)self->_imageView setImage:imageCopy];
 }
 
 - (void)_updateLableColor
@@ -51,35 +51,35 @@
   [(UILabel *)self->_label setTextColor:v3];
 }
 
-- (void)focusDidChange:(BOOL)a3
+- (void)focusDidChange:(BOOL)change
 {
   v4.receiver = self;
   v4.super_class = CarSearchCategoryButton;
-  [(CarFocusableControl *)&v4 focusDidChange:a3];
+  [(CarFocusableControl *)&v4 focusDidChange:change];
   [(CarSearchCategoryButton *)self _updateLableColor];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = CarSearchCategoryButton;
-  [(CarFocusableControl *)&v4 setHighlighted:a3];
+  [(CarFocusableControl *)&v4 setHighlighted:highlighted];
   [(CarSearchCategoryButton *)self _updateLableColor];
 }
 
-- (CarSearchCategoryButton)initWithFrame:(CGRect)a3
+- (CarSearchCategoryButton)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = CarSearchCategoryButton;
-  v3 = [(CarFocusableControl *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarFocusableControl *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CarFocusableControl *)v3 setFocusableControlStyle:1];
     [(CarFocusableControl *)v4 setFocusLayerInsets:-4.0, -4.0, -4.0, -4.0];
     [(CarSearchCategoryButton *)v4 setAccessibilityIdentifier:@"CarSearchCategoryCell"];
-    v5 = [(CarSearchCategoryButton *)v4 accessibilityTraits];
-    [(CarSearchCategoryButton *)v4 setAccessibilityTraits:UIAccessibilityTraitButton | v5];
+    accessibilityTraits = [(CarSearchCategoryButton *)v4 accessibilityTraits];
+    [(CarSearchCategoryButton *)v4 setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
     [(CarFocusableControl *)v4 setMetrics:1.0, 10.0, 8.0];
     v6 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     label = v4->_label;
@@ -112,8 +112,8 @@
     [(CarFocusableControl *)v4 addSubview:v15];
     LODWORD(v16) = 1148846080;
     v17 = [v15 _maps_constraintsEqualToEdgesOfView:v4 insets:UIEdgeInsetsZero.top priority:{UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v16}];
-    v18 = [v17 allConstraints];
-    [NSLayoutConstraint activateConstraints:v18];
+    allConstraints = [v17 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   return v4;

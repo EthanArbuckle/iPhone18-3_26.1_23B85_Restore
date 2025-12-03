@@ -16,16 +16,16 @@
 
 - (uint64_t)dc_isInSecureWindow
 {
-  v2 = [a1 window];
+  window = [self window];
 
-  if (v2)
+  if (window)
   {
-    v3 = [a1 window];
-    v4 = [v3 screen];
-    v5 = [v4 displayIdentity];
-    v6 = [v5 expectsSecureRendering];
+    window2 = [self window];
+    screen = [window2 screen];
+    displayIdentity = [screen displayIdentity];
+    expectsSecureRendering = [displayIdentity expectsSecureRendering];
 
-    return v6;
+    return expectsSecureRendering;
   }
 
   else
@@ -42,7 +42,7 @@
 
 - (uint64_t)dc_crashIfWindowIsSecure
 {
-  result = [a1 dc_isInSecureWindow];
+  result = [self dc_isInSecureWindow];
   if (result)
   {
     v2 = os_log_create("com.apple.documentcamera", "");
@@ -59,18 +59,18 @@
 
 - (id)dc_imageRenderedFromLayer
 {
-  v2 = [a1 layer];
-  [v2 layoutIfNeeded];
+  layer = [self layer];
+  [layer layoutIfNeeded];
 
-  v3 = [MEMORY[0x277D75568] defaultFormat];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
   v4 = objc_alloc(MEMORY[0x277D75560]);
-  [a1 bounds];
-  v7 = [v4 initWithSize:v3 format:{v5, v6}];
+  [self bounds];
+  v7 = [v4 initWithSize:defaultFormat format:{v5, v6}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__UIView_DC__dc_imageRenderedFromLayer__block_invoke;
   v10[3] = &unk_278F937F8;
-  v10[4] = a1;
+  v10[4] = self;
   v8 = [v7 imageWithActions:v10];
 
   return v8;
@@ -78,18 +78,18 @@
 
 - (id)dc_imageRenderedFromViewHierarchy
 {
-  v2 = [a1 layer];
-  [v2 layoutIfNeeded];
+  layer = [self layer];
+  [layer layoutIfNeeded];
 
-  v3 = [MEMORY[0x277D75568] defaultFormat];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
   v4 = objc_alloc(MEMORY[0x277D75560]);
-  [a1 bounds];
-  v7 = [v4 initWithSize:v3 format:{v5, v6}];
+  [self bounds];
+  v7 = [v4 initWithSize:defaultFormat format:{v5, v6}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__UIView_DC__dc_imageRenderedFromViewHierarchy__block_invoke;
   v10[3] = &unk_278F937F8;
-  v10[4] = a1;
+  v10[4] = self;
   v8 = [v7 imageWithActions:v10];
 
   return v8;
@@ -98,10 +98,10 @@
 - (id)dc_imageViewRenderedFromLayer
 {
   v2 = objc_alloc(MEMORY[0x277D755E8]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  v4 = [a1 dc_imageRenderedFromLayer];
-  [v3 setImage:v4];
+  dc_imageRenderedFromLayer = [self dc_imageRenderedFromLayer];
+  [v3 setImage:dc_imageRenderedFromLayer];
 
   return v3;
 }
@@ -109,10 +109,10 @@
 - (id)dc_imageViewRenderedFromViewHierarchy
 {
   v2 = objc_alloc(MEMORY[0x277D755E8]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  v4 = [a1 dc_imageRenderedFromViewHierarchy];
-  [v3 setImage:v4];
+  dc_imageRenderedFromViewHierarchy = [self dc_imageRenderedFromViewHierarchy];
+  [v3 setImage:dc_imageRenderedFromViewHierarchy];
 
   return v3;
 }
@@ -121,13 +121,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 constraints];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  constraints = [self constraints];
+  v7 = [constraints countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -138,43 +138,43 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(constraints);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 firstItem];
-        v13 = v12;
-        if (v12 == v4)
+        firstItem = [v11 firstItem];
+        v13 = firstItem;
+        if (firstItem == v4)
         {
         }
 
         else
         {
-          v14 = [v11 secondItem];
+          secondItem = [v11 secondItem];
 
-          if (v14 != v4)
+          if (secondItem != v4)
           {
             continue;
           }
         }
 
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [constraints countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  [a1 removeConstraints:v5];
+  [self removeConstraints:array];
 }
 
 - (void)dc_addConstraintsToFillSuperview
 {
-  v1 = a1;
-  [v1 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = _NSDictionaryOfVariableBindings(&cfstr_View.isa, v1, 0);
+  selfCopy = self;
+  [selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  v6 = _NSDictionaryOfVariableBindings(&cfstr_View.isa, selfCopy, 0);
 
   v2 = MEMORY[0x277CCAAD0];
   v3 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:0 views:v6];
@@ -187,18 +187,18 @@
 
 - (id)dc_renderImage
 {
-  v2 = [a1 layer];
-  [v2 layoutIfNeeded];
+  layer = [self layer];
+  [layer layoutIfNeeded];
 
-  v3 = [MEMORY[0x277D75568] defaultFormat];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
   v4 = objc_alloc(MEMORY[0x277D75560]);
-  [a1 bounds];
-  v7 = [v4 initWithSize:v3 format:{v5, v6}];
+  [self bounds];
+  v7 = [v4 initWithSize:defaultFormat format:{v5, v6}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __28__UIView_DC__dc_renderImage__block_invoke;
   v10[3] = &unk_278F937F8;
-  v10[4] = a1;
+  v10[4] = self;
   v8 = [v7 imageWithActions:v10];
 
   return v8;
@@ -207,10 +207,10 @@
 - (id)dc_renderImageView
 {
   v2 = objc_alloc(MEMORY[0x277D755E8]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  v4 = [a1 dc_renderImage];
-  [v3 setImage:v4];
+  dc_renderImage = [self dc_renderImage];
+  [v3 setImage:dc_renderImage];
 
   return v3;
 }
@@ -232,7 +232,7 @@
     v14[2] = __74__UIView_DC__dc_animateWithDuration_timingFunction_animations_completion___block_invoke;
     v14[3] = &unk_278F93820;
     v15 = v9;
-    [v13 animateWithDuration:v11 animations:v14 completion:a1];
+    [v13 animateWithDuration:v11 animations:v14 completion:self];
 
     [MEMORY[0x277CD9FF0] commit];
   }

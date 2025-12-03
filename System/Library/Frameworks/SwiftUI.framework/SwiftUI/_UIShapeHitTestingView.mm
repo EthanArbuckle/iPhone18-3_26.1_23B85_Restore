@@ -1,20 +1,20 @@
 @interface _UIShapeHitTestingView
-- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _UIShapeHitTestingView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v17.receiver = self;
   v17.super_class = swift_getObjectType();
   v7 = v17.receiver;
-  v8 = a4;
-  v9 = [(_UIShapeHitTestingView *)&v17 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(_UIShapeHitTestingView *)&v17 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -45,12 +45,12 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = self + OBJC_IVAR____TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView_path;
   *v9 = 0u;
@@ -61,7 +61,7 @@ LABEL_5:
   return [(_UIGraphicsView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView_path;
@@ -70,8 +70,8 @@ LABEL_5:
   v6[32] = 6;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(_UIGraphicsView *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(_UIGraphicsView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

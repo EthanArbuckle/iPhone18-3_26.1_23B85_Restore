@@ -1,45 +1,45 @@
 @interface TransitDirectionsColoredLine
-- (TransitDirectionsColoredLine)initWithFrame:(CGRect)a3;
-- (TransitDirectionsColoredLine)initWithStyle:(unint64_t)a3;
+- (TransitDirectionsColoredLine)initWithFrame:(CGRect)frame;
+- (TransitDirectionsColoredLine)initWithStyle:(unint64_t)style;
 - (double)innerGapLength;
-- (unint64_t)_maximumNumberOfDots:(double *)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setInnerGapLength:(double)a3;
-- (void)setLineColor:(id)a3;
-- (void)setOuterGapLength:(double)a3;
-- (void)setStyle:(unint64_t)a3;
+- (unint64_t)_maximumNumberOfDots:(double *)dots;
+- (void)drawRect:(CGRect)rect;
+- (void)setInnerGapLength:(double)length;
+- (void)setLineColor:(id)color;
+- (void)setOuterGapLength:(double)length;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation TransitDirectionsColoredLine
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v24.receiver = self;
   v24.super_class = TransitDirectionsColoredLine;
-  [(TransitDirectionsColoredLine *)&v24 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(TransitDirectionsColoredLine *)self lineColor];
-  if (v4)
+  [(TransitDirectionsColoredLine *)&v24 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  lineColor = [(TransitDirectionsColoredLine *)self lineColor];
+  if (lineColor)
   {
-    v5 = [(TransitDirectionsColoredLine *)self style];
+    style = [(TransitDirectionsColoredLine *)self style];
     [(TransitDirectionsColoredLine *)self bounds];
     Width = CGRectGetWidth(v26);
     v23 = 0.0;
-    if (v5 != 4 || [(TransitDirectionsColoredLine *)self _maximumNumberOfDots:&v23])
+    if (style != 4 || [(TransitDirectionsColoredLine *)self _maximumNumberOfDots:&v23])
     {
       CurrentContext = UIGraphicsGetCurrentContext();
       [(TransitDirectionsColoredLine *)self bounds];
       CGContextClearRect(CurrentContext, v27);
       CGContextSetLineWidth(CurrentContext, Width);
-      CGContextSetStrokeColorWithColor(CurrentContext, [v4 CGColor]);
+      CGContextSetStrokeColorWithColor(CurrentContext, [lineColor CGColor]);
       v8 = Width * 0.5;
       [(TransitDirectionsColoredLine *)self bounds];
       Height = CGRectGetHeight(v28);
-      if (v5)
+      if (style)
       {
-        if (v5 != 4)
+        if (style != 4)
         {
           v19 = 0.0;
-          if (v5 >= 3)
+          if (style >= 3)
           {
             v20 = 0.0;
           }
@@ -49,7 +49,7 @@
             v20 = Width * 0.5;
           }
 
-          if ((v5 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+          if ((style & 0xFFFFFFFFFFFFFFFDLL) == 1)
           {
             v19 = Width * 0.5;
           }
@@ -57,15 +57,15 @@
           v21 = Height - v19;
           [(TransitDirectionsColoredLine *)self bounds];
           MidY = CGRectGetMidY(v30);
-          CGContextSetLineCap(CurrentContext, (v5 < 3));
+          CGContextSetLineCap(CurrentContext, (style < 3));
           CGContextMoveToPoint(CurrentContext, v8, MidY);
           CGContextAddLineToPoint(CurrentContext, v8, v20);
-          if (v5 != 1)
+          if (style != 1)
           {
             CGContextStrokePath(CurrentContext);
           }
 
-          CGContextSetLineCap(CurrentContext, ((v5 & 0xFFFFFFFFFFFFFFFDLL) == 1));
+          CGContextSetLineCap(CurrentContext, ((style & 0xFFFFFFFFFFFFFFFDLL) == 1));
           CGContextMoveToPoint(CurrentContext, v8, MidY);
           v16 = CurrentContext;
           v17 = v8;
@@ -105,7 +105,7 @@ LABEL_17:
   }
 }
 
-- (unint64_t)_maximumNumberOfDots:(double *)a3
+- (unint64_t)_maximumNumberOfDots:(double *)dots
 {
   [(TransitDirectionsColoredLine *)self bounds];
   Width = CGRectGetWidth(v19);
@@ -125,7 +125,7 @@ LABEL_17:
     v13 = v13 + v7 + Width;
   }
 
-  if (a3)
+  if (dots)
   {
     [(TransitDirectionsColoredLine *)self outerGapLength];
     v16 = Width * (v14 + (v14 & 1) - 1) + v15 * 2.0;
@@ -135,17 +135,17 @@ LABEL_17:
       v16 = v16 + v17 * ((v14 & 1) + v14);
     }
 
-    *a3 = v16;
+    *dots = v16;
   }
 
   return v14 + (v14 & 1) - 1;
 }
 
-- (void)setInnerGapLength:(double)a3
+- (void)setInnerGapLength:(double)length
 {
-  if (self->_innerGapLength != a3)
+  if (self->_innerGapLength != length)
   {
-    self->_innerGapLength = a3;
+    self->_innerGapLength = length;
     [(TransitDirectionsColoredLine *)self setNeedsDisplay];
   }
 }
@@ -163,41 +163,41 @@ LABEL_17:
   return result;
 }
 
-- (void)setOuterGapLength:(double)a3
+- (void)setOuterGapLength:(double)length
 {
-  if (self->_outerGapLength != a3)
+  if (self->_outerGapLength != length)
   {
-    self->_outerGapLength = a3;
+    self->_outerGapLength = length;
     [(TransitDirectionsColoredLine *)self setNeedsDisplay];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(TransitDirectionsColoredLine *)self setNeedsDisplay];
   }
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  v5 = a3;
-  if (self->_lineColor != v5)
+  colorCopy = color;
+  if (self->_lineColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lineColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_lineColor, color);
     [(TransitDirectionsColoredLine *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (TransitDirectionsColoredLine)initWithFrame:(CGRect)a3
+- (TransitDirectionsColoredLine)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitDirectionsColoredLine;
-  v3 = [(TransitDirectionsColoredLine *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsColoredLine *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -209,12 +209,12 @@ LABEL_17:
   return v3;
 }
 
-- (TransitDirectionsColoredLine)initWithStyle:(unint64_t)a3
+- (TransitDirectionsColoredLine)initWithStyle:(unint64_t)style
 {
   result = [(TransitDirectionsColoredLine *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
   }
 
   return result;

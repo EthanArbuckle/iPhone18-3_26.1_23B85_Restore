@@ -1,21 +1,21 @@
 @interface GEOAddress
-- (id)initWithAddressBookAddress:(id)a3;
+- (id)initWithAddressBookAddress:(id)address;
 @end
 
 @implementation GEOAddress
 
-- (id)initWithAddressBookAddress:(id)a3
+- (id)initWithAddressBookAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 addressDictionary];
-  v6 = [(GEOAddress *)self initWithAddressDictionary:v5];
+  addressCopy = address;
+  addressDictionary = [addressCopy addressDictionary];
+  v6 = [(GEOAddress *)self initWithAddressDictionary:addressDictionary];
 
   if (v6)
   {
-    v7 = [v4 singleLineAddress];
-    if (v7)
+    singleLineAddress = [addressCopy singleLineAddress];
+    if (singleLineAddress)
     {
-      [(GEOAddress *)v6 addFormattedAddressLine:v7];
+      [(GEOAddress *)v6 addFormattedAddressLine:singleLineAddress];
     }
 
     v8 = v6;

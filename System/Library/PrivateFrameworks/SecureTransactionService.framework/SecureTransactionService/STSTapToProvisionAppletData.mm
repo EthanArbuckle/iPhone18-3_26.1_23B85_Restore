@@ -1,32 +1,32 @@
 @interface STSTapToProvisionAppletData
-+ (id)fromOR:(id)a3;
-- (STSTapToProvisionAppletData)initWithVersion:(id)a3;
++ (id)fromOR:(id)r;
+- (STSTapToProvisionAppletData)initWithVersion:(id)version;
 @end
 
 @implementation STSTapToProvisionAppletData
 
-- (STSTapToProvisionAppletData)initWithVersion:(id)a3
+- (STSTapToProvisionAppletData)initWithVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = STSTapToProvisionAppletData;
   v6 = [(STSTapToProvisionAppletData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_version, a3);
+    objc_storeStrong(&v6->_version, version);
   }
 
   return v7;
 }
 
-+ (id)fromOR:(id)a3
++ (id)fromOR:(id)r
 {
-  v3 = a3;
+  rCopy = r;
   v4 = [STSTapToProvisionAppletData alloc];
-  v5 = [v3 provisionAppletVersion];
+  provisionAppletVersion = [rCopy provisionAppletVersion];
 
-  v6 = [(STSTapToProvisionAppletData *)v4 initWithVersion:v5];
+  v6 = [(STSTapToProvisionAppletData *)v4 initWithVersion:provisionAppletVersion];
 
   return v6;
 }

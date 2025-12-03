@@ -11,8 +11,8 @@
 - (id)px_sl_containedSharingSuggestionObjectIDs
 {
   v1 = MEMORY[0x1E695DFD8];
-  v2 = [a1 objectID];
-  v3 = [v1 setWithObject:v2];
+  objectID = [self objectID];
+  v3 = [v1 setWithObject:objectID];
 
   return v3;
 }
@@ -20,7 +20,7 @@
 - (id)px_sl_containedSharingSuggestions
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a1;
+  v3[0] = self;
   v1 = [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1];
 
   return v1;
@@ -29,53 +29,53 @@
 - (void)px_sl_getKeyAsset:()SharingSuggestionContainer suggestedDate:locations:
 {
   v108[1] = *MEMORY[0x1E69E9840];
-  v7 = [a1 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v8 setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
   v108[0] = *MEMORY[0x1E6978C20];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v108 count:1];
-  [v8 setFetchPropertySets:v9];
+  [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = MEMORY[0x1E696AE18];
-  v12 = [a1 objectID];
-  v13 = [v11 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight == %@", v12];
-  [v10 addObject:v13];
+  objectID = [self objectID];
+  v13 = [v11 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight == %@", objectID];
+  [array addObject:v13];
 
   v14 = PLManagedAssetPredicateToFetchAssetsSuggestedForSharing();
-  [v10 addObject:v14];
+  [array addObject:v14];
 
-  v15 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v10];
-  [v8 setInternalPredicate:v15];
+  v15 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
+  [librarySpecificFetchOptions setInternalPredicate:v15];
 
   v16 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:0];
   v107 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
-  [v8 setInternalSortDescriptors:v17];
+  [librarySpecificFetchOptions setInternalSortDescriptors:v17];
 
-  [v8 setSharingFilter:0];
-  [v8 setUseNoIndexOnSharingFilter:1];
-  v18 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v8];
-  v19 = [v18 firstObject];
+  [librarySpecificFetchOptions setSharingFilter:0];
+  [librarySpecificFetchOptions setUseNoIndexOnSharingFilter:1];
+  v18 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
+  firstObject = [v18 firstObject];
 
-  v73 = v19;
-  v20 = [v19 curationProperties];
-  *a4 = [v20 addedDate];
+  v73 = firstObject;
+  curationProperties = [firstObject curationProperties];
+  *a4 = [curationProperties addedDate];
 
   v21 = MEMORY[0x1E69789F0];
-  v106 = a1;
-  v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
+  selfCopy = self;
+  v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
   v23 = [v21 fetchHighlightsInSharedLibrarySharingSuggestions:v22];
 
   v78 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v79 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v24 = [a1 photoLibrary];
-  v25 = [v24 librarySpecificFetchOptions];
+  photoLibrary2 = [self photoLibrary];
+  librarySpecificFetchOptions2 = [photoLibrary2 librarySpecificFetchOptions];
 
-  [v25 setWantsIncrementalChangeDetails:0];
-  v77 = v25;
-  v26 = [v25 copy];
+  [librarySpecificFetchOptions2 setWantsIncrementalChangeDetails:0];
+  v77 = librarySpecificFetchOptions2;
+  v26 = [librarySpecificFetchOptions2 copy];
   v27 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"curationScore" ascending:0];
   v105[0] = v27;
   v28 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
@@ -124,10 +124,10 @@
                 objc_enumerationMutation(v36);
               }
 
-              v41 = [*(*(&v92 + 1) + 8 * j) localizedLocationNames];
-              if ([v41 count])
+              localizedLocationNames = [*(*(&v92 + 1) + 8 * j) localizedLocationNames];
+              if ([localizedLocationNames count])
               {
-                [v35 addObjectsFromArray:v41];
+                [v35 addObjectsFromArray:localizedLocationNames];
               }
             }
 
@@ -174,15 +174,15 @@
 
         v51 = *(*(&v88 + 1) + 8 * k);
         v52 = [v78 objectForKeyedSubscript:v51];
-        v53 = [v52 firstObject];
+        firstObject2 = [v52 firstObject];
 
-        if (v53)
+        if (firstObject2)
         {
           v54 = v51;
 
-          v55 = v53;
-          *a3 = v53;
-          v71 = v53;
+          v55 = firstObject2;
+          *a3 = firstObject2;
+          v71 = firstObject2;
           if (v54)
           {
             [v46 removeObject:v54];
@@ -283,15 +283,15 @@ LABEL_36:
     while (v59);
   }
 
-  v69 = [v56 array];
-  *a5 = [v69 copy];
+  array2 = [v56 array];
+  *a5 = [array2 copy];
 }
 
 - (id)px_sl_fetchAssetCollections
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v1 = MEMORY[0x1E69789F0];
-  v5[0] = a1;
+  v5[0] = self;
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   v3 = [v1 fetchHighlightsInSharedLibrarySharingSuggestions:v2];
 
@@ -300,16 +300,16 @@ LABEL_36:
 
 - (__CFString)px_sl_title
 {
-  v2 = [a1 startDate];
-  if (v2 && (v3 = v2, [a1 endDate], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
+  startDate = [self startDate];
+  if (startDate && (v3 = startDate, [self endDate], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = [a1 startDate];
-    v6 = [a1 endDate];
-    v7 = [v5 earlierDate:v6];
+    startDate2 = [self startDate];
+    endDate = [self endDate];
+    v7 = [startDate2 earlierDate:endDate];
 
-    v8 = [a1 startDate];
-    v9 = [a1 endDate];
-    v10 = [v8 laterDate:v9];
+    startDate3 = [self startDate];
+    endDate2 = [self endDate];
+    v10 = [startDate3 laterDate:endDate2];
 
     [v10 timeIntervalSinceDate:v7];
     v12 = [v7 dateByAddingTimeInterval:v11 * 0.5];

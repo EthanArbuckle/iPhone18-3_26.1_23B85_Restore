@@ -1,30 +1,30 @@
 @interface MobileAssetKeyManager
-- (BOOL)decryptContentEncryptedAssetAtURL:(id)a3 assetAttributes:(id)a4 error:(id *)a5;
-- (BOOL)decryptFileAtURL:(id)a3 metadata:(id)a4 key:(id)a5 error:(id *)a6;
-- (BOOL)isWellFormedTokenFileName:(id)a3;
-- (BOOL)keyManagerResult:(int64_t)a3 underlying:(id)a4 description:(id)a5 error:(id *)a6;
-- (BOOL)shouldDisableUIForUsage:(id)a3 assetAttributes:(id)a4 downloadOptions:(id)a5;
+- (BOOL)decryptContentEncryptedAssetAtURL:(id)l assetAttributes:(id)attributes error:(id *)error;
+- (BOOL)decryptFileAtURL:(id)l metadata:(id)metadata key:(id)key error:(id *)error;
+- (BOOL)isWellFormedTokenFileName:(id)name;
+- (BOOL)keyManagerResult:(int64_t)result underlying:(id)underlying description:(id)description error:(id *)error;
+- (BOOL)shouldDisableUIForUsage:(id)usage assetAttributes:(id)attributes downloadOptions:(id)options;
 - (MobileAssetKeyManager)init;
-- (MobileAssetKeyManager)initWithDelegate:(id)a3;
-- (id)base64EncodedStringFromString:(id)a3;
-- (id)buildKeyManagerError:(int64_t)a3 underlying:(id)a4 description:(id)a5;
-- (id)copyDawToken:(BOOL)a3 useAppleConnect:(BOOL)a4 error:(id *)a5;
+- (MobileAssetKeyManager)initWithDelegate:(id)delegate;
+- (id)base64EncodedStringFromString:(id)string;
+- (id)buildKeyManagerError:(int64_t)error underlying:(id)underlying description:(id)description;
+- (id)copyDawToken:(BOOL)token useAppleConnect:(BOOL)connect error:(id *)error;
 - (id)copyDawTokenFileName;
 - (id)copyDawTokenFromOverrides;
-- (id)copyDawTokenInternal:(BOOL)a3 useAppleConnect:(BOOL)a4 error:(id *)a5;
-- (id)copyPersonalizationSSOToken:(BOOL)a3 error:(id *)a4;
-- (id)copyPersonalizationSSOTokenInternal:(BOOL)a3 error:(id *)a4;
-- (id)createGetDecryptionKeyRequestForKnox:(id)a3 authData:(id)a4 keyFetchBaseURLString:(id)a5 apTicket:(id)a6 assetAttributes:(id)a7 error:(id *)a8;
+- (id)copyDawTokenInternal:(BOOL)internal useAppleConnect:(BOOL)connect error:(id *)error;
+- (id)copyPersonalizationSSOToken:(BOOL)token error:(id *)error;
+- (id)copyPersonalizationSSOTokenInternal:(BOOL)internal error:(id *)error;
+- (id)createGetDecryptionKeyRequestForKnox:(id)knox authData:(id)data keyFetchBaseURLString:(id)string apTicket:(id)ticket assetAttributes:(id)attributes error:(id *)error;
 - (id)fetchDSMEKey;
-- (id)getDecryptionKey:(id)a3 downloadOptions:(id)a4 apTicket:(id)a5 skipKnoxLookup:(BOOL)a6 disableUI:(BOOL)a7 error:(id *)a8;
-- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptions:(id)a3 downloadOptions:(id)a4 error:(id *)a5;
-- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptionsInternal:(id)a3 downloadOptions:(id)a4 error:(id *)a5;
-- (id)getDecryptionKeyFromKnoxUsingAssetAttributes:(id)a3 downloadOptions:(id)a4 apTicket:(id)a5 disableUI:(BOOL)a6 error:(id *)a7;
-- (id)getDecryptionKeyFromKnoxUsingAssetAttributesInternal:(id)a3 downloadOptions:(id)a4 apTicket:(id)a5 disableUI:(BOOL)a6 error:(id *)a7;
-- (id)normalizedAuthToken:(id)a3 source:(id)a4;
-- (id)requestServerForDecryptionKey:(id)a3 recipientPrivateKey:(__SecKey *)a4 downloadOptions:(id)a5 disableUI:(BOOL)a6 err:(id *)a7;
-- (void)appendPEMEncodedCertificate:(__SecCertificate *)a3 toString:(id)a4;
-- (void)appendPEMEncodedData:(id)a3 type:(id)a4 toString:(id)a5;
+- (id)getDecryptionKey:(id)key downloadOptions:(id)options apTicket:(id)ticket skipKnoxLookup:(BOOL)lookup disableUI:(BOOL)i error:(id *)error;
+- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptions:(id)options downloadOptions:(id)downloadOptions error:(id *)error;
+- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptionsInternal:(id)internal downloadOptions:(id)options error:(id *)error;
+- (id)getDecryptionKeyFromKnoxUsingAssetAttributes:(id)attributes downloadOptions:(id)options apTicket:(id)ticket disableUI:(BOOL)i error:(id *)error;
+- (id)getDecryptionKeyFromKnoxUsingAssetAttributesInternal:(id)internal downloadOptions:(id)options apTicket:(id)ticket disableUI:(BOOL)i error:(id *)error;
+- (id)normalizedAuthToken:(id)token source:(id)source;
+- (id)requestServerForDecryptionKey:(id)key recipientPrivateKey:(__SecKey *)privateKey downloadOptions:(id)options disableUI:(BOOL)i err:(id *)err;
+- (void)appendPEMEncodedCertificate:(__SecCertificate *)certificate toString:(id)string;
+- (void)appendPEMEncodedData:(id)data type:(id)type toString:(id)string;
 - (void)dealloc;
 @end
 
@@ -38,23 +38,23 @@
   return v4;
 }
 
-- (MobileAssetKeyManager)initWithDelegate:(id)a3
+- (MobileAssetKeyManager)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = MobileAssetKeyManager;
   v6 = [(MobileAssetKeyManager *)&v22 init];
   if (v6)
   {
-    v7 = [@"com.apple.MobileAsset.keyManagerQueue" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.keyManagerQueue" UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     keyManagerQueue = v6->_keyManagerQueue;
     v6->_keyManagerQueue = v9;
 
-    v11 = [@"com.apple.MobileAsset.KeyManager.SSOQueue" UTF8String];
+    uTF8String2 = [@"com.apple.MobileAsset.KeyManager.SSOQueue" UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String2, v12);
     ssoQueue = v6->_ssoQueue;
     v6->_ssoQueue = v13;
 
@@ -68,10 +68,10 @@
     [(NSURLSessionConfiguration *)v6->_knoxSessionConfig setWaitsForConnectivity:1];
     [(NSURLSessionConfiguration *)v6->_knoxSessionConfig set_downloadFileProtectionType:NSFileProtectionNone];
     [(NSURLSessionConfiguration *)v6->_knoxSessionConfig set_shouldSkipPreferredClientCertificateLookup:1];
-    objc_storeStrong(&v6->_downloadSessionDelegate, a3);
+    objc_storeStrong(&v6->_downloadSessionDelegate, delegate);
     v17 = v6->_knoxSessionConfig;
-    v18 = [v5 queue];
-    v19 = [NSURLSession sessionWithConfiguration:v17 delegate:v5 delegateQueue:v18];
+    queue = [delegateCopy queue];
+    v19 = [NSURLSession sessionWithConfiguration:v17 delegate:delegateCopy delegateQueue:queue];
     knoxSession = v6->_knoxSession;
     v6->_knoxSession = v19;
   }
@@ -87,50 +87,50 @@
   [(MobileAssetKeyManager *)&v3 dealloc];
 }
 
-- (id)buildKeyManagerError:(int64_t)a3 underlying:(id)a4 description:(id)a5
+- (id)buildKeyManagerError:(int64_t)error underlying:(id)underlying description:(id)description
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 domain];
-  v10 = [v9 isEqualToString:@"MAKeyManagerErrorDomain"];
+  underlyingCopy = underlying;
+  descriptionCopy = description;
+  domain = [underlyingCopy domain];
+  v10 = [domain isEqualToString:@"MAKeyManagerErrorDomain"];
 
   if (v10)
   {
-    v11 = v7;
+    v11 = underlyingCopy;
   }
 
   else
   {
     v12 = objc_opt_new();
-    [v12 setSafeObject:v8 forKey:NSLocalizedDescriptionKey];
-    if (v7)
+    [v12 setSafeObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
+    if (underlyingCopy)
     {
-      [v12 setSafeObject:v7 forKey:NSUnderlyingErrorKey];
+      [v12 setSafeObject:underlyingCopy forKey:NSUnderlyingErrorKey];
     }
 
-    v11 = [NSError errorWithDomain:@"MAKeyManagerErrorDomain" code:a3 userInfo:v12];
+    v11 = [NSError errorWithDomain:@"MAKeyManagerErrorDomain" code:error userInfo:v12];
   }
 
   return v11;
 }
 
-- (BOOL)keyManagerResult:(int64_t)a3 underlying:(id)a4 description:(id)a5 error:(id *)a6
+- (BOOL)keyManagerResult:(int64_t)result underlying:(id)underlying description:(id)description error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [(MobileAssetKeyManager *)self buildKeyManagerError:a3 underlying:a4 description:a5];
+    *error = [(MobileAssetKeyManager *)self buildKeyManagerError:result underlying:underlying description:description];
   }
 
   return 0;
 }
 
-- (BOOL)isWellFormedTokenFileName:(id)a3
+- (BOOL)isWellFormedTokenFileName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (isWellFormedTokenFileName__once == -1)
   {
-    if (v3)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -429,12 +429,12 @@ LABEL_15:
 LABEL_32:
 }
 
-- (id)normalizedAuthToken:(id)a3 source:(id)a4
+- (id)normalizedAuthToken:(id)token source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  tokenCopy = token;
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [tokenCopy stringByTrimmingCharactersInSet:v7];
 
   v9 = [v8 rangeOfString:@" "];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -443,7 +443,7 @@ LABEL_32:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v5;
+      v18 = sourceCopy;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Read stashed token from %{public}@ (raw)", &v17, 0xCu);
     }
   }
@@ -459,7 +459,7 @@ LABEL_32:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = v5;
+      v18 = sourceCopy;
       v19 = 2114;
       v20 = v11;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Read stashed token from %{public}@ (Authorization: %{public}@)", &v17, 0x16u);
@@ -477,26 +477,26 @@ LABEL_32:
   v3 = [(MobileAssetKeyManager *)self copyPreferencesValue:@"MobileAssetTokenOverride"];
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v4 = [p_super copyDawTokenFileName];
-    if (!v4)
+    copyDawTokenFileName = [p_super copyDawTokenFileName];
+    if (!copyDawTokenFileName)
     {
       goto LABEL_17;
     }
 
     v5 = [NSURL fileURLWithPath:@"/private/var/MobileSoftwareUpdate/MobileAsset/" isDirectory:1];
-    v6 = [NSURL fileURLWithPath:v4 isDirectory:0 relativeToURL:v5];
-    v7 = [v6 absoluteURL];
+    v6 = [NSURL fileURLWithPath:copyDawTokenFileName isDirectory:0 relativeToURL:v5];
+    absoluteURL = [v6 absoluteURL];
 
     v8 = _MAClientLog(@"KeyManager");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v7;
+      v19 = absoluteURL;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Attempting to read stashed token from %@", buf, 0xCu);
     }
 
     v17 = 0;
-    v9 = [NSFileHandle fileHandleForReadingFromURL:v7 error:&v17];
+    v9 = [NSFileHandle fileHandleForReadingFromURL:absoluteURL error:&v17];
     v10 = v17;
     if (v9)
     {
@@ -518,7 +518,7 @@ LABEL_32:
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v19 = v7;
+        v19 = absoluteURL;
         v20 = 2112;
         v21 = v12;
         _os_log_impl(&dword_0, p_super, OS_LOG_TYPE_ERROR, "Failed to read stashed token from %@: %@", buf, 0x16u);
@@ -531,7 +531,7 @@ LABEL_32:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v19 = v7;
+        v19 = absoluteURL;
         v20 = 2112;
         v21 = v10;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Failed to get handle for token file %@: %@", buf, 0x16u);
@@ -552,20 +552,20 @@ LABEL_17:
   }
 
   p_super = [p_super normalizedAuthToken:v3 source:@"defaults"];
-  v4 = 0;
+  copyDawTokenFileName = 0;
 LABEL_18:
 
   return p_super;
 }
 
-- (id)copyDawTokenInternal:(BOOL)a3 useAppleConnect:(BOOL)a4 error:(id *)a5
+- (id)copyDawTokenInternal:(BOOL)internal useAppleConnect:(BOOL)connect error:(id *)error
 {
-  v7 = a3;
+  internalCopy = internal;
   dispatch_assert_queue_V2(self->_ssoQueue);
-  v9 = [(MobileAssetKeyManager *)self copyDawTokenFromOverrides];
+  copyDawTokenFromOverrides = [(MobileAssetKeyManager *)self copyDawTokenFromOverrides];
   v10 = _MAClientLog(@"KeyManager");
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (copyDawTokenFromOverrides)
   {
     if (v11)
     {
@@ -578,7 +578,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!a4)
+  if (!connect)
   {
     if (v11)
     {
@@ -586,7 +586,7 @@ LABEL_20:
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Not querying AppleConnect for token", &v22, 2u);
     }
 
-    v9 = 0;
+    copyDawTokenFromOverrides = 0;
     goto LABEL_20;
   }
 
@@ -602,7 +602,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"default";
-      if (v7)
+      if (internalCopy)
       {
         v13 = @"silent";
       }
@@ -612,10 +612,10 @@ LABEL_20:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "SSO supported. Attempting to get daw token using %@ interactivity level", &v22, 0xCu);
     }
 
-    v9 = copyDawToken(@"177666", v7);
+    copyDawTokenFromOverrides = copyDawToken(@"177666", internalCopy);
     v14 = _MAClientLog(@"KeyManager");
     v15 = v14;
-    if (v9)
+    if (copyDawTokenFromOverrides)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -634,7 +634,7 @@ LABEL_20:
     }
 
     v19 = @"Failed to read daw token from AppleConnect";
-    v20 = self;
+    selfCopy2 = self;
     v21 = 30016;
   }
 
@@ -649,27 +649,27 @@ LABEL_20:
     }
 
     v19 = @"AppleConnect not installed in this environment";
-    v20 = self;
+    selfCopy2 = self;
     v21 = 30015;
   }
 
-  v16 = [(MobileAssetKeyManager *)v20 buildKeyManagerError:v21 underlying:0 description:v19];
-  v9 = 0;
-  if (a5 && v16)
+  v16 = [(MobileAssetKeyManager *)selfCopy2 buildKeyManagerError:v21 underlying:0 description:v19];
+  copyDawTokenFromOverrides = 0;
+  if (error && v16)
   {
     v16 = v16;
-    v9 = 0;
-    *a5 = v16;
+    copyDawTokenFromOverrides = 0;
+    *error = v16;
   }
 
 LABEL_21:
 
-  return v9;
+  return copyDawTokenFromOverrides;
 }
 
-- (id)copyPersonalizationSSOTokenInternal:(BOOL)a3 error:(id *)a4
+- (id)copyPersonalizationSSOTokenInternal:(BOOL)internal error:(id *)error
 {
-  v5 = a3;
+  internalCopy = internal;
   dispatch_assert_queue_V2(self->_ssoQueue);
   v7 = _MAClientLog(@"KeyManager");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -686,7 +686,7 @@ LABEL_21:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"default";
-      if (v5)
+      if (internalCopy)
       {
         v11 = @"silent";
       }
@@ -697,7 +697,7 @@ LABEL_21:
     }
 
     v24 = @"stealthMode";
-    v12 = [NSNumber numberWithBool:v5];
+    v12 = [NSNumber numberWithBool:internalCopy];
     v25 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
@@ -715,7 +715,7 @@ LABEL_21:
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Successfully read out token", buf, 2u);
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_22;
       }
@@ -724,7 +724,7 @@ LABEL_20:
       if (v15)
       {
         v20 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       goto LABEL_22;
@@ -741,7 +741,7 @@ LABEL_20:
 
     v16 = 0;
     v15 = v19;
-    if (a4)
+    if (error)
     {
       goto LABEL_20;
     }
@@ -760,7 +760,7 @@ LABEL_20:
     v13 = 0;
     v14 = 0;
     v16 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_20;
     }
@@ -772,29 +772,29 @@ LABEL_22:
   return v21;
 }
 
-- (BOOL)shouldDisableUIForUsage:(id)a3 assetAttributes:(id)a4 downloadOptions:(id)a5
+- (BOOL)shouldDisableUIForUsage:(id)usage assetAttributes:(id)attributes downloadOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  usageCopy = usage;
+  attributesCopy = attributes;
+  optionsCopy = options;
   v10 = +[NSMutableArray array];
-  if (v9)
+  if (optionsCopy)
   {
-    if ([v9 discretionary])
+    if ([optionsCopy discretionary])
     {
       [v10 addObject:@"discretionary download"];
     }
 
-    if (__isPlatformVersionAtLeast(2, 17, 0, 0) && [v9 disableUI])
+    if (__isPlatformVersionAtLeast(2, 17, 0, 0) && [optionsCopy disableUI])
     {
       [v10 addObject:@"non-ui download"];
     }
   }
 
-  if (v8)
+  if (attributesCopy)
   {
-    v11 = [v8 objectForKeyedSubscript:@"AssetType"];
-    v12 = [v8 objectForKeyedSubscript:@"_AllowUserInteraction"];
+    v11 = [attributesCopy objectForKeyedSubscript:@"AssetType"];
+    v12 = [attributesCopy objectForKeyedSubscript:@"_AllowUserInteraction"];
     if (!v12)
     {
       if (isUserInteractionAllowedType(v11))
@@ -828,7 +828,7 @@ LABEL_22:
     {
       v16 = [v10 componentsJoinedByString:{@", "}];
       v18 = 138543874;
-      v19 = v7;
+      v19 = usageCopy;
       v20 = 2114;
       v21 = v11;
       v22 = 2114;
@@ -840,7 +840,7 @@ LABEL_22:
   else if (v15)
   {
     v18 = 138543618;
-    v19 = v7;
+    v19 = usageCopy;
     v20 = 2114;
     v21 = v11;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "AppleConnect prompt allowed for %{public}@ (%{public}@)", &v18, 0x16u);
@@ -849,51 +849,51 @@ LABEL_22:
   return v13 != 0;
 }
 
-- (void)appendPEMEncodedData:(id)a3 type:(id)a4 toString:(id)a5
+- (void)appendPEMEncodedData:(id)data type:(id)type toString:(id)string
 {
-  v7 = a5;
-  v10 = a4;
-  v8 = a3;
-  [v7 appendFormat:@"-----BEGIN %@-----\n", v10];
-  v9 = [v8 base64EncodedStringWithOptions:33];
+  stringCopy = string;
+  typeCopy = type;
+  dataCopy = data;
+  [stringCopy appendFormat:@"-----BEGIN %@-----\n", typeCopy];
+  v9 = [dataCopy base64EncodedStringWithOptions:33];
 
-  [v7 appendString:v9];
-  [v7 appendFormat:@"\n-----END %@-----\n", v10];
+  [stringCopy appendString:v9];
+  [stringCopy appendFormat:@"\n-----END %@-----\n", typeCopy];
 }
 
-- (void)appendPEMEncodedCertificate:(__SecCertificate *)a3 toString:(id)a4
+- (void)appendPEMEncodedCertificate:(__SecCertificate *)certificate toString:(id)string
 {
-  v6 = a4;
-  v7 = SecCertificateCopyData(a3);
-  [(MobileAssetKeyManager *)self appendPEMEncodedData:v7 type:@"CERTIFICATE" toString:v6];
+  stringCopy = string;
+  v7 = SecCertificateCopyData(certificate);
+  [(MobileAssetKeyManager *)self appendPEMEncodedData:v7 type:@"CERTIFICATE" toString:stringCopy];
 }
 
-- (id)base64EncodedStringFromString:(id)a3
+- (id)base64EncodedStringFromString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   return v4;
 }
 
-- (id)createGetDecryptionKeyRequestForKnox:(id)a3 authData:(id)a4 keyFetchBaseURLString:(id)a5 apTicket:(id)a6 assetAttributes:(id)a7 error:(id *)a8
+- (id)createGetDecryptionKeyRequestForKnox:(id)knox authData:(id)data keyFetchBaseURLString:(id)string apTicket:(id)ticket assetAttributes:(id)attributes error:(id *)error
 {
-  v13 = a3;
-  v45 = a4;
-  v14 = a5;
-  v44 = a6;
-  v15 = a7;
-  v16 = [(MobileAssetKeyManager *)self keyManagerQueue];
-  dispatch_assert_queue_V2(v16);
+  knoxCopy = knox;
+  dataCopy = data;
+  stringCopy = string;
+  ticketCopy = ticket;
+  attributesCopy = attributes;
+  keyManagerQueue = [(MobileAssetKeyManager *)self keyManagerQueue];
+  dispatch_assert_queue_V2(keyManagerQueue);
 
-  v42 = v14;
-  v39 = [v14 stringByAppendingString:@"/keys/fetch"];
+  v42 = stringCopy;
+  v39 = [stringCopy stringByAppendingString:@"/keys/fetch"];
   v40 = [NSURL URLWithString:?];
   v17 = [NSMutableURLRequest requestWithURL:?];
   v18 = objc_opt_new();
   v19 = MGCopyAnswer();
-  v41 = v15;
-  v20 = [v15 objectForKeyedSubscript:@"AssetType"];
+  v41 = attributesCopy;
+  v20 = [attributesCopy objectForKeyedSubscript:@"AssetType"];
   v21 = @"unknownAssetType";
   if (v20)
   {
@@ -912,7 +912,7 @@ LABEL_22:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v24 = v13;
+  v24 = knoxCopy;
   v25 = [v24 countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v25)
   {
@@ -939,8 +939,8 @@ LABEL_22:
   v29 = [(MobileAssetKeyManager *)self base64EncodedStringFromString:v23];
   [(__CFString *)v18 setObject:v29 forKeyedSubscript:@"cert-chain"];
 
-  [(__CFString *)v18 setObject:v45 forKeyedSubscript:@"auth-data"];
-  [(__CFString *)v18 setObject:v44 forKeyedSubscript:@"ap-ticket"];
+  [(__CFString *)v18 setObject:dataCopy forKeyedSubscript:@"auth-data"];
+  [(__CFString *)v18 setObject:ticketCopy forKeyedSubscript:@"ap-ticket"];
   if ([NSJSONSerialization isValidJSONObject:v18])
   {
     v30 = _MAClientLog(@"KeyManager");
@@ -997,12 +997,12 @@ LABEL_22:
   }
 
   v17 = 0;
-  if (a8 && v33)
+  if (error && v33)
   {
     v35 = v33;
     v17 = 0;
     v31 = 0;
-    *a8 = v33;
+    *error = v33;
   }
 
   else
@@ -1016,10 +1016,10 @@ LABEL_24:
   return v17;
 }
 
-- (id)requestServerForDecryptionKey:(id)a3 recipientPrivateKey:(__SecKey *)a4 downloadOptions:(id)a5 disableUI:(BOOL)a6 err:(id *)a7
+- (id)requestServerForDecryptionKey:(id)key recipientPrivateKey:(__SecKey *)privateKey downloadOptions:(id)options disableUI:(BOOL)i err:(id *)err
 {
-  v11 = a3;
-  v12 = a5;
+  keyCopy = key;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_keyManagerQueue);
   v58 = 0;
   v59 = &v58;
@@ -1045,7 +1045,7 @@ LABEL_24:
   v43 = &v58;
   v40[4] = self;
   v44 = &v52;
-  v45 = a4;
+  privateKeyCopy = privateKey;
   v13 = dispatch_semaphore_create(0);
   v41 = v13;
   v14 = objc_retainBlock(v40);
@@ -1057,12 +1057,12 @@ LABEL_24:
   v25[1] = 3221225472;
   v25[2] = __105__MobileAssetKeyManager_requestServerForDecryptionKey_recipientPrivateKey_downloadOptions_disableUI_err___block_invoke_1290;
   v25[3] = &unk_4B6570;
-  v15 = v12;
+  v15 = optionsCopy;
   v31 = &v36;
-  v35 = a6;
+  iCopy = i;
   v26 = v15;
-  v27 = self;
-  v16 = v11;
+  selfCopy = self;
+  v16 = keyCopy;
   v28 = v16;
   v32 = &v46;
   v33 = &v52;
@@ -1079,12 +1079,12 @@ LABEL_24:
     if (*(v59 + 24) != 1 || (v37[3] & 1) != 0 || ((v19[2])(v19, 1, 1), (v20 = v53[5]) == 0))
     {
       v20 = 0;
-      if (a7)
+      if (err)
       {
         v21 = v47[5];
         if (v21)
         {
-          *a7 = v21;
+          *err = v21;
           v20 = v53[5];
         }
       }
@@ -1467,22 +1467,22 @@ LABEL_30:
 LABEL_31:
 }
 
-- (id)getDecryptionKeyFromKnoxUsingAssetAttributesInternal:(id)a3 downloadOptions:(id)a4 apTicket:(id)a5 disableUI:(BOOL)a6 error:(id *)a7
+- (id)getDecryptionKeyFromKnoxUsingAssetAttributesInternal:(id)internal downloadOptions:(id)options apTicket:(id)ticket disableUI:(BOOL)i error:(id *)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(MobileAssetKeyManager *)self keyManagerQueue];
-  dispatch_assert_queue_V2(v15);
+  iCopy = i;
+  internalCopy = internal;
+  optionsCopy = options;
+  ticketCopy = ticket;
+  keyManagerQueue = [(MobileAssetKeyManager *)self keyManagerQueue];
+  dispatch_assert_queue_V2(keyManagerQueue);
 
   v54 = 0;
   v16 = objc_autoreleasePoolPush();
   v17 = v16;
-  if (v12)
+  if (internalCopy)
   {
-    v51 = v13;
-    v18 = [v12 objectForKeyedSubscript:@"__WKMSAuthData"];
+    v51 = optionsCopy;
+    v18 = [internalCopy objectForKeyedSubscript:@"__WKMSAuthData"];
     if (!v18)
     {
       v34 = _MAClientLog(@"KeyManager");
@@ -1498,7 +1498,7 @@ LABEL_31:
     }
 
     v19 = v18;
-    v20 = [v12 objectForKeyedSubscript:@"__WKMSURL"];
+    v20 = [internalCopy objectForKeyedSubscript:@"__WKMSURL"];
     v21 = _MAClientLog(@"KeyManager");
     v22 = v21;
     if (!v20)
@@ -1516,7 +1516,7 @@ LABEL_36:
 LABEL_37:
       v32 = 0;
       v33 = 0;
-      v13 = v51;
+      optionsCopy = v51;
       goto LABEL_38;
     }
 
@@ -1531,27 +1531,27 @@ LABEL_37:
     if (os_variant_has_internal_content())
     {
       v23 = [(MobileAssetKeyManager *)self copyPreferencesValue:@"DisableBAAForWKMS"];
-      v24 = [v23 BOOLValue];
+      bOOLValue = [v23 BOOLValue];
 
-      v25 = [(MobileAssetKeyManager *)self downloadSessionDelegate];
-      if (v24)
+      downloadSessionDelegate = [(MobileAssetKeyManager *)self downloadSessionDelegate];
+      if (bOOLValue)
       {
 LABEL_20:
-        v35 = [v25 copyKeyAndSelfSignedCertificateChain:&v54];
+        v35 = [downloadSessionDelegate copyKeyAndSelfSignedCertificateChain:&v54];
         if (v35)
         {
 LABEL_21:
           v33 = v35;
-          v48 = v25;
+          v48 = downloadSessionDelegate;
           v50 = v20;
           v53 = 0;
-          v36 = self;
-          v37 = [(MobileAssetKeyManager *)self createGetDecryptionKeyRequestForKnox:v54 authData:v19 keyFetchBaseURLString:v50 apTicket:v14 assetAttributes:v12 error:&v53];
+          selfCopy = self;
+          v37 = [(MobileAssetKeyManager *)self createGetDecryptionKeyRequestForKnox:v54 authData:v19 keyFetchBaseURLString:v50 apTicket:ticketCopy assetAttributes:internalCopy error:&v53];
           v38 = v53;
           v39 = v38;
           if (!v37 || v38)
           {
-            v31 = [(MobileAssetKeyManager *)v36 buildKeyManagerError:30009 underlying:v38 description:@"Failed to create decryptionKeyRequest for knox"];
+            v31 = [(MobileAssetKeyManager *)selfCopy buildKeyManagerError:30009 underlying:v38 description:@"Failed to create decryptionKeyRequest for knox"];
             v43 = _MAClientLog(@"KeyManager");
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
@@ -1566,7 +1566,7 @@ LABEL_21:
           else
           {
             v52 = 0;
-            v32 = [(MobileAssetKeyManager *)v36 requestServerForDecryptionKey:v37 recipientPrivateKey:v33 downloadOptions:v51 disableUI:v8 err:&v52];
+            v32 = [(MobileAssetKeyManager *)selfCopy requestServerForDecryptionKey:v37 recipientPrivateKey:v33 downloadOptions:v51 disableUI:iCopy err:&v52];
             v40 = v52;
             v41 = v40;
             if (!v32 || (v31 = 0, v40))
@@ -1579,16 +1579,16 @@ LABEL_21:
                 _os_log_impl(&dword_0, v42, OS_LOG_TYPE_ERROR, "[KnoxKeyRead]: %@", buf, 0xCu);
               }
 
-              v31 = [(MobileAssetKeyManager *)v36 buildKeyManagerError:30010 underlying:v41 description:@"Request to knox for decryption key returned failure"];
+              v31 = [(MobileAssetKeyManager *)selfCopy buildKeyManagerError:30010 underlying:v41 description:@"Request to knox for decryption key returned failure"];
             }
           }
 
-          v13 = v51;
+          optionsCopy = v51;
           v17 = v49;
           goto LABEL_38;
         }
 
-        v44 = v25;
+        v44 = downloadSessionDelegate;
         v45 = _MAClientLog(@"KeyManager");
         v17 = v49;
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -1606,10 +1606,10 @@ LABEL_21:
 
     else
     {
-      v25 = [(MobileAssetKeyManager *)self downloadSessionDelegate];
+      downloadSessionDelegate = [(MobileAssetKeyManager *)self downloadSessionDelegate];
     }
 
-    v35 = [v25 copyKeyAndBAACerificateChain:&v54];
+    v35 = [downloadSessionDelegate copyKeyAndBAACerificateChain:&v54];
     if (v35)
     {
       goto LABEL_21;
@@ -1618,8 +1618,8 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  v26 = a7;
-  v27 = v14;
+  errorCopy = error;
+  v27 = ticketCopy;
   v28 = v16;
   v29 = [NSString stringWithFormat:@"Missing AssetAttributes"];
   v30 = _MAClientLog(@"KeyManager");
@@ -1635,15 +1635,15 @@ LABEL_21:
   v32 = 0;
   v33 = 0;
   v17 = v28;
-  v14 = v27;
-  a7 = v26;
-  v12 = 0;
+  ticketCopy = v27;
+  error = errorCopy;
+  internalCopy = 0;
 LABEL_38:
   objc_autoreleasePoolPop(v17);
-  if (a7 && v31)
+  if (error && v31)
   {
     v46 = v31;
-    *a7 = v31;
+    *error = v31;
   }
 
   if (v33)
@@ -1654,22 +1654,22 @@ LABEL_38:
   return v32;
 }
 
-- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptionsInternal:(id)a3 downloadOptions:(id)a4 error:(id *)a5
+- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptionsInternal:(id)internal downloadOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MobileAssetKeyManager *)self keyManagerQueue];
-  dispatch_assert_queue_V2(v10);
+  internalCopy = internal;
+  optionsCopy = options;
+  keyManagerQueue = [(MobileAssetKeyManager *)self keyManagerQueue];
+  dispatch_assert_queue_V2(keyManagerQueue);
 
   v11 = objc_autoreleasePoolPush();
-  if (v8 | v9)
+  if (internalCopy | optionsCopy)
   {
-    if (v8)
+    if (internalCopy)
     {
-      v12 = [v8 objectForKeyedSubscript:@"ArchiveDecryptionKey"];
+      v12 = [internalCopy objectForKeyedSubscript:@"ArchiveDecryptionKey"];
       if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v13 = [[NSData alloc] initWithBase64EncodedString:v12 options:0];
+        decryptionKey2 = [[NSData alloc] initWithBase64EncodedString:v12 options:0];
         v14 = _MAClientLog(@"KeyManager");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -1680,10 +1680,10 @@ LABEL_38:
 
       else
       {
-        v13 = 0;
+        decryptionKey2 = 0;
       }
 
-      if (!v9)
+      if (!optionsCopy)
       {
         goto LABEL_20;
       }
@@ -1691,37 +1691,37 @@ LABEL_38:
 
     else
     {
-      v13 = 0;
-      if (!v9)
+      decryptionKey2 = 0;
+      if (!optionsCopy)
       {
         goto LABEL_20;
       }
     }
 
-    if (!v13)
+    if (!decryptionKey2)
     {
-      v17 = [v9 decryptionKey];
+      decryptionKey = [optionsCopy decryptionKey];
 
-      if (!v17)
+      if (!decryptionKey)
       {
-        v13 = 0;
-        if (!v8)
+        decryptionKey2 = 0;
+        if (!internalCopy)
         {
           goto LABEL_52;
         }
 
 LABEL_21:
-        if (!v13)
+        if (!decryptionKey2)
         {
-          v19 = [v8 objectForKey:@"ArchiveDecryptionKeyFile"];
+          v19 = [internalCopy objectForKey:@"ArchiveDecryptionKeyFile"];
           v20 = v19;
           if (v19 && [v19 hasPrefix:@"com.apple.MobileAsset.DecryptionKey."])
           {
-            v47 = self;
+            selfCopy = self;
             v49 = v11;
-            v50 = a5;
-            v51 = v9;
-            v52 = v8;
+            errorCopy = error;
+            v51 = optionsCopy;
+            v52 = internalCopy;
             v21 = [NSMutableArray alloc];
             v22 = [@"/var/MobileAsset/AssetsV2/DecryptionKeys" stringByAppendingPathComponent:v20];
             v63 = v22;
@@ -1779,11 +1779,11 @@ LABEL_28:
                 if ([v35 fileSize])
                 {
                   v37 = +[NSFileManager defaultManager];
-                  v13 = [v37 contentsAtPath:v31];
+                  decryptionKey2 = [v37 contentsAtPath:v31];
 
-                  if (v13)
+                  if (decryptionKey2)
                   {
-                    if ([v13 length]== &stru_20.nsects + 1 || [v13 length]== &stru_20)
+                    if ([decryptionKey2 length]== &stru_20.nsects + 1 || [decryptionKey2 length]== &stru_20)
                     {
                       v44 = _MAClientLog(@"KeyManager");
                       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -1795,15 +1795,15 @@ LABEL_28:
 
                       v43 = v26;
                       v16 = 0;
-                      v9 = v51;
-                      v8 = v52;
+                      optionsCopy = v51;
+                      internalCopy = v52;
                       goto LABEL_56;
                     }
 
                     v38 = _MAClientLog(@"KeyManager");
                     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                     {
-                      v39 = [v13 length];
+                      v39 = [decryptionKey2 length];
                       *buf = 134218242;
                       v59 = v39;
                       v60 = 2114;
@@ -1814,12 +1814,12 @@ LABEL_28:
                     goto LABEL_46;
                   }
 
-                  v13 = _MAClientLog(@"KeyManager");
-                  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+                  decryptionKey2 = _MAClientLog(@"KeyManager");
+                  if (os_log_type_enabled(decryptionKey2, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543362;
                     v59 = v31;
-                    v40 = v13;
+                    v40 = decryptionKey2;
                     v41 = "[KeyFromMetaDataOrOptions]: Found decryption key path in attributes, but no key was loaded from path: %{public}@";
                     v42 = 12;
                     goto LABEL_45;
@@ -1828,14 +1828,14 @@ LABEL_28:
 
                 else
                 {
-                  v13 = _MAClientLog(@"KeyManager");
-                  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+                  decryptionKey2 = _MAClientLog(@"KeyManager");
+                  if (os_log_type_enabled(decryptionKey2, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543618;
                     v59 = v31;
                     v60 = 2114;
                     v61 = v36;
-                    v40 = v13;
+                    v40 = decryptionKey2;
                     v41 = "[KeyFromMetaDataOrOptions]: Found decryption key path in attributes, but file does not have any contents at path: %{public}@, error: %{public}@";
                     v42 = 22;
 LABEL_45:
@@ -1859,21 +1859,21 @@ LABEL_47:
               }
             }
 
-            v16 = [(MobileAssetKeyManager *)v47 buildKeyManagerError:30012 underlying:0 description:@"Unable to read valid key from provided key file"];
-            v13 = 0;
-            v9 = v51;
-            v8 = v52;
+            v16 = [(MobileAssetKeyManager *)selfCopy buildKeyManagerError:30012 underlying:0 description:@"Unable to read valid key from provided key file"];
+            decryptionKey2 = 0;
+            optionsCopy = v51;
+            internalCopy = v52;
             v43 = v26;
 LABEL_56:
             v11 = v49;
-            a5 = v50;
+            error = errorCopy;
             v20 = v48;
           }
 
           else
           {
             v16 = 0;
-            v13 = 0;
+            decryptionKey2 = 0;
           }
 
           goto LABEL_58;
@@ -1885,7 +1885,7 @@ LABEL_52:
         goto LABEL_61;
       }
 
-      v13 = [v9 decryptionKey];
+      decryptionKey2 = [optionsCopy decryptionKey];
       v18 = _MAClientLog(@"KeyManager");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -1895,7 +1895,7 @@ LABEL_52:
     }
 
 LABEL_20:
-    if (!v8)
+    if (!internalCopy)
     {
       goto LABEL_52;
     }
@@ -1912,18 +1912,18 @@ LABEL_20:
   }
 
   v16 = [(MobileAssetKeyManager *)self buildKeyManagerError:30001 underlying:0 description:@"No attributes dict or download options passed to get decryption key function"];
-  v13 = 0;
+  decryptionKey2 = 0;
 LABEL_58:
   objc_autoreleasePoolPop(v11);
-  if (a5 && v16)
+  if (error && v16)
   {
     v45 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
 LABEL_61:
 
-  return v13;
+  return decryptionKey2;
 }
 
 - (id)fetchDSMEKey
@@ -1990,41 +1990,41 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)decryptFileAtURL:(id)a3 metadata:(id)a4 key:(id)a5 error:(id *)a6
+- (BOOL)decryptFileAtURL:(id)l metadata:(id)metadata key:(id)key error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v51 = a5;
-  v11 = [v10 objectForKeyedSubscript:@"compressed"];
+  lCopy = l;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v11 = [metadataCopy objectForKeyedSubscript:@"compressed"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v12 = 0;
+    bOOLValue = 0;
   }
 
-  v13 = [v10 objectForKeyedSubscript:@"offset"];
+  v13 = [metadataCopy objectForKeyedSubscript:@"offset"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 unsignedLongLongValue];
+    unsignedLongLongValue = [v13 unsignedLongLongValue];
   }
 
   else
   {
-    v14 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  v15 = [v10 objectForKeyedSubscript:@"tag"];
-  v16 = [v10 objectForKeyedSubscript:@"nonce"];
+  v15 = [metadataCopy objectForKeyedSubscript:@"tag"];
+  v16 = [metadataCopy objectForKeyedSubscript:@"nonce"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v47 = v12;
+    v47 = bOOLValue;
     v17 = [[NSData alloc] initWithBase64EncodedString:v15 options:0];
     v18 = [[NSData alloc] initWithBase64EncodedString:v16 options:0];
     v48 = v18;
@@ -2033,17 +2033,17 @@ LABEL_13:
     {
       ParallelCompressionEnterThreadErrorContext();
       Mutable = CFArrayCreateMutable(0, 0, &kAAByteStreamArrayCallBacks);
-      v20 = AAFileStreamOpenWithPath([v9 fileSystemRepresentation], 2, 0x1B6u);
+      v20 = AAFileStreamOpenWithPath([lCopy fileSystemRepresentation], 2, 0x1B6u);
       if (v20)
       {
         v21 = v20;
-        v44 = a6;
-        v45 = v9;
+        errorCopy = error;
+        v45 = lCopy;
         CFArrayAppendValue(Mutable, v20);
         LOBYTE(buffer) = 0;
         v22 = calloc(1uLL, 0x20uLL);
         *v22 = v21;
-        v22[2] = v14;
+        v22[2] = unsignedLongLongValue;
         v22[3] = 0;
         v23 = dispatch_data_create(&buffer, 0, 0, 0);
         v24 = v22[1];
@@ -2058,16 +2058,16 @@ LABEL_13:
         CFArrayAppendValue(Mutable, v25);
         v46 = v48;
         v41 = v49;
-        v26 = v51;
+        v26 = keyCopy;
         v27 = calloc(1uLL, 0x20uLL);
         ostream = v25;
         *v27 = v25;
         objc_storeStrong(v27 + 2, v49);
         *(v27 + 6) = -4304;
-        v28 = [v26 bytes];
+        bytes = [v26 bytes];
         v29 = [v26 length];
 
-        if (CCCryptorCreateWithMode(1u, 0xBu, 0, 0, 0, v28, v29, 0, 0, 0, 0, v27 + 1) || ([v46 bytes], objc_msgSend(v46, "length"), CCCryptorGCMSetIV()))
+        if (CCCryptorCreateWithMode(1u, 0xBu, 0, 0, 0, bytes, v29, 0, 0, 0, 0, v27 + 1) || ([v46 bytes], objc_msgSend(v46, "length"), CCCryptorGCMSetIV()))
         {
           _gcmDecryptionStreamClose(v27);
           v30 = 0;
@@ -2083,8 +2083,8 @@ LABEL_13:
 
         v31 = Mutable;
         CFArrayAppendValue(Mutable, v30);
-        a6 = v44;
-        v9 = v45;
+        error = errorCopy;
+        lCopy = v45;
         p_weak_ivar_lyt = (&MAAIRBMobileAssetOperationMetadata__metaData + 56);
         if (v47)
         {
@@ -2117,7 +2117,7 @@ LABEL_13:
           _os_log_impl(&dword_0, v39, OS_LOG_TYPE_ERROR, "[DecryptFileAtURL]: %@: %@", &buffer, 0x16u);
         }
 
-        v36 = [(MobileAssetKeyManager *)self keyManagerResult:30029 underlying:v38 description:v34 error:a6];
+        v36 = [(MobileAssetKeyManager *)self keyManagerResult:30029 underlying:v38 description:v34 error:error];
       }
 
       else
@@ -2138,7 +2138,7 @@ LABEL_13:
         _os_log_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "[DecryptFileAtURL]: %@", &buffer, 0xCu);
       }
 
-      v36 = [(MobileAssetKeyManager *)self keyManagerResult:30029 underlying:0 description:v34 error:a6];
+      v36 = [(MobileAssetKeyManager *)self keyManagerResult:30029 underlying:0 description:v34 error:error];
     }
   }
 
@@ -2153,13 +2153,13 @@ LABEL_13:
       _os_log_impl(&dword_0, v35, OS_LOG_TYPE_ERROR, "[DecryptFileAtURL]: %@", &buffer, 0xCu);
     }
 
-    v36 = [(MobileAssetKeyManager *)self keyManagerResult:30029 underlying:0 description:v34 error:a6];
+    v36 = [(MobileAssetKeyManager *)self keyManagerResult:30029 underlying:0 description:v34 error:error];
   }
 
   return v36;
 }
 
-- (id)copyDawToken:(BOOL)a3 useAppleConnect:(BOOL)a4 error:(id *)a5
+- (id)copyDawToken:(BOOL)token useAppleConnect:(BOOL)connect error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -2181,17 +2181,17 @@ LABEL_13:
   v14[3] = &unk_4B65C0;
   v14[4] = self;
   v14[5] = &v23;
-  v15 = a3;
-  v16 = a4;
+  tokenCopy = token;
+  connectCopy = connect;
   v14[6] = &v17;
   dispatch_sync(ssoQueue, v14);
   objc_autoreleasePoolPop(v9);
-  if (a5)
+  if (error)
   {
     v11 = v18[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -2216,7 +2216,7 @@ void __60__MobileAssetKeyManager_copyDawToken_useAppleConnect_error___block_invo
   *(v7 + 40) = v6;
 }
 
-- (id)copyPersonalizationSSOToken:(BOOL)a3 error:(id *)a4
+- (id)copyPersonalizationSSOToken:(BOOL)token error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -2238,16 +2238,16 @@ void __60__MobileAssetKeyManager_copyDawToken_useAppleConnect_error___block_invo
   v12[3] = &unk_4B65E8;
   v12[4] = self;
   v12[5] = &v20;
-  v13 = a3;
+  tokenCopy = token;
   v12[6] = &v14;
   dispatch_sync(ssoQueue, v12);
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v9 = v15[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -2271,10 +2271,10 @@ void __59__MobileAssetKeyManager_copyPersonalizationSSOToken_error___block_invok
   *(v6 + 40) = v5;
 }
 
-- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptions:(id)a3 downloadOptions:(id)a4 error:(id *)a5
+- (id)getDecryptionKeyFromAssetMetadataOrDownloadOptions:(id)options downloadOptions:(id)downloadOptions error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  downloadOptionsCopy = downloadOptions;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2287,26 +2287,26 @@ void __59__MobileAssetKeyManager_copyPersonalizationSSOToken_error___block_invok
   v24 = __Block_byref_object_copy__19;
   v25 = __Block_byref_object_dispose__19;
   v26 = 0;
-  v10 = [(MobileAssetKeyManager *)self keyManagerQueue];
+  keyManagerQueue = [(MobileAssetKeyManager *)self keyManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __98__MobileAssetKeyManager_getDecryptionKeyFromAssetMetadataOrDownloadOptions_downloadOptions_error___block_invoke;
   block[3] = &unk_4B6610;
   v19 = &v27;
   block[4] = self;
-  v11 = v8;
+  v11 = optionsCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = downloadOptionsCopy;
   v18 = v12;
   v20 = &v21;
-  dispatch_sync(v10, block);
+  dispatch_sync(keyManagerQueue, block);
 
-  if (a5)
+  if (error)
   {
     v13 = v22[5];
     if (v13)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -2332,11 +2332,11 @@ void __98__MobileAssetKeyManager_getDecryptionKeyFromAssetMetadataOrDownloadOpti
   *(v7 + 40) = v6;
 }
 
-- (id)getDecryptionKeyFromKnoxUsingAssetAttributes:(id)a3 downloadOptions:(id)a4 apTicket:(id)a5 disableUI:(BOOL)a6 error:(id *)a7
+- (id)getDecryptionKeyFromKnoxUsingAssetAttributes:(id)attributes downloadOptions:(id)options apTicket:(id)ticket disableUI:(BOOL)i error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  attributesCopy = attributes;
+  optionsCopy = options;
+  ticketCopy = ticket;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -2349,29 +2349,29 @@ void __98__MobileAssetKeyManager_getDecryptionKeyFromAssetMetadataOrDownloadOpti
   v32 = __Block_byref_object_copy__19;
   v33 = __Block_byref_object_dispose__19;
   v34 = 0;
-  v15 = [(MobileAssetKeyManager *)self keyManagerQueue];
+  keyManagerQueue = [(MobileAssetKeyManager *)self keyManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __111__MobileAssetKeyManager_getDecryptionKeyFromKnoxUsingAssetAttributes_downloadOptions_apTicket_disableUI_error___block_invoke;
   block[3] = &unk_4B6638;
   v26 = &v35;
   block[4] = self;
-  v16 = v12;
+  v16 = attributesCopy;
   v23 = v16;
-  v17 = v13;
+  v17 = optionsCopy;
   v24 = v17;
-  v18 = v14;
-  v28 = a6;
+  v18 = ticketCopy;
+  iCopy = i;
   v25 = v18;
   v27 = &v29;
-  dispatch_sync(v15, block);
+  dispatch_sync(keyManagerQueue, block);
 
-  if (a7)
+  if (error)
   {
     v19 = v30[5];
     if (v19)
     {
-      *a7 = v19;
+      *error = v19;
     }
   }
 
@@ -2399,11 +2399,11 @@ void __111__MobileAssetKeyManager_getDecryptionKeyFromKnoxUsingAssetAttributes_d
   *(v9 + 40) = v8;
 }
 
-- (id)getDecryptionKey:(id)a3 downloadOptions:(id)a4 apTicket:(id)a5 skipKnoxLookup:(BOOL)a6 disableUI:(BOOL)a7 error:(id *)a8
+- (id)getDecryptionKey:(id)key downloadOptions:(id)options apTicket:(id)ticket skipKnoxLookup:(BOOL)lookup disableUI:(BOOL)i error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  keyCopy = key;
+  optionsCopy = options;
+  ticketCopy = ticket;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -2416,30 +2416,30 @@ void __111__MobileAssetKeyManager_getDecryptionKeyFromKnoxUsingAssetAttributes_d
   v43 = __Block_byref_object_copy__19;
   v44 = __Block_byref_object_dispose__19;
   v45 = 0;
-  v17 = [(MobileAssetKeyManager *)self keyManagerQueue];
+  keyManagerQueue = [(MobileAssetKeyManager *)self keyManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipKnoxLookup_disableUI_error___block_invoke;
   block[3] = &unk_4B6660;
   v36 = &v46;
   block[4] = self;
-  v18 = v14;
+  v18 = keyCopy;
   v33 = v18;
-  v19 = v15;
+  v19 = optionsCopy;
   v34 = v19;
   v37 = &v40;
-  v38 = a6;
-  v20 = v16;
+  lookupCopy = lookup;
+  v20 = ticketCopy;
   v35 = v20;
-  v39 = a7;
-  dispatch_sync(v17, block);
+  iCopy = i;
+  dispatch_sync(keyManagerQueue, block);
 
-  if (a8)
+  if (error)
   {
     v21 = v41[5];
     if (v21)
     {
-      *a8 = v21;
+      *error = v21;
     }
   }
 
@@ -2576,12 +2576,12 @@ void __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipK
   }
 }
 
-- (BOOL)decryptContentEncryptedAssetAtURL:(id)a3 assetAttributes:(id)a4 error:(id *)a5
+- (BOOL)decryptContentEncryptedAssetAtURL:(id)l assetAttributes:(id)attributes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  attributesCopy = attributes;
   v10 = +[NSFileManager defaultManager];
-  if (!v8 || !v9)
+  if (!lCopy || !attributesCopy)
   {
     v36 = _MAClientLog(@"KeyManager");
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -2592,11 +2592,11 @@ void __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipK
     }
 
     v34 = @"Invalid arguments passed to decrypt content encrypted asset function";
-    v35 = [(MobileAssetKeyManager *)self keyManagerResult:30001 underlying:0 description:@"Invalid arguments passed to decrypt content encrypted asset function" error:a5];
+    v35 = [(MobileAssetKeyManager *)self keyManagerResult:30001 underlying:0 description:@"Invalid arguments passed to decrypt content encrypted asset function" error:error];
     goto LABEL_42;
   }
 
-  v11 = [v9 objectForKeyedSubscript:@"_ContentEncryption"];
+  v11 = [attributesCopy objectForKeyedSubscript:@"_ContentEncryption"];
   if (v11)
   {
     v12 = v11;
@@ -2611,28 +2611,28 @@ void __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipK
         _os_log_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "[DecryptContentEncryptedAsset]: %@", buf, 0xCu);
       }
 
-      v35 = [(MobileAssetKeyManager *)self keyManagerResult:30001 underlying:0 description:v34 error:a5];
+      v35 = [(MobileAssetKeyManager *)self keyManagerResult:30001 underlying:0 description:v34 error:error];
       goto LABEL_41;
     }
 
-    v13 = [(MobileAssetKeyManager *)self fetchDSMEKey];
-    v14 = [v8 URLByAppendingPathComponent:@"ContentProtection.plist" isDirectory:0];
+    fetchDSMEKey = [(MobileAssetKeyManager *)self fetchDSMEKey];
+    v14 = [lCopy URLByAppendingPathComponent:@"ContentProtection.plist" isDirectory:0];
     v60 = 0;
     v15 = [NSDictionary dictionaryWithContentsOfURL:v14 error:&v60];
     v16 = v60;
-    v54 = v13;
+    v54 = fetchDSMEKey;
     v51 = v16;
     v52 = v15;
     if (v15)
     {
-      if (v13)
+      if (fetchDSMEKey)
       {
-        v46 = a5;
+        errorCopy = error;
         v47 = v14;
         v48 = v12;
         v49 = v10;
-        v50 = v9;
-        v53 = v8;
+        v50 = attributesCopy;
+        v53 = lCopy;
         v58 = 0u;
         v59 = 0u;
         v56 = 0u;
@@ -2657,31 +2657,31 @@ void __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipK
               *buf = 0;
               v24 = [v17 objectForKeyedSubscript:v22];
               v25 = [v53 URLByAppendingPathComponent:v22 isDirectory:0];
-              v26 = self;
+              selfCopy = self;
               v27 = [(MobileAssetKeyManager *)self decryptFileAtURL:v25 metadata:v24 key:v54 error:buf];
               v28 = *buf;
 
               objc_autoreleasePoolPop(v23);
               if ((v27 & 1) == 0)
               {
-                if (v46)
+                if (errorCopy)
                 {
                   v42 = v28;
-                  *v46 = v28;
+                  *errorCopy = v28;
                 }
 
                 v34 = 0;
                 v35 = 0;
-                v8 = v53;
+                lCopy = v53;
                 v32 = v54;
                 v10 = v49;
-                v9 = v50;
+                attributesCopy = v50;
                 v14 = v47;
                 v12 = v48;
                 goto LABEL_35;
               }
 
-              self = v26;
+              self = selfCopy;
             }
 
             v19 = [v17 countByEnumeratingWithState:&v56 objects:v61 count:16];
@@ -2695,7 +2695,7 @@ void __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipK
         }
 
         v29 = _MAClientLog(@"KeyManager");
-        v8 = v53;
+        lCopy = v53;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
@@ -2708,7 +2708,7 @@ void __98__MobileAssetKeyManager_getDecryptionKey_downloadOptions_apTicket_skipK
         v14 = v47;
         v30 = [v49 removeItemAtURL:v47 error:&v55];
         v31 = v55;
-        v9 = v50;
+        attributesCopy = v50;
         v12 = v48;
         v32 = v54;
         if ((v30 & 1) == 0)
@@ -2740,7 +2740,7 @@ LABEL_35:
         _os_log_impl(&dword_0, v44, OS_LOG_TYPE_ERROR, "[DecryptContentEncryptedAsset]: %@", buf, 0xCu);
       }
 
-      v40 = self;
+      selfCopy3 = self;
       v41 = 30026;
     }
 
@@ -2758,11 +2758,11 @@ LABEL_35:
       }
 
       v34 = @"Failed to read content encrypted asset manifest";
-      v40 = self;
+      selfCopy3 = self;
       v41 = 30027;
     }
 
-    v35 = [(MobileAssetKeyManager *)v40 keyManagerResult:v41 underlying:0 description:v34 error:a5];
+    v35 = [(MobileAssetKeyManager *)selfCopy3 keyManagerResult:v41 underlying:0 description:v34 error:error];
     v43 = v52;
     v32 = v54;
 LABEL_40:

@@ -1,34 +1,34 @@
 @interface IDSPseudonym
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPseudonym:(id)a3;
-- (IDSPseudonym)initWithCoder:(id)a3;
-- (IDSPseudonym)initWithDictionaryRepresentation:(id)a3;
-- (IDSPseudonym)initWithURI:(id)a3 maskedURI:(id)a4 properties:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPseudonym:(id)pseudonym;
+- (IDSPseudonym)initWithCoder:(id)coder;
+- (IDSPseudonym)initWithDictionaryRepresentation:(id)representation;
+- (IDSPseudonym)initWithURI:(id)i maskedURI:(id)rI properties:(id)properties;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 - (id)destinationURIs;
-- (id)withUpdatedProperties:(id)a3;
+- (id)withUpdatedProperties:(id)properties;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPseudonym
 
-- (IDSPseudonym)initWithURI:(id)a3 maskedURI:(id)a4 properties:(id)a5
+- (IDSPseudonym)initWithURI:(id)i maskedURI:(id)rI properties:(id)properties
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  iCopy = i;
+  rICopy = rI;
+  propertiesCopy = properties;
+  if (iCopy)
   {
-    if (v10)
+    if (rICopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     sub_1A7E208E0();
-    if (v11)
+    if (propertiesCopy)
     {
       goto LABEL_4;
     }
@@ -37,13 +37,13 @@ LABEL_8:
   }
 
   sub_1A7E2086C();
-  if (!v10)
+  if (!rICopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (propertiesCopy)
   {
     goto LABEL_4;
   }
@@ -57,18 +57,18 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_URI, a3);
-    objc_storeStrong(&v13->_maskedURI, a4);
-    objc_storeStrong(&v13->_properties, a5);
+    objc_storeStrong(&v12->_URI, i);
+    objc_storeStrong(&v13->_maskedURI, rI);
+    objc_storeStrong(&v13->_properties, properties);
   }
 
   return v13;
 }
 
-- (id)withUpdatedProperties:(id)a3
+- (id)withUpdatedProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithURI:self->_URI maskedURI:self->_maskedURI properties:v4];
+  propertiesCopy = properties;
+  v5 = [objc_alloc(objc_opt_class()) initWithURI:self->_URI maskedURI:self->_maskedURI properties:propertiesCopy];
 
   return v5;
 }
@@ -83,19 +83,19 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPseudonym *)self isEqualToPseudonym:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPseudonym *)self isEqualToPseudonym:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPseudonym:(id)a3
+- (BOOL)isEqualToPseudonym:(id)pseudonym
 {
-  v4 = a3;
-  if (self == v4)
+  pseudonymCopy = pseudonym;
+  if (self == pseudonymCopy)
   {
     v11 = 1;
   }
@@ -103,16 +103,16 @@ LABEL_4:
   else
   {
     v5 = [(IDSPseudonym *)self URI];
-    v6 = [(IDSPseudonym *)v4 URI];
+    v6 = [(IDSPseudonym *)pseudonymCopy URI];
     if ([v5 isEqualToURI:v6])
     {
-      v7 = [(IDSPseudonym *)self properties];
-      v8 = [(IDSPseudonym *)v4 properties];
-      if ([v7 isEqualToPseudonymProperties:v8])
+      properties = [(IDSPseudonym *)self properties];
+      properties2 = [(IDSPseudonym *)pseudonymCopy properties];
+      if ([properties isEqualToPseudonymProperties:properties2])
       {
-        v9 = [(IDSPseudonym *)self maskedURI];
-        v10 = [(IDSPseudonym *)v4 maskedURI];
-        v11 = [v9 isEqualToURI:v10];
+        maskedURI = [(IDSPseudonym *)self maskedURI];
+        maskedURI2 = [(IDSPseudonym *)pseudonymCopy maskedURI];
+        v11 = [maskedURI isEqualToURI:maskedURI2];
       }
 
       else
@@ -134,8 +134,8 @@ LABEL_4:
 {
   v3 = [(IDSPseudonym *)self URI];
   v4 = [v3 hash];
-  v5 = [(IDSPseudonym *)self properties];
-  v6 = [v5 hash];
+  properties = [(IDSPseudonym *)self properties];
+  v6 = [properties hash];
 
   return v6 ^ v4;
 }
@@ -143,40 +143,40 @@ LABEL_4:
 - (id)destinationURIs
 {
   v2 = [(IDSPseudonym *)self URI];
-  v3 = [v2 destinationURIs];
+  destinationURIs = [v2 destinationURIs];
 
-  return v3;
+  return destinationURIs;
 }
 
-- (IDSPseudonym)initWithDictionaryRepresentation:(id)a3
+- (IDSPseudonym)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 _stringForKey:@"u"];
+  representationCopy = representation;
+  v5 = [representationCopy _stringForKey:@"u"];
   v6 = [IDSURI URIWithPrefixedURI:v5];
 
-  v7 = [v4 _stringForKey:@"m"];
+  v7 = [representationCopy _stringForKey:@"m"];
   v8 = [IDSURI URIWithPrefixedURI:v7];
 
   v9 = [IDSPseudonymProperties alloc];
-  v10 = [v4 _dictionaryForKey:@"p"];
+  v10 = [representationCopy _dictionaryForKey:@"p"];
 
   v11 = [(IDSPseudonymProperties *)v9 initWithDictionaryRepresentation:v10];
-  v12 = 0;
+  selfCopy = 0;
   if (v6 && v8 && v11)
   {
     self = [(IDSPseudonym *)self initWithURI:v6 maskedURI:v8 properties:v11];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (IDSPseudonym)initWithCoder:(id)a3
+- (IDSPseudonym)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"m"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"m"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
 
   if (v5)
   {
@@ -190,34 +190,34 @@ LABEL_4:
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IDSPseudonym *)self initWithURI:v5 maskedURI:v6 properties:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URI = self->_URI;
-  v5 = a3;
-  [v5 encodeObject:URI forKey:@"u"];
-  [v5 encodeObject:self->_maskedURI forKey:@"m"];
-  [v5 encodeObject:self->_properties forKey:@"p"];
+  coderCopy = coder;
+  [coderCopy encodeObject:URI forKey:@"u"];
+  [coderCopy encodeObject:self->_maskedURI forKey:@"m"];
+  [coderCopy encodeObject:self->_properties forKey:@"p"];
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSURI *)self->_URI prefixedURI];
-  if (v4)
+  prefixedURI = [(IDSURI *)self->_URI prefixedURI];
+  if (prefixedURI)
   {
-    CFDictionarySetValue(v3, @"u", v4);
+    CFDictionarySetValue(v3, @"u", prefixedURI);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -225,10 +225,10 @@ LABEL_4:
     sub_1A7E209C8();
   }
 
-  v5 = [(IDSURI *)self->_maskedURI prefixedURI];
-  if (v5)
+  prefixedURI2 = [(IDSURI *)self->_maskedURI prefixedURI];
+  if (prefixedURI2)
   {
-    CFDictionarySetValue(v3, @"m", v5);
+    CFDictionarySetValue(v3, @"m", prefixedURI2);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -236,10 +236,10 @@ LABEL_4:
     sub_1A7E20A50();
   }
 
-  v6 = [(IDSPseudonymProperties *)self->_properties dictionaryRepresentation];
-  if (v6)
+  dictionaryRepresentation = [(IDSPseudonymProperties *)self->_properties dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    CFDictionarySetValue(v3, @"p", v6);
+    CFDictionarySetValue(v3, @"p", dictionaryRepresentation);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

@@ -52,8 +52,8 @@
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:5];
   v20 = [v13 initWithArray:v19];
 
-  v21 = [MEMORY[0x277D79F18] currentDevice];
-  LODWORD(v15) = [v21 hasSystemAperture];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  LODWORD(v15) = [currentDevice hasSystemAperture];
 
   if (v15)
   {

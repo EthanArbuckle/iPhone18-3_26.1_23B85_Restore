@@ -1,9 +1,9 @@
 @interface ATAssetSessionTask
 - (NSString)debugDescription;
-- (id)_initWithDataClass:(id)a3 assets:(id)a4;
+- (id)_initWithDataClass:(id)class assets:(id)assets;
 - (id)remainingAssets;
-- (void)_finishAsset:(id)a3 withError:(id)a4;
-- (void)assetLinkController:(id)a3 didFinishAsset:(id)a4;
+- (void)_finishAsset:(id)asset withError:(id)error;
+- (void)assetLinkController:(id)controller didFinishAsset:(id)asset;
 - (void)cancel;
 - (void)cancelAllAssets;
 - (void)resume;
@@ -13,20 +13,20 @@
 
 @implementation ATAssetSessionTask
 
-- (void)_finishAsset:(id)a3 withError:(id)a4
+- (void)_finishAsset:(id)asset withError:(id)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetCopy = asset;
   remainingAssets = self->_remainingAssets;
-  v8 = a4;
-  [(NSMutableOrderedSet *)remainingAssets removeObject:v6];
-  if (!v8)
+  errorCopy = error;
+  [(NSMutableOrderedSet *)remainingAssets removeObject:assetCopy];
+  if (!errorCopy)
   {
-    v13 = [(ATSessionTask *)self totalBytesTransferred];
-    v14 = [v13 unsignedLongLongValue];
-    v15 = [v6 totalBytes];
+    totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+    unsignedLongLongValue = [totalBytesTransferred unsignedLongLongValue];
+    totalBytes = [assetCopy totalBytes];
 
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15 + v14];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:totalBytes + unsignedLongLongValue];
     [(ATSessionTask *)self setTotalBytesTransferred:v11];
 LABEL_7:
 
@@ -34,11 +34,11 @@ LABEL_7:
   }
 
   v9 = [(NSMutableSet *)self->_failedAssets count];
-  [(NSMutableSet *)self->_failedAssets addObject:v6];
+  [(NSMutableSet *)self->_failedAssets addObject:assetCopy];
   if (v9 != [(NSMutableSet *)self->_failedAssets count])
   {
-    v10 = [(ATSessionTask *)self recentlyFailedAssets];
-    v11 = [v10 mutableCopy];
+    recentlyFailedAssets = [(ATSessionTask *)self recentlyFailedAssets];
+    v11 = [recentlyFailedAssets mutableCopy];
 
     recentFailedArrayIndex = self->_recentFailedArrayIndex;
     if (recentFailedArrayIndex >= 5)
@@ -47,21 +47,21 @@ LABEL_7:
       self->_recentFailedArrayIndex = 0;
     }
 
-    [v11 setObject:v6 atIndexedSubscript:recentFailedArrayIndex];
+    [v11 setObject:assetCopy atIndexedSubscript:recentFailedArrayIndex];
     ++self->_recentFailedArrayIndex;
     [(ATSessionTask *)self setRecentlyFailedAssets:v11];
     goto LABEL_7;
   }
 
 LABEL_8:
-  [v6 setError:v8];
+  [assetCopy setError:errorCopy];
   v16 = +[ATClientController sharedInstance];
-  v17 = [v6 dataclass];
-  v18 = [v16 clientForDataclass:v17];
+  dataclass = [assetCopy dataclass];
+  v18 = [v16 clientForDataclass:dataclass];
 
-  v19 = [v8 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  v20 = [v19 objectForKey:@"ATLegacyAssetLinkErrorIsVisibleKey"];
+  v20 = [userInfo objectForKey:@"ATLegacyAssetLinkErrorIsVisibleKey"];
 
   if (v20 && [v20 BOOLValue])
   {
@@ -73,31 +73,31 @@ LABEL_8:
   v21 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(ATSessionTask *)self completedItemCount];
-    v23 = [(ATSessionTask *)self totalItemCount];
+    completedItemCount = [(ATSessionTask *)self completedItemCount];
+    totalItemCount = [(ATSessionTask *)self totalItemCount];
     failedAssetsCount = self->_failedAssetsCount;
     [(ATSessionTask *)self totalBytesTransferred];
-    v46 = v6;
+    v46 = assetCopy;
     v25 = v20;
     v27 = v26 = v18;
-    v28 = [(ATSessionTask *)self totalBytesToTransfer];
+    totalBytesToTransfer = [(ATSessionTask *)self totalBytesToTransfer];
     *buf = 138544642;
-    v50 = self;
+    selfCopy4 = self;
     v51 = 2048;
-    *v52 = v22;
+    *v52 = completedItemCount;
     *&v52[8] = 2048;
-    *&v52[10] = v23;
+    *&v52[10] = totalItemCount;
     v53 = 2048;
     v54 = failedAssetsCount;
     v55 = 2112;
     v56 = v27;
     v57 = 2112;
-    v58 = v28;
+    v58 = totalBytesToTransfer;
     _os_log_impl(&dword_223819000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Completed %lu/%lu assets (%lu failed, %@/%@ bytes transferred)", buf, 0x3Eu);
 
     v18 = v26;
     v20 = v25;
-    v6 = v46;
+    assetCopy = v46;
   }
 
   if ([(NSMutableOrderedSet *)self->_remainingAssets count])
@@ -111,7 +111,7 @@ LABEL_8:
       {
         v44 = [(NSMutableOrderedSet *)self->_remainingAssets count];
         *buf = 138543618;
-        v50 = self;
+        selfCopy4 = self;
         v51 = 1024;
         *v52 = v44;
         v34 = "%{public}@ %d assets remaining.";
@@ -126,7 +126,7 @@ LABEL_8:
       v32 = [(NSMutableOrderedSet *)self->_remainingAssets count];
       v33 = self->_remainingAssets;
       *buf = 138543874;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 1024;
       *v52 = v32;
       *&v52[4] = 2114;
@@ -161,13 +161,13 @@ LABEL_25:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
       retryInterval = self->_retryInterval;
-      v41 = [(ATSessionTask *)self recentlyFailedAssets];
+      recentlyFailedAssets2 = [(ATSessionTask *)self recentlyFailedAssets];
       *buf = 138543874;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 1024;
       *v52 = retryInterval;
       *&v52[4] = 2114;
-      *&v52[6] = v41;
+      *&v52[6] = recentlyFailedAssets2;
       _os_log_impl(&dword_223819000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ Re-querying client bundle for more assets in %d seconds. recentlyFailedAssets=%{public}@", buf, 0x1Cu);
     }
 
@@ -179,8 +179,8 @@ LABEL_25:
 
   else
   {
-    v45 = [(ATAssetSessionTask *)self assetLinkController];
-    [v45 removeObserver:self];
+    assetLinkController = [(ATAssetSessionTask *)self assetLinkController];
+    [assetLinkController removeObserver:self];
 
     [(ATSessionTask *)self setFinished:1];
   }
@@ -188,9 +188,9 @@ LABEL_25:
 LABEL_28:
 }
 
-- (void)assetLinkController:(id)a3 didFinishAsset:(id)a4
+- (void)assetLinkController:(id)controller didFinishAsset:(id)asset
 {
-  v5 = a4;
+  assetCopy = asset;
   if (![(ATSessionTask *)self isCancelled])
   {
     queue = self->_queue;
@@ -199,7 +199,7 @@ LABEL_28:
     v7[2] = __57__ATAssetSessionTask_assetLinkController_didFinishAsset___block_invoke;
     v7[3] = &unk_2784E5960;
     v7[4] = self;
-    v8 = v5;
+    v8 = assetCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -246,8 +246,8 @@ void __57__ATAssetSessionTask_assetLinkController_didFinishAsset___block_invoke(
   v8.receiver = self;
   v8.super_class = ATAssetSessionTask;
   v4 = [(ATSessionTask *)&v8 description];
-  v5 = [(ATAssetSessionTask *)self remainingAssets];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  remainingAssets = [(ATAssetSessionTask *)self remainingAssets];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, remainingAssets];
 
   return v6;
 }
@@ -389,13 +389,13 @@ uint64_t __28__ATAssetSessionTask_cancel__block_invoke_34(uint64_t a1)
 - (void)start
 {
   v48 = *MEMORY[0x277D85DE8];
-  v2 = [(ATSessionTask *)self dataClass];
+  dataClass = [(ATSessionTask *)self dataClass];
 
-  if (v2)
+  if (dataClass)
   {
     v3 = +[ATClientController sharedInstance];
-    v4 = [(ATSessionTask *)self dataClass];
-    v5 = [v3 clientForDataclass:v4];
+    dataClass2 = [(ATSessionTask *)self dataClass];
+    v5 = [v3 clientForDataclass:dataClass2];
 
     if (v5)
     {
@@ -429,11 +429,11 @@ uint64_t __28__ATAssetSessionTask_cancel__block_invoke_34(uint64_t a1)
       v8 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(ATSessionTask *)self dataClass];
+        dataClass3 = [(ATSessionTask *)self dataClass];
         *buf = 138543618;
         *&buf[4] = self;
         *&buf[12] = 2114;
-        *&buf[14] = v9;
+        *&buf[14] = dataClass3;
         _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ No ATClient for asset dataClass %{public}@", buf, 0x16u);
       }
     }
@@ -449,15 +449,15 @@ uint64_t __28__ATAssetSessionTask_cancel__block_invoke_34(uint64_t a1)
   {
     [(ATSessionTask *)self setTotalItemCount:[(NSMutableOrderedSet *)self->_remainingAssets count]];
     [(ATSessionTask *)self setCompletedItemCount:0];
-    v10 = [MEMORY[0x277CBEA60] array];
-    [(ATSessionTask *)self setRecentlyFailedAssets:v10];
+    array = [MEMORY[0x277CBEA60] array];
+    [(ATSessionTask *)self setRecentlyFailedAssets:array];
 
     [(ATSessionTask *)self setTotalBytesTransferred:&unk_2836F50F8];
     [(ATSessionTask *)self setTotalBytesToTransfer:&unk_2836F50F8];
   }
 
-  v11 = [(ATSessionTask *)self totalBytesTransferred];
-  v12 = [v11 unsignedLongLongValue];
+  totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+  unsignedLongLongValue = [totalBytesTransferred unsignedLongLongValue];
 
   v39 = 0u;
   v40 = 0u;
@@ -487,7 +487,7 @@ uint64_t __28__ATAssetSessionTask_cancel__block_invoke_34(uint64_t a1)
     while (v15);
   }
 
-  v18 = v14 + v12;
+  v18 = v14 + unsignedLongLongValue;
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v18];
   [(ATSessionTask *)self setTotalBytesToTransfer:v19];
 
@@ -965,18 +965,18 @@ void __29__ATAssetSessionTask_suspend__block_invoke(uint64_t a1)
   dispatch_source_set_timer(v2, 0xFFFFFFFFFFFFFFFFLL, 0, 0);
 }
 
-- (id)_initWithDataClass:(id)a3 assets:(id)a4
+- (id)_initWithDataClass:(id)class assets:(id)assets
 {
-  v6 = a4;
+  assetsCopy = assets;
   v27.receiver = self;
   v27.super_class = ATAssetSessionTask;
-  v7 = [(ATSessionTask *)&v27 initWithDataClass:a3];
+  v7 = [(ATSessionTask *)&v27 initWithDataClass:class];
   v8 = v7;
   if (v7)
   {
-    if (v6)
+    if (assetsCopy)
     {
-      [(NSMutableOrderedSet *)v7->_remainingAssets addObjectsFromArray:v6];
+      [(NSMutableOrderedSet *)v7->_remainingAssets addObjectsFromArray:assetsCopy];
     }
 
     v8->_recentFailedArrayIndex = 0;
@@ -998,9 +998,9 @@ void __29__ATAssetSessionTask_suspend__block_invoke(uint64_t a1)
     currentAssets = v8->_currentAssets;
     v8->_currentAssets = v17;
 
-    v19 = [MEMORY[0x277CE53F0] sharedInstance];
+    mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
     assetLinkController = v8->_assetLinkController;
-    v8->_assetLinkController = v19;
+    v8->_assetLinkController = mEMORY[0x277CE53F0];
 
     v8->_retryInterval = 10.0;
     v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v8->_queue);

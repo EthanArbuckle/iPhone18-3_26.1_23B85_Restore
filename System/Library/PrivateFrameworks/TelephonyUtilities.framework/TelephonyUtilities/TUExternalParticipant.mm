@@ -3,17 +3,17 @@
 - (NSString)description;
 - (NSString)displayName;
 - (TUExternalParticipant)init;
-- (TUExternalParticipant)initWithIdentifier:(id)a3 displayName:(id)a4 info:(id)a5 status:(int64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (TUExternalParticipant)initWithIdentifier:(id)identifier displayName:(id)name info:(id)info status:(int64_t)status;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUExternalParticipant
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TUExternalParticipant.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TUExternalParticipant.encode(with:)(coderCopy);
 }
 
 - (NSString)displayName
@@ -37,23 +37,23 @@
   return v4;
 }
 
-- (TUExternalParticipant)initWithIdentifier:(id)a3 displayName:(id)a4 info:(id)a5 status:(int64_t)a6
+- (TUExternalParticipant)initWithIdentifier:(id)identifier displayName:(id)name info:(id)info status:(int64_t)status
 {
   v10 = sub_19586ED50();
   v12 = v11;
-  v13 = a3;
-  v14 = a5;
+  identifierCopy = identifier;
+  infoCopy = info;
   v15 = sub_19586E9B0();
   v17 = v16;
 
-  *(self + OBJC_IVAR___TUExternalParticipant_identifier) = v13;
+  *(self + OBJC_IVAR___TUExternalParticipant_identifier) = identifierCopy;
   v18 = (self + OBJC_IVAR___TUExternalParticipant_displayName);
   *v18 = v10;
   v18[1] = v12;
   v19 = (self + OBJC_IVAR___TUExternalParticipant_info);
   *v19 = v15;
   v19[1] = v17;
-  *(self + OBJC_IVAR___TUExternalParticipant_status) = a6;
+  *(self + OBJC_IVAR___TUExternalParticipant_status) = status;
   v21.receiver = self;
   v21.super_class = TUExternalParticipant;
   return [(TUExternalParticipant *)&v21 init];
@@ -61,7 +61,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TUExternalParticipant.description.getter();
 
   v3 = sub_19586ED30();

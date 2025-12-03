@@ -1,16 +1,16 @@
 @interface SpatialAudioQueue
 - ($09AED28DA01A4B4CD63B1271B5E0322A)streamInfo;
-- (BOOL)updateStreamInfo:(id)a3;
-- (SpatialAudioQueue)initWithStreamInfo:(id)a3;
+- (BOOL)updateStreamInfo:(id)info;
+- (SpatialAudioQueue)initWithStreamInfo:(id)info;
 - (void)dealloc;
 @end
 
 @implementation SpatialAudioQueue
 
-- (SpatialAudioQueue)initWithStreamInfo:(id)a3
+- (SpatialAudioQueue)initWithStreamInfo:(id)info
 {
-  v3 = *&a3.var2;
-  v4 = *&a3.var0;
+  v3 = *&info.var2;
+  v4 = *&info.var0;
   v10.receiver = self;
   v10.super_class = SpatialAudioQueue;
   v5 = [(SpatialAudioQueue *)&v10 init];
@@ -70,10 +70,10 @@
   [(SpatialAudioQueue *)&v8 dealloc];
 }
 
-- (BOOL)updateStreamInfo:(id)a3
+- (BOOL)updateStreamInfo:(id)info
 {
-  v3 = *&a3.var2;
-  v4 = *&a3.var0;
+  v3 = *&info.var2;
+  v4 = *&info.var0;
   v16[0] = 0;
   v16[1] = 0;
   sub_70AF4(v16, &self->queueMutex);

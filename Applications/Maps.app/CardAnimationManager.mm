@@ -2,7 +2,7 @@
 - (CardAnimation)cardHeightAnimation;
 - (id)defaultCardHeightAnimation;
 - (void)popCardHeightAnimation;
-- (void)pushCardHeightAnimation:(id)a3;
+- (void)pushCardHeightAnimation:(id)animation;
 @end
 
 @implementation CardAnimationManager
@@ -18,16 +18,16 @@
   }
 }
 
-- (void)pushCardHeightAnimation:(id)a3
+- (void)pushCardHeightAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   cardHeightAnimationPushCount = self->_cardHeightAnimationPushCount;
   self->_cardHeightAnimationPushCount = cardHeightAnimationPushCount + 1;
   if (!cardHeightAnimationPushCount)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_cardHeightAnimation, a3);
-    v5 = v7;
+    v7 = animationCopy;
+    objc_storeStrong(&self->_cardHeightAnimation, animation);
+    animationCopy = v7;
   }
 }
 
@@ -36,15 +36,15 @@
   cardHeightAnimation = self->_cardHeightAnimation;
   if (cardHeightAnimation)
   {
-    v3 = cardHeightAnimation;
+    defaultCardHeightAnimation = cardHeightAnimation;
   }
 
   else
   {
-    v3 = [(CardAnimationManager *)self defaultCardHeightAnimation];
+    defaultCardHeightAnimation = [(CardAnimationManager *)self defaultCardHeightAnimation];
   }
 
-  return v3;
+  return defaultCardHeightAnimation;
 }
 
 - (id)defaultCardHeightAnimation

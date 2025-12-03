@@ -1,14 +1,14 @@
 @interface ClearCacheOperation
-- (ClearCacheOperation)initWithCache:(id)a3 operationType:(unint64_t)a4;
+- (ClearCacheOperation)initWithCache:(id)cache operationType:(unint64_t)type;
 - (id)description;
 - (void)run;
 @end
 
 @implementation ClearCacheOperation
 
-- (ClearCacheOperation)initWithCache:(id)a3 operationType:(unint64_t)a4
+- (ClearCacheOperation)initWithCache:(id)cache operationType:(unint64_t)type
 {
-  v7 = a3;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = ClearCacheOperation;
   v8 = [(ClearCacheOperation *)&v12 init];
@@ -18,8 +18,8 @@
     transaction = v8->_transaction;
     v8->_transaction = v9;
 
-    v8->_operation = a4;
-    objc_storeStrong(&v8->_cache, a3);
+    v8->_operation = type;
+    objc_storeStrong(&v8->_cache, cache);
   }
 
   return v8;

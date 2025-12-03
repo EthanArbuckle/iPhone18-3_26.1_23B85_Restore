@@ -1,44 +1,44 @@
 @interface NURule
-+ (id)ruleWithBlockPredicate:(id)a3 action:(id)a4;
-+ (id)ruleWithPredicate:(id)a3 action:(id)a4;
-+ (id)ruleWithPredicate:(id)a3 assertingFact:(id)a4 grade:(double)a5;
-+ (id)ruleWithPredicate:(id)a3 retractingFact:(id)a4 grade:(double)a5;
++ (id)ruleWithBlockPredicate:(id)predicate action:(id)action;
++ (id)ruleWithPredicate:(id)predicate action:(id)action;
++ (id)ruleWithPredicate:(id)predicate assertingFact:(id)fact grade:(double)grade;
++ (id)ruleWithPredicate:(id)predicate retractingFact:(id)fact grade:(double)grade;
 @end
 
 @implementation NURule
 
-+ (id)ruleWithBlockPredicate:(id)a3 action:(id)a4
++ (id)ruleWithBlockPredicate:(id)predicate action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_NUBlockRule alloc] initWithPredicate:v6 action:v5];
+  actionCopy = action;
+  predicateCopy = predicate;
+  v7 = [[_NUBlockRule alloc] initWithPredicate:predicateCopy action:actionCopy];
 
   return v7;
 }
 
-+ (id)ruleWithPredicate:(id)a3 action:(id)a4
++ (id)ruleWithPredicate:(id)predicate action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_NSPredicateBlockRule alloc] initWithPredicate:v6 action:v5];
+  actionCopy = action;
+  predicateCopy = predicate;
+  v7 = [[_NSPredicateBlockRule alloc] initWithPredicate:predicateCopy action:actionCopy];
 
   return v7;
 }
 
-+ (id)ruleWithPredicate:(id)a3 retractingFact:(id)a4 grade:(double)a5
++ (id)ruleWithPredicate:(id)predicate retractingFact:(id)fact grade:(double)grade
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[_NSPredicateRule alloc] initWithPredicate:v8 fact:v7 grade:0 asserting:a5];
+  factCopy = fact;
+  predicateCopy = predicate;
+  v9 = [[_NSPredicateRule alloc] initWithPredicate:predicateCopy fact:factCopy grade:0 asserting:grade];
 
   return v9;
 }
 
-+ (id)ruleWithPredicate:(id)a3 assertingFact:(id)a4 grade:(double)a5
++ (id)ruleWithPredicate:(id)predicate assertingFact:(id)fact grade:(double)grade
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[_NSPredicateRule alloc] initWithPredicate:v8 fact:v7 grade:1 asserting:a5];
+  factCopy = fact;
+  predicateCopy = predicate;
+  v9 = [[_NSPredicateRule alloc] initWithPredicate:predicateCopy fact:factCopy grade:1 asserting:grade];
 
   return v9;
 }

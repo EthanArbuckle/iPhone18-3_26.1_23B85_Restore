@@ -2,11 +2,11 @@
 - (BOOL)allocateOutputBufferObjects;
 - (BOOL)compileModelOnDevice;
 - (BOOL)createFunction;
-- (BOOL)executeSynchronouslyOperation:(e5rt_execution_stream_operation *)a3 onStream:(e5rt_execution_stream *)a4;
+- (BOOL)executeSynchronouslyOperation:(e5rt_execution_stream_operation *)operation onStream:(e5rt_execution_stream *)stream;
 - (BOOL)getOutputPortNames;
 - (BOOL)initializeModel;
-- (BOOL)resetStream:(e5rt_execution_stream *)a3;
-- (SRNet)initWithModelPath:(id)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5;
+- (BOOL)resetStream:(e5rt_execution_stream *)stream;
+- (SRNet)initWithModelPath:(id)path inputWidth:(unint64_t)width inputHeight:(unint64_t)height;
 - (void)allocateOutputBufferObjects;
 - (void)compileModelOnDevice;
 - (void)createFunction;
@@ -146,8 +146,8 @@ LABEL_15:
     inputWidth = self->_inputWidth;
     inputHeight = self->_inputHeight;
     v13 = [MEMORY[0x277CCACA8] stringWithCString:*&v5[8 * v8] encoding:{4, v19}];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%zux%zu", inputWidth, inputHeight];
-    LODWORD(inputHeight) = [v13 hasSuffix:v14];
+    inputHeight = [MEMORY[0x277CCACA8] stringWithFormat:@"%zux%zu", inputWidth, inputHeight];
+    LODWORD(inputHeight) = [v13 hasSuffix:inputHeight];
 
     if (inputHeight)
     {
@@ -367,7 +367,7 @@ LABEL_14:
   [(SRNet *)&v8 dealloc];
 }
 
-- (BOOL)executeSynchronouslyOperation:(e5rt_execution_stream_operation *)a3 onStream:(e5rt_execution_stream *)a4
+- (BOOL)executeSynchronouslyOperation:(e5rt_execution_stream_operation *)operation onStream:(e5rt_execution_stream *)stream
 {
   v15 = *MEMORY[0x277D85DE8];
   if (e5rt_async_event_create())
@@ -518,7 +518,7 @@ LABEL_35:
   return v4;
 }
 
-- (BOOL)resetStream:(e5rt_execution_stream *)a3
+- (BOOL)resetStream:(e5rt_execution_stream *)stream
 {
   v3 = e5rt_execution_stream_reset();
   if (v3)
@@ -533,13 +533,13 @@ LABEL_35:
   return v3 == 0;
 }
 
-- (SRNet)initWithModelPath:(id)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5
+- (SRNet)initWithModelPath:(id)path inputWidth:(unint64_t)width inputHeight:(unint64_t)height
 {
-  v9 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = SRNet;
   v10 = [(SRNet *)&v15 init];
-  if (!v10 || (v11 = objc_alloc_init(OFNormalization), normalization = v10->_normalization, v10->_normalization = v11, normalization, objc_storeStrong(&v10->_modelPath, a3), v10->_inputWidth = a4, v10->_inputHeight = a5, [(SRNet *)v10 initializeModel]) && [(SRNet *)v10 allocateOutputBufferObjects])
+  if (!v10 || (v11 = objc_alloc_init(OFNormalization), normalization = v10->_normalization, v10->_normalization = v11, normalization, objc_storeStrong(&v10->_modelPath, path), v10->_inputWidth = width, v10->_inputHeight = height, [(SRNet *)v10 initializeModel]) && [(SRNet *)v10 allocateOutputBufferObjects])
   {
     v13 = v10;
   }
@@ -555,16 +555,16 @@ LABEL_35:
 - (BOOL)initializeModel
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(SRNet *)self compileModelOnDevice];
-  if (!v3)
+  compileModelOnDevice = [(SRNet *)self compileModelOnDevice];
+  if (!compileModelOnDevice)
   {
-    return v3;
+    return compileModelOnDevice;
   }
 
-  v3 = [(SRNet *)self createFunction];
-  if (!v3)
+  compileModelOnDevice = [(SRNet *)self createFunction];
+  if (!compileModelOnDevice)
   {
-    return v3;
+    return compileModelOnDevice;
   }
 
   if (e5rt_precompiled_compute_op_create_options_create_with_program_function())
@@ -574,18 +574,18 @@ LABEL_35:
     if ((v4 & 0x10) != 0)
     {
       v5 = global_logger;
-      v3 = OUTLINED_FUNCTION_7_5();
-      if (v3)
+      compileModelOnDevice = OUTLINED_FUNCTION_7_5();
+      if (compileModelOnDevice)
       {
         goto LABEL_19;
       }
 
-      return v3;
+      return compileModelOnDevice;
     }
 
 LABEL_20:
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(compileModelOnDevice) = 0;
+    return compileModelOnDevice;
   }
 
   if (e5rt_execution_stream_operation_create_precompiled_compute_operation_with_options())
@@ -595,23 +595,23 @@ LABEL_20:
     if ((v6 & 0x10) != 0)
     {
       v5 = global_logger;
-      v3 = OUTLINED_FUNCTION_7_5();
-      if (v3)
+      compileModelOnDevice = OUTLINED_FUNCTION_7_5();
+      if (compileModelOnDevice)
       {
         goto LABEL_19;
       }
 
-      return v3;
+      return compileModelOnDevice;
     }
 
     goto LABEL_20;
   }
 
   e5rt_precompiled_compute_op_create_options_release();
-  v3 = [(SRNet *)self getOutputPortNames];
-  if (!v3)
+  compileModelOnDevice = [(SRNet *)self getOutputPortNames];
+  if (!compileModelOnDevice)
   {
-    return v3;
+    return compileModelOnDevice;
   }
 
   [(NSString *)self->_outputPortName UTF8String];
@@ -622,13 +622,13 @@ LABEL_20:
     if ((v7 & 0x10) != 0)
     {
       v5 = global_logger;
-      v3 = OUTLINED_FUNCTION_7_5();
-      if (v3)
+      compileModelOnDevice = OUTLINED_FUNCTION_7_5();
+      if (compileModelOnDevice)
       {
         goto LABEL_19;
       }
 
-      return v3;
+      return compileModelOnDevice;
     }
 
     goto LABEL_20;
@@ -636,8 +636,8 @@ LABEL_20:
 
   if (!e5rt_execution_stream_create())
   {
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(compileModelOnDevice) = 1;
+    return compileModelOnDevice;
   }
 
   e5rt_get_last_error_message();
@@ -648,8 +648,8 @@ LABEL_20:
   }
 
   v5 = global_logger;
-  v3 = OUTLINED_FUNCTION_7_5();
-  if (v3)
+  compileModelOnDevice = OUTLINED_FUNCTION_7_5();
+  if (compileModelOnDevice)
   {
 LABEL_19:
     *buf = 136315650;
@@ -658,7 +658,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  return v3;
+  return compileModelOnDevice;
 }
 
 - (void)compileModelOnDevice
@@ -671,7 +671,7 @@ LABEL_19:
 - (void)createFunction
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&dword_24874B000, a2, OS_LOG_TYPE_DEBUG, "Library metadata %@", &v3, 0xCu);

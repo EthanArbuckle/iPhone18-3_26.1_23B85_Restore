@@ -1,8 +1,8 @@
 @interface HMTestOcclusionViewController
-- (id)datePickerForSpecifier:(id)a3;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)datePickerChanged:(id)a3;
-- (void)listItemSelected:(id)a3;
+- (void)datePickerChanged:(id)changed;
+- (void)listItemSelected:(id)selected;
 - (void)postOcclusionData;
 - (void)viewDidLoad;
 @end
@@ -19,8 +19,8 @@
 - (id)specifiers
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"bt-address"];
+  userInfo = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"bt-address"];
   address = self->_address;
   self->_address = v5;
 
@@ -153,10 +153,10 @@
   return v30;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v81 = a3;
-  if ([v81 section] == 2)
+  selectedCopy = selected;
+  if ([selectedCopy section] == 2)
   {
     [(HMTestOcclusionViewController *)self postOcclusionData];
     [(HMTestOcclusionViewController *)self reloadSpecifiers];
@@ -177,11 +177,11 @@
 
   else
   {
-    firstTimeUseRightTimestamp = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:v81];
-    v8 = [(HMTestOcclusionViewController *)self specifierAtIndexPath:v81];
+    firstTimeUseRightTimestamp = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:selectedCopy];
+    v8 = [(HMTestOcclusionViewController *)self specifierAtIndexPath:selectedCopy];
     [firstTimeUseRightTimestamp setChecked:{objc_msgSend(firstTimeUseRightTimestamp, "isChecked") ^ 1}];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:@"bottom-mic-left"];
+    identifier = [v8 identifier];
+    v10 = [identifier isEqualToString:@"bottom-mic-left"];
 
     if (v10)
     {
@@ -198,8 +198,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFEFFF | v11;
     }
 
-    v12 = [v8 identifier];
-    v13 = [v12 isEqualToString:@"freq-left"];
+    identifier2 = [v8 identifier];
+    v13 = [identifier2 isEqualToString:@"freq-left"];
 
     if (v13)
     {
@@ -216,8 +216,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFFEFF | v14;
     }
 
-    v15 = [v8 identifier];
-    v16 = [v15 isEqualToString:@"front-vent-left"];
+    identifier3 = [v8 identifier];
+    v16 = [identifier3 isEqualToString:@"front-vent-left"];
 
     if (v16)
     {
@@ -234,8 +234,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFF7FF | v17;
     }
 
-    v18 = [v8 identifier];
-    v19 = [v18 isEqualToString:@"inner-mic-left"];
+    identifier4 = [v8 identifier];
+    v19 = [identifier4 isEqualToString:@"inner-mic-left"];
 
     if (v19)
     {
@@ -252,8 +252,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFBFFF | v20;
     }
 
-    v21 = [v8 identifier];
-    v22 = [v21 isEqualToString:@"rear-vent-left"];
+    identifier5 = [v8 identifier];
+    v22 = [identifier5 isEqualToString:@"rear-vent-left"];
 
     if (v22)
     {
@@ -270,8 +270,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFFBFF | v23;
     }
 
-    v24 = [v8 identifier];
-    v25 = [v24 isEqualToString:@"speaker-left"];
+    identifier6 = [v8 identifier];
+    v25 = [identifier6 isEqualToString:@"speaker-left"];
 
     if (v25)
     {
@@ -288,8 +288,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFFDFF | v26;
     }
 
-    v27 = [v8 identifier];
-    v28 = [v27 isEqualToString:@"top-mic-left"];
+    identifier7 = [v8 identifier];
+    v28 = [identifier7 isEqualToString:@"top-mic-left"];
 
     if (v28)
     {
@@ -306,8 +306,8 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFDFFF | v29;
     }
 
-    v30 = [v8 identifier];
-    v31 = [v30 isEqualToString:@"thd-left"];
+    identifier8 = [v8 identifier];
+    v31 = [identifier8 isEqualToString:@"thd-left"];
 
     if (v31)
     {
@@ -324,16 +324,16 @@
       self->_measurementResultLeft = self->_measurementResultLeft & 0xFFFFFF7F | v32;
     }
 
-    v33 = [v8 identifier];
-    v34 = [v33 isEqualToString:@"no-utp-left"];
+    identifier9 = [v8 identifier];
+    v34 = [identifier9 isEqualToString:@"no-utp-left"];
 
     if (v34)
     {
-      v35 = [firstTimeUseRightTimestamp isChecked];
+      isChecked = [firstTimeUseRightTimestamp isChecked];
       measurementResultLeft = self->_measurementResultLeft;
       v37 = measurementResultLeft | 3;
       v38 = measurementResultLeft & 0xFFFFFFF8;
-      if (v35)
+      if (isChecked)
       {
         v38 = v37;
       }
@@ -341,16 +341,16 @@
       self->_measurementResultLeft = v38;
     }
 
-    v39 = [v8 identifier];
-    v40 = [v39 isEqualToString:@"no-msr-left"];
+    identifier10 = [v8 identifier];
+    v40 = [identifier10 isEqualToString:@"no-msr-left"];
 
     if (v40)
     {
-      v41 = [firstTimeUseRightTimestamp isChecked];
+      isChecked2 = [firstTimeUseRightTimestamp isChecked];
       v42 = self->_measurementResultLeft;
       v43 = v42 | 4;
       v44 = v42 & 0xFFFFFFF8;
-      if (v41)
+      if (isChecked2)
       {
         v44 = v43;
       }
@@ -358,8 +358,8 @@
       self->_measurementResultLeft = v44;
     }
 
-    v45 = [v8 identifier];
-    v46 = [v45 isEqualToString:@"bottom-mic-right"];
+    identifier11 = [v8 identifier];
+    v46 = [identifier11 isEqualToString:@"bottom-mic-right"];
 
     if (v46)
     {
@@ -376,8 +376,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFEFFF | v47;
     }
 
-    v48 = [v8 identifier];
-    v49 = [v48 isEqualToString:@"freq-right"];
+    identifier12 = [v8 identifier];
+    v49 = [identifier12 isEqualToString:@"freq-right"];
 
     if (v49)
     {
@@ -394,8 +394,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFFEFF | v50;
     }
 
-    v51 = [v8 identifier];
-    v52 = [v51 isEqualToString:@"front-vent-right"];
+    identifier13 = [v8 identifier];
+    v52 = [identifier13 isEqualToString:@"front-vent-right"];
 
     if (v52)
     {
@@ -412,8 +412,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFF7FF | v53;
     }
 
-    v54 = [v8 identifier];
-    v55 = [v54 isEqualToString:@"inner-mic-right"];
+    identifier14 = [v8 identifier];
+    v55 = [identifier14 isEqualToString:@"inner-mic-right"];
 
     if (v55)
     {
@@ -430,8 +430,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFBFFF | v56;
     }
 
-    v57 = [v8 identifier];
-    v58 = [v57 isEqualToString:@"rear-vent-right"];
+    identifier15 = [v8 identifier];
+    v58 = [identifier15 isEqualToString:@"rear-vent-right"];
 
     if (v58)
     {
@@ -448,8 +448,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFFBFF | v59;
     }
 
-    v60 = [v8 identifier];
-    v61 = [v60 isEqualToString:@"speaker-right"];
+    identifier16 = [v8 identifier];
+    v61 = [identifier16 isEqualToString:@"speaker-right"];
 
     if (v61)
     {
@@ -466,8 +466,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFFDFF | v62;
     }
 
-    v63 = [v8 identifier];
-    v64 = [v63 isEqualToString:@"top-mic-right"];
+    identifier17 = [v8 identifier];
+    v64 = [identifier17 isEqualToString:@"top-mic-right"];
 
     if (v64)
     {
@@ -484,8 +484,8 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFDFFF | v65;
     }
 
-    v66 = [v8 identifier];
-    v67 = [v66 isEqualToString:@"thd-right"];
+    identifier18 = [v8 identifier];
+    v67 = [identifier18 isEqualToString:@"thd-right"];
 
     if (v67)
     {
@@ -502,16 +502,16 @@
       self->_measurementResultRight = self->_measurementResultRight & 0xFFFFFF7F | v68;
     }
 
-    v69 = [v8 identifier];
-    v70 = [v69 isEqualToString:@"no-utp-right"];
+    identifier19 = [v8 identifier];
+    v70 = [identifier19 isEqualToString:@"no-utp-right"];
 
     if (v70)
     {
-      v71 = [firstTimeUseRightTimestamp isChecked];
+      isChecked3 = [firstTimeUseRightTimestamp isChecked];
       measurementResultRight = self->_measurementResultRight;
       v73 = measurementResultRight | 3;
       v74 = measurementResultRight & 0xFFFFFFF8;
-      if (v71)
+      if (isChecked3)
       {
         v74 = v73;
       }
@@ -519,16 +519,16 @@
       self->_measurementResultRight = v74;
     }
 
-    v75 = [v8 identifier];
-    v76 = [v75 isEqualToString:@"no-msr-right"];
+    identifier20 = [v8 identifier];
+    v76 = [identifier20 isEqualToString:@"no-msr-right"];
 
     if (v76)
     {
-      v77 = [firstTimeUseRightTimestamp isChecked];
+      isChecked4 = [firstTimeUseRightTimestamp isChecked];
       v78 = self->_measurementResultRight;
       v79 = v78 | 4;
       v80 = v78 & 0xFFFFFFF8;
-      if (v77)
+      if (isChecked4)
       {
         v80 = v79;
       }
@@ -590,8 +590,8 @@
   v17 = [MEMORY[0x277CBEA90] dataWithBytes:&v23 length:57];
   [v16 setObject:v17 forKeyedSubscript:@"msg-data"];
 
-  v18 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v18 postNotificationName:@"com.apple.HearingModeService" object:0 userInfo:v16 options:2];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.HearingModeService" object:0 userInfo:v16 options:2];
 
   v19 = MEMORY[0x277D75110];
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sent to HearingModeService!"];
@@ -602,73 +602,73 @@
   [(HMTestOcclusionViewController *)self presentViewController:v21 animated:1 completion:0];
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v17 = a3;
-  v4 = [v17 accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"left"];
+  changedCopy = changed;
+  accessibilityIdentifier = [changedCopy accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"left"];
 
   if (v5)
   {
-    v6 = v17;
+    v6 = changedCopy;
     v7 = &OBJC_IVAR___HMTestOcclusionViewController__leftMeasurementTimestamp;
   }
 
   else
   {
-    v8 = [v17 accessibilityIdentifier];
-    v9 = [v8 isEqualToString:@"right"];
+    accessibilityIdentifier2 = [changedCopy accessibilityIdentifier];
+    v9 = [accessibilityIdentifier2 isEqualToString:@"right"];
 
     if (v9)
     {
-      v6 = v17;
+      v6 = changedCopy;
       v7 = &OBJC_IVAR___HMTestOcclusionViewController__rightMeasurementTimestamp;
     }
 
     else
     {
-      v10 = [v17 accessibilityIdentifier];
-      v11 = [v10 isEqualToString:@"first-left"];
+      accessibilityIdentifier3 = [changedCopy accessibilityIdentifier];
+      v11 = [accessibilityIdentifier3 isEqualToString:@"first-left"];
 
       if (v11)
       {
-        v6 = v17;
+        v6 = changedCopy;
         v7 = &OBJC_IVAR___HMTestOcclusionViewController__firstTimeUseLeftTimestamp;
       }
 
       else
       {
-        v12 = [v17 accessibilityIdentifier];
-        v13 = [v12 isEqualToString:@"first-right"];
+        accessibilityIdentifier4 = [changedCopy accessibilityIdentifier];
+        v13 = [accessibilityIdentifier4 isEqualToString:@"first-right"];
 
         if (!v13)
         {
           goto LABEL_10;
         }
 
-        v6 = v17;
+        v6 = changedCopy;
         v7 = &OBJC_IVAR___HMTestOcclusionViewController__firstTimeUseRightTimestamp;
       }
     }
   }
 
-  v14 = [v6 date];
+  date = [v6 date];
   v15 = *v7;
   v16 = *(&self->super.super.super.super.super.super.isa + v15);
-  *(&self->super.super.super.super.super.super.isa + v15) = v14;
+  *(&self->super.super.super.super.super.super.isa + v15) = date;
 
 LABEL_10:
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = objc_alloc(MEMORY[0x277D753E8]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v5 setDatePickerMode:2];
   [v5 setPreferredDatePickerStyle:2];
-  v6 = [v3 identifier];
-  v7 = [v6 isEqualToString:@"timestamp-left"];
+  identifier = [specifierCopy identifier];
+  v7 = [identifier isEqualToString:@"timestamp-left"];
 
   if (v7)
   {
@@ -677,8 +677,8 @@ LABEL_10:
 
   else
   {
-    v9 = [v3 identifier];
-    v10 = [v9 isEqualToString:@"timestamp-right"];
+    identifier2 = [specifierCopy identifier];
+    v10 = [identifier2 isEqualToString:@"timestamp-right"];
 
     if (v10)
     {
@@ -687,8 +687,8 @@ LABEL_10:
 
     else
     {
-      v11 = [v3 identifier];
-      v12 = [v11 isEqualToString:@"first-time-use-left"];
+      identifier3 = [specifierCopy identifier];
+      v12 = [identifier3 isEqualToString:@"first-time-use-left"];
 
       if (v12)
       {
@@ -697,8 +697,8 @@ LABEL_10:
 
       else
       {
-        v13 = [v3 identifier];
-        v14 = [v13 isEqualToString:@"first-time-use-right"];
+        identifier4 = [specifierCopy identifier];
+        v14 = [identifier4 isEqualToString:@"first-time-use-right"];
 
         if (!v14)
         {

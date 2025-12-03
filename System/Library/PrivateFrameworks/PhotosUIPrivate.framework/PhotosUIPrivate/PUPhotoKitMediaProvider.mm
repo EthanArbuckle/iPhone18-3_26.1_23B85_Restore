@@ -1,67 +1,67 @@
 @interface PUPhotoKitMediaProvider
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAsynchronousVideoURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int)a3;
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestAsynchronousVideoURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int)request;
 @end
 
 @implementation PUPhotoKitMediaProvider
 
-- (void)cancelImageRequest:(int)a3
+- (void)cancelImageRequest:(int)request
 {
-  v3 = *&a3;
-  v4 = [MEMORY[0x1E6978860] defaultManager];
-  [v4 cancelImageRequest:v3];
+  v3 = *&request;
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:v3];
 }
 
-- (int)requestAsynchronousVideoURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAsynchronousVideoURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E6978860];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 defaultManager];
+  optionsCopy = options;
+  assetCopy = asset;
+  defaultManager = [v8 defaultManager];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__PUPhotoKitMediaProvider_requestAsynchronousVideoURLForAsset_options_resultHandler___block_invoke;
   v14[3] = &unk_1E7B7F898;
-  v15 = v7;
-  v12 = v7;
-  LODWORD(v8) = [v11 requestURLForVideo:v10 options:v9 resultHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  LODWORD(v8) = [defaultManager requestURLForVideo:assetCopy options:optionsCopy resultHandler:v14];
 
   return v8;
 }
 
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
-  v12 = v10;
+  v12 = optionsCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7B7BF10;
-  v13 = v11;
+  v13 = handlerCopy;
   v59 = v13;
-  v14 = v9;
+  v14 = assetCopy;
   v58 = v14;
   v15 = _Block_copy(aBlock);
-  v16 = [(PUMediaProvider *)self loadingStatusManager];
-  v17 = v16;
-  if (v16)
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  v17 = loadingStatusManager;
+  if (loadingStatusManager)
   {
     *buf = 0;
     v52 = buf;
@@ -74,16 +74,16 @@
     v46 = __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke_2;
     v47 = &unk_1E7B7FFC0;
     v50 = buf;
-    v48 = v16;
+    v48 = loadingStatusManager;
     v49 = v14;
     px_dispatch_on_main_queue();
-    v18 = [v12 progressHandler];
+    progressHandler = [v12 progressHandler];
     v19 = _Block_copy(v15);
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke_3;
     v40[3] = &unk_1E7B7BC90;
-    v20 = v18;
+    v20 = progressHandler;
     v42 = v20;
     v21 = v48;
     v41 = v21;
@@ -104,9 +104,9 @@
   }
 
   v24 = +[PUOneUpSettings sharedInstance];
-  v25 = [v24 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v24 simulateAssetContentLoading];
 
-  if (v25)
+  if (simulateAssetContentLoading)
   {
     v26 = PLUIGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -116,18 +116,18 @@
     }
 
     v27 = objc_alloc_init(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation);
-    v28 = [v12 progressHandler];
-    [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 setExternalProgressHandler:v28];
+    progressHandler2 = [v12 progressHandler];
+    [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 setExternalResultHandler:v15];
     v29 = [v12 copy];
 
-    v30 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 internalProgressHandler];
-    [v29 setProgressHandler:v30];
+    internalProgressHandler = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 internalProgressHandler];
+    [v29 setProgressHandler:internalProgressHandler];
 
-    v31 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)v27 internalResultHandler];
 
-    v15 = v31;
+    v15 = internalResultHandler;
   }
 
   else
@@ -135,8 +135,8 @@
     v29 = v12;
   }
 
-  v32 = [MEMORY[0x1E6978860] defaultManager];
-  v33 = [v32 requestAnimatedImageForAsset:v14 options:v29 resultHandler:v15];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v33 = [defaultManager requestAnimatedImageForAsset:v14 options:v29 resultHandler:v15];
 
   return v33;
 }
@@ -237,24 +237,24 @@ void __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHa
   }
 }
 
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:382 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:382 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
-  v12 = [v10 copy];
+  v12 = [optionsCopy copy];
   [v12 setLoadingMode:0x10000];
-  v13 = _Block_copy(v11);
-  v14 = [(PUMediaProvider *)self loadingStatusManager];
-  v15 = v14;
-  if (v14)
+  v13 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  v15 = loadingStatusManager;
+  if (loadingStatusManager)
   {
     *buf = 0;
     v54 = buf;
@@ -267,16 +267,16 @@ void __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHa
     v48 = __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke;
     v49 = &unk_1E7B7FFC0;
     v52 = buf;
-    v50 = v14;
-    v51 = v9;
+    v50 = loadingStatusManager;
+    v51 = assetCopy;
     px_dispatch_on_main_queue();
-    v16 = [v12 progressHandler];
+    progressHandler = [v12 progressHandler];
     v17 = _Block_copy(v13);
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke_2;
     v42[3] = &unk_1E7B7BC90;
-    v18 = v16;
+    v18 = progressHandler;
     v44 = v18;
     v19 = v50;
     v43 = v19;
@@ -304,9 +304,9 @@ void __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHa
   v37 = v22;
   v23 = _Block_copy(v36);
   v24 = +[PUOneUpSettings sharedInstance];
-  v25 = [v24 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v24 simulateAssetContentLoading];
 
-  if (v25)
+  if (simulateAssetContentLoading)
   {
     v26 = PLUIGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -316,23 +316,23 @@ void __78__PUPhotoKitMediaProvider_requestAnimatedImageForAsset_options_resultHa
     }
 
     v27 = objc_alloc_init(PUPhotoKitMediaProviderImageDownloadSimulation);
-    v28 = [v12 progressHandler];
-    [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 setExternalProgressHandler:v28];
+    progressHandler2 = [v12 progressHandler];
+    [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 setExternalResultHandler:v23];
     v29 = [v12 copy];
 
-    v30 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 internalProgressHandler];
-    [v29 setProgressHandler:v30];
+    internalProgressHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 internalProgressHandler];
+    [v29 setProgressHandler:internalProgressHandler];
 
-    v31 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v27 internalResultHandler];
 
-    v23 = v31;
+    v23 = internalResultHandler;
     v12 = v29;
   }
 
-  v32 = [MEMORY[0x1E6978860] defaultManager];
-  v33 = [v32 requestImageForAsset:v9 targetSize:0 contentMode:v12 options:v23 resultHandler:{*MEMORY[0x1E6978E30], *(MEMORY[0x1E6978E30] + 8)}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v33 = [defaultManager requestImageForAsset:assetCopy targetSize:0 contentMode:v12 options:v23 resultHandler:{*MEMORY[0x1E6978E30], *(MEMORY[0x1E6978E30] + 8)}];
 
   return v33;
 }
@@ -428,35 +428,35 @@ void __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler
   }
 }
 
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
-  v17 = v15;
+  v17 = optionsCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7B7BE98;
-  v18 = v16;
+  v18 = handlerCopy;
   v67 = v18;
-  v19 = v14;
+  v19 = assetCopy;
   v65 = v19;
   v20 = v17;
   v66 = v20;
   v21 = _Block_copy(aBlock);
-  v22 = [(PUMediaProvider *)self loadingStatusManager];
-  v23 = v22;
-  if (v22)
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  v23 = loadingStatusManager;
+  if (loadingStatusManager)
   {
     *buf = 0;
     v59 = buf;
@@ -469,10 +469,10 @@ void __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler
     v53 = __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke_2;
     v54 = &unk_1E7B7FFC0;
     v57 = buf;
-    v55 = v22;
+    v55 = loadingStatusManager;
     v56 = v19;
     px_dispatch_on_main_queue();
-    v24 = [v20 progressHandler];
+    progressHandler = [v20 progressHandler];
     v25 = _Block_copy(v21);
     v26 = [v20 copy];
 
@@ -480,7 +480,7 @@ void __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler
     v47[1] = 3221225472;
     v47[2] = __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke_3;
     v47[3] = &unk_1E7B7BC90;
-    v27 = v24;
+    v27 = progressHandler;
     v49 = v27;
     v28 = v55;
     v48 = v28;
@@ -506,9 +506,9 @@ void __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler
   }
 
   v31 = +[PUOneUpSettings sharedInstance];
-  v32 = [v31 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v31 simulateAssetContentLoading];
 
-  if (v32)
+  if (simulateAssetContentLoading)
   {
     v33 = PLUIGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -518,23 +518,23 @@ void __73__PUPhotoKitMediaProvider_requestImageURLForAsset_options_resultHandler
     }
 
     v34 = objc_alloc_init(PUPhotoKitMediaProviderLivePhotoDownloadSimulation);
-    v35 = [v26 progressHandler];
-    [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 setExternalProgressHandler:v35];
+    progressHandler2 = [v26 progressHandler];
+    [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 setExternalResultHandler:v21];
     v36 = [v26 copy];
 
-    v37 = [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 internalProgressHandler];
-    [v36 setProgressHandler:v37];
+    internalProgressHandler = [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 internalProgressHandler];
+    [v36 setProgressHandler:internalProgressHandler];
 
-    v38 = [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderLivePhotoDownloadSimulation *)v34 internalResultHandler];
 
-    v21 = v38;
+    v21 = internalResultHandler;
     v26 = v36;
   }
 
-  v39 = [MEMORY[0x1E6978860] defaultManager];
-  v40 = [v39 requestLivePhotoForAsset:v19 targetSize:a5 contentMode:v26 options:v21 resultHandler:{width, height}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v40 = [defaultManager requestLivePhotoForAsset:v19 targetSize:mode contentMode:v26 options:v21 resultHandler:{width, height}];
 
   return v40;
 }
@@ -636,23 +636,23 @@ void __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMo
   }
 }
 
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
-  v12 = v10;
-  v13 = _Block_copy(v11);
-  v14 = [(PUMediaProvider *)self loadingStatusManager];
-  v15 = v14;
-  if (v14)
+  v12 = optionsCopy;
+  v13 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  v15 = loadingStatusManager;
+  if (loadingStatusManager)
   {
     *buf = 0;
     v51 = buf;
@@ -665,10 +665,10 @@ void __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMo
     v45 = __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler___block_invoke;
     v46 = &unk_1E7B7FFC0;
     v49 = buf;
-    v47 = v14;
-    v48 = v9;
+    v47 = loadingStatusManager;
+    v48 = videoCopy;
     px_dispatch_on_main_queue();
-    v16 = [v12 progressHandler];
+    progressHandler = [v12 progressHandler];
     v17 = _Block_copy(v13);
     v18 = [v12 copy];
 
@@ -676,7 +676,7 @@ void __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMo
     v39[1] = 3221225472;
     v39[2] = __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler___block_invoke_2;
     v39[3] = &unk_1E7B7BC90;
-    v19 = v16;
+    v19 = progressHandler;
     v41 = v19;
     v20 = v47;
     v40 = v20;
@@ -702,9 +702,9 @@ void __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMo
   }
 
   v23 = +[PUOneUpSettings sharedInstance];
-  v24 = [v23 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v23 simulateAssetContentLoading];
 
-  if (v24)
+  if (simulateAssetContentLoading)
   {
     v25 = PLUIGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -714,23 +714,23 @@ void __97__PUPhotoKitMediaProvider_requestLivePhotoForAsset_targetSize_contentMo
     }
 
     v26 = objc_alloc_init(PUPhotoKitMediaProviderAVAssetDownloadSimulation);
-    v27 = [v18 progressHandler];
-    [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 setExternalProgressHandler:v27];
+    progressHandler2 = [v18 progressHandler];
+    [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 setExternalResultHandler:v13];
     v28 = [v18 copy];
 
-    v29 = [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 internalProgressHandler];
-    [v28 setProgressHandler:v29];
+    internalProgressHandler = [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 internalProgressHandler];
+    [v28 setProgressHandler:internalProgressHandler];
 
-    v30 = [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderAVAssetDownloadSimulation *)v26 internalResultHandler];
 
-    v13 = v30;
+    v13 = internalResultHandler;
     v18 = v28;
   }
 
-  v31 = [MEMORY[0x1E6978860] defaultManager];
-  v32 = [v31 requestAVAssetForVideo:v9 options:v18 resultHandler:v13];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v32 = [defaultManager requestAVAssetForVideo:videoCopy options:v18 resultHandler:v13];
 
   return v32;
 }
@@ -812,17 +812,17 @@ void __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler_
   }
 }
 
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   v86[0] = 0;
@@ -835,7 +835,7 @@ void __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler_
   v84[3] = __Block_byref_object_copy__60118;
   v84[4] = __Block_byref_object_dispose__60119;
   v85 = 0;
-  v12 = v10;
+  v12 = optionsCopy;
   [v12 setLiveRenderVideoIfNeeded:1];
   v13 = +[PUPhotoEditProtoSettings sharedInstance];
   [v12 setLiveRenderAndOnDemandRenderVideoConcurrently:{objc_msgSend(v13, "enableLiveVideoRender") ^ 1}];
@@ -846,21 +846,21 @@ void __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler_
   v82[3] = __Block_byref_object_copy__60118;
   v82[4] = __Block_byref_object_dispose__60119;
   v83 = 0;
-  v14 = [(PUMediaProvider *)self loadingStatusManager];
-  v15 = v14;
-  if (v14)
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  v15 = loadingStatusManager;
+  if (loadingStatusManager)
   {
     v78[4] = MEMORY[0x1E69E9820];
     v78[5] = 3221225472;
     v78[6] = __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke;
     v78[7] = &unk_1E7B7FFC0;
     v81 = v82;
-    v79 = v14;
-    v80 = v9;
+    v79 = loadingStatusManager;
+    v80 = videoCopy;
     px_dispatch_on_main_queue();
   }
 
-  v44 = [v12 progressHandler];
+  progressHandler = [v12 progressHandler];
   v78[0] = 0;
   v78[1] = v78;
   v78[2] = 0x2020000000;
@@ -869,7 +869,7 @@ void __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler_
   v76[1] = v76;
   v76[2] = 0x2020000000;
   v77 = 0;
-  v16 = v9;
+  v16 = videoCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v46 = v16;
@@ -891,9 +891,9 @@ void __72__PUPhotoKitMediaProvider_requestAVAssetForVideo_options_resultHandler_
     goto LABEL_16;
   }
 
-  v18 = [v12 downloadIntent];
+  downloadIntent = [v12 downloadIntent];
   v45 = 0;
-  if (!v46 || v18 != 3)
+  if (!v46 || downloadIntent != 3)
   {
     goto LABEL_17;
   }
@@ -906,9 +906,9 @@ LABEL_16:
 
   else
   {
-    v19 = [v46 photoLibrary];
-    v20 = [v46 uuid];
-    v88[0] = v20;
+    photoLibrary = [v46 photoLibrary];
+    uuid = [v46 uuid];
+    v88[0] = uuid;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:1];
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
@@ -918,12 +918,12 @@ LABEL_16:
     v71 = v76;
     v68 = v15;
     v69 = 0;
-    v70 = v44;
+    v70 = progressHandler;
     v72 = v78;
     v73 = v82;
     v74 = v86;
     v75 = v84;
-    v45 = [v19 analyzeAssets:v21 forFeature:7 withCompletion:v66];
+    v45 = [photoLibrary analyzeAssets:v21 forFeature:7 withCompletion:v66];
   }
 
 LABEL_17:
@@ -931,7 +931,7 @@ LABEL_17:
   aBlock[1] = 3221225472;
   aBlock[2] = __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke_2_218;
   aBlock[3] = &unk_1E7B7BDA8;
-  v43 = v11;
+  v43 = handlerCopy;
   v65 = v43;
   v22 = v16;
   v64 = v22;
@@ -949,7 +949,7 @@ LABEL_17:
     v61 = v78;
     v27 = v15;
     v58 = v27;
-    v60 = v44;
+    v60 = progressHandler;
     v28 = v45;
     v59 = v28;
     v62 = v82;
@@ -978,9 +978,9 @@ LABEL_17:
   }
 
   v31 = +[PUOneUpSettings sharedInstance];
-  v32 = [v31 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v31 simulateAssetContentLoading];
 
-  if (v32)
+  if (simulateAssetContentLoading)
   {
     v33 = PLUIGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -990,18 +990,18 @@ LABEL_17:
     }
 
     v34 = objc_alloc_init(PUPhotoKitMediaProviderPlayerItemDownloadSimulation);
-    v35 = [v26 progressHandler];
-    [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 setExternalProgressHandler:v35];
+    progressHandler2 = [v26 progressHandler];
+    [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 setExternalResultHandler:v24];
     v36 = [v26 copy];
 
-    v37 = [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 internalProgressHandler];
-    [v36 setProgressHandler:v37];
+    internalProgressHandler = [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 internalProgressHandler];
+    [v36 setProgressHandler:internalProgressHandler];
 
-    v38 = [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderPlayerItemDownloadSimulation *)v34 internalResultHandler];
 
-    v24 = v38;
+    v24 = internalResultHandler;
   }
 
   else
@@ -1009,8 +1009,8 @@ LABEL_17:
     v36 = v26;
   }
 
-  v39 = [MEMORY[0x1E6978860] defaultManager];
-  v40 = [v39 requestPlayerItemForVideo:v22 options:v36 resultHandler:v24];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v40 = [defaultManager requestPlayerItemForVideo:v22 options:v36 resultHandler:v24];
 
   _Block_object_dispose(v76, 8);
   _Block_object_dispose(v78, 8);
@@ -1205,24 +1205,24 @@ uint64_t __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultH
   return result;
 }
 
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
-  v12 = v10;
-  v13 = _Block_copy(v11);
-  v14 = [(PUMediaProvider *)self loadingStatusManager];
-  v15 = v14;
+  v12 = optionsCopy;
+  v13 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  v15 = loadingStatusManager;
   v16 = &unk_1B3D0C000;
-  if (v14)
+  if (loadingStatusManager)
   {
     *buf = 0;
     v55 = buf;
@@ -1235,10 +1235,10 @@ uint64_t __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultH
     v49 = __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke;
     v50 = &unk_1E7B7FFC0;
     v53 = buf;
-    v51 = v14;
-    v52 = v9;
+    v51 = loadingStatusManager;
+    v52 = assetCopy;
     px_dispatch_on_main_queue();
-    v17 = [v12 progressHandler];
+    progressHandler = [v12 progressHandler];
     v18 = _Block_copy(v13);
     v19 = [v12 copy];
 
@@ -1246,7 +1246,7 @@ uint64_t __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultH
     v43[1] = 3221225472;
     v43[2] = __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke_2;
     v43[3] = &unk_1E7B7BC90;
-    v20 = v17;
+    v20 = progressHandler;
     v45 = v20;
     v21 = v51;
     v44 = v21;
@@ -1273,9 +1273,9 @@ uint64_t __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultH
   }
 
   v24 = +[PUOneUpSettings sharedInstance];
-  v25 = [v24 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v24 simulateAssetContentLoading];
 
-  if (v25)
+  if (simulateAssetContentLoading)
   {
     v26 = PLUIGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1285,29 +1285,29 @@ uint64_t __75__PUPhotoKitMediaProvider_requestPlayerItemForVideo_options_resultH
     }
 
     v27 = objc_alloc_init(PUPhotoKitMediaProviderImageDataDownloadSimulation);
-    v28 = [v19 progressHandler];
-    [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 setExternalProgressHandler:v28];
+    progressHandler2 = [v19 progressHandler];
+    [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 setExternalResultHandler:v13];
     v29 = [v19 copy];
 
-    v30 = [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 internalProgressHandler];
-    [v29 setProgressHandler:v30];
+    internalProgressHandler = [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 internalProgressHandler];
+    [v29 setProgressHandler:internalProgressHandler];
 
-    v31 = [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderImageDataDownloadSimulation *)v27 internalResultHandler];
 
-    v13 = v31;
+    v13 = internalResultHandler;
     v19 = v29;
   }
 
-  v32 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = v16[211];
   v37[2] = __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke_211;
   v37[3] = &unk_1E7B7BD30;
   v38 = v13;
   v33 = v13;
-  v34 = [v32 requestImageDataAndOrientationForAsset:v9 options:v19 resultHandler:v37];
+  v34 = [defaultManager requestImageDataAndOrientationForAsset:assetCopy options:v19 resultHandler:v37];
 
   return v34;
 }
@@ -1402,32 +1402,32 @@ void __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandle
   }
 }
 
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitMediaProvider.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
-  v17 = v15;
+  v17 = optionsCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__PUPhotoKitMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7B7BC68;
-  v18 = v14;
+  v18 = assetCopy;
   v63 = v18;
-  v19 = v16;
+  v19 = handlerCopy;
   v64 = v19;
   v20 = _Block_copy(aBlock);
-  v21 = [(PUMediaProvider *)self loadingStatusManager];
-  if (([v17 avoidDisplayingProgressUpdates] & 1) != 0 || !v21)
+  loadingStatusManager = [(PUMediaProvider *)self loadingStatusManager];
+  if (([v17 avoidDisplayingProgressUpdates] & 1) != 0 || !loadingStatusManager)
   {
     v24 = v17;
   }
@@ -1445,10 +1445,10 @@ void __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandle
     v51 = __93__PUPhotoKitMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke_203;
     v52 = &unk_1E7B7FFC0;
     v55 = buf;
-    v53 = v21;
+    v53 = loadingStatusManager;
     v54 = v18;
     px_dispatch_on_main_queue();
-    v22 = [v17 progressHandler];
+    progressHandler = [v17 progressHandler];
     v23 = _Block_copy(v20);
     v24 = [v17 copy];
 
@@ -1456,7 +1456,7 @@ void __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandle
     v45[1] = 3221225472;
     v45[2] = __93__PUPhotoKitMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke_2;
     v45[3] = &unk_1E7B7BC90;
-    v25 = v22;
+    v25 = progressHandler;
     v47 = v25;
     v26 = v53;
     v46 = v26;
@@ -1477,9 +1477,9 @@ void __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandle
   }
 
   v29 = +[PUOneUpSettings sharedInstance];
-  v30 = [v29 simulateAssetContentLoading];
+  simulateAssetContentLoading = [v29 simulateAssetContentLoading];
 
-  if (v30)
+  if (simulateAssetContentLoading)
   {
     v31 = PLUIGetLog();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -1489,23 +1489,23 @@ void __74__PUPhotoKitMediaProvider_requestImageDataForAsset_options_resultHandle
     }
 
     v32 = objc_alloc_init(PUPhotoKitMediaProviderImageDownloadSimulation);
-    v33 = [v24 progressHandler];
-    [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 setExternalProgressHandler:v33];
+    progressHandler2 = [v24 progressHandler];
+    [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 setExternalProgressHandler:progressHandler2];
 
     [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 setExternalResultHandler:v20];
     v34 = [v24 copy];
 
-    v35 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 internalProgressHandler];
-    [v34 setProgressHandler:v35];
+    internalProgressHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 internalProgressHandler];
+    [v34 setProgressHandler:internalProgressHandler];
 
-    v36 = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 internalResultHandler];
+    internalResultHandler = [(PUPhotoKitMediaProviderImageDownloadSimulation *)v32 internalResultHandler];
 
-    v20 = v36;
+    v20 = internalResultHandler;
     v24 = v34;
   }
 
-  v37 = [MEMORY[0x1E6978860] defaultManager];
-  v38 = [v37 requestImageForAsset:v18 targetSize:a5 contentMode:v24 options:v20 resultHandler:{width, height}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v38 = [defaultManager requestImageForAsset:v18 targetSize:mode contentMode:v24 options:v20 resultHandler:{width, height}];
 
   return v38;
 }

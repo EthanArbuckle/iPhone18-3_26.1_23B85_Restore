@@ -1,33 +1,33 @@
 @interface DOCIndeterminateProgressRingView
-- (DOCIndeterminateProgressRingView)initWithFrame:(CGRect)a3;
-- (void)_removeAllAnimations:(BOOL)a3;
+- (DOCIndeterminateProgressRingView)initWithFrame:(CGRect)frame;
+- (void)_removeAllAnimations:(BOOL)animations;
 - (void)_updateShapePath;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation DOCIndeterminateProgressRingView
 
-- (DOCIndeterminateProgressRingView)initWithFrame:(CGRect)a3
+- (DOCIndeterminateProgressRingView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = DOCIndeterminateProgressRingView;
-  v3 = [(DOCIndeterminateProgressRingView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCIndeterminateProgressRingView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(DOCIndeterminateProgressRingView *)v3 layer];
-    [v5 setLineCap:*MEMORY[0x277CDA780]];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    layer = [(DOCIndeterminateProgressRingView *)v3 layer];
+    [layer setLineCap:*MEMORY[0x277CDA780]];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
     [(DOCIndeterminateProgressRingView *)v4 _updateShapePath];
     v7 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.z"];
     spinnerAnimation = v4->_spinnerAnimation;
     v4->_spinnerAnimation = v7;
 
-    v9 = [(CABasicAnimation *)v4->_spinnerAnimation keyPath];
-    v10 = [v5 valueForKeyPath:v9];
+    keyPath = [(CABasicAnimation *)v4->_spinnerAnimation keyPath];
+    v10 = [layer valueForKeyPath:keyPath];
 
     [(CABasicAnimation *)v4->_spinnerAnimation setFromValue:v10];
     v11 = v4->_spinnerAnimation;
@@ -46,31 +46,31 @@
     v17 = v4->_spinnerAnimation;
     [(CABasicAnimation *)v17 duration];
     [(CABasicAnimation *)v17 setBeginTime:(v16 - fmod(v16, v18))];
-    [v5 addAnimation:v4->_spinnerAnimation forKey:@"DOCIndeterminateProgressRingViewSpinnerAnimationKey"];
+    [layer addAnimation:v4->_spinnerAnimation forKey:@"DOCIndeterminateProgressRingViewSpinnerAnimationKey"];
   }
 
   return v4;
 }
 
-- (void)_removeAllAnimations:(BOOL)a3
+- (void)_removeAllAnimations:(BOOL)animations
 {
   v5.receiver = self;
   v5.super_class = DOCIndeterminateProgressRingView;
-  [(DOCIndeterminateProgressRingView *)&v5 _removeAllAnimations:a3];
-  v4 = [(DOCIndeterminateProgressRingView *)self layer];
-  [v4 addAnimation:self->_spinnerAnimation forKey:@"DOCIndeterminateProgressRingViewSpinnerAnimationKey"];
+  [(DOCIndeterminateProgressRingView *)&v5 _removeAllAnimations:animations];
+  layer = [(DOCIndeterminateProgressRingView *)self layer];
+  [layer addAnimation:self->_spinnerAnimation forKey:@"DOCIndeterminateProgressRingViewSpinnerAnimationKey"];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = DOCIndeterminateProgressRingView;
-  v4 = a3;
-  [(DOCIndeterminateProgressRingView *)&v7 setTintColor:v4];
+  colorCopy = color;
+  [(DOCIndeterminateProgressRingView *)&v7 setTintColor:colorCopy];
   v5 = [(DOCIndeterminateProgressRingView *)self layer:v7.receiver];
-  v6 = [v4 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  [v5 setStrokeColor:v6];
+  [v5 setStrokeColor:cGColor];
 }
 
 - (void)layoutSubviews
@@ -83,7 +83,7 @@
 
 - (void)_updateShapePath
 {
-  v12 = [(DOCIndeterminateProgressRingView *)self layer];
+  layer = [(DOCIndeterminateProgressRingView *)self layer];
   [(DOCIndeterminateProgressRingView *)self bounds];
   x = v14.origin.x;
   y = v14.origin.y;
@@ -96,9 +96,9 @@
   v15.size.width = width;
   v15.size.height = height;
   MidY = CGRectGetMidY(v15);
-  v10 = [MEMORY[0x277D75208] bezierPath];
-  [v10 addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v7 clockwise:{0.0, 5.8293997}];
-  [v12 setPath:{objc_msgSend(v10, "CGPath")}];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  [bezierPath addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v7 clockwise:{0.0, 5.8293997}];
+  [layer setPath:{objc_msgSend(bezierPath, "CGPath")}];
   if (width >= height)
   {
     v11 = height;
@@ -109,8 +109,8 @@
     v11 = width;
   }
 
-  [v12 setLineWidth:v11 / 36.0 * 3.0];
-  [v12 setBounds:{x, y, width, height}];
+  [layer setLineWidth:v11 / 36.0 * 3.0];
+  [layer setBounds:{x, y, width, height}];
 }
 
 @end

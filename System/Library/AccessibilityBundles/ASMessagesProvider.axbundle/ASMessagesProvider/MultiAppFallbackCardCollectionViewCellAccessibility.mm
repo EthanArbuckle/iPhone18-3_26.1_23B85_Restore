@@ -1,28 +1,28 @@
 @interface MultiAppFallbackCardCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation MultiAppFallbackCardCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASMessagesProvider.MultiAppFallbackCardCollectionViewCell" hasSwiftField:@"infoLayerLabelsView" withSwiftType:"TodayCardLabelsView"];
-  [v3 validateClass:@"ASMessagesProvider.MultiAppFallbackCardCollectionViewCell" hasSwiftField:@"infoLayerOverlayContainer" withSwiftType:"InfoLayerOverlayContainerView"];
-  [v3 validateClass:@"ASMessagesProvider.InfoLayerOverlayContainerView" hasSwiftField:@"overlayView" withSwiftType:"Optional<UIView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASMessagesProvider.MultiAppFallbackCardCollectionViewCell" hasSwiftField:@"infoLayerLabelsView" withSwiftType:"TodayCardLabelsView"];
+  [validationsCopy validateClass:@"ASMessagesProvider.MultiAppFallbackCardCollectionViewCell" hasSwiftField:@"infoLayerOverlayContainer" withSwiftType:"InfoLayerOverlayContainerView"];
+  [validationsCopy validateClass:@"ASMessagesProvider.InfoLayerOverlayContainerView" hasSwiftField:@"overlayView" withSwiftType:"Optional<UIView>"];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(MultiAppFallbackCardCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"infoLayerLabelsView"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
   v5 = [(MultiAppFallbackCardCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"infoLayerOverlayContainer"];
   v6 = [v5 safeSwiftValueForKey:@"overlayView"];
-  [v3 axSafelyAddObject:v6];
+  [array axSafelyAddObject:v6];
 
-  return v3;
+  return array;
 }
 
 @end

@@ -11,7 +11,7 @@
   v8 = [PUIStyleSerialization dataForStyle:a3 error:a5];
   if (v8)
   {
-    [a1 encodeObject:v8 forKey:v9];
+    [self encodeObject:v8 forKey:v9];
   }
 }
 
@@ -19,7 +19,7 @@
 {
   v6 = a3;
   v7 = objc_opt_self();
-  v8 = [a1 decodeObjectOfClass:v7 forKey:v6];
+  v8 = [self decodeObjectOfClass:v7 forKey:v6];
 
   if (v8)
   {

@@ -1,18 +1,18 @@
 @interface HRCImproveHealthAndActivityMonitor
-- (HRCImproveHealthAndActivityMonitor)initWithAnalyticsReporter:(id)a3;
+- (HRCImproveHealthAndActivityMonitor)initWithAnalyticsReporter:(id)reporter;
 - (void)_check;
 - (void)dealloc;
 @end
 
 @implementation HRCImproveHealthAndActivityMonitor
 
-- (HRCImproveHealthAndActivityMonitor)initWithAnalyticsReporter:(id)a3
+- (HRCImproveHealthAndActivityMonitor)initWithAnalyticsReporter:(id)reporter
 {
-  v5 = a3;
+  reporterCopy = reporter;
   v22.receiver = self;
   v22.super_class = HRCImproveHealthAndActivityMonitor;
   v6 = [(HRCImproveHealthAndActivityMonitor *)&v22 init];
-  objc_storeStrong(&v6->_analyticsReporter, a3);
+  objc_storeStrong(&v6->_analyticsReporter, reporter);
   [(HRCAnalyticsReporter *)v6->_analyticsReporter setImproveHealthAndActivityAllowed:0];
   v7 = objc_opt_new();
   operationQueue = v6->_operationQueue;
@@ -53,20 +53,20 @@
 - (void)_check
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isHealthDataSubmissionAllowed];
+  isHealthDataSubmissionAllowed = [v3 isHealthDataSubmissionAllowed];
 
-  if (self->_allowed != v4)
+  if (self->_allowed != isHealthDataSubmissionAllowed)
   {
-    self->_allowed = v4;
+    self->_allowed = isHealthDataSubmissionAllowed;
     v5 = sub_10000132C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67240192;
-      v6[1] = v4;
+      v6[1] = isHealthDataSubmissionAllowed;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "HRCImproveHealthAndActivityMonitor enabled : %{public,BOOL}d", v6, 8u);
     }
 
-    [(HRCAnalyticsReporter *)self->_analyticsReporter setImproveHealthAndActivityAllowed:v4];
+    [(HRCAnalyticsReporter *)self->_analyticsReporter setImproveHealthAndActivityAllowed:isHealthDataSubmissionAllowed];
   }
 }
 

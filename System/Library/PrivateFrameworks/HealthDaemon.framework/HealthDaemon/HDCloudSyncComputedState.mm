@@ -4,8 +4,8 @@
 - (NSArray)pushTargets;
 - (NSArray)targets;
 - (id)detailedDescription;
-- (void)addTargets:(id)a3;
-- (void)replaceTargets:(id)a3;
+- (void)addTargets:(id)targets;
+- (void)replaceTargets:(id)targets;
 - (void)resetTargets;
 @end
 
@@ -37,11 +37,11 @@
   return v3;
 }
 
-- (void)addTargets:(id)a3
+- (void)addTargets:(id)targets
 {
-  v4 = a3;
+  targetsCopy = targets;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_targets addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_targets addObjectsFromArray:targetsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -64,17 +64,17 @@
   return v3;
 }
 
-- (void)replaceTargets:(id)a3
+- (void)replaceTargets:(id)targets
 {
-  v4 = a3;
+  targetsCopy = targets;
   os_unfair_lock_lock(&self->_lock);
   targets = self->_targets;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__HDCloudSyncComputedState_replaceTargets___block_invoke;
   v11[3] = &unk_278614BF0;
-  v12 = v4;
-  v6 = v4;
+  v12 = targetsCopy;
+  v6 = targetsCopy;
   v7 = [(NSMutableArray *)targets hk_filter:v11];
   v8 = [v7 arrayByAddingObjectsFromArray:v6];
 
@@ -99,16 +99,16 @@
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(HDCloudSyncComputedState *)self pushTargets];
-  [v3 appendFormat:@"Push Targets (%lu):\n", objc_msgSend(v4, "count")];
-  if ([v4 count])
+  pushTargets = [(HDCloudSyncComputedState *)self pushTargets];
+  [v3 appendFormat:@"Push Targets (%lu):\n", objc_msgSend(pushTargets, "count")];
+  if ([pushTargets count])
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v30 = v4;
-    v5 = v4;
+    v30 = pushTargets;
+    v5 = pushTargets;
     v6 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v6)
     {
@@ -129,8 +129,8 @@
           [v3 appendString:v12];
 
           [v3 appendString:@"\n"];
-          v13 = [v10 storeRecord];
-          v14 = [v13 description];
+          storeRecord = [v10 storeRecord];
+          v14 = [storeRecord description];
           v15 = [v14 hk_stringIndentedBy:4];
           [v3 appendString:v15];
 
@@ -143,16 +143,16 @@
       while (v7);
     }
 
-    v4 = v30;
+    pushTargets = v30;
   }
 
-  v16 = [(HDCloudSyncComputedState *)self pullTargets];
-  [v3 appendFormat:@"\nPull Targets (%lu):\n", objc_msgSend(v16, "count")];
+  pullTargets = [(HDCloudSyncComputedState *)self pullTargets];
+  [v3 appendFormat:@"\nPull Targets (%lu):\n", objc_msgSend(pullTargets, "count")];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = v16;
+  v17 = pullTargets;
   v18 = [v17 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v18)
   {
@@ -173,8 +173,8 @@
         [v3 appendString:v24];
 
         [v3 appendString:@"\n"];
-        v25 = [v22 storeRecord];
-        v26 = [v25 description];
+        storeRecord2 = [v22 storeRecord];
+        v26 = [storeRecord2 description];
         v27 = [v26 hk_stringIndentedBy:4];
         [v3 appendString:v27];
 

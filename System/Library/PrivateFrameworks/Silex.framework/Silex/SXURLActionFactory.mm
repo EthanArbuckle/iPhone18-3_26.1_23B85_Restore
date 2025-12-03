@@ -1,87 +1,87 @@
 @interface SXURLActionFactory
-- (id)actionForURL:(id)a3 analytics:(id)a4 openInBrowser:(BOOL)a5;
+- (id)actionForURL:(id)l analytics:(id)analytics openInBrowser:(BOOL)browser;
 @end
 
 @implementation SXURLActionFactory
 
-- (id)actionForURL:(id)a3 analytics:(id)a4 openInBrowser:(BOOL)a5
+- (id)actionForURL:(id)l analytics:(id)analytics openInBrowser:(BOOL)browser
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  browserCopy = browser;
+  lCopy = l;
+  analyticsCopy = analytics;
+  if (!lCopy)
   {
-    v11 = 0;
+    host = 0;
     goto LABEL_9;
   }
 
   v9 = MEMORY[0x1E695DFF8];
-  v10 = [v7 scheme];
-  if ([v9 isDefaultCallingAppScheme:v10] & 1) != 0 || (objc_msgSend(v7, "isFaceTimeURL"))
+  scheme = [lCopy scheme];
+  if ([v9 isDefaultCallingAppScheme:scheme] & 1) != 0 || (objc_msgSend(lCopy, "isFaceTimeURL"))
   {
 
 LABEL_5:
-    v11 = [v7 host];
+    host = [lCopy host];
 
-    if (!v11)
+    if (!host)
     {
       goto LABEL_9;
     }
 
     v12 = [SXPhoneNumberAction alloc];
-    v13 = [v7 host];
-    v11 = [(SXPhoneNumberAction *)v12 initWithPhoneNumber:v13];
+    host2 = [lCopy host];
+    host = [(SXPhoneNumberAction *)v12 initWithPhoneNumber:host2];
     goto LABEL_7;
   }
 
-  v15 = [v7 isFaceTimeAudioURL];
+  isFaceTimeAudioURL = [lCopy isFaceTimeAudioURL];
 
-  if (v15)
+  if (isFaceTimeAudioURL)
   {
     goto LABEL_5;
   }
 
-  v16 = [v7 scheme];
-  v17 = [v16 isEqualToString:@"mailto"];
+  scheme2 = [lCopy scheme];
+  v17 = [scheme2 isEqualToString:@"mailto"];
 
   if (v17)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v7 resolvingAgainstBaseURL:0];
-    v18 = [v13 queryValueForName:@"to"];
-    v19 = [v13 queryValueForName:@"subject"];
-    v11 = [[SXEmailAction alloc] initWithRecipient:v18 subject:v19];
+    host2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:0];
+    v18 = [host2 queryValueForName:@"to"];
+    v19 = [host2 queryValueForName:@"subject"];
+    host = [[SXEmailAction alloc] initWithRecipient:v18 subject:v19];
 
 LABEL_7:
     goto LABEL_9;
   }
 
-  v20 = [v7 scheme];
-  v21 = [v20 isEqualToString:@"webcal"];
+  scheme3 = [lCopy scheme];
+  v21 = [scheme3 isEqualToString:@"webcal"];
 
   if (v21)
   {
-    v11 = [v7 host];
+    host = [lCopy host];
 
-    if (!v11)
+    if (!host)
     {
       goto LABEL_9;
     }
 
-    v22 = [[SXWebCalAction alloc] initWithURL:v7];
+    v22 = [[SXWebCalAction alloc] initWithURL:lCopy];
     goto LABEL_26;
   }
 
-  v23 = [v7 scheme];
-  if ([v23 isEqualToString:@"action"])
+  scheme4 = [lCopy scheme];
+  if ([scheme4 isEqualToString:@"action"])
   {
-    v24 = [v7 host];
-    v25 = [v24 isEqualToString:@"close"];
+    host3 = [lCopy host];
+    v25 = [host3 isEqualToString:@"close"];
 
     if (v25)
     {
       v22 = objc_alloc_init(SXCloseAction);
 LABEL_26:
-      v11 = v22;
+      host = v22;
       goto LABEL_9;
     }
   }
@@ -90,30 +90,30 @@ LABEL_26:
   {
   }
 
-  v26 = [v7 scheme];
-  if (v26 || ([v7 host], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+  scheme5 = [lCopy scheme];
+  if (scheme5 || ([lCopy host], (scheme5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_25:
-    v22 = [[SXLinkAction alloc] initWithURL:v7 analytics:v8 openInBrowser:v5];
+    v22 = [[SXLinkAction alloc] initWithURL:lCopy analytics:analyticsCopy openInBrowser:browserCopy];
     goto LABEL_26;
   }
 
-  v27 = [v7 fragment];
+  fragment = [lCopy fragment];
 
-  if (!v27)
+  if (!fragment)
   {
     goto LABEL_25;
   }
 
   v28 = [SXComponentBookmark alloc];
-  v29 = [v7 fragment];
-  v30 = [(SXComponentBookmark *)v28 initWithComponentIdentifier:v29];
+  fragment2 = [lCopy fragment];
+  v30 = [(SXComponentBookmark *)v28 initWithComponentIdentifier:fragment2];
 
-  v11 = [[SXBookmarkAction alloc] initWithBookmark:v30];
+  host = [[SXBookmarkAction alloc] initWithBookmark:v30];
 LABEL_9:
 
-  return v11;
+  return host;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface CKPhotoStackItemEffectView
 - (CKBalloonDescriptor_t)contentBalloonDescriptorForCurrentTraitCollection;
-- (CKPhotoStackItemEffectView)initWithFrame:(CGRect)a3;
+- (CKPhotoStackItemEffectView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation CKPhotoStackItemEffectView
 
-- (CKPhotoStackItemEffectView)initWithFrame:(CGRect)a3
+- (CKPhotoStackItemEffectView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKPhotoStackItemEffectView;
-  v3 = [(CKPhotoStackItemEffectView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKPhotoStackItemEffectView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKPhotoStackItemEffectView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKPhotoStackItemEffectView *)v3 setBackgroundColor:clearColor];
 
     v5 = [_TtC7ChatKit37CKPhotoStackPhotoContentContainerView alloc];
     [(CKPhotoStackItemEffectView *)v3 bounds];
@@ -31,9 +31,9 @@
 
 - (CKBalloonDescriptor_t)contentBalloonDescriptorForCurrentTraitCollection
 {
-  v13 = [(CKPhotoStackItemEffectView *)self traitCollection];
-  v4 = [v13 userInterfaceStyle];
-  v5 = [v13 isTranscriptBackgroundActive];
+  traitCollection = [(CKPhotoStackItemEffectView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
   v6 = +[CKUIBehavior sharedBehaviors];
   v7 = *MEMORY[0x1E69A6E08];
   v8 = *(MEMORY[0x1E69A6E08] + 8);
@@ -60,9 +60,9 @@
   retstr->var8.green = v8;
   retstr->var8.blue = v9;
   retstr->var8.alpha = v10;
-  retstr->var9 = v5;
+  retstr->var9 = isTranscriptBackgroundActive;
   *(&retstr->var11 + 5) = 0;
-  retstr->var10 = v4;
+  retstr->var10 = userInterfaceStyle;
   retstr->var11 = 0;
 
   return result;
@@ -73,7 +73,7 @@
   v33.receiver = self;
   v33.super_class = CKPhotoStackItemEffectView;
   [(CKPhotoStackItemEffectView *)&v33 layoutSubviews];
-  v3 = [(CKPhotoStackItemEffectView *)self traitCollection];
+  traitCollection = [(CKPhotoStackItemEffectView *)self traitCollection];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -95,32 +95,32 @@
     v18 = v26;
     v19 = v27;
     v20 = v28;
-    v6 = [(CKBalloonLayer *)v5 initWithDescriptor:&v17 traitCollection:v3];
+    v6 = [(CKBalloonLayer *)v5 initWithDescriptor:&v17 traitCollection:traitCollection];
     v7 = self->_contentBackdropLayer;
     self->_contentBackdropLayer = v6;
 
     contentBackdropLayer = self->_contentBackdropLayer;
   }
 
-  v8 = [(CKBalloonLayer *)contentBackdropLayer superlayer];
-  v9 = [(CKPhotoStackItemEffectView *)self layer];
+  superlayer = [(CKBalloonLayer *)contentBackdropLayer superlayer];
+  layer = [(CKPhotoStackItemEffectView *)self layer];
 
-  v10 = [(CKPhotoStackItemEffectView *)self layer];
-  v11 = v10;
-  if (v8 != v9)
+  layer2 = [(CKPhotoStackItemEffectView *)self layer];
+  layer3 = layer2;
+  if (superlayer != layer)
   {
     goto LABEL_6;
   }
 
-  v12 = [v10 sublayers];
-  v13 = [v12 firstObject];
+  sublayers = [layer2 sublayers];
+  firstObject = [sublayers firstObject];
   v14 = self->_contentBackdropLayer;
 
-  if (v13 != v14)
+  if (firstObject != v14)
   {
-    v11 = [(CKPhotoStackItemEffectView *)self layer];
+    layer3 = [(CKPhotoStackItemEffectView *)self layer];
 LABEL_6:
-    [v11 insertSublayer:self->_contentBackdropLayer atIndex:0];
+    [layer3 insertSublayer:self->_contentBackdropLayer atIndex:0];
   }
 
   v15 = self->_contentBackdropLayer;
@@ -132,26 +132,26 @@ LABEL_6:
   v18 = v26;
   v19 = v27;
   v20 = v28;
-  [(CKBalloonLayer *)v15 updateDescriptor:&v17 traitCollection:v3];
-  v16 = [(CKPhotoStackItemEffectView *)self layer];
-  [v16 bounds];
+  [(CKBalloonLayer *)v15 updateDescriptor:&v17 traitCollection:traitCollection];
+  layer4 = [(CKPhotoStackItemEffectView *)self layer];
+  [layer4 bounds];
   [(CKBalloonLayer *)self->_contentBackdropLayer setFrame:?];
 
   [(CKPhotoStackItemEffectView *)self bounds];
   [(CKPhotoStackPhotoContentContainerView *)self->_contentContainerView setFrame:?];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v6 = a3;
-  v4 = [(CKPhotoStackPhotoContentContainerView *)self->_contentContainerView contentView];
+  viewCopy = view;
+  contentView = [(CKPhotoStackPhotoContentContainerView *)self->_contentContainerView contentView];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = viewCopy;
+  if (contentView != viewCopy)
   {
-    [(CKPhotoStackPhotoContentContainerView *)self->_contentContainerView setContentView:v6];
+    [(CKPhotoStackPhotoContentContainerView *)self->_contentContainerView setContentView:viewCopy];
     [(CKPhotoStackItemEffectView *)self setNeedsLayout];
-    v5 = v6;
+    v5 = viewCopy;
   }
 }
 

@@ -1,43 +1,43 @@
 @interface CRLFreehandDrawingsAttachment
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4;
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds;
 - (CGAffineTransform)drawingTransform;
-- (CRLFreehandDrawingsAttachment)initWithDelegate:(id)a3 drawing:(id)a4;
+- (CRLFreehandDrawingsAttachment)initWithDelegate:(id)delegate drawing:(id)drawing;
 - (PKRecognitionController)recognitionController;
 - (PKStrokeSpatialCache)strokeSpatialCache;
 - (double)viewScaleForExternalAttachment;
-- (id)_firstStrokesInSelectedStrokes:(id)a3;
-- (id)_lastStrokesInSelectedStrokes:(id)a3;
+- (id)_firstStrokesInSelectedStrokes:(id)strokes;
+- (id)_lastStrokesInSelectedStrokes:(id)strokes;
 - (id)contentScaledCoordinateSpace;
 - (id)contentUnscaledCoordinateSpace;
 - (id)contentWindowCoordinateSpace;
 - (id)strokeDataUUIDsNonInteractiveFromAttachment;
 - (void)dealloc;
 - (void)didDeselectAllStrokes;
-- (void)didSelectPreviouslySelectedStrokes:(id)a3;
-- (void)fetchIntersectedStrokesAtPoint:(CGPoint)a3 selectionType:(int64_t)a4 inputType:(int64_t)a5 visibleOnscreenStrokes:(id)a6 completion:(id)a7;
-- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)a3 bottomPoint:(CGPoint)a4 liveScrollOffset:(CGPoint)a5 completion:(id)a6;
-- (void)installSelectionView:(id)a3;
-- (void)invalidateStrokeCacheForVisibleUnscaledBounds:(CGRect)a3 force:(BOOL)a4;
+- (void)didSelectPreviouslySelectedStrokes:(id)strokes;
+- (void)fetchIntersectedStrokesAtPoint:(CGPoint)point selectionType:(int64_t)type inputType:(int64_t)inputType visibleOnscreenStrokes:(id)strokes completion:(id)completion;
+- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)point bottomPoint:(CGPoint)bottomPoint liveScrollOffset:(CGPoint)offset completion:(id)completion;
+- (void)installSelectionView:(id)view;
+- (void)invalidateStrokeCacheForVisibleUnscaledBounds:(CGRect)bounds force:(BOOL)force;
 - (void)teardown;
-- (void)translationDidFinishedInViewController:(id)a3;
+- (void)translationDidFinishedInViewController:(id)controller;
 - (void)updateAttachmentBoundsAfterCanvasVisibleBoundsChanged;
-- (void)updateLiveSelectionForStrokesInLayer:(id)a3 inDrawing:(id)a4;
+- (void)updateLiveSelectionForStrokesInLayer:(id)layer inDrawing:(id)drawing;
 @end
 
 @implementation CRLFreehandDrawingsAttachment
 
-- (CRLFreehandDrawingsAttachment)initWithDelegate:(id)a3 drawing:(id)a4
+- (CRLFreehandDrawingsAttachment)initWithDelegate:(id)delegate drawing:(id)drawing
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  drawingCopy = drawing;
   v12.receiver = self;
   v12.super_class = CRLFreehandDrawingsAttachment;
   v8 = [(CRLFreehandDrawingsAttachment *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_drawing, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_drawing, drawing);
     size = CGRectZero.size;
     v9->mCachedVisibleBounds.origin = CGRectZero.origin;
     v9->mCachedVisibleBounds.size = size;
@@ -123,19 +123,19 @@
 - (void)updateAttachmentBoundsAfterCanvasVisibleBoundsChanged
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v27 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v4 = [v27 canvasView];
-  v5 = [v4 unscaledCoordinateSpace];
+  canvasView = [interactiveCanvasController canvasView];
+  unscaledCoordinateSpace = [canvasView unscaledCoordinateSpace];
   [(PKDrawing *)self->_drawing bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v27 canvasView];
-  v15 = [v14 window];
-  v16 = [v15 coordinateSpace];
-  [v5 convertRect:v16 toCoordinateSpace:{v7, v9, v11, v13}];
+  canvasView2 = [interactiveCanvasController canvasView];
+  window = [canvasView2 window];
+  coordinateSpace = [window coordinateSpace];
+  [unscaledCoordinateSpace convertRect:coordinateSpace toCoordinateSpace:{v7, v9, v11, v13}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -146,14 +146,14 @@
   self->mViewRep = v25;
 }
 
-- (void)invalidateStrokeCacheForVisibleUnscaledBounds:(CGRect)a3 force:(BOOL)a4
+- (void)invalidateStrokeCacheForVisibleUnscaledBounds:(CGRect)bounds force:(BOOL)force
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!sub_10011EE4C(self->mCachedVisibleBounds.origin.x, self->mCachedVisibleBounds.origin.y, self->mCachedVisibleBounds.size.width, self->mCachedVisibleBounds.size.height, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height) || v4)
+  forceCopy = force;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!sub_10011EE4C(self->mCachedVisibleBounds.origin.x, self->mCachedVisibleBounds.origin.y, self->mCachedVisibleBounds.size.width, self->mCachedVisibleBounds.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height) || forceCopy)
   {
     self->mCachedVisibleBounds.origin.x = x;
     self->mCachedVisibleBounds.origin.y = y;
@@ -181,9 +181,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = [WeakRetained smartSelectionControllerForAttachment:self];
 
-  v5 = [v4 recognitionController];
+  recognitionController = [v4 recognitionController];
 
-  return v5;
+  return recognitionController;
 }
 
 - (CGAffineTransform)drawingTransform
@@ -195,139 +195,139 @@
   return self;
 }
 
-- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)a3 bottomPoint:(CGPoint)a4 liveScrollOffset:(CGPoint)a5 completion:(id)a6
+- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)point bottomPoint:(CGPoint)bottomPoint liveScrollOffset:(CGPoint)offset completion:(id)completion
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4.y;
-  v9 = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v13 = a6;
+  y = offset.y;
+  x = offset.x;
+  v8 = bottomPoint.y;
+  v9 = bottomPoint.x;
+  v10 = point.y;
+  v11 = point.x;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v15 = [WeakRetained smartSelectionControllerForAttachment:self];
 
-  [v15 fetchIntersectedStrokesBetweenTopPoint:v13 bottomPoint:v11 liveScrollOffset:v10 completion:{v9, v8, x, y}];
+  [v15 fetchIntersectedStrokesBetweenTopPoint:completionCopy bottomPoint:v11 liveScrollOffset:v10 completion:{v9, v8, x, y}];
 }
 
-- (void)fetchIntersectedStrokesAtPoint:(CGPoint)a3 selectionType:(int64_t)a4 inputType:(int64_t)a5 visibleOnscreenStrokes:(id)a6 completion:(id)a7
+- (void)fetchIntersectedStrokesAtPoint:(CGPoint)point selectionType:(int64_t)type inputType:(int64_t)inputType visibleOnscreenStrokes:(id)strokes completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a7;
-  v14 = a6;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  strokesCopy = strokes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16 = [WeakRetained smartSelectionControllerForAttachment:self];
 
-  [v16 fetchIntersectedStrokesAtPoint:a4 selectionType:a5 inputType:v14 visibleOnscreenStrokes:v13 completion:{x, y}];
+  [v16 fetchIntersectedStrokesAtPoint:type selectionType:inputType inputType:strokesCopy visibleOnscreenStrokes:completionCopy completion:{x, y}];
 }
 
 - (id)contentWindowCoordinateSpace
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v4 = [v3 canvasView];
-  v5 = [v4 window];
-  v6 = [v5 coordinateSpace];
+  canvasView = [interactiveCanvasController canvasView];
+  window = [canvasView window];
+  coordinateSpace = [window coordinateSpace];
 
-  return v6;
+  return coordinateSpace;
 }
 
 - (id)contentScaledCoordinateSpace
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v4 = [v3 canvasView];
+  canvasView = [interactiveCanvasController canvasView];
 
-  return v4;
+  return canvasView;
 }
 
 - (id)contentUnscaledCoordinateSpace
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v4 = [v3 canvasView];
-  v5 = [v4 unscaledCoordinateSpace];
+  canvasView = [interactiveCanvasController canvasView];
+  unscaledCoordinateSpace = [canvasView unscaledCoordinateSpace];
 
-  return v5;
+  return unscaledCoordinateSpace;
 }
 
 - (double)viewScaleForExternalAttachment
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  [v3 viewScale];
+  [interactiveCanvasController viewScale];
   v5 = v4;
 
   return v5;
 }
 
-- (void)installSelectionView:(id)a3
+- (void)installSelectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(CRLFreehandDrawingsAttachment *)self viewRep];
-  [WeakRetained installSelectionView:v4 fromView:v5];
+  viewRep = [(CRLFreehandDrawingsAttachment *)self viewRep];
+  [WeakRetained installSelectionView:viewCopy fromView:viewRep];
 }
 
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v7.x = x;
   v7.y = y;
-  return CGRectContainsPoint(a4, v7);
+  return CGRectContainsPoint(bounds, v7);
 }
 
-- (id)_firstStrokesInSelectedStrokes:(id)a3
+- (id)_firstStrokesInSelectedStrokes:(id)strokes
 {
-  v4 = a3;
+  strokesCopy = strokes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained smartSelectionControllerForAttachment:self];
 
-  v7 = [v6 firstStrokesInSelectedStrokes:v4 isRTL:sub_1004A48FC()];
+  v7 = [v6 firstStrokesInSelectedStrokes:strokesCopy isRTL:sub_1004A48FC()];
 
   return v7;
 }
 
-- (id)_lastStrokesInSelectedStrokes:(id)a3
+- (id)_lastStrokesInSelectedStrokes:(id)strokes
 {
-  v4 = a3;
+  strokesCopy = strokes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained smartSelectionControllerForAttachment:self];
 
-  v7 = [v6 lastStrokesInSelectedStrokes:v4 isRTL:sub_1004A48FC()];
+  v7 = [v6 lastStrokesInSelectedStrokes:strokesCopy isRTL:sub_1004A48FC()];
 
   return v7;
 }
 
-- (void)updateLiveSelectionForStrokesInLayer:(id)a3 inDrawing:(id)a4
+- (void)updateLiveSelectionForStrokesInLayer:(id)layer inDrawing:(id)drawing
 {
-  v5 = a3;
+  layerCopy = layer;
   v6 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = sub_100014370(v6, WeakRetained);
 
-  v8 = [v9 selectionDecorator];
-  [v8 setDecoratorLayer:v5];
+  selectionDecorator = [v9 selectionDecorator];
+  [selectionDecorator setDecoratorLayer:layerCopy];
 }
 
-- (void)translationDidFinishedInViewController:(id)a3
+- (void)translationDidFinishedInViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained installTranslationViewController:v4];
+  [WeakRetained installTranslationViewController:controllerCopy];
 }
 
-- (void)didSelectPreviouslySelectedStrokes:(id)a3
+- (void)didSelectPreviouslySelectedStrokes:(id)strokes
 {
-  v4 = a3;
+  strokesCopy = strokes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pencilKitDidSmartSelectPreviouslySelectedStrokes:v4];
+  [WeakRetained pencilKitDidSmartSelectPreviouslySelectedStrokes:strokesCopy];
 }
 
 - (void)didDeselectAllStrokes
@@ -339,9 +339,9 @@
 - (id)strokeDataUUIDsNonInteractiveFromAttachment
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained strokeDataUUIDsForNonInteractiveDrawings];
+  strokeDataUUIDsForNonInteractiveDrawings = [WeakRetained strokeDataUUIDsForNonInteractiveDrawings];
 
-  return v3;
+  return strokeDataUUIDsForNonInteractiveDrawings;
 }
 
 @end

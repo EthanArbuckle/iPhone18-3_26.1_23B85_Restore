@@ -1,72 +1,72 @@
 @interface HKMedicationsBarcodeNDCParser
-+ (BOOL)_isGTIN14CodeValid:(id)a3;
-+ (BOOL)isObservationSupported:(id)a3;
-+ (id)_barcodeObservationsFrom:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-+ (id)_convertNDCFromGTIN14Code:(id)a3;
-+ (id)_parsedGTIN14FromDataMatrix:(id)a3;
-+ (id)_parsedGTIN14FromDataMatrixPayload:(id)a3;
-+ (id)_parsedGTIN14FromEAN13:(id)a3;
-+ (id)_parsedGTIN14FromEAN13Payload:(id)a3;
-+ (id)_parsedNDCFromEAN13:(id)a3;
-+ (id)hkt_parsedNDCFromDataMatrixPayload:(id)a3;
-+ (id)hkt_parsedNDCFromEAN13Payload:(id)a3;
-+ (id)parsedGTIN14CodeFromBarcodeObservation:(id)a3;
-+ (id)parsedGTIN14CodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-+ (id)parsedNDCCodeFromBarcodeObservation:(id)a3;
-+ (id)parsedNDCCodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-+ (id)parsedNDCFromDataMatrix:(id)a3;
++ (BOOL)_isGTIN14CodeValid:(id)valid;
++ (BOOL)isObservationSupported:(id)supported;
++ (id)_barcodeObservationsFrom:(opaqueCMSampleBuffer *)from error:(id *)error;
++ (id)_convertNDCFromGTIN14Code:(id)code;
++ (id)_parsedGTIN14FromDataMatrix:(id)matrix;
++ (id)_parsedGTIN14FromDataMatrixPayload:(id)payload;
++ (id)_parsedGTIN14FromEAN13:(id)n13;
++ (id)_parsedGTIN14FromEAN13Payload:(id)payload;
++ (id)_parsedNDCFromEAN13:(id)n13;
++ (id)hkt_parsedNDCFromDataMatrixPayload:(id)payload;
++ (id)hkt_parsedNDCFromEAN13Payload:(id)payload;
++ (id)parsedGTIN14CodeFromBarcodeObservation:(id)observation;
++ (id)parsedGTIN14CodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
++ (id)parsedNDCCodeFromBarcodeObservation:(id)observation;
++ (id)parsedNDCCodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
++ (id)parsedNDCFromDataMatrix:(id)matrix;
 @end
 
 @implementation HKMedicationsBarcodeNDCParser
 
-+ (BOOL)isObservationSupported:(id)a3
++ (BOOL)isObservationSupported:(id)supported
 {
-  v3 = a3;
-  v4 = [v3 symbology];
-  if (v4 == *MEMORY[0x277CE2E98])
+  supportedCopy = supported;
+  symbology = [supportedCopy symbology];
+  if (symbology == *MEMORY[0x277CE2E98])
   {
     v6 = 1;
   }
 
   else
   {
-    v5 = [v3 symbology];
-    v6 = v5 == *MEMORY[0x277CE2E90];
+    symbology2 = [supportedCopy symbology];
+    v6 = symbology2 == *MEMORY[0x277CE2E90];
   }
 
   return v6;
 }
 
-+ (id)parsedNDCCodeFromBarcodeObservation:(id)a3
++ (id)parsedNDCCodeFromBarcodeObservation:(id)observation
 {
-  v4 = a3;
+  observationCopy = observation;
   v5 = objc_autoreleasePoolPush();
-  if (![a1 isObservationSupported:v4])
+  if (![self isObservationSupported:observationCopy])
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 symbology];
+  symbology = [observationCopy symbology];
   v7 = *MEMORY[0x277CE2E98];
 
-  if (v6 == v7)
+  if (symbology == v7)
   {
-    v11 = [a1 _parsedNDCFromEAN13:v4];
+    v11 = [self _parsedNDCFromEAN13:observationCopy];
   }
 
   else
   {
-    v8 = [v4 symbology];
+    symbology2 = [observationCopy symbology];
     v9 = *MEMORY[0x277CE2E90];
 
-    if (v8 != v9)
+    if (symbology2 != v9)
     {
 LABEL_4:
       v10 = 0;
       goto LABEL_8;
     }
 
-    v11 = [a1 parsedNDCFromDataMatrix:v4];
+    v11 = [self parsedNDCFromDataMatrix:observationCopy];
   }
 
   v10 = v11;
@@ -76,36 +76,36 @@ LABEL_8:
   return v10;
 }
 
-+ (id)parsedGTIN14CodeFromBarcodeObservation:(id)a3
++ (id)parsedGTIN14CodeFromBarcodeObservation:(id)observation
 {
-  v4 = a3;
+  observationCopy = observation;
   v5 = objc_autoreleasePoolPush();
-  if (![a1 isObservationSupported:v4])
+  if (![self isObservationSupported:observationCopy])
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 symbology];
+  symbology = [observationCopy symbology];
   v7 = *MEMORY[0x277CE2E98];
 
-  if (v6 == v7)
+  if (symbology == v7)
   {
-    v11 = [a1 _parsedGTIN14FromEAN13:v4];
+    v11 = [self _parsedGTIN14FromEAN13:observationCopy];
   }
 
   else
   {
-    v8 = [v4 symbology];
+    symbology2 = [observationCopy symbology];
     v9 = *MEMORY[0x277CE2E90];
 
-    if (v8 != v9)
+    if (symbology2 != v9)
     {
 LABEL_4:
       v10 = 0;
       goto LABEL_8;
     }
 
-    v11 = [a1 _parsedGTIN14FromDataMatrix:v4];
+    v11 = [self _parsedGTIN14FromDataMatrix:observationCopy];
   }
 
   v10 = v11;
@@ -115,10 +115,10 @@ LABEL_8:
   return v10;
 }
 
-+ (id)parsedNDCCodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
++ (id)parsedNDCCodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a1 _barcodeObservationsFrom:a3 error:a4];
+  v5 = [self _barcodeObservationsFrom:buffer error:error];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -141,7 +141,7 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [a1 parsedNDCCodeFromBarcodeObservation:{*(*(&v15 + 1) + 8 * i), v15}];
+          v12 = [self parsedNDCCodeFromBarcodeObservation:{*(*(&v15 + 1) + 8 * i), v15}];
           if ([v12 length])
           {
             [v6 addObject:v12];
@@ -165,10 +165,10 @@ LABEL_8:
   return v6;
 }
 
-+ (id)parsedGTIN14CodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
++ (id)parsedGTIN14CodesFromCMSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a1 _barcodeObservationsFrom:a3 error:a4];
+  v5 = [self _barcodeObservationsFrom:buffer error:error];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -191,7 +191,7 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [a1 parsedGTIN14CodeFromBarcodeObservation:{*(*(&v15 + 1) + 8 * i), v15}];
+          v12 = [self parsedGTIN14CodeFromBarcodeObservation:{*(*(&v15 + 1) + 8 * i), v15}];
           if ([v12 length])
           {
             [v6 addObject:v12];
@@ -215,11 +215,11 @@ LABEL_8:
   return v6;
 }
 
-+ (id)_barcodeObservationsFrom:(opaqueCMSampleBuffer *)a3 error:(id *)a4
++ (id)_barcodeObservationsFrom:(opaqueCMSampleBuffer *)from error:(id *)error
 {
   v6 = objc_alloc(MEMORY[0x277CE2D50]);
-  v7 = [v6 initWithCMSampleBuffer:a3 options:MEMORY[0x277CBEC10]];
-  v8 = [HKMedicationsBarcodeExtractor extractedBarcodesFromRequestHandler:v7 error:a4];
+  v7 = [v6 initWithCMSampleBuffer:from options:MEMORY[0x277CBEC10]];
+  v8 = [HKMedicationsBarcodeExtractor extractedBarcodesFromRequestHandler:v7 error:error];
   v9 = v8;
   if (v8)
   {
@@ -229,20 +229,20 @@ LABEL_8:
   return v9;
 }
 
-+ (id)_parsedGTIN14FromEAN13:(id)a3
++ (id)_parsedGTIN14FromEAN13:(id)n13
 {
-  v4 = [a3 payloadStringValue];
-  v5 = [a1 _parsedGTIN14FromEAN13Payload:v4];
+  payloadStringValue = [n13 payloadStringValue];
+  v5 = [self _parsedGTIN14FromEAN13Payload:payloadStringValue];
 
   return v5;
 }
 
-+ (id)_parsedGTIN14FromEAN13Payload:(id)a3
++ (id)_parsedGTIN14FromEAN13Payload:(id)payload
 {
-  v3 = a3;
-  if ([v3 length] == 13 && objc_msgSend(v3, "hasPrefix:", @"03"))
+  payloadCopy = payload;
+  if ([payloadCopy length] == 13 && objc_msgSend(payloadCopy, "hasPrefix:", @"03"))
   {
-    v4 = [@"0" stringByAppendingString:v3];
+    v4 = [@"0" stringByAppendingString:payloadCopy];
   }
 
   else
@@ -253,35 +253,35 @@ LABEL_8:
   return v4;
 }
 
-+ (id)_parsedNDCFromEAN13:(id)a3
++ (id)_parsedNDCFromEAN13:(id)n13
 {
-  v4 = [a1 _parsedGTIN14FromEAN13:a3];
-  v5 = [a1 _convertNDCFromGTIN14Code:v4];
+  v4 = [self _parsedGTIN14FromEAN13:n13];
+  v5 = [self _convertNDCFromGTIN14Code:v4];
 
   return v5;
 }
 
-+ (id)_parsedGTIN14FromDataMatrix:(id)a3
++ (id)_parsedGTIN14FromDataMatrix:(id)matrix
 {
-  v4 = [a3 payloadStringValue];
-  v5 = [a1 _parsedGTIN14FromDataMatrixPayload:v4];
+  payloadStringValue = [matrix payloadStringValue];
+  v5 = [self _parsedGTIN14FromDataMatrixPayload:payloadStringValue];
 
   return v5;
 }
 
-+ (id)parsedNDCFromDataMatrix:(id)a3
++ (id)parsedNDCFromDataMatrix:(id)matrix
 {
-  v4 = [a1 _parsedGTIN14FromDataMatrix:a3];
-  v5 = [a1 _convertNDCFromGTIN14Code:v4];
+  v4 = [self _parsedGTIN14FromDataMatrix:matrix];
+  v5 = [self _convertNDCFromGTIN14Code:v4];
 
   return v5;
 }
 
-+ (id)_parsedGTIN14FromDataMatrixPayload:(id)a3
++ (id)_parsedGTIN14FromDataMatrixPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", 29];
-  v6 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v4];
+  v6 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:payloadCopy];
   if ([v6 scanString:v5 intoString:0])
   {
     do
@@ -292,10 +292,10 @@ LABEL_8:
       v9 = v8;
       if (v7 && [v8 isEqual:@"01"])
       {
-        v10 = [v4 substringWithRange:{objc_msgSend(v6, "scanLocation"), 14}];
+        v10 = [payloadCopy substringWithRange:{objc_msgSend(v6, "scanLocation"), 14}];
         if (([v10 containsString:v5] & 1) == 0)
         {
-          if ([a1 _isGTIN14CodeValid:v10])
+          if ([self _isGTIN14CodeValid:v10])
           {
             v11 = v10;
           }
@@ -319,15 +319,15 @@ LABEL_8:
   return v11;
 }
 
-+ (BOOL)_isGTIN14CodeValid:(id)a3
++ (BOOL)_isGTIN14CodeValid:(id)valid
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"003"])
+  validCopy = valid;
+  if ([validCopy hasPrefix:@"003"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 1}];
-    v5 = [v4 integerValue];
+    v4 = [validCopy substringFromIndex:{objc_msgSend(validCopy, "length") - 1}];
+    integerValue = [v4 integerValue];
 
-    if ([v3 length] == 1)
+    if ([validCopy length] == 1)
     {
       goto LABEL_11;
     }
@@ -336,8 +336,8 @@ LABEL_8:
     v7 = 0;
     do
     {
-      v8 = [v3 substringWithRange:{v6, 1}];
-      v9 = [v8 integerValue];
+      v8 = [validCopy substringWithRange:{v6, 1}];
+      integerValue2 = [v8 integerValue];
 
       if (v6)
       {
@@ -349,11 +349,11 @@ LABEL_8:
         v10 = 3;
       }
 
-      v7 += v9 * v10;
+      v7 += integerValue2 * v10;
       ++v6;
     }
 
-    while ([v3 length] - 1 > v6);
+    while ([validCopy length] - 1 > v6);
     if (!(v7 % 10))
     {
 LABEL_11:
@@ -365,7 +365,7 @@ LABEL_11:
       v11 = 10 - v7 % 10;
     }
 
-    v12 = v5 == v11;
+    v12 = integerValue == v11;
   }
 
   else
@@ -376,12 +376,12 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_convertNDCFromGTIN14Code:(id)a3
++ (id)_convertNDCFromGTIN14Code:(id)code
 {
-  v4 = a3;
-  if ([a1 _isGTIN14CodeValid:v4])
+  codeCopy = code;
+  if ([self _isGTIN14CodeValid:codeCopy])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"003", "length")}];
+    v5 = [codeCopy substringFromIndex:{objc_msgSend(@"003", "length")}];
     v6 = [v5 substringToIndex:{objc_msgSend(v5, "length") - 1}];
 
     if ([v6 length] == 10 || objc_msgSend(v6, "length") == 11)
@@ -403,18 +403,18 @@ LABEL_11:
   return v7;
 }
 
-+ (id)hkt_parsedNDCFromDataMatrixPayload:(id)a3
++ (id)hkt_parsedNDCFromDataMatrixPayload:(id)payload
 {
-  v4 = [a1 _parsedGTIN14FromDataMatrixPayload:a3];
-  v5 = [a1 _convertNDCFromGTIN14Code:v4];
+  v4 = [self _parsedGTIN14FromDataMatrixPayload:payload];
+  v5 = [self _convertNDCFromGTIN14Code:v4];
 
   return v5;
 }
 
-+ (id)hkt_parsedNDCFromEAN13Payload:(id)a3
++ (id)hkt_parsedNDCFromEAN13Payload:(id)payload
 {
-  v4 = [a1 _parsedGTIN14FromEAN13Payload:a3];
-  v5 = [a1 _convertNDCFromGTIN14Code:v4];
+  v4 = [self _parsedGTIN14FromEAN13Payload:payload];
+  v5 = [self _convertNDCFromGTIN14Code:v4];
 
   return v5;
 }

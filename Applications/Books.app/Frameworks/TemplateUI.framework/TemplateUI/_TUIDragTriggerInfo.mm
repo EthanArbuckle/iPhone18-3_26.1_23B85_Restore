@@ -1,23 +1,23 @@
 @interface _TUIDragTriggerInfo
-- (_TUIDragTriggerInfo)initWithActionObject:(id)a3 behavior:(id)a4 arguments:(id)a5;
+- (_TUIDragTriggerInfo)initWithActionObject:(id)object behavior:(id)behavior arguments:(id)arguments;
 @end
 
 @implementation _TUIDragTriggerInfo
 
-- (_TUIDragTriggerInfo)initWithActionObject:(id)a3 behavior:(id)a4 arguments:(id)a5
+- (_TUIDragTriggerInfo)initWithActionObject:(id)object behavior:(id)behavior arguments:(id)arguments
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  behaviorCopy = behavior;
+  argumentsCopy = arguments;
   v15.receiver = self;
   v15.super_class = _TUIDragTriggerInfo;
   v12 = [(_TUIDragTriggerInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionObject, a3);
-    objc_storeStrong(&v13->_behavior, a4);
-    objc_storeStrong(&v13->_arguments, a5);
+    objc_storeStrong(&v12->_actionObject, object);
+    objc_storeStrong(&v13->_behavior, behavior);
+    objc_storeStrong(&v13->_arguments, arguments);
   }
 
   return v13;

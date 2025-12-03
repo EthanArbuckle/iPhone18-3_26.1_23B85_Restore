@@ -1,54 +1,54 @@
 @interface BWPreviewTimeMachineSinkNode
 - ($2825F4736939C4A6D3AD43837233062D)frameDimensions;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)earliestAllowedPTS;
-- (BWPreviewTimeMachineSinkNode)initWithCaptureDevice:(id)a3 processingQueuePriority:(unsigned int)a4 timeMachineCapacity:(int)a5 smartCameraMotionDetectionEnabled:(BOOL)a6 sinkID:(id)a7;
-- (uint64_t)_computeMotionDetectionFaceRectForSampleBuffers:(uint64_t)a3 faceMotionRectOut:;
+- (BWPreviewTimeMachineSinkNode)initWithCaptureDevice:(id)device processingQueuePriority:(unsigned int)priority timeMachineCapacity:(int)capacity smartCameraMotionDetectionEnabled:(BOOL)enabled sinkID:(id)d;
+- (uint64_t)_computeMotionDetectionFaceRectForSampleBuffers:(uint64_t)buffers faceMotionRectOut:;
 - (uint64_t)_setupStateMachine;
 - (uint64_t)_trimToTimeRange:(uint64_t)result;
 - (uint64_t)dealloc;
 - (void)dealloc;
-- (void)detectMotionOnStoredFramesWithSmartCameraDiagnostics:(id)a3 completionHandler:(id)a4;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)detectMotionOnStoredFramesWithSmartCameraDiagnostics:(id)diagnostics completionHandler:(id)handler;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 - (void)resume;
-- (void)setEarliestAllowedPTS:(id *)a3;
-- (void)suspendWithPTSRange:(id *)a3 completionHandler:(id)a4;
+- (void)setEarliestAllowedPTS:(id *)s;
+- (void)suspendWithPTSRange:(id *)range completionHandler:(id)handler;
 @end
 
 @implementation BWPreviewTimeMachineSinkNode
 
-- (BWPreviewTimeMachineSinkNode)initWithCaptureDevice:(id)a3 processingQueuePriority:(unsigned int)a4 timeMachineCapacity:(int)a5 smartCameraMotionDetectionEnabled:(BOOL)a6 sinkID:(id)a7
+- (BWPreviewTimeMachineSinkNode)initWithCaptureDevice:(id)device processingQueuePriority:(unsigned int)priority timeMachineCapacity:(int)capacity smartCameraMotionDetectionEnabled:(BOOL)enabled sinkID:(id)d
 {
-  v7 = a6;
+  enabledCopy = enabled;
   v16.receiver = self;
   v16.super_class = BWPreviewTimeMachineSinkNode;
-  v10 = [(BWSinkNode *)&v16 initWithSinkID:a7];
+  v10 = [(BWSinkNode *)&v16 initWithSinkID:d];
   if (v10)
   {
     v12 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v10];
     v13 = objc_alloc_init(BWVideoFormatRequirements);
     v14 = v13;
-    if (v7)
+    if (enabledCopy)
     {
       [(BWVideoFormatRequirements *)v13 setSupportedPixelFormats:&unk_1F2248340];
     }
 
     [(BWNodeInput *)v12 setFormatRequirements:v14];
-    *(v10 + 59) = a5;
-    [(BWNodeInput *)v12 setRetainedBufferCount:(a5 + 1)];
+    *(v10 + 59) = capacity;
+    [(BWNodeInput *)v12 setRetainedBufferCount:(capacity + 1)];
     [v10 addInput:v12];
 
-    [a3 setPreviewTimeMachineProcessor:v10];
-    *(v10 + 26) = a3;
+    [device setPreviewTimeMachineProcessor:v10];
+    *(v10 + 26) = device;
     *(v10 + 27) = FigDispatchQueueCreateWithPriority();
     *(v10 + 28) = objc_opt_new();
     *(v10 + 58) = 0;
     v15 = MEMORY[0x1E6960C70];
     *(v10 + 33) = *(MEMORY[0x1E6960C70] + 16);
     *(v10 + 248) = *v15;
-    v10[337] = v7;
+    v10[337] = enabledCopy;
     [(BWPreviewTimeMachineSinkNode *)v10 _setupStateMachine];
   }
 
@@ -83,13 +83,13 @@
   [(BWNode *)&v5 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (void)setEarliestAllowedPTS:(id *)a3
+- (void)setEarliestAllowedPTS:(id *)s
 {
   os_unfair_lock_lock(&self->_timeMachineLock);
-  var3 = a3->var3;
-  *&self->_earliestAllowedPTS.value = *&a3->var0;
+  var3 = s->var3;
+  *&self->_earliestAllowedPTS.value = *&s->var0;
   self->_earliestAllowedPTS.epoch = var3;
-  start = *a3;
+  start = *s;
   v6 = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&v8, &start, &v6);
   [(BWPreviewTimeMachineSinkNode *)self _trimToTimeRange:?];
@@ -107,14 +107,14 @@
 
 - ($2825F4736939C4A6D3AD43837233062D)frameDimensions
 {
-  v2 = [(BWNodeInput *)self->super.super._input videoFormat];
-  v3 = [(BWVideoFormat *)v2 width];
-  return (v3 | ([(BWVideoFormat *)v2 height]<< 32));
+  videoFormat = [(BWNodeInput *)self->super.super._input videoFormat];
+  width = [(BWVideoFormat *)videoFormat width];
+  return (width | ([(BWVideoFormat *)videoFormat height]<< 32));
 }
 
-- (void)detectMotionOnStoredFramesWithSmartCameraDiagnostics:(id)a3 completionHandler:(id)a4
+- (void)detectMotionOnStoredFramesWithSmartCameraDiagnostics:(id)diagnostics completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     if (self->_smartCameraMotionDetectionEnabled)
     {
@@ -129,8 +129,8 @@
       block[3] = &unk_1E7990A08;
       block[4] = timeMachineFrames;
       block[5] = self;
-      block[6] = a3;
-      block[7] = a4;
+      block[6] = diagnostics;
+      block[7] = handler;
       dispatch_async(processingQueue, block);
     }
 
@@ -151,7 +151,7 @@
       v14[1] = 3221225472;
       v14[2] = __103__BWPreviewTimeMachineSinkNode_detectMotionOnStoredFramesWithSmartCameraDiagnostics_completionHandler___block_invoke;
       v14[3] = &unk_1E798FEA0;
-      v14[4] = a4;
+      v14[4] = handler;
       dispatch_async(v12, v14);
     }
   }
@@ -268,13 +268,13 @@ LABEL_23:
   }
 }
 
-- (void)suspendWithPTSRange:(id *)a3 completionHandler:(id)a4
+- (void)suspendWithPTSRange:(id *)range completionHandler:(id)handler
 {
-  if ((a3->var0.var2 & 1) == 0 || (a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
     [BWPreviewTimeMachineSinkNode suspendWithPTSRange:completionHandler:];
     v11 = 1;
-    if (!a4)
+    if (!handler)
     {
       return;
     }
@@ -286,9 +286,9 @@ LABEL_23:
   v7 = [(FigStateMachine *)self->_stateMachine transitionToState:2 fromState:1];
   if (v7)
   {
-    v9 = *&a3->var0.var3;
-    v8 = *&a3->var1.var1;
-    *&self->_requestedSuspendPTSRange.start.value = *&a3->var0.var0;
+    v9 = *&range->var0.var3;
+    v8 = *&range->var1.var1;
+    *&self->_requestedSuspendPTSRange.start.value = *&range->var0.var0;
     *&self->_requestedSuspendPTSRange.start.epoch = v9;
     *&self->_requestedSuspendPTSRange.duration.timescale = v8;
     suspendCompletionHandler = self->_suspendCompletionHandler;
@@ -298,12 +298,12 @@ LABEL_23:
       suspendCompletionHandler = v14;
     }
 
-    self->_suspendCompletionHandler = [a4 copy];
+    self->_suspendCompletionHandler = [handler copy];
   }
 
   v11 = !v7;
   os_unfair_lock_unlock(&self->_timeMachineLock);
-  if (a4)
+  if (handler)
   {
 LABEL_10:
     if (v11)
@@ -313,7 +313,7 @@ LABEL_10:
       v13[1] = 3221225472;
       v13[2] = __70__BWPreviewTimeMachineSinkNode_suspendWithPTSRange_completionHandler___block_invoke;
       v13[3] = &unk_1E798FEA0;
-      v13[4] = a4;
+      v13[4] = handler;
       dispatch_async(processingQueue, v13);
     }
   }
@@ -339,7 +339,7 @@ uint64_t __70__BWPreviewTimeMachineSinkNode_suspendWithPTSRange_completionHandle
   os_unfair_lock_unlock(&self->_timeMachineLock);
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -350,7 +350,7 @@ uint64_t __70__BWPreviewTimeMachineSinkNode_suspendWithPTSRange_completionHandle
   dispatch_sync(processingQueue, block);
   v6.receiver = self;
   v6.super_class = BWPreviewTimeMachineSinkNode;
-  [(BWSinkNode *)&v6 didReachEndOfDataForInput:a3];
+  [(BWSinkNode *)&v6 didReachEndOfDataForInput:input];
 }
 
 void __58__BWPreviewTimeMachineSinkNode_didReachEndOfDataForInput___block_invoke(uint64_t a1)
@@ -380,11 +380,11 @@ void __58__BWPreviewTimeMachineSinkNode_didReachEndOfDataForInput___block_invoke
   os_unfair_lock_unlock((*(a1 + 32) + 232));
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_timeMachineLock);
-  v6 = [(FigStateMachine *)self->_stateMachine currentState];
-  if (v6 == 4)
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
+  if (currentState == 4)
   {
     os_unfair_lock_unlock(&self->_timeMachineLock);
     v7 = 0;
@@ -392,8 +392,8 @@ void __58__BWPreviewTimeMachineSinkNode_didReachEndOfDataForInput___block_invoke
 
   else
   {
-    v8 = v6;
-    if ((self->_earliestAllowedPTS.flags & 1) != 0 && (ptmsn_getSampleBufferPTS(a3, &time1), *&time2.start.value = *&self->_earliestAllowedPTS.value, time2.start.epoch = self->_earliestAllowedPTS.epoch, CMTimeCompare(&time1.start, &time2.start) < 0) || ([(NSMutableArray *)self->_timeMachineFrames addObject:a3], [(NSMutableArray *)self->_timeMachineFrames count]<= self->_timeMachineCapacity))
+    v8 = currentState;
+    if ((self->_earliestAllowedPTS.flags & 1) != 0 && (ptmsn_getSampleBufferPTS(buffer, &time1), *&time2.start.value = *&self->_earliestAllowedPTS.value, time2.start.epoch = self->_earliestAllowedPTS.epoch, CMTimeCompare(&time1.start, &time2.start) < 0) || ([(NSMutableArray *)self->_timeMachineFrames addObject:buffer], [(NSMutableArray *)self->_timeMachineFrames count]<= self->_timeMachineCapacity))
     {
       v7 = v8 == 2;
       os_unfair_lock_unlock(&self->_timeMachineLock);
@@ -414,7 +414,7 @@ void __58__BWPreviewTimeMachineSinkNode_didReachEndOfDataForInput___block_invoke
 
   if (!self->_haveFrameRotationAndMirror)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (ImageBuffer)
     {
       BWGetPixelBufferRotationAndMirroring(ImageBuffer, &self->_frameRotationDegrees, &self->_frameMirrored);
@@ -635,9 +635,9 @@ void __60__BWPreviewTimeMachineSinkNode_renderSampleBuffer_forInput___block_invo
   v19();
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if ([objc_msgSend(a3 "reason")])
+  if ([objc_msgSend(sample "reason")])
   {
     os_unfair_lock_lock(&self->_timeMachineLock);
     if ([(NSMutableArray *)self->_timeMachineFrames count])
@@ -656,7 +656,7 @@ void __60__BWPreviewTimeMachineSinkNode_renderSampleBuffer_forInput___block_invo
 
   v8.receiver = self;
   v8.super_class = BWPreviewTimeMachineSinkNode;
-  [(BWNode *)&v8 handleDroppedSample:a3 forInput:a4];
+  [(BWNode *)&v8 handleDroppedSample:sample forInput:input];
 }
 
 BOOL __49__BWPreviewTimeMachineSinkNode__trimToTimeRange___block_invoke(_OWORD *a1, void *a2)
@@ -707,14 +707,14 @@ BOOL __49__BWPreviewTimeMachineSinkNode__trimToTimeRange___block_invoke(_OWORD *
   return result;
 }
 
-- (uint64_t)_computeMotionDetectionFaceRectForSampleBuffers:(uint64_t)a3 faceMotionRectOut:
+- (uint64_t)_computeMotionDetectionFaceRectForSampleBuffers:(uint64_t)buffers faceMotionRectOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ((*(a1 + 338) & 1) == 0)
+  if ((*(self + 338) & 1) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -723,7 +723,7 @@ BOOL __49__BWPreviewTimeMachineSinkNode__trimToTimeRange___block_invoke(_OWORD *
   }
 
   v6 = objc_opt_new();
-  v14 = OUTLINED_FUNCTION_5_26(v6, v7, v8, v9, v10, v11, v12, v13, v61, v63, v65, v68, v3, a3, v75, v77, v79, v81, v83, v85, v87, v89, v91, v93, v95, v97, v99, v101, v103, v105, 0);
+  v14 = OUTLINED_FUNCTION_5_26(v6, v7, v8, v9, v10, v11, v12, v13, v61, v63, v65, v68, v3, buffers, v75, v77, v79, v81, v83, v85, v87, v89, v91, v93, v95, v97, v99, v101, v103, v105, 0);
   if (v14)
   {
     v15 = v14;
@@ -760,15 +760,15 @@ BOOL __49__BWPreviewTimeMachineSinkNode__trimToTimeRange___block_invoke(_OWORD *
 
   if ([v6 count])
   {
-    v29 = [a1 frameDimensions];
-    if (v6 && (v30 = v29, v31 = *(a1 + 340), v32 = *(a1 + 344), [v6 count]))
+    frameDimensions = [self frameDimensions];
+    if (v6 && (v30 = frameDimensions, v31 = *(self + 340), v32 = *(self + 344), [v6 count]))
     {
       v116 = 0u;
       v117 = 0u;
       v114 = 0u;
       v115 = 0u;
-      v33 = [v6 reverseObjectEnumerator];
-      v34 = [v33 countByEnumeratingWithState:&v114 objects:v113 count:16];
+      reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+      v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v114 objects:v113 count:16];
       if (v34)
       {
         v35 = v34;
@@ -784,7 +784,7 @@ LABEL_19:
         {
           if (*v115 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v41 = *(*(&v114 + 1) + 8 * v40);
@@ -802,7 +802,7 @@ LABEL_19:
 
           if (v35 == ++v40)
           {
-            v35 = [v33 countByEnumeratingWithState:&v114 objects:v113 count:16];
+            v35 = [reverseObjectEnumerator countByEnumeratingWithState:&v114 objects:v113 count:16];
             if (v35)
             {
               goto LABEL_19;
@@ -961,7 +961,7 @@ LABEL_41:
   OUTLINED_FUNCTION_1_11();
   OUTLINED_FUNCTION_2_5();
   result = FigDebugAssert3();
-  *a2 = *a1;
+  *a2 = *self;
   return result;
 }
 

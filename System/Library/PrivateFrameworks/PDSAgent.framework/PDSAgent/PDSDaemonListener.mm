@@ -1,20 +1,20 @@
 @interface PDSDaemonListener
-- (PDSDaemonListener)initWithClientIDs:(id)a3 entryStore:(id)a4 userTracker:(id)a5;
-- (PDSDaemonListener)initWithEntryStore:(id)a3 userTracker:(id)a4;
-- (void)activeUsersWithClientID:(id)a3 withCompletion:(id)a4;
-- (void)batchUpdateEntries:(id)a3 forClientID:(id)a4 withCompletion:(id)a5;
-- (void)entriesForClientID:(id)a3 withCompletion:(id)a4;
-- (void)entriesForUser:(id)a3 clientID:(id)a4 withCompletion:(id)a5;
-- (void)removeAllEntriesForUser:(id)a3 withClientID:(id)a4 withCompletion:(id)a5;
-- (void)storeEntries:(id)a3 deleteEntries:(id)a4 withCompletion:(id)a5;
-- (void)usersWithClientID:(id)a3 withCompletion:(id)a4;
+- (PDSDaemonListener)initWithClientIDs:(id)ds entryStore:(id)store userTracker:(id)tracker;
+- (PDSDaemonListener)initWithEntryStore:(id)store userTracker:(id)tracker;
+- (void)activeUsersWithClientID:(id)d withCompletion:(id)completion;
+- (void)batchUpdateEntries:(id)entries forClientID:(id)d withCompletion:(id)completion;
+- (void)entriesForClientID:(id)d withCompletion:(id)completion;
+- (void)entriesForUser:(id)user clientID:(id)d withCompletion:(id)completion;
+- (void)removeAllEntriesForUser:(id)user withClientID:(id)d withCompletion:(id)completion;
+- (void)storeEntries:(id)entries deleteEntries:(id)deleteEntries withCompletion:(id)completion;
+- (void)usersWithClientID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation PDSDaemonListener
 
-- (PDSDaemonListener)initWithEntryStore:(id)a3 userTracker:(id)a4
+- (PDSDaemonListener)initWithEntryStore:(id)store userTracker:(id)tracker
 {
-  result = [(PDSDaemonListener *)self initWithClientIDs:&unk_286FBBBE8 entryStore:a3 userTracker:a4];
+  result = [(PDSDaemonListener *)self initWithClientIDs:&unk_286FBBBE8 entryStore:store userTracker:tracker];
   if (result)
   {
     result->_bypassClientIDCheck = 1;
@@ -23,26 +23,26 @@
   return result;
 }
 
-- (PDSDaemonListener)initWithClientIDs:(id)a3 entryStore:(id)a4 userTracker:(id)a5
+- (PDSDaemonListener)initWithClientIDs:(id)ds entryStore:(id)store userTracker:(id)tracker
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dsCopy = ds;
+  storeCopy = store;
+  trackerCopy = tracker;
+  if (!dsCopy)
   {
     [PDSDaemonListener initWithClientIDs:entryStore:userTracker:];
   }
 
-  if ([v9 count])
+  if ([dsCopy count])
   {
-    if (v10)
+    if (storeCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
     [PDSDaemonListener initWithClientIDs:entryStore:userTracker:];
-    if (v11)
+    if (trackerCopy)
     {
       goto LABEL_6;
     }
@@ -51,13 +51,13 @@ LABEL_10:
   }
 
   [PDSDaemonListener initWithClientIDs:entryStore:userTracker:];
-  if (!v10)
+  if (!storeCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  if (v11)
+  if (trackerCopy)
   {
     goto LABEL_6;
   }
@@ -71,24 +71,24 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientIDs, a3);
-    objc_storeStrong(&v13->_entryStore, a4);
-    objc_storeStrong(&v13->_userTracker, a5);
+    objc_storeStrong(&v12->_clientIDs, ds);
+    objc_storeStrong(&v13->_entryStore, store);
+    objc_storeStrong(&v13->_userTracker, tracker);
     v13->_bypassClientIDCheck = 0;
   }
 
   return v13;
 }
 
-- (void)storeEntries:(id)a3 deleteEntries:(id)a4 withCompletion:(id)a5
+- (void)storeEntries:(id)entries deleteEntries:(id)deleteEntries withCompletion:(id)completion
 {
   v88 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  entriesCopy = entries;
+  deleteEntriesCopy = deleteEntries;
+  completionCopy = completion;
+  if ([entriesCopy count] || objc_msgSend(deleteEntriesCopy, "count"))
   {
-    v60 = v10;
+    v60 = completionCopy;
     if ([(PDSDaemonListener *)self bypassClientIDCheck])
     {
       goto LABEL_4;
@@ -98,7 +98,7 @@ LABEL_6:
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v40 = v8;
+    v40 = entriesCopy;
     v41 = [v40 countByEnumeratingWithState:&v79 objects:v87 count:16];
     if (v41)
     {
@@ -114,9 +114,9 @@ LABEL_37:
         }
 
         v45 = *(*(&v79 + 1) + 8 * v44);
-        v46 = [(PDSDaemonListener *)self clientIDs];
-        v47 = [v45 clientID];
-        v48 = [v46 containsObject:v47];
+        clientIDs = [(PDSDaemonListener *)self clientIDs];
+        clientID = [v45 clientID];
+        v48 = [clientIDs containsObject:clientID];
 
         if (!v48)
         {
@@ -144,21 +144,21 @@ LABEL_43:
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v40 = v9;
+      v40 = deleteEntriesCopy;
       v49 = [v40 countByEnumeratingWithState:&v75 objects:v86 count:16];
       if (!v49)
       {
 LABEL_51:
 
 LABEL_4:
-        if ([v8 count] && objc_msgSend(v9, "count"))
+        if ([entriesCopy count] && objc_msgSend(deleteEntriesCopy, "count"))
         {
           v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
           v71 = 0u;
           v72 = 0u;
           v73 = 0u;
           v74 = 0u;
-          v12 = v8;
+          v12 = entriesCopy;
           v13 = [v12 countByEnumeratingWithState:&v71 objects:v85 count:16];
           if (v13)
           {
@@ -173,8 +173,8 @@ LABEL_4:
                   objc_enumerationMutation(v12);
                 }
 
-                v17 = [*(*(&v71 + 1) + 8 * i) registration];
-                [v11 addObject:v17];
+                registration = [*(*(&v71 + 1) + 8 * i) registration];
+                [v11 addObject:registration];
               }
 
               v14 = [v12 countByEnumeratingWithState:&v71 objects:v85 count:16];
@@ -187,7 +187,7 @@ LABEL_4:
           v70 = 0u;
           v67 = 0u;
           v68 = 0u;
-          v18 = v9;
+          v18 = deleteEntriesCopy;
           v19 = [v18 countByEnumeratingWithState:&v67 objects:v84 count:16];
           if (v19)
           {
@@ -202,14 +202,14 @@ LABEL_4:
                   objc_enumerationMutation(v18);
                 }
 
-                v23 = [*(*(&v67 + 1) + 8 * j) registration];
-                v24 = [v11 containsObject:v23];
+                registration2 = [*(*(&v67 + 1) + 8 * j) registration];
+                v24 = [v11 containsObject:registration2];
 
                 if (v24)
                 {
 
                   v57 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-305 userInfo:0];
-                  v10 = v60;
+                  completionCopy = v60;
                   v60[2](v60, v57);
 
                   goto LABEL_58;
@@ -227,12 +227,12 @@ LABEL_4:
           }
         }
 
-        v59 = v9;
+        v59 = deleteEntriesCopy;
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v25 = v8;
+        v25 = entriesCopy;
         v26 = [v25 countByEnumeratingWithState:&v63 objects:v83 count:16];
         if (v26)
         {
@@ -250,18 +250,18 @@ LABEL_4:
               v30 = *(*(&v63 + 1) + 8 * k);
               if ([v30 state] == 1)
               {
-                v31 = [(PDSDaemonListener *)self userTracker];
-                v32 = [v30 user];
+                userTracker = [(PDSDaemonListener *)self userTracker];
+                user = [v30 user];
                 v62 = 0;
-                v33 = [v31 validUser:v32 withError:&v62];
+                v33 = [userTracker validUser:user withError:&v62];
                 v34 = v62;
 
                 if ((v33 & 1) == 0)
                 {
-                  v10 = v60;
+                  completionCopy = v60;
                   v60[2](v60, v34);
 
-                  v9 = v59;
+                  deleteEntriesCopy = v59;
                   goto LABEL_58;
                 }
               }
@@ -278,17 +278,17 @@ LABEL_4:
           while (v27);
         }
 
-        v35 = [(PDSDaemonListener *)self entryStore];
+        entryStore = [(PDSDaemonListener *)self entryStore];
         v61 = 0;
-        v9 = v59;
-        [v35 storeEntries:v25 deleteEntries:v59 withError:&v61];
+        deleteEntriesCopy = v59;
+        [entryStore storeEntries:v25 deleteEntries:v59 withError:&v61];
         v36 = v61;
 
         if (v36)
         {
           v37 = MEMORY[0x277CCA9B8];
-          v38 = [v36 domain];
-          v39 = [v37 errorWithDomain:v38 code:objc_msgSend(v36 userInfo:{"code"), 0}];
+          domain = [v36 domain];
+          v39 = [v37 errorWithDomain:domain code:objc_msgSend(v36 userInfo:{"code"), 0}];
         }
 
         else
@@ -296,7 +296,7 @@ LABEL_4:
           v39 = 0;
         }
 
-        v10 = v60;
+        completionCopy = v60;
         v60[2](v60, v39);
 
         goto LABEL_57;
@@ -314,9 +314,9 @@ LABEL_45:
         }
 
         v53 = *(*(&v75 + 1) + 8 * v52);
-        v54 = [(PDSDaemonListener *)self clientIDs];
-        v55 = [v53 clientID];
-        v56 = [v54 containsObject:v55];
+        clientIDs2 = [(PDSDaemonListener *)self clientIDs];
+        clientID2 = [v53 clientID];
+        v56 = [clientIDs2 containsObject:clientID2];
 
         if (!v56)
         {
@@ -336,36 +336,36 @@ LABEL_45:
       }
     }
 
-    v10 = v60;
+    completionCopy = v60;
 
     v36 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-    v10[2](v10, v36);
+    completionCopy[2](completionCopy, v36);
 LABEL_57:
 
     goto LABEL_58;
   }
 
-  v10[2](v10, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_58:
 
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)batchUpdateEntries:(id)a3 forClientID:(id)a4 withCompletion:(id)a5
+- (void)batchUpdateEntries:(id)entries forClientID:(id)d withCompletion:(id)completion
 {
   v79 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v55 = v9;
-  v54 = a5;
+  entriesCopy = entries;
+  dCopy = d;
+  v10 = entriesCopy;
+  v55 = dCopy;
+  completionCopy = completion;
   if (![(PDSDaemonListener *)self bypassClientIDCheck])
   {
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v11 = v8;
+    v11 = entriesCopy;
     v12 = [v11 countByEnumeratingWithState:&v71 objects:v78 count:16];
     if (v12)
     {
@@ -381,16 +381,16 @@ LABEL_58:
           }
 
           v16 = *(*(&v71 + 1) + 8 * i);
-          v17 = [(PDSDaemonListener *)self clientIDs];
-          v18 = [v16 clientID];
-          v19 = [v17 containsObject:v18];
+          clientIDs = [(PDSDaemonListener *)self clientIDs];
+          clientID = [v16 clientID];
+          v19 = [clientIDs containsObject:clientID];
 
           if (!v19)
           {
 
             v31 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-            v48 = v54;
-            (*(v54 + 2))(v54, v31);
+            v48 = completionCopy;
+            (*(completionCopy + 2))(completionCopy, v31);
             goto LABEL_46;
           }
         }
@@ -426,16 +426,16 @@ LABEL_58:
         }
 
         v25 = *(*(&v67 + 1) + 8 * j);
-        v26 = [(PDSDaemonListener *)self userTracker];
-        v27 = [v25 user];
+        userTracker = [(PDSDaemonListener *)self userTracker];
+        user = [v25 user];
         v66 = 0;
-        v28 = [v26 validUser:v27 withError:&v66];
+        v28 = [userTracker validUser:user withError:&v66];
         v29 = v66;
 
         if ((v28 & 1) == 0)
         {
-          v48 = v54;
-          (*(v54 + 2))(v54, v29);
+          v48 = completionCopy;
+          (*(completionCopy + 2))(completionCopy, v29);
 
           v31 = v20;
           goto LABEL_46;
@@ -452,13 +452,13 @@ LABEL_58:
     }
   }
 
-  v30 = [(PDSDaemonListener *)self entryStore];
-  v31 = [v30 entriesWithClientID:v55];
+  entryStore = [(PDSDaemonListener *)self entryStore];
+  v31 = [entryStore entriesWithClientID:v55];
 
   if ([v31 count])
   {
     v53 = v10;
-    v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
+    entryStore3 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v33 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v61 = 0u;
     v62 = 0u;
@@ -514,7 +514,7 @@ LABEL_58:
           v45 = *(*(&v57 + 1) + 8 * m);
           if (([v34 containsObject:{v45, v53}] & 1) == 0)
           {
-            [v32 addObject:v45];
+            [entryStore3 addObject:v45];
           }
         }
 
@@ -524,9 +524,9 @@ LABEL_58:
       while (v42);
     }
 
-    v46 = [(PDSDaemonListener *)self entryStore];
+    entryStore2 = [(PDSDaemonListener *)self entryStore];
     v56 = 0;
-    [v46 storeEntries:v32 deleteEntries:v33 withError:&v56];
+    [entryStore2 storeEntries:entryStore3 deleteEntries:v33 withError:&v56];
     v47 = v56;
 
     v10 = v53;
@@ -534,18 +534,18 @@ LABEL_58:
 
   else
   {
-    v32 = [(PDSDaemonListener *)self entryStore];
+    entryStore3 = [(PDSDaemonListener *)self entryStore];
     v65 = 0;
-    [v32 storeEntries:v20 deleteEntries:0 withError:&v65];
+    [entryStore3 storeEntries:v20 deleteEntries:0 withError:&v65];
     v47 = v65;
   }
 
-  v48 = v54;
+  v48 = completionCopy;
   if (v47)
   {
     v49 = MEMORY[0x277CCA9B8];
-    v50 = [v47 domain];
-    v51 = [v49 errorWithDomain:v50 code:objc_msgSend(v47 userInfo:{"code"), 0}];
+    domain = [v47 domain];
+    v51 = [v49 errorWithDomain:domain code:objc_msgSend(v47 userInfo:{"code"), 0}];
   }
 
   else
@@ -553,29 +553,29 @@ LABEL_58:
     v51 = 0;
   }
 
-  (*(v54 + 2))(v54, v51);
+  (*(completionCopy + 2))(completionCopy, v51);
 
 LABEL_46:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllEntriesForUser:(id)a3 withClientID:(id)a4 withCompletion:(id)a5
+- (void)removeAllEntriesForUser:(id)user withClientID:(id)d withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 containsObject:v9], v11, (v12 & 1) != 0))
+  userCopy = user;
+  dCopy = d;
+  completionCopy = completion;
+  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 containsObject:dCopy], v11, (v12 & 1) != 0))
   {
-    v13 = [(PDSDaemonListener *)self entryStore];
+    entryStore = [(PDSDaemonListener *)self entryStore];
     v18 = 0;
-    [v13 updateEntryState:2 forUser:v8 clientID:v9 withError:&v18];
+    [entryStore updateEntryState:2 forUser:userCopy clientID:dCopy withError:&v18];
     v14 = v18;
 
     if (v14)
     {
       v15 = MEMORY[0x277CCA9B8];
-      v16 = [v14 domain];
-      v17 = [v15 errorWithDomain:v16 code:objc_msgSend(v14 userInfo:{"code"), 0}];
+      domain = [v14 domain];
+      v17 = [v15 errorWithDomain:domain code:objc_msgSend(v14 userInfo:{"code"), 0}];
     }
 
     else
@@ -583,33 +583,33 @@ LABEL_46:
       v17 = 0;
     }
 
-    v10[2](v10, v17);
+    completionCopy[2](completionCopy, v17);
   }
 
   else
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
   }
 }
 
-- (void)activeUsersWithClientID:(id)a3 withCompletion:(id)a4
+- (void)activeUsersWithClientID:(id)d withCompletion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v14], v7, (v8 & 1) != 0))
+  dCopy = d;
+  completionCopy = completion;
+  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:dCopy], v7, (v8 & 1) != 0))
   {
-    v9 = [v14 isEqualToString:*MEMORY[0x277D37B10]];
-    v10 = [(PDSDaemonListener *)self entryStore];
-    v11 = v10;
+    v9 = [dCopy isEqualToString:*MEMORY[0x277D37B10]];
+    entryStore = [(PDSDaemonListener *)self entryStore];
+    v11 = entryStore;
     if (v9)
     {
-      [v10 activeUsers];
+      [entryStore activeUsers];
     }
 
     else
     {
-      [v10 activeUsersWithClientID:v14];
+      [entryStore activeUsersWithClientID:dCopy];
     }
     v12 = ;
 
@@ -623,33 +623,33 @@ LABEL_46:
       v13 = MEMORY[0x277CBEBF8];
     }
 
-    v6[2](v6, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 
   else
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-    (v6)[2](v6, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 }
 
-- (void)usersWithClientID:(id)a3 withCompletion:(id)a4
+- (void)usersWithClientID:(id)d withCompletion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v14], v7, (v8 & 1) != 0))
+  dCopy = d;
+  completionCopy = completion;
+  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:dCopy], v7, (v8 & 1) != 0))
   {
-    v9 = [v14 isEqualToString:*MEMORY[0x277D37B10]];
-    v10 = [(PDSDaemonListener *)self entryStore];
-    v11 = v10;
+    v9 = [dCopy isEqualToString:*MEMORY[0x277D37B10]];
+    entryStore = [(PDSDaemonListener *)self entryStore];
+    v11 = entryStore;
     if (v9)
     {
-      [v10 users];
+      [entryStore users];
     }
 
     else
     {
-      [v10 usersWithClientID:v14];
+      [entryStore usersWithClientID:dCopy];
     }
     v12 = ;
 
@@ -663,74 +663,74 @@ LABEL_46:
       v13 = MEMORY[0x277CBEBF8];
     }
 
-    v6[2](v6, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 
   else
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-    (v6)[2](v6, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 }
 
-- (void)entriesForUser:(id)a3 clientID:(id)a4 withCompletion:(id)a5
+- (void)entriesForUser:(id)user clientID:(id)d withCompletion:(id)completion
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:v8], v10, (v11 & 1) != 0))
+  userCopy = user;
+  dCopy = d;
+  completionCopy = completion;
+  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:dCopy], v10, (v11 & 1) != 0))
   {
-    v12 = [v8 isEqualToString:*MEMORY[0x277D37B10]];
-    v13 = [(PDSDaemonListener *)self entryStore];
-    v14 = v13;
+    v12 = [dCopy isEqualToString:*MEMORY[0x277D37B10]];
+    entryStore = [(PDSDaemonListener *)self entryStore];
+    v14 = entryStore;
     if (v12)
     {
-      [v13 entriesForUser:v16];
+      [entryStore entriesForUser:userCopy];
     }
 
     else
     {
-      [v13 entriesForUser:v16 withClientID:v8];
+      [entryStore entriesForUser:userCopy withClientID:dCopy];
     }
     v15 = ;
 
-    v9[2](v9, v15, 0);
+    completionCopy[2](completionCopy, v15, 0);
   }
 
   else
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-    (v9)[2](v9, 0, v15);
+    (completionCopy)[2](completionCopy, 0, v15);
   }
 }
 
-- (void)entriesForClientID:(id)a3 withCompletion:(id)a4
+- (void)entriesForClientID:(id)d withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v13], v7, (v8 & 1) != 0))
+  dCopy = d;
+  completionCopy = completion;
+  if (-[PDSDaemonListener bypassClientIDCheck](self, "bypassClientIDCheck") || (-[PDSDaemonListener clientIDs](self, "clientIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:dCopy], v7, (v8 & 1) != 0))
   {
-    v9 = [v13 isEqualToString:*MEMORY[0x277D37B10]];
-    v10 = [(PDSDaemonListener *)self entryStore];
-    v11 = v10;
+    v9 = [dCopy isEqualToString:*MEMORY[0x277D37B10]];
+    entryStore = [(PDSDaemonListener *)self entryStore];
+    v11 = entryStore;
     if (v9)
     {
-      [v10 entries];
+      [entryStore entries];
     }
 
     else
     {
-      [v10 entriesWithClientID:v13];
+      [entryStore entriesWithClientID:dCopy];
     }
     v12 = ;
 
-    v6[2](v6, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
   }
 
   else
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-303 userInfo:0];
-    (v6)[2](v6, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 }
 

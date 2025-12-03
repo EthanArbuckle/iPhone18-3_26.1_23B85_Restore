@@ -14,17 +14,17 @@
 
 - (void)propertiesDidChange
 {
-  v3 = [(TLKObject *)self observer];
-  if (v3)
+  observer = [(TLKObject *)self observer];
+  if (observer)
   {
-    v4 = v3;
-    v5 = [(TLKObject *)self observer];
-    v6 = [v5 batchUpdateCount];
+    v4 = observer;
+    observer2 = [(TLKObject *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v6)
+    if (!batchUpdateCount)
     {
-      v7 = [(TLKObject *)self observer];
-      [v7 propertiesDidChange];
+      observer3 = [(TLKObject *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }

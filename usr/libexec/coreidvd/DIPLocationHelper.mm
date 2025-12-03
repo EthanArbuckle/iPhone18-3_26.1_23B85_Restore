@@ -1,8 +1,8 @@
 @interface DIPLocationHelper
 - (_TtC8coreidvd17DIPLocationHelper)init;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation DIPLocationHelper
@@ -16,28 +16,28 @@
   return v3;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_10001F8D4(0, &qword_100848A38, CLLocation_ptr);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  sub_10059A714(v7, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_10059A714(managerCopy, v6);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_10059AFF4(v6);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10059AFF4(managerCopy);
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
-  v7 = self;
-  sub_10059B1CC(a4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_10059B1CC(status);
 }
 
 @end

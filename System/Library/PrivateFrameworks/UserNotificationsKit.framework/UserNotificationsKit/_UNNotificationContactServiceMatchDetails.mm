@@ -1,14 +1,14 @@
 @interface _UNNotificationContactServiceMatchDetails
-- (_UNNotificationContactServiceMatchDetails)initWithCnContactIdentifier:(id)a3 cnContactFullname:(id)a4 isSuggestedContact:(BOOL)a5;
+- (_UNNotificationContactServiceMatchDetails)initWithCnContactIdentifier:(id)identifier cnContactFullname:(id)fullname isSuggestedContact:(BOOL)contact;
 @end
 
 @implementation _UNNotificationContactServiceMatchDetails
 
-- (_UNNotificationContactServiceMatchDetails)initWithCnContactIdentifier:(id)a3 cnContactFullname:(id)a4 isSuggestedContact:(BOOL)a5
+- (_UNNotificationContactServiceMatchDetails)initWithCnContactIdentifier:(id)identifier cnContactFullname:(id)fullname isSuggestedContact:(BOOL)contact
 {
   v15.receiver = self;
   v15.super_class = _UNNotificationContactServiceMatchDetails;
-  v5 = [(_UNNotificationContactServiceMatchDetails *)&v15 init:a3];
+  v5 = [(_UNNotificationContactServiceMatchDetails *)&v15 init:identifier];
   if (v5)
   {
     NCRegisterUserNotificationsUILogging();

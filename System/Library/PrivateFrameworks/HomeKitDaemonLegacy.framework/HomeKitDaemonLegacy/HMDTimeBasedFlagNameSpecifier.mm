@@ -1,46 +1,46 @@
 @interface HMDTimeBasedFlagNameSpecifier
-+ (id)specifierWithFlagName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGroupNameSpecifier:(id)a3;
-- (HMDTimeBasedFlagNameSpecifier)initWithCoder:(id)a3;
-- (HMDTimeBasedFlagNameSpecifier)initWithFlagName:(id)a3;
++ (id)specifierWithFlagName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGroupNameSpecifier:(id)specifier;
+- (HMDTimeBasedFlagNameSpecifier)initWithCoder:(id)coder;
+- (HMDTimeBasedFlagNameSpecifier)initWithFlagName:(id)name;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDTimeBasedFlagNameSpecifier
 
 - (NSString)description
 {
-  v2 = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
-  v3 = [v2 description];
+  flagName = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
+  v3 = [flagName description];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
-  v3 = [v2 hash];
+  flagName = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
+  v3 = [flagName hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToGroupNameSpecifier:(id)a3
+- (BOOL)isEqualToGroupNameSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
-  v6 = [v4 flagName];
+  specifierCopy = specifier;
+  flagName = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
+  flagName2 = [specifierCopy flagName];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(specifierCopy) = [flagName isEqualToString:flagName2];
+  return specifierCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -61,9 +61,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
-      v8 = [(HMDTimeBasedFlagNameSpecifier *)v6 flagName];
-      v9 = [v7 isEqualToString:v8];
+      flagName = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
+      flagName2 = [(HMDTimeBasedFlagNameSpecifier *)v6 flagName];
+      v9 = [flagName isEqualToString:flagName2];
     }
 
     else
@@ -75,22 +75,22 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
-  [v4 encodeObject:v5 forKey:@"flagName"];
+  coderCopy = coder;
+  flagName = [(HMDTimeBasedFlagNameSpecifier *)self flagName];
+  [coderCopy encodeObject:flagName forKey:@"flagName"];
 }
 
-- (HMDTimeBasedFlagNameSpecifier)initWithCoder:(id)a3
+- (HMDTimeBasedFlagNameSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDTimeBasedFlagNameSpecifier;
   v5 = [(HMDTimeBasedFlagNameSpecifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flagName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flagName"];
     flagName = v5->_flagName;
     v5->_flagName = v6;
   }
@@ -98,25 +98,25 @@
   return v5;
 }
 
-- (HMDTimeBasedFlagNameSpecifier)initWithFlagName:(id)a3
+- (HMDTimeBasedFlagNameSpecifier)initWithFlagName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = HMDTimeBasedFlagNameSpecifier;
   v6 = [(HMDTimeBasedFlagNameSpecifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_flagName, a3);
+    objc_storeStrong(&v6->_flagName, name);
   }
 
   return v7;
 }
 
-+ (id)specifierWithFlagName:(id)a3
++ (id)specifierWithFlagName:(id)name
 {
-  v3 = a3;
-  v4 = [[HMDTimeBasedFlagNameSpecifier alloc] initWithFlagName:v3];
+  nameCopy = name;
+  v4 = [[HMDTimeBasedFlagNameSpecifier alloc] initWithFlagName:nameCopy];
 
   return v4;
 }

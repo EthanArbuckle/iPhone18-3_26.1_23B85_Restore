@@ -1,42 +1,42 @@
 @interface AXManagedAssetTask
-+ (id)taskWithName:(id)a3 policy:(id)a4 context:(id)a5 block:(id)a6;
++ (id)taskWithName:(id)name policy:(id)policy context:(id)context block:(id)block;
 - (AXAssetController)assetController;
-- (AXManagedAssetTask)initWithName:(id)a3 policy:(id)a4 context:(id)a5 block:(id)a6;
+- (AXManagedAssetTask)initWithName:(id)name policy:(id)policy context:(id)context block:(id)block;
 - (BOOL)_deferIfNeeded;
 - (NSString)description;
-- (id)_restorationExitStatusForResult:(unint64_t)a3;
-- (void)_completeWithResult:(unint64_t)a3;
+- (id)_restorationExitStatusForResult:(unint64_t)result;
+- (void)_completeWithResult:(unint64_t)result;
 @end
 
 @implementation AXManagedAssetTask
 
-+ (id)taskWithName:(id)a3 policy:(id)a4 context:(id)a5 block:(id)a6
++ (id)taskWithName:(id)name policy:(id)policy context:(id)context block:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithName:v13 policy:v12 context:v11 block:v10];
+  blockCopy = block;
+  contextCopy = context;
+  policyCopy = policy;
+  nameCopy = name;
+  v14 = [[self alloc] initWithName:nameCopy policy:policyCopy context:contextCopy block:blockCopy];
 
   return v14;
 }
 
-- (AXManagedAssetTask)initWithName:(id)a3 policy:(id)a4 context:(id)a5 block:(id)a6
+- (AXManagedAssetTask)initWithName:(id)name policy:(id)policy context:(id)context block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  policyCopy = policy;
+  contextCopy = context;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = AXManagedAssetTask;
   v14 = [(AXManagedAssetTask *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(AXManagedAssetTask *)v14 setTaskBlock:v13];
-    [(AXManagedAssetTask *)v15 setPolicy:v11];
-    [(AXManagedAssetTask *)v15 setName:v10];
-    [(AXManagedAssetTask *)v15 setContext:v12];
+    [(AXManagedAssetTask *)v14 setTaskBlock:blockCopy];
+    [(AXManagedAssetTask *)v15 setPolicy:policyCopy];
+    [(AXManagedAssetTask *)v15 setName:nameCopy];
+    [(AXManagedAssetTask *)v15 setContext:contextCopy];
   }
 
   return v15;
@@ -44,10 +44,10 @@
 
 - (NSString)description
 {
-  v3 = [(AXManagedAssetTask *)self context];
-  v4 = [v3 environment];
+  context = [(AXManagedAssetTask *)self context];
+  environment = [context environment];
   v5 = @"XPCActivity";
-  if (!v4)
+  if (!environment)
   {
     v5 = @"XPCClientReq";
   }
@@ -56,17 +56,17 @@
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(AXManagedAssetTask *)self name];
-  v10 = [(AXManagedAssetTask *)self policy];
-  v11 = [v10 assetType];
-  v12 = [(AXManagedAssetTask *)self finished];
+  name = [(AXManagedAssetTask *)self name];
+  policy = [(AXManagedAssetTask *)self policy];
+  assetType = [policy assetType];
+  finished = [(AXManagedAssetTask *)self finished];
   v13 = @"Active";
-  if (v12)
+  if (finished)
   {
     v13 = @"Finished";
   }
 
-  v14 = [NSString stringWithFormat:@"%@<%p> [%@:%@:%@ - Status:%@]", v8, self, v6, v9, v11, v13];
+  v14 = [NSString stringWithFormat:@"%@<%p> [%@:%@:%@ - Status:%@]", v8, self, v6, name, assetType, v13];
 
   return v14;
 }
@@ -76,8 +76,8 @@
   assetController = self->_assetController;
   if (!assetController)
   {
-    v4 = [(AXManagedAssetTask *)self policy];
-    v5 = [AXAssetController assetControllerWithPolicy:v4 qosClass:33 shouldRefreshForAssetInstallNotifications:0];
+    policy = [(AXManagedAssetTask *)self policy];
+    v5 = [AXAssetController assetControllerWithPolicy:policy qosClass:33 shouldRefreshForAssetInstallNotifications:0];
     v6 = self->_assetController;
     self->_assetController = v5;
 
@@ -89,24 +89,24 @@
   return assetController;
 }
 
-- (void)_completeWithResult:(unint64_t)a3
+- (void)_completeWithResult:(unint64_t)result
 {
   v5 = AXLogAssetDaemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"Deferred";
-    if (a3 == 1)
+    if (result == 1)
     {
       v6 = @"Failed";
     }
 
-    if (!a3)
+    if (!result)
     {
       v6 = @"Success";
     }
 
     v15 = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will complete task [%@] with result : %@", &v15, 0x16u);
@@ -123,43 +123,43 @@
 
   else
   {
-    v8 = [(AXManagedAssetTask *)self assetController];
-    [v8 removeObserver:self];
+    assetController = [(AXManagedAssetTask *)self assetController];
+    [assetController removeObserver:self];
 
     [(AXManagedAssetTask *)self setAssetController:0];
-    v9 = [(AXManagedAssetTask *)self restorationState];
-    if (a3 > 1)
+    restorationState = [(AXManagedAssetTask *)self restorationState];
+    if (result > 1)
     {
-      v10 = [(AXManagedAssetTask *)self restorationState];
-      v11 = [v10 phase];
-      v12 = [(AXManagedAssetTask *)self _restorationExitStatusForResult:a3];
+      restorationState2 = [(AXManagedAssetTask *)self restorationState];
+      phase = [restorationState2 phase];
+      v12 = [(AXManagedAssetTask *)self _restorationExitStatusForResult:result];
       v13 = +[AXAssetMetadataStore store];
-      [v9 updatePhase:v11 exitStatus:v12 saveToStore:v13];
+      [restorationState updatePhase:phase exitStatus:v12 saveToStore:v13];
     }
 
     else
     {
-      v10 = [(AXManagedAssetTask *)self _restorationExitStatusForResult:a3];
-      v11 = +[AXAssetMetadataStore store];
-      [v9 updatePhase:@"Idle" exitStatus:v10 saveToStore:v11];
+      restorationState2 = [(AXManagedAssetTask *)self _restorationExitStatusForResult:result];
+      phase = +[AXAssetMetadataStore store];
+      [restorationState updatePhase:@"Idle" exitStatus:restorationState2 saveToStore:phase];
     }
 
-    v14 = [(AXManagedAssetTask *)self context];
-    [v14 finishWithResult:a3];
+    context = [(AXManagedAssetTask *)self context];
+    [context finishWithResult:result];
 
     [(AXManagedAssetTask *)self setFinished:1];
   }
 }
 
-- (id)_restorationExitStatusForResult:(unint64_t)a3
+- (id)_restorationExitStatusForResult:(unint64_t)result
 {
   v3 = @"Success";
-  if (a3 == 1)
+  if (result == 1)
   {
     v3 = @"Failed";
   }
 
-  if (a3 == 2)
+  if (result == 2)
   {
     return @"Deferred";
   }
@@ -178,24 +178,24 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ - Checking _deferIfNeeded: Already finixhed, returning true ", &v9, 0xCu);
     }
 
     return 1;
   }
 
-  v4 = [(AXManagedAssetTask *)self context];
-  v5 = [v4 shouldDefer];
+  context = [(AXManagedAssetTask *)self context];
+  shouldDefer = [context shouldDefer];
 
   v6 = AXLogAssetDaemon();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (shouldDefer)
   {
     if (v7)
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ - Checking _deferIfNeeded: Returning true", &v9, 0xCu);
     }
 
@@ -206,7 +206,7 @@
   if (v7)
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ - Checking _deferIfNeeded: Returning false", &v9, 0xCu);
   }
 

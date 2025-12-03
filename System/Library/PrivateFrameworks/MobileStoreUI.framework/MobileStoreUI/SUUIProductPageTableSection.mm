@@ -1,17 +1,17 @@
 @interface SUUIProductPageTableSection
-- (double)heightForTextLayout:(id)a3 isExpanded:(BOOL)a4;
-- (id)textBoxTableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (double)heightForTextLayout:(id)layout isExpanded:(BOOL)expanded;
+- (id)textBoxTableViewCellForTableView:(id)view indexPath:(id)path;
 @end
 
 @implementation SUUIProductPageTableSection
 
-- (double)heightForTextLayout:(id)a3 isExpanded:(BOOL)a4
+- (double)heightForTextLayout:(id)layout isExpanded:(BOOL)expanded
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  layoutCopy = layout;
+  v6 = layoutCopy;
+  if (layoutCopy)
   {
-    if (a4 || ![v5 requiresTruncation])
+    if (expanded || ![layoutCopy requiresTruncation])
     {
       [v6 textSize];
     }
@@ -32,9 +32,9 @@
   return v8;
 }
 
-- (id)textBoxTableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)textBoxTableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:{@"TB", a4}];
+  v4 = [view dequeueReusableCellWithIdentifier:{@"TB", path}];
   if (!v4)
   {
     v4 = [[SUUITextBoxTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"TB"];

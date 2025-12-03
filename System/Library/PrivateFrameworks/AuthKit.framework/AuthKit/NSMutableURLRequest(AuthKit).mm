@@ -109,12 +109,12 @@
 + (id)ak_localeHeader
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = +[AKDevice currentDevice];
-  v4 = [v5 locale];
-  location[0] = [v4 localeIdentifier];
-  MEMORY[0x1E69E5920](v4);
+  locale = [v5 locale];
+  location[0] = [locale localeIdentifier];
+  MEMORY[0x1E69E5920](locale);
   MEMORY[0x1E69E5920](v5);
   if (location[0])
   {
@@ -138,11 +138,11 @@
 + (id)ak_timeZoneHeader
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
-  v4 = [MEMORY[0x1E695DFE8] localTimeZone];
-  location[0] = [v4 abbreviation];
-  MEMORY[0x1E69E5920](v4);
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  location[0] = [localTimeZone abbreviation];
+  MEMORY[0x1E69E5920](localTimeZone);
   if (location[0])
   {
     v7 = @"X-Apple-I-TimeZone";
@@ -165,11 +165,11 @@
 + (id)ak_clientTimeHeader
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
-  v4 = [MEMORY[0x1E695DF00] date];
-  location[0] = [v4 ak_serverFriendlyString];
-  MEMORY[0x1E69E5920](v4);
+  date = [MEMORY[0x1E695DF00] date];
+  location[0] = [date ak_serverFriendlyString];
+  MEMORY[0x1E69E5920](date);
   if (location[0])
   {
     v7 = @"X-Apple-I-Client-Time";
@@ -192,15 +192,15 @@
 - (uint64_t)ak_addClientInfoHeader
 {
   v4 = +[AKDevice currentDevice];
-  v3 = [v4 serverFriendlyDescription];
-  [a1 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v3);
+  serverFriendlyDescription = [v4 serverFriendlyDescription];
+  [self setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](serverFriendlyDescription);
   return MEMORY[0x1E69E5920](v4);
 }
 
 - (void)ak_addDeviceUDIDHeader
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   *&v9[8] = 0;
   v8 = +[AKDevice currentDevice];
@@ -209,9 +209,9 @@
   if (v9[0])
   {
     v7 = +[AKDevice currentDevice];
-    v2 = [v7 provisioningDeviceIdentifier];
+    provisioningDeviceIdentifier = [v7 provisioningDeviceIdentifier];
     v3 = *&v9[4];
-    *&v9[4] = v2;
+    *&v9[4] = provisioningDeviceIdentifier;
     MEMORY[0x1E69E5920](v3);
     MEMORY[0x1E69E5920](v7);
   }
@@ -219,14 +219,14 @@
   else
   {
     v6 = +[AKDevice currentDevice];
-    v4 = [v6 uniqueDeviceIdentifier];
+    uniqueDeviceIdentifier = [v6 uniqueDeviceIdentifier];
     v5 = *&v9[4];
-    *&v9[4] = v4;
+    *&v9[4] = uniqueDeviceIdentifier;
     MEMORY[0x1E69E5920](v5);
     MEMORY[0x1E69E5920](v6);
   }
 
-  [v11 setValue:*&v9[4] forHTTPHeaderField:@"X-Mme-Device-Id"];
+  [selfCopy setValue:*&v9[4] forHTTPHeaderField:@"X-Mme-Device-Id"];
   objc_storeStrong(&v9[4], 0);
 }
 
@@ -250,7 +250,7 @@
   result = MEMORY[0x1E69E5920](v2);
   if (v3)
   {
-    return [a1 setValue:@"true" forHTTPHeaderField:@"X-Apple-I-88CC-99DE-EE63-2736"];
+    return [self setValue:@"true" forHTTPHeaderField:@"X-Apple-I-88CC-99DE-EE63-2736"];
   }
 
   return result;
@@ -276,7 +276,7 @@
   result = MEMORY[0x1E69E5920](v2);
   if (v3)
   {
-    return [a1 setValue:@"true" forHTTPHeaderField:@"X-Apple-I-B636-170F-9E08-A4C3"];
+    return [self setValue:@"true" forHTTPHeaderField:@"X-Apple-I-B636-170F-9E08-A4C3"];
   }
 
   return result;
@@ -285,21 +285,21 @@
 - (uint64_t)ak_addFeatureMaskHeader
 {
   v6 = +[AKDevice currentDevice];
-  v7 = [v6 isInternalBuild];
+  isInternalBuild = [v6 isInternalBuild];
   MEMORY[0x1E69E5920](v6);
-  result = v7;
-  if (v7)
+  result = isInternalBuild;
+  if (isInternalBuild)
   {
     v4 = +[AKConfiguration sharedConfiguration];
-    v5 = [v4 internalFeaturesMaskValue];
+    internalFeaturesMaskValue = [v4 internalFeaturesMaskValue];
     MEMORY[0x1E69E5920](v4);
-    result = v5;
-    if (v5)
+    result = internalFeaturesMaskValue;
+    if (internalFeaturesMaskValue)
     {
-      v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
-      v2 = [v3 stringValue];
-      [a1 setValue:? forHTTPHeaderField:?];
-      MEMORY[0x1E69E5920](v2);
+      v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:internalFeaturesMaskValue];
+      stringValue = [v3 stringValue];
+      [self setValue:? forHTTPHeaderField:?];
+      MEMORY[0x1E69E5920](stringValue);
       return MEMORY[0x1E69E5920](v3);
     }
   }
@@ -309,16 +309,16 @@
 
 - (void)ak_addLocaleHeader
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   v3 = +[AKDevice currentDevice];
   location[0] = [v3 locale];
   MEMORY[0x1E69E5920](v3);
   if (location[0])
   {
-    v2 = [location[0] localeIdentifier];
-    [v5 setValue:? forHTTPHeaderField:?];
-    MEMORY[0x1E69E5920](v2);
+    localeIdentifier = [location[0] localeIdentifier];
+    [selfCopy setValue:? forHTTPHeaderField:?];
+    MEMORY[0x1E69E5920](localeIdentifier);
   }
 
   objc_storeStrong(location, 0);
@@ -326,37 +326,37 @@
 
 - (void)ak_addTimeZoneHeaders
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  location[0] = [v6 name];
-  MEMORY[0x1E69E5920](v6);
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  location[0] = [localTimeZone name];
+  MEMORY[0x1E69E5920](localTimeZone);
   if (location[0])
   {
-    [v8 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-TimeZone"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-TimeZone"];
   }
 
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [v2 secondsFromGMT];
-  MEMORY[0x1E69E5920](v2);
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
-  v4 = [v5 stringValue];
-  [v8 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v4);
+  localTimeZone2 = [MEMORY[0x1E695DFE8] localTimeZone];
+  secondsFromGMT = [localTimeZone2 secondsFromGMT];
+  MEMORY[0x1E69E5920](localTimeZone2);
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:secondsFromGMT];
+  stringValue = [v5 stringValue];
+  [selfCopy setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](stringValue);
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addDeviceROMHeader
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[AKDevice currentDevice];
   location[0] = [v2 ROMAddress];
   MEMORY[0x1E69E5920](v2);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-ROM"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-ROM"];
   }
 
   objc_storeStrong(location, 0);
@@ -364,14 +364,14 @@
 
 - (void)ak_addDeviceSerialNumberHeader
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[AKDevice currentDevice];
   location[0] = [v2 serialNumber];
   MEMORY[0x1E69E5920](v2);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-SRL-NO"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-SRL-NO"];
   }
 
   objc_storeStrong(location, 0);
@@ -379,14 +379,14 @@
 
 - (void)ak_addDeviceMLBHeader
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[AKDevice currentDevice];
   location[0] = [v2 MLBSerialNumber];
   MEMORY[0x1E69E5920](v2);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MLB"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MLB"];
   }
 
   objc_storeStrong(location, 0);
@@ -395,12 +395,12 @@
 - (uint64_t)ak_addDeviceModeHeader
 {
   v2 = +[AKDevice currentDevice];
-  v3 = [v2 isInRestrictedSharingMode];
+  isInRestrictedSharingMode = [v2 isInRestrictedSharingMode];
   MEMORY[0x1E69E5920](v2);
-  result = v3;
-  if (v3)
+  result = isInRestrictedSharingMode;
+  if (isInRestrictedSharingMode)
   {
-    return [a1 setValue:@"1" forHTTPHeaderField:@"X-Apple-I-Device-Mode"];
+    return [self setValue:@"1" forHTTPHeaderField:@"X-Apple-I-Device-Mode"];
   }
 
   return result;
@@ -408,16 +408,16 @@
 
 - (void)ak_addLocalUserUUIDHashHeader
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   v3 = +[AKDevice currentDevice];
-  v2 = [v3 localUserUUID];
-  location[0] = [v2 aaf_toSHA256String];
-  MEMORY[0x1E69E5920](v2);
+  localUserUUID = [v3 localUserUUID];
+  location[0] = [localUserUUID aaf_toSHA256String];
+  MEMORY[0x1E69E5920](localUserUUID);
   MEMORY[0x1E69E5920](v3);
   if (location[0])
   {
-    [v5 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MD-LU"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MD-LU"];
   }
 
   objc_storeStrong(location, 0);
@@ -425,49 +425,49 @@
 
 - (void)ak_addAppleIDHeaderWithValue:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-AppleID"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-AppleID"];
   objc_storeStrong(location, 0);
 }
 
 - (uint64_t)ak_addAppleIDUserModeHeaderWithValue:()AuthKit
 {
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v5 = [v6 stringValue];
-  [a1 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v5);
+  stringValue = [v6 stringValue];
+  [self setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](stringValue);
   return MEMORY[0x1E69E5920](v6);
 }
 
 - (uint64_t)ak_addProvisioningUDIDHeader
 {
   v4 = +[AKDevice currentDevice];
-  v3 = [v4 provisioningDeviceIdentifier];
-  [a1 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v3);
+  provisioningDeviceIdentifier = [v4 provisioningDeviceIdentifier];
+  [self setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](provisioningDeviceIdentifier);
   return MEMORY[0x1E69E5920](v4);
 }
 
 - (void)ak_addProxiedDeviceUDIDHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Mme-Proxied-Device-Id"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Mme-Proxied-Device-Id"];
   objc_storeStrong(location, 0);
 }
 
 - (uint64_t)ak_addClientTimeHeader
 {
-  v4 = [MEMORY[0x1E695DF00] date];
-  v3 = [v4 ak_serverFriendlyString];
-  [a1 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v3);
-  return MEMORY[0x1E69E5920](v4);
+  date = [MEMORY[0x1E695DF00] date];
+  ak_serverFriendlyString = [date ak_serverFriendlyString];
+  [self setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](ak_serverFriendlyString);
+  return MEMORY[0x1E69E5920](date);
 }
 
 - (uint64_t)ak_addCircleStatusHeader
@@ -475,12 +475,12 @@
   v3 = +[AKDevice currentDevice];
   if ([v3 isInCircle])
   {
-    [a1 setValue:@"true" forHTTPHeaderField:{@"X-Apple-I-CDP-Circle-Status", @"true"}];
+    [self setValue:@"true" forHTTPHeaderField:{@"X-Apple-I-CDP-Circle-Status", @"true"}];
   }
 
   else
   {
-    [a1 setValue:@"false" forHTTPHeaderField:{@"X-Apple-I-CDP-Circle-Status", @"false"}];
+    [self setValue:@"false" forHTTPHeaderField:{@"X-Apple-I-CDP-Circle-Status", @"false"}];
   }
 
   return MEMORY[0x1E69E5920](v3);
@@ -488,11 +488,11 @@
 
 - (void)ak_addOTStatusHeaderForAltDSID:()AuthKit
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v3 = v5;
+  v3 = selfCopy;
   if ([AKCDPFactory cdpAccountIsOTEnabledForAltDSID:location[0]])
   {
     [v3 setValue:@"true" forHTTPHeaderField:{@"X-Apple-I-OT-Status", @"true"}];
@@ -508,11 +508,11 @@
 
 - (void)ak_addCDPStatusHeaderForDSID:()AuthKit
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v3 = v5;
+  v3 = selfCopy;
   if ([AKCDPFactory cdpAccountIsICDPEnabledForDSID:location[0]])
   {
     [v3 setValue:@"true" forHTTPHeaderField:{@"X-Apple-I-CDP-Status", @"true"}];
@@ -530,58 +530,58 @@
 {
   if (a3)
   {
-    return [a1 setValue:@"true" forHTTPHeaderField:@"X-Apple-I-CDP-Circle-Status"];
+    return [self setValue:@"true" forHTTPHeaderField:@"X-Apple-I-CDP-Circle-Status"];
   }
 
   else
   {
-    return [a1 setValue:@"false" forHTTPHeaderField:@"X-Apple-I-CDP-Circle-Status"];
+    return [self setValue:@"false" forHTTPHeaderField:@"X-Apple-I-CDP-Circle-Status"];
   }
 }
 
 - (void)ak_addCompanionClientInfoHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-MMe-Companion-Client-Info"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-MMe-Companion-Client-Info"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addProxiedClientInfoHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-MMe-Proxied-Client-Info"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-MMe-Proxied-Client-Info"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addAttestationDataHeaders
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = a1;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = 0;
   v13 = objc_alloc_init(AKAnisetteProvisioningController);
   v2 = [AKAttestationRequestData alloc];
-  v12 = [(AKAttestationRequestData *)v2 initWithRequest:v15 requiredHeaders:0];
+  v12 = [(AKAttestationRequestData *)v2 initWithRequest:selfCopy requiredHeaders:0];
   v10 = v14[0];
   v7 = [v13 attestationDataForRequestData:v12 error:&v10];
   objc_storeStrong(v14, v10);
   v11 = v7;
   if (v7)
   {
-    v4 = [v15 allHTTPHeaderFields];
-    v9 = [v4 mutableCopy];
-    MEMORY[0x1E69E5920](v4);
+    allHTTPHeaderFields = [selfCopy allHTTPHeaderFields];
+    v9 = [allHTTPHeaderFields mutableCopy];
+    MEMORY[0x1E69E5920](allHTTPHeaderFields);
     v5 = v9;
-    v6 = [v11 attestationHeaders];
+    attestationHeaders = [v11 attestationHeaders];
     [v5 addEntriesFromDictionary:?];
-    MEMORY[0x1E69E5920](v6);
-    [v15 setAllHTTPHeaderFields:v9];
+    MEMORY[0x1E69E5920](attestationHeaders);
+    [selfCopy setAllHTTPHeaderFields:v9];
     objc_storeStrong(&v9, 0);
   }
 
@@ -590,7 +590,7 @@
     v8 = _AKLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v3 = [v15 URL];
+      v3 = [selfCopy URL];
       __os_log_helper_16_2_2_8_64_8_64(v16, v3, v14[0]);
       _os_log_error_impl(&dword_193225000, v8, OS_LOG_TYPE_ERROR, "Unable to get Attestation data for request %@! Error: %@", v16, 0x16u);
       MEMORY[0x1E69E5920](v3);
@@ -609,7 +609,7 @@
 - (void)ak_addProxiedAnisetteHeaders:()AuthKit
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -631,7 +631,7 @@
       }
 
       v12 = *(__b[1] + 8 * v7);
-      v3 = v15;
+      v3 = selfCopy;
       v4 = [v13 objectForKeyedSubscript:v12];
       [v3 setValue:? forHTTPHeaderField:?];
       MEMORY[0x1E69E5920](v4);
@@ -657,7 +657,7 @@
 - (void)ak_addProxiedAttestationHeaders:()AuthKit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -670,181 +670,181 @@
   }
 
   objc_storeStrong(&v12, 0);
-  v10 = [location[0] attestationHeaders];
-  v3 = v10;
+  attestationHeaders = [location[0] attestationHeaders];
+  v3 = attestationHeaders;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __64__NSMutableURLRequest_AuthKit__ak_addProxiedAttestationHeaders___block_invoke;
   v8 = &unk_1E73D5E48;
-  v9 = MEMORY[0x1E69E5928](v14);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   [v3 enumerateKeysAndObjectsUsingBlock:&v4];
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&attestationHeaders, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
 - (void)ak_addAuthorizationHeaderWithIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Identity-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Identity-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addAuthorizationHeaderWithAltIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Alt-Identity-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Alt-Identity-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addProxiedAuthorizationHeaderWithIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Proxied-Identity-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Proxied-Identity-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addAuthorizationHeaderWithServiceToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-GS-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-GS-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addAuthorizationHeaderWithHeartbeatToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-HB-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-HB-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addAuthorizationHeaderWithCustodianRecoveryToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-CR-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-CR-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addICSCRecoveryHeaderWithIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-iCSC-Identity-Token"];
-  [v7 ak_addRecoveryHeaderWithIdentityToken:location[0] forAltDSID:v5];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-iCSC-Identity-Token"];
+  [selfCopy ak_addRecoveryHeaderWithIdentityToken:location[0] forAltDSID:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addRecoveryHeaderWithIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Recovery-Identity-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Recovery-Identity-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addShortLivedTokenHeaderWithIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-SL-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-SL-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addGuardianAuthorizationHeaderWithIdentityToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Guardian-Identity-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Guardian-Identity-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addGuardianAuthorizationHeaderWithHeartbeatToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Guardian-HB-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Guardian-HB-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addGuardianAuthorizationHeaderWithServiceToken:()AuthKit forAltDSID:
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = 0;
   objc_storeStrong(&v5, a4);
-  [v7 _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Guardian-GS-Token"];
+  [selfCopy _setAuthorizationHeaderWithToken:location[0] altDSID:v5 key:@"X-Apple-Guardian-GS-Token"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addGuardianAuthorizationHeaderWithIdentityToken:()AuthKit heartbeatToken:serviceToken:forAltDSID:
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -854,9 +854,9 @@
   objc_storeStrong(&v10, a5);
   v9 = 0;
   objc_storeStrong(&v9, a6);
-  [v13 ak_addGuardianAuthorizationHeaderWithIdentityToken:location[0] forAltDSID:v9];
-  [v13 ak_addGuardianAuthorizationHeaderWithHeartbeatToken:v11 forAltDSID:v9];
-  [v13 ak_addGuardianAuthorizationHeaderWithServiceToken:v10 forAltDSID:v9];
+  [selfCopy ak_addGuardianAuthorizationHeaderWithIdentityToken:location[0] forAltDSID:v9];
+  [selfCopy ak_addGuardianAuthorizationHeaderWithHeartbeatToken:v11 forAltDSID:v9];
+  [selfCopy ak_addGuardianAuthorizationHeaderWithServiceToken:v10 forAltDSID:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
@@ -865,7 +865,7 @@
 
 - (void)ak_addURLSwitchingHeaderWithURLKey:()AuthKit altDSID:
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -886,7 +886,7 @@
   v10 = v4;
   MEMORY[0x1E69E5920](v5);
   v9 = [v10 dataUsingEncoding:4];
-  v6 = v13;
+  v6 = selfCopy;
   v7 = [v9 base64EncodedStringWithOptions:0];
   [v6 setValue:? forHTTPHeaderField:?];
   MEMORY[0x1E69E5920](v7);
@@ -898,21 +898,21 @@
 
 - (void)ak_addDataCenterHeaderWithIdentifier:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-DC"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-DC"];
   objc_storeStrong(location, 0);
 }
 
 - (id)ak_valueForEncodedHeaderWithKey:()AuthKit
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v9 = [v11 valueForHTTPHeaderField:location[0]];
+  v9 = [selfCopy valueForHTTPHeaderField:location[0]];
   if (v9)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v9 options:0];
@@ -939,7 +939,7 @@
 
 - (void)_setAuthorizationHeaderWithToken:()AuthKit altDSID:key:
 {
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -949,7 +949,7 @@
   objc_storeStrong(&v11, a5);
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v12, location[0]];
   v9 = [v10 dataUsingEncoding:4];
-  v7 = v14;
+  v7 = selfCopy;
   v8 = [v9 base64EncodedStringWithOptions:0];
   [v7 setValue:? forHTTPHeaderField:?];
   MEMORY[0x1E69E5920](v8);
@@ -963,7 +963,7 @@
 - (void)ak_setBodyWithParameters:()AuthKit
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -986,7 +986,7 @@
 
   else
   {
-    [v9 setHTTPBody:v6];
+    [selfCopy setHTTPBody:v6];
   }
 
   objc_storeStrong(&v6, 0);
@@ -998,7 +998,7 @@
 - (void)ak_setJSONBodyWithParameters:()AuthKit
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -1021,7 +1021,7 @@
 
   else
   {
-    [v9 setHTTPBody:v6];
+    [selfCopy setHTTPBody:v6];
   }
 
   objc_storeStrong(&v6, 0);
@@ -1032,13 +1032,13 @@
 
 - (void)ak_addAbsintheHeaderWithValue:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Mme-Nas-Qualify"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Mme-Nas-Qualify"];
   }
 
   objc_storeStrong(location, 0);
@@ -1047,7 +1047,7 @@
 - (void)ak_addLoggedInServicesHeaderForServices:()AuthKit
 {
   v8 = *MEMORY[0x1E69E9840];
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -1062,7 +1062,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [v6 setValue:v4 forHTTPHeaderField:@"X-Apple-I-Logged-In-Services"];
+    [selfCopy setValue:v4 forHTTPHeaderField:@"X-Apple-I-Logged-In-Services"];
     objc_storeStrong(&v4, 0);
   }
 
@@ -1072,7 +1072,7 @@
 
 - (void)ak_addContextHeaderForServiceType:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[2] = a2;
   location[1] = a3;
   location[0] = 0;
@@ -1108,7 +1108,7 @@
 
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-AK-Context-Type"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-AK-Context-Type"];
   }
 
   objc_storeStrong(location, 0);
@@ -1116,12 +1116,12 @@
 
 - (void)ak_addContinutationKeyHeader:()AuthKit
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = [location[0] dataUsingEncoding:4];
-  v3 = v7;
+  v3 = selfCopy;
   v4 = [v5 base64EncodedStringWithOptions:0];
   [v3 setValue:? forHTTPHeaderField:?];
   MEMORY[0x1E69E5920](v4);
@@ -1131,18 +1131,18 @@
 
 - (void)ak_addContinutationKeyPresenceHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:@"true" forHTTPHeaderField:@"X-Apple-I-CK-Presence"];
+    [selfCopy setValue:@"true" forHTTPHeaderField:@"X-Apple-I-CK-Presence"];
   }
 
   else
   {
-    [v4 setValue:@"false" forHTTPHeaderField:@"X-Apple-I-CK-Presence"];
+    [selfCopy setValue:@"false" forHTTPHeaderField:@"X-Apple-I-CK-Presence"];
   }
 
   objc_storeStrong(location, 0);
@@ -1150,12 +1150,12 @@
 
 - (void)ak_addPasswordResetKeyHeader:()AuthKit
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v5 = [location[0] dataUsingEncoding:4];
-  v3 = v7;
+  v3 = selfCopy;
   v4 = [v5 base64EncodedStringWithOptions:0];
   [v3 setValue:? forHTTPHeaderField:?];
   MEMORY[0x1E69E5920](v4);
@@ -1165,16 +1165,16 @@
 
 - (void)ak_addCountryHeader
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v2 = [v3 objectForKey:*MEMORY[0x1E695D978]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v2 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
   location[0] = [v2 uppercaseString];
   MEMORY[0x1E69E5920](v2);
-  MEMORY[0x1E69E5920](v3);
+  MEMORY[0x1E69E5920](currentLocale);
   if (location[0])
   {
-    [v5 setValue:location[0] forHTTPHeaderField:@"X-MMe-Country"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-MMe-Country"];
   }
 
   objc_storeStrong(location, 0);
@@ -1182,12 +1182,12 @@
 
 - (void)ak_addSKUCountryHeader
 {
-  v3 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = MGGetStringAnswer();
   if (location[0])
   {
-    [v3 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-SKU-Country"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-SKU-Country"];
   }
 
   objc_storeStrong(location, 0);
@@ -1195,16 +1195,16 @@
 
 - (void)ak_addProxiedDeviceCountryHeader:()AuthKit
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    v3 = v6;
-    v4 = [location[0] uppercaseString];
+    v3 = selfCopy;
+    uppercaseString = [location[0] uppercaseString];
     [v3 setValue:? forHTTPHeaderField:?];
-    MEMORY[0x1E69E5920](v4);
+    MEMORY[0x1E69E5920](uppercaseString);
   }
 
   objc_storeStrong(location, 0);
@@ -1212,13 +1212,13 @@
 
 - (void)ak_addProxiedDeviceSerialNumberHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Proxied-SRL-NO"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Proxied-SRL-NO"];
   }
 
   objc_storeStrong(location, 0);
@@ -1226,17 +1226,17 @@
 
 - (void)ak_addPhoneNumberHeader
 {
-  v11 = a1;
+  selfCopy = self;
   v10[1] = a2;
   v6 = +[AKDevice currentDevice];
-  v5 = [v6 phoneNumber];
-  v10[0] = [v5 dataUsingEncoding:4];
-  MEMORY[0x1E69E5920](v5);
+  phoneNumber = [v6 phoneNumber];
+  v10[0] = [phoneNumber dataUsingEncoding:4];
+  MEMORY[0x1E69E5920](phoneNumber);
   MEMORY[0x1E69E5920](v6);
   if (v10[0])
   {
     v4 = [v10[0] base64EncodedStringWithOptions:0];
-    [v11 setValue:? forHTTPHeaderField:?];
+    [selfCopy setValue:? forHTTPHeaderField:?];
     MEMORY[0x1E69E5920](v4);
   }
 
@@ -1260,17 +1260,17 @@
 
 - (void)ak_addPhoneNumberCertificateHeaderWithValue:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-IDS-PAC"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-IDS-PAC"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addPhoneInformationHeaderWithValue:()AuthKit
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -1279,7 +1279,7 @@
     v8 = [MEMORY[0x1E696AEC0] ak_base64EncodedJsonFromObject:location[0]];
     if (v8)
     {
-      [v10 setValue:v8 forHTTPHeaderField:@"X-Apple-I-Phone"];
+      [selfCopy setValue:v8 forHTTPHeaderField:@"X-Apple-I-Phone"];
     }
 
     else
@@ -1306,39 +1306,39 @@
 - (uint64_t)ak_addAcceptedSLAHeaderWithVersion:()AuthKit
 {
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v5 = [v6 stringValue];
-  [a1 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v5);
+  stringValue = [v6 stringValue];
+  [self setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](stringValue);
   return MEMORY[0x1E69E5920](v6);
 }
 
 - (void)ak_addClientApp:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-Client-App-Name"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-Client-App-Name"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addProxyApp:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-Proxied-App-Name"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-Proxied-App-Name"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addAppProvidedContext:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-App-Provided-Context"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-App-Provided-Context"];
   objc_storeStrong(location, 0);
 }
 
@@ -1355,7 +1355,7 @@
 + (id)ak_clientInfoHeader
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = +[AKDevice currentDevice];
   location[0] = [v4 serverFriendlyDescription];
@@ -1382,7 +1382,7 @@
 + (id)ak_deviceUDIDHeader
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = +[AKDevice currentDevice];
   location[0] = [v4 uniqueDeviceIdentifier];
@@ -1409,16 +1409,16 @@
 + (id)ak_anisetteHeadersWithData:()AuthKit
 {
   v19 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v15 = [location[0] machineID];
-  v14 = [location[0] oneTimePassword];
+  machineID = [location[0] machineID];
+  oneTimePassword = [location[0] oneTimePassword];
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13 = [v9 initWithFormat:@"%llu", objc_msgSend(location[0], "routingInfo")];
-  if (!v15 || !v14 || !v13)
+  if (!machineID || !oneTimePassword || !v13)
   {
     v12 = _AKLogSystem();
     v11 = OS_LOG_TYPE_ERROR;
@@ -1431,14 +1431,14 @@
     objc_storeStrong(&v12, 0);
   }
 
-  if (v15)
+  if (machineID)
   {
-    [v16 setObject:v15 forKeyedSubscript:@"X-Apple-I-MD-M"];
+    [v16 setObject:machineID forKeyedSubscript:@"X-Apple-I-MD-M"];
   }
 
-  if (v14)
+  if (oneTimePassword)
   {
-    [v16 setObject:v14 forKeyedSubscript:@"X-Apple-I-MD"];
+    [v16 setObject:oneTimePassword forKeyedSubscript:@"X-Apple-I-MD"];
   }
 
   if (v13)
@@ -1447,13 +1447,13 @@
   }
 
   v8 = +[AKDevice currentDevice];
-  v7 = [v8 localUserUUID];
-  v10 = [v7 aaf_toSHA256String];
-  MEMORY[0x1E69E5920](v7);
+  localUserUUID = [v8 localUserUUID];
+  aaf_toSHA256String = [localUserUUID aaf_toSHA256String];
+  MEMORY[0x1E69E5920](localUserUUID);
   MEMORY[0x1E69E5920](v8);
-  if (v10)
+  if (aaf_toSHA256String)
   {
-    [v16 setObject:v10 forKeyedSubscript:@"X-Apple-I-MD-LU"];
+    [v16 setObject:aaf_toSHA256String forKeyedSubscript:@"X-Apple-I-MD-LU"];
   }
 
   v5 = +[AKConfiguration sharedConfiguration];
@@ -1465,10 +1465,10 @@
   }
 
   v4 = [v16 copy];
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&aaf_toSHA256String, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&oneTimePassword, 0);
+  objc_storeStrong(&machineID, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1479,16 +1479,16 @@
 + (id)ak_anisetteHeadersWithCompanionData:()AuthKit
 {
   v13 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [location[0] machineID];
-  v8 = [location[0] oneTimePassword];
+  machineID = [location[0] machineID];
+  oneTimePassword = [location[0] oneTimePassword];
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = [v5 initWithFormat:@"%llu", objc_msgSend(location[0], "routingInfo")];
-  if (!v9 || !v8 || !v7)
+  if (!machineID || !oneTimePassword || !v7)
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -1500,14 +1500,14 @@
     objc_storeStrong(&oslog, 0);
   }
 
-  if (v9)
+  if (machineID)
   {
-    [v10 setObject:v9 forKeyedSubscript:@"X-Apple-I-Companion-MD-M"];
+    [v10 setObject:machineID forKeyedSubscript:@"X-Apple-I-Companion-MD-M"];
   }
 
-  if (v8)
+  if (oneTimePassword)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"X-Apple-I-Companion-MD"];
+    [v10 setObject:oneTimePassword forKeyedSubscript:@"X-Apple-I-Companion-MD"];
   }
 
   if (v7)
@@ -1517,8 +1517,8 @@
 
   v4 = MEMORY[0x1E69E5928](v10);
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&oneTimePassword, 0);
+  objc_storeStrong(&machineID, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1528,7 +1528,7 @@
 
 + (id)ak_proxiedHeadersForDevice:()AuthKit anisetteData:
 {
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -1536,11 +1536,11 @@
   objc_storeStrong(&v12, a4);
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = v11;
-  v7 = [v14 ak_proxiedAnisetteHeadersWithData:v12];
+  v7 = [selfCopy ak_proxiedAnisetteHeadersWithData:v12];
   [v6 addEntriesFromDictionary:?];
   MEMORY[0x1E69E5920](v7);
   v8 = v11;
-  v9 = [v14 ak_proxiedClientInfoHeadersWithDevice:location[0]];
+  v9 = [selfCopy ak_proxiedClientInfoHeadersWithDevice:location[0]];
   [v8 addEntriesFromDictionary:?];
   MEMORY[0x1E69E5920](v9);
   v10 = MEMORY[0x1E69E5928](v11);
@@ -1554,16 +1554,16 @@
 + (id)ak_proxiedAnisetteHeadersWithData:()AuthKit
 {
   v13 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [location[0] machineID];
-  v8 = [location[0] oneTimePassword];
+  machineID = [location[0] machineID];
+  oneTimePassword = [location[0] oneTimePassword];
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = [v5 initWithFormat:@"%llu", objc_msgSend(location[0], "routingInfo")];
-  if (!v9 || !v8 || !v7)
+  if (!machineID || !oneTimePassword || !v7)
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -1575,14 +1575,14 @@
     objc_storeStrong(&oslog, 0);
   }
 
-  if (v9)
+  if (machineID)
   {
-    [v10 setObject:v9 forKeyedSubscript:@"X-Apple-I-Proxied-MD-M"];
+    [v10 setObject:machineID forKeyedSubscript:@"X-Apple-I-Proxied-MD-M"];
   }
 
-  if (v8)
+  if (oneTimePassword)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"X-Apple-I-Proxied-MD"];
+    [v10 setObject:oneTimePassword forKeyedSubscript:@"X-Apple-I-Proxied-MD"];
   }
 
   if (v7)
@@ -1592,8 +1592,8 @@
 
   v4 = MEMORY[0x1E69E5928](v10);
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&oneTimePassword, 0);
+  objc_storeStrong(&machineID, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1603,27 +1603,27 @@
 
 + (id)ak_proxiedClientInfoHeadersWithDevice:()AuthKit
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [location[0] serverFriendlyDescription];
-  MEMORY[0x1E69E5920](v8);
-  if (v8)
+  serverFriendlyDescription = [location[0] serverFriendlyDescription];
+  MEMORY[0x1E69E5920](serverFriendlyDescription);
+  if (serverFriendlyDescription)
   {
-    v7 = [location[0] serverFriendlyDescription];
+    serverFriendlyDescription2 = [location[0] serverFriendlyDescription];
     [v9 setObject:? forKeyedSubscript:?];
-    MEMORY[0x1E69E5920](v7);
+    MEMORY[0x1E69E5920](serverFriendlyDescription2);
   }
 
-  v6 = [location[0] uniqueDeviceIdentifier];
-  MEMORY[0x1E69E5920](v6);
-  if (v6)
+  uniqueDeviceIdentifier = [location[0] uniqueDeviceIdentifier];
+  MEMORY[0x1E69E5920](uniqueDeviceIdentifier);
+  if (uniqueDeviceIdentifier)
   {
-    v5 = [location[0] uniqueDeviceIdentifier];
+    uniqueDeviceIdentifier2 = [location[0] uniqueDeviceIdentifier];
     [v9 setObject:? forKeyedSubscript:?];
-    MEMORY[0x1E69E5920](v5);
+    MEMORY[0x1E69E5920](uniqueDeviceIdentifier2);
   }
 
   v4 = MEMORY[0x1E69E5928](v9);
@@ -1635,14 +1635,14 @@
 
 - (void)ak_addDeviceModel
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[AKDevice currentDevice];
   location[0] = [v2 modelNumber];
   MEMORY[0x1E69E5920](v2);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-MMe-Device-Model"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-MMe-Device-Model"];
   }
 
   objc_storeStrong(location, 0);
@@ -1650,44 +1650,44 @@
 
 - (void)ak_addCFUHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-CFU-State"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-CFU-State"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addDeviceConfigurationModeHeader
 {
-  v3 = a1;
+  selfCopy = self;
   v2[1] = a2;
   v2[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", +[AKDevice currentDeviceAuthenticationMode](AKDevice, "currentDeviceAuthenticationMode")];
-  [v3 setValue:v2[0] forHTTPHeaderField:@"X-Apple-I-Device-Configuration-Mode"];
+  [selfCopy setValue:v2[0] forHTTPHeaderField:@"X-Apple-I-Device-Configuration-Mode"];
   objc_storeStrong(v2, 0);
 }
 
 - (void)ak_addDeviceConfigurationModeHeaderForAuthContext:()AuthKit
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", +[AKDevice currentDeviceAuthenticationModeForAuthContext:](AKDevice, "currentDeviceAuthenticationModeForAuthContext:", location[0])];
-  [v5 setValue:v3 forHTTPHeaderField:@"X-Apple-I-Device-Configuration-Mode"];
+  [selfCopy setValue:v3 forHTTPHeaderField:@"X-Apple-I-Device-Configuration-Mode"];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addRequestUUIDHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Request-UUID"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Request-UUID"];
   }
 
   objc_storeStrong(location, 0);
@@ -1719,13 +1719,13 @@
 
 - (void)ak_addClientBundleIDHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Client-Bundle-Id"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Client-Bundle-Id"];
   }
 
   objc_storeStrong(location, 0);
@@ -1733,13 +1733,13 @@
 
 - (void)ak_addServerBackoffInfoHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-S-Backoff-Server-Info"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-S-Backoff-Server-Info"];
   }
 
   objc_storeStrong(location, 0);
@@ -1747,16 +1747,16 @@
 
 - (void)ak_addServerBackoffOptInHeader:()AuthKit
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    v3 = v6;
-    v4 = [location[0] stringValue];
+    v3 = selfCopy;
+    stringValue = [location[0] stringValue];
     [v3 setValue:? forHTTPHeaderField:?];
-    MEMORY[0x1E69E5920](v4);
+    MEMORY[0x1E69E5920](stringValue);
   }
 
   objc_storeStrong(location, 0);
@@ -1764,13 +1764,13 @@
 
 - (void)ak_addProxiedBundleIDHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Proxied-Bundle-Id"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Proxied-Bundle-Id"];
   }
 
   objc_storeStrong(location, 0);
@@ -1778,13 +1778,13 @@
 
 - (void)ak_addFidoRecoveryTokenHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Fido-Recovery-Token"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Fido-Recovery-Token"];
   }
 
   objc_storeStrong(location, 0);
@@ -1792,21 +1792,21 @@
 
 - (void)ak_addWalrusStatusHeader
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   v4 = +[AKCDPFactory walrusStatusLiveValue];
-  v9 = [v4 captureCurrentValue];
+  captureCurrentValue = [v4 captureCurrentValue];
   MEMORY[0x1E69E5920](v4);
-  v8 = [v9 unsignedIntegerValue];
-  if (v8)
+  unsignedIntegerValue = [captureCurrentValue unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    if (v8 == 1)
+    if (unsignedIntegerValue == 1)
     {
       objc_storeStrong(location, @"0");
     }
 
-    else if (v8 == 2)
+    else if (unsignedIntegerValue == 2)
     {
       objc_storeStrong(location, @"1");
     }
@@ -1828,20 +1828,20 @@
     objc_storeStrong(location, 0);
   }
 
-  [v11 setValue:location[0] forHTTPHeaderField:@"X-Apple-AK-DataRecoveryService-Status"];
-  objc_storeStrong(&v9, 0);
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-AK-DataRecoveryService-Status"];
+  objc_storeStrong(&captureCurrentValue, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addPrivateEmailDomainHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Private-Email-Domain"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Private-Email-Domain"];
   }
 
   objc_storeStrong(location, 0);
@@ -1849,13 +1849,13 @@
 
 - (void)ak_addPrivateEmailOriginHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Private-Email-Origin"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Private-Email-Origin"];
   }
 
   objc_storeStrong(location, 0);
@@ -1863,7 +1863,7 @@
 
 - (void)ak_addPrivateEmailAppBundleIdHeader:()AuthKit
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -1871,7 +1871,7 @@
   {
     v4 = [location[0] dataUsingEncoding:4];
     v3 = [v4 base64EncodedStringWithOptions:0];
-    [v6 setValue:v3 forHTTPHeaderField:@"X-Apple-I-Private-Email-Client-Bundle"];
+    [selfCopy setValue:v3 forHTTPHeaderField:@"X-Apple-I-Private-Email-Client-Bundle"];
     objc_storeStrong(&v3, 0);
     objc_storeStrong(&v4, 0);
   }
@@ -1881,7 +1881,7 @@
 
 - (void)ak_addPrivateEmailAppNameHeader:()AuthKit
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -1889,7 +1889,7 @@
   {
     v4 = [location[0] dataUsingEncoding:4];
     v3 = [v4 base64EncodedStringWithOptions:0];
-    [v6 setValue:v3 forHTTPHeaderField:@"X-Apple-I-Private-Email-App-Name"];
+    [selfCopy setValue:v3 forHTTPHeaderField:@"X-Apple-I-Private-Email-App-Name"];
     objc_storeStrong(&v3, 0);
     objc_storeStrong(&v4, 0);
   }
@@ -1899,20 +1899,20 @@
 
 - (uint64_t)ak_addSupportedLanguageHeader
 {
-  v3 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  [a1 setValue:? forHTTPHeaderField:?];
-  return MEMORY[0x1E69E5920](v3);
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  [self setValue:? forHTTPHeaderField:?];
+  return MEMORY[0x1E69E5920](_deviceLanguage);
 }
 
 - (void)ak_addRequestContextHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Request-Context"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Request-Context"];
   }
 
   objc_storeStrong(location, 0);
@@ -1921,7 +1921,7 @@
 - (void)ak_addExperimentModeHeader
 {
   v10 = *MEMORY[0x1E69E9840];
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
   v3 = +[AKConfiguration sharedConfiguration];
   v4 = [v3 shouldAllowExperimentalMode] == 1;
@@ -1947,7 +1947,7 @@
   objc_storeStrong(&oslog, 0);
   if (v6)
   {
-    [v8 setValue:@"true" forHTTPHeaderField:@"X-Apple-I-Experiment-Mode"];
+    [selfCopy setValue:@"true" forHTTPHeaderField:@"X-Apple-I-Experiment-Mode"];
   }
 
   *MEMORY[0x1E69E9840];
@@ -1955,13 +1955,13 @@
 
 - (void)ak_addHeaderForSourceAltDSID:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Source-Alternate-Id"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Source-Alternate-Id"];
   }
 
   objc_storeStrong(location, 0);
@@ -1969,60 +1969,60 @@
 
 - (void)ak_addTelemetryDeviceSessionID:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Device-Session-Id"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Device-Session-Id"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addTelemetryFlowID:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Flow-Id"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Flow-Id"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addHeaderForDeviceManagementState:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MDM-Device-Posture"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MDM-Device-Posture"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addHeaderForMDMOrganizationToken:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MDM-Org-Token"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-MDM-Org-Token"];
   objc_storeStrong(location, 0);
 }
 
 - (uint64_t)ak_addHeaderForSecurityCode:()AuthKit
 {
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v5 = [v6 stringValue];
-  [a1 setValue:? forHTTPHeaderField:?];
-  MEMORY[0x1E69E5920](v5);
+  stringValue = [v6 stringValue];
+  [self setValue:? forHTTPHeaderField:?];
+  MEMORY[0x1E69E5920](stringValue);
   return MEMORY[0x1E69E5920](v6);
 }
 
 - (void)ak_addHeaderForDCRT:()AuthKit
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v3 = v6;
+  v3 = selfCopy;
   v4 = [location[0] base64EncodedStringWithOptions:0];
   [v3 setValue:? forHTTPHeaderField:?];
   MEMORY[0x1E69E5920](v4);
@@ -2031,23 +2031,23 @@
 
 - (void)ak_addPreviousTransactionIdHeader:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Previous-PTXID"];
+  [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Previous-PTXID"];
   objc_storeStrong(location, 0);
 }
 
 - (void)ak_addServiceHeaderForServiceType:()AuthKit
 {
-  v4 = a1;
+  selfCopy = self;
   location[2] = a2;
   location[1] = a3;
   location[0] = AKStringFromServiceType(a3);
   if (location[0])
   {
-    [v4 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Service-Type"];
+    [selfCopy setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Service-Type"];
   }
 
   objc_storeStrong(location, 0);
@@ -2055,7 +2055,7 @@
 
 - (void)ak_addCreateInformationHeaderWithValue:()AuthKit
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -2064,7 +2064,7 @@
     v8 = [MEMORY[0x1E696AEC0] ak_base64EncodedJsonFromObject:location[0]];
     if (v8)
     {
-      [v10 setValue:v8 forHTTPHeaderField:@"X-Apple-I-Create-Context"];
+      [selfCopy setValue:v8 forHTTPHeaderField:@"X-Apple-I-Create-Context"];
     }
 
     else
@@ -2091,7 +2091,7 @@
 - (void)ak_addBiometryTypeHeaderWithValue:()AuthKit
 {
   v9 = *MEMORY[0x1E69E9840];
-  v7 = a1;
+  selfCopy = self;
   v6 = a2;
   v5 = a3;
   location = 0;
@@ -2118,7 +2118,7 @@
 
   if (location)
   {
-    [v7 setValue:location forHTTPHeaderField:@"X-Apple-I-Bio-Type"];
+    [selfCopy setValue:location forHTTPHeaderField:@"X-Apple-I-Bio-Type"];
   }
 
   else

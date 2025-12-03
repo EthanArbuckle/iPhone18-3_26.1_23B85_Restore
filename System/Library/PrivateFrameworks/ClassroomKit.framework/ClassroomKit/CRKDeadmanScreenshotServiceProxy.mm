@@ -1,8 +1,8 @@
 @interface CRKDeadmanScreenshotServiceProxy
-- (CRKDeadmanScreenshotServiceProxy)initWithTimeout:(double)a3;
+- (CRKDeadmanScreenshotServiceProxy)initWithTimeout:(double)timeout;
 - (CRKScreenshotServiceInterface)underlyingProxy;
 - (void)dealloc;
-- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)a3 completion:(id)a4;
+- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)pixels completion:(id)completion;
 - (void)startTimer;
 - (void)stopTimer;
 @end
@@ -17,35 +17,35 @@
   [(CRKDeadmanScreenshotServiceProxy *)&v3 dealloc];
 }
 
-- (CRKDeadmanScreenshotServiceProxy)initWithTimeout:(double)a3
+- (CRKDeadmanScreenshotServiceProxy)initWithTimeout:(double)timeout
 {
   v5.receiver = self;
   v5.super_class = CRKDeadmanScreenshotServiceProxy;
   result = [(CRKDeadmanScreenshotServiceProxy *)&v5 init];
   if (result)
   {
-    result->_timeout = a3;
+    result->_timeout = timeout;
   }
 
   return result;
 }
 
-- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)a3 completion:(id)a4
+- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)pixels completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = pixels.height;
+  width = pixels.width;
+  completionCopy = completion;
   [(CRKDeadmanScreenshotServiceProxy *)self setCountOfInFlightRequests:[(CRKDeadmanScreenshotServiceProxy *)self countOfInFlightRequests]+ 1];
   [(CRKDeadmanScreenshotServiceProxy *)self stopTimer];
-  v8 = [(CRKDeadmanScreenshotServiceProxy *)self underlyingProxy];
+  underlyingProxy = [(CRKDeadmanScreenshotServiceProxy *)self underlyingProxy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__CRKDeadmanScreenshotServiceProxy_fetchScreenshotDataWithMaximumSizeInPixels_completion___block_invoke;
   v10[3] = &unk_278DC2F70;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [v8 fetchScreenshotDataWithMaximumSizeInPixels:v10 completion:{width, height}];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [underlyingProxy fetchScreenshotDataWithMaximumSizeInPixels:v10 completion:{width, height}];
 }
 
 uint64_t __90__CRKDeadmanScreenshotServiceProxy_fetchScreenshotDataWithMaximumSizeInPixels_completion___block_invoke(uint64_t a1)
@@ -65,9 +65,9 @@ uint64_t __90__CRKDeadmanScreenshotServiceProxy_fetchScreenshotDataWithMaximumSi
 
 - (void)startTimer
 {
-  v3 = [(CRKDeadmanScreenshotServiceProxy *)self timer];
+  timer = [(CRKDeadmanScreenshotServiceProxy *)self timer];
 
-  if (!v3)
+  if (!timer)
   {
     v4 = _CRKLogGeneral_14();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -112,9 +112,9 @@ void __46__CRKDeadmanScreenshotServiceProxy_startTimer__block_invoke(uint64_t a1
 
 - (void)stopTimer
 {
-  v3 = [(CRKDeadmanScreenshotServiceProxy *)self timer];
+  timer = [(CRKDeadmanScreenshotServiceProxy *)self timer];
 
-  if (v3)
+  if (timer)
   {
     v4 = _CRKLogGeneral_14();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -123,8 +123,8 @@ void __46__CRKDeadmanScreenshotServiceProxy_startTimer__block_invoke(uint64_t a1
       _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating ScreenshotService deadman timer", v6, 2u);
     }
 
-    v5 = [(CRKDeadmanScreenshotServiceProxy *)self timer];
-    [v5 invalidate];
+    timer2 = [(CRKDeadmanScreenshotServiceProxy *)self timer];
+    [timer2 invalidate];
 
     [(CRKDeadmanScreenshotServiceProxy *)self setTimer:0];
   }

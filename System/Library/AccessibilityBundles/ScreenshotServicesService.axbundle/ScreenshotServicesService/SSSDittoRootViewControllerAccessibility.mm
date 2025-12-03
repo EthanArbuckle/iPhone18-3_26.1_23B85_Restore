@@ -1,29 +1,29 @@
 @interface SSSDittoRootViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)containerViewControllerDidEndDismissAnimation:(id)a3;
-- (void)dittoDismissTimerFired:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)containerViewControllerDidEndDismissAnimation:(id)animation;
+- (void)dittoDismissTimerFired:(id)fired;
 @end
 
 @implementation SSSDittoRootViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SSSDittoRootViewController" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SSSDittoRootViewController" hasInstanceMethod:@"dittoDismissTimerFired:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SSSDittoRootViewController" hasInstanceMethod:@"containerViewControllerDidEndDismissAnimation:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SSSDittoRootViewController" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SSSDittoRootViewController" hasInstanceMethod:@"dittoDismissTimerFired:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SSSDittoRootViewController" hasInstanceMethod:@"containerViewControllerDidEndDismissAnimation:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)dittoDismissTimerFired:(id)a3
+- (void)dittoDismissTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __66__SSSDittoRootViewControllerAccessibility_dittoDismissTimerFired___block_invoke;
   v8[3] = &unk_29F2F46C0;
-  v5 = v4;
+  v5 = firedCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v6 = MEMORY[0x29C2EC200](v8);
   if (_AXSAssistiveTouchScannerEnabled())
   {
@@ -58,11 +58,11 @@ uint64_t __66__SSSDittoRootViewControllerAccessibility_dittoDismissTimerFired___
   return result;
 }
 
-- (void)containerViewControllerDidEndDismissAnimation:(id)a3
+- (void)containerViewControllerDidEndDismissAnimation:(id)animation
 {
   v3.receiver = self;
   v3.super_class = SSSDittoRootViewControllerAccessibility;
-  [(SSSDittoRootViewControllerAccessibility *)&v3 containerViewControllerDidEndDismissAnimation:a3];
+  [(SSSDittoRootViewControllerAccessibility *)&v3 containerViewControllerDidEndDismissAnimation:animation];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 

@@ -1,6 +1,6 @@
 @interface UIGestureRecognizerTransformAnalyzer
 - (UIGestureRecognizerTransformAnalyzer)init;
-- (id)analyzeTouches:(id)a3;
+- (id)analyzeTouches:(id)touches;
 @end
 
 @implementation UIGestureRecognizerTransformAnalyzer
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (id)analyzeTouches:(id)a3
+- (id)analyzeTouches:(id)touches
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  touchesCopy = touches;
+  v5 = [touchesCopy count];
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
   v8 = 0.0;
@@ -38,11 +38,11 @@
     v9 = v5;
     if (v5 == 1)
     {
-      v10 = [v4 anyObject];
-      [v10 _locationInSceneReferenceSpace];
+      anyObject = [touchesCopy anyObject];
+      [anyObject _locationInSceneReferenceSpace];
       v12 = v11;
       v14 = v13;
-      [v10 _previousLocationInSceneReferenceSpace];
+      [anyObject _previousLocationInSceneReferenceSpace];
       v16 = v12 - v15;
       v18 = v14 - v17;
       v6 = vabdd_f64(v12, v15);
@@ -53,14 +53,14 @@
 
     else
     {
-      v20 = _CentroidOfTouches(v4, 0);
+      v20 = _CentroidOfTouches(touchesCopy, 0);
       v71 = v21;
       v72 = v20;
       v73 = 0u;
       v74 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v22 = v4;
+      v22 = touchesCopy;
       v23 = [v22 countByEnumeratingWithState:&v73 objects:v77 count:16];
       if (v23)
       {

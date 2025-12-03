@@ -1,10 +1,10 @@
 @interface _UIBackdropViewSettingsLightEmojiKeyboard
-- (id)_defaultColorTintColorWithOpacity:(double)a3;
+- (id)_defaultColorTintColorWithOpacity:(double)opacity;
 @end
 
 @implementation _UIBackdropViewSettingsLightEmojiKeyboard
 
-- (id)_defaultColorTintColorWithOpacity:(double)a3
+- (id)_defaultColorTintColorWithOpacity:(double)opacity
 {
   if ([(_UIBackdropViewSettings *)self graphicsQuality]== 40 || [(_UIBackdropViewSettings *)self graphicsQuality]== 10)
   {
@@ -20,7 +20,7 @@
     v7 = 0.968627451;
   }
 
-  v8 = [UIColor colorWithRed:v5 green:v6 blue:v7 alpha:a3];
+  v8 = [UIColor colorWithRed:v5 green:v6 blue:v7 alpha:opacity];
 
   return v8;
 }

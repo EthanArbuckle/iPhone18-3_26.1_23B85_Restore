@@ -1,12 +1,12 @@
 @interface AssistantVoiceDownloadingView
-- (AssistantVoiceDownloadingView)initWithActivityIndicatorStyle:(int64_t)a3;
+- (AssistantVoiceDownloadingView)initWithActivityIndicatorStyle:(int64_t)style;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 @end
 
 @implementation AssistantVoiceDownloadingView
 
-- (AssistantVoiceDownloadingView)initWithActivityIndicatorStyle:(int64_t)a3
+- (AssistantVoiceDownloadingView)initWithActivityIndicatorStyle:(int64_t)style
 {
   v19.receiver = self;
   v19.super_class = AssistantVoiceDownloadingView;
@@ -17,7 +17,7 @@
   v8 = [(AssistantVoiceDownloadingView *)&v19 initWithFrame:*MEMORY[0x277CBF3A0], v5, v6, v7];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:a3];
+    v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:style];
     indicator = v8->_indicator;
     v8->_indicator = v9;
 
@@ -30,8 +30,8 @@
     [(UILabel *)v8->_downloadLabel setFont:v13];
 
     [(UILabel *)v8->_downloadLabel setAdjustsFontForContentSizeCategory:1];
-    v14 = [MEMORY[0x277D75348] lightGrayColor];
-    [(UILabel *)v8->_downloadLabel setTextColor:v14];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [(UILabel *)v8->_downloadLabel setTextColor:lightGrayColor];
 
     v15 = +[AssistantVoiceController bundle];
     v16 = SFLocalizableWAPIStringKeyForKey();

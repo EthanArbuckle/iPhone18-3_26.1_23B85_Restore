@@ -1,21 +1,21 @@
 @interface APPBLogImpressionRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addMetric:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInsufficientPlaybackTime:(BOOL)a3;
-- (void)setHasScreenSaverActive:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasVisuallyEngaged:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMetric:(id)metric;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInsufficientPlaybackTime:(BOOL)time;
+- (void)setHasScreenSaverActive:(BOOL)active;
+- (void)setHasType:(BOOL)type;
+- (void)setHasVisuallyEngaged:(BOOL)engaged;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogImpressionRequest
@@ -32,27 +32,27 @@
   return v3;
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   metrics = self->_metrics;
-  v8 = v4;
+  v8 = metricCopy;
   if (!metrics)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_metrics;
     self->_metrics = v6;
 
-    v4 = v8;
+    metricCopy = v8;
     metrics = self->_metrics;
   }
 
-  [(NSMutableArray *)metrics addObject:v4];
+  [(NSMutableArray *)metrics addObject:metricCopy];
 }
 
-- (void)setHasScreenSaverActive:(BOOL)a3
+- (void)setHasScreenSaverActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasInsufficientPlaybackTime:(BOOL)a3
+- (void)setHasInsufficientPlaybackTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVisuallyEngaged:(BOOL)a3
+- (void)setHasVisuallyEngaged:(BOOL)engaged
 {
-  if (a3)
+  if (engaged)
   {
     v3 = 16;
   }
@@ -108,9 +108,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -123,35 +123,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047DE30 + (a3 - 1));
+    v4 = *(&off_10047DE30 + (string - 1));
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"contentRequest"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"contentRequest"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"viewable"])
+  else if ([typeCopy isEqualToString:@"viewable"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"viewable50Percent"])
+  else if ([typeCopy isEqualToString:@"viewable50Percent"])
   {
     v4 = 3;
   }
@@ -169,8 +169,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogImpressionRequest;
   v3 = [(APPBLogImpressionRequest *)&v7 description];
-  v4 = [(APPBLogImpressionRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogImpressionRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -181,8 +181,8 @@
   metaData = self->_metaData;
   if (metaData)
   {
-    v5 = [(APPBLogMetaData *)metaData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"metaData"];
+    dictionaryRepresentation = [(APPBLogMetaData *)metaData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"metaData"];
   }
 
   if ([(NSMutableArray *)self->_metrics count])
@@ -207,8 +207,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -305,9 +305,9 @@ LABEL_28:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_metaData)
   {
     PBDataWriterWriteSubmessage();
@@ -401,40 +401,40 @@ LABEL_19:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_metaData)
   {
-    [v10 setMetaData:?];
+    [toCopy setMetaData:?];
   }
 
   if ([(APPBLogImpressionRequest *)self metricsCount])
   {
-    [v10 clearMetrics];
-    v4 = [(APPBLogImpressionRequest *)self metricsCount];
-    if (v4)
+    [toCopy clearMetrics];
+    metricsCount = [(APPBLogImpressionRequest *)self metricsCount];
+    if (metricsCount)
     {
-      v5 = v4;
+      v5 = metricsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBLogImpressionRequest *)self metricAtIndex:i];
-        [v10 addMetric:v7];
+        [toCopy addMetric:v7];
       }
     }
   }
 
-  v8 = v10;
+  v8 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
-    v10[49] = self->_screenSaverActive;
-    v10[52] |= 8u;
+    toCopy[49] = self->_screenSaverActive;
+    toCopy[52] |= 8u;
   }
 
   if (self->_mediaContentHash)
   {
-    [v10 setMediaContentHash:?];
-    v8 = v10;
+    [toCopy setMediaContentHash:?];
+    v8 = toCopy;
   }
 
   has = self->_has;
@@ -487,15 +487,15 @@ LABEL_15:
 LABEL_16:
   if (self->_contextString)
   {
-    [v10 setContextString:?];
-    v8 = v10;
+    [toCopy setContextString:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -518,7 +518,7 @@ LABEL_16:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v5 addMetric:v13];
       }
 
@@ -534,7 +534,7 @@ LABEL_16:
     *(v5 + 52) |= 8u;
   }
 
-  v14 = [(NSData *)self->_mediaContentHash copyWithZone:a3, v20];
+  v14 = [(NSData *)self->_mediaContentHash copyWithZone:zone, v20];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -586,23 +586,23 @@ LABEL_14:
   }
 
 LABEL_15:
-  v17 = [(NSString *)self->_contextString copyWithZone:a3];
+  v17 = [(NSString *)self->_contextString copyWithZone:zone];
   v18 = v5[1];
   v5[1] = v17;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
   metaData = self->_metaData;
-  if (metaData | *(v4 + 3))
+  if (metaData | *(equalCopy + 3))
   {
     if (![(APPBLogMetaData *)metaData isEqual:?])
     {
@@ -611,7 +611,7 @@ LABEL_15:
   }
 
   metrics = self->_metrics;
-  if (metrics | *(v4 + 4))
+  if (metrics | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)metrics isEqual:?])
     {
@@ -622,32 +622,32 @@ LABEL_15:
   has = self->_has;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0)
+    if ((*(equalCopy + 52) & 8) == 0)
     {
       goto LABEL_44;
     }
 
     if (self->_screenSaverActive)
     {
-      if ((*(v4 + 49) & 1) == 0)
+      if ((*(equalCopy + 49) & 1) == 0)
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(v4 + 49))
+    else if (*(equalCopy + 49))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_44;
   }
 
   mediaContentHash = self->_mediaContentHash;
-  if (mediaContentHash | *(v4 + 2))
+  if (mediaContentHash | *(equalCopy + 2))
   {
     if (![(NSData *)mediaContentHash isEqual:?])
     {
@@ -659,46 +659,46 @@ LABEL_15:
 
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_playbackTime != *(v4 + 10))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_playbackTime != *(equalCopy + 10))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_44;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_44;
     }
 
     if (self->_insufficientPlaybackTime)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_44;
   }
 
   if ((has & 0x10) == 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_24;
     }
@@ -708,20 +708,20 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if ((*(v4 + 52) & 0x10) == 0)
+  if ((*(equalCopy + 52) & 0x10) == 0)
   {
     goto LABEL_44;
   }
 
   if (self->_visuallyEngaged)
   {
-    if ((*(v4 + 50) & 1) == 0)
+    if ((*(equalCopy + 50) & 1) == 0)
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 50))
+  else if (*(equalCopy + 50))
   {
     goto LABEL_44;
   }
@@ -729,19 +729,19 @@ LABEL_44:
 LABEL_24:
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_type != *(v4 + 11))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_type != *(equalCopy + 11))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_44;
   }
 
   contextString = self->_contextString;
-  if (contextString | *(v4 + 1))
+  if (contextString | *(equalCopy + 1))
   {
     v10 = [(NSString *)contextString isEqual:?];
   }
@@ -842,11 +842,11 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v13 ^ v14 ^ v15 ^ [(NSString *)self->_contextString hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   metaData = self->_metaData;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (metaData)
   {
     if (v6)
@@ -864,7 +864,7 @@ LABEL_15:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -888,23 +888,23 @@ LABEL_15:
     while (v9);
   }
 
-  if ((*(v4 + 52) & 8) != 0)
+  if ((*(fromCopy + 52) & 8) != 0)
   {
-    self->_screenSaverActive = *(v4 + 49);
+    self->_screenSaverActive = *(fromCopy + 49);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBLogImpressionRequest *)self setMediaContentHash:?];
   }
 
-  v12 = *(v4 + 52);
+  v12 = *(fromCopy + 52);
   if (v12)
   {
-    self->_playbackTime = *(v4 + 10);
+    self->_playbackTime = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v12 = *(v4 + 52);
+    v12 = *(fromCopy + 52);
     if ((v12 & 4) == 0)
     {
 LABEL_19:
@@ -917,14 +917,14 @@ LABEL_19:
     }
   }
 
-  else if ((*(v4 + 52) & 4) == 0)
+  else if ((*(fromCopy + 52) & 4) == 0)
   {
     goto LABEL_19;
   }
 
-  self->_insufficientPlaybackTime = *(v4 + 48);
+  self->_insufficientPlaybackTime = *(fromCopy + 48);
   *&self->_has |= 4u;
-  v12 = *(v4 + 52);
+  v12 = *(fromCopy + 52);
   if ((v12 & 0x10) == 0)
   {
 LABEL_20:
@@ -937,17 +937,17 @@ LABEL_20:
   }
 
 LABEL_27:
-  self->_visuallyEngaged = *(v4 + 50);
+  self->_visuallyEngaged = *(fromCopy + 50);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
 LABEL_21:
-    self->_type = *(v4 + 11);
+    self->_type = *(fromCopy + 11);
     *&self->_has |= 2u;
   }
 
 LABEL_22:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(APPBLogImpressionRequest *)self setContextString:?];
   }

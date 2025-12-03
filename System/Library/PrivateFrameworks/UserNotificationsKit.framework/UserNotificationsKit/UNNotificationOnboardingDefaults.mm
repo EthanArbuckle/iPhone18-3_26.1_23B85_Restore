@@ -1,16 +1,16 @@
 @interface UNNotificationOnboardingDefaults
 + (void)applyToSettingsIfNecessary;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)save;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationOnboardingDefaults
 
 - (id)save
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UNNotificationOnboardingDefaults.save()();
 
   if (v3)
@@ -26,24 +26,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_270A78D10();
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_28083FCE0);
   v5 = sub_270A88F50();
 
   v6 = sub_270A88FB0();
 
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_270A89270();
     swift_unknownObjectRelease();
@@ -52,7 +52,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UNNotificationOnboardingDefaults.isEqual(_:)(v8);
@@ -63,7 +63,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UNNotificationOnboardingDefaults.description.getter();
 
   v3 = sub_270A88FB0();

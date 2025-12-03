@@ -1,22 +1,22 @@
 @interface HKVerifiableClinicalRecordDisplayItem
-+ (id)subtitleItemWithTitleText:(id)a3 detailText:(id)a4 style:(int64_t)a5;
-+ (id)valueItemWithTitleText:(id)a3 attributedDetailText:(id)a4;
-+ (id)valueItemWithTitleText:(id)a3 detailText:(id)a4;
++ (id)subtitleItemWithTitleText:(id)text detailText:(id)detailText style:(int64_t)style;
++ (id)valueItemWithTitleText:(id)text attributedDetailText:(id)detailText;
++ (id)valueItemWithTitleText:(id)text detailText:(id)detailText;
 @end
 
 @implementation HKVerifiableClinicalRecordDisplayItem
 
-+ (id)subtitleItemWithTitleText:(id)a3 detailText:(id)a4 style:(int64_t)a5
++ (id)subtitleItemWithTitleText:(id)text detailText:(id)detailText style:(int64_t)style
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] && objc_msgSend(v8, "length"))
+  textCopy = text;
+  detailTextCopy = detailText;
+  if ([textCopy length] && objc_msgSend(detailTextCopy, "length"))
   {
     v9 = objc_alloc_init(HKVerifiableClinicalRecordDisplayItem);
     [(HKVerifiableClinicalRecordDisplayItem *)v9 setType:0];
-    [(HKVerifiableClinicalRecordDisplayItem *)v9 setSubtitleStyle:a5];
-    [(HKVerifiableClinicalRecordDisplayItem *)v9 setTitleText:v7];
-    [(HKVerifiableClinicalRecordDisplayItem *)v9 setDetailText:v8];
+    [(HKVerifiableClinicalRecordDisplayItem *)v9 setSubtitleStyle:style];
+    [(HKVerifiableClinicalRecordDisplayItem *)v9 setTitleText:textCopy];
+    [(HKVerifiableClinicalRecordDisplayItem *)v9 setDetailText:detailTextCopy];
   }
 
   else
@@ -27,16 +27,16 @@
   return v9;
 }
 
-+ (id)valueItemWithTitleText:(id)a3 detailText:(id)a4
++ (id)valueItemWithTitleText:(id)text detailText:(id)detailText
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  textCopy = text;
+  detailTextCopy = detailText;
+  if ([textCopy length] && objc_msgSend(detailTextCopy, "length"))
   {
     v7 = objc_alloc_init(HKVerifiableClinicalRecordDisplayItem);
     [(HKVerifiableClinicalRecordDisplayItem *)v7 setType:1];
-    [(HKVerifiableClinicalRecordDisplayItem *)v7 setTitleText:v5];
-    [(HKVerifiableClinicalRecordDisplayItem *)v7 setDetailText:v6];
+    [(HKVerifiableClinicalRecordDisplayItem *)v7 setTitleText:textCopy];
+    [(HKVerifiableClinicalRecordDisplayItem *)v7 setDetailText:detailTextCopy];
   }
 
   else
@@ -47,16 +47,16 @@
   return v7;
 }
 
-+ (id)valueItemWithTitleText:(id)a3 attributedDetailText:(id)a4
++ (id)valueItemWithTitleText:(id)text attributedDetailText:(id)detailText
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  textCopy = text;
+  detailTextCopy = detailText;
+  if ([textCopy length] && objc_msgSend(detailTextCopy, "length"))
   {
     v7 = objc_alloc_init(HKVerifiableClinicalRecordDisplayItem);
     [(HKVerifiableClinicalRecordDisplayItem *)v7 setType:1];
-    [(HKVerifiableClinicalRecordDisplayItem *)v7 setTitleText:v5];
-    [(HKVerifiableClinicalRecordDisplayItem *)v7 setAttributedDetailText:v6];
+    [(HKVerifiableClinicalRecordDisplayItem *)v7 setTitleText:textCopy];
+    [(HKVerifiableClinicalRecordDisplayItem *)v7 setAttributedDetailText:detailTextCopy];
   }
 
   else

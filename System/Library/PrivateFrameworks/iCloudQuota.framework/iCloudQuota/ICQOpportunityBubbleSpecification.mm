@@ -1,15 +1,15 @@
 @interface ICQOpportunityBubbleSpecification
-- (ICQOpportunityBubbleSpecification)initWithOpportunityBubble:(id)a3 andOpportunitySheet:(id)a4;
+- (ICQOpportunityBubbleSpecification)initWithOpportunityBubble:(id)bubble andOpportunitySheet:(id)sheet;
 - (id)serverUIURL;
 @end
 
 @implementation ICQOpportunityBubbleSpecification
 
-- (ICQOpportunityBubbleSpecification)initWithOpportunityBubble:(id)a3 andOpportunitySheet:(id)a4
+- (ICQOpportunityBubbleSpecification)initWithOpportunityBubble:(id)bubble andOpportunitySheet:(id)sheet
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bubbleCopy = bubble;
+  sheetCopy = sheet;
   v27.receiver = self;
   v27.super_class = ICQOpportunityBubbleSpecification;
   v8 = [(ICQOpportunityBubbleSpecification *)&v27 init];
@@ -20,7 +20,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"appId"];
+  v9 = [bubbleCopy objectForKeyedSubscript:@"appId"];
   appId = v8->_appId;
   v8->_appId = v9;
 
@@ -28,7 +28,7 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v6 objectForKeyedSubscript:@"opportunityBubbleDetails"];
+    v12 = [bubbleCopy objectForKeyedSubscript:@"opportunityBubbleDetails"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,9 +37,9 @@ LABEL_10:
       v8->_bubbleDetails = v13;
     }
 
-    if (v7)
+    if (sheetCopy)
     {
-      v15 = [v7 objectForKeyedSubscript:@"opportunitySheetDetails"];
+      v15 = [sheetCopy objectForKeyedSubscript:@"opportunitySheetDetails"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -49,7 +49,7 @@ LABEL_10:
       }
     }
 
-    v18 = [[_ICQOpportunityBubbleReportingSpecification alloc] initWithServerDictionary:v6];
+    v18 = [[_ICQOpportunityBubbleReportingSpecification alloc] initWithServerDictionary:bubbleCopy];
     reportingDetails = v8->_reportingDetails;
     v8->_reportingDetails = v18;
 
@@ -82,42 +82,42 @@ LABEL_16:
 - (id)serverUIURL
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQOpportunityBubbleSpecification *)self bubbleDetails];
+  bubbleDetails = [(ICQOpportunityBubbleSpecification *)self bubbleDetails];
 
-  if (v3)
+  if (bubbleDetails)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(ICQOpportunityBubbleSpecification *)self bubbleDetails];
-    v5 = [v4 actions];
+    bubbleDetails2 = [(ICQOpportunityBubbleSpecification *)self bubbleDetails];
+    actions = [bubbleDetails2 actions];
 
-    v3 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
-    if (v3)
+    bubbleDetails = [actions countByEnumeratingWithState:&v12 objects:v16 count:16];
+    if (bubbleDetails)
     {
       v6 = *v13;
       while (2)
       {
-        for (i = 0; i != v3; i = i + 1)
+        for (i = 0; i != bubbleDetails; i = i + 1)
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(actions);
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
-          v9 = [v8 serverUIURL];
+          serverUIURL = [v8 serverUIURL];
 
-          if (v9)
+          if (serverUIURL)
           {
-            v3 = [v8 serverUIURL];
+            bubbleDetails = [v8 serverUIURL];
             goto LABEL_12;
           }
         }
 
-        v3 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
-        if (v3)
+        bubbleDetails = [actions countByEnumeratingWithState:&v12 objects:v16 count:16];
+        if (bubbleDetails)
         {
           continue;
         }
@@ -131,7 +131,7 @@ LABEL_12:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return bubbleDetails;
 }
 
 @end

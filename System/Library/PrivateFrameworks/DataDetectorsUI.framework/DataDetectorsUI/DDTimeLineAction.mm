@@ -30,10 +30,10 @@
 
 - (id)platterTitle
 {
-  v2 = [(DDTimeLineAction *)self startDate];
-  if (v2)
+  startDate = [(DDTimeLineAction *)self startDate];
+  if (startDate)
   {
-    v3 = [MEMORY[0x277CCA968] localizedStringFromDate:v2 dateStyle:3 timeStyle:0];
+    v3 = [MEMORY[0x277CCA968] localizedStringFromDate:startDate dateStyle:3 timeStyle:0];
 
     v4 = v3;
   }
@@ -120,13 +120,13 @@ LABEL_6:
 - (id)menuActionClasses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DDTimeLineAction *)self previewActions];
+  array = [MEMORY[0x277CBEB18] array];
+  previewActions = [(DDTimeLineAction *)self previewActions];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v5 = [previewActions countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,15 +137,15 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(previewActions);
         }
 
         v16 = *(*(&v12 + 1) + 8 * i);
         v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [previewActions countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);
@@ -153,14 +153,14 @@ LABEL_6:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (id)commitURL
 {
-  v2 = [(DDTimeLineAction *)self startDate];
+  startDate = [(DDTimeLineAction *)self startDate];
   v3 = MEMORY[0x277CCACA8];
-  [v2 timeIntervalSinceReferenceDate];
+  [startDate timeIntervalSinceReferenceDate];
   v5 = [v3 stringWithFormat:@"calshow:%f", v4];
   v6 = [MEMORY[0x277CBEBC0] URLWithString:v5];
 

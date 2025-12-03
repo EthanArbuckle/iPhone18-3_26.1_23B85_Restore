@@ -61,17 +61,17 @@ void __45__PKAppBackgroundStateTracker_sharedInstance__block_invoke()
     {
       if ((_UIApplicationIsExtension() & 1) == 0)
       {
-        v5 = [MEMORY[0x1E696AAE8] mainBundle];
-        v6 = [v5 bundleIdentifier];
-        v7 = [v6 isEqualToString:@"com.apple.ScreenshotServicesService"];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v7 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
         if ((v7 & 1) == 0)
         {
-          v8 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v8 addObserver:v3 selector:sel__updateState name:*MEMORY[0x1E69DDAC8] object:0];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:v3 selector:sel__updateState name:*MEMORY[0x1E69DDAC8] object:0];
 
-          v9 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v9 addObserver:v3 selector:sel__updateState name:*MEMORY[0x1E69DDAB0] object:0];
+          defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter2 addObserver:v3 selector:sel__updateState name:*MEMORY[0x1E69DDAB0] object:0];
 
           [(PKAppBackgroundStateTracker *)v3 _updateState];
         }
@@ -84,12 +84,12 @@ void __45__PKAppBackgroundStateTracker_sharedInstance__block_invoke()
 
 - (void)_updateStateOnMainThread
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 16) sharedApplication];
-    v3 = [v2 applicationState] == 2;
+    sharedApplication = [*(self + 16) sharedApplication];
+    v3 = [sharedApplication applicationState] == 2;
 
-    atomic_store(v3, (a1 + 8));
+    atomic_store(v3, (self + 8));
   }
 }
 

@@ -1,15 +1,15 @@
 @interface FADeleteFamilyOperation
-- (FADeleteFamilyOperation)initWithNetworkService:(id)a3;
+- (FADeleteFamilyOperation)initWithNetworkService:(id)service;
 - (id)deleteFamily;
 @end
 
 @implementation FADeleteFamilyOperation
 
-- (FADeleteFamilyOperation)initWithNetworkService:(id)a3
+- (FADeleteFamilyOperation)initWithNetworkService:(id)service
 {
   v4.receiver = self;
   v4.super_class = FADeleteFamilyOperation;
-  return [(FANetworkClient *)&v4 initWithNetworkService:a3];
+  return [(FANetworkClient *)&v4 initWithNetworkService:service];
 }
 
 - (id)deleteFamily
@@ -24,10 +24,10 @@
   v4 = +[AAURLConfiguration urlConfiguration];
   v5 = [v4 urlForEndpoint:@"deleteFamily"];
 
-  v6 = [(FANetworkClient *)self networkService];
-  v7 = [v6 standardPlistRequestWithUrl:v5 method:@"POST" plistBody:0];
-  v8 = [v7 then];
-  v9 = (v8)[2](v8, &stru_1000A62A0);
+  networkService = [(FANetworkClient *)self networkService];
+  v7 = [networkService standardPlistRequestWithUrl:v5 method:@"POST" plistBody:0];
+  then = [v7 then];
+  v9 = (then)[2](then, &stru_1000A62A0);
 
   return v9;
 }

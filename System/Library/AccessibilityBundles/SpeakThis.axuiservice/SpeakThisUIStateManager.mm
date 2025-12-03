@@ -2,9 +2,9 @@
 + (SpeakThisUIStateManager)sharedInstance;
 - (SpeakThisUIStateManager)init;
 - (void)_updateObservers;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setCurrentControllerTitle:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setCurrentControllerTitle:(id)title;
 @end
 
 @implementation SpeakThisUIStateManager
@@ -42,30 +42,30 @@
   return v2;
 }
 
-- (void)setCurrentControllerTitle:(id)a3
+- (void)setCurrentControllerTitle:(id)title
 {
-  objc_storeStrong(&self->_currentControllerTitle, a3);
+  objc_storeStrong(&self->_currentControllerTitle, title);
 
   [(SpeakThisUIStateManager *)self _updateObservers];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SpeakThisUIStateManager *)self observers];
-    [v5 addObject:v4];
+    observerCopy = observer;
+    observers = [(SpeakThisUIStateManager *)self observers];
+    [observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SpeakThisUIStateManager *)self observers];
-    [v5 removeObject:v4];
+    observerCopy = observer;
+    observers = [(SpeakThisUIStateManager *)self observers];
+    [observers removeObject:observerCopy];
   }
 }
 
@@ -75,8 +75,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SpeakThisUIStateManager *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  observers = [(SpeakThisUIStateManager *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -88,7 +88,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v7 + 1) + 8 * v6) uiStateChanged];
@@ -96,7 +96,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [observers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);

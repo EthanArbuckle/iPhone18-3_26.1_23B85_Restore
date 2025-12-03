@@ -1,106 +1,106 @@
 @interface ATXHomeScreenSuggestionClient
 + (id)sharedInstance;
-- (ATXHomeScreenSuggestionClient)initWithHomeScreenConfigCache:(id)a3 engagementRecordManager:(id)a4 widgetDwellTracker:(id)a5 widgetDismissManager:(id)a6 uiCacheManager:(id)a7 actionPredictionClient:(id)a8 chronoServicesProvider:(id)a9 store:(id)a10 logger:(id)a11;
-- (BOOL)_isFallbackSuggestionUsed:(id)a3 guardedData:(id)a4;
-- (BOOL)_isWidgetEngaged:(id)a3 kind:(id)a4 afterMostRecentProactiveRotationToSuggestionWithIdentifier:(id)a5 guardedData:(id)a6;
-- (BOOL)_replaceSuggestionIfNeeded:(id)a3 fromProactiveWidget:(id)a4 guardedData:(id)a5;
-- (BOOL)hasWidgetBeenSeen:(id)a3;
-- (BOOL)hasWidgetBeenTapped:(id)a3;
-- (BOOL)isSuggestionReplacementAvailableForSuggestion:(id)a3 inLayout:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData:(id)a3 cachedSuggestions:(id)a4;
-- (id)_knownProactiveWidgetUniqueIdentifiersInPages:(id)a3;
+- (ATXHomeScreenSuggestionClient)initWithHomeScreenConfigCache:(id)cache engagementRecordManager:(id)manager widgetDwellTracker:(id)tracker widgetDismissManager:(id)dismissManager uiCacheManager:(id)cacheManager actionPredictionClient:(id)client chronoServicesProvider:(id)provider store:(id)self0 logger:(id)self1;
+- (BOOL)_isFallbackSuggestionUsed:(id)used guardedData:(id)data;
+- (BOOL)_isWidgetEngaged:(id)engaged kind:(id)kind afterMostRecentProactiveRotationToSuggestionWithIdentifier:(id)identifier guardedData:(id)data;
+- (BOOL)_replaceSuggestionIfNeeded:(id)needed fromProactiveWidget:(id)widget guardedData:(id)data;
+- (BOOL)hasWidgetBeenSeen:(id)seen;
+- (BOOL)hasWidgetBeenTapped:(id)tapped;
+- (BOOL)isSuggestionReplacementAvailableForSuggestion:(id)suggestion inLayout:(id)layout;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData:(id)data cachedSuggestions:(id)suggestions;
+- (id)_knownProactiveWidgetUniqueIdentifiersInPages:(id)pages;
 - (id)_loadKnownHomeScreenProactiveWidgetUniqueIds;
 - (id)_loadKnownTodayPageProactiveWidgetUniqueIds;
-- (id)_newSuggestionLayoutForOldLayout:(id)a3 replacedSuggestionId:(id)a4 shouldSuggestionsBeDisjoint:(BOOL)a5 usedFallbackIndexSet:(id)a6 guardedData:(id)a7;
-- (id)_replaceSuggestionWithId:(id)a3 fromSuggestionsArray:(id)a4 suggestionLayoutType:(int64_t)a5 usedFallbackIndexSet:(id)a6 shouldSuggestionsBeDisjoint:(BOOL)a7 guardedData:(id)a8;
+- (id)_newSuggestionLayoutForOldLayout:(id)layout replacedSuggestionId:(id)id shouldSuggestionsBeDisjoint:(BOOL)disjoint usedFallbackIndexSet:(id)set guardedData:(id)data;
+- (id)_replaceSuggestionWithId:(id)id fromSuggestionsArray:(id)array suggestionLayoutType:(int64_t)type usedFallbackIndexSet:(id)set shouldSuggestionsBeDisjoint:(BOOL)disjoint guardedData:(id)data;
 - (id)homeScreenPrediction;
-- (id)unusedFallbackAppSuggestionsForPage:(int64_t)a3;
-- (int64_t)_layoutTypeOfSuggestion:(id)a3 inLayout:(id)a4;
-- (unint64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)a3;
-- (void)_alertUserIfNeededOfStackChange:(id)a3 widgetOnTop:(id)a4 reason:(unint64_t)a5;
-- (void)_cancelAndReleaseLayoutUpdateSuppressionTimer:(id)a3;
-- (void)_cleanupGuardedData:(id)a3;
-- (void)_clearRotationSuppressionTimerWithGuardedData:(id)a3;
-- (void)_dismissSuggestions:(id)a3 guardedData:(id)a4 fromSuggestionsWidget:(id)a5 dismissFromAllUIs:(BOOL)a6 duration:(double)a7;
+- (id)unusedFallbackAppSuggestionsForPage:(int64_t)page;
+- (int64_t)_layoutTypeOfSuggestion:(id)suggestion inLayout:(id)layout;
+- (unint64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)identifier;
+- (void)_alertUserIfNeededOfStackChange:(id)change widgetOnTop:(id)top reason:(unint64_t)reason;
+- (void)_cancelAndReleaseLayoutUpdateSuppressionTimer:(id)timer;
+- (void)_cleanupGuardedData:(id)data;
+- (void)_clearRotationSuppressionTimerWithGuardedData:(id)data;
+- (void)_dismissSuggestions:(id)suggestions guardedData:(id)data fromSuggestionsWidget:(id)widget dismissFromAllUIs:(BOOL)is duration:(double)duration;
 - (void)_layoutUpdateSuppressionTimerFired;
-- (void)_notifyObserversAboutLayoutUpdateWithGuardedData:(id)a3;
-- (void)_notifyObserversAboutSuggestionRefreshWithGuardedData:(id)a3;
-- (void)_readCachedSuggestionsFromDiskAndUpdateGuardedData:(id)a3;
-- (void)_recordSuggestedWidgetIfNecessaryInStacks:(id)a3 guardedData:(id)a4;
-- (void)_refreshInferredEngagementStatusForWidgetSuggestions:(id)a3;
-- (void)_replaceSuggestionForAllProactiveWidgets:(id)a3 guardedData:(id)a4;
-- (void)_replaceSuggestionWithId:(id)a3 shouldSuggestionsBeDisjoint:(BOOL)a4 guardedData:(id)a5;
+- (void)_notifyObserversAboutLayoutUpdateWithGuardedData:(id)data;
+- (void)_notifyObserversAboutSuggestionRefreshWithGuardedData:(id)data;
+- (void)_readCachedSuggestionsFromDiskAndUpdateGuardedData:(id)data;
+- (void)_recordSuggestedWidgetIfNecessaryInStacks:(id)stacks guardedData:(id)data;
+- (void)_refreshInferredEngagementStatusForWidgetSuggestions:(id)suggestions;
+- (void)_replaceSuggestionForAllProactiveWidgets:(id)widgets guardedData:(id)data;
+- (void)_replaceSuggestionWithId:(id)id shouldSuggestionsBeDisjoint:(BOOL)disjoint guardedData:(id)data;
 - (void)_rotationSuppressionTimerFired;
-- (void)_startSuppressingRotationForTimeInterval:(double)a3 leeway:(double)a4 guardedData:(id)a5;
-- (void)_startSuppressingSystemInitiatedLayoutUpdateForTimeInterval:(double)a3 leeway:(double)a4 guardedData:(id)a5;
-- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)a3;
-- (void)_updateGuardedData:(id)a3 withCachedSuggestions:(id)a4 updateProactiveWidgetLayoutsOnly:(BOOL)a5;
-- (void)_updateKnownWidgetUniqueIdsIfNecessaryWithGuardedData:(id)a3;
-- (void)_updateLoggerStacksToStackSuggestionsFromHomeScreenCachedSuggestions:(id)a3;
-- (void)_writeDockAppList:(id)a3 guardedData:(id)a4 completionHandler:(id)a5;
-- (void)_writeHomeScreenPageConfigurations:(id)a3 forClientWithIdentifier:(id)a4 guardedData:(id)a5 completionHandler:(id)a6;
-- (void)_writeTodayPageStacks:(id)a3 appPredictionPanels:(id)a4 guardedData:(id)a5 completionHandler:(id)a6;
-- (void)blendingLayerDidUpdateHomeScreenCachedSuggestions:(id)a3 completion:(id)a4;
-- (void)chronoServiceProvider:(id)a3 finishedPrewarmingSuggestions:(id)a4;
-- (void)chronoServiceProvider:(id)a3 reloadDidCompleteForWidget:(id)a4 success:(BOOL)a5 widgetIsReadyForDisplay:(BOOL)a6 error:(id)a7;
+- (void)_startSuppressingRotationForTimeInterval:(double)interval leeway:(double)leeway guardedData:(id)data;
+- (void)_startSuppressingSystemInitiatedLayoutUpdateForTimeInterval:(double)interval leeway:(double)leeway guardedData:(id)data;
+- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)suggestion;
+- (void)_updateGuardedData:(id)data withCachedSuggestions:(id)suggestions updateProactiveWidgetLayoutsOnly:(BOOL)only;
+- (void)_updateKnownWidgetUniqueIdsIfNecessaryWithGuardedData:(id)data;
+- (void)_updateLoggerStacksToStackSuggestionsFromHomeScreenCachedSuggestions:(id)suggestions;
+- (void)_writeDockAppList:(id)list guardedData:(id)data completionHandler:(id)handler;
+- (void)_writeHomeScreenPageConfigurations:(id)configurations forClientWithIdentifier:(id)identifier guardedData:(id)data completionHandler:(id)handler;
+- (void)_writeTodayPageStacks:(id)stacks appPredictionPanels:(id)panels guardedData:(id)data completionHandler:(id)handler;
+- (void)blendingLayerDidUpdateHomeScreenCachedSuggestions:(id)suggestions completion:(id)completion;
+- (void)chronoServiceProvider:(id)provider finishedPrewarmingSuggestions:(id)suggestions;
+- (void)chronoServiceProvider:(id)provider reloadDidCompleteForWidget:(id)widget success:(BOOL)success widgetIsReadyForDisplay:(BOOL)display error:(id)error;
 - (void)dealloc;
-- (void)didFinishExecutingTappedSuggestion:(id)a3 fromWidget:(id)a4;
-- (void)forceDebugRotationForStack:(id)a3 extensionBundleId:(id)a4 kind:(id)a5 completion:(id)a6;
-- (void)getCurrentSuggestionsWidgetAndAppPredictionPanelLayoutsWithCompletionHandler:(id)a3;
-- (void)homeScreenPredictionWithReply:(id)a3;
-- (void)layoutForAppPredictionPanel:(id)a3 completionHandler:(id)a4;
-- (void)layoutForSuggestionsWidget:(id)a3 completionHandler:(id)a4;
-- (void)loadHomeScreenPageConfigurationsForClientWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)loadHomeScreenPageConfigurationsWithCompletionHandler:(id)a3;
-- (void)logContextMenuDismissOnceForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logContextMenuNeverShowAgainForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
+- (void)didFinishExecutingTappedSuggestion:(id)suggestion fromWidget:(id)widget;
+- (void)forceDebugRotationForStack:(id)stack extensionBundleId:(id)id kind:(id)kind completion:(id)completion;
+- (void)getCurrentSuggestionsWidgetAndAppPredictionPanelLayoutsWithCompletionHandler:(id)handler;
+- (void)homeScreenPredictionWithReply:(id)reply;
+- (void)layoutForAppPredictionPanel:(id)panel completionHandler:(id)handler;
+- (void)layoutForSuggestionsWidget:(id)widget completionHandler:(id)handler;
+- (void)loadHomeScreenPageConfigurationsForClientWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)loadHomeScreenPageConfigurationsWithCompletionHandler:(id)handler;
+- (void)logContextMenuDismissOnceForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id;
+- (void)logContextMenuNeverShowAgainForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id;
 - (void)logDeviceLock;
-- (void)logDidTapSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logHomeScreenDidDisappearWithReason:(id)a3;
-- (void)logHomeScreenPageDidAppear:(unint64_t)a3 topWidgetsByStackIdentifier:(id)a4 prediction:(id)a5;
-- (void)logSpecialPageDidAppear:(unint64_t)a3 widgetsByStackId:(id)a4 prediction:(id)a5;
-- (void)logSpecialPageDidDisappear:(unint64_t)a3;
-- (void)logStackDidAppear:(id)a3 topWidget:(id)a4 prediction:(id)a5;
-- (void)logStackDidDisappear:(id)a3 topWidget:(id)a4 prediction:(id)a5;
-- (void)logStackDidTap:(id)a3 engagedUrl:(id)a4 widgetOnTop:(id)a5 prediction:(id)a6;
-- (void)logStackStatusDidChange:(id)a3 widgetOnTop:(id)a4 reason:(unint64_t)a5 prediction:(id)a6;
-- (void)logStackVisibilityChanged:(id)a3 visibleRect:(CGRect)a4 topWidget:(id)a5 prediction:(id)a6;
-- (void)logSuggestionsDidAppear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logSuggestionsDidDisappear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5;
-- (void)logSupplementaryActionInContextMenu:(unint64_t)a3 stackId:(id)a4 widgetOnTop:(id)a5 prediction:(id)a6;
-- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)a3;
-- (void)logUserDidAddApp:(id)a3 page:(id)a4;
-- (void)logUserDidAddPinnedWidget:(id)a3 page:(id)a4 defaultsComparator:(id)a5;
-- (void)logUserDidAddWidgetToStack:(id)a3 stackIdentifier:(id)a4 isSuggestion:(BOOL)a5;
-- (void)logUserDidChangeStackConfiguration:(id)a3;
-- (void)logUserDidCreateStack:(id)a3 page:(id)a4 isSuggestion:(BOOL)a5;
-- (void)logUserDidDeletePinnedWidget:(id)a3 stackLocation:(unint64_t)a4 page:(id)a5;
-- (void)logUserDidDeleteStack:(id)a3 stackKind:(unint64_t)a4 stackLocation:(unint64_t)a5 page:(id)a6;
-- (void)logUserDidDeleteWidgetOnStack:(id)a3 stackIdentifier:(id)a4 stackKind:(unint64_t)a5 stackLocation:(unint64_t)a6;
-- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)a3;
-- (void)logUserDidRemoveApp:(id)a3 page:(id)a4;
-- (void)logUserDidSwitchHomeScreenExperience:(unint64_t)a3;
-- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)a3 rankOfWidgetInGallery:(unint64_t)a4 galleryItems:(id)a5;
-- (void)logWidgetDidAppear:(id)a3 blendingCacheId:(id)a4;
-- (void)logWidgetDidAppear:(id)a3 stackId:(id)a4 prediction:(id)a5;
-- (void)logWidgetDidDisappear:(id)a3 blendingCacheId:(id)a4;
-- (void)logWidgetDidDisappear:(id)a3 stackId:(id)a4 prediction:(id)a5;
-- (void)logWidgetInsertionDidFailInStack:(id)a3 prediction:(id)a4;
-- (void)logWidgetOccluded:(id)a3 blendingCacheId:(id)a4;
-- (void)logWidgetUnoccluded:(id)a3 blendingCacheId:(id)a4;
-- (void)markFallbackAppSuggestion:(id)a3 asUnusedForPage:(int64_t)a4;
-- (void)markFallbackAppSuggestion:(id)a3 asUsedForPage:(int64_t)a4;
-- (void)registerObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setIsUserInteractingWithProactiveWidget:(BOOL)a3;
-- (void)significantDwellDetectedForWidget:(id)a3 date:(id)a4;
-- (void)startSuppressingRotationForTimeInterval:(double)a3 leeway:(double)a4;
-- (void)synchronouslyRelinquishOnDiskResourcesAheadOfDataDeletionWithCompletionHandler:(id)a3;
-- (void)writeDockAppList:(id)a3 completionHandler:(id)a4;
-- (void)writeHomeScreenPageConfigurations:(id)a3 completionHandler:(id)a4;
-- (void)writeHomeScreenPageConfigurations:(id)a3 forClientWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)writeTodayPageStacks:(id)a3 appPredictionPanels:(id)a4 completionHandler:(id)a5;
+- (void)logDidTapSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id;
+- (void)logHomeScreenDidDisappearWithReason:(id)reason;
+- (void)logHomeScreenPageDidAppear:(unint64_t)appear topWidgetsByStackIdentifier:(id)identifier prediction:(id)prediction;
+- (void)logSpecialPageDidAppear:(unint64_t)appear widgetsByStackId:(id)id prediction:(id)prediction;
+- (void)logSpecialPageDidDisappear:(unint64_t)disappear;
+- (void)logStackDidAppear:(id)appear topWidget:(id)widget prediction:(id)prediction;
+- (void)logStackDidDisappear:(id)disappear topWidget:(id)widget prediction:(id)prediction;
+- (void)logStackDidTap:(id)tap engagedUrl:(id)url widgetOnTop:(id)top prediction:(id)prediction;
+- (void)logStackStatusDidChange:(id)change widgetOnTop:(id)top reason:(unint64_t)reason prediction:(id)prediction;
+- (void)logStackVisibilityChanged:(id)changed visibleRect:(CGRect)rect topWidget:(id)widget prediction:(id)prediction;
+- (void)logSuggestionsDidAppear:(id)appear widget:(id)widget blendingCacheId:(id)id;
+- (void)logSuggestionsDidDisappear:(id)disappear widget:(id)widget blendingCacheId:(id)id;
+- (void)logSupplementaryActionInContextMenu:(unint64_t)menu stackId:(id)id widgetOnTop:(id)top prediction:(id)prediction;
+- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)suggestion;
+- (void)logUserDidAddApp:(id)app page:(id)page;
+- (void)logUserDidAddPinnedWidget:(id)widget page:(id)page defaultsComparator:(id)comparator;
+- (void)logUserDidAddWidgetToStack:(id)stack stackIdentifier:(id)identifier isSuggestion:(BOOL)suggestion;
+- (void)logUserDidChangeStackConfiguration:(id)configuration;
+- (void)logUserDidCreateStack:(id)stack page:(id)page isSuggestion:(BOOL)suggestion;
+- (void)logUserDidDeletePinnedWidget:(id)widget stackLocation:(unint64_t)location page:(id)page;
+- (void)logUserDidDeleteStack:(id)stack stackKind:(unint64_t)kind stackLocation:(unint64_t)location page:(id)page;
+- (void)logUserDidDeleteWidgetOnStack:(id)stack stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location;
+- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)suggestion;
+- (void)logUserDidRemoveApp:(id)app page:(id)page;
+- (void)logUserDidSwitchHomeScreenExperience:(unint64_t)experience;
+- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)analytics rankOfWidgetInGallery:(unint64_t)gallery galleryItems:(id)items;
+- (void)logWidgetDidAppear:(id)appear blendingCacheId:(id)id;
+- (void)logWidgetDidAppear:(id)appear stackId:(id)id prediction:(id)prediction;
+- (void)logWidgetDidDisappear:(id)disappear blendingCacheId:(id)id;
+- (void)logWidgetDidDisappear:(id)disappear stackId:(id)id prediction:(id)prediction;
+- (void)logWidgetInsertionDidFailInStack:(id)stack prediction:(id)prediction;
+- (void)logWidgetOccluded:(id)occluded blendingCacheId:(id)id;
+- (void)logWidgetUnoccluded:(id)unoccluded blendingCacheId:(id)id;
+- (void)markFallbackAppSuggestion:(id)suggestion asUnusedForPage:(int64_t)page;
+- (void)markFallbackAppSuggestion:(id)suggestion asUsedForPage:(int64_t)page;
+- (void)registerObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setIsUserInteractingWithProactiveWidget:(BOOL)widget;
+- (void)significantDwellDetectedForWidget:(id)widget date:(id)date;
+- (void)startSuppressingRotationForTimeInterval:(double)interval leeway:(double)leeway;
+- (void)synchronouslyRelinquishOnDiskResourcesAheadOfDataDeletionWithCompletionHandler:(id)handler;
+- (void)writeDockAppList:(id)list completionHandler:(id)handler;
+- (void)writeHomeScreenPageConfigurations:(id)configurations completionHandler:(id)handler;
+- (void)writeHomeScreenPageConfigurations:(id)configurations forClientWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)writeTodayPageStacks:(id)stacks appPredictionPanels:(id)panels completionHandler:(id)handler;
 @end
 
 @implementation ATXHomeScreenSuggestionClient
@@ -111,7 +111,7 @@
   block[1] = 3221225472;
   block[2] = __47__ATXHomeScreenSuggestionClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_7 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_7, block);
@@ -139,24 +139,24 @@ void __47__ATXHomeScreenSuggestionClient_sharedInstance__block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (ATXHomeScreenSuggestionClient)initWithHomeScreenConfigCache:(id)a3 engagementRecordManager:(id)a4 widgetDwellTracker:(id)a5 widgetDismissManager:(id)a6 uiCacheManager:(id)a7 actionPredictionClient:(id)a8 chronoServicesProvider:(id)a9 store:(id)a10 logger:(id)a11
+- (ATXHomeScreenSuggestionClient)initWithHomeScreenConfigCache:(id)cache engagementRecordManager:(id)manager widgetDwellTracker:(id)tracker widgetDismissManager:(id)dismissManager uiCacheManager:(id)cacheManager actionPredictionClient:(id)client chronoServicesProvider:(id)provider store:(id)self0 logger:(id)self1
 {
-  v17 = a3;
-  v55 = a4;
-  v54 = a5;
-  v53 = a6;
-  v52 = a7;
-  v47 = a8;
-  v51 = a8;
-  v50 = a9;
-  v49 = a10;
-  v48 = a11;
+  cacheCopy = cache;
+  managerCopy = manager;
+  trackerCopy = tracker;
+  dismissManagerCopy = dismissManager;
+  cacheManagerCopy = cacheManager;
+  clientCopy = client;
+  clientCopy2 = client;
+  providerCopy = provider;
+  storeCopy = store;
+  loggerCopy = logger;
   v61.receiver = self;
   v61.super_class = ATXHomeScreenSuggestionClient;
   v18 = [(ATXHomeScreenSuggestionClient *)&v61 init];
   if (v18)
   {
-    v45 = v17;
+    v45 = cacheCopy;
     v19 = objc_opt_new();
     v20 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:5 capacity:0];
     v21 = *(v19 + 8);
@@ -166,9 +166,9 @@ void __47__ATXHomeScreenSuggestionClient_sharedInstance__block_invoke(uint64_t a
     v23 = *(v19 + 80);
     *(v19 + 80) = v22;
 
-    objc_storeStrong((v19 + 192), a10);
-    objc_storeStrong((v19 + 208), a6);
-    objc_storeStrong((v19 + 200), a11);
+    objc_storeStrong((v19 + 192), store);
+    objc_storeStrong((v19 + 208), dismissManager);
+    objc_storeStrong((v19 + 200), logger);
     v24 = objc_opt_new();
     v25 = *(v19 + 128);
     *(v19 + 128) = v24;
@@ -190,15 +190,15 @@ void __47__ATXHomeScreenSuggestionClient_sharedInstance__block_invoke(uint64_t a
     v36 = *(v18 + 11);
     *(v18 + 11) = v35;
 
-    objc_storeStrong(v18 + 5, a7);
-    objc_storeStrong(v18 + 6, a3);
-    objc_storeStrong(v18 + 7, a4);
-    objc_storeStrong(v18 + 8, a5);
+    objc_storeStrong(v18 + 5, cacheManager);
+    objc_storeStrong(v18 + 6, cache);
+    objc_storeStrong(v18 + 7, manager);
+    objc_storeStrong(v18 + 8, tracker);
     [*(v18 + 8) setDelegate:v18];
     *(v18 + 104) = xmmword_1BF6F5660;
     *(v18 + 15) = 0x4014000000000000;
-    objc_storeStrong(v18 + 9, v47);
-    objc_storeStrong(v18 + 10, a9);
+    objc_storeStrong(v18 + 9, clientCopy);
+    objc_storeStrong(v18 + 10, provider);
     [*(v18 + 10) setDelegate:v18];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
@@ -230,7 +230,7 @@ void __47__ATXHomeScreenSuggestionClient_sharedInstance__block_invoke(uint64_t a
       _os_log_impl(&dword_1BF549000, v43, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: XPC listener resumed", buf, 2u);
     }
 
-    v17 = v45;
+    cacheCopy = v45;
   }
 
   return v18;
@@ -455,30 +455,30 @@ void __201__ATXHomeScreenSuggestionClient_initWithHomeScreenConfigCache_engageme
   [(ATXHomeScreenSuggestionClient *)&v5 dealloc];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__ATXHomeScreenSuggestionClient_registerObserver___block_invoke;
   v7[3] = &unk_1E80C3448;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__ATXHomeScreenSuggestionClient_removeObserver___block_invoke;
   v7[3] = &unk_1E80C3470;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
@@ -492,7 +492,7 @@ void __48__ATXHomeScreenSuggestionClient_removeObserver___block_invoke(uint64_t 
   }
 }
 
-- (void)startSuppressingRotationForTimeInterval:(double)a3 leeway:(double)a4
+- (void)startSuppressingRotationForTimeInterval:(double)interval leeway:(double)leeway
 {
   lock = self->_lock;
   v5[0] = MEMORY[0x1E69E9820];
@@ -500,23 +500,23 @@ void __48__ATXHomeScreenSuggestionClient_removeObserver___block_invoke(uint64_t 
   v5[2] = __80__ATXHomeScreenSuggestionClient_startSuppressingRotationForTimeInterval_leeway___block_invoke;
   v5[3] = &unk_1E80C3498;
   v5[4] = self;
-  *&v5[5] = a3;
-  *&v5[6] = a4;
+  *&v5[5] = interval;
+  *&v5[6] = leeway;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v5];
 }
 
-- (void)_startSuppressingRotationForTimeInterval:(double)a3 leeway:(double)a4 guardedData:(id)a5
+- (void)_startSuppressingRotationForTimeInterval:(double)interval leeway:(double)leeway guardedData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  dataCopy = data;
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
     v9 = *MEMORY[0x1E698B060];
     keyExistsAndHasValidFormat[0] = 0;
     if (CFPreferencesGetAppBooleanValue(v9, *MEMORY[0x1E698B030], keyExistsAndHasValidFormat))
     {
-      a4 = 0.01;
-      a3 = 1.0;
+      leeway = 0.01;
+      interval = 1.0;
     }
   }
 
@@ -524,21 +524,21 @@ void __48__ATXHomeScreenSuggestionClient_removeObserver___block_invoke(uint64_t 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *keyExistsAndHasValidFormat = 134218240;
-    v18 = a3;
+    intervalCopy = interval;
     v19 = 2048;
-    v20 = a4;
+    leewayCopy = leeway;
     _os_log_impl(&dword_1BF549000, v10, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: start suppressing rotation for %f seconds with %f leeway seconds", keyExistsAndHasValidFormat, 0x16u);
   }
 
-  v11 = v8[2];
+  v11 = dataCopy[2];
   if (!v11)
   {
     v12 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_outputQueue);
-    v13 = v8[2];
-    v8[2] = v12;
+    v13 = dataCopy[2];
+    dataCopy[2] = v12;
 
     objc_initWeak(keyExistsAndHasValidFormat, self);
-    v14 = v8[2];
+    v14 = dataCopy[2];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __93__ATXHomeScreenSuggestionClient__startSuppressingRotationForTimeInterval_leeway_guardedData___block_invoke;
@@ -547,11 +547,11 @@ void __48__ATXHomeScreenSuggestionClient_removeObserver___block_invoke(uint64_t 
     dispatch_source_set_event_handler(v14, handler);
     objc_destroyWeak(&v16);
     objc_destroyWeak(keyExistsAndHasValidFormat);
-    v11 = v8[2];
+    v11 = dataCopy[2];
   }
 
-  dispatch_source_set_timer(v11, [MEMORY[0x1E69C5D10] dispatchTimeWithSecondsFromNow:a3], 0xFFFFFFFFFFFFFFFFLL, (a4 * 1000000000.0));
-  dispatch_activate(v8[2]);
+  dispatch_source_set_timer(v11, [MEMORY[0x1E69C5D10] dispatchTimeWithSecondsFromNow:interval], 0xFFFFFFFFFFFFFFFFLL, (leeway * 1000000000.0));
+  dispatch_activate(dataCopy[2]);
 }
 
 void __93__ATXHomeScreenSuggestionClient__startSuppressingRotationForTimeInterval_leeway_guardedData___block_invoke(uint64_t a1)
@@ -600,18 +600,18 @@ void __63__ATXHomeScreenSuggestionClient__rotationSuppressionTimerFired__block_i
   }
 }
 
-- (void)_startSuppressingSystemInitiatedLayoutUpdateForTimeInterval:(double)a3 leeway:(double)a4 guardedData:(id)a5
+- (void)_startSuppressingSystemInitiatedLayoutUpdateForTimeInterval:(double)interval leeway:(double)leeway guardedData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  dataCopy = data;
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
     v9 = *MEMORY[0x1E698B060];
     keyExistsAndHasValidFormat[0] = 0;
     if (CFPreferencesGetAppBooleanValue(v9, *MEMORY[0x1E698B030], keyExistsAndHasValidFormat))
     {
-      a4 = 0.01;
-      a3 = 1.0;
+      leeway = 0.01;
+      interval = 1.0;
     }
   }
 
@@ -619,21 +619,21 @@ void __63__ATXHomeScreenSuggestionClient__rotationSuppressionTimerFired__block_i
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *keyExistsAndHasValidFormat = 134218240;
-    v18 = a3;
+    intervalCopy = interval;
     v19 = 2048;
-    v20 = a4;
+    leewayCopy = leeway;
     _os_log_impl(&dword_1BF549000, v10, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: start suppressing layout update for %f seconds with %f leeway seconds", keyExistsAndHasValidFormat, 0x16u);
   }
 
-  v11 = v8[3];
+  v11 = dataCopy[3];
   if (!v11)
   {
     v12 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_outputQueue);
-    v13 = v8[3];
-    v8[3] = v12;
+    v13 = dataCopy[3];
+    dataCopy[3] = v12;
 
     objc_initWeak(keyExistsAndHasValidFormat, self);
-    v14 = v8[3];
+    v14 = dataCopy[3];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __112__ATXHomeScreenSuggestionClient__startSuppressingSystemInitiatedLayoutUpdateForTimeInterval_leeway_guardedData___block_invoke;
@@ -642,11 +642,11 @@ void __63__ATXHomeScreenSuggestionClient__rotationSuppressionTimerFired__block_i
     dispatch_source_set_event_handler(v14, handler);
     objc_destroyWeak(&v16);
     objc_destroyWeak(keyExistsAndHasValidFormat);
-    v11 = v8[3];
+    v11 = dataCopy[3];
   }
 
-  dispatch_source_set_timer(v11, [MEMORY[0x1E69C5D10] dispatchTimeWithSecondsFromNow:a3], 0xFFFFFFFFFFFFFFFFLL, (a4 * 1000000000.0));
-  dispatch_activate(v8[3]);
+  dispatch_source_set_timer(v11, [MEMORY[0x1E69C5D10] dispatchTimeWithSecondsFromNow:interval], 0xFFFFFFFFFFFFFFFFLL, (leeway * 1000000000.0));
+  dispatch_activate(dataCopy[3]);
 }
 
 void __112__ATXHomeScreenSuggestionClient__startSuppressingSystemInitiatedLayoutUpdateForTimeInterval_leeway_guardedData___block_invoke(uint64_t a1)
@@ -695,15 +695,15 @@ void __67__ATXHomeScreenSuggestionClient__layoutUpdateSuppressionTimerFired__blo
   }
 }
 
-- (void)_cancelAndReleaseLayoutUpdateSuppressionTimer:(id)a3
+- (void)_cancelAndReleaseLayoutUpdateSuppressionTimer:(id)timer
 {
-  v3 = *(a3 + 3);
+  v3 = *(timer + 3);
   if (v3)
   {
-    v5 = a3;
+    timerCopy = timer;
     dispatch_source_cancel(v3);
-    v6 = *(a3 + 3);
-    *(a3 + 3) = 0;
+    v6 = *(timer + 3);
+    *(timer + 3) = 0;
   }
 }
 
@@ -772,16 +772,16 @@ LABEL_8:
   return v7;
 }
 
-- (id)_knownProactiveWidgetUniqueIdentifiersInPages:(id)a3
+- (id)_knownProactiveWidgetUniqueIdentifiersInPages:(id)pages
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pagesCopy = pages;
   v4 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v3;
+  obj = pagesCopy;
   v29 = [obj countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v29)
   {
@@ -804,8 +804,8 @@ LABEL_8:
         v47 = 0u;
         v30 = v7;
         v31 = v6;
-        v32 = [v7 stacks];
-        v34 = [v32 countByEnumeratingWithState:&v44 objects:v56 count:16];
+        stacks = [v7 stacks];
+        v34 = [stacks countByEnumeratingWithState:&v44 objects:v56 count:16];
         if (v34)
         {
           v33 = *v45;
@@ -816,7 +816,7 @@ LABEL_8:
             {
               if (*v45 != v33)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(stacks);
               }
 
               v35 = v8;
@@ -825,8 +825,8 @@ LABEL_8:
               v41 = 0u;
               v42 = 0u;
               v43 = 0u;
-              v10 = [v9 widgets];
-              v11 = [v10 countByEnumeratingWithState:&v40 objects:v55 count:16];
+              widgets = [v9 widgets];
+              v11 = [widgets countByEnumeratingWithState:&v40 objects:v55 count:16];
               if (v11)
               {
                 v12 = v11;
@@ -837,35 +837,35 @@ LABEL_8:
                   {
                     if (*v41 != v13)
                     {
-                      objc_enumerationMutation(v10);
+                      objc_enumerationMutation(widgets);
                     }
 
                     v15 = *(*(&v40 + 1) + 8 * i);
-                    v16 = [v15 extensionBundleId];
-                    v17 = [v16 isEqualToString:v5];
+                    extensionBundleId = [v15 extensionBundleId];
+                    v17 = [extensionBundleId isEqualToString:v5];
 
                     if (v17)
                     {
-                      v18 = [v15 widgetUniqueId];
+                      widgetUniqueId = [v15 widgetUniqueId];
 
-                      if (v18)
+                      if (widgetUniqueId)
                       {
-                        v19 = [v15 widgetUniqueId];
-                        [v4 addObject:v19];
+                        widgetUniqueId2 = [v15 widgetUniqueId];
+                        [v4 addObject:widgetUniqueId2];
                       }
 
                       else
                       {
-                        v19 = __atxlog_handle_home_screen();
-                        if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+                        widgetUniqueId2 = __atxlog_handle_home_screen();
+                        if (os_log_type_enabled(widgetUniqueId2, OS_LOG_TYPE_FAULT))
                         {
-                          [(ATXHomeScreenSuggestionClient *)v53 _knownProactiveWidgetUniqueIdentifiersInPages:v9, &v54, v19];
+                          [(ATXHomeScreenSuggestionClient *)v53 _knownProactiveWidgetUniqueIdentifiersInPages:v9, &v54, widgetUniqueId2];
                         }
                       }
                     }
                   }
 
-                  v12 = [v10 countByEnumeratingWithState:&v40 objects:v55 count:16];
+                  v12 = [widgets countByEnumeratingWithState:&v40 objects:v55 count:16];
                 }
 
                 while (v12);
@@ -875,7 +875,7 @@ LABEL_8:
             }
 
             while (v35 + 1 != v34);
-            v34 = [v32 countByEnumeratingWithState:&v44 objects:v56 count:16];
+            v34 = [stacks countByEnumeratingWithState:&v44 objects:v56 count:16];
           }
 
           while (v34);
@@ -885,8 +885,8 @@ LABEL_8:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v20 = [v30 panels];
-        v21 = [v20 countByEnumeratingWithState:&v36 objects:v52 count:16];
+        panels = [v30 panels];
+        v21 = [panels countByEnumeratingWithState:&v36 objects:v52 count:16];
         if (v21)
         {
           v22 = v21;
@@ -897,14 +897,14 @@ LABEL_8:
             {
               if (*v37 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(panels);
               }
 
-              v25 = [*(*(&v36 + 1) + 8 * j) identifier];
-              [v4 addObject:v25];
+              identifier = [*(*(&v36 + 1) + 8 * j) identifier];
+              [v4 addObject:identifier];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v36 objects:v52 count:16];
+            v22 = [panels countByEnumeratingWithState:&v36 objects:v52 count:16];
           }
 
           while (v22);
@@ -923,13 +923,13 @@ LABEL_8:
   return v4;
 }
 
-- (void)_readCachedSuggestionsFromDiskAndUpdateGuardedData:(id)a3
+- (void)_readCachedSuggestionsFromDiskAndUpdateGuardedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(ATXUICacheManager *)self->_uiCacheManager cachedLayoutForConsumerSubType:34 expectedClass:objc_opt_class()];
   if (v5)
   {
-    [(ATXHomeScreenSuggestionClient *)self _updateGuardedData:v4 withCachedSuggestions:v5 updateProactiveWidgetLayoutsOnly:1];
+    [(ATXHomeScreenSuggestionClient *)self _updateGuardedData:dataCopy withCachedSuggestions:v5 updateProactiveWidgetLayoutsOnly:1];
     [(ATXChronoServicesProvider *)self->_chronoServicesProvider resetToPrewarmWidgetsInSuggestions:v5];
   }
 
@@ -942,39 +942,39 @@ LABEL_8:
       _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: Unable to read cached suggestions, set prediction data as empty.", v18, 2u);
     }
 
-    v7 = v4[17];
-    v4[17] = 0;
+    v7 = dataCopy[17];
+    dataCopy[17] = 0;
 
-    v8 = v4[11];
-    v4[11] = 0;
+    v8 = dataCopy[11];
+    dataCopy[11] = 0;
 
     v9 = objc_opt_new();
-    v10 = v4[14];
-    v4[14] = v9;
+    v10 = dataCopy[14];
+    dataCopy[14] = v9;
 
     v11 = objc_opt_new();
-    v12 = v4[12];
-    v4[12] = v11;
+    v12 = dataCopy[12];
+    dataCopy[12] = v11;
 
     v13 = objc_opt_new();
-    v14 = v4[13];
-    v4[13] = v13;
+    v14 = dataCopy[13];
+    dataCopy[13] = v13;
 
     v15 = objc_opt_new();
-    v16 = v4[15];
-    v4[15] = v15;
+    v16 = dataCopy[15];
+    dataCopy[15] = v15;
 
-    v17 = v4[18];
-    v4[18] = 0;
+    v17 = dataCopy[18];
+    dataCopy[18] = 0;
   }
 }
 
-- (void)_updateKnownWidgetUniqueIdsIfNecessaryWithGuardedData:(id)a3
+- (void)_updateKnownWidgetUniqueIdsIfNecessaryWithGuardedData:(id)data
 {
-  v4 = a3;
-  if ([(ATXHomeScreenSuggestionClient *)self _isSystemInitiatedLayoutUpdateAllowed:v4])
+  dataCopy = data;
+  if ([(ATXHomeScreenSuggestionClient *)self _isSystemInitiatedLayoutUpdateAllowed:dataCopy])
   {
-    if (*(v4 + 64) == 1)
+    if (*(dataCopy + 64) == 1)
     {
       v5 = __atxlog_handle_home_screen();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -983,14 +983,14 @@ LABEL_8:
         _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: updating known today page widget unique ids", buf, 2u);
       }
 
-      v6 = [(ATXHomeScreenSuggestionClient *)self _loadKnownTodayPageProactiveWidgetUniqueIds];
-      v7 = v4[7];
-      v4[7] = v6;
+      _loadKnownTodayPageProactiveWidgetUniqueIds = [(ATXHomeScreenSuggestionClient *)self _loadKnownTodayPageProactiveWidgetUniqueIds];
+      v7 = dataCopy[7];
+      dataCopy[7] = _loadKnownTodayPageProactiveWidgetUniqueIds;
 
-      *(v4 + 64) = 0;
+      *(dataCopy + 64) = 0;
     }
 
-    if (*(v4 + 48) == 1)
+    if (*(dataCopy + 48) == 1)
     {
       v8 = __atxlog_handle_home_screen();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -999,27 +999,27 @@ LABEL_8:
         _os_log_impl(&dword_1BF549000, v8, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: updating known Home Screen widget unique ids", v11, 2u);
       }
 
-      v9 = [(ATXHomeScreenSuggestionClient *)self _loadKnownHomeScreenProactiveWidgetUniqueIds];
-      v10 = v4[5];
-      v4[5] = v9;
+      _loadKnownHomeScreenProactiveWidgetUniqueIds = [(ATXHomeScreenSuggestionClient *)self _loadKnownHomeScreenProactiveWidgetUniqueIds];
+      v10 = dataCopy[5];
+      dataCopy[5] = _loadKnownHomeScreenProactiveWidgetUniqueIds;
 
-      *(v4 + 48) = 0;
+      *(dataCopy + 48) = 0;
     }
   }
 }
 
-- (id)_computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData:(id)a3 cachedSuggestions:(id)a4
+- (id)_computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData:(id)data cachedSuggestions:(id)suggestions
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  suggestionsCopy = suggestions;
   v7 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v8 = [v5[12] allKeys];
-  v9 = v8;
+  allKeys = [dataCopy[12] allKeys];
+  v9 = allKeys;
   v10 = MEMORY[0x1E695E0F0];
-  if (v8)
+  if (allKeys)
   {
-    v11 = v8;
+    v11 = allKeys;
   }
 
   else
@@ -1030,13 +1030,13 @@ LABEL_8:
   v12 = [v7 initWithArray:v11];
 
   v13 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v34 = v6;
-  v14 = [v6 cachedSuggestionWidgetLayouts];
-  v15 = [v14 allKeys];
-  v16 = v15;
-  if (v15)
+  v34 = suggestionsCopy;
+  cachedSuggestionWidgetLayouts = [suggestionsCopy cachedSuggestionWidgetLayouts];
+  allKeys2 = [cachedSuggestionWidgetLayouts allKeys];
+  v16 = allKeys2;
+  if (allKeys2)
   {
-    v17 = v15;
+    v17 = allKeys2;
   }
 
   else
@@ -1052,7 +1052,7 @@ LABEL_8:
   v39[1] = 3221225472;
   v39[2] = __115__ATXHomeScreenSuggestionClient__computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData_cachedSuggestions___block_invoke;
   v39[3] = &unk_1E80C34C0;
-  v19 = v5;
+  v19 = dataCopy;
   v40 = v19;
   v20 = [v12 objectsPassingTest:v39];
   v21 = [v19[11] mutableCopy];
@@ -1089,7 +1089,7 @@ LABEL_8:
         }
 
         v30 = *(*(&v35 + 1) + 8 * i);
-        v31 = [v5[12] objectForKeyedSubscript:v30];
+        v31 = [dataCopy[12] objectForKeyedSubscript:v30];
         [v24 setObject:v31 forKeyedSubscript:v30];
       }
 
@@ -1110,56 +1110,56 @@ uint64_t __115__ATXHomeScreenSuggestionClient__computePreviousSuggestedSuggestio
   return v3;
 }
 
-- (void)_updateGuardedData:(id)a3 withCachedSuggestions:(id)a4 updateProactiveWidgetLayoutsOnly:(BOOL)a5
+- (void)_updateGuardedData:(id)data withCachedSuggestions:(id)suggestions updateProactiveWidgetLayoutsOnly:(BOOL)only
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([(ATXHomeScreenSuggestionClient *)self _isSystemInitiatedLayoutUpdateAllowed:v8]&& !*(v8 + 2))
+  dataCopy = data;
+  suggestionsCopy = suggestions;
+  if ([(ATXHomeScreenSuggestionClient *)self _isSystemInitiatedLayoutUpdateAllowed:dataCopy]&& !*(dataCopy + 2))
   {
-    v11 = *(v8 + 9);
-    *(v8 + 9) = 0;
+    v11 = *(dataCopy + 9);
+    *(dataCopy + 9) = 0;
   }
 
   else
   {
-    v10 = v9;
-    v11 = *(v8 + 9);
-    *(v8 + 9) = v10;
+    v10 = suggestionsCopy;
+    v11 = *(dataCopy + 9);
+    *(dataCopy + 9) = v10;
   }
 
-  if ([(ATXHomeScreenSuggestionClient *)self _isSystemInitiatedLayoutUpdateAllowed:v8])
+  if ([(ATXHomeScreenSuggestionClient *)self _isSystemInitiatedLayoutUpdateAllowed:dataCopy])
   {
-    v12 = [(ATXHomeScreenSuggestionClient *)self _computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData:v8 cachedSuggestions:v9];
-    v13 = *(v8 + 11);
-    *(v8 + 11) = v12;
+    v12 = [(ATXHomeScreenSuggestionClient *)self _computePreviousSuggestedSuggestionWidgetLayoutsWithGuardedData:dataCopy cachedSuggestions:suggestionsCopy];
+    v13 = *(dataCopy + 11);
+    *(dataCopy + 11) = v12;
 
-    if ([*(v8 + 11) count])
+    if ([*(dataCopy + 11) count])
     {
       v14 = __atxlog_handle_home_screen();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [*(v8 + 11) allKeys];
+        allKeys = [*(dataCopy + 11) allKeys];
         *buf = 138412290;
-        v35 = v15;
+        v35 = allKeys;
         _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: keeping around previously-removed suggested suggestion widget layouts: %@", buf, 0xCu);
       }
 
-      [(ATXHomeScreenSuggestionClient *)self _clearRotationSuppressionTimerWithGuardedData:v8];
+      [(ATXHomeScreenSuggestionClient *)self _clearRotationSuppressionTimerWithGuardedData:dataCopy];
     }
 
-    v16 = [v9 cachedSuggestionWidgetLayouts];
-    v17 = *(v8 + 12);
-    *(v8 + 12) = v16;
+    cachedSuggestionWidgetLayouts = [suggestionsCopy cachedSuggestionWidgetLayouts];
+    v17 = *(dataCopy + 12);
+    *(dataCopy + 12) = cachedSuggestionWidgetLayouts;
 
-    v18 = [v9 cachedAppPredictionPanelLayouts];
-    v19 = *(v8 + 13);
-    *(v8 + 13) = v18;
+    cachedAppPredictionPanelLayouts = [suggestionsCopy cachedAppPredictionPanelLayouts];
+    v19 = *(dataCopy + 13);
+    *(dataCopy + 13) = cachedAppPredictionPanelLayouts;
 
-    v20 = [v9 fallbackSuggestions];
-    v21 = [v20 mutableCopy];
-    v22 = *(v8 + 15);
-    *(v8 + 15) = v21;
+    fallbackSuggestions = [suggestionsCopy fallbackSuggestions];
+    v21 = [fallbackSuggestions mutableCopy];
+    v22 = *(dataCopy + 15);
+    *(dataCopy + 15) = v21;
 
     v23 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -1168,10 +1168,10 @@ uint64_t __115__ATXHomeScreenSuggestionClient__computePreviousSuggestedSuggestio
       _os_log_impl(&dword_1BF549000, v23, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: updated Proactive widget layouts", buf, 2u);
     }
 
-    [(ATXHomeScreenSuggestionClient *)self _notifyObserversAboutLayoutUpdateWithGuardedData:v8];
-    if (!a5)
+    [(ATXHomeScreenSuggestionClient *)self _notifyObserversAboutLayoutUpdateWithGuardedData:dataCopy];
+    if (!only)
     {
-      if (*(v8 + 2) || [(NSUserDefaults *)self->_atxDefaults BOOLForKey:@"ATXStopAllStackRotation"])
+      if (*(dataCopy + 2) || [(NSUserDefaults *)self->_atxDefaults BOOLForKey:@"ATXStopAllStackRotation"])
       {
         v24 = __atxlog_handle_home_screen();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1183,22 +1183,22 @@ uint64_t __115__ATXHomeScreenSuggestionClient__computePreviousSuggestedSuggestio
 
       else
       {
-        if ([*(v8 + 14) count])
+        if ([*(dataCopy + 14) count])
         {
-          [(ATXHomeScreenSuggestionClient *)self _refreshInferredEngagementStatusForWidgetSuggestions:v8];
+          [(ATXHomeScreenSuggestionClient *)self _refreshInferredEngagementStatusForWidgetSuggestions:dataCopy];
         }
 
-        v25 = [v9 uuid];
-        v26 = [v25 UUIDString];
-        v27 = *(v8 + 17);
-        *(v8 + 17) = v26;
+        uuid = [suggestionsCopy uuid];
+        uUIDString = [uuid UUIDString];
+        v27 = *(dataCopy + 17);
+        *(dataCopy + 17) = uUIDString;
 
-        v28 = [ATXHomeScreenStackSuggestion stackSuggestionsFromCachedSuggestions:v9];
-        v29 = *(v8 + 14);
-        *(v8 + 14) = v28;
+        v28 = [ATXHomeScreenStackSuggestion stackSuggestionsFromCachedSuggestions:suggestionsCopy];
+        v29 = *(dataCopy + 14);
+        *(dataCopy + 14) = v28;
 
-        v30 = *(v8 + 18);
-        *(v8 + 18) = 0;
+        v30 = *(dataCopy + 18);
+        *(dataCopy + 18) = 0;
 
         v31 = __atxlog_handle_home_screen();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -1207,8 +1207,8 @@ uint64_t __115__ATXHomeScreenSuggestionClient__computePreviousSuggestedSuggestio
           _os_log_impl(&dword_1BF549000, v31, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: updated stack suggestions", buf, 2u);
         }
 
-        [(ATXHomeScreenSuggestionClient *)self _notifyObserversAboutSuggestionRefreshWithGuardedData:v8];
-        [(ATXHomeScreenSuggestionClient *)self _handleStackSuggestionDidUpdate:v8];
+        [(ATXHomeScreenSuggestionClient *)self _notifyObserversAboutSuggestionRefreshWithGuardedData:dataCopy];
+        [(ATXHomeScreenSuggestionClient *)self _handleStackSuggestionDidUpdate:dataCopy];
         outputQueue = self->_outputQueue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -1237,11 +1237,11 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
   *(a2 + 88) = 0;
 }
 
-- (void)_refreshInferredEngagementStatusForWidgetSuggestions:(id)a3
+- (void)_refreshInferredEngagementStatusForWidgetSuggestions:(id)suggestions
 {
   v71 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v53 = self;
+  suggestionsCopy = suggestions;
+  selfCopy = self;
   v4 = [(ATXEngagementRecordManager *)self->_engagementRecordManager engagedExecutablesOfType:4 queryOptions:0];
   v54 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
   v5 = __atxlog_handle_home_screen();
@@ -1279,30 +1279,30 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
           v11 = *(*(&v59 + 1) + 8 * i);
           if ([v11 type] == 3)
           {
-            v12 = [v11 object];
-            v13 = [v12 suggestionIdentifier];
-            v14 = [v12 widgetBundleIdentifier];
-            v15 = [v12 widgetKind];
-            v16 = [(ATXHomeScreenSuggestionClient *)v53 _isWidgetEngaged:v14 kind:v15 afterMostRecentProactiveRotationToSuggestionWithIdentifier:v13 guardedData:v52];
+            object = [v11 object];
+            suggestionIdentifier = [object suggestionIdentifier];
+            widgetBundleIdentifier = [object widgetBundleIdentifier];
+            widgetKind = [object widgetKind];
+            v16 = [(ATXHomeScreenSuggestionClient *)selfCopy _isWidgetEngaged:widgetBundleIdentifier kind:widgetKind afterMostRecentProactiveRotationToSuggestionWithIdentifier:suggestionIdentifier guardedData:suggestionsCopy];
 
             if (!v16)
             {
               v17 = __atxlog_handle_home_screen();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
-                v18 = [v12 confidenceLevel];
-                v19 = [v12 widgetBundleIdentifier];
+                confidenceLevel = [object confidenceLevel];
+                widgetBundleIdentifier2 = [object widgetBundleIdentifier];
                 *buf = 138543874;
-                v65 = v13;
+                v65 = suggestionIdentifier;
                 v66 = 2050;
-                v67 = v18;
+                v67 = confidenceLevel;
                 v68 = 2112;
-                v69 = v19;
+                v69 = widgetBundleIdentifier2;
                 _os_log_impl(&dword_1BF549000, v17, OS_LOG_TYPE_DEFAULT, "RAS:     [TRYING TO REMOVE ENGAGEMENT] infoSuggestionId %{public}@, confidence %{public}ld, widgetExtBundleId %@", buf, 0x20u);
               }
 
-              v20 = [v12 confidenceLevel];
-              if (v20 >= [obj minInfoConfidenceLevelForBlendingConfidenceCategory:3])
+              confidenceLevel2 = [object confidenceLevel];
+              if (confidenceLevel2 >= [obj minInfoConfidenceLevelForBlendingConfidenceCategory:3])
               {
                 v21 = v49;
               }
@@ -1312,10 +1312,10 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
                 v21 = v48;
               }
 
-              [(ATXEngagementRecordManager *)v53->_engagementRecordManager removeEngagementForExecutableIdentifier:v11 recordType:4 abortingRemovalIfEngagementDateIsLaterThanDate:v21];
+              [(ATXEngagementRecordManager *)selfCopy->_engagementRecordManager removeEngagementForExecutableIdentifier:v11 recordType:4 abortingRemovalIfEngagementDateIsLaterThanDate:v21];
             }
 
-            [v54 addObject:v13];
+            [v54 addObject:suggestionIdentifier];
           }
         }
 
@@ -1337,7 +1337,7 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obja = [v52[14] allValues];
+  obja = [suggestionsCopy[14] allValues];
   v23 = [obja countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v23)
   {
@@ -1353,71 +1353,71 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
         }
 
         v27 = *(*(&v55 + 1) + 8 * j);
-        v28 = [v27 topWidgetProactiveSuggestion];
+        topWidgetProactiveSuggestion = [v27 topWidgetProactiveSuggestion];
 
-        if (v28)
+        if (topWidgetProactiveSuggestion)
         {
-          v29 = [v27 topWidgetProactiveSuggestion];
-          v30 = [v29 executableSpecification];
-          v31 = [v30 executableIdentifier];
+          topWidgetProactiveSuggestion2 = [v27 topWidgetProactiveSuggestion];
+          executableSpecification = [topWidgetProactiveSuggestion2 executableSpecification];
+          executableIdentifier = [executableSpecification executableIdentifier];
 
-          if ([v54 containsObject:v31])
+          if ([v54 containsObject:executableIdentifier])
           {
             v32 = __atxlog_handle_home_screen();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v65 = v31;
+              v65 = executableIdentifier;
               _os_log_impl(&dword_1BF549000, v32, OS_LOG_TYPE_DEFAULT, "RAS:     Skipping infoSuggestionId %{public}@ becaues it was already processed", buf, 0xCu);
             }
           }
 
           else
           {
-            v33 = [v27 topWidget];
-            v34 = [v33 extensionBundleId];
-            v35 = [v27 topWidget];
-            v36 = [v35 widgetKind];
-            v37 = [(ATXHomeScreenSuggestionClient *)v53 _isWidgetEngaged:v34 kind:v36 afterMostRecentProactiveRotationToSuggestionWithIdentifier:v31 guardedData:v52];
+            topWidget = [v27 topWidget];
+            extensionBundleId = [topWidget extensionBundleId];
+            topWidget2 = [v27 topWidget];
+            widgetKind2 = [topWidget2 widgetKind];
+            v37 = [(ATXHomeScreenSuggestionClient *)selfCopy _isWidgetEngaged:extensionBundleId kind:widgetKind2 afterMostRecentProactiveRotationToSuggestionWithIdentifier:executableIdentifier guardedData:suggestionsCopy];
 
             if (v37)
             {
-              engagementRecordManager = v53->_engagementRecordManager;
-              v39 = [v27 topWidgetProactiveSuggestion];
-              LODWORD(engagementRecordManager) = [(ATXEngagementRecordManager *)engagementRecordManager hasReferenceForSuggestion:v39];
+              engagementRecordManager = selfCopy->_engagementRecordManager;
+              topWidgetProactiveSuggestion3 = [v27 topWidgetProactiveSuggestion];
+              LODWORD(engagementRecordManager) = [(ATXEngagementRecordManager *)engagementRecordManager hasReferenceForSuggestion:topWidgetProactiveSuggestion3];
 
-              v40 = __atxlog_handle_home_screen();
-              v41 = os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT);
+              topWidgetProactiveSuggestion4 = __atxlog_handle_home_screen();
+              v41 = os_log_type_enabled(topWidgetProactiveSuggestion4, OS_LOG_TYPE_DEFAULT);
               if (engagementRecordManager)
               {
                 if (v41)
                 {
-                  v42 = [v27 topWidget];
-                  v43 = [v42 extensionBundleId];
+                  topWidget3 = [v27 topWidget];
+                  extensionBundleId2 = [topWidget3 extensionBundleId];
                   *buf = 138543618;
-                  v65 = v31;
+                  v65 = executableIdentifier;
                   v66 = 2112;
-                  v67 = v43;
-                  _os_log_impl(&dword_1BF549000, v40, OS_LOG_TYPE_DEFAULT, "RAS:     [ADDING ENGAGEMENT] infoSuggestionId %{public}@, widgetExtBundleId %@", buf, 0x16u);
+                  v67 = extensionBundleId2;
+                  _os_log_impl(&dword_1BF549000, topWidgetProactiveSuggestion4, OS_LOG_TYPE_DEFAULT, "RAS:     [ADDING ENGAGEMENT] infoSuggestionId %{public}@, widgetExtBundleId %@", buf, 0x16u);
                 }
 
-                v44 = v53->_engagementRecordManager;
-                v40 = [v27 topWidgetProactiveSuggestion];
-                [(ATXEngagementRecordManager *)v44 addEngagedSuggestion:v40 engagementRecordType:4];
+                v44 = selfCopy->_engagementRecordManager;
+                topWidgetProactiveSuggestion4 = [v27 topWidgetProactiveSuggestion];
+                [(ATXEngagementRecordManager *)v44 addEngagedSuggestion:topWidgetProactiveSuggestion4 engagementRecordType:4];
               }
 
               else if (v41)
               {
-                v45 = [v27 topWidget];
-                v46 = [v45 extensionBundleId];
+                topWidget4 = [v27 topWidget];
+                extensionBundleId3 = [topWidget4 extensionBundleId];
                 *buf = 138543618;
-                v65 = v31;
+                v65 = executableIdentifier;
                 v66 = 2112;
-                v67 = v46;
-                _os_log_impl(&dword_1BF549000, v40, OS_LOG_TYPE_DEFAULT, "RAS:     Skipping infoSuggestionId %{public}@ because ERM doesn't contain a reference, widgetExtBundleId %@", buf, 0x16u);
+                v67 = extensionBundleId3;
+                _os_log_impl(&dword_1BF549000, topWidgetProactiveSuggestion4, OS_LOG_TYPE_DEFAULT, "RAS:     Skipping infoSuggestionId %{public}@ because ERM doesn't contain a reference, widgetExtBundleId %@", buf, 0x16u);
               }
 
-              [v54 addObject:v31];
+              [v54 addObject:executableIdentifier];
             }
           }
         }
@@ -1430,28 +1430,28 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
   }
 }
 
-- (BOOL)_isWidgetEngaged:(id)a3 kind:(id)a4 afterMostRecentProactiveRotationToSuggestionWithIdentifier:(id)a5 guardedData:(id)a6
+- (BOOL)_isWidgetEngaged:(id)engaged kind:(id)kind afterMostRecentProactiveRotationToSuggestionWithIdentifier:(id)identifier guardedData:(id)data
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12[24] mostRecentRotationRecordForSuggestionIdentifier:v11];
-  v14 = [v13 rotationDate];
+  engagedCopy = engaged;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  dataCopy = data;
+  v13 = [dataCopy[24] mostRecentRotationRecordForSuggestionIdentifier:identifierCopy];
+  rotationDate = [v13 rotationDate];
 
-  if (v14)
+  if (rotationDate)
   {
-    v15 = [v12[24] mostRecentEngagementOfWidget:v9 kind:v10 ofType:1];
-    v16 = [v12[24] mostRecentEngagementOfWidget:v9 kind:v10 ofType:2];
-    v17 = [v16 date];
-    if (v17 && (v18 = v17, [v15 date], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
+    v15 = [dataCopy[24] mostRecentEngagementOfWidget:engagedCopy kind:kindCopy ofType:1];
+    v16 = [dataCopy[24] mostRecentEngagementOfWidget:engagedCopy kind:kindCopy ofType:2];
+    date = [v16 date];
+    if (date && (v18 = date, [v15 date], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
     {
-      v20 = [v16 date];
-      v21 = [v15 date];
-      v22 = [v20 laterDate:v21];
+      date2 = [v16 date];
+      date3 = [v15 date];
+      date5 = [date2 laterDate:date3];
 
-      if (!v22)
+      if (!date5)
       {
         goto LABEL_17;
       }
@@ -1459,18 +1459,18 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
 
     else
     {
-      v23 = [v16 date];
+      date4 = [v16 date];
 
-      if (v23)
+      if (date4)
       {
         v24 = v16;
       }
 
       else
       {
-        v22 = [v15 date];
+        date5 = [v15 date];
 
-        if (!v22)
+        if (!date5)
         {
           goto LABEL_17;
         }
@@ -1478,33 +1478,33 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
         v24 = v15;
       }
 
-      v22 = [v24 date];
-      if (!v22)
+      date5 = [v24 date];
+      if (!date5)
       {
         goto LABEL_17;
       }
     }
 
-    v26 = [v13 rotationDate];
-    v27 = [v22 earlierDate:v26];
+    rotationDate2 = [v13 rotationDate];
+    v27 = [date5 earlierDate:rotationDate2];
 
-    if (v27 != v22)
+    if (v27 != date5)
     {
-      v28 = [v12[24] mostRecentTimelineUpdateDateOfWidget:v9 kind:v10];
+      v28 = [dataCopy[24] mostRecentTimelineUpdateDateOfWidget:engagedCopy kind:kindCopy];
       v29 = v28;
       if (v28)
       {
-        v30 = v28;
+        distantPast = v28;
       }
 
       else
       {
-        v30 = [MEMORY[0x1E695DF00] distantPast];
+        distantPast = [MEMORY[0x1E695DF00] distantPast];
       }
 
-      v31 = v30;
+      v31 = distantPast;
 
-      v33 = [v22 laterDate:v31];
+      v33 = [date5 laterDate:v31];
 
       log = __atxlog_handle_home_screen();
       v34 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
@@ -1514,15 +1514,15 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
       {
         if (v34)
         {
-          v38 = [v13 rotationDate];
+          rotationDate3 = [v13 rotationDate];
           *buf = 138413314;
-          v41 = v9;
+          v41 = engagedCopy;
           v42 = 2114;
-          v43 = v11;
+          v43 = identifierCopy;
           v44 = 2114;
-          v45 = v38;
+          v45 = rotationDate3;
           v46 = 2114;
-          v47 = v22;
+          v47 = date5;
           v48 = 2114;
           v49 = v31;
           v36 = "RAS:     NO <= _isWidgetEngaged: %@, suggestionId: %{public}@ (mostRecentRotation %{public}@, mostRecentEngagement %{public}@, mostRecentTimelineUpdate %{public}@)";
@@ -1532,15 +1532,15 @@ void __107__ATXHomeScreenSuggestionClient__updateGuardedData_withCachedSuggestio
 
       else if (v34)
       {
-        v38 = [v13 rotationDate];
+        rotationDate3 = [v13 rotationDate];
         *buf = 138413314;
-        v41 = v9;
+        v41 = engagedCopy;
         v42 = 2114;
-        v43 = v11;
+        v43 = identifierCopy;
         v44 = 2114;
-        v45 = v38;
+        v45 = rotationDate3;
         v46 = 2114;
-        v47 = v22;
+        v47 = date5;
         v48 = 2114;
         v49 = v31;
         v36 = "RAS:     YES <= _isWidgetEngaged: %@, suggestionId: %{public}@ (mostRecentRotation %{public}@, mostRecentEngagement %{public}@, mostRecentTimelineUpdate %{public}@)";
@@ -1556,15 +1556,15 @@ LABEL_17:
     v31 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v13 rotationDate];
+      rotationDate4 = [v13 rotationDate];
       *buf = 138413058;
-      v41 = v9;
+      v41 = engagedCopy;
       v42 = 2114;
-      v43 = v11;
+      v43 = identifierCopy;
       v44 = 2114;
-      v45 = v32;
+      v45 = rotationDate4;
       v46 = 2114;
-      v47 = v22;
+      v47 = date5;
       _os_log_impl(&dword_1BF549000, v31, OS_LOG_TYPE_DEFAULT, "RAS:     NO <= _isWidgetEngaged: %@, suggestionId: %{public}@ (mostRecentRotation %{public}@, mostRecentEngagement %{public}@)", buf, 0x2Au);
     }
 
@@ -1576,9 +1576,9 @@ LABEL_17:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v41 = v9;
+    v41 = engagedCopy;
     v42 = 2114;
-    v43 = v11;
+    v43 = identifierCopy;
     _os_log_impl(&dword_1BF549000, v15, OS_LOG_TYPE_DEFAULT, "RAS:     NO <= _isWidgetEngaged: %@, suggestionId: %{public}@ (nil suggestion rotation date)", buf, 0x16u);
   }
 
@@ -1588,14 +1588,14 @@ LABEL_29:
   return v25;
 }
 
-- (void)_notifyObserversAboutSuggestionRefreshWithGuardedData:(id)a3
+- (void)_notifyObserversAboutSuggestionRefreshWithGuardedData:(id)data
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(data + 1);
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -1645,14 +1645,14 @@ uint64_t __87__ATXHomeScreenSuggestionClient__notifyObserversAboutSuggestionRefr
   return result;
 }
 
-- (void)_notifyObserversAboutLayoutUpdateWithGuardedData:(id)a3
+- (void)_notifyObserversAboutLayoutUpdateWithGuardedData:(id)data
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(data + 1);
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -1702,9 +1702,9 @@ uint64_t __82__ATXHomeScreenSuggestionClient__notifyObserversAboutLayoutUpdateWi
   return result;
 }
 
-- (void)_cleanupGuardedData:(id)a3
+- (void)_cleanupGuardedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1712,42 +1712,42 @@ uint64_t __82__ATXHomeScreenSuggestionClient__notifyObserversAboutLayoutUpdateWi
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: cleaning up guarded data", v14, 2u);
   }
 
-  v6 = v4[11];
-  v4[11] = 0;
+  v6 = dataCopy[11];
+  dataCopy[11] = 0;
 
-  v7 = v4[17];
-  v4[17] = 0;
+  v7 = dataCopy[17];
+  dataCopy[17] = 0;
 
-  v8 = v4[12];
-  v4[12] = 0;
+  v8 = dataCopy[12];
+  dataCopy[12] = 0;
 
-  v9 = v4[13];
-  v4[13] = 0;
+  v9 = dataCopy[13];
+  dataCopy[13] = 0;
 
-  v10 = v4[14];
-  v4[14] = 0;
+  v10 = dataCopy[14];
+  dataCopy[14] = 0;
 
-  v11 = v4[15];
-  v4[15] = 0;
+  v11 = dataCopy[15];
+  dataCopy[15] = 0;
 
-  v12 = v4[18];
-  v4[18] = 0;
+  v12 = dataCopy[18];
+  dataCopy[18] = 0;
 
-  v13 = v4[9];
-  v4[9] = 0;
+  v13 = dataCopy[9];
+  dataCopy[9] = 0;
 
-  [(ATXHomeScreenSuggestionClient *)self _clearRotationSuppressionTimerWithGuardedData:v4];
+  [(ATXHomeScreenSuggestionClient *)self _clearRotationSuppressionTimerWithGuardedData:dataCopy];
 }
 
-- (void)_clearRotationSuppressionTimerWithGuardedData:(id)a3
+- (void)_clearRotationSuppressionTimerWithGuardedData:(id)data
 {
-  v3 = *(a3 + 2);
+  v3 = *(data + 2);
   if (v3)
   {
-    v5 = a3;
+    dataCopy = data;
     dispatch_source_cancel(v3);
-    v6 = *(a3 + 2);
-    *(a3 + 2) = 0;
+    v6 = *(data + 2);
+    *(data + 2) = 0;
   }
 }
 
@@ -1764,14 +1764,14 @@ void __65__ATXHomeScreenSuggestionClient__handleStackSuggestionDidUpdate___block
   }
 }
 
-- (void)_alertUserIfNeededOfStackChange:(id)a3 widgetOnTop:(id)a4 reason:(unint64_t)a5
+- (void)_alertUserIfNeededOfStackChange:(id)change widgetOnTop:(id)top reason:(unint64_t)reason
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  changeCopy = change;
+  topCopy = top;
   if ([(NSUserDefaults *)self->_atxDefaults BOOLForKey:@"ATXHomeScreenStackChangeAlert"])
   {
-    v10 = a5 > 9;
+    v10 = reason > 9;
   }
 
   else
@@ -1779,9 +1779,9 @@ void __65__ATXHomeScreenSuggestionClient__handleStackSuggestionDidUpdate___block
     v10 = 1;
   }
 
-  if (!v10 && ((1 << a5) & 0x20C) != 0)
+  if (!v10 && ((1 << reason) & 0x20C) != 0)
   {
-    v36 = v9;
+    v36 = topCopy;
     [(ATXHomeScreenConfigCache *)self->_homeScreenConfigCache loadHomeScreenAndTodayPageConfigurationsWithError:0];
     v42 = 0u;
     v43 = 0u;
@@ -1810,8 +1810,8 @@ void __65__ATXHomeScreenSuggestionClient__handleStackSuggestionDidUpdate___block
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v37 = [v13 stacks];
-        v14 = [v37 countByEnumeratingWithState:&v38 objects:v52 count:16];
+        stacks = [v13 stacks];
+        v14 = [stacks countByEnumeratingWithState:&v38 objects:v52 count:16];
         if (v14)
         {
           v15 = v14;
@@ -1822,21 +1822,21 @@ void __65__ATXHomeScreenSuggestionClient__handleStackSuggestionDidUpdate___block
             {
               if (*v39 != v16)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(stacks);
               }
 
               v18 = *(*(&v38 + 1) + 8 * i);
-              v19 = [v18 identifier];
-              v20 = [v19 isEqualToString:v8];
+              identifier = [v18 identifier];
+              v20 = [identifier isEqualToString:changeCopy];
 
               if (v20)
               {
                 v21 = objc_opt_new();
-                if (a5 == 9)
+                if (reason == 9)
                 {
                   v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-                  v23 = [v36 extensionBundleId];
-                  v24 = [v25 initWithFormat:@"%@ (forced debug rotation)", v23];
+                  extensionBundleId = [v36 extensionBundleId];
+                  v24 = [v25 initWithFormat:@"%@ (forced debug rotation)", extensionBundleId];
 LABEL_23:
                   v26 = v24;
                   [v21 setObject:v24 forKeyedSubscript:@"widget"];
@@ -1844,35 +1844,35 @@ LABEL_23:
 
                 else
                 {
-                  if (a5 == 3)
+                  if (reason == 3)
                   {
                     v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-                    v23 = [v36 extensionBundleId];
-                    v24 = [v22 initWithFormat:@"%@ (due to suggestion expiry)", v23];
+                    extensionBundleId = [v36 extensionBundleId];
+                    v24 = [v22 initWithFormat:@"%@ (due to suggestion expiry)", extensionBundleId];
                     goto LABEL_23;
                   }
 
-                  v23 = [v36 extensionBundleId];
-                  [v21 setObject:v23 forKeyedSubscript:@"widget"];
+                  extensionBundleId = [v36 extensionBundleId];
+                  [v21 setObject:extensionBundleId forKeyedSubscript:@"widget"];
                 }
 
                 v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "pageIndex")}];
                 [v21 setObject:v27 forKeyedSubscript:@"pageNumber"];
 
-                v28 = [MEMORY[0x1E696ABB0] defaultCenter];
-                [v28 postNotificationName:@"com.apple.duetexpertd.homeScreenStackChange" object:0 userInfo:v21];
+                defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+                [defaultCenter postNotificationName:@"com.apple.duetexpertd.homeScreenStackChange" object:0 userInfo:v21];
 
                 v29 = __atxlog_handle_home_screen();
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
                 {
-                  v30 = [v18 identifier];
-                  v31 = [v13 pageIndex];
+                  identifier2 = [v18 identifier];
+                  pageIndex = [v13 pageIndex];
                   *buf = 136315650;
                   v47 = "[ATXHomeScreenSuggestionClient _alertUserIfNeededOfStackChange:widgetOnTop:reason:]";
                   v48 = 2112;
-                  v49 = v30;
+                  v49 = identifier2;
                   v50 = 2048;
-                  v51 = v31;
+                  v51 = pageIndex;
                   _os_log_impl(&dword_1BF549000, v29, OS_LOG_TYPE_DEFAULT, "%s: sent notification about stackID: %@ on page: %lu", buf, 0x20u);
                 }
 
@@ -1880,7 +1880,7 @@ LABEL_23:
               }
             }
 
-            v15 = [v37 countByEnumeratingWithState:&v38 objects:v52 count:16];
+            v15 = [stacks countByEnumeratingWithState:&v38 objects:v52 count:16];
           }
 
           while (v15);
@@ -1895,27 +1895,27 @@ LABEL_23:
       {
 LABEL_32:
 
-        v9 = v36;
+        topCopy = v36;
         break;
       }
     }
   }
 }
 
-- (void)layoutForSuggestionsWidget:(id)a3 completionHandler:(id)a4
+- (void)layoutForSuggestionsWidget:(id)widget completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  handlerCopy = handler;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__ATXHomeScreenSuggestionClient_layoutForSuggestionsWidget_completionHandler___block_invoke;
   v11[3] = &unk_1E80C3508;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = widgetCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = widgetCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
@@ -2031,20 +2031,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)layoutForAppPredictionPanel:(id)a3 completionHandler:(id)a4
+- (void)layoutForAppPredictionPanel:(id)panel completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  panelCopy = panel;
+  handlerCopy = handler;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__ATXHomeScreenSuggestionClient_layoutForAppPredictionPanel_completionHandler___block_invoke;
   v11[3] = &unk_1E80C3508;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = panelCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = panelCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
@@ -2143,12 +2143,12 @@ LABEL_7:
 LABEL_15:
 }
 
-- (int64_t)_layoutTypeOfSuggestion:(id)a3 inLayout:(id)a4
+- (int64_t)_layoutTypeOfSuggestion:(id)suggestion inLayout:(id)layout
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 oneByOneSuggestions];
-  v8 = [v7 containsObject:v5];
+  suggestionCopy = suggestion;
+  layoutCopy = layout;
+  oneByOneSuggestions = [layoutCopy oneByOneSuggestions];
+  v8 = [oneByOneSuggestions containsObject:suggestionCopy];
 
   if (v8)
   {
@@ -2157,8 +2157,8 @@ LABEL_15:
 
   else
   {
-    v10 = [v6 oneByTwoSuggestions];
-    v11 = [v10 containsObject:v5];
+    oneByTwoSuggestions = [layoutCopy oneByTwoSuggestions];
+    v11 = [oneByTwoSuggestions containsObject:suggestionCopy];
 
     if (v11)
     {
@@ -2167,8 +2167,8 @@ LABEL_15:
 
     else
     {
-      v12 = [v6 twoByTwoSuggestions];
-      v13 = [v12 containsObject:v5];
+      twoByTwoSuggestions = [layoutCopy twoByTwoSuggestions];
+      v13 = [twoByTwoSuggestions containsObject:suggestionCopy];
 
       if (v13)
       {
@@ -2177,8 +2177,8 @@ LABEL_15:
 
       else
       {
-        v14 = [v6 oneByFourSuggestions];
-        v15 = [v14 containsObject:v5];
+        oneByFourSuggestions = [layoutCopy oneByFourSuggestions];
+        v15 = [oneByFourSuggestions containsObject:suggestionCopy];
 
         if (v15)
         {
@@ -2187,8 +2187,8 @@ LABEL_15:
 
         else
         {
-          v16 = [v6 twoByFourSuggestions];
-          v17 = [v16 containsObject:v5];
+          twoByFourSuggestions = [layoutCopy twoByFourSuggestions];
+          v17 = [twoByFourSuggestions containsObject:suggestionCopy];
 
           if (v17)
           {
@@ -2197,8 +2197,8 @@ LABEL_15:
 
           else
           {
-            v18 = [v6 fourByFourSuggestions];
-            v19 = [v18 containsObject:v5];
+            fourByFourSuggestions = [layoutCopy fourByFourSuggestions];
+            v19 = [fourByFourSuggestions containsObject:suggestionCopy];
 
             if (v19)
             {
@@ -2207,8 +2207,8 @@ LABEL_15:
 
             else
             {
-              v20 = [v6 fourByEightSuggestions];
-              v21 = [v20 containsObject:v5];
+              fourByEightSuggestions = [layoutCopy fourByEightSuggestions];
+              v21 = [fourByEightSuggestions containsObject:suggestionCopy];
 
               if (v21)
               {
@@ -2229,12 +2229,12 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)isSuggestionReplacementAvailableForSuggestion:(id)a3 inLayout:(id)a4
+- (BOOL)isSuggestionReplacementAvailableForSuggestion:(id)suggestion inLayout:(id)layout
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXHomeScreenSuggestionClient *)self _layoutTypeOfSuggestion:v6 inLayout:v7];
+  suggestionCopy = suggestion;
+  layoutCopy = layout;
+  v8 = [(ATXHomeScreenSuggestionClient *)self _layoutTypeOfSuggestion:suggestionCopy inLayout:layoutCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2357,12 +2357,12 @@ void __88__ATXHomeScreenSuggestionClient_isSuggestionReplacementAvailableForSugg
 LABEL_19:
 }
 
-- (BOOL)_isFallbackSuggestionUsed:(id)a3 guardedData:(id)a4
+- (BOOL)_isFallbackSuggestionUsed:(id)used guardedData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 executableSpecification];
-  v7 = [v6 executableObject];
+  dataCopy = data;
+  executableSpecification = [used executableSpecification];
+  executableObject = [executableSpecification executableObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2371,8 +2371,8 @@ LABEL_19:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [v5[16] allValues];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allValues = [dataCopy[16] allValues];
+    v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = *v14;
@@ -2382,17 +2382,17 @@ LABEL_19:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) containsObject:v7])
+          if ([*(*(&v13 + 1) + 8 * i) containsObject:executableObject])
           {
             LOBYTE(v9) = 1;
             goto LABEL_13;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v9)
         {
           continue;
@@ -2413,7 +2413,7 @@ LABEL_13:
   return v9;
 }
 
-- (id)unusedFallbackAppSuggestionsForPage:(int64_t)a3
+- (id)unusedFallbackAppSuggestionsForPage:(int64_t)page
 {
   v5 = objc_opt_new();
   lock = self->_lock;
@@ -2421,7 +2421,7 @@ LABEL_13:
   v9[1] = 3221225472;
   v9[2] = __69__ATXHomeScreenSuggestionClient_unusedFallbackAppSuggestionsForPage___block_invoke;
   v9[3] = &unk_1E80C35A8;
-  v11 = a3;
+  pageCopy = page;
   v7 = v5;
   v10 = v7;
   [(_PASQueueLock *)lock runWithLockAcquired:v9];
@@ -2535,17 +2535,17 @@ LABEL_18:
 LABEL_20:
 }
 
-- (void)markFallbackAppSuggestion:(id)a3 asUnusedForPage:(int64_t)a4
+- (void)markFallbackAppSuggestion:(id)suggestion asUnusedForPage:(int64_t)page
 {
-  v6 = a3;
+  suggestionCopy = suggestion;
   lock = self->_lock;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__ATXHomeScreenSuggestionClient_markFallbackAppSuggestion_asUnusedForPage___block_invoke;
   v9[3] = &unk_1E80C35A8;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = suggestionCopy;
+  pageCopy = page;
+  v8 = suggestionCopy;
   [(_PASQueueLock *)lock runWithLockAcquired:v9];
 }
 
@@ -2557,17 +2557,17 @@ void __75__ATXHomeScreenSuggestionClient_markFallbackAppSuggestion_asUnusedForPa
   [v4 removeObject:*(a1 + 32)];
 }
 
-- (void)markFallbackAppSuggestion:(id)a3 asUsedForPage:(int64_t)a4
+- (void)markFallbackAppSuggestion:(id)suggestion asUsedForPage:(int64_t)page
 {
-  v6 = a3;
+  suggestionCopy = suggestion;
   lock = self->_lock;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__ATXHomeScreenSuggestionClient_markFallbackAppSuggestion_asUsedForPage___block_invoke;
   v9[3] = &unk_1E80C35A8;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = suggestionCopy;
+  pageCopy = page;
+  v8 = suggestionCopy;
   [(_PASQueueLock *)lock runWithLockAcquired:v9];
 }
 
@@ -2589,20 +2589,20 @@ void __73__ATXHomeScreenSuggestionClient_markFallbackAppSuggestion_asUsedForPage
   [v5 addObject:*(a1 + 32)];
 }
 
-- (void)didFinishExecutingTappedSuggestion:(id)a3 fromWidget:(id)a4
+- (void)didFinishExecutingTappedSuggestion:(id)suggestion fromWidget:(id)widget
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__ATXHomeScreenSuggestionClient_didFinishExecutingTappedSuggestion_fromWidget___block_invoke;
   v11[3] = &unk_1E80C35D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = suggestionCopy;
+  selfCopy = self;
+  v14 = widgetCopy;
+  v9 = widgetCopy;
+  v10 = suggestionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
@@ -2634,14 +2634,14 @@ void __79__ATXHomeScreenSuggestionClient_didFinishExecutingTappedSuggestion_from
   [*(a1 + 40) _replaceSuggestionIfNeeded:*(a1 + 32) fromProactiveWidget:*(a1 + 48) guardedData:v3];
 }
 
-- (void)setIsUserInteractingWithProactiveWidget:(BOOL)a3
+- (void)setIsUserInteractingWithProactiveWidget:(BOOL)widget
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__ATXHomeScreenSuggestionClient_setIsUserInteractingWithProactiveWidget___block_invoke;
   v4[3] = &unk_1E80C35F8;
-  v5 = a3;
+  widgetCopy = widget;
   v4[4] = self;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v4];
 }
@@ -2746,17 +2746,17 @@ void __53__ATXHomeScreenSuggestionClient_homeScreenPrediction__block_invoke(uint
   *(v11 + 40) = v10;
 }
 
-- (void)homeScreenPredictionWithReply:(id)a3
+- (void)homeScreenPredictionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   outputQueue = self->_outputQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__ATXHomeScreenSuggestionClient_homeScreenPredictionWithReply___block_invoke;
   v7[3] = &unk_1E80C2008;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(outputQueue, v7);
 }
 
@@ -2773,17 +2773,17 @@ void __63__ATXHomeScreenSuggestionClient_homeScreenPredictionWithReply___block_i
   (*(v5 + 16))(v5, v6, 0);
 }
 
-- (void)chronoServiceProvider:(id)a3 finishedPrewarmingSuggestions:(id)a4
+- (void)chronoServiceProvider:(id)provider finishedPrewarmingSuggestions:(id)suggestions
 {
-  v5 = a4;
+  suggestionsCopy = suggestions;
   lock = self->_lock;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__ATXHomeScreenSuggestionClient_chronoServiceProvider_finishedPrewarmingSuggestions___block_invoke;
   v8[3] = &unk_1E80C3470;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = suggestionsCopy;
+  v7 = suggestionsCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v8];
 }
 
@@ -2801,21 +2801,21 @@ void __85__ATXHomeScreenSuggestionClient_chronoServiceProvider_finishedPrewarmin
   [*(a1 + 32) _updateGuardedData:v3 withCachedSuggestions:*(a1 + 40) updateProactiveWidgetLayoutsOnly:0];
 }
 
-- (void)chronoServiceProvider:(id)a3 reloadDidCompleteForWidget:(id)a4 success:(BOOL)a5 widgetIsReadyForDisplay:(BOOL)a6 error:(id)a7
+- (void)chronoServiceProvider:(id)provider reloadDidCompleteForWidget:(id)widget success:(BOOL)success widgetIsReadyForDisplay:(BOOL)display error:(id)error
 {
-  v11 = a4;
-  v12 = a7;
+  widgetCopy = widget;
+  errorCopy = error;
   lock = self->_lock;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __120__ATXHomeScreenSuggestionClient_chronoServiceProvider_reloadDidCompleteForWidget_success_widgetIsReadyForDisplay_error___block_invoke;
   v16[3] = &unk_1E80C3648;
-  v19 = a5;
-  v17 = v11;
-  v18 = v12;
-  v20 = a6;
-  v14 = v12;
-  v15 = v11;
+  successCopy = success;
+  v17 = widgetCopy;
+  v18 = errorCopy;
+  displayCopy = display;
+  v14 = errorCopy;
+  v15 = widgetCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v16];
 }
 
@@ -2848,9 +2848,9 @@ void __120__ATXHomeScreenSuggestionClient_chronoServiceProvider_reloadDidComplet
   [v13 recordWidgetReloadForSuggestion:v14 date:v15 readyForDisplay:*(a1 + 49)];
 }
 
-- (void)_updateLoggerStacksToStackSuggestionsFromHomeScreenCachedSuggestions:(id)a3
+- (void)_updateLoggerStacksToStackSuggestionsFromHomeScreenCachedSuggestions:(id)suggestions
 {
-  v4 = [ATXHomeScreenStackSuggestion stackSuggestionsFromCachedSuggestions:a3];
+  v4 = [ATXHomeScreenStackSuggestion stackSuggestionsFromCachedSuggestions:suggestions];
   v5 = objc_opt_new();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2915,10 +2915,10 @@ void __102__ATXHomeScreenSuggestionClient__updateLoggerStacksToStackSuggestionsF
   }
 }
 
-- (void)blendingLayerDidUpdateHomeScreenCachedSuggestions:(id)a3 completion:(id)a4
+- (void)blendingLayerDidUpdateHomeScreenCachedSuggestions:(id)suggestions completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  suggestionsCopy = suggestions;
   v8 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2926,38 +2926,38 @@ void __102__ATXHomeScreenSuggestionClient__updateLoggerStacksToStackSuggestionsF
     _os_log_impl(&dword_1BF549000, v8, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: received update from duetexpertd", buf, 2u);
   }
 
-  [(ATXChronoServicesProvider *)self->_chronoServicesProvider resetToPrewarmWidgetsInSuggestions:v7];
-  [(ATXHomeScreenSuggestionClient *)self _updateLoggerStacksToStackSuggestionsFromHomeScreenCachedSuggestions:v7];
+  [(ATXChronoServicesProvider *)self->_chronoServicesProvider resetToPrewarmWidgetsInSuggestions:suggestionsCopy];
+  [(ATXHomeScreenSuggestionClient *)self _updateLoggerStacksToStackSuggestionsFromHomeScreenCachedSuggestions:suggestionsCopy];
 
   outputQueue = self->_outputQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__ATXHomeScreenSuggestionClient_blendingLayerDidUpdateHomeScreenCachedSuggestions_completion___block_invoke;
   block[3] = &unk_1E80C3698;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(outputQueue, block);
 }
 
-- (void)getCurrentSuggestionsWidgetAndAppPredictionPanelLayoutsWithCompletionHandler:(id)a3
+- (void)getCurrentSuggestionsWidgetAndAppPredictionPanelLayoutsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __110__ATXHomeScreenSuggestionClient_getCurrentSuggestionsWidgetAndAppPredictionPanelLayoutsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E80C36C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
-- (void)synchronouslyRelinquishOnDiskResourcesAheadOfDataDeletionWithCompletionHandler:(id)a3
+- (void)synchronouslyRelinquishOnDiskResourcesAheadOfDataDeletionWithCompletionHandler:(id)handler
 {
   lock = self->_lock;
-  v4 = a3;
+  handlerCopy = handler;
   [(_PASQueueLock *)lock runWithLockAcquired:&__block_literal_global_160];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 void __112__ATXHomeScreenSuggestionClient_synchronouslyRelinquishOnDiskResourcesAheadOfDataDeletionWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2969,26 +2969,26 @@ void __112__ATXHomeScreenSuggestionClient_synchronouslyRelinquishOnDiskResources
   a2[24] = 0;
 }
 
-- (void)forceDebugRotationForStack:(id)a3 extensionBundleId:(id)a4 kind:(id)a5 completion:(id)a6
+- (void)forceDebugRotationForStack:(id)stack extensionBundleId:(id)id kind:(id)kind completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stackCopy = stack;
+  idCopy = id;
+  kindCopy = kind;
+  completionCopy = completion;
   lock = self->_lock;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __94__ATXHomeScreenSuggestionClient_forceDebugRotationForStack_extensionBundleId_kind_completion___block_invoke;
   v19[3] = &unk_1E80C36E8;
-  v22 = v12;
-  v23 = v13;
+  v22 = kindCopy;
+  v23 = completionCopy;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = stackCopy;
+  v21 = idCopy;
+  v15 = kindCopy;
+  v16 = idCopy;
+  v17 = stackCopy;
+  v18 = completionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v19];
 }
 
@@ -3228,36 +3228,36 @@ LABEL_46:
 LABEL_47:
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.proactive.HomeScreenSuggestion.xpc"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.proactive.HomeScreenSuggestion.xpc"];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && ([v8 BOOLValue] & 1) != 0)
   {
     v9 = ATXHomeScreenSuggestionServerXPCInterface();
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v7 setExportedObject:self];
-    [v7 setInterruptionHandler:&__block_literal_global_172];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_172];
     objc_initWeak(&location, self);
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __68__ATXHomeScreenSuggestionClient_listener_shouldAcceptNewConnection___block_invoke_173;
     v18 = &unk_1E80C10D8;
     objc_copyWeak(&v19, &location);
-    [v7 setInvalidationHandler:&v15];
+    [connectionCopy setInvalidationHandler:&v15];
     v10 = ATXHomeScreenSuggestionClientXPCInterface();
-    [v7 setRemoteObjectInterface:{v10, v15, v16, v17, v18}];
+    [connectionCopy setRemoteObjectInterface:{v10, v15, v16, v17, v18}];
 
-    [(ATXHomeScreenSuggestionClient *)self setXpcConnection:v7];
-    [v7 resume];
+    [(ATXHomeScreenSuggestionClient *)self setXpcConnection:connectionCopy];
+    [connectionCopy resume];
     v11 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = v7;
+      v22 = connectionCopy;
       _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: accepts XPC connection: %{public}@", buf, 0xCu);
     }
 
@@ -3303,13 +3303,13 @@ void __68__ATXHomeScreenSuggestionClient_listener_shouldAcceptNewConnection___bl
   [WeakRetained setXpcConnection:0];
 }
 
-- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)a3 rankOfWidgetInGallery:(unint64_t)a4 galleryItems:(id)a5
+- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)analytics rankOfWidgetInGallery:(unint64_t)gallery galleryItems:(id)items
 {
-  v8 = a5;
-  v9 = a3;
-  v11 = [(ATXHomeScreenSuggestionClient *)self xpcConnection];
-  v10 = [v11 remoteObjectProxyWithErrorHandler:&__block_literal_global_175];
-  [v10 logWidgetAddedFeaturesInCoreAnalytics:v9 rankOfWidgetInGallery:a4 galleryItems:v8];
+  itemsCopy = items;
+  analyticsCopy = analytics;
+  xpcConnection = [(ATXHomeScreenSuggestionClient *)self xpcConnection];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_175];
+  [v10 logWidgetAddedFeaturesInCoreAnalytics:analyticsCopy rankOfWidgetInGallery:gallery galleryItems:itemsCopy];
 }
 
 void __106__ATXHomeScreenSuggestionClient_logWidgetAddedFeaturesInCoreAnalytics_rankOfWidgetInGallery_galleryItems___block_invoke(uint64_t a1, void *a2)
@@ -3322,9 +3322,9 @@ void __106__ATXHomeScreenSuggestionClient_logWidgetAddedFeaturesInCoreAnalytics_
   }
 }
 
-- (BOOL)hasWidgetBeenSeen:(id)a3
+- (BOOL)hasWidgetBeenSeen:(id)seen
 {
-  v4 = a3;
+  seenCopy = seen;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3335,7 +3335,7 @@ void __106__ATXHomeScreenSuggestionClient_logWidgetAddedFeaturesInCoreAnalytics_
   v8[2] = __51__ATXHomeScreenSuggestionClient_hasWidgetBeenSeen___block_invoke;
   v8[3] = &unk_1E80C3710;
   v10 = &v11;
-  v6 = v4;
+  v6 = seenCopy;
   v9 = v6;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
   LOBYTE(lock) = *(v12 + 24);
@@ -3350,9 +3350,9 @@ void __51__ATXHomeScreenSuggestionClient_hasWidgetBeenSeen___block_invoke(uint64
   *(*(*(a1 + 40) + 8) + 24) = v3 != 0;
 }
 
-- (BOOL)hasWidgetBeenTapped:(id)a3
+- (BOOL)hasWidgetBeenTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3363,7 +3363,7 @@ void __51__ATXHomeScreenSuggestionClient_hasWidgetBeenSeen___block_invoke(uint64
   v8[2] = __53__ATXHomeScreenSuggestionClient_hasWidgetBeenTapped___block_invoke;
   v8[3] = &unk_1E80C3710;
   v10 = &v11;
-  v6 = v4;
+  v6 = tappedCopy;
   v9 = v6;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
   LOBYTE(lock) = *(v12 + 24);
@@ -3378,25 +3378,25 @@ void __53__ATXHomeScreenSuggestionClient_hasWidgetBeenTapped___block_invoke(uint
   *(*(*(a1 + 40) + 8) + 24) = v3 != 0;
 }
 
-- (void)significantDwellDetectedForWidget:(id)a3 date:(id)a4
+- (void)significantDwellDetectedForWidget:(id)widget date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  dateCopy = date;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__ATXHomeScreenSuggestionClient_significantDwellDetectedForWidget_date___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = widgetCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = widgetCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (unint64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)a3
+- (unint64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -3406,7 +3406,7 @@ void __53__ATXHomeScreenSuggestionClient_hasWidgetBeenTapped___block_invoke(uint
   v9[1] = 3221225472;
   v9[2] = __77__ATXHomeScreenSuggestionClient_pageIndexOfAppPredictionPanelWithIdentifier___block_invoke;
   v9[3] = &unk_1E80C3738;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASQueueLock *)lock runWithLockAcquired:v9];
@@ -3435,17 +3435,17 @@ void __77__ATXHomeScreenSuggestionClient_pageIndexOfAppPredictionPanelWithIdenti
   }
 }
 
-- (void)loadHomeScreenPageConfigurationsWithCompletionHandler:(id)a3
+- (void)loadHomeScreenPageConfigurationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E80C3760;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
@@ -3458,20 +3458,20 @@ void __87__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsWithCom
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)loadHomeScreenPageConfigurationsForClientWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)loadHomeScreenPageConfigurationsForClientWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForClientWithIdentifier_completionHandler___block_invoke;
   v11[3] = &unk_1E80C3508;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
@@ -3485,68 +3485,68 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
   (*(a1[6] + 16))();
 }
 
-- (void)writeHomeScreenPageConfigurations:(id)a3 completionHandler:(id)a4
+- (void)writeHomeScreenPageConfigurations:(id)configurations completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  handlerCopy = handler;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__ATXHomeScreenSuggestionClient_writeHomeScreenPageConfigurations_completionHandler___block_invoke;
   v11[3] = &unk_1E80C3508;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationsCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)writeHomeScreenPageConfigurations:(id)a3 forClientWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)writeHomeScreenPageConfigurations:(id)configurations forClientWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __109__ATXHomeScreenSuggestionClient_writeHomeScreenPageConfigurations_forClientWithIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E80C3788;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = configurationsCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = configurationsCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
-- (void)_writeHomeScreenPageConfigurations:(id)a3 forClientWithIdentifier:(id)a4 guardedData:(id)a5 completionHandler:(id)a6
+- (void)_writeHomeScreenPageConfigurations:(id)configurations forClientWithIdentifier:(id)identifier guardedData:(id)data completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
+  dataCopy = data;
+  handlerCopy = handler;
   if ([MEMORY[0x1E69C5D08] isClassCLocked])
   {
-    v14 = [v10 copy];
-    v15 = *(v12 + 19);
-    *(v12 + 19) = v14;
+    v14 = [configurationsCopy copy];
+    v15 = *(dataCopy + 19);
+    *(dataCopy + 19) = v14;
 
-    v16 = [v11 copy];
-    v17 = *(v12 + 20);
-    *(v12 + 20) = v16;
+    v16 = [identifierCopy copy];
+    v17 = *(dataCopy + 20);
+    *(dataCopy + 20) = v16;
 
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     homeScreenConfigCache = self->_homeScreenConfigCache;
     v41 = 0;
-    v19 = [(ATXHomeScreenConfigCache *)homeScreenConfigCache writeHomeScreenPageConfigurations:v10 forClientWithIdentifier:v11 error:&v41];
+    v19 = [(ATXHomeScreenConfigCache *)homeScreenConfigCache writeHomeScreenPageConfigurations:configurationsCopy forClientWithIdentifier:identifierCopy error:&v41];
     v20 = v41;
     v21 = v20;
     if (v19)
@@ -3556,7 +3556,7 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v22 = v10;
+      v22 = configurationsCopy;
       v23 = [v22 countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v23)
       {
@@ -3574,8 +3574,8 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
             v27 = *(*(&v37 + 1) + 8 * i);
             if (([v27 isHidden] & 1) == 0)
             {
-              v28 = [v27 stacks];
-              [(ATXHomeScreenSuggestionClient *)self _recordSuggestedWidgetIfNecessaryInStacks:v28 guardedData:v12];
+              stacks = [v27 stacks];
+              [(ATXHomeScreenSuggestionClient *)self _recordSuggestedWidgetIfNecessaryInStacks:stacks guardedData:dataCopy];
             }
           }
 
@@ -3586,8 +3586,8 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
       }
 
       [MEMORY[0x1E69C5BB8] refreshBlendingLayerWithReason:@"Wrote home screen page configurations"];
-      *(v12 + 48) = 1;
-      [*(v12 + 25) homeScreenOrTodayPageConfigDidChange];
+      *(dataCopy + 48) = 1;
+      [*(dataCopy + 25) homeScreenOrTodayPageConfigDidChange];
       v29 = objc_alloc(MEMORY[0x1E695DFD8]);
       v30 = [v22 _pas_mappedArrayWithTransform:&__block_literal_global_182];
       v31 = v30;
@@ -3605,7 +3605,7 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
 
       v34 = objc_opt_new();
       [v34 removePagesWithIdentifiersNotInSet:v33];
-      v13[2](v13, 0);
+      handlerCopy[2](handlerCopy, 0);
 
       v21 = v36;
     }
@@ -3621,56 +3621,56 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
         }
       }
 
-      (v13)[2](v13, v21);
+      (handlerCopy)[2](handlerCopy, v21);
     }
   }
 }
 
-- (void)writeDockAppList:(id)a3 completionHandler:(id)a4
+- (void)writeDockAppList:(id)list completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  handlerCopy = handler;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__ATXHomeScreenSuggestionClient_writeDockAppList_completionHandler___block_invoke;
   v11[3] = &unk_1E80C3508;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = listCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = listCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)_writeDockAppList:(id)a3 guardedData:(id)a4 completionHandler:(id)a5
+- (void)_writeDockAppList:(id)list guardedData:(id)data completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E69C5D08];
-  v11 = a3;
+  listCopy = list;
   if ([v10 isClassCLocked])
   {
-    v12 = [v11 copy];
+    v12 = [listCopy copy];
 
-    v13 = *(v8 + 21);
-    *(v8 + 21) = v12;
+    v13 = *(dataCopy + 21);
+    *(dataCopy + 21) = v12;
 
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     homeScreenConfigCache = self->_homeScreenConfigCache;
     v20 = 0;
-    v15 = [(ATXHomeScreenConfigCache *)homeScreenConfigCache writeDockAppList:v11 error:&v20];
+    v15 = [(ATXHomeScreenConfigCache *)homeScreenConfigCache writeDockAppList:listCopy error:&v20];
 
     v16 = v20;
     v17 = v16;
     if (v15)
     {
       [MEMORY[0x1E69C5BB8] refreshBlendingLayerWithReason:@"Wrote Dock apps"];
-      [*(v8 + 25) dockAppListDidChange];
+      [*(dataCopy + 25) dockAppListDidChange];
       v18 = 0;
     }
 
@@ -3689,67 +3689,67 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
       }
     }
 
-    (v9)[2](v9, v18);
+    (handlerCopy)[2](handlerCopy, v18);
   }
 }
 
-- (void)writeTodayPageStacks:(id)a3 appPredictionPanels:(id)a4 completionHandler:(id)a5
+- (void)writeTodayPageStacks:(id)stacks appPredictionPanels:(id)panels completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stacksCopy = stacks;
+  panelsCopy = panels;
+  handlerCopy = handler;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __92__ATXHomeScreenSuggestionClient_writeTodayPageStacks_appPredictionPanels_completionHandler___block_invoke;
   v15[3] = &unk_1E80C3788;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = stacksCopy;
+  v17 = panelsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = panelsCopy;
+  v14 = stacksCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
-- (void)_writeTodayPageStacks:(id)a3 appPredictionPanels:(id)a4 guardedData:(id)a5 completionHandler:(id)a6
+- (void)_writeTodayPageStacks:(id)stacks appPredictionPanels:(id)panels guardedData:(id)data completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stacksCopy = stacks;
+  panelsCopy = panels;
+  dataCopy = data;
+  handlerCopy = handler;
   if ([MEMORY[0x1E69C5D08] isClassCLocked])
   {
-    v14 = [v10 copy];
-    v15 = *(v12 + 22);
-    *(v12 + 22) = v14;
+    v14 = [stacksCopy copy];
+    v15 = *(dataCopy + 22);
+    *(dataCopy + 22) = v14;
 
-    v16 = [v11 copy];
-    v17 = *(v12 + 23);
-    *(v12 + 23) = v16;
+    v16 = [panelsCopy copy];
+    v17 = *(dataCopy + 23);
+    *(dataCopy + 23) = v16;
 
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     homeScreenConfigCache = self->_homeScreenConfigCache;
     v24 = 0;
-    v19 = [(ATXHomeScreenConfigCache *)homeScreenConfigCache writeTodayPageStacks:v10 appPredictionPanels:v11 error:&v24];
+    v19 = [(ATXHomeScreenConfigCache *)homeScreenConfigCache writeTodayPageStacks:stacksCopy appPredictionPanels:panelsCopy error:&v24];
     v20 = v24;
     v21 = v20;
     if (v19)
     {
-      [(ATXHomeScreenSuggestionClient *)self _recordSuggestedWidgetIfNecessaryInStacks:v10 guardedData:v12];
+      [(ATXHomeScreenSuggestionClient *)self _recordSuggestedWidgetIfNecessaryInStacks:stacksCopy guardedData:dataCopy];
       [MEMORY[0x1E69C5BB8] refreshBlendingLayerWithReason:@"Wrote Today page configuration"];
       v22 = objc_opt_new();
       [v22 setPageIndex:20000];
-      [v22 setStacks:v10];
-      [v22 setPanels:v11];
-      *(v12 + 64) = 1;
-      [*(v12 + 25) homeScreenOrTodayPageConfigDidChange];
-      v13[2](v13, 0);
+      [v22 setStacks:stacksCopy];
+      [v22 setPanels:panelsCopy];
+      *(dataCopy + 64) = 1;
+      [*(dataCopy + 25) homeScreenOrTodayPageConfigDidChange];
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -3763,22 +3763,22 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
         }
       }
 
-      (v13)[2](v13, v21);
+      (handlerCopy)[2](handlerCopy, v21);
     }
   }
 }
 
-- (void)_recordSuggestedWidgetIfNecessaryInStacks:(id)a3 guardedData:(id)a4
+- (void)_recordSuggestedWidgetIfNecessaryInStacks:(id)stacks guardedData:(id)data
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  stacksCopy = stacks;
+  dataCopy = data;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
-  v21 = [v5 countByEnumeratingWithState:&v26 objects:v37 count:16];
+  obj = stacksCopy;
+  v21 = [stacksCopy countByEnumeratingWithState:&v26 objects:v37 count:16];
   if (v21)
   {
     v20 = *v27;
@@ -3796,8 +3796,8 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [v8 widgets];
-        v10 = [v9 countByEnumeratingWithState:&v22 objects:v36 count:16];
+        widgets = [v8 widgets];
+        v10 = [widgets countByEnumeratingWithState:&v22 objects:v36 count:16];
         if (v10)
         {
           v11 = v10;
@@ -3808,40 +3808,40 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
             {
               if (*v23 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(widgets);
               }
 
               v14 = *(*(&v22 + 1) + 8 * j);
               if ([v14 isSuggestedWidget])
               {
-                v15 = [v14 widgetUniqueId];
+                widgetUniqueId = [v14 widgetUniqueId];
 
-                if (v15)
+                if (widgetUniqueId)
                 {
-                  v16 = v6[24];
-                  v17 = [v14 widgetUniqueId];
-                  [v16 recordSuggestedWidgetUniqueIdIfNotExist:v17];
+                  v16 = dataCopy[24];
+                  widgetUniqueId2 = [v14 widgetUniqueId];
+                  [v16 recordSuggestedWidgetUniqueIdIfNotExist:widgetUniqueId2];
                 }
 
                 else
                 {
-                  v17 = __atxlog_handle_home_screen();
-                  if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+                  widgetUniqueId2 = __atxlog_handle_home_screen();
+                  if (os_log_type_enabled(widgetUniqueId2, OS_LOG_TYPE_FAULT))
                   {
-                    v18 = [v8 identifier];
+                    identifier = [v8 identifier];
                     *buf = 136315650;
                     v31 = "[ATXHomeScreenSuggestionClient _recordSuggestedWidgetIfNecessaryInStacks:guardedData:]";
                     v32 = 2112;
                     v33 = v14;
                     v34 = 2114;
-                    v35 = v18;
-                    _os_log_fault_impl(&dword_1BF549000, v17, OS_LOG_TYPE_FAULT, "%s: Suggested widget %@ in stack %{public}@ does not have widgetUniqueId", buf, 0x20u);
+                    v35 = identifier;
+                    _os_log_fault_impl(&dword_1BF549000, widgetUniqueId2, OS_LOG_TYPE_FAULT, "%s: Suggested widget %@ in stack %{public}@ does not have widgetUniqueId", buf, 0x20u);
                   }
                 }
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v22 objects:v36 count:16];
+            v11 = [widgets countByEnumeratingWithState:&v22 objects:v36 count:16];
           }
 
           while (v11);
@@ -3855,23 +3855,23 @@ void __107__ATXHomeScreenSuggestionClient_loadHomeScreenPageConfigurationsForCli
   }
 }
 
-- (void)logWidgetDidAppear:(id)a3 stackId:(id)a4 prediction:(id)a5
+- (void)logWidgetDidAppear:(id)appear stackId:(id)id prediction:(id)prediction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appearCopy = appear;
+  idCopy = id;
+  predictionCopy = prediction;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__ATXHomeScreenSuggestionClient_logWidgetDidAppear_stackId_prediction___block_invoke;
   v15[3] = &unk_1E80C37D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = appearCopy;
+  v17 = idCopy;
+  v18 = predictionCopy;
+  v12 = predictionCopy;
+  v13 = idCopy;
+  v14 = appearCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
@@ -3907,23 +3907,23 @@ void __71__ATXHomeScreenSuggestionClient_logWidgetDidAppear_stackId_prediction__
   }
 }
 
-- (void)logWidgetDidDisappear:(id)a3 stackId:(id)a4 prediction:(id)a5
+- (void)logWidgetDidDisappear:(id)disappear stackId:(id)id prediction:(id)prediction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  disappearCopy = disappear;
+  idCopy = id;
+  predictionCopy = prediction;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__ATXHomeScreenSuggestionClient_logWidgetDidDisappear_stackId_prediction___block_invoke;
   v15[3] = &unk_1E80C37D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = disappearCopy;
+  v17 = idCopy;
+  v18 = predictionCopy;
+  v12 = predictionCopy;
+  v13 = idCopy;
+  v14 = disappearCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
@@ -3954,15 +3954,15 @@ void __74__ATXHomeScreenSuggestionClient_logWidgetDidDisappear_stackId_predictio
   }
 }
 
-- (void)logStackVisibilityChanged:(id)a3 visibleRect:(CGRect)a4 topWidget:(id)a5 prediction:(id)a6
+- (void)logStackVisibilityChanged:(id)changed visibleRect:(CGRect)rect topWidget:(id)widget prediction:(id)prediction
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  changedCopy = changed;
+  widgetCopy = widget;
+  predictionCopy = prediction;
   lock = self->_lock;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -3972,21 +3972,21 @@ void __74__ATXHomeScreenSuggestionClient_logWidgetDidDisappear_stackId_predictio
   v25 = y;
   v26 = width;
   v27 = height;
-  v21 = v13;
-  v22 = v14;
-  v23 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
+  v21 = changedCopy;
+  v22 = widgetCopy;
+  v23 = predictionCopy;
+  v17 = predictionCopy;
+  v18 = widgetCopy;
+  v19 = changedCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v20];
 }
 
-- (void)logStackDidDisappear:(id)a3 topWidget:(id)a4 prediction:(id)a5
+- (void)logStackDidDisappear:(id)disappear topWidget:(id)widget prediction:(id)prediction
 {
-  if (a4)
+  if (widget)
   {
 
-    [(ATXHomeScreenSuggestionClient *)self logWidgetDidDisappear:a4 stackId:a3 prediction:a5];
+    [(ATXHomeScreenSuggestionClient *)self logWidgetDidDisappear:widget stackId:disappear prediction:prediction];
   }
 
   else
@@ -3999,12 +3999,12 @@ void __74__ATXHomeScreenSuggestionClient_logWidgetDidDisappear_stackId_predictio
   }
 }
 
-- (void)logStackDidAppear:(id)a3 topWidget:(id)a4 prediction:(id)a5
+- (void)logStackDidAppear:(id)appear topWidget:(id)widget prediction:(id)prediction
 {
-  if (a4)
+  if (widget)
   {
 
-    [(ATXHomeScreenSuggestionClient *)self logWidgetDidAppear:a4 stackId:a3 prediction:a5];
+    [(ATXHomeScreenSuggestionClient *)self logWidgetDidAppear:widget stackId:appear prediction:prediction];
   }
 
   else
@@ -4017,82 +4017,82 @@ void __74__ATXHomeScreenSuggestionClient_logWidgetDidDisappear_stackId_predictio
   }
 }
 
-- (void)logHomeScreenPageDidAppear:(unint64_t)a3 topWidgetsByStackIdentifier:(id)a4 prediction:(id)a5
+- (void)logHomeScreenPageDidAppear:(unint64_t)appear topWidgetsByStackIdentifier:(id)identifier prediction:(id)prediction
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  predictionCopy = prediction;
   lock = self->_lock;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __99__ATXHomeScreenSuggestionClient_logHomeScreenPageDidAppear_topWidgetsByStackIdentifier_prediction___block_invoke;
   v13[3] = &unk_1E80C3820;
-  v15 = v9;
-  v16 = a3;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = predictionCopy;
+  appearCopy = appear;
+  v14 = identifierCopy;
+  v11 = predictionCopy;
+  v12 = identifierCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v13];
 }
 
-- (void)logHomeScreenDidDisappearWithReason:(id)a3
+- (void)logHomeScreenDidDisappearWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__ATXHomeScreenSuggestionClient_logHomeScreenDidDisappearWithReason___block_invoke;
   v7[3] = &unk_1E80C3448;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
-- (void)logSpecialPageDidAppear:(unint64_t)a3 widgetsByStackId:(id)a4 prediction:(id)a5
+- (void)logSpecialPageDidAppear:(unint64_t)appear widgetsByStackId:(id)id prediction:(id)prediction
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  predictionCopy = prediction;
   lock = self->_lock;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__ATXHomeScreenSuggestionClient_logSpecialPageDidAppear_widgetsByStackId_prediction___block_invoke;
   v13[3] = &unk_1E80C3820;
-  v15 = v9;
-  v16 = a3;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = predictionCopy;
+  appearCopy = appear;
+  v14 = idCopy;
+  v11 = predictionCopy;
+  v12 = idCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v13];
 }
 
-- (void)logSpecialPageDidDisappear:(unint64_t)a3
+- (void)logSpecialPageDidDisappear:(unint64_t)disappear
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60__ATXHomeScreenSuggestionClient_logSpecialPageDidDisappear___block_invoke;
   v4[3] = &__block_descriptor_40_e50_v16__0__ATXHomeScreenSuggestionClientGuardedData_8l;
-  v4[4] = a3;
+  v4[4] = disappear;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v4];
 }
 
-- (void)logStackStatusDidChange:(id)a3 widgetOnTop:(id)a4 reason:(unint64_t)a5 prediction:(id)a6
+- (void)logStackStatusDidChange:(id)change widgetOnTop:(id)top reason:(unint64_t)reason prediction:(id)prediction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changeCopy = change;
+  topCopy = top;
+  predictionCopy = prediction;
   lock = self->_lock;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __87__ATXHomeScreenSuggestionClient_logStackStatusDidChange_widgetOnTop_reason_prediction___block_invoke;
   v17[3] = &unk_1E80C3868;
-  v20 = v11;
-  v21 = a5;
+  v20 = topCopy;
+  reasonCopy = reason;
   v17[4] = self;
-  v18 = v12;
-  v19 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = predictionCopy;
+  v19 = changeCopy;
+  v14 = topCopy;
+  v15 = changeCopy;
+  v16 = predictionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v17];
 }
 
@@ -4123,25 +4123,25 @@ void __87__ATXHomeScreenSuggestionClient_logStackStatusDidChange_widgetOnTop_rea
   [*(a1 + 32) _alertUserIfNeededOfStackChange:*(a1 + 48) widgetOnTop:*(a1 + 56) reason:v7];
 }
 
-- (void)logStackDidTap:(id)a3 engagedUrl:(id)a4 widgetOnTop:(id)a5 prediction:(id)a6
+- (void)logStackDidTap:(id)tap engagedUrl:(id)url widgetOnTop:(id)top prediction:(id)prediction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tapCopy = tap;
+  urlCopy = url;
+  topCopy = top;
+  predictionCopy = prediction;
   lock = self->_lock;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __82__ATXHomeScreenSuggestionClient_logStackDidTap_engagedUrl_widgetOnTop_prediction___block_invoke;
   v19[3] = &unk_1E80C37D0;
-  v20 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v20 = topCopy;
+  v21 = tapCopy;
+  v22 = urlCopy;
+  v23 = predictionCopy;
+  v15 = predictionCopy;
+  v16 = urlCopy;
+  v17 = tapCopy;
+  v18 = topCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v19];
 }
 
@@ -4163,24 +4163,24 @@ uint64_t __82__ATXHomeScreenSuggestionClient_logStackDidTap_engagedUrl_widgetOnT
   return [v8 logStackDidTap:v9 engagedUrl:v11 widgetOnTop:v10 prediction:v12];
 }
 
-- (void)logSupplementaryActionInContextMenu:(unint64_t)a3 stackId:(id)a4 widgetOnTop:(id)a5 prediction:(id)a6
+- (void)logSupplementaryActionInContextMenu:(unint64_t)menu stackId:(id)id widgetOnTop:(id)top prediction:(id)prediction
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  topCopy = top;
+  predictionCopy = prediction;
   lock = self->_lock;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __100__ATXHomeScreenSuggestionClient_logSupplementaryActionInContextMenu_stackId_widgetOnTop_prediction___block_invoke;
   v17[3] = &unk_1E80C3868;
-  v20 = v12;
-  v21 = a3;
+  v20 = predictionCopy;
+  menuCopy = menu;
   v17[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v18 = topCopy;
+  v19 = idCopy;
+  v14 = predictionCopy;
+  v15 = idCopy;
+  v16 = topCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v17];
 }
 
@@ -4276,137 +4276,137 @@ LABEL_7:
   [*(v3 + 25) logSupplementaryActionInContextMenu:*(a1 + 64) stackId:*(a1 + 48) widgetOnTop:*(a1 + 40) prediction:*(a1 + 56)];
 }
 
-- (void)logUserDidChangeStackConfiguration:(id)a3
+- (void)logUserDidChangeStackConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__ATXHomeScreenSuggestionClient_logUserDidChangeStackConfiguration___block_invoke;
   v7[3] = &unk_1E80C3448;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
-- (void)logUserDidAddApp:(id)a3 page:(id)a4
+- (void)logUserDidAddApp:(id)app page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  pageCopy = page;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__ATXHomeScreenSuggestionClient_logUserDidAddApp_page___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appCopy;
+  v13 = pageCopy;
+  v9 = pageCopy;
+  v10 = appCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)logUserDidRemoveApp:(id)a3 page:(id)a4
+- (void)logUserDidRemoveApp:(id)app page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  pageCopy = page;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__ATXHomeScreenSuggestionClient_logUserDidRemoveApp_page___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appCopy;
+  v13 = pageCopy;
+  v9 = pageCopy;
+  v10 = appCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)logUserDidAddPinnedWidget:(id)a3 page:(id)a4 defaultsComparator:(id)a5
+- (void)logUserDidAddPinnedWidget:(id)widget page:(id)page defaultsComparator:(id)comparator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  widgetCopy = widget;
+  pageCopy = page;
+  comparatorCopy = comparator;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__ATXHomeScreenSuggestionClient_logUserDidAddPinnedWidget_page_defaultsComparator___block_invoke;
   v15[3] = &unk_1E80C35D0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = widgetCopy;
+  v17 = pageCopy;
+  v18 = comparatorCopy;
+  v12 = comparatorCopy;
+  v13 = pageCopy;
+  v14 = widgetCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
-- (void)logUserDidDeletePinnedWidget:(id)a3 stackLocation:(unint64_t)a4 page:(id)a5
+- (void)logUserDidDeletePinnedWidget:(id)widget stackLocation:(unint64_t)location page:(id)page
 {
-  v8 = a3;
-  v9 = a5;
+  widgetCopy = widget;
+  pageCopy = page;
   lock = self->_lock;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__ATXHomeScreenSuggestionClient_logUserDidDeletePinnedWidget_stackLocation_page___block_invoke;
   v13[3] = &unk_1E80C3820;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = pageCopy;
+  locationCopy = location;
+  v14 = widgetCopy;
+  v11 = pageCopy;
+  v12 = widgetCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v13];
 }
 
-- (void)logUserDidAddWidgetToStack:(id)a3 stackIdentifier:(id)a4 isSuggestion:(BOOL)a5
+- (void)logUserDidAddWidgetToStack:(id)stack stackIdentifier:(id)identifier isSuggestion:(BOOL)suggestion
 {
-  v8 = a3;
-  v9 = a4;
+  stackCopy = stack;
+  identifierCopy = identifier;
   lock = self->_lock;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__ATXHomeScreenSuggestionClient_logUserDidAddWidgetToStack_stackIdentifier_isSuggestion___block_invoke;
   v13[3] = &unk_1E80C3890;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = stackCopy;
+  v15 = identifierCopy;
+  suggestionCopy = suggestion;
+  v11 = identifierCopy;
+  v12 = stackCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v13];
 }
 
-- (void)logUserDidDeleteWidgetOnStack:(id)a3 stackIdentifier:(id)a4 stackKind:(unint64_t)a5 stackLocation:(unint64_t)a6
+- (void)logUserDidDeleteWidgetOnStack:(id)stack stackIdentifier:(id)identifier stackKind:(unint64_t)kind stackLocation:(unint64_t)location
 {
-  v10 = a3;
-  v11 = a4;
+  stackCopy = stack;
+  identifierCopy = identifier;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __103__ATXHomeScreenSuggestionClient_logUserDidDeleteWidgetOnStack_stackIdentifier_stackKind_stackLocation___block_invoke;
   v15[3] = &unk_1E80C38B8;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = stackCopy;
+  v17 = identifierCopy;
+  kindCopy = kind;
+  locationCopy = location;
+  v13 = identifierCopy;
+  v14 = stackCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
-- (void)logUserDidCreateStack:(id)a3 page:(id)a4 isSuggestion:(BOOL)a5
+- (void)logUserDidCreateStack:(id)stack page:(id)page isSuggestion:(BOOL)suggestion
 {
-  v8 = a3;
-  v9 = a4;
+  stackCopy = stack;
+  pageCopy = page;
   lock = self->_lock;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__ATXHomeScreenSuggestionClient_logUserDidCreateStack_page_isSuggestion___block_invoke;
   v13[3] = &unk_1E80C38E0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = stackCopy;
+  v15 = pageCopy;
+  suggestionCopy = suggestion;
+  v11 = pageCopy;
+  v12 = stackCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v13];
 }
 
@@ -4426,21 +4426,21 @@ uint64_t __73__ATXHomeScreenSuggestionClient_logUserDidCreateStack_page_isSugges
   return [v7 logUserDidCreateStack:v8 page:v9 isSuggestion:v10];
 }
 
-- (void)logUserDidDeleteStack:(id)a3 stackKind:(unint64_t)a4 stackLocation:(unint64_t)a5 page:(id)a6
+- (void)logUserDidDeleteStack:(id)stack stackKind:(unint64_t)kind stackLocation:(unint64_t)location page:(id)page
 {
-  v10 = a3;
-  v11 = a6;
+  stackCopy = stack;
+  pageCopy = page;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__ATXHomeScreenSuggestionClient_logUserDidDeleteStack_stackKind_stackLocation_page___block_invoke;
   v15[3] = &unk_1E80C38B8;
-  v18 = a4;
-  v19 = a5;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  kindCopy = kind;
+  locationCopy = location;
+  v16 = stackCopy;
+  v17 = pageCopy;
+  v13 = pageCopy;
+  v14 = stackCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
@@ -4478,137 +4478,137 @@ uint64_t __46__ATXHomeScreenSuggestionClient_logDeviceLock__block_invoke_2(uint6
   return [v5 logDeviceLock];
 }
 
-- (void)logWidgetInsertionDidFailInStack:(id)a3 prediction:(id)a4
+- (void)logWidgetInsertionDidFailInStack:(id)stack prediction:(id)prediction
 {
-  v5 = a3;
-  v6 = [a4 suggestionForStackIdentifier:v5];
-  v7 = [v6 topWidget];
+  stackCopy = stack;
+  v6 = [prediction suggestionForStackIdentifier:stackCopy];
+  topWidget = [v6 topWidget];
 
   v8 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
   {
-    [ATXHomeScreenSuggestionClient logWidgetInsertionDidFailInStack:v7 prediction:?];
+    [ATXHomeScreenSuggestionClient logWidgetInsertionDidFailInStack:topWidget prediction:?];
   }
 }
 
-- (void)logWidgetDidAppear:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetDidAppear:(id)appear blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  appearCopy = appear;
+  idCopy = id;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__ATXHomeScreenSuggestionClient_logWidgetDidAppear_blendingCacheId___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appearCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = appearCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)logWidgetDidDisappear:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetDidDisappear:(id)disappear blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  disappearCopy = disappear;
+  idCopy = id;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__ATXHomeScreenSuggestionClient_logWidgetDidDisappear_blendingCacheId___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = disappearCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = disappearCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)logSuggestionsDidAppear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logSuggestionsDidAppear:(id)appear widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appearCopy = appear;
+  widgetCopy = widget;
+  idCopy = id;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__ATXHomeScreenSuggestionClient_logSuggestionsDidAppear_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C35D0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = appearCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = appearCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
-- (void)logSuggestionsDidDisappear:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logSuggestionsDidDisappear:(id)disappear widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  disappearCopy = disappear;
+  widgetCopy = widget;
+  idCopy = id;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__ATXHomeScreenSuggestionClient_logSuggestionsDidDisappear_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C35D0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = disappearCopy;
+  v17 = widgetCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = disappearCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
-- (void)logWidgetOccluded:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetOccluded:(id)occluded blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  occludedCopy = occluded;
+  idCopy = id;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__ATXHomeScreenSuggestionClient_logWidgetOccluded_blendingCacheId___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = occludedCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = occludedCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)logWidgetUnoccluded:(id)a3 blendingCacheId:(id)a4
+- (void)logWidgetUnoccluded:(id)unoccluded blendingCacheId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  unoccludedCopy = unoccluded;
+  idCopy = id;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__ATXHomeScreenSuggestionClient_logWidgetUnoccluded_blendingCacheId___block_invoke;
   v11[3] = &unk_1E80C3470;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = unoccludedCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = unoccludedCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v11];
 }
 
-- (void)logDidTapSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logDidTapSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
+  idCopy = id;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__ATXHomeScreenSuggestionClient_logDidTapSuggestion_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C35D0;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = widgetCopy;
+  v17 = suggestionCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = suggestionCopy;
+  v14 = widgetCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
@@ -4629,31 +4629,31 @@ uint64_t __76__ATXHomeScreenSuggestionClient_logDidTapSuggestion_widget_blending
   return [v8 logDidTapSuggestion:v9 widget:v10 blendingCacheId:v11];
 }
 
-- (void)_dismissSuggestions:(id)a3 guardedData:(id)a4 fromSuggestionsWidget:(id)a5 dismissFromAllUIs:(BOOL)a6 duration:(double)a7
+- (void)_dismissSuggestions:(id)suggestions guardedData:(id)data fromSuggestionsWidget:(id)widget dismissFromAllUIs:(BOOL)is duration:(double)duration
 {
-  v8 = a6;
+  isCopy = is;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = *(a4 + 26);
-  v15 = [v13 extensionBundleId];
-  v16 = [v13 widgetKind];
-  v29 = v13;
-  v17 = [v13 intent];
+  suggestionsCopy = suggestions;
+  widgetCopy = widget;
+  v14 = *(data + 26);
+  extensionBundleId = [widgetCopy extensionBundleId];
+  widgetKind = [widgetCopy widgetKind];
+  v29 = widgetCopy;
+  intent = [widgetCopy intent];
   v18 = [MEMORY[0x1E695DF00] now];
-  [v14 userDidDismissSuggestionForWidget:v15 kind:v16 intent:v17 atDate:v18 duration:a7];
+  [v14 userDidDismissSuggestionForWidget:extensionBundleId kind:widgetKind intent:intent atDate:v18 duration:duration];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = v12;
+  v19 = suggestionsCopy;
   v20 = [v19 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v20)
   {
     v21 = v20;
     v22 = *v31;
-    if (v8)
+    if (isCopy)
     {
       v23 = 120;
     }
@@ -4673,10 +4673,10 @@ uint64_t __76__ATXHomeScreenSuggestionClient_logDidTapSuggestion_widget_blending
         }
 
         v25 = *(*(&v30 + 1) + 8 * i);
-        v26 = [v25 executableSpecification];
-        v27 = [v26 executableType];
+        executableSpecification = [v25 executableSpecification];
+        executableType = [executableSpecification executableType];
 
-        if (v27 == 1)
+        if (executableType == 1)
         {
           v28 = 8;
         }
@@ -4697,23 +4697,23 @@ uint64_t __76__ATXHomeScreenSuggestionClient_logDidTapSuggestion_widget_blending
   }
 }
 
-- (void)logContextMenuDismissOnceForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logContextMenuDismissOnceForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
+  idCopy = id;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95__ATXHomeScreenSuggestionClient_logContextMenuDismissOnceForSuggestion_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C37D0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = suggestionCopy;
+  selfCopy = self;
+  v18 = widgetCopy;
+  v19 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = suggestionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
@@ -4751,23 +4751,23 @@ uint64_t __95__ATXHomeScreenSuggestionClient_logContextMenuDismissOnceForSuggest
   return [v14 logContextMenuDismissOnceForSuggestion:*(a1 + 32) widget:*(a1 + 48) blendingCacheId:*(a1 + 56)];
 }
 
-- (void)logContextMenuNeverShowAgainForSuggestion:(id)a3 widget:(id)a4 blendingCacheId:(id)a5
+- (void)logContextMenuNeverShowAgainForSuggestion:(id)suggestion widget:(id)widget blendingCacheId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionCopy = suggestion;
+  widgetCopy = widget;
+  idCopy = id;
   lock = self->_lock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSuggestion_widget_blendingCacheId___block_invoke;
   v15[3] = &unk_1E80C37D0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = suggestionCopy;
+  selfCopy = self;
+  v18 = widgetCopy;
+  v19 = idCopy;
+  v12 = idCopy;
+  v13 = widgetCopy;
+  v14 = suggestionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v15];
 }
 
@@ -4798,51 +4798,51 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
   return [v10 logContextMenuNeverShowAgainForSuggestion:*(a1 + 32) widget:*(a1 + 48) blendingCacheId:*(a1 + 56)];
 }
 
-- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)a3
+- (void)logUserDidAcceptWidgetOnboardingSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__ATXHomeScreenSuggestionClient_logUserDidAcceptWidgetOnboardingSuggestion___block_invoke;
   v7[3] = &unk_1E80C3448;
-  v8 = v4;
-  v6 = v4;
+  v8 = suggestionCopy;
+  v6 = suggestionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
-- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)a3
+- (void)logUserDidRejectWidgetOnboardingSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__ATXHomeScreenSuggestionClient_logUserDidRejectWidgetOnboardingSuggestion___block_invoke;
   v7[3] = &unk_1E80C3448;
-  v8 = v4;
-  v6 = v4;
+  v8 = suggestionCopy;
+  v6 = suggestionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
-- (void)logUserDidSwitchHomeScreenExperience:(unint64_t)a3
+- (void)logUserDidSwitchHomeScreenExperience:(unint64_t)experience
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __70__ATXHomeScreenSuggestionClient_logUserDidSwitchHomeScreenExperience___block_invoke;
   v4[3] = &__block_descriptor_40_e50_v16__0__ATXHomeScreenSuggestionClientGuardedData_8l;
-  v4[4] = a3;
+  v4[4] = experience;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v4];
 }
 
-- (BOOL)_replaceSuggestionIfNeeded:(id)a3 fromProactiveWidget:(id)a4 guardedData:(id)a5
+- (BOOL)_replaceSuggestionIfNeeded:(id)needed fromProactiveWidget:(id)widget guardedData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 extensionBundleId];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E698AFC0]];
+  neededCopy = needed;
+  widgetCopy = widget;
+  dataCopy = data;
+  extensionBundleId = [widgetCopy extensionBundleId];
+  v12 = [extensionBundleId isEqualToString:*MEMORY[0x1E698AFC0]];
 
   if (v12)
   {
@@ -4851,8 +4851,8 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
 
   else
   {
-    v14 = [v9 extensionBundleId];
-    v15 = [v14 isEqualToString:@"com.apple.proactive.appprediction.panel"];
+    extensionBundleId2 = [widgetCopy extensionBundleId];
+    v15 = [extensionBundleId2 isEqualToString:@"com.apple.proactive.appprediction.panel"];
 
     if (v15)
     {
@@ -4871,16 +4871,16 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
     }
   }
 
-  v17 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithSuggestion:v8 engagementRecordType:v13];
+  v17 = [(ATXEngagementRecordManager *)self->_engagementRecordManager hasEngagedWithSuggestion:neededCopy engagementRecordType:v13];
   v18 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 uuid];
-    v20 = [v19 UUIDString];
+    uuid = [neededCopy uuid];
+    uUIDString = [uuid UUIDString];
     v24 = 136315650;
     v25 = "[ATXHomeScreenSuggestionClient _replaceSuggestionIfNeeded:fromProactiveWidget:guardedData:]";
     v26 = 2114;
-    v27 = v20;
+    v27 = uUIDString;
     v28 = 1024;
     v29 = v17;
     _os_log_impl(&dword_1BF549000, v18, OS_LOG_TYPE_DEFAULT, "%s: suggestionID %{public}@, isSuggestionReplacementNeeded %{BOOL}u", &v24, 0x1Cu);
@@ -4888,42 +4888,42 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
 
   if (v17)
   {
-    v21 = [v8 uuid];
-    v22 = [v21 UUIDString];
-    [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionForAllProactiveWidgets:v22 guardedData:v10];
+    uuid2 = [neededCopy uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionForAllProactiveWidgets:uUIDString2 guardedData:dataCopy];
   }
 
   return v17;
 }
 
-- (void)_replaceSuggestionForAllProactiveWidgets:(id)a3 guardedData:(id)a4
+- (void)_replaceSuggestionForAllProactiveWidgets:(id)widgets guardedData:(id)data
 {
   rotationSuppressionInterval = self->_rotationSuppressionInterval;
   timerLeeway = self->_timerLeeway;
-  v8 = a4;
-  v9 = a3;
-  [(ATXHomeScreenSuggestionClient *)self _startSuppressingRotationForTimeInterval:v8 leeway:rotationSuppressionInterval guardedData:timerLeeway];
-  [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v9 shouldSuggestionsBeDisjoint:0 guardedData:v8];
+  dataCopy = data;
+  widgetsCopy = widgets;
+  [(ATXHomeScreenSuggestionClient *)self _startSuppressingRotationForTimeInterval:dataCopy leeway:rotationSuppressionInterval guardedData:timerLeeway];
+  [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:widgetsCopy shouldSuggestionsBeDisjoint:0 guardedData:dataCopy];
 
-  [(ATXHomeScreenSuggestionClient *)self _notifyObserversAboutLayoutUpdateWithGuardedData:v8];
+  [(ATXHomeScreenSuggestionClient *)self _notifyObserversAboutLayoutUpdateWithGuardedData:dataCopy];
   v10 = MEMORY[0x1E69C5BB8];
 
   [v10 refreshBlendingLayerWithReason:@"Replaced suggestion for all widgets"];
 }
 
-- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)a3
+- (void)_toggleSiriSearchSettingsOffForAppSuggestion:(id)suggestion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 executableSpecification];
-  v5 = [v4 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  v6 = [v3 executableSpecification];
-  v7 = [v6 executableObject];
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  executableObject = [executableSpecification2 executableObject];
 
-  if (v5 == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (executableType == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = v7;
+    v8 = executableObject;
     v9 = objc_alloc(MEMORY[0x1E695DFA8]);
     v10 = *MEMORY[0x1E695E8B8];
     v11 = *MEMORY[0x1E695E898];
@@ -4962,80 +4962,80 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
     v8 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [ATXHomeScreenSuggestionClient _toggleSiriSearchSettingsOffForAppSuggestion:v3];
+      [ATXHomeScreenSuggestionClient _toggleSiriSearchSettingsOffForAppSuggestion:suggestionCopy];
     }
   }
 }
 
-- (id)_newSuggestionLayoutForOldLayout:(id)a3 replacedSuggestionId:(id)a4 shouldSuggestionsBeDisjoint:(BOOL)a5 usedFallbackIndexSet:(id)a6 guardedData:(id)a7
+- (id)_newSuggestionLayoutForOldLayout:(id)layout replacedSuggestionId:(id)id shouldSuggestionsBeDisjoint:(BOOL)disjoint usedFallbackIndexSet:(id)set guardedData:(id)data
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v15 oneByOneSuggestions];
-  v33 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v16 suggestionLayoutType:1 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  disjointCopy = disjoint;
+  dataCopy = data;
+  setCopy = set;
+  idCopy = id;
+  layoutCopy = layout;
+  oneByOneSuggestions = [layoutCopy oneByOneSuggestions];
+  v33 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:oneByOneSuggestions suggestionLayoutType:1 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v17 = [v15 oneByTwoSuggestions];
-  v32 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v17 suggestionLayoutType:2 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  oneByTwoSuggestions = [layoutCopy oneByTwoSuggestions];
+  v32 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:oneByTwoSuggestions suggestionLayoutType:2 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v18 = [v15 twoByTwoSuggestions];
-  v31 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v18 suggestionLayoutType:3 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  twoByTwoSuggestions = [layoutCopy twoByTwoSuggestions];
+  v31 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:twoByTwoSuggestions suggestionLayoutType:3 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v19 = [v15 oneByFourSuggestions];
-  v20 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v19 suggestionLayoutType:5 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  oneByFourSuggestions = [layoutCopy oneByFourSuggestions];
+  v20 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:oneByFourSuggestions suggestionLayoutType:5 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v21 = [v15 twoByFourSuggestions];
-  v22 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v21 suggestionLayoutType:4 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  twoByFourSuggestions = [layoutCopy twoByFourSuggestions];
+  v22 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:twoByFourSuggestions suggestionLayoutType:4 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v23 = [v15 fourByFourSuggestions];
-  v24 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v23 suggestionLayoutType:6 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  fourByFourSuggestions = [layoutCopy fourByFourSuggestions];
+  v24 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:fourByFourSuggestions suggestionLayoutType:6 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v25 = [v15 fourByEightSuggestions];
-  v26 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:v14 fromSuggestionsArray:v25 suggestionLayoutType:7 usedFallbackIndexSet:v13 shouldSuggestionsBeDisjoint:v8 guardedData:v12];
+  fourByEightSuggestions = [layoutCopy fourByEightSuggestions];
+  v26 = [(ATXHomeScreenSuggestionClient *)self _replaceSuggestionWithId:idCopy fromSuggestionsArray:fourByEightSuggestions suggestionLayoutType:7 usedFallbackIndexSet:setCopy shouldSuggestionsBeDisjoint:disjointCopy guardedData:dataCopy];
 
-  v27 = [objc_alloc(MEMORY[0x1E69C5C10]) initWithLayoutType:objc_msgSend(v15 oneByOneSuggestions:"layoutType") oneByTwoSuggestions:v33 twoByTwoSuggestions:v32 oneByFourSuggestions:v31 twoByFourSuggestions:v20 fourByFourSuggestions:v22 fourByEightSuggestions:{v24, v26}];
-  [v15 layoutScore];
+  v27 = [objc_alloc(MEMORY[0x1E69C5C10]) initWithLayoutType:objc_msgSend(layoutCopy oneByOneSuggestions:"layoutType") oneByTwoSuggestions:v33 twoByTwoSuggestions:v32 oneByFourSuggestions:v31 twoByFourSuggestions:v20 fourByFourSuggestions:v22 fourByEightSuggestions:{v24, v26}];
+  [layoutCopy layoutScore];
   [v27 setLayoutScore:?];
-  v28 = [v15 uuid];
-  [v27 setUuid:v28];
+  uuid = [layoutCopy uuid];
+  [v27 setUuid:uuid];
 
-  [v27 setIsValidForSuggestionsWidget:{objc_msgSend(v15, "isValidForSuggestionsWidget")}];
-  [v27 setConfidenceWarrantsSnappingOrNPlusOne:{objc_msgSend(v15, "confidenceWarrantsSnappingOrNPlusOne")}];
-  [v27 setIsNPlusOne:{objc_msgSend(v15, "isNPlusOne")}];
-  v29 = [v15 widgetUniqueId];
+  [v27 setIsValidForSuggestionsWidget:{objc_msgSend(layoutCopy, "isValidForSuggestionsWidget")}];
+  [v27 setConfidenceWarrantsSnappingOrNPlusOne:{objc_msgSend(layoutCopy, "confidenceWarrantsSnappingOrNPlusOne")}];
+  [v27 setIsNPlusOne:{objc_msgSend(layoutCopy, "isNPlusOne")}];
+  widgetUniqueId = [layoutCopy widgetUniqueId];
 
-  [v27 setWidgetUniqueId:v29];
+  [v27 setWidgetUniqueId:widgetUniqueId];
   return v27;
 }
 
-- (void)_replaceSuggestionWithId:(id)a3 shouldSuggestionsBeDisjoint:(BOOL)a4 guardedData:(id)a5
+- (void)_replaceSuggestionWithId:(id)id shouldSuggestionsBeDisjoint:(BOOL)disjoint guardedData:(id)data
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8 + 12;
-  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v8[12], "count")}];
-  v11 = v8 + 13;
-  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v8[13], "count")}];
+  idCopy = id;
+  dataCopy = data;
+  v9 = dataCopy + 12;
+  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dataCopy[12], "count")}];
+  v11 = dataCopy + 13;
+  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dataCopy[13], "count")}];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__9;
   v40 = __Block_byref_object_dispose__9;
   v41 = objc_opt_new();
-  v13 = v8[12];
+  v13 = dataCopy[12];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __98__ATXHomeScreenSuggestionClient__replaceSuggestionWithId_shouldSuggestionsBeDisjoint_guardedData___block_invoke;
   v30[3] = &unk_1E80C3908;
   v30[4] = self;
-  v14 = v7;
-  v35 = a4;
+  v14 = idCopy;
+  disjointCopy = disjoint;
   v31 = v14;
   v34 = &v36;
-  v15 = v8;
+  v15 = dataCopy;
   v32 = v15;
   v16 = v10;
   v33 = v16;
@@ -5047,7 +5047,7 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
   v24[3] = &unk_1E80C3908;
   v24[4] = self;
   v18 = v14;
-  v29 = a4;
+  disjointCopy2 = disjoint;
   v25 = v18;
   v28 = &v36;
   v19 = v15;
@@ -5061,9 +5061,9 @@ uint64_t __98__ATXHomeScreenSuggestionClient_logContextMenuNeverShowAgainForSugg
   v21 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [*v9 allKeys];
+    allKeys = [*v9 allKeys];
     *buf = 138543362;
-    v43 = v22;
+    v43 = allKeys;
     _os_log_impl(&dword_1BF549000, v21, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenSuggestionClient: setting new suggestion widget layouts after replacement: %{public}@", buf, 0xCu);
   }
 
@@ -5094,29 +5094,29 @@ void __98__ATXHomeScreenSuggestionClient__replaceSuggestionWithId_shouldSuggesti
   [*(a1 + 56) setObject:v11 forKeyedSubscript:v10];
 }
 
-- (id)_replaceSuggestionWithId:(id)a3 fromSuggestionsArray:(id)a4 suggestionLayoutType:(int64_t)a5 usedFallbackIndexSet:(id)a6 shouldSuggestionsBeDisjoint:(BOOL)a7 guardedData:(id)a8
+- (id)_replaceSuggestionWithId:(id)id fromSuggestionsArray:(id)array suggestionLayoutType:(int64_t)type usedFallbackIndexSet:(id)set shouldSuggestionsBeDisjoint:(BOOL)disjoint guardedData:(id)data
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (v15)
+  idCopy = id;
+  arrayCopy = array;
+  setCopy = set;
+  dataCopy = data;
+  if (arrayCopy)
   {
     v42 = 0;
     v43 = &v42;
     v44 = 0x2020000000;
-    v45 = [v15 count];
+    v45 = [arrayCopy count];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __161__ATXHomeScreenSuggestionClient__replaceSuggestionWithId_fromSuggestionsArray_suggestionLayoutType_usedFallbackIndexSet_shouldSuggestionsBeDisjoint_guardedData___block_invoke;
     v39[3] = &unk_1E80C3930;
-    v40 = v14;
+    v40 = idCopy;
     v41 = &v42;
-    [v15 enumerateObjectsUsingBlock:v39];
+    [arrayCopy enumerateObjectsUsingBlock:v39];
     v18 = v43[3];
-    if (v18 == [v15 count])
+    if (v18 == [arrayCopy count])
     {
-      v19 = v15;
+      v19 = arrayCopy;
     }
 
     else
@@ -5124,31 +5124,31 @@ void __98__ATXHomeScreenSuggestionClient__replaceSuggestionWithId_shouldSuggesti
       v35 = 0;
       v36 = &v35;
       v37 = 0x2020000000;
-      v38 = [v17[15] count];
-      v20 = v17[15];
+      v38 = [dataCopy[15] count];
+      v20 = dataCopy[15];
       v25 = MEMORY[0x1E69E9820];
       v26 = 3221225472;
       v27 = __161__ATXHomeScreenSuggestionClient__replaceSuggestionWithId_fromSuggestionsArray_suggestionLayoutType_usedFallbackIndexSet_shouldSuggestionsBeDisjoint_guardedData___block_invoke_2;
       v28 = &unk_1E80C3958;
-      v29 = self;
-      v30 = v17;
-      v34 = a7;
-      v21 = v16;
+      selfCopy = self;
+      v30 = dataCopy;
+      disjointCopy = disjoint;
+      v21 = setCopy;
       v32 = &v35;
-      v33 = a5;
+      typeCopy = type;
       v31 = v21;
       [v20 enumerateObjectsUsingBlock:&v25];
       v22 = v36[3];
-      if (v22 == [v17[15] count])
+      if (v22 == [dataCopy[15] count])
       {
-        v19 = v15;
+        v19 = arrayCopy;
       }
 
       else
       {
-        v23 = [v17[15] objectAtIndexedSubscript:v36[3]];
+        v23 = [dataCopy[15] objectAtIndexedSubscript:v36[3]];
         [v21 addIndex:v36[3]];
-        v19 = [v15 mutableCopy];
+        v19 = [arrayCopy mutableCopy];
         [v19 replaceObjectAtIndex:v43[3] withObject:v23];
       }
 

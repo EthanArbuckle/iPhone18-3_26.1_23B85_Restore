@@ -1,27 +1,27 @@
 @interface NTKWidgetPreviewComplication
-+ (id)complicationWithViewController:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)complicationWithViewController:(id)controller;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation NTKWidgetPreviewComplication
 
-+ (id)complicationWithViewController:(id)a3
++ (id)complicationWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithComplicationType:56];
+  controllerCopy = controller;
+  v5 = [[self alloc] initWithComplicationType:56];
   v6 = v5[4];
-  v5[4] = v4;
+  v5[4] = controllerCopy;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CHUISWidgetPreviewHosting *)self->_viewController isEqual:v4[4]];
+    v5 = [(CHUISWidgetPreviewHosting *)self->_viewController isEqual:equalCopy[4]];
   }
 
   else

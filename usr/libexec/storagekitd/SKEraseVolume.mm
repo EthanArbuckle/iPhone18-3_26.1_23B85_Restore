@@ -1,26 +1,26 @@
 @interface SKEraseVolume
-+ (void)reProbeWithDisk:(id)a3 isEncrypted:(BOOL)a4;
++ (void)reProbeWithDisk:(id)disk isEncrypted:(BOOL)encrypted;
 - (BOOL)requiresEraseDiskForAPFS;
-- (id)createStateMachineWithError:(id *)a3;
-- (id)syncDiskFromDaemon:(id)a3 error:(id *)a4;
+- (id)createStateMachineWithError:(id *)error;
+- (id)syncDiskFromDaemon:(id)daemon error:(id *)error;
 @end
 
 @implementation SKEraseVolume
 
-- (id)syncDiskFromDaemon:(id)a3 error:(id *)a4
+- (id)syncDiskFromDaemon:(id)daemon error:(id *)error
 {
-  v5 = a3;
+  daemonCopy = daemon;
   v6 = +[SKDaemonManager sharedManager];
-  v7 = [v6 allDisks];
+  allDisks = [v6 allDisks];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000134F8;
   v15[3] = &unk_1000491E8;
-  v8 = v5;
+  v8 = daemonCopy;
   v16 = v8;
   v9 = [NSPredicate predicateWithBlock:v15];
-  v10 = [v7 filteredArrayUsingPredicate:v9];
+  v10 = [allDisks filteredArrayUsingPredicate:v9];
 
   if ([v10 count] == 1)
   {
@@ -32,7 +32,7 @@
     v17 = v8;
     v12 = [NSArray arrayWithObjects:&v17 count:1];
     v13 = [SKError errorWithCode:300 disks:v12 userInfo:0];
-    v11 = [SKError nilWithError:v13 error:a4];
+    v11 = [SKError nilWithError:v13 error:error];
   }
 
   return v11;
@@ -41,13 +41,13 @@
 - (BOOL)requiresEraseDiskForAPFS
 {
   v3 = +[SKBaseManager sharedManager];
-  v4 = [(SKEraseVolume *)self disk];
-  v5 = [v3 wholeDiskForDisk:v4];
+  disk = [(SKEraseVolume *)self disk];
+  v5 = [v3 wholeDiskForDisk:disk];
 
   if ([v5 canPartitionDisk])
   {
-    v6 = [v5 type];
-    v7 = [v6 isEqualToString:kSKDiskTypeGPTWholeDisk] ^ 1;
+    type = [v5 type];
+    v7 = [type isEqualToString:kSKDiskTypeGPTWholeDisk] ^ 1;
   }
 
   else
@@ -58,34 +58,34 @@
   return v7;
 }
 
-+ (void)reProbeWithDisk:(id)a3 isEncrypted:(BOOL)a4
++ (void)reProbeWithDisk:(id)disk isEncrypted:(BOOL)encrypted
 {
-  v5 = a3;
+  diskCopy = disk;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 container];
-    v5 = v6;
-    if (v7)
+    v6 = diskCopy;
+    container = [v6 container];
+    diskCopy = v6;
+    if (container)
     {
-      v8 = [v6 container];
-      v9 = [v8 isLiveFSAPFSDisk];
+      container2 = [v6 container];
+      isLiveFSAPFSDisk = [container2 isLiveFSAPFSDisk];
 
-      v5 = v6;
-      if (v9)
+      diskCopy = v6;
+      if (isLiveFSAPFSDisk)
       {
-        v5 = [v6 container];
+        diskCopy = [v6 container];
       }
     }
   }
 
-  if (([v5 isLiveFSAPFSDisk] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (([diskCopy isLiveFSAPFSDisk] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (![v5 isLiveFSAPFSDisk] || a4)
+    if (![diskCopy isLiveFSAPFSDisk] || encrypted)
     {
       v27 = 0;
-      v24 = [v5 reProbeWithError:&v27];
+      v24 = [diskCopy reProbeWithError:&v27];
       v17 = v27;
       if (v24)
       {
@@ -98,7 +98,7 @@
         *buf = 136315650;
         v30 = "+[SKEraseVolume(Daemon) reProbeWithDisk:isEncrypted:]";
         v31 = 2112;
-        v32 = v5;
+        v32 = diskCopy;
         v33 = 2112;
         v34 = v17;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s: Failed to reProbe %@, %@", buf, 0x20u);
@@ -108,25 +108,25 @@
     else
     {
       v10 = +[SKDaemonManager sharedManager];
-      v11 = [v10 disksNotificationsWaiters];
+      disksNotificationsWaiters = [v10 disksNotificationsWaiters];
 
       v12 = [SKDiskNotificationWaiter alloc];
-      v13 = [v5 diskIdentifier];
-      v14 = [(SKDiskNotificationWaiter *)v12 initWithDiskIdentifier:v13];
+      diskIdentifier = [diskCopy diskIdentifier];
+      v14 = [(SKDiskNotificationWaiter *)v12 initWithDiskIdentifier:diskIdentifier];
 
-      v15 = v11;
+      v15 = disksNotificationsWaiters;
       objc_sync_enter(v15);
       [v15 addObject:v14];
       objc_sync_exit(v15);
 
       v28 = 0;
-      v16 = [v5 reProbeWithError:&v28];
+      v16 = [diskCopy reProbeWithError:&v28];
       v17 = v28;
       if (v16)
       {
-        v18 = [(SKDiskNotificationWaiter *)v14 semaphore];
+        semaphore = [(SKDiskNotificationWaiter *)v14 semaphore];
         v19 = dispatch_time(0, 30000000000);
-        v20 = dispatch_semaphore_wait(v18, v19) == 0;
+        v20 = dispatch_semaphore_wait(semaphore, v19) == 0;
 
         v21 = sub_10000BFD0();
         v22 = v21;
@@ -134,22 +134,22 @@
         {
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v5 diskIdentifier];
+            diskIdentifier2 = [diskCopy diskIdentifier];
             *buf = 136315394;
             v30 = "+[SKEraseVolume(Daemon) reProbeWithDisk:isEncrypted:]";
             v31 = 2112;
-            v32 = v26;
+            v32 = diskIdentifier2;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s: Received disk notification for %@", buf, 0x16u);
           }
         }
 
         else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v5 diskIdentifier];
+          diskIdentifier3 = [diskCopy diskIdentifier];
           *buf = 136315394;
           v30 = "+[SKEraseVolume(Daemon) reProbeWithDisk:isEncrypted:]";
           v31 = 2112;
-          v32 = v23;
+          v32 = diskIdentifier3;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s: Timeout waiting for notification about %@", buf, 0x16u);
         }
       }
@@ -162,7 +162,7 @@
           *buf = 136315650;
           v30 = "+[SKEraseVolume(Daemon) reProbeWithDisk:isEncrypted:]";
           v31 = 2112;
-          v32 = v5;
+          v32 = diskCopy;
           v33 = 2112;
           v34 = v17;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s: Failed to reProbe %@ (LiveFS), %@", buf, 0x20u);
@@ -182,41 +182,41 @@
 LABEL_25:
 }
 
-- (id)createStateMachineWithError:(id *)a3
+- (id)createStateMachineWithError:(id *)error
 {
-  v5 = [(SKEraseVolume *)self disk];
+  disk = [(SKEraseVolume *)self disk];
 
-  if (!v5)
+  if (!disk)
   {
     v6 = +[SKDaemonManager sharedManager];
-    v7 = [(SKEraseVolume *)self diskRepresentation];
-    v8 = [v6 knownDiskForDictionary:v7];
+    diskRepresentation = [(SKEraseVolume *)self diskRepresentation];
+    v8 = [v6 knownDiskForDictionary:diskRepresentation];
     [(SKEraseVolume *)self setDisk:v8];
 
-    v9 = [(SKEraseVolume *)self disk];
+    disk2 = [(SKEraseVolume *)self disk];
 
-    if (!v9)
+    if (!disk2)
     {
-      v36 = [(SKEraseVolume *)self diskRepresentation];
-      v37 = [SKError errorWithCode:117 userInfo:v36];
-      v35 = [SKError nilWithError:v37 error:a3];
+      diskRepresentation2 = [(SKEraseVolume *)self diskRepresentation];
+      v37 = [SKError errorWithCode:117 userInfo:diskRepresentation2];
+      v35 = [SKError nilWithError:v37 error:error];
 
       goto LABEL_35;
     }
   }
 
-  v10 = [(SKEraseVolume *)self validateWithError:a3];
+  v10 = [(SKEraseVolume *)self validateWithError:error];
 
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  v11 = [(SKEraseVolume *)self descriptor];
-  v12 = [v11 filesystem];
-  v13 = [(SKEraseVolume *)self descriptor];
-  v14 = [v13 name];
-  v15 = [v12 isValidName:v14 error:a3];
+  descriptor = [(SKEraseVolume *)self descriptor];
+  filesystem = [descriptor filesystem];
+  descriptor2 = [(SKEraseVolume *)self descriptor];
+  name = [descriptor2 name];
+  v15 = [filesystem isValidName:name error:error];
 
   if (!v15)
   {
@@ -269,41 +269,41 @@ LABEL_12:
   v86 = @"volumeCreatedEvent";
   v87 = v81;
   v80 = objc_retainBlock(v85);
-  v18 = [(SKEraseVolume *)self descriptor];
-  v19 = [v18 filesystem];
-  v20 = [v19 majorType];
-  if ([v20 isEqualToString:@"apfs"])
+  descriptor3 = [(SKEraseVolume *)self descriptor];
+  filesystem2 = [descriptor3 filesystem];
+  majorType = [filesystem2 majorType];
+  if ([majorType isEqualToString:@"apfs"])
   {
-    v21 = [(SKEraseVolume *)self requiresEraseDiskForAPFS];
+    requiresEraseDiskForAPFS = [(SKEraseVolume *)self requiresEraseDiskForAPFS];
 
-    if (v21)
+    if (requiresEraseDiskForAPFS)
     {
       v22 = +[SKBaseManager sharedManager];
-      v23 = [(SKEraseVolume *)self disk];
-      v24 = [v22 wholeDiskForDisk:v23];
+      disk3 = [(SKEraseVolume *)self disk];
+      v24 = [v22 wholeDiskForDisk:disk3];
 
-      v25 = [(SKEraseVolume *)self descriptor];
-      v26 = [SKPartitionDescriptor descriptorWithVolume:v25];
+      descriptor4 = [(SKEraseVolume *)self descriptor];
+      v26 = [SKPartitionDescriptor descriptorWithVolume:descriptor4];
       v101 = v26;
       v27 = [NSArray arrayWithObjects:&v101 count:1];
-      v28 = [SKEraseDisk eraseDiskWithRootDisk:v24 descriptors:v27 error:a3];
+      v28 = [SKEraseDisk eraseDiskWithRootDisk:v24 descriptors:v27 error:error];
 
       if (v28)
       {
-        v29 = [v24 children];
-        v30 = v29;
-        if (v29 && [v29 count]>= 2)
+        children = [v24 children];
+        v30 = children;
+        if (children && [children count]>= 2)
         {
           v31 = [v30 objectAtIndexedSubscript:0];
           [(SKEraseVolume *)self setDisk:v31];
         }
 
-        v32 = [(SKEraseVolume *)self progress];
-        v33 = [v28 progress];
-        v34 = [(SKEraseVolume *)self progress];
-        [v32 chainChildProgress:v33 withPendingUnitCount:{objc_msgSend(v34, "totalUnitCount")}];
+        progress = [(SKEraseVolume *)self progress];
+        progress2 = [v28 progress];
+        progress3 = [(SKEraseVolume *)self progress];
+        [progress chainChildProgress:progress2 withPendingUnitCount:{objc_msgSend(progress3, "totalUnitCount")}];
 
-        v35 = [v28 createStateMachineWithError:a3];
+        v35 = [v28 createStateMachineWithError:error];
       }
 
       else
@@ -327,25 +327,25 @@ LABEL_12:
   {
   }
 
-  v38 = [(SKEraseVolume *)self disk];
-  v39 = [v38 filesystem];
-  v40 = [v39 majorType];
-  v41 = [(SKEraseVolume *)self descriptor];
-  v42 = [v41 filesystem];
-  v43 = [v42 majorType];
-  v44 = [v40 isEqualToString:v43];
+  disk4 = [(SKEraseVolume *)self disk];
+  filesystem3 = [disk4 filesystem];
+  majorType2 = [filesystem3 majorType];
+  descriptor5 = [(SKEraseVolume *)self descriptor];
+  filesystem4 = [descriptor5 filesystem];
+  majorType3 = [filesystem4 majorType];
+  v44 = [majorType2 isEqualToString:majorType3];
 
   if (v44)
   {
     goto LABEL_16;
   }
 
-  v46 = [(SKEraseVolume *)self descriptor];
-  v47 = [v46 filesystem];
-  v48 = [v47 majorType];
-  if ([v48 isEqualToString:@"apfs"])
+  descriptor6 = [(SKEraseVolume *)self descriptor];
+  filesystem5 = [descriptor6 filesystem];
+  majorType4 = [filesystem5 majorType];
+  if ([majorType4 isEqualToString:@"apfs"])
   {
-    v49 = [(SKEraseVolume *)self disk];
+    disk5 = [(SKEraseVolume *)self disk];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -361,10 +361,10 @@ LABEL_16:
   {
   }
 
-  v51 = [(SKEraseVolume *)self descriptor];
-  v52 = [v51 filesystem];
-  v53 = [v52 majorType];
-  v54 = [v53 isEqualToString:@"apfs"];
+  descriptor7 = [(SKEraseVolume *)self descriptor];
+  filesystem6 = [descriptor7 filesystem];
+  majorType5 = [filesystem6 majorType];
+  v54 = [majorType5 isEqualToString:@"apfs"];
 
   if (v54)
   {
@@ -377,10 +377,10 @@ LABEL_16:
   }
 
 LABEL_24:
-  v55 = [(SKEraseVolume *)self disk];
-  v56 = [v55 canPartitionDisk];
+  disk6 = [(SKEraseVolume *)self disk];
+  canPartitionDisk = [disk6 canPartitionDisk];
 
-  if (v56)
+  if (canPartitionDisk)
   {
     v57 = @"rePartitionedEvent";
   }
@@ -422,7 +422,7 @@ LABEL_24:
   v98[13] = v61;
   v62 = [NSArray arrayWithObjects:v98 count:14];
   v63 = [SKStateTransitionTable tableWithTransitionEntries:v62];
-  v64 = [(SKEraseVolume *)self disk];
+  disk7 = [(SKEraseVolume *)self disk];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -431,7 +431,7 @@ LABEL_24:
 
   else
   {
-    v65 = [(SKEraseVolume *)self disk];
+    disk8 = [(SKEraseVolume *)self disk];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

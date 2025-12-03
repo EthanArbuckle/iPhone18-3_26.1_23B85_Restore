@@ -1,19 +1,19 @@
 @interface STTelephonyStatusDomainData
-- (BOOL)isEqual:(id)a3;
-- (STTelephonyStatusDomainData)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STTelephonyStatusDomainData)initWithCoder:(id)coder;
 - (STTelephonyStatusDomainSIMInfo)primarySIMInfo;
 - (STTelephonyStatusDomainSIMInfo)secondarySIMInfo;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithData:(void *)a1;
-- (id)initWithSIMOneInfo:(void *)a3 SIMTwoInfo:(char)a4 cellularRadioCapabilityEnabled:(char)a5 dualSIMEnabled:(char)a6 radioModuleDead:(char)a7 usingStewieForSOS:(char)a8 inactiveSOSEnabled:(char)a9 usingStewieConnection:(char)a10 usingStewieConnectionOverInternet:;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithData:(void *)data;
+- (id)initWithSIMOneInfo:(void *)info SIMTwoInfo:(char)twoInfo cellularRadioCapabilityEnabled:(char)enabled dualSIMEnabled:(char)mEnabled radioModuleDead:(char)dead usingStewieForSOS:(char)s inactiveSOSEnabled:(char)sEnabled usingStewieConnection:(char)self0 usingStewieConnectionOverInternet:;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STTelephonyStatusDomainData
@@ -25,18 +25,18 @@
     goto LABEL_27;
   }
 
-  v3 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
-  if ([v3 isSIMPresent] && objc_msgSend(v3, "isPreferredForDataConnections"))
+  sIMTwoInfo = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
+  if ([sIMTwoInfo isSIMPresent] && objc_msgSend(sIMTwoInfo, "isPreferredForDataConnections"))
   {
-    v4 = v3;
+    v4 = sIMTwoInfo;
   }
 
   else
   {
-    v5 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
-    if ([v5 isSIMPresent])
+    sIMOneInfo = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+    if ([sIMOneInfo isSIMPresent])
     {
-      v4 = v5;
+      v4 = sIMOneInfo;
     }
 
     else
@@ -48,22 +48,22 @@
   if (v4)
   {
     v6 = v4;
-    v7 = v6;
+    sIMOneInfo4 = v6;
     goto LABEL_30;
   }
 
-  v8 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
-  if ([v8 isSIMPresent])
+  sIMOneInfo2 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+  if ([sIMOneInfo2 isSIMPresent])
   {
-    v9 = v8;
+    v9 = sIMOneInfo2;
   }
 
   else
   {
-    v10 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
-    if ([v10 isSIMPresent])
+    sIMTwoInfo2 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
+    if ([sIMTwoInfo2 isSIMPresent])
     {
-      v9 = v10;
+      v9 = sIMTwoInfo2;
     }
 
     else
@@ -74,18 +74,18 @@
 
   if (!v9)
   {
-    v12 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
-    if ([v12 serviceState] == 3)
+    sIMOneInfo3 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+    if ([sIMOneInfo3 serviceState] == 3)
     {
-      v13 = v12;
+      v13 = sIMOneInfo3;
     }
 
     else
     {
-      v14 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
-      if ([v14 serviceState] == 3)
+      sIMTwoInfo3 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
+      if ([sIMTwoInfo3 serviceState] == 3)
       {
-        v13 = v14;
+        v13 = sIMTwoInfo3;
       }
 
       else
@@ -97,7 +97,7 @@
     if (v13)
     {
       v15 = v13;
-      v7 = v15;
+      sIMOneInfo4 = v15;
 LABEL_28:
 
       v11 = 0;
@@ -105,49 +105,49 @@ LABEL_28:
     }
 
 LABEL_27:
-    v7 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+    sIMOneInfo4 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
     v15 = 0;
     goto LABEL_28;
   }
 
   v11 = v9;
-  v7 = v11;
+  sIMOneInfo4 = v11;
 LABEL_29:
 
   v6 = 0;
 LABEL_30:
 
-  return v7;
+  return sIMOneInfo4;
 }
 
 - (STTelephonyStatusDomainSIMInfo)secondarySIMInfo
 {
-  v2 = self;
-  if ([(STTelephonyStatusDomainData *)self isCellularRadioCapabilityEnabled]&& [(STTelephonyStatusDomainData *)v2 isDualSIMEnabled])
+  selfCopy = self;
+  if ([(STTelephonyStatusDomainData *)self isCellularRadioCapabilityEnabled]&& [(STTelephonyStatusDomainData *)selfCopy isDualSIMEnabled])
   {
-    v3 = [(STTelephonyStatusDomainData *)v2 primarySIMInfo];
-    v4 = v3;
-    if (v2)
+    primarySIMInfo = [(STTelephonyStatusDomainData *)selfCopy primarySIMInfo];
+    v4 = primarySIMInfo;
+    if (selfCopy)
     {
-      v5 = v3;
-      v6 = [(STTelephonyStatusDomainData *)v2 SIMOneInfo];
+      v5 = primarySIMInfo;
+      sIMOneInfo = [(STTelephonyStatusDomainData *)selfCopy SIMOneInfo];
 
-      if (v6 == v5)
+      if (sIMOneInfo == v5)
       {
-        v7 = [(STTelephonyStatusDomainData *)v2 SIMTwoInfo];
+        sIMTwoInfo = [(STTelephonyStatusDomainData *)selfCopy SIMTwoInfo];
       }
 
       else
       {
-        v7 = v6;
+        sIMTwoInfo = sIMOneInfo;
       }
 
-      v2 = v7;
+      selfCopy = sIMTwoInfo;
     }
 
-    if (([(STTelephonyStatusDomainData *)v2 isSIMPresent]& 1) != 0 || [(STTelephonyStatusDomainData *)v2 serviceState]== 3)
+    if (([(STTelephonyStatusDomainData *)selfCopy isSIMPresent]& 1) != 0 || [(STTelephonyStatusDomainData *)selfCopy serviceState]== 3)
     {
-      v8 = v2;
+      v8 = selfCopy;
     }
 
     else
@@ -164,38 +164,38 @@ LABEL_30:
   return v8;
 }
 
-- (id)initWithData:(void *)a1
+- (id)initWithData:(void *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
     v3 = a2;
-    v4 = [v3 SIMOneInfo];
-    v5 = [v3 SIMTwoInfo];
-    v13 = [v3 isCellularRadioCapabilityEnabled];
-    v6 = [v3 isDualSIMEnabled];
-    v7 = [v3 isRadioModuleDead];
-    v8 = [v3 isUsingStewieForSOS];
-    v9 = [v3 isInactiveSOSEnabled];
-    v10 = [v3 isUsingStewieConnection];
-    v11 = [v3 isUsingStewieConnectionOverInternet];
+    sIMOneInfo = [v3 SIMOneInfo];
+    sIMTwoInfo = [v3 SIMTwoInfo];
+    isCellularRadioCapabilityEnabled = [v3 isCellularRadioCapabilityEnabled];
+    isDualSIMEnabled = [v3 isDualSIMEnabled];
+    isRadioModuleDead = [v3 isRadioModuleDead];
+    isUsingStewieForSOS = [v3 isUsingStewieForSOS];
+    isInactiveSOSEnabled = [v3 isInactiveSOSEnabled];
+    isUsingStewieConnection = [v3 isUsingStewieConnection];
+    isUsingStewieConnectionOverInternet = [v3 isUsingStewieConnectionOverInternet];
 
-    v2 = [(STTelephonyStatusDomainData *)v2 initWithSIMOneInfo:v4 SIMTwoInfo:v5 cellularRadioCapabilityEnabled:v13 dualSIMEnabled:v6 radioModuleDead:v7 usingStewieForSOS:v8 inactiveSOSEnabled:v9 usingStewieConnection:v10 usingStewieConnectionOverInternet:v11];
+    dataCopy = [(STTelephonyStatusDomainData *)dataCopy initWithSIMOneInfo:sIMOneInfo SIMTwoInfo:sIMTwoInfo cellularRadioCapabilityEnabled:isCellularRadioCapabilityEnabled dualSIMEnabled:isDualSIMEnabled radioModuleDead:isRadioModuleDead usingStewieForSOS:isUsingStewieForSOS inactiveSOSEnabled:isInactiveSOSEnabled usingStewieConnection:isUsingStewieConnection usingStewieConnectionOverInternet:isUsingStewieConnectionOverInternet];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (id)initWithSIMOneInfo:(void *)a3 SIMTwoInfo:(char)a4 cellularRadioCapabilityEnabled:(char)a5 dualSIMEnabled:(char)a6 radioModuleDead:(char)a7 usingStewieForSOS:(char)a8 inactiveSOSEnabled:(char)a9 usingStewieConnection:(char)a10 usingStewieConnectionOverInternet:
+- (id)initWithSIMOneInfo:(void *)info SIMTwoInfo:(char)twoInfo cellularRadioCapabilityEnabled:(char)enabled dualSIMEnabled:(char)mEnabled radioModuleDead:(char)dead usingStewieForSOS:(char)s inactiveSOSEnabled:(char)sEnabled usingStewieConnection:(char)self0 usingStewieConnectionOverInternet:
 {
   v17 = a2;
-  v18 = a3;
-  if (a1)
+  infoCopy = info;
+  if (self)
   {
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = STTelephonyStatusDomainData;
-    a1 = objc_msgSendSuper2(&v28, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v28, sel_init);
+    if (self)
     {
       v19 = [v17 copy];
       v20 = v19;
@@ -209,10 +209,10 @@ LABEL_30:
         v21 = objc_alloc_init(STTelephonyStatusDomainSIMInfo);
       }
 
-      v22 = *(a1 + 1);
-      *(a1 + 1) = v21;
+      v22 = *(self + 1);
+      *(self + 1) = v21;
 
-      v23 = [v18 copy];
+      v23 = [infoCopy copy];
       v24 = v23;
       if (v23)
       {
@@ -224,100 +224,100 @@ LABEL_30:
         v25 = objc_alloc_init(STTelephonyStatusDomainSIMInfo);
       }
 
-      v26 = *(a1 + 2);
-      *(a1 + 2) = v25;
+      v26 = *(self + 2);
+      *(self + 2) = v25;
 
-      *(a1 + 24) = a4;
-      *(a1 + 25) = a5;
-      *(a1 + 26) = a6;
-      *(a1 + 27) = a7;
-      *(a1 + 28) = a8;
-      *(a1 + 29) = a9;
-      *(a1 + 30) = a10;
+      *(self + 24) = twoInfo;
+      *(self + 25) = enabled;
+      *(self + 26) = mEnabled;
+      *(self + 27) = dead;
+      *(self + 28) = s;
+      *(self + 29) = sEnabled;
+      *(self + 30) = connection;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  sIMOneInfo = [(STTelephonyStatusDomainData *)self SIMOneInfo];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke;
   v50[3] = &unk_1E85DE0B0;
-  v7 = v4;
+  v7 = equalCopy;
   v51 = v7;
-  v8 = [v5 appendObject:v6 counterpart:v50];
+  v8 = [v5 appendObject:sIMOneInfo counterpart:v50];
 
-  v9 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
+  sIMTwoInfo = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_2;
   v48[3] = &unk_1E85DE0B0;
   v10 = v7;
   v49 = v10;
-  v11 = [v5 appendObject:v9 counterpart:v48];
+  v11 = [v5 appendObject:sIMTwoInfo counterpart:v48];
 
-  v12 = [(STTelephonyStatusDomainData *)self isCellularRadioCapabilityEnabled];
+  isCellularRadioCapabilityEnabled = [(STTelephonyStatusDomainData *)self isCellularRadioCapabilityEnabled];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_3;
   v46[3] = &unk_1E85DDD50;
   v13 = v10;
   v47 = v13;
-  v14 = [v5 appendBool:v12 counterpart:v46];
-  v15 = [(STTelephonyStatusDomainData *)self isDualSIMEnabled];
+  v14 = [v5 appendBool:isCellularRadioCapabilityEnabled counterpart:v46];
+  isDualSIMEnabled = [(STTelephonyStatusDomainData *)self isDualSIMEnabled];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_4;
   v44[3] = &unk_1E85DDD50;
   v16 = v13;
   v45 = v16;
-  v17 = [v5 appendBool:v15 counterpart:v44];
-  v18 = [(STTelephonyStatusDomainData *)self isRadioModuleDead];
+  v17 = [v5 appendBool:isDualSIMEnabled counterpart:v44];
+  isRadioModuleDead = [(STTelephonyStatusDomainData *)self isRadioModuleDead];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_5;
   v42[3] = &unk_1E85DDD50;
   v19 = v16;
   v43 = v19;
-  v20 = [v5 appendBool:v18 counterpart:v42];
-  v21 = [(STTelephonyStatusDomainData *)self isUsingStewieForSOS];
+  v20 = [v5 appendBool:isRadioModuleDead counterpart:v42];
+  isUsingStewieForSOS = [(STTelephonyStatusDomainData *)self isUsingStewieForSOS];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_6;
   v40[3] = &unk_1E85DDD50;
   v22 = v19;
   v41 = v22;
-  v23 = [v5 appendBool:v21 counterpart:v40];
-  v24 = [(STTelephonyStatusDomainData *)self isInactiveSOSEnabled];
+  v23 = [v5 appendBool:isUsingStewieForSOS counterpart:v40];
+  isInactiveSOSEnabled = [(STTelephonyStatusDomainData *)self isInactiveSOSEnabled];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_7;
   v38[3] = &unk_1E85DDD50;
   v25 = v22;
   v39 = v25;
-  v26 = [v5 appendBool:v24 counterpart:v38];
-  v27 = [(STTelephonyStatusDomainData *)self isUsingStewieConnection];
+  v26 = [v5 appendBool:isInactiveSOSEnabled counterpart:v38];
+  isUsingStewieConnection = [(STTelephonyStatusDomainData *)self isUsingStewieConnection];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_8;
   v36[3] = &unk_1E85DDD50;
   v28 = v25;
   v37 = v28;
-  v29 = [v5 appendBool:v27 counterpart:v36];
-  v30 = [(STTelephonyStatusDomainData *)self isUsingStewieConnectionOverInternet];
+  v29 = [v5 appendBool:isUsingStewieConnection counterpart:v36];
+  isUsingStewieConnectionOverInternet = [(STTelephonyStatusDomainData *)self isUsingStewieConnectionOverInternet];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __39__STTelephonyStatusDomainData_isEqual___block_invoke_9;
   v34[3] = &unk_1E85DDD50;
   v35 = v28;
   v31 = v28;
-  v32 = [v5 appendBool:v30 counterpart:v34];
+  v32 = [v5 appendBool:isUsingStewieConnectionOverInternet counterpart:v34];
   LOBYTE(v28) = [v5 isEqual];
 
   return v28;
@@ -325,71 +325,71 @@ LABEL_30:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  sIMOneInfo = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+  v5 = [builder appendObject:sIMOneInfo];
 
-  v6 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
-  v7 = [v3 appendObject:v6];
+  sIMTwoInfo = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
+  v7 = [builder appendObject:sIMTwoInfo];
 
-  v8 = [v3 appendBool:{-[STTelephonyStatusDomainData isCellularRadioCapabilityEnabled](self, "isCellularRadioCapabilityEnabled")}];
-  v9 = [v3 appendBool:{-[STTelephonyStatusDomainData isDualSIMEnabled](self, "isDualSIMEnabled")}];
-  v10 = [v3 appendBool:{-[STTelephonyStatusDomainData isRadioModuleDead](self, "isRadioModuleDead")}];
-  v11 = [v3 appendBool:{-[STTelephonyStatusDomainData isUsingStewieForSOS](self, "isUsingStewieForSOS")}];
-  v12 = [v3 appendBool:{-[STTelephonyStatusDomainData isInactiveSOSEnabled](self, "isInactiveSOSEnabled")}];
-  v13 = [v3 appendBool:{-[STTelephonyStatusDomainData isUsingStewieConnection](self, "isUsingStewieConnection")}];
-  v14 = [v3 appendBool:{-[STTelephonyStatusDomainData isUsingStewieConnectionOverInternet](self, "isUsingStewieConnectionOverInternet")}];
-  v15 = [v3 hash];
+  v8 = [builder appendBool:{-[STTelephonyStatusDomainData isCellularRadioCapabilityEnabled](self, "isCellularRadioCapabilityEnabled")}];
+  v9 = [builder appendBool:{-[STTelephonyStatusDomainData isDualSIMEnabled](self, "isDualSIMEnabled")}];
+  v10 = [builder appendBool:{-[STTelephonyStatusDomainData isRadioModuleDead](self, "isRadioModuleDead")}];
+  v11 = [builder appendBool:{-[STTelephonyStatusDomainData isUsingStewieForSOS](self, "isUsingStewieForSOS")}];
+  v12 = [builder appendBool:{-[STTelephonyStatusDomainData isInactiveSOSEnabled](self, "isInactiveSOSEnabled")}];
+  v13 = [builder appendBool:{-[STTelephonyStatusDomainData isUsingStewieConnection](self, "isUsingStewieConnection")}];
+  v14 = [builder appendBool:{-[STTelephonyStatusDomainData isUsingStewieConnectionOverInternet](self, "isUsingStewieConnectionOverInternet")}];
+  v15 = [builder hash];
 
   return v15;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableTelephonyStatusDomainData allocWithZone:a3];
+  v4 = [STMutableTelephonyStatusDomainData allocWithZone:zone];
 
   return [(STTelephonyStatusDomainData *)v4 initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonyStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonyStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __79__STTelephonyStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -422,13 +422,13 @@ id __79__STTelephonyStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:{"isUsingStewieConnectionOverInternet"), @"usingStewieConnectionOverInternet"}];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STTelephonyStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STTelephonyStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -439,13 +439,13 @@ id __79__STTelephonyStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STTelephonyStatusDomainData *)self copy];
     }
@@ -453,7 +453,7 @@ id __79__STTelephonyStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
     else
     {
       v5 = [(STTelephonyStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -465,36 +465,36 @@ id __79__STTelephonyStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(STTelephonyStatusDomainData *)self SIMOneInfo];
-  [v6 encodeObject:v4 forKey:@"SIMOneInfo"];
+  coderCopy = coder;
+  sIMOneInfo = [(STTelephonyStatusDomainData *)self SIMOneInfo];
+  [coderCopy encodeObject:sIMOneInfo forKey:@"SIMOneInfo"];
 
-  v5 = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
-  [v6 encodeObject:v5 forKey:@"SIMTwoInfo"];
+  sIMTwoInfo = [(STTelephonyStatusDomainData *)self SIMTwoInfo];
+  [coderCopy encodeObject:sIMTwoInfo forKey:@"SIMTwoInfo"];
 
-  [v6 encodeBool:-[STTelephonyStatusDomainData isCellularRadioCapabilityEnabled](self forKey:{"isCellularRadioCapabilityEnabled"), @"cellularRadioCapabilityEnabled"}];
-  [v6 encodeBool:-[STTelephonyStatusDomainData isDualSIMEnabled](self forKey:{"isDualSIMEnabled"), @"dualSIMEnabled"}];
-  [v6 encodeBool:-[STTelephonyStatusDomainData isRadioModuleDead](self forKey:{"isRadioModuleDead"), @"radioModuleDead"}];
-  [v6 encodeBool:-[STTelephonyStatusDomainData isUsingStewieForSOS](self forKey:{"isUsingStewieForSOS"), @"usingStewieForSOS"}];
-  [v6 encodeBool:-[STTelephonyStatusDomainData isInactiveSOSEnabled](self forKey:{"isInactiveSOSEnabled"), @"inactiveSOSEnabled"}];
-  [v6 encodeBool:-[STTelephonyStatusDomainData isUsingStewieConnection](self forKey:{"isUsingStewieConnection"), @"usingStewieConnection"}];
-  [v6 encodeBool:-[STTelephonyStatusDomainData isUsingStewieConnectionOverInternet](self forKey:{"isUsingStewieConnectionOverInternet"), @"usingStewieConnectionOverInternet"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isCellularRadioCapabilityEnabled](self forKey:{"isCellularRadioCapabilityEnabled"), @"cellularRadioCapabilityEnabled"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isDualSIMEnabled](self forKey:{"isDualSIMEnabled"), @"dualSIMEnabled"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isRadioModuleDead](self forKey:{"isRadioModuleDead"), @"radioModuleDead"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isUsingStewieForSOS](self forKey:{"isUsingStewieForSOS"), @"usingStewieForSOS"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isInactiveSOSEnabled](self forKey:{"isInactiveSOSEnabled"), @"inactiveSOSEnabled"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isUsingStewieConnection](self forKey:{"isUsingStewieConnection"), @"usingStewieConnection"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainData isUsingStewieConnectionOverInternet](self forKey:{"isUsingStewieConnectionOverInternet"), @"usingStewieConnectionOverInternet"}];
 }
 
-- (STTelephonyStatusDomainData)initWithCoder:(id)a3
+- (STTelephonyStatusDomainData)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SIMOneInfo"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SIMTwoInfo"];
-  v6 = [v3 decodeBoolForKey:@"cellularRadioCapabilityEnabled"];
-  v7 = [v3 decodeBoolForKey:@"dualSIMEnabled"];
-  v8 = [v3 decodeBoolForKey:@"radioModuleDead"];
-  v9 = [v3 decodeBoolForKey:@"usingStewieForSOS"];
-  v10 = [v3 decodeBoolForKey:@"inactiveSOSEnabled"];
-  v11 = [v3 decodeBoolForKey:@"usingStewieConnection"];
-  v12 = [v3 decodeBoolForKey:@"usingStewieConnectionOverInternet"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SIMOneInfo"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SIMTwoInfo"];
+  v6 = [coderCopy decodeBoolForKey:@"cellularRadioCapabilityEnabled"];
+  v7 = [coderCopy decodeBoolForKey:@"dualSIMEnabled"];
+  v8 = [coderCopy decodeBoolForKey:@"radioModuleDead"];
+  v9 = [coderCopy decodeBoolForKey:@"usingStewieForSOS"];
+  v10 = [coderCopy decodeBoolForKey:@"inactiveSOSEnabled"];
+  v11 = [coderCopy decodeBoolForKey:@"usingStewieConnection"];
+  v12 = [coderCopy decodeBoolForKey:@"usingStewieConnectionOverInternet"];
 
   v13 = [(STTelephonyStatusDomainData *)self initWithSIMOneInfo:v4 SIMTwoInfo:v5 cellularRadioCapabilityEnabled:v6 dualSIMEnabled:v7 radioModuleDead:v8 usingStewieForSOS:v9 inactiveSOSEnabled:v10 usingStewieConnection:v11 usingStewieConnectionOverInternet:v12];
   return v13;

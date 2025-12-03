@@ -85,16 +85,16 @@
 
 + (id)operatingSystemName
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
 
-  return [v2 systemName];
+  return [currentDevice systemName];
 }
 
 + (id)systemVersion
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
 
-  return [v2 systemVersion];
+  return [currentDevice systemVersion];
 }
 
 + (id)osVersion

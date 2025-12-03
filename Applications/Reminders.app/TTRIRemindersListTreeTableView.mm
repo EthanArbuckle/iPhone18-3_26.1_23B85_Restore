@@ -1,8 +1,8 @@
 @interface TTRIRemindersListTreeTableView
 - (CGPoint)contentOffset;
-- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithCoder:(id)a3;
-- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentOffset:(CGPoint)a3;
+- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithCoder:(id)coder;
+- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation TTRIRemindersListTreeTableView
@@ -17,30 +17,30 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
   sub_1001D62AC(x, y);
 }
 
-- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v11 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders30TTRIRemindersListTreeTableView_ownerViewControllerFor52010514);
   *v11 = 0;
   v11[1] = 0;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  return [(TTRITreeTableView *)&v13 initWithFrame:a4 style:x, y, width, height];
+  return [(TTRITreeTableView *)&v13 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithCoder:(id)a3
+- (_TtC9Reminders30TTRIRemindersListTreeTableView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders30TTRIRemindersListTreeTableView_ownerViewControllerFor52010514);
@@ -48,8 +48,8 @@
   v6[1] = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(TTRITreeTableView *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(TTRITreeTableView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

@@ -1,27 +1,27 @@
 @interface ProviderConfiguration
-- (BOOL)isEqualToConfiguration:(id)a3;
+- (BOOL)isEqualToConfiguration:(id)configuration;
 - (BOOL)providerOff;
-- (BOOL)useV5ForConnection:(id)a3;
-- (ProviderConfiguration)initWithConfiguration:(id)a3;
+- (BOOL)useV5ForConnection:(id)connection;
+- (ProviderConfiguration)initWithConfiguration:(id)configuration;
 - (void)_configureToBeOff;
-- (void)_parseConfiguration:(id)a3;
+- (void)_parseConfiguration:(id)configuration;
 @end
 
 @implementation ProviderConfiguration
 
-- (ProviderConfiguration)initWithConfiguration:(id)a3
+- (ProviderConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = ProviderConfiguration;
   v5 = [(ProviderConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
-    [(ProviderConfiguration *)v5 _parseConfiguration:v4];
+    [(ProviderConfiguration *)v5 _parseConfiguration:configurationCopy];
     v8 = v5;
   }
 
@@ -48,14 +48,14 @@
   self->_useV5 = 0;
 }
 
-- (void)_parseConfiguration:(id)a3
+- (void)_parseConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
+  configurationCopy = configuration;
+  v5 = configurationCopy;
   self->_proxyOff = 0;
-  if (v4)
+  if (configurationCopy)
   {
-    v6 = [v4 objectForKey:@"Proxy Versions To Turn Off"];
+    v6 = [configurationCopy objectForKey:@"Proxy Versions To Turn Off"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -205,20 +205,20 @@ LABEL_40:
 LABEL_42:
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   configuration = self->_configuration;
-  v6 = !(v4 | configuration) || v4 && [(NSDictionary *)configuration isEqualToDictionary:v4];
+  v6 = !(configurationCopy | configuration) || configurationCopy && [(NSDictionary *)configuration isEqualToDictionary:configurationCopy];
 
   return v6;
 }
 
-- (BOOL)useV5ForConnection:(id)a3
+- (BOOL)useV5ForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->_useV5 && (!self->_isWebBrowserOnly || Backend::Google::SSBUtilities::hasWebBrowserEntitlement(v4));
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  v6 = self->_useV5 && (!self->_isWebBrowserOnly || Backend::Google::SSBUtilities::hasWebBrowserEntitlement(connectionCopy));
 
   return v6;
 }

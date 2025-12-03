@@ -3,11 +3,11 @@
 + (void)__test_only_reloadDefaultStore;
 - (FPDConfigurationStore)init;
 - (NSString)getTrialConfigurationState;
-- (double)temporaryFileTrackingDelayForVariant:(id)a3;
-- (id)loadTrialClient:(BOOL)a3;
-- (void)addObserver:(id)a3;
-- (void)loadFpfsConfigNamespace:(id)a3;
-- (void)loadSpecDownloadNamespace:(id)a3;
+- (double)temporaryFileTrackingDelayForVariant:(id)variant;
+- (id)loadTrialClient:(BOOL)client;
+- (void)addObserver:(id)observer;
+- (void)loadFpfsConfigNamespace:(id)namespace;
+- (void)loadSpecDownloadNamespace:(id)namespace;
 - (void)refresh;
 @end
 
@@ -95,18 +95,18 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
     dispatch_source_set_event_handler(v18, v19);
 
     dispatch_activate(v18);
-    v20 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v21 = v17[4];
-    v17[4] = v20;
+    v17[4] = weakObjectsHashTable;
   }
 
   v22 = *MEMORY[0x1E69E9840];
   return v2;
 }
 
-- (double)temporaryFileTrackingDelayForVariant:(id)a3
+- (double)temporaryFileTrackingDelayForVariant:(id)variant
 {
-  v4 = [(NSMutableDictionary *)self->_temporaryFileTrackingDelayPerVariant objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_temporaryFileTrackingDelayPerVariant objectForKeyedSubscript:variant];
   v5 = v4;
   if (v4)
   {
@@ -122,11 +122,11 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
   return defaultTemporaryFileTrackingDelay;
 }
 
-- (id)loadTrialClient:(BOOL)a3
+- (id)loadTrialClient:(BOOL)client
 {
-  v30 = a3;
+  clientCopy = client;
   v49[2] = *MEMORY[0x1E69E9840];
-  v35 = [MEMORY[0x1E69DB518] client];
+  client = [MEMORY[0x1E69DB518] client];
   v49[0] = @"COREOS_FPFS_CONFIG";
   v49[1] = @"COREOS_FPFS_SPECULATIVE_DOWNLOADS";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
@@ -151,59 +151,59 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
 
         v5 = *(*(&v36 + 1) + 8 * i);
         v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-        v7 = [v35 rolloutIdentifiersWithNamespaceName:v5];
+        v7 = [client rolloutIdentifiersWithNamespaceName:v5];
         v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
         if (v7)
         {
-          v9 = [v7 factorPackId];
-          [v8 setObject:v9 forKeyedSubscript:@"factorPackId"];
+          factorPackId = [v7 factorPackId];
+          [v8 setObject:factorPackId forKeyedSubscript:@"factorPackId"];
 
-          v10 = [v7 rolloutId];
-          [v8 setObject:v10 forKeyedSubscript:@"rolloutId"];
+          rolloutId = [v7 rolloutId];
+          [v8 setObject:rolloutId forKeyedSubscript:@"rolloutId"];
 
-          v11 = [v7 rampId];
-          [v8 setObject:v11 forKeyedSubscript:@"rampId"];
+          rampId = [v7 rampId];
+          [v8 setObject:rampId forKeyedSubscript:@"rampId"];
 
           v12 = fp_current_or_default_log();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
-            v13 = [v7 factorPackId];
-            v14 = [v7 rolloutId];
-            v15 = [v7 rampId];
+            factorPackId2 = [v7 factorPackId];
+            rolloutId2 = [v7 rolloutId];
+            rampId2 = [v7 rampId];
             *buf = 138413058;
             v41 = v5;
             v42 = 2112;
-            v43 = v13;
+            v43 = factorPackId2;
             v44 = 2112;
-            v45 = v14;
+            v45 = rolloutId2;
             v46 = 2112;
-            v47 = v15;
+            v47 = rampId2;
             _os_log_impl(&dword_1CEFC7000, v12, OS_LOG_TYPE_INFO, "[INFO] [Trial - %@] factor pack: %@, rollout: %@, ramp: %@", buf, 0x2Au);
           }
         }
 
         [v6 setObject:v8 forKeyedSubscript:@"rollout"];
-        v16 = [v35 experimentIdentifiersWithNamespaceName:v5];
+        v16 = [client experimentIdentifiersWithNamespaceName:v5];
         v17 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
         if (v16)
         {
-          v18 = [v16 experimentId];
-          [v17 setObject:v18 forKeyedSubscript:@"experimentId"];
+          experimentId = [v16 experimentId];
+          [v17 setObject:experimentId forKeyedSubscript:@"experimentId"];
 
-          v19 = [v16 treatmentId];
-          [v17 setObject:v19 forKeyedSubscript:@"treatmentId"];
+          treatmentId = [v16 treatmentId];
+          [v17 setObject:treatmentId forKeyedSubscript:@"treatmentId"];
 
           v20 = fp_current_or_default_log();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
-            v21 = [v16 experimentId];
-            v22 = [v16 treatmentId];
+            experimentId2 = [v16 experimentId];
+            treatmentId2 = [v16 treatmentId];
             *buf = 138412802;
             v41 = v5;
             v42 = 2112;
-            v43 = v21;
+            v43 = experimentId2;
             v44 = 2112;
-            v45 = v22;
+            v45 = treatmentId2;
             _os_log_impl(&dword_1CEFC7000, v20, OS_LOG_TYPE_INFO, "[INFO] [Trial - %@] experiment: %@, treatment: %@", buf, 0x20u);
           }
         }
@@ -218,10 +218,10 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
     while (v34);
   }
 
-  v23 = self;
-  objc_sync_enter(v23);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v24 = [v33 copy];
-  if (v30)
+  if (clientCopy)
   {
     v25 = 40;
   }
@@ -231,31 +231,31 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
     v25 = 48;
   }
 
-  v26 = *(&v23->super.isa + v25);
-  *(&v23->super.isa + v25) = v24;
+  v26 = *(&selfCopy->super.isa + v25);
+  *(&selfCopy->super.isa + v25) = v24;
 
-  objc_sync_exit(v23);
+  objc_sync_exit(selfCopy);
   v27 = *MEMORY[0x1E69E9840];
 
-  return v35;
+  return client;
 }
 
-- (void)loadFpfsConfigNamespace:(id)a3
+- (void)loadFpfsConfigNamespace:(id)namespace
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_trialTestFactor = fp_configuration_store_int_check(v4, @"testFactor", @"COREOS_FPFS_CONFIG", 1, 1, 0x7FFFFFFF);
-  self->_hardConcurrentOperationLimit = fp_configuration_store_int_check(v4, @"hardConcurrentOperationLimit", @"COREOS_FPFS_CONFIG", 128, 1, 0x7FFFFFFF);
-  self->_softConcurrentOperationLimit = fp_configuration_store_int_check(v4, @"softConcurrentOperationLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
-  self->_hardConcurrentContentUpdateLimit = fp_configuration_store_int_check(v4, @"hardConcurrentContentUpdateLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
-  self->_softConcurrentContentUpdateLimit = fp_configuration_store_int_check(v4, @"softConcurrentContentUpdateLimit", @"COREOS_FPFS_CONFIG", 16, 1, 0x7FFFFFFF);
-  self->_hardConcurrentMetadataOnlyUpdateLimit = fp_configuration_store_int_check(v4, @"hardConcurrentMetadataOnlyUpdateLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
-  self->_softConcurrentMetadataOnlyUpdateLimit = fp_configuration_store_int_check(v4, @"softConcurrentMetadataOnlyUpdateLimit", @"COREOS_FPFS_CONFIG", 16, 1, 0x7FFFFFFF);
-  self->_hardConcurrentProvideFileLimit = fp_configuration_store_int_check(v4, @"hardConcurrentProvideFileLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
-  self->_softConcurrentProvideFileLimit = fp_configuration_store_int_check(v4, @"softConcurrentProvideFileLimit", @"COREOS_FPFS_CONFIG", 16, 1, 0x7FFFFFFF);
-  v5 = [v4 levelForFactor:@"userExtensionPackageAllowlist" withNamespaceName:@"COREOS_FPFS_CONFIG"];
-  v6 = [v5 stringValue];
-  v7 = [v6 componentsSeparatedByString:@""];;
+  namespaceCopy = namespace;
+  self->_trialTestFactor = fp_configuration_store_int_check(namespaceCopy, @"testFactor", @"COREOS_FPFS_CONFIG", 1, 1, 0x7FFFFFFF);
+  self->_hardConcurrentOperationLimit = fp_configuration_store_int_check(namespaceCopy, @"hardConcurrentOperationLimit", @"COREOS_FPFS_CONFIG", 128, 1, 0x7FFFFFFF);
+  self->_softConcurrentOperationLimit = fp_configuration_store_int_check(namespaceCopy, @"softConcurrentOperationLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
+  self->_hardConcurrentContentUpdateLimit = fp_configuration_store_int_check(namespaceCopy, @"hardConcurrentContentUpdateLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
+  self->_softConcurrentContentUpdateLimit = fp_configuration_store_int_check(namespaceCopy, @"softConcurrentContentUpdateLimit", @"COREOS_FPFS_CONFIG", 16, 1, 0x7FFFFFFF);
+  self->_hardConcurrentMetadataOnlyUpdateLimit = fp_configuration_store_int_check(namespaceCopy, @"hardConcurrentMetadataOnlyUpdateLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
+  self->_softConcurrentMetadataOnlyUpdateLimit = fp_configuration_store_int_check(namespaceCopy, @"softConcurrentMetadataOnlyUpdateLimit", @"COREOS_FPFS_CONFIG", 16, 1, 0x7FFFFFFF);
+  self->_hardConcurrentProvideFileLimit = fp_configuration_store_int_check(namespaceCopy, @"hardConcurrentProvideFileLimit", @"COREOS_FPFS_CONFIG", 32, 1, 0x7FFFFFFF);
+  self->_softConcurrentProvideFileLimit = fp_configuration_store_int_check(namespaceCopy, @"softConcurrentProvideFileLimit", @"COREOS_FPFS_CONFIG", 16, 1, 0x7FFFFFFF);
+  v5 = [namespaceCopy levelForFactor:@"userExtensionPackageAllowlist" withNamespaceName:@"COREOS_FPFS_CONFIG"];
+  stringValue = [v5 stringValue];
+  v7 = [stringValue componentsSeparatedByString:@""];;
   v8 = v7;
   v9 = *MEMORY[0x1E6967530];
   if (v7)
@@ -270,34 +270,34 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
 
   objc_storeStrong(&self->_userPackageExtensions, v10);
 
-  self->_hasUpcallExecutionTimeLimits = fp_configuration_store_BOOL_check(v4, @"hasUpcallExecutionTimeLimits", 1);
-  self->_upcallExecutionTimeLimitBase = fp_configuration_store_double_check(v4, @"upcallExecutionTimeLimitBase", 180.0, 0.0, 86400.0);
-  self->_upcallExecutionTimeLimitPerKiloByte = fp_configuration_store_double_check(v4, @"upcallExecutionTimeLimitPerKiloByte", 0.005, 0.0, 3600.0);
-  self->_upcallExcutionTimeLimitStaleProgress = fp_configuration_store_double_check(v4, @"upcallExcutionTimeLimitStaleProgress", 600.0, 0.0, 86400.0);
-  self->_upcallExcutionTimeLimitProgressCancellationGracePeriod = fp_configuration_store_double_check(v4, @"upcallExcutionTimeLimitProgressCancellationGracePeriod", 15.0, 0.0, 3600.0);
-  self->_errorGenerationUpdateSeconds = fp_configuration_store_int_check(v4, @"errorGenerationUpdateSeconds", @"COREOS_FPFS_CONFIG", 30, 1, 600);
-  self->_lowPrioritySignalProviderChangesIntervalSeconds = fp_configuration_store_int_check(v4, @"lowPrioritySignalProviderChangesIntervalSeconds", @"COREOS_FPFS_CONFIG", 2, 1, 60);
-  self->_vfsDirectoryListerLimit = fp_configuration_store_int_check(v4, @"vfsDirectoryListerLimit", @"COREOS_FPFS_CONFIG", 200, 1, 1000);
-  self->_maxFSEventQueueSize = fp_configuration_store_int_check(v4, @"maxFSEventQueueSize", @"COREOS_FPFS_CONFIG", 1024, 128, 10240);
-  self->_fseventProcessBatchSize = fp_configuration_store_int_check(v4, @"fseventProcessBatchSize", @"COREOS_FPFS_CONFIG", 64, 8, 256);
-  self->_fseventsAggregationDelay = fp_configuration_store_double_check(v4, @"fseventsAggregationDelay", 0.2, 0.0, 3600.0);
-  self->_maxLookupDepth = fp_configuration_store_int_check(v4, @"maxLookupDepth", @"COREOS_FPFS_CONFIG", 5, 1, 9);
-  self->_partialReimportHierarchyLimit = fp_configuration_store_int_check(v4, @"partialReimportHierarchyLimit", @"COREOS_FPFS_CONFIG", 1000, 1, 10000000);
-  self->_sqlDatabaseFlushIntervalMilliseconds = fp_configuration_store_int_check(v4, @"sqlDatabaseFlushIntervalMilliseconds", @"COREOS_FPFS_CONFIG", 100, 10, 1000);
-  self->_sqlDatabaseVacuumBatchSize = fp_configuration_store_int_check(v4, @"sqlDatabaseVacuumBatchSize", @"COREOS_FPFS_CONFIG", 10485760, 0x100000, 104857600);
-  self->_sqlDatabaseBatchDelay = fp_configuration_store_double_check(v4, @"sqlDatabaseBatchDelay", 0.5, 0.05, 5.0);
-  self->_sqlDatabaseBatchChangeCount = fp_configuration_store_int_check(v4, @"sqlDatabaseBatchChangeCount", @"COREOS_FPFS_CONFIG", 100000, 10000, 1000000);
-  self->_sqlDatabaseOnNextDurableFlushTriggerThreshold = fp_configuration_store_int_check(v4, @"sqlDatabaseOnNextDurableFlushTriggerThreshold", @"COREOS_FPFS_CONFIG", 220, 100, 800);
-  self->_sqlDatabaseStatementCacheMaxCount = fp_configuration_store_int_check(v4, @"sqlDatabaseStatementCacheMaxCount", @"COREOS_FPFS_CONFIG", 300, 10, 0x7FFFFFFF);
-  self->_sqlDatabaseStatementWarnTime = fp_configuration_store_int_check(v4, @"sqlDatabaseStatementWarnTime", @"COREOS_FPFS_CONFIG", 100000, 0, 0x7FFFFFFF);
-  self->_sqlDatabaseBusyHandlerRetries = fp_configuration_store_int_check(v4, @"sqlDatabaseBusyHandlerRetries", @"COREOS_FPFS_CONFIG", 10, -1, 3600);
-  self->_pendingSetMaxItemCount = fp_configuration_store_int_check(v4, @"pendingSetMaxItemCount", @"COREOS_FPFS_CONFIG", 1000, 2, 0x7FFFFFFF);
-  self->_pendingSetRefreshInterval = fp_configuration_store_double_check(v4, @"pendingSetRefreshInterval", 1.0, 1.0, 86400.0);
-  self->_pendingSetRegatherThreshold = fp_configuration_store_int_check(v4, @"pendingSetRegatherThreshold", @"COREOS_FPFS_CONFIG", self->_pendingSetMaxItemCount / 2, self->_pendingSetMaxItemCount / 2, self->_pendingSetMaxItemCount);
-  self->_perfTelemetrySubSamplingPercentage = fp_configuration_store_int_check(v4, @"perfTelemetrySubSamplingPercentage", @"COREOS_FPFS_CONFIG", 80, 0, 100);
-  v11 = [v4 levelForFactor:@"dynamicErrorSampleRatePerProvider" withNamespaceName:@"COREOS_FPFS_CONFIG"];
-  v12 = [v11 stringValue];
-  v13 = [v12 componentsSeparatedByString:@""];;
+  self->_hasUpcallExecutionTimeLimits = fp_configuration_store_BOOL_check(namespaceCopy, @"hasUpcallExecutionTimeLimits", 1);
+  self->_upcallExecutionTimeLimitBase = fp_configuration_store_double_check(namespaceCopy, @"upcallExecutionTimeLimitBase", 180.0, 0.0, 86400.0);
+  self->_upcallExecutionTimeLimitPerKiloByte = fp_configuration_store_double_check(namespaceCopy, @"upcallExecutionTimeLimitPerKiloByte", 0.005, 0.0, 3600.0);
+  self->_upcallExcutionTimeLimitStaleProgress = fp_configuration_store_double_check(namespaceCopy, @"upcallExcutionTimeLimitStaleProgress", 600.0, 0.0, 86400.0);
+  self->_upcallExcutionTimeLimitProgressCancellationGracePeriod = fp_configuration_store_double_check(namespaceCopy, @"upcallExcutionTimeLimitProgressCancellationGracePeriod", 15.0, 0.0, 3600.0);
+  self->_errorGenerationUpdateSeconds = fp_configuration_store_int_check(namespaceCopy, @"errorGenerationUpdateSeconds", @"COREOS_FPFS_CONFIG", 30, 1, 600);
+  self->_lowPrioritySignalProviderChangesIntervalSeconds = fp_configuration_store_int_check(namespaceCopy, @"lowPrioritySignalProviderChangesIntervalSeconds", @"COREOS_FPFS_CONFIG", 2, 1, 60);
+  self->_vfsDirectoryListerLimit = fp_configuration_store_int_check(namespaceCopy, @"vfsDirectoryListerLimit", @"COREOS_FPFS_CONFIG", 200, 1, 1000);
+  self->_maxFSEventQueueSize = fp_configuration_store_int_check(namespaceCopy, @"maxFSEventQueueSize", @"COREOS_FPFS_CONFIG", 1024, 128, 10240);
+  self->_fseventProcessBatchSize = fp_configuration_store_int_check(namespaceCopy, @"fseventProcessBatchSize", @"COREOS_FPFS_CONFIG", 64, 8, 256);
+  self->_fseventsAggregationDelay = fp_configuration_store_double_check(namespaceCopy, @"fseventsAggregationDelay", 0.2, 0.0, 3600.0);
+  self->_maxLookupDepth = fp_configuration_store_int_check(namespaceCopy, @"maxLookupDepth", @"COREOS_FPFS_CONFIG", 5, 1, 9);
+  self->_partialReimportHierarchyLimit = fp_configuration_store_int_check(namespaceCopy, @"partialReimportHierarchyLimit", @"COREOS_FPFS_CONFIG", 1000, 1, 10000000);
+  self->_sqlDatabaseFlushIntervalMilliseconds = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseFlushIntervalMilliseconds", @"COREOS_FPFS_CONFIG", 100, 10, 1000);
+  self->_sqlDatabaseVacuumBatchSize = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseVacuumBatchSize", @"COREOS_FPFS_CONFIG", 10485760, 0x100000, 104857600);
+  self->_sqlDatabaseBatchDelay = fp_configuration_store_double_check(namespaceCopy, @"sqlDatabaseBatchDelay", 0.5, 0.05, 5.0);
+  self->_sqlDatabaseBatchChangeCount = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseBatchChangeCount", @"COREOS_FPFS_CONFIG", 100000, 10000, 1000000);
+  self->_sqlDatabaseOnNextDurableFlushTriggerThreshold = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseOnNextDurableFlushTriggerThreshold", @"COREOS_FPFS_CONFIG", 220, 100, 800);
+  self->_sqlDatabaseStatementCacheMaxCount = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseStatementCacheMaxCount", @"COREOS_FPFS_CONFIG", 300, 10, 0x7FFFFFFF);
+  self->_sqlDatabaseStatementWarnTime = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseStatementWarnTime", @"COREOS_FPFS_CONFIG", 100000, 0, 0x7FFFFFFF);
+  self->_sqlDatabaseBusyHandlerRetries = fp_configuration_store_int_check(namespaceCopy, @"sqlDatabaseBusyHandlerRetries", @"COREOS_FPFS_CONFIG", 10, -1, 3600);
+  self->_pendingSetMaxItemCount = fp_configuration_store_int_check(namespaceCopy, @"pendingSetMaxItemCount", @"COREOS_FPFS_CONFIG", 1000, 2, 0x7FFFFFFF);
+  self->_pendingSetRefreshInterval = fp_configuration_store_double_check(namespaceCopy, @"pendingSetRefreshInterval", 1.0, 1.0, 86400.0);
+  self->_pendingSetRegatherThreshold = fp_configuration_store_int_check(namespaceCopy, @"pendingSetRegatherThreshold", @"COREOS_FPFS_CONFIG", self->_pendingSetMaxItemCount / 2, self->_pendingSetMaxItemCount / 2, self->_pendingSetMaxItemCount);
+  self->_perfTelemetrySubSamplingPercentage = fp_configuration_store_int_check(namespaceCopy, @"perfTelemetrySubSamplingPercentage", @"COREOS_FPFS_CONFIG", 80, 0, 100);
+  v11 = [namespaceCopy levelForFactor:@"dynamicErrorSampleRatePerProvider" withNamespaceName:@"COREOS_FPFS_CONFIG"];
+  stringValue2 = [v11 stringValue];
+  v13 = [stringValue2 componentsSeparatedByString:@""];;
   v14 = v13;
   if (v13)
   {
@@ -311,21 +311,21 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
 
   objc_storeStrong(&self->_dynamicErrorSampleRatePerProvider, v15);
 
-  self->_maxFPCKDatabaseChecks = fp_configuration_store_int_check(v4, @"maxFPCKDatabaseChecks", @"COREOS_FPFS_CONFIG", 60000, 0, 0x7FFFFFFF);
-  self->_maxFPCKDatabaseChecksDiagnostic = fp_configuration_store_int_check(v4, @"maxFPCKDatabaseChecksDiagnostic", @"COREOS_FPFS_CONFIG", 2000, 0, 0x7FFFFFFF);
-  self->_avoidNilErrorItemsForDetailedPayload = fp_configuration_store_BOOL_check(v4, @"avoidNilErrorItemsForDetailedPayload", 0);
+  self->_maxFPCKDatabaseChecks = fp_configuration_store_int_check(namespaceCopy, @"maxFPCKDatabaseChecks", @"COREOS_FPFS_CONFIG", 60000, 0, 0x7FFFFFFF);
+  self->_maxFPCKDatabaseChecksDiagnostic = fp_configuration_store_int_check(namespaceCopy, @"maxFPCKDatabaseChecksDiagnostic", @"COREOS_FPFS_CONFIG", 2000, 0, 0x7FFFFFFF);
+  self->_avoidNilErrorItemsForDetailedPayload = fp_configuration_store_BOOL_check(namespaceCopy, @"avoidNilErrorItemsForDetailedPayload", 0);
   self->_hangingDownloadCancellationPromptEnabled = 0;
-  self->_minimumDiskSpaceRequiredToBeGreedy = fp_configuration_store_int64_check(v4, @"diskSpaceMinimumRequiredToBeGreedy_ios", @"COREOS_FPFS_CONFIG", 0x80000000, 1, 0x7FFFFFFFFFFFFFFFLL);
-  self->_relativeDiskSpaceRequiredToBeGreedy = fp_configuration_store_double_check(v4, @"diskSpaceRequiredToBeGreedyRelative_ios", 0.1, 0.0, 1.0);
-  self->_diskSpaceRequiredToReturnToGreedyState = fp_configuration_store_int64_check(v4, @"diskSpaceRequiredToReturnToGreedyState_ios", @"COREOS_FPFS_CONFIG", 0x200000000, 1, 0x7FFFFFFFFFFFFFFFLL);
-  self->_relativeDiskSpaceRequiredToReturnToGreedyState = fp_configuration_store_double_check(v4, @"diskSpaceRequiredToReturnToGreedyStateRelative_ios", 0.15, 0.0, 1.0);
-  self->_diskSpaceCheckInterval = fp_configuration_store_int_check(v4, @"diskSpaceCheckInterval", @"COREOS_FPFS_CONFIG", 30, 0, 0x7FFFFFFF);
-  self->_minTimeBetweenSpeculativeDownloadsPurgeSession = fp_configuration_store_int_check(v4, @"minTimeBetweenSpeculativeDownloadsPurgeSession_ios", @"COREOS_FPFS_CONFIG", 1200, 0, 0x7FFFFFFF);
-  self->_minTimeToPreventDownloadsAfterReturningToGreedyState = fp_configuration_store_int_check(v4, @"minTimeToPreventDownloadsAfterReturningToGreedyState_ios", @"COREOS_FPFS_CONFIG", 86400, 0, 0x7FFFFFFF);
-  self->_useCacheDeleteWhenReachingLowerBound = fp_configuration_store_BOOL_check(v4, @"useCacheDeleteWhenReachingLowerBound", 0);
-  v48 = self;
-  self->_timeForMarkingAnItemOnTheMacAsIndexed = fp_configuration_store_int_check(v4, @"timeForMarkingAnItemOnTheMacAsIndexed", @"COREOS_FPFS_CONFIG", 86400, 0, 0x7FFFFFFF);
-  v16 = v4;
+  self->_minimumDiskSpaceRequiredToBeGreedy = fp_configuration_store_int64_check(namespaceCopy, @"diskSpaceMinimumRequiredToBeGreedy_ios", @"COREOS_FPFS_CONFIG", 0x80000000, 1, 0x7FFFFFFFFFFFFFFFLL);
+  self->_relativeDiskSpaceRequiredToBeGreedy = fp_configuration_store_double_check(namespaceCopy, @"diskSpaceRequiredToBeGreedyRelative_ios", 0.1, 0.0, 1.0);
+  self->_diskSpaceRequiredToReturnToGreedyState = fp_configuration_store_int64_check(namespaceCopy, @"diskSpaceRequiredToReturnToGreedyState_ios", @"COREOS_FPFS_CONFIG", 0x200000000, 1, 0x7FFFFFFFFFFFFFFFLL);
+  self->_relativeDiskSpaceRequiredToReturnToGreedyState = fp_configuration_store_double_check(namespaceCopy, @"diskSpaceRequiredToReturnToGreedyStateRelative_ios", 0.15, 0.0, 1.0);
+  self->_diskSpaceCheckInterval = fp_configuration_store_int_check(namespaceCopy, @"diskSpaceCheckInterval", @"COREOS_FPFS_CONFIG", 30, 0, 0x7FFFFFFF);
+  self->_minTimeBetweenSpeculativeDownloadsPurgeSession = fp_configuration_store_int_check(namespaceCopy, @"minTimeBetweenSpeculativeDownloadsPurgeSession_ios", @"COREOS_FPFS_CONFIG", 1200, 0, 0x7FFFFFFF);
+  self->_minTimeToPreventDownloadsAfterReturningToGreedyState = fp_configuration_store_int_check(namespaceCopy, @"minTimeToPreventDownloadsAfterReturningToGreedyState_ios", @"COREOS_FPFS_CONFIG", 86400, 0, 0x7FFFFFFF);
+  self->_useCacheDeleteWhenReachingLowerBound = fp_configuration_store_BOOL_check(namespaceCopy, @"useCacheDeleteWhenReachingLowerBound", 0);
+  selfCopy = self;
+  self->_timeForMarkingAnItemOnTheMacAsIndexed = fp_configuration_store_int_check(namespaceCopy, @"timeForMarkingAnItemOnTheMacAsIndexed", @"COREOS_FPFS_CONFIG", 86400, 0, 0x7FFFFFFF);
+  v16 = namespaceCopy;
   v49 = objc_opt_new();
   v51 = 0u;
   v52 = 0u;
@@ -395,61 +395,61 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
   }
 
   v37 = v16;
-  temporaryFileTrackingDelayPerVariant = v48->_temporaryFileTrackingDelayPerVariant;
-  v48->_temporaryFileTrackingDelayPerVariant = v49;
+  temporaryFileTrackingDelayPerVariant = selfCopy->_temporaryFileTrackingDelayPerVariant;
+  selfCopy->_temporaryFileTrackingDelayPerVariant = v49;
   v39 = v49;
 
-  v48->_defaultTemporaryFileTrackingDelay = fp_configuration_store_double_check(v37, @"temporaryFileTrackingDelay", 60.0, 1.0, 86400.0);
-  v48->_minBatteryPercentageToAllowBackgroundDownloads = fp_configuration_store_int64_check(v37, @"minBatteryPercentageToAllowBackgroundDownloads", @"COREOS_FPFS_CONFIG", 50, 0, 100);
-  v48->_maxFileSizeToDownloadSpeculativlyWhenBGSTSizeReportIsOff = fp_configuration_store_int64_check(v37, @"maxFileSizeToDownloadSpeculativlyWhenBGSTSizeReportIsOff", @"COREOS_FPFS_CONFIG", 0x100000000, 0, 0x7FFFFFFFFFFFFFFFLL);
+  selfCopy->_defaultTemporaryFileTrackingDelay = fp_configuration_store_double_check(v37, @"temporaryFileTrackingDelay", 60.0, 1.0, 86400.0);
+  selfCopy->_minBatteryPercentageToAllowBackgroundDownloads = fp_configuration_store_int64_check(v37, @"minBatteryPercentageToAllowBackgroundDownloads", @"COREOS_FPFS_CONFIG", 50, 0, 100);
+  selfCopy->_maxFileSizeToDownloadSpeculativlyWhenBGSTSizeReportIsOff = fp_configuration_store_int64_check(v37, @"maxFileSizeToDownloadSpeculativlyWhenBGSTSizeReportIsOff", @"COREOS_FPFS_CONFIG", 0x100000000, 0, 0x7FFFFFFFFFFFFFFFLL);
   v40 = fp_configuration_store_string_check(v37, @"targetedSPSErrorsPayload", @"[]");
-  targetedSPSErrorsPayload = v48->_targetedSPSErrorsPayload;
-  v48->_targetedSPSErrorsPayload = v40;
+  targetedSPSErrorsPayload = selfCopy->_targetedSPSErrorsPayload;
+  selfCopy->_targetedSPSErrorsPayload = v40;
 
-  v48->_spsFeedbackRequestPromptTimeoutInSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackRequestPromptTimeoutInSeconds", @"COREOS_FPFS_CONFIG", 172800, 0, 0x7FFFFFFF);
-  v48->_spsFeedbackBackoffAfterSayingYesInSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackBackoffAfterSayingYesInSeconds", @"COREOS_FPFS_CONFIG", 2678400, 0, 0x7FFFFFFF);
-  v48->_spsFeedbackBackoffAfterOtherResponsesInSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackBackoffAfterOtherResponsesInSeconds", @"COREOS_FPFS_CONFIG", 604800, 0, 0x7FFFFFFF);
-  v48->_spsFeedbackBackoffAfterOtherResponses_MultipleAttempts_InSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackBackoffAfterOtherResponses_MultipleAttempts_InSeconds", @"COREOS_FPFS_CONFIG", 2678400, 0, 0x7FFFFFFF);
-  v48->_externalFeedbackAllowed = fp_configuration_store_BOOL_check(v37, @"externalFeedbackAllowed", 1);
+  selfCopy->_spsFeedbackRequestPromptTimeoutInSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackRequestPromptTimeoutInSeconds", @"COREOS_FPFS_CONFIG", 172800, 0, 0x7FFFFFFF);
+  selfCopy->_spsFeedbackBackoffAfterSayingYesInSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackBackoffAfterSayingYesInSeconds", @"COREOS_FPFS_CONFIG", 2678400, 0, 0x7FFFFFFF);
+  selfCopy->_spsFeedbackBackoffAfterOtherResponsesInSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackBackoffAfterOtherResponsesInSeconds", @"COREOS_FPFS_CONFIG", 604800, 0, 0x7FFFFFFF);
+  selfCopy->_spsFeedbackBackoffAfterOtherResponses_MultipleAttempts_InSeconds = fp_configuration_store_int_check(v37, @"spsFeedbackBackoffAfterOtherResponses_MultipleAttempts_InSeconds", @"COREOS_FPFS_CONFIG", 2678400, 0, 0x7FFFFFFF);
+  selfCopy->_externalFeedbackAllowed = fp_configuration_store_BOOL_check(v37, @"externalFeedbackAllowed", 1);
   v42 = fp_configuration_store_string_check(v37, @"externalFeedbackDenyList", &stru_1F4C2FFD0);
   v43 = MEMORY[0x1E695DFD8];
   v44 = [v42 componentsSeparatedByString:@""];;
   v45 = [v43 setWithArray:v44];
-  externalFeedbackDenyList = v48->_externalFeedbackDenyList;
-  v48->_externalFeedbackDenyList = v45;
+  externalFeedbackDenyList = selfCopy->_externalFeedbackDenyList;
+  selfCopy->_externalFeedbackDenyList = v45;
 
-  v48->_residencyReasonEnablement = fp_configuration_store_int_check(v37, @"residencyReasonEnablement", @"COREOS_FPFS_CONFIG", 2, 0, 2);
-  v48->_searchOnServerMaxNumberOfResults = fp_configuration_store_int64_check(v37, @"sosMaxPageSize", @"COREOS_FPFS_CONFIG", 200, 1, 10000);
+  selfCopy->_residencyReasonEnablement = fp_configuration_store_int_check(v37, @"residencyReasonEnablement", @"COREOS_FPFS_CONFIG", 2, 0, 2);
+  selfCopy->_searchOnServerMaxNumberOfResults = fp_configuration_store_int64_check(v37, @"sosMaxPageSize", @"COREOS_FPFS_CONFIG", 200, 1, 10000);
 
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadSpecDownloadNamespace:(id)a3
+- (void)loadSpecDownloadNamespace:(id)namespace
 {
-  v4 = a3;
-  self->_speculativeSetRecencyDays = fp_configuration_store_int_check(v4, @"speculativeSetRecencyDays", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 1000);
-  self->_speculativeSetPageSize = fp_configuration_store_int_check(v4, @"speculativeSetPageSize", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 100, 1, 1000);
-  self->_speculativeSetRefreshInterval = fp_configuration_store_int64_check(v4, @"speculativeSetRefreshInterval", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 60, 0, 86400);
-  self->_speculativeSetMaximumDownloadsAllowed = fp_configuration_store_int_check(v4, @"speculativeSetMaximumDownloadsAllowed", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 1000000, 0, 1000000);
-  self->_speculativeSetMaximumDownloadsRefreshInterval = fp_configuration_store_int64_check(v4, @"speculativeSetMaximumDownloadsRefreshInterval", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 86400, 0, 2592000);
-  self->_speculativeSetCancelDownloadDelay = fp_configuration_store_int64_check(v4, @"speculativeSetCancelDownloadDelay", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 10, 0, 86400);
-  self->_speculativeSetRefreshInheritedContentPolicyMaximumJobs = fp_configuration_store_int64_check(v4, @"speculativeSetRefreshInheritedContentPolicyMaximumJobs", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 10, 1, 100);
-  self->_speculativeSetDownloadTextAge = fp_configuration_store_int_check(v4, @"speculativeSetDownloadTextAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
-  self->_speculativeSetDownloadImageAge = fp_configuration_store_int_check(v4, @"speculativeSetDownloadImageAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
-  self->_speculativeSetDownloadMovieAge = fp_configuration_store_int_check(v4, @"speculativeSetDownloadMovieAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
-  self->_speculativeSetDownloadAudioAge = fp_configuration_store_int_check(v4, @"speculativeSetDownloadAudioAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
-  self->_speculativeSetDownloadCompressedAge = fp_configuration_store_int_check(v4, @"speculativeDownloadSetCompressedAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
-  v5 = fp_configuration_store_int_check(v4, @"speculativeSetDownloadOtherAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
+  namespaceCopy = namespace;
+  self->_speculativeSetRecencyDays = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetRecencyDays", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 1000);
+  self->_speculativeSetPageSize = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetPageSize", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 100, 1, 1000);
+  self->_speculativeSetRefreshInterval = fp_configuration_store_int64_check(namespaceCopy, @"speculativeSetRefreshInterval", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 60, 0, 86400);
+  self->_speculativeSetMaximumDownloadsAllowed = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetMaximumDownloadsAllowed", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 1000000, 0, 1000000);
+  self->_speculativeSetMaximumDownloadsRefreshInterval = fp_configuration_store_int64_check(namespaceCopy, @"speculativeSetMaximumDownloadsRefreshInterval", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 86400, 0, 2592000);
+  self->_speculativeSetCancelDownloadDelay = fp_configuration_store_int64_check(namespaceCopy, @"speculativeSetCancelDownloadDelay", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 10, 0, 86400);
+  self->_speculativeSetRefreshInheritedContentPolicyMaximumJobs = fp_configuration_store_int64_check(namespaceCopy, @"speculativeSetRefreshInheritedContentPolicyMaximumJobs", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 10, 1, 100);
+  self->_speculativeSetDownloadTextAge = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetDownloadTextAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
+  self->_speculativeSetDownloadImageAge = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetDownloadImageAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
+  self->_speculativeSetDownloadMovieAge = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetDownloadMovieAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
+  self->_speculativeSetDownloadAudioAge = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetDownloadAudioAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
+  self->_speculativeSetDownloadCompressedAge = fp_configuration_store_int_check(namespaceCopy, @"speculativeDownloadSetCompressedAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
+  v5 = fp_configuration_store_int_check(namespaceCopy, @"speculativeSetDownloadOtherAge", @"COREOS_FPFS_SPECULATIVE_DOWNLOADS", 90, 0, 0x7FFFFFFF);
 
   self->_speculativeSetDownloadOtherAge = v5;
 }
 
 - (NSString)getTrialConfigurationState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_trialConfigurationState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_trialConfigurationState;
+  objc_sync_exit(selfCopy);
 
   v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:1 error:0];
 
@@ -461,24 +461,24 @@ void __37__FPDConfigurationStore_defaultStore__block_invoke()
 - (void)refresh
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 allObjects];
+  allObjects = [self allObjects];
   OUTLINED_FUNCTION_4_0(&dword_1CEFC7000, v2, v3, "[DEBUG] First: %@", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = self->_observers;
   objc_sync_enter(v5);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v5);
 
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(FPDConfigurationStore *)v4 addObserver:v6];
+    [(FPDConfigurationStore *)observerCopy addObserver:v6];
   }
 }
 

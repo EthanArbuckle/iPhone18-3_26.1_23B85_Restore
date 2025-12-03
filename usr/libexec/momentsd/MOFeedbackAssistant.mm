@@ -1,10 +1,10 @@
 @interface MOFeedbackAssistant
-+ (void)triggerFeedbackAssistantFlowWithFlowIdentifier:(id)a3;
++ (void)triggerFeedbackAssistantFlowWithFlowIdentifier:(id)identifier;
 @end
 
 @implementation MOFeedbackAssistant
 
-+ (void)triggerFeedbackAssistantFlowWithFlowIdentifier:(id)a3
++ (void)triggerFeedbackAssistantFlowWithFlowIdentifier:(id)identifier
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v4 = *(*(v3 - 8) + 64);

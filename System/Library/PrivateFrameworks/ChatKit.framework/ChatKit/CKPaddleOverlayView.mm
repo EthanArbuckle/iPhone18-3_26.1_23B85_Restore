@@ -1,58 +1,58 @@
 @interface CKPaddleOverlayView
 - (CGRect)anchorRect;
 - (CGRect)overlayRect;
-- (CKPaddleOverlayView)initWithOverlayView:(id)a3 atAnchorRect:(CGRect)a4 inView:(id)a5 delegate:(id)a6;
+- (CKPaddleOverlayView)initWithOverlayView:(id)view atAnchorRect:(CGRect)rect inView:(id)inView delegate:(id)delegate;
 - (CKPaddleOverlayViewDelegate)delegate;
 - (void)dismiss;
-- (void)showPaddleAnimated:(BOOL)a3 completion:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showPaddleAnimated:(BOOL)animated completion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateShadowVisualStyling;
 @end
 
 @implementation CKPaddleOverlayView
 
-- (CKPaddleOverlayView)initWithOverlayView:(id)a3 atAnchorRect:(CGRect)a4 inView:(id)a5 delegate:(id)a6
+- (CKPaddleOverlayView)initWithOverlayView:(id)view atAnchorRect:(CGRect)rect inView:(id)inView delegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a5;
-  [(CKPaddleOverlayView *)self setDelegate:a6];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  inViewCopy = inView;
+  [(CKPaddleOverlayView *)self setDelegate:delegate];
   [(CKPaddleOverlayView *)self setOpaque:0];
-  v16 = [(CKPaddleOverlayView *)self layer];
-  [v16 setAllowsGroupBlending:0];
+  layer = [(CKPaddleOverlayView *)self layer];
+  [layer setAllowsGroupBlending:0];
 
-  v17 = v15;
-  v18 = [v17 superview];
+  v17 = inViewCopy;
+  superview = [v17 superview];
 
-  v19 = v17;
-  if (v18)
+  superview2 = v17;
+  if (superview)
   {
     v20 = v17;
     do
     {
-      v19 = [v20 superview];
+      superview2 = [v20 superview];
 
-      v21 = [v19 superview];
+      v19Superview = [superview2 superview];
 
-      v20 = v19;
+      v20 = superview2;
     }
 
-    while (v21);
+    while (v19Superview);
   }
 
-  [v19 convertRect:v17 fromView:{x, y, width, height}];
+  [superview2 convertRect:v17 fromView:{x, y, width, height}];
   [(CKPaddleOverlayView *)self setAnchorRect:?];
-  [v19 bounds];
+  [superview2 bounds];
   v22 = [(CKPaddleOverlayView *)self initWithFrame:?];
   v23 = v22;
   if (v22)
   {
     [(CKPaddleOverlayView *)v22 bounds];
     v25 = v24;
-    objc_storeStrong(&v23->_viewToShow, a3);
+    objc_storeStrong(&v23->_viewToShow, view);
     [(UIView *)v23->_viewToShow bounds];
     v27 = v26;
     v29 = v28;
@@ -129,8 +129,8 @@
     [v50 paddleOverlayRadius];
     [(UIVisualEffectView *)v49 _setContinuousCornerRadius:?];
 
-    v51 = [(UIVisualEffectView *)v23->_visualEffectView layer];
-    [v51 setMasksToBounds:1];
+    layer2 = [(UIVisualEffectView *)v23->_visualEffectView layer];
+    [layer2 setMasksToBounds:1];
 
     v52 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     shadowView = v23->_shadowView;
@@ -140,8 +140,8 @@
     [(UIView *)v23->_contentView bounds];
     [(UIImageView *)v54 setFrame:v55 + -150.0, v56 + -150.0, v57 + 300.0, v58 + 300.0];
     v105 = v23->_shadowView;
-    v59 = [(CKPaddleOverlayView *)v23 traitCollection];
-    [v59 displayScale];
+    traitCollection = [(CKPaddleOverlayView *)v23 traitCollection];
+    [traitCollection displayScale];
     v61 = v60;
     if (CKShadowImageCreateWithShadowProperties_onceToken != -1)
     {
@@ -152,7 +152,7 @@
     v63 = [CKShadowImageCreateWithShadowProperties_shadowImages objectForKey:v62];
     if (!v63)
     {
-      v102 = v59;
+      v102 = traitCollection;
       v103 = v62;
       v64 = v61 * 400.0;
       DeviceGray = CGColorSpaceCreateDeviceGray();
@@ -196,15 +196,15 @@
         CGContextSaveGState(v68);
         CGContextSetBlendMode(v68, kCGBlendModeMultiply);
         v76 = +[CKUIBehavior sharedBehaviors];
-        v77 = [v76 theme];
-        v78 = [v77 paddleShadow];
-        v79 = [v78 CGColor];
+        theme = [v76 theme];
+        paddleShadow = [theme paddleShadow];
+        cGColor = [paddleShadow CGColor];
         v106.width = 0.0;
         v106.height = -4.0;
-        CGContextSetShadowWithColor(v68, v106, 16.0, v79);
+        CGContextSetShadowWithColor(v68, v106, 16.0, cGColor);
 
-        v80 = [MEMORY[0x1E69DC888] whiteColor];
-        CGContextSetFillColorWithColor(v68, [v80 CGColor]);
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        CGContextSetFillColorWithColor(v68, [whiteColor CGColor]);
 
         v81 = v104;
         [v104 fill];
@@ -261,8 +261,8 @@
         v61 = v100;
       }
 
-      v92 = [MEMORY[0x1E69DC888] blackColor];
-      CGContextSetFillColorWithColor(v68, [v92 CGColor]);
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      CGContextSetFillColorWithColor(v68, [blackColor CGColor]);
 
       CGContextSetBlendMode(v68, kCGBlendModeClear);
       [v81 fill];
@@ -279,7 +279,7 @@
       CGContextRelease(v68);
       CGColorSpaceRelease(space);
 
-      v59 = v102;
+      traitCollection = v102;
       v62 = v103;
     }
 
@@ -293,12 +293,12 @@
     v23->_paddleView = v96;
 
     [(UIView *)v23->_paddleView addSubview:v23->_viewToShow];
-    v98 = [(UIVisualEffectView *)v23->_visualEffectView contentView];
-    [v98 addSubview:v23->_paddleView];
+    contentView = [(UIVisualEffectView *)v23->_visualEffectView contentView];
+    [contentView addSubview:v23->_paddleView];
 
     [(UIView *)v23->_contentView addSubview:v23->_visualEffectView];
-    [v19 addSubview:v23];
-    [v19 bringSubviewToFront:v23];
+    [superview2 addSubview:v23];
+    [superview2 bringSubviewToFront:v23];
   }
 
   return v23;
@@ -317,36 +317,36 @@
     v3 = [MEMORY[0x1E696B098] valueWithCAColorMatrix:v8];
     v4 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D78]];
     [v4 setValue:v3 forKey:@"inputColorMatrix"];
-    v5 = [(CKPaddleOverlayView *)self shadowView];
-    v6 = [v5 layer];
+    shadowView = [(CKPaddleOverlayView *)self shadowView];
+    layer = [shadowView layer];
     v9[0] = v4;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    [v6 setFilters:v7];
+    [layer setFilters:v7];
   }
 }
 
-- (void)showPaddleAnimated:(BOOL)a3 completion:(id)a4
+- (void)showPaddleAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (animated)
   {
-    v7 = [(CKPaddleOverlayView *)self contentView];
-    v8 = [v7 layer];
-    [v8 setAnchorPoint:{0.5, 1.0}];
+    contentView = [(CKPaddleOverlayView *)self contentView];
+    layer = [contentView layer];
+    [layer setAnchorPoint:{0.5, 1.0}];
 
     [(CKPaddleOverlayView *)self overlayRect];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CKPaddleOverlayView *)self contentView];
-    [v17 setFrame:{v10, v12, v14, v16}];
+    contentView2 = [(CKPaddleOverlayView *)self contentView];
+    [contentView2 setFrame:{v10, v12, v14, v16}];
 
-    v18 = [(CKPaddleOverlayView *)self contentView];
-    v19 = v18;
-    if (v18)
+    contentView3 = [(CKPaddleOverlayView *)self contentView];
+    v19 = contentView3;
+    if (contentView3)
     {
-      [v18 transform3D];
+      [contentView3 transform3D];
     }
 
     else
@@ -356,15 +356,15 @@
 
     v22 = 1.0;
     CATransform3DScale(&v32, &v31, 0.2, 0.2, 1.0);
-    v23 = [(CKPaddleOverlayView *)self contentView];
+    contentView4 = [(CKPaddleOverlayView *)self contentView];
     v31 = v32;
-    [v23 setTransform3D:&v31];
+    [contentView4 setTransform3D:&v31];
 
-    v24 = [(CKPaddleOverlayView *)self shadowView];
-    [v24 setAlpha:0.0];
+    shadowView = [(CKPaddleOverlayView *)self shadowView];
+    [shadowView setAlpha:0.0];
 
-    v25 = [(CKPaddleOverlayView *)self visualEffectView];
-    [v25 setAlpha:0.0];
+    visualEffectView = [(CKPaddleOverlayView *)self visualEffectView];
+    [visualEffectView setAlpha:0.0];
 
     if (UIAccessibilityIsReduceMotionEnabled())
     {
@@ -387,21 +387,21 @@
     v28[1] = 3221225472;
     v28[2] = __53__CKPaddleOverlayView_showPaddleAnimated_completion___block_invoke_2;
     v28[3] = &unk_1E72F4FB0;
-    v29 = v6;
+    v29 = completionCopy;
     [v27 _animateUsingSpringWithDampingRatio:1 response:v30 tracking:v28 dampingRatioSmoothing:v22 responseSmoothing:v26 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
   }
 
   else
   {
-    v20 = [(CKPaddleOverlayView *)self shadowView];
-    [v20 setAlpha:1.0];
+    shadowView2 = [(CKPaddleOverlayView *)self shadowView];
+    [shadowView2 setAlpha:1.0];
 
-    v21 = [(CKPaddleOverlayView *)self visualEffectView];
-    [v21 setAlpha:1.0];
+    visualEffectView2 = [(CKPaddleOverlayView *)self visualEffectView];
+    [visualEffectView2 setAlpha:1.0];
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 }
@@ -539,11 +539,11 @@ void __30__CKPaddleOverlayView_dismiss__block_invoke_4(uint64_t a1)
   [v2 didDismissPaddleOverlayView:*(a1 + 32)];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v3.receiver = self;
   v3.super_class = CKPaddleOverlayView;
-  [(CKPaddleOverlayView *)&v3 traitCollectionDidChange:a3];
+  [(CKPaddleOverlayView *)&v3 traitCollectionDidChange:change];
 }
 
 - (CKPaddleOverlayViewDelegate)delegate

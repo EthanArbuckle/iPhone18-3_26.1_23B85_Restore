@@ -14,7 +14,7 @@
 + (id)dmd_userImageDatabaseDirectoryURL;
 + (id)dmd_userLibraryURL;
 + (void)dmd_createUserDMDDirectoryDataVault;
-+ (void)dmd_setUserDirSuffix:(char *)a3;
++ (void)dmd_setUserDirSuffix:(char *)suffix;
 @end
 
 @implementation NSFileManager
@@ -33,24 +33,24 @@
 
 + (id)dmd_systemDMDDirectoryURL
 {
-  v2 = [a1 dmd_systemLibraryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"dmd" isDirectory:1];
+  dmd_systemLibraryURL = [self dmd_systemLibraryURL];
+  v3 = [dmd_systemLibraryURL URLByAppendingPathComponent:@"dmd" isDirectory:1];
 
   return v3;
 }
 
 + (id)dmd_systemConfigurationEngineDirectoryURL
 {
-  v2 = [a1 dmd_systemDMDDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"ConfigurationEngine" isDirectory:1];
+  dmd_systemDMDDirectoryURL = [self dmd_systemDMDDirectoryURL];
+  v3 = [dmd_systemDMDDirectoryURL URLByAppendingPathComponent:@"ConfigurationEngine" isDirectory:1];
 
   return v3;
 }
 
 + (id)dmd_systemConfigurationDatabaseURL
 {
-  v2 = [a1 dmd_systemConfigurationEngineDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Database" isDirectory:0];
+  dmd_systemConfigurationEngineDirectoryURL = [self dmd_systemConfigurationEngineDirectoryURL];
+  v3 = [dmd_systemConfigurationEngineDirectoryURL URLByAppendingPathComponent:@"Database" isDirectory:0];
 
   return v3;
 }
@@ -73,7 +73,7 @@
   block[1] = 3221225472;
   block[2] = sub_10007B560;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF390 != -1)
   {
     dispatch_once(&qword_1000FF390, block);
@@ -98,48 +98,48 @@
 
 + (id)dmd_userDMDDirectoryURL
 {
-  v2 = [a1 dmd_userLibraryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"dmd" isDirectory:1];
+  dmd_userLibraryURL = [self dmd_userLibraryURL];
+  v3 = [dmd_userLibraryURL URLByAppendingPathComponent:@"dmd" isDirectory:1];
 
   return v3;
 }
 
 + (id)dmd_userConfigurationEngineDirectoryURL
 {
-  v2 = [a1 dmd_userDMDDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"ConfigurationEngine" isDirectory:1];
+  dmd_userDMDDirectoryURL = [self dmd_userDMDDirectoryURL];
+  v3 = [dmd_userDMDDirectoryURL URLByAppendingPathComponent:@"ConfigurationEngine" isDirectory:1];
 
   return v3;
 }
 
 + (id)dmd_userConfigurationDatabaseURL
 {
-  v2 = [a1 dmd_userConfigurationEngineDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Database" isDirectory:0];
+  dmd_userConfigurationEngineDirectoryURL = [self dmd_userConfigurationEngineDirectoryURL];
+  v3 = [dmd_userConfigurationEngineDirectoryURL URLByAppendingPathComponent:@"Database" isDirectory:0];
 
   return v3;
 }
 
 + (id)dmd_userImageDatabaseDirectoryURL
 {
-  v2 = [a1 dmd_userConfigurationEngineDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Images" isDirectory:1];
+  dmd_userConfigurationEngineDirectoryURL = [self dmd_userConfigurationEngineDirectoryURL];
+  v3 = [dmd_userConfigurationEngineDirectoryURL URLByAppendingPathComponent:@"Images" isDirectory:1];
 
   return v3;
 }
 
 + (id)dmd_userFontDatabaseDirectoryURL
 {
-  v2 = [a1 dmd_userConfigurationEngineDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Font" isDirectory:1];
+  dmd_userConfigurationEngineDirectoryURL = [self dmd_userConfigurationEngineDirectoryURL];
+  v3 = [dmd_userConfigurationEngineDirectoryURL URLByAppendingPathComponent:@"Font" isDirectory:1];
 
   return v3;
 }
 
 + (id)dmd_userEffectivePoliciesDatabaseURL
 {
-  v2 = [a1 dmd_userDMDDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Policies" isDirectory:1];
+  dmd_userDMDDirectoryURL = [self dmd_userDMDDirectoryURL];
+  v3 = [dmd_userDMDDirectoryURL URLByAppendingPathComponent:@"Policies" isDirectory:1];
   v4 = [v3 URLByAppendingPathComponent:@"Database" isDirectory:0];
 
   return v4;
@@ -147,10 +147,10 @@
 
 + (void)dmd_createUserDMDDirectoryDataVault
 {
-  v2 = [a1 dmd_userDMDDirectoryURL];
+  dmd_userDMDDirectoryURL = [self dmd_userDMDDirectoryURL];
   v3 = +[NSFileManager defaultManager];
   v7 = 0;
-  v4 = [v3 createDirectoryAtURL:v2 withIntermediateDirectories:1 attributes:0 error:&v7];
+  v4 = [v3 createDirectoryAtURL:dmd_userDMDDirectoryURL withIntermediateDirectories:1 attributes:0 error:&v7];
   v5 = v7;
   v6 = v5;
   if ((v4 & 1) == 0)
@@ -158,14 +158,14 @@
     sub_100088390(v5);
   }
 
-  [v2 fileSystemRepresentation];
+  [dmd_userDMDDirectoryURL fileSystemRepresentation];
   if (rootless_convert_to_datavault())
   {
     sub_10008841C();
   }
 }
 
-+ (void)dmd_setUserDirSuffix:(char *)a3
++ (void)dmd_setUserDirSuffix:(char *)suffix
 {
   if ((_set_user_dir_suffix() & 1) == 0)
   {
@@ -175,8 +175,8 @@
 
 + (id)dmd_legacyUserConfigurationEngineDatabaseURL
 {
-  v2 = [a1 dmd_userDMDDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Configurations" isDirectory:0];
+  dmd_userDMDDirectoryURL = [self dmd_userDMDDirectoryURL];
+  v3 = [dmd_userDMDDirectoryURL URLByAppendingPathComponent:@"Configurations" isDirectory:0];
 
   return v3;
 }

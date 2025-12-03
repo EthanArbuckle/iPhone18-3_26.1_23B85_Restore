@@ -1,9 +1,9 @@
 @interface MUVendorLinkMenuItemViewModel
-- (MUVendorLinkMenuItemViewModel)initWithTitle:(id)a3 image:(id)a4 vendorLinkViewModel:(id)a5;
+- (MUVendorLinkMenuItemViewModel)initWithTitle:(id)title image:(id)image vendorLinkViewModel:(id)model;
 - (MUVendorLinkMenuItemViewModelUpdateDelegate)updateDelegate;
 - (NSString)identifier;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MUVendorLinkMenuItemViewModel
@@ -15,62 +15,62 @@
   return WeakRetained;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_image = &self->_image;
-  if (self->_image != v5)
+  if (self->_image != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_image, a3);
-    v7 = [(MUVendorLinkMenuItemViewModel *)self updateDelegate];
-    [v7 vendorLinkMenuItemViewModelDidUpdate:self];
+    v8 = imageCopy;
+    objc_storeStrong(p_image, image);
+    updateDelegate = [(MUVendorLinkMenuItemViewModel *)self updateDelegate];
+    [updateDelegate vendorLinkMenuItemViewModelDidUpdate:self];
 
-    v5 = v8;
+    imageCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_image, v5);
+  MEMORY[0x1EEE66BB8](p_image, imageCopy);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   p_title = &self->_title;
-  if (self->_title != v5)
+  if (self->_title != titleCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_title, a3);
-    v7 = [(MUVendorLinkMenuItemViewModel *)self updateDelegate];
-    [v7 vendorLinkMenuItemViewModelDidUpdate:self];
+    v8 = titleCopy;
+    objc_storeStrong(p_title, title);
+    updateDelegate = [(MUVendorLinkMenuItemViewModel *)self updateDelegate];
+    [updateDelegate vendorLinkMenuItemViewModelDidUpdate:self];
 
-    v5 = v8;
+    titleCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_title, v5);
+  MEMORY[0x1EEE66BB8](p_title, titleCopy);
 }
 
 - (NSString)identifier
 {
-  v2 = [(MUVendorLinkMenuItemViewModel *)self vendorLinkViewModel];
-  v3 = [v2 uniqueIdentifier];
+  vendorLinkViewModel = [(MUVendorLinkMenuItemViewModel *)self vendorLinkViewModel];
+  uniqueIdentifier = [vendorLinkViewModel uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
-- (MUVendorLinkMenuItemViewModel)initWithTitle:(id)a3 image:(id)a4 vendorLinkViewModel:(id)a5
+- (MUVendorLinkMenuItemViewModel)initWithTitle:(id)title image:(id)image vendorLinkViewModel:(id)model
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  imageCopy = image;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = MUVendorLinkMenuItemViewModel;
   v12 = [(MUVendorLinkMenuItemViewModel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_image, a4);
-    objc_storeStrong(&v13->_vendorLinkViewModel, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_image, image);
+    objc_storeStrong(&v13->_vendorLinkViewModel, model);
   }
 
   return v13;

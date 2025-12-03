@@ -2,12 +2,12 @@
 - (BOOL)isEligibleForAppDistribution;
 - (STContentPrivacyListController)contentPrivacyController;
 - (id)specifiers;
-- (void)_isLoadedDidChange:(BOOL)a3;
+- (void)_isLoadedDidChange:(BOOL)change;
 - (void)dealloc;
 - (void)didCancelEnteringPIN;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -37,28 +37,28 @@
 - (id)specifiers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(STContentPrivacyStoreDetailController *)self isEligibleForAppDistribution];
-  v4 = [(STContentPrivacyStoreDetailController *)self contentPrivacyController];
-  v5 = v4;
-  if (v3)
+  isEligibleForAppDistribution = [(STContentPrivacyStoreDetailController *)self isEligibleForAppDistribution];
+  contentPrivacyController = [(STContentPrivacyStoreDetailController *)self contentPrivacyController];
+  v5 = contentPrivacyController;
+  if (isEligibleForAppDistribution)
   {
-    [v4 distributionStoreDetailSpecifiers];
+    [contentPrivacyController distributionStoreDetailSpecifiers];
   }
 
   else
   {
-    [v4 storeDetailSpecifiers];
+    [contentPrivacyController storeDetailSpecifiers];
   }
   v6 = ;
   v7 = *MEMORY[0x277D3FC48];
   v8 = *(&self->super.super.super.super.super.super.super.isa + v7);
   *(&self->super.super.super.super.super.super.super.isa + v7) = v6;
 
-  v9 = [(STPINListViewController *)self coordinator];
-  v10 = [v9 contentPrivacyCoordinator];
-  v11 = [v10 areRestrictionsEditable];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  areRestrictionsEditable = [contentPrivacyCoordinator areRestrictionsEditable];
 
-  if ((v11 & 1) == 0)
+  if ((areRestrictionsEditable & 1) == 0)
   {
     v23 = 0u;
     v24 = 0u;
@@ -98,11 +98,11 @@
   return v19;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STContentPrivacyStoreDetailController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STContentPrivacyStoreDetailController *)self specifierAtIndexPath:pathCopy];
   v9 = [(STContentPrivacyStoreDetailController *)self getGroupSpecifierForSpecifier:v8];
   v10 = [v9 objectForKeyedSubscript:0x287672648];
   if (v10)
@@ -117,20 +117,20 @@
       v16[4] = self;
       v17 = v11;
       v18 = v10;
-      v19 = v6;
-      v20 = v7;
+      v19 = viewCopy;
+      v20 = pathCopy;
       [(PSListController *)self st_showPINSheetWithCompletion:v16];
     }
 
     else
     {
-      v12 = [(STPINListViewController *)self coordinator];
-      v13 = [v12 contentPrivacyCoordinator];
-      [v13 saveRestrictionValue:v11 forItem:v10 completionHandler:&__block_literal_global_57];
+      coordinator = [(STPINListViewController *)self coordinator];
+      contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+      [contentPrivacyCoordinator saveRestrictionValue:v11 forItem:v10 completionHandler:&__block_literal_global_57];
 
       v15.receiver = self;
       v15.super_class = STContentPrivacyStoreDetailController;
-      [(STPINListViewController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(STPINListViewController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 
@@ -138,7 +138,7 @@
   {
     v14.receiver = self;
     v14.super_class = STContentPrivacyStoreDetailController;
-    [(STPINListViewController *)&v14 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(STPINListViewController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
@@ -163,72 +163,72 @@ id *__75__STContentPrivacyStoreDetailController_tableView_didSelectRowAtIndexPat
 
 - (BOOL)isEligibleForAppDistribution
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
   if ([v5 isRemoteUser])
   {
-    v6 = 0;
+    isEligibleForAppDistribution = 0;
   }
 
   else
   {
-    v7 = [(STPINListViewController *)self coordinator];
-    v8 = [v7 contentPrivacyCoordinator];
-    v9 = [v8 viewModel];
-    v6 = [v9 isEligibleForAppDistribution];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+    viewModel2 = [contentPrivacyCoordinator viewModel];
+    isEligibleForAppDistribution = [viewModel2 isEligibleForAppDistribution];
   }
 
-  return v6;
+  return isEligibleForAppDistribution;
 }
 
 - (void)dealloc
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  [v3 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.isLoaded" context:@"KVOContextContentPrivacyStoreDetailController"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.isLoaded" context:@"KVOContextContentPrivacyStoreDetailController"];
 
   v4.receiver = self;
   v4.super_class = STContentPrivacyStoreDetailController;
   [(STListViewController *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = v5;
-  if (v5 == v4)
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
+  v6 = coordinator;
+  if (coordinator == coordinatorCopy)
   {
     v7.receiver = self;
     v7.super_class = STContentPrivacyStoreDetailController;
-    [(STPINListViewController *)&v7 setCoordinator:v4];
+    [(STPINListViewController *)&v7 setCoordinator:coordinatorCopy];
   }
 
   else
   {
-    [v5 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.isLoaded" context:@"KVOContextContentPrivacyStoreDetailController"];
+    [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.isLoaded" context:@"KVOContextContentPrivacyStoreDetailController"];
     v7.receiver = self;
     v7.super_class = STContentPrivacyStoreDetailController;
-    [(STPINListViewController *)&v7 setCoordinator:v4];
-    [v4 addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.isLoaded" options:1 context:@"KVOContextContentPrivacyStoreDetailController"];
+    [(STPINListViewController *)&v7 setCoordinator:coordinatorCopy];
+    [coordinatorCopy addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.isLoaded" options:1 context:@"KVOContextContentPrivacyStoreDetailController"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == @"KVOContextContentPrivacyStoreDetailController")
+  changeCopy = change;
+  if (context == @"KVOContextContentPrivacyStoreDetailController")
   {
-    v12 = a3;
+    pathCopy = path;
     [(STPINListViewController *)self coordinator];
 
-    v13 = [v12 isEqualToString:@"contentPrivacyCoordinator.viewModel.isLoaded"];
+    v13 = [pathCopy isEqualToString:@"contentPrivacyCoordinator.viewModel.isLoaded"];
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null)
       {
 
         v14 = 0;
@@ -242,14 +242,14 @@ id *__75__STContentPrivacyStoreDetailController_tableView_didSelectRowAtIndexPat
   {
     v16.receiver = self;
     v16.super_class = STContentPrivacyStoreDetailController;
-    v11 = a3;
-    [(STListViewController *)&v16 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STListViewController *)&v16 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_isLoadedDidChange:(BOOL)a3
+- (void)_isLoadedDidChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     [(STContentPrivacyStoreDetailController *)self reloadSpecifiers];
   }

@@ -1,93 +1,93 @@
 @interface HKSleepMetrics
 - ($0AC6E346AE4835514AAA8AC86D8F4844)morningIndexRange;
-- (BOOL)isEqual:(id)a3;
-- (HKSleepMetrics)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKSleepMetrics)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSleepMetrics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   start = self->_morningIndexRange.start;
-  v5 = a3;
-  [v5 encodeInteger:start forKey:@"morningIndexRangeStart"];
-  [v5 encodeInteger:self->_morningIndexRange.duration forKey:@"morningIndexRangeDuration"];
-  [v5 encodeInteger:self->_sleepAnalysisAsleepCount forKey:@"sleepAnalysisAsleepCount"];
-  [v5 encodeInteger:self->_sleepAnalysisInBedCount forKey:@"sleepAnalysisInBedCount"];
-  [v5 encodeInteger:self->_sleepAnalysisCount forKey:@"sleepAnalysisCount"];
-  [v5 encodeObject:self->_averageSleepDuration forKey:@"averageSleepDuration"];
-  [v5 encodeObject:self->_averageInBedDuration forKey:@"averageInBedDuration"];
-  [v5 encodeObject:self->_averageREMSleepDuration forKey:@"averageREMSleepDuration"];
-  [v5 encodeObject:self->_averageCoreSleepDuration forKey:@"averageCoreSleepDuration"];
-  [v5 encodeObject:self->_averageDeepSleepDuration forKey:@"averageDeepSleepDuration"];
-  [v5 encodeObject:self->_averageUnspecifiedSleepDuration forKey:@"averageUnspecifiedSleepDuration"];
-  [v5 encodeObject:self->_averageAwakeDuration forKey:@"averageAwakeDuration"];
-  [v5 encodeInteger:self->_bedtimeAchievedCount forKey:@"bedtimeAchievedCount"];
-  [v5 encodeInteger:self->_sleepDurationGoalAchievedCount forKey:@"sleepDurationGoalAchievedCount"];
-  [v5 encodeInteger:self->_sleepDurationGoalStreakCount forKey:@"sleepDurationGoalStreakCount"];
-  [v5 encodeObject:self->_averageBedtimeMiss forKey:@"averageBedtimeMiss"];
-  [v5 encodeObject:self->_averageSleepDurationGoalMiss forKey:@"averageSleepDurationGoalMiss"];
-  [v5 encodeObject:self->_averageBedtime forKey:@"averageBedtime"];
-  [v5 encodeObject:self->_averageWakeTime forKey:@"averageWakeTime"];
-  [v5 encodeObject:self->_averageInBedStartTime forKey:@"averageInBedStartTime"];
-  [v5 encodeObject:self->_averageInBedEndTime forKey:@"averageInBedEndTime"];
-  [v5 encodeObject:self->_averageSleepStartTime forKey:@"averageSleepStartTime"];
-  [v5 encodeObject:self->_averageSleepEndTime forKey:@"averageSleepEndTime"];
-  [v5 encodeObject:self->_standardDeviationActualTimeAsleep forKey:@"standardDeviationActualTimeAsleep"];
-  [v5 encodeObject:self->_standardDeviationScheduledTimeAsleep forKey:@"standardDeviationScheduledTimeAsleep"];
-  [v5 encodeObject:self->_standardDeviationActualVsScheduledTimeAsleep forKey:@"standardDeviationActualVsScheduledTimeAsleep"];
-  [v5 encodeObject:self->_averageSleepStartOffset forKey:@"averageSleepStartOffset"];
-  [v5 encodeObject:self->_averageSleepEndOffset forKey:@"averageSleepEndOffset"];
-  [v5 encodeObject:self->_averageInBedStartOffset forKey:@"averageInBedStartOffset"];
-  [v5 encodeObject:self->_averageInBedEndOffset forKey:@"averageInBedEndOffset"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:start forKey:@"morningIndexRangeStart"];
+  [coderCopy encodeInteger:self->_morningIndexRange.duration forKey:@"morningIndexRangeDuration"];
+  [coderCopy encodeInteger:self->_sleepAnalysisAsleepCount forKey:@"sleepAnalysisAsleepCount"];
+  [coderCopy encodeInteger:self->_sleepAnalysisInBedCount forKey:@"sleepAnalysisInBedCount"];
+  [coderCopy encodeInteger:self->_sleepAnalysisCount forKey:@"sleepAnalysisCount"];
+  [coderCopy encodeObject:self->_averageSleepDuration forKey:@"averageSleepDuration"];
+  [coderCopy encodeObject:self->_averageInBedDuration forKey:@"averageInBedDuration"];
+  [coderCopy encodeObject:self->_averageREMSleepDuration forKey:@"averageREMSleepDuration"];
+  [coderCopy encodeObject:self->_averageCoreSleepDuration forKey:@"averageCoreSleepDuration"];
+  [coderCopy encodeObject:self->_averageDeepSleepDuration forKey:@"averageDeepSleepDuration"];
+  [coderCopy encodeObject:self->_averageUnspecifiedSleepDuration forKey:@"averageUnspecifiedSleepDuration"];
+  [coderCopy encodeObject:self->_averageAwakeDuration forKey:@"averageAwakeDuration"];
+  [coderCopy encodeInteger:self->_bedtimeAchievedCount forKey:@"bedtimeAchievedCount"];
+  [coderCopy encodeInteger:self->_sleepDurationGoalAchievedCount forKey:@"sleepDurationGoalAchievedCount"];
+  [coderCopy encodeInteger:self->_sleepDurationGoalStreakCount forKey:@"sleepDurationGoalStreakCount"];
+  [coderCopy encodeObject:self->_averageBedtimeMiss forKey:@"averageBedtimeMiss"];
+  [coderCopy encodeObject:self->_averageSleepDurationGoalMiss forKey:@"averageSleepDurationGoalMiss"];
+  [coderCopy encodeObject:self->_averageBedtime forKey:@"averageBedtime"];
+  [coderCopy encodeObject:self->_averageWakeTime forKey:@"averageWakeTime"];
+  [coderCopy encodeObject:self->_averageInBedStartTime forKey:@"averageInBedStartTime"];
+  [coderCopy encodeObject:self->_averageInBedEndTime forKey:@"averageInBedEndTime"];
+  [coderCopy encodeObject:self->_averageSleepStartTime forKey:@"averageSleepStartTime"];
+  [coderCopy encodeObject:self->_averageSleepEndTime forKey:@"averageSleepEndTime"];
+  [coderCopy encodeObject:self->_standardDeviationActualTimeAsleep forKey:@"standardDeviationActualTimeAsleep"];
+  [coderCopy encodeObject:self->_standardDeviationScheduledTimeAsleep forKey:@"standardDeviationScheduledTimeAsleep"];
+  [coderCopy encodeObject:self->_standardDeviationActualVsScheduledTimeAsleep forKey:@"standardDeviationActualVsScheduledTimeAsleep"];
+  [coderCopy encodeObject:self->_averageSleepStartOffset forKey:@"averageSleepStartOffset"];
+  [coderCopy encodeObject:self->_averageSleepEndOffset forKey:@"averageSleepEndOffset"];
+  [coderCopy encodeObject:self->_averageInBedStartOffset forKey:@"averageInBedStartOffset"];
+  [coderCopy encodeObject:self->_averageInBedEndOffset forKey:@"averageInBedEndOffset"];
 }
 
-- (HKSleepMetrics)initWithCoder:(id)a3
+- (HKSleepMetrics)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v27 = [v3 decodeIntegerForKey:@"morningIndexRangeStart"];
-  v26 = [v3 decodeIntegerForKey:@"morningIndexRangeDuration"];
+  coderCopy = coder;
+  v27 = [coderCopy decodeIntegerForKey:@"morningIndexRangeStart"];
+  v26 = [coderCopy decodeIntegerForKey:@"morningIndexRangeDuration"];
   v22 = objc_opt_class();
-  v25 = [v3 decodeIntegerForKey:@"sleepAnalysisAsleepCount"];
-  v24 = [v3 decodeIntegerForKey:@"sleepAnalysisInBedCount"];
-  v23 = [v3 decodeIntegerForKey:@"sleepAnalysisCount"];
-  v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepDuration"];
-  v36 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedDuration"];
-  v35 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageREMSleepDuration"];
-  v34 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageCoreSleepDuration"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageDeepSleepDuration"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageUnspecifiedSleepDuration"];
-  v33 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageAwakeDuration"];
-  v19 = [v3 decodeIntegerForKey:@"bedtimeAchievedCount"];
-  v18 = [v3 decodeIntegerForKey:@"sleepDurationGoalAchievedCount"];
-  v17 = [v3 decodeIntegerForKey:@"sleepDurationGoalStreakCount"];
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageBedtimeMiss"];
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepDurationGoalMiss"];
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageBedtime"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageWakeTime"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedStartTime"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedEndTime"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepStartTime"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepEndTime"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"standardDeviationActualTimeAsleep"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"standardDeviationScheduledTimeAsleep"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"standardDeviationActualVsScheduledTimeAsleep"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepStartOffset"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepEndOffset"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedStartOffset"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedEndOffset"];
+  v25 = [coderCopy decodeIntegerForKey:@"sleepAnalysisAsleepCount"];
+  v24 = [coderCopy decodeIntegerForKey:@"sleepAnalysisInBedCount"];
+  v23 = [coderCopy decodeIntegerForKey:@"sleepAnalysisCount"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepDuration"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedDuration"];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageREMSleepDuration"];
+  v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageCoreSleepDuration"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageDeepSleepDuration"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageUnspecifiedSleepDuration"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageAwakeDuration"];
+  v19 = [coderCopy decodeIntegerForKey:@"bedtimeAchievedCount"];
+  v18 = [coderCopy decodeIntegerForKey:@"sleepDurationGoalAchievedCount"];
+  v17 = [coderCopy decodeIntegerForKey:@"sleepDurationGoalStreakCount"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageBedtimeMiss"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepDurationGoalMiss"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageBedtime"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageWakeTime"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedStartTime"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedEndTime"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepStartTime"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepEndTime"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"standardDeviationActualTimeAsleep"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"standardDeviationScheduledTimeAsleep"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"standardDeviationActualVsScheduledTimeAsleep"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepStartOffset"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSleepEndOffset"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedStartOffset"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageInBedEndOffset"];
 
   v28 = [v22 sleepMetricsWithMorningIndexRange:v27 sleepAnalysisAsleepCount:v26 sleepAnalysisInBedCount:v25 sleepAnalysisCount:v24 averageSleepDuration:v23 averageInBedDuration:v37 averageREMSleepDuration:v36 averageCoreSleepDuration:v35 averageDeepSleepDuration:v34 averageUnspecifiedSleepDuration:v21 averageAwakeDuration:v20 bedtimeAchievedCount:v33 sleepDurationGoalAchievedCount:v19 sleepDurationGoalStreakCount:v18 averageBedtimeMiss:v17 averageSleepDurationGoalMiss:v32 averageBedtime:v31 averageWakeTime:v30 averageInBedStartTime:v16 averageInBedEndTime:v13 averageSleepStartTime:v15 averageSleepEndTime:v14 standardDeviationActualTimeAsleep:v12 standardDeviationScheduledTimeAsleep:v11 standardDeviationActualVsScheduledTimeAsleep:v10 averageSleepStartOffset:v4 averageSleepEndOffset:v5 averageInBedStartOffset:v6 averageInBedEndOffset:{v7, v8}];
 
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v51 = 1;
   }
@@ -97,7 +97,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_morningIndexRange.start != v5->_morningIndexRange.start)
       {

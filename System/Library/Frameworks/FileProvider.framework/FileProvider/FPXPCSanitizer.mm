@@ -1,7 +1,7 @@
 @interface FPXPCSanitizer
 + (id)permittedErrorDomains;
 - (FPXPCSanitizer)init;
-- (FPXPCSanitizer)initWithProviderDomainIdentifier:(id)a3;
+- (FPXPCSanitizer)initWithProviderDomainIdentifier:(id)identifier;
 @end
 
 @implementation FPXPCSanitizer
@@ -17,16 +17,16 @@
   return v2;
 }
 
-- (FPXPCSanitizer)initWithProviderDomainIdentifier:(id)a3
+- (FPXPCSanitizer)initWithProviderDomainIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FPXPCSanitizer;
   v6 = [(FPXPCSanitizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_providerIdentifier, a3);
+    objc_storeStrong(&v6->_providerIdentifier, identifier);
   }
 
   return v7;

@@ -1,13 +1,13 @@
 @interface CAFrameRateRangeGroup
 - (CAFrameIntervalRange)arbitratedIntervalRange;
 - (CAFrameRateRange)arbitratedRange;
-- (CAFrameRateRangeGroup)initWithDisplay:(id)a3;
-- (CAFrameRateRangeGroup)initWithHeartbeatRate:(double)a3 minimumFrameDuration:(unsigned __int8)a4 supportsVRR:(BOOL)a5 compatQuantaMode:(BOOL)a6 serverCompatQuantaMode:(BOOL)a7;
-- (void)addFrameRateRange:(CAFrameRateRange)a3;
-- (void)addReason:(unsigned int)a3;
+- (CAFrameRateRangeGroup)initWithDisplay:(id)display;
+- (CAFrameRateRangeGroup)initWithHeartbeatRate:(double)rate minimumFrameDuration:(unsigned __int8)duration supportsVRR:(BOOL)r compatQuantaMode:(BOOL)mode serverCompatQuantaMode:(BOOL)quantaMode;
+- (void)addFrameRateRange:(CAFrameRateRange)range;
+- (void)addReason:(unsigned int)reason;
 - (void)dealloc;
-- (void)removeFrameRateRange:(CAFrameRateRange)a3;
-- (void)updateFrameRateRange:(CAFrameRateRange)a3 toRange:(CAFrameRateRange)a4;
+- (void)removeFrameRateRange:(CAFrameRateRange)range;
+- (void)updateFrameRateRange:(CAFrameRateRange)range toRange:(CAFrameRateRange)toRange;
 @end
 
 @implementation CAFrameRateRangeGroup
@@ -85,9 +85,9 @@ LABEL_9:
   [(CAFrameRateRangeGroup *)&v8 dealloc];
 }
 
-- (void)addReason:(unsigned int)a3
+- (void)addReason:(unsigned int)reason
 {
-  if (a3)
+  if (reason)
   {
     current_reason_count = self->_current_reason_count;
     if (current_reason_count)
@@ -99,7 +99,7 @@ LABEL_9:
         while (1)
         {
           v6 = *reasons++;
-          if (v6 == a3)
+          if (v6 == reason)
           {
             break;
           }
@@ -116,7 +116,7 @@ LABEL_9:
     {
 LABEL_7:
       self->_current_reason_count = current_reason_count + 1;
-      self->_reasons[current_reason_count] = a3;
+      self->_reasons[current_reason_count] = reason;
     }
   }
 }
@@ -138,14 +138,14 @@ LABEL_7:
   return result;
 }
 
-- (void)updateFrameRateRange:(CAFrameRateRange)a3 toRange:(CAFrameRateRange)a4
+- (void)updateFrameRateRange:(CAFrameRateRange)range toRange:(CAFrameRateRange)toRange
 {
-  preferred = a4.preferred;
-  maximum = a4.maximum;
-  minimum = a4.minimum;
-  v7 = a3.preferred;
-  v8 = a3.maximum;
-  v9 = a3.minimum;
+  preferred = toRange.preferred;
+  maximum = toRange.maximum;
+  minimum = toRange.minimum;
+  v7 = range.preferred;
+  v8 = range.maximum;
+  v9 = range.minimum;
   impl = self->_impl;
   os_unfair_lock_lock(impl);
   v12.minimum = v9;
@@ -161,11 +161,11 @@ LABEL_7:
   os_unfair_lock_unlock(impl);
 }
 
-- (void)removeFrameRateRange:(CAFrameRateRange)a3
+- (void)removeFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
   impl = self->_impl;
   os_unfair_lock_lock(impl);
   v8.minimum = minimum;
@@ -177,11 +177,11 @@ LABEL_7:
   os_unfair_lock_unlock(impl);
 }
 
-- (void)addFrameRateRange:(CAFrameRateRange)a3
+- (void)addFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
   impl = self->_impl;
   os_unfair_lock_lock(impl);
   v8.minimum = minimum;
@@ -193,7 +193,7 @@ LABEL_7:
   os_unfair_lock_unlock(impl);
 }
 
-- (CAFrameRateRangeGroup)initWithHeartbeatRate:(double)a3 minimumFrameDuration:(unsigned __int8)a4 supportsVRR:(BOOL)a5 compatQuantaMode:(BOOL)a6 serverCompatQuantaMode:(BOOL)a7
+- (CAFrameRateRangeGroup)initWithHeartbeatRate:(double)rate minimumFrameDuration:(unsigned __int8)duration supportsVRR:(BOOL)r compatQuantaMode:(BOOL)mode serverCompatQuantaMode:(BOOL)quantaMode
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -206,10 +206,10 @@ LABEL_7:
   return 0;
 }
 
-- (CAFrameRateRangeGroup)initWithDisplay:(id)a3
+- (CAFrameRateRangeGroup)initWithDisplay:(id)display
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!display)
   {
     return 0;
   }

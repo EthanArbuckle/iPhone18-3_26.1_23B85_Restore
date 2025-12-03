@@ -1,6 +1,6 @@
 @interface WFType
-- (BOOL)conformsToTypes:(id)a3;
-- (BOOL)isEqualToType:(id)a3;
+- (BOOL)conformsToTypes:(id)types;
+- (BOOL)isEqualToType:(id)type;
 - (NSString)string;
 - (id)description;
 - (unint64_t)hash;
@@ -10,8 +10,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFType *)self string];
-  v3 = [v2 hash];
+  string = [(WFType *)self string];
+  v3 = [string hash];
 
   return v3;
 }
@@ -22,8 +22,8 @@
   v8.receiver = self;
   v8.super_class = WFType;
   v4 = [(WFType *)&v8 description];
-  v5 = [(WFType *)self string];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  string = [(WFType *)self string];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, string];
 
   return v6;
 }
@@ -35,15 +35,15 @@
   return result;
 }
 
-- (BOOL)isEqualToType:(id)a3
+- (BOOL)isEqualToType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFType *)self string];
-    v6 = [v4 string];
-    v7 = [v5 isEqualToString:v6];
+    string = [(WFType *)self string];
+    string2 = [typeCopy string];
+    v7 = [string isEqualToString:string2];
   }
 
   else
@@ -54,15 +54,15 @@
   return v7;
 }
 
-- (BOOL)conformsToTypes:(id)a3
+- (BOOL)conformsToTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  typesCopy = types;
+  v5 = [typesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -73,7 +73,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(typesCopy);
         }
 
         if ([(WFType *)self conformsToType:*(*(&v12 + 1) + 8 * i), v12])
@@ -83,7 +83,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [typesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

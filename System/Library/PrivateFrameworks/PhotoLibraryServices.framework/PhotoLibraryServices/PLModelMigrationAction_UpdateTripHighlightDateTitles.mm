@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_UpdateTripHighlightDateTitles
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateTripHighlightDateTitles
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v98[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLPhotosHighlight entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -34,7 +34,7 @@
   v55[1] = 3221225472;
   v55[2] = __100__PLModelMigrationAction_UpdateTripHighlightDateTitles_performActionWithManagedObjectContext_error___block_invoke;
   v55[3] = &unk_1E7575B30;
-  v15 = v5;
+  v15 = contextCopy;
   v56 = v15;
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
@@ -61,17 +61,17 @@
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionCore *)self logger];
-      v23 = v22 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v23 = logger == 0;
 
       if (v23)
       {
         v37 = PLMigrationGetLog();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
         {
-          v38 = [v58[5] completedUnitCount];
+          completedUnitCount = [v58[5] completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v38;
+          *&buf[4] = completedUnitCount;
           _os_log_impl(&dword_19BF1F000, v37, OS_LOG_TYPE_INFO, "Updated titles for %lu highlights", buf, 0xCu);
         }
       }
@@ -111,9 +111,9 @@
         memset(buf, 0, sizeof(buf));
         v24 = PLMigrationGetLog();
         os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
-        v25 = [v58[5] completedUnitCount];
+        completedUnitCount2 = [v58[5] completedUnitCount];
         v63 = 134217984;
-        v64 = v25;
+        v64 = completedUnitCount2;
         LODWORD(v48) = 12;
         v26 = _os_log_send_and_compose_impl();
 
@@ -137,8 +137,8 @@
 
     if (v29)
     {
-      v30 = [(PLModelMigrationActionCore *)self logger];
-      v31 = v30 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v31 = logger2 == 0;
 
       if (v31)
       {
@@ -215,7 +215,7 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v43 = v19;
   v44 = v43;
-  if (a4)
+  if (error)
   {
     v45 = v18;
   }
@@ -228,7 +228,7 @@
   if ((v45 & 1) == 0)
   {
     v46 = v43;
-    *a4 = v44;
+    *error = v44;
   }
 
   _Block_object_dispose(&v57, 8);

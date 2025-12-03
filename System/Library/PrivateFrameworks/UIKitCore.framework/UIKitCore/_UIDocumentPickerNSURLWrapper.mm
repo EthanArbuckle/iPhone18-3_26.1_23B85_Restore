@@ -1,55 +1,55 @@
 @interface _UIDocumentPickerNSURLWrapper
-+ (id)wrapperForExportWithURL:(id)a3 error:(id *)a4;
-+ (id)wrapperWithURL:(id)a3 readonly:(BOOL)a4;
-+ (void)assembleURL:(id)a3 sandbox:(id)a4 physicalURL:(id)a5 physicalSandbox:(id)a6;
-- (_UIDocumentPickerNSURLWrapper)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)wrapperForExportWithURL:(id)l error:(id *)error;
++ (id)wrapperWithURL:(id)l readonly:(BOOL)readonly;
++ (void)assembleURL:(id)l sandbox:(id)sandbox physicalURL:(id)rL physicalSandbox:(id)physicalSandbox;
+- (_UIDocumentPickerNSURLWrapper)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIDocumentPickerNSURLWrapper
 
-+ (id)wrapperWithURL:(id)a3 readonly:(BOOL)a4
++ (id)wrapperWithURL:(id)l readonly:(BOOL)readonly
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  readonlyCopy = readonly;
+  lCopy = l;
+  if (!lCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"NSURL+UIDocumentPicker.m" lineNumber:324 description:@"tried to create wrapper with nil url"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSURL+UIDocumentPicker.m" lineNumber:324 description:@"tried to create wrapper with nil url"];
   }
 
   v7 = objc_alloc_init(_UIDocumentPickerNSURLWrapper);
-  [(_UIDocumentPickerNSURLWrapper *)v7 setUrl:v6];
+  [(_UIDocumentPickerNSURLWrapper *)v7 setUrl:lCopy];
   v8 = _CFURLPromiseCopyPhysicalURL();
-  if (([v6 isEqual:v8] & 1) == 0)
+  if (([lCopy isEqual:v8] & 1) == 0)
   {
     [(_UIDocumentPickerNSURLWrapper *)v7 setPromiseURL:v8];
   }
 
-  v9 = [v6 startAccessingSecurityScopedResource];
-  v10 = [v8 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource2 = [v8 startAccessingSecurityScopedResource];
   v11 = MEMORY[0x1E69E9BA8];
-  if (!v4)
+  if (!readonlyCopy)
   {
     v11 = MEMORY[0x1E69E9BB0];
   }
 
   v12 = *v11;
   v13 = @"read-write";
-  if (v4)
+  if (readonlyCopy)
   {
     v13 = @"read-only";
   }
 
   v14 = v13;
   v27 = 0;
-  v15 = [v6 ui_issueSandboxExtensionOfClass:v12 error:&v27];
+  v15 = [lCopy ui_issueSandboxExtensionOfClass:v12 error:&v27];
   v16 = v27;
   [(_UIDocumentPickerNSURLWrapper *)v7 setScope:v15];
 
-  v17 = [(_UIDocumentPickerNSURLWrapper *)v7 scope];
+  scope = [(_UIDocumentPickerNSURLWrapper *)v7 scope];
 
-  if (v17)
+  if (scope)
   {
     if (v8)
     {
@@ -58,7 +58,7 @@
 
 LABEL_19:
     v19 = v16;
-    if (v9)
+    if (startAccessingSecurityScopedResource)
     {
       goto LABEL_20;
     }
@@ -66,8 +66,8 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:a1 file:@"NSURL+UIDocumentPicker.m" lineNumber:339 description:{@"Could not issue %@ sandbox extension (%@).", v14, v16}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSURL+UIDocumentPicker.m" lineNumber:339 description:{@"Could not issue %@ sandbox extension (%@).", v14, v16}];
 
   if (!v8)
   {
@@ -80,20 +80,20 @@ LABEL_11:
   v19 = v26;
 
   [(_UIDocumentPickerNSURLWrapper *)v7 setPromiseScope:v18];
-  v20 = [(_UIDocumentPickerNSURLWrapper *)v7 scope];
+  scope2 = [(_UIDocumentPickerNSURLWrapper *)v7 scope];
 
-  if (!v20)
+  if (!scope2)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"NSURL+UIDocumentPicker.m" lineNumber:342 description:{@"Could not issue %@ sandbox extension (%@).", v14, v19}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"NSURL+UIDocumentPicker.m" lineNumber:342 description:{@"Could not issue %@ sandbox extension (%@).", v14, v19}];
 
-    if (v9)
+    if (startAccessingSecurityScopedResource)
     {
       goto LABEL_20;
     }
 
 LABEL_13:
-    if (!v10)
+    if (!startAccessingSecurityScopedResource2)
     {
       goto LABEL_15;
     }
@@ -101,14 +101,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!startAccessingSecurityScopedResource)
   {
     goto LABEL_13;
   }
 
 LABEL_20:
-  [v6 stopAccessingSecurityScopedResource];
-  if (v10)
+  [lCopy stopAccessingSecurityScopedResource];
+  if (startAccessingSecurityScopedResource2)
   {
 LABEL_14:
     [v8 stopAccessingSecurityScopedResource];
@@ -119,21 +119,21 @@ LABEL_15:
   return v7;
 }
 
-+ (id)wrapperForExportWithURL:(id)a3 error:(id *)a4
++ (id)wrapperForExportWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(_UIDocumentPickerNSURLWrapper);
-  [(_UIDocumentPickerNSURLWrapper *)v6 setUrl:v5];
+  [(_UIDocumentPickerNSURLWrapper *)v6 setUrl:lCopy];
   v7 = [(_UIDocumentPickerNSURLWrapper *)v6 url];
-  v8 = [v7 ui_issueReadSandboxExtensionWithError:a4];
+  v8 = [v7 ui_issueReadSandboxExtensionWithError:error];
   [(_UIDocumentPickerNSURLWrapper *)v6 setScope:v8];
 
-  v9 = [(_UIDocumentPickerNSURLWrapper *)v6 scope];
+  scope = [(_UIDocumentPickerNSURLWrapper *)v6 scope];
 
-  if (v9)
+  if (scope)
   {
     v10 = _CFURLPromiseCopyPhysicalURL();
-    if (!v10 || ([v5 isEqual:v10] & 1) != 0 || (-[_UIDocumentPickerNSURLWrapper setPromiseURL:](v6, "setPromiseURL:", v10), objc_msgSend(v10, "ui_issueReadSandboxExtensionWithError:", a4), v11 = objc_claimAutoreleasedReturnValue(), -[_UIDocumentPickerNSURLWrapper setPromiseScope:](v6, "setPromiseScope:", v11), v11, -[_UIDocumentPickerNSURLWrapper promiseScope](v6, "promiseScope"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if (!v10 || ([lCopy isEqual:v10] & 1) != 0 || (-[_UIDocumentPickerNSURLWrapper setPromiseURL:](v6, "setPromiseURL:", v10), objc_msgSend(v10, "ui_issueReadSandboxExtensionWithError:", error), v11 = objc_claimAutoreleasedReturnValue(), -[_UIDocumentPickerNSURLWrapper setPromiseScope:](v6, "setPromiseScope:", v11), v11, -[_UIDocumentPickerNSURLWrapper promiseScope](v6, "promiseScope"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       v12 = v6;
     }
@@ -147,62 +147,62 @@ LABEL_15:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v4 = [(_UIDocumentPickerNSURLWrapper *)self url];
-  [v9 encodeObject:v4 forKey:@"NSURL"];
+  [coderCopy encodeObject:v4 forKey:@"NSURL"];
 
-  v5 = [(_UIDocumentPickerNSURLWrapper *)self scope];
-  [v9 encodeObject:v5 forKey:@"NSURLScope"];
+  scope = [(_UIDocumentPickerNSURLWrapper *)self scope];
+  [coderCopy encodeObject:scope forKey:@"NSURLScope"];
 
-  v6 = [(_UIDocumentPickerNSURLWrapper *)self promiseURL];
+  promiseURL = [(_UIDocumentPickerNSURLWrapper *)self promiseURL];
 
-  if (v6)
+  if (promiseURL)
   {
-    v7 = [(_UIDocumentPickerNSURLWrapper *)self promiseURL];
-    [v9 encodeObject:v7 forKey:@"NSPromise"];
+    promiseURL2 = [(_UIDocumentPickerNSURLWrapper *)self promiseURL];
+    [coderCopy encodeObject:promiseURL2 forKey:@"NSPromise"];
 
-    v8 = [(_UIDocumentPickerNSURLWrapper *)self promiseScope];
-    [v9 encodeObject:v8 forKey:@"NSPromiseScope"];
+    promiseScope = [(_UIDocumentPickerNSURLWrapper *)self promiseScope];
+    [coderCopy encodeObject:promiseScope forKey:@"NSPromiseScope"];
   }
 }
 
-+ (void)assembleURL:(id)a3 sandbox:(id)a4 physicalURL:(id)a5 physicalSandbox:(id)a6
++ (void)assembleURL:(id)l sandbox:(id)sandbox physicalURL:(id)rL physicalSandbox:(id)physicalSandbox
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v12)
+  lCopy = l;
+  sandboxCopy = sandbox;
+  rLCopy = rL;
+  physicalSandboxCopy = physicalSandbox;
+  if (lCopy)
   {
-    if (v9)
+    if (sandboxCopy)
     {
-      MEMORY[0x18CFE8460](v12, v9);
+      MEMORY[0x18CFE8460](lCopy, sandboxCopy);
     }
 
-    if (v10 && v11)
+    if (rLCopy && physicalSandboxCopy)
     {
-      MEMORY[0x18CFE8460](v10, v11);
+      MEMORY[0x18CFE8460](rLCopy, physicalSandboxCopy);
     }
 
     _CFURLPromiseSetPhysicalURL();
   }
 }
 
-- (_UIDocumentPickerNSURLWrapper)initWithCoder:(id)a3
+- (_UIDocumentPickerNSURLWrapper)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSURL"];
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSPromise"];
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSURLScope"];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSPromiseScope"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSURL"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSPromise"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSURLScope"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSPromiseScope"];
 
   [objc_opt_class() assembleURL:v6 sandbox:v8 physicalURL:v7 physicalSandbox:v9];
   if (!v6)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"NSURL+UIDocumentPicker.m" lineNumber:420 description:@"tried to unarchive a wrapper with nil url"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSURL+UIDocumentPicker.m" lineNumber:420 description:@"tried to unarchive a wrapper with nil url"];
   }
 
   [(_UIDocumentPickerNSURLWrapper *)self setUrl:v6];

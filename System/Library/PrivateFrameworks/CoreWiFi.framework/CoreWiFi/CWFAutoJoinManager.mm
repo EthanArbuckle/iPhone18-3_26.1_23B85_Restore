@@ -1,42 +1,42 @@
 @interface CWFAutoJoinManager
-- (BOOL)__allowAutoJoinWithTrigger:(int64_t)a3 error:(id *)a4;
+- (BOOL)__allowAutoJoinWithTrigger:(int64_t)trigger error:(id *)error;
 - (BOOL)__allowBrokenBackhaulPersonalHotspotFallback;
-- (BOOL)__allowHotspot:(id)a3 error:(id *)a4;
-- (BOOL)__allowJoinCandidate:(id)a3 context:(id)a4 defer:(BOOL *)a5 error:(id *)a6;
-- (BOOL)__allowKnownNetwork:(id)a3 context:(id)a4 allowForSeamlessSSIDTransition:(id)a5 defer:(BOOL *)a6 targetQueue:(id)a7 error:(id *)a8;
-- (BOOL)__allowOpportunisticNetworkTransitionWithTrigger:(int64_t)a3;
-- (BOOL)__calloutToAllowAutoJoinWithTrigger:(int64_t)a3 error:(id *)a4;
-- (BOOL)__calloutToAllowBrokenBackhaulPersonalHotspotFallbackAndReturnError:(id *)a3;
-- (BOOL)__calloutToAllowHotspot:(id)a3 error:(id *)a4;
-- (BOOL)__calloutToAllowJoinCandidate:(id)a3 trigger:(int64_t)a4 defer:(BOOL *)a5 error:(id *)a6;
-- (BOOL)__calloutToAllowKnownNetwork:(id)a3 trigger:(int64_t)a4 allowForSeamlessSSIDTransition:(id)a5 defer:(BOOL *)a6 queue:(id)a7 error:(id *)a8;
-- (BOOL)__calloutToAssociateWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)__calloutToConnectToHotspot:(id)a3 error:(id *)a4;
-- (BOOL)__candidateSupportsSeamlessSSIDTransition:(id)a3 fromNetwork:(id)a4 context:(id)a5;
-- (BOOL)__connectToHotspot:(id)a3 error:(id *)a4;
+- (BOOL)__allowHotspot:(id)hotspot error:(id *)error;
+- (BOOL)__allowJoinCandidate:(id)candidate context:(id)context defer:(BOOL *)defer error:(id *)error;
+- (BOOL)__allowKnownNetwork:(id)network context:(id)context allowForSeamlessSSIDTransition:(id)transition defer:(BOOL *)defer targetQueue:(id)queue error:(id *)error;
+- (BOOL)__allowOpportunisticNetworkTransitionWithTrigger:(int64_t)trigger;
+- (BOOL)__calloutToAllowAutoJoinWithTrigger:(int64_t)trigger error:(id *)error;
+- (BOOL)__calloutToAllowBrokenBackhaulPersonalHotspotFallbackAndReturnError:(id *)error;
+- (BOOL)__calloutToAllowHotspot:(id)hotspot error:(id *)error;
+- (BOOL)__calloutToAllowJoinCandidate:(id)candidate trigger:(int64_t)trigger defer:(BOOL *)defer error:(id *)error;
+- (BOOL)__calloutToAllowKnownNetwork:(id)network trigger:(int64_t)trigger allowForSeamlessSSIDTransition:(id)transition defer:(BOOL *)defer queue:(id)queue error:(id *)error;
+- (BOOL)__calloutToAssociateWithParameters:(id)parameters error:(id *)error;
+- (BOOL)__calloutToConnectToHotspot:(id)hotspot error:(id *)error;
+- (BOOL)__candidateSupportsSeamlessSSIDTransition:(id)transition fromNetwork:(id)network context:(id)context;
+- (BOOL)__connectToHotspot:(id)hotspot error:(id *)error;
 - (BOOL)__defaultUserConfiguredNetworkPreference;
-- (BOOL)__didRecentlyJoinAny6GHzOnlyNetworks:(id)a3;
-- (BOOL)__discoverKnownNetworksWithContext:(id)a3 error:(id *)a4;
+- (BOOL)__didRecentlyJoinAny6GHzOnlyNetworks:(id)networks;
+- (BOOL)__discoverKnownNetworksWithContext:(id)context error:(id *)error;
 - (BOOL)__hasJoinedAnyKnownNetworkSinceBoot;
-- (BOOL)__isAutoJoinCancelled:(id *)a3;
+- (BOOL)__isAutoJoinCancelled:(id *)cancelled;
 - (BOOL)__isAutoJoinRequeued;
 - (BOOL)__isAutoJoiningAtHome;
-- (BOOL)__isDeferrableJoinCandidate:(id)a3;
-- (BOOL)__isDeferrableKnownNetwork:(id)a3;
+- (BOOL)__isDeferrableJoinCandidate:(id)candidate;
+- (BOOL)__isDeferrableKnownNetwork:(id)network;
 - (BOOL)__isEnabledKnownNetworkNearby;
-- (BOOL)__isNonPinnedEAPTLSCandidate:(id)a3;
-- (BOOL)__matchAndJoinScanResults:(id)a3 allowPreAssociationScan:(BOOL)a4 context:(id)a5 error:(id *)a6;
+- (BOOL)__isNonPinnedEAPTLSCandidate:(id)candidate;
+- (BOOL)__matchAndJoinScanResults:(id)results allowPreAssociationScan:(BOOL)scan context:(id)context error:(id *)error;
 - (BOOL)__nextRequest;
-- (BOOL)__performJoinWithNetwork:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)__preflightMatchKnownNetworksForScanResult:(id)a3;
+- (BOOL)__performJoinWithNetwork:(id)network context:(id)context error:(id *)error;
+- (BOOL)__preflightMatchKnownNetworksForScanResult:(id)result;
 - (BOOL)__shouldAllowPreAssocScan;
-- (BOOL)__shouldBypassLockdownModeCheckForTrigger:(int64_t)a3 targetNetworkSSID:(id)a4 networkSSID:(id)a5;
-- (BOOL)__shouldBypassUnusedNetworkPeriodCheckForTrigger:(int64_t)a3 knownNetwork:(id)a4;
-- (BOOL)__shouldIgnoreRequestWithTrigger:(int64_t)a3;
-- (BOOL)__shouldInvokeImmediatelyForTrigger:(int64_t)a3;
-- (BOOL)__shouldResetRetryIntervalIndexForTrigger:(int64_t)a3 previousTimestamp:(unint64_t)a4;
-- (BOOL)__shouldThrottleAutoJoinTrigger:(int64_t)a3;
-- (BOOL)isKnownNetworkDisallowed:(id)a3;
+- (BOOL)__shouldBypassLockdownModeCheckForTrigger:(int64_t)trigger targetNetworkSSID:(id)d networkSSID:(id)iD;
+- (BOOL)__shouldBypassUnusedNetworkPeriodCheckForTrigger:(int64_t)trigger knownNetwork:(id)network;
+- (BOOL)__shouldIgnoreRequestWithTrigger:(int64_t)trigger;
+- (BOOL)__shouldInvokeImmediatelyForTrigger:(int64_t)trigger;
+- (BOOL)__shouldResetRetryIntervalIndexForTrigger:(int64_t)trigger previousTimestamp:(unint64_t)timestamp;
+- (BOOL)__shouldThrottleAutoJoinTrigger:(int64_t)trigger;
+- (BOOL)isKnownNetworkDisallowed:(id)disallowed;
 - (BOOL)maxCompatibilityEnabled;
 - (CLLocation)location;
 - (CWFAutoJoinManager)init;
@@ -51,77 +51,77 @@
 - (NSSet)knownNetworks;
 - (NSSet)recentlyMatchedCandidates;
 - (NSSet)supportedChannels;
-- (id)__alreadyFoundFollowup6GHzBSSWithSignature:(id)a3;
-- (id)__basicChannelRepresentation:(id)a3;
-- (id)__cachedScanResultsWithChannelList:(id)a3 context:(id)a4;
-- (id)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)a3 maxCacheAge:(unint64_t)a4 cacheOnly:(BOOL)a5 error:(id *)a6;
-- (id)__calloutToPerformGASQueryWithParameters:(id)a3 GASQueryNetworks:(id *)a4 error:(id *)a5;
-- (id)__calloutToScanForNetworksWithParameters:(id)a3 scanChannels:(id *)a4 error:(id *)a5;
-- (id)__descriptionForError:(id)a3;
+- (id)__alreadyFoundFollowup6GHzBSSWithSignature:(id)signature;
+- (id)__basicChannelRepresentation:(id)representation;
+- (id)__cachedScanResultsWithChannelList:(id)list context:(id)context;
+- (id)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)timeout maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only error:(id *)error;
+- (id)__calloutToPerformGASQueryWithParameters:(id)parameters GASQueryNetworks:(id *)networks error:(id *)error;
+- (id)__calloutToScanForNetworksWithParameters:(id)parameters scanChannels:(id *)channels error:(id *)error;
+- (id)__descriptionForError:(id)error;
 - (id)__disallowedKnownNetworks;
-- (id)__hiddenSSIDListForLocation:(id)a3 knownNetworks:(id)a4 recentOnly:(BOOL)a5 nearbyOnly:(BOOL)a6;
-- (id)__knownNetworksList:(id)a3 containsMatchingKnownNetwork:(id)a4;
-- (id)__knownNetworksSupportingSeamlessSSIDTransition:(id)a3 fromNetwork:(id)a4 allowSameSSID:(BOOL)a5 context:(id)a6;
-- (id)__morePreferredKnownNetworksWithCandidate:(id)a3 knownNetworks:(id)a4 context:(id)a5;
-- (id)__passpointScanResults:(id)a3;
-- (id)__perform6GHzFollowupDiscoveryWithScanResults:(id)a3 SSIDList:(id)a4 dwellTime:(unint64_t)a5 context:(id)a6 error:(id *)a7;
-- (id)__performGASQueryWithScanResults:(id)a3 ANQPElementIDList:(id)a4 maxCacheAge:(unint64_t)a5 cacheOnly:(BOOL)a6 error:(id *)a7;
-- (id)__performPreAssociationScanWithContext:(id)a3 network:(id)a4;
-- (id)__performScanWithChannelList:(id)a3 SSIDList:(id)a4 passive:(BOOL)a5 dwellTime:(unint64_t)a6 maxCacheAge:(unint64_t)a7 cacheOnly:(BOOL)a8 isPreAssociationScan:(BOOL)a9 checkForKnownNetworks:(BOOL)a10 error:(id *)a11;
+- (id)__hiddenSSIDListForLocation:(id)location knownNetworks:(id)networks recentOnly:(BOOL)only nearbyOnly:(BOOL)nearbyOnly;
+- (id)__knownNetworksList:(id)list containsMatchingKnownNetwork:(id)network;
+- (id)__knownNetworksSupportingSeamlessSSIDTransition:(id)transition fromNetwork:(id)network allowSameSSID:(BOOL)d context:(id)context;
+- (id)__morePreferredKnownNetworksWithCandidate:(id)candidate knownNetworks:(id)networks context:(id)context;
+- (id)__passpointScanResults:(id)results;
+- (id)__perform6GHzFollowupDiscoveryWithScanResults:(id)results SSIDList:(id)list dwellTime:(unint64_t)time context:(id)context error:(id *)error;
+- (id)__performGASQueryWithScanResults:(id)results ANQPElementIDList:(id)list maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only error:(id *)error;
+- (id)__performPreAssociationScanWithContext:(id)context network:(id)network;
+- (id)__performScanWithChannelList:(id)list SSIDList:(id)dList passive:(BOOL)passive dwellTime:(unint64_t)time maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only isPreAssociationScan:(BOOL)scan checkForKnownNetworks:(BOOL)self0 error:(id *)self1;
 - (id)__retryInterval;
-- (id)__retryIntervalWithScheduleIndex:(unint64_t)a3;
-- (id)performAutoJoinWithParameters:(id)a3 reply:(id)a4;
-- (int64_t)__allowAutoHotspotWithTrigger:(int64_t)a3 error:(id *)a4;
-- (int64_t)__calloutToAllowAutoHotspotWithTrigger:(int64_t)a3 error:(id *)a4;
-- (int64_t)__retryTriggerForRetrySchedule:(int64_t)a3;
+- (id)__retryIntervalWithScheduleIndex:(unint64_t)index;
+- (id)performAutoJoinWithParameters:(id)parameters reply:(id)reply;
+- (int64_t)__allowAutoHotspotWithTrigger:(int64_t)trigger error:(id *)error;
+- (int64_t)__calloutToAllowAutoHotspotWithTrigger:(int64_t)trigger error:(id *)error;
+- (int64_t)__retryTriggerForRetrySchedule:(int64_t)schedule;
 - (int64_t)retrySchedule;
 - (unint64_t)__nextRequestInterval;
-- (unsigned)__qosForAutoJoinTrigger:(int64_t)a3;
-- (void)__addDependentThrottleInterval:(unint64_t)a3 trigger:(int64_t)a4 dependentTrigger:(int64_t)a5;
-- (void)__addDisallowedKnownNetwork:(id)a3;
-- (void)__addMatchingThrottleInterval:(unint64_t)a3 triggers:(id)a4;
-- (void)__addRequest:(id)a3;
-- (void)__addWilcardThrottleInterval:(unint64_t)a3 triggers:(id)a4;
-- (void)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)a3 maxCacheAge:(unint64_t)a4 cacheOnly:(BOOL)a5 reply:(id)a6;
-- (void)__calloutToCheckForBrokenBackhaulAndReply:(id)a3;
-- (void)__invalidateAllowedKnownNetworksCacheForTrigger:(int64_t)a3;
+- (unsigned)__qosForAutoJoinTrigger:(int64_t)trigger;
+- (void)__addDependentThrottleInterval:(unint64_t)interval trigger:(int64_t)trigger dependentTrigger:(int64_t)dependentTrigger;
+- (void)__addDisallowedKnownNetwork:(id)network;
+- (void)__addMatchingThrottleInterval:(unint64_t)interval triggers:(id)triggers;
+- (void)__addRequest:(id)request;
+- (void)__addWilcardThrottleInterval:(unint64_t)interval triggers:(id)triggers;
+- (void)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)timeout maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only reply:(id)reply;
+- (void)__calloutToCheckForBrokenBackhaulAndReply:(id)reply;
+- (void)__invalidateAllowedKnownNetworksCacheForTrigger:(int64_t)trigger;
 - (void)__performAutoJoin;
-- (void)__prepareKnownNetworksContext:(id)a3;
-- (void)__removeDisallowedKnownNetwork:(id)a3;
-- (void)__removeRedundantRequests:(id)a3;
+- (void)__prepareKnownNetworksContext:(id)context;
+- (void)__removeDisallowedKnownNetwork:(id)network;
+- (void)__removeRedundantRequests:(id)requests;
 - (void)__resetRetryIntervalIndex;
 - (void)__scheduleDelayedAutoJoinMetricSubmission;
 - (void)__setupRetryIntervals;
 - (void)__setupThrottleIntervals;
-- (void)__sortAndFilterUserConfiguredNetworks:(id)a3;
-- (void)__sortHotspotCandidates:(id)a3;
-- (void)__sortJoinCandidates:(id)a3 context:(id)a4;
-- (void)__sortKnownNetworks:(id)a3;
-- (void)__sortKnownNetworksByJoinTimestamp:(id)a3;
-- (void)__submitAutoJoinMetric:(id)a3;
+- (void)__sortAndFilterUserConfiguredNetworks:(id)networks;
+- (void)__sortHotspotCandidates:(id)candidates;
+- (void)__sortJoinCandidates:(id)candidates context:(id)context;
+- (void)__sortKnownNetworks:(id)networks;
+- (void)__sortKnownNetworksByJoinTimestamp:(id)timestamp;
+- (void)__submitAutoJoinMetric:(id)metric;
 - (void)__unscheduleDelayedAutoJoinMetricSubmission;
-- (void)__updateAutoJoinMetricAndStatistics:(id)a3;
+- (void)__updateAutoJoinMetricAndStatistics:(id)statistics;
 - (void)__updateAutoJoinMetricWithJoinStatus;
-- (void)__updateAutoJoinState:(int64_t)a3;
+- (void)__updateAutoJoinState:(int64_t)state;
 - (void)__updateDisallowedMatchedKnownNetworks;
-- (void)__updateDiscoverTimestampForJoinCandidates:(id)a3;
+- (void)__updateDiscoverTimestampForJoinCandidates:(id)candidates;
 - (void)__updateNextRequestTimer;
-- (void)__updateRNRChannel:(id)a3 has6GHzOnlyBSS:(BOOL)a4 joinCandidate:(id)a5;
+- (void)__updateRNRChannel:(id)channel has6GHzOnlyBSS:(BOOL)s joinCandidate:(id)candidate;
 - (void)__updateRecentlyMatchedCandidates;
 - (void)__updateRetrySchedule;
-- (void)__updateStatisticsWithPreAssocScanChannels:(id)a3;
-- (void)__updateStatisticsWithScanChannels:(id)a3;
-- (void)cancelAutoJoinWithUUID:(id)a3 error:(id)a4 reply:(id)a5;
+- (void)__updateStatisticsWithPreAssocScanChannels:(id)channels;
+- (void)__updateStatisticsWithScanChannels:(id)channels;
+- (void)cancelAutoJoinWithUUID:(id)d error:(id)error reply:(id)reply;
 - (void)invalidate;
 - (void)resetStatistics;
-- (void)setAssociatedNetwork:(id)a3;
-- (void)setJoinStatus:(id)a3;
-- (void)setKnownNetworks:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setMaxCompatibilityEnabled:(BOOL)a3;
-- (void)setNearbyRecommendedNetworks:(id)a3;
-- (void)setRetrySchedule:(int64_t)a3;
-- (void)setSupportedChannels:(id)a3;
+- (void)setAssociatedNetwork:(id)network;
+- (void)setJoinStatus:(id)status;
+- (void)setKnownNetworks:(id)networks;
+- (void)setLocation:(id)location;
+- (void)setMaxCompatibilityEnabled:(BOOL)enabled;
+- (void)setNearbyRecommendedNetworks:(id)networks;
+- (void)setRetrySchedule:(int64_t)schedule;
+- (void)setSupportedChannels:(id)channels;
 @end
 
 @implementation CWFAutoJoinManager
@@ -177,16 +177,16 @@
         }
 
         v12 = [(NSMutableArray *)self->_pendingRequests objectAtIndexedSubscript:v11];
-        v13 = [v12 parameters];
-        if (!-[CWFAutoJoinManager __shouldThrottleAutoJoinTrigger:](self, "__shouldThrottleAutoJoinTrigger:", [v13 trigger]))
+        parameters = [v12 parameters];
+        if (!-[CWFAutoJoinManager __shouldThrottleAutoJoinTrigger:](self, "__shouldThrottleAutoJoinTrigger:", [parameters trigger]))
         {
           break;
         }
 
-        v14 = [v12 parameters];
-        v15 = [v14 targetNetworkProfile];
+        parameters2 = [v12 parameters];
+        targetNetworkProfile = [parameters2 targetNetworkProfile];
 
-        if (v15)
+        if (targetNetworkProfile)
         {
           goto LABEL_20;
         }
@@ -233,9 +233,9 @@ LABEL_30:
       }
 
 LABEL_20:
-      v18 = [v12 parameters];
-      v19 = [v18 trigger];
-      if (v19 - 44 < 8 || v19 <= 0x3F && ((1 << v19) & 0xC000000000000010) != 0)
+      parameters3 = [v12 parameters];
+      trigger = [parameters3 trigger];
+      if (trigger - 44 < 8 || trigger <= 0x3F && ((1 << trigger) & 0xC000000000000010) != 0)
       {
 
         if (!v8)
@@ -364,12 +364,12 @@ LABEL_36:
 
   if ([(CWFAutoJoinManager *)self __nextRequestInterval]> 0x7FFFFFFFFFFFFFFELL)
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    __nextRequestInterval = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_9;
   }
 
-  v6 = [(CWFAutoJoinManager *)self __nextRequestInterval];
-  if (v6 >= 1)
+  __nextRequestInterval = [(CWFAutoJoinManager *)self __nextRequestInterval];
+  if (__nextRequestInterval >= 1)
   {
 LABEL_9:
     v9 = CWFGetOSLog();
@@ -399,13 +399,13 @@ LABEL_9:
       v19 = 138543618;
       v20 = v12;
       v21 = 2048;
-      v22 = v6 / 0xF4240uLL;
+      v22 = __nextRequestInterval / 0xF4240uLL;
       _os_log_send_and_compose_impl();
     }
 
     self->_isNextRequestScheduled = 1;
     v13 = self->_nextRequestTimer;
-    v14 = dispatch_walltime(0, v6);
+    v14 = dispatch_walltime(0, __nextRequestInterval);
     v15 = v13;
     goto LABEL_18;
   }
@@ -454,7 +454,7 @@ LABEL_18:
   if (v61)
   {
     v60 = *v95;
-    v75 = self;
+    selfCopy = self;
     do
     {
       v4 = 0;
@@ -468,29 +468,29 @@ LABEL_18:
         v62 = v4;
         throttleIntervalMap = self->_throttleIntervalMap;
         v6 = MEMORY[0x1E696AD98];
-        v7 = [*(*(&v94 + 1) + 8 * v4) parameters];
-        v8 = [v6 numberWithInteger:{objc_msgSend(v7, "trigger")}];
+        parameters = [*(*(&v94 + 1) + 8 * v4) parameters];
+        v8 = [v6 numberWithInteger:{objc_msgSend(parameters, "trigger")}];
         v9 = [(NSMutableDictionary *)throttleIntervalMap objectForKeyedSubscript:v8];
 
         if (!v9)
         {
-          v9 = [(NSMutableDictionary *)v75->_throttleIntervalMap objectForKeyedSubscript:&unk_1F5BBC5C8];
+          v9 = [(NSMutableDictionary *)selfCopy->_throttleIntervalMap objectForKeyedSubscript:&unk_1F5BBC5C8];
         }
 
         v92 = 0u;
         v93 = 0u;
         v90 = 0u;
         v91 = 0u;
-        v10 = [v9 intervals];
-        v11 = [v10 allKeys];
+        intervals = [v9 intervals];
+        allKeys = [intervals allKeys];
 
-        v63 = v11;
+        v63 = allKeys;
         v74 = v9;
-        v67 = [v11 countByEnumeratingWithState:&v90 objects:v101 count:16];
+        v67 = [allKeys countByEnumeratingWithState:&v90 objects:v101 count:16];
         if (v67)
         {
           v65 = *v91;
-          self = v75;
+          self = selfCopy;
           do
           {
             v12 = 0;
@@ -507,8 +507,8 @@ LABEL_18:
               v87 = 0u;
               v88 = 0u;
               v89 = 0u;
-              v14 = [(NSMutableDictionary *)self->_throttleTimestampMap allKeys];
-              v15 = [v14 countByEnumeratingWithState:&v86 objects:v100 count:16];
+              allKeys2 = [(NSMutableDictionary *)self->_throttleTimestampMap allKeys];
+              v15 = [allKeys2 countByEnumeratingWithState:&v86 objects:v100 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -521,42 +521,42 @@ LABEL_18:
                   {
                     if (*v87 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(allKeys2);
                     }
 
                     v19 = *(*(&v86 + 1) + 8 * v18);
-                    v20 = [v13 integerValue];
-                    if (v20 == [v19 integerValue])
+                    integerValue = [v13 integerValue];
+                    if (integerValue == [v19 integerValue])
                     {
                       v21 = [(NSMutableDictionary *)self->_throttleTimestampMap objectForKeyedSubscript:v19];
-                      v22 = [v9 intervals];
-                      v23 = [v22 objectForKeyedSubscript:v13];
+                      intervals2 = [v9 intervals];
+                      v23 = [intervals2 objectForKeyedSubscript:v13];
 
                       if (v23 && v21)
                       {
-                        v71 = [v21 unsignedLongValue];
+                        unsignedLongValue = [v21 unsignedLongValue];
                         v24 = v13;
                         v25 = v17;
-                        v26 = v14;
-                        v27 = [v23 unsignedLongValue];
+                        v26 = allKeys2;
+                        unsignedLongValue2 = [v23 unsignedLongValue];
                         v28 = 1000000000 * [v23 unsignedLongValue];
-                        v29 = [v23 unsignedLongValue];
-                        v30 = 1000000000 * v29;
-                        v31 = v27 > v28;
-                        v14 = v26;
+                        unsignedLongValue3 = [v23 unsignedLongValue];
+                        v30 = 1000000000 * unsignedLongValue3;
+                        v31 = unsignedLongValue2 > v28;
+                        allKeys2 = v26;
                         v17 = v25;
                         v13 = v24;
                         v9 = v74;
-                        self = v75;
+                        self = selfCopy;
                         if (v31)
                         {
-                          v30 = v29;
+                          v30 = unsignedLongValue3;
                         }
 
-                        v32 = v30 - (v73 - v71);
+                        v32 = v30 - (v73 - unsignedLongValue);
                         if (v3 >= v32)
                         {
-                          v33 = v30 - (v73 - v71);
+                          v33 = v30 - (v73 - unsignedLongValue);
                         }
 
                         else
@@ -569,7 +569,7 @@ LABEL_18:
                           v32 = v33;
                         }
 
-                        if (v30 > v73 - v71)
+                        if (v30 > v73 - unsignedLongValue)
                         {
                           v3 = v32;
                         }
@@ -582,7 +582,7 @@ LABEL_18:
                   }
 
                   while (v16 != v18);
-                  v16 = [v14 countByEnumeratingWithState:&v86 objects:v100 count:16];
+                  v16 = [allKeys2 countByEnumeratingWithState:&v86 objects:v100 count:16];
                 }
 
                 while (v16);
@@ -600,18 +600,18 @@ LABEL_18:
 
         else
         {
-          self = v75;
+          self = selfCopy;
         }
 
         v84 = 0u;
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v34 = [v9 intervalsBasedOnTriggerTimestamp];
-        v35 = [v34 allKeys];
+        intervalsBasedOnTriggerTimestamp = [v9 intervalsBasedOnTriggerTimestamp];
+        allKeys3 = [intervalsBasedOnTriggerTimestamp allKeys];
 
-        v64 = v35;
-        v68 = [v35 countByEnumeratingWithState:&v82 objects:v99 count:16];
+        v64 = allKeys3;
+        v68 = [allKeys3 countByEnumeratingWithState:&v82 objects:v99 count:16];
         if (v68)
         {
           v66 = *v83;
@@ -631,8 +631,8 @@ LABEL_18:
               v79 = 0u;
               v80 = 0u;
               v81 = 0u;
-              v38 = [(NSMutableDictionary *)self->_triggerTimestampMap allKeys];
-              v39 = [v38 countByEnumeratingWithState:&v78 objects:v98 count:16];
+              allKeys4 = [(NSMutableDictionary *)self->_triggerTimestampMap allKeys];
+              v39 = [allKeys4 countByEnumeratingWithState:&v78 objects:v98 count:16];
               if (v39)
               {
                 v40 = v39;
@@ -645,42 +645,42 @@ LABEL_18:
                   {
                     if (*v79 != v41)
                     {
-                      objc_enumerationMutation(v38);
+                      objc_enumerationMutation(allKeys4);
                     }
 
                     v43 = *(*(&v78 + 1) + 8 * v42);
-                    v44 = [v37 integerValue];
-                    if (v44 == [v43 integerValue])
+                    integerValue2 = [v37 integerValue];
+                    if (integerValue2 == [v43 integerValue])
                     {
                       v45 = [(NSMutableDictionary *)self->_triggerTimestampMap objectForKeyedSubscript:v43];
-                      v46 = [v9 intervalsBasedOnTriggerTimestamp];
-                      v47 = [v46 objectForKeyedSubscript:v37];
+                      intervalsBasedOnTriggerTimestamp2 = [v9 intervalsBasedOnTriggerTimestamp];
+                      v47 = [intervalsBasedOnTriggerTimestamp2 objectForKeyedSubscript:v37];
 
                       if (v47 && v45)
                       {
-                        v72 = [v45 unsignedLongValue];
+                        unsignedLongValue4 = [v45 unsignedLongValue];
                         v48 = v37;
                         v49 = v41;
-                        v50 = v38;
-                        v51 = [v47 unsignedLongValue];
+                        v50 = allKeys4;
+                        unsignedLongValue5 = [v47 unsignedLongValue];
                         v52 = 1000000000 * [v47 unsignedLongValue];
-                        v53 = [v47 unsignedLongValue];
-                        v54 = 1000000000 * v53;
-                        v31 = v51 > v52;
-                        v38 = v50;
+                        unsignedLongValue6 = [v47 unsignedLongValue];
+                        v54 = 1000000000 * unsignedLongValue6;
+                        v31 = unsignedLongValue5 > v52;
+                        allKeys4 = v50;
                         v41 = v49;
                         v37 = v48;
                         v9 = v74;
-                        self = v75;
+                        self = selfCopy;
                         if (v31)
                         {
-                          v54 = v53;
+                          v54 = unsignedLongValue6;
                         }
 
-                        v55 = v54 - (v73 - v72);
+                        v55 = v54 - (v73 - unsignedLongValue4);
                         if (v3 >= v55)
                         {
-                          v56 = v54 - (v73 - v72);
+                          v56 = v54 - (v73 - unsignedLongValue4);
                         }
 
                         else
@@ -693,7 +693,7 @@ LABEL_18:
                           v55 = v56;
                         }
 
-                        if (v54 > v73 - v72)
+                        if (v54 > v73 - unsignedLongValue4)
                         {
                           v3 = v55;
                         }
@@ -706,7 +706,7 @@ LABEL_18:
                   }
 
                   while (v40 != v42);
-                  v40 = [v38 countByEnumeratingWithState:&v78 objects:v98 count:16];
+                  v40 = [allKeys4 countByEnumeratingWithState:&v78 objects:v98 count:16];
                 }
 
                 while (v40);
@@ -738,10 +738,10 @@ LABEL_18:
 
 - (CWFAutoJoinStatistics)statistics
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFAutoJoinStatistics *)v2->_statistics copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CWFAutoJoinStatistics *)selfCopy->_statistics copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -884,8 +884,8 @@ LABEL_18:
     goto LABEL_35;
   }
 
-  v33 = [MEMORY[0x1E695DF00] date];
-  [*(v2 + 20) setStartedAt:v33];
+  date = [MEMORY[0x1E695DF00] date];
+  [*(v2 + 20) setStartedAt:date];
 
   v34 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(v2 + 1));
   v35 = *(v2 + 21);
@@ -1077,46 +1077,46 @@ LABEL_35:
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_invalidated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_invalidated)
   {
-    *&v2->_invalidated = 257;
-    underlyingCancelError = v2->_underlyingCancelError;
-    v2->_underlyingCancelError = 0;
+    *&selfCopy->_invalidated = 257;
+    underlyingCancelError = selfCopy->_underlyingCancelError;
+    selfCopy->_underlyingCancelError = 0;
 
-    internalQueue = v2->_internalQueue;
+    internalQueue = selfCopy->_internalQueue;
     v5 = qos_class_self();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C6A6D8;
     block[3] = &unk_1E86E6010;
-    block[4] = v2;
+    block[4] = selfCopy;
     v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v5, 0, block);
     dispatch_async(internalQueue, v6);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)nearbyRecommendedNetworks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_nearbyRecommendedNetworks copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_nearbyRecommendedNetworks copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setNearbyRecommendedNetworks:(id)a3
+- (void)setNearbyRecommendedNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
-  objc_sync_enter(v6);
-  nearbyRecommendedNetworks = v6->_nearbyRecommendedNetworks;
-  if (nearbyRecommendedNetworks != v4 && (!v4 || !nearbyRecommendedNetworks || ([(NSArray *)v4 isEqual:?]& 1) == 0))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nearbyRecommendedNetworks = selfCopy->_nearbyRecommendedNetworks;
+  if (nearbyRecommendedNetworks != networksCopy && (!networksCopy || !nearbyRecommendedNetworks || ([(NSArray *)networksCopy isEqual:?]& 1) == 0))
   {
     v8 = CWFGetOSLog();
     if (v8)
@@ -1135,33 +1135,33 @@ LABEL_35:
       _os_log_send_and_compose_impl();
     }
 
-    v11 = [(NSArray *)v4 copy];
-    v12 = v6->_nearbyRecommendedNetworks;
-    v6->_nearbyRecommendedNetworks = v11;
+    v11 = [(NSArray *)networksCopy copy];
+    v12 = selfCopy->_nearbyRecommendedNetworks;
+    selfCopy->_nearbyRecommendedNetworks = v11;
 
-    v6->_didConfigurationChangeSincePreviousAttempt = 1;
-    [(CWFAutoJoinManager *)v6 __resetRetryIntervalIndex];
+    selfCopy->_didConfigurationChangeSincePreviousAttempt = 1;
+    [(CWFAutoJoinManager *)selfCopy __resetRetryIntervalIndex];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   objc_autoreleasePoolPop(v5);
 }
 
 - (NSSet)knownNetworks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSSet *)v2->_knownNetworks copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSSet *)selfCopy->_knownNetworks copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)__submitAutoJoinMetric:(id)a3
+- (void)__submitAutoJoinMetric:(id)metric
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  metricCopy = metric;
   v4 = CWFGetOSLog();
   if (v4)
   {
@@ -1181,26 +1181,26 @@ LABEL_35:
 
   if (objc_opt_class())
   {
-    v7 = [v3 coreAnalyticsEventName];
-    v8 = [v3 autoJoinedNetwork];
-    if (v8 || ([v3 userJoinedNetwork], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    coreAnalyticsEventName = [metricCopy coreAnalyticsEventName];
+    autoJoinedNetwork = [metricCopy autoJoinedNetwork];
+    if (autoJoinedNetwork || ([metricCopy userJoinedNetwork], (autoJoinedNetwork = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = v8;
+      scanErrors = autoJoinedNetwork;
     }
 
     else
     {
-      v9 = [v3 scanErrors];
-      if (![v9 count])
+      scanErrors = [metricCopy scanErrors];
+      if (![scanErrors count])
       {
-        v15 = [v3 hotspot];
-        if (!v15)
+        hotspot = [metricCopy hotspot];
+        if (!hotspot)
         {
-          if ([v3 autoHotspotMode] == 3)
+          if ([metricCopy autoHotspotMode] == 3)
           {
-            v16 = [v3 autoHotspotBrowseError];
+            autoHotspotBrowseError = [metricCopy autoHotspotBrowseError];
 
-            if (v16)
+            if (autoHotspotBrowseError)
             {
               goto LABEL_11;
             }
@@ -1250,8 +1250,8 @@ LABEL_11:
       _os_log_send_and_compose_impl();
     }
 
-    v19 = v7;
-    v20 = v3;
+    v19 = coreAnalyticsEventName;
+    v20 = metricCopy;
     AnalyticsSendEventLazy();
 
     v13 = v19;
@@ -1263,45 +1263,45 @@ LABEL_17:
 
 - (void)__updateAutoJoinMetricWithJoinStatus
 {
-  v2 = self;
+  selfCopy = self;
   v123 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFJoinStatus *)self->_joinStatus scanResult];
+  scanResult = [(CWFJoinStatus *)self->_joinStatus scanResult];
 
-  if (!v3)
+  if (!scanResult)
   {
     goto LABEL_61;
   }
 
-  if (![(CWFJoinStatus *)v2->_joinStatus isAutoJoin])
+  if (![(CWFJoinStatus *)selfCopy->_joinStatus isAutoJoin])
   {
     goto LABEL_27;
   }
 
-  v4 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric autoJoinedNetwork];
-  v5 = [v4 SSID];
-  if (!v5)
+  autoJoinedNetwork = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric autoJoinedNetwork];
+  sSID = [autoJoinedNetwork SSID];
+  if (!sSID)
   {
     goto LABEL_26;
   }
 
-  v6 = v5;
-  v7 = [(CWFJoinStatus *)v2->_joinStatus scanResult];
-  v8 = [v7 SSID];
-  if (!v8)
+  v6 = sSID;
+  scanResult2 = [(CWFJoinStatus *)selfCopy->_joinStatus scanResult];
+  sSID2 = [scanResult2 SSID];
+  if (!sSID2)
   {
 
 LABEL_26:
 LABEL_27:
-    if ([(CWFJoinStatus *)v2->_joinStatus isAutoJoin])
+    if ([(CWFJoinStatus *)selfCopy->_joinStatus isAutoJoin])
     {
       goto LABEL_61;
     }
 
-    v44 = [(CWFJoinStatus *)v2->_joinStatus startedAt];
-    [v44 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)selfCopy->_joinStatus startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v46 = v45;
-    v47 = [(CWFAutoJoinMetric *)v2->_cachedMetric startedAt];
-    [v47 timeIntervalSinceReferenceDate];
+    startedAt2 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric startedAt];
+    [startedAt2 timeIntervalSinceReferenceDate];
     v49 = v48;
 
     if (v46 <= v49)
@@ -1309,28 +1309,28 @@ LABEL_27:
       goto LABEL_61;
     }
 
-    v50 = [(CWFJoinStatus *)v2->_joinStatus scanResult];
-    v51 = [(CWFJoinStatus *)v2->_joinStatus knownNetworkProfile];
-    v52 = [v50 scanResultWithMatchingKnownNetworkProfile:v51];
-    [(CWFAutoJoinMetric *)v2->_cachedMetric setUserJoinedNetwork:v52];
+    scanResult3 = [(CWFJoinStatus *)selfCopy->_joinStatus scanResult];
+    knownNetworkProfile = [(CWFJoinStatus *)selfCopy->_joinStatus knownNetworkProfile];
+    v52 = [scanResult3 scanResultWithMatchingKnownNetworkProfile:knownNetworkProfile];
+    [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setUserJoinedNetwork:v52];
 
-    v53 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-    LODWORD(v51) = [(CWFAutoJoinManager *)v2 __preflightMatchKnownNetworksForScanResult:v53];
+    userJoinedNetwork = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+    LODWORD(knownNetworkProfile) = [(CWFAutoJoinManager *)selfCopy __preflightMatchKnownNetworksForScanResult:userJoinedNetwork];
 
-    if (v51)
+    if (knownNetworkProfile)
     {
-      v54 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-      v55 = [(CWFAutoJoinManager *)v2 knownNetworks];
-      v56 = [v55 allObjects];
-      v57 = sub_1E0BED85C(v54, v56);
+      userJoinedNetwork2 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+      knownNetworks = [(CWFAutoJoinManager *)selfCopy knownNetworks];
+      allObjects = [knownNetworks allObjects];
+      v57 = sub_1E0BED85C(userJoinedNetwork2, allObjects);
 
-      cachedMetric = v2->_cachedMetric;
+      cachedMetric = selfCopy->_cachedMetric;
       if (v57)
       {
         [(CWFAutoJoinMetric *)cachedMetric setDidUserJoinKnownNetwork:1];
-        v59 = [(CWFJoinStatus *)v2->_joinStatus scanResult];
-        v60 = [v59 scanResultWithMatchingKnownNetworkProfile:v57];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setUserJoinedNetwork:v60];
+        scanResult4 = [(CWFJoinStatus *)selfCopy->_joinStatus scanResult];
+        v60 = [scanResult4 scanResultWithMatchingKnownNetworkProfile:v57];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setUserJoinedNetwork:v60];
       }
 
       else
@@ -1343,7 +1343,7 @@ LABEL_27:
     v116 = 0u;
     v113 = 0u;
     v114 = 0u;
-    obja = v2->_lowRSSICandidates;
+    obja = selfCopy->_lowRSSICandidates;
     v74 = [(NSMutableSet *)obja countByEnumeratingWithState:&v113 objects:v121 count:16];
     if (!v74)
     {
@@ -1353,7 +1353,7 @@ LABEL_27:
     v75 = v74;
     v76 = *v114;
     v104 = *v114;
-    v106 = v2;
+    v106 = selfCopy;
     while (1)
     {
       for (i = 0; i != v75; ++i)
@@ -1364,68 +1364,68 @@ LABEL_27:
         }
 
         v78 = *(*(&v113 + 1) + 8 * i);
-        v79 = [v78 matchingKnownNetworkProfile];
-        v80 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-        v81 = [v80 matchingKnownNetworkProfile];
-        v82 = v81;
-        if (v79 == v81)
+        matchingKnownNetworkProfile = [v78 matchingKnownNetworkProfile];
+        userJoinedNetwork3 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+        matchingKnownNetworkProfile2 = [userJoinedNetwork3 matchingKnownNetworkProfile];
+        v82 = matchingKnownNetworkProfile2;
+        if (matchingKnownNetworkProfile == matchingKnownNetworkProfile2)
         {
 
 LABEL_55:
-          [(CWFAutoJoinMetric *)v2->_cachedMetric setDidUserJoinLowRSSINetwork:1];
+          [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setDidUserJoinLowRSSINetwork:1];
 LABEL_56:
 
-          v90 = [(NSMutableDictionary *)v2->_disallowedKnownNetworksMap allKeys];
-          v91 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-          v92 = [v91 matchingKnownNetworkProfile];
-          v93 = [v92 identifier];
-          v94 = [v90 containsObject:v93];
+          allKeys = [(NSMutableDictionary *)selfCopy->_disallowedKnownNetworksMap allKeys];
+          userJoinedNetwork4 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+          matchingKnownNetworkProfile3 = [userJoinedNetwork4 matchingKnownNetworkProfile];
+          identifier = [matchingKnownNetworkProfile3 identifier];
+          v94 = [allKeys containsObject:identifier];
 
           if (v94)
           {
-            [(CWFAutoJoinMetric *)v2->_cachedMetric setDidUserJoinDisallowedNetwork:1];
+            [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setDidUserJoinDisallowedNetwork:1];
           }
 
-          deferredKnownNetworks = v2->_deferredKnownNetworks;
-          v96 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-          v97 = [v96 matchingKnownNetworkProfile];
-          LODWORD(deferredKnownNetworks) = [(NSMutableOrderedSet *)deferredKnownNetworks containsObject:v97];
+          deferredKnownNetworks = selfCopy->_deferredKnownNetworks;
+          userJoinedNetwork5 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+          matchingKnownNetworkProfile4 = [userJoinedNetwork5 matchingKnownNetworkProfile];
+          LODWORD(deferredKnownNetworks) = [(NSMutableOrderedSet *)deferredKnownNetworks containsObject:matchingKnownNetworkProfile4];
 
           if (deferredKnownNetworks)
           {
-            [(CWFAutoJoinMetric *)v2->_cachedMetric setDidUserJoinDeferredNetwork:1];
+            [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setDidUserJoinDeferredNetwork:1];
           }
 
-          [(CWFAutoJoinManager *)v2 __submitAutoJoinMetric:v2->_cachedMetric];
+          [(CWFAutoJoinManager *)selfCopy __submitAutoJoinMetric:selfCopy->_cachedMetric];
           goto LABEL_61;
         }
 
-        v83 = [v78 matchingKnownNetworkProfile];
-        if (!v83)
+        matchingKnownNetworkProfile5 = [v78 matchingKnownNetworkProfile];
+        if (!matchingKnownNetworkProfile5)
         {
           goto LABEL_50;
         }
 
-        v112 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-        v84 = [v112 matchingKnownNetworkProfile];
-        if (!v84)
+        userJoinedNetwork6 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+        matchingKnownNetworkProfile6 = [userJoinedNetwork6 matchingKnownNetworkProfile];
+        if (!matchingKnownNetworkProfile6)
         {
 
 LABEL_50:
           continue;
         }
 
-        v85 = v84;
-        v86 = [v78 matchingKnownNetworkProfile];
-        v87 = [(CWFAutoJoinMetric *)v2->_cachedMetric userJoinedNetwork];
-        [v87 matchingKnownNetworkProfile];
+        v85 = matchingKnownNetworkProfile6;
+        matchingKnownNetworkProfile7 = [v78 matchingKnownNetworkProfile];
+        userJoinedNetwork7 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric userJoinedNetwork];
+        [userJoinedNetwork7 matchingKnownNetworkProfile];
         v89 = v88 = v75;
-        v110 = [v86 isEqual:v89];
+        v110 = [matchingKnownNetworkProfile7 isEqual:v89];
 
         v75 = v88;
         v76 = v104;
 
-        v2 = v106;
+        selfCopy = v106;
         if (v110)
         {
           goto LABEL_55;
@@ -1440,40 +1440,40 @@ LABEL_50:
     }
   }
 
-  v9 = v8;
-  v10 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric autoJoinedNetwork];
-  v11 = [v10 SSID];
-  [(CWFJoinStatus *)v2->_joinStatus scanResult];
-  v13 = v12 = v2;
-  v14 = [v13 SSID];
-  v15 = [v11 isEqual:v14];
+  v9 = sSID2;
+  autoJoinedNetwork2 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric autoJoinedNetwork];
+  sSID3 = [autoJoinedNetwork2 SSID];
+  [(CWFJoinStatus *)selfCopy->_joinStatus scanResult];
+  v13 = v12 = selfCopy;
+  sSID4 = [v13 SSID];
+  v15 = [sSID3 isEqual:sSID4];
 
-  v2 = v12;
+  selfCopy = v12;
   if (!v15)
   {
     goto LABEL_27;
   }
 
-  v16 = [(CWFJoinStatus *)v12->_joinStatus associationEndedAt];
-  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setJoinEndedAt:v16];
+  associationEndedAt = [(CWFJoinStatus *)v12->_joinStatus associationEndedAt];
+  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setJoinEndedAt:associationEndedAt];
 
-  v17 = [(CWFJoinStatus *)v12->_joinStatus startedAt];
-  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setJoinStartedAt:v17];
+  startedAt3 = [(CWFJoinStatus *)v12->_joinStatus startedAt];
+  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setJoinStartedAt:startedAt3];
 
-  v18 = [(CWFJoinStatus *)v12->_joinStatus IPv4AssignedAt];
-  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setRoutableIPv4AddressAt:v18];
+  iPv4AssignedAt = [(CWFJoinStatus *)v12->_joinStatus IPv4AssignedAt];
+  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setRoutableIPv4AddressAt:iPv4AssignedAt];
 
-  v19 = [(CWFJoinStatus *)v12->_joinStatus IPv4PrimaryAt];
-  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setPrimaryIPv4InterfaceAt:v19];
+  iPv4PrimaryAt = [(CWFJoinStatus *)v12->_joinStatus IPv4PrimaryAt];
+  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setPrimaryIPv4InterfaceAt:iPv4PrimaryAt];
 
-  v20 = [(CWFJoinStatus *)v12->_joinStatus IPv6AssignedAt];
-  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setRoutableIPv6AddressAt:v20];
+  iPv6AssignedAt = [(CWFJoinStatus *)v12->_joinStatus IPv6AssignedAt];
+  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setRoutableIPv6AddressAt:iPv6AssignedAt];
 
-  v21 = [(CWFJoinStatus *)v12->_joinStatus IPv6PrimaryAt];
-  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setPrimaryIPv6InterfaceAt:v21];
+  iPv6PrimaryAt = [(CWFJoinStatus *)v12->_joinStatus IPv6PrimaryAt];
+  [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric setPrimaryIPv6InterfaceAt:iPv6PrimaryAt];
 
-  v22 = [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric wasAlreadyAssociatedToNetwork];
-  if (v22)
+  wasAlreadyAssociatedToNetwork = [(CWFAutoJoinMetric *)v12->_delayedSubmissionMetric wasAlreadyAssociatedToNetwork];
+  if (wasAlreadyAssociatedToNetwork)
   {
 LABEL_9:
 
@@ -1482,8 +1482,8 @@ LABEL_9:
 
   if (v12->_prevAssociatedNetwork)
   {
-    v22 = [(CWFJoinStatus *)v12->_joinStatus associationEndedAt];
-    [v22 timeIntervalSinceReferenceDate];
+    wasAlreadyAssociatedToNetwork = [(CWFJoinStatus *)v12->_joinStatus associationEndedAt];
+    [wasAlreadyAssociatedToNetwork timeIntervalSinceReferenceDate];
     v24 = v23;
     v25 = CWFGetBootTime();
     v26 = [v25 dateByAddingTimeInterval:v12->_prevAssocBeforeTimestamp / 1000000000.0];
@@ -1519,44 +1519,44 @@ LABEL_10:
       }
 
       v32 = *(*(&v117 + 1) + 8 * j);
-      v33 = [v32 matchingKnownNetworkProfile];
-      v34 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric userJoinedNetwork];
-      v35 = [v34 matchingKnownNetworkProfile];
-      v36 = v35;
-      if (v33 == v35)
+      matchingKnownNetworkProfile8 = [v32 matchingKnownNetworkProfile];
+      userJoinedNetwork8 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric userJoinedNetwork];
+      matchingKnownNetworkProfile9 = [userJoinedNetwork8 matchingKnownNetworkProfile];
+      v36 = matchingKnownNetworkProfile9;
+      if (matchingKnownNetworkProfile8 == matchingKnownNetworkProfile9)
       {
 
 LABEL_33:
-        [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric setDidJoinPreviouslyLowRSSINetwork:1];
+        [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric setDidJoinPreviouslyLowRSSINetwork:1];
         goto LABEL_34;
       }
 
-      v37 = [v32 matchingKnownNetworkProfile];
-      if (!v37)
+      matchingKnownNetworkProfile10 = [v32 matchingKnownNetworkProfile];
+      if (!matchingKnownNetworkProfile10)
       {
         goto LABEL_21;
       }
 
-      v111 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric userJoinedNetwork];
-      v38 = [v111 matchingKnownNetworkProfile];
-      if (!v38)
+      userJoinedNetwork9 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric userJoinedNetwork];
+      matchingKnownNetworkProfile11 = [userJoinedNetwork9 matchingKnownNetworkProfile];
+      if (!matchingKnownNetworkProfile11)
       {
 
 LABEL_21:
         continue;
       }
 
-      v39 = v38;
-      v40 = [v32 matchingKnownNetworkProfile];
-      v41 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric userJoinedNetwork];
-      [v41 matchingKnownNetworkProfile];
+      v39 = matchingKnownNetworkProfile11;
+      matchingKnownNetworkProfile12 = [v32 matchingKnownNetworkProfile];
+      userJoinedNetwork10 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric userJoinedNetwork];
+      [userJoinedNetwork10 matchingKnownNetworkProfile];
       v43 = v42 = v29;
-      v109 = [v40 isEqual:v43];
+      v109 = [matchingKnownNetworkProfile12 isEqual:v43];
 
       v29 = v42;
       v30 = v103;
 
-      v2 = v105;
+      selfCopy = v105;
       if (v109)
       {
         goto LABEL_33;
@@ -1574,40 +1574,40 @@ LABEL_21:
 
 LABEL_34:
 
-  v61 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric startedAt];
-  if (v61)
+  startedAt4 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric startedAt];
+  if (startedAt4)
   {
-    v62 = v61;
-    v63 = [(CWFAutoJoinMetric *)v2->_cachedMetric startedAt];
-    if (v63)
+    v62 = startedAt4;
+    startedAt5 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric startedAt];
+    if (startedAt5)
     {
-      v64 = v63;
-      v65 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric startedAt];
-      v66 = [(CWFAutoJoinMetric *)v2->_cachedMetric startedAt];
-      v67 = [v65 isEqual:v66];
+      v64 = startedAt5;
+      startedAt6 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric startedAt];
+      startedAt7 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric startedAt];
+      v67 = [startedAt6 isEqual:startedAt7];
 
       if (v67)
       {
-        v68 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric joinEndedAt];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setJoinEndedAt:v68];
+        joinEndedAt = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric joinEndedAt];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setJoinEndedAt:joinEndedAt];
 
-        v69 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric joinStartedAt];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setJoinStartedAt:v69];
+        joinStartedAt = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric joinStartedAt];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setJoinStartedAt:joinStartedAt];
 
-        v70 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric routableIPv4AddressAt];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setRoutableIPv4AddressAt:v70];
+        routableIPv4AddressAt = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric routableIPv4AddressAt];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setRoutableIPv4AddressAt:routableIPv4AddressAt];
 
-        v71 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric primaryIPv4InterfaceAt];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setPrimaryIPv4InterfaceAt:v71];
+        primaryIPv4InterfaceAt = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric primaryIPv4InterfaceAt];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setPrimaryIPv4InterfaceAt:primaryIPv4InterfaceAt];
 
-        v72 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric routableIPv6AddressAt];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setRoutableIPv6AddressAt:v72];
+        routableIPv6AddressAt = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric routableIPv6AddressAt];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setRoutableIPv6AddressAt:routableIPv6AddressAt];
 
-        v73 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric primaryIPv6InterfaceAt];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setPrimaryIPv6InterfaceAt:v73];
+        primaryIPv6InterfaceAt = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric primaryIPv6InterfaceAt];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setPrimaryIPv6InterfaceAt:primaryIPv6InterfaceAt];
 
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setLinkRecoveryDelay:[(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric linkRecoveryDelay]];
-        [(CWFAutoJoinMetric *)v2->_cachedMetric setDidJoinPreviouslyLowRSSINetwork:[(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric didJoinPreviouslyLowRSSINetwork]];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setLinkRecoveryDelay:[(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric linkRecoveryDelay]];
+        [(CWFAutoJoinMetric *)selfCopy->_cachedMetric setDidJoinPreviouslyLowRSSINetwork:[(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric didJoinPreviouslyLowRSSINetwork]];
       }
     }
 
@@ -1616,18 +1616,18 @@ LABEL_34:
     }
   }
 
-  v99 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric primaryIPv4InterfaceAt];
-  if (v99)
+  primaryIPv4InterfaceAt2 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric primaryIPv4InterfaceAt];
+  if (primaryIPv4InterfaceAt2)
   {
-    v100 = v99;
-    v101 = [(CWFAutoJoinMetric *)v2->_delayedSubmissionMetric primaryIPv6InterfaceAt];
+    v100 = primaryIPv4InterfaceAt2;
+    primaryIPv6InterfaceAt2 = [(CWFAutoJoinMetric *)selfCopy->_delayedSubmissionMetric primaryIPv6InterfaceAt];
 
-    if (v101)
+    if (primaryIPv6InterfaceAt2)
     {
-      [(CWFAutoJoinManager *)v2 __unscheduleDelayedAutoJoinMetricSubmission];
-      [(CWFAutoJoinManager *)v2 __submitAutoJoinMetric:v2->_delayedSubmissionMetric];
-      delayedSubmissionMetric = v2->_delayedSubmissionMetric;
-      v2->_delayedSubmissionMetric = 0;
+      [(CWFAutoJoinManager *)selfCopy __unscheduleDelayedAutoJoinMetricSubmission];
+      [(CWFAutoJoinManager *)selfCopy __submitAutoJoinMetric:selfCopy->_delayedSubmissionMetric];
+      delayedSubmissionMetric = selfCopy->_delayedSubmissionMetric;
+      selfCopy->_delayedSubmissionMetric = 0;
     }
   }
 
@@ -1637,52 +1637,52 @@ LABEL_61:
 
 - (CWFScanResult)associatedNetwork
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_associatedNetwork;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_associatedNetwork;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setAssociatedNetwork:(id)a3
+- (void)setAssociatedNetwork:(id)network
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  associatedNetwork = v5->_associatedNetwork;
-  if (associatedNetwork != v4 && (!v4 || !associatedNetwork || ![(CWFScanResult *)v4 isEqual:?]))
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  associatedNetwork = selfCopy->_associatedNetwork;
+  if (associatedNetwork != networkCopy && (!networkCopy || !associatedNetwork || ![(CWFScanResult *)networkCopy isEqual:?]))
   {
     goto LABEL_13;
   }
 
-  v7 = [(CWFScanResult *)v4 matchingKnownNetworkProfile];
-  v8 = [(CWFScanResult *)v5->_associatedNetwork matchingKnownNetworkProfile];
-  v9 = v8;
-  if (v7 == v8)
+  matchingKnownNetworkProfile = [(CWFScanResult *)networkCopy matchingKnownNetworkProfile];
+  matchingKnownNetworkProfile2 = [(CWFScanResult *)selfCopy->_associatedNetwork matchingKnownNetworkProfile];
+  v9 = matchingKnownNetworkProfile2;
+  if (matchingKnownNetworkProfile == matchingKnownNetworkProfile2)
   {
 
     goto LABEL_37;
   }
 
-  v10 = [(CWFScanResult *)v4 matchingKnownNetworkProfile];
-  if (!v10)
+  matchingKnownNetworkProfile3 = [(CWFScanResult *)networkCopy matchingKnownNetworkProfile];
+  if (!matchingKnownNetworkProfile3)
   {
     goto LABEL_12;
   }
 
-  v11 = [(CWFScanResult *)v5->_associatedNetwork matchingKnownNetworkProfile];
-  if (!v11)
+  matchingKnownNetworkProfile4 = [(CWFScanResult *)selfCopy->_associatedNetwork matchingKnownNetworkProfile];
+  if (!matchingKnownNetworkProfile4)
   {
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = [(CWFScanResult *)v4 matchingKnownNetworkProfile];
-  v13 = [(CWFScanResult *)v5->_associatedNetwork matchingKnownNetworkProfile];
-  v14 = [v12 isEqual:v13];
+  matchingKnownNetworkProfile5 = [(CWFScanResult *)networkCopy matchingKnownNetworkProfile];
+  matchingKnownNetworkProfile6 = [(CWFScanResult *)selfCopy->_associatedNetwork matchingKnownNetworkProfile];
+  v14 = [matchingKnownNetworkProfile5 isEqual:matchingKnownNetworkProfile6];
 
   if (v14)
   {
@@ -1705,129 +1705,129 @@ LABEL_13:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v52 = 138543362;
-    v53 = v4;
+    v53 = networkCopy;
     LODWORD(v50) = 12;
     v49 = &v52;
     _os_log_send_and_compose_impl();
   }
 
-  v18 = v5->_associatedNetwork;
-  if ((v4 == 0) == (v18 != 0))
+  v18 = selfCopy->_associatedNetwork;
+  if ((networkCopy == 0) == (v18 != 0))
   {
     v19 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
-    v5->_linkChangeTimestamp = v19;
+    selfCopy->_linkChangeTimestamp = v19;
     if (v18)
     {
-      v5->_prevAssocBeforeTimestamp = v19;
-      v20 = [(CWFScanResult *)v5->_associatedNetwork copy];
-      prevAssociatedNetwork = v5->_prevAssociatedNetwork;
-      v5->_prevAssociatedNetwork = v20;
+      selfCopy->_prevAssocBeforeTimestamp = v19;
+      v20 = [(CWFScanResult *)selfCopy->_associatedNetwork copy];
+      prevAssociatedNetwork = selfCopy->_prevAssociatedNetwork;
+      selfCopy->_prevAssociatedNetwork = v20;
     }
   }
 
-  v22 = [(CWFScanResult *)v4 copy:v49];
-  v23 = v5->_associatedNetwork;
-  v5->_associatedNetwork = v22;
+  v22 = [(CWFScanResult *)networkCopy copy:v49];
+  v23 = selfCopy->_associatedNetwork;
+  selfCopy->_associatedNetwork = v22;
 
-  v24 = [(CWFScanResult *)v5->_steerToNetwork matchingKnownNetworkProfile];
-  v25 = [v24 identifier];
-  if (!v25)
+  matchingKnownNetworkProfile7 = [(CWFScanResult *)selfCopy->_steerToNetwork matchingKnownNetworkProfile];
+  identifier = [matchingKnownNetworkProfile7 identifier];
+  if (!identifier)
   {
     goto LABEL_26;
   }
 
-  v26 = [(CWFScanResult *)v5->_associatedNetwork matchingKnownNetworkProfile];
-  v27 = [v26 identifier];
-  if (!v27)
+  matchingKnownNetworkProfile8 = [(CWFScanResult *)selfCopy->_associatedNetwork matchingKnownNetworkProfile];
+  identifier2 = [matchingKnownNetworkProfile8 identifier];
+  if (!identifier2)
   {
 
 LABEL_26:
     goto LABEL_27;
   }
 
-  v28 = [(CWFScanResult *)v5->_steerToNetwork matchingKnownNetworkProfile];
-  v29 = [v28 identifier];
-  v30 = [(CWFScanResult *)v5->_associatedNetwork matchingKnownNetworkProfile];
-  v31 = [v30 identifier];
-  v51 = [v29 isEqual:v31];
+  matchingKnownNetworkProfile9 = [(CWFScanResult *)selfCopy->_steerToNetwork matchingKnownNetworkProfile];
+  identifier3 = [matchingKnownNetworkProfile9 identifier];
+  matchingKnownNetworkProfile10 = [(CWFScanResult *)selfCopy->_associatedNetwork matchingKnownNetworkProfile];
+  identifier4 = [matchingKnownNetworkProfile10 identifier];
+  v51 = [identifier3 isEqual:identifier4];
 
   if ((v51 & 1) == 0)
   {
 LABEL_27:
-    steerToNetwork = v5->_steerToNetwork;
-    v5->_steerToNetwork = 0;
+    steerToNetwork = selfCopy->_steerToNetwork;
+    selfCopy->_steerToNetwork = 0;
 
-    steerFromNetwork = v5->_steerFromNetwork;
-    v5->_steerFromNetwork = 0;
+    steerFromNetwork = selfCopy->_steerFromNetwork;
+    selfCopy->_steerFromNetwork = 0;
   }
 
-  v34 = v5->_associatedNetwork;
+  v34 = selfCopy->_associatedNetwork;
   if (v34)
   {
-    v35 = [(CWFScanResult *)v34 networkProfile];
-    v36 = [v35 identifier];
-    if (v36)
+    networkProfile = [(CWFScanResult *)v34 networkProfile];
+    identifier5 = [networkProfile identifier];
+    if (identifier5)
     {
-      v37 = [(NSMutableDictionary *)v5->_disallowedKnownNetworksMap allKeys];
-      v38 = [v35 identifier];
-      v39 = [v37 containsObject:v38];
+      allKeys = [(NSMutableDictionary *)selfCopy->_disallowedKnownNetworksMap allKeys];
+      identifier6 = [networkProfile identifier];
+      v39 = [allKeys containsObject:identifier6];
 
       if (v39)
       {
-        disallowedKnownNetworksMap = v5->_disallowedKnownNetworksMap;
-        v41 = [v35 identifier];
-        [(NSMutableDictionary *)disallowedKnownNetworksMap removeObjectForKey:v41];
+        disallowedKnownNetworksMap = selfCopy->_disallowedKnownNetworksMap;
+        identifier7 = [networkProfile identifier];
+        [(NSMutableDictionary *)disallowedKnownNetworksMap removeObjectForKey:identifier7];
       }
     }
 
-    v42 = [v35 identifier];
-    if (v42)
+    identifier8 = [networkProfile identifier];
+    if (identifier8)
     {
-      failedToJoinKnownNetworkIDs = v5->_failedToJoinKnownNetworkIDs;
-      v44 = [v35 identifier];
-      LODWORD(failedToJoinKnownNetworkIDs) = [(NSMutableSet *)failedToJoinKnownNetworkIDs containsObject:v44];
+      failedToJoinKnownNetworkIDs = selfCopy->_failedToJoinKnownNetworkIDs;
+      identifier9 = [networkProfile identifier];
+      LODWORD(failedToJoinKnownNetworkIDs) = [(NSMutableSet *)failedToJoinKnownNetworkIDs containsObject:identifier9];
 
       if (failedToJoinKnownNetworkIDs)
       {
-        v45 = v5->_failedToJoinKnownNetworkIDs;
-        v46 = [v35 identifier];
-        [(NSMutableSet *)v45 removeObject:v46];
+        v45 = selfCopy->_failedToJoinKnownNetworkIDs;
+        identifier10 = [networkProfile identifier];
+        [(NSMutableSet *)v45 removeObject:identifier10];
       }
     }
   }
 
   else
   {
-    [(CWFAutoJoinManager *)v5 __unscheduleDelayedAutoJoinMetricSubmission];
-    [(CWFAutoJoinManager *)v5 __submitAutoJoinMetric:v5->_delayedSubmissionMetric];
-    delayedSubmissionMetric = v5->_delayedSubmissionMetric;
-    v5->_delayedSubmissionMetric = 0;
+    [(CWFAutoJoinManager *)selfCopy __unscheduleDelayedAutoJoinMetricSubmission];
+    [(CWFAutoJoinManager *)selfCopy __submitAutoJoinMetric:selfCopy->_delayedSubmissionMetric];
+    delayedSubmissionMetric = selfCopy->_delayedSubmissionMetric;
+    selfCopy->_delayedSubmissionMetric = 0;
   }
 
 LABEL_37:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v48 = *MEMORY[0x1E69E9840];
 }
 
 - (CWFJoinStatus)joinStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_joinStatus;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_joinStatus;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setJoinStatus:(id)a3
+- (void)setJoinStatus:(id)status
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  joinStatus = v5->_joinStatus;
-  if (joinStatus != v4 && (!v4 || !joinStatus || ![(CWFJoinStatus *)v4 isEqual:?]))
+  statusCopy = status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  joinStatus = selfCopy->_joinStatus;
+  if (joinStatus != statusCopy && (!statusCopy || !joinStatus || ![(CWFJoinStatus *)statusCopy isEqual:?]))
   {
     v7 = CWFGetOSLog();
     if (v7)
@@ -1846,14 +1846,14 @@ LABEL_37:
       _os_log_send_and_compose_impl();
     }
 
-    v10 = [(CWFJoinStatus *)v4 copy];
-    v11 = v5->_joinStatus;
-    v5->_joinStatus = v10;
+    v10 = [(CWFJoinStatus *)statusCopy copy];
+    v11 = selfCopy->_joinStatus;
+    selfCopy->_joinStatus = v10;
 
-    [(CWFAutoJoinManager *)v5 __updateAutoJoinMetricWithJoinStatus];
+    [(CWFAutoJoinManager *)selfCopy __updateAutoJoinMetricWithJoinStatus];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -1888,16 +1888,16 @@ LABEL_37:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setKnownNetworks:(id)a3
+- (void)setKnownNetworks:(id)networks
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  networksCopy = networks;
   context = objc_autoreleasePoolPush();
-  v5 = self;
-  objc_sync_enter(v5);
-  knownNetworks = v5->_knownNetworks;
-  v44 = v4;
-  if (knownNetworks != v4 && (!v4 || !knownNetworks || ([(NSSet *)v4 isEqual:?]& 1) == 0))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  knownNetworks = selfCopy->_knownNetworks;
+  v44 = networksCopy;
+  if (knownNetworks != networksCopy && (!networksCopy || !knownNetworks || ([(NSSet *)networksCopy isEqual:?]& 1) == 0))
   {
     v7 = CWFGetOSLog();
     if (v7)
@@ -1920,8 +1920,8 @@ LABEL_37:
     }
 
     v10 = [MEMORY[0x1E695DFA8] set];
-    v48 = [MEMORY[0x1E695DF90] dictionary];
-    v46 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
@@ -1942,71 +1942,71 @@ LABEL_37:
           }
 
           v14 = *(*(&v49 + 1) + 8 * i);
-          v15 = [(NSSet *)v5->_knownNetworks member:v14, v41, v42, context];
-          if (v15)
+          context = [(NSSet *)selfCopy->_knownNetworks member:v14, v41, v42, context];
+          if (context)
           {
-            v16 = [v14 SSID];
+            sSID = [v14 SSID];
 
-            if (v16)
+            if (sSID)
             {
-              v17 = [v14 SSID];
-              [v48 setObject:v15 forKeyedSubscript:v17];
+              sSID2 = [v14 SSID];
+              [dictionary setObject:context forKeyedSubscript:sSID2];
             }
 
             if ([v14 isPasspoint])
             {
-              v18 = [v14 domainName];
-              [v46 setObject:v15 forKeyedSubscript:v18];
+              domainName = [v14 domainName];
+              [dictionary2 setObject:context forKeyedSubscript:domainName];
             }
 
-            [v10 addObject:v15];
+            [v10 addObject:context];
           }
 
           else
           {
             v19 = [v14 copy];
-            knownNetworkAllowCache = v5->_knownNetworkAllowCache;
-            v21 = [v14 identifier];
-            [(NSMutableDictionary *)knownNetworkAllowCache setObject:0 forKeyedSubscript:v21];
+            knownNetworkAllowCache = selfCopy->_knownNetworkAllowCache;
+            identifier = [v14 identifier];
+            [(NSMutableDictionary *)knownNetworkAllowCache setObject:0 forKeyedSubscript:identifier];
 
-            knownNetworkAllowErrorCache = v5->_knownNetworkAllowErrorCache;
-            v23 = [v14 identifier];
-            [(NSMutableDictionary *)knownNetworkAllowErrorCache setObject:0 forKeyedSubscript:v23];
+            knownNetworkAllowErrorCache = selfCopy->_knownNetworkAllowErrorCache;
+            identifier2 = [v14 identifier];
+            [(NSMutableDictionary *)knownNetworkAllowErrorCache setObject:0 forKeyedSubscript:identifier2];
 
-            knownNetworkDeferCache = v5->_knownNetworkDeferCache;
-            v25 = [v14 identifier];
-            [(NSMutableDictionary *)knownNetworkDeferCache setObject:0 forKeyedSubscript:v25];
+            knownNetworkDeferCache = selfCopy->_knownNetworkDeferCache;
+            identifier3 = [v14 identifier];
+            [(NSMutableDictionary *)knownNetworkDeferCache setObject:0 forKeyedSubscript:identifier3];
 
-            v26 = [v14 SSID];
+            sSID3 = [v14 SSID];
 
-            if (v26)
+            if (sSID3)
             {
-              knownNetworkSSIDMap = v5->_knownNetworkSSIDMap;
-              v28 = [v14 SSID];
-              v29 = [(NSMutableDictionary *)knownNetworkSSIDMap objectForKeyedSubscript:v28];
+              knownNetworkSSIDMap = selfCopy->_knownNetworkSSIDMap;
+              sSID4 = [v14 SSID];
+              v29 = [(NSMutableDictionary *)knownNetworkSSIDMap objectForKeyedSubscript:sSID4];
 
               if (!v29 || (v30 = [v29 effectiveSupportedSecurityTypes], v30 != objc_msgSend(v14, "effectiveSupportedSecurityTypes")))
               {
                 v45 = 1;
               }
 
-              v31 = [v14 SSID];
-              [v48 setObject:v19 forKeyedSubscript:v31];
+              sSID5 = [v14 SSID];
+              [dictionary setObject:v19 forKeyedSubscript:sSID5];
             }
 
             if ([v14 isPasspoint])
             {
-              knownNetworkPasspointDomainMap = v5->_knownNetworkPasspointDomainMap;
-              v33 = [v14 domainName];
-              v34 = [(NSMutableDictionary *)knownNetworkPasspointDomainMap objectForKeyedSubscript:v33];
+              knownNetworkPasspointDomainMap = selfCopy->_knownNetworkPasspointDomainMap;
+              domainName2 = [v14 domainName];
+              v34 = [(NSMutableDictionary *)knownNetworkPasspointDomainMap objectForKeyedSubscript:domainName2];
 
               if (!v34 || (v35 = [v34 effectiveSupportedSecurityTypes], v35 != objc_msgSend(v14, "effectiveSupportedSecurityTypes")))
               {
                 v45 = 1;
               }
 
-              v36 = [v14 domainName];
-              [v46 setObject:v19 forKeyedSubscript:v36];
+              domainName3 = [v14 domainName];
+              [dictionary2 setObject:v19 forKeyedSubscript:domainName3];
             }
 
             [v10 addObject:v19];
@@ -2025,23 +2025,23 @@ LABEL_37:
     }
 
     v37 = [v10 copy];
-    v38 = v5->_knownNetworks;
-    v5->_knownNetworks = v37;
+    v38 = selfCopy->_knownNetworks;
+    selfCopy->_knownNetworks = v37;
 
-    [(NSMutableDictionary *)v5->_knownNetworkSSIDMap setDictionary:v48];
-    [(NSMutableDictionary *)v5->_knownNetworkPasspointDomainMap setDictionary:v46];
-    v39 = [(NSSet *)v5->_knownNetworks allObjects];
-    [(CWFAutoJoinStatistics *)v5->_statistics setKnownNetworks:v39];
+    [(NSMutableDictionary *)selfCopy->_knownNetworkSSIDMap setDictionary:dictionary];
+    [(NSMutableDictionary *)selfCopy->_knownNetworkPasspointDomainMap setDictionary:dictionary2];
+    allObjects = [(NSSet *)selfCopy->_knownNetworks allObjects];
+    [(CWFAutoJoinStatistics *)selfCopy->_statistics setKnownNetworks:allObjects];
 
     if (v45)
     {
-      v5->_didConfigurationChangeSincePreviousAttempt = 1;
-      v5->_resetCachedKnownNetworksContext = 1;
-      [(CWFAutoJoinManager *)v5 __resetRetryIntervalIndex];
+      selfCopy->_didConfigurationChangeSincePreviousAttempt = 1;
+      selfCopy->_resetCachedKnownNetworksContext = 1;
+      [(CWFAutoJoinManager *)selfCopy __resetRetryIntervalIndex];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   objc_autoreleasePoolPop(context);
   v40 = *MEMORY[0x1E69E9840];
@@ -2049,21 +2049,21 @@ LABEL_37:
 
 - (NSSet)supportedChannels
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSSet *)v2->_supportedChannels copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSSet *)selfCopy->_supportedChannels copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSupportedChannels:(id)a3
+- (void)setSupportedChannels:(id)channels
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  supportedChannels = v5->_supportedChannels;
-  if (supportedChannels != v4 && (!v4 || !supportedChannels || ([(NSSet *)v4 isEqual:?]& 1) == 0))
+  channelsCopy = channels;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  supportedChannels = selfCopy->_supportedChannels;
+  if (supportedChannels != channelsCopy && (!channelsCopy || !supportedChannels || ([(NSSet *)channelsCopy isEqual:?]& 1) == 0))
   {
     v7 = CWFGetOSLog();
     if (v7)
@@ -2085,9 +2085,9 @@ LABEL_37:
       _os_log_send_and_compose_impl();
     }
 
-    if (v5->_supportedChannels)
+    if (selfCopy->_supportedChannels)
     {
-      v10 = [(NSSet *)v4 isSubsetOfSet:?];
+      v10 = [(NSSet *)channelsCopy isSubsetOfSet:?];
     }
 
     else
@@ -2095,38 +2095,38 @@ LABEL_37:
       v10 = 0;
     }
 
-    v11 = [(NSSet *)v4 copy:v13];
-    v12 = v5->_supportedChannels;
-    v5->_supportedChannels = v11;
+    v11 = [(NSSet *)channelsCopy copy:v13];
+    v12 = selfCopy->_supportedChannels;
+    selfCopy->_supportedChannels = v11;
 
     if (!v10)
     {
-      v5->_didConfigurationChangeSincePreviousAttempt = 1;
-      v5->_resetCachedKnownNetworksContext = 1;
-      [(CWFAutoJoinManager *)v5 __resetRetryIntervalIndex];
+      selfCopy->_didConfigurationChangeSincePreviousAttempt = 1;
+      selfCopy->_resetCachedKnownNetworksContext = 1;
+      [(CWFAutoJoinManager *)selfCopy __resetRetryIntervalIndex];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (CLLocation)location
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CLLocation *)v2->_location copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CLLocation *)selfCopy->_location copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  location = v5->_location;
-  if (location != v4 && (!v4 || !location || ([(CLLocation *)v4 isEqual:?]& 1) == 0))
+  locationCopy = location;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  location = selfCopy->_location;
+  if (location != locationCopy && (!locationCopy || !location || ([(CLLocation *)locationCopy isEqual:?]& 1) == 0))
   {
     v7 = CWFGetOSLog();
     if (v7)
@@ -2148,17 +2148,17 @@ LABEL_37:
       _os_log_send_and_compose_impl();
     }
 
-    if (!v4 || (v10 = v5->_location) == 0 || ([(CLLocation *)v10 distanceFromLocation:v4], v11 > 20.0))
+    if (!locationCopy || (v10 = selfCopy->_location) == 0 || ([(CLLocation *)v10 distanceFromLocation:locationCopy], v11 > 20.0))
     {
-      v5->_resetCachedKnownNetworksContext = 1;
+      selfCopy->_resetCachedKnownNetworksContext = 1;
     }
 
-    v12 = [(CLLocation *)v4 copy:v19];
-    v13 = v5->_location;
-    v5->_location = v12;
+    v12 = [(CLLocation *)locationCopy copy:v19];
+    v13 = selfCopy->_location;
+    selfCopy->_location = v12;
 
-    loiTypes = v5->_loiTypes;
-    v5->_loiTypes = 0;
+    loiTypes = selfCopy->_loiTypes;
+    selfCopy->_loiTypes = 0;
 
     if (_os_feature_enabled_impl())
     {
@@ -2180,36 +2180,36 @@ LABEL_37:
 
       v16 = v15;
       _Block_object_dispose(&v23, 8);
-      v17 = [v15 defaultManager];
-      v18 = v5->_location;
+      defaultManager = [v15 defaultManager];
+      v18 = selfCopy->_location;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = sub_1E0C6CE64;
       v21[3] = &unk_1E86E7698;
-      v21[4] = v5;
-      [v17 fetchLocationsOfInterestWithinDistance:v18 ofLocation:v21 withHandler:100.1];
+      v21[4] = selfCopy;
+      [defaultManager fetchLocationsOfInterestWithinDistance:v18 ofLocation:v21 withHandler:100.1];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (int64_t)retrySchedule
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  retrySchedule = v2->_retrySchedule;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  retrySchedule = selfCopy->_retrySchedule;
+  objc_sync_exit(selfCopy);
 
   return retrySchedule;
 }
 
-- (void)setRetrySchedule:(int64_t)a3
+- (void)setRetrySchedule:(int64_t)schedule
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_retrySchedule != a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_retrySchedule != schedule)
   {
     v5 = CWFGetOSLog();
     if (v5)
@@ -2225,8 +2225,8 @@ LABEL_37:
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = sub_1E0BEE2F0(v4->_retrySchedule);
-      v9 = sub_1E0BEE2F0(a3);
+      v8 = sub_1E0BEE2F0(selfCopy->_retrySchedule);
+      v9 = sub_1E0BEE2F0(schedule);
       v13 = 138543618;
       v14 = v8;
       v15 = 2114;
@@ -2236,51 +2236,51 @@ LABEL_37:
       _os_log_send_and_compose_impl();
     }
 
-    v4->_retrySchedule = a3;
-    [(CWFAutoJoinManager *)v4 __setupThrottleIntervals];
-    if (!v4->_invalidated && (v4->_isRetryScheduled || [(CWFAutoJoinManager *)v4 __shouldAlwaysUpdateRetrySchedule:a3]))
+    selfCopy->_retrySchedule = schedule;
+    [(CWFAutoJoinManager *)selfCopy __setupThrottleIntervals];
+    if (!selfCopy->_invalidated && (selfCopy->_isRetryScheduled || [(CWFAutoJoinManager *)selfCopy __shouldAlwaysUpdateRetrySchedule:schedule]))
     {
-      [(CWFAutoJoinManager *)v4 __updateRetrySchedule:v11];
+      [(CWFAutoJoinManager *)selfCopy __updateRetrySchedule:v11];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMaxCompatibilityEnabled:(BOOL)a3
+- (void)setMaxCompatibilityEnabled:(BOOL)enabled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_maxCompatibilityEnabled = a3;
+  obj->_maxCompatibilityEnabled = enabled;
   objc_sync_exit(obj);
 }
 
 - (BOOL)maxCompatibilityEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  maxCompatibilityEnabled = v2->_maxCompatibilityEnabled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  maxCompatibilityEnabled = selfCopy->_maxCompatibilityEnabled;
+  objc_sync_exit(selfCopy);
 
   return maxCompatibilityEnabled;
 }
 
-- (id)performAutoJoinWithParameters:(id)a3 reply:(id)a4
+- (id)performAutoJoinWithParameters:(id)parameters reply:(id)reply
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  replyCopy = reply;
   v8 = objc_alloc_init(CWFAutoJoinRequest);
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  [(CWFAutoJoinRequest *)v8 setUUID:v9];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(CWFAutoJoinRequest *)v8 setUUID:uUID];
 
-  [(CWFAutoJoinRequest *)v8 setParameters:v6];
-  [(CWFAutoJoinRequest *)v8 setReply:v7];
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10->_invalidated)
+  [(CWFAutoJoinRequest *)v8 setParameters:parametersCopy];
+  [(CWFAutoJoinRequest *)v8 setReply:replyCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_invalidated)
   {
     v11 = CWFGetOSLog();
     if (v11)
@@ -2296,9 +2296,9 @@ LABEL_37:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(CWFAutoJoinRequest *)v8 UUID];
-      v15 = [v14 UUIDString];
-      v16 = [v15 substringToIndex:5];
+      uUID2 = [(CWFAutoJoinRequest *)v8 UUID];
+      uUIDString = [uUID2 UUIDString];
+      v16 = [uUIDString substringToIndex:5];
       [(CWFAutoJoinRequest *)v8 parameters];
       v29 = 138543618;
       v30 = v16;
@@ -2334,41 +2334,41 @@ LABEL_37:
       _os_log_send_and_compose_impl();
     }
 
-    targetQueue = v10->_targetQueue;
+    targetQueue = selfCopy->_targetQueue;
     v22 = qos_class_self();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C6D58C;
     block[3] = &unk_1E86E6AF0;
-    v28 = v7;
+    v28 = replyCopy;
     v23 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v22, 0, block);
     dispatch_async(targetQueue, v23);
   }
 
   else
   {
-    [(CWFAutoJoinManager *)v10 __addRequest:v8];
+    [(CWFAutoJoinManager *)selfCopy __addRequest:v8];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  v24 = [(CWFAutoJoinRequest *)v8 UUID];
+  uUID3 = [(CWFAutoJoinRequest *)v8 UUID];
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return uUID3;
 }
 
-- (void)cancelAutoJoinWithUUID:(id)a3 error:(id)a4 reply:(id)a5
+- (void)cancelAutoJoinWithUUID:(id)d error:(id)error reply:(id)reply
 {
   v121 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v90 = a4;
-  v88 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  v91 = v9;
-  if (v9->_invalidated)
+  dCopy = d;
+  errorCopy = error;
+  replyCopy = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v91 = selfCopy;
+  if (selfCopy->_invalidated)
   {
     v10 = CWFGetOSLog();
     if (v10)
@@ -2384,8 +2384,8 @@ LABEL_37:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v8 UUIDString];
-      [v19 substringToIndex:5];
+      uUIDString = [dCopy UUIDString];
+      [uUIDString substringToIndex:5];
       v112 = v111 = 138543362;
       _os_log_send_and_compose_impl();
     }
@@ -2418,21 +2418,21 @@ LABEL_37:
       _os_log_send_and_compose_impl();
     }
 
-    targetQueue = v9->_targetQueue;
+    targetQueue = selfCopy->_targetQueue;
     v25 = qos_class_self();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C6E6E0;
     block[3] = &unk_1E86E6AF0;
-    v109 = v88;
+    v109 = replyCopy;
     v26 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v25, 0, block);
     dispatch_async(targetQueue, v26);
   }
 
-  else if (v8)
+  else if (dCopy)
   {
-    v12 = [(CWFAutoJoinRequest *)v9->_activeRequest UUID];
-    v13 = [v8 isEqual:v12];
+    uUID = [(CWFAutoJoinRequest *)selfCopy->_activeRequest UUID];
+    v13 = [dCopy isEqual:uUID];
 
     if (v13)
     {
@@ -2450,36 +2450,36 @@ LABEL_37:
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        activeRequest = v9->_activeRequest;
+        activeRequest = selfCopy->_activeRequest;
         v111 = 138543362;
         v112 = activeRequest;
         _os_log_send_and_compose_impl();
       }
 
-      v9->_cancelled = 1;
-      v56 = [v90 copy];
-      underlyingCancelError = v9->_underlyingCancelError;
-      v9->_underlyingCancelError = v56;
+      selfCopy->_cancelled = 1;
+      v56 = [errorCopy copy];
+      underlyingCancelError = selfCopy->_underlyingCancelError;
+      selfCopy->_underlyingCancelError = v56;
 
-      internalQueue = v9->_internalQueue;
+      internalQueue = selfCopy->_internalQueue;
       v59 = qos_class_self();
       v106[0] = MEMORY[0x1E69E9820];
       v106[1] = 3221225472;
       v106[2] = sub_1E0C6E8C4;
       v106[3] = &unk_1E86E64C0;
-      v106[4] = v9;
-      v107 = v88;
+      v106[4] = selfCopy;
+      v107 = replyCopy;
       v60 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v59, 0, v106);
       dispatch_async(internalQueue, v60);
     }
 
     else
     {
-      for (i = 0; i < [(NSMutableArray *)v9->_pendingRequests count]; ++i)
+      for (i = 0; i < [(NSMutableArray *)selfCopy->_pendingRequests count]; ++i)
       {
-        v28 = [(NSMutableArray *)v9->_pendingRequests objectAtIndexedSubscript:i];
-        v29 = [v28 UUID];
-        v30 = [v8 isEqual:v29];
+        v28 = [(NSMutableArray *)selfCopy->_pendingRequests objectAtIndexedSubscript:i];
+        uUID2 = [v28 UUID];
+        v30 = [dCopy isEqual:uUID2];
 
         if (v30)
         {
@@ -2530,7 +2530,7 @@ LABEL_37:
             _os_log_send_and_compose_impl();
           }
 
-          v66 = v9->_targetQueue;
+          v66 = selfCopy->_targetQueue;
           v67 = qos_class_self();
           v102[0] = MEMORY[0x1E69E9820];
           v102[1] = 3221225472;
@@ -2538,12 +2538,12 @@ LABEL_37:
           v102[3] = &unk_1E86E6CA8;
           v68 = v28;
           v103 = v68;
-          v104 = v90;
-          v105 = v88;
+          v104 = errorCopy;
+          v105 = replyCopy;
           v69 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v67, 0, v102);
           dispatch_async(v66, v69);
 
-          [(NSMutableArray *)v9->_pendingRequests removeObjectAtIndex:i];
+          [(NSMutableArray *)selfCopy->_pendingRequests removeObjectAtIndex:i];
           goto LABEL_66;
         }
       }
@@ -2562,8 +2562,8 @@ LABEL_37:
 
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [v8 UUIDString];
-        [v80 substringToIndex:5];
+        uUIDString2 = [dCopy UUIDString];
+        [uUIDString2 substringToIndex:5];
         v112 = v111 = 138543362;
         _os_log_send_and_compose_impl();
       }
@@ -2596,13 +2596,13 @@ LABEL_37:
         _os_log_send_and_compose_impl();
       }
 
-      v85 = v9->_targetQueue;
+      v85 = selfCopy->_targetQueue;
       v86 = qos_class_self();
       v100[0] = MEMORY[0x1E69E9820];
       v100[1] = 3221225472;
       v100[2] = sub_1E0C6EEE0;
       v100[3] = &unk_1E86E6AF0;
-      v101 = v88;
+      v101 = replyCopy;
       v87 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v86, 0, v100);
       dispatch_async(v85, v87);
     }
@@ -2632,7 +2632,7 @@ LABEL_37:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    obj = v9->_pendingRequests;
+    obj = selfCopy->_pendingRequests;
     v34 = [(NSMutableArray *)obj countByEnumeratingWithState:&v96 objects:v110 count:16];
     if (v34)
     {
@@ -2702,7 +2702,7 @@ LABEL_37:
           v94[2] = sub_1E0C6F0C4;
           v94[3] = &unk_1E86E6420;
           v94[4] = v38;
-          v95 = v90;
+          v95 = errorCopy;
           v48 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v47, 0, v94);
           dispatch_async(v46, v48);
         }
@@ -2718,7 +2718,7 @@ LABEL_37:
     if (v91->_activeRequest)
     {
       v91->_cancelled = 1;
-      v50 = [v90 copy];
+      v50 = [errorCopy copy];
       v51 = v91->_underlyingCancelError;
       v91->_underlyingCancelError = v50;
 
@@ -2737,11 +2737,11 @@ LABEL_37:
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
         v71 = v91->_activeRequest;
-        v72 = [(NSError *)v91->_underlyingCancelError code];
+        code = [(NSError *)v91->_underlyingCancelError code];
         v111 = 138543618;
         v112 = v71;
         v113 = 2048;
-        v114 = v72;
+        v114 = code;
         _os_log_send_and_compose_impl();
       }
 
@@ -2755,7 +2755,7 @@ LABEL_37:
     v92[2] = sub_1E0C6F310;
     v92[3] = &unk_1E86E64C0;
     v92[4] = v49;
-    v93 = v88;
+    v93 = replyCopy;
     v75 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v74, 0, v92);
     dispatch_async(v73, v75);
   }
@@ -2768,10 +2768,10 @@ LABEL_66:
 
 - (CWFAutoJoinMetric)metric
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFAutoJoinMetric *)v2->_cachedMetric copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CWFAutoJoinMetric *)selfCopy->_cachedMetric copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -2779,8 +2779,8 @@ LABEL_66:
 - (void)resetStatistics
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = CWFGetOSLog();
   if (v3)
   {
@@ -2795,35 +2795,35 @@ LABEL_66:
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    statistics = v2->_statistics;
+    statistics = selfCopy->_statistics;
     _os_log_send_and_compose_impl();
   }
 
   v6 = objc_alloc_init(CWFAutoJoinStatistics);
-  v7 = v2->_statistics;
-  v2->_statistics = v6;
+  v7 = selfCopy->_statistics;
+  selfCopy->_statistics = v6;
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  [(CWFAutoJoinStatistics *)v2->_statistics setStartedAt:v8];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CWFAutoJoinStatistics *)selfCopy->_statistics setStartedAt:date];
 
-  statisticsSubmissionTimer = v2->_statisticsSubmissionTimer;
+  statisticsSubmissionTimer = selfCopy->_statisticsSubmissionTimer;
   if (statisticsSubmissionTimer)
   {
     v10 = dispatch_walltime(0, 86400000000000);
     dispatch_source_set_timer(statisticsSubmissionTimer, v10, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
 - (NSSet)recentlyMatchedCandidates
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_recentlyMatchedCandidates copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_recentlyMatchedCandidates copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -2833,18 +2833,18 @@ LABEL_66:
   v18 = *MEMORY[0x1E69E9840];
   v3 = [(NSMutableSet *)self->_matchedCandidates mutableCopy];
   v4 = [(NSMutableSet *)self->_disallowedMatchedCandidates mutableCopy];
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableSet *)v5->_recentlyMatchedCandidates minusSet:v3];
-  [(NSMutableSet *)v5->_recentlyMatchedCandidates minusSet:v4];
-  [(NSMutableSet *)v5->_recentlyMatchedCandidates unionSet:v3];
-  [(NSMutableSet *)v5->_recentlyMatchedCandidates unionSet:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_recentlyMatchedCandidates minusSet:v3];
+  [(NSMutableSet *)selfCopy->_recentlyMatchedCandidates minusSet:v4];
+  [(NSMutableSet *)selfCopy->_recentlyMatchedCandidates unionSet:v3];
+  [(NSMutableSet *)selfCopy->_recentlyMatchedCandidates unionSet:v4];
   v6 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v5->_recentlyMatchedCandidates;
+  v7 = selfCopy->_recentlyMatchedCandidates;
   v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -2871,38 +2871,38 @@ LABEL_66:
     while (v8);
   }
 
-  [(NSMutableSet *)v5->_recentlyMatchedCandidates minusSet:v6];
-  objc_sync_exit(v5);
+  [(NSMutableSet *)selfCopy->_recentlyMatchedCandidates minusSet:v6];
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__hiddenSSIDListForLocation:(id)a3 knownNetworks:(id)a4 recentOnly:(BOOL)a5 nearbyOnly:(BOOL)a6
+- (id)__hiddenSSIDListForLocation:(id)location knownNetworks:(id)networks recentOnly:(BOOL)only nearbyOnly:(BOOL)nearbyOnly
 {
-  v59 = a5;
+  onlyCopy = only;
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  networksCopy = networks;
   v55 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E695DFA0] orderedSet];
-  if (v9)
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  if (networksCopy)
   {
-    v11 = [v9 allObjects];
-    [v10 addObjectsFromArray:v11];
+    allObjects = [networksCopy allObjects];
+    [orderedSet addObjectsFromArray:allObjects];
 
-    [(CWFAutoJoinManager *)self __sortKnownNetworks:v10];
+    [(CWFAutoJoinManager *)self __sortKnownNetworks:orderedSet];
   }
 
-  v56 = v9;
-  v58 = [MEMORY[0x1E695DFA0] orderedSet];
-  v57 = [MEMORY[0x1E695DFA0] orderedSet];
+  v56 = networksCopy;
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet3 = [MEMORY[0x1E695DFA0] orderedSet];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v13 = v12;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v10;
+  obj = orderedSet;
   v62 = [obj countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v62)
   {
@@ -2917,12 +2917,12 @@ LABEL_66:
         }
 
         v15 = *(*(&v69 + 1) + 8 * i);
-        v16 = [v15 BSSList];
+        bSSList = [v15 BSSList];
         v63 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastAssociatedAt" ascending:0];
         v74 = v63;
         v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
-        v64 = v16;
-        v18 = [v16 sortedArrayUsingDescriptors:v17];
+        v64 = bSSList;
+        v18 = [bSSList sortedArrayUsingDescriptors:v17];
 
         v67 = 0u;
         v68 = 0u;
@@ -2944,16 +2944,16 @@ LABEL_66:
                 objc_enumerationMutation(v19);
               }
 
-              v25 = [*(*(&v65 + 1) + 8 * j) location];
-              v26 = v25;
-              if (v8)
+              location = [*(*(&v65 + 1) + 8 * j) location];
+              v26 = location;
+              if (locationCopy)
               {
-                if (v25)
+                if (location)
                 {
-                  [v8 horizontalAccuracy];
+                  [locationCopy horizontalAccuracy];
                   if (v27 >= 0.0)
                   {
-                    [v8 horizontalAccuracy];
+                    [locationCopy horizontalAccuracy];
                     if (v28 <= 100.0)
                     {
                       [v26 horizontalAccuracy];
@@ -2962,7 +2962,7 @@ LABEL_66:
                         [v26 horizontalAccuracy];
                         if (v30 <= 100.0)
                         {
-                          [v26 distanceFromLocation:v8];
+                          [v26 distanceFromLocation:locationCopy];
                           if (v31 <= 300.0)
                           {
                             v22 = 1;
@@ -2986,23 +2986,23 @@ LABEL_66:
           v22 = 0;
         }
 
-        v32 = [v15 networkName];
-        if (v32 && ([v15 isPasspoint] & 1) == 0)
+        networkName = [v15 networkName];
+        if (networkName && ([v15 isPasspoint] & 1) == 0)
         {
           if ([v15 hiddenState] == 2)
           {
-            v33 = [v15 wasHiddenBefore];
-            if (!v33)
+            wasHiddenBefore = [v15 wasHiddenBefore];
+            if (!wasHiddenBefore)
             {
               goto LABEL_42;
             }
 
-            v34 = v33;
-            v35 = [v15 wasHiddenBefore];
-            [v35 timeIntervalSinceNow];
+            v34 = wasHiddenBefore;
+            wasHiddenBefore2 = [v15 wasHiddenBefore];
+            [wasHiddenBefore2 timeIntervalSinceNow];
             v37 = v36;
-            v38 = [v15 wasHiddenBefore];
-            [v38 timeIntervalSinceNow];
+            wasHiddenBefore3 = [v15 wasHiddenBefore];
+            [wasHiddenBefore3 timeIntervalSinceNow];
             v40 = v39;
 
             if (v37 >= 0.0)
@@ -3019,18 +3019,18 @@ LABEL_66:
             }
           }
 
-          if (v59)
+          if (onlyCopy)
           {
-            v41 = [v15 lastJoinedAt];
-            [v41 timeIntervalSinceReferenceDate];
+            lastJoinedAt = [v15 lastJoinedAt];
+            [lastJoinedAt timeIntervalSinceReferenceDate];
             if (v13 - v42 <= 2592000.0)
             {
             }
 
             else
             {
-              v43 = [v15 lastDiscoveredAt];
-              [v43 timeIntervalSinceReferenceDate];
+              lastDiscoveredAt = [v15 lastDiscoveredAt];
+              [lastDiscoveredAt timeIntervalSinceReferenceDate];
               v45 = v13 - v44;
 
               if (v45 > 2592000.0)
@@ -3042,15 +3042,15 @@ LABEL_66:
 
           if (v22)
           {
-            v46 = v57;
+            v46 = orderedSet3;
           }
 
           else
           {
-            v46 = v58;
+            v46 = orderedSet2;
           }
 
-          [v46 addObject:v32];
+          [v46 addObject:networkName];
         }
 
 LABEL_42:
@@ -3062,24 +3062,24 @@ LABEL_42:
     while (v62);
   }
 
-  if ([v57 count] || objc_msgSend(v58, "count"))
+  if ([orderedSet3 count] || objc_msgSend(orderedSet2, "count"))
   {
-    v47 = [MEMORY[0x1E695DFA0] orderedSet];
-    v48 = [v57 array];
-    [v47 addObjectsFromArray:v48];
+    orderedSet4 = [MEMORY[0x1E695DFA0] orderedSet];
+    array = [orderedSet3 array];
+    [orderedSet4 addObjectsFromArray:array];
 
     v50 = v55;
     v49 = v56;
-    if (!a6)
+    if (!nearbyOnly)
     {
-      v51 = [v58 array];
-      [v47 addObjectsFromArray:v51];
+      array2 = [orderedSet2 array];
+      [orderedSet4 addObjectsFromArray:array2];
     }
   }
 
   else
   {
-    v47 = 0;
+    orderedSet4 = 0;
     v50 = v55;
     v49 = v56;
   }
@@ -3087,57 +3087,57 @@ LABEL_42:
   objc_autoreleasePoolPop(v50);
   v52 = *MEMORY[0x1E69E9840];
 
-  return v47;
+  return orderedSet4;
 }
 
 - (NSOrderedSet)recentLocationBasedHiddenSSIDList
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFAutoJoinManager *)v2 location];
-  v4 = [(CWFAutoJoinManager *)v2 knownNetworks];
-  v5 = [(CWFAutoJoinManager *)v2 __hiddenSSIDListForLocation:v3 knownNetworks:v4 recentOnly:1 nearbyOnly:1];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  location = [(CWFAutoJoinManager *)selfCopy location];
+  knownNetworks = [(CWFAutoJoinManager *)selfCopy knownNetworks];
+  v5 = [(CWFAutoJoinManager *)selfCopy __hiddenSSIDListForLocation:location knownNetworks:knownNetworks recentOnly:1 nearbyOnly:1];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (NSOrderedSet)locationBasedHiddenSSIDList
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFAutoJoinManager *)v2 location];
-  v4 = [(CWFAutoJoinManager *)v2 knownNetworks];
-  v5 = [(CWFAutoJoinManager *)v2 __hiddenSSIDListForLocation:v3 knownNetworks:v4 recentOnly:0 nearbyOnly:1];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  location = [(CWFAutoJoinManager *)selfCopy location];
+  knownNetworks = [(CWFAutoJoinManager *)selfCopy knownNetworks];
+  v5 = [(CWFAutoJoinManager *)selfCopy __hiddenSSIDListForLocation:location knownNetworks:knownNetworks recentOnly:0 nearbyOnly:1];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (NSOrderedSet)hiddenSSIDList
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFAutoJoinManager *)v2 location];
-  v4 = [(CWFAutoJoinManager *)v2 knownNetworks];
-  v5 = [(CWFAutoJoinManager *)v2 __hiddenSSIDListForLocation:v3 knownNetworks:v4 recentOnly:0 nearbyOnly:0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  location = [(CWFAutoJoinManager *)selfCopy location];
+  knownNetworks = [(CWFAutoJoinManager *)selfCopy knownNetworks];
+  v5 = [(CWFAutoJoinManager *)selfCopy __hiddenSSIDListForLocation:location knownNetworks:knownNetworks recentOnly:0 nearbyOnly:0];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)__updateStatisticsWithScanChannels:(id)a3
+- (void)__updateStatisticsWithScanChannels:(id)channels
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  channelsCopy = channels;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channelsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3148,7 +3148,7 @@ LABEL_42:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(channelsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -3170,7 +3170,7 @@ LABEL_42:
         [(CWFAutoJoinStatistics *)self->_statistics setScanChannelCount:[(CWFAutoJoinStatistics *)self->_statistics scanChannelCount]+ 1];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channelsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3179,15 +3179,15 @@ LABEL_42:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__updateStatisticsWithPreAssocScanChannels:(id)a3
+- (void)__updateStatisticsWithPreAssocScanChannels:(id)channels
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  channelsCopy = channels;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channelsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3198,7 +3198,7 @@ LABEL_42:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(channelsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -3220,7 +3220,7 @@ LABEL_42:
         [(CWFAutoJoinStatistics *)self->_statistics setPreAssocScanChannelCount:[(CWFAutoJoinStatistics *)self->_statistics preAssocScanChannelCount]+ 1];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channelsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3251,136 +3251,136 @@ LABEL_42:
   dispatch_async(internalQueue, block);
 }
 
-- (void)__updateAutoJoinMetricAndStatistics:(id)a3
+- (void)__updateAutoJoinMetricAndStatistics:(id)statistics
 {
-  v33 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v33 copy];
-  cachedMetric = v4->_cachedMetric;
-  v4->_cachedMetric = v5;
+  statisticsCopy = statistics;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [statisticsCopy copy];
+  cachedMetric = selfCopy->_cachedMetric;
+  selfCopy->_cachedMetric = v5;
 
-  if ([v33 result])
+  if ([statisticsCopy result])
   {
-    v7 = [v33 autoJoinedNetwork];
-    if (v7)
+    autoJoinedNetwork = [statisticsCopy autoJoinedNetwork];
+    if (autoJoinedNetwork)
     {
 
 LABEL_6:
-      [(CWFAutoJoinManager *)v4 __submitAutoJoinMetric:v4->_delayedSubmissionMetric];
-      v9 = [v33 copy];
-      delayedSubmissionMetric = v4->_delayedSubmissionMetric;
-      v4->_delayedSubmissionMetric = v9;
+      [(CWFAutoJoinManager *)selfCopy __submitAutoJoinMetric:selfCopy->_delayedSubmissionMetric];
+      v9 = [statisticsCopy copy];
+      delayedSubmissionMetric = selfCopy->_delayedSubmissionMetric;
+      selfCopy->_delayedSubmissionMetric = v9;
 
-      [(CWFAutoJoinManager *)v4 __scheduleDelayedAutoJoinMetricSubmission];
-      [(CWFAutoJoinManager *)v4 __updateAutoJoinMetricWithJoinStatus];
+      [(CWFAutoJoinManager *)selfCopy __scheduleDelayedAutoJoinMetricSubmission];
+      [(CWFAutoJoinManager *)selfCopy __updateAutoJoinMetricWithJoinStatus];
       goto LABEL_8;
     }
   }
 
-  if ([v33 autoHotspotResult])
+  if ([statisticsCopy autoHotspotResult])
   {
-    v8 = [v33 hotspot];
+    hotspot = [statisticsCopy hotspot];
 
-    if (v8)
+    if (hotspot)
     {
       goto LABEL_6;
     }
   }
 
-  [(CWFAutoJoinManager *)v4 __submitAutoJoinMetric:v33];
+  [(CWFAutoJoinManager *)selfCopy __submitAutoJoinMetric:statisticsCopy];
 LABEL_8:
-  v11 = [v33 wasAlreadyAssociatedToNetwork];
+  wasAlreadyAssociatedToNetwork = [statisticsCopy wasAlreadyAssociatedToNetwork];
 
-  if (v11)
+  if (wasAlreadyAssociatedToNetwork)
   {
-    [(CWFAutoJoinStatistics *)v4->_statistics setAutoJoinAlreadyAssociatedCount:[(CWFAutoJoinStatistics *)v4->_statistics autoJoinAlreadyAssociatedCount]+ 1];
+    [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoJoinAlreadyAssociatedCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoJoinAlreadyAssociatedCount]+ 1];
   }
 
-  v12 = [(CWFAutoJoinStatistics *)v4->_statistics autoJoinTriggerCounts];
+  autoJoinTriggerCounts = [(CWFAutoJoinStatistics *)selfCopy->_statistics autoJoinTriggerCounts];
   v13 = MEMORY[0x1E696AD98];
-  v14 = [v33 autoJoinParameters];
-  v15 = [v13 numberWithInteger:{objc_msgSend(v14, "trigger")}];
-  v16 = [v12 objectForKeyedSubscript:v15];
-  v17 = [v16 unsignedIntegerValue];
+  autoJoinParameters = [statisticsCopy autoJoinParameters];
+  v15 = [v13 numberWithInteger:{objc_msgSend(autoJoinParameters, "trigger")}];
+  v16 = [autoJoinTriggerCounts objectForKeyedSubscript:v15];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17 + 1];
-  v19 = [(CWFAutoJoinStatistics *)v4->_statistics autoJoinTriggerCounts];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  autoJoinTriggerCounts2 = [(CWFAutoJoinStatistics *)selfCopy->_statistics autoJoinTriggerCounts];
   v20 = MEMORY[0x1E696AD98];
-  v21 = [v33 autoJoinParameters];
-  v22 = [v20 numberWithInteger:{objc_msgSend(v21, "trigger")}];
-  [v19 setObject:v18 forKeyedSubscript:v22];
+  autoJoinParameters2 = [statisticsCopy autoJoinParameters];
+  v22 = [v20 numberWithInteger:{objc_msgSend(autoJoinParameters2, "trigger")}];
+  [autoJoinTriggerCounts2 setObject:v18 forKeyedSubscript:v22];
 
-  v23 = [v33 error];
+  error = [statisticsCopy error];
 
-  if (v23)
+  if (error)
   {
-    [(CWFAutoJoinStatistics *)v4->_statistics setAutoJoinAbortedCount:[(CWFAutoJoinStatistics *)v4->_statistics autoJoinAbortedCount]+ 1];
+    [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoJoinAbortedCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoJoinAbortedCount]+ 1];
   }
 
-  v24 = [v33 scanChannels];
-  [(CWFAutoJoinManager *)v4 __updateStatisticsWithScanChannels:v24];
+  scanChannels = [statisticsCopy scanChannels];
+  [(CWFAutoJoinManager *)selfCopy __updateStatisticsWithScanChannels:scanChannels];
 
-  v25 = [v33 preAssociationScanChannels];
-  [(CWFAutoJoinManager *)v4 __updateStatisticsWithPreAssocScanChannels:v25];
+  preAssociationScanChannels = [statisticsCopy preAssociationScanChannels];
+  [(CWFAutoJoinManager *)selfCopy __updateStatisticsWithPreAssocScanChannels:preAssociationScanChannels];
 
-  statistics = v4->_statistics;
-  v27 = [v33 followup6GHzScanChannels];
-  -[CWFAutoJoinStatistics setFollowup6GHzScanChannelCount:](statistics, "setFollowup6GHzScanChannelCount:", -[CWFAutoJoinStatistics followup6GHzScanChannelCount](statistics, "followup6GHzScanChannelCount") + [v27 count]);
+  statistics = selfCopy->_statistics;
+  followup6GHzScanChannels = [statisticsCopy followup6GHzScanChannels];
+  -[CWFAutoJoinStatistics setFollowup6GHzScanChannelCount:](statistics, "setFollowup6GHzScanChannelCount:", -[CWFAutoJoinStatistics followup6GHzScanChannelCount](statistics, "followup6GHzScanChannelCount") + [followup6GHzScanChannels count]);
 
-  v28 = v4->_statistics;
-  v29 = [v33 GASQueryNetworks];
-  -[CWFAutoJoinStatistics setGASQueryCount:](v28, "setGASQueryCount:", -[CWFAutoJoinStatistics GASQueryCount](v28, "GASQueryCount") + [v29 count]);
+  v28 = selfCopy->_statistics;
+  gASQueryNetworks = [statisticsCopy GASQueryNetworks];
+  -[CWFAutoJoinStatistics setGASQueryCount:](v28, "setGASQueryCount:", -[CWFAutoJoinStatistics GASQueryCount](v28, "GASQueryCount") + [gASQueryNetworks count]);
 
-  v30 = [v33 autoJoinedNetwork];
+  autoJoinedNetwork2 = [statisticsCopy autoJoinedNetwork];
 
-  if (v30)
+  if (autoJoinedNetwork2)
   {
-    [(CWFAutoJoinStatistics *)v4->_statistics setAutoJoinDidFindCandidateCount:[(CWFAutoJoinStatistics *)v4->_statistics autoJoinDidFindCandidateCount]+ 1];
-    if ([v33 result])
+    [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoJoinDidFindCandidateCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoJoinDidFindCandidateCount]+ 1];
+    if ([statisticsCopy result])
     {
-      [(CWFAutoJoinStatistics *)v4->_statistics setAutoJoinDidJoinCount:[(CWFAutoJoinStatistics *)v4->_statistics autoJoinDidJoinCount]+ 1];
+      [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoJoinDidJoinCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoJoinDidJoinCount]+ 1];
     }
   }
 
-  if ([v33 autoHotspotWasAttempted] && objc_msgSend(v33, "autoHotspotMode") == 3)
+  if ([statisticsCopy autoHotspotWasAttempted] && objc_msgSend(statisticsCopy, "autoHotspotMode") == 3)
   {
-    [(CWFAutoJoinStatistics *)v4->_statistics setAutoHotspotCount:[(CWFAutoJoinStatistics *)v4->_statistics autoHotspotCount]+ 1];
-    v31 = [v33 hotspot];
+    [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoHotspotCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoHotspotCount]+ 1];
+    hotspot2 = [statisticsCopy hotspot];
 
-    if (v31)
+    if (hotspot2)
     {
-      [(CWFAutoJoinStatistics *)v4->_statistics setAutoHotspotDidFindCandidateCount:[(CWFAutoJoinStatistics *)v4->_statistics autoHotspotDidFindCandidateCount]+ 1];
-      if ([v33 autoHotspotResult])
+      [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoHotspotDidFindCandidateCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoHotspotDidFindCandidateCount]+ 1];
+      if ([statisticsCopy autoHotspotResult])
       {
-        [(CWFAutoJoinStatistics *)v4->_statistics setAutoHotspotDidJoinCount:[(CWFAutoJoinStatistics *)v4->_statistics autoHotspotDidJoinCount]+ 1];
+        [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoHotspotDidJoinCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoHotspotDidJoinCount]+ 1];
       }
     }
 
-    v32 = [v33 autoHotspotError];
+    autoHotspotError = [statisticsCopy autoHotspotError];
 
-    if (v32)
+    if (autoHotspotError)
     {
-      [(CWFAutoJoinStatistics *)v4->_statistics setAutoHotspotAbortedCount:[(CWFAutoJoinStatistics *)v4->_statistics autoHotspotAbortedCount]+ 1];
+      [(CWFAutoJoinStatistics *)selfCopy->_statistics setAutoHotspotAbortedCount:[(CWFAutoJoinStatistics *)selfCopy->_statistics autoHotspotAbortedCount]+ 1];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)__shouldIgnoreRequestWithTrigger:(int64_t)a3
+- (BOOL)__shouldIgnoreRequestWithTrigger:(int64_t)trigger
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 != 32)
+  if (trigger != 32)
   {
-    if (a3 != 58 && a3 != 34)
+    if (trigger != 58 && trigger != 34)
     {
       goto LABEL_5;
     }
 
-    v5 = [(CWFAutoJoinManager *)self associatedNetwork];
+    associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
 
-    if (v5)
+    if (associatedNetwork)
     {
       goto LABEL_5;
     }
@@ -3405,7 +3405,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v11 = sub_1E0BCC05C(a3);
+    v11 = sub_1E0BCC05C(trigger);
 LABEL_21:
     _os_log_send_and_compose_impl();
 
@@ -3420,8 +3420,8 @@ LABEL_21:
 
   if (!self->_cancelled)
   {
-    v7 = [(CWFAutoJoinRequest *)activeRequest parameters];
-    if ([v7 trigger] == 32)
+    parameters = [(CWFAutoJoinRequest *)activeRequest parameters];
+    if ([parameters trigger] == 32)
     {
 
 LABEL_16:
@@ -3446,10 +3446,10 @@ LABEL_16:
       goto LABEL_21;
     }
 
-    v12 = [(CWFAutoJoinRequest *)self->_activeRequest parameters];
-    v13 = [v12 trigger];
+    parameters2 = [(CWFAutoJoinRequest *)self->_activeRequest parameters];
+    trigger = [parameters2 trigger];
 
-    if (v13 == 47)
+    if (trigger == 47)
     {
       goto LABEL_16;
     }
@@ -3462,41 +3462,41 @@ LABEL_23:
   return activeRequest;
 }
 
-- (BOOL)__shouldResetRetryIntervalIndexForTrigger:(int64_t)a3 previousTimestamp:(unint64_t)a4
+- (BOOL)__shouldResetRetryIntervalIndexForTrigger:(int64_t)trigger previousTimestamp:(unint64_t)timestamp
 {
   result = 0;
-  if (a3 <= 0x3B)
+  if (trigger <= 0x3B)
   {
-    if (((1 << a3) & 0x90000032010018CLL) != 0)
+    if (((1 << trigger) & 0x90000032010018CLL) != 0)
     {
       return 1;
     }
 
-    else if (a3 == 19)
+    else if (trigger == 19)
     {
-      return clock_gettime_nsec_np(_CLOCK_MONOTONIC) - a4 > 0x45D964B800;
+      return clock_gettime_nsec_np(_CLOCK_MONOTONIC) - timestamp > 0x45D964B800;
     }
   }
 
   return result;
 }
 
-- (BOOL)__shouldInvokeImmediatelyForTrigger:(int64_t)a3
+- (BOOL)__shouldInvokeImmediatelyForTrigger:(int64_t)trigger
 {
   result = 0;
-  if ((a3 - 9) <= 0x3B)
+  if ((trigger - 9) <= 0x3B)
   {
-    if (((1 << (a3 - 9)) & 0xE88004001800911) != 0)
+    if (((1 << (trigger - 9)) & 0xE88004001800911) != 0)
     {
       return 1;
     }
 
-    else if (a3 == 61)
+    else if (trigger == 61)
     {
-      v5 = self;
-      objc_sync_enter(v5);
-      retryScheduleIndex = v5->_retryScheduleIndex;
-      objc_sync_exit(v5);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      retryScheduleIndex = selfCopy->_retryScheduleIndex;
+      objc_sync_exit(selfCopy);
 
       return retryScheduleIndex != 0;
     }
@@ -3505,22 +3505,22 @@ LABEL_23:
   return result;
 }
 
-- (void)__removeRedundantRequests:(id)a3
+- (void)__removeRedundantRequests:(id)requests
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v41 = [MEMORY[0x1E695DF70] array];
-  v48 = v4;
+  requestsCopy = requests;
+  array = [MEMORY[0x1E695DF70] array];
+  v48 = requestsCopy;
   if ([(NSMutableArray *)self->_pendingRequests count])
   {
     v5 = 0;
     while (1)
     {
       v6 = [(NSMutableArray *)self->_pendingRequests objectAtIndexedSubscript:v5];
-      v7 = [v6 parameters];
-      v8 = [v7 mode];
-      v9 = [v4 parameters];
-      if (v8 == [v9 mode])
+      parameters = [v6 parameters];
+      mode = [parameters mode];
+      parameters2 = [requestsCopy parameters];
+      if (mode == [parameters2 mode])
       {
         break;
       }
@@ -3532,57 +3532,57 @@ LABEL_24:
       }
     }
 
-    v10 = [v6 parameters];
-    obj = [v10 targetNetworkProfile];
-    v11 = [obj identifier];
-    v50 = [v4 parameters];
-    v12 = [v50 targetNetworkProfile];
-    v13 = [v12 identifier];
-    if (v11 == v13)
+    parameters3 = [v6 parameters];
+    obj = [parameters3 targetNetworkProfile];
+    identifier = [obj identifier];
+    parameters4 = [requestsCopy parameters];
+    targetNetworkProfile = [parameters4 targetNetworkProfile];
+    identifier2 = [targetNetworkProfile identifier];
+    if (identifier == identifier2)
     {
-      v49 = v10;
+      v49 = parameters3;
     }
 
     else
     {
-      v47 = [v6 parameters];
-      v46 = [v47 targetNetworkProfile];
-      v45 = [v46 identifier];
-      if (!v45)
+      parameters5 = [v6 parameters];
+      targetNetworkProfile2 = [parameters5 targetNetworkProfile];
+      identifier3 = [targetNetworkProfile2 identifier];
+      if (!identifier3)
       {
-        v45 = 0;
+        identifier3 = 0;
         v15 = 0;
 LABEL_20:
 
 LABEL_21:
         if (v15)
         {
-          [v41 addObject:v6];
+          [array addObject:v6];
         }
 
-        v4 = v48;
+        requestsCopy = v48;
         goto LABEL_24;
       }
 
-      v49 = v10;
-      v44 = [v48 parameters];
-      v43 = [v44 targetNetworkProfile];
-      v42 = [v43 identifier];
-      if (!v42)
+      v49 = parameters3;
+      parameters6 = [v48 parameters];
+      targetNetworkProfile3 = [parameters6 targetNetworkProfile];
+      identifier4 = [targetNetworkProfile3 identifier];
+      if (!identifier4)
       {
-        v42 = 0;
+        identifier4 = 0;
         v15 = 0;
         goto LABEL_19;
       }
 
-      v40 = [v6 parameters];
-      v39 = [v40 targetNetworkProfile];
-      v14 = [v39 identifier];
-      v37 = [v48 parameters];
-      v36 = [v37 targetNetworkProfile];
-      [v36 identifier];
-      v35 = v38 = v14;
-      if (![v14 isEqual:?])
+      parameters7 = [v6 parameters];
+      targetNetworkProfile4 = [parameters7 targetNetworkProfile];
+      identifier5 = [targetNetworkProfile4 identifier];
+      parameters8 = [v48 parameters];
+      targetNetworkProfile5 = [parameters8 targetNetworkProfile];
+      [targetNetworkProfile5 identifier];
+      v35 = v38 = identifier5;
+      if (![identifier5 isEqual:?])
       {
         v15 = 0;
 LABEL_16:
@@ -3592,9 +3592,9 @@ LABEL_19:
       }
     }
 
-    v16 = [v6 parameters];
-    v17 = [v16 trigger];
-    if (v17 - 44 < 8 || v17 <= 0x3F && ((1 << v17) & 0xC000000000000010) != 0)
+    parameters9 = [v6 parameters];
+    trigger = [parameters9 trigger];
+    if (trigger - 44 < 8 || trigger <= 0x3F && ((1 << trigger) & 0xC000000000000010) != 0)
     {
 
       v15 = 0;
@@ -3605,8 +3605,8 @@ LABEL_19:
       v15 = [v6 allowAutoHotspotFallback] ^ 1;
     }
 
-    v10 = v49;
-    if (v11 == v13)
+    parameters3 = v49;
+    if (identifier == identifier2)
     {
       goto LABEL_21;
     }
@@ -3619,7 +3619,7 @@ LABEL_27:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obja = v41;
+  obja = array;
   v18 = [obja countByEnumeratingWithState:&v54 objects:v68 count:16];
   if (v18)
   {
@@ -3706,10 +3706,10 @@ LABEL_27:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__invalidateAllowedKnownNetworksCacheForTrigger:(int64_t)a3
+- (void)__invalidateAllowedKnownNetworksCacheForTrigger:(int64_t)trigger
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0x28 && ((1 << a3) & 0x101A03A0100) != 0)
+  if (trigger <= 0x28 && ((1 << trigger) & 0x101A03A0100) != 0)
   {
     v27 = 0u;
     v28 = 0u;
@@ -3730,26 +3730,26 @@ LABEL_27:
           }
 
           v8 = *(*(&v25 + 1) + 8 * i);
-          v9 = [v8 identifier];
+          identifier = [v8 identifier];
 
-          if (v9)
+          if (identifier)
           {
-            if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x14 && [v8 isEAP] && !objc_msgSend(v8, "isSystemMode"))
+            if ((trigger & 0xFFFFFFFFFFFFFFFELL) == 0x14 && [v8 isEAP] && !objc_msgSend(v8, "isSystemMode"))
             {
               goto LABEL_19;
             }
 
             v10 = 0;
-            if (((1 << a3) & 0x101A00A0100) != 0)
+            if (((1 << trigger) & 0x101A00A0100) != 0)
             {
               knownNetworkAllowCache = self->_knownNetworkAllowCache;
-              v3 = [v8 identifier];
-              v4 = [(NSMutableDictionary *)knownNetworkAllowCache objectForKeyedSubscript:v3];
+              identifier2 = [v8 identifier];
+              v4 = [(NSMutableDictionary *)knownNetworkAllowCache objectForKeyedSubscript:identifier2];
               if (v4)
               {
                 v12 = self->_knownNetworkAllowCache;
-                v13 = [v8 identifier];
-                v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
+                identifier3 = [v8 identifier];
+                v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:identifier3];
                 v10 = [v14 BOOLValue] ^ 1;
               }
 
@@ -3759,7 +3759,7 @@ LABEL_27:
               }
             }
 
-            if (((1 << a3) & 0x101A00A0100) != 0)
+            if (((1 << trigger) & 0x101A00A0100) != 0)
             {
             }
 
@@ -3767,16 +3767,16 @@ LABEL_27:
             {
 LABEL_19:
               v15 = self->_knownNetworkAllowCache;
-              v16 = [v8 identifier];
-              [(NSMutableDictionary *)v15 setObject:0 forKeyedSubscript:v16];
+              identifier4 = [v8 identifier];
+              [(NSMutableDictionary *)v15 setObject:0 forKeyedSubscript:identifier4];
 
               knownNetworkAllowErrorCache = self->_knownNetworkAllowErrorCache;
-              v18 = [v8 identifier];
-              [(NSMutableDictionary *)knownNetworkAllowErrorCache setObject:0 forKeyedSubscript:v18];
+              identifier5 = [v8 identifier];
+              [(NSMutableDictionary *)knownNetworkAllowErrorCache setObject:0 forKeyedSubscript:identifier5];
 
               knownNetworkDeferCache = self->_knownNetworkDeferCache;
-              v20 = [v8 identifier];
-              [(NSMutableDictionary *)knownNetworkDeferCache setObject:0 forKeyedSubscript:v20];
+              identifier6 = [v8 identifier];
+              [(NSMutableDictionary *)knownNetworkDeferCache setObject:0 forKeyedSubscript:identifier6];
             }
           }
         }
@@ -3791,19 +3791,19 @@ LABEL_19:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)__qosForAutoJoinTrigger:(int64_t)a3
+- (unsigned)__qosForAutoJoinTrigger:(int64_t)trigger
 {
-  if (a3 > 0x3F)
+  if (trigger > 0x3F)
   {
     return 25;
   }
 
-  if (((1 << a3) & 0xC00FF00000000010) != 0)
+  if (((1 << trigger) & 0xC00FF00000000010) != 0)
   {
     return 21;
   }
 
-  if (((1 << a3) & 0xC0010020010104) != 0)
+  if (((1 << trigger) & 0xC0010020010104) != 0)
   {
     return 33;
   }
@@ -3834,10 +3834,10 @@ LABEL_19:
   return _os_feature_enabled_impl();
 }
 
-- (void)__addRequest:(id)a3
+- (void)__addRequest:(id)request
 {
   v145 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = CWFGetOSLog();
   if (v5)
   {
@@ -3853,39 +3853,39 @@ LABEL_19:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v136 = 138543362;
-    *v137 = v4;
+    *v137 = requestCopy;
     LODWORD(v95) = 12;
     v93 = &v136;
     _os_log_send_and_compose_impl();
   }
 
-  v8 = [v4 parameters];
-  v9 = [v8 trigger];
+  parameters = [requestCopy parameters];
+  trigger = [parameters trigger];
 
   triggerTimestampMap = self->_triggerTimestampMap;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:trigger];
   v12 = [(NSMutableDictionary *)triggerTimestampMap objectForKeyedSubscript:v11];
-  v13 = [v12 unsignedLongValue];
+  unsignedLongValue = [v12 unsignedLongValue];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC)];
   v15 = self->_triggerTimestampMap;
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:trigger];
   [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
 
-  v99 = v9;
-  if ([(CWFAutoJoinManager *)self __shouldResetRetryIntervalIndexForTrigger:v9 previousTimestamp:v13])
+  v99 = trigger;
+  if ([(CWFAutoJoinManager *)self __shouldResetRetryIntervalIndexForTrigger:trigger previousTimestamp:unsignedLongValue])
   {
     [(CWFAutoJoinManager *)self __resetRetryIntervalIndex];
   }
 
-  v17 = v9;
-  if (v9 - 44 >= 8 && (v9 > 0x3F || ((1 << v9) & 0xC000000000000010) == 0))
+  v17 = trigger;
+  if (trigger - 44 >= 8 && (trigger > 0x3F || ((1 << trigger) & 0xC000000000000010) == 0))
   {
-    [v4 setAllowAutoHotspotFallback:{-[CWFAutoJoinManager __shouldAllowAutoHotspotForTrigger:](self, "__shouldAllowAutoHotspotForTrigger:", v9, v93, v95)}];
+    [requestCopy setAllowAutoHotspotFallback:{-[CWFAutoJoinManager __shouldAllowAutoHotspotForTrigger:](self, "__shouldAllowAutoHotspotForTrigger:", trigger, v93, v95)}];
   }
 
-  [(CWFAutoJoinManager *)self __invalidateAllowedKnownNetworksCacheForTrigger:v9, v93, v95];
-  if ((v9 & 0xFFFFFFFFFFFFFFDFLL) == 8)
+  [(CWFAutoJoinManager *)self __invalidateAllowedKnownNetworksCacheForTrigger:trigger, v93, v95];
+  if ((trigger & 0xFFFFFFFFFFFFFFDFLL) == 8)
   {
     prevAssociatedNetwork = self->_prevAssociatedNetwork;
     self->_prevAssociatedNetwork = 0;
@@ -3894,21 +3894,21 @@ LABEL_19:
   }
 
   activeRequest = self->_activeRequest;
-  v98 = self;
-  v117 = v4;
+  selfCopy = self;
+  v117 = requestCopy;
   if (!activeRequest || self->_cancelled)
   {
     v97 = 0;
     goto LABEL_37;
   }
 
-  v20 = [(CWFAutoJoinRequest *)activeRequest parameters];
-  if ([v20 trigger] == v9)
+  parameters2 = [(CWFAutoJoinRequest *)activeRequest parameters];
+  if ([parameters2 trigger] == trigger)
   {
-    v21 = [(CWFAutoJoinRequest *)self->_activeRequest parameters];
-    v22 = [v21 mode];
-    v23 = [v4 parameters];
-    if (v22 != [v23 mode])
+    parameters3 = [(CWFAutoJoinRequest *)self->_activeRequest parameters];
+    mode = [parameters3 mode];
+    parameters4 = [requestCopy parameters];
+    if (mode != [parameters4 mode])
     {
       v97 = 0;
 LABEL_35:
@@ -3917,52 +3917,52 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v24 = [(CWFAutoJoinRequest *)self->_activeRequest parameters];
-    [v24 targetNetworkProfile];
-    v25 = v4;
+    parameters5 = [(CWFAutoJoinRequest *)self->_activeRequest parameters];
+    [parameters5 targetNetworkProfile];
+    v25 = requestCopy;
     v27 = v26 = self;
-    v28 = [v27 identifier];
-    v29 = [v25 parameters];
-    v30 = [v29 targetNetworkProfile];
-    v31 = [v30 identifier];
-    if (v28 != v31)
+    identifier = [v27 identifier];
+    parameters6 = [v25 parameters];
+    targetNetworkProfile = [parameters6 targetNetworkProfile];
+    identifier2 = [targetNetworkProfile identifier];
+    if (identifier != identifier2)
     {
-      v32 = [(CWFAutoJoinRequest *)v26->_activeRequest parameters];
-      v124 = [v32 targetNetworkProfile];
-      v33 = [v124 identifier];
-      if (!v33)
+      parameters7 = [(CWFAutoJoinRequest *)v26->_activeRequest parameters];
+      targetNetworkProfile2 = [parameters7 targetNetworkProfile];
+      identifier3 = [targetNetworkProfile2 identifier];
+      if (!identifier3)
       {
         v97 = 0;
 LABEL_33:
 
 LABEL_34:
-        self = v98;
-        v4 = v117;
+        self = selfCopy;
+        requestCopy = v117;
         goto LABEL_35;
       }
 
-      v120 = v33;
-      v122 = v32;
-      v118 = [v117 parameters];
-      v116 = [v118 targetNetworkProfile];
-      v34 = [v116 identifier];
-      if (!v34)
+      v120 = identifier3;
+      v122 = parameters7;
+      parameters8 = [v117 parameters];
+      targetNetworkProfile3 = [parameters8 targetNetworkProfile];
+      identifier4 = [targetNetworkProfile3 identifier];
+      if (!identifier4)
       {
         v97 = 0;
 LABEL_32:
 
-        v32 = v122;
+        parameters7 = v122;
         goto LABEL_33;
       }
 
-      v115 = v34;
-      v113 = [(CWFAutoJoinRequest *)v98->_activeRequest parameters];
-      v111 = [v113 targetNetworkProfile];
-      v35 = [v111 identifier];
-      v109 = [v117 parameters];
-      v108 = [v109 targetNetworkProfile];
-      v107 = [v108 identifier];
-      if (![v35 isEqual:?])
+      identifier9 = identifier4;
+      parameters9 = [(CWFAutoJoinRequest *)selfCopy->_activeRequest parameters];
+      targetNetworkProfile4 = [parameters9 targetNetworkProfile];
+      identifier5 = [targetNetworkProfile4 identifier];
+      parameters10 = [v117 parameters];
+      targetNetworkProfile5 = [parameters10 targetNetworkProfile];
+      identifier6 = [targetNetworkProfile5 identifier];
+      if (![identifier5 isEqual:?])
       {
         v97 = 0;
 LABEL_31:
@@ -3970,13 +3970,13 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v106 = v35;
+      v107Identifier = identifier5;
     }
 
-    v36 = [(CWFAutoJoinRequest *)v98->_activeRequest allowAutoHotspotFallback];
-    v97 = v36 ^ [v117 allowAutoHotspotFallback] ^ 1;
-    v35 = v106;
-    if (v28 == v31)
+    allowAutoHotspotFallback = [(CWFAutoJoinRequest *)selfCopy->_activeRequest allowAutoHotspotFallback];
+    v97 = allowAutoHotspotFallback ^ [v117 allowAutoHotspotFallback] ^ 1;
+    identifier5 = v107Identifier;
+    if (identifier == identifier2)
     {
       goto LABEL_34;
     }
@@ -4011,16 +4011,16 @@ LABEL_39:
       }
 
       v42 = *(*(&v132 + 1) + 8 * v41);
-      v43 = [v42 parameters];
-      if ([v43 trigger] != v17)
+      parameters11 = [v42 parameters];
+      if ([parameters11 trigger] != v17)
       {
         goto LABEL_50;
       }
 
-      v44 = [v42 parameters];
-      v45 = [v44 mode];
-      v46 = [v4 parameters];
-      if (v45 != [v46 mode])
+      parameters12 = [v42 parameters];
+      mode2 = [parameters12 mode];
+      parameters13 = [requestCopy parameters];
+      if (mode2 != [parameters13 mode])
       {
 
         v39 = v125;
@@ -4029,53 +4029,53 @@ LABEL_50:
         goto LABEL_61;
       }
 
-      v47 = [v42 parameters];
-      v123 = [v47 targetNetworkProfile];
-      v48 = [v123 identifier];
-      v121 = [v4 parameters];
-      v119 = [v121 targetNetworkProfile];
-      v49 = [v119 identifier];
-      if (v48 == v49)
+      parameters14 = [v42 parameters];
+      targetNetworkProfile6 = [parameters14 targetNetworkProfile];
+      identifier7 = [targetNetworkProfile6 identifier];
+      parameters15 = [requestCopy parameters];
+      targetNetworkProfile7 = [parameters15 targetNetworkProfile];
+      identifier8 = [targetNetworkProfile7 identifier];
+      if (identifier7 == identifier8)
       {
-        v50 = v113;
+        parameters16 = parameters9;
       }
 
       else
       {
-        v50 = [v42 parameters];
-        v116 = [v50 targetNetworkProfile];
-        v115 = [v116 identifier];
-        if (!v115)
+        parameters16 = [v42 parameters];
+        targetNetworkProfile3 = [parameters16 targetNetworkProfile];
+        identifier9 = [targetNetworkProfile3 identifier];
+        if (!identifier9)
         {
           v53 = 0;
-          v115 = 0;
+          identifier9 = 0;
           goto LABEL_59;
         }
 
-        v108 = [v117 parameters];
-        v107 = [v108 targetNetworkProfile];
-        v106 = [v107 identifier];
-        if (!v106)
+        targetNetworkProfile5 = [v117 parameters];
+        identifier6 = [targetNetworkProfile5 targetNetworkProfile];
+        v107Identifier = [identifier6 identifier];
+        if (!v107Identifier)
         {
-          v106 = 0;
+          v107Identifier = 0;
           v53 = 0;
           v17 = v99;
           goto LABEL_58;
         }
 
-        v114 = v47;
-        v105 = [v42 parameters];
-        v104 = [v105 targetNetworkProfile];
-        v51 = [v104 identifier];
-        v102 = [v117 parameters];
-        v101 = [v102 targetNetworkProfile];
-        [v101 identifier];
-        v100 = v103 = v51;
-        if (![v51 isEqual:?])
+        v114 = parameters14;
+        parameters17 = [v42 parameters];
+        targetNetworkProfile8 = [parameters17 targetNetworkProfile];
+        identifier10 = [targetNetworkProfile8 identifier];
+        parameters18 = [v117 parameters];
+        targetNetworkProfile9 = [parameters18 targetNetworkProfile];
+        [targetNetworkProfile9 identifier];
+        v100 = v103 = identifier10;
+        if (![identifier10 isEqual:?])
         {
           v53 = 0;
           v17 = v99;
-          v47 = v114;
+          parameters14 = v114;
 LABEL_57:
 
 LABEL_58:
@@ -4085,28 +4085,28 @@ LABEL_59:
         }
 
         v17 = v99;
-        v47 = v114;
+        parameters14 = v114;
       }
 
-      v52 = [v42 allowAutoHotspotFallback];
-      v53 = v52 ^ [v117 allowAutoHotspotFallback] ^ 1;
-      if (v48 != v49)
+      allowAutoHotspotFallback2 = [v42 allowAutoHotspotFallback];
+      v53 = allowAutoHotspotFallback2 ^ [v117 allowAutoHotspotFallback] ^ 1;
+      if (identifier7 != identifier8)
       {
         goto LABEL_57;
       }
 
 LABEL_60:
-      v113 = v50;
+      parameters9 = parameters16;
 
-      v4 = v117;
+      requestCopy = v117;
       v40 = v110;
       v37 = v112;
       v39 = v125;
       if (v53)
       {
 
-        v54 = v98;
-        if (![(CWFAutoJoinManager *)v98 __shouldIgnoreRequestWithTrigger:v17])
+        v54 = selfCopy;
+        if (![(CWFAutoJoinManager *)selfCopy __shouldIgnoreRequestWithTrigger:v17])
         {
           goto LABEL_72;
         }
@@ -4148,7 +4148,7 @@ LABEL_70:
         block[1] = 3221225472;
         block[2] = sub_1E0C72990;
         block[3] = &unk_1E86E6010;
-        v131 = v4;
+        v131 = requestCopy;
         v65 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v64, 0, block);
         dispatch_async(targetQueue, v65);
 
@@ -4172,13 +4172,13 @@ LABEL_61:
     }
   }
 
-  v54 = v98;
-  if ([(CWFAutoJoinManager *)v98 __shouldIgnoreRequestWithTrigger:v17])
+  v54 = selfCopy;
+  if ([(CWFAutoJoinManager *)selfCopy __shouldIgnoreRequestWithTrigger:v17])
   {
     goto LABEL_70;
   }
 
-  if (v97 && !v98->_didConfigurationChangeSincePreviousAttempt)
+  if (v97 && !selfCopy->_didConfigurationChangeSincePreviousAttempt)
   {
 LABEL_72:
     v60 = CWFGetOSLog();
@@ -4237,7 +4237,7 @@ LABEL_72:
     v128[1] = 3221225472;
     v128[2] = sub_1E0C72B98;
     v128[3] = &unk_1E86E6010;
-    v129 = v4;
+    v129 = requestCopy;
     v74 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v73, 0, v128);
     dispatch_async(v72, v74);
 
@@ -4245,7 +4245,7 @@ LABEL_72:
     goto LABEL_87;
   }
 
-  if ([(CWFAutoJoinManager *)v98 __shouldInvokeImmediatelyForTrigger:v17])
+  if ([(CWFAutoJoinManager *)selfCopy __shouldInvokeImmediatelyForTrigger:v17])
   {
     v55 = CWFGetOSLog();
     if (v55)
@@ -4267,7 +4267,7 @@ LABEL_72:
       _os_log_send_and_compose_impl();
     }
 
-    if (v98->_activeRequest && !v98->_requeued)
+    if (selfCopy->_activeRequest && !selfCopy->_requeued)
     {
       v78 = CWFGetOSLog();
       if (v78)
@@ -4289,31 +4289,31 @@ LABEL_72:
         _os_log_send_and_compose_impl();
       }
 
-      pendingRequests = v98->_pendingRequests;
-      v82 = [(CWFAutoJoinRequest *)v98->_activeRequest copy];
+      pendingRequests = selfCopy->_pendingRequests;
+      v82 = [(CWFAutoJoinRequest *)selfCopy->_activeRequest copy];
       [(NSMutableArray *)pendingRequests insertObject:v82 atIndex:0];
 
-      v98->_requeued = 1;
+      selfCopy->_requeued = 1;
     }
 
-    v83 = [MEMORY[0x1E695DF00] date];
-    [v4 setAddedAt:v83];
+    date = [MEMORY[0x1E695DF00] date];
+    [requestCopy setAddedAt:date];
 
-    [(NSMutableArray *)v98->_pendingRequests insertObject:v4 atIndex:0];
+    [(NSMutableArray *)selfCopy->_pendingRequests insertObject:requestCopy atIndex:0];
   }
 
   else
   {
-    v76 = [MEMORY[0x1E695DF00] date];
-    [v4 setAddedAt:v76];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [requestCopy setAddedAt:date2];
 
-    [(NSMutableArray *)v98->_pendingRequests addObject:v4];
+    [(NSMutableArray *)selfCopy->_pendingRequests addObject:requestCopy];
   }
 
-  if (v98->_activeRequest)
+  if (selfCopy->_activeRequest)
   {
-    v84 = [(CWFAutoJoinManager *)v98 __qosForAutoJoinTrigger:v17];
-    if (v84 > v98->_highestPendingQoS)
+    v84 = [(CWFAutoJoinManager *)selfCopy __qosForAutoJoinTrigger:v17];
+    if (v84 > selfCopy->_highestPendingQoS)
     {
       v85 = v84;
       v86 = CWFGetOSLog();
@@ -4330,7 +4330,7 @@ LABEL_72:
 
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
       {
-        highestPendingQoS = v98->_highestPendingQoS;
+        highestPendingQoS = selfCopy->_highestPendingQoS;
         v90 = sub_1E0BCC05C(v99);
         v136 = 67109634;
         *v137 = v85;
@@ -4343,13 +4343,13 @@ LABEL_72:
         _os_log_send_and_compose_impl();
       }
 
-      v98->_highestPendingQoS = v85;
-      internalQueue = v98->_internalQueue;
+      selfCopy->_highestPendingQoS = v85;
+      internalQueue = selfCopy->_internalQueue;
       v126[0] = MEMORY[0x1E69E9820];
       v126[1] = 3221225472;
       v126[2] = sub_1E0C72DA0;
       v126[3] = &unk_1E86E6778;
-      v126[4] = v98;
+      v126[4] = selfCopy;
       v127 = v85;
       v92 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v85, 0, v126);
       dispatch_async(internalQueue, v92);
@@ -4365,12 +4365,12 @@ LABEL_88:
   v75 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__updateAutoJoinState:(int64_t)a3
+- (void)__updateAutoJoinState:(int64_t)state
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     v6 = CWFGetOSLog();
     if (v6)
@@ -4406,7 +4406,7 @@ LABEL_88:
     block[2] = sub_1E0C73060;
     block[3] = &unk_1E86E76C0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = state;
     v11 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v10, 0, block);
     dispatch_async(targetQueue, v11);
   }
@@ -4438,9 +4438,9 @@ LABEL_88:
 
         v8 = *(*(&v18 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
-        v10 = [(CWFAutoJoinManager *)self knownNetworks];
-        v11 = [v10 allObjects];
-        v12 = sub_1E0BED85C(v8, v11);
+        knownNetworks = [(CWFAutoJoinManager *)self knownNetworks];
+        allObjects = [knownNetworks allObjects];
+        v12 = sub_1E0BED85C(v8, allObjects);
 
         if (v12 && ([v12 isAutoJoinDisabled] & 1) == 0 && (objc_msgSend(v12, "isPersonalHotspot") & 1) == 0)
         {
@@ -4487,22 +4487,22 @@ LABEL_17:
   return v13;
 }
 
-- (id)__descriptionForError:(id)a3
+- (id)__descriptionForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
   v5 = *MEMORY[0x1E696A578];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  v7 = [v3 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo2 = [errorCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-  v9 = [v8 userInfo];
-  v10 = [v9 objectForKeyedSubscript:v5];
+  userInfo3 = [v8 userInfo];
+  v10 = [userInfo3 objectForKeyedSubscript:v5];
 
   v11 = v8;
   v12 = v10;
-  if (v8 || (v11 = v3, v12 = v6, v3))
+  if (v8 || (v11 = errorCopy, v12 = v6, errorCopy))
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld '%@'", objc_msgSend(v11, "code"), v12];
   }
@@ -4540,26 +4540,26 @@ LABEL_17:
   v493 = sub_1E0BC2D60;
   v494 = sub_1E0BC61EC;
   v495 = 0;
-  v430 = [(CWFAutoJoinManager *)self associatedNetwork];
-  v3 = self;
-  objc_sync_enter(v3);
-  obj = v3;
-  v4 = [(CWFAutoJoinRequest *)v3->_activeRequest parameters];
-  v438 = [v4 copy];
+  associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  parameters = [(CWFAutoJoinRequest *)selfCopy->_activeRequest parameters];
+  v438 = [parameters copy];
 
-  v5 = [(CWFAutoJoinRequest *)obj->_activeRequest UUID];
-  v406 = [v5 copy];
+  uUID = [(CWFAutoJoinRequest *)obj->_activeRequest UUID];
+  v406 = [uUID copy];
 
   retrySchedule = obj->_retrySchedule;
   retryScheduleIndex = obj->_retryScheduleIndex;
-  v400 = [(CWFAutoJoinRequest *)obj->_activeRequest allowAutoHotspotFallback];
+  allowAutoHotspotFallback = [(CWFAutoJoinRequest *)obj->_activeRequest allowAutoHotspotFallback];
   v8 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC520];
-  v395 = [v8 unsignedLongValue];
+  unsignedLongValue = [v8 unsignedLongValue];
 
   triggerTimestampMap = obj->_triggerTimestampMap;
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v438, "trigger")}];
   v11 = [(NSMutableDictionary *)triggerTimestampMap objectForKeyedSubscript:v10];
-  v409 = [v11 unsignedLongValue];
+  unsignedLongValue2 = [v11 unsignedLongValue];
 
   linkChangeTimestamp = obj->_linkChangeTimestamp;
   v397 = [(CWFScanResult *)obj->_steerFromNetwork copy];
@@ -4587,7 +4587,7 @@ LABEL_17:
   v434 = v489;
   if (!v16)
   {
-    v402 = 0;
+    supportedChannels = 0;
     v403 = 0;
     v428 = 0;
     v429 = 0;
@@ -4602,7 +4602,7 @@ LABEL_17:
     v398 = 0;
     v399 = 0;
     v407 = 0;
-    v408 = 0;
+    nearbyRecommendedNetworks = 0;
     v421 = 0;
     v441 = 0;
     v431 = 0;
@@ -4616,7 +4616,7 @@ LABEL_17:
 
   [(CWFAutoJoinMetric *)obj->_metric setUUID:v406];
   obj->_state = 0;
-  if (!v430 && [(NSMutableSet *)obj->_failedToJoinKnownNetworkIDs count])
+  if (!associatedNetwork && [(NSMutableSet *)obj->_failedToJoinKnownNetworkIDs count])
   {
     v19 = CWFGetOSLog();
     if (v19)
@@ -4685,7 +4685,7 @@ LABEL_17:
   [(CWFAutoJoinMetric *)obj->_metric setAutoJoinParameters:v438];
   [(CWFAutoJoinMetric *)obj->_metric setRetrySchedule:retrySchedule];
   [(CWFAutoJoinMetric *)obj->_metric setRetryScheduleIndex:retryScheduleIndex];
-  [(CWFAutoJoinMetric *)obj->_metric setWasAlreadyAssociatedToNetwork:v430];
+  [(CWFAutoJoinMetric *)obj->_metric setWasAlreadyAssociatedToNetwork:associatedNetwork];
   self->_beginTimestamp = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v403 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
   v28 = CWFGetBootTime();
@@ -4706,7 +4706,7 @@ LABEL_17:
   }
 
   [(CWFAutoJoinContext *)v439 setMaxScanSSIDCount:v30];
-  if (v430)
+  if (associatedNetwork)
   {
     v31 = -70;
   }
@@ -4722,8 +4722,8 @@ LABEL_17:
   [(CWFAutoJoinContext *)v439 setMaxBSSLocationDistance:300.0];
   [(CWFAutoJoinContext *)v439 setMaxBSSChannelCount:3];
   [(CWFAutoJoinContext *)v439 setDwellTime:0];
-  v32 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
-  if ([v32 trigger] == 54)
+  autoJoinParameters = [(CWFAutoJoinContext *)v439 autoJoinParameters];
+  if ([autoJoinParameters trigger] == 54)
   {
 
 LABEL_26:
@@ -4733,16 +4733,16 @@ LABEL_26:
     goto LABEL_33;
   }
 
-  v33 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
-  v34 = [v33 trigger] == 55;
+  autoJoinParameters2 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
+  v34 = [autoJoinParameters2 trigger] == 55;
 
   if (v34)
   {
     goto LABEL_26;
   }
 
-  v35 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
-  v36 = [v35 trigger] == 45;
+  autoJoinParameters3 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
+  v36 = [autoJoinParameters3 trigger] == 45;
 
   if (v36)
   {
@@ -4751,8 +4751,8 @@ LABEL_26:
 
   else
   {
-    v38 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
-    v39 = [v38 trigger] == 58;
+    autoJoinParameters4 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
+    v39 = [autoJoinParameters4 trigger] == 58;
 
     if (!v39)
     {
@@ -4767,9 +4767,9 @@ LABEL_26:
       }
 
       [(CWFAutoJoinContext *)v439 setMaxScanChannelCount:v161];
-      v162 = [v438 trigger];
+      trigger = [v438 trigger];
       v40 = 0;
-      if (v162 - 44 >= 8 && (v162 > 0x3F || ((1 << v162) & 0xC000000000000010) == 0))
+      if (trigger - 44 >= 8 && (trigger > 0x3F || ((1 << trigger) & 0xC000000000000010) == 0))
       {
         v163 = 20000;
         if (didConfigurationChangeSincePreviousAttempt)
@@ -4777,7 +4777,7 @@ LABEL_26:
           v163 = 0;
         }
 
-        if (v430)
+        if (associatedNetwork)
         {
           v40 = 0;
         }
@@ -4817,8 +4817,8 @@ LABEL_33:
     [(CWFAutoJoinContext *)v439 setDwellTime:40];
     [(CWFAutoJoinContext *)v439 setMaxBSSChannelAge:0];
     [(CWFAutoJoinContext *)v439 setAlwaysIncludeRemainingNon2GHzChannels:0];
-    v42 = [v438 preferredChannels];
-    v43 = [v42 copy];
+    preferredChannels = [v438 preferredChannels];
+    v43 = [preferredChannels copy];
     cachedCarPlayPreferredChannels = v435->_cachedCarPlayPreferredChannels;
     v435->_cachedCarPlayPreferredChannels = v43;
 
@@ -4845,14 +4845,14 @@ LABEL_33:
     }
   }
 
-  v49 = [v438 trigger];
-  if (v49 - 44 < 8 || (v431 = 0, v49 <= 0x3F) && ((1 << v49) & 0xC000000000000010) != 0)
+  trigger2 = [v438 trigger];
+  if (trigger2 - 44 < 8 || (v431 = 0, trigger2 <= 0x3F) && ((1 << trigger2) & 0xC000000000000010) != 0)
   {
-    v50 = [(CWFAutoJoinManager *)v435 __retryInterval];
-    v431 = v50;
-    if (v50)
+    __retryInterval = [(CWFAutoJoinManager *)v435 __retryInterval];
+    v431 = __retryInterval;
+    if (__retryInterval)
     {
-      -[CWFAutoJoinContext setBSSChannelsOnly:](v439, "setBSSChannelsOnly:", [v50 BSSChannelsOnly]);
+      -[CWFAutoJoinContext setBSSChannelsOnly:](v439, "setBSSChannelsOnly:", [__retryInterval BSSChannelsOnly]);
       -[CWFAutoJoinContext setMaxBSSChannelCount:](v439, "setMaxBSSChannelCount:", [v431 maxBSSChannelCount]);
       -[CWFAutoJoinContext setMaxBSSChannelAge:](v439, "setMaxBSSChannelAge:", [v431 maxBSSChannelAge]);
       -[CWFAutoJoinContext setPassiveScan:](v439, "setPassiveScan:", [v431 passiveScan]);
@@ -4871,8 +4871,8 @@ LABEL_33:
   if ([v438 trigger] == 47)
   {
     v51 = v435->_cachedCarPlayPreferredChannels;
-    v52 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
-    [v52 setPreferredChannels:v51];
+    autoJoinParameters5 = [(CWFAutoJoinContext *)v439 autoJoinParameters];
+    [autoJoinParameters5 setPreferredChannels:v51];
   }
 
   if ([v438 mode] == 4 && objc_msgSend(v438, "trigger") != 54 && objc_msgSend(v438, "trigger") != 55)
@@ -4889,14 +4889,14 @@ LABEL_33:
   }
 
   [(CWFAutoJoinContext *)v439 setPreferUserConfiguredNetworks:[(CWFAutoJoinManager *)v435 __defaultUserConfiguredNetworkPreference]];
-  v402 = [(CWFAutoJoinManager *)v435 supportedChannels];
-  if (![v402 count])
+  supportedChannels = [(CWFAutoJoinManager *)v435 supportedChannels];
+  if (![supportedChannels count])
   {
     v363 = MEMORY[0x1E696ABC0];
     v534 = *MEMORY[0x1E696A578];
     v535[0] = @"No configured channels";
-    v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v535 forKeys:&v534 count:1];
-    v158 = [v363 errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:v72];
+    array5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v535 forKeys:&v534 count:1];
+    v158 = [v363 errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:array5];
 
     v432 = 0;
     v412 = 0;
@@ -4909,19 +4909,19 @@ LABEL_33:
     v417 = 0;
     v398 = 0;
     v407 = 0;
-    v408 = 0;
+    nearbyRecommendedNetworks = 0;
     v421 = 0;
     v441 = 0;
-    v424 = 0;
+    knownNetworks = 0;
     v405 = 0;
     v436 = 0;
     goto LABEL_364;
   }
 
   [(CWFAutoJoinManager *)v435 __updateAutoJoinState:1];
-  v424 = [(CWFAutoJoinManager *)v435 knownNetworks];
-  v408 = [(CWFAutoJoinManager *)v435 nearbyRecommendedNetworks];
-  if (![v424 count] && !objc_msgSend(v408, "count"))
+  knownNetworks = [(CWFAutoJoinManager *)v435 knownNetworks];
+  nearbyRecommendedNetworks = [(CWFAutoJoinManager *)v435 nearbyRecommendedNetworks];
+  if (![knownNetworks count] && !objc_msgSend(nearbyRecommendedNetworks, "count"))
   {
     v366 = CWFGetOSLog();
     if (v366)
@@ -4981,7 +4981,7 @@ LABEL_498:
     goto LABEL_499;
   }
 
-  if (v400 && (-[CWFAutoJoinManager __calloutToAllowAutoHotspotWithTrigger:error:](v435, "__calloutToAllowAutoHotspotWithTrigger:error:", [v438 trigger], 0) & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (allowAutoHotspotFallback && (-[CWFAutoJoinManager __calloutToAllowAutoHotspotWithTrigger:error:](v435, "__calloutToAllowAutoHotspotWithTrigger:error:", [v438 trigger], 0) & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v53 = CWFGetOSLog();
     if (v53)
@@ -5020,7 +5020,7 @@ LABEL_498:
     [(CWFAutoJoinManager *)v435 __calloutToBrowseForHotspotsWithTimeout:10 maxCacheAge:10 cacheOnly:v58 reply:v488, v381, v386];
     if ([v438 trigger] == 67)
     {
-      if (v430)
+      if (associatedNetwork)
       {
         v59 = CWFGetOSLog();
         if (v59)
@@ -5090,9 +5090,9 @@ LABEL_498:
         v432 = 0;
         v170 = v434;
 LABEL_354:
-        v271 = [v438 mode];
+        mode = [v438 mode];
         v272 = v497[5];
-        if (v271 == 3)
+        if (mode == 3)
         {
           if (v272)
           {
@@ -5121,7 +5121,7 @@ LABEL_354:
 LABEL_362:
         v451 = 0;
         v436 = [(CWFAutoJoinManager *)v435 __performAutoHotspotWithBrowseTimeout:10 maxCacheAge:v273 cacheOnly:v274 error:&v451];
-        v72 = v451;
+        array5 = v451;
 LABEL_363:
         v158 = v170;
         goto LABEL_364;
@@ -5133,8 +5133,8 @@ LABEL_363:
   {
     if (![(CWFAutoJoinContext *)v439 include6GHzChannels])
     {
-      v61 = [v424 allObjects];
-      [(CWFAutoJoinContext *)v439 setInclude6GHzChannels:[(CWFAutoJoinManager *)v435 __didRecentlyJoinAny6GHzOnlyNetworks:v61]];
+      allObjects = [knownNetworks allObjects];
+      [(CWFAutoJoinContext *)v439 setInclude6GHzChannels:[(CWFAutoJoinManager *)v435 __didRecentlyJoinAny6GHzOnlyNetworks:allObjects]];
     }
 
     v62 = CWFGetOSLog();
@@ -5151,9 +5151,9 @@ LABEL_363:
 
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
     {
-      v65 = [(CWFAutoJoinContext *)v439 include6GHzChannels];
+      include6GHzChannels = [(CWFAutoJoinContext *)v439 include6GHzChannels];
       v66 = "NOT ";
-      if (v65)
+      if (include6GHzChannels)
       {
         v66 = "";
       }
@@ -5166,11 +5166,11 @@ LABEL_363:
     }
   }
 
-  v67 = [v438 targetNetworkProfile];
-  if (v67)
+  targetNetworkProfile = [v438 targetNetworkProfile];
+  if (targetNetworkProfile)
   {
-    v68 = [v424 allObjects];
-    v405 = [(CWFAutoJoinManager *)v435 __knownNetworksList:v68 containsMatchingKnownNetwork:v67];
+    allObjects2 = [knownNetworks allObjects];
+    v405 = [(CWFAutoJoinManager *)v435 __knownNetworksList:allObjects2 containsMatchingKnownNetwork:targetNetworkProfile];
 
     if (v405)
     {
@@ -5198,7 +5198,7 @@ LABEL_363:
       targetQueue = v435->_targetQueue;
       v486 = 0;
       v75 = [(CWFAutoJoinManager *)v435 __allowKnownNetwork:v405 context:v439 allowForSeamlessSSIDTransition:0 defer:0 targetQueue:targetQueue error:&v486];
-      v72 = v486;
+      array5 = v486;
       if (v75)
       {
         v76 = [(CWFAutoJoinContext *)v439 copy];
@@ -5224,10 +5224,10 @@ LABEL_363:
         }
 
         v485 = v434;
-        v157 = [(CWFAutoJoinManager *)v435 __discoverKnownNetworksWithContext:v76 error:&v485, v381, v386];
+        v386 = [(CWFAutoJoinManager *)v435 __discoverKnownNetworksWithContext:v76 error:&v485, v381, v386];
         v158 = v485;
 
-        if (v157)
+        if (v386)
         {
 
           v426 = 0;
@@ -5269,7 +5269,7 @@ LABEL_364:
 
           v428 = v439;
           v429 = v432;
-          v399 = v424;
+          v399 = knownNetworks;
           v434 = v158;
           goto LABEL_365;
         }
@@ -5283,16 +5283,16 @@ LABEL_364:
       v71 = CWFGetOSLog();
       if (v71)
       {
-        v72 = CWFGetOSLog();
+        array5 = CWFGetOSLog();
       }
 
       else
       {
-        v72 = MEMORY[0x1E69E9C10];
+        array5 = MEMORY[0x1E69E9C10];
         v80 = MEMORY[0x1E69E9C10];
       }
 
-      if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(array5, OS_LOG_TYPE_DEFAULT))
       {
         v510 = 138543362;
         *v511 = 0;
@@ -5329,7 +5329,7 @@ LABEL_108:
 
     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
     {
-      v84 = [v424 count];
+      v84 = [knownNetworks count];
       v510 = 134217984;
       *v511 = v84;
       LODWORD(v386) = 12;
@@ -5341,7 +5341,7 @@ LABEL_108:
     v483 = 0u;
     v480 = 0u;
     v481 = 0u;
-    v85 = v424;
+    v85 = knownNetworks;
     v86 = [v85 countByEnumeratingWithState:&v480 objects:v533 count:16];
     if (v86)
     {
@@ -5399,7 +5399,7 @@ LABEL_108:
 
     if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
     {
-      v97 = [v408 count];
+      v97 = [nearbyRecommendedNetworks count];
       v510 = 134217984;
       *v511 = v97;
       LODWORD(v386) = 12;
@@ -5411,7 +5411,7 @@ LABEL_108:
     v479 = 0u;
     v476 = 0u;
     v477 = 0u;
-    v98 = v408;
+    v98 = nearbyRecommendedNetworks;
     v99 = [v98 countByEnumeratingWithState:&v476 objects:v532 count:16];
     if (v99)
     {
@@ -5456,10 +5456,10 @@ LABEL_108:
     }
   }
 
-  v107 = [MEMORY[0x1E695DFA0] orderedSet];
-  v108 = [MEMORY[0x1E695DFA0] orderedSet];
-  v109 = [MEMORY[0x1E695DFA0] orderedSet];
-  v110 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet4 = [MEMORY[0x1E695DFA0] orderedSet];
   v111 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v112 = CWFGetOSLog();
   if (v112)
@@ -5495,52 +5495,52 @@ LABEL_108:
   block[1] = 3221225472;
   block[2] = sub_1E0C781E4;
   block[3] = &unk_1E86E7758;
-  v399 = v424;
+  v399 = knownNetworks;
   v467 = v399;
   v468 = v435;
   v428 = v439;
   v469 = v428;
-  v441 = v107;
+  v441 = orderedSet;
   v470 = v441;
-  v421 = v108;
+  v421 = orderedSet2;
   v471 = v421;
-  v413 = v109;
+  v413 = orderedSet3;
   v472 = v413;
   v474 = &v506;
-  v398 = v110;
+  v398 = orderedSet4;
   v473 = v398;
   v475 = &v502;
   dispatch_sync(v115, block);
 
-  if (!v430 || ![v441 count])
+  if (!associatedNetwork || ![v441 count])
   {
     goto LABEL_232;
   }
 
-  v116 = [v430 matchingKnownNetworkProfile];
-  v117 = [v116 isCarPlay];
+  matchingKnownNetworkProfile = [associatedNetwork matchingKnownNetworkProfile];
+  isCarPlay = [matchingKnownNetworkProfile isCarPlay];
 
-  if (v117)
+  if (isCarPlay)
   {
     v367 = CWFGetOSLog();
     if (v367)
     {
-      v72 = CWFGetOSLog();
+      array5 = CWFGetOSLog();
     }
 
     else
     {
-      v72 = MEMORY[0x1E69E9C10];
+      array5 = MEMORY[0x1E69E9C10];
       v372 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(array5, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_516;
     }
 
     v510 = 138543362;
-    *v511 = v430;
+    *v511 = associatedNetwork;
     LODWORD(v386) = 12;
     v381 = &v510;
     goto LABEL_503;
@@ -5550,47 +5550,47 @@ LABEL_108:
   {
     if ([v438 trigger] == 58)
     {
-      v72 = [MEMORY[0x1E695DFA8] set];
-      v128 = [(CWFAutoJoinManager *)v435 associatedNetwork];
-      v129 = [v128 channel];
-      if (([v129 is6GHz] & 1) == 0)
+      array5 = [MEMORY[0x1E695DFA8] set];
+      associatedNetwork2 = [(CWFAutoJoinManager *)v435 associatedNetwork];
+      channel = [associatedNetwork2 channel];
+      if (([channel is6GHz] & 1) == 0)
       {
-        v130 = [v397 channel];
-        v131 = [v130 is6GHz];
+        channel2 = [v397 channel];
+        is6GHz = [channel2 is6GHz];
 
-        if (!v131)
+        if (!is6GHz)
         {
           goto LABEL_170;
         }
 
-        v132 = [v441 array];
-        v133 = [v397 matchingKnownNetworkProfile];
-        v128 = [(CWFAutoJoinManager *)v435 __knownNetworksList:v132 containsMatchingKnownNetwork:v133];
+        array = [v441 array];
+        matchingKnownNetworkProfile2 = [v397 matchingKnownNetworkProfile];
+        associatedNetwork2 = [(CWFAutoJoinManager *)v435 __knownNetworksList:array containsMatchingKnownNetwork:matchingKnownNetworkProfile2];
 
-        if (!v128)
+        if (!associatedNetwork2)
         {
 LABEL_169:
 
 LABEL_170:
-          v136 = [v430 matchingKnownNetworkProfile];
-          v137 = [v441 array];
-          v138 = [(CWFAutoJoinManager *)v435 __morePreferredKnownNetworksWithCandidate:v136 knownNetworks:v137 context:v428];
+          matchingKnownNetworkProfile3 = [associatedNetwork matchingKnownNetworkProfile];
+          array2 = [v441 array];
+          v138 = [(CWFAutoJoinManager *)v435 __morePreferredKnownNetworksWithCandidate:matchingKnownNetworkProfile3 knownNetworks:array2 context:v428];
           v139 = [v138 set];
-          [v72 unionSet:v139];
+          [array5 unionSet:v139];
 
-          if ([(CWFAutoJoinManager *)v435 __isDeferrableJoinCandidate:v430])
+          if ([(CWFAutoJoinManager *)v435 __isDeferrableJoinCandidate:associatedNetwork])
           {
-            v140 = [v430 matchingKnownNetworkProfile];
-            v141 = [v140 wasMoreRecentlyJoinedByUser];
+            matchingKnownNetworkProfile4 = [associatedNetwork matchingKnownNetworkProfile];
+            wasMoreRecentlyJoinedByUser = [matchingKnownNetworkProfile4 wasMoreRecentlyJoinedByUser];
 
-            if ((v141 & 1) == 0)
+            if ((wasMoreRecentlyJoinedByUser & 1) == 0)
             {
               v142 = [v421 set];
-              [v72 unionSet:v142];
+              [array5 unionSet:v142];
             }
           }
 
-          [v441 intersectSet:v72];
+          [v441 intersectSet:array5];
           if ([v441 count])
           {
             goto LABEL_231;
@@ -5611,7 +5611,7 @@ LABEL_170:
           if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
           {
             v510 = 138543362;
-            *v511 = v430;
+            *v511 = associatedNetwork;
             LODWORD(v386) = 12;
             v381 = &v510;
             _os_log_send_and_compose_impl();
@@ -5621,11 +5621,11 @@ LABEL_170:
         }
 
         [(CWFAutoJoinContext *)v428 setInclude6GHzChannels:1];
-        v530 = v128;
-        v129 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v530 count:1];
-        v134 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:v129 fromNetwork:v430 allowSameSSID:1 context:v428];
+        v530 = associatedNetwork2;
+        channel = [MEMORY[0x1E695DEC8] arrayWithObjects:&v530 count:1];
+        v134 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:channel fromNetwork:associatedNetwork allowSameSSID:1 context:v428];
         v135 = [v134 set];
-        [v72 unionSet:v135];
+        [array5 unionSet:v135];
       }
 
       goto LABEL_169;
@@ -5633,12 +5633,12 @@ LABEL_170:
 
     if ([v438 trigger] == 54 || objc_msgSend(v438, "trigger") == 55)
     {
-      v145 = [v438 trigger];
-      if (v145 != 54 && [v438 trigger] == 55)
+      trigger3 = [v438 trigger];
+      if (trigger3 != 54 && [v438 trigger] == 55)
       {
-        v146 = [v441 array];
-        v147 = [(CWFAutoJoinManager *)v435 associatedNetwork];
-        v148 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:v146 fromNetwork:v147 allowSameSSID:0 context:v428];
+        array3 = [v441 array];
+        associatedNetwork3 = [(CWFAutoJoinManager *)v435 associatedNetwork];
+        v148 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:array3 fromNetwork:associatedNetwork3 allowSameSSID:0 context:v428];
         v149 = [v148 count] == 0;
 
         if (v149)
@@ -5647,9 +5647,9 @@ LABEL_170:
         }
       }
 
-      v150 = [v441 array];
-      v151 = [(CWFAutoJoinManager *)v435 associatedNetwork];
-      v152 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:v150 fromNetwork:v151 allowSameSSID:v145 != 54 context:v428];
+      array4 = [v441 array];
+      associatedNetwork4 = [(CWFAutoJoinManager *)v435 associatedNetwork];
+      v152 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:array4 fromNetwork:associatedNetwork4 allowSameSSID:trigger3 != 54 context:v428];
       v153 = [v152 count] == 0;
 
       if (v153)
@@ -5657,8 +5657,8 @@ LABEL_170:
         v374 = MEMORY[0x1E696ABC0];
         v528 = *MEMORY[0x1E696A578];
         v529 = @"Already associated and no seamless SSID transition candidates configured";
-        v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v529 forKeys:&v528 count:1];
-        v158 = [v374 errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:v72];
+        array5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v529 forKeys:&v528 count:1];
+        v158 = [v374 errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:array5];
 
         v426 = 0;
         v427 = 0;
@@ -5671,9 +5671,9 @@ LABEL_170:
         goto LABEL_485;
       }
 
-      v72 = [v441 array];
-      v154 = [(CWFAutoJoinManager *)v435 associatedNetwork];
-      v155 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:v72 fromNetwork:v154 allowSameSSID:1 context:v428];
+      array5 = [v441 array];
+      associatedNetwork5 = [(CWFAutoJoinManager *)v435 associatedNetwork];
+      v155 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:array5 fromNetwork:associatedNetwork5 allowSameSSID:1 context:v428];
       v156 = [v155 set];
       [v441 intersectSet:v156];
 
@@ -5682,7 +5682,7 @@ LABEL_170:
 
     if ([v438 trigger] == 68)
     {
-      if ([v430 isPersonalHotspot])
+      if ([associatedNetwork isPersonalHotspot])
       {
         goto LABEL_232;
       }
@@ -5690,16 +5690,16 @@ LABEL_170:
       v180 = CWFGetOSLog();
       if (v180)
       {
-        v72 = CWFGetOSLog();
+        array5 = CWFGetOSLog();
       }
 
       else
       {
-        v72 = MEMORY[0x1E69E9C10];
+        array5 = MEMORY[0x1E69E9C10];
         v377 = MEMORY[0x1E69E9C10];
       }
 
-      if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(array5, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_516;
       }
@@ -5709,7 +5709,7 @@ LABEL_170:
       v381 = &v510;
     }
 
-    else if ([v438 trigger] == 32 || objc_msgSend(v438, "trigger") == 47 || (objc_msgSend(v430, "matchingKnownNetworkProfile"), v181 = objc_claimAutoreleasedReturnValue(), v182 = objc_msgSend(v181, "wasMoreRecentlyJoinedByUser"), v181, !v182))
+    else if ([v438 trigger] == 32 || objc_msgSend(v438, "trigger") == 47 || (objc_msgSend(associatedNetwork, "matchingKnownNetworkProfile"), v181 = objc_claimAutoreleasedReturnValue(), v182 = objc_msgSend(v181, "wasMoreRecentlyJoinedByUser"), v181, !v182))
     {
       if (-[CWFAutoJoinManager __allowOpportunisticNetworkTransitionWithTrigger:](v435, "__allowOpportunisticNetworkTransitionWithTrigger:", [v438 trigger]))
       {
@@ -5719,22 +5719,22 @@ LABEL_170:
       v183 = CWFGetOSLog();
       if (v183)
       {
-        v72 = CWFGetOSLog();
+        array5 = CWFGetOSLog();
       }
 
       else
       {
-        v72 = MEMORY[0x1E69E9C10];
+        array5 = MEMORY[0x1E69E9C10];
         v378 = MEMORY[0x1E69E9C10];
       }
 
-      if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(array5, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_516;
       }
 
       v510 = 138543362;
-      *v511 = v430;
+      *v511 = associatedNetwork;
       LODWORD(v386) = 12;
       v381 = &v510;
     }
@@ -5744,22 +5744,22 @@ LABEL_170:
       v379 = CWFGetOSLog();
       if (v379)
       {
-        v72 = CWFGetOSLog();
+        array5 = CWFGetOSLog();
       }
 
       else
       {
-        v72 = MEMORY[0x1E69E9C10];
+        array5 = MEMORY[0x1E69E9C10];
         v380 = MEMORY[0x1E69E9C10];
       }
 
-      if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(array5, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_516;
       }
 
       v510 = 138543362;
-      *v511 = v430;
+      *v511 = associatedNetwork;
       LODWORD(v386) = 12;
       v381 = &v510;
     }
@@ -5775,40 +5775,40 @@ LABEL_503:
     v417 = 0;
     v407 = 0;
 LABEL_517:
-    v424 = v399;
+    knownNetworks = v399;
     goto LABEL_188;
   }
 
-  v72 = [MEMORY[0x1E695DFA8] set];
-  v118 = [(CWFAutoJoinManager *)v435 associatedNetwork];
-  v119 = [v118 channel];
-  if ([v119 is6GHz])
+  array5 = [MEMORY[0x1E695DFA8] set];
+  associatedNetwork6 = [(CWFAutoJoinManager *)v435 associatedNetwork];
+  channel3 = [associatedNetwork6 channel];
+  if ([channel3 is6GHz])
   {
 LABEL_158:
 
     goto LABEL_159;
   }
 
-  v120 = [v397 channel];
-  v121 = [v120 is6GHz];
+  channel4 = [v397 channel];
+  is6GHz2 = [channel4 is6GHz];
 
-  if (!v121)
+  if (!is6GHz2)
   {
     goto LABEL_160;
   }
 
-  v122 = [v441 array];
-  v123 = [v397 matchingKnownNetworkProfile];
-  v118 = [(CWFAutoJoinManager *)v435 __knownNetworksList:v122 containsMatchingKnownNetwork:v123];
+  array6 = [v441 array];
+  matchingKnownNetworkProfile5 = [v397 matchingKnownNetworkProfile];
+  associatedNetwork6 = [(CWFAutoJoinManager *)v435 __knownNetworksList:array6 containsMatchingKnownNetwork:matchingKnownNetworkProfile5];
 
-  if (v118)
+  if (associatedNetwork6)
   {
     [(CWFAutoJoinContext *)v428 setInclude6GHzChannels:1];
-    v531 = v118;
-    v119 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v531 count:1];
-    v124 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:v119 fromNetwork:v430 allowSameSSID:1 context:v428];
+    v531 = associatedNetwork6;
+    channel3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v531 count:1];
+    v124 = [(CWFAutoJoinManager *)v435 __knownNetworksSupportingSeamlessSSIDTransition:channel3 fromNetwork:associatedNetwork allowSameSSID:1 context:v428];
     v125 = [v124 set];
-    [v72 unionSet:v125];
+    [array5 unionSet:v125];
 
     goto LABEL_158;
   }
@@ -5838,18 +5838,18 @@ LABEL_160:
       _os_log_send_and_compose_impl();
     }
 
-    v172 = [v430 matchingKnownNetworkProfile];
-    v173 = [v441 array];
-    v174 = [(CWFAutoJoinManager *)v435 __morePreferredKnownNetworksWithCandidate:v172 knownNetworks:v173 context:v428];
+    matchingKnownNetworkProfile6 = [associatedNetwork matchingKnownNetworkProfile];
+    array7 = [v441 array];
+    v174 = [(CWFAutoJoinManager *)v435 __morePreferredKnownNetworksWithCandidate:matchingKnownNetworkProfile6 knownNetworks:array7 context:v428];
     v175 = [v174 set];
-    [v72 unionSet:v175];
+    [array5 unionSet:v175];
 
-    if ([(CWFAutoJoinManager *)v435 __isDeferrableJoinCandidate:v430])
+    if ([(CWFAutoJoinManager *)v435 __isDeferrableJoinCandidate:associatedNetwork])
     {
-      v176 = [v430 matchingKnownNetworkProfile];
-      v177 = [v176 wasMoreRecentlyJoinedByUser];
+      matchingKnownNetworkProfile7 = [associatedNetwork matchingKnownNetworkProfile];
+      wasMoreRecentlyJoinedByUser2 = [matchingKnownNetworkProfile7 wasMoreRecentlyJoinedByUser];
 
-      if ((v177 & 1) == 0)
+      if ((wasMoreRecentlyJoinedByUser2 & 1) == 0)
       {
         v178 = CWFGetOSLog();
         if (v178)
@@ -5872,12 +5872,12 @@ LABEL_160:
         }
 
         v185 = [v421 set];
-        [v72 unionSet:v185];
+        [array5 unionSet:v185];
       }
     }
   }
 
-  [v441 intersectSet:{v72, v384, v389}];
+  [v441 intersectSet:{array5, v384, v389}];
   if (![v441 count])
   {
     v370 = CWFGetOSLog();
@@ -5895,7 +5895,7 @@ LABEL_160:
     if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
     {
       v510 = 138543362;
-      *v511 = v430;
+      *v511 = associatedNetwork;
       LODWORD(v386) = 12;
       v381 = &v510;
       _os_log_send_and_compose_impl();
@@ -5918,7 +5918,7 @@ LABEL_516:
 LABEL_231:
 
 LABEL_232:
-  if ([v441 count] || objc_msgSend(v408, "count"))
+  if ([v441 count] || objc_msgSend(nearbyRecommendedNetworks, "count"))
   {
     v186 = [v441 set];
     [v421 intersectSet:v186];
@@ -6265,14 +6265,14 @@ LABEL_316:
         }
 
         v427 = [(CWFAutoJoinContext *)v428 copy];
-        v72 = [MEMORY[0x1E695DFA0] orderedSet];
+        array5 = [MEMORY[0x1E695DFA0] orderedSet];
         v258 = [v441 set];
-        [v72 unionSet:v258];
+        [array5 unionSet:v258];
 
         v259 = [v398 set];
-        [v72 unionSet:v259];
+        [array5 unionSet:v259];
 
-        [v427 setKnownNetworks:v72];
+        [v427 setKnownNetworks:array5];
         [v427 setAllowStandalone6GHz:1];
         [v427 setUseCacheForPreviouslyScannedChannels:1];
         [v427 setAllowDeferredCandidates:1];
@@ -6310,13 +6310,13 @@ LABEL_316:
             v422 = 0;
             v436 = 0;
             v432 = v260;
-            v424 = v399;
+            knownNetworks = v399;
             goto LABEL_363;
           }
 
           v432 = v260;
 LABEL_341:
-          if (v430)
+          if (associatedNetwork)
           {
             v422 = 0;
             goto LABEL_353;
@@ -6388,7 +6388,7 @@ LABEL_476:
         v436 = 1;
         v432 = v260;
 LABEL_485:
-        v424 = v399;
+        knownNetworks = v399;
         goto LABEL_364;
       }
 
@@ -6438,13 +6438,13 @@ LABEL_485:
         v412 = v225;
       }
 
-      v72 = [MEMORY[0x1E695DF70] array];
-      v226 = [v160 recentChannelList];
-      v227 = [v160 remainingChannelList];
-      v228 = [v226 arrayByAddingObjectsFromArray:v227];
+      array5 = [MEMORY[0x1E695DF70] array];
+      recentChannelList = [v160 recentChannelList];
+      remainingChannelList = [v160 remainingChannelList];
+      v228 = [recentChannelList arrayByAddingObjectsFromArray:remainingChannelList];
 
-      v229 = [v160 recentChannelList];
-      if ([v229 count] >= 2)
+      recentChannelList2 = [v160 recentChannelList];
+      if ([recentChannelList2 count] >= 2)
       {
 
         v231 = 2;
@@ -6452,8 +6452,8 @@ LABEL_485:
 
       else
       {
-        v230 = [v160 recentChannelList];
-        v231 = [v230 count];
+        recentChannelList3 = [v160 recentChannelList];
+        v231 = [recentChannelList3 count];
 
         if (!v231)
         {
@@ -6464,8 +6464,8 @@ LABEL_485:
       for (k = 0; k != v231; ++k)
       {
         hiddenNetworkChannels = obj->_hiddenNetworkChannels;
-        v234 = [v160 recentChannelList];
-        v235 = [v234 objectAtIndexedSubscript:k];
+        recentChannelList4 = [v160 recentChannelList];
+        v235 = [recentChannelList4 objectAtIndexedSubscript:k];
         [(NSMutableSet *)hiddenNetworkChannels addObject:v235];
       }
 
@@ -6491,7 +6491,7 @@ LABEL_297:
             v240 = *(*(&v458 + 1) + 8 * m);
             if ([(NSMutableSet *)obj->_hiddenNetworkChannels containsObject:v240])
             {
-              [v72 addObject:v240];
+              [array5 addObject:v240];
             }
           }
 
@@ -6501,10 +6501,10 @@ LABEL_297:
         while (v237);
       }
 
-      v241 = [MEMORY[0x1E695DF70] array];
-      [v160 setRecentChannelList:v241];
+      array8 = [MEMORY[0x1E695DF70] array];
+      [v160 setRecentChannelList:array8];
 
-      [v160 setRemainingChannelList:v72];
+      [v160 setRemainingChannelList:array5];
       v242 = CWFGetOSLog();
       if (v242)
       {
@@ -6519,8 +6519,8 @@ LABEL_297:
 
       if (os_log_type_enabled(v243, OS_LOG_TYPE_DEFAULT))
       {
-        v245 = [v72 count];
-        v246 = [v72 componentsJoinedByString:@", "];
+        v245 = [array5 count];
+        v246 = [array5 componentsJoinedByString:@", "];
         v510 = 134218242;
         *v511 = v245;
         *&v511[8] = 2114;
@@ -6530,7 +6530,7 @@ LABEL_297:
         _os_log_send_and_compose_impl();
       }
 
-      if ([v72 count])
+      if ([array5 count])
       {
         v457 = v434;
         v247 = [v210 __discoverKnownNetworksWithContext:v160 error:&v457];
@@ -6607,7 +6607,7 @@ LABEL_499:
   v407 = 0;
   v170 = v434;
 LABEL_353:
-  if (v400)
+  if (allowAutoHotspotFallback)
   {
     goto LABEL_354;
   }
@@ -6616,9 +6616,9 @@ LABEL_353:
   v436 = 0;
   v428 = v439;
   v429 = v432;
-  v399 = v424;
+  v399 = knownNetworks;
 LABEL_365:
-  v275 = [(CWFAutoJoinMetric *)obj->_metric scanDuration:v381]|| [(CWFAutoJoinMetric *)obj->_metric autoHotspotBrowseDuration];
+  autoHotspotBrowseDuration = [(CWFAutoJoinMetric *)obj->_metric scanDuration:v381]|| [(CWFAutoJoinMetric *)obj->_metric autoHotspotBrowseDuration];
   v276 = obj;
   objc_sync_enter(v276);
   v425 = *(v276 + 257);
@@ -6626,16 +6626,16 @@ LABEL_365:
   v277 = v276[33];
   if (v277)
   {
-    v278 = [v277 code];
+    code = [v277 code];
   }
 
   else
   {
-    v278 = 0;
+    code = 0;
   }
 
-  v279 = [(CWFAutoJoinRequest *)obj->_activeRequest reply];
-  v433 = [v279 copy];
+  reply = [(CWFAutoJoinRequest *)obj->_activeRequest reply];
+  v433 = [reply copy];
 
   if ((v434 != 0) | (v425 | v440) & 1)
   {
@@ -6664,8 +6664,8 @@ LABEL_365:
     v276[33] = 0;
 
     *(v276 + 258) = 0;
-    v284 = [v438 trigger];
-    if (v284 - 44 < 8 || v284 <= 0x3F && ((1 << v284) & 0xC000000000000010) != 0)
+    trigger4 = [v438 trigger];
+    if (trigger4 - 44 < 8 || trigger4 <= 0x3F && ((1 << trigger4) & 0xC000000000000010) != 0)
     {
       ++obj->_retryScheduleIndex;
     }
@@ -6675,7 +6675,7 @@ LABEL_365:
   {
     if (!v434 || (v425 & 1) != 0 || (v285 = [v438 trigger], v285 - 44 >= 8) && (v285 > 0x3F || ((1 << v285) & 0xC000000000000010) == 0))
     {
-      if (v278 == 37)
+      if (code == 37)
       {
         v286 = CWFGetOSLog();
         if (v286)
@@ -6705,27 +6705,27 @@ LABEL_365:
     }
   }
 
-  v289 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC538, v385, v390];
-  v290 = [v289 unsignedLongValue];
+  v390 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC538, v385, v390];
+  unsignedLongValue3 = [v390 unsignedLongValue];
 
   v291 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC550];
-  v292 = [v291 unsignedLongValue];
+  unsignedLongValue4 = [v291 unsignedLongValue];
 
   v293 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC568];
-  v294 = [v293 unsignedLongValue];
+  unsignedLongValue5 = [v293 unsignedLongValue];
 
   v295 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC580];
-  v296 = [v295 unsignedLongValue];
+  unsignedLongValue6 = [v295 unsignedLongValue];
 
   v297 = [(NSMutableDictionary *)obj->_triggerTimestampMap objectForKeyedSubscript:&unk_1F5BBC598];
-  v298 = [v297 unsignedLongValue];
+  unsignedLongValue7 = [v297 unsignedLongValue];
 
   if (v436 && ([v438 trigger] == 54 || objc_msgSend(v438, "trigger") == 55))
   {
     [v276[36] setObject:0 forKeyedSubscript:&unk_1F5BBC5B0];
   }
 
-  if (v275)
+  if (autoHotspotBrowseDuration)
   {
     v299 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v403];
     v300 = v276[36];
@@ -6748,66 +6748,66 @@ LABEL_365:
     [(CWFAutoJoinMetric *)obj->_metric setEndedAt:v305];
 
     [(CWFAutoJoinMetric *)obj->_metric setResult:v436];
-    if (linkChangeTimestamp < v395 || v409 == v395)
+    if (linkChangeTimestamp < unsignedLongValue || unsignedLongValue2 == unsignedLongValue)
     {
       v306 = CWFGetBootTime();
-      v307 = [v306 dateByAddingTimeInterval:v395 / 1000000000.0];
+      v307 = [v306 dateByAddingTimeInterval:unsignedLongValue / 1000000000.0];
       [(CWFAutoJoinMetric *)obj->_metric setTriggeredByLinkDownAt:v307];
     }
 
-    if (linkChangeTimestamp < v290 || v409 == v290)
+    if (linkChangeTimestamp < unsignedLongValue3 || unsignedLongValue2 == unsignedLongValue3)
     {
       v308 = CWFGetBootTime();
-      v309 = [v308 dateByAddingTimeInterval:v290 / 1000000000.0];
+      v309 = [v308 dateByAddingTimeInterval:unsignedLongValue3 / 1000000000.0];
       [(CWFAutoJoinMetric *)obj->_metric setTriggeredByFirstUnlockAt:v309];
     }
 
-    if (linkChangeTimestamp < v292 || v409 == v292)
+    if (linkChangeTimestamp < unsignedLongValue4 || unsignedLongValue2 == unsignedLongValue4)
     {
       v310 = CWFGetBootTime();
-      v311 = [v310 dateByAddingTimeInterval:v292 / 1000000000.0];
+      v311 = [v310 dateByAddingTimeInterval:unsignedLongValue4 / 1000000000.0];
       [(CWFAutoJoinMetric *)obj->_metric setTriggeredByDeviceWakeAt:v311];
     }
 
-    if (linkChangeTimestamp < v294 || v409 == v294)
+    if (linkChangeTimestamp < unsignedLongValue5 || unsignedLongValue2 == unsignedLongValue5)
     {
       v312 = CWFGetBootTime();
-      v313 = [v312 dateByAddingTimeInterval:v294 / 1000000000.0];
+      v313 = [v312 dateByAddingTimeInterval:unsignedLongValue5 / 1000000000.0];
       [(CWFAutoJoinMetric *)obj->_metric setTriggeredByWiFiOnAt:v313];
     }
 
-    if (linkChangeTimestamp < v296 || v409 == v296)
+    if (linkChangeTimestamp < unsignedLongValue6 || unsignedLongValue2 == unsignedLongValue6)
     {
       v314 = CWFGetBootTime();
-      v315 = [v314 dateByAddingTimeInterval:v296 / 1000000000.0];
+      v315 = [v314 dateByAddingTimeInterval:unsignedLongValue6 / 1000000000.0];
       [(CWFAutoJoinMetric *)obj->_metric setTriggeredByMotionEndedAt:v315];
     }
 
-    if (linkChangeTimestamp < v298 || v409 == v298)
+    if (linkChangeTimestamp < unsignedLongValue7 || unsignedLongValue2 == unsignedLongValue7)
     {
       v316 = CWFGetBootTime();
-      v317 = [v316 dateByAddingTimeInterval:v298 / 1000000000.0];
+      v317 = [v316 dateByAddingTimeInterval:unsignedLongValue7 / 1000000000.0];
       [(CWFAutoJoinMetric *)obj->_metric setTriggeredByAutoJoinEnabledAt:v317];
     }
 
-    v318 = [(CWFAutoJoinMetric *)obj->_metric wasAlreadyAssociatedToNetwork];
-    if (!v318)
+    wasAlreadyAssociatedToNetwork = [(CWFAutoJoinMetric *)obj->_metric wasAlreadyAssociatedToNetwork];
+    if (!wasAlreadyAssociatedToNetwork)
     {
-      v318 = [(CWFAutoJoinMetric *)obj->_metric autoJoinedNetwork];
-      v319 = [v318 matchingKnownNetworkProfile];
-      v320 = [v319 identifier];
-      if (v320)
+      wasAlreadyAssociatedToNetwork = [(CWFAutoJoinMetric *)obj->_metric autoJoinedNetwork];
+      matchingKnownNetworkProfile8 = [wasAlreadyAssociatedToNetwork matchingKnownNetworkProfile];
+      identifier = [matchingKnownNetworkProfile8 identifier];
+      if (identifier)
       {
-        v321 = [v404 matchingKnownNetworkProfile];
-        v419 = [v321 identifier];
-        if (v419)
+        matchingKnownNetworkProfile9 = [v404 matchingKnownNetworkProfile];
+        identifier2 = [matchingKnownNetworkProfile9 identifier];
+        if (identifier2)
         {
-          v415 = [(CWFAutoJoinMetric *)obj->_metric autoJoinedNetwork];
-          v322 = [v415 matchingKnownNetworkProfile];
-          v323 = [v322 identifier];
-          v324 = [v404 matchingKnownNetworkProfile];
-          v325 = [v324 identifier];
-          v410 = [v323 isEqual:v325];
+          autoJoinedNetwork = [(CWFAutoJoinMetric *)obj->_metric autoJoinedNetwork];
+          matchingKnownNetworkProfile10 = [autoJoinedNetwork matchingKnownNetworkProfile];
+          identifier3 = [matchingKnownNetworkProfile10 identifier];
+          matchingKnownNetworkProfile11 = [v404 matchingKnownNetworkProfile];
+          identifier4 = [matchingKnownNetworkProfile11 identifier];
+          v410 = [identifier3 isEqual:identifier4];
 
           if (v410)
           {
@@ -6839,9 +6839,9 @@ LABEL_431:
             objc_enumerationMutation(v327);
           }
 
-          v331 = [*(*(&v447 + 1) + 8 * n) matchingKnownNetworkProfile];
-          v332 = [v331 identifier];
-          [v326 addObject:v332];
+          matchingKnownNetworkProfile12 = [*(*(&v447 + 1) + 8 * n) matchingKnownNetworkProfile];
+          identifier5 = [matchingKnownNetworkProfile12 identifier];
+          [v326 addObject:identifier5];
         }
 
         v328 = [v327 countByEnumeratingWithState:&v447 objects:v526 count:16];
@@ -6900,27 +6900,27 @@ LABEL_431:
     if (os_log_type_enabled(v339, OS_LOG_TYPE_DEFAULT))
     {
       v401 = v160;
-      v341 = [v406 UUIDString];
-      v437 = [v341 substringToIndex:5];
-      v342 = [(CWFAutoJoinMetric *)obj->_metric endedAt];
-      [v342 timeIntervalSinceReferenceDate];
+      uUIDString = [v406 UUIDString];
+      v437 = [uUIDString substringToIndex:5];
+      endedAt = [(CWFAutoJoinMetric *)obj->_metric endedAt];
+      [endedAt timeIntervalSinceReferenceDate];
       v344 = v343;
-      v345 = [(CWFAutoJoinMetric *)obj->_metric startedAt];
-      [v345 timeIntervalSinceReferenceDate];
+      startedAt = [(CWFAutoJoinMetric *)obj->_metric startedAt];
+      [startedAt timeIntervalSinceReferenceDate];
       v347 = v346;
-      v396 = [(CWFAutoJoinMetric *)obj->_metric result];
-      v416 = [(CWFAutoJoinMetric *)obj->_metric error];
-      v420 = [v276 __descriptionForError:v416];
-      v411 = [(CWFAutoJoinMetric *)obj->_metric scanChannels];
-      v394 = [v411 count];
-      v348 = [(CWFAutoJoinMetric *)obj->_metric autoHotspotWasAttempted];
-      if (v348)
+      result = [(CWFAutoJoinMetric *)obj->_metric result];
+      error = [(CWFAutoJoinMetric *)obj->_metric error];
+      v420 = [v276 __descriptionForError:error];
+      scanChannels = [(CWFAutoJoinMetric *)obj->_metric scanChannels];
+      v394 = [scanChannels count];
+      autoHotspotWasAttempted = [(CWFAutoJoinMetric *)obj->_metric autoHotspotWasAttempted];
+      if (autoHotspotWasAttempted)
       {
-        v392 = [(CWFAutoJoinMetric *)obj->_metric autoHotspotEndedAt];
-        [v392 timeIntervalSinceReferenceDate];
+        autoHotspotEndedAt = [(CWFAutoJoinMetric *)obj->_metric autoHotspotEndedAt];
+        [autoHotspotEndedAt timeIntervalSinceReferenceDate];
         v350 = v349;
-        v391 = [(CWFAutoJoinMetric *)obj->_metric autoHotspotStartedAt];
-        [v391 timeIntervalSinceReferenceDate];
+        autoHotspotStartedAt = [(CWFAutoJoinMetric *)obj->_metric autoHotspotStartedAt];
+        [autoHotspotStartedAt timeIntervalSinceReferenceDate];
         v352 = ((v350 - v351) * 1000.0);
       }
 
@@ -6929,17 +6929,17 @@ LABEL_431:
         v352 = 0;
       }
 
-      v353 = [(CWFAutoJoinMetric *)obj->_metric autoHotspotResult];
-      v354 = [(CWFAutoJoinMetric *)obj->_metric autoHotspotError];
-      [v276 __descriptionForError:v354];
-      obja = v345;
-      v355 = v393 = v341;
+      autoHotspotResult = [(CWFAutoJoinMetric *)obj->_metric autoHotspotResult];
+      autoHotspotError = [(CWFAutoJoinMetric *)obj->_metric autoHotspotError];
+      [v276 __descriptionForError:autoHotspotError];
+      obja = startedAt;
+      v355 = v393 = uUIDString;
       v510 = 138545666;
       *v511 = v437;
       *&v511[8] = 2048;
       v512 = ((v344 - v347) * 1000.0);
       v513 = 1024;
-      *v514 = v396;
+      *v514 = result;
       *&v514[4] = 2114;
       *&v514[6] = v420;
       *&v514[14] = 1024;
@@ -6951,20 +6951,20 @@ LABEL_431:
       v518 = 2048;
       v519 = v352;
       v520 = 1024;
-      v521 = v353;
+      v521 = autoHotspotResult;
       v522 = 2114;
       v523 = v355;
       _os_log_send_and_compose_impl();
 
       v160 = v401;
-      if (v348)
+      if (autoHotspotWasAttempted)
       {
       }
     }
 
     [v276 __updateDisallowedMatchedKnownNetworks];
-    v356 = [v276[56] allObjects];
-    [v276 __updateDiscoverTimestampForJoinCandidates:v356];
+    allObjects3 = [v276[56] allObjects];
+    [v276 __updateDiscoverTimestampForJoinCandidates:allObjects3];
 
     [v276 __updateRecentlyMatchedCandidates];
     [v276 __updateAutoJoinState:0];
@@ -7000,14 +7000,14 @@ LABEL_431:
       _os_log_send_and_compose_impl();
     }
 
-    v361 = [v276 targetQueue];
+    targetQueue = [v276 targetQueue];
     v444[0] = MEMORY[0x1E69E9820];
     v444[1] = 3221225472;
     v444[2] = sub_1E0C785B8;
     v444[3] = &unk_1E86E6BE0;
     v446 = v433;
     v445 = v434;
-    dispatch_sync(v361, v444);
+    dispatch_sync(targetQueue, v444);
   }
 
   _Block_object_dispose(&v490, 8);
@@ -7019,82 +7019,82 @@ LABEL_431:
   v362 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__sortKnownNetworks:(id)a3
+- (void)__sortKnownNetworks:(id)networks
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v10 = [v4 array];
-  v6 = [(CWFAutoJoinManager *)self knownNetworkComparator];
-  if (v6)
+  networksCopy = networks;
+  array = [v4 array];
+  knownNetworkComparator = [(CWFAutoJoinManager *)self knownNetworkComparator];
+  if (knownNetworkComparator)
   {
-    v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:v6];
-    [v10 addObject:v7];
+    v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:knownNetworkComparator];
+    [array addObject:v7];
   }
 
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastJoinedAt" ascending:0];
-  [v10 addObject:v8];
+  [array addObject:v8];
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedAt" ascending:0];
-  [v10 addObject:v9];
-  [v5 sortUsingDescriptors:v10];
+  [array addObject:v9];
+  [networksCopy sortUsingDescriptors:array];
 }
 
-- (void)__sortKnownNetworksByJoinTimestamp:(id)a3
+- (void)__sortKnownNetworksByJoinTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v7 = [v3 array];
+  timestampCopy = timestamp;
+  array = [v3 array];
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastJoinedByUserAt" ascending:0];
-  [v7 addObject:v5];
+  [array addObject:v5];
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastJoinedBySystemAt" ascending:0];
-  [v7 addObject:v6];
-  [v4 sortUsingDescriptors:v7];
+  [array addObject:v6];
+  [timestampCopy sortUsingDescriptors:array];
 }
 
-- (void)__sortAndFilterUserConfiguredNetworks:(id)a3
+- (void)__sortAndFilterUserConfiguredNetworks:(id)networks
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  networksCopy = networks;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastJoinedByUserAt" ascending:0];
-  [v5 addObject:v6];
-  v7 = [(CWFAutoJoinManager *)self knownNetworkComparator];
-  if (v7)
+  [array addObject:v6];
+  knownNetworkComparator = [(CWFAutoJoinManager *)self knownNetworkComparator];
+  if (knownNetworkComparator)
   {
-    v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:v7];
-    [v5 addObject:v8];
+    v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:knownNetworkComparator];
+    [array addObject:v8];
   }
 
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastJoinedAt" ascending:0];
-  [v5 addObject:v9];
+  [array addObject:v9];
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedAt" ascending:0];
-  [v5 addObject:v10];
-  [v4 sortUsingDescriptors:v5];
-  v11 = [v4 firstObject];
-  v12 = [v11 lastJoinedByUserAt];
+  [array addObject:v10];
+  [networksCopy sortUsingDescriptors:array];
+  firstObject = [networksCopy firstObject];
+  lastJoinedByUserAt = [firstObject lastJoinedByUserAt];
 
-  if (v12)
+  if (lastJoinedByUserAt)
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = sub_1E0C78B34;
     v18 = &unk_1E86E7780;
-    v19 = v12;
-    v20 = v13;
-    v14 = v13;
-    [v4 enumerateObjectsUsingBlock:&v15];
-    [v4 removeObjectsInArray:{v14, v15, v16, v17, v18}];
+    v19 = lastJoinedByUserAt;
+    v20 = array2;
+    v14 = array2;
+    [networksCopy enumerateObjectsUsingBlock:&v15];
+    [networksCopy removeObjectsInArray:{v14, v15, v16, v17, v18}];
   }
 }
 
-- (id)__basicChannelRepresentation:(id)a3
+- (id)__basicChannelRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 channel];
-    v6 = [v4 band];
+    representationCopy = representation;
+    channel = [representationCopy channel];
+    band = [representationCopy band];
 
-    v7 = [CWFChannel channelWithNumber:v5 band:v6 width:20];
+    v7 = [CWFChannel channelWithNumber:channel band:band width:20];
   }
 
   else
@@ -7105,16 +7105,16 @@ LABEL_431:
   return v7;
 }
 
-- (id)__knownNetworksList:(id)a3 containsMatchingKnownNetwork:(id)a4
+- (id)__knownNetworksList:(id)list containsMatchingKnownNetwork:(id)network
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  networkCopy = network;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = listCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -7131,10 +7131,10 @@ LABEL_3:
       }
 
       v11 = *(*(&v29 + 1) + 8 * v10);
-      v12 = [v6 identifier];
-      v13 = [v11 identifier];
-      v14 = v13;
-      if (v12 == v13)
+      identifier = [networkCopy identifier];
+      identifier2 = [v11 identifier];
+      v14 = identifier2;
+      if (identifier == identifier2)
       {
 
 LABEL_17:
@@ -7142,22 +7142,22 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v15 = [v6 identifier];
-      if (v15)
+      identifier3 = [networkCopy identifier];
+      if (identifier3)
       {
-        v16 = v15;
-        v17 = [v11 identifier];
-        if (v17)
+        v16 = identifier3;
+        identifier4 = [v11 identifier];
+        if (identifier4)
         {
-          v18 = v17;
-          [v6 identifier];
-          v19 = v6;
+          v18 = identifier4;
+          [networkCopy identifier];
+          v19 = networkCopy;
           v21 = v20 = v9;
-          v22 = [v11 identifier];
-          v28 = [v21 isEqual:v22];
+          identifier5 = [v11 identifier];
+          v28 = [v21 isEqual:identifier5];
 
           v9 = v20;
-          v6 = v19;
+          networkCopy = v19;
           v8 = v26;
 
           if (v28)
@@ -7191,18 +7191,18 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)__didRecentlyJoinAny6GHzOnlyNetworks:(id)a3
+- (BOOL)__didRecentlyJoinAny6GHzOnlyNetworks:(id)networks
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CWFAutoJoinManager *)self location];
+  networksCopy = networks;
+  location = [(CWFAutoJoinManager *)self location];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v7 = v6;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v8 = v4;
+  v8 = networksCopy;
   v9 = [v8 countByEnumeratingWithState:&v58 objects:v67 count:16];
   if (v9)
   {
@@ -7221,13 +7221,13 @@ LABEL_18:
         v13 = *(*(&v58 + 1) + 8 * v12);
         if ([v13 wasRecently6GHzOnlyOnAnyDevice])
         {
-          v14 = [v13 lastJoinedOnAnyDeviceAt];
-          [v14 timeIntervalSinceReferenceDate];
+          lastJoinedOnAnyDeviceAt = [v13 lastJoinedOnAnyDeviceAt];
+          [lastJoinedOnAnyDeviceAt timeIntervalSinceReferenceDate];
           v16 = v7 - v15;
 
           if (v16 <= 2592000.0)
           {
-            if (!v5)
+            if (!location)
             {
               goto LABEL_33;
             }
@@ -7239,8 +7239,8 @@ LABEL_18:
             v57 = 0u;
             v54 = 0u;
             v55 = 0u;
-            v17 = [v13 BSSList];
-            v18 = [v17 countByEnumeratingWithState:&v54 objects:v66 count:16];
+            bSSList = [v13 BSSList];
+            v18 = [bSSList countByEnumeratingWithState:&v54 objects:v66 count:16];
             if (!v18)
             {
 LABEL_32:
@@ -7261,10 +7261,10 @@ LABEL_33:
 
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
-                v45 = [v13 identifier];
-                v46 = [v45 redactedForWiFi];
+                identifier = [v13 identifier];
+                redactedForWiFi = [identifier redactedForWiFi];
                 v62 = 138543362;
-                v63 = v46;
+                v63 = redactedForWiFi;
                 _os_log_send_and_compose_impl();
               }
 
@@ -7281,28 +7281,28 @@ LABEL_33:
               {
                 if (*v55 != v21)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(bSSList);
                 }
 
                 v23 = *(*(&v54 + 1) + 8 * i);
-                v24 = [v23 lastAssociatedAt];
-                [v24 timeIntervalSinceReferenceDate];
+                lastAssociatedAt = [v23 lastAssociatedAt];
+                [lastAssociatedAt timeIntervalSinceReferenceDate];
                 v26 = v7 - v25;
 
                 if (v26 <= 2592000.0)
                 {
-                  v27 = [v23 location];
-                  if (!v27)
+                  location2 = [v23 location];
+                  if (!location2)
                   {
                     goto LABEL_32;
                   }
 
-                  v28 = v27;
-                  [v27 distanceFromLocation:v5];
+                  v28 = location2;
+                  [location2 distanceFromLocation:location];
                   v30 = v29;
                   [v28 horizontalAccuracy];
                   v32 = v30 - v31;
-                  [v5 horizontalAccuracy];
+                  [location horizontalAccuracy];
                   v34 = v32 - v33;
 
                   if (v34 <= 3000.0)
@@ -7314,7 +7314,7 @@ LABEL_33:
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v54 objects:v66 count:16];
+              v19 = [bSSList countByEnumeratingWithState:&v54 objects:v66 count:16];
             }
 
             while (v19);
@@ -7341,10 +7341,10 @@ LABEL_33:
 
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
-              v38 = [v13 identifier];
-              v39 = [v38 redactedForWiFi];
+              identifier2 = [v13 identifier];
+              redactedForWiFi2 = [identifier2 redactedForWiFi];
               v62 = 138543618;
-              v63 = v39;
+              v63 = redactedForWiFi2;
               v64 = 1024;
               v65 = 3000;
               LODWORD(v50) = 18;
@@ -7381,42 +7381,42 @@ LABEL_40:
   return v41;
 }
 
-- (void)__prepareKnownNetworksContext:(id)a3
+- (void)__prepareKnownNetworksContext:(id)context
 {
   v373[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
-  v312 = self;
+  selfCopy = self;
   [(CWFAutoJoinManager *)self __updateAutoJoinState:1];
-  v316 = v4;
-  v5 = [v4 knownNetworks];
-  v6 = [v5 mutableCopy];
+  v316 = contextCopy;
+  knownNetworks = [contextCopy knownNetworks];
+  v6 = [knownNetworks mutableCopy];
 
   if ([v316 preferUserConfiguredNetworks])
   {
-    [(CWFAutoJoinManager *)v312 __sortAndFilterUserConfiguredNetworks:v6];
+    [(CWFAutoJoinManager *)selfCopy __sortAndFilterUserConfiguredNetworks:v6];
   }
 
   else
   {
-    [(CWFAutoJoinManager *)v312 __sortKnownNetworks:v6];
+    [(CWFAutoJoinManager *)selfCopy __sortKnownNetworks:v6];
   }
 
   v274 = v6;
   [v316 setKnownNetworks:v6];
-  v308 = [MEMORY[0x1E695DFA0] orderedSet];
-  v293 = [MEMORY[0x1E695DFA0] orderedSet];
-  v297 = [MEMORY[0x1E695DFA0] orderedSet];
-  v296 = [MEMORY[0x1E695DFA0] orderedSet];
-  v292 = [MEMORY[0x1E695DFA0] orderedSet];
-  v291 = [MEMORY[0x1E695DFA0] orderedSet];
-  v295 = [MEMORY[0x1E695DFA0] orderedSet];
-  v315 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet4 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet5 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet6 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet7 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet8 = [MEMORY[0x1E695DFA0] orderedSet];
   v275 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"channel" ascending:1];
-  v7 = [(CWFAutoJoinManager *)v312 supportedChannels];
+  supportedChannels = [(CWFAutoJoinManager *)selfCopy supportedChannels];
   v373[0] = v275;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v373 count:1];
-  v9 = [v7 sortedArrayUsingDescriptors:v8];
+  v9 = [supportedChannels sortedArrayUsingDescriptors:v8];
 
   v343 = 0u;
   v344 = 0u;
@@ -7440,8 +7440,8 @@ LABEL_40:
       }
 
       v13 = *(*(&v341 + 1) + 8 * i);
-      v14 = [v316 autoJoinParameters];
-      if ([v14 trigger] == 54)
+      autoJoinParameters = [v316 autoJoinParameters];
+      if ([autoJoinParameters trigger] == 54)
       {
 
 LABEL_12:
@@ -7453,8 +7453,8 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v15 = [v316 autoJoinParameters];
-      v16 = [v15 trigger] == 55;
+      autoJoinParameters2 = [v316 autoJoinParameters];
+      v16 = [autoJoinParameters2 trigger] == 55;
 
       if (v16)
       {
@@ -7462,26 +7462,26 @@ LABEL_12:
       }
 
 LABEL_13:
-      v17 = [(CWFAutoJoinManager *)v312 __basicChannelRepresentation:v13];
-      [v315 addObject:v17];
+      v17 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v13];
+      [orderedSet8 addObject:v17];
       if ([v13 is2GHz])
       {
-        v18 = [v13 channel];
-        v19 = v308;
-        if (v18 != 1)
+        channel = [v13 channel];
+        v19 = orderedSet;
+        if (channel != 1)
         {
-          v20 = [v13 channel];
-          v19 = v308;
-          if (v20 != 6)
+          channel2 = [v13 channel];
+          v19 = orderedSet;
+          if (channel2 != 6)
           {
             if ([v13 channel] == 11)
             {
-              v19 = v308;
+              v19 = orderedSet;
             }
 
             else
             {
-              v19 = v293;
+              v19 = orderedSet2;
             }
           }
         }
@@ -7491,29 +7491,29 @@ LABEL_13:
       {
         if ([v13 isDFS])
         {
-          v19 = v296;
+          v19 = orderedSet4;
         }
 
         else
         {
-          v19 = v297;
+          v19 = orderedSet3;
         }
       }
 
       else
       {
-        v21 = [v13 is6GHz];
-        v19 = v295;
-        if (v21)
+        is6GHz = [v13 is6GHz];
+        v19 = orderedSet7;
+        if (is6GHz)
         {
           if ([v13 is6GHzPSC])
           {
-            v19 = v292;
+            v19 = orderedSet5;
           }
 
           else
           {
-            v19 = v291;
+            v19 = orderedSet6;
           }
         }
       }
@@ -7527,20 +7527,20 @@ LABEL_13:
   while (v10);
 LABEL_30:
 
-  v300 = [MEMORY[0x1E695DFA0] orderedSet];
-  v285 = [MEMORY[0x1E695DFA0] orderedSet];
-  v281 = [MEMORY[0x1E695DFA0] orderedSet];
-  v277 = [MEMORY[0x1E695DFA0] orderedSet];
-  v269 = [MEMORY[0x1E695DFA0] orderedSet];
-  v270 = [MEMORY[0x1E695DFA0] orderedSet];
-  v280 = [MEMORY[0x1E695DFA0] orderedSet];
-  v273 = [MEMORY[0x1E695DFA0] orderedSet];
-  v272 = [MEMORY[0x1E695DFA0] orderedSet];
-  v278 = [MEMORY[0x1E695DFA0] orderedSet];
-  v265 = [MEMORY[0x1E695DFA0] orderedSet];
-  v266 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet9 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet10 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet11 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet12 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet13 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet14 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet15 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet16 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet17 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet18 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet19 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet20 = [MEMORY[0x1E695DFA0] orderedSet];
   v271 = [MEMORY[0x1E695DFA8] set];
-  v301 = [(CWFAutoJoinManager *)v312 location];
+  location = [(CWFAutoJoinManager *)selfCopy location];
   v22 = CWFGetOSLog();
   if (v22)
   {
@@ -7555,31 +7555,31 @@ LABEL_30:
 
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v316 maxBSSChannelAge];
+    maxBSSChannelAge = [v316 maxBSSChannelAge];
     [v316 minBSSLocationAccuracy];
     v27 = v26;
     [v316 maxBSSLocationDistance];
     v29 = v28;
-    v30 = [v316 maxBSSChannelCount];
-    v31 = [v316 maxHiddenKnownNetworkSSIDAge];
-    v32 = [v301 description];
-    v33 = [v32 redactedSensitiveContentForWiFi];
-    v34 = [v316 autoJoinParameters];
-    v35 = [v34 preferredChannels];
+    maxBSSChannelCount = [v316 maxBSSChannelCount];
+    maxHiddenKnownNetworkSSIDAge = [v316 maxHiddenKnownNetworkSSIDAge];
+    v32 = [location description];
+    redactedSensitiveContentForWiFi = [v32 redactedSensitiveContentForWiFi];
+    autoJoinParameters3 = [v316 autoJoinParameters];
+    preferredChannels = [autoJoinParameters3 preferredChannels];
     v345 = 134219522;
-    v346 = v25;
+    v346 = maxBSSChannelAge;
     v347 = 2048;
     v348 = v27;
     v349 = 2048;
     v350 = v29;
     v351 = 2048;
-    v352 = v30;
+    v352 = maxBSSChannelCount;
     v353 = 2048;
-    v354 = v31;
+    v354 = maxHiddenKnownNetworkSSIDAge;
     v355 = 2114;
-    v356 = v33;
+    v356 = redactedSensitiveContentForWiFi;
     v357 = 2114;
-    v358 = v35;
+    v358 = preferredChannels;
     LODWORD(v260) = 72;
     v256 = &v345;
     _os_log_send_and_compose_impl();
@@ -7591,10 +7591,10 @@ LABEL_30:
   v340 = 0u;
   v337 = 0u;
   v338 = 0u;
-  v38 = [v316 autoJoinParameters];
-  v39 = [v38 preferredChannels];
+  autoJoinParameters4 = [v316 autoJoinParameters];
+  preferredChannels2 = [autoJoinParameters4 preferredChannels];
 
-  v40 = [v39 countByEnumeratingWithState:&v337 objects:v371 count:16];
+  v40 = [preferredChannels2 countByEnumeratingWithState:&v337 objects:v371 count:16];
   if (v40)
   {
     v41 = *v338;
@@ -7605,13 +7605,13 @@ LABEL_30:
       {
         if (*v338 != v41)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(preferredChannels2);
         }
 
-        v44 = [(CWFAutoJoinManager *)v312 __basicChannelRepresentation:*(*(&v337 + 1) + 8 * j), v256, v260];
-        if ([v315 containsObject:v44])
+        v260 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:*(*(&v337 + 1) + 8 * j), v256, v260];
+        if ([orderedSet8 containsObject:v260])
         {
-          [v300 addObject:v44];
+          [orderedSet9 addObject:v260];
         }
 
         else
@@ -7631,7 +7631,7 @@ LABEL_30:
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
           {
             v345 = 138543362;
-            v346 = v44;
+            v346 = v260;
             LODWORD(v260) = 12;
             v256 = &v345;
             _os_log_send_and_compose_impl();
@@ -7639,17 +7639,17 @@ LABEL_30:
         }
       }
 
-      v40 = [v39 countByEnumeratingWithState:&v337 objects:v371 count:16];
+      v40 = [preferredChannels2 countByEnumeratingWithState:&v337 objects:v371 count:16];
     }
 
     while (v40);
   }
 
-  v48 = [v300 array];
-  [v285 addObjectsFromArray:v48];
+  array = [orderedSet9 array];
+  [orderedSet10 addObjectsFromArray:array];
 
-  v49 = [v274 array];
-  v50 = [v49 copy];
+  array2 = [v274 array];
+  v50 = [array2 copy];
 
   v335 = 0u;
   v336 = 0u;
@@ -7676,19 +7676,19 @@ LABEL_30:
       }
 
       v313 = *(*(&v333 + 1) + 8 * v284);
-      v288 = [MEMORY[0x1E695DFA0] orderedSet];
-      v306 = [MEMORY[0x1E695DFA0] orderedSet];
-      v305 = [MEMORY[0x1E695DFA0] orderedSet];
-      v290 = [MEMORY[0x1E695DFA0] orderedSet];
-      v287 = [MEMORY[0x1E695DFA0] orderedSet];
-      v304 = [MEMORY[0x1E695DFA0] orderedSet];
-      v303 = [MEMORY[0x1E695DFA0] orderedSet];
-      v289 = [MEMORY[0x1E695DFA0] orderedSet];
-      v282 = [v313 BSSList];
+      orderedSet21 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet22 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet23 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet24 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet25 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet26 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet27 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet28 = [MEMORY[0x1E695DFA0] orderedSet];
+      bSSList = [v313 BSSList];
       v283 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastAssociatedAt" ascending:0];
       v369 = v283;
       v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v369 count:1];
-      v52 = [v282 sortedArrayUsingDescriptors:v51];
+      v52 = [bSSList sortedArrayUsingDescriptors:v51];
 
       v331 = 0u;
       v332 = 0u;
@@ -7711,10 +7711,10 @@ LABEL_30:
             }
 
             v314 = *(*(&v329 + 1) + 8 * v309);
-            v310 = [v314 location];
-            if (v310)
+            location2 = [v314 location];
+            if (location2)
             {
-              v53 = v301 != 0;
+              v53 = location != 0;
             }
 
             else
@@ -7727,13 +7727,13 @@ LABEL_30:
               goto LABEL_69;
             }
 
-            [v301 horizontalAccuracy];
+            [location horizontalAccuracy];
             if (v54 < 0.0)
             {
               goto LABEL_69;
             }
 
-            [v301 horizontalAccuracy];
+            [location horizontalAccuracy];
             v56 = v55;
             [v316 minBSSLocationAccuracy];
             if (v56 > v57)
@@ -7741,8 +7741,8 @@ LABEL_30:
               goto LABEL_69;
             }
 
-            [v310 horizontalAccuracy];
-            if (v58 >= 0.0 && ([v310 horizontalAccuracy], v60 = v59, objc_msgSend(v316, "minBSSLocationAccuracy"), v60 <= v61) && (objc_msgSend(v310, "distanceFromLocation:", v301), v63 = v62, objc_msgSend(v316, "maxBSSLocationDistance"), v63 <= v64))
+            [location2 horizontalAccuracy];
+            if (v58 >= 0.0 && ([location2 horizontalAccuracy], v60 = v59, objc_msgSend(v316, "minBSSLocationAccuracy"), v60 <= v61) && (objc_msgSend(location2, "distanceFromLocation:", location), v63 = v62, objc_msgSend(v316, "maxBSSLocationDistance"), v63 <= v64))
             {
               v65 = 1;
               v286 = 1;
@@ -7754,19 +7754,19 @@ LABEL_69:
               v65 = 0;
             }
 
-            v66 = [v314 channel];
-            v311 = [v66 copy];
+            channel3 = [v314 channel];
+            v311 = [channel3 copy];
 
             if (v311)
             {
-              v67 = [MEMORY[0x1E695DF70] array];
-              v307 = [(CWFAutoJoinManager *)v312 __basicChannelRepresentation:v311];
+              array3 = [MEMORY[0x1E695DF70] array];
+              v307 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v311];
               if ([v307 is6GHz])
               {
-                v68 = [v314 colocated2GHzRNRChannel];
-                if (v68)
+                colocated2GHzRNRChannel = [v314 colocated2GHzRNRChannel];
+                if (colocated2GHzRNRChannel)
                 {
-                  v69 = [(CWFAutoJoinManager *)v312 __basicChannelRepresentation:v68];
+                  v69 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:colocated2GHzRNRChannel];
                   v70 = CWFGetOSLog();
                   if (v70)
                   {
@@ -7781,26 +7781,26 @@ LABEL_69:
 
                   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
                   {
-                    v73 = [v313 identifier];
-                    v74 = [v73 redactedForWiFi];
+                    identifier = [v313 identifier];
+                    redactedForWiFi = [identifier redactedForWiFi];
                     v345 = 138543874;
                     v346 = v69;
                     v347 = 2114;
                     v348 = v307;
                     v349 = 2114;
-                    v350 = v74;
+                    v350 = redactedForWiFi;
                     LODWORD(v261) = 32;
                     v257 = &v345;
                     _os_log_send_and_compose_impl();
                   }
 
-                  [v67 addObject:v69];
+                  [array3 addObject:v69];
                 }
 
-                v75 = [v314 colocated5GHzRNRChannel];
-                if (v75)
+                colocated5GHzRNRChannel = [v314 colocated5GHzRNRChannel];
+                if (colocated5GHzRNRChannel)
                 {
-                  v76 = [(CWFAutoJoinManager *)v312 __basicChannelRepresentation:v75];
+                  v76 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:colocated5GHzRNRChannel];
                   v77 = CWFGetOSLog();
                   if (v77)
                   {
@@ -7815,51 +7815,51 @@ LABEL_69:
 
                   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
                   {
-                    v80 = [v313 identifier];
-                    v81 = [v80 redactedForWiFi];
+                    identifier2 = [v313 identifier];
+                    redactedForWiFi2 = [identifier2 redactedForWiFi];
                     v345 = 138543874;
                     v346 = v76;
                     v347 = 2114;
                     v348 = v307;
                     v349 = 2114;
-                    v350 = v81;
+                    v350 = redactedForWiFi2;
                     LODWORD(v261) = 32;
                     v257 = &v345;
                     _os_log_send_and_compose_impl();
                   }
 
-                  [v67 addObject:v76];
+                  [array3 addObject:v76];
                 }
               }
 
-              [v67 addObject:{v307, v257, v261}];
+              [array3 addObject:{v307, v257, v261}];
               v327 = 0u;
               v328 = 0u;
               v325 = 0u;
               v326 = 0u;
-              v82 = v67;
+              v82 = array3;
               v83 = [v82 countByEnumeratingWithState:&v325 objects:v367 count:16];
               if (v83)
               {
                 v84 = *v326;
                 if (v65)
                 {
-                  v85 = v290;
+                  v85 = orderedSet24;
                 }
 
                 else
                 {
-                  v85 = v289;
+                  v85 = orderedSet28;
                 }
 
                 if (v65)
                 {
-                  v86 = v288;
+                  v86 = orderedSet21;
                 }
 
                 else
                 {
-                  v86 = v287;
+                  v86 = orderedSet25;
                 }
 
                 do
@@ -7873,7 +7873,7 @@ LABEL_69:
                     }
 
                     v88 = *(*(&v325 + 1) + 8 * v87);
-                    if ([v315 containsObject:{v88, v257, v261}])
+                    if ([orderedSet8 containsObject:{v88, v257, v261}])
                     {
                       if (![v88 is6GHz])
                       {
@@ -7953,12 +7953,12 @@ LABEL_103:
                         if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
                         {
 LABEL_128:
-                          v104 = [v313 identifier];
-                          v105 = [v104 redactedForWiFi];
+                          identifier3 = [v313 identifier];
+                          redactedForWiFi3 = [identifier3 redactedForWiFi];
                           v345 = 138543618;
                           v346 = v88;
                           v347 = 2114;
-                          v348 = v105;
+                          v348 = redactedForWiFi3;
                           LODWORD(v261) = 22;
                           v257 = &v345;
                           _os_log_send_and_compose_impl();
@@ -7982,10 +7982,10 @@ LABEL_128:
 
                       if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
                       {
-                        v96 = [v313 identifier];
-                        v97 = [v96 redactedForWiFi];
+                        identifier4 = [v313 identifier];
+                        redactedForWiFi4 = [identifier4 redactedForWiFi];
                         v345 = 138543618;
-                        v346 = v97;
+                        v346 = redactedForWiFi4;
                         v347 = 2114;
                         v348 = v88;
                         LODWORD(v261) = 22;
@@ -8028,7 +8028,7 @@ LABEL_137:
       v324 = 0u;
       v321 = 0u;
       v322 = 0u;
-      v108 = v288;
+      v108 = orderedSet21;
       v109 = 0;
       v110 = [v108 countByEnumeratingWithState:&v321 objects:v366 count:16];
       if (v110)
@@ -8048,12 +8048,12 @@ LABEL_137:
             v114 = *(*(&v321 + 1) + 8 * v112);
             if (v113 >= [v316 maxBSSChannelCount])
             {
-              v115 = v305;
+              v115 = orderedSet23;
             }
 
             else
             {
-              v115 = v306;
+              v115 = orderedSet22;
             }
 
             [v115 addObject:v114];
@@ -8073,7 +8073,7 @@ LABEL_137:
       v320 = 0u;
       v317 = 0u;
       v318 = 0u;
-      v116 = v287;
+      v116 = orderedSet25;
       v117 = [v116 countByEnumeratingWithState:&v317 objects:v365 count:16];
       if (v117)
       {
@@ -8092,12 +8092,12 @@ LABEL_137:
             v121 = *(*(&v317 + 1) + 8 * v119);
             if (v120 >= [v316 maxBSSChannelCount])
             {
-              v122 = v303;
+              v122 = orderedSet27;
             }
 
             else
             {
-              v122 = v304;
+              v122 = orderedSet26;
             }
 
             [v122 addObject:v121];
@@ -8113,40 +8113,40 @@ LABEL_137:
         while (v117);
       }
 
-      v123 = [v306 array];
-      [v280 addObjectsFromArray:v123];
+      array4 = [orderedSet22 array];
+      [orderedSet15 addObjectsFromArray:array4];
 
-      v124 = [v305 array];
-      [v273 addObjectsFromArray:v124];
+      array5 = [orderedSet23 array];
+      [orderedSet16 addObjectsFromArray:array5];
 
-      v125 = [v290 array];
-      [v272 addObjectsFromArray:v125];
+      array6 = [orderedSet24 array];
+      [orderedSet17 addObjectsFromArray:array6];
 
-      v126 = [v304 array];
-      [v277 addObjectsFromArray:v126];
+      array7 = [orderedSet26 array];
+      [orderedSet12 addObjectsFromArray:array7];
 
-      v127 = [v303 array];
-      [v269 addObjectsFromArray:v127];
+      array8 = [orderedSet27 array];
+      [orderedSet13 addObjectsFromArray:array8];
 
-      v128 = [v289 array];
-      [v270 addObjectsFromArray:v128];
+      array9 = [orderedSet28 array];
+      [orderedSet14 addObjectsFromArray:array9];
 
-      v129 = [v313 networkName];
-      if (v129 && ([v313 isPasspoint] & 1) == 0)
+      networkName = [v313 networkName];
+      if (networkName && ([v313 isPasspoint] & 1) == 0)
       {
         if ([v313 hiddenState] == 2)
         {
-          v147 = [v313 wasHiddenBefore];
-          if (!v147)
+          wasHiddenBefore = [v313 wasHiddenBefore];
+          if (!wasHiddenBefore)
           {
             goto LABEL_159;
           }
 
-          v148 = [v313 wasHiddenBefore];
-          [v148 timeIntervalSinceNow];
+          wasHiddenBefore2 = [v313 wasHiddenBefore];
+          [wasHiddenBefore2 timeIntervalSinceNow];
           v150 = v149 >= 0.0;
-          v151 = [v313 wasHiddenBefore];
-          [v151 timeIntervalSinceNow];
+          wasHiddenBefore3 = [v313 wasHiddenBefore];
+          [wasHiddenBefore3 timeIntervalSinceNow];
           v153 = v152;
 
           if (v150)
@@ -8165,8 +8165,8 @@ LABEL_137:
 
         if ([v316 maxHiddenKnownNetworkSSIDAge])
         {
-          v154 = [v313 lastJoinedAt];
-          [v154 timeIntervalSinceReferenceDate];
+          lastJoinedAt = [v313 lastJoinedAt];
+          [lastJoinedAt timeIntervalSinceReferenceDate];
           v156 = v155;
           if (v37 - v155 <= [v316 maxHiddenKnownNetworkSSIDAge])
           {
@@ -8174,8 +8174,8 @@ LABEL_137:
 
           else
           {
-            v157 = [v313 lastDiscoveredAt];
-            [v157 timeIntervalSinceReferenceDate];
+            lastDiscoveredAt = [v313 lastDiscoveredAt];
+            [lastDiscoveredAt timeIntervalSinceReferenceDate];
             v159 = v37 - v158 > [v316 maxHiddenKnownNetworkSSIDAge];
 
             if (v159)
@@ -8187,15 +8187,15 @@ LABEL_137:
 
         if (v286)
         {
-          v160 = v266;
+          v160 = orderedSet20;
         }
 
         else
         {
-          v160 = v265;
+          v160 = orderedSet19;
         }
 
-        [v160 addObject:v129];
+        [v160 addObject:networkName];
         v130 = "yes";
       }
 
@@ -8208,31 +8208,31 @@ LABEL_159:
       v131 = [MEMORY[0x1E695DFA8] set];
       if ([v313 isPasspoint])
       {
-        v132 = [v313 domainName];
+        domainName = [v313 domainName];
 
-        if (v132)
+        if (domainName)
         {
           [v131 addObject:&unk_1F5BBC5E0];
         }
 
-        v133 = [v313 NAIRealmNameList];
-        v134 = [v133 count];
+        nAIRealmNameList = [v313 NAIRealmNameList];
+        v134 = [nAIRealmNameList count];
 
         if (v134)
         {
           [v131 addObject:&unk_1F5BBC5F8];
         }
 
-        v135 = [v313 roamingConsortiumList];
-        v136 = [v135 count];
+        roamingConsortiumList = [v313 roamingConsortiumList];
+        v136 = [roamingConsortiumList count];
 
         if (v136)
         {
           [v131 addObject:&unk_1F5BBC610];
         }
 
-        v137 = [v313 cellularNetworkInfo];
-        v138 = [v137 count];
+        cellularNetworkInfo = [v313 cellularNetworkInfo];
+        v138 = [cellularNetworkInfo count];
 
         if (v138)
         {
@@ -8240,8 +8240,8 @@ LABEL_159:
         }
 
         [v131 addObject:&unk_1F5BBC640];
-        v139 = [v131 allObjects];
-        [v271 addObjectsFromArray:v139];
+        allObjects = [v131 allObjects];
+        [v271 addObjectsFromArray:allObjects];
       }
 
       v140 = CWFGetOSLog();
@@ -8258,9 +8258,9 @@ LABEL_159:
 
       if (os_log_type_enabled(v141, OS_LOG_TYPE_DEBUG))
       {
-        v143 = [v313 identifier];
-        v144 = [v143 redactedForWiFi];
-        v145 = v144;
+        identifier5 = [v313 identifier];
+        redactedForWiFi5 = [identifier5 redactedForWiFi];
+        v145 = redactedForWiFi5;
         v345 = 138545666;
         v146 = "no";
         if (v286)
@@ -8268,23 +8268,23 @@ LABEL_159:
           v146 = "yes";
         }
 
-        v346 = v144;
+        v346 = redactedForWiFi5;
         v347 = 2082;
         v348 = v146;
         v349 = 2082;
         v350 = v130;
         v351 = 2114;
-        v352 = v306;
+        v352 = orderedSet22;
         v353 = 2114;
-        v354 = v305;
+        v354 = orderedSet23;
         v355 = 2114;
-        v356 = v290;
+        v356 = orderedSet24;
         v357 = 2114;
-        v358 = v304;
+        v358 = orderedSet26;
         v359 = 2114;
-        v360 = v303;
+        v360 = orderedSet27;
         v361 = 2114;
-        v362 = v289;
+        v362 = orderedSet28;
         v363 = 2114;
         v364 = v131;
         LODWORD(v260) = 102;
@@ -8314,112 +8314,112 @@ LABEL_159:
   v162 = v268 > 1;
 LABEL_197:
 
-  if ([v280 count] || objc_msgSend(v273, "count") || objc_msgSend(v272, "count"))
+  if ([orderedSet15 count] || objc_msgSend(orderedSet16, "count") || objc_msgSend(orderedSet17, "count"))
   {
-    [(CWFAutoJoinMetric *)v312->_metric setDidUseLocationOptimizedChannelList:1, v256, v260];
+    [(CWFAutoJoinMetric *)selfCopy->_metric setDidUseLocationOptimizedChannelList:1, v256, v260];
   }
 
-  v163 = v312;
+  v163 = selfCopy;
   objc_sync_enter(v163);
-  v164 = [v163[19] parameters];
-  v165 = [v164 mode];
+  parameters = [v163[19] parameters];
+  mode = [parameters mode];
 
   objc_sync_exit(v163);
-  LODWORD(v164) = [v316 BSSChannelsOnly];
-  v166 = [v280 array];
-  [v285 addObjectsFromArray:v166];
+  LODWORD(parameters) = [v316 BSSChannelsOnly];
+  array10 = [orderedSet15 array];
+  [orderedSet10 addObjectsFromArray:array10];
 
-  if (!v164)
+  if (!parameters)
   {
-    v174 = [v273 array];
-    [v285 addObjectsFromArray:v174];
+    array11 = [orderedSet16 array];
+    [orderedSet10 addObjectsFromArray:array11];
 
-    v175 = [v272 array];
-    [v285 addObjectsFromArray:v175];
+    array12 = [orderedSet17 array];
+    [orderedSet10 addObjectsFromArray:array12];
 
-    v176 = [v277 array];
-    [v285 addObjectsFromArray:v176];
+    array13 = [orderedSet12 array];
+    [orderedSet10 addObjectsFromArray:array13];
 
-    v177 = [v269 array];
-    [v285 addObjectsFromArray:v177];
+    array14 = [orderedSet13 array];
+    [orderedSet10 addObjectsFromArray:array14];
 
-    v168 = [v270 array];
-    [v285 addObjectsFromArray:v168];
+    array15 = [orderedSet14 array];
+    [orderedSet10 addObjectsFromArray:array15];
     goto LABEL_208;
   }
 
-  v167 = [v277 array];
-  [v285 addObjectsFromArray:v167];
+  array16 = [orderedSet12 array];
+  [orderedSet10 addObjectsFromArray:array16];
 
-  if (![v285 count])
+  if (![orderedSet10 count])
   {
-    v168 = [MEMORY[0x1E695DFA0] orderedSet];
-    v169 = [v272 array];
-    [v168 addObjectsFromArray:v169];
+    array15 = [MEMORY[0x1E695DFA0] orderedSet];
+    array17 = [orderedSet17 array];
+    [array15 addObjectsFromArray:array17];
 
-    v170 = [v270 array];
-    [v168 addObjectsFromArray:v170];
+    array18 = [orderedSet14 array];
+    [array15 addObjectsFromArray:array18];
 
-    v171 = [v168 array];
-    v172 = [v168 count];
+    v168Array = [array15 array];
+    v172 = [array15 count];
     if (v172 >= [v316 maxBSSChannelCount])
     {
-      v173 = [v316 maxBSSChannelCount];
+      maxBSSChannelCount2 = [v316 maxBSSChannelCount];
     }
 
     else
     {
-      v173 = [v168 count];
+      maxBSSChannelCount2 = [array15 count];
     }
 
-    v178 = [v171 subarrayWithRange:{0, v173, v256, v260}];
-    [v285 addObjectsFromArray:v178];
+    v178 = [v168Array subarrayWithRange:{0, maxBSSChannelCount2, v256, v260}];
+    [orderedSet10 addObjectsFromArray:v178];
 
 LABEL_208:
   }
 
   if (([v316 BSSChannelsOnly] & 1) == 0)
   {
-    v179 = [v308 array];
-    [v281 addObjectsFromArray:v179];
+    array19 = [orderedSet array];
+    [orderedSet11 addObjectsFromArray:array19];
 
-    v180 = [v293 array];
-    [v281 addObjectsFromArray:v180];
+    array20 = [orderedSet2 array];
+    [orderedSet11 addObjectsFromArray:array20];
 
-    v181 = [v297 array];
-    [v281 addObjectsFromArray:v181];
+    array21 = [orderedSet3 array];
+    [orderedSet11 addObjectsFromArray:array21];
 
-    v182 = [v296 array];
-    [v281 addObjectsFromArray:v182];
+    array22 = [orderedSet4 array];
+    [orderedSet11 addObjectsFromArray:array22];
 
     if ([v316 include6GHzChannels])
     {
       if (_os_feature_enabled_impl())
       {
-        v183 = [v292 array];
-        [v281 addObjectsFromArray:v183];
+        array23 = [orderedSet5 array];
+        [orderedSet11 addObjectsFromArray:array23];
 
         if (_os_feature_enabled_impl())
         {
-          v184 = [v291 array];
-          [v281 addObjectsFromArray:v184];
+          array24 = [orderedSet6 array];
+          [orderedSet11 addObjectsFromArray:array24];
         }
       }
     }
 
-    v185 = [v295 array];
-    [v281 addObjectsFromArray:v185];
+    array25 = [orderedSet7 array];
+    [orderedSet11 addObjectsFromArray:array25];
 
-    [v281 minusOrderedSet:v285];
+    [orderedSet11 minusOrderedSet:orderedSet10];
   }
 
-  v186 = [v266 array];
-  [v278 addObjectsFromArray:v186];
+  array26 = [orderedSet20 array];
+  [orderedSet18 addObjectsFromArray:array26];
 
-  v187 = [v265 array];
-  [v278 addObjectsFromArray:v187];
+  array27 = [orderedSet19 array];
+  [orderedSet18 addObjectsFromArray:array27];
 
-  if (v165 == 1 && v162)
+  if (mode == 1 && v162)
   {
     v188 = CWFGetOSLog();
     if (v188)
@@ -8446,23 +8446,23 @@ LABEL_208:
     [v163[25] setDidDetectColocatedNetworkEnvironment:1];
   }
 
-  v191 = [v285 array];
-  v192 = [v191 copy];
+  array28 = [orderedSet10 array];
+  v192 = [array28 copy];
   [v316 setRecentChannelList:v192];
 
-  v193 = [v281 array];
-  v194 = [v193 copy];
+  array29 = [orderedSet11 array];
+  v194 = [array29 copy];
   [v316 setRemainingChannelList:v194];
 
-  v195 = [v316 autoJoinParameters];
-  if ([v195 trigger] != 32)
+  autoJoinParameters5 = [v316 autoJoinParameters];
+  if ([autoJoinParameters5 trigger] != 32)
   {
-    v197 = [v316 autoJoinParameters];
-    if ([v197 trigger] == 47)
+    autoJoinParameters6 = [v316 autoJoinParameters];
+    if ([autoJoinParameters6 trigger] == 47)
     {
-      v198 = [v316 BSSChannelsOnly];
+      bSSChannelsOnly = [v316 BSSChannelsOnly];
 
-      if ((v198 & 1) == 0)
+      if ((bSSChannelsOnly & 1) == 0)
       {
         goto LABEL_265;
       }
@@ -8473,15 +8473,15 @@ LABEL_208:
     goto LABEL_263;
   }
 
-  v196 = [v316 BSSChannelsOnly];
+  bSSChannelsOnly2 = [v316 BSSChannelsOnly];
 
-  if (!v196)
+  if (!bSSChannelsOnly2)
   {
     goto LABEL_265;
   }
 
 LABEL_227:
-  v199 = [v300 count];
+  v199 = [orderedSet9 count];
   v200 = CWFGetOSLog();
   if (v200)
   {
@@ -8505,7 +8505,7 @@ LABEL_227:
 
   if (v199 == 1)
   {
-    v195 = [v300 firstObject];
+    autoJoinParameters5 = [orderedSet9 firstObject];
     v203 = CWFGetOSLog();
     if (v203)
     {
@@ -8520,30 +8520,30 @@ LABEL_227:
 
     if (os_log_type_enabled(v204, OS_LOG_TYPE_DEFAULT))
     {
-      v206 = [v195 channel];
+      channel4 = [autoJoinParameters5 channel];
       v345 = 134217984;
-      v346 = v206;
+      v346 = channel4;
       LODWORD(v263) = 12;
       v259 = &v345;
       _os_log_send_and_compose_impl();
     }
 
-    if ([v195 band] == 2)
+    if ([autoJoinParameters5 band] == 2)
     {
       if (![v316 includeAdjacent5GHzChannel])
       {
         goto LABEL_262;
       }
 
-      v207 = [v195 channel];
+      channel5 = [autoJoinParameters5 channel];
       v208 = 4;
-      if (v207 > 148)
+      if (channel5 > 148)
       {
-        if (v207 > 156)
+        if (channel5 > 156)
         {
-          if (v207 != 157)
+          if (channel5 != 157)
           {
-            if (v207 != 161)
+            if (channel5 != 161)
             {
               goto LABEL_262;
             }
@@ -8552,12 +8552,12 @@ LABEL_227:
           }
 
 LABEL_255:
-          v209 = [v195 channel] + v208;
+          v209 = [autoJoinParameters5 channel] + v208;
           if (v209)
           {
-            v210 = [v195 copy];
+            v210 = [autoJoinParameters5 copy];
             [v210 setChannel:v209];
-            [v300 addObject:v210];
+            [orderedSet9 addObject:v210];
             v211 = CWFGetOSLog();
             if (v211)
             {
@@ -8583,12 +8583,12 @@ LABEL_255:
 
         else
         {
-          if (v207 == 149)
+          if (channel5 == 149)
           {
             goto LABEL_255;
           }
 
-          if (v207 == 153)
+          if (channel5 == 153)
           {
             goto LABEL_254;
           }
@@ -8597,11 +8597,11 @@ LABEL_255:
 
       else
       {
-        if (v207 <= 43)
+        if (channel5 <= 43)
         {
-          if (v207 != 36)
+          if (channel5 != 36)
           {
-            if (v207 != 40)
+            if (channel5 != 40)
             {
               goto LABEL_262;
             }
@@ -8613,20 +8613,20 @@ LABEL_254:
           goto LABEL_255;
         }
 
-        if (v207 == 44)
+        if (channel5 == 44)
         {
           goto LABEL_255;
         }
 
-        if (v207 == 48)
+        if (channel5 == 48)
         {
           goto LABEL_254;
         }
       }
 
 LABEL_262:
-      v197 = [v300 array];
-      v214 = [v197 copy];
+      autoJoinParameters6 = [orderedSet9 array];
+      v214 = [autoJoinParameters6 copy];
       [v316 setRecentChannelList:v214];
 
 LABEL_263:
@@ -8636,10 +8636,10 @@ LABEL_263:
 LABEL_265:
   if (([v316 passiveScan] & 1) == 0)
   {
-    if ([v278 count])
+    if ([orderedSet18 count])
     {
-      v215 = [v278 array];
-      [v316 setSSIDList:v215];
+      array30 = [orderedSet18 array];
+      [v316 setSSIDList:array30];
     }
 
     else
@@ -8650,8 +8650,8 @@ LABEL_265:
 
   if ([v271 count])
   {
-    v216 = [v271 allObjects];
-    [v316 setANQPElementIDList:v216];
+    allObjects2 = [v271 allObjects];
+    [v316 setANQPElementIDList:allObjects2];
   }
 
   else
@@ -8659,25 +8659,25 @@ LABEL_265:
     [v316 setANQPElementIDList:0];
   }
 
-  v217 = [v163[25] channelList];
-  v218 = v217 == 0;
+  channelList = [v163[25] channelList];
+  v218 = channelList == 0;
 
   if (v218)
   {
-    v219 = [v300 array];
+    array31 = [orderedSet9 array];
     v221 = v163[25];
     v220 = v163 + 25;
-    [v221 setPreferredChannelList:v219];
+    [v221 setPreferredChannelList:array31];
 
-    v222 = [v316 recentChannelList];
-    [*v220 setRecentChannelList:v222];
+    recentChannelList = [v316 recentChannelList];
+    [*v220 setRecentChannelList:recentChannelList];
 
-    v223 = [v316 remainingChannelList];
-    [*v220 setRemainingChannelList:v223];
+    remainingChannelList = [v316 remainingChannelList];
+    [*v220 setRemainingChannelList:remainingChannelList];
 
-    v224 = [v316 recentChannelList];
-    v225 = [v316 remainingChannelList];
-    v226 = [v224 arrayByAddingObjectsFromArray:v225];
+    recentChannelList2 = [v316 recentChannelList];
+    remainingChannelList2 = [v316 remainingChannelList];
+    v226 = [recentChannelList2 arrayByAddingObjectsFromArray:remainingChannelList2];
     [*v220 setChannelList:v226];
   }
 
@@ -8695,10 +8695,10 @@ LABEL_265:
 
   if (os_log_type_enabled(v228, OS_LOG_TYPE_DEFAULT))
   {
-    v230 = [v316 SSIDList];
-    v231 = [v230 count];
-    v232 = [v316 SSIDList];
-    v233 = [v232 componentsJoinedByString:{@", "}];
+    sSIDList = [v316 SSIDList];
+    v231 = [sSIDList count];
+    sSIDList2 = [v316 SSIDList];
+    v233 = [sSIDList2 componentsJoinedByString:{@", "}];
     v345 = 134218242;
     v346 = v231;
     v347 = 2114;
@@ -8720,10 +8720,10 @@ LABEL_265:
 
   if (os_log_type_enabled(v235, OS_LOG_TYPE_DEFAULT))
   {
-    v237 = [v316 ANQPElementIDList];
-    v238 = [v237 count];
-    v239 = [v316 ANQPElementIDList];
-    v240 = [v239 componentsJoinedByString:{@", "}];
+    aNQPElementIDList = [v316 ANQPElementIDList];
+    v238 = [aNQPElementIDList count];
+    aNQPElementIDList2 = [v316 ANQPElementIDList];
+    v240 = [aNQPElementIDList2 componentsJoinedByString:{@", "}];
     v345 = 134218242;
     v346 = v238;
     v347 = 2114;
@@ -8745,10 +8745,10 @@ LABEL_265:
 
   if (os_log_type_enabled(v242, OS_LOG_TYPE_DEFAULT))
   {
-    v244 = [v316 recentChannelList];
-    v245 = [v244 count];
-    v246 = [v316 recentChannelList];
-    v247 = [v246 componentsJoinedByString:{@", "}];
+    recentChannelList3 = [v316 recentChannelList];
+    v245 = [recentChannelList3 count];
+    recentChannelList4 = [v316 recentChannelList];
+    v247 = [recentChannelList4 componentsJoinedByString:{@", "}];
     v345 = 134218242;
     v346 = v245;
     v347 = 2114;
@@ -8770,10 +8770,10 @@ LABEL_265:
 
   if (os_log_type_enabled(v249, OS_LOG_TYPE_DEFAULT))
   {
-    v251 = [v316 remainingChannelList];
-    v252 = [v251 count];
-    v253 = [v316 remainingChannelList];
-    v254 = [v253 componentsJoinedByString:{@", "}];
+    remainingChannelList3 = [v316 remainingChannelList];
+    v252 = [remainingChannelList3 count];
+    remainingChannelList4 = [v316 remainingChannelList];
+    v254 = [remainingChannelList4 componentsJoinedByString:{@", "}];
     v345 = 134218242;
     v346 = v252;
     v347 = 2114;
@@ -8785,28 +8785,28 @@ LABEL_265:
   v255 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__cachedScanResultsWithChannelList:(id)a3 context:(id)a4
+- (id)__cachedScanResultsWithChannelList:(id)list context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  listCopy = list;
   LOWORD(v19) = 0;
-  v8 = -[CWFAutoJoinManager __performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:](self, "__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:", v7, 0, 0, 0, [v6 maxScanCacheAge], 1, v19, 0);
+  v8 = -[CWFAutoJoinManager __performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:](self, "__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:", listCopy, 0, 0, 0, [contextCopy maxScanCacheAge], 1, v19, 0);
 
   if ([v8 count])
   {
     v9 = [MEMORY[0x1E695DFA8] set];
-    v10 = [v6 ANQPElementIDList];
-    v11 = [v10 count];
+    aNQPElementIDList = [contextCopy ANQPElementIDList];
+    v11 = [aNQPElementIDList count];
 
     if (v11)
     {
       v12 = [(CWFAutoJoinManager *)self __passpointScanResults:v8];
       if ([v12 count])
       {
-        v13 = [v6 ANQPElementIDList];
-        v14 = [v6 maxANQPCacheAge];
-        v15 = [v6 autoJoinParameters];
-        v16 = -[CWFAutoJoinManager __performGASQueryWithScanResults:ANQPElementIDList:maxCacheAge:cacheOnly:error:](self, "__performGASQueryWithScanResults:ANQPElementIDList:maxCacheAge:cacheOnly:error:", v12, v13, v14, [v15 mode] == 3, 0);
+        aNQPElementIDList2 = [contextCopy ANQPElementIDList];
+        maxANQPCacheAge = [contextCopy maxANQPCacheAge];
+        autoJoinParameters = [contextCopy autoJoinParameters];
+        v16 = -[CWFAutoJoinManager __performGASQueryWithScanResults:ANQPElementIDList:maxCacheAge:cacheOnly:error:](self, "__performGASQueryWithScanResults:ANQPElementIDList:maxCacheAge:cacheOnly:error:", v12, aNQPElementIDList2, maxANQPCacheAge, [autoJoinParameters mode] == 3, 0);
 
         if (v16)
         {
@@ -8829,16 +8829,16 @@ LABEL_265:
     v9 = 0;
   }
 
-  v17 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
 - (BOOL)__hasJoinedAnyKnownNetworkSinceBoot
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasJoinedAnyKnownNetworkSinceBoot)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasJoinedAnyKnownNetworkSinceBoot)
   {
     hasJoinedAnyKnownNetworkSinceBoot = 1;
   }
@@ -8846,41 +8846,41 @@ LABEL_265:
   else
   {
     v4 = CWFGetBootTime();
-    knownNetworks = v2->_knownNetworks;
+    knownNetworks = selfCopy->_knownNetworks;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1E0C7BD14;
     v8[3] = &unk_1E86E77A8;
     v6 = v4;
     v9 = v6;
-    v10 = v2;
+    v10 = selfCopy;
     [(NSSet *)knownNetworks enumerateObjectsUsingBlock:v8];
 
-    hasJoinedAnyKnownNetworkSinceBoot = v2->_hasJoinedAnyKnownNetworkSinceBoot;
+    hasJoinedAnyKnownNetworkSinceBoot = selfCopy->_hasJoinedAnyKnownNetworkSinceBoot;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return hasJoinedAnyKnownNetworkSinceBoot & 1;
 }
 
-- (id)__performPreAssociationScanWithContext:(id)a3 network:(id)a4
+- (id)__performPreAssociationScanWithContext:(id)context network:(id)network
 {
   v248[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v186 = a4;
-  v7 = [v186 matchingKnownNetworkProfile];
-  v208 = [MEMORY[0x1E695DFA0] orderedSet];
-  v195 = [MEMORY[0x1E695DFA0] orderedSet];
+  contextCopy = context;
+  networkCopy = network;
+  matchingKnownNetworkProfile = [networkCopy matchingKnownNetworkProfile];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"channel" ascending:1];
-  v211 = self;
-  v9 = [(CWFAutoJoinManager *)self supportedChannels];
+  selfCopy = self;
+  supportedChannels = [(CWFAutoJoinManager *)self supportedChannels];
   v182 = v8;
   v248[0] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v248 count:1];
-  v11 = [v9 sortedArrayUsingDescriptors:v10];
+  v11 = [supportedChannels sortedArrayUsingDescriptors:v10];
 
-  v196 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet3 = [MEMORY[0x1E695DFA0] orderedSet];
   v220 = 0u;
   v221 = 0u;
   v222 = 0u;
@@ -8901,16 +8901,16 @@ LABEL_265:
         }
 
         v16 = *(*(&v220 + 1) + 8 * i);
-        v17 = [(CWFAutoJoinManager *)v211 __basicChannelRepresentation:v16];
-        [v208 addObject:v17];
+        v17 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v16];
+        [orderedSet addObject:v17];
         if ([v16 is6GHzPSC])
         {
-          [v196 addObject:v17];
+          [orderedSet3 addObject:v17];
         }
 
         if (([v16 is6GHz] & 1) == 0)
         {
-          [v195 addObject:v17];
+          [orderedSet2 addObject:v17];
         }
       }
 
@@ -8920,41 +8920,41 @@ LABEL_265:
     while (v13);
   }
 
-  v187 = [MEMORY[0x1E695DFA0] orderedSet];
-  v190 = [MEMORY[0x1E695DFA0] orderedSet];
-  v189 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet4 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet5 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet6 = [MEMORY[0x1E695DFA0] orderedSet];
   v18 = [MEMORY[0x1E695DFA8] set];
-  v19 = [(CWFAutoJoinManager *)v211 location];
+  location = [(CWFAutoJoinManager *)selfCopy location];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v21 = v20;
-  v22 = [v186 channel];
-  v23 = [(CWFAutoJoinManager *)v211 __basicChannelRepresentation:v22];
+  channel = [networkCopy channel];
+  v23 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:channel];
 
-  v24 = [(CWFAutoJoinMetric *)v211->_metric scanChannels];
-  [v18 addObjectsFromArray:v24];
+  scanChannels = [(CWFAutoJoinMetric *)selfCopy->_metric scanChannels];
+  [v18 addObjectsFromArray:scanChannels];
 
-  v25 = [(CWFAutoJoinMetric *)v211->_metric preAssociationScanChannels];
-  [v18 addObjectsFromArray:v25];
+  preAssociationScanChannels = [(CWFAutoJoinMetric *)selfCopy->_metric preAssociationScanChannels];
+  [v18 addObjectsFromArray:preAssociationScanChannels];
 
-  v26 = [(CWFAutoJoinMetric *)v211->_metric followup6GHzScanChannels];
+  followup6GHzScanChannels = [(CWFAutoJoinMetric *)selfCopy->_metric followup6GHzScanChannels];
   v185 = v18;
-  [v18 addObjectsFromArray:v26];
+  [v18 addObjectsFromArray:followup6GHzScanChannels];
 
-  v27 = (clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - v211->_beginTimestamp) / 0xF4240;
-  v198 = v6;
-  v199 = v19;
+  v27 = (clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - selfCopy->_beginTimestamp) / 0xF4240;
+  v198 = contextCopy;
+  v199 = location;
   v183 = v23;
   v179 = v27;
-  if (v23 && [v186 age] > v27 && (objc_msgSend(v18, "containsObject:", v23) & 1) == 0)
+  if (v23 && [networkCopy age] > v27 && (objc_msgSend(v18, "containsObject:", v23) & 1) == 0)
   {
     v102 = MEMORY[0x1E696AEC0];
-    v103 = [v186 shortSSID];
-    v104 = [v186 BSSID];
-    v105 = [v186 channel];
-    v106 = [v102 stringWithFormat:@"%lu/%@/%lu", v103, v104, objc_msgSend(v105, "channel")];
+    shortSSID = [networkCopy shortSSID];
+    bSSID = [networkCopy BSSID];
+    channel2 = [networkCopy channel];
+    v106 = [v102 stringWithFormat:@"%lu/%@/%lu", shortSSID, bSSID, objc_msgSend(channel2, "channel")];
 
-    v107 = [(NSMutableDictionary *)v211->_followup6GHzRNRMap objectForKeyedSubscript:v106];
-    v108 = [(NSMutableDictionary *)v211->_followup6GHzFILSDMap objectForKeyedSubscript:v106];
+    v107 = [(NSMutableDictionary *)selfCopy->_followup6GHzRNRMap objectForKeyedSubscript:v106];
+    v108 = [(NSMutableDictionary *)selfCopy->_followup6GHzFILSDMap objectForKeyedSubscript:v106];
     if (!(v107 | v108))
     {
       v109 = CWFGetOSLog();
@@ -8971,13 +8971,13 @@ LABEL_265:
 
       if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
       {
-        v167 = [v7 identifier];
-        v168 = [v167 redactedForWiFi];
-        v169 = [v186 age];
+        identifier = [matchingKnownNetworkProfile identifier];
+        redactedForWiFi = [identifier redactedForWiFi];
+        v169 = [networkCopy age];
         v224 = 138544130;
         v225 = v183;
         v226 = 2114;
-        v227 = v168;
+        v227 = redactedForWiFi;
         v228 = 2048;
         v229 = v169;
         v230 = 2048;
@@ -8987,25 +8987,25 @@ LABEL_265:
         _os_log_send_and_compose_impl();
       }
 
-      [v187 addObject:v183];
-      v19 = v199;
+      [orderedSet4 addObject:v183];
+      location = v199;
     }
 
     v184 = 0;
-    v6 = v198;
+    contextCopy = v198;
   }
 
   else
   {
-    v184 = [MEMORY[0x1E695DFA0] orderedSetWithObject:v186];
+    v184 = [MEMORY[0x1E695DFA0] orderedSetWithObject:networkCopy];
   }
 
-  v28 = [v7 BSSList];
+  bSSList = [matchingKnownNetworkProfile BSSList];
   v180 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastAssociatedAt" ascending:0];
   v246 = v180;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v246 count:1];
-  v181 = v28;
-  v30 = [v28 sortedArrayUsingDescriptors:v29];
+  v181 = bSSList;
+  v30 = [bSSList sortedArrayUsingDescriptors:v29];
 
   v218 = 0u;
   v219 = 0u;
@@ -9018,7 +9018,7 @@ LABEL_265:
     v209 = 0;
     v188 = 0;
     v200 = *v217;
-    v31 = v208;
+    v31 = orderedSet;
     while (1)
     {
       v32 = 0;
@@ -9030,34 +9030,34 @@ LABEL_265:
         }
 
         v33 = *(*(&v216 + 1) + 8 * v32);
-        if (![v6 maxBSSChannelAge] || (objc_msgSend(v33, "lastAssociatedAt"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "timeIntervalSinceReferenceDate"), v36 = v21 - v35, v37 = objc_msgSend(v6, "maxBSSChannelAge"), v34, v36 <= v37))
+        if (![contextCopy maxBSSChannelAge] || (objc_msgSend(v33, "lastAssociatedAt"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "timeIntervalSinceReferenceDate"), v36 = v21 - v35, v37 = objc_msgSend(contextCopy, "maxBSSChannelAge"), v34, v36 <= v37))
         {
-          if ([v6 maxBSSChannelCount] && v209 >= objc_msgSend(v6, "maxBSSChannelCount"))
+          if ([contextCopy maxBSSChannelCount] && v209 >= objc_msgSend(contextCopy, "maxBSSChannelCount"))
           {
             goto LABEL_93;
           }
 
-          v38 = [v33 location];
+          location2 = [v33 location];
           v39 = 0;
-          v205 = v38;
-          if (v19 && v38)
+          v205 = location2;
+          if (location && location2)
           {
-            [v19 horizontalAccuracy];
+            [location horizontalAccuracy];
             if (v40 < 0.0)
             {
               goto LABEL_32;
             }
 
-            [v19 horizontalAccuracy];
+            [location horizontalAccuracy];
             v42 = v41;
-            [v6 minBSSLocationAccuracy];
+            [contextCopy minBSSLocationAccuracy];
             if (v42 > v43)
             {
               goto LABEL_32;
             }
 
             [v205 horizontalAccuracy];
-            if (v44 >= 0.0 && ([v205 horizontalAccuracy], v46 = v45, objc_msgSend(v6, "minBSSLocationAccuracy"), v46 <= v47) && (objc_msgSend(v205, "distanceFromLocation:", v19), v49 = v48, objc_msgSend(v6, "maxBSSLocationDistance"), v49 <= v50))
+            if (v44 >= 0.0 && ([v205 horizontalAccuracy], v46 = v45, objc_msgSend(contextCopy, "minBSSLocationAccuracy"), v46 <= v47) && (objc_msgSend(v205, "distanceFromLocation:", location), v49 = v48, objc_msgSend(contextCopy, "maxBSSLocationDistance"), v49 <= v50))
             {
               v39 = 1;
               v188 = 1;
@@ -9070,22 +9070,22 @@ LABEL_32:
             }
           }
 
-          v51 = [v33 channel];
-          v52 = [v51 copy];
+          channel3 = [v33 channel];
+          v52 = [channel3 copy];
 
           v204 = v52;
           if (v52)
           {
-            v53 = [MEMORY[0x1E695DF70] array];
-            v54 = [(CWFAutoJoinManager *)v211 __basicChannelRepresentation:v52];
+            array = [MEMORY[0x1E695DF70] array];
+            v54 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v52];
             v55 = v54;
             if ([v54 is6GHz])
             {
-              v56 = [v33 colocated2GHzRNRChannel];
-              v202 = v56;
-              if (v56)
+              colocated2GHzRNRChannel = [v33 colocated2GHzRNRChannel];
+              v202 = colocated2GHzRNRChannel;
+              if (colocated2GHzRNRChannel)
               {
-                v191 = [(CWFAutoJoinManager *)v211 __basicChannelRepresentation:v56];
+                v191 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:colocated2GHzRNRChannel];
                 v57 = CWFGetOSLog();
                 if (v57)
                 {
@@ -9100,14 +9100,14 @@ LABEL_32:
 
                 if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
                 {
-                  v60 = [v7 identifier];
-                  v61 = [v60 redactedForWiFi];
+                  identifier2 = [matchingKnownNetworkProfile identifier];
+                  redactedForWiFi2 = [identifier2 redactedForWiFi];
                   v224 = 138543874;
                   v225 = v191;
                   v226 = 2114;
                   v227 = v55;
                   v228 = 2114;
-                  v229 = v61;
+                  v229 = redactedForWiFi2;
                   LODWORD(v176) = 32;
                   v171 = &v224;
                   _os_log_send_and_compose_impl();
@@ -9115,14 +9115,14 @@ LABEL_32:
                   v54 = v55;
                 }
 
-                [v53 addObject:v191];
-                v56 = v202;
+                [array addObject:v191];
+                colocated2GHzRNRChannel = v202;
               }
 
-              v62 = [v33 colocated5GHzRNRChannel];
-              if (v62)
+              colocated5GHzRNRChannel = [v33 colocated5GHzRNRChannel];
+              if (colocated5GHzRNRChannel)
               {
-                v192 = [(CWFAutoJoinManager *)v211 __basicChannelRepresentation:v62];
+                v192 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:colocated5GHzRNRChannel];
                 v63 = CWFGetOSLog();
                 if (v63)
                 {
@@ -9137,14 +9137,14 @@ LABEL_32:
 
                 if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                 {
-                  v66 = [v7 identifier];
-                  v67 = [v66 redactedForWiFi];
+                  identifier3 = [matchingKnownNetworkProfile identifier];
+                  redactedForWiFi3 = [identifier3 redactedForWiFi];
                   v224 = 138543874;
                   v225 = v192;
                   v226 = 2114;
                   v227 = v55;
                   v228 = 2114;
-                  v229 = v67;
+                  v229 = redactedForWiFi3;
                   LODWORD(v176) = 32;
                   v171 = &v224;
                   _os_log_send_and_compose_impl();
@@ -9152,14 +9152,14 @@ LABEL_32:
                   v54 = v55;
                 }
 
-                [v53 addObject:v192];
-                v56 = v202;
+                [array addObject:v192];
+                colocated2GHzRNRChannel = v202;
               }
             }
 
             else
             {
-              [v53 addObject:v54];
+              [array addObject:v54];
             }
 
             v203 = v32;
@@ -9167,16 +9167,16 @@ LABEL_32:
             v215 = 0u;
             v212 = 0u;
             v213 = 0u;
-            v68 = v53;
+            v68 = array;
             v69 = [v68 countByEnumeratingWithState:&v212 objects:v244 count:16];
             if (v69)
             {
               v70 = v69;
               v71 = *v213;
-              v72 = v190;
+              v72 = orderedSet5;
               if (v39)
               {
-                v72 = v189;
+                v72 = orderedSet6;
               }
 
               v206 = v72;
@@ -9207,9 +9207,9 @@ LABEL_32:
 
                     if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
                     {
-                      v80 = [v7 identifier];
-                      [v80 redactedForWiFi];
-                      v82 = v81 = v7;
+                      identifier4 = [matchingKnownNetworkProfile identifier];
+                      [identifier4 redactedForWiFi];
+                      v82 = v81 = matchingKnownNetworkProfile;
                       v224 = 138543618;
                       v225 = v82;
                       v226 = 2114;
@@ -9218,8 +9218,8 @@ LABEL_32:
                       v171 = &v224;
                       _os_log_send_and_compose_impl();
 
-                      v7 = v81;
-                      v31 = v208;
+                      matchingKnownNetworkProfile = v81;
+                      v31 = orderedSet;
                     }
 
                     goto LABEL_71;
@@ -9247,10 +9247,10 @@ LABEL_32:
                       }
 
 LABEL_83:
-                      v193 = [v7 identifier];
-                      v87 = [v193 redactedForWiFi];
+                      identifier5 = [matchingKnownNetworkProfile identifier];
+                      redactedForWiFi4 = [identifier5 redactedForWiFi];
                       v224 = 138543618;
-                      v225 = v87;
+                      v225 = redactedForWiFi4;
                       v226 = 2114;
                       v227 = v74;
                       LODWORD(v176) = 22;
@@ -9283,8 +9283,8 @@ LABEL_83:
                     }
                   }
 
-                  v75 = [(CWFAutoJoinMetric *)v211->_metric scanChannels];
-                  v76 = [v75 containsObject:v74];
+                  scanChannels2 = [(CWFAutoJoinMetric *)selfCopy->_metric scanChannels];
+                  v76 = [scanChannels2 containsObject:v74];
 
                   if (v76)
                   {
@@ -9310,8 +9310,8 @@ LABEL_72:
               while (v88);
             }
 
-            v6 = v198;
-            v19 = v199;
+            contextCopy = v198;
+            location = v199;
             v32 = v203;
           }
         }
@@ -9330,35 +9330,35 @@ LABEL_72:
   }
 
   v188 = 0;
-  v31 = v208;
+  v31 = orderedSet;
 LABEL_93:
 
-  v90 = [v189 array];
-  [v187 addObjectsFromArray:v90];
+  array2 = [orderedSet6 array];
+  [orderedSet4 addObjectsFromArray:array2];
 
-  v91 = [v190 array];
-  [v187 addObjectsFromArray:v91];
+  array3 = [orderedSet5 array];
+  [orderedSet4 addObjectsFromArray:array3];
 
-  v92 = [v7 networkName];
-  if (!v92 || ([v7 isPasspoint] & 1) != 0)
+  networkName = [matchingKnownNetworkProfile networkName];
+  if (!networkName || ([matchingKnownNetworkProfile isPasspoint] & 1) != 0)
   {
     goto LABEL_95;
   }
 
-  if ([v7 hiddenState] == 2)
+  if ([matchingKnownNetworkProfile hiddenState] == 2)
   {
-    v94 = [v7 wasHiddenBefore];
-    if (!v94)
+    wasHiddenBefore = [matchingKnownNetworkProfile wasHiddenBefore];
+    if (!wasHiddenBefore)
     {
       goto LABEL_95;
     }
 
-    v95 = v94;
-    v96 = [v7 wasHiddenBefore];
-    [v96 timeIntervalSinceNow];
+    v95 = wasHiddenBefore;
+    wasHiddenBefore2 = [matchingKnownNetworkProfile wasHiddenBefore];
+    [wasHiddenBefore2 timeIntervalSinceNow];
     v98 = v97;
-    v99 = [v7 wasHiddenBefore];
-    [v99 timeIntervalSinceNow];
+    wasHiddenBefore3 = [matchingKnownNetworkProfile wasHiddenBefore];
+    [wasHiddenBefore3 timeIntervalSinceNow];
     v101 = v100;
 
     if (v98 < 0.0)
@@ -9380,7 +9380,7 @@ LABEL_95:
   }
 
 LABEL_105:
-  v93 = [MEMORY[0x1E695DEC8] arrayWithObject:{v92, v171}];
+  v93 = [MEMORY[0x1E695DEC8] arrayWithObject:{networkName, v171}];
 LABEL_106:
   v111 = CWFGetOSLog();
   if (v111)
@@ -9396,10 +9396,10 @@ LABEL_106:
 
   if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
   {
-    v207 = [v7 identifier];
-    v114 = [v207 redactedForWiFi];
+    identifier6 = [matchingKnownNetworkProfile identifier];
+    redactedForWiFi5 = [identifier6 redactedForWiFi];
     v115 = "no";
-    v210 = v92;
+    v210 = networkName;
     if (v188)
     {
       v116 = "yes";
@@ -9416,52 +9416,52 @@ LABEL_106:
     }
 
     v117 = v93;
-    v118 = [v6 maxBSSChannelAge];
-    [v6 minBSSLocationAccuracy];
+    maxBSSChannelAge = [contextCopy maxBSSChannelAge];
+    [contextCopy minBSSLocationAccuracy];
     v120 = v119;
-    [v6 maxBSSLocationDistance];
+    [contextCopy maxBSSLocationDistance];
     v122 = v121;
-    v123 = [v6 maxBSSChannelCount];
-    v124 = [v19 description];
+    maxBSSChannelCount = [contextCopy maxBSSChannelCount];
+    v124 = [location description];
     [v124 redactedSensitiveContentForWiFi];
-    v126 = v125 = v7;
+    v126 = v125 = matchingKnownNetworkProfile;
     v224 = 138545666;
-    v225 = v114;
+    v225 = redactedForWiFi5;
     v226 = 2082;
     v227 = v116;
-    v31 = v208;
+    v31 = orderedSet;
     v228 = 2082;
     v229 = v115;
     v230 = 2114;
-    v231 = v189;
+    v231 = orderedSet6;
     v232 = 2114;
-    v233 = v190;
+    v233 = orderedSet5;
     v234 = 2048;
-    v235 = v118;
+    v235 = maxBSSChannelAge;
     v93 = v117;
     v236 = 2048;
     v237 = v120;
     v238 = 2048;
     v239 = v122;
     v240 = 2048;
-    v241 = v123;
-    v6 = v198;
+    v241 = maxBSSChannelCount;
+    contextCopy = v198;
     v242 = 2114;
     v243 = v126;
     LODWORD(v176) = 102;
     v171 = &v224;
     _os_log_send_and_compose_impl();
 
-    v7 = v125;
-    v92 = v210;
+    matchingKnownNetworkProfile = v125;
+    networkName = v210;
 
-    v19 = v199;
+    location = v199;
   }
 
-  v127 = [v6 autoJoinParameters];
-  v128 = [v127 mode];
+  autoJoinParameters = [contextCopy autoJoinParameters];
+  mode = [autoJoinParameters mode];
 
-  if (v128 == 2)
+  if (mode == 2)
   {
     v129 = CWFGetOSLog();
     if (v129)
@@ -9483,24 +9483,24 @@ LABEL_106:
       _os_log_send_and_compose_impl();
     }
 
-    v132 = [v196 array];
-    [v187 addObjectsFromArray:v132];
+    array4 = [orderedSet3 array];
+    [orderedSet4 addObjectsFromArray:array4];
   }
 
-  v133 = v186;
-  v134 = [v186 matchingKnownNetworkProfile];
-  v135 = [v134 lastJoinedBySystemAt];
-  if (v135)
+  v133 = networkCopy;
+  matchingKnownNetworkProfile2 = [networkCopy matchingKnownNetworkProfile];
+  lastJoinedBySystemAt = [matchingKnownNetworkProfile2 lastJoinedBySystemAt];
+  if (lastJoinedBySystemAt)
   {
   }
 
   else
   {
-    v136 = [v186 matchingKnownNetworkProfile];
-    v137 = [v136 addReason];
+    matchingKnownNetworkProfile3 = [networkCopy matchingKnownNetworkProfile];
+    addReason = [matchingKnownNetworkProfile3 addReason];
 
-    v133 = v186;
-    if (v137 != 8)
+    v133 = networkCopy;
+    if (addReason != 8)
     {
       goto LABEL_133;
     }
@@ -9525,20 +9525,20 @@ LABEL_106:
       _os_log_send_and_compose_impl();
     }
 
-    v134 = [v195 array];
-    [v187 addObjectsFromArray:v134];
-    v133 = v186;
+    matchingKnownNetworkProfile2 = [orderedSet2 array];
+    [orderedSet4 addObjectsFromArray:matchingKnownNetworkProfile2];
+    v133 = networkCopy;
   }
 
 LABEL_133:
-  v141 = [v133 channel];
-  if ([v141 is6GHz])
+  channel4 = [v133 channel];
+  if ([channel4 is6GHz])
   {
-    v142 = [v133 matchingKnownNetworkProfile];
-    v143 = [v142 lastJoinedAt];
+    matchingKnownNetworkProfile4 = [v133 matchingKnownNetworkProfile];
+    lastJoinedAt = [matchingKnownNetworkProfile4 lastJoinedAt];
 
-    v133 = v186;
-    if (!v143)
+    v133 = networkCopy;
+    if (!lastJoinedAt)
     {
       v144 = CWFGetOSLog();
       if (v144)
@@ -9560,14 +9560,14 @@ LABEL_133:
         _os_log_send_and_compose_impl();
       }
 
-      v147 = [v195 array];
-      [v187 addObjectsFromArray:v147];
+      array5 = [orderedSet2 array];
+      [orderedSet4 addObjectsFromArray:array5];
 
-      v148 = [v196 array];
-      [v187 addObjectsFromArray:v148];
+      array6 = [orderedSet3 array];
+      [orderedSet4 addObjectsFromArray:array6];
 
-      [v6 setDidForceAllRemainingChannels:1];
-      v133 = v186;
+      [contextCopy setDidForceAllRemainingChannels:1];
+      v133 = networkCopy;
     }
   }
 
@@ -9575,9 +9575,9 @@ LABEL_133:
   {
   }
 
-  v149 = [v187 count];
-  [v187 minusSet:v185];
-  if ([v187 count])
+  v149 = [orderedSet4 count];
+  [orderedSet4 minusSet:v185];
+  if ([orderedSet4 count])
   {
     v150 = CWFGetOSLog();
     if (v150)
@@ -9598,46 +9598,46 @@ LABEL_133:
       _os_log_send_and_compose_impl();
     }
 
-    v156 = [v187 array];
-    BYTE1(v174) = [v6 skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
+    array7 = [orderedSet4 array];
+    BYTE1(v174) = [contextCopy skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
     LOBYTE(v174) = 1;
-    v154 = [(CWFAutoJoinManager *)v211 __performScanWithChannelList:v156 SSIDList:v93 passive:0 dwellTime:0 maxCacheAge:v179 cacheOnly:0 isPreAssociationScan:v174 checkForKnownNetworks:0 error:?];
+    v154 = [(CWFAutoJoinManager *)selfCopy __performScanWithChannelList:array7 SSIDList:v93 passive:0 dwellTime:0 maxCacheAge:v179 cacheOnly:0 isPreAssociationScan:v174 checkForKnownNetworks:0 error:?];
 
     if (v154)
     {
-      v157 = v184;
+      orderedSet7 = v184;
       if (!v184)
       {
-        v157 = [MEMORY[0x1E695DFA0] orderedSet];
+        orderedSet7 = [MEMORY[0x1E695DFA0] orderedSet];
       }
 
-      [v157 removeObjectsInArray:v154];
-      v184 = v157;
-      [v157 addObjectsFromArray:v154];
-      v158 = [v6 autoJoinParameters];
-      if ([v158 trigger] != 54)
+      [orderedSet7 removeObjectsInArray:v154];
+      v184 = orderedSet7;
+      [orderedSet7 addObjectsFromArray:v154];
+      autoJoinParameters2 = [contextCopy autoJoinParameters];
+      if ([autoJoinParameters2 trigger] != 54)
       {
-        v159 = [v6 autoJoinParameters];
-        v160 = [v159 trigger];
+        autoJoinParameters3 = [contextCopy autoJoinParameters];
+        trigger = [autoJoinParameters3 trigger];
 
-        if (v160 == 55)
+        if (trigger == 55)
         {
-          v133 = v186;
-          v19 = v199;
+          v133 = networkCopy;
+          location = v199;
           goto LABEL_170;
         }
 
-        v158 = [(CWFAutoJoinManager *)v211 __perform6GHzFollowupDiscoveryWithScanResults:v154 SSIDList:v93 dwellTime:0 context:v6 error:0];
-        v19 = v199;
-        if (v158)
+        autoJoinParameters2 = [(CWFAutoJoinManager *)selfCopy __perform6GHzFollowupDiscoveryWithScanResults:v154 SSIDList:v93 dwellTime:0 context:contextCopy error:0];
+        location = v199;
+        if (autoJoinParameters2)
         {
-          [v157 removeObjectsInArray:v158];
-          [v157 addObjectsFromArray:v158];
+          [orderedSet7 removeObjectsInArray:autoJoinParameters2];
+          [orderedSet7 addObjectsFromArray:autoJoinParameters2];
         }
       }
     }
 
-    v133 = v186;
+    v133 = networkCopy;
   }
 
   else
@@ -9691,17 +9691,17 @@ LABEL_133:
 
 LABEL_170:
 
-  v163 = [v184 array];
+  array8 = [v184 array];
 
   v164 = *MEMORY[0x1E69E9840];
 
-  return v163;
+  return array8;
 }
 
-- (BOOL)__discoverKnownNetworksWithContext:(id)a3 error:(id *)a4
+- (BOOL)__discoverKnownNetworksWithContext:(id)context error:(id *)error
 {
   v149 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = CWFGetOSLog();
   if (v6)
   {
@@ -9717,34 +9717,34 @@ LABEL_170:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v141 = 134218752;
-    v142 = [v5 maxScanCycles];
+    maxScanCycles = [contextCopy maxScanCycles];
     v143 = 2048;
-    v144 = [v5 maxScanChannelCount];
+    maxScanChannelCount = [contextCopy maxScanChannelCount];
     v145 = 2048;
-    v146 = [v5 maxScanSSIDCount];
+    maxScanSSIDCount = [contextCopy maxScanSSIDCount];
     v147 = 2048;
-    v148 = [v5 minRSSI];
+    minRSSI = [contextCopy minRSSI];
     LODWORD(v108) = 42;
     v106 = &v141;
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [v5 autoJoinParameters];
+  autoJoinParameters = [contextCopy autoJoinParameters];
   v138 = 0;
-  v10 = -[CWFAutoJoinManager __allowAutoJoinWithTrigger:error:](self, "__allowAutoJoinWithTrigger:error:", [v9 trigger], &v138);
+  v10 = -[CWFAutoJoinManager __allowAutoJoinWithTrigger:error:](self, "__allowAutoJoinWithTrigger:error:", [autoJoinParameters trigger], &v138);
   v11 = v138;
 
   if (!v10)
   {
-    v121 = 0;
-    v122 = 0;
+    array2 = 0;
+    array = 0;
     v21 = 0;
     v102 = 0;
     v12 = 0;
     v16 = 0;
     v35 = 0;
-    v101 = a4;
-    if (a4)
+    errorCopy2 = error;
+    if (error)
     {
       goto LABEL_115;
     }
@@ -9754,26 +9754,26 @@ LABEL_170:
 
   context = objc_autoreleasePoolPush();
   v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"channel" ascending:1];
-  v13 = [(CWFAutoJoinManager *)self supportedChannels];
+  supportedChannels = [(CWFAutoJoinManager *)self supportedChannels];
   v140 = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v140 count:1];
-  v15 = [v13 sortedArrayUsingDescriptors:v14];
+  v15 = [supportedChannels sortedArrayUsingDescriptors:v14];
 
   [(CWFAutoJoinManager *)self __updateAutoJoinState:2];
   v113 = v15;
-  if ([v5 cacheOnly])
+  if ([contextCopy cacheOnly])
   {
-    v16 = [(CWFAutoJoinManager *)self __cachedScanResultsWithChannelList:v15 context:v5];
+    v16 = [(CWFAutoJoinManager *)self __cachedScanResultsWithChannelList:v15 context:contextCopy];
     if ([v16 count])
     {
       v137 = v11;
-      v17 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:v16 allowPreAssociationScan:[(CWFAutoJoinManager *)self __shouldAllowPreAssocScan] context:v5 error:&v137];
+      v17 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:v16 allowPreAssociationScan:[(CWFAutoJoinManager *)self __shouldAllowPreAssocScan] context:contextCopy error:&v137];
       v18 = v137;
 
       if (v17)
       {
-        v121 = 0;
-        v122 = 0;
+        array2 = 0;
+        array = 0;
         v21 = 0;
         v35 = 1;
         v11 = v18;
@@ -9790,10 +9790,10 @@ LABEL_170:
   }
 
   [(CWFAutoJoinManager *)self __updateAutoJoinState:2, v106, v108];
-  if ([v5 cacheOnly])
+  if ([contextCopy cacheOnly])
   {
-    v121 = 0;
-    v122 = 0;
+    array2 = 0;
+    array = 0;
     v21 = 0;
     v35 = 0;
     goto LABEL_114;
@@ -9802,17 +9802,17 @@ LABEL_170:
   v110 = v16;
   v111 = v12;
   v19 = MEMORY[0x1E695DF70];
-  v20 = [v5 recentChannelList];
-  v21 = [v19 arrayWithArray:v20];
+  recentChannelList = [contextCopy recentChannelList];
+  v21 = [v19 arrayWithArray:recentChannelList];
 
-  v122 = [MEMORY[0x1E695DF70] array];
-  v121 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v22 = [v5 remainingChannelList];
-  v23 = [v22 countByEnumeratingWithState:&v133 objects:v139 count:16];
+  remainingChannelList = [contextCopy remainingChannelList];
+  v23 = [remainingChannelList countByEnumeratingWithState:&v133 objects:v139 count:16];
   if (v23)
   {
     v24 = v23;
@@ -9823,52 +9823,52 @@ LABEL_170:
       {
         if (*v134 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(remainingChannelList);
         }
 
         v27 = *(*(&v133 + 1) + 8 * i);
         if ([v27 is2GHz])
         {
-          v28 = v122;
+          v28 = array;
         }
 
         else
         {
-          v28 = v121;
+          v28 = array2;
         }
 
         [v28 addObject:v27];
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v133 objects:v139 count:16];
+      v24 = [remainingChannelList countByEnumeratingWithState:&v133 objects:v139 count:16];
     }
 
     while (v24);
   }
 
-  [v21 addObjectsFromArray:v122];
-  [v21 addObjectsFromArray:v121];
+  [v21 addObjectsFromArray:array];
+  [v21 addObjectsFromArray:array2];
   v29 = 0;
   v117 = v21;
   while (2)
   {
-    v30 = [v5 SSIDList];
-    v31 = [v5 SSIDList];
-    v32 = [v31 count] - v29;
-    v33 = [v5 maxScanSSIDCount];
-    if (v32 >= v33)
+    sSIDList = [contextCopy SSIDList];
+    sSIDList2 = [contextCopy SSIDList];
+    v32 = [sSIDList2 count] - v29;
+    maxScanSSIDCount2 = [contextCopy maxScanSSIDCount];
+    if (v32 >= maxScanSSIDCount2)
     {
-      v34 = [v5 maxScanSSIDCount];
+      maxScanSSIDCount3 = [contextCopy maxScanSSIDCount];
     }
 
     else
     {
-      v115 = [v5 SSIDList];
-      v34 = [v115 count] - v29;
+      sSIDList3 = [contextCopy SSIDList];
+      maxScanSSIDCount3 = [sSIDList3 count] - v29;
     }
 
-    v118 = [v30 subarrayWithRange:{v29, v34}];
-    if (v32 < v33)
+    v118 = [sSIDList subarrayWithRange:{v29, maxScanSSIDCount3}];
+    if (v32 < maxScanSSIDCount2)
     {
     }
 
@@ -9885,10 +9885,10 @@ LABEL_170:
         goto LABEL_107;
       }
 
-      v38 = [v5 autoJoinParameters];
-      v39 = [v38 trigger];
+      autoJoinParameters2 = [contextCopy autoJoinParameters];
+      trigger = [autoJoinParameters2 trigger];
       v132 = v11;
-      v36 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:v39 error:&v132];
+      v36 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:trigger error:&v132];
       v40 = v132;
 
       if (!v36)
@@ -9897,28 +9897,28 @@ LABEL_170:
       }
 
       [v21 count];
-      v41 = [v5 recentChannelList];
-      if (v123 >= [v41 count])
+      recentChannelList2 = [contextCopy recentChannelList];
+      if (v123 >= [recentChannelList2 count])
       {
       }
 
       else
       {
-        v42 = [v5 autoJoinParameters];
-        v43 = [v42 mode];
+        autoJoinParameters3 = [contextCopy autoJoinParameters];
+        mode = [autoJoinParameters3 mode];
 
-        if (v43 != 2)
+        if (mode != 2)
         {
-          [v5 maxScanChannelCount];
-          v44 = [v5 recentChannelList];
-          [v44 count];
+          [contextCopy maxScanChannelCount];
+          recentChannelList3 = [contextCopy recentChannelList];
+          [recentChannelList3 count];
 
           v120 = 0;
           goto LABEL_53;
         }
       }
 
-      if (([v5 alwaysIncludeRemainingNon2GHzChannels] & 1) != 0 || (!objc_msgSend(v5, "skipRemainingNon2GHzChannelsUnlessKnownNetworkFound") || self->_didDiscoverKnownNetworks) && self->_didDiscoverBSS)
+      if (([contextCopy alwaysIncludeRemainingNon2GHzChannels] & 1) != 0 || (!objc_msgSend(contextCopy, "skipRemainingNon2GHzChannelsUnlessKnownNetworkFound") || self->_didDiscoverKnownNetworks) && self->_didDiscoverBSS)
       {
         v45 = CWFGetOSLog();
         if (v45)
@@ -9966,43 +9966,43 @@ LABEL_170:
           _os_log_send_and_compose_impl();
         }
 
-        v51 = [v5 recentChannelList];
-        [v51 count];
-        [v122 count];
+        recentChannelList4 = [contextCopy recentChannelList];
+        [recentChannelList4 count];
+        [array count];
 
         v120 = 1;
       }
 
 LABEL_53:
-      v52 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       v53 = [v21 subarrayWithRange:?];
       v54 = [v53 count];
-      v55 = [v5 maxScanCacheAge];
-      if ([v5 useCacheForPreviouslyScannedChannels])
+      maxScanCacheAge = [contextCopy maxScanCacheAge];
+      if ([contextCopy useCacheForPreviouslyScannedChannels])
       {
-        v55 += (clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - self->_beginTimestamp) / 0xF4240;
+        maxScanCacheAge += (clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - self->_beginTimestamp) / 0xF4240;
       }
 
-      v56 = [v5 passiveScan];
-      v57 = [v5 dwellTime];
-      v58 = [v5 skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
+      passiveScan = [contextCopy passiveScan];
+      dwellTime = [contextCopy dwellTime];
+      skipRemainingNon2GHzChannelsUnlessKnownNetworkFound = [contextCopy skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
       v131 = 0;
       v109 = &v131;
-      BYTE1(v107) = v58;
+      BYTE1(v107) = skipRemainingNon2GHzChannelsUnlessKnownNetworkFound;
       LOBYTE(v107) = 0;
-      v59 = [CWFAutoJoinManager __performScanWithChannelList:"__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:" SSIDList:v53 passive:v118 dwellTime:v56 maxCacheAge:v57 cacheOnly:v55 isPreAssociationScan:0 checkForKnownNetworks:? error:?];
+      v59 = [CWFAutoJoinManager __performScanWithChannelList:"__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:" SSIDList:v53 passive:v118 dwellTime:passiveScan maxCacheAge:dwellTime cacheOnly:maxScanCacheAge isPreAssociationScan:0 checkForKnownNetworks:? error:?];
       v119 = v131;
       if ([v59 count])
       {
-        [v52 removeObjectsInArray:v59];
-        [v52 addObjectsFromArray:v59];
+        [orderedSet removeObjectsInArray:v59];
+        [orderedSet addObjectsFromArray:v59];
       }
 
       v123 += v54;
-      v60 = [v5 autoJoinParameters];
-      v61 = [v60 trigger];
+      autoJoinParameters4 = [contextCopy autoJoinParameters];
+      trigger2 = [autoJoinParameters4 trigger];
       v130 = v40;
-      v62 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:v61 error:&v130];
+      v62 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:trigger2 error:&v130];
       v11 = v130;
 
       if (!v62)
@@ -10020,7 +10020,7 @@ LABEL_53:
         v63 = [v117 subarrayWithRange:{v123, objc_msgSend(v117, "count") - v123}];
 
         v123 += [v63 count];
-        if (self->_didDiscoverKnownNetworks || ([v5 skipRemainingNon2GHzChannelsUnlessKnownNetworkFound] & 1) == 0 && self->_didDiscoverBSS)
+        if (self->_didDiscoverKnownNetworks || ([contextCopy skipRemainingNon2GHzChannelsUnlessKnownNetworkFound] & 1) == 0 && self->_didDiscoverBSS)
         {
           v64 = CWFGetOSLog();
           if (v64)
@@ -10041,21 +10041,21 @@ LABEL_53:
             _os_log_send_and_compose_impl();
           }
 
-          v69 = [v5 passiveScan];
-          v70 = [v5 dwellTime];
-          v71 = [v5 skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
+          passiveScan2 = [contextCopy passiveScan];
+          dwellTime2 = [contextCopy dwellTime];
+          skipRemainingNon2GHzChannelsUnlessKnownNetworkFound2 = [contextCopy skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
           v129 = v119;
           v109 = &v129;
-          BYTE1(v107) = v71;
+          BYTE1(v107) = skipRemainingNon2GHzChannelsUnlessKnownNetworkFound2;
           LOBYTE(v107) = 0;
-          v72 = [CWFAutoJoinManager __performScanWithChannelList:"__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:" SSIDList:v63 passive:v118 dwellTime:v69 maxCacheAge:v70 cacheOnly:v55 isPreAssociationScan:0 checkForKnownNetworks:? error:?];
+          v72 = [CWFAutoJoinManager __performScanWithChannelList:"__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:" SSIDList:v63 passive:v118 dwellTime:passiveScan2 maxCacheAge:dwellTime2 cacheOnly:maxScanCacheAge isPreAssociationScan:0 checkForKnownNetworks:? error:?];
           v73 = v129;
 
           v59 = v72;
           if ([v72 count])
           {
-            [v52 removeObjectsInArray:v72];
-            [v52 addObjectsFromArray:v72];
+            [orderedSet removeObjectsInArray:v72];
+            [orderedSet addObjectsFromArray:v72];
           }
 
           [(CWFAutoJoinMetric *)self->_metric setDidIncludeRemainingNon2GHzChannels:1];
@@ -10091,38 +10091,38 @@ LABEL_53:
         v63 = v53;
       }
 
-      if (![v52 count])
+      if (![orderedSet count])
       {
         goto LABEL_99;
       }
 
-      v75 = [v5 autoJoinParameters];
-      if ([v75 trigger] != 54)
+      autoJoinParameters5 = [contextCopy autoJoinParameters];
+      if ([autoJoinParameters5 trigger] != 54)
       {
-        v76 = [v5 autoJoinParameters];
-        v77 = [v76 trigger];
+        autoJoinParameters6 = [contextCopy autoJoinParameters];
+        trigger3 = [autoJoinParameters6 trigger];
 
-        if (v77 == 55)
+        if (trigger3 == 55)
         {
           goto LABEL_83;
         }
 
-        v78 = [v52 array];
+        array3 = [orderedSet array];
         v128 = 0;
-        v75 = [(CWFAutoJoinManager *)self __perform6GHzFollowupDiscoveryWithScanResults:v78 SSIDList:v118 dwellTime:0 context:v5 error:&v128];
+        autoJoinParameters5 = [(CWFAutoJoinManager *)self __perform6GHzFollowupDiscoveryWithScanResults:array3 SSIDList:v118 dwellTime:0 context:contextCopy error:&v128];
 
-        if (v75)
+        if (autoJoinParameters5)
         {
-          [v52 removeObjectsInArray:v75];
-          [v52 addObjectsFromArray:v75];
+          [orderedSet removeObjectsInArray:autoJoinParameters5];
+          [orderedSet addObjectsFromArray:autoJoinParameters5];
         }
       }
 
 LABEL_83:
-      v79 = [v52 array];
-      v80 = [(CWFAutoJoinManager *)self __shouldAllowPreAssocScan];
+      array4 = [orderedSet array];
+      __shouldAllowPreAssocScan = [(CWFAutoJoinManager *)self __shouldAllowPreAssocScan];
       v127 = v11;
-      v81 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:v79 allowPreAssociationScan:v80 context:v5 error:&v127];
+      v81 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:array4 allowPreAssociationScan:__shouldAllowPreAssocScan context:contextCopy error:&v127];
       v82 = v127;
 
       if (v81)
@@ -10137,10 +10137,10 @@ LABEL_83:
       }
 
       [(CWFAutoJoinManager *)self __updateAutoJoinState:2];
-      v83 = [v5 autoJoinParameters];
-      v84 = [v83 trigger];
+      autoJoinParameters7 = [contextCopy autoJoinParameters];
+      trigger4 = [autoJoinParameters7 trigger];
       v126 = v82;
-      v36 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:v84 error:&v126];
+      v36 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:trigger4 error:&v126];
       v11 = v126;
 
       if (!v36)
@@ -10152,30 +10152,30 @@ LABEL_83:
         goto LABEL_97;
       }
 
-      if (!v120 || ![v5 skipRemainingNon2GHzChannelsUnlessKnownNetworkFound] || self->_didDiscoverKnownNetworks)
+      if (!v120 || ![contextCopy skipRemainingNon2GHzChannelsUnlessKnownNetworkFound] || self->_didDiscoverKnownNetworks)
       {
-        v85 = [v5 ANQPElementIDList];
-        v86 = [v85 count];
+        aNQPElementIDList = [contextCopy ANQPElementIDList];
+        v86 = [aNQPElementIDList count];
 
         if (v86)
         {
-          v87 = [v52 array];
-          v88 = [(CWFAutoJoinManager *)self __passpointScanResults:v87];
+          array5 = [orderedSet array];
+          v88 = [(CWFAutoJoinManager *)self __passpointScanResults:array5];
 
           if ([v88 count])
           {
             v89 = v63;
-            v90 = [v5 ANQPElementIDList];
-            v91 = [v5 maxANQPCacheAge];
+            aNQPElementIDList2 = [contextCopy ANQPElementIDList];
+            maxANQPCacheAge = [contextCopy maxANQPCacheAge];
             v125 = 0;
-            v92 = [(CWFAutoJoinManager *)self __performGASQueryWithScanResults:v88 ANQPElementIDList:v90 maxCacheAge:v91 cacheOnly:0 error:&v125];
+            v92 = [(CWFAutoJoinManager *)self __performGASQueryWithScanResults:v88 ANQPElementIDList:aNQPElementIDList2 maxCacheAge:maxANQPCacheAge cacheOnly:0 error:&v125];
             v93 = v125;
 
             if ([v92 count])
             {
-              v94 = [(CWFAutoJoinManager *)self __shouldAllowPreAssocScan];
+              __shouldAllowPreAssocScan2 = [(CWFAutoJoinManager *)self __shouldAllowPreAssocScan];
               v124 = v11;
-              v95 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:v92 allowPreAssociationScan:v94 context:v5 error:&v124];
+              v95 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:v92 allowPreAssociationScan:__shouldAllowPreAssocScan2 context:contextCopy error:&v124];
               v96 = v124;
 
               if (v95)
@@ -10234,12 +10234,12 @@ LABEL_97:
     v11 = v40;
 LABEL_107:
 
-    v99 = [v5 SSIDList];
+    sSIDList4 = [contextCopy SSIDList];
     v29 = v116;
-    if (v116 < [v99 count])
+    if (v116 < [sSIDList4 count])
     {
-      v100 = v116 / [v5 maxScanSSIDCount];
-      if (!(v35 & 1 | (v100 >= [v5 maxScanCycles])))
+      v100 = v116 / [contextCopy maxScanSSIDCount];
+      if (!(v35 & 1 | (v100 >= [contextCopy maxScanCycles])))
       {
 
         if ((v36 & 1) == 0)
@@ -10261,14 +10261,14 @@ LABEL_113:
 LABEL_114:
   objc_autoreleasePoolPop(context);
   v102 = v113;
-  v101 = a4;
-  if (a4)
+  errorCopy2 = error;
+  if (error)
   {
 LABEL_115:
     if (v11)
     {
       v103 = v11;
-      *v101 = v11;
+      *errorCopy2 = v11;
     }
   }
 
@@ -10278,14 +10278,14 @@ LABEL_117:
   return v35 & 1;
 }
 
-- (void)__updateDiscoverTimestampForJoinCandidates:(id)a3
+- (void)__updateDiscoverTimestampForJoinCandidates:(id)candidates
 {
   v40 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a3;
+  obj = candidates;
   v4 = [obj countByEnumeratingWithState:&v25 objects:v39 count:16];
   if (v4)
   {
@@ -10355,12 +10355,12 @@ LABEL_117:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__updateRNRChannel:(id)a3 has6GHzOnlyBSS:(BOOL)a4 joinCandidate:(id)a5
+- (void)__updateRNRChannel:(id)channel has6GHzOnlyBSS:(BOOL)s joinCandidate:(id)candidate
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 copy];
+  channelCopy = channel;
+  candidateCopy = candidate;
+  v10 = [candidateCopy copy];
   v11 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v12 = CWFGetOSLog();
   if (v12)
@@ -10397,11 +10397,11 @@ LABEL_117:
   block[3] = &unk_1E86E7820;
   block[4] = self;
   v23 = v10;
-  v26 = a4;
-  v24 = v9;
-  v25 = v8;
-  v17 = v8;
-  v18 = v9;
+  sCopy = s;
+  v24 = candidateCopy;
+  v25 = channelCopy;
+  v17 = channelCopy;
+  v18 = candidateCopy;
   v19 = v10;
   v20 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v16, 0, block);
   dispatch_async(targetQueue, v20);
@@ -10411,19 +10411,19 @@ LABEL_117:
 
 - (BOOL)__shouldAllowPreAssocScan
 {
-  v2 = [(CWFAutoJoinMetric *)self->_metric autoJoinParameters];
-  v3 = [v2 trigger];
+  autoJoinParameters = [(CWFAutoJoinMetric *)self->_metric autoJoinParameters];
+  trigger = [autoJoinParameters trigger];
 
-  return v3 != 32 && v3 != 47;
+  return trigger != 32 && trigger != 47;
 }
 
-- (BOOL)__preflightMatchKnownNetworksForScanResult:(id)a3
+- (BOOL)__preflightMatchKnownNetworksForScanResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 SSID];
-  if (v6 && (knownNetworkSSIDMap = v5->_knownNetworkSSIDMap, [v4 SSID], v8 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKeyedSubscript:](knownNetworkSSIDMap, "objectForKeyedSubscript:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, v6, v9))
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sSID = [resultCopy SSID];
+  if (sSID && (knownNetworkSSIDMap = selfCopy->_knownNetworkSSIDMap, [resultCopy SSID], v8 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKeyedSubscript:](knownNetworkSSIDMap, "objectForKeyedSubscript:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, sSID, v9))
   {
     v10 = 1;
   }
@@ -10431,9 +10431,9 @@ LABEL_117:
   else
   {
     v9 = 0;
-    if ([v4 isPasspoint])
+    if ([resultCopy isPasspoint])
     {
-      v10 = [(NSMutableDictionary *)v5->_knownNetworkPasspointDomainMap count]!= 0;
+      v10 = [(NSMutableDictionary *)selfCopy->_knownNetworkPasspointDomainMap count]!= 0;
     }
 
     else
@@ -10442,38 +10442,38 @@ LABEL_117:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
-- (BOOL)__matchAndJoinScanResults:(id)a3 allowPreAssociationScan:(BOOL)a4 context:(id)a5 error:(id *)a6
+- (BOOL)__matchAndJoinScanResults:(id)results allowPreAssociationScan:(BOOL)scan context:(id)context error:(id *)error
 {
-  v300 = a4;
+  scanCopy = scan;
   v404 = *MEMORY[0x1E69E9840];
-  v299 = a3;
-  v313 = a5;
-  v7 = [v313 autoJoinParameters];
+  resultsCopy = results;
+  contextCopy = context;
+  autoJoinParameters = [contextCopy autoJoinParameters];
   v392 = 0;
-  v8 = -[CWFAutoJoinManager __allowAutoJoinWithTrigger:error:](self, "__allowAutoJoinWithTrigger:error:", [v7 trigger], &v392);
+  v8 = -[CWFAutoJoinManager __allowAutoJoinWithTrigger:error:](self, "__allowAutoJoinWithTrigger:error:", [autoJoinParameters trigger], &v392);
   v302 = v392;
 
   if (!v8)
   {
-    v303 = 0;
-    v301 = 0;
-    v305 = 0;
+    associatedNetwork = 0;
+    array2 = 0;
+    array = 0;
     obj = 0;
     goto LABEL_367;
   }
 
   context = objc_autoreleasePoolPush();
-  v9 = [v299 mutableCopy];
-  v305 = [MEMORY[0x1E695DF70] array];
-  v301 = [MEMORY[0x1E695DF70] array];
-  v303 = [(CWFAutoJoinManager *)self associatedNetwork];
-  if (v303 && ([v9 containsObject:v303] & 1) == 0)
+  v9 = [resultsCopy mutableCopy];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
+  if (associatedNetwork && ([v9 containsObject:associatedNetwork] & 1) == 0)
   {
-    [v9 addObject:v303];
+    [v9 addObject:associatedNetwork];
   }
 
   v390 = 0u;
@@ -10481,11 +10481,11 @@ LABEL_117:
   v388 = 0u;
   v389 = 0u;
   obj = v9;
-  v349 = [obj countByEnumeratingWithState:&v388 objects:v403 count:16];
-  if (v349)
+  sSID12 = [obj countByEnumeratingWithState:&v388 objects:v403 count:16];
+  if (sSID12)
   {
     v345 = *v389;
-    v331 = 138543362;
+    sSID13 = 138543362;
     do
     {
       v10 = 0;
@@ -10500,29 +10500,29 @@ LABEL_117:
         if (sub_1E0BF11B4(v11))
         {
           v12 = MEMORY[0x1E696AEC0];
-          v13 = [v11 shortSSID];
-          v14 = [v11 BSSID];
-          v15 = [v11 channel];
-          v353 = [v12 stringWithFormat:@"%lu/%@/%lu", v13, v14, objc_msgSend(v15, "channel")];
+          shortSSID = [v11 shortSSID];
+          bSSID = [v11 BSSID];
+          channel = [v11 channel];
+          v353 = [v12 stringWithFormat:@"%lu/%@/%lu", shortSSID, bSSID, objc_msgSend(channel, "channel")];
 
-          v351 = [(NSMutableDictionary *)self->_followup6GHzRNRMap objectForKeyedSubscript:v353];
-          v16 = [v11 channel];
-          if (![v16 is6GHz] || (objc_msgSend(v313, "include6GHzChannels") & 1) != 0)
+          sSID11 = [(NSMutableDictionary *)self->_followup6GHzRNRMap objectForKeyedSubscript:v353];
+          channel2 = [v11 channel];
+          if (![channel2 is6GHz] || (objc_msgSend(contextCopy, "include6GHzChannels") & 1) != 0)
           {
 
             goto LABEL_14;
           }
 
-          if (!v351)
+          if (!sSID11)
           {
 
             goto LABEL_34;
           }
 
-          v23 = [v351 channel];
-          v24 = [v23 is6GHz];
+          channel3 = [sSID11 channel];
+          is6GHz = [channel3 is6GHz];
 
-          if (v24)
+          if (is6GHz)
           {
 LABEL_34:
             v38 = CWFGetOSLog();
@@ -10553,21 +10553,21 @@ LABEL_34:
 LABEL_14:
           if ([(CWFAutoJoinManager *)self lockdownModeEnabled])
           {
-            v17 = [v313 autoJoinParameters];
-            v18 = [v17 trigger];
-            v19 = [v313 autoJoinParameters];
-            v20 = [v19 targetNetworkProfile];
-            v21 = [v20 SSID];
-            v22 = [v11 SSID];
-            if ([(CWFAutoJoinManager *)self __shouldBypassLockdownModeCheckForTrigger:v18 targetNetworkSSID:v21 networkSSID:v22])
+            autoJoinParameters2 = [contextCopy autoJoinParameters];
+            trigger = [autoJoinParameters2 trigger];
+            autoJoinParameters3 = [contextCopy autoJoinParameters];
+            targetNetworkProfile = [autoJoinParameters3 targetNetworkProfile];
+            sSID = [targetNetworkProfile SSID];
+            sSID2 = [v11 SSID];
+            if ([(CWFAutoJoinManager *)self __shouldBypassLockdownModeCheckForTrigger:trigger targetNetworkSSID:sSID networkSSID:sSID2])
             {
 
               goto LABEL_21;
             }
 
-            v25 = [v11 isAllowedInLockdownMode];
+            isAllowedInLockdownMode = [v11 isAllowedInLockdownMode];
 
-            if (v25)
+            if (isAllowedInLockdownMode)
             {
               goto LABEL_21;
             }
@@ -10607,22 +10607,22 @@ LABEL_21:
             goto LABEL_120;
           }
 
-          v26 = [v313 knownNetworks];
-          v27 = [v26 array];
-          v341 = sub_1E0BED85C(v11, v27);
+          knownNetworks = [contextCopy knownNetworks];
+          array3 = [knownNetworks array];
+          v341 = sub_1E0BED85C(v11, array3);
 
           if (!v341)
           {
             goto LABEL_120;
           }
 
-          v28 = [v11 isPasspoint];
-          if (v28 != [v341 isPasspoint])
+          isPasspoint = [v11 isPasspoint];
+          if (isPasspoint != [v341 isPasspoint])
           {
-            if ([v313 allowSSIDBasedMatchingForPasspointNetworks])
+            if ([contextCopy allowSSIDBasedMatchingForPasspointNetworks])
             {
-              v29 = [(CWFAutoJoinManager *)self __disallowedKnownNetworks];
-              v30 = sub_1E0BED85C(v11, v29);
+              __disallowedKnownNetworks = [(CWFAutoJoinManager *)self __disallowedKnownNetworks];
+              v30 = sub_1E0BED85C(v11, __disallowedKnownNetworks);
 
               if (!v30)
               {
@@ -10683,52 +10683,52 @@ LABEL_118:
           }
 
 LABEL_26:
-          v31 = [(CWFAutoJoinMetric *)self->_metric matchedCandidateAt];
-          v32 = v31 == 0;
+          matchedCandidateAt = [(CWFAutoJoinMetric *)self->_metric matchedCandidateAt];
+          v32 = matchedCandidateAt == 0;
 
           if (v32)
           {
-            v33 = [MEMORY[0x1E695DF00] date];
-            [(CWFAutoJoinMetric *)self->_metric setMatchedCandidateAt:v33];
+            date = [MEMORY[0x1E695DF00] date];
+            [(CWFAutoJoinMetric *)self->_metric setMatchedCandidateAt:date];
           }
 
           if (-[CWFAutoJoinMetric bestCandidateRSSI](self->_metric, "bestCandidateRSSI") && (v34 = -[CWFAutoJoinMetric bestCandidateRSSI](self->_metric, "bestCandidateRSSI"), v34 > [v11 RSSI]))
           {
-            v35 = [(CWFAutoJoinMetric *)self->_metric bestCandidateRSSI];
+            bestCandidateRSSI = [(CWFAutoJoinMetric *)self->_metric bestCandidateRSSI];
           }
 
           else
           {
-            v35 = [v11 RSSI];
+            bestCandidateRSSI = [v11 RSSI];
           }
 
-          [(CWFAutoJoinMetric *)self->_metric setBestCandidateRSSI:v35];
+          [(CWFAutoJoinMetric *)self->_metric setBestCandidateRSSI:bestCandidateRSSI];
           updatedAllowCacheKnownNetworks = self->_updatedAllowCacheKnownNetworks;
-          v41 = [v341 identifier];
-          LOBYTE(updatedAllowCacheKnownNetworks) = [(NSMutableSet *)updatedAllowCacheKnownNetworks containsObject:v41];
+          identifier = [v341 identifier];
+          LOBYTE(updatedAllowCacheKnownNetworks) = [(NSMutableSet *)updatedAllowCacheKnownNetworks containsObject:identifier];
 
           if ((updatedAllowCacheKnownNetworks & 1) == 0)
           {
             knownNetworkAllowCache = self->_knownNetworkAllowCache;
-            v43 = [v341 identifier];
-            [(NSMutableDictionary *)knownNetworkAllowCache setObject:0 forKeyedSubscript:v43];
+            identifier2 = [v341 identifier];
+            [(NSMutableDictionary *)knownNetworkAllowCache setObject:0 forKeyedSubscript:identifier2];
 
             knownNetworkDeferCache = self->_knownNetworkDeferCache;
-            v45 = [v341 identifier];
-            [(NSMutableDictionary *)knownNetworkDeferCache setObject:0 forKeyedSubscript:v45];
+            identifier3 = [v341 identifier];
+            [(NSMutableDictionary *)knownNetworkDeferCache setObject:0 forKeyedSubscript:identifier3];
 
             knownNetworkAllowErrorCache = self->_knownNetworkAllowErrorCache;
-            v47 = [v341 identifier];
-            [(NSMutableDictionary *)knownNetworkAllowErrorCache setObject:0 forKeyedSubscript:v47];
+            identifier4 = [v341 identifier];
+            [(NSMutableDictionary *)knownNetworkAllowErrorCache setObject:0 forKeyedSubscript:identifier4];
           }
 
           v48 = [v11 scanResultWithMatchingKnownNetworkProfile:v341];
           [(NSMutableSet *)self->_matchedCandidates addObject:v48];
-          v49 = self;
-          objc_sync_enter(v49);
-          v50 = [v48 RSSI];
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          rSSI = [v48 RSSI];
           lowRSSICandidates = self->_lowRSSICandidates;
-          if (v50 > -81)
+          if (rSSI > -81)
           {
             [(NSMutableSet *)lowRSSICandidates removeObject:v48];
             [(NSMutableSet *)self->_prevLowRSSICandidates addObject:v48];
@@ -10753,10 +10753,10 @@ LABEL_26:
             self->_lowRSSICandidateFoundTimestamp = v54;
           }
 
-          objc_sync_exit(v49);
+          objc_sync_exit(selfCopy);
 
-          v58 = [v11 RSSI];
-          if (v58 < [v313 minRSSI])
+          rSSI2 = [v11 RSSI];
+          if (rSSI2 < [contextCopy minRSSI])
           {
             v125 = CWFGetOSLog();
             if (v125)
@@ -10772,9 +10772,9 @@ LABEL_26:
 
             if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
             {
-              v131 = [v313 minRSSI];
+              minRSSI = [contextCopy minRSSI];
               v394 = 134218242;
-              *v395 = v131;
+              *v395 = minRSSI;
               *&v395[8] = 2114;
               *&v395[10] = v11;
               LODWORD(v296) = 22;
@@ -10785,31 +10785,31 @@ LABEL_26:
             goto LABEL_140;
           }
 
-          v59 = [v313 autoJoinParameters];
-          if ([v59 trigger] == 54)
+          autoJoinParameters4 = [contextCopy autoJoinParameters];
+          if ([autoJoinParameters4 trigger] == 54)
           {
 
             goto LABEL_52;
           }
 
-          v60 = [v313 autoJoinParameters];
-          v61 = [v60 trigger] == 55;
+          autoJoinParameters5 = [contextCopy autoJoinParameters];
+          v61 = [autoJoinParameters5 trigger] == 55;
 
           if (!v61)
           {
-            v67 = [(CWFAutoJoinManager *)v49 associatedNetwork];
-            v68 = [(CWFAutoJoinManager *)v49 __candidateSupportsSeamlessSSIDTransition:v48 fromNetwork:v67 context:v313];
+            associatedNetwork2 = [(CWFAutoJoinManager *)selfCopy associatedNetwork];
+            v68 = [(CWFAutoJoinManager *)selfCopy __candidateSupportsSeamlessSSIDTransition:v48 fromNetwork:associatedNetwork2 context:contextCopy];
 
             if (!v68)
             {
               goto LABEL_77;
             }
 
-            v69 = [v303 matchingKnownNetworkProfile];
-            v70 = [v48 matchingKnownNetworkProfile];
-            v402 = v70;
+            matchingKnownNetworkProfile = [associatedNetwork matchingKnownNetworkProfile];
+            matchingKnownNetworkProfile2 = [v48 matchingKnownNetworkProfile];
+            v402 = matchingKnownNetworkProfile2;
             v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v402 count:1];
-            v72 = [(CWFAutoJoinManager *)v49 __morePreferredKnownNetworksWithCandidate:v69 knownNetworks:v71 context:v313];
+            v72 = [(CWFAutoJoinManager *)selfCopy __morePreferredKnownNetworksWithCandidate:matchingKnownNetworkProfile knownNetworks:v71 context:contextCopy];
             v73 = v72 == 0;
 
             if (!v73)
@@ -10817,10 +10817,10 @@ LABEL_26:
               goto LABEL_77;
             }
 
-            v74 = [v48 channel];
-            v75 = [v74 is2GHz];
+            channel4 = [v48 channel];
+            is2GHz = [channel4 is2GHz];
 
-            if (!v75)
+            if (!is2GHz)
             {
               goto LABEL_77;
             }
@@ -10850,24 +10850,24 @@ LABEL_26:
           }
 
 LABEL_52:
-          v62 = [v48 SSID];
-          v63 = [v303 SSID];
-          v64 = v63;
-          if (v62 == v63)
+          sSID3 = [v48 SSID];
+          sSID4 = [associatedNetwork SSID];
+          v64 = sSID4;
+          if (sSID3 == sSID4)
           {
 
             goto LABEL_77;
           }
 
-          v65 = [v48 SSID];
-          if (v65)
+          sSID5 = [v48 SSID];
+          if (sSID5)
           {
-            v329 = [v303 SSID];
-            if (v329)
+            sSID6 = [associatedNetwork SSID];
+            if (sSID6)
             {
-              v319 = [v48 SSID];
-              v322 = [v303 SSID];
-              if ([v319 isEqual:v322])
+              sSID7 = [v48 SSID];
+              sSID8 = [associatedNetwork SSID];
+              if ([sSID7 isEqual:sSID8])
               {
 
                 v66 = 0;
@@ -10880,7 +10880,7 @@ LABEL_52:
             else
             {
               v78 = 0;
-              v329 = 0;
+              sSID6 = 0;
             }
           }
 
@@ -10889,14 +10889,14 @@ LABEL_52:
             v78 = 0;
           }
 
-          v80 = [(CWFAutoJoinManager *)v49 associatedNetwork];
-          v81 = [(CWFAutoJoinManager *)v49 __candidateSupportsSeamlessSSIDTransition:v48 fromNetwork:v80 context:v313];
+          associatedNetwork3 = [(CWFAutoJoinManager *)selfCopy associatedNetwork];
+          v81 = [(CWFAutoJoinManager *)selfCopy __candidateSupportsSeamlessSSIDTransition:v48 fromNetwork:associatedNetwork3 context:contextCopy];
 
           v66 = !v81;
           if (v78)
           {
 
-            if (!v65)
+            if (!sSID5)
             {
               goto LABEL_72;
             }
@@ -10935,7 +10935,7 @@ LABEL_140:
             goto LABEL_117;
           }
 
-          if (v65)
+          if (sSID5)
           {
             goto LABEL_76;
           }
@@ -10969,21 +10969,21 @@ LABEL_77:
             _os_log_send_and_compose_impl();
           }
 
-          v86 = [v11 channel];
-          if ([v86 is6GHz])
+          channel5 = [v11 channel];
+          if ([channel5 is6GHz])
           {
-            v87 = [v313 allowStandalone6GHz];
+            allowStandalone6GHz = [contextCopy allowStandalone6GHz];
 
-            if ((v87 & 1) == 0)
+            if ((allowStandalone6GHz & 1) == 0)
             {
-              v88 = [v48 matchingKnownNetworkProfile];
-              v89 = [v88 isStandalone6G];
+              matchingKnownNetworkProfile3 = [v48 matchingKnownNetworkProfile];
+              isStandalone6G = [matchingKnownNetworkProfile3 isStandalone6G];
 
-              if (v89)
+              if (isStandalone6G)
               {
-                v90 = [(CWFAutoJoinManager *)v49 knownNetworks];
-                v91 = [v90 allObjects];
-                v92 = [(CWFAutoJoinManager *)v49 __knownNetworksSupportingSeamlessSSIDTransition:v91 fromNetwork:v48 allowSameSSID:0 context:v313];
+                knownNetworks2 = [(CWFAutoJoinManager *)selfCopy knownNetworks];
+                allObjects = [knownNetworks2 allObjects];
+                v92 = [(CWFAutoJoinManager *)selfCopy __knownNetworksSupportingSeamlessSSIDTransition:allObjects fromNetwork:v48 allowSameSSID:0 context:contextCopy];
 
                 v386 = 0u;
                 v387 = 0u;
@@ -11007,25 +11007,25 @@ LABEL_87:
                     v95 = *(*(&v384 + 1) + 8 * v94);
                     if (([v95 isStandalone6G] & 1) == 0)
                     {
-                      v96 = [v48 matchingKnownNetworkProfile];
-                      v97 = [v96 lastDiscoveredAt];
+                      matchingKnownNetworkProfile4 = [v48 matchingKnownNetworkProfile];
+                      lastDiscoveredAt = [matchingKnownNetworkProfile4 lastDiscoveredAt];
 
-                      v98 = [v48 matchingKnownNetworkProfile];
-                      v99 = [v98 lastJoinedAt];
+                      matchingKnownNetworkProfile5 = [v48 matchingKnownNetworkProfile];
+                      lastJoinedAt = [matchingKnownNetworkProfile5 lastJoinedAt];
 
-                      v100 = [v95 lastDiscoveredAt];
-                      v101 = [v95 lastJoinedAt];
-                      if (v97)
+                      lastDiscoveredAt2 = [v95 lastDiscoveredAt];
+                      lastJoinedAt2 = [v95 lastJoinedAt];
+                      if (lastDiscoveredAt)
                       {
-                        if (v100)
+                        if (lastDiscoveredAt2)
                         {
-                          [v97 timeIntervalSinceReferenceDate];
+                          [lastDiscoveredAt timeIntervalSinceReferenceDate];
                           v103 = v102;
-                          [v100 timeIntervalSinceReferenceDate];
+                          [lastDiscoveredAt2 timeIntervalSinceReferenceDate];
                           v105 = floor(v103) < floor(v104);
-                          [v97 timeIntervalSinceReferenceDate];
+                          [lastDiscoveredAt timeIntervalSinceReferenceDate];
                           v107 = v106;
-                          [v100 timeIntervalSinceReferenceDate];
+                          [lastDiscoveredAt2 timeIntervalSinceReferenceDate];
                           v109 = floor(v107) - floor(v108);
                           if (v105)
                           {
@@ -11039,18 +11039,18 @@ LABEL_87:
                         }
                       }
 
-                      if (!v99 || !v101)
+                      if (!lastJoinedAt || !lastJoinedAt2)
                       {
                         goto LABEL_102;
                       }
 
-                      [v99 timeIntervalSinceReferenceDate];
+                      [lastJoinedAt timeIntervalSinceReferenceDate];
                       v111 = v110;
-                      [v101 timeIntervalSinceReferenceDate];
+                      [lastJoinedAt2 timeIntervalSinceReferenceDate];
                       v113 = floor(v111) < floor(v112);
-                      [v99 timeIntervalSinceReferenceDate];
+                      [lastJoinedAt timeIntervalSinceReferenceDate];
                       v115 = v114;
-                      [v101 timeIntervalSinceReferenceDate];
+                      [lastJoinedAt2 timeIntervalSinceReferenceDate];
                       v117 = floor(v115) - floor(v116);
                       if (v113)
                       {
@@ -11104,15 +11104,15 @@ LABEL_102:
 
                     if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
                     {
-                      v123 = [v48 networkName];
+                      networkName = [v48 networkName];
                       v394 = 138543362;
-                      *v395 = v123;
+                      *v395 = networkName;
                       LODWORD(v296) = 12;
                       v294 = &v394;
                       _os_log_send_and_compose_impl();
                     }
 
-                    [v305 addObject:v48];
+                    [array addObject:v48];
                     goto LABEL_117;
                   }
                 }
@@ -11122,7 +11122,7 @@ LABEL_102:
                 }
               }
 
-              [v301 addObject:{v48, v294}];
+              [array2 addObject:{v48, v294}];
 LABEL_117:
 
               goto LABEL_118;
@@ -11133,7 +11133,7 @@ LABEL_117:
           {
           }
 
-          [v305 addObject:{v48, v294, v296}];
+          [array addObject:{v48, v294, v296}];
           goto LABEL_117;
         }
 
@@ -11141,25 +11141,25 @@ LABEL_121:
         v10 = v10 + 1;
       }
 
-      while (v10 != v349);
+      while (v10 != sSID12);
       v134 = [obj countByEnumeratingWithState:&v388 objects:v403 count:16];
-      v349 = v134;
+      sSID12 = v134;
     }
 
     while (v134);
   }
 
-  if (![v301 count])
+  if (![array2 count])
   {
     goto LABEL_201;
   }
 
-  v306 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v382 = 0u;
   v383 = 0u;
   v380 = 0u;
   v381 = 0u;
-  v304 = v301;
+  v304 = array2;
   v308 = [v304 countByEnumeratingWithState:&v380 objects:v400 count:16];
   if (!v308)
   {
@@ -11177,36 +11177,36 @@ LABEL_121:
       }
 
       v354 = *(*(&v380 + 1) + 8 * i);
-      v327 = [v313 autoJoinParameters];
-      v135 = [v327 targetNetworkProfile];
-      v136 = [v135 identifier];
-      v137 = [v354 matchingKnownNetworkProfile];
-      v138 = [v137 identifier];
-      v139 = v138;
-      if (v136 == v138)
+      autoJoinParameters6 = [contextCopy autoJoinParameters];
+      targetNetworkProfile2 = [autoJoinParameters6 targetNetworkProfile];
+      identifier5 = [targetNetworkProfile2 identifier];
+      matchingKnownNetworkProfile6 = [v354 matchingKnownNetworkProfile];
+      identifier6 = [matchingKnownNetworkProfile6 identifier];
+      v139 = identifier6;
+      if (identifier5 == identifier6)
       {
 
 LABEL_162:
 LABEL_163:
-        [v306 addObject:v354];
+        [array4 addObject:v354];
         continue;
       }
 
-      v346 = [v313 autoJoinParameters];
-      v140 = [v346 targetNetworkProfile];
-      v141 = [v140 identifier];
-      if (v141)
+      autoJoinParameters7 = [contextCopy autoJoinParameters];
+      targetNetworkProfile3 = [autoJoinParameters7 targetNetworkProfile];
+      identifier7 = [targetNetworkProfile3 identifier];
+      if (identifier7)
       {
-        v342 = [v354 matchingKnownNetworkProfile];
-        v142 = [v342 identifier];
-        if (v142)
+        matchingKnownNetworkProfile7 = [v354 matchingKnownNetworkProfile];
+        identifier8 = [matchingKnownNetworkProfile7 identifier];
+        if (identifier8)
         {
-          v338 = [v313 autoJoinParameters];
-          v334 = [v338 targetNetworkProfile];
-          v143 = [v334 identifier];
-          v144 = [v354 matchingKnownNetworkProfile];
-          v145 = [v144 identifier];
-          v323 = [v143 isEqual:v145];
+          autoJoinParameters8 = [contextCopy autoJoinParameters];
+          targetNetworkProfile4 = [autoJoinParameters8 targetNetworkProfile];
+          identifier9 = [targetNetworkProfile4 identifier];
+          matchingKnownNetworkProfile8 = [v354 matchingKnownNetworkProfile];
+          identifier10 = [matchingKnownNetworkProfile8 identifier];
+          v323 = [identifier9 isEqual:identifier10];
 
           if (v323)
           {
@@ -11222,8 +11222,8 @@ LABEL_166:
       v379 = 0u;
       v376 = 0u;
       v377 = 0u;
-      v327 = v305;
-      v347 = [v327 countByEnumeratingWithState:&v376 objects:v399 count:16];
+      autoJoinParameters6 = array;
+      v347 = [autoJoinParameters6 countByEnumeratingWithState:&v376 objects:v399 count:16];
       if (!v347)
       {
         goto LABEL_192;
@@ -11236,29 +11236,29 @@ LABEL_166:
         {
           if (*v377 != v343)
           {
-            objc_enumerationMutation(v327);
+            objc_enumerationMutation(autoJoinParameters6);
           }
 
           v147 = *(*(&v376 + 1) + 8 * j);
-          v148 = [v354 SSID];
-          v149 = [v147 SSID];
-          if (v148 != v149)
+          sSID9 = [v354 SSID];
+          sSID10 = [v147 SSID];
+          if (sSID9 != sSID10)
           {
-            v351 = [v354 SSID];
-            if (!v351)
+            sSID11 = [v354 SSID];
+            if (!sSID11)
             {
               goto LABEL_182;
             }
 
-            v349 = [v147 SSID];
-            if (!v349)
+            sSID12 = [v147 SSID];
+            if (!sSID12)
             {
               goto LABEL_181;
             }
 
-            v329 = [v354 SSID];
-            v331 = [v147 SSID];
-            if (([v329 isEqual:v331] & 1) == 0)
+            sSID6 = [v354 SSID];
+            sSID13 = [v147 SSID];
+            if (([sSID6 isEqual:sSID13] & 1) == 0)
             {
 
 LABEL_181:
@@ -11268,30 +11268,30 @@ LABEL_182:
             }
           }
 
-          v150 = [v354 matchingKnownNetworkProfile];
-          v151 = [v150 identifier];
-          v152 = [v147 matchingKnownNetworkProfile];
-          v153 = [v152 identifier];
-          if (v151 == v153)
+          matchingKnownNetworkProfile9 = [v354 matchingKnownNetworkProfile];
+          identifier11 = [matchingKnownNetworkProfile9 identifier];
+          matchingKnownNetworkProfile10 = [v147 matchingKnownNetworkProfile];
+          identifier12 = [matchingKnownNetworkProfile10 identifier];
+          if (identifier11 == identifier12)
           {
             v339 = 1;
           }
 
           else
           {
-            v335 = [v354 matchingKnownNetworkProfile];
-            v154 = [v335 identifier];
-            if (v154)
+            matchingKnownNetworkProfile11 = [v354 matchingKnownNetworkProfile];
+            identifier13 = [matchingKnownNetworkProfile11 identifier];
+            if (identifier13)
             {
-              v324 = [v147 matchingKnownNetworkProfile];
-              v320 = [v324 identifier];
-              if (v320)
+              matchingKnownNetworkProfile12 = [v147 matchingKnownNetworkProfile];
+              identifier14 = [matchingKnownNetworkProfile12 identifier];
+              if (identifier14)
               {
-                v317 = [v354 matchingKnownNetworkProfile];
-                v315 = [v317 identifier];
-                v155 = [v147 matchingKnownNetworkProfile];
-                v156 = [v155 identifier];
-                v339 = [v315 isEqual:v156];
+                matchingKnownNetworkProfile13 = [v354 matchingKnownNetworkProfile];
+                identifier15 = [matchingKnownNetworkProfile13 identifier];
+                matchingKnownNetworkProfile14 = [v147 matchingKnownNetworkProfile];
+                identifier16 = [matchingKnownNetworkProfile14 identifier];
+                v339 = [identifier15 isEqual:identifier16];
               }
 
               else
@@ -11306,7 +11306,7 @@ LABEL_182:
             }
           }
 
-          if (v148 != v149)
+          if (sSID9 != sSID10)
           {
           }
 
@@ -11316,7 +11316,7 @@ LABEL_182:
           }
         }
 
-        v347 = [v327 countByEnumeratingWithState:&v376 objects:v399 count:16];
+        v347 = [autoJoinParameters6 countByEnumeratingWithState:&v376 objects:v399 count:16];
       }
 
       while (v347);
@@ -11344,8 +11344,8 @@ LABEL_192:
       }
 
       [(CWFAutoJoinMetric *)self->_metric setDidExcludeStandalone6GHzNetwork:1];
-      v160 = [v354 matchingKnownNetworkProfile];
-      -[CWFAutoJoinMetric setDidExclude6GHzOnlyNetwork:](self->_metric, "setDidExclude6GHzOnlyNetwork:", [v160 wasRecently6GHzOnlyOnAnyDevice]);
+      matchingKnownNetworkProfile15 = [v354 matchingKnownNetworkProfile];
+      -[CWFAutoJoinMetric setDidExclude6GHzOnlyNetwork:](self->_metric, "setDidExclude6GHzOnlyNetwork:", [matchingKnownNetworkProfile15 wasRecently6GHzOnlyOnAnyDevice]);
     }
 
     v308 = [v304 countByEnumeratingWithState:&v380 objects:v400 count:16];
@@ -11354,26 +11354,26 @@ LABEL_192:
   while (v308);
 LABEL_200:
 
-  [v305 addObjectsFromArray:v306];
+  [array addObjectsFromArray:array4];
 LABEL_201:
-  if ([v305 count])
+  if ([array count])
   {
     [(CWFAutoJoinManager *)self __updateAutoJoinState:3];
-    [(CWFAutoJoinManager *)self __sortJoinCandidates:v305 context:v313];
-    if (!v303)
+    [(CWFAutoJoinManager *)self __sortJoinCandidates:array context:contextCopy];
+    if (!associatedNetwork)
     {
       goto LABEL_224;
     }
 
-    v161 = [v313 autoJoinParameters];
-    if ([v161 trigger] == 54)
+    autoJoinParameters9 = [contextCopy autoJoinParameters];
+    if ([autoJoinParameters9 trigger] == 54)
     {
 
       goto LABEL_208;
     }
 
-    v164 = [v313 autoJoinParameters];
-    v165 = [v164 trigger] == 55;
+    autoJoinParameters10 = [contextCopy autoJoinParameters];
+    v165 = [autoJoinParameters10 trigger] == 55;
 
     if (v165)
     {
@@ -11382,7 +11382,7 @@ LABEL_208:
       v375 = 0u;
       v372 = 0u;
       v373 = 0u;
-      v355 = v305;
+      v355 = array;
       v166 = [v355 countByEnumeratingWithState:&v372 objects:v398 count:16];
       if (v166)
       {
@@ -11397,12 +11397,12 @@ LABEL_210:
           }
 
           v169 = *(*(&v372 + 1) + 8 * v168);
-          if ([(CWFAutoJoinManager *)self __allowJoinCandidate:v169 context:v313 defer:0 error:0])
+          if ([(CWFAutoJoinManager *)self __allowJoinCandidate:v169 context:contextCopy defer:0 error:0])
           {
-            v170 = [v169 SSID];
-            v171 = [v303 SSID];
-            v172 = v171;
-            if (v170 == v171)
+            sSID14 = [v169 SSID];
+            sSID15 = [associatedNetwork SSID];
+            v172 = sSID15;
+            if (sSID14 == sSID15)
             {
 
 LABEL_230:
@@ -11410,15 +11410,15 @@ LABEL_230:
               goto LABEL_231;
             }
 
-            v173 = [v169 SSID];
-            if (v173)
+            sSID16 = [v169 SSID];
+            if (sSID16)
             {
-              v174 = [v303 SSID];
-              if (v174)
+              sSID17 = [associatedNetwork SSID];
+              if (sSID17)
               {
-                v175 = [v169 SSID];
-                v176 = [v303 SSID];
-                v177 = [v175 isEqual:v176];
+                sSID18 = [v169 SSID];
+                sSID19 = [associatedNetwork SSID];
+                v177 = [sSID18 isEqual:sSID19];
 
                 if (v177)
                 {
@@ -11458,7 +11458,7 @@ LABEL_224:
     v371 = 0u;
     v368 = 0u;
     v369 = 0u;
-    v321 = v305;
+    v321 = array;
     v336 = [v321 countByEnumeratingWithState:&v368 objects:v397 count:16];
     if (v336)
     {
@@ -11478,10 +11478,10 @@ LABEL_224:
 
           v344 = v180;
           v352 = *(*(&v368 + 1) + 8 * v180);
-          v182 = [v313 autoJoinParameters];
-          v183 = [v182 trigger];
+          autoJoinParameters11 = [contextCopy autoJoinParameters];
+          trigger2 = [autoJoinParameters11 trigger];
           v367 = v302;
-          v8 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:v183 error:&v367];
+          v8 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:trigger2 error:&v367];
           v350 = v367;
 
           if (!v8)
@@ -11491,20 +11491,20 @@ LABEL_224:
 
           v366 = 0;
           v365 = 0;
-          v184 = [(CWFAutoJoinManager *)self __allowJoinCandidate:v352 context:v313 defer:&v366 error:&v365];
+          v184 = [(CWFAutoJoinManager *)self __allowJoinCandidate:v352 context:contextCopy defer:&v366 error:&v365];
           v185 = v365;
           if (v184)
           {
             v348 = v185;
-            if ([v313 allowDeferredCandidates] & 1) == 0 && (v366)
+            if ([contextCopy allowDeferredCandidates] & 1) == 0 && (v366)
             {
-              v186 = self;
-              objc_sync_enter(v186);
+              selfCopy2 = self;
+              objc_sync_enter(selfCopy2);
               deferredKnownNetworks = self->_deferredKnownNetworks;
-              v285 = [v352 matchingKnownNetworkProfile];
-              [(NSMutableOrderedSet *)deferredKnownNetworks addObject:v285];
+              matchingKnownNetworkProfile16 = [v352 matchingKnownNetworkProfile];
+              [(NSMutableOrderedSet *)deferredKnownNetworks addObject:matchingKnownNetworkProfile16];
 
-              objc_sync_exit(v186);
+              objc_sync_exit(selfCopy2);
             }
 
             else
@@ -11514,24 +11514,24 @@ LABEL_224:
                 goto LABEL_248;
               }
 
-              v186 = [v352 SSID];
-              v187 = [v303 SSID];
-              v188 = v187;
-              if (v186 == v187)
+              selfCopy2 = [v352 SSID];
+              sSID20 = [associatedNetwork SSID];
+              v188 = sSID20;
+              if (selfCopy2 == sSID20)
               {
 
                 goto LABEL_248;
               }
 
-              v189 = [v352 SSID];
-              if (v189)
+              sSID21 = [v352 SSID];
+              if (sSID21)
               {
-                v190 = [v303 SSID];
-                if (v190)
+                sSID22 = [associatedNetwork SSID];
+                if (sSID22)
                 {
-                  v191 = [v352 SSID];
-                  v192 = [v303 SSID];
-                  v193 = [v191 isEqual:v192];
+                  sSID23 = [v352 SSID];
+                  sSID24 = [associatedNetwork SSID];
+                  v193 = [sSID23 isEqual:sSID24];
 
                   if (!v193)
                   {
@@ -11539,41 +11539,41 @@ LABEL_224:
                   }
 
 LABEL_248:
-                  v194 = [(NSMutableDictionary *)self->_deferredColocatedJoinCandidateMap allKeys];
-                  v195 = [v352 matchingKnownNetworkProfile];
-                  v196 = [v195 identifier];
-                  v197 = [v194 containsObject:v196];
+                  allKeys = [(NSMutableDictionary *)self->_deferredColocatedJoinCandidateMap allKeys];
+                  matchingKnownNetworkProfile17 = [v352 matchingKnownNetworkProfile];
+                  identifier17 = [matchingKnownNetworkProfile17 identifier];
+                  v197 = [allKeys containsObject:identifier17];
 
                   if (v197)
                   {
-                    v198 = [(NSMutableDictionary *)self->_deferredColocatedJoinCandidateMap allValues];
-                    v186 = [v198 mutableCopy];
+                    allValues = [(NSMutableDictionary *)self->_deferredColocatedJoinCandidateMap allValues];
+                    selfCopy2 = [allValues mutableCopy];
 
-                    [(CWFAutoJoinManager *)self __sortKnownNetworksByJoinTimestamp:v186];
-                    v199 = [v352 matchingKnownNetworkProfile];
-                    v200 = [v199 identifier];
-                    v201 = [(CWFAutoJoinManager *)v186 firstObject];
-                    v202 = [v201 identifier];
-                    if (v200 == v202)
+                    [(CWFAutoJoinManager *)self __sortKnownNetworksByJoinTimestamp:selfCopy2];
+                    matchingKnownNetworkProfile18 = [v352 matchingKnownNetworkProfile];
+                    identifier18 = [matchingKnownNetworkProfile18 identifier];
+                    firstObject = [(CWFAutoJoinManager *)selfCopy2 firstObject];
+                    identifier19 = [firstObject identifier];
+                    if (identifier18 == identifier19)
                     {
                       v330 = 1;
                     }
 
                     else
                     {
-                      v328 = [v352 matchingKnownNetworkProfile];
-                      v325 = [v328 identifier];
-                      if (v325)
+                      matchingKnownNetworkProfile19 = [v352 matchingKnownNetworkProfile];
+                      identifier20 = [matchingKnownNetworkProfile19 identifier];
+                      if (identifier20)
                       {
-                        v318 = [(CWFAutoJoinManager *)v186 firstObject];
-                        v316 = [v318 identifier];
-                        if (v316)
+                        firstObject2 = [(CWFAutoJoinManager *)selfCopy2 firstObject];
+                        identifier21 = [firstObject2 identifier];
+                        if (identifier21)
                         {
-                          v312 = [v352 matchingKnownNetworkProfile];
-                          v309 = [v312 identifier];
-                          v203 = [(CWFAutoJoinManager *)v186 firstObject];
-                          v204 = [v203 identifier];
-                          v330 = [v309 isEqual:v204];
+                          matchingKnownNetworkProfile20 = [v352 matchingKnownNetworkProfile];
+                          identifier22 = [matchingKnownNetworkProfile20 identifier];
+                          firstObject3 = [(CWFAutoJoinManager *)selfCopy2 firstObject];
+                          identifier23 = [firstObject3 identifier];
+                          v330 = [identifier22 isEqual:identifier23];
                         }
 
                         else
@@ -11638,12 +11638,12 @@ LABEL_248:
 
                   else
                   {
-                    v205 = [v352 matchingKnownNetworkProfile];
-                    v206 = [(CWFAutoJoinManager *)self knownNetworks];
-                    v207 = [v206 allObjects];
-                    v186 = [(CWFAutoJoinManager *)self __morePreferredKnownNetworksWithCandidate:v205 knownNetworks:v207 context:v313];
+                    matchingKnownNetworkProfile21 = [v352 matchingKnownNetworkProfile];
+                    knownNetworks3 = [(CWFAutoJoinManager *)self knownNetworks];
+                    allObjects2 = [knownNetworks3 allObjects];
+                    selfCopy2 = [(CWFAutoJoinManager *)self __morePreferredKnownNetworksWithCandidate:matchingKnownNetworkProfile21 knownNetworks:allObjects2 context:contextCopy];
 
-                    if ([(CWFAutoJoinManager *)v186 count])
+                    if ([(CWFAutoJoinManager *)selfCopy2 count])
                     {
                       v208 = CWFGetOSLog();
                       if (v208)
@@ -11680,7 +11680,7 @@ LABEL_248:
 
                       if (os_log_type_enabled(v212, OS_LOG_TYPE_DEFAULT))
                       {
-                        v214 = [(CWFAutoJoinManager *)v186 count];
+                        v214 = [(CWFAutoJoinManager *)selfCopy2 count];
                         v394 = 134217984;
                         *v395 = v214;
                         LODWORD(v296) = 12;
@@ -11692,8 +11692,8 @@ LABEL_248:
                       v364 = 0u;
                       v361 = 0u;
                       v362 = 0u;
-                      v186 = v186;
-                      v215 = [(CWFAutoJoinManager *)v186 countByEnumeratingWithState:&v361 objects:v396 count:16];
+                      selfCopy2 = selfCopy2;
+                      v215 = [(CWFAutoJoinManager *)selfCopy2 countByEnumeratingWithState:&v361 objects:v396 count:16];
                       if (v215)
                       {
                         v216 = *v362;
@@ -11703,7 +11703,7 @@ LABEL_248:
                           {
                             if (*v362 != v216)
                             {
-                              objc_enumerationMutation(v186);
+                              objc_enumerationMutation(selfCopy2);
                             }
 
                             v218 = *(*(&v361 + 1) + 8 * k);
@@ -11729,26 +11729,26 @@ LABEL_248:
                             }
                           }
 
-                          v215 = [(CWFAutoJoinManager *)v186 countByEnumeratingWithState:&v361 objects:v396 count:16];
+                          v215 = [(CWFAutoJoinManager *)selfCopy2 countByEnumeratingWithState:&v361 objects:v396 count:16];
                         }
 
                         while (v215);
                       }
 
-                      v222 = [v352 matchingKnownNetworkProfile];
+                      matchingKnownNetworkProfile22 = [v352 matchingKnownNetworkProfile];
                       deferredColocatedJoinCandidateMap = self->_deferredColocatedJoinCandidateMap;
-                      v224 = [v352 matchingKnownNetworkProfile];
-                      v225 = [v224 identifier];
-                      [(NSMutableDictionary *)deferredColocatedJoinCandidateMap setObject:v222 forKeyedSubscript:v225];
+                      matchingKnownNetworkProfile23 = [v352 matchingKnownNetworkProfile];
+                      identifier24 = [matchingKnownNetworkProfile23 identifier];
+                      [(NSMutableDictionary *)deferredColocatedJoinCandidateMap setObject:matchingKnownNetworkProfile22 forKeyedSubscript:identifier24];
 
                       [(CWFAutoJoinMetric *)self->_metric setDidDeferJoinToDiscoverMorePreferredNetwork:1];
-                      v226 = [v313 copy];
-                      [v226 setKnownNetworks:v186];
+                      v226 = [contextCopy copy];
+                      [v226 setKnownNetworks:selfCopy2];
                       [v226 setPassiveScan:0];
                       [v226 setUseCacheForPreviouslyScannedChannels:1];
                       [v226 setAllowDeferredCandidates:1];
-                      v227 = [v352 RSSI];
-                      if (v227 - 3 < [v313 minRSSI] && objc_msgSend(v352, "RSSI") >= -87)
+                      rSSI3 = [v352 RSSI];
+                      if (rSSI3 - 3 < [contextCopy minRSSI] && objc_msgSend(v352, "RSSI") >= -87)
                       {
                         -[NSObject setMinRSSI:](v226, "setMinRSSI:", [v352 RSSI] - 3);
                         v228 = CWFGetOSLog();
@@ -11765,26 +11765,26 @@ LABEL_248:
 
                         if (os_log_type_enabled(v229, OS_LOG_TYPE_DEFAULT))
                         {
-                          v236 = [v313 minRSSI];
-                          v237 = [v226 minRSSI];
+                          minRSSI2 = [contextCopy minRSSI];
+                          minRSSI3 = [v226 minRSSI];
                           v394 = 67109632;
                           *v395 = 3;
                           *&v395[4] = 2048;
-                          *&v395[6] = v236;
+                          *&v395[6] = minRSSI2;
                           *&v395[14] = 2048;
-                          *&v395[16] = v237;
+                          *&v395[16] = minRSSI3;
                           LODWORD(v296) = 28;
                           v295 = &v394;
                           _os_log_send_and_compose_impl();
                         }
                       }
 
-                      v238 = [(NSMutableDictionary *)self->_cachedKnownNetworksContexts objectForKeyedSubscript:v226, v295];
-                      v239 = v238;
-                      if (v238)
+                      v295 = [(NSMutableDictionary *)self->_cachedKnownNetworksContexts objectForKeyedSubscript:v226, v295];
+                      v239 = v295;
+                      if (v295)
                       {
                         v240 = v226;
-                        v226 = v238;
+                        v226 = v295;
                       }
 
                       else
@@ -11806,10 +11806,10 @@ LABEL_372:
                         goto LABEL_363;
                       }
 
-                      v242 = [v313 autoJoinParameters];
-                      v243 = [v242 trigger];
+                      autoJoinParameters12 = [contextCopy autoJoinParameters];
+                      trigger3 = [autoJoinParameters12 trigger];
                       v359 = v241;
-                      v244 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:v243 error:&v359];
+                      v244 = [(CWFAutoJoinManager *)self __allowAutoJoinWithTrigger:trigger3 error:&v359];
                       v350 = v359;
 
                       if (!v244)
@@ -11845,30 +11845,30 @@ LABEL_314:
 
                     if ((v340 & 1) == 0)
                     {
-                      v248 = [v303 matchingKnownNetworkProfile];
-                      v249 = [v248 identifier];
-                      v250 = [v352 matchingKnownNetworkProfile];
-                      v251 = [v250 identifier];
-                      v252 = [v249 isEqual:v251];
+                      matchingKnownNetworkProfile24 = [associatedNetwork matchingKnownNetworkProfile];
+                      identifier25 = [matchingKnownNetworkProfile24 identifier];
+                      matchingKnownNetworkProfile25 = [v352 matchingKnownNetworkProfile];
+                      identifier26 = [matchingKnownNetworkProfile25 identifier];
+                      v252 = [identifier25 isEqual:identifier26];
 
                       if (v252)
                       {
                         v287 = CWFGetOSLog();
                         if (v287)
                         {
-                          v186 = CWFGetOSLog();
+                          selfCopy2 = CWFGetOSLog();
                         }
 
                         else
                         {
-                          v186 = MEMORY[0x1E69E9C10];
+                          selfCopy2 = MEMORY[0x1E69E9C10];
                           v289 = MEMORY[0x1E69E9C10];
                         }
 
-                        if (os_log_type_enabled(&v186->super, OS_LOG_TYPE_DEFAULT))
+                        if (os_log_type_enabled(&selfCopy2->super, OS_LOG_TYPE_DEFAULT))
                         {
                           v394 = 138543362;
-                          *v395 = v303;
+                          *v395 = associatedNetwork;
                           goto LABEL_361;
                         }
 
@@ -11882,44 +11882,44 @@ LABEL_364:
                       }
                     }
 
-                    v253 = [v313 autoJoinParameters];
-                    if ([v253 trigger] == 54)
+                    autoJoinParameters13 = [contextCopy autoJoinParameters];
+                    if ([autoJoinParameters13 trigger] == 54)
                     {
                     }
 
                     else
                     {
-                      v254 = [v313 autoJoinParameters];
-                      v255 = [v254 trigger] == 55;
+                      autoJoinParameters14 = [contextCopy autoJoinParameters];
+                      v255 = [autoJoinParameters14 trigger] == 55;
 
                       if (!v255)
                       {
-                        v256 = [(CWFAutoJoinManager *)self associatedNetwork];
-                        v257 = [v256 matchingKnownNetworkProfile];
-                        v258 = [v352 matchingKnownNetworkProfile];
-                        v259 = [v257 compareUserPriority:v258] == 1;
+                        associatedNetwork4 = [(CWFAutoJoinManager *)self associatedNetwork];
+                        matchingKnownNetworkProfile26 = [associatedNetwork4 matchingKnownNetworkProfile];
+                        matchingKnownNetworkProfile27 = [v352 matchingKnownNetworkProfile];
+                        v259 = [matchingKnownNetworkProfile26 compareUserPriority:matchingKnownNetworkProfile27] == 1;
 
                         if (v259)
                         {
                           v288 = CWFGetOSLog();
                           if (v288)
                           {
-                            v186 = CWFGetOSLog();
+                            selfCopy2 = CWFGetOSLog();
                           }
 
                           else
                           {
-                            v186 = MEMORY[0x1E69E9C10];
+                            selfCopy2 = MEMORY[0x1E69E9C10];
                             v290 = MEMORY[0x1E69E9C10];
                           }
 
-                          if (!os_log_type_enabled(&v186->super, OS_LOG_TYPE_DEFAULT))
+                          if (!os_log_type_enabled(&selfCopy2->super, OS_LOG_TYPE_DEFAULT))
                           {
                             goto LABEL_362;
                           }
 
                           v394 = 138543362;
-                          *v395 = v303;
+                          *v395 = associatedNetwork;
 LABEL_361:
                           LOBYTE(v8) = 1;
                           _os_log_send_and_compose_impl();
@@ -11928,13 +11928,13 @@ LABEL_361:
                       }
                     }
 
-                    if (v300)
+                    if (scanCopy)
                     {
-                      v186 = [(CWFAutoJoinManager *)self __performPreAssociationScanWithContext:v313 network:v352];
-                      if ([(CWFAutoJoinManager *)v186 count])
+                      selfCopy2 = [(CWFAutoJoinManager *)self __performPreAssociationScanWithContext:contextCopy network:v352];
+                      if ([(CWFAutoJoinManager *)selfCopy2 count])
                       {
                         v358 = v350;
-                        v260 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:v186 allowPreAssociationScan:0 context:v313 error:&v358];
+                        v260 = [(CWFAutoJoinManager *)self __matchAndJoinScanResults:selfCopy2 allowPreAssociationScan:0 context:contextCopy error:&v358];
                         v261 = v358;
 
                         if (v260)
@@ -11951,15 +11951,15 @@ LABEL_361:
                     else
                     {
                       v357 = 0;
-                      v262 = [(CWFAutoJoinManager *)self __performJoinWithNetwork:v352 context:v313 error:&v357];
+                      v262 = [(CWFAutoJoinManager *)self __performJoinWithNetwork:v352 context:contextCopy error:&v357];
                       v263 = v357;
-                      v186 = v263;
+                      selfCopy2 = v263;
                       if (v262)
                       {
                         goto LABEL_362;
                       }
 
-                      if ([(CWFAutoJoinManager *)v263 code]== -3936 || [(CWFAutoJoinManager *)v186 code]== -3947)
+                      if ([(CWFAutoJoinManager *)v263 code]== -3936 || [(CWFAutoJoinManager *)selfCopy2 code]== -3947)
                       {
                         v264 = CWFGetOSLog();
                         if (v264)
@@ -11975,38 +11975,38 @@ LABEL_361:
 
                         if (os_log_type_enabled(v265, OS_LOG_TYPE_DEFAULT))
                         {
-                          v267 = [(CWFAutoJoinManager *)v186 code];
+                          code = [(CWFAutoJoinManager *)selfCopy2 code];
                           v394 = 134217984;
-                          *v395 = v267;
+                          *v395 = code;
                           v295 = &v394;
                           _os_log_send_and_compose_impl();
                         }
 
-                        v268 = [v352 channel];
-                        v393 = v268;
+                        channel6 = [v352 channel];
+                        v393 = channel6;
                         v269 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v393 count:1];
-                        v270 = [v313 SSIDList];
-                        v271 = [v313 dwellTime];
+                        sSIDList = [contextCopy SSIDList];
+                        dwellTime = [contextCopy dwellTime];
                         v296 = 0;
-                        BYTE1(v295) = [v313 skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
+                        BYTE1(v295) = [contextCopy skipRemainingNon2GHzChannelsUnlessKnownNetworkFound];
                         LOBYTE(v295) = 0;
-                        v272 = [CWFAutoJoinManager __performScanWithChannelList:"__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:" SSIDList:v269 passive:v270 dwellTime:0 maxCacheAge:v271 cacheOnly:0 isPreAssociationScan:0 checkForKnownNetworks:? error:?];
+                        v272 = [CWFAutoJoinManager __performScanWithChannelList:"__performScanWithChannelList:SSIDList:passive:dwellTime:maxCacheAge:cacheOnly:isPreAssociationScan:checkForKnownNetworks:error:" SSIDList:v269 passive:sSIDList dwellTime:0 maxCacheAge:dwellTime cacheOnly:0 isPreAssociationScan:0 checkForKnownNetworks:? error:?];
 
-                        v356 = v186;
-                        LOBYTE(v268) = [(CWFAutoJoinManager *)self __performJoinWithNetwork:v352 context:v313 error:&v356];
+                        v356 = selfCopy2;
+                        LOBYTE(channel6) = [(CWFAutoJoinManager *)self __performJoinWithNetwork:v352 context:contextCopy error:&v356];
                         v273 = v356;
 
-                        if (v268)
+                        if (channel6)
                         {
                           LOBYTE(v8) = 1;
-                          v186 = v273;
+                          selfCopy2 = v273;
                           goto LABEL_363;
                         }
 
-                        v186 = v273;
+                        selfCopy2 = v273;
                       }
 
-                      if ([(CWFAutoJoinManager *)v186 code]!= -3936 && [(CWFAutoJoinManager *)v186 code]!= -3947)
+                      if ([(CWFAutoJoinManager *)selfCopy2 code]!= -3936 && [(CWFAutoJoinManager *)selfCopy2 code]!= -3947)
                       {
                         v274 = CWFGetOSLog();
                         if (v274)
@@ -12029,14 +12029,14 @@ LABEL_361:
                         }
 
                         failedToJoinKnownNetworkIDs = self->_failedToJoinKnownNetworkIDs;
-                        v278 = [v352 matchingKnownNetworkProfile];
-                        v279 = [v278 identifier];
-                        [(NSMutableSet *)failedToJoinKnownNetworkIDs addObject:v279];
+                        matchingKnownNetworkProfile28 = [v352 matchingKnownNetworkProfile];
+                        identifier27 = [matchingKnownNetworkProfile28 identifier];
+                        [(NSMutableSet *)failedToJoinKnownNetworkIDs addObject:identifier27];
 
                         v280 = self->_deferredColocatedJoinCandidateMap;
-                        v281 = [v352 matchingKnownNetworkProfile];
-                        v282 = [v281 identifier];
-                        [(NSMutableDictionary *)v280 setObject:0 forKeyedSubscript:v282];
+                        matchingKnownNetworkProfile29 = [v352 matchingKnownNetworkProfile];
+                        identifier28 = [matchingKnownNetworkProfile29 identifier];
+                        [(NSMutableDictionary *)v280 setObject:0 forKeyedSubscript:identifier28];
                       }
                     }
                   }
@@ -12077,7 +12077,7 @@ LABEL_345:
 LABEL_365:
 
     [(CWFAutoJoinManager *)self __updateDiscoverTimestampForJoinCandidates:v321];
-    [(CWFAutoJoinManager *)self __updateDiscoverTimestampForJoinCandidates:v301];
+    [(CWFAutoJoinManager *)self __updateDiscoverTimestampForJoinCandidates:array2];
   }
 
   else
@@ -12105,10 +12105,10 @@ LABEL_365:
 
   objc_autoreleasePoolPop(context);
 LABEL_367:
-  if (a6 && v302)
+  if (error && v302)
   {
     v291 = v302;
-    *a6 = v302;
+    *error = v302;
   }
 
   v292 = *MEMORY[0x1E69E9840];
@@ -12118,16 +12118,16 @@ LABEL_367:
 - (BOOL)__isAutoJoiningAtHome
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  loiTypes = v2->_loiTypes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  loiTypes = selfCopy->_loiTypes;
   if (loiTypes && [(NSArray *)loiTypes count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = v2->_loiTypes;
+    v4 = selfCopy->_loiTypes;
     v5 = 0;
     v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
@@ -12157,35 +12157,35 @@ LABEL_367:
     v5 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v9 = *MEMORY[0x1E69E9840];
   return v5 & 1;
 }
 
-- (BOOL)__isAutoJoinCancelled:(id *)a3
+- (BOOL)__isAutoJoinCancelled:(id *)cancelled
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  cancelled = v4->_cancelled;
-  v6 = v4->_underlyingCancelError;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  v6 = selfCopy->_underlyingCancelError;
+  objc_sync_exit(selfCopy);
 
   if (cancelled)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v7 setObject:@"Auto-join has been cancelled" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"Auto-join has been cancelled" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A798];
-    v10 = [v7 copy];
+    v10 = [dictionary copy];
     v11 = [v8 errorWithDomain:v9 code:89 userInfo:v10];
 
-    [(CWFAutoJoinMetric *)v4->_metric setWasCancelled:1];
-    if (a3 && v11)
+    [(CWFAutoJoinMetric *)selfCopy->_metric setWasCancelled:1];
+    if (cancelled && v11)
     {
       v12 = v11;
-      *a3 = v11;
+      *cancelled = v11;
     }
   }
 
@@ -12199,19 +12199,19 @@ LABEL_367:
 
 - (BOOL)__isAutoJoinRequeued
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  requeued = v2->_requeued;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  requeued = selfCopy->_requeued;
+  objc_sync_exit(selfCopy);
 
   return requeued;
 }
 
-- (BOOL)__allowOpportunisticNetworkTransitionWithTrigger:(int64_t)a3
+- (BOOL)__allowOpportunisticNetworkTransitionWithTrigger:(int64_t)trigger
 {
   v4 = _os_feature_enabled_impl();
-  v5 = 0x180030C001101uLL >> (a3 - 20);
-  if ((a3 - 20) > 0x30)
+  v5 = 0x180030C001101uLL >> (trigger - 20);
+  if ((trigger - 20) > 0x30)
   {
     LOBYTE(v5) = 0;
   }
@@ -12237,14 +12237,14 @@ LABEL_367:
   v4 = v13;
   if (!v3)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setObject:@"BBH PH fallback is not allowed" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"BBH PH fallback is not allowed" forKeyedSubscript:*MEMORY[0x1E696A578]];
     if (v4)
     {
-      [v5 setObject:v4 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      [dictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
 
-    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v5];
+    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
 
     v7 = CWFGetOSLog();
     if (v7)
@@ -12277,11 +12277,11 @@ LABEL_367:
   return v3;
 }
 
-- (BOOL)__allowAutoJoinWithTrigger:(int64_t)a3 error:(id *)a4
+- (BOOL)__allowAutoJoinWithTrigger:(int64_t)trigger error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = [(CWFAutoJoinManager *)self __isAutoJoinRequeued];
-  if (v7)
+  __isAutoJoinRequeued = [(CWFAutoJoinManager *)self __isAutoJoinRequeued];
+  if (__isAutoJoinRequeued)
   {
     v9 = 0;
     goto LABEL_23;
@@ -12296,22 +12296,22 @@ LABEL_367:
     goto LABEL_13;
   }
 
-  if (a3 == 67 && ![(CWFAutoJoinManager *)self __allowBrokenBackhaulPersonalHotspotFallback])
+  if (trigger == 67 && ![(CWFAutoJoinManager *)self __allowBrokenBackhaulPersonalHotspotFallback])
   {
 LABEL_23:
     v17 = 0;
     goto LABEL_13;
   }
 
-  v10 = [(CWFAutoJoinManager *)self allowAutoJoinHandler];
+  allowAutoJoinHandler = [(CWFAutoJoinManager *)self allowAutoJoinHandler];
 
-  if (!v10)
+  if (!allowAutoJoinHandler)
   {
     goto LABEL_8;
   }
 
   v25 = 0;
-  v11 = [(CWFAutoJoinManager *)self __calloutToAllowAutoJoinWithTrigger:a3 error:&v25];
+  v11 = [(CWFAutoJoinManager *)self __calloutToAllowAutoJoinWithTrigger:trigger error:&v25];
   v12 = v25;
   v13 = v12;
   if (v11)
@@ -12319,7 +12319,7 @@ LABEL_23:
 
 LABEL_8:
     v14 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -12327,14 +12327,14 @@ LABEL_8:
     goto LABEL_19;
   }
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
-  [v15 setObject:@"Auto-join is not allowed" forKeyedSubscript:*MEMORY[0x1E696A578]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Auto-join is not allowed" forKeyedSubscript:*MEMORY[0x1E696A578]];
   if (v13)
   {
-    [v15 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
-  v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v15];
+  v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
 
   v17 = 0;
   v9 = v16;
@@ -12355,7 +12355,7 @@ LABEL_13:
   {
     v21 = [(CWFAutoJoinManager *)self __descriptionForError:v9];
     v27 = 67109634;
-    v28 = v7;
+    v28 = __isAutoJoinRequeued;
     v29 = 1024;
     v30 = v17;
     v31 = 2114;
@@ -12365,13 +12365,13 @@ LABEL_13:
 
   [(CWFAutoJoinMetric *)self->_metric setWasAborted:1];
   v14 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_19:
     if (v9)
     {
       v22 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -12381,19 +12381,19 @@ LABEL_21:
   return v14;
 }
 
-- (BOOL)__shouldBypassUnusedNetworkPeriodCheckForTrigger:(int64_t)a3 knownNetwork:(id)a4
+- (BOOL)__shouldBypassUnusedNetworkPeriodCheckForTrigger:(int64_t)trigger knownNetwork:(id)network
 {
-  v5 = a4;
-  v6 = v5;
-  if ((a3 - 32) <= 0x21 && ((1 << (a3 - 32)) & 0x200008001) != 0)
+  networkCopy = network;
+  v6 = networkCopy;
+  if ((trigger - 32) <= 0x21 && ((1 << (trigger - 32)) & 0x200008001) != 0)
   {
     v7 = 1;
   }
 
-  else if ([v5 addReason] == 7 || objc_msgSend(v6, "addReason") == 12)
+  else if ([networkCopy addReason] == 7 || objc_msgSend(v6, "addReason") == 12)
   {
-    v9 = [v6 lastJoinedBySystemAt];
-    v7 = v9 == 0;
+    lastJoinedBySystemAt = [v6 lastJoinedBySystemAt];
+    v7 = lastJoinedBySystemAt == 0;
   }
 
   else
@@ -12404,14 +12404,14 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)__shouldBypassLockdownModeCheckForTrigger:(int64_t)a3 targetNetworkSSID:(id)a4 networkSSID:(id)a5
+- (BOOL)__shouldBypassLockdownModeCheckForTrigger:(int64_t)trigger targetNetworkSSID:(id)d networkSSID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 7)
+  dCopy = d;
+  iDCopy = iD;
+  v9 = iDCopy;
+  if (trigger == 7)
   {
-    if (v7 == v8)
+    if (dCopy == iDCopy)
     {
       v10 = 1;
     }
@@ -12419,9 +12419,9 @@ LABEL_21:
     else
     {
       v10 = 0;
-      if (v7 && v8)
+      if (dCopy && iDCopy)
       {
-        v10 = [v7 isEqual:v8];
+        v10 = [dCopy isEqual:iDCopy];
       }
     }
   }
@@ -12434,14 +12434,14 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)__isDeferrableKnownNetwork:(id)a3
+- (BOOL)__isDeferrableKnownNetwork:(id)network
 {
-  v4 = a3;
-  v5 = ([v4 isCarPlay] & 1) == 0 && ((objc_msgSend(v4, "isHotspot") & 1) != 0 || (objc_msgSend(v4, "isPersonalHotspot") & 1) != 0 || objc_msgSend(v4, "addReason") == 10 || (objc_msgSend(v4, "isOpen") & 1) != 0 || (objc_msgSend(v4, "isOWE") & 1) != 0 || (objc_msgSend(v4, "isWAPI") & 1) != 0 || objc_msgSend(v4, "isPSK") && ((objc_msgSend(v4, "isWEP") & 1) != 0 || objc_msgSend(v4, "isWPA")));
-  if ([v4 networkOfInterestHomeState] == 2 && -[CWFAutoJoinManager __isAutoJoiningAtHome](self, "__isAutoJoiningAtHome"))
+  networkCopy = network;
+  v5 = ([networkCopy isCarPlay] & 1) == 0 && ((objc_msgSend(networkCopy, "isHotspot") & 1) != 0 || (objc_msgSend(networkCopy, "isPersonalHotspot") & 1) != 0 || objc_msgSend(networkCopy, "addReason") == 10 || (objc_msgSend(networkCopy, "isOpen") & 1) != 0 || (objc_msgSend(networkCopy, "isOWE") & 1) != 0 || (objc_msgSend(networkCopy, "isWAPI") & 1) != 0 || objc_msgSend(networkCopy, "isPSK") && ((objc_msgSend(networkCopy, "isWEP") & 1) != 0 || objc_msgSend(networkCopy, "isWPA")));
+  if ([networkCopy networkOfInterestHomeState] == 2 && -[CWFAutoJoinManager __isAutoJoiningAtHome](self, "__isAutoJoiningAtHome"))
   {
-    v6 = [(CWFAutoJoinManager *)self location];
-    v7 = [v4 wasManuallyJoinedRecentlyInProximityOf:v6] ^ 1;
+    location = [(CWFAutoJoinManager *)self location];
+    v7 = [networkCopy wasManuallyJoinedRecentlyInProximityOf:location] ^ 1;
   }
 
   else
@@ -12452,64 +12452,64 @@ LABEL_21:
   return v5 | v7;
 }
 
-- (BOOL)__isDeferrableJoinCandidate:(id)a3
+- (BOOL)__isDeferrableJoinCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 matchingKnownNetworkProfile];
-  if ([v5 isCarPlay])
+  candidateCopy = candidate;
+  matchingKnownNetworkProfile = [candidateCopy matchingKnownNetworkProfile];
+  if ([matchingKnownNetworkProfile isCarPlay])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 matchingKnownNetworkProfile];
-    if ([(CWFAutoJoinManager *)self __isDeferrableKnownNetwork:v7])
+    matchingKnownNetworkProfile2 = [candidateCopy matchingKnownNetworkProfile];
+    if ([(CWFAutoJoinManager *)self __isDeferrableKnownNetwork:matchingKnownNetworkProfile2])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = sub_1E0BF1240(v4);
+      v6 = sub_1E0BF1240(candidateCopy);
     }
   }
 
   return v6;
 }
 
-- (BOOL)__allowKnownNetwork:(id)a3 context:(id)a4 allowForSeamlessSSIDTransition:(id)a5 defer:(BOOL *)a6 targetQueue:(id)a7 error:(id *)a8
+- (BOOL)__allowKnownNetwork:(id)network context:(id)context allowForSeamlessSSIDTransition:(id)transition defer:(BOOL *)defer targetQueue:(id)queue error:(id *)error
 {
   v117 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v108 = a5;
-  v101 = a7;
-  v110 = 0;
-  v15 = [v14 autoJoinParameters];
-  v16 = [v15 trigger];
+  networkCopy = network;
+  contextCopy = context;
+  transitionCopy = transition;
+  queueCopy = queue;
+  bOOLValue2 = 0;
+  autoJoinParameters = [contextCopy autoJoinParameters];
+  trigger = [autoJoinParameters trigger];
 
-  v106 = [(CWFAutoJoinManager *)self associatedNetwork];
-  v17 = self;
-  objc_sync_enter(v17);
-  knownNetworkAllowCache = v17->_knownNetworkAllowCache;
-  v19 = [v13 identifier];
-  v104 = [(NSMutableDictionary *)knownNetworkAllowCache objectForKeyedSubscript:v19];
+  associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  knownNetworkAllowCache = selfCopy->_knownNetworkAllowCache;
+  identifier = [networkCopy identifier];
+  v104 = [(NSMutableDictionary *)knownNetworkAllowCache objectForKeyedSubscript:identifier];
 
-  knownNetworkDeferCache = v17->_knownNetworkDeferCache;
-  v21 = [v13 identifier];
-  v102 = [(NSMutableDictionary *)knownNetworkDeferCache objectForKeyedSubscript:v21];
+  knownNetworkDeferCache = selfCopy->_knownNetworkDeferCache;
+  identifier2 = [networkCopy identifier];
+  v102 = [(NSMutableDictionary *)knownNetworkDeferCache objectForKeyedSubscript:identifier2];
 
-  knownNetworkAllowErrorCache = v17->_knownNetworkAllowErrorCache;
-  v23 = [v13 identifier];
-  v103 = [(NSMutableDictionary *)knownNetworkAllowErrorCache objectForKeyedSubscript:v23];
+  knownNetworkAllowErrorCache = selfCopy->_knownNetworkAllowErrorCache;
+  identifier3 = [networkCopy identifier];
+  v103 = [(NSMutableDictionary *)knownNetworkAllowErrorCache objectForKeyedSubscript:identifier3];
 
-  objc_sync_exit(v17);
-  if ([v13 isAutoJoinDisabled])
+  objc_sync_exit(selfCopy);
+  if ([networkCopy isAutoJoinDisabled])
   {
-    v24 = [MEMORY[0x1E695DF90] dictionary];
-    [v24 setObject:@"Known network profile is disabled" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"Known network profile is disabled" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
 LABEL_3:
     v26 = v25;
 LABEL_4:
@@ -12517,85 +12517,85 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (!-[CWFAutoJoinManager __shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:](v17, "__shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:", v16, v13) && (([v13 isCaptive] & 1) != 0 || objc_msgSend(v13, "wasCaptive")) && ((objc_msgSend(v13, "isOpen") & 1) != 0 || objc_msgSend(v13, "isOWE")))
+  if (!-[CWFAutoJoinManager __shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:](selfCopy, "__shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:", trigger, networkCopy) && (([networkCopy isCaptive] & 1) != 0 || objc_msgSend(networkCopy, "wasCaptive")) && ((objc_msgSend(networkCopy, "isOpen") & 1) != 0 || objc_msgSend(networkCopy, "isOWE")))
   {
-    v56 = [v13 lastJoinedOnAnyDeviceAt];
-    if (v56)
+    lastJoinedOnAnyDeviceAt = [networkCopy lastJoinedOnAnyDeviceAt];
+    if (lastJoinedOnAnyDeviceAt)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v58 = v57;
-      v59 = [v13 lastJoinedOnAnyDeviceAt];
-      [v59 timeIntervalSinceReferenceDate];
+      lastJoinedOnAnyDeviceAt2 = [networkCopy lastJoinedOnAnyDeviceAt];
+      [lastJoinedOnAnyDeviceAt2 timeIntervalSinceReferenceDate];
       v61 = v58 - v60;
 
       if (v61 > 1209600.0)
       {
-        v24 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Captive known network profile unused for %d weeks", 2];
-        [v24 setObject:v62 forKeyedSubscript:*MEMORY[0x1E696A578]];
+        [dictionary setObject:v62 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-        v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+        v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
         goto LABEL_3;
       }
     }
   }
 
-  if (!-[CWFAutoJoinManager __shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:](v17, "__shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:", v16, v13) && (([v13 isOpen] & 1) != 0 || objc_msgSend(v13, "isOWE")))
+  if (!-[CWFAutoJoinManager __shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:](selfCopy, "__shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:", trigger, networkCopy) && (([networkCopy isOpen] & 1) != 0 || objc_msgSend(networkCopy, "isOWE")))
   {
-    v29 = [v13 lastJoinedOnAnyDeviceAt];
-    if (v29)
+    lastJoinedOnAnyDeviceAt3 = [networkCopy lastJoinedOnAnyDeviceAt];
+    if (lastJoinedOnAnyDeviceAt3)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v31 = v30;
-      v32 = [v13 lastJoinedOnAnyDeviceAt];
-      [v32 timeIntervalSinceReferenceDate];
+      lastJoinedOnAnyDeviceAt4 = [networkCopy lastJoinedOnAnyDeviceAt];
+      [lastJoinedOnAnyDeviceAt4 timeIntervalSinceReferenceDate];
       v34 = v31 - v33;
 
       if (v34 > 1209600.0)
       {
-        v24 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Open known network profile unused for %d weeks", 2];
-        [v24 setObject:v35 forKeyedSubscript:*MEMORY[0x1E696A578]];
+        [dictionary setObject:v35 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-        v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+        v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
         goto LABEL_3;
       }
     }
   }
 
-  if (![(CWFAutoJoinManager *)v17 __shouldBypassUnusedNetworkPeriodCheckForTrigger:v16 knownNetwork:v13])
+  if (![(CWFAutoJoinManager *)selfCopy __shouldBypassUnusedNetworkPeriodCheckForTrigger:trigger knownNetwork:networkCopy])
   {
-    v36 = [v13 lastJoinedOnAnyDeviceAt];
-    if (v36)
+    lastJoinedOnAnyDeviceAt5 = [networkCopy lastJoinedOnAnyDeviceAt];
+    if (lastJoinedOnAnyDeviceAt5)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v38 = v37;
-      v39 = [v13 lastJoinedOnAnyDeviceAt];
-      [v39 timeIntervalSinceReferenceDate];
+      lastJoinedOnAnyDeviceAt6 = [networkCopy lastJoinedOnAnyDeviceAt];
+      [lastJoinedOnAnyDeviceAt6 timeIntervalSinceReferenceDate];
       v41 = v38 - v40;
 
       if (v41 > 43545600.0)
       {
-        v24 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Known network profile unused for %d weeks", 72];
-        [v24 setObject:v42 forKeyedSubscript:*MEMORY[0x1E696A578]];
+        [dictionary setObject:v42 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-        v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+        v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
         goto LABEL_3;
       }
     }
   }
 
-  if (!-[CWFAutoJoinManager __shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:](v17, "__shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:", v16, v13) && (([v13 isOpen] & 1) != 0 || objc_msgSend(v13, "isOWE")))
+  if (!-[CWFAutoJoinManager __shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:](selfCopy, "__shouldBypassUnusedNetworkPeriodCheckForTrigger:knownNetwork:", trigger, networkCopy) && (([networkCopy isOpen] & 1) != 0 || objc_msgSend(networkCopy, "isOWE")))
   {
-    v45 = [v13 lastJoinedByUserAt];
-    if (!v45)
+    lastJoinedByUserAt = [networkCopy lastJoinedByUserAt];
+    if (!lastJoinedByUserAt)
     {
-      v46 = [v13 lastJoinedOnAnyDeviceAt];
-      if (!v46)
+      lastJoinedOnAnyDeviceAt7 = [networkCopy lastJoinedOnAnyDeviceAt];
+      if (!lastJoinedOnAnyDeviceAt7)
       {
-        v8 = [v13 addedAt];
-        if (!v8)
+        addedAt = [networkCopy addedAt];
+        if (!addedAt)
         {
           goto LABEL_63;
         }
@@ -12603,17 +12603,17 @@ LABEL_4:
 
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v48 = v47;
-      v49 = [v13 lastJoinedOnAnyDeviceAt];
-      [v49 timeIntervalSinceReferenceDate];
+      lastJoinedOnAnyDeviceAt8 = [networkCopy lastJoinedOnAnyDeviceAt];
+      [lastJoinedOnAnyDeviceAt8 timeIntervalSinceReferenceDate];
       if (v48 - v50 > 86400.0)
       {
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v52 = v51;
-        v53 = [v13 addedAt];
-        [v53 timeIntervalSinceReferenceDate];
+        addedAt2 = [networkCopy addedAt];
+        [addedAt2 timeIntervalSinceReferenceDate];
         v55 = v52 - v54;
 
-        if (v46)
+        if (lastJoinedOnAnyDeviceAt7)
         {
         }
 
@@ -12623,47 +12623,47 @@ LABEL_4:
 
         if (v55 > 86400.0)
         {
-          v24 = [MEMORY[0x1E695DF90] dictionary];
-          v99 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Open known network profile never joined by user/UI unused for %d seconds", 86400];
-          [v24 setObject:v99 forKeyedSubscript:*MEMORY[0x1E696A578]];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          86400 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Open known network profile never joined by user/UI unused for %d seconds", 86400];
+          [dictionary setObject:86400 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-          v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+          v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
           goto LABEL_3;
         }
 
         goto LABEL_63;
       }
 
-      if (v46)
+      if (lastJoinedOnAnyDeviceAt7)
       {
-        v45 = v46;
+        lastJoinedByUserAt = lastJoinedOnAnyDeviceAt7;
       }
 
       else
       {
-        v45 = v8;
+        lastJoinedByUserAt = addedAt;
       }
     }
   }
 
 LABEL_63:
-  if ([v106 isPersonalHotspot])
+  if ([associatedNetwork isPersonalHotspot])
   {
-    v75 = [v13 brokenBackhaulStateUpdatedAt];
-    [v75 timeIntervalSinceNow];
+    brokenBackhaulStateUpdatedAt = [networkCopy brokenBackhaulStateUpdatedAt];
+    [brokenBackhaulStateUpdatedAt timeIntervalSinceNow];
     v77 = v76;
     v78 = v76 >= 0.0;
-    v79 = [v13 brokenBackhaulStateUpdatedAt];
-    [v79 timeIntervalSinceNow];
+    brokenBackhaulStateUpdatedAt2 = [networkCopy brokenBackhaulStateUpdatedAt];
+    [brokenBackhaulStateUpdatedAt2 timeIntervalSinceNow];
     if (!v78)
     {
       v80 = -v80;
     }
 
     v81 = v80 < 3600.0;
-    if (v80 < 3600.0 && [v13 brokenBackhaulState] != 4)
+    if (v80 < 3600.0 && [networkCopy brokenBackhaulState] != 4)
     {
-      v81 = [v13 brokenBackhaulState] == 3;
+      v81 = [networkCopy brokenBackhaulState] == 3;
     }
 
     if (v77 < 0.0)
@@ -12684,28 +12684,28 @@ LABEL_63:
       }
     }
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
-    v87 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Known network profile with recently (<%ds) broken backhaul not allowed when already associated to PH", 3600];
-    [v24 setObject:v87 forKeyedSubscript:*MEMORY[0x1E696A578]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    3600 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Known network profile with recently (<%ds) broken backhaul not allowed when already associated to PH", 3600];
+    [dictionary setObject:3600 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-    v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+    v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
     goto LABEL_3;
   }
 
 LABEL_71:
-  if (!v108 && v104)
+  if (!transitionCopy && v104)
   {
-    v82 = [v104 BOOLValue];
-    v110 = [v102 BOOLValue];
-    if ((v82 & 1) == 0)
+    bOOLValue = [v104 BOOLValue];
+    bOOLValue2 = [v102 BOOLValue];
+    if ((bOOLValue & 1) == 0)
     {
-      v83 = [v103 userInfo];
-      v24 = [v83 mutableCopy];
+      userInfo = [v103 userInfo];
+      dictionary = [userInfo mutableCopy];
 
-      [v24 setObject:@"Known network profile is not allowed by daemon (cached)" forKeyedSubscript:*MEMORY[0x1E696A578]];
+      [dictionary setObject:@"Known network profile is not allowed by daemon (cached)" forKeyedSubscript:*MEMORY[0x1E696A578]];
       v84 = MEMORY[0x1E696ABC0];
-      v85 = [v103 domain];
-      v26 = [v84 errorWithDomain:v85 code:objc_msgSend(v103 userInfo:{"code"), v24}];
+      domain = [v103 domain];
+      v26 = [v84 errorWithDomain:domain code:objc_msgSend(v103 userInfo:{"code"), dictionary}];
 
       goto LABEL_4;
     }
@@ -12713,78 +12713,78 @@ LABEL_71:
     goto LABEL_78;
   }
 
-  v86 = [(CWFAutoJoinManager *)v17 allowKnownNetworkHandler];
+  allowKnownNetworkHandler = [(CWFAutoJoinManager *)selfCopy allowKnownNetworkHandler];
 
-  if (!v86)
+  if (!allowKnownNetworkHandler)
   {
 LABEL_78:
-    v24 = 0;
+    dictionary = 0;
     v26 = 0;
     LOBYTE(v27) = 1;
     goto LABEL_5;
   }
 
   v109 = 0;
-  v27 = [(CWFAutoJoinManager *)v17 __calloutToAllowKnownNetwork:v13 trigger:v16 allowForSeamlessSSIDTransition:v108 defer:&v110 queue:v101 error:&v109];
+  v27 = [(CWFAutoJoinManager *)selfCopy __calloutToAllowKnownNetwork:networkCopy trigger:trigger allowForSeamlessSSIDTransition:transitionCopy defer:&bOOLValue2 queue:queueCopy error:&v109];
   v100 = v109;
   if (v27)
   {
-    v24 = 0;
+    dictionary = 0;
     v26 = 0;
   }
 
   else
   {
-    v24 = [MEMORY[0x1E695DF90] dictionary];
-    [v24 setObject:@"Known network profile is not allowed by daemon" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    [v24 setObject:v100 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v26 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v24];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"Known network profile is not allowed by daemon" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v100 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v26 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
   }
 
-  if (!v108)
+  if (!transitionCopy)
   {
-    v88 = v17;
+    v88 = selfCopy;
     objc_sync_enter(v88);
     v89 = [MEMORY[0x1E696AD98] numberWithBool:v27];
-    v90 = v17->_knownNetworkAllowCache;
-    v91 = [v13 identifier];
-    [(NSMutableDictionary *)v90 setObject:v89 forKeyedSubscript:v91];
+    v90 = selfCopy->_knownNetworkAllowCache;
+    identifier4 = [networkCopy identifier];
+    [(NSMutableDictionary *)v90 setObject:v89 forKeyedSubscript:identifier4];
 
-    v92 = v17->_knownNetworkAllowErrorCache;
-    v93 = [v13 identifier];
-    [(NSMutableDictionary *)v92 setObject:v26 forKeyedSubscript:v93];
+    v92 = selfCopy->_knownNetworkAllowErrorCache;
+    identifier5 = [networkCopy identifier];
+    [(NSMutableDictionary *)v92 setObject:v26 forKeyedSubscript:identifier5];
 
-    v94 = [MEMORY[0x1E696AD98] numberWithBool:v110];
-    v95 = v17->_knownNetworkDeferCache;
-    v96 = [v13 identifier];
-    [(NSMutableDictionary *)v95 setObject:v94 forKeyedSubscript:v96];
+    v94 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue2];
+    v95 = selfCopy->_knownNetworkDeferCache;
+    identifier6 = [networkCopy identifier];
+    [(NSMutableDictionary *)v95 setObject:v94 forKeyedSubscript:identifier6];
 
     updatedAllowCacheKnownNetworks = v88->_updatedAllowCacheKnownNetworks;
-    v98 = [v13 identifier];
-    [(NSMutableSet *)updatedAllowCacheKnownNetworks addObject:v98];
+    identifier7 = [networkCopy identifier];
+    [(NSMutableSet *)updatedAllowCacheKnownNetworks addObject:identifier7];
 
     objc_sync_exit(v88);
   }
 
 LABEL_5:
-  if ([(CWFAutoJoinManager *)v17 __isDeferrableKnownNetwork:v13])
+  if ([(CWFAutoJoinManager *)selfCopy __isDeferrableKnownNetwork:networkCopy])
   {
-    v110 = 1;
+    bOOLValue2 = 1;
   }
 
-  v28 = [v13 lastJoinedByUserAt];
-  if (v28)
+  lastJoinedByUserAt2 = [networkCopy lastJoinedByUserAt];
+  if (lastJoinedByUserAt2)
   {
   }
 
-  else if ([v14 preferUserConfiguredNetworks])
+  else if ([contextCopy preferUserConfiguredNetworks])
   {
-    v110 = 1;
+    bOOLValue2 = 1;
   }
 
   if (v27)
   {
-    [(CWFAutoJoinManager *)v17 __removeDisallowedKnownNetwork:v13];
+    [(CWFAutoJoinManager *)selfCopy __removeDisallowedKnownNetwork:networkCopy];
   }
 
   else
@@ -12803,25 +12803,25 @@ LABEL_5:
 
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
-      v64 = [v13 identifier];
-      v65 = [v64 redactedForWiFi];
-      v66 = [(CWFAutoJoinManager *)v17 __descriptionForError:v26];
+      identifier8 = [networkCopy identifier];
+      redactedForWiFi = [identifier8 redactedForWiFi];
+      v66 = [(CWFAutoJoinManager *)selfCopy __descriptionForError:v26];
       v111 = 138543874;
-      v112 = v65;
+      v112 = redactedForWiFi;
       v113 = 2114;
       v114 = v66;
       v115 = 2114;
-      v116 = v13;
+      v116 = networkCopy;
       _os_log_send_and_compose_impl();
     }
 
-    if (!v108)
+    if (!transitionCopy)
     {
-      [(CWFAutoJoinManager *)v17 __addDisallowedKnownNetwork:v13];
+      [(CWFAutoJoinManager *)selfCopy __addDisallowedKnownNetwork:networkCopy];
     }
   }
 
-  if (a6 && v110 == 1)
+  if (defer && bOOLValue2 == 1)
   {
     v67 = CWFGetOSLog();
     if (v67)
@@ -12837,39 +12837,39 @@ LABEL_5:
 
     if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
     {
-      v70 = [v13 identifier];
-      v71 = [v70 redactedForWiFi];
+      identifier9 = [networkCopy identifier];
+      redactedForWiFi2 = [identifier9 redactedForWiFi];
       v111 = 138543618;
-      v112 = v71;
+      v112 = redactedForWiFi2;
       v113 = 2114;
-      v114 = v13;
+      v114 = networkCopy;
       _os_log_send_and_compose_impl();
     }
 
-    *a6 = v110;
+    *defer = bOOLValue2;
   }
 
-  if (a8 && v26)
+  if (error && v26)
   {
     v72 = v26;
-    *a8 = v26;
+    *error = v26;
   }
 
   v73 = *MEMORY[0x1E69E9840];
   return v27;
 }
 
-- (BOOL)isKnownNetworkDisallowed:(id)a3
+- (BOOL)isKnownNetworkDisallowed:(id)disallowed
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 identifier];
-  if (v6)
+  disallowedCopy = disallowed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [disallowedCopy identifier];
+  if (identifier)
   {
-    v7 = [(NSMutableDictionary *)v5->_disallowedKnownNetworksMap allKeys];
-    v8 = [v4 identifier];
-    v9 = [v7 containsObject:v8];
+    allKeys = [(NSMutableDictionary *)selfCopy->_disallowedKnownNetworksMap allKeys];
+    identifier2 = [disallowedCopy identifier];
+    v9 = [allKeys containsObject:identifier2];
   }
 
   else
@@ -12877,64 +12877,64 @@ LABEL_5:
     v9 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
-- (void)__removeDisallowedKnownNetwork:(id)a3
+- (void)__removeDisallowedKnownNetwork:(id)network
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v8 identifier];
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [networkCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    disallowedKnownNetworksMap = v4->_disallowedKnownNetworksMap;
-    v7 = [v8 identifier];
-    [(NSMutableDictionary *)disallowedKnownNetworksMap removeObjectForKey:v7];
+    disallowedKnownNetworksMap = selfCopy->_disallowedKnownNetworksMap;
+    identifier2 = [networkCopy identifier];
+    [(NSMutableDictionary *)disallowedKnownNetworksMap removeObjectForKey:identifier2];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)__addDisallowedKnownNetwork:(id)a3
+- (void)__addDisallowedKnownNetwork:(id)network
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v8 identifier];
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [networkCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    disallowedKnownNetworksMap = v4->_disallowedKnownNetworksMap;
-    v7 = [v8 identifier];
-    [(NSMutableDictionary *)disallowedKnownNetworksMap setObject:v8 forKey:v7];
+    disallowedKnownNetworksMap = selfCopy->_disallowedKnownNetworksMap;
+    identifier2 = [networkCopy identifier];
+    [(NSMutableDictionary *)disallowedKnownNetworksMap setObject:networkCopy forKey:identifier2];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)__disallowedKnownNetworks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_disallowedKnownNetworksMap allValues];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_disallowedKnownNetworksMap allValues];
+  v4 = [allValues copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)__knownNetworksSupportingSeamlessSSIDTransition:(id)a3 fromNetwork:(id)a4 allowSameSSID:(BOOL)a5 context:(id)a6
+- (id)__knownNetworksSupportingSeamlessSSIDTransition:(id)transition fromNetwork:(id)network allowSameSSID:(BOOL)d context:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x1E695DFA0] orderedSet];
-  v14 = CWFKnownNetworksSupportingSeamlessSSIDTransitionForScanResult(v11, v10, a5);
+  transitionCopy = transition;
+  networkCopy = network;
+  contextCopy = context;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v14 = CWFKnownNetworksSupportingSeamlessSSIDTransitionForScanResult(networkCopy, transitionCopy, d);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -12954,9 +12954,9 @@ LABEL_5:
         }
 
         v19 = *(*(&v23 + 1) + 8 * i);
-        if ([(CWFAutoJoinManager *)self __allowKnownNetwork:v19 context:v12 allowForSeamlessSSIDTransition:v11 defer:0 targetQueue:self->_targetQueue error:0])
+        if ([(CWFAutoJoinManager *)self __allowKnownNetwork:v19 context:contextCopy allowForSeamlessSSIDTransition:networkCopy defer:0 targetQueue:self->_targetQueue error:0])
         {
-          [v13 addObject:v19];
+          [orderedSet addObject:v19];
         }
       }
 
@@ -12966,22 +12966,22 @@ LABEL_5:
     while (v16);
   }
 
-  v20 = [v13 copy];
+  v20 = [orderedSet copy];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (BOOL)__candidateSupportsSeamlessSSIDTransition:(id)a3 fromNetwork:(id)a4 context:(id)a5
+- (BOOL)__candidateSupportsSeamlessSSIDTransition:(id)transition fromNetwork:(id)network context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (CWFScanResultSupportsSeamlessSSIDTransition(v9, v8))
+  transitionCopy = transition;
+  networkCopy = network;
+  contextCopy = context;
+  if (CWFScanResultSupportsSeamlessSSIDTransition(networkCopy, transitionCopy))
   {
-    v11 = [v8 matchingKnownNetworkProfile];
-    v12 = [(CWFAutoJoinManager *)self __allowKnownNetwork:v11 context:v10 allowForSeamlessSSIDTransition:v9 defer:0 targetQueue:self->_targetQueue error:0];
+    matchingKnownNetworkProfile = [transitionCopy matchingKnownNetworkProfile];
+    v12 = [(CWFAutoJoinManager *)self __allowKnownNetwork:matchingKnownNetworkProfile context:contextCopy allowForSeamlessSSIDTransition:networkCopy defer:0 targetQueue:self->_targetQueue error:0];
   }
 
   else
@@ -12992,12 +12992,12 @@ LABEL_5:
   return v12;
 }
 
-- (id)__performGASQueryWithScanResults:(id)a3 ANQPElementIDList:(id)a4 maxCacheAge:(unint64_t)a5 cacheOnly:(BOOL)a6 error:(id *)a7
+- (id)__performGASQueryWithScanResults:(id)results ANQPElementIDList:(id)list maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only error:(id *)error
 {
-  v7 = a6;
+  onlyCopy = only;
   v110 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  resultsCopy = results;
+  listCopy = list;
   v13 = CWFGetOSLog();
   if (v13)
   {
@@ -13013,23 +13013,23 @@ LABEL_5:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v99 = 67109376;
-    *v100 = v7;
+    *v100 = onlyCopy;
     *&v100[4] = 2048;
-    *&v100[6] = a5;
+    *&v100[6] = age;
     LODWORD(v78) = 18;
     v77 = &v99;
     _os_log_send_and_compose_impl();
   }
 
-  v80 = v7;
-  v85 = a5;
+  v80 = onlyCopy;
+  ageCopy = age;
 
-  v87 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v11;
+  obj = resultsCopy;
   v16 = [obj countByEnumeratingWithState:&v94 objects:v109 count:16];
   if (v16)
   {
@@ -13046,11 +13046,11 @@ LABEL_5:
 
         v20 = *(*(&v94 + 1) + 8 * i);
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [v20 networkName];
+        networkName = [v20 networkName];
         [v20 BSSID];
-        v78 = v77 = v22;
+        v78 = v77 = networkName;
         v23 = [v21 stringWithFormat:@"'%@'/%@"];
-        [v87 addObject:v23];
+        [array addObject:v23];
       }
 
       v17 = [obj countByEnumeratingWithState:&v94 objects:v109 count:16];
@@ -13074,7 +13074,7 @@ LABEL_5:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v27 = [obj count];
-    v28 = [v87 componentsJoinedByString:{@", "}];
+    v28 = [array componentsJoinedByString:{@", "}];
     v99 = 134218242;
     *v100 = v27;
     *&v100[8] = 2114;
@@ -13098,8 +13098,8 @@ LABEL_5:
 
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [v12 count];
-    v33 = [v12 componentsJoinedByString:{@", "}];
+    v32 = [listCopy count];
+    v33 = [listCopy componentsJoinedByString:{@", "}];
     v99 = 134218242;
     *v100 = v32;
     *&v100[8] = 2114;
@@ -13110,15 +13110,15 @@ LABEL_5:
   }
 
   v34 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v35 = [(CWFAutoJoinManager *)self performGASQueryHandler];
+  performGASQueryHandler = [(CWFAutoJoinManager *)self performGASQueryHandler];
 
-  v83 = v12;
-  if (v35)
+  v83 = listCopy;
+  if (performGASQueryHandler)
   {
     v36 = objc_alloc_init(CWFANQPParameters);
     [(CWFANQPParameters *)v36 setScanResults:obj];
-    [(CWFANQPParameters *)v36 setANQPElementIDList:v12];
-    [(CWFANQPParameters *)v36 setAcceptableCacheAge:v85];
+    [(CWFANQPParameters *)v36 setANQPElementIDList:listCopy];
+    [(CWFANQPParameters *)v36 setAcceptableCacheAge:ageCopy];
     v92 = 0;
     v93 = 0;
     v37 = [(CWFAutoJoinManager *)self __calloutToPerformGASQueryWithParameters:v36 GASQueryNetworks:&v93 error:&v92];
@@ -13128,12 +13128,12 @@ LABEL_5:
     {
       if ([v38 count])
       {
-        v40 = [(CWFAutoJoinMetric *)self->_metric GASQueryNetworks];
+        gASQueryNetworks = [(CWFAutoJoinMetric *)self->_metric GASQueryNetworks];
         metric = self->_metric;
-        if (v40)
+        if (gASQueryNetworks)
         {
-          v42 = [(CWFAutoJoinMetric *)metric GASQueryNetworks];
-          [v42 arrayByAddingObjectsFromArray:v38];
+          gASQueryNetworks2 = [(CWFAutoJoinMetric *)metric GASQueryNetworks];
+          [gASQueryNetworks2 arrayByAddingObjectsFromArray:v38];
           v44 = v43 = v38;
           [(CWFAutoJoinMetric *)self->_metric setGASQueryNetworks:v44];
 
@@ -13153,20 +13153,20 @@ LABEL_5:
 
     else
     {
-      v47 = [MEMORY[0x1E695DF90] dictionary];
-      [v47 setObject:@"Failed to perform GAS/ANQP" forKeyedSubscript:*MEMORY[0x1E696A578]];
-      [v47 setObject:v39 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-      v79 = v47;
-      v46 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:v47];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:@"Failed to perform GAS/ANQP" forKeyedSubscript:*MEMORY[0x1E696A578]];
+      [dictionary setObject:v39 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      v79 = dictionary;
+      v46 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:dictionary];
     }
   }
 
   else
   {
-    v45 = [MEMORY[0x1E695DF90] dictionary];
-    [v45 setObject:@"CWFAutoJoinManager.performGASQueryHandler() not configured" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    v79 = v45;
-    v46 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:v45];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setObject:@"CWFAutoJoinManager.performGASQueryHandler() not configured" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    v79 = dictionary2;
+    v46 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:dictionary2];
     v38 = 0;
     v37 = 0;
   }
@@ -13175,18 +13175,18 @@ LABEL_5:
   [(CWFAutoJoinMetric *)self->_metric setGASQueryDuration:[(CWFAutoJoinMetric *)self->_metric GASQueryDuration]+ v49 / 0xF4240];
   if (v46)
   {
-    v50 = [(CWFAutoJoinMetric *)self->_metric GASQueryErrors];
-    if (v50)
+    gASQueryErrors = [(CWFAutoJoinMetric *)self->_metric GASQueryErrors];
+    if (gASQueryErrors)
     {
-      v51 = [(CWFAutoJoinMetric *)self->_metric GASQueryErrors];
-      v52 = [v51 arrayByAddingObject:v46];
+      gASQueryErrors2 = [(CWFAutoJoinMetric *)self->_metric GASQueryErrors];
+      v52 = [gASQueryErrors2 arrayByAddingObject:v46];
       [(CWFAutoJoinMetric *)self->_metric setGASQueryErrors:v52];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DEC8] arrayWithObject:v46];
-      [(CWFAutoJoinMetric *)self->_metric setGASQueryErrors:v51];
+      gASQueryErrors2 = [MEMORY[0x1E695DEC8] arrayWithObject:v46];
+      [(CWFAutoJoinMetric *)self->_metric setGASQueryErrors:gASQueryErrors2];
     }
   }
 
@@ -13229,7 +13229,7 @@ LABEL_5:
     v105 = 1024;
     v106 = v80;
     v107 = 2048;
-    v108 = v85;
+    v108 = ageCopy;
     _os_log_send_and_compose_impl();
   }
 
@@ -13302,10 +13302,10 @@ LABEL_5:
     while (v65);
   }
 
-  if (a7 && v84)
+  if (error && v84)
   {
     v73 = v84;
-    *a7 = v84;
+    *error = v84;
   }
 
   v74 = v63;
@@ -13314,14 +13314,14 @@ LABEL_5:
   return v63;
 }
 
-- (id)__performScanWithChannelList:(id)a3 SSIDList:(id)a4 passive:(BOOL)a5 dwellTime:(unint64_t)a6 maxCacheAge:(unint64_t)a7 cacheOnly:(BOOL)a8 isPreAssociationScan:(BOOL)a9 checkForKnownNetworks:(BOOL)a10 error:(id *)a11
+- (id)__performScanWithChannelList:(id)list SSIDList:(id)dList passive:(BOOL)passive dwellTime:(unint64_t)time maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only isPreAssociationScan:(BOOL)scan checkForKnownNetworks:(BOOL)self0 error:(id *)self1
 {
-  v11 = a8;
-  v14 = a5;
-  v17 = a9;
+  onlyCopy = only;
+  passiveCopy = passive;
+  scanCopy4 = scan;
   v126 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
+  listCopy = list;
+  dListCopy = dList;
   v20 = CWFGetOSLog();
   if (v20)
   {
@@ -13337,11 +13337,11 @@ LABEL_5:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v113 = 134218496;
-    v114 = a6;
+    timeCopy = time;
     v115 = 1024;
-    *v116 = v11;
+    *v116 = onlyCopy;
     *&v116[4] = 2048;
-    *&v116[6] = a7;
+    *&v116[6] = age;
     LODWORD(v92) = 28;
     v91 = &v113;
     _os_log_send_and_compose_impl();
@@ -13361,17 +13361,17 @@ LABEL_5:
 
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v18 count];
-    v27 = [v18 componentsJoinedByString:{@", "}];
+    v26 = [listCopy count];
+    v27 = [listCopy componentsJoinedByString:{@", "}];
     v113 = 134218242;
-    v114 = v26;
+    timeCopy = v26;
     v115 = 2114;
     *v116 = v27;
     LODWORD(v92) = 22;
     v91 = &v113;
     _os_log_send_and_compose_impl();
 
-    v17 = a9;
+    scanCopy4 = scan;
   }
 
   v28 = CWFGetOSLog();
@@ -13388,26 +13388,26 @@ LABEL_5:
 
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v19 count];
-    v32 = [v19 componentsJoinedByString:{@", "}];
+    v31 = [dListCopy count];
+    v32 = [dListCopy componentsJoinedByString:{@", "}];
     v113 = 134218242;
-    v114 = v31;
+    timeCopy = v31;
     v115 = 2114;
     *v116 = v32;
     LODWORD(v92) = 22;
     v91 = &v113;
     _os_log_send_and_compose_impl();
 
-    v17 = a9;
+    scanCopy4 = scan;
   }
 
   v33 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v34 = [(CWFAutoJoinManager *)self scanForNetworksHandler];
+  scanForNetworksHandler = [(CWFAutoJoinManager *)self scanForNetworksHandler];
 
-  v98 = v19;
-  v99 = v18;
-  v93 = a7;
-  if (v34)
+  v98 = dListCopy;
+  v99 = listCopy;
+  ageCopy = age;
+  if (scanForNetworksHandler)
   {
     v35 = objc_alloc_init(CWFScanParameters);
     [(CWFScanParameters *)v35 setBSSType:3];
@@ -13415,19 +13415,19 @@ LABEL_5:
     [(CWFScanParameters *)v35 setNumberOfScans:1];
     [(CWFScanParameters *)v35 setIncludeHiddenNetworks:1];
     [(CWFScanParameters *)v35 setAddScanDurationToMaxAge:1];
-    [(CWFScanParameters *)v35 setChannels:v18];
-    [(CWFScanParameters *)v35 setSSIDList:v19];
-    [(CWFScanParameters *)v35 setDwellTime:a6];
+    [(CWFScanParameters *)v35 setChannels:listCopy];
+    [(CWFScanParameters *)v35 setSSIDList:dListCopy];
+    [(CWFScanParameters *)v35 setDwellTime:time];
     [(CWFScanParameters *)v35 setScanFlags:2592];
     v94 = v33;
-    if (v11)
+    if (onlyCopy)
     {
       [(CWFScanParameters *)v35 setScanType:3];
     }
 
     else
     {
-      if (v14)
+      if (passiveCopy)
       {
         v40 = 2;
       }
@@ -13438,10 +13438,10 @@ LABEL_5:
       }
 
       [(CWFScanParameters *)v35 setScanType:v40, v91, v92];
-      [(CWFScanParameters *)v35 setAcceptableCacheAge:a7];
+      [(CWFScanParameters *)v35 setAcceptableCacheAge:age];
     }
 
-    [(CWFScanParameters *)v35 setMaximumAge:a7, v91, v92];
+    [(CWFScanParameters *)v35 setMaximumAge:age, v91, v92];
     v110 = 0;
     v111 = 0;
     v39 = [(CWFAutoJoinManager *)self __calloutToScanForNetworksWithParameters:v35 scanChannels:&v111 error:&v110];
@@ -13452,7 +13452,7 @@ LABEL_5:
       if ([v38 count])
       {
         metric = self->_metric;
-        if (v17)
+        if (scanCopy4)
         {
           [(CWFAutoJoinMetric *)metric preAssociationScanChannels];
         }
@@ -13463,19 +13463,19 @@ LABEL_5:
         }
         v43 = ;
         v100 = v38;
-        HIDWORD(v92) = v11;
+        HIDWORD(v92) = onlyCopy;
         v97 = v43;
         if (v43)
         {
-          v45 = [v43 mutableCopy];
+          array = [v43 mutableCopy];
         }
 
         else
         {
-          v45 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v46 = v45;
+        v46 = array;
         v108 = 0u;
         v109 = 0u;
         v106 = 0u;
@@ -13506,8 +13506,8 @@ LABEL_5:
         }
 
         v53 = self->_metric;
-        v17 = a9;
-        if (a9)
+        scanCopy4 = scan;
+        if (scan)
         {
           [(CWFAutoJoinMetric *)v53 setPreAssociationScanChannels:v46];
         }
@@ -13517,7 +13517,7 @@ LABEL_5:
           [(CWFAutoJoinMetric *)v53 setScanChannels:v46];
         }
 
-        v11 = HIDWORD(v92);
+        onlyCopy = HIDWORD(v92);
 
         v38 = v100;
       }
@@ -13529,11 +13529,11 @@ LABEL_5:
 
     else
     {
-      v44 = [MEMORY[0x1E695DF90] dictionary];
-      [v44 setObject:@"Failed to perform scan" forKeyedSubscript:*MEMORY[0x1E696A578]];
-      [v44 setObject:v41 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-      v96 = v44;
-      v37 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:v44];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:@"Failed to perform scan" forKeyedSubscript:*MEMORY[0x1E696A578]];
+      [dictionary setObject:v41 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      v96 = dictionary;
+      v37 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:dictionary];
     }
 
     v33 = v94;
@@ -13541,17 +13541,17 @@ LABEL_5:
 
   else
   {
-    v36 = [MEMORY[0x1E695DF90] dictionary];
-    [v36 setObject:@"CWFAutoJoinManager.scanForNetworksHandler() not configured" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    v96 = v36;
-    v37 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:v36];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setObject:@"CWFAutoJoinManager.scanForNetworksHandler() not configured" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    v96 = dictionary2;
+    v37 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:dictionary2];
     v38 = 0;
     v39 = 0;
   }
 
   v55 = (clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - v33) / 0xF4240;
   v56 = self->_metric;
-  if (v17)
+  if (scanCopy4)
   {
     [(CWFAutoJoinMetric *)self->_metric setPreAssociationScanDuration:[(CWFAutoJoinMetric *)v56 preAssociationScanDuration]+ v55];
     if (!v37)
@@ -13572,15 +13572,15 @@ LABEL_5:
   v57 = [(CWFAutoJoinMetric *)self->_metric scanErrors:v91];
   if (v57)
   {
-    v58 = [(CWFAutoJoinMetric *)self->_metric scanErrors];
-    v59 = [v58 arrayByAddingObject:v37];
+    scanErrors = [(CWFAutoJoinMetric *)self->_metric scanErrors];
+    v59 = [scanErrors arrayByAddingObject:v37];
     [(CWFAutoJoinMetric *)self->_metric setScanErrors:v59];
   }
 
   else
   {
-    v58 = [MEMORY[0x1E695DEC8] arrayWithObject:v37];
-    [(CWFAutoJoinMetric *)self->_metric setScanErrors:v58];
+    scanErrors = [MEMORY[0x1E695DEC8] arrayWithObject:v37];
+    [(CWFAutoJoinMetric *)self->_metric setScanErrors:scanErrors];
   }
 
 LABEL_54:
@@ -13613,7 +13613,7 @@ LABEL_54:
     v65 = [(CWFAutoJoinManager *)self __descriptionForError:v37];
     v66 = [v38 count];
     v113 = 136447746;
-    v114 = v63;
+    timeCopy = v63;
     v115 = 2048;
     *v116 = v55;
     *&v116[8] = 2048;
@@ -13623,9 +13623,9 @@ LABEL_54:
     v119 = 2048;
     v120 = v66;
     v121 = 1024;
-    v122 = v11;
+    v122 = onlyCopy;
     v123 = 2048;
-    v124 = v93;
+    v124 = ageCopy;
     LODWORD(v92) = 68;
     v91 = &v113;
     _os_log_send_and_compose_impl();
@@ -13647,7 +13647,7 @@ LABEL_54:
 
   if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
   {
-    if (v11)
+    if (onlyCopy)
     {
       v70 = " Cache";
     }
@@ -13659,7 +13659,7 @@ LABEL_54:
 
     v71 = [v39 count];
     v113 = 136446466;
-    v114 = v70;
+    timeCopy = v70;
     v115 = 2048;
     *v116 = v71;
     _os_log_send_and_compose_impl();
@@ -13701,21 +13701,21 @@ LABEL_54:
         if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
         {
           v113 = 138543362;
-          v114 = v78;
+          timeCopy = v78;
           _os_log_send_and_compose_impl();
         }
 
-        v82 = [v78 channel];
-        v83 = [(CWFAutoJoinManager *)self __basicChannelRepresentation:v82];
+        channel = [v78 channel];
+        v83 = [(CWFAutoJoinManager *)self __basicChannelRepresentation:channel];
 
-        v84 = [(CWFAutoJoinMetric *)self->_metric scanChannels];
-        v85 = [v84 containsObject:v83];
+        scanChannels = [(CWFAutoJoinMetric *)self->_metric scanChannels];
+        v85 = [scanChannels containsObject:v83];
 
         if (v85)
         {
           self->_didDiscoverBSS = 1;
-          v86 = [v78 SSID];
-          v87 = [v86 length];
+          sSID = [v78 SSID];
+          v87 = [sSID length];
 
           if (!v87)
           {
@@ -13730,15 +13730,15 @@ LABEL_54:
     while (v74);
   }
 
-  if (a10)
+  if (networks)
   {
     self->_didDiscoverKnownNetworks = [(CWFAutoJoinManager *)self __isEnabledKnownNetworkNearby];
   }
 
-  if (a11 && v95)
+  if (error && v95)
   {
     v88 = v95;
-    *a11 = v95;
+    *error = v95;
   }
 
   v89 = *MEMORY[0x1E69E9840];
@@ -13746,10 +13746,10 @@ LABEL_54:
   return v72;
 }
 
-- (id)__alreadyFoundFollowup6GHzBSSWithSignature:(id)a3
+- (id)__alreadyFoundFollowup6GHzBSSWithSignature:(id)signature
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  signatureCopy = signature;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -13792,14 +13792,14 @@ LABEL_8:
 
             v12 = *(*(&v25 + 1) + 8 * v11);
             v13 = MEMORY[0x1E696AEC0];
-            v14 = [v12 shortSSID];
-            v15 = [v12 BSSID];
-            v16 = [v12 channel];
-            v17 = [v13 stringWithFormat:@"%lu/%@/%lu", v14, v15, objc_msgSend(v16, "channel")];
+            shortSSID = [v12 shortSSID];
+            bSSID = [v12 BSSID];
+            channel = [v12 channel];
+            v17 = [v13 stringWithFormat:@"%lu/%@/%lu", shortSSID, bSSID, objc_msgSend(channel, "channel")];
 
-            if (v4)
+            if (signatureCopy)
             {
-              if (v17 && ([v17 isEqual:v4] & 1) != 0)
+              if (v17 && ([v17 isEqual:signatureCopy] & 1) != 0)
               {
                 break;
               }
@@ -13848,13 +13848,13 @@ LABEL_21:
   return v18;
 }
 
-- (id)__perform6GHzFollowupDiscoveryWithScanResults:(id)a3 SSIDList:(id)a4 dwellTime:(unint64_t)a5 context:(id)a6 error:(id *)a7
+- (id)__perform6GHzFollowupDiscoveryWithScanResults:(id)results SSIDList:(id)list dwellTime:(unint64_t)time context:(id)context error:(id *)error
 {
   v253 = *MEMORY[0x1E69E9840];
-  v167 = a3;
-  v166 = a4;
-  v180 = a6;
-  v190 = [MEMORY[0x1E695DF90] dictionary];
+  resultsCopy = results;
+  listCopy = list;
+  contextCopy = context;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v199 = [MEMORY[0x1E695DFA8] set];
   [(CWFAutoJoinManager *)self supportedChannels];
   v232 = 0u;
@@ -13885,12 +13885,12 @@ LABEL_21:
     while (v11);
   }
 
-  [v167 sortedArrayUsingComparator:&unk_1F5B891D0];
+  [resultsCopy sortedArrayUsingComparator:&unk_1F5B891D0];
   v228 = 0u;
   v229 = 0u;
   v230 = 0u;
   v169 = v231 = 0u;
-  v206 = self;
+  selfCopy = self;
   v173 = [v169 countByEnumeratingWithState:&v228 objects:v251 count:16];
   if (!v173)
   {
@@ -13917,20 +13917,20 @@ LABEL_21:
       context = objc_autoreleasePoolPush();
       if ([v17 isFILSDiscoveryFrame] && (objc_msgSend(v17, "channel"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "is6GHz"), v18, v19))
       {
-        v20 = [v17 channel];
-        v21 = [(CWFAutoJoinManager *)self __basicChannelRepresentation:v20];
+        channel = [v17 channel];
+        v21 = [(CWFAutoJoinManager *)self __basicChannelRepresentation:channel];
 
         if ([v199 containsObject:v21])
         {
           v193 = v21;
-          v22 = [v17 SSID];
-          v23 = [v17 shortSSID];
+          sSID = [v17 SSID];
+          shortSSID = [v17 shortSSID];
           v224 = 0u;
           v225 = 0u;
           v226 = 0u;
           v227 = 0u;
-          v196 = [v180 knownNetworks];
-          v203 = [v196 countByEnumeratingWithState:&v224 objects:v250 count:16];
+          knownNetworks = [contextCopy knownNetworks];
+          v203 = [knownNetworks countByEnumeratingWithState:&v224 objects:v250 count:16];
           if (!v203)
           {
             goto LABEL_57;
@@ -13943,17 +13943,17 @@ LABEL_21:
             {
               if (*v225 != v200)
               {
-                objc_enumerationMutation(v196);
+                objc_enumerationMutation(knownNetworks);
               }
 
               v25 = *(*(&v224 + 1) + 8 * j);
               v26 = objc_autoreleasePoolPush();
-              v27 = [v25 SSID];
-              v28 = [v25 shortSSID];
-              v29 = v28;
-              if (v27)
+              sSID2 = [v25 SSID];
+              shortSSID2 = [v25 shortSSID];
+              v29 = shortSSID2;
+              if (sSID2)
               {
-                v30 = v22 == 0;
+                v30 = sSID == 0;
               }
 
               else
@@ -13963,7 +13963,7 @@ LABEL_21:
 
               if (v30)
               {
-                if (!v23 || v23 != v28)
+                if (!shortSSID || shortSSID != shortSSID2)
                 {
                   goto LABEL_55;
                 }
@@ -13971,10 +13971,10 @@ LABEL_21:
 
               else
               {
-                v31 = [v27 isEqual:v22];
-                if (v23)
+                v31 = [sSID2 isEqual:sSID];
+                if (shortSSID)
                 {
-                  v32 = v23 == v29;
+                  v32 = shortSSID == v29;
                 }
 
                 else
@@ -13990,10 +13990,10 @@ LABEL_21:
               }
 
               v34 = MEMORY[0x1E696AEC0];
-              v35 = [v17 BSSID];
+              bSSID = [v17 BSSID];
               v36 = v17;
-              v37 = [v17 channel];
-              v38 = [v34 stringWithFormat:@"%lu/%@/%lu", v23, v35, objc_msgSend(v37, "channel")];
+              channel2 = [v17 channel];
+              v38 = [v34 stringWithFormat:@"%lu/%@/%lu", shortSSID, bSSID, objc_msgSend(channel2, "channel")];
 
               v39 = CWFGetOSLog();
               if (v39)
@@ -14018,15 +14018,15 @@ LABEL_21:
                 _os_log_send_and_compose_impl();
               }
 
-              v42 = [(NSMutableDictionary *)v206->_followup6GHzFILSDMap objectForKeyedSubscript:v38];
+              v42 = [(NSMutableDictionary *)selfCopy->_followup6GHzFILSDMap objectForKeyedSubscript:v38];
 
               if (!v42)
               {
-                [(NSMutableDictionary *)v206->_followup6GHzFILSDMap setObject:v36 forKeyedSubscript:v38];
+                [(NSMutableDictionary *)selfCopy->_followup6GHzFILSDMap setObject:v36 forKeyedSubscript:v38];
               }
 
-              v43 = [(CWFAutoJoinManager *)v206 __alreadyFoundFollowup6GHzBSSWithSignature:v38, v161, v163];
-              if (v43)
+              v163 = [(CWFAutoJoinManager *)selfCopy __alreadyFoundFollowup6GHzBSSWithSignature:v38, v161, v163];
+              if (v163)
               {
                 v44 = CWFGetOSLog();
                 if (v44)
@@ -14048,24 +14048,24 @@ LABEL_21:
                   _os_log_send_and_compose_impl();
                 }
 
-                v51 = v205;
+                array = v205;
                 if (!v205)
                 {
-                  v51 = [MEMORY[0x1E695DF70] array];
+                  array = [MEMORY[0x1E695DF70] array];
                 }
 
-                v205 = v51;
-                [v51 addObject:{v43, v160, v162}];
+                v205 = array;
+                [array addObject:{v163, v160, v162}];
               }
 
               else
               {
                 v46 = objc_alloc_init(CWFScanParameters);
-                v47 = [v25 networkName];
-                [(CWFScanParameters *)v46 setSSID:v47];
+                networkName = [v25 networkName];
+                [(CWFScanParameters *)v46 setSSID:networkName];
 
-                v48 = [v36 BSSID];
-                [(CWFScanParameters *)v46 setBSSID:v48];
+                bSSID2 = [v36 BSSID];
+                [(CWFScanParameters *)v46 setBSSID:bSSID2];
 
                 v249 = v193;
                 v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v249 count:1];
@@ -14076,13 +14076,13 @@ LABEL_21:
                 [(CWFScanParameters *)v46 setNumberOfScans:1];
                 [(CWFScanParameters *)v46 setIncludeHiddenNetworks:1];
                 [(CWFScanParameters *)v46 setAcceptableCacheAge:0];
-                [(CWFScanParameters *)v46 setDwellTime:a5];
+                [(CWFScanParameters *)v46 setDwellTime:time];
                 [(CWFScanParameters *)v46 setScanFlags:1056];
                 [(CWFScanParameters *)v46 setScanType:1];
-                [v190 setObject:v46 forKeyedSubscript:v38];
+                [dictionary setObject:v46 forKeyedSubscript:v38];
               }
 
-              self = v206;
+              self = selfCopy;
 
               v17 = v36;
 LABEL_55:
@@ -14090,7 +14090,7 @@ LABEL_55:
               objc_autoreleasePoolPop(v26);
             }
 
-            v203 = [v196 countByEnumeratingWithState:&v224 objects:v250 count:16];
+            v203 = [knownNetworks countByEnumeratingWithState:&v224 objects:v250 count:16];
             if (!v203)
             {
 LABEL_57:
@@ -14127,12 +14127,12 @@ LABEL_57:
       else
       {
 LABEL_58:
-        v52 = [v17 RNRBSSList];
+        rNRBSSList = [v17 RNRBSSList];
         v220 = 0u;
         v221 = 0u;
         v222 = 0u;
         v223 = 0u;
-        v53 = v52;
+        v53 = rNRBSSList;
         v183 = [v53 countByEnumeratingWithState:&v220 objects:v248 count:16];
         if (v183)
         {
@@ -14149,23 +14149,23 @@ LABEL_58:
               }
 
               v55 = *(*(&v220 + 1) + 8 * k);
-              v56 = [v55 channel];
-              if ([v56 is6GHz])
+              channel3 = [v55 channel];
+              if ([channel3 is6GHz])
               {
-                v57 = [v55 shortSSID];
-                if (v57 || [v55 isSameSSID] && (v57 = objc_msgSend(v194, "shortSSID")) != 0)
+                shortSSID3 = [v55 shortSSID];
+                if (shortSSID3 || [v55 isSameSSID] && (shortSSID3 = objc_msgSend(v194, "shortSSID")) != 0)
                 {
-                  v58 = v57;
-                  v59 = [v55 BSSID];
-                  if (v59)
+                  v58 = shortSSID3;
+                  bSSID3 = [v55 BSSID];
+                  if (bSSID3)
                   {
                     v186 = k;
                     v218 = 0u;
                     v219 = 0u;
                     v216 = 0u;
                     v217 = 0u;
-                    v191 = [v180 knownNetworks];
-                    v204 = [v191 countByEnumeratingWithState:&v216 objects:v247 count:16];
+                    knownNetworks2 = [contextCopy knownNetworks];
+                    v204 = [knownNetworks2 countByEnumeratingWithState:&v216 objects:v247 count:16];
                     if (v204)
                     {
                       v197 = v55;
@@ -14177,14 +14177,14 @@ LABEL_58:
                         {
                           if (*v217 != v201)
                           {
-                            objc_enumerationMutation(v191);
+                            objc_enumerationMutation(knownNetworks2);
                           }
 
                           v61 = *(*(&v216 + 1) + 8 * v60);
                           v62 = objc_autoreleasePoolPush();
                           if (v58 == [v61 shortSSID])
                           {
-                            v63 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu/%@/%lu", v58, v59, objc_msgSend(v56, "channel")];
+                            v63 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu/%@/%lu", v58, bSSID3, objc_msgSend(channel3, "channel")];
                             v64 = CWFGetOSLog();
                             if (v64)
                             {
@@ -14210,20 +14210,20 @@ LABEL_58:
                               _os_log_send_and_compose_impl();
                             }
 
-                            v67 = [(CWFAutoJoinManager *)v206 __basicChannelRepresentation:v56];
+                            v67 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:channel3];
                             if ([v199 containsObject:v67])
                             {
-                              v68 = [(NSMutableDictionary *)v206->_followup6GHzRNRMap objectForKeyedSubscript:v63];
+                              v68 = [(NSMutableDictionary *)selfCopy->_followup6GHzRNRMap objectForKeyedSubscript:v63];
 
                               if (!v68)
                               {
-                                [(NSMutableDictionary *)v206->_followup6GHzRNRMap setObject:v194 forKeyedSubscript:v63];
+                                [(NSMutableDictionary *)selfCopy->_followup6GHzRNRMap setObject:v194 forKeyedSubscript:v63];
                               }
 
-                              v69 = [(CWFAutoJoinManager *)v206 __alreadyFoundFollowup6GHzBSSWithSignature:v63, v160, v162];
-                              if (v69)
+                              v162 = [(CWFAutoJoinManager *)selfCopy __alreadyFoundFollowup6GHzBSSWithSignature:v63, v160, v162];
+                              if (v162)
                               {
-                                v70 = v69;
+                                v70 = v162;
                                 v71 = CWFGetOSLog();
                                 if (v71)
                                 {
@@ -14244,23 +14244,23 @@ LABEL_58:
                                   _os_log_send_and_compose_impl();
                                 }
 
-                                v78 = v205;
+                                array2 = v205;
                                 if (!v205)
                                 {
-                                  v78 = [MEMORY[0x1E695DF70] array];
+                                  array2 = [MEMORY[0x1E695DF70] array];
                                 }
 
-                                v205 = v78;
-                                [v78 addObject:{v70, v160, v162}];
+                                v205 = array2;
+                                [array2 addObject:{v70, v160, v162}];
                               }
 
                               else
                               {
                                 v73 = objc_alloc_init(CWFScanParameters);
-                                v74 = [v61 networkName];
-                                [(CWFScanParameters *)v73 setSSID:v74];
+                                networkName2 = [v61 networkName];
+                                [(CWFScanParameters *)v73 setSSID:networkName2];
 
-                                [(CWFScanParameters *)v73 setBSSID:v59];
+                                [(CWFScanParameters *)v73 setBSSID:bSSID3];
                                 v246 = v67;
                                 v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v246 count:1];
                                 [(CWFScanParameters *)v73 setChannels:v75];
@@ -14270,7 +14270,7 @@ LABEL_58:
                                 [(CWFScanParameters *)v73 setNumberOfScans:1];
                                 [(CWFScanParameters *)v73 setIncludeHiddenNetworks:1];
                                 [(CWFScanParameters *)v73 setAcceptableCacheAge:0];
-                                [(CWFScanParameters *)v73 setDwellTime:a5];
+                                [(CWFScanParameters *)v73 setDwellTime:time];
                                 if ([v197 isUPRActive])
                                 {
                                   v76 = 32;
@@ -14283,7 +14283,7 @@ LABEL_58:
 
                                 [(CWFScanParameters *)v73 setScanFlags:v76];
                                 [(CWFScanParameters *)v73 setScanType:1];
-                                [v190 setObject:v73 forKeyedSubscript:v63];
+                                [dictionary setObject:v73 forKeyedSubscript:v63];
 
                                 v70 = 0;
                               }
@@ -14313,7 +14313,7 @@ LABEL_58:
                               }
                             }
 
-                            self = v206;
+                            self = selfCopy;
                           }
 
                           objc_autoreleasePoolPop(v62);
@@ -14321,7 +14321,7 @@ LABEL_58:
                         }
 
                         while (v204 != v60);
-                        v81 = [v191 countByEnumeratingWithState:&v216 objects:v247 count:16];
+                        v81 = [knownNetworks2 countByEnumeratingWithState:&v216 objects:v247 count:16];
                         v204 = v81;
                       }
 
@@ -14356,28 +14356,28 @@ LABEL_58:
   while (v85);
 LABEL_121:
 
-  if ([v190 count])
+  if ([dictionary count])
   {
-    v86 = [(CWFAutoJoinMetric *)self->_metric followup6GHzScanChannels];
-    v164 = v86;
-    if (v86)
+    followup6GHzScanChannels = [(CWFAutoJoinMetric *)self->_metric followup6GHzScanChannels];
+    v164 = followup6GHzScanChannels;
+    if (followup6GHzScanChannels)
     {
-      v87 = [v86 mutableCopy];
+      array3 = [followup6GHzScanChannels mutableCopy];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
     }
 
-    v172 = v87;
+    v172 = array3;
 
     v214 = 0u;
     v215 = 0u;
     v212 = 0u;
     v213 = 0u;
-    v89 = [v190 allKeys];
-    v90 = [v89 countByEnumeratingWithState:&v212 objects:v245 count:16];
+    allKeys = [dictionary allKeys];
+    v90 = [allKeys countByEnumeratingWithState:&v212 objects:v245 count:16];
     if (v90)
     {
       v91 = v90;
@@ -14388,7 +14388,7 @@ LABEL_121:
       v177 = *MEMORY[0x1E696A578];
       v168 = *MEMORY[0x1E696AA08];
       v176 = *MEMORY[0x1E696A798];
-      v182 = v89;
+      v182 = allKeys;
       do
       {
         v93 = 0;
@@ -14397,13 +14397,13 @@ LABEL_121:
         {
           if (*v213 != v192)
           {
-            objc_enumerationMutation(v89);
+            objc_enumerationMutation(allKeys);
           }
 
           v198 = v93;
           v94 = *(*(&v212 + 1) + 8 * v93);
           v195 = objc_autoreleasePoolPush();
-          v95 = [v190 objectForKeyedSubscript:v94];
+          v95 = [dictionary objectForKeyedSubscript:v94];
           v96 = [(CWFAutoJoinManager *)self __alreadyFoundFollowup6GHzBSSWithSignature:v94];
           v202 = v95;
           if (v96)
@@ -14428,16 +14428,16 @@ LABEL_121:
               _os_log_send_and_compose_impl();
             }
 
-            v104 = v205;
+            array4 = v205;
             v106 = v195;
             v105 = v198;
             if (!v205)
             {
-              v104 = [MEMORY[0x1E695DF70] array];
+              array4 = [MEMORY[0x1E695DF70] array];
             }
 
-            v205 = v104;
-            [v104 addObject:{v96, v160, v162}];
+            v205 = array4;
+            [array4 addObject:{v96, v160, v162}];
           }
 
           else
@@ -14460,37 +14460,37 @@ LABEL_121:
 
               if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
               {
-                v109 = [v202 SSID];
-                v184 = [v202 shortSSID];
-                v110 = [v202 BSSID];
-                v111 = [v110 redactedForWiFi];
-                v112 = [v202 channels];
-                v113 = [v112 firstObject];
+                sSID3 = [v202 SSID];
+                shortSSID4 = [v202 shortSSID];
+                bSSID4 = [v202 BSSID];
+                redactedForWiFi = [bSSID4 redactedForWiFi];
+                channels = [v202 channels];
+                firstObject = [channels firstObject];
                 v237 = 138544130;
-                v238 = v109;
+                v238 = sSID3;
                 v239 = 2048;
-                v240 = v184;
+                v240 = shortSSID4;
                 v241 = 2114;
-                v242 = v111;
+                v242 = redactedForWiFi;
                 v243 = 2114;
-                v244 = v113;
+                v244 = firstObject;
                 LODWORD(v162) = 42;
                 v160 = &v237;
                 _os_log_send_and_compose_impl();
 
                 v91 = v187;
-                v89 = v182;
+                allKeys = v182;
               }
 
-              v114 = v205;
+              array5 = v205;
               if (!v205)
               {
-                v114 = [MEMORY[0x1E695DF70] array];
+                array5 = [MEMORY[0x1E695DF70] array];
               }
 
-              v205 = v114;
-              [v114 addObjectsFromArray:{v99, v160, v162}];
-              self = v206;
+              v205 = array5;
+              [array5 addObjectsFromArray:{v99, v160, v162}];
+              self = selfCopy;
             }
 
             else
@@ -14510,20 +14510,20 @@ LABEL_121:
 
               if (os_log_type_enabled(v107, OS_LOG_TYPE_DEFAULT))
               {
-                v117 = [v202 SSID];
-                v118 = [v202 shortSSID];
-                v119 = [v202 BSSID];
-                v120 = [v119 redactedForWiFi];
-                v121 = [v202 channels];
-                v122 = [v121 firstObject];
+                sSID4 = [v202 SSID];
+                shortSSID5 = [v202 shortSSID];
+                bSSID5 = [v202 BSSID];
+                redactedForWiFi2 = [bSSID5 redactedForWiFi];
+                channels2 = [v202 channels];
+                firstObject2 = [channels2 firstObject];
                 v237 = 138544130;
-                v238 = v117;
+                v238 = sSID4;
                 v239 = 2048;
-                v240 = v118;
+                v240 = shortSSID5;
                 v241 = 2114;
-                v242 = v120;
+                v242 = redactedForWiFi2;
                 v243 = 2114;
-                v244 = v122;
+                v244 = firstObject2;
                 LODWORD(v162) = 42;
                 v160 = &v237;
                 _os_log_send_and_compose_impl();
@@ -14532,76 +14532,76 @@ LABEL_121:
               }
 
               v123 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-              v124 = v206;
-              v125 = [(CWFAutoJoinManager *)v206 scanForNetworksHandler];
+              v124 = selfCopy;
+              scanForNetworksHandler = [(CWFAutoJoinManager *)selfCopy scanForNetworksHandler];
 
-              if (v125)
+              if (scanForNetworksHandler)
               {
                 v211 = 0;
-                [(CWFAutoJoinManager *)v206 __calloutToScanForNetworksWithParameters:v116 scanChannels:0 error:&v211];
+                [(CWFAutoJoinManager *)selfCopy __calloutToScanForNetworksWithParameters:v116 scanChannels:0 error:&v211];
                 v127 = v126 = v116;
                 v128 = v211;
                 v185 = v128;
                 if (v127)
                 {
-                  v129 = [v126 channels];
-                  v130 = [v129 firstObject];
+                  channels3 = [v126 channels];
+                  firstObject3 = [channels3 firstObject];
 
-                  [v172 addObject:v130];
-                  v131 = v205;
+                  [v172 addObject:firstObject3];
+                  array6 = v205;
                   if (!v205)
                   {
-                    v131 = [MEMORY[0x1E695DF70] array];
+                    array6 = [MEMORY[0x1E695DF70] array];
                   }
 
-                  v205 = v131;
-                  [v131 addObjectsFromArray:{v127, v160, v162}];
-                  v124 = v206;
-                  [(NSMutableDictionary *)v206->_followup6GHzScanResultsMap setObject:v127 forKeyedSubscript:v126];
+                  v205 = array6;
+                  [array6 addObjectsFromArray:{v127, v160, v162}];
+                  v124 = selfCopy;
+                  [(NSMutableDictionary *)selfCopy->_followup6GHzScanResultsMap setObject:v127 forKeyedSubscript:v126];
                 }
 
                 else
                 {
                   v133 = v128;
-                  v134 = [MEMORY[0x1E695DF90] dictionary];
+                  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
 
-                  [v134 setObject:@"Failed to perform 6GHz followup scan" forKeyedSubscript:v177];
-                  [v134 setObject:v133 forKeyedSubscript:v168];
-                  [MEMORY[0x1E696ABC0] errorWithDomain:v176 code:2 userInfo:v134];
-                  v130 = v189;
-                  v189 = v178 = v134;
-                  v124 = v206;
+                  [dictionary2 setObject:@"Failed to perform 6GHz followup scan" forKeyedSubscript:v177];
+                  [dictionary2 setObject:v133 forKeyedSubscript:v168];
+                  [MEMORY[0x1E696ABC0] errorWithDomain:v176 code:2 userInfo:dictionary2];
+                  firstObject3 = v189;
+                  v189 = v178 = dictionary2;
+                  v124 = selfCopy;
                 }
               }
 
               else
               {
-                v132 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary3 = [MEMORY[0x1E695DF90] dictionary];
 
-                [v132 setObject:@"CWFAutoJoinManager.scanForNetworksHandler() not configured" forKeyedSubscript:v177];
-                [MEMORY[0x1E696ABC0] errorWithDomain:v176 code:6 userInfo:v132];
+                [dictionary3 setObject:@"CWFAutoJoinManager.scanForNetworksHandler() not configured" forKeyedSubscript:v177];
+                [MEMORY[0x1E696ABC0] errorWithDomain:v176 code:6 userInfo:dictionary3];
                 v127 = 0;
                 v185 = 0;
-                v130 = v189;
-                v189 = v178 = v132;
+                firstObject3 = v189;
+                v189 = v178 = dictionary3;
               }
 
               v135 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - v123;
               [(CWFAutoJoinMetric *)v124->_metric setFollowup6GHzScanDuration:[(CWFAutoJoinMetric *)v124->_metric followup6GHzScanDuration]+ v135 / 0xF4240];
               if (v189)
               {
-                v136 = [(CWFAutoJoinMetric *)v124->_metric scanErrors];
-                if (v136)
+                scanErrors = [(CWFAutoJoinMetric *)v124->_metric scanErrors];
+                if (scanErrors)
                 {
-                  v137 = [(CWFAutoJoinMetric *)v124->_metric scanErrors];
-                  v138 = [v137 arrayByAddingObject:v189];
+                  scanErrors2 = [(CWFAutoJoinMetric *)v124->_metric scanErrors];
+                  v138 = [scanErrors2 arrayByAddingObject:v189];
                   [(CWFAutoJoinMetric *)v124->_metric setScanErrors:v138];
                 }
 
                 else
                 {
-                  v137 = [MEMORY[0x1E695DEC8] arrayWithObject:v189];
-                  [(CWFAutoJoinMetric *)v124->_metric setScanErrors:v137];
+                  scanErrors2 = [MEMORY[0x1E695DEC8] arrayWithObject:v189];
+                  [(CWFAutoJoinMetric *)v124->_metric setScanErrors:scanErrors2];
                 }
               }
 
@@ -14630,7 +14630,7 @@ LABEL_121:
                 }
 
                 v143 = [v127 count];
-                v144 = [(CWFAutoJoinManager *)v206 __descriptionForError:v189];
+                v144 = [(CWFAutoJoinManager *)selfCopy __descriptionForError:v189];
                 v237 = 136446978;
                 v238 = v142;
                 v239 = 2048;
@@ -14714,8 +14714,8 @@ LABEL_121:
                 while (v150);
               }
 
-              self = v206;
-              v89 = v182;
+              self = selfCopy;
+              allKeys = v182;
               v91 = v187;
             }
 
@@ -14729,7 +14729,7 @@ LABEL_121:
         }
 
         while (v93 != v91);
-        v91 = [v89 countByEnumeratingWithState:&v212 objects:v245 count:16];
+        v91 = [allKeys countByEnumeratingWithState:&v212 objects:v245 count:16];
       }
 
       while (v91);
@@ -14742,12 +14742,12 @@ LABEL_121:
     }
 
     [(CWFAutoJoinMetric *)self->_metric setFollowup6GHzScanChannels:v172];
-    if (a7)
+    if (error)
     {
       v88 = v178;
       if (v189)
       {
-        *a7 = v189;
+        *error = v189;
       }
     }
 
@@ -14769,19 +14769,19 @@ LABEL_121:
   return v205;
 }
 
-- (id)__passpointScanResults:(id)a3
+- (id)__passpointScanResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [resultsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    array = 0;
     v7 = *v14;
     do
     {
@@ -14789,22 +14789,22 @@ LABEL_121:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isPasspoint])
         {
-          if (!v6)
+          if (!array)
           {
-            v6 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v6 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [resultsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -14812,34 +14812,34 @@ LABEL_121:
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
-  v10 = [v6 copy];
+  v10 = [array copy];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (BOOL)__isNonPinnedEAPTLSCandidate:(id)a3
+- (BOOL)__isNonPinnedEAPTLSCandidate:(id)candidate
 {
-  v3 = [a3 matchingKnownNetworkProfile];
-  if (![v3 isEAP])
+  matchingKnownNetworkProfile = [candidate matchingKnownNetworkProfile];
+  if (![matchingKnownNetworkProfile isEAP])
   {
     goto LABEL_9;
   }
 
-  v4 = [v3 acceptedEAPTypes];
-  v5 = [v4 containsObject:&unk_1F5BBC658];
+  acceptedEAPTypes = [matchingKnownNetworkProfile acceptedEAPTypes];
+  v5 = [acceptedEAPTypes containsObject:&unk_1F5BBC658];
 
-  v6 = [v3 acceptedEAPTypes];
-  v7 = [v6 containsObject:&unk_1F5BBC670];
+  acceptedEAPTypes2 = [matchingKnownNetworkProfile acceptedEAPTypes];
+  v7 = [acceptedEAPTypes2 containsObject:&unk_1F5BBC670];
 
   if (v5 && v7)
   {
-    v8 = [v3 acceptedEAPTypes];
-    v9 = [v8 count];
+    acceptedEAPTypes3 = [matchingKnownNetworkProfile acceptedEAPTypes];
+    v9 = [acceptedEAPTypes3 count];
 
     if (v9 != 2)
     {
@@ -14856,8 +14856,8 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v10 = [v3 acceptedEAPTypes];
-    v11 = [v10 count];
+    acceptedEAPTypes4 = [matchingKnownNetworkProfile acceptedEAPTypes];
+    v11 = [acceptedEAPTypes4 count];
 
     if (v11 != 1)
     {
@@ -14865,49 +14865,49 @@ LABEL_9:
     }
   }
 
-  v12 = [v3 TLSTrustedServerNames];
-  v13 = [v12 count] == 0;
+  tLSTrustedServerNames = [matchingKnownNetworkProfile TLSTrustedServerNames];
+  v13 = [tLSTrustedServerNames count] == 0;
 
 LABEL_10:
   return v13;
 }
 
-- (BOOL)__allowJoinCandidate:(id)a3 context:(id)a4 defer:(BOOL *)a5 error:(id *)a6
+- (BOOL)__allowJoinCandidate:(id)candidate context:(id)context defer:(BOOL *)defer error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  candidateCopy = candidate;
+  contextCopy = context;
   v68 = 0;
-  v12 = [v11 autoJoinParameters];
-  v13 = [v12 trigger];
+  autoJoinParameters = [contextCopy autoJoinParameters];
+  trigger = [autoJoinParameters trigger];
 
   failedToJoinKnownNetworkIDs = self->_failedToJoinKnownNetworkIDs;
-  v15 = [v10 matchingKnownNetworkProfile];
-  v16 = [v15 identifier];
-  LODWORD(failedToJoinKnownNetworkIDs) = [(NSMutableSet *)failedToJoinKnownNetworkIDs containsObject:v16];
+  matchingKnownNetworkProfile = [candidateCopy matchingKnownNetworkProfile];
+  identifier = [matchingKnownNetworkProfile identifier];
+  LODWORD(failedToJoinKnownNetworkIDs) = [(NSMutableSet *)failedToJoinKnownNetworkIDs containsObject:identifier];
 
   if (failedToJoinKnownNetworkIDs)
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = v17;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = dictionary;
     v19 = *MEMORY[0x1E696A578];
     v20 = @"Already failed to auto-join known network profile";
 LABEL_18:
-    [v17 setObject:v20 forKeyedSubscript:v19];
-    v30 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v18];
+    [dictionary setObject:v20 forKeyedSubscript:v19];
+    v30 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary2];
     v31 = 0;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v21 = [v10 channel];
-  if ([v21 is6GHz] && !-[CWFAutoJoinManager maxCompatibilityEnabled](self, "maxCompatibilityEnabled"))
+  channel = [candidateCopy channel];
+  if ([channel is6GHz] && !-[CWFAutoJoinManager maxCompatibilityEnabled](self, "maxCompatibilityEnabled"))
   {
-    v28 = [v10 matchingKnownNetworkProfile];
-    v29 = [v28 isStandalone6G];
+    matchingKnownNetworkProfile2 = [candidateCopy matchingKnownNetworkProfile];
+    isStandalone6G = [matchingKnownNetworkProfile2 isStandalone6G];
 
-    if (v29)
+    if (isStandalone6G)
     {
       goto LABEL_17;
     }
@@ -14917,14 +14917,14 @@ LABEL_19:
   {
   }
 
-  v22 = [v10 channel];
-  if ([v22 is6GHz])
+  channel2 = [candidateCopy channel];
+  if ([channel2 is6GHz])
   {
 
-    if ((v13 & 0xFFFFFFFFFFFFFFFELL) == 0x36)
+    if ((trigger & 0xFFFFFFFFFFFFFFFELL) == 0x36)
     {
-      v17 = [MEMORY[0x1E695DF90] dictionary];
-      v18 = v17;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = dictionary;
       v19 = *MEMORY[0x1E696A578];
       v20 = @"6G is not allowed with current trigger";
       goto LABEL_18;
@@ -14935,63 +14935,63 @@ LABEL_19:
   {
   }
 
-  v23 = [v10 channel];
-  v24 = [v23 is6GHz];
+  channel3 = [candidateCopy channel];
+  is6GHz = [channel3 is6GHz];
 
-  if ((v24 & 1) == 0 && v13 == 45)
+  if ((is6GHz & 1) == 0 && trigger == 45)
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = v17;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = dictionary;
     v19 = *MEMORY[0x1E696A578];
     v20 = @"non-6G is not allowed with current trigger";
     goto LABEL_18;
   }
 
-  v25 = [v10 channel];
-  if (([v25 is6GHz] & 1) == 0)
+  channel4 = [candidateCopy channel];
+  if (([channel4 is6GHz] & 1) == 0)
   {
 
     goto LABEL_48;
   }
 
-  v26 = [v10 matchingKnownNetworkProfile];
-  v27 = [v26 disable6EMode];
+  matchingKnownNetworkProfile3 = [candidateCopy matchingKnownNetworkProfile];
+  disable6EMode = [matchingKnownNetworkProfile3 disable6EMode];
 
-  if (v27 == 2)
+  if (disable6EMode == 2)
   {
 LABEL_17:
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = v17;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = dictionary;
     v19 = *MEMORY[0x1E696A578];
     v20 = @"6G is not allowed with this network";
     goto LABEL_18;
   }
 
 LABEL_48:
-  v53 = [v10 matchingKnownNetworkProfile];
+  matchingKnownNetworkProfile4 = [candidateCopy matchingKnownNetworkProfile];
   targetQueue = self->_targetQueue;
   v67 = 0;
-  v55 = [(CWFAutoJoinManager *)self __allowKnownNetwork:v53 context:v11 allowForSeamlessSSIDTransition:0 defer:&v68 targetQueue:targetQueue error:&v67];
+  v55 = [(CWFAutoJoinManager *)self __allowKnownNetwork:matchingKnownNetworkProfile4 context:contextCopy allowForSeamlessSSIDTransition:0 defer:&v68 targetQueue:targetQueue error:&v67];
   v30 = v67;
 
   if (v55)
   {
-    v56 = a5;
-    v57 = [v10 matchingKnownNetworkProfile];
-    if ([v57 addReason] == 10 && ((objc_msgSend(v10, "isOpen") & 1) != 0 || (objc_msgSend(v10, "isOWE") & 1) != 0 || (objc_msgSend(v10, "isWAPI") & 1) != 0 || objc_msgSend(v10, "isPSK") && ((objc_msgSend(v10, "isWEP") & 1) != 0 || (objc_msgSend(v10, "isWPA") & 1) != 0) || (objc_msgSend(v10, "hasWEP104Cipher") & 1) != 0 || (objc_msgSend(v10, "hasWEP40Cipher") & 1) != 0 || (objc_msgSend(v10, "hasTKIPCipher") & 1) != 0))
+    deferCopy = defer;
+    matchingKnownNetworkProfile5 = [candidateCopy matchingKnownNetworkProfile];
+    if ([matchingKnownNetworkProfile5 addReason] == 10 && ((objc_msgSend(candidateCopy, "isOpen") & 1) != 0 || (objc_msgSend(candidateCopy, "isOWE") & 1) != 0 || (objc_msgSend(candidateCopy, "isWAPI") & 1) != 0 || objc_msgSend(candidateCopy, "isPSK") && ((objc_msgSend(candidateCopy, "isWEP") & 1) != 0 || (objc_msgSend(candidateCopy, "isWPA") & 1) != 0) || (objc_msgSend(candidateCopy, "hasWEP104Cipher") & 1) != 0 || (objc_msgSend(candidateCopy, "hasWEP40Cipher") & 1) != 0 || (objc_msgSend(candidateCopy, "hasTKIPCipher") & 1) != 0))
     {
-      v58 = [v10 matchingKnownNetworkProfile];
-      v59 = [v58 lastJoinedByUserAt];
+      matchingKnownNetworkProfile6 = [candidateCopy matchingKnownNetworkProfile];
+      lastJoinedByUserAt = [matchingKnownNetworkProfile6 lastJoinedByUserAt];
 
-      if (!v59)
+      if (!lastJoinedByUserAt)
       {
-        v18 = [MEMORY[0x1E695DF90] dictionary];
-        [v18 setObject:@"Carrier-based known network profile with weak security never joined by user" forKeyedSubscript:*MEMORY[0x1E696A578]];
-        v60 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v18];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary2 setObject:@"Carrier-based known network profile with weak security never joined by user" forKeyedSubscript:*MEMORY[0x1E696A578]];
+        v60 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary2];
 
         v31 = 0;
         v30 = v60;
-        a5 = v56;
+        defer = deferCopy;
         goto LABEL_19;
       }
     }
@@ -15000,14 +15000,14 @@ LABEL_48:
     {
     }
 
-    v61 = [(CWFAutoJoinManager *)self allowJoinCandidateHandler];
+    allowJoinCandidateHandler = [(CWFAutoJoinManager *)self allowJoinCandidateHandler];
 
-    if (v61)
+    if (allowJoinCandidateHandler)
     {
       v66 = 0;
-      v62 = [(CWFAutoJoinManager *)self __calloutToAllowJoinCandidate:v10 trigger:v13 defer:&v68 error:&v66];
-      v18 = v66;
-      a5 = v56;
+      v62 = [(CWFAutoJoinManager *)self __calloutToAllowJoinCandidate:candidateCopy trigger:trigger defer:&v68 error:&v66];
+      dictionary2 = v66;
+      defer = deferCopy;
       if (v62)
       {
         v31 = 1;
@@ -15015,10 +15015,10 @@ LABEL_48:
 
       else
       {
-        v63 = [MEMORY[0x1E695DF90] dictionary];
-        [v63 setObject:@"Join candidate is not allowed by daemon" forKeyedSubscript:*MEMORY[0x1E696A578]];
-        [v63 setObject:v18 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-        v64 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v63];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary3 setObject:@"Join candidate is not allowed by daemon" forKeyedSubscript:*MEMORY[0x1E696A578]];
+        [dictionary3 setObject:dictionary2 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+        v64 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary3];
 
         v31 = 0;
         v30 = v64;
@@ -15028,7 +15028,7 @@ LABEL_48:
     }
 
     v31 = 1;
-    a5 = v56;
+    defer = deferCopy;
   }
 
   else
@@ -15037,18 +15037,18 @@ LABEL_48:
   }
 
 LABEL_20:
-  if ([(CWFAutoJoinManager *)self __isDeferrableJoinCandidate:v10])
+  if ([(CWFAutoJoinManager *)self __isDeferrableJoinCandidate:candidateCopy])
   {
     v68 = 1;
   }
 
-  v32 = [v10 matchingKnownNetworkProfile];
-  v33 = [v32 lastJoinedByUserAt];
-  if (!v33)
+  matchingKnownNetworkProfile7 = [candidateCopy matchingKnownNetworkProfile];
+  lastJoinedByUserAt2 = [matchingKnownNetworkProfile7 lastJoinedByUserAt];
+  if (!lastJoinedByUserAt2)
   {
-    v34 = [v11 preferUserConfiguredNetworks];
+    preferUserConfiguredNetworks = [contextCopy preferUserConfiguredNetworks];
 
-    if (v34)
+    if (preferUserConfiguredNetworks)
     {
       v68 = 1;
       if (!v31)
@@ -15063,7 +15063,7 @@ LABEL_20:
     }
 
 LABEL_27:
-    if (!a5)
+    if (!defer)
     {
       goto LABEL_43;
     }
@@ -15091,27 +15091,27 @@ LABEL_30:
 
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [v10 matchingKnownNetworkProfile];
-    [v38 identifier];
-    v65 = v11;
-    v39 = a6;
-    v41 = v40 = a5;
-    v42 = [v41 redactedForWiFi];
+    matchingKnownNetworkProfile8 = [candidateCopy matchingKnownNetworkProfile];
+    [matchingKnownNetworkProfile8 identifier];
+    v65 = contextCopy;
+    errorCopy = error;
+    v41 = v40 = defer;
+    redactedForWiFi = [v41 redactedForWiFi];
     v43 = [(CWFAutoJoinManager *)self __descriptionForError:v30];
     v69 = 138543874;
-    v70 = v42;
+    v70 = redactedForWiFi;
     v71 = 2114;
     v72 = v43;
     v73 = 2114;
-    v74 = v10;
+    v74 = candidateCopy;
     _os_log_send_and_compose_impl();
 
-    a5 = v40;
-    a6 = v39;
-    v11 = v65;
+    defer = v40;
+    error = errorCopy;
+    contextCopy = v65;
   }
 
-  if (a5)
+  if (defer)
   {
 LABEL_36:
     if (v68)
@@ -15130,39 +15130,39 @@ LABEL_36:
 
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [v10 matchingKnownNetworkProfile];
-        v48 = [v47 identifier];
-        v49 = [v48 redactedForWiFi];
+        matchingKnownNetworkProfile9 = [candidateCopy matchingKnownNetworkProfile];
+        identifier2 = [matchingKnownNetworkProfile9 identifier];
+        redactedForWiFi2 = [identifier2 redactedForWiFi];
         v69 = 138543618;
-        v70 = v49;
+        v70 = redactedForWiFi2;
         v71 = 2114;
-        v72 = v10;
+        v72 = candidateCopy;
         _os_log_send_and_compose_impl();
       }
 
-      *a5 = v68;
+      *defer = v68;
     }
   }
 
 LABEL_43:
-  if (a6 && v30)
+  if (error && v30)
   {
     v50 = v30;
-    *a6 = v30;
+    *error = v30;
   }
 
   v51 = *MEMORY[0x1E69E9840];
   return v31;
 }
 
-- (BOOL)__performJoinWithNetwork:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)__performJoinWithNetwork:(id)network context:(id)context error:(id *)error
 {
   v127 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v102 = a4;
-  v108 = self;
-  v98 = [(CWFAutoJoinManager *)self associatedNetwork];
-  v107 = v7;
+  networkCopy = network;
+  contextCopy = context;
+  selfCopy = self;
+  associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
+  v107 = networkCopy;
   v8 = CWFGetOSLog();
   if (v8)
   {
@@ -15185,46 +15185,46 @@ LABEL_43:
   }
 
   v94 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v11 = [(CWFAutoJoinManager *)self associateToNetworkHandler];
+  associateToNetworkHandler = [(CWFAutoJoinManager *)self associateToNetworkHandler];
 
-  if (!v11)
+  if (!associateToNetworkHandler)
   {
     v122 = *MEMORY[0x1E696A578];
     v123 = @"CWFAutoJoinManager.associateToNetworkHandler() not configured";
-    v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v123 forKeys:&v122 count:1];
-    v20 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:v103];
+    userInfo = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v123 forKeys:&v122 count:1];
+    v20 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:userInfo];
     v21 = 0;
     v99 = 0;
     v105 = 0;
-    v22 = v107;
+    associatedNetwork2 = v107;
     goto LABEL_58;
   }
 
   v99 = objc_alloc_init(CWFAssocParameters);
   [(CWFAssocParameters *)v99 setScanResult:v107];
-  v12 = [v107 SSID];
-  v13 = [v98 SSID];
-  v14 = v13;
-  if (v12 == v13)
+  sSID = [v107 SSID];
+  sSID2 = [associatedNetwork SSID];
+  v14 = sSID2;
+  if (sSID == sSID2)
   {
   }
 
   else
   {
-    v15 = [v107 SSID];
-    if (v15)
+    sSID3 = [v107 SSID];
+    if (sSID3)
     {
-      v16 = [v98 SSID];
-      if (v16)
+      sSID4 = [associatedNetwork SSID];
+      if (sSID4)
       {
-        v17 = [v107 SSID];
-        v18 = [v98 SSID];
-        v19 = ([v17 isEqual:v18] & 1) != 0 || -[CWFAutoJoinManager __candidateSupportsSeamlessSSIDTransition:fromNetwork:context:](v108, "__candidateSupportsSeamlessSSIDTransition:fromNetwork:context:", v107, v98, v102);
+        sSID5 = [v107 SSID];
+        sSID6 = [associatedNetwork SSID];
+        v19 = ([sSID5 isEqual:sSID6] & 1) != 0 || -[CWFAutoJoinManager __candidateSupportsSeamlessSSIDTransition:fromNetwork:context:](selfCopy, "__candidateSupportsSeamlessSSIDTransition:fromNetwork:context:", v107, associatedNetwork, contextCopy);
       }
 
       else
       {
-        v19 = [(CWFAutoJoinManager *)v108 __candidateSupportsSeamlessSSIDTransition:v107 fromNetwork:v98 context:v102];
+        v19 = [(CWFAutoJoinManager *)selfCopy __candidateSupportsSeamlessSSIDTransition:v107 fromNetwork:associatedNetwork context:contextCopy];
       }
 
       if (v19)
@@ -15237,7 +15237,7 @@ LABEL_15:
       goto LABEL_41;
     }
 
-    v23 = [(CWFAutoJoinManager *)v108 __candidateSupportsSeamlessSSIDTransition:v107 fromNetwork:v98 context:v102];
+    v23 = [(CWFAutoJoinManager *)selfCopy __candidateSupportsSeamlessSSIDTransition:v107 fromNetwork:associatedNetwork context:contextCopy];
 
     if (!v23)
     {
@@ -15246,18 +15246,18 @@ LABEL_15:
   }
 
 LABEL_20:
-  v25 = [(CWFAutoJoinManager *)v108 colocatedScopeID:v91];
+  v25 = [(CWFAutoJoinManager *)selfCopy colocatedScopeID:v91];
   [(CWFAssocParameters *)v99 setColocatedScopeID:v25];
 
-  v26 = [v102 autoJoinParameters];
-  if ([v26 trigger] == 54)
+  autoJoinParameters = [contextCopy autoJoinParameters];
+  if ([autoJoinParameters trigger] == 54)
   {
   }
 
   else
   {
-    v27 = [v102 autoJoinParameters];
-    v24 = [v27 trigger] == 55;
+    autoJoinParameters2 = [contextCopy autoJoinParameters];
+    v24 = [autoJoinParameters2 trigger] == 55;
 
     if (!v24)
     {
@@ -15269,8 +15269,8 @@ LABEL_20:
   v113 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v28 = [v102 autoJoinParameters];
-  obj = [v28 preferredChannels];
+  autoJoinParameters3 = [contextCopy autoJoinParameters];
+  obj = [autoJoinParameters3 preferredChannels];
 
   v104 = [obj countByEnumeratingWithState:&v110 objects:v126 count:16];
   if (v104)
@@ -15286,9 +15286,9 @@ LABEL_25:
       }
 
       v30 = *(*(&v110 + 1) + 8 * v29);
-      v106 = [(CWFAutoJoinManager *)v108 __basicChannelRepresentation:v30];
-      v31 = [v107 channel];
-      v32 = [(CWFAutoJoinManager *)v108 __basicChannelRepresentation:v31];
+      v106 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v30];
+      channel = [v107 channel];
+      v32 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:channel];
       v33 = v32;
       if (v106 == v32)
       {
@@ -15298,16 +15298,16 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v34 = [(CWFAutoJoinManager *)v108 __basicChannelRepresentation:v30];
+      v34 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v30];
       if (v34)
       {
-        v35 = [v107 channel];
-        v36 = [(CWFAutoJoinManager *)v108 __basicChannelRepresentation:v35];
+        channel2 = [v107 channel];
+        v36 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:channel2];
         if (v36)
         {
-          v37 = [(CWFAutoJoinManager *)v108 __basicChannelRepresentation:v30];
-          v38 = [v107 channel];
-          v39 = [(CWFAutoJoinManager *)v108 __basicChannelRepresentation:v38];
+          v37 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:v30];
+          channel3 = [v107 channel];
+          v39 = [(CWFAutoJoinManager *)selfCopy __basicChannelRepresentation:channel3];
           v40 = [v37 isEqual:v39];
 
           if (v40)
@@ -15337,23 +15337,23 @@ LABEL_35:
 LABEL_40:
   v24 = 1;
 LABEL_41:
-  v41 = [v102 autoJoinParameters];
-  if ([v41 mode] == 2 && !objc_msgSend(v102, "BSSChannelsOnly"))
+  autoJoinParameters4 = [contextCopy autoJoinParameters];
+  if ([autoJoinParameters4 mode] == 2 && !objc_msgSend(contextCopy, "BSSChannelsOnly"))
   {
   }
 
   else
   {
-    v42 = [v102 didForceAllRemainingChannels];
+    didForceAllRemainingChannels = [contextCopy didForceAllRemainingChannels];
 
-    if ((v42 & 1) == 0)
+    if ((didForceAllRemainingChannels & 1) == 0)
     {
       goto LABEL_48;
     }
   }
 
-  v43 = [(NSMutableSet *)v108->_cumulativeScanResults allObjects];
-  v44 = CWFScanResultHas6GHzOnlyBSS(v107, v43, &unk_1F5B8AC80);
+  allObjects = [(NSMutableSet *)selfCopy->_cumulativeScanResults allObjects];
+  v44 = CWFScanResultHas6GHzOnlyBSS(v107, allObjects, &unk_1F5B8AC80);
 
   if (v44)
   {
@@ -15364,103 +15364,103 @@ LABEL_49:
   }
 
 LABEL_48:
-  v45 = [v107 matchingKnownNetworkProfile];
-  v46 = [v45 wasRecently6GHzOnlyOnAnyDevice];
+  matchingKnownNetworkProfile = [v107 matchingKnownNetworkProfile];
+  wasRecently6GHzOnlyOnAnyDevice = [matchingKnownNetworkProfile wasRecently6GHzOnlyOnAnyDevice];
 
   v21 = 0;
-  if (v46)
+  if (wasRecently6GHzOnlyOnAnyDevice)
   {
     goto LABEL_49;
   }
 
 LABEL_50:
   v109 = 0;
-  v105 = [(CWFAutoJoinManager *)v108 __calloutToAssociateWithParameters:v99 error:&v109];
+  v105 = [(CWFAutoJoinManager *)selfCopy __calloutToAssociateWithParameters:v99 error:&v109];
   v47 = v109;
   v48 = v47;
   if (v105)
   {
-    v22 = [(CWFAutoJoinManager *)v108 associatedNetwork];
+    associatedNetwork2 = [(CWFAutoJoinManager *)selfCopy associatedNetwork];
 
     if (v24)
     {
-      v49 = v108;
+      v49 = selfCopy;
       objc_sync_enter(v49);
-      v50 = [v98 copy];
+      v50 = [associatedNetwork copy];
       steerFromNetwork = v49->_steerFromNetwork;
       v49->_steerFromNetwork = v50;
 
-      v52 = [v22 copy];
+      v52 = [associatedNetwork2 copy];
       steerToNetwork = v49->_steerToNetwork;
       v49->_steerToNetwork = v52;
 
       objc_sync_exit(v49);
     }
 
-    v103 = 0;
+    userInfo = 0;
     v20 = 0;
   }
 
   else
   {
-    v103 = [v47 userInfo];
-    if (!v103)
+    userInfo = [v47 userInfo];
+    if (!userInfo)
     {
       v124 = *MEMORY[0x1E696A578];
       v125 = @"Failed to join to network";
-      v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
+      userInfo = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
     }
 
     v54 = MEMORY[0x1E696ABC0];
-    v55 = [v48 code];
-    v20 = [v54 errorWithDomain:*MEMORY[0x1E696A798] code:v55 userInfo:v103];
-    v22 = v107;
+    code = [v48 code];
+    v20 = [v54 errorWithDomain:*MEMORY[0x1E696A798] code:code userInfo:userInfo];
+    associatedNetwork2 = v107;
   }
 
 LABEL_58:
   v93 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   if (v20)
   {
-    v56 = [(CWFAutoJoinMetric *)v108->_metric joinErrors];
-    if (v56)
+    joinErrors = [(CWFAutoJoinMetric *)selfCopy->_metric joinErrors];
+    if (joinErrors)
     {
-      v57 = [(CWFAutoJoinMetric *)v108->_metric joinErrors];
-      v58 = [v57 arrayByAddingObject:v20];
-      [(CWFAutoJoinMetric *)v108->_metric setJoinErrors:v58];
+      joinErrors2 = [(CWFAutoJoinMetric *)selfCopy->_metric joinErrors];
+      v58 = [joinErrors2 arrayByAddingObject:v20];
+      [(CWFAutoJoinMetric *)selfCopy->_metric setJoinErrors:v58];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DEC8] arrayWithObject:v20];
-      [(CWFAutoJoinMetric *)v108->_metric setJoinErrors:v57];
+      joinErrors2 = [MEMORY[0x1E695DEC8] arrayWithObject:v20];
+      [(CWFAutoJoinMetric *)selfCopy->_metric setJoinErrors:joinErrors2];
     }
   }
 
   v59 = MEMORY[0x1E696AEC0];
-  v60 = [v22 shortSSID];
-  v61 = [v22 BSSID];
-  v62 = [v22 channel];
-  v63 = [v59 stringWithFormat:@"%lu/%@/%lu", v60, v61, objc_msgSend(v62, "channel")];
+  shortSSID = [associatedNetwork2 shortSSID];
+  bSSID = [associatedNetwork2 BSSID];
+  channel4 = [associatedNetwork2 channel];
+  v63 = [v59 stringWithFormat:@"%lu/%@/%lu", shortSSID, bSSID, objc_msgSend(channel4, "channel")];
 
-  v64 = [(NSMutableDictionary *)v108->_followup6GHzRNRMap objectForKeyedSubscript:v63];
-  obja = [(NSMutableDictionary *)v108->_followup6GHzFILSDMap objectForKeyedSubscript:v63];
-  [(CWFAutoJoinMetric *)v108->_metric setWas6EPreferOn:[(CWFAutoJoinManager *)v108 maxCompatibilityEnabled]];
-  v101 = [v22 matchingKnownNetworkProfile];
-  -[CWFAutoJoinMetric setWas6EDisabled:](v108->_metric, "setWas6EDisabled:", [v101 disable6EMode] == 2);
+  v64 = [(NSMutableDictionary *)selfCopy->_followup6GHzRNRMap objectForKeyedSubscript:v63];
+  obja = [(NSMutableDictionary *)selfCopy->_followup6GHzFILSDMap objectForKeyedSubscript:v63];
+  [(CWFAutoJoinMetric *)selfCopy->_metric setWas6EPreferOn:[(CWFAutoJoinManager *)selfCopy maxCompatibilityEnabled]];
+  matchingKnownNetworkProfile2 = [associatedNetwork2 matchingKnownNetworkProfile];
+  -[CWFAutoJoinMetric setWas6EDisabled:](selfCopy->_metric, "setWas6EDisabled:", [matchingKnownNetworkProfile2 disable6EMode] == 2);
   if (v105)
   {
-    v65 = [v64 channel];
-    v66 = [v22 copy];
-    [(CWFAutoJoinManager *)v108 __updateRNRChannel:v65 has6GHzOnlyBSS:v21 joinCandidate:v66];
+    channel5 = [v64 channel];
+    v66 = [associatedNetwork2 copy];
+    [(CWFAutoJoinManager *)selfCopy __updateRNRChannel:channel5 has6GHzOnlyBSS:v21 joinCandidate:v66];
 
-    v67 = [v22 channel];
-    if ([v67 is6GHz])
+    channel6 = [associatedNetwork2 channel];
+    if ([channel6 is6GHz])
     {
-      v68 = [v102 allowStandalone6GHz];
+      allowStandalone6GHz = [contextCopy allowStandalone6GHz];
 
-      if ((v68 & 1) == 0)
+      if ((allowStandalone6GHz & 1) == 0)
       {
-        [(CWFAutoJoinMetric *)v108->_metric setWas6GHzDeprioritized:0];
+        [(CWFAutoJoinMetric *)selfCopy->_metric setWas6GHzDeprioritized:0];
       }
     }
 
@@ -15468,53 +15468,53 @@ LABEL_58:
     {
     }
 
-    v69 = [v98 SSID];
-    v70 = [v22 SSID];
-    if (v69 == v70)
+    sSID7 = [associatedNetwork SSID];
+    sSID8 = [associatedNetwork2 SSID];
+    if (sSID7 == sSID8)
     {
-      [(CWFAutoJoinMetric *)v108->_metric setDidTriggerReassoc:1];
+      [(CWFAutoJoinMetric *)selfCopy->_metric setDidTriggerReassoc:1];
     }
 
     else
     {
-      v71 = [v98 SSID];
-      if (v71)
+      sSID9 = [associatedNetwork SSID];
+      if (sSID9)
       {
-        v72 = [v22 SSID];
-        if (v72)
+        sSID10 = [associatedNetwork2 SSID];
+        if (sSID10)
         {
-          v73 = [v98 SSID];
-          v74 = [v22 SSID];
-          -[CWFAutoJoinMetric setDidTriggerReassoc:](v108->_metric, "setDidTriggerReassoc:", [v73 isEqual:v74]);
+          sSID11 = [associatedNetwork SSID];
+          sSID12 = [associatedNetwork2 SSID];
+          -[CWFAutoJoinMetric setDidTriggerReassoc:](selfCopy->_metric, "setDidTriggerReassoc:", [sSID11 isEqual:sSID12]);
         }
 
         else
         {
-          [(CWFAutoJoinMetric *)v108->_metric setDidTriggerReassoc:0];
+          [(CWFAutoJoinMetric *)selfCopy->_metric setDidTriggerReassoc:0];
         }
       }
 
       else
       {
-        [(CWFAutoJoinMetric *)v108->_metric setDidTriggerReassoc:0];
+        [(CWFAutoJoinMetric *)selfCopy->_metric setDidTriggerReassoc:0];
       }
     }
 
-    if (![(CWFAutoJoinMetric *)v108->_metric didTriggerReassoc])
+    if (![(CWFAutoJoinMetric *)selfCopy->_metric didTriggerReassoc])
     {
-      v75 = [(CWFAssocParameters *)v99 colocatedScopeID];
-      [(CWFAutoJoinMetric *)v108->_metric setDidPerformSeamlessSSIDTransition:v75 != 0];
+      colocatedScopeID = [(CWFAssocParameters *)v99 colocatedScopeID];
+      [(CWFAutoJoinMetric *)selfCopy->_metric setDidPerformSeamlessSSIDTransition:colocatedScopeID != 0];
     }
 
-    v76 = v108;
+    v76 = selfCopy;
     objc_sync_enter(v76);
     deferredKnownNetworks = v76->_deferredKnownNetworks;
-    v78 = [v22 matchingKnownNetworkProfile];
-    LODWORD(deferredKnownNetworks) = [(NSMutableOrderedSet *)deferredKnownNetworks containsObject:v78];
+    matchingKnownNetworkProfile3 = [associatedNetwork2 matchingKnownNetworkProfile];
+    LODWORD(deferredKnownNetworks) = [(NSMutableOrderedSet *)deferredKnownNetworks containsObject:matchingKnownNetworkProfile3];
 
     if (deferredKnownNetworks)
     {
-      [(CWFAutoJoinMetric *)v108->_metric setDidJoinDeferredNetwork:1];
+      [(CWFAutoJoinMetric *)selfCopy->_metric setDidJoinDeferredNetwork:1];
     }
 
     objc_sync_exit(v76);
@@ -15522,22 +15522,22 @@ LABEL_58:
 
   if (v64)
   {
-    [(CWFAutoJoinMetric *)v108->_metric setWasDiscoveredViaRNR:1];
+    [(CWFAutoJoinMetric *)selfCopy->_metric setWasDiscoveredViaRNR:1];
   }
 
   else if (obja)
   {
-    [(CWFAutoJoinMetric *)v108->_metric setWasDiscoveredViaFILSD:1];
+    [(CWFAutoJoinMetric *)selfCopy->_metric setWasDiscoveredViaFILSD:1];
   }
 
-  v79 = [(CWFAutoJoinManager *)v108 __alreadyFoundFollowup6GHzBSSWithSignature:v63];
+  v79 = [(CWFAutoJoinManager *)selfCopy __alreadyFoundFollowup6GHzBSSWithSignature:v63];
 
   if (v79)
   {
-    [(CWFAutoJoinMetric *)v108->_metric setWasDiscoveredVia6GHzFollowup:1];
+    [(CWFAutoJoinMetric *)selfCopy->_metric setWasDiscoveredVia6GHzFollowup:1];
   }
 
-  [(CWFAutoJoinMetric *)v108->_metric setAutoJoinedNetwork:v22];
+  [(CWFAutoJoinMetric *)selfCopy->_metric setAutoJoinedNetwork:associatedNetwork2];
   v80 = CWFGetOSLog();
   if (v80)
   {
@@ -15572,8 +15572,8 @@ LABEL_58:
       v84 = "FAILED";
     }
 
-    v85 = [(CWFAutoJoinManager *)v108 __descriptionForError:v20];
-    v86 = [(CWFAutoJoinMetric *)v108->_metric autoJoinedNetwork];
+    v85 = [(CWFAutoJoinManager *)selfCopy __descriptionForError:v20];
+    autoJoinedNetwork = [(CWFAutoJoinMetric *)selfCopy->_metric autoJoinedNetwork];
     v114 = 136446978;
     v115 = v84;
     v116 = 2048;
@@ -15581,12 +15581,12 @@ LABEL_58:
     v118 = 2114;
     v119 = v85;
     v120 = 2114;
-    v121 = v86;
+    v121 = autoJoinedNetwork;
     _os_log_send_and_compose_impl();
   }
 
   v87 = v20 == 0;
-  if (!a5)
+  if (!error)
   {
     v87 = 1;
   }
@@ -15594,25 +15594,25 @@ LABEL_58:
   if (!v87)
   {
     v88 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
   v89 = *MEMORY[0x1E69E9840];
   return v105;
 }
 
-- (void)__sortJoinCandidates:(id)a3 context:(id)a4
+- (void)__sortJoinCandidates:(id)candidates context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 preferUserConfiguredNetworks];
-  v13 = [v6 autoJoinParameters];
+  contextCopy = context;
+  candidatesCopy = candidates;
+  preferUserConfiguredNetworks = [contextCopy preferUserConfiguredNetworks];
+  autoJoinParameters = [contextCopy autoJoinParameters];
 
-  v9 = [v13 trigger];
-  v10 = [(CWFAutoJoinManager *)self associatedNetwork];
-  v11 = [(CWFAutoJoinManager *)self joinCandidateComparator];
-  v12 = sub_1E0BEFAA0(1, v8, v9, v10, v11);
-  [v7 sortUsingDescriptors:v12];
+  trigger = [autoJoinParameters trigger];
+  associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
+  joinCandidateComparator = [(CWFAutoJoinManager *)self joinCandidateComparator];
+  v12 = sub_1E0BEFAA0(1, preferUserConfiguredNetworks, trigger, associatedNetwork, joinCandidateComparator);
+  [candidatesCopy sortUsingDescriptors:v12];
 }
 
 - (void)__updateDisallowedMatchedKnownNetworks
@@ -15640,8 +15640,8 @@ LABEL_58:
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([(CWFAutoJoinManager *)self __preflightMatchKnownNetworksForScanResult:v8, v13])
         {
-          v9 = [(NSMutableDictionary *)self->_disallowedKnownNetworksMap allValues];
-          v10 = sub_1E0BED85C(v8, v9);
+          allValues = [(NSMutableDictionary *)self->_disallowedKnownNetworksMap allValues];
+          v10 = sub_1E0BED85C(v8, allValues);
 
           if (v10)
           {
@@ -15660,39 +15660,39 @@ LABEL_58:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__morePreferredKnownNetworksWithCandidate:(id)a3 knownNetworks:(id)a4 context:(id)a5
+- (id)__morePreferredKnownNetworksWithCandidate:(id)candidate knownNetworks:(id)networks context:(id)context
 {
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v68 = [MEMORY[0x1E695DFA0] orderedSet];
-  v63 = v10;
-  v11 = [v10 autoJoinParameters];
-  v12 = [v11 trigger];
+  candidateCopy = candidate;
+  networksCopy = networks;
+  contextCopy = context;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v63 = contextCopy;
+  autoJoinParameters = [contextCopy autoJoinParameters];
+  trigger = [autoJoinParameters trigger];
 
-  v62 = [v8 lastJoinedAt];
-  v61 = [v8 lastDiscoveredAt];
-  v67 = [v8 networkGroupID];
-  v64 = [v8 networkGroupPriority];
+  lastJoinedAt = [candidateCopy lastJoinedAt];
+  lastDiscoveredAt = [candidateCopy lastDiscoveredAt];
+  networkGroupID = [candidateCopy networkGroupID];
+  networkGroupPriority = [candidateCopy networkGroupPriority];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v14 = v13;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v9;
+  obj = networksCopy;
   v15 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (!v15)
   {
-    v17 = v10;
+    v17 = contextCopy;
     goto LABEL_47;
   }
 
   v16 = v15;
   v69 = *v71;
-  v65 = v12 & 0xFFFFFFFFFFFFFFFCLL;
-  v17 = v10;
+  v65 = trigger & 0xFFFFFFFFFFFFFFFCLL;
+  v17 = contextCopy;
   do
   {
     v18 = 0;
@@ -15704,63 +15704,63 @@ LABEL_58:
       }
 
       v19 = *(*(&v70 + 1) + 8 * v18);
-      v20 = [v8 identifier];
-      v21 = [v19 identifier];
-      v22 = [v20 isEqual:v21];
+      identifier = [candidateCopy identifier];
+      identifier2 = [v19 identifier];
+      v22 = [identifier isEqual:identifier2];
 
       if (v22 & 1) != 0 || !-[CWFAutoJoinManager __allowKnownNetwork:context:allowForSeamlessSSIDTransition:defer:targetQueue:error:](self, "__allowKnownNetwork:context:allowForSeamlessSSIDTransition:defer:targetQueue:error:", v19, v17, 0, 0, self->_targetQueue, 0) || ([v19 isPersonalHotspot])
       {
         goto LABEL_31;
       }
 
-      if ([v8 compareUserPriority:v19] == -1)
+      if ([candidateCopy compareUserPriority:v19] == -1)
       {
-        v25 = [v19 addedAt];
-        v26 = [v19 lastJoinedAt];
-        v27 = [v19 lastDiscoveredAt];
-        [v26 timeIntervalSinceReferenceDate];
+        addedAt = [v19 addedAt];
+        lastJoinedAt2 = [v19 lastJoinedAt];
+        lastDiscoveredAt2 = [v19 lastDiscoveredAt];
+        [lastJoinedAt2 timeIntervalSinceReferenceDate];
         if (v14 - v28 < 1209600.0)
         {
           goto LABEL_18;
         }
 
-        [v27 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt2 timeIntervalSinceReferenceDate];
         if (v14 - v29 < 1209600.0)
         {
           goto LABEL_18;
         }
 
-        [v25 timeIntervalSinceReferenceDate];
+        [addedAt timeIntervalSinceReferenceDate];
         if (v14 - v30 < 1209600.0)
         {
           goto LABEL_18;
         }
 
-        [v26 timeIntervalSinceReferenceDate];
+        [lastJoinedAt2 timeIntervalSinceReferenceDate];
         v32 = v31;
-        [v62 timeIntervalSinceReferenceDate];
+        [lastJoinedAt timeIntervalSinceReferenceDate];
         if (v32 > v33)
         {
           goto LABEL_18;
         }
 
-        [v27 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt2 timeIntervalSinceReferenceDate];
         v35 = v34;
-        [v61 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt timeIntervalSinceReferenceDate];
         if (v35 > v36)
         {
           goto LABEL_18;
         }
 
-        if (v26 && v62)
+        if (lastJoinedAt2 && lastJoinedAt)
         {
-          [v26 timeIntervalSinceReferenceDate];
+          [lastJoinedAt2 timeIntervalSinceReferenceDate];
           v42 = floor(v41);
-          [v62 timeIntervalSinceReferenceDate];
+          [lastJoinedAt timeIntervalSinceReferenceDate];
           v44 = floor(v43);
-          [v26 timeIntervalSinceReferenceDate];
+          [lastJoinedAt2 timeIntervalSinceReferenceDate];
           v46 = floor(v45);
-          [v62 timeIntervalSinceReferenceDate];
+          [lastJoinedAt timeIntervalSinceReferenceDate];
           v48 = v46 - floor(v47);
           if (v42 < v44)
           {
@@ -15774,18 +15774,18 @@ LABEL_58:
         }
 
         v37 = 1;
-        if (!v27 || !v61)
+        if (!lastDiscoveredAt2 || !lastDiscoveredAt)
         {
           goto LABEL_19;
         }
 
-        [v27 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt2 timeIntervalSinceReferenceDate];
         v50 = floor(v49);
-        [v61 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt timeIntervalSinceReferenceDate];
         v52 = floor(v51);
-        [v27 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt2 timeIntervalSinceReferenceDate];
         v54 = floor(v53);
-        [v61 timeIntervalSinceReferenceDate];
+        [lastDiscoveredAt timeIntervalSinceReferenceDate];
         v56 = v54 - floor(v55);
         if (v50 < v52)
         {
@@ -15804,10 +15804,10 @@ LABEL_18:
         }
 
 LABEL_19:
-        if (([v8 networkOfInterestHomeState] == 1 || objc_msgSend(v8, "networkOfInterestHomeState") == 3) && objc_msgSend(v19, "networkOfInterestHomeState") == 2 && -[CWFAutoJoinManager __isAutoJoiningAtHome](self, "__isAutoJoiningAtHome"))
+        if (([candidateCopy networkOfInterestHomeState] == 1 || objc_msgSend(candidateCopy, "networkOfInterestHomeState") == 3) && objc_msgSend(v19, "networkOfInterestHomeState") == 2 && -[CWFAutoJoinManager __isAutoJoiningAtHome](self, "__isAutoJoiningAtHome"))
         {
-          v38 = [(CWFAutoJoinManager *)self location];
-          v39 = [v19 wasManuallyJoinedRecentlyInProximityOf:v38];
+          location = [(CWFAutoJoinManager *)self location];
+          v39 = [v19 wasManuallyJoinedRecentlyInProximityOf:location];
 
           v17 = v63;
           v37 = v39 ^ 1;
@@ -15821,28 +15821,28 @@ LABEL_19:
         goto LABEL_31;
       }
 
-      v23 = [v19 networkGroupID];
-      if (([v67 isEqualToString:v23] & 1) == 0)
+      networkGroupID2 = [v19 networkGroupID];
+      if (([networkGroupID isEqualToString:networkGroupID2] & 1) == 0)
       {
 
         goto LABEL_31;
       }
 
-      v24 = [v19 networkGroupPriority];
+      networkGroupPriority2 = [v19 networkGroupPriority];
 
-      if (v64 < v24)
+      if (networkGroupPriority < networkGroupPriority2)
       {
 LABEL_26:
         if ([(CWFAutoJoinManager *)self __allowKnownNetwork:v19 context:v17 allowForSeamlessSSIDTransition:0 defer:0 targetQueue:self->_targetQueue error:0])
         {
-          v40 = v68;
-          if (!v68)
+          orderedSet2 = orderedSet;
+          if (!orderedSet)
           {
-            v40 = [MEMORY[0x1E695DFA0] orderedSet];
+            orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
           }
 
-          v68 = v40;
-          [v40 addObject:v19];
+          orderedSet = orderedSet2;
+          [orderedSet2 addObject:v19];
         }
       }
 
@@ -15858,17 +15858,17 @@ LABEL_31:
   while (v57);
 LABEL_47:
 
-  v58 = [v68 copy];
+  v58 = [orderedSet copy];
   v59 = *MEMORY[0x1E69E9840];
 
   return v58;
 }
 
-- (BOOL)__connectToHotspot:(id)a3 error:(id *)a4
+- (BOOL)__connectToHotspot:(id)hotspot error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v46 = [(CWFAutoJoinManager *)self associatedNetwork];
+  hotspotCopy = hotspot;
+  associatedNetwork = [(CWFAutoJoinManager *)self associatedNetwork];
   v6 = CWFGetOSLog();
   if (v6)
   {
@@ -15884,74 +15884,74 @@ LABEL_47:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v49 = 138543362;
-    v50 = v5;
+    v50 = hotspotCopy;
     LODWORD(v45) = 12;
     v44 = &v49;
     _os_log_send_and_compose_impl();
   }
 
   v9 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
-  v10 = [(CWFAutoJoinManager *)self connectToHotspotHandler];
+  connectToHotspotHandler = [(CWFAutoJoinManager *)self connectToHotspotHandler];
 
-  if (v10)
+  if (connectToHotspotHandler)
   {
     v11 = CWFGetBootTime();
     v12 = [v11 dateByAddingTimeInterval:v9 / 1000000000.0];
     [(CWFAutoJoinMetric *)self->_metric setAutoHotspotJoinStartedAt:v12];
 
     v48 = 0;
-    v13 = [(CWFAutoJoinManager *)self __calloutToConnectToHotspot:v5 error:&v48];
+    v13 = [(CWFAutoJoinManager *)self __calloutToConnectToHotspot:hotspotCopy error:&v48];
     v14 = v48;
     if (v13)
     {
-      v15 = self;
-      objc_sync_enter(v15);
-      v16 = [v46 copy];
-      brokenBackhaulNetwork = v15->_brokenBackhaulNetwork;
-      v15->_brokenBackhaulNetwork = v16;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v16 = [associatedNetwork copy];
+      brokenBackhaulNetwork = selfCopy->_brokenBackhaulNetwork;
+      selfCopy->_brokenBackhaulNetwork = v16;
 
-      objc_sync_exit(v15);
-      v18 = 0;
+      objc_sync_exit(selfCopy);
+      dictionary = 0;
       v19 = 0;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DF90] dictionary];
-      [v18 setObject:@"Failed to connect to hotspot" forKeyedSubscript:*MEMORY[0x1E696A578]];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:@"Failed to connect to hotspot" forKeyedSubscript:*MEMORY[0x1E696A578]];
       v20 = MEMORY[0x1E696ABC0];
-      v21 = [v14 code];
-      v19 = [v20 errorWithDomain:*MEMORY[0x1E696A798] code:v21 userInfo:v18];
+      code = [v14 code];
+      v19 = [v20 errorWithDomain:*MEMORY[0x1E696A798] code:code userInfo:dictionary];
     }
   }
 
   else
   {
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [v18 setObject:@"CWFAutoJoinManager.connectToHotspotHandler() not configured" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:v18];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"CWFAutoJoinManager.connectToHotspotHandler() not configured" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:6 userInfo:dictionary];
     v13 = 0;
   }
 
   v22 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
   if (v19)
   {
-    v23 = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinErrors];
-    if (v23)
+    autoHotspotJoinErrors = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinErrors];
+    if (autoHotspotJoinErrors)
     {
-      v24 = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinErrors];
-      v25 = [v24 arrayByAddingObject:v19];
+      autoHotspotJoinErrors2 = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinErrors];
+      v25 = [autoHotspotJoinErrors2 arrayByAddingObject:v19];
       [(CWFAutoJoinMetric *)self->_metric setAutoHotspotJoinErrors:v25];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DEC8] arrayWithObject:v19];
-      [(CWFAutoJoinMetric *)self->_metric setAutoHotspotJoinErrors:v24];
+      autoHotspotJoinErrors2 = [MEMORY[0x1E695DEC8] arrayWithObject:v19];
+      [(CWFAutoJoinMetric *)self->_metric setAutoHotspotJoinErrors:autoHotspotJoinErrors2];
     }
   }
 
-  [(CWFAutoJoinMetric *)self->_metric setHotspot:v5, v44, v45];
+  [(CWFAutoJoinMetric *)self->_metric setHotspot:hotspotCopy, v44, v45];
   v26 = CWFGetBootTime();
   v27 = [v26 dateByAddingTimeInterval:v22 / 1000000000.0];
   [(CWFAutoJoinMetric *)self->_metric setAutoHotspotJoinEndedAt:v27];
@@ -15990,11 +15990,11 @@ LABEL_47:
       v32 = "FAILED";
     }
 
-    v33 = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinEndedAt];
-    [v33 timeIntervalSinceReferenceDate];
+    autoHotspotJoinEndedAt = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinEndedAt];
+    [autoHotspotJoinEndedAt timeIntervalSinceReferenceDate];
     v35 = v34;
-    v36 = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinStartedAt];
-    [v36 timeIntervalSinceReferenceDate];
+    autoHotspotJoinStartedAt = [(CWFAutoJoinMetric *)self->_metric autoHotspotJoinStartedAt];
+    [autoHotspotJoinStartedAt timeIntervalSinceReferenceDate];
     v38 = v37;
     v39 = [(CWFAutoJoinManager *)self __descriptionForError:v19];
     v49 = 136446978;
@@ -16004,12 +16004,12 @@ LABEL_47:
     v53 = 2114;
     v54 = v39;
     v55 = 2114;
-    v56 = v5;
+    v56 = hotspotCopy;
     _os_log_send_and_compose_impl();
   }
 
   v40 = v19 == 0;
-  if (!a4)
+  if (!error)
   {
     v40 = 1;
   }
@@ -16017,18 +16017,18 @@ LABEL_47:
   if (!v40)
   {
     v41 = v19;
-    *a4 = v19;
+    *error = v19;
   }
 
   v42 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)__sortHotspotCandidates:(id)a3
+- (void)__sortHotspotCandidates:(id)candidates
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEB0];
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = [v3 sortDescriptorWithKey:0 ascending:1 comparator:&unk_1F5B8ACA0];
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:1 comparator:&unk_1F5B89130];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"networkType" ascending:0];
@@ -16040,12 +16040,12 @@ LABEL_47:
   v12[3] = v8;
   v12[4] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:5];
-  [v4 sortUsingDescriptors:v10];
+  [candidatesCopy sortUsingDescriptors:v10];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)__allowAutoHotspotWithTrigger:(int64_t)a3 error:(id *)a4
+- (int64_t)__allowAutoHotspotWithTrigger:(int64_t)trigger error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v23 = 0;
@@ -16059,13 +16059,13 @@ LABEL_47:
   else
   {
     v22 = 0;
-    v10 = [(CWFAutoJoinManager *)self __calloutToAllowAutoHotspotWithTrigger:a3 error:&v22];
+    v10 = [(CWFAutoJoinManager *)self __calloutToAllowAutoHotspotWithTrigger:trigger error:&v22];
     v11 = v22;
     v12 = v11;
     if ((v10 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -16073,14 +16073,14 @@ LABEL_47:
       goto LABEL_13;
     }
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
-    [v20 setObject:@"Auto-hotspot is not allowed" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"Auto-hotspot is not allowed" forKeyedSubscript:*MEMORY[0x1E696A578]];
     if (v12)
     {
-      [v20 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
 
-    v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v20];
+    v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
 
     v8 = v21;
   }
@@ -16106,13 +16106,13 @@ LABEL_47:
   }
 
   [(CWFAutoJoinMetric *)self->_metric setAutoHotspotWasAborted:1];
-  if (a4)
+  if (error)
   {
 LABEL_13:
     if (v8)
     {
       v17 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -16122,38 +16122,38 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)__allowHotspot:(id)a3 error:(id *)a4
+- (BOOL)__allowHotspot:(id)hotspot error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CWFAutoJoinManager *)self allowHotspotHandler];
+  hotspotCopy = hotspot;
+  allowHotspotHandler = [(CWFAutoJoinManager *)self allowHotspotHandler];
 
-  if (!v7)
+  if (!allowHotspotHandler)
   {
     goto LABEL_4;
   }
 
   v20 = 0;
-  v8 = [(CWFAutoJoinManager *)self __calloutToAllowHotspot:v6 error:&v20];
+  v8 = [(CWFAutoJoinManager *)self __calloutToAllowHotspot:hotspotCopy error:&v20];
   v9 = v20;
   v10 = v9;
   if (v8)
   {
 
-    v7 = 0;
+    allowHotspotHandler = 0;
 LABEL_4:
     v11 = 1;
     goto LABEL_5;
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [v14 setObject:@"Hotspot is not allowed by daemon" forKeyedSubscript:*MEMORY[0x1E696A578]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Hotspot is not allowed by daemon" forKeyedSubscript:*MEMORY[0x1E696A578]];
   if (v10)
   {
-    [v14 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
-  v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v14];
+  allowHotspotHandler = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:dictionary];
 
   v15 = CWFGetOSLog();
   if (v15)
@@ -16169,20 +16169,20 @@ LABEL_4:
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(CWFAutoJoinManager *)self __descriptionForError:v7];
+    v18 = [(CWFAutoJoinManager *)self __descriptionForError:allowHotspotHandler];
     v21 = 138543618;
-    v22 = v6;
+    v22 = hotspotCopy;
     v23 = 2114;
     v24 = v18;
     _os_log_send_and_compose_impl();
   }
 
   v11 = 0;
-  if (a4 && v7)
+  if (error && allowHotspotHandler)
   {
-    v19 = v7;
+    v19 = allowHotspotHandler;
     v11 = 0;
-    *a4 = v7;
+    *error = allowHotspotHandler;
   }
 
 LABEL_5:
@@ -16191,33 +16191,33 @@ LABEL_5:
   return v11;
 }
 
-- (void)__addDependentThrottleInterval:(unint64_t)a3 trigger:(int64_t)a4 dependentTrigger:(int64_t)a5
+- (void)__addDependentThrottleInterval:(unint64_t)interval trigger:(int64_t)trigger dependentTrigger:(int64_t)dependentTrigger
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(CWFAutoJoinThrottle);
-  [(CWFAutoJoinThrottle *)v9 setTrigger:a4];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  [(CWFAutoJoinThrottle *)v9 setTrigger:trigger];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:dependentTrigger];
   v16 = v10;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:interval];
   v17[0] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   [(CWFAutoJoinThrottle *)v9 setIntervalsBasedOnTriggerTimestamp:v12];
 
   throttleIntervalMap = self->_throttleIntervalMap;
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:trigger];
   [(NSMutableDictionary *)throttleIntervalMap setObject:v9 forKeyedSubscript:v14];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__addMatchingThrottleInterval:(unint64_t)a3 triggers:(id)a4
+- (void)__addMatchingThrottleInterval:(unint64_t)interval triggers:(id)triggers
 {
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a4;
+  obj = triggers;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -16233,12 +16233,12 @@ LABEL_5:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
         v21 = v10;
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:interval];
         v22 = v12;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        v14 = [CWFAutoJoinThrottle autoJoinThrottleWithTrigger:v11 intervals:v13];
+        v14 = [CWFAutoJoinThrottle autoJoinThrottleWithTrigger:integerValue intervals:v13];
         [(NSMutableDictionary *)self->_throttleIntervalMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -16251,14 +16251,14 @@ LABEL_5:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__addWilcardThrottleInterval:(unint64_t)a3 triggers:(id)a4
+- (void)__addWilcardThrottleInterval:(unint64_t)interval triggers:(id)triggers
 {
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a4;
+  obj = triggers;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -16274,12 +16274,12 @@ LABEL_5:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
         v21 = &unk_1F5BBC5C8;
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:interval];
         v22 = v12;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        v14 = [CWFAutoJoinThrottle autoJoinThrottleWithTrigger:v11 intervals:v13];
+        v14 = [CWFAutoJoinThrottle autoJoinThrottleWithTrigger:integerValue intervals:v13];
         [(NSMutableDictionary *)self->_throttleIntervalMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -16312,16 +16312,16 @@ LABEL_5:
       [(CWFAutoJoinManager *)self __addWilcardThrottleInterval:-1 triggers:&unk_1F5BB9BC8];
       [(CWFAutoJoinManager *)self __addWilcardThrottleInterval:0 triggers:&unk_1F5BB9BE0];
       v6 = *MEMORY[0x1E69E9840];
-      v7 = self;
+      selfCopy2 = self;
 LABEL_9:
 
-      MEMORY[0x1EEE66B58](v7, sel___addMatchingThrottleInterval_triggers_);
+      MEMORY[0x1EEE66B58](selfCopy2, sel___addMatchingThrottleInterval_triggers_);
       return;
     }
 
 LABEL_8:
     v8 = *MEMORY[0x1E69E9840];
-    v7 = self;
+    selfCopy2 = self;
     goto LABEL_9;
   }
 
@@ -16345,8 +16345,8 @@ LABEL_17:
   [(CWFAutoJoinManager *)self __addWilcardThrottleInterval:0 triggers:&unk_1F5BB9C88];
   if (os_variant_has_internal_content())
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10 = [v9 objectForKey:@"assoc_retry_awdl_rt_throttle_interval"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10 = [standardUserDefaults objectForKey:@"assoc_retry_awdl_rt_throttle_interval"];
 
     if (v10)
     {
@@ -16367,37 +16367,37 @@ LABEL_17:
         v19 = 134218240;
         v20 = 900;
         v21 = 2048;
-        v22 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
         LODWORD(v18) = 22;
         v17 = &v19;
         _os_log_send_and_compose_impl();
       }
 
-      v14 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v14 = 900;
+      unsignedIntegerValue2 = 900;
     }
   }
 
   else
   {
-    v14 = 900;
+    unsignedIntegerValue2 = 900;
   }
 
-  [(CWFAutoJoinManager *)self __addDependentThrottleInterval:v14 trigger:45 dependentTrigger:57, v17, v18];
+  [(CWFAutoJoinManager *)self __addDependentThrottleInterval:unsignedIntegerValue2 trigger:45 dependentTrigger:57, v17, v18];
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)__shouldThrottleAutoJoinTrigger:(int64_t)a3
+- (BOOL)__shouldThrottleAutoJoinTrigger:(int64_t)trigger
 {
   v93 = *MEMORY[0x1E69E9840];
   v65 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
   throttleIntervalMap = self->_throttleIntervalMap;
-  v58 = a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  triggerCopy = trigger;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:trigger];
   v7 = [(NSMutableDictionary *)throttleIntervalMap objectForKeyedSubscript:v6];
 
   if (!v7)
@@ -16409,16 +16409,16 @@ LABEL_17:
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v8 = [v7 intervals];
-  v9 = [v8 allKeys];
+  intervals = [v7 intervals];
+  allKeys = [intervals allKeys];
 
-  v66 = self;
+  selfCopy = self;
   v67 = v7;
-  v59 = [v9 countByEnumeratingWithState:&v81 objects:v92 count:16];
+  v59 = [allKeys countByEnumeratingWithState:&v81 objects:v92 count:16];
   if (v59)
   {
     v10 = *v82;
-    v63 = v9;
+    v63 = allKeys;
     v56 = *v82;
     do
     {
@@ -16427,7 +16427,7 @@ LABEL_17:
       {
         if (*v82 != v10)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v61 = v11;
@@ -16452,12 +16452,12 @@ LABEL_17:
               }
 
               v17 = *(*(&v77 + 1) + 8 * i);
-              v18 = [v12 integerValue];
-              if (v18 == [v17 integerValue])
+              integerValue = [v12 integerValue];
+              if (integerValue == [v17 integerValue])
               {
                 v19 = [(NSMutableDictionary *)self->_throttleTimestampMap objectForKeyedSubscript:v17];
-                v20 = [v7 intervals];
-                v21 = [v20 objectForKeyedSubscript:v12];
+                intervals2 = [v7 intervals];
+                v21 = [intervals2 objectForKeyedSubscript:v12];
 
                 if (v19)
                 {
@@ -16471,20 +16471,20 @@ LABEL_17:
 
                 if (!v22)
                 {
-                  v23 = [v19 unsignedLongLongValue];
-                  v24 = [v21 unsignedLongValue];
+                  unsignedLongLongValue = [v19 unsignedLongLongValue];
+                  unsignedLongValue = [v21 unsignedLongValue];
                   v25 = 1000000000 * [v21 unsignedLongValue];
-                  v26 = [v21 unsignedLongValue];
-                  v27 = 1000000000 * v26;
-                  v28 = v24 > v25;
-                  self = v66;
+                  unsignedLongValue2 = [v21 unsignedLongValue];
+                  v27 = 1000000000 * unsignedLongValue2;
+                  v28 = unsignedLongValue > v25;
+                  self = selfCopy;
                   v7 = v67;
                   if (v28)
                   {
-                    v27 = v26;
+                    v27 = unsignedLongValue2;
                   }
 
-                  if (v65 - v23 < v27)
+                  if (v65 - unsignedLongLongValue < v27)
                   {
                     v48 = CWFGetOSLog();
                     if (v48)
@@ -16498,11 +16498,11 @@ LABEL_17:
                       v51 = MEMORY[0x1E69E9C10];
                     }
 
-                    v30 = v63;
+                    allKeys2 = v63;
 
                     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
                     {
-                      v52 = sub_1E0BCC05C(v58);
+                      v52 = sub_1E0BCC05C(triggerCopy);
                       v87 = 138543618;
                       v88 = v67;
                       v89 = 2114;
@@ -16531,7 +16531,7 @@ LABEL_61:
         }
 
         v11 = v61 + 1;
-        v9 = v63;
+        allKeys = v63;
         v10 = v56;
       }
 
@@ -16546,14 +16546,14 @@ LABEL_61:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v29 = [v7 intervalsBasedOnTriggerTimestamp];
-  v30 = [v29 allKeys];
+  intervalsBasedOnTriggerTimestamp = [v7 intervalsBasedOnTriggerTimestamp];
+  allKeys2 = [intervalsBasedOnTriggerTimestamp allKeys];
 
-  v60 = [v30 countByEnumeratingWithState:&v73 objects:v86 count:16];
+  v60 = [allKeys2 countByEnumeratingWithState:&v73 objects:v86 count:16];
   if (v60)
   {
     v31 = *v74;
-    v64 = v30;
+    v64 = allKeys2;
     v57 = *v74;
     do
     {
@@ -16562,7 +16562,7 @@ LABEL_61:
       {
         if (*v74 != v31)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allKeys2);
         }
 
         v62 = v32;
@@ -16587,12 +16587,12 @@ LABEL_33:
             }
 
             v38 = *(*(&v69 + 1) + 8 * v37);
-            v39 = [v33 integerValue];
-            if (v39 == [v38 integerValue])
+            integerValue2 = [v33 integerValue];
+            if (integerValue2 == [v38 integerValue])
             {
               v19 = [(NSMutableDictionary *)self->_triggerTimestampMap objectForKeyedSubscript:v38];
-              v40 = [v7 intervalsBasedOnTriggerTimestamp];
-              v21 = [v40 objectForKeyedSubscript:v33];
+              intervalsBasedOnTriggerTimestamp2 = [v7 intervalsBasedOnTriggerTimestamp];
+              v21 = [intervalsBasedOnTriggerTimestamp2 objectForKeyedSubscript:v33];
 
               if (v19)
               {
@@ -16606,20 +16606,20 @@ LABEL_33:
 
               if (!v41)
               {
-                v42 = [v19 unsignedLongLongValue];
-                v43 = [v21 unsignedLongValue];
+                unsignedLongLongValue2 = [v19 unsignedLongLongValue];
+                unsignedLongValue3 = [v21 unsignedLongValue];
                 v44 = 1000000000 * [v21 unsignedLongValue];
-                v45 = [v21 unsignedLongValue];
-                v46 = 1000000000 * v45;
-                v28 = v43 > v44;
-                self = v66;
+                unsignedLongValue4 = [v21 unsignedLongValue];
+                v46 = 1000000000 * unsignedLongValue4;
+                v28 = unsignedLongValue3 > v44;
+                self = selfCopy;
                 v7 = v67;
                 if (v28)
                 {
-                  v46 = v45;
+                  v46 = unsignedLongValue4;
                 }
 
-                if (v65 - v42 < v46)
+                if (v65 - unsignedLongLongValue2 < v46)
                 {
                   v50 = CWFGetOSLog();
                   if (v50)
@@ -16633,11 +16633,11 @@ LABEL_33:
                     v53 = MEMORY[0x1E69E9C10];
                   }
 
-                  v30 = v64;
+                  allKeys2 = v64;
 
                   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
                   {
-                    v52 = sub_1E0BCC05C(v58);
+                    v52 = sub_1E0BCC05C(triggerCopy);
                     v87 = 138543618;
                     v88 = v67;
                     v89 = 2114;
@@ -16664,7 +16664,7 @@ LABEL_33:
         }
 
         v32 = v62 + 1;
-        v30 = v64;
+        allKeys2 = v64;
         v31 = v57;
       }
 
@@ -16684,7 +16684,7 @@ LABEL_62:
 
 - (void)__setupRetryIntervals
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc_init(CWFAutoJoinRetryInterval);
   [(CWFAutoJoinRetryInterval *)v4 setBSSChannelsOnly:0];
   [(CWFAutoJoinRetryInterval *)v4 setMaxBSSChannelAge:2592000];
@@ -16723,194 +16723,194 @@ LABEL_62:
   v71 = [v9 copy];
   [v71 setAllowAutoHotspotFallback:1];
   v10 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:0 count:1];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v11 = [v5 autoJoinRetryInterval:20 count:1];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v12 = [v5 autoJoinRetryInterval:120 count:1];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v13 = [v5 autoJoinRetryInterval:240 count:1];
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   v14 = [v5 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v14];
+  [array addObject:v14];
 
-  v15 = [v3 copy];
+  v15 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v15 forKeyedSubscript:&unk_1F5BBC8E0];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v16 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:0 count:1];
-  [v3 addObject:v16];
+  [array addObject:v16];
 
   v17 = 5;
   v18 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:5 count:2];
-  [v3 addObject:v18];
+  [array addObject:v18];
 
   v19 = [v5 autoJoinRetryInterval:10 count:1];
-  [v3 addObject:v19];
+  [array addObject:v19];
 
   v20 = [v5 autoJoinRetryInterval:120 count:1];
-  [v3 addObject:v20];
+  [array addObject:v20];
 
   v21 = [v5 autoJoinRetryInterval:240 count:1];
-  [v3 addObject:v21];
+  [array addObject:v21];
 
   v22 = [v5 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v22];
+  [array addObject:v22];
 
-  v23 = [v3 copy];
+  v23 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v23 forKeyedSubscript:&unk_1F5BBC8F8];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v24 = [v72 autoJoinRetryInterval:0 count:1];
-  [v3 addObject:v24];
+  [array addObject:v24];
 
   v25 = [v9 autoJoinRetryInterval:5 count:2];
-  [v3 addObject:v25];
+  [array addObject:v25];
 
   v26 = [v71 autoJoinRetryInterval:10 count:12];
-  [v3 addObject:v26];
+  [array addObject:v26];
 
   v27 = [v71 autoJoinRetryInterval:20 count:-1];
-  [v3 addObject:v27];
+  [array addObject:v27];
 
-  v28 = [v3 copy];
+  v28 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v28 forKeyedSubscript:&unk_1F5BBC520];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v29 = [(CWFAutoJoinRetryInterval *)v73 autoJoinRetryInterval:120 count:1];
-  [v3 addObject:v29];
+  [array addObject:v29];
 
   v30 = [(CWFAutoJoinRetryInterval *)v73 autoJoinRetryInterval:240 count:1];
-  [v3 addObject:v30];
+  [array addObject:v30];
 
   v31 = [(CWFAutoJoinRetryInterval *)v73 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v31];
+  [array addObject:v31];
 
-  v32 = [v3 copy];
+  v32 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v32 forKeyedSubscript:&unk_1F5BBC6B8];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v33 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:20 count:1];
-  [v3 addObject:v33];
+  [array addObject:v33];
 
   v34 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:60 count:4];
-  [v3 addObject:v34];
+  [array addObject:v34];
 
   v35 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:120 count:1];
-  [v3 addObject:v35];
+  [array addObject:v35];
 
   v36 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:240 count:1];
-  [v3 addObject:v36];
+  [array addObject:v36];
 
   v37 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v37];
+  [array addObject:v37];
 
-  v38 = [v3 copy];
+  v38 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v38 forKeyedSubscript:&unk_1F5BBC910];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v39 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:20 count:1];
-  [v3 addObject:v39];
+  [array addObject:v39];
 
   v40 = [v5 autoJoinRetryInterval:20 count:1];
-  [v3 addObject:v40];
+  [array addObject:v40];
 
   v41 = [v5 autoJoinRetryInterval:120 count:1];
-  [v3 addObject:v41];
+  [array addObject:v41];
 
   v42 = [v5 autoJoinRetryInterval:240 count:1];
-  [v3 addObject:v42];
+  [array addObject:v42];
 
   v43 = [v5 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v43];
+  [array addObject:v43];
 
-  v44 = [v3 copy];
+  v44 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v44 forKeyedSubscript:&unk_1F5BBC730];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   do
   {
     v45 = [(CWFAutoJoinRetryInterval *)v7 autoJoinRetryInterval:0 count:2];
-    [v3 addObject:v45];
+    [array addObject:v45];
 
     v46 = [v8 autoJoinRetryInterval:0 count:2];
-    [v3 addObject:v46];
+    [array addObject:v46];
 
     v47 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:0 count:1];
-    [v3 addObject:v47];
+    [array addObject:v47];
 
     --v17;
   }
 
   while (v17);
-  v48 = [v3 copy];
+  v48 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v48 forKeyedSubscript:&unk_1F5BBC6A0];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v49 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:360 count:1];
-  [v3 addObject:v49];
+  [array addObject:v49];
 
   v50 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:900 count:-1];
-  [v3 addObject:v50];
+  [array addObject:v50];
 
-  v51 = [v3 copy];
+  v51 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v51 forKeyedSubscript:&unk_1F5BBC568];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v52 = [(CWFAutoJoinRetryInterval *)v4 autoJoinRetryInterval:900 count:-1];
-  [v3 addObject:v52];
+  [array addObject:v52];
 
-  v53 = [v3 copy];
+  v53 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v53 forKeyedSubscript:&unk_1F5BBC7C0];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v54 = [v9 autoJoinRetryInterval:0 count:1];
-  [v3 addObject:v54];
+  [array addObject:v54];
 
   v55 = [v9 autoJoinRetryInterval:5 count:2];
-  [v3 addObject:v55];
+  [array addObject:v55];
 
   v56 = [v9 autoJoinRetryInterval:10 count:2];
-  [v3 addObject:v56];
+  [array addObject:v56];
 
   v57 = [v9 autoJoinRetryInterval:20 count:16];
-  [v3 addObject:v57];
+  [array addObject:v57];
 
   v58 = [v9 autoJoinRetryInterval:120 count:1];
-  [v3 addObject:v58];
+  [array addObject:v58];
 
   v59 = [v9 autoJoinRetryInterval:240 count:1];
-  [v3 addObject:v59];
+  [array addObject:v59];
 
   v60 = [v9 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v60];
+  [array addObject:v60];
 
-  v61 = [v3 copy];
+  v61 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v61 forKeyedSubscript:&unk_1F5BBC928];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v62 = [(CWFAutoJoinRetryInterval *)v6 autoJoinRetryInterval:0 count:1];
-  [v3 addObject:v62];
+  [array addObject:v62];
 
   v63 = [v5 autoJoinRetryInterval:5 count:2];
-  [v3 addObject:v63];
+  [array addObject:v63];
 
   v64 = [v5 autoJoinRetryInterval:30 count:5];
-  [v3 addObject:v64];
+  [array addObject:v64];
 
   v65 = [v5 autoJoinRetryInterval:60 count:5];
-  [v3 addObject:v65];
+  [array addObject:v65];
 
   v66 = [v5 autoJoinRetryInterval:480 count:-1];
-  [v3 addObject:v66];
+  [array addObject:v66];
 
-  v67 = [v3 copy];
+  v67 = [array copy];
   [(NSMutableDictionary *)self->_retryIntervalMap setObject:v67 forKeyedSubscript:&unk_1F5BBC940];
 
-  [v3 removeAllObjects];
+  [array removeAllObjects];
   v68 = CWFGetOSLog();
   if (v68)
   {
@@ -16931,7 +16931,7 @@ LABEL_62:
   [(NSMutableDictionary *)self->_retryIntervalMap enumerateKeysAndObjectsUsingBlock:&unk_1F5B8ACC0];
 }
 
-- (id)__retryIntervalWithScheduleIndex:(unint64_t)a3
+- (id)__retryIntervalWithScheduleIndex:(unint64_t)index
 {
   v32 = *MEMORY[0x1E69E9840];
   retrySchedule = self->_retrySchedule;
@@ -16998,7 +16998,7 @@ LABEL_62:
           v15 += [v18 count];
         }
 
-        if (v15 > a3)
+        if (v15 > index)
         {
           v19 = v18;
           goto LABEL_21;
@@ -17025,24 +17025,24 @@ LABEL_21:
 
 - (id)__retryInterval
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFAutoJoinManager *)v2 __retryIntervalWithScheduleIndex:v2->_retryScheduleIndex];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CWFAutoJoinManager *)selfCopy __retryIntervalWithScheduleIndex:selfCopy->_retryScheduleIndex];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (int64_t)__retryTriggerForRetrySchedule:(int64_t)a3
+- (int64_t)__retryTriggerForRetrySchedule:(int64_t)schedule
 {
-  if ((a3 - 2) > 9)
+  if ((schedule - 2) > 9)
   {
     return 4;
   }
 
   else
   {
-    return qword_1E0D81B18[a3 - 2];
+    return qword_1E0D81B18[schedule - 2];
   }
 }
 
@@ -17073,17 +17073,17 @@ LABEL_21:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 interval];
+      interval = [v7 interval];
       v10 = 1000000000 * [v8 interval];
-      v11 = [v8 interval];
-      if (v9 <= v10)
+      interval2 = [v8 interval];
+      if (interval <= v10)
       {
-        v12 = 1000000000 * v11;
+        v12 = 1000000000 * interval2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = interval2;
       }
 
       if ([(CWFAutoJoinManager *)self __applyRetryIntervalSkew:v12]> 0x7FFFFFFFFFFFFFFELL)
@@ -17093,17 +17093,17 @@ LABEL_21:
 
       else
       {
-        v13 = [v8 interval];
+        interval3 = [v8 interval];
         v14 = 1000000000 * [v8 interval];
-        v15 = [v8 interval];
-        if (v13 <= v14)
+        interval4 = [v8 interval];
+        if (interval3 <= v14)
         {
-          v16 = 1000000000 * v15;
+          v16 = 1000000000 * interval4;
         }
 
         else
         {
-          v16 = v15;
+          v16 = interval4;
         }
 
         v17 = [(CWFAutoJoinManager *)self __applyRetryIntervalSkew:v16];
@@ -17220,7 +17220,7 @@ LABEL_33:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)__calloutToAllowAutoJoinWithTrigger:(int64_t)a3 error:(id *)a4
+- (BOOL)__calloutToAllowAutoJoinWithTrigger:(int64_t)trigger error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -17276,19 +17276,19 @@ LABEL_33:
   v22 = &v34;
   v23 = &v28;
   v24 = v26;
-  v25 = a3;
+  triggerCopy = trigger;
   v14 = v7;
   v21 = v14;
   v15 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v13, 0, block);
   dispatch_async(targetQueue, v15);
 
   dispatch_block_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v16 = v29[5];
     if (v16)
     {
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -17302,12 +17302,12 @@ LABEL_33:
   return v17 & 1;
 }
 
-- (BOOL)__calloutToAllowKnownNetwork:(id)a3 trigger:(int64_t)a4 allowForSeamlessSSIDTransition:(id)a5 defer:(BOOL *)a6 queue:(id)a7 error:(id *)a8
+- (BOOL)__calloutToAllowKnownNetwork:(id)network trigger:(int64_t)trigger allowForSeamlessSSIDTransition:(id)transition defer:(BOOL *)defer queue:(id)queue error:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  networkCopy = network;
+  transitionCopy = transition;
+  queueCopy = queue;
   v58 = 0;
   v59 = &v58;
   v60 = 0x2020000000;
@@ -17322,8 +17322,8 @@ LABEL_33:
   v51 = sub_1E0BC2D60;
   v52 = sub_1E0BC61EC;
   v53 = 0;
-  v15 = [v12 copy];
-  if (v14)
+  v15 = [networkCopy copy];
+  if (queueCopy)
   {
     v46[0] = 0;
     v46[1] = v46;
@@ -17365,16 +17365,16 @@ LABEL_33:
     block[3] = &unk_1E86E7920;
     block[4] = self;
     v38 = v15;
-    v45 = a4;
+    triggerCopy = trigger;
     v41 = &v58;
     v42 = &v54;
     v43 = &v48;
     v44 = v46;
-    v39 = v13;
+    v39 = transitionCopy;
     v40 = v16;
     v24 = v16;
     v25 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v23, 0, block);
-    dispatch_async(v14, v25);
+    dispatch_async(queueCopy, v25);
 
     dispatch_block_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
     _Block_object_dispose(v46, 8);
@@ -17382,11 +17382,11 @@ LABEL_33:
 
   else
   {
-    v20 = [(CWFAutoJoinManager *)self allowKnownNetworkHandler];
+    allowKnownNetworkHandler = [(CWFAutoJoinManager *)self allowKnownNetworkHandler];
 
-    if (v20)
+    if (allowKnownNetworkHandler)
     {
-      v21 = [(CWFAutoJoinManager *)self allowKnownNetworkHandler];
+      allowKnownNetworkHandler2 = [(CWFAutoJoinManager *)self allowKnownNetworkHandler];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = sub_1E0C8D660;
@@ -17394,7 +17394,7 @@ LABEL_33:
       v36[4] = &v58;
       v36[5] = &v54;
       v36[6] = &v48;
-      (v21)[2](v21, v15, a4, v13, v36);
+      (allowKnownNetworkHandler2)[2](allowKnownNetworkHandler2, v15, trigger, transitionCopy, v36);
     }
 
     else
@@ -17409,17 +17409,17 @@ LABEL_33:
     }
   }
 
-  if (a6 && (v55[3] & 1) != 0)
+  if (defer && (v55[3] & 1) != 0)
   {
-    *a6 = 1;
+    *defer = 1;
   }
 
-  if (a8)
+  if (error)
   {
     v26 = v49[5];
     if (v26)
     {
-      *a8 = v26;
+      *error = v26;
     }
   }
 
@@ -17433,10 +17433,10 @@ LABEL_33:
   return v27 & 1;
 }
 
-- (id)__calloutToScanForNetworksWithParameters:(id)a3 scanChannels:(id *)a4 error:(id *)a5
+- (id)__calloutToScanForNetworksWithParameters:(id)parameters scanChannels:(id *)channels error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  parametersCopy = parameters;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -17497,7 +17497,7 @@ LABEL_33:
   block[2] = sub_1E0C8DAD8;
   block[3] = &unk_1E86E7998;
   block[4] = self;
-  v16 = v8;
+  v16 = parametersCopy;
   v27 = v16;
   v29 = &v47;
   v30 = &v41;
@@ -17509,21 +17509,21 @@ LABEL_33:
   dispatch_async(targetQueue, v18);
 
   dispatch_block_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (channels)
   {
     v19 = v42[5];
     if (v19)
     {
-      *a4 = v19;
+      *channels = v19;
     }
   }
 
-  if (a5)
+  if (error)
   {
     v20 = v36[5];
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -17545,10 +17545,10 @@ LABEL_33:
   return v21;
 }
 
-- (id)__calloutToPerformGASQueryWithParameters:(id)a3 GASQueryNetworks:(id *)a4 error:(id *)a5
+- (id)__calloutToPerformGASQueryWithParameters:(id)parameters GASQueryNetworks:(id *)networks error:(id *)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  parametersCopy = parameters;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -17607,7 +17607,7 @@ LABEL_33:
   block[2] = sub_1E0C8E2E0;
   block[3] = &unk_1E86E7998;
   block[4] = self;
-  v16 = v8;
+  v16 = parametersCopy;
   v25 = v16;
   v27 = &v45;
   v28 = &v39;
@@ -17619,21 +17619,21 @@ LABEL_33:
   dispatch_async(targetQueue, v18);
 
   dispatch_block_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (networks)
   {
     v19 = v40[5];
     if (v19)
     {
-      *a4 = v19;
+      *networks = v19;
     }
   }
 
-  if (a5)
+  if (error)
   {
     v20 = v34[5];
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -17650,10 +17650,10 @@ LABEL_33:
   return v21;
 }
 
-- (BOOL)__calloutToAllowJoinCandidate:(id)a3 trigger:(int64_t)a4 defer:(BOOL *)a5 error:(id *)a6
+- (BOOL)__calloutToAllowJoinCandidate:(id)candidate trigger:(int64_t)trigger defer:(BOOL *)defer error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  candidateCopy = candidate;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -17668,7 +17668,7 @@ LABEL_33:
   v39 = sub_1E0BC2D60;
   v40 = sub_1E0BC61EC;
   v41 = 0;
-  v11 = [v10 copy];
+  v11 = [candidateCopy copy];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
@@ -17715,24 +17715,24 @@ LABEL_33:
   v30 = &v42;
   v31 = &v36;
   v32 = v34;
-  v33 = a4;
+  triggerCopy = trigger;
   v20 = v12;
   v28 = v20;
   v21 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v18, 0, block);
   dispatch_async(targetQueue, v21);
 
   dispatch_block_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5 && (v43[3] & 1) != 0)
+  if (defer && (v43[3] & 1) != 0)
   {
-    *a5 = 1;
+    *defer = 1;
   }
 
-  if (a6)
+  if (error)
   {
     v22 = v37[5];
     if (v22)
     {
-      *a6 = v22;
+      *error = v22;
     }
   }
 
@@ -17748,10 +17748,10 @@ LABEL_33:
   return v23 & 1;
 }
 
-- (BOOL)__calloutToAssociateWithParameters:(id)a3 error:(id *)a4
+- (BOOL)__calloutToAssociateWithParameters:(id)parameters error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  parametersCopy = parameters;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -17798,7 +17798,7 @@ LABEL_33:
   block[2] = sub_1E0C8F18C;
   block[3] = &unk_1E86E7A10;
   block[4] = self;
-  v14 = v6;
+  v14 = parametersCopy;
   v22 = v14;
   v24 = &v28;
   v25 = v26;
@@ -17809,9 +17809,9 @@ LABEL_33:
 
   dispatch_block_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   v17 = v29[5];
-  if (a4 && v17)
+  if (error && v17)
   {
-    *a4 = v17;
+    *error = v17;
     v17 = v29[5];
   }
 
@@ -17824,7 +17824,7 @@ LABEL_33:
   return v18;
 }
 
-- (int64_t)__calloutToAllowAutoHotspotWithTrigger:(int64_t)a3 error:(id *)a4
+- (int64_t)__calloutToAllowAutoHotspotWithTrigger:(int64_t)trigger error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -17880,19 +17880,19 @@ LABEL_33:
   v22 = &v34;
   v23 = &v28;
   v24 = v26;
-  v25 = a3;
+  triggerCopy = trigger;
   v14 = v7;
   v21 = v14;
   v15 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v13, 0, block);
   dispatch_async(targetQueue, v15);
 
   dispatch_block_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v16 = v29[5];
     if (v16)
     {
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -17906,10 +17906,10 @@ LABEL_33:
   return v17;
 }
 
-- (BOOL)__calloutToAllowHotspot:(id)a3 error:(id *)a4
+- (BOOL)__calloutToAllowHotspot:(id)hotspot error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  hotspotCopy = hotspot;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -17960,7 +17960,7 @@ LABEL_33:
   block[2] = sub_1E0C8FF4C;
   block[3] = &unk_1E86E7A60;
   block[4] = self;
-  v14 = v6;
+  v14 = hotspotCopy;
   v22 = v14;
   v24 = &v35;
   v25 = &v29;
@@ -17971,12 +17971,12 @@ LABEL_33:
   dispatch_async(targetQueue, v16);
 
   dispatch_block_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v17 = v30[5];
     if (v17)
     {
-      *a4 = v17;
+      *error = v17;
     }
   }
 
@@ -17990,10 +17990,10 @@ LABEL_33:
   return v18 & 1;
 }
 
-- (void)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)a3 maxCacheAge:(unint64_t)a4 cacheOnly:(BOOL)a5 reply:(id)a6
+- (void)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)timeout maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  replyCopy = reply;
   v11 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v12 = CWFGetOSLog();
   if (v12)
@@ -18028,19 +18028,19 @@ LABEL_33:
   block[1] = 3221225472;
   block[2] = sub_1E0C90504;
   block[3] = &unk_1E86E7AB0;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
+  timeoutCopy = timeout;
+  ageCopy = age;
+  onlyCopy = only;
   block[4] = self;
-  v21 = v10;
-  v17 = v10;
+  v21 = replyCopy;
+  v17 = replyCopy;
   v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v16, 0, block);
   dispatch_async(targetQueue, v18);
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)__calloutToAllowBrokenBackhaulPersonalHotspotFallbackAndReturnError:(id *)a3
+- (BOOL)__calloutToAllowBrokenBackhaulPersonalHotspotFallbackAndReturnError:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v31 = 0;
@@ -18102,12 +18102,12 @@ LABEL_33:
   dispatch_async(targetQueue, v13);
 
   dispatch_block_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
     v14 = v26[5];
     if (v14)
     {
-      *a3 = v14;
+      *error = v14;
     }
   }
 
@@ -18121,10 +18121,10 @@ LABEL_33:
   return v15 & 1;
 }
 
-- (void)__calloutToCheckForBrokenBackhaulAndReply:(id)a3
+- (void)__calloutToCheckForBrokenBackhaulAndReply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v6 = CWFGetOSLog();
   if (v6)
@@ -18160,15 +18160,15 @@ LABEL_33:
   block[2] = sub_1E0C910D8;
   block[3] = &unk_1E86E64C0;
   block[4] = self;
-  v15 = v4;
-  v11 = v4;
+  v15 = replyCopy;
+  v11 = replyCopy;
   v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v10, 0, block);
   dispatch_async(targetQueue, v12);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)a3 maxCacheAge:(unint64_t)a4 cacheOnly:(BOOL)a5 error:(id *)a6
+- (id)__calloutToBrowseForHotspotsWithTimeout:(unint64_t)timeout maxCacheAge:(unint64_t)age cacheOnly:(BOOL)only error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
   v40 = 0;
@@ -18222,9 +18222,9 @@ LABEL_33:
   block[1] = 3221225472;
   block[2] = sub_1E0C91770;
   block[3] = &unk_1E86E7B78;
-  v29 = a3;
-  v30 = a4;
-  v31 = a5;
+  timeoutCopy = timeout;
+  ageCopy = age;
+  onlyCopy = only;
   block[4] = self;
   v26 = &v40;
   v27 = &v34;
@@ -18235,12 +18235,12 @@ LABEL_33:
   dispatch_async(targetQueue, v19);
 
   dispatch_block_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-  if (a6)
+  if (error)
   {
     v20 = v35[5];
     if (v20)
     {
-      *a6 = v20;
+      *error = v20;
     }
   }
 
@@ -18255,10 +18255,10 @@ LABEL_33:
   return v21;
 }
 
-- (BOOL)__calloutToConnectToHotspot:(id)a3 error:(id *)a4
+- (BOOL)__calloutToConnectToHotspot:(id)hotspot error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  hotspotCopy = hotspot;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -18305,7 +18305,7 @@ LABEL_33:
   block[2] = sub_1E0C91E64;
   block[3] = &unk_1E86E7A10;
   block[4] = self;
-  v14 = v6;
+  v14 = hotspotCopy;
   v22 = v14;
   v24 = &v28;
   v25 = v26;
@@ -18316,9 +18316,9 @@ LABEL_33:
 
   dispatch_block_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   v17 = v29[5];
-  if (a4 && v17)
+  if (error && v17)
   {
-    *a4 = v17;
+    *error = v17;
     v17 = v29[5];
   }
 

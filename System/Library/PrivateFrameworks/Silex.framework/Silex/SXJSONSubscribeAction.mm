@@ -1,35 +1,35 @@
 @interface SXJSONSubscribeAction
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
 @end
 
 @implementation SXJSONSubscribeAction
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"inAppPurchaseIdKey"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"inAppPurchaseIdKey"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = objc_opt_class();
   }
 
   else
   {
-    if ([v6 isEqualToString:@"postPurchaseAction"])
+    if ([propertyCopy isEqualToString:@"postPurchaseAction"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v7 objectForKey:@"type"];
+        v9 = [valueCopy objectForKey:@"type"];
         v10 = [SXClassFactory classForBaseClass:objc_opt_class() type:v9];
 
         goto LABEL_9;
       }
     }
 
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___SXJSONSubscribeAction;
-    v8 = objc_msgSendSuper2(&v12, sel_classForProtocolProperty_withValue_, v6, v7);
+    v8 = objc_msgSendSuper2(&v12, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
   }
 
   v10 = v8;

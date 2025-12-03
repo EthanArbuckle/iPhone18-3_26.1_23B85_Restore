@@ -1,15 +1,15 @@
 @interface FPArchiveTemporaryFolder
-- (FPArchiveTemporaryFolder)initWithURL:(id)a3;
-- (id)temporaryFolderURLGetError:(id *)a3;
+- (FPArchiveTemporaryFolder)initWithURL:(id)l;
+- (id)temporaryFolderURLGetError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation FPArchiveTemporaryFolder
 
-- (FPArchiveTemporaryFolder)initWithURL:(id)a3
+- (FPArchiveTemporaryFolder)initWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     [FPArchiveTemporaryFolder initWithURL:];
   }
@@ -20,32 +20,32 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
 }
 
-- (id)temporaryFolderURLGetError:(id *)a3
+- (id)temporaryFolderURLGetError:(id *)error
 {
   temporaryFolderURL = self->_temporaryFolderURL;
   if (!temporaryFolderURL)
   {
-    v6 = [(NSURL *)self->_url startAccessingSecurityScopedResource];
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:self->_url create:1 error:a3];
+    startAccessingSecurityScopedResource = [(NSURL *)self->_url startAccessingSecurityScopedResource];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:self->_url create:1 error:error];
     v9 = self->_temporaryFolderURL;
     self->_temporaryFolderURL = v8;
 
     temporaryFolderURL = self->_temporaryFolderURL;
-    if (!temporaryFolderURL && v6)
+    if (!temporaryFolderURL && startAccessingSecurityScopedResource)
     {
       [(NSURL *)self->_url stopAccessingSecurityScopedResource];
       v10 = 0;
       goto LABEL_7;
     }
 
-    self->_didStartAccessing = v6;
+    self->_didStartAccessing = startAccessingSecurityScopedResource;
   }
 
   v10 = temporaryFolderURL;

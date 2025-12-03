@@ -7,38 +7,38 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
   {
     v5 = [(NTKModularTemplateViewAccessibility *)self safeValueForKey:@"complicationTemplate"];
-    v4 = [v5 accessibilityLabel];
+    accessibilityUserDefinedLabel2 = [v5 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedValue];
+  accessibilityUserDefinedValue = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedValue];
 
-  if (v3)
+  if (accessibilityUserDefinedValue)
   {
-    v4 = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue2 = [(NTKModularTemplateViewAccessibility *)self accessibilityUserDefinedValue];
   }
 
   else
   {
     v5 = [(NTKModularTemplateViewAccessibility *)self safeValueForKey:@"complicationTemplate"];
-    v4 = [v5 accessibilityValue];
+    accessibilityUserDefinedValue2 = [v5 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityUserDefinedValue2;
 }
 
 @end

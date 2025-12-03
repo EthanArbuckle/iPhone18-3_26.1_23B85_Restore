@@ -1,22 +1,22 @@
 @interface NTKCGalleryCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axLabelCollectionViewCell:(id)a3 atIndexPath:(id)a4;
+- (void)_axLabelCollectionViewCell:(id)cell atIndexPath:(id)path;
 - (void)_axMarkHeader;
 @end
 
 @implementation NTKCGalleryCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKCGalleryCollectionCell"];
-  [v3 validateClass:@"_NTKCGalleryCollectionCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
-  [v3 validateClass:@"NTKCGalleryCell" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
-  [v3 validateClass:@"NTKCGalleryCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCGalleryCell" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKCGalleryCollectionCell"];
+  [validationsCopy validateClass:@"_NTKCGalleryCollectionCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NTKCGalleryCell" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
+  [validationsCopy validateClass:@"NTKCGalleryCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCGalleryCell" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 - (void)_axMarkHeader
@@ -40,8 +40,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  visibleCells = [v4 visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -52,7 +52,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -60,7 +60,7 @@
         [(NTKCGalleryCellAccessibility *)self _axLabelCollectionViewCell:v10 atIndexPath:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v7);
@@ -77,43 +77,43 @@
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = NTKCGalleryCellAccessibility;
-  v6 = a4;
-  v7 = [(NTKCGalleryCellAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(NTKCGalleryCellAccessibility *)self _axLabelCollectionViewCell:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(NTKCGalleryCellAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(NTKCGalleryCellAccessibility *)self _axLabelCollectionViewCell:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }
 
-- (void)_axLabelCollectionViewCell:(id)a3 atIndexPath:(id)a4
+- (void)_axLabelCollectionViewCell:(id)cell atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
-  v7 = [v5 safeValueForKey:@"_nameLabel"];
+  v7 = [cellCopy safeValueForKey:@"_nameLabel"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 text];
-  if (![v9 length])
+  text = [v8 text];
+  if (![text length])
   {
 
     goto LABEL_5;
   }
 
-  v10 = [v8 isHidden];
+  isHidden = [v8 isHidden];
 
-  if (v10)
+  if (isHidden)
   {
 LABEL_5:
-    [v5 setAccessibilityLabel:0];
+    [cellCopy setAccessibilityLabel:0];
     goto LABEL_6;
   }
 
-  v11 = [v8 accessibilityLabel];
-  [v5 setAccessibilityLabel:v11];
+  accessibilityLabel = [v8 accessibilityLabel];
+  [cellCopy setAccessibilityLabel:accessibilityLabel];
 
 LABEL_6:
 }

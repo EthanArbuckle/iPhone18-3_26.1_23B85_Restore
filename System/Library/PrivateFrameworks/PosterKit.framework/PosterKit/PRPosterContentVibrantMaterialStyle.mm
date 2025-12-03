@@ -1,36 +1,36 @@
 @interface PRPosterContentVibrantMaterialStyle
-+ (void)performClassReplacementForKeyedUnarchiver:(id)a3;
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4;
++ (void)performClassReplacementForKeyedUnarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation;
 - (NSString)nonVariatedIdentifier;
-- (PRPosterContentVibrantMaterialStyle)initWithCoder:(id)a3;
-- (PRPosterContentVibrantMaterialStyle)initWithPreferredMaterialType:(unint64_t)a3;
-- (id)copyWithPreferredMaterial:(unint64_t)a3;
+- (PRPosterContentVibrantMaterialStyle)initWithCoder:(id)coder;
+- (PRPosterContentVibrantMaterialStyle)initWithPreferredMaterialType:(unint64_t)type;
+- (id)copyWithPreferredMaterial:(unint64_t)material;
 - (unint64_t)hash;
-- (void)applyStyleWithRenderer:(id)a3;
+- (void)applyStyleWithRenderer:(id)renderer;
 @end
 
 @implementation PRPosterContentVibrantMaterialStyle
 
-- (PRPosterContentVibrantMaterialStyle)initWithPreferredMaterialType:(unint64_t)a3
+- (PRPosterContentVibrantMaterialStyle)initWithPreferredMaterialType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PRPosterContentVibrantMaterialStyle;
   result = [(PRPosterContentVibrantMaterialStyle *)&v5 init];
   if (result)
   {
-    result->_preferredMaterialType = a3;
+    result->_preferredMaterialType = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     v7 = v6;
     if (v6 && self->_preferredMaterialType == *(v6 + 1))
     {
@@ -62,38 +62,38 @@
 
 - (NSString)nonVariatedIdentifier
 {
-  v2 = [(PRPosterContentVibrantMaterialStyle *)self type];
+  type = [(PRPosterContentVibrantMaterialStyle *)self type];
 
-  return _PRPosterContentStyleStringForType(v2);
+  return _PRPosterContentStyleStringForType(type);
 }
 
-- (void)applyStyleWithRenderer:(id)a3
+- (void)applyStyleWithRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 renderVibrantMaterialStyle:self];
+    [rendererCopy renderVibrantMaterialStyle:self];
   }
 }
 
-- (id)copyWithPreferredMaterial:(unint64_t)a3
+- (id)copyWithPreferredMaterial:(unint64_t)material
 {
   v4 = objc_alloc(objc_opt_class());
 
-  return [v4 initWithPreferredMaterialType:a3];
+  return [v4 initWithPreferredMaterialType:material];
 }
 
-- (PRPosterContentVibrantMaterialStyle)initWithCoder:(id)a3
+- (PRPosterContentVibrantMaterialStyle)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:*MEMORY[0x1E69C54B8]];
+  v4 = [coder decodeIntegerForKey:*MEMORY[0x1E69C54B8]];
 
   return [(PRPosterContentVibrantMaterialStyle *)self initWithPreferredMaterialType:v4];
 }
 
-+ (void)performClassReplacementForKeyedUnarchiver:(id)a3
++ (void)performClassReplacementForKeyedUnarchiver:(id)unarchiver
 {
   sub_1A8BDDB84();
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   sub_1A8BDDB74();
 }
 

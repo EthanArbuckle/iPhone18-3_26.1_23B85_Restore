@@ -1,26 +1,26 @@
 @interface MUPDFContentViewController
-- (BOOL)PDFView:(id)a3 shouldHandleLink:(id)a4;
-- (BOOL)_pageLabelExistAtPoint:(CGPoint)a3;
-- (BOOL)_thumbnailViewExistAtPoint:(CGPoint)a3;
+- (BOOL)PDFView:(id)view shouldHandleLink:(id)link;
+- (BOOL)_pageLabelExistAtPoint:(CGPoint)point;
+- (BOOL)_thumbnailViewExistAtPoint:(CGPoint)point;
 - (BOOL)_updateCachedThumbnailViewInsetsDidChangeLeftOrRight;
-- (BOOL)acceptSingleTouch:(id)a3;
+- (BOOL)acceptSingleTouch:(id)touch;
 - (BOOL)allowsThumbnailViewPageReordering;
 - (BOOL)canEditContent;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canShowPageViewLabel;
-- (BOOL)documentCanBeEdited:(id)a3;
-- (BOOL)isTouchInThumbnailView:(id)a3;
-- (BOOL)shouldShowAnnotationsOfType:(id)a3;
-- (CGAffineTransform)_compensatingAffineTransformForPage:(SEL)a3;
+- (BOOL)documentCanBeEdited:(id)edited;
+- (BOOL)isTouchInThumbnailView:(id)view;
+- (BOOL)shouldShowAnnotationsOfType:(id)type;
+- (CGAffineTransform)_compensatingAffineTransformForPage:(SEL)page;
 - (CGPoint)viewTransitionPointOnPageToCenter;
 - (CGRect)visibleContentRect;
-- (CGRect)visibleContentRectInCoordinateSpace:(id)a3;
-- (CGSize)_medianSizeForCurrentDocumentInPDFViewWithGetter:(id)a3;
+- (CGRect)visibleContentRectInCoordinateSpace:(id)space;
+- (CGSize)_medianSizeForCurrentDocumentInPDFViewWithGetter:(id)getter;
 - (CGSize)_thumbnailViewCellSize;
 - (CGSize)contentSize;
-- (CGSize)idealContentSizeForScreenSize:(CGSize)a3 windowDecorationSize:(CGSize)a4;
-- (MUPDFContentViewController)initWithNibName:(id)a3 bundle:(id)a4 delegate:(id)a5;
-- (MUPDFContentViewController)initWithPDFDocument:(id)a3 delegate:(id)a4;
+- (CGSize)idealContentSizeForScreenSize:(CGSize)size windowDecorationSize:(CGSize)decorationSize;
+- (MUPDFContentViewController)initWithNibName:(id)name bundle:(id)bundle delegate:(id)delegate;
+- (MUPDFContentViewController)initWithPDFDocument:(id)document delegate:(id)delegate;
 - (NSString)documentUnlockedWithPassword;
 - (PDFPage)viewTransitionPageToCenter;
 - (UIEdgeInsets)cachedThumnailViewInsets;
@@ -28,10 +28,10 @@
 - (UIScrollView)contentViewScrollView;
 - (double)_thumbnailViewWidth;
 - (id)contentSnapshot;
-- (id)controller:(id)a3 willSetToolbarItems:(id)a4;
-- (id)menuElementsForPage:(id)a3;
+- (id)controller:(id)controller willSetToolbarItems:(id)items;
+- (id)menuElementsForPage:(id)page;
 - (unint64_t)pageCount;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
 - (void)_createPDFView;
 - (void)_prepareToRotate;
 - (void)_recoverFromRotation;
@@ -39,72 +39,72 @@
 - (void)_teardownPDFViewIfNecessary;
 - (void)_updateMinMaxZoomFactor;
 - (void)_updatePDFViewDisplayMode;
-- (void)_updatePageNumberOverlayToPage:(unint64_t)a3 animate:(BOOL)a4;
+- (void)_updatePageNumberOverlayToPage:(unint64_t)page animate:(BOOL)animate;
 - (void)_updateThumbnailView;
 - (void)_updateThumbnailViewAppearance;
 - (void)_updateThumbnailViewHolderBackgroundColor;
 - (void)_updateThumbnailViewHolderConstraints;
 - (void)_updateThumbnailViewHolderVisibility;
-- (void)_userChangedScrollViewMagnificationNotification:(id)a3;
-- (void)annotationController:(id)a3 detectedEditOfType:(unint64_t)a4;
-- (void)controllerWillDismissSignatureCaptureView:(id)a3;
-- (void)controllerWillDismissSignatureManagerView:(id)a3;
-- (void)controllerWillShowSignatureCaptureView:(id)a3;
-- (void)controllerWillShowSignatureManagerView:(id)a3;
+- (void)_userChangedScrollViewMagnificationNotification:(id)notification;
+- (void)annotationController:(id)controller detectedEditOfType:(unint64_t)type;
+- (void)controllerWillDismissSignatureCaptureView:(id)view;
+- (void)controllerWillDismissSignatureManagerView:(id)view;
+- (void)controllerWillShowSignatureCaptureView:(id)view;
+- (void)controllerWillShowSignatureManagerView:(id)view;
 - (void)dealloc;
-- (void)edgeSwipeGestureRecognized:(id)a3;
-- (void)editCheckpointReachedForAnnotationController:(id)a3;
-- (void)find:(id)a3;
-- (void)findNext:(id)a3;
-- (void)findPrevious:(id)a3;
-- (void)highlight:(id)a3;
-- (void)loadContentWithCompletionBlock:(id)a3;
-- (void)pageLabelViewTapped:(id)a3;
-- (void)pdfDocumentDidUnlock:(id)a3;
-- (void)pdfScrollViewWillBeginDragging:(id)a3;
-- (void)pdfViewDidChangeCurrentPage:(id)a3;
-- (void)penStrokeCompletedForAnnotationController:(id)a3;
-- (void)positionSketchOverlay:(id)a3 forAnnotationController:(id)a4;
+- (void)edgeSwipeGestureRecognized:(id)recognized;
+- (void)editCheckpointReachedForAnnotationController:(id)controller;
+- (void)find:(id)find;
+- (void)findNext:(id)next;
+- (void)findPrevious:(id)previous;
+- (void)highlight:(id)highlight;
+- (void)loadContentWithCompletionBlock:(id)block;
+- (void)pageLabelViewTapped:(id)tapped;
+- (void)pdfDocumentDidUnlock:(id)unlock;
+- (void)pdfScrollViewWillBeginDragging:(id)dragging;
+- (void)pdfViewDidChangeCurrentPage:(id)page;
+- (void)penStrokeCompletedForAnnotationController:(id)controller;
+- (void)positionSketchOverlay:(id)overlay forAnnotationController:(id)controller;
 - (void)removeThumbnailViewHolderConstraints;
-- (void)setAllowsThumbnailViewPageReordering:(BOOL)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setFixedThumbnailView:(BOOL)a3;
-- (void)setForcesPDFViewTopAlignment:(BOOL)a3;
-- (void)setInkStyle:(unint64_t)a3;
-- (void)setNavigationModeHorizontal:(BOOL)a3;
-- (void)setShowsThumbnailView:(BOOL)a3;
-- (void)setThumbnailViewStyle:(int64_t)a3;
+- (void)setAllowsThumbnailViewPageReordering:(BOOL)reordering;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setFixedThumbnailView:(BOOL)view;
+- (void)setForcesPDFViewTopAlignment:(BOOL)alignment;
+- (void)setInkStyle:(unint64_t)style;
+- (void)setNavigationModeHorizontal:(BOOL)horizontal;
+- (void)setShowsThumbnailView:(BOOL)view;
+- (void)setThumbnailViewStyle:(int64_t)style;
 - (void)setup;
 - (void)teardown;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MUPDFContentViewController
 
-- (MUPDFContentViewController)initWithNibName:(id)a3 bundle:(id)a4 delegate:(id)a5
+- (MUPDFContentViewController)initWithNibName:(id)name bundle:(id)bundle delegate:(id)delegate
 {
   v6 = MEMORY[0x277CD93D0];
-  v7 = a5;
+  delegateCopy = delegate;
   v8 = objc_alloc_init(v6);
-  v9 = [(MUPDFContentViewController *)self initWithPDFDocument:v8 delegate:v7];
+  v9 = [(MUPDFContentViewController *)self initWithPDFDocument:v8 delegate:delegateCopy];
 
   return v9;
 }
 
-- (MUPDFContentViewController)initWithPDFDocument:(id)a3 delegate:(id)a4
+- (MUPDFContentViewController)initWithPDFDocument:(id)document delegate:(id)delegate
 {
-  v7 = a3;
+  documentCopy = document;
   v11.receiver = self;
   v11.super_class = MUPDFContentViewController;
-  v8 = [(MUContentViewController *)&v11 initWithNibName:0 bundle:0 delegate:a4];
+  v8 = [(MUContentViewController *)&v11 initWithNibName:0 bundle:0 delegate:delegate];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pdfDocument, a3);
+    objc_storeStrong(&v8->_pdfDocument, document);
     [(PDFDocument *)v9->_pdfDocument setDelegate:v9];
     [(PDFDocument *)v9->_pdfDocument setPDFAKControllerDelegate:v9];
     v9->_thumbnailViewStyle = 0;
@@ -116,35 +116,35 @@
 
 - (BOOL)allowsThumbnailViewPageReordering
 {
-  v2 = [(MUPDFContentViewController *)self thumbnailView];
-  v3 = v2;
-  if (v2)
+  thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+  v3 = thumbnailView;
+  if (thumbnailView)
   {
-    v4 = [v2 allowsPageReordering];
+    allowsPageReordering = [thumbnailView allowsPageReordering];
   }
 
   else
   {
-    v4 = 0;
+    allowsPageReordering = 0;
   }
 
-  return v4;
+  return allowsPageReordering;
 }
 
-- (void)setAllowsThumbnailViewPageReordering:(BOOL)a3
+- (void)setAllowsThumbnailViewPageReordering:(BOOL)reordering
 {
-  v3 = a3;
-  self->_allowsThumbnailViewPageReordering = a3;
-  v4 = [(MUPDFContentViewController *)self thumbnailView];
-  [v4 setAllowsPageReordering:v3];
+  reorderingCopy = reordering;
+  self->_allowsThumbnailViewPageReordering = reordering;
+  thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+  [thumbnailView setAllowsPageReordering:reorderingCopy];
 }
 
-- (void)setInkStyle:(unint64_t)a3
+- (void)setInkStyle:(unint64_t)style
 {
-  self->_inkStyle = a3;
-  v3 = a3 == 0;
-  v4 = [(MUContentViewController *)self annotationController];
-  [v4 setUseHighVisibilityDefaultInks:v3];
+  self->_inkStyle = style;
+  v3 = style == 0;
+  annotationController = [(MUContentViewController *)self annotationController];
+  [annotationController setUseHighVisibilityDefaultInks:v3];
 }
 
 - (void)dealloc
@@ -160,9 +160,9 @@
   v5.receiver = self;
   v5.super_class = MUPDFContentViewController;
   [(MUPDFContentViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] darkGrayColor];
-  v4 = [(MUPDFContentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+  view = [(MUPDFContentViewController *)self view];
+  [view setBackgroundColor:darkGrayColor];
 }
 
 - (void)viewDidLayoutSubviews
@@ -172,32 +172,32 @@
   [(MUPDFContentViewController *)&v16 viewDidLayoutSubviews];
   if (![(MUPDFContentViewController *)self viewIsTransitioningBetweenSizes])
   {
-    v3 = [(MUPDFContentViewController *)self pdfView];
-    v4 = [v3 autoScales];
+    pdfView = [(MUPDFContentViewController *)self pdfView];
+    autoScales = [pdfView autoScales];
 
-    v5 = [(MUPDFContentViewController *)self pdfView];
-    [v5 scaleFactor];
+    pdfView2 = [(MUPDFContentViewController *)self pdfView];
+    [pdfView2 scaleFactor];
     v7 = v6;
-    v8 = [(MUPDFContentViewController *)self pdfView];
-    [v8 autoScaleFactor];
+    pdfView3 = [(MUPDFContentViewController *)self pdfView];
+    [pdfView3 autoScaleFactor];
     v10 = vabdd_f64(v7, v9);
 
     [(MUPDFContentViewController *)self _updateMinMaxZoomFactor];
     if (v10 < 0.0005)
     {
-      v11 = [(MUPDFContentViewController *)self pdfView];
-      v12 = [(MUPDFContentViewController *)self pdfView];
-      [v12 autoScaleFactor];
-      [v11 setScaleFactor:?];
+      pdfView4 = [(MUPDFContentViewController *)self pdfView];
+      pdfView5 = [(MUPDFContentViewController *)self pdfView];
+      [pdfView5 autoScaleFactor];
+      [pdfView4 setScaleFactor:?];
     }
 
-    v13 = [(MUPDFContentViewController *)self pdfView];
-    v14 = [v13 autoScales];
+    pdfView6 = [(MUPDFContentViewController *)self pdfView];
+    autoScales2 = [pdfView6 autoScales];
 
-    if (v4 != v14)
+    if (autoScales != autoScales2)
     {
-      v15 = [(MUPDFContentViewController *)self pdfView];
-      [v15 setAutoScales:v4];
+      pdfView7 = [(MUPDFContentViewController *)self pdfView];
+      [pdfView7 setAutoScales:autoScales];
     }
   }
 }
@@ -221,8 +221,8 @@
 {
   NSLog(&cfstr_S_0.isa, a2, "[MUPDFContentViewController teardown]");
   [(MUPDFContentViewController *)self _teardownPDFViewIfNecessary];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if ([(MUPDFContentViewController *)self didSetup])
   {
@@ -231,42 +231,42 @@
   }
 }
 
-- (void)loadContentWithCompletionBlock:(id)a3
+- (void)loadContentWithCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v4 = objc_autoreleasePoolPush();
   [(MUPDFContentViewController *)self _createPDFView];
   objc_autoreleasePoolPop(v4);
   [MEMORY[0x277CD9FF0] commit];
-  v5 = v6;
-  if (v6)
+  v5 = blockCopy;
+  if (blockCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(blockCopy + 2))(blockCopy);
+    v5 = blockCopy;
   }
 }
 
 - (CGSize)contentSize
 {
-  v3 = [(MUPDFContentViewController *)self pdfView];
-  [v3 scaleFactor];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  [pdfView scaleFactor];
   v5 = v4;
-  v6 = [v3 autoScales];
-  [v3 setAutoScales:0];
-  [v3 setScaleFactor:1.0];
+  autoScales = [pdfView autoScales];
+  [pdfView setAutoScales:0];
+  [pdfView setScaleFactor:1.0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __41__MUPDFContentViewController_contentSize__block_invoke;
   v14[3] = &unk_27986E9F8;
-  v15 = v3;
-  v7 = v3;
+  v15 = pdfView;
+  v7 = pdfView;
   [(MUPDFContentViewController *)self _medianSizeForCurrentDocumentInPDFViewWithGetter:v14];
   v9 = v8;
   v11 = v10;
   [v7 setScaleFactor:v5];
-  [v7 setAutoScales:v6];
+  [v7 setAutoScales:autoScales];
 
   v12 = v9;
   v13 = v11;
@@ -275,42 +275,42 @@
   return result;
 }
 
-- (CGSize)idealContentSizeForScreenSize:(CGSize)a3 windowDecorationSize:(CGSize)a4
+- (CGSize)idealContentSizeForScreenSize:(CGSize)size windowDecorationSize:(CGSize)decorationSize
 {
-  v5 = a3.width - a4.width;
-  v6 = a3.height - a4.height;
-  v7 = [(MUPDFContentViewController *)self pdfView];
-  v8 = [v7 autoScales];
-  [v7 setScaleFactor:1.0];
-  [v7 setAutoScales:0];
+  v5 = size.width - decorationSize.width;
+  v6 = size.height - decorationSize.height;
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  autoScales = [pdfView autoScales];
+  [pdfView setScaleFactor:1.0];
+  [pdfView setAutoScales:0];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __81__MUPDFContentViewController_idealContentSizeForScreenSize_windowDecorationSize___block_invoke;
   v27[3] = &unk_27986E9F8;
-  v9 = v7;
+  v9 = pdfView;
   v28 = v9;
   [(MUPDFContentViewController *)self _medianSizeForCurrentDocumentInPDFViewWithGetter:v27];
   v11 = v10;
   v13 = v12;
   if ([v9 displayMode])
   {
-    v14 = [v9 document];
-    v15 = [v14 pageCount];
+    document = [v9 document];
+    pageCount = [document pageCount];
 
-    if (v15 > 1)
+    if (pageCount > 1)
     {
       v13 = 1.79769313e308;
     }
   }
 
-  v16 = [v9 displayMode];
+  displayMode = [v9 displayMode];
   v17 = v6 / v13;
   if (v5 / v11 < v6 / v13)
   {
     v17 = v5 / v11;
   }
 
-  if (v16)
+  if (displayMode)
   {
     v17 = v5 / v11;
   }
@@ -321,16 +321,16 @@
   v19 = v13 * v18;
   if ([v9 displayMode])
   {
-    v20 = [v9 document];
-    v21 = [v20 pageCount];
+    document2 = [v9 document];
+    pageCount2 = [document2 pageCount];
 
-    if (v21 > 1)
+    if (pageCount2 > 1)
     {
       v19 = 1.79769313e308;
     }
   }
 
-  if (v8)
+  if (autoScales)
   {
     [v9 setAutoScales:1];
   }
@@ -365,19 +365,19 @@
 
 - (UIScrollView)contentViewScrollView
 {
-  v2 = [(MUPDFContentViewController *)self pdfView];
-  v3 = [v2 documentScrollView];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  documentScrollView = [pdfView documentScrollView];
 
-  return v3;
+  return documentScrollView;
 }
 
-- (BOOL)PDFView:(id)a3 shouldHandleLink:(id)a4
+- (BOOL)PDFView:(id)view shouldHandleLink:(id)link
 {
-  v5 = a4;
-  v6 = [(MUContentViewController *)self delegate];
+  linkCopy = link;
+  delegate = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 contentViewController:self shouldHandleURL:v5];
+    v7 = [delegate contentViewController:self shouldHandleURL:linkCopy];
   }
 
   else
@@ -388,54 +388,54 @@
   return v7;
 }
 
-- (BOOL)shouldShowAnnotationsOfType:(id)a3
+- (BOOL)shouldShowAnnotationsOfType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[MUCGPDFAnnotationAdaptor supportedAnnotationTypes];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:typeCopy];
 
   return v5 ^ 1;
 }
 
-- (BOOL)documentCanBeEdited:(id)a3
+- (BOOL)documentCanBeEdited:(id)edited
 {
-  v4 = a3;
-  v5 = [(MUPDFContentViewController *)self pdfDocument];
+  editedCopy = edited;
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
 
-  if (v5 != v4)
+  if (pdfDocument != editedCopy)
   {
     goto LABEL_2;
   }
 
-  v8 = [(MUPDFContentViewController *)self canEditContent];
+  canEditContent = [(MUPDFContentViewController *)self canEditContent];
 
-  if (!v8)
+  if (!canEditContent)
   {
     return 0;
   }
 
-  v5 = [(MUContentViewController *)self delegate];
+  pdfDocument = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 allowsEditing];
+    allowsEditing = [pdfDocument allowsEditing];
   }
 
   else
   {
 LABEL_2:
-    v6 = 0;
+    allowsEditing = 0;
   }
 
-  return v6;
+  return allowsEditing;
 }
 
-- (id)menuElementsForPage:(id)a3
+- (id)menuElementsForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
+  pageCopy = page;
+  delegate = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 getMenuElementsForPage:v4];
+    v6 = [delegate getMenuElementsForPage:pageCopy];
   }
 
   else
@@ -448,33 +448,33 @@ LABEL_2:
 
 - (BOOL)canShowPageViewLabel
 {
-  v3 = [(MUContentViewController *)self delegate];
+  delegate = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    LOBYTE(v4) = [v3 canShowPageViewLabel];
+    LOBYTE(v4) = [delegate canShowPageViewLabel];
   }
 
   else
   {
-    v5 = [(MUPDFContentViewController *)self pdfDocument];
-    v4 = [v5 isLocked] ^ 1;
+    pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+    v4 = [pdfDocument isLocked] ^ 1;
   }
 
   return v4;
 }
 
-- (id)controller:(id)a3 willSetToolbarItems:(id)a4
+- (id)controller:(id)controller willSetToolbarItems:(id)items
 {
-  v5 = a4;
-  v6 = [(MUContentViewController *)self delegate];
+  itemsCopy = items;
+  delegate = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 annotationControllerOfContentViewController:self willSetToolbarItems:v5];
+    v7 = [delegate annotationControllerOfContentViewController:self willSetToolbarItems:itemsCopy];
   }
 
   else
   {
-    v7 = v5;
+    v7 = itemsCopy;
   }
 
   v8 = v7;
@@ -482,76 +482,76 @@ LABEL_2:
   return v8;
 }
 
-- (void)positionSketchOverlay:(id)a3 forAnnotationController:(id)a4
+- (void)positionSketchOverlay:(id)overlay forAnnotationController:(id)controller
 {
-  v6 = a3;
-  v5 = [(MUContentViewController *)self delegate];
+  overlayCopy = overlay;
+  delegate = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 positionSketchOverlay:v6 forContentViewController:self];
+    [delegate positionSketchOverlay:overlayCopy forContentViewController:self];
   }
 }
 
-- (void)annotationController:(id)a3 detectedEditOfType:(unint64_t)a4
+- (void)annotationController:(id)controller detectedEditOfType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(MUContentViewController *)self delegate];
-  [v7 annotationController:v6 detectedEditOfType:a4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate annotationController:controllerCopy detectedEditOfType:type];
 }
 
-- (void)editCheckpointReachedForAnnotationController:(id)a3
+- (void)editCheckpointReachedForAnnotationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 editCheckpointReachedForAnnotationController:v4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate editCheckpointReachedForAnnotationController:controllerCopy];
 }
 
-- (void)penStrokeCompletedForAnnotationController:(id)a3
+- (void)penStrokeCompletedForAnnotationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 penStrokeCompletedForAnnotationController:v4];
+  controllerCopy = controller;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate penStrokeCompletedForAnnotationController:controllerCopy];
 }
 
-- (void)controllerWillShowSignatureCaptureView:(id)a3
+- (void)controllerWillShowSignatureCaptureView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillShowSignatureCaptureView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillShowSignatureCaptureView:viewCopy];
 }
 
-- (void)controllerWillDismissSignatureCaptureView:(id)a3
+- (void)controllerWillDismissSignatureCaptureView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillDismissSignatureCaptureView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillDismissSignatureCaptureView:viewCopy];
 }
 
-- (void)controllerWillShowSignatureManagerView:(id)a3
+- (void)controllerWillShowSignatureManagerView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillShowSignatureManagerView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillShowSignatureManagerView:viewCopy];
 }
 
-- (void)controllerWillDismissSignatureManagerView:(id)a3
+- (void)controllerWillDismissSignatureManagerView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self delegate];
-  [v5 controllerWillDismissSignatureManagerView:v4];
+  viewCopy = view;
+  delegate = [(MUContentViewController *)self delegate];
+  [delegate controllerWillDismissSignatureManagerView:viewCopy];
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  top = a3.top;
+  right = insets.right;
+  top = insets.top;
   v14 = *&self->_edgeInsets.bottom;
   v15 = *&self->_edgeInsets.top;
-  self->_edgeInsets = a3;
-  left = a3.left;
-  bottom = a3.bottom;
-  v4 = [(MUPDFContentViewController *)self navigationModeHorizontal];
-  if (v4)
+  self->_edgeInsets = insets;
+  left = insets.left;
+  bottom = insets.bottom;
+  navigationModeHorizontal = [(MUPDFContentViewController *)self navigationModeHorizontal];
+  if (navigationModeHorizontal)
   {
     v5 = 0.0;
   }
@@ -563,7 +563,7 @@ LABEL_2:
 
   if (v5 > 0.0)
   {
-    if (v4)
+    if (navigationModeHorizontal)
     {
       v6 = left;
     }
@@ -573,7 +573,7 @@ LABEL_2:
       v6 = 0.0;
     }
 
-    if (v4)
+    if (navigationModeHorizontal)
     {
       v7 = 0.0;
     }
@@ -583,7 +583,7 @@ LABEL_2:
       v7 = bottom;
     }
 
-    if (v4)
+    if (navigationModeHorizontal)
     {
       v8 = right;
     }
@@ -593,8 +593,8 @@ LABEL_2:
       v8 = 0.0;
     }
 
-    v9 = [(MUPDFContentViewController *)self thumbnailView];
-    [v9 setContentInset:{v5, v6, v7, v8}];
+    thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+    [thumbnailView setContentInset:{v5, v6, v7, v8}];
   }
 
   v10.f64[0] = top;
@@ -603,12 +603,12 @@ LABEL_2:
   v11.f64[1] = right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v15, v10), vceqq_f64(v14, v11)))) & 1) == 0)
   {
-    v12 = [(MUContentViewController *)self annotationController];
-    v13 = [v12 currentPageIndex];
+    annotationController = [(MUContentViewController *)self annotationController];
+    currentPageIndex = [annotationController currentPageIndex];
 
-    if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+    if (currentPageIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(MUPDFContentViewController *)self _updatePageNumberOverlayToPage:v13 animate:0];
+      [(MUPDFContentViewController *)self _updatePageNumberOverlayToPage:currentPageIndex animate:0];
     }
   }
 
@@ -621,37 +621,37 @@ LABEL_2:
 
 - (unint64_t)pageCount
 {
-  v2 = [(MUPDFContentViewController *)self pdfDocument];
-  v3 = [v2 pageCount];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  pageCount = [pdfDocument pageCount];
 
-  return v3;
+  return pageCount;
 }
 
-- (void)setFixedThumbnailView:(BOOL)a3
+- (void)setFixedThumbnailView:(BOOL)view
 {
-  if (self->_fixedThumbnailView != a3)
+  if (self->_fixedThumbnailView != view)
   {
-    self->_fixedThumbnailView = a3;
+    self->_fixedThumbnailView = view;
     [(MUPDFContentViewController *)self removeThumbnailViewHolderConstraints];
 
     [(MUPDFContentViewController *)self _updateThumbnailViewHolderConstraints];
   }
 }
 
-- (void)setShowsThumbnailView:(BOOL)a3
+- (void)setShowsThumbnailView:(BOOL)view
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  if (self->_showsThumbnailView == a3)
+  if (self->_showsThumbnailView == view)
   {
     return;
   }
 
-  v3 = a3;
-  v5 = [(MUPDFContentViewController *)self pdfView];
+  viewCopy = view;
+  pdfView = [(MUPDFContentViewController *)self pdfView];
 
-  if (!v5)
+  if (!pdfView)
   {
-    self->_showsThumbnailView = v3;
+    self->_showsThumbnailView = viewCopy;
     return;
   }
 
@@ -666,10 +666,10 @@ LABEL_2:
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   if (v7 <= 0.0)
   {
-    self->_showsThumbnailView = v3;
+    self->_showsThumbnailView = viewCopy;
     if ([(MUPDFContentViewController *)self fixedThumbnailView])
     {
-      if (v3)
+      if (viewCopy)
       {
         v8 = 1.0;
       }
@@ -679,12 +679,12 @@ LABEL_2:
         v8 = 0.0;
       }
 
-      v9 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      [v9 setAlpha:v8];
+      thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      [thumbnailViewHolder setAlpha:v8];
     }
 
     [(MUPDFContentViewController *)self _updateThumbnailViewHolderVisibility];
-    if (!v3)
+    if (!viewCopy)
     {
       goto LABEL_17;
     }
@@ -692,51 +692,51 @@ LABEL_2:
     goto LABEL_16;
   }
 
-  if (v3)
+  if (viewCopy)
   {
 LABEL_16:
-    v10 = [(MUPDFContentViewController *)self thumbnailView];
+    thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
 
-    if (!v10)
+    if (!thumbnailView)
     {
       v11 = [objc_alloc(MEMORY[0x277CD93F0]) initWithFrame:self->_thumbnailViewStyle style:{0.0, 0.0, 100.0, 100.0}];
       [v11 setThumbnailContextMenuDelegate:self];
       [v11 setAllowsPageReordering:self->_allowsThumbnailViewPageReordering];
       [(MUPDFContentViewController *)self setThumbnailView:v11];
-      v12 = [(MUPDFContentViewController *)self pdfView];
-      [v11 setPDFView:v12];
+      pdfView2 = [(MUPDFContentViewController *)self pdfView];
+      [v11 setPDFView:pdfView2];
 
       [(MUPDFContentViewController *)self _updateThumbnailViewAppearance];
       [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v13 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      [v13 addSubview:v11];
+      thumbnailViewHolder2 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      [thumbnailViewHolder2 addSubview:v11];
 
       v14 = _NSDictionaryOfVariableBindings(&cfstr_Thumbnailview.isa, v11, 0);
-      v15 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      thumbnailViewHolder3 = [(MUPDFContentViewController *)self thumbnailViewHolder];
       v16 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-0-[thumbnailView]-0@999-|" options:0 metrics:0 views:v14];
-      [v15 addConstraints:v16];
+      [thumbnailViewHolder3 addConstraints:v16];
 
-      v17 = [(MUPDFContentViewController *)self thumbnailView];
-      v18 = [v17 leadingAnchor];
-      v19 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      v20 = [v19 leadingAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20];
+      thumbnailView2 = [(MUPDFContentViewController *)self thumbnailView];
+      leadingAnchor = [thumbnailView2 leadingAnchor];
+      thumbnailViewHolder4 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      leadingAnchor2 = [thumbnailViewHolder4 leadingAnchor];
+      v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(MUPDFContentViewController *)self setThumbnailViewLeadingConstraint:v21];
 
-      v22 = [(MUPDFContentViewController *)self thumbnailView];
-      v23 = [v22 trailingAnchor];
-      v24 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      v25 = [v24 trailingAnchor];
-      v26 = [v23 constraintEqualToAnchor:v25];
+      thumbnailView3 = [(MUPDFContentViewController *)self thumbnailView];
+      trailingAnchor = [thumbnailView3 trailingAnchor];
+      thumbnailViewHolder5 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      trailingAnchor2 = [thumbnailViewHolder5 trailingAnchor];
+      v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
       LODWORD(v27) = 1148829696;
       [v26 setPriority:v27];
-      v28 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      v29 = [(MUPDFContentViewController *)self thumbnailViewLeadingConstraint];
-      v36[0] = v29;
+      thumbnailViewHolder6 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      thumbnailViewLeadingConstraint = [(MUPDFContentViewController *)self thumbnailViewLeadingConstraint];
+      v36[0] = thumbnailViewLeadingConstraint;
       v36[1] = v26;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
-      [v28 addConstraints:v30];
+      [thumbnailViewHolder6 addConstraints:v30];
 
       [(MUPDFContentViewController *)self _updateThumbnailViewHolderConstraints];
       [(MUPDFContentViewController *)self setEdgeInsets:self->_edgeInsets.top, self->_edgeInsets.left, self->_edgeInsets.bottom, self->_edgeInsets.right];
@@ -758,19 +758,19 @@ LABEL_17:
 
   [MEMORY[0x277CD9FF0] commit];
 LABEL_21:
-  self->_showsThumbnailView = v3;
+  self->_showsThumbnailView = viewCopy;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke;
   v34[3] = &unk_27986EA48;
-  v35 = v3;
+  v35 = viewCopy;
   v34[4] = self;
   v34[5] = 0x3FC999999999999ALL;
   v31 = MEMORY[0x259C7BE00](v34);
-  v32 = [(MUPDFContentViewController *)self view];
-  v33 = [v32 window];
+  view = [(MUPDFContentViewController *)self view];
+  window = [view window];
 
-  if (v33)
+  if (window)
   {
     v31[2](v31);
   }
@@ -840,11 +840,11 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
   return result;
 }
 
-- (void)setNavigationModeHorizontal:(BOOL)a3
+- (void)setNavigationModeHorizontal:(BOOL)horizontal
 {
-  if (self->_navigationModeHorizontal != a3)
+  if (self->_navigationModeHorizontal != horizontal)
   {
-    self->_navigationModeHorizontal = a3;
+    self->_navigationModeHorizontal = horizontal;
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     [(MUPDFContentViewController *)self _updateThumbnailViewAppearance];
@@ -856,38 +856,38 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
   }
 }
 
-- (void)setForcesPDFViewTopAlignment:(BOOL)a3
+- (void)setForcesPDFViewTopAlignment:(BOOL)alignment
 {
-  if (self->_forcesPDFViewTopAlignment != a3)
+  if (self->_forcesPDFViewTopAlignment != alignment)
   {
-    self->_forcesPDFViewTopAlignment = a3;
-    v4 = [(MUPDFContentViewController *)self pdfView];
-    [v4 setForcesTopAlignment:self->_forcesPDFViewTopAlignment];
+    self->_forcesPDFViewTopAlignment = alignment;
+    pdfView = [(MUPDFContentViewController *)self pdfView];
+    [pdfView setForcesTopAlignment:self->_forcesPDFViewTopAlignment];
   }
 }
 
 - (void)_updatePDFViewDisplayMode
 {
-  v3 = [(MUPDFContentViewController *)self pdfView];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
 
-  if (v3)
+  if (pdfView)
   {
     v4 = [(MUPDFContentViewController *)self navigationModeHorizontal]^ 1;
-    v5 = [(MUPDFContentViewController *)self pdfView];
-    [v5 setDisplayMode:v4];
+    pdfView2 = [(MUPDFContentViewController *)self pdfView];
+    [pdfView2 setDisplayMode:v4];
 
-    v6 = [(MUPDFContentViewController *)self pdfView];
-    [v6 setDisplayBox:1];
+    pdfView3 = [(MUPDFContentViewController *)self pdfView];
+    [pdfView3 setDisplayBox:1];
   }
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  v6 = a3;
-  v7 = [(MUPDFContentViewController *)self pdfView];
-  v8 = [v7 documentScrollView];
+  viewCopy = view;
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  documentScrollView = [pdfView documentScrollView];
 
-  if (v8 == v6 && !a4 && [(MUPDFContentViewController *)self _updateCachedThumbnailViewInsetsDidChangeLeftOrRight]&& [(MUPDFContentViewController *)self showsThumbnailView])
+  if (documentScrollView == viewCopy && !only && [(MUPDFContentViewController *)self _updateCachedThumbnailViewInsetsDidChangeLeftOrRight]&& [(MUPDFContentViewController *)self showsThumbnailView])
   {
 
     [(MUPDFContentViewController *)self _updateThumbnailViewHolderConstraints];
@@ -901,9 +901,9 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
     return 61.0;
   }
 
-  v3 = [MEMORY[0x277D75520] defaultMetrics];
-  v4 = [(MUPDFContentViewController *)self traitCollection];
-  [v3 scaledValueForValue:v4 compatibleWithTraitCollection:81.0];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  traitCollection = [(MUPDFContentViewController *)self traitCollection];
+  [defaultMetrics scaledValueForValue:traitCollection compatibleWithTraitCollection:81.0];
   v6 = v5;
 
   return (v6 + -81.0) * 0.5 + 81.0;
@@ -948,10 +948,10 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
 
 - (BOOL)_updateCachedThumbnailViewInsetsDidChangeLeftOrRight
 {
-  v3 = [(MUPDFContentViewController *)self contentViewScrollView];
+  contentViewScrollView = [(MUPDFContentViewController *)self contentViewScrollView];
   v4 = self->_thumbnailViewStyle != 1;
   [(MUPDFContentViewController *)self _thumbnailViewWidth];
-  [v3 _baseInsetsForAccessoryOnEdge:v4 hasCustomClientInsets:0 accessorySize:? additionalInsetFromEdge:?];
+  [contentViewScrollView _baseInsetsForAccessoryOnEdge:v4 hasCustomClientInsets:0 accessorySize:? additionalInsetFromEdge:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -981,45 +981,45 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
 {
   if (self->_thumbnailViewStyle == 1)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    v4 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-    [v4 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
+    [thumbnailViewHolder setBackgroundColor:clearColor];
 
-    v5 = [(MUPDFContentViewController *)self scrollerBackgroundView];
+    scrollerBackgroundView = [(MUPDFContentViewController *)self scrollerBackgroundView];
 
-    if (!v5)
+    if (!scrollerBackgroundView)
     {
       v6 = [MEMORY[0x277D75210] effectWithStyle:8];
       v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v6];
       [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v8 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      [v8 addSubview:v7];
+      thumbnailViewHolder2 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      [thumbnailViewHolder2 addSubview:v7];
 
       v9 = _NSDictionaryOfVariableBindings(&cfstr_Backgroundview.isa, v7, 0);
-      v10 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      thumbnailViewHolder3 = [(MUPDFContentViewController *)self thumbnailViewHolder];
       v11 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-0-[backgroundView]-0-|" options:0 metrics:0 views:v9];
-      [v10 addConstraints:v11];
+      [thumbnailViewHolder3 addConstraints:v11];
 
-      v12 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      thumbnailViewHolder4 = [(MUPDFContentViewController *)self thumbnailViewHolder];
       v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-0-[backgroundView]-0-|" options:0 metrics:0 views:v9];
-      [v12 addConstraints:v13];
+      [thumbnailViewHolder4 addConstraints:v13];
 
       [(MUPDFContentViewController *)self setScrollerBackgroundView:v7];
     }
 
     showsThumbnailView = self->_showsThumbnailView;
-    v18 = [(MUPDFContentViewController *)self scrollerBackgroundView];
-    [v18 setHidden:!showsThumbnailView];
+    scrollerBackgroundView2 = [(MUPDFContentViewController *)self scrollerBackgroundView];
+    [scrollerBackgroundView2 setHidden:!showsThumbnailView];
   }
 
   else
   {
     v15 = [MEMORY[0x277D75348] colorWithWhite:0.301960784 alpha:0.2];
-    v16 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-    [v16 setBackgroundColor:v15];
+    thumbnailViewHolder5 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+    [thumbnailViewHolder5 setBackgroundColor:v15];
 
-    v17 = [(MUPDFContentViewController *)self scrollerBackgroundView];
-    [v17 removeFromSuperview];
+    scrollerBackgroundView3 = [(MUPDFContentViewController *)self scrollerBackgroundView];
+    [scrollerBackgroundView3 removeFromSuperview];
 
     [(MUPDFContentViewController *)self setScrollerBackgroundView:0];
   }
@@ -1028,22 +1028,22 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
 - (void)_updateThumbnailViewHolderVisibility
 {
   showsThumbnailView = self->_showsThumbnailView;
-  v4 = [(MUPDFContentViewController *)self scrollerBackgroundView];
-  [v4 setHidden:!showsThumbnailView];
+  scrollerBackgroundView = [(MUPDFContentViewController *)self scrollerBackgroundView];
+  [scrollerBackgroundView setHidden:!showsThumbnailView];
 
-  v5 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-  [v5 setHidden:!showsThumbnailView];
+  thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
+  [thumbnailViewHolder setHidden:!showsThumbnailView];
 }
 
 - (void)removeThumbnailViewHolderConstraints
 {
-  v3 = [(MUPDFContentViewController *)self thumbnailViewHolderConstraints];
+  thumbnailViewHolderConstraints = [(MUPDFContentViewController *)self thumbnailViewHolderConstraints];
 
-  if (v3)
+  if (thumbnailViewHolderConstraints)
   {
-    v4 = [(MUPDFContentViewController *)self view];
-    v5 = [(MUPDFContentViewController *)self thumbnailViewHolderConstraints];
-    [v4 removeConstraints:v5];
+    view = [(MUPDFContentViewController *)self view];
+    thumbnailViewHolderConstraints2 = [(MUPDFContentViewController *)self thumbnailViewHolderConstraints];
+    [view removeConstraints:thumbnailViewHolderConstraints2];
 
     [(MUPDFContentViewController *)self setThumbnailViewHolderWidthConstraint:0];
     [(MUPDFContentViewController *)self setThumbnailViewHolderConstraints:0];
@@ -1055,15 +1055,15 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
 - (void)_updateThumbnailViewHolderConstraints
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v3 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+  thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
 
-  if (v3)
+  if (thumbnailViewHolder)
   {
-    v4 = [(MUPDFContentViewController *)self thumbnailViewHolderConstraints];
-    if (v4)
+    thumbnailViewHolderConstraints = [(MUPDFContentViewController *)self thumbnailViewHolderConstraints];
+    if (thumbnailViewHolderConstraints)
     {
-      v5 = [(MUPDFContentViewController *)self navigationModeHorizontal];
-      v6 = v5 ^ [(MUPDFContentViewController *)self constraintsAreHorizontal];
+      navigationModeHorizontal = [(MUPDFContentViewController *)self navigationModeHorizontal];
+      v6 = navigationModeHorizontal ^ [(MUPDFContentViewController *)self constraintsAreHorizontal];
     }
 
     else
@@ -1074,8 +1074,8 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
     thumbnailViewStyle = self->_thumbnailViewStyle;
     if (thumbnailViewStyle == 1)
     {
-      v12 = [(MUPDFContentViewController *)self view];
-      [v12 safeAreaInsets];
+      view = [(MUPDFContentViewController *)self view];
+      [view safeAreaInsets];
       v9 = v13;
       v11 = v14;
     }
@@ -1087,8 +1087,8 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
       v11 = v10;
     }
 
-    v15 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-    if ([v15 effectiveUserInterfaceLayoutDirection])
+    thumbnailViewHolder2 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+    if ([thumbnailViewHolder2 effectiveUserInterfaceLayoutDirection])
     {
       v9 = v11;
     }
@@ -1104,8 +1104,8 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
       v16 = v17;
     }
 
-    v18 = [(MUPDFContentViewController *)self navigationModeHorizontal];
-    if (thumbnailViewStyle != 1 || v18)
+    navigationModeHorizontal2 = [(MUPDFContentViewController *)self navigationModeHorizontal];
+    if (thumbnailViewStyle != 1 || navigationModeHorizontal2)
     {
       v20 = v16;
     }
@@ -1135,9 +1135,9 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
       [(MUPDFContentViewController *)self removeThumbnailViewHolderConstraints];
       v22 = objc_opt_new();
       [(MUPDFContentViewController *)self setThumbnailViewHolderConstraints:v22];
-      v23 = [(MUPDFContentViewController *)self view];
-      v24 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      v25 = _NSDictionaryOfVariableBindings(&cfstr_Holderview.isa, v24, 0);
+      view2 = [(MUPDFContentViewController *)self view];
+      thumbnailViewHolder3 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      v25 = _NSDictionaryOfVariableBindings(&cfstr_Holderview.isa, thumbnailViewHolder3, 0);
       v59[0] = @"WIDTH";
       v26 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
       v59[1] = @"OFFSET";
@@ -1162,7 +1162,7 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
         v31 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[holderView(WIDTH)]" options:0 metrics:v29 views:v25];
         [v22 addObjectsFromArray:v31];
 
-        v32 = [MEMORY[0x277CCAAD0] constraintWithItem:v24 attribute:4 relatedBy:0 toItem:v23 attribute:4 multiplier:1.0 constant:v21];
+        v32 = [MEMORY[0x277CCAAD0] constraintWithItem:thumbnailViewHolder3 attribute:4 relatedBy:0 toItem:view2 attribute:4 multiplier:1.0 constant:v21];
         [(MUPDFContentViewController *)self setThumbnailViewHolderRevealConstraint:v32];
 
         v33 = @"H:|-(-1)-[holderView]-(-1)-|";
@@ -1170,81 +1170,81 @@ uint64_t __52__MUPDFContentViewController_setShowsThumbnailView___block_invoke_3
 
       else
       {
-        v37 = [v24 widthAnchor];
-        v38 = [v37 constraintEqualToConstant:v20];
+        widthAnchor = [thumbnailViewHolder3 widthAnchor];
+        v38 = [widthAnchor constraintEqualToConstant:v20];
         [(MUPDFContentViewController *)self setThumbnailViewHolderWidthConstraint:v38];
 
-        v39 = [(MUPDFContentViewController *)self thumbnailViewHolderWidthConstraint];
-        [v22 addObject:v39];
+        thumbnailViewHolderWidthConstraint = [(MUPDFContentViewController *)self thumbnailViewHolderWidthConstraint];
+        [v22 addObject:thumbnailViewHolderWidthConstraint];
 
         if (thumbnailViewStyle == 1)
         {
-          v41 = [(MUPDFContentViewController *)self thumbnailViewLeadingConstraint];
-          [v41 setConstant:v9];
+          thumbnailViewLeadingConstraint = [(MUPDFContentViewController *)self thumbnailViewLeadingConstraint];
+          [thumbnailViewLeadingConstraint setConstant:v9];
 
-          v42 = [(MUPDFContentViewController *)self fixedThumbnailView];
-          v43 = [(MUPDFContentViewController *)self pdfViewLeadingConstraint];
-          v44 = v43;
-          if (v42)
+          fixedThumbnailView = [(MUPDFContentViewController *)self fixedThumbnailView];
+          pdfViewLeadingConstraint = [(MUPDFContentViewController *)self pdfViewLeadingConstraint];
+          v44 = pdfViewLeadingConstraint;
+          if (fixedThumbnailView)
           {
-            [v43 setActive:0];
+            [pdfViewLeadingConstraint setActive:0];
 
-            v45 = [v24 leadingAnchor];
-            [v23 leadingAnchor];
-            v46 = v58 = v23;
-            v40 = [v45 constraintEqualToAnchor:v46];
+            leadingAnchor = [thumbnailViewHolder3 leadingAnchor];
+            [view2 leadingAnchor];
+            v46 = v58 = view2;
+            leadingAnchor3 = [leadingAnchor constraintEqualToAnchor:v46];
 
-            v47 = [v24 trailingAnchor];
-            v48 = [(MUPDFContentViewController *)self pdfView];
-            v49 = [v48 leadingAnchor];
-            v50 = [v47 constraintEqualToAnchor:v49];
+            trailingAnchor = [thumbnailViewHolder3 trailingAnchor];
+            pdfView = [(MUPDFContentViewController *)self pdfView];
+            leadingAnchor2 = [pdfView leadingAnchor];
+            leadingAnchor4 = [trailingAnchor constraintEqualToAnchor:leadingAnchor2];
 
             v30 = 0x277CCA000;
-            v23 = v58;
+            view2 = v58;
 
-            [v22 addObject:v40];
-            [v22 addObject:v50];
+            [v22 addObject:leadingAnchor3];
+            [v22 addObject:leadingAnchor4];
           }
 
           else
           {
-            [v43 setActive:1];
+            [pdfViewLeadingConstraint setActive:1];
 
-            v40 = [v24 leadingAnchor];
-            v50 = [v23 leadingAnchor];
-            v51 = [v40 constraintEqualToAnchor:v50 constant:-v21];
+            leadingAnchor3 = [thumbnailViewHolder3 leadingAnchor];
+            leadingAnchor4 = [view2 leadingAnchor];
+            v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:-v21];
             [(MUPDFContentViewController *)self setThumbnailViewHolderRevealConstraint:v51];
           }
         }
 
         else
         {
-          v40 = [MEMORY[0x277CCAAD0] constraintWithItem:v24 attribute:2 relatedBy:0 toItem:v23 attribute:2 multiplier:1.0 constant:v21];
-          [(MUPDFContentViewController *)self setThumbnailViewHolderRevealConstraint:v40];
+          leadingAnchor3 = [MEMORY[0x277CCAAD0] constraintWithItem:thumbnailViewHolder3 attribute:2 relatedBy:0 toItem:view2 attribute:2 multiplier:1.0 constant:v21];
+          [(MUPDFContentViewController *)self setThumbnailViewHolderRevealConstraint:leadingAnchor3];
         }
 
-        v52 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
+        thumbnailViewHolderRevealConstraint = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
 
         v33 = @"V:|-(-1)-[holderView]-(-1)-|";
-        if (!v52)
+        if (!thumbnailViewHolderRevealConstraint)
         {
           goto LABEL_47;
         }
       }
 
-      v53 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
-      [v22 addObject:v53];
+      thumbnailViewHolderRevealConstraint2 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
+      [v22 addObject:thumbnailViewHolderRevealConstraint2];
 
 LABEL_47:
       v54 = [*(v30 + 2768) constraintsWithVisualFormat:v33 options:0 metrics:v29 views:v25];
       [v22 addObjectsFromArray:v54];
 
       [(MUPDFContentViewController *)self setConstraintsAreHorizontal:[(MUPDFContentViewController *)self navigationModeHorizontal]];
-      v55 = [(MUPDFContentViewController *)self view];
-      [v55 addConstraints:v22];
+      view3 = [(MUPDFContentViewController *)self view];
+      [view3 addConstraints:v22];
 
-      v56 = [(MUPDFContentViewController *)self view];
-      [v56 setNeedsLayout];
+      view4 = [(MUPDFContentViewController *)self view];
+      [view4 setNeedsLayout];
 
       return;
     }
@@ -1254,42 +1254,42 @@ LABEL_47:
       v21 = -v21;
     }
 
-    v34 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
-    [v34 setConstant:v21];
+    thumbnailViewHolderRevealConstraint3 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
+    [thumbnailViewHolderRevealConstraint3 setConstant:v21];
 
-    v35 = [(MUPDFContentViewController *)self navigationModeHorizontal];
-    if (thumbnailViewStyle == 1 && !v35)
+    navigationModeHorizontal3 = [(MUPDFContentViewController *)self navigationModeHorizontal];
+    if (thumbnailViewStyle == 1 && !navigationModeHorizontal3)
     {
-      v36 = [(MUPDFContentViewController *)self thumbnailViewHolderWidthConstraint];
-      [v36 setConstant:v20];
+      thumbnailViewHolderWidthConstraint2 = [(MUPDFContentViewController *)self thumbnailViewHolderWidthConstraint];
+      [thumbnailViewHolderWidthConstraint2 setConstant:v20];
 
-      v57 = [(MUPDFContentViewController *)self thumbnailViewLeadingConstraint];
-      [v57 setConstant:v9];
+      thumbnailViewLeadingConstraint2 = [(MUPDFContentViewController *)self thumbnailViewLeadingConstraint];
+      [thumbnailViewLeadingConstraint2 setConstant:v9];
     }
   }
 }
 
 - (void)_updateThumbnailViewAppearance
 {
-  v3 = [(MUPDFContentViewController *)self thumbnailView];
-  if (v3)
+  thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+  if (thumbnailView)
   {
-    v16 = v3;
+    v16 = thumbnailView;
     if ([(MUPDFContentViewController *)self navigationModeHorizontal])
     {
-      v4 = [MEMORY[0x277D75348] whiteColor];
-      [v16 setBackgroundColor:v4];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v16 setBackgroundColor:whiteColor];
 
       v5 = [MEMORY[0x277D75348] colorWithWhite:0.274509804 alpha:1.0];
-      v6 = [v5 CGColor];
-      v7 = [v16 layer];
-      [v7 setBorderColor:v6];
+      cGColor = [v5 CGColor];
+      layer = [v16 layer];
+      [layer setBorderColor:cGColor];
 
-      v8 = [MEMORY[0x277D759A0] mainScreen];
-      [v8 nativeScale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen nativeScale];
       v10 = 1.0 / v9;
-      v11 = [v16 layer];
-      [v11 setBorderWidth:v10];
+      layer2 = [v16 layer];
+      [layer2 setBorderWidth:v10];
 
       v12 = 1;
     }
@@ -1298,39 +1298,39 @@ LABEL_47:
     {
       [v16 setBackgroundColor:0];
       v13 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.0];
-      v14 = [v13 CGColor];
-      v15 = [v16 layer];
-      [v15 setBorderColor:v14];
+      cGColor2 = [v13 CGColor];
+      layer3 = [v16 layer];
+      [layer3 setBorderColor:cGColor2];
 
-      v8 = [v16 layer];
-      [v8 setBorderWidth:0.0];
+      mainScreen = [v16 layer];
+      [mainScreen setBorderWidth:0.0];
       v12 = 0;
     }
 
     [v16 setLayoutMode:v12];
     [(MUPDFContentViewController *)self _thumbnailViewCellSize];
     [v16 setThumbnailSize:?];
-    v3 = v16;
+    thumbnailView = v16;
   }
 }
 
 - (NSString)documentUnlockedWithPassword
 {
-  v3 = [(MUPDFContentViewController *)self pdfDocument];
-  v4 = [v3 isEncrypted];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  isEncrypted = [pdfDocument isEncrypted];
 
-  if (v4)
+  if (isEncrypted)
   {
-    v5 = [(MUPDFContentViewController *)self pdfDocument];
-    v6 = [v5 passwordUsedForUnlocking];
+    pdfDocument2 = [(MUPDFContentViewController *)self pdfDocument];
+    passwordUsedForUnlocking = [pdfDocument2 passwordUsedForUnlocking];
   }
 
   else
   {
-    v6 = 0;
+    passwordUsedForUnlocking = 0;
   }
 
-  return v6;
+  return passwordUsedForUnlocking;
 }
 
 - (void)_createPDFView
@@ -1340,33 +1340,33 @@ LABEL_47:
   [(MUPDFView *)firstValue setForcesTopAlignment:[(MUPDFContentViewController *)self forcesPDFViewTopAlignment]];
   [(MUPDFContentViewController *)self setPdfView:firstValue];
   [(MUPDFView *)firstValue setDelegate:self];
-  v3 = [(MUPDFContentViewController *)self view];
-  [v3 addSubview:firstValue];
+  view = [(MUPDFContentViewController *)self view];
+  [view addSubview:firstValue];
 
   [(MUPDFView *)firstValue setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(MUPDFView *)firstValue leadingAnchor];
-  v5 = [(MUPDFContentViewController *)self view];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  leadingAnchor = [(MUPDFView *)firstValue leadingAnchor];
+  view2 = [(MUPDFContentViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v8 = [(MUPDFView *)firstValue trailingAnchor];
-  v9 = [(MUPDFContentViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(MUPDFView *)firstValue trailingAnchor];
+  view3 = [(MUPDFContentViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   LODWORD(v12) = 1148829696;
   [v11 setPriority:v12];
-  v13 = [(MUPDFContentViewController *)self view];
-  [v13 addConstraint:v7];
+  view4 = [(MUPDFContentViewController *)self view];
+  [view4 addConstraint:v7];
 
-  v14 = [(MUPDFContentViewController *)self view];
-  [v14 addConstraint:v11];
+  view5 = [(MUPDFContentViewController *)self view];
+  [view5 addConstraint:v11];
 
   [(MUPDFContentViewController *)self setPdfViewLeadingConstraint:v7];
   v15 = _NSDictionaryOfVariableBindings(&cfstr_Pdfview.isa, firstValue, 0);
-  v16 = [(MUPDFContentViewController *)self view];
+  view6 = [(MUPDFContentViewController *)self view];
   v17 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-0-[pdfView]-0@999-|" options:0 metrics:0 views:v15];
-  [v16 addConstraints:v17];
+  [view6 addConstraints:v17];
 
   [(MUPDFContentViewController *)self _updatePDFViewDisplayMode];
   v18 = objc_alloc(MEMORY[0x277D75D18]);
@@ -1379,50 +1379,50 @@ LABEL_47:
   [v23 setBackgroundColor:v24];
 
   [(MUPDFContentViewController *)self setThumbnailViewHolder:v23];
-  v25 = [(MUPDFContentViewController *)self view];
-  [v25 insertSubview:v23 above:firstValue];
+  view7 = [(MUPDFContentViewController *)self view];
+  [view7 insertSubview:v23 above:firstValue];
 
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [(MUPDFContentViewController *)self pdfDocument];
-  v27 = [v26 isLocked];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  isLocked = [pdfDocument isLocked];
 
-  if (v27)
+  if (isLocked)
   {
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v29 = *MEMORY[0x277CD9410];
-    v30 = [(MUPDFContentViewController *)self pdfDocument];
-    [v28 addObserver:self selector:sel_pdfDocumentDidUnlock_ name:v29 object:v30];
+    pdfDocument2 = [(MUPDFContentViewController *)self pdfDocument];
+    [defaultCenter addObserver:self selector:sel_pdfDocumentDidUnlock_ name:v29 object:pdfDocument2];
   }
 
-  v31 = [(MUPDFContentViewController *)self pdfDocument];
-  [(MUPDFView *)firstValue setDocument:v31 waitDuration:0.25];
+  pdfDocument3 = [(MUPDFContentViewController *)self pdfDocument];
+  [(MUPDFView *)firstValue setDocument:pdfDocument3 waitDuration:0.25];
 
   [(MUPDFView *)firstValue setAutoScales:1];
-  v32 = [(MUPDFContentViewController *)self navigationModeHorizontal];
-  v33 = [(MUPDFContentViewController *)self showsThumbnailView];
-  self->_navigationModeHorizontal = !v32;
-  self->_showsThumbnailView = !v33;
-  [(MUPDFContentViewController *)self setNavigationModeHorizontal:v32];
-  [(MUPDFContentViewController *)self setShowsThumbnailView:v33];
-  if (v33)
+  navigationModeHorizontal = [(MUPDFContentViewController *)self navigationModeHorizontal];
+  showsThumbnailView = [(MUPDFContentViewController *)self showsThumbnailView];
+  self->_navigationModeHorizontal = !navigationModeHorizontal;
+  self->_showsThumbnailView = !showsThumbnailView;
+  [(MUPDFContentViewController *)self setNavigationModeHorizontal:navigationModeHorizontal];
+  [(MUPDFContentViewController *)self setShowsThumbnailView:showsThumbnailView];
+  if (showsThumbnailView)
   {
-    v34 = [(MUPDFContentViewController *)self thumbnailView];
-    [v34 setPDFView:firstValue];
+    thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+    [thumbnailView setPDFView:firstValue];
   }
 
-  v35 = [(MUPDFView *)firstValue documentScrollView];
-  [v35 setDecelerationRate:*MEMORY[0x277D76EC0]];
-  [v35 setMaximumZoomScale:10.0];
-  [v35 setMinimumZoomScale:0.1];
-  [v35 _addBoundingPathChangeObserver:self];
-  v36 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v36 addObserver:self selector:sel__userChangedScrollViewMagnificationNotification_ name:@"UITextSelectionDidZoom" object:v35];
+  documentScrollView = [(MUPDFView *)firstValue documentScrollView];
+  [documentScrollView setDecelerationRate:*MEMORY[0x277D76EC0]];
+  [documentScrollView setMaximumZoomScale:10.0];
+  [documentScrollView setMinimumZoomScale:0.1];
+  [documentScrollView _addBoundingPathChangeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__userChangedScrollViewMagnificationNotification_ name:@"UITextSelectionDidZoom" object:documentScrollView];
 
-  v37 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v37 addObserver:self selector:sel_pdfViewDidChangeCurrentPage_ name:*MEMORY[0x277CD9440] object:firstValue];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_pdfViewDidChangeCurrentPage_ name:*MEMORY[0x277CD9440] object:firstValue];
 
-  v38 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v38 addObserver:self selector:sel_pdfScrollViewWillBeginDragging_ name:*MEMORY[0x277CD9438] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_pdfScrollViewWillBeginDragging_ name:*MEMORY[0x277CD9438] object:0];
 
   if (self->_pageLabelView || (v39 = [[MUPDFPageLabelView alloc] initWithFrame:v19, v20, v21, v22], pageLabelView = self->_pageLabelView, self->_pageLabelView = v39, pageLabelView, [(MUPDFPageLabelView *)self->_pageLabelView setTranslatesAutoresizingMaskIntoConstraints:0], self->_pageLabelView))
   {
@@ -1438,14 +1438,14 @@ LABEL_47:
 
   if (!self->_edgePanGestureRecognizer)
   {
-    v43 = [(MUPDFContentViewController *)self pdfView];
-    v44 = [v43 effectiveUserInterfaceLayoutDirection];
+    pdfView = [(MUPDFContentViewController *)self pdfView];
+    effectiveUserInterfaceLayoutDirection = [pdfView effectiveUserInterfaceLayoutDirection];
 
     v45 = [objc_alloc(MEMORY[0x277D759A8]) initWithTarget:self action:sel_edgeSwipeGestureRecognized_];
     edgePanGestureRecognizer = self->_edgePanGestureRecognizer;
     self->_edgePanGestureRecognizer = v45;
 
-    if (v44 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v47 = 8;
     }
@@ -1456,73 +1456,73 @@ LABEL_47:
     }
 
     [(UIScreenEdgePanGestureRecognizer *)self->_edgePanGestureRecognizer setEdges:v47];
-    v48 = [(MUPDFContentViewController *)self pdfView];
-    [v48 addGestureRecognizer:self->_edgePanGestureRecognizer];
+    pdfView2 = [(MUPDFContentViewController *)self pdfView];
+    [pdfView2 addGestureRecognizer:self->_edgePanGestureRecognizer];
   }
 
-  v49 = [(MUPDFContentViewController *)self pdfDocument];
-  v50 = [v49 akController];
-  [(MUContentViewController *)self setAnnotationController:v50];
+  pdfDocument4 = [(MUPDFContentViewController *)self pdfDocument];
+  akController = [pdfDocument4 akController];
+  [(MUContentViewController *)self setAnnotationController:akController];
 }
 
 - (void)_teardownPDFViewIfNecessary
 {
-  v3 = [(MUPDFContentViewController *)self pdfView];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
 
-  if (v3)
+  if (pdfView)
   {
-    v13 = [(MUPDFContentViewController *)self pdfView];
-    v4 = [v13 documentScrollView];
-    [v4 _removeBoundingPathChangeObserver:self];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:@"UITextSelectionDidZoom" object:v4];
+    pdfView2 = [(MUPDFContentViewController *)self pdfView];
+    documentScrollView = [pdfView2 documentScrollView];
+    [documentScrollView _removeBoundingPathChangeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UITextSelectionDidZoom" object:documentScrollView];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277CD9440] object:v13];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277CD9440] object:pdfView2];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = *MEMORY[0x277CD9410];
-    v9 = [(MUPDFContentViewController *)self pdfDocument];
-    [v7 removeObserver:self name:v8 object:v9];
+    pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+    [defaultCenter3 removeObserver:self name:v8 object:pdfDocument];
 
     [(MUPDFContentViewController *)self removeThumbnailViewHolderConstraints];
-    v10 = [(MUPDFContentViewController *)self thumbnailView];
-    [v10 setPDFView:0];
+    thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+    [thumbnailView setPDFView:0];
 
-    v11 = [(MUPDFContentViewController *)self thumbnailView];
-    [v11 removeFromSuperview];
+    thumbnailView2 = [(MUPDFContentViewController *)self thumbnailView];
+    [thumbnailView2 removeFromSuperview];
 
     [(MUPDFContentViewController *)self setThumbnailView:0];
-    v12 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-    [v12 removeFromSuperview];
+    thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
+    [thumbnailViewHolder removeFromSuperview];
 
     [(MUPDFContentViewController *)self setThumbnailViewHolder:0];
     [(PDFDocument *)self->_pdfDocument setDelegate:0];
     [(PDFDocument *)self->_pdfDocument setPDFAKControllerDelegate:0];
-    [v13 setDelegate:0];
-    [v13 removeFromSuperview];
-    [v13 setDocument:0];
+    [pdfView2 setDelegate:0];
+    [pdfView2 removeFromSuperview];
+    [pdfView2 setDocument:0];
     [(MUPDFContentViewController *)self setPdfView:0];
   }
 }
 
-- (void)pdfViewDidChangeCurrentPage:(id)a3
+- (void)pdfViewDidChangeCurrentPage:(id)page
 {
-  v4 = a3;
-  v11 = [(MUPDFContentViewController *)self pdfView];
-  v5 = [v4 object];
+  pageCopy = page;
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  object = [pageCopy object];
 
-  v6 = v11;
-  if (v5 == v11)
+  v6 = pdfView;
+  if (object == pdfView)
   {
-    v7 = [v11 document];
-    v8 = [v11 currentPage];
-    v9 = v8;
-    if (v7)
+    document = [pdfView document];
+    currentPage = [pdfView currentPage];
+    v9 = currentPage;
+    if (document)
     {
-      if (v8)
+      if (currentPage)
       {
-        v10 = [v7 indexForPage:v8];
+        v10 = [document indexForPage:currentPage];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [(MUPDFContentViewController *)self _updatePageNumberOverlayToPage:v10 animate:1];
@@ -1530,48 +1530,48 @@ LABEL_47:
       }
     }
 
-    v6 = v11;
+    v6 = pdfView;
   }
 }
 
-- (void)pdfScrollViewWillBeginDragging:(id)a3
+- (void)pdfScrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [(MUPDFContentViewController *)self view];
-  v7 = [v5 window];
+  draggingCopy = dragging;
+  view = [(MUPDFContentViewController *)self view];
+  window = [view window];
 
-  v6 = [v4 object];
+  object = [draggingCopy object];
 
-  if ((!v7 || [v6 isDescendantOfView:v7]) && self->_shouldShowThumbnailView && -[MUPDFContentViewController thumbnailViewStyle](self, "thumbnailViewStyle") == 1)
+  if ((!window || [object isDescendantOfView:window]) && self->_shouldShowThumbnailView && -[MUPDFContentViewController thumbnailViewStyle](self, "thumbnailViewStyle") == 1)
   {
     self->_shouldShowThumbnailView = 0;
     [(MUPDFContentViewController *)self _updateThumbnailView];
   }
 }
 
-- (void)pdfDocumentDidUnlock:(id)a3
+- (void)pdfDocumentDidUnlock:(id)unlock
 {
-  v4 = [a3 object];
-  v5 = [(MUPDFContentViewController *)self pdfDocument];
+  object = [unlock object];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
 
-  if (v4 == v5)
+  if (object == pdfDocument)
   {
-    v7 = [(MUPDFContentViewController *)self navigationModeHorizontal];
-    v8 = [(MUPDFContentViewController *)self showsThumbnailView];
-    self->_navigationModeHorizontal = !v7;
-    self->_showsThumbnailView = !v8;
-    [(MUPDFContentViewController *)self setNavigationModeHorizontal:v7];
-    [(MUPDFContentViewController *)self setShowsThumbnailView:v8];
-    v9 = [(MUContentViewController *)self delegate];
+    navigationModeHorizontal = [(MUPDFContentViewController *)self navigationModeHorizontal];
+    showsThumbnailView = [(MUPDFContentViewController *)self showsThumbnailView];
+    self->_navigationModeHorizontal = !navigationModeHorizontal;
+    self->_showsThumbnailView = !showsThumbnailView;
+    [(MUPDFContentViewController *)self setNavigationModeHorizontal:navigationModeHorizontal];
+    [(MUPDFContentViewController *)self setShowsThumbnailView:showsThumbnailView];
+    delegate = [(MUContentViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 contentControllerDidUnlockDocument:self];
+      [delegate contentControllerDidUnlockDocument:self];
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = *MEMORY[0x277CD9410];
-    v12 = [(MUPDFContentViewController *)self pdfDocument];
-    [v10 removeObserver:self name:v11 object:v12];
+    pdfDocument2 = [(MUPDFContentViewController *)self pdfDocument];
+    [defaultCenter removeObserver:self name:v11 object:pdfDocument2];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1583,21 +1583,21 @@ LABEL_47:
 
   else
   {
-    v6 = [(MUPDFContentViewController *)self pdfDocument];
-    NSLog(&cfstr_SNotificationD.isa, "[MUPDFContentViewController pdfDocumentDidUnlock:]", v4, v6);
+    pdfDocument3 = [(MUPDFContentViewController *)self pdfDocument];
+    NSLog(&cfstr_SNotificationD.isa, "[MUPDFContentViewController pdfDocumentDidUnlock:]", object, pdfDocument3);
   }
 }
 
 - (void)_updateThumbnailView
 {
-  v2 = [(MUContentViewController *)self delegate];
+  delegate = [(MUContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v2 updateThumbnailView];
+    [delegate updateThumbnailView];
   }
 }
 
-- (void)pageLabelViewTapped:(id)a3
+- (void)pageLabelViewTapped:(id)tapped
 {
   if ([(MUPDFContentViewController *)self thumbnailViewStyle]== 1)
   {
@@ -1609,7 +1609,7 @@ LABEL_47:
   }
 }
 
-- (void)edgeSwipeGestureRecognized:(id)a3
+- (void)edgeSwipeGestureRecognized:(id)recognized
 {
   if ([(MUPDFContentViewController *)self thumbnailViewStyle]== 1 && !self->_shouldShowThumbnailView)
   {
@@ -1644,31 +1644,31 @@ LABEL_47:
   }
 }
 
-- (void)_updatePageNumberOverlayToPage:(unint64_t)a3 animate:(BOOL)a4
+- (void)_updatePageNumberOverlayToPage:(unint64_t)page animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   if ([(MUPDFContentViewController *)self canShowPageViewLabel])
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"%lu of %lu" value:&stru_286962590 table:@"MUPDFContentViewController"];
-    v10 = [(MUPDFContentViewController *)self pdfDocument];
-    v11 = [v7 stringWithFormat:v9, a3 + 1, objc_msgSend(v10, "pageCount")];
+    pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+    v11 = [v7 stringWithFormat:v9, page + 1, objc_msgSend(pdfDocument, "pageCount")];
 
-    v12 = [(MUPDFContentViewController *)self pdfView];
+    pdfView = [(MUPDFContentViewController *)self pdfView];
     v13 = self->_pageLabelView;
-    v14 = [(MUPDFPageLabelView *)v13 superview];
+    superview = [(MUPDFPageLabelView *)v13 superview];
 
-    if (!v14)
+    if (!superview)
     {
       [(MUPDFContentViewController *)self _removePageLabelViewConstraints];
     }
 
-    [(MUPDFPageLabelView *)v13 showNowInSuperView:v12 withText:v11];
+    [(MUPDFPageLabelView *)v13 showNowInSuperView:pdfView withText:v11];
     [(MUPDFContentViewController *)self _updateThumbnailViewHolderConstraints];
-    v15 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-    v16 = v15;
-    if (self->pageLabelViewTopConstraint || !v15)
+    thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
+    v16 = thumbnailViewHolder;
+    if (self->pageLabelViewTopConstraint || !thumbnailViewHolder)
     {
       [(MUPDFContentViewController *)self edgeInsets];
       [(NSLayoutConstraint *)self->pageLabelViewTopConstraint setConstant:v23 + 20.0];
@@ -1676,23 +1676,23 @@ LABEL_47:
 
     else
     {
-      v17 = [(MUPDFPageLabelView *)v13 topAnchor];
-      v18 = [v16 topAnchor];
+      topAnchor = [(MUPDFPageLabelView *)v13 topAnchor];
+      topAnchor2 = [v16 topAnchor];
       [(MUPDFContentViewController *)self edgeInsets];
-      v20 = [v17 constraintEqualToAnchor:v18 constant:v19 + 20.0];
+      v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v19 + 20.0];
       pageLabelViewTopConstraint = self->pageLabelViewTopConstraint;
       self->pageLabelViewTopConstraint = v20;
 
       [(NSLayoutConstraint *)self->pageLabelViewTopConstraint setActive:1];
-      v22 = [(MUPDFContentViewController *)self view];
-      [v22 setNeedsUpdateConstraints];
+      view = [(MUPDFContentViewController *)self view];
+      [view setNeedsUpdateConstraints];
     }
 
     pageLabelViewSideConstraint = self->pageLabelViewSideConstraint;
     if (pageLabelViewSideConstraint)
     {
       [(NSLayoutConstraint *)pageLabelViewSideConstraint setConstant:20.0];
-      if (v4)
+      if (animateCopy)
       {
 LABEL_10:
         v33[0] = MEMORY[0x277D85DD0];
@@ -1710,33 +1710,33 @@ LABEL_16:
     else
     {
       thumbnailViewStyle = self->_thumbnailViewStyle;
-      v26 = [(MUPDFPageLabelView *)v13 leadingAnchor];
+      leadingAnchor = [(MUPDFPageLabelView *)v13 leadingAnchor];
       if (thumbnailViewStyle == 1)
       {
-        v27 = [v16 trailingAnchor];
-        v28 = [v26 constraintEqualToAnchor:v27 constant:20.0];
-        v29 = self->pageLabelViewSideConstraint;
+        trailingAnchor = [v16 trailingAnchor];
+        v28 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:20.0];
+        leadingAnchor2 = self->pageLabelViewSideConstraint;
         self->pageLabelViewSideConstraint = v28;
       }
 
       else
       {
-        v27 = [(MUPDFContentViewController *)self view];
-        v29 = [v27 leadingAnchor];
-        v30 = [v26 constraintEqualToAnchor:v29 constant:20.0];
+        trailingAnchor = [(MUPDFContentViewController *)self view];
+        leadingAnchor2 = [trailingAnchor leadingAnchor];
+        v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
         v31 = self->pageLabelViewSideConstraint;
         self->pageLabelViewSideConstraint = v30;
       }
 
       [(NSLayoutConstraint *)self->pageLabelViewSideConstraint setActive:1];
-      if (v4)
+      if (animateCopy)
       {
         goto LABEL_10;
       }
     }
 
-    v32 = [(MUPDFContentViewController *)self view];
-    [v32 updateConstraints];
+    view2 = [(MUPDFContentViewController *)self view];
+    [view2 updateConstraints];
 
     goto LABEL_16;
   }
@@ -1750,14 +1750,14 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
 
 - (BOOL)canEditContent
 {
-  v2 = [(MUPDFContentViewController *)self pdfDocument];
-  v3 = v2;
-  if (v2)
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  v3 = pdfDocument;
+  if (pdfDocument)
   {
-    v4 = [v2 allowsDocumentAssembly];
-    v5 = [v3 allowsDocumentChanges];
-    v6 = v5 & ([v3 isLocked] ^ 1);
-    if (v4)
+    allowsDocumentAssembly = [pdfDocument allowsDocumentAssembly];
+    allowsDocumentChanges = [v3 allowsDocumentChanges];
+    v6 = allowsDocumentChanges & ([v3 isLocked] ^ 1);
+    if (allowsDocumentAssembly)
     {
       v7 = v6;
     }
@@ -1776,11 +1776,11 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
   return v7;
 }
 
-- (BOOL)acceptSingleTouch:(id)a3
+- (BOOL)acceptSingleTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(MUPDFContentViewController *)self view];
-  [v4 locationInView:v5];
+  touchCopy = touch;
+  view = [(MUPDFContentViewController *)self view];
+  [touchCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -1791,15 +1791,15 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
 
   else
   {
-    v11 = [(MUPDFContentViewController *)self pdfView];
-    v12 = v11;
-    v10 = v11 && ([v11 shouldAcceptTouch:v4 ofGestureRecognizer:0] & 1) != 0;
+    pdfView = [(MUPDFContentViewController *)self pdfView];
+    v12 = pdfView;
+    v10 = pdfView && ([pdfView shouldAcceptTouch:touchCopy ofGestureRecognizer:0] & 1) != 0;
   }
 
   return v10;
 }
 
-- (BOOL)_pageLabelExistAtPoint:(CGPoint)a3
+- (BOOL)_pageLabelExistAtPoint:(CGPoint)point
 {
   pageLabelView = self->_pageLabelView;
   if (!pageLabelView)
@@ -1807,12 +1807,12 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = pageLabelView;
-  v8 = [(MUPDFContentViewController *)self view];
-  v9 = [(MUPDFPageLabelView *)v7 superview];
-  [v8 convertPoint:v9 toView:{x, y}];
+  view = [(MUPDFContentViewController *)self view];
+  superview = [(MUPDFPageLabelView *)v7 superview];
+  [view convertPoint:superview toView:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -1832,15 +1832,15 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
   return CGRectContainsPoint(*&v22, *&v26);
 }
 
-- (BOOL)_thumbnailViewExistAtPoint:(CGPoint)a3
+- (BOOL)_thumbnailViewExistAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUPDFContentViewController *)self thumbnailView];
-  v6 = v5;
-  if (v5)
+  y = point.y;
+  x = point.x;
+  thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+  v6 = thumbnailView;
+  if (thumbnailView)
   {
-    [v5 frame];
+    [thumbnailView frame];
     v9.x = x;
     v9.y = y;
     v7 = CGRectContainsPoint(v10, v9);
@@ -1854,75 +1854,75 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
   return v7;
 }
 
-- (void)setThumbnailViewStyle:(int64_t)a3
+- (void)setThumbnailViewStyle:(int64_t)style
 {
-  if (self->_thumbnailViewStyle != a3)
+  if (self->_thumbnailViewStyle != style)
   {
-    self->_thumbnailViewStyle = a3;
-    v5 = [MEMORY[0x277D75348] clearColor];
-    v6 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-    [v6 setBackgroundColor:v5];
+    self->_thumbnailViewStyle = style;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    thumbnailViewHolder = [(MUPDFContentViewController *)self thumbnailViewHolder];
+    [thumbnailViewHolder setBackgroundColor:clearColor];
 
     [(MUPDFContentViewController *)self removeThumbnailViewHolderConstraints];
     [(MUPDFContentViewController *)self _updateThumbnailViewHolderBackgroundColor];
     [(MUPDFContentViewController *)self _removePageLabelViewConstraints];
-    if (a3 == 1)
+    if (style == 1)
     {
       [(MUPDFContentViewController *)self _updateThumbnailViewHolderConstraints];
-      v7 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-      v8 = [v7 superview];
-      v9 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
-      v10 = [v9 secondItem];
+      thumbnailViewHolder2 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+      superview = [thumbnailViewHolder2 superview];
+      thumbnailViewHolderRevealConstraint = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
+      secondItem = [thumbnailViewHolderRevealConstraint secondItem];
 
-      if (v8 == v10)
+      if (superview == secondItem)
       {
-        v11 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-        [v11 frame];
+        thumbnailViewHolder3 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+        [thumbnailViewHolder3 frame];
         v13 = v12;
         v15 = v14;
         v17 = v16;
 
-        v18 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-        v19 = [v18 effectiveUserInterfaceLayoutDirection];
+        thumbnailViewHolder4 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+        effectiveUserInterfaceLayoutDirection = [thumbnailViewHolder4 effectiveUserInterfaceLayoutDirection];
 
-        if (v19)
+        if (effectiveUserInterfaceLayoutDirection)
         {
-          v20 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-          v21 = [v20 superview];
-          [v21 bounds];
+          thumbnailViewHolder5 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+          superview2 = [thumbnailViewHolder5 superview];
+          [superview2 bounds];
           v23 = v22;
-          v24 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
-          [v24 constant];
+          thumbnailViewHolderRevealConstraint2 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
+          [thumbnailViewHolderRevealConstraint2 constant];
           v26 = v23 - v25;
         }
 
         else
         {
-          v20 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
-          [v20 constant];
+          thumbnailViewHolder5 = [(MUPDFContentViewController *)self thumbnailViewHolderRevealConstraint];
+          [thumbnailViewHolder5 constant];
           v26 = v27;
         }
 
-        v28 = [(MUPDFContentViewController *)self thumbnailViewHolder];
-        [v28 setFrame:{v26, v13, v15, v17}];
+        thumbnailViewHolder6 = [(MUPDFContentViewController *)self thumbnailViewHolder];
+        [thumbnailViewHolder6 setFrame:{v26, v13, v15, v17}];
       }
     }
   }
 }
 
-- (BOOL)isTouchInThumbnailView:(id)a3
+- (BOOL)isTouchInThumbnailView:(id)view
 {
-  v4 = a3;
-  v5 = [(MUPDFContentViewController *)self thumbnailView];
-  v6 = v5;
-  if (v5)
+  viewCopy = view;
+  thumbnailView = [(MUPDFContentViewController *)self thumbnailView];
+  v6 = thumbnailView;
+  if (thumbnailView)
   {
-    [v5 bounds];
+    [thumbnailView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v4 locationInView:v6];
+    [viewCopy locationInView:v6];
     v19.x = v15;
     v19.y = v16;
     v20.origin.x = v8;
@@ -1942,9 +1942,9 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
 
 - (CGRect)visibleContentRect
 {
-  v3 = [(MUPDFContentViewController *)self view];
-  v4 = [v3 window];
-  [(MUPDFContentViewController *)self visibleContentRectInCoordinateSpace:v4];
+  view = [(MUPDFContentViewController *)self view];
+  window = [view window];
+  [(MUPDFContentViewController *)self visibleContentRectInCoordinateSpace:window];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1961,28 +1961,28 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
   return result;
 }
 
-- (CGRect)visibleContentRectInCoordinateSpace:(id)a3
+- (CGRect)visibleContentRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(MUContentViewController *)self annotationController];
-  v6 = [(MUPDFContentViewController *)self pdfView];
-  [v6 bounds];
-  [v6 convertRect:v4 toCoordinateSpace:?];
+  spaceCopy = space;
+  annotationController = [(MUContentViewController *)self annotationController];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  [pdfView bounds];
+  [pdfView convertRect:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MUPDFContentViewController *)self pdfDocument];
-  v16 = [v15 isLocked];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  isLocked = [pdfDocument isLocked];
 
-  if ((v16 & 1) == 0)
+  if ((isLocked & 1) == 0)
   {
-    v17 = [v6 pageViewForPageAtIndex:{objc_msgSend(v5, "currentPageIndex")}];
+    v17 = [pdfView pageViewForPageAtIndex:{objc_msgSend(annotationController, "currentPageIndex")}];
     v18 = v17;
     if (v17)
     {
       [v17 bounds];
-      [v18 convertRect:v4 toCoordinateSpace:?];
+      [v18 convertRect:spaceCopy toCoordinateSpace:?];
       v8 = v19;
       v10 = v20;
       v12 = v21;
@@ -2003,31 +2003,31 @@ void __69__MUPDFContentViewController__updatePageNumberOverlayToPage_animate___b
 
 - (id)contentSnapshot
 {
-  v3 = [(MUContentViewController *)self annotationController];
-  v4 = [(MUPDFContentViewController *)self pdfDocument];
-  v5 = [v4 isLocked];
+  annotationController = [(MUContentViewController *)self annotationController];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  isLocked = [pdfDocument isLocked];
 
-  if (v5)
+  if (isLocked)
   {
-    v6 = [(MUPDFContentViewController *)self pdfView];
+    pdfView = [(MUPDFContentViewController *)self pdfView];
   }
 
   else
   {
-    v7 = [v3 currentPageIndex];
-    v8 = [(MUPDFContentViewController *)self pdfView];
-    v6 = [v8 pageViewForPageAtIndex:v7];
+    currentPageIndex = [annotationController currentPageIndex];
+    pdfView2 = [(MUPDFContentViewController *)self pdfView];
+    pdfView = [pdfView2 pageViewForPageAtIndex:currentPageIndex];
 
-    if ([v3 isOverlayViewLoadedAtIndex:v7])
+    if ([annotationController isOverlayViewLoadedAtIndex:currentPageIndex])
     {
-      v9 = [v3 overlayViewAtIndex:v7];
+      v9 = [annotationController overlayViewAtIndex:currentPageIndex];
       goto LABEL_6;
     }
   }
 
   v9 = 0;
 LABEL_6:
-  v10 = [v6 snapshotViewAfterScreenUpdates:1];
+  v10 = [pdfView snapshotViewAfterScreenUpdates:1];
   if (v9)
   {
     v11 = [v9 snapshotViewAfterScreenUpdates:1];
@@ -2038,20 +2038,20 @@ LABEL_6:
   return v10;
 }
 
-- (void)highlight:(id)a3
+- (void)highlight:(id)highlight
 {
   v5 = objc_alloc_init(MEMORY[0x277D75220]);
   [v5 setTag:764050];
-  v4 = [(MUContentViewController *)self annotationController];
-  [v4 performActionForSender:v5];
+  annotationController = [(MUContentViewController *)self annotationController];
+  [annotationController performActionForSender:v5];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277D75718] sharedMenuController];
-  v8 = v7;
-  if (v7 == v6)
+  senderCopy = sender;
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  v8 = mEMORY[0x277D75718];
+  if (mEMORY[0x277D75718] == senderCopy)
   {
   }
 
@@ -2062,34 +2062,34 @@ LABEL_6:
 
     if ((isKindOfClass & 1) == 0)
     {
-      v10 = [(MUPDFContentViewController *)&v15 canPerformAction:a3 withSender:v6, self, MUPDFContentViewController, v16.receiver, v16.super_class];
+      mUPDFContentViewController = [(MUPDFContentViewController *)&v15 canPerformAction:action withSender:senderCopy, self, MUPDFContentViewController, v16.receiver, v16.super_class];
       goto LABEL_7;
     }
   }
 
-  if (sel_highlight_ == a3)
+  if (sel_highlight_ == action)
   {
     v12 = objc_alloc_init(MEMORY[0x277D75220]);
     [v12 setTag:764050];
-    v13 = [(MUContentViewController *)self annotationController];
-    v11 = [v13 validateSender:v12];
+    annotationController = [(MUContentViewController *)self annotationController];
+    v11 = [annotationController validateSender:v12];
 
     goto LABEL_9;
   }
 
-  v10 = [(MUPDFContentViewController *)&v16 canPerformAction:a3 withSender:v6, v15.receiver, v15.super_class, self, MUPDFContentViewController];
+  mUPDFContentViewController = [(MUPDFContentViewController *)&v16 canPerformAction:action withSender:senderCopy, v15.receiver, v15.super_class, self, MUPDFContentViewController];
 LABEL_7:
-  v11 = v10;
+  v11 = mUPDFContentViewController;
 LABEL_9:
 
   return v11;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(MUPDFContentViewController *)self setViewIsTransitioningBetweenSizes:1];
   [(MUPDFContentViewController *)self _prepareToRotate];
   v9[4] = self;
@@ -2102,16 +2102,16 @@ LABEL_9:
   v9[1] = 3221225472;
   v9[2] = __81__MUPDFContentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v9[3] = &unk_27986EA70;
-  [v7 animateAlongsideTransition:v10 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:v9];
   v8.receiver = self;
   v8.super_class = MUPDFContentViewController;
-  [(MUPDFContentViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(MUPDFContentViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (void)_prepareToRotate
 {
-  v2 = [(MUPDFContentViewController *)self pdfView];
-  [v2 beginPDFViewRotation];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  [pdfView beginPDFViewRotation];
 }
 
 - (void)_recoverFromRotation
@@ -2119,22 +2119,22 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v3 = [(MUPDFContentViewController *)self pdfView];
-  [v3 endPDFViewRotation];
-  v4 = [(MUPDFContentViewController *)self pdfView];
-  v5 = [v4 visiblePages];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  [pdfView endPDFViewRotation];
+  pdfView2 = [(MUPDFContentViewController *)self pdfView];
+  visiblePages = [pdfView2 visiblePages];
 
-  v6 = [(MUPDFContentViewController *)self pdfDocument];
-  v7 = [v6 isLocked];
+  pdfDocument = [(MUPDFContentViewController *)self pdfDocument];
+  isLocked = [pdfDocument isLocked];
 
-  if ((v7 & 1) == 0)
+  if ((isLocked & 1) == 0)
   {
-    v8 = [(MUContentViewController *)self annotationController];
+    annotationController = [(MUContentViewController *)self annotationController];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v5;
+    v9 = visiblePages;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -2151,10 +2151,10 @@ LABEL_9:
           }
 
           v14 = *(*(&v17 + 1) + 8 * v13);
-          v15 = [(MUPDFContentViewController *)self pdfDocument];
-          v16 = [v15 indexForPage:v14];
+          pdfDocument2 = [(MUPDFContentViewController *)self pdfDocument];
+          v16 = [pdfDocument2 indexForPage:v14];
 
-          [v8 updateOverlayViewAtIndex:v16];
+          [annotationController updateOverlayViewAtIndex:v16];
           ++v13;
         }
 
@@ -2169,35 +2169,35 @@ LABEL_9:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (CGSize)_medianSizeForCurrentDocumentInPDFViewWithGetter:(id)a3
+- (CGSize)_medianSizeForCurrentDocumentInPDFViewWithGetter:(id)getter
 {
   v20[64] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MUPDFContentViewController *)self pdfView];
-  v6 = [v5 document];
-  v7 = v6;
+  getterCopy = getter;
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  document = [pdfView document];
+  v7 = document;
   v8 = 792.0;
   v9 = 612.0;
-  if (v5 && v6 && [v6 pageCount])
+  if (pdfView && document && [document pageCount])
   {
-    v10 = [v7 pageCount];
-    if (v10 >= 2)
+    pageCount = [v7 pageCount];
+    if (pageCount >= 2)
     {
       v11 = 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = pageCount;
     }
 
-    if (v10)
+    if (pageCount)
     {
       v12 = 0;
       do
       {
         v13 = [v7 pageAtIndex:v12];
-        v14 = v4[2](v4, v13);
+        v14 = getterCopy[2](getterCopy, v13);
         v16 = v15;
 
         *&v20[v12] = v14;
@@ -2220,47 +2220,47 @@ LABEL_9:
 
 - (void)_updateMinMaxZoomFactor
 {
-  v4 = [(MUPDFContentViewController *)self pdfView];
-  v2 = [v4 documentScrollView];
-  [v2 setMinimumZoomScale:0.1];
-  [v4 autoScaleFactor];
-  [v2 setMinimumZoomScale:{fmin(v3, 10.0)}];
-  [v2 setMaximumZoomScale:10.0];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  documentScrollView = [pdfView documentScrollView];
+  [documentScrollView setMinimumZoomScale:0.1];
+  [pdfView autoScaleFactor];
+  [documentScrollView setMinimumZoomScale:{fmin(v3, 10.0)}];
+  [documentScrollView setMaximumZoomScale:10.0];
 }
 
-- (void)_userChangedScrollViewMagnificationNotification:(id)a3
+- (void)_userChangedScrollViewMagnificationNotification:(id)notification
 {
-  v4 = a3;
-  v11 = [(MUPDFContentViewController *)self pdfView];
-  v5 = [v4 object];
+  notificationCopy = notification;
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  object = [notificationCopy object];
 
-  v6 = [v11 documentScrollView];
+  documentScrollView = [pdfView documentScrollView];
 
-  if (v5 == v6)
+  if (object == documentScrollView)
   {
-    [v11 scaleFactor];
+    [pdfView scaleFactor];
     v8 = v7;
-    [v11 autoScaleFactor];
+    [pdfView autoScaleFactor];
     v10 = v9 + 0.005;
-    if (v8 < v9 + 0.005 != [v11 autoScales])
+    if (v8 < v9 + 0.005 != [pdfView autoScales])
     {
-      [v11 setAutoScales:v8 < v10];
+      [pdfView setAutoScales:v8 < v10];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = MUPDFContentViewController;
-  v4 = a3;
-  [(MUPDFContentViewController *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(MUPDFContentViewController *)&v8 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(MUPDFContentViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(MUPDFContentViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(MUPDFContentViewController *)self _updateThumbnailViewAppearance];
     [(MUPDFContentViewController *)self removeThumbnailViewHolderConstraints];
@@ -2268,21 +2268,21 @@ LABEL_9:
   }
 }
 
-- (CGAffineTransform)_compensatingAffineTransformForPage:(SEL)a3
+- (CGAffineTransform)_compensatingAffineTransformForPage:(SEL)page
 {
   v5 = a4;
-  v6 = [v5 rotation];
+  rotation = [v5 rotation];
   [v5 boundsForBox:1];
   v8 = v7;
   v10 = v9;
 
   memset(&v18, 0, sizeof(v18));
-  CGAffineTransformMakeRotation(&v18, v6 * 3.14159265 / 180.0);
+  CGAffineTransformMakeRotation(&v18, rotation * 3.14159265 / 180.0);
   v11 = *(MEMORY[0x277CBF2C0] + 16);
   *&v17.a = *MEMORY[0x277CBF2C0];
   *&v17.c = v11;
   *&v17.tx = *(MEMORY[0x277CBF2C0] + 32);
-  switch(v6)
+  switch(rotation)
   {
     case 270:
       v13 = 0.0;
@@ -2308,25 +2308,25 @@ LABEL_8:
   return CGAffineTransformConcat(retstr, &t1, &v15);
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  v4 = [(MUPDFContentViewController *)self pdfView];
-  v3 = [v4 findInteraction];
-  [v3 presentFindNavigatorShowingReplace:0];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  findInteraction = [pdfView findInteraction];
+  [findInteraction presentFindNavigatorShowingReplace:0];
 }
 
-- (void)findNext:(id)a3
+- (void)findNext:(id)next
 {
-  v4 = [(MUPDFContentViewController *)self pdfView];
-  v3 = [v4 findInteraction];
-  [v3 findNext];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  findInteraction = [pdfView findInteraction];
+  [findInteraction findNext];
 }
 
-- (void)findPrevious:(id)a3
+- (void)findPrevious:(id)previous
 {
-  v4 = [(MUPDFContentViewController *)self pdfView];
-  v3 = [v4 findInteraction];
-  [v3 findPrevious];
+  pdfView = [(MUPDFContentViewController *)self pdfView];
+  findInteraction = [pdfView findInteraction];
+  [findInteraction findPrevious];
 }
 
 - (UIEdgeInsets)edgeInsets

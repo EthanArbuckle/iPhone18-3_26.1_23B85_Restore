@@ -1,24 +1,24 @@
 @interface NavSignLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityAttributedUserInputLabels;
 @end
 
 @implementation NavSignLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NavSignLabel" hasInstanceMethod:@"textAlternatives" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKServerFormattedString" hasInstanceMethod:@"multiPartAttributedStringWithAttributes:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"MKMultiPartAttributedString" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NavSignLabel" hasInstanceMethod:@"textAlternatives" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKServerFormattedString" hasInstanceMethod:@"multiPartAttributedStringWithAttributes:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"MKMultiPartAttributedString" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityAttributedLabel
 {
   v2 = [(NavSignLabelAccessibility *)self safeArrayForKey:@"textAlternatives"];
   LOBYTE(v9) = 0;
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
   v4 = __UIAccessibilitySafeClass();
 
   v15 = 0;

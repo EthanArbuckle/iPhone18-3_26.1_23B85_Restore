@@ -18,7 +18,7 @@
   }
 
   [v4 setBackgroundColor:v5];
-  [a1 setSelectedBackgroundView:v4];
+  [self setSelectedBackgroundView:v4];
 }
 
 @end

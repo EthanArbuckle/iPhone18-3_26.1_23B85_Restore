@@ -1,29 +1,29 @@
 @interface NWURLLoaderHTTP
 - (BOOL)allowsWriteAfterBecomingStream;
-- (BOOL)canHandleRedirectionToRequest:(id)a3;
+- (BOOL)canHandleRedirectionToRequest:(id)request;
 - (NSString)multipartMixedReplaceBoundary;
 - (NWConcrete_nw_connection)underlyingConnection;
-- (NWURLError)errorForErrorCode:(id *)a1;
+- (NWURLError)errorForErrorCode:(id *)code;
 - (OS_nw_http_fields)trailerFields;
 - (OS_sec_trust)peerTrust;
 - (id)errorForClientMetadataError;
-- (id)errorForNWError:(id *)a1;
+- (id)errorForNWError:(id *)error;
 - (id)takeCachedResponse;
 - (void)addProgressObserverForResponseStallTimer;
 - (void)cancelConnection;
-- (void)continueLoading:(nw_protocol_options_t)a1;
-- (void)notifyRequestCompletion:(id)a3;
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
+- (void)continueLoading:(nw_protocol_options_t)loading;
+- (void)notifyRequestCompletion:(id)completion;
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
 - (void)readResponse;
-- (void)readResponse:(id)a3;
-- (void)responseFromMetadata:(*-[NWURLLoaderHTTP responseFromMetadata:(void *)a2 ](uint64_t)a1;
-- (void)restartStallTimer:(id)a3;
-- (void)setPendingError:(uint64_t)a1;
-- (void)start:(id)a3;
+- (void)readResponse:(id)response;
+- (void)responseFromMetadata:(*-[NWURLLoaderHTTP responseFromMetadata:(void *)metadata ](uint64_t)self;
+- (void)restartStallTimer:(id)timer;
+- (void)setPendingError:(uint64_t)error;
+- (void)start:(id)start;
 - (void)stop;
 - (void)stopResponseStallTimer;
-- (void)updateClient:(id)a3;
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5;
+- (void)updateClient:(id)client;
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler;
 @end
 
 @implementation NWURLLoaderHTTP
@@ -47,19 +47,19 @@
 
 - (void)addProgressObserverForResponseStallTimer
 {
-  if (a1 && *(a1 + 160) && *(a1 + 152))
+  if (self && *(self + 160) && *(self + 152))
   {
     if (HTTPNotificationCenter_onceToken != -1)
     {
-      v3 = a1;
+      selfCopy = self;
       dispatch_once(&HTTPNotificationCenter_onceToken, &__block_literal_global_233);
-      a1 = v3;
+      self = selfCopy;
     }
 
-    v1 = *(a1 + 152);
-    v2 = a1;
+    v1 = *(self + 152);
+    selfCopy2 = self;
     v4 = HTTPNotificationCenter_center;
-    [v4 addObserver:v2 selector:sel_restartStallTimer_ name:@"NWURLLoaderHTTPConnectionProgressNotification" object:v1];
+    [v4 addObserver:selfCopy2 selector:sel_restartStallTimer_ name:@"NWURLLoaderHTTPConnectionProgressNotification" object:v1];
   }
 }
 
@@ -124,16 +124,16 @@
     if (v16)
     {
       v18 = [NWURLError alloc];
-      v19 = [(NWURLLoaderClient *)self->_client loaderTask];
-      v20 = self;
-      v21 = v19;
+      loaderTask = [(NWURLLoaderClient *)self->_client loaderTask];
+      selfCopy = self;
+      v21 = loaderTask;
       if (v18)
       {
         v22 = [(NWURLError *)v18 initWithErrorCode:-999];
         v18 = v22;
         if (v22)
         {
-          [(NWURLError *)v22 fillErrorForLoader:v20 andTask:v21];
+          [(NWURLError *)v22 fillErrorForLoader:selfCopy andTask:v21];
         }
       }
 
@@ -158,13 +158,13 @@
 
 - (void)cancelConnection
 {
-  if (a1)
+  if (self)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __35__NWURLLoaderHTTP_cancelConnection__block_invoke;
     v6[3] = &unk_1E6A3A528;
-    v6[4] = a1;
+    v6[4] = self;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 0x40000000;
     v8 = __nw_http_diag_log_for_level_block_invoke;
@@ -175,18 +175,18 @@
     os_unfair_lock_lock(&lock);
     v8(v7);
     os_unfair_lock_unlock(&lock);
-    if ((*(a1 + 15) & 1) == 0)
+    if ((*(self + 15) & 1) == 0)
     {
-      *(a1 + 15) = 1;
-      v2 = *(a1 + 72);
+      *(self + 15) = 1;
+      v2 = *(self + 72);
       if (v2)
       {
-        v3 = *(a1 + 40);
+        v3 = *(self + 40);
         v4 = v2;
-        v5 = [(NWURLSessionTaskConfiguration *)v3 activity];
-        nw_connection_end_activity(v4, v5);
+        activity = [(NWURLSessionTaskConfiguration *)v3 activity];
+        nw_connection_end_activity(v4, activity);
 
-        nw_connection_cancel(*(a1 + 72));
+        nw_connection_cancel(*(self + 72));
       }
     }
   }
@@ -194,29 +194,29 @@
 
 - (void)stopResponseStallTimer
 {
-  if (a1)
+  if (self)
   {
-    v3 = *(a1 + 160);
+    v3 = *(self + 160);
     if (v3)
     {
       nw_queue_cancel_source(v3, a2);
-      *(a1 + 160) = 0;
-      if (*(a1 + 152))
+      *(self + 160) = 0;
+      if (*(self + 152))
       {
         if (HTTPNotificationCenter_onceToken != -1)
         {
           dispatch_once(&HTTPNotificationCenter_onceToken, &__block_literal_global_233);
         }
 
-        v4 = *(a1 + 152);
+        v4 = *(self + 152);
         v5 = HTTPNotificationCenter_center;
-        [v5 removeObserver:a1 name:@"NWURLLoaderHTTPConnectionProgressNotification" object:v4];
+        [v5 removeObserver:self name:@"NWURLLoaderHTTPConnectionProgressNotification" object:v4];
       }
     }
   }
 }
 
-- (void)restartStallTimer:(id)a3
+- (void)restartStallTimer:(id)timer
 {
   if (self)
   {
@@ -255,15 +255,15 @@
   return self;
 }
 
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   if (!self)
   {
     v13 = 0;
 LABEL_9:
-    v9[2](v9, v13);
+    handlerCopy[2](handlerCopy, v13);
 
     goto LABEL_10;
   }
@@ -271,16 +271,16 @@ LABEL_9:
   if (!self->_protocolSwitched || !self->_becameStream)
   {
     v13 = [NWURLError alloc];
-    v14 = [(NWURLLoaderClient *)self->_client loaderTask];
-    v15 = self;
-    v16 = v14;
+    loaderTask = [(NWURLLoaderClient *)self->_client loaderTask];
+    selfCopy = self;
+    v16 = loaderTask;
     if (v13)
     {
       v17 = [(NWURLError *)v13 initWithErrorCode:-1005];
       v13 = v17;
       if (v17)
       {
-        [(NWURLError *)v17 fillErrorForLoader:v15 andTask:v16];
+        [(NWURLError *)v17 fillErrorForLoader:selfCopy andTask:v16];
       }
     }
 
@@ -294,10 +294,10 @@ LABEL_9:
   completion[2] = __56__NWURLLoaderHTTP_writeData_complete_completionHandler___block_invoke;
   completion[3] = &unk_1E6A3A6A0;
   v19 = v10;
-  v20 = self;
-  v21 = v9;
+  selfCopy2 = self;
+  v21 = handlerCopy;
   v12 = v10;
-  nw_connection_send(&connection->super, v8, &__block_literal_global_8_44676, a4, completion);
+  nw_connection_send(&connection->super, dataCopy, &__block_literal_global_8_44676, complete, completion);
 
 LABEL_10:
 }
@@ -357,27 +357,27 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)errorForNWError:(id *)a1
+- (id)errorForNWError:(id *)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [(NWURLLoaderHTTP *)a1 errorForClientMetadataError];
-    v5 = v4;
-    if (v4)
+    errorForClientMetadataError = [(NWURLLoaderHTTP *)error errorForClientMetadataError];
+    v5 = errorForClientMetadataError;
+    if (errorForClientMetadataError)
     {
-      a1 = v4;
+      error = errorForClientMetadataError;
     }
 
     else
     {
       v6 = [NWURLError alloc];
-      v7 = [a1[6] loaderTask];
-      a1 = [(NWURLError *)v6 initWithNWError:v3 forLoader:a1 andTask:v7];
+      loaderTask = [error[6] loaderTask];
+      error = [(NWURLError *)v6 initWithNWError:v3 forLoader:error andTask:loaderTask];
     }
   }
 
-  return a1;
+  return error;
 }
 
 - (id)errorForClientMetadataError
@@ -386,19 +386,19 @@ LABEL_13:
   if (p_isa)
   {
     v1 = p_isa;
-    v2 = [p_isa[6] clientMetadata];
+    clientMetadata = [p_isa[6] clientMetadata];
 
-    if (!v2)
+    if (!clientMetadata)
     {
       goto LABEL_13;
     }
 
-    v3 = [v1[6] clientMetadata];
-    v4 = v3;
-    if (v3)
+    clientMetadata2 = [v1[6] clientMetadata];
+    v4 = clientMetadata2;
+    if (clientMetadata2)
     {
       v5 = nw_protocol_copy_http_client_definition_onceToken;
-      v6 = v3;
+      v6 = clientMetadata2;
       if (v5 != -1)
       {
         dispatch_once(&nw_protocol_copy_http_client_definition_onceToken, &__block_literal_global_85);
@@ -430,9 +430,9 @@ LABEL_13:
         {
           v10 = qword_182BD33A8[v9];
           v11 = [NWURLError alloc];
-          v12 = [v1[6] loaderTask];
+          loaderTask = [v1[6] loaderTask];
           v13 = v1;
-          v4 = v12;
+          v4 = loaderTask;
           if (v11 && (v14 = [(NWURLError *)v11 initWithErrorCode:v10]) != 0)
           {
             v15 = v14;
@@ -635,21 +635,21 @@ LABEL_17:
   return self;
 }
 
-- (void)notifyRequestCompletion:(id)a3
+- (void)notifyRequestCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self)
   {
-    newValue = v4;
+    newValue = completionCopy;
     if (self->_requestCompleteInternal)
     {
-      (*(v4 + 2))(v4);
+      (*(completionCopy + 2))(completionCopy);
     }
 
     else
     {
-      objc_setProperty_nonatomic_copy(self, v4, v4, 144);
+      objc_setProperty_nonatomic_copy(self, completionCopy, completionCopy, 144);
     }
 
     v5 = newValue;
@@ -676,19 +676,19 @@ LABEL_17:
   return self;
 }
 
-- (BOOL)canHandleRedirectionToRequest:(id)a3
+- (BOOL)canHandleRedirectionToRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [(NSURL *)v3 _NW_isHTTPish];
+  v3 = [request URL];
+  _NW_isHTTPish = [(NSURL *)v3 _NW_isHTTPish];
 
-  return v4;
+  return _NW_isHTTPish;
 }
 
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
+  lengthCopy = length;
+  handlerCopy = handler;
+  v9 = handlerCopy;
   if (!self)
   {
     connection = 0;
@@ -704,8 +704,8 @@ LABEL_9:
     v20[2] = __85__NWURLLoaderHTTP_readDataOfMinimumIncompleteLength_maximumLength_completionHandler___block_invoke;
     v20[3] = &unk_1E6A3A670;
     v20[4] = self;
-    v21 = v8;
-    nw_connection_receive_internal(connection, 0, v6, a4, v20);
+    v21 = handlerCopy;
+    nw_connection_receive_internal(connection, 0, lengthCopy, maximumLength, v20);
 
     goto LABEL_15;
   }
@@ -713,41 +713,41 @@ LABEL_9:
   if (self->_loadingFromCache)
   {
     v10 = self->_cachedResponseFound;
-    v11 = [(NSCachedURLResponse *)v10 data];
-    v12 = [v11 length];
+    data = [(NSCachedURLResponse *)v10 data];
+    v12 = [data length];
     cachedResponseDataOffset = self->_cachedResponseDataOffset;
 
-    v14 = [(NSCachedURLResponse *)self->_cachedResponseFound data];
-    v15 = [v14 _createDispatchData];
+    data2 = [(NSCachedURLResponse *)self->_cachedResponseFound data];
+    _createDispatchData = [data2 _createDispatchData];
 
-    if (v12 <= cachedResponseDataOffset + a4)
+    if (v12 <= cachedResponseDataOffset + maximumLength)
     {
-      if (v15)
+      if (_createDispatchData)
       {
         v18 = self->_cachedResponseDataOffset;
         if (v18)
         {
-          subrange = dispatch_data_create_subrange(v15, v18, a4);
+          subrange = dispatch_data_create_subrange(_createDispatchData, v18, maximumLength);
 
-          v15 = subrange;
+          _createDispatchData = subrange;
         }
       }
 
-      (v9)[2](v9, v15, 1, 0);
+      (v9)[2](v9, _createDispatchData, 1, 0);
     }
 
     else
     {
-      v16 = dispatch_data_create_subrange(v15, self->_cachedResponseDataOffset, a4);
+      v16 = dispatch_data_create_subrange(_createDispatchData, self->_cachedResponseDataOffset, maximumLength);
 
-      self->_cachedResponseDataOffset += a4;
+      self->_cachedResponseDataOffset += maximumLength;
       (v9)[2](v9, v16, 0, 0);
     }
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 1, self->_pendingError);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1, self->_pendingError);
   }
 
 LABEL_15:
@@ -1087,19 +1087,19 @@ LABEL_77:
   (*(v64 + 16))(v64, v9, a4, v67);
 }
 
-- (void)setPendingError:(uint64_t)a1
+- (void)setPendingError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((error + 88), a2);
   }
 }
 
-- (void)readResponse:(id)a3
+- (void)readResponse:(id)response
 {
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, a2, a3, 136);
+    objc_setProperty_nonatomic_copy(self, a2, response, 136);
 
     [(NWURLLoaderHTTP *)self readResponse];
   }
@@ -1107,30 +1107,30 @@ LABEL_77:
 
 - (void)readResponse
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     if (v2)
     {
-      if (*(a1 + 12) == 1)
+      if (*(self + 12) == 1)
       {
         v12 = v2;
-        objc_setProperty_nonatomic_copy(a1, v3, 0, 136);
-        (*(v12 + 2))(v12, 0, *(a1 + 88));
+        objc_setProperty_nonatomic_copy(self, v3, 0, 136);
+        (*(v12 + 2))(v12, 0, *(self + 88));
       }
 
       else
       {
-        if (*(a1 + 17) != 1 || (*(a1 + 18) & 1) != 0)
+        if (*(self + 17) != 1 || (*(self + 18) & 1) != 0)
         {
-          v4 = *(a1 + 72);
-          v5 = *(a1 + 72);
+          v4 = *(self + 72);
+          v5 = *(self + 72);
           v13[0] = MEMORY[0x1E69E9820];
           v13[1] = 3221225472;
           v13[2] = __31__NWURLLoaderHTTP_readResponse__block_invoke;
           v13[3] = &unk_1E6A3A648;
           v14 = v4;
-          v15 = a1;
+          selfCopy = self;
           v6 = v4;
           nw_connection_receive_internal(v5, 0, 0, 0, v13);
 
@@ -1138,19 +1138,19 @@ LABEL_77:
         }
 
         v12 = v2;
-        objc_setProperty_nonatomic_copy(a1, v7, 0, 136);
-        *(a1 + 12) = 1;
-        *(a1 + 19) = 1;
-        v8 = *(a1 + 144);
-        objc_setProperty_nonatomic_copy(a1, v9, 0, 144);
+        objc_setProperty_nonatomic_copy(self, v7, 0, 136);
+        *(self + 12) = 1;
+        *(self + 19) = 1;
+        v8 = *(self + 144);
+        objc_setProperty_nonatomic_copy(self, v9, 0, 144);
         if (v8)
         {
           v8[2](v8);
         }
 
-        v10 = *(a1 + 104);
-        v11 = [v10 response];
-        (*(v12 + 2))(v12, v11, 0);
+        v10 = *(self + 104);
+        response = [v10 response];
+        (*(v12 + 2))(v12, response, 0);
       }
     }
   }
@@ -1901,21 +1901,21 @@ LABEL_161:
 LABEL_97:
 }
 
-- (NWURLError)errorForErrorCode:(id *)a1
+- (NWURLError)errorForErrorCode:(id *)code
 {
-  if (a1)
+  if (code)
   {
     v4 = [NWURLError alloc];
-    v5 = [a1[6] loaderTask];
-    v6 = a1;
-    v7 = v5;
+    loaderTask = [code[6] loaderTask];
+    codeCopy = code;
+    v7 = loaderTask;
     if (v4)
     {
       v8 = [(NWURLError *)v4 initWithErrorCode:a2];
       v9 = v8;
       if (v8)
       {
-        [(NWURLError *)v8 fillErrorForLoader:v6 andTask:v7];
+        [(NWURLError *)v8 fillErrorForLoader:codeCopy andTask:v7];
       }
     }
 
@@ -1933,15 +1933,15 @@ LABEL_97:
   return v9;
 }
 
-- (void)responseFromMetadata:(*-[NWURLLoaderHTTP responseFromMetadata:(void *)a2 ](uint64_t)a1
+- (void)responseFromMetadata:(*-[NWURLLoaderHTTP responseFromMetadata:(void *)metadata ](uint64_t)self
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = a2;
-  v4 = v3;
+  metadataCopy = metadata;
+  v4 = metadataCopy;
   v5 = 0;
-  if (a1 && v3)
+  if (self && metadataCopy)
   {
-    v6 = nw_http_metadata_copy_response(v3);
+    v6 = nw_http_metadata_copy_response(metadataCopy);
     if (!v6)
     {
       v5 = 0;
@@ -1978,8 +1978,8 @@ LABEL_26:
       {
         v9 = [v8 componentsSeparatedByString:@""];;
         v46 = [v9 objectAtIndexedSubscript:0];
-        v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v11 = [v46 stringByTrimmingCharactersInSet:v10];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v11 = [v46 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
         v12 = [v11 isEqualToString:@"multipart/x-mixed-replace"];
 
         if (v12)
@@ -1991,17 +1991,17 @@ LABEL_26:
             if (v15 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v16 = [v14 substringToIndex:v15];
-              v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-              v18 = [v16 stringByTrimmingCharactersInSet:v17];
+              whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+              v18 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
               v19 = [v14 substringFromIndex:v15 + 1];
-              v20 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-              v21 = [v19 stringByTrimmingCharactersInSet:v20];
+              whitespaceCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+              v21 = [v19 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
               if ([v18 isEqualToString:@"boundary"])
               {
-                v30 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-                v31 = [v21 stringByTrimmingCharactersInSet:v30];
+                whitespaceCharacterSet4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+                v31 = [v21 stringByTrimmingCharactersInSet:whitespaceCharacterSet4];
                 v22 = [v31 mutableCopy];
 
                 if ([v22 length] >= 2 && objc_msgSend(v22, "hasPrefix:", @") && objc_msgSend(v22, "hasSuffix:", @"))
@@ -2028,15 +2028,15 @@ LABEL_16:
       _Block_object_dispose(buf, 8);
     }
 
-    v23 = *(a1 + 128);
-    *(a1 + 128) = v22;
+    v23 = *(self + 128);
+    *(self + 128) = v22;
 
     version = nw_http_metadata_get_version(v4);
-    v25 = *(a1 + 24);
+    v25 = *(self + 24);
     v5 = nw_http_response_copy_url_response(v48, 0, v25, **(&unk_1E6A3DCA8 + version));
 
-    v26 = [*(a1 + 48) clientMetadata];
-    v27 = nw_http_client_metadata_copy_current_transaction_metadata(v26);
+    clientMetadata = [*(self + 48) clientMetadata];
+    v27 = nw_http_client_metadata_copy_current_transaction_metadata(clientMetadata);
 
     v28 = v27;
     if (v28)
@@ -2231,12 +2231,12 @@ void __61__NWURLLoaderHTTP_multipartMixedReplaceBoundaryFromResponse___block_inv
   }
 }
 
-- (void)updateClient:(id)a3
+- (void)updateClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   if (self)
   {
-    objc_storeStrong(&self->_client, a3);
+    objc_storeStrong(&self->_client, client);
   }
 }
 
@@ -2296,9 +2296,9 @@ void __35__NWURLLoaderHTTP_cancelConnection__block_invoke(uint64_t a1)
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (bumpProcessFDLimit_onceToken[0] == -1)
   {
     if (self)
@@ -2320,9 +2320,9 @@ LABEL_3:
 
   client = 0;
 LABEL_4:
-  v6 = [(NWURLLoaderClient *)client loaderDataTask];
+  loaderDataTask = [(NWURLLoaderClient *)client loaderDataTask];
 
-  if (v6)
+  if (loaderDataTask)
   {
     if (self)
     {
@@ -2332,12 +2332,12 @@ LABEL_4:
       v10 = v9;
       if (v9)
       {
-        v11 = [(NWURLSessionTask *)v9->_task _preconnect];
+        _preconnect = [(NWURLSessionTask *)v9->_task _preconnect];
       }
 
       else
       {
-        v11 = 0;
+        _preconnect = 0;
       }
 
       v12 = self->_configuration;
@@ -2346,15 +2346,15 @@ LABEL_4:
       {
         if ([(NSURLRequest *)v12->_request _explicitlySetCachePolicy])
         {
-          v14 = [p_isa[4] cachePolicy];
+          cachePolicy = [p_isa[4] cachePolicy];
         }
 
         else
         {
-          v14 = [p_isa[2] requestCachePolicy];
+          cachePolicy = [p_isa[2] requestCachePolicy];
         }
 
-        v15 = v14;
+        v15 = cachePolicy;
       }
 
       else
@@ -2366,13 +2366,13 @@ LABEL_4:
       v17 = v16;
       if (v7 && v7->_cache)
       {
-        v18 = [(NSURLRequest *)v16 HTTPMethod];
-        v19 = [v18 caseInsensitiveCompare:@"GET"];
+        hTTPMethod = [(NSURLRequest *)v16 HTTPMethod];
+        v19 = [hTTPMethod caseInsensitiveCompare:@"GET"];
 
         v20 = 0;
         if (!v19)
         {
-          v21 = v11 ? 1 : v15;
+          v21 = _preconnect ? 1 : v15;
           if (v21 != 1 && v21 != 4)
           {
             v22 = [(NSURLRequest *)v17 valueForHTTPHeaderField:@"Range"];
@@ -2408,7 +2408,7 @@ LABEL_4:
     {
       v25 = self->_cache;
       v26 = self->_client;
-      v27 = [(NWURLLoaderClient *)v26 loaderDataTask];
+      loaderDataTask2 = [(NWURLLoaderClient *)v26 loaderDataTask];
 
       v28 = self->_client;
       v31[0] = MEMORY[0x1E69E9820];
@@ -2416,44 +2416,44 @@ LABEL_4:
       v31[2] = __25__NWURLLoaderHTTP_start___block_invoke_2;
       v31[3] = &unk_1E6A3A208;
       v32 = v25;
-      v33 = v27;
-      v34 = self;
-      v35 = v4;
+      v33 = loaderDataTask2;
+      selfCopy = self;
+      v35 = startCopy;
       v36 = v24;
-      v29 = v27;
+      v29 = loaderDataTask2;
       v30 = v25;
       [(NWURLLoaderClient *)v28 loaderRunDelegateBlock:v31];
     }
 
     else
     {
-      (*(v23 + 2))(v23, 0, v4);
+      (*(v23 + 2))(v23, 0, startCopy);
     }
   }
 
   else
   {
-    [(NWURLLoaderHTTP *)&self->super continueLoading:v4];
+    [(NWURLLoaderHTTP *)&self->super continueLoading:startCopy];
   }
 }
 
-- (void)continueLoading:(nw_protocol_options_t)a1
+- (void)continueLoading:(nw_protocol_options_t)loading
 {
   v316 = *MEMORY[0x1E69E9840];
   v260 = a2;
-  if (!a1)
+  if (!loading)
   {
     goto LABEL_230;
   }
 
-  isa = a1[3].isa;
-  BYTE1(a1[1].isa) = 1;
+  isa = loading[3].isa;
+  BYTE1(loading[1].isa) = 1;
   v7 = isa;
   v8 = fixInvalidURLRequest(v7);
-  v9 = a1[3].isa;
-  a1[3].isa = v8;
+  v9 = loading[3].isa;
+  loading[3].isa = v8;
 
-  v10 = [(objc_class *)a1[3].isa URL];
+  v10 = [(objc_class *)loading[3].isa URL];
   v11 = nw_endpoint_create_with_cfurl(v10);
 
   if (!v11 || (v12 = v11, hostname = _nw_endpoint_get_hostname(v12), v12, !hostname))
@@ -2465,16 +2465,16 @@ LABEL_89:
     goto LABEL_9;
   }
 
-  v14 = a1[5].isa;
+  v14 = loading[5].isa;
   v15 = v14;
   if (v14)
   {
-    v16 = [v14[3] _hostOverride];
+    _hostOverride = [v14[3] _hostOverride];
   }
 
   else
   {
-    v16 = 0;
+    _hostOverride = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -2482,27 +2482,27 @@ LABEL_89:
   aBlock[1] = 3221225472;
   aBlock[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke;
   aBlock[3] = &unk_1E6A3A280;
-  aBlock[4] = a1;
+  aBlock[4] = loading;
   v17 = _Block_copy(aBlock);
   v300[0] = MEMORY[0x1E69E9820];
   v300[1] = 3221225472;
   v300[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_4;
   v300[3] = &unk_1E6A3A320;
-  v269 = v16;
+  v269 = _hostOverride;
   v301 = v269;
   v2 = v12;
   v302 = v2;
-  v303 = a1;
+  loadingCopy = loading;
   v299[0] = MEMORY[0x1E69E9820];
   v299[1] = 3221225472;
   v299[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_10;
   v299[3] = &unk_1E6A3A230;
-  v299[4] = a1;
+  v299[4] = loading;
   v297[0] = MEMORY[0x1E69E9820];
   v297[1] = 3221225472;
   v297[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_11;
   v297[3] = &unk_1E6A3A348;
-  v297[4] = a1;
+  v297[4] = loading;
   v3 = v17;
   v298 = v3;
   parameters = nw_parameters_create_secure_http_messaging(v300, &__block_literal_global_75412, &__block_literal_global_41, v299, v297);
@@ -2522,21 +2522,21 @@ LABEL_89:
 
 LABEL_9:
   protocol = nw_protocol_create_options(nw_protocol_copy_http_connection_state_definition_http_connection_state_definition);
-  v19 = [(NWURLSessionTaskConfiguration *)a1[5].isa connectionStateStorage];
-  nw_http_connection_state_options_set_connection_state_storage(protocol, v19);
+  connectionStateStorage = [(NWURLSessionTaskConfiguration *)loading[5].isa connectionStateStorage];
+  nw_http_connection_state_options_set_connection_state_storage(protocol, connectionStateStorage);
 
-  v20 = a1[5].isa;
+  v20 = loading[5].isa;
   if (v20)
   {
-    v21 = [*(v20 + 4) assumesHTTP3Capable];
+    assumesHTTP3Capable = [*(v20 + 4) assumesHTTP3Capable];
   }
 
   else
   {
-    v21 = 0;
+    assumesHTTP3Capable = 0;
   }
 
-  nw_http_connection_state_options_set_assumes_http3_capable(protocol, v21);
+  nw_http_connection_state_options_set_assumes_http3_capable(protocol, assumesHTTP3Capable);
   nw_protocol_stack_prepend_application_protocol(stack, protocol);
   if (nw_protocol_copy_http_joining_definition_onceToken != -1)
   {
@@ -2552,22 +2552,22 @@ LABEL_9:
   }
 
   v282 = nw_protocol_create_options(nw_protocol_copy_http_cookie_definition_http_cookie_definition);
-  v23 = [(NWURLSessionTaskConfiguration *)a1[5].isa HTTPCookieStorage];
-  nw_http_cookie_options_set_cookie_storage(v282, v23);
+  hTTPCookieStorage = [(NWURLSessionTaskConfiguration *)loading[5].isa HTTPCookieStorage];
+  nw_http_cookie_options_set_cookie_storage(v282, hTTPCookieStorage);
 
-  v24 = a1[5].isa;
+  v24 = loading[5].isa;
   if (!v24)
   {
-    v31 = 0;
-    v268 = 0;
+    _storagePartitionIdentifier2 = 0;
+    _cookieTransformCallback = 0;
     goto LABEL_33;
   }
 
-  v268 = [*(v24 + 3) _cookieTransformCallback];
-  if (v268)
+  _cookieTransformCallback = [*(v24 + 3) _cookieTransformCallback];
+  if (_cookieTransformCallback)
   {
     v25 = v282;
-    v26 = v268;
+    v26 = _cookieTransformCallback;
     if (v25)
     {
       if (nw_protocol_copy_http_cookie_definition_onceToken != -1)
@@ -2632,7 +2632,7 @@ LABEL_140:
         goto LABEL_140;
       }
 
-      v276 = a1;
+      loadingCopy3 = loading;
       backtrace_string = __nw_create_backtrace_string();
       v84 = __nwlog_obj();
       v91 = v306[0];
@@ -2648,7 +2648,7 @@ LABEL_140:
           _os_log_impl(&dword_181A37000, v84, v91, "%{public}s protocol options are not http_cookie, dumping backtrace:%{public}s", buf, 0x16u);
         }
 
-        a1 = v276;
+        loading = loadingCopy3;
         free(backtrace_string);
         if (!v72)
         {
@@ -2710,7 +2710,7 @@ LABEL_140:
         goto LABEL_140;
       }
 
-      v276 = a1;
+      loadingCopy3 = loading;
       v83 = __nw_create_backtrace_string();
       v84 = __nwlog_obj();
       v85 = v306[0];
@@ -2726,7 +2726,7 @@ LABEL_140:
           _os_log_impl(&dword_181A37000, v84, v85, "%{public}s called with null options, dumping backtrace:%{public}s", buf, 0x16u);
         }
 
-        a1 = v276;
+        loading = loadingCopy3;
         free(v83);
 LABEL_153:
         if (!v72)
@@ -2747,38 +2747,38 @@ LABEL_154:
       }
     }
 
-    a1 = v276;
+    loading = loadingCopy3;
     goto LABEL_153;
   }
 
 LABEL_23:
-  v27 = a1[5].isa;
+  v27 = loading[5].isa;
   if (!v27)
   {
-    v31 = 0;
+    _storagePartitionIdentifier2 = 0;
     goto LABEL_33;
   }
 
-  v28 = [*(v27 + 3) _storagePartitionIdentifier];
-  v29 = v28 == 0;
+  _storagePartitionIdentifier = [*(v27 + 3) _storagePartitionIdentifier];
+  v29 = _storagePartitionIdentifier == 0;
 
   if (v29)
   {
     goto LABEL_34;
   }
 
-  v30 = a1[5].isa;
+  v30 = loading[5].isa;
   if (v30)
   {
-    v31 = [*(v30 + 3) _storagePartitionIdentifier];
+    _storagePartitionIdentifier2 = [*(v30 + 3) _storagePartitionIdentifier];
   }
 
   else
   {
-    v31 = 0;
+    _storagePartitionIdentifier2 = 0;
   }
 
-  v32 = [v31 cStringUsingEncoding:{4, v250, v251}];
+  v32 = [_storagePartitionIdentifier2 cStringUsingEncoding:{4, v250, v251}];
   v33 = v282;
   if (!v33)
   {
@@ -2954,7 +2954,7 @@ LABEL_32:
 
 LABEL_33:
 LABEL_34:
-  v34 = a1[5].isa;
+  v34 = loading[5].isa;
   if (v34)
   {
     if ([*(v34 + 4) _allowOnlyPartitionedCookies])
@@ -2962,57 +2962,57 @@ LABEL_34:
       nw_http_cookie_options_set_allow_only_partitioned_cookies(v282, 1);
     }
 
-    v35 = a1[5].isa;
+    v35 = loading[5].isa;
     if (v35)
     {
-      v36 = [*(v35 + 3) _siteForCookies];
-      v37 = v36 == 0;
+      _siteForCookies = [*(v35 + 3) _siteForCookies];
+      v37 = _siteForCookies == 0;
 
       if (!v37)
       {
-        v38 = a1[5].isa;
+        v38 = loading[5].isa;
         if (v38)
         {
-          v39 = [*(v38 + 3) _siteForCookies];
+          _siteForCookies2 = [*(v38 + 3) _siteForCookies];
         }
 
         else
         {
-          v39 = 0;
+          _siteForCookies2 = 0;
         }
 
-        nw_http_cookie_options_set_site_for_cookies(v282, v39);
+        nw_http_cookie_options_set_site_for_cookies(v282, _siteForCookies2);
 
-        v40 = a1[5].isa;
+        v40 = loading[5].isa;
         if (v40)
         {
-          v41 = [*(v40 + 3) _isTopLevelNavigation];
+          _isTopLevelNavigation = [*(v40 + 3) _isTopLevelNavigation];
         }
 
         else
         {
-          v41 = 0;
+          _isTopLevelNavigation = 0;
         }
 
-        nw_http_cookie_options_set_is_top_level_navigation(v282, v41);
+        nw_http_cookie_options_set_is_top_level_navigation(v282, _isTopLevelNavigation);
       }
     }
   }
 
-  v42 = a1[5].isa;
+  v42 = loading[5].isa;
   if (!v42 || (([*(v42 + 4) _explicitlySetShouldHandleCookies] & 1) == 0 ? (v43 = objc_msgSend(*(v42 + 2), "HTTPShouldSetCookies")) : (v43 = objc_msgSend(*(v42 + 4), "HTTPShouldHandleCookies")), (v43 & 1) == 0))
   {
     nw_http_cookie_options_set_should_not_send_cookies(v282);
   }
 
-  v44 = a1[5].isa;
+  v44 = loading[5].isa;
   if (!v44 || [*(v44 + 4) _explicitlySetShouldHandleCookies] && (objc_msgSend(*(v44 + 4), "HTTPShouldHandleCookies") & 1) == 0)
   {
     nw_http_cookie_options_set_should_not_save_cookies(v282);
   }
 
   nw_protocol_stack_prepend_application_protocol(stack, v282);
-  if ([(objc_class *)a1[6].isa supportsResumableUpload])
+  if ([(objc_class *)loading[6].isa supportsResumableUpload])
   {
     if (nw_protocol_copy_http_resumable_upload_definition_onceToken != -1)
     {
@@ -3020,15 +3020,15 @@ LABEL_34:
     }
 
     v45 = nw_protocol_create_options(nw_protocol_copy_http_resumable_upload_definition_http_resumable_upload_definition);
-    v46 = [(objc_class *)a1[6].isa uploadResumeURL];
-    v47 = v46;
-    if (v46)
+    uploadResumeURL = [(objc_class *)loading[6].isa uploadResumeURL];
+    v47 = uploadResumeURL;
+    if (uploadResumeURL)
     {
-      v48 = _nw_endpoint_create_with_cfurl(v46);
+      v48 = _nw_endpoint_create_with_cfurl(uploadResumeURL);
       nw_http_resumable_upload_options_set_resume_endpoint(v45, v48);
     }
 
-    v49 = a1[4].isa;
+    v49 = loading[4].isa;
     if ((v49 & 0x8000000000000000) == 0)
     {
       nw_http_resumable_upload_options_set_original_content_length(v45, v49);
@@ -3056,13 +3056,13 @@ LABEL_34:
   v296[1] = v4;
   v296[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_12;
   v296[3] = &unk_1E6A3A370;
-  v296[4] = a1;
-  nw_http_authentication_options_set_challenge_handler(v281, v296, a1[7].isa);
-  v259 = [(NWURLSessionTaskConfiguration *)a1[5].isa URLCredentialStorage];
-  nw_http_authentication_options_set_credential_storage(v281, v259);
-  if (a1[5].isa)
+  v296[4] = loading;
+  nw_http_authentication_options_set_challenge_handler(v281, v296, loading[7].isa);
+  uRLCredentialStorage = [(NWURLSessionTaskConfiguration *)loading[5].isa URLCredentialStorage];
+  nw_http_authentication_options_set_credential_storage(v281, uRLCredentialStorage);
+  if (loading[5].isa)
   {
-    v51 = *(a1[5].isa + 3);
+    v51 = *(loading[5].isa + 3);
     if (v51)
     {
       v52 = *(v51 + 416);
@@ -3099,7 +3099,7 @@ LABEL_34:
       nw_http_authentication_options_set_credential_cache(v281, v267);
     }
 
-    v57 = a1[5].isa;
+    v57 = loading[5].isa;
     if (v57)
     {
       v58 = *(v57 + 3);
@@ -3136,7 +3136,7 @@ LABEL_78:
 
     v255 = 0;
 LABEL_81:
-    v64 = a1[5].isa;
+    v64 = loading[5].isa;
     if (!v64)
     {
       goto LABEL_165;
@@ -3147,7 +3147,7 @@ LABEL_81:
 
   v255 = 0;
   v267 = 0;
-  v64 = a1[5].isa;
+  v64 = loading[5].isa;
   if (!v64)
   {
     goto LABEL_165;
@@ -3202,7 +3202,7 @@ LABEL_166:
   }
 
   v101 = nw_protocol_create_options(nw_protocol_copy_http_security_definition_http_security_definition);
-  v102 = a1[5].isa;
+  v102 = loading[5].isa;
   if (v102 && ([*(v102 + 2) _hstsStorage], (v103 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v257 = v103;
@@ -3218,9 +3218,9 @@ LABEL_166:
     v257 = 0;
   }
 
-  v106 = [(NWURLSessionTaskConfiguration *)a1[5].isa connectionStateStorage];
+  connectionStateStorage2 = [(NWURLSessionTaskConfiguration *)loading[5].isa connectionStateStorage];
   v107 = v101;
-  v108 = v106;
+  v108 = connectionStateStorage2;
   if (!v107)
   {
     v199 = __nwlog_obj();
@@ -3397,29 +3397,29 @@ LABEL_179:
   v295[1] = v4;
   v295[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_13;
   v295[3] = &unk_1E6A3A398;
-  v295[4] = a1;
-  nw_http_security_options_set_handler(v107, v295, a1[7].isa);
-  v109 = a1[5].isa;
+  v295[4] = loading;
+  nw_http_security_options_set_handler(v107, v295, loading[7].isa);
+  v109 = loading[5].isa;
   if (v109)
   {
-    v110 = [*(v109 + 4) _ignoreHSTS];
+    _ignoreHSTS = [*(v109 + 4) _ignoreHSTS];
   }
 
   else
   {
-    v110 = 0;
+    _ignoreHSTS = 0;
   }
 
-  nw_http_security_options_set_skip_hsts_lookup(v107, v110);
-  v111 = a1[5].isa;
+  nw_http_security_options_set_skip_hsts_lookup(v107, _ignoreHSTS);
+  v111 = loading[5].isa;
   if (v111)
   {
-    v112 = [*(v111 + 2) _allowsHSTSWithUntrustedRootCertificate];
+    _allowsHSTSWithUntrustedRootCertificate = [*(v111 + 2) _allowsHSTSWithUntrustedRootCertificate];
   }
 
   else
   {
-    v112 = 0;
+    _allowsHSTSWithUntrustedRootCertificate = 0;
   }
 
   v277 = v107;
@@ -3513,7 +3513,7 @@ LABEL_407:
     *&buf[8] = v4;
     *&buf[16] = __nw_http_security_options_set_save_hsts_with_untrusted_root_cert_block_invoke;
     v311 = &__block_descriptor_33_e9_B16__0_v8l;
-    LOBYTE(v312) = v112;
+    LOBYTE(v312) = _allowsHSTSWithUntrustedRootCertificate;
     nw_protocol_options_access_handle(v277, buf);
     goto LABEL_188;
   }
@@ -3608,11 +3608,11 @@ LABEL_188:
   v294[1] = v4;
   v294[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_15;
   v294[3] = &unk_1E6A3A3E8;
-  v294[4] = a1;
-  nw_http_redirect_options_set_handler(v270, v294, a1[7].isa);
+  v294[4] = loading;
+  nw_http_redirect_options_set_handler(v270, v294, loading[7].isa);
   nw_protocol_stack_prepend_application_protocol(stack, v270);
-  v266 = [(objc_class *)a1[3].isa _propertyForKey:*MEMORY[0x1E695AD60]];
-  if ((!v266 || [MEMORY[0x1E695E118] isEqual:v266]) && (-[objc_class isWebSocket](a1[6].isa, "isWebSocket", v250, v251) & 1) == 0)
+  v266 = [(objc_class *)loading[3].isa _propertyForKey:*MEMORY[0x1E695AD60]];
+  if ((!v266 || [MEMORY[0x1E695E118] isEqual:v266]) && (-[objc_class isWebSocket](loading[6].isa, "isWebSocket", v250, v251) & 1) == 0)
   {
     if (nw_protocol_copy_http_sniffing_definition_onceToken != -1)
     {
@@ -3633,7 +3633,7 @@ LABEL_188:
   v293[1] = v4;
   v293[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_18;
   v293[3] = &unk_1E6A3A410;
-  v293[4] = a1;
+  v293[4] = loading;
   v115 = v114;
   v116 = v293;
   if (!v115)
@@ -3992,33 +3992,33 @@ LABEL_208:
   v292[1] = v4;
   v292[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_49;
   v292[3] = &unk_1E6A3A370;
-  v292[4] = a1;
+  v292[4] = loading;
   nw_proxy_options_set_authentication_challenge_handler(v119, v292);
-  v265 = [(objc_class *)a1[3].isa valueForHTTPHeaderField:@"Proxy-Authorization"];
+  v265 = [(objc_class *)loading[3].isa valueForHTTPHeaderField:@"Proxy-Authorization"];
   if (v265)
   {
     nw_proxy_options_set_http_proxy_authorization_header(v119, [v265 cStringUsingEncoding:5]);
   }
 
   nw_parameters_add_proxy_options(parameters, v119);
-  [(NWURLSessionTaskConfiguration *)a1[5].isa configureParameters:?];
-  BYTE5(a1[2].isa) = nw_parameters_has_custom_proxy_configs(parameters);
-  [(NWURLBackgroundScheduler *)a1[23].isa complete];
+  [(NWURLSessionTaskConfiguration *)loading[5].isa configureParameters:?];
+  BYTE5(loading[2].isa) = nw_parameters_has_custom_proxy_configs(parameters);
+  [(NWURLBackgroundScheduler *)loading[23].isa complete];
   v252 = v117;
-  v121 = a1[5].isa;
+  v121 = loading[5].isa;
   v122 = v2;
-  v124 = a1[6].isa;
-  v123 = a1[7].isa;
+  v124 = loading[6].isa;
+  v123 = loading[7].isa;
   v291[0] = MEMORY[0x1E69E9820];
   v291[1] = v4;
   v291[2] = __35__NWURLLoaderHTTP_continueLoading___block_invoke_2_56;
   v291[3] = &unk_1E6A3D868;
-  v291[4] = a1;
+  v291[4] = loading;
   v284[0] = MEMORY[0x1E69E9820];
   v284[1] = v4;
   v285 = __35__NWURLLoaderHTTP_continueLoading___block_invoke_58;
   v286 = &unk_1E6A3A460;
-  v287 = a1;
+  loadingCopy4 = loading;
   v290 = v260;
   v125 = v122;
   v288 = v125;
@@ -4046,11 +4046,11 @@ LABEL_208:
           v253 = objc_alloc_init(NWURLBackgroundScheduler);
           v132 = MEMORY[0x1E696AEC0];
           v133 = getpid();
-          v134 = [v132 stringWithFormat:@"com.apple.URLSession-%d-%u-%@", v133, ++schedulerWithConfiguration_description_endpoint_parameters_queue_stopHandler_completionHandler__serialNumber, parametersa];
+          parametersa = [v132 stringWithFormat:@"com.apple.URLSession-%d-%u-%@", v133, ++schedulerWithConfiguration_description_endpoint_parameters_queue_stopHandler_completionHandler__serialNumber, parametersa];
           v135 = v253;
           if (v253)
           {
-            objc_storeStrong(&v253->_identifier, v134);
+            objc_storeStrong(&v253->_identifier, parametersa);
             v135 = v253;
           }
 
@@ -4071,10 +4071,10 @@ LABEL_208:
           v141 = [v139 initWithIdentifier:identifier];
           if (([v129[2] _duetPreauthorized] & 1) == 0)
           {
-            v142 = [v129[3] backgroundSchedulingPriority];
-            if (v142 > 1)
+            backgroundSchedulingPriority = [v129[3] backgroundSchedulingPriority];
+            if (backgroundSchedulingPriority > 1)
             {
-              if (v142 == 2)
+              if (backgroundSchedulingPriority == 2)
               {
                 [v141 setPriority:2];
                 v143 = v129;
@@ -4115,7 +4115,7 @@ LABEL_243:
                 goto LABEL_245;
               }
 
-              if (v142 == 3)
+              if (backgroundSchedulingPriority == 3)
               {
                 [v141 setPriority:1];
                 v143 = v129;
@@ -4155,62 +4155,62 @@ LABEL_246:
               [v141 setRequiresNetworkConnectivity:1];
               [v141 setPreventsDeviceSleep:1];
               [v141 setRequiresExternalPower:{objc_msgSend(v129[2], "_requiresPowerPluggedIn")}];
-              v159 = [v129[4] _explicitlySetAllowsExpensiveNetworkAccess];
+              _explicitlySetAllowsExpensiveNetworkAccess = [v129[4] _explicitlySetAllowsExpensiveNetworkAccess];
               v160 = 2;
-              if (v159)
+              if (_explicitlySetAllowsExpensiveNetworkAccess)
               {
                 v160 = 4;
               }
 
               [v141 setRequiresInexpensiveNetworkConnectivity:{objc_msgSend(v129[v160], "allowsExpensiveNetworkAccess") ^ 1}];
-              v161 = [v129[4] _explicitlySetAllowsConstrainedNetworkAccess];
+              _explicitlySetAllowsConstrainedNetworkAccess = [v129[4] _explicitlySetAllowsConstrainedNetworkAccess];
               v162 = 2;
-              if (v161)
+              if (_explicitlySetAllowsConstrainedNetworkAccess)
               {
                 v162 = 4;
               }
 
               [v141 setRequiresUnconstrainedNetworkConnectivity:{objc_msgSend(v129[v162], "allowsConstrainedNetworkAccess") ^ 1}];
-              v163 = [*v158 countOfBytesClientExpectsToSend];
+              countOfBytesClientExpectsToSend = [*v158 countOfBytesClientExpectsToSend];
               v164 = *v158;
-              if (v163)
+              if (countOfBytesClientExpectsToSend)
               {
-                v165 = [v164 countOfBytesClientExpectsToSend];
+                countOfBytesClientExpectsToSend2 = [v164 countOfBytesClientExpectsToSend];
               }
 
               else if ([v164 isUpload])
               {
-                v165 = 5242880;
+                countOfBytesClientExpectsToSend2 = 5242880;
               }
 
               else
               {
-                v165 = 10240;
+                countOfBytesClientExpectsToSend2 = 10240;
               }
 
-              [v141 setNetworkUploadSize:v165];
-              v166 = [v129[3] countOfBytesClientExpectsToReceive];
+              [v141 setNetworkUploadSize:countOfBytesClientExpectsToSend2];
+              countOfBytesClientExpectsToReceive = [v129[3] countOfBytesClientExpectsToReceive];
               v167 = v129[3];
-              if (v166)
+              if (countOfBytesClientExpectsToReceive)
               {
-                v168 = [v167 countOfBytesClientExpectsToReceive];
+                countOfBytesClientExpectsToReceive2 = [v167 countOfBytesClientExpectsToReceive];
               }
 
               else if ([v167 isUpload])
               {
-                v168 = 10240;
+                countOfBytesClientExpectsToReceive2 = 10240;
               }
 
               else
               {
-                v168 = 5242880;
+                countOfBytesClientExpectsToReceive2 = 5242880;
               }
 
-              [v141 setNetworkDownloadSize:v168];
+              [v141 setNetworkDownloadSize:countOfBytesClientExpectsToReceive2];
               v169 = MEMORY[0x1E695DEC8];
-              v170 = [(NWURLSessionTaskConfiguration *)v129 sourceApplicationBundleIdentifier];
-              v171 = [v129[2] _sourceApplicationSecondaryIdentifier];
-              v172 = [v169 arrayWithObjects:{v170, v171, 0}];
+              sourceApplicationBundleIdentifier = [(NWURLSessionTaskConfiguration *)v129 sourceApplicationBundleIdentifier];
+              _sourceApplicationSecondaryIdentifier = [v129[2] _sourceApplicationSecondaryIdentifier];
+              v172 = [v169 arrayWithObjects:{sourceApplicationBundleIdentifier, _sourceApplicationSecondaryIdentifier, 0}];
               [v141 setRelatedApplications:v172];
 
               [v141 setNetworkEndpointPrimitive:v261];
@@ -4243,7 +4243,7 @@ LABEL_246:
               }
 
               Helper_x8__OBJC_CLASS___BGSystemTaskScheduler = gotLoadHelper_x8__OBJC_CLASS___BGSystemTaskScheduler(v176);
-              v179 = [*(v178 + 1216) sharedScheduler];
+              sharedScheduler = [*(v178 + 1216) sharedScheduler];
               if (v253)
               {
                 v180 = v253;
@@ -4267,12 +4267,12 @@ LABEL_246:
               v314 = v256;
               v184 = v258;
               v315 = v184;
-              [v179 registerForTaskWithIdentifier:v181 usingQueue:v183 launchHandler:buf];
+              [sharedScheduler registerForTaskWithIdentifier:v181 usingQueue:v183 launchHandler:buf];
 
               v186 = gotLoadHelper_x8__OBJC_CLASS___BGSystemTaskScheduler(v185);
-              v188 = [*(v187 + 1216) sharedScheduler];
+              sharedScheduler2 = [*(v187 + 1216) sharedScheduler];
               v305 = 0;
-              v189 = [v188 submitTaskRequest:v141 error:&v305];
+              v189 = [sharedScheduler2 submitTaskRequest:v141 error:&v305];
               v190 = v305;
 
               if (v189)
@@ -4304,8 +4304,8 @@ LABEL_246:
                 }
 
                 v194 = gotLoadHelper_x8__OBJC_CLASS___BGSystemTaskScheduler(v193);
-                v196 = [*(v195 + 1216) sharedScheduler];
-                v197 = v196;
+                sharedScheduler3 = [*(v195 + 1216) sharedScheduler];
+                v197 = sharedScheduler3;
                 if (v253)
                 {
                   v198 = v182->_identifier;
@@ -4316,7 +4316,7 @@ LABEL_246:
                   v198 = 0;
                 }
 
-                [v196 deregisterTaskWithIdentifier:v198];
+                [sharedScheduler3 deregisterTaskWithIdentifier:v198];
 
                 v285(v184, 0);
                 v146 = 0;
@@ -4325,7 +4325,7 @@ LABEL_246:
               goto LABEL_227;
             }
 
-            if (v142 == 1)
+            if (backgroundSchedulingPriority == 1)
             {
               [v141 setPriority:3];
               v148 = 10.0;
@@ -4334,7 +4334,7 @@ LABEL_245:
               goto LABEL_246;
             }
 
-            if (v142)
+            if (backgroundSchedulingPriority)
             {
               goto LABEL_246;
             }
@@ -4350,12 +4350,12 @@ LABEL_245:
   v146 = 0;
 LABEL_227:
 
-  v147 = a1[23].isa;
-  a1[23].isa = v146;
+  v147 = loading[23].isa;
+  loading[23].isa = v146;
 
-  if (a1[23].isa)
+  if (loading[23].isa)
   {
-    [(objc_class *)a1[6].isa loaderToggleRequestTimeoutTimer:0];
+    [(objc_class *)loading[6].isa loaderToggleRequestTimeoutTimer:0];
   }
 
 LABEL_230:

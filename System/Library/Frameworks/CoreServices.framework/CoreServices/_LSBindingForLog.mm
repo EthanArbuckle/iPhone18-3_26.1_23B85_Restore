@@ -1,5 +1,5 @@
 @interface _LSBindingForLog
-- (_LSBindingForLog)initWithState:(const void *)a3 binding:(const LSBinding *)a4;
+- (_LSBindingForLog)initWithState:(const void *)state binding:(const LSBinding *)binding;
 - (id).cxx_construct;
 - (id)description;
 - (id)redactedDescription;
@@ -17,7 +17,7 @@
   return self;
 }
 
-- (_LSBindingForLog)initWithState:(const void *)a3 binding:(const LSBinding *)a4
+- (_LSBindingForLog)initWithState:(const void *)state binding:(const LSBinding *)binding
 {
   v10.receiver = self;
   v10.super_class = _LSBindingForLog;
@@ -25,13 +25,13 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, **a3);
-    v8 = *&a4->claim;
-    *&v7->_binding.bundle = *&a4->bundle;
+    objc_storeStrong(&v6->_db, **state);
+    v8 = *&binding->claim;
+    *&v7->_binding.bundle = *&binding->bundle;
     *&v7->_binding.claim = v8;
-    objc_storeStrong(&v7->_binding.userInfo, a4->userInfo);
-    objc_storeStrong(&v7->_binding.var0, a4->var0);
-    v7->_binding.provenance = a4->provenance;
+    objc_storeStrong(&v7->_binding.userInfo, binding->userInfo);
+    objc_storeStrong(&v7->_binding.var0, binding->var0);
+    v7->_binding.provenance = binding->provenance;
   }
 
   return v7;

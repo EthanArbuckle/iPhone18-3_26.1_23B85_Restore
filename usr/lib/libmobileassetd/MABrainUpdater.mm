@@ -1,15 +1,15 @@
 @interface MABrainUpdater
 + (id)sharedInstance;
 - (BOOL)hasAppleConnect;
-- (BOOL)writePlist:(id)a3 path:(id)a4 error:(id *)a5;
+- (BOOL)writePlist:(id)plist path:(id)path error:(id *)error;
 - (MABrainUpdater)init;
-- (void)callback:(id)a3 error:(id)a4;
+- (void)callback:(id)callback error:(id)error;
 - (void)commit;
-- (void)install:(id)a3 asset:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)purge:(id)a3 completion:(id)a4;
-- (void)schedule:(BOOL)a3;
-- (void)start:(id)a3;
-- (void)update:(id)a3 completion:(id)a4;
+- (void)install:(id)install asset:(id)asset options:(id)options completion:(id)completion;
+- (void)purge:(id)purge completion:(id)completion;
+- (void)schedule:(BOOL)schedule;
+- (void)start:(id)start;
+- (void)update:(id)update completion:(id)completion;
 @end
 
 @implementation MABrainUpdater
@@ -68,16 +68,16 @@ void __32__MABrainUpdater_sharedInstance__block_invoke(id a1)
   return v2;
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __24__MABrainUpdater_start___block_invoke;
   v6[3] = &unk_4B2B18;
-  v7 = a3;
-  v8 = self;
+  startCopy = start;
+  selfCopy = self;
   v4 = start__pred;
-  v5 = v7;
+  v5 = startCopy;
   if (v4 != -1)
   {
     dispatch_once(&start__pred, v6);
@@ -323,7 +323,7 @@ void __24__MABrainUpdater_start___block_invoke_1145(id a1)
   raise(5);
 }
 
-- (void)schedule:(BOOL)a3
+- (void)schedule:(BOOL)schedule
 {
   v5 = [[NSBackgroundActivityScheduler alloc] initWithIdentifier:@"com.apple.mobileassetd-MobileAssetBrain_check"];
   v6 = v5;
@@ -333,7 +333,7 @@ void __24__MABrainUpdater_start___block_invoke_1145(id a1)
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v7, XPC_ACTIVITY_ALLOW_BATTERY, 1);
     xpc_dictionary_set_BOOL(v7, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, 1);
-    if (a3)
+    if (schedule)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -383,7 +383,7 @@ void __24__MABrainUpdater_start___block_invoke_1145(id a1)
     v20[2] = __27__MABrainUpdater_schedule___block_invoke_1152;
     v20[3] = &unk_4B3378;
     v20[4] = self;
-    v22 = a3;
+    scheduleCopy = schedule;
     v11 = v6;
     v21 = v11;
     v12 = objc_retainBlock(v20);
@@ -392,7 +392,7 @@ void __24__MABrainUpdater_start___block_invoke_1145(id a1)
     v15[1] = 3221225472;
     v15[2] = __27__MABrainUpdater_schedule___block_invoke_1199;
     v15[3] = &unk_4B4EB0;
-    v16 = v19 = a3;
+    v16 = v19 = schedule;
     v17 = @"com.apple.mobileassetd-MobileAssetBrain_check";
     v18 = v12;
     v13 = v12;
@@ -741,13 +741,13 @@ LABEL_7:
   }
 }
 
-- (BOOL)writePlist:(id)a3 path:(id)a4 error:(id *)a5
+- (BOOL)writePlist:(id)plist path:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [NSURL fileURLWithPath:v8];
+  plistCopy = plist;
+  pathCopy = path;
+  v9 = [NSURL fileURLWithPath:pathCopy];
   v21 = 0;
-  v10 = [v7 writeToURL:v9 error:&v21];
+  v10 = [plistCopy writeToURL:v9 error:&v21];
   v11 = v21;
 
   v12 = _MADLog(@"Brain");
@@ -757,7 +757,7 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v8;
+      v23 = pathCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "[MAB] Successfully wrote %@.", buf, 0xCu);
     }
 
@@ -769,14 +769,14 @@ LABEL_11:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v23 = v8;
+    v23 = pathCopy;
     v24 = 2112;
     v25 = v11;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "[MAB] Failed to write %@: %@", buf, 0x16u);
   }
 
   v20 = 0;
-  v13 = [NSPropertyListSerialization dataWithPropertyList:v7 format:100 options:0 error:&v20];
+  v13 = [NSPropertyListSerialization dataWithPropertyList:plistCopy format:100 options:0 error:&v20];
   v14 = v20;
 
   if (!v13)
@@ -787,7 +787,7 @@ LABEL_11:
   }
 
   v19 = v14;
-  v15 = [v13 writeToFile:v8 options:0 error:&v19];
+  v15 = [v13 writeToFile:pathCopy options:0 error:&v19];
   v11 = v19;
 
   if (v15)
@@ -796,7 +796,7 @@ LABEL_11:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v8;
+      v23 = pathCopy;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "[MAB] Successfully wrote %@ (using NSData).", buf, 0xCu);
     }
 
@@ -806,10 +806,10 @@ LABEL_11:
 
 LABEL_13:
 
-  if (a5 && v11)
+  if (error && v11)
   {
     v17 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v15;
@@ -843,19 +843,19 @@ LABEL_6:
   return v2;
 }
 
-- (void)install:(id)a3 asset:(id)a4 options:(id)a5 completion:(id)a6
+- (void)install:(id)install asset:(id)asset options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v56 = a5;
-  v57 = a6;
+  installCopy = install;
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
   v76 = 0;
   v77 = &v76;
   v78 = 0x3032000000;
   v79 = __Block_byref_object_copy__14;
   v80 = __Block_byref_object_dispose__14;
   v81 = 0;
-  v12 = v10;
+  v12 = installCopy;
   v13 = [@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:v12];
   v88[0] = NSFileOwnerAccountID;
   v88[1] = NSFileGroupOwnerAccountID;
@@ -868,31 +868,31 @@ LABEL_6:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v87 = v11;
+    v87 = assetCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "[MAB] MobileAssetBrain install of asset %@ is starting...", buf, 0xCu);
   }
 
-  [v11 refreshState];
-  if ([v11 state] == &dword_0 + 2)
+  [assetCopy refreshState];
+  if ([assetCopy state] == &dword_0 + 2)
   {
     v15 = [MABrainBundle alloc];
-    v16 = [v11 getLocalUrl];
-    v17 = [v16 path];
-    v18 = [(MABrainBundle *)v15 initWithPath:v17];
+    getLocalUrl = [assetCopy getLocalUrl];
+    path = [getLocalUrl path];
+    v18 = [(MABrainBundle *)v15 initWithPath:path];
 
     MABrainUtilityCancelDeviceUnlockAction(self->_relaunchToken);
-    v19 = self;
-    objc_sync_enter(v19);
-    p_waitForAppleConnectToken = &v19->_waitForAppleConnectToken;
-    waitForAppleConnectToken = v19->_waitForAppleConnectToken;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    p_waitForAppleConnectToken = &selfCopy->_waitForAppleConnectToken;
+    waitForAppleConnectToken = selfCopy->_waitForAppleConnectToken;
     if (waitForAppleConnectToken != -1)
     {
       MABrainUtilityCancelDeviceUnlockAction(waitForAppleConnectToken);
-      waitForAppleConnectAction = v19->_waitForAppleConnectAction;
-      v19->_waitForAppleConnectToken = -1;
+      waitForAppleConnectAction = selfCopy->_waitForAppleConnectAction;
+      selfCopy->_waitForAppleConnectToken = -1;
       v23 = objc_retainBlock(waitForAppleConnectAction);
-      v24 = v19->_waitForAppleConnectAction;
-      v19->_waitForAppleConnectAction = 0;
+      v24 = selfCopy->_waitForAppleConnectAction;
+      selfCopy->_waitForAppleConnectAction = 0;
 
       if (v23)
       {
@@ -900,9 +900,9 @@ LABEL_6:
       }
     }
 
-    objc_sync_exit(v19);
+    objc_sync_exit(selfCopy);
 
-    [(MABrainUpdater *)v19 garbageCollect];
+    [(MABrainUpdater *)selfCopy garbageCollect];
     v25 = +[NSFileManager defaultManager];
     v26 = (v77 + 5);
     obj = v77[5];
@@ -917,17 +917,17 @@ LABEL_6:
       v68[3] = &unk_4B4ED8;
       v28 = v13;
       v69 = v28;
-      v70 = v11;
-      v71 = v19;
+      v70 = assetCopy;
+      v71 = selfCopy;
       v74 = &v76;
       v72 = v12;
-      v54 = v57;
+      v54 = completionCopy;
       v73 = v54;
       v29 = objc_retainBlock(v68);
       v30 = _MADLog(@"Brain");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v56 objectForKeyedSubscript:@"ssoToken"];
+        v31 = [optionsCopy objectForKeyedSubscript:@"ssoToken"];
         v32 = " with SSO";
         if (!v31)
         {
@@ -941,7 +941,7 @@ LABEL_6:
 
       v33 = (v77 + 5);
       v67 = v77[5];
-      v34 = [(MABrainBundle *)v18 personalize:v28 options:v56 error:&v67];
+      v34 = [(MABrainBundle *)v18 personalize:v28 options:optionsCopy error:&v67];
       objc_storeStrong(v33, v67);
       if (v34)
       {
@@ -952,26 +952,26 @@ LABEL_23:
       }
 
       v53 = v77[5];
-      v43 = [v56 objectForKeyedSubscript:@"nonBlocking"];
-      v44 = [v43 BOOLValue];
+      v43 = [optionsCopy objectForKeyedSubscript:@"nonBlocking"];
+      bOOLValue = [v43 BOOLValue];
 
-      v45 = [v56 objectForKeyedSubscript:@"ssoToken"];
-      if ((v45 != 0) | v44 & 1)
+      v45 = [optionsCopy objectForKeyedSubscript:@"ssoToken"];
+      if ((v45 != 0) | bOOLValue & 1)
       {
       }
 
-      else if ([(MABrainUpdater *)v19 hasAppleConnect])
+      else if ([(MABrainUpdater *)selfCopy hasAppleConnect])
       {
         v46 = v29;
-        v47 = v44 ^ 1;
-        v48 = v19;
+        v47 = bOOLValue ^ 1;
+        v48 = selfCopy;
         objc_sync_enter(v48);
         v49 = v48[2];
         v58[0] = _NSConcreteStackBlock;
         v58[1] = 3221225472;
         v58[2] = __51__MABrainUpdater_install_asset_options_completion___block_invoke_1247;
         v58[3] = &unk_4B4F00;
-        v59 = v56;
+        v59 = optionsCopy;
         v66 = v47;
         v29 = v46;
         v60 = v18;
@@ -992,7 +992,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      [(MABrainUpdater *)v19 callback:v54 error:v77[5]];
+      [(MABrainUpdater *)selfCopy callback:v54 error:v77[5]];
       goto LABEL_22;
     }
 
@@ -1008,7 +1008,7 @@ LABEL_22:
     v42 = v77[5];
     v77[5] = v41;
 
-    [(MABrainUpdater *)v19 callback:v57 error:v77[5]];
+    [(MABrainUpdater *)selfCopy callback:completionCopy error:v77[5]];
   }
 
   else
@@ -1016,14 +1016,14 @@ LABEL_22:
     v84[0] = NSDebugDescriptionErrorKey;
     v84[1] = @"asset.state";
     v85[0] = @"Unexpected MABrain asset state";
-    v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 state]);
+    v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [assetCopy state]);
     v85[1] = v35;
     v36 = [NSDictionary dictionaryWithObjects:v85 forKeys:v84 count:2];
     v37 = [NSError errorWithDomain:@"MobileAssetBrainErrorDomain" code:101 userInfo:v36];
     v38 = v77[5];
     v77[5] = v37;
 
-    [(MABrainUpdater *)self callback:v57 error:v77[5]];
+    [(MABrainUpdater *)self callback:completionCopy error:v77[5]];
     v18 = 0;
   }
 
@@ -1240,28 +1240,28 @@ void __51__MABrainUpdater_install_asset_options_completion___block_invoke_1247(u
   }
 }
 
-- (void)callback:(id)a3 error:(id)a4
+- (void)callback:(id)callback error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  errorCopy = error;
   callbackQueue = self->_callbackQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __33__MABrainUpdater_callback_error___block_invoke;
   v11[3] = &unk_4B31D8;
-  v12 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  v12 = errorCopy;
+  v13 = callbackCopy;
+  v9 = errorCopy;
+  v10 = callbackCopy;
   dispatch_async(callbackQueue, v11);
 }
 
-- (void)update:(id)a3 completion:(id)a4
+- (void)update:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
   scanner = self->_scanner;
   v14[0] = _NSConcreteStackBlock;
@@ -1269,12 +1269,12 @@ void __51__MABrainUpdater_install_asset_options_completion___block_invoke_1247(u
   v14[2] = __36__MABrainUpdater_update_completion___block_invoke;
   v14[3] = &unk_4B4FC0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = v9;
+  v15 = uUIDString;
+  v16 = updateCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = updateCopy;
+  v13 = uUIDString;
   [(MABrainScanner *)scanner locateAvailableUpdateBrain:v13 options:v12 completion:v14];
 }
 
@@ -1581,10 +1581,10 @@ void __36__MABrainUpdater_update_completion___block_invoke_1271(id a1, BOOL a2)
   exit(1);
 }
 
-- (void)purge:(id)a3 completion:(id)a4
+- (void)purge:(id)purge completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 objectForKeyedSubscript:@"relaunchBrain"];
+  completionCopy = completion;
+  v7 = [purge objectForKeyedSubscript:@"relaunchBrain"];
   v13 = 0;
   [MABrainBundle destageProposed:&v13];
   v8 = v13;
@@ -1598,7 +1598,7 @@ void __36__MABrainUpdater_update_completion___block_invoke_1271(id a1, BOOL a2)
     v11 = v9;
   }
 
-  [(MABrainUpdater *)self callback:v6 error:v11];
+  [(MABrainUpdater *)self callback:completionCopy error:v11];
   [(MABrainUpdater *)self garbageCollect];
   if (v7)
   {

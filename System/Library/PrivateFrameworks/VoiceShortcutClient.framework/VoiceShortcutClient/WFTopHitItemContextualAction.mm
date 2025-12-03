@@ -1,21 +1,21 @@
 @interface WFTopHitItemContextualAction
 + (id)availableCollectionIdentifiers;
-+ (id)disambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 error:(id *)a5;
++ (id)disambiguationEntriesForCollection:(id)collection limit:(int64_t)limit error:(id *)error;
 + (id)supportedBundleIdentifiers;
-+ (void)_unsafeDisambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5;
-+ (void)disambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5;
-+ (void)getTopHitContextualActionsForType:(unint64_t)a3 limit:(int64_t)a4 completion:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (WFTopHitItemContextualAction)initWithItem:(id)a3 identifier:(id)a4 wfActionIdentifier:(id)a5 associatedAppBundleIdentifier:(id)a6 parameters:(id)a7 displayString:(id)a8 title:(id)a9 subtitle:(id)a10 primaryColor:(unint64_t)a11 icon:(id)a12 accessoryIcon:(id)a13 namedQueryInfo:(id)a14;
++ (void)_unsafeDisambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler;
++ (void)disambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler;
++ (void)getTopHitContextualActionsForType:(unint64_t)type limit:(int64_t)limit completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (WFTopHitItemContextualAction)initWithItem:(id)item identifier:(id)identifier wfActionIdentifier:(id)actionIdentifier associatedAppBundleIdentifier:(id)bundleIdentifier parameters:(id)parameters displayString:(id)string title:(id)title subtitle:(id)self0 primaryColor:(unint64_t)self1 icon:(id)self2 accessoryIcon:(id)self3 namedQueryInfo:(id)self4;
 - (unint64_t)hash;
 @end
 
 @implementation WFTopHitItemContextualAction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -25,13 +25,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5)
       {
-        v6 = [(WFContextualAction *)self uniqueIdentifier];
-        v7 = [(WFContextualAction *)v5 uniqueIdentifier];
-        v8 = v6;
-        v9 = v7;
+        uniqueIdentifier = [(WFContextualAction *)self uniqueIdentifier];
+        uniqueIdentifier2 = [(WFContextualAction *)v5 uniqueIdentifier];
+        v8 = uniqueIdentifier;
+        v9 = uniqueIdentifier2;
         v10 = v9;
         if (v8 == v9)
         {
@@ -70,56 +70,56 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 combineContentsOfPropertyListObject:v5];
 
-  v7 = [(WFContextualAction *)self uniqueIdentifier];
-  v8 = [v3 combineContentsOfPropertyListObject:v7];
+  uniqueIdentifier = [(WFContextualAction *)self uniqueIdentifier];
+  v8 = [v3 combineContentsOfPropertyListObject:uniqueIdentifier];
 
   v9 = [v3 finalize];
   return v9;
 }
 
-- (WFTopHitItemContextualAction)initWithItem:(id)a3 identifier:(id)a4 wfActionIdentifier:(id)a5 associatedAppBundleIdentifier:(id)a6 parameters:(id)a7 displayString:(id)a8 title:(id)a9 subtitle:(id)a10 primaryColor:(unint64_t)a11 icon:(id)a12 accessoryIcon:(id)a13 namedQueryInfo:(id)a14
+- (WFTopHitItemContextualAction)initWithItem:(id)item identifier:(id)identifier wfActionIdentifier:(id)actionIdentifier associatedAppBundleIdentifier:(id)bundleIdentifier parameters:(id)parameters displayString:(id)string title:(id)title subtitle:(id)self0 primaryColor:(unint64_t)self1 icon:(id)self2 accessoryIcon:(id)self3 namedQueryInfo:(id)self4
 {
-  v27 = a3;
-  v26 = a14;
+  itemCopy = item;
+  infoCopy = info;
   v28.receiver = self;
   v28.super_class = WFTopHitItemContextualAction;
   BYTE2(v23) = 0;
   LOWORD(v23) = 0;
-  v19 = [WFContextualAction initWithIdentifier:sel_initWithIdentifier_wfActionIdentifier_associatedAppBundleIdentifier_parameters_displayString_title_subtitle_icon_accessoryIcon_actionShowsUserInterface_actionHasResult_isReversible_ wfActionIdentifier:a4 associatedAppBundleIdentifier:a5 parameters:a6 displayString:a7 title:a8 subtitle:a9 icon:a10 accessoryIcon:a12 actionShowsUserInterface:a13 actionHasResult:v23 isReversible:?];
+  v19 = [WFContextualAction initWithIdentifier:sel_initWithIdentifier_wfActionIdentifier_associatedAppBundleIdentifier_parameters_displayString_title_subtitle_icon_accessoryIcon_actionShowsUserInterface_actionHasResult_isReversible_ wfActionIdentifier:identifier associatedAppBundleIdentifier:actionIdentifier parameters:bundleIdentifier displayString:parameters title:string subtitle:title icon:subtitle accessoryIcon:icon actionShowsUserInterface:accessoryIcon actionHasResult:v23 isReversible:?];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_item, a3);
-    v20->_primaryColor = a11;
-    objc_storeStrong(&v20->_namedQueryInfo, a14);
+    objc_storeStrong(&v19->_item, item);
+    v20->_primaryColor = color;
+    objc_storeStrong(&v20->_namedQueryInfo, info);
     v21 = v20;
   }
 
   return v20;
 }
 
-+ (id)disambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 error:(id *)a5
++ (id)disambiguationEntriesForCollection:(id)collection limit:(int64_t)limit error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
   }
 
   return 0;
 }
 
-+ (void)_unsafeDisambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5
++ (void)_unsafeDisambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696ABC0];
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [v6 errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
-  (*(a5 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-+ (void)disambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5
++ (void)disambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2810000000;
@@ -135,13 +135,13 @@
   v16 = &unk_1E7B02070;
   v19 = v24;
   v20 = v22;
-  v21 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = collectionCopy;
   v17 = v10;
-  v11 = v9;
+  v11 = handlerCopy;
   v18 = v11;
   v12 = _Block_copy(&v13);
-  [a1 _unsafeDisambiguationEntriesForCollection:v10 limit:a4 completionHandler:{v12, v13, v14, v15, v16}];
+  [self _unsafeDisambiguationEntriesForCollection:v10 limit:limit completionHandler:{v12, v13, v14, v15, v16}];
 
   _Block_object_dispose(v22, 8);
   _Block_object_dispose(v24, 8);
@@ -220,35 +220,35 @@ BOOL __58__WFTopHitItemContextualAction_supportedBundleIdentifiers__block_invoke
   return v4 != 0;
 }
 
-+ (void)getTopHitContextualActionsForType:(unint64_t)a3 limit:(int64_t)a4 completion:(id)a5
++ (void)getTopHitContextualActionsForType:(unint64_t)type limit:(int64_t)limit completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = +[VCVoiceShortcutClient standardClient];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__WFTopHitItemContextualAction_getTopHitContextualActionsForType_limit_completion___block_invoke;
   aBlock[3] = &unk_1E7B026A8;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
       (v11)[2](v11, 0, v12);
       goto LABEL_12;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __83__WFTopHitItemContextualAction_getTopHitContextualActionsForType_limit_completion___block_invoke_2;
       v19[3] = &unk_1E7B026A8;
       v20 = v10;
-      [v8 getSuggestedShortcutsWithLimit:a4 completion:v19];
+      [v8 getSuggestedShortcutsWithLimit:limit completion:v19];
       v12 = v20;
       goto LABEL_12;
     }
@@ -256,7 +256,7 @@ BOOL __58__WFTopHitItemContextualAction_supportedBundleIdentifiers__block_invoke
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         v17[0] = MEMORY[0x1E69E9820];
@@ -264,7 +264,7 @@ BOOL __58__WFTopHitItemContextualAction_supportedBundleIdentifiers__block_invoke
         v17[2] = __83__WFTopHitItemContextualAction_getTopHitContextualActionsForType_limit_completion___block_invoke_4;
         v17[3] = &unk_1E7B026A8;
         v18 = v10;
-        [(WFTopHitItemContextualAction *)WFPlayMusicContextualAction disambiguationEntriesForCollection:@"Suggested" limit:a4 completionHandler:v17];
+        [(WFTopHitItemContextualAction *)WFPlayMusicContextualAction disambiguationEntriesForCollection:@"Suggested" limit:limit completionHandler:v17];
         v12 = v18;
         goto LABEL_12;
       case 3uLL:
@@ -273,7 +273,7 @@ BOOL __58__WFTopHitItemContextualAction_supportedBundleIdentifiers__block_invoke
         v15[2] = __83__WFTopHitItemContextualAction_getTopHitContextualActionsForType_limit_completion___block_invoke_5;
         v15[3] = &unk_1E7B026A8;
         v16 = v10;
-        [(WFTopHitItemContextualAction *)WFPlayPodcastEpisodeContextualAction disambiguationEntriesForCollection:@"Suggested" limit:a4 completionHandler:v15];
+        [(WFTopHitItemContextualAction *)WFPlayPodcastEpisodeContextualAction disambiguationEntriesForCollection:@"Suggested" limit:limit completionHandler:v15];
         v12 = v16;
         goto LABEL_12;
       case 4uLL:
@@ -282,7 +282,7 @@ BOOL __58__WFTopHitItemContextualAction_supportedBundleIdentifiers__block_invoke
         v13[2] = __83__WFTopHitItemContextualAction_getTopHitContextualActionsForType_limit_completion___block_invoke_6;
         v13[3] = &unk_1E7B02028;
         v14 = v10;
-        [v8 getLinkActionWithAppBundleIdentifier:@"com.apple.springboard" appIntentIdentifier:@"OpenCamera" expandingParameterName:@"cameraMode" limit:a4 completion:v13];
+        [v8 getLinkActionWithAppBundleIdentifier:@"com.apple.springboard" appIntentIdentifier:@"OpenCamera" expandingParameterName:@"cameraMode" limit:limit completion:v13];
         v12 = v14;
 LABEL_12:
 

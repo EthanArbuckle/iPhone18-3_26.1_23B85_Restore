@@ -1,10 +1,10 @@
 @interface ATXPOICategoryVisitDataProvider
 - (ATXPOICategoryVisitDataProvider)init;
-- (ATXPOICategoryVisitDataProvider)initWithStream:(id)a3;
-- (BOOL)hasExitedAllCategories:(id)a3;
+- (ATXPOICategoryVisitDataProvider)initWithStream:(id)stream;
+- (BOOL)hasExitedAllCategories:(id)categories;
 - (id)getCurrentVisit;
-- (id)getCurrentVisitAtDate:(id)a3;
-- (void)subscribeToPOIChangesForCategories:(id)a3 observer:(id)a4 enterSelector:(SEL)a5 exitSelector:(SEL)a6 sinkCompletion:(id)a7;
+- (id)getCurrentVisitAtDate:(id)date;
+- (void)subscribeToPOIChangesForCategories:(id)categories observer:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector sinkCompletion:(id)completion;
 - (void)unsubscribeToPOIChanges;
 @end
 
@@ -13,24 +13,24 @@
 - (ATXPOICategoryVisitDataProvider)init
 {
   v3 = BiomeLibrary();
-  v4 = [v3 Location];
-  v5 = [v4 PointOfInterest];
-  v6 = [v5 Category];
-  v7 = [(ATXPOICategoryVisitDataProvider *)self initWithStream:v6];
+  location = [v3 Location];
+  pointOfInterest = [location PointOfInterest];
+  category = [pointOfInterest Category];
+  v7 = [(ATXPOICategoryVisitDataProvider *)self initWithStream:category];
 
   return v7;
 }
 
-- (ATXPOICategoryVisitDataProvider)initWithStream:(id)a3
+- (ATXPOICategoryVisitDataProvider)initWithStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v14.receiver = self;
   v14.super_class = ATXPOICategoryVisitDataProvider;
   v6 = [(ATXPOICategoryVisitDataProvider *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.proactive.ATXPOICategoryVisitDataProvider.subscribe", v8);
     queue = v7->_queue;
@@ -51,39 +51,39 @@
   v5 = v4 + -86400.0;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v7 = [(ATXPOICategoryEventAggregator *)self->_streamAggregator groupVisitsFromPublisher:v3 startTimestamp:v5 endTimestamp:v6];
-  v8 = [v7 finalPOIWithoutExit];
+  finalPOIWithoutExit = [v7 finalPOIWithoutExit];
 
-  return v8;
+  return finalPOIWithoutExit;
 }
 
-- (id)getCurrentVisitAtDate:(id)a3
+- (id)getCurrentVisitAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 dateByAddingTimeInterval:-86400.0];
-  v6 = [(BMStream *)self->_stream atx_publisherWithStartDate:v5 endDate:v4 maxEvents:0 lastN:0 reversed:0];
+  dateCopy = date;
+  v5 = [dateCopy dateByAddingTimeInterval:-86400.0];
+  v6 = [(BMStream *)self->_stream atx_publisherWithStartDate:v5 endDate:dateCopy maxEvents:0 lastN:0 reversed:0];
   streamAggregator = self->_streamAggregator;
   [v5 timeIntervalSinceReferenceDate];
   v9 = v8;
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v12 = [(ATXPOICategoryEventAggregator *)streamAggregator groupVisitsFromPublisher:v6 startTimestamp:v9 endTimestamp:v11];
-  v13 = [v12 finalPOIWithoutExit];
+  finalPOIWithoutExit = [v12 finalPOIWithoutExit];
 
-  return v13;
+  return finalPOIWithoutExit;
 }
 
-- (void)subscribeToPOIChangesForCategories:(id)a3 observer:(id)a4 enterSelector:(SEL)a5 exitSelector:(SEL)a6 sinkCompletion:(id)a7
+- (void)subscribeToPOIChangesForCategories:(id)categories observer:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector sinkCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  categoriesCopy = categories;
+  observerCopy = observer;
+  completionCopy = completion;
   [(ATXPOICategoryVisitDataProvider *)self unsubscribeToPOIChanges];
-  v15 = [MEMORY[0x277CCAC38] processInfo];
-  v16 = [v15 processName];
-  v17 = [v16 lowercaseString];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  lowercaseString = [processName lowercaseString];
 
-  v18 = [@"ATXPOICategoryVisitDataProvider.subscribe." stringByAppendingString:v17];
+  v18 = [@"ATXPOICategoryVisitDataProvider.subscribe." stringByAppendingString:lowercaseString];
   v19 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:v18 targetQueue:self->_queue];
   scheduler = self->_scheduler;
   self->_scheduler = v19;
@@ -92,21 +92,21 @@
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v34 = 0;
-  v21 = [(BMStream *)self->_stream atx_DSLPublisher];
-  v22 = [v21 subscribeOn:self->_scheduler];
+  atx_DSLPublisher = [(BMStream *)self->_stream atx_DSLPublisher];
+  v22 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __121__ATXPOICategoryVisitDataProvider_subscribeToPOIChangesForCategories_observer_enterSelector_exitSelector_sinkCompletion___block_invoke;
   v27[3] = &unk_279AB81F8;
   v30 = v33;
-  v31 = a6;
+  exitSelectorCopy = exitSelector;
   v27[4] = self;
-  v23 = v12;
+  v23 = categoriesCopy;
   v28 = v23;
-  v32 = a5;
-  v24 = v13;
+  selectorCopy = selector;
+  v24 = observerCopy;
   v29 = v24;
-  v25 = [v22 sinkWithCompletion:v14 receiveInput:v27];
+  v25 = [v22 sinkWithCompletion:completionCopy receiveInput:v27];
   sink = self->_sink;
   self->_sink = v25;
 
@@ -155,25 +155,25 @@ void __121__ATXPOICategoryVisitDataProvider_subscribeToPOIChangesForCategories_o
 LABEL_11:
 }
 
-- (BOOL)hasExitedAllCategories:(id)a3
+- (BOOL)hasExitedAllCategories:(id)categories
 {
-  v4 = a3;
-  v5 = [(ATXPOICategoryVisitDataProvider *)self getCurrentVisit];
-  v6 = v5;
-  if (v5 && ([v5 hasExited] & 1) == 0)
+  categoriesCopy = categories;
+  getCurrentVisit = [(ATXPOICategoryVisitDataProvider *)self getCurrentVisit];
+  v6 = getCurrentVisit;
+  if (getCurrentVisit && ([getCurrentVisit hasExited] & 1) == 0)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v8 = [v6 possibleCategoryNames];
+    possibleCategoryNames = [v6 possibleCategoryNames];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __58__ATXPOICategoryVisitDataProvider_hasExitedAllCategories___block_invoke;
     v10[3] = &unk_279AB8220;
-    v11 = v4;
+    v11 = categoriesCopy;
     v12 = &v13;
-    [v8 enumerateObjectsUsingBlock:v10];
+    [possibleCategoryNames enumerateObjectsUsingBlock:v10];
 
     v7 = *(v14 + 24) ^ 1;
     _Block_object_dispose(&v13, 8);

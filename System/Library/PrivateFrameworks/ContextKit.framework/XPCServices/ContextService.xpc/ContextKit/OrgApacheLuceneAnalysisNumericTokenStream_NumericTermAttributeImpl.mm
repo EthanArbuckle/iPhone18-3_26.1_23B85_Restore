@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)clone;
 - (id)getBytesRef;
 - (int)incShift;
 - (unint64_t)hash;
-- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)a3;
+- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)impl;
 - (void)dealloc;
-- (void)init__WithLong:(int64_t)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6;
-- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)a3;
+- (void)init__WithLong:(int64_t)long withInt:(int)int withInt:(int)withInt withInt:(int)a6;
+- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)reflector;
 @end
 
 @implementation OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl
@@ -42,34 +42,34 @@
   return v2;
 }
 
-- (void)init__WithLong:(int64_t)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6
+- (void)init__WithLong:(int64_t)long withInt:(int)int withInt:(int)withInt withInt:(int)a6
 {
-  self->value_ = a3;
-  self->valueSize_ = a4;
-  self->precisionStep_ = a5;
+  self->value_ = long;
+  self->valueSize_ = int;
+  self->precisionStep_ = withInt;
   self->shift_ = a6;
 }
 
-- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)a3
+- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)reflector
 {
-  if (!a3)
+  if (!reflector)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 reflectWithIOSClass:OrgApacheLuceneAnalysisTokenattributesTermToBytesRefAttribute_class_() withNSString:@"bytes" withId:{-[OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl getBytesRef](self, "getBytesRef")}];
+  [reflector reflectWithIOSClass:OrgApacheLuceneAnalysisTokenattributesTermToBytesRefAttribute_class_() withNSString:@"bytes" withId:{-[OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl getBytesRef](self, "getBytesRef")}];
   if (qword_100553FE8 != -1)
   {
     sub_100049140();
   }
 
-  [a3 reflectWithIOSClass:qword_100553FE0 withNSString:@"shift" withId:JavaLangInteger_valueOfWithInt_(self->shift_)];
+  [reflector reflectWithIOSClass:qword_100553FE0 withNSString:@"shift" withId:JavaLangInteger_valueOfWithInt_(self->shift_)];
   if (qword_100553FE8 != -1)
   {
     sub_100049140();
   }
 
-  [a3 reflectWithIOSClass:qword_100553FE0 withNSString:@"rawValue" withId:{JavaLangLong_valueOfWithLong_(-[OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl getRawValue](self, "getRawValue"))}];
+  [reflector reflectWithIOSClass:qword_100553FE0 withNSString:@"rawValue" withId:{JavaLangLong_valueOfWithLong_(-[OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl getRawValue](self, "getRawValue"))}];
   if (qword_100553FE8 != -1)
   {
     sub_100049140();
@@ -78,14 +78,14 @@
   v5 = qword_100553FE0;
   v6 = JavaLangInteger_valueOfWithInt_(self->valueSize_);
 
-  [a3 reflectWithIOSClass:v5 withNSString:@"valueSize" withId:v6];
+  [reflector reflectWithIOSClass:v5 withNSString:@"valueSize" withId:v6];
 }
 
-- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)a3
+- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)impl
 {
   if (qword_100553FE8 == -1)
   {
-    if (a3)
+    if (impl)
     {
       goto LABEL_3;
     }
@@ -95,13 +95,13 @@ LABEL_8:
   }
 
   sub_100049140();
-  if (!a3)
+  if (!impl)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (([qword_100553FE0 isInstance:a3] & 1) == 0)
+  if (([qword_100553FE0 isInstance:impl] & 1) == 0)
   {
     JreThrowClassCastException();
   }
@@ -111,16 +111,16 @@ LABEL_3:
   precisionStep = self->precisionStep_;
   shift = self->shift_;
 
-  [a3 init__WithLong:value withInt:valueSize withInt:precisionStep withInt:shift];
+  [impl init__WithLong:value withInt:valueSize withInt:precisionStep withInt:shift];
 }
 
 - (id)clone
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl;
-  v3 = [(OrgApacheLuceneUtilAttributeImpl *)&v6 clone];
+  clone = [(OrgApacheLuceneUtilAttributeImpl *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -131,9 +131,9 @@ LABEL_3:
   }
 
   v4 = new_OrgApacheLuceneUtilBytesRefBuilder_init();
-  JreStrongAssignAndConsume(v3 + 4, v4);
-  [v3[4] copyBytesWithOrgApacheLuceneUtilBytesRef:{-[OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl getBytesRef](self, "getBytesRef")}];
-  return v3;
+  JreStrongAssignAndConsume(clone + 4, v4);
+  [clone[4] copyBytesWithOrgApacheLuceneUtilBytesRef:{-[OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl getBytesRef](self, "getBytesRef")}];
+  return clone;
 }
 
 - (unint64_t)hash
@@ -146,17 +146,17 @@ LABEL_3:
   return OrgLukhnosPortmobileUtilObjects_hash__WithNSObjectArray_(v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
-    v5 = [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl *)self getClass];
-    if (v5 == [a3 getClass])
+    getClass = [(OrgApacheLuceneAnalysisNumericTokenStream_NumericTermAttributeImpl *)self getClass];
+    if (getClass == [equal getClass])
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -164,9 +164,9 @@ LABEL_3:
         JreThrowClassCastException();
       }
 
-      if (self->precisionStep_ == *(a3 + 6) && self->shift_ == *(a3 + 5) && self->value_ == *(a3 + 1))
+      if (self->precisionStep_ == *(equal + 6) && self->shift_ == *(equal + 5) && self->value_ == *(equal + 1))
       {
-        return self->valueSize_ == *(a3 + 4);
+        return self->valueSize_ == *(equal + 4);
       }
     }
   }

@@ -1,88 +1,88 @@
 @interface LPLinkSnapshotConfiguration
 - (CGSize)maximumSize;
 - (CGSize)size;
-- (LPLinkSnapshotConfiguration)initWithCoder:(id)a3;
-- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)a3 preferredSizeClass:(unint64_t)a4 maximumSize:(CGSize)a5 scale:(double)a6;
-- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)a3 preferredSizeClass:(unint64_t)a4 size:(CGSize)a5 scale:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (LPLinkSnapshotConfiguration)initWithCoder:(id)coder;
+- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)collection preferredSizeClass:(unint64_t)class maximumSize:(CGSize)size scale:(double)scale;
+- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)collection preferredSizeClass:(unint64_t)class size:(CGSize)size scale:(double)scale;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPLinkSnapshotConfiguration
 
-- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)a3 preferredSizeClass:(unint64_t)a4 maximumSize:(CGSize)a5 scale:(double)a6
+- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)collection preferredSizeClass:(unint64_t)class maximumSize:(CGSize)size scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
   v17.receiver = self;
   v17.super_class = LPLinkSnapshotConfiguration;
   v13 = [(LPLinkSnapshotConfiguration *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_traitCollection, a3);
-    v14->_preferredSizeClass = a4;
+    objc_storeStrong(&v13->_traitCollection, collection);
+    v14->_preferredSizeClass = class;
     v14->_maximumSize.width = width;
     v14->_maximumSize.height = height;
-    v14->_scale = a6;
+    v14->_scale = scale;
     v15 = v14;
   }
 
   return v14;
 }
 
-- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)a3 preferredSizeClass:(unint64_t)a4 size:(CGSize)a5 scale:(double)a6
+- (LPLinkSnapshotConfiguration)initWithTraitCollection:(id)collection preferredSizeClass:(unint64_t)class size:(CGSize)size scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
   v17.receiver = self;
   v17.super_class = LPLinkSnapshotConfiguration;
   v13 = [(LPLinkSnapshotConfiguration *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_traitCollection, a3);
-    v14->_preferredSizeClass = a4;
+    objc_storeStrong(&v13->_traitCollection, collection);
+    v14->_preferredSizeClass = class;
     v14->_size.width = width;
     v14->_size.height = height;
-    v14->_scale = a6;
+    v14->_scale = scale;
     v15 = v14;
   }
 
   return v14;
 }
 
-- (LPLinkSnapshotConfiguration)initWithCoder:(id)a3
+- (LPLinkSnapshotConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = LPLinkSnapshotConfiguration;
   v5 = [(LPLinkSnapshotConfiguration *)&v21 init];
   if (v5)
   {
-    v6 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
+    v6 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
     traitCollection = v5->_traitCollection;
     v5->_traitCollection = v6;
 
-    v5->_preferredSizeClass = [v4 decodeIntegerForKey:@"preferredSizeClass"];
-    v8 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"sizeClassParameters"];
+    v5->_preferredSizeClass = [coderCopy decodeIntegerForKey:@"preferredSizeClass"];
+    v8 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"sizeClassParameters"];
     sizeClassParameters = v5->_sizeClassParameters;
     v5->_sizeClassParameters = v8;
 
-    [v4 decodeFloatForKey:@"maximumWidth"];
+    [coderCopy decodeFloatForKey:@"maximumWidth"];
     v11 = v10;
-    [v4 decodeFloatForKey:@"maximumHeight"];
+    [coderCopy decodeFloatForKey:@"maximumHeight"];
     v5->_maximumSize.width = v11;
     v5->_maximumSize.height = v12;
-    [v4 decodeFloatForKey:@"sizeWidth"];
+    [coderCopy decodeFloatForKey:@"sizeWidth"];
     v14 = v13;
-    [v4 decodeFloatForKey:@"sizeHeight"];
+    [coderCopy decodeFloatForKey:@"sizeHeight"];
     v5->_size.width = v14;
     v5->_size.height = v15;
-    [v4 decodeFloatForKey:@"scale"];
+    [coderCopy decodeFloatForKey:@"scale"];
     v5->_scale = v16;
-    v17 = [v4 _lp_strictlyDecodeColorForKey:@"overrideBackgroundColor"];
+    v17 = [coderCopy _lp_strictlyDecodeColorForKey:@"overrideBackgroundColor"];
     overrideBackgroundColor = v5->_overrideBackgroundColor;
     v5->_overrideBackgroundColor = v17;
 
@@ -92,28 +92,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 _lp_encodeObjectIfNotNil:self->_traitCollection forKey:@"traitCollection"];
-  [v9 encodeInteger:self->_preferredSizeClass forKey:@"preferredSizeClass"];
-  [v9 _lp_encodeObjectIfNotNil:self->_sizeClassParameters forKey:@"sizeClassParameters"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeObjectIfNotNil:self->_traitCollection forKey:@"traitCollection"];
+  [coderCopy encodeInteger:self->_preferredSizeClass forKey:@"preferredSizeClass"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_sizeClassParameters forKey:@"sizeClassParameters"];
   width = self->_maximumSize.width;
   *&width = width;
-  [v9 encodeFloat:@"maximumWidth" forKey:width];
+  [coderCopy encodeFloat:@"maximumWidth" forKey:width];
   height = self->_maximumSize.height;
   *&height = height;
-  [v9 encodeFloat:@"maximumHeight" forKey:height];
+  [coderCopy encodeFloat:@"maximumHeight" forKey:height];
   v6 = self->_size.width;
   *&v6 = v6;
-  [v9 encodeFloat:@"sizeWidth" forKey:v6];
+  [coderCopy encodeFloat:@"sizeWidth" forKey:v6];
   v7 = self->_size.height;
   *&v7 = v7;
-  [v9 encodeFloat:@"sizeHeight" forKey:v7];
+  [coderCopy encodeFloat:@"sizeHeight" forKey:v7];
   scale = self->_scale;
   *&scale = scale;
-  [v9 encodeFloat:@"scale" forKey:scale];
-  [v9 _lp_encodeColorIfNotNil:self->_overrideBackgroundColor forKey:@"overrideBackgroundColor"];
+  [coderCopy encodeFloat:@"scale" forKey:scale];
+  [coderCopy _lp_encodeColorIfNotNil:self->_overrideBackgroundColor forKey:@"overrideBackgroundColor"];
 }
 
 - (CGSize)size

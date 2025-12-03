@@ -1,35 +1,35 @@
 @interface ARVisualLocalizationResultData
-- (ARVisualLocalizationResultData)initWithCoder:(id)a3;
-- (ARVisualLocalizationResultData)initWithVLLocalizationResult:(id)a3 errorCode:(int64_t)a4 debugInfo:(id)a5 heading:(double)a6 inputLocation:(id)a7 algorithmVersion:(int64_t)a8 undulation:(double)a9;
-- (void)encodeWithCoder:(id)a3;
+- (ARVisualLocalizationResultData)initWithCoder:(id)coder;
+- (ARVisualLocalizationResultData)initWithVLLocalizationResult:(id)result errorCode:(int64_t)code debugInfo:(id)info heading:(double)heading inputLocation:(id)location algorithmVersion:(int64_t)version undulation:(double)undulation;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARVisualLocalizationResultData
 
-- (ARVisualLocalizationResultData)initWithVLLocalizationResult:(id)a3 errorCode:(int64_t)a4 debugInfo:(id)a5 heading:(double)a6 inputLocation:(id)a7 algorithmVersion:(int64_t)a8 undulation:(double)a9
+- (ARVisualLocalizationResultData)initWithVLLocalizationResult:(id)result errorCode:(int64_t)code debugInfo:(id)info heading:(double)heading inputLocation:(id)location algorithmVersion:(int64_t)version undulation:(double)undulation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a5;
-  v19 = a7;
+  resultCopy = result;
+  infoCopy = info;
+  locationCopy = location;
   v32.receiver = self;
   v32.super_class = ARVisualLocalizationResultData;
   v20 = [(ARVisualLocalizationResultData *)&v32 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_localizationResult, a3);
-    v21->_errorCode = a4;
-    objc_storeStrong(&v21->_debugInfo, a5);
-    v21->_heading = a6;
-    objc_storeStrong(&v21->_inputLocation, a7);
-    v21->_algorithmVersion = a8;
-    v21->_undulation = a9;
+    objc_storeStrong(&v20->_localizationResult, result);
+    v21->_errorCode = code;
+    objc_storeStrong(&v21->_debugInfo, info);
+    v21->_heading = heading;
+    objc_storeStrong(&v21->_inputLocation, location);
+    v21->_algorithmVersion = version;
+    v21->_undulation = undulation;
     if (v21->_localizationResult)
     {
-      if (v17)
+      if (resultCopy)
       {
-        [v17 location];
+        [resultCopy location];
       }
 
       else
@@ -44,8 +44,8 @@
       v22 = ARWGS84ToMSLAltitude(v31, v21->_undulation);
       v23 = objc_alloc(MEMORY[0x1E6985C40]);
       v24 = CLLocationCoordinate2DMake(latitude[0], latitude[1]);
-      v25 = [MEMORY[0x1E695DF00] date];
-      v26 = [v23 initWithCoordinate:v25 altitude:v24.latitude horizontalAccuracy:v24.longitude verticalAccuracy:v22 timestamp:{0.0, 0.0}];
+      date = [MEMORY[0x1E695DF00] date];
+      v26 = [v23 initWithCoordinate:date altitude:v24.latitude horizontalAccuracy:v24.longitude verticalAccuracy:v22 timestamp:{0.0, 0.0}];
       location = v21->_location;
       v21->_location = v26;
     }
@@ -54,34 +54,34 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   [(ARVisualLocalizationResultData *)self heading];
-  [v6 encodeDouble:@"ARVisualLocalizationResultData_headingKey" forKey:?];
-  v4 = [(ARVisualLocalizationResultData *)self localizationResult];
-  [v6 encodeObject:v4 forKey:@"ARVisualLocalizationResultData_localizationResultKey"];
+  [coderCopy encodeDouble:@"ARVisualLocalizationResultData_headingKey" forKey:?];
+  localizationResult = [(ARVisualLocalizationResultData *)self localizationResult];
+  [coderCopy encodeObject:localizationResult forKey:@"ARVisualLocalizationResultData_localizationResultKey"];
 
-  [v6 encodeInteger:-[ARVisualLocalizationResultData errorCode](self forKey:{"errorCode"), @"ARVisualLocalizationResultData_errorCodeKey"}];
-  v5 = [(ARVisualLocalizationResultData *)self debugInfo];
-  [v6 encodeObject:v5 forKey:@"ARVisualLocalizationResultData_debugInfoKey"];
+  [coderCopy encodeInteger:-[ARVisualLocalizationResultData errorCode](self forKey:{"errorCode"), @"ARVisualLocalizationResultData_errorCodeKey"}];
+  debugInfo = [(ARVisualLocalizationResultData *)self debugInfo];
+  [coderCopy encodeObject:debugInfo forKey:@"ARVisualLocalizationResultData_debugInfoKey"];
 
-  [v6 encodeObject:self->_inputLocation forKey:@"ARVisualLocalizationResultData_inputLocationKey"];
-  [v6 encodeInteger:-[ARVisualLocalizationResultData algorithmVersion](self forKey:{"algorithmVersion"), @"ARVisualLocalizationResultData_algorithmVersionKey"}];
-  [v6 encodeDouble:@"ARVisualLocalizationResultData_undulationKey" forKey:self->_undulation];
+  [coderCopy encodeObject:self->_inputLocation forKey:@"ARVisualLocalizationResultData_inputLocationKey"];
+  [coderCopy encodeInteger:-[ARVisualLocalizationResultData algorithmVersion](self forKey:{"algorithmVersion"), @"ARVisualLocalizationResultData_algorithmVersionKey"}];
+  [coderCopy encodeDouble:@"ARVisualLocalizationResultData_undulationKey" forKey:self->_undulation];
 }
 
-- (ARVisualLocalizationResultData)initWithCoder:(id)a3
+- (ARVisualLocalizationResultData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"ARVisualLocalizationResultData_headingKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"ARVisualLocalizationResultData_headingKey"];
   v6 = v5;
-  v7 = [v4 decodeObjectForKey:@"ARVisualLocalizationResultData_localizationResultKey"];
-  v8 = [v4 decodeIntegerForKey:@"ARVisualLocalizationResultData_errorCodeKey"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ARVisualLocalizationResultData_debugInfoKey"];
-  v10 = [v4 decodeObjectForKey:@"ARVisualLocalizationResultData_inputLocationKey"];
-  v11 = [v4 decodeIntegerForKey:@"ARVisualLocalizationResultData_algorithmVersionKey"];
-  [v4 decodeDoubleForKey:@"ARVisualLocalizationResultData_undulationKey"];
+  v7 = [coderCopy decodeObjectForKey:@"ARVisualLocalizationResultData_localizationResultKey"];
+  v8 = [coderCopy decodeIntegerForKey:@"ARVisualLocalizationResultData_errorCodeKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ARVisualLocalizationResultData_debugInfoKey"];
+  v10 = [coderCopy decodeObjectForKey:@"ARVisualLocalizationResultData_inputLocationKey"];
+  v11 = [coderCopy decodeIntegerForKey:@"ARVisualLocalizationResultData_algorithmVersionKey"];
+  [coderCopy decodeDoubleForKey:@"ARVisualLocalizationResultData_undulationKey"];
   v13 = v12;
 
   v14 = [(ARVisualLocalizationResultData *)self initWithVLLocalizationResult:v7 errorCode:v8 debugInfo:v9 heading:v10 inputLocation:v11 algorithmVersion:v6 undulation:v13];

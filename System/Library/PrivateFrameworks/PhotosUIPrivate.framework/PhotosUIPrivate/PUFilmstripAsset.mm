@@ -1,21 +1,21 @@
 @interface PUFilmstripAsset
-- (BOOL)isEqual:(id)a3;
-- (PUFilmstripAsset)initWithNormalizedTime:(double)a3 asset:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PUFilmstripAsset)initWithNormalizedTime:(double)time asset:(id)asset;
 - (double)sourceTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
-- (void)loadSourceTimeWithCompletionHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
+- (void)loadSourceTimeWithCompletionHandler:(id)handler;
 @end
 
 @implementation PUFilmstripAsset
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v9 = v6 == self->__normalizedTime && ([v5 _asset], v7 = [v5 _normalizedTime];
   }
 
@@ -27,9 +27,9 @@
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  [a3 sourceTime];
+  [compare sourceTime];
   sourceTime = self->_sourceTime;
   if (v4 <= sourceTime)
   {
@@ -42,25 +42,25 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(PUFilmstripAsset *)self _normalizedTime];
   v6 = v5;
-  v7 = [(PUFilmstripAsset *)self _asset];
-  v8 = [v4 initWithNormalizedTime:v7 asset:v6];
+  _asset = [(PUFilmstripAsset *)self _asset];
+  v8 = [v4 initWithNormalizedTime:_asset asset:v6];
 
   return v8;
 }
 
-- (void)loadSourceTimeWithCompletionHandler:(id)a3
+- (void)loadSourceTimeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PUFilmstripAsset *)self _isSourceTimeAccurate])
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 1, 0, self->_sourceTime);
+      handlerCopy[2](handlerCopy, 1, 0, self->_sourceTime);
     }
   }
 
@@ -73,7 +73,7 @@
     v6[2] = __56__PUFilmstripAsset_loadSourceTimeWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E7B77110;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = handlerCopy;
     [(AVAsset *)asset pu_loadDurationWithCompletionHandler:v6];
 
     objc_destroyWeak(&v8);
@@ -128,11 +128,11 @@ LABEL_11:
 {
   if (![(PUFilmstripAsset *)self _isSourceTimeAccurate])
   {
-    v3 = [(PUFilmstripAsset *)self _asset];
-    v4 = v3;
-    if (v3)
+    _asset = [(PUFilmstripAsset *)self _asset];
+    v4 = _asset;
+    if (_asset)
     {
-      [v3 pu_duration];
+      [_asset pu_duration];
     }
 
     else
@@ -150,7 +150,7 @@ LABEL_11:
   return self->_sourceTime;
 }
 
-- (PUFilmstripAsset)initWithNormalizedTime:(double)a3 asset:(id)a4
+- (PUFilmstripAsset)initWithNormalizedTime:(double)time asset:(id)asset
 {
   v7.receiver = self;
   v7.super_class = PUFilmstripAsset;
@@ -158,9 +158,9 @@ LABEL_11:
   if (result)
   {
     *&result->_pixelWidth = vdupq_n_s64(1uLL);
-    result->__normalizedTime = a3;
+    result->__normalizedTime = time;
     result->__isSourceTimeAccurate = 0;
-    result->__asset = a4;
+    result->__asset = asset;
   }
 
   return result;

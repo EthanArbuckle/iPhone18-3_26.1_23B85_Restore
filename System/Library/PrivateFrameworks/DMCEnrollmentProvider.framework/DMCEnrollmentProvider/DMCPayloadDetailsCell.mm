@@ -1,26 +1,26 @@
 @interface DMCPayloadDetailsCell
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (void)_addCopyEditMenuAction;
-- (void)_didLongPress:(id)a3;
-- (void)copy:(id)a3;
-- (void)setDetail:(id)a3 value:(id)a4;
+- (void)_didLongPress:(id)press;
+- (void)copy:(id)copy;
+- (void)setDetail:(id)detail value:(id)value;
 @end
 
 @implementation DMCPayloadDetailsCell
 
-- (void)setDetail:(id)a3 value:(id)a4
+- (void)setDetail:(id)detail value:(id)value
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detailCopy = detail;
+  valueCopy = value;
   [(DMCPayloadDetailsCell *)self setSelectionStyle:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MEMORY[0x277D756E0] valueCellConfiguration];
-    v9 = v7;
+    valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+    dMCProfileHexString = valueCopy;
 LABEL_3:
-    v10 = v9;
+    v10 = dMCProfileHexString;
     goto LABEL_6;
   }
 
@@ -30,61 +30,61 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [MEMORY[0x277D756E0] cellConfiguration];
-      v9 = [v7 componentsJoinedByString:@"\n"];
+      valueCellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+      dMCProfileHexString = [valueCopy componentsJoinedByString:@"\n"];
     }
 
     else
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v19 = [MEMORY[0x277D756E0] cellConfiguration];
-      v8 = v19;
+      cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+      valueCellConfiguration = cellConfiguration;
       if ((isKindOfClass & 1) == 0)
       {
-        [v19 setSecondaryText:0];
-        [v8 setText:v6];
+        [cellConfiguration setSecondaryText:0];
+        [valueCellConfiguration setText:detailCopy];
         v10 = 0;
         goto LABEL_13;
       }
 
-      v9 = [v7 DMCProfileHexString];
+      dMCProfileHexString = [valueCopy DMCProfileHexString];
     }
 
     goto LABEL_3;
   }
 
-  v8 = [MEMORY[0x277D756E0] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
   v11 = objc_opt_new();
   [v11 setDateStyle:1];
   [v11 setTimeStyle:2];
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v11 setLocale:v12];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v11 setLocale:currentLocale];
 
-  v10 = [v11 stringFromDate:v7];
+  v10 = [v11 stringFromDate:valueCopy];
 
 LABEL_6:
-  [v8 setText:v6];
+  [valueCellConfiguration setText:detailCopy];
   if (!v10)
   {
 LABEL_13:
-    v17 = v6;
+    v17 = detailCopy;
     goto LABEL_14;
   }
 
   v13 = objc_alloc(MEMORY[0x277CCA898]);
   v20 = *MEMORY[0x277D740C0];
-  v14 = [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
-  v21[0] = v14;
+  dMCProfileSecondaryLabelColor = [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
+  v21[0] = dMCProfileSecondaryLabelColor;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v16 = [v13 initWithString:v10 attributes:v15];
-  [v8 setSecondaryAttributedText:v16];
+  [valueCellConfiguration setSecondaryAttributedText:v16];
 
   v17 = v10;
 LABEL_14:
   [(DMCPayloadDetailsCell *)self setCopyableText:v17];
   [(DMCPayloadDetailsCell *)self _addCopyEditMenuAction];
-  [(DMCPayloadDetailsCell *)self setContentConfiguration:v8];
+  [(DMCPayloadDetailsCell *)self setContentConfiguration:valueCellConfiguration];
 }
 
 - (void)_addCopyEditMenuAction
@@ -106,8 +106,8 @@ LABEL_14:
     self->_longPress = v6;
   }
 
-  v8 = [(DMCPayloadDetailsCell *)self gestureRecognizers];
-  v9 = [v8 containsObject:self->_longPress];
+  gestureRecognizers = [(DMCPayloadDetailsCell *)self gestureRecognizers];
+  v9 = [gestureRecognizers containsObject:self->_longPress];
 
   if ((v9 & 1) == 0)
   {
@@ -117,29 +117,29 @@ LABEL_14:
   }
 }
 
-- (void)_didLongPress:(id)a3
+- (void)_didLongPress:(id)press
 {
   [(DMCPayloadDetailsCell *)self center];
   v4 = [MEMORY[0x277D754C0] configurationWithIdentifier:0 sourcePoint:?];
   [(UIEditMenuInteraction *)self->_editMenuInteraction presentEditMenuWithConfiguration:v4];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(DMCPayloadDetailsCell *)self copyableText];
-  v3 = [MEMORY[0x277D75810] generalPasteboard];
-  [v3 setString:v4];
+  copyableText = [(DMCPayloadDetailsCell *)self copyableText];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  [generalPasteboard setString:copyableText];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_copy_ != a3)
+  if (sel_copy_ != action)
   {
     return 0;
   }
 
-  v5 = [(DMCPayloadDetailsCell *)self copyableText];
-  v4 = v5 != 0;
+  copyableText = [(DMCPayloadDetailsCell *)self copyableText];
+  v4 = copyableText != 0;
 
   return v4;
 }

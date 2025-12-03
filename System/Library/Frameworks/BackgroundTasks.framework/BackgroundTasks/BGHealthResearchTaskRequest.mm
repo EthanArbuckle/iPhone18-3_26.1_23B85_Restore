@@ -1,34 +1,34 @@
 @interface BGHealthResearchTaskRequest
-+ (id)_requestFromActivity:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_requestFromActivity:(id)activity;
+- (BOOL)isEqual:(id)equal;
 - (id)_activity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BGHealthResearchTaskRequest
 
-+ (id)_requestFromActivity:(id)a3
++ (id)_requestFromActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 launchReason];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E699A568]];
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
+  v6 = [launchReason isEqualToString:*MEMORY[0x1E699A568]];
 
   if (v6)
   {
-    v7 = [a1 alloc];
-    v8 = [v4 clientProvidedIdentifier];
-    v9 = [v7 initWithIdentifier:v8];
+    v7 = [self alloc];
+    clientProvidedIdentifier = [activityCopy clientProvidedIdentifier];
+    v9 = [v7 initWithIdentifier:clientProvidedIdentifier];
 
-    v10 = [v4 clientProvidedStartDate];
-    [v9 setEarliestBeginDate:v10];
+    clientProvidedStartDate = [activityCopy clientProvidedStartDate];
+    [v9 setEarliestBeginDate:clientProvidedStartDate];
 
-    [v9 setRequiresExternalPower:{objc_msgSend(v4, "requiresPlugin")}];
-    [v9 setRequiresNetworkConnectivity:{objc_msgSend(v4, "requiresNetwork")}];
-    v11 = [v4 fileProtection];
-    v12 = [v11 protectionType];
-    [v9 setProtectionTypeOfRequiredData:v12];
+    [v9 setRequiresExternalPower:{objc_msgSend(activityCopy, "requiresPlugin")}];
+    [v9 setRequiresNetworkConnectivity:{objc_msgSend(activityCopy, "requiresNetwork")}];
+    fileProtection = [activityCopy fileProtection];
+    protectionType = [fileProtection protectionType];
+    [v9 setProtectionTypeOfRequiredData:protectionType];
   }
 
   else
@@ -42,12 +42,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BGTaskRequest *)self identifier];
-  v5 = [(BGTaskRequest *)self earliestBeginDate];
-  v6 = [(BGProcessingTaskRequest *)self requiresExternalPower];
-  v7 = [(BGProcessingTaskRequest *)self requiresNetworkConnectivity];
-  v8 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
-  v9 = [v3 stringWithFormat:@"<BGHealthResearchTaskRequest: %@, earliestBeginDate: %@, requiresExternalPower=%u, requiresNetworkConnectivity=%u, protectionTypeOfRequiredData=%@>", v4, v5, v6, v7, v8];
+  identifier = [(BGTaskRequest *)self identifier];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  requiresExternalPower = [(BGProcessingTaskRequest *)self requiresExternalPower];
+  requiresNetworkConnectivity = [(BGProcessingTaskRequest *)self requiresNetworkConnectivity];
+  protectionTypeOfRequiredData = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
+  v9 = [v3 stringWithFormat:@"<BGHealthResearchTaskRequest: %@, earliestBeginDate: %@, requiresExternalPower=%u, requiresNetworkConnectivity=%u, protectionTypeOfRequiredData=%@>", identifier, earliestBeginDate, requiresExternalPower, requiresNetworkConnectivity, protectionTypeOfRequiredData];
 
   return v9;
 }
@@ -55,28 +55,28 @@
 - (id)_activity
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BGTaskRequest *)self identifier];
-  v5 = [v3 stringWithFormat:@"bgHealthResearch-%@", v4];
+  identifier = [(BGTaskRequest *)self identifier];
+  v5 = [v3 stringWithFormat:@"bgHealthResearch-%@", identifier];
 
   v6 = MEMORY[0x1E699A488];
   v7 = *MEMORY[0x1E699A5C0];
   v8 = *MEMORY[0x1E699A4E8];
-  v9 = [MEMORY[0x1E695DF00] distantFuture];
-  v10 = [MEMORY[0x1E695DF00] distantFuture];
-  v11 = [v6 activityWithName:v5 priority:v7 duration:v8 startingAfter:v9 startingBefore:v10];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture2 = [MEMORY[0x1E695DF00] distantFuture];
+  v11 = [v6 activityWithName:v5 priority:v7 duration:v8 startingAfter:distantFuture startingBefore:distantFuture2];
 
   [v11 setLaunchReason:*MEMORY[0x1E699A568]];
-  v12 = [(BGTaskRequest *)self identifier];
-  [v11 setClientProvidedIdentifier:v12];
+  identifier2 = [(BGTaskRequest *)self identifier];
+  [v11 setClientProvidedIdentifier:identifier2];
 
-  v13 = [(BGTaskRequest *)self earliestBeginDate];
-  [v11 setClientProvidedStartDate:v13];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  [v11 setClientProvidedStartDate:earliestBeginDate];
 
   [v11 setRequiresPlugin:{-[BGProcessingTaskRequest requiresExternalPower](self, "requiresExternalPower")}];
   [v11 setRequiresNetwork:{-[BGProcessingTaskRequest requiresNetworkConnectivity](self, "requiresNetworkConnectivity")}];
   v14 = MEMORY[0x1E699A4A0];
-  v15 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
-  v16 = [v14 protectionWithType:v15];
+  protectionTypeOfRequiredData = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
+  v16 = [v14 protectionWithType:protectionTypeOfRequiredData];
   [v11 setFileProtection:v16];
 
   return v11;
@@ -84,10 +84,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BGTaskRequest *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(BGTaskRequest *)self earliestBeginDate];
-  v6 = v4 ^ (2 * [v5 hash]);
+  identifier = [(BGTaskRequest *)self identifier];
+  v4 = [identifier hash];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  v6 = v4 ^ (2 * [earliestBeginDate hash]);
   if ([(BGProcessingTaskRequest *)self requiresNetworkConnectivity])
   {
     v7 = 4;
@@ -98,24 +98,24 @@
     v7 = 0;
   }
 
-  v8 = [(BGProcessingTaskRequest *)self requiresExternalPower];
+  requiresExternalPower = [(BGProcessingTaskRequest *)self requiresExternalPower];
   v9 = 8;
-  if (!v8)
+  if (!requiresExternalPower)
   {
     v9 = 0;
   }
 
   v10 = v6 ^ v7 ^ v9;
-  v11 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
-  v12 = v10 ^ (16 * [v11 hash]);
+  protectionTypeOfRequiredData = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
+  v12 = v10 ^ (16 * [protectionTypeOfRequiredData hash]);
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -125,31 +125,31 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(BGTaskRequest *)v7 identifier];
-      v9 = [(BGTaskRequest *)self identifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      identifier = [(BGTaskRequest *)v7 identifier];
+      identifier2 = [(BGTaskRequest *)self identifier];
+      if (identifier != identifier2)
       {
-        v10 = [(BGTaskRequest *)v7 identifier];
-        v3 = [(BGTaskRequest *)self identifier];
-        if (![v10 isEqual:v3])
+        identifier3 = [(BGTaskRequest *)v7 identifier];
+        identifier4 = [(BGTaskRequest *)self identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v11 = 0;
           goto LABEL_25;
         }
 
-        v24 = v10;
+        v24 = identifier3;
       }
 
-      v12 = [(BGTaskRequest *)v7 earliestBeginDate];
-      v13 = [(BGTaskRequest *)self earliestBeginDate];
-      if (v12 == v13 || (-[BGTaskRequest earliestBeginDate](v7, "earliestBeginDate"), v14 = objc_claimAutoreleasedReturnValue(), -[BGTaskRequest earliestBeginDate](self, "earliestBeginDate"), v4 = objc_claimAutoreleasedReturnValue(), v23 = v14, [v14 isEqual:v4]))
+      earliestBeginDate = [(BGTaskRequest *)v7 earliestBeginDate];
+      earliestBeginDate2 = [(BGTaskRequest *)self earliestBeginDate];
+      if (earliestBeginDate == earliestBeginDate2 || (-[BGTaskRequest earliestBeginDate](v7, "earliestBeginDate"), v14 = objc_claimAutoreleasedReturnValue(), -[BGTaskRequest earliestBeginDate](self, "earliestBeginDate"), v4 = objc_claimAutoreleasedReturnValue(), v23 = v14, [v14 isEqual:v4]))
       {
         if (([(BGProcessingTaskRequest *)v7 requiresNetworkConnectivity]&& [(BGProcessingTaskRequest *)self requiresNetworkConnectivity]|| ![(BGProcessingTaskRequest *)v7 requiresNetworkConnectivity]&& ![(BGProcessingTaskRequest *)self requiresNetworkConnectivity]) && ([(BGProcessingTaskRequest *)v7 requiresExternalPower]&& [(BGProcessingTaskRequest *)self requiresExternalPower]|| ![(BGProcessingTaskRequest *)v7 requiresExternalPower]&& ![(BGProcessingTaskRequest *)self requiresExternalPower]))
         {
-          v17 = [(BGHealthResearchTaskRequest *)v7 protectionTypeOfRequiredData];
-          v18 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
-          if (v17 == v18)
+          protectionTypeOfRequiredData = [(BGHealthResearchTaskRequest *)v7 protectionTypeOfRequiredData];
+          protectionTypeOfRequiredData2 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
+          if (protectionTypeOfRequiredData == protectionTypeOfRequiredData2)
           {
 
             v11 = 1;
@@ -158,11 +158,11 @@
 
           else
           {
-            v22 = v18;
-            v20 = [(BGHealthResearchTaskRequest *)v7 protectionTypeOfRequiredData];
-            v21 = v17;
-            v19 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
-            v11 = [v20 isEqual:?];
+            v22 = protectionTypeOfRequiredData2;
+            protectionTypeOfRequiredData3 = [(BGHealthResearchTaskRequest *)v7 protectionTypeOfRequiredData];
+            v21 = protectionTypeOfRequiredData;
+            protectionTypeOfRequiredData4 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
+            v11 = [protectionTypeOfRequiredData3 isEqual:?];
 
             v15 = v11;
           }
@@ -174,13 +174,13 @@
           v15 = 0;
         }
 
-        if (v12 == v13)
+        if (earliestBeginDate == earliestBeginDate2)
         {
 
           v11 = v15;
 LABEL_24:
-          v10 = v24;
-          if (v8 == v9)
+          identifier3 = v24;
+          if (identifier == identifier2)
           {
 LABEL_26:
 
@@ -209,18 +209,18 @@ LABEL_27:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = BGHealthResearchTaskRequest;
-  v4 = [(BGProcessingTaskRequest *)&v8 copyWithZone:a3];
-  v5 = [(BGTaskRequest *)self earliestBeginDate];
-  [v4 setEarliestBeginDate:v5];
+  v4 = [(BGProcessingTaskRequest *)&v8 copyWithZone:zone];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  [v4 setEarliestBeginDate:earliestBeginDate];
 
   [v4 setRequiresNetworkConnectivity:{-[BGProcessingTaskRequest requiresNetworkConnectivity](self, "requiresNetworkConnectivity")}];
   [v4 setRequiresExternalPower:{-[BGProcessingTaskRequest requiresExternalPower](self, "requiresExternalPower")}];
-  v6 = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
-  [v4 setProtectionTypeOfRequiredData:v6];
+  protectionTypeOfRequiredData = [(BGHealthResearchTaskRequest *)self protectionTypeOfRequiredData];
+  [v4 setProtectionTypeOfRequiredData:protectionTypeOfRequiredData];
 
   return v4;
 }

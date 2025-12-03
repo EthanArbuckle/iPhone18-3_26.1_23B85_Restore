@@ -6,8 +6,8 @@
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  [(MPModelTVSeason *)v2 number];
+  selfCopy = self;
+  [(MPModelTVSeason *)selfCopy number];
   v3._countAndFlagsBits = dispatch thunk of CustomStringConvertible.description.getter();
   String.append(_:)(v3);
 

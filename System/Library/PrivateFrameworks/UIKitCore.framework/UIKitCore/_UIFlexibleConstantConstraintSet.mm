@@ -1,54 +1,54 @@
 @interface _UIFlexibleConstantConstraintSet
-+ (id)constraintSetWithCollapsableConstantPreferredEqualityConstraint:(id)a3 equalityPriority:(unint64_t)a4;
-+ (id)constraintSetWithRequiredEqualityConstraint:(id)a3;
-- (id)_initWithEqualityConstraint:(id)a3 equalityPriority:(unint64_t)a4 prefersMin:(BOOL)a5;
++ (id)constraintSetWithCollapsableConstantPreferredEqualityConstraint:(id)constraint equalityPriority:(unint64_t)priority;
++ (id)constraintSetWithRequiredEqualityConstraint:(id)constraint;
+- (id)_initWithEqualityConstraint:(id)constraint equalityPriority:(unint64_t)priority prefersMin:(BOOL)min;
 - (id)_otherInequalityConstraint;
 - (id)_preferredInequalityConstraint;
 - (void)_updateInequalityConstants;
-- (void)setEqualityConstant:(double)a3;
-- (void)setMaxConstant:(double)a3;
-- (void)setMinConstant:(double)a3;
+- (void)setEqualityConstant:(double)constant;
+- (void)setMaxConstant:(double)constant;
+- (void)setMinConstant:(double)constant;
 @end
 
 @implementation _UIFlexibleConstantConstraintSet
 
-+ (id)constraintSetWithRequiredEqualityConstraint:(id)a3
++ (id)constraintSetWithRequiredEqualityConstraint:(id)constraint
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithEqualityConstraint:v4 equalityPriority:1000 prefersMin:0];
+  constraintCopy = constraint;
+  v5 = [[self alloc] _initWithEqualityConstraint:constraintCopy equalityPriority:1000 prefersMin:0];
 
   return v5;
 }
 
-+ (id)constraintSetWithCollapsableConstantPreferredEqualityConstraint:(id)a3 equalityPriority:(unint64_t)a4
++ (id)constraintSetWithCollapsableConstantPreferredEqualityConstraint:(id)constraint equalityPriority:(unint64_t)priority
 {
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithEqualityConstraint:v6 equalityPriority:a4 prefersMin:0];
+  constraintCopy = constraint;
+  v7 = [[self alloc] _initWithEqualityConstraint:constraintCopy equalityPriority:priority prefersMin:0];
 
   return v7;
 }
 
-- (id)_initWithEqualityConstraint:(id)a3 equalityPriority:(unint64_t)a4 prefersMin:(BOOL)a5
+- (id)_initWithEqualityConstraint:(id)constraint equalityPriority:(unint64_t)priority prefersMin:(BOOL)min
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if ([v10 relation])
+  constraintCopy = constraint;
+  if ([constraintCopy relation])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"_UIConstantConstraintSet.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"cn.relation == NSLayoutRelationEqual"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIConstantConstraintSet.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"cn.relation == NSLayoutRelationEqual"}];
   }
 
-  if ([v10 isActive])
+  if ([constraintCopy isActive])
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"_UIConstantConstraintSet.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"cn.active == NO"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIConstantConstraintSet.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"cn.active == NO"}];
   }
 
-  v11 = [MEMORY[0x1E695DF70] arrayWithObject:v10];
-  v12 = v10;
-  *&v13 = a4;
+  v11 = [MEMORY[0x1E695DF70] arrayWithObject:constraintCopy];
+  v12 = constraintCopy;
+  *&v13 = priority;
   [v12 setPriority:v13];
-  if (a4 == 1000)
+  if (priority == 1000)
   {
     v14 = 0;
     v15 = 0;
@@ -57,16 +57,16 @@
   else
   {
     v16 = MEMORY[0x1E69977A0];
-    v17 = [v12 firstItem];
-    v18 = [v12 firstAttribute];
-    v19 = [v12 secondItem];
-    v14 = [v16 constraintWithItem:v17 attribute:v18 relatedBy:1 toItem:v19 attribute:{objc_msgSend(v12, "secondAttribute")}];
+    firstItem = [v12 firstItem];
+    firstAttribute = [v12 firstAttribute];
+    secondItem = [v12 secondItem];
+    v14 = [v16 constraintWithItem:firstItem attribute:firstAttribute relatedBy:1 toItem:secondItem attribute:{objc_msgSend(v12, "secondAttribute")}];
 
     v20 = MEMORY[0x1E69977A0];
-    v21 = [v12 firstItem];
-    v22 = [v12 firstAttribute];
-    v23 = [v12 secondItem];
-    v15 = [v20 constraintWithItem:v21 attribute:v22 relatedBy:-1 toItem:v23 attribute:{objc_msgSend(v12, "secondAttribute")}];
+    firstItem2 = [v12 firstItem];
+    firstAttribute2 = [v12 firstAttribute];
+    secondItem2 = [v12 secondItem];
+    v15 = [v20 constraintWithItem:firstItem2 attribute:firstAttribute2 relatedBy:-1 toItem:secondItem2 attribute:{objc_msgSend(v12, "secondAttribute")}];
 
     v31[0] = v14;
     v31[1] = v15;
@@ -82,8 +82,8 @@
   {
     objc_storeStrong(&v25->_minConstraint, v14);
     objc_storeStrong(&v26->_maxConstraint, v15);
-    objc_storeStrong(&v26->_equalityConstraint, a3);
-    v26->_equalityConstraintPrefersMin = a5;
+    objc_storeStrong(&v26->_equalityConstraint, constraint);
+    v26->_equalityConstraintPrefersMin = min;
     [(_UIFlexibleConstantConstraintSet *)v26 setMinConstant:0.0];
     [(_UIFlexibleConstantConstraintSet *)v26 setMaxConstant:10000.0];
     [(NSLayoutConstraint *)v26->_equalityConstraint constant];
@@ -93,33 +93,33 @@
   return v26;
 }
 
-- (void)setMinConstant:(double)a3
+- (void)setMinConstant:(double)constant
 {
-  if (![(_UIFlexibleConstantConstraintSet *)self _equalityConstraintIsRequired]&& self->_minConstant != a3)
+  if (![(_UIFlexibleConstantConstraintSet *)self _equalityConstraintIsRequired]&& self->_minConstant != constant)
   {
-    self->_minConstant = a3;
+    self->_minConstant = constant;
     minConstraint = self->_minConstraint;
 
-    [(NSLayoutConstraint *)minConstraint setConstant:a3];
+    [(NSLayoutConstraint *)minConstraint setConstant:constant];
   }
 }
 
-- (void)setMaxConstant:(double)a3
+- (void)setMaxConstant:(double)constant
 {
-  if (![(_UIFlexibleConstantConstraintSet *)self _equalityConstraintIsRequired]&& self->_maxConstant != a3)
+  if (![(_UIFlexibleConstantConstraintSet *)self _equalityConstraintIsRequired]&& self->_maxConstant != constant)
   {
-    self->_maxConstant = a3;
+    self->_maxConstant = constant;
     maxConstraint = self->_maxConstraint;
 
-    [(NSLayoutConstraint *)maxConstraint setConstant:a3];
+    [(NSLayoutConstraint *)maxConstraint setConstant:constant];
   }
 }
 
-- (void)setEqualityConstant:(double)a3
+- (void)setEqualityConstant:(double)constant
 {
-  if (self->_equalityConstant != a3)
+  if (self->_equalityConstant != constant)
   {
-    self->_equalityConstant = a3;
+    self->_equalityConstant = constant;
     [(NSLayoutConstraint *)self->_equalityConstraint setConstant:?];
 
     [(_UIFlexibleConstantConstraintSet *)self _updateInequalityConstants];

@@ -1,39 +1,39 @@
 @interface HFHomeBuilder
-- (HFHomeBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (HFHomeBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (id)commitItem;
 - (id)createHome;
 - (id)performValidation;
 - (id)updateName;
 - (id)updateUserNotes;
-- (void)setHome:(id)a3;
+- (void)setHome:(id)home;
 @end
 
 @implementation HFHomeBuilder
 
-- (HFHomeBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFHomeBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v6 = a4;
+  homeCopy = home;
   v17.receiver = self;
   v17.super_class = HFHomeBuilder;
-  v7 = [(HFItemBuilder *)&v17 initWithExistingObject:a3 inHome:v6];
+  v7 = [(HFItemBuilder *)&v17 initWithExistingObject:object inHome:homeCopy];
   if (v7)
   {
-    v8 = [v6 name];
+    name = [homeCopy name];
     name = v7->_name;
-    v7->_name = v8;
+    v7->_name = name;
 
-    v10 = [v6 hf_notesApplicationData];
+    hf_notesApplicationData = [homeCopy hf_notesApplicationData];
     userNotes = v7->_userNotes;
-    v7->_userNotes = v10;
+    v7->_userNotes = hf_notesApplicationData;
 
     if (+[HFExecutionEnvironment isHomeApp])
     {
       v12 = +[HFWallpaperManager sharedInstance];
-      v13 = [v12 wallpaperSourceRegistered];
+      wallpaperSourceRegistered = [v12 wallpaperSourceRegistered];
 
-      if (v13)
+      if (wallpaperSourceRegistered)
       {
-        v14 = [[HFWallpaperEditCollectionBuilder alloc] initWithHomeKitObject:v6];
+        v14 = [[HFWallpaperEditCollectionBuilder alloc] initWithHomeKitObject:homeCopy];
         wallpaperBuilder = v7->_wallpaperBuilder;
         v7->_wallpaperBuilder = v14;
       }
@@ -43,18 +43,18 @@
   return v7;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFItemBuilder *)self home];
+  homeCopy = home;
+  home = [(HFItemBuilder *)self home];
 
-  if (v5 != v4)
+  if (home != homeCopy)
   {
     v12.receiver = self;
     v12.super_class = HFHomeBuilder;
-    [(HFItemBuilder *)&v12 setHome:v4];
-    v6 = [objc_opt_class() homeKitRepresentationClass];
-    v7 = v4;
+    [(HFItemBuilder *)&v12 setHome:homeCopy];
+    homeKitRepresentationClass = [objc_opt_class() homeKitRepresentationClass];
+    v7 = homeCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -73,9 +73,9 @@
         goto LABEL_9;
       }
 
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", homeKitRepresentationClass, objc_opt_class()}];
     }
 
     v9 = 0;
@@ -87,17 +87,17 @@ LABEL_9:
 
 - (id)commitItem
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = v3 == 0;
+  home = [(HFItemBuilder *)self home];
+  v4 = home == 0;
 
-  v5 = [(HFHomeBuilder *)self performValidation];
+  performValidation = [(HFHomeBuilder *)self performValidation];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __27__HFHomeBuilder_commitItem__block_invoke;
   v17[3] = &unk_277DFD660;
   v18 = v4;
   v17[4] = self;
-  v6 = [v5 flatMap:v17];
+  v6 = [performValidation flatMap:v17];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __27__HFHomeBuilder_commitItem__block_invoke_2;
@@ -238,8 +238,8 @@ void __27__HFHomeBuilder_commitItem__block_invoke_6()
   v3 = MEMORY[0x277D2C900];
   v4 = [(HFItemBuilder *)self lazy_verifyPropertyIsSet:@"name"];
   v11[0] = v4;
-  v5 = [(HFHomeBuilder *)self name];
-  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:v5];
+  name = [(HFHomeBuilder *)self name];
+  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:name];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v3 chainFutures:v7];
@@ -252,16 +252,16 @@ void __27__HFHomeBuilder_commitItem__block_invoke_6()
 - (id)createHome
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 homeManager];
+  homeManager = [v3 homeManager];
 
   v5 = MEMORY[0x277D2C900];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __27__HFHomeBuilder_createHome__block_invoke;
   v13[3] = &unk_277DF61F0;
-  v6 = v4;
+  v6 = homeManager;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = [v5 futureWithCompletionHandlerAdapterBlock:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -310,10 +310,10 @@ id __27__HFHomeBuilder_createHome__block_invoke_2(uint64_t a1, void *a2)
 
 - (id)updateName
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = [v3 name];
-  v5 = [(HFHomeBuilder *)self name];
-  v6 = [v4 isEqualToString:v5];
+  home = [(HFItemBuilder *)self home];
+  name = [home name];
+  name2 = [(HFHomeBuilder *)self name];
+  v6 = [name isEqualToString:name2];
 
   if (v6)
   {
@@ -384,15 +384,15 @@ void __27__HFHomeBuilder_updateName__block_invoke_4(uint64_t a1, void *a2)
 
 - (id)updateUserNotes
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = [v3 hf_notesApplicationData];
+  home = [(HFItemBuilder *)self home];
+  hf_notesApplicationData = [home hf_notesApplicationData];
 
-  v5 = [(HFHomeBuilder *)self userNotes];
-  if (v5 | v4 && (v6 = v5, -[HFHomeBuilder userNotes](self, "userNotes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:v4], v7, v6, !v8))
+  userNotes = [(HFHomeBuilder *)self userNotes];
+  if (userNotes | hf_notesApplicationData && (v6 = userNotes, -[HFHomeBuilder userNotes](self, "userNotes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:hf_notesApplicationData], v7, v6, !v8))
   {
-    v10 = [(HFItemBuilder *)self home];
-    v11 = [(HFHomeBuilder *)self userNotes];
-    v9 = [v10 hf_setNotesApplicationData:v11];
+    home2 = [(HFItemBuilder *)self home];
+    userNotes2 = [(HFHomeBuilder *)self userNotes];
+    v9 = [home2 hf_setNotesApplicationData:userNotes2];
   }
 
   else

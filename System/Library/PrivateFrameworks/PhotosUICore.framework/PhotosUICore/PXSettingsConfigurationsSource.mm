@@ -1,18 +1,18 @@
 @interface PXSettingsConfigurationsSource
 - (PXSettingsConfigurationsSource)init;
-- (PXSettingsConfigurationsSource)initWithUserDefaults:(id)a3;
+- (PXSettingsConfigurationsSource)initWithUserDefaults:(id)defaults;
 - (PXSettingsConfigurationsSourceObserver)observer;
-- (id)configurationAtIndex:(int64_t)a3;
-- (int64_t)indexOfConfiguration:(id)a3;
+- (id)configurationAtIndex:(int64_t)index;
+- (int64_t)indexOfConfiguration:(id)configuration;
 - (int64_t)numberOfConfigurations;
 - (void)_save;
 - (void)deleteAllConfigurations;
-- (void)deleteConfigurationAtIndex:(int64_t)a3;
-- (void)insertConfiguration:(id)a3 atIndex:(int64_t)a4;
-- (void)insertConfigurations:(id)a3 atIndex:(int64_t)a4;
-- (void)performChanges:(id)a3;
-- (void)renameConfigurationAtIndex:(int64_t)a3 withName:(id)a4;
-- (void)updateConfigurationAtIndex:(int64_t)a3;
+- (void)deleteConfigurationAtIndex:(int64_t)index;
+- (void)insertConfiguration:(id)configuration atIndex:(int64_t)index;
+- (void)insertConfigurations:(id)configurations atIndex:(int64_t)index;
+- (void)performChanges:(id)changes;
+- (void)renameConfigurationAtIndex:(int64_t)index withName:(id)name;
+- (void)updateConfigurationAtIndex:(int64_t)index;
 @end
 
 @implementation PXSettingsConfigurationsSource
@@ -24,82 +24,82 @@
   return WeakRetained;
 }
 
-- (void)updateConfigurationAtIndex:(int64_t)a3
+- (void)updateConfigurationAtIndex:(int64_t)index
 {
   v7 = [(PXSettingsConfigurationsSource *)self configurationAtIndex:?];
-  v5 = [(PXSettingsConfigurationsSource *)self configurations];
-  v6 = [v7 copyWithUpdatedSettingsValues];
-  [v5 replaceObjectAtIndex:a3 withObject:v6];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  copyWithUpdatedSettingsValues = [v7 copyWithUpdatedSettingsValues];
+  [configurations replaceObjectAtIndex:index withObject:copyWithUpdatedSettingsValues];
 }
 
-- (void)renameConfigurationAtIndex:(int64_t)a3 withName:(id)a4
+- (void)renameConfigurationAtIndex:(int64_t)index withName:(id)name
 {
-  v6 = a4;
-  v9 = [(PXSettingsConfigurationsSource *)self configurationAtIndex:a3];
-  v7 = [(PXSettingsConfigurationsSource *)self configurations];
-  v8 = [v9 copyWithName:v6];
+  nameCopy = name;
+  v9 = [(PXSettingsConfigurationsSource *)self configurationAtIndex:index];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  v8 = [v9 copyWithName:nameCopy];
 
-  [v7 replaceObjectAtIndex:a3 withObject:v8];
+  [configurations replaceObjectAtIndex:index withObject:v8];
 }
 
 - (void)deleteAllConfigurations
 {
-  v2 = [(PXSettingsConfigurationsSource *)self configurations];
-  [v2 removeAllObjects];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  [configurations removeAllObjects];
 }
 
-- (void)deleteConfigurationAtIndex:(int64_t)a3
+- (void)deleteConfigurationAtIndex:(int64_t)index
 {
-  v4 = [(PXSettingsConfigurationsSource *)self configurations];
-  [v4 removeObjectAtIndex:a3];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  [configurations removeObjectAtIndex:index];
 }
 
-- (void)insertConfigurations:(id)a3 atIndex:(int64_t)a4
+- (void)insertConfigurations:(id)configurations atIndex:(int64_t)index
 {
-  v6 = a3;
-  v8 = [(PXSettingsConfigurationsSource *)self configurations];
-  v7 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{a4, objc_msgSend(v6, "count")}];
-  [v8 insertObjects:v6 atIndexes:v7];
+  configurationsCopy = configurations;
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  v7 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{index, objc_msgSend(configurationsCopy, "count")}];
+  [configurations insertObjects:configurationsCopy atIndexes:v7];
 }
 
-- (void)insertConfiguration:(id)a3 atIndex:(int64_t)a4
+- (void)insertConfiguration:(id)configuration atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(PXSettingsConfigurationsSource *)self configurations];
-  [v7 insertObject:v6 atIndex:a4];
+  configurationCopy = configuration;
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  [configurations insertObject:configurationCopy atIndex:index];
 }
 
 - (void)_save
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = [(PXSettingsConfigurationsSource *)self configurations];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
   v10 = 0;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v10];
+  v6 = [v4 archivedDataWithRootObject:configurations requiringSecureCoding:1 error:&v10];
   v7 = v10;
 
   if (!v6)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSettingsConfigurationsSource.m" lineNumber:79 description:{@"couldn't archive configurations: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSettingsConfigurationsSource.m" lineNumber:79 description:{@"couldn't archive configurations: %@", v7}];
   }
 
-  v8 = [(PXSettingsConfigurationsSource *)self userDefaults];
-  [v8 setObject:v6 forKey:@"PXSettingsConfigurations"];
+  userDefaults = [(PXSettingsConfigurationsSource *)self userDefaults];
+  [userDefaults setObject:v6 forKey:@"PXSettingsConfigurations"];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXSettingsConfigurationsSource *)self observer];
+  changesCopy = changes;
+  observer = [(PXSettingsConfigurationsSource *)self observer];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__PXSettingsConfigurationsSource_performChanges___block_invoke;
   aBlock[3] = &unk_1E774A0E0;
   aBlock[4] = self;
-  v12 = v4;
-  v6 = v5;
+  v12 = changesCopy;
+  v6 = observer;
   v11 = v6;
-  v7 = v4;
+  v7 = changesCopy;
   v8 = _Block_copy(aBlock);
   v9 = v8;
   if (v6)
@@ -127,42 +127,42 @@ void __49__PXSettingsConfigurationsSource_performChanges___block_invoke(uint64_t
   [*(a1 + 40) settingsConfigurationSource:*(a1 + 32) didChange:v5];
 }
 
-- (int64_t)indexOfConfiguration:(id)a3
+- (int64_t)indexOfConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PXSettingsConfigurationsSource *)self configurations];
-  v6 = [v5 indexOfObject:v4];
+  configurationCopy = configuration;
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  v6 = [configurations indexOfObject:configurationCopy];
 
   return v6;
 }
 
-- (id)configurationAtIndex:(int64_t)a3
+- (id)configurationAtIndex:(int64_t)index
 {
-  v4 = [(PXSettingsConfigurationsSource *)self configurations];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  v5 = [configurations objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (int64_t)numberOfConfigurations
 {
-  v2 = [(PXSettingsConfigurationsSource *)self configurations];
-  v3 = [v2 count];
+  configurations = [(PXSettingsConfigurationsSource *)self configurations];
+  v3 = [configurations count];
 
   return v3;
 }
 
-- (PXSettingsConfigurationsSource)initWithUserDefaults:(id)a3
+- (PXSettingsConfigurationsSource)initWithUserDefaults:(id)defaults
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  defaultsCopy = defaults;
   v21.receiver = self;
   v21.super_class = PXSettingsConfigurationsSource;
   v6 = [(PXSettingsConfigurationsSource *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     v8 = [(NSUserDefaults *)v7->_userDefaults objectForKey:@"PXSettingsConfigurations"];
     if (v8)
     {
@@ -200,8 +200,8 @@ void __49__PXSettingsConfigurationsSource_performChanges___block_invoke(uint64_t
 
 - (PXSettingsConfigurationsSource)init
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [(PXSettingsConfigurationsSource *)self initWithUserDefaults:v3];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [(PXSettingsConfigurationsSource *)self initWithUserDefaults:standardUserDefaults];
 
   return v4;
 }

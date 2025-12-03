@@ -1,20 +1,20 @@
 @interface ENSecKey
-+ (id)keyFromBase64String:(id)a3 keyClass:(__CFString *)a4 error:(id *)a5;
-- (ENSecKey)initWithKeyRef:(__SecKey *)a3;
++ (id)keyFromBase64String:(id)string keyClass:(__CFString *)class error:(id *)error;
+- (ENSecKey)initWithKeyRef:(__SecKey *)ref;
 - (void)dealloc;
 @end
 
 @implementation ENSecKey
 
-- (ENSecKey)initWithKeyRef:(__SecKey *)a3
+- (ENSecKey)initWithKeyRef:(__SecKey *)ref
 {
   v6.receiver = self;
   v6.super_class = ENSecKey;
   v4 = [(ENSecKey *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_keyRef = a3;
+    CFRetain(ref);
+    v4->_keyRef = ref;
   }
 
   return v4;
@@ -28,10 +28,10 @@
   [(ENSecKey *)&v3 dealloc];
 }
 
-+ (id)keyFromBase64String:(id)a3 keyClass:(__CFString *)a4 error:(id *)a5
++ (id)keyFromBase64String:(id)string keyClass:(__CFString *)class error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
     v7 = ENCopyPublicKeyFromBase64String();
     if (v7)
@@ -43,10 +43,10 @@
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     ENErrorF();
-    *a5 = v9 = 0;
+    *error = v9 = 0;
     goto LABEL_4;
   }
 

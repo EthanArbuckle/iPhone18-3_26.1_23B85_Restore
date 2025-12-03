@@ -1,10 +1,10 @@
 @interface ANSTActionHighlightModel
 + (ANSTActionHighlightModel)new;
 - (ANSTActionHighlightModel)init;
-- (BOOL)bindInputFrameBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)executeAndUpdateStateTensorData:(id)a3 outputDictionary:(id)a4 outError:(id *)a5;
-- (BOOL)prepareWithError:(id *)a3;
-- (id)initForVersion:(unint64_t)a3;
+- (BOOL)bindInputFrameBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)executeAndUpdateStateTensorData:(id)data outputDictionary:(id)dictionary outError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (id)initForVersion:(unint64_t)version;
 - (void)dealloc;
 @end
 
@@ -19,12 +19,12 @@
 
 + (ANSTActionHighlightModel)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (id)initForVersion:(unint64_t)a3
+- (id)initForVersion:(unint64_t)version
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
@@ -33,7 +33,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_version = a3;
+    v4->_version = version;
     v6 = [ANSTPixelBufferDescriptor alloc];
     v8 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v6, v7, @"input_image", 224, 224, 1111970369, 0, 0);
     inputImageDescriptor = v5->_inputImageDescriptor;
@@ -51,7 +51,7 @@
   return v5;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v165[1] = *MEMORY[0x277D85DE8];
   if (self->_prepared)
@@ -74,7 +74,7 @@
         sub_22E659B6C();
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -84,7 +84,7 @@
       v165[0] = v10;
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, v165, &v164, 1);
       v99 = LABEL_72:;
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v100, @"ANSTErrorDomain", 5, v99);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v100, @"ANSTErrorDomain", 5, v99);
 
 LABEL_73:
 LABEL_74:
@@ -95,7 +95,7 @@ LABEL_74:
 
   if (!self->_operation)
   {
-    if (a3)
+    if (error)
     {
       v20 = MEMORY[0x277CCACA8];
       v21 = ANSTActionDetectorVersionToNSString(self->_version);
@@ -105,7 +105,7 @@ LABEL_74:
       v162 = *MEMORY[0x277CCA068];
       v163 = v23;
       v26 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, &v163, &v162, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v24, v27, @"ANSTErrorDomain", 5, v26);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v24, v27, @"ANSTErrorDomain", 5, v26);
     }
 
     goto LABEL_74;
@@ -123,7 +123,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -147,7 +147,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -171,7 +171,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -196,7 +196,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -220,7 +220,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -244,7 +244,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -269,7 +269,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -293,7 +293,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -317,7 +317,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -342,7 +342,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -367,7 +367,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -392,7 +392,7 @@ LABEL_74:
       sub_22E659B6C();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -576,7 +576,7 @@ LABEL_75:
   [(ANSTActionHighlightModel *)&v33 dealloc];
 }
 
-- (BOOL)bindInputFrameBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)bindInputFrameBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v71[1] = *MEMORY[0x277D85DE8];
   stream = self->_stream;
@@ -592,7 +592,7 @@ LABEL_75:
       sub_22E659C54();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -604,7 +604,7 @@ LABEL_75:
     goto LABEL_11;
   }
 
-  CVPixelBufferGetIOSurface(a3);
+  CVPixelBufferGetIOSurface(buffer);
   v16 = e5rt_surface_object_create_from_iosurface();
   if (v16)
   {
@@ -617,7 +617,7 @@ LABEL_75:
       sub_22E659C54();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -627,7 +627,7 @@ LABEL_75:
     v69 = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v21, &v69, &v68, 1);
     v22 = LABEL_11:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v23, @"ANSTErrorDomain", 5, v22);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v23, @"ANSTErrorDomain", 5, v22);
 
     goto LABEL_12;
   }
@@ -645,7 +645,7 @@ LABEL_75:
       sub_22E659C54();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -669,7 +669,7 @@ LABEL_75:
       sub_22E659C54();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -725,14 +725,14 @@ LABEL_75:
     sub_22E659C54();
   }
 
-  if (a4)
+  if (error)
   {
     v33 = MEMORY[0x277CCA9B8];
     v62 = *MEMORY[0x277CCA068];
     v63 = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v59, &v63, &v62, 1);
     v60 = LABEL_37:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v33, v61, @"ANSTErrorDomain", 5, v60);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v33, v61, @"ANSTErrorDomain", 5, v60);
   }
 
 LABEL_12:
@@ -743,11 +743,11 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)executeAndUpdateStateTensorData:(id)a3 outputDictionary:(id)a4 outError:(id *)a5
+- (BOOL)executeAndUpdateStateTensorData:(id)data outputDictionary:(id)dictionary outError:(id *)error
 {
   v89[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v10 = a4;
+  dataCopy = data;
+  dictionaryCopy = dictionary;
   if (self->_prepared)
   {
     buffer = 0;
@@ -764,13 +764,13 @@ LABEL_13:
         sub_22E659CC8();
       }
 
-      if (a5)
+      if (error)
       {
         v19 = MEMORY[0x277CCA9B8];
         v86 = *MEMORY[0x277CCA068];
         v87 = v16;
         v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, &v87, &v86, 1);
-        *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v19, v21, @"ANSTErrorDomain", 5, v20);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v19, v21, @"ANSTErrorDomain", 5, v20);
       }
 
       v22 = 0;
@@ -784,9 +784,9 @@ LABEL_13:
       v76[2] = sub_22E604268;
       v76[3] = &unk_27884FCC0;
       v78 = buffer;
-      v26 = v8;
+      v26 = dataCopy;
       v77 = v26;
-      objc_msgSend_performDataAccessWithOptions_usingBlock_error_(v26, v27, 0, v76, a5);
+      objc_msgSend_performDataAccessWithOptions_usingBlock_error_(v26, v27, 0, v76, error);
       IOSurfaceUnlock(buffer, 0, 0);
       stream = self->_stream;
       v29 = e5rt_execution_stream_execute_sync();
@@ -801,13 +801,13 @@ LABEL_13:
           sub_22E659CC8();
         }
 
-        if (a5)
+        if (error)
         {
           v36 = MEMORY[0x277CCA9B8];
           v84 = *MEMORY[0x277CCA068];
           v85 = v33;
           v37 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v35, &v85, &v84, 1);
-          *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v36, v38, @"ANSTErrorDomain", 5, v37);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v36, v38, @"ANSTErrorDomain", 5, v37);
         }
 
         v22 = 0;
@@ -829,13 +829,13 @@ LABEL_13:
             sub_22E659CC8();
           }
 
-          if (a5)
+          if (error)
           {
             v47 = MEMORY[0x277CCA9B8];
             v82 = *MEMORY[0x277CCA068];
             v83 = v44;
             v48 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v46, &v83, &v82, 1);
-            *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v47, v49, @"ANSTErrorDomain", 5, v48);
+            *error = objc_msgSend_errorWithDomain_code_userInfo_(v47, v49, @"ANSTErrorDomain", 5, v48);
           }
 
           v22 = 0;
@@ -850,7 +850,7 @@ LABEL_13:
           v72[3] = &unk_27884FB70;
           v74 = v75;
           v73 = v26;
-          objc_msgSend_performMutableDataAccessWithOptions_usingBlock_error_(v73, v50, 0, v72, a5);
+          objc_msgSend_performMutableDataAccessWithOptions_usingBlock_error_(v73, v50, 0, v72, error);
           IOSurfaceUnlock(v75, 1u, 0);
           v52 = objc_msgSend_supportedActionTypesOfDetectorVersion_(ANSTActionDetector, v51, self->_version);
           v71 = 0;
@@ -868,13 +868,13 @@ LABEL_13:
               sub_22E659CC8();
             }
 
-            if (a5)
+            if (error)
             {
               v61 = MEMORY[0x277CCA9B8];
               v80 = *MEMORY[0x277CCA068];
               v81 = v58;
               v62 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v60, &v81, &v80, 1);
-              *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v61, v63, @"ANSTErrorDomain", 5, v62);
+              *error = objc_msgSend_errorWithDomain_code_userInfo_(v61, v63, @"ANSTErrorDomain", 5, v62);
             }
           }
 
@@ -888,7 +888,7 @@ LABEL_13:
             v68[3] = &unk_27884FCE8;
             v70 = BaseAddress;
             v68[4] = self;
-            v69 = v10;
+            v69 = dictionaryCopy;
             objc_msgSend_enumerateObjectsUsingBlock_(v52, v65, v68);
             IOSurfaceUnlock(v71, 1u, 0);
           }
@@ -903,13 +903,13 @@ LABEL_13:
 
   else
   {
-    if (a5)
+    if (error)
     {
       v23 = MEMORY[0x277CCA9B8];
       v88 = *MEMORY[0x277CCA068];
       v89[0] = @"Model was not prepared.";
       v24 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v9, v89, &v88, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v23, v25, @"ANSTErrorDomain", 3, v24);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v23, v25, @"ANSTErrorDomain", 3, v24);
     }
 
     v22 = 0;

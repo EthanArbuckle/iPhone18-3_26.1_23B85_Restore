@@ -15,8 +15,8 @@
 
 - (UIView)view
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUAbstractNavigationBanner.m" lineNumber:23 description:{@"%s must be overriden by subclass", "-[PUAbstractNavigationBanner view]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAbstractNavigationBanner.m" lineNumber:23 description:{@"%s must be overriden by subclass", "-[PUAbstractNavigationBanner view]"}];
 
   [(PUAbstractNavigationBanner *)self doesNotRecognizeSelector:a2];
   return 0;
@@ -24,8 +24,8 @@
 
 - (double)height
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUAbstractNavigationBanner.m" lineNumber:17 description:{@"%s must be overriden by subclass", "-[PUAbstractNavigationBanner height]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAbstractNavigationBanner.m" lineNumber:17 description:{@"%s must be overriden by subclass", "-[PUAbstractNavigationBanner height]"}];
 
   [(PUAbstractNavigationBanner *)self doesNotRecognizeSelector:a2];
   return 0.0;

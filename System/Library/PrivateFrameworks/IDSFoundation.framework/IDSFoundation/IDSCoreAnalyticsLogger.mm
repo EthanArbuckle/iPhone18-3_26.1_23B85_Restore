@@ -1,40 +1,40 @@
 @interface IDSCoreAnalyticsLogger
 + (id)defaultLogger;
-- (IDSCoreAnalyticsLogger)initWithDomain:(id)a3;
-- (void)logMetric:(id)a3;
+- (IDSCoreAnalyticsLogger)initWithDomain:(id)domain;
+- (void)logMetric:(id)metric;
 @end
 
 @implementation IDSCoreAnalyticsLogger
 
 + (id)defaultLogger
 {
-  v2 = [[a1 alloc] initWithDomain:@"com.apple.IDS"];
+  v2 = [[self alloc] initWithDomain:@"com.apple.IDS"];
 
   return v2;
 }
 
-- (IDSCoreAnalyticsLogger)initWithDomain:(id)a3
+- (IDSCoreAnalyticsLogger)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = IDSCoreAnalyticsLogger;
   v6 = [(IDSCoreAnalyticsLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_domain, a3);
+    objc_storeStrong(&v6->_domain, domain);
   }
 
   return v7;
 }
 
-- (void)logMetric:(id)a3
+- (void)logMetric:(id)metric
 {
-  v10 = a3;
+  metricCopy = metric;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(IDSCoreAnalyticsLogger *)self domain];
-  v6 = [v10 name];
-  v7 = [v4 stringWithFormat:@"%@.%@", v5, v6];
+  domain = [(IDSCoreAnalyticsLogger *)self domain];
+  name = [metricCopy name];
+  v7 = [v4 stringWithFormat:@"%@.%@", domain, name];
 
   if (qword_1EB2BC178 != -1)
   {
@@ -44,8 +44,8 @@
   v8 = off_1EB2BC170;
   if (off_1EB2BC170)
   {
-    v9 = [v10 dictionaryRepresentation];
-    v8(v7, v9);
+    dictionaryRepresentation = [metricCopy dictionaryRepresentation];
+    v8(v7, dictionaryRepresentation);
   }
 }
 

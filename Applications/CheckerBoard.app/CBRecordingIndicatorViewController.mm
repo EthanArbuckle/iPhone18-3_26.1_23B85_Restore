@@ -1,16 +1,16 @@
 @interface CBRecordingIndicatorViewController
 - (CBRecordingIndicatorViewControllerDelegate)delegate;
-- (id)initForLocation:(unint64_t)a3;
-- (void)setIndicatorColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateIndicatorType:(unint64_t)a3;
-- (void)updateIndicatorVisibility:(BOOL)a3;
-- (void)updateIndicatorVisibilityWithFastFadeAnimation:(BOOL)a3;
+- (id)initForLocation:(unint64_t)location;
+- (void)setIndicatorColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateIndicatorType:(unint64_t)type;
+- (void)updateIndicatorVisibility:(BOOL)visibility;
+- (void)updateIndicatorVisibilityWithFastFadeAnimation:(BOOL)animation;
 @end
 
 @implementation CBRecordingIndicatorViewController
 
-- (id)initForLocation:(unint64_t)a3
+- (id)initForLocation:(unint64_t)location
 {
   v12.receiver = self;
   v12.super_class = CBRecordingIndicatorViewController;
@@ -18,10 +18,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_location = a3;
+    v4->_location = location;
     v4->_activeInterfaceOrientation = 1;
     v4->_indicatorState = 0;
-    v7 = [(CBRecordingIndicatorViewController *)v4 view];
+    view = [(CBRecordingIndicatorViewController *)v4 view];
     v8 = objc_alloc_init(CBRecordingIndicatorView);
     [(CBRecordingIndicatorView *)v8 setAutoresizingMask:0];
     objc_storeStrong((v5 + 144), v8);
@@ -32,10 +32,10 @@
       *(v5 + 136) = v9;
       v11 = v9;
 
-      [v7 addSubview:v11];
+      [view addSubview:v11];
       [v11 addSubview:v8];
 
-      if (a3)
+      if (location)
       {
 LABEL_6:
         sub_100045308(v5);
@@ -46,8 +46,8 @@ LABEL_6:
 
     else
     {
-      [v7 addSubview:v8];
-      if (a3)
+      [view addSubview:v8];
+      if (location)
       {
         goto LABEL_6;
       }
@@ -61,19 +61,19 @@ LABEL_6:
   return v5;
 }
 
-- (void)setIndicatorColor:(id)a3
+- (void)setIndicatorColor:(id)color
 {
-  objc_storeStrong(&self->_indicatorColor, a3);
-  v6 = a3;
-  v5 = [(CBRecordingIndicatorViewController *)self indicatorView];
-  [v5 setBackgroundColor:self->_indicatorColor];
+  objc_storeStrong(&self->_indicatorColor, color);
+  colorCopy = color;
+  indicatorView = [(CBRecordingIndicatorViewController *)self indicatorView];
+  [indicatorView setBackgroundColor:self->_indicatorColor];
 
   [(CASecureIndicatorLayer *)self->_contentLayer setBackgroundColor:[(UIColor *)self->_indicatorColor cgColor]];
 }
 
-- (void)updateIndicatorType:(unint64_t)a3
+- (void)updateIndicatorType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     +[UIColor systemOrangeColor];
   }
@@ -84,10 +84,10 @@ LABEL_6:
   }
   v5 = ;
   [(CBRecordingIndicatorViewController *)self setIndicatorColor:v5];
-  v6 = [(CBRecordingIndicatorViewController *)self indicatorView];
-  [v6 setIndicatorType:a3];
+  indicatorView = [(CBRecordingIndicatorViewController *)self indicatorView];
+  [indicatorView setIndicatorType:type];
 
-  v7 = sub_100018610(a3);
+  v7 = sub_100018610(type);
   v8 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,7 +97,7 @@ LABEL_6:
   }
 
   [(CASecureIndicatorLayer *)self->_contentLayer setPrivacyIndicatorType:v7];
-  v9 = sub_100018654(a3);
+  v9 = sub_100018654(type);
   v10 = 0.0;
   if (v9)
   {
@@ -107,27 +107,27 @@ LABEL_6:
   [(CASecureIndicatorLayer *)self->_contentLayer setCornerRadius:v10];
 }
 
-- (void)updateIndicatorVisibility:(BOOL)a3
+- (void)updateIndicatorVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   if (self)
   {
     if ([(CBRecordingIndicatorViewController *)self location]== 2 || self->_isSecure && ![(CBRecordingIndicatorViewController *)self location])
     {
 
-      sub_1000079D8(self, v3);
+      sub_1000079D8(self, visibilityCopy);
     }
 
     else
     {
 
-      [(CBRecordingIndicatorViewController *)self updateIndicatorVisibilityWithFastFadeAnimation:v3];
+      [(CBRecordingIndicatorViewController *)self updateIndicatorVisibilityWithFastFadeAnimation:visibilityCopy];
     }
   }
 
   else
   {
-    sub_100046914(a3, &from);
+    sub_100046914(visibility, &from);
 
     sub_100045F0C(0);
     from = 0;
@@ -142,14 +142,14 @@ LABEL_6:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [(CBRecordingIndicatorViewController *)self traitCollection];
-  v5 = [v4 _backlightLuminance];
-  if (v5 != [v6 _backlightLuminance])
+  changeCopy = change;
+  traitCollection = [(CBRecordingIndicatorViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
+  if (_backlightLuminance != [changeCopy _backlightLuminance])
   {
-    sub_10004684C(self, v5, [v6 _backlightLuminance]);
+    sub_10004684C(self, _backlightLuminance, [changeCopy _backlightLuminance]);
   }
 }
 
@@ -160,13 +160,13 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)updateIndicatorVisibilityWithFastFadeAnimation:(BOOL)a3
+- (void)updateIndicatorVisibilityWithFastFadeAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (animationCopy)
     {
       v6 = @"on";
     }
@@ -176,14 +176,14 @@ LABEL_6:
       v6 = @"off";
     }
 
-    v7 = [(CBRecordingIndicatorViewController *)self location];
+    location = [(CBRecordingIndicatorViewController *)self location];
     v8 = @"Standalone";
-    if (v7 == 1)
+    if (location == 1)
     {
       v8 = @"StatusBar";
     }
 
-    if (v7 == 2)
+    if (location == 2)
     {
       v8 = @"SystemAperture";
     }
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
   sub_100045F0C(&self->super.super.super.isa);
-  if (v3)
+  if (animationCopy)
   {
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;

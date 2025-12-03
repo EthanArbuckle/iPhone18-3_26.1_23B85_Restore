@@ -20,8 +20,8 @@
       v15 = v14;
       if (v10)
       {
-        v16 = [v14 valueRange];
-        [v10 substringWithRange:{v16, v17}];
+        valueRange = [v14 valueRange];
+        [v10 substringWithRange:{valueRange, v17}];
       }
 
       else
@@ -30,21 +30,21 @@
       }
       v18 = ;
       v19 = MEMORY[0x277D7B690];
-      v20 = [v15 name];
-      v21 = [v19 safe_initWithName:v20 value:v18];
+      name = [v15 name];
+      v21 = [v19 safe_initWithName:name value:v18];
 
       [v21 setParsedOk:1];
       [v21 setStatus:0];
       if (v10)
       {
-        v22 = [v15 range];
-        v24 = [v10 substringWithRange:{v22, v23}];
+        range = [v15 range];
+        v24 = [v10 substringWithRange:{range, v23}];
         [v21 setText:v24];
       }
 
       v25 = MEMORY[0x277D7B6D8];
-      v26 = [v15 range];
-      v28 = [v25 ik_cssSourceRangeForRange:v26 withNewLineIndexSet:{v27, v11}];
+      range2 = [v15 range];
+      v28 = [v25 ik_cssSourceRangeForRange:range2 withNewLineIndexSet:{v27, v11}];
       if (v28)
       {
         [v21 setRange:v28];
@@ -79,16 +79,16 @@
     }
   }
 
-  v32 = [v9 range];
+  range3 = [v9 range];
   v42 = v33;
-  v34 = [v30 styleId];
-  v35 = [v34 styleSheetId];
-  v36 = [v35 isEqualToString:@"inline"];
+  styleId = [v30 styleId];
+  styleSheetId = [styleId styleSheetId];
+  v36 = [styleSheetId isEqualToString:@"inline"];
 
   if (v36)
   {
     v37 = [v10 length];
-    v32 = 0;
+    range3 = 0;
   }
 
   else
@@ -96,7 +96,7 @@
     v37 = v42;
   }
 
-  v38 = [MEMORY[0x277D7B6D8] ik_cssSourceRangeForRange:v32 withNewLineIndexSet:{v37, v11}];
+  v38 = [MEMORY[0x277D7B6D8] ik_cssSourceRangeForRange:range3 withNewLineIndexSet:{v37, v11}];
   if (v38)
   {
     [v31 setRange:v38];
@@ -104,7 +104,7 @@
 
   if (v10)
   {
-    v39 = [v10 substringWithRange:{v32, v37}];
+    v39 = [v10 substringWithRange:{range3, v37}];
     [v31 setCssText:v39];
   }
 

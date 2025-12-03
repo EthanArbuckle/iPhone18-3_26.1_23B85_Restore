@@ -10,13 +10,13 @@
   v6.receiver = self;
   v6.super_class = PXDemoViewWidgetUIViewController;
   [(PXDemoViewWidgetUIViewController *)&v6 viewDidLoad];
-  v3 = [(PXDemoViewWidgetUIViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] purpleColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PXDemoViewWidgetUIViewController *)self view];
+  purpleColor = [MEMORY[0x1E69DC888] purpleColor];
+  [view setBackgroundColor:purpleColor];
 
   [(UIViewController *)self px_enableBarAppearance];
-  v5 = [(UIViewController *)self px_barAppearance];
-  [v5 performChangesWithAnimationOptions:0 changes:&__block_literal_global_163794];
+  px_barAppearance = [(UIViewController *)self px_barAppearance];
+  [px_barAppearance performChangesWithAnimationOptions:0 changes:&__block_literal_global_163794];
 }
 
 void __47__PXDemoViewWidgetUIViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)

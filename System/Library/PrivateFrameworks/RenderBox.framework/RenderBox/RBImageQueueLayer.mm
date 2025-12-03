@@ -1,45 +1,45 @@
 @interface RBImageQueueLayer
-+ (id)defaultValueForKey:(id)a3;
-- (id)initWithSlots:(void *)a1;
++ (id)defaultValueForKey:(id)key;
+- (id)initWithSlots:(void *)slots;
 @end
 
 @implementation RBImageQueueLayer
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"speed"])
+  if ([key isEqualToString:@"speed"])
   {
     return &unk_1F0A47090;
   }
 
-  if ([a3 isEqualToString:@"anchorPoint"])
+  if ([key isEqualToString:@"anchorPoint"])
   {
     v7[0] = 0;
     v7[1] = 0;
     return [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{CGPoint=dd}"];
   }
 
-  else if ([a3 isEqualToString:@"needsLayoutOnGeometryChange"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"allowsEdgeAntialiasing"))
+  else if ([key isEqualToString:@"needsLayoutOnGeometryChange"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"allowsEdgeAntialiasing"))
   {
     return MEMORY[0x1E695E110];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RBImageQueueLayer;
-    return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
   }
 }
 
-- (id)initWithSlots:(void *)a1
+- (id)initWithSlots:(void *)slots
 {
-  if (!a1)
+  if (!slots)
   {
     return 0;
   }
 
-  v4.receiver = a1;
+  v4.receiver = slots;
   v4.super_class = RBImageQueueLayer;
   v1 = objc_msgSendSuper2(&v4, sel_init);
   if (v1)

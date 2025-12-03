@@ -1,21 +1,21 @@
 @interface _SUUIModalSheetNavigationController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 @end
 
 @implementation _SUUIModalSheetNavigationController
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(_SUUIModalSheetNavigationController *)self topViewController];
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  topViewController = [(_SUUIModalSheetNavigationController *)self topViewController];
 
-  if (v8 != v7)
+  if (topViewController != containerCopy)
   {
     v13.receiver = self;
     v13.super_class = _SUUIModalSheetNavigationController;
-    [(_SUUIModalSheetNavigationController *)&v13 sizeForChildContentContainer:v7 withParentContainerSize:width, height];
+    [(_SUUIModalSheetNavigationController *)&v13 sizeForChildContentContainer:containerCopy withParentContainerSize:width, height];
     width = v9;
     height = v10;
   }

@@ -1,17 +1,17 @@
 @interface PDFSelection
-- (BOOL)containsPoint:(CGPoint)a3 onPage:(id)a4;
+- (BOOL)containsPoint:(CGPoint)point onPage:(id)page;
 - (BOOL)isEmpty;
-- (BOOL)isEqualToSelection:(id)a3;
+- (BOOL)isEqualToSelection:(id)selection;
 - (BOOL)isStandaloneGraphic;
 - (BOOL)isTableCellSelection;
-- (CGPDFSelection)cgSelectionForPage:(id)a3;
+- (CGPDFSelection)cgSelectionForPage:(id)page;
 - (CGPoint)firstCharCenter;
 - (CGPoint)leftMostCharCenter;
 - (CGPoint)rightMostCharCenter;
 - (CGRect)boundsForPage:(PDFPage *)page;
-- (CGRect)firstSpanBoundsForPage:(id)a3;
-- (CGRect)lastSpanBoundsForPage:(id)a3;
-- (CGRect)spanBoundsForPage:(id)a3 atPoint:(CGPoint)a4;
+- (CGRect)firstSpanBoundsForPage:(id)page;
+- (CGRect)lastSpanBoundsForPage:(id)page;
+- (CGRect)spanBoundsForPage:(id)page atPoint:(CGPoint)point;
 - (CGRect)tableCellSelectionRect;
 - (NSArray)pages;
 - (NSArray)selectionsByLine;
@@ -19,14 +19,14 @@
 - (NSString)string;
 - (NSUInteger)numberOfTextRangesOnPage:(PDFPage *)page;
 - (PDFSelection)initWithDocument:(PDFDocument *)document;
-- (PDFSelection)initWithPage:(id)a3;
-- (_NSRange)previewRangeAtIndex:(unint64_t)a3 onPage:(id)a4;
+- (PDFSelection)initWithPage:(id)page;
+- (_NSRange)previewRangeAtIndex:(unint64_t)index onPage:(id)page;
 - (id)asDestination;
-- (id)attributedStringScaled:(double)a3;
-- (id)boundsArrayForPage:(id)a3;
+- (id)attributedStringScaled:(double)scaled;
+- (id)boundsArrayForPage:(id)page;
 - (id)copyAsTextSelection;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createAttributedStringForCGSelection:(CGPDFSelection *)a3 scaled:(double)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createAttributedStringForCGSelection:(CGPDFSelection *)selection scaled:(double)scaled;
 - (id)description;
 - (id)document;
 - (id)firstPage;
@@ -34,19 +34,19 @@
 - (id)htmlData;
 - (id)lastPage;
 - (id)rtfData;
-- (int64_t)compare:(id)a3;
-- (unint64_t)indexOfFirstCharacterOnPage:(id)a3;
-- (unint64_t)indexOfLastCharacterOnPage:(id)a3;
-- (unint64_t)pdfKitIndexOfFirstCharacterOnPage:(id)a3;
-- (unint64_t)pdfKitIndexOfLastCharacterOnPage:(id)a3;
-- (void)addCGSelection:(CGPDFSelection *)a3 forPage:(id)a4;
-- (void)addSelectionCore:(id)a3 normalize:(BOOL)a4;
-- (void)addSelectionCore:(id)a3 normalize:(BOOL)a4 withClampedRange:(id)a5;
-- (void)addSelectionRange:(_NSRange)a3 page:(id)a4 normalize:(BOOL)a5;
+- (int64_t)compare:(id)compare;
+- (unint64_t)indexOfFirstCharacterOnPage:(id)page;
+- (unint64_t)indexOfLastCharacterOnPage:(id)page;
+- (unint64_t)pdfKitIndexOfFirstCharacterOnPage:(id)page;
+- (unint64_t)pdfKitIndexOfLastCharacterOnPage:(id)page;
+- (void)addCGSelection:(CGPDFSelection *)selection forPage:(id)page;
+- (void)addSelectionCore:(id)core normalize:(BOOL)normalize;
+- (void)addSelectionCore:(id)core normalize:(BOOL)normalize withClampedRange:(id)range;
+- (void)addSelectionRange:(_NSRange)range page:(id)page normalize:(BOOL)normalize;
 - (void)addSelections:(NSArray *)selections;
 - (void)dealloc;
-- (void)drawForPage:(id)a3 withBox:(int)a4 active:(BOOL)a5 inContext:(CGContext *)a6;
-- (void)enumerateRectsAndTransformsForPage:(id)a3 usingBlock:(id)a4;
+- (void)drawForPage:(id)page withBox:(int)box active:(BOOL)active inContext:(CGContext *)context;
+- (void)enumerateRectsAndTransformsForPage:(id)page usingBlock:(id)block;
 - (void)extendSelectionAtEnd:(NSInteger)succeed;
 - (void)extendSelectionAtStart:(NSInteger)precede;
 - (void)extendSelectionForLineBoundaries;
@@ -76,24 +76,24 @@
     v6->_cgSelections = 0;
     v6->_pages = 0;
 
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     pdfSelectionUUID = v6->_pdfSelectionUUID;
-    v6->_pdfSelectionUUID = v10;
+    v6->_pdfSelectionUUID = uUID;
   }
 
   return v6;
 }
 
-- (PDFSelection)initWithPage:(id)a3
+- (PDFSelection)initWithPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v12.receiver = self;
   v12.super_class = PDFSelection;
   v5 = [(PDFSelection *)&v12 init];
   if (v5)
   {
-    v6 = [v4 document];
-    objc_storeWeak(&v5->_document, v6);
+    document = [pageCopy document];
+    objc_storeWeak(&v5->_document, document);
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     pageRanges = v5->_pageRanges;
@@ -101,7 +101,7 @@
 
     v5->_forceBreaks = 0;
     v5->_cgSelections = 0;
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v4, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{pageCopy, 0}];
     pages = v5->_pages;
     v5->_pages = v9;
   }
@@ -109,9 +109,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_document);
   v6 = [v4 initWithDocument:WeakRetained];
 
@@ -122,10 +122,10 @@
     for (i = 0; i != v8; ++i)
     {
       v10 = [(NSMutableArray *)self->_pageRanges objectAtIndex:i];
-      v11 = [v10 range];
+      range = [v10 range];
       v13 = v12;
-      v14 = [v10 page];
-      [v6 addSelectionRange:v11 page:v13 normalize:{v14, 0}];
+      page = [v10 page];
+      [v6 addSelectionRange:range page:v13 normalize:{page, 0}];
     }
   }
 
@@ -147,13 +147,13 @@
     }
   }
 
-  v21 = [(PDFSelection *)self color];
-  [v6 setColor:v21];
+  color = [(PDFSelection *)self color];
+  [v6 setColor:color];
 
   [v6 setForceBreaks:{-[PDFSelection forceBreaks](self, "forceBreaks")}];
-  v22 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v23 = v6[7];
-  v6[7] = v22;
+  v6[7] = uUID;
 
   return v6;
 }
@@ -177,8 +177,8 @@
     {
       v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
       v6 = [(NSMutableArray *)self->_pageRanges objectAtIndex:0];
-      v7 = [v6 page];
-      [v5 addObject:v7];
+      page = [v6 page];
+      [v5 addObject:page];
 
       if (v4 != 1)
       {
@@ -187,11 +187,11 @@
         do
         {
           v10 = [(NSMutableArray *)self->_pageRanges objectAtIndex:v9];
-          v11 = [v10 page];
+          page2 = [v10 page];
 
-          if (([v5 containsObject:v11] & 1) == 0)
+          if (([v5 containsObject:page2] & 1) == 0)
           {
-            [v5 addObject:v11];
+            [v5 addObject:page2];
           }
 
           ++v9;
@@ -213,8 +213,8 @@
   v5 = self->_color;
   self->_color = v4;
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"PDFSelectionChangedColor" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFSelectionChangedColor" object:self userInfo:0];
 }
 
 - (NSString)string
@@ -313,12 +313,12 @@
   return result;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 onPage:(id)a4
+- (BOOL)containsPoint:(CGPoint)point onPage:(id)page
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = [(PDFSelection *)self boundsArrayForPage:a4];
+  v6 = [(PDFSelection *)self boundsArrayForPage:page];
   v7 = v6;
   if (v6 && [v6 count])
   {
@@ -371,16 +371,16 @@ LABEL_14:
   return v9;
 }
 
-- (CGRect)spanBoundsForPage:(id)a3 atPoint:(CGPoint)a4
+- (CGRect)spanBoundsForPage:(id)page atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v34 = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
   width = *(MEMORY[0x1E695F058] + 16);
   height = *(MEMORY[0x1E695F058] + 24);
-  v10 = [(PDFSelection *)self boundsArrayForPage:a3];
+  v10 = [(PDFSelection *)self boundsArrayForPage:page];
   v11 = v10;
   if (v10 && [v10 count])
   {
@@ -461,14 +461,14 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)firstSpanBoundsForPage:(id)a3
+- (CGRect)firstSpanBoundsForPage:(id)page
 {
-  v3 = [(PDFSelection *)self boundsArrayForPage:a3];
+  v3 = [(PDFSelection *)self boundsArrayForPage:page];
   v4 = v3;
   if (v3 && [v3 count])
   {
-    v5 = [v4 firstObject];
-    [v5 PDFKitPDFRectValue];
+    firstObject = [v4 firstObject];
+    [firstObject PDFKitPDFRectValue];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -494,14 +494,14 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)lastSpanBoundsForPage:(id)a3
+- (CGRect)lastSpanBoundsForPage:(id)page
 {
-  v3 = [(PDFSelection *)self boundsArrayForPage:a3];
+  v3 = [(PDFSelection *)self boundsArrayForPage:page];
   v4 = v3;
   if (v3 && [v3 count])
   {
-    v5 = [v4 lastObject];
-    [v5 PDFKitPDFRectValue];
+    lastObject = [v4 lastObject];
+    [lastObject PDFKitPDFRectValue];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -660,8 +660,8 @@ LABEL_10:
       for (i = 0; i != v9; ++i)
       {
         v11 = [PDFSelection alloc];
-        v12 = [(PDFSelection *)self document];
-        v13 = [(PDFSelection *)v11 initWithDocument:v12];
+        document = [(PDFSelection *)self document];
+        v13 = [(PDFSelection *)v11 initWithDocument:document];
 
         ValueAtIndex = CFArrayGetValueAtIndex(v7, i);
         v15 = [(NSMutableArray *)self->_pages objectAtIndex:v5];
@@ -684,10 +684,10 @@ LABEL_11:
   return v16;
 }
 
-- (void)enumerateRectsAndTransformsForPage:(id)a3 usingBlock:(id)a4
+- (void)enumerateRectsAndTransformsForPage:(id)page usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  pageCopy = page;
+  blockCopy = block;
   cgSelections = self->_cgSelections;
   if (cgSelections)
   {
@@ -699,7 +699,7 @@ LABEL_11:
       aBlock[1] = 3221225472;
       aBlock[2] = __62__PDFSelection_enumerateRectsAndTransformsForPage_usingBlock___block_invoke;
       aBlock[3] = &unk_1E8152470;
-      v15 = v7;
+      v15 = blockCopy;
       v11 = _Block_copy(aBlock);
       if (v10 >= 1)
       {
@@ -707,7 +707,7 @@ LABEL_11:
         {
           CFArrayGetValueAtIndex(self->_cgSelections, i);
           Page = CGPDFSelectionGetPage();
-          if (Page == [v6 pageRef])
+          if (Page == [pageCopy pageRef])
           {
             CGPDFSelectionEnumerateRectsAndTransforms();
           }
@@ -769,9 +769,9 @@ LABEL_9:
 {
   if (succeed)
   {
-    v5 = [(PDFSelection *)self document];
+    document = [(PDFSelection *)self document];
 
-    if (v5)
+    if (document)
     {
       cgSelections = self->_cgSelections;
       if (cgSelections)
@@ -841,27 +841,27 @@ LABEL_9:
 
             else
             {
-              v15 = [(PDFSelection *)self document];
-              v16 = [(NSMutableArray *)self->_pages lastObject];
-              v17 = [v15 indexForPage:v16];
+              document2 = [(PDFSelection *)self document];
+              lastObject = [(NSMutableArray *)self->_pages lastObject];
+              v17 = [document2 indexForPage:lastObject];
 
-              v18 = [(PDFSelection *)self document];
-              v19 = [v18 pageCount];
+              document3 = [(PDFSelection *)self document];
+              pageCount = [document3 pageCount];
 
-              if (v17 + 1 < v19 && v14)
+              if (v17 + 1 < pageCount && v14)
               {
                 v20 = v17 + 2;
                 do
                 {
-                  v21 = [(PDFSelection *)self document];
-                  v22 = [v21 pageAtIndex:v20 - 1];
-                  v23 = [v22 numberOfCharacters];
+                  document4 = [(PDFSelection *)self document];
+                  v22 = [document4 pageAtIndex:v20 - 1];
+                  numberOfCharacters = [v22 numberOfCharacters];
 
-                  if (v23)
+                  if (numberOfCharacters)
                   {
-                    if (v14 >= v23)
+                    if (v14 >= numberOfCharacters)
                     {
-                      v24 = v14 - v23;
+                      v24 = v14 - numberOfCharacters;
                     }
 
                     else
@@ -869,20 +869,20 @@ LABEL_9:
                       v24 = 0;
                     }
 
-                    if (v14 <= v23)
+                    if (v14 <= numberOfCharacters)
                     {
-                      v23 = v14;
+                      numberOfCharacters = v14;
                     }
 
-                    v25 = [(PDFSelection *)self document];
-                    v26 = [v25 pageAtIndex:v20 - 1];
-                    v27 = [v26 selectionForRange:{0, v23}];
+                    document5 = [(PDFSelection *)self document];
+                    v26 = [document5 pageAtIndex:v20 - 1];
+                    v27 = [v26 selectionForRange:{0, numberOfCharacters}];
                     [(PDFSelection *)self addSelectionCore:v27 normalize:1];
 
                     v14 = v24;
                   }
 
-                  if (v20 >= v19)
+                  if (v20 >= pageCount)
                   {
                     break;
                   }
@@ -904,9 +904,9 @@ LABEL_9:
 {
   if (precede)
   {
-    v5 = [(PDFSelection *)self document];
+    document = [(PDFSelection *)self document];
 
-    if (v5)
+    if (document)
     {
       cgSelections = self->_cgSelections;
       if (cgSelections)
@@ -961,24 +961,24 @@ LABEL_9:
             v9 = precede - v7;
             if (precede > v7)
             {
-              v10 = [(PDFSelection *)self document];
+              document2 = [(PDFSelection *)self document];
               v11 = [(NSMutableArray *)self->_pages objectAtIndex:0];
-              v12 = [v10 indexForPage:v11];
+              v12 = [document2 indexForPage:v11];
 
               if (v12)
               {
                 v13 = v12 - 1;
                 do
                 {
-                  v14 = [(PDFSelection *)self document];
-                  v15 = [v14 pageAtIndex:v13];
-                  v16 = [v15 numberOfCharacters];
+                  document3 = [(PDFSelection *)self document];
+                  v15 = [document3 pageAtIndex:v13];
+                  numberOfCharacters = [v15 numberOfCharacters];
 
-                  if (v16)
+                  if (numberOfCharacters)
                   {
-                    if (v16 >= v9)
+                    if (numberOfCharacters >= v9)
                     {
-                      v17 = v16 - v9;
+                      v17 = numberOfCharacters - v9;
                     }
 
                     else
@@ -986,9 +986,9 @@ LABEL_9:
                       v17 = 0;
                     }
 
-                    if (v9 >= v16)
+                    if (v9 >= numberOfCharacters)
                     {
-                      v18 = v9 - v16;
+                      v18 = v9 - numberOfCharacters;
                     }
 
                     else
@@ -996,14 +996,14 @@ LABEL_9:
                       v18 = 0;
                     }
 
-                    if (v9 < v16)
+                    if (v9 < numberOfCharacters)
                     {
-                      v16 = v9;
+                      numberOfCharacters = v9;
                     }
 
-                    v19 = [(PDFSelection *)self document];
-                    v20 = [v19 pageAtIndex:v13];
-                    v21 = [v20 selectionForRange:{v17, v16}];
+                    document4 = [(PDFSelection *)self document];
+                    v20 = [document4 pageAtIndex:v13];
+                    v21 = [v20 selectionForRange:{v17, numberOfCharacters}];
                     [(PDFSelection *)self addSelectionCore:v21 normalize:1];
 
                     v9 = v18;
@@ -1102,8 +1102,8 @@ LABEL_9:
 
 - (id)asDestination
 {
-  v3 = [(PDFSelection *)self pages];
-  if (![v3 count])
+  pages = [(PDFSelection *)self pages];
+  if (![pages count])
   {
     v4 = 0;
 LABEL_9:
@@ -1111,7 +1111,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [v3 objectAtIndex:0];
+  v4 = [pages objectAtIndex:0];
   if (!v4)
   {
     goto LABEL_9;
@@ -1193,10 +1193,10 @@ LABEL_10:
   return IsEmpty;
 }
 
-- (BOOL)isEqualToSelection:(id)a3
+- (BOOL)isEqualToSelection:(id)selection
 {
-  v4 = a3;
-  if (v4 && (Count = CFArrayGetCount(self->_cgSelections), CFArrayGetCount(v4[5]) == Count))
+  selectionCopy = selection;
+  if (selectionCopy && (Count = CFArrayGetCount(self->_cgSelections), CFArrayGetCount(selectionCopy[5]) == Count))
   {
     v6 = Count - 1;
     if (Count < 1)
@@ -1210,7 +1210,7 @@ LABEL_10:
       do
       {
         CFArrayGetValueAtIndex(self->_cgSelections, v7);
-        CFArrayGetValueAtIndex(v4[5], v7);
+        CFArrayGetValueAtIndex(selectionCopy[5], v7);
         v8 = CGPDFSelectionEqualToSelection();
         if (v8)
         {
@@ -1238,11 +1238,11 @@ LABEL_10:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 document], v6 = objc_claimAutoreleasedReturnValue(), -[PDFSelection document](self, "document"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 != v7))
+  compareCopy = compare;
+  v5 = compareCopy;
+  if (!compareCopy || ([compareCopy document], v6 = objc_claimAutoreleasedReturnValue(), -[PDFSelection document](self, "document"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 != v7))
   {
     v8 = 0;
 LABEL_4:
@@ -1253,30 +1253,30 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [(PDFSelection *)self pages];
-  v8 = v13;
-  if (!v13 || ![v13 count])
+  pages = [(PDFSelection *)self pages];
+  v8 = pages;
+  if (!pages || ![pages count])
   {
     goto LABEL_4;
   }
 
   v9 = [v8 objectAtIndex:0];
-  v14 = [v5 pages];
+  pages2 = [v5 pages];
 
-  if (!v14)
+  if (!pages2)
   {
     v8 = 0;
     goto LABEL_5;
   }
 
-  if ([v14 count])
+  if ([pages2 count])
   {
-    v10 = [v14 objectAtIndex:0];
-    v15 = [(PDFSelection *)self document];
-    v16 = [v15 indexForPage:v9];
+    v10 = [pages2 objectAtIndex:0];
+    document = [(PDFSelection *)self document];
+    v16 = [document indexForPage:v9];
 
-    v17 = [v5 document];
-    v18 = [v17 indexForPage:v10];
+    document2 = [v5 document];
+    v18 = [document2 indexForPage:v10];
 
     v11 = -1;
     if (v18 != 0x7FFFFFFFFFFFFFFFLL && v16 >= v18)
@@ -1304,27 +1304,27 @@ LABEL_5:
     v11 = -1;
   }
 
-  v8 = v14;
+  v8 = pages2;
 LABEL_6:
 
   return v11;
 }
 
-- (id)boundsArrayForPage:(id)a3
+- (id)boundsArrayForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   cgSelections = self->_cgSelections;
   if (cgSelections && (Count = CFArrayGetCount(cgSelections)) != 0)
   {
     v7 = Count;
     v8 = 0;
     v9 = 0;
-    v17 = v4;
+    v17 = pageCopy;
     do
     {
       v10 = [(NSMutableArray *)self->_pages objectAtIndex:v8];
 
-      if (v10 == v4)
+      if (v10 == pageCopy)
       {
         memset(v19, 0, sizeof(v19));
         CFArrayGetValueAtIndex(self->_cgSelections, v8);
@@ -1348,7 +1348,7 @@ LABEL_6:
           }
         }
 
-        v4 = v17;
+        pageCopy = v17;
       }
 
       ++v8;
@@ -1365,38 +1365,38 @@ LABEL_6:
   return v9;
 }
 
-- (void)addCGSelection:(CGPDFSelection *)a3 forPage:(id)a4
+- (void)addCGSelection:(CGPDFSelection *)selection forPage:(id)page
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  pageCopy = page;
+  v7 = pageCopy;
+  if (selection)
   {
-    if ((v10 = v6, self->_cgSelections) && self->_pages || (self->_cgSelections = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]), v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3], pages = self->_pages, self->_pages = v8, pages, v7 = v10, self->_cgSelections))
+    if ((v10 = pageCopy, self->_cgSelections) && self->_pages || (self->_cgSelections = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]), v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3], pages = self->_pages, self->_pages = v8, pages, v7 = v10, self->_cgSelections))
     {
       if (self->_pages)
       {
         CGPDFSelectionSetClientProperty();
-        CFArrayAppendValue(self->_cgSelections, a3);
-        v6 = [(NSMutableArray *)self->_pages addObject:v10];
+        CFArrayAppendValue(self->_cgSelections, selection);
+        pageCopy = [(NSMutableArray *)self->_pages addObject:v10];
         v7 = v10;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](pageCopy, v7);
 }
 
-- (CGPDFSelection)cgSelectionForPage:(id)a3
+- (CGPDFSelection)cgSelectionForPage:(id)page
 {
-  v4 = a3;
-  if (v4 && self->_cgSelections && ((v5 = [(NSMutableArray *)self->_pages count], CFArrayGetCount(self->_cgSelections) == v5) ? (v6 = v5 == 0) : (v6 = 1), !v6))
+  pageCopy = page;
+  if (pageCopy && self->_cgSelections && ((v5 = [(NSMutableArray *)self->_pages count], CFArrayGetCount(self->_cgSelections) == v5) ? (v6 = v5 == 0) : (v6 = 1), !v6))
   {
     v7 = 0;
     while (1)
     {
       v8 = [(NSMutableArray *)self->_pages objectAtIndex:v7];
 
-      if (v8 == v4)
+      if (v8 == pageCopy)
       {
         break;
       }
@@ -1419,38 +1419,38 @@ LABEL_10:
   return ValueAtIndex;
 }
 
-- (void)addSelectionCore:(id)a3 normalize:(BOOL)a4
+- (void)addSelectionCore:(id)core normalize:(BOOL)normalize
 {
-  v4 = a4;
-  v20 = a3;
-  if (!v20)
+  normalizeCopy = normalize;
+  coreCopy = core;
+  if (!coreCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [(PDFSelection *)self document];
+  document = [(PDFSelection *)self document];
 
-  if (!v6)
+  if (!document)
   {
     goto LABEL_5;
   }
 
-  v7 = [(PDFSelection *)self document];
-  v8 = [v20 document];
+  document2 = [(PDFSelection *)self document];
+  document3 = [coreCopy document];
 
-  if (v7 != v8)
+  if (document2 != document3)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"addSelection: selection document mismatch"];
     goto LABEL_5;
   }
 
-  v9 = [v20 cgSelections];
-  if (!v9)
+  cgSelections = [coreCopy cgSelections];
+  if (!cgSelections)
   {
     goto LABEL_20;
   }
 
-  v10 = v9;
+  v10 = cgSelections;
   if (!self->_cgSelections)
   {
     self->_cgSelections = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
@@ -1464,8 +1464,8 @@ LABEL_10:
   }
 
   Count = CFArrayGetCount(v10);
-  v14 = [v20 cgSelectionPages];
-  v15 = [v14 count];
+  cgSelectionPages = [coreCopy cgSelectionPages];
+  v15 = [cgSelectionPages count];
 
   if (Count == v15)
   {
@@ -1485,11 +1485,11 @@ LABEL_10:
     }
 
     v18 = self->_pages;
-    v19 = [v20 cgSelectionPages];
-    [(NSMutableArray *)v18 addObjectsFromArray:v19];
+    cgSelectionPages2 = [coreCopy cgSelectionPages];
+    [(NSMutableArray *)v18 addObjectsFromArray:cgSelectionPages2];
 
 LABEL_20:
-    if (v4)
+    if (normalizeCopy)
     {
       [(PDFSelection *)self normalize];
     }
@@ -1498,38 +1498,38 @@ LABEL_20:
 LABEL_5:
 }
 
-- (void)addSelectionCore:(id)a3 normalize:(BOOL)a4 withClampedRange:(id)a5
+- (void)addSelectionCore:(id)core normalize:(BOOL)normalize withClampedRange:(id)range
 {
-  v5 = a4;
-  v21 = a3;
-  if (!v21)
+  normalizeCopy = normalize;
+  coreCopy = core;
+  if (!coreCopy)
   {
     goto LABEL_5;
   }
 
-  v7 = [(PDFSelection *)self document];
+  document = [(PDFSelection *)self document];
 
-  if (!v7)
+  if (!document)
   {
     goto LABEL_5;
   }
 
-  v8 = [(PDFSelection *)self document];
-  v9 = [v21 document];
+  document2 = [(PDFSelection *)self document];
+  document3 = [coreCopy document];
 
-  if (v8 != v9)
+  if (document2 != document3)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"addSelection: selection document mismatch"];
     goto LABEL_5;
   }
 
-  v10 = [v21 cgSelections];
-  if (!v10)
+  cgSelections = [coreCopy cgSelections];
+  if (!cgSelections)
   {
     goto LABEL_20;
   }
 
-  v11 = v10;
+  v11 = cgSelections;
   if (!self->_cgSelections)
   {
     self->_cgSelections = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
@@ -1543,8 +1543,8 @@ LABEL_5:
   }
 
   Count = CFArrayGetCount(v11);
-  v15 = [v21 cgSelectionPages];
-  v16 = [v15 count];
+  cgSelectionPages = [coreCopy cgSelectionPages];
+  v16 = [cgSelectionPages count];
 
   if (Count == v16)
   {
@@ -1564,11 +1564,11 @@ LABEL_5:
     }
 
     v19 = self->_pages;
-    v20 = [v21 cgSelectionPages];
-    [(NSMutableArray *)v19 addObjectsFromArray:v20];
+    cgSelectionPages2 = [coreCopy cgSelectionPages];
+    [(NSMutableArray *)v19 addObjectsFromArray:cgSelectionPages2];
 
 LABEL_20:
-    if (v5)
+    if (normalizeCopy)
     {
       [(PDFSelection *)self normalize];
     }
@@ -1577,22 +1577,22 @@ LABEL_20:
 LABEL_5:
 }
 
-- (void)addSelectionRange:(_NSRange)a3 page:(id)a4 normalize:(BOOL)a5
+- (void)addSelectionRange:(_NSRange)range page:(id)page normalize:(BOOL)normalize
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  v9 = [(PDFSelection *)self document];
+  normalizeCopy = normalize;
+  length = range.length;
+  location = range.location;
+  pageCopy = page;
+  document = [(PDFSelection *)self document];
 
   v10 = 0;
-  if (v9)
+  if (document)
   {
     if (length)
     {
-      v10 = [[PDFPageRange alloc] initWithPage:v11 range:location, length];
+      v10 = [[PDFPageRange alloc] initWithPage:pageCopy range:location, length];
       [(NSMutableArray *)self->_pageRanges addObject:v10];
-      if (v5)
+      if (normalizeCopy)
       {
         [(PDFSelection *)self normalize];
       }
@@ -1699,22 +1699,22 @@ LABEL_5:
 {
   if ([(PDFSelection *)self isEmpty])
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v3 = [(NSMutableArray *)self->_pages lastObject];
+    lastObject = [(NSMutableArray *)self->_pages lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (unint64_t)indexOfFirstCharacterOnPage:(id)a3
+- (unint64_t)indexOfFirstCharacterOnPage:(id)page
 {
-  if (a3)
+  if (page)
   {
-    return [(PDFSelection *)self previewRangeAtIndex:0 onPage:a3];
+    return [(PDFSelection *)self previewRangeAtIndex:0 onPage:page];
   }
 
   else
@@ -1723,13 +1723,13 @@ LABEL_5:
   }
 }
 
-- (unint64_t)indexOfLastCharacterOnPage:(id)a3
+- (unint64_t)indexOfLastCharacterOnPage:(id)page
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (page)
   {
-    v5 = a3;
-    v6 = [(PDFSelection *)self previewRangeAtIndex:[(PDFSelection *)self numberOfTextRangesOnPage:v5]- 1 onPage:v5];
+    pageCopy = page;
+    v6 = [(PDFSelection *)self previewRangeAtIndex:[(PDFSelection *)self numberOfTextRangesOnPage:pageCopy]- 1 onPage:pageCopy];
     v8 = v7;
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1746,11 +1746,11 @@ LABEL_5:
   return v3;
 }
 
-- (unint64_t)pdfKitIndexOfFirstCharacterOnPage:(id)a3
+- (unint64_t)pdfKitIndexOfFirstCharacterOnPage:(id)page
 {
-  if (a3)
+  if (page)
   {
-    return [(PDFSelection *)self rangeAtIndex:0 onPage:a3];
+    return [(PDFSelection *)self rangeAtIndex:0 onPage:page];
   }
 
   else
@@ -1759,13 +1759,13 @@ LABEL_5:
   }
 }
 
-- (unint64_t)pdfKitIndexOfLastCharacterOnPage:(id)a3
+- (unint64_t)pdfKitIndexOfLastCharacterOnPage:(id)page
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (page)
   {
-    v5 = a3;
-    v6 = [(PDFSelection *)self rangeAtIndex:[(PDFSelection *)self numberOfTextRangesOnPage:v5]- 1 onPage:v5];
+    pageCopy = page;
+    v6 = [(PDFSelection *)self rangeAtIndex:[(PDFSelection *)self numberOfTextRangesOnPage:pageCopy]- 1 onPage:pageCopy];
     v8 = v7;
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1782,9 +1782,9 @@ LABEL_5:
   return v3;
 }
 
-- (id)createAttributedStringForCGSelection:(CGPDFSelection *)a3 scaled:(double)a4
+- (id)createAttributedStringForCGSelection:(CGPDFSelection *)selection scaled:(double)scaled
 {
-  v5 = [(PDFSelection *)self document];
+  document = [(PDFSelection *)self document];
   AttributedString = CGPDFSelectionCreateAttributedString();
   v7 = [AttributedString mutableCopy];
   v8 = [v7 length];
@@ -1792,7 +1792,7 @@ LABEL_5:
   v11[1] = 3221225472;
   v11[2] = __60__PDFSelection_createAttributedStringForCGSelection_scaled___block_invoke;
   v11[3] = &unk_1E8152498;
-  v13 = a4;
+  scaledCopy = scaled;
   v9 = v7;
   v12 = v9;
   [v9 enumerateAttributesInRange:0 options:v8 usingBlock:{0, v11}];
@@ -1823,7 +1823,7 @@ void __60__PDFSelection_createAttributedStringForCGSelection_scaled___block_invo
   [*(a1 + 32) setAttributes:v7 range:{a3, a4}];
 }
 
-- (id)attributedStringScaled:(double)a3
+- (id)attributedStringScaled:(double)scaled
 {
   if (!self->_cgSelections)
   {
@@ -1846,15 +1846,15 @@ LABEL_14:
   do
   {
     NSLog(&cfstr_Attributedstri_0.isa, v8);
-    v9 = [(PDFSelection *)self createAttributedStringForCGSelection:CFArrayGetValueAtIndex(self->_cgSelections scaled:v8), a3];
-    if (v9)
+    scaled = [(PDFSelection *)self createAttributedStringForCGSelection:CFArrayGetValueAtIndex(self->_cgSelections scaled:v8), scaled];
+    if (scaled)
     {
       if (!v7)
       {
         v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F416DF70];
       }
 
-      [v7 appendAttributedString:v9];
+      [v7 appendAttributedString:scaled];
       if (++v8 < Count && [(PDFSelection *)self forceBreaks])
       {
         v13 = 12;
@@ -1880,11 +1880,11 @@ LABEL_15:
 - (id)rtfData
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PDFSelection *)self attributedString];
+  attributedString = [(PDFSelection *)self attributedString];
   v6 = *MEMORY[0x1E69DB628];
   v7[0] = *MEMORY[0x1E69DB6A0];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v4 = [v2 dataFromRange:0 documentAttributes:objc_msgSend(v2 error:{"length"), v3, 0}];
+  v4 = [attributedString dataFromRange:0 documentAttributes:objc_msgSend(attributedString error:{"length"), v3, 0}];
 
   return v4;
 }
@@ -1892,11 +1892,11 @@ LABEL_15:
 - (id)htmlData
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PDFSelection *)self attributedString];
+  attributedString = [(PDFSelection *)self attributedString];
   v6 = *MEMORY[0x1E69DB628];
   v7[0] = *MEMORY[0x1E69DB658];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v4 = [v2 dataFromRange:0 documentAttributes:objc_msgSend(v2 error:{"length"), v3, 0}];
+  v4 = [attributedString dataFromRange:0 documentAttributes:objc_msgSend(attributedString error:{"length"), v3, 0}];
 
   return v4;
 }
@@ -1904,31 +1904,31 @@ LABEL_15:
 - (id)html
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PDFSelection *)self htmlData];
-  v5 = [v3 initWithData:v4 encoding:4];
+  htmlData = [(PDFSelection *)self htmlData];
+  v5 = [v3 initWithData:htmlData encoding:4];
 
   return v5;
 }
 
-- (void)drawForPage:(id)a3 withBox:(int)a4 active:(BOOL)a5 inContext:(CGContext *)a6
+- (void)drawForPage:(id)page withBox:(int)box active:(BOOL)active inContext:(CGContext *)context
 {
-  v10 = a3;
-  if (a4 <= 4)
+  pageCopy = page;
+  if (box <= 4)
   {
     cgSelections = self->_cgSelections;
     if (cgSelections)
     {
       Count = CFArrayGetCount(cgSelections);
-      if (a6)
+      if (context)
       {
         v13 = Count;
         if (Count)
         {
-          v14 = a4;
-          v15 = [(PDFSelection *)self color];
-          if (!v15)
+          boxCopy = box;
+          color = [(PDFSelection *)self color];
+          if (!color)
           {
-            if (a5)
+            if (active)
             {
               +[PDFSelection defaultActiveColor];
             }
@@ -1937,16 +1937,16 @@ LABEL_15:
             {
               +[PDFSelection defaultInactiveColor];
             }
-            v15 = ;
+            color = ;
           }
 
-          CGContextSetFillColorWithColor(a6, [v15 CGColor]);
-          CGContextSaveGState(a6);
-          rect = PDFRectToCGRect([v10 boundsForBox:0]);
+          CGContextSetFillColorWithColor(context, [color CGColor]);
+          CGContextSaveGState(context);
+          rect = PDFRectToCGRect([pageCopy boundsForBox:0]);
           v17 = v16;
           v19 = v18;
           rect_16 = v20;
-          v37.origin.x = PDFRectToCGRect([v10 boundsForBox:v14]);
+          v37.origin.x = PDFRectToCGRect([pageCopy boundsForBox:boxCopy]);
           x = v37.origin.x;
           y = v37.origin.y;
           width = v37.size.width;
@@ -1967,9 +1967,9 @@ LABEL_15:
           v40.size.width = v19;
           v40.size.height = rect_16;
           v27 = CGRectGetMinY(v40);
-          CGContextTranslateCTM(a6, -rect_8, -(MinY - v27));
-          v28 = [v10 renderingProperties];
-          [v28 isDarkMode];
+          CGContextTranslateCTM(context, -rect_8, -(MinY - v27));
+          renderingProperties = [pageCopy renderingProperties];
+          [renderingProperties isDarkMode];
           CGContextSetCompositeOperation();
           if (v13 >= 1)
           {
@@ -1977,9 +1977,9 @@ LABEL_15:
             {
               CFArrayGetValueAtIndex(self->_cgSelections, i);
               Page = CGPDFSelectionGetPage();
-              if (Page == [v10 pageRef])
+              if (Page == [pageCopy pageRef])
               {
-                CGContextBeginPath(a6);
+                CGContextBeginPath(context);
                 NumberOfRectsAndTransforms = CGPDFSelectionGetNumberOfRectsAndTransforms();
                 if (NumberOfRectsAndTransforms >= 1)
                 {
@@ -1987,20 +1987,20 @@ LABEL_15:
                   for (j = 0; j != v32; ++j)
                   {
                     CGPDFSelectionGetRectAndTransform();
-                    CGContextMoveToPoint(a6, 0.0 * 0.0 + 0.0 * 0.0 + 0.0, 0.0 * 0.0 + 0.0 * 0.0 + 0.0);
-                    CGContextAddLineToPoint(a6, (0.0 + 0.0) * 0.0 + 0.0 * 0.0 + 0.0, (0.0 + 0.0) * 0.0 + 0.0 * 0.0 + 0.0);
-                    CGContextAddLineToPoint(a6, (0.0 + 0.0) * 0.0 + 0.0 * (0.0 + 0.0) + 0.0, (0.0 + 0.0) * 0.0 + 0.0 * (0.0 + 0.0) + 0.0);
-                    CGContextAddLineToPoint(a6, 0.0 * 0.0 + 0.0 * (0.0 + 0.0) + 0.0, 0.0 * 0.0 + 0.0 * (0.0 + 0.0) + 0.0);
-                    CGContextAddLineToPoint(a6, 0.0 * 0.0 + 0.0 * 0.0 + 0.0, 0.0 * 0.0 + 0.0 * 0.0 + 0.0);
+                    CGContextMoveToPoint(context, 0.0 * 0.0 + 0.0 * 0.0 + 0.0, 0.0 * 0.0 + 0.0 * 0.0 + 0.0);
+                    CGContextAddLineToPoint(context, (0.0 + 0.0) * 0.0 + 0.0 * 0.0 + 0.0, (0.0 + 0.0) * 0.0 + 0.0 * 0.0 + 0.0);
+                    CGContextAddLineToPoint(context, (0.0 + 0.0) * 0.0 + 0.0 * (0.0 + 0.0) + 0.0, (0.0 + 0.0) * 0.0 + 0.0 * (0.0 + 0.0) + 0.0);
+                    CGContextAddLineToPoint(context, 0.0 * 0.0 + 0.0 * (0.0 + 0.0) + 0.0, 0.0 * 0.0 + 0.0 * (0.0 + 0.0) + 0.0);
+                    CGContextAddLineToPoint(context, 0.0 * 0.0 + 0.0 * 0.0 + 0.0, 0.0 * 0.0 + 0.0 * 0.0 + 0.0);
                   }
                 }
 
-                CGContextFillPath(a6);
+                CGContextFillPath(context);
               }
             }
           }
 
-          CGContextRestoreGState(a6);
+          CGContextRestoreGState(context);
         }
       }
     }
@@ -2082,8 +2082,8 @@ LABEL_15:
   }
 
   [(NSMutableArray *)self->_pageRanges sortUsingFunction:_sortPageRanges context:0];
-  v35 = [(PDFSelection *)self pages];
-  v34 = [v35 count];
+  pages = [(PDFSelection *)self pages];
+  v34 = [pages count];
   if (!v34)
   {
     goto LABEL_39;
@@ -2093,40 +2093,40 @@ LABEL_15:
   do
   {
     v36 = v14;
-    v15 = [v35 objectAtIndex:v34];
+    v15 = [pages objectAtIndex:v34];
     v16 = 0;
     do
     {
       v17 = [(NSMutableArray *)self->_pageRanges objectAtIndex:v16];
-      v18 = [v17 page];
+      page = [v17 page];
 
-      if (v18 != v15)
+      if (page != v15)
       {
         v19 = v16 + 1;
         goto LABEL_37;
       }
 
       v20 = [(NSMutableArray *)self->_pageRanges objectAtIndex:v16];
-      v21 = [v20 range];
+      range = [v20 range];
       v23 = v22;
 
       v19 = v16 + 1;
       if (v16 + 1 < [(NSMutableArray *)self->_pageRanges count])
       {
         v37 = v23;
-        v24 = v21 + v23;
+        v24 = range + v23;
         for (j = v16 + 1; j < [(NSMutableArray *)self->_pageRanges count]; ++j)
         {
           v26 = [(NSMutableArray *)self->_pageRanges objectAtIndex:j];
-          v27 = [v26 page];
+          page2 = [v26 page];
 
-          if (v27 == v15)
+          if (page2 == v15)
           {
             v28 = [(NSMutableArray *)self->_pageRanges objectAtIndex:j];
-            v29 = [v28 range];
+            range2 = [v28 range];
             v31 = v30;
 
-            if (v29 == v21)
+            if (range2 == range)
             {
               if (v31 > v37)
               {
@@ -2136,16 +2136,16 @@ LABEL_15:
 
             else
             {
-              if (v29 <= v21 || v29 > v24)
+              if (range2 <= range || range2 > v24)
               {
                 continue;
               }
 
-              if (v29 + v31 > v24)
+              if (range2 + v31 > v24)
               {
-                v32 = v29 + v31 - v21;
+                v32 = range2 + v31 - range;
                 v33 = [(NSMutableArray *)self->_pageRanges objectAtIndex:v16];
-                [v33 setRange:{v21, v32}];
+                [v33 setRange:{range, v32}];
               }
             }
 
@@ -2165,7 +2165,7 @@ LABEL_37:
 
   while (v36 + 1 != v34);
 LABEL_39:
-  v13 = v35;
+  v13 = pages;
 LABEL_40:
 }
 
@@ -2298,8 +2298,8 @@ LABEL_40:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(self->_cgSelections, i);
         v11 = [(NSMutableArray *)self->_pages objectAtIndex:i];
-        v12 = [v11 document];
-        v13 = [v12 indexForPage:v11];
+        document = [v11 document];
+        v13 = [document indexForPage:v11];
 
         [v6 appendFormat:@"    [%ld] page=%ld: ", i, v13];
         v14 = CFCopyDescription(ValueAtIndex);
@@ -2328,10 +2328,10 @@ LABEL_40:
   return v6;
 }
 
-- (_NSRange)previewRangeAtIndex:(unint64_t)a3 onPage:(id)a4
+- (_NSRange)previewRangeAtIndex:(unint64_t)index onPage:(id)page
 {
-  v5 = a4;
-  if (v5 && (cgSelections = self->_cgSelections) != 0 && (Count = CFArrayGetCount(cgSelections)) != 0)
+  pageCopy = page;
+  if (pageCopy && (cgSelections = self->_cgSelections) != 0 && (Count = CFArrayGetCount(cgSelections)) != 0)
   {
     v8 = Count;
     v9 = 0;
@@ -2339,7 +2339,7 @@ LABEL_40:
     {
       v10 = [(NSMutableArray *)self->_pages objectAtIndex:v9];
 
-      if (v10 == v5)
+      if (v10 == pageCopy)
       {
         break;
       }

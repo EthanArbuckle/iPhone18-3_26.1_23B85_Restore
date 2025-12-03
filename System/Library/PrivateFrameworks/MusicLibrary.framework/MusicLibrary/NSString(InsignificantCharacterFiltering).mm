@@ -9,15 +9,15 @@
 
 - (id)MLSortStringWithPrefix
 {
-  v2 = [a1 copyWithoutInsignificantCharacters];
-  if ([v2 isEqualToString:a1])
+  copyWithoutInsignificantCharacters = [self copyWithoutInsignificantCharacters];
+  if ([copyWithoutInsignificantCharacters isEqualToString:self])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v2;
+    v3 = copyWithoutInsignificantCharacters;
   }
 
   return v3;
@@ -25,15 +25,15 @@
 
 - (id)MLSortString
 {
-  v2 = [a1 copyWithoutInsignificantPrefixAndCharacters];
-  if ([v2 isEqualToString:a1])
+  copyWithoutInsignificantPrefixAndCharacters = [self copyWithoutInsignificantPrefixAndCharacters];
+  if ([copyWithoutInsignificantPrefixAndCharacters isEqualToString:self])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v2;
+    v3 = copyWithoutInsignificantPrefixAndCharacters;
   }
 
   return v3;
@@ -41,11 +41,11 @@
 
 - (CFStringRef)_copyWithoutInsignificantPrefix:()InsignificantCharacterFiltering andCharacters:
 {
-  v1 = [__CFString _rangeWithoutInsignificantPrefix:a1 andCharacters:"_rangeWithoutInsignificantPrefix:andCharacters:"];
-  if (!v2 || (v3 = v1, v4 = v2, !v1) && v2 == CFStringGetLength(a1) || (v8.location = v3, v8.length = v4, (result = CFStringCreateWithSubstring(0, a1, v8)) == 0))
+  v1 = [__CFString _rangeWithoutInsignificantPrefix:self andCharacters:"_rangeWithoutInsignificantPrefix:andCharacters:"];
+  if (!v2 || (v3 = v1, v4 = v2, !v1) && v2 == CFStringGetLength(self) || (v8.location = v3, v8.length = v4, (result = CFStringCreateWithSubstring(0, self, v8)) == 0))
   {
 
-    return a1;
+    return self;
   }
 
   return result;
@@ -53,7 +53,7 @@
 
 - (CFIndex)_rangeWithoutInsignificantPrefix:()InsignificantCharacterFiltering andCharacters:
 {
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   v8 = Length;
   if (!a3)
   {
@@ -95,7 +95,7 @@ LABEL_10:
         v26.location = 0;
         v26.length = 0;
         v27.location = 0;
-        if (CFStringFindWithOptions(a1, v13, v27, 9uLL, &v26))
+        if (CFStringFindWithOptions(self, v13, v27, 9uLL, &v26))
         {
           if (!v26.location)
           {
@@ -120,8 +120,8 @@ LABEL_15:
     v17 = ValidFirstCharacterSet_chars;
     if (!ValidFirstCharacterSet_chars)
     {
-      v18 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-      v19 = [v18 mutableCopy];
+      alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+      v19 = [alphanumericCharacterSet mutableCopy];
       v20 = ValidFirstCharacterSet_chars;
       ValidFirstCharacterSet_chars = v19;
 
@@ -132,7 +132,7 @@ LABEL_15:
     v21 = v17;
     if (v16)
     {
-      CharacterAtIndex = CFStringGetCharacterAtIndex(a1, v15);
+      CharacterAtIndex = CFStringGetCharacterAtIndex(self, v15);
       if (CFCharacterSetIsCharacterMember(v21, CharacterAtIndex))
       {
         v23 = 1;
@@ -141,7 +141,7 @@ LABEL_15:
 
       else
       {
-        v24 = [(__CFString *)a1 rangeOfCharacterFromSet:v21 options:0 range:v15, v16];
+        v24 = [(__CFString *)self rangeOfCharacterFromSet:v21 options:0 range:v15, v16];
       }
 
       if (v24 != 0x7FFFFFFFFFFFFFFFLL && v23 != 0)

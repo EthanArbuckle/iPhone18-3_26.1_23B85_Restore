@@ -1,17 +1,17 @@
 @interface GQHBulletState
-- (BOOL)hasNumberAtLevel:(int)a3;
+- (BOOL)hasNumberAtLevel:(int)level;
 - (GQHBulletState)init;
-- (__CFString)bulletChar:(int)a3;
-- (id)listStyleAtLevel:(int)a3;
-- (int)bulletIndentForLevel:(int)a3;
-- (int)labelTypeAtLevel:(int)a3;
-- (int)numberAtLevel:(int)a3;
-- (int)textIndentForLevel:(int)a3;
-- (int)typeAtlevel:(int)a3;
+- (__CFString)bulletChar:(int)char;
+- (id)listStyleAtLevel:(int)level;
+- (int)bulletIndentForLevel:(int)level;
+- (int)labelTypeAtLevel:(int)level;
+- (int)numberAtLevel:(int)level;
+- (int)textIndentForLevel:(int)level;
+- (int)typeAtlevel:(int)atlevel;
 - (void)dealloc;
-- (void)setBulletChar:(__CFString *)a3 level:(int)a4;
-- (void)setCurrentLevel:(int)a3;
-- (void)setListStyle:(id)a3 atLevel:(int)a4;
+- (void)setBulletChar:(__CFString *)char level:(int)level;
+- (void)setCurrentLevel:(int)level;
+- (void)setListStyle:(id)style atLevel:(int)level;
 @end
 
 @implementation GQHBulletState
@@ -54,100 +54,100 @@
   [(GQHBulletState *)&v3 dealloc];
 }
 
-- (int)typeAtlevel:(int)a3
+- (int)typeAtlevel:(int)atlevel
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, atlevel);
 
   return [ValueAtIndex type];
 }
 
-- (BOOL)hasNumberAtLevel:(int)a3
+- (BOOL)hasNumberAtLevel:(int)level
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
   return [ValueAtIndex hasNumber];
 }
 
-- (int)numberAtLevel:(int)a3
+- (int)numberAtLevel:(int)level
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
   return [ValueAtIndex number];
 }
 
-- (int)labelTypeAtLevel:(int)a3
+- (int)labelTypeAtLevel:(int)level
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
   return [ValueAtIndex labelType];
 }
 
-- (void)setBulletChar:(__CFString *)a3 level:(int)a4
+- (void)setBulletChar:(__CFString *)char level:(int)level
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a4);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
-  [ValueAtIndex setBulletChar:a3];
+  [ValueAtIndex setBulletChar:char];
 }
 
-- (__CFString)bulletChar:(int)a3
+- (__CFString)bulletChar:(int)char
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, char);
 
   return [ValueAtIndex bulletChar];
 }
 
-- (int)bulletIndentForLevel:(int)a3
+- (int)bulletIndentForLevel:(int)level
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
   return [ValueAtIndex bulletIndent];
 }
 
-- (int)textIndentForLevel:(int)a3
+- (int)textIndentForLevel:(int)level
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
   return [ValueAtIndex textIndent];
 }
 
-- (void)setListStyle:(id)a3 atLevel:(int)a4
+- (void)setListStyle:(id)style atLevel:(int)level
 {
-  if (CFArrayGetCount(self->mLevels) > a4)
+  if (CFArrayGetCount(self->mLevels) > level)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a4);
+    ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
-    [ValueAtIndex setStyle:a3];
+    [ValueAtIndex setStyle:style];
   }
 }
 
-- (id)listStyleAtLevel:(int)a3
+- (id)listStyleAtLevel:(int)level
 {
-  if (CFArrayGetCount(self->mLevels) <= a3)
+  if (CFArrayGetCount(self->mLevels) <= level)
   {
     return 0;
   }
 
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, level);
 
   return [ValueAtIndex style];
 }
 
-- (void)setCurrentLevel:(int)a3
+- (void)setCurrentLevel:(int)level
 {
-  if (self->mCurrentLevel > a3 && dword_9CDF8 > a3)
+  if (self->mCurrentLevel > level && dword_9CDF8 > level)
   {
-    v6 = a3;
+    levelCopy = level;
     do
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, ++v6);
+      ValueAtIndex = CFArrayGetValueAtIndex(self->mLevels, ++levelCopy);
       [ValueAtIndex setNumber:0];
       [ValueAtIndex setHasNumber:0];
     }
 
-    while (v6 < dword_9CDF8);
+    while (levelCopy < dword_9CDF8);
   }
 
-  self->mCurrentLevel = a3;
+  self->mCurrentLevel = level;
 }
 
 @end

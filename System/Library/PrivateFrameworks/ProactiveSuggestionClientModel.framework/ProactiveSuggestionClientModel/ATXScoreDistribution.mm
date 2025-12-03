@@ -1,11 +1,11 @@
 @interface ATXScoreDistribution
 - (ATXScoreDistribution)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXDeviceLevelMetricsScoreDistribution:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXDeviceLevelMetricsScoreDistribution:(id)distribution;
 - (double)mean;
 - (double)standardDeviation;
-- (void)enumerateAsHistogramWithNumberOfBins:(unint64_t)a3 binHandler:(id)a4;
-- (void)recordScore:(double)a3;
+- (void)enumerateAsHistogramWithNumberOfBins:(unint64_t)bins binHandler:(id)handler;
+- (void)recordScore:(double)score;
 @end
 
 @implementation ATXScoreDistribution
@@ -25,21 +25,21 @@
   return v2;
 }
 
-- (void)recordScore:(double)a3
+- (void)recordScore:(double)score
 {
-  if (![(NSMutableArray *)self->_scores count]|| self->_min > a3)
+  if (![(NSMutableArray *)self->_scores count]|| self->_min > score)
   {
-    self->_min = a3;
+    self->_min = score;
   }
 
-  if (![(NSMutableArray *)self->_scores count]|| self->_max < a3)
+  if (![(NSMutableArray *)self->_scores count]|| self->_max < score)
   {
-    self->_max = a3;
+    self->_max = score;
   }
 
-  self->_sum = self->_sum + a3;
+  self->_sum = self->_sum + score;
   scores = self->_scores;
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:score];
   [(NSMutableArray *)scores addObject:v6];
 }
 
@@ -108,33 +108,33 @@
   return result;
 }
 
-- (void)enumerateAsHistogramWithNumberOfBins:(unint64_t)a3 binHandler:(id)a4
+- (void)enumerateAsHistogramWithNumberOfBins:(unint64_t)bins binHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 && [(NSMutableArray *)self->_scores count])
+  handlerCopy = handler;
+  if (bins && [(NSMutableArray *)self->_scores count])
   {
     v8.n128_u64[0] = *&self->_min;
     v9.n128_u64[0] = *&self->_max;
     if (v8.n128_f64[0] == v9.n128_f64[0])
     {
       v7.n128_u64[0] = 1.0;
-      v6[2](v6, v7, v8, v9);
+      handlerCopy[2](handlerCopy, v7, v8, v9);
     }
 
     else
     {
-      v24 = v6;
-      v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
-      v12 = a3;
+      v24 = handlerCopy;
+      v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:bins];
+      binsCopy = bins;
       do
       {
         [v11 addObject:&unk_1F5A41128];
-        --v12;
+        --binsCopy;
       }
 
-      while (v12);
-      v13 = (self->_max - self->_min) / a3;
+      while (binsCopy);
+      v13 = (self->_max - self->_min) / bins;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
@@ -157,9 +157,9 @@
 
             [*(*(&v29 + 1) + 8 * v17) doubleValue];
             v19 = (v18 - self->_min) / v13;
-            if (v19 >= a3)
+            if (v19 >= bins)
             {
-              v20 = a3 - 1;
+              v20 = bins - 1;
             }
 
             else
@@ -188,7 +188,7 @@
       v26[3] = &unk_1E86A4208;
       v28 = v13;
       v26[4] = self;
-      v6 = v24;
+      handlerCopy = v24;
       v27 = v24;
       [v11 enumerateObjectsUsingBlock:v26];
     }
@@ -199,7 +199,7 @@
     v7.n128_u64[0] = 0;
     v8.n128_u64[0] = 0;
     v9.n128_u64[0] = 0;
-    v6[2](v6, v7, v8, v9);
+    handlerCopy[2](handlerCopy, v7, v8, v9);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -220,28 +220,28 @@ uint64_t __72__ATXScoreDistribution_enumerateAsHistogramWithNumberOfBins_binHand
   return v10(v5, v9, v11, v12);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXScoreDistribution *)self isEqualToATXDeviceLevelMetricsScoreDistribution:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXScoreDistribution *)self isEqualToATXDeviceLevelMetricsScoreDistribution:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXDeviceLevelMetricsScoreDistribution:(id)a3
+- (BOOL)isEqualToATXDeviceLevelMetricsScoreDistribution:(id)distribution
 {
   v4 = self->_scores;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(distribution + 1))
   {
     v6 = 1;
   }

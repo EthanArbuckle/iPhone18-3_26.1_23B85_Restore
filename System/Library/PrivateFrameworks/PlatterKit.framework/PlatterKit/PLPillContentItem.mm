@@ -1,40 +1,40 @@
 @interface PLPillContentItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLikePillContentItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLikePillContentItem:(id)item;
 - (NSAttributedString)attributedText;
 - (NSString)text;
-- (PLPillContentItem)itemWithAttributedText:(id)a3;
-- (PLPillContentItem)itemWithAttributedText:(id)a3 style:(unint64_t)a4;
-- (PLPillContentItem)itemWithAttributedText:(id)a3 style:(unint64_t)a4 accessoryView:(id)a5;
-- (PLPillContentItem)itemWithStyle:(unint64_t)a3;
-- (PLPillContentItem)itemWithText:(id)a3;
-- (PLPillContentItem)itemWithText:(id)a3 style:(unint64_t)a4;
-- (PLPillContentItem)itemWithText:(id)a3 style:(unint64_t)a4 accessoryView:(id)a5;
+- (PLPillContentItem)itemWithAttributedText:(id)text;
+- (PLPillContentItem)itemWithAttributedText:(id)text style:(unint64_t)style;
+- (PLPillContentItem)itemWithAttributedText:(id)text style:(unint64_t)style accessoryView:(id)view;
+- (PLPillContentItem)itemWithStyle:(unint64_t)style;
+- (PLPillContentItem)itemWithText:(id)text;
+- (PLPillContentItem)itemWithText:(id)text style:(unint64_t)style;
+- (PLPillContentItem)itemWithText:(id)text style:(unint64_t)style accessoryView:(id)view;
 - (PLPillContentWrapperView)wrapperView;
-- (id)_initWithIdentifier:(id)a3 text:(id)a4 style:(unint64_t)a5 accessoryView:(id)a6 solo:(BOOL)a7;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithIdentifier:(id)identifier text:(id)text style:(unint64_t)style accessoryView:(id)view solo:(BOOL)solo;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)soloItem;
 - (unint64_t)hash;
-- (void)setWrapperView:(id)a3;
-- (void)updateWithContentItem:(id)a3;
+- (void)setWrapperView:(id)view;
+- (void)updateWithContentItem:(id)item;
 @end
 
 @implementation PLPillContentItem
 
-- (id)_initWithIdentifier:(id)a3 text:(id)a4 style:(unint64_t)a5 accessoryView:(id)a6 solo:(BOOL)a7
+- (id)_initWithIdentifier:(id)identifier text:(id)text style:(unint64_t)style accessoryView:(id)view solo:(BOOL)solo
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  identifierCopy = identifier;
+  textCopy = text;
+  viewCopy = view;
   v23.receiver = self;
   v23.super_class = PLPillContentItem;
   v15 = [(PLPillContentItem *)&v23 init];
   if (v15)
   {
-    if (v12)
+    if (identifierCopy)
     {
-      v16 = [v12 copy];
+      v16 = [identifierCopy copy];
       identifier = v15->_identifier;
       v15->_identifier = v16;
     }
@@ -42,18 +42,18 @@
     else
     {
       identifier = objc_opt_new();
-      v18 = [identifier UUIDString];
+      uUIDString = [identifier UUIDString];
       v19 = v15->_identifier;
-      v15->_identifier = v18;
+      v15->_identifier = uUIDString;
     }
 
-    v20 = [v13 copy];
+    v20 = [textCopy copy];
     text = v15->_text;
     v15->_text = v20;
 
-    v15->_style = a5;
-    objc_storeStrong(&v15->_accessoryView, a6);
-    v15->_solo = a7;
+    v15->_style = style;
+    objc_storeStrong(&v15->_accessoryView, view);
+    v15->_solo = solo;
   }
 
   return v15;
@@ -107,31 +107,31 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_identifier];
-  v5 = [v3 appendUnsignedInteger:self->_style];
-  v6 = [v3 appendObject:self->_accessoryView];
-  v7 = [v3 appendBool:self->_solo];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_identifier];
+  v5 = [builder appendUnsignedInteger:self->_style];
+  v6 = [builder appendObject:self->_accessoryView];
+  v7 = [builder appendBool:self->_solo];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(PLPillContentItem *)self isLikePillContentItem:v5])
     {
-      v6 = [v5 text];
+      text = [v5 text];
       if (BSEqualStrings() && (style = self->_style, style == [v5 style]))
       {
         accessoryView = self->_accessoryView;
-        v9 = [v5 accessoryView];
-        if (accessoryView == v9)
+        accessoryView = [v5 accessoryView];
+        if (accessoryView == accessoryView)
         {
           solo = self->_solo;
           v10 = solo == [v5 isSolo];
@@ -163,84 +163,84 @@
   return v10;
 }
 
-- (BOOL)isLikePillContentItem:(id)a3
+- (BOOL)isLikePillContentItem:(id)item
 {
   identifier = self->_identifier;
-  v4 = [a3 _identifier];
-  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:v4];
+  _identifier = [item _identifier];
+  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:_identifier];
 
   return identifier;
 }
 
-- (PLPillContentItem)itemWithText:(id)a3
+- (PLPillContentItem)itemWithText:(id)text
 {
-  v4 = a3;
-  v5 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:v4 style:self->_style accessoryView:self->_accessoryView solo:0];
+  textCopy = text;
+  v5 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:textCopy style:self->_style accessoryView:self->_accessoryView solo:0];
 
   return v5;
 }
 
-- (PLPillContentItem)itemWithAttributedText:(id)a3
+- (PLPillContentItem)itemWithAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:v4 style:self->_style accessoryView:self->_accessoryView solo:0];
+  textCopy = text;
+  v5 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:textCopy style:self->_style accessoryView:self->_accessoryView solo:0];
 
   return v5;
 }
 
-- (PLPillContentItem)itemWithStyle:(unint64_t)a3
+- (PLPillContentItem)itemWithStyle:(unint64_t)style
 {
-  v3 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:self->_text style:a3 accessoryView:self->_accessoryView solo:0];
+  v3 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:self->_text style:style accessoryView:self->_accessoryView solo:0];
 
   return v3;
 }
 
-- (PLPillContentItem)itemWithText:(id)a3 style:(unint64_t)a4
+- (PLPillContentItem)itemWithText:(id)text style:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:v6 style:a4 accessoryView:self->_accessoryView solo:0];
+  textCopy = text;
+  v7 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:textCopy style:style accessoryView:self->_accessoryView solo:0];
 
   return v7;
 }
 
-- (PLPillContentItem)itemWithAttributedText:(id)a3 style:(unint64_t)a4
+- (PLPillContentItem)itemWithAttributedText:(id)text style:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:v6 style:a4 accessoryView:self->_accessoryView solo:0];
+  textCopy = text;
+  v7 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:textCopy style:style accessoryView:self->_accessoryView solo:0];
 
   return v7;
 }
 
-- (PLPillContentItem)itemWithText:(id)a3 style:(unint64_t)a4 accessoryView:(id)a5
+- (PLPillContentItem)itemWithText:(id)text style:(unint64_t)style accessoryView:(id)view
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:v9 style:a4 accessoryView:v8 solo:0];
+  viewCopy = view;
+  textCopy = text;
+  v10 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:textCopy style:style accessoryView:viewCopy solo:0];
 
   return v10;
 }
 
-- (PLPillContentItem)itemWithAttributedText:(id)a3 style:(unint64_t)a4 accessoryView:(id)a5
+- (PLPillContentItem)itemWithAttributedText:(id)text style:(unint64_t)style accessoryView:(id)view
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:v9 style:a4 accessoryView:v8 solo:0];
+  viewCopy = view;
+  textCopy = text;
+  v10 = [[PLPillContentItem alloc] _initWithIdentifier:self->_identifier text:textCopy style:style accessoryView:viewCopy solo:0];
 
   return v10;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PLPillContentItem *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PLPillContentItem *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -248,8 +248,8 @@
   v10[3] = &unk_2784254E0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -271,9 +271,9 @@ id __59__PLPillContentItem_descriptionBuilderWithMultilinePrefix___block_invoke(
   return WeakRetained;
 }
 
-- (void)setWrapperView:(id)a3
+- (void)setWrapperView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_wrapperView);
 
   v5 = obj;
@@ -291,11 +291,11 @@ id __59__PLPillContentItem_descriptionBuilderWithMultilinePrefix___block_invoke(
   return v2;
 }
 
-- (void)updateWithContentItem:(id)a3
+- (void)updateWithContentItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PLPillContentItem *)self wrapperView];
-  [v5 updateWithContentItem:v4];
+  itemCopy = item;
+  wrapperView = [(PLPillContentItem *)self wrapperView];
+  [wrapperView updateWithContentItem:itemCopy];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface HUPlaceholderTileCell
-- (HUPlaceholderTileCell)initWithCoder:(id)a3;
-- (HUPlaceholderTileCell)initWithFrame:(CGRect)a3;
+- (HUPlaceholderTileCell)initWithCoder:(id)coder;
+- (HUPlaceholderTileCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HUPlaceholderTileCell
 
-- (HUPlaceholderTileCell)initWithFrame:(CGRect)a3
+- (HUPlaceholderTileCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PlaceholderTileCell();
   return [(HUTileCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (HUPlaceholderTileCell)initWithCoder:(id)a3
+- (HUPlaceholderTileCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlaceholderTileCell();
-  v4 = a3;
-  v5 = [(HUTileCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HUTileCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

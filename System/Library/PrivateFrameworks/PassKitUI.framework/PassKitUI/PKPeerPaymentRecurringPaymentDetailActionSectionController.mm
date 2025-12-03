@@ -1,30 +1,30 @@
 @interface PKPeerPaymentRecurringPaymentDetailActionSectionController
-- (PKPeerPaymentRecurringPaymentDetailActionSectionController)initWithAction:(unint64_t)a3 delegate:(id)a4;
+- (PKPeerPaymentRecurringPaymentDetailActionSectionController)initWithAction:(unint64_t)action delegate:(id)delegate;
 - (PKPeerPaymentRecurringPaymentDetailActionSectionControllerDelegate)delegate;
 - (id)_actionSectionIdentifier;
 - (id)_spinnerAccessory;
 - (id)identifiers;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_decorateListCell:(id)a3 forItem:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
-- (void)setStatus:(unint64_t)a3;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_decorateListCell:(id)cell forItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
+- (void)setStatus:(unint64_t)status;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentDetailActionSectionController
 
-- (PKPeerPaymentRecurringPaymentDetailActionSectionController)initWithAction:(unint64_t)a3 delegate:(id)a4
+- (PKPeerPaymentRecurringPaymentDetailActionSectionController)initWithAction:(unint64_t)action delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = PKPeerPaymentRecurringPaymentDetailActionSectionController;
   v7 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    v7->_action = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_action = action;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     objc_initWeak(&location, v8);
     v9 = MEMORY[0x1E69DC800];
     v10 = objc_opt_class();
@@ -56,9 +56,9 @@ void __86__PKPeerPaymentRecurringPaymentDetailActionSectionController_initWithAc
   }
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   action = self->_action;
   if (action)
@@ -96,18 +96,18 @@ void __86__PKPeerPaymentRecurringPaymentDetailActionSectionController_initWithAc
   self->_rowItems = v11;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v14 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self _actionSectionIdentifier];
-  [WeakRetained updateFooterForSectionIdentifier:v14];
+  _actionSectionIdentifier = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self _actionSectionIdentifier];
+  [WeakRetained updateFooterForSectionIdentifier:_actionSectionIdentifier];
 
   v15 = objc_loadWeakRetained(&self->_delegate);
-  [v15 reloadDataAnimated:v3];
+  [v15 reloadDataAnimated:animatedCopy];
 }
 
 - (id)identifiers
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self _actionSectionIdentifier];
-  v5[0] = v2;
+  _actionSectionIdentifier = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self _actionSectionIdentifier];
+  v5[0] = _actionSectionIdentifier;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -141,7 +141,7 @@ LABEL_6:
   return v3;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_rowItems];
@@ -149,23 +149,23 @@ LABEL_6:
   return v5;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [(PKDynamicListSectionController *)self headerText];
-  if (v8)
+  headerText = [(PKDynamicListSectionController *)self headerText];
+  if (headerText)
   {
   }
 
   else
   {
-    v9 = [(PKDynamicListSectionController *)self attributedHeaderText];
+    attributedHeaderText = [(PKDynamicListSectionController *)self attributedHeaderText];
 
-    if (!v9)
+    if (!attributedHeaderText)
     {
       goto LABEL_5;
     }
@@ -173,16 +173,16 @@ LABEL_6:
 
   [v6 setHeaderMode:1];
 LABEL_5:
-  v10 = [(PKDynamicListSectionController *)self footerText];
-  if (v10)
+  footerText = [(PKDynamicListSectionController *)self footerText];
+  if (footerText)
   {
   }
 
   else
   {
-    v11 = [(PKDynamicListSectionController *)self attributedFooterText];
+    attributedFooterText = [(PKDynamicListSectionController *)self attributedFooterText];
 
-    if (!v11)
+    if (!attributedFooterText)
     {
       goto LABEL_9;
     }
@@ -190,14 +190,14 @@ LABEL_5:
 
   [v6 setFooterMode:1];
 LABEL_9:
-  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:environmentCopy];
 
   return v12;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   action = self->_action;
   v8[4] = self;
@@ -210,7 +210,7 @@ LABEL_9:
   v8[1] = 3221225472;
   v8[2] = __76__PKPeerPaymentRecurringPaymentDetailActionSectionController_didSelectItem___block_invoke_3;
   v8[3] = &unk_1E8010970;
-  [WeakRetained performAction:action forItem:v4 startHandler:v9 completion:v8];
+  [WeakRetained performAction:action forItem:itemCopy startHandler:v9 completion:v8];
 
   v7 = objc_loadWeakRetained(&self->_delegate);
   [v7 deselectCells];
@@ -236,53 +236,53 @@ void __76__PKPeerPaymentRecurringPaymentDetailActionSectionController_didSelectI
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)_decorateListCell:(id)a3 forItem:(id)a4
+- (void)_decorateListCell:(id)cell forItem:(id)item
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  itemCopy = item;
   v7 = MEMORY[0x1E69DCC28];
-  v8 = a3;
-  v9 = [v7 valueCellConfiguration];
-  v10 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v11 = [v6 identifier];
-  v12 = [v11 isEqualToString:@"cancel"];
+  cellCopy = cell;
+  valueCellConfiguration = [v7 valueCellConfiguration];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  identifier = [itemCopy identifier];
+  v12 = [identifier isEqualToString:@"cancel"];
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
 
-    v10 = v13;
+    systemBlueColor = systemRedColor;
   }
 
-  v14 = [v6 title];
-  [v9 setText:v14];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v15 = [v9 textProperties];
-  [v15 setColor:v10];
+  textProperties = [valueCellConfiguration textProperties];
+  [textProperties setColor:systemBlueColor];
 
-  if ([v6 actionInProgress])
+  if ([itemCopy actionInProgress])
   {
-    v16 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self _spinnerAccessory];
-    v18[0] = v16;
+    _spinnerAccessory = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self _spinnerAccessory];
+    v18[0] = _spinnerAccessory;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    [v8 setAccessories:v17];
+    [cellCopy setAccessories:v17];
   }
 
   else
   {
-    [v8 setAccessories:MEMORY[0x1E695E0F0]];
+    [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
   }
 
-  [v8 setContentConfiguration:v9];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
 - (id)_spinnerAccessory

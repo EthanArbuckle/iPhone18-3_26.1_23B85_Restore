@@ -1,23 +1,23 @@
 @interface AVMobileChromelessContentTabsView
 - (AVMobileChromelessContentTabsTransitionState)transitionState;
-- (AVMobileChromelessContentTabsView)initWithStyleSheet:(id)a3;
+- (AVMobileChromelessContentTabsView)initWithStyleSheet:(id)sheet;
 - (AVMobileChromelessContentTabsViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (UIScrollViewDelegate)contentViewDelegate;
 - (id)_updateContentTabsUserInteractionEnabledStateIfNeeded;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_setupContentTabSelectionViewIfNeeded;
 - (void)_setupContentTabsContentViewIfNeeded;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
-- (void)contentTabSelectionView:(id)a3 didChangeSelectedTabTo:(id)a4 withReason:(unint64_t)a5;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
+- (void)contentTabSelectionView:(id)view didChangeSelectedTabTo:(id)to withReason:(unint64_t)reason;
 - (void)didMoveToSuperview;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setContentTabs:(id)a3;
-- (void)setContentViewDelegate:(id)a3;
-- (void)setFadeDistance:(double)a3;
-- (void)setTransitionState:(AVMobileChromelessContentTabsTransitionState *)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setContentTabs:(id)tabs;
+- (void)setContentViewDelegate:(id)delegate;
+- (void)setFadeDistance:(double)distance;
+- (void)setTransitionState:(AVMobileChromelessContentTabsTransitionState *)state;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation AVMobileChromelessContentTabsView
@@ -46,25 +46,25 @@
   return WeakRetained;
 }
 
-- (void)contentTabSelectionView:(id)a3 didChangeSelectedTabTo:(id)a4 withReason:(unint64_t)a5
+- (void)contentTabSelectionView:(id)view didChangeSelectedTabTo:(id)to withReason:(unint64_t)reason
 {
-  v10 = a4;
-  v7 = [(AVMobileChromelessContentTabsView *)self delegate];
+  toCopy = to;
+  delegate = [(AVMobileChromelessContentTabsView *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(AVMobileChromelessContentTabsView *)self delegate];
-    [v9 contentTabsView:self didChangeContentTab:v10 withReason:a5];
+    delegate2 = [(AVMobileChromelessContentTabsView *)self delegate];
+    [delegate2 contentTabsView:self didChangeContentTab:toCopy withReason:reason];
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  if (self->_contentTabSelectionView == a3)
+  if (self->_contentTabSelectionView == invalidated)
   {
-    v5 = [(AVMobileChromelessContentTabsView *)self superview];
-    [v5 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileChromelessContentTabsView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
     [(AVMobileChromelessContentTabsView *)self setNeedsLayout];
   }
@@ -82,36 +82,36 @@
 
 - (void)_setupContentTabsContentViewIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!a1[62])
+    if (!self[62])
     {
-      v2 = [a1 window];
+      window = [self window];
 
-      if (v2)
+      if (window)
       {
         v3 = objc_alloc_init(AVMobileChromelessContentTabsContentView);
-        v4 = a1[62];
-        a1[62] = v3;
+        v4 = self[62];
+        self[62] = v3;
 
-        v5 = [a1[62] scrollView];
-        WeakRetained = objc_loadWeakRetained(a1 + 64);
-        [v5 setDelegate:WeakRetained];
+        scrollView = [self[62] scrollView];
+        WeakRetained = objc_loadWeakRetained(self + 64);
+        [scrollView setDelegate:WeakRetained];
 
-        [a1 addSubview:a1[62]];
+        [self addSubview:self[62]];
       }
     }
 
-    v7 = a1[62];
+    v7 = self[62];
     if (v7)
     {
-      v8 = [v7 scrollView];
+      scrollView2 = [v7 scrollView];
 
-      if (v8)
+      if (scrollView2)
       {
-        v10 = [a1[62] scrollView];
-        v9 = objc_loadWeakRetained(a1 + 64);
-        [v10 setDelegate:v9];
+        scrollView3 = [self[62] scrollView];
+        v9 = objc_loadWeakRetained(self + 64);
+        [scrollView3 setDelegate:v9];
       }
     }
   }
@@ -119,22 +119,22 @@
 
 - (void)_setupContentTabSelectionViewIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 488))
+    if (!*(self + 488))
     {
-      v2 = [a1 window];
+      window = [self window];
 
-      if (v2)
+      if (window)
       {
-        v3 = [[AVMobileContentTabSelectionView alloc] initWithStyleSheet:*(a1 + 480)];
-        v4 = *(a1 + 488);
-        *(a1 + 488) = v3;
+        v3 = [[AVMobileContentTabSelectionView alloc] initWithStyleSheet:*(self + 480)];
+        v4 = *(self + 488);
+        *(self + 488) = v3;
 
-        [*(a1 + 488) setDelegate:a1];
-        v5 = *(a1 + 488);
+        [*(self + 488) setDelegate:self];
+        v5 = *(self + 488);
 
-        [a1 addSubview:v5];
+        [self addSubview:v5];
       }
     }
   }
@@ -147,9 +147,9 @@
     v1 = result;
     [result[62] setUserInteractionEnabled:{objc_msgSend(result, "isUserInteractionEnabled")}];
     v2 = v1[61];
-    v3 = [v1 isUserInteractionEnabled];
+    isUserInteractionEnabled = [v1 isUserInteractionEnabled];
 
-    return [v2 setUserInteractionEnabled:v3];
+    return [v2 setUserInteractionEnabled:isUserInteractionEnabled];
   }
 
   return result;
@@ -230,11 +230,11 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = AVMobileChromelessContentTabsView;
-  v5 = [(AVView *)&v12 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(AVView *)&v12 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self->_contentTabSelectionView)
   {
@@ -246,10 +246,10 @@
     v7 = [(AVMobileContentTabSelectionView *)v5 isDescendantOfView:?];
   }
 
-  v8 = [(AVMobileChromelessContentTabsContentView *)self->_contentView scrollView];
-  if (([v8 isTracking] & 1) == 0 && (objc_msgSend(v8, "isDragging") & 1) == 0)
+  scrollView = [(AVMobileChromelessContentTabsContentView *)self->_contentView scrollView];
+  if (([scrollView isTracking] & 1) == 0 && (objc_msgSend(scrollView, "isDragging") & 1) == 0)
   {
-    v7 &= [v8 isDecelerating];
+    v7 &= [scrollView isDecelerating];
   }
 
   if (v7)
@@ -267,10 +267,10 @@
   return v9;
 }
 
-- (void)setTransitionState:(AVMobileChromelessContentTabsTransitionState *)a3
+- (void)setTransitionState:(AVMobileChromelessContentTabsTransitionState *)state
 {
   p_transitionState = &self->_transitionState;
-  __copy_assignment_8_8_s0_s8_t16w16(&self->_transitionState, a3);
+  __copy_assignment_8_8_s0_s8_t16w16(&self->_transitionState, state);
   if (self)
   {
     v6 = p_transitionState->activeContentTab;
@@ -303,35 +303,35 @@
     }
   }
 
-  upcomingContentTab = a3->upcomingContentTab;
+  upcomingContentTab = state->upcomingContentTab;
 }
 
-- (void)setFadeDistance:(double)a3
+- (void)setFadeDistance:(double)distance
 {
-  if (self->_fadeDistance != a3)
+  if (self->_fadeDistance != distance)
   {
-    self->_fadeDistance = a3;
+    self->_fadeDistance = distance;
     [(AVMobileChromelessContentTabsView *)self setNeedsLayout];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = AVMobileChromelessContentTabsView;
-  if ([(AVMobileChromelessContentTabsView *)&v6 isUserInteractionEnabled]!= a3)
+  if ([(AVMobileChromelessContentTabsView *)&v6 isUserInteractionEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessContentTabsView;
-    [(AVMobileChromelessContentTabsView *)&v5 setUserInteractionEnabled:v3];
+    [(AVMobileChromelessContentTabsView *)&v5 setUserInteractionEnabled:enabledCopy];
     [(AVMobileChromelessContentTabsView *)&self->super.super.super.super.isa _updateContentTabsUserInteractionEnabledStateIfNeeded];
   }
 }
 
-- (void)setContentViewDelegate:(id)a3
+- (void)setContentViewDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_contentViewDelegate);
 
   v6 = obj;
@@ -343,9 +343,9 @@
     contentView = self->_contentView;
     if (contentView)
     {
-      v7 = [(AVMobileChromelessContentTabsContentView *)contentView scrollView];
+      scrollView = [(AVMobileChromelessContentTabsContentView *)contentView scrollView];
       v8 = objc_loadWeakRetained(&self->_contentViewDelegate);
-      [v7 setDelegate:v8];
+      [scrollView setDelegate:v8];
 
       v6 = obj;
     }
@@ -354,32 +354,32 @@
   MEMORY[0x1EEE66BB8](contentView, v6);
 }
 
-- (void)setContentTabs:(id)a3
+- (void)setContentTabs:(id)tabs
 {
-  v5 = a3;
-  if (self->_contentTabs != v5)
+  tabsCopy = tabs;
+  if (self->_contentTabs != tabsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentTabs, a3);
+    v6 = tabsCopy;
+    objc_storeStrong(&self->_contentTabs, tabs);
     [(AVMobileChromelessContentTabsView *)self _setupContentTabSelectionViewIfNeeded];
     [(AVMobileChromelessContentTabsView *)&self->super.super.super.super.isa _setupContentTabsContentViewIfNeeded];
     [(AVMobileContentTabSelectionView *)self->_contentTabSelectionView setContentTabs:v6];
-    v5 = [(AVMobileChromelessContentTabsContentView *)self->_contentView setContentTabs:v6];
+    tabsCopy = [(AVMobileChromelessContentTabsContentView *)self->_contentView setContentTabs:v6];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](tabsCopy);
 }
 
-- (AVMobileChromelessContentTabsView)initWithStyleSheet:(id)a3
+- (AVMobileChromelessContentTabsView)initWithStyleSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   v11.receiver = self;
   v11.super_class = AVMobileChromelessContentTabsView;
   v6 = [(AVView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleSheet, a3);
+    objc_storeStrong(&v6->_styleSheet, sheet);
     v8 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     contentTabs = v7->_contentTabs;
     v7->_contentTabs = v8;

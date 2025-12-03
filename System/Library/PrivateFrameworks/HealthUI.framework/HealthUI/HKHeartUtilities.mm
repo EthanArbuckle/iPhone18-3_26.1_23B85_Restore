@@ -1,27 +1,27 @@
 @interface HKHeartUtilities
 + (id)localizedPossibleHypertensionTitle;
-+ (id)minMaxStringForHeartRates:(id)a3 displayTypeController:(id)a4 unitController:(id)a5;
++ (id)minMaxStringForHeartRates:(id)rates displayTypeController:(id)controller unitController:(id)unitController;
 @end
 
 @implementation HKHeartUtilities
 
-+ (id)minMaxStringForHeartRates:(id)a3 displayTypeController:(id)a4 unitController:(id)a5
++ (id)minMaxStringForHeartRates:(id)rates displayTypeController:(id)controller unitController:(id)unitController
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  ratesCopy = rates;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  if ([ratesCopy count])
   {
-    v38 = v9;
-    v10 = v8;
+    v38 = unitControllerCopy;
+    v10 = controllerCopy;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v11 = v7;
+    v11 = ratesCopy;
     v12 = [v11 countByEnumeratingWithState:&v39 objects:v43 count:16];
-    v37 = v7;
+    v37 = ratesCopy;
     if (v12)
     {
       v13 = v12;
@@ -37,9 +37,9 @@
             objc_enumerationMutation(v11);
           }
 
-          v18 = [*(*(&v39 + 1) + 8 * i) quantity];
+          quantity = [*(*(&v39 + 1) + 8 * i) quantity];
           v19 = [MEMORY[0x1E696C510] unitFromString:@"count/min"];
-          [v18 doubleValueForUnit:v19];
+          [quantity doubleValueForUnit:v19];
           v21 = v20;
 
           if (v16 >= v21)
@@ -67,15 +67,15 @@
 
     v23 = v10;
     v24 = [v10 displayTypeWithIdentifier:&unk_1F4384240];
-    v25 = [v24 presentation];
+    presentation = [v24 presentation];
     v26 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
-    v27 = [v25 adjustedValueForDaemonValue:v26];
+    v27 = [presentation adjustedValueForDaemonValue:v26];
 
-    v28 = [v24 presentation];
+    presentation2 = [v24 presentation];
     v29 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
-    v30 = [v28 adjustedValueForDaemonValue:v29];
+    v30 = [presentation2 adjustedValueForDaemonValue:v29];
 
-    v9 = v38;
+    unitControllerCopy = v38;
     v31 = HKFormattedStringFromValueForContext(v27, v24, v38, 0, 0, 1);
     v32 = HKFormattedStringFromValueForContext(v30, v24, v38, 0, 0, 1);
     v33 = MEMORY[0x1E696AEC0];
@@ -83,8 +83,8 @@
     v35 = [v34 localizedStringForKey:@"SHOW_ALL_DATA_MIN_MAX" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v22 = [v33 stringWithFormat:v35, v31, v32];
 
-    v8 = v23;
-    v7 = v37;
+    controllerCopy = v23;
+    ratesCopy = v37;
   }
 
   else

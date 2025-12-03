@@ -1,21 +1,21 @@
 @interface SUUIStarBarView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SUUIStarBarView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setColoringUsingStyle:(id)a3;
-- (void)setEmptyColor:(id)a3;
-- (void)setFilledColor:(id)a3;
-- (void)setNumberOfStars:(int64_t)a3;
-- (void)setValue:(double)a3;
+- (SUUIStarBarView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setColoringUsingStyle:(id)style;
+- (void)setEmptyColor:(id)color;
+- (void)setFilledColor:(id)color;
+- (void)setNumberOfStars:(int64_t)stars;
+- (void)setValue:(double)value;
 @end
 
 @implementation SUUIStarBarView
 
-- (SUUIStarBarView)initWithFrame:(CGRect)a3
+- (SUUIStarBarView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIStarBarView;
-  v3 = [(SUUIStarBarView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStarBarView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.05];
@@ -32,30 +32,30 @@
   return v3;
 }
 
-- (void)setColoringUsingStyle:(id)a3
+- (void)setColoringUsingStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 ikBackgroundColor];
-  v12 = [v5 color];
+  styleCopy = style;
+  ikBackgroundColor = [styleCopy ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  v6 = [v4 ikColor];
+  ikColor = [styleCopy ikColor];
 
-  v7 = [v6 color];
+  color2 = [ikColor color];
 
-  if (v12 && v7)
+  if (color && color2)
   {
-    [(SUUIStarBarView *)self setEmptyColor:v12];
+    [(SUUIStarBarView *)self setEmptyColor:color];
 LABEL_7:
-    [(SUUIStarBarView *)self setFilledColor:v7];
+    [(SUUIStarBarView *)self setFilledColor:color2];
     goto LABEL_8;
   }
 
-  if (v7)
+  if (color2)
   {
-    v8 = SUUIColorSchemeStyleForColor(v7);
+    v8 = SUUIColorSchemeStyleForColor(color2);
     if (v8 <= 3)
     {
-      v9 = [v7 colorWithAlphaComponent:dbl_259FCBB88[v8]];
+      v9 = [color2 colorWithAlphaComponent:dbl_259FCBB88[v8]];
       [(SUUIStarBarView *)self setEmptyColor:v9];
     }
 
@@ -71,11 +71,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setEmptyColor:(id)a3
+- (void)setEmptyColor:(id)color
 {
-  if (self->_emptyColor != a3)
+  if (self->_emptyColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     emptyColor = self->_emptyColor;
     self->_emptyColor = v4;
 
@@ -89,11 +89,11 @@ LABEL_8:
   }
 }
 
-- (void)setFilledColor:(id)a3
+- (void)setFilledColor:(id)color
 {
-  if (self->_filledColor != a3)
+  if (self->_filledColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     filledColor = self->_filledColor;
     self->_filledColor = v4;
 
@@ -107,27 +107,27 @@ LABEL_8:
   }
 }
 
-- (void)setNumberOfStars:(int64_t)a3
+- (void)setNumberOfStars:(int64_t)stars
 {
-  if (self->_numberOfStars != a3)
+  if (self->_numberOfStars != stars)
   {
-    self->_numberOfStars = a3;
+    self->_numberOfStars = stars;
     [(SUUIStarBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(SUUIStarBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SUUIStarBarView *)self bounds:a3.origin.x];
+  [(SUUIStarBarView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;

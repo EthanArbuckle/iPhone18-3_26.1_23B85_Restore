@@ -1,19 +1,19 @@
 @interface CKAppStripLayoutAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKAppStripLayoutAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
-    v8 = [v7 showsBorder];
-    if (v8 == -[CKAppStripLayoutAttributes showsBorder](self, "showsBorder") && (v9 = [v7 appStripSize], v9 == -[CKAppStripLayoutAttributes appStripSize](self, "appStripSize")))
+    v7 = equalCopy;
+    showsBorder = [v7 showsBorder];
+    if (showsBorder == -[CKAppStripLayoutAttributes showsBorder](self, "showsBorder") && (v9 = [v7 appStripSize], v9 == -[CKAppStripLayoutAttributes appStripSize](self, "appStripSize")))
     {
       v11.receiver = self;
       v11.super_class = CKAppStripLayoutAttributes;
@@ -34,11 +34,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CKAppStripLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [v4 setShowsBorder:{-[CKAppStripLayoutAttributes showsBorder](self, "showsBorder")}];
   [v4 setAppStripSize:{-[CKAppStripLayoutAttributes appStripSize](self, "appStripSize")}];
   return v4;

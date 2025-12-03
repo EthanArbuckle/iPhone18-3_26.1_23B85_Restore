@@ -1,31 +1,31 @@
 @interface NTKDigitialUtilitarianFaceViewComplicationFactory
 - (UIColor)shadowColor;
 - (double)_timeTravelYAdjustment;
-- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)a3 faceView:(id)a4 forSlots:(id)a5;
-- (id)initForDevice:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (int64_t)_photosUtilitySlotForSlot:(id)a3;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4 attributes:(unint64_t)a5 faceView:(id)a6;
-- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)a3 faceView:(id)a4;
-- (void)loadLayoutRulesForFaceView:(id)a3;
-- (void)setAlpha:(double)a3 faceView:(id)a4;
-- (void)setForegroundColor:(id)a3 faceView:(id)a4;
-- (void)setShadowColor:(id)a3 faceView:(id)a4;
-- (void)setUsesLegibility:(BOOL)a3 faceView:(id)a4;
+- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)attributes faceView:(id)view forSlots:(id)slots;
+- (id)initForDevice:(id)device;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (int64_t)_photosUtilitySlotForSlot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot attributes:(unint64_t)attributes faceView:(id)faceView;
+- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)animated faceView:(id)view;
+- (void)loadLayoutRulesForFaceView:(id)view;
+- (void)setAlpha:(double)alpha faceView:(id)view;
+- (void)setForegroundColor:(id)color faceView:(id)view;
+- (void)setShadowColor:(id)color faceView:(id)view;
+- (void)setUsesLegibility:(BOOL)legibility faceView:(id)view;
 @end
 
 @implementation NTKDigitialUtilitarianFaceViewComplicationFactory
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKDigitialUtilitarianFaceViewComplicationFactory;
-  v5 = [(NTKFaceViewComplicationFactory *)&v13 initForDevice:v4];
+  v5 = [(NTKFaceViewComplicationFactory *)&v13 initForDevice:deviceCopy];
   if (v5)
   {
-    v6 = [[NTKUtilityComplicationFactory alloc] initForDevice:v4];
+    v6 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     v7 = *(v5 + 9);
     *(v5 + 9) = v6;
 
@@ -37,8 +37,8 @@
 
     [v5 setAlpha:1.0];
     [v5 setContentSpecificAnimationDuration:0.45];
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setForegroundColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v5 setForegroundColor:whiteColor];
 
     v14[0] = @"top-right";
     v14[1] = @"bottom";
@@ -84,15 +84,15 @@
   return result;
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFaceViewComplicationFactory *)self device];
-  v6 = ___LayoutConstants_block_invoke_13(v5, v5);
+  viewCopy = view;
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v6 = ___LayoutConstants_block_invoke_13(device, device);
   v64 = v7;
 
-  [v4 bounds];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -111,14 +111,14 @@
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v21 = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self supportedComplicationSlots];
-  v22 = [v21 countByEnumeratingWithState:&v65 objects:v69 count:16];
+  supportedComplicationSlots = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self supportedComplicationSlots];
+  v22 = [supportedComplicationSlots countByEnumeratingWithState:&v65 objects:v69 count:16];
   if (v22)
   {
     v23 = v22;
     v24 = *v66;
     v63 = v15;
-    v62 = v21;
+    v62 = supportedComplicationSlots;
     v61 = -v6;
     do
     {
@@ -127,11 +127,11 @@
       {
         if (*v66 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(supportedComplicationSlots);
         }
 
         v26 = *(*(&v65 + 1) + 8 * v25);
-        v27 = [v4 complicationLayoutforSlot:{v26, *&v61}];
+        v27 = [viewCopy complicationLayoutforSlot:{v26, *&v61}];
         if ([v26 isEqualToString:@"bottom"])
         {
           complicationFactory = self->_complicationFactory;
@@ -160,13 +160,13 @@ LABEL_12:
 
         if ([v26 isEqualToString:@"date"])
         {
-          v38 = [(NTKFaceViewComplicationFactory *)self device];
-          v39 = NTKDigitalTimeLabelStyleWideRightSideMargin(v38);
-          v40 = [(NTKFaceViewComplicationFactory *)self device];
-          v41 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v40 applyAdvanceFudge:v9 forDevice:v11, v13, v15, v39];
+          device2 = [(NTKFaceViewComplicationFactory *)self device];
+          v39 = NTKDigitalTimeLabelStyleWideRightSideMargin(device2);
+          device3 = [(NTKFaceViewComplicationFactory *)self device];
+          v41 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:device3 applyAdvanceFudge:v9 forDevice:v11, v13, v15, v39];
 
-          v42 = [v41 layoutRule];
-          [v42 referenceFrame];
+          layoutRule = [v41 layoutRule];
+          [layoutRule referenceFrame];
           v44 = v43;
           v45 = v13;
           v46 = v9;
@@ -181,7 +181,7 @@ LABEL_12:
           v71.size.width = v52;
           v71.size.height = v54;
           v55 = CGRectGetMaxY(v71) - v64;
-          v56 = [(NTKFaceViewComplicationFactory *)self device];
+          device4 = [(NTKFaceViewComplicationFactory *)self device];
           v57 = v55;
           v9 = v46;
           v13 = v45;
@@ -189,10 +189,10 @@ LABEL_12:
           v6 = v50;
           v11 = v49;
           v15 = v63;
-          v59 = [(NTKLayoutRule *)NTKComplicationLayoutRule layoutRuleForDevice:v56 withReferenceFrame:2 horizontalLayout:0 verticalLayout:v44, v57, v58, 46.0];
+          v59 = [(NTKLayoutRule *)NTKComplicationLayoutRule layoutRuleForDevice:device4 withReferenceFrame:2 horizontalLayout:0 verticalLayout:v44, v57, v58, 46.0];
 
           [v27 setDefaultLayoutRule:v59 forState:0];
-          v21 = v62;
+          supportedComplicationSlots = v62;
         }
 
 LABEL_13:
@@ -201,7 +201,7 @@ LABEL_13:
       }
 
       while (v23 != v25);
-      v60 = [v21 countByEnumeratingWithState:&v65 objects:v69 count:16];
+      v60 = [supportedComplicationSlots countByEnumeratingWithState:&v65 objects:v69 count:16];
       v23 = v60;
     }
 
@@ -209,29 +209,29 @@ LABEL_13:
   }
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 isEqualToString:@"date"])
+  complicationCopy = complication;
+  slotCopy = slot;
+  viewCopy = view;
+  if ([slotCopy isEqualToString:@"date"])
   {
     v13 = [NTKDateComplicationLabel alloc];
-    v14 = [(NTKFaceViewComplicationFactory *)self device];
-    v15 = [(NTKDateComplicationLabel *)v13 initWithSizeStyle:0 accentType:0 forDevice:v14];
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v15 = [(NTKDateComplicationLabel *)v13 initWithSizeStyle:0 accentType:0 forDevice:device];
 
-    v16 = [(NTKFaceViewComplicationFactory *)self device];
-    ___LayoutConstants_block_invoke_13(v16, v16);
+    device2 = [(NTKFaceViewComplicationFactory *)self device];
+    ___LayoutConstants_block_invoke_13(device2, device2);
     v18 = v17;
 
     v19 = [MEMORY[0x277CBBB08] systemFontOfSize:v18 weight:*MEMORY[0x277D74408]];
     [(NTKDateComplicationLabel *)v15 setFont:v19];
-    v20 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-    [(NTKDateComplicationLabel *)v15 setTextColor:v20];
+    foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+    [(NTKDateComplicationLabel *)v15 setTextColor:foregroundColor];
 
     [(NTKDateComplicationLabel *)v15 setUsesLegibility:self->_usesLegibility];
-    v21 = [MEMORY[0x277CBEAF8] currentLocale];
-    v22 = [v21 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v22 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
     v23 = [v22 isEqualToString:@"he"];
     v24 = [v22 isEqualToString:@"pl"];
@@ -256,29 +256,29 @@ LABEL_13:
 
   else
   {
-    v15 = [(NTKUtilityComplicationFactory *)self->_complicationFactory newViewForComplication:v10 family:a4 forSlot:[(NTKDigitialUtilitarianFaceViewComplicationFactory *)self _photosUtilitySlotForSlot:v11]];
-    [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self configureComplicationView:v15 forSlot:v11 faceView:v12];
+    v15 = [(NTKUtilityComplicationFactory *)self->_complicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKDigitialUtilitarianFaceViewComplicationFactory *)self _photosUtilitySlotForSlot:slotCopy]];
+    [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self configureComplicationView:v15 forSlot:slotCopy faceView:viewCopy];
   }
 
   return v15;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4 attributes:(unint64_t)a5 faceView:(id)a6
+- (void)_configureComplicationView:(id)view forSlot:(id)slot attributes:(unint64_t)attributes faceView:(id)faceView
 {
-  v7 = a5;
-  v16 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v16 conformsToProtocol:&unk_28A859958])
+  attributesCopy = attributes;
+  viewCopy = view;
+  slotCopy = slot;
+  faceViewCopy = faceView;
+  if ([viewCopy conformsToProtocol:&unk_28A859958])
   {
-    v12 = v16;
+    v12 = viewCopy;
     if (objc_opt_respondsToSelector())
     {
       [v12 setUseBlockyHighlightCorners:1];
-      if ((v7 & 0x10) == 0)
+      if ((attributesCopy & 0x10) == 0)
       {
 LABEL_4:
-        if ((v7 & 1) == 0)
+        if ((attributesCopy & 1) == 0)
         {
           goto LABEL_5;
         }
@@ -287,27 +287,27 @@ LABEL_4:
       }
     }
 
-    else if ((v7 & 0x10) == 0)
+    else if ((attributesCopy & 0x10) == 0)
     {
       goto LABEL_4;
     }
 
     [v12 setFontWeight:*MEMORY[0x277D74420]];
     [v12 setUseAlternativePunctuation:1];
-    -[NTKUtilityComplicationFactory foregroundAlphaForEditing:](self->_complicationFactory, "foregroundAlphaForEditing:", [v11 editing]);
+    -[NTKUtilityComplicationFactory foregroundAlphaForEditing:](self->_complicationFactory, "foregroundAlphaForEditing:", [faceViewCopy editing]);
     [v12 setForegroundAlpha:?];
-    -[NTKUtilityComplicationFactory foregroundImageAlphaForEditing:](self->_complicationFactory, "foregroundImageAlphaForEditing:", [v11 editing]);
+    -[NTKUtilityComplicationFactory foregroundImageAlphaForEditing:](self->_complicationFactory, "foregroundImageAlphaForEditing:", [faceViewCopy editing]);
     [v12 setForegroundImageAlpha:?];
-    [v12 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKDigitialUtilitarianFaceViewComplicationFactory _photosUtilitySlotForSlot:](self, "_photosUtilitySlotForSlot:", v10))}];
+    [v12 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKDigitialUtilitarianFaceViewComplicationFactory _photosUtilitySlotForSlot:](self, "_photosUtilitySlotForSlot:", slotCopy))}];
     [v12 setSuppressesInternalColorOverrides:1];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v12 setBackgroundColor:clearColor];
 
     [v12 setUsesLegibility:self->_usesLegibility];
-    if ((v7 & 1) == 0)
+    if ((attributesCopy & 1) == 0)
     {
 LABEL_5:
-      if ((v7 & 2) == 0)
+      if ((attributesCopy & 2) == 0)
       {
         goto LABEL_6;
       }
@@ -316,13 +316,13 @@ LABEL_5:
     }
 
 LABEL_14:
-    v14 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-    [v12 setForegroundColor:v14];
+    foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+    [v12 setForegroundColor:foregroundColor];
 
-    if ((v7 & 2) == 0)
+    if ((attributesCopy & 2) == 0)
     {
 LABEL_6:
-      if ((v7 & 4) == 0)
+      if ((attributesCopy & 4) == 0)
       {
 LABEL_8:
 
@@ -336,10 +336,10 @@ LABEL_7:
     }
 
 LABEL_15:
-    v15 = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self shadowColor];
-    [v12 setShadowColor:v15];
+    shadowColor = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self shadowColor];
+    [v12 setShadowColor:shadowColor];
 
-    if ((v7 & 4) == 0)
+    if ((attributesCopy & 4) == 0)
     {
       goto LABEL_8;
     }
@@ -350,20 +350,20 @@ LABEL_15:
 LABEL_9:
 }
 
-- (int64_t)_photosUtilitySlotForSlot:(id)a3
+- (int64_t)_photosUtilitySlotForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"top-right"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"top-right"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"bottom"])
+  else if ([slotCopy isEqualToString:@"bottom"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"date"])
+  else if ([slotCopy isEqualToString:@"date"])
   {
     v4 = 12;
   }
@@ -376,30 +376,30 @@ LABEL_9:
   return v4;
 }
 
-- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)a3 faceView:(id)a4
+- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)animated faceView:(id)view
 {
-  v4 = a3;
-  v10 = a4;
-  if (v4)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (animatedCopy)
   {
-    v6 = [(NTKFaceViewComplicationFactory *)self foregroundColorProviderBlock];
+    foregroundColorProviderBlock = [(NTKFaceViewComplicationFactory *)self foregroundColorProviderBlock];
 
-    v7 = [(NTKFaceViewComplicationFactory *)self alphaProviderBlock];
+    alphaProviderBlock = [(NTKFaceViewComplicationFactory *)self alphaProviderBlock];
 
     v8 = 4;
-    if (v6)
+    if (foregroundColorProviderBlock)
     {
       v8 = 5;
     }
 
-    if (v7)
+    if (alphaProviderBlock)
     {
       v9 = v8;
     }
 
     else
     {
-      v9 = v6 != 0;
+      v9 = foregroundColorProviderBlock != 0;
     }
   }
 
@@ -408,15 +408,15 @@ LABEL_9:
     v9 = 0xFFFFFFFFLL;
   }
 
-  [(NTKFaceViewComplicationFactory *)self applyComplicationContentSpecificAttributesAnimated:v4 attributes:v9 faceView:v10];
+  [(NTKFaceViewComplicationFactory *)self applyComplicationContentSpecificAttributesAnimated:animatedCopy attributes:v9 faceView:viewCopy];
 }
 
-- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)a3 faceView:(id)a4 forSlots:(id)a5
+- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)attributes faceView:(id)view forSlots:(id)slots
 {
-  v5 = a3;
-  v7 = a4;
-  v8 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-  v9 = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self shadowColor];
+  attributesCopy = attributes;
+  viewCopy = view;
+  foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+  shadowColor = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self shadowColor];
   [(NTKFaceViewComplicationFactory *)self alpha];
   v11 = v10;
   v12 = objc_opt_new();
@@ -424,17 +424,17 @@ LABEL_9:
   v23[1] = 3221225472;
   v23[2] = __138__NTKDigitialUtilitarianFaceViewComplicationFactory_createComplicationContentSpecificAttributesAnimationWithAttributes_faceView_forSlots___block_invoke;
   v23[3] = &unk_278780428;
-  v28 = v5 & 1;
-  v24 = v8;
-  v29 = (v5 & 4) != 0;
+  v28 = attributesCopy & 1;
+  v24 = foregroundColor;
+  v29 = (attributesCopy & 4) != 0;
   v27 = v11;
   v13 = v12;
-  v30 = (v5 & 2) != 0;
+  v30 = (attributesCopy & 2) != 0;
   v25 = v13;
-  v26 = v9;
-  v14 = v9;
-  v15 = v8;
-  [v7 enumerateComplicationDisplayWrappersWithBlock:v23];
+  v26 = shadowColor;
+  v14 = shadowColor;
+  v15 = foregroundColor;
+  [viewCopy enumerateComplicationDisplayWrappersWithBlock:v23];
 
   [(NTKFaceViewComplicationFactory *)self contentSpecificAnimationDuration];
   v17 = v16;
@@ -591,20 +591,20 @@ void __138__NTKDigitialUtilitarianFaceViewComplicationFactory_createComplication
   }
 }
 
-- (void)setForegroundColor:(id)a3 faceView:(id)a4
+- (void)setForegroundColor:(id)color faceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-  if (([v8 isEqual:v6] & 1) == 0)
+  colorCopy = color;
+  viewCopy = view;
+  foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+  if (([foregroundColor isEqual:colorCopy] & 1) == 0)
   {
-    [(NTKFaceViewComplicationFactory *)self setForegroundColor:v6];
+    [(NTKFaceViewComplicationFactory *)self setForegroundColor:colorCopy];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __81__NTKDigitialUtilitarianFaceViewComplicationFactory_setForegroundColor_faceView___block_invoke;
     v9[3] = &unk_27877F148;
     v9[4] = self;
-    v10 = v7;
+    v10 = viewCopy;
     [v10 enumerateComplicationDisplayWrappersWithBlock:v9];
   }
 }
@@ -617,20 +617,20 @@ void __81__NTKDigitialUtilitarianFaceViewComplicationFactory_setForegroundColor_
   [v5 _configureComplicationView:v7 forSlot:v6 attributes:1 faceView:*(a1 + 40)];
 }
 
-- (void)setShadowColor:(id)a3 faceView:(id)a4
+- (void)setShadowColor:(id)color faceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self shadowColor];
-  if (([v8 isEqual:v6] & 1) == 0)
+  colorCopy = color;
+  viewCopy = view;
+  shadowColor = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self shadowColor];
+  if (([shadowColor isEqual:colorCopy] & 1) == 0)
   {
-    [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self setShadowColor:v6];
+    [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self setShadowColor:colorCopy];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__NTKDigitialUtilitarianFaceViewComplicationFactory_setShadowColor_faceView___block_invoke;
     v9[3] = &unk_27877F148;
     v9[4] = self;
-    v10 = v7;
+    v10 = viewCopy;
     [v10 enumerateComplicationDisplayWrappersWithBlock:v9];
   }
 }
@@ -643,19 +643,19 @@ void __77__NTKDigitialUtilitarianFaceViewComplicationFactory_setShadowColor_face
   [v5 _configureComplicationView:v7 forSlot:v6 attributes:2 faceView:*(a1 + 40)];
 }
 
-- (void)setUsesLegibility:(BOOL)a3 faceView:(id)a4
+- (void)setUsesLegibility:(BOOL)legibility faceView:(id)view
 {
-  v4 = a3;
-  v6 = a4;
-  if ([(NTKDigitialUtilitarianFaceViewComplicationFactory *)self usesLegibility]!= v4)
+  legibilityCopy = legibility;
+  viewCopy = view;
+  if ([(NTKDigitialUtilitarianFaceViewComplicationFactory *)self usesLegibility]!= legibilityCopy)
   {
-    [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self setUsesLegibility:v4];
+    [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self setUsesLegibility:legibilityCopy];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __80__NTKDigitialUtilitarianFaceViewComplicationFactory_setUsesLegibility_faceView___block_invoke;
     v7[3] = &unk_27877F148;
     v7[4] = self;
-    v8 = v6;
+    v8 = viewCopy;
     [v8 enumerateComplicationDisplayWrappersWithBlock:v7];
   }
 }
@@ -668,19 +668,19 @@ void __80__NTKDigitialUtilitarianFaceViewComplicationFactory_setUsesLegibility_f
   [v5 _configureComplicationView:v7 forSlot:v6 attributes:16 faceView:*(a1 + 40)];
 }
 
-- (void)setAlpha:(double)a3 faceView:(id)a4
+- (void)setAlpha:(double)alpha faceView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   [(NTKFaceViewComplicationFactory *)self alpha];
-  if (v7 != a3)
+  if (v7 != alpha)
   {
-    [(NTKFaceViewComplicationFactory *)self setAlpha:a3];
+    [(NTKFaceViewComplicationFactory *)self setAlpha:alpha];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __71__NTKDigitialUtilitarianFaceViewComplicationFactory_setAlpha_faceView___block_invoke;
     v8[3] = &unk_27877F148;
     v8[4] = self;
-    v9 = v6;
+    v9 = viewCopy;
     [v9 enumerateComplicationDisplayWrappersWithBlock:v8];
   }
 }

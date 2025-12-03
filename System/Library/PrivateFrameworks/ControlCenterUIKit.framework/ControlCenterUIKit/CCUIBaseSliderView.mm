@@ -2,7 +2,7 @@
 - (BOOL)isGroupRenderingRequired;
 - (BOOL)shouldIntegralizeContentLayout;
 - (BOOL)shouldIntegralizeValueLayout;
-- (CCUIBaseSliderView)initWithFrame:(CGRect)a3;
+- (CCUIBaseSliderView)initWithFrame:(CGRect)frame;
 - (CGPoint)glyphCenter;
 - (NSArray)punchOutRenderingViews;
 - (NSArray)topLevelBlockingGestureRecognizers;
@@ -11,15 +11,15 @@
 - (double)presentationLayoutValue;
 - (float)presentationValue;
 - (unint64_t)buttonInputStepCount;
-- (void)_applyGlyphState:(id)a3 performConfiguration:(BOOL)a4;
+- (void)_applyGlyphState:(id)state performConfiguration:(BOOL)configuration;
 - (void)_configureButtonInteraction;
 - (void)_configureGroupRenderingMode;
 - (void)_configurePanGestureRecognizer;
-- (void)_handleFluidSliderInteractionUpdate:(id)a3;
+- (void)_handleFluidSliderInteractionUpdate:(id)update;
 - (void)_layoutElasticContentContainers;
-- (void)_setActiveGlyphView:(id)a3;
-- (void)_setGlyphImage:(id)a3 forceUpdate:(BOOL)a4;
-- (void)_setGlyphState:(id)a3;
+- (void)_setActiveGlyphView:(id)view;
+- (void)_setGlyphImage:(id)image forceUpdate:(BOOL)update;
+- (void)_setGlyphState:(id)state;
 - (void)_updateBackgroundViewAppearance;
 - (void)_updateContinuousSliderCornerRadius;
 - (void)_updateGlyphImage;
@@ -27,28 +27,28 @@
 - (void)_updateHasInoperativeAppearance;
 - (void)_updateInteractionEnabled;
 - (void)_updateStretchAmount;
-- (void)addCustomInputDriver:(id)a3;
-- (void)applyContinuousSliderCornerRadius:(double)a3;
+- (void)addCustomInputDriver:(id)driver;
+- (void)applyContinuousSliderCornerRadius:(double)radius;
 - (void)didMoveToWindow;
 - (void)layoutElasticContentViews;
 - (void)layoutSubviews;
-- (void)setButtonInputStepCount:(unint64_t)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContinuousSliderCornerRadius:(double)a3;
-- (void)setElasticContentStretchAmount:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphScale:(double)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setGlyphTintColor:(id)a3;
-- (void)setGlyphVisible:(BOOL)a3;
-- (void)setInoperative:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setShouldIncludeVolumeButtonsInput:(BOOL)a3;
-- (void)setShouldRelaxVisibilityRequirementForButtonInput:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
-- (void)setValueVisible:(BOOL)a3;
+- (void)setButtonInputStepCount:(unint64_t)count;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContinuousSliderCornerRadius:(double)radius;
+- (void)setElasticContentStretchAmount:(double)amount;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphScale:(double)scale;
+- (void)setGlyphState:(id)state;
+- (void)setGlyphTintColor:(id)color;
+- (void)setGlyphVisible:(BOOL)visible;
+- (void)setInoperative:(BOOL)inoperative;
+- (void)setName:(id)name;
+- (void)setShouldIncludeVolumeButtonsInput:(BOOL)input;
+- (void)setShouldRelaxVisibilityRequirementForButtonInput:(BOOL)input;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setValue:(float)value animated:(BOOL)animated;
+- (void)setValueVisible:(BOOL)visible;
 @end
 
 @implementation CCUIBaseSliderView
@@ -57,17 +57,17 @@
 {
   if ([(CCUIBaseSliderView *)self isEnabled])
   {
-    v3 = [(CCUIBaseSliderView *)self isUserInteractionEnabled];
+    isUserInteractionEnabled = [(CCUIBaseSliderView *)self isUserInteractionEnabled];
   }
 
   else
   {
-    v3 = 0;
+    isUserInteractionEnabled = 0;
   }
 
   interaction = self->_interaction;
 
-  [(_UIFluidSliderInteraction *)interaction setUserInteractionEnabled:v3];
+  [(_UIFluidSliderInteraction *)interaction setUserInteractionEnabled:isUserInteractionEnabled];
 }
 
 - (void)_updateHasInoperativeAppearance
@@ -110,8 +110,8 @@
     self->_sizeForValidConfiguration.height = v4;
     [(CCUIBaseSliderView *)self _effectiveStretchAmount];
     v9 = v8;
-    v10 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-    [v10 trackSize];
+    configuration = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+    [configuration trackSize];
     v12 = v6 != v11;
     if (v7 != v13)
     {
@@ -120,8 +120,8 @@
 
     v45 = v12;
 
-    v14 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-    v15 = [v14 copyWithTrackSize:{v6, v7}];
+    configuration2 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+    v15 = [configuration2 copyWithTrackSize:{v6, v7}];
 
     [v15 setStretchAmount:v9];
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -147,10 +147,10 @@
   UIRectGetCenter();
   v19 = v18;
   v21 = v20;
-  v22 = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
-  v23 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v22 setCenter:{v19, v21}];
-  [v23 setCenter:{v19, v21}];
+  elasticBackgroundContentView = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticBackgroundContentView setCenter:{v19, v21}];
+  [elasticContentView setCenter:{v19, v21}];
   v24 = self->_contentMetrics;
   if (self->_glyphVisible)
   {
@@ -172,9 +172,9 @@
       v28 = objc_opt_self();
       if (objc_opt_isKindOfClass())
       {
-        v29 = [(UIImage *)self->_glyphImage isSymbolImage];
+        isSymbolImage = [(UIImage *)self->_glyphImage isSymbolImage];
 
-        if (!v29)
+        if (!isSymbolImage)
         {
           [(CCUIModuleContentMetrics *)v24 symbolScaleFactor];
           glyphScale = glyphScale * v30;
@@ -190,8 +190,8 @@
       if (objc_opt_isKindOfClass())
       {
         v31 = self->_glyphImageView;
-        v32 = [(CCUIModuleContentMetrics *)v24 symbolFont];
-        v33 = [v32 _fontScaledByScaleFactor:0.87];
+        symbolFont = [(CCUIModuleContentMetrics *)v24 symbolFont];
+        v33 = [symbolFont _fontScaledByScaleFactor:0.87];
         [(CCUIGlyphTinting *)v31 setFont:v33];
       }
     }
@@ -283,8 +283,8 @@ LABEL_23:
 
 - (void)_updateContinuousSliderCornerRadius
 {
-  v3 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v3 bounds];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -340,12 +340,12 @@ LABEL_23:
   v21 = v24;
   v22 = v25;
   [v18 setTransform:&v20];
-  v19 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v19 setBounds:{v6, v8, v14, v16}];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView setBounds:{v6, v8, v14, v16}];
   v20 = v23;
   v21 = v24;
   v22 = v25;
-  [v19 setTransform:&v20];
+  [elasticContentView setTransform:&v20];
 }
 
 - (BOOL)shouldIntegralizeContentLayout
@@ -353,8 +353,8 @@ LABEL_23:
   [(CCUIBaseSliderView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v7 bounds];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView bounds];
   v10 = v6 == v9 && v4 == v8;
 
   return v10;
@@ -362,8 +362,8 @@ LABEL_23:
 
 - (void)layoutElasticContentViews
 {
-  v3 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v3 bounds];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -385,8 +385,8 @@ LABEL_23:
     goto LABEL_9;
   }
 
-  v16 = [(CCUIBaseSliderView *)self traitCollection];
-  [v16 displayScale];
+  traitCollection = [(CCUIBaseSliderView *)self traitCollection];
+  [traitCollection displayScale];
 
   glyphImageView = self->_glyphImageView;
   if (glyphImageView)
@@ -425,14 +425,14 @@ LABEL_9:
 
 - (BOOL)shouldIntegralizeValueLayout
 {
-  v3 = [(CCUIBaseSliderView *)self shouldIntegralizeContentLayout];
-  if (v3)
+  shouldIntegralizeContentLayout = [(CCUIBaseSliderView *)self shouldIntegralizeContentLayout];
+  if (shouldIntegralizeContentLayout)
   {
 
-    LOBYTE(v3) = [(CCUIBaseSliderView *)self _isInteractionStable];
+    LOBYTE(shouldIntegralizeContentLayout) = [(CCUIBaseSliderView *)self _isInteractionStable];
   }
 
-  return v3;
+  return shouldIntegralizeContentLayout;
 }
 
 - (double)presentationLayoutValue
@@ -463,9 +463,9 @@ LABEL_9:
 
 - (void)_updateGlyphTinting
 {
-  v3 = [(CCUIBaseSliderView *)self _usesVibrantGlyphStyling];
+  _usesVibrantGlyphStyling = [(CCUIBaseSliderView *)self _usesVibrantGlyphStyling];
   compensatingGlyphView = self->_compensatingGlyphView;
-  if (v3)
+  if (_usesVibrantGlyphStyling)
   {
     [(CCUIPunchOutCompensating *)compensatingGlyphView setHidden:0];
     [(CCUIPunchOutCompensating *)self->_compensatingGlyphView ccui_updatePunchOutCompensationIfNecessary];
@@ -528,8 +528,8 @@ LABEL_9:
   {
     if (v4 && [(UIImage *)v21 isSymbolImage])
     {
-      v10 = [(CCUIModuleContentMetrics *)v4 symbolConfiguration];
-      v11 = [(UIImage *)v21 imageByApplyingSymbolConfiguration:v10];
+      symbolConfiguration = [(CCUIModuleContentMetrics *)v4 symbolConfiguration];
+      v11 = [(UIImage *)v21 imageByApplyingSymbolConfiguration:symbolConfiguration];
 
       v12 = v11;
     }
@@ -575,8 +575,8 @@ LABEL_9:
   if (isKindOfClass)
   {
     v19 = self->_glyphImageView;
-    v20 = [(UIImage *)v21 ccui_systemImageName];
-    [(CCUIGlyphTinting *)v19 setSystemImageName:v20];
+    ccui_systemImageName = [(UIImage *)v21 ccui_systemImageName];
+    [(CCUIGlyphTinting *)v19 setSystemImageName:ccui_systemImageName];
 
 LABEL_21:
     [(CCUIGlyphTinting *)v19 sizeToFit];
@@ -587,27 +587,27 @@ LABEL_21:
 
 - (void)_configureGroupRenderingMode
 {
-  v3 = [(CCUIBaseSliderView *)self _usesVibrantGlyphStyling];
+  _usesVibrantGlyphStyling = [(CCUIBaseSliderView *)self _usesVibrantGlyphStyling];
 
-  [self ccui_configureForGroupRenderingMode:v3];
+  [self ccui_configureForGroupRenderingMode:_usesVibrantGlyphStyling];
 }
 
-- (CCUIBaseSliderView)initWithFrame:(CGRect)a3
+- (CCUIBaseSliderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   BSDispatchQueueAssertMain();
   v33.receiver = self;
   v33.super_class = CCUIBaseSliderView;
-  v8 = [(CCUIBaseSliderView *)&v33 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(CCUIBaseSliderView *)&v33 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_glyphVisible = 1;
-    v8->_glyphScale = 1.0;
-    objc_storeStrong(&v8->_glyphState, @"*");
+    height->_glyphVisible = 1;
+    height->_glyphScale = 1.0;
+    objc_storeStrong(&height->_glyphState, @"*");
     v9->_valueVisible = 1;
     v9->_elasticContentStretchAmount = -1.0;
     [(CCUIBaseSliderView *)v9 bounds];
@@ -667,26 +667,26 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   [WeakRetained _handleFluidSliderInteractionUpdate:v3];
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = fmax(fmin(a3, 1.0), 0.0);
+  v4 = fmax(fmin(value, 1.0), 0.0);
   if (self->_value != v4)
   {
-    v5 = a4;
+    animatedCopy = animated;
     self->_value = v4;
     [(_UIFluidSliderInteraction *)self->_interaction value];
     if ((BSFloatEqualToFloat() & 1) == 0)
     {
-      if (v5)
+      if (animatedCopy)
       {
-        v7 = [(CCUIBaseSliderView *)self window];
+        window = [(CCUIBaseSliderView *)self window];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __40__CCUIBaseSliderView_setValue_animated___block_invoke;
         v10[3] = &unk_1E83EAAB8;
         v10[4] = self;
         v11 = v4;
-        [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:v7 actions:v10];
+        [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:window actions:v10];
       }
 
       else
@@ -703,98 +703,98 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setContinuousSliderCornerRadius:(double)a3
+- (void)setContinuousSliderCornerRadius:(double)radius
 {
-  if (self->_continuousSliderCornerRadius != a3)
+  if (self->_continuousSliderCornerRadius != radius)
   {
-    self->_continuousSliderCornerRadius = a3;
+    self->_continuousSliderCornerRadius = radius;
     [(CCUIBaseSliderView *)self _updateContinuousSliderCornerRadius];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v5 = a3;
+  metricsCopy = metrics;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contentMetrics, a3);
+    objc_storeStrong(&self->_contentMetrics, metrics);
     [(CCUIBaseSliderView *)self _updateStretchAmount];
     [(CCUIBaseSliderView *)self _updateGlyphImage];
     [(CCUIBaseSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setGlyphVisible:(BOOL)a3
+- (void)setGlyphVisible:(BOOL)visible
 {
-  if (self->_glyphVisible != a3)
+  if (self->_glyphVisible != visible)
   {
-    self->_glyphVisible = a3;
+    self->_glyphVisible = visible;
     [(CCUIBaseSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setGlyphScale:(double)a3
+- (void)setGlyphScale:(double)scale
 {
-  if (self->_glyphScale != a3)
+  if (self->_glyphScale != scale)
   {
-    self->_glyphScale = a3;
+    self->_glyphScale = scale;
     [(CCUIBaseSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setGlyphTintColor:(id)a3
+- (void)setGlyphTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_glyphTintColor, a3);
+    objc_storeStrong(&self->_glyphTintColor, color);
     [CCUIBaseSliderView _setGlyphImage:"_setGlyphImage:forceUpdate:" forceUpdate:?];
     [(CCUIBaseSliderView *)self _updateGlyphTinting];
     [(CCUIBaseSliderView *)self _configureGroupRenderingMode];
   }
 }
 
-- (void)setInoperative:(BOOL)a3
+- (void)setInoperative:(BOOL)inoperative
 {
-  if (self->_inoperative != a3)
+  if (self->_inoperative != inoperative)
   {
-    self->_inoperative = a3;
+    self->_inoperative = inoperative;
     [(_UIFluidSliderInteraction *)self->_interaction setLocked:?];
 
     [(CCUIBaseSliderView *)self _updateHasInoperativeAppearance];
   }
 }
 
-- (void)setValueVisible:(BOOL)a3
+- (void)setValueVisible:(BOOL)visible
 {
-  if (self->_valueVisible != a3)
+  if (self->_valueVisible != visible)
   {
-    self->_valueVisible = a3;
+    self->_valueVisible = visible;
     [(CCUIBaseSliderView *)self _updateGlyphTinting];
 
     [(CCUIBaseSliderView *)self _updateHasInoperativeAppearance];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CCUIBaseSliderView *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(CCUIBaseSliderView *)self isEnabled];
   v6.receiver = self;
   v6.super_class = CCUIBaseSliderView;
-  [(CCUIBaseSliderView *)&v6 setEnabled:v3];
-  if (v5 != v3)
+  [(CCUIBaseSliderView *)&v6 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
     [(CCUIBaseSliderView *)self _updateInteractionEnabled];
     [(CCUIBaseSliderView *)self _updateHasInoperativeAppearance];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CCUIBaseSliderView;
-  [(CCUIBaseSliderView *)&v4 setUserInteractionEnabled:a3];
+  [(CCUIBaseSliderView *)&v4 setUserInteractionEnabled:enabled];
   [(CCUIBaseSliderView *)self _updateInteractionEnabled];
 }
 
@@ -816,8 +816,8 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
     return 0;
   }
 
-  v3 = [(CCUIBaseSliderView *)self punchOutRenderingViews];
-  v4 = [v3 count] != 0;
+  punchOutRenderingViews = [(CCUIBaseSliderView *)self punchOutRenderingViews];
+  v4 = [punchOutRenderingViews count] != 0;
 
   return v4;
 }
@@ -827,11 +827,11 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   v8[1] = *MEMORY[0x1E69E9840];
   if ([(CCUIBaseSliderView *)self isInteractiveWhenUnexpanded])
   {
-    v3 = [(CCUIBaseSliderView *)self _panGestureRecognizer];
-    v8[0] = v3;
+    _panGestureRecognizer = [(CCUIBaseSliderView *)self _panGestureRecognizer];
+    v8[0] = _panGestureRecognizer;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-    v5 = [(CCUIBaseSliderView *)self _additionalTopLevelBlockingGestureRecognizers];
-    v6 = [v4 arrayByAddingObjectsFromArray:v5];
+    _additionalTopLevelBlockingGestureRecognizers = [(CCUIBaseSliderView *)self _additionalTopLevelBlockingGestureRecognizers];
+    v6 = [v4 arrayByAddingObjectsFromArray:_additionalTopLevelBlockingGestureRecognizers];
   }
 
   else
@@ -842,18 +842,18 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   return v6;
 }
 
-- (void)setShouldIncludeVolumeButtonsInput:(BOOL)a3
+- (void)setShouldIncludeVolumeButtonsInput:(BOOL)input
 {
-  if (self->_shouldIncludeVolumeButtonsInput != a3)
+  if (self->_shouldIncludeVolumeButtonsInput != input)
   {
-    v4 = a3;
-    self->_shouldIncludeVolumeButtonsInput = a3;
-    v6 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-    v9 = [v6 copy];
+    inputCopy = input;
+    self->_shouldIncludeVolumeButtonsInput = input;
+    configuration = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+    v9 = [configuration copy];
 
     v7 = [v9 preferredInputMethods] & 0xFFFFFFFFFFFFFFFDLL;
     v8 = 2;
-    if (!v4)
+    if (!inputCopy)
     {
       v8 = 0;
     }
@@ -865,11 +865,11 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setElasticContentStretchAmount:(double)a3
+- (void)setElasticContentStretchAmount:(double)amount
 {
-  if (self->_elasticContentStretchAmount != a3)
+  if (self->_elasticContentStretchAmount != amount)
   {
-    self->_elasticContentStretchAmount = a3;
+    self->_elasticContentStretchAmount = amount;
     __asm { FMOV            V0.2D, #-1.0 }
 
     self->_sizeForValidConfiguration = _Q0;
@@ -877,20 +877,20 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)applyContinuousSliderCornerRadius:(double)a3
+- (void)applyContinuousSliderCornerRadius:(double)radius
 {
   [(UIView *)self->_backgroundView _setContinuousCornerRadius:?];
   elasticContentView = self->_elasticContentView;
 
-  [(UIView *)elasticContentView _setContinuousCornerRadius:a3];
+  [(UIView *)elasticContentView _setContinuousCornerRadius:radius];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     name = self->_name;
     self->_name = v4;
 
@@ -898,43 +898,43 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setShouldRelaxVisibilityRequirementForButtonInput:(BOOL)a3
+- (void)setShouldRelaxVisibilityRequirementForButtonInput:(BOOL)input
 {
-  if (self->_shouldRelaxVisibilityRequirementForButtonInput != a3)
+  if (self->_shouldRelaxVisibilityRequirementForButtonInput != input)
   {
-    self->_shouldRelaxVisibilityRequirementForButtonInput = a3;
+    self->_shouldRelaxVisibilityRequirementForButtonInput = input;
     [(CCUIBaseSliderView *)self _configureButtonInteraction];
   }
 }
 
 - (unint64_t)buttonInputStepCount
 {
-  v2 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-  v3 = [v2 stepCount];
+  configuration = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+  stepCount = [configuration stepCount];
 
-  return v3;
+  return stepCount;
 }
 
-- (void)setButtonInputStepCount:(unint64_t)a3
+- (void)setButtonInputStepCount:(unint64_t)count
 {
-  if ([(CCUIBaseSliderView *)self buttonInputStepCount]!= a3)
+  if ([(CCUIBaseSliderView *)self buttonInputStepCount]!= count)
   {
-    v5 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-    v6 = [v5 copy];
+    configuration = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+    v6 = [configuration copy];
 
-    [v6 setStepCount:a3];
+    [v6 setStepCount:count];
     [(_UIFluidSliderInteraction *)self->_interaction setConfiguration:v6];
   }
 }
 
-- (void)addCustomInputDriver:(id)a3
+- (void)addCustomInputDriver:(id)driver
 {
-  v11 = a3;
-  v4 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-  v5 = [v4 copy];
+  driverCopy = driver;
+  configuration = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+  v5 = [configuration copy];
 
-  v6 = [v5 _customDrivers];
-  v7 = [v6 arrayByAddingObject:v11];
+  _customDrivers = [v5 _customDrivers];
+  v7 = [_customDrivers arrayByAddingObject:driverCopy];
   v8 = v7;
   if (v7)
   {
@@ -943,7 +943,7 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
 
   else
   {
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObject:v11];
+    v9 = [MEMORY[0x1E695DEC8] arrayWithObject:driverCopy];
   }
 
   v10 = v9;
@@ -952,16 +952,16 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
   [(_UIFluidSliderInteraction *)self->_interaction setConfiguration:v5];
 }
 
-- (void)_setActiveGlyphView:(id)a3
+- (void)_setActiveGlyphView:(id)view
 {
-  v9 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_activeGlyphView, a3);
+    objc_storeStrong(&self->_activeGlyphView, view);
     [(CCUIPunchOutCompensating *)self->_compensatingGlyphView removeFromSuperview];
-    v5 = [(CCUIGlyphTinting *)self->_activeGlyphView ccui_punchOutCompensatingCopy];
+    ccui_punchOutCompensatingCopy = [(CCUIGlyphTinting *)self->_activeGlyphView ccui_punchOutCompensatingCopy];
     compensatingGlyphView = self->_compensatingGlyphView;
-    self->_compensatingGlyphView = v5;
+    self->_compensatingGlyphView = ccui_punchOutCompensatingCopy;
 
     [(CCUIPunchOutCompensating *)self->_compensatingGlyphView setAutoresizingMask:0];
     [(CCUIPunchOutCompensating *)self->_compensatingGlyphView setTintAdjustmentMode:1];
@@ -972,21 +972,21 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
     }
 
     [(CCUIPunchOutCompensating *)self->_compensatingGlyphView ccui_setCompensationAlpha:v7];
-    v8 = [(CCUIBaseSliderView *)self glyphContainerView];
-    [v8 addSubview:self->_compensatingGlyphView];
+    glyphContainerView = [(CCUIBaseSliderView *)self glyphContainerView];
+    [glyphContainerView addSubview:self->_compensatingGlyphView];
 
     [(CCUIBaseSliderView *)self _updateGlyphTinting];
   }
 }
 
-- (void)_setGlyphImage:(id)a3 forceUpdate:(BOOL)a4
+- (void)_setGlyphImage:(id)image forceUpdate:(BOOL)update
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_glyphImage != v7 || v4)
+  updateCopy = update;
+  imageCopy = image;
+  if (self->_glyphImage != imageCopy || updateCopy)
   {
-    v33 = v7;
-    objc_storeStrong(&self->_glyphImage, a3);
+    v33 = imageCopy;
+    objc_storeStrong(&self->_glyphImage, image);
     if (!self->_glyphImage)
     {
       [(CCUIGlyphTinting *)self->_glyphImageView removeFromSuperview];
@@ -994,7 +994,7 @@ void __36__CCUIBaseSliderView_initWithFrame___block_invoke(uint64_t a1, void *a2
       self->_glyphImageView = 0;
 LABEL_27:
 
-      v7 = v33;
+      imageCopy = v33;
       goto LABEL_28;
     }
 
@@ -1048,8 +1048,8 @@ LABEL_15:
       [*p_glyphImageView setContentMode:4];
       [*p_glyphImageView setTintAdjustmentMode:1];
       [*p_glyphImageView setUserInteractionEnabled:0];
-      v24 = [(CCUIBaseSliderView *)self glyphContainerView];
-      [v24 addSubview:*p_glyphImageView];
+      glyphContainerView = [(CCUIBaseSliderView *)self glyphContainerView];
+      [glyphContainerView addSubview:*p_glyphImageView];
       goto LABEL_23;
     }
 
@@ -1064,18 +1064,18 @@ LABEL_18:
     *p_glyphImageView = v25;
 
     [*p_glyphImageView setUserInteractionEnabled:0];
-    v24 = *p_glyphImageView;
-    v27 = [(CCUIBaseSliderView *)self contentMetrics];
-    v28 = v27;
-    if (v27)
+    glyphContainerView = *p_glyphImageView;
+    contentMetrics = [(CCUIBaseSliderView *)self contentMetrics];
+    v28 = contentMetrics;
+    if (contentMetrics)
     {
-      v29 = [v27 symbolFont];
-      v30 = [v29 _fontScaledByScaleFactor:0.87];
-      [v24 setFont:v30];
+      symbolFont = [contentMetrics symbolFont];
+      v30 = [symbolFont _fontScaledByScaleFactor:0.87];
+      [glyphContainerView setFont:v30];
     }
 
-    v31 = [(CCUIBaseSliderView *)self glyphContainerView];
-    [v31 addSubview:*p_glyphImageView];
+    glyphContainerView2 = [(CCUIBaseSliderView *)self glyphContainerView];
+    [glyphContainerView2 addSubview:*p_glyphImageView];
 
 LABEL_23:
 LABEL_24:
@@ -1096,12 +1096,12 @@ LABEL_24:
 LABEL_28:
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v18 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_glyphPackageDescription, a3);
+    objc_storeStrong(&self->_glyphPackageDescription, description);
     glyphPackageDescription = self->_glyphPackageDescription;
     glyphPackageView = self->_glyphPackageView;
     if (glyphPackageDescription)
@@ -1113,8 +1113,8 @@ LABEL_28:
         self->_glyphPackageView = v7;
 
         [(CCUICAPackageView *)self->_glyphPackageView setAutoresizingMask:0];
-        v9 = [(CCUIBaseSliderView *)self glyphContainerView];
-        [v9 addSubview:self->_glyphPackageView];
+        glyphContainerView = [(CCUIBaseSliderView *)self glyphContainerView];
+        [glyphContainerView addSubview:self->_glyphPackageView];
 
         glyphPackageView = self->_glyphPackageView;
         glyphPackageDescription = self->_glyphPackageDescription;
@@ -1146,8 +1146,8 @@ LABEL_28:
       v15 = v13;
 
       [(CCUIPunchOutCompensating *)v15 setPackageDescription:self->_glyphPackageDescription];
-      v16 = [(CCUIBaseSliderView *)self glyphState];
-      [(CCUIBaseSliderView *)self _applyGlyphState:v16 performConfiguration:1];
+      glyphState = [(CCUIBaseSliderView *)self glyphState];
+      [(CCUIBaseSliderView *)self _applyGlyphState:glyphState performConfiguration:1];
 
       v17 = 0.0;
       if (self->_glyphVisible)
@@ -1168,14 +1168,14 @@ LABEL_28:
   }
 }
 
-- (void)_applyGlyphState:(id)a3 performConfiguration:(BOOL)a4
+- (void)_applyGlyphState:(id)state performConfiguration:(BOOL)configuration
 {
-  v4 = a4;
-  v6 = a3;
+  configurationCopy = configuration;
+  stateCopy = state;
   glyphPackageView = self->_glyphPackageView;
   if (glyphPackageView)
   {
-    v8 = @"*" == v6;
+    v8 = @"*" == stateCopy;
   }
 
   else
@@ -1185,7 +1185,7 @@ LABEL_28:
 
   if (!v8)
   {
-    [(CCUICAPackageView *)glyphPackageView setStateName:v6];
+    [(CCUICAPackageView *)glyphPackageView setStateName:stateCopy];
     compensatingGlyphView = self->_compensatingGlyphView;
     v10 = objc_opt_self();
     v11 = compensatingGlyphView;
@@ -1209,8 +1209,8 @@ LABEL_28:
 
     v13 = v12;
 
-    [(CCUIPunchOutCompensating *)v13 setStateName:v6];
-    if (v4)
+    [(CCUIPunchOutCompensating *)v13 setStateName:stateCopy];
+    if (configurationCopy)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -1224,36 +1224,36 @@ LABEL_28:
   }
 }
 
-- (void)_setGlyphState:(id)a3
+- (void)_setGlyphState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   glyphState = self->_glyphState;
-  if (glyphState != v5)
+  if (glyphState != stateCopy)
   {
     v7 = glyphState == @"*";
-    v8 = v5;
-    objc_storeStrong(&self->_glyphState, a3);
+    v8 = stateCopy;
+    objc_storeStrong(&self->_glyphState, state);
     [(CCUIBaseSliderView *)self _applyGlyphState:self->_glyphState performConfiguration:v7];
-    v5 = v8;
+    stateCopy = v8;
   }
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  v4 = @"*";
-  if (a3)
+  stateCopy = @"*";
+  if (state)
   {
-    v4 = a3;
+    stateCopy = state;
   }
 
-  v5 = v4;
+  v5 = stateCopy;
   [(CCUIBaseSliderView *)self _setGlyphState:v5];
 }
 
 - (CGPoint)glyphCenter
 {
-  v2 = [(CCUIBaseSliderView *)self glyphContainerView];
-  [v2 bounds];
+  glyphContainerView = [(CCUIBaseSliderView *)self glyphContainerView];
+  [glyphContainerView bounds];
   v4 = v3;
   v6 = v5;
 
@@ -1280,35 +1280,35 @@ LABEL_28:
 
 - (void)_configurePanGestureRecognizer
 {
-  v2 = [(CCUIBaseSliderView *)self _panGestureRecognizer];
-  [v2 setCancelsTouchesInView:0];
-  [v2 setDelaysTouchesEnded:0];
+  _panGestureRecognizer = [(CCUIBaseSliderView *)self _panGestureRecognizer];
+  [_panGestureRecognizer setCancelsTouchesInView:0];
+  [_panGestureRecognizer setDelaysTouchesEnded:0];
 }
 
 - (void)_configureButtonInteraction
 {
-  v3 = [(_UIFluidSliderInteraction *)self->_interaction _volumeButtonInteraction];
-  if (v3)
+  _volumeButtonInteraction = [(_UIFluidSliderInteraction *)self->_interaction _volumeButtonInteraction];
+  if (_volumeButtonInteraction)
   {
-    v5 = v3;
-    [v3 _setWantsRelaxedVisibilityRequirement:{-[CCUIBaseSliderView shouldRelaxVisibilityRequirementForButtonInput](self, "shouldRelaxVisibilityRequirementForButtonInput")}];
-    v4 = [(CCUIBaseSliderView *)self name];
-    [v5 _setName:v4];
+    v5 = _volumeButtonInteraction;
+    [_volumeButtonInteraction _setWantsRelaxedVisibilityRequirement:{-[CCUIBaseSliderView shouldRelaxVisibilityRequirementForButtonInput](self, "shouldRelaxVisibilityRequirementForButtonInput")}];
+    name = [(CCUIBaseSliderView *)self name];
+    [v5 _setName:name];
 
-    v3 = v5;
+    _volumeButtonInteraction = v5;
   }
 }
 
 - (void)_updateBackgroundViewAppearance
 {
-  v3 = [(CCUIBaseSliderView *)self hasInoperativeAppearance];
+  hasInoperativeAppearance = [(CCUIBaseSliderView *)self hasInoperativeAppearance];
   v6 = self->_backgroundView;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(UIView *)v6 setHasInoperativeAppearance:v3];
+    [(UIView *)v6 setHasInoperativeAppearance:hasInoperativeAppearance];
   }
 }
 
@@ -1316,8 +1316,8 @@ LABEL_28:
 {
   [(CCUIBaseSliderView *)self _effectiveStretchAmount];
   v4 = v3;
-  v5 = [(_UIFluidSliderInteraction *)self->_interaction configuration];
-  v6 = [v5 copy];
+  configuration = [(_UIFluidSliderInteraction *)self->_interaction configuration];
+  v6 = [configuration copy];
 
   [v6 setStretchAmount:v4];
   [(_UIFluidSliderInteraction *)self->_interaction setConfiguration:v6];
@@ -1327,8 +1327,8 @@ LABEL_28:
 {
   [(CCUIBaseSliderView *)self elasticContentStretchAmount];
   v4 = v3;
-  v5 = [(CCUIBaseSliderView *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(CCUIBaseSliderView *)self traitCollection];
+  [traitCollection displayScale];
   if (v4 >= 0.0)
   {
     if (v4 > 0.0 && v4 < 1.0)
@@ -1342,8 +1342,8 @@ LABEL_28:
   else
   {
     [(CCUIBaseSliderView *)self _length];
-    v6 = [(CCUIBaseSliderView *)self window];
-    [v6 bounds];
+    window = [(CCUIBaseSliderView *)self window];
+    [window bounds];
 
     contentMetrics = self->_contentMetrics;
     if (contentMetrics)
@@ -1373,9 +1373,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)_handleFluidSliderInteractionUpdate:(id)a3
+- (void)_handleFluidSliderInteractionUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   v6 = self->_lastInteractionUpdate;
   v7 = v6;
   if (v6)
@@ -1388,28 +1388,28 @@ LABEL_28:
     v8 = 0;
   }
 
-  v9 = [v5 interactionState];
-  v28 = [(CCUIBaseSliderView *)self isEditingValue];
+  interactionState = [updateCopy interactionState];
+  isEditingValue = [(CCUIBaseSliderView *)self isEditingValue];
   [(CCUIBaseSliderView *)self presentationValue];
   v11 = v10;
   [(CCUIBaseSliderView *)self value];
   v13 = v12;
   shouldSendEditingControlEvents = self->_shouldSendEditingControlEvents;
-  v15 = [(_UIFluidSliderInteraction *)self->_interaction isLocked];
-  if (!v8 && v9 == 1 && (v15 & 1) == 0)
+  isLocked = [(_UIFluidSliderInteraction *)self->_interaction isLocked];
+  if (!v8 && interactionState == 1 && (isLocked & 1) == 0)
   {
     shouldSendEditingControlEvents = 1;
     self->_editingValue = 1;
     self->_shouldSendEditingControlEvents = 1;
-    if (!v28)
+    if (!isEditingValue)
     {
       [(CCUIBaseSliderView *)self sendActionsForControlEvents:0x10000];
     }
   }
 
-  if ([v5 interactionState] == 1)
+  if ([updateCopy interactionState] == 1)
   {
-    v16 = [v5 isTracking] ^ 1;
+    v16 = [updateCopy isTracking] ^ 1;
   }
 
   else
@@ -1425,7 +1425,7 @@ LABEL_28:
     [(CCUIBaseSliderView *)self sendActionsForControlEvents:CCUIBaseSliderViewControlEventIndirectInputDidBegin];
   }
 
-  objc_storeStrong(&self->_lastInteractionUpdate, a3);
+  objc_storeStrong(&self->_lastInteractionUpdate, update);
   [(_UIFluidSliderInteraction *)self->_interaction value];
   *&v19 = fmax(fmin(v19, 1.0), 0.0);
   self->_value = *&v19;
@@ -1461,7 +1461,7 @@ LABEL_28:
     v30 = v22;
     v31 = v24;
     v25 = _Block_copy(aBlock);
-    if ([v5 interactionState] && v24 != (v11 >= 0.17 && self->_valueVisible))
+    if ([updateCopy interactionState] && v24 != (v11 >= 0.17 && self->_valueVisible))
     {
       [MEMORY[0x1E69DD250] animateWithSpringDuration:0 bounce:v25 initialSpringVelocity:0 delay:0.3 options:0.0 animations:0.0 completion:0.0];
     }
@@ -1477,16 +1477,16 @@ LABEL_28:
   {
     self->_editingValue = 0;
     self->_shouldSendEditingControlEvents = 0;
-    if (v28 && shouldSendEditingControlEvents)
+    if (isEditingValue && shouldSendEditingControlEvents)
     {
       [(CCUIBaseSliderView *)self sendActionsForControlEvents:0x40000];
     }
   }
 
-  if (-[_UIFluidSliderInteractionUpdate isTracking](v7, "isTracking") && ([v5 isTracking] & 1) == 0)
+  if (-[_UIFluidSliderInteractionUpdate isTracking](v7, "isTracking") && ([updateCopy isTracking] & 1) == 0)
   {
-    v27 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v27 _deactivateReachability];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] _deactivateReachability];
   }
 }
 

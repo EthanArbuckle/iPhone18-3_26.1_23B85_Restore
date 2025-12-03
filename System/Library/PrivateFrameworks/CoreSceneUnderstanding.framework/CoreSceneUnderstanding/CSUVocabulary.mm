@@ -1,33 +1,33 @@
 @interface CSUVocabulary
-- (CSUVocabulary)initWithName:(id)a3 labelFilePath:(id)a4 internalCount:(unint64_t)a5 visibleCount:(unint64_t)a6 startIndex:(unint64_t)a7;
+- (CSUVocabulary)initWithName:(id)name labelFilePath:(id)path internalCount:(unint64_t)count visibleCount:(unint64_t)visibleCount startIndex:(unint64_t)index;
 - (NSArray)labels;
 - (id).cxx_construct;
-- (void)_enumerateAllLabelsInVocabularyUsingBlock:(id)a3;
-- (void)_enumerateVisibleLabelsAndIndicesInVocabularyUsingBlock:(id)a3;
-- (void)_enumerateVisibleLabelsInVocabularyUsingBlock:(id)a3;
+- (void)_enumerateAllLabelsInVocabularyUsingBlock:(id)block;
+- (void)_enumerateVisibleLabelsAndIndicesInVocabularyUsingBlock:(id)block;
+- (void)_enumerateVisibleLabelsInVocabularyUsingBlock:(id)block;
 @end
 
 @implementation CSUVocabulary
 
-- (CSUVocabulary)initWithName:(id)a3 labelFilePath:(id)a4 internalCount:(unint64_t)a5 visibleCount:(unint64_t)a6 startIndex:(unint64_t)a7
+- (CSUVocabulary)initWithName:(id)name labelFilePath:(id)path internalCount:(unint64_t)count visibleCount:(unint64_t)visibleCount startIndex:(unint64_t)index
 {
-  v13 = a3;
-  v14 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CSUVocabulary;
   v15 = [(CSUVocabulary *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    v16->_count = a6;
-    v16->_internalCount = a5;
-    v16->_startIndex = a7;
+    objc_storeStrong(&v15->_name, name);
+    v16->_count = visibleCount;
+    v16->_internalCount = count;
+    v16->_startIndex = index;
     labels = v16->_labels;
     v16->_labels = 0;
 
-    objc_storeStrong(&v16->_labelFilePath, a4);
-    sub_1AC08B318(&v16->_visibleLabels.__begin_, a6);
+    objc_storeStrong(&v16->_labelFilePath, path);
+    sub_1AC08B318(&v16->_visibleLabels.__begin_, visibleCount);
     v18 = v16;
   }
 
@@ -120,9 +120,9 @@ LABEL_18:
   return v29;
 }
 
-- (void)_enumerateAllLabelsInVocabularyUsingBlock:(id)a3
+- (void)_enumerateAllLabelsInVocabularyUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v24 = 0;
   v9 = objc_msgSend_labels(self, v5, v6, v7, v8);
 
@@ -140,13 +140,13 @@ LABEL_18:
       {
         if (v20 == begin[1])
         {
-          v4[2](v4, *begin, &v24);
+          blockCopy[2](blockCopy, *begin, &v24);
           begin += 2;
         }
 
         else
         {
-          v4[2](v4, 0, &v24);
+          blockCopy[2](blockCopy, 0, &v24);
         }
 
         if (v24)
@@ -160,9 +160,9 @@ LABEL_18:
   }
 }
 
-- (void)_enumerateVisibleLabelsInVocabularyUsingBlock:(id)a3
+- (void)_enumerateVisibleLabelsInVocabularyUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v9 = objc_msgSend_labels(self, v5, v6, v7, v8);
 
@@ -175,7 +175,7 @@ LABEL_18:
       v12 = begin + 16;
       do
       {
-        v4[2](v4, *(v12 - 2), &v14);
+        blockCopy[2](blockCopy, *(v12 - 2), &v14);
         if (v14)
         {
           break;
@@ -190,9 +190,9 @@ LABEL_18:
   }
 }
 
-- (void)_enumerateVisibleLabelsAndIndicesInVocabularyUsingBlock:(id)a3
+- (void)_enumerateVisibleLabelsAndIndicesInVocabularyUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v9 = objc_msgSend_labels(self, v5, v6, v7, v8);
 
@@ -201,7 +201,7 @@ LABEL_18:
     begin = self->_visibleLabels.__begin_;
     for (i = self->_visibleLabels.__end_; begin != i; begin += 2)
     {
-      (*(v4 + 2))(v4, *begin, begin[1], &v12);
+      (*(blockCopy + 2))(blockCopy, *begin, begin[1], &v12);
       if (v12)
       {
         break;

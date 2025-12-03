@@ -1,30 +1,30 @@
 @interface TRIActivateTreatmentTask
-+ (id)parseFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)dependencies;
 - (NSString)description;
-- (TRIActivateTreatmentTask)initWithCoder:(id)a3;
+- (TRIActivateTreatmentTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
-- (id)_nextTasksForRunStatus:(int)a3;
+- (id)_nextTasksForRunStatus:(int)status;
 - (id)metrics;
-- (id)runTaskUsingContext:(id)a3 experiment:(id)a4;
+- (id)runTaskUsingContext:(id)context experiment:(id)experiment;
 - (id)serialize;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIActivateTreatmentTask
 
-- (TRIActivateTreatmentTask)initWithCoder:(id)a3
+- (TRIActivateTreatmentTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIActivateTreatmentTask;
   v5 = [(TRIActivateTreatmentTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -44,18 +44,18 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIActivateTreatmentTask.m" lineNumber:80 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivateTreatmentTask.m" lineNumber:80 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIActivateTreatmentTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIActivateTreatmentTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 - (unint64_t)requiredCapabilities
@@ -76,9 +76,9 @@
 
   if (![(TRIActivateTreatmentBaseTask *)self requiresTreatmentInstallation])
   {
-    v10 = [(TRIExperimentBaseTask *)self experiment];
-    v11 = [(TRITreatmentBaseTask *)self taskAttributing];
-    v12 = [TRIFetchExperimentTask taskWithExperimentDeployment:v10 taskAttributing:v11];
+    experiment = [(TRIExperimentBaseTask *)self experiment];
+    taskAttributing = [(TRITreatmentBaseTask *)self taskAttributing];
+    v12 = [TRIFetchExperimentTask taskWithExperimentDeployment:experiment taskAttributing:taskAttributing];
     v23 = v12;
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
 
@@ -87,57 +87,57 @@ LABEL_13:
   }
 
   v3 = objc_opt_new();
-  v4 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+  factorPackSetId = [(TRIActivateTreatmentTask *)self factorPackSetId];
 
-  if (v4)
+  if (factorPackSetId)
   {
-    v5 = [(TRIActivateTreatmentTask *)self factorPackSetId];
-    v6 = [(TRITreatmentBaseTask *)self treatmentId];
-    v7 = [(TRITreatmentBaseTask *)self taskAttributing];
-    v8 = [(TRIExperimentBaseTask *)self experiment];
-    v9 = [TRIFetchFactorPackSetTask taskWithFactorPackSetId:v5 treatmentId:v6 isCounterfactualTreatment:0 taskAttribution:v7 experimentDeployment:v8];
+    factorPackSetId2 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+    treatmentId = [(TRITreatmentBaseTask *)self treatmentId];
+    taskAttributing2 = [(TRITreatmentBaseTask *)self taskAttributing];
+    experiment2 = [(TRIExperimentBaseTask *)self experiment];
+    v9 = [TRIFetchFactorPackSetTask taskWithFactorPackSetId:factorPackSetId2 treatmentId:treatmentId isCounterfactualTreatment:0 taskAttribution:taskAttributing2 experimentDeployment:experiment2];
     [v3 addObject:v9];
   }
 
   else
   {
-    v5 = [(TRIExperimentBaseTask *)self experiment];
-    v6 = [(TRITreatmentBaseTask *)self treatmentId];
-    v7 = [(TRITreatmentBaseTask *)self taskAttributing];
-    v8 = [TRIFetchTreatmentTask taskWithExperiment:v5 treatmentId:v6 taskAttributing:v7 capabilityModifier:self->_capabilityModifier];
-    [v3 addObject:v8];
+    factorPackSetId2 = [(TRIExperimentBaseTask *)self experiment];
+    treatmentId = [(TRITreatmentBaseTask *)self treatmentId];
+    taskAttributing2 = [(TRITreatmentBaseTask *)self taskAttributing];
+    experiment2 = [TRIFetchTreatmentTask taskWithExperiment:factorPackSetId2 treatmentId:treatmentId taskAttributing:taskAttributing2 capabilityModifier:self->_capabilityModifier];
+    [v3 addObject:experiment2];
   }
 
-  v13 = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
+  counterfactualTreatments = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
 
-  if (v13)
+  if (counterfactualTreatments)
   {
-    v14 = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
+    counterfactualTreatments2 = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __40__TRIActivateTreatmentTask_dependencies__block_invoke;
     v21[3] = &unk_279DE3B38;
     v21[4] = self;
     v22 = v3;
-    [v14 enumerateKeysAndObjectsUsingBlock:v21];
+    [counterfactualTreatments2 enumerateKeysAndObjectsUsingBlock:v21];
   }
 
   if (![v3 count])
   {
-    v10 = TRILogCategory_Server();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    experiment = TRILogCategory_Server();
+    if (os_log_type_enabled(experiment, OS_LOG_TYPE_FAULT))
     {
-      v17 = [(TRIExperimentBaseTask *)self experiment];
-      v18 = [v17 experimentId];
-      v19 = [(TRITreatmentBaseTask *)self treatmentId];
-      v20 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+      experiment3 = [(TRIExperimentBaseTask *)self experiment];
+      experimentId = [experiment3 experimentId];
+      treatmentId2 = [(TRITreatmentBaseTask *)self treatmentId];
+      factorPackSetId3 = [(TRIActivateTreatmentTask *)self factorPackSetId];
       *buf = 138412802;
-      v25 = v18;
+      v25 = experimentId;
       v26 = 2112;
-      v27 = v19;
+      v27 = treatmentId2;
       v28 = 2112;
-      v29 = v20;
-      _os_log_fault_impl(&dword_26F567000, v10, OS_LOG_TYPE_FAULT, "Activate treatment task isn't queueing a fetch FPS or fetch treatmentV1. (ExperimentId: %@, TreatmentId: %@, FPSId:%@)", buf, 0x20u);
+      v29 = factorPackSetId3;
+      _os_log_fault_impl(&dword_26F567000, experiment, OS_LOG_TYPE_FAULT, "Activate treatment task isn't queueing a fetch FPS or fetch treatmentV1. (ExperimentId: %@, TreatmentId: %@, FPSId:%@)", buf, 0x20u);
     }
 
     goto LABEL_13;
@@ -179,25 +179,25 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runTaskUsingContext:(id)a3 experiment:(id)a4
+- (id)runTaskUsingContext:(id)context experiment:(id)experiment
 {
   v147 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v111 = v7;
-  v109 = v8;
-  if ([TRIUserAdjustableSettings getExperimentOptOut:v7])
+  contextCopy = context;
+  experimentCopy = experiment;
+  v111 = contextCopy;
+  v109 = experimentCopy;
+  if ([TRIUserAdjustableSettings getExperimentOptOut:contextCopy])
   {
     v9 = TRILogCategory_Server();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v109 experimentDeployment];
-      v11 = [v10 experimentId];
-      v12 = [v109 experimentDeployment];
+      experimentDeployment = [v109 experimentDeployment];
+      experimentId = [experimentDeployment experimentId];
+      experimentDeployment2 = [v109 experimentDeployment];
       *buf = 138543618;
-      *&buf[4] = v11;
+      *&buf[4] = experimentId;
       *&buf[12] = 1026;
-      *&buf[14] = [v12 deploymentId];
+      *&buf[14] = [experimentDeployment2 deploymentId];
       _os_log_impl(&dword_26F567000, v9, OS_LOG_TYPE_DEFAULT, "Skipping activation of treatment for experiment: %{public}@ (deployment: %{public}d) due to user opt-out of experiments", buf, 0x12u);
     }
 
@@ -207,24 +207,24 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
   else
   {
     v96 = a2;
-    v110 = self;
+    selfCopy = self;
     v136[0] = MEMORY[0x277D85DD0];
     v136[1] = 3221225472;
     v136[2] = __59__TRIActivateTreatmentTask_runTaskUsingContext_experiment___block_invoke;
     v136[3] = &unk_279DE3B60;
-    v14 = v8;
+    v14 = experimentCopy;
     v137 = v14;
     v102 = MEMORY[0x2743948D0](v136);
-    v15 = [v7 paths];
-    v103 = [v15 namespaceDescriptorsExperimentDir];
+    paths = [contextCopy paths];
+    namespaceDescriptorsExperimentDir = [paths namespaceDescriptorsExperimentDir];
 
-    if (!v103)
+    if (!namespaceDescriptorsExperimentDir)
     {
-      v91 = [MEMORY[0x277CCA890] currentHandler];
-      [v91 handleFailureInMethod:a2 object:v110 file:@"TRIActivateTreatmentTask.m" lineNumber:211 description:@"no namespace descriptor directory"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"TRIActivateTreatmentTask.m" lineNumber:211 description:@"no namespace descriptor directory"];
     }
 
-    v106 = [v14 experimentDeployment];
+    experimentDeployment3 = [v14 experimentDeployment];
     v132 = 0;
     v133 = &v132;
     v134 = 0x2020000000;
@@ -236,32 +236,32 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
     v145 = __Block_byref_object_dispose__44;
     v146 = @"reason-not-set";
     v16 = [TRISystemCovariates alloc];
-    v17 = [v7 paths];
-    v112 = [(TRISystemCovariates *)v16 initWithPaths:v17];
+    paths2 = [contextCopy paths];
+    v112 = [(TRISystemCovariates *)v16 initWithPaths:paths2];
 
-    v18 = [(TRISystemCovariates *)v112 dictionary];
-    v105 = [v18 valueForKey:@"OSBuild"];
+    dictionary = [(TRISystemCovariates *)v112 dictionary];
+    v105 = [dictionary valueForKey:@"OSBuild"];
 
-    v19 = [(TRISystemCovariates *)v112 dictionary];
-    v108 = [v19 valueForKey:@"UserSettingsLanguageCode"];
+    dictionary2 = [(TRISystemCovariates *)v112 dictionary];
+    v108 = [dictionary2 valueForKey:@"UserSettingsLanguageCode"];
 
-    v20 = [(TRISystemCovariates *)v112 dictionary];
-    v107 = [v20 valueForKey:@"UserSettingsRegionCode"];
+    dictionary3 = [(TRISystemCovariates *)v112 dictionary];
+    v107 = [dictionary3 valueForKey:@"UserSettingsRegionCode"];
 
-    v21 = [(TRISystemCovariates *)v112 dictionary];
-    v104 = [v21 valueForKey:@"BCP47DeviceLocale"];
+    dictionary4 = [(TRISystemCovariates *)v112 dictionary];
+    v104 = [dictionary4 valueForKey:@"BCP47DeviceLocale"];
 
     if (v104)
     {
       v22 = [v104 componentsSeparatedByString:@"-"];
-      v23 = [v22 firstObject];
+      firstObject = [v22 firstObject];
 
       v24 = [v104 componentsSeparatedByString:@"-"];
-      v25 = [v24 lastObject];
+      lastObject = [v24 lastObject];
 
-      if (v25)
+      if (lastObject)
       {
-        v26 = v25;
+        v26 = lastObject;
       }
 
       else
@@ -271,11 +271,11 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
 
       v107 = v26;
 
-      v108 = v23;
+      v108 = firstObject;
     }
 
-    v27 = [(TRISystemCovariates *)v112 dictionary];
-    v28 = [v27 valueForKey:@"CarrierBundleIdentifier"];
+    dictionary5 = [(TRISystemCovariates *)v112 dictionary];
+    v28 = [dictionary5 valueForKey:@"CarrierBundleIdentifier"];
     v29 = v28;
     if (v28)
     {
@@ -289,8 +289,8 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
 
     v101 = v30;
 
-    v31 = [(TRISystemCovariates *)v112 dictionary];
-    v32 = [v31 valueForKey:@"CarrierCountryIsoCode"];
+    dictionary6 = [(TRISystemCovariates *)v112 dictionary];
+    v32 = [dictionary6 valueForKey:@"CarrierCountryIsoCode"];
     v33 = v32;
     if (v32)
     {
@@ -304,16 +304,16 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
 
     v100 = v34;
 
-    v35 = [(TRISystemCovariates *)v112 dictionary];
-    v36 = [v35 valueForKey:@"DiagnosticsUsageEnabled"];
-    v37 = [v36 BOOLValue];
+    dictionary7 = [(TRISystemCovariates *)v112 dictionary];
+    v36 = [dictionary7 valueForKey:@"DiagnosticsUsageEnabled"];
+    bOOLValue = [v36 BOOLValue];
 
-    v38 = [(TRISystemCovariates *)v112 dictionary];
-    v39 = [v38 valueForKey:@"HasANE"];
-    v40 = [v39 BOOLValue];
+    dictionary8 = [(TRISystemCovariates *)v112 dictionary];
+    v39 = [dictionary8 valueForKey:@"HasANE"];
+    bOOLValue2 = [v39 BOOLValue];
 
-    v41 = [(TRISystemCovariates *)v112 dictionary];
-    v42 = [v41 valueForKey:@"ANEVersion"];
+    dictionary9 = [(TRISystemCovariates *)v112 dictionary];
+    v42 = [dictionary9 valueForKey:@"ANEVersion"];
     v43 = v42;
     if (v42)
     {
@@ -329,34 +329,34 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
 
     if (!v105)
     {
-      v92 = [MEMORY[0x277CCA890] currentHandler];
-      [v92 handleFailureInMethod:v96 object:v110 file:@"TRIActivateTreatmentTask.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"osBuild"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:v96 object:selfCopy file:@"TRIActivateTreatmentTask.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"osBuild"}];
     }
 
     if (!v108)
     {
-      v93 = [MEMORY[0x277CCA890] currentHandler];
-      [v93 handleFailureInMethod:v96 object:v110 file:@"TRIActivateTreatmentTask.m" lineNumber:244 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:v96 object:selfCopy file:@"TRIActivateTreatmentTask.m" lineNumber:244 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
     }
 
     if (!v107)
     {
-      v94 = [MEMORY[0x277CCA890] currentHandler];
-      [v94 handleFailureInMethod:v96 object:v110 file:@"TRIActivateTreatmentTask.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"regionCode"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:v96 object:selfCopy file:@"TRIActivateTreatmentTask.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"regionCode"}];
     }
 
-    v45 = [v7 experimentDatabase];
-    v46 = [v45 experimentRecordWithExperimentDeployment:v106];
+    experimentDatabase = [contextCopy experimentDatabase];
+    v46 = [experimentDatabase experimentRecordWithExperimentDeployment:experimentDeployment3];
 
     if (v46 && [v46 status] == 1)
     {
       v47 = TRILogCategory_Server();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [(TRIExperimentBaseTask *)v110 experiment];
-        v49 = [v48 experimentId];
+        experiment = [(TRIExperimentBaseTask *)selfCopy experiment];
+        experimentId2 = [experiment experimentId];
         *v139 = 138543362;
-        v140 = v49;
+        v140 = experimentId2;
         _os_log_impl(&dword_26F567000, v47, OS_LOG_TYPE_DEFAULT, "Experiment %{public}@ is already activated, nothing to do.", v139, 0xCu);
       }
 
@@ -367,15 +367,15 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
     else
     {
 
-      v50 = [v7 experimentDatabase];
+      experimentDatabase2 = [contextCopy experimentDatabase];
       v117[0] = MEMORY[0x277D85DD0];
       v117[1] = 3221225472;
       v117[2] = __59__TRIActivateTreatmentTask_runTaskUsingContext_experiment___block_invoke_171;
       v117[3] = &unk_279DE3BB0;
-      v97 = v7;
+      v97 = contextCopy;
       v118 = v97;
-      v119 = v106;
-      v120 = v110;
+      v119 = experimentDeployment3;
+      v120 = selfCopy;
       v128 = &v132;
       v129 = buf;
       v121 = v105;
@@ -383,32 +383,32 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
       v123 = v107;
       v124 = v101;
       v125 = v100;
-      v130 = v37;
-      v131 = v40;
+      v130 = bOOLValue;
+      v131 = bOOLValue2;
       v126 = v99;
       v98 = v14;
       v127 = v98;
-      [v50 writeTransactionWithFailableBlock:v117];
+      [experimentDatabase2 writeTransactionWithFailableBlock:v117];
 
-      v51 = [(TRIActivateTreatmentBaseTask *)v110 endTime];
-      v52 = v51 == 0;
+      endTime = [(TRIActivateTreatmentBaseTask *)selfCopy endTime];
+      v52 = endTime == 0;
 
       if (v52)
       {
-        v53 = [v98 endDate];
-        [(TRIActivateTreatmentBaseTask *)v110 setEndTime:v53];
+        endDate = [v98 endDate];
+        [(TRIActivateTreatmentBaseTask *)selfCopy setEndTime:endDate];
       }
 
       v54 = TRILogCategory_Server();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [(TRITreatmentBaseTask *)v110 treatmentId];
-        v56 = [(TRIExperimentBaseTask *)v110 experiment];
-        v57 = [v56 shortDesc];
+        treatmentId = [(TRITreatmentBaseTask *)selfCopy treatmentId];
+        experiment2 = [(TRIExperimentBaseTask *)selfCopy experiment];
+        shortDesc = [experiment2 shortDesc];
         *v139 = 138412546;
-        v140 = v55;
+        v140 = treatmentId;
         v141 = 2114;
-        v142 = v57;
+        v142 = shortDesc;
         _os_log_impl(&dword_26F567000, v54, OS_LOG_TYPE_DEFAULT, "notify about updates to namespaces in treatment %@ for experiment %{public}@", v139, 0x16u);
       }
 
@@ -416,8 +416,8 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
       v116 = 0u;
       v113 = 0u;
       v114 = 0u;
-      v58 = [v98 namespaces];
-      v59 = [v58 countByEnumeratingWithState:&v113 objects:v138 count:16];
+      namespaces = [v98 namespaces];
+      v59 = [namespaces countByEnumeratingWithState:&v113 objects:v138 count:16];
       if (v59)
       {
         v60 = *v114;
@@ -427,25 +427,25 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
           {
             if (*v114 != v60)
             {
-              objc_enumerationMutation(v58);
+              objc_enumerationMutation(namespaces);
             }
 
             v62 = *(*(&v113 + 1) + 8 * i);
             v63 = TRILogCategory_Server();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
             {
-              v64 = [v62 name];
+              name = [v62 name];
               *v139 = 138543362;
-              v140 = v64;
+              v140 = name;
               _os_log_impl(&dword_26F567000, v63, OS_LOG_TYPE_DEFAULT, "notify about updates to namespace %{public}@", v139, 0xCu);
             }
 
             v65 = MEMORY[0x277D73790];
-            v66 = [v62 name];
-            [v65 notifyUpdateForNamespaceName:v66];
+            name2 = [v62 name];
+            [v65 notifyUpdateForNamespaceName:name2];
           }
 
-          v59 = [v58 countByEnumeratingWithState:&v113 objects:v138 count:16];
+          v59 = [namespaces countByEnumeratingWithState:&v113 objects:v138 count:16];
         }
 
         while (v59);
@@ -454,11 +454,11 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
       if (*(v133 + 6) == 2)
       {
         [TRIBiomeExperimentUpdateStreamWriter writeExperimentUpdateWithRecord:v98 withExperimentStateIsActive:1 withUserId:0];
-        v67 = [(TRIExperimentBaseTask *)v110 experiment];
-        v68 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:v67];
+        experiment3 = [(TRIExperimentBaseTask *)selfCopy experiment];
+        v68 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:experiment3];
 
-        v69 = [v97 contentTracker];
-        [v69 addRefWithContentIdentifier:v68];
+        contentTracker = [v97 contentTracker];
+        [contentTracker addRefWithContentIdentifier:v68];
 
         v70 = [TRIExperimentPostLaunchEvent activatedEventWithExperimentRecord:v98];
         v71 = [TRIExperimentPostLaunchRecorder recorderFromContext:v97];
@@ -467,44 +467,44 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
           v72 = TRILogCategory_Server();
           if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
           {
-            v89 = [(TRITreatmentBaseTask *)v110 treatmentId];
-            v90 = [(TRIExperimentBaseTask *)v110 experiment];
+            treatmentId2 = [(TRITreatmentBaseTask *)selfCopy treatmentId];
+            experiment4 = [(TRIExperimentBaseTask *)selfCopy experiment];
             *v139 = 138412546;
-            v140 = v89;
+            v140 = treatmentId2;
             v141 = 2114;
-            v142 = v90;
+            v142 = experiment4;
             _os_log_error_impl(&dword_26F567000, v72, OS_LOG_TYPE_ERROR, "Treatment is active but we failed to update experiment history database for treatment %@ for experiment %{public}@:. We will retry running the task.", v139, 0x16u);
           }
 
           *(v133 + 6) = 1;
         }
 
-        if ([(TRIActivateTreatmentBaseTask *)v110 requiresTreatmentInstallation])
+        if ([(TRIActivateTreatmentBaseTask *)selfCopy requiresTreatmentInstallation])
         {
-          v73 = [(TRIExperimentBaseTask *)v110 containerForFirstNamespaceInExperimentWithContext:v97];
-          v74 = [(TRITreatmentBaseTask *)v110 treatmentId];
-          v75 = [TRIContentTracker contentIdentifierForTreatmentArtifactWithTreatmentId:v74 container:v73];
+          v73 = [(TRIExperimentBaseTask *)selfCopy containerForFirstNamespaceInExperimentWithContext:v97];
+          treatmentId3 = [(TRITreatmentBaseTask *)selfCopy treatmentId];
+          v75 = [TRIContentTracker contentIdentifierForTreatmentArtifactWithTreatmentId:treatmentId3 container:v73];
 
-          v76 = [v97 contentTracker];
-          [v76 addRefWithContentIdentifier:v75];
+          contentTracker2 = [v97 contentTracker];
+          [contentTracker2 addRefWithContentIdentifier:v75];
         }
       }
 
       v77 = *(v133 + 6);
       if (v77 == 3)
       {
-        v78 = [(TRIExperimentBaseTask *)v110 experiment];
-        v79 = [v78 experimentId];
-        v80 = [(TRIExperimentBaseTask *)v110 experiment];
-        v81 = [v80 deploymentId];
-        v82 = [(TRITreatmentBaseTask *)v110 treatmentId];
-        v83 = [TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:v79 deploymentId:v81 treatmentId:v82];
+        experiment5 = [(TRIExperimentBaseTask *)selfCopy experiment];
+        experimentId3 = [experiment5 experimentId];
+        experiment6 = [(TRIExperimentBaseTask *)selfCopy experiment];
+        deploymentId = [experiment6 deploymentId];
+        treatmentId4 = [(TRITreatmentBaseTask *)selfCopy treatmentId];
+        v83 = [TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:experimentId3 deploymentId:deploymentId treatmentId:treatmentId4];
 
         v84 = [TRIExperimentPostLaunchEvent failureEventWithEventType:8 treatmentTriple:v83 failureReason:*(*&buf[8] + 40)];
         if (!v84)
         {
-          v95 = [MEMORY[0x277CCA890] currentHandler];
-          [v95 handleFailureInMethod:v96 object:v110 file:@"TRIActivateTreatmentTask.m" lineNumber:484 description:{@"Expression was unexpectedly nil/false: %@", @"[TRIExperimentPostLaunchEvent failureEventWithEventType:TRIInternalExperimentAllocationStatusTypeTreatmentActivationFailure treatmentTriple:triple failureReason:failureReason]"}];
+          currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler5 handleFailureInMethod:v96 object:selfCopy file:@"TRIActivateTreatmentTask.m" lineNumber:484 description:{@"Expression was unexpectedly nil/false: %@", @"[TRIExperimentPostLaunchEvent failureEventWithEventType:TRIInternalExperimentAllocationStatusTypeTreatmentActivationFailure treatmentTriple:triple failureReason:failureReason]"}];
         }
 
         v85 = [TRIExperimentPostLaunchRecorder recorderFromContext:v97];
@@ -513,7 +513,7 @@ void __40__TRIActivateTreatmentTask_dependencies__block_invoke(uint64_t a1, void
         v77 = *(v133 + 6);
       }
 
-      v86 = [(TRIActivateTreatmentTask *)v110 _nextTasksForRunStatus:v77];
+      v86 = [(TRIActivateTreatmentTask *)selfCopy _nextTasksForRunStatus:v77];
       v13 = (v102)[2](v102, v77, v86, 1, 0);
 
       notify_post("com.apple.trial.ActivateTreatmentTaskComplete");
@@ -850,46 +850,46 @@ void __59__TRIActivateTreatmentTask_runTaskUsingContext_experiment___block_invok
   *a3 = 1;
 }
 
-- (id)_nextTasksForRunStatus:(int)a3
+- (id)_nextTasksForRunStatus:(int)status
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (status == 2)
   {
-    v12 = [(TRIActivateTreatmentBaseTask *)self endTime];
+    endTime = [(TRIActivateTreatmentBaseTask *)self endTime];
 
-    if (!v12)
+    if (!endTime)
     {
-      v5 = TRILogCategory_Server();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+      experiment5 = TRILogCategory_Server();
+      if (os_log_type_enabled(experiment5, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [(TRITreatmentBaseTask *)self treatmentId];
-        v26 = [(TRIExperimentBaseTask *)self experiment];
-        v27 = [v26 experimentId];
+        treatmentId = [(TRITreatmentBaseTask *)self treatmentId];
+        experiment = [(TRIExperimentBaseTask *)self experiment];
+        experimentId = [experiment experimentId];
         v28 = 138412546;
-        v29 = v25;
+        v29 = treatmentId;
         v30 = 2114;
-        v31 = v27;
-        _os_log_debug_impl(&dword_26F567000, v5, OS_LOG_TYPE_DEBUG, "not scheduling deactivation of treatment %@ for experiment %{public}@ since end time is nil", &v28, 0x16u);
+        v31 = experimentId;
+        _os_log_debug_impl(&dword_26F567000, experiment5, OS_LOG_TYPE_DEBUG, "not scheduling deactivation of treatment %@ for experiment %{public}@ since end time is nil", &v28, 0x16u);
       }
 
       v11 = MEMORY[0x277CBEBF8];
       goto LABEL_9;
     }
 
-    v13 = [(TRIExperimentBaseTask *)self experiment];
-    v14 = [v13 experimentId];
-    v15 = [(TRIExperimentBaseTask *)self experiment];
-    v16 = [v15 deploymentId];
-    v17 = [(TRIActivateTreatmentBaseTask *)self endTime];
-    v18 = [(TRITreatmentBaseTask *)self taskAttributing];
-    v5 = [TRIDeactivateTreatmentTask taskWithExperimentId:v14 deploymentId:v16 startTime:v17 failOnUnrecognizedExperiment:1 triggerEvent:2 taskAttribution:v18];
+    experiment2 = [(TRIExperimentBaseTask *)self experiment];
+    experimentId2 = [experiment2 experimentId];
+    experiment3 = [(TRIExperimentBaseTask *)self experiment];
+    deploymentId = [experiment3 deploymentId];
+    endTime2 = [(TRIActivateTreatmentBaseTask *)self endTime];
+    taskAttributing = [(TRITreatmentBaseTask *)self taskAttributing];
+    experiment5 = [TRIDeactivateTreatmentTask taskWithExperimentId:experimentId2 deploymentId:deploymentId startTime:endTime2 failOnUnrecognizedExperiment:1 triggerEvent:2 taskAttribution:taskAttributing];
 
-    v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(60 * arc4random_uniform(0x1Eu))];
-    v19 = [(TRIExperimentBaseTask *)self experiment];
-    v20 = [v19 experimentId];
-    v21 = [TRISubscribeChannelTask taskWithExperimentId:v20 startTime:v6];
+    experimentId4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(60 * arc4random_uniform(0x1Eu))];
+    experiment4 = [(TRIExperimentBaseTask *)self experiment];
+    experimentId3 = [experiment4 experimentId];
+    v21 = [TRISubscribeChannelTask taskWithExperimentId:experimentId3 startTime:experimentId4];
 
-    v32[0] = v5;
+    v32[0] = experiment5;
     v32[1] = v21;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
 
@@ -899,23 +899,23 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (status == 3)
   {
     v4 = TRILogCategory_Server();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(TRITreatmentBaseTask *)self treatmentId];
+      treatmentId2 = [(TRITreatmentBaseTask *)self treatmentId];
       v28 = 138412290;
-      v29 = v24;
+      v29 = treatmentId2;
       _os_log_error_impl(&dword_26F567000, v4, OS_LOG_TYPE_ERROR, "failed to activate treatment id %@", &v28, 0xCu);
     }
 
-    v5 = [(TRIExperimentBaseTask *)self experiment];
-    v6 = [v5 experimentId];
-    v7 = [(TRIExperimentBaseTask *)self experiment];
-    v8 = [v7 deploymentId];
-    v9 = [(TRITreatmentBaseTask *)self taskAttributing];
-    v10 = [TRIDeactivateTreatmentTask taskWithExperimentId:v6 deploymentId:v8 failOnUnrecognizedExperiment:1 triggerEvent:10 taskAttribution:v9];
+    experiment5 = [(TRIExperimentBaseTask *)self experiment];
+    experimentId4 = [experiment5 experimentId];
+    experiment6 = [(TRIExperimentBaseTask *)self experiment];
+    deploymentId2 = [experiment6 deploymentId];
+    taskAttributing2 = [(TRITreatmentBaseTask *)self taskAttributing];
+    v10 = [TRIDeactivateTreatmentTask taskWithExperimentId:experimentId4 deploymentId:deploymentId2 failOnUnrecognizedExperiment:1 triggerEvent:10 taskAttribution:taskAttributing2];
     v33[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
 
@@ -933,12 +933,12 @@ LABEL_11:
 {
   v10.receiver = self;
   v10.super_class = TRIActivateTreatmentTask;
-  v3 = [(TRITreatmentBaseTask *)&v10 metrics];
-  v4 = v3;
+  metrics = [(TRITreatmentBaseTask *)&v10 metrics];
+  v4 = metrics;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (metrics)
   {
-    v5 = v3;
+    v5 = metrics;
   }
 
   v6 = v5;
@@ -961,60 +961,60 @@ LABEL_11:
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRIExperimentBaseTask *)self experiment];
-  v5 = [v4 experimentId];
-  [v3 setExperimentId:v5];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment experimentId];
+  [v3 setExperimentId:experimentId];
 
-  v6 = [(TRIExperimentBaseTask *)self experiment];
-  [v3 setDeploymentId:{objc_msgSend(v6, "deploymentId")}];
+  experiment2 = [(TRIExperimentBaseTask *)self experiment];
+  [v3 setDeploymentId:{objc_msgSend(experiment2, "deploymentId")}];
 
-  v7 = [(TRITreatmentBaseTask *)self treatmentId];
-  [v3 setTreatmentId:v7];
+  treatmentId = [(TRITreatmentBaseTask *)self treatmentId];
+  [v3 setTreatmentId:treatmentId];
 
-  v8 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+  factorPackSetId = [(TRIActivateTreatmentTask *)self factorPackSetId];
 
-  if (v8)
+  if (factorPackSetId)
   {
-    v9 = [(TRIActivateTreatmentTask *)self factorPackSetId];
-    [v3 setFactorPackSetId:v9];
+    factorPackSetId2 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+    [v3 setFactorPackSetId:factorPackSetId2];
   }
 
-  v10 = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
+  counterfactualTreatments = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
 
-  if (v10)
+  if (counterfactualTreatments)
   {
-    v11 = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
-    v12 = [v11 mutableCopy];
+    counterfactualTreatments2 = [(TRIActivateTreatmentTask *)self counterfactualTreatments];
+    v12 = [counterfactualTreatments2 mutableCopy];
     [v3 setCounterfactualTreatments:v12];
   }
 
-  v13 = [(TRITreatmentBaseTask *)self taskAttributing];
-  v14 = [v13 asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v14];
+  taskAttributing = [(TRITreatmentBaseTask *)self taskAttributing];
+  asPersistedTaskAttribution = [taskAttributing asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
-  v15 = [(TRIActivateTreatmentBaseTask *)self startTime];
+  startTime = [(TRIActivateTreatmentBaseTask *)self startTime];
 
-  if (v15)
+  if (startTime)
   {
     v16 = objc_alloc(MEMORY[0x277D73B88]);
-    v17 = [(TRIActivateTreatmentBaseTask *)self startTime];
-    v18 = [v16 initWithDate:v17];
+    startTime2 = [(TRIActivateTreatmentBaseTask *)self startTime];
+    v18 = [v16 initWithDate:startTime2];
     [v3 setStartTimestamp:v18];
   }
 
-  v19 = [(TRIActivateTreatmentBaseTask *)self endTime];
+  endTime = [(TRIActivateTreatmentBaseTask *)self endTime];
 
-  if (v19)
+  if (endTime)
   {
     v20 = objc_alloc(MEMORY[0x277D73B88]);
-    v21 = [(TRIActivateTreatmentBaseTask *)self endTime];
-    v22 = [v20 initWithDate:v21];
+    endTime2 = [(TRIActivateTreatmentBaseTask *)self endTime];
+    v22 = [v20 initWithDate:endTime2];
     [v3 setEndTimestamp:v22];
   }
 
   [v3 setRequiresTreatmentInstallation:{-[TRIActivateTreatmentBaseTask requiresTreatmentInstallation](self, "requiresTreatmentInstallation")}];
-  v23 = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
-  [v3 setCapabilityModifier:v23];
+  asPersistedModifier = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
+  [v3 setCapabilityModifier:asPersistedModifier];
 
   if (self->_taskOptions)
   {
@@ -1026,25 +1026,25 @@ LABEL_11:
 
 - (id)serialize
 {
-  v4 = [(TRIActivateTreatmentTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIActivateTreatmentTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIActivateTreatmentTask.m" lineNumber:573 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivateTreatmentTask.m" lineNumber:573 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v71 = *MEMORY[0x277D85DE8];
   v68 = 0;
-  v4 = [(TRIPBMessage *)TRIActivateTreatmentPersistedTask parseFromData:a3 error:&v68];
+  v4 = [(TRIPBMessage *)TRIActivateTreatmentPersistedTask parseFromData:data error:&v68];
   v5 = v68;
   if (!v4)
   {
@@ -1092,8 +1092,8 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  v6 = [v4 experimentId];
-  v7 = [v6 length];
+  experimentId = [v4 experimentId];
+  v7 = [experimentId length];
 
   if (!v7)
   {
@@ -1140,8 +1140,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v8 = [v4 treatmentId];
-  v9 = [v8 length];
+  treatmentId = [v4 treatmentId];
+  v9 = [treatmentId length];
 
   if (!v9)
   {
@@ -1206,8 +1206,8 @@ LABEL_31:
     goto LABEL_14;
   }
 
-  v10 = [v4 taskAttribution];
-  v11 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v10];
+  taskAttribution = [v4 taskAttribution];
+  v11 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
   if (!v11)
   {
@@ -1223,14 +1223,14 @@ LABEL_31:
   }
 
   v12 = objc_alloc(MEMORY[0x277D736C0]);
-  v13 = [v4 experimentId];
-  v14 = [v12 initWithExperimentId:v13 deploymentId:{objc_msgSend(v4, "deploymentId")}];
+  experimentId2 = [v4 experimentId];
+  v14 = [v12 initWithExperimentId:experimentId2 deploymentId:{objc_msgSend(v4, "deploymentId")}];
 
   if ([v4 hasCapabilityModifier])
   {
     v15 = [TRITaskCapabilityModifier alloc];
-    v16 = [v4 capabilityModifier];
-    v17 = [v16 add];
+    capabilityModifier = [v4 capabilityModifier];
+    v17 = [capabilityModifier add];
     [v4 capabilityModifier];
     v19 = v18 = v14;
     v20 = -[TRITaskCapabilityModifier initWithAdd:remove:](v15, "initWithAdd:remove:", v17, [v19 remove]);
@@ -1246,14 +1246,14 @@ LABEL_31:
   if ([v4 counterfactualTreatments_Count])
   {
     v41 = objc_opt_new();
-    v42 = [v4 counterfactualTreatments];
+    counterfactualTreatments = [v4 counterfactualTreatments];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __42__TRIActivateTreatmentTask_parseFromData___block_invoke;
     v66[3] = &unk_279DDF658;
     v65 = v41;
     v67 = v65;
-    [v42 enumerateKeysAndObjectsUsingBlock:v66];
+    [counterfactualTreatments enumerateKeysAndObjectsUsingBlock:v66];
   }
 
   else
@@ -1261,57 +1261,57 @@ LABEL_31:
     v65 = 0;
   }
 
-  v43 = [v4 hasFactorPackSetId];
+  hasFactorPackSetId = [v4 hasFactorPackSetId];
   v44 = objc_opt_class();
-  v45 = [v4 treatmentId];
-  if (v43)
+  treatmentId2 = [v4 treatmentId];
+  if (hasFactorPackSetId)
   {
-    v3 = [v4 factorPackSetId];
+    factorPackSetId = [v4 factorPackSetId];
     if ([v4 hasRequiresTreatmentInstallation])
     {
-      v61 = [v4 requiresTreatmentInstallation];
+      requiresTreatmentInstallation = [v4 requiresTreatmentInstallation];
     }
 
     else
     {
-      v61 = 1;
+      requiresTreatmentInstallation = 1;
     }
 
-    v47 = [v4 hasStartTimestamp];
-    if (v47)
+    hasStartTimestamp = [v4 hasStartTimestamp];
+    if (hasStartTimestamp)
     {
-      v43 = [v4 startTimestamp];
-      v64 = [v43 date];
+      hasFactorPackSetId = [v4 startTimestamp];
+      date = [hasFactorPackSetId date];
     }
 
     else
     {
-      v64 = 0;
+      date = 0;
     }
 
     if ([v4 hasTaskOptions])
     {
       [v4 taskOptions];
-      v60 = v43;
-      v49 = v3;
-      v50 = v45;
+      v60 = hasFactorPackSetId;
+      v49 = factorPackSetId;
+      v50 = treatmentId2;
       v51 = v20;
       v53 = v52 = v14;
-      v36 = [v44 taskWithExperiment:v52 treatmentId:v50 factorPackSetId:v49 counterfactualTreatments:v65 taskAttributing:v11 requiresTreatmentInstallation:v61 capabilityModifier:v51 startTime:v64 taskOptions:v53];
+      v36 = [v44 taskWithExperiment:v52 treatmentId:v50 factorPackSetId:v49 counterfactualTreatments:v65 taskAttributing:v11 requiresTreatmentInstallation:requiresTreatmentInstallation capabilityModifier:v51 startTime:date taskOptions:v53];
 
       v14 = v52;
       v20 = v51;
-      v45 = v50;
-      v3 = v49;
-      v43 = v60;
+      treatmentId2 = v50;
+      factorPackSetId = v49;
+      hasFactorPackSetId = v60;
     }
 
     else
     {
-      v36 = [v44 taskWithExperiment:v14 treatmentId:v45 factorPackSetId:v3 counterfactualTreatments:v65 taskAttributing:v11 requiresTreatmentInstallation:v61 capabilityModifier:v20 startTime:v64 taskOptions:0];
+      v36 = [v44 taskWithExperiment:v14 treatmentId:treatmentId2 factorPackSetId:factorPackSetId counterfactualTreatments:v65 taskAttributing:v11 requiresTreatmentInstallation:requiresTreatmentInstallation capabilityModifier:v20 startTime:date taskOptions:0];
     }
 
-    if (!v47)
+    if (!hasStartTimestamp)
     {
       goto LABEL_68;
     }
@@ -1322,45 +1322,45 @@ LABEL_31:
     v63 = v44;
     if ([v4 hasRequiresTreatmentInstallation])
     {
-      v46 = [v4 requiresTreatmentInstallation];
+      requiresTreatmentInstallation2 = [v4 requiresTreatmentInstallation];
     }
 
     else
     {
-      v46 = 1;
+      requiresTreatmentInstallation2 = 1;
     }
 
-    v48 = [v4 hasStartTimestamp];
-    if (v48)
+    hasStartTimestamp2 = [v4 hasStartTimestamp];
+    if (hasStartTimestamp2)
     {
-      v3 = [v4 startTimestamp];
-      v43 = [v3 date];
+      factorPackSetId = [v4 startTimestamp];
+      hasFactorPackSetId = [factorPackSetId date];
     }
 
     else
     {
-      v43 = 0;
+      hasFactorPackSetId = 0;
     }
 
     if ([v4 hasTaskOptions])
     {
       [v4 taskOptions];
-      v62 = v3;
-      v54 = v45;
+      v62 = factorPackSetId;
+      v54 = treatmentId2;
       v56 = v55 = v20;
-      v36 = [v63 taskWithExperiment:v14 treatmentId:v54 taskAttributing:v11 requiresTreatmentInstallation:v46 capabilityModifier:v55 startTime:v43 taskOptions:v56];
+      v36 = [v63 taskWithExperiment:v14 treatmentId:v54 taskAttributing:v11 requiresTreatmentInstallation:requiresTreatmentInstallation2 capabilityModifier:v55 startTime:hasFactorPackSetId taskOptions:v56];
 
       v20 = v55;
-      v45 = v54;
-      v3 = v62;
+      treatmentId2 = v54;
+      factorPackSetId = v62;
     }
 
     else
     {
-      v36 = [v63 taskWithExperiment:v14 treatmentId:v45 taskAttributing:v11 requiresTreatmentInstallation:v46 capabilityModifier:v20 startTime:v43 taskOptions:0];
+      v36 = [v63 taskWithExperiment:v14 treatmentId:treatmentId2 taskAttributing:v11 requiresTreatmentInstallation:requiresTreatmentInstallation2 capabilityModifier:v20 startTime:hasFactorPackSetId taskOptions:0];
     }
 
-    if (!v48)
+    if (!hasStartTimestamp2)
     {
       goto LABEL_69;
     }
@@ -1371,22 +1371,22 @@ LABEL_69:
 
   if ([v4 hasEndTimestamp])
   {
-    v57 = [v4 endTimestamp];
-    v58 = [v57 date];
-    [v36 setEndTime:v58];
+    endTimestamp = [v4 endTimestamp];
+    date2 = [endTimestamp date];
+    [v36 setEndTime:date2];
   }
 
   if ([v4 hasRetryCount])
   {
-    v59 = [v4 retryCount];
+    retryCount = [v4 retryCount];
   }
 
   else
   {
-    v59 = 0;
+    retryCount = 0;
   }
 
-  [v36 setRetryCount:v59];
+  [v36 setRetryCount:retryCount];
 
 LABEL_75:
 LABEL_33:
@@ -1425,13 +1425,13 @@ void __42__TRIActivateTreatmentTask_parseFromData___block_invoke(uint64_t a1, vo
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRIExperimentBaseTask *)self experiment];
-  v6 = [v5 shortDesc];
-  v7 = [(TRITreatmentBaseTask *)self treatmentId];
-  v8 = [(TRIActivateTreatmentTask *)self factorPackSetId];
-  v9 = [(TRITreatmentBaseTask *)self taskAttributing];
-  v10 = [v9 applicationBundleIdentifier];
-  v11 = [v3 stringWithFormat:@"<%@:%@, %@, %@, %@, r:%d>", v4, v6, v7, v8, v10, -[TRIActivateTreatmentTask retryCount](self, "retryCount")];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  shortDesc = [experiment shortDesc];
+  treatmentId = [(TRITreatmentBaseTask *)self treatmentId];
+  factorPackSetId = [(TRIActivateTreatmentTask *)self factorPackSetId];
+  taskAttributing = [(TRITreatmentBaseTask *)self taskAttributing];
+  applicationBundleIdentifier = [taskAttributing applicationBundleIdentifier];
+  v11 = [v3 stringWithFormat:@"<%@:%@, %@, %@, %@, r:%d>", v4, shortDesc, treatmentId, factorPackSetId, applicationBundleIdentifier, -[TRIActivateTreatmentTask retryCount](self, "retryCount")];
 
   return v11;
 }
@@ -1441,11 +1441,11 @@ void __42__TRIActivateTreatmentTask_parseFromData___block_invoke(uint64_t a1, vo
   v8.receiver = self;
   v8.super_class = TRIActivateTreatmentTask;
   v3 = [(TRIActivateTreatmentBaseTask *)&v8 hash];
-  v4 = [(TRIActivateTreatmentTask *)self factorPackSetId];
-  if (v4)
+  factorPackSetId = [(TRIActivateTreatmentTask *)self factorPackSetId];
+  if (factorPackSetId)
   {
-    v5 = [(TRIActivateTreatmentTask *)self factorPackSetId];
-    v6 = [v5 hash];
+    factorPackSetId2 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+    v6 = [factorPackSetId2 hash];
   }
 
   else
@@ -1456,67 +1456,67 @@ void __42__TRIActivateTreatmentTask_parseFromData___block_invoke(uint64_t a1, vo
   return v6 + 37 * v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(factorPackSetId2) = 1;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = TRIActivateTreatmentTask;
-    v5 = [(TRIActivateTreatmentBaseTask *)&v13 isEqual:v4];
-    LOBYTE(v6) = 0;
-    if (v4 && v5)
+    v5 = [(TRIActivateTreatmentBaseTask *)&v13 isEqual:equalCopy];
+    LOBYTE(factorPackSetId2) = 0;
+    if (equalCopy && v5)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
-        v8 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+        v7 = equalCopy;
+        factorPackSetId = [(TRIActivateTreatmentTask *)self factorPackSetId];
 
-        v6 = [(TRIActivateTreatmentTask *)v7 factorPackSetId];
+        factorPackSetId2 = [(TRIActivateTreatmentTask *)v7 factorPackSetId];
 
-        if (v8)
+        if (factorPackSetId)
         {
-          if (!v6)
+          if (!factorPackSetId2)
           {
 LABEL_13:
 
             goto LABEL_14;
           }
 
-          v9 = [(TRIActivateTreatmentTask *)self factorPackSetId];
-          v10 = [(TRIActivateTreatmentTask *)v7 factorPackSetId];
-          v11 = [v9 isEqualToString:v10];
+          factorPackSetId3 = [(TRIActivateTreatmentTask *)self factorPackSetId];
+          factorPackSetId4 = [(TRIActivateTreatmentTask *)v7 factorPackSetId];
+          v11 = [factorPackSetId3 isEqualToString:factorPackSetId4];
 
           if (v11)
           {
 LABEL_8:
-            LOBYTE(v6) = 1;
+            LOBYTE(factorPackSetId2) = 1;
             goto LABEL_13;
           }
         }
 
-        else if (!v6)
+        else if (!factorPackSetId2)
         {
           goto LABEL_8;
         }
 
-        LOBYTE(v6) = 0;
+        LOBYTE(factorPackSetId2) = 0;
         goto LABEL_13;
       }
 
-      LOBYTE(v6) = 0;
+      LOBYTE(factorPackSetId2) = 0;
     }
   }
 
 LABEL_14:
 
-  return v6;
+  return factorPackSetId2;
 }
 
 @end

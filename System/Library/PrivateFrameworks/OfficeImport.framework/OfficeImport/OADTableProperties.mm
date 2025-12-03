@@ -1,7 +1,7 @@
 @interface OADTableProperties
 + (id)defaultProperties;
-- (BOOL)hasBandsNormalToDir:(int)a3;
-- (BOOL)hasVectorNormalToDir:(int)a3 atExtremePos:(int)a4;
+- (BOOL)hasBandsNormalToDir:(int)dir;
+- (BOOL)hasVectorNormalToDir:(int)dir atExtremePos:(int)pos;
 - (NSString)description;
 - (OADTableProperties)initWithDefaults;
 - (id)effects;
@@ -25,19 +25,19 @@
 {
   v5.receiver = self;
   v5.super_class = OADTableProperties;
-  v2 = [(OADDrawableProperties *)&v5 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADDrawableProperties *)&v5 initWithDefaults];
+  if (initWithDefaults)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
-    [(OADTableProperties *)v2 setEffects:v3];
+    array = [MEMORY[0x277CBEA60] array];
+    [(OADTableProperties *)initWithDefaults setEffects:array];
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
-- (BOOL)hasBandsNormalToDir:(int)a3
+- (BOOL)hasBandsNormalToDir:(int)dir
 {
-  if (a3)
+  if (dir)
   {
     return [(OADTableProperties *)self bandColumn];
   }
@@ -48,11 +48,11 @@
   }
 }
 
-- (BOOL)hasVectorNormalToDir:(int)a3 atExtremePos:(int)a4
+- (BOOL)hasVectorNormalToDir:(int)dir atExtremePos:(int)pos
 {
-  if (a3)
+  if (dir)
   {
-    if (a4)
+    if (pos)
     {
       return [(OADTableProperties *)self lastColumn];
     }
@@ -63,7 +63,7 @@
     }
   }
 
-  else if (a4)
+  else if (pos)
   {
     return [(OADTableProperties *)self lastRow];
   }

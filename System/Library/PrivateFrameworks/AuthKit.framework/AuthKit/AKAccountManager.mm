@@ -1,304 +1,304 @@
 @interface AKAccountManager
 + (AKAccountManager)sharedInstance;
 + (id)personaIDIfCurrentPersonaIsDataSeparated;
-+ (id)stringRepresentationForService:(int64_t)a3;
-+ (void)performWithinPersonaForAccount:(id)a3 withBlock:(id)a4;
++ (id)stringRepresentationForService:(int64_t)service;
++ (void)performWithinPersonaForAccount:(id)account withBlock:(id)block;
 - (ACAccountType)appleIDAccountType;
 - (ACAccountType)iCloudAccountType;
 - (ACAccountType)protoAccountType;
 - (AKAccountManager)init;
 - (BOOL)_ageAttestationPhase1FeatureRestricted;
-- (BOOL)_isAccountEligibleForSecurityUpgrade:(id)a3 ofServiceType:(int64_t)a4;
-- (BOOL)_saveAccount:(id)a3 error:(id *)a4;
-- (BOOL)_setUsername:(id)a3 forAccount:(id)a4;
-- (BOOL)_shouldBlockAuthorizationForPersona:(id)a3;
-- (BOOL)accountAccessTelemetryOptInForAccount:(id)a3;
-- (BOOL)accountIdentifiableTelemetryForAccount:(id)a3;
-- (BOOL)accountImprovementOptInForAccount:(id)a3;
-- (BOOL)accountIsSignedIntoServices:(id)a3;
-- (BOOL)authorizationUsedForAccount:(id)a3;
-- (BOOL)canBeBeneficiaryForAccount:(id)a3;
-- (BOOL)canBeCustodianForAccount:(id)a3;
-- (BOOL)canHaveBeneficiaryForAccount:(id)a3;
-- (BOOL)canHaveCustodianForAccount:(id)a3;
-- (BOOL)custodianEnabledForAccount:(id)a3;
-- (BOOL)demoAccountForAccount:(id)a3;
-- (BOOL)hasMDMForAccount:(id)a3;
-- (BOOL)hasPersonaAvailableForAltDSID:(id)a3;
-- (BOOL)hasPrimaryiCloudAccountForAltDSID:(id)a3;
-- (BOOL)hasPrimaryiCloudAccountForAppleID:(id)a3;
-- (BOOL)isAskToBuyForAccount:(id)a3;
-- (BOOL)isBeneficiaryForAccount:(id)a3;
-- (BOOL)isDataSeparatedAccountForAltDSID:(id)a3;
-- (BOOL)isEligibleForSafetyScreenForAccount:(id)a3;
-- (BOOL)isFidoForAccount:(id)a3;
-- (BOOL)isFulliCloudAccount:(id)a3;
-- (BOOL)isManagedAppleIDForAccount:(id)a3;
-- (BOOL)isNotificationEmailAvailableForAccount:(id)a3;
-- (BOOL)isPasscodeAuthEnabledForAccount:(id)a3;
-- (BOOL)isPasscodeAuthForAccount:(id)a3;
-- (BOOL)isPrimaryiCloudAccount:(id)a3;
-- (BOOL)isPrimaryiCloudAccountEmailVerified:(id)a3;
-- (BOOL)isProximityAuthEligible:(id)a3;
-- (BOOL)isSignOutInProgress:(id)a3;
-- (BOOL)isSiwaEnabledForChildAccount:(id)a3;
-- (BOOL)mdmInformationRequiredForAccount:(id)a3;
-- (BOOL)needsRepairForAccount:(id)a3;
-- (BOOL)phoneAsAppleIDForAccount:(id)a3;
-- (BOOL)piggybackingApprovalEligible:(id)a3;
+- (BOOL)_isAccountEligibleForSecurityUpgrade:(id)upgrade ofServiceType:(int64_t)type;
+- (BOOL)_saveAccount:(id)account error:(id *)error;
+- (BOOL)_setUsername:(id)username forAccount:(id)account;
+- (BOOL)_shouldBlockAuthorizationForPersona:(id)persona;
+- (BOOL)accountAccessTelemetryOptInForAccount:(id)account;
+- (BOOL)accountIdentifiableTelemetryForAccount:(id)account;
+- (BOOL)accountImprovementOptInForAccount:(id)account;
+- (BOOL)accountIsSignedIntoServices:(id)services;
+- (BOOL)authorizationUsedForAccount:(id)account;
+- (BOOL)canBeBeneficiaryForAccount:(id)account;
+- (BOOL)canBeCustodianForAccount:(id)account;
+- (BOOL)canHaveBeneficiaryForAccount:(id)account;
+- (BOOL)canHaveCustodianForAccount:(id)account;
+- (BOOL)custodianEnabledForAccount:(id)account;
+- (BOOL)demoAccountForAccount:(id)account;
+- (BOOL)hasMDMForAccount:(id)account;
+- (BOOL)hasPersonaAvailableForAltDSID:(id)d;
+- (BOOL)hasPrimaryiCloudAccountForAltDSID:(id)d;
+- (BOOL)hasPrimaryiCloudAccountForAppleID:(id)d;
+- (BOOL)isAskToBuyForAccount:(id)account;
+- (BOOL)isBeneficiaryForAccount:(id)account;
+- (BOOL)isDataSeparatedAccountForAltDSID:(id)d;
+- (BOOL)isEligibleForSafetyScreenForAccount:(id)account;
+- (BOOL)isFidoForAccount:(id)account;
+- (BOOL)isFulliCloudAccount:(id)account;
+- (BOOL)isManagedAppleIDForAccount:(id)account;
+- (BOOL)isNotificationEmailAvailableForAccount:(id)account;
+- (BOOL)isPasscodeAuthEnabledForAccount:(id)account;
+- (BOOL)isPasscodeAuthForAccount:(id)account;
+- (BOOL)isPrimaryiCloudAccount:(id)account;
+- (BOOL)isPrimaryiCloudAccountEmailVerified:(id)verified;
+- (BOOL)isProximityAuthEligible:(id)eligible;
+- (BOOL)isSignOutInProgress:(id)progress;
+- (BOOL)isSiwaEnabledForChildAccount:(id)account;
+- (BOOL)mdmInformationRequiredForAccount:(id)account;
+- (BOOL)needsRepairForAccount:(id)account;
+- (BOOL)phoneAsAppleIDForAccount:(id)account;
+- (BOOL)piggybackingApprovalEligible:(id)eligible;
 - (BOOL)primaryiCloudAccountHasPendingDOB;
-- (BOOL)privateAttestationEnabledForAccount:(id)a3;
-- (BOOL)resetAccountImprovementOptInForAccount:(id)a3 error:(id *)a4;
-- (BOOL)saveAccount:(id)a3 error:(id *)a4;
-- (BOOL)selectedPrivateEmailForAccount:(id)a3;
-- (BOOL)setAccountAccessTelemetryOptIn:(BOOL)a3 forAccount:(id)a4 error:(id *)a5;
-- (BOOL)setAccountImprovementOptIn:(BOOL)a3 forAccount:(id)a4 error:(id *)a5;
+- (BOOL)privateAttestationEnabledForAccount:(id)account;
+- (BOOL)resetAccountImprovementOptInForAccount:(id)account error:(id *)error;
+- (BOOL)saveAccount:(id)account error:(id *)error;
+- (BOOL)selectedPrivateEmailForAccount:(id)account;
+- (BOOL)setAccountAccessTelemetryOptIn:(BOOL)in forAccount:(id)account error:(id *)error;
+- (BOOL)setAccountImprovementOptIn:(BOOL)in forAccount:(id)account error:(id *)error;
 - (BOOL)shieldSignInOrCreateFlows;
-- (BOOL)shouldPerformSatoriWarmupVerificationForAccount:(id)a3;
-- (BOOL)shouldUpdateAuthModeForAccount:(id)a3;
-- (BOOL)userIsSeniorForAccount:(id)a3;
-- (BOOL)userUnderAgeForAccount:(id)a3;
-- (BOOL)verifiedPrimaryEmailForAccount:(id)a3;
-- (id)DSIDForAccount:(id)a3;
-- (id)_accountTypeForServiceType:(int64_t)a3;
-- (id)_aliasesForiCloudAccount:(id)a3;
-- (id)_altDSIDForiCloudAccount:(id)a3;
-- (id)_creationKeyForTokenWithName:(id)a3;
-- (id)_credentialForAccount:(id)a3;
+- (BOOL)shouldPerformSatoriWarmupVerificationForAccount:(id)account;
+- (BOOL)shouldUpdateAuthModeForAccount:(id)account;
+- (BOOL)userIsSeniorForAccount:(id)account;
+- (BOOL)userUnderAgeForAccount:(id)account;
+- (BOOL)verifiedPrimaryEmailForAccount:(id)account;
+- (id)DSIDForAccount:(id)account;
+- (id)_accountTypeForServiceType:(int64_t)type;
+- (id)_aliasesForiCloudAccount:(id)account;
+- (id)_altDSIDForiCloudAccount:(id)account;
+- (id)_creationKeyForTokenWithName:(id)name;
+- (id)_credentialForAccount:(id)account;
 - (id)_defaultSecurityUpgradeServiceNames;
-- (id)_fetchAllAccountsWithType:(id)a3 error:(id *)a4;
-- (id)_iCloudAccountFromPersonaUniqueIdentifier:(id)a3;
+- (id)_fetchAllAccountsWithType:(id)type error:(id *)error;
+- (id)_iCloudAccountFromPersonaUniqueIdentifier:(id)identifier;
 - (id)_iCloudAccountRequestingAuthorization;
 - (id)_iCloudAccounts;
-- (id)_idmsWalrusStatusForAccount:(id)a3;
-- (id)_isSilentBurnCDPRepairEnabledForAccount:(id)a3;
-- (id)_isSilentEscrowRecordRepairEnabledForAccount:(id)a3;
-- (id)_isSilentEscrowRecordRepairEnabledForAccountV2:(id)a3;
-- (id)_matchingServiceAccountForAuthKitAccount:(id)a3 service:(int64_t)a4;
-- (id)_protoAccountWithError:(id *)a3;
+- (id)_idmsWalrusStatusForAccount:(id)account;
+- (id)_isSilentBurnCDPRepairEnabledForAccount:(id)account;
+- (id)_isSilentEscrowRecordRepairEnabledForAccount:(id)account;
+- (id)_isSilentEscrowRecordRepairEnabledForAccountV2:(id)v2;
+- (id)_matchingServiceAccountForAuthKitAccount:(id)account service:(int64_t)service;
+- (id)_protoAccountWithError:(id *)error;
 - (id)_serviceTypesForSecurityUpgrade;
-- (id)_telemetryDeviceSessionIDForAccount:(id)a3;
-- (id)_tokenWithName:(id)a3 forAccount:(id)a4 error:(id *)a5;
-- (id)accountAccessTelemetryOptInDateForAccount:(id)a3;
+- (id)_telemetryDeviceSessionIDForAccount:(id)account;
+- (id)_tokenWithName:(id)name forAccount:(id)account error:(id *)error;
+- (id)accountAccessTelemetryOptInDateForAccount:(id)account;
 - (id)accountEligibleForUpdate;
-- (id)accountTypeForTypeIdentifier:(id)a3;
-- (id)accountsUsingService:(int64_t)a3;
-- (id)activeServiceNamesForAccount:(id)a3;
+- (id)accountTypeForTypeIdentifier:(id)identifier;
+- (id)accountsUsingService:(int64_t)service;
+- (id)activeServiceNamesForAccount:(id)account;
 - (id)activeiCloudPrivateEmailCount;
-- (id)activeiCloudPrivateEmailCountForAccount:(id)a3;
-- (id)additionalInfoForAccount:(id)a3;
-- (id)adpCohortForAccount:(id)a3;
-- (id)ageOfMajorityForAccount:(id)a3;
-- (id)aliasesForAccount:(id)a3;
+- (id)activeiCloudPrivateEmailCountForAccount:(id)account;
+- (id)additionalInfoForAccount:(id)account;
+- (id)adpCohortForAccount:(id)account;
+- (id)ageOfMajorityForAccount:(id)account;
+- (id)aliasesForAccount:(id)account;
 - (id)allAuthKitAccounts;
-- (id)allAuthKitAccountsWithError:(id *)a3;
-- (id)allTokensForAccount:(id)a3 error:(id *)a4;
-- (id)altDSIDForAccount:(id)a3;
+- (id)allAuthKitAccountsWithError:(id *)error;
+- (id)allTokensForAccount:(id)account error:(id *)error;
+- (id)altDSIDForAccount:(id)account;
 - (id)altDSIDForAuthKitAccountRequestingAuthorization;
 - (id)altDSIDforPrimaryiCloudAccount;
-- (id)appleAccountConsentVersionForAccount:(id)a3;
-- (id)appleIDAccountWithAltDSID:(id)a3;
-- (id)appleIDAccountWithAppleID:(id)a3;
-- (id)appleIDCountryCodeForAccount:(id)a3;
+- (id)appleAccountConsentVersionForAccount:(id)account;
+- (id)appleIDAccountWithAltDSID:(id)d;
+- (id)appleIDAccountWithAppleID:(id)d;
+- (id)appleIDCountryCodeForAccount:(id)account;
 - (id)authKitAccountRequestingAuthorization;
-- (id)authKitAccountTypeWithError:(id *)a3;
-- (id)authKitAccountWithAltDSID:(id)a3;
-- (id)authKitAccountWithAltDSID:(id)a3 error:(id *)a4;
-- (id)authKitAccountWithAppleID:(id)a3;
-- (id)authKitAccountWithAppleID:(id)a3 error:(id *)a4;
-- (id)authKitAccountWithDSID:(id)a3;
-- (id)beneficiaryInfoForAccount:(id)a3;
-- (id)beneficiaryLastModifiedForAccount:(id)a3;
-- (id)beneficiaryListVersionForAccount:(id)a3;
-- (id)birthYearForAccount:(id)a3;
-- (id)buildCredentialWithTokens:(id)a3;
-- (id)canAttestAgeForAccount:(id)a3;
-- (id)combinedAliasesAndReachableEmailsForAccount:(id)a3;
-- (id)configDataVersionForAccount:(id)a3;
-- (id)configValue:(id)a3 forAccount:(id)a4;
-- (id)continuationTokenForAccount:(id)a3;
-- (id)continuationTokenForAccount:(id)a3 error:(id *)a4;
-- (id)custodianInfosForAccount:(id)a3;
-- (id)custodianLastModifiedForAccount:(id)a3;
-- (id)custodianListVersionForAccount:(id)a3;
-- (id)deletedDevicesCacheExpiryOffsetForAccount:(id)a3;
-- (id)deviceListVersionForAccount:(id)a3;
-- (id)familyNameForAccount:(id)a3;
-- (id)formattedUsernameForAccount:(id)a3;
-- (id)forwardingEmailForAccount:(id)a3;
-- (id)get3PRegulatoryOverride:(id)a3;
-- (id)givenNameForAccount:(id)a3;
-- (id)groupKitEligibilityForAccount:(id)a3;
-- (id)hasModernRecoveryKeyForAccount:(id)a3;
-- (id)hasSOSActiveDeviceForAccount:(id)a3;
-- (id)hearbeatTokenForAccount:(id)a3;
-- (id)hearbeatTokenForAccount:(id)a3 error:(id *)a4;
-- (id)iCloudAccountForAltDSID:(id)a3;
-- (id)iCloudAccountForAppleID:(id)a3;
-- (id)idmsWalrusStatusForAccount:(id)a3;
+- (id)authKitAccountTypeWithError:(id *)error;
+- (id)authKitAccountWithAltDSID:(id)d;
+- (id)authKitAccountWithAltDSID:(id)d error:(id *)error;
+- (id)authKitAccountWithAppleID:(id)d;
+- (id)authKitAccountWithAppleID:(id)d error:(id *)error;
+- (id)authKitAccountWithDSID:(id)d;
+- (id)beneficiaryInfoForAccount:(id)account;
+- (id)beneficiaryLastModifiedForAccount:(id)account;
+- (id)beneficiaryListVersionForAccount:(id)account;
+- (id)birthYearForAccount:(id)account;
+- (id)buildCredentialWithTokens:(id)tokens;
+- (id)canAttestAgeForAccount:(id)account;
+- (id)combinedAliasesAndReachableEmailsForAccount:(id)account;
+- (id)configDataVersionForAccount:(id)account;
+- (id)configValue:(id)value forAccount:(id)account;
+- (id)continuationTokenForAccount:(id)account;
+- (id)continuationTokenForAccount:(id)account error:(id *)error;
+- (id)custodianInfosForAccount:(id)account;
+- (id)custodianLastModifiedForAccount:(id)account;
+- (id)custodianListVersionForAccount:(id)account;
+- (id)deletedDevicesCacheExpiryOffsetForAccount:(id)account;
+- (id)deviceListVersionForAccount:(id)account;
+- (id)familyNameForAccount:(id)account;
+- (id)formattedUsernameForAccount:(id)account;
+- (id)forwardingEmailForAccount:(id)account;
+- (id)get3PRegulatoryOverride:(id)override;
+- (id)givenNameForAccount:(id)account;
+- (id)groupKitEligibilityForAccount:(id)account;
+- (id)hasModernRecoveryKeyForAccount:(id)account;
+- (id)hasSOSActiveDeviceForAccount:(id)account;
+- (id)hearbeatTokenForAccount:(id)account;
+- (id)hearbeatTokenForAccount:(id)account error:(id *)error;
+- (id)iCloudAccountForAltDSID:(id)d;
+- (id)iCloudAccountForAppleID:(id)d;
+- (id)idmsWalrusStatusForAccount:(id)account;
 - (id)inactiveiCloudPrivateEmailCount;
-- (id)inactiveiCloudPrivateEmailCountForAccount:(id)a3;
-- (id)isEligibleToMigrateToChildForAccount:(id)a3;
-- (id)isSOSNeededForAccount:(id)a3;
-- (id)isSilentBurnCDPRepairEnabledForAccount:(id)a3;
-- (id)isSilentEscrowRecordRepairEnabledForAccount:(id)a3;
-- (id)isSilentEscrowRecordRepairEnabledForAccountV2:(id)a3;
-- (id)lastSettingsRedirectDateForAccount:(id)a3;
-- (id)loginHandlesForAccount:(id)a3;
-- (id)managedOrganizationNameForAccount:(id)a3;
-- (id)markedForSignOutForAccount:(id)a3;
-- (id)masterTokenForAccount:(id)a3;
+- (id)inactiveiCloudPrivateEmailCountForAccount:(id)account;
+- (id)isEligibleToMigrateToChildForAccount:(id)account;
+- (id)isSOSNeededForAccount:(id)account;
+- (id)isSilentBurnCDPRepairEnabledForAccount:(id)account;
+- (id)isSilentEscrowRecordRepairEnabledForAccount:(id)account;
+- (id)isSilentEscrowRecordRepairEnabledForAccountV2:(id)v2;
+- (id)lastSettingsRedirectDateForAccount:(id)account;
+- (id)loginHandlesForAccount:(id)account;
+- (id)managedOrganizationNameForAccount:(id)account;
+- (id)markedForSignOutForAccount:(id)account;
+- (id)masterTokenForAccount:(id)account;
 - (id)mostRecentlyUsedAuthKitAccount;
-- (id)nextLivenessNonce:(id)a3;
-- (id)notificationEmailForAccount:(id)a3;
-- (id)passkeyEligibleForAccount:(id)a3;
-- (id)passkeyPresentForAccount:(id)a3;
-- (id)passkeyRegistrationAttemptDateForAccount:(id)a3;
-- (id)passkeysDeletionAttemptDateForAccount:(id)a3;
-- (id)passkeysInKeychainCountForAccount:(id)a3;
-- (id)passwordResetTokenBackupForAccount:(id)a3;
-- (id)passwordResetTokenBackupForAccount:(id)a3 error:(id *)a4;
-- (id)passwordResetTokenForAccount:(id)a3;
-- (id)passwordResetTokenForAccount:(id)a3 error:(id *)a4;
-- (id)personaUniqueStringForAltDSID:(id)a3;
-- (id)previousAccountInfoRefreshDateForAccount:(id)a3;
+- (id)nextLivenessNonce:(id)nonce;
+- (id)notificationEmailForAccount:(id)account;
+- (id)passkeyEligibleForAccount:(id)account;
+- (id)passkeyPresentForAccount:(id)account;
+- (id)passkeyRegistrationAttemptDateForAccount:(id)account;
+- (id)passkeysDeletionAttemptDateForAccount:(id)account;
+- (id)passkeysInKeychainCountForAccount:(id)account;
+- (id)passwordResetTokenBackupForAccount:(id)account;
+- (id)passwordResetTokenBackupForAccount:(id)account error:(id *)error;
+- (id)passwordResetTokenForAccount:(id)account;
+- (id)passwordResetTokenForAccount:(id)account error:(id *)error;
+- (id)personaUniqueStringForAltDSID:(id)d;
+- (id)previousAccountInfoRefreshDateForAccount:(id)account;
 - (id)primaryAuthKitAccount;
-- (id)primaryEmailAddressForAccount:(id)a3;
+- (id)primaryEmailAddressForAccount:(id)account;
 - (id)primaryiCloudAccount;
-- (id)reachableEmailAddressesForAccount:(id)a3;
-- (id)renewDeviceSessionIDForAccount:(id)a3;
-- (id)securityKeysForAccount:(id)a3;
-- (id)selectedAuthorizationEmailForAccount:(id)a3;
-- (id)serverExperimentalFeaturesForAccount:(id)a3;
-- (id)servicesUsingAccount:(id)a3;
-- (id)settingsServiceTokenForAccount:(id)a3;
-- (id)sharingGroupLastNotificationDateForAccount:(id)a3;
-- (id)telemetryDeviceSessionIDForAccount:(id)a3;
-- (id)tokenCreationDateWithIdentifier:(id)a3 forAccount:(id)a4 error:(id *)a5;
-- (id)tokenCreationTimeStampWithIdentifier:(id)a3 forAccount:(id)a4 error:(id *)a5;
-- (id)transportableAuthKitAccount:(id)a3;
-- (id)trustedPhoneNumbersForAccount:(id)a3;
-- (id)webAccessEnabledForAccount:(id)a3;
-- (int64_t)_serviceTypeForServiceNameString:(id)a3;
-- (int64_t)deviceRemovalReasonForAccount:(id)a3;
-- (unint64_t)accountImprovementOptInValueForAccount:(id)a3;
-- (unint64_t)authenticationModeForAccount:(id)a3;
-- (unint64_t)managedOrganizationTypeForAccount:(id)a3;
-- (unint64_t)numberOfApprovedRecoveryContactsForAltDSID:(id)a3;
-- (unint64_t)repairStateForAccount:(id)a3;
-- (unint64_t)securityLevelForAccount:(id)a3;
-- (unint64_t)signInPartitionForLivenessWithAltDSID:(id)a3;
-- (unint64_t)userAgeRangeForAccount:(id)a3;
-- (void)_clearRawPasswordForAccount:(id)a3;
+- (id)reachableEmailAddressesForAccount:(id)account;
+- (id)renewDeviceSessionIDForAccount:(id)account;
+- (id)securityKeysForAccount:(id)account;
+- (id)selectedAuthorizationEmailForAccount:(id)account;
+- (id)serverExperimentalFeaturesForAccount:(id)account;
+- (id)servicesUsingAccount:(id)account;
+- (id)settingsServiceTokenForAccount:(id)account;
+- (id)sharingGroupLastNotificationDateForAccount:(id)account;
+- (id)telemetryDeviceSessionIDForAccount:(id)account;
+- (id)tokenCreationDateWithIdentifier:(id)identifier forAccount:(id)account error:(id *)error;
+- (id)tokenCreationTimeStampWithIdentifier:(id)identifier forAccount:(id)account error:(id *)error;
+- (id)transportableAuthKitAccount:(id)account;
+- (id)trustedPhoneNumbersForAccount:(id)account;
+- (id)webAccessEnabledForAccount:(id)account;
+- (int64_t)_serviceTypeForServiceNameString:(id)string;
+- (int64_t)deviceRemovalReasonForAccount:(id)account;
+- (unint64_t)accountImprovementOptInValueForAccount:(id)account;
+- (unint64_t)authenticationModeForAccount:(id)account;
+- (unint64_t)managedOrganizationTypeForAccount:(id)account;
+- (unint64_t)numberOfApprovedRecoveryContactsForAltDSID:(id)d;
+- (unint64_t)repairStateForAccount:(id)account;
+- (unint64_t)securityLevelForAccount:(id)account;
+- (unint64_t)signInPartitionForLivenessWithAltDSID:(id)d;
+- (unint64_t)userAgeRangeForAccount:(id)account;
+- (void)_clearRawPasswordForAccount:(id)account;
 - (void)_removeAllRawPasswordCaches;
-- (void)_removeTokenForKeys:(id)a3 forAccount:(id)a4;
-- (void)_removeTokenKey:(id)a3 forAccount:(id)a4;
-- (void)_reportTokenWithName:(id)a3 forAccount:(id)a4 error:(id)a5;
-- (void)_reportTokenWithTelemetryID:(id)a3 account:(id)a4 telemetryFlowID:(id)a5 error:(id)a6;
-- (void)_setTokenCreationTimeForToken:(id)a3 tokenID:(id)a4 account:(id)a5 credential:(id)a6;
-- (void)_triggerSilentTTRFor:(unint64_t)a3;
-- (void)clearDeviceRemovalReasonFromAccount:(id)a3;
+- (void)_removeTokenForKeys:(id)keys forAccount:(id)account;
+- (void)_removeTokenKey:(id)key forAccount:(id)account;
+- (void)_reportTokenWithName:(id)name forAccount:(id)account error:(id)error;
+- (void)_reportTokenWithTelemetryID:(id)d account:(id)account telemetryFlowID:(id)iD error:(id)error;
+- (void)_setTokenCreationTimeForToken:(id)token tokenID:(id)d account:(id)account credential:(id)credential;
+- (void)_triggerSilentTTRFor:(unint64_t)for;
+- (void)clearDeviceRemovalReasonFromAccount:(id)account;
 - (void)removeAllPasswordResetTokens;
-- (void)removeContinuationTokenForAccount:(id)a3 telemetryFlowID:(id)a4 error:(id)a5;
-- (void)removeMasterTokenForAccount:(id)a3;
-- (void)removePasswordResetTokenForAccount:(id)a3 telemetryFlowID:(id)a4 error:(id)a5;
-- (void)set3PRegulatoryOverride:(id)a3 forAccount:(id)a4;
-- (void)setADPCohort:(id)a3 forAccount:(id)a4;
-- (void)setAccount:(id)a3 inUse:(BOOL)a4 byService:(int64_t)a5;
-- (void)setActiveiCloudPrivateEmailCount:(id)a3 forAccount:(id)a4;
-- (void)setAdditionalInfo:(id)a3 forAccount:(id)a4;
-- (void)setAgeOfMajority:(id)a3 forAccount:(id)a4;
-- (void)setAliases:(id)a3 forAccount:(id)a4;
-- (void)setAltDSID:(id)a3 forAccount:(id)a4;
-- (void)setAppleIDCountryCode:(id)a3 forAccount:(id)a4;
-- (void)setAskToBuy:(BOOL)a3 forAccount:(id)a4;
-- (void)setAuthenticationMode:(unint64_t)a3 forAccount:(id)a4;
-- (void)setAuthorizationUsed:(BOOL)a3 forAccount:(id)a4;
-- (void)setBeneficiary:(BOOL)a3 forAccount:(id)a4;
-- (void)setBeneficiaryInfo:(id)a3 forAccount:(id)a4;
-- (void)setBeneficiaryLastModified:(id)a3 forAccount:(id)a4;
-- (void)setBeneficiaryListVersion:(id)a3 forAccount:(id)a4;
-- (void)setBirthYear:(id)a3 forAccount:(id)a4;
-- (void)setCanAttestAge:(id)a3 forAccount:(id)a4;
-- (void)setCanBeBeneficiary:(BOOL)a3 forAccount:(id)a4;
-- (void)setCanBeCustodian:(BOOL)a3 forAccount:(id)a4;
-- (void)setCanHaveBeneficiary:(BOOL)a3 forAccount:(id)a4;
-- (void)setCanHaveCustodian:(BOOL)a3 forAccount:(id)a4;
-- (void)setConfigDataVersion:(id)a3 forAccount:(id)a4;
-- (void)setConfigValue:(id)a3 forKey:(id)a4 forAccount:(id)a5;
-- (void)setConsentVersion:(id)a3 forAccount:(id)a4;
-- (void)setCredentialStorageOption:(unint64_t)a3 forAccount:(id)a4;
-- (void)setCustodianEnabled:(BOOL)a3 forAccount:(id)a4;
-- (void)setCustodianInfos:(id)a3 forAccount:(id)a4;
-- (void)setCustodianLastModified:(id)a3 forAccount:(id)a4;
-- (void)setCustodianListVersion:(id)a3 forAccount:(id)a4;
-- (void)setDSID:(id)a3 forAccount:(id)a4;
-- (void)setDeletedDevicesCacheExpiryOffset:(id)a3 forAccount:(id)a4;
-- (void)setDemoAccount:(BOOL)a3 forAccount:(id)a4;
-- (void)setDeviceListVersion:(id)a3 forAccount:(id)a4;
-- (void)setDeviceRemovalReason:(int64_t)a3 onAccount:(id)a4;
-- (void)setFamilyName:(id)a3 forAccount:(id)a4;
-- (void)setFido:(BOOL)a3 forAccount:(id)a4;
-- (void)setForwardingEmail:(id)a3 forAccount:(id)a4;
-- (void)setGivenName:(id)a3 forAccount:(id)a4;
-- (void)setGroupKitEligibility:(id)a3 forAccount:(id)a4;
-- (void)setHasMDM:(BOOL)a3 forAccount:(id)a4;
-- (void)setHasModernRecoveryKey:(BOOL)a3 forAccount:(id)a4;
-- (void)setHasSOSActiveDevice:(BOOL)a3 forAccount:(id)a4;
-- (void)setIdmsWalrusStatus:(id)a3 forAccount:(id)a4;
-- (void)setInactiveiCloudPrivateEmailCount:(id)a3 forAccount:(id)a4;
-- (void)setIsEligibleForSafetyScreen:(BOOL)a3 forAccount:(id)a4;
-- (void)setIsEligibleToMigrateToChild:(id)a3 forAccount:(id)a4;
-- (void)setIsNotificationEmailAvailable:(BOOL)a3 forAccount:(id)a4;
-- (void)setIsProximityAuthEligible:(BOOL)a3 forAccount:(id)a4;
-- (void)setIsSiwaEnabled:(BOOL)a3 forChildAccount:(id)a4;
-- (void)setLastSettingsRedirectDate:(id)a3 forAccount:(id)a4;
-- (void)setLoginHandles:(id)a3 forAccount:(id)a4;
-- (void)setMDMInformationRequired:(BOOL)a3 forAccount:(id)a4;
-- (void)setManagedOrganizationName:(id)a3 forAccount:(id)a4;
-- (void)setManagedOrganizationType:(unint64_t)a3 forAccount:(id)a4;
-- (void)setMarkedForSignOut:(BOOL)a3 forAccount:(id)a4;
-- (void)setNextLivenessNonce:(id)a3 nonce:(id)a4;
-- (void)setNotificationEmail:(id)a3 forAccount:(id)a4;
-- (void)setPasscodeAuth:(BOOL)a3 forAccount:(id)a4;
-- (void)setPasscodeAuthEnabled:(BOOL)a3 forAccount:(id)a4;
-- (void)setPasskeyEligible:(BOOL)a3 forAccount:(id)a4;
-- (void)setPasskeyPresent:(BOOL)a3 forAccount:(id)a4;
-- (void)setPasskeyRegistrationAttemptDateForAccount:(id)a3 forAccount:(id)a4;
-- (void)setPasskeysDeletionAttemptDate:(id)a3 forAccount:(id)a4;
-- (void)setPasskeysInKeychainCount:(id)a3 forAccount:(id)a4;
-- (void)setPendingDOB:(id)a3 forAccount:(id)a4;
-- (void)setPhoneAsAppleID:(BOOL)a3 forAccount:(id)a4;
-- (void)setPiggybackingApprovalEligible:(BOOL)a3 forAccount:(id)a4;
-- (void)setPreviousAccountInfoRefreshDate:(id)a3 forAccount:(id)a4;
-- (void)setPrimaryEmailAddress:(id)a3 forAccount:(id)a4;
-- (void)setPrivateAttestationEnabled:(BOOL)a3 forAccount:(id)a4;
-- (void)setReachableEmailAddresses:(id)a3 forAccount:(id)a4;
-- (void)setRepairState:(unint64_t)a3 forAccount:(id)a4;
-- (void)setSOSNeeded:(BOOL)a3 forAccount:(id)a4;
-- (void)setSecurityKeys:(id)a3 forAccount:(id)a4;
-- (void)setSecurityLevel:(unint64_t)a3 forAccount:(id)a4;
-- (void)setSelectedAuthorizationEmail:(id)a3 forAccount:(id)a4;
-- (void)setSelectedPrivateEmail:(BOOL)a3 forAccount:(id)a4;
-- (void)setServerExperimentalFeatures:(id)a3 forAccount:(id)a4;
-- (void)setSharingGroupLastNotificationDate:(id)a3 forAccount:(id)a4;
-- (void)setSignOutInProgress:(id)a3 forAccount:(id)a4;
-- (void)setSilentBurnCDPRepairEnabled:(id)a3 forAccount:(id)a4;
-- (void)setSilentEscrowRecordRepairEnabled:(id)a3 forAccount:(id)a4;
-- (void)setSilentEscrowRecordRepairEnabledV2:(id)a3 forAccount:(id)a4;
-- (void)setTelemetryDeviceSessionID:(id)a3 forAccount:(id)a4;
-- (void)setToken:(id)a3 tokenID:(id)a4 account:(id)a5 credential:(id)a6;
-- (void)setTrustedPhoneNumbers:(id)a3 forAccount:(id)a4;
-- (void)setUserAgeRange:(unint64_t)a3 forAccount:(id)a4;
-- (void)setUserIsSenior:(BOOL)a3 forAccount:(id)a4;
-- (void)setUserUnderage:(BOOL)a3 forAccount:(id)a4;
-- (void)setVerifiedPrimaryEmail:(BOOL)a3 forAccount:(id)a4;
-- (void)setWebAccessEnabled:(BOOL)a3 forAccount:(id)a4;
-- (void)updateAccountAccessTelemetryOptInTimestampForAccount:(id)a3 withOptIn:(BOOL)a4;
-- (void)updateAuthModeTimestampForAccount:(id)a3;
-- (void)updateSatoriWarmUpTimestampForAccount:(id)a3;
-- (void)updateUsername:(id)a3 forAccountsWithAltDSID:(id)a4;
-- (void)updateVerifiedEmail:(BOOL)a3 forAccountWithAltDSID:(id)a4;
+- (void)removeContinuationTokenForAccount:(id)account telemetryFlowID:(id)d error:(id)error;
+- (void)removeMasterTokenForAccount:(id)account;
+- (void)removePasswordResetTokenForAccount:(id)account telemetryFlowID:(id)d error:(id)error;
+- (void)set3PRegulatoryOverride:(id)override forAccount:(id)account;
+- (void)setADPCohort:(id)cohort forAccount:(id)account;
+- (void)setAccount:(id)account inUse:(BOOL)use byService:(int64_t)service;
+- (void)setActiveiCloudPrivateEmailCount:(id)count forAccount:(id)account;
+- (void)setAdditionalInfo:(id)info forAccount:(id)account;
+- (void)setAgeOfMajority:(id)majority forAccount:(id)account;
+- (void)setAliases:(id)aliases forAccount:(id)account;
+- (void)setAltDSID:(id)d forAccount:(id)account;
+- (void)setAppleIDCountryCode:(id)code forAccount:(id)account;
+- (void)setAskToBuy:(BOOL)buy forAccount:(id)account;
+- (void)setAuthenticationMode:(unint64_t)mode forAccount:(id)account;
+- (void)setAuthorizationUsed:(BOOL)used forAccount:(id)account;
+- (void)setBeneficiary:(BOOL)beneficiary forAccount:(id)account;
+- (void)setBeneficiaryInfo:(id)info forAccount:(id)account;
+- (void)setBeneficiaryLastModified:(id)modified forAccount:(id)account;
+- (void)setBeneficiaryListVersion:(id)version forAccount:(id)account;
+- (void)setBirthYear:(id)year forAccount:(id)account;
+- (void)setCanAttestAge:(id)age forAccount:(id)account;
+- (void)setCanBeBeneficiary:(BOOL)beneficiary forAccount:(id)account;
+- (void)setCanBeCustodian:(BOOL)custodian forAccount:(id)account;
+- (void)setCanHaveBeneficiary:(BOOL)beneficiary forAccount:(id)account;
+- (void)setCanHaveCustodian:(BOOL)custodian forAccount:(id)account;
+- (void)setConfigDataVersion:(id)version forAccount:(id)account;
+- (void)setConfigValue:(id)value forKey:(id)key forAccount:(id)account;
+- (void)setConsentVersion:(id)version forAccount:(id)account;
+- (void)setCredentialStorageOption:(unint64_t)option forAccount:(id)account;
+- (void)setCustodianEnabled:(BOOL)enabled forAccount:(id)account;
+- (void)setCustodianInfos:(id)infos forAccount:(id)account;
+- (void)setCustodianLastModified:(id)modified forAccount:(id)account;
+- (void)setCustodianListVersion:(id)version forAccount:(id)account;
+- (void)setDSID:(id)d forAccount:(id)account;
+- (void)setDeletedDevicesCacheExpiryOffset:(id)offset forAccount:(id)account;
+- (void)setDemoAccount:(BOOL)account forAccount:(id)forAccount;
+- (void)setDeviceListVersion:(id)version forAccount:(id)account;
+- (void)setDeviceRemovalReason:(int64_t)reason onAccount:(id)account;
+- (void)setFamilyName:(id)name forAccount:(id)account;
+- (void)setFido:(BOOL)fido forAccount:(id)account;
+- (void)setForwardingEmail:(id)email forAccount:(id)account;
+- (void)setGivenName:(id)name forAccount:(id)account;
+- (void)setGroupKitEligibility:(id)eligibility forAccount:(id)account;
+- (void)setHasMDM:(BOOL)m forAccount:(id)account;
+- (void)setHasModernRecoveryKey:(BOOL)key forAccount:(id)account;
+- (void)setHasSOSActiveDevice:(BOOL)device forAccount:(id)account;
+- (void)setIdmsWalrusStatus:(id)status forAccount:(id)account;
+- (void)setInactiveiCloudPrivateEmailCount:(id)count forAccount:(id)account;
+- (void)setIsEligibleForSafetyScreen:(BOOL)screen forAccount:(id)account;
+- (void)setIsEligibleToMigrateToChild:(id)child forAccount:(id)account;
+- (void)setIsNotificationEmailAvailable:(BOOL)available forAccount:(id)account;
+- (void)setIsProximityAuthEligible:(BOOL)eligible forAccount:(id)account;
+- (void)setIsSiwaEnabled:(BOOL)enabled forChildAccount:(id)account;
+- (void)setLastSettingsRedirectDate:(id)date forAccount:(id)account;
+- (void)setLoginHandles:(id)handles forAccount:(id)account;
+- (void)setMDMInformationRequired:(BOOL)required forAccount:(id)account;
+- (void)setManagedOrganizationName:(id)name forAccount:(id)account;
+- (void)setManagedOrganizationType:(unint64_t)type forAccount:(id)account;
+- (void)setMarkedForSignOut:(BOOL)out forAccount:(id)account;
+- (void)setNextLivenessNonce:(id)nonce nonce:(id)a4;
+- (void)setNotificationEmail:(id)email forAccount:(id)account;
+- (void)setPasscodeAuth:(BOOL)auth forAccount:(id)account;
+- (void)setPasscodeAuthEnabled:(BOOL)enabled forAccount:(id)account;
+- (void)setPasskeyEligible:(BOOL)eligible forAccount:(id)account;
+- (void)setPasskeyPresent:(BOOL)present forAccount:(id)account;
+- (void)setPasskeyRegistrationAttemptDateForAccount:(id)account forAccount:(id)forAccount;
+- (void)setPasskeysDeletionAttemptDate:(id)date forAccount:(id)account;
+- (void)setPasskeysInKeychainCount:(id)count forAccount:(id)account;
+- (void)setPendingDOB:(id)b forAccount:(id)account;
+- (void)setPhoneAsAppleID:(BOOL)d forAccount:(id)account;
+- (void)setPiggybackingApprovalEligible:(BOOL)eligible forAccount:(id)account;
+- (void)setPreviousAccountInfoRefreshDate:(id)date forAccount:(id)account;
+- (void)setPrimaryEmailAddress:(id)address forAccount:(id)account;
+- (void)setPrivateAttestationEnabled:(BOOL)enabled forAccount:(id)account;
+- (void)setReachableEmailAddresses:(id)addresses forAccount:(id)account;
+- (void)setRepairState:(unint64_t)state forAccount:(id)account;
+- (void)setSOSNeeded:(BOOL)needed forAccount:(id)account;
+- (void)setSecurityKeys:(id)keys forAccount:(id)account;
+- (void)setSecurityLevel:(unint64_t)level forAccount:(id)account;
+- (void)setSelectedAuthorizationEmail:(id)email forAccount:(id)account;
+- (void)setSelectedPrivateEmail:(BOOL)email forAccount:(id)account;
+- (void)setServerExperimentalFeatures:(id)features forAccount:(id)account;
+- (void)setSharingGroupLastNotificationDate:(id)date forAccount:(id)account;
+- (void)setSignOutInProgress:(id)progress forAccount:(id)account;
+- (void)setSilentBurnCDPRepairEnabled:(id)enabled forAccount:(id)account;
+- (void)setSilentEscrowRecordRepairEnabled:(id)enabled forAccount:(id)account;
+- (void)setSilentEscrowRecordRepairEnabledV2:(id)v2 forAccount:(id)account;
+- (void)setTelemetryDeviceSessionID:(id)d forAccount:(id)account;
+- (void)setToken:(id)token tokenID:(id)d account:(id)account credential:(id)credential;
+- (void)setTrustedPhoneNumbers:(id)numbers forAccount:(id)account;
+- (void)setUserAgeRange:(unint64_t)range forAccount:(id)account;
+- (void)setUserIsSenior:(BOOL)senior forAccount:(id)account;
+- (void)setUserUnderage:(BOOL)underage forAccount:(id)account;
+- (void)setVerifiedPrimaryEmail:(BOOL)email forAccount:(id)account;
+- (void)setWebAccessEnabled:(BOOL)enabled forAccount:(id)account;
+- (void)updateAccountAccessTelemetryOptInTimestampForAccount:(id)account withOptIn:(BOOL)in;
+- (void)updateAuthModeTimestampForAccount:(id)account;
+- (void)updateSatoriWarmUpTimestampForAccount:(id)account;
+- (void)updateUsername:(id)username forAccountsWithAltDSID:(id)d;
+- (void)updateVerifiedEmail:(BOOL)email forAccountWithAltDSID:(id)d;
 @end
 
 @implementation AKAccountManager
@@ -368,9 +368,9 @@ uint64_t __34__AKAccountManager_sharedInstance__block_invoke()
     v16->_protoAccountTypeLock._os_unfair_lock_opaque = 0;
     v16->_accountTypeCacheLock._os_unfair_lock_opaque = 0;
     v16->_fetchAccountsLock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     accountTypeCache = v16->_accountTypeCache;
-    v16->_accountTypeCache = v8;
+    v16->_accountTypeCache = dictionary;
     MEMORY[0x1E69E5920](accountTypeCache);
   }
 
@@ -381,19 +381,19 @@ uint64_t __34__AKAccountManager_sharedInstance__block_invoke()
 
 - (id)_iCloudAccounts
 {
-  v4 = [(AKAccountManager *)self iCloudAccountType];
+  iCloudAccountType = [(AKAccountManager *)self iCloudAccountType];
   v5 = [AKAccountManager _fetchAllAccountsWithType:"_fetchAllAccountsWithType:error:" error:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](iCloudAccountType);
 
   return v5;
 }
 
 - (id)primaryAuthKitAccount
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(AKAccountManager *)self altDSIDforPrimaryiCloudAccount];
-  v3 = [(AKAccountManager *)v5 authKitAccountWithAltDSID:v4[0] error:?];
+  v3 = [(AKAccountManager *)selfCopy authKitAccountWithAltDSID:v4[0] error:?];
   objc_storeStrong(v4, 0);
 
   return v3;
@@ -401,12 +401,12 @@ uint64_t __34__AKAccountManager_sharedInstance__block_invoke()
 
 - (id)altDSIDforPrimaryiCloudAccount
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKAccountManager *)self primaryiCloudAccount];
   if (location[0])
   {
-    v6 = [(AKAccountManager *)v5 altDSIDForAccount:location[0]];
+    v6 = [(AKAccountManager *)selfCopy altDSIDForAccount:location[0]];
   }
 
   else
@@ -423,7 +423,7 @@ uint64_t __34__AKAccountManager_sharedInstance__block_invoke()
 - (id)primaryiCloudAccount
 {
   v17 = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKAccountManager *)self _iCloudAccounts];
   memset(__b, 0, sizeof(__b));
@@ -443,7 +443,7 @@ uint64_t __34__AKAccountManager_sharedInstance__block_invoke()
       }
 
       v12 = *(__b[1] + 8 * v6);
-      if ([(AKAccountManager *)v14 isPrimaryiCloudAccount:v12])
+      if ([(AKAccountManager *)selfCopy isPrimaryiCloudAccount:v12])
       {
         break;
       }
@@ -509,30 +509,30 @@ LABEL_9:
 - (ACAccountType)protoAccountType
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_protoAccountType)
   {
-    os_unfair_lock_lock(&v10->_protoAccountTypeLock);
-    if (!v10->_protoAccountType)
+    os_unfair_lock_lock(&selfCopy->_protoAccountTypeLock);
+    if (!selfCopy->_protoAccountType)
     {
       location[0] = 0;
-      accountStore = v10->_accountStore;
+      accountStore = selfCopy->_accountStore;
       v3 = *MEMORY[0x1E6959830];
       v8 = 0;
       v7 = [(AKAccountStore *)accountStore accountTypeWithAccountTypeIdentifier:v3 error:&v8];
       objc_storeStrong(location, v8);
-      protoAccountType = v10->_protoAccountType;
-      v10->_protoAccountType = v7;
+      protoAccountType = selfCopy->_protoAccountType;
+      selfCopy->_protoAccountType = v7;
       MEMORY[0x1E69E5920](protoAccountType);
       objc_storeStrong(location, 0);
     }
 
-    os_unfair_lock_unlock(&v10->_protoAccountTypeLock);
+    os_unfair_lock_unlock(&selfCopy->_protoAccountTypeLock);
   }
 
   *MEMORY[0x1E69E9840];
-  v5 = v10->_protoAccountType;
+  v5 = selfCopy->_protoAccountType;
 
   return v5;
 }
@@ -540,23 +540,23 @@ LABEL_9:
 - (BOOL)shieldSignInOrCreateFlows
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   if ([(AKAccountManager *)self _ageAttestationPhase1FeatureRestricted])
   {
     v16[0] = 0;
     v14 = 0;
-    v5 = [(AKAccountManager *)v17 _protoAccountWithError:&v14];
+    v5 = [(AKAccountManager *)selfCopy _protoAccountWithError:&v14];
     objc_storeStrong(v16, v14);
     v15 = v5;
-    v6 = [v16[0] domain];
+    domain = [v16[0] domain];
     v7 = 0;
-    if ([v6 isEqualToString:*MEMORY[0x1E6959970]])
+    if ([domain isEqualToString:*MEMORY[0x1E6959970]])
     {
       v7 = [v16[0] code] == 9;
     }
 
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](domain);
     if (v7)
     {
       v13 = _AKLogSystem();
@@ -606,18 +606,18 @@ LABEL_9:
 - (BOOL)_ageAttestationPhase1FeatureRestricted
 {
   v3 = +[AKFeatureManager sharedManager];
-  v4 = [v3 isAgeAttestationPhase1Enabled];
+  isAgeAttestationPhase1Enabled = [v3 isAgeAttestationPhase1Enabled];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return isAgeAttestationPhase1Enabled;
 }
 
-- (id)altDSIDForAccount:(id)a3
+- (id)altDSIDForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"altDSID"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -626,17 +626,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)telemetryDeviceSessionIDForAccount:(id)a3
+- (id)telemetryDeviceSessionIDForAccount:(id)account
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   if (location[0])
   {
-    if ([(AKAccountManager *)v11 accountIdentifiableTelemetryForAccount:location[0]])
+    if ([(AKAccountManager *)selfCopy accountIdentifiableTelemetryForAccount:location[0]])
     {
-      v12 = [(AKAccountManager *)v11 _telemetryDeviceSessionIDForAccount:location[0]];
+      v12 = [(AKAccountManager *)selfCopy _telemetryDeviceSessionIDForAccount:location[0]];
     }
 
     else
@@ -667,13 +667,13 @@ LABEL_9:
   return v3;
 }
 
-- (id)_telemetryDeviceSessionIDForAccount:(id)a3
+- (id)_telemetryDeviceSessionIDForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"telemetryDeviceSessionID"];
   if (v5)
   {
@@ -693,13 +693,13 @@ LABEL_9:
   return v3;
 }
 
-- (id)appleAccountConsentVersionForAccount:(id)a3
+- (id)appleAccountConsentVersionForAccount:(id)account
 {
   v12 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   if (location[0])
   {
     v11 = [location[0] accountPropertyForKey:@"X-Apple-I-PrivacyConsent-Version"];
@@ -728,36 +728,36 @@ LABEL_9:
   return v3;
 }
 
-- (id)renewDeviceSessionIDForAccount:(id)a3
+- (id)renewDeviceSessionIDForAccount:(id)account
 {
   v31 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   if (location[0])
   {
-    v9 = [(AKAccountManager *)v27 telemetryDeviceSessionIDForAccount:location[0]];
+    v9 = [(AKAccountManager *)selfCopy telemetryDeviceSessionIDForAccount:location[0]];
     v10 = [v9 isEqualToString:@"device_session_id_missing"];
     MEMORY[0x1E69E5920](v9);
     if (v10)
     {
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v18 = [v6 UUIDString];
-      MEMORY[0x1E69E5920](v6);
-      [(AKAccountManager *)v27 setTelemetryDeviceSessionID:v18 forAccount:location[0]];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      MEMORY[0x1E69E5920](uUID);
+      [(AKAccountManager *)selfCopy setTelemetryDeviceSessionID:uUIDString forAccount:location[0]];
       v17 = _AKLogSystem();
       v16 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_1_8_64(v30, v18);
+        __os_log_helper_16_2_1_8_64(v30, uUIDString);
         _os_log_debug_impl(&dword_193225000, v17, v16, "Created a new device session id: %@", v30, 0xCu);
       }
 
       objc_storeStrong(&v17, 0);
       v15 = 0;
       obj = 0;
-      v5 = [(AKAccountManager *)v27 saveAccount:location[0] error:&obj];
+      v5 = [(AKAccountManager *)selfCopy saveAccount:location[0] error:&obj];
       objc_storeStrong(&v15, obj);
       if (!v5)
       {
@@ -771,10 +771,10 @@ LABEL_9:
         objc_storeStrong(&oslog, 0);
       }
 
-      v28 = MEMORY[0x1E69E5928](v18);
+      v28 = MEMORY[0x1E69E5928](uUIDString);
       v22 = 1;
       objc_storeStrong(&v15, 0);
-      objc_storeStrong(&v18, 0);
+      objc_storeStrong(&uUIDString, 0);
     }
 
     else
@@ -819,33 +819,33 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)accountIsSignedIntoServices:(id)a3
+- (BOOL)accountIsSignedIntoServices:(id)services
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, services);
   v6 = +[AKAccountManager sharedInstance];
   v4 = [(AKAccountManager *)v6 servicesUsingAccount:location[0]];
-  v5 = [v4 aaf_hasObjects];
+  aaf_hasObjects = [v4 aaf_hasObjects];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
-  return v5;
+  return aaf_hasObjects;
 }
 
-- (BOOL)accountAccessTelemetryOptInForAccount:(id)a3
+- (BOOL)accountAccessTelemetryOptInForAccount:(id)account
 {
   v20 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v8 = +[AKConfiguration sharedConfiguration];
-  v9 = [v8 shouldEnableTelemetryOptIn];
+  shouldEnableTelemetryOptIn = [v8 shouldEnableTelemetryOptIn];
   MEMORY[0x1E69E5920](v8);
-  v17 = v9 == 1;
-  if (v9 == 1)
+  v17 = shouldEnableTelemetryOptIn == 1;
+  if (shouldEnableTelemetryOptIn == 1)
   {
     v16 = _AKLogSystem();
     v15 = 2;
@@ -862,7 +862,7 @@ LABEL_9:
 
   v12 = 0;
   v10 = 0;
-  v5 = 1;
+  bOOLValue = 1;
   if (!v17)
   {
     v4 = objc_opt_class();
@@ -870,10 +870,10 @@ LABEL_9:
     v12 = 1;
     v11 = _AKSafeCast_8(v4, v13);
     v10 = 1;
-    v5 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
-  v19 = v5 & 1;
+  v19 = bOOLValue & 1;
   if (v10)
   {
     MEMORY[0x1E69E5920](v11);
@@ -889,31 +889,31 @@ LABEL_9:
   return v19 & 1;
 }
 
-- (BOOL)accountImprovementOptInForAccount:(id)a3
+- (BOOL)accountImprovementOptInForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAccountManager *)v5 accountImprovementOptInValueForAccount:location[0]]== 1;
+  objc_storeStrong(location, account);
+  v6 = [(AKAccountManager *)selfCopy accountImprovementOptInValueForAccount:location[0]]== 1;
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (unint64_t)accountImprovementOptInValueForAccount:(id)a3
+- (unint64_t)accountImprovementOptInValueForAccount:(id)account
 {
   v19 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v9 = +[AKConfiguration sharedConfiguration];
-  v10 = [v9 shouldEnableAccountImprovementOptIn];
+  shouldEnableAccountImprovementOptIn = [v9 shouldEnableAccountImprovementOptIn];
   MEMORY[0x1E69E5920](v9);
-  v16 = v10 == 1;
-  if (v10 == 1)
+  v16 = shouldEnableAccountImprovementOptIn == 1;
+  if (shouldEnableAccountImprovementOptIn == 1)
   {
     v15 = _AKLogSystem();
     v14 = 2;
@@ -926,7 +926,7 @@ LABEL_9:
     }
 
     objc_storeStrong(&v15, 0);
-    v18 = 1;
+    unsignedIntegerValue = 1;
     v12 = 1;
   }
 
@@ -940,115 +940,115 @@ LABEL_9:
       v4 = [location[0] accountPropertyForKey:@"com.apple.idms.config.privacy.appleaccount.access"];
       v11 = _AKSafeCast_8(v5, v4);
       MEMORY[0x1E69E5920](v4);
-      v18 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
       v12 = 1;
       objc_storeStrong(&v11, 0);
     }
 
     else
     {
-      v18 = 2;
+      unsignedIntegerValue = 2;
       v12 = 1;
     }
   }
 
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v18;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)accountIdentifiableTelemetryForAccount:(id)a3
+- (BOOL)accountIdentifiableTelemetryForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = 1;
-  if (![(AKAccountManager *)v6 accountAccessTelemetryOptInForAccount:location[0]])
+  if (![(AKAccountManager *)selfCopy accountAccessTelemetryOptInForAccount:location[0]])
   {
-    v4 = [(AKAccountManager *)v6 accountImprovementOptInForAccount:location[0]];
+    v4 = [(AKAccountManager *)selfCopy accountImprovementOptInForAccount:location[0]];
   }
 
   objc_storeStrong(location, 0);
   return v4 & 1;
 }
 
-- (void)setInactiveiCloudPrivateEmailCount:(id)a3 forAccount:(id)a4
+- (void)setInactiveiCloudPrivateEmailCount:(id)count forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, count);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"inActiveHMECount"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setActiveiCloudPrivateEmailCount:(id)a3 forAccount:(id)a4
+- (void)setActiveiCloudPrivateEmailCount:(id)count forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, count);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"activeHMECount"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setTelemetryDeviceSessionID:(id)a3 forAccount:(id)a4
+- (void)setTelemetryDeviceSessionID:(id)d forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"telemetryDeviceSessionID"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setConsentVersion:(id)a3 forAccount:(id)a4
+- (void)setConsentVersion:(id)version forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"X-Apple-I-PrivacyConsent-Version"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setAccountAccessTelemetryOptIn:(BOOL)a3 forAccount:(id)a4 error:(id *)a5
+- (BOOL)setAccountAccessTelemetryOptIn:(BOOL)in forAccount:(id)account error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v32 = self;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  inCopy = in;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v28 = a5;
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v30];
-  v27 = [v13 stringValue];
+  objc_storeStrong(&location, account);
+  errorCopy = error;
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:inCopy];
+  stringValue = [v13 stringValue];
   MEMORY[0x1E69E5920](v13);
-  [location setAccountProperty:v27 forKey:@"com.apple.idms.config.privacy.appleid.data.access"];
+  [location setAccountProperty:stringValue forKey:@"com.apple.idms.config.privacy.appleid.data.access"];
   v25 = 0;
   v12 = 0;
-  if (v30)
+  if (inCopy)
   {
     v26 = [location accountPropertyForKey:@"telemetryDeviceSessionID"];
     v25 = 1;
@@ -1062,25 +1062,25 @@ LABEL_9:
 
   if (v12)
   {
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v24 = [v11 UUIDString];
-    MEMORY[0x1E69E5920](v11);
-    [(AKAccountManager *)v32 setTelemetryDeviceSessionID:v24 forAccount:location];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    MEMORY[0x1E69E5920](uUID);
+    [(AKAccountManager *)selfCopy setTelemetryDeviceSessionID:uUIDString forAccount:location];
     v23 = _AKLogSystem();
     v22 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v33, v24);
+      __os_log_helper_16_2_1_8_64(v33, uUIDString);
       _os_log_debug_impl(&dword_193225000, v23, v22, "Telemetry Opt-In detected, but we didn't have an existing device session ID, creating... %@", v33, 0xCu);
     }
 
     objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&uUIDString, 0);
   }
 
-  objc_storeStrong(&v27, 0);
-  [(AKAccountManager *)v32 updateAccountAccessTelemetryOptInTimestampForAccount:location withOptIn:v30];
-  v21 = [(AKAccountManager *)v32 saveAccount:location error:v28];
+  objc_storeStrong(&stringValue, 0);
+  [(AKAccountManager *)selfCopy updateAccountAccessTelemetryOptInTimestampForAccount:location withOptIn:inCopy];
+  v21 = [(AKAccountManager *)selfCopy saveAccount:location error:errorCopy];
   if (v21)
   {
     v17 = _AKLogSystem();
@@ -1117,20 +1117,20 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)setAccountImprovementOptIn:(BOOL)a3 forAccount:(id)a4 error:(id *)a5
+- (BOOL)setAccountImprovementOptIn:(BOOL)in forAccount:(id)account error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  inCopy = in;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v20 = a5;
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:v22];
+  objc_storeStrong(&location, account);
+  errorCopy = error;
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:inCopy];
   [location setAccountProperty:v19 forKey:@"com.apple.idms.config.privacy.appleaccount.access"];
   v17 = 0;
   v8 = 0;
-  if (v22)
+  if (inCopy)
   {
     v18 = [location accountPropertyForKey:@"telemetryDeviceSessionID"];
     v17 = 1;
@@ -1144,30 +1144,30 @@ LABEL_9:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v7 UUIDString];
-    MEMORY[0x1E69E5920](v7);
-    [(AKAccountManager *)v24 setTelemetryDeviceSessionID:v16 forAccount:location];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    MEMORY[0x1E69E5920](uUID);
+    [(AKAccountManager *)selfCopy setTelemetryDeviceSessionID:uUIDString forAccount:location];
     v15 = _AKLogSystem();
     v14 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v27, v16);
+      __os_log_helper_16_2_1_8_64(v27, uUIDString);
       _os_log_debug_impl(&dword_193225000, v15, v14, "Account Improvement Telemetry Opt-In detected, but we didn't have an existing device session ID, creating... %@", v27, 0xCu);
     }
 
     objc_storeStrong(&v15, 0);
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&uUIDString, 0);
   }
 
   objc_storeStrong(&v19, 0);
-  v13 = [(AKAccountManager *)v24 saveAccount:location error:v20];
+  v13 = [(AKAccountManager *)selfCopy saveAccount:location error:errorCopy];
   if (v13)
   {
     v10 = _AKLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_1_4_0(v25, v22);
+      __os_log_helper_16_0_1_4_0(v25, inCopy);
       _os_log_debug_impl(&dword_193225000, v10, OS_LOG_TYPE_DEBUG, "Successfully set account improvement program opt-in to %{BOOL}d", v25, 8u);
     }
 
@@ -1180,7 +1180,7 @@ LABEL_9:
     v11 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_1_4_0(v26, v22);
+      __os_log_helper_16_0_1_4_0(v26, inCopy);
       _os_log_debug_impl(&dword_193225000, v12, v11, "Failed to set account improvement program opt-in to %{BOOL}d", v26, 8u);
     }
 
@@ -1193,16 +1193,16 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)resetAccountImprovementOptInForAccount:(id)a3 error:(id *)a4
+- (BOOL)resetAccountImprovementOptInForAccount:(id)account error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, account);
+  errorCopy = error;
   [location[0] setAccountProperty:0 forKey:@"com.apple.idms.config.privacy.appleaccount.access"];
-  v17 = [(AKAccountManager *)v20 saveAccount:location[0] error:a4];
+  v17 = [(AKAccountManager *)selfCopy saveAccount:location[0] error:error];
   if (v17)
   {
     v13 = _AKLogSystem();
@@ -1239,19 +1239,19 @@ LABEL_9:
   return v5;
 }
 
-- (void)updateAccountAccessTelemetryOptInTimestampForAccount:(id)a3 withOptIn:(BOOL)a4
+- (void)updateAccountAccessTelemetryOptInTimestampForAccount:(id)account withOptIn:(BOOL)in
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, account);
+  if (in)
   {
     v5 = location[0];
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     [v5 setAccountProperty:? forKey:?];
-    MEMORY[0x1E69E5920](v4);
+    MEMORY[0x1E69E5920](date);
   }
 
   else
@@ -1263,13 +1263,13 @@ LABEL_9:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)accountAccessTelemetryOptInDateForAccount:(id)a3
+- (id)accountAccessTelemetryOptInDateForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"DataAccessAnalyticsOptInTimeStamp"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1278,13 +1278,13 @@ LABEL_9:
   return v3;
 }
 
-- (id)configDataVersionForAccount:(id)a3
+- (id)configDataVersionForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"configDataVersion"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1293,30 +1293,30 @@ LABEL_9:
   return v3;
 }
 
-- (void)setConfigDataVersion:(id)a3 forAccount:(id)a4
+- (void)setConfigDataVersion:(id)version forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"configDataVersion"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)configValue:(id)a3 forAccount:(id)a4
+- (id)configValue:(id)value forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, account);
   v9 = [v7 accountPropertyForKey:location[0]];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -1326,34 +1326,34 @@ LABEL_9:
   return v4;
 }
 
-- (void)setConfigValue:(id)a3 forKey:(id)a4 forAccount:(id)a5
+- (void)setConfigValue:(id)value forKey:(id)key forAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, key);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, account);
   [v7 setAccountProperty:location[0] forKey:v8];
-  [(AKAccountManager *)v10 saveAccount:v7 error:0];
+  [(AKAccountManager *)selfCopy saveAccount:v7 error:0];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAltDSID:(id)a3 forAccount:(id)a4
+- (void)setAltDSID:(id)d forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, account);
   if (location[0])
   {
     [v10 setAccountProperty:location[0] forKey:@"altDSID"];
@@ -1379,13 +1379,13 @@ LABEL_9:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)DSIDForAccount:(id)a3
+- (id)DSIDForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"DSID"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1394,15 +1394,15 @@ LABEL_9:
   return v3;
 }
 
-- (void)setDSID:(id)a3 forAccount:(id)a4
+- (void)setDSID:(id)d forAccount:(id)account
 {
   v19 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, account);
   if (location[0])
   {
     objc_opt_class();
@@ -1453,30 +1453,30 @@ LABEL_9:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)combinedAliasesAndReachableEmailsForAccount:(id)a3
+- (id)combinedAliasesAndReachableEmailsForAccount:(id)account
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [(AKAccountManager *)v17 aliasesForAccount:location[0]];
-  v14 = [(AKAccountManager *)v17 reachableEmailAddressesForAccount:location[0]];
-  v13 = [MEMORY[0x1E695DF70] array];
+  objc_storeStrong(location, account);
+  v15 = [(AKAccountManager *)selfCopy aliasesForAccount:location[0]];
+  v14 = [(AKAccountManager *)selfCopy reachableEmailAddressesForAccount:location[0]];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = v15;
   v7[1] = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
   v10 = __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_invoke;
   v11 = &unk_1E73D69C0;
-  v12 = MEMORY[0x1E69E5928](v13);
+  v12 = MEMORY[0x1E69E5928](array);
   [v4 enumerateObjectsUsingBlock:?];
   v5 = v14;
-  v7[0] = MEMORY[0x1E69E5928](v13);
+  v7[0] = MEMORY[0x1E69E5928](array);
   [v5 enumerateObjectsUsingBlock:?];
-  v6 = [v13 copy];
+  v6 = [array copy];
   objc_storeStrong(v7, 0);
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
@@ -1510,13 +1510,13 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   objc_storeStrong(location, 0);
 }
 
-- (id)aliasesForAccount:(id)a3
+- (id)aliasesForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"aliases"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1525,51 +1525,51 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setAliases:(id)a3 forAccount:(id)a4
+- (void)setAliases:(id)aliases forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, aliases);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"aliases"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)formattedUsernameForAccount:(id)a3
+- (id)formattedUsernameForAccount:(id)account
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] username];
+  objc_storeStrong(location, account);
+  username = [location[0] username];
   v5 = [AKUsernameFormatter formattedUsernameFromUsername:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](username);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (void)updateVerifiedEmail:(BOOL)a3 forAccountWithAltDSID:(id)a4
+- (void)updateVerifiedEmail:(BOOL)email forAccountWithAltDSID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  emailCopy = email;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v15 = [(AKAccountManager *)v19 authKitAccountWithAltDSID:location error:0];
-  v4 = [(AKAccountManager *)v19 verifiedPrimaryEmailForAccount:v15];
-  if (v4 == v17)
+  objc_storeStrong(&location, d);
+  v15 = [(AKAccountManager *)selfCopy authKitAccountWithAltDSID:location error:0];
+  v4 = [(AKAccountManager *)selfCopy verifiedPrimaryEmailForAccount:v15];
+  if (v4 == emailCopy)
   {
     v8 = _AKLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (v17)
+      if (emailCopy)
       {
         v7 = @"YES";
       }
@@ -1588,10 +1588,10 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
 
   else
   {
-    [(AKAccountManager *)v19 setVerifiedPrimaryEmail:v17 forAccount:v15];
+    [(AKAccountManager *)selfCopy setVerifiedPrimaryEmail:emailCopy forAccount:v15];
     v14 = 0;
     obj = 0;
-    [(AKAccountManager *)v19 saveAccount:v15 error:&obj];
+    [(AKAccountManager *)selfCopy saveAccount:v15 error:&obj];
     objc_storeStrong(&v14, obj);
     if (v14)
     {
@@ -1599,7 +1599,7 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
       type = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        if (v17)
+        if (emailCopy)
         {
           v5 = @"YES";
         }
@@ -1622,7 +1622,7 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
       v9 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        if (v17)
+        if (emailCopy)
         {
           v6 = @"YES";
         }
@@ -1647,15 +1647,15 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   *MEMORY[0x1E69E9840];
 }
 
-- (void)updateUsername:(id)a3 forAccountsWithAltDSID:(id)a4
+- (void)updateUsername:(id)username forAccountsWithAltDSID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, d);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1665,22 +1665,22 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   }
 
   objc_storeStrong(&oslog, 0);
-  v7 = [(AKAccountManager *)v12 authKitAccountWithAltDSID:v10 error:0];
-  if (v7 && [(AKAccountManager *)v12 _setUsername:location[0] forAccount:v7])
+  v7 = [(AKAccountManager *)selfCopy authKitAccountWithAltDSID:v10 error:0];
+  if (v7 && [(AKAccountManager *)selfCopy _setUsername:location[0] forAccount:v7])
   {
-    [(AKAccountManager *)v12 saveAccount:v7 error:0];
+    [(AKAccountManager *)selfCopy saveAccount:v7 error:0];
   }
 
-  v6 = [(AKAccountManager *)v12 appleIDAccountWithAltDSID:v10];
-  if (v6 && [(AKAccountManager *)v12 _setUsername:location[0] forAccount:v6])
+  v6 = [(AKAccountManager *)selfCopy appleIDAccountWithAltDSID:v10];
+  if (v6 && [(AKAccountManager *)selfCopy _setUsername:location[0] forAccount:v6])
   {
-    [(AKAccountManager *)v12 saveAccount:v6 error:0];
+    [(AKAccountManager *)selfCopy saveAccount:v6 error:0];
   }
 
-  v5 = [(AKAccountManager *)v12 iCloudAccountForAltDSID:v10];
-  if (v5 && [(AKAccountManager *)v12 _setUsername:location[0] forAccount:v5])
+  v5 = [(AKAccountManager *)selfCopy iCloudAccountForAltDSID:v10];
+  if (v5 && [(AKAccountManager *)selfCopy _setUsername:location[0] forAccount:v5])
   {
-    [(AKAccountManager *)v12 saveAccount:v5 error:0];
+    [(AKAccountManager *)selfCopy saveAccount:v5 error:0];
   }
 
   objc_storeStrong(&v5, 0);
@@ -1691,28 +1691,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_setUsername:(id)a3 forAccount:(id)a4
+- (BOOL)_setUsername:(id)username forAccount:(id)account
 {
   v15 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, account);
   v9 = 0;
   v7 = 0;
   if (location[0])
   {
     v5 = location[0];
-    v10 = [v11 username];
+    username = [v11 username];
     v9 = 1;
     v7 = [v5 isEqualToString:?] == 0;
   }
 
   if (v9)
   {
-    MEMORY[0x1E69E5920](v10);
+    MEMORY[0x1E69E5920](username);
   }
 
   if (v7)
@@ -1740,13 +1740,13 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v13 & 1;
 }
 
-- (id)primaryEmailAddressForAccount:(id)a3
+- (id)primaryEmailAddressForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"primaryEmail"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -1755,28 +1755,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setPrimaryEmailAddress:(id)a3 forAccount:(id)a4
+- (void)setPrimaryEmailAddress:(id)address forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, address);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"primaryEmail"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)verifiedPrimaryEmailForAccount:(id)a3
+- (BOOL)verifiedPrimaryEmailForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"vettedPrimaryEmail"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -1785,29 +1785,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setVerifiedPrimaryEmail:(BOOL)a3 forAccount:(id)a4
+- (void)setVerifiedPrimaryEmail:(BOOL)email forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  emailCopy = email;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:emailCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)phoneAsAppleIDForAccount:(id)a3
+- (BOOL)phoneAsAppleIDForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"phoneAsAppleID"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -1816,29 +1816,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setPhoneAsAppleID:(BOOL)a3 forAccount:(id)a4
+- (void)setPhoneAsAppleID:(BOOL)d forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  dCopy = d;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:dCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)userUnderAgeForAccount:(id)a3
+- (BOOL)userUnderAgeForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"isUnderage"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -1847,29 +1847,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setUserUnderage:(BOOL)a3 forAccount:(id)a4
+- (void)setUserUnderage:(BOOL)underage forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  underageCopy = underage;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:underageCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEligibleForSafetyScreenForAccount:(id)a3
+- (BOOL)isEligibleForSafetyScreenForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"safetyScreenEligibility"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -1878,31 +1878,31 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setIsEligibleForSafetyScreen:(BOOL)a3 forAccount:(id)a4
+- (void)setIsEligibleForSafetyScreen:(BOOL)screen forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  screenCopy = screen;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:screenCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setPendingDOB:(id)a3 forAccount:(id)a4
+- (void)setPendingDOB:(id)b forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, b);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"pendingDOB"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -1933,13 +1933,13 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v7;
 }
 
-- (BOOL)isSiwaEnabledForChildAccount:(id)a3
+- (BOOL)isSiwaEnabledForChildAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"isSiwaEnabled"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -1948,29 +1948,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setIsSiwaEnabled:(BOOL)a3 forChildAccount:(id)a4
+- (void)setIsSiwaEnabled:(BOOL)enabled forChildAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)userIsSeniorForAccount:(id)a3
+- (BOOL)userIsSeniorForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"isSenior"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -1979,60 +1979,60 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setUserAgeRange:(unint64_t)a3 forAccount:(id)a4
+- (void)setUserAgeRange:(unint64_t)range forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  rangeCopy = range;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:rangeCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)userAgeRangeForAccount:(id)a3
+- (unint64_t)userAgeRangeForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"userAgeRange"];
-  v6 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setUserIsSenior:(BOOL)a3 forAccount:(id)a4
+- (void)setUserIsSenior:(BOOL)senior forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  seniorCopy = senior;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:seniorCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)demoAccountForAccount:(id)a3
+- (BOOL)demoAccountForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"demoAccount"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -2041,29 +2041,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setDemoAccount:(BOOL)a3 forAccount:(id)a4
+- (void)setDemoAccount:(BOOL)account forAccount:(id)forAccount
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  accountCopy = account;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, forAccount);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:accountCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)ageOfMajorityForAccount:(id)a3
+- (id)ageOfMajorityForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"ageOfMajority"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2072,28 +2072,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setAgeOfMajority:(id)a3 forAccount:(id)a4
+- (void)setAgeOfMajority:(id)majority forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, majority);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"ageOfMajority"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)appleIDCountryCodeForAccount:(id)a3
+- (id)appleIDCountryCodeForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"appleIDCountryCode"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2102,28 +2102,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setAppleIDCountryCode:(id)a3 forAccount:(id)a4
+- (void)setAppleIDCountryCode:(id)code forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"appleIDCountryCode"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)authorizationUsedForAccount:(id)a3
+- (BOOL)authorizationUsedForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"appleIdSignInEnabled"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -2132,111 +2132,111 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setAuthorizationUsed:(BOOL)a3 forAccount:(id)a4
+- (void)setAuthorizationUsed:(BOOL)used forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  usedCopy = used;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:usedCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)privateAttestationEnabledForAccount:(id)a3
+- (BOOL)privateAttestationEnabledForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"privateAttestationEnabled"];
   if (v5)
   {
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  v7 = v4 != 0;
+  v7 = bOOLValue != 0;
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)setPrivateAttestationEnabled:(BOOL)a3 forAccount:(id)a4
+- (void)setPrivateAttestationEnabled:(BOOL)enabled forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isProximityAuthEligible:(id)a3
+- (BOOL)isProximityAuthEligible:(id)eligible
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, eligible);
   v5 = [location[0] accountPropertyForKey:@"isProximityAuthEligible"];
   if (v5)
   {
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  v7 = v4 != 0;
+  v7 = bOOLValue != 0;
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)setIsProximityAuthEligible:(BOOL)a3 forAccount:(id)a4
+- (void)setIsProximityAuthEligible:(BOOL)eligible forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  eligibleCopy = eligible;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:eligibleCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)piggybackingApprovalEligible:(id)a3
+- (BOOL)piggybackingApprovalEligible:(id)eligible
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, eligible);
   v4 = [location[0] accountPropertyForKey:@"pbae"];
   if (v4)
   {
@@ -2254,29 +2254,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setPiggybackingApprovalEligible:(BOOL)a3 forAccount:(id)a4
+- (void)setPiggybackingApprovalEligible:(BOOL)eligible forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  eligibleCopy = eligible;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:eligibleCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)reachableEmailAddressesForAccount:(id)a3
+- (id)reachableEmailAddressesForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"reachableEmailAddresses"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2285,28 +2285,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setReachableEmailAddresses:(id)a3 forAccount:(id)a4
+- (void)setReachableEmailAddresses:(id)addresses forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, addresses);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"reachableEmailAddresses"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)givenNameForAccount:(id)a3
+- (id)givenNameForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"firstName"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2315,28 +2315,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setGivenName:(id)a3 forAccount:(id)a4
+- (void)setGivenName:(id)name forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"firstName"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)familyNameForAccount:(id)a3
+- (id)familyNameForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"lastName"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2345,28 +2345,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setFamilyName:(id)a3 forAccount:(id)a4
+- (void)setFamilyName:(id)name forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"lastName"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)forwardingEmailForAccount:(id)a3
+- (id)forwardingEmailForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"forwardingEmail"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2375,28 +2375,28 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setForwardingEmail:(id)a3 forAccount:(id)a4
+- (void)setForwardingEmail:(id)email forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, email);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"forwardingEmail"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)selectedPrivateEmailForAccount:(id)a3
+- (BOOL)selectedPrivateEmailForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"privateEmailSelection"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -2405,29 +2405,29 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6 & 1;
 }
 
-- (void)setSelectedPrivateEmail:(BOOL)a3 forAccount:(id)a4
+- (void)setSelectedPrivateEmail:(BOOL)email forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  emailCopy = email;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:emailCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)selectedAuthorizationEmailForAccount:(id)a3
+- (id)selectedAuthorizationEmailForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"authorizationEmailSelection"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -2436,35 +2436,35 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v3;
 }
 
-- (void)setSelectedAuthorizationEmail:(id)a3 forAccount:(id)a4
+- (void)setSelectedAuthorizationEmail:(id)email forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, email);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"authorizationEmailSelection"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveAccount:(id)a3 error:(id *)a4
+- (BOOL)saveAccount:(id)account error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, account);
+  errorCopy = error;
   v16 = 0;
   v14 = 0;
-  v10 = [(AKAccountManager *)v19 _saveAccount:location[0] error:&v14];
+  v10 = [(AKAccountManager *)selfCopy _saveAccount:location[0] error:&v14];
   objc_storeStrong(&v16, v14);
   v15 = v10;
-  if ([(AKAccountStore *)v19->_accountStore isAccountDaemonConnectionError:v16])
+  if ([(AKAccountStore *)selfCopy->_accountStore isAccountDaemonConnectionError:v16])
   {
     v13 = _AKLogSystem();
     v12 = OS_LOG_TYPE_DEFAULT;
@@ -2477,16 +2477,16 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v16, 0);
     v11 = v16;
-    v8 = [(AKAccountManager *)v19 _saveAccount:location[0] error:&v11];
+    v8 = [(AKAccountManager *)selfCopy _saveAccount:location[0] error:&v11];
     objc_storeStrong(&v16, v11);
     v15 = v8;
   }
 
-  if (v17 && v16)
+  if (errorCopy && v16)
   {
     v7 = v16;
     v4 = v16;
-    *v17 = v7;
+    *errorCopy = v7;
   }
 
   v6 = v15;
@@ -2496,14 +2496,14 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   return v6;
 }
 
-- (BOOL)_saveAccount:(id)a3 error:(id *)a4
+- (BOOL)_saveAccount:(id)account error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, account);
+  errorCopy = error;
   v29 = 0;
   v30 = &v29;
   v31 = 0x20000000;
@@ -2532,7 +2532,7 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
   v16 = __39__AKAccountManager__saveAccount_error___block_invoke;
   v17 = &unk_1E73D69E8;
   v19[1] = &v29;
-  v18 = MEMORY[0x1E69E5928](v36);
+  v18 = MEMORY[0x1E69E5928](selfCopy);
   v19[0] = MEMORY[0x1E69E5928](location[0]);
   v19[2] = &v22;
   [AKAccountManager performWithinPersonaForAccount:v8 withBlock:&v13];
@@ -2561,11 +2561,11 @@ void __64__AKAccountManager_combinedAliasesAndReachableEmailsForAccount___block_
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v34)
+    if (errorCopy)
     {
       v7 = v23[5];
       v4 = v7;
-      *v34 = v7;
+      *errorCopy = v7;
     }
   }
 
@@ -2592,60 +2592,60 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return MEMORY[0x1E69E5920](v6);
 }
 
-- (unint64_t)securityLevelForAccount:(id)a3
+- (unint64_t)securityLevelForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"security-level"];
-  v6 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setSecurityLevel:(unint64_t)a3 forAccount:(id)a4
+- (void)setSecurityLevel:(unint64_t)level forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  levelCopy = level;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:levelCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setCredentialStorageOption:(unint64_t)a3 forAccount:(id)a4
+- (void)setCredentialStorageOption:(unint64_t)option forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  optionCopy = option;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:optionCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)mdmInformationRequiredForAccount:(id)a3
+- (BOOL)mdmInformationRequiredForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = objc_opt_class();
   v4 = [location[0] accountPropertyForKey:@"mdm-info-required"];
   v6 = _AKSafeCast_8(v5, v4);
@@ -2657,47 +2657,47 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v8 & 1;
 }
 
-- (void)setMDMInformationRequired:(BOOL)a3 forAccount:(id)a4
+- (void)setMDMInformationRequired:(BOOL)required forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  requiredCopy = required;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:requiredCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setDeviceRemovalReason:(int64_t)a3 onAccount:(id)a4
+- (void)setDeviceRemovalReason:(int64_t)reason onAccount:(id)account
 {
   v18 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  reasonCopy = reason;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v13;
-    v6 = [location username];
-    __os_log_helper_16_2_2_8_0_8_64(v17, v7, v6);
+    v7 = reasonCopy;
+    username = [location username];
+    __os_log_helper_16_2_2_8_0_8_64(v17, v7, username);
     _os_log_impl(&dword_193225000, v11, v10, "AKAccountManager setDeviceRemovalReason:%ld onAccount:%@", v17, 0x16u);
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](username);
   }
 
   objc_storeStrong(&v11, 0);
-  v9 = [(AKAccountManager *)v15 deviceRemovalReasonForAccount:location];
+  v9 = [(AKAccountManager *)selfCopy deviceRemovalReasonForAccount:location];
   if (v9 == -1)
   {
     v5 = location;
-    v4 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+    v4 = [MEMORY[0x1E696AD98] numberWithInteger:reasonCopy];
     [v5 setAccountProperty:? forKey:?];
     MEMORY[0x1E69E5920](v4);
   }
@@ -2707,7 +2707,7 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
     v8 = _AKLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_0_2_8_0_8_0(v16, v9, v13);
+      __os_log_helper_16_0_2_8_0_8_0(v16, v9, reasonCopy);
       _os_log_error_impl(&dword_193225000, v8, OS_LOG_TYPE_ERROR, "AKAccountManager setDeviceRemovalReason, there is already a removal reason set! Old reason: %ld. New reason: %ld", v16, 0x16u);
     }
 
@@ -2718,13 +2718,13 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)clearDeviceRemovalReasonFromAccount:(id)a3
+- (void)clearDeviceRemovalReasonFromAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2741,48 +2741,48 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)deviceRemovalReasonForAccount:(id)a3
+- (int64_t)deviceRemovalReasonForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"AKRemoteDeviceRemovalReasonKey"];
   if (v6)
   {
     v5 = objc_opt_class();
     v4 = _AKSafeCast_8(v5, v6);
-    v8 = [v4 integerValue];
+    integerValue = [v4 integerValue];
     MEMORY[0x1E69E5920](v4);
   }
 
   else
   {
-    v8 = -1;
+    integerValue = -1;
   }
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v8;
+  return integerValue;
 }
 
-- (BOOL)shouldPerformSatoriWarmupVerificationForAccount:(id)a3
+- (BOOL)shouldPerformSatoriWarmupVerificationForAccount:(id)account
 {
   v15 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v12 = 0;
   v11 = [location[0] accountPropertyForKey:@"WarmUpVerificationTimeStamp"];
   if (v11)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceDate:v11];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v11];
     v8 = v3;
-    MEMORY[0x1E69E5920](v7);
+    MEMORY[0x1E69E5920](date);
     v10 = v8;
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -2809,29 +2809,29 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)updateSatoriWarmUpTimestampForAccount:(id)a3
+- (void)updateSatoriWarmUpTimestampForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = location[0];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   [v4 setAccountProperty:? forKey:?];
-  MEMORY[0x1E69E5920](v3);
-  [(AKAccountManager *)v6 saveAccount:location[0] error:0];
+  MEMORY[0x1E69E5920](date);
+  [(AKAccountManager *)selfCopy saveAccount:location[0] error:0];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)needsRepairForAccount:(id)a3
+- (BOOL)needsRepairForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"repair-state"];
   v6 = [v4 integerValue] > 1;
   MEMORY[0x1E69E5920](v4);
@@ -2840,44 +2840,44 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (unint64_t)repairStateForAccount:(id)a3
+- (unint64_t)repairStateForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"repair-state"];
-  v6 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setRepairState:(unint64_t)a3 forAccount:(id)a4
+- (void)setRepairState:(unint64_t)state forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:stateCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)webAccessEnabledForAccount:(id)a3
+- (id)webAccessEnabledForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"webAccessEnabled"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -2889,29 +2889,29 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setWebAccessEnabled:(BOOL)a3 forAccount:(id)a4
+- (void)setWebAccessEnabled:(BOOL)enabled forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)serverExperimentalFeaturesForAccount:(id)a3
+- (id)serverExperimentalFeaturesForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"serverExperimentalFeatures"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -2923,28 +2923,28 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setServerExperimentalFeatures:(id)a3 forAccount:(id)a4
+- (void)setServerExperimentalFeatures:(id)features forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"serverExperimentalFeatures"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)markedForSignOutForAccount:(id)a3
+- (id)markedForSignOutForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"markedForSignOut"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -2956,34 +2956,34 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setMarkedForSignOut:(BOOL)a3 forAccount:(id)a4
+- (void)setMarkedForSignOut:(BOOL)out forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  outCopy = out;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:outCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)hasSOSActiveDeviceForAccount:(id)a3
+- (id)hasSOSActiveDeviceForAccount:(id)account
 {
   v13 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = +[AKConfiguration sharedConfiguration];
-  v7 = [v6 forceHasSOSActiveDevice];
+  forceHasSOSActiveDevice = [v6 forceHasSOSActiveDevice];
   MEMORY[0x1E69E5920](v6);
-  v10 = v7;
-  if (v7)
+  v10 = forceHasSOSActiveDevice;
+  if (forceHasSOSActiveDevice)
   {
     if (v10 == -1)
     {
@@ -3014,34 +3014,34 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setHasSOSActiveDevice:(BOOL)a3 forAccount:(id)a4
+- (void)setHasSOSActiveDevice:(BOOL)device forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  deviceCopy = device;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:deviceCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)isSOSNeededForAccount:(id)a3
+- (id)isSOSNeededForAccount:(id)account
 {
   v13 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = +[AKConfiguration sharedConfiguration];
-  v7 = [v6 forceSOSNeeded];
+  forceSOSNeeded = [v6 forceSOSNeeded];
   MEMORY[0x1E69E5920](v6);
-  v10 = v7;
-  if (v7)
+  v10 = forceSOSNeeded;
+  if (forceSOSNeeded)
   {
     if (v10 == -1)
     {
@@ -3072,29 +3072,29 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setSOSNeeded:(BOOL)a3 forAccount:(id)a4
+- (void)setSOSNeeded:(BOOL)needed forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  neededCopy = needed;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:neededCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)hasModernRecoveryKeyForAccount:(id)a3
+- (id)hasModernRecoveryKeyForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"hasRK"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -3106,29 +3106,29 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setHasModernRecoveryKey:(BOOL)a3 forAccount:(id)a4
+- (void)setHasModernRecoveryKey:(BOOL)key forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  keyCopy = key;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:keyCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)get3PRegulatoryOverride:(id)a3
+- (id)get3PRegulatoryOverride:(id)override
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, override);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"3PRegulatoryOverride"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -3140,28 +3140,28 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)set3PRegulatoryOverride:(id)a3 forAccount:(id)a4
+- (void)set3PRegulatoryOverride:(id)override forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, override);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"3PRegulatoryOverride"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)adpCohortForAccount:(id)a3
+- (id)adpCohortForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"adpCh"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -3173,119 +3173,119 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)hearbeatTokenForAccount:(id)a3
+- (id)hearbeatTokenForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 hearbeatTokenForAccount:location[0] error:0];
+  objc_storeStrong(location, account);
+  v4 = [(AKAccountManager *)selfCopy hearbeatTokenForAccount:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)continuationTokenForAccount:(id)a3
+- (id)continuationTokenForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 continuationTokenForAccount:location[0] error:0];
+  objc_storeStrong(location, account);
+  v4 = [(AKAccountManager *)selfCopy continuationTokenForAccount:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)passwordResetTokenForAccount:(id)a3
+- (id)passwordResetTokenForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 passwordResetTokenForAccount:location[0] error:0];
+  objc_storeStrong(location, account);
+  v4 = [(AKAccountManager *)selfCopy passwordResetTokenForAccount:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)passwordResetTokenBackupForAccount:(id)a3
+- (id)passwordResetTokenBackupForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 passwordResetTokenBackupForAccount:location[0] error:0];
+  objc_storeStrong(location, account);
+  v4 = [(AKAccountManager *)selfCopy passwordResetTokenBackupForAccount:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)hearbeatTokenForAccount:(id)a3 error:(id *)a4
+- (id)hearbeatTokenForAccount:(id)account error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAccountManager *)v8 _tokenWithName:*MEMORY[0x1E69599A0] forAccount:location[0] error:a4];
+  objc_storeStrong(location, account);
+  v6 = [(AKAccountManager *)selfCopy _tokenWithName:*MEMORY[0x1E69599A0] forAccount:location[0] error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)continuationTokenForAccount:(id)a3 error:(id *)a4
+- (id)continuationTokenForAccount:(id)account error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAccountManager *)v8 _tokenWithName:*MEMORY[0x1E6959948] forAccount:location[0] error:a4];
+  objc_storeStrong(location, account);
+  v6 = [(AKAccountManager *)selfCopy _tokenWithName:*MEMORY[0x1E6959948] forAccount:location[0] error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)passwordResetTokenForAccount:(id)a3 error:(id *)a4
+- (id)passwordResetTokenForAccount:(id)account error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAccountManager *)v8 _tokenWithName:*MEMORY[0x1E69599D8] forAccount:location[0] error:a4];
+  objc_storeStrong(location, account);
+  v6 = [(AKAccountManager *)selfCopy _tokenWithName:*MEMORY[0x1E69599D8] forAccount:location[0] error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)passwordResetTokenBackupForAccount:(id)a3 error:(id *)a4
+- (id)passwordResetTokenBackupForAccount:(id)account error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAccountManager *)v8 _tokenWithName:*MEMORY[0x1E69599D0] forAccount:location[0] error:a4];
+  objc_storeStrong(location, account);
+  v6 = [(AKAccountManager *)selfCopy _tokenWithName:*MEMORY[0x1E69599D0] forAccount:location[0] error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)allTokensForAccount:(id)a3 error:(id *)a4
+- (id)allTokensForAccount:(id)account error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21[1] = a4;
+  objc_storeStrong(location, account);
+  v21[1] = error;
   v21[0] = objc_opt_new();
   v20[0] = 0;
   obj = 0;
   v12 = [location[0] credentialWithError:&obj];
   objc_storeStrong(v20, obj);
   v19 = v12;
-  v17 = [v12 keysForCredentialItems];
+  keysForCredentialItems = [v12 keysForCredentialItems];
   memset(__b, 0, sizeof(__b));
-  v10 = MEMORY[0x1E69E5928](v17);
+  v10 = MEMORY[0x1E69E5928](keysForCredentialItems);
   v11 = [v10 countByEnumeratingWithState:__b objects:v24 count:16];
   if (v11)
   {
@@ -3323,7 +3323,7 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
 
   MEMORY[0x1E69E5920](v10);
   v23 = [v21[0] copy];
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&keysForCredentialItems, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(v20, 0);
   objc_storeStrong(v21, 0);
@@ -3334,13 +3334,13 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)buildCredentialWithTokens:(id)a3
+- (id)buildCredentialWithTokens:(id)tokens
 {
   v18 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tokens);
   v15 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
   obj = [location[0] allKeys];
@@ -3385,13 +3385,13 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)masterTokenForAccount:(id)a3
+- (id)masterTokenForAccount:(id)account
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKAccountManager *)v7 _tokenWithName:*MEMORY[0x1E6959A18] forAccount:location[0] error:0];
+  objc_storeStrong(location, account);
+  v5 = [(AKAccountManager *)selfCopy _tokenWithName:*MEMORY[0x1E6959A18] forAccount:location[0] error:0];
   if (v5)
   {
     v8 = [AKMasterToken tokenWithExternalizedVersionString:v5];
@@ -3409,42 +3409,42 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)settingsServiceTokenForAccount:(id)a3
+- (id)settingsServiceTokenForAccount:(id)account
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v8 store];
-  v6 = [(ACAccountStore *)v4 credentialForAccount:location[0] serviceID:@"com.apple.gs.appleid.auth"];
-  MEMORY[0x1E69E5920](v4);
-  v5 = [v6 token];
+  objc_storeStrong(location, account);
+  store = [(AKAccountManager *)selfCopy store];
+  v6 = [(ACAccountStore *)store credentialForAccount:location[0] serviceID:@"com.apple.gs.appleid.auth"];
+  MEMORY[0x1E69E5920](store);
+  token = [v6 token];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 
-  return v5;
+  return token;
 }
 
-- (void)removeMasterTokenForAccount:(id)a3
+- (void)removeMasterTokenForAccount:(id)account
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAccountManager *)v4 _removeTokenKey:*MEMORY[0x1E6959A18] forAccount:location[0]];
+  objc_storeStrong(location, account);
+  [(AKAccountManager *)selfCopy _removeTokenKey:*MEMORY[0x1E6959A18] forAccount:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (id)tokenCreationDateWithIdentifier:(id)a3 forAccount:(id)a4 error:(id *)a5
+- (id)tokenCreationDateWithIdentifier:(id)identifier forAccount:(id)account error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
-  v27 = a5;
+  objc_storeStrong(&v28, account);
+  errorCopy = error;
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -3456,10 +3456,10 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   objc_storeStrong(&v26, 0);
   if (v28)
   {
-    v21 = [(AKAccountManager *)v30 _creationKeyForTokenWithName:location[0]];
+    v21 = [(AKAccountManager *)selfCopy _creationKeyForTokenWithName:location[0]];
     if (v21)
     {
-      v17 = [(AKAccountManager *)v30 _tokenWithName:v21 forAccount:v28 error:v27];
+      v17 = [(AKAccountManager *)selfCopy _tokenWithName:v21 forAccount:v28 error:errorCopy];
       v16 = 0;
       if (v17)
       {
@@ -3507,11 +3507,11 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
     }
 
     objc_storeStrong(&v24, 0);
-    if (v27)
+    if (errorCopy)
     {
       v13 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
       v5 = v13;
-      *v27 = v13;
+      *errorCopy = v13;
     }
 
     v31 = 0;
@@ -3526,16 +3526,16 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)tokenCreationTimeStampWithIdentifier:(id)a3 forAccount:(id)a4 error:(id *)a5
+- (id)tokenCreationTimeStampWithIdentifier:(id)identifier forAccount:(id)account error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  v23 = a5;
+  objc_storeStrong(&v24, account);
+  errorCopy = error;
   v22 = _AKLogSystem();
   v21 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -3547,10 +3547,10 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   objc_storeStrong(&v22, 0);
   if (v24)
   {
-    v17 = [(AKAccountManager *)v26 _creationKeyForTokenWithName:location[0]];
+    v17 = [(AKAccountManager *)selfCopy _creationKeyForTokenWithName:location[0]];
     if (v17)
     {
-      v13 = [(AKAccountManager *)v26 _tokenWithName:v17 forAccount:v24 error:v23];
+      v13 = [(AKAccountManager *)selfCopy _tokenWithName:v17 forAccount:v24 error:errorCopy];
       v27 = MEMORY[0x1E69E5928](v13);
       v18 = 1;
       objc_storeStrong(&v13, 0);
@@ -3587,11 +3587,11 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
     }
 
     objc_storeStrong(&v20, 0);
-    if (v23)
+    if (errorCopy)
     {
       v10 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
       v5 = v10;
-      *v23 = v10;
+      *errorCopy = v10;
     }
 
     v27 = 0;
@@ -3606,23 +3606,23 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)setToken:(id)a3 tokenID:(id)a4 account:(id)a5 credential:(id)a6
+- (void)setToken:(id)token tokenID:(id)d account:(id)account credential:(id)credential
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, d);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, account);
   v11 = 0;
-  objc_storeStrong(&v11, a6);
+  objc_storeStrong(&v11, credential);
   v9 = v11;
-  v10 = [location[0] stringValue];
+  stringValue = [location[0] stringValue];
   [v9 setCredentialItem:? forKey:?];
-  MEMORY[0x1E69E5920](v10);
-  [(AKAccountManager *)v15 _setTokenCreationTimeForToken:location[0] tokenID:v13 account:v12 credential:v11];
+  MEMORY[0x1E69E5920](stringValue);
+  [(AKAccountManager *)selfCopy _setTokenCreationTimeForToken:location[0] tokenID:v13 account:v12 credential:v11];
   [v12 setCredential:v11];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
@@ -3630,21 +3630,21 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)_setTokenCreationTimeForToken:(id)a3 tokenID:(id)a4 account:(id)a5 credential:(id)a6
+- (void)_setTokenCreationTimeForToken:(id)token tokenID:(id)d account:(id)account credential:(id)credential
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, d);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, account);
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, credential);
   if (v32)
   {
-    v27 = [(AKAccountManager *)v36 _creationKeyForTokenWithName:v34];
+    v27 = [(AKAccountManager *)selfCopy _creationKeyForTokenWithName:v34];
     if (!v27)
     {
       v26 = _AKLogSystem();
@@ -3668,11 +3668,11 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
       goto LABEL_21;
     }
 
-    v23 = [(AKAccountManager *)v36 tokenCreationDateWithIdentifier:v34 forAccount:v33 error:0];
-    v22 = [location[0] creationDate];
-    if (v22)
+    v23 = [(AKAccountManager *)selfCopy tokenCreationDateWithIdentifier:v34 forAccount:v33 error:0];
+    creationDate = [location[0] creationDate];
+    if (creationDate)
     {
-      if (v23 && [v22 compare:v23] != 1)
+      if (v23 && [creationDate compare:v23] != 1)
       {
         v20 = _AKLogSystem();
         v19 = 16;
@@ -3687,7 +3687,7 @@ uint64_t __39__AKAccountManager__saveAccount_error___block_invoke(uint64_t a1)
         objc_storeStrong(&v20, 0);
         v28 = 1;
 LABEL_18:
-        objc_storeStrong(&v22, 0);
+        objc_storeStrong(&creationDate, 0);
         objc_storeStrong(&v23, 0);
         if (v28)
         {
@@ -3701,10 +3701,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v9 = [location[0] creationDate];
-      [v9 timeIntervalSince1970];
+      creationDate2 = [location[0] creationDate];
+      [creationDate2 timeIntervalSince1970];
       v10 = v6;
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](creationDate2);
       v21[1] = v10;
       v21[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&v10 * 1000.0];
       [v32 setCredentialItem:v21[0] forKey:v27];
@@ -3734,12 +3734,12 @@ LABEL_23:
   objc_storeStrong(location, 0);
 }
 
-- (id)_creationKeyForTokenWithName:(id)a3
+- (id)_creationKeyForTokenWithName:(id)name
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v5 = 0;
   if (location[0] == *MEMORY[0x1E6959948])
   {
@@ -3763,16 +3763,16 @@ LABEL_23:
   return v4;
 }
 
-- (id)_tokenWithName:(id)a3 forAccount:(id)a4 error:(id *)a5
+- (id)_tokenWithName:(id)name forAccount:(id)account error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v50 = 0;
-  objc_storeStrong(&v50, a4);
-  v49 = a5;
+  objc_storeStrong(&v50, account);
+  errorCopy = error;
   if (v50)
   {
     v39 = 0;
@@ -3803,7 +3803,7 @@ LABEL_23:
     v20 = __52__AKAccountManager__tokenWithName_forAccount_error___block_invoke;
     v21 = &unk_1E73D6A10;
     v24[1] = &v32;
-    v22 = MEMORY[0x1E69E5928](v52);
+    v22 = MEMORY[0x1E69E5928](selfCopy);
     v23 = MEMORY[0x1E69E5928](v50);
     v24[2] = &v39;
     v24[3] = &v25;
@@ -3839,14 +3839,14 @@ LABEL_23:
 
     if (v40[5])
     {
-      if (v49)
+      if (errorCopy)
       {
         v9 = v40[5];
         v6 = v9;
-        *v49 = v9;
+        *errorCopy = v9;
       }
 
-      [(AKAccountManager *)v52 _reportTokenWithName:location[0] forAccount:v50 error:v40[5]];
+      [(AKAccountManager *)selfCopy _reportTokenWithName:location[0] forAccount:v50 error:v40[5]];
     }
 
     v53 = MEMORY[0x1E69E5928](v26[5]);
@@ -3873,12 +3873,12 @@ LABEL_23:
     }
 
     objc_storeStrong(&v48, 0);
-    if (v49)
+    if (errorCopy)
     {
       v11 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
       v5 = v11;
-      *v49 = v11;
-      [(AKAccountManager *)v52 _reportTokenWithName:location[0] forAccount:v50 error:*v49];
+      *errorCopy = v11;
+      [(AKAccountManager *)selfCopy _reportTokenWithName:location[0] forAccount:v50 error:*errorCopy];
     }
 
     v53 = 0;
@@ -3914,23 +3914,23 @@ uint64_t __52__AKAccountManager__tokenWithName_forAccount_error___block_invoke(v
   return MEMORY[0x1E69E5920](v8);
 }
 
-- (void)_reportTokenWithName:(id)a3 forAccount:(id)a4 error:(id)a5
+- (void)_reportTokenWithName:(id)name forAccount:(id)account error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, account);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, error);
   v8 = 0;
   if (location[0] == *MEMORY[0x1E6959948])
   {
     objc_storeStrong(&v8, @"com.apple.authkit.token.ck.fetch");
 LABEL_10:
-    [(AKAccountManager *)v12 _reportTokenWithTelemetryID:v8 account:v10 telemetryFlowID:0 error:v9];
+    [(AKAccountManager *)selfCopy _reportTokenWithTelemetryID:v8 account:v10 telemetryFlowID:0 error:v9];
     goto LABEL_11;
   }
 
@@ -3962,7 +3962,7 @@ LABEL_11:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)authKitAccountTypeWithError:(id *)a3
+- (id)authKitAccountTypeWithError:(id *)error
 {
   v9 = *MEMORY[0x1E69E9840];
   if (!self->_authKitAccountType)
@@ -3970,7 +3970,7 @@ LABEL_11:
     os_unfair_lock_lock(&self->_authKitAccountTypeLock);
     if (!self->_authKitAccountType)
     {
-      v3 = [(AKAccountStore *)self->_accountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959880] error:a3];
+      v3 = [(AKAccountStore *)self->_accountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959880] error:error];
       authKitAccountType = self->_authKitAccountType;
       self->_authKitAccountType = v3;
       MEMORY[0x1E69E5920](authKitAccountType);
@@ -3987,7 +3987,7 @@ LABEL_11:
 
 - (id)accountEligibleForUpdate
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKAccountManager *)self _serviceTypesForSecurityUpgrade];
   v16 = 0;
@@ -4003,7 +4003,7 @@ LABEL_11:
   v12 = 0;
   v13 = __44__AKAccountManager_accountEligibleForUpdate__block_invoke;
   v14 = &unk_1E73D6A60;
-  v15[0] = MEMORY[0x1E69E5928](v24);
+  v15[0] = MEMORY[0x1E69E5928](selfCopy);
   v15[1] = &v16;
   [v6 enumerateObjectsUsingBlock:&v10];
   if (!v17[5])
@@ -4084,16 +4084,16 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
 
 - (id)_serviceTypesForSecurityUpgrade
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6 = [AKURLBag bagForAltDSID:0];
   v7[0] = [v6 securityUpgradeServiceNames];
   MEMORY[0x1E69E5920](v6);
   if (![v7[0] count])
   {
-    v2 = [(AKAccountManager *)v8 _defaultSecurityUpgradeServiceNames];
+    _defaultSecurityUpgradeServiceNames = [(AKAccountManager *)selfCopy _defaultSecurityUpgradeServiceNames];
     v3 = v7[0];
-    v7[0] = v2;
+    v7[0] = _defaultSecurityUpgradeServiceNames;
     MEMORY[0x1E69E5920](v3);
   }
 
@@ -4113,12 +4113,12 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
   return v3;
 }
 
-- (int64_t)_serviceTypeForServiceNameString:(id)a3
+- (int64_t)_serviceTypeForServiceNameString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   if ([location[0] isEqualToString:@"itunesstore"])
   {
     v5 = 2;
@@ -4153,29 +4153,29 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
   return v5;
 }
 
-- (id)_accountTypeForServiceType:(int64_t)a3
+- (id)_accountTypeForServiceType:(int64_t)type
 {
-  v10 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
-  if (a3 == 1)
+  location[1] = type;
+  if (type == 1)
   {
-    v11 = [(AKAccountManager *)v10 accountTypeForTypeIdentifier:*MEMORY[0x1E6959800]];
+    v11 = [(AKAccountManager *)selfCopy accountTypeForTypeIdentifier:*MEMORY[0x1E6959800]];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v11 = [(AKAccountManager *)v10 accountTypeForTypeIdentifier:*MEMORY[0x1E6959928]];
+    v11 = [(AKAccountManager *)selfCopy accountTypeForTypeIdentifier:*MEMORY[0x1E6959928]];
   }
 
-  else if ((a3 - 4) <= 1)
+  else if ((type - 4) <= 1)
   {
-    v11 = [(AKAccountManager *)v10 accountTypeForTypeIdentifier:*MEMORY[0x1E69598A8]];
+    v11 = [(AKAccountManager *)selfCopy accountTypeForTypeIdentifier:*MEMORY[0x1E69598A8]];
   }
 
-  else if (a3 == 6)
+  else if (type == 6)
   {
-    v11 = [(AKAccountManager *)v10 accountTypeForTypeIdentifier:*MEMORY[0x1E6959858]];
+    v11 = [(AKAccountManager *)selfCopy accountTypeForTypeIdentifier:*MEMORY[0x1E6959858]];
   }
 
   else
@@ -4199,17 +4199,17 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
   return v3;
 }
 
-- (BOOL)_isAccountEligibleForSecurityUpgrade:(id)a3 ofServiceType:(int64_t)a4
+- (BOOL)_isAccountEligibleForSecurityUpgrade:(id)upgrade ofServiceType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  if ([(AKAccountManager *)v13 securityLevelForAccount:location[0]]== 2)
+  objc_storeStrong(location, upgrade);
+  typeCopy = type;
+  if ([(AKAccountManager *)selfCopy securityLevelForAccount:location[0]]== 2)
   {
-    v5 = [(AKAccountManager *)v13 _matchingServiceAccountForAuthKitAccount:location[0] service:v11];
+    v5 = [(AKAccountManager *)selfCopy _matchingServiceAccountForAuthKitAccount:location[0] service:typeCopy];
     MEMORY[0x1E69E5920](v5);
     if (v5)
     {
@@ -4222,7 +4222,7 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
       v7 = _AKLogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_2_8_0_8_64(v15, v11, location[0]);
+        __os_log_helper_16_2_2_8_0_8_64(v15, typeCopy, location[0]);
         _os_log_debug_impl(&dword_193225000, v7, OS_LOG_TYPE_DEBUG, "There is no matching service account for service type (%li). (%@) may be abandoned authkit account, but still on device.", v15, 0x16u);
       }
 
@@ -4255,7 +4255,7 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
 - (void)removeAllPasswordResetTokens
 {
   v23 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKAccountManager *)self allAuthKitAccountsWithError:0];
   MEMORY[0x1E69E5920](0);
@@ -4287,14 +4287,14 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
       }
 
       v15 = *(__b[1] + 8 * v9);
-      v6 = v19;
+      v6 = selfCopy;
       v20[0] = *MEMORY[0x1E69599D8];
       v20[1] = *MEMORY[0x1E69599D0];
       v20[2] = @"password-reset-token-creation";
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
       [AKAccountManager _removeTokenForKeys:v6 forAccount:"_removeTokenForKeys:forAccount:"];
       MEMORY[0x1E69E5920](v5);
-      v3 = v19;
+      v3 = selfCopy;
       v4 = v15;
       v2 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7080];
       [(AKAccountManager *)v3 _reportTokenWithTelemetryID:@"com.apple.authkit.token.prk.delete" account:v4 telemetryFlowID:0 error:?];
@@ -4317,47 +4317,47 @@ uint64_t __44__AKAccountManager_accountEligibleForUpdate__block_invoke_2(uint64_
   *MEMORY[0x1E69E9840];
 }
 
-- (void)removeContinuationTokenForAccount:(id)a3 telemetryFlowID:(id)a4 error:(id)a5
+- (void)removeContinuationTokenForAccount:(id)account telemetryFlowID:(id)d error:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, d);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, error);
   v19 = _AKLogSystem();
   v18 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v25, v23, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v25, selfCopy, location[0]);
     _os_log_impl(&dword_193225000, v19, v18, "%@: Attempting to remove continuation key for account (%@)", v25, 0x16u);
   }
 
   objc_storeStrong(&v19, 0);
-  v17 = [v20 ak_allUnderlyingErrors];
-  v5 = v17;
+  ak_allUnderlyingErrors = [v20 ak_allUnderlyingErrors];
+  v5 = ak_allUnderlyingErrors;
   v10 = MEMORY[0x1E69E9820];
   v11 = -1073741824;
   v12 = 0;
   v13 = __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_error___block_invoke;
   v14 = &unk_1E73D6A88;
-  v15 = MEMORY[0x1E69E5928](v23);
+  v15 = MEMORY[0x1E69E5928](selfCopy);
   v16 = MEMORY[0x1E69E5928](location[0]);
   [v5 enumerateObjectsUsingBlock:&v10];
-  v6 = v23;
+  v6 = selfCopy;
   v24[0] = *MEMORY[0x1E6959948];
   v24[1] = @"continuation-key-creation";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   [AKAccountManager _removeTokenForKeys:v6 forAccount:"_removeTokenForKeys:forAccount:"];
   MEMORY[0x1E69E5920](v7);
-  [(AKAccountManager *)v23 _triggerSilentTTRFor:1];
-  [(AKAccountManager *)v23 _reportTokenWithTelemetryID:@"com.apple.authkit.token.ck.delete" account:location[0] telemetryFlowID:v21 error:v20];
+  [(AKAccountManager *)selfCopy _triggerSilentTTRFor:1];
+  [(AKAccountManager *)selfCopy _reportTokenWithTelemetryID:@"com.apple.authkit.token.ck.delete" account:location[0] telemetryFlowID:v21 error:v20];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&ak_allUnderlyingErrors, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
@@ -4391,13 +4391,13 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   objc_storeStrong(location, 0);
 }
 
-- (id)_credentialForAccount:(id)a3
+- (id)_credentialForAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v9 = 0;
   v8 = 0;
   v7 = 0;
@@ -4415,50 +4415,50 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   return v5;
 }
 
-- (void)removePasswordResetTokenForAccount:(id)a3 telemetryFlowID:(id)a4 error:(id)a5
+- (void)removePasswordResetTokenForAccount:(id)account telemetryFlowID:(id)d error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, d);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, error);
   v9 = _AKLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v15, v13, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v15, selfCopy, location[0]);
     _os_log_impl(&dword_193225000, v9, OS_LOG_TYPE_DEFAULT, "%@: Attempting to remove PRK for account (%@)", v15, 0x16u);
   }
 
   objc_storeStrong(&v9, 0);
-  v5 = v13;
+  v5 = selfCopy;
   v14[0] = *MEMORY[0x1E69599D8];
   v14[1] = @"password-reset-token-creation";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   [AKAccountManager _removeTokenForKeys:v5 forAccount:"_removeTokenForKeys:forAccount:"];
   MEMORY[0x1E69E5920](v6);
-  [(AKAccountManager *)v13 _reportTokenWithTelemetryID:@"com.apple.authkit.token.prk.delete" account:location[0] telemetryFlowID:v11 error:v10];
+  [(AKAccountManager *)selfCopy _reportTokenWithTelemetryID:@"com.apple.authkit.token.prk.delete" account:location[0] telemetryFlowID:v11 error:v10];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeTokenKey:(id)a3 forAccount:(id)a4
+- (void)_removeTokenKey:(id)key forAccount:(id)account
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, account);
   if (location[0])
   {
-    v6 = v14;
+    v6 = selfCopy;
     v15[0] = location[0];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     [AKAccountManager _removeTokenForKeys:v6 forAccount:"_removeTokenForKeys:forAccount:"];
@@ -4485,15 +4485,15 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeTokenForKeys:(id)a3 forAccount:(id)a4
+- (void)_removeTokenForKeys:(id)keys forAccount:(id)account
 {
   v42 = *MEMORY[0x1E69E9840];
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, keys);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, account);
   v29 = 0;
   v30 = &v29;
   v31 = 838860800;
@@ -4561,7 +4561,7 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
     v19[0] = MEMORY[0x1E69E5928](v36);
     v19[1] = &v29;
     [AKAccountManager performWithinPersonaForAccount:v5 withBlock:&v14];
-    [(AKAccountManager *)v38 saveAccount:v36 error:0];
+    [(AKAccountManager *)selfCopy saveAccount:v36 error:0];
     objc_storeStrong(v19, 0);
     v24 = 0;
   }
@@ -4587,11 +4587,11 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_triggerSilentTTRFor:(unint64_t)a3
+- (void)_triggerSilentTTRFor:(unint64_t)for
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = for;
   location[0] = _AKLogSystem();
   v6 = 2;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
@@ -4605,19 +4605,19 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   objc_storeStrong(location, 0);
 }
 
-- (void)_reportTokenWithTelemetryID:(id)a3 account:(id)a4 telemetryFlowID:(id)a5 error:(id)a6
+- (void)_reportTokenWithTelemetryID:(id)d account:(id)account telemetryFlowID:(id)iD error:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, account);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, iD);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
+  objc_storeStrong(&v21, error);
   v20 = _AKLogSystem();
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -4628,10 +4628,10 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
 
   objc_storeStrong(&v20, 0);
   v8 = [AKURLBag bagForAltDSID:0];
-  v9 = [v8 IDMSEnvironment];
+  iDMSEnvironment = [v8 IDMSEnvironment];
   MEMORY[0x1E69E5920](v8);
-  v18[1] = v9;
-  if (v9)
+  v18[1] = iDMSEnvironment;
+  if (iDMSEnvironment)
   {
     v18[0] = _AKLogSystem();
     v17 = OS_LOG_TYPE_DEBUG;
@@ -4648,7 +4648,7 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   else
   {
     v15 = [MEMORY[0x1E6985DB0] ak_analyticsEventWithEventName:location[0] account:v23 error:v21];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AKAccountManager securityLevelForAccount:](v25, "securityLevelForAccount:", v23)}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AKAccountManager securityLevelForAccount:](selfCopy, "securityLevelForAccount:", v23)}];
     [v15 setObject:? forKeyedSubscript:?];
     MEMORY[0x1E69E5920](v7);
     if (v22)
@@ -4658,7 +4658,7 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
 
     if ([@"com.apple.authkit.token.ck.delete" isEqualToString:location[0]])
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AKAccountManager deviceRemovalReasonForAccount:](v25, "deviceRemovalReasonForAccount:", v23)}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AKAccountManager deviceRemovalReasonForAccount:](selfCopy, "deviceRemovalReasonForAccount:", v23)}];
       [v15 setObject:? forKeyedSubscript:?];
       MEMORY[0x1E69E5920](v6);
     }
@@ -4685,23 +4685,23 @@ void __76__AKAccountManager_removeContinuationTokenForAccount_telemetryFlowID_er
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAccount:(id)a3 inUse:(BOOL)a4 byService:(int64_t)a5
+- (void)setAccount:(id)account inUse:(BOOL)use byService:(int64_t)service
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  v15 = a5;
-  queue = v18->_accountQueue;
+  objc_storeStrong(location, account);
+  useCopy = use;
+  serviceCopy = service;
+  queue = selfCopy->_accountQueue;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
   v11 = __47__AKAccountManager_setAccount_inUse_byService___block_invoke;
   v12 = &unk_1E73D6AD8;
   v13[0] = MEMORY[0x1E69E5928](location[0]);
-  v14 = v16;
-  v13[1] = v15;
+  v14 = useCopy;
+  v13[1] = serviceCopy;
   dispatch_barrier_sync(queue, &v8);
   objc_storeStrong(v13, 0);
   objc_storeStrong(location, 0);
@@ -4740,12 +4740,12 @@ void __47__AKAccountManager_setAccount_inUse_byService___block_invoke(uint64_t a
   *MEMORY[0x1E69E9840];
 }
 
-- (id)servicesUsingAccount:(id)a3
+- (id)servicesUsingAccount:(id)account
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v12 = 0;
   v13 = &v12;
   v14 = 838860800;
@@ -4753,7 +4753,7 @@ void __47__AKAccountManager_setAccount_inUse_byService___block_invoke(uint64_t a
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__7;
   v18 = 0;
-  queue = v20->_accountQueue;
+  queue = selfCopy->_accountQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -4783,20 +4783,20 @@ uint64_t __41__AKAccountManager_servicesUsingAccount___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)accountsUsingService:(int64_t)a3
+- (id)accountsUsingService:(int64_t)service
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  serviceCopy = service;
   v13 = [MEMORY[0x1E695DFA8] set];
-  queue = v16->_accountQueue;
+  queue = selfCopy->_accountQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __41__AKAccountManager_accountsUsingService___block_invoke;
   v10 = &unk_1E73D6B50;
-  v11 = MEMORY[0x1E69E5928](v16);
-  v12[1] = v14;
+  v11 = MEMORY[0x1E69E5928](selfCopy);
+  v12[1] = serviceCopy;
   v12[0] = MEMORY[0x1E69E5928](v13);
   dispatch_sync(queue, &v6);
   v5 = [v13 copy];
@@ -4844,17 +4844,17 @@ void __41__AKAccountManager_accountsUsingService___block_invoke_2(uint64_t a1, v
   objc_storeStrong(location, 0);
 }
 
-- (id)activeServiceNamesForAccount:(id)a3
+- (id)activeServiceNamesForAccount:(id)account
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v8 servicesUsingAccount:location[0]];
-  v6 = [v4 allObjects];
+  objc_storeStrong(location, account);
+  v4 = [(AKAccountManager *)selfCopy servicesUsingAccount:location[0]];
+  allObjects = [v4 allObjects];
   MEMORY[0x1E69E5920](v4);
-  v5 = [v6 aaf_map:&__block_literal_global_227];
-  objc_storeStrong(&v6, 0);
+  v5 = [allObjects aaf_map:&__block_literal_global_227];
+  objc_storeStrong(&allObjects, 0);
   objc_storeStrong(location, 0);
 
   return v5;
@@ -4871,13 +4871,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v3;
 }
 
-+ (id)stringRepresentationForService:(int64_t)a3
++ (id)stringRepresentationForService:(int64_t)service
 {
-  location[3] = a1;
+  location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = service;
   location[0] = 0;
-  switch(a3)
+  switch(service)
   {
     case 1:
       objc_storeStrong(location, @"icloud");
@@ -4908,27 +4908,27 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v4;
 }
 
-- (BOOL)hasPrimaryiCloudAccountForAppleID:(id)a3
+- (BOOL)hasPrimaryiCloudAccountForAppleID:(id)d
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v8;
-  v5 = [(AKAccountManager *)v8 iCloudAccountForAppleID:location[0]];
+  objc_storeStrong(location, d);
+  v4 = selfCopy;
+  v5 = [(AKAccountManager *)selfCopy iCloudAccountForAppleID:location[0]];
   v6 = [(AKAccountManager *)v4 isPrimaryiCloudAccount:?];
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (BOOL)hasPrimaryiCloudAccountForAltDSID:(id)a3
+- (BOOL)hasPrimaryiCloudAccountForAltDSID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v7 = _AKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -4937,8 +4937,8 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   }
 
   objc_storeStrong(&v7, 0);
-  v4 = v9;
-  v5 = [(AKAccountManager *)v9 iCloudAccountForAltDSID:location[0]];
+  v4 = selfCopy;
+  v5 = [(AKAccountManager *)selfCopy iCloudAccountForAltDSID:location[0]];
   v6 = [(AKAccountManager *)v4 isPrimaryiCloudAccount:?];
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(location, 0);
@@ -4946,13 +4946,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v6;
 }
 
-- (BOOL)isPrimaryiCloudAccount:(id)a3
+- (BOOL)isPrimaryiCloudAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v7 = [location[0] accountPropertyForKey:@"accountClass"];
   if ([v7 isEqualToString:@"primary"])
   {
@@ -4992,13 +4992,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v9 & 1;
 }
 
-- (BOOL)isPrimaryiCloudAccountEmailVerified:(id)a3
+- (BOOL)isPrimaryiCloudAccountEmailVerified:(id)verified
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, verified);
   v5 = [location[0] accountPropertyForKey:@"primaryEmailVerified"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -5024,13 +5024,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v7 & 1;
 }
 
-- (id)transportableAuthKitAccount:(id)a3
+- (id)transportableAuthKitAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] copy];
   v5 = objc_alloc_init(MEMORY[0x1E695DFD8]);
   [v6 setAccountProperty:v5 forKey:@"retaining-services"];
@@ -5046,13 +5046,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v3;
 }
 
-- (id)_aliasesForiCloudAccount:(id)a3
+- (id)_aliasesForiCloudAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"appleIdAliases"];
   MEMORY[0x1E69E5920](0);
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -5081,13 +5081,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v3;
 }
 
-- (BOOL)isFulliCloudAccount:(id)a3
+- (BOOL)isFulliCloudAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = objc_opt_class();
   v4 = [location[0] accountPropertyForKey:@"accountClass"];
   v6 = _AKSafeCast_8(v5, v4);
@@ -5099,13 +5099,13 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
   return v8 & 1;
 }
 
-- (id)_altDSIDForiCloudAccount:(id)a3
+- (id)_altDSIDForiCloudAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"altDSID"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -5136,52 +5136,52 @@ id __49__AKAccountManager_activeServiceNamesForAccount___block_invoke(void *a1, 
 - (ACAccountType)appleIDAccountType
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_appleIDAccountType)
   {
-    os_unfair_lock_lock(&v10->_appleIDAccountTypeLock);
-    if (!v10->_appleIDAccountType)
+    os_unfair_lock_lock(&selfCopy->_appleIDAccountTypeLock);
+    if (!selfCopy->_appleIDAccountType)
     {
       location[0] = 0;
-      accountStore = v10->_accountStore;
+      accountStore = selfCopy->_accountStore;
       v3 = *MEMORY[0x1E6959808];
       v8 = 0;
       v7 = [(AKAccountStore *)accountStore accountTypeWithAccountTypeIdentifier:v3 error:&v8];
       objc_storeStrong(location, v8);
-      appleIDAccountType = v10->_appleIDAccountType;
-      v10->_appleIDAccountType = v7;
+      appleIDAccountType = selfCopy->_appleIDAccountType;
+      selfCopy->_appleIDAccountType = v7;
       MEMORY[0x1E69E5920](appleIDAccountType);
       objc_storeStrong(location, 0);
     }
 
-    os_unfair_lock_unlock(&v10->_appleIDAccountTypeLock);
+    os_unfair_lock_unlock(&selfCopy->_appleIDAccountTypeLock);
   }
 
   *MEMORY[0x1E69E9840];
-  v5 = v10->_appleIDAccountType;
+  v5 = selfCopy->_appleIDAccountType;
 
   return v5;
 }
 
-- (id)accountTypeForTypeIdentifier:(id)a3
+- (id)accountTypeForTypeIdentifier:(id)identifier
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   if (location[0])
   {
-    v15 = [(NSMutableDictionary *)v18->_accountTypeCache objectForKey:location[0]];
+    v15 = [(NSMutableDictionary *)selfCopy->_accountTypeCache objectForKey:location[0]];
     if (!v15)
     {
-      p_accountTypeCacheLock = &v18->_accountTypeCacheLock;
+      p_accountTypeCacheLock = &selfCopy->_accountTypeCacheLock;
       v8 = MEMORY[0x1E69E9820];
       v9 = -1073741824;
       v10 = 0;
       v11 = __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke;
       v12 = &unk_1E73D6BC0;
-      v13 = MEMORY[0x1E69E5928](v18);
+      v13 = MEMORY[0x1E69E5928](selfCopy);
       v14 = MEMORY[0x1E69E5928](location[0]);
       v3 = ak_unfair_lock_perform_with_result_2(p_accountTypeCacheLock, &v8);
       v4 = v15;
@@ -5232,13 +5232,13 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v6;
 }
 
-- (id)additionalInfoForAccount:(id)a3
+- (id)additionalInfoForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"additionalInfo"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -5247,28 +5247,28 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setAdditionalInfo:(id)a3 forAccount:(id)a4
+- (void)setAdditionalInfo:(id)info forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"additionalInfo"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)trustedPhoneNumbersForAccount:(id)a3
+- (id)trustedPhoneNumbersForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"trustedPhoneNumbers"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -5277,28 +5277,28 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setTrustedPhoneNumbers:(id)a3 forAccount:(id)a4
+- (void)setTrustedPhoneNumbers:(id)numbers forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, numbers);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"trustedPhoneNumbers"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)securityKeysForAccount:(id)a3
+- (id)securityKeysForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"securityKeys"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -5307,28 +5307,28 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setSecurityKeys:(id)a3 forAccount:(id)a4
+- (void)setSecurityKeys:(id)keys forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, keys);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"securityKeys"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)loginHandlesForAccount:(id)a3
+- (id)loginHandlesForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"loginHandles"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -5337,15 +5337,15 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setLoginHandles:(id)a3 forAccount:(id)a4
+- (void)setLoginHandles:(id)handles forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handles);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"loginHandles"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -5355,7 +5355,7 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
 - (void)_removeAllRawPasswordCaches
 {
   v17 = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(AKAccountManager *)self _iCloudAccounts];
   location = _AKLogSystem();
@@ -5386,7 +5386,7 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
       }
 
       v10 = *(__b[1] + 8 * v4);
-      [(AKAccountManager *)v14 _clearRawPasswordForAccount:v10];
+      [(AKAccountManager *)selfCopy _clearRawPasswordForAccount:v10];
       ++v4;
       if (v2 + 1 >= v5)
       {
@@ -5405,13 +5405,13 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_clearRawPasswordForAccount:(id)a3
+- (void)_clearRawPasswordForAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v8 = 0;
   v6 = 0;
   v3 = [location[0] credentialWithError:&v6];
@@ -5438,12 +5438,12 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setNextLivenessNonce:(id)a3 nonce:(id)a4
+- (void)setNextLivenessNonce:(id)nonce nonce:(id)a4
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, nonce);
   v5 = 0;
   objc_storeStrong(&v5, a4);
   [location[0] setAccountProperty:v5 forKey:@"nextLivenessNonce"];
@@ -5451,13 +5451,13 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   objc_storeStrong(location, 0);
 }
 
-- (id)nextLivenessNonce:(id)a3
+- (id)nextLivenessNonce:(id)nonce
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, nonce);
   v6 = [location[0] accountPropertyForKey:@"nextLivenessNonce"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -5466,11 +5466,11 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v3;
 }
 
-- (id)allAuthKitAccountsWithError:(id *)a3
+- (id)allAuthKitAccountsWithError:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  errorCopy = error;
   v10 = 0;
   obj = 0;
   v7 = [(AKAccountManager *)self authKitAccountTypeWithError:&obj];
@@ -5478,16 +5478,16 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   v9 = v7;
   if (v7)
   {
-    v14 = [(AKAccountManager *)v13 _fetchAllAccountsWithType:v9 error:v11];
+    v14 = [(AKAccountManager *)selfCopy _fetchAllAccountsWithType:v9 error:errorCopy];
   }
 
   else
   {
-    if (v11)
+    if (errorCopy)
     {
       v6 = v10;
       v3 = v10;
-      *v11 = v6;
+      *errorCopy = v6;
     }
 
     v14 = 0;
@@ -5500,28 +5500,28 @@ id __49__AKAccountManager_accountTypeForTypeIdentifier___block_invoke(void *a1)
   return v4;
 }
 
-- (id)authKitAccountWithAltDSID:(id)a3 error:(id *)a4
+- (id)authKitAccountWithAltDSID:(id)d error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, d);
+  errorCopy = error;
   if (location[0])
   {
     v24 = 0;
     obj = 0;
-    v17 = [(AKAccountManager *)v28 allAuthKitAccountsWithError:&obj];
+    v17 = [(AKAccountManager *)selfCopy allAuthKitAccountsWithError:&obj];
     objc_storeStrong(&v24, obj);
     v23 = v17;
     if (v24)
     {
-      if (v26)
+      if (errorCopy)
       {
         v16 = v24;
         v5 = v24;
-        *v26 = v16;
+        *errorCopy = v16;
       }
 
       v29 = 0;
@@ -5591,11 +5591,11 @@ LABEL_17:
 
   else
   {
-    if (v26)
+    if (errorCopy)
     {
       v18 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7025];
       v4 = v18;
-      *v26 = v18;
+      *errorCopy = v18;
     }
 
     v29 = 0;
@@ -5609,28 +5609,28 @@ LABEL_17:
   return v6;
 }
 
-- (id)authKitAccountWithAppleID:(id)a3 error:(id *)a4
+- (id)authKitAccountWithAppleID:(id)d error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
+  objc_storeStrong(location, d);
+  errorCopy = error;
   if (location[0])
   {
     v25 = 0;
     obj = 0;
-    v17 = [(AKAccountManager *)v29 allAuthKitAccountsWithError:&obj];
+    v17 = [(AKAccountManager *)selfCopy allAuthKitAccountsWithError:&obj];
     objc_storeStrong(&v25, obj);
     v24 = v17;
     if (v25)
     {
-      if (v27)
+      if (errorCopy)
       {
         v16 = v25;
         v5 = v25;
-        *v27 = v16;
+        *errorCopy = v16;
       }
 
       v30 = 0;
@@ -5656,15 +5656,15 @@ LABEL_17:
           }
 
           v22 = *(__b[1] + 8 * v12);
-          v8 = [v22 username];
-          v9 = [v8 isEqual:location[0]];
-          MEMORY[0x1E69E5920](v8);
+          username = [v22 username];
+          v9 = [username isEqual:location[0]];
+          MEMORY[0x1E69E5920](username);
           if (v9)
           {
             break;
           }
 
-          v20 = [(AKAccountManager *)v29 aliasesForAccount:v22];
+          v20 = [(AKAccountManager *)selfCopy aliasesForAccount:v22];
           if ([v20 containsObject:location[0]])
           {
             v30 = MEMORY[0x1E69E5928](v22);
@@ -5719,11 +5719,11 @@ LABEL_22:
 
   else
   {
-    if (v27)
+    if (errorCopy)
     {
       v18 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
       v4 = v18;
-      *v27 = v18;
+      *errorCopy = v18;
     }
 
     v30 = 0;
@@ -5739,33 +5739,33 @@ LABEL_22:
 
 - (id)allAuthKitAccounts
 {
-  v4 = [(AKAccountManager *)self authKitAccountType];
+  authKitAccountType = [(AKAccountManager *)self authKitAccountType];
   v5 = [AKAccountManager _fetchAllAccountsWithType:"_fetchAllAccountsWithType:error:" error:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](authKitAccountType);
 
   return v5;
 }
 
-- (id)authKitAccountWithAltDSID:(id)a3
+- (id)authKitAccountWithAltDSID:(id)d
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 authKitAccountWithAltDSID:location[0] error:0];
+  objc_storeStrong(location, d);
+  v4 = [(AKAccountManager *)selfCopy authKitAccountWithAltDSID:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)authKitAccountWithDSID:(id)a3
+- (id)authKitAccountWithDSID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [(AKAccountManager *)v18 allAuthKitAccountsWithError:0];
+  objc_storeStrong(location, d);
+  v16 = [(AKAccountManager *)selfCopy allAuthKitAccountsWithError:0];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x1E69E5928](v16);
   v12 = [obj countByEnumeratingWithState:__b objects:v20 count:16];
@@ -5827,43 +5827,43 @@ LABEL_9:
   return v3;
 }
 
-- (id)authKitAccountWithAppleID:(id)a3
+- (id)authKitAccountWithAppleID:(id)d
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 authKitAccountWithAppleID:location[0] error:0];
+  objc_storeStrong(location, d);
+  v4 = [(AKAccountManager *)selfCopy authKitAccountWithAppleID:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)_protoAccountWithError:(id *)a3
+- (id)_protoAccountWithError:(id *)error
 {
   v7[3] = self;
   v7[2] = a2;
-  v7[1] = a3;
-  v5 = [(AKAccountManager *)self protoAccountType];
+  v7[1] = error;
+  protoAccountType = [(AKAccountManager *)self protoAccountType];
   v7[0] = [AKAccountManager _fetchAllAccountsWithType:"_fetchAllAccountsWithType:error:" error:?];
-  MEMORY[0x1E69E5920](v5);
-  v6 = [v7[0] firstObject];
+  MEMORY[0x1E69E5920](protoAccountType);
+  firstObject = [v7[0] firstObject];
   objc_storeStrong(v7, 0);
 
-  return v6;
+  return firstObject;
 }
 
-- (id)appleIDAccountWithAltDSID:(id)a3
+- (id)appleIDAccountWithAltDSID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = v22;
-  v14 = [(AKAccountManager *)v22 appleIDAccountType];
+  objc_storeStrong(location, d);
+  v13 = selfCopy;
+  appleIDAccountType = [(AKAccountManager *)selfCopy appleIDAccountType];
   v20 = [AKAccountManager _fetchAllAccountsWithType:v13 error:"_fetchAllAccountsWithType:error:"];
-  MEMORY[0x1E69E5920](v14);
+  MEMORY[0x1E69E5920](appleIDAccountType);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x1E69E5928](v20);
   v16 = [obj countByEnumeratingWithState:__b objects:v24 count:16];
@@ -5933,17 +5933,17 @@ LABEL_10:
   return v3;
 }
 
-- (id)appleIDAccountWithAppleID:(id)a3
+- (id)appleIDAccountWithAppleID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = v20;
-  v12 = [(AKAccountManager *)v20 appleIDAccountType];
+  objc_storeStrong(location, d);
+  v11 = selfCopy;
+  appleIDAccountType = [(AKAccountManager *)selfCopy appleIDAccountType];
   v18 = [AKAccountManager _fetchAllAccountsWithType:v11 error:"_fetchAllAccountsWithType:error:"];
-  MEMORY[0x1E69E5920](v12);
+  MEMORY[0x1E69E5920](appleIDAccountType);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x1E69E5928](v18);
   v14 = [obj countByEnumeratingWithState:__b objects:v22 count:16];
@@ -5961,9 +5961,9 @@ LABEL_10:
       }
 
       v17 = *(__b[1] + 8 * v9);
-      v5 = [v17 username];
-      v6 = [v5 isEqual:location[0]];
-      MEMORY[0x1E69E5920](v5);
+      username = [v17 username];
+      v6 = [username isEqual:location[0]];
+      MEMORY[0x1E69E5920](username);
       if (v6)
       {
         break;
@@ -6005,21 +6005,21 @@ LABEL_9:
   return v3;
 }
 
-- (id)_matchingServiceAccountForAuthKitAccount:(id)a3 service:(int64_t)a4
+- (id)_matchingServiceAccountForAuthKitAccount:(id)account service:(int64_t)service
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21[1] = a4;
-  v21[0] = [(AKAccountManager *)v23 _accountTypeForServiceType:a4];
+  objc_storeStrong(location, account);
+  v21[1] = service;
+  v21[0] = [(AKAccountManager *)selfCopy _accountTypeForServiceType:service];
   if (v21[0])
   {
-    v19 = [(AKAccountManager *)v23 _fetchAllAccountsWithType:v21[0] error:0];
+    v19 = [(AKAccountManager *)selfCopy _fetchAllAccountsWithType:v21[0] error:0];
     if ([v19 count])
     {
-      v18 = [(AKAccountManager *)v23 altDSIDForAccount:location[0]];
-      v17 = [location[0] username];
+      v18 = [(AKAccountManager *)selfCopy altDSIDForAccount:location[0]];
+      username = [location[0] username];
       v6 = v19;
       v8 = MEMORY[0x1E69E9820];
       v9 = -1073741824;
@@ -6027,8 +6027,8 @@ LABEL_9:
       v11 = __69__AKAccountManager__matchingServiceAccountForAuthKitAccount_service___block_invoke;
       v12 = &unk_1E73D6BE8;
       v13 = MEMORY[0x1E69E5928](v18);
-      v14 = MEMORY[0x1E69E5928](v23);
-      v15 = MEMORY[0x1E69E5928](v17);
+      v14 = MEMORY[0x1E69E5928](selfCopy);
+      v15 = MEMORY[0x1E69E5928](username);
       v16 = [v6 aaf_firstObjectPassingTest:&v8];
       v24 = MEMORY[0x1E69E5928](v16);
       v20 = 1;
@@ -6036,7 +6036,7 @@ LABEL_9:
       objc_storeStrong(&v15, 0);
       objc_storeStrong(&v14, 0);
       objc_storeStrong(&v13, 0);
-      objc_storeStrong(&v17, 0);
+      objc_storeStrong(&username, 0);
       objc_storeStrong(&v18, 0);
     }
 
@@ -6114,11 +6114,11 @@ uint64_t __69__AKAccountManager__matchingServiceAccountForAuthKitAccount_service
       }
 
       v14 = *(__b[1] + 8 * v9);
-      v5 = [location creationDate];
-      v4 = [v14 creationDate];
-      v6 = [v5 compare:?];
-      MEMORY[0x1E69E5920](v4);
-      MEMORY[0x1E69E5920](v5);
+      creationDate = [location creationDate];
+      creationDate2 = [v14 creationDate];
+      v6 = [creationDate compare:?];
+      MEMORY[0x1E69E5920](creationDate2);
+      MEMORY[0x1E69E5920](creationDate);
       if (v6 == -1)
       {
         objc_storeStrong(&location, v14);
@@ -6146,16 +6146,16 @@ uint64_t __69__AKAccountManager__matchingServiceAccountForAuthKitAccount_service
   return v3;
 }
 
-- (id)iCloudAccountForAppleID:(id)a3
+- (id)iCloudAccountForAppleID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = [(AKAccountManager *)v19 _iCloudAccounts];
+  objc_storeStrong(location, d);
+  _iCloudAccounts = [(AKAccountManager *)selfCopy _iCloudAccounts];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x1E69E5928](v17);
+  obj = MEMORY[0x1E69E5928](_iCloudAccounts);
   v12 = [obj countByEnumeratingWithState:__b objects:v21 count:16];
   if (v12)
   {
@@ -6171,15 +6171,15 @@ uint64_t __69__AKAccountManager__matchingServiceAccountForAuthKitAccount_service
       }
 
       v16 = *(__b[1] + 8 * v9);
-      v5 = [v16 username];
-      v6 = [v5 isEqual:location[0]];
-      MEMORY[0x1E69E5920](v5);
+      username = [v16 username];
+      v6 = [username isEqual:location[0]];
+      MEMORY[0x1E69E5920](username);
       if (v6)
       {
         break;
       }
 
-      v13 = [(AKAccountManager *)v19 _aliasesForiCloudAccount:v16];
+      v13 = [(AKAccountManager *)selfCopy _aliasesForiCloudAccount:v16];
       if ([v13 containsObject:location[0]])
       {
         v20 = MEMORY[0x1E69E5928](v16);
@@ -6227,7 +6227,7 @@ LABEL_14:
     v14 = 1;
   }
 
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&_iCloudAccounts, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   v3 = v20;
@@ -6235,16 +6235,16 @@ LABEL_14:
   return v3;
 }
 
-- (id)iCloudAccountForAltDSID:(id)a3
+- (id)iCloudAccountForAltDSID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [(AKAccountManager *)v17 _iCloudAccounts];
+  objc_storeStrong(location, d);
+  _iCloudAccounts = [(AKAccountManager *)selfCopy _iCloudAccounts];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x1E69E5928](v15);
+  obj = MEMORY[0x1E69E5928](_iCloudAccounts);
   v10 = [obj countByEnumeratingWithState:__b objects:v19 count:16];
   if (v10)
   {
@@ -6260,7 +6260,7 @@ LABEL_14:
       }
 
       v14 = *(__b[1] + 8 * v7);
-      v12 = [(AKAccountManager *)v17 _altDSIDForiCloudAccount:v14];
+      v12 = [(AKAccountManager *)selfCopy _altDSIDForiCloudAccount:v14];
       if ([v12 isEqual:location[0]])
       {
         v18 = MEMORY[0x1E69E5928](v14);
@@ -6303,7 +6303,7 @@ LABEL_11:
     v18 = 0;
   }
 
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&_iCloudAccounts, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   v3 = v18;
@@ -6311,22 +6311,22 @@ LABEL_11:
   return v3;
 }
 
-- (id)_fetchAllAccountsWithType:(id)a3 error:(id *)a4
+- (id)_fetchAllAccountsWithType:(id)type error:(id *)error
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
-  v6 = v17;
+  objc_storeStrong(location, type);
+  errorCopy = error;
+  v6 = selfCopy;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
   v11 = __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke;
   v12 = &unk_1E73D6C10;
-  v13 = MEMORY[0x1E69E5928](v17);
+  v13 = MEMORY[0x1E69E5928](selfCopy);
   v14[0] = MEMORY[0x1E69E5928](location[0]);
-  v14[1] = v15;
+  v14[1] = errorCopy;
   v7 = ak_unfair_lock_perform_with_result_2(v6 + 27, &v8);
   objc_storeStrong(v14, 0);
   objc_storeStrong(&v13, 0);
@@ -6399,53 +6399,53 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v10;
 }
 
-- (unint64_t)authenticationModeForAccount:(id)a3
+- (unint64_t)authenticationModeForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"auth-mode"];
-  v6 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setAuthenticationMode:(unint64_t)a3 forAccount:(id)a4
+- (void)setAuthenticationMode:(unint64_t)mode forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  modeCopy = mode;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:modeCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
-  [(AKAccountManager *)v9 updateAuthModeTimestampForAccount:location];
+  [(AKAccountManager *)selfCopy updateAuthModeTimestampForAccount:location];
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldUpdateAuthModeForAccount:(id)a3
+- (BOOL)shouldUpdateAuthModeForAccount:(id)account
 {
   v15 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v12 = 0;
   v11 = [location[0] accountPropertyForKey:@"AuthModeTimeStamp"];
   if (v11)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceDate:v11];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v11];
     v8 = v3;
-    MEMORY[0x1E69E5920](v7);
+    MEMORY[0x1E69E5920](date);
     v10 = v8;
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -6472,70 +6472,70 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v5;
 }
 
-- (void)updateAuthModeTimestampForAccount:(id)a3
+- (void)updateAuthModeTimestampForAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = location[0];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   [v4 setAccountProperty:? forKey:?];
-  MEMORY[0x1E69E5920](v3);
+  MEMORY[0x1E69E5920](date);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isManagedAppleIDForAccount:(id)a3
+- (BOOL)isManagedAppleIDForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 securityLevelForAccount:location[0]]== 5;
+  objc_storeStrong(location, account);
+  v4 = [(AKAccountManager *)selfCopy securityLevelForAccount:location[0]]== 5;
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (unint64_t)managedOrganizationTypeForAccount:(id)a3
+- (unint64_t)managedOrganizationTypeForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"managedOrganizationType"];
-  v6 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setManagedOrganizationType:(unint64_t)a3 forAccount:(id)a4
+- (void)setManagedOrganizationType:(unint64_t)type forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:typeCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)managedOrganizationNameForAccount:(id)a3
+- (id)managedOrganizationNameForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"managedOrganizationName"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -6544,28 +6544,28 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v3;
 }
 
-- (void)setManagedOrganizationName:(id)a3 forAccount:(id)a4
+- (void)setManagedOrganizationName:(id)name forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"managedOrganizationName"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isNotificationEmailAvailableForAccount:(id)a3
+- (BOOL)isNotificationEmailAvailableForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"isNotificationEmailAvailable"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6574,29 +6574,29 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v6 & 1;
 }
 
-- (void)setIsNotificationEmailAvailable:(BOOL)a3 forAccount:(id)a4
+- (void)setIsNotificationEmailAvailable:(BOOL)available forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  availableCopy = available;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:availableCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)notificationEmailForAccount:(id)a3
+- (id)notificationEmailForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"notificationEmail"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -6605,28 +6605,28 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v3;
 }
 
-- (void)setNotificationEmail:(id)a3 forAccount:(id)a4
+- (void)setNotificationEmail:(id)email forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, email);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"notificationEmail"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canBeCustodianForAccount:(id)a3
+- (BOOL)canBeCustodianForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"canBeCustodian"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6635,29 +6635,29 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v6 & 1;
 }
 
-- (void)setCanBeCustodian:(BOOL)a3 forAccount:(id)a4
+- (void)setCanBeCustodian:(BOOL)custodian forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  custodianCopy = custodian;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:custodianCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canHaveCustodianForAccount:(id)a3
+- (BOOL)canHaveCustodianForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"canHaveCustodian"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6666,29 +6666,29 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v6 & 1;
 }
 
-- (void)setCanHaveCustodian:(BOOL)a3 forAccount:(id)a4
+- (void)setCanHaveCustodian:(BOOL)custodian forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  custodianCopy = custodian;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:custodianCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)custodianEnabledForAccount:(id)a3
+- (BOOL)custodianEnabledForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"custodianEnabled"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6697,29 +6697,29 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v6 & 1;
 }
 
-- (void)setCustodianEnabled:(BOOL)a3 forAccount:(id)a4
+- (void)setCustodianEnabled:(BOOL)enabled forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)custodianListVersionForAccount:(id)a3
+- (id)custodianListVersionForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"custodianListVersion"];
   v7 = MEMORY[0x1E69E5928](v5);
   objc_storeStrong(&v5, 0);
@@ -6730,28 +6730,28 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v3;
 }
 
-- (void)setCustodianListVersion:(id)a3 forAccount:(id)a4
+- (void)setCustodianListVersion:(id)version forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"custodianListVersion"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)custodianLastModifiedForAccount:(id)a3
+- (id)custodianLastModifiedForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"custodianLastModified"];
   v7 = MEMORY[0x1E69E5928](v5);
   objc_storeStrong(&v5, 0);
@@ -6762,28 +6762,28 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v3;
 }
 
-- (void)setCustodianLastModified:(id)a3 forAccount:(id)a4
+- (void)setCustodianLastModified:(id)modified forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, modified);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"custodianLastModified"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)custodianInfosForAccount:(id)a3
+- (id)custodianInfosForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"custodianInfos"];
   v7 = MEMORY[0x1E69E5928](v5);
   objc_storeStrong(&v5, 0);
@@ -6794,14 +6794,14 @@ id __52__AKAccountManager__fetchAllAccountsWithType_error___block_invoke(uint64_
   return v3;
 }
 
-- (unint64_t)numberOfApprovedRecoveryContactsForAltDSID:(id)a3
+- (unint64_t)numberOfApprovedRecoveryContactsForAltDSID:(id)d
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKAccountManager *)v9 authKitAccountWithAltDSID:location[0] error:0];
-  v6 = [(AKAccountManager *)v9 custodianInfosForAccount:v7];
+  objc_storeStrong(location, d);
+  v7 = [(AKAccountManager *)selfCopy authKitAccountWithAltDSID:location[0] error:0];
+  v6 = [(AKAccountManager *)selfCopy custodianInfosForAccount:v7];
   v5 = [v6 aaf_filter:&__block_literal_global_252];
   v4 = [v5 count];
   objc_storeStrong(&v5, 0);
@@ -6824,28 +6824,28 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v6;
 }
 
-- (void)setCustodianInfos:(id)a3 forAccount:(id)a4
+- (void)setCustodianInfos:(id)infos forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, infos);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"custodianInfos"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)beneficiaryInfoForAccount:(id)a3
+- (id)beneficiaryInfoForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"beneficiaryInfo"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -6854,28 +6854,28 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setBeneficiaryInfo:(id)a3 forAccount:(id)a4
+- (void)setBeneficiaryInfo:(id)info forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"beneficiaryInfo"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isBeneficiaryForAccount:(id)a3
+- (BOOL)isBeneficiaryForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"beneficiaryAccount"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6884,29 +6884,29 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v6 & 1;
 }
 
-- (void)setBeneficiary:(BOOL)a3 forAccount:(id)a4
+- (void)setBeneficiary:(BOOL)beneficiary forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  beneficiaryCopy = beneficiary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:beneficiaryCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canBeBeneficiaryForAccount:(id)a3
+- (BOOL)canBeBeneficiaryForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"canBeBeneficiary"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6915,29 +6915,29 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v6 & 1;
 }
 
-- (void)setCanBeBeneficiary:(BOOL)a3 forAccount:(id)a4
+- (void)setCanBeBeneficiary:(BOOL)beneficiary forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  beneficiaryCopy = beneficiary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:beneficiaryCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canHaveBeneficiaryForAccount:(id)a3
+- (BOOL)canHaveBeneficiaryForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"canHaveBeneficiary"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -6946,29 +6946,29 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v6 & 1;
 }
 
-- (void)setCanHaveBeneficiary:(BOOL)a3 forAccount:(id)a4
+- (void)setCanHaveBeneficiary:(BOOL)beneficiary forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  beneficiaryCopy = beneficiary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:beneficiaryCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)beneficiaryListVersionForAccount:(id)a3
+- (id)beneficiaryListVersionForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"beneficiaryListVersion"];
   v7 = MEMORY[0x1E69E5928](v5);
   objc_storeStrong(&v5, 0);
@@ -6979,28 +6979,28 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setBeneficiaryListVersion:(id)a3 forAccount:(id)a4
+- (void)setBeneficiaryListVersion:(id)version forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"beneficiaryListVersion"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)beneficiaryLastModifiedForAccount:(id)a3
+- (id)beneficiaryLastModifiedForAccount:(id)account
 {
   v8 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = [location[0] accountPropertyForKey:@"beneficiaryLastModified"];
   v7 = MEMORY[0x1E69E5928](v5);
   objc_storeStrong(&v5, 0);
@@ -7011,28 +7011,28 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setBeneficiaryLastModified:(id)a3 forAccount:(id)a4
+- (void)setBeneficiaryLastModified:(id)modified forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, modified);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"beneficiaryLastModified"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasMDMForAccount:(id)a3
+- (BOOL)hasMDMForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"hasMDM"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -7041,32 +7041,32 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v6 & 1;
 }
 
-- (void)setHasMDM:(BOOL)a3 forAccount:(id)a4
+- (void)setHasMDM:(BOOL)m forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  mCopy = m;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:mCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)isSilentEscrowRecordRepairEnabledForAccount:(id)a3
+- (id)isSilentEscrowRecordRepairEnabledForAccount:(id)account
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v9 = +[AKConfiguration sharedConfiguration];
-  v10 = [v9 forceSilentEscrowRecordRepairEnabled];
+  forceSilentEscrowRecordRepairEnabled = [v9 forceSilentEscrowRecordRepairEnabled];
   MEMORY[0x1E69E5920](v9);
-  if (v10 == -1)
+  if (forceSilentEscrowRecordRepairEnabled == -1)
   {
     v17 = _AKLogSystem();
     v16 = 2;
@@ -7083,9 +7083,9 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
     v14 = 1;
   }
 
-  else if (v10)
+  else if (forceSilentEscrowRecordRepairEnabled)
   {
-    if (v10 == 1)
+    if (forceSilentEscrowRecordRepairEnabled == 1)
     {
       v13 = _AKLogSystem();
       v12 = 2;
@@ -7110,7 +7110,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
 
   else
   {
-    v20 = [(AKAccountManager *)v19 _isSilentEscrowRecordRepairEnabledForAccount:location[0]];
+    v20 = [(AKAccountManager *)selfCopy _isSilentEscrowRecordRepairEnabledForAccount:location[0]];
     v14 = 1;
   }
 
@@ -7120,14 +7120,14 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (id)_isSilentEscrowRecordRepairEnabledForAccount:(id)a3
+- (id)_isSilentEscrowRecordRepairEnabledForAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKAccountManager *)v9 additionalInfoForAccount:location[0]];
+  objc_storeStrong(location, account);
+  v7 = [(AKAccountManager *)selfCopy additionalInfoForAccount:location[0]];
   v6 = objc_opt_class();
   v5 = [v7 objectForKeyedSubscript:@"silentEscrowRecordRepairEnabled"];
   v10 = _AKSafeCast_8(v6, v5);
@@ -7140,16 +7140,16 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setSilentEscrowRecordRepairEnabled:(id)a3 forAccount:(id)a4
+- (void)setSilentEscrowRecordRepairEnabled:(id)enabled forAccount:(id)account
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, enabled);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v7 = [(AKAccountManager *)v15 additionalInfoForAccount:v13];
+  objc_storeStrong(&v13, account);
+  v7 = [(AKAccountManager *)selfCopy additionalInfoForAccount:v13];
   v8 = [v7 mutableCopy];
   v10 = 0;
   if (v8)
@@ -7173,7 +7173,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   MEMORY[0x1E69E5920](v8);
   MEMORY[0x1E69E5920](v7);
   [v12 setObject:location[0] forKeyedSubscript:@"silentEscrowRecordRepairEnabled"];
-  v5 = v15;
+  v5 = selfCopy;
   v6 = [v12 copy];
   [(AKAccountManager *)v5 setAdditionalInfo:v6 forAccount:v13];
   MEMORY[0x1E69E5920](v6);
@@ -7183,16 +7183,16 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (id)isSilentEscrowRecordRepairEnabledForAccountV2:(id)a3
+- (id)isSilentEscrowRecordRepairEnabledForAccountV2:(id)v2
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, v2);
   v9 = +[AKConfiguration sharedConfiguration];
-  v10 = [v9 forceSilentEscrowRecordRepairEnabledV2];
+  forceSilentEscrowRecordRepairEnabledV2 = [v9 forceSilentEscrowRecordRepairEnabledV2];
   MEMORY[0x1E69E5920](v9);
-  if (v10 == -1)
+  if (forceSilentEscrowRecordRepairEnabledV2 == -1)
   {
     v17 = _AKLogSystem();
     v16 = 2;
@@ -7209,9 +7209,9 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
     v14 = 1;
   }
 
-  else if (v10)
+  else if (forceSilentEscrowRecordRepairEnabledV2)
   {
-    if (v10 == 1)
+    if (forceSilentEscrowRecordRepairEnabledV2 == 1)
     {
       v13 = _AKLogSystem();
       v12 = 2;
@@ -7236,7 +7236,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
 
   else
   {
-    v20 = [(AKAccountManager *)v19 _isSilentEscrowRecordRepairEnabledForAccountV2:location[0]];
+    v20 = [(AKAccountManager *)selfCopy _isSilentEscrowRecordRepairEnabledForAccountV2:location[0]];
     v14 = 1;
   }
 
@@ -7246,14 +7246,14 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (id)_isSilentEscrowRecordRepairEnabledForAccountV2:(id)a3
+- (id)_isSilentEscrowRecordRepairEnabledForAccountV2:(id)v2
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKAccountManager *)v9 additionalInfoForAccount:location[0]];
+  objc_storeStrong(location, v2);
+  v7 = [(AKAccountManager *)selfCopy additionalInfoForAccount:location[0]];
   v6 = objc_opt_class();
   v5 = [v7 objectForKeyedSubscript:@"silentEscrowRecordRepairEnabledV2"];
   v10 = _AKSafeCast_8(v6, v5);
@@ -7266,16 +7266,16 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setSilentEscrowRecordRepairEnabledV2:(id)a3 forAccount:(id)a4
+- (void)setSilentEscrowRecordRepairEnabledV2:(id)v2 forAccount:(id)account
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, v2);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v7 = [(AKAccountManager *)v15 additionalInfoForAccount:v13];
+  objc_storeStrong(&v13, account);
+  v7 = [(AKAccountManager *)selfCopy additionalInfoForAccount:v13];
   v8 = [v7 mutableCopy];
   v10 = 0;
   if (v8)
@@ -7299,7 +7299,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   MEMORY[0x1E69E5920](v8);
   MEMORY[0x1E69E5920](v7);
   [v12 setObject:location[0] forKeyedSubscript:@"silentEscrowRecordRepairEnabledV2"];
-  v5 = v15;
+  v5 = selfCopy;
   v6 = [v12 copy];
   [(AKAccountManager *)v5 setAdditionalInfo:v6 forAccount:v13];
   MEMORY[0x1E69E5920](v6);
@@ -7309,16 +7309,16 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (id)isSilentBurnCDPRepairEnabledForAccount:(id)a3
+- (id)isSilentBurnCDPRepairEnabledForAccount:(id)account
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v9 = +[AKConfiguration sharedConfiguration];
-  v10 = [v9 forceSilentBurnCDPRepairEnabled];
+  forceSilentBurnCDPRepairEnabled = [v9 forceSilentBurnCDPRepairEnabled];
   MEMORY[0x1E69E5920](v9);
-  if (v10 == -1)
+  if (forceSilentBurnCDPRepairEnabled == -1)
   {
     v17 = _AKLogSystem();
     v16 = 2;
@@ -7335,9 +7335,9 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
     v14 = 1;
   }
 
-  else if (v10)
+  else if (forceSilentBurnCDPRepairEnabled)
   {
-    if (v10 == 1)
+    if (forceSilentBurnCDPRepairEnabled == 1)
     {
       v13 = _AKLogSystem();
       v12 = 2;
@@ -7362,7 +7362,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
 
   else
   {
-    v20 = [(AKAccountManager *)v19 _isSilentBurnCDPRepairEnabledForAccount:location[0]];
+    v20 = [(AKAccountManager *)selfCopy _isSilentBurnCDPRepairEnabledForAccount:location[0]];
     v14 = 1;
   }
 
@@ -7372,14 +7372,14 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (id)_isSilentBurnCDPRepairEnabledForAccount:(id)a3
+- (id)_isSilentBurnCDPRepairEnabledForAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKAccountManager *)v9 additionalInfoForAccount:location[0]];
+  objc_storeStrong(location, account);
+  v7 = [(AKAccountManager *)selfCopy additionalInfoForAccount:location[0]];
   v6 = objc_opt_class();
   v5 = [v7 objectForKeyedSubscript:@"silenBurnMiniBuddyEnabled"];
   v10 = _AKSafeCast_8(v6, v5);
@@ -7392,16 +7392,16 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setSilentBurnCDPRepairEnabled:(id)a3 forAccount:(id)a4
+- (void)setSilentBurnCDPRepairEnabled:(id)enabled forAccount:(id)account
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, enabled);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v7 = [(AKAccountManager *)v15 additionalInfoForAccount:v13];
+  objc_storeStrong(&v13, account);
+  v7 = [(AKAccountManager *)selfCopy additionalInfoForAccount:v13];
   v8 = [v7 mutableCopy];
   v10 = 0;
   if (v8)
@@ -7425,7 +7425,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   MEMORY[0x1E69E5920](v8);
   MEMORY[0x1E69E5920](v7);
   [v12 setObject:location[0] forKeyedSubscript:@"silenBurnMiniBuddyEnabled"];
-  v5 = v15;
+  v5 = selfCopy;
   v6 = [v12 copy];
   [(AKAccountManager *)v5 setAdditionalInfo:v6 forAccount:v13];
   MEMORY[0x1E69E5920](v6);
@@ -7435,17 +7435,17 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (id)idmsWalrusStatusForAccount:(id)a3
+- (id)idmsWalrusStatusForAccount:(id)account
 {
   v15 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v7 = +[AKConfiguration sharedConfiguration];
-  v11 = [v7 idmsWalrusStatusOverride];
+  idmsWalrusStatusOverride = [v7 idmsWalrusStatusOverride];
   MEMORY[0x1E69E5920](v7);
-  if (v11)
+  if (idmsWalrusStatusOverride)
   {
     v10 = _AKLogSystem();
     v9 = 2;
@@ -7458,15 +7458,15 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
     }
 
     objc_storeStrong(&v10, 0);
-    v14 = MEMORY[0x1E69E5928](v11);
+    v14 = MEMORY[0x1E69E5928](idmsWalrusStatusOverride);
   }
 
   else
   {
-    v14 = [(AKAccountManager *)v13 _idmsWalrusStatusForAccount:location[0]];
+    v14 = [(AKAccountManager *)selfCopy _idmsWalrusStatusForAccount:location[0]];
   }
 
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&idmsWalrusStatusOverride, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   v3 = v14;
@@ -7474,13 +7474,13 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (id)_idmsWalrusStatusForAccount:(id)a3
+- (id)_idmsWalrusStatusForAccount:(id)account
 {
   v15 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v8 = objc_opt_class();
   v7 = [location[0] accountPropertyForKey:@"idmsWalrusStatus"];
   v11 = _AKSafeCast_8(v8, v7);
@@ -7492,7 +7492,7 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
 
   else
   {
-    v10 = [(AKAccountManager *)v13 additionalInfoForAccount:location[0]];
+    v10 = [(AKAccountManager *)selfCopy additionalInfoForAccount:location[0]];
     v6 = objc_opt_class();
     v5 = [v10 objectForKeyedSubscript:@"idmsWalrusStatus"];
     v9 = _AKSafeCast_8(v6, v5);
@@ -7510,28 +7510,28 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (void)setIdmsWalrusStatus:(id)a3 forAccount:(id)a4
+- (void)setIdmsWalrusStatus:(id)status forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, status);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"idmsWalrusStatus"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isFidoForAccount:(id)a3
+- (BOOL)isFidoForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"fidoAccount"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);
@@ -7540,35 +7540,35 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v6 & 1;
 }
 
-- (void)setFido:(BOOL)a3 forAccount:(id)a4
+- (void)setFido:(BOOL)fido forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  fidoCopy = fido;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:fidoCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)signInPartitionForLivenessWithAltDSID:(id)a3
+- (unint64_t)signInPartitionForLivenessWithAltDSID:(id)d
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 iCloudAccountForAltDSID:location[0]];
-  if (v4 && [(AKAccountManager *)v6 isPrimaryiCloudAccount:v4])
+  objc_storeStrong(location, d);
+  v4 = [(AKAccountManager *)selfCopy iCloudAccountForAltDSID:location[0]];
+  if (v4 && [(AKAccountManager *)selfCopy isPrimaryiCloudAccount:v4])
   {
     v7 = 1;
   }
 
-  else if (v4 && [(AKAccountManager *)v6 isFulliCloudAccount:v4])
+  else if (v4 && [(AKAccountManager *)selfCopy isFulliCloudAccount:v4])
   {
     v7 = 2;
   }
@@ -7583,26 +7583,26 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v7;
 }
 
-- (BOOL)isDataSeparatedAccountForAltDSID:(id)a3
+- (BOOL)isDataSeparatedAccountForAltDSID:(id)d
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAccountManager *)v6 iCloudAccountForAltDSID:location[0]];
+  objc_storeStrong(location, d);
+  v4 = [(AKAccountManager *)selfCopy iCloudAccountForAltDSID:location[0]];
   v7 = v4 && ([v4 isDataSeparatedAccount] & 1) != 0;
   objc_storeStrong(&v4, 0);
   objc_storeStrong(location, 0);
   return v7;
 }
 
-- (id)personaUniqueStringForAltDSID:(id)a3
+- (id)personaUniqueStringForAltDSID:(id)d
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAccountManager *)v8 iCloudAccountForAltDSID:location[0]];
+  objc_storeStrong(location, d);
+  v6 = [(AKAccountManager *)selfCopy iCloudAccountForAltDSID:location[0]];
   v5 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6959798]];
   if (v5)
   {
@@ -7622,14 +7622,14 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
   return v3;
 }
 
-- (BOOL)hasPersonaAvailableForAltDSID:(id)a3
+- (BOOL)hasPersonaAvailableForAltDSID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = [(AKAccountManager *)v28 iCloudAccountForAltDSID:location[0]];
+  objc_storeStrong(location, d);
+  v26 = [(AKAccountManager *)selfCopy iCloudAccountForAltDSID:location[0]];
   v25 = [v26 objectForKeyedSubscript:*MEMORY[0x1E6959798]];
   if (v25)
   {
@@ -7654,20 +7654,20 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
       UMUserManagerClass = 0;
     }
 
-    v12 = [UMUserManagerClass sharedManager];
-    v21 = [v12 listAllPersonaWithAttributes];
-    MEMORY[0x1E69E5920](v12);
+    uMUserManagerClass = [UMUserManagerClass sharedManager];
+    listAllPersonaWithAttributes = [uMUserManagerClass listAllPersonaWithAttributes];
+    MEMORY[0x1E69E5920](uMUserManagerClass);
     v20 = _AKLogSystem();
     v19 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v31, v21);
+      __os_log_helper_16_2_1_8_64(v31, listAllPersonaWithAttributes);
       _os_log_debug_impl(&dword_193225000, v20, v19, "personaAttributes: %@", v31, 0xCu);
     }
 
     objc_storeStrong(&v20, 0);
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x1E69E5928](v21);
+    obj = MEMORY[0x1E69E5928](listAllPersonaWithAttributes);
     v11 = [obj countByEnumeratingWithState:__b objects:v30 count:16];
     if (v11)
     {
@@ -7683,9 +7683,9 @@ BOOL __63__AKAccountManager_numberOfApprovedRecoveryContactsForAltDSID___block_i
         }
 
         v18 = *(__b[1] + 8 * v8);
-        v4 = [v18 userPersonaUniqueString];
-        v5 = [v4 isEqual:v25];
-        MEMORY[0x1E69E5920](v4);
+        userPersonaUniqueString = [v18 userPersonaUniqueString];
+        v5 = [userPersonaUniqueString isEqual:v25];
+        MEMORY[0x1E69E5920](userPersonaUniqueString);
         if (v5)
         {
           break;
@@ -7719,7 +7719,7 @@ LABEL_17:
       v29 = 0;
     }
 
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&listAllPersonaWithAttributes, 0);
   }
 
   else
@@ -7736,12 +7736,12 @@ LABEL_17:
 
 - (id)altDSIDForAuthKitAccountRequestingAuthorization
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKAccountManager *)self authKitAccountRequestingAuthorization];
   if (location[0])
   {
-    v6 = [(AKAccountManager *)v5 altDSIDForAccount:location[0]];
+    v6 = [(AKAccountManager *)selfCopy altDSIDForAccount:location[0]];
   }
 
   else
@@ -7757,12 +7757,12 @@ LABEL_17:
 
 - (id)authKitAccountRequestingAuthorization
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
-  v4 = [(AKAccountManager *)self _iCloudAccountRequestingAuthorization];
+  _iCloudAccountRequestingAuthorization = [(AKAccountManager *)self _iCloudAccountRequestingAuthorization];
   v6[0] = [(AKAccountManager *)self altDSIDForAccount:?];
-  MEMORY[0x1E69E5920](v4);
-  v5 = [(AKAccountManager *)v7 authKitAccountWithAltDSID:v6[0] error:?];
+  MEMORY[0x1E69E5920](_iCloudAccountRequestingAuthorization);
+  v5 = [(AKAccountManager *)selfCopy authKitAccountWithAltDSID:v6[0] error:?];
   objc_storeStrong(v6, 0);
 
   return v5;
@@ -7770,7 +7770,7 @@ LABEL_17:
 
 - (id)_iCloudAccountRequestingAuthorization
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   if (UserManagementLibraryCore(0))
   {
@@ -7782,9 +7782,9 @@ LABEL_17:
     UMUserManagerClass = 0;
   }
 
-  v10 = [UMUserManagerClass sharedManager];
-  v20[0] = [v10 currentPersona];
-  MEMORY[0x1E69E5920](v10);
+  uMUserManagerClass = [UMUserManagerClass sharedManager];
+  v20[0] = [uMUserManagerClass currentPersona];
+  MEMORY[0x1E69E5920](uMUserManagerClass);
   if ([v20[0] isDataSeparatedPersona])
   {
     location = _AKLogSystem();
@@ -7798,18 +7798,18 @@ LABEL_17:
     }
 
     objc_storeStrong(&location, 0);
-    v6 = v21;
-    v7 = [v20[0] userPersonaUniqueString];
+    v6 = selfCopy;
+    userPersonaUniqueString = [v20[0] userPersonaUniqueString];
     v16 = [(AKAccountManager *)v6 _iCloudAccountFromPersonaUniqueIdentifier:?];
-    MEMORY[0x1E69E5920](v7);
-    if ([(AKAccountManager *)v21 _shouldBlockAuthorizationForPersona:v20[0]])
+    MEMORY[0x1E69E5920](userPersonaUniqueString);
+    if ([(AKAccountManager *)selfCopy _shouldBlockAuthorizationForPersona:v20[0]])
     {
-      v22 = 0;
+      primaryiCloudAccount = 0;
     }
 
     else
     {
-      v22 = MEMORY[0x1E69E5928](v16);
+      primaryiCloudAccount = MEMORY[0x1E69E5928](v16);
     }
 
     v15 = 1;
@@ -7829,26 +7829,26 @@ LABEL_17:
     }
 
     objc_storeStrong(&v14, 0);
-    v22 = [(AKAccountManager *)v21 primaryiCloudAccount];
+    primaryiCloudAccount = [(AKAccountManager *)selfCopy primaryiCloudAccount];
     v15 = 1;
   }
 
   objc_storeStrong(v20, 0);
-  v2 = v22;
+  v2 = primaryiCloudAccount;
 
   return v2;
 }
 
-- (id)_iCloudAccountFromPersonaUniqueIdentifier:(id)a3
+- (id)_iCloudAccountFromPersonaUniqueIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [(AKAccountManager *)v18 _iCloudAccounts];
+  objc_storeStrong(location, identifier);
+  _iCloudAccounts = [(AKAccountManager *)selfCopy _iCloudAccounts];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x1E69E5928](v16);
+  obj = MEMORY[0x1E69E5928](_iCloudAccounts);
   v12 = [obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v12)
   {
@@ -7900,7 +7900,7 @@ LABEL_9:
     v19 = 0;
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&_iCloudAccounts, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   v3 = v19;
@@ -7908,19 +7908,19 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_shouldBlockAuthorizationForPersona:(id)a3
+- (BOOL)_shouldBlockAuthorizationForPersona:(id)persona
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, persona);
   if (([location[0] isDataSeparatedPersona] & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v11 = [(AKAccountManager *)v13 primaryiCloudAccount];
-  if ([(AKAccountManager *)v13 isManagedAppleIDForAccount:v11])
+  primaryiCloudAccount = [(AKAccountManager *)selfCopy primaryiCloudAccount];
+  if ([(AKAccountManager *)selfCopy isManagedAppleIDForAccount:primaryiCloudAccount])
   {
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_ERROR;
@@ -7942,7 +7942,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&primaryiCloudAccount, 0);
   if (!v6)
   {
 LABEL_8:
@@ -7956,7 +7956,7 @@ LABEL_8:
 + (id)personaIDIfCurrentPersonaIsDataSeparated
 {
   v12 = *MEMORY[0x1E69E9840];
-  v9[2] = a1;
+  v9[2] = self;
   v9[1] = a2;
   if (UserManagementLibraryCore(0))
   {
@@ -7968,24 +7968,24 @@ LABEL_8:
     UMUserManagerClass = 0;
   }
 
-  v5 = [UMUserManagerClass sharedManager];
-  v9[0] = [v5 currentPersona];
-  MEMORY[0x1E69E5920](v5);
+  uMUserManagerClass = [UMUserManagerClass sharedManager];
+  v9[0] = [uMUserManagerClass currentPersona];
+  MEMORY[0x1E69E5920](uMUserManagerClass);
   if ([v9[0] isEnterprisePersona] & 1) != 0 || (objc_msgSend(v9[0], "isGuestPersona"))
   {
-    v8 = [v9[0] userPersonaUniqueString];
+    userPersonaUniqueString = [v9[0] userPersonaUniqueString];
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [v9[0] userPersonaNickName];
-      __os_log_helper_16_2_3_8_66_8_64_8_0(v11, v8, v4, [v9[0] userPersonaType]);
+      userPersonaNickName = [v9[0] userPersonaNickName];
+      __os_log_helper_16_2_3_8_66_8_64_8_0(v11, userPersonaUniqueString, userPersonaNickName, [v9[0] userPersonaType]);
       _os_log_debug_impl(&dword_193225000, oslog, OS_LOG_TYPE_DEBUG, "Running within data separated persona. {uniqueString=%{public}@, nickname=%@, type=%ld}", v11, 0x20u);
-      MEMORY[0x1E69E5920](v4);
+      MEMORY[0x1E69E5920](userPersonaNickName);
     }
 
     objc_storeStrong(&oslog, 0);
-    v10 = MEMORY[0x1E69E5928](v8);
-    objc_storeStrong(&v8, 0);
+    v10 = MEMORY[0x1E69E5928](userPersonaUniqueString);
+    objc_storeStrong(&userPersonaUniqueString, 0);
   }
 
   else
@@ -8000,15 +8000,15 @@ LABEL_8:
   return v2;
 }
 
-+ (void)performWithinPersonaForAccount:(id)a3 withBlock:(id)a4
++ (void)performWithinPersonaForAccount:(id)account withBlock:(id)block
 {
   v66 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v59 = 0;
-  objc_storeStrong(&v59, a4);
+  objc_storeStrong(&v59, block);
   v58 = 0;
   v58 = [location[0] objectForKeyedSubscript:*MEMORY[0x1E6959798]];
   MEMORY[0x1E69E5920](0);
@@ -8036,19 +8036,19 @@ LABEL_8:
       UMUserManagerClass = 0;
     }
 
-    v28 = [UMUserManagerClass sharedManager];
-    v4 = [v28 currentPersona];
+    uMUserManagerClass = [UMUserManagerClass sharedManager];
+    currentPersona = [uMUserManagerClass currentPersona];
     v5 = v54;
-    v54 = v4;
+    v54 = currentPersona;
     MEMORY[0x1E69E5920](v5);
-    MEMORY[0x1E69E5920](v28);
+    MEMORY[0x1E69E5920](uMUserManagerClass);
     v52 = v55;
     v29 = [v54 copyCurrentPersonaContextWithError:&v52];
     objc_storeStrong(&v55, v52);
     v6 = v53;
     v53 = v29;
     MEMORY[0x1E69E5920](v6);
-    v51 = [location[0] identifier];
+    identifier = [location[0] identifier];
     if (v53)
     {
       v7 = [v54 createPersonaContextForBackgroundProcessingWithPersonaUniqueString:v58];
@@ -8057,14 +8057,14 @@ LABEL_8:
       MEMORY[0x1E69E5920](v8);
       if (v55)
       {
-        v26 = [v55 domain];
+        domain = [v55 domain];
         v27 = 0;
-        if ([v26 isEqualToString:*MEMORY[0x1E696A798]])
+        if ([domain isEqualToString:*MEMORY[0x1E696A798]])
         {
           v27 = [v55 code] == 1;
         }
 
-        MEMORY[0x1E69E5920](v26);
+        MEMORY[0x1E69E5920](domain);
         if (v27)
         {
           v50 = _AKLogSystem();
@@ -8084,7 +8084,7 @@ LABEL_8:
         v46 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_2_3_8_64_8_64_8_64(v64, v58, v51, v55);
+          __os_log_helper_16_2_3_8_64_8_64_8_64(v64, v58, identifier, v55);
           _os_log_error_impl(&dword_193225000, oslog, v46, "Failed to set persona ID (%@) context for account %@ with error %@", v64, 0x20u);
         }
 
@@ -8098,14 +8098,14 @@ LABEL_8:
       v44 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v63, v51, v55);
+        __os_log_helper_16_2_2_8_64_8_64(v63, identifier, v55);
         _os_log_error_impl(&dword_193225000, v45, v44, "Could not get current persona context for account %@, with error %@", v63, 0x16u);
       }
 
       objc_storeStrong(&v45, 0);
     }
 
-    objc_storeStrong(&v51, 0);
+    objc_storeStrong(&identifier, 0);
   }
 
   else
@@ -8137,14 +8137,14 @@ LABEL_8:
       v21 = 0;
     }
 
-    v20 = [v21 sharedManager];
-    v19 = [v20 currentPersona];
-    v18 = [v19 userPersonaNickName];
-    __os_log_helper_16_2_1_8_64(v62, v18);
+    sharedManager = [v21 sharedManager];
+    currentPersona2 = [sharedManager currentPersona];
+    userPersonaNickName = [currentPersona2 userPersonaNickName];
+    __os_log_helper_16_2_1_8_64(v62, userPersonaNickName);
     _os_log_impl(&dword_193225000, v40, v39, "Performing block within persona %@", v62, 0xCu);
-    MEMORY[0x1E69E5920](v18);
-    MEMORY[0x1E69E5920](v19);
-    MEMORY[0x1E69E5920](v20);
+    MEMORY[0x1E69E5920](userPersonaNickName);
+    MEMORY[0x1E69E5920](currentPersona2);
+    MEMORY[0x1E69E5920](sharedManager);
   }
 
   objc_storeStrong(&v40, 0);
@@ -8189,14 +8189,14 @@ LABEL_8:
       v13 = 0;
     }
 
-    v12 = [v13 sharedManager];
-    v11 = [v12 currentPersona];
-    v10 = [v11 userPersonaNickName];
-    __os_log_helper_16_2_1_8_64(v61, v10);
+    sharedManager2 = [v13 sharedManager];
+    currentPersona3 = [sharedManager2 currentPersona];
+    userPersonaNickName2 = [currentPersona3 userPersonaNickName];
+    __os_log_helper_16_2_1_8_64(v61, userPersonaNickName2);
     _os_log_impl(&dword_193225000, v32, OS_LOG_TYPE_DEFAULT, "Performed block within persona %@", v61, 0xCu);
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
-    MEMORY[0x1E69E5920](v12);
+    MEMORY[0x1E69E5920](userPersonaNickName2);
+    MEMORY[0x1E69E5920](currentPersona3);
+    MEMORY[0x1E69E5920](sharedManager2);
   }
 
   objc_storeStrong(&v32, 0);
@@ -8209,29 +8209,29 @@ LABEL_8:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setPasskeyEligible:(BOOL)a3 forAccount:(id)a4
+- (void)setPasskeyEligible:(BOOL)eligible forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  eligibleCopy = eligible;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:eligibleCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)passkeyEligibleForAccount:(id)a3
+- (id)passkeyEligibleForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"passkeyEligible"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8243,29 +8243,29 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPasskeyPresent:(BOOL)a3 forAccount:(id)a4
+- (void)setPasskeyPresent:(BOOL)present forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  presentCopy = present;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:presentCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)passkeyPresentForAccount:(id)a3
+- (id)passkeyPresentForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"passkeyPresent"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8277,28 +8277,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPasskeysInKeychainCount:(id)a3 forAccount:(id)a4
+- (void)setPasskeysInKeychainCount:(id)count forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, count);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"passkeysCount"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)passkeysInKeychainCountForAccount:(id)a3
+- (id)passkeysInKeychainCountForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"passkeysCount"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8310,28 +8310,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPasskeyRegistrationAttemptDateForAccount:(id)a3 forAccount:(id)a4
+- (void)setPasskeyRegistrationAttemptDateForAccount:(id)account forAccount:(id)forAccount
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, forAccount);
   [v5 setAccountProperty:location[0] forKey:@"passkeyRegistrationAttemptDate"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)passkeyRegistrationAttemptDateForAccount:(id)a3
+- (id)passkeyRegistrationAttemptDateForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"passkeyRegistrationAttemptDate"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8343,28 +8343,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPasskeysDeletionAttemptDate:(id)a3 forAccount:(id)a4
+- (void)setPasskeysDeletionAttemptDate:(id)date forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"passkeysDeletionAttemptDate"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)passkeysDeletionAttemptDateForAccount:(id)a3
+- (id)passkeysDeletionAttemptDateForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"passkeysDeletionAttemptDate"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8376,13 +8376,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)groupKitEligibilityForAccount:(id)a3
+- (id)groupKitEligibilityForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"groupkitEligibilityInd"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8394,44 +8394,44 @@ LABEL_8:
   return v3;
 }
 
-- (void)setGroupKitEligibility:(id)a3 forAccount:(id)a4
+- (void)setGroupKitEligibility:(id)eligibility forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, eligibility);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"groupkitEligibilityInd"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setPasscodeAuthEnabled:(BOOL)a3 forAccount:(id)a4
+- (void)setPasscodeAuthEnabled:(BOOL)enabled forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isPasscodeAuthEnabledForAccount:(id)a3
+- (BOOL)isPasscodeAuthEnabledForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = objc_opt_class();
   v4 = [location[0] accountPropertyForKey:@"passcodeAuthEnabled"];
   v6 = _AKSafeCast_8(v5, v4);
@@ -8443,29 +8443,29 @@ LABEL_8:
   return v8 & 1;
 }
 
-- (void)setPasscodeAuth:(BOOL)a3 forAccount:(id)a4
+- (void)setPasscodeAuth:(BOOL)auth forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  authCopy = auth;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:authCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isPasscodeAuthForAccount:(id)a3
+- (BOOL)isPasscodeAuthForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = objc_opt_class();
   v4 = [location[0] accountPropertyForKey:@"isPasscodeAuth"];
   v6 = _AKSafeCast_8(v5, v4);
@@ -8477,29 +8477,29 @@ LABEL_8:
   return v8 & 1;
 }
 
-- (void)setAskToBuy:(BOOL)a3 forAccount:(id)a4
+- (void)setAskToBuy:(BOOL)buy forAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  buyCopy = buy;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v5 = location;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:buyCopy];
   [v5 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(&location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isAskToBuyForAccount:(id)a3
+- (BOOL)isAskToBuyForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = objc_opt_class();
   v4 = [location[0] accountPropertyForKey:@"askToBuy"];
   v6 = _AKSafeCast_8(v5, v4);
@@ -8511,13 +8511,13 @@ LABEL_8:
   return v8 & 1;
 }
 
-- (id)deviceListVersionForAccount:(id)a3
+- (id)deviceListVersionForAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"deviceListVersion"];
   v7 = _AKSafeCast_8(v6, v5);
@@ -8531,28 +8531,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setDeviceListVersion:(id)a3 forAccount:(id)a4
+- (void)setDeviceListVersion:(id)version forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"deviceListVersion"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)deletedDevicesCacheExpiryOffsetForAccount:(id)a3
+- (id)deletedDevicesCacheExpiryOffsetForAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"deletedDevicesCacheExpiryOffset"];
   v7 = _AKSafeCast_8(v6, v5);
@@ -8566,28 +8566,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setDeletedDevicesCacheExpiryOffset:(id)a3 forAccount:(id)a4
+- (void)setDeletedDevicesCacheExpiryOffset:(id)offset forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, offset);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"deletedDevicesCacheExpiryOffset"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)birthYearForAccount:(id)a3
+- (id)birthYearForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"yob"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8599,44 +8599,44 @@ LABEL_8:
   return v3;
 }
 
-- (void)setBirthYear:(id)a3 forAccount:(id)a4
+- (void)setBirthYear:(id)year forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, year);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"yob"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setCanAttestAge:(id)a3 forAccount:(id)a4
+- (void)setCanAttestAge:(id)age forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, age);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"parentalAgeConsent"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)canAttestAgeForAccount:(id)a3
+- (id)canAttestAgeForAccount:(id)account
 {
   v10 = *MEMORY[0x1E69E9840];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKAccountManager *)v8 userUnderAgeForAccount:location[0]])
+  objc_storeStrong(location, account);
+  if ([(AKAccountManager *)selfCopy userUnderAgeForAccount:location[0]])
   {
     v6 = objc_opt_class();
     v5 = [location[0] accountPropertyForKey:@"parentalAgeConsent"];
@@ -8656,15 +8656,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)setADPCohort:(id)a3 forAccount:(id)a4
+- (void)setADPCohort:(id)cohort forAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cohort);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, account);
   if (location[0])
   {
     if (([location[0] intValue] & 0x80000000) != 0 || objc_msgSend(location[0], "intValue") > 10)
@@ -8672,7 +8672,7 @@ LABEL_8:
       v5 = _AKLogSystem();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
       {
-        __os_log_helper_16_2_2_8_64_4_0(v10, v9, [location[0] intValue]);
+        __os_log_helper_16_2_2_8_64_4_0(v10, selfCopy, [location[0] intValue]);
         _os_log_fault_impl(&dword_193225000, v5, OS_LOG_TYPE_FAULT, "%@: ADP cohort value %d obtained from IdMS outside the allowed range, rejected.", v10, 0x12u);
       }
 
@@ -8697,13 +8697,13 @@ LABEL_8:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)activeiCloudPrivateEmailCountForAccount:(id)a3
+- (id)activeiCloudPrivateEmailCountForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"activeHMECount"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -8712,13 +8712,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)inactiveiCloudPrivateEmailCountForAccount:(id)a3
+- (id)inactiveiCloudPrivateEmailCountForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = [location[0] accountPropertyForKey:@"inActiveHMECount"];
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -8729,44 +8729,44 @@ LABEL_8:
 
 - (id)activeiCloudPrivateEmailCount
 {
-  v4 = [(AKAccountManager *)self primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)self primaryAuthKitAccount];
   v5 = [(AKAccountManager *)self activeiCloudPrivateEmailCountForAccount:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](primaryAuthKitAccount);
 
   return v5;
 }
 
 - (id)inactiveiCloudPrivateEmailCount
 {
-  v4 = [(AKAccountManager *)self primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)self primaryAuthKitAccount];
   v5 = [(AKAccountManager *)self inactiveiCloudPrivateEmailCountForAccount:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](primaryAuthKitAccount);
 
   return v5;
 }
 
-- (void)setSharingGroupLastNotificationDate:(id)a3 forAccount:(id)a4
+- (void)setSharingGroupLastNotificationDate:(id)date forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"signInWithAppleSharingGroupLastNotificationDate"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)sharingGroupLastNotificationDateForAccount:(id)a3
+- (id)sharingGroupLastNotificationDateForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"signInWithAppleSharingGroupLastNotificationDate"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8778,28 +8778,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPreviousAccountInfoRefreshDate:(id)a3 forAccount:(id)a4
+- (void)setPreviousAccountInfoRefreshDate:(id)date forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"previousAccountInfoRefreshDate"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)previousAccountInfoRefreshDateForAccount:(id)a3
+- (id)previousAccountInfoRefreshDateForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"previousAccountInfoRefreshDate"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8811,13 +8811,13 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isSignOutInProgress:(id)a3
+- (BOOL)isSignOutInProgress:(id)progress
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, progress);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"signOutInProgress"];
   v4 = _AKSafeCast_8(v6, v5);
@@ -8829,28 +8829,28 @@ LABEL_8:
   return v8 & 1;
 }
 
-- (void)setSignOutInProgress:(id)a3 forAccount:(id)a4
+- (void)setSignOutInProgress:(id)progress forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, progress);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"signOutInProgress"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)isEligibleToMigrateToChildForAccount:(id)a3
+- (id)isEligibleToMigrateToChildForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"ageMigrationEligible"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8862,28 +8862,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setIsEligibleToMigrateToChild:(id)a3 forAccount:(id)a4
+- (void)setIsEligibleToMigrateToChild:(id)child forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, child);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"ageMigrationEligible"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (id)lastSettingsRedirectDateForAccount:(id)a3
+- (id)lastSettingsRedirectDateForAccount:(id)account
 {
   v9 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v6 = objc_opt_class();
   v5 = [location[0] accountPropertyForKey:@"lastSettingsRedirectDate"];
   v8 = _AKSafeCast_8(v6, v5);
@@ -8895,15 +8895,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)setLastSettingsRedirectDate:(id)a3 forAccount:(id)a4
+- (void)setLastSettingsRedirectDate:(id)date forAccount:(id)account
 {
   location[6] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, account);
   [v5 setAccountProperty:location[0] forKey:@"lastSettingsRedirectDate"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);

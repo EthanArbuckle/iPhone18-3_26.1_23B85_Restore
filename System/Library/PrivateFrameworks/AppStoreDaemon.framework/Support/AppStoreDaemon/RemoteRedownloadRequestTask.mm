@@ -1,29 +1,29 @@
 @interface RemoteRedownloadRequestTask
 - (_TtC9appstored27RemoteRedownloadRequestTask)init;
-- (_TtC9appstored27RemoteRedownloadRequestTask)initWithLogKey:(id)a3;
-- (_TtC9appstored27RemoteRedownloadRequestTask)initWithMessage:(id)a3;
+- (_TtC9appstored27RemoteRedownloadRequestTask)initWithLogKey:(id)key;
+- (_TtC9appstored27RemoteRedownloadRequestTask)initWithMessage:(id)message;
 - (_TtC9appstored27RemoteRedownloadRequestTask)initWithoutKeepAlive;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation RemoteRedownloadRequestTask
 
-- (_TtC9appstored27RemoteRedownloadRequestTask)initWithMessage:(id)a3
+- (_TtC9appstored27RemoteRedownloadRequestTask)initWithMessage:(id)message
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9appstored27RemoteRedownloadRequestTask_message) = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9appstored27RemoteRedownloadRequestTask_message) = message;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  messageCopy = message;
   return [(Task *)&v8 init];
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -39,7 +39,7 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (_TtC9appstored27RemoteRedownloadRequestTask)initWithLogKey:(id)a3
+- (_TtC9appstored27RemoteRedownloadRequestTask)initWithLogKey:(id)key
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

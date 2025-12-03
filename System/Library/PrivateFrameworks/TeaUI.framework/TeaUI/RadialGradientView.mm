@@ -6,7 +6,7 @@
 
 + (Class)layerClass
 {
-  static RadialGradientView.layerClass.getter(a1, a2);
+  static RadialGradientView.layerClass.getter(self, a2);
 
   return swift_getObjCClassFromMetadata();
 }

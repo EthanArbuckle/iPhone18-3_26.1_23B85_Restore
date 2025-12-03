@@ -1,12 +1,12 @@
 @interface PKNearbyPeerPaymentEntryCollectionViewHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKNearbyPeerPaymentEntryCollectionViewHeaderView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKNearbyPeerPaymentEntryCollectionViewHeaderView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PKNearbyPeerPaymentEntryCollectionViewHeaderView
 
-- (PKNearbyPeerPaymentEntryCollectionViewHeaderView)initWithCoder:(id)a3
+- (PKNearbyPeerPaymentEntryCollectionViewHeaderView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR___PKNearbyPeerPaymentEntryCollectionViewHeaderView_lineView;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DD250]) init];
@@ -30,9 +30,9 @@
   [*&v2[OBJC_IVAR___PKNearbyPeerPaymentEntryCollectionViewHeaderView_lineView] setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = PKUIPixelLength();
   v5 = width;
   result.height = v4;

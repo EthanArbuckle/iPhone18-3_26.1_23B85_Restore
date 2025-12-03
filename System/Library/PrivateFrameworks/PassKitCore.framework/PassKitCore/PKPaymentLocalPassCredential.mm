@@ -1,8 +1,8 @@
 @interface PKPaymentLocalPassCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
 - (NSString)summaryMetadataDescription;
-- (PKPaymentLocalPassCredential)initWithPaymentPass:(id)a3;
+- (PKPaymentLocalPassCredential)initWithPaymentPass:(id)pass;
 - (id)activationMethods;
 - (id)description;
 - (unint64_t)hash;
@@ -10,10 +10,10 @@
 
 @implementation PKPaymentLocalPassCredential
 
-- (PKPaymentLocalPassCredential)initWithPaymentPass:(id)a3
+- (PKPaymentLocalPassCredential)initWithPaymentPass:(id)pass
 {
-  v5 = a3;
-  if (v5)
+  passCopy = pass;
+  if (passCopy)
   {
     v17.receiver = self;
     v17.super_class = PKPaymentLocalPassCredential;
@@ -21,29 +21,29 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_paymentPass, a3);
-      v8 = [v5 serialNumber];
+      objc_storeStrong(&v6->_paymentPass, pass);
+      serialNumber = [passCopy serialNumber];
       serialNumber = v7->_serialNumber;
-      v7->_serialNumber = v8;
+      v7->_serialNumber = serialNumber;
 
-      v10 = [v5 passTypeIdentifier];
+      passTypeIdentifier = [passCopy passTypeIdentifier];
       passTypeIdentifier = v7->_passTypeIdentifier;
-      v7->_passTypeIdentifier = v10;
+      v7->_passTypeIdentifier = passTypeIdentifier;
 
-      v12 = [v5 devicePrimaryPaymentApplication];
-      -[PKPaymentCredential setCredentialType:](v7, "setCredentialType:", [v12 paymentNetworkIdentifier]);
+      devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+      -[PKPaymentCredential setCredentialType:](v7, "setCredentialType:", [devicePrimaryPaymentApplication paymentNetworkIdentifier]);
 
-      v13 = [v5 primaryAccountNumberSuffix];
-      [(PKPaymentCredential *)v7 setSanitizedPrimaryAccountNumber:v13];
+      primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
+      [(PKPaymentCredential *)v7 setSanitizedPrimaryAccountNumber:primaryAccountNumberSuffix];
 
-      v14 = [v5 sanitizedPrimaryAccountName];
-      [(PKPaymentCredential *)v7 setSanitizedPrimaryAccountName:v14];
+      sanitizedPrimaryAccountName = [passCopy sanitizedPrimaryAccountName];
+      [(PKPaymentCredential *)v7 setSanitizedPrimaryAccountName:sanitizedPrimaryAccountName];
 
       [(PKPaymentCredential *)v7 setExpiration:0];
-      v15 = [v5 localizedDescription];
-      [(PKPaymentCredential *)v7 setLongDescription:v15];
+      localizedDescription = [passCopy localizedDescription];
+      [(PKPaymentCredential *)v7 setLongDescription:localizedDescription];
 
-      -[PKPaymentCredential setCardType:](v7, "setCardType:", [v5 cardType]);
+      -[PKPaymentCredential setCardType:](v7, "setCardType:", [passCopy cardType]);
     }
   }
 
@@ -60,10 +60,10 @@
 {
   if ([(PKPass *)self->_paymentPass passType]== PKPassTypeSecureElement)
   {
-    v3 = [(PKSecureElementPass *)self->_paymentPass primaryAccountNumberSuffix];
-    if ([v3 length])
+    primaryAccountNumberSuffix = [(PKSecureElementPass *)self->_paymentPass primaryAccountNumberSuffix];
+    if ([primaryAccountNumberSuffix length])
     {
-      PKMaskedPaymentPAN(v3);
+      PKMaskedPaymentPAN(primaryAccountNumberSuffix);
     }
 
     else
@@ -81,10 +81,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -92,16 +92,16 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentLocalPassCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentLocalPassCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
-  v4 = a3;
-  v5 = v4[14];
+  credentialCopy = credential;
+  v5 = credentialCopy[14];
   v6 = self->_serialNumber;
   v7 = v5;
   v8 = v7;
@@ -162,9 +162,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_serialNumber];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_serialNumber];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

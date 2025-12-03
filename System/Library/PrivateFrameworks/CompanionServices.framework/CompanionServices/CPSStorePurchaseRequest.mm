@@ -1,7 +1,7 @@
 @interface CPSStorePurchaseRequest
-- (CPSStorePurchaseRequest)initWithCoder:(id)a3;
+- (CPSStorePurchaseRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSStorePurchaseRequest
@@ -12,30 +12,30 @@
   v4 = [v3 appendObject:self->_purchaseRequest withName:@"purchaseRequest"];
   v5 = [v3 appendObject:self->_account withName:@"account"];
   v6 = [v3 appendObject:self->_deviceName withName:@"deviceName"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (CPSStorePurchaseRequest)initWithCoder:(id)a3
+- (CPSStorePurchaseRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CPSStorePurchaseRequest;
-  v5 = [(CPSAuthenticationRequest *)&v15 initWithCoder:v4];
+  v5 = [(CPSAuthenticationRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:getAMSDelegatePurchaseRequestClass() forKey:@"purchaseRequest"];
+    v6 = [coderCopy decodeObjectOfClass:getAMSDelegatePurchaseRequestClass() forKey:@"purchaseRequest"];
     purchaseRequest = v5->_purchaseRequest;
     v5->_purchaseRequest = v6;
 
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"account"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"account"];
     account = v5->_account;
     v5->_account = v9;
 
     v11 = objc_opt_self();
-    v12 = [v4 decodeObjectOfClass:v11 forKey:@"deviceName"];
+    v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v12;
   }
@@ -43,15 +43,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPSStorePurchaseRequest;
-  v4 = a3;
-  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_purchaseRequest forKey:{@"purchaseRequest", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_account forKey:@"account"];
-  [v4 encodeObject:self->_deviceName forKey:@"deviceName"];
+  coderCopy = coder;
+  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_purchaseRequest forKey:{@"purchaseRequest", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_account forKey:@"account"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"deviceName"];
 }
 
 @end

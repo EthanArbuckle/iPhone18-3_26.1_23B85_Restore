@@ -1,30 +1,30 @@
 @interface CRLConnectionLineAbstractLayoutAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_crlaxVisuallyPointsAtHead;
 - (BOOL)_crlaxVisuallyPointsAtTail;
-- (BOOL)crlaxIsVisuallyPointingAt:(id)a3;
-- (id)crlaxOppositeConnectedLayoutFrom:(id)a3;
+- (BOOL)crlaxIsVisuallyPointingAt:(id)at;
+- (id)crlaxOppositeConnectedLayoutFrom:(id)from;
 @end
 
 @implementation CRLConnectionLineAbstractLayoutAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (BOOL)crlaxIsVisuallyPointingAt:(id)a3
+- (BOOL)crlaxIsVisuallyPointingAt:(id)at
 {
-  v4 = a3;
+  atCopy = at;
   if ([(CRLConnectionLineAbstractLayoutAccessibility *)self _crlaxVisuallyPointsAtHead])
   {
-    v5 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-    v6 = [v5 connectedTo];
-    v7 = v6 == v4;
+    crlaxTarget = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+    connectedTo = [crlaxTarget connectedTo];
+    v7 = connectedTo == atCopy;
   }
 
   else
@@ -34,9 +34,9 @@
 
   if ([(CRLConnectionLineAbstractLayoutAccessibility *)self _crlaxVisuallyPointsAtTail])
   {
-    v8 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-    v9 = [v8 connectedFrom];
-    v10 = v9 == v4;
+    crlaxTarget2 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+    connectedFrom = [crlaxTarget2 connectedFrom];
+    v10 = connectedFrom == atCopy;
   }
 
   else
@@ -47,22 +47,22 @@
   return v7 || v10;
 }
 
-- (id)crlaxOppositeConnectedLayoutFrom:(id)a3
+- (id)crlaxOppositeConnectedLayoutFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-  v6 = [v5 connectedTo];
+  fromCopy = from;
+  crlaxTarget = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+  connectedTo = [crlaxTarget connectedTo];
 
-  v7 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-  v8 = v7;
-  if (v6 == v4)
+  crlaxTarget2 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+  v8 = crlaxTarget2;
+  if (connectedTo == fromCopy)
   {
-    [v7 connectedFrom];
+    [crlaxTarget2 connectedFrom];
   }
 
   else
   {
-    [v7 connectedTo];
+    [crlaxTarget2 connectedTo];
   }
   v9 = ;
 
@@ -71,51 +71,51 @@
 
 - (BOOL)_crlaxVisuallyPointsAtHead
 {
-  v3 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-  v4 = [v3 strokeHeadLineEnd];
+  crlaxTarget = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+  strokeHeadLineEnd = [crlaxTarget strokeHeadLineEnd];
 
-  v5 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-  v6 = [v5 strokeTailLineEnd];
+  crlaxTarget2 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+  strokeTailLineEnd = [crlaxTarget2 strokeTailLineEnd];
 
-  if (!v4)
+  if (!strokeHeadLineEnd)
   {
     LOBYTE(v7) = 0;
-    if (v6)
+    if (strokeTailLineEnd)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v8 = 1;
+    isNone = 1;
     goto LABEL_6;
   }
 
-  v7 = [v4 isNone] ^ 1;
-  if (!v6)
+  v7 = [strokeHeadLineEnd isNone] ^ 1;
+  if (!strokeTailLineEnd)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v8 = [v6 isNone];
+  isNone = [strokeTailLineEnd isNone];
 LABEL_6:
-  v9 = v7 | v8;
+  v9 = v7 | isNone;
 
   return v9 & 1;
 }
 
 - (BOOL)_crlaxVisuallyPointsAtTail
 {
-  v3 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-  v4 = [v3 strokeHeadLineEnd];
+  crlaxTarget = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+  strokeHeadLineEnd = [crlaxTarget strokeHeadLineEnd];
 
-  v5 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
-  v6 = [v5 strokeTailLineEnd];
+  crlaxTarget2 = [(CRLConnectionLineAbstractLayoutAccessibility *)self crlaxTarget];
+  strokeTailLineEnd = [crlaxTarget2 strokeTailLineEnd];
 
-  if (!v4)
+  if (!strokeHeadLineEnd)
   {
-    v7 = 1;
-    if (!v6)
+    isNone = 1;
+    if (!strokeTailLineEnd)
     {
       goto LABEL_4;
     }
@@ -123,16 +123,16 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v7 = [v4 isNone];
-  if (v6)
+  isNone = [strokeHeadLineEnd isNone];
+  if (strokeTailLineEnd)
   {
 LABEL_3:
-    v7 |= [v6 isNone] ^ 1;
+    isNone |= [strokeTailLineEnd isNone] ^ 1;
   }
 
 LABEL_4:
 
-  return v7 & 1;
+  return isNone & 1;
 }
 
 @end

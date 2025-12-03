@@ -13,7 +13,7 @@
 - (id)safari_applicationRecordForConnectedProcess
 {
   v1 = MEMORY[0x1E696B0B8];
-  [a1 auditToken];
+  [self auditToken];
   v2 = [v1 safari_applicationRecordForConnectedProcessWithAuditToken:&v4];
 
   return v2;
@@ -51,8 +51,8 @@
     v7 = WBS_LOG_CHANNEL_PREFIXXPC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v5 safari_privacyPreservingDescription];
-      [(NSXPCConnection(SafariCoreExtras) *)v8 safari_applicationRecordForConnectedProcessWithAuditToken:buf, v7];
+      safari_privacyPreservingDescription = [v5 safari_privacyPreservingDescription];
+      [(NSXPCConnection(SafariCoreExtras) *)safari_privacyPreservingDescription safari_applicationRecordForConnectedProcessWithAuditToken:buf, v7];
     }
   }
 
@@ -89,9 +89,9 @@ LABEL_10:
       v13 = WBS_LOG_CHANNEL_PREFIXXPC();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v11 safari_privacyPreservingDescription];
+        safari_privacyPreservingDescription = [v11 safari_privacyPreservingDescription];
         *buf = 138543362;
-        *&buf[4] = v14;
+        *&buf[4] = safari_privacyPreservingDescription;
         _os_log_impl(&dword_1B8447000, v13, OS_LOG_TYPE_DEFAULT, "Could not load shared web credentials: %{public}@", buf, 0xCu);
       }
 
@@ -110,24 +110,24 @@ LABEL_10:
 
 - (uint64_t)safari_BOOLForEntitlement:()SafariCoreExtras
 {
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)safari_arrayForEntitlement:()SafariCoreExtras
 {
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -155,7 +155,7 @@ LABEL_10:
 
 - (id)safari_arrayForEntitlement:()SafariCoreExtras containingObjectsOfClass:
 {
-  v5 = [a1 safari_arrayForEntitlement:?];
+  v5 = [self safari_arrayForEntitlement:?];
   if ([v5 count])
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -178,7 +178,7 @@ LABEL_10:
 {
   v4 = a3;
   v5 = objc_opt_class();
-  [a1 auditToken];
+  [self auditToken];
   v6 = [v5 safari_applicationWithAuditToken:&v8 hasApprovedWebCredentialsDomainAssociationForDomain:v4];
 
   return v6;

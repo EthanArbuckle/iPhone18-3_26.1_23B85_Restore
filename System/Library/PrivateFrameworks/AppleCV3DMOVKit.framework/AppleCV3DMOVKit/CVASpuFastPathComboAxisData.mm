@@ -1,11 +1,11 @@
 @interface CVASpuFastPathComboAxisData
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVASpuFastPathComboAxisData)initWithCoder:(id)a3;
-- (CVASpuFastPathComboAxisData)initWithFastPathIMUData:(id)a3;
++ (id)withData:(id)data;
+- (CVASpuFastPathComboAxisData)initWithCoder:(id)coder;
+- (CVASpuFastPathComboAxisData)initWithFastPathIMUData:(id)data;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVASpuFastPathComboAxisData
@@ -26,11 +26,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVASpuFastPathComboAxisData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -48,52 +48,52 @@
   return v6;
 }
 
-- (CVASpuFastPathComboAxisData)initWithCoder:(id)a3
+- (CVASpuFastPathComboAxisData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CVASpuFastPathComboAxisData;
   v5 = [(CVASpuFastPathComboAxisData *)&v9 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_packetType = [v4 decodeInt32ForKey:@"pt"];
-    v5->_sample_id = [v4 decodeInt32ForKey:@"si"];
-    v5->_valid_data = [v4 decodeInt32ForKey:@"vd"];
-    v5->_ax = [v4 decodeInt32ForKey:@"ax"];
-    v5->_ay = [v4 decodeInt32ForKey:@"ay"];
-    v5->_az = [v4 decodeInt32ForKey:@"az"];
-    v5->_unfiltered_ax = [v4 decodeInt32ForKey:@"uax"];
-    v5->_unfiltered_ay = [v4 decodeInt32ForKey:@"uay"];
-    v5->_unfiltered_az = [v4 decodeInt32ForKey:@"uaz"];
-    v5->_gx = [v4 decodeInt32ForKey:@"gx"];
-    v5->_gy = [v4 decodeInt32ForKey:@"gy"];
-    v5->_gz = [v4 decodeInt32ForKey:@"gz"];
-    v5->_temperature = [v4 decodeInt32ForKey:@"p"];
-    [v4 decodeDoubleForKey:@"t"];
+    v5->_packetType = [coderCopy decodeInt32ForKey:@"pt"];
+    v5->_sample_id = [coderCopy decodeInt32ForKey:@"si"];
+    v5->_valid_data = [coderCopy decodeInt32ForKey:@"vd"];
+    v5->_ax = [coderCopy decodeInt32ForKey:@"ax"];
+    v5->_ay = [coderCopy decodeInt32ForKey:@"ay"];
+    v5->_az = [coderCopy decodeInt32ForKey:@"az"];
+    v5->_unfiltered_ax = [coderCopy decodeInt32ForKey:@"uax"];
+    v5->_unfiltered_ay = [coderCopy decodeInt32ForKey:@"uay"];
+    v5->_unfiltered_az = [coderCopy decodeInt32ForKey:@"uaz"];
+    v5->_gx = [coderCopy decodeInt32ForKey:@"gx"];
+    v5->_gy = [coderCopy decodeInt32ForKey:@"gy"];
+    v5->_gz = [coderCopy decodeInt32ForKey:@"gz"];
+    v5->_temperature = [coderCopy decodeInt32ForKey:@"p"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v7;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (CVASpuFastPathComboAxisData)initWithFastPathIMUData:(id)a3
+- (CVASpuFastPathComboAxisData)initWithFastPathIMUData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = CVASpuFastPathComboAxisData;
   v5 = [(CVASpuFastPathComboAxisData *)&v18 init];
   if (v5)
   {
-    v6 = [v4 bytes];
-    v7 = *v6;
+    bytes = [dataCopy bytes];
+    v7 = *bytes;
     if (v7 == 3)
     {
-      v11 = v6;
-      CMClockMakeHostTimeFromSystemUnits(&time, *(v6 + 1));
+      v11 = bytes;
+      CMClockMakeHostTimeFromSystemUnits(&time, *(bytes + 1));
       *(v5 + 8) = CMTimeGetSeconds(&time);
       *(v5 + 10) = -1;
       v12 = *(v11 + 4);
@@ -121,24 +121,24 @@
         goto LABEL_9;
       }
 
-      *(v5 + 8) = *(v6 + 1);
-      *(v5 + 10) = *(v6 + 2);
-      v8 = *(v6 + 6);
-      *(v5 + 9) = *(v6 + 14);
-      v9 = v6[18];
+      *(v5 + 8) = *(bytes + 1);
+      *(v5 + 10) = *(bytes + 2);
+      v8 = *(bytes + 6);
+      *(v5 + 9) = *(bytes + 14);
+      v9 = bytes[18];
       *(v5 + 2) = v8;
       *(v5 + 3) = v9;
-      *(v5 + 14) = *(v6 + 19);
-      *(v5 + 4) = *(v6 + 21);
-      *(v5 + 5) = *(v6 + 23);
-      *(v5 + 6) = *(v6 + 25);
-      *(v5 + 7) = *(v6 + 27);
-      *(v5 + 8) = *(v6 + 29);
-      *(v5 + 9) = *(v6 + 31);
-      *(v5 + 10) = *(v6 + 33);
-      *(v5 + 11) = *(v6 + 35);
-      *(v5 + 12) = *(v6 + 37);
-      v10 = *(v6 + 39);
+      *(v5 + 14) = *(bytes + 19);
+      *(v5 + 4) = *(bytes + 21);
+      *(v5 + 5) = *(bytes + 23);
+      *(v5 + 6) = *(bytes + 25);
+      *(v5 + 7) = *(bytes + 27);
+      *(v5 + 8) = *(bytes + 29);
+      *(v5 + 9) = *(bytes + 31);
+      *(v5 + 10) = *(bytes + 33);
+      *(v5 + 11) = *(bytes + 35);
+      *(v5 + 12) = *(bytes + 37);
+      v10 = *(bytes + 39);
     }
 
     *(v5 + 13) = v10;
@@ -150,26 +150,26 @@ LABEL_9:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeInt32:self->_packetType forKey:@"pt"];
-  [v5 encodeInt32:self->_sample_id forKey:@"si"];
-  [v5 encodeInt32:self->_valid_data forKey:@"vd"];
-  [v5 encodeInt32:self->_ax forKey:@"ax"];
-  [v5 encodeInt32:self->_ay forKey:@"ay"];
-  [v5 encodeInt32:self->_az forKey:@"az"];
-  [v5 encodeInt32:self->_unfiltered_ax forKey:@"uax"];
-  [v5 encodeInt32:self->_unfiltered_ay forKey:@"uay"];
-  [v5 encodeInt32:self->_unfiltered_az forKey:@"uaz"];
-  [v5 encodeInt32:self->_gx forKey:@"gx"];
-  [v5 encodeInt32:self->_gy forKey:@"gy"];
-  [v5 encodeInt32:self->_gz forKey:@"gz"];
-  [v5 encodeInt32:self->_temperature forKey:@"p"];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
-  [v5 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v5 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeInt32:self->_packetType forKey:@"pt"];
+  [coderCopy encodeInt32:self->_sample_id forKey:@"si"];
+  [coderCopy encodeInt32:self->_valid_data forKey:@"vd"];
+  [coderCopy encodeInt32:self->_ax forKey:@"ax"];
+  [coderCopy encodeInt32:self->_ay forKey:@"ay"];
+  [coderCopy encodeInt32:self->_az forKey:@"az"];
+  [coderCopy encodeInt32:self->_unfiltered_ax forKey:@"uax"];
+  [coderCopy encodeInt32:self->_unfiltered_ay forKey:@"uay"];
+  [coderCopy encodeInt32:self->_unfiltered_az forKey:@"uaz"];
+  [coderCopy encodeInt32:self->_gx forKey:@"gx"];
+  [coderCopy encodeInt32:self->_gy forKey:@"gy"];
+  [coderCopy encodeInt32:self->_gz forKey:@"gz"];
+  [coderCopy encodeInt32:self->_temperature forKey:@"p"];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -235,8 +235,8 @@ LABEL_9:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVASpuFastPathComboAxisData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVASpuFastPathComboAxisData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface ReplayPagesTestRunner
-- (BOOL)loadTestSuiteFile:(id)a3;
+- (BOOL)loadTestSuiteFile:(id)file;
 - (void)dealloc;
-- (void)finishedTestPage:(id)a3;
+- (void)finishedTestPage:(id)page;
 - (void)startNextPage;
 @end
 
@@ -21,33 +21,33 @@
   [(PageLoadTestRunner *)&v4 dealloc];
 }
 
-- (BOOL)loadTestSuiteFile:(id)a3
+- (BOOL)loadTestSuiteFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   suiteFile = self->_suiteFile;
   if (suiteFile)
   {
     fclose(suiteFile);
   }
 
-  v6 = fopen([v4 UTF8String], "r");
+  v6 = fopen([fileCopy UTF8String], "r");
   self->_suiteFile = v6;
   if (!v6)
   {
     v7 = *__error();
     v8 = __error();
-    [(PageLoadTestRunner *)self log:@"Error %d, could not open %@: %s", v7, v4, strerror(*v8)];
+    [(PageLoadTestRunner *)self log:@"Error %d, could not open %@: %s", v7, fileCopy, strerror(*v8)];
   }
 
   return v6 != 0;
 }
 
-- (void)finishedTestPage:(id)a3
+- (void)finishedTestPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   ++self->_attemptCount;
-  v6 = v4;
-  if ([v4 status] == 5)
+  v6 = pageCopy;
+  if ([pageCopy status] == 5)
   {
     ++self->_successCount;
   }

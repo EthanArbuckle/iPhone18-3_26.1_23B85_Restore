@@ -1,22 +1,22 @@
 @interface SASProximitySessionSharingTransport
-- (SASProximitySessionSharingTransport)initWithMessageSession:(id)a3;
+- (SASProximitySessionSharingTransport)initWithMessageSession:(id)session;
 - (void)activate;
 - (void)invalidate;
-- (void)sendData:(id)a3 response:(id)a4;
+- (void)sendData:(id)data response:(id)response;
 @end
 
 @implementation SASProximitySessionSharingTransport
 
-- (SASProximitySessionSharingTransport)initWithMessageSession:(id)a3
+- (SASProximitySessionSharingTransport)initWithMessageSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = SASProximitySessionSharingTransport;
   v5 = [(SASProximitySessionSharingTransport *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SASProximitySessionSharingTransport *)v5 setMessageSession:v4];
+    [(SASProximitySessionSharingTransport *)v5 setMessageSession:sessionCopy];
   }
 
   return v6;
@@ -25,26 +25,26 @@
 - (void)activate
 {
   v3 = objc_alloc(MEMORY[0x277D02880]);
-  v4 = [(SASProximitySessionSharingTransport *)self messageSession];
-  v5 = [v3 initWithTemplate:v4];
+  messageSession = [(SASProximitySessionSharingTransport *)self messageSession];
+  v5 = [v3 initWithTemplate:messageSession];
   [(SASProximitySessionSharingTransport *)self setActionMessageSession:v5];
 
-  v6 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
-  [v6 setLabel:@"Proximity Setup Sesssion"];
+  actionMessageSession = [(SASProximitySessionSharingTransport *)self actionMessageSession];
+  [actionMessageSession setLabel:@"Proximity Setup Sesssion"];
 
-  v7 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
-  [v7 setInvalidationHandler:&__block_literal_global_0];
+  actionMessageSession2 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
+  [actionMessageSession2 setInvalidationHandler:&__block_literal_global_0];
 
-  v8 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
+  actionMessageSession3 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__SASProximitySessionSharingTransport_activate__block_invoke_6;
   v10[3] = &unk_278846240;
   v10[4] = self;
-  [v8 registerRequestID:@"Action" options:0 handler:v10];
+  [actionMessageSession3 registerRequestID:@"Action" options:0 handler:v10];
 
-  v9 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
-  [v9 activate];
+  actionMessageSession4 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
+  [actionMessageSession4 activate];
 }
 
 void __47__SASProximitySessionSharingTransport_activate__block_invoke()
@@ -77,22 +77,22 @@ void __47__SASProximitySessionSharingTransport_activate__block_invoke_6(uint64_t
 
 - (void)invalidate
 {
-  v2 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
-  [v2 invalidate];
+  actionMessageSession = [(SASProximitySessionSharingTransport *)self actionMessageSession];
+  [actionMessageSession invalidate];
 }
 
-- (void)sendData:(id)a3 response:(id)a4
+- (void)sendData:(id)data response:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SASProximitySessionSharingTransport *)self actionMessageSession];
+  responseCopy = response;
+  dataCopy = data;
+  actionMessageSession = [(SASProximitySessionSharingTransport *)self actionMessageSession];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__SASProximitySessionSharingTransport_sendData_response___block_invoke;
   v10[3] = &unk_278846268;
-  v11 = v6;
-  v9 = v6;
-  [v8 sendRequestID:@"Action" options:0 request:v7 responseHandler:v10];
+  v11 = responseCopy;
+  v9 = responseCopy;
+  [actionMessageSession sendRequestID:@"Action" options:0 request:dataCopy responseHandler:v10];
 }
 
 void __57__SASProximitySessionSharingTransport_sendData_response___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)

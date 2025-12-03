@@ -12,8 +12,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 subviews];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [v6 subviews];
+  v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -25,14 +25,14 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
-        [a1 tpSetSemanticContentAttribute_recursive:a3 startingAtView:*(*(&v13 + 1) + 8 * v11++)];
+        [self tpSetSemanticContentAttribute_recursive:a3 startingAtView:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);

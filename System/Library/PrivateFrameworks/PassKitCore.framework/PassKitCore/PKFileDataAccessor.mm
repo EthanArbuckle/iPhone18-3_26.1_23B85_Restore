@@ -1,29 +1,29 @@
 @interface PKFileDataAccessor
-- (BOOL)_remoteAssetsDownloadedForScreenScale:(double)a3 seids:(id)a4 suffix:(id)a5 includeEncryptedAssets:(BOOL)a6;
-- (BOOL)remoteAssetsDownloadedForConfiguration:(id)a3;
-- (PKFileDataAccessor)initWithFileURL:(id)a3 error:(id *)a4 coordinator:(id)a5;
+- (BOOL)_remoteAssetsDownloadedForScreenScale:(double)scale seids:(id)seids suffix:(id)suffix includeEncryptedAssets:(BOOL)assets;
+- (BOOL)remoteAssetsDownloadedForConfiguration:(id)configuration;
+- (PKFileDataAccessor)initWithFileURL:(id)l error:(id *)error coordinator:(id)coordinator;
 - (id)archiveData;
 - (id)bundle;
 - (id)content;
-- (id)dataForBundleResource:(id)a3;
-- (id)dataForBundleResourceNamed:(id)a3 withExtension:(id)a4;
-- (id)dataForBundleResources:(id)a3;
+- (id)dataForBundleResource:(id)resource;
+- (id)dataForBundleResourceNamed:(id)named withExtension:(id)extension;
+- (id)dataForBundleResources:(id)resources;
 - (id)dictionary;
-- (id)displayProfileOfType:(int64_t)a3;
-- (id)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7;
+- (id)displayProfileOfType:(int64_t)type;
+- (id)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat;
 - (id)manifestHash;
-- (id)passLocalizedStringForKey:(id)a3;
+- (id)passLocalizedStringForKey:(id)key;
 - (id)remoteAssetManager;
-- (id)remoteAssetManagerForSEIDs:(id)a3;
-- (id)resourceValueForKey:(id)a3;
+- (id)remoteAssetManagerForSEIDs:(id)ds;
+- (id)resourceValueForKey:(id)key;
 - (id)serializedFileWrapper;
 - (unint64_t)fileSizeOnDisk;
-- (void)_downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4;
-- (void)contentWithCompletion:(id)a3;
+- (void)_downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion;
+- (void)contentWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)dictionaryWithCompletion:(id)a3;
-- (void)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7 withCompletion:(id)a8;
-- (void)revocationStatusWithCompletion:(id)a3;
+- (void)dictionaryWithCompletion:(id)completion;
+- (void)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat withCompletion:(id)completion;
+- (void)revocationStatusWithCompletion:(id)completion;
 @end
 
 @implementation PKFileDataAccessor
@@ -33,10 +33,10 @@
   v15 = *MEMORY[0x1E69E9840];
   if (self->_ownsFileURL && self->_fileURL)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     fileURL = self->_fileURL;
     v10 = 0;
-    v5 = [v3 removeItemAtURL:fileURL error:&v10];
+    v5 = [defaultManager removeItemAtURL:fileURL error:&v10];
     v6 = v10;
 
     if ((v5 & 1) == 0)
@@ -121,13 +121,13 @@ void __28__PKFileDataAccessor_bundle__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (PKFileDataAccessor)initWithFileURL:(id)a3 error:(id *)a4 coordinator:(id)a5
+- (PKFileDataAccessor)initWithFileURL:(id)l error:(id *)error coordinator:(id)coordinator
 {
-  v9 = a3;
-  v17 = a5;
-  if (v17)
+  lCopy = l;
+  coordinatorCopy = coordinator;
+  if (coordinatorCopy)
   {
-    if (!v9)
+    if (!lCopy)
     {
       goto LABEL_8;
     }
@@ -135,13 +135,13 @@ void __28__PKFileDataAccessor_bundle__block_invoke(uint64_t a1)
 
   else
   {
-    v17 = [[PKDirectoryCoordinator alloc] initWithURL:v9];
-    if (!v9)
+    coordinatorCopy = [[PKDirectoryCoordinator alloc] initWithURL:lCopy];
+    if (!lCopy)
     {
 LABEL_8:
-      if (a4)
+      if (error)
       {
-        *a4 = PKValidationErrorWithReason(0, v10, v11, v12, v13, v14, v15, v16, v21.receiver);
+        *error = PKValidationErrorWithReason(0, v10, v11, v12, v13, v14, v15, v16, v21.receiver);
       }
 
       v19 = 0;
@@ -149,7 +149,7 @@ LABEL_8:
     }
   }
 
-  if (!v17)
+  if (!coordinatorCopy)
   {
     goto LABEL_8;
   }
@@ -160,8 +160,8 @@ LABEL_8:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_fileURL, a3);
-    objc_storeStrong(&v19->_coordinator, v17);
+    objc_storeStrong(&v18->_fileURL, l);
+    objc_storeStrong(&v19->_coordinator, coordinatorCopy);
   }
 
 LABEL_11:
@@ -195,27 +195,27 @@ uint64_t __36__PKFileDataAccessor_fileSizeOnDisk__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)revocationStatusWithCompletion:(id)a3
+- (void)revocationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   coordinator = self->_coordinator;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PKFileDataAccessor_revocationStatusWithCompletion___block_invoke;
   v7[3] = &unk_1E79C86F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v7];
 }
 
-- (void)dictionaryWithCompletion:(id)a3
+- (void)dictionaryWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    v6 = [(PKFileDataAccessor *)self dictionary];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    dictionary = [(PKFileDataAccessor *)self dictionary];
+    (*(completion + 2))(completionCopy, dictionary);
   }
 }
 
@@ -251,20 +251,20 @@ void __29__PKFileDataAccessor_content__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)contentWithCompletion:(id)a3
+- (void)contentWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    v6 = [(PKFileDataAccessor *)self content];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    content = [(PKFileDataAccessor *)self content];
+    (*(completion + 2))(completionCopy, content);
   }
 }
 
-- (id)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7
+- (id)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat
 {
-  v11 = a5;
-  v12 = a6;
+  suffixCopy = suffix;
+  profileCopy = profile;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -277,13 +277,13 @@ void __29__PKFileDataAccessor_content__block_invoke(uint64_t a1)
   v18[2] = __80__PKFileDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preheat___block_invoke;
   v18[3] = &unk_1E79C8720;
   v22 = &v25;
-  v23 = a3;
-  v24 = a4;
-  v14 = v11;
+  typeCopy = type;
+  scaleCopy = scale;
+  v14 = suffixCopy;
   v19 = v14;
-  v15 = v12;
+  v15 = profileCopy;
   v20 = v15;
-  v21 = self;
+  selfCopy = self;
   [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v18];
   v16 = v26[5];
 
@@ -304,20 +304,20 @@ void __80__PKFileDataAccessor_imageSetForType_screenScale_suffix_displayProfile_
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7 withCompletion:(id)a8
+- (void)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat withCompletion:(id)completion
 {
-  if (a8)
+  if (completion)
   {
-    v9 = a7;
-    v15 = a8;
-    v16 = [(PKFileDataAccessor *)self imageSetForType:a3 screenScale:a5 suffix:a6 displayProfile:v9 preheat:a4];
-    (*(a8 + 2))(v15, v16);
+    preheatCopy = preheat;
+    completionCopy = completion;
+    v16 = [(PKFileDataAccessor *)self imageSetForType:type screenScale:suffix suffix:profile displayProfile:preheatCopy preheat:scale];
+    (*(completion + 2))(completionCopy, v16);
   }
 }
 
-- (id)resourceValueForKey:(id)a3
+- (id)resourceValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -331,7 +331,7 @@ void __80__PKFileDataAccessor_imageSetForType_screenScale_suffix_displayProfile_
   v9[3] = &unk_1E79C8748;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v9];
   v7 = v13[5];
@@ -351,11 +351,11 @@ void __42__PKFileDataAccessor_resourceValueForKey___block_invoke(void *a1)
   objc_storeStrong((v3 + 40), obj);
 }
 
-- (id)dataForBundleResourceNamed:(id)a3 withExtension:(id)a4
+- (id)dataForBundleResourceNamed:(id)named withExtension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKFileDataAccessor *)self bundle];
+  namedCopy = named;
+  extensionCopy = extension;
+  bundle = [(PKFileDataAccessor *)self bundle];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -367,11 +367,11 @@ void __42__PKFileDataAccessor_resourceValueForKey___block_invoke(void *a1)
   v15[1] = 3221225472;
   v15[2] = __63__PKFileDataAccessor_dataForBundleResourceNamed_withExtension___block_invoke;
   v15[3] = &unk_1E79C8770;
-  v10 = v8;
+  v10 = bundle;
   v16 = v10;
-  v11 = v6;
+  v11 = namedCopy;
   v17 = v11;
-  v12 = v7;
+  v12 = extensionCopy;
   v18 = v12;
   v19 = &v20;
   [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v15];
@@ -391,36 +391,36 @@ void __63__PKFileDataAccessor_dataForBundleResourceNamed_withExtension___block_i
   *(v3 + 40) = v2;
 }
 
-- (id)dataForBundleResource:(id)a3
+- (id)dataForBundleResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 extension];
+  resourceCopy = resource;
+  name = [resourceCopy name];
+  extension = [resourceCopy extension];
 
-  v7 = [(PKFileDataAccessor *)self dataForBundleResourceNamed:v5 withExtension:v6];
+  v7 = [(PKFileDataAccessor *)self dataForBundleResourceNamed:name withExtension:extension];
 
   return v7;
 }
 
-- (id)dataForBundleResources:(id)a3
+- (id)dataForBundleResources:(id)resources
 {
-  v4 = a3;
-  v5 = [v4 count];
+  resourcesCopy = resources;
+  v5 = [resourcesCopy count];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v5];
     v7 = objc_autoreleasePoolPush();
-    v8 = [(PKFileDataAccessor *)self bundle];
+    bundle = [(PKFileDataAccessor *)self bundle];
     coordinator = self->_coordinator;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__PKFileDataAccessor_dataForBundleResources___block_invoke;
     v13[3] = &unk_1E79C8798;
-    v14 = v4;
-    v15 = v8;
+    v14 = resourcesCopy;
+    v15 = bundle;
     v10 = v6;
     v16 = v10;
-    v11 = v8;
+    v11 = bundle;
     [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v13];
 
     objc_autoreleasePoolPop(v7);
@@ -572,23 +572,23 @@ void __43__PKFileDataAccessor_serializedFileWrapper__block_invoke(uint64_t a1, v
   *(v6 + 40) = v5;
 }
 
-- (BOOL)remoteAssetsDownloadedForConfiguration:(id)a3
+- (BOOL)remoteAssetsDownloadedForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 seids];
+  configurationCopy = configuration;
+  seids = [configurationCopy seids];
   v6 = PKScreenScale();
-  v7 = [v4 includeEncryptedAssets];
+  includeEncryptedAssets = [configurationCopy includeEncryptedAssets];
 
-  LOBYTE(self) = [(PKFileDataAccessor *)self _remoteAssetsDownloadedForScreenScale:v5 seids:0 suffix:v7 includeEncryptedAssets:v6];
+  LOBYTE(self) = [(PKFileDataAccessor *)self _remoteAssetsDownloadedForScreenScale:seids seids:0 suffix:includeEncryptedAssets includeEncryptedAssets:v6];
   return self;
 }
 
-- (BOOL)_remoteAssetsDownloadedForScreenScale:(double)a3 seids:(id)a4 suffix:(id)a5 includeEncryptedAssets:(BOOL)a6
+- (BOOL)_remoteAssetsDownloadedForScreenScale:(double)scale seids:(id)seids suffix:(id)suffix includeEncryptedAssets:(BOOL)assets
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [(PKFileDataAccessor *)self remoteAssetManagerForSEIDs:a4];
-  [v11 deviceSpecificItemsForScreenScale:v10 suffix:a3];
+  suffixCopy = suffix;
+  v11 = [(PKFileDataAccessor *)self remoteAssetManagerForSEIDs:seids];
+  [v11 deviceSpecificItemsForScreenScale:suffixCopy suffix:scale];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -608,7 +608,7 @@ void __43__PKFileDataAccessor_serializedFileWrapper__block_invoke(uint64_t a1, v
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        if ((a6 || ![*(*(&v20 + 1) + 8 * i) encryptionSource]) && !objc_msgSend(v11, "assetExistsLocally:", v17, v20))
+        if ((assets || ![*(*(&v20 + 1) + 8 * i) encryptionSource]) && !objc_msgSend(v11, "assetExistsLocally:", v17, v20))
         {
           v18 = 0;
           goto LABEL_13;
@@ -631,13 +631,13 @@ LABEL_13:
   return v18;
 }
 
-- (void)_downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4
+- (void)_downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 seids];
-  if (v8)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  seids = [configurationCopy seids];
+  if (seids)
   {
     goto LABEL_9;
   }
@@ -646,45 +646,45 @@ LABEL_13:
   {
     if (PKRunningInPassd())
     {
-      v8 = +[PKSecureElement secureElementIdentifiers];
+      seids = +[PKSecureElement secureElementIdentifiers];
       goto LABEL_9;
     }
 
     v9 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v16 = 134349314;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v10;
+      v19 = callStackSymbols;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKFileDataAccessor (%{public}p): downloadRemoteAssets should always be called with a seids outside of passd, falling back to downloading everything. Called from: %@", &v16, 0x16u);
     }
   }
 
-  v8 = 0;
+  seids = 0;
 LABEL_9:
-  v11 = [(PKFileDataAccessor *)self remoteAssetManagerForSEIDs:v8];
+  v11 = [(PKFileDataAccessor *)self remoteAssetManagerForSEIDs:seids];
   if (v11)
   {
-    [v6 screenScale];
+    [configurationCopy screenScale];
     v13 = v12;
-    v14 = [v6 suffix];
-    v15 = [v6 cloudStoreCoordinatorDelegate];
-    [v11 downloadRemoteAssetsWithScreenScale:v14 suffix:v15 cloudStoreCoordinatorDelegate:objc_msgSend(v6 ignoreRequiredAssetDownloadFailures:"ignoreRequiredAssetDownloadFailures") includeEncryptedAssets:objc_msgSend(v6 completion:{"includeEncryptedAssets"), v7, v13}];
+    suffix = [configurationCopy suffix];
+    cloudStoreCoordinatorDelegate = [configurationCopy cloudStoreCoordinatorDelegate];
+    [v11 downloadRemoteAssetsWithScreenScale:suffix suffix:cloudStoreCoordinatorDelegate cloudStoreCoordinatorDelegate:objc_msgSend(configurationCopy ignoreRequiredAssetDownloadFailures:"ignoreRequiredAssetDownloadFailures") includeEncryptedAssets:objc_msgSend(configurationCopy completion:{"includeEncryptedAssets"), completionCopy, v13}];
   }
 
   else
   {
-    v7[2](v7, 1, 0, 1.0);
+    completionCopy[2](completionCopy, 1, 0, 1.0);
   }
 }
 
-- (id)remoteAssetManagerForSEIDs:(id)a3
+- (id)remoteAssetManagerForSEIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [[PKRemoteAssetManager alloc] initWithDirectoryCoordinator:self->_coordinator];
-  [(PKRemoteAssetManager *)v5 setSeids:v4];
+  [(PKRemoteAssetManager *)v5 setSeids:dsCopy];
 
   return v5;
 }
@@ -731,22 +731,22 @@ void __40__PKFileDataAccessor_remoteAssetManager__block_invoke(uint64_t a1)
   objc_storeStrong(v7, v6);
 }
 
-- (id)displayProfileOfType:(int64_t)a3
+- (id)displayProfileOfType:(int64_t)type
 {
-  v5 = [(PKFileDataAccessor *)self dictionary];
+  dictionary = [(PKFileDataAccessor *)self dictionary];
   v6 = MEMORY[0x1E696AAE8];
-  v7 = [(PKFileDataAccessor *)self fileURL];
-  v8 = [v6 bundleWithURL:v7];
-  v9 = [PKDisplayProfile displayProfileOfType:a3 withDictionary:v5 bundle:v8];
+  fileURL = [(PKFileDataAccessor *)self fileURL];
+  v8 = [v6 bundleWithURL:fileURL];
+  v9 = [PKDisplayProfile displayProfileOfType:type withDictionary:dictionary bundle:v8];
 
   return v9;
 }
 
-- (id)passLocalizedStringForKey:(id)a3
+- (id)passLocalizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKFileDataAccessor *)self bundle];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_1F227FD28 table:@"pass_localizable"];
+  keyCopy = key;
+  bundle = [(PKFileDataAccessor *)self bundle];
+  v6 = [bundle localizedStringForKey:keyCopy value:&stru_1F227FD28 table:@"pass_localizable"];
 
   return v6;
 }

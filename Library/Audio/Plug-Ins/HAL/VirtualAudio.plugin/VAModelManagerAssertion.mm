@@ -1,21 +1,21 @@
 @interface VAModelManagerAssertion
 - (VAModelManagerAssertion)init;
-- (void)acquireInPolicy:(NSString *)a3 inDescription:(NSString *)a4 completionHandler:(id)a5;
-- (void)invalidateWithCompletionHandler:(id)a3;
+- (void)acquireInPolicy:(NSString *)policy inDescription:(NSString *)description completionHandler:(id)handler;
+- (void)invalidateWithCompletionHandler:(id)handler;
 @end
 
 @implementation VAModelManagerAssertion
 
-- (void)acquireInPolicy:(NSString *)a3 inDescription:(NSString *)a4 completionHandler:(id)a5
+- (void)acquireInPolicy:(NSString *)policy inDescription:(NSString *)description completionHandler:(id)handler
 {
   v9 = sub_1D1138(&qword_6E48F8, &qword_516E88);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = policy;
+  v14[3] = description;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_51349C();
@@ -30,19 +30,19 @@
   v17[3] = 0;
   v17[4] = &unk_517050;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  policyCopy = policy;
+  descriptionCopy = description;
 
   sub_1D0460(0, 0, v12, &unk_517058, v17);
 }
 
-- (void)invalidateWithCompletionHandler:(id)a3
+- (void)invalidateWithCompletionHandler:(id)handler
 {
   v5 = sub_1D1138(&qword_6E48F8, &qword_516E88);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

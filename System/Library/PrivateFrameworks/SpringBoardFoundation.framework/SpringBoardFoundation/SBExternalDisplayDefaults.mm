@@ -1,13 +1,13 @@
 @interface SBExternalDisplayDefaults
-- (BOOL)displaySupportsExtendedDisplayMode:(id)a3;
+- (BOOL)displaySupportsExtendedDisplayMode:(id)mode;
 - (NSString)description;
 - (id)_constructDisplaySettingsMap;
-- (id)displayModeSettingsForDisplay:(id)a3;
-- (id)observeDisplayModeSettingsOnQueue:(id)a3 withBlock:(id)a4;
+- (id)displayModeSettingsForDisplay:(id)display;
+- (id)observeDisplayModeSettingsOnQueue:(id)queue withBlock:(id)block;
 - (void)_bindAndRegisterDefaults;
-- (void)_saveDisplaySettingsMapToStore:(id)a3;
+- (void)_saveDisplaySettingsMapToStore:(id)store;
 - (void)resetPrototypeSettingAdjustableDefaults;
-- (void)setDisplayModeSettings:(id)a3 forDisplaysMatchingPredicates:(id)a4;
+- (void)setDisplayModeSettings:(id)settings forDisplaysMatchingPredicates:(id)predicates;
 @end
 
 @implementation SBExternalDisplayDefaults
@@ -36,10 +36,10 @@
 
 - (void)resetPrototypeSettingAdjustableDefaults
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  [v3 removeObjectForKey:@"SBExtendedDisplayOverrideSupportForAirPlayAndDontFileRadars"];
-  [v3 removeObjectForKey:@"SBExtendedDisplayContentsScaleAndDontFileRadars"];
-  [v3 removeObjectForKey:@"SBDisplayModeSettings"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store removeObjectForKey:@"SBExtendedDisplayOverrideSupportForAirPlayAndDontFileRadars"];
+  [_store removeObjectForKey:@"SBExtendedDisplayContentsScaleAndDontFileRadars"];
+  [_store removeObjectForKey:@"SBDisplayModeSettings"];
   [(BSAbstractDefaultDomain *)self synchronizeDefaults];
 }
 
@@ -50,87 +50,87 @@
   [(SBExternalDisplayDefaults *)self contentsScale];
   v5 = [v3 appendFloat:@"contentsScale" withName:2 decimalPrecision:?];
   v6 = [v3 appendBool:-[SBExternalDisplayDefaults isMirroringEnabled](self withName:{"isMirroringEnabled"), @"mirroringEnabled"}];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)displaySupportsExtendedDisplayMode:(id)a3
+- (BOOL)displaySupportsExtendedDisplayMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(SBExternalDisplayDefaults *)self allowWirelessDisplaysForExtendedDisplayMode];
-  v6 = [v4 identity];
-  v7 = [v6 rootIdentity];
+  modeCopy = mode;
+  allowWirelessDisplaysForExtendedDisplayMode = [(SBExternalDisplayDefaults *)self allowWirelessDisplaysForExtendedDisplayMode];
+  identity = [modeCopy identity];
+  rootIdentity = [identity rootIdentity];
 
-  if ([v7 isExternal] && objc_msgSend(v7, "isAirPlayDisplay") && (objc_msgSend(v7, "isCarDisplay") & 1) == 0 && (objc_msgSend(v7, "isCarInstrumentsDisplay") & 1) == 0 && (objc_msgSend(v7, "connectionType") == 1) | v5 & 1 && objc_msgSend(v7, "isRootIdentity"))
+  if ([rootIdentity isExternal] && objc_msgSend(rootIdentity, "isAirPlayDisplay") && (objc_msgSend(rootIdentity, "isCarDisplay") & 1) == 0 && (objc_msgSend(rootIdentity, "isCarInstrumentsDisplay") & 1) == 0 && (objc_msgSend(rootIdentity, "connectionType") == 1) | allowWirelessDisplaysForExtendedDisplayMode & 1 && objc_msgSend(rootIdentity, "isRootIdentity"))
   {
-    v8 = [v4 hardwareIdentifier];
+    hardwareIdentifier = [modeCopy hardwareIdentifier];
 
-    if (v8)
+    if (hardwareIdentifier)
     {
-      v8 = [SBDisplayScaleMapping withDisplay:v4];
-      v9 = [v8 supportedScales];
+      hardwareIdentifier = [SBDisplayScaleMapping withDisplay:modeCopy];
+      supportedScales = [hardwareIdentifier supportedScales];
 
-      LOBYTE(v8) = v9 != 0;
+      LOBYTE(hardwareIdentifier) = supportedScales != 0;
     }
   }
 
   else
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(hardwareIdentifier) = 0;
   }
 
-  return v8;
+  return hardwareIdentifier;
 }
 
-- (id)displayModeSettingsForDisplay:(id)a3
+- (id)displayModeSettingsForDisplay:(id)display
 {
-  v4 = a3;
-  if (!v4)
+  displayCopy = display;
+  if (!displayCopy)
   {
     [SBExternalDisplayDefaults displayModeSettingsForDisplay:];
   }
 
-  if (![(SBExternalDisplayDefaults *)self displaySupportsExtendedDisplayMode:v4])
+  if (![(SBExternalDisplayDefaults *)self displaySupportsExtendedDisplayMode:displayCopy])
   {
-    v8 = 0;
+    createDefaultSettings = 0;
     goto LABEL_18;
   }
 
-  v5 = [(SBExternalDisplayDefaults *)self _constructDisplaySettingsMap];
-  v6 = [SBDisplayModePredicate forDisplay:v4];
-  v7 = [v5 objectForKey:v6];
-  v8 = v7;
+  _constructDisplaySettingsMap = [(SBExternalDisplayDefaults *)self _constructDisplaySettingsMap];
+  v6 = [SBDisplayModePredicate forDisplay:displayCopy];
+  v7 = [_constructDisplaySettingsMap objectForKey:v6];
+  createDefaultSettings = v7;
   if (!v7)
   {
-    v9 = [SBDisplayModePredicate forDisplaysSimilarToDisplay:v4];
-    v8 = [v5 objectForKey:v9];
+    v9 = [SBDisplayModePredicate forDisplaysSimilarToDisplay:displayCopy];
+    createDefaultSettings = [_constructDisplaySettingsMap objectForKey:v9];
 
-    if (!v8)
+    if (!createDefaultSettings)
     {
       v10 = +[SBDisplayModePredicate allDisplays];
-      v8 = [v5 objectForKey:v10];
+      createDefaultSettings = [_constructDisplaySettingsMap objectForKey:v10];
     }
   }
 
-  v11 = [SBDisplayScaleMapping withDisplay:v4];
+  v11 = [SBDisplayScaleMapping withDisplay:displayCopy];
   v12 = v11;
-  if (!v8)
+  if (!createDefaultSettings)
   {
-    v8 = [v11 createDefaultSettings];
+    createDefaultSettings = [v11 createDefaultSettings];
   }
 
-  v13 = [v12 supportedScales];
-  [v8 scale];
-  if ((SBSDisplayScaleMaskFromScale() & ~v13) != 0)
+  supportedScales = [v12 supportedScales];
+  [createDefaultSettings scale];
+  if ((SBSDisplayScaleMaskFromScale() & ~supportedScales) != 0)
   {
-    v14 = [v8 mutableCopy];
+    v14 = [createDefaultSettings mutableCopy];
     [v14 setScale:1];
 
-    v8 = v14;
+    createDefaultSettings = v14;
 LABEL_14:
-    [v5 setObject:v8 forKey:v6];
-    [(SBExternalDisplayDefaults *)self _saveDisplaySettingsMapToStore:v5];
+    [_constructDisplaySettingsMap setObject:createDefaultSettings forKey:v6];
+    [(SBExternalDisplayDefaults *)self _saveDisplaySettingsMapToStore:_constructDisplaySettingsMap];
     goto LABEL_15;
   }
 
@@ -140,37 +140,37 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (!v8)
+  if (!createDefaultSettings)
   {
     [SBExternalDisplayDefaults displayModeSettingsForDisplay:];
   }
 
 LABEL_18:
 
-  return v8;
+  return createDefaultSettings;
 }
 
-- (void)setDisplayModeSettings:(id)a3 forDisplaysMatchingPredicates:(id)a4
+- (void)setDisplayModeSettings:(id)settings forDisplaysMatchingPredicates:(id)predicates
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  settingsCopy = settings;
+  predicatesCopy = predicates;
+  if (!settingsCopy)
   {
     [SBExternalDisplayDefaults setDisplayModeSettings:forDisplaysMatchingPredicates:];
   }
 
-  if (![v7 count])
+  if (![predicatesCopy count])
   {
     [SBExternalDisplayDefaults setDisplayModeSettings:forDisplaysMatchingPredicates:];
   }
 
-  v8 = [(SBExternalDisplayDefaults *)self _constructDisplaySettingsMap];
+  _constructDisplaySettingsMap = [(SBExternalDisplayDefaults *)self _constructDisplaySettingsMap];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = predicatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -187,10 +187,10 @@ LABEL_18:
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        v16 = [v8 objectForKey:{v15, v17}];
-        if (([v16 isEqual:v6] & 1) == 0)
+        v16 = [_constructDisplaySettingsMap objectForKey:{v15, v17}];
+        if (([v16 isEqual:settingsCopy] & 1) == 0)
         {
-          [v8 setObject:v6 forKey:v15];
+          [_constructDisplaySettingsMap setObject:settingsCopy forKey:v15];
           v12 = 1;
         }
       }
@@ -202,7 +202,7 @@ LABEL_18:
 
     if (v12)
     {
-      [(SBExternalDisplayDefaults *)self _saveDisplaySettingsMapToStore:v8];
+      [(SBExternalDisplayDefaults *)self _saveDisplaySettingsMapToStore:_constructDisplaySettingsMap];
     }
   }
 
@@ -211,14 +211,14 @@ LABEL_18:
   }
 }
 
-- (id)observeDisplayModeSettingsOnQueue:(id)a3 withBlock:(id)a4
+- (id)observeDisplayModeSettingsOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queueCopy = queue;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (queueCopy)
   {
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -236,21 +236,21 @@ LABEL_18:
   [SBExternalDisplayDefaults observeDisplayModeSettingsOnQueue:withBlock:];
 LABEL_3:
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"displayModeSettingsMap"];
-  v10 = [(BSAbstractDefaultDomain *)self observeDefault:v9 onQueue:v6 withBlock:v8];
+  v10 = [(BSAbstractDefaultDomain *)self observeDefault:v9 onQueue:queueCopy withBlock:v8];
 
   return v10;
 }
 
-- (void)_saveDisplaySettingsMapToStore:(id)a3
+- (void)_saveDisplaySettingsMapToStore:(id)store
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  storeCopy = store;
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(storeCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = storeCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -267,9 +267,9 @@ LABEL_3:
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [v6 objectForKey:{v11, v17}];
-        v13 = [v11 defaultsKeyRepresentation];
-        v14 = [v12 defaultsRepresentation];
-        [v5 setObject:v14 forKey:v13];
+        defaultsKeyRepresentation = [v11 defaultsKeyRepresentation];
+        defaultsRepresentation = [v12 defaultsRepresentation];
+        [v5 setObject:defaultsRepresentation forKey:defaultsKeyRepresentation];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -278,8 +278,8 @@ LABEL_3:
     while (v8);
   }
 
-  v15 = [(SBExternalDisplayDefaults *)self displayModeSettingsMap];
-  v16 = [v5 isEqual:v15];
+  displayModeSettingsMap = [(SBExternalDisplayDefaults *)self displayModeSettingsMap];
+  v16 = [v5 isEqual:displayModeSettingsMap];
 
   if ((v16 & 1) == 0)
   {
@@ -290,16 +290,16 @@ LABEL_3:
 - (id)_constructDisplaySettingsMap
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(SBExternalDisplayDefaults *)self displayModeSettingsMap];
-  if (!v2)
+  displayModeSettingsMap = [(SBExternalDisplayDefaults *)self displayModeSettingsMap];
+  if (!displayModeSettingsMap)
   {
-    v2 = MEMORY[0x1E695E0F8];
+    displayModeSettingsMap = MEMORY[0x1E695E0F8];
   }
 
-  v17 = v2;
-  v3 = [v2 mutableCopy];
+  v17 = displayModeSettingsMap;
+  v3 = [displayModeSettingsMap mutableCopy];
   v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -337,7 +337,7 @@ LABEL_3:
 
         if (v14)
         {
-          [v18 addObject:v9];
+          [array addObject:v9];
         }
 
         else
@@ -352,9 +352,9 @@ LABEL_3:
     while (v6);
   }
 
-  if ([v18 count])
+  if ([array count])
   {
-    [v4 removeObjectsForKeys:v18];
+    [v4 removeObjectsForKeys:array];
     [(SBExternalDisplayDefaults *)self setDisplayModeSettingsMap:v4];
   }
 

@@ -1,34 +1,34 @@
 @interface INIntent
-+ (id)_sharedExtensionContextUUIDForIntentClassName:(id)a3;
++ (id)_sharedExtensionContextUUIDForIntentClassName:(id)name;
 + (id)intentDescription;
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
 + (id)typeName;
-+ (void)_setSharedExtensionContextUUID:(id)a3 forIntentClassName:(id)a4;
++ (void)_setSharedExtensionContextUUID:(id)d forIntentClassName:(id)name;
 + (void)initialize;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_intents_preferredScaledImageSize;
-- (BOOL)_enumerateWithValueProcessingBlock:(id)a3;
-- (BOOL)_hasMatchingIntentHandlerIncludingRemoteExecution:(BOOL)a3;
+- (BOOL)_enumerateWithValueProcessingBlock:(id)block;
+- (BOOL)_hasMatchingIntentHandlerIncludingRemoteExecution:(BOOL)execution;
 - (BOOL)_hasTitle;
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4;
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block;
 - (BOOL)_isConfigurable;
 - (BOOL)_isEligibleForSuggestions;
 - (BOOL)_isPrimaryDisplayDisabled;
 - (BOOL)_isUserConfirmationRequired;
-- (BOOL)_isValidKey:(id)a3;
-- (BOOL)_isValueValidForKey:(id)a3 unsupportedReason:(id *)a4;
-- (BOOL)_supportsBackgroundExecutionWithOptions:(unint64_t)a3;
-- (BOOL)configureAttributeSet:(id)a3 includingData:(BOOL)a4;
+- (BOOL)_isValidKey:(id)key;
+- (BOOL)_isValueValidForKey:(id)key unsupportedReason:(id *)reason;
+- (BOOL)_supportsBackgroundExecutionWithOptions:(unint64_t)options;
+- (BOOL)configureAttributeSet:(id)set includingData:(BOOL)data;
 - (BOOL)didAuthenticateAppProtection;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGenericIntent;
 - (INAppIntent)_asMigratedAppIntent;
 - (INImage)_defaultImage;
 - (INImage)_keyImage;
 - (INImage)imageForParameterNamed:(NSString *)parameterName;
 - (INIntent)init;
-- (INIntent)initWithCoder:(id)a3;
-- (INIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (INIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (INIntent)initWithCoder:(id)coder;
+- (INIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (INIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 - (INIntentCodableDescription)_codableDescription;
 - (INIntentKeyParameter)_keyParameter;
 - (INShortcutAvailabilityOptions)shortcutAvailability;
@@ -67,44 +67,44 @@
 - (NSString)utteranceString;
 - (NSString)verb;
 - (_INPBIntentMetadata)_metadata;
-- (id)_JSONDictionaryRepresentationWithConfiguration:(id)a3;
+- (id)_JSONDictionaryRepresentationWithConfiguration:(id)configuration;
 - (id)_backingStoreData;
 - (id)_className;
-- (id)_copyApplyingNewBackingStoreData:(id)a3 error:(id *)a4;
-- (id)_copyWithoutBackingStoreData:(id *)a3;
+- (id)_copyApplyingNewBackingStoreData:(id)data error:(id *)error;
+- (id)_copyWithoutBackingStoreData:(id *)data;
 - (id)_currentParameterCombination;
 - (id)_defaultImageName;
 - (id)_dictionaryRepresentation;
 - (id)_displayOrderedNonNilParameters;
 - (id)_emptyCopy;
-- (id)_imageForParameter:(id)a3;
+- (id)_imageForParameter:(id)parameter;
 - (id)_inCodable;
 - (id)_init;
-- (id)_initWithIdentifier:(id)a3 backingStore:(id)a4 schema:(id)a5 error:(id *)a6;
-- (id)_initWithIdentifier:(id)a3 schema:(id)a4 name:(id)a5 data:(id)a6;
+- (id)_initWithIdentifier:(id)identifier backingStore:(id)store schema:(id)schema error:(id *)error;
+- (id)_initWithIdentifier:(id)identifier schema:(id)schema name:(id)name data:(id)data;
 - (id)_intentInstanceDescription;
-- (id)_intents_backgroundHandlingAssertionForBundleIdentifier:(id)a3 context:(unint64_t)a4 error:(id *)a5;
+- (id)_intents_backgroundHandlingAssertionForBundleIdentifier:(id)identifier context:(unint64_t)context error:(id *)error;
 - (id)_intents_bestBundleIdentifier;
 - (id)_intents_bundleIdForDisplay;
 - (id)_intents_bundleIdForLaunching;
 - (id)_keyCodableAttributes;
 - (id)_keyImageWithIntentDescriptionStrategy;
-- (id)_localizedCombinationStringForKey:(id)a3 value:(id)a4 localizationTable:(id)a5 bundleURL:(id)a6 localizer:(id)a7;
+- (id)_localizedCombinationStringForKey:(id)key value:(id)value localizationTable:(id)table bundleURL:(id)l localizer:(id)localizer;
 - (id)_nonNilParameters;
-- (id)_querySchemaWithBlock:(id)a3 contentOptions:(unint64_t)a4;
-- (id)_subtitleForLanguage:(id)a3;
-- (id)_subtitleWithLocalizer:(id)a3 fromBundleURL:(id)a4;
-- (id)_titleForLanguage:(id)a3;
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4;
+- (id)_querySchemaWithBlock:(id)block contentOptions:(unint64_t)options;
+- (id)_subtitleForLanguage:(id)language;
+- (id)_subtitleWithLocalizer:(id)localizer fromBundleURL:(id)l;
+- (id)_titleForLanguage:(id)language;
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l;
 - (id)_typedBackingStore;
-- (id)_validParameterCombinationsWithSchema:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_validParameterCombinationsWithSchema:(id)schema;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)intentSlotDescriptions;
-- (id)localizeValueOfSlotDescription:(id)a3 withLocalizer:(id)a4;
-- (id)valueForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
+- (id)localizeValueOfSlotDescription:(id)description withLocalizer:(id)localizer;
+- (id)valueForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (int64_t)_executionContext;
 - (int64_t)_idiom;
 - (int64_t)_indexingHash;
@@ -112,49 +112,49 @@
 - (int64_t)_intents_toggleState;
 - (int64_t)_type;
 - (int64_t)triggerMethod;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)_injectProxiesForImagesUsingCustomCodableStrategy:(id)a3 completion:(id)a4;
-- (void)_injectProxiesForParameterImages:(id)a3 completion:(id)a4;
-- (void)_injectProxyForDefaultImage:(id)a3 completion:(id)a4;
-- (void)_intents_allowAppToInitiatePlaybackForBundleIdentifier:(id)a3 context:(unint64_t)a4 error:(id *)a5;
-- (void)_setAirPlayRouteIds:(id)a3;
-- (void)_setCategoryVerb:(id)a3;
-- (void)_setDefaultImage:(id)a3;
-- (void)_setEndpointMediaPlaybackEnabled:(id)a3;
-- (void)_setExecutionContext:(int64_t)a3;
-- (void)_setExtensionBundleId:(id)a3;
-- (void)_setIdiom:(int64_t)a3;
-- (void)_setImage:(id)a3 forParameter:(id)a4;
-- (void)_setIntentCategory:(int64_t)a3;
-- (void)_setIsOwnedByCurrentUser:(id)a3;
-- (void)_setLaunchId:(id)a3;
-- (void)_setMSLimitReached:(id)a3;
-- (void)_setMetadata:(id)a3;
-- (void)_setNanoLaunchId:(id)a3;
-- (void)_setOriginatingDeviceIdsIdentifier:(id)a3;
-- (void)_setOriginatingDeviceRapportEffectiveIdentifier:(id)a3;
-- (void)_setOriginatingDeviceRapportMediaSystemIdentifier:(id)a3;
-- (void)_setParameterImages:(id)a3;
-- (void)_setParametersForcedToNeedsValue:(id)a3;
-- (void)_setUiExtensionBundleId:(id)a3;
-- (void)_updateWithJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDomain:(id)a3;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)_injectProxiesForImagesUsingCustomCodableStrategy:(id)strategy completion:(id)completion;
+- (void)_injectProxiesForParameterImages:(id)images completion:(id)completion;
+- (void)_injectProxyForDefaultImage:(id)image completion:(id)completion;
+- (void)_intents_allowAppToInitiatePlaybackForBundleIdentifier:(id)identifier context:(unint64_t)context error:(id *)error;
+- (void)_setAirPlayRouteIds:(id)ids;
+- (void)_setCategoryVerb:(id)verb;
+- (void)_setDefaultImage:(id)image;
+- (void)_setEndpointMediaPlaybackEnabled:(id)enabled;
+- (void)_setExecutionContext:(int64_t)context;
+- (void)_setExtensionBundleId:(id)id;
+- (void)_setIdiom:(int64_t)idiom;
+- (void)_setImage:(id)image forParameter:(id)parameter;
+- (void)_setIntentCategory:(int64_t)category;
+- (void)_setIsOwnedByCurrentUser:(id)user;
+- (void)_setLaunchId:(id)id;
+- (void)_setMSLimitReached:(id)reached;
+- (void)_setMetadata:(id)metadata;
+- (void)_setNanoLaunchId:(id)id;
+- (void)_setOriginatingDeviceIdsIdentifier:(id)identifier;
+- (void)_setOriginatingDeviceRapportEffectiveIdentifier:(id)identifier;
+- (void)_setOriginatingDeviceRapportMediaSystemIdentifier:(id)identifier;
+- (void)_setParameterImages:(id)images;
+- (void)_setParametersForcedToNeedsValue:(id)value;
+- (void)_setUiExtensionBundleId:(id)id;
+- (void)_updateWithJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDomain:(id)domain;
 - (void)setDonationMetadata:(INIntentDonationMetadata *)donationMetadata;
 - (void)setImage:(INImage *)image forParameterNamed:(NSString *)parameterName;
-- (void)setParametersByName:(id)a3;
+- (void)setParametersByName:(id)name;
 - (void)setShortcutAvailability:(INShortcutAvailabilityOptions)shortcutAvailability;
 - (void)setSuggestedInvocationPhrase:(NSString *)suggestedInvocationPhrase;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)setVerb:(id)a3;
-- (void)trimDataAgainstTCCForAuditToken:(id *)a3 bundle:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)setVerb:(id)verb;
+- (void)trimDataAgainstTCCForAuditToken:(id *)token bundle:(id)bundle;
 @end
 
 @implementation INIntent
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -176,9 +176,9 @@
     goto LABEL_9;
   }
 
-  v5 = [objc_opt_class() intentDescription];
+  intentDescription = [objc_opt_class() intentDescription];
 
-  if (v5)
+  if (intentDescription)
   {
     goto LABEL_9;
   }
@@ -210,20 +210,20 @@ LABEL_8:
 
     self = v12;
 LABEL_9:
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [(INIntent *)self initWithIdentifier:v14 backingStore:0];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [(INIntent *)self initWithIdentifier:uUIDString backingStore:0];
 
-    v16 = [(INIntent *)v15 launchId];
+    launchId = [(INIntent *)v15 launchId];
 
-    if (!v16)
+    if (!launchId)
     {
       v17 = INContainingBundleIdentifierForCurrentProcess();
       [(INIntent *)v15 _setLaunchId:v17];
     }
 
     self = v15;
-    v18 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
@@ -237,11 +237,11 @@ LABEL_9:
     _os_log_error_impl(&dword_18E991000, v21, OS_LOG_TYPE_ERROR, "%s Unable to initialize '%@'. Please make sure that your intent definition file is valid.", &v22, 0x16u);
   }
 
-  v18 = 0;
+  selfCopy = 0;
 LABEL_12:
 
   v19 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
 + (id)intentDescription
@@ -266,52 +266,52 @@ LABEL_12:
       v4 = @"Turn On";
     }
 
-    v5 = v4;
+    categoryVerb2 = v4;
   }
 
   else
   {
-    v6 = [(INIntent *)self _metadata];
-    v7 = [v6 categoryVerb];
-    if ([v7 length])
+    _metadata = [(INIntent *)self _metadata];
+    categoryVerb = [_metadata categoryVerb];
+    if ([categoryVerb length])
     {
-      v8 = [(INIntent *)self _metadata];
-      v5 = [v8 categoryVerb];
+      _metadata2 = [(INIntent *)self _metadata];
+      categoryVerb2 = [_metadata2 categoryVerb];
     }
 
     else
     {
-      v5 = @"Do";
+      categoryVerb2 = @"Do";
     }
   }
 
-  return v5;
+  return categoryVerb2;
 }
 
 - (NSString)launchId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 launchId];
+  _metadata = [(INIntent *)self _metadata];
+  launchId = [_metadata launchId];
 
-  return v3;
+  return launchId;
 }
 
 - (_INPBIntentMetadata)_metadata
 {
   if ([(INIntent *)self _type]== 2)
   {
-    v3 = [(INIntent *)self _inCodable];
-    v4 = [v3 valueForPropertyNamed:@"_metadata"];
+    _inCodable = [(INIntent *)self _inCodable];
+    metadata = [_inCodable valueForPropertyNamed:@"_metadata"];
 LABEL_5:
-    v5 = v4;
+    v5 = metadata;
 
     goto LABEL_7;
   }
 
   if ([(INIntent *)self _type]== 3)
   {
-    v3 = [(INIntent *)self _typedBackingStore];
-    v4 = [v3 metadata];
+    _inCodable = [(INIntent *)self _typedBackingStore];
+    metadata = [_inCodable metadata];
     goto LABEL_5;
   }
 
@@ -323,7 +323,7 @@ LABEL_7:
 
 - (int64_t)_type
 {
-  v3 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -339,14 +339,14 @@ LABEL_7:
 
   v6 = objc_opt_class();
   v7 = INIntentSchemaGetIntentDescriptionWithFacadeClass(v6);
-  v8 = [v7 type];
+  type = [v7 type];
 
-  return v8 != 0;
+  return type != 0;
 }
 
 - (BOOL)isGenericIntent
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -355,13 +355,13 @@ LABEL_7:
 
 - (int64_t)_intentCategory
 {
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 hasIntentCategory];
-  v5 = [(INIntent *)self _metadata];
-  v6 = [v5 intentCategory];
-  if (v4 && (v6 - 1) <= 0x14)
+  _metadata = [(INIntent *)self _metadata];
+  hasIntentCategory = [_metadata hasIntentCategory];
+  _metadata2 = [(INIntent *)self _metadata];
+  intentCategory = [_metadata2 intentCategory];
+  if (hasIntentCategory && (intentCategory - 1) <= 0x14)
   {
-    v7 = qword_18EE5F3F0[v6 - 1];
+    v7 = qword_18EE5F3F0[intentCategory - 1];
   }
 
   else
@@ -374,41 +374,41 @@ LABEL_7:
 
 - (id)_className
 {
-  v3 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(INIntent *)self backingStore];
-    v5 = [v4 _objectDescription];
-    v6 = [v5 className];
+    backingStore2 = [(INIntent *)self backingStore];
+    _objectDescription = [backingStore2 _objectDescription];
+    className = [_objectDescription className];
   }
 
   else
   {
     v7 = objc_opt_class();
-    v6 = NSStringFromClass(v7);
+    className = NSStringFromClass(v7);
   }
 
-  return v6;
+  return className;
 }
 
 - (id)_inCodable
 {
-  v3 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(INIntent *)self backingStore];
+    backingStore2 = [(INIntent *)self backingStore];
   }
 
   else
   {
-    v5 = 0;
+    backingStore2 = 0;
   }
 
-  return v5;
+  return backingStore2;
 }
 
 - (id)_init
@@ -441,26 +441,26 @@ LABEL_7:
 - (id)_nonNilParameters
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(INIntent *)self backingStore];
-    v6 = [v5 _nonNilAttributes];
+    backingStore2 = [(INIntent *)self backingStore];
+    _nonNilAttributes = [backingStore2 _nonNilAttributes];
   }
 
   else
   {
-    v7 = [objc_opt_class() intentDescription];
-    v6 = [MEMORY[0x1E695DFA8] set];
+    intentDescription = [objc_opt_class() intentDescription];
+    _nonNilAttributes = [MEMORY[0x1E695DFA8] set];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v7 slotDescriptions];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    slotDescriptions = [intentDescription slotDescriptions];
+    v9 = [slotDescriptions countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -471,21 +471,21 @@ LABEL_7:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(slotDescriptions);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 facadePropertyName];
-          v15 = [(INIntent *)self valueForKey:v14];
+          facadePropertyName = [v13 facadePropertyName];
+          v15 = [(INIntent *)self valueForKey:facadePropertyName];
 
           if ((INObjectIsConsideredNil(v15, [v13 isEnum]) & 1) == 0)
           {
-            v16 = [v13 facadePropertyName];
-            [v6 addObject:v16];
+            facadePropertyName2 = [v13 facadePropertyName];
+            [_nonNilAttributes addObject:facadePropertyName2];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [slotDescriptions countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
@@ -494,16 +494,16 @@ LABEL_7:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return _nonNilAttributes;
 }
 
 - (INIntentCodableDescription)_codableDescription
 {
-  v3 = [(INIntent *)self _inCodable];
-  v4 = v3;
-  if (v3)
+  _inCodable = [(INIntent *)self _inCodable];
+  v4 = _inCodable;
+  if (_inCodable)
   {
-    v5 = [v3 _objectDescription];
+    _objectDescription = [_inCodable _objectDescription];
   }
 
   else
@@ -513,10 +513,10 @@ LABEL_7:
     v10[2] = __31__INIntent__codableDescription__block_invoke;
     v10[3] = &unk_1E7283DA8;
     v10[4] = self;
-    v5 = [(INIntent *)self _querySchemaWithBlock:v10 contentOptions:31];
+    _objectDescription = [(INIntent *)self _querySchemaWithBlock:v10 contentOptions:31];
   }
 
-  v6 = v5;
+  v6 = _objectDescription;
   if (v6)
   {
     objc_opt_class();
@@ -543,14 +543,14 @@ LABEL_7:
 
 - (BOOL)_hasTitle
 {
-  v3 = [(INIntent *)self _nonNilParameters];
-  v4 = [v3 mutableCopy];
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  v4 = [_nonNilParameters mutableCopy];
 
-  v5 = [objc_opt_class() _ignoredParameters];
-  [v4 minusSet:v5];
+  _ignoredParameters = [objc_opt_class() _ignoredParameters];
+  [v4 minusSet:_ignoredParameters];
 
-  v6 = [(INIntent *)self _parameterCombinations];
-  v7 = [v6 objectForKey:v4];
+  _parameterCombinations = [(INIntent *)self _parameterCombinations];
+  v7 = [_parameterCombinations objectForKey:v4];
 
   if (v7 && ([v7 titleFormatString], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v9))
   {
@@ -559,12 +559,12 @@ LABEL_7:
 
   else
   {
-    v11 = [(INIntent *)self backingStore];
+    backingStore = [(INIntent *)self backingStore];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(INIntent *)self backingStore];
-      v13 = [v12 _objectDescription];
+      backingStore2 = [(INIntent *)self backingStore];
+      _objectDescription = [backingStore2 _objectDescription];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -574,11 +574,11 @@ LABEL_7:
         goto LABEL_10;
       }
 
-      v15 = [(INIntent *)self backingStore];
-      v11 = [v15 _objectDescription];
+      backingStore3 = [(INIntent *)self backingStore];
+      backingStore = [backingStore3 _objectDescription];
 
-      v16 = [v11 title];
-      v10 = [v16 length] != 0;
+      title = [backingStore title];
+      v10 = [title length] != 0;
     }
 
     else
@@ -594,17 +594,17 @@ LABEL_10:
 
 - (id)_intentInstanceDescription
 {
-  v3 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(INIntent *)self backingStore];
-    v36 = [v5 _objectDescription];
-    v6 = [v36 typeName];
-    v7 = [(INIntent *)self _className];
-    v8 = [(NSString *)v7 stringByAppendingString:@"Response"];
+    backingStore2 = [(INIntent *)self backingStore];
+    _objectDescription = [backingStore2 _objectDescription];
+    typeName = [_objectDescription typeName];
+    _className = [(INIntent *)self _className];
+    v8 = [(NSString *)_className stringByAppendingString:@"Response"];
     v9 = objc_opt_class();
     v10 = NSClassFromString(v8);
     if (v10 && (v11 = v10, [(objc_class *)v10 isSubclassOfClass:v9]))
@@ -619,20 +619,20 @@ LABEL_10:
       v8 = @"INIntentResponse";
     }
 
-    v15 = [(INIntent *)self extensionBundleId];
-    if (![v15 length])
+    extensionBundleId = [(INIntent *)self extensionBundleId];
+    if (![extensionBundleId length])
     {
-      v16 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
-      v37 = v15;
-      INExtractAppInfoFromSiriLaunchId(v16, &v37, 0);
+      _intents_launchIdForCurrentPlatform = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+      v37 = extensionBundleId;
+      INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform, &v37, 0);
       v17 = v37;
 
-      v15 = v17;
+      extensionBundleId = v17;
     }
 
-    if ([v15 length] && -[NSString length](v7, "length"))
+    if ([extensionBundleId length] && -[NSString length](_className, "length"))
     {
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@", @"sirikit.intents.custom.", v15, v7];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@", @"sirikit.intents.custom.", extensionBundleId, _className];
     }
 
     else
@@ -642,12 +642,12 @@ LABEL_10:
 
     v33 = [INIntentDescription alloc];
     v18 = objc_opt_class();
-    v19 = NSClassFromString(v7);
+    v19 = NSClassFromString(_className);
     v35 = v8;
     if (v19)
     {
       v20 = v19;
-      v21 = v7;
+      v21 = _className;
       if ([(objc_class *)v19 isSubclassOfClass:v18])
       {
         v22 = v20;
@@ -663,54 +663,54 @@ LABEL_10:
 
     else
     {
-      v21 = v7;
+      v21 = _className;
     }
 
     v23 = v19;
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"handle%@:completion:", v6];
+    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"handle%@:completion:", typeName];
     v25 = NSSelectorFromString(v24);
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"confirm%@:completion:", v6];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"confirm%@:completion:", typeName];
     v27 = NSSelectorFromString(v26);
-    INIntentSlotDescriptionsWithCodable(v5);
-    v29 = v28 = v5;
+    INIntentSlotDescriptionsWithCodable(backingStore2);
+    v29 = v28 = backingStore2;
     v32 = v25;
     v30 = v21;
-    v14 = [(INIntentDescription *)v33 initWithName:v21 responseName:v35 facadeClass:v23 dataClass:0 type:v34 isPrivate:0 handleSelector:v32 confirmSelector:v27 slotsByName:v29];
+    intentDescription = [(INIntentDescription *)v33 initWithName:v21 responseName:v35 facadeClass:v23 dataClass:0 type:v34 isPrivate:0 handleSelector:v32 confirmSelector:v27 slotsByName:v29];
   }
 
   else
   {
-    v14 = [objc_opt_class() intentDescription];
+    intentDescription = [objc_opt_class() intentDescription];
   }
 
-  return v14;
+  return intentDescription;
 }
 
 - (NSString)extensionBundleId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 systemExtensionBundleId];
+  _metadata = [(INIntent *)self _metadata];
+  systemExtensionBundleId = [_metadata systemExtensionBundleId];
 
-  return v3;
+  return systemExtensionBundleId;
 }
 
 - (INImage)_defaultImage
 {
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 defaultImageValue];
+  _metadata = [(INIntent *)self _metadata];
+  defaultImageValue = [_metadata defaultImageValue];
 
-  if (v4)
+  if (defaultImageValue)
   {
-    v5 = INIntentSlotValueTransformFromImageValue(v4);
+    v5 = INIntentSlotValueTransformFromImageValue(defaultImageValue);
   }
 
   else
   {
-    v6 = [(INIntent *)self _defaultImageName];
-    if (v6)
+    _defaultImageName = [(INIntent *)self _defaultImageName];
+    if (_defaultImageName)
     {
-      v5 = [INImage imageNamed:v6];
-      v7 = [INImage imageNamed:v6];
+      v5 = [INImage imageNamed:_defaultImageName];
+      v7 = [INImage imageNamed:_defaultImageName];
       [(INIntent *)self _setDefaultImage:v7];
     }
 
@@ -720,16 +720,16 @@ LABEL_10:
     }
   }
 
-  v8 = [(INIntent *)self extensionBundleId];
-  if (v8)
+  extensionBundleId = [(INIntent *)self extensionBundleId];
+  if (extensionBundleId)
   {
-    [v5 _setBundleIdentifier:v8];
+    [v5 _setBundleIdentifier:extensionBundleId];
   }
 
   else
   {
-    v9 = [(INIntent *)self launchId];
-    [v5 _setBundleIdentifier:v9];
+    launchId = [(INIntent *)self launchId];
+    [v5 _setBundleIdentifier:launchId];
   }
 
   return v5;
@@ -737,38 +737,38 @@ LABEL_10:
 
 - (id)_defaultImageName
 {
-  v3 = [(INIntent *)self _className];
-  v4 = [(INIntent *)self _inCodable];
-  v5 = [v4 _objectDescription];
+  _className = [(INIntent *)self _className];
+  _inCodable = [(INIntent *)self _inCodable];
+  _objectDescription = [_inCodable _objectDescription];
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!_objectDescription || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __29__INIntent__defaultImageName__block_invoke;
     v8[3] = &unk_1E7283C18;
-    v9 = v3;
-    v5 = [(INIntent *)self _querySchemaWithBlock:v8 contentOptions:31];
+    v9 = _className;
+    _objectDescription = [(INIntent *)self _querySchemaWithBlock:v8 contentOptions:31];
   }
 
-  v6 = [v5 defaultImageName];
+  defaultImageName = [_objectDescription defaultImageName];
 
-  return v6;
+  return defaultImageName;
 }
 
 - (NSArray)_parameterImages
 {
   v28 = *MEMORY[0x1E69E9840];
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 parameterImages];
+  _metadata = [(INIntent *)self _metadata];
+  parameterImages = [_metadata parameterImages];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = parameterImages;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
@@ -788,9 +788,9 @@ LABEL_10:
         v11 = objc_opt_class();
         v12 = [v9 key];
         v13 = [INParameter parameterForClass:v11 keyPath:v12];
-        v14 = [v9 pairImageValues];
-        v15 = [v14 firstObject];
-        v16 = INIntentSlotValueTransformFromImageValue(v15);
+        pairImageValues = [v9 pairImageValues];
+        firstObject = [pairImageValues firstObject];
+        v16 = INIntentSlotValueTransformFromImageValue(firstObject);
         v17 = [(INParameterImage *)v10 initWithParameter:v13 image:v16];
         [v22 addObject:v17];
       }
@@ -814,36 +814,36 @@ LABEL_10:
   {
     if ([(INIntent *)self _type]== 2)
     {
-      v4 = objc_alloc_init(INJSONEncoderConfiguration);
-      v5 = [(INIntent *)self _JSONDictionaryRepresentationWithConfiguration:v4];
-      v6 = [v5 objectForKeyedSubscript:@"parameters"];
+      _dictionaryRepresentation = objc_alloc_init(INJSONEncoderConfiguration);
+      v5 = [(INIntent *)self _JSONDictionaryRepresentationWithConfiguration:_dictionaryRepresentation];
+      _intents_indexingRepresentation = [v5 objectForKeyedSubscript:@"parameters"];
     }
 
     else
     {
-      v4 = [(INIntent *)self _dictionaryRepresentation];
-      v6 = [v4 _intents_indexingRepresentation];
+      _dictionaryRepresentation = [(INIntent *)self _dictionaryRepresentation];
+      _intents_indexingRepresentation = [_dictionaryRepresentation _intents_indexingRepresentation];
     }
 
-    v7 = [v6 mutableCopy];
-    v8 = [(INIntent *)self launchId];
+    v7 = [_intents_indexingRepresentation mutableCopy];
+    launchId = [(INIntent *)self launchId];
 
-    if (v8)
+    if (launchId)
     {
-      v9 = [(INIntent *)self launchId];
-      [v7 setObject:v9 forKey:@"_launchId"];
+      launchId2 = [(INIntent *)self launchId];
+      [v7 setObject:launchId2 forKey:@"_launchId"];
     }
 
-    v10 = [(INIntent *)self extensionBundleId];
+    extensionBundleId = [(INIntent *)self extensionBundleId];
 
-    if (v10)
+    if (extensionBundleId)
     {
-      v11 = [(INIntent *)self extensionBundleId];
-      [v7 setObject:v11 forKey:@"_extensionBundleId"];
+      extensionBundleId2 = [(INIntent *)self extensionBundleId];
+      [v7 setObject:extensionBundleId2 forKey:@"_extensionBundleId"];
     }
 
-    v12 = [(INIntent *)self _className];
-    [v7 setObject:v12 forKey:@"_className"];
+    _className = [(INIntent *)self _className];
+    [v7 setObject:_className forKey:@"_className"];
 
     v13 = objc_alloc_init(MEMORY[0x1E69AA8A0]);
     v14 = [v13 combineContentsOfPropertyListObject:v7];
@@ -857,56 +857,56 @@ LABEL_10:
 
 - (NSString)suggestedInvocationPhrase
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 suggestedInvocationPhrase];
-  v4 = [v3 _intents_decodeFromProto];
+  _metadata = [(INIntent *)self _metadata];
+  suggestedInvocationPhrase = [_metadata suggestedInvocationPhrase];
+  _intents_decodeFromProto = [suggestedInvocationPhrase _intents_decodeFromProto];
 
-  return v4;
+  return _intents_decodeFromProto;
 }
 
 - (NSString)intentDescription
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 intentDescription];
+  _metadata = [(INIntent *)self _metadata];
+  intentDescription = [_metadata intentDescription];
 
-  return v3;
+  return intentDescription;
 }
 
 - (id)_dictionaryRepresentation
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 dictionaryRepresentation];
+    dictionaryRepresentation = [backingStore dictionaryRepresentation];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F8];
+    dictionaryRepresentation = MEMORY[0x1E695E0F8];
   }
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (NSString)typeName
 {
-  v3 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(INIntent *)self launchId];
+    launchId = [(INIntent *)self launchId];
     v15 = 0;
-    INExtractAppInfoFromSiriLaunchId(v5, &v15, 0);
+    INExtractAppInfoFromSiriLaunchId(launchId, &v15, 0);
     v6 = v15;
 
-    v7 = [(INIntent *)self extensionBundleId];
-    v8 = v7;
-    if (v7)
+    extensionBundleId = [(INIntent *)self extensionBundleId];
+    v8 = extensionBundleId;
+    if (extensionBundleId)
     {
-      v9 = v7;
+      v9 = extensionBundleId;
     }
 
     else
@@ -914,33 +914,33 @@ LABEL_10:
       v9 = v6;
     }
 
-    v10 = v9;
+    bundleIdentifier = v9;
 
-    if (!v10)
+    if (!bundleIdentifier)
     {
       v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v10 = [v11 bundleIdentifier];
+      bundleIdentifier = [v11 bundleIdentifier];
     }
 
-    v12 = [(INIntent *)self _className];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@", @"sirikit.intents.custom.", v10, v12];
+    _className = [(INIntent *)self _className];
+    typeName = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@", @"sirikit.intents.custom.", bundleIdentifier, _className];
   }
 
   else
   {
-    v13 = [objc_opt_class() typeName];
+    typeName = [objc_opt_class() typeName];
   }
 
-  return v13;
+  return typeName;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -964,19 +964,19 @@ LABEL_10:
 
 - (NSString)intentId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 intentId];
+  _metadata = [(INIntent *)self _metadata];
+  intentId = [_metadata intentId];
 
-  return v3;
+  return intentId;
 }
 
 + (id)typeName
 {
-  v2 = INIntentSchemaGetIntentDescriptionWithFacadeClass(a1);
-  v3 = [v2 type];
-  if (v3)
+  v2 = INIntentSchemaGetIntentDescriptionWithFacadeClass(self);
+  type = [v2 type];
+  if (type)
   {
-    v4 = v3;
+    v4 = type;
   }
 
   else
@@ -991,28 +991,28 @@ LABEL_10:
 {
   v2 = objc_opt_class();
   v3 = INIntentSchemaGetIntentDescriptionWithFacadeClass(v2);
-  v4 = [v3 slotDescriptions];
+  slotDescriptions = [v3 slotDescriptions];
 
-  return v4;
+  return slotDescriptions;
 }
 
 - (NSArray)airPlayRouteIds
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 airPlayRouteIds];
+  _metadata = [(INIntent *)self _metadata];
+  airPlayRouteIds = [_metadata airPlayRouteIds];
 
-  return v3;
+  return airPlayRouteIds;
 }
 
 - (int64_t)_executionContext
 {
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 hasExecutionContext];
-  v5 = [(INIntent *)self _metadata];
-  v6 = [v5 executionContext];
-  if (((v6 - 1 < 0xA) & v4) != 0)
+  _metadata = [(INIntent *)self _metadata];
+  hasExecutionContext = [_metadata hasExecutionContext];
+  _metadata2 = [(INIntent *)self _metadata];
+  executionContext = [_metadata2 executionContext];
+  if (((executionContext - 1 < 0xA) & hasExecutionContext) != 0)
   {
-    v7 = v6;
+    v7 = executionContext;
   }
 
   else
@@ -1026,14 +1026,14 @@ LABEL_10:
 - (id)_intents_bundleIdForDisplay
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(INIntent *)self _intents_bestBundleIdentifier];
-  if (v3)
+  _intents_bestBundleIdentifier = [(INIntent *)self _intents_bestBundleIdentifier];
+  if (_intents_bestBundleIdentifier)
   {
     objc_opt_class();
     v4 = ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [(INIntent *)self preferredCallProvider]== 2;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = v3;
+    v8 = _intents_bestBundleIdentifier;
     v9 = v7;
     if (_INSpecialCaseDisplayableBundleIdentifier_onceToken != -1)
     {
@@ -1108,27 +1108,27 @@ LABEL_10:
 
 - (id)_intents_bestBundleIdentifier
 {
-  v3 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+  _intents_launchIdForCurrentPlatform = [(INIntent *)self _intents_launchIdForCurrentPlatform];
   v10 = 0;
-  INExtractAppInfoFromSiriLaunchId(v3, &v10, 0);
+  INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform, &v10, 0);
   v4 = v10;
 
   if (!v4)
   {
-    v5 = [(INIntent *)self extensionBundleId];
-    v6 = INAppProxyForAppOrContainedPluginWithBundleIdentifier(v5);
+    extensionBundleId = [(INIntent *)self extensionBundleId];
+    v6 = INAppProxyForAppOrContainedPluginWithBundleIdentifier(extensionBundleId);
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 bundleIdentifier];
+      bundleIdentifier = [v6 bundleIdentifier];
     }
 
     else
     {
-      v8 = v5;
+      bundleIdentifier = extensionBundleId;
     }
 
-    v4 = v8;
+    v4 = bundleIdentifier;
   }
 
   return v4;
@@ -1136,35 +1136,35 @@ LABEL_10:
 
 - (NSString)_uiExtensionBundleId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 systemUIExtensionBundleId];
+  _metadata = [(INIntent *)self _metadata];
+  systemUIExtensionBundleId = [_metadata systemUIExtensionBundleId];
 
-  return v3;
+  return systemUIExtensionBundleId;
 }
 
 - (NSString)verb
 {
-  v2 = [(INIntent *)self _typedBackingStore];
-  v3 = [v2 verb];
+  _typedBackingStore = [(INIntent *)self _typedBackingStore];
+  verb = [_typedBackingStore verb];
 
-  return v3;
+  return verb;
 }
 
 - (INShortcutAvailabilityOptions)shortcutAvailability
 {
   v8 = 0;
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 shortcutAvailabilitiesCount];
+  _metadata = [(INIntent *)self _metadata];
+  shortcutAvailabilitiesCount = [_metadata shortcutAvailabilitiesCount];
 
-  if (!v4)
+  if (!shortcutAvailabilitiesCount)
   {
     return 0;
   }
 
-  for (i = 0; i != v4; ++i)
+  for (i = 0; i != shortcutAvailabilitiesCount; ++i)
   {
-    v6 = [(INIntent *)self _metadata];
-    INShortcutAvailabilityOptionsAddBackingType(&v8, [v6 shortcutAvailabilityAtIndex:i]);
+    _metadata2 = [(INIntent *)self _metadata];
+    INShortcutAvailabilityOptionsAddBackingType(&v8, [_metadata2 shortcutAvailabilityAtIndex:i]);
   }
 
   return v8;
@@ -1172,16 +1172,16 @@ LABEL_10:
 
 - (NSString)domain
 {
-  v2 = [(INIntent *)self _typedBackingStore];
-  v3 = [v2 domain];
+  _typedBackingStore = [(INIntent *)self _typedBackingStore];
+  domain = [_typedBackingStore domain];
 
-  return v3;
+  return domain;
 }
 
 - (NSString)debugDescription
 {
-  v2 = [(INIntent *)self _redactedDictionaryRepresentation];
-  v3 = [v2 descriptionAtIndent:0];
+  _redactedDictionaryRepresentation = [(INIntent *)self _redactedDictionaryRepresentation];
+  v3 = [_redactedDictionaryRepresentation descriptionAtIndent:0];
 
   return v3;
 }
@@ -1196,18 +1196,18 @@ id __34__INIntent__parameterCombinations__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  imagesCopy = images;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__INIntent_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
   v10[3] = &unk_1E727D7B8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = imagesCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = imagesCopy;
   [(INIntent *)self _injectProxyForDefaultImage:v9 completion:v10];
 }
 
@@ -1243,23 +1243,23 @@ void __70__INIntent_INImageProxyInjecting___injectProxiesForImages_completion___
   }
 }
 
-- (void)_injectProxiesForParameterImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForParameterImages:(id)images completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(INIntent *)self _parameterImages];
-  v9 = [v8 valueForKey:@"image"];
+  completionCopy = completion;
+  imagesCopy = images;
+  _parameterImages = [(INIntent *)self _parameterImages];
+  v9 = [_parameterImages valueForKey:@"image"];
   v10 = [(INIntent *)self copy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__INIntent_INImageProxyInjecting___injectProxiesForParameterImages_completion___block_invoke;
   v13[3] = &unk_1E727D790;
-  v14 = v8;
+  v14 = _parameterImages;
   v15 = v10;
-  v16 = v6;
-  v11 = v6;
-  v12 = v8;
-  [v9 _injectProxiesForImages:v7 completion:v13];
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = _parameterImages;
+  [v9 _injectProxiesForImages:imagesCopy completion:v13];
 }
 
 void __79__INIntent_INImageProxyInjecting___injectProxiesForParameterImages_completion___block_invoke(uint64_t a1, void *a2)
@@ -1296,12 +1296,12 @@ void __79__INIntent_INImageProxyInjecting___injectProxiesForParameterImages_comp
   [v5 addObject:v9];
 }
 
-- (void)_injectProxyForDefaultImage:(id)a3 completion:(id)a4
+- (void)_injectProxyForDefaultImage:(id)image completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INIntent *)self _defaultImage];
-  if (v8)
+  imageCopy = image;
+  completionCopy = completion;
+  _defaultImage = [(INIntent *)self _defaultImage];
+  if (_defaultImage)
   {
     v9 = [(INIntent *)self copy];
     v10[0] = MEMORY[0x1E69E9820];
@@ -1309,13 +1309,13 @@ void __79__INIntent_INImageProxyInjecting___injectProxiesForParameterImages_comp
     v10[2] = __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_completion___block_invoke;
     v10[3] = &unk_1E7285CD0;
     v10[4] = v9;
-    v11 = v7;
-    v6[2](v6, v8, v10);
+    v11 = completionCopy;
+    imageCopy[2](imageCopy, _defaultImage, v10);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, self);
+    (*(completionCopy + 2))(completionCopy, self);
   }
 }
 
@@ -1334,11 +1334,11 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
   return result;
 }
 
-- (void)_injectProxiesForImagesUsingCustomCodableStrategy:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImagesUsingCustomCodableStrategy:(id)strategy completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v29 = a4;
+  strategyCopy = strategy;
+  completionCopy = completion;
   v31 = [(INIntent *)self copy];
   group = dispatch_group_create();
   v28 = dispatch_queue_create("com.apple.intents.custom-codable-strategy-queue", MEMORY[0x1E69E96A8]);
@@ -1346,12 +1346,12 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v34 = self;
-  v6 = [(INIntent *)self _codableDescription];
-  v7 = [v6 attributes];
+  selfCopy = self;
+  _codableDescription = [(INIntent *)self _codableDescription];
+  attributes = [_codableDescription attributes];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  obj = attributes;
+  v8 = [attributes countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1374,16 +1374,16 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
         if (objc_opt_isKindOfClass())
         {
           v15 = v13;
-          v16 = [v15 valueTransformer];
-          v17 = [objc_opt_class() transformedValueClass];
+          valueTransformer = [v15 valueTransformer];
+          transformedValueClass = [objc_opt_class() transformedValueClass];
           v18 = NSStringFromSelector([v15 getter]);
-          v19 = [(INIntent *)v34 backingStore];
-          v20 = [v19 valueForKey:v18];
+          backingStore = [(INIntent *)selfCopy backingStore];
+          v20 = [backingStore valueForKey:v18];
 
           if (v20)
           {
             v21 = v10;
-            v22 = NSStringFromClass(v17);
+            v22 = NSStringFromClass(transformedValueClass);
             v23 = objc_opt_class();
             v24 = NSStringFromClass(v23);
             v25 = [v22 isEqualToString:v24];
@@ -1399,7 +1399,7 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
               v42 = group;
               v43 = v31;
               v44 = v18;
-              v32[2](v32, v26, v41);
+              strategyCopy[2](strategyCopy, v26, v41);
 
               v10 = v21;
               v9 = v33;
@@ -1411,7 +1411,7 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
               v10 = v21;
               v9 = v33;
               v11 = 0x1E727A000;
-              if ([(objc_class *)v17 conformsToProtocol:&unk_1F02E20C8])
+              if ([(objc_class *)transformedValueClass conformsToProtocol:&unk_1F02E20C8])
               {
                 dispatch_group_enter(group);
                 v38[0] = MEMORY[0x1E69E9820];
@@ -1421,7 +1421,7 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
                 v38[4] = v31;
                 v39 = v18;
                 v40 = group;
-                [v20 _injectProxiesForImages:v32 completion:v38];
+                [v20 _injectProxiesForImages:strategyCopy completion:v38];
               }
             }
           }
@@ -1437,14 +1437,14 @@ uint64_t __74__INIntent_INImageProxyInjecting___injectProxyForDefaultImage_compl
     while (v9);
   }
 
-  if (v29)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __96__INIntent_INImageProxyInjecting___injectProxiesForImagesUsingCustomCodableStrategy_completion___block_invoke_3;
     block[3] = &unk_1E7287140;
     block[4] = v31;
-    v37 = v29;
+    v37 = completionCopy;
     dispatch_group_notify(group, v28, block);
   }
 
@@ -1474,36 +1474,36 @@ void __96__INIntent_INImageProxyInjecting___injectProxiesForImagesUsingCustomCod
   dispatch_group_leave(v6);
 }
 
-- (void)_intents_allowAppToInitiatePlaybackForBundleIdentifier:(id)a3 context:(unint64_t)a4 error:(id *)a5
+- (void)_intents_allowAppToInitiatePlaybackForBundleIdentifier:(id)identifier context:(unint64_t)context error:(id *)error
 {
-  if (!a4)
+  if (!context)
   {
     v14[7] = v5;
     v14[8] = v6;
-    v8 = a3;
-    v9 = [getAVSystemControllerClass() sharedAVSystemController];
+    identifierCopy = identifier;
+    sharedAVSystemController = [getAVSystemControllerClass() sharedAVSystemController];
     v10 = getAVSystemController_AllowAppToInitiatePlaybackTemporarilyAttribute();
     v14[0] = 0;
-    v11 = [v9 setAttribute:v8 forKey:v10 error:v14];
+    v11 = [sharedAVSystemController setAttribute:identifierCopy forKey:v10 error:v14];
 
     v12 = v14[0];
     if ((v11 & 1) == 0)
     {
       v13 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 }
 
-- (id)_intents_backgroundHandlingAssertionForBundleIdentifier:(id)a3 context:(unint64_t)a4 error:(id *)a5
+- (id)_intents_backgroundHandlingAssertionForBundleIdentifier:(id)identifier context:(unint64_t)context error:(id *)error
 {
-  v8 = a3;
+  identifierCopy = identifier;
   if ([(INIntent *)self _type]== 2)
   {
-    [(INIntent *)self _intents_allowAppToInitiatePlaybackForBundleIdentifier:v8 context:a4 error:a5];
+    [(INIntent *)self _intents_allowAppToInitiatePlaybackForBundleIdentifier:identifierCopy context:context error:error];
   }
 
-  v9 = [MEMORY[0x1E695FBE0] newAssertionForBundleIdentifier:v8 withReason:@"User is directly engaging with the app in Siri" level:1];
+  v9 = [MEMORY[0x1E695FBE0] newAssertionForBundleIdentifier:identifierCopy withReason:@"User is directly engaging with the app in Siri" level:1];
 
   return v9;
 }
@@ -1515,10 +1515,10 @@ void __96__INIntent_INImageProxyInjecting___injectProxiesForImagesUsingCustomCod
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(INIntent *)self _intentInstanceDescription];
-  v4 = [v3 slotDescriptions];
+  _intentInstanceDescription = [(INIntent *)self _intentInstanceDescription];
+  slotDescriptions = [_intentInstanceDescription slotDescriptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [slotDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1529,21 +1529,21 @@ void __96__INIntent_INImageProxyInjecting___injectProxiesForImagesUsingCustomCod
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(slotDescriptions);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 valueType] == 204)
         {
-          v11 = [v9 name];
-          v12 = [(INIntent *)self valueForKey:v11];
+          name = [v9 name];
+          v12 = [(INIntent *)self valueForKey:name];
 
-          v10 = [v12 integerValue];
+          integerValue = [v12 integerValue];
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [slotDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -1553,62 +1553,62 @@ void __96__INIntent_INImageProxyInjecting___injectProxiesForImagesUsingCustomCod
     }
   }
 
-  v10 = 0;
+  integerValue = 0;
 LABEL_11:
 
   v13 = *MEMORY[0x1E69E9840];
+  return integerValue;
+}
+
+- (id)localizeValueOfSlotDescription:(id)description withLocalizer:(id)localizer
+{
+  localizerCopy = localizer;
+  descriptionCopy = description;
+  facadePropertyName = [descriptionCopy facadePropertyName];
+  v9 = [(INIntent *)self valueForKey:facadePropertyName];
+  v10 = [descriptionCopy localizeValue:v9 withLocalizer:localizerCopy];
+
   return v10;
 }
 
-- (id)localizeValueOfSlotDescription:(id)a3 withLocalizer:(id)a4
+- (id)_localizedCombinationStringForKey:(id)key value:(id)value localizationTable:(id)table bundleURL:(id)l localizer:(id)localizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 facadePropertyName];
-  v9 = [(INIntent *)self valueForKey:v8];
-  v10 = [v7 localizeValue:v9 withLocalizer:v6];
-
-  return v10;
-}
-
-- (id)_localizedCombinationStringForKey:(id)a3 value:(id)a4 localizationTable:(id)a5 bundleURL:(id)a6 localizer:(id)a7
-{
-  v12 = a3;
-  v41 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v13 bundleIdentifier];
-  if (!v16)
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
+  lCopy = l;
+  localizerCopy = localizer;
+  bundleIdentifier = [tableCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
     goto LABEL_6;
   }
 
-  v17 = v16;
-  v18 = [(INIntent *)self extensionBundleId];
-  v19 = [v13 bundleIdentifier];
-  if ([v18 containsString:v19])
+  v17 = bundleIdentifier;
+  extensionBundleId = [(INIntent *)self extensionBundleId];
+  bundleIdentifier2 = [tableCopy bundleIdentifier];
+  if ([extensionBundleId containsString:bundleIdentifier2])
   {
-    v20 = [(INIntent *)self extensionBundleId];
+    extensionBundleId2 = [(INIntent *)self extensionBundleId];
   }
 
   else
   {
-    v20 = 0;
+    extensionBundleId2 = 0;
   }
 
-  if (!v20)
+  if (!extensionBundleId2)
   {
 LABEL_6:
-    v21 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+    _intents_launchIdForCurrentPlatform = [(INIntent *)self _intents_launchIdForCurrentPlatform];
     v44 = 0;
-    INExtractAppInfoFromSiriLaunchId(v21, &v44, 0);
-    v20 = v44;
+    INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform, &v44, 0);
+    extensionBundleId2 = v44;
   }
 
-  if ([v15 bundleWithIdentifier:0 fileURL:v14])
+  if ([localizerCopy bundleWithIdentifier:0 fileURL:lCopy])
   {
-    if (v14)
+    if (lCopy)
     {
       goto LABEL_16;
     }
@@ -1616,47 +1616,47 @@ LABEL_6:
 
   else
   {
-    [v15 bundleWithIdentifier:v20 fileURL:0];
-    if (v14)
+    [localizerCopy bundleWithIdentifier:extensionBundleId2 fileURL:0];
+    if (lCopy)
     {
       goto LABEL_16;
     }
   }
 
-  v22 = [v15 languageCode];
+  languageCode = [localizerCopy languageCode];
 
-  if (!v22 && v20)
+  if (!languageCode && extensionBundleId2)
   {
     v23 = _INVCIntentDefinitionManagerClass();
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v23 intentDefinitionBundleURLForBundleID:v20];
+      lCopy = [v23 intentDefinitionBundleURLForBundleID:extensionBundleId2];
     }
 
     else
     {
-      v14 = 0;
+      lCopy = 0;
     }
   }
 
 LABEL_16:
-  v24 = [v15 bundleWithIdentifier:v20 fileURL:v14];
-  v25 = [v15 languageCode];
-  v39 = v13;
-  v26 = [v13 tableName];
-  v40 = v12;
+  v24 = [localizerCopy bundleWithIdentifier:extensionBundleId2 fileURL:lCopy];
+  languageCode2 = [localizerCopy languageCode];
+  v39 = tableCopy;
+  tableName = [tableCopy tableName];
+  v40 = keyCopy;
   if ([(INIntent *)self _type]!= 2)
   {
-    v42 = v25;
-    v29 = INLocalizedFormatStringFromSlotComposing(v12, v41, v26, v24, v15, self, MEMORY[0x1E695E0F8], &v42);
+    v42 = languageCode2;
+    v29 = INLocalizedFormatStringFromSlotComposing(keyCopy, valueCopy, tableName, v24, localizerCopy, self, MEMORY[0x1E695E0F8], &v42);
     v30 = v42;
 
     if (v29)
     {
-      v33 = [v15 languageCode];
-      if ([v33 isEqualToString:v30])
+      languageCode3 = [localizerCopy languageCode];
+      if ([languageCode3 isEqualToString:v30])
       {
-        v34 = v15;
+        v34 = localizerCopy;
       }
 
       else
@@ -1675,10 +1675,10 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  v27 = [v20 hasPrefix:@"com.apple."];
-  v28 = [(INIntent *)self backingStore];
-  v43 = v25;
-  v29 = INLocalizedFormatStringFromCodable(v12, v41, v26, v24, v15, v28, 0, &v43, v27);
+  v27 = [extensionBundleId2 hasPrefix:@"com.apple."];
+  backingStore = [(INIntent *)self backingStore];
+  v43 = languageCode2;
+  v29 = INLocalizedFormatStringFromCodable(keyCopy, valueCopy, tableName, v24, localizerCopy, backingStore, 0, &v43, v27);
   v30 = v43;
 
   if (!v29)
@@ -1686,10 +1686,10 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v31 = [v15 languageCode];
-  if ([v31 isEqualToString:v30])
+  languageCode4 = [localizerCopy languageCode];
+  if ([languageCode4 isEqualToString:v30])
   {
-    v32 = v15;
+    v32 = localizerCopy;
   }
 
   else
@@ -1699,8 +1699,8 @@ LABEL_23:
 
   v36 = v32;
 
-  v37 = [(INIntent *)self backingStore];
-  v35 = INReplaceVariablesInFormatStringFromCodable(v29, v36, v37, 0, v27);
+  backingStore2 = [(INIntent *)self backingStore];
+  v35 = INReplaceVariablesInFormatStringFromCodable(v29, v36, backingStore2, 0, v27);
 
 LABEL_28:
 LABEL_29:
@@ -1710,24 +1710,24 @@ LABEL_29:
 
 - (NSString)_localizedVerb
 {
-  v2 = [(INIntent *)self _categoryVerb];
-  v3 = INLocalizedStringWithLocalizer(v2, 0, 0);
+  _categoryVerb = [(INIntent *)self _categoryVerb];
+  v3 = INLocalizedStringWithLocalizer(_categoryVerb, 0, 0);
 
   return v3;
 }
 
-- (id)_subtitleWithLocalizer:(id)a3 fromBundleURL:(id)a4
+- (id)_subtitleWithLocalizer:(id)localizer fromBundleURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INIntent *)self _nonNilParameters];
-  v9 = [v8 mutableCopy];
+  localizerCopy = localizer;
+  lCopy = l;
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  v9 = [_nonNilParameters mutableCopy];
 
-  v10 = [objc_opt_class() _ignoredParameters];
-  [v9 minusSet:v10];
+  _ignoredParameters = [objc_opt_class() _ignoredParameters];
+  [v9 minusSet:_ignoredParameters];
 
-  v11 = [(INIntent *)self _parameterCombinations];
-  v12 = [v11 objectForKey:v9];
+  _parameterCombinations = [(INIntent *)self _parameterCombinations];
+  v12 = [_parameterCombinations objectForKey:v9];
 
   if (!v12)
   {
@@ -1737,17 +1737,17 @@ LABEL_29:
 
   if ([(INIntent *)self _type]== 2)
   {
-    v13 = [v12 subtitleFormatStringLocID];
-    v14 = [v12 subtitleFormatString];
-    v15 = [v12 _localizationTable];
-    v16 = [(INIntent *)self _localizedCombinationStringForKey:v13 value:v14 localizationTable:v15 bundleURL:v7 localizer:v6];
+    subtitleFormatStringLocID = [v12 subtitleFormatStringLocID];
+    subtitleFormatString = [v12 subtitleFormatString];
+    _localizationTable = [v12 _localizationTable];
+    v16 = [(INIntent *)self _localizedCombinationStringForKey:subtitleFormatStringLocID value:subtitleFormatString localizationTable:_localizationTable bundleURL:lCopy localizer:localizerCopy];
 
     goto LABEL_17;
   }
 
-  v17 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+  _intents_launchIdForCurrentPlatform = [(INIntent *)self _intents_launchIdForCurrentPlatform];
   v50 = 0;
-  INExtractAppInfoFromSiriLaunchId(v17, &v50, 0);
+  INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform, &v50, 0);
   v18 = v50;
 
   v19 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v18];
@@ -1755,9 +1755,9 @@ LABEL_29:
   if (v19)
   {
     v20 = MEMORY[0x1E695DFD8];
-    v21 = [v19 siriActionDefinitionURLs];
-    v22 = [v21 allKeys];
-    v23 = [v20 setWithArray:v22];
+    siriActionDefinitionURLs = [v19 siriActionDefinitionURLs];
+    allKeys = [siriActionDefinitionURLs allKeys];
+    definedIntents = [v20 setWithArray:allKeys];
 
 LABEL_9:
     goto LABEL_10;
@@ -1765,66 +1765,66 @@ LABEL_9:
 
   if (v18)
   {
-    v21 = [_INVCIntentDefinitionManagerClass() appInfoForBundleID:v18];
-    v23 = [v21 definedIntents];
+    siriActionDefinitionURLs = [_INVCIntentDefinitionManagerClass() appInfoForBundleID:v18];
+    definedIntents = [siriActionDefinitionURLs definedIntents];
     goto LABEL_9;
   }
 
-  v23 = 0;
+  definedIntents = 0;
 LABEL_10:
   v24 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v25 = objc_opt_class();
   v26 = NSStringFromClass(v25);
-  v47 = v23;
-  v27 = [v23 containsObject:v26];
+  v47 = definedIntents;
+  v27 = [definedIntents containsObject:v26];
 
   v49 = v24;
   if (!v27)
   {
-    v31 = [v12 subtitleFormatStringLocID];
-    v34 = [v12 subtitleFormatString];
-    v38 = [v12 _localizationTable];
+    subtitleFormatStringLocID2 = [v12 subtitleFormatStringLocID];
+    subtitleFormatString2 = [v12 subtitleFormatString];
+    _localizationTable2 = [v12 _localizationTable];
     v39 = v24;
-    v35 = v38;
-    v36 = [v39 bundleURL];
-    v40 = self;
-    v41 = v31;
-    v42 = v34;
-    v43 = v35;
-    v44 = v36;
+    subtitleFormatString5 = _localizationTable2;
+    bundleURL = [v39 bundleURL];
+    selfCopy2 = self;
+    v41 = subtitleFormatStringLocID2;
+    v42 = subtitleFormatString2;
+    v43 = subtitleFormatString5;
+    v44 = bundleURL;
 LABEL_15:
-    v16 = [(INIntent *)v40 _localizedCombinationStringForKey:v41 value:v42 localizationTable:v43 bundleURL:v44 localizer:v6];
+    v16 = [(INIntent *)selfCopy2 _localizedCombinationStringForKey:v41 value:v42 localizationTable:v43 bundleURL:v44 localizer:localizerCopy];
     goto LABEL_16;
   }
 
   v28 = [INSchema _defaultSchemaForBundle:v24];
-  v29 = [(INIntent *)self _className];
-  v30 = [v28 _parameterCombinationsForClassName:v29];
-  v31 = [v30 objectForKey:v9];
+  _className = [(INIntent *)self _className];
+  v30 = [v28 _parameterCombinationsForClassName:_className];
+  subtitleFormatStringLocID2 = [v30 objectForKey:v9];
 
-  v32 = [v31 subtitleFormatString];
-  v33 = [v12 subtitleFormatString];
-  LODWORD(v30) = [v32 isEqualToString:v33];
+  subtitleFormatString3 = [subtitleFormatStringLocID2 subtitleFormatString];
+  subtitleFormatString4 = [v12 subtitleFormatString];
+  LODWORD(v30) = [subtitleFormatString3 isEqualToString:subtitleFormatString4];
 
   if (!v30)
   {
-    v34 = [v12 subtitleFormatStringLocID];
-    v35 = [v12 subtitleFormatString];
-    v36 = [v12 _localizationTable];
-    v40 = self;
-    v41 = v34;
-    v42 = v35;
-    v43 = v36;
-    v44 = v7;
+    subtitleFormatString2 = [v12 subtitleFormatStringLocID];
+    subtitleFormatString5 = [v12 subtitleFormatString];
+    bundleURL = [v12 _localizationTable];
+    selfCopy2 = self;
+    v41 = subtitleFormatString2;
+    v42 = subtitleFormatString5;
+    v43 = bundleURL;
+    v44 = lCopy;
     goto LABEL_15;
   }
 
-  v34 = [v31 subtitleFormatStringLocID];
-  v35 = [v31 subtitleFormatString];
-  v36 = [v31 _localizationTable];
+  subtitleFormatString2 = [subtitleFormatStringLocID2 subtitleFormatStringLocID];
+  subtitleFormatString5 = [subtitleFormatStringLocID2 subtitleFormatString];
+  bundleURL = [subtitleFormatStringLocID2 _localizationTable];
   [v49 bundleURL];
   v37 = v46 = v18;
-  v16 = [(INIntent *)self _localizedCombinationStringForKey:v34 value:v35 localizationTable:v36 bundleURL:v37 localizer:v6];
+  v16 = [(INIntent *)self _localizedCombinationStringForKey:subtitleFormatString2 value:subtitleFormatString5 localizationTable:bundleURL bundleURL:v37 localizer:localizerCopy];
 
   v18 = v46;
 LABEL_16:
@@ -1834,21 +1834,21 @@ LABEL_17:
   return v16;
 }
 
-- (id)_subtitleForLanguage:(id)a3
+- (id)_subtitleForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = +[INIntentSummaryCache sharedCache];
   v13 = 0;
-  v6 = [v5 getSubtitle:&v13 forIntent:self languageCode:v4];
+  v6 = [v5 getSubtitle:&v13 forIntent:self languageCode:languageCopy];
   v7 = v13;
 
   if ((v6 & 1) == 0)
   {
-    v8 = [INStringLocalizer localizerForLanguage:v4];
+    v8 = [INStringLocalizer localizerForLanguage:languageCopy];
     v9 = [(INIntent *)self _subtitleWithLocalizer:v8 fromBundleURL:0];
 
     v10 = +[INIntentSummaryCache sharedCache];
-    [v10 setSubtitle:v9 forIntent:self languageCode:v4];
+    [v10 setSubtitle:v9 forIntent:self languageCode:languageCopy];
 
     v7 = v9;
   }
@@ -1858,18 +1858,18 @@ LABEL_17:
   return v7;
 }
 
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INIntent *)self _nonNilParameters];
-  v9 = [v8 mutableCopy];
+  localizerCopy = localizer;
+  lCopy = l;
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  v9 = [_nonNilParameters mutableCopy];
 
-  v10 = [objc_opt_class() _ignoredParameters];
-  [v9 minusSet:v10];
+  _ignoredParameters = [objc_opt_class() _ignoredParameters];
+  [v9 minusSet:_ignoredParameters];
 
-  v11 = [(INIntent *)self _parameterCombinations];
-  v12 = [v11 objectForKey:v9];
+  _parameterCombinations = [(INIntent *)self _parameterCombinations];
+  v12 = [_parameterCombinations objectForKey:v9];
 
   if (!v12)
   {
@@ -1879,99 +1879,99 @@ LABEL_17:
 
   if ([(INIntent *)self _type]== 2)
   {
-    v13 = [v12 titleFormatStringLocID];
-    v14 = [v12 titleFormatString];
-    v15 = [v12 _localizationTable];
-    v16 = [(INIntent *)self _localizedCombinationStringForKey:v13 value:v14 localizationTable:v15 bundleURL:v7 localizer:v6];
+    titleFormatStringLocID = [v12 titleFormatStringLocID];
+    titleFormatString = [v12 titleFormatString];
+    _localizationTable = [v12 _localizationTable];
+    v16 = [(INIntent *)self _localizedCombinationStringForKey:titleFormatStringLocID value:titleFormatString localizationTable:_localizationTable bundleURL:lCopy localizer:localizerCopy];
 
     goto LABEL_17;
   }
 
-  v17 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+  _intents_launchIdForCurrentPlatform = [(INIntent *)self _intents_launchIdForCurrentPlatform];
   v71 = 0;
-  INExtractAppInfoFromSiriLaunchId(v17, &v71, 0);
-  v18 = v71;
+  INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform, &v71, 0);
+  definedIntents = v71;
 
-  v19 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v18];
+  v19 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:definedIntents];
   v67 = v19;
-  v68 = v18;
+  v68 = definedIntents;
   if (v19)
   {
     v20 = MEMORY[0x1E695DFD8];
-    v21 = [v19 siriActionDefinitionURLs];
-    v22 = [v21 allKeys];
-    v18 = [v20 setWithArray:v22];
+    siriActionDefinitionURLs = [v19 siriActionDefinitionURLs];
+    allKeys = [siriActionDefinitionURLs allKeys];
+    definedIntents = [v20 setWithArray:allKeys];
   }
 
   else
   {
-    if (!v18)
+    if (!definedIntents)
     {
       goto LABEL_10;
     }
 
-    v21 = [_INVCIntentDefinitionManagerClass() appInfoForBundleID:v18];
-    v18 = [v21 definedIntents];
+    siriActionDefinitionURLs = [_INVCIntentDefinitionManagerClass() appInfoForBundleID:definedIntents];
+    definedIntents = [siriActionDefinitionURLs definedIntents];
   }
 
 LABEL_10:
   v23 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
-  v66 = v18;
-  v26 = [v18 containsObject:v25];
+  v66 = definedIntents;
+  v26 = [definedIntents containsObject:v25];
 
   v65 = v9;
   if (!v26)
   {
-    v30 = [v12 titleFormatStringLocID];
-    v33 = [v12 titleFormatString];
-    v34 = [v12 _localizationTable];
-    v35 = [v23 bundleURL];
-    v39 = self;
-    v40 = v30;
-    v41 = v33;
-    v42 = v34;
-    v43 = v35;
+    titleFormatStringLocID2 = [v12 titleFormatStringLocID];
+    titleFormatString2 = [v12 titleFormatString];
+    _localizationTable2 = [v12 _localizationTable];
+    bundleURL = [v23 bundleURL];
+    selfCopy2 = self;
+    v40 = titleFormatStringLocID2;
+    v41 = titleFormatString2;
+    v42 = _localizationTable2;
+    v43 = bundleURL;
 LABEL_15:
-    [(INIntent *)v39 _localizedCombinationStringForKey:v40 value:v41 localizationTable:v42 bundleURL:v43 localizer:v6];
+    [(INIntent *)selfCopy2 _localizedCombinationStringForKey:v40 value:v41 localizationTable:v42 bundleURL:v43 localizer:localizerCopy];
     v16 = v38 = v23;
     goto LABEL_16;
   }
 
   v27 = [INSchema _defaultSchemaForBundle:v23];
-  v28 = [(INIntent *)self _className];
-  v29 = [v27 _parameterCombinationsForClassName:v28];
-  v30 = [v29 objectForKey:v9];
+  _className = [(INIntent *)self _className];
+  v29 = [v27 _parameterCombinationsForClassName:_className];
+  titleFormatStringLocID2 = [v29 objectForKey:v9];
 
-  v31 = [v30 titleFormatString];
-  v32 = [v12 titleFormatString];
-  LODWORD(v29) = [v31 isEqualToString:v32];
+  titleFormatString3 = [titleFormatStringLocID2 titleFormatString];
+  titleFormatString4 = [v12 titleFormatString];
+  LODWORD(v29) = [titleFormatString3 isEqualToString:titleFormatString4];
 
   if (!v29)
   {
-    v33 = [v12 titleFormatStringLocID];
-    v34 = [v12 titleFormatString];
-    v35 = [v12 _localizationTable];
-    v39 = self;
-    v40 = v33;
-    v41 = v34;
-    v42 = v35;
-    v43 = v7;
+    titleFormatString2 = [v12 titleFormatStringLocID];
+    _localizationTable2 = [v12 titleFormatString];
+    bundleURL = [v12 _localizationTable];
+    selfCopy2 = self;
+    v40 = titleFormatString2;
+    v41 = _localizationTable2;
+    v42 = bundleURL;
+    v43 = lCopy;
     goto LABEL_15;
   }
 
-  v33 = [v30 titleFormatStringLocID];
-  v34 = [v30 titleFormatString];
-  v35 = [v30 _localizationTable];
+  titleFormatString2 = [titleFormatStringLocID2 titleFormatStringLocID];
+  _localizationTable2 = [titleFormatStringLocID2 titleFormatString];
+  bundleURL = [titleFormatStringLocID2 _localizationTable];
   [v23 bundleURL];
-  v63 = v7;
-  v37 = v36 = v6;
-  [(INIntent *)self _localizedCombinationStringForKey:v33 value:v34 localizationTable:v35 bundleURL:v37 localizer:v36];
+  v63 = lCopy;
+  v37 = v36 = localizerCopy;
+  [(INIntent *)self _localizedCombinationStringForKey:titleFormatString2 value:_localizationTable2 localizationTable:bundleURL bundleURL:v37 localizer:v36];
   v16 = v38 = v23;
 
-  v6 = v36;
-  v7 = v63;
+  localizerCopy = v36;
+  lCopy = v63;
 LABEL_16:
 
   v9 = v65;
@@ -1981,70 +1981,70 @@ LABEL_17:
     goto LABEL_31;
   }
 
-  v44 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v45 = v6;
-    v46 = [(INIntent *)self backingStore];
-    v47 = [v46 _objectDescription];
+    v45 = localizerCopy;
+    backingStore2 = [(INIntent *)self backingStore];
+    _objectDescription = [backingStore2 _objectDescription];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v6 = v45;
+      localizerCopy = v45;
       goto LABEL_31;
     }
 
-    v49 = [(INIntent *)self backingStore];
-    v44 = [v49 _objectDescription];
+    backingStore3 = [(INIntent *)self backingStore];
+    backingStore = [backingStore3 _objectDescription];
 
-    v50 = [v44 title];
+    title = [backingStore title];
 
-    v51 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+    _intents_launchIdForCurrentPlatform2 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
     v70 = 0;
-    INExtractAppInfoFromSiriLaunchId(v51, &v70, 0);
+    INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform2, &v70, 0);
     v52 = v70;
 
     if (v52)
     {
-      v6 = v45;
+      localizerCopy = v45;
       v53 = [v45 bundleWithIdentifier:v52 fileURL:0];
       if (v53)
       {
         v54 = v53;
-        v69 = v50;
-        v64 = v7;
-        v55 = [v44 titleLocID];
-        v56 = [v44 titleLocID];
-        v57 = [v44 _localizationTable];
-        v58 = [v57 tableName];
-        v59 = INLocalizedStringFromBundle(v55, v56, v58, v45, v54, 0);
+        v69 = title;
+        v64 = lCopy;
+        titleLocID = [backingStore titleLocID];
+        titleLocID2 = [backingStore titleLocID];
+        _localizationTable3 = [backingStore _localizationTable];
+        tableName = [_localizationTable3 tableName];
+        v59 = INLocalizedStringFromBundle(titleLocID, titleLocID2, tableName, v45, v54, 0);
 
-        if ([v59 length] && (objc_msgSend(v44, "titleLocID"), v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "isEqualToString:", v59), v60, (v61 & 1) == 0))
+        if ([v59 length] && (objc_msgSend(backingStore, "titleLocID"), v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "isEqualToString:", v59), v60, (v61 & 1) == 0))
         {
-          v50 = v59;
+          title = v59;
 
-          v6 = v45;
-          v7 = v64;
+          localizerCopy = v45;
+          lCopy = v64;
         }
 
         else
         {
-          v6 = v45;
-          v7 = v64;
-          v50 = v69;
+          localizerCopy = v45;
+          lCopy = v64;
+          title = v69;
         }
       }
     }
 
     else
     {
-      v6 = v45;
+      localizerCopy = v45;
     }
 
-    v16 = v50;
+    v16 = title;
   }
 
 LABEL_31:
@@ -2052,21 +2052,21 @@ LABEL_31:
   return v16;
 }
 
-- (id)_titleForLanguage:(id)a3
+- (id)_titleForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = +[INIntentSummaryCache sharedCache];
   v13 = 0;
-  v6 = [v5 getTitle:&v13 forIntent:self languageCode:v4];
+  v6 = [v5 getTitle:&v13 forIntent:self languageCode:languageCopy];
   v7 = v13;
 
   if ((v6 & 1) == 0)
   {
-    v8 = [INStringLocalizer localizerForLanguage:v4];
+    v8 = [INStringLocalizer localizerForLanguage:languageCopy];
     v9 = [(INIntent *)self _titleWithLocalizer:v8 fromBundleURL:0];
 
     v10 = +[INIntentSummaryCache sharedCache];
-    [v10 setTitle:v9 forIntent:self languageCode:v4];
+    [v10 setTitle:v9 forIntent:self languageCode:languageCopy];
 
     v7 = v9;
   }
@@ -2079,12 +2079,12 @@ LABEL_31:
 - (id)_intents_bundleIdForLaunching
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(INIntent *)self _intents_bestBundleIdentifier];
-  if (v2)
+  _intents_bestBundleIdentifier = [(INIntent *)self _intents_bestBundleIdentifier];
+  if (_intents_bestBundleIdentifier)
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = v2;
+    v5 = _intents_bestBundleIdentifier;
     v6 = v4;
     if (_INSpecialCaseLaunchableBundleIdentifier_onceToken != -1)
     {
@@ -2135,22 +2135,22 @@ LABEL_31:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(INIntent *)self _sortedParameterImages];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _sortedParameterImages = [(INIntent *)self _sortedParameterImages];
+  v4 = [_sortedParameterImages countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v4)
   {
 
 LABEL_14:
-    if ([(INIntent *)self _type]!= 1 || ([(INIntent *)self _keyImageWithIntentDescriptionStrategy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ([(INIntent *)self _type]!= 1 || ([(INIntent *)self _keyImageWithIntentDescriptionStrategy], (_defaultImage = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v6 = [(INIntent *)self _defaultImage];
+      _defaultImage = [(INIntent *)self _defaultImage];
     }
 
     goto LABEL_17;
   }
 
   v5 = v4;
-  v6 = 0;
+  _defaultImage = 0;
   v7 = *v17;
   do
   {
@@ -2158,31 +2158,31 @@ LABEL_14:
     {
       if (*v17 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(_sortedParameterImages);
       }
 
       v9 = *(*(&v16 + 1) + 8 * i);
-      v10 = [v9 image];
-      if (v10)
+      image = [v9 image];
+      if (image)
       {
-        v11 = [v9 parameter];
-        v12 = [v11 _parameterValueForParameterizedObject:self];
+        parameter = [v9 parameter];
+        v12 = [parameter _parameterValueForParameterizedObject:self];
 
         if (v12)
         {
-          v13 = v10;
+          v13 = image;
 
-          v6 = v13;
+          _defaultImage = v13;
         }
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v5 = [_sortedParameterImages countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
   while (v5);
 
-  if (!v6)
+  if (!_defaultImage)
   {
     goto LABEL_14;
   }
@@ -2190,34 +2190,34 @@ LABEL_14:
 LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return _defaultImage;
 }
 
 - (id)_keyImageWithIntentDescriptionStrategy
 {
   v3 = INKeyImageUtilitiesSortedSubProducersForSlotComposingProducer(self);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 valueForSlotComposer:self];
+  v5 = [firstObject valueForSlotComposer:self];
   if ([v5 conformsToProtocol:&unk_1F02E1E10])
   {
-    v6 = [v5 _keyImage];
+    _keyImage = [v5 _keyImage];
   }
 
   else
   {
-    v6 = 0;
+    _keyImage = 0;
   }
 
-  return v6;
+  return _keyImage;
 }
 
-+ (void)_setSharedExtensionContextUUID:(id)a3 forIntentClassName:(id)a4
++ (void)_setSharedExtensionContextUUID:(id)d forIntentClassName:(id)name
 {
-  if (a4)
+  if (name)
   {
-    v5 = a4;
-    v6 = a3;
+    nameCopy = name;
+    dCopy = d;
     os_unfair_lock_lock(&sharedContextExtensionUUIDDictionaryLock);
     v7 = sharedContextExtensionUUIDDictionary;
     if (!sharedContextExtensionUUIDDictionary)
@@ -2227,7 +2227,7 @@ LABEL_17:
     }
 
     v10 = [v7 mutableCopy];
-    [v10 setObject:v6 forKeyedSubscript:v5];
+    [v10 setObject:dCopy forKeyedSubscript:nameCopy];
 
     v8 = [v10 copy];
     v9 = sharedContextExtensionUUIDDictionary;
@@ -2237,13 +2237,13 @@ LABEL_17:
   }
 }
 
-+ (id)_sharedExtensionContextUUIDForIntentClassName:(id)a3
++ (id)_sharedExtensionContextUUIDForIntentClassName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v3 = a3;
+    nameCopy = name;
     os_unfair_lock_lock(&sharedContextExtensionUUIDDictionaryLock);
-    v4 = [sharedContextExtensionUUIDDictionary objectForKeyedSubscript:v3];
+    v4 = [sharedContextExtensionUUIDDictionary objectForKeyedSubscript:nameCopy];
 
     os_unfair_lock_unlock(&sharedContextExtensionUUIDDictionaryLock);
   }
@@ -2256,33 +2256,33 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)configureAttributeSet:(id)a3 includingData:(BOOL)a4
+- (BOOL)configureAttributeSet:(id)set includingData:(BOOL)data
 {
-  v47 = a4;
+  dataCopy = data;
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 displayName];
+  setCopy = set;
+  displayName = [setCopy displayName];
 
-  if (!v6)
+  if (!displayName)
   {
-    v7 = [(INIntent *)self _title];
-    [v5 setDisplayName:v7];
+    _title = [(INIntent *)self _title];
+    [setCopy setDisplayName:_title];
   }
 
-  v8 = [v5 contentDescription];
+  contentDescription = [setCopy contentDescription];
 
-  if (!v8)
+  if (!contentDescription)
   {
-    v9 = [(INIntent *)self _subtitle];
-    [v5 setContentDescription:v9];
+    _subtitle = [(INIntent *)self _subtitle];
+    [setCopy setContentDescription:_subtitle];
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(INIntent *)self launchId];
-  v12 = v11;
-  if (v11)
+  launchId = [(INIntent *)self launchId];
+  v12 = launchId;
+  if (launchId)
   {
-    v13 = v11;
+    v13 = launchId;
   }
 
   else
@@ -2290,11 +2290,11 @@ LABEL_17:
     v13 = @"no-launchId";
   }
 
-  v14 = [(INIntent *)self extensionBundleId];
-  v15 = v14;
-  if (v14)
+  extensionBundleId = [(INIntent *)self extensionBundleId];
+  v15 = extensionBundleId;
+  if (extensionBundleId)
   {
-    v16 = v14;
+    v16 = extensionBundleId;
   }
 
   else
@@ -2302,76 +2302,76 @@ LABEL_17:
     v16 = @"no-extensionBundleId";
   }
 
-  v17 = [v5 displayName];
-  v18 = [v17 length];
+  displayName2 = [setCopy displayName];
+  v18 = [displayName2 length];
   if (v18)
   {
-    [v5 displayName];
+    [setCopy displayName];
   }
 
   else
   {
-    v46 = [MEMORY[0x1E696AFB0] UUID];
-    [v46 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [uUID UUIDString];
   }
   v19 = ;
   v20 = [v10 stringWithFormat:@"%@-%@-%@", v13, v16, v19];
-  [v5 setUniqueIdentifier:v20];
+  [setCopy setUniqueIdentifier:v20];
 
   if (!v18)
   {
 
-    v19 = v46;
+    v19 = uUID;
   }
 
-  v21 = [(INIntent *)self _spotlightContentType];
-  [v5 setContentType:v21];
+  _spotlightContentType = [(INIntent *)self _spotlightContentType];
+  [setCopy setContentType:_spotlightContentType];
 
-  v22 = [(INIntent *)self _className];
-  [v5 setAttribute:v22 forKey:@"_kMDItemIntentClass"];
+  _className = [(INIntent *)self _className];
+  [setCopy setAttribute:_className forKey:@"_kMDItemIntentClass"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[INIntent _supportsBackgroundExecutionWithOptions:](self, "_supportsBackgroundExecutionWithOptions:", 0)}];
-  [v5 setBackgroundRunnable:v23];
+  [setCopy setBackgroundRunnable:v23];
 
-  v24 = [(INIntent *)self _categoryVerb];
-  v25 = [(INIntent *)self _categoryVerb];
-  v26 = INCSLocalizedString(v24, v25);
-  [v5 setPunchoutLabel:v26];
+  _categoryVerb = [(INIntent *)self _categoryVerb];
+  _categoryVerb2 = [(INIntent *)self _categoryVerb];
+  v26 = INCSLocalizedString(_categoryVerb, _categoryVerb2);
+  [setCopy setPunchoutLabel:v26];
 
-  v27 = [v5 thumbnailData];
-  if (v27)
+  thumbnailData = [setCopy thumbnailData];
+  if (thumbnailData)
   {
   }
 
   else
   {
-    v28 = [v5 thumbnailURL];
+    thumbnailURL = [setCopy thumbnailURL];
 
-    if (!v28)
+    if (!thumbnailURL)
     {
-      v29 = [(INIntent *)self keyImage];
-      v30 = v29;
-      if (v29)
+      keyImage = [(INIntent *)self keyImage];
+      v30 = keyImage;
+      if (keyImage)
       {
-        v31 = [v29 _uri];
-        v32 = [v31 isFileURL];
+        _uri = [keyImage _uri];
+        isFileURL = [_uri isFileURL];
 
-        if (v32)
+        if (isFileURL)
         {
-          v33 = [v30 _uri];
-          [v5 setThumbnailURL:v33];
+          _uri2 = [v30 _uri];
+          [setCopy setThumbnailURL:_uri2];
         }
 
         else
         {
-          v34 = [v30 _imageData];
-          if (![v34 length])
+          _imageData = [v30 _imageData];
+          if (![_imageData length])
           {
             v35 = +[INImageServiceConnection sharedConnection];
             v49 = 0;
             v36 = [v35 loadDataImageFromImage:v30 scaledSize:&v49 error:{0.0, 0.0}];
             v37 = v49;
-            v38 = [v36 _imageData];
+            _imageData2 = [v36 _imageData];
 
             if (v37)
             {
@@ -2388,19 +2388,19 @@ LABEL_17:
               }
             }
 
-            v34 = v38;
+            _imageData = _imageData2;
           }
 
-          if ([v34 length])
+          if ([_imageData length])
           {
-            [v5 setThumbnailData:v34];
+            [setCopy setThumbnailData:_imageData];
           }
         }
       }
     }
   }
 
-  if (v47)
+  if (dataCopy)
   {
     v48 = 0;
     v40 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v48];
@@ -2408,7 +2408,7 @@ LABEL_17:
     v42 = v40 != 0;
     if (v40)
     {
-      [v5 setAttribute:v40 forKey:@"_kMDItemUserActivityData"];
+      [setCopy setAttribute:v40 forKey:@"_kMDItemUserActivityData"];
     }
 
     else
@@ -2434,19 +2434,19 @@ LABEL_17:
   return v42;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INIntent *)self _inCodable];
-  v9 = [(INIntent *)self _inCodable];
+  valueCopy = value;
+  keyCopy = key;
+  _inCodable = [(INIntent *)self _inCodable];
+  _inCodable2 = [(INIntent *)self _inCodable];
 
-  if (v9)
+  if (_inCodable2)
   {
-    if ([v8 isValidKey:v7])
+    if ([_inCodable isValidKey:keyCopy])
     {
-      [v8 setValue:v6 forPropertyNamed:v7];
+      [_inCodable setValue:valueCopy forPropertyNamed:keyCopy];
     }
 
     else
@@ -2457,10 +2457,10 @@ LABEL_17:
       v17[3] = &unk_1E7283DA8;
       v17[4] = self;
       v10 = [(INIntent *)self _querySchemaWithBlock:v17 contentOptions:31];
-      [v8 _setObjectDescription:v10];
-      if ([v8 isValidKey:v7])
+      [_inCodable _setObjectDescription:v10];
+      if ([_inCodable isValidKey:keyCopy])
       {
-        [v8 setValue:v6 forPropertyNamed:v7];
+        [_inCodable setValue:valueCopy forPropertyNamed:keyCopy];
       }
 
       else
@@ -2474,7 +2474,7 @@ LABEL_17:
           *buf = 136315650;
           v19 = "[INIntent setValue:forUndefinedKey:]";
           v20 = 2112;
-          v21 = v7;
+          v21 = keyCopy;
           v22 = 2112;
           v23 = v15;
           _os_log_fault_impl(&dword_18E991000, v13, OS_LOG_TYPE_FAULT, "%s '%@' is an invalid parameter for '%@'. Please make sure that your intent definition file is valid.", buf, 0x20u);
@@ -2487,7 +2487,7 @@ LABEL_17:
   {
     v16.receiver = self;
     v16.super_class = INIntent;
-    [(INIntent *)&v16 setValue:v6 forUndefinedKey:v7];
+    [(INIntent *)&v16 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2503,24 +2503,24 @@ id __37__INIntent_setValue_forUndefinedKey___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INIntent *)self _inCodable];
-  v6 = v5;
-  if (!v5)
+  keyCopy = key;
+  _inCodable = [(INIntent *)self _inCodable];
+  v6 = _inCodable;
+  if (!_inCodable)
   {
     v17.receiver = self;
     v17.super_class = INIntent;
-    v8 = [(INIntent *)&v17 valueForUndefinedKey:v4];
+    v8 = [(INIntent *)&v17 valueForUndefinedKey:keyCopy];
     goto LABEL_7;
   }
 
-  if ([v5 isValidKey:v4])
+  if ([_inCodable isValidKey:keyCopy])
   {
 LABEL_5:
-    v8 = [v6 valueForPropertyNamed:v4];
+    v8 = [v6 valueForPropertyNamed:keyCopy];
 LABEL_7:
     v9 = v8;
     goto LABEL_8;
@@ -2533,7 +2533,7 @@ LABEL_7:
   v16[4] = self;
   v7 = [(INIntent *)self _querySchemaWithBlock:v16 contentOptions:31];
   [v6 _setObjectDescription:v7];
-  if ([v6 isValidKey:v4])
+  if ([v6 isValidKey:keyCopy])
   {
 
     goto LABEL_5;
@@ -2548,7 +2548,7 @@ LABEL_7:
     *buf = 136315650;
     v19 = "[INIntent valueForUndefinedKey:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = keyCopy;
     v22 = 2112;
     v23 = v15;
     _os_log_fault_impl(&dword_18E991000, v13, OS_LOG_TYPE_FAULT, "%s '%@' is an invalid parameter for '%@'. Please make sure that your intent definition file is valid.", buf, 0x20u);
@@ -2572,21 +2572,21 @@ id __33__INIntent_valueForUndefinedKey___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _inCodable];
-  v6 = v5;
-  if (v5 && [v5 isValidKey:v4])
+  keyCopy = key;
+  _inCodable = [(INIntent *)self _inCodable];
+  v6 = _inCodable;
+  if (_inCodable && [_inCodable isValidKey:keyCopy])
   {
-    v7 = [v6 valueForPropertyNamed:v4];
+    v7 = [v6 valueForPropertyNamed:keyCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = INIntent;
-    v7 = [(INIntent *)&v10 valueForKey:v4];
+    v7 = [(INIntent *)&v10 valueForKey:keyCopy];
   }
 
   v8 = v7;
@@ -2594,25 +2594,25 @@ id __33__INIntent_valueForUndefinedKey___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (BOOL)_isValueValidForKey:(id)a3 unsupportedReason:(id *)a4
+- (BOOL)_isValueValidForKey:(id)key unsupportedReason:(id *)reason
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  keyCopy = key;
+  if (reason)
   {
-    *a4 = 0;
+    *reason = 0;
   }
 
-  if ([(INIntent *)self _isValidKey:v6])
+  if ([(INIntent *)self _isValidKey:keyCopy])
   {
-    v7 = [(INIntent *)self valueForKey:v6];
+    v7 = [(INIntent *)self valueForKey:keyCopy];
     if (v7)
     {
-      v8 = [(INIntent *)self _codableDescription];
-      v9 = [v8 attributeByName:v6];
+      _codableDescription = [(INIntent *)self _codableDescription];
+      v9 = [_codableDescription attributeByName:keyCopy];
 
-      v10 = [v9 unsupportedReasons];
-      v11 = [v10 count];
+      unsupportedReasons = [v9 unsupportedReasons];
+      v11 = [unsupportedReasons count];
 
       if (v11)
       {
@@ -2620,12 +2620,12 @@ id __33__INIntent_valueForUndefinedKey___block_invoke(uint64_t a1, void *a2)
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v12 = [v9 unsupportedReasons];
-        v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        unsupportedReasons2 = [v9 unsupportedReasons];
+        v13 = [unsupportedReasons2 countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
-          v29 = v6;
+          v29 = keyCopy;
           v15 = *v31;
           while (2)
           {
@@ -2633,25 +2633,25 @@ id __33__INIntent_valueForUndefinedKey___block_invoke(uint64_t a1, void *a2)
             {
               if (*v31 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(unsupportedReasons2);
               }
 
               v17 = *(*(&v30 + 1) + 8 * i);
-              v18 = [v17 predicateFormat];
-              v19 = [v18 length];
+              predicateFormat = [v17 predicateFormat];
+              v19 = [predicateFormat length];
 
               if (v19)
               {
                 v20 = MEMORY[0x1E696AE18];
-                v21 = [v17 predicateFormat];
-                v22 = [v20 predicateWithFormat:v21, v7];
+                predicateFormat2 = [v17 predicateFormat];
+                v22 = [v20 predicateWithFormat:predicateFormat2, v7];
 
                 v23 = [v22 evaluateWithObject:v9];
                 v24 = v23;
-                if (a4 && (v23 & 1) == 0)
+                if (reason && (v23 & 1) == 0)
                 {
                   v25 = v17;
-                  *a4 = v17;
+                  *reason = v17;
                 }
 
                 if (!v24)
@@ -2662,7 +2662,7 @@ id __33__INIntent_valueForUndefinedKey___block_invoke(uint64_t a1, void *a2)
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+            v14 = [unsupportedReasons2 countByEnumeratingWithState:&v30 objects:v34 count:16];
             if (v14)
             {
               continue;
@@ -2673,7 +2673,7 @@ id __33__INIntent_valueForUndefinedKey___block_invoke(uint64_t a1, void *a2)
 
           v26 = 1;
 LABEL_23:
-          v6 = v29;
+          keyCopy = v29;
         }
 
         else
@@ -2703,19 +2703,19 @@ LABEL_23:
   return v26;
 }
 
-- (BOOL)_isValidKey:(id)a3
+- (BOOL)_isValidKey:(id)key
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _inCodable];
-  v6 = v5;
-  if (v5)
+  keyCopy = key;
+  _inCodable = [(INIntent *)self _inCodable];
+  v6 = _inCodable;
+  if (_inCodable)
   {
-    v7 = [v5 isValidKey:v4];
+    v7 = [_inCodable isValidKey:keyCopy];
   }
 
   else
   {
-    NSSelectorFromString(v4);
+    NSSelectorFromString(keyCopy);
 
     v7 = objc_opt_respondsToSelector();
   }
@@ -2791,8 +2791,8 @@ LABEL_11:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [(INIntent *)self _keyCodableAttributes];
-    v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    _keyCodableAttributes = [(INIntent *)self _keyCodableAttributes];
+    v4 = [_keyCodableAttributes countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v4)
     {
       v5 = v4;
@@ -2803,19 +2803,19 @@ LABEL_11:
         {
           if (*v20 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_keyCodableAttributes);
           }
 
           v8 = *(*(&v19 + 1) + 8 * i);
-          v9 = [v8 propertyName];
-          if ([(INIntent *)self _isValidKey:v9])
+          propertyName = [v8 propertyName];
+          if ([(INIntent *)self _isValidKey:propertyName])
           {
-            v10 = [(INIntent *)self valueForKey:v9];
+            v10 = [(INIntent *)self valueForKey:propertyName];
             if (v10)
             {
               v11 = v10;
               v12 = [INIntentKeyParameter alloc];
-              v13 = [(INIntent *)self imageForParameterNamed:v9];
+              v13 = [(INIntent *)self imageForParameterNamed:propertyName];
               v14 = [(INIntentKeyParameter *)v12 initWithCodableAttribute:v8 value:v11 image:v13];
               keyParameter = self->_keyParameter;
               self->_keyParameter = v14;
@@ -2825,7 +2825,7 @@ LABEL_11:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v5 = [_keyCodableAttributes countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v5)
         {
           continue;
@@ -2857,12 +2857,12 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)_updateWithJSONDictionary:(id)a3
+- (void)_updateWithJSONDictionary:(id)dictionary
 {
-  v29 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(INJSONDecoder);
-  v5 = [(INIntent *)self _metadata];
-  v6 = [v29 objectForKeyedSubscript:@"metadata"];
+  _metadata = [(INIntent *)self _metadata];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
   if (v6)
   {
     objc_opt_class();
@@ -2895,10 +2895,10 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
     v10 = MEMORY[0x1E695E0F8];
   }
 
-  [(INJSONDecoder *)v4 decodeObject:v5 withCodableDescription:0 from:v10];
+  [(INJSONDecoder *)v4 decodeObject:_metadata withCodableDescription:0 from:v10];
 
-  v11 = [(INIntent *)self _codableDescription];
-  v12 = [v29 objectForKeyedSubscript:@"parameters"];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
   if (v12)
   {
     objc_opt_class();
@@ -2930,10 +2930,10 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
     v15 = v9;
   }
 
-  [(INJSONDecoder *)v4 decodeObject:self withCodableDescription:v11 from:v15];
+  [(INJSONDecoder *)v4 decodeObject:self withCodableDescription:_codableDescription from:v15];
 
   v16 = [INParameterContexts alloc];
-  v17 = [v29 objectForKeyedSubscript:@"parameterContexts"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"parameterContexts"];
   if (v17)
   {
     objc_opt_class();
@@ -2968,13 +2968,13 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
   v21 = [(INParameterContexts *)v16 _initWithIntent:self decoder:v4 JSONDictionary:v20];
 
   [(INIntent *)self _setParameterContexts:v21];
-  v22 = [(INIntent *)self _codableDescription];
-  if (v22)
+  _codableDescription2 = [(INIntent *)self _codableDescription];
+  if (_codableDescription2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v22;
+      v23 = _codableDescription2;
     }
 
     else
@@ -2990,12 +2990,12 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
 
   v24 = v23;
 
-  v25 = [v24 _nullable_schema];
-  v26 = [(INIntent *)self _className];
-  v27 = [v25 intentResponseCodableDescriptionWithIntentClassName:v26];
+  _nullable_schema = [v24 _nullable_schema];
+  _className = [(INIntent *)self _className];
+  v27 = [_nullable_schema intentResponseCodableDescriptionWithIntentClassName:_className];
 
-  v28 = [v25 _types];
-  [v24 _reestablishReferencedCodableDescriptionsUsingTypes:v28 intentResponseCodableDescription:v27];
+  _types = [_nullable_schema _types];
+  [v24 _reestablishReferencedCodableDescriptionsUsingTypes:_types intentResponseCodableDescription:v27];
 }
 
 - (NSDictionary)_JSONDictionaryRepresentation
@@ -3009,49 +3009,49 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)_JSONDictionaryRepresentationWithConfiguration:(id)a3
+- (id)_JSONDictionaryRepresentationWithConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(v4);
-  v7 = [[INJSONEncoder alloc] initWithConfiguration:v5];
+  v7 = [[INJSONEncoder alloc] initWithConfiguration:configurationCopy];
 
-  v8 = [(INIntent *)self typeName];
-  [v6 if_setObjectIfNonNil:v8 forKey:@"typeName"];
+  typeName = [(INIntent *)self typeName];
+  [v6 if_setObjectIfNonNil:typeName forKey:@"typeName"];
 
-  v9 = [(INIntent *)self _metadata];
-  v10 = [(INJSONEncoder *)v7 encodeObject:v9];
+  _metadata = [(INIntent *)self _metadata];
+  v10 = [(INJSONEncoder *)v7 encodeObject:_metadata];
   [v6 if_setObjectIfNonNil:v10 forKey:@"metadata"];
 
-  v11 = [(INIntent *)self _codableDescription];
-  v12 = [(INJSONEncoder *)v7 encodeObject:self withCodableDescription:v11];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  v12 = [(INJSONEncoder *)v7 encodeObject:self withCodableDescription:_codableDescription];
   [v6 if_setObjectIfNonNil:v12 forKey:@"parameters"];
 
   return v6;
 }
 
-- (void)setParametersByName:(id)a3
+- (void)setParametersByName:(id)name
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _typedBackingStore];
+  nameCopy = name;
+  _typedBackingStore = [(INIntent *)self _typedBackingStore];
 
-  if (v5)
+  if (_typedBackingStore)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(nameCopy, "count")}];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __32__INIntent_setParametersByName___block_invoke;
     v12[3] = &unk_1E7285238;
     v13 = v6;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v12];
-    v8 = [(INIntent *)self _typedBackingStore];
-    [v8 setParameters:v7];
+    [nameCopy enumerateKeysAndObjectsUsingBlock:v12];
+    _typedBackingStore2 = [(INIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setParameters:v7];
   }
 
   else
   {
-    v9 = [(INIntent *)self backingStore];
+    backingStore = [(INIntent *)self backingStore];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3062,7 +3062,7 @@ id __31__INIntent__codableDescription__block_invoke(uint64_t a1, void *a2)
       v11[2] = __32__INIntent_setParametersByName___block_invoke_2;
       v11[3] = &unk_1E7285238;
       v11[4] = self;
-      [v4 enumerateKeysAndObjectsUsingBlock:v11];
+      [nameCopy enumerateKeysAndObjectsUsingBlock:v11];
     }
   }
 }
@@ -3077,16 +3077,16 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
 - (NSDictionary)parametersByName
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(INIntent *)self _typedBackingStore];
+  _typedBackingStore = [(INIntent *)self _typedBackingStore];
 
-  if (v3)
+  if (_typedBackingStore)
   {
-    v4 = [(INIntent *)self _typedBackingStore];
-    v5 = [v4 parameters];
+    _typedBackingStore2 = [(INIntent *)self _typedBackingStore];
+    parameters = [_typedBackingStore2 parameters];
 
-    if ([v5 count])
+    if ([parameters count])
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(parameters, "count")}];
     }
 
     else
@@ -3098,7 +3098,7 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v5;
+    v11 = parameters;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
@@ -3114,11 +3114,11 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [v16 role];
-          if (v17)
+          role = [v16 role];
+          if (role)
           {
             v18 = INIntentSlotValueTransformFromProperty(v16);
-            [v6 setObject:v18 forKeyedSubscript:v17];
+            [v6 setObject:v18 forKeyedSubscript:role];
           }
         }
 
@@ -3133,14 +3133,14 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
 
   else
   {
-    v7 = [(INIntent *)self backingStore];
+    backingStore = [(INIntent *)self backingStore];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(INIntent *)self backingStore];
-      v10 = [v9 _dictionaryRepresentationWithNullValues:0];
+      backingStore2 = [(INIntent *)self backingStore];
+      v10 = [backingStore2 _dictionaryRepresentationWithNullValues:0];
     }
 
     else
@@ -3156,38 +3156,38 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
 
 - (NSArray)_parametersForcedToNeedsValue
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 forceNeedsValueForParameters];
+  _metadata = [(INIntent *)self _metadata];
+  forceNeedsValueForParameters = [_metadata forceNeedsValueForParameters];
 
-  return v3;
+  return forceNeedsValueForParameters;
 }
 
-- (void)_setParametersForcedToNeedsValue:(id)a3
+- (void)_setParametersForcedToNeedsValue:(id)value
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setForceNeedsValueForParameters:v4];
+  valueCopy = value;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setForceNeedsValueForParameters:valueCopy];
 }
 
-- (void)setVerb:(id)a3
+- (void)setVerb:(id)verb
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _typedBackingStore];
-  [v5 setVerb:v4];
+  verbCopy = verb;
+  _typedBackingStore = [(INIntent *)self _typedBackingStore];
+  [_typedBackingStore setVerb:verbCopy];
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _typedBackingStore];
-  [v5 setDomain:v4];
+  domainCopy = domain;
+  _typedBackingStore = [(INIntent *)self _typedBackingStore];
+  [_typedBackingStore setDomain:domainCopy];
 }
 
-- (INIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (INIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  verbCopy = verb;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = INIntent;
   v11 = [(INIntent *)&v16 init];
@@ -3200,9 +3200,9 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
     v14 = objc_alloc_init(_INPBIntentMetadata);
     [(INIntent *)v11 _setMetadata:v14];
 
-    [(INIntent *)v11 setDomain:v8];
-    [(INIntent *)v11 setVerb:v9];
-    [(INIntent *)v11 setParametersByName:v10];
+    [(INIntent *)v11 setDomain:domainCopy];
+    [(INIntent *)v11 setVerb:verbCopy];
+    [(INIntent *)v11 setParametersByName:nameCopy];
     [(INIntent *)v11 _setIntentCategory:0];
     [(INIntent *)v11 _setCategoryVerb:@"Do"];
   }
@@ -3212,46 +3212,46 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
 
 - (NSOrderedSet)_displayOrderedAttributes
 {
-  v2 = [(INIntent *)self _codableDescription];
-  v3 = [v2 displayOrderedAttributes];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  displayOrderedAttributes = [_codableDescription displayOrderedAttributes];
 
-  return v3;
+  return displayOrderedAttributes;
 }
 
 - (NSArray)_codableAttributes
 {
-  v2 = [(INIntent *)self _codableDescription];
-  v3 = [v2 attributes];
-  v4 = [v3 allValues];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  attributes = [_codableDescription attributes];
+  allValues = [attributes allValues];
 
-  return v4;
+  return allValues;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INIntent;
   v6 = [(INIntent *)&v11 description];
-  v7 = [(INIntent *)self _redactedDictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _redactedDictionaryRepresentation = [(INIntent *)self _redactedDictionaryRepresentation];
+  v8 = [_redactedDictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (INIntent)initWithCoder:(id)a3
+- (INIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = INIntent;
   v5 = [(INIntent *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(INIntent *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backingStore"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backingStore"];
     [(INIntent *)v5 setBackingStore:v7];
 
     v8 = MEMORY[0x1E695DFD8];
@@ -3259,25 +3259,25 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"parameterCombinations"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"parameterCombinations"];
     parameterCombinations = v5->_parameterCombinations;
     v5->_parameterCombinations = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordRoute"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordRoute"];
     [(INIntent *)v5 _setRecordRoute:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordDeviceUID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordDeviceUID"];
     recordDeviceUID = v5->_recordDeviceUID;
     v5->_recordDeviceUID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordDeviceIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordDeviceIdentifier"];
     recordDeviceIdentifier = v5->_recordDeviceIdentifier;
     v5->_recordDeviceIdentifier = v18;
 
-    v5->_audioSessionID = [v4 decodeInt32ForKey:@"audioSessionID"];
-    v5->_shouldForwardToAppOnSucccess = [v4 decodeBoolForKey:@"_shouldForwardToAppOnSucccess"];
-    v5->_indexingHash = [v4 decodeInt64ForKey:@"_indexingHash"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"donationMetadata"];
+    v5->_audioSessionID = [coderCopy decodeInt32ForKey:@"audioSessionID"];
+    v5->_shouldForwardToAppOnSucccess = [coderCopy decodeBoolForKey:@"_shouldForwardToAppOnSucccess"];
+    v5->_indexingHash = [coderCopy decodeInt64ForKey:@"_indexingHash"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"donationMetadata"];
     donationMetadata = v5->_donationMetadata;
     v5->_donationMetadata = v20;
 
@@ -3287,7 +3287,7 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v22 setWithObjects:{v23, v24, v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"_parameterContexts"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"_parameterContexts"];
 
     v29 = v28;
     if (v29)
@@ -3311,14 +3311,14 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
 
     v31 = v30;
 
-    v32 = [v31 allKeys];
+    allKeys = [v31 allKeys];
 
-    v33 = [v32 count];
+    v33 = [allKeys count];
     if (v33)
     {
       v34 = objc_alloc_init(INJSONDecoder);
-      v35 = [(INIntent *)v5 _codableDescription];
-      v36 = [INParameterContexts _intents_decodeWithJSONDecoder:v34 codableDescription:v35 from:v29];
+      _codableDescription = [(INIntent *)v5 _codableDescription];
+      v36 = [INParameterContexts _intents_decodeWithJSONDecoder:v34 codableDescription:_codableDescription from:v29];
       parameterContexts = v5->_parameterContexts;
       v5->_parameterContexts = v36;
     }
@@ -3327,36 +3327,36 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeObject:self->_identifier forKey:@"identifier"];
-  [v9 encodeObject:self->_backingStore forKey:@"backingStore"];
-  [v9 encodeObject:self->_parameterCombinations forKey:@"parameterCombinations"];
-  [v9 encodeObject:self->_recordRoute forKey:@"recordRoute"];
-  [v9 encodeObject:self->_recordDeviceUID forKey:@"recordDeviceUID"];
-  [v9 encodeObject:self->_recordDeviceIdentifier forKey:@"recordDeviceIdentifier"];
-  [v9 encodeInt32:self->_audioSessionID forKey:@"audioSessionID"];
-  [v9 encodeInt64:self->_indexingHash forKey:@"_indexingHash"];
-  [v9 encodeObject:self->_donationMetadata forKey:@"donationMetadata"];
-  [v9 encodeBool:self->_shouldForwardToAppOnSucccess forKey:@"_shouldForwardToAppOnSucccess"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_backingStore forKey:@"backingStore"];
+  [coderCopy encodeObject:self->_parameterCombinations forKey:@"parameterCombinations"];
+  [coderCopy encodeObject:self->_recordRoute forKey:@"recordRoute"];
+  [coderCopy encodeObject:self->_recordDeviceUID forKey:@"recordDeviceUID"];
+  [coderCopy encodeObject:self->_recordDeviceIdentifier forKey:@"recordDeviceIdentifier"];
+  [coderCopy encodeInt32:self->_audioSessionID forKey:@"audioSessionID"];
+  [coderCopy encodeInt64:self->_indexingHash forKey:@"_indexingHash"];
+  [coderCopy encodeObject:self->_donationMetadata forKey:@"donationMetadata"];
+  [coderCopy encodeBool:self->_shouldForwardToAppOnSucccess forKey:@"_shouldForwardToAppOnSucccess"];
   parameterContexts = self->_parameterContexts;
   if (parameterContexts && ![(INParameterContexts *)parameterContexts _isEmpty])
   {
     v5 = self->_parameterContexts;
     v6 = objc_alloc_init(INJSONEncoder);
-    v7 = [(INIntent *)self _codableDescription];
-    v8 = [(INParameterContexts *)v5 _intents_encodeWithJSONEncoder:v6 codableDescription:v7];
+    _codableDescription = [(INIntent *)self _codableDescription];
+    v8 = [(INParameterContexts *)v5 _intents_encodeWithJSONEncoder:v6 codableDescription:_codableDescription];
 
-    [v9 encodeObject:v8 forKey:@"_parameterContexts"];
+    [coderCopy encodeObject:v8 forKey:@"_parameterContexts"];
   }
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 intents_setPlistSafeObject:self->_identifier forKey:@"identifier"];
+  parametersCopy = parameters;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary intents_setPlistSafeObject:self->_identifier forKey:@"identifier"];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -3370,7 +3370,7 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
     v9 = self->_backingStore;
     v10 = (v39 + 5);
     obj = v39[5];
-    [v7 intents_setWidgetPlistRepresentable:v9 forKey:@"backingStore" parameters:v6 error:&obj];
+    [dictionary intents_setWidgetPlistRepresentable:v9 forKey:@"backingStore" parameters:parametersCopy error:&obj];
     objc_storeStrong(v10, obj);
   }
 
@@ -3389,10 +3389,10 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
   v18 = v39[5];
   if (v18)
   {
-    if (a4)
+    if (error)
     {
       v19 = 0;
-      *a4 = v18;
+      *error = v18;
       goto LABEL_20;
     }
 
@@ -3401,31 +3401,31 @@ void __32__INIntent_setParametersByName___block_invoke(uint64_t a1, void *a2, vo
 
   if (self->_parameterCombinations)
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     parameterCombinations = self->_parameterCombinations;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __62__INIntent_widgetPlistableRepresentationWithParameters_error___block_invoke;
     v32[3] = &unk_1E7283D30;
-    v33 = v6;
+    v33 = parametersCopy;
     v36 = &v38;
-    v22 = v20;
+    v22 = array;
     v34 = v22;
-    v35 = self;
+    selfCopy = self;
     [(NSDictionary *)parameterCombinations enumerateKeysAndObjectsUsingBlock:v32];
     v23 = v39[5];
     if (v23)
     {
-      if (a4)
+      if (error)
       {
         v24 = v23;
-        *a4 = v23;
+        *error = v23;
       }
     }
 
     else
     {
-      [v7 intents_setPlistSafeObject:v22 forKey:@"parameterCombinations"];
+      [dictionary intents_setPlistSafeObject:v22 forKey:@"parameterCombinations"];
     }
 
     if (v23)
@@ -3439,7 +3439,7 @@ LABEL_13:
   if (self->_indexingHash)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
-    [v7 intents_setPlistSafeObject:v25 forKey:@"_indexingHash"];
+    [dictionary intents_setPlistSafeObject:v25 forKey:@"_indexingHash"];
   }
 
   parameterContexts = self->_parameterContexts;
@@ -3447,13 +3447,13 @@ LABEL_13:
   {
     v27 = self->_parameterContexts;
     v28 = objc_alloc_init(INJSONEncoder);
-    v29 = [(INIntent *)self _codableDescription];
-    v30 = [(INParameterContexts *)v27 _intents_encodeWithJSONEncoder:v28 codableDescription:v29];
+    _codableDescription = [(INIntent *)self _codableDescription];
+    v30 = [(INParameterContexts *)v27 _intents_encodeWithJSONEncoder:v28 codableDescription:_codableDescription];
 
-    [v7 intents_setPlistSafeObject:v30 forKey:@"_parameterContexts"];
+    [dictionary intents_setPlistSafeObject:v30 forKey:@"_parameterContexts"];
   }
 
-  v19 = v7;
+  v19 = dictionary;
 LABEL_20:
   _Block_object_dispose(&v38, 8);
 
@@ -3500,8 +3500,8 @@ void __62__INIntent_widgetPlistableRepresentationWithParameters_error___block_in
     v9[0] = @"id";
     v9[1] = @"data";
     v10[0] = identifier;
-    v5 = [(PBCodable *)self->_backingStore data];
-    v10[1] = v5;
+    data = [(PBCodable *)self->_backingStore data];
+    v10[1] = data;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   }
 
@@ -3515,11 +3515,11 @@ void __62__INIntent_widgetPlistableRepresentationWithParameters_error___block_in
   return v6;
 }
 
-- (id)_copyApplyingNewBackingStoreData:(id)a3 error:(id *)a4
+- (id)_copyApplyingNewBackingStoreData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:@"data"];
-  v8 = [v6 objectForKey:@"id"];
+  dataCopy = data;
+  v7 = [dataCopy objectForKey:@"data"];
+  v8 = [dataCopy objectForKey:@"id"];
 
   if (!v8)
   {
@@ -3528,10 +3528,10 @@ void __62__INIntent_widgetPlistableRepresentationWithParameters_error___block_in
 
     if (v21)
     {
-      if (a4)
+      if (error)
       {
         v22 = v21;
-        *a4 = v21;
+        *error = v21;
       }
 
 LABEL_12:
@@ -3551,17 +3551,17 @@ LABEL_12:
     v17 = [v13 stringWithFormat:@"Unsupported backing store to set data on: %@", v16];
     v18 = INIntentError(8001, v17, 0);
 
-    if (a4 && v18)
+    if (error && v18)
     {
       v19 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
     goto LABEL_12;
   }
 
   v10 = [(INIntent *)self copyWithZone:0];
-  [v10[12] _setData:v7 error:a4];
+  [v10[12] _setData:v7 error:error];
   v11 = [v8 copy];
   v12 = v10[10];
   v10[10] = v11;
@@ -3572,18 +3572,18 @@ LABEL_13:
   return v10;
 }
 
-- (id)_copyWithoutBackingStoreData:(id *)a3
+- (id)_copyWithoutBackingStoreData:(id *)data
 {
   backingStore = self->_backingStore;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = [(INIntent *)self copyWithZone:0];
-    [v6[12] _setData:0 error:a3];
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    [v6[12] _setData:0 error:data];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v9 = v6[10];
-    v6[10] = v8;
+    v6[10] = uUIDString;
 
     v6[8] = 0;
   }
@@ -3597,10 +3597,10 @@ LABEL_13:
     v14 = [v10 stringWithFormat:@"Unsupported backing store to set data on: %@", v13];
     v15 = INIntentError(8001, v14, 0);
 
-    if (a3 && v15)
+    if (data && v15)
     {
       v16 = v15;
-      *a3 = v15;
+      *data = v15;
     }
 
     return 0;
@@ -3609,12 +3609,12 @@ LABEL_13:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_identifier copyWithZone:a3];
+    v6 = [(NSString *)self->_identifier copyWithZone:zone];
     v7 = *(v5 + 80);
     *(v5 + 80) = v6;
 
@@ -3623,12 +3623,12 @@ LABEL_13:
     *(v5 + 96) = v8;
 
     objc_storeStrong((v5 + 40), self->_parameterCombinations);
-    v10 = [(NSString *)self->_recordRoute copyWithZone:a3];
+    v10 = [(NSString *)self->_recordRoute copyWithZone:zone];
     v11 = *(v5 + 104);
     *(v5 + 104) = v10;
 
     objc_storeStrong((v5 + 112), self->_recordDeviceUID);
-    v12 = [(NSString *)self->_recordDeviceIdentifier copyWithZone:a3];
+    v12 = [(NSString *)self->_recordDeviceIdentifier copyWithZone:zone];
     v13 = *(v5 + 120);
     *(v5 + 120) = v12;
 
@@ -3636,7 +3636,7 @@ LABEL_13:
     objc_storeStrong((v5 + 56), self->_parameterContexts);
     *(v5 + 32) = self->_shouldForwardToAppOnSucccess;
     *(v5 + 64) = self->_indexingHash;
-    v14 = [(INIntentDonationMetadata *)self->_donationMetadata copyWithZone:a3];
+    v14 = [(INIntentDonationMetadata *)self->_donationMetadata copyWithZone:zone];
     v15 = *(v5 + 88);
     *(v5 + 88) = v14;
   }
@@ -3646,55 +3646,55 @@ LABEL_13:
 
 - (id)_emptyCopy
 {
-  v3 = [(INIntent *)self _inCodable];
+  _inCodable = [(INIntent *)self _inCodable];
 
-  if (v3)
+  if (_inCodable)
   {
-    v4 = [(INIntent *)self copy];
-    v5 = [v4 _inCodable];
-    [v5 setNilValueForAllKeys];
+    _init = [(INIntent *)self copy];
+    _inCodable2 = [_init _inCodable];
+    [_inCodable2 setNilValueForAllKeys];
   }
 
   else
   {
-    v4 = [objc_alloc(objc_opt_class()) _init];
-    if (!v4)
+    _init = [objc_alloc(objc_opt_class()) _init];
+    if (!_init)
     {
       goto LABEL_6;
     }
 
     backingStore = self->_backingStore;
     v7 = objc_alloc_init(objc_opt_class());
-    v8 = *(v4 + 96);
-    *(v4 + 96) = v7;
+    v8 = *(_init + 96);
+    *(_init + 96) = v7;
 
-    objc_storeStrong((v4 + 40), self->_parameterCombinations);
-    objc_storeStrong((v4 + 104), self->_recordRoute);
-    objc_storeStrong((v4 + 112), self->_recordDeviceUID);
-    objc_storeStrong((v4 + 120), self->_recordDeviceIdentifier);
-    *(v4 + 36) = self->_audioSessionID;
-    objc_storeStrong((v4 + 56), self->_parameterContexts);
-    *(v4 + 32) = self->_shouldForwardToAppOnSucccess;
-    v5 = [(INIntent *)self _metadata];
-    [v4 _setMetadata:v5];
+    objc_storeStrong((_init + 40), self->_parameterCombinations);
+    objc_storeStrong((_init + 104), self->_recordRoute);
+    objc_storeStrong((_init + 112), self->_recordDeviceUID);
+    objc_storeStrong((_init + 120), self->_recordDeviceIdentifier);
+    *(_init + 36) = self->_audioSessionID;
+    objc_storeStrong((_init + 56), self->_parameterContexts);
+    *(_init + 32) = self->_shouldForwardToAppOnSucccess;
+    _inCodable2 = [(INIntent *)self _metadata];
+    [_init _setMetadata:_inCodable2];
   }
 
 LABEL_6:
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  v11 = *(v4 + 80);
-  *(v4 + 80) = v10;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = *(_init + 80);
+  *(_init + 80) = uUIDString;
 
-  return v4;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
     v8 = 0;
     if (identifier == v5[10] || [(NSString *)identifier isEqual:?])
@@ -3715,19 +3715,19 @@ LABEL_6:
   return v8;
 }
 
-- (void)trimDataAgainstTCCForAuditToken:(id *)a3 bundle:(id)a4
+- (void)trimDataAgainstTCCForAuditToken:(id *)token bundle:(id)bundle
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(INIntent *)self _metadata];
-  v8 = INPrivacyEntitlementOptionsForIntentMetadata(v7);
+  bundleCopy = bundle;
+  _metadata = [(INIntent *)self _metadata];
+  v8 = INPrivacyEntitlementOptionsForIntentMetadata(_metadata);
 
   if (v8)
   {
-    v9 = *&a3->var0[4];
-    *v17 = *a3->var0;
+    v9 = *&token->var0[4];
+    *v17 = *token->var0;
     *&v17[16] = v9;
-    v10 = INPrivacyEntitlementOptionsMissingForExtension(v8, v17, v6);
+    v10 = INPrivacyEntitlementOptionsMissingForExtension(v8, v17, bundleCopy);
     if (v10)
     {
       v11 = v10;
@@ -3743,7 +3743,7 @@ LABEL_6:
         _os_log_impl(&dword_18E991000, v13, OS_LOG_TYPE_INFO, "%s Missing required entitlement: %{public}@, redacting data accordingly", v17, 0x16u);
       }
 
-      v15 = INContainingAppBundleIdentifierForBundle(v6);
+      v15 = INContainingAppBundleIdentifierForBundle(bundleCopy);
       [(INIntent *)self _redactForMissingPrivacyEntitlementOptions:v11 containingAppBundleId:v15];
     }
   }
@@ -3753,17 +3753,17 @@ LABEL_6:
 
 - (BOOL)_isUserConfirmationRequired
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 userConfirmationRequired];
+  _metadata = [(INIntent *)self _metadata];
+  userConfirmationRequired = [_metadata userConfirmationRequired];
 
-  return v3;
+  return userConfirmationRequired;
 }
 
 - (id)_displayOrderedNonNilParameters
 {
   v3 = MEMORY[0x1E695DFA0];
-  v4 = [(INIntent *)self _nonNilParameters];
-  v5 = [v3 orderedSetWithSet:v4];
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  v5 = [v3 orderedSetWithSet:_nonNilParameters];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -3820,25 +3820,25 @@ uint64_t __43__INIntent__displayOrderedNonNilParameters__block_invoke(uint64_t a
 
 - (BOOL)_isEligibleForSuggestions
 {
-  v2 = [(INIntent *)self _codableDescription];
-  v3 = [v2 isEligibleForSuggestions];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  isEligibleForSuggestions = [_codableDescription isEligibleForSuggestions];
 
-  return v3;
+  return isEligibleForSuggestions;
 }
 
 - (BOOL)_isConfigurable
 {
-  v2 = [(INIntent *)self _codableDescription];
-  v3 = [v2 isConfigurable];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  isConfigurable = [_codableDescription isConfigurable];
 
-  return v3;
+  return isConfigurable;
 }
 
-- (BOOL)_hasMatchingIntentHandlerIncludingRemoteExecution:(BOOL)a3
+- (BOOL)_hasMatchingIntentHandlerIncludingRemoteExecution:(BOOL)execution
 {
-  v3 = a3;
-  v5 = [(INIntent *)self extensionBundleId];
-  v6 = [v5 length];
+  executionCopy = execution;
+  extensionBundleId = [(INIntent *)self extensionBundleId];
+  v6 = [extensionBundleId length];
 
   if (v6)
   {
@@ -3848,63 +3848,63 @@ uint64_t __43__INIntent__displayOrderedNonNilParameters__block_invoke(uint64_t a
 
   else
   {
-    v9 = [(INIntent *)self launchId];
+    launchId = [(INIntent *)self launchId];
     v17 = 0;
-    INExtractAppInfoFromSiriLaunchId(v9, &v17, 0);
+    INExtractAppInfoFromSiriLaunchId(launchId, &v17, 0);
     v7 = v17;
 
     v10 = [INAppInfo appInfoWithIntent:self];
-    v11 = [v10 supportedIntents];
-    v12 = [(INIntent *)self _className];
-    v8 = [v11 containsObject:v12];
+    supportedIntents = [v10 supportedIntents];
+    _className = [(INIntent *)self _className];
+    v8 = [supportedIntents containsObject:_className];
 
-    if (!v8 && v3 && v7)
+    if (!v8 && executionCopy && v7)
     {
       v13 = [_INVCIntentDefinitionManagerClass() appInfoForBundleID:v7];
-      v14 = [v13 supportedActionsByExtensions];
-      v15 = [(INIntent *)self _className];
-      LOBYTE(v8) = [v14 containsObject:v15];
+      supportedActionsByExtensions = [v13 supportedActionsByExtensions];
+      _className2 = [(INIntent *)self _className];
+      LOBYTE(v8) = [supportedActionsByExtensions containsObject:_className2];
     }
   }
 
   return v8;
 }
 
-- (BOOL)_supportsBackgroundExecutionWithOptions:(unint64_t)a3
+- (BOOL)_supportsBackgroundExecutionWithOptions:(unint64_t)options
 {
-  v4 = [(INIntent *)self _hasMatchingIntentHandlerIncludingRemoteExecution:a3 & 1];
-  v5 = [(INIntent *)self _currentParameterCombination];
-  v6 = v5;
-  if (v5)
+  v4 = [(INIntent *)self _hasMatchingIntentHandlerIncludingRemoteExecution:options & 1];
+  _currentParameterCombination = [(INIntent *)self _currentParameterCombination];
+  v6 = _currentParameterCombination;
+  if (_currentParameterCombination)
   {
-    v4 &= [v5 supportsBackgroundExecution];
+    v4 &= [_currentParameterCombination supportsBackgroundExecution];
   }
 
   return v4;
 }
 
-- (id)_validParameterCombinationsWithSchema:(id)a3
+- (id)_validParameterCombinationsWithSchema:(id)schema
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  schemaCopy = schema;
+  if (schemaCopy)
   {
-    v5 = [(INIntent *)self _className];
-    v6 = [v4 _parameterCombinationsForClassName:v5];
+    _className = [(INIntent *)self _className];
+    _parameterCombinations = [schemaCopy _parameterCombinationsForClassName:_className];
   }
 
   else
   {
-    v6 = [(INIntent *)self _parameterCombinations];
+    _parameterCombinations = [(INIntent *)self _parameterCombinations];
   }
 
-  v7 = [(INIntent *)self _nonNilParameters];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = _parameterCombinations;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -3920,10 +3920,10 @@ uint64_t __43__INIntent__displayOrderedNonNilParameters__block_invoke(uint64_t a
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        if ([v14 isSubsetOfSet:{v7, v18}])
+        if ([v14 isSubsetOfSet:{_nonNilParameters, v18}])
         {
           v15 = [v9 objectForKey:v14];
-          [v8 setObject:v15 forKey:v14];
+          [dictionary setObject:v15 forKey:v14];
         }
       }
 
@@ -3935,18 +3935,18 @@ uint64_t __43__INIntent__displayOrderedNonNilParameters__block_invoke(uint64_t a
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return dictionary;
 }
 
 - (NSDictionary)_resolvableParameterCombinations
 {
-  v3 = [(INIntent *)self _codableDescription];
-  if (v3)
+  _codableDescription = [(INIntent *)self _codableDescription];
+  if (_codableDescription)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = _codableDescription;
     }
 
     else
@@ -3962,8 +3962,8 @@ uint64_t __43__INIntent__displayOrderedNonNilParameters__block_invoke(uint64_t a
 
   v5 = v4;
 
-  v6 = [(INIntent *)self _parameterCombinations];
-  v7 = [v5 resolvableParameterCombinationsWithParameterCombinations:v6];
+  _parameterCombinations = [(INIntent *)self _parameterCombinations];
+  v7 = [v5 resolvableParameterCombinationsWithParameterCombinations:_parameterCombinations];
 
   return v7;
 }
@@ -4000,44 +4000,44 @@ id __46__INIntent__configurableParameterCombinations__block_invoke(uint64_t a1, 
 
 - (id)_currentParameterCombination
 {
-  v3 = [(INIntent *)self _parameterCombinations];
-  v4 = [(INIntent *)self _nonNilParameters];
-  v5 = [v3 objectForKey:v4];
+  _parameterCombinations = [(INIntent *)self _parameterCombinations];
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  v5 = [_parameterCombinations objectForKey:_nonNilParameters];
 
   return v5;
 }
 
-- (id)_querySchemaWithBlock:(id)a3 contentOptions:(unint64_t)a4
+- (id)_querySchemaWithBlock:(id)block contentOptions:(unint64_t)options
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(INIntent *)self launchId];
+  blockCopy = block;
+  launchId = [(INIntent *)self launchId];
 
-  if (!v7)
+  if (!launchId)
   {
     v15 = 0;
 LABEL_23:
     v32 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v33 = [INSchema _defaultSchemaForBundle:v32 contentOptions:a4];
+    v33 = [INSchema _defaultSchemaForBundle:v32 contentOptions:options];
 
-    v24 = v6[2](v6, v33);
+    v24 = blockCopy[2](blockCopy, v33);
     v15 = v33;
     goto LABEL_24;
   }
 
-  v8 = [(INIntent *)self launchId];
+  launchId2 = [(INIntent *)self launchId];
   v38 = 0;
-  INExtractAppInfoFromSiriLaunchId(v8, &v38, 0);
+  INExtractAppInfoFromSiriLaunchId(launchId2, &v38, 0);
   v9 = v38;
 
   CanMapLSDatabase = INThisProcessCanMapLSDatabase(0);
-  v11 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 isEqualToString:v9];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  bundleIdentifier = [bundleRecordForCurrentProcess bundleIdentifier];
+  v13 = [bundleIdentifier isEqualToString:v9];
 
   if (v13)
   {
-    v14 = v11;
+    v14 = bundleRecordForCurrentProcess;
   }
 
   else if (CanMapLSDatabase)
@@ -4067,14 +4067,14 @@ LABEL_23:
     v14 = 0;
   }
 
-  v19 = [v14 intentDefinitionURLs];
-  v20 = [(INIntent *)self _className];
-  v21 = [v19 objectForKey:v20];
+  intentDefinitionURLs = [v14 intentDefinitionURLs];
+  _className = [(INIntent *)self _className];
+  v21 = [intentDefinitionURLs objectForKey:_className];
 
   if (v21)
   {
     v22 = v14;
-    v36 = v11;
+    v36 = bundleRecordForCurrentProcess;
     if (v22)
     {
       objc_opt_class();
@@ -4096,11 +4096,11 @@ LABEL_23:
 
     v25 = v23;
 
-    v26 = [v25 containingBundleRecord];
-    v27 = v26;
-    if (v26)
+    containingBundleRecord = [v25 containingBundleRecord];
+    v27 = containingBundleRecord;
+    if (containingBundleRecord)
     {
-      v28 = v26;
+      v28 = containingBundleRecord;
     }
 
     else
@@ -4110,15 +4110,15 @@ LABEL_23:
 
     v29 = v28;
 
-    v30 = [v29 bundleIdentifier];
+    bundleIdentifier2 = [v29 bundleIdentifier];
 
     v39 = v21;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-    v15 = [INSchema _schemaWithIntentDefinitionURLs:v31 bundleIdentifier:v9 mainBundleIdentifier:v30 contentOptions:a4];
+    v15 = [INSchema _schemaWithIntentDefinitionURLs:v31 bundleIdentifier:v9 mainBundleIdentifier:bundleIdentifier2 contentOptions:options];
 
-    v24 = v6[2](v6, v15);
+    v24 = blockCopy[2](blockCopy, v15);
 
-    v11 = v36;
+    bundleRecordForCurrentProcess = v36;
   }
 
   else
@@ -4139,11 +4139,11 @@ LABEL_24:
   return v24;
 }
 
-- (void)_setParameterImages:(id)a3
+- (void)_setParameterImages:(id)images
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _parameterImages];
-  v6 = [v5 isEqualToArray:v4];
+  imagesCopy = images;
+  _parameterImages = [(INIntent *)self _parameterImages];
+  v6 = [_parameterImages isEqualToArray:imagesCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -4154,9 +4154,9 @@ LABEL_24:
     v10[3] = &unk_1E7283CB8;
     v11 = v7;
     v8 = v7;
-    [v4 enumerateObjectsUsingBlock:v10];
-    v9 = [(INIntent *)self _metadata];
-    [v9 setParameterImages:v8];
+    [imagesCopy enumerateObjectsUsingBlock:v10];
+    _metadata = [(INIntent *)self _metadata];
+    [_metadata setParameterImages:v8];
   }
 }
 
@@ -4204,7 +4204,7 @@ void __32__INIntent__setParameterImages___block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)_sortedParameterImages
 {
-  v3 = [(INIntent *)self _parameterImages];
+  _parameterImages = [(INIntent *)self _parameterImages];
   if ([(INIntent *)self _type]== 1)
   {
     v4 = v13;
@@ -4215,7 +4215,7 @@ void __32__INIntent__setParameterImages___block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v6 = v3;
+    v6 = _parameterImages;
     if ([(INIntent *)self _type]!= 2)
     {
       goto LABEL_7;
@@ -4231,7 +4231,7 @@ void __32__INIntent__setParameterImages___block_invoke(uint64_t a1, void *a2)
   v4[3] = &unk_1E7283C68;
   v4[4] = self;
   v7 = MEMORY[0x193AD7780]();
-  v6 = v3;
+  v6 = _parameterImages;
   if (v7)
   {
     v10[0] = MEMORY[0x1E69E9820];
@@ -4240,7 +4240,7 @@ void __32__INIntent__setParameterImages___block_invoke(uint64_t a1, void *a2)
     v10[3] = &unk_1E7283C90;
     v11 = v7;
     v8 = v7;
-    v6 = [v3 sortedArrayUsingComparator:v10];
+    v6 = [_parameterImages sortedArrayUsingComparator:v10];
   }
 
 LABEL_7:
@@ -4311,41 +4311,41 @@ uint64_t __34__INIntent__sortedParameterImages__block_invoke_3(uint64_t a1, uint
   }
 }
 
-- (id)_imageForParameter:(id)a3
+- (id)_imageForParameter:(id)parameter
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  parameterCopy = parameter;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(INIntent *)self _parameterImages];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  _parameterImages = [(INIntent *)self _parameterImages];
+  image = [_parameterImages countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (image)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != image; i = i + 1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_parameterImages);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 parameter];
-        v11 = [v10 isEqualToParameter:v4];
+        parameter = [v9 parameter];
+        v11 = [parameter isEqualToParameter:parameterCopy];
 
         if (v11)
         {
-          v6 = [v9 image];
+          image = [v9 image];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      image = [_parameterImages countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (image)
       {
         continue;
       }
@@ -4358,14 +4358,14 @@ LABEL_11:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return image;
 }
 
-- (void)_setImage:(id)a3 forParameter:(id)a4
+- (void)_setImage:(id)image forParameter:(id)parameter
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  imageCopy = image;
+  parameterCopy = parameter;
+  v8 = imageCopy;
   if (v8)
   {
     objc_opt_class();
@@ -4387,11 +4387,11 @@ LABEL_11:
 
   v10 = v9;
 
-  v11 = [(INIntent *)self _parameterImages];
+  _parameterImages = [(INIntent *)self _parameterImages];
   if (v10)
   {
-    v12 = [[INParameterImage alloc] initWithParameter:v7 image:v10];
-    v13 = [v11 arrayByAddingObject:v12];
+    v12 = [[INParameterImage alloc] initWithParameter:parameterCopy image:v10];
+    v13 = [_parameterImages arrayByAddingObject:v12];
     [(INIntent *)self _setParameterImages:v13];
   }
 
@@ -4402,9 +4402,9 @@ LABEL_11:
     v17[1] = 3221225472;
     v17[2] = __35__INIntent__setImage_forParameter___block_invoke;
     v17[3] = &unk_1E7283C40;
-    v18 = v7;
+    v18 = parameterCopy;
     v15 = [v14 predicateWithBlock:v17];
-    v16 = [v11 filteredArrayUsingPredicate:v15];
+    v16 = [_parameterImages filteredArrayUsingPredicate:v15];
     [(INIntent *)self _setParameterImages:v16];
   }
 }
@@ -4420,9 +4420,9 @@ uint64_t __35__INIntent__setImage_forParameter___block_invoke(uint64_t a1, void 
 - (id)_keyCodableAttributes
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(INIntent *)self _codableDescription];
-  v4 = [v3 keyAttribute];
-  v5 = [v2 if_arrayWithObjectIfNonNil:v4];
+  _codableDescription = [(INIntent *)self _codableDescription];
+  keyAttribute = [_codableDescription keyAttribute];
+  v5 = [v2 if_arrayWithObjectIfNonNil:keyAttribute];
 
   return v5;
 }
@@ -4448,41 +4448,41 @@ uint64_t __35__INIntent__setImage_forParameter___block_invoke(uint64_t a1, void 
 
 - (BOOL)didAuthenticateAppProtection
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 bypassAppProtectionAuthentication];
+  _metadata = [(INIntent *)self _metadata];
+  bypassAppProtectionAuthentication = [_metadata bypassAppProtectionAuthentication];
 
-  return v3;
+  return bypassAppProtectionAuthentication;
 }
 
 - (NSString)_preferredAudioOutputRouteId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 preferredAudioOutputRouteId];
+  _metadata = [(INIntent *)self _metadata];
+  preferredAudioOutputRouteId = [_metadata preferredAudioOutputRouteId];
 
-  return v3;
+  return preferredAudioOutputRouteId;
 }
 
 - (NSString)_mediaRouteId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 mediaRouteId];
+  _metadata = [(INIntent *)self _metadata];
+  mediaRouteId = [_metadata mediaRouteId];
 
-  return v3;
+  return mediaRouteId;
 }
 
 - (NSString)_endpointId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 endpointId];
+  _metadata = [(INIntent *)self _metadata];
+  endpointId = [_metadata endpointId];
 
-  return v3;
+  return endpointId;
 }
 
-- (void)_setAirPlayRouteIds:(id)a3
+- (void)_setAirPlayRouteIds:(id)ids
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setAirPlayRouteIds:v4];
+  idsCopy = ids;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setAirPlayRouteIds:idsCopy];
 }
 
 - (void)setDonationMetadata:(INIntentDonationMetadata *)donationMetadata
@@ -4496,8 +4496,8 @@ uint64_t __35__INIntent__setImage_forParameter___block_invoke(uint64_t a1, void 
 
 - (void)setShortcutAvailability:(INShortcutAvailabilityOptions)shortcutAvailability
 {
-  v5 = [(INIntent *)self _metadata];
-  [v5 clearShortcutAvailabilities];
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata clearShortcutAvailabilities];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -4516,37 +4516,37 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
 - (void)setSuggestedInvocationPhrase:(NSString *)suggestedInvocationPhrase
 {
   v4 = suggestedInvocationPhrase;
-  v6 = [(INIntent *)self _metadata];
-  v5 = [(NSString *)v4 _intents_encodeForProto];
+  _metadata = [(INIntent *)self _metadata];
+  _intents_encodeForProto = [(NSString *)v4 _intents_encodeForProto];
 
-  [v6 setSuggestedInvocationPhrase:v5];
+  [_metadata setSuggestedInvocationPhrase:_intents_encodeForProto];
 }
 
-- (void)_setEndpointMediaPlaybackEnabled:(id)a3
+- (void)_setEndpointMediaPlaybackEnabled:(id)enabled
 {
-  v6 = a3;
-  v4 = [(INIntent *)self _metadata];
-  if (v6)
+  enabledCopy = enabled;
+  _metadata = [(INIntent *)self _metadata];
+  if (enabledCopy)
   {
-    v5 = [v6 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  [v4 setEndpointMediaPlaybackEnabled:v5];
+  [_metadata setEndpointMediaPlaybackEnabled:bOOLValue];
 }
 
 - (NSNumber)_endpointMediaPlaybackEnabled
 {
-  v3 = [(INIntent *)self _metadata];
-  if ([v3 hasEndpointMediaPlaybackEnabled])
+  _metadata = [(INIntent *)self _metadata];
+  if ([_metadata hasEndpointMediaPlaybackEnabled])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntent *)self _metadata];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "endpointMediaPlaybackEnabled")}];
+    _metadata2 = [(INIntent *)self _metadata];
+    v6 = [v4 numberWithBool:{objc_msgSend(_metadata2, "endpointMediaPlaybackEnabled")}];
   }
 
   else
@@ -4557,31 +4557,31 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
   return v6;
 }
 
-- (void)_setMSLimitReached:(id)a3
+- (void)_setMSLimitReached:(id)reached
 {
-  v6 = a3;
-  v4 = [(INIntent *)self _metadata];
-  if (v6)
+  reachedCopy = reached;
+  _metadata = [(INIntent *)self _metadata];
+  if (reachedCopy)
   {
-    v5 = [v6 BOOLValue];
+    bOOLValue = [reachedCopy BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  [v4 setMsLimitReached:v5];
+  [_metadata setMsLimitReached:bOOLValue];
 }
 
 - (NSNumber)_msLimitReached
 {
-  v3 = [(INIntent *)self _metadata];
-  if ([v3 hasMsLimitReached])
+  _metadata = [(INIntent *)self _metadata];
+  if ([_metadata hasMsLimitReached])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntent *)self _metadata];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "msLimitReached")}];
+    _metadata2 = [(INIntent *)self _metadata];
+    v6 = [v4 numberWithBool:{objc_msgSend(_metadata2, "msLimitReached")}];
   }
 
   else
@@ -4592,29 +4592,29 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
   return v6;
 }
 
-- (void)_setIsOwnedByCurrentUser:(id)a3
+- (void)_setIsOwnedByCurrentUser:(id)user
 {
-  v5 = a3;
-  v4 = [(INIntent *)self _metadata];
-  if (v5)
+  userCopy = user;
+  _metadata = [(INIntent *)self _metadata];
+  if (userCopy)
   {
-    [v4 setIsOwnedByCurrentUser:{objc_msgSend(v5, "BOOLValue")}];
+    [_metadata setIsOwnedByCurrentUser:{objc_msgSend(userCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasIsOwnedByCurrentUser:0];
+    [_metadata setHasIsOwnedByCurrentUser:0];
   }
 }
 
 - (NSNumber)_isOwnedByCurrentUser
 {
-  v3 = [(INIntent *)self _metadata];
-  if ([v3 hasIsOwnedByCurrentUser])
+  _metadata = [(INIntent *)self _metadata];
+  if ([_metadata hasIsOwnedByCurrentUser])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntent *)self _metadata];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "isOwnedByCurrentUser")}];
+    _metadata2 = [(INIntent *)self _metadata];
+    v6 = [v4 numberWithBool:{objc_msgSend(_metadata2, "isOwnedByCurrentUser")}];
   }
 
   else
@@ -4625,85 +4625,85 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
   return v6;
 }
 
-- (void)_setOriginatingDeviceRapportEffectiveIdentifier:(id)a3
+- (void)_setOriginatingDeviceRapportEffectiveIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setOriginatingDeviceRapportEffectiveId:v4];
+  identifierCopy = identifier;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setOriginatingDeviceRapportEffectiveId:identifierCopy];
 }
 
 - (NSString)_originatingDeviceRapportEffectiveIdentifier
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 originatingDeviceRapportEffectiveId];
+  _metadata = [(INIntent *)self _metadata];
+  originatingDeviceRapportEffectiveId = [_metadata originatingDeviceRapportEffectiveId];
 
-  return v3;
+  return originatingDeviceRapportEffectiveId;
 }
 
-- (void)_setOriginatingDeviceRapportMediaSystemIdentifier:(id)a3
+- (void)_setOriginatingDeviceRapportMediaSystemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setOriginatingDeviceRapportMediaSystemId:v4];
+  identifierCopy = identifier;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setOriginatingDeviceRapportMediaSystemId:identifierCopy];
 }
 
 - (NSString)_originatingDeviceRapportMediaSystemIdentifier
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 originatingDeviceRapportMediaSystemId];
+  _metadata = [(INIntent *)self _metadata];
+  originatingDeviceRapportMediaSystemId = [_metadata originatingDeviceRapportMediaSystemId];
 
-  return v3;
+  return originatingDeviceRapportMediaSystemId;
 }
 
-- (void)_setOriginatingDeviceIdsIdentifier:(id)a3
+- (void)_setOriginatingDeviceIdsIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setOriginatingDeviceIdsIdentifier:v4];
+  identifierCopy = identifier;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setOriginatingDeviceIdsIdentifier:identifierCopy];
 }
 
 - (NSString)_originatingDeviceIDSIdentifier
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 originatingDeviceIdsIdentifier];
+  _metadata = [(INIntent *)self _metadata];
+  originatingDeviceIdsIdentifier = [_metadata originatingDeviceIdsIdentifier];
 
-  return v3;
+  return originatingDeviceIdsIdentifier;
 }
 
 - (BOOL)_isPrimaryDisplayDisabled
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 isPrimaryDisplayDisabled];
+  _metadata = [(INIntent *)self _metadata];
+  isPrimaryDisplayDisabled = [_metadata isPrimaryDisplayDisabled];
 
-  return v3;
+  return isPrimaryDisplayDisabled;
 }
 
-- (void)_setIdiom:(int64_t)a3
+- (void)_setIdiom:(int64_t)idiom
 {
-  v4 = [(INIntent *)self _metadata];
-  v6 = v4;
-  if ((a3 - 1) < 7)
+  _metadata = [(INIntent *)self _metadata];
+  v6 = _metadata;
+  if ((idiom - 1) < 7)
   {
-    v5 = a3;
+    idiomCopy = idiom;
   }
 
   else
   {
-    v5 = 0x7FFFFFFFLL;
+    idiomCopy = 0x7FFFFFFFLL;
   }
 
-  [v4 setIdiom:v5];
+  [_metadata setIdiom:idiomCopy];
 }
 
 - (int64_t)_idiom
 {
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 hasIdiom];
-  v5 = [(INIntent *)self _metadata];
-  v6 = [v5 idiom];
-  if (((v6 - 1 < 7) & v4) != 0)
+  _metadata = [(INIntent *)self _metadata];
+  hasIdiom = [_metadata hasIdiom];
+  _metadata2 = [(INIntent *)self _metadata];
+  idiom = [_metadata2 idiom];
+  if (((idiom - 1 < 7) & hasIdiom) != 0)
   {
-    v7 = v6;
+    v7 = idiom;
   }
 
   else
@@ -4716,40 +4716,40 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
 
 - (int64_t)triggerMethod
 {
-  v3 = [(INIntent *)self _metadata];
-  v4 = [v3 hasTriggerMethod];
-  v5 = [(INIntent *)self _metadata];
-  v6 = [v5 triggerMethod];
+  _metadata = [(INIntent *)self _metadata];
+  hasTriggerMethod = [_metadata hasTriggerMethod];
+  _metadata2 = [(INIntent *)self _metadata];
+  triggerMethod = [_metadata2 triggerMethod];
   v7 = 3;
   v8 = 4;
-  if (v6 != 30)
+  if (triggerMethod != 30)
   {
     v8 = 0;
   }
 
-  if (v6 != 20)
+  if (triggerMethod != 20)
   {
     v7 = v8;
   }
 
   v9 = 1;
   v10 = 2;
-  if (v6 != 10)
+  if (triggerMethod != 10)
   {
     v10 = 0;
   }
 
-  if (v6)
+  if (triggerMethod)
   {
     v9 = v10;
   }
 
-  if (v6 <= 19)
+  if (triggerMethod <= 19)
   {
     v7 = v9;
   }
 
-  if (v4)
+  if (hasTriggerMethod)
   {
     v11 = v7;
   }
@@ -4762,119 +4762,119 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
   return v11;
 }
 
-- (void)_setExecutionContext:(int64_t)a3
+- (void)_setExecutionContext:(int64_t)context
 {
-  v4 = [(INIntent *)self _metadata];
-  v6 = v4;
-  if ((a3 - 1) < 0xA)
+  _metadata = [(INIntent *)self _metadata];
+  v6 = _metadata;
+  if ((context - 1) < 0xA)
   {
-    v5 = a3;
+    contextCopy = context;
   }
 
   else
   {
-    v5 = 0x7FFFFFFFLL;
+    contextCopy = 0x7FFFFFFFLL;
   }
 
-  [v4 setExecutionContext:v5];
+  [_metadata setExecutionContext:contextCopy];
 }
 
-- (void)_setNanoLaunchId:(id)a3
+- (void)_setNanoLaunchId:(id)id
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setNanoLaunchId:v4];
+  idCopy = id;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setNanoLaunchId:idCopy];
 }
 
 - (NSString)_nanoLaunchId
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 nanoLaunchId];
+  _metadata = [(INIntent *)self _metadata];
+  nanoLaunchId = [_metadata nanoLaunchId];
 
-  return v3;
+  return nanoLaunchId;
 }
 
-- (void)_setUiExtensionBundleId:(id)a3
+- (void)_setUiExtensionBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setSystemUIExtensionBundleId:v4];
+  idCopy = id;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setSystemUIExtensionBundleId:idCopy];
 }
 
-- (void)_setExtensionBundleId:(id)a3
+- (void)_setExtensionBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setSystemExtensionBundleId:v4];
+  idCopy = id;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setSystemExtensionBundleId:idCopy];
 }
 
-- (void)_setLaunchId:(id)a3
+- (void)_setLaunchId:(id)id
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setLaunchId:v4];
+  idCopy = id;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setLaunchId:idCopy];
 }
 
-- (void)_setDefaultImage:(id)a3
+- (void)_setDefaultImage:(id)image
 {
-  v4 = a3;
-  v7 = [(INIntent *)self _metadata];
-  v5 = INIntentSlotValueTransformToImageValue(v4);
+  imageCopy = image;
+  _metadata = [(INIntent *)self _metadata];
+  v5 = INIntentSlotValueTransformToImageValue(imageCopy);
 
   if (v5)
   {
-    [v7 setDefaultImageValue:v5];
+    [_metadata setDefaultImageValue:v5];
   }
 
   else
   {
     v6 = objc_alloc_init(_INPBImageValue);
-    [v7 setDefaultImageValue:v6];
+    [_metadata setDefaultImageValue:v6];
   }
 }
 
-- (void)_setCategoryVerb:(id)a3
+- (void)_setCategoryVerb:(id)verb
 {
-  v4 = a3;
-  v5 = [(INIntent *)self _metadata];
-  [v5 setCategoryVerb:v4];
+  verbCopy = verb;
+  _metadata = [(INIntent *)self _metadata];
+  [_metadata setCategoryVerb:verbCopy];
 }
 
-- (void)_setIntentCategory:(int64_t)a3
+- (void)_setIntentCategory:(int64_t)category
 {
-  v4 = [(INIntent *)self _metadata];
-  if ((a3 - 1) > 0x13)
+  _metadata = [(INIntent *)self _metadata];
+  if ((category - 1) > 0x13)
   {
     v5 = 0x7FFFFFFFLL;
   }
 
   else
   {
-    v5 = dword_18EE5F3A0[a3 - 1];
+    v5 = dword_18EE5F3A0[category - 1];
   }
 
-  v6 = v4;
-  [v4 setIntentCategory:v5];
+  v6 = _metadata;
+  [_metadata setIntentCategory:v5];
 }
 
 - (NSString)utteranceString
 {
-  v2 = [(INIntent *)self _metadata];
-  v3 = [v2 userUtterance];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _metadata = [(INIntent *)self _metadata];
+  userUtterance = [_metadata userUtterance];
+  v4 = INIntentSlotValueTransformFromString(userUtterance);
 
   return v4;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   if ([(INIntent *)self _type]== 2)
   {
-    v4 = [(INIntent *)self _inCodable];
-    if ([v4 isValidKey:@"_metadata"])
+    _inCodable = [(INIntent *)self _inCodable];
+    if ([_inCodable isValidKey:@"_metadata"])
     {
-      [v4 setValue:v5 forPropertyNamed:@"_metadata"];
+      [_inCodable setValue:metadataCopy forPropertyNamed:@"_metadata"];
     }
   }
 
@@ -4885,25 +4885,25 @@ void __36__INIntent_setShortcutAvailability___block_invoke(uint64_t a1, uint64_t
       goto LABEL_7;
     }
 
-    v4 = [(INIntent *)self _typedBackingStore];
-    [v4 setMetadata:v5];
+    _inCodable = [(INIntent *)self _typedBackingStore];
+    [_inCodable setMetadata:metadataCopy];
   }
 
 LABEL_7:
 }
 
-- (id)_initWithIdentifier:(id)a3 schema:(id)a4 name:(id)a5 data:(id)a6
+- (id)_initWithIdentifier:(id)identifier schema:(id)schema name:(id)name data:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 intentCodableDescriptionWithIntentClassName:v12];
+  identifierCopy = identifier;
+  schemaCopy = schema;
+  nameCopy = name;
+  dataCopy = data;
+  v14 = [schemaCopy intentCodableDescriptionWithIntentClassName:nameCopy];
   if (v14)
   {
     v15 = objc_opt_class();
-    v16 = NSClassFromString(v12);
+    v16 = NSClassFromString(nameCopy);
     if (v16)
     {
       v17 = v16;
@@ -4925,7 +4925,7 @@ LABEL_7:
     if (v19)
     {
       v20 = objc_opt_class();
-      v21 = NSClassFromString(v12);
+      v21 = NSClassFromString(nameCopy);
       if (v21)
       {
         v22 = v21;
@@ -4944,10 +4944,10 @@ LABEL_7:
 
       v24 = v21;
       v25 = INIntentSchemaGetIntentDescriptionWithFacadeClass(v24);
-      v26 = [v25 dataClass];
-      if (v26)
+      dataClass = [v25 dataClass];
+      if (dataClass)
       {
-        v27 = [[v26 alloc] initWithData:v13];
+        v27 = [[dataClass alloc] initWithData:dataCopy];
       }
 
       else
@@ -4955,54 +4955,54 @@ LABEL_7:
         v27 = 0;
       }
 
-      v28 = [[v24 alloc] _initWithIdentifier:v10 backingStore:v27 schema:v11 error:0];
+      selfCopy = [[v24 alloc] _initWithIdentifier:identifierCopy backingStore:v27 schema:schemaCopy error:0];
     }
 
     else
     {
-      v27 = [[INCodable alloc] initWithCodableDescription:v14 data:v13];
+      v27 = [[INCodable alloc] initWithCodableDescription:v14 data:dataCopy];
       v31 = 0;
-      self = [(INIntent *)self _initWithIdentifier:v10 backingStore:v27 schema:v11 error:&v31];
-      v28 = self;
+      self = [(INIntent *)self _initWithIdentifier:identifierCopy backingStore:v27 schema:schemaCopy error:&v31];
+      selfCopy = self;
     }
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
   v29 = *MEMORY[0x1E69E9840];
-  return v28;
+  return selfCopy;
 }
 
-- (id)_initWithIdentifier:(id)a3 backingStore:(id)a4 schema:(id)a5 error:(id *)a6
+- (id)_initWithIdentifier:(id)identifier backingStore:(id)store schema:(id)schema error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  schemaCopy = schema;
   if (!self)
   {
     goto LABEL_22;
   }
 
-  v12 = [a3 copy];
+  v12 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v12;
 
   v14 = objc_opt_class();
   v15 = INIntentSchemaGetIntentDescriptionWithFacadeClass(v14);
-  v16 = [v15 dataClass];
-  if (v16)
+  dataClass = [v15 dataClass];
+  if (dataClass)
   {
-    v17 = v16;
-    if (![v10 isMemberOfClass:v16])
+    v17 = dataClass;
+    if (![storeCopy isMemberOfClass:dataClass])
     {
       v18 = objc_alloc_init(v17);
       goto LABEL_7;
     }
 
 LABEL_6:
-    v18 = [v10 copy];
+    v18 = [storeCopy copy];
     goto LABEL_7;
   }
 
@@ -5018,74 +5018,74 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v18 = [v10 _copyWithZone:0 error:a6];
+  v18 = [storeCopy _copyWithZone:0 error:error];
 LABEL_7:
   backingStore = self->_backingStore;
   self->_backingStore = v18;
 
 LABEL_8:
-  v20 = [(INIntent *)self _metadata];
+  _metadata = [(INIntent *)self _metadata];
 
-  if (!v20)
+  if (!_metadata)
   {
     v21 = objc_alloc_init(_INPBIntentMetadata);
     [(INIntent *)self _setMetadata:v21];
   }
 
-  if (v11)
+  if (schemaCopy)
   {
-    v22 = [(INIntent *)self _className];
-    v23 = [v11 _parameterCombinationsForClassName:v22];
+    _className = [(INIntent *)self _className];
+    v23 = [schemaCopy _parameterCombinationsForClassName:_className];
     parameterCombinations = self->_parameterCombinations;
     self->_parameterCombinations = v23;
 
-    v25 = [(INIntent *)self _className];
-    v26 = [v11 _configurableParameterCombinationsForClassName:v25];
+    _className2 = [(INIntent *)self _className];
+    v26 = [schemaCopy _configurableParameterCombinationsForClassName:_className2];
     configurableParameterCombinations = self->_configurableParameterCombinations;
     self->_configurableParameterCombinations = v26;
   }
 
-  v28 = [(INIntent *)self _metadata];
-  [v28 setDefaultImageValue:0];
+  _metadata2 = [(INIntent *)self _metadata];
+  [_metadata2 setDefaultImageValue:0];
 
   if ([(INIntent *)self _type]!= 2)
   {
     goto LABEL_20;
   }
 
-  v29 = [(INIntent *)self _inCodable];
-  v30 = [v29 _objectDescription];
+  _inCodable = [(INIntent *)self _inCodable];
+  _objectDescription = [_inCodable _objectDescription];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v32 = [(INIntent *)self _inCodable];
-    v33 = [v32 _objectDescription];
+    _inCodable2 = [(INIntent *)self _inCodable];
+    _objectDescription2 = [_inCodable2 _objectDescription];
 
     if (![(INIntent *)self _intentCategory])
     {
-      -[INIntent _setIntentCategory:](self, "_setIntentCategory:", [v33 intentCategory]);
+      -[INIntent _setIntentCategory:](self, "_setIntentCategory:", [_objectDescription2 intentCategory]);
     }
 
-    v34 = [(INIntent *)self _metadata];
-    v35 = [v34 categoryVerb];
-    v36 = [v35 length];
+    _metadata3 = [(INIntent *)self _metadata];
+    categoryVerb = [_metadata3 categoryVerb];
+    v36 = [categoryVerb length];
 
     if (!v36)
     {
-      v37 = [v33 verb];
-      [(INIntent *)self _setCategoryVerb:v37];
+      verb = [_objectDescription2 verb];
+      [(INIntent *)self _setCategoryVerb:verb];
     }
 
-    -[INIntent _setUserConfirmationRequired:](self, "_setUserConfirmationRequired:", [v33 userConfirmationRequired]);
-    v38 = [v33 versioningHash];
+    -[INIntent _setUserConfirmationRequired:](self, "_setUserConfirmationRequired:", [_objectDescription2 userConfirmationRequired]);
+    versioningHash = [_objectDescription2 versioningHash];
 
-    if (v38)
+    if (versioningHash)
     {
-      v39 = [(INIntent *)self _metadata];
-      v40 = [v33 versioningHash];
-      [v39 setVersioningHash:{objc_msgSend(v40, "unsignedLongLongValue")}];
+      _metadata4 = [(INIntent *)self _metadata];
+      versioningHash2 = [_objectDescription2 versioningHash];
+      [_metadata4 setVersioningHash:{objc_msgSend(versioningHash2, "unsignedLongLongValue")}];
     }
   }
 
@@ -5093,8 +5093,8 @@ LABEL_8:
   {
 LABEL_20:
     [(INIntent *)self _setIntentCategory:[(INIntent *)self _intentCategory]];
-    v33 = [(INIntent *)self _categoryVerb];
-    [(INIntent *)self _setCategoryVerb:v33];
+    _objectDescription2 = [(INIntent *)self _categoryVerb];
+    [(INIntent *)self _setCategoryVerb:_objectDescription2];
   }
 
   self->_keyParameterLock._os_unfair_lock_opaque = 0;
@@ -5103,15 +5103,15 @@ LABEL_22:
   return self;
 }
 
-- (INIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (INIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = INIntent;
-  v7 = a4;
+  storeCopy = store;
   v16 = 0;
-  v8 = [[(INIntent *)&v17 init] _initWithIdentifier:v6 backingStore:v7 schema:0 error:&v16];
+  v8 = [[(INIntent *)&v17 init] _initWithIdentifier:identifierCopy backingStore:storeCopy schema:0 error:&v16];
 
   v9 = v16;
   v10 = v8;
@@ -5124,7 +5124,7 @@ LABEL_22:
       *buf = 136315650;
       v19 = "[INIntent initWithIdentifier:backingStore:]";
       v20 = 2112;
-      v21 = v6;
+      v21 = identifierCopy;
       v22 = 2112;
       v23 = v9;
       _os_log_error_impl(&dword_18E991000, v12, OS_LOG_TYPE_ERROR, "%s Failed to initialize intent with identifier %@ due to error %@", buf, 0x20u);
@@ -5142,13 +5142,13 @@ LABEL_22:
   return v13;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  representationCopy = representation;
+  v7 = objc_alloc_init(self);
   if (v7)
   {
-    v8 = [v6 intents_stringForKey:@"identifier"];
+    v8 = [representationCopy intents_stringForKey:@"identifier"];
     [v7 setIdentifier:v8];
 
     v34 = 0;
@@ -5157,7 +5157,7 @@ LABEL_22:
     v37 = __Block_byref_object_copy__90461;
     v38 = __Block_byref_object_dispose__90462;
     v39 = 0;
-    v9 = [v6 intents_safeObjectForKey:@"backingStore" ofType:objc_opt_class()];
+    v9 = [representationCopy intents_safeObjectForKey:@"backingStore" ofType:objc_opt_class()];
     if (v9)
     {
       v10 = (v35 + 5);
@@ -5167,9 +5167,9 @@ LABEL_22:
       v12 = v35[5];
       if (v12)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v12;
+          *error = v12;
         }
 
 LABEL_12:
@@ -5183,24 +5183,24 @@ LABEL_12:
       v7[12] = v11;
     }
 
-    v11 = [v6 intents_safeObjectForKey:@"parameterCombinations" ofType:objc_opt_class()];
+    v11 = [representationCopy intents_safeObjectForKey:@"parameterCombinations" ofType:objc_opt_class()];
     if (v11)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __56__INIntent_makeFromWidgetPlistableRepresentation_error___block_invoke;
       v30[3] = &unk_1E7283D80;
       v32 = &v34;
-      v15 = v14;
+      v15 = dictionary;
       v31 = v15;
       [v11 enumerateObjectsUsingBlock:v30];
       v16 = v35[5];
       if (v16)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v16;
+          *error = v16;
         }
 
         goto LABEL_12;
@@ -5211,8 +5211,8 @@ LABEL_12:
       v19 = v15;
     }
 
-    v7[8] = [v6 intents_int64ForKey:@"_indexingHash"];
-    v20 = [v6 intents_safeObjectForKey:@"_parameterContexts" ofType:objc_opt_class()];
+    v7[8] = [representationCopy intents_int64ForKey:@"_indexingHash"];
+    v20 = [representationCopy intents_safeObjectForKey:@"_parameterContexts" ofType:objc_opt_class()];
     if (v20)
     {
       objc_opt_class();
@@ -5234,14 +5234,14 @@ LABEL_12:
 
     v22 = v21;
 
-    v23 = [v22 allKeys];
-    v24 = [v23 count];
+    allKeys = [v22 allKeys];
+    v24 = [allKeys count];
 
     if (v24)
     {
       v25 = objc_alloc_init(INJSONDecoder);
-      v26 = [v7 _codableDescription];
-      v27 = [INParameterContexts _intents_decodeWithJSONDecoder:v25 codableDescription:v26 from:v20];
+      _codableDescription = [v7 _codableDescription];
+      v27 = [INParameterContexts _intents_decodeWithJSONDecoder:v25 codableDescription:_codableDescription from:v20];
       v28 = v7[7];
       v7[7] = v27;
     }
@@ -5404,27 +5404,27 @@ LABEL_28:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_enumerateWithValueProcessingBlock:(id)a3
+- (BOOL)_enumerateWithValueProcessingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(INIntent *)self backingStore];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  blockCopy = block;
+  backingStore = [(INIntent *)self backingStore];
+  if (backingStore && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = INEnumerateObjectsInCodable(v5, v4);
+    v6 = INEnumerateObjectsInCodable(backingStore, blockCopy);
   }
 
   else
   {
 
-    v6 = INEnumerateObjectsInIntentSlotComposing(self, v4);
+    v6 = INEnumerateObjectsInIntentSlotComposing(self, blockCopy);
   }
 
   return v6;
 }
 
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block
 {
-  v5 = _INEnumerableValueProcessingBlock(a3, a4);
+  v5 = _INEnumerableValueProcessingBlock(class, block);
   LOBYTE(self) = [(INIntent *)self _enumerateWithValueProcessingBlock:v5];
 
   return self;

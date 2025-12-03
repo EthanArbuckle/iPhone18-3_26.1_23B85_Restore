@@ -1,58 +1,58 @@
 @interface AVNowPlayingPlaybackControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_axAnnounceCurrentScrubPosition;
 - (void)_axUpdateAccessibilityCustomActions;
-- (void)_timerFiredForHidingPlaybackControls:(id)a3;
+- (void)_timerFiredForHidingPlaybackControls:(id)controls;
 - (void)didPressLeftArrowB39;
 - (void)didPressRightArrowB39;
 @end
 
 @implementation AVNowPlayingPlaybackControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_setControlsContainerSubviewsVisible:animated:withCoordinators:" withFullSignature:{"v", "B", "B", "@", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"timeControlStatus" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"didPressLeftArrowB39" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"didPressRightArrowB39" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"scanForwardNext" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"scanBackwardNext" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVPlaybackControlsViewController" hasInstanceMethod:@"playbackRate" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_timerFiredForHidingPlaybackControls:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_playbackMetadataViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceVariable:@"_transportBar" withType:"UIView<AVTransportControlsProviding>"];
-  [v3 validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_scrubNeedleTimeLabel" withType:"UILabel"];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"overlayViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVxOverlayViewController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVxCollectionViewController" hasInstanceMethod:@"leftItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVxCollectionViewController" hasInstanceMethod:@"centerItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVxCollectionViewController" hasInstanceMethod:@"rightItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVControlItem" hasInstanceMethod:@"_sendActionWithSender:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_setPlaybackControlsState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_setControlsContainerSubviewsVisible:animated:withCoordinators:" withFullSignature:{"v", "B", "B", "@", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"timeControlStatus" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"didPressLeftArrowB39" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"didPressRightArrowB39" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"scanForwardNext" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"scanBackwardNext" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVPlaybackControlsViewController" hasInstanceMethod:@"playbackRate" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_timerFiredForHidingPlaybackControls:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_playbackMetadataViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceVariable:@"_transportBar" withType:"UIView<AVTransportControlsProviding>"];
+  [validationsCopy validateClass:@"AVNowPlayingTransportBar" hasInstanceVariable:@"_scrubNeedleTimeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"overlayViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVxOverlayViewController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVxCollectionViewController" hasInstanceMethod:@"leftItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVxCollectionViewController" hasInstanceMethod:@"centerItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVxCollectionViewController" hasInstanceMethod:@"rightItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVControlItem" hasInstanceMethod:@"_sendActionWithSender:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVNowPlayingPlaybackControlsViewController" hasInstanceMethod:@"_setPlaybackControlsState:animated:" withFullSignature:{"v", "q", "B", 0}];
 }
 
 - (void)_axUpdateAccessibilityCustomActions
 {
   v42 = *MEMORY[0x29EDCA608];
-  v2 = [MEMORY[0x29EDB8DE8] array];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   v26 = [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)self safeValueForKeyPath:@"overlayViewController.collectionViewController"];
   v4 = [v26 safeArrayForKey:@"leftItems"];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  [array2 axSafelyAddObjectsFromArray:v4];
 
   v5 = [v26 safeArrayForKey:@"centerItems"];
-  [v3 axSafelyAddObjectsFromArray:v5];
+  [array2 axSafelyAddObjectsFromArray:v5];
 
   v6 = [v26 safeArrayForKey:@"rightItems"];
-  [v3 axSafelyAddObjectsFromArray:v6];
+  [array2 axSafelyAddObjectsFromArray:v6];
 
   objc_initWeak(&location, self);
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v3;
+  v7 = array2;
   v8 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v8)
   {
@@ -67,8 +67,8 @@
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v11 accessibilityLabel];
-        if ([v12 length])
+        accessibilityLabel = [v11 accessibilityLabel];
+        if ([accessibilityLabel length])
         {
           objc_initWeak(&from, v11);
           v13 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -78,8 +78,8 @@
           v32[3] = &unk_29F298E60;
           objc_copyWeak(&v33, &from);
           objc_copyWeak(&v34, &location);
-          v14 = [v13 initWithName:v12 actionHandler:v32];
-          [v2 addObject:v14];
+          v14 = [v13 initWithName:accessibilityLabel actionHandler:v32];
+          [array addObject:v14];
 
           objc_destroyWeak(&v34);
           objc_destroyWeak(&v33);
@@ -93,8 +93,8 @@
     while (v8);
   }
 
-  [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)self setAccessibilityCustomActions:v2];
-  v15 = [MEMORY[0x29EDB8DE8] array];
+  [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)self setAccessibilityCustomActions:array];
+  array3 = [MEMORY[0x29EDB8DE8] array];
   [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)self safeFloatForKey:@"playbackRate"];
   v17 = v16;
   if (v16 <= 0.0)
@@ -108,7 +108,7 @@
     objc_copyWeak(&v31, &location);
     v20 = [v18 initWithName:v19 actionHandler:v30];
 
-    [v15 addObject:v20];
+    [array3 addObject:v20];
     objc_destroyWeak(&v31);
   }
 
@@ -123,12 +123,12 @@
     objc_copyWeak(&v29, &location);
     v23 = [v21 initWithName:v22 actionHandler:v28];
 
-    [v15 addObject:v23];
+    [array3 addObject:v23];
     objc_destroyWeak(&v29);
   }
 
   v24 = [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)self safeValueForKey:@"_transportBar"];
-  [v24 setAccessibilityCustomActions:v15];
+  [v24 setAccessibilityCustomActions:array3];
 
   objc_destroyWeak(&location);
   v25 = *MEMORY[0x29EDCA608];
@@ -185,14 +185,14 @@ void __94__AVNowPlayingPlaybackControlsViewControllerAccessibility__axUpdateAcce
   [WeakRetained scanBackwardNext];
 }
 
-- (void)_timerFiredForHidingPlaybackControls:(id)a3
+- (void)_timerFiredForHidingPlaybackControls:(id)controls
 {
-  v4 = a3;
+  controlsCopy = controls;
   if (!UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning() || [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)self safeIntegerForKey:@"timeControlStatus"])
   {
     v5.receiver = self;
     v5.super_class = AVNowPlayingPlaybackControlsViewControllerAccessibility;
-    [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)&v5 _timerFiredForHidingPlaybackControls:v4];
+    [(AVNowPlayingPlaybackControlsViewControllerAccessibility *)&v5 _timerFiredForHidingPlaybackControls:controlsCopy];
   }
 }
 
@@ -202,8 +202,8 @@ void __94__AVNowPlayingPlaybackControlsViewControllerAccessibility__axUpdateAcce
   v2 = [v4 safeUIViewForKey:@"_scrubNeedleTimeLabel"];
   if ([v2 _accessibilityViewIsVisible])
   {
-    v3 = [v2 accessibilityLabel];
-    if ([v3 length])
+    accessibilityLabel = [v2 accessibilityLabel];
+    if ([accessibilityLabel length])
     {
       UIAccessibilitySpeak();
     }

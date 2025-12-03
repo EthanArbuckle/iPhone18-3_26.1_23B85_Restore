@@ -3,7 +3,7 @@
 - (void)cleanup;
 - (void)releaseResourceAccess;
 - (void)requestResourceAccess;
-- (void)resourceAccessResult:(BOOL)a3;
+- (void)resourceAccessResult:(BOOL)result;
 - (void)resourceAccessRevoked;
 @end
 
@@ -46,10 +46,10 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)resourceAccessResult:(BOOL)a3
+- (void)resourceAccessResult:(BOOL)result
 {
   v41 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (result)
   {
     v4 = GetCameraUserspaceLogStream(CameraUserspaceLoggingCategory)::_generalLog;
     v5 = MEMORY[0x277D86220];

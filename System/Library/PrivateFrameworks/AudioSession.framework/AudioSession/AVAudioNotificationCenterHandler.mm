@@ -1,10 +1,10 @@
 @interface AVAudioNotificationCenterHandler
 - (id)interruptionHandler;
 - (id)propertyNotificationHandler;
-- (int)handleInterruptionNotifications:(id)a3;
-- (void)handlePropertyNotifications:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setPropertyNotificationHandler:(id)a3;
+- (int)handleInterruptionNotifications:(id)notifications;
+- (void)handlePropertyNotifications:(id)notifications;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setPropertyNotificationHandler:(id)handler;
 @end
 
 @implementation AVAudioNotificationCenterHandler
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (void)setPropertyNotificationHandler:(id)a3
+- (void)setPropertyNotificationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_mutex.m_lock);
-  v5 = MEMORY[0x1B26ED920](v4);
+  v5 = MEMORY[0x1B26ED920](handlerCopy);
 
   propertyNotificationHandler = self->_propertyNotificationHandler;
   self->_propertyNotificationHandler = v5;
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_mutex.m_lock);
-  v5 = MEMORY[0x1B26ED920](v4);
+  v5 = MEMORY[0x1B26ED920](handlerCopy);
 
   interruptionHandler = self->_interruptionHandler;
   self->_interruptionHandler = v5;
@@ -51,19 +51,19 @@
   os_unfair_lock_unlock(&self->_mutex.m_lock);
 }
 
-- (int)handleInterruptionNotifications:(id)a3
+- (int)handleInterruptionNotifications:(id)notifications
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVAudioNotificationCenterHandler *)self interruptionHandler];
-  if (v5)
+  notificationsCopy = notifications;
+  interruptionHandler = [(AVAudioNotificationCenterHandler *)self interruptionHandler];
+  if (interruptionHandler)
   {
     v6 = objc_opt_new();
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v4;
+    v7 = notificationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -89,7 +89,7 @@
       while (v8);
     }
 
-    v14 = (v5)[2](v5, v6);
+    v14 = (interruptionHandler)[2](interruptionHandler, v6);
   }
 
   else
@@ -101,19 +101,19 @@
   return v14;
 }
 
-- (void)handlePropertyNotifications:(id)a3
+- (void)handlePropertyNotifications:(id)notifications
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVAudioNotificationCenterHandler *)self propertyNotificationHandler];
-  if (v5)
+  notificationsCopy = notifications;
+  propertyNotificationHandler = [(AVAudioNotificationCenterHandler *)self propertyNotificationHandler];
+  if (propertyNotificationHandler)
   {
     v6 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = notificationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -143,7 +143,7 @@
       while (v8);
     }
 
-    (v5)[2](v5, v6);
+    (propertyNotificationHandler)[2](propertyNotificationHandler, v6);
   }
 
   v14 = *MEMORY[0x1E69E9840];

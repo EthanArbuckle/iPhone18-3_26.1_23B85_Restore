@@ -1,18 +1,18 @@
 @interface SKUIStackTemplateElement
 - (NSArray)collectionElements;
-- (SKUIStackTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIStackTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIViewElement)collectionHeaderViewElement;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)numberOfSplits;
 @end
 
 @implementation SKUIStackTemplateElement
 
-- (SKUIStackTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIStackTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIStackTemplateElement initWithDOMElement:parent:elementFactory:];
@@ -20,24 +20,24 @@
 
   v14.receiver = self;
   v14.super_class = SKUIStackTemplateElement;
-  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"resetState"];
+    v12 = [elementCopy getAttribute:@"resetState"];
     v11->_needsStateReset = [v12 BOOLValue];
   }
 
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SKUIStackTemplateElement;
-  v4 = a3;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  elementCopy = element;
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     collectionElements = self->_collectionElements;
     self->_collectionElements = 0;

@@ -3,12 +3,12 @@
 - (MPSRNNMatrixInferenceLayer)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSRNNMatrixInferenceLayer)initWithDevice:(id)device rnnDescriptor:(const MPSRNNDescriptor *)rnnDescriptor;
 - (MPSRNNMatrixInferenceLayer)initWithDevice:(id)device rnnDescriptors:(NSArray *)rnnDescriptors;
-- (id)recurrentStateForBatchSize:(unint64_t)a3;
-- (id)temporaryRecurrentStateForCommandBuffer:(id)a3 batchSize:(unint64_t)a4;
+- (id)recurrentStateForBatchSize:(unint64_t)size;
+- (id)temporaryRecurrentStateForCommandBuffer:(id)buffer batchSize:(unint64_t)size;
 - (void)dealloc;
 - (void)encodeBidirectionalSequenceToCommandBuffer:(id)commandBuffer sourceSequence:(NSArray *)sourceSequence destinationForwardMatrices:(NSArray *)destinationForwardMatrices destinationBackwardMatrices:(NSArray *)destinationBackwardMatrices;
 - (void)encodeSequenceToCommandBuffer:(id)commandBuffer sourceMatrices:(NSArray *)sourceMatrices sourceOffsets:(NSUInteger *)sourceOffsets destinationMatrices:(NSArray *)destinationMatrices destinationOffsets:(NSUInteger *)destinationOffsets recurrentInputState:(MPSRNNRecurrentMatrixState *)recurrentInputState recurrentOutputStates:(NSMutableArray *)recurrentOutputStates;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSRNNMatrixInferenceLayer
@@ -189,7 +189,7 @@ LABEL_28:
         goto LABEL_4;
       }
 
-      v14 = self;
+      selfCopy2 = self;
       if (!MTLReportFailureTypeEnabled())
       {
         goto LABEL_47;
@@ -198,7 +198,7 @@ LABEL_28:
 
     else
     {
-      v14 = self;
+      selfCopy2 = self;
       if (!MTLReportFailureTypeEnabled())
       {
         goto LABEL_47;
@@ -213,39 +213,39 @@ LABEL_28:
 LABEL_4:
   v176.receiver = self;
   v176.super_class = MPSRNNMatrixInferenceLayer;
-  v14 = [(MPSKernel *)&v176 initWithDevice:device];
-  if (!v14)
+  selfCopy2 = [(MPSKernel *)&v176 initWithDevice:device];
+  if (!selfCopy2)
   {
-    return v14;
+    return selfCopy2;
   }
 
-  v14->_numberOfLayers = objc_msgSend_count(rnnDescriptors, v7, v8, v9, v10, v11, v12, v13);
-  p_nForwardLayers = &v14->nForwardLayers;
-  v14->nForwardLayers = 0;
-  p_nBackwardLayers = &v14->nBackwardLayers;
-  v14->nBackwardLayers = 0;
-  p_backwardLayers = &v14->backwardLayers;
-  v14->backwardLayers = 0;
-  p_backwardLayerTypes = &v14->backwardLayerTypes;
-  v14->backwardLayerTypes = 0;
-  p_forwardLayers = &v14->forwardLayers;
-  v14->forwardLayers = 0;
-  p_forwardLayerTypes = &v14->forwardLayerTypes;
-  v14->forwardLayerTypes = 0;
-  v14->layers = 0;
-  v14->layerTypes = 0;
-  v14->_storeAllIntermediateStates = 0;
-  v14->_propagateFullRecurrentRows = 0;
-  numberOfLayers = v14->_numberOfLayers;
+  selfCopy2->_numberOfLayers = objc_msgSend_count(rnnDescriptors, v7, v8, v9, v10, v11, v12, v13);
+  p_nForwardLayers = &selfCopy2->nForwardLayers;
+  selfCopy2->nForwardLayers = 0;
+  p_nBackwardLayers = &selfCopy2->nBackwardLayers;
+  selfCopy2->nBackwardLayers = 0;
+  p_backwardLayers = &selfCopy2->backwardLayers;
+  selfCopy2->backwardLayers = 0;
+  p_backwardLayerTypes = &selfCopy2->backwardLayerTypes;
+  selfCopy2->backwardLayerTypes = 0;
+  p_forwardLayers = &selfCopy2->forwardLayers;
+  selfCopy2->forwardLayers = 0;
+  p_forwardLayerTypes = &selfCopy2->forwardLayerTypes;
+  selfCopy2->forwardLayerTypes = 0;
+  selfCopy2->layers = 0;
+  selfCopy2->layerTypes = 0;
+  selfCopy2->_storeAllIntermediateStates = 0;
+  selfCopy2->_propagateFullRecurrentRows = 0;
+  numberOfLayers = selfCopy2->_numberOfLayers;
   if (!numberOfLayers)
   {
-    return v14;
+    return selfCopy2;
   }
 
   v174 = device;
-  v14->layers = malloc_type_malloc(8 * numberOfLayers, 0x80040B8603338uLL);
-  v14->layerTypes = malloc_type_malloc(4 * v14->_numberOfLayers, 0x100004052888210uLL);
-  v23 = v14->_numberOfLayers;
+  selfCopy2->layers = malloc_type_malloc(8 * numberOfLayers, 0x80040B8603338uLL);
+  selfCopy2->layerTypes = malloc_type_malloc(4 * selfCopy2->_numberOfLayers, 0x100004052888210uLL);
+  v23 = selfCopy2->_numberOfLayers;
   if (!v23)
   {
 LABEL_27:
@@ -257,7 +257,7 @@ LABEL_27:
         *p_backwardLayerTypes = malloc_type_malloc(4 * *p_nBackwardLayers, 0x100004052888210uLL);
         *p_forwardLayers = malloc_type_malloc(8 * *p_nForwardLayers, 0x80040B8603338uLL);
         *p_forwardLayerTypes = malloc_type_malloc(4 * *p_nForwardLayers, 0x100004052888210uLL);
-        if (v14->_numberOfLayers)
+        if (selfCopy2->_numberOfLayers)
         {
           v149 = 0;
           v150 = 0;
@@ -265,12 +265,12 @@ LABEL_27:
           for (i = objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v143, 0, v144, v145, v146, v147, v148); ; i = objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v161, v149, v162, v163, v164, v165, v166))
           {
             v160 = objc_msgSend_layerSequenceDirection(i, v153, v154, v155, v156, v157, v158, v159);
-            v167 = v14->layers[v149];
+            v167 = selfCopy2->layers[v149];
             if (v160)
             {
               *(*p_backwardLayers + 8 * v150) = v167;
-              *(*p_backwardLayerTypes + 4 * v150++) = v14->layerTypes[v149];
-              if (++v149 >= v14->_numberOfLayers)
+              *(*p_backwardLayerTypes + 4 * v150++) = selfCopy2->layerTypes[v149];
+              if (++v149 >= selfCopy2->_numberOfLayers)
               {
                 goto LABEL_31;
               }
@@ -279,8 +279,8 @@ LABEL_27:
             else
             {
               *(*p_forwardLayers + 8 * v151) = v167;
-              *(*p_forwardLayerTypes + 4 * v151++) = v14->layerTypes[v149];
-              if (++v149 >= v14->_numberOfLayers)
+              *(*p_forwardLayerTypes + 4 * v151++) = selfCopy2->layerTypes[v149];
+              if (++v149 >= selfCopy2->_numberOfLayers)
               {
                 goto LABEL_31;
               }
@@ -291,24 +291,24 @@ LABEL_27:
         goto LABEL_31;
       }
 
-      p_forwardLayerTypes = &v14->backwardLayerTypes;
-      p_forwardLayers = &v14->backwardLayers;
+      p_forwardLayerTypes = &selfCopy2->backwardLayerTypes;
+      p_forwardLayers = &selfCopy2->backwardLayers;
     }
 
-    *p_forwardLayerTypes = v14->layerTypes;
-    *p_forwardLayers = v14->layers;
+    *p_forwardLayerTypes = selfCopy2->layerTypes;
+    *p_forwardLayers = selfCopy2->layers;
 LABEL_31:
     v138 = objc_alloc(MEMORY[0x277CD75E0]);
-    v14->gemmKernel = objc_msgSend_initWithDevice_transposeLeft_transposeRight_resultRows_resultColumns_interiorColumns_alpha_beta_(v138, v139, v174, 0, 1, 4, 4, 4, 1.0, 1.0);
+    selfCopy2->gemmKernel = objc_msgSend_initWithDevice_transposeLeft_transposeRight_resultRows_resultColumns_interiorColumns_alpha_beta_(v138, v139, v174, 0, 1, 4, 4, 4, 1.0, 1.0);
     v140 = objc_alloc(MEMORY[0x277CD75E0]);
-    v14->gemmKernelNonTranspose = objc_msgSend_initWithDevice_transposeLeft_transposeRight_resultRows_resultColumns_interiorColumns_alpha_beta_(v140, v141, v174, 0, 0, 4, 4, 4, 1.0, 1.0);
-    return v14;
+    selfCopy2->gemmKernelNonTranspose = objc_msgSend_initWithDevice_transposeLeft_transposeRight_resultRows_resultColumns_interiorColumns_alpha_beta_(v140, v141, v174, 0, 0, 4, 4, 4, 1.0, 1.0);
+    return selfCopy2;
   }
 
   v24 = 0;
   while (1)
   {
-    if ((*(&v14->super.super.isa + v6) & 1) == 0)
+    if ((*(&selfCopy2->super.super.isa + v6) & 1) == 0)
     {
       objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v17, v24, v18, v19, v20, v21, v22);
       if (!objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v43, v24, v44, v45, v46, v47, v48))
@@ -345,27 +345,27 @@ LABEL_31:
 
     if (v24)
     {
-      if (v24 != v14->_numberOfLayers - 1)
+      if (v24 != selfCopy2->_numberOfLayers - 1)
       {
         goto LABEL_20;
       }
 
 LABEL_19:
       v105 = objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v17, v24, v18, v19, v20, v21, v22);
-      v14->_outputFeatureChannels = objc_msgSend_outputFeatureChannels(v105, v106, v107, v108, v109, v110, v111, v112);
+      selfCopy2->_outputFeatureChannels = objc_msgSend_outputFeatureChannels(v105, v106, v107, v108, v109, v110, v111, v112);
       goto LABEL_20;
     }
 
     v129 = objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v17, 0, v18, v19, v20, v21, v22);
-    v14->_inputFeatureChannels = objc_msgSend_inputFeatureChannels(v129, v130, v131, v132, v133, v134, v135, v136);
-    if (v14->_numberOfLayers == 1)
+    selfCopy2->_inputFeatureChannels = objc_msgSend_inputFeatureChannels(v129, v130, v131, v132, v133, v134, v135, v136);
+    if (selfCopy2->_numberOfLayers == 1)
     {
       goto LABEL_19;
     }
 
 LABEL_20:
-    v14->layers[v24] = 0;
-    v14->layerTypes[v24] = 0;
+    selfCopy2->layers[v24] = 0;
+    selfCopy2->layerTypes[v24] = 0;
     objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v17, v24, v18, v19, v20, v21, v22);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -401,20 +401,20 @@ LABEL_20:
       }
     }
 
-    v14->layers[v24] = v25;
-    v14->layerTypes[v24] = v32;
+    selfCopy2->layers[v24] = v25;
+    selfCopy2->layerTypes[v24] = v32;
 LABEL_10:
     v33 = objc_msgSend_objectAtIndexedSubscript_(rnnDescriptors, v26, v24, v27, v28, v29, v30, v31);
     v41 = objc_msgSend_layerSequenceDirection(v33, v34, v35, v36, v37, v38, v39, v40);
-    v42 = &v14->nForwardLayers;
+    v42 = &selfCopy2->nForwardLayers;
     if (v41)
     {
-      v42 = &v14->nBackwardLayers;
+      v42 = &selfCopy2->nBackwardLayers;
     }
 
     ++*v42;
     ++v24;
-    v23 = v14->_numberOfLayers;
+    v23 = selfCopy2->_numberOfLayers;
     if (v24 >= v23)
     {
       goto LABEL_27;
@@ -1012,17 +1012,17 @@ LABEL_25:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v51.receiver = self;
   v51.super_class = MPSRNNMatrixInferenceLayer;
   [(MPSKernel *)&v51 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_inputFeatureChannels, @"kMPSRNNLayer._inputFeatureChannels", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_outputFeatureChannels, @"kMPSRNNLayer._outputFeatureChannels", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_numberOfLayers, @"kMPSRNNLayer._numberOfLayers", v16, v17, v18, v19);
-  objc_msgSend_encodeBool_forKey_(a3, v20, self->_recurrentOutputIsTemporary, @"kMPSRNNLayer._recurrentOutputIsTemporary", v21, v22, v23, v24);
-  objc_msgSend_encodeInt64_forKey_(a3, v25, self->_bidirectionalCombineMode, @"kMPSRNNLayer._bidirectionalCombineMode", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_inputFeatureChannels, @"kMPSRNNLayer._inputFeatureChannels", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_outputFeatureChannels, @"kMPSRNNLayer._outputFeatureChannels", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_numberOfLayers, @"kMPSRNNLayer._numberOfLayers", v16, v17, v18, v19);
+  objc_msgSend_encodeBool_forKey_(coder, v20, self->_recurrentOutputIsTemporary, @"kMPSRNNLayer._recurrentOutputIsTemporary", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v25, self->_bidirectionalCombineMode, @"kMPSRNNLayer._bidirectionalCombineMode", v26, v27, v28, v29);
   numberOfLayers = self->_numberOfLayers;
   if (!numberOfLayers)
   {
@@ -1083,7 +1083,7 @@ LABEL_9:
   }
 
 LABEL_11:
-  sub_239BCD9D8(a3, v35, @"kMPSRNNLayer.layerTypes", v36, v31, v32, v33, v34);
+  sub_239BCD9D8(coder, v35, @"kMPSRNNLayer.layerTypes", v36, v31, v32, v33, v34);
   free(v35);
   if (self->_numberOfLayers)
   {
@@ -1094,13 +1094,13 @@ LABEL_11:
       switch(v49)
       {
         case 2:
-          sub_239BC6D40(a3, self->layers[v48], v48);
+          sub_239BC6D40(coder, self->layers[v48], v48);
           break;
         case 1:
-          sub_239BC6FA4(a3, self->layers[v48], v48);
+          sub_239BC6FA4(coder, self->layers[v48], v48);
           break;
         case 0:
-          sub_239BC6BE0(a3, self->layers[v48], v48);
+          sub_239BC6BE0(coder, self->layers[v48], v48);
           break;
       }
 
@@ -1132,7 +1132,7 @@ LABEL_11:
   if (v13)
   {
     v44 = 0;
-    for (i = objc_msgSend_objectAtIndexedSubscript_(sourceMatrices, v36, 0, v37, v38, v39, v40, v41); ; i = objc_msgSend_objectAtIndexedSubscript_(sourceMatrices, v52, v44, v54, v55, v56, v57, v58, v132, v134, v136, outputFeatureChannels))
+    for (i = objc_msgSend_objectAtIndexedSubscript_(sourceMatrices, v36, 0, v37, v38, v39, v40, v41); ; i = objc_msgSend_objectAtIndexedSubscript_(sourceMatrices, v52, v44, v54, v55, v56, v57, v58, selfCopy3, v134, v136, outputFeatureChannels))
     {
       v42[v44] = i;
       *(v43 + 8 * v44) = objc_msgSend_objectAtIndexedSubscript_(destinationMatrices, v46, v44, v47, v48, v49, v50, v51);
@@ -1148,27 +1148,27 @@ LABEL_11:
           v140 = objc_msgSend_rows(*(v43 + 8 * v44), v118, v119, v120, v121, v122, v123, v124);
           v134 = v44;
           v136 = v117;
-          v132 = self;
+          selfCopy3 = self;
           MTLReportFailure();
         }
 
-        objc_msgSend_columns(v42[v44], v81, v82, v83, v84, v85, v86, v87, v132, v134, v136, outputFeatureChannels, v140, v141);
+        objc_msgSend_columns(v42[v44], v81, v82, v83, v84, v85, v86, v87, selfCopy3, v134, v136, outputFeatureChannels, v140, v141);
         if (objc_msgSend_columns(v42[v44], v88, v89, v90, v91, v92, v93, v94) != self->_inputFeatureChannels && MTLReportFailureTypeEnabled())
         {
           v137 = objc_msgSend_columns(v42[v44], v95, v96, v97, v98, v99, v100, v101);
           inputFeatureChannels = self->_inputFeatureChannels;
-          v133 = self;
+          selfCopy2 = self;
           v135 = v44;
           MTLReportFailure();
         }
 
-        objc_msgSend_columns(*(v43 + 8 * v44), v95, v96, v97, v98, v99, v100, v101, v133, v135, v137, inputFeatureChannels);
+        objc_msgSend_columns(*(v43 + 8 * v44), v95, v96, v97, v98, v99, v100, v101, selfCopy2, v135, v137, inputFeatureChannels);
         if (objc_msgSend_columns(*(v43 + 8 * v44), v102, v103, v104, v105, v106, v107, v108) != self->_outputFeatureChannels && MTLReportFailureTypeEnabled())
         {
           v109 = objc_msgSend_objectAtIndexedSubscript_(destinationMatrices, v52, v44, v54, v55, v56, v57, v58);
           v136 = objc_msgSend_columns(v109, v110, v111, v112, v113, v114, v115, v116);
           outputFeatureChannels = self->_outputFeatureChannels;
-          v132 = self;
+          selfCopy3 = self;
           v134 = v44;
           MTLReportFailure();
         }
@@ -1197,12 +1197,12 @@ LABEL_11:
     v409 = commandBuffer;
     v410 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v15, v16, commandBuffer, 0, v17, v18, v19, v20);
     v414 = v410;
-    v415 = self;
-    v411 = self;
+    selfCopy = self;
+    selfCopy2 = self;
     if ((*(&self->super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
     {
       v27 = *(&self->super.super.isa + *MEMORY[0x277CD7360]);
-      if (v27 || (v28 = objc_opt_class(), v29 = NSStringFromClass(v28), objc_msgSend_setLabel_(v411, v30, v29, v31, v32, v33, v34, v35), (v27 = v29) != 0))
+      if (v27 || (v28 = objc_opt_class(), v29 = NSStringFromClass(v28), objc_msgSend_setLabel_(selfCopy2, v30, v29, v31, v32, v33, v34, v35), (v27 = v29) != 0))
       {
         objc_msgSend_setLabel_(v410, v21, v27, v22, v23, v24, v25, v26);
       }
@@ -1228,7 +1228,7 @@ LABEL_11:
     }
 
     v412 = v36;
-    bidirectionalCombineMode = v411->_bidirectionalCombineMode;
+    bidirectionalCombineMode = selfCopy2->_bidirectionalCombineMode;
     if (bidirectionalCombineMode)
     {
       v62 = bidirectionalCombineMode == 2;
@@ -1247,8 +1247,8 @@ LABEL_11:
         v38[j] = objc_msgSend_objectAtIndexedSubscript_(destinationForwardMatrices, v64, j, v65, v66, v67, v68, v69);
       }
 
-      sub_239BC7754(v411, v410, commandBuffer, v36, v38, v14, 0, 0, 0, 1, 0, 0, 0);
-      if (v411->_bidirectionalCombineMode == 2)
+      sub_239BC7754(selfCopy2, v410, commandBuffer, v36, v38, v14, 0, 0, 0, 1, 0, 0, 0);
+      if (selfCopy2->_bidirectionalCombineMode == 2)
       {
         v77 = objc_msgSend_columns(*v38, v70, v71, v72, v73, v74, v75, v76) >> 1;
       }
@@ -1263,7 +1263,7 @@ LABEL_11:
       do
       {
         *v394 = objc_msgSend_objectAtIndexedSubscript_(sourceSequence, v70, v393, v72, v73, v74, v75, v76);
-        if (v411->_bidirectionalCombineMode == 2)
+        if (selfCopy2->_bidirectionalCombineMode == 2)
         {
           v401 = objc_msgSend_objectAtIndexedSubscript_(destinationForwardMatrices, v395, v393, v396, v397, v398, v399, v400);
         }
@@ -1279,7 +1279,7 @@ LABEL_11:
       }
 
       while (v393 != -1);
-      sub_239BC7754(v411, v410, v409, v36, v38, v14, 0, 0, 1, 0, v77, 0, 0);
+      sub_239BC7754(selfCopy2, v410, v409, v36, v38, v14, 0, 0, 1, 0, v77, 0, 0);
     }
 
     else if (bidirectionalCombineMode == 1)
@@ -1290,7 +1290,7 @@ LABEL_11:
         v38[k] = objc_msgSend_objectAtIndexedSubscript_(destinationForwardMatrices, v79, k, v80, v81, v82, v83, v84);
       }
 
-      sub_239BC7754(v411, v410, commandBuffer, v36, v38, v14, 0, 0, 0, 1, 0, 0, 0);
+      sub_239BC7754(selfCopy2, v410, commandBuffer, v36, v38, v14, 0, 0, 0, 1, 0, 0, 0);
       MEMORY[0x23EE7D040](v413, commandBuffer, 0);
       v85 = MEMORY[0x277CD7258];
       v92 = objc_msgSend_objectAtIndexedSubscript_(destinationForwardMatrices, v86, 0, v87, v88, v89, v90, v91);
@@ -1320,7 +1320,7 @@ LABEL_11:
       }
 
       while (v176 != -1);
-      sub_239BC7754(v411, v410, v409, v412, v172, v14, 0, 0, 1, 0, 0, 0, 0);
+      sub_239BC7754(selfCopy2, v410, v409, v412, v172, v14, 0, 0, 1, 0, 0, 0, 0);
       v190 = v412;
       do
       {
@@ -1483,16 +1483,16 @@ LABEL_11:
   }
 }
 
-- (id)recurrentStateForBatchSize:(unint64_t)a3
+- (id)recurrentStateForBatchSize:(unint64_t)size
 {
-  v3 = sub_239BC82A0(self->_numberOfLayers, a3, self->layers, self->layerTypes, 0, (*(&self->super.super.isa + *MEMORY[0x277CD7350]))[2], 0, 0);
+  v3 = sub_239BC82A0(self->_numberOfLayers, size, self->layers, self->layerTypes, 0, (*(&self->super.super.isa + *MEMORY[0x277CD7350]))[2], 0, 0);
 
   return v3;
 }
 
-- (id)temporaryRecurrentStateForCommandBuffer:(id)a3 batchSize:(unint64_t)a4
+- (id)temporaryRecurrentStateForCommandBuffer:(id)buffer batchSize:(unint64_t)size
 {
-  v4 = sub_239BC82A0(self->_numberOfLayers, a4, self->layers, self->layerTypes, 1u, (*(&self->super.super.isa + *MEMORY[0x277CD7350]))[2], a3, 0);
+  v4 = sub_239BC82A0(self->_numberOfLayers, size, self->layers, self->layerTypes, 1u, (*(&self->super.super.isa + *MEMORY[0x277CD7350]))[2], buffer, 0);
 
   return v4;
 }

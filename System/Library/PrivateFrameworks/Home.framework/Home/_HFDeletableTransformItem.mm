@@ -7,10 +7,10 @@
 
 - (BOOL)hf_canDeleteItem
 {
-  v2 = [(HFTransformItem *)self sourceItem];
-  if ([v2 conformsToProtocol:&unk_282552AC8])
+  sourceItem = [(HFTransformItem *)self sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_282552AC8])
   {
-    v3 = v2;
+    v3 = sourceItem;
   }
 
   else
@@ -20,15 +20,15 @@
 
   v4 = v3;
 
-  v5 = [v4 hf_canDeleteItem];
-  return v5;
+  hf_canDeleteItem = [v4 hf_canDeleteItem];
+  return hf_canDeleteItem;
 }
 
 - (id)hf_deleteItem
 {
-  v2 = [(HFTransformItem *)self sourceItem];
+  sourceItem = [(HFTransformItem *)self sourceItem];
   v3 = &unk_282552AC8;
-  v4 = v2;
+  v4 = sourceItem;
   v5 = v4;
   if (v4)
   {
@@ -48,18 +48,18 @@
       goto LABEL_8;
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v10 = NSStringFromProtocol(v3);
-    [v8 handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v10}];
+    [currentHandler handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v10}];
   }
 
   v7 = 0;
 LABEL_8:
 
-  v11 = [v7 hf_deleteItem];
+  hf_deleteItem = [v7 hf_deleteItem];
 
-  return v11;
+  return hf_deleteItem;
 }
 
 @end

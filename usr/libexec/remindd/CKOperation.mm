@@ -8,19 +8,19 @@
 {
   v13.receiver = self;
   v13.super_class = CKOperation;
-  v3 = [(CKOperation *)&v13 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(CKOperation *)&v13 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(CKOperation *)self metrics];
-  v6 = [v5 cloudKitMetrics];
-  [v6 duration];
+  metrics = [(CKOperation *)self metrics];
+  cloudKitMetrics = [metrics cloudKitMetrics];
+  [cloudKitMetrics duration];
   v8 = v7;
 
   if (v8 > 0.0)
   {
-    v9 = [(CKOperation *)self metrics];
-    v10 = [v9 cloudKitMetrics];
-    [v10 duration];
+    metrics2 = [(CKOperation *)self metrics];
+    cloudKitMetrics2 = [metrics2 cloudKitMetrics];
+    [cloudKitMetrics2 duration];
     v11 = [NSNumber numberWithDouble:?];
     [v4 setObject:v11 forKeyedSubscript:@"duration"];
   }

@@ -1,5 +1,5 @@
 @interface NUTileLayer
-- (NUTileLayer)initWithImage:(id)a3 tile:(id)a4;
+- (NUTileLayer)initWithImage:(id)image tile:(id)tile;
 - (void)dealloc;
 @end
 
@@ -19,20 +19,20 @@
   [(NUTileLayer *)&v6 dealloc];
 }
 
-- (NUTileLayer)initWithImage:(id)a3 tile:(id)a4
+- (NUTileLayer)initWithImage:(id)image tile:(id)tile
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  tileCopy = tile;
   v18.receiver = self;
   v18.super_class = NUTileLayer;
   v8 = [(NUTileLayer *)&v18 init];
   v9 = *(v8 + 6);
-  *(v8 + 6) = v6;
-  v10 = v6;
+  *(v8 + 6) = imageCopy;
+  v10 = imageCopy;
 
-  if (v7)
+  if (tileCopy)
   {
-    [v7 frameRect];
+    [tileCopy frameRect];
   }
 
   else

@@ -1,33 +1,33 @@
 @interface ASEmailChangeFlagsAction
-- (ASEmailChangeFlagsAction)initWithServerID:(id)a3 read:(BOOL)a4 flagged:(BOOL)a5 changedFlags:(unint64_t)a6;
-- (void)appendApplicationDataForTask:(id)a3 toWBXMLData:(id)a4;
+- (ASEmailChangeFlagsAction)initWithServerID:(id)d read:(BOOL)read flagged:(BOOL)flagged changedFlags:(unint64_t)flags;
+- (void)appendApplicationDataForTask:(id)task toWBXMLData:(id)data;
 @end
 
 @implementation ASEmailChangeFlagsAction
 
-- (ASEmailChangeFlagsAction)initWithServerID:(id)a3 read:(BOOL)a4 flagged:(BOOL)a5 changedFlags:(unint64_t)a6
+- (ASEmailChangeFlagsAction)initWithServerID:(id)d read:(BOOL)read flagged:(BOOL)flagged changedFlags:(unint64_t)flags
 {
   v10.receiver = self;
   v10.super_class = ASEmailChangeFlagsAction;
-  result = [(ASEmailChangeFlagsAction *)&v10 initWithItemChangeType:1 changedItem:0 serverId:a3];
+  result = [(ASEmailChangeFlagsAction *)&v10 initWithItemChangeType:1 changedItem:0 serverId:d];
   if (result)
   {
-    result->_read = a4;
-    result->_flagged = a5;
-    result->_changedFlags = a6;
+    result->_read = read;
+    result->_flagged = flagged;
+    result->_changedFlags = flags;
   }
 
   return result;
 }
 
-- (void)appendApplicationDataForTask:(id)a3 toWBXMLData:(id)a4
+- (void)appendApplicationDataForTask:(id)task toWBXMLData:(id)data
 {
-  v6 = a4;
-  [v6 switchToCodePage:2];
+  dataCopy = data;
+  [dataCopy switchToCodePage:2];
   changedFlags = self->_changedFlags;
   if (changedFlags)
   {
-    [v6 appendTag:21 withIntContent:self->_read];
+    [dataCopy appendTag:21 withIntContent:self->_read];
     changedFlags = self->_changedFlags;
   }
 
@@ -35,15 +35,15 @@
   {
     if (self->_flagged)
     {
-      [v6 openTag:58];
-      [v6 appendTag:59 withIntContent:2];
-      [v6 appendTag:61 withStringContent:@"Flag for follow up"];
-      [v6 closeTag:58];
+      [dataCopy openTag:58];
+      [dataCopy appendTag:59 withIntContent:2];
+      [dataCopy appendTag:61 withStringContent:@"Flag for follow up"];
+      [dataCopy closeTag:58];
     }
 
     else
     {
-      [v6 appendEmptyTag:58];
+      [dataCopy appendEmptyTag:58];
     }
   }
 }

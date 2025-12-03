@@ -1,8 +1,8 @@
 @interface _UIGestureRecognizerDriverContextImpl
-- (CGPoint)convertPoint:(CGPoint)a3 fromSceneReferenceCoordinatesToView:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toSceneReferenceCoordinatesFromView:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromSceneReferenceCoordinatesToView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point toSceneReferenceCoordinatesFromView:(id)view;
 - (UIWindow)eventReceivingWindow;
-- (void)ignoreEventComponent:(id)a3 forEvent:(id)a4;
+- (void)ignoreEventComponent:(id)component forEvent:(id)event;
 - (void)initWithGestureRecognizer:(void *)result;
 @end
 
@@ -26,38 +26,38 @@
 
 - (UIWindow)eventReceivingWindow
 {
-  v2 = [(UIGestureRecognizer *)self->_gestureRecognizer container];
-  v3 = [v2 _eventReceivingWindow];
+  container = [(UIGestureRecognizer *)self->_gestureRecognizer container];
+  _eventReceivingWindow = [container _eventReceivingWindow];
 
-  return v3;
+  return _eventReceivingWindow;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromSceneReferenceCoordinatesToView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromSceneReferenceCoordinatesToView:(id)view
 {
-  [(UIGestureRecognizer *)self->_gestureRecognizer _convertPoint:a4 fromSceneReferenceCoordinatesToView:a3.x, a3.y];
+  [(UIGestureRecognizer *)self->_gestureRecognizer _convertPoint:view fromSceneReferenceCoordinatesToView:point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toSceneReferenceCoordinatesFromView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toSceneReferenceCoordinatesFromView:(id)view
 {
-  [(UIGestureRecognizer *)self->_gestureRecognizer _convertPoint:a4 toSceneReferenceCoordinatesFromView:a3.x, a3.y];
+  [(UIGestureRecognizer *)self->_gestureRecognizer _convertPoint:view toSceneReferenceCoordinatesFromView:point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)ignoreEventComponent:(id)a3 forEvent:(id)a4
+- (void)ignoreEventComponent:(id)component forEvent:(id)event
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([a3 _eventComponentType])
+  if ([component _eventComponentType])
   {
-    if ([a3 _eventComponentType] == 1)
+    if ([component _eventComponentType] == 1)
     {
       gestureRecognizer = self->_gestureRecognizer;
 
-      [(UIGestureRecognizer *)gestureRecognizer ignorePress:a3 forEvent:a4];
+      [(UIGestureRecognizer *)gestureRecognizer ignorePress:component forEvent:event];
     }
 
     else if (os_variant_has_internal_diagnostics())
@@ -66,7 +66,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         v11 = 138412290;
-        v12 = a3;
+        componentCopy2 = component;
         _os_log_fault_impl(&dword_188A29000, v10, OS_LOG_TYPE_FAULT, "Unsupported event component: %@", &v11, 0xCu);
       }
     }
@@ -77,7 +77,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = a3;
+        componentCopy2 = component;
         _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Unsupported event component: %@", &v11, 0xCu);
       }
     }
@@ -87,7 +87,7 @@
   {
     v8 = self->_gestureRecognizer;
 
-    [(UIGestureRecognizer *)v8 ignoreTouch:a3 forEvent:a4];
+    [(UIGestureRecognizer *)v8 ignoreTouch:component forEvent:event];
   }
 }
 

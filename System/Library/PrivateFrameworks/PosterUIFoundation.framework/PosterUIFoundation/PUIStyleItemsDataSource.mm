@@ -1,28 +1,28 @@
 @interface PUIStyleItemsDataSource
-- (PUIStyleItemsDataSource)initWithConfiguration:(id)a3 includesSuggestedStyle:(BOOL)a4 delegate:(id)a5;
+- (PUIStyleItemsDataSource)initWithConfiguration:(id)configuration includesSuggestedStyle:(BOOL)style delegate:(id)delegate;
 - (PUIStyleItemsDataSourceDelegate)delegate;
-- (id)coordinatorForIndex:(unint64_t)a3;
-- (id)firstCoordinatorPassingTest:(id)a3;
-- (unint64_t)indexForCoordinator:(id)a3;
+- (id)coordinatorForIndex:(unint64_t)index;
+- (id)firstCoordinatorPassingTest:(id)test;
+- (unint64_t)indexForCoordinator:(id)coordinator;
 - (void)buildCoordinators;
-- (void)setContentsLuminance:(double)a3;
+- (void)setContentsLuminance:(double)luminance;
 @end
 
 @implementation PUIStyleItemsDataSource
 
-- (PUIStyleItemsDataSource)initWithConfiguration:(id)a3 includesSuggestedStyle:(BOOL)a4 delegate:(id)a5
+- (PUIStyleItemsDataSource)initWithConfiguration:(id)configuration includesSuggestedStyle:(BOOL)style delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PUIStyleItemsDataSource;
   v11 = [(PUIStyleItemsDataSource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_configuration, a3);
-    v12->_includeSuggestedStyle = a4;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_configuration, configuration);
+    v12->_includeSuggestedStyle = style;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     [(PUIStyleItemsDataSource *)v12 buildCoordinators];
   }
 
@@ -34,31 +34,31 @@
   v29 = *MEMORY[0x1E69E9840];
   if (!self->_coordinators)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [(PUIStyleConfiguration *)self->_configuration suggestedStyle];
-    v5 = [(PUIStyleConfiguration *)self->_configuration stylePalette];
-    if (self->_includeSuggestedStyle && [(PUIStyleConfiguration *)self->_configuration showsSuggestedContentStyleItem]&& v4)
+    array = [MEMORY[0x1E695DF70] array];
+    suggestedStyle = [(PUIStyleConfiguration *)self->_configuration suggestedStyle];
+    stylePalette = [(PUIStyleConfiguration *)self->_configuration stylePalette];
+    if (self->_includeSuggestedStyle && [(PUIStyleConfiguration *)self->_configuration showsSuggestedContentStyleItem]&& suggestedStyle)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v7 = [WeakRetained coordinatorForStyle:v4 isSuggestedStyle:1 fromDataSource:self];
+      v7 = [WeakRetained coordinatorForStyle:suggestedStyle isSuggestedStyle:1 fromDataSource:self];
 
       if (!v7)
       {
-        v7 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:v4 suggested:1];
+        v7 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:suggestedStyle suggested:1];
       }
 
-      [v3 addObject:v7];
-      if ([v5 isDefaultPalette] && objc_msgSend(v5, "context") == 1)
+      [array addObject:v7];
+      if ([stylePalette isDefaultPalette] && objc_msgSend(stylePalette, "context") == 1)
       {
-        v8 = [v5 styles];
-        v9 = [v8 mutableCopy];
+        styles = [stylePalette styles];
+        v9 = [styles mutableCopy];
 
         [v9 removeObjectAtIndex:15];
         v10 = [PUIStylePalette alloc];
-        v11 = [v5 localizedName];
-        v12 = [(PUIStylePalette *)v10 initWithStyles:v9 localizedName:v11];
+        localizedName = [stylePalette localizedName];
+        v12 = [(PUIStylePalette *)v10 initWithStyles:v9 localizedName:localizedName];
 
-        v5 = v12;
+        stylePalette = v12;
       }
     }
 
@@ -66,8 +66,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = [v5 styles];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    styles2 = [stylePalette styles];
+    v14 = [styles2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -78,7 +78,7 @@
         {
           if (*v25 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(styles2);
           }
 
           v18 = *(*(&v24 + 1) + 8 * i);
@@ -90,25 +90,25 @@
             v20 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:v18 suggested:0];
           }
 
-          [v3 addObject:v20];
+          [array addObject:v20];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v15 = [styles2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v15);
     }
 
-    v21 = [v3 copy];
+    v21 = [array copy];
     coordinators = self->_coordinators;
     self->_coordinators = v21;
   }
 }
 
-- (id)firstCoordinatorPassingTest:(id)a3
+- (id)firstCoordinatorPassingTest:(id)test
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -128,7 +128,7 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (v4[2](v4, v9))
+        if (testCopy[2](testCopy, v9))
         {
           v6 = v9;
           goto LABEL_11;
@@ -150,42 +150,42 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)indexForCoordinator:(id)a3
+- (unint64_t)indexForCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   coordinators = self->_coordinators;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__PUIStyleItemsDataSource_indexForCoordinator___block_invoke;
   v9[3] = &unk_1E78559C0;
-  v10 = v4;
-  v6 = v4;
+  v10 = coordinatorCopy;
+  v6 = coordinatorCopy;
   v7 = [(NSArray *)coordinators indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)coordinatorForIndex:(unint64_t)a3
+- (id)coordinatorForIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_coordinators count]<= a3)
+  if ([(NSArray *)self->_coordinators count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_coordinators objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_coordinators objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_contentsLuminance != a3)
+  if (self->_contentsLuminance != luminance)
   {
-    self->_contentsLuminance = a3;
+    self->_contentsLuminance = luminance;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -205,7 +205,7 @@ LABEL_11:
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * i) setContentsLuminance:{a3, v9}];
+          [*(*(&v9 + 1) + 8 * i) setContentsLuminance:{luminance, v9}];
         }
 
         v6 = [(NSArray *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];

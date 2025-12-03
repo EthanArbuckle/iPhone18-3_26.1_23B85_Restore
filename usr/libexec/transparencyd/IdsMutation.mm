@@ -1,8 +1,8 @@
 @interface IdsMutation
-+ (id)parseFromData:(id)a3 error:(id *)a4;
++ (id)parseFromData:(id)data error:(id *)error;
 - (BOOL)getOptIn;
 - (BOOL)hasOptInExtension;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IdsMutation)init;
 - (id)accountKeyHash;
 - (id)data;
@@ -17,44 +17,44 @@
 
 - (int)getSimpleMutationType
 {
-  v2 = [(IdsMutation *)self mutationType];
-  if (v2 > 6)
+  mutationType = [(IdsMutation *)self mutationType];
+  if (mutationType > 6)
   {
     return 1;
   }
 
   else
   {
-    return dword_1002DF2B0[v2];
+    return dword_1002DF2B0[mutationType];
   }
 }
 
 - (BOOL)getOptIn
 {
-  v3 = [(IdsMutation *)self mutationType];
-  switch(v3)
+  mutationType = [(IdsMutation *)self mutationType];
+  switch(mutationType)
   {
     case 6u:
-      v4 = [(IdsMutation *)self optInOutMutation];
+      optInOutMutation = [(IdsMutation *)self optInOutMutation];
       goto LABEL_19;
     case 4u:
-      v5 = [(IdsMutation *)self idsDeviceMutation];
-      if (v5)
+      idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
+      if (idsDeviceMutation)
       {
-        v6 = v5;
-        v7 = [(IdsMutation *)self idsDeviceMutation];
+        v6 = idsDeviceMutation;
+        idsDeviceMutation2 = [(IdsMutation *)self idsDeviceMutation];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v9 = [(IdsMutation *)self idsDeviceMutation];
+          idsDeviceMutation3 = [(IdsMutation *)self idsDeviceMutation];
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v10 = [v9 extensions];
-          v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          extensions = [idsDeviceMutation3 extensions];
+          v11 = [extensions countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v11)
           {
             v12 = v11;
@@ -65,21 +65,21 @@
               {
                 if (*v23 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(extensions);
                 }
 
                 v15 = *(*(&v22 + 1) + 8 * i);
                 if ([v15 extensionType] == 3)
                 {
-                  v20 = [v15 extensionData];
-                  v21 = [OptInOutWithExt parseFromData:v20 error:0];
+                  extensionData = [v15 extensionData];
+                  v21 = [OptInOutWithExt parseFromData:extensionData error:0];
 
-                  v16 = [v21 optIn];
-                  return v16;
+                  optIn = [v21 optIn];
+                  return optIn;
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+              v12 = [extensions countByEnumeratingWithState:&v22 objects:v26 count:16];
               if (v12)
               {
                 continue;
@@ -93,12 +93,12 @@
 
       break;
     case 3u:
-      v4 = [(IdsMutation *)self optInOut];
+      optInOutMutation = [(IdsMutation *)self optInOut];
 LABEL_19:
-      v18 = v4;
-      v19 = [v4 optIn];
+      v18 = optInOutMutation;
+      optIn2 = [optInOutMutation optIn];
 
-      return v19;
+      return optIn2;
   }
 
   return 0;
@@ -111,26 +111,26 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  v3 = [(IdsMutation *)self idsDeviceMutation];
-  if (!v3)
+  idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
+  if (!idsDeviceMutation)
   {
     goto LABEL_13;
   }
 
-  v4 = v3;
-  v5 = [(IdsMutation *)self idsDeviceMutation];
+  v4 = idsDeviceMutation;
+  idsDeviceMutation2 = [(IdsMutation *)self idsDeviceMutation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(IdsMutation *)self idsDeviceMutation];
+    idsDeviceMutation3 = [(IdsMutation *)self idsDeviceMutation];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v7 extensions];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    extensions = [idsDeviceMutation3 extensions];
+    v9 = [extensions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = *v16;
@@ -140,20 +140,20 @@ LABEL_19:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(extensions);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           if ([v12 extensionType] == 3)
           {
-            v14 = [v12 extensionData];
-            v9 = [OptInOutWithExt parseFromData:v14 error:0];
+            extensionData = [v12 extensionData];
+            v9 = [OptInOutWithExt parseFromData:extensionData error:0];
 
             goto LABEL_18;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [extensions countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -182,26 +182,26 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v3 = [(IdsMutation *)self idsDeviceMutation];
-  if (!v3)
+  idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
+  if (!idsDeviceMutation)
   {
     goto LABEL_13;
   }
 
-  v4 = v3;
-  v5 = [(IdsMutation *)self idsDeviceMutation];
+  v4 = idsDeviceMutation;
+  idsDeviceMutation2 = [(IdsMutation *)self idsDeviceMutation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(IdsMutation *)self idsDeviceMutation];
+    idsDeviceMutation3 = [(IdsMutation *)self idsDeviceMutation];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v7 extensions];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    extensions = [idsDeviceMutation3 extensions];
+    v9 = [extensions countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = *v14;
@@ -211,7 +211,7 @@ LABEL_13:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(extensions);
           }
 
           if ([*(*(&v13 + 1) + 8 * i) extensionType] == 3)
@@ -221,7 +221,7 @@ LABEL_13:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [extensions countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v9)
         {
           continue;
@@ -245,30 +245,30 @@ LABEL_13:
 
 - (id)accountKeyHash
 {
-  v3 = [(IdsMutation *)self mutationType];
-  v4 = 0;
-  if (v3 <= 6)
+  mutationType = [(IdsMutation *)self mutationType];
+  accountKeyHash = 0;
+  if (mutationType <= 6)
   {
-    if (((1 << v3) & 0x36) != 0)
+    if (((1 << mutationType) & 0x36) != 0)
     {
-      v5 = [(IdsMutation *)self idsDeviceMutation];
+      idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
 LABEL_4:
-      v6 = v5;
-      v4 = [v5 accountKeyHash];
+      v6 = idsDeviceMutation;
+      accountKeyHash = [idsDeviceMutation accountKeyHash];
 
       goto LABEL_5;
     }
 
-    if (v3 == 6)
+    if (mutationType == 6)
     {
-      v5 = [(IdsMutation *)self optInOutMutation];
+      idsDeviceMutation = [(IdsMutation *)self optInOutMutation];
       goto LABEL_4;
     }
   }
 
 LABEL_5:
 
-  return v4;
+  return accountKeyHash;
 }
 
 - (IdsMutation)init
@@ -295,23 +295,23 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v6 = [(IdsMutation *)self mutationType];
+  mutationType = [(IdsMutation *)self mutationType];
   v7 = 0;
-  if (v6 > 6)
+  if (mutationType > 6)
   {
-    v10 = 0;
+    data = 0;
   }
 
   else
   {
-    if (((1 << v6) & 0x36) != 0)
+    if (((1 << mutationType) & 0x36) != 0)
     {
-      v8 = [(IdsMutation *)self idsDeviceMutation];
+      idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
 LABEL_8:
-      v9 = v8;
-      v10 = [v8 data];
+      v9 = idsDeviceMutation;
+      data = [idsDeviceMutation data];
 
-      if (v10 && ([v3 appendData:v10], -[IdsMutation extensions](self, "extensions"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[TLSMessageClass encodeExtensions:buffer:](self, "encodeExtensions:buffer:", v11, v3), v11, v12))
+      if (data && ([v3 appendData:data], -[IdsMutation extensions](self, "extensions"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[TLSMessageClass encodeExtensions:buffer:](self, "encodeExtensions:buffer:", v11, v3), v11, v12))
       {
         v7 = [NSData dataWithData:v3];
       }
@@ -324,16 +324,16 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    if (v6 == 3)
+    if (mutationType == 3)
     {
-      v8 = [(IdsMutation *)self optInOut];
+      idsDeviceMutation = [(IdsMutation *)self optInOut];
       goto LABEL_8;
     }
 
-    v10 = 0;
-    if (v6 == 6)
+    data = 0;
+    if (mutationType == 6)
     {
-      v8 = [(IdsMutation *)self optInOutMutation];
+      idsDeviceMutation = [(IdsMutation *)self optInOutMutation];
       goto LABEL_8;
     }
   }
@@ -345,17 +345,17 @@ LABEL_12:
   return v7;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
 
-  v9 = &v8[v7];
+  v9 = &v8[bytes2];
   v10 = objc_alloc_init(IdsMutation);
   v43 = 0;
-  v11 = [(TLSMessageClass *)v10 parseByte:v6 end:v9 result:&v43];
+  v11 = [(TLSMessageClass *)v10 parseByte:bytes end:v9 result:&v43];
   if (v11)
   {
     v12 = v43 == 2;
@@ -368,14 +368,14 @@ LABEL_12:
 
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
       v13 = kTransparencyErrorDecode;
       v14 = @"failed to parse mutation version from Mutation";
       v15 = -265;
 LABEL_17:
       [TransparencyError errorWithDomain:v13 code:v15 description:v14];
-      *a4 = v27 = 0;
+      *error = v27 = 0;
       goto LABEL_47;
     }
 
@@ -388,7 +388,7 @@ LABEL_17:
   v17 = [(TLSMessageClass *)v10 parseByte:v16 end:v9 result:&v42];
   if (!v17)
   {
-    if (a4)
+    if (error)
     {
       v13 = kTransparencyErrorDecode;
       v14 = @"failed to parse mutation type from Mutation";
@@ -405,7 +405,7 @@ LABEL_17:
   v19 = [(TLSMessageClass *)v10 parseUint64:v18 end:v9 result:&v41];
   if (!v19)
   {
-    if (a4)
+    if (error)
     {
       v13 = kTransparencyErrorDecode;
       v14 = @"failed to parse mutation timestamp from Mutation";
@@ -425,10 +425,10 @@ LABEL_18:
   v22 = v40;
   if (!v21)
   {
-    if (a4)
+    if (error)
     {
       [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-241 description:@"failed to parse uri VRF output from Mutation"];
-      *a4 = v27 = 0;
+      *error = v27 = 0;
     }
 
     else
@@ -441,10 +441,10 @@ LABEL_18:
 
   [(IdsMutation *)v10 setUriVRFOutput:v22];
   v23 = [NSData dataWithBytes:v21 length:v9 - v21];
-  v24 = [(IdsMutation *)v10 mutationType];
-  if (v24 > 3)
+  mutationType = [(IdsMutation *)v10 mutationType];
+  if (mutationType > 3)
   {
-    if ((v24 - 4) < 2)
+    if ((mutationType - 4) < 2)
     {
       v38 = 0;
       v25 = [IdsDeviceMutationWithExt parseFromData:v23 error:&v38];
@@ -456,10 +456,10 @@ LABEL_23:
         [v25 setIdsMutation:v10];
         [(IdsMutation *)v10 setIdsDeviceMutation:v25];
 LABEL_25:
-        v29 = [v25 parsedLength];
+        parsedLength = [v25 parsedLength];
 
         v35 = 0;
-        v30 = [(TLSMessageClass *)v10 parseExtensions:&v29[v21] end:v9 result:&v35];
+        v30 = [(TLSMessageClass *)v10 parseExtensions:&parsedLength[v21] end:v9 result:&v35];
         v31 = v35;
         if (v30)
         {
@@ -469,10 +469,10 @@ LABEL_25:
           v27 = v10;
         }
 
-        else if (a4)
+        else if (error)
         {
           [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-248 description:@"failed to parse extensions from Mutation"];
-          *a4 = v27 = 0;
+          *error = v27 = 0;
         }
 
         else
@@ -486,7 +486,7 @@ LABEL_25:
       goto LABEL_34;
     }
 
-    if (v24 == 6)
+    if (mutationType == 6)
     {
       v36 = 0;
       v25 = [OptInOutMutation parseFromData:v23 error:&v36];
@@ -499,10 +499,10 @@ LABEL_25:
       }
 
 LABEL_34:
-      if (a4 && v28)
+      if (error && v28)
       {
         v33 = v28;
-        *a4 = v28;
+        *error = v28;
       }
 
       goto LABEL_38;
@@ -511,7 +511,7 @@ LABEL_34:
 
   else
   {
-    if ((v24 - 1) < 2)
+    if ((mutationType - 1) < 2)
     {
       v39 = 0;
       v25 = [IdsDeviceMutation parseFromData:v23 error:&v39];
@@ -519,7 +519,7 @@ LABEL_34:
       goto LABEL_23;
     }
 
-    if (v24 == 3)
+    if (mutationType == 3)
     {
       v37 = 0;
       v25 = [OptInOut parseFromData:v23 error:&v37];
@@ -535,10 +535,10 @@ LABEL_34:
     }
   }
 
-  if (a4)
+  if (error)
   {
     [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-273 description:@"unknown mutation type in mutation"];
-    *a4 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_45;
   }
 
@@ -554,29 +554,29 @@ LABEL_47:
 
 - (id)debugDescription
 {
-  v3 = [(IdsMutation *)self mutationType];
+  mutationType = [(IdsMutation *)self mutationType];
   v4 = @"unknown";
-  if (v3 <= 6)
+  if (mutationType <= 6)
   {
-    if (((1 << v3) & 0x36) != 0)
+    if (((1 << mutationType) & 0x36) != 0)
     {
-      v5 = [(IdsMutation *)self idsDeviceMutation];
+      idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
 LABEL_4:
-      v6 = v5;
-      v4 = [v5 debugDescription];
+      v6 = idsDeviceMutation;
+      v4 = [idsDeviceMutation debugDescription];
 
       goto LABEL_5;
     }
 
-    if (v3 == 3)
+    if (mutationType == 3)
     {
-      v5 = [(IdsMutation *)self optInOut];
+      idsDeviceMutation = [(IdsMutation *)self optInOut];
       goto LABEL_4;
     }
 
-    if (v3 == 6)
+    if (mutationType == 6)
     {
-      v5 = [(IdsMutation *)self optInOutMutation];
+      idsDeviceMutation = [(IdsMutation *)self optInOutMutation];
       goto LABEL_4;
     }
   }
@@ -584,37 +584,37 @@ LABEL_4:
 LABEL_5:
   mutationType = self->_mutationType;
   mutationMs = self->_mutationMs;
-  v9 = [(NSData *)self->_uriVRFOutput kt_hexString];
-  v10 = [NSString stringWithFormat:@"{\tmutationType:%hhu\n\tmutationMs:%llu\n\turiVRFOutput:%@\n\tsubMutation:\n%@\n}", mutationType, mutationMs, v9, v4];
+  kt_hexString = [(NSData *)self->_uriVRFOutput kt_hexString];
+  v10 = [NSString stringWithFormat:@"{\tmutationType:%hhu\n\tmutationMs:%llu\n\turiVRFOutput:%@\n\tsubMutation:\n%@\n}", mutationType, mutationMs, kt_hexString, v4];
 
   return v10;
 }
 
 - (id)description
 {
-  v3 = [(IdsMutation *)self mutationType];
+  mutationType = [(IdsMutation *)self mutationType];
   v4 = @"unknown";
-  if (v3 <= 6)
+  if (mutationType <= 6)
   {
-    if (((1 << v3) & 0x36) != 0)
+    if (((1 << mutationType) & 0x36) != 0)
     {
-      v5 = [(IdsMutation *)self idsDeviceMutation];
+      idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
 LABEL_4:
-      v6 = v5;
-      v4 = [v5 description];
+      v6 = idsDeviceMutation;
+      v4 = [idsDeviceMutation description];
 
       goto LABEL_5;
     }
 
-    if (v3 == 3)
+    if (mutationType == 3)
     {
-      v5 = [(IdsMutation *)self optInOut];
+      idsDeviceMutation = [(IdsMutation *)self optInOut];
       goto LABEL_4;
     }
 
-    if (v3 == 6)
+    if (mutationType == 6)
     {
-      v5 = [(IdsMutation *)self optInOutMutation];
+      idsDeviceMutation = [(IdsMutation *)self optInOutMutation];
       goto LABEL_4;
     }
   }
@@ -622,16 +622,16 @@ LABEL_4:
 LABEL_5:
   mutationType = self->_mutationType;
   mutationMs = self->_mutationMs;
-  v9 = [(NSData *)self->_uriVRFOutput kt_hexString];
-  v10 = [NSString stringWithFormat:@"mutationType:%hhu mutationMs:%llu; uriVRFOutput:%@; subMutation:%@", mutationType, mutationMs, v9, v4];;
+  kt_hexString = [(NSData *)self->_uriVRFOutput kt_hexString];
+  v10 = [NSString stringWithFormat:@"mutationType:%hhu mutationMs:%llu; uriVRFOutput:%@; subMutation:%@", mutationType, mutationMs, kt_hexString, v4];;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -641,11 +641,11 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IdsMutation *)self data];
-      v7 = [(IdsMutation *)v5 data];
+      v5 = equalCopy;
+      data = [(IdsMutation *)self data];
+      data2 = [(IdsMutation *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else
@@ -670,29 +670,29 @@ LABEL_5:
   [v3 setObject:v6 forKeyedSubscript:@"mutationMs"];
 
   v7 = [NSDate dateWithTimeIntervalSince1970:([(IdsMutation *)self mutationMs]/ 0x3E8)];
-  v8 = [v7 kt_toISO_8601_UTCString];
-  [v3 setObject:v8 forKeyedSubscript:@"mutationDateReadable"];
+  kt_toISO_8601_UTCString = [v7 kt_toISO_8601_UTCString];
+  [v3 setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"mutationDateReadable"];
 
-  v9 = [(IdsMutation *)self uriVRFOutput];
-  v10 = [v9 kt_hexString];
-  [v3 setObject:v10 forKeyedSubscript:@"uriVrfOutput"];
+  uriVRFOutput = [(IdsMutation *)self uriVRFOutput];
+  kt_hexString = [uriVRFOutput kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"uriVrfOutput"];
 
-  v11 = [(IdsMutation *)self optInOut];
+  optInOut = [(IdsMutation *)self optInOut];
 
-  if (v11)
+  if (optInOut)
   {
-    v12 = [(IdsMutation *)self optInOut];
-    v13 = [v12 diagnosticsJsonDictionary];
-    [v3 setObject:v13 forKeyedSubscript:@"optInOut"];
+    optInOut2 = [(IdsMutation *)self optInOut];
+    diagnosticsJsonDictionary = [optInOut2 diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary forKeyedSubscript:@"optInOut"];
   }
 
-  v14 = [(IdsMutation *)self idsDeviceMutation];
+  idsDeviceMutation = [(IdsMutation *)self idsDeviceMutation];
 
-  if (v14)
+  if (idsDeviceMutation)
   {
-    v15 = [(IdsMutation *)self idsDeviceMutation];
-    v16 = [v15 diagnosticsJsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"idsDeviceMutation"];
+    idsDeviceMutation2 = [(IdsMutation *)self idsDeviceMutation];
+    diagnosticsJsonDictionary2 = [idsDeviceMutation2 diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary2 forKeyedSubscript:@"idsDeviceMutation"];
   }
 
   return v3;

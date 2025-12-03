@@ -1,47 +1,47 @@
 @interface SFBarButtonGroupContainerConfiguration
 - (SFBarButtonGroupContainerConfiguration)init;
-- (SFBarButtonGroupContainerConfiguration)initWithTheme:(id)a3 preferredTraitCollection:(id)a4;
-- (id)copyWithZone:(void *)a3;
-- (void)setPreferredTraitCollection:(id)a3;
-- (void)setTheme:(id)a3;
+- (SFBarButtonGroupContainerConfiguration)initWithTheme:(id)theme preferredTraitCollection:(id)collection;
+- (id)copyWithZone:(void *)zone;
+- (void)setPreferredTraitCollection:(id)collection;
+- (void)setTheme:(id)theme;
 @end
 
 @implementation SFBarButtonGroupContainerConfiguration
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_theme);
-  *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_theme) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_theme) = theme;
+  themeCopy = theme;
 }
 
-- (void)setPreferredTraitCollection:(id)a3
+- (void)setPreferredTraitCollection:(id)collection
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_preferredTraitCollection);
-  *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_preferredTraitCollection) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_preferredTraitCollection) = collection;
+  collectionCopy = collection;
 }
 
-- (SFBarButtonGroupContainerConfiguration)initWithTheme:(id)a3 preferredTraitCollection:(id)a4
+- (SFBarButtonGroupContainerConfiguration)initWithTheme:(id)theme preferredTraitCollection:(id)collection
 {
   *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_hidesBackground) = 0;
   v5 = OBJC_IVAR___SFBarButtonGroupContainerConfiguration_preferredTraitCollection;
   *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_preferredTraitCollection) = 0;
-  *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_theme) = a3;
-  *(&self->super.isa + v5) = a4;
+  *(&self->super.isa + OBJC_IVAR___SFBarButtonGroupContainerConfiguration_theme) = theme;
+  *(&self->super.isa + v5) = collection;
   v9.receiver = self;
   v9.super_class = SFBarButtonGroupContainerConfiguration;
-  v6 = a3;
-  v7 = a4;
+  themeCopy = theme;
+  collectionCopy = collection;
   return [(SFBarButtonGroupContainerConfiguration *)&v9 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  v4 = [(SFBarButtonGroupContainerConfiguration *)v3 theme];
-  v5 = [(SFBarButtonGroupContainerConfiguration *)v3 preferredTraitCollection];
-  v6 = [objc_allocWithZone(SFBarButtonGroupContainerConfiguration) initWithTheme:v4 preferredTraitCollection:v5];
+  selfCopy = self;
+  theme = [(SFBarButtonGroupContainerConfiguration *)selfCopy theme];
+  preferredTraitCollection = [(SFBarButtonGroupContainerConfiguration *)selfCopy preferredTraitCollection];
+  v6 = [objc_allocWithZone(SFBarButtonGroupContainerConfiguration) initWithTheme:theme preferredTraitCollection:preferredTraitCollection];
 
   [v6 setHidesBackground_];
   return v6;

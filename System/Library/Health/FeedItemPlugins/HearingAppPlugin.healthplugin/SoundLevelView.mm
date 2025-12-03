@@ -1,11 +1,11 @@
 @interface SoundLevelView
-- (_TtC16HearingAppPlugin14SoundLevelView)initWithCoder:(id)a3;
-- (_TtC16HearingAppPlugin14SoundLevelView)initWithFrame:(CGRect)a3;
+- (_TtC16HearingAppPlugin14SoundLevelView)initWithCoder:(id)coder;
+- (_TtC16HearingAppPlugin14SoundLevelView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SoundLevelView
 
-- (_TtC16HearingAppPlugin14SoundLevelView)initWithCoder:(id)a3
+- (_TtC16HearingAppPlugin14SoundLevelView)initWithCoder:(id)coder
 {
   sub_29D6600C4();
   sub_29D6600B4();
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC16HearingAppPlugin14SoundLevelView)initWithFrame:(CGRect)a3
+- (_TtC16HearingAppPlugin14SoundLevelView)initWithFrame:(CGRect)frame
 {
   sub_29D6600C4();
   sub_29D6600B4();

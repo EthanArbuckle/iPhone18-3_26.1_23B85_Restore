@@ -1,35 +1,35 @@
 @interface NTKWhistlerAnalogColorPalette
-- (NTKWhistlerAnalogColorPalette)initWithDevice:(id)a3;
-- (id)bezelTextColorForColorPalette:(id)a3;
-- (id)complicationForegroundColorPalette:(id)a3;
-- (id)dialFillColorForColorPalette:(id)a3;
-- (id)handFillColorForColorPalette:(id)a3;
-- (id)hourTicksColorForColorPalette:(id)a3;
-- (id)minuteTicksColorForColorPalette:(id)a3;
-- (id)platterTextColorForColorPalette:(id)a3;
-- (id)secondHandColorForColorPalette:(id)a3;
+- (NTKWhistlerAnalogColorPalette)initWithDevice:(id)device;
+- (id)bezelTextColorForColorPalette:(id)palette;
+- (id)complicationForegroundColorPalette:(id)palette;
+- (id)dialFillColorForColorPalette:(id)palette;
+- (id)handFillColorForColorPalette:(id)palette;
+- (id)hourTicksColorForColorPalette:(id)palette;
+- (id)minuteTicksColorForColorPalette:(id)palette;
+- (id)platterTextColorForColorPalette:(id)palette;
+- (id)secondHandColorForColorPalette:(id)palette;
 @end
 
 @implementation NTKWhistlerAnalogColorPalette
 
-- (NTKWhistlerAnalogColorPalette)initWithDevice:(id)a3
+- (NTKWhistlerAnalogColorPalette)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKWhistlerAnalogColorPalette;
   v6 = [(NTKWhistlerAnalogColorPalette *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (id)handFillColorForColorPalette:(id)a3
+- (id)handFillColorForColorPalette:(id)palette
 {
-  if ([a3 isWhiteColor])
+  if ([palette isWhiteColor])
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -43,27 +43,27 @@
   return v3;
 }
 
-- (id)secondHandColorForColorPalette:(id)a3
+- (id)secondHandColorForColorPalette:(id)palette
 {
-  v3 = a3;
-  if (([v3 isMulticolor] & 1) != 0 || (objc_msgSend(v3, "isBlackColor") & 1) != 0 || objc_msgSend(v3, "isWhiteColor"))
+  paletteCopy = palette;
+  if (([paletteCopy isMulticolor] & 1) != 0 || (objc_msgSend(paletteCopy, "isBlackColor") & 1) != 0 || objc_msgSend(paletteCopy, "isWhiteColor"))
   {
-    v4 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
   }
 
   else
   {
-    v4 = [v3 primaryColor];
+    systemRedColor = [paletteCopy primaryColor];
   }
 
-  v5 = v4;
+  v5 = systemRedColor;
 
   return v5;
 }
 
-- (id)hourTicksColorForColorPalette:(id)a3
+- (id)hourTicksColorForColorPalette:(id)palette
 {
-  if ([a3 isWhiteColor])
+  if ([palette isWhiteColor])
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -77,10 +77,10 @@
   return v3;
 }
 
-- (id)minuteTicksColorForColorPalette:(id)a3
+- (id)minuteTicksColorForColorPalette:(id)palette
 {
-  v3 = a3;
-  if ([v3 isWhiteColor])
+  paletteCopy = palette;
+  if ([paletteCopy isWhiteColor])
   {
     v4 = NTKColorWithRGBA(150, 150, 150, 1.0);
 LABEL_5:
@@ -88,23 +88,23 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isBlackColor])
+  if ([paletteCopy isBlackColor])
   {
     v4 = [MEMORY[0x277D75348] colorWithWhite:0.4 alpha:1.0];
     goto LABEL_5;
   }
 
-  v6 = [v3 primaryColor];
-  v5 = [v6 colorWithAlphaComponent:0.5];
+  primaryColor = [paletteCopy primaryColor];
+  v5 = [primaryColor colorWithAlphaComponent:0.5];
 
 LABEL_7:
 
   return v5;
 }
 
-- (id)dialFillColorForColorPalette:(id)a3
+- (id)dialFillColorForColorPalette:(id)palette
 {
-  if ([a3 isWhiteColor])
+  if ([palette isWhiteColor])
   {
     NTKColorWithRGBA(229, 229, 229, 1.0);
   }
@@ -118,10 +118,10 @@ LABEL_7:
   return v3;
 }
 
-- (id)bezelTextColorForColorPalette:(id)a3
+- (id)bezelTextColorForColorPalette:(id)palette
 {
-  v3 = a3;
-  if ([v3 isWhiteColor])
+  paletteCopy = palette;
+  if ([paletteCopy isWhiteColor])
   {
     v4 = MEMORY[0x277D75348];
     v5 = 0.15;
@@ -129,9 +129,9 @@ LABEL_7:
 
   else
   {
-    v6 = [v3 isBlackColor];
+    isBlackColor = [paletteCopy isBlackColor];
     v4 = MEMORY[0x277D75348];
-    if (v6)
+    if (isBlackColor)
     {
       v5 = 0.85;
     }
@@ -147,17 +147,17 @@ LABEL_7:
   return v7;
 }
 
-- (id)platterTextColorForColorPalette:(id)a3
+- (id)platterTextColorForColorPalette:(id)palette
 {
-  v3 = a3;
-  if ([v3 isWhiteColor])
+  paletteCopy = palette;
+  if ([paletteCopy isWhiteColor])
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   else
   {
-    if ([v3 isBlackColor])
+    if ([paletteCopy isBlackColor])
     {
       [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
     }
@@ -166,37 +166,37 @@ LABEL_7:
     {
       [MEMORY[0x277D75348] whiteColor];
     }
-    v4 = ;
+    blackColor = ;
   }
 
-  v5 = v4;
+  v5 = blackColor;
 
   return v5;
 }
 
-- (id)complicationForegroundColorPalette:(id)a3
+- (id)complicationForegroundColorPalette:(id)palette
 {
-  v3 = a3;
-  if ([v3 isWhiteColor])
+  paletteCopy = palette;
+  if ([paletteCopy isWhiteColor])
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   else
   {
-    if ([v3 isBlackColor])
+    if ([paletteCopy isBlackColor])
     {
       [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
     }
 
     else
     {
-      [v3 primaryColor];
+      [paletteCopy primaryColor];
     }
-    v4 = ;
+    blackColor = ;
   }
 
-  v5 = v4;
+  v5 = blackColor;
 
   return v5;
 }

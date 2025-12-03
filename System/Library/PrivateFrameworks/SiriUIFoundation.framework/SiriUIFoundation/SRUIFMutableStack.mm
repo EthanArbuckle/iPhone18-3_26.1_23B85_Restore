@@ -1,44 +1,44 @@
 @interface SRUIFMutableStack
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)popTopObject;
-- (void)popObjectsUsingBlock:(id)a3;
-- (void)pushObject:(id)a3;
+- (void)popObjectsUsingBlock:(id)block;
+- (void)pushObject:(id)object;
 @end
 
 @implementation SRUIFMutableStack
 
-- (void)pushObject:(id)a3
+- (void)pushObject:(id)object
 {
-  v4 = a3;
-  v5 = [(SRUIFStack *)self _elements];
-  [v5 addObject:v4];
+  objectCopy = object;
+  _elements = [(SRUIFStack *)self _elements];
+  [_elements addObject:objectCopy];
 }
 
 - (id)popTopObject
 {
-  v3 = [(SRUIFStack *)self topObject];
-  v4 = [(SRUIFStack *)self _elements];
-  [v4 removeLastObject];
+  topObject = [(SRUIFStack *)self topObject];
+  _elements = [(SRUIFStack *)self _elements];
+  [_elements removeLastObject];
 
-  return v3;
+  return topObject;
 }
 
-- (void)popObjectsUsingBlock:(id)a3
+- (void)popObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v10 = 0;
-    v5 = [(SRUIFStack *)self _elements];
-    v6 = [v5 count];
+    _elements = [(SRUIFStack *)self _elements];
+    v6 = [_elements count];
 
     if (v6)
     {
       v7 = v6 - 1;
       do
       {
-        v8 = [(SRUIFMutableStack *)self popTopObject];
-        v4[2](v4, v8, &v10);
+        popTopObject = [(SRUIFMutableStack *)self popTopObject];
+        blockCopy[2](blockCopy, popTopObject, &v10);
 
         if (!v7)
         {
@@ -62,7 +62,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SRUIFStack alloc];
 

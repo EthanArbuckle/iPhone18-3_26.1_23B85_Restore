@@ -1,6 +1,6 @@
 @interface TintColorObservingView
-- (_TtC16MusicApplication22TintColorObservingView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication22TintColorObservingView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication22TintColorObservingView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication22TintColorObservingView)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
@@ -20,10 +20,10 @@
     goto LABEL_4;
   }
 
-  v5 = [v2 tintColor];
-  if (v5)
+  tintColor = [v2 tintColor];
+  if (tintColor)
   {
-    v6 = v5;
+    v6 = tintColor;
     v4();
 
     sub_17654(v4);
@@ -35,12 +35,12 @@ LABEL_4:
   __break(1u);
 }
 
-- (_TtC16MusicApplication22TintColorObservingView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication22TintColorObservingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication22TintColorObservingView_tintColorDidChangeCallback);
   v9 = type metadata accessor for TintColorObservingView();
   *v8 = 0;
@@ -50,15 +50,15 @@ LABEL_4:
   return [(TintColorObservingView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MusicApplication22TintColorObservingView)initWithCoder:(id)a3
+- (_TtC16MusicApplication22TintColorObservingView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication22TintColorObservingView_tintColorDidChangeCallback);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TintColorObservingView();
-  v5 = a3;
-  v6 = [(TintColorObservingView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(TintColorObservingView *)&v8 initWithCoder:coderCopy];
 
   return v6;
 }

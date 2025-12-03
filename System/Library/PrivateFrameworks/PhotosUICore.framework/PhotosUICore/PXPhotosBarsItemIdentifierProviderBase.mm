@@ -1,52 +1,52 @@
 @interface PXPhotosBarsItemIdentifierProviderBase
-+ (void)_topBarValuesForSelectionModeWithModel:(id)a3 title:(id *)a4 leadingIdentifiers:(id *)a5 trailingIdentifiers:(id *)a6 allowSelectAll:(BOOL)a7 allowAdd:(BOOL)a8 allowTrashActions:(BOOL)a9 allowDeleteShareActions:(BOOL)a10 wantsMultiSelectMenu:(BOOL)a11;
++ (void)_topBarValuesForSelectionModeWithModel:(id)model title:(id *)title leadingIdentifiers:(id *)identifiers trailingIdentifiers:(id *)trailingIdentifiers allowSelectAll:(BOOL)all allowAdd:(BOOL)add allowTrashActions:(BOOL)actions allowDeleteShareActions:(BOOL)self0 wantsMultiSelectMenu:(BOOL)self1;
 @end
 
 @implementation PXPhotosBarsItemIdentifierProviderBase
 
-+ (void)_topBarValuesForSelectionModeWithModel:(id)a3 title:(id *)a4 leadingIdentifiers:(id *)a5 trailingIdentifiers:(id *)a6 allowSelectAll:(BOOL)a7 allowAdd:(BOOL)a8 allowTrashActions:(BOOL)a9 allowDeleteShareActions:(BOOL)a10 wantsMultiSelectMenu:(BOOL)a11
++ (void)_topBarValuesForSelectionModeWithModel:(id)model title:(id *)title leadingIdentifiers:(id *)identifiers trailingIdentifiers:(id *)trailingIdentifiers allowSelectAll:(BOOL)all allowAdd:(BOOL)add allowTrashActions:(BOOL)actions allowDeleteShareActions:(BOOL)self0 wantsMultiSelectMenu:(BOOL)self1
 {
-  v11 = a8;
-  v12 = a7;
+  addCopy = add;
+  allCopy = all;
   v52[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  modelCopy = model;
   v15 = MEMORY[0x1A590D320]();
-  if ([v14 allowsMoveToLibraryAction] & 1) != 0 || (objc_msgSend(v14, "allowsMoveToPersonalLibraryAction") & 1) != 0 || ((objc_msgSend(v14, "allowsMoveToSharedLibraryAction") | v15))
+  if ([modelCopy allowsMoveToLibraryAction] & 1) != 0 || (objc_msgSend(modelCopy, "allowsMoveToPersonalLibraryAction") & 1) != 0 || ((objc_msgSend(modelCopy, "allowsMoveToSharedLibraryAction") | v15))
   {
-    *a4 = 0;
+    *title = 0;
   }
 
   else
   {
-    v34 = [v14 selectionManager];
-    v35 = [v34 assetTypeCounter];
-    v36 = [v35 typedCount];
-    v38 = PXLocalizedSelectModeCaption(1, v36, v37);
-    *a4 = v38;
+    selectionManager = [modelCopy selectionManager];
+    assetTypeCounter = [selectionManager assetTypeCounter];
+    typedCount = [assetTypeCounter typedCount];
+    v38 = PXLocalizedSelectModeCaption(1, typedCount, v37);
+    *title = v38;
   }
 
-  v16 = [v14 isInCompactMode];
-  v17 = [v14 selectionSnapshot];
-  v43 = [v17 areAllItemsSelected];
+  isInCompactMode = [modelCopy isInCompactMode];
+  selectionSnapshot = [modelCopy selectionSnapshot];
+  areAllItemsSelected = [selectionSnapshot areAllItemsSelected];
 
-  v18 = [v14 allowsAddToLibraryAction];
-  v19 = [v14 allowsInfoAction];
-  if ([v14 wantsToolbarVisible] && (objc_msgSend(v14, "prefersActionsInToolbar") & 1) != 0)
+  allowsAddToLibraryAction = [modelCopy allowsAddToLibraryAction];
+  allowsInfoAction = [modelCopy allowsInfoAction];
+  if ([modelCopy wantsToolbarVisible] && (objc_msgSend(modelCopy, "prefersActionsInToolbar") & 1) != 0)
   {
-    v20 = 1;
+    prefersActionsInToolbar = 1;
   }
 
-  else if ([v14 shouldAlwaysRespectToolbarActionPlacementPreference])
+  else if ([modelCopy shouldAlwaysRespectToolbarActionPlacementPreference])
   {
-    v20 = [v14 prefersActionsInToolbar];
+    prefersActionsInToolbar = [modelCopy prefersActionsInToolbar];
   }
 
   else
   {
-    v20 = 0;
+    prefersActionsInToolbar = 0;
   }
 
-  v21 = [v14 allowsTapbackAction];
+  allowsTapbackAction = [modelCopy allowsTapbackAction];
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -55,45 +55,45 @@
   v23 = v22;
   v47 = v23;
   v24 = _Block_copy(aBlock);
-  v25 = [v14 canExitSelectMode];
-  if (v25)
+  canExitSelectMode = [modelCopy canExitSelectMode];
+  if (canExitSelectMode)
   {
-    v25 = v24[2](v24, *off_1E7721E30);
+    canExitSelectMode = v24[2](v24, *off_1E7721E30);
   }
 
-  if (!(v20 & 1 | ((v21 & 1) == 0)))
+  if (!(prefersActionsInToolbar & 1 | ((allowsTapbackAction & 1) == 0)))
   {
-    v25 = v24[2](v24, *off_1E7721F30);
+    canExitSelectMode = v24[2](v24, *off_1E7721F30);
   }
 
-  if (!(v20 & 1 | ((v18 & 1) == 0)))
+  if (!(prefersActionsInToolbar & 1 | ((allowsAddToLibraryAction & 1) == 0)))
   {
-    v25 = v24[2](v24, *off_1E7721E18);
+    canExitSelectMode = v24[2](v24, *off_1E7721E18);
   }
 
-  if (v19)
+  if (allowsInfoAction)
   {
-    v25 = v24[2](v24, *off_1E7721E88);
+    canExitSelectMode = v24[2](v24, *off_1E7721E88);
   }
 
-  if (MEMORY[0x1A590D320](v25) && a11)
+  if (MEMORY[0x1A590D320](canExitSelectMode) && menu)
   {
     v24[2](v24, *off_1E7721F00);
   }
 
-  if (v16)
+  if (isInCompactMode)
   {
-    if (v12)
+    if (allCopy)
     {
       v26 = off_1E7721E50;
-      if (!v43)
+      if (!areAllItemsSelected)
       {
         v26 = off_1E7721EF0;
       }
 
       v52[0] = *v26;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
-      if (!v11)
+      if (!addCopy)
       {
         goto LABEL_43;
       }
@@ -102,7 +102,7 @@
     else
     {
       v27 = MEMORY[0x1E695E0F0];
-      if (!v11)
+      if (!addCopy)
       {
         goto LABEL_43;
       }
@@ -114,7 +114,7 @@
     goto LABEL_43;
   }
 
-  if (a9)
+  if (actions)
   {
     v28 = *off_1E7721ED8;
     v51[0] = *off_1E7721E48;
@@ -127,22 +127,22 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (a10)
+  if (shareActions)
   {
     v50 = *off_1E7721F08;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
-    if ([v14 allowsTrashAction])
+    if ([modelCopy allowsTrashAction])
     {
       v41 = [v27 arrayByAddingObject:*off_1E7721F50];
 
       v27 = v41;
-      if (!v11)
+      if (!addCopy)
       {
         goto LABEL_31;
       }
     }
 
-    else if (!v11)
+    else if (!addCopy)
     {
       goto LABEL_31;
     }
@@ -154,7 +154,7 @@ LABEL_30:
 
   else
   {
-    if (v11)
+    if (addCopy)
     {
       v49 = *off_1E7721E08;
       v29 = MEMORY[0x1E695DEC8];
@@ -167,9 +167,9 @@ LABEL_30:
   }
 
 LABEL_31:
-  if (v12)
+  if (allCopy)
   {
-    if (v43)
+    if (areAllItemsSelected)
     {
       v32 = off_1E7721E50;
     }
@@ -197,8 +197,8 @@ LABEL_43:
   }
 
   v40 = v27;
-  *a5 = v27;
-  *a6 = [v23 copy];
+  *identifiers = v27;
+  *trailingIdentifiers = [v23 copy];
 }
 
 void __213__PXPhotosBarsItemIdentifierProviderBase__topBarValuesForSelectionModeWithModel_title_leadingIdentifiers_trailingIdentifiers_allowSelectAll_allowAdd_allowTrashActions_allowDeleteShareActions_wantsMultiSelectMenu___block_invoke(uint64_t a1, void *a2)

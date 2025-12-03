@@ -1,7 +1,7 @@
 @interface HKStatistics
-+ (void)_validateOptions:(unint64_t)a3 forDataType:(id)a4;
-- (BOOL)getData:(id *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)_validateOptions:(unint64_t)options forDataType:(id)type;
+- (BOOL)getData:(id *)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKQuantity)averageQuantityForSource:(HKSource *)source;
 - (HKQuantity)durationForSource:(HKSource *)source;
 - (HKQuantity)maximumQuantityForSource:(HKSource *)source;
@@ -10,24 +10,24 @@
 - (HKQuantity)sumQuantityForSource:(HKSource *)source;
 - (HKQuantityType)quantityType;
 - (HKStatistics)init;
-- (HKStatistics)initWithCoder:(id)a3;
-- (HKStatistics)initWithDataType:(id)a3 startDate:(id)a4 endDate:(id)a5;
+- (HKStatistics)initWithCoder:(id)coder;
+- (HKStatistics)initWithDataType:(id)type startDate:(id)date endDate:(id)endDate;
 - (NSDateInterval)mostRecentQuantityDateIntervalForSource:(HKSource *)source;
 - (NSString)description;
-- (id)_initAsCopyOf:(id)a3;
+- (id)_initAsCopyOf:(id)of;
 - (id)asJSONObject;
 - (id)baselineRelativeValueState;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setSources:(id)a3;
-- (void)_validateUnit:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setSources:(id)sources;
+- (void)_validateUnit:(id)unit;
+- (void)encodeWithCoder:(id)coder;
 - (void)quantityType;
-- (void)setAverageQuantity:(id)a3;
-- (void)setMaximumQuantity:(id)a3;
-- (void)setMinimumQuantity:(id)a3;
-- (void)setMostRecentQuantity:(id)a3;
-- (void)setSumQuantity:(id)a3;
+- (void)setAverageQuantity:(id)quantity;
+- (void)setMaximumQuantity:(id)quantity;
+- (void)setMinimumQuantity:(id)quantity;
+- (void)setMostRecentQuantity:(id)quantity;
+- (void)setSumQuantity:(id)quantity;
 @end
 
 @implementation HKStatistics
@@ -42,17 +42,17 @@
   return 0;
 }
 
-+ (void)_validateOptions:(unint64_t)a3 forDataType:(id)a4
++ (void)_validateOptions:(unint64_t)options forDataType:(id)type
 {
-  isKindOfClass = a4;
+  isKindOfClass = type;
   v6 = isKindOfClass;
-  if (a3 != 0x10000000)
+  if (options != 0x10000000)
   {
     v8 = isKindOfClass;
     if ([isKindOfClass conformsToProtocol:&unk_1F06B3968])
     {
       v7 = v8;
-      if (([v7 supportsStatisticOptions:a3] & 1) == 0)
+      if (([v7 supportsStatisticOptions:options] & 1) == 0)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Statistics option is not compatible with statistic configuration providing data type %@", v7}];
       }
@@ -69,7 +69,7 @@
     }
 
     v6 = v8;
-    if (a3 != 0xFFFFFFFF80000000 && a3 != 64 && a3 != 0x40000000)
+    if (options != 0xFFFFFFFF80000000 && options != 64 && options != 0x40000000)
     {
       isKindOfClass = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Statistics option is not compatible with non-quantity data type %@", v8}];
 LABEL_12:
@@ -80,20 +80,20 @@ LABEL_12:
   MEMORY[0x1EEE66BB8](isKindOfClass, v6);
 }
 
-- (HKStatistics)initWithDataType:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (HKStatistics)initWithDataType:(id)type startDate:(id)date endDate:(id)endDate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  dateCopy = date;
+  endDateCopy = endDate;
   v15.receiver = self;
   v15.super_class = HKStatistics;
   v12 = [(HKStatistics *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataType, a3);
-    objc_storeStrong(&v13->_startDate, a4);
-    objc_storeStrong(&v13->_endDate, a5);
+    objc_storeStrong(&v12->_dataType, type);
+    objc_storeStrong(&v13->_startDate, date);
+    objc_storeStrong(&v13->_endDate, endDate);
   }
 
   return v13;
@@ -102,8 +102,8 @@ LABEL_12:
 - (HKQuantity)averageQuantityForSource:(HKSource *)source
 {
   averageQuantityBySource = self->_averageQuantityBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)averageQuantityBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)averageQuantityBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -111,8 +111,8 @@ LABEL_12:
 - (HKQuantity)minimumQuantityForSource:(HKSource *)source
 {
   minimumQuantityBySource = self->_minimumQuantityBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)minimumQuantityBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)minimumQuantityBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -120,8 +120,8 @@ LABEL_12:
 - (HKQuantity)maximumQuantityForSource:(HKSource *)source
 {
   maximumQuantityBySource = self->_maximumQuantityBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)maximumQuantityBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)maximumQuantityBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -129,8 +129,8 @@ LABEL_12:
 - (HKQuantity)mostRecentQuantityForSource:(HKSource *)source
 {
   mostRecentQuantityBySource = self->_mostRecentQuantityBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)mostRecentQuantityBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)mostRecentQuantityBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -138,8 +138,8 @@ LABEL_12:
 - (NSDateInterval)mostRecentQuantityDateIntervalForSource:(HKSource *)source
 {
   mostRecentQuantityDateIntervalBySource = self->_mostRecentQuantityDateIntervalBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)mostRecentQuantityDateIntervalBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)mostRecentQuantityDateIntervalBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -147,8 +147,8 @@ LABEL_12:
 - (HKQuantity)sumQuantityForSource:(HKSource *)source
 {
   sumQuantityBySource = self->_sumQuantityBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)sumQuantityBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)sumQuantityBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -156,8 +156,8 @@ LABEL_12:
 - (HKQuantity)durationForSource:(HKSource *)source
 {
   durationBySource = self->_durationBySource;
-  v4 = [(HKSource *)source bundleIdentifier];
-  v5 = [(NSDictionary *)durationBySource objectForKeyedSubscript:v4];
+  bundleIdentifier = [(HKSource *)source bundleIdentifier];
+  v5 = [(NSDictionary *)durationBySource objectForKeyedSubscript:bundleIdentifier];
 
   return v5;
 }
@@ -186,8 +186,8 @@ LABEL_12:
     }
 
     v6 = minimumQuantity;
-    v7 = [(HKObjectType *)v4 _unitForChangeInCanonicalUnit];
-    [(HKQuantity *)v6 doubleValueForUnit:v7];
+    _unitForChangeInCanonicalUnit = [(HKObjectType *)v4 _unitForChangeInCanonicalUnit];
+    [(HKQuantity *)v6 doubleValueForUnit:_unitForChangeInCanonicalUnit];
     v9 = v8;
 
     v10 = &unk_1F0684638;
@@ -215,105 +215,105 @@ LABEL_12:
   return v11;
 }
 
-- (void)setAverageQuantity:(id)a3
+- (void)setAverageQuantity:(id)quantity
 {
-  v9 = a3;
+  quantityCopy = quantity;
   dataType = self->_dataType;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(HKStatistics *)self quantityType];
-    v7 = [v6 aggregationStyle];
+    quantityType = [(HKStatistics *)self quantityType];
+    aggregationStyle = [quantityType aggregationStyle];
 
-    if ((v7 - 1) <= 2)
+    if ((aggregationStyle - 1) <= 2)
     {
-      if (v9)
+      if (quantityCopy)
       {
-        v8 = [v9 _unit];
-        [(HKStatistics *)self _validateUnit:v8];
+        _unit = [quantityCopy _unit];
+        [(HKStatistics *)self _validateUnit:_unit];
       }
 
-      objc_storeStrong(&self->_averageQuantity, a3);
+      objc_storeStrong(&self->_averageQuantity, quantity);
     }
   }
 }
 
-- (void)setMinimumQuantity:(id)a3
+- (void)setMinimumQuantity:(id)quantity
 {
-  v9 = a3;
+  quantityCopy = quantity;
   dataType = self->_dataType;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(HKStatistics *)self quantityType];
-    v7 = [v6 aggregationStyle];
+    quantityType = [(HKStatistics *)self quantityType];
+    aggregationStyle = [quantityType aggregationStyle];
 
-    if ((v7 - 1) <= 2)
+    if ((aggregationStyle - 1) <= 2)
     {
-      if (v9)
+      if (quantityCopy)
       {
-        v8 = [v9 _unit];
-        [(HKStatistics *)self _validateUnit:v8];
+        _unit = [quantityCopy _unit];
+        [(HKStatistics *)self _validateUnit:_unit];
       }
 
-      objc_storeStrong(&self->_minimumQuantity, a3);
+      objc_storeStrong(&self->_minimumQuantity, quantity);
     }
   }
 }
 
-- (void)setMaximumQuantity:(id)a3
+- (void)setMaximumQuantity:(id)quantity
 {
-  v9 = a3;
+  quantityCopy = quantity;
   dataType = self->_dataType;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(HKStatistics *)self quantityType];
-    v7 = [v6 aggregationStyle];
+    quantityType = [(HKStatistics *)self quantityType];
+    aggregationStyle = [quantityType aggregationStyle];
 
-    if ((v7 - 1) <= 2)
+    if ((aggregationStyle - 1) <= 2)
     {
-      if (v9)
+      if (quantityCopy)
       {
-        v8 = [v9 _unit];
-        [(HKStatistics *)self _validateUnit:v8];
+        _unit = [quantityCopy _unit];
+        [(HKStatistics *)self _validateUnit:_unit];
       }
 
-      objc_storeStrong(&self->_maximumQuantity, a3);
+      objc_storeStrong(&self->_maximumQuantity, quantity);
     }
   }
 }
 
-- (void)setMostRecentQuantity:(id)a3
+- (void)setMostRecentQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  quantityCopy = quantity;
+  v5 = quantityCopy;
+  if (quantityCopy)
   {
-    v6 = [(HKQuantity *)v4 _unit];
-    [(HKStatistics *)self _validateUnit:v6];
+    _unit = [(HKQuantity *)quantityCopy _unit];
+    [(HKStatistics *)self _validateUnit:_unit];
   }
 
   mostRecentQuantity = self->_mostRecentQuantity;
   self->_mostRecentQuantity = v5;
 }
 
-- (void)setSumQuantity:(id)a3
+- (void)setSumQuantity:(id)quantity
 {
-  v8 = a3;
+  quantityCopy = quantity;
   if ([(HKObjectType *)self->_dataType conformsToProtocol:&unk_1F06B3968])
   {
     v5 = self->_dataType;
     v6 = v5;
     if (v5 && ![(HKObjectType *)v5 aggregationStyleForStatistics])
     {
-      if (v8)
+      if (quantityCopy)
       {
-        v7 = [v8 _unit];
-        [(HKStatistics *)self _validateUnit:v7];
+        _unit = [quantityCopy _unit];
+        [(HKStatistics *)self _validateUnit:_unit];
       }
 
-      objc_storeStrong(&self->_sumQuantity, a3);
+      objc_storeStrong(&self->_sumQuantity, quantity);
     }
   }
 
@@ -323,101 +323,101 @@ LABEL_12:
   }
 }
 
-- (void)_validateUnit:(id)a3
+- (void)_validateUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   if ([(HKObjectType *)self->_dataType conformsToProtocol:&unk_1F06B3968])
   {
-    [(HKObjectType *)self->_dataType validateUnitForStatistic:v4];
+    [(HKObjectType *)self->_dataType validateUnitForStatistic:unitCopy];
   }
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ %@ is not able to determine compatibility of unit %@", objc_opt_class(), self->_dataType, v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ %@ is not able to determine compatibility of unit %@", objc_opt_class(), self->_dataType, unitCopy}];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 _initAsCopyOf:self];
 }
 
-- (id)_initAsCopyOf:(id)a3
+- (id)_initAsCopyOf:(id)of
 {
-  v4 = a3;
-  v5 = v4[1];
-  v6 = [v4 startDate];
-  v7 = [v4 endDate];
-  v8 = [(HKStatistics *)self initWithDataType:v5 startDate:v6 endDate:v7];
+  ofCopy = of;
+  v5 = ofCopy[1];
+  startDate = [ofCopy startDate];
+  endDate = [ofCopy endDate];
+  v8 = [(HKStatistics *)self initWithDataType:v5 startDate:startDate endDate:endDate];
 
   if (v8)
   {
-    -[HKStatistics setDataCount:](v8, "setDataCount:", [v4 dataCount]);
-    v8->_dataCount = [v4 dataCount];
-    v9 = [v4 averageQuantity];
+    -[HKStatistics setDataCount:](v8, "setDataCount:", [ofCopy dataCount]);
+    v8->_dataCount = [ofCopy dataCount];
+    averageQuantity = [ofCopy averageQuantity];
     averageQuantity = v8->_averageQuantity;
-    v8->_averageQuantity = v9;
+    v8->_averageQuantity = averageQuantity;
 
-    v11 = [v4 minimumQuantity];
+    minimumQuantity = [ofCopy minimumQuantity];
     minimumQuantity = v8->_minimumQuantity;
-    v8->_minimumQuantity = v11;
+    v8->_minimumQuantity = minimumQuantity;
 
-    v13 = [v4 maximumQuantity];
+    maximumQuantity = [ofCopy maximumQuantity];
     maximumQuantity = v8->_maximumQuantity;
-    v8->_maximumQuantity = v13;
+    v8->_maximumQuantity = maximumQuantity;
 
-    v15 = [v4 mostRecentQuantity];
+    mostRecentQuantity = [ofCopy mostRecentQuantity];
     mostRecentQuantity = v8->_mostRecentQuantity;
-    v8->_mostRecentQuantity = v15;
+    v8->_mostRecentQuantity = mostRecentQuantity;
 
-    v17 = [v4 mostRecentQuantityDateInterval];
+    mostRecentQuantityDateInterval = [ofCopy mostRecentQuantityDateInterval];
     mostRecentQuantityDateInterval = v8->_mostRecentQuantityDateInterval;
-    v8->_mostRecentQuantityDateInterval = v17;
+    v8->_mostRecentQuantityDateInterval = mostRecentQuantityDateInterval;
 
-    v19 = [v4 sumQuantity];
+    sumQuantity = [ofCopy sumQuantity];
     sumQuantity = v8->_sumQuantity;
-    v8->_sumQuantity = v19;
+    v8->_sumQuantity = sumQuantity;
 
-    v21 = [v4 duration];
+    duration = [ofCopy duration];
     duration = v8->_duration;
-    v8->_duration = v21;
+    v8->_duration = duration;
 
-    v23 = [v4 averageQuantityBySource];
+    averageQuantityBySource = [ofCopy averageQuantityBySource];
     averageQuantityBySource = v8->_averageQuantityBySource;
-    v8->_averageQuantityBySource = v23;
+    v8->_averageQuantityBySource = averageQuantityBySource;
 
-    v25 = [v4 minimumQuantityBySource];
+    minimumQuantityBySource = [ofCopy minimumQuantityBySource];
     minimumQuantityBySource = v8->_minimumQuantityBySource;
-    v8->_minimumQuantityBySource = v25;
+    v8->_minimumQuantityBySource = minimumQuantityBySource;
 
-    v27 = [v4 maximumQuantityBySource];
+    maximumQuantityBySource = [ofCopy maximumQuantityBySource];
     maximumQuantityBySource = v8->_maximumQuantityBySource;
-    v8->_maximumQuantityBySource = v27;
+    v8->_maximumQuantityBySource = maximumQuantityBySource;
 
-    v29 = [v4 mostRecentQuantityBySource];
+    mostRecentQuantityBySource = [ofCopy mostRecentQuantityBySource];
     mostRecentQuantityBySource = v8->_mostRecentQuantityBySource;
-    v8->_mostRecentQuantityBySource = v29;
+    v8->_mostRecentQuantityBySource = mostRecentQuantityBySource;
 
-    v31 = [v4 mostRecentQuantityDateIntervalBySource];
+    mostRecentQuantityDateIntervalBySource = [ofCopy mostRecentQuantityDateIntervalBySource];
     mostRecentQuantityDateIntervalBySource = v8->_mostRecentQuantityDateIntervalBySource;
-    v8->_mostRecentQuantityDateIntervalBySource = v31;
+    v8->_mostRecentQuantityDateIntervalBySource = mostRecentQuantityDateIntervalBySource;
 
-    v33 = [v4 sumQuantityBySource];
+    sumQuantityBySource = [ofCopy sumQuantityBySource];
     sumQuantityBySource = v8->_sumQuantityBySource;
-    v8->_sumQuantityBySource = v33;
+    v8->_sumQuantityBySource = sumQuantityBySource;
 
-    v35 = [v4 dataCountBySource];
+    dataCountBySource = [ofCopy dataCountBySource];
     dataCountBySource = v8->_dataCountBySource;
-    v8->_dataCountBySource = v35;
+    v8->_dataCountBySource = dataCountBySource;
 
-    v37 = [v4 durationBySource];
+    durationBySource = [ofCopy durationBySource];
     durationBySource = v8->_durationBySource;
-    v8->_durationBySource = v37;
+    v8->_durationBySource = durationBySource;
 
-    v39 = [v4 sources];
-    v40 = [v39 copy];
+    sources = [ofCopy sources];
+    v40 = [sources copy];
     sources = v8->_sources;
     v8->_sources = v40;
   }
@@ -425,48 +425,48 @@ LABEL_12:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dataType = self->_dataType;
-  v5 = a3;
-  [v5 encodeObject:dataType forKey:@"dataType"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeInteger:self->_dataCount forKey:@"dataCount"];
-  [v5 encodeObject:self->_sources forKey:@"sources"];
-  [v5 encodeObject:self->_averageQuantity forKey:@"average"];
-  [v5 encodeObject:self->_minimumQuantity forKey:@"min"];
-  [v5 encodeObject:self->_maximumQuantity forKey:@"max"];
-  [v5 encodeObject:self->_mostRecentQuantity forKey:@"mostRecent"];
-  [v5 encodeObject:self->_mostRecentQuantityDateInterval forKey:@"mostRecentDateInterval"];
-  [v5 encodeObject:self->_sumQuantity forKey:@"sum"];
-  [v5 encodeObject:self->_duration forKey:@"duration"];
-  [v5 encodeObject:self->_averageQuantityBySource forKey:@"averageBySource"];
-  [v5 encodeObject:self->_minimumQuantityBySource forKey:@"minBySource"];
-  [v5 encodeObject:self->_maximumQuantityBySource forKey:@"maxBySource"];
-  [v5 encodeObject:self->_mostRecentQuantityBySource forKey:@"mostRecentBySource"];
-  [v5 encodeObject:self->_mostRecentQuantityDateIntervalBySource forKey:@"mostRecentDateIntervalBySource"];
-  [v5 encodeObject:self->_sumQuantityBySource forKey:@"sumBySource"];
-  [v5 encodeObject:self->_dataCountBySource forKey:@"countBySource"];
-  [v5 encodeObject:self->_durationBySource forKey:@"durationBySource"];
-  [v5 encodeObject:self->_categoryValue forKey:@"categoryValueKey"];
-  [v5 encodeObject:self->_categoryValueBySource forKey:@"categoryValueBySourceKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dataType forKey:@"dataType"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeInteger:self->_dataCount forKey:@"dataCount"];
+  [coderCopy encodeObject:self->_sources forKey:@"sources"];
+  [coderCopy encodeObject:self->_averageQuantity forKey:@"average"];
+  [coderCopy encodeObject:self->_minimumQuantity forKey:@"min"];
+  [coderCopy encodeObject:self->_maximumQuantity forKey:@"max"];
+  [coderCopy encodeObject:self->_mostRecentQuantity forKey:@"mostRecent"];
+  [coderCopy encodeObject:self->_mostRecentQuantityDateInterval forKey:@"mostRecentDateInterval"];
+  [coderCopy encodeObject:self->_sumQuantity forKey:@"sum"];
+  [coderCopy encodeObject:self->_duration forKey:@"duration"];
+  [coderCopy encodeObject:self->_averageQuantityBySource forKey:@"averageBySource"];
+  [coderCopy encodeObject:self->_minimumQuantityBySource forKey:@"minBySource"];
+  [coderCopy encodeObject:self->_maximumQuantityBySource forKey:@"maxBySource"];
+  [coderCopy encodeObject:self->_mostRecentQuantityBySource forKey:@"mostRecentBySource"];
+  [coderCopy encodeObject:self->_mostRecentQuantityDateIntervalBySource forKey:@"mostRecentDateIntervalBySource"];
+  [coderCopy encodeObject:self->_sumQuantityBySource forKey:@"sumBySource"];
+  [coderCopy encodeObject:self->_dataCountBySource forKey:@"countBySource"];
+  [coderCopy encodeObject:self->_durationBySource forKey:@"durationBySource"];
+  [coderCopy encodeObject:self->_categoryValue forKey:@"categoryValueKey"];
+  [coderCopy encodeObject:self->_categoryValueBySource forKey:@"categoryValueBySourceKey"];
 }
 
-- (HKStatistics)initWithCoder:(id)a3
+- (HKStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
   v8 = [(HKStatistics *)self initWithDataType:v5 startDate:v6 endDate:v7];
   if (v8)
   {
-    v8->_dataCount = [v4 decodeIntegerForKey:@"dataCount"];
+    v8->_dataCount = [coderCopy decodeIntegerForKey:@"dataCount"];
     v9 = objc_alloc(MEMORY[0x1E695DFD8]);
     v10 = objc_opt_class();
     v36 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v36 forKey:@"sources"];
+    v11 = [coderCopy decodeObjectOfClasses:v36 forKey:@"sources"];
     sources = v8->_sources;
     v8->_sources = v11;
 
@@ -474,56 +474,56 @@ LABEL_12:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = objc_opt_class();
-    v17 = [v4 decodeObjectOfClass:v14 forKey:@"average"];
+    v17 = [coderCopy decodeObjectOfClass:v14 forKey:@"average"];
     [(HKStatistics *)v8 setAverageQuantity:v17];
 
-    v18 = [v4 decodeObjectOfClass:v14 forKey:@"min"];
+    v18 = [coderCopy decodeObjectOfClass:v14 forKey:@"min"];
     [(HKStatistics *)v8 setMinimumQuantity:v18];
 
-    v19 = [v4 decodeObjectOfClass:v14 forKey:@"max"];
+    v19 = [coderCopy decodeObjectOfClass:v14 forKey:@"max"];
     [(HKStatistics *)v8 setMaximumQuantity:v19];
 
-    v20 = [v4 decodeObjectOfClass:v14 forKey:@"mostRecent"];
+    v20 = [coderCopy decodeObjectOfClass:v14 forKey:@"mostRecent"];
     [(HKStatistics *)v8 setMostRecentQuantity:v20];
 
-    v21 = [v4 decodeObjectOfClass:v13 forKey:@"mostRecentDateInterval"];
+    v21 = [coderCopy decodeObjectOfClass:v13 forKey:@"mostRecentDateInterval"];
     [(HKStatistics *)v8 setMostRecentQuantityDateInterval:v21];
 
-    v22 = [v4 decodeObjectOfClass:v14 forKey:@"sum"];
+    v22 = [coderCopy decodeObjectOfClass:v14 forKey:@"sum"];
     [(HKStatistics *)v8 setSumQuantity:v22];
 
-    v23 = [v4 decodeObjectOfClass:v14 forKey:@"duration"];
+    v23 = [coderCopy decodeObjectOfClass:v14 forKey:@"duration"];
     [(HKStatistics *)v8 setDuration:v23];
 
-    v24 = [v4 decodeObjectOfClass:v16 forKey:@"categoryValueKey"];
+    v24 = [coderCopy decodeObjectOfClass:v16 forKey:@"categoryValueKey"];
     [(HKStatistics *)v8 setCategoryValue:v24];
 
     v25 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), v15, v16, v13, v14, 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"averageBySource"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"averageBySource"];
     [(HKStatistics *)v8 setAverageQuantityBySource:v26];
 
-    v27 = [v4 decodeObjectOfClasses:v25 forKey:@"minBySource"];
+    v27 = [coderCopy decodeObjectOfClasses:v25 forKey:@"minBySource"];
     [(HKStatistics *)v8 setMinimumQuantityBySource:v27];
 
-    v28 = [v4 decodeObjectOfClasses:v25 forKey:@"maxBySource"];
+    v28 = [coderCopy decodeObjectOfClasses:v25 forKey:@"maxBySource"];
     [(HKStatistics *)v8 setMaximumQuantityBySource:v28];
 
-    v29 = [v4 decodeObjectOfClasses:v25 forKey:@"mostRecentBySource"];
+    v29 = [coderCopy decodeObjectOfClasses:v25 forKey:@"mostRecentBySource"];
     [(HKStatistics *)v8 setMostRecentQuantityBySource:v29];
 
-    v30 = [v4 decodeObjectOfClasses:v25 forKey:@"mostRecentDateIntervalBySource"];
+    v30 = [coderCopy decodeObjectOfClasses:v25 forKey:@"mostRecentDateIntervalBySource"];
     [(HKStatistics *)v8 setMostRecentQuantityDateIntervalBySource:v30];
 
-    v31 = [v4 decodeObjectOfClasses:v25 forKey:@"sumBySource"];
+    v31 = [coderCopy decodeObjectOfClasses:v25 forKey:@"sumBySource"];
     [(HKStatistics *)v8 setSumQuantityBySource:v31];
 
-    v32 = [v4 decodeObjectOfClasses:v25 forKey:@"countBySource"];
+    v32 = [coderCopy decodeObjectOfClasses:v25 forKey:@"countBySource"];
     [(HKStatistics *)v8 setDataCountBySource:v32];
 
-    v33 = [v4 decodeObjectOfClasses:v25 forKey:@"durationBySource"];
+    v33 = [coderCopy decodeObjectOfClasses:v25 forKey:@"durationBySource"];
     [(HKStatistics *)v8 setDurationBySource:v33];
 
-    v34 = [v4 decodeObjectOfClasses:v25 forKey:@"categoryValueBySourceKey"];
+    v34 = [coderCopy decodeObjectOfClasses:v25 forKey:@"categoryValueBySourceKey"];
     [(HKStatistics *)v8 setCategoryValueBySource:v34];
   }
 
@@ -537,156 +537,156 @@ LABEL_12:
   return v4 ^ [(NSDate *)self->_endDate hash]^ (2654435761u * self->_dataCount);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_60;
   }
 
-  if (![(HKObjectType *)self->_dataType isEqual:v4[1]])
+  if (![(HKObjectType *)self->_dataType isEqual:equalCopy[1]])
   {
     goto LABEL_60;
   }
 
-  if (![(NSDate *)self->_startDate isEqual:v4[2]])
+  if (![(NSDate *)self->_startDate isEqual:equalCopy[2]])
   {
     goto LABEL_60;
   }
 
-  if (![(NSDate *)self->_endDate isEqual:v4[3]])
+  if (![(NSDate *)self->_endDate isEqual:equalCopy[3]])
   {
     goto LABEL_60;
   }
 
-  if (self->_dataCount != v4[7])
+  if (self->_dataCount != equalCopy[7])
   {
     goto LABEL_60;
   }
 
   averageQuantity = self->_averageQuantity;
-  v6 = v4[8];
+  v6 = equalCopy[8];
   if (averageQuantity != v6 && (!v6 || ![(HKQuantity *)averageQuantity isEqual:?]))
   {
     goto LABEL_60;
   }
 
   minimumQuantity = self->_minimumQuantity;
-  v8 = v4[9];
+  v8 = equalCopy[9];
   if (minimumQuantity != v8 && (!v8 || ![(HKQuantity *)minimumQuantity isEqual:?]))
   {
     goto LABEL_60;
   }
 
   maximumQuantity = self->_maximumQuantity;
-  v10 = v4[10];
+  v10 = equalCopy[10];
   if (maximumQuantity != v10 && (!v10 || ![(HKQuantity *)maximumQuantity isEqual:?]))
   {
     goto LABEL_60;
   }
 
   mostRecentQuantity = self->_mostRecentQuantity;
-  v12 = v4[11];
+  v12 = equalCopy[11];
   if (mostRecentQuantity != v12 && (!v12 || ![(HKQuantity *)mostRecentQuantity isEqual:?]))
   {
     goto LABEL_60;
   }
 
   mostRecentQuantityDateInterval = self->_mostRecentQuantityDateInterval;
-  v14 = v4[12];
+  v14 = equalCopy[12];
   if (mostRecentQuantityDateInterval != v14 && (!v14 || ![(NSDateInterval *)mostRecentQuantityDateInterval isEqual:?]))
   {
     goto LABEL_60;
   }
 
   sumQuantity = self->_sumQuantity;
-  v16 = v4[23];
+  v16 = equalCopy[23];
   if (sumQuantity != v16 && (!v16 || ![(HKQuantity *)sumQuantity isEqual:?]))
   {
     goto LABEL_60;
   }
 
   duration = self->_duration;
-  v18 = v4[13];
+  v18 = equalCopy[13];
   if (duration != v18 && (!v18 || ![(HKQuantity *)duration isEqual:?]))
   {
     goto LABEL_60;
   }
 
   sources = self->_sources;
-  v20 = v4[4];
+  v20 = equalCopy[4];
   if (sources != v20 && (!v20 || ![(NSArray *)sources isEqual:?]))
   {
     goto LABEL_60;
   }
 
   dataCountBySource = self->_dataCountBySource;
-  v22 = v4[20];
+  v22 = equalCopy[20];
   if (dataCountBySource != v22 && (!v22 || ![(NSDictionary *)dataCountBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   averageQuantityBySource = self->_averageQuantityBySource;
-  v24 = v4[15];
+  v24 = equalCopy[15];
   if (averageQuantityBySource != v24 && (!v24 || ![(NSDictionary *)averageQuantityBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   minimumQuantityBySource = self->_minimumQuantityBySource;
-  v26 = v4[16];
+  v26 = equalCopy[16];
   if (minimumQuantityBySource != v26 && (!v26 || ![(NSDictionary *)minimumQuantityBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   maximumQuantityBySource = self->_maximumQuantityBySource;
-  v28 = v4[17];
+  v28 = equalCopy[17];
   if (maximumQuantityBySource != v28 && (!v28 || ![(NSDictionary *)maximumQuantityBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   mostRecentQuantityBySource = self->_mostRecentQuantityBySource;
-  v30 = v4[18];
+  v30 = equalCopy[18];
   if (mostRecentQuantityBySource != v30 && (!v30 || ![(NSDictionary *)mostRecentQuantityBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   mostRecentQuantityDateIntervalBySource = self->_mostRecentQuantityDateIntervalBySource;
-  v32 = v4[19];
+  v32 = equalCopy[19];
   if (mostRecentQuantityDateIntervalBySource != v32 && (!v32 || ![(NSDictionary *)mostRecentQuantityDateIntervalBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   sumQuantityBySource = self->_sumQuantityBySource;
-  v34 = v4[24];
+  v34 = equalCopy[24];
   if (sumQuantityBySource != v34 && (!v34 || ![(NSDictionary *)sumQuantityBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   durationBySource = self->_durationBySource;
-  v36 = v4[21];
+  v36 = equalCopy[21];
   if (durationBySource != v36 && (!v36 || ![(NSDictionary *)durationBySource isEqual:?]))
   {
     goto LABEL_60;
   }
 
   categoryValue = self->_categoryValue;
-  v38 = v4[5];
+  v38 = equalCopy[5];
   if (categoryValue != v38 && (!v38 || ![(NSNumber *)categoryValue isEqual:?]))
   {
     goto LABEL_60;
   }
 
   categoryValueBySource = self->_categoryValueBySource;
-  v40 = v4[6];
+  v40 = equalCopy[6];
   if (categoryValueBySource == v40)
   {
     v41 = 1;
@@ -723,23 +723,23 @@ LABEL_61:
   return v5;
 }
 
-- (void)_setSources:(id)a3
+- (void)_setSources:(id)sources
 {
-  v4 = [a3 copy];
+  v4 = [sources copy];
   sources = self->_sources;
   self->_sources = v4;
 
   MEMORY[0x1EEE66BB8](v4, sources);
 }
 
-- (BOOL)getData:(id *)a3 error:(id *)a4
+- (BOOL)getData:(id *)data error:(id *)error
 {
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:a4];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:error];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
-    *a3 = v8;
+    *data = v8;
   }
 
   else
@@ -748,7 +748,7 @@ LABEL_61:
     v10 = HKLogInfrastructure();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(HKStatistics *)self getData:a4 error:v10];
+      [(HKStatistics *)self getData:error error:v10];
     }
   }
 
@@ -772,28 +772,28 @@ LABEL_61:
 - (id)asJSONObject
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(HKStatistics *)self averageQuantity];
-  v5 = [(HKStatistics *)self quantityType];
-  v6 = [v5 canonicalUnit];
-  v7 = [v4 asJSONObjectForUnit:v6];
+  averageQuantity = [(HKStatistics *)self averageQuantity];
+  quantityType = [(HKStatistics *)self quantityType];
+  canonicalUnit = [quantityType canonicalUnit];
+  v7 = [averageQuantity asJSONObjectForUnit:canonicalUnit];
   [v3 setObject:v7 forKeyedSubscript:@"averageQuantity"];
 
-  v8 = [(HKStatistics *)self minimumQuantity];
-  v9 = [(HKStatistics *)self quantityType];
-  v10 = [v9 canonicalUnit];
-  v11 = [v8 asJSONObjectForUnit:v10];
+  minimumQuantity = [(HKStatistics *)self minimumQuantity];
+  quantityType2 = [(HKStatistics *)self quantityType];
+  canonicalUnit2 = [quantityType2 canonicalUnit];
+  v11 = [minimumQuantity asJSONObjectForUnit:canonicalUnit2];
   [v3 setObject:v11 forKeyedSubscript:@"minimumQuantity"];
 
-  v12 = [(HKStatistics *)self maximumQuantity];
-  v13 = [(HKStatistics *)self quantityType];
-  v14 = [v13 canonicalUnit];
-  v15 = [v12 asJSONObjectForUnit:v14];
+  maximumQuantity = [(HKStatistics *)self maximumQuantity];
+  quantityType3 = [(HKStatistics *)self quantityType];
+  canonicalUnit3 = [quantityType3 canonicalUnit];
+  v15 = [maximumQuantity asJSONObjectForUnit:canonicalUnit3];
   [v3 setObject:v15 forKeyedSubscript:@"maximumQuantity"];
 
-  v16 = [(HKStatistics *)self mostRecentQuantity];
-  v17 = [(HKStatistics *)self quantityType];
-  v18 = [v17 canonicalUnit];
-  v19 = [v16 asJSONObjectForUnit:v18];
+  mostRecentQuantity = [(HKStatistics *)self mostRecentQuantity];
+  quantityType4 = [(HKStatistics *)self quantityType];
+  canonicalUnit4 = [quantityType4 canonicalUnit];
+  v19 = [mostRecentQuantity asJSONObjectForUnit:canonicalUnit4];
   [v3 setObject:v19 forKeyedSubscript:@"mostRecentQuantity"];
 
   return v3;
@@ -801,8 +801,8 @@ LABEL_61:
 
 - (void)quantityType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKStatistics.m" lineNumber:441 description:@"Data type is not a quantity"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKStatistics.m" lineNumber:441 description:@"Data type is not a quantity"];
 }
 
 - (void)getData:(os_log_t)log error:.cold.1(uint64_t a1, uint64_t *a2, os_log_t log)

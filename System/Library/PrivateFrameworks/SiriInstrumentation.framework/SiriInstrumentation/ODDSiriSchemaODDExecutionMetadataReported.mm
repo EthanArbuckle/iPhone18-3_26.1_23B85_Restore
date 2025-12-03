@@ -1,33 +1,33 @@
 @interface ODDSiriSchemaODDExecutionMetadataReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDExecutionMetadataReported)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDExecutionMetadataReported)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDExecutionMetadataReported)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDExecutionMetadataReported)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasExecutionStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasExecutionStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDExecutionMetadataReported
 
-- (ODDSiriSchemaODDExecutionMetadataReported)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDExecutionMetadataReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ODDSiriSchemaODDExecutionMetadataReported;
   v5 = [(ODDSiriSchemaODDExecutionMetadataReported *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"extensionName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"extensionName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDExecutionMetadataReported setExtensionName:](v5, "setExtensionName:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"executionStatus"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"executionStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDExecutionMetadataReported)initWithJSON:(id)a3
+- (ODDSiriSchemaODDExecutionMetadataReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDExecutionMetadataReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDExecutionMetadataReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDExecutionMetadataReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -90,7 +90,7 @@
       v5 = @"ODDEXECUTIONSTATUS_UNKNOWN";
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"executionStatus"];
+    [dictionary setObject:v5 forKeyedSubscript:@"executionStatus"];
     has = self->_has;
   }
 
@@ -107,12 +107,12 @@
       v7 = off_1E78DD6B0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"extensionName"];
+    [dictionary setObject:v7 forKeyedSubscript:@"extensionName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -141,16 +141,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -159,7 +159,7 @@ LABEL_3:
   if (*&has)
   {
     extensionName = self->_extensionName;
-    if (extensionName != [v4 extensionName])
+    if (extensionName != [equalCopy extensionName])
     {
 LABEL_10:
       v10 = 0;
@@ -167,7 +167,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -179,7 +179,7 @@ LABEL_10:
   if (v8)
   {
     executionStatus = self->_executionStatus;
-    if (executionStatus != [v4 executionStatus])
+    if (executionStatus != [equalCopy executionStatus])
     {
       goto LABEL_10;
     }
@@ -191,28 +191,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasExecutionStatus:(BOOL)a3
+- (void)setHasExecutionStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }

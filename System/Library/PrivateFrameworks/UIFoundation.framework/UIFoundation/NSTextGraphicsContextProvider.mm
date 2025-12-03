@@ -1,8 +1,8 @@
 @interface NSTextGraphicsContextProvider
 + (Class)textGraphicsContextProviderClass;
-+ (void)setCurrentTextGraphicsContext:(id)a3 duringBlock:(id)a4;
-+ (void)setTextGraphicsContextClass:(Class)a3;
-+ (void)setTextGraphicsContextProviderClass:(Class)a3;
++ (void)setCurrentTextGraphicsContext:(id)context duringBlock:(id)block;
++ (void)setTextGraphicsContextClass:(Class)class;
++ (void)setTextGraphicsContextProviderClass:(Class)class;
 @end
 
 @implementation NSTextGraphicsContextProvider
@@ -25,52 +25,52 @@ uint64_t __65__NSTextGraphicsContextProvider_textGraphicsContextProviderClass__b
   return result;
 }
 
-+ (void)setTextGraphicsContextProviderClass:(Class)a3
++ (void)setTextGraphicsContextProviderClass:(Class)class
 {
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F01D8F00]& 1) == 0 && ([(objc_class *)a3 conformsToProtocol:&unk_1F01D9228]& 1) == 0)
+  if (([(objc_class *)class conformsToProtocol:&unk_1F01D8F00]& 1) == 0 && ([(objc_class *)class conformsToProtocol:&unk_1F01D9228]& 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A Class %@ not conforming to NSTextGraphicsContextProvider was specified to textGraphicsContextProviderClass.", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A Class %@ not conforming to NSTextGraphicsContextProvider was specified to textGraphicsContextProviderClass.", class}];
   }
 
   block = MEMORY[0x1E69E9820];
   v5 = 3221225472;
   v6 = __69__NSTextGraphicsContextProvider_setTextGraphicsContextProviderClass___block_invoke;
   v7 = &unk_1E72657B8;
-  v8 = a3;
+  classCopy = class;
   if (_textGraphicsContextProviderClassOnce != -1)
   {
     dispatch_once(&_textGraphicsContextProviderClassOnce, &block);
   }
 
-  if (_textGraphicsContextProviderClass != a3)
+  if (_textGraphicsContextProviderClass != class)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Requested to reset textGraphicsContextProviderClass property with %@ after initialization.", a3, block, v5, v6, v7, v8}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Requested to reset textGraphicsContextProviderClass property with %@ after initialization.", class, block, v5, v6, v7, classCopy}];
   }
 }
 
-+ (void)setTextGraphicsContextClass:(Class)a3
++ (void)setTextGraphicsContextClass:(Class)class
 {
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F01D9228]& 1) == 0)
+  if (([(objc_class *)class conformsToProtocol:&unk_1F01D9228]& 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A Class %@ not conforming to NSTextGraphicsContext was specified to textGraphicsContextClass.", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A Class %@ not conforming to NSTextGraphicsContext was specified to textGraphicsContextClass.", class}];
   }
 
-  [NSTextGraphicsContextProvider setTextGraphicsContextProviderClass:a3];
+  [NSTextGraphicsContextProvider setTextGraphicsContextProviderClass:class];
 }
 
-+ (void)setCurrentTextGraphicsContext:(id)a3 duringBlock:(id)a4
++ (void)setCurrentTextGraphicsContext:(id)context duringBlock:(id)block
 {
   if (objc_opt_respondsToSelector())
   {
 
-    [a3 becomeCurrentGraphicsContextDuringBlock:a4];
+    [context becomeCurrentGraphicsContextDuringBlock:block];
   }
 
   else
   {
-    v6 = *(a4 + 2);
+    v6 = *(block + 2);
 
-    v6(a4);
+    v6(block);
   }
 }
 

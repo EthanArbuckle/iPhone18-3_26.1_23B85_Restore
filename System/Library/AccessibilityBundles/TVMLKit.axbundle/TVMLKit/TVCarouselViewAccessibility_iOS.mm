@@ -1,15 +1,15 @@
 @interface TVCarouselViewAccessibility_iOS
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_updateAutoScrollTimer;
 @end
 
 @implementation TVCarouselViewAccessibility_iOS
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVCarouselView" hasInstanceMethod:@"_updateAutoScrollTimer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_TVCarouselView" hasInstanceMethod:@"_stopAutoScrollTimer" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVCarouselView" hasInstanceMethod:@"_updateAutoScrollTimer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_TVCarouselView" hasInstanceMethod:@"_stopAutoScrollTimer" withFullSignature:{"v", 0}];
 }
 
 - (void)_updateAutoScrollTimer
@@ -20,7 +20,7 @@
     v5 = 3221225472;
     v6 = __57__TVCarouselViewAccessibility_iOS__updateAutoScrollTimer__block_invoke;
     v7 = &unk_29F308080;
-    v8 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
   }
 

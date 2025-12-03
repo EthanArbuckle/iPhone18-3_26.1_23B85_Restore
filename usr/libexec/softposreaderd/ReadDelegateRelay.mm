@@ -1,23 +1,23 @@
 @interface ReadDelegateRelay
-- (void)onSuccessWithTransactionData:(id)a3;
-- (void)onUpdateWithEvent:(int64_t)a3 mode:(int64_t)a4;
+- (void)onSuccessWithTransactionData:(id)data;
+- (void)onUpdateWithEvent:(int64_t)event mode:(int64_t)mode;
 @end
 
 @implementation ReadDelegateRelay
 
-- (void)onUpdateWithEvent:(int64_t)a3 mode:(int64_t)a4
+- (void)onUpdateWithEvent:(int64_t)event mode:(int64_t)mode
 {
 
-  sub_100100D88(a3, a4);
+  sub_100100D88(event, mode);
 }
 
-- (void)onSuccessWithTransactionData:(id)a3
+- (void)onSuccessWithTransactionData:(id)data
 {
   v5 = *self->completion;
   v4 = *&self->completion[8];
-  v6 = a3;
+  dataCopy = data;
 
-  v5(a3, 0);
+  v5(data, 0);
 }
 
 @end

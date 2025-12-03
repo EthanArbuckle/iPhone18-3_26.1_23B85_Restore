@@ -1,19 +1,19 @@
 @interface TFDeviceInstructionView
 + (UIEdgeInsets)imageLayoutInsets;
 + (id)backgroundColor;
-- (TFDeviceInstructionView)initWithFrame:(CGRect)a3;
-- (void)displayDeviceImage:(id)a3 inOrientation:(int64_t)a4;
+- (TFDeviceInstructionView)initWithFrame:(CGRect)frame;
+- (void)displayDeviceImage:(id)image inOrientation:(int64_t)orientation;
 - (void)layoutSubviews;
-- (void)updateCurrentDeviceImageToOrientation:(int64_t)a3;
+- (void)updateCurrentDeviceImageToOrientation:(int64_t)orientation;
 @end
 
 @implementation TFDeviceInstructionView
 
-- (TFDeviceInstructionView)initWithFrame:(CGRect)a3
+- (TFDeviceInstructionView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = TFDeviceInstructionView;
-  v3 = [(TFDeviceInstructionView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TFDeviceInstructionView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -28,8 +28,8 @@
 
     +[TFDeviceInstructionView cornerRadius];
     v9 = v8;
-    v10 = [(TFDeviceInstructionView *)v3 layer];
-    [v10 setCornerRadius:v9];
+    layer = [(TFDeviceInstructionView *)v3 layer];
+    [layer setCornerRadius:v9];
   }
 
   return v3;
@@ -58,27 +58,27 @@
   return result;
 }
 
-- (void)displayDeviceImage:(id)a3 inOrientation:(int64_t)a4
+- (void)displayDeviceImage:(id)image inOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [(TFDeviceInstructionView *)self deviceImageView];
-  [v7 setImage:v6];
+  imageCopy = image;
+  deviceImageView = [(TFDeviceInstructionView *)self deviceImageView];
+  [deviceImageView setImage:imageCopy];
 
-  [(TFDeviceInstructionView *)self updateCurrentDeviceImageToOrientation:a4];
+  [(TFDeviceInstructionView *)self updateCurrentDeviceImageToOrientation:orientation];
 }
 
-- (void)updateCurrentDeviceImageToOrientation:(int64_t)a3
+- (void)updateCurrentDeviceImageToOrientation:(int64_t)orientation
 {
   v4 = 0.0;
-  if ((a3 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    v4 = dbl_26D313AF0[a3 - 2];
+    v4 = dbl_26D313AF0[orientation - 2];
   }
 
   CGAffineTransformMakeRotation(&v7, v4);
-  v5 = [(TFDeviceInstructionView *)self deviceImageView];
+  deviceImageView = [(TFDeviceInstructionView *)self deviceImageView];
   v6 = v7;
-  [v5 setTransform:&v6];
+  [deviceImageView setTransform:&v6];
 }
 
 - (void)layoutSubviews
@@ -96,8 +96,8 @@
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(TFDeviceInstructionView *)self deviceImageView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  deviceImageView = [(TFDeviceInstructionView *)self deviceImageView];
+  [deviceImageView setFrame:{v12, v14, v16, v18}];
 }
 
 @end

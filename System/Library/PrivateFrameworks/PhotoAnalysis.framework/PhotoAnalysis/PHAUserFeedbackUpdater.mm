@@ -1,41 +1,41 @@
 @interface PHAUserFeedbackUpdater
-+ (id)_memoriesFetchResultWithObjectIDs:(id)a3 existingMemoriesFetchResult:(id)a4;
-+ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)a3;
-- (BOOL)_deleteWallpaperTopSuggestionsOfPersonsForLocalIdentifiers:(id)a3;
++ (id)_memoriesFetchResultWithObjectIDs:(id)ds existingMemoriesFetchResult:(id)result;
++ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)library;
+- (BOOL)_deleteWallpaperTopSuggestionsOfPersonsForLocalIdentifiers:(id)identifiers;
 - (BOOL)_demoteFeaturedMemories;
-- (BOOL)_neverFeatureMemories:(id)a3 error:(id *)a4;
-- (BOOL)_retireAndUnfeatureSuggestions:(id)a3 didUnfeatureSuggestions:(BOOL *)a4;
-- (BOOL)_unfeaturePersonMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)a3;
-- (BOOL)_unfeatureSocialGroupMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)a3;
-- (BOOL)updateFeatureContentWithPersonUUIDs:(id)a3 error:(id *)a4;
-- (PHAUserFeedbackUpdater)initWithGraphManager:(id)a3;
-- (double)_userFeedbackScoreForAssetCollection:(id)a3 assetsFetchResult:(id)a4 keyAsset:(id)a5 personUUIDsByAssetUUID:(id)a6;
-- (id)_fetchAssetsWithNegativeFeedbackFrom:(id)a3;
-- (id)_notRecommendedMemoriesFromMemories:(id)a3;
-- (id)_personUUIDsByAssetUUIDFromAssets:(id)a3;
+- (BOOL)_neverFeatureMemories:(id)memories error:(id *)error;
+- (BOOL)_retireAndUnfeatureSuggestions:(id)suggestions didUnfeatureSuggestions:(BOOL *)unfeatureSuggestions;
+- (BOOL)_unfeaturePersonMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)ds;
+- (BOOL)_unfeatureSocialGroupMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)ds;
+- (BOOL)updateFeatureContentWithPersonUUIDs:(id)ds error:(id *)error;
+- (PHAUserFeedbackUpdater)initWithGraphManager:(id)manager;
+- (double)_userFeedbackScoreForAssetCollection:(id)collection assetsFetchResult:(id)result keyAsset:(id)asset personUUIDsByAssetUUID:(id)d;
+- (id)_fetchAssetsWithNegativeFeedbackFrom:(id)from;
+- (id)_notRecommendedMemoriesFromMemories:(id)memories;
+- (id)_personUUIDsByAssetUUIDFromAssets:(id)assets;
 - (id)_suggestionsToRetire;
-- (void)_clearEnrichmentStateOfHighlightsWithNegativeFeedback:(id)a3;
+- (void)_clearEnrichmentStateOfHighlightsWithNegativeFeedback:(id)feedback;
 - (void)_demoteNotFeaturedMemories;
-- (void)_enrichKeyAssetsforHighlightsWithNegativeFeedbackWithAssets:(id)a3;
-- (void)_processWallpaperSuggestionsWithNegativeFeedbackPersonUUIDs:(id)a3;
-- (void)_reloadWallpaperSuggestionsWithRejectedPersonsForLocalIdentifiers:(id)a3 forceReload:(BOOL)a4;
+- (void)_enrichKeyAssetsforHighlightsWithNegativeFeedbackWithAssets:(id)assets;
+- (void)_processWallpaperSuggestionsWithNegativeFeedbackPersonUUIDs:(id)ds;
+- (void)_reloadWallpaperSuggestionsWithRejectedPersonsForLocalIdentifiers:(id)identifiers forceReload:(BOOL)reload;
 @end
 
 @implementation PHAUserFeedbackUpdater
 
-- (double)_userFeedbackScoreForAssetCollection:(id)a3 assetsFetchResult:(id)a4 keyAsset:(id)a5 personUUIDsByAssetUUID:(id)a6
+- (double)_userFeedbackScoreForAssetCollection:(id)collection assetsFetchResult:(id)result keyAsset:(id)asset personUUIDsByAssetUUID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  collectionCopy = collection;
+  resultCopy = result;
+  assetCopy = asset;
+  dCopy = d;
+  v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(resultCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = v11;
+  v15 = resultCopy;
   v16 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v16)
   {
@@ -51,8 +51,8 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v32 + 1) + 8 * v19) uuid];
-        [v14 addObject:v20];
+        uuid = [*(*(&v32 + 1) + 8 * v19) uuid];
+        [v14 addObject:uuid];
 
         ++v19;
       }
@@ -64,32 +64,32 @@
     while (v17);
   }
 
-  v21 = [v12 uuid];
-  v22 = [v14 arrayByAddingObject:v21];
+  uuid2 = [assetCopy uuid];
+  v22 = [v14 arrayByAddingObject:uuid2];
 
   v23 = MEMORY[0x277CBEAC0];
-  v24 = [v13 objectsForKeys:v22 notFoundMarker:MEMORY[0x277CBEBF8]];
+  v24 = [dCopy objectsForKeys:v22 notFoundMarker:MEMORY[0x277CBEBF8]];
   v25 = [v23 dictionaryWithObjects:v24 forKeys:v22];
 
-  v26 = [objc_opt_class() _blockableFeaturesForAssetCollection:v10];
+  v26 = [objc_opt_class() _blockableFeaturesForAssetCollection:collectionCopy];
   userFeedbackCalculator = self->_userFeedbackCalculator;
-  v28 = [v12 uuid];
-  [(PHUserFeedbackCalculator *)userFeedbackCalculator scoreForAssetUUIDs:v14 keyAssetUUID:v28 personsUUIDsByAssetUUIDs:v25 memoryFeatures:v26];
+  uuid3 = [assetCopy uuid];
+  [(PHUserFeedbackCalculator *)userFeedbackCalculator scoreForAssetUUIDs:v14 keyAssetUUID:uuid3 personsUUIDsByAssetUUIDs:v25 memoryFeatures:v26];
   v30 = v29;
 
   return v30;
 }
 
-- (id)_personUUIDsByAssetUUIDFromAssets:(id)a3
+- (id)_personUUIDsByAssetUUIDFromAssets:(id)assets
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  assetsCopy = assets;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -104,8 +104,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) uuid];
-        [v5 addObject:v11];
+        uuid = [*(*(&v16 + 1) + 8 * i) uuid];
+        [v5 addObject:uuid];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -115,17 +115,17 @@
   }
 
   v12 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v13 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v13 setIncludedDetectionTypes:&unk_2844CCA68];
-  v14 = [MEMORY[0x277CD9938] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v12 options:v13];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_2844CCA68];
+  v14 = [MEMORY[0x277CD9938] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v12 options:librarySpecificFetchOptions];
 
   return v14;
 }
 
-- (void)_clearEnrichmentStateOfHighlightsWithNegativeFeedback:(id)a3
+- (void)_clearEnrichmentStateOfHighlightsWithNegativeFeedback:(id)feedback
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  feedbackCopy = feedback;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -133,7 +133,7 @@
     _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] About to mark highlights with negative feedback persons for re-erichment.", buf, 2u);
   }
 
-  v6 = [v4 count];
+  v6 = [feedbackCopy count];
   v7 = self->_loggingConnection;
   if (v6)
   {
@@ -157,11 +157,11 @@
       _os_log_impl(&dword_22FA28000, v13, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] Initiate fetching highlights for assets.", buf, 2u);
     }
 
-    v14 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"enrichmentState != %ld", 0];
-    [v14 setPredicate:v15];
+    [librarySpecificFetchOptions setPredicate:v15];
 
-    v16 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:v4 withType:6 options:v14];
+    v16 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:feedbackCopy withType:6 options:librarySpecificFetchOptions];
     v17 = [v16 count];
     v18 = self->_loggingConnection;
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
@@ -274,10 +274,10 @@ void __80__PHAUserFeedbackUpdater__clearEnrichmentStateOfHighlightsWithNegativeF
   }
 }
 
-- (void)_enrichKeyAssetsforHighlightsWithNegativeFeedbackWithAssets:(id)a3
+- (void)_enrichKeyAssetsforHighlightsWithNegativeFeedbackWithAssets:(id)assets
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -285,7 +285,7 @@ void __80__PHAUserFeedbackUpdater__clearEnrichmentStateOfHighlightsWithNegativeF
     _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] About to initiate enriching key assets for persons with negative feedback.", buf, 2u);
   }
 
-  v6 = [v4 count];
+  v6 = [assetsCopy count];
   v7 = self->_loggingConnection;
   if (v6)
   {
@@ -313,20 +313,20 @@ void __80__PHAUserFeedbackUpdater__clearEnrichmentStateOfHighlightsWithNegativeF
       _os_log_impl(&dword_22FA28000, v14, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] Initiate fetching highlights for assets.", buf, 2u);
     }
 
-    v15 = [v4 fetchedObjectIDsSet];
-    v16 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    v17 = [MEMORY[0x277CBEB18] array];
-    v45 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY %K IN %@ OR ANY %K IN %@ OR ANY %K IN %@ OR ANY %K IN %@", @"keyAssetPrivate", v15, @"keyAssetShared", v15, @"dayGroupKeyAssetPrivate", v15, @"dayGroupKeyAssetShared", v15];
-    [v17 addObject:?];
-    v18 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v17];
-    [v16 setInternalPredicate:v18];
+    fetchedObjectIDsSet = [assetsCopy fetchedObjectIDsSet];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    array = [MEMORY[0x277CBEB18] array];
+    v45 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY %K IN %@ OR ANY %K IN %@ OR ANY %K IN %@ OR ANY %K IN %@", @"keyAssetPrivate", fetchedObjectIDsSet, @"keyAssetShared", fetchedObjectIDsSet, @"dayGroupKeyAssetPrivate", fetchedObjectIDsSet, @"dayGroupKeyAssetShared", fetchedObjectIDsSet];
+    [array addObject:?];
+    v18 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
+    [librarySpecificFetchOptions setInternalPredicate:v18];
 
-    v19 = [MEMORY[0x277CD9958] fetchHighlightsWithOptions:v16];
+    v19 = [MEMORY[0x277CD9958] fetchHighlightsWithOptions:librarySpecificFetchOptions];
     if ([v19 count])
     {
       v41 = v12;
       v42 = v13;
-      v43 = v16;
+      v43 = librarySpecificFetchOptions;
       v20 = [objc_alloc(MEMORY[0x277D3B9A0]) initWithHighlightTailorOptions:24];
       v49 = v20;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
@@ -354,9 +354,9 @@ void __80__PHAUserFeedbackUpdater__clearEnrichmentStateOfHighlightsWithNegativeF
       v52 = v29;
       [v27 enumerateObjectsUsingBlock:buf];
 
-      v30 = [MEMORY[0x277D22C80] ignoreProgress];
+      ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
       v47 = 0;
-      v31 = [v22 enrichDataModelForHighlightUUIDs:v29 progressReporter:v30 error:&v47];
+      v31 = [v22 enrichDataModelForHighlightUUIDs:v29 progressReporter:ignoreProgress error:&v47];
       v32 = v47;
 
       v33 = self->_loggingConnection;
@@ -377,7 +377,7 @@ void __80__PHAUserFeedbackUpdater__clearEnrichmentStateOfHighlightsWithNegativeF
       }
 
       v13 = v42;
-      v16 = v43;
+      librarySpecificFetchOptions = v43;
       v12 = v41;
     }
 
@@ -426,10 +426,10 @@ void __86__PHAUserFeedbackUpdater__enrichKeyAssetsforHighlightsWithNegativeFeedb
   [v2 addObject:v3];
 }
 
-- (id)_fetchAssetsWithNegativeFeedbackFrom:(id)a3
+- (id)_fetchAssetsWithNegativeFeedbackFrom:(id)from
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -437,32 +437,32 @@ void __86__PHAUserFeedbackUpdater__enrichKeyAssetsforHighlightsWithNegativeFeedb
     _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] Initiate fetching assets for persons with negative feedback.", buf, 2u);
   }
 
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v6 setIncludedDetectionTypes:&unk_2844CCA50];
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN (%@)", @"personUUID", v4];
-  [v6 setInternalPredicate:v7];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_2844CCA50];
+  fromCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN (%@)", @"personUUID", fromCopy];
+  [librarySpecificFetchOptions setInternalPredicate:fromCopy];
 
-  v8 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v6];
-  v9 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v8 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v14[0] = *MEMORY[0x277CD9AA8];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [v9 setFetchPropertySets:v10];
+  [librarySpecificFetchOptions2 setFetchPropertySets:v10];
 
-  v11 = [MEMORY[0x277CD97A8] fetchAssetsForPersons:v8 options:v9];
+  v11 = [MEMORY[0x277CD97A8] fetchAssetsForPersons:v8 options:librarySpecificFetchOptions2];
 
   return v11;
 }
 
-- (void)_reloadWallpaperSuggestionsWithRejectedPersonsForLocalIdentifiers:(id)a3 forceReload:(BOOL)a4
+- (void)_reloadWallpaperSuggestionsWithRejectedPersonsForLocalIdentifiers:(id)identifiers forceReload:(BOOL)reload
 {
-  v4 = a4;
+  reloadCopy = reload;
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d AND %K = %d AND %K IN %@", @"subtype", 652, @"featuredState", 1, @"context", v6];
-  [v7 setPredicate:v8];
+  identifiersCopy = identifiers;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d AND %K = %d AND %K IN %@", @"subtype", 652, @"featuredState", 1, @"context", identifiersCopy];
+  [librarySpecificFetchOptions setPredicate:identifiersCopy];
 
-  v9 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v7];
+  v9 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v9 count])
   {
     v10 = 0;
@@ -470,7 +470,7 @@ void __86__PHAUserFeedbackUpdater__enrichKeyAssetsforHighlightsWithNegativeFeedb
 
   else
   {
-    v10 = !v4;
+    v10 = !reloadCopy;
   }
 
   if (!v10)
@@ -495,8 +495,8 @@ void __86__PHAUserFeedbackUpdater__enrichKeyAssetsforHighlightsWithNegativeFeedb
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v40 + 1) + 8 * i) uuid];
-          [v11 addObject:v17];
+          uuid = [*(*(&v40 + 1) + 8 * i) uuid];
+          [v11 addObject:uuid];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -522,7 +522,7 @@ void __86__PHAUserFeedbackUpdater__enrichKeyAssetsforHighlightsWithNegativeFeedb
       goto LABEL_23;
     }
 
-    v34 = v6;
+    v34 = identifiersCopy;
     v21 = [objc_alloc(MEMORY[0x277D3BB60]) initWithTaskName:@"ReloadWallpaperSuggestionsForUserFeedbackUpdater" loggingConnection:self->_loggingConnection];
     v22 = objc_alloc(MEMORY[0x277D22C98]);
     v37[0] = MEMORY[0x277D85DD0];
@@ -549,7 +549,7 @@ void __86__PHAUserFeedbackUpdater__enrichKeyAssetsforHighlightsWithNegativeFeedb
       {
 LABEL_22:
 
-        v6 = v34;
+        identifiersCopy = v34;
 LABEL_23:
 
         goto LABEL_24;
@@ -596,22 +596,22 @@ LABEL_23:
 LABEL_24:
 }
 
-- (BOOL)_deleteWallpaperTopSuggestionsOfPersonsForLocalIdentifiers:(id)a3
+- (BOOL)_deleteWallpaperTopSuggestionsOfPersonsForLocalIdentifiers:(id)identifiers
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = [v4 sortDescriptorWithKey:@"self" ascending:1];
   v30[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [identifiersCopy sortedArrayUsingDescriptors:v7];
   v9 = [v8 componentsJoinedByString:{@", "}];
 
-  v10 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d AND %K IN %@", @"subtype", 602, @"context", v5];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d AND %K IN %@", @"subtype", 602, @"context", identifiersCopy];
 
-  [v10 setPredicate:v11];
-  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v10];
+  [librarySpecificFetchOptions setPredicate:identifiersCopy];
+  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v12 count])
   {
     photoLibrary = self->_photoLibrary;
@@ -679,14 +679,14 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)_unfeaturePersonMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)a3
+- (BOOL)_unfeaturePersonMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)ds
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dsCopy = ds;
+  v5 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
-    v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v7 = MEMORY[0x277CCA920];
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"type", 10];
     v30[0] = v8;
@@ -696,9 +696,9 @@ LABEL_10:
     v30[2] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
     v12 = [v7 andPredicateWithSubpredicates:v11];
-    [v6 setInternalPredicate:v12];
+    [librarySpecificFetchOptions setInternalPredicate:v12];
 
-    v13 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v6];
+    v13 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
     if (![v13 count])
     {
       LOBYTE(v17) = 0;
@@ -707,13 +707,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     photoLibrary = self->_photoLibrary;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __93__PHAUserFeedbackUpdater__unfeaturePersonMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs___block_invoke;
     v24[3] = &unk_2788B2E78;
-    v16 = v14;
+    v16 = firstObject;
     v25 = v16;
     v23 = 0;
     v17 = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v24 error:&v23];
@@ -729,9 +729,9 @@ LABEL_11:
       }
 
       v20 = loggingConnection;
-      v21 = [v16 relatedCollectionUUID];
+      relatedCollectionUUID = [v16 relatedCollectionUUID];
       *buf = 138412290;
-      v27 = v21;
+      v27 = relatedCollectionUUID;
       _os_log_impl(&dword_22FA28000, v20, OS_LOG_TYPE_DEFAULT, "[PHAUserFeedbackUpdater] Successfully unfeatured Magic Slot suggestion for person %@", buf, 0xCu);
     }
 
@@ -743,9 +743,9 @@ LABEL_11:
       }
 
       v20 = loggingConnection;
-      v21 = [v16 relatedCollectionUUID];
+      relatedCollectionUUID = [v16 relatedCollectionUUID];
       *buf = 138412546;
-      v27 = v21;
+      v27 = relatedCollectionUUID;
       v28 = 2112;
       v29 = v18;
       _os_log_error_impl(&dword_22FA28000, v20, OS_LOG_TYPE_ERROR, "[PHAUserFeedbackUpdater] Failed to unfeature Magic Slot suggestion for person %@: %@", buf, 0x16u);
@@ -766,11 +766,11 @@ void __93__PHAUserFeedbackUpdater__unfeaturePersonMagicSlotSuggestionWithNegativ
   [v1 setFeaturedState:0];
 }
 
-- (BOOL)_unfeatureSocialGroupMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)a3
+- (BOOL)_unfeatureSocialGroupMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:(id)ds
 {
   v44[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  dsCopy = ds;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v6 = MEMORY[0x277CCA920];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"type", 10];
   v44[0] = v7;
@@ -780,22 +780,22 @@ void __93__PHAUserFeedbackUpdater__unfeaturePersonMagicSlotSuggestionWithNegativ
   v44[2] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:3];
   v11 = [v6 andPredicateWithSubpredicates:v10];
-  [v5 setInternalPredicate:v11];
+  [librarySpecificFetchOptions setInternalPredicate:v11];
 
-  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v5];
+  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v12 count])
   {
-    v13 = [v12 firstObject];
-    v14 = [v13 relatedCollectionUUID];
-    if (v14)
+    firstObject = [v12 firstObject];
+    relatedCollectionUUID = [firstObject relatedCollectionUUID];
+    if (relatedCollectionUUID)
     {
-      v15 = [MEMORY[0x277CD99D0] localIdentifierWithUUID:v14];
-      v16 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+      v15 = [MEMORY[0x277CD99D0] localIdentifierWithUUID:relatedCollectionUUID];
+      librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
       v17 = MEMORY[0x277CD99D0];
       v33 = v15;
       v43 = v15;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
-      v19 = [v17 fetchSocialGroupsWithLocalIdentifiers:v18 options:v16];
+      v19 = [v17 fetchSocialGroupsWithLocalIdentifiers:v18 options:librarySpecificFetchOptions2];
 
       if (![v19 count])
       {
@@ -807,12 +807,12 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v30 = v14;
-      v31 = v13;
+      v30 = relatedCollectionUUID;
+      v31 = firstObject;
       [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-      v21 = v20 = v4;
-      v22 = [v19 firstObject];
-      v23 = [MEMORY[0x277CD9938] fetchPersonsInSocialGroup:v22 option:v21];
+      v21 = v20 = dsCopy;
+      firstObject2 = [v19 firstObject];
+      v23 = [MEMORY[0x277CD9938] fetchPersonsInSocialGroup:firstObject2 option:v21];
       v24 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
@@ -831,7 +831,7 @@ LABEL_15:
         v35[1] = 3221225472;
         v35[2] = __98__PHAUserFeedbackUpdater__unfeatureSocialGroupMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs___block_invoke_2;
         v35[3] = &unk_2788B2E78;
-        v13 = v31;
+        firstObject = v31;
         v36 = v31;
         v34 = 0;
         LODWORD(v19) = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v35 error:&v34];
@@ -839,8 +839,8 @@ LABEL_15:
         loggingConnection = self->_loggingConnection;
         if (v19)
         {
-          v4 = v32;
-          v14 = v30;
+          dsCopy = v32;
+          relatedCollectionUUID = v30;
           if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
@@ -851,8 +851,8 @@ LABEL_15:
 
         else
         {
-          v4 = v32;
-          v14 = v30;
+          dsCopy = v32;
+          relatedCollectionUUID = v30;
           if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
@@ -863,14 +863,14 @@ LABEL_15:
           }
         }
 
-        v16 = v36;
+        librarySpecificFetchOptions2 = v36;
         goto LABEL_15;
       }
 
       LOBYTE(v19) = 0;
-      v13 = v31;
-      v4 = v32;
-      v14 = v30;
+      firstObject = v31;
+      dsCopy = v32;
+      relatedCollectionUUID = v30;
     }
 
     else
@@ -902,10 +902,10 @@ void __98__PHAUserFeedbackUpdater__unfeatureSocialGroupMagicSlotSuggestionWithNe
   [v1 setFeaturedState:0];
 }
 
-- (void)_processWallpaperSuggestionsWithNegativeFeedbackPersonUUIDs:(id)a3
+- (void)_processWallpaperSuggestionsWithNegativeFeedbackPersonUUIDs:(id)ds
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -913,9 +913,9 @@ void __98__PHAUserFeedbackUpdater__unfeatureSocialGroupMagicSlotSuggestionWithNe
     _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] About to process Wallpaper Suggestions", buf, 2u);
   }
 
-  if ([v4 count])
+  if ([dsCopy count])
   {
-    v6 = [MEMORY[0x277CD9938] localIdentifiersWithUUIDs:v4];
+    v6 = [MEMORY[0x277CD9938] localIdentifiersWithUUIDs:dsCopy];
     v7 = self->_loggingConnection;
     v8 = os_signpost_id_generate(v7);
     info = 0;
@@ -995,18 +995,18 @@ void __98__PHAUserFeedbackUpdater__unfeatureSocialGroupMagicSlotSuggestionWithNe
   }
 }
 
-- (BOOL)_neverFeatureMemories:(id)a3 error:(id *)a4
+- (BOOL)_neverFeatureMemories:(id)memories error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  memoriesCopy = memories;
+  if ([memoriesCopy count])
   {
     photoLibrary = self->_photoLibrary;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke;
     v10[3] = &unk_2788B2E78;
-    v11 = v6;
-    v8 = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v10 error:a4];
+    v11 = memoriesCopy;
+    v8 = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v10 error:error];
   }
 
   else
@@ -1054,23 +1054,23 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
   }
 }
 
-- (id)_notRecommendedMemoriesFromMemories:(id)a3
+- (id)_notRecommendedMemoriesFromMemories:(id)memories
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v5 setIncludeGuestAssets:1];
-  v21 = v5;
-  v6 = [MEMORY[0x277CD97A8] fetchKeyAssetByMemoryUUIDForMemories:v4 options:v5];
-  v7 = [v6 allValues];
-  v23 = [(PHAUserFeedbackUpdater *)self _personUUIDsByAssetUUIDFromAssets:v7];
+  memoriesCopy = memories;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v21 = librarySpecificFetchOptions;
+  v6 = [MEMORY[0x277CD97A8] fetchKeyAssetByMemoryUUIDForMemories:memoriesCopy options:librarySpecificFetchOptions];
+  allValues = [v6 allValues];
+  v23 = [(PHAUserFeedbackUpdater *)self _personUUIDsByAssetUUIDFromAssets:allValues];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v4;
+  v8 = memoriesCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v9)
   {
@@ -1087,8 +1087,8 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 uuid];
-        v16 = [v6 objectForKeyedSubscript:v15];
+        uuid = [v13 uuid];
+        v16 = [v6 objectForKeyedSubscript:uuid];
 
         if (v16)
         {
@@ -1105,9 +1105,9 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
           if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             v18 = loggingConnection;
-            v19 = [v13 uuid];
+            uuid2 = [v13 uuid];
             *buf = 138412290;
-            v29 = v19;
+            v29 = uuid2;
             _os_log_error_impl(&dword_22FA28000, v18, OS_LOG_TYPE_ERROR, "[PHAUserFeedbackUpdater] Key asset is nil for memory with UUID %@", buf, 0xCu);
           }
         }
@@ -1126,14 +1126,14 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
 
 - (void)_demoteNotFeaturedMemories
 {
-  v2 = self;
+  selfCopy = self;
   v63[2] = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
     _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHAUserFeedbackUpdater] Started marking memories as never feature based on user feedback.", buf, 2u);
-    loggingConnection = v2->_loggingConnection;
+    loggingConnection = selfCopy->_loggingConnection;
   }
 
   v4 = loggingConnection;
@@ -1153,23 +1153,23 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
   v45 = v7;
 
   v44 = mach_absolute_time();
-  v8 = [(PHPhotoLibrary *)v2->_photoLibrary librarySpecificFetchOptions];
-  [v8 setWantsIncrementalChangeDetails:1];
-  [v8 setChunkSizeForFetch:13];
-  [v8 setCacheSizeForFetch:13];
-  [v8 setIncludePendingMemories:1];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:1];
+  [librarySpecificFetchOptions setChunkSizeForFetch:13];
+  [librarySpecificFetchOptions setCacheSizeForFetch:13];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"rejected = NO AND featuredState == %d", 0];
-  [v8 setPredicate:v9];
+  [librarySpecificFetchOptions setPredicate:v9];
 
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v63[0] = v10;
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
   v63[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:2];
-  [v8 setSortDescriptors:v12];
+  [librarySpecificFetchOptions setSortDescriptors:v12];
 
-  v47 = v8;
-  v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v8];
+  v47 = librarySpecificFetchOptions;
+  v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v49 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v53 = 0u;
@@ -1197,16 +1197,16 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
 
         v21 = *(*(&v53 + 1) + 8 * v19);
         v22 = objc_autoreleasePoolPush();
-        v23 = [v21 objectID];
-        [v14 addObject:v23];
+        objectID = [v21 objectID];
+        [v14 addObject:objectID];
 
         if ([v14 count] == 13 || v20 >= objc_msgSend(v15, "count"))
         {
           context = v22;
           v24 = v15;
           v25 = [objc_opt_class() _memoriesFetchResultWithObjectIDs:v14 existingMemoriesFetchResult:v15];
-          v26 = v2;
-          v27 = [(PHAUserFeedbackUpdater *)v2 _notRecommendedMemoriesFromMemories:v25];
+          v26 = selfCopy;
+          v27 = [(PHAUserFeedbackUpdater *)selfCopy _notRecommendedMemoriesFromMemories:v25];
           [v49 addObjectsFromArray:v27];
           v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
@@ -1215,13 +1215,13 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
           {
             objc_autoreleasePoolPop(context);
             v14 = v28;
-            v2 = v26;
+            selfCopy = v26;
             v15 = v24;
             goto LABEL_19;
           }
 
           v14 = v28;
-          v2 = v26;
+          selfCopy = v26;
           v15 = v24;
           v22 = context;
         }
@@ -1246,9 +1246,9 @@ void __54__PHAUserFeedbackUpdater__neverFeatureMemories_error___block_invoke(uin
 LABEL_19:
 
   v52 = 0;
-  v30 = [(PHAUserFeedbackUpdater *)v2 _neverFeatureMemories:v49 error:&v52];
+  v30 = [(PHAUserFeedbackUpdater *)selfCopy _neverFeatureMemories:v49 error:&v52];
   v31 = v52;
-  v32 = v2->_loggingConnection;
+  v32 = selfCopy->_loggingConnection;
   if (v30)
   {
     v34 = v46;
@@ -1322,12 +1322,12 @@ LABEL_19:
   }
 
   v8 = mach_absolute_time();
-  v9 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"featuredState == %d", 1];
-  [v9 setPredicate:v10];
+  [librarySpecificFetchOptions setPredicate:v10];
 
-  [v9 setIncludePendingMemories:1];
-  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v9];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
+  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v12 = [(PHAUserFeedbackUpdater *)self _notRecommendedMemoriesFromMemories:v11];
   v25 = 0;
   v13 = [(PHAUserFeedbackUpdater *)self _neverFeatureMemories:v12 error:&v25];
@@ -1377,11 +1377,11 @@ LABEL_19:
   return v23;
 }
 
-- (BOOL)_retireAndUnfeatureSuggestions:(id)a3 didUnfeatureSuggestions:(BOOL *)a4
+- (BOOL)_retireAndUnfeatureSuggestions:(id)suggestions didUnfeatureSuggestions:(BOOL *)unfeatureSuggestions
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 count])
+  suggestionsCopy = suggestions;
+  if (![suggestionsCopy count])
   {
     LOBYTE(v15) = 0;
     goto LABEL_23;
@@ -1417,7 +1417,7 @@ LABEL_19:
   v28[1] = 3221225472;
   v28[2] = __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSuggestions___block_invoke;
   v28[3] = &unk_2788B16C0;
-  v14 = v6;
+  v14 = suggestionsCopy;
   v29 = v14;
   v30 = buf;
   v27 = 0;
@@ -1435,7 +1435,7 @@ LABEL_19:
       _os_log_impl(&dword_22FA28000, v18, OS_LOG_TYPE_DEFAULT, "[PHAUserFeedbackUpdater] %lu suggestion(s) marked as retired.", v36, 0xCu);
     }
 
-    if (!a4)
+    if (!unfeatureSuggestions)
     {
       goto LABEL_17;
     }
@@ -1446,7 +1446,7 @@ LABEL_19:
 
   if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    if (!a4)
+    if (!unfeatureSuggestions)
     {
       goto LABEL_17;
     }
@@ -1457,12 +1457,12 @@ LABEL_19:
   *v36 = 138412290;
   v37 = v16;
   _os_log_error_impl(&dword_22FA28000, v17, OS_LOG_TYPE_ERROR, "[PHAUserFeedbackUpdater] Retiring suggestions failed with error: %@", v36, 0xCu);
-  if (a4)
+  if (unfeatureSuggestions)
   {
 LABEL_15:
     v20 = 0;
 LABEL_16:
-    *a4 = v20;
+    *unfeatureSuggestions = v20;
   }
 
 LABEL_17:
@@ -1559,18 +1559,18 @@ void __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSug
   v34 = v7;
 
   v32 = mach_absolute_time();
-  v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v8 setWantsIncrementalChangeDetails:0];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(state == %d || state == %d || state == %d)", 1, 0, 3];
-  [v8 setPredicate:v9];
+  [librarySpecificFetchOptions setPredicate:v9];
 
-  v37 = v8;
-  v10 = [MEMORY[0x277CD99E0] fetchAllFeaturedStateEnabledSuggestionsWithOptions:v8];
-  v11 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v11 setIncludeGuestAssets:1];
-  v36 = v11;
-  v12 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v10 options:v11];
-  v33 = [v12 allValues];
+  v37 = librarySpecificFetchOptions;
+  v10 = [MEMORY[0x277CD99E0] fetchAllFeaturedStateEnabledSuggestionsWithOptions:librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setIncludeGuestAssets:1];
+  v36 = librarySpecificFetchOptions2;
+  v12 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v10 options:librarySpecificFetchOptions2];
+  allValues = [v12 allValues];
   v40 = [(PHAUserFeedbackUpdater *)self _personUUIDsByAssetUUIDFromAssets:?];
   v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v41 = 0u;
@@ -1594,8 +1594,8 @@ void __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSug
 
         v17 = *(*(&v41 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
-        v19 = [v17 uuid];
-        v20 = [v12 objectForKeyedSubscript:v19];
+        uuid = [v17 uuid];
+        v20 = [v12 objectForKeyedSubscript:uuid];
 
         if (v20)
         {
@@ -1612,9 +1612,9 @@ void __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSug
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v22 = v21;
-            v23 = [v17 uuid];
+            uuid2 = [v17 uuid];
             *buf = 138412290;
-            v47 = v23;
+            v47 = uuid2;
             _os_log_error_impl(&dword_22FA28000, v22, OS_LOG_TYPE_ERROR, "[PHAUserFeedbackUpdater] Key asset is nil for suggestion with UUID %@", buf, 0xCu);
           }
         }
@@ -1658,17 +1658,17 @@ void __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSug
   return v38;
 }
 
-- (BOOL)updateFeatureContentWithPersonUUIDs:(id)a3 error:(id *)a4
+- (BOOL)updateFeatureContentWithPersonUUIDs:(id)ds error:(id *)error
 {
-  v5 = a3;
-  v6 = [(PHAUserFeedbackUpdater *)self _suggestionsToRetire];
+  dsCopy = ds;
+  _suggestionsToRetire = [(PHAUserFeedbackUpdater *)self _suggestionsToRetire];
   v17 = 0;
-  v7 = [(PHAUserFeedbackUpdater *)self _retireAndUnfeatureSuggestions:v6 didUnfeatureSuggestions:&v17];
+  v7 = [(PHAUserFeedbackUpdater *)self _retireAndUnfeatureSuggestions:_suggestionsToRetire didUnfeatureSuggestions:&v17];
   [(PHAUserFeedbackUpdater *)self _demoteNotFeaturedMemories];
-  v8 = [(PHAUserFeedbackUpdater *)self _demoteFeaturedMemories];
-  v9 = [(PHUserFeedbackCalculator *)self->_userFeedbackCalculator personUUIDsWithNegativeFeedback];
-  [(PHAUserFeedbackUpdater *)self _processWallpaperSuggestionsWithNegativeFeedbackPersonUUIDs:v9];
-  if (v5 && [v5 count])
+  _demoteFeaturedMemories = [(PHAUserFeedbackUpdater *)self _demoteFeaturedMemories];
+  personUUIDsWithNegativeFeedback = [(PHUserFeedbackCalculator *)self->_userFeedbackCalculator personUUIDsWithNegativeFeedback];
+  [(PHAUserFeedbackUpdater *)self _processWallpaperSuggestionsWithNegativeFeedbackPersonUUIDs:personUUIDsWithNegativeFeedback];
+  if (dsCopy && [dsCopy count])
   {
     highlighUpdationQueue = self->_highlighUpdationQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1676,7 +1676,7 @@ void __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSug
     block[2] = __68__PHAUserFeedbackUpdater_updateFeatureContentWithPersonUUIDs_error___block_invoke;
     block[3] = &unk_2788B2C00;
     block[4] = self;
-    v11 = v5;
+    v11 = dsCopy;
     v16 = v11;
     dispatch_async(highlighUpdationQueue, block);
     LODWORD(highlighUpdationQueue) = [(PHAUserFeedbackUpdater *)self _unfeatureSocialGroupMagicSlotSuggestionWithNegativeFeedbackPersonUUIDs:v11];
@@ -1694,7 +1694,7 @@ void __81__PHAUserFeedbackUpdater__retireAndUnfeatureSuggestions_didUnfeatureSug
     if (!v7)
     {
 LABEL_8:
-      v13 = v8 | v12;
+      v13 = _demoteFeaturedMemories | v12;
       goto LABEL_9;
     }
   }
@@ -1717,19 +1717,19 @@ void __68__PHAUserFeedbackUpdater_updateFeatureContentWithPersonUUIDs_error___bl
   [*(a1 + 32) _enrichKeyAssetsforHighlightsWithNegativeFeedbackWithAssets:v2];
 }
 
-- (PHAUserFeedbackUpdater)initWithGraphManager:(id)a3
+- (PHAUserFeedbackUpdater)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = PHAUserFeedbackUpdater;
   v6 = [(PHAUserFeedbackUpdater *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphManager, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(&v6->_graphManager, manager);
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.PHAUserFeedbackHighlightUpdation", v10);
@@ -1737,35 +1737,35 @@ void __68__PHAUserFeedbackUpdater_updateFeatureContentWithPersonUUIDs_error___bl
     v7->_highlighUpdationQueue = v11;
 
     v13 = objc_opt_class();
-    v14 = [v5 photoLibrary];
-    v15 = [v13 _userFeedbackCalculatorWithPhotoLibrary:v14];
+    photoLibrary2 = [managerCopy photoLibrary];
+    v15 = [v13 _userFeedbackCalculatorWithPhotoLibrary:photoLibrary2];
     userFeedbackCalculator = v7->_userFeedbackCalculator;
     v7->_userFeedbackCalculator = v15;
 
-    v17 = [v5 workingContext];
-    v18 = [v17 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
     loggingConnection = v7->_loggingConnection;
-    v7->_loggingConnection = v18;
+    v7->_loggingConnection = loggingConnection;
   }
 
   return v7;
 }
 
-+ (id)_memoriesFetchResultWithObjectIDs:(id)a3 existingMemoriesFetchResult:(id)a4
++ (id)_memoriesFetchResultWithObjectIDs:(id)ds existingMemoriesFetchResult:(id)result
 {
   v5 = MEMORY[0x277CD9888];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithExistingFetchResult:v6 filteredObjectIDs:v7];
+  resultCopy = result;
+  dsCopy = ds;
+  v8 = [[v5 alloc] initWithExistingFetchResult:resultCopy filteredObjectIDs:dsCopy];
 
   return v8;
 }
 
-+ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)a3
++ (id)_userFeedbackCalculatorWithPhotoLibrary:(id)library
 {
   v3 = MEMORY[0x277CD99F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [[v3 alloc] initWithPhotoLibrary:libraryCopy];
 
   return v5;
 }

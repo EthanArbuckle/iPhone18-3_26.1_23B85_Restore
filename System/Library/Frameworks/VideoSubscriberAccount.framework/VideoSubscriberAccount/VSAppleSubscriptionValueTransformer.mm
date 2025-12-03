@@ -1,14 +1,14 @@
 @interface VSAppleSubscriptionValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSAppleSubscriptionValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v7 = 0;
-  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:value requiringSecureCoding:1 error:&v7];
   v4 = v7;
   if (v4)
   {
@@ -22,19 +22,19 @@
   return v3;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAC8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  valueCopy = value;
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v13[2] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
   v7 = [v4 setWithArray:v6];
   v12 = 0;
-  v8 = [v3 unarchivedObjectOfClasses:v7 fromData:v5 error:&v12];
+  v8 = [v3 unarchivedObjectOfClasses:v7 fromData:valueCopy error:&v12];
 
   v9 = v12;
   if (v9)

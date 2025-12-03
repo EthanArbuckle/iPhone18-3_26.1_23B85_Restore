@@ -1,17 +1,17 @@
 @interface smbSearchContext
 - (BOOL)checkSearchAborted;
 - (BOOL)checkSearchDone;
-- (id)makeStandardPath:(id)a3;
-- (id)parseSearchResults:(id)a3;
+- (id)makeStandardPath:(id)path;
+- (id)parseSearchResults:(id)results;
 - (int)doTreeConnect;
 - (int)doTreeDisconnect;
 - (int)logoutDisconnect;
-- (int)parseSearchCriteria:(id)a3;
-- (int)pipeClose:(unsigned int)a3;
-- (int)pipeOpen:(unsigned int)a3;
-- (int)pipeTransceive:(unsigned int)a3 DataIn:(id)a4 DataOut:(id)a5;
-- (int)pipeWait:(unsigned int)a3;
-- (int)pipeWrite:(unsigned int)a3 WriteData:(id)a4;
+- (int)parseSearchCriteria:(id)criteria;
+- (int)pipeClose:(unsigned int)close;
+- (int)pipeOpen:(unsigned int)open;
+- (int)pipeTransceive:(unsigned int)transceive DataIn:(id)in DataOut:(id)out;
+- (int)pipeWait:(unsigned int)wait;
+- (int)pipeWrite:(unsigned int)write WriteData:(id)data;
 - (smbSearchContext)init;
 - (void)logConfig;
 - (void)setSearchAborted;
@@ -99,52 +99,52 @@ LABEL_11:
 
 - (BOOL)checkSearchAborted
 {
-  v3 = [(smbSearchContext *)self searchLock];
-  [v3 lock];
+  searchLock = [(smbSearchContext *)self searchLock];
+  [searchLock lock];
 
-  LOBYTE(v3) = [(smbSearchContext *)self isAborted];
-  v4 = [(smbSearchContext *)self searchLock];
-  [v4 unlock];
+  LOBYTE(searchLock) = [(smbSearchContext *)self isAborted];
+  searchLock2 = [(smbSearchContext *)self searchLock];
+  [searchLock2 unlock];
 
-  return v3;
+  return searchLock;
 }
 
 - (void)setSearchAborted
 {
-  v3 = [(smbSearchContext *)self searchLock];
-  [v3 lock];
+  searchLock = [(smbSearchContext *)self searchLock];
+  [searchLock lock];
 
   self->_isAborted = 1;
-  v4 = [(smbSearchContext *)self searchLock];
-  [v4 unlock];
+  searchLock2 = [(smbSearchContext *)self searchLock];
+  [searchLock2 unlock];
 }
 
 - (BOOL)checkSearchDone
 {
-  v3 = [(smbSearchContext *)self searchLock];
-  [v3 lock];
+  searchLock = [(smbSearchContext *)self searchLock];
+  [searchLock lock];
 
-  LOBYTE(v3) = [(smbSearchContext *)self isFinished];
-  v4 = [(smbSearchContext *)self searchLock];
-  [v4 unlock];
+  LOBYTE(searchLock) = [(smbSearchContext *)self isFinished];
+  searchLock2 = [(smbSearchContext *)self searchLock];
+  [searchLock2 unlock];
 
-  return v3;
+  return searchLock;
 }
 
 - (void)setSearchDone
 {
-  v3 = [(smbSearchContext *)self searchLock];
-  [v3 lock];
+  searchLock = [(smbSearchContext *)self searchLock];
+  [searchLock lock];
 
   self->_isFinished = 1;
-  v4 = [(smbSearchContext *)self searchLock];
-  [v4 unlock];
+  searchLock2 = [(smbSearchContext *)self searchLock];
+  [searchLock2 unlock];
 }
 
-- (int)parseSearchCriteria:(id)a3
+- (int)parseSearchCriteria:(id)criteria
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:LISearchObjTypeReturnAll];
+  criteriaCopy = criteria;
+  v5 = [criteriaCopy objectForKey:LISearchObjTypeReturnAll];
   if (v5)
   {
     v6 = v5;
@@ -162,7 +162,7 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  v8 = [v4 objectForKey:LISearchObjTypeReturnDirs];
+  v8 = [criteriaCopy objectForKey:LISearchObjTypeReturnDirs];
   v9 = v8;
   if (v8 && [v8 BOOLValue])
   {
@@ -174,7 +174,7 @@ LABEL_11:
     self->_searchReturnTypes |= 1u;
   }
 
-  v10 = [v4 objectForKey:LISearchObjTypeReturnFiles];
+  v10 = [criteriaCopy objectForKey:LISearchObjTypeReturnFiles];
 
   if (v10 && [v10 BOOLValue])
   {
@@ -186,7 +186,7 @@ LABEL_11:
     self->_searchReturnTypes |= 2u;
   }
 
-  v6 = [v4 objectForKey:LISearchObjTypeReturnLinks];
+  v6 = [criteriaCopy objectForKey:LISearchObjTypeReturnLinks];
 
   if (v6 && [v6 BOOLValue])
   {
@@ -213,10 +213,10 @@ LABEL_22:
     goto LABEL_30;
   }
 
-  v11 = [v4 objectForKey:LISearchObjXattrsInclude];
+  v11 = [criteriaCopy objectForKey:LISearchObjXattrsInclude];
   if (!v11)
   {
-    v15 = [v4 objectForKey:LISearchFileNameContains];
+    v15 = [criteriaCopy objectForKey:LISearchFileNameContains];
     if (v15)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -233,7 +233,7 @@ LABEL_22:
       v16 = 0;
     }
 
-    v12 = [v4 objectForKey:LISearchFileNameEndsWith];
+    v12 = [criteriaCopy objectForKey:LISearchFileNameEndsWith];
 
     if (v12)
     {
@@ -246,7 +246,7 @@ LABEL_22:
       v16 = 1;
     }
 
-    v13 = [v4 objectForKey:LISearchFileContentsInclude];
+    v13 = [criteriaCopy objectForKey:LISearchFileContentsInclude];
     if (v13)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -258,7 +258,7 @@ LABEL_22:
       v16 = 1;
     }
 
-    v17 = [v4 objectForKey:LISearchObjModifiedAfter];
+    v17 = [criteriaCopy objectForKey:LISearchObjModifiedAfter];
     if (v17)
     {
       v18 = v17;
@@ -330,19 +330,19 @@ LABEL_50:
 
       else
       {
-        v5 = [(smbSearchContext *)self pipe0];
+        pipe0 = [(smbSearchContext *)self pipe0];
         v6 = [(smbSearchContext *)self pd];
-        [v5 setPd:v6];
+        [pipe0 setPd:v6];
 
-        v7 = [(smbSearchContext *)self pipe0];
-        [v7 setShareID:self->_treeParam.shareId];
+        pipe02 = [(smbSearchContext *)self pipe0];
+        [pipe02 setShareID:self->_treeParam.shareId];
 
-        v8 = [(smbSearchContext *)self pipe1];
+        pipe1 = [(smbSearchContext *)self pipe1];
         v9 = [(smbSearchContext *)self pd];
-        [v8 setPd:v9];
+        [pipe1 setPd:v9];
 
-        v10 = [(smbSearchContext *)self pipe1];
-        [v10 setShareID:self->_treeParam.shareId];
+        pipe12 = [(smbSearchContext *)self pipe1];
+        [pipe12 setShareID:self->_treeParam.shareId];
 
         v3 = 0;
         self->_treeIsConnected = 1;
@@ -386,11 +386,11 @@ LABEL_50:
 {
   if (self->_treeIsConnected)
   {
-    v3 = [(smbSearchContext *)self pipe0];
-    [v3 pipeClose];
+    pipe0 = [(smbSearchContext *)self pipe0];
+    [pipe0 pipeClose];
 
-    v4 = [(smbSearchContext *)self pipe1];
-    [v4 pipeClose];
+    pipe1 = [(smbSearchContext *)self pipe1];
+    [pipe1 pipeClose];
 
     self->_treeIsConnected = 0;
     v5 = [smb_subr sendTreeDisonnect:self->_pd ShareID:self->_treeParam.shareId Param:&self->_treeParam];
@@ -413,22 +413,22 @@ LABEL_50:
   return v5;
 }
 
-- (int)pipeOpen:(unsigned int)a3
+- (int)pipeOpen:(unsigned int)open
 {
-  if (a3 == 1)
+  if (open == 1)
   {
-    v3 = [(smbSearchContext *)self pipe1];
+    pipe1 = [(smbSearchContext *)self pipe1];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!open)
   {
-    v3 = [(smbSearchContext *)self pipe0];
+    pipe1 = [(smbSearchContext *)self pipe0];
 LABEL_5:
-    v4 = v3;
-    v5 = [v3 pipeOpen];
+    v4 = pipe1;
+    pipeOpen = [pipe1 pipeOpen];
 
-    return v5;
+    return pipeOpen;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -439,24 +439,24 @@ LABEL_5:
   return 22;
 }
 
-- (int)pipeWait:(unsigned int)a3
+- (int)pipeWait:(unsigned int)wait
 {
   if (self->_treeIsConnected)
   {
-    if (a3 == 1)
+    if (wait == 1)
     {
-      v3 = [(smbSearchContext *)self pipe1];
+      pipe1 = [(smbSearchContext *)self pipe1];
       goto LABEL_9;
     }
 
-    if (!a3)
+    if (!wait)
     {
-      v3 = [(smbSearchContext *)self pipe0];
+      pipe1 = [(smbSearchContext *)self pipe0];
 LABEL_9:
-      v5 = v3;
-      v6 = [v3 pipeWait];
+      v5 = pipe1;
+      pipeWait = [pipe1 pipeWait];
 
-      return v6;
+      return pipeWait;
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -478,24 +478,24 @@ LABEL_9:
   }
 }
 
-- (int)pipeTransceive:(unsigned int)a3 DataIn:(id)a4 DataOut:(id)a5
+- (int)pipeTransceive:(unsigned int)transceive DataIn:(id)in DataOut:(id)out
 {
-  v8 = a4;
-  v9 = a5;
+  inCopy = in;
+  outCopy = out;
   if (self->_treeIsConnected)
   {
-    if (a3 == 1)
+    if (transceive == 1)
     {
-      v10 = [(smbSearchContext *)self pipe1];
+      pipe1 = [(smbSearchContext *)self pipe1];
       goto LABEL_9;
     }
 
-    if (!a3)
+    if (!transceive)
     {
-      v10 = [(smbSearchContext *)self pipe0];
+      pipe1 = [(smbSearchContext *)self pipe0];
 LABEL_9:
-      v12 = v10;
-      v11 = [v10 pipeTransceive:v8 DataOut:v9];
+      v12 = pipe1;
+      v11 = [pipe1 pipeTransceive:inCopy DataOut:outCopy];
 
       goto LABEL_13;
     }
@@ -523,23 +523,23 @@ LABEL_13:
   return v11;
 }
 
-- (int)pipeWrite:(unsigned int)a3 WriteData:(id)a4
+- (int)pipeWrite:(unsigned int)write WriteData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   if (self->_treeIsConnected)
   {
-    if (a3 == 1)
+    if (write == 1)
     {
-      v7 = [(smbSearchContext *)self pipe1];
+      pipe1 = [(smbSearchContext *)self pipe1];
       goto LABEL_9;
     }
 
-    if (!a3)
+    if (!write)
     {
-      v7 = [(smbSearchContext *)self pipe0];
+      pipe1 = [(smbSearchContext *)self pipe0];
 LABEL_9:
-      v9 = v7;
-      v8 = [v7 pipeWrite:v6];
+      v9 = pipe1;
+      v8 = [pipe1 pipeWrite:dataCopy];
 
       goto LABEL_13;
     }
@@ -567,24 +567,24 @@ LABEL_13:
   return v8;
 }
 
-- (int)pipeClose:(unsigned int)a3
+- (int)pipeClose:(unsigned int)close
 {
   if (self->_treeIsConnected)
   {
-    if (a3 == 1)
+    if (close == 1)
     {
-      v3 = [(smbSearchContext *)self pipe1];
+      pipe1 = [(smbSearchContext *)self pipe1];
       goto LABEL_9;
     }
 
-    if (!a3)
+    if (!close)
     {
-      v3 = [(smbSearchContext *)self pipe0];
+      pipe1 = [(smbSearchContext *)self pipe0];
 LABEL_9:
-      v5 = v3;
-      v6 = [v3 pipeClose];
+      v5 = pipe1;
+      pipeClose = [pipe1 pipeClose];
 
-      return v6;
+      return pipeClose;
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -606,9 +606,9 @@ LABEL_9:
   }
 }
 
-- (id)parseSearchResults:(id)a3
+- (id)parseSearchResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -624,15 +624,15 @@ LABEL_9:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    obj = [v3 rows];
+    obj = [resultsCopy rows];
     v63 = [obj countByEnumeratingWithState:&v64 objects:v103 count:16];
     if (v63)
     {
       v52 = v4;
       v53 = 0;
-      v51 = v3;
+      v51 = resultsCopy;
       v5 = 0;
-      v6 = 0;
+      propValue2 = 0;
       v7 = 0;
       v8 = 0;
       v57 = 0;
@@ -660,32 +660,32 @@ LABEL_9:
           v70 = 0u;
           v71 = 0u;
           v72 = 0;
-          v12 = [v8 columns];
+          columns = [v8 columns];
           v13 = [NSNumber numberWithUnsignedInt:12];
-          v14 = [v12 objectForKey:v13];
+          v14 = [columns objectForKey:v13];
 
           if (v14)
           {
-            v15 = [v14 propValue];
+            propValue = [v14 propValue];
 
-            if ([v15 vType] != 31)
+            if ([propValue vType] != 31)
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
-                v26 = [v15 vType];
+                vType = [propValue vType];
                 *buf = 67109376;
                 *&buf[4] = v5;
                 *&buf[8] = 1024;
-                *&buf[10] = v26;
+                *&buf[10] = vType;
                 _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "parseSearchResults: row: %u, Path property unexpected vType: 0x%x\n", buf, 0xEu);
               }
 
               goto LABEL_28;
             }
 
-            v16 = [v15 strValue];
+            strValue = [propValue strValue];
 
-            if (!v16)
+            if (!strValue)
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
@@ -694,12 +694,12 @@ LABEL_9:
 
               v60 = 0;
 LABEL_28:
-              v6 = v15;
+              propValue2 = propValue;
               v7 = v14;
               goto LABEL_39;
             }
 
-            v17 = [(smbSearchContext *)self makeStandardPath:v16];
+            v17 = [(smbSearchContext *)self makeStandardPath:strValue];
 
             if (!v17)
             {
@@ -708,12 +708,12 @@ LABEL_28:
                 *buf = 67109378;
                 *&buf[4] = v5;
                 *&buf[8] = 2112;
-                *&buf[10] = v16;
+                *&buf[10] = strValue;
                 _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "parseSearchResults: row: %u, unable to standardize path: %@\n", buf, 0x12u);
               }
 
               v57 = 0;
-              v6 = v15;
+              propValue2 = propValue;
               v7 = v14;
               goto LABEL_38;
             }
@@ -728,9 +728,9 @@ LABEL_28:
             }
 
             v61 = v17;
-            v18 = [v8 columns];
+            columns2 = [v8 columns];
             v19 = [NSNumber numberWithUnsignedInt:13];
-            v7 = [v18 objectForKey:v19];
+            v7 = [columns2 objectForKey:v19];
 
             if (!v7)
             {
@@ -740,29 +740,29 @@ LABEL_28:
               }
 
               v7 = 0;
-              v6 = v15;
+              propValue2 = propValue;
               goto LABEL_37;
             }
 
-            v6 = [v7 propValue];
+            propValue2 = [v7 propValue];
 
-            if ([v6 vType] != 19)
+            if ([propValue2 vType] != 19)
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
               {
-                v42 = [v6 vType];
+                vType2 = [propValue2 vType];
                 *buf = 67109376;
                 *&buf[4] = v5;
                 *&buf[8] = 1024;
-                *&buf[10] = v42;
+                *&buf[10] = vType2;
                 _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "parseSearchResults: row: %u, SystemFileAttributes property unexpected vType: 0x%x\n", buf, 0xEu);
               }
 
               goto LABEL_37;
             }
 
-            v20 = [v6 uint4Val];
-            if ((v20 & 0x10) != 0)
+            uint4Val = [propValue2 uint4Val];
+            if ((uint4Val & 0x10) != 0)
             {
               if (([(smbSearchContext *)self searchReturnTypes]& 1) != 0)
               {
@@ -775,11 +775,11 @@ LABEL_28:
                 goto LABEL_37;
               }
 
-              v27 = [(smbSearchContext *)self searchReturnTypes];
+              searchReturnTypes = [(smbSearchContext *)self searchReturnTypes];
               *buf = 67109634;
               *&buf[4] = v5;
               *&buf[8] = 1024;
-              *&buf[10] = v27;
+              *&buf[10] = searchReturnTypes;
               *&buf[14] = 2112;
               v24 = v61;
               *&buf[16] = v61;
@@ -788,19 +788,19 @@ LABEL_28:
 
             else
             {
-              v21 = v20;
-              v22 = [(smbSearchContext *)self searchReturnTypes];
+              v21 = uint4Val;
+              searchReturnTypes2 = [(smbSearchContext *)self searchReturnTypes];
               if ((v21 & 0x400) == 0)
               {
-                if ((v22 & 2) == 0)
+                if ((searchReturnTypes2 & 2) == 0)
                 {
                   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                   {
-                    v23 = [(smbSearchContext *)self searchReturnTypes];
+                    searchReturnTypes3 = [(smbSearchContext *)self searchReturnTypes];
                     *buf = 67109634;
                     *&buf[4] = v5;
                     *&buf[8] = 1024;
-                    *&buf[10] = v23;
+                    *&buf[10] = searchReturnTypes3;
                     *&buf[14] = 2112;
                     v24 = v61;
                     *&buf[16] = v61;
@@ -811,16 +811,16 @@ LABEL_28:
 LABEL_37:
                   v57 = v61;
 LABEL_38:
-                  v60 = v16;
+                  v60 = strValue;
                   goto LABEL_39;
                 }
 
                 v28 = 1;
 LABEL_48:
                 v58 = v28;
-                v29 = [v8 columns];
+                columns3 = [v8 columns];
                 v30 = [NSNumber numberWithUnsignedInt:1];
-                v31 = [v29 objectForKey:v30];
+                v31 = [columns3 objectForKey:v30];
 
                 if (!v31)
                 {
@@ -833,31 +833,31 @@ LABEL_48:
                   goto LABEL_37;
                 }
 
-                v32 = [v31 propValue];
+                propValue3 = [v31 propValue];
 
-                if ([v32 vType] != 64)
+                if ([propValue3 vType] != 64)
                 {
                   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                   {
-                    v44 = [v32 vType];
+                    vType3 = [propValue3 vType];
                     *buf = 67109376;
                     *&buf[4] = v5;
                     *&buf[8] = 1024;
-                    *&buf[10] = v44;
+                    *&buf[10] = vType3;
                     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "parseSearchResults: row: %u, SystemDateModified property unexpected vType: 0x%x\n", buf, 0xEu);
                   }
 
-                  v6 = v32;
+                  propValue2 = propValue3;
                   v7 = v31;
                   goto LABEL_37;
                 }
 
-                v33 = [v32 timeSpec];
+                timeSpec = [propValue3 timeSpec];
                 v54 = v34;
-                v55 = v33;
-                v35 = [v8 columns];
+                v55 = timeSpec;
+                columns4 = [v8 columns];
                 v36 = [NSNumber numberWithUnsignedInt:15];
-                v7 = [v35 objectForKey:v36];
+                v7 = [columns4 objectForKey:v36];
 
                 if (!v7)
                 {
@@ -867,28 +867,28 @@ LABEL_48:
                   }
 
                   v7 = 0;
-                  v6 = v32;
+                  propValue2 = propValue3;
                   goto LABEL_37;
                 }
 
-                v6 = [v7 propValue];
+                propValue2 = [v7 propValue];
 
-                if ([v6 vType] != 64)
+                if ([propValue2 vType] != 64)
                 {
                   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                   {
-                    v43 = [v6 vType];
+                    vType4 = [propValue2 vType];
                     *buf = 67109376;
                     *&buf[4] = v5;
                     *&buf[8] = 1024;
-                    *&buf[10] = v43;
+                    *&buf[10] = vType4;
                     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "parseSearchResults: row: %u, SystemDateAccessed property unexpected vType: 0x%x\n", buf, 0xEu);
                   }
 
                   goto LABEL_37;
                 }
 
-                v37 = [v6 timeSpec];
+                timeSpec2 = [propValue2 timeSpec];
                 v39 = v38;
                 v40 = objc_alloc_init(searchResultItem);
 
@@ -910,7 +910,7 @@ LABEL_48:
                 v79 = v73;
                 v80 = v74;
                 v81 = v75;
-                v82 = v37;
+                v82 = timeSpec2;
                 v83 = v39;
                 v84 = v55;
                 v85 = v54;
@@ -927,7 +927,7 @@ LABEL_48:
                 goto LABEL_38;
               }
 
-              if ((v22 & 3) != 0)
+              if ((searchReturnTypes2 & 3) != 0)
               {
                 v28 = 3;
                 goto LABEL_48;
@@ -938,11 +938,11 @@ LABEL_48:
                 goto LABEL_37;
               }
 
-              v41 = [(smbSearchContext *)self searchReturnTypes];
+              searchReturnTypes4 = [(smbSearchContext *)self searchReturnTypes];
               *buf = 67109634;
               *&buf[4] = v5;
               *&buf[8] = 1024;
-              *&buf[10] = v41;
+              *&buf[10] = searchReturnTypes4;
               *&buf[14] = 2112;
               v24 = v61;
               *&buf[16] = v61;
@@ -973,7 +973,7 @@ LABEL_39:
         if (!v45)
         {
 
-          v3 = v51;
+          resultsCopy = v51;
           v4 = v52;
           v46 = v53;
           v47 = v57;
@@ -986,7 +986,7 @@ LABEL_39:
     v48 = 0;
     v47 = 0;
     v7 = 0;
-    v6 = 0;
+    propValue2 = 0;
     v46 = 0;
 LABEL_75:
 
@@ -1002,7 +1002,7 @@ LABEL_75:
     v48 = 0;
     v47 = 0;
     v7 = 0;
-    v6 = 0;
+    propValue2 = 0;
     v46 = 0;
   }
 
@@ -1012,10 +1012,10 @@ LABEL_78:
   return v49;
 }
 
-- (id)makeStandardPath:(id)a3
+- (id)makeStandardPath:(id)path
 {
-  v3 = [a3 pathComponents];
-  if ([v3 count] < 4)
+  pathComponents = [path pathComponents];
+  if ([pathComponents count] < 4)
   {
     v5 = 0;
     v4 = 0;
@@ -1030,7 +1030,7 @@ LABEL_78:
     do
     {
       v8 = v5;
-      v5 = [v3 objectAtIndex:v7];
+      v5 = [pathComponents objectAtIndex:v7];
 
       if (v4)
       {
@@ -1047,7 +1047,7 @@ LABEL_78:
       v7 = v6;
     }
 
-    while ([v3 count] > v6++);
+    while ([pathComponents count] > v6++);
   }
 
   return v4;

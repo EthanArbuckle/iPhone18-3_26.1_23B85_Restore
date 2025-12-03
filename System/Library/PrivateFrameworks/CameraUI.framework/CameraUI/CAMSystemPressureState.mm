@@ -1,54 +1,54 @@
 @interface CAMSystemPressureState
 - (BOOL)isCameraTooHot;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSystemPressureState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSystemPressureState:(id)state;
 - (BOOL)shouldDisableOptionalUIEffects;
 - (BOOL)shouldDisablePIPMotionBlur;
-- (CAMSystemPressureState)initWithCaptureSystemPressureState:(id)a3;
+- (CAMSystemPressureState)initWithCaptureSystemPressureState:(id)state;
 - (id)description;
 @end
 
 @implementation CAMSystemPressureState
 
-- (CAMSystemPressureState)initWithCaptureSystemPressureState:(id)a3
+- (CAMSystemPressureState)initWithCaptureSystemPressureState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v10.receiver = self;
   v10.super_class = CAMSystemPressureState;
   v6 = [(CAMSystemPressureState *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__underlyingSystemPressureState, a3);
+    objc_storeStrong(&v6->__underlyingSystemPressureState, state);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CAMSystemPressureState *)self isEqualToSystemPressureState:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CAMSystemPressureState *)self isEqualToSystemPressureState:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSystemPressureState:(id)a3
+- (BOOL)isEqualToSystemPressureState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy == self)
   {
     goto LABEL_6;
   }
 
-  v6 = [(CAMSystemPressureState *)v4 _underlyingSystemPressureState];
-  if (!v6)
+  _underlyingSystemPressureState = [(CAMSystemPressureState *)stateCopy _underlyingSystemPressureState];
+  if (!_underlyingSystemPressureState)
   {
-    v7 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
+    _underlyingSystemPressureState2 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
 
-    if (v7)
+    if (_underlyingSystemPressureState2)
     {
       goto LABEL_5;
     }
@@ -59,9 +59,9 @@ LABEL_6:
   }
 
 LABEL_5:
-  v8 = [(CAMSystemPressureState *)v5 _underlyingSystemPressureState];
-  v9 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
-  v10 = [v8 isEqual:v9];
+  _underlyingSystemPressureState3 = [(CAMSystemPressureState *)v5 _underlyingSystemPressureState];
+  _underlyingSystemPressureState4 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
+  v10 = [_underlyingSystemPressureState3 isEqual:_underlyingSystemPressureState4];
 
 LABEL_7:
   return v10;
@@ -73,19 +73,19 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = CAMSystemPressureState;
   v4 = [(CAMSystemPressureState *)&v8 description];
-  v5 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  _underlyingSystemPressureState = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, _underlyingSystemPressureState];
 
   return v6;
 }
 
 - (BOOL)isCameraTooHot
 {
-  v2 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
-  if (([v2 factors] & 8) != 0)
+  _underlyingSystemPressureState = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
+  if (([_underlyingSystemPressureState factors] & 8) != 0)
   {
-    v4 = [v2 level];
-    v3 = [v4 isEqualToString:*MEMORY[0x1E6986B68]];
+    level = [_underlyingSystemPressureState level];
+    v3 = [level isEqualToString:*MEMORY[0x1E6986B68]];
   }
 
   else
@@ -98,17 +98,17 @@ LABEL_7:
 
 - (BOOL)shouldDisablePIPMotionBlur
 {
-  v2 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
-  v3 = [v2 level];
+  _underlyingSystemPressureState = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
+  level = [_underlyingSystemPressureState level];
 
-  if ([v3 isEqualToString:*MEMORY[0x1E6986B60]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E6986B58]))
+  if ([level isEqualToString:*MEMORY[0x1E6986B60]] & 1) != 0 || (objc_msgSend(level, "isEqualToString:", *MEMORY[0x1E6986B58]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E6986B68]];
+    v4 = [level isEqualToString:*MEMORY[0x1E6986B68]];
   }
 
   return v4;
@@ -116,17 +116,17 @@ LABEL_7:
 
 - (BOOL)shouldDisableOptionalUIEffects
 {
-  v2 = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
-  v3 = [v2 level];
+  _underlyingSystemPressureState = [(CAMSystemPressureState *)self _underlyingSystemPressureState];
+  level = [_underlyingSystemPressureState level];
 
-  if ([v3 isEqualToString:*MEMORY[0x1E6986B60]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E6986B58]))
+  if ([level isEqualToString:*MEMORY[0x1E6986B60]] & 1) != 0 || (objc_msgSend(level, "isEqualToString:", *MEMORY[0x1E6986B58]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E6986B68]];
+    v4 = [level isEqualToString:*MEMORY[0x1E6986B68]];
   }
 
   return v4;

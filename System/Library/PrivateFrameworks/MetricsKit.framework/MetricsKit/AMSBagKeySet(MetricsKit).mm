@@ -11,22 +11,22 @@
   v7 = objc_opt_new();
   [v7 addBagKey:@"metrics" valueType:6];
   v4 = MEMORY[0x277CEE400];
-  v5 = [v3 profile];
-  v6 = [v3 profileVersion];
+  profile = [v3 profile];
+  profileVersion = [v3 profileVersion];
 
-  [v4 registerBagKeySet:v7 forProfile:v5 profileVersion:v6];
+  [v4 registerBagKeySet:v7 forProfile:profile profileVersion:profileVersion];
 }
 
 + (void)registerBagKeySetForMetricsRecorder:()MetricsKit
 {
   v3 = MEMORY[0x277CEE590];
   v4 = a3;
-  v8 = [v3 bagKeySet];
+  bagKeySet = [v3 bagKeySet];
   v5 = MEMORY[0x277CEE400];
-  v6 = [v4 profile];
-  v7 = [v4 profileVersion];
+  profile = [v4 profile];
+  profileVersion = [v4 profileVersion];
 
-  [v5 registerBagKeySet:v8 forProfile:v6 profileVersion:v7];
+  [v5 registerBagKeySet:bagKeySet forProfile:profile profileVersion:profileVersion];
 }
 
 @end

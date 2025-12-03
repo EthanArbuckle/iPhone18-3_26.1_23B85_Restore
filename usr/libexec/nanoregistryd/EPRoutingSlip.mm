@@ -2,69 +2,69 @@
 - (BOOL)decrementCurrentTransactionIndex;
 - (BOOL)incrementCurrentTransactionIndex;
 - (BOOL)updateCurrentTransactionIndex;
-- (EPRoutingSlip)initWithCoder:(id)a3;
-- (EPRoutingSlip)initWithIdentifier:(id)a3 routingSlipEntries:(id)a4;
-- (EPRoutingSlip)initWithRoutingSlipEntries:(id)a3;
+- (EPRoutingSlip)initWithCoder:(id)coder;
+- (EPRoutingSlip)initWithIdentifier:(id)identifier routingSlipEntries:(id)entries;
+- (EPRoutingSlip)initWithRoutingSlipEntries:(id)entries;
 - (EPRoutingSlipDelegate)routingSlipDelegate;
 - (EPRoutingSlipEntry)currentEntry;
 - (EPTransaction)transaction;
 - (id)getLastFirstError;
-- (id)objectForKeyedSubscript:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)cancelWithError:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)cancelWithError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)persist;
 - (void)printDescription;
 - (void)resume;
-- (void)resumeWithServiceRegistry:(id)a3 rollback:(BOOL)a4;
-- (void)setState:(unint64_t)a3;
-- (void)setTransactionIndex:(int64_t)a3;
-- (void)transactionDidComplete:(id)a3;
+- (void)resumeWithServiceRegistry:(id)registry rollback:(BOOL)rollback;
+- (void)setState:(unint64_t)state;
+- (void)setTransactionIndex:(int64_t)index;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation EPRoutingSlip
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(EPRoutingSlip *)self entries];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  entries = [(EPRoutingSlip *)self entries];
+  v9 = [entries countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (EPRoutingSlip)initWithRoutingSlipEntries:(id)a3
+- (EPRoutingSlip)initWithRoutingSlipEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
-  v7 = [(EPRoutingSlip *)self initWithIdentifier:v6 routingSlipEntries:v4];
+  uUIDString = [v5 UUIDString];
+  v7 = [(EPRoutingSlip *)self initWithIdentifier:uUIDString routingSlipEntries:entriesCopy];
 
   return v7;
 }
 
-- (EPRoutingSlip)initWithIdentifier:(id)a3 routingSlipEntries:(id)a4
+- (EPRoutingSlip)initWithIdentifier:(id)identifier routingSlipEntries:(id)entries
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  entriesCopy = entries;
   v9 = [(EPRoutingSlip *)self init];
   v10 = v9;
   if (v9)
   {
-    v29 = v7;
-    objc_storeStrong(&v9->_identifier, a3);
+    v29 = identifierCopy;
+    objc_storeStrong(&v9->_identifier, identifier);
     v11 = +[NSMutableDictionary dictionary];
     transactionReferences = v10->_transactionReferences;
     v10->_transactionReferences = v11;
 
     v13 = +[NSMutableArray array];
-    v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
+    v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [entriesCopy count]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v28 = v8;
-    v15 = v8;
+    v28 = entriesCopy;
+    v15 = entriesCopy;
     v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v16)
     {
@@ -80,15 +80,15 @@
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
-          v21 = [v20 transactionClasses];
-          v22 = [v21 containsObject:{objc_msgSend(v20, "transactionClass")}];
+          transactionClasses = [v20 transactionClasses];
+          v22 = [transactionClasses containsObject:{objc_msgSend(v20, "transactionClass")}];
 
           if (v22)
           {
             [v20 setRoutingSlip:v10];
             [v13 addObject:v20];
-            v23 = [v20 name];
-            [(NSDictionary *)v14 setObject:v20 forKeyedSubscript:v23];
+            name = [v20 name];
+            [(NSDictionary *)v14 setObject:v20 forKeyedSubscript:name];
           }
         }
 
@@ -105,20 +105,20 @@
     entryMap = v10->_entryMap;
     v10->_entryMap = v14;
 
-    v8 = v28;
-    v7 = v29;
+    entriesCopy = v28;
+    identifierCopy = v29;
   }
 
   return v10;
 }
 
-- (void)resumeWithServiceRegistry:(id)a3 rollback:(BOOL)a4
+- (void)resumeWithServiceRegistry:(id)registry rollback:(BOOL)rollback
 {
-  v4 = a4;
-  v6 = a3;
+  rollbackCopy = rollback;
+  registryCopy = registry;
   if ([(EPRoutingSlip *)self notUnrollable]|| [(EPRoutingSlip *)self resumeEnabled])
   {
-    v4 = 0;
+    rollbackCopy = 0;
   }
 
   if ([(EPRoutingSlip *)self queuedCancel])
@@ -127,14 +127,14 @@
   }
 
   [(EPRoutingSlip *)self setQueuedCancel:0];
-  [(EPRoutingSlip *)self setServiceRegistry:v6];
+  [(EPRoutingSlip *)self setServiceRegistry:registryCopy];
 
-  [(EPRoutingSlip *)self setDidFail:v4 | [(EPRoutingSlip *)self didFail]];
-  if (v4 && [(EPRoutingSlip *)self state]== 2)
+  [(EPRoutingSlip *)self setDidFail:rollbackCopy | [(EPRoutingSlip *)self didFail]];
+  if (rollbackCopy && [(EPRoutingSlip *)self state]== 2)
   {
     [(EPRoutingSlip *)self setState:0];
-    v7 = [(EPRoutingSlip *)self entries];
-    -[EPRoutingSlip setTransactionIndex:](self, "setTransactionIndex:", [v7 count] - 1);
+    entries = [(EPRoutingSlip *)self entries];
+    -[EPRoutingSlip setTransactionIndex:](self, "setTransactionIndex:", [entries count] - 1);
   }
 
   v8 = nr_daemon_log();
@@ -149,7 +149,7 @@
       v12 = 138543618;
       v13 = identifier;
       v14 = 1024;
-      v15 = v4;
+      v15 = rollbackCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: resumeWithServiceRegistry rollback:%{BOOL}d", &v12, 0x12u);
     }
   }
@@ -166,8 +166,8 @@
 
   else
   {
-    v6 = [(EPRoutingSlip *)self entries];
-    v7 = [v6 objectAtIndexedSubscript:{-[EPRoutingSlip transactionIndex](self, "transactionIndex")}];
+    entries = [(EPRoutingSlip *)self entries];
+    v7 = [entries objectAtIndexedSubscript:{-[EPRoutingSlip transactionIndex](self, "transactionIndex")}];
   }
 
   return v7;
@@ -185,10 +185,10 @@
 
     if (!self->_transaction)
     {
-      v7 = [(EPRoutingSlip *)self currentEntry];
-      v8 = [v7 newTransaction];
+      currentEntry = [(EPRoutingSlip *)self currentEntry];
+      newTransaction = [currentEntry newTransaction];
       v9 = self->_transaction;
-      self->_transaction = v8;
+      self->_transaction = newTransaction;
 
       [(EPTransaction *)self->_transaction setDelegate:self];
       [(NSMutableDictionary *)self->_transactionReferences setObject:self->_transaction forKeyedSubscript:v4];
@@ -200,11 +200,11 @@
   return transaction;
 }
 
-- (void)setTransactionIndex:(int64_t)a3
+- (void)setTransactionIndex:(int64_t)index
 {
-  if (self->_transactionIndex != a3)
+  if (self->_transactionIndex != index)
   {
-    self->_transactionIndex = a3;
+    self->_transactionIndex = index;
   }
 }
 
@@ -215,11 +215,11 @@
     return 0;
   }
 
-  v3 = [(EPRoutingSlip *)self transactionIndex];
-  v4 = [(EPRoutingSlip *)self entries];
-  v5 = [v4 count] - 1;
+  transactionIndex = [(EPRoutingSlip *)self transactionIndex];
+  entries = [(EPRoutingSlip *)self entries];
+  v5 = [entries count] - 1;
 
-  if (v3 >= v5)
+  if (transactionIndex >= v5)
   {
     return 0;
   }
@@ -235,11 +235,11 @@
     return 0;
   }
 
-  v3 = [(EPRoutingSlip *)self transactionIndex];
-  v4 = [(EPRoutingSlip *)self entries];
-  v5 = [v4 count];
+  transactionIndex = [(EPRoutingSlip *)self transactionIndex];
+  entries = [(EPRoutingSlip *)self entries];
+  v5 = [entries count];
 
-  if (v3 > v5)
+  if (transactionIndex > v5)
   {
     return 0;
   }
@@ -252,16 +252,16 @@
 {
   if ([(EPRoutingSlip *)self didFail]&& ![(EPRoutingSlip *)self notUnrollable])
   {
-    v3 = [(EPRoutingSlip *)self decrementCurrentTransactionIndex];
-    if (!v3)
+    decrementCurrentTransactionIndex = [(EPRoutingSlip *)self decrementCurrentTransactionIndex];
+    if (!decrementCurrentTransactionIndex)
     {
-      return v3;
+      return decrementCurrentTransactionIndex;
     }
 
 LABEL_6:
     [(EPRoutingSlip *)self persist];
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(decrementCurrentTransactionIndex) = 1;
+    return decrementCurrentTransactionIndex;
   }
 
   if ([(EPRoutingSlip *)self incrementCurrentTransactionIndex])
@@ -269,8 +269,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(decrementCurrentTransactionIndex) = 0;
+  return decrementCurrentTransactionIndex;
 }
 
 - (void)persist
@@ -279,11 +279,11 @@ LABEL_6:
   [WeakRetained routingSlipRequestsArchiving:self];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
@@ -304,10 +304,10 @@ LABEL_6:
     }
   }
 
-  v7 = [(EPRoutingSlip *)self state];
-  if (v7 > 1)
+  state = [(EPRoutingSlip *)self state];
+  if (state > 1)
   {
-    if (v7 == 2)
+    if (state == 2)
     {
       v29 = sub_1000034AC();
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
@@ -317,19 +317,19 @@ LABEL_6:
         goto LABEL_34;
       }
 
-      v9 = sub_1000034AC();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      transaction = sub_1000034AC();
+      if (os_log_type_enabled(transaction, OS_LOG_TYPE_DEFAULT))
       {
         identifier = self->_identifier;
         *v46 = 138543362;
         *&v46[4] = identifier;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: Completed", v46, 0xCu);
+        _os_log_impl(&_mh_execute_header, transaction, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: Completed", v46, 0xCu);
       }
 
       goto LABEL_33;
     }
 
-    if (v7 == 3)
+    if (state == 3)
     {
       v14 = sub_1000034AC();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -346,15 +346,15 @@ LABEL_6:
         }
       }
 
-      v9 = [(EPRoutingSlip *)self transaction];
-      [v9 cancelWithError:0];
+      transaction = [(EPRoutingSlip *)self transaction];
+      [transaction cancelWithError:0];
       goto LABEL_33;
     }
   }
 
   else
   {
-    if (!v7)
+    if (!state)
     {
       v18 = sub_1000034AC();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -376,8 +376,8 @@ LABEL_6:
       self->_osTransaction = v22;
 
       [(EPRoutingSlip *)self setState:1];
-      v9 = [(EPRoutingSlip *)self currentEntry];
-      v10 = [(EPRoutingSlip *)self transaction];
+      transaction = [(EPRoutingSlip *)self currentEntry];
+      transaction2 = [(EPRoutingSlip *)self transaction];
       if (![(EPRoutingSlip *)self didFail]|| [(EPRoutingSlip *)self notUnrollable])
       {
         v24 = sub_1000034AC();
@@ -391,13 +391,13 @@ LABEL_6:
 LABEL_29:
             v26 = self->_identifier;
             transactionIndex = self->_transactionIndex;
-            v28 = [v9 shortDescription];
+            shortDescription = [transaction shortDescription];
             *v46 = 138543874;
             *&v46[4] = v26;
             *&v46[12] = 2048;
             *&v46[14] = transactionIndex;
             *&v46[22] = 2114;
-            v47 = v28;
+            v47 = shortDescription;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: Starting saga entry %ld:%{public}@", v46, 0x20u);
           }
 
@@ -405,7 +405,7 @@ LABEL_30:
         }
 
 LABEL_31:
-        [v10 beginTransactionWithRoutingSlipEntry:v9 serviceRegistry:{self->_serviceRegistry, *v46, *&v46[16], v47}];
+        [transaction2 beginTransactionWithRoutingSlipEntry:transaction serviceRegistry:{self->_serviceRegistry, *v46, *&v46[16], v47}];
 LABEL_32:
 
 LABEL_33:
@@ -430,7 +430,7 @@ LABEL_33:
         }
 
 LABEL_50:
-        [v10 beginRollbackWithRoutingSlipEntry:v9 serviceRegistry:{self->_serviceRegistry, *v46, *&v46[8], v47}];
+        [transaction2 beginRollbackWithRoutingSlipEntry:transaction serviceRegistry:{self->_serviceRegistry, *v46, *&v46[8], v47}];
         goto LABEL_32;
       }
 
@@ -446,18 +446,18 @@ LABEL_50:
       }
 
 LABEL_55:
-      [(EPRoutingSlip *)self transactionDidComplete:v10, *v46, *&v46[8], v47];
+      [(EPRoutingSlip *)self transactionDidComplete:transaction2, *v46, *&v46[8], v47];
       goto LABEL_32;
     }
 
-    if (v7 == 1)
+    if (state == 1)
     {
-      v8 = [(EPTransaction *)self->_transaction delegate];
+      delegate = [(EPTransaction *)self->_transaction delegate];
 
-      if (!v8)
+      if (!delegate)
       {
-        v9 = [(EPRoutingSlip *)self currentEntry];
-        v10 = [(EPRoutingSlip *)self transaction];
+        transaction = [(EPRoutingSlip *)self currentEntry];
+        transaction2 = [(EPRoutingSlip *)self transaction];
         if (![(EPRoutingSlip *)self didFail]|| [(EPRoutingSlip *)self notUnrollable])
         {
           v11 = sub_1000034AC();
@@ -491,13 +491,13 @@ LABEL_55:
 LABEL_48:
               v40 = self->_identifier;
               v41 = self->_transactionIndex;
-              v42 = [v9 shortDescription];
+              shortDescription2 = [transaction shortDescription];
               *v46 = 138543874;
               *&v46[4] = v40;
               *&v46[12] = 2048;
               *&v46[14] = v41;
               *&v46[22] = 2114;
-              v47 = v42;
+              v47 = shortDescription2;
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: Rolling back saga entry %ld:%{public}@", v46, 0x20u);
             }
 
@@ -517,13 +517,13 @@ LABEL_49:
 LABEL_53:
             v43 = self->_identifier;
             v44 = self->_transactionIndex;
-            v45 = [v9 shortDescription];
+            shortDescription3 = [transaction shortDescription];
             *v46 = 138543874;
             *&v46[4] = v43;
             *&v46[12] = 2048;
             *&v46[14] = v44;
             *&v46[22] = 2114;
-            v47 = v45;
+            v47 = shortDescription3;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: Rollback not implement for saga entry %ld:%{public}@", v46, 0x20u);
           }
 
@@ -585,15 +585,15 @@ LABEL_34:
   [(EPRoutingSlip *)self setRoutingSlipDelegate:0];
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
-  v4 = [(EPServiceRegistry *)self->_serviceRegistry queue];
+  queue = [(EPServiceRegistry *)self->_serviceRegistry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FBB8C;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)printDescription
@@ -613,13 +613,13 @@ LABEL_34:
     }
   }
 
-  v7 = [(EPRoutingSlip *)self entries];
+  entries = [(EPRoutingSlip *)self entries];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000FC00C;
   v12[3] = &unk_100179ED8;
   v12[4] = self;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [entries enumerateObjectsUsingBlock:v12];
 
   v8 = sub_1000034AC();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -637,57 +637,57 @@ LABEL_34:
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(EPRoutingSlip *)self entryMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  entryMap = [(EPRoutingSlip *)self entryMap];
+  v6 = [entryMap objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
-- (EPRoutingSlip)initWithCoder:(id)a3
+- (EPRoutingSlip)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v5 = [NSArray arrayWithObjects:v12 count:2];
   v6 = [NSSet setWithArray:v5];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"entries"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"entries"];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  if (!v8)
+  uUIDString = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  if (!uUIDString)
   {
     v9 = +[NSUUID UUID];
-    v8 = [v9 UUIDString];
+    uUIDString = [v9 UUIDString];
   }
 
-  v10 = [(EPRoutingSlip *)self initWithIdentifier:v8 routingSlipEntries:v7];
+  v10 = [(EPRoutingSlip *)self initWithIdentifier:uUIDString routingSlipEntries:v7];
   if (v10)
   {
-    v10->_transactionIndex = [v4 decodeIntegerForKey:@"transactionIndex"];
-    v10->_didFail = [v4 decodeBoolForKey:@"didFail"];
-    v10->_state = [v4 decodeIntegerForKey:@"state"];
-    v10->_persistWhilePending = [v4 decodeBoolForKey:@"persistWhilePending"];
-    v10->_notUnrollable = [v4 decodeBoolForKey:@"notUnrollable"];
-    v10->_resumeEnabled = [v4 decodeBoolForKey:@"resumeEnabled"];
+    v10->_transactionIndex = [coderCopy decodeIntegerForKey:@"transactionIndex"];
+    v10->_didFail = [coderCopy decodeBoolForKey:@"didFail"];
+    v10->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v10->_persistWhilePending = [coderCopy decodeBoolForKey:@"persistWhilePending"];
+    v10->_notUnrollable = [coderCopy decodeBoolForKey:@"notUnrollable"];
+    v10->_resumeEnabled = [coderCopy decodeBoolForKey:@"resumeEnabled"];
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_entries forKey:@"entries"];
-  [v5 encodeInteger:self->_transactionIndex forKey:@"transactionIndex"];
-  [v5 encodeBool:self->_didFail forKey:@"didFail"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeBool:self->_persistWhilePending forKey:@"persistWhilePending"];
-  [v5 encodeBool:self->_notUnrollable forKey:@"notUnrollable"];
-  [v5 encodeBool:self->_resumeEnabled forKey:@"resumeEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_entries forKey:@"entries"];
+  [coderCopy encodeInteger:self->_transactionIndex forKey:@"transactionIndex"];
+  [coderCopy encodeBool:self->_didFail forKey:@"didFail"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeBool:self->_persistWhilePending forKey:@"persistWhilePending"];
+  [coderCopy encodeBool:self->_notUnrollable forKey:@"notUnrollable"];
+  [coderCopy encodeBool:self->_resumeEnabled forKey:@"resumeEnabled"];
 }
 
 - (id)getLastFirstError
@@ -696,8 +696,8 @@ LABEL_34:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = self;
-  v3 = [(EPRoutingSlip *)v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v3 = [(EPRoutingSlip *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -709,23 +709,23 @@ LABEL_34:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 errors];
-        v10 = [v9 firstObject];
+        errors = [v8 errors];
+        firstObject = [errors firstObject];
 
-        if (v10)
+        if (firstObject)
         {
-          v11 = [v8 errors];
-          v12 = [v11 firstObject];
+          errors2 = [v8 errors];
+          firstObject2 = [errors2 firstObject];
 
-          v5 = v12;
+          v5 = firstObject2;
         }
       }
 
-      v4 = [(EPRoutingSlip *)v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [(EPRoutingSlip *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -739,9 +739,9 @@ LABEL_34:
   return v5;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -797,14 +797,14 @@ LABEL_17:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = self->_identifier;
-      v13 = [(EPRoutingSlip *)self currentEntry];
-      v14 = [v13 shortDescription];
+      currentEntry = [(EPRoutingSlip *)self currentEntry];
+      shortDescription = [currentEntry shortDescription];
       v29 = 138543874;
       v30 = v12;
       v31 = 2114;
-      v32 = v14;
+      v32 = shortDescription;
       v33 = 2114;
-      v34 = v4;
+      v34 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: canceling running transaction %{public}@ with error:%{public}@", &v29, 0x20u);
     }
   }
@@ -812,17 +812,17 @@ LABEL_17:
   v15 = self->_transaction;
   if (objc_opt_respondsToSelector())
   {
-    [(EPTransaction *)self->_transaction cancelWithError:v4];
+    [(EPTransaction *)self->_transaction cancelWithError:errorCopy];
     goto LABEL_31;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    if (v4)
+    if (errorCopy)
     {
-      v20 = [(EPRoutingSlip *)self currentEntry];
-      v21 = [v20 errors];
-      [v21 addObject:v4];
+      currentEntry2 = [(EPRoutingSlip *)self currentEntry];
+      errors = [currentEntry2 errors];
+      [errors addObject:errorCopy];
     }
 
     [(EPTransaction *)self->_transaction cancel];
@@ -844,12 +844,12 @@ LABEL_17:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v25 = self->_identifier;
-      v26 = [(EPRoutingSlip *)self currentEntry];
-      v27 = [v26 shortDescription];
+      currentEntry3 = [(EPRoutingSlip *)self currentEntry];
+      shortDescription2 = [currentEntry3 shortDescription];
       v29 = 138543618;
       v30 = v25;
       v31 = 2114;
-      v32 = v27;
+      v32 = shortDescription2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "EPRoutingSlip[%{public}@]: canceling running transaction %{public}@ failed, transaction does not respond to the cancel selector!", &v29, 0x16u);
     }
 

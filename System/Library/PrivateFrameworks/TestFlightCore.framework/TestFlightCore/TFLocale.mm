@@ -1,31 +1,31 @@
 @interface TFLocale
-+ (id)preferredLocaleKeyFromAvailableKeys:(id)a3 primaryLocaleKey:(id)a4;
-+ (id)preferredLocalizedDisplayNameFromDisplayNames:(id)a3;
++ (id)preferredLocaleKeyFromAvailableKeys:(id)keys primaryLocaleKey:(id)key;
++ (id)preferredLocalizedDisplayNameFromDisplayNames:(id)names;
 @end
 
 @implementation TFLocale
 
-+ (id)preferredLocaleKeyFromAvailableKeys:(id)a3 primaryLocaleKey:(id)a4
++ (id)preferredLocaleKeyFromAvailableKeys:(id)keys primaryLocaleKey:(id)key
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 count])
+  keysCopy = keys;
+  keyCopy = key;
+  if (keysCopy && [keysCopy count])
   {
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v7 localeIdentifier];
-    if ([v5 containsObject:v8])
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    if ([keysCopy containsObject:localeIdentifier])
     {
-      v9 = v8;
+      firstObject = localeIdentifier;
     }
 
     else
     {
-      v21 = v8;
-      v23 = v6;
-      v10 = [v5 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
-      v22 = v7;
-      v11 = [v7 languageCode];
+      v21 = localeIdentifier;
+      v23 = keyCopy;
+      v10 = [keysCopy sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+      v22 = currentLocale;
+      languageCode = [currentLocale languageCode];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -47,14 +47,14 @@
 
             v17 = *(*(&v24 + 1) + 8 * i);
             v18 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v17];
-            v19 = [v18 languageCode];
+            languageCode2 = [v18 languageCode];
 
-            if ([v19 isEqualToString:v11])
+            if ([languageCode2 isEqualToString:languageCode])
             {
-              v9 = v17;
+              firstObject = v17;
 
-              v7 = v22;
-              v6 = v23;
+              currentLocale = v22;
+              keyCopy = v23;
               goto LABEL_18;
             }
           }
@@ -69,49 +69,49 @@
         }
       }
 
-      v6 = v23;
-      if (v23 && [v5 containsObject:v23])
+      keyCopy = v23;
+      if (v23 && [keysCopy containsObject:v23])
       {
-        v9 = v23;
-        v7 = v22;
+        firstObject = v23;
+        currentLocale = v22;
       }
 
       else
       {
-        v9 = @"en_US";
-        v7 = v22;
-        if (([v5 containsObject:@"en_US"] & 1) == 0)
+        firstObject = @"en_US";
+        currentLocale = v22;
+        if (([keysCopy containsObject:@"en_US"] & 1) == 0)
         {
-          v9 = [v12 firstObject];
+          firstObject = [v12 firstObject];
         }
       }
 
 LABEL_18:
 
-      v8 = v21;
+      localeIdentifier = v21;
     }
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-+ (id)preferredLocalizedDisplayNameFromDisplayNames:(id)a3
++ (id)preferredLocalizedDisplayNameFromDisplayNames:(id)names
 {
-  v3 = a3;
-  v4 = [v3 localizedNames];
-  v5 = [v4 allKeys];
+  namesCopy = names;
+  localizedNames = [namesCopy localizedNames];
+  allKeys = [localizedNames allKeys];
 
-  v6 = [v3 primaryLocale];
-  v7 = [TFLocale preferredLocaleKeyFromAvailableKeys:v5 primaryLocaleKey:v6];
+  primaryLocale = [namesCopy primaryLocale];
+  v7 = [TFLocale preferredLocaleKeyFromAvailableKeys:allKeys primaryLocaleKey:primaryLocale];
 
-  v8 = [v3 localizedNames];
+  localizedNames2 = [namesCopy localizedNames];
 
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [localizedNames2 objectForKeyedSubscript:v7];
 
   return v9;
 }

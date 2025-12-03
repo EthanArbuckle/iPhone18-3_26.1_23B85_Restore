@@ -1,31 +1,31 @@
 @interface HUGridSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (HUGridSectionHeaderViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (HUGridSectionHeaderViewAccessibility)initWithFrame:(CGRect)frame;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HUGridSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUGridSectionHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"HUGridSectionHeaderView" hasInstanceMethod:@"chevronView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridSectionHeaderView" isKindOfClass:@"UICollectionViewListCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUGridSectionHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"HUGridSectionHeaderView" hasInstanceMethod:@"chevronView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridSectionHeaderView" isKindOfClass:@"UICollectionViewListCell"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v9.receiver = self;
   v9.super_class = HUGridSectionHeaderViewAccessibility;
-  v3 = [(HUGridSectionHeaderViewAccessibility *)&v9 accessibilityTraits];
+  accessibilityTraits = [(HUGridSectionHeaderViewAccessibility *)&v9 accessibilityTraits];
   v4 = [(HUGridSectionHeaderViewAccessibility *)self safeValueForKey:@"chevronView"];
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = *MEMORY[0x29EDC7F80] | v3;
-  LODWORD(v3) = [v5 isHidden];
+  v6 = *MEMORY[0x29EDC7F80] | accessibilityTraits;
+  LODWORD(accessibilityTraits) = [v5 isHidden];
 
-  if (v3)
+  if (accessibilityTraits)
   {
     v7 = 0;
   }
@@ -38,11 +38,11 @@
   return v6 | v7;
 }
 
-- (HUGridSectionHeaderViewAccessibility)initWithFrame:(CGRect)a3
+- (HUGridSectionHeaderViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = HUGridSectionHeaderViewAccessibility;
-  v3 = [(HUGridSectionHeaderViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUGridSectionHeaderViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HUGridSectionHeaderViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

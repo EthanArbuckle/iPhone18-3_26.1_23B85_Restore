@@ -1,42 +1,42 @@
 @interface _UIBarCustomizer
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (CGPoint)lastDragLocation;
 - (CGRect)initialSourceFrame;
-- (_UIBarCustomizer)initWithDelegate:(id)a3;
+- (_UIBarCustomizer)initWithDelegate:(id)delegate;
 - (_UIBarCustomizerDelegate)delegate;
-- (double)_dragInteraction:(id)a3 delayForLiftBeginningAtLocation:(CGPoint)a4;
-- (id)_dragItemsAtLocation:(CGPoint)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (double)_dragInteraction:(id)interaction delayForLiftBeginningAtLocation:(CGPoint)location;
+- (id)_dragItemsAtLocation:(CGPoint)location;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 - (int)_overflowItemBucketSize;
-- (void)_animateDropOrCancelForItem:(id)a3 animator:(id)a4 isCancel:(BOOL)a5;
+- (void)_animateDropOrCancelForItem:(id)item animator:(id)animator isCancel:(BOOL)cancel;
 - (void)_reflow;
-- (void)_reflowAnimatedWithAlongsideActions:(id)a3;
-- (void)_setActive:(BOOL)a3;
+- (void)_reflowAnimatedWithAlongsideActions:(id)actions;
+- (void)_setActive:(BOOL)active;
 - (void)_updateDebugUI;
-- (void)beginWithSession:(id)a3;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
+- (void)beginWithSession:(id)session;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
 - (void)invalidateLayout;
 @end
 
 @implementation _UIBarCustomizer
 
-- (_UIBarCustomizer)initWithDelegate:(id)a3
+- (_UIBarCustomizer)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UIBarCustomizer;
   v5 = [(_UIBarCustomizer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(_UIBarCustomizer *)v6 setInitialSourceFrame:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     [(_UIBarCustomizer *)v6 set_dropIndex:0x7FFFFFFFFFFFFFFFLL];
   }
@@ -44,27 +44,27 @@
   return v6;
 }
 
-- (void)beginWithSession:(id)a3
+- (void)beginWithSession:(id)session
 {
   v91 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v62 = [v65 _mutableVisibleItems];
-  v64 = [v65 _mutableAdditionalItems];
-  [(_UIBarCustomizer *)self set_activeSession:v65];
-  v63 = [(_UIBarCustomizer *)self delegate];
-  v3 = [(_UIBarCustomizer *)self _activeSession];
-  v66 = [v63 barCustomizer:self containerViewForSession:v3];
+  sessionCopy = session;
+  _mutableVisibleItems = [sessionCopy _mutableVisibleItems];
+  _mutableAdditionalItems = [sessionCopy _mutableAdditionalItems];
+  [(_UIBarCustomizer *)self set_activeSession:sessionCopy];
+  delegate = [(_UIBarCustomizer *)self delegate];
+  _activeSession = [(_UIBarCustomizer *)self _activeSession];
+  v66 = [delegate barCustomizer:self containerViewForSession:_activeSession];
 
-  v4 = [v66 traitCollection];
-  v5 = [v4 layoutDirection];
+  traitCollection = [v66 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v5 == 1)
+  if (layoutDirection == 1)
   {
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v6 = v62;
+    v6 = _mutableVisibleItems;
     v7 = [v6 countByEnumeratingWithState:&v84 objects:v90 count:16];
     if (v7)
     {
@@ -93,7 +93,7 @@
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v10 = v64;
+    v10 = _mutableAdditionalItems;
     v11 = [v10 countByEnumeratingWithState:&v80 objects:v89 count:16];
     if (v11)
     {
@@ -119,24 +119,24 @@
     }
   }
 
-  v14 = [(_UIBarCustomizer *)self containerView];
-  v15 = v14 == 0;
+  containerView = [(_UIBarCustomizer *)self containerView];
+  v15 = containerView == 0;
 
   if (v15)
   {
-    v25 = [v63 barCustomizer:self parentTraitEnvironmentForSession:v65];
-    v26 = [[_UIBarCustomizationContainerView alloc] initWithParentTraitEnvironment:v25];
+    v25 = [delegate barCustomizer:self parentTraitEnvironmentForSession:sessionCopy];
+    reservoir = [[_UIBarCustomizationContainerView alloc] initWithParentTraitEnvironment:v25];
     [v66 bounds];
-    [(UIView *)v26 setFrame:?];
+    [(UIView *)reservoir setFrame:?];
     objc_initWeak(&location, self);
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
     v77[2] = __37___UIBarCustomizer_beginWithSession___block_invoke;
     v77[3] = &unk_1E7108E78;
     objc_copyWeak(&v78, &location);
-    [(_UIBarCustomizationContainerView *)v26 setTraitChangeHandler:v77];
+    [(_UIBarCustomizationContainerView *)reservoir setTraitChangeHandler:v77];
     v27 = [UIView alloc];
-    [(UIView *)v26 bounds];
+    [(UIView *)reservoir bounds];
     v28 = [(UIView *)v27 initWithFrame:?];
     [(UIView *)v28 setAutoresizingMask:18];
     v29 = +[UIColor _alertControllerDimmingViewColor];
@@ -146,25 +146,25 @@
     v30 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel__handleDimmingViewTap_];
     [(UIView *)v28 addGestureRecognizer:v30];
 
-    [(UIView *)v26 addSubview:v28];
+    [(UIView *)reservoir addSubview:v28];
     [(_UIBarCustomizer *)self setDimmingView:v28];
 
     v31 = objc_opt_new();
     [v31 setShowsHorizontalScrollIndicator:0];
-    [(UIView *)v26 addSubview:v31];
+    [(UIView *)reservoir addSubview:v31];
     [(_UIBarCustomizer *)self setVisibleItemScrollView:v31];
 
     v32 = [UIView alloc];
-    [(UIView *)v26 bounds];
+    [(UIView *)reservoir bounds];
     v33 = [(UIView *)v32 initWithFrame:?];
     [(UIView *)v33 setAutoresizingMask:18];
     [(UIView *)v33 setAlpha:1.0];
-    v34 = [(_UIBarCustomizer *)self dimmingView];
-    [(UIView *)v26 insertSubview:v33 aboveSubview:v34];
+    dimmingView = [(_UIBarCustomizer *)self dimmingView];
+    [(UIView *)reservoir insertSubview:v33 aboveSubview:dimmingView];
 
     [(_UIBarCustomizer *)self setReservoirContainerView:v33];
     v35 = [_UIBarCustomizationItemReservoirView alloc];
-    v36 = [v64 mutableCopy];
+    v36 = [_mutableAdditionalItems mutableCopy];
     v37 = [(_UIBarCustomizationItemReservoirView *)v35 initWithItems:v36];
 
     [(_UIBarCustomizationItemReservoirView *)v37 setExpanded:0 animated:0];
@@ -185,8 +185,8 @@
     v40 = [UIAction actionWithHandler:v73];
     [(_UIBarCustomizationItemReservoirView *)v37 setDoneAction:v40];
 
-    v41 = [(_UIBarCustomizer *)self reservoirContainerView];
-    [v41 addSubview:v37];
+    reservoirContainerView = [(_UIBarCustomizer *)self reservoirContainerView];
+    [reservoirContainerView addSubview:v37];
 
     objc_destroyWeak(&v74);
     objc_destroyWeak(&v76);
@@ -196,15 +196,15 @@
     [(UIDragInteraction *)v42 setEnabled:0];
     [(_UIBarCustomizer *)self setDragInteraction:v42];
 
-    v43 = [(_UIBarCustomizer *)self dragInteraction];
-    [(UIView *)v26 addInteraction:v43];
+    dragInteraction = [(_UIBarCustomizer *)self dragInteraction];
+    [(UIView *)reservoir addInteraction:dragInteraction];
 
     v44 = [[UIDropInteraction alloc] initWithDelegate:self];
-    [(UIView *)v26 addInteraction:v44];
+    [(UIView *)reservoir addInteraction:v44];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v45 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v46 = 3;
       do
       {
@@ -212,18 +212,18 @@
         v48 = +[UIColor tintColor];
         [v47 setBackgroundColor:v48];
 
-        v49 = [(_UIBarCustomizer *)self visibleItemScrollView];
-        [v49 addSubview:v47];
+        visibleItemScrollView = [(_UIBarCustomizer *)self visibleItemScrollView];
+        [visibleItemScrollView addSubview:v47];
 
-        [v45 addObject:v47];
+        [array addObject:v47];
         --v46;
       }
 
       while (v46);
-      [(_UIBarCustomizer *)self setEllipsisDotViews:v45];
+      [(_UIBarCustomizer *)self setEllipsisDotViews:array];
     }
 
-    [(_UIBarCustomizer *)self setContainerView:v26];
+    [(_UIBarCustomizer *)self setContainerView:reservoir];
     objc_destroyWeak(&v78);
     objc_destroyWeak(&location);
   }
@@ -235,28 +235,28 @@
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(_UIBarCustomizer *)self containerView];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    containerView2 = [(_UIBarCustomizer *)self containerView];
+    [containerView2 setFrame:{v17, v19, v21, v23}];
 
-    v25 = [v64 mutableCopy];
-    v26 = [(_UIBarCustomizer *)self reservoir];
-    [(_UIBarCustomizationContainerView *)v26 setItems:v25];
+    v25 = [_mutableAdditionalItems mutableCopy];
+    reservoir = [(_UIBarCustomizer *)self reservoir];
+    [(_UIBarCustomizationContainerView *)reservoir setItems:v25];
   }
 
-  v50 = [(_UIBarCustomizer *)self containerView];
-  [v66 addSubview:v50];
+  containerView3 = [(_UIBarCustomizer *)self containerView];
+  [v66 addSubview:containerView3];
 
-  v51 = [(_UIBarCustomizer *)self visibleItemScrollView];
-  [v51 setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  visibleItemScrollView2 = [(_UIBarCustomizer *)self visibleItemScrollView];
+  [visibleItemScrollView2 setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
-  v52 = [MEMORY[0x1E695DF70] array];
-  [(_UIBarCustomizer *)self set_visibleItems:v52];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [(_UIBarCustomizer *)self set_visibleItems:array2];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v53 = v62;
+  v53 = _mutableVisibleItems;
   v54 = [v53 countByEnumeratingWithState:&v69 objects:v88 count:16];
   if (v54)
   {
@@ -276,11 +276,11 @@
         v59 = [[_UIBarCustomizationChiclet alloc] initWithItem:v57];
         [(_UIBarCustomizationChiclet *)v59 sizeToFit];
         [v58 setChiclet:v59];
-        v60 = [(_UIBarCustomizer *)self _visibleItems];
-        [v60 addObject:v57];
+        _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
+        [_visibleItems addObject:v57];
 
-        v61 = [(_UIBarCustomizer *)self visibleItemScrollView];
-        [v61 addSubview:v58];
+        visibleItemScrollView3 = [(_UIBarCustomizer *)self visibleItemScrollView];
+        [visibleItemScrollView3 addSubview:v58];
 
         ++v56;
       }
@@ -307,57 +307,57 @@
   {
     [(_UIBarCustomizer *)self setInitialSourceFrame:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     [(_UIBarCustomizer *)self _reflow];
-    v3 = [(_UIBarCustomizer *)self reservoir];
-    [v3 invalidateLayoutAndForceUpdate:1];
+    reservoir = [(_UIBarCustomizer *)self reservoir];
+    [reservoir invalidateLayoutAndForceUpdate:1];
   }
 }
 
-- (void)_setActive:(BOOL)a3
+- (void)_setActive:(BOOL)active
 {
-  v3 = a3;
-  if ([(_UIBarCustomizer *)self isActive]!= a3)
+  activeCopy = active;
+  if ([(_UIBarCustomizer *)self isActive]!= active)
   {
-    self->_isActive = v3;
-    v5 = [(_UIBarCustomizer *)self dragInteraction];
-    [v5 setEnabled:v3];
+    self->_isActive = activeCopy;
+    dragInteraction = [(_UIBarCustomizer *)self dragInteraction];
+    [dragInteraction setEnabled:activeCopy];
 
-    v6 = [(_UIBarCustomizer *)self containerView];
-    [v6 setUserInteractionEnabled:v3];
+    containerView = [(_UIBarCustomizer *)self containerView];
+    [containerView setUserInteractionEnabled:activeCopy];
 
-    if (v3)
+    if (activeCopy)
     {
       v7 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
       v8 = [v7 vendKeyboardSuppressionAssertionForReason:@"bar customizer"];
       [(_UIBarCustomizer *)self setKeyboardSuppressionAssertion:v8];
 
-      v9 = [(_UIBarCustomizer *)self _activeSession];
-      v10 = [v9 beginAnimationCoordinator];
-      v11 = [(_UIBarCustomizer *)self reservoirContainerView];
-      [v11 setAlpha:1.0];
+      _activeSession = [(_UIBarCustomizer *)self _activeSession];
+      beginAnimationCoordinator = [_activeSession beginAnimationCoordinator];
+      reservoirContainerView = [(_UIBarCustomizer *)self reservoirContainerView];
+      [reservoirContainerView setAlpha:1.0];
 
-      v12 = [(_UIBarCustomizer *)self reservoirContainerView];
-      v13 = [v12 _outermostLayer];
-      [v13 setOpacity:0.0];
+      reservoirContainerView2 = [(_UIBarCustomizer *)self reservoirContainerView];
+      _outermostLayer = [reservoirContainerView2 _outermostLayer];
+      [_outermostLayer setOpacity:0.0];
     }
 
     else
     {
       [(_UIBarCustomizer *)self setKeyboardSuppressionAssertion:0];
-      v9 = [(_UIBarCustomizer *)self _activeSession];
-      v10 = [v9 endAnimationCoordinator];
-      v14 = [(_UIBarCustomizer *)self dragInteraction];
-      [v14 _cancelDrag];
+      _activeSession = [(_UIBarCustomizer *)self _activeSession];
+      beginAnimationCoordinator = [_activeSession endAnimationCoordinator];
+      dragInteraction2 = [(_UIBarCustomizer *)self dragInteraction];
+      [dragInteraction2 _cancelDrag];
 
       [(_UIBarCustomizer *)self set_activeSession:0];
-      v15 = [(_UIBarCustomizer *)self _visibleItems];
-      [v9 set_mutableVisibleItems:v15];
+      _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
+      [_activeSession set_mutableVisibleItems:_visibleItems];
 
-      v16 = [(_UIBarCustomizer *)self reservoir];
-      v17 = [v16 items];
-      [v9 set_mutableAdditionalItems:v17];
+      reservoir = [(_UIBarCustomizer *)self reservoir];
+      items = [reservoir items];
+      [_activeSession set_mutableAdditionalItems:items];
 
-      v18 = [(_UIBarCustomizer *)self delegate];
-      [v18 barCustomizer:self willEndSession:v9 didReset:{-[_UIBarCustomizer wasReset](self, "wasReset")}];
+      delegate = [(_UIBarCustomizer *)self delegate];
+      [delegate barCustomizer:self willEndSession:_activeSession didReset:{-[_UIBarCustomizer wasReset](self, "wasReset")}];
 
       objc_initWeak(&location, self);
       v39[0] = MEMORY[0x1E69E9820];
@@ -365,7 +365,7 @@
       v39[2] = __31___UIBarCustomizer__setActive___block_invoke;
       v39[3] = &unk_1E7108EA0;
       objc_copyWeak(&v40, &location);
-      [v10 addCompletion:v39];
+      [beginAnimationCoordinator addCompletion:v39];
       objc_destroyWeak(&v40);
       objc_destroyWeak(&location);
     }
@@ -375,43 +375,43 @@
     v32 = 3221225472;
     v33 = __31___UIBarCustomizer__setActive___block_invoke_2;
     v34 = &unk_1E70F5B18;
-    v35 = self;
-    LOBYTE(v38) = v3;
-    v36 = v9;
-    v37 = v10;
+    selfCopy = self;
+    LOBYTE(v38) = activeCopy;
+    v36 = _activeSession;
+    v37 = beginAnimationCoordinator;
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __31___UIBarCustomizer__setActive___block_invoke_3;
     v26 = &unk_1E7108EC8;
-    LOBYTE(v30) = v3;
-    v27 = self;
+    LOBYTE(v30) = activeCopy;
+    selfCopy2 = self;
     v28 = v37;
     v29 = v36;
     v20 = v36;
     v21 = v37;
     [UIView _animateUsingSpringBehavior:v19 tracking:0 animations:&v31 completion:&v23];
 
-    if (!v3)
+    if (!activeCopy)
     {
-      [(_UIBarCustomizer *)self setInitialSourceFrame:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38];
+      [(_UIBarCustomizer *)self setInitialSourceFrame:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v23, v24, v25, v26, selfCopy2, v28, v29, v30, v31, v32, v33, v34, selfCopy, v36, v37, v38];
     }
 
     v22 = [(_UIBarCustomizer *)self reservoir:v23];
-    [v22 setExpanded:v3 animated:1];
+    [v22 setExpanded:activeCopy animated:1];
   }
 }
 
 - (void)_reflow
 {
   v182 = *MEMORY[0x1E69E9840];
-  v150 = [(_UIBarCustomizer *)self containerView];
-  v2 = [(_UIBarCustomizer *)self visibleItemScrollView];
+  containerView = [(_UIBarCustomizer *)self containerView];
+  visibleItemScrollView = [(_UIBarCustomizer *)self visibleItemScrollView];
   [(_UIBarCustomizer *)self initialSourceFrame];
   x = v3;
   y = v5;
   width = v7;
   height = v9;
-  v148 = [(_UIBarCustomizer *)self _visibleItems];
+  _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
   v183.origin.x = x;
   v183.origin.y = y;
   v183.size.width = width;
@@ -422,18 +422,18 @@
     v176[1] = 3221225472;
     v176[2] = __27___UIBarCustomizer__reflow__block_invoke;
     v176[3] = &unk_1E70F35B8;
-    v11 = v2;
+    v11 = visibleItemScrollView;
     v177 = v11;
-    v178 = self;
+    selfCopy = self;
     [UIView performWithoutAnimation:v176];
     v174 = 0u;
     v175 = 0u;
     v172 = 0u;
     v173 = 0u;
-    v12 = [(_UIBarCustomizer *)self _activeSession];
-    v13 = [v12 sourceItems];
+    _activeSession = [(_UIBarCustomizer *)self _activeSession];
+    sourceItems = [_activeSession sourceItems];
 
-    v14 = [v13 countByEnumeratingWithState:&v172 objects:v180 count:16];
+    v14 = [sourceItems countByEnumeratingWithState:&v172 objects:v180 count:16];
     if (v14)
     {
       v15 = *v173;
@@ -443,7 +443,7 @@
         {
           if (*v173 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(sourceItems);
           }
 
           [*(*(&v172 + 1) + 8 * i) _sourceFrameInContainer:v11];
@@ -462,7 +462,7 @@
           height = v185.size.height;
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v172 objects:v180 count:16];
+        v14 = [sourceItems countByEnumeratingWithState:&v172 objects:v180 count:16];
       }
 
       while (v14);
@@ -474,7 +474,7 @@
     v186.size.height = height;
     if (CGRectIsNull(v186))
     {
-      [v150 bounds];
+      [containerView bounds];
       x = CGRectGetMidX(v187);
       width = 0.0;
       height = 100.0;
@@ -489,14 +489,14 @@
     v181.a = 0.0;
     *&v181.b = &v181;
     *&v181.c = 0x2020000000uLL;
-    v21 = [v150 traitCollection];
-    v22 = [v21 layoutDirection];
+    traitCollection = [containerView traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
     v170[0] = MEMORY[0x1E69E9820];
     v170[1] = 3221225472;
     v170[2] = __27___UIBarCustomizer__reflow__block_invoke_2;
     v170[3] = &unk_1E7108EF0;
-    if (v22 == 1)
+    if (layoutDirection == 1)
     {
       v23 = 2;
     }
@@ -506,26 +506,26 @@
       v23 = 0;
     }
 
-    v171 = v22 == 1;
+    v171 = layoutDirection == 1;
     v170[4] = self;
     v170[5] = &v181;
     *&v170[6] = y + height * 0.5;
-    [v148 enumerateObjectsWithOptions:v23 usingBlock:v170];
+    [_visibleItems enumerateObjectsWithOptions:v23 usingBlock:v170];
     v24 = *(*&v181.b + 24);
-    [v2 frame];
+    [visibleItemScrollView frame];
     v25 = CGRectGetWidth(v188);
-    v26 = [(_UIBarCustomizer *)self _dropIndex];
-    v27 = [v148 count];
+    _dropIndex = [(_UIBarCustomizer *)self _dropIndex];
+    v27 = [_visibleItems count];
     v28 = 0;
     v29 = 0;
     v30 = -40.0;
-    if (v22 == 1)
+    if (layoutDirection == 1)
     {
       v30 = 40.0;
     }
 
     v31 = v30 + (v25 - v24) * 0.5;
-    if (v26 == v27)
+    if (_dropIndex == v27)
     {
       v32 = v31;
     }
@@ -535,16 +535,16 @@
       v32 = (v25 - v24) * 0.5;
     }
 
-    while ([v148 count] > v28)
+    while ([_visibleItems count] > v28)
     {
-      v33 = [v148 objectAtIndexedSubscript:v28];
-      v34 = [v33 _chiclet];
-      v35 = [v34 anchorView];
+      v33 = [_visibleItems objectAtIndexedSubscript:v28];
+      _chiclet = [v33 _chiclet];
+      anchorView = [_chiclet anchorView];
 
-      v36 = [v35 chiclet];
-      LODWORD(v34) = [v36 minimized];
+      chiclet = [anchorView chiclet];
+      LODWORD(_chiclet) = [chiclet minimized];
 
-      if (v34)
+      if (_chiclet)
       {
         v37 = fmin((v29 / [(_UIBarCustomizer *)self _overflowItemBucketSize]), 2.0) * 0.166666667 + 0.5;
         v38 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:v37];
@@ -552,7 +552,7 @@
         v168[1] = 3221225472;
         v168[2] = __27___UIBarCustomizer__reflow__block_invoke_3;
         v168[3] = &unk_1E70F3590;
-        v39 = v35;
+        v39 = anchorView;
         v169 = v39;
         [UIView _animateUsingSpringBehavior:v38 tracking:0 animations:v168 completion:0];
 
@@ -573,32 +573,32 @@
 
       else if (v32 > 0.0)
       {
-        [v35 center];
+        [anchorView center];
         v42 = v41;
-        [v35 center];
-        [v35 setCenter:v32 + v42];
+        [anchorView center];
+        [anchorView setCenter:v32 + v42];
       }
 
       ++v28;
     }
 
-    [v2 frame];
-    [v2 setContentSize:{v24, CGRectGetHeight(v195)}];
+    [visibleItemScrollView frame];
+    [visibleItemScrollView setContentSize:{v24, CGRectGetHeight(v195)}];
     _Block_object_dispose(&v181, 8);
   }
 
   else
   {
-    [v2 setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    v43 = [(_UIBarCustomizer *)self delegate];
-    v44 = [(_UIBarCustomizer *)self _activeSession];
-    [v43 barCustomizer:self overflowControlBoundsForSession:v44];
+    [visibleItemScrollView setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    delegate = [(_UIBarCustomizer *)self delegate];
+    _activeSession2 = [(_UIBarCustomizer *)self _activeSession];
+    [delegate barCustomizer:self overflowControlBoundsForSession:_activeSession2];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
 
-    [v150 convertRect:v2 toView:{v46, v48, v50, v52}];
+    [containerView convertRect:visibleItemScrollView toView:{v46, v48, v50, v52}];
     v137 = v53;
     v138 = v54;
     v135 = v55;
@@ -607,7 +607,7 @@
     v164 = 0u;
     v161 = 0u;
     v162 = 0u;
-    v57 = v148;
+    v57 = _visibleItems;
     v58 = 0;
     v59 = [v57 countByEnumeratingWithState:&v161 objects:v179 count:16];
     if (v59)
@@ -622,12 +622,12 @@
             objc_enumerationMutation(v57);
           }
 
-          v62 = [*(*(&v161 + 1) + 8 * j) _chiclet];
-          v63 = [v62 anchorView];
+          _chiclet2 = [*(*(&v161 + 1) + 8 * j) _chiclet];
+          anchorView2 = [_chiclet2 anchorView];
 
-          v64 = [v63 chiclet];
-          v65 = [v64 representedItem];
-          [v65 _sourceFrameInContainer:v150];
+          chiclet2 = [anchorView2 chiclet];
+          representedItem = [chiclet2 representedItem];
+          [representedItem _sourceFrameInContainer:containerView];
           v67 = v66;
           v69 = v68;
           v46 = v70;
@@ -641,10 +641,10 @@
           {
             if ([(_UIBarCustomizer *)self wasReset])
             {
-              [v63 setAlpha:0.0];
+              [anchorView2 setAlpha:0.0];
               CGAffineTransformMakeScale(&v160, 0.1, 0.1);
               v181 = v160;
-              [v63 setTransform:&v181];
+              [anchorView2 setTransform:&v181];
             }
 
             else
@@ -655,11 +655,11 @@
 
           else
           {
-            [v2 frame];
+            [visibleItemScrollView frame];
             MinX = CGRectGetMinX(v190);
-            [v2 frame];
-            [v63 setCenter:{v46 * 0.5 + v67 - MinX, v72 * 0.5 + v69 - CGRectGetMinY(v191)}];
-            [v63 frame];
+            [visibleItemScrollView frame];
+            [anchorView2 setCenter:{v46 * 0.5 + v67 - MinX, v72 * 0.5 + v69 - CGRectGetMinY(v191)}];
+            [anchorView2 frame];
             CGRectGetMaxX(v192);
           }
         }
@@ -673,11 +673,11 @@
     v140 = v58;
     [(_UIBarCustomizer *)self setOverflowItemCount:?];
     v74 = [v57 count];
-    v141 = [(_UIBarCustomizer *)self _overflowItemBucketSize];
-    v75 = [(_UIBarCustomizer *)self containerView];
-    v76 = [v75 traitCollection];
+    _overflowItemBucketSize = [(_UIBarCustomizer *)self _overflowItemBucketSize];
+    containerView2 = [(_UIBarCustomizer *)self containerView];
+    traitCollection2 = [containerView2 traitCollection];
 
-    v142 = v76;
+    v142 = traitCollection2;
     v77 = [UIImageSymbolConfiguration configurationWithTextStyle:"configurationWithTextStyle:scale:" scale:?];
     v78 = [v77 configurationWithTraitCollection:v142];
     if (_UISMCBarsEnabled())
@@ -691,10 +691,10 @@
     }
 
     v80 = [UIImage systemImageNamed:v79 withConfiguration:v78];
-    v81 = [v80 _outlinePath];
+    _outlinePath = [v80 _outlinePath];
 
-    v82 = v81;
-    SeparateComponents = CGPathCreateSeparateComponents([v81 CGPath], 0);
+    v82 = _outlinePath;
+    SeparateComponents = CGPathCreateSeparateComponents([_outlinePath CGPath], 0);
     Count = CFArrayGetCount(SeparateComponents);
     if (Count >= 1)
     {
@@ -711,7 +711,7 @@
         v143 = PathBoundingBox.size.height;
         v144 = PathBoundingBox.size.width;
         v92 = CGRectGetWidth(PathBoundingBox);
-        [v81 bounds];
+        [_outlinePath bounds];
         if (v92 < CGRectGetWidth(v194) * 0.5)
         {
           v93.f64[0] = v144;
@@ -737,13 +737,13 @@
       do
       {
         v98 = [v57 objectAtIndexedSubscript:v96];
-        v99 = [v98 _chiclet];
-        v100 = [v99 anchorView];
+        _chiclet3 = [v98 _chiclet];
+        anchorView3 = [_chiclet3 anchorView];
 
-        v101 = [v142 layoutDirection];
-        v102 = fmin((v97 / v141), 2.0);
+        layoutDirection2 = [v142 layoutDirection];
+        v102 = fmin((v97 / _overflowItemBucketSize), 2.0);
         v103 = v102 - 1;
-        if (v101)
+        if (layoutDirection2)
         {
           v104 = -(v95 * v103);
         }
@@ -758,10 +758,10 @@
         v156[1] = 3221225472;
         v156[2] = __27___UIBarCustomizer__reflow__block_invoke_5;
         v156[3] = &unk_1E70F6848;
-        v157 = v100;
+        v157 = anchorView3;
         v158 = v137 + v135 * 0.5 + v104;
         v159 = v138 + v136 * 0.5;
-        v106 = v100;
+        v106 = anchorView3;
         [UIView _animateUsingSpringBehavior:v105 tracking:0 animations:v156 completion:0];
 
         ++v96;
@@ -787,10 +787,10 @@
       }
 
       v110 = [UIImage systemImageNamed:v109 withConfiguration:v108];
-      v111 = [v110 _outlinePath];
+      _outlinePath2 = [v110 _outlinePath];
 
-      v112 = v111;
-      v113 = CGPathCreateSeparateComponents([v111 CGPath], 0);
+      v112 = _outlinePath2;
+      v113 = CGPathCreateSeparateComponents([_outlinePath2 CGPath], 0);
       v114 = CFArrayGetCount(v113);
       v115 = 0.0;
       if (v114 >= 1)
@@ -805,7 +805,7 @@
           v120 = v196.size.width;
           v121 = v196.size.height;
           v122 = CGRectGetWidth(v196);
-          [v111 bounds];
+          [_outlinePath2 bounds];
           if (v122 < CGRectGetWidth(v197) * 0.5)
           {
             break;
@@ -826,8 +826,8 @@
 
 LABEL_67:
 
-      v123 = [(_UIBarCustomizer *)self ellipsisDotViews];
-      v124 = [v123 count] == 0;
+      ellipsisDotViews = [(_UIBarCustomizer *)self ellipsisDotViews];
+      v124 = [ellipsisDotViews count] == 0;
 
       if (!v124)
       {
@@ -835,12 +835,12 @@ LABEL_67:
         v126 = MEMORY[0x1E69E9820];
         do
         {
-          v127 = [(_UIBarCustomizer *)self ellipsisDotViews];
-          v128 = [v127 objectAtIndexedSubscript:v125];
+          ellipsisDotViews2 = [(_UIBarCustomizer *)self ellipsisDotViews];
+          v128 = [ellipsisDotViews2 objectAtIndexedSubscript:v125];
 
-          v129 = [v147 layoutDirection];
+          layoutDirection3 = [v147 layoutDirection];
           v130 = -(v95 * (v125 - 1));
-          if (!v129)
+          if (!layoutDirection3)
           {
             v130 = v95 * (v125 - 1);
           }
@@ -861,8 +861,8 @@ LABEL_67:
             [v132 setAlpha:1.0];
           }
 
-          v133 = [(_UIBarCustomizer *)self ellipsisDotViews];
-          v134 = [v133 count];
+          ellipsisDotViews3 = [(_UIBarCustomizer *)self ellipsisDotViews];
+          v134 = [ellipsisDotViews3 count];
 
           ++v125;
         }
@@ -873,25 +873,25 @@ LABEL_67:
   }
 }
 
-- (void)_reflowAnimatedWithAlongsideActions:(id)a3
+- (void)_reflowAnimatedWithAlongsideActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.4];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56___UIBarCustomizer__reflowAnimatedWithAlongsideActions___block_invoke;
   v7[3] = &unk_1E70F37C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = actionsCopy;
+  v6 = actionsCopy;
   [UIView _animateUsingSpringBehavior:v5 tracking:0 animations:v7 completion:0];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UIBarCustomizer *)self containerView];
-  [v5 locationInView:v6];
+  sessionCopy = session;
+  containerView = [(_UIBarCustomizer *)self containerView];
+  [sessionCopy locationInView:containerView];
   v8 = v7;
   v10 = v9;
 
@@ -900,13 +900,13 @@ LABEL_67:
   return v11;
 }
 
-- (id)_dragItemsAtLocation:(CGPoint)a3
+- (id)_dragItemsAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(_UIBarCustomizer *)self containerView];
-  v6 = [v5 hitTest:0 withEvent:{x, y}];
+  containerView = [(_UIBarCustomizer *)self containerView];
+  v6 = [containerView hitTest:0 withEvent:{x, y}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -926,14 +926,14 @@ LABEL_67:
   return v9;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = [a4 items];
+  obj = [begin items];
   v4 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
@@ -949,10 +949,10 @@ LABEL_67:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 _chiclet];
-        v10 = [v9 anchorView];
+        _chiclet = [v8 _chiclet];
+        anchorView = [_chiclet anchorView];
 
-        [v10 setState:1];
+        [anchorView setState:1];
         v11 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.3];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
@@ -969,23 +969,23 @@ LABEL_67:
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  if (!a5)
+  if (!operation)
   {
-    [(_UIBarCustomizer *)self set_dropIndex:0x7FFFFFFFFFFFFFFFLL, a4];
+    [(_UIBarCustomizer *)self set_dropIndex:0x7FFFFFFFFFFFFFFFLL, session];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  itemsCopy = items;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -997,62 +997,62 @@ LABEL_67:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) _chiclet];
-        v12 = [v11 anchorView];
+        _chiclet = [*(*(&v13 + 1) + 8 * v10) _chiclet];
+        anchorView = [_chiclet anchorView];
 
-        [v12 setState:1];
+        [anchorView setState:1];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = objc_opt_new();
   [v6 _setPreviewMode:3];
   [v6 setHidesSourceViewDuringDropAnimation:1];
-  v7 = [v5 _chiclet];
-  v8 = [v7 superview];
-  v9 = [v5 _chiclet];
-  [v8 bringSubviewToFront:v9];
+  _chiclet = [itemCopy _chiclet];
+  superview = [_chiclet superview];
+  _chiclet2 = [itemCopy _chiclet];
+  [superview bringSubviewToFront:_chiclet2];
 
   v10 = [UITargetedDragPreview alloc];
-  v11 = [v5 _chiclet];
+  _chiclet3 = [itemCopy _chiclet];
 
-  v12 = [(UITargetedPreview *)v10 initWithView:v11 parameters:v6];
+  v12 = [(UITargetedPreview *)v10 initWithView:_chiclet3 parameters:v6];
 
   return v12;
 }
 
-- (double)_dragInteraction:(id)a3 delayForLiftBeginningAtLocation:(CGPoint)a4
+- (double)_dragInteraction:(id)interaction delayForLiftBeginningAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [a3 view];
-  v8 = [(_UIBarCustomizer *)self containerView];
-  [v7 convertPoint:v8 toView:{x, y}];
+  y = location.y;
+  x = location.x;
+  view = [interaction view];
+  containerView = [(_UIBarCustomizer *)self containerView];
+  [view convertPoint:containerView toView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(_UIBarCustomizer *)self containerView];
-  v14 = [v13 hitTest:0 withEvent:{v10, v12}];
+  containerView2 = [(_UIBarCustomizer *)self containerView];
+  v14 = [containerView2 hitTest:0 withEvent:{v10, v12}];
 
-  v15 = [v14 _containingScrollView];
-  v16 = v15;
+  _containingScrollView = [v14 _containingScrollView];
+  v16 = _containingScrollView;
   v17 = 0.0;
-  if (v15)
+  if (_containingScrollView)
   {
-    [v15 contentSize];
+    [_containingScrollView contentSize];
     v19 = v18;
     [v16 frame];
     if (v19 > CGRectGetWidth(v23) || ([v16 contentSize], v21 = v20, objc_msgSend(v16, "frame"), v21 > CGRectGetHeight(v24)))
@@ -1064,18 +1064,18 @@ LABEL_67:
   return v17;
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v7 = a5;
-  v8 = [a4 _chiclet];
-  if (-[_UIBarCustomizer isActive](self, "isActive") || (-[_UIBarCustomizer _visibleItems](self, "_visibleItems"), v9 = objc_claimAutoreleasedReturnValue(), [v8 representedItem], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "containsObject:", v10), v10, v9, v11))
+  defaultCopy = default;
+  _chiclet = [item _chiclet];
+  if (-[_UIBarCustomizer isActive](self, "isActive") || (-[_UIBarCustomizer _visibleItems](self, "_visibleItems"), v9 = objc_claimAutoreleasedReturnValue(), [_chiclet representedItem], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "containsObject:", v10), v10, v9, v11))
   {
     v12 = [UIDragPreviewTarget alloc];
-    v13 = [v8 superview];
-    [v8 center];
-    v14 = [(UIPreviewTarget *)v12 initWithContainer:v13 center:?];
+    superview = [_chiclet superview];
+    [_chiclet center];
+    v14 = [(UIPreviewTarget *)v12 initWithContainer:superview center:?];
 
-    v15 = [v7 retargetedPreviewWithTarget:v14];
+    v15 = [defaultCopy retargetedPreviewWithTarget:v14];
   }
 
   else
@@ -1086,15 +1086,15 @@ LABEL_67:
   return v15;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a4 items];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  items = [session items];
+  v5 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1106,15 +1106,15 @@ LABEL_67:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) localObject];
+        localObject = [*(*(&v12 + 1) + 8 * i) localObject];
         objc_opt_class();
         v8 &= objc_opt_isKindOfClass();
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1128,17 +1128,17 @@ LABEL_67:
   return v8 & 1;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(_UIBarCustomizer *)self _visibleItems];
-  v7 = [(_UIBarCustomizer *)self containerView];
-  [v5 locationInView:v7];
+  updateCopy = update;
+  _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
+  containerView = [(_UIBarCustomizer *)self containerView];
+  [updateCopy locationInView:containerView];
   v9 = v8;
   v11 = v10;
   [(_UIBarCustomizer *)self setLastDragLocation:?];
-  [v7 bounds];
+  [containerView bounds];
   v44.size.width = CGRectGetWidth(v43);
   v44.size.height = 150.0;
   v44.origin.x = 0.0;
@@ -1147,18 +1147,18 @@ LABEL_67:
   v42.y = v11;
   if (CGRectContainsPoint(v44, v42))
   {
-    v33 = v5;
-    v31 = self;
-    v12 = [(_UIBarCustomizer *)self visibleItemScrollView];
-    [v7 convertPoint:v12 toView:{v9, v11}];
+    v33 = updateCopy;
+    selfCopy = self;
+    visibleItemScrollView = [(_UIBarCustomizer *)self visibleItemScrollView];
+    [containerView convertPoint:visibleItemScrollView toView:{v9, v11}];
     v14 = v13;
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v32 = v6;
-    v15 = v6;
+    v32 = _visibleItems;
+    v15 = _visibleItems;
     v16 = [v15 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v16)
     {
@@ -1177,22 +1177,22 @@ LABEL_67:
             objc_enumerationMutation(v15);
           }
 
-          v22 = [*(*(&v35 + 1) + 8 * v20) _chiclet];
-          v23 = [v22 anchorView];
+          _chiclet = [*(*(&v35 + 1) + 8 * v20) _chiclet];
+          anchorView = [_chiclet anchorView];
 
-          if ([v23 state] != 1)
+          if ([anchorView state] != 1)
           {
-            v24 = [v23 chiclet];
-            v25 = [v24 fixed];
+            chiclet = [anchorView chiclet];
+            fixed = [chiclet fixed];
 
-            if ((v25 & 1) == 0)
+            if ((fixed & 1) == 0)
             {
-              v26 = [v7 traitCollection];
-              v27 = [v26 layoutDirection];
+              traitCollection = [containerView traitCollection];
+              layoutDirection = [traitCollection layoutDirection];
 
-              [v23 frame];
+              [anchorView frame];
               MidX = CGRectGetMidX(v45);
-              if (v27)
+              if (layoutDirection)
               {
                 if (v14 >= MidX)
                 {
@@ -1233,9 +1233,9 @@ LABEL_17:
 
 LABEL_19:
 
-    v6 = v32;
-    v5 = v33;
-    self = v31;
+    _visibleItems = v32;
+    updateCopy = v33;
+    self = selfCopy;
   }
 
   else
@@ -1255,23 +1255,23 @@ LABEL_19:
   return v29;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v47 = [(_UIBarCustomizer *)self _dropIndex];
+  dropCopy = drop;
+  _dropIndex = [(_UIBarCustomizer *)self _dropIndex];
   [(_UIBarCustomizer *)self set_dropIndex:0x7FFFFFFFFFFFFFFFLL];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v44 = v5;
-  obj = [v5 items];
+  v44 = dropCopy;
+  obj = [dropCopy items];
   v48 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v48)
   {
     v46 = *v50;
-    v6 = v47;
+    v6 = _dropIndex;
     do
     {
       for (i = 0; i != v48; ++i)
@@ -1282,92 +1282,92 @@ LABEL_19:
         }
 
         v8 = *(*(&v49 + 1) + 8 * i);
-        v9 = [v8 _chiclet];
-        v10 = [v9 representedItem];
-        v11 = v10;
-        if (v47 == 0x7FFFFFFFFFFFFFFFLL && ([v10 removable] & 1) != 0)
+        _chiclet = [v8 _chiclet];
+        representedItem = [_chiclet representedItem];
+        v11 = representedItem;
+        if (_dropIndex == 0x7FFFFFFFFFFFFFFFLL && ([representedItem removable] & 1) != 0)
         {
-          v12 = [(_UIBarCustomizer *)self _visibleItems];
-          v13 = [v12 containsObject:v11];
+          _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
+          v13 = [_visibleItems containsObject:v11];
 
           if (v13)
           {
-            v14 = [(_UIBarCustomizer *)self reservoir];
-            [v14 addItem:v11];
+            reservoir = [(_UIBarCustomizer *)self reservoir];
+            [reservoir addItem:v11];
 
-            v15 = [(_UIBarCustomizer *)self _visibleItems];
-            [v15 removeObject:v11];
+            _visibleItems2 = [(_UIBarCustomizer *)self _visibleItems];
+            [_visibleItems2 removeObject:v11];
 
-            v16 = [v9 anchorView];
-            [v16 removeFromSuperview];
+            anchorView = [_chiclet anchorView];
+            [anchorView removeFromSuperview];
 
-            [v9 setAnchorView:0];
+            [_chiclet setAnchorView:0];
           }
         }
 
         else
         {
-          v17 = [v8 _chiclet];
-          v18 = [v17 anchorView];
+          _chiclet2 = [v8 _chiclet];
+          anchorView2 = [_chiclet2 anchorView];
 
-          if (!v18)
+          if (!anchorView2)
           {
-            v18 = objc_opt_new();
-            v19 = [(_UIBarCustomizer *)self visibleItemScrollView];
-            [v19 addSubview:v18];
+            anchorView2 = objc_opt_new();
+            visibleItemScrollView = [(_UIBarCustomizer *)self visibleItemScrollView];
+            [visibleItemScrollView addSubview:anchorView2];
 
-            v20 = [v8 _chiclet];
-            [v18 setChiclet:v20];
+            _chiclet3 = [v8 _chiclet];
+            [anchorView2 setChiclet:_chiclet3];
 
-            [v18 layoutIfNeeded];
-            v21 = [(_UIBarCustomizer *)self _visibleItems];
-            v22 = [v21 count];
+            [anchorView2 layoutIfNeeded];
+            _visibleItems3 = [(_UIBarCustomizer *)self _visibleItems];
+            v22 = [_visibleItems3 count];
 
             if (v22)
             {
-              v23 = [(_UIBarCustomizer *)self _visibleItems];
-              v24 = v23;
+              _visibleItems4 = [(_UIBarCustomizer *)self _visibleItems];
+              v24 = _visibleItems4;
               if (v6 == v22)
               {
-                v25 = [v23 objectAtIndexedSubscript:v6 - 1];
-                v26 = [v25 _chiclet];
-                v27 = [v26 anchorView];
+                v25 = [_visibleItems4 objectAtIndexedSubscript:v6 - 1];
+                _chiclet4 = [v25 _chiclet];
+                anchorView3 = [_chiclet4 anchorView];
 
-                [v27 frame];
+                [anchorView3 frame];
                 v28 = CGRectGetMaxX(v55) + 20.0;
               }
 
               else
               {
-                v29 = [v23 objectAtIndexedSubscript:v6];
-                v30 = [v29 _chiclet];
-                v27 = [v30 anchorView];
+                v29 = [_visibleItems4 objectAtIndexedSubscript:v6];
+                _chiclet5 = [v29 _chiclet];
+                anchorView3 = [_chiclet5 anchorView];
 
-                [v27 frame];
+                [anchorView3 frame];
                 v28 = CGRectGetMinX(v56) + -20.0;
               }
 
-              [v27 center];
+              [anchorView3 center];
               v32 = v31;
 
-              [v18 setCenter:{v28, v32}];
+              [anchorView2 setCenter:{v28, v32}];
             }
           }
 
-          v33 = [(_UIBarCustomizer *)self _visibleItems];
-          v34 = [v33 indexOfObject:v11];
+          _visibleItems5 = [(_UIBarCustomizer *)self _visibleItems];
+          v34 = [_visibleItems5 indexOfObject:v11];
 
           v36 = v34 != 0x7FFFFFFFFFFFFFFFLL && v6 > v34;
           v6 -= v36;
-          v37 = [(_UIBarCustomizer *)self _visibleItems];
-          [v37 removeObject:v11];
+          _visibleItems6 = [(_UIBarCustomizer *)self _visibleItems];
+          [_visibleItems6 removeObject:v11];
 
-          v38 = [(_UIBarCustomizer *)self reservoir];
-          [v38 removeItem:v11];
+          reservoir2 = [(_UIBarCustomizer *)self reservoir];
+          [reservoir2 removeItem:v11];
 
-          v39 = [(_UIBarCustomizer *)self _visibleItems];
-          v40 = [(_UIBarCustomizer *)self _visibleItems];
-          v41 = [v40 count];
+          _visibleItems7 = [(_UIBarCustomizer *)self _visibleItems];
+          _visibleItems8 = [(_UIBarCustomizer *)self _visibleItems];
+          v41 = [_visibleItems8 count];
 
           if (v6 >= v41)
           {
@@ -1379,10 +1379,10 @@ LABEL_19:
             v42 = v6;
           }
 
-          [v39 insertObject:v11 atIndex:v42];
+          [_visibleItems7 insertObject:v11 atIndex:v42];
 
-          v43 = [v18 superview];
-          [v43 bringSubviewToFront:v18];
+          superview = [anchorView2 superview];
+          [superview bringSubviewToFront:anchorView2];
         }
       }
 
@@ -1393,45 +1393,45 @@ LABEL_19:
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v6 = a5;
-  v7 = a4;
+  defaultCopy = default;
+  itemCopy = item;
   v8 = [UIDragPreviewTarget alloc];
-  v9 = [v7 _chiclet];
-  v10 = [v9 superview];
-  v11 = [v7 _chiclet];
+  _chiclet = [itemCopy _chiclet];
+  superview = [_chiclet superview];
+  _chiclet2 = [itemCopy _chiclet];
 
-  [v11 center];
-  v12 = [(UIPreviewTarget *)v8 initWithContainer:v10 center:?];
+  [_chiclet2 center];
+  v12 = [(UIPreviewTarget *)v8 initWithContainer:superview center:?];
 
-  v13 = [v6 retargetedPreviewWithTarget:v12];
+  v13 = [defaultCopy retargetedPreviewWithTarget:v12];
 
   return v13;
 }
 
-- (void)_animateDropOrCancelForItem:(id)a3 animator:(id)a4 isCancel:(BOOL)a5
+- (void)_animateDropOrCancelForItem:(id)item animator:(id)animator isCancel:(BOOL)cancel
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v34 = v8;
-  v10 = [v8 _chiclet];
-  v11 = [v10 anchorView];
-  [v11 setState:0];
+  itemCopy = item;
+  animatorCopy = animator;
+  v34 = itemCopy;
+  _chiclet = [itemCopy _chiclet];
+  anchorView = [_chiclet anchorView];
+  [anchorView setState:0];
   v12 = 0;
-  if (!a5)
+  if (!cancel)
   {
     v13 = objc_opt_new();
     [(_UIBarCustomizer *)self lastDragLocation];
     v15 = v14;
     v17 = v16;
-    v18 = [v10 superview];
-    [v10 center];
+    superview = [_chiclet superview];
+    [_chiclet center];
     v20 = v19;
     v22 = v21;
-    v23 = [(_UIBarCustomizer *)self containerView];
-    [v18 convertPoint:v23 toView:{v20, v22}];
+    containerView = [(_UIBarCustomizer *)self containerView];
+    [superview convertPoint:containerView toView:{v20, v22}];
     [v13 setValue:sqrt((v24 - v15) * (v24 - v15) + (v25 - v17) * (v25 - v17))];
 
     v47[0] = v13;
@@ -1440,25 +1440,25 @@ LABEL_19:
     v44[1] = 3221225472;
     v44[2] = __66___UIBarCustomizer__animateDropOrCancelForItem_animator_isCancel___block_invoke;
     v44[3] = &unk_1E70F35B8;
-    v45 = v11;
+    v45 = anchorView;
     v12 = v13;
     v46 = v12;
     [UIView _createTransformerWithInputAnimatableProperties:v26 presentationValueChangedCallback:v44];
   }
 
-  v27 = [v10 representedItem];
-  v28 = [(_UIBarCustomizer *)self _visibleItems];
-  v29 = [v28 containsObject:v27];
+  representedItem = [_chiclet representedItem];
+  _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
+  v29 = [_visibleItems containsObject:representedItem];
 
   v30 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.3];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __66___UIBarCustomizer__animateDropOrCancelForItem_animator_isCancel___block_invoke_2;
   v40[3] = &unk_1E70F5AF0;
-  v31 = v27;
+  v31 = representedItem;
   v41 = v31;
   v43 = v29;
-  v32 = v10;
+  v32 = _chiclet;
   v42 = v32;
   [UIView _animateUsingSpringBehavior:v30 tracking:0 animations:v40 completion:0];
 
@@ -1468,10 +1468,10 @@ LABEL_19:
   v35[2] = __66___UIBarCustomizer__animateDropOrCancelForItem_animator_isCancel___block_invoke_3;
   v35[3] = &unk_1E7108F18;
   objc_copyWeak(&v37, &location);
-  v38 = a5;
+  cancelCopy = cancel;
   v33 = v12;
   v36 = v33;
-  [v9 addAnimations:v35];
+  [animatorCopy addAnimations:v35];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
@@ -1535,21 +1535,21 @@ LABEL_19:
           v7 = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.2];
           [qword_1ED49DF38 setBackgroundColor:v7];
 
-          v8 = [(_UIBarCustomizer *)self visibleItemScrollView];
-          [v8 addSubview:qword_1ED49DF38];
+          visibleItemScrollView = [(_UIBarCustomizer *)self visibleItemScrollView];
+          [visibleItemScrollView addSubview:qword_1ED49DF38];
         }
 
-        v9 = [(_UIBarCustomizer *)self _dropIndex];
+        _dropIndex = [(_UIBarCustomizer *)self _dropIndex];
         v10 = 0.0;
-        if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+        if (_dropIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v11 = [(_UIBarCustomizer *)self _visibleItems];
+          _visibleItems = [(_UIBarCustomizer *)self _visibleItems];
           v15 = MEMORY[0x1E69E9820];
           v16 = 3221225472;
           v17 = __34___UIBarCustomizer__updateDebugUI__block_invoke_2;
           v18 = &unk_1E70F36D0;
-          v19 = self;
-          v12 = v11;
+          selfCopy = self;
+          v12 = _visibleItems;
           v20 = v12;
           v21 = 0x4044000000000000;
           v13 = _Block_copy(&v15);

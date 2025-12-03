@@ -1,34 +1,34 @@
 @interface NTKGreenfieldViewController
-- (NTKGreenfieldViewController)initWithUrl:(id)a3 sourceApplicationBundleIdentifier:(id)a4;
-- (void)_toggleCancelButton:(BOOL)a3;
-- (void)_toggleRightCounterLabel:(BOOL)a3;
-- (void)addWatchFaceManager:(id)a3 didFinishAddingFaceWithError:(id)a4;
-- (void)addWatchFaceManager:(id)a3 updateStateToAddComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6;
-- (void)addWatchFaceManager:(id)a3 updateStateToCompletedWithSkippedComplicationSlots:(id)a4 canRevisit:(BOOL)a5;
-- (void)addWatchFaceManager:(id)a3 updateStateToComplicationsNotAvailableWithSlots:(id)a4 unavailableTitle:(id)a5 unavailableDescription:(id)a6;
-- (void)addWatchFaceManager:(id)a3 updateStateToRevisitComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6;
-- (void)addWatchFaceManager:(id)a3 updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)a4;
-- (void)companionContentViewController:(id)a3 handleButtonEvent:(int64_t)a4;
-- (void)didStartLoadingInAddWatchFaceManager:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (NTKGreenfieldViewController)initWithUrl:(id)url sourceApplicationBundleIdentifier:(id)identifier;
+- (void)_toggleCancelButton:(BOOL)button;
+- (void)_toggleRightCounterLabel:(BOOL)label;
+- (void)addWatchFaceManager:(id)manager didFinishAddingFaceWithError:(id)error;
+- (void)addWatchFaceManager:(id)manager updateStateToAddComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots;
+- (void)addWatchFaceManager:(id)manager updateStateToCompletedWithSkippedComplicationSlots:(id)slots canRevisit:(BOOL)revisit;
+- (void)addWatchFaceManager:(id)manager updateStateToComplicationsNotAvailableWithSlots:(id)slots unavailableTitle:(id)title unavailableDescription:(id)description;
+- (void)addWatchFaceManager:(id)manager updateStateToRevisitComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots;
+- (void)addWatchFaceManager:(id)manager updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)directly;
+- (void)companionContentViewController:(id)controller handleButtonEvent:(int64_t)event;
+- (void)didStartLoadingInAddWatchFaceManager:(id)manager;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKGreenfieldViewController
 
-- (NTKGreenfieldViewController)initWithUrl:(id)a3 sourceApplicationBundleIdentifier:(id)a4
+- (NTKGreenfieldViewController)initWithUrl:(id)url sourceApplicationBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  urlCopy = url;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = NTKGreenfieldViewController;
   v9 = [(NTKGreenfieldViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_faceURL, a3);
-    objc_storeStrong(&v10->_sourceApplicationBundleIdentifier, a4);
+    objc_storeStrong(&v9->_faceURL, url);
+    objc_storeStrong(&v10->_sourceApplicationBundleIdentifier, identifier);
   }
 
   return v10;
@@ -39,21 +39,21 @@
   v24.receiver = self;
   v24.super_class = NTKGreenfieldViewController;
   [(NTKGreenfieldViewController *)&v24 viewDidLoad];
-  v3 = [(NTKGreenfieldViewController *)self navigationController];
-  [v3 setModalInPresentation:1];
+  navigationController = [(NTKGreenfieldViewController *)self navigationController];
+  [navigationController setModalInPresentation:1];
 
   v4 = objc_opt_new();
   [v4 configureWithTransparentBackground];
   v5 = [MEMORY[0x277D75210] effectWithStyle:2];
   [v4 setBackgroundEffect:v5];
 
-  v6 = [(NTKGreenfieldViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 setStandardAppearance:v4];
+  navigationController2 = [(NTKGreenfieldViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setStandardAppearance:v4];
 
   v8 = BPSBackgroundColor();
-  v9 = [(NTKGreenfieldViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  view = [(NTKGreenfieldViewController *)self view];
+  [view setBackgroundColor:v8];
 
   v10 = objc_alloc_init(NTKGreenfieldCompanionLoadingViewController);
   loadingViewController = self->_loadingViewController;
@@ -64,17 +64,17 @@
   self->_hiddenNavigationController = v12;
 
   [(NTKGreenfieldViewController *)self addChildViewController:self->_hiddenNavigationController];
-  v14 = [(NTKGreenfieldViewController *)self view];
-  v15 = [(UINavigationController *)self->_hiddenNavigationController view];
-  [v14 addSubview:v15];
+  view2 = [(NTKGreenfieldViewController *)self view];
+  view3 = [(UINavigationController *)self->_hiddenNavigationController view];
+  [view2 addSubview:view3];
 
   [(UINavigationController *)self->_hiddenNavigationController didMoveToParentViewController:self];
   [(UINavigationController *)self->_hiddenNavigationController setNavigationBarHidden:1 animated:0];
   v16 = objc_alloc_init(NTKGreenfieldAddWatchFaceManager);
   [(NTKGreenfieldViewController *)self setAddWatchFaceManager:v16];
 
-  v17 = [(NTKGreenfieldViewController *)self addWatchFaceManager];
-  [v17 setDelegate:self];
+  addWatchFaceManager = [(NTKGreenfieldViewController *)self addWatchFaceManager];
+  [addWatchFaceManager setDelegate:self];
 
   [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodeWatchFaceWithURL:self->_faceURL sourceApplicationBundleIdentifier:self->_sourceApplicationBundleIdentifier];
   v18 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -84,24 +84,24 @@
   v20 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
   [(UILabel *)self->_complicationsCounterLabel setFont:v20];
 
-  v21 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(UILabel *)self->_complicationsCounterLabel setTextColor:v21];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [(UILabel *)self->_complicationsCounterLabel setTextColor:systemWhiteColor];
 
   v22 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:self->_complicationsCounterLabel];
-  v23 = [(NTKGreenfieldViewController *)self navigationItem];
-  [v23 setRightBarButtonItem:v22];
+  navigationItem = [(NTKGreenfieldViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v22];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NTKGreenfieldViewController;
-  [(NTKGreenfieldViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager addedFaceID];
-  if (v4)
+  [(NTKGreenfieldViewController *)&v6 viewDidDisappear:disappear];
+  addedFaceID = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager addedFaceID];
+  if (addedFaceID)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"NTKGreenfieldAddWatchFaceManagerDidAddFaceNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"NTKGreenfieldAddWatchFaceManagerDidAddFaceNotification" object:addedFaceID];
   }
 
   [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleDidExitAddWatchFaceFlow];
@@ -112,21 +112,21 @@
   v5.receiver = self;
   v5.super_class = NTKGreenfieldViewController;
   [(NTKGreenfieldViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(UINavigationController *)self->_hiddenNavigationController view];
-  v4 = [(NTKGreenfieldViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(UINavigationController *)self->_hiddenNavigationController view];
+  view2 = [(NTKGreenfieldViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (void)_toggleRightCounterLabel:(BOOL)a3
+- (void)_toggleRightCounterLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
-    v5 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager viewedNonInstalledAppCount];
-    v6 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager totalNonInstalledAppCount];
+    viewedNonInstalledAppCount = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager viewedNonInstalledAppCount];
+    totalNonInstalledAppCount = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager totalNonInstalledAppCount];
     v7 = MEMORY[0x277CCACA8];
     v8 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_APPS_COUNTER", @"%lu of %lu");
-    v9 = [v7 localizedStringWithFormat:v8, v5, v6];
+    v9 = [v7 localizedStringWithFormat:v8, viewedNonInstalledAppCount, totalNonInstalledAppCount];
 
     [(UILabel *)self->_complicationsCounterLabel setText:v9];
     [(UILabel *)self->_complicationsCounterLabel sizeToFit];
@@ -137,7 +137,7 @@
   v10[2] = __56__NTKGreenfieldViewController__toggleRightCounterLabel___block_invoke;
   v10[3] = &unk_27877F7E8;
   v10[4] = self;
-  v11 = a3;
+  labelCopy = label;
   [MEMORY[0x277D75D18] animateWithDuration:4 delay:v10 options:0 animations:0.2 completion:0.0];
 }
 
@@ -152,48 +152,48 @@ uint64_t __56__NTKGreenfieldViewController__toggleRightCounterLabel___block_invo
   return [*(*(a1 + 32) + 1000) setAlpha:v1];
 }
 
-- (void)_toggleCancelButton:(BOOL)a3
+- (void)_toggleCancelButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(NTKGreenfieldViewController *)self navigationItem];
-  v8 = v5;
-  if (v3)
+  buttonCopy = button;
+  navigationItem = [(NTKGreenfieldViewController *)self navigationItem];
+  v8 = navigationItem;
+  if (buttonCopy)
   {
-    v6 = [v5 leftBarButtonItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-    if (v6)
+    if (leftBarButtonItem)
     {
       return;
     }
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__didTapCancelButton];
-    v7 = [(NTKGreenfieldViewController *)self navigationItem];
-    [v7 setLeftBarButtonItem:v8 animated:1];
+    navigationItem2 = [(NTKGreenfieldViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v8 animated:1];
   }
 
   else
   {
-    [v5 setLeftBarButtonItem:0 animated:1];
+    [navigationItem setLeftBarButtonItem:0 animated:1];
   }
 }
 
-- (void)companionContentViewController:(id)a3 handleButtonEvent:(int64_t)a4
+- (void)companionContentViewController:(id)controller handleButtonEvent:(int64_t)event
 {
-  v6 = a3;
-  if (a4 > 2)
+  controllerCopy = controller;
+  if (event > 2)
   {
-    switch(a4)
+    switch(event)
     {
       case 3:
-        v7 = v6;
+        v7 = controllerCopy;
         [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleRevisitSkippedComplicationsAction];
         break;
       case 4:
-        v7 = v6;
+        v7 = controllerCopy;
         [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleSkipComplicationAction];
         break;
       case 5:
-        v7 = v6;
+        v7 = controllerCopy;
         [(NTKGreenfieldViewController *)self dismissViewControllerAnimated:1 completion:0];
         break;
       default:
@@ -201,97 +201,97 @@ uint64_t __56__NTKGreenfieldViewController__toggleRightCounterLabel___block_invo
     }
   }
 
-  else if (a4)
+  else if (event)
   {
-    if (a4 == 1)
+    if (event == 1)
     {
-      v7 = v6;
+      v7 = controllerCopy;
       [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleContinueAction];
     }
 
     else
     {
-      if (a4 != 2)
+      if (event != 2)
       {
         goto LABEL_15;
       }
 
-      v7 = v6;
+      v7 = controllerCopy;
       [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleDoneAction];
     }
   }
 
   else
   {
-    v7 = v6;
+    v7 = controllerCopy;
     [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleAddToMyFacesAction];
   }
 
-  v6 = v7;
+  controllerCopy = v7;
 LABEL_15:
 }
 
-- (void)didStartLoadingInAddWatchFaceManager:(id)a3
+- (void)didStartLoadingInAddWatchFaceManager:(id)manager
 {
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:0];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:1];
   v4 = [(UINavigationController *)self->_hiddenNavigationController popToRootViewControllerAnimated:1];
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)a4
+- (void)addWatchFaceManager:(id)manager updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)directly
 {
-  v4 = a4;
+  directlyCopy = directly;
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:0];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:1];
-  v8 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager addFaceDescription];
-  v6 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
-  v7 = [[NTKGreenfieldCompanionContentViewController alloc] initStartStateWithDecodedRecipe:v6 canAddFaceDirectly:v4 addFaceDescription:v8];
+  addFaceDescription = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager addFaceDescription];
+  decodedRecipe = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
+  v7 = [[NTKGreenfieldCompanionContentViewController alloc] initStartStateWithDecodedRecipe:decodedRecipe canAddFaceDirectly:directlyCopy addFaceDescription:addFaceDescription];
   [v7 setGreenfieldDelegate:self];
   [(UINavigationController *)self->_hiddenNavigationController pushViewController:v7 animated:0];
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToComplicationsNotAvailableWithSlots:(id)a4 unavailableTitle:(id)a5 unavailableDescription:(id)a6
+- (void)addWatchFaceManager:(id)manager updateStateToComplicationsNotAvailableWithSlots:(id)slots unavailableTitle:(id)title unavailableDescription:(id)description
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  descriptionCopy = description;
+  titleCopy = title;
+  slotsCopy = slots;
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:0];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:1];
-  v13 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
-  v12 = [[NTKGreenfieldCompanionContentViewController alloc] initComplicationNotAvailableStateWithDecodedRecipe:v13 unavailableSlots:v11 unavailableTitle:v10 unavailableDescription:v9];
+  decodedRecipe = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
+  v12 = [[NTKGreenfieldCompanionContentViewController alloc] initComplicationNotAvailableStateWithDecodedRecipe:decodedRecipe unavailableSlots:slotsCopy unavailableTitle:titleCopy unavailableDescription:descriptionCopy];
 
   [v12 setGreenfieldDelegate:self];
   [(UINavigationController *)self->_hiddenNavigationController pushViewController:v12 animated:1];
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToAddComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6
+- (void)addWatchFaceManager:(id)manager updateStateToAddComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots
 {
-  v9 = a6;
-  v10 = a4;
+  slotsCopy = slots;
+  idCopy = id;
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:1];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:1];
-  v12 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
-  v11 = [[NTKGreenfieldCompanionContentViewController alloc] initAddComplicationStateWithDecodedRecipe:v12 complicationItemId:v10 installMode:a5 skippedComplicationSlots:v9];
+  decodedRecipe = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
+  v11 = [[NTKGreenfieldCompanionContentViewController alloc] initAddComplicationStateWithDecodedRecipe:decodedRecipe complicationItemId:idCopy installMode:mode skippedComplicationSlots:slotsCopy];
 
   [v11 setGreenfieldDelegate:self];
   [(UINavigationController *)self->_hiddenNavigationController pushViewController:v11 animated:1];
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToRevisitComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6
+- (void)addWatchFaceManager:(id)manager updateStateToRevisitComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = a4;
+  slotsCopy = slots;
+  idCopy = id;
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:1];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:1];
-  v11 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
-  v12 = [[NTKGreenfieldCompanionContentViewController alloc] initAddComplicationStateWithDecodedRecipe:v11 complicationItemId:v10 installMode:a5 skippedComplicationSlots:v9];
+  decodedRecipe = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
+  v12 = [[NTKGreenfieldCompanionContentViewController alloc] initAddComplicationStateWithDecodedRecipe:decodedRecipe complicationItemId:idCopy installMode:mode skippedComplicationSlots:slotsCopy];
 
   [v12 setGreenfieldDelegate:self];
-  v13 = [(UINavigationController *)self->_hiddenNavigationController topViewController];
+  topViewController = [(UINavigationController *)self->_hiddenNavigationController topViewController];
   hiddenNavigationController = self->_hiddenNavigationController;
   v17[0] = v12;
-  v17[1] = v13;
+  v17[1] = topViewController;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   [(UINavigationController *)hiddenNavigationController setViewControllers:v15 animated:0];
 
@@ -303,29 +303,29 @@ LABEL_15:
   dispatch_async(MEMORY[0x277D85CD0], v16);
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToCompletedWithSkippedComplicationSlots:(id)a4 canRevisit:(BOOL)a5
+- (void)addWatchFaceManager:(id)manager updateStateToCompletedWithSkippedComplicationSlots:(id)slots canRevisit:(BOOL)revisit
 {
-  v5 = a5;
-  v7 = a4;
+  revisitCopy = revisit;
+  slotsCopy = slots;
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:0];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:0];
-  v9 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
-  v8 = [[NTKGreenfieldCompanionContentViewController alloc] initCompletedStateWithDecodedRecipe:v9 skippedComplicationSlots:v7 canRevisit:v5];
+  decodedRecipe = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
+  v8 = [[NTKGreenfieldCompanionContentViewController alloc] initCompletedStateWithDecodedRecipe:decodedRecipe skippedComplicationSlots:slotsCopy canRevisit:revisitCopy];
 
   [v8 setGreenfieldDelegate:self];
   [(UINavigationController *)self->_hiddenNavigationController pushViewController:v8 animated:1];
 }
 
-- (void)addWatchFaceManager:(id)a3 didFinishAddingFaceWithError:(id)a4
+- (void)addWatchFaceManager:(id)manager didFinishAddingFaceWithError:(id)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   [(NTKGreenfieldViewController *)self _toggleRightCounterLabel:0];
   [(NTKGreenfieldViewController *)self _toggleCancelButton:1];
-  if (v5)
+  if (errorCopy)
   {
-    v6 = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
-    v7 = [[NTKGreenfieldCompanionContentViewController alloc] initWithError:v5 decodedRecipe:v6];
+    decodedRecipe = [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager decodedRecipe];
+    v7 = [[NTKGreenfieldCompanionContentViewController alloc] initWithError:errorCopy decodedRecipe:decodedRecipe];
     [(NTKGreenfieldCompanionContentViewController *)v7 setGreenfieldDelegate:self];
     hiddenNavigationController = self->_hiddenNavigationController;
     v10[0] = v7;

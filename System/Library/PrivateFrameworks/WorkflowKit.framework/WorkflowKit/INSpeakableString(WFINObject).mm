@@ -6,7 +6,7 @@
 
 - (id)wf_initWithIdentifier:()WFINObject displayString:
 {
-  v4 = [a1 initWithVocabularyIdentifier:a3 spokenPhrase:a4 pronunciationHint:0];
+  v4 = [self initWithVocabularyIdentifier:a3 spokenPhrase:a4 pronunciationHint:0];
 
   return v4;
 }

@@ -1,33 +1,33 @@
 @interface _HMDAccountHandleIdentifier
-- (BOOL)isEqual:(id)a3;
-- (_HMDAccountHandleIdentifier)initWithAccountHandle:(id)a3;
-- (_HMDAccountHandleIdentifier)initWithCoder:(id)a3;
-- (_HMDAccountHandleIdentifier)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_HMDAccountHandleIdentifier)initWithAccountHandle:(id)handle;
+- (_HMDAccountHandleIdentifier)initWithCoder:(id)coder;
+- (_HMDAccountHandleIdentifier)initWithIdentifier:(id)identifier;
 - (id)identifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HMDAccountHandleIdentifier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _HMDAccountHandleIdentifier;
-  v4 = a3;
-  [(_HMDAccountIdentifier *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_HMDAccountIdentifier *)&v6 encodeWithCoder:coderCopy];
   v5 = [(_HMDAccountHandleIdentifier *)self accountHandle:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"HM.handle"];
+  [coderCopy encodeObject:v5 forKey:@"HM.handle"];
 }
 
-- (_HMDAccountHandleIdentifier)initWithCoder:(id)a3
+- (_HMDAccountHandleIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HMDAccountHandleIdentifier;
-  v5 = [(_HMDAccountIdentifier *)&v9 initWithCoder:v4];
+  v5 = [(_HMDAccountIdentifier *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.handle"];
     accountHandle = v5->_accountHandle;
     v5->_accountHandle = v6;
   }
@@ -37,16 +37,16 @@
 
 - (id)identifier
 {
-  v2 = [(_HMDAccountHandleIdentifier *)self accountHandle];
-  v3 = [v2 identifier];
+  accountHandle = [(_HMDAccountHandleIdentifier *)self accountHandle];
+  identifier = [accountHandle identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -56,7 +56,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -67,9 +67,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMDAccountHandleIdentifier *)self accountHandle];
-      v8 = [(_HMDAccountHandleIdentifier *)v6 accountHandle];
-      v9 = [v7 isEqual:v8];
+      accountHandle = [(_HMDAccountHandleIdentifier *)self accountHandle];
+      accountHandle2 = [(_HMDAccountHandleIdentifier *)v6 accountHandle];
+      v9 = [accountHandle isEqual:accountHandle2];
     }
 
     else
@@ -81,16 +81,16 @@
   return v9;
 }
 
-- (_HMDAccountHandleIdentifier)initWithAccountHandle:(id)a3
+- (_HMDAccountHandleIdentifier)initWithAccountHandle:(id)handle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handleCopy = handle;
+  v5 = handleCopy;
+  if (handleCopy)
   {
-    v6 = [v4 identifier];
+    identifier = [handleCopy identifier];
     v12.receiver = self;
     v12.super_class = _HMDAccountHandleIdentifier;
-    v7 = [(_HMDAccountIdentifier *)&v12 initWithIdentifier:v6];
+    v7 = [(_HMDAccountIdentifier *)&v12 initWithIdentifier:identifier];
 
     if (v7)
     {
@@ -100,20 +100,20 @@
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (_HMDAccountHandleIdentifier)initWithIdentifier:(id)a3
+- (_HMDAccountHandleIdentifier)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

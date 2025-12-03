@@ -1,33 +1,33 @@
 @interface IDSGroupSessionUnicastParameter
-- (BOOL)isEqual:(id)a3;
-- (IDSGroupSessionUnicastParameter)initWithCoder:(id)a3;
-- (IDSGroupSessionUnicastParameter)initWithConnectedSocket:(int)a3 dataMode:(int64_t)a4 connectionIndex:(unint64_t)a5;
-- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)a3 localParticipantID:(unint64_t)a4 remoteParticipantID:(unint64_t)a5 dataMode:(int64_t)a6 connectionIndex:(unint64_t)a7;
-- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)a3 localParticipantID:(unint64_t)a4 remoteParticipantID:(unint64_t)a5 salt:(id)a6 dataMode:(int64_t)a7 connectionIndex:(unint64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDSGroupSessionUnicastParameter)initWithCoder:(id)coder;
+- (IDSGroupSessionUnicastParameter)initWithConnectedSocket:(int)socket dataMode:(int64_t)mode connectionIndex:(unint64_t)index;
+- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)d localParticipantID:(unint64_t)iD remoteParticipantID:(unint64_t)participantID dataMode:(int64_t)mode connectionIndex:(unint64_t)index;
+- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)d localParticipantID:(unint64_t)iD remoteParticipantID:(unint64_t)participantID salt:(id)salt dataMode:(int64_t)mode connectionIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_requestNWConnectionforIDSGroupSessionUnicastParameter:(id)a3;
-- (void)_setUpNWConnectionforTesting:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_requestNWConnectionforIDSGroupSessionUnicastParameter:(id)parameter;
+- (void)_setUpNWConnectionforTesting:(id)testing;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSGroupSessionUnicastParameter
 
-- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)a3 localParticipantID:(unint64_t)a4 remoteParticipantID:(unint64_t)a5 dataMode:(int64_t)a6 connectionIndex:(unint64_t)a7
+- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)d localParticipantID:(unint64_t)iD remoteParticipantID:(unint64_t)participantID dataMode:(int64_t)mode connectionIndex:(unint64_t)index
 {
   v12 = MEMORY[0x1E695DEF0];
-  v13 = a3;
-  v14 = [v12 data];
-  v15 = [(IDSGroupSessionUnicastParameter *)self initWithGroupSessionID:v13 localParticipantID:a4 remoteParticipantID:a5 salt:v14 dataMode:a6 connectionIndex:a7];
+  dCopy = d;
+  data = [v12 data];
+  v15 = [(IDSGroupSessionUnicastParameter *)self initWithGroupSessionID:dCopy localParticipantID:iD remoteParticipantID:participantID salt:data dataMode:mode connectionIndex:index];
 
   return v15;
 }
 
-- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)a3 localParticipantID:(unint64_t)a4 remoteParticipantID:(unint64_t)a5 salt:(id)a6 dataMode:(int64_t)a7 connectionIndex:(unint64_t)a8
+- (IDSGroupSessionUnicastParameter)initWithGroupSessionID:(id)d localParticipantID:(unint64_t)iD remoteParticipantID:(unint64_t)participantID salt:(id)salt dataMode:(int64_t)mode connectionIndex:(unint64_t)index
 {
   v61 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
+  dCopy = d;
+  saltCopy = salt;
   v56.receiver = self;
   v56.super_class = IDSGroupSessionUnicastParameter;
   v17 = [(IDSGroupSessionUnicastParameter *)&v56 init];
@@ -39,48 +39,48 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  objc_storeStrong(&v17->_groupSessionID, a3);
-  v18->_localParticipantID = a4;
-  v18->_remoteParticipantID = a5;
-  objc_storeStrong(&v18->_salt, a6);
-  v18->_connectionIndex = a8;
-  v18->_dataMode = a7;
+  objc_storeStrong(&v17->_groupSessionID, d);
+  v18->_localParticipantID = iD;
+  v18->_remoteParticipantID = participantID;
+  objc_storeStrong(&v18->_salt, salt);
+  v18->_connectionIndex = index;
+  v18->_dataMode = mode;
   v18->_socket = -1;
   v19 = +[IDSLogging _IDSGroupSession];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
-    [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5];
-    v22 = v21 = v15;
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:iD];
+    [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:participantID];
+    v22 = v21 = dCopy;
     *buf = 138412546;
     v58 = v20;
     v59 = 2112;
     v60 = v22;
     _os_log_impl(&dword_1959FF000, v19, OS_LOG_TYPE_DEFAULT, "Creating IDSGroupSessionUnicastParameter with local id %@ and remote id %@", buf, 0x16u);
 
-    v15 = v21;
+    dCopy = v21;
   }
 
   v23 = 0;
-  if (a7 <= 2)
+  if (mode <= 2)
   {
-    if (!a7)
+    if (!mode)
     {
-      v24 = a8 - 25536;
+      v24 = index - 25536;
       v25 = -20536;
       goto LABEL_15;
     }
 
-    if (a7 != 1)
+    if (mode != 1)
     {
-      if (a7 == 2)
+      if (mode == 2)
       {
-        v24 = a8 - 15536;
+        v24 = index - 15536;
         v25 = -10536;
 LABEL_15:
-        v26 = a8 + v25;
+        v26 = index + v25;
 LABEL_19:
-        if (a4 <= a5)
+        if (iD <= participantID)
         {
           v28 = v26;
         }
@@ -90,7 +90,7 @@ LABEL_19:
           v28 = v24;
         }
 
-        if (a4 <= a5)
+        if (iD <= participantID)
         {
           v29 = v24;
         }
@@ -118,8 +118,8 @@ LABEL_19:
         [v37 setParticipantID:v18->_remoteParticipantID];
         [v37 setSalt:v18->_salt];
         v38 = v18->_parameters;
-        v39 = [v37 stringRepresentation];
-        [v39 UTF8String];
+        stringRepresentation = [v37 stringRepresentation];
+        [stringRepresentation UTF8String];
         nw_parameters_set_account_id();
 
         MEMORY[0x19A8BBA70](v18->_parameters, v36);
@@ -131,18 +131,18 @@ LABEL_19:
         xpc_array_set_string(v41, 0xFFFFFFFFFFFFFFFFLL, [v43 UTF8String]);
 
         xpc_array_set_string(v42, 0xFFFFFFFFFFFFFFFFLL, [*MEMORY[0x1E69A4ED0] UTF8String]);
-        if (((1 << a7) & 9) == 0 && ((1 << a7) & 0x12) == 0)
+        if (((1 << mode) & 9) == 0 && ((1 << mode) & 0x12) == 0)
         {
           v44 = nw_parameters_copy_default_protocol_stack(v18->_parameters);
           v55 = v36;
-          v45 = v16;
-          v46 = v15;
+          v45 = saltCopy;
+          v46 = dCopy;
           v47 = sub_195A15A18();
           options = nw_framer_create_options(v47);
           nw_protocol_stack_prepend_application_protocol(v44, options);
 
-          v15 = v46;
-          v16 = v45;
+          dCopy = v46;
+          saltCopy = v45;
           v36 = v55;
         }
 
@@ -150,7 +150,7 @@ LABEL_19:
         nw_parameters_set_data_mode();
         v50 = v18->_parameters;
         nw_parameters_set_required_netagent_classes();
-        if ((a7 - 3) <= 2)
+        if ((mode - 3) <= 2)
         {
           v51 = v18->_parameters;
           v52 = IDSRealTimeContext();
@@ -165,22 +165,22 @@ LABEL_19:
 
     v27 = 30000;
 LABEL_18:
-    v26 = a8 + v27;
-    v24 = a8 + v27;
+    v26 = index + v27;
+    v24 = index + v27;
     goto LABEL_19;
   }
 
-  switch(a7)
+  switch(mode)
   {
     case 3:
-      v24 = a8 - 23536;
+      v24 = index - 23536;
       v25 = -18536;
       goto LABEL_15;
     case 4:
       v27 = 32000;
       goto LABEL_18;
     case 5:
-      v24 = a8 - 13536;
+      v24 = index - 13536;
       v25 = -8536;
       goto LABEL_15;
   }
@@ -191,7 +191,7 @@ LABEL_32:
   return v23;
 }
 
-- (IDSGroupSessionUnicastParameter)initWithConnectedSocket:(int)a3 dataMode:(int64_t)a4 connectionIndex:(unint64_t)a5
+- (IDSGroupSessionUnicastParameter)initWithConnectedSocket:(int)socket dataMode:(int64_t)mode connectionIndex:(unint64_t)index
 {
   v14.receiver = self;
   v14.super_class = IDSGroupSessionUnicastParameter;
@@ -203,9 +203,9 @@ LABEL_32:
     v8->_groupSessionID = 0;
 
     *&v9->_localParticipantID = xmmword_195B54080;
-    v9->_connectionIndex = a5;
-    v9->_dataMode = a4;
-    v9->_socket = a3;
+    v9->_connectionIndex = index;
+    v9->_dataMode = mode;
+    v9->_socket = socket;
     endpoint = v9->_endpoint;
     v9->_endpoint = 0;
 
@@ -216,14 +216,14 @@ LABEL_32:
   return v9;
 }
 
-- (void)_requestNWConnectionforIDSGroupSessionUnicastParameter:(id)a3
+- (void)_requestNWConnectionforIDSGroupSessionUnicastParameter:(id)parameter
 {
-  v10 = a3;
+  parameterCopy = parameter;
   if ([(IDSGroupSessionUnicastParameter *)self socket]< 1)
   {
-    v4 = [(IDSGroupSessionUnicastParameter *)self endpoint];
-    v5 = [(IDSGroupSessionUnicastParameter *)self parameters];
-    v6 = nw_connection_create(v4, v5);
+    endpoint = [(IDSGroupSessionUnicastParameter *)self endpoint];
+    parameters = [(IDSGroupSessionUnicastParameter *)self parameters];
+    v6 = nw_connection_create(endpoint, parameters);
 
     if (v6)
     {
@@ -237,21 +237,21 @@ LABEL_32:
       v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:42 userInfo:v9];
     }
 
-    if (v10)
+    if (parameterCopy)
     {
-      v10[2](v10, v6, v7);
+      parameterCopy[2](parameterCopy, v6, v7);
     }
   }
 
   else
   {
-    [(IDSGroupSessionUnicastParameter *)self _setUpNWConnectionforTesting:v10];
+    [(IDSGroupSessionUnicastParameter *)self _setUpNWConnectionforTesting:parameterCopy];
   }
 }
 
-- (void)_setUpNWConnectionforTesting:(id)a3
+- (void)_setUpNWConnectionforTesting:(id)testing
 {
-  v12 = a3;
+  testingCopy = testing;
   if ([(IDSGroupSessionUnicastParameter *)self dataMode]&& [(IDSGroupSessionUnicastParameter *)self dataMode]!= 1)
   {
     if ([(IDSGroupSessionUnicastParameter *)self dataMode]== 2)
@@ -290,42 +290,42 @@ LABEL_4:
 
   v4 = 0;
 LABEL_8:
-  if (v12)
+  if (testingCopy)
   {
-    v12[2](v12, v4, v5);
+    testingCopy[2](testingCopy, v4, v5);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupSessionID = self->_groupSessionID;
-  v5 = a3;
-  [v5 encodeObject:groupSessionID forKey:@"groupSessionID"];
-  [v5 encodeInt64:self->_localParticipantID forKey:@"localParticipantID"];
-  [v5 encodeInt64:self->_remoteParticipantID forKey:@"remoteParticipantID"];
-  [v5 encodeObject:self->_salt forKey:@"salt"];
-  [v5 encodeInt64:self->_connectionIndex forKey:@"connectionIndex"];
-  [v5 encodeInt:LODWORD(self->_dataMode) forKey:@"dataMode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupSessionID forKey:@"groupSessionID"];
+  [coderCopy encodeInt64:self->_localParticipantID forKey:@"localParticipantID"];
+  [coderCopy encodeInt64:self->_remoteParticipantID forKey:@"remoteParticipantID"];
+  [coderCopy encodeObject:self->_salt forKey:@"salt"];
+  [coderCopy encodeInt64:self->_connectionIndex forKey:@"connectionIndex"];
+  [coderCopy encodeInt:LODWORD(self->_dataMode) forKey:@"dataMode"];
 }
 
-- (IDSGroupSessionUnicastParameter)initWithCoder:(id)a3
+- (IDSGroupSessionUnicastParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupSessionID"];
-  v6 = [v4 decodeInt64ForKey:@"localParticipantID"];
-  v7 = [v4 decodeInt64ForKey:@"remoteParticipantID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
-  v9 = [v4 decodeInt64ForKey:@"connectionIndex"];
-  v10 = [v4 decodeIntForKey:@"dataMode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupSessionID"];
+  v6 = [coderCopy decodeInt64ForKey:@"localParticipantID"];
+  v7 = [coderCopy decodeInt64ForKey:@"remoteParticipantID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
+  v9 = [coderCopy decodeInt64ForKey:@"connectionIndex"];
+  v10 = [coderCopy decodeIntForKey:@"dataMode"];
 
   v11 = [(IDSGroupSessionUnicastParameter *)self initWithGroupSessionID:v5 localParticipantID:v6 remoteParticipantID:v7 salt:v8 dataMode:v10 connectionIndex:v9];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -335,10 +335,10 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       groupSessionID = self->_groupSessionID;
-      v7 = [(IDSGroupSessionUnicastParameter *)v5 groupSessionID];
-      if ([(NSString *)groupSessionID isEqual:v7]&& (localParticipantID = self->_localParticipantID, localParticipantID == [(IDSGroupSessionUnicastParameter *)v5 localParticipantID]) && (remoteParticipantID = self->_remoteParticipantID, remoteParticipantID == [(IDSGroupSessionUnicastParameter *)v5 remoteParticipantID]) && (connectionIndex = self->_connectionIndex, connectionIndex == [(IDSGroupSessionUnicastParameter *)v5 connectionIndex]))
+      groupSessionID = [(IDSGroupSessionUnicastParameter *)v5 groupSessionID];
+      if ([(NSString *)groupSessionID isEqual:groupSessionID]&& (localParticipantID = self->_localParticipantID, localParticipantID == [(IDSGroupSessionUnicastParameter *)v5 localParticipantID]) && (remoteParticipantID = self->_remoteParticipantID, remoteParticipantID == [(IDSGroupSessionUnicastParameter *)v5 remoteParticipantID]) && (connectionIndex = self->_connectionIndex, connectionIndex == [(IDSGroupSessionUnicastParameter *)v5 connectionIndex]))
       {
         dataMode = self->_dataMode;
         v12 = dataMode == [(IDSGroupSessionUnicastParameter *)v5 dataMode];
@@ -367,7 +367,7 @@ LABEL_8:
   return [(NSData *)salt hash]+ 32 * v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IDSGroupSessionUnicastParameter alloc];
   groupSessionID = self->_groupSessionID;

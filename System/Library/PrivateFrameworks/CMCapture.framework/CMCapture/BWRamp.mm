@@ -1,10 +1,10 @@
 @interface BWRamp
-- (BWRamp)initWithName:(id)a3;
+- (BWRamp)initWithName:(id)name;
 - (float)updateRampForNextIteration;
 - (void)dealloc;
 - (void)reset;
-- (void)startRampFrom:(float)a3 to:(float)a4 iterations:(int)a5 shape:(int)a6 exponentialConvergenceFraction:(float)a7;
-- (void)startSpringRampFrom:(float)a3 to:(float)a4 withTension:(float)a5 friction:(float)a6 snapFraction:(float)a7 frameRate:(float)a8;
+- (void)startRampFrom:(float)from to:(float)to iterations:(int)iterations shape:(int)shape exponentialConvergenceFraction:(float)fraction;
+- (void)startSpringRampFrom:(float)from to:(float)to withTension:(float)tension friction:(float)friction snapFraction:(float)fraction frameRate:(float)rate;
 @end
 
 @implementation BWRamp
@@ -39,9 +39,9 @@
     else if (shape == 3)
     {
       v10 = FigCaptureRoundFloatToMultipleOf(1, (v4 / self->_frameRate) * 60.0);
-      v11 = [(BWSpringSimulation *)self->_spring updateCount];
-      v12 = __OFSUB__(v10, v11);
-      v13 = v10 - v11;
+      updateCount = [(BWSpringSimulation *)self->_spring updateCount];
+      v12 = __OFSUB__(v10, updateCount);
+      v13 = v10 - updateCount;
       if (!((v13 < 0) ^ v12 | (v13 == 0)))
       {
         do
@@ -116,83 +116,83 @@
   [(BWRamp *)&v3 dealloc];
 }
 
-- (BWRamp)initWithName:(id)a3
+- (BWRamp)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = BWRamp;
   v4 = [(BWRamp *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
     *&v4->_exponentialConvergenceFraction = vdup_n_s32(0x3F7AE148u);
   }
 
   return v4;
 }
 
-- (void)startRampFrom:(float)a3 to:(float)a4 iterations:(int)a5 shape:(int)a6 exponentialConvergenceFraction:(float)a7
+- (void)startRampFrom:(float)from to:(float)to iterations:(int)iterations shape:(int)shape exponentialConvergenceFraction:(float)fraction
 {
-  if (a6 == 3)
+  if (shape == 3)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Use -startSpringRampFrom: for BWRampShapeSpring" userInfo:{0, v7, v8}]);
   }
 
-  if (a3 == a4)
+  if (from == to)
   {
     v9 = 0;
   }
 
   else
   {
-    self->_startValue = a3;
-    self->_targetValue = a4;
-    self->_durationInIterations = a5;
-    self->_shape = a6;
-    self->_exponentialConvergenceFraction = a7;
-    self->_exponentialSnapFraction = a7;
-    self->_isRampingUp = a3 < a4;
+    self->_startValue = from;
+    self->_targetValue = to;
+    self->_durationInIterations = iterations;
+    self->_shape = shape;
+    self->_exponentialConvergenceFraction = fraction;
+    self->_exponentialSnapFraction = fraction;
+    self->_isRampingUp = from < to;
     self->_currentIteration = 0;
     v9 = 1;
   }
 
-  self->_currentValue = a3;
+  self->_currentValue = from;
   self->_isRamping = v9;
 }
 
-- (void)startSpringRampFrom:(float)a3 to:(float)a4 withTension:(float)a5 friction:(float)a6 snapFraction:(float)a7 frameRate:(float)a8
+- (void)startSpringRampFrom:(float)from to:(float)to withTension:(float)tension friction:(float)friction snapFraction:(float)fraction frameRate:(float)rate
 {
-  if (a8 <= 0.0)
+  if (rate <= 0.0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invalid frame rate" userInfo:0]);
   }
 
-  if (a3 == a4)
+  if (from == to)
   {
     v11 = 0;
   }
 
   else
   {
-    self->_startValue = a3;
-    self->_targetValue = a4;
+    self->_startValue = from;
+    self->_targetValue = to;
     self->_shape = 3;
-    self->_exponentialSnapFraction = a7;
+    self->_exponentialSnapFraction = fraction;
 
     v15 = objc_alloc_init(BWSpringSimulation);
     self->_spring = v15;
-    [(BWSpringSimulation *)v15 setTension:a5];
-    [(BWSpringSimulation *)self->_spring setFriction:a6];
+    [(BWSpringSimulation *)v15 setTension:tension];
+    [(BWSpringSimulation *)self->_spring setFriction:friction];
     [(BWSpringSimulation *)self->_spring resetWithInput:1.0 initialOutput:0.0 initialVelocity:0.0 convergedSpeed:0.001];
     v16 = MEMORY[0x1E6960CC0];
     *&self->_springPTS.value = *MEMORY[0x1E6960CC0];
     self->_springPTS.epoch = *(v16 + 16);
-    self->_frameRate = a8;
-    self->_isRampingUp = a3 < a4;
+    self->_frameRate = rate;
+    self->_isRampingUp = from < to;
     self->_currentIteration = 0;
     v11 = 1;
   }
 
-  self->_currentValue = a3;
+  self->_currentValue = from;
   self->_isRamping = v11;
 }
 

@@ -1,6 +1,6 @@
 @interface SUUIMenuBarTemplateElement
 - (SUUIMenuBarViewElement)menuBar;
-- (id)_menuBarChildOfElement:(id)a3;
+- (id)_menuBarChildOfElement:(id)element;
 @end
 
 @implementation SUUIMenuBarTemplateElement
@@ -10,17 +10,17 @@
   v3 = [(SUUIMenuBarTemplateElement *)self _menuBarChildOfElement:self];
   if (!v3)
   {
-    v4 = [(SUUIMenuBarTemplateElement *)self navigationBarElement];
-    v3 = [(SUUIMenuBarTemplateElement *)self _menuBarChildOfElement:v4];
+    navigationBarElement = [(SUUIMenuBarTemplateElement *)self navigationBarElement];
+    v3 = [(SUUIMenuBarTemplateElement *)self _menuBarChildOfElement:navigationBarElement];
   }
 
   return v3;
 }
 
-- (id)_menuBarChildOfElement:(id)a3
+- (id)_menuBarChildOfElement:(id)element
 {
   v14 = *MEMORY[0x277D85DE8];
-  [a3 children];
+  [element children];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;

@@ -1,40 +1,40 @@
 @interface HKMobilityWalkingSteadinessAnalyticsDailyEvent
-- (HKMobilityWalkingSteadinessAnalyticsDailyEvent)initWithDataSource:(id)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (HKMobilityWalkingSteadinessAnalyticsDailyEvent)initWithDataSource:(id)source;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HKMobilityWalkingSteadinessAnalyticsDailyEvent
 
-- (HKMobilityWalkingSteadinessAnalyticsDailyEvent)initWithDataSource:(id)a3
+- (HKMobilityWalkingSteadinessAnalyticsDailyEvent)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = HKMobilityWalkingSteadinessAnalyticsDailyEvent;
   v6 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  sourceCopy = source;
   v8 = objc_alloc_init(v6);
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v7 environmentDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
 
-  v11 = [v9 numberWithBool:{objc_msgSend(v10, "isImproveHealthAndActivityEnabled")}];
+  v11 = [v9 numberWithBool:{objc_msgSend(environmentDataSource, "isImproveHealthAndActivityEnabled")}];
   [v8 setObject:v11 forKeyedSubscript:@"isImproveHealthAndActivityAllowed"];
 
-  v12 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v43 = 0;
-  v13 = [v12 hasWalkingSteadinessMeasurementsWithError:&v43];
+  v13 = [dataSource hasWalkingSteadinessMeasurementsWithError:&v43];
   v14 = v43;
   [v8 setObject:v13 forKeyedSubscript:@"hasWalkingSteadinessMeasurements"];
 
@@ -44,9 +44,9 @@
     goto LABEL_6;
   }
 
-  v16 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource2 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v42 = 0;
-  v17 = [v16 walkingSteadinessNotificationsEnabledWithError:&v42];
+  v17 = [dataSource2 walkingSteadinessNotificationsEnabledWithError:&v42];
   v18 = v42;
   [v8 setObject:v17 forKeyedSubscript:@"isWalkingSteadinessNotificationsEnabled"];
 
@@ -56,9 +56,9 @@
     goto LABEL_6;
   }
 
-  v19 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource3 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v41 = 0;
-  v20 = [v19 activePairedWatchTypeWithError:&v41];
+  v20 = [dataSource3 activePairedWatchTypeWithError:&v41];
   v21 = v41;
   [v8 setObject:v20 forKeyedSubscript:@"activePairedWatchType"];
 
@@ -68,9 +68,9 @@
     goto LABEL_6;
   }
 
-  v22 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource4 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v40 = 0;
-  v23 = [v22 areHealthNotificationsAuthorizedWithError:&v40];
+  v23 = [dataSource4 areHealthNotificationsAuthorizedWithError:&v40];
   v24 = v40;
   [v8 setObject:v23 forKeyedSubscript:@"areHealthNotificationsAuthorized"];
 
@@ -80,9 +80,9 @@
     goto LABEL_6;
   }
 
-  v25 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource5 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v39 = 0;
-  v26 = [v25 hasLaunchedHealthAppInLastWeek:&v39];
+  v26 = [dataSource5 hasLaunchedHealthAppInLastWeek:&v39];
   v27 = v39;
   [v8 setObject:v26 forKeyedSubscript:@"hasLaunchedHealthAppInLastWeek"];
 
@@ -91,10 +91,10 @@
   {
 LABEL_6:
     v28 = v15;
-    if (a4)
+    if (error)
     {
       v29 = v15;
-      *a4 = v28;
+      *error = v28;
     }
 
     else
@@ -107,9 +107,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v32 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource6 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v38 = 0;
-  v33 = [v32 hasLaunchedHealthAppInLastMonth:&v38];
+  v33 = [dataSource6 hasLaunchedHealthAppInLastMonth:&v38];
   v34 = v38;
   [v8 setObject:v33 forKeyedSubscript:@"hasLaunchedHealthAppInLastMonth"];
 
@@ -117,10 +117,10 @@ LABEL_10:
   if (v35)
   {
     v36 = v35;
-    if (a4)
+    if (error)
     {
       v37 = v35;
-      *a4 = v36;
+      *error = v36;
     }
 
     else
@@ -137,23 +137,23 @@ LABEL_11:
   return v30;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v67 = 0;
-  v8 = [v7 ageWithError:&v67];
+  v8 = [dataSource ageWithError:&v67];
   v9 = v67;
 
   v10 = v9;
   if (v10)
   {
     v11 = v10;
-    if (a4)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -169,9 +169,9 @@ LABEL_11:
   v14 = [HKMobilityAnalyticsUtilities payloadValueForAge:v8];
   [v6 setObject:v14 forKeyedSubscript:@"age"];
 
-  v15 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource2 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v66 = 0;
-  v11 = [v15 biologicalSexWithError:&v66];
+  v11 = [dataSource2 biologicalSexWithError:&v66];
   v16 = v66;
 
   v17 = v16;
@@ -183,15 +183,15 @@ LABEL_11:
   v18 = [HKMobilityAnalyticsUtilities payloadStringForBiologicalSex:v11];
   [v6 setObject:v18 forKeyedSubscript:@"sex"];
 
-  v19 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource3 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v65 = 0;
-  v20 = [v19 hasHeightWithError:&v65];
+  v20 = [dataSource3 hasHeightWithError:&v65];
   v21 = v65;
   [v6 setObject:v20 forKeyedSubscript:@"hasHeight"];
 
-  v22 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource4 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v64 = v21;
-  v23 = [v22 numberOfDaysSinceLastWalkingSteadinessMeasurementWithError:&v64];
+  v23 = [dataSource4 numberOfDaysSinceLastWalkingSteadinessMeasurementWithError:&v64];
   v24 = v64;
 
   [v6 setObject:v23 forKeyedSubscript:@"numberOfDaysSinceLastWalkingSteadinessMeasurement"];
@@ -201,9 +201,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v25 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource5 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v63 = 0;
-  v26 = [v25 numberOfLowNotificationsInPastYearWithError:&v63];
+  v26 = [dataSource5 numberOfLowNotificationsInPastYearWithError:&v63];
   v27 = v63;
   [v6 setObject:v26 forKeyedSubscript:@"numberOfLowNotificationsInPastYear"];
 
@@ -213,9 +213,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v28 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource6 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v62 = 0;
-  v29 = [v28 numberOfRepeatLowNotificationsInPastYearWithError:&v62];
+  v29 = [dataSource6 numberOfRepeatLowNotificationsInPastYearWithError:&v62];
   v30 = v62;
   [v6 setObject:v29 forKeyedSubscript:@"numberOfRepeatLowNotificationsInPastYear"];
 
@@ -225,9 +225,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v31 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource7 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v61 = 0;
-  v32 = [v31 numberOfVeryLowNotificationsInPastYearWithError:&v61];
+  v32 = [dataSource7 numberOfVeryLowNotificationsInPastYearWithError:&v61];
   v33 = v61;
   [v6 setObject:v32 forKeyedSubscript:@"numberOfVeryLowNotificationsInPastYear"];
 
@@ -237,9 +237,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v34 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource8 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v60 = 0;
-  v35 = [v34 numberOfRepeatVeryLowNotificationsInPastYearWithError:&v60];
+  v35 = [dataSource8 numberOfRepeatVeryLowNotificationsInPastYearWithError:&v60];
   v36 = v60;
   [v6 setObject:v35 forKeyedSubscript:@"numberOfRepeatVeryLowNotificationsInPastYear"];
 
@@ -249,9 +249,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v37 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource9 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v59 = 0;
-  v38 = [v37 numberOfInitialNotificationsInPastYearWithError:&v59];
+  v38 = [dataSource9 numberOfInitialNotificationsInPastYearWithError:&v59];
   v39 = v59;
   [v6 setObject:v38 forKeyedSubscript:@"numberOfInitialNotificationsInPastYear"];
 
@@ -261,9 +261,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v40 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource10 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v58 = 0;
-  v41 = [v40 daysSinceLastRepeatNotificationWithError:&v58];
+  v41 = [dataSource10 daysSinceLastRepeatNotificationWithError:&v58];
   v42 = v58;
   [v6 setObject:v41 forKeyedSubscript:@"daysSinceLastRepeatNotification"];
 
@@ -273,9 +273,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v43 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource11 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v57 = 0;
-  v44 = [v43 daysSinceLastInitialNotificationWithError:&v57];
+  v44 = [dataSource11 daysSinceLastInitialNotificationWithError:&v57];
   v45 = v57;
   [v6 setObject:v44 forKeyedSubscript:@"daysSinceLastInitialNotification"];
 
@@ -285,9 +285,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v46 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource12 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v56 = 0;
-  v47 = [v46 currentWalkingSteadinessClassificationWithError:&v56];
+  v47 = [dataSource12 currentWalkingSteadinessClassificationWithError:&v56];
   v48 = v56;
   [v6 setObject:v47 forKeyedSubscript:@"currentWalkingSteadinessClassification"];
 
@@ -297,10 +297,10 @@ LABEL_11:
 LABEL_14:
     v49 = v17;
 LABEL_15:
-    if (a4)
+    if (error)
     {
       v50 = v49;
-      *a4 = v49;
+      *error = v49;
     }
 
     else
@@ -312,9 +312,9 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  v52 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
+  dataSource13 = [(HKMobilityWalkingSteadinessAnalyticsDailyEvent *)self dataSource];
   v55 = 0;
-  v53 = [v52 previousWalkingSteadinessClassificationWithError:&v55];
+  v53 = [dataSource13 previousWalkingSteadinessClassificationWithError:&v55];
   v54 = v55;
   [v6 setObject:v53 forKeyedSubscript:@"previousWalkingSteadinessClassification"];
 

@@ -1,7 +1,7 @@
 @interface INIntegerResolutionResult
 + (INIntegerResolutionResult)successWithResolvedValue:(NSInteger)resolvedValue;
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
 @end
 
 @implementation INIntegerResolutionResult
@@ -9,21 +9,21 @@
 + (INIntegerResolutionResult)successWithResolvedValue:(NSInteger)resolvedValue
 {
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:resolvedValue];
-  v5 = [a1 resolutionResultSuccessWithResolvedValue:v4];
+  v5 = [self resolutionResultSuccessWithResolvedValue:v4];
 
   return v5;
 }
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  if ([v6 valueType] == 24 || objc_msgSend(v6, "valueType") == 8 || objc_msgSend(v6, "valueType") == 5 || objc_msgSend(v6, "valueType") == 9 || objc_msgSend(v6, "valueType") == 6)
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  if ([descriptionCopy valueType] == 24 || objc_msgSend(descriptionCopy, "valueType") == 8 || objc_msgSend(descriptionCopy, "valueType") == 5 || objc_msgSend(descriptionCopy, "valueType") == 9 || objc_msgSend(descriptionCopy, "valueType") == 6)
   {
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -31,12 +31,12 @@
         goto LABEL_13;
       }
 
-      v13 = [v5 stringValue];
+      stringValue = [objectCopy stringValue];
       goto LABEL_12;
     }
   }
 
-  else if ([v6 valueType] != 25)
+  else if ([descriptionCopy valueType] != 25)
   {
     goto LABEL_13;
   }
@@ -44,19 +44,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v5 firstObject];
+    firstObject = [objectCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v5 valueForKey:@"stringValue"];
-      v13 = [v12 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+      v12 = [objectCopy valueForKey:@"stringValue"];
+      stringValue = [v12 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
       v7 = v12;
 LABEL_12:
 
-      v7 = v13;
+      v7 = stringValue;
     }
   }
 
@@ -65,27 +65,27 @@ LABEL_13:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] == 24)
+  if ([descriptionCopy valueType] == 24)
   {
     [(_INPBIntentSlotValue *)v7 setType:3];
-    if ([v6 valueStyle] == 3)
+    if ([descriptionCopy valueStyle] == 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v5 firstObject];
+        firstObject = [objectCopy firstObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v10 = v5;
+          v10 = objectCopy;
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
@@ -105,9 +105,9 @@ LABEL_13:
                 }
 
                 v15 = INIntentSlotValueTransformToInteger(*(*(&v49 + 1) + 8 * i));
-                v16 = [v15 values];
-                v17 = [v16 firstObject];
-                [(_INPBIntentSlotValue *)v7 addPayloadIntegerValue:v17];
+                values = [v15 values];
+                firstObject2 = [values firstObject];
+                [(_INPBIntentSlotValue *)v7 addPayloadIntegerValue:firstObject2];
               }
 
               v12 = [v10 countByEnumeratingWithState:&v49 objects:v55 count:16];
@@ -127,31 +127,31 @@ LABEL_13:
       goto LABEL_29;
     }
 
-    v10 = INIntentSlotValueTransformToInteger(v5);
-    v28 = [v10 values];
-    v29 = [v28 firstObject];
-    [(_INPBIntentSlotValue *)v7 addPayloadIntegerValue:v29];
+    v10 = INIntentSlotValueTransformToInteger(objectCopy);
+    values2 = [v10 values];
+    firstObject3 = [values2 firstObject];
+    [(_INPBIntentSlotValue *)v7 addPayloadIntegerValue:firstObject3];
 LABEL_27:
 
 LABEL_28:
     goto LABEL_29;
   }
 
-  if ([v6 valueType] == 25)
+  if ([descriptionCopy valueType] == 25)
   {
     [(_INPBIntentSlotValue *)v7 setType:52];
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v5 firstObject];
+        firstObject4 = [objectCopy firstObject];
         objc_opt_class();
         v19 = objc_opt_isKindOfClass();
 
         if (v19)
         {
-          v20 = v5;
+          v20 = objectCopy;
           v21 = objc_alloc_init(_INPBIntegerList);
           v45 = 0u;
           v46 = 0u;
@@ -188,21 +188,21 @@ LABEL_28:
     }
   }
 
-  else if ([v6 valueType] == 26)
+  else if ([descriptionCopy valueType] == 26)
   {
     [(_INPBIntentSlotValue *)v7 setType:8];
-    if ([v6 valueStyle] == 3)
+    if ([descriptionCopy valueStyle] == 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = [v5 firstObject];
+        firstObject5 = [objectCopy firstObject];
         objc_opt_class();
         v33 = objc_opt_isKindOfClass();
 
         if (v33)
         {
-          v10 = v5;
+          v10 = objectCopy;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
@@ -222,9 +222,9 @@ LABEL_28:
                 }
 
                 v38 = INIntentSlotValueTransformToLong(*(*(&v41 + 1) + 8 * k));
-                v39 = [v38 values];
-                v40 = [v39 firstObject];
-                [(_INPBIntentSlotValue *)v7 addPayloadLongValue:v40];
+                values3 = [v38 values];
+                firstObject6 = [values3 firstObject];
+                [(_INPBIntentSlotValue *)v7 addPayloadLongValue:firstObject6];
               }
 
               v35 = [v10 countByEnumeratingWithState:&v41 objects:v53 count:16];
@@ -241,36 +241,36 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = INIntentSlotValueTransformToLong(v5);
-      v28 = [v10 values];
-      v29 = [v28 firstObject];
-      [(_INPBIntentSlotValue *)v7 addPayloadLongValue:v29];
+      v10 = INIntentSlotValueTransformToLong(objectCopy);
+      values2 = [v10 values];
+      firstObject3 = [values2 firstObject];
+      [(_INPBIntentSlotValue *)v7 addPayloadLongValue:firstObject3];
       goto LABEL_27;
     }
   }
 
-  else if ([v6 valueType] == 8 || objc_msgSend(v6, "valueType") == 5)
+  else if ([descriptionCopy valueType] == 8 || objc_msgSend(descriptionCopy, "valueType") == 5)
   {
     [(_INPBIntentSlotValue *)v7 setType:101];
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[_INPBIntentSlotValue addPayloadPrimitiveInt:](v7, "addPayloadPrimitiveInt:", [v5 intValue]);
+        -[_INPBIntentSlotValue addPayloadPrimitiveInt:](v7, "addPayloadPrimitiveInt:", [objectCopy intValue]);
       }
     }
   }
 
-  else if ([v6 valueType] == 9 || objc_msgSend(v6, "valueType") == 6)
+  else if ([descriptionCopy valueType] == 9 || objc_msgSend(descriptionCopy, "valueType") == 6)
   {
     [(_INPBIntentSlotValue *)v7 setType:102];
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[_INPBIntentSlotValue addPayloadPrimitiveLong:](v7, "addPayloadPrimitiveLong:", [v5 longLongValue]);
+        -[_INPBIntentSlotValue addPayloadPrimitiveLong:](v7, "addPayloadPrimitiveLong:", [objectCopy longLongValue]);
       }
     }
   }

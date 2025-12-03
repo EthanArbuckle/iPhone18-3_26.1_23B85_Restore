@@ -1,63 +1,63 @@
 @interface OCXContentType
-- (OCXContentType)initWithContentType:(id)a3 extension:(id)a4;
-- (OCXContentType)initWithContentType:(id)a3 path:(id)a4;
-- (void)writeToStreamWriter:(id)a3;
+- (OCXContentType)initWithContentType:(id)type extension:(id)extension;
+- (OCXContentType)initWithContentType:(id)type path:(id)path;
+- (void)writeToStreamWriter:(id)writer;
 @end
 
 @implementation OCXContentType
 
-- (OCXContentType)initWithContentType:(id)a3 extension:(id)a4
+- (OCXContentType)initWithContentType:(id)type extension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  extensionCopy = extension;
   v12.receiver = self;
   v12.super_class = OCXContentType;
   v9 = [(OCXContentType *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mContentType, a3);
-    objc_storeStrong(&v10->mExtension, a4);
+    objc_storeStrong(&v9->mContentType, type);
+    objc_storeStrong(&v10->mExtension, extension);
   }
 
   return v10;
 }
 
-- (OCXContentType)initWithContentType:(id)a3 path:(id)a4
+- (OCXContentType)initWithContentType:(id)type path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = OCXContentType;
   v9 = [(OCXContentType *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mContentType, a3);
-    objc_storeStrong(&v10->mPath, a4);
+    objc_storeStrong(&v9->mContentType, type);
+    objc_storeStrong(&v10->mPath, path);
   }
 
   return v10;
 }
 
-- (void)writeToStreamWriter:(id)a3
+- (void)writeToStreamWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   if ([(OCXContentType *)self isOverride])
   {
-    [v5 startPlainElement:@"Override"];
+    [writerCopy startPlainElement:@"Override"];
     v4 = [@"/" stringByAppendingString:self->mPath];
-    [v5 writePlainAttribute:@"PartName" content:v4];
+    [writerCopy writePlainAttribute:@"PartName" content:v4];
   }
 
   else
   {
-    [v5 startPlainElement:@"Default"];
-    [v5 writePlainAttribute:@"Extension" content:self->mExtension];
+    [writerCopy startPlainElement:@"Default"];
+    [writerCopy writePlainAttribute:@"Extension" content:self->mExtension];
   }
 
-  [v5 writePlainAttribute:@"ContentType" content:self->mContentType];
-  [v5 endElement];
+  [writerCopy writePlainAttribute:@"ContentType" content:self->mContentType];
+  [writerCopy endElement];
 }
 
 @end

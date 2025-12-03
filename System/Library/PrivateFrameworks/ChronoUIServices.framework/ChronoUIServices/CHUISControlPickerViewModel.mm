@@ -1,12 +1,12 @@
 @interface CHUISControlPickerViewModel
-- (CHUISControlPickerViewModel)initWithIconView:(id)a3;
+- (CHUISControlPickerViewModel)initWithIconView:(id)view;
 @end
 
 @implementation CHUISControlPickerViewModel
 
-- (CHUISControlPickerViewModel)initWithIconView:(id)a3
+- (CHUISControlPickerViewModel)initWithIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CHUISControlPickerViewModel;
   v6 = [(CHUISControlPickerViewModel *)&v9 init];
@@ -14,7 +14,7 @@
   if (v6)
   {
     v6->_state = 0;
-    objc_storeStrong(&v6->_iconView, a3);
+    objc_storeStrong(&v6->_iconView, view);
   }
 
   return v7;

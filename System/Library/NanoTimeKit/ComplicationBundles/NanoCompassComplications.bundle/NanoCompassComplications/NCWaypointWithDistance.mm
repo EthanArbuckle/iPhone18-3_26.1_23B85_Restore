@@ -1,38 +1,38 @@
 @interface NCWaypointWithDistance
-- (NCWaypointWithDistance)initWithWaypoint:(id)a3 distance:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
+- (NCWaypointWithDistance)initWithWaypoint:(id)waypoint distance:(double)distance;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation NCWaypointWithDistance
 
-- (NCWaypointWithDistance)initWithWaypoint:(id)a3 distance:(double)a4
+- (NCWaypointWithDistance)initWithWaypoint:(id)waypoint distance:(double)distance
 {
-  v7 = a3;
+  waypointCopy = waypoint;
   v11.receiver = self;
   v11.super_class = NCWaypointWithDistance;
   v8 = [(NCWaypointWithDistance *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_waypoint, a3);
-    v9->_distance = a4;
+    objc_storeStrong(&v8->_waypoint, waypoint);
+    v9->_distance = distance;
   }
 
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_msgSend_distance(self, v5, v6, v7);
   v9 = v8;
-  objc_msgSend_distance(v4, v10, v11, v12);
+  objc_msgSend_distance(compareCopy, v10, v11, v12);
   if (v9 == v16)
   {
     v17 = objc_msgSend_waypoint(self, v13, v14, v15);
     v21 = objc_msgSend_uuid(v17, v18, v19, v20);
-    v25 = objc_msgSend_waypoint(v4, v22, v23, v24);
+    v25 = objc_msgSend_waypoint(compareCopy, v22, v23, v24);
     v29 = objc_msgSend_uuid(v25, v26, v27, v28);
     v32 = objc_msgSend_compare_(v21, v30, v29, v31);
   }
@@ -41,7 +41,7 @@
   {
     objc_msgSend_distance(self, v13, v14, v15);
     v34 = v33;
-    objc_msgSend_distance(v4, v35, v36, v37);
+    objc_msgSend_distance(compareCopy, v35, v36, v37);
     if (v34 >= v38)
     {
       v32 = 1;
@@ -56,9 +56,9 @@
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_waypoint(self, a2, a3, v3);
+  v5 = objc_msgSend_waypoint(self, a2, zone, v3);
   isAltitudePopulated = objc_msgSend_isAltitudePopulated(v5, v6, v7, v8);
 
   if (isAltitudePopulated)

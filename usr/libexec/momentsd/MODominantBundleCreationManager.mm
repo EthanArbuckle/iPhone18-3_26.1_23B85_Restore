@@ -1,42 +1,42 @@
 @interface MODominantBundleCreationManager
-- (BOOL)_locationCheckForMergingOutingBundle:(id)a3 activityBundle:(id)a4;
-- (MODominantBundleCreationManager)initWithUniverse:(id)a3;
-- (id)_dominantBundleCreatedFromOutingBundles:(id)a3 activityBundles:(id)a4 parameters:(id)a5;
-- (id)filterEventBundlesEligibleForDominantBundleCreation:(id)a3;
-- (id)getInviteBundles:(id)a3;
-- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)a3 compareWithHomeBundle:(id)a4;
-- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)a3 compareWithInviteOutingBundle:(id)a4;
-- (void)_suppressDuplicateContactBundles:(id)a3 comparedWithContactTrendbundles:(id)a4;
-- (void)_suppressDuplicateHomeBundles:(id)a3 parameters:(id)a4;
-- (void)_suppressDuplicateMediaBundles:(id)a3 comparedWithActivitybundles:(id)a4 parameters:(id)a5;
-- (void)_suppressDuplicateMediaBundles:(id)a3 comparedWithHomebundles:(id)a4 parameters:(id)a5;
-- (void)processBundlesForCreatingDominantBundles:(id)a3 withParameters:(id)a4 handler:(id)a5;
+- (BOOL)_locationCheckForMergingOutingBundle:(id)bundle activityBundle:(id)activityBundle;
+- (MODominantBundleCreationManager)initWithUniverse:(id)universe;
+- (id)_dominantBundleCreatedFromOutingBundles:(id)bundles activityBundles:(id)activityBundles parameters:(id)parameters;
+- (id)filterEventBundlesEligibleForDominantBundleCreation:(id)creation;
+- (id)getInviteBundles:(id)bundles;
+- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)bundles compareWithHomeBundle:(id)bundle;
+- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)bundles compareWithInviteOutingBundle:(id)bundle;
+- (void)_suppressDuplicateContactBundles:(id)bundles comparedWithContactTrendbundles:(id)trendbundles;
+- (void)_suppressDuplicateHomeBundles:(id)bundles parameters:(id)parameters;
+- (void)_suppressDuplicateMediaBundles:(id)bundles comparedWithActivitybundles:(id)activitybundles parameters:(id)parameters;
+- (void)_suppressDuplicateMediaBundles:(id)bundles comparedWithHomebundles:(id)homebundles parameters:(id)parameters;
+- (void)processBundlesForCreatingDominantBundles:(id)bundles withParameters:(id)parameters handler:(id)handler;
 @end
 
 @implementation MODominantBundleCreationManager
 
-- (MODominantBundleCreationManager)initWithUniverse:(id)a3
+- (MODominantBundleCreationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v9.receiver = self;
   v9.super_class = MODominantBundleCreationManager;
   v6 = [(MODominantBundleCreationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
   }
 
   return v7;
 }
 
-- (void)processBundlesForCreatingDominantBundles:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)processBundlesForCreatingDominantBundles:(id)bundles withParameters:(id)parameters handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bundlesCopy = bundles;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v8 count];
+  v12 = [bundlesCopy count];
   v13 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
   if (v12)
@@ -45,16 +45,16 @@
     if (v14)
     {
       *buf = 134217984;
-      v57 = [v8 count];
+      v57 = [bundlesCopy count];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "DominantBundleCreation: input eventBundles count, %lu", buf, 0xCu);
     }
 
-    v48 = v10;
-    v50 = v9;
+    v48 = handlerCopy;
+    v50 = parametersCopy;
 
     v15 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v46 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 2];
-    v16 = [v8 filteredArrayUsingPredicate:?];
+    v16 = [bundlesCopy filteredArrayUsingPredicate:?];
     v55 = v15;
     v17 = [NSArray arrayWithObjects:&v55 count:1];
     v18 = [v16 sortedArrayUsingDescriptors:v17];
@@ -68,26 +68,26 @@
     }
 
     v45 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 1];
-    [v8 filteredArrayUsingPredicate:?];
+    [bundlesCopy filteredArrayUsingPredicate:?];
     v21 = v49 = v19;
     v54 = v15;
     v22 = [NSArray arrayWithObjects:&v54 count:1];
     v23 = [v21 sortedArrayUsingDescriptors:v22];
 
     v43 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 7];
-    v24 = [v8 filteredArrayUsingPredicate:?];
+    v24 = [bundlesCopy filteredArrayUsingPredicate:?];
     v53 = v15;
     v25 = [NSArray arrayWithObjects:&v53 count:1];
     v26 = [v24 sortedArrayUsingDescriptors:v25];
 
     v41 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 4];
-    v27 = [v8 filteredArrayUsingPredicate:?];
+    v27 = [bundlesCopy filteredArrayUsingPredicate:?];
     v52 = v15;
     v28 = [NSArray arrayWithObjects:&v52 count:1];
     v39 = [v27 sortedArrayUsingDescriptors:v28];
 
     v40 = [NSPredicate predicateWithBlock:&__block_literal_global_2];
-    v29 = [v8 filteredArrayUsingPredicate:?];
+    v29 = [bundlesCopy filteredArrayUsingPredicate:?];
     [(MODominantBundleCreationManager *)self _suppressDuplicateHomeBundles:v26 parameters:v50];
     v30 = [NSPredicate predicateWithFormat:@"%K = NO", @"isAggregatedAndSuppressed"];
     v42 = v26;
@@ -100,7 +100,7 @@
     [(MODominantBundleCreationManager *)self _removeDuplicatePhotoResourceFromActivityBundles:v23 compareWithInviteOutingBundle:v49];
     v34 = [(MODominantBundleCreationManager *)self _dominantBundleCreatedFromOutingBundles:v44 activityBundles:v23 parameters:v50];
     [(MODominantBundleCreationManager *)self _suppressDuplicateContactBundles:v39 comparedWithContactTrendbundles:v29];
-    v35 = [v8 arrayByAddingObjectsFromArray:v34];
+    v35 = [bundlesCopy arrayByAddingObjectsFromArray:v34];
     v36 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
@@ -112,11 +112,11 @@
 
     objc_autoreleasePoolPop(context);
     v38 = objc_autoreleasePoolPush();
-    v10 = v48;
+    handlerCopy = v48;
     (*(v48 + 2))(v48, v35, 0);
     objc_autoreleasePoolPop(v38);
 
-    v9 = v50;
+    parametersCopy = v50;
   }
 
   else
@@ -127,7 +127,7 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "DominantBundleCreation: No eventBundle to be proccessed through dominantBundleCreation process", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     objc_autoreleasePoolPop(v11);
   }
 }
@@ -177,20 +177,20 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
   return (v4 == 9) & v8;
 }
 
-- (id)_dominantBundleCreatedFromOutingBundles:(id)a3 activityBundles:(id)a4 parameters:(id)a5
+- (id)_dominantBundleCreatedFromOutingBundles:(id)bundles activityBundles:(id)activityBundles parameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bundlesCopy = bundles;
+  activityBundlesCopy = activityBundles;
+  parametersCopy = parameters;
   v12 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    *v119 = [v9 count];
+    *v119 = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "DominantBundleCreation: input outing bundle count, %lu", buf, 0xCu);
   }
 
-  v13 = [(MODominantBundleCreationManager *)self filterEventBundlesEligibleForDominantBundleCreation:v9];
+  v13 = [(MODominantBundleCreationManager *)self filterEventBundlesEligibleForDominantBundleCreation:bundlesCopy];
 
   v14 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -204,13 +204,13 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
   v16 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v10 count];
+    v17 = [activityBundlesCopy count];
     *buf = 134217984;
     *v119 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "DominantBundleCreation: input activity bundle count, %lu", buf, 0xCu);
   }
 
-  v18 = [(MODominantBundleCreationManager *)self filterEventBundlesEligibleForDominantBundleCreation:v10];
+  v18 = [(MODominantBundleCreationManager *)self filterEventBundlesEligibleForDominantBundleCreation:activityBundlesCopy];
 
   v19 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -224,7 +224,7 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
   if ([v13 count] && objc_msgSend(v18, "count"))
   {
     v101 = a2;
-    v107 = self;
+    selfCopy = self;
     v110 = objc_opt_new();
     v105 = objc_opt_new();
     v104 = [NSPredicate predicateWithFormat:@"type == %lu", 2];
@@ -233,7 +233,7 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
     if ([v13 count])
     {
       v21 = 0;
-      v22 = 0;
+      action = 0;
       v23 = 0;
       while (1)
       {
@@ -249,23 +249,23 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
         [MOSummarizationUtilities overlappingTimeIntervalBetween:v24 andOtherBundle:v26];
         v28 = v27;
         v29 = [NSDateInterval alloc];
-        v30 = [v24 startDate];
-        v31 = [v24 endDate];
-        v32 = [v29 initWithStartDate:v30 endDate:v31];
+        startDate = [v24 startDate];
+        endDate = [v24 endDate];
+        v32 = [v29 initWithStartDate:startDate endDate:endDate];
         [v32 duration];
         v34 = v28 / v33;
 
         v35 = [NSDateInterval alloc];
-        v36 = [v26 startDate];
-        v37 = [v26 endDate];
-        v38 = [v35 initWithStartDate:v36 endDate:v37];
+        startDate2 = [v26 startDate];
+        endDate2 = [v26 endDate];
+        v38 = [v35 initWithStartDate:startDate2 endDate:endDate2];
         [v38 duration];
         v40 = v28 / v39;
 
-        [v11 dominantBundle_overlappingThreshold];
-        if (v34 > v41 || ([v11 dominantBundle_overlappingThreshold], v40 > v42))
+        [parametersCopy dominantBundle_overlappingThreshold];
+        if (v34 > v41 || ([parametersCopy dominantBundle_overlappingThreshold], v40 > v42))
         {
-          if (!+[MOSummarizationUtilities isOutingBundleFromHomeOrWorkVisit:](MOSummarizationUtilities, "isOutingBundleFromHomeOrWorkVisit:", v24) && -[MODominantBundleCreationManager _locationCheckForMergingOutingBundle:activityBundle:](v107, "_locationCheckForMergingOutingBundle:activityBundle:", v24, v26) && +[MOSummarizationUtilities isOutingBundleInsideOneDay:](MOSummarizationUtilities, "isOutingBundleInsideOneDay:", v24) && [v26 bundleSubType] != 204 && objc_msgSend(v26, "bundleSubType") != 207 && objc_msgSend(v26, "bundleSubType") != 208 && !+[MOSummarizationUtilities isFlightBundle:](MOSummarizationUtilities, "isFlightBundle:", v24))
+          if (!+[MOSummarizationUtilities isOutingBundleFromHomeOrWorkVisit:](MOSummarizationUtilities, "isOutingBundleFromHomeOrWorkVisit:", v24) && -[MODominantBundleCreationManager _locationCheckForMergingOutingBundle:activityBundle:](selfCopy, "_locationCheckForMergingOutingBundle:activityBundle:", v24, v26) && +[MOSummarizationUtilities isOutingBundleInsideOneDay:](MOSummarizationUtilities, "isOutingBundleInsideOneDay:", v24) && [v26 bundleSubType] != 204 && objc_msgSend(v26, "bundleSubType") != 207 && objc_msgSend(v26, "bundleSubType") != 208 && !+[MOSummarizationUtilities isFlightBundle:](MOSummarizationUtilities, "isFlightBundle:", v24))
           {
             break;
           }
@@ -277,32 +277,32 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
           goto LABEL_31;
         }
 
-        v44 = v22;
+        v44 = action;
         [MOSummarizationUtilities removeDuplicatePhotoResourceFromBundle:v26 comparedWithPrimaryBundle:v24];
-        v22 = [v26 action];
-        if ([v22 actionSubtype] != 2)
+        action = [v26 action];
+        if ([action actionSubtype] != 2)
         {
           goto LABEL_30;
         }
 
-        v45 = [v26 resources];
-        v46 = [v45 count];
+        resources = [v26 resources];
+        v46 = [resources count];
 
         v25 = v106;
-        LODWORD(v22) = v44;
+        LODWORD(action) = v44;
         if (v46)
         {
-          v47 = [v26 resources];
-          v22 = [v47 filteredArrayUsingPredicate:v104];
+          resources2 = [v26 resources];
+          action = [resources2 filteredArrayUsingPredicate:v104];
 
-          if ([v22 count])
+          if ([action count])
           {
             v116 = v103;
             v48 = [NSArray arrayWithObjects:&v116 count:1];
-            v49 = [v22 sortedArrayUsingDescriptors:v48];
+            v49 = [action sortedArrayUsingDescriptors:v48];
 
-            v50 = [v49 firstObject];
-            [v50 setPriorityScore:99.0];
+            firstObject = [v49 firstObject];
+            [firstObject setPriorityScore:99.0];
             goto LABEL_29;
           }
 
@@ -310,14 +310,14 @@ BOOL __99__MODominantBundleCreationManager_processBundlesForCreatingDominantBund
         }
 
 LABEL_31:
-        v51 = [v24 endDate];
-        v52 = [v26 endDate];
-        v53 = [v51 isOnOrAfter:v52];
+        endDate3 = [v24 endDate];
+        endDate4 = [v26 endDate];
+        v53 = [endDate3 isOnOrAfter:endDate4];
 
         v23 = v43 + v53;
-        v21 = v22 + (v53 ^ 1);
+        v21 = action + (v53 ^ 1);
 
-        v22 = v21;
+        action = v21;
         v18 = v25;
         if ([v13 count] <= v21)
         {
@@ -326,19 +326,19 @@ LABEL_31:
       }
 
       v54 = [v13 count];
-      v44 = v22;
-      v22 = [NSNumber numberWithInt:v22];
-      v117[0] = v22;
+      v44 = action;
+      action = [NSNumber numberWithInt:action];
+      v117[0] = action;
       v43 = v108;
       v49 = [NSNumber numberWithInt:v108 + v54];
       v117[1] = v49;
-      v50 = [NSArray arrayWithObjects:v117 count:2];
-      [v105 addObject:v50];
+      firstObject = [NSArray arrayWithObjects:v117 count:2];
+      [v105 addObject:firstObject];
 LABEL_29:
 
 LABEL_30:
       v25 = v106;
-      LODWORD(v22) = v44;
+      LODWORD(action) = v44;
       goto LABEL_31;
     }
 
@@ -367,7 +367,7 @@ LABEL_37:
       }
 
       v66 = +[NSAssertionHandler currentHandler];
-      [v66 handleFailureInMethod:v101 object:v107 file:@"MODominantBundleCreationManager.m" lineNumber:199 description:{@"DominantBundleCreation: the event bundles and membership arrays have to be of the same size. (in %s:%d)", "-[MODominantBundleCreationManager _dominantBundleCreatedFromOutingBundles:activityBundles:parameters:]", 199}];
+      [v66 handleFailureInMethod:v101 object:selfCopy file:@"MODominantBundleCreationManager.m" lineNumber:199 description:{@"DominantBundleCreation: the event bundles and membership arrays have to be of the same size. (in %s:%d)", "-[MODominantBundleCreationManager _dominantBundleCreatedFromOutingBundles:activityBundles:parameters:]", 199}];
     }
 
     if (v60)
@@ -395,10 +395,10 @@ LABEL_37:
           v74 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEBUG))
           {
-            v82 = [v69 intValue];
+            intValue = [v69 intValue];
             v76 = [v106 objectAtIndexedSubscript:v80];
             *buf = 67109378;
-            *v119 = v82;
+            *v119 = intValue;
             *&v119[4] = 2112;
             *&v119[6] = v76;
             v77 = v74;
@@ -415,10 +415,10 @@ LABEL_37:
           v74 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEBUG))
           {
-            v75 = [v69 intValue];
+            intValue2 = [v69 intValue];
             v76 = [v13 objectAtIndexedSubscript:i];
             *buf = 67109378;
-            *v119 = v75;
+            *v119 = intValue2;
             *&v119[4] = 2112;
             *&v119[6] = v76;
             v77 = v74;
@@ -439,18 +439,18 @@ LABEL_54:
       [MODominantBundleCreationManager _dominantBundleCreatedFromOutingBundles:v109 activityBundles:? parameters:?];
     }
 
-    v84 = [(MODominantBundleCreationManager *)v107 fUniverse];
+    fUniverse = [(MODominantBundleCreationManager *)selfCopy fUniverse];
     v85 = objc_opt_class();
     v86 = NSStringFromClass(v85);
-    v87 = [v84 getService:v86];
+    v87 = [fUniverse getService:v86];
 
     v58 = objc_opt_new();
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
     v114 = 0u;
-    v88 = [v110 allValues];
-    v89 = [v88 countByEnumeratingWithState:&v111 objects:v115 count:16];
+    allValues = [v110 allValues];
+    v89 = [allValues countByEnumeratingWithState:&v111 objects:v115 count:16];
     if (v89)
     {
       v90 = v89;
@@ -461,14 +461,14 @@ LABEL_54:
         {
           if (*v112 != v91)
           {
-            objc_enumerationMutation(v88);
+            objc_enumerationMutation(allValues);
           }
 
           v93 = *(*(&v111 + 1) + 8 * j);
           if ([v93 count] >= 2)
           {
-            v94 = [v93 allObjects];
-            v95 = [MOSummarizationUtilities createDominantBundleFromBundles:v94 withParameters:v11 timeZoneManager:v87];
+            allObjects = [v93 allObjects];
+            v95 = [MOSummarizationUtilities createDominantBundleFromBundles:allObjects withParameters:parametersCopy timeZoneManager:v87];
 
             if (v95)
             {
@@ -485,7 +485,7 @@ LABEL_54:
           }
         }
 
-        v90 = [v88 countByEnumeratingWithState:&v111 objects:v115 count:16];
+        v90 = [allValues countByEnumeratingWithState:&v111 objects:v115 count:16];
       }
 
       while (v90);
@@ -525,40 +525,40 @@ LABEL_54:
   return v58;
 }
 
-- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)a3 compareWithHomeBundle:(id)a4
+- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)bundles compareWithHomeBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  bundlesCopy = bundles;
+  bundleCopy = bundle;
+  if ([bundlesCopy count] && objc_msgSend(bundleCopy, "count"))
   {
     v25 = [NSPredicate predicateWithFormat:@"type == %lu", 2];
     v24 = [[NSSortDescriptor alloc] initWithKey:@"priorityScore" ascending:1];
-    if ([v6 count])
+    if ([bundleCopy count])
     {
       v7 = 0;
       v8 = 0;
       v9 = 0;
       while (1)
       {
-        if ([v5 count] <= v9)
+        if ([bundlesCopy count] <= v9)
         {
           goto LABEL_13;
         }
 
-        v10 = [v6 objectAtIndexedSubscript:v7];
-        v11 = [v5 objectAtIndexedSubscript:v9];
+        v10 = [bundleCopy objectAtIndexedSubscript:v7];
+        v11 = [bundlesCopy objectAtIndexedSubscript:v9];
         [MOSummarizationUtilities overlappingTimeIntervalBetween:v10 andOtherBundle:v11];
         if (v12 > 0.0)
         {
           [MOSummarizationUtilities removeDuplicatePhotoResourceFromBundle:v11 comparedWithPrimaryBundle:v10];
-          v13 = [v11 action];
-          if ([v13 actionSubtype] != 2)
+          action = [v11 action];
+          if ([action actionSubtype] != 2)
           {
             goto LABEL_11;
           }
 
-          v14 = [v11 resources];
-          v15 = [v14 count];
+          resources = [v11 resources];
+          v15 = [resources count];
 
           if (v15)
           {
@@ -567,30 +567,30 @@ LABEL_54:
         }
 
 LABEL_12:
-        v20 = [v10 endDate];
-        v21 = [v11 endDate];
-        v22 = [v20 isOnOrAfter:v21];
+        endDate = [v10 endDate];
+        endDate2 = [v11 endDate];
+        v22 = [endDate isOnOrAfter:endDate2];
 
         v9 += v22;
         v8 += v22 ^ 1;
         v7 = v8;
-        if ([v6 count] <= v8)
+        if ([bundleCopy count] <= v8)
         {
           goto LABEL_13;
         }
       }
 
-      v16 = [v11 resources];
-      v13 = [v16 filteredArrayUsingPredicate:v25];
+      resources2 = [v11 resources];
+      action = [resources2 filteredArrayUsingPredicate:v25];
 
-      if ([v13 count])
+      if ([action count])
       {
         v26 = v24;
         v17 = [NSArray arrayWithObjects:&v26 count:1];
-        v18 = [v13 sortedArrayUsingDescriptors:v17];
+        v18 = [action sortedArrayUsingDescriptors:v17];
 
-        v19 = [v18 firstObject];
-        [v19 setPriorityScore:99.0];
+        firstObject = [v18 firstObject];
+        [firstObject setPriorityScore:99.0];
       }
 
 LABEL_11:
@@ -609,48 +609,48 @@ LABEL_13:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v28 = [v6 count];
+      v28 = [bundleCopy count];
       v29 = 2048;
-      v30 = [v5 count];
+      v30 = [bundlesCopy count];
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "DominantBundleCreation: no resource change needed for activity bundles compared to home bundles since home or activit bundles count is 0, home bundles count: %lu, activity bundles count: %lu", buf, 0x16u);
     }
   }
 }
 
-- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)a3 compareWithInviteOutingBundle:(id)a4
+- (void)_removeDuplicatePhotoResourceFromActivityBundles:(id)bundles compareWithInviteOutingBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  bundlesCopy = bundles;
+  bundleCopy = bundle;
+  if ([bundlesCopy count] && objc_msgSend(bundleCopy, "count"))
   {
     v25 = [NSPredicate predicateWithFormat:@"type == %lu", 2];
     v24 = [[NSSortDescriptor alloc] initWithKey:@"priorityScore" ascending:1];
-    if ([v6 count])
+    if ([bundleCopy count])
     {
       v7 = 0;
       v8 = 0;
       v9 = 0;
       while (1)
       {
-        if ([v5 count] <= v9)
+        if ([bundlesCopy count] <= v9)
         {
           goto LABEL_13;
         }
 
-        v10 = [v6 objectAtIndexedSubscript:v7];
-        v11 = [v5 objectAtIndexedSubscript:v9];
+        v10 = [bundleCopy objectAtIndexedSubscript:v7];
+        v11 = [bundlesCopy objectAtIndexedSubscript:v9];
         [MOSummarizationUtilities overlappingTimeIntervalBetween:v10 andOtherBundle:v11];
         if (v12 > 0.0)
         {
           [MOSummarizationUtilities removeDuplicatePhotoResourceFromBundle:v11 comparedWithPrimaryBundle:v10];
-          v13 = [v11 action];
-          if ([v13 actionSubtype] != 2)
+          action = [v11 action];
+          if ([action actionSubtype] != 2)
           {
             goto LABEL_11;
           }
 
-          v14 = [v11 resources];
-          v15 = [v14 count];
+          resources = [v11 resources];
+          v15 = [resources count];
 
           if (v15)
           {
@@ -659,30 +659,30 @@ LABEL_13:
         }
 
 LABEL_12:
-        v20 = [v10 endDate];
-        v21 = [v11 endDate];
-        v22 = [v20 isOnOrAfter:v21];
+        endDate = [v10 endDate];
+        endDate2 = [v11 endDate];
+        v22 = [endDate isOnOrAfter:endDate2];
 
         v9 += v22;
         v8 += v22 ^ 1;
         v7 = v8;
-        if ([v6 count] <= v8)
+        if ([bundleCopy count] <= v8)
         {
           goto LABEL_13;
         }
       }
 
-      v16 = [v11 resources];
-      v13 = [v16 filteredArrayUsingPredicate:v25];
+      resources2 = [v11 resources];
+      action = [resources2 filteredArrayUsingPredicate:v25];
 
-      if ([v13 count])
+      if ([action count])
       {
         v26 = v24;
         v17 = [NSArray arrayWithObjects:&v26 count:1];
-        v18 = [v13 sortedArrayUsingDescriptors:v17];
+        v18 = [action sortedArrayUsingDescriptors:v17];
 
-        v19 = [v18 firstObject];
-        [v19 setPriorityScore:99.0];
+        firstObject = [v18 firstObject];
+        [firstObject setPriorityScore:99.0];
       }
 
 LABEL_11:
@@ -701,48 +701,48 @@ LABEL_13:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v28 = [v6 count];
+      v28 = [bundleCopy count];
       v29 = 2048;
-      v30 = [v5 count];
+      v30 = [bundlesCopy count];
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "DominantBundleCreation: no resource change needed for activity bundles compared to invite outing bundles since outing or activity bundles count is 0, invite outing bundles count: %lu, activity bundles count: %lu", buf, 0x16u);
     }
   }
 }
 
-- (void)_suppressDuplicateContactBundles:(id)a3 comparedWithContactTrendbundles:(id)a4
+- (void)_suppressDuplicateContactBundles:(id)bundles comparedWithContactTrendbundles:(id)trendbundles
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  bundlesCopy = bundles;
+  trendbundlesCopy = trendbundles;
+  if ([bundlesCopy count] && objc_msgSend(trendbundlesCopy, "count"))
   {
-    if ([v5 count])
+    if ([bundlesCopy count])
     {
       v7 = 0;
       v8 = 0;
       v9 = 0;
       v10 = 0;
-      v32 = v5;
-      v34 = v6;
+      v32 = bundlesCopy;
+      v34 = trendbundlesCopy;
       do
       {
-        if ([v6 count] <= v9)
+        if ([trendbundlesCopy count] <= v9)
         {
           break;
         }
 
         v11 = v9;
-        v12 = [v5 objectAtIndexedSubscript:v7];
-        v13 = [v6 objectAtIndexedSubscript:v9];
+        v12 = [bundlesCopy objectAtIndexedSubscript:v7];
+        v13 = [trendbundlesCopy objectAtIndexedSubscript:v9];
         [MOSummarizationUtilities overlappingTimeIntervalBetween:v12 andOtherBundle:v13];
         if (v14 > 0.0)
         {
           v15 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 10];
-          v16 = [v13 events];
-          v17 = [v16 filteredArrayUsingPredicate:v15];
+          events = [v13 events];
+          v17 = [events filteredArrayUsingPredicate:v15];
 
-          v18 = [v12 events];
+          events2 = [v12 events];
           v33 = v15;
-          v19 = [v18 filteredArrayUsingPredicate:v15];
+          v19 = [events2 filteredArrayUsingPredicate:v15];
 
           v37 = 0u;
           v38 = 0u;
@@ -776,20 +776,20 @@ LABEL_13:
             while (v22);
           }
 
-          v5 = v32;
+          bundlesCopy = v32;
         }
 
-        v25 = [v13 endDate];
-        v26 = [v12 endDate];
-        v27 = [v25 isOnOrAfter:v26];
+        endDate = [v13 endDate];
+        endDate2 = [v12 endDate];
+        v27 = [endDate isOnOrAfter:endDate2];
 
         v9 = v11 + (v27 ^ 1);
         v8 += v27;
         v7 = v8;
-        v6 = v34;
+        trendbundlesCopy = v34;
       }
 
-      while ([v5 count] > v8);
+      while ([bundlesCopy count] > v8);
     }
 
     else
@@ -815,9 +815,9 @@ LABEL_13:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v41 = [v5 count];
+      v41 = [bundlesCopy count];
       v42 = 2048;
-      v43 = [v6 count];
+      v43 = [trendbundlesCopy count];
       v29 = "DominantBundleCreation: no needed to remove duplicate contact bundle compared to contact trend bundles since contact or contact trend bundles count is 0, contact bundles count: %lu, contact trend bundles count: %lu";
       v30 = v28;
       v31 = 22;
@@ -827,14 +827,14 @@ LABEL_24:
   }
 }
 
-- (void)_suppressDuplicateMediaBundles:(id)a3 comparedWithHomebundles:(id)a4 parameters:(id)a5
+- (void)_suppressDuplicateMediaBundles:(id)bundles comparedWithHomebundles:(id)homebundles parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
-  if ([v7 count] && objc_msgSend(v8, "count"))
+  bundlesCopy = bundles;
+  homebundlesCopy = homebundles;
+  parametersCopy = parameters;
+  if ([bundlesCopy count] && objc_msgSend(homebundlesCopy, "count"))
   {
-    if ([v7 count])
+    if ([bundlesCopy count])
     {
       v9 = 0;
       v10 = 0;
@@ -842,39 +842,39 @@ LABEL_24:
       v12 = 0;
       do
       {
-        if ([v8 count] <= v11)
+        if ([homebundlesCopy count] <= v11)
         {
           break;
         }
 
-        v13 = [v7 objectAtIndexedSubscript:v9];
-        v14 = [v8 objectAtIndexedSubscript:v11];
+        v13 = [bundlesCopy objectAtIndexedSubscript:v9];
+        v14 = [homebundlesCopy objectAtIndexedSubscript:v11];
         [MOSummarizationUtilities overlappingTimeIntervalBetween:v13 andOtherBundle:v14];
         v16 = v15;
         v17 = [NSDateInterval alloc];
-        v18 = [v13 startDate];
-        v19 = [v13 endDate];
-        v20 = [v17 initWithStartDate:v18 endDate:v19];
+        startDate = [v13 startDate];
+        endDate = [v13 endDate];
+        v20 = [v17 initWithStartDate:startDate endDate:endDate];
         [v20 duration];
         v22 = v16 / v21;
 
-        [v31 dominantBundle_suppressMediaBundleComparedWithHomeBundleThreshold];
+        [parametersCopy dominantBundle_suppressMediaBundleComparedWithHomeBundleThreshold];
         if (v22 > v23)
         {
           [v13 setIsAggregatedAndSuppressed:1];
           ++v12;
         }
 
-        v24 = [v13 endDate];
-        v25 = [v14 endDate];
-        v26 = [v24 isOnOrAfter:v25];
+        endDate2 = [v13 endDate];
+        endDate3 = [v14 endDate];
+        v26 = [endDate2 isOnOrAfter:endDate3];
 
         v11 += v26;
         v10 += v26 ^ 1;
         v9 = v10;
       }
 
-      while ([v7 count] > v10);
+      while ([bundlesCopy count] > v10);
     }
 
     else
@@ -900,9 +900,9 @@ LABEL_24:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v33 = [v7 count];
+      v33 = [bundlesCopy count];
       v34 = 2048;
-      v35 = [v8 count];
+      v35 = [homebundlesCopy count];
       v28 = "DominantBundleCreation: no needed to remove duplicate media compared to home bundles since media or home bundles count is 0, media bundles count: %lu, home bundles count: %lu";
       v29 = v27;
       v30 = 22;
@@ -912,14 +912,14 @@ LABEL_15:
   }
 }
 
-- (void)_suppressDuplicateMediaBundles:(id)a3 comparedWithActivitybundles:(id)a4 parameters:(id)a5
+- (void)_suppressDuplicateMediaBundles:(id)bundles comparedWithActivitybundles:(id)activitybundles parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
-  if ([v7 count] && objc_msgSend(v8, "count"))
+  bundlesCopy = bundles;
+  activitybundlesCopy = activitybundles;
+  parametersCopy = parameters;
+  if ([bundlesCopy count] && objc_msgSend(activitybundlesCopy, "count"))
   {
-    if ([v7 count])
+    if ([bundlesCopy count])
     {
       v9 = 0;
       v10 = 0;
@@ -927,39 +927,39 @@ LABEL_15:
       v12 = 0;
       do
       {
-        if ([v8 count] <= v11)
+        if ([activitybundlesCopy count] <= v11)
         {
           break;
         }
 
-        v13 = [v7 objectAtIndexedSubscript:v9];
-        v14 = [v8 objectAtIndexedSubscript:v11];
+        v13 = [bundlesCopy objectAtIndexedSubscript:v9];
+        v14 = [activitybundlesCopy objectAtIndexedSubscript:v11];
         [MOSummarizationUtilities overlappingTimeIntervalBetween:v13 andOtherBundle:v14];
         v16 = v15;
         v17 = [NSDateInterval alloc];
-        v18 = [v13 startDate];
-        v19 = [v13 endDate];
-        v20 = [v17 initWithStartDate:v18 endDate:v19];
+        startDate = [v13 startDate];
+        endDate = [v13 endDate];
+        v20 = [v17 initWithStartDate:startDate endDate:endDate];
         [v20 duration];
         v22 = v16 / v21;
 
-        [v31 dominantBundle_suppressMediaBundleComparedWithActivityBundleThreshold];
+        [parametersCopy dominantBundle_suppressMediaBundleComparedWithActivityBundleThreshold];
         if (v22 > v23)
         {
           [v13 setIsAggregatedAndSuppressed:1];
           ++v12;
         }
 
-        v24 = [v13 endDate];
-        v25 = [v14 endDate];
-        v26 = [v24 isOnOrAfter:v25];
+        endDate2 = [v13 endDate];
+        endDate3 = [v14 endDate];
+        v26 = [endDate2 isOnOrAfter:endDate3];
 
         v11 += v26;
         v10 += v26 ^ 1;
         v9 = v10;
       }
 
-      while ([v7 count] > v10);
+      while ([bundlesCopy count] > v10);
     }
 
     else
@@ -985,9 +985,9 @@ LABEL_15:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v33 = [v7 count];
+      v33 = [bundlesCopy count];
       v34 = 2048;
-      v35 = [v8 count];
+      v35 = [activitybundlesCopy count];
       v28 = "DominantBundleCreation: no needed to remove duplicate media compared to activity bundles since media or activity bundles count is 0, media bundles count: %lu, home bundles count: %lu";
       v29 = v27;
       v30 = 22;
@@ -997,15 +997,15 @@ LABEL_15:
   }
 }
 
-- (BOOL)_locationCheckForMergingOutingBundle:(id)a3 activityBundle:(id)a4
+- (BOOL)_locationCheckForMergingOutingBundle:(id)bundle activityBundle:(id)activityBundle
 {
-  v5 = a4;
+  activityBundleCopy = activityBundle;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [a3 events];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  events = [bundle events];
+  v7 = [events countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1017,14 +1017,14 @@ LABEL_15:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(events);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v5 visitEventsRejectedByWatchLocation];
-        v14 = [v12 eventIdentifier];
-        v15 = [v14 UUIDString];
-        v16 = [v13 containsObject:v15];
+        visitEventsRejectedByWatchLocation = [activityBundleCopy visitEventsRejectedByWatchLocation];
+        eventIdentifier = [v12 eventIdentifier];
+        uUIDString = [eventIdentifier UUIDString];
+        v16 = [visitEventsRejectedByWatchLocation containsObject:uUIDString];
 
         if (v16)
         {
@@ -1039,7 +1039,7 @@ LABEL_15:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [events countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -1053,22 +1053,22 @@ LABEL_15:
   return v10 & 1;
 }
 
-- (void)_suppressDuplicateHomeBundles:(id)a3 parameters:(id)a4
+- (void)_suppressDuplicateHomeBundles:(id)bundles parameters:(id)parameters
 {
-  v4 = a3;
-  if ([v4 count])
+  bundlesCopy = bundles;
+  if ([bundlesCopy count])
   {
     v5 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    v6 = [v4 firstObject];
-    v7 = [v6 startDate];
-    v8 = [v5 components:28 fromDate:v7];
+    firstObject = [bundlesCopy firstObject];
+    startDate = [firstObject startDate];
+    v8 = [v5 components:28 fromDate:startDate];
 
     [v8 setHour:3];
     v76 = v8;
     v9 = [v5 dateFromComponents:v8];
-    v10 = [v4 lastObject];
-    v11 = [v10 startDate];
-    v12 = [v5 components:28 fromDate:v11];
+    lastObject = [bundlesCopy lastObject];
+    startDate2 = [lastObject startDate];
+    v12 = [v5 components:28 fromDate:startDate2];
 
     [v12 setHour:3];
     v75 = v12;
@@ -1111,7 +1111,7 @@ LABEL_15:
     v91 = 0;
     v88 = 0;
     v83 = *v115;
-    v77 = v4;
+    v77 = bundlesCopy;
     v79 = v13;
     v80 = v5;
     while (1)
@@ -1132,7 +1132,7 @@ LABEL_15:
         v113 = v18;
         v85 = v18;
         v19 = [NSPredicate predicateWithBlock:v111];
-        v20 = [v4 filteredArrayUsingPredicate:v19];
+        v20 = [bundlesCopy filteredArrayUsingPredicate:v19];
 
         v21 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1175,32 +1175,32 @@ LABEL_15:
                 }
 
                 v31 = *(*(&v107 + 1) + 8 * j);
-                v32 = [v31 action];
-                [v32 actionSubtype];
+                action = [v31 action];
+                [action actionSubtype];
 
-                v33 = [v31 action];
-                v34 = [v33 actionSubtype];
+                action2 = [v31 action];
+                actionSubtype = [action2 actionSubtype];
 
-                if (v34 == 1)
+                if (actionSubtype == 1)
                 {
                   ++v28;
                 }
 
-                v35 = [v31 action];
-                v36 = [v35 actionSubtype];
+                action3 = [v31 action];
+                actionSubtype2 = [action3 actionSubtype];
 
-                if (v36 == 9)
+                if (actionSubtype2 == 9)
                 {
                   ++v27;
                 }
 
-                v37 = [v31 suggestionID];
-                v38 = [v37 UUIDString];
-                [v94 addObject:v38];
+                suggestionID = [v31 suggestionID];
+                uUIDString = [suggestionID UUIDString];
+                [v94 addObject:uUIDString];
 
-                v39 = [v31 bundleIdentifier];
-                v40 = [v39 UUIDString];
-                [v93 addObject:v40];
+                bundleIdentifier = [v31 bundleIdentifier];
+                uUIDString2 = [bundleIdentifier UUIDString];
+                [v93 addObject:uUIDString2];
               }
 
               v26 = [v24 countByEnumeratingWithState:&v107 objects:v121 count:16];
@@ -1248,10 +1248,10 @@ LABEL_15:
               {
                 if (v86)
                 {
-                  v59 = [*(*(&v103 + 1) + 8 * k) action];
-                  v60 = [v59 actionSubtype];
+                  action4 = [*(*(&v103 + 1) + 8 * k) action];
+                  actionSubtype3 = [action4 actionSubtype];
 
-                  if (v60 != 1)
+                  if (actionSubtype3 != 1)
                   {
 LABEL_52:
                     [v56 setIsAggregatedAndSuppressed:1];
@@ -1263,10 +1263,10 @@ LABEL_52:
 
               else
               {
-                v57 = [*(*(&v103 + 1) + 8 * k) action];
-                v58 = [v57 actionSubtype];
+                action5 = [*(*(&v103 + 1) + 8 * k) action];
+                actionSubtype4 = [action5 actionSubtype];
 
-                if (v58 != 9)
+                if (actionSubtype4 != 9)
                 {
                   goto LABEL_52;
                 }
@@ -1276,8 +1276,8 @@ LABEL_52:
               v102 = 0u;
               v99 = 0u;
               v100 = 0u;
-              v61 = [v56 resources];
-              v62 = [v61 countByEnumeratingWithState:&v99 objects:v119 count:16];
+              resources = [v56 resources];
+              v62 = [resources countByEnumeratingWithState:&v99 objects:v119 count:16];
               if (!v62)
               {
 
@@ -1297,7 +1297,7 @@ LABEL_66:
                 {
                   if (*v100 != v65)
                   {
-                    objc_enumerationMutation(v61);
+                    objc_enumerationMutation(resources);
                   }
 
                   v67 = *(*(&v99 + 1) + 8 * m);
@@ -1307,7 +1307,7 @@ LABEL_66:
                   }
                 }
 
-                v63 = [v61 countByEnumeratingWithState:&v99 objects:v119 count:16];
+                v63 = [resources countByEnumeratingWithState:&v99 objects:v119 count:16];
               }
 
               while (v63);
@@ -1327,7 +1327,7 @@ LABEL_67:
             {
 LABEL_71:
 
-              v4 = v77;
+              bundlesCopy = v77;
               v13 = v79;
               v5 = v80;
               v14 = &GEOPOICategoryGasStation_ptr;
@@ -1345,14 +1345,14 @@ LABEL_71:
           v95 = 0u;
           v96 = 0u;
           v42 = v20;
-          v43 = [v20 firstObject];
-          v44 = [v43 resources];
+          firstObject2 = [v20 firstObject];
+          resources2 = [firstObject2 resources];
 
-          v45 = [v44 countByEnumeratingWithState:&v95 objects:v118 count:16];
+          v45 = [resources2 countByEnumeratingWithState:&v95 objects:v118 count:16];
           if (v45)
           {
             v46 = v45;
-            v47 = v4;
+            v47 = bundlesCopy;
             v48 = i;
             v49 = 0;
             v50 = *v96;
@@ -1362,7 +1362,7 @@ LABEL_71:
               {
                 if (*v96 != v50)
                 {
-                  objc_enumerationMutation(v44);
+                  objc_enumerationMutation(resources2);
                 }
 
                 v52 = *(*(&v95 + 1) + 8 * n);
@@ -1372,13 +1372,13 @@ LABEL_71:
                 }
               }
 
-              v46 = [v44 countByEnumeratingWithState:&v95 objects:v118 count:16];
+              v46 = [resources2 countByEnumeratingWithState:&v95 objects:v118 count:16];
             }
 
             while (v46);
 
             i = v48;
-            v4 = v47;
+            bundlesCopy = v47;
             v13 = v79;
             v5 = v80;
             if (v49)
@@ -1395,9 +1395,9 @@ LABEL_71:
           }
 
           v20 = v42;
-          v68 = [v42 firstObject];
+          firstObject3 = [v42 firstObject];
           v92 = 1;
-          [v68 setIsAggregatedAndSuppressed:1];
+          [firstObject3 setIsAggregatedAndSuppressed:1];
 
           v89 = 0;
           ++v91;
@@ -1461,7 +1461,7 @@ LABEL_84:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    *v123 = [v4 count];
+    *v123 = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "DominantBundleCreation: no need to remove duplicate home bundles since home bundle count is %lu", buf, 0xCu);
   }
 
@@ -1477,14 +1477,14 @@ id __76__MODominantBundleCreationManager__suppressDuplicateHomeBundles_parameter
   return v5;
 }
 
-- (id)filterEventBundlesEligibleForDominantBundleCreation:(id)a3
+- (id)filterEventBundlesEligibleForDominantBundleCreation:(id)creation
 {
-  v3 = a3;
+  creationCopy = creation;
   v4 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v25 = [v3 count];
+    v25 = [creationCopy count];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "DominantBundleCreation: Raw input eventBundles count, %lu", buf, 0xCu);
   }
 
@@ -1493,7 +1493,7 @@ id __76__MODominantBundleCreationManager__suppressDuplicateHomeBundles_parameter
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = creationCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -1509,13 +1509,13 @@ id __76__MODominantBundleCreationManager__suppressDuplicateHomeBundles_parameter
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 resources];
+        resources = [v11 resources];
 
-        if (v12)
+        if (resources)
         {
           v13 = [NSPredicate predicateWithFormat:@"type == %lu", 17];
-          v14 = [v11 resources];
-          v15 = [v14 filteredArrayUsingPredicate:v13];
+          resources2 = [v11 resources];
+          v15 = [resources2 filteredArrayUsingPredicate:v13];
 
           if (![v15 count])
           {
@@ -1547,15 +1547,15 @@ id __76__MODominantBundleCreationManager__suppressDuplicateHomeBundles_parameter
   return v5;
 }
 
-- (id)getInviteBundles:(id)a3
+- (id)getInviteBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v15 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = v3;
+  v4 = bundlesCopy;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -1571,13 +1571,13 @@ id __76__MODominantBundleCreationManager__suppressDuplicateHomeBundles_parameter
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 resources];
+        resources = [v9 resources];
 
-        if (v10)
+        if (resources)
         {
           v11 = [NSPredicate predicateWithFormat:@"type == %lu", 17];
-          v12 = [v9 resources];
-          v13 = [v12 filteredArrayUsingPredicate:v11];
+          resources2 = [v9 resources];
+          v13 = [resources2 filteredArrayUsingPredicate:v11];
 
           if ([v13 count])
           {

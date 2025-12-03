@@ -1,26 +1,26 @@
 @interface _BlastDoorLPPasswordsInviteMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPPasswordsInviteMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPPasswordsInviteMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPPasswordsInviteMetadata
 
-- (_BlastDoorLPPasswordsInviteMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPPasswordsInviteMetadata)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _BlastDoorLPPasswordsInviteMetadata;
   v5 = [(_BlastDoorLPPasswordsInviteMetadata *)&v13 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"groupName");
+    v6 = decodeStringForKey(coderCopy, @"groupName");
     groupName = v5->_groupName;
     v5->_groupName = v6;
 
-    v8 = decodeStringForKey(v4, @"urlParameters");
+    v8 = decodeStringForKey(coderCopy, @"urlParameters");
     urlParameters = v5->_urlParameters;
     v5->_urlParameters = v8;
 
@@ -31,24 +31,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupName = self->_groupName;
-  v5 = a3;
-  [v5 _bd_lp_encodeObjectIfNotNil:groupName forKey:@"groupName"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_urlParameters forKey:@"urlParameters"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:groupName forKey:@"groupName"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_urlParameters forKey:@"urlParameters"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPPasswordsInviteMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPPasswordsInviteMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPPasswordsInviteMetadata *)self groupName];
-    [(_BlastDoorLPPasswordsInviteMetadata *)v4 setGroupName:v5];
+    groupName = [(_BlastDoorLPPasswordsInviteMetadata *)self groupName];
+    [(_BlastDoorLPPasswordsInviteMetadata *)v4 setGroupName:groupName];
 
-    v6 = [(_BlastDoorLPPasswordsInviteMetadata *)self urlParameters];
-    [(_BlastDoorLPPasswordsInviteMetadata *)v4 setUrlParameters:v6];
+    urlParameters = [(_BlastDoorLPPasswordsInviteMetadata *)self urlParameters];
+    [(_BlastDoorLPPasswordsInviteMetadata *)v4 setUrlParameters:urlParameters];
 
     v7 = v4;
   }
@@ -56,13 +56,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = _BlastDoorLPPasswordsInviteMetadata;
-  if ([(_BlastDoorLPPasswordsInviteMetadata *)&v15 isEqual:v4])
+  if ([(_BlastDoorLPPasswordsInviteMetadata *)&v15 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -72,10 +72,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       groupName = self->_groupName;
-      v8 = [v6 groupName];
-      if (groupName | v8 && (v9 = v8, v10 = [(NSString *)groupName isEqual:v8], v9, !v10))
+      groupName = [v6 groupName];
+      if (groupName | groupName && (v9 = groupName, v10 = [(NSString *)groupName isEqual:groupName], v9, !v10))
       {
         v5 = 0;
       }
@@ -83,10 +83,10 @@
       else
       {
         urlParameters = self->_urlParameters;
-        v12 = [v6 urlParameters];
-        if (urlParameters | v12)
+        urlParameters = [v6 urlParameters];
+        if (urlParameters | urlParameters)
         {
-          v5 = [(NSString *)urlParameters isEqual:v12];
+          v5 = [(NSString *)urlParameters isEqual:urlParameters];
         }
 
         else

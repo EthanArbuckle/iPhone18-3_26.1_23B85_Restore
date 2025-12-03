@@ -27,21 +27,21 @@
   v5 = v4;
   if (v4)
   {
-    v33 = a1;
-    v6 = [v4 visits];
+    selfCopy = self;
+    visits = [v4 visits];
 
-    if (v6)
+    if (visits)
     {
       v7 = MEMORY[0x277CBEB18];
-      v8 = [v5 visits];
-      v6 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+      visits2 = [v5 visits];
+      visits = [v7 arrayWithCapacity:{objc_msgSend(visits2, "count")}];
 
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v9 = [v5 visits];
-      v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      visits3 = [v5 visits];
+      v10 = [visits3 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v10)
       {
         v11 = v10;
@@ -52,50 +52,50 @@
           {
             if (*v35 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(visits3);
             }
 
             v14 = [objc_alloc(MEMORY[0x277D01188]) initWithLearnedVisit:*(*(&v34 + 1) + 8 * i)];
             if (v14)
             {
-              [v6 addObject:v14];
+              [visits addObject:v14];
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v11 = [visits3 countByEnumeratingWithState:&v34 objects:v38 count:16];
         }
 
         while (v11);
       }
     }
 
-    v32 = [v5 location];
-    v15 = [v32 location];
-    v31 = [v5 location];
-    [v31 confidence];
+    location = [v5 location];
+    v32Location = [location location];
+    location2 = [v5 location];
+    [location2 confidence];
     v17 = v16;
-    v18 = [v5 identifier];
+    identifier = [v5 identifier];
     v19 = MEMORY[0x277D01170];
-    v30 = [v5 place];
-    v29 = [v19 typeFromPlaceType:{objc_msgSend(v30, "type")}];
+    place = [v5 place];
+    v29 = [v19 typeFromPlaceType:{objc_msgSend(place, "type")}];
     v20 = MEMORY[0x277D01170];
-    v21 = [v5 place];
-    v22 = [v20 typeSourceFromPlaceTypeSource:{objc_msgSend(v21, "typeSource")}];
-    v23 = [v5 place];
-    v24 = [v23 customLabel];
-    v25 = [v5 place];
-    v26 = [v25 mapItem];
-    a1 = [v33 initWithLocation:v15 confidence:v18 identifier:v29 type:v22 typeSource:v6 visits:v24 customLabel:v17 mapItem:v26];
+    place2 = [v5 place];
+    v22 = [v20 typeSourceFromPlaceTypeSource:{objc_msgSend(place2, "typeSource")}];
+    place3 = [v5 place];
+    customLabel = [place3 customLabel];
+    place4 = [v5 place];
+    mapItem = [place4 mapItem];
+    self = [selfCopy initWithLocation:v32Location confidence:identifier identifier:v29 type:v22 typeSource:visits visits:customLabel customLabel:v17 mapItem:mapItem];
 
-    v27 = a1;
+    selfCopy2 = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy2 = 0;
   }
 
-  return v27;
+  return selfCopy2;
 }
 
 + (id)locationsOfInterestFromLearnedLocationsOfInterest:()RTExtensions

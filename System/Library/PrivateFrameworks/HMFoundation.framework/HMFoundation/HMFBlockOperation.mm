@@ -1,19 +1,19 @@
 @interface HMFBlockOperation
-+ (id)blockOperationWithBlock:(id)a3;
-- (HMFBlockOperation)initWithTimeout:(double)a3;
++ (id)blockOperationWithBlock:(id)block;
+- (HMFBlockOperation)initWithTimeout:(double)timeout;
 - (NSArray)executionBlocks;
-- (void)addExecutionBlock:(id)a3;
+- (void)addExecutionBlock:(id)block;
 - (void)main;
 @end
 
 @implementation HMFBlockOperation
 
-+ (id)blockOperationWithBlock:(id)a3
++ (id)blockOperationWithBlock:(id)block
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  v6 = _Block_copy(blockCopy);
 
   v11[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (HMFBlockOperation)initWithTimeout:(double)a3
+- (HMFBlockOperation)initWithTimeout:(double)timeout
 {
   v7.receiver = self;
   v7.super_class = HMFBlockOperation;
-  v3 = [(HMFOperation *)&v7 initWithTimeout:a3];
+  v3 = [(HMFOperation *)&v7 initWithTimeout:timeout];
   v4 = v3;
   if (v3)
   {
@@ -49,12 +49,12 @@
   return v3;
 }
 
-- (void)addExecutionBlock:(id)a3
+- (void)addExecutionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    aBlock = v4;
+    aBlock = blockCopy;
     os_unfair_lock_lock_with_options();
     if (self->super._executing || self->super._finished)
     {
@@ -69,24 +69,24 @@
     self->_executionBlocks = v7;
 
     os_unfair_lock_unlock(&self->super._lock);
-    v4 = aBlock;
+    blockCopy = aBlock;
   }
 }
 
 - (void)main
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMFBlockOperation *)self executionBlocks];
-  v4 = [v3 count];
+  executionBlocks = [(HMFBlockOperation *)self executionBlocks];
+  v4 = [executionBlocks count];
 
   if ([(HMFOperation *)self isExecuting]&& ([(HMFBlockOperation *)self isCancelled]& 1) == 0 && v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = HMFGetLogIdentifier(v6);
+      v8 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       v24 = v8;
       v25 = 2048;
@@ -99,8 +99,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(HMFBlockOperation *)v6 executionBlocks];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    executionBlocks2 = [(HMFBlockOperation *)selfCopy executionBlocks];
+    v10 = [executionBlocks2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -112,11 +112,11 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(executionBlocks2);
           }
 
           v14 = *(*(&v18 + 1) + 8 * v13);
-          queue = v6->super._queue;
+          queue = selfCopy->super._queue;
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __25__HMFBlockOperation_main__block_invoke;
@@ -127,7 +127,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [executionBlocks2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);

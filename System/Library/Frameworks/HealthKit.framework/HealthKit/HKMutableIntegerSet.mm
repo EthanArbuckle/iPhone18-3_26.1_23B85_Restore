@@ -1,29 +1,29 @@
 @interface HKMutableIntegerSet
-- (HKMutableIntegerSet)initWithCapacity:(unint64_t)a3;
-- (void)addInteger:(int64_t)a3;
-- (void)enumerateIntegersUsingBlock:(id)a3;
-- (void)removeInteger:(int64_t)a3;
+- (HKMutableIntegerSet)initWithCapacity:(unint64_t)capacity;
+- (void)addInteger:(int64_t)integer;
+- (void)enumerateIntegersUsingBlock:(id)block;
+- (void)removeInteger:(int64_t)integer;
 @end
 
 @implementation HKMutableIntegerSet
 
-- (HKMutableIntegerSet)initWithCapacity:(unint64_t)a3
+- (HKMutableIntegerSet)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = HKMutableIntegerSet;
-  return [(HKIntegerSet *)&v4 initWithCapacity:a3];
+  return [(HKIntegerSet *)&v4 initWithCapacity:capacity];
 }
 
-- (void)enumerateIntegersUsingBlock:(id)a3
+- (void)enumerateIntegersUsingBlock:(id)block
 {
   self->_enumerating = 1;
   v4.receiver = self;
   v4.super_class = HKMutableIntegerSet;
-  [(HKIntegerSet *)&v4 enumerateIntegersUsingBlock:a3];
+  [(HKIntegerSet *)&v4 enumerateIntegersUsingBlock:block];
   self->_enumerating = 0;
 }
 
-- (void)addInteger:(int64_t)a3
+- (void)addInteger:(int64_t)integer
 {
   if (!self->super._set)
   {
@@ -38,10 +38,10 @@
 
   set = self->super._set;
 
-  CFSetAddValue(set, a3);
+  CFSetAddValue(set, integer);
 }
 
-- (void)removeInteger:(int64_t)a3
+- (void)removeInteger:(int64_t)integer
 {
   if (!self->super._set)
   {
@@ -56,7 +56,7 @@
 
   set = self->super._set;
 
-  CFSetRemoveValue(set, a3);
+  CFSetRemoveValue(set, integer);
 }
 
 - (void)addInteger:.cold.1()

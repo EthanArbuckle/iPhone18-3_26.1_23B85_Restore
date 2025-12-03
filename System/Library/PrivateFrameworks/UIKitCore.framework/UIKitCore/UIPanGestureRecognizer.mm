@@ -1,57 +1,57 @@
 @interface UIPanGestureRecognizer
-- (BOOL)_shouldBeginHorizontally:(BOOL)a3 vertically:(BOOL)a4 withEvent:(id)a5;
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3;
+- (BOOL)_shouldBeginHorizontally:(BOOL)horizontally vertically:(BOOL)vertically withEvent:(id)event;
+- (BOOL)_shouldTryToBeginWithEvent:(id)event;
 - (BOOL)_touchesExceedAllowableSeparation;
-- (BOOL)_updateMovingTouchesArraySavingOldArray:(id *)a3;
+- (BOOL)_updateMovingTouchesArraySavingOldArray:(id *)array;
 - (BOOL)_willScrollX;
 - (BOOL)_willScrollY;
-- (BOOL)shouldReceiveEvent:(id)a3;
+- (BOOL)shouldReceiveEvent:(id)event;
 - (CGPoint)_adjustSceneReferenceLocation:(CGPoint)result;
-- (CGPoint)_convertPoint:(CGPoint)a3 fromSceneReferenceCoordinatesToView:(id)a4;
-- (CGPoint)_convertPoint:(CGPoint)a3 toSceneReferenceCoordinatesFromView:(id)a4;
-- (CGPoint)_convertVelocitySample:(id)a3 fromSceneReferenceCoordinatesToView:(id)a4;
-- (CGPoint)_initialLocationInView:(id)a3;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4;
+- (CGPoint)_convertPoint:(CGPoint)point fromSceneReferenceCoordinatesToView:(id)view;
+- (CGPoint)_convertPoint:(CGPoint)point toSceneReferenceCoordinatesFromView:(id)view;
+- (CGPoint)_convertVelocitySample:(id)sample fromSceneReferenceCoordinatesToView:(id)view;
+- (CGPoint)_initialLocationInView:(id)view;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view;
 - (CGPoint)translationInView:(UIView *)view;
 - (CGPoint)velocityInView:(UIView *)view;
-- (UIPanGestureRecognizer)initWithCoder:(id)a3;
-- (UIPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIPanGestureRecognizer)initWithCoder:(id)coder;
+- (UIPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_allowableSeparation;
 - (double)_hysteresis;
-- (double)_offsetInViewFromSceneReferenceLocation:(double)a3 toSceneReferenceLocation:(double)a4;
-- (double)_shiftPanLocationToNewSceneReferenceLocation:(double)a3 lockingToAxis:(double)a4;
-- (double)_translationDistanceInSceneInSelfAxis:(double)a3;
+- (double)_offsetInViewFromSceneReferenceLocation:(double)location toSceneReferenceLocation:(double)referenceLocation;
+- (double)_shiftPanLocationToNewSceneReferenceLocation:(double)location lockingToAxis:(double)axis;
+- (double)_translationDistanceInSceneInSelfAxis:(double)axis;
 - (id)_activeTouches;
 - (uint64_t)_scrollDeviceCategory;
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 affectingTranslation:(BOOL)a5;
-- (void)_handleEndedTouches:(id)a3 withFinalStateAdjustments:(id)a4;
-- (void)_ignoreTouchForTouchIdentifier:(unsigned int)a3;
-- (void)_ignoreTouches:(uint64_t)a3 forEvent:;
-- (void)_processScrollPhaseChanged:(id)a3;
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time affectingTranslation:(BOOL)translation;
+- (void)_handleEndedTouches:(id)touches withFinalStateAdjustments:(id)adjustments;
+- (void)_ignoreTouchForTouchIdentifier:(unsigned int)identifier;
+- (void)_ignoreTouches:(uint64_t)touches forEvent:;
+- (void)_processScrollPhaseChanged:(id)changed;
 - (void)_removeHysteresisFromTranslation;
 - (void)_resetGestureRecognizer;
 - (void)_resetVelocitySamples;
-- (void)_scrollingChangedWithEvent:(id)a3;
-- (void)_setCanPanVertically:(BOOL)a3;
-- (void)_setFailsPastHysteresisWithoutMinTouches:(BOOL)a3;
-- (void)_setIgnoresStationaryTouches:(BOOL)a3;
-- (void)_setRequiresImmediateMultipleTouches:(BOOL)a3;
-- (void)_setiOSMacScrollingEnabled:(BOOL)a3;
-- (void)_touchesListChangedFrom:(id)a3 to:(id)a4;
+- (void)_scrollingChangedWithEvent:(id)event;
+- (void)_setCanPanVertically:(BOOL)vertically;
+- (void)_setFailsPastHysteresisWithoutMinTouches:(BOOL)touches;
+- (void)_setIgnoresStationaryTouches:(BOOL)touches;
+- (void)_setRequiresImmediateMultipleTouches:(BOOL)touches;
+- (void)_setiOSMacScrollingEnabled:(BOOL)enabled;
+- (void)_touchesListChangedFrom:(id)from to:(id)to;
 - (void)_willBeginAfterSatisfyingFailureRequirements;
 - (void)clearMultitouchTimer;
-- (void)encodeWithCoder:(id)a3;
-- (void)multitouchExpired:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setFailsPastMaxTouches:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)multitouchExpired:(id)expired;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)setDelegate:(id)delegate;
+- (void)setFailsPastMaxTouches:(BOOL)touches;
 - (void)setTranslation:(CGPoint)translation inView:(UIView *)view;
-- (void)startMultitouchTimer:(double)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)startMultitouchTimer:(double)timer;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIPanGestureRecognizer
@@ -83,13 +83,13 @@
 
 - (void)_resetVelocitySamples
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 424);
-    *(a1 + 424) = 0;
+    v2 = *(self + 424);
+    *(self + 424) = 0;
 
-    v3 = *(a1 + 432);
-    *(a1 + 432) = 0;
+    v3 = *(self + 432);
+    *(self + 432) = 0;
   }
 }
 
@@ -105,8 +105,8 @@
 - (double)_allowableSeparation
 {
   allowableSeparation = self->_allowableSeparation;
-  v3 = [(UIGestureRecognizer *)self view];
-  [v3 _touchSloppinessFactor];
+  view = [(UIGestureRecognizer *)self view];
+  [view _touchSloppinessFactor];
   v5 = allowableSeparation * v4;
 
   return v5;
@@ -114,13 +114,13 @@
 
 - (id)_activeTouches
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[40];
+    self = self[40];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)_willScrollX
@@ -143,8 +143,8 @@
 - (double)_hysteresis
 {
   hysteresis = self->_hysteresis;
-  v4 = [(UIGestureRecognizer *)self view];
-  [v4 _touchSloppinessFactor];
+  view = [(UIGestureRecognizer *)self view];
+  [view _touchSloppinessFactor];
   v6 = hysteresis * v5;
 
   v7 = [(UIGestureRecognizer *)self _activeEventOfType:10];
@@ -183,18 +183,18 @@
 
 - (void)_removeHysteresisFromTranslation
 {
-  v34 = [(UIGestureRecognizer *)self view];
+  view = [(UIGestureRecognizer *)self view];
   [(UIPanGestureRecognizer *)self _hysteresis];
   v4 = v3;
-  [(UIPanGestureRecognizer *)self translationInView:v34];
+  [(UIPanGestureRecognizer *)self translationInView:view];
   v6 = v5;
   v8 = v7;
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);
-  [(UIPanGestureRecognizer *)self _convertPoint:v34 toSceneReferenceCoordinatesFromView:*MEMORY[0x1E695EFF8], v10];
+  [(UIPanGestureRecognizer *)self _convertPoint:view toSceneReferenceCoordinatesFromView:*MEMORY[0x1E695EFF8], v10];
   v12 = v11;
   v14 = v13;
-  [(UIPanGestureRecognizer *)self _convertPoint:v34 toSceneReferenceCoordinatesFromView:v6, v8];
+  [(UIPanGestureRecognizer *)self _convertPoint:view toSceneReferenceCoordinatesFromView:v6, v8];
   v16 = v15 - v12;
   v18 = v17 - v14;
   v19 = v4 + v16;
@@ -231,10 +231,10 @@
     v24 = v22;
   }
 
-  [(UIPanGestureRecognizer *)self _convertPoint:v34 fromSceneReferenceCoordinatesToView:v9, v10];
+  [(UIPanGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v9, v10];
   v26 = v25;
   v28 = v27;
-  [(UIPanGestureRecognizer *)self _convertPoint:v34 fromSceneReferenceCoordinatesToView:v21, v24];
+  [(UIPanGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v21, v24];
   v30 = v29 - v26;
   v32 = v31 - v28;
   panFlags = self->_panFlags;
@@ -248,20 +248,20 @@
     v32 = 0.0;
   }
 
-  [(UIPanGestureRecognizer *)self setTranslation:v34 inView:v30, v32];
+  [(UIPanGestureRecognizer *)self setTranslation:view inView:v30, v32];
 }
 
 - (void)_willBeginAfterSatisfyingFailureRequirements
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(UIPanGestureRecognizer *)self setTranslation:v3 inView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIPanGestureRecognizer *)self setTranslation:view inView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
 }
 
-- (UIPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = UIPanGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -271,7 +271,7 @@
   return v5;
 }
 
-- (UIPanGestureRecognizer)initWithCoder:(id)a3
+- (UIPanGestureRecognizer)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = UIPanGestureRecognizer;
@@ -280,19 +280,19 @@
   if (v4)
   {
     _UIPanGestureRecognizerCommonInit(v4);
-    if ([a3 containsValueForKey:@"UIPanGestureRecognizer.minimumNumberOfTouches"])
+    if ([coder containsValueForKey:@"UIPanGestureRecognizer.minimumNumberOfTouches"])
     {
-      v5->_minimumNumberOfTouches = [a3 decodeIntegerForKey:@"UIPanGestureRecognizer.minimumNumberOfTouches"];
+      v5->_minimumNumberOfTouches = [coder decodeIntegerForKey:@"UIPanGestureRecognizer.minimumNumberOfTouches"];
     }
 
-    if ([a3 containsValueForKey:@"UIPanGestureRecognizer.maximumNumberOfTouches"])
+    if ([coder containsValueForKey:@"UIPanGestureRecognizer.maximumNumberOfTouches"])
     {
-      v5->_maximumNumberOfTouches = [a3 decodeIntegerForKey:@"UIPanGestureRecognizer.maximumNumberOfTouches"];
+      v5->_maximumNumberOfTouches = [coder decodeIntegerForKey:@"UIPanGestureRecognizer.maximumNumberOfTouches"];
     }
 
-    if ([a3 containsValueForKey:@"UIPanGestureRecognizer.allowedScrollTypesMask"])
+    if ([coder containsValueForKey:@"UIPanGestureRecognizer.allowedScrollTypesMask"])
     {
-      v5->_allowedScrollTypesMask = [a3 decodeIntegerForKey:@"UIPanGestureRecognizer.allowedScrollTypesMask"];
+      v5->_allowedScrollTypesMask = [coder decodeIntegerForKey:@"UIPanGestureRecognizer.allowedScrollTypesMask"];
     }
 
     v6 = v5;
@@ -301,7 +301,7 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = UIPanGestureRecognizer;
@@ -309,27 +309,27 @@
   minimumNumberOfTouches = self->_minimumNumberOfTouches;
   if (minimumNumberOfTouches != 1)
   {
-    [a3 encodeInteger:minimumNumberOfTouches forKey:@"UIPanGestureRecognizer.minimumNumberOfTouches"];
+    [coder encodeInteger:minimumNumberOfTouches forKey:@"UIPanGestureRecognizer.minimumNumberOfTouches"];
   }
 
   maximumNumberOfTouches = self->_maximumNumberOfTouches;
   if (maximumNumberOfTouches != 0xFFFFFFFF)
   {
-    [a3 encodeInteger:maximumNumberOfTouches forKey:@"UIPanGestureRecognizer.maximumNumberOfTouches"];
+    [coder encodeInteger:maximumNumberOfTouches forKey:@"UIPanGestureRecognizer.maximumNumberOfTouches"];
   }
 
-  [a3 encodeInteger:self->_allowedScrollTypesMask forKey:@"UIPanGestureRecognizer.allowedScrollTypesMask"];
+  [coder encodeInteger:self->_allowedScrollTypesMask forKey:@"UIPanGestureRecognizer.allowedScrollTypesMask"];
 }
 
-- (void)startMultitouchTimer:(double)a3
+- (void)startMultitouchTimer:(double)timer
 {
   [(UIPanGestureRecognizer *)self clearMultitouchTimer];
   *&self->_panFlags |= 0x80u;
 
-  [(UIPanGestureRecognizer *)self performSelector:sel_multitouchExpired_ withObject:0 afterDelay:a3];
+  [(UIPanGestureRecognizer *)self performSelector:sel_multitouchExpired_ withObject:0 afterDelay:timer];
 }
 
-- (void)multitouchExpired:(id)a3
+- (void)multitouchExpired:(id)expired
 {
   if ([(NSMutableArray *)self->_touches count]< self->_minimumNumberOfTouches)
   {
@@ -339,9 +339,9 @@
   }
 }
 
-- (void)setFailsPastMaxTouches:(BOOL)a3
+- (void)setFailsPastMaxTouches:(BOOL)touches
 {
-  if (a3)
+  if (touches)
   {
     v3 = 64;
   }
@@ -354,9 +354,9 @@
   *&self->_panFlags = *&self->_panFlags & 0xFFBF | v3;
 }
 
-- (void)_setFailsPastHysteresisWithoutMinTouches:(BOOL)a3
+- (void)_setFailsPastHysteresisWithoutMinTouches:(BOOL)touches
 {
-  if (a3)
+  if (touches)
   {
     v3 = 8;
   }
@@ -369,9 +369,9 @@
   *(self + 392) = *(self + 392) & 0xF7 | v3;
 }
 
-- (void)_setRequiresImmediateMultipleTouches:(BOOL)a3
+- (void)_setRequiresImmediateMultipleTouches:(BOOL)touches
 {
-  if (a3)
+  if (touches)
   {
     v3 = 256;
   }
@@ -384,9 +384,9 @@
   *&self->_panFlags = *&self->_panFlags & 0xFEFF | v3;
 }
 
-- (void)_setIgnoresStationaryTouches:(BOOL)a3
+- (void)_setIgnoresStationaryTouches:(BOOL)touches
 {
-  if (a3)
+  if (touches)
   {
     v3 = 4;
   }
@@ -399,9 +399,9 @@
   *(self + 393) = *(self + 393) & 0xFB | v3;
 }
 
-- (void)_setCanPanVertically:(BOOL)a3
+- (void)_setCanPanVertically:(BOOL)vertically
 {
-  if (a3)
+  if (vertically)
   {
     v3 = 2;
   }
@@ -414,28 +414,28 @@
   *&self->_panFlags = *&self->_panFlags & 0xFFFD | v3;
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 toSceneReferenceCoordinatesFromView:(id)a4
+- (CGPoint)_convertPoint:(CGPoint)point toSceneReferenceCoordinatesFromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (view)
   {
-    v6 = a4;
+    viewCopy = view;
   }
 
   else
   {
-    v7 = [(UIGestureRecognizer *)self view];
-    v6 = [v7 window];
+    view = [(UIGestureRecognizer *)self view];
+    viewCopy = [view window];
   }
 
-  v8 = [v6 _window];
-  [v6 convertPoint:0 toView:{x, y}];
+  _window = [viewCopy _window];
+  [viewCopy convertPoint:0 toView:{x, y}];
   v11 = v9;
   v12 = v10;
-  if (v8)
+  if (_window)
   {
-    [v8 _convertDoublePointToSceneReferenceSpace:{v9, v10}];
+    [_window _convertDoublePointToSceneReferenceSpace:{v9, v10}];
     v11 = v13;
     v12 = v14;
   }
@@ -447,31 +447,31 @@
   return result;
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 fromSceneReferenceCoordinatesToView:(id)a4
+- (CGPoint)_convertPoint:(CGPoint)point fromSceneReferenceCoordinatesToView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (view)
   {
-    v6 = a4;
+    viewCopy = view;
   }
 
   else
   {
-    v7 = [(UIGestureRecognizer *)self view];
-    v6 = [v7 _window];
+    view = [(UIGestureRecognizer *)self view];
+    viewCopy = [view _window];
   }
 
-  v8 = [v6 _window];
-  v9 = v8;
-  if (v8)
+  _window = [viewCopy _window];
+  v9 = _window;
+  if (_window)
   {
-    [v8 _convertDoublePointFromSceneReferenceSpace:{x, y}];
+    [_window _convertDoublePointFromSceneReferenceSpace:{x, y}];
     x = v10;
     y = v11;
   }
 
-  [v6 convertPoint:0 fromView:{x, y}];
+  [viewCopy convertPoint:0 fromView:{x, y}];
   v13 = v12;
   v15 = v14;
 
@@ -508,19 +508,19 @@
   }
 }
 
-- (CGPoint)_convertVelocitySample:(id)a3 fromSceneReferenceCoordinatesToView:(id)a4
+- (CGPoint)_convertVelocitySample:(id)sample fromSceneReferenceCoordinatesToView:(id)view
 {
-  if (a3)
+  if (sample)
   {
     v5 = 0.0;
     v6 = 0.0;
-    if (*(a3 + 5) >= 0.001)
+    if (*(sample + 5) >= 0.001)
     {
-      [(UIPanGestureRecognizer *)self _convertPoint:a4 fromSceneReferenceCoordinatesToView:*(a3 + 1), *(a3 + 2)];
+      [(UIPanGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:*(sample + 1), *(sample + 2)];
       v10 = v9;
       v12 = v11;
-      [(UIPanGestureRecognizer *)self _convertPoint:a4 fromSceneReferenceCoordinatesToView:*(a3 + 3), *(a3 + 4)];
-      v14 = *(a3 + 5);
+      [(UIPanGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:*(sample + 3), *(sample + 4)];
+      v14 = *(sample + 5);
       v5 = (v13 - v10) / v14;
       v6 = (v15 - v12) / v14;
     }
@@ -557,15 +557,15 @@
   return result;
 }
 
-- (void)_touchesListChangedFrom:(id)a3 to:(id)a4
+- (void)_touchesListChangedFrom:(id)from to:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:from];
   [(UIGestureRecognizer *)self _centroidOfTouches:v6 excludingEnded:0];
   v8 = v7;
   v10 = v9;
 
-  v11 = [MEMORY[0x1E695DFD8] setWithArray:a4];
+  v11 = [MEMORY[0x1E695DFD8] setWithArray:to];
   [(UIGestureRecognizer *)self _centroidOfTouches:v11 excludingEnded:1];
   v13 = v12;
   v15 = v14;
@@ -583,8 +583,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = a4;
-  v20 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  toCopy = to;
+  v20 = [toCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v20)
   {
     v21 = 0;
@@ -596,7 +596,7 @@
       {
         if (*v25 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(toCopy);
         }
 
         if ([*(*(&v24 + 1) + 8 * v23) phase] < 3)
@@ -608,7 +608,7 @@
       }
 
       while (v20 != v23);
-      v20 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v20 = [toCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v20);
@@ -618,32 +618,32 @@
   self->_lastTouchCount = v20;
 }
 
-- (double)_offsetInViewFromSceneReferenceLocation:(double)a3 toSceneReferenceLocation:(double)a4
+- (double)_offsetInViewFromSceneReferenceLocation:(double)location toSceneReferenceLocation:(double)referenceLocation
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v10 = [a1 view];
-  [a1 _convertPoint:v10 fromSceneReferenceCoordinatesToView:{a2, a3}];
+  view = [self view];
+  [self _convertPoint:view fromSceneReferenceCoordinatesToView:{a2, location}];
   v12 = v11;
 
-  v13 = [a1 view];
-  [a1 _convertPoint:v13 fromSceneReferenceCoordinatesToView:{a4, a5}];
+  view2 = [self view];
+  [self _convertPoint:view2 fromSceneReferenceCoordinatesToView:{referenceLocation, a5}];
   v15 = v14;
 
   return v15 - v12;
 }
 
-- (double)_shiftPanLocationToNewSceneReferenceLocation:(double)a3 lockingToAxis:(double)a4
+- (double)_shiftPanLocationToNewSceneReferenceLocation:(double)location lockingToAxis:(double)axis
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v6 = [(UIPanGestureRecognizer *)a1 _offsetInViewFromSceneReferenceLocation:a1[47] toSceneReferenceLocation:a3, a4];
+  axis = [(UIPanGestureRecognizer *)self _offsetInViewFromSceneReferenceLocation:self[47] toSceneReferenceLocation:location, axis];
   if (a2 == 1)
   {
     v8 = 0.0;
@@ -661,7 +661,7 @@
 
   else
   {
-    v9 = v6;
+    v9 = axis;
   }
 
   if (a2 == 2)
@@ -674,13 +674,13 @@
     v10 = v8;
   }
 
-  v11 = [a1 view];
-  [a1 _convertPoint:v11 fromSceneReferenceCoordinatesToView:{a1[37], a1[38]}];
+  view = [self view];
+  [self _convertPoint:view fromSceneReferenceCoordinatesToView:{self[37], self[38]}];
   v13 = v12;
   v15 = v14;
 
-  v16 = [a1 view];
-  [a1 _convertPoint:v16 toSceneReferenceCoordinatesFromView:{v9 + v13, v10 + v15}];
+  view2 = [self view];
+  [self _convertPoint:view2 toSceneReferenceCoordinatesFromView:{v9 + v13, v10 + v15}];
   v18 = v17;
 
   return v18;
@@ -711,15 +711,15 @@ LABEL_10:
   return result;
 }
 
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 affectingTranslation:(BOOL)a5
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time affectingTranslation:(BOOL)translation
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  translationCopy = translation;
+  y = to.y;
+  x = to.x;
   [(UIPanGestureRecognizer *)self _adjustSceneReferenceLocation:?];
   v11 = v10;
   v13 = v12;
-  v14 = a4 - self->_lastTouchTime;
+  v14 = time - self->_lastTouchTime;
   if (v14 > 0.008 || v14 > 0.0)
   {
     v15 = self->_previousVelocitySample;
@@ -742,7 +742,7 @@ LABEL_10:
     *(v17 + 5) = v14;
   }
 
-  if (v5)
+  if (translationCopy)
   {
     self->_lastUnadjustedSceneReferenceLocation.x = x;
     self->_lastUnadjustedSceneReferenceLocation.y = y;
@@ -750,30 +750,30 @@ LABEL_10:
     self->_lastSceneReferenceLocation.y = v13;
   }
 
-  self->_lastTouchTime = a4;
+  self->_lastTouchTime = time;
 }
 
-- (double)_translationDistanceInSceneInSelfAxis:(double)a3
+- (double)_translationDistanceInSceneInSelfAxis:(double)axis
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v6 = [a1 view];
-  [a1 translationInView:v6];
+  view = [self view];
+  [self translationInView:view];
   v8 = a2 * v7;
-  v10 = a3 * v9;
-  [a1 _convertPoint:v6 toSceneReferenceCoordinatesFromView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  v10 = axis * v9;
+  [self _convertPoint:view toSceneReferenceCoordinatesFromView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   v12 = v11;
   v14 = v13;
-  [a1 _convertPoint:v6 toSceneReferenceCoordinatesFromView:{v8, v10}];
+  [self _convertPoint:view toSceneReferenceCoordinatesFromView:{v8, v10}];
   v17 = hypot(v15 - v12, v16 - v14);
 
   return v17;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   *(self + 392) = *(self + 392) & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
@@ -789,18 +789,18 @@ LABEL_10:
   *(self + 392) = *(self + 392) & 0xFD | v5;
   v6.receiver = self;
   v6.super_class = UIPanGestureRecognizer;
-  [(UIGestureRecognizer *)&v6 setDelegate:a3];
+  [(UIGestureRecognizer *)&v6 setDelegate:delegate];
 }
 
-- (BOOL)_shouldBeginHorizontally:(BOOL)a3 vertically:(BOOL)a4 withEvent:(id)a5
+- (BOOL)_shouldBeginHorizontally:(BOOL)horizontally vertically:(BOOL)vertically withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(UIGestureRecognizer *)self delegate];
-  v10 = v9;
-  if ((*(self + 392) & 1) != 0 && v7 && (*&self->_panFlags & 0x10) == 0)
+  verticallyCopy = vertically;
+  horizontallyCopy = horizontally;
+  delegate = [(UIGestureRecognizer *)self delegate];
+  v10 = delegate;
+  if ((*(self + 392) & 1) != 0 && horizontallyCopy && (*&self->_panFlags & 0x10) == 0)
   {
-    if ([v9 _panGestureRecognizer:self shouldTryToBeginHorizontallyWithEvent:a5])
+    if ([delegate _panGestureRecognizer:self shouldTryToBeginHorizontallyWithEvent:event])
     {
       v11 = 20;
     }
@@ -813,9 +813,9 @@ LABEL_10:
     *&self->_panFlags = *&self->_panFlags & 0xFFFB | v11;
   }
 
-  if ((*(self + 392) & 2) != 0 && v6 && (*&self->_panFlags & 0x20) == 0)
+  if ((*(self + 392) & 2) != 0 && verticallyCopy && (*&self->_panFlags & 0x20) == 0)
   {
-    if ([v10 _panGestureRecognizer:self shouldTryToBeginVerticallyWithEvent:a5])
+    if ([v10 _panGestureRecognizer:self shouldTryToBeginVerticallyWithEvent:event])
     {
       v12 = 40;
     }
@@ -828,9 +828,9 @@ LABEL_10:
     *&self->_panFlags = *&self->_panFlags & 0xFFF7 | v12;
   }
 
-  if (!v7)
+  if (!horizontallyCopy)
   {
-    if (!v6)
+    if (!verticallyCopy)
     {
       LOBYTE(v14) = 0;
       goto LABEL_22;
@@ -841,7 +841,7 @@ LABEL_10:
   }
 
   panFlags = self->_panFlags;
-  if (((!v6 | ((*&panFlags & 4) >> 2)) & 1) == 0)
+  if (((!verticallyCopy | ((*&panFlags & 4) >> 2)) & 1) == 0)
   {
 LABEL_20:
     v14 = (*&panFlags >> 3) & 1;
@@ -854,19 +854,19 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3
+- (BOOL)_shouldTryToBeginWithEvent:(id)event
 {
-  if (![a3 type] && -[NSMutableArray count](self->_movingTouches, "count") < self->_minimumNumberOfTouches || !-[UIPanGestureRecognizer _shouldBeginHorizontally:vertically:withEvent:](self, "_shouldBeginHorizontally:vertically:withEvent:", -[UIPanGestureRecognizer _willScrollX](self, "_willScrollX"), -[UIPanGestureRecognizer _willScrollY](self, "_willScrollY"), a3))
+  if (![event type] && -[NSMutableArray count](self->_movingTouches, "count") < self->_minimumNumberOfTouches || !-[UIPanGestureRecognizer _shouldBeginHorizontally:vertically:withEvent:](self, "_shouldBeginHorizontally:vertically:withEvent:", -[UIPanGestureRecognizer _willScrollX](self, "_willScrollX"), -[UIPanGestureRecognizer _willScrollY](self, "_willScrollY"), event))
   {
     return 0;
   }
 
   v5 = 1;
-  [(UIPanGestureRecognizer *)self _shouldBeginHorizontally:1 vertically:1 withEvent:a3];
+  [(UIPanGestureRecognizer *)self _shouldBeginHorizontally:1 vertically:1 withEvent:event];
   return v5;
 }
 
-- (BOOL)_updateMovingTouchesArraySavingOldArray:(id *)a3
+- (BOOL)_updateMovingTouchesArraySavingOldArray:(id *)array
 {
   v20 = *MEMORY[0x1E69E9840];
   if ((*(self + 393) & 4) == 0 || [(NSMutableArray *)self->_touches count]< 2)
@@ -898,9 +898,9 @@ LABEL_22:
         v11 = [(UITouch *)v10 _isStationaryRelativeToTouches:?];
         if (v11 == [(NSMutableArray *)self->_movingTouches containsObject:v10])
         {
-          if (a3 && !*a3)
+          if (array && !*array)
           {
-            *a3 = [(NSMutableArray *)self->_movingTouches copy];
+            *array = [(NSMutableArray *)self->_movingTouches copy];
           }
 
           movingTouches = self->_movingTouches;
@@ -932,13 +932,13 @@ LABEL_22:
   return v7;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v31 = *MEMORY[0x1E69E9840];
   if (self)
   {
     p_digitizerLocation = &self->_digitizerLocation;
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     p_digitizerLocation->x = v8;
     self->_digitizerLocation.y = v9;
   }
@@ -952,8 +952,8 @@ LABEL_22:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = a3;
-    v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    beganCopy = began;
+    v13 = [beganCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v13)
     {
       v14 = v13;
@@ -964,7 +964,7 @@ LABEL_22:
         {
           if (*v27 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(beganCopy);
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
@@ -986,7 +986,7 @@ LABEL_22:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v14 = [beganCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v14)
         {
           continue;
@@ -1004,9 +1004,9 @@ LABEL_22:
 
     else
     {
-      v18 = [(UIPanGestureRecognizer *)self _touchesExceedAllowableSeparation];
-      v19 = v18;
-      if (v18)
+      _touchesExceedAllowableSeparation = [(UIPanGestureRecognizer *)self _touchesExceedAllowableSeparation];
+      v19 = _touchesExceedAllowableSeparation;
+      if (_touchesExceedAllowableSeparation)
       {
         v20 = @"MaxAllowableSeparationExceeded";
       }
@@ -1056,18 +1056,18 @@ LABEL_22:
     self->_lastSceneReferenceLocation = self->_firstSceneReferenceLocation;
     self->_lastUnadjustedSceneReferenceLocation = self->_firstSceneReferenceLocation;
     self->_lastTouchCount = [(NSMutableArray *)self->_movingTouches count];
-    [a4 timestamp];
+    [event timestamp];
     self->_lastTouchTime = v24;
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v30 = *MEMORY[0x1E69E9840];
   if (self)
   {
     p_digitizerLocation = &self->_digitizerLocation;
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     p_digitizerLocation->x = v8;
     self->_digitizerLocation.y = v9;
     v28 = 0;
@@ -1131,12 +1131,12 @@ LABEL_13:
     [(UIGestureRecognizer *)self _centroidOfTouches:self->_movingTouches excludingEnded:1, v24];
     v19 = v18;
     v21 = v20;
-    [a4 timestamp];
+    [event timestamp];
     [(UIPanGestureRecognizer *)self _centroidMovedTo:1 atTime:v19 affectingTranslation:v21, v22];
-    [(UIPanGestureRecognizer *)self _didUpdateCentroidWithTouches:a3 event:a4];
+    [(UIPanGestureRecognizer *)self _didUpdateCentroidWithTouches:moved event:event];
   }
 
-  if ([(UIGestureRecognizer *)self state]|| ![(UIPanGestureRecognizer *)self _shouldTryToBeginWithEvent:a4])
+  if ([(UIGestureRecognizer *)self state]|| ![(UIPanGestureRecognizer *)self _shouldTryToBeginWithEvent:event])
   {
     if ([(UIPanGestureRecognizer *)self _failsPastHysteresisWithoutMinTouches])
     {
@@ -1160,7 +1160,7 @@ LABEL_13:
   }
 }
 
-- (void)_handleEndedTouches:(id)a3 withFinalStateAdjustments:(id)a4
+- (void)_handleEndedTouches:(id)touches withFinalStateAdjustments:(id)adjustments
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = [(NSMutableArray *)self->_movingTouches copy];
@@ -1169,8 +1169,8 @@ LABEL_13:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = a3;
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  touchesCopy = touches;
+  v9 = [touchesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1181,7 +1181,7 @@ LABEL_13:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
@@ -1189,7 +1189,7 @@ LABEL_13:
         [(NSMutableArray *)self->_movingTouches removeObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [touchesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -1205,16 +1205,16 @@ LABEL_13:
 
   else
   {
-    (*(a4 + 2))();
+    (*(adjustments + 2))();
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (self)
   {
     p_digitizerLocation = &self->_digitizerLocation;
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     p_digitizerLocation->x = v7;
     self->_digitizerLocation.y = v8;
   }
@@ -1224,7 +1224,7 @@ LABEL_13:
   v9[2] = __49__UIPanGestureRecognizer_touchesEnded_withEvent___block_invoke;
   v9[3] = &unk_1E70F3590;
   v9[4] = self;
-  [(UIPanGestureRecognizer *)self _handleEndedTouches:a3 withFinalStateAdjustments:v9];
+  [(UIPanGestureRecognizer *)self _handleEndedTouches:ended withFinalStateAdjustments:v9];
 }
 
 uint64_t __49__UIPanGestureRecognizer_touchesEnded_withEvent___block_invoke(uint64_t a1)
@@ -1244,27 +1244,27 @@ uint64_t __49__UIPanGestureRecognizer_touchesEnded_withEvent___block_invoke(uint
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__UIPanGestureRecognizer_touchesCancelled_withEvent___block_invoke;
   v4[3] = &unk_1E70F3590;
   v4[4] = self;
-  [(UIPanGestureRecognizer *)self _handleEndedTouches:a3 withFinalStateAdjustments:v4];
+  [(UIPanGestureRecognizer *)self _handleEndedTouches:cancelled withFinalStateAdjustments:v4];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v7 = [a3 anyObject];
-  [(UIGestureRecognizer *)self ignorePress:v7 forEvent:a4];
+  anyObject = [began anyObject];
+  [(UIGestureRecognizer *)self ignorePress:anyObject forEvent:event];
 
   v8.receiver = self;
   v8.super_class = UIPanGestureRecognizer;
-  [(UIGestureRecognizer *)&v8 pressesBegan:a3 withEvent:a4];
+  [(UIGestureRecognizer *)&v8 pressesBegan:began withEvent:event];
 }
 
-- (void)_ignoreTouchForTouchIdentifier:(unsigned int)a3
+- (void)_ignoreTouchForTouchIdentifier:(unsigned int)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -1287,7 +1287,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([v10 _touchIdentifier] == a3)
+      if ([v10 _touchIdentifier] == identifier)
       {
         break;
       }
@@ -1321,17 +1321,17 @@ LABEL_3:
 LABEL_12:
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  [(UIPanGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:self->_lastSceneReferenceLocation.x, self->_lastSceneReferenceLocation.y];
+  [(UIPanGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:self->_lastSceneReferenceLocation.x, self->_lastSceneReferenceLocation.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view
 {
-  if ([(NSMutableArray *)self->_touches count]<= a3)
+  if ([(NSMutableArray *)self->_touches count]<= touch)
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
@@ -1339,15 +1339,15 @@ LABEL_12:
     v16 = NSStringFromSelector(a2);
     v8 = [v13 stringWithFormat:@"-[%@ %@]", v15, v16];
 
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%ld) beyond bounds (%ld).", v8, a3, -[NSMutableArray count](self->_touches, "count")}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%ld) beyond bounds (%ld).", v8, touch, -[NSMutableArray count](self->_touches, "count")}];
     v10 = *MEMORY[0x1E695EFF8];
     v12 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
   else
   {
-    v8 = [(NSMutableArray *)self->_touches objectAtIndex:a3];
-    [v8 locationInView:a4];
+    v8 = [(NSMutableArray *)self->_touches objectAtIndex:touch];
+    [v8 locationInView:view];
     v10 = v9;
     v12 = v11;
   }
@@ -1359,12 +1359,12 @@ LABEL_12:
   return result;
 }
 
-- (void)_ignoreTouches:(uint64_t)a3 forEvent:
+- (void)_ignoreTouches:(uint64_t)touches forEvent:
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1 && [a2 count])
+  if (self && [a2 count])
   {
-    [a1 touchesCancelled:a2 withEvent:a3];
+    [self touchesCancelled:a2 withEvent:touches];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -1385,7 +1385,7 @@ LABEL_12:
             objc_enumerationMutation(v6);
           }
 
-          [a1 ignoreTouch:*(*(&v11 + 1) + 8 * v10++) forEvent:{a3, v11}];
+          [self ignoreTouch:*(*(&v11 + 1) + 8 * v10++) forEvent:{touches, v11}];
         }
 
         while (v8 != v10);
@@ -1397,17 +1397,17 @@ LABEL_12:
   }
 }
 
-- (CGPoint)_initialLocationInView:(id)a3
+- (CGPoint)_initialLocationInView:(id)view
 {
-  [(UIPanGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:self->_firstSceneReferenceLocation.x, self->_firstSceneReferenceLocation.y];
+  [(UIPanGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:self->_firstSceneReferenceLocation.x, self->_firstSceneReferenceLocation.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  if ([a3 type] == 10)
+  if ([event type] == 10)
   {
     if (self && (*&self->_panFlags & 0x1800) == 0x800)
     {
@@ -1420,20 +1420,20 @@ LABEL_12:
     }
 
     allowedScrollTypesMask = self->_allowedScrollTypesMask;
-    return allowedScrollTypesMask && (allowedScrollTypesMask & (1 << [a3 _scrollType])) != 0;
+    return allowedScrollTypesMask && (allowedScrollTypesMask & (1 << [event _scrollType])) != 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIPanGestureRecognizer;
-    return [(UIGestureRecognizer *)&v7 shouldReceiveEvent:a3];
+    return [(UIGestureRecognizer *)&v7 shouldReceiveEvent:event];
   }
 }
 
-- (void)_setiOSMacScrollingEnabled:(BOOL)a3
+- (void)_setiOSMacScrollingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 3;
   }
@@ -1446,21 +1446,21 @@ LABEL_12:
   [(UIPanGestureRecognizer *)self setAllowedScrollTypesMask:v3];
 }
 
-- (void)_processScrollPhaseChanged:(id)a3
+- (void)_processScrollPhaseChanged:(id)changed
 {
-  [a3 _adjustedDeltaForPanWithAcceleration:-[UIPanGestureRecognizer _iOSMacUseNonacceleratedDelta](self honoringScrollDirectionPreference:{"_iOSMacUseNonacceleratedDelta") ^ 1, -[UIPanGestureRecognizer _iOSMacIgnoreScrollDirectionUserPreference](self, "_iOSMacIgnoreScrollDirectionUserPreference") ^ 1}];
+  [changed _adjustedDeltaForPanWithAcceleration:-[UIPanGestureRecognizer _iOSMacUseNonacceleratedDelta](self honoringScrollDirectionPreference:{"_iOSMacUseNonacceleratedDelta") ^ 1, -[UIPanGestureRecognizer _iOSMacIgnoreScrollDirectionUserPreference](self, "_iOSMacIgnoreScrollDirectionUserPreference") ^ 1}];
   v7 = v6 != 0.0 || v5 != 0.0;
   if (v7)
   {
 LABEL_18:
     v14 = v5 + self->_lastUnadjustedSceneReferenceLocation.x;
     v15 = v6 + self->_lastUnadjustedSceneReferenceLocation.y;
-    [a3 timestamp];
+    [changed timestamp];
     [(UIPanGestureRecognizer *)self _centroidMovedTo:v7 atTime:v14 affectingTranslation:v15, v16];
     goto LABEL_19;
   }
 
-  [a3 _stifledDelta];
+  [changed _stifledDelta];
   if (v5 != 0.0 || v6 != 0.0)
   {
     panFlags = self->_panFlags;
@@ -1502,7 +1502,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible && [(UIPanGestureRecognizer *)self _shouldTryToBeginWithEvent:a3])
+  if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible && [(UIPanGestureRecognizer *)self _shouldTryToBeginWithEvent:changed])
   {
     if ((*&self->_panFlags & 0x600) == 0)
     {
@@ -1513,50 +1513,50 @@ LABEL_19:
   }
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v5 = [a3 phase];
-  if (v5 <= 3)
+  phase = [event phase];
+  if (phase <= 3)
   {
-    if (v5 == 2)
+    if (phase == 2)
     {
       if (self)
       {
-        [a3 _digitizerLocation];
+        [event _digitizerLocation];
         self->_digitizerLocation.x = v7;
         self->_digitizerLocation.y = v8;
       }
 
-      v9 = [a3 _allWindows];
-      v19 = [v9 anyObject];
+      _allWindows = [event _allWindows];
+      anyObject = [_allWindows anyObject];
 
-      [a3 locationInView:0];
-      [(UIPanGestureRecognizer *)self _convertPoint:v19 toSceneReferenceCoordinatesFromView:?];
+      [event locationInView:0];
+      [(UIPanGestureRecognizer *)self _convertPoint:anyObject toSceneReferenceCoordinatesFromView:?];
       self->_firstSceneReferenceLocation.x = v10;
       self->_firstSceneReferenceLocation.y = v11;
       self->_lastSceneReferenceLocation = self->_firstSceneReferenceLocation;
       self->_lastUnadjustedSceneReferenceLocation = self->_firstSceneReferenceLocation;
-      [a3 timestamp];
+      [event timestamp];
       self->_lastTouchTime = v12;
       self->_lastTouchCount = 1;
-      if (![a3 _scrollType])
+      if (![event _scrollType])
       {
-        [(UIPanGestureRecognizer *)self _processScrollPhaseChanged:a3];
+        [(UIPanGestureRecognizer *)self _processScrollPhaseChanged:event];
       }
     }
 
-    else if (v5 == 3)
+    else if (phase == 3)
     {
 
-      [(UIPanGestureRecognizer *)self _processScrollPhaseChanged:a3];
+      [(UIPanGestureRecognizer *)self _processScrollPhaseChanged:event];
     }
 
     return;
   }
 
-  if (v5 != 4)
+  if (phase != 4)
   {
-    if (v5 != 5)
+    if (phase != 5)
     {
       return;
     }
@@ -1574,7 +1574,7 @@ LABEL_10:
     return;
   }
 
-  [a3 timestamp];
+  [event timestamp];
   v14 = v13 - self->_lastTouchTime;
   v15 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_DurationBetweenScrollChangeAndEndEventsToResetVelocity, @"DurationBetweenScrollChangeAndEndEventsToResetVelocity");
   v16 = *&qword_1EA95E4A8;
@@ -1597,23 +1597,23 @@ LABEL_10:
 
 - (uint64_t)_scrollDeviceCategory
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 _activeEventOfType:10];
+  v1 = [self _activeEventOfType:10];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 _scrollDeviceCategory];
+    _scrollDeviceCategory = [v1 _scrollDeviceCategory];
   }
 
   else
   {
-    v2 = 0;
+    _scrollDeviceCategory = 0;
   }
 
-  return v2;
+  return _scrollDeviceCategory;
 }
 
 @end

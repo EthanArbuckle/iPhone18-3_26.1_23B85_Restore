@@ -1,8 +1,8 @@
 @interface _ATXAppIconState
 + (_ATXAppIconState)sharedInstance;
-- (BOOL)appInFolderWithBundleId:(id)a3;
-- (BOOL)appOnDockWithBundleId:(id)a3;
-- (_ATXAppIconState)initWithHomeScreenConfigCache:(id)a3 sbsHomeScreenService:(id)a4;
+- (BOOL)appInFolderWithBundleId:(id)id;
+- (BOOL)appOnDockWithBundleId:(id)id;
+- (_ATXAppIconState)initWithHomeScreenConfigCache:(id)cache sbsHomeScreenService:(id)service;
 - (id)allAppsKnownToSpringBoard;
 - (id)allDockedApps;
 - (id)allFolderApps;
@@ -10,9 +10,9 @@
 - (id)nonFolderAppSetOnPages;
 - (id)springboardPageNumbersWithAppPredictionPanels;
 - (id)springboardPageNumbersWithSuggestionsWidgets;
-- (int64_t)folderPageNumberForBundleId:(id)a3;
-- (int64_t)springboardPageLocationForBundleId:(id)a3;
-- (int64_t)springboardPageNumberForBundleId:(id)a3;
+- (int64_t)folderPageNumberForBundleId:(id)id;
+- (int64_t)springboardPageLocationForBundleId:(id)id;
+- (int64_t)springboardPageNumberForBundleId:(id)id;
 - (unint64_t)getFirstVisiblePageIndex;
 - (unint64_t)numberOfApps;
 - (unint64_t)numberOfFolders;
@@ -132,23 +132,23 @@
   return v3;
 }
 
-- (_ATXAppIconState)initWithHomeScreenConfigCache:(id)a3 sbsHomeScreenService:(id)a4
+- (_ATXAppIconState)initWithHomeScreenConfigCache:(id)cache sbsHomeScreenService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  serviceCopy = service;
   v40.receiver = self;
   v40.super_class = _ATXAppIconState;
   v9 = [(_ATXAppIconState *)&v40 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeScreenConfigCache, a3);
-    objc_storeStrong(&v10->_sbsHomeScreenService, a4);
+    objc_storeStrong(&v9->_homeScreenConfigCache, cache);
+    objc_storeStrong(&v10->_sbsHomeScreenService, service);
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     syncQueue = v10->_syncQueue;
     v10->_syncQueue = v15;
 
@@ -243,9 +243,9 @@
   return v5;
 }
 
-- (BOOL)appOnDockWithBundleId:(id)a3
+- (BOOL)appOnDockWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -255,10 +255,10 @@
   block[1] = 3221225472;
   block[2] = __42___ATXAppIconState_appOnDockWithBundleId___block_invoke;
   block[3] = &unk_27859A8B0;
-  v9 = v4;
+  v9 = idCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(syncQueue, block);
   LOBYTE(syncQueue) = *(v12 + 24);
 
@@ -266,9 +266,9 @@
   return syncQueue;
 }
 
-- (BOOL)appInFolderWithBundleId:(id)a3
+- (BOOL)appInFolderWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -278,10 +278,10 @@
   block[1] = 3221225472;
   block[2] = __44___ATXAppIconState_appInFolderWithBundleId___block_invoke;
   block[3] = &unk_27859A8B0;
-  v9 = v4;
+  v9 = idCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(syncQueue, block);
   LOBYTE(syncQueue) = *(v12 + 24);
 
@@ -289,9 +289,9 @@
   return syncQueue;
 }
 
-- (int64_t)springboardPageNumberForBundleId:(id)a3
+- (int64_t)springboardPageNumberForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -305,15 +305,15 @@
   block[3] = &unk_27859A8B0;
   v13 = &v14;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   v12 = v6;
   dispatch_sync(syncQueue, block);
-  v7 = [v15[5] indexPath];
+  indexPath = [v15[5] indexPath];
 
-  if (v7)
+  if (indexPath)
   {
-    v8 = [v15[5] indexPath];
-    v9 = [v8 indexAtPosition:0];
+    indexPath2 = [v15[5] indexPath];
+    v9 = [indexPath2 indexAtPosition:0];
   }
 
   else
@@ -325,9 +325,9 @@
   return v9;
 }
 
-- (int64_t)springboardPageLocationForBundleId:(id)a3
+- (int64_t)springboardPageLocationForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -341,15 +341,15 @@
   block[3] = &unk_27859A8B0;
   v13 = &v14;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   v12 = v6;
   dispatch_sync(syncQueue, block);
-  v7 = [v15[5] indexPath];
+  indexPath = [v15[5] indexPath];
 
-  if (v7)
+  if (indexPath)
   {
-    v8 = [v15[5] indexPath];
-    v9 = [v8 indexAtPosition:1];
+    indexPath2 = [v15[5] indexPath];
+    v9 = [indexPath2 indexAtPosition:1];
   }
 
   else
@@ -361,9 +361,9 @@
   return v9;
 }
 
-- (int64_t)folderPageNumberForBundleId:(id)a3
+- (int64_t)folderPageNumberForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -377,19 +377,19 @@
   block[3] = &unk_27859A8B0;
   v15 = &v16;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   v14 = v6;
   dispatch_sync(syncQueue, block);
   v7 = v17[5];
   if (v7)
   {
-    v8 = [v7 indexPath];
-    v9 = [v8 length];
+    indexPath = [v7 indexPath];
+    v9 = [indexPath length];
 
     if (v9 == 3)
     {
-      v10 = [v17[5] indexPath];
-      v11 = [v10 indexAtPosition:2];
+      indexPath2 = [v17[5] indexPath];
+      v11 = [indexPath2 indexAtPosition:2];
     }
 
     else
@@ -409,8 +409,8 @@
 
 - (unint64_t)numberOfApps
 {
-  v2 = [(_ATXAppIconState *)self allInstalledAppsKnownToSpringBoard];
-  v3 = [v2 count];
+  allInstalledAppsKnownToSpringBoard = [(_ATXAppIconState *)self allInstalledAppsKnownToSpringBoard];
+  v3 = [allInstalledAppsKnownToSpringBoard count];
 
   return v3;
 }

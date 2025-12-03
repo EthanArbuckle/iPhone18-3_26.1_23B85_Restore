@@ -1,56 +1,56 @@
 @interface UCStreamCoderV2
-- (UCStreamCoderV2)initWithInputStream:(id)a3 outputStream:(id)a4;
-- (id)fetchDataForType:(id)a3;
-- (id)packMessage:(id)a3;
-- (id)unpackMessage:(id)a3;
+- (UCStreamCoderV2)initWithInputStream:(id)stream outputStream:(id)outputStream;
+- (id)fetchDataForType:(id)type;
+- (id)packMessage:(id)message;
+- (id)unpackMessage:(id)message;
 - (void)calculateTimeRemaining;
 - (void)cancelReceive;
-- (void)completedReceivingPasteboardWithError:(id)a3;
+- (void)completedReceivingPasteboardWithError:(id)error;
 - (void)dealloc;
-- (void)filePackagerError:(id)a3;
-- (void)handleHeartbeat:(id)a3;
-- (void)handlePasteboardAuxInfoReceived:(id)a3;
-- (void)handlePasteboardDataRequest:(id)a3;
-- (void)handlePasteboardDataResponse:(id)a3;
-- (void)handlePasteboardFileRequest:(id)a3;
-- (void)handlePasteboardFileResponse:(id)a3;
-- (void)handlePasteboardInfoRequest:(id)a3;
-- (void)handlePasteboardInfoResponse:(id)a3;
-- (void)packager:(id)a3 gotData:(id)a4 forPacket:(int64_t)a5;
-- (void)processPasteboardInfo:(id)a3;
-- (void)receivedPasteboardInfo:(id)a3 withError:(id)a4;
-- (void)recvStop:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)removeReceivedItems:(id)a3;
-- (void)sendCompletedWithError:(id)a3;
+- (void)filePackagerError:(id)error;
+- (void)handleHeartbeat:(id)heartbeat;
+- (void)handlePasteboardAuxInfoReceived:(id)received;
+- (void)handlePasteboardDataRequest:(id)request;
+- (void)handlePasteboardDataResponse:(id)response;
+- (void)handlePasteboardFileRequest:(id)request;
+- (void)handlePasteboardFileResponse:(id)response;
+- (void)handlePasteboardInfoRequest:(id)request;
+- (void)handlePasteboardInfoResponse:(id)response;
+- (void)packager:(id)packager gotData:(id)data forPacket:(int64_t)packet;
+- (void)processPasteboardInfo:(id)info;
+- (void)receivedPasteboardInfo:(id)info withError:(id)error;
+- (void)recvStop:(id)stop;
+- (void)removeObject:(id)object;
+- (void)removeReceivedItems:(id)items;
+- (void)sendCompletedWithError:(id)error;
 - (void)sendFileArchiveRequest;
 - (void)sendHeartbeat;
-- (void)sendPasteboard:(id)a3 withCompletion:(id)a4;
+- (void)sendPasteboard:(id)pasteboard withCompletion:(id)completion;
 - (void)sendPasteboardDataRequest;
 - (void)sendPasteboardDataResponse;
 - (void)sendPasteboardInfoRequest;
 - (void)sendPasteboardInfoResponse;
-- (void)sendStopWithError:(int64_t)a3;
+- (void)sendStopWithError:(int64_t)error;
 - (void)sendTotalSendSize;
-- (void)setState:(int64_t)a3;
-- (void)storeObject:(id)a3;
-- (void)streams:(id)a3 didReadMessage:(id)a4 withTag:(int64_t)a5;
-- (void)streams:(id)a3 didWriteMessageWithTag:(int64_t)a4;
-- (void)streamsDidClose:(id)a3 withError:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)storeObject:(id)object;
+- (void)streams:(id)streams didReadMessage:(id)message withTag:(int64_t)tag;
+- (void)streams:(id)streams didWriteMessageWithTag:(int64_t)tag;
+- (void)streamsDidClose:(id)close withError:(id)error;
 @end
 
 @implementation UCStreamCoderV2
 
-- (UCStreamCoderV2)initWithInputStream:(id)a3 outputStream:(id)a4
+- (UCStreamCoderV2)initWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v28.receiver = self;
   v28.super_class = UCStreamCoderV2;
   v8 = [(UCStreamCoderV2 *)&v28 init];
   if (v8)
   {
-    v9 = [[UAStreamHandler alloc] initWithInputStream:v6 outputStream:v7 delegate:v8];
+    v9 = [[UAStreamHandler alloc] initWithInputStream:streamCopy outputStream:outputStreamCopy delegate:v8];
     [(UCStreamCoderV2 *)v8 setStreamHandler:v9];
 
     v10 = objc_alloc_init(NSMutableDictionary);
@@ -68,8 +68,8 @@
     v14 = objc_alloc_init(NSMutableArray);
     [(UCStreamCoderV2 *)v8 setObjects:v14];
 
-    v15 = [(UCStreamCoderV2 *)v8 streamHandler];
-    [v15 start];
+    streamHandler = [(UCStreamCoderV2 *)v8 streamHandler];
+    [streamHandler start];
 
     [(UCStreamCoderV2 *)v8 setState:0];
     v16 = +[UAUserActivityDefaults sharedDefaults];
@@ -102,23 +102,23 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[CODERV2] dealloc", buf, 2u);
   }
 
-  v4 = [(UCStreamCoderV2 *)self streamHandler];
-  [v4 stop];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+  [streamHandler stop];
 
   v5.receiver = self;
   v5.super_class = UCStreamCoderV2;
   [(UCStreamCoderV2 *)&v5 dealloc];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = sub_100018758(self->_state);
-      v7 = sub_100018758(a3);
+      v7 = sub_100018758(state);
       v8 = 138412546;
       v9 = v6;
       v10 = 2112;
@@ -126,139 +126,139 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[CODERV2] State: %@ -> %@", &v8, 0x16u);
     }
 
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
-- (void)storeObject:(id)a3
+- (void)storeObject:(id)object
 {
-  v6 = a3;
-  v4 = [(UCStreamCoderV2 *)self objects];
-  objc_sync_enter(v4);
-  v5 = [(UCStreamCoderV2 *)self objects];
-  [v5 addObject:v6];
+  objectCopy = object;
+  objects = [(UCStreamCoderV2 *)self objects];
+  objc_sync_enter(objects);
+  objects2 = [(UCStreamCoderV2 *)self objects];
+  [objects2 addObject:objectCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(objects);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v6 = a3;
-  v4 = [(UCStreamCoderV2 *)self objects];
-  objc_sync_enter(v4);
-  v5 = [(UCStreamCoderV2 *)self objects];
-  [v5 removeObject:v6];
+  objectCopy = object;
+  objects = [(UCStreamCoderV2 *)self objects];
+  objc_sync_enter(objects);
+  objects2 = [(UCStreamCoderV2 *)self objects];
+  [objects2 removeObject:objectCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(objects);
 }
 
-- (void)streamsDidClose:(id)a3 withError:(id)a4
+- (void)streamsDidClose:(id)close withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[CODERV2] Streams closed: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(UCStreamCoderV2 *)self receivedInfo];
-  [(UCStreamCoderV2 *)self receivedPasteboardInfo:v7 withError:v5];
+  receivedInfo = [(UCStreamCoderV2 *)self receivedInfo];
+  [(UCStreamCoderV2 *)self receivedPasteboardInfo:receivedInfo withError:errorCopy];
 
-  [(UCStreamCoderV2 *)self completedReceivingPasteboardWithError:v5];
-  [(UCStreamCoderV2 *)self sendCompletedWithError:v5];
+  [(UCStreamCoderV2 *)self completedReceivingPasteboardWithError:errorCopy];
+  [(UCStreamCoderV2 *)self sendCompletedWithError:errorCopy];
 }
 
-- (void)streams:(id)a3 didReadMessage:(id)a4 withTag:(int64_t)a5
+- (void)streams:(id)streams didReadMessage:(id)message withTag:(int64_t)tag
 {
-  v7 = a4;
+  messageCopy = message;
   v8 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = sub_100018BB8(a5);
+    v9 = sub_100018BB8(tag);
     v11 = 138543362;
     v12 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[CODERV2] Reveived message for tag %{public}@", &v11, 0xCu);
   }
 
-  v10 = [(UCStreamCoderV2 *)self watchdog];
-  [v10 poke];
+  watchdog = [(UCStreamCoderV2 *)self watchdog];
+  [watchdog poke];
 
-  if (a5 > 6)
+  if (tag > 6)
   {
-    if (a5 > 8)
+    if (tag > 8)
     {
-      if (a5 == 9)
+      if (tag == 9)
       {
-        [(UCStreamCoderV2 *)self handlePasteboardAuxInfoReceived:v7];
+        [(UCStreamCoderV2 *)self handlePasteboardAuxInfoReceived:messageCopy];
       }
 
-      else if (a5 == 10)
+      else if (tag == 10)
       {
-        [(UCStreamCoderV2 *)self handleHeartbeat:v7];
+        [(UCStreamCoderV2 *)self handleHeartbeat:messageCopy];
       }
     }
 
-    else if (a5 == 7)
+    else if (tag == 7)
     {
-      [(UCStreamCoderV2 *)self handlePasteboardFileRequest:v7];
+      [(UCStreamCoderV2 *)self handlePasteboardFileRequest:messageCopy];
     }
 
     else
     {
-      [(UCStreamCoderV2 *)self handlePasteboardFileResponse:v7];
+      [(UCStreamCoderV2 *)self handlePasteboardFileResponse:messageCopy];
     }
   }
 
-  else if (a5 > 4)
+  else if (tag > 4)
   {
-    if (a5 == 5)
+    if (tag == 5)
     {
-      [(UCStreamCoderV2 *)self handlePasteboardDataRequest:v7];
+      [(UCStreamCoderV2 *)self handlePasteboardDataRequest:messageCopy];
     }
 
     else
     {
-      [(UCStreamCoderV2 *)self handlePasteboardDataResponse:v7];
+      [(UCStreamCoderV2 *)self handlePasteboardDataResponse:messageCopy];
     }
   }
 
-  else if (a5 == 3)
+  else if (tag == 3)
   {
-    [(UCStreamCoderV2 *)self handlePasteboardInfoRequest:v7];
+    [(UCStreamCoderV2 *)self handlePasteboardInfoRequest:messageCopy];
   }
 
-  else if (a5 == 4)
+  else if (tag == 4)
   {
-    [(UCStreamCoderV2 *)self handlePasteboardInfoResponse:v7];
+    [(UCStreamCoderV2 *)self handlePasteboardInfoResponse:messageCopy];
   }
 }
 
-- (void)streams:(id)a3 didWriteMessageWithTag:(int64_t)a4
+- (void)streams:(id)streams didWriteMessageWithTag:(int64_t)tag
 {
-  v6 = a3;
+  streamsCopy = streams;
   v7 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = sub_100018BB8(a4);
+    v8 = sub_100018BB8(tag);
     v26 = 138543362;
     v27 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[CODERV2] Did write tag %{public}@", &v26, 0xCu);
   }
 
-  v9 = [(UCStreamCoderV2 *)self watchdog];
-  [v9 poke];
+  watchdog = [(UCStreamCoderV2 *)self watchdog];
+  [watchdog poke];
 
-  v10 = [(UCStreamCoderV2 *)self state];
-  if (v10 == 2)
+  state = [(UCStreamCoderV2 *)self state];
+  if (state == 2)
   {
     v11 = 3;
   }
 
   else
   {
-    if (v10 != 5)
+    if (state != 5)
     {
       goto LABEL_8;
     }
@@ -268,34 +268,34 @@
 
   [(UCStreamCoderV2 *)self setState:v11];
 LABEL_8:
-  if (a4)
+  if (tag)
   {
-    if (a4 == 8)
+    if (tag == 8)
     {
-      v16 = [(UCStreamCoderV2 *)self archiveQueue];
-      objc_sync_enter(v16);
-      v17 = [(UCStreamCoderV2 *)self archiveQueue];
-      v18 = [v17 firstObject];
+      archiveQueue = [(UCStreamCoderV2 *)self archiveQueue];
+      objc_sync_enter(archiveQueue);
+      archiveQueue2 = [(UCStreamCoderV2 *)self archiveQueue];
+      firstObject = [archiveQueue2 firstObject];
 
-      if (v18)
+      if (firstObject)
       {
         v19 = sub_100001A30(@"pasteboard-server");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v26 = 138543362;
-          v27 = v18;
+          v27 = firstObject;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "[CODERV2] Requesting delivery for %{public}@", &v26, 0xCu);
         }
 
-        v20 = [(UCStreamCoderV2 *)self archivePackagers];
-        v21 = [v20 objectForKeyedSubscript:v18];
+        archivePackagers = [(UCStreamCoderV2 *)self archivePackagers];
+        v21 = [archivePackagers objectForKeyedSubscript:firstObject];
 
-        v22 = [v21 deliverNextPacket];
+        deliverNextPacket = [v21 deliverNextPacket];
         v23 = sub_100001A30(@"pasteboard-server");
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
           v26 = 67109120;
-          LODWORD(v27) = v22;
+          LODWORD(v27) = deliverNextPacket;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "[CODERV2] Req result: %d", &v26, 8u);
         }
       }
@@ -312,10 +312,10 @@ LABEL_8:
         [(UCStreamCoderV2 *)self setState:1];
       }
 
-      objc_sync_exit(v16);
+      objc_sync_exit(archiveQueue);
     }
 
-    else if (a4 == 6)
+    else if (tag == 6)
     {
       v12 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -324,10 +324,10 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[CODERV2] Did write data chunk", &v26, 2u);
       }
 
-      v13 = [(UCStreamCoderV2 *)self filePackager];
-      v14 = [v13 deliverNextPacket];
+      filePackager = [(UCStreamCoderV2 *)self filePackager];
+      deliverNextPacket2 = [filePackager deliverNextPacket];
 
-      if ((v14 & 1) == 0)
+      if ((deliverNextPacket2 & 1) == 0)
       {
         v15 = sub_100001A30(@"pasteboard-server");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -343,12 +343,12 @@ LABEL_8:
 
   else
   {
-    v24 = [(UCStreamCoderV2 *)self streamHandler];
-    [v24 stop];
+    streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+    [streamHandler stop];
   }
 }
 
-- (void)sendStopWithError:(int64_t)a3
+- (void)sendStopWithError:(int64_t)error
 {
   v5 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -358,27 +358,27 @@ LABEL_8:
   }
 
   [(UCStreamCoderV2 *)self setState:8];
-  if (a3)
+  if (error)
   {
     v11 = @"error";
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:error];
     v12 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
     v8 = [(UCStreamCoderV2 *)self packMessage:v7];
-    v9 = [(UCStreamCoderV2 *)self streamHandler];
-    [v9 writeMessage:v8 tag:0];
+    streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+    [streamHandler writeMessage:v8 tag:0];
   }
 }
 
-- (void)recvStop:(id)a3
+- (void)recvStop:(id)stop
 {
-  v4 = [(UCStreamCoderV2 *)self unpackMessage:a3];
+  v4 = [(UCStreamCoderV2 *)self unpackMessage:stop];
   v5 = [v4 objectForKeyedSubscript:@"error"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = [NSError alloc];
-  v8 = [v7 initWithDomain:UAContinuityErrorDomain code:v6 userInfo:0];
+  v8 = [v7 initWithDomain:UAContinuityErrorDomain code:integerValue userInfo:0];
   v9 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -390,35 +390,35 @@ LABEL_8:
   [(UCStreamCoderV2 *)self receivedPasteboardInfo:0 withError:v8];
   [(UCStreamCoderV2 *)self completedReceivingPasteboardWithError:v8];
   [(UCStreamCoderV2 *)self sendCompletedWithError:v8];
-  v10 = [(UCStreamCoderV2 *)self streamHandler];
-  [v10 stop];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+  [streamHandler stop];
 }
 
-- (void)handlePasteboardInfoRequest:(id)a3
+- (void)handlePasteboardInfoRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(UCStreamCoderV2 *)self setState:4];
-  v5 = [(UCStreamCoderV2 *)self unpackMessage:v4];
+  v5 = [(UCStreamCoderV2 *)self unpackMessage:requestCopy];
 
   [(UCStreamCoderV2 *)self sendPasteboardInfoResponse];
 }
 
-- (void)handlePasteboardDataRequest:(id)a3
+- (void)handlePasteboardDataRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(UCStreamCoderV2 *)self setState:4];
-  v5 = [(UCStreamCoderV2 *)self unpackMessage:v4];
+  v5 = [(UCStreamCoderV2 *)self unpackMessage:requestCopy];
 
   [(UCStreamCoderV2 *)self sendPasteboardDataResponse];
 }
 
-- (void)handlePasteboardFileRequest:(id)a3
+- (void)handlePasteboardFileRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(UCStreamCoderV2 *)self setState:4];
-  v35 = self;
-  v33 = v4;
-  v34 = [(UCStreamCoderV2 *)self unpackMessage:v4];
+  selfCopy = self;
+  v33 = requestCopy;
+  v34 = [(UCStreamCoderV2 *)self unpackMessage:requestCopy];
   v36 = [v34 objectForKeyedSubscript:@"uuid"];
   v5 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -428,9 +428,9 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[CODERV2] Archvie requested for UUID: %@", buf, 0xCu);
   }
 
-  v6 = [(UCStreamCoderV2 *)self archivePackagers];
-  v7 = [v6 allKeys];
-  v8 = [v7 containsObject:v36];
+  archivePackagers = [(UCStreamCoderV2 *)self archivePackagers];
+  allKeys = [archivePackagers allKeys];
+  v8 = [allKeys containsObject:v36];
 
   if (v8)
   {
@@ -441,9 +441,9 @@ LABEL_8:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(UCStreamCoderV2 *)self sendingInfo];
-  v10 = [v9 pbinfo];
-  obj = [v10 items];
+  sendingInfo = [(UCStreamCoderV2 *)self sendingInfo];
+  pbinfo = [sendingInfo pbinfo];
+  obj = [pbinfo items];
 
   v11 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v11)
@@ -460,17 +460,17 @@ LABEL_8:
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
-        v16 = [v15 types];
-        v17 = [v16 allKeys];
-        v18 = [v17 containsObject:@"public.file-url"];
+        types = [v15 types];
+        allKeys2 = [types allKeys];
+        v18 = [allKeys2 containsObject:@"public.file-url"];
 
         if (v18)
         {
-          v19 = [v15 types];
-          v20 = [v19 objectForKeyedSubscript:@"public.file-url"];
-          v21 = [v20 uuid];
-          v22 = [v21 UUIDString];
-          v23 = [v22 isEqualToString:v36];
+          types2 = [v15 types];
+          v20 = [types2 objectForKeyedSubscript:@"public.file-url"];
+          uuid = [v20 uuid];
+          uUIDString = [uuid UUIDString];
+          v23 = [uUIDString isEqualToString:v36];
 
           v12 |= v23;
         }
@@ -483,25 +483,25 @@ LABEL_8:
 
     if (v12)
     {
-      v24 = [(UCStreamCoderV2 *)v35 requestedArchives];
-      objc_sync_enter(v24);
-      v25 = [(UCStreamCoderV2 *)v35 requestedArchives];
-      [v25 addObject:v36];
+      requestedArchives = [(UCStreamCoderV2 *)selfCopy requestedArchives];
+      objc_sync_enter(requestedArchives);
+      requestedArchives2 = [(UCStreamCoderV2 *)selfCopy requestedArchives];
+      [requestedArchives2 addObject:v36];
 
-      objc_sync_exit(v24);
+      objc_sync_exit(requestedArchives);
 LABEL_15:
-      v26 = [(UCStreamCoderV2 *)v35 archiveQueue];
-      objc_sync_enter(v26);
-      v27 = [(UCStreamCoderV2 *)v35 archiveQueue];
-      [v27 addObject:v36];
+      archiveQueue = [(UCStreamCoderV2 *)selfCopy archiveQueue];
+      objc_sync_enter(archiveQueue);
+      archiveQueue2 = [(UCStreamCoderV2 *)selfCopy archiveQueue];
+      [archiveQueue2 addObject:v36];
 
-      v28 = [(UCStreamCoderV2 *)v35 archiveQueue];
-      v29 = [v28 firstObject];
+      archiveQueue3 = [(UCStreamCoderV2 *)selfCopy archiveQueue];
+      firstObject = [archiveQueue3 firstObject];
 
-      if ([v29 isEqualToString:v36])
+      if ([firstObject isEqualToString:v36])
       {
-        v30 = [(UCStreamCoderV2 *)v35 archivePackagers];
-        v31 = [v30 objectForKeyedSubscript:v36];
+        archivePackagers2 = [(UCStreamCoderV2 *)selfCopy archivePackagers];
+        v31 = [archivePackagers2 objectForKeyedSubscript:v36];
         [v31 deliverNextPacket];
 
         v32 = sub_100001A30(@"pasteboard-server");
@@ -513,7 +513,7 @@ LABEL_15:
         }
       }
 
-      objc_sync_exit(v26);
+      objc_sync_exit(archiveQueue);
       goto LABEL_23;
     }
   }
@@ -522,22 +522,22 @@ LABEL_15:
   {
   }
 
-  v26 = sub_100001A30(@"pasteboard-server");
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  archiveQueue = sub_100001A30(@"pasteboard-server");
+  if (os_log_type_enabled(archiveQueue, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
     v44 = v36;
-    _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "[CODERV2] File requested with invalid UUID: %{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, archiveQueue, OS_LOG_TYPE_ERROR, "[CODERV2] File requested with invalid UUID: %{public}@", buf, 0xCu);
   }
 
 LABEL_23:
 }
 
-- (void)handlePasteboardInfoResponse:(id)a3
+- (void)handlePasteboardInfoResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(UCStreamCoderV2 *)self setState:7];
-  v5 = [(UCStreamCoderV2 *)self unpackMessage:v4];
+  v5 = [(UCStreamCoderV2 *)self unpackMessage:responseCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"data"];
   if (v6)
@@ -546,8 +546,8 @@ LABEL_23:
     v8 = [v7 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
     [(UCStreamCoderV2 *)self setReceivedInfo:v8];
 
-    v9 = [(UCStreamCoderV2 *)self progress];
-    [v9 setCompletedUnitCount:0];
+    progress = [(UCStreamCoderV2 *)self progress];
+    [progress setCompletedUnitCount:0];
 
     v10 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -557,8 +557,8 @@ LABEL_23:
     }
 
     [(UCStreamCoderV2 *)self sendPasteboardDataRequest];
-    v11 = [(UCStreamCoderV2 *)self receivedInfo];
-    [(UCStreamCoderV2 *)self processPasteboardInfo:v11];
+    receivedInfo = [(UCStreamCoderV2 *)self receivedInfo];
+    [(UCStreamCoderV2 *)self processPasteboardInfo:receivedInfo];
   }
 
   else
@@ -583,11 +583,11 @@ LABEL_23:
   }
 }
 
-- (void)handlePasteboardDataResponse:(id)a3
+- (void)handlePasteboardDataResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(UCStreamCoderV2 *)self setState:7];
-  v5 = [(UCStreamCoderV2 *)self unpackMessage:v4];
+  v5 = [(UCStreamCoderV2 *)self unpackMessage:responseCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"data"];
   v7 = sub_100001A30(@"pasteboard-server");
@@ -603,13 +603,13 @@ LABEL_23:
   }
 
   -[UCStreamCoderV2 setBytesReceived:](self, "setBytesReceived:", [v6 length] + -[UCStreamCoderV2 bytesReceived](self, "bytesReceived"));
-  v10 = [(UCStreamCoderV2 *)self progress];
-  [v10 setCompletedUnitCount:{-[UCStreamCoderV2 bytesReceived](self, "bytesReceived")}];
+  progress = [(UCStreamCoderV2 *)self progress];
+  [progress setCompletedUnitCount:{-[UCStreamCoderV2 bytesReceived](self, "bytesReceived")}];
 
   [(UCStreamCoderV2 *)self calculateTimeRemaining];
-  v11 = [(UCStreamCoderV2 *)self receivingDataFile];
+  receivingDataFile = [(UCStreamCoderV2 *)self receivingDataFile];
   v21 = 0;
-  v12 = [v11 writeData:v6 error:&v21];
+  v12 = [receivingDataFile writeData:v6 error:&v21];
   v13 = v21;
 
   if (v12)
@@ -621,8 +621,8 @@ LABEL_23:
     {
       if ([(UCStreamCoderV2 *)self returnInfoEarly])
       {
-        v16 = [(UCStreamCoderV2 *)self receivedInfo];
-        [(UCStreamCoderV2 *)self receivedPasteboardInfo:v16 withError:0];
+        receivedInfo = [(UCStreamCoderV2 *)self receivedInfo];
+        [(UCStreamCoderV2 *)self receivedPasteboardInfo:receivedInfo withError:0];
       }
 
       if ([(UCStreamCoderV2 *)self remoteHasFiles])
@@ -658,11 +658,11 @@ LABEL_23:
   }
 }
 
-- (void)handlePasteboardFileResponse:(id)a3
+- (void)handlePasteboardFileResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(UCStreamCoderV2 *)self setState:7];
-  v5 = [(UCStreamCoderV2 *)self unpackMessage:v4];
+  v5 = [(UCStreamCoderV2 *)self unpackMessage:responseCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"data"];
   v7 = [NSUUID alloc];
@@ -696,8 +696,8 @@ LABEL_23:
   }
 
   -[UCStreamCoderV2 setBytesReceived:](self, "setBytesReceived:", [v6 length] + -[UCStreamCoderV2 bytesReceived](self, "bytesReceived"));
-  v20 = [(UCStreamCoderV2 *)self progress];
-  [v20 setCompletedUnitCount:{-[UCStreamCoderV2 bytesReceived](self, "bytesReceived")}];
+  progress = [(UCStreamCoderV2 *)self progress];
+  [progress setCompletedUnitCount:{-[UCStreamCoderV2 bytesReceived](self, "bytesReceived")}];
 
   [(UCStreamCoderV2 *)self calculateTimeRemaining];
   v21 = +[UASharedPasteboardDataManager sharedInstance];
@@ -711,9 +711,9 @@ LABEL_23:
     v24 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [v9 UUIDString];
+      uUIDString = [v9 UUIDString];
       *buf = 138412290;
-      v38 = v25;
+      v38 = uUIDString;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[CODERV2] Received all data for archive: %@", buf, 0xCu);
     }
 
@@ -724,8 +724,8 @@ LABEL_23:
     v28 = [v27 fileURLForPasteboardItem:v9];
 
     v29 = [UCExtractor alloc];
-    v30 = [v9 UUIDString];
-    v31 = [(UCExtractor *)v29 initWithDestinationURL:v28 forArchiveUUID:v30];
+    uUIDString2 = [v9 UUIDString];
+    v31 = [(UCExtractor *)v29 initWithDestinationURL:v28 forArchiveUUID:uUIDString2];
 
     [(UCStreamCoderV2 *)self storeObject:v31];
     v33[0] = _NSConcreteStackBlock;
@@ -733,16 +733,16 @@ LABEL_23:
     v33[2] = sub_10001A25C;
     v33[3] = &unk_1000C4EE0;
     v34 = v9;
-    v35 = self;
+    selfCopy = self;
     v36 = v31;
     v32 = v31;
     [(UCExtractor *)v32 extractArchiveWithCompletion:v33];
   }
 }
 
-- (void)handlePasteboardAuxInfoReceived:(id)a3
+- (void)handlePasteboardAuxInfoReceived:(id)received
 {
-  v4 = [(UCStreamCoderV2 *)self unpackMessage:a3];
+  v4 = [(UCStreamCoderV2 *)self unpackMessage:received];
   v5 = [v4 objectForKeyedSubscript:@"totalSize"];
   if (v5)
   {
@@ -755,12 +755,12 @@ LABEL_23:
     }
 
     -[UCStreamCoderV2 setExpectedLength:](self, "setExpectedLength:", [v5 integerValue]);
-    v7 = [(UCStreamCoderV2 *)self progress];
-    [v7 setTotalUnitCount:{objc_msgSend(v5, "integerValue")}];
+    progress = [(UCStreamCoderV2 *)self progress];
+    [progress setTotalUnitCount:{objc_msgSend(v5, "integerValue")}];
   }
 }
 
-- (void)handleHeartbeat:(id)a3
+- (void)handleHeartbeat:(id)heartbeat
 {
   v4 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -769,27 +769,27 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[CODERV2] Sending heartbeat", v6, 2u);
   }
 
-  v5 = [(UCStreamCoderV2 *)self watchdog];
-  [v5 poke];
+  watchdog = [(UCStreamCoderV2 *)self watchdog];
+  [watchdog poke];
 }
 
 - (void)sendPasteboardInfoRequest
 {
   v4 = [(UCStreamCoderV2 *)self packMessage:&off_1000CC808];
   [(UCStreamCoderV2 *)self setState:2];
-  v3 = [(UCStreamCoderV2 *)self streamHandler];
-  [v3 writeMessage:v4 tag:3];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+  [streamHandler writeMessage:v4 tag:3];
 }
 
 - (void)sendPasteboardInfoResponse
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(UCStreamCoderV2 *)self sendingInfo];
+  sendingInfo = [(UCStreamCoderV2 *)self sendingInfo];
 
-  if (v4)
+  if (sendingInfo)
   {
-    v5 = [(UCStreamCoderV2 *)self sendingInfo];
-    v6 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    sendingInfo2 = [(UCStreamCoderV2 *)self sendingInfo];
+    v6 = [NSKeyedArchiver archivedDataWithRootObject:sendingInfo2 requiringSecureCoding:1 error:0];
 
     [v3 setObject:v6 forKeyedSubscript:@"data"];
   }
@@ -803,8 +803,8 @@ LABEL_23:
   }
 
   [(UCStreamCoderV2 *)self setState:5];
-  v9 = [(UCStreamCoderV2 *)self streamHandler];
-  [v9 writeMessage:v7 tag:4];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+  [streamHandler writeMessage:v7 tag:4];
 }
 
 - (void)sendPasteboardDataRequest
@@ -818,8 +818,8 @@ LABEL_23:
 
   v4 = [(UCStreamCoderV2 *)self packMessage:&off_1000CC830];
   [(UCStreamCoderV2 *)self setState:2];
-  v5 = [(UCStreamCoderV2 *)self streamHandler];
-  [v5 writeMessage:v4 tag:5];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+  [streamHandler writeMessage:v4 tag:5];
 }
 
 - (void)sendFileArchiveRequest
@@ -828,11 +828,11 @@ LABEL_23:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(UCStreamCoderV2 *)self receivedInfo];
-  v4 = [v3 pbinfo];
-  v5 = [v4 items];
+  receivedInfo = [(UCStreamCoderV2 *)self receivedInfo];
+  pbinfo = [receivedInfo pbinfo];
+  items = [pbinfo items];
 
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v6 = [items countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v6)
   {
     v8 = v6;
@@ -845,46 +845,46 @@ LABEL_23:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 types];
-        v13 = [v12 allKeys];
-        v14 = [v13 containsObject:@"public.file-url"];
+        types = [v11 types];
+        allKeys = [types allKeys];
+        v14 = [allKeys containsObject:@"public.file-url"];
 
         if (v14)
         {
-          v15 = [v11 types];
-          v16 = [v15 objectForKeyedSubscript:@"public.file-url"];
-          v17 = [v16 uuid];
-          v18 = [v17 UUIDString];
+          types2 = [v11 types];
+          v16 = [types2 objectForKeyedSubscript:@"public.file-url"];
+          uuid = [v16 uuid];
+          uUIDString = [uuid UUIDString];
 
           v19 = sub_100001A30(@"pasteboard-server");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             *buf = v25;
-            v33 = v18;
+            v33 = uUIDString;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[CODERV2] Requesting archive for UUID: %{public}@", buf, 0xCu);
           }
 
           v20 = +[UASharedPasteboardDataManager sharedInstance];
-          v21 = [[NSUUID alloc] initWithUUIDString:v18];
+          v21 = [[NSUUID alloc] initWithUUIDString:uUIDString];
           [v20 createTmpArchiveFileWithUUID:v21];
 
           v30[0] = @"supportsCompression";
           v30[1] = @"uuid";
           v31[0] = &__kCFBooleanFalse;
-          v31[1] = v18;
+          v31[1] = uUIDString;
           v22 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
           v23 = [(UCStreamCoderV2 *)self packMessage:v22];
           [(UCStreamCoderV2 *)self setState:2];
-          v24 = [(UCStreamCoderV2 *)self streamHandler];
-          [v24 writeMessage:v23 tag:7];
+          streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+          [streamHandler writeMessage:v23 tag:7];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v8 = [items countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v8);
@@ -901,17 +901,17 @@ LABEL_23:
   }
 
   v4 = [UCFilePackager alloc];
-  v5 = [(UCStreamCoderV2 *)self sendingDataFile];
-  v6 = [(UCStreamCoderV2 *)self sendingInfo];
-  v7 = [v6 pbinfo];
-  v8 = -[UCFilePackager initWithFile:fileSize:packetSize:options:receiver:](v4, "initWithFile:fileSize:packetSize:options:receiver:", v5, [v7 dataSize], 0x10000, 0, self);
+  sendingDataFile = [(UCStreamCoderV2 *)self sendingDataFile];
+  sendingInfo = [(UCStreamCoderV2 *)self sendingInfo];
+  pbinfo = [sendingInfo pbinfo];
+  v8 = -[UCFilePackager initWithFile:fileSize:packetSize:options:receiver:](v4, "initWithFile:fileSize:packetSize:options:receiver:", sendingDataFile, [pbinfo dataSize], 0x10000, 0, self);
   [(UCStreamCoderV2 *)self setFilePackager:v8];
 
-  v9 = [(UCStreamCoderV2 *)self filePackager];
-  [v9 setTag:6];
+  filePackager = [(UCStreamCoderV2 *)self filePackager];
+  [filePackager setTag:6];
 
-  v10 = [(UCStreamCoderV2 *)self filePackager];
-  [v10 deliverNextPacket];
+  filePackager2 = [(UCStreamCoderV2 *)self filePackager];
+  [filePackager2 deliverNextPacket];
 
   [(UCStreamCoderV2 *)self setState:6];
 }
@@ -924,8 +924,8 @@ LABEL_23:
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
   v5 = [(UCStreamCoderV2 *)self packMessage:v4];
-  v6 = [(UCStreamCoderV2 *)self streamHandler];
-  [v6 writeMessage:v5 tag:9];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+  [streamHandler writeMessage:v5 tag:9];
 }
 
 - (void)sendHeartbeat
@@ -937,12 +937,12 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[CODERV2] Sending heartbeat", v7, 2u);
   }
 
-  v4 = [(UCStreamCoderV2 *)self watchdog];
-  [v4 poke];
+  watchdog = [(UCStreamCoderV2 *)self watchdog];
+  [watchdog poke];
 
-  v5 = [(UCStreamCoderV2 *)self streamHandler];
+  streamHandler = [(UCStreamCoderV2 *)self streamHandler];
   v6 = [@"UCHB" dataUsingEncoding:1];
-  [v5 writeMessage:v6 tag:10];
+  [streamHandler writeMessage:v6 tag:10];
 }
 
 - (void)cancelReceive
@@ -951,19 +951,19 @@ LABEL_23:
   v4 = [NSError errorWithDomain:UAContinuityErrorDomain code:-125 userInfo:0];
   [(UCStreamCoderV2 *)self receivedPasteboardInfo:0 withError:v4];
   [(UCStreamCoderV2 *)self completedReceivingPasteboardWithError:v4];
-  v3 = [(UCStreamCoderV2 *)self watchdog];
-  [v3 cancel];
+  watchdog = [(UCStreamCoderV2 *)self watchdog];
+  [watchdog cancel];
 }
 
-- (void)receivedPasteboardInfo:(id)a3 withError:(id)a4
+- (void)receivedPasteboardInfo:(id)info withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UCStreamCoderV2 *)self itemsLockedSem];
-  if (v8)
+  infoCopy = info;
+  errorCopy = error;
+  itemsLockedSem = [(UCStreamCoderV2 *)self itemsLockedSem];
+  if (itemsLockedSem)
   {
     v9 = dispatch_time(0, 1000000000);
-    if (dispatch_semaphore_wait(v8, v9))
+    if (dispatch_semaphore_wait(itemsLockedSem, v9))
     {
       v10 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -976,16 +976,16 @@ LABEL_23:
     [(UCStreamCoderV2 *)self setItemsLockedSem:0];
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(UCStreamCoderV2 *)v11 infoRecvHandler];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  infoRecvHandler = [(UCStreamCoderV2 *)selfCopy infoRecvHandler];
 
-  if (v12)
+  if (infoRecvHandler)
   {
-    if (v7)
+    if (errorCopy)
     {
-      v13 = [(UCStreamCoderV2 *)v11 receivedInfo];
-      [(UCStreamCoderV2 *)v11 removeReceivedItems:v13];
+      receivedInfo = [(UCStreamCoderV2 *)selfCopy receivedInfo];
+      [(UCStreamCoderV2 *)selfCopy removeReceivedItems:receivedInfo];
     }
 
     v14 = sub_100001A30(@"pasteboard-server");
@@ -995,10 +995,10 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[CODERV2] Calling received info handler", v18, 2u);
     }
 
-    v15 = [(UCStreamCoderV2 *)v11 infoRecvHandler];
-    (v15)[2](v15, v6, v7);
+    infoRecvHandler2 = [(UCStreamCoderV2 *)selfCopy infoRecvHandler];
+    (infoRecvHandler2)[2](infoRecvHandler2, infoCopy, errorCopy);
 
-    [(UCStreamCoderV2 *)v11 setInfoRecvHandler:0];
+    [(UCStreamCoderV2 *)selfCopy setInfoRecvHandler:0];
   }
 
   else
@@ -1011,25 +1011,25 @@ LABEL_23:
     }
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)completedReceivingPasteboardWithError:(id)a3
+- (void)completedReceivingPasteboardWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(UCStreamCoderV2 *)self receivedInfo];
-  [(UCStreamCoderV2 *)self receivedPasteboardInfo:v5 withError:v4];
+  errorCopy = error;
+  receivedInfo = [(UCStreamCoderV2 *)self receivedInfo];
+  [(UCStreamCoderV2 *)self receivedPasteboardInfo:receivedInfo withError:errorCopy];
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(UCStreamCoderV2 *)v6 fileRecvHandler];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fileRecvHandler = [(UCStreamCoderV2 *)selfCopy fileRecvHandler];
 
-  if (v7)
+  if (fileRecvHandler)
   {
-    if (v4)
+    if (errorCopy)
     {
-      v8 = [(UCStreamCoderV2 *)v6 receivedInfo];
-      [(UCStreamCoderV2 *)v6 removeReceivedItems:v8];
+      receivedInfo2 = [(UCStreamCoderV2 *)selfCopy receivedInfo];
+      [(UCStreamCoderV2 *)selfCopy removeReceivedItems:receivedInfo2];
     }
 
     v9 = sub_100001A30(@"pasteboard-server");
@@ -1039,11 +1039,11 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[CODERV2] Calling pasteboard received handler", buf, 2u);
     }
 
-    v10 = [(UCStreamCoderV2 *)v6 fileRecvHandler];
-    v11 = [(UCStreamCoderV2 *)v6 streamHandler];
-    (v10)[2](v10, v6, [v11 totalBytesReceived], v4);
+    fileRecvHandler2 = [(UCStreamCoderV2 *)selfCopy fileRecvHandler];
+    streamHandler = [(UCStreamCoderV2 *)selfCopy streamHandler];
+    (fileRecvHandler2)[2](fileRecvHandler2, selfCopy, [streamHandler totalBytesReceived], errorCopy);
 
-    [(UCStreamCoderV2 *)v6 setFileRecvHandler:0];
+    [(UCStreamCoderV2 *)selfCopy setFileRecvHandler:0];
     v12 = +[UASharedPasteboardDataManager sharedInstance];
     [v12 cleanupArchiveDir];
   }
@@ -1058,57 +1058,57 @@ LABEL_23:
     }
   }
 
-  objc_sync_exit(v6);
-  v13 = [(UCStreamCoderV2 *)v6 watchdog];
-  [v13 cancel];
+  objc_sync_exit(selfCopy);
+  watchdog = [(UCStreamCoderV2 *)selfCopy watchdog];
+  [watchdog cancel];
 }
 
-- (void)removeReceivedItems:(id)a3
+- (void)removeReceivedItems:(id)items
 {
-  v20 = a3;
-  v3 = [v20 pbinfo];
-  v4 = [v3 items];
-  v5 = [v4 count];
+  itemsCopy = items;
+  pbinfo = [itemsCopy pbinfo];
+  items = [pbinfo items];
+  v5 = [items count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [v20 pbinfo];
-      v8 = [v7 items];
-      v9 = [v8 objectAtIndexedSubscript:v6];
+      pbinfo2 = [itemsCopy pbinfo];
+      items2 = [pbinfo2 items];
+      v9 = [items2 objectAtIndexedSubscript:v6];
 
-      v10 = [v9 types];
-      v11 = [v10 allKeys];
-      v12 = [v11 containsObject:@"public.file-url"];
+      types = [v9 types];
+      allKeys = [types allKeys];
+      v12 = [allKeys containsObject:@"public.file-url"];
 
       if (v12)
       {
-        v13 = [v9 types];
-        v14 = [v13 objectForKeyedSubscript:@"public.file-url"];
-        v15 = [v14 uuid];
+        types2 = [v9 types];
+        v14 = [types2 objectForKeyedSubscript:@"public.file-url"];
+        uuid = [v14 uuid];
 
         v16 = +[UASharedPasteboardDataManager sharedInstance];
-        [v16 cleanupForItem:v15];
+        [v16 cleanupForItem:uuid];
       }
 
       ++v6;
-      v17 = [v20 pbinfo];
-      v18 = [v17 items];
-      v19 = [v18 count];
+      pbinfo3 = [itemsCopy pbinfo];
+      items3 = [pbinfo3 items];
+      v19 = [items3 count];
     }
 
     while (v19 > v6);
   }
 }
 
-- (void)processPasteboardInfo:(id)a3
+- (void)processPasteboardInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 pbinfo];
-  v6 = [v5 items];
-  v7 = [v6 count];
+  infoCopy = info;
+  pbinfo = [infoCopy pbinfo];
+  items = [pbinfo items];
+  v7 = [items count];
 
   if (v7)
   {
@@ -1119,41 +1119,41 @@ LABEL_23:
     v34 = v8;
     do
     {
-      v11 = [v4 pbinfo];
-      v12 = [v11 items];
-      v13 = [v12 objectAtIndexedSubscript:v9];
+      pbinfo2 = [infoCopy pbinfo];
+      items2 = [pbinfo2 items];
+      v13 = [items2 objectAtIndexedSubscript:v9];
 
-      v14 = [v13 types];
-      v15 = [v14 allKeys];
-      v16 = [v15 containsObject:@"public.file-url"];
+      types = [v13 types];
+      allKeys = [types allKeys];
+      v16 = [allKeys containsObject:@"public.file-url"];
 
       if (v16)
       {
-        v17 = [v13 types];
-        v18 = [v17 objectForKeyedSubscript:@"public.file-url"];
-        v19 = [v18 uuid];
+        types2 = [v13 types];
+        v18 = [types2 objectForKeyedSubscript:@"public.file-url"];
+        uuid = [v18 uuid];
 
         v20 = sub_100001A30(@"pasteboard-server");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v19 UUIDString];
+          uUIDString = [uuid UUIDString];
           *buf = v34;
           v40 = v9;
           v41 = 2112;
-          v42 = v21;
+          v42 = uUIDString;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "[CODERV2] Item %d has public.file-url with uuid: %@", buf, 0x12u);
         }
 
         v10 = (v10 + 1);
 
         v22 = +[UASharedPasteboardDataManager sharedInstance];
-        [v22 createTmpArchiveFileWithUUID:v19];
+        [v22 createTmpArchiveFileWithUUID:uuid];
 
         [(UCStreamCoderV2 *)self setRemoteHasFiles:1];
         v23 = [NSNumber numberWithInt:v9];
-        v24 = [(UCStreamCoderV2 *)self uuidItemMap];
-        v25 = [v19 UUIDString];
-        [v24 setObject:v23 forKeyedSubscript:v25];
+        uuidItemMap = [(UCStreamCoderV2 *)self uuidItemMap];
+        uUIDString2 = [uuid UUIDString];
+        [uuidItemMap setObject:v23 forKeyedSubscript:uUIDString2];
 
         v26 = +[UASharedPasteboardDataManager sharedInstance];
         v36[0] = _NSConcreteStackBlock;
@@ -1161,13 +1161,13 @@ LABEL_23:
         v37[0] = sub_10001B880;
         v37[1] = &unk_1000C4F00;
         v38 = v9;
-        [v26 obtainLockForItem:v19 completion:v36];
+        [v26 obtainLockForItem:uuid completion:v36];
       }
 
       ++v9;
-      v27 = [v4 pbinfo];
-      v28 = [v27 items];
-      v29 = [v28 count];
+      pbinfo3 = [infoCopy pbinfo];
+      items3 = [pbinfo3 items];
+      v29 = [items3 count];
     }
 
     while (v29 > v9);
@@ -1178,15 +1178,15 @@ LABEL_23:
     v10 = 0;
   }
 
-  v30 = [(UCStreamCoderV2 *)self progress];
+  progress = [(UCStreamCoderV2 *)self progress];
   v31 = [NSNumber numberWithInt:v10];
-  [v30 setUserInfoObject:v31 forKey:@"numFiles"];
+  [progress setUserInfoObject:v31 forKey:@"numFiles"];
 
-  v32 = [(UCStreamCoderV2 *)self itemsLockedSem];
-  v33 = v32;
-  if (v32)
+  itemsLockedSem = [(UCStreamCoderV2 *)self itemsLockedSem];
+  v33 = itemsLockedSem;
+  if (itemsLockedSem)
   {
-    dispatch_semaphore_signal(v32);
+    dispatch_semaphore_signal(itemsLockedSem);
   }
 }
 
@@ -1194,12 +1194,12 @@ LABEL_23:
 {
   v3 = [UADiagnosticUtils absoluteToNSec:mach_absolute_time() - [(UCStreamCoderV2 *)self streamStartTime]]/ 1000000000.0;
   v4 = [(UCStreamCoderV2 *)self bytesReceived]/ v3;
-  v5 = [(UCStreamCoderV2 *)self progress];
+  progress = [(UCStreamCoderV2 *)self progress];
   v6 = [NSNumber numberWithDouble:v4];
-  [v5 setUserInfoObject:v6 forKey:NSProgressThroughputKey];
+  [progress setUserInfoObject:v6 forKey:NSProgressThroughputKey];
 
-  v7 = [(UCStreamCoderV2 *)self expectedLength];
-  v8 = (v7 - [(UCStreamCoderV2 *)self bytesReceived]) / v4;
+  expectedLength = [(UCStreamCoderV2 *)self expectedLength];
+  v8 = (expectedLength - [(UCStreamCoderV2 *)self bytesReceived]) / v4;
   if (*&qword_1000E5C00 != 0.0)
   {
     v8 = v8 * 0.5 + *&qword_1000E5C00 * 0.5;
@@ -1212,52 +1212,52 @@ LABEL_23:
 
   if (v3 > v11)
   {
-    v13 = [(UCStreamCoderV2 *)self progress];
+    progress2 = [(UCStreamCoderV2 *)self progress];
     v12 = [NSNumber numberWithDouble:*&qword_1000E5C00];
-    [v13 setUserInfoObject:v12 forKey:NSProgressEstimatedTimeRemainingKey];
+    [progress2 setUserInfoObject:v12 forKey:NSProgressEstimatedTimeRemainingKey];
   }
 }
 
-- (void)sendPasteboard:(id)a3 withCompletion:(id)a4
+- (void)sendPasteboard:(id)pasteboard withCompletion:(id)completion
 {
-  v6 = a3;
-  v65 = a4;
-  v71 = self;
-  [(UCStreamCoderV2 *)self setSendingInfo:v6];
-  v66 = v6;
-  v7 = [v6 pbinfo];
-  v8 = [v7 dataFile];
-  [(UCStreamCoderV2 *)self setSendingDataFile:v8];
+  pasteboardCopy = pasteboard;
+  completionCopy = completion;
+  selfCopy = self;
+  [(UCStreamCoderV2 *)self setSendingInfo:pasteboardCopy];
+  v66 = pasteboardCopy;
+  pbinfo = [pasteboardCopy pbinfo];
+  dataFile = [pbinfo dataFile];
+  [(UCStreamCoderV2 *)self setSendingDataFile:dataFile];
 
-  v9 = [v66 pbinfo];
-  -[UCStreamCoderV2 setTotalSendSize:](self, "setTotalSendSize:", [v9 dataSize] + -[UCStreamCoderV2 totalSendSize](self, "totalSendSize"));
+  pbinfo2 = [v66 pbinfo];
+  -[UCStreamCoderV2 setTotalSendSize:](self, "setTotalSendSize:", [pbinfo2 dataSize] + -[UCStreamCoderV2 totalSendSize](self, "totalSendSize"));
 
-  v10 = [(UCStreamCoderV2 *)self sendingInfo];
-  v11 = [v10 pbinfo];
-  [v11 setDataFile:0];
+  sendingInfo = [(UCStreamCoderV2 *)self sendingInfo];
+  pbinfo3 = [sendingInfo pbinfo];
+  [pbinfo3 setDataFile:0];
 
-  [(UCStreamCoderV2 *)self setSendErrorHandler:v65];
+  [(UCStreamCoderV2 *)self setSendErrorHandler:completionCopy];
   objc_initWeak(&location, self);
   v12 = &_dispatch_main_q;
   v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   [(UCStreamCoderV2 *)self setHeartBeatTrigger:v13];
 
-  v14 = [(UCStreamCoderV2 *)self heartBeatTrigger];
+  heartBeatTrigger = [(UCStreamCoderV2 *)self heartBeatTrigger];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10001C54C;
   handler[3] = &unk_1000C4EB8;
   objc_copyWeak(&v82, &location);
-  dispatch_source_set_event_handler(v14, handler);
+  dispatch_source_set_event_handler(heartBeatTrigger, handler);
 
-  v15 = [(UCStreamCoderV2 *)self heartBeatTrigger];
-  dispatch_source_set_timer(v15, 0, 0x12A05F200uLL, 0x12A05F200uLL);
+  heartBeatTrigger2 = [(UCStreamCoderV2 *)self heartBeatTrigger];
+  dispatch_source_set_timer(heartBeatTrigger2, 0, 0x12A05F200uLL, 0x12A05F200uLL);
 
-  v16 = [(UCStreamCoderV2 *)self heartBeatTrigger];
-  dispatch_activate(v16);
+  heartBeatTrigger3 = [(UCStreamCoderV2 *)self heartBeatTrigger];
+  dispatch_activate(heartBeatTrigger3);
 
-  v17 = [(UCStreamCoderV2 *)self watchdog];
-  [v17 start];
+  watchdog = [(UCStreamCoderV2 *)self watchdog];
+  [watchdog start];
 
   v18 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1270,9 +1270,9 @@ LABEL_23:
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v19 = [(UCStreamCoderV2 *)self sendingInfo];
-  v20 = [v19 pbinfo];
-  obj = [v20 items];
+  sendingInfo2 = [(UCStreamCoderV2 *)self sendingInfo];
+  pbinfo4 = [sendingInfo2 pbinfo];
+  obj = [pbinfo4 items];
 
   v21 = [obj countByEnumeratingWithState:&v77 objects:v88 count:16];
   if (v21)
@@ -1289,9 +1289,9 @@ LABEL_23:
         }
 
         v23 = *(*(&v77 + 1) + 8 * i);
-        v24 = [v23 types];
-        v25 = [v24 allKeys];
-        v26 = [v25 containsObject:@"public.file-url"];
+        types = [v23 types];
+        allKeys = [types allKeys];
+        v26 = [allKeys containsObject:@"public.file-url"];
 
         if (v26)
         {
@@ -1302,31 +1302,31 @@ LABEL_23:
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[CODERV2] Sending pasteboard with files", buf, 2u);
           }
 
-          v28 = [v23 types];
-          v29 = [v28 objectForKeyedSubscript:@"public.file-url"];
-          v70 = [v29 uuid];
+          types2 = [v23 types];
+          v29 = [types2 objectForKeyedSubscript:@"public.file-url"];
+          uuid = [v29 uuid];
 
-          v30 = [v23 types];
-          v31 = [v30 objectForKeyedSubscript:@"public.file-url"];
-          v32 = [(UCStreamCoderV2 *)v71 fetchDataForType:v31];
+          types3 = [v23 types];
+          v31 = [types3 objectForKeyedSubscript:@"public.file-url"];
+          v32 = [(UCStreamCoderV2 *)selfCopy fetchDataForType:v31];
 
-          v33 = [v23 types];
-          v34 = [v33 objectForKeyedSubscript:@"com.apple.security.sandbox-extension-dict"];
-          v35 = [(UCStreamCoderV2 *)v71 fetchDataForType:v34];
+          types4 = [v23 types];
+          v34 = [types4 objectForKeyedSubscript:@"com.apple.security.sandbox-extension-dict"];
+          v35 = [(UCStreamCoderV2 *)selfCopy fetchDataForType:v34];
 
           v36 = [NSURL URLWithDataRepresentation:v32 relativeToURL:0];
           v37 = [NSPropertyListSerialization propertyListWithData:v35 options:0 format:0 error:0];
           if (v37)
           {
-            v38 = [v36 path];
-            v39 = [v37 objectForKeyedSubscript:v38];
+            path = [v36 path];
+            v39 = [v37 objectForKeyedSubscript:path];
             v40 = sub_100001A30(@"pasteboard-server");
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138478083;
               v85 = v39;
               v86 = 2113;
-              v87 = v38;
+              v87 = path;
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEBUG, "[CODERV2] Got extension data: %{private}@ for path %{private}@", buf, 0x16u);
             }
 
@@ -1355,11 +1355,11 @@ LABEL_23:
 
           else
           {
-            v48 = [v36 path];
+            path2 = [v36 path];
             v49 = +[UASharedPasteboardDataManager sharedInstance];
-            v50 = [v49 fileURLForCloneItems];
-            v51 = [v50 path];
-            v52 = [v48 hasPrefix:v51];
+            fileURLForCloneItems = [v49 fileURLForCloneItems];
+            path3 = [fileURLForCloneItems path];
+            v52 = [path2 hasPrefix:path3];
 
             if (!v52)
             {
@@ -1370,15 +1370,15 @@ LABEL_23:
                 _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "[CODERV2] Error getting sandbox info", buf, 2u);
               }
 
-              [(UCStreamCoderV2 *)v71 sendStopWithError:-122];
+              [(UCStreamCoderV2 *)selfCopy sendStopWithError:-122];
               goto LABEL_39;
             }
 
-            v38 = sub_100001A30(&stru_1000C67D0);
-            if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
+            path = sub_100001A30(&stru_1000C67D0);
+            if (os_log_type_enabled(path, OS_LOG_TYPE_INFO))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "[CODERV2] Archiving item in our clone dir, no need for sandbox ext", buf, 2u);
+              _os_log_impl(&_mh_execute_header, path, OS_LOG_TYPE_INFO, "[CODERV2] Archiving item in our clone dir, no need for sandbox ext", buf, 2u);
             }
 
             v46 = -1;
@@ -1393,18 +1393,18 @@ LABEL_23:
           }
 
           v54 = [UCArchiver alloc];
-          v55 = [v70 UUIDString];
-          v56 = [(UCArchiver *)v54 initWithURL:v36 typeUUID:v55];
+          uUIDString = [uuid UUIDString];
+          v56 = [(UCArchiver *)v54 initWithURL:v36 typeUUID:uUIDString];
 
-          [(UCStreamCoderV2 *)v71 storeObject:v56];
+          [(UCStreamCoderV2 *)selfCopy storeObject:v56];
           v72[0] = _NSConcreteStackBlock;
           v72[1] = 3221225472;
           v72[2] = sub_10001C58C;
           v72[3] = &unk_1000C4F28;
-          v72[4] = v71;
+          v72[4] = selfCopy;
           v57 = v36;
           v73 = v57;
-          v58 = v70;
+          v58 = uuid;
           v74 = v58;
           v76 = v46;
           v59 = v56;
@@ -1423,37 +1423,37 @@ LABEL_23:
     }
   }
 
-  v60 = [(UCStreamCoderV2 *)v71 objects];
-  v61 = [v60 count] == 0;
+  objects = [(UCStreamCoderV2 *)selfCopy objects];
+  v61 = [objects count] == 0;
 
   if (v61)
   {
     v62 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
     {
-      v63 = [NSNumber numberWithInteger:[(UCStreamCoderV2 *)v71 totalSendSize]];
+      v63 = [NSNumber numberWithInteger:[(UCStreamCoderV2 *)selfCopy totalSendSize]];
       *buf = 138412290;
       v85 = v63;
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEBUG, "[CODERV2] No files to archive, total send size: %@", buf, 0xCu);
     }
 
-    [(UCStreamCoderV2 *)v71 sendTotalSendSize];
+    [(UCStreamCoderV2 *)selfCopy sendTotalSendSize];
   }
 
-  [(UCStreamCoderV2 *)v71 setState:1];
+  [(UCStreamCoderV2 *)selfCopy setState:1];
 LABEL_39:
   objc_destroyWeak(&v82);
   objc_destroyWeak(&location);
 }
 
-- (void)sendCompletedWithError:(id)a3
+- (void)sendCompletedWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(UCStreamCoderV2 *)v5 sendErrorHandler];
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sendErrorHandler = [(UCStreamCoderV2 *)selfCopy sendErrorHandler];
 
-  if (v6)
+  if (sendErrorHandler)
   {
     v7 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1462,11 +1462,11 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[CODERV2] Calling pasteboard sent handler", buf, 2u);
     }
 
-    v8 = [(UCStreamCoderV2 *)v5 sendErrorHandler];
-    v9 = [(UCStreamCoderV2 *)v5 streamHandler];
-    (v8)[2](v8, v5, [v9 totalBytesSent], v4);
+    sendErrorHandler2 = [(UCStreamCoderV2 *)selfCopy sendErrorHandler];
+    streamHandler = [(UCStreamCoderV2 *)selfCopy streamHandler];
+    (sendErrorHandler2)[2](sendErrorHandler2, selfCopy, [streamHandler totalBytesSent], errorCopy);
 
-    [(UCStreamCoderV2 *)v5 setSendErrorHandler:0];
+    [(UCStreamCoderV2 *)selfCopy setSendErrorHandler:0];
   }
 
   else
@@ -1479,52 +1479,52 @@ LABEL_39:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v11 = [(UCStreamCoderV2 *)v5 watchdog];
-  [v11 cancel];
+  watchdog = [(UCStreamCoderV2 *)selfCopy watchdog];
+  [watchdog cancel];
 
-  v12 = [(UCStreamCoderV2 *)v5 heartBeatTrigger];
-  v13 = v12;
-  if (v12)
+  heartBeatTrigger = [(UCStreamCoderV2 *)selfCopy heartBeatTrigger];
+  v13 = heartBeatTrigger;
+  if (heartBeatTrigger)
   {
-    dispatch_source_cancel(v12);
-    [(UCStreamCoderV2 *)v5 setHeartBeatTrigger:0];
+    dispatch_source_cancel(heartBeatTrigger);
+    [(UCStreamCoderV2 *)selfCopy setHeartBeatTrigger:0];
   }
 
-  [(UCStreamCoderV2 *)v5 setState:8];
+  [(UCStreamCoderV2 *)selfCopy setState:8];
 }
 
-- (void)packager:(id)a3 gotData:(id)a4 forPacket:(int64_t)a5
+- (void)packager:(id)packager gotData:(id)data forPacket:(int64_t)packet
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 tag];
+  packagerCopy = packager;
+  dataCopy = data;
+  v10 = [packagerCopy tag];
   v11 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v29 = 67109376;
-    *v30 = a5;
+    *v30 = packet;
     *&v30[4] = 2048;
     *&v30[6] = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[CODERV2] Got data from packager, packet #: %d, tag: %ld", &v29, 0x12u);
   }
 
-  if ([v8 totalPacketCount] == a5)
+  if ([packagerCopy totalPacketCount] == packet)
   {
     v12 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 uuid];
+      uuid = [packagerCopy uuid];
       v29 = 134218242;
       *v30 = v10;
       *&v30[8] = 2114;
-      *&v30[10] = v13;
+      *&v30[10] = uuid;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[CODERV2] Finished sending packages: %ld / %{public}@", &v29, 0x16u);
     }
 
-    v14 = [(UCStreamCoderV2 *)self filePackager];
-    v15 = v14 == v8;
+    filePackager = [(UCStreamCoderV2 *)self filePackager];
+    v15 = filePackager == packagerCopy;
 
     if (v15)
     {
@@ -1533,21 +1533,21 @@ LABEL_39:
 
     else
     {
-      v16 = [v8 uuid];
+      uuid2 = [packagerCopy uuid];
 
-      if (v16)
+      if (uuid2)
       {
-        v17 = [(UCStreamCoderV2 *)self archiveQueue];
-        objc_sync_enter(v17);
-        v18 = [(UCStreamCoderV2 *)self archivePackagers];
-        v19 = [v8 uuid];
-        [v18 setObject:0 forKeyedSubscript:v19];
+        archiveQueue = [(UCStreamCoderV2 *)self archiveQueue];
+        objc_sync_enter(archiveQueue);
+        archivePackagers = [(UCStreamCoderV2 *)self archivePackagers];
+        uuid3 = [packagerCopy uuid];
+        [archivePackagers setObject:0 forKeyedSubscript:uuid3];
 
-        v20 = [(UCStreamCoderV2 *)self archiveQueue];
-        v21 = [v8 uuid];
-        [v20 removeObject:v21];
+        archiveQueue2 = [(UCStreamCoderV2 *)self archiveQueue];
+        uuid4 = [packagerCopy uuid];
+        [archiveQueue2 removeObject:uuid4];
 
-        objc_sync_exit(v17);
+        objc_sync_exit(archiveQueue);
       }
     }
   }
@@ -1555,76 +1555,76 @@ LABEL_39:
   if (v10)
   {
     v22 = objc_alloc_init(NSMutableDictionary);
-    v23 = [NSNumber numberWithInteger:a5];
+    v23 = [NSNumber numberWithInteger:packet];
     [v22 setObject:v23 forKeyedSubscript:@"packetNum"];
 
-    v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 totalPacketCount]);
+    v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [packagerCopy totalPacketCount]);
     [v22 setObject:v24 forKeyedSubscript:@"totalNum"];
 
-    [v22 setObject:v9 forKeyedSubscript:@"data"];
-    v25 = [v8 uuid];
+    [v22 setObject:dataCopy forKeyedSubscript:@"data"];
+    uuid5 = [packagerCopy uuid];
 
-    if (v25)
+    if (uuid5)
     {
-      v26 = [v8 uuid];
-      [v22 setObject:v26 forKeyedSubscript:@"uuid"];
+      uuid6 = [packagerCopy uuid];
+      [v22 setObject:uuid6 forKeyedSubscript:@"uuid"];
     }
 
     v27 = [(UCStreamCoderV2 *)self packMessage:v22];
-    v28 = [(UCStreamCoderV2 *)self streamHandler];
-    [v28 writeMessage:v27 tag:v10];
+    streamHandler = [(UCStreamCoderV2 *)self streamHandler];
+    [streamHandler writeMessage:v27 tag:v10];
   }
 }
 
-- (void)filePackagerError:(id)a3
+- (void)filePackagerError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "[CODERV2] Error from packager: %{public}@", &v6, 0xCu);
   }
 
   [(UCStreamCoderV2 *)self sendStopWithError:-122];
-  [(UCStreamCoderV2 *)self sendCompletedWithError:v4];
+  [(UCStreamCoderV2 *)self sendCompletedWithError:errorCopy];
 }
 
-- (id)packMessage:(id)a3
+- (id)packMessage:(id)message
 {
   v3 = _UACopyPackedDataForObject();
 
   return v3;
 }
 
-- (id)unpackMessage:(id)a3
+- (id)unpackMessage:(id)message
 {
-  v3 = a3;
-  [v3 bytes];
-  [v3 length];
+  messageCopy = message;
+  [messageCopy bytes];
+  [messageCopy length];
 
   v4 = _UACopyUnpackedObjectFromData();
 
   return v4;
 }
 
-- (id)fetchDataForType:(id)a3
+- (id)fetchDataForType:(id)type
 {
-  v4 = a3;
-  v5 = [(UCStreamCoderV2 *)self sendingDataFile];
-  objc_sync_enter(v5);
-  v6 = [(UCStreamCoderV2 *)self sendingDataFile];
-  v7 = [v4 offset];
-  [v6 seekToFileOffset:{objc_msgSend(v7, "unsignedLongLongValue")}];
+  typeCopy = type;
+  sendingDataFile = [(UCStreamCoderV2 *)self sendingDataFile];
+  objc_sync_enter(sendingDataFile);
+  sendingDataFile2 = [(UCStreamCoderV2 *)self sendingDataFile];
+  offset = [typeCopy offset];
+  [sendingDataFile2 seekToFileOffset:{objc_msgSend(offset, "unsignedLongLongValue")}];
 
-  v8 = [(UCStreamCoderV2 *)self sendingDataFile];
-  v9 = [v8 readDataOfLength:{objc_msgSend(v4, "size")}];
+  sendingDataFile3 = [(UCStreamCoderV2 *)self sendingDataFile];
+  v9 = [sendingDataFile3 readDataOfLength:{objc_msgSend(typeCopy, "size")}];
 
-  v10 = [(UCStreamCoderV2 *)self sendingDataFile];
-  [v10 seekToFileOffset:0];
+  sendingDataFile4 = [(UCStreamCoderV2 *)self sendingDataFile];
+  [sendingDataFile4 seekToFileOffset:0];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(sendingDataFile);
 
   return v9;
 }

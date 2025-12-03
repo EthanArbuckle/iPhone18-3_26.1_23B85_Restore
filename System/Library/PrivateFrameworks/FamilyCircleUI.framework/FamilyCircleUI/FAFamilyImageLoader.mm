@@ -3,8 +3,8 @@
 - (NSDictionary)_authResults;
 - (NSDictionary)authResults;
 - (_TtC14FamilyCircleUI19FAFamilyImageLoader)init;
-- (void)setAuthResults:(id)a3;
-- (void)set_authResults:(id)a3;
+- (void)setAuthResults:(id)results;
+- (void)set_authResults:(id)results;
 @end
 
 @implementation FAFamilyImageLoader
@@ -32,7 +32,7 @@
   return v5;
 }
 
-- (void)set_authResults:(id)a3
+- (void)set_authResults:(id)results
 {
   v4 = sub_21BE2890C();
   v5 = OBJC_IVAR____TtC14FamilyCircleUI19FAFamilyImageLoader__authResults;
@@ -45,24 +45,24 @@
 {
   swift_getKeyPath();
   sub_21BC75D70();
-  v3 = self;
+  selfCopy = self;
   sub_21BE25F1C();
 
   v4 = OBJC_IVAR____TtC14FamilyCircleUI19FAFamilyImageLoader__authResults;
   swift_beginAccess();
-  v5 = *(v3 + v4);
+  v5 = *(selfCopy + v4);
 
   v6 = sub_21BE288EC();
 
   return v6;
 }
 
-- (void)setAuthResults:(id)a3
+- (void)setAuthResults:(id)results
 {
   sub_21BE2890C();
   swift_getKeyPath();
   sub_21BC75D70();
-  v4 = self;
+  selfCopy = self;
   sub_21BE25F0C();
 }
 

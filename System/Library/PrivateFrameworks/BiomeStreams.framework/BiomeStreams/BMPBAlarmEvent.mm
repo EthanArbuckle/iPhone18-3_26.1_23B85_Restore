@@ -1,25 +1,25 @@
 @interface BMPBAlarmEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventType:(id)a3;
-- (int)StringAsLastEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
+- (int)StringAsLastEventType:(id)type;
 - (int)eventType;
 - (int)lastEventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsSleepAlarm:(BOOL)a3;
-- (void)setHasLastEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsSleepAlarm:(BOOL)alarm;
+- (void)setHasLastEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBAlarmEvent
 
-- (void)setHasIsSleepAlarm:(BOOL)a3
+- (void)setHasIsSleepAlarm:(BOOL)alarm
 {
-  if (a3)
+  if (alarm)
   {
     v3 = 4;
   }
@@ -45,35 +45,35 @@
   }
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Firing"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Firing"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Stopped"])
+  else if ([typeCopy isEqualToString:@"Stopped"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Snoozed"])
+  else if ([typeCopy isEqualToString:@"Snoozed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Created"])
+  else if ([typeCopy isEqualToString:@"Created"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Updated"])
+  else if ([typeCopy isEqualToString:@"Updated"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Deleted"])
+  else if ([typeCopy isEqualToString:@"Deleted"])
   {
     v4 = 5;
   }
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)setHasLastEventType:(BOOL)a3
+- (void)setHasLastEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -114,60 +114,60 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsLastEventType:(id)a3
+- (int)StringAsLastEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Idle"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Idle"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Fired"])
+  else if ([typeCopy isEqualToString:@"Fired"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FiredAfterSnooze"])
+  else if ([typeCopy isEqualToString:@"FiredAfterSnooze"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FiredGoToBedReminder"])
+  else if ([typeCopy isEqualToString:@"FiredGoToBedReminder"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FiredGoToBedReminderAfterSnooze"])
+  else if ([typeCopy isEqualToString:@"FiredGoToBedReminderAfterSnooze"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Dismissed"])
+  else if ([typeCopy isEqualToString:@"Dismissed"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"DismissedGoToBedReminder"])
+  else if ([typeCopy isEqualToString:@"DismissedGoToBedReminder"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Snoozed"])
+  else if ([typeCopy isEqualToString:@"Snoozed"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SnoozedBedtime"])
+  else if ([typeCopy isEqualToString:@"SnoozedBedtime"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ConfigurationChanged"])
+  else if ([typeCopy isEqualToString:@"ConfigurationChanged"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TimedOut"])
+  else if ([typeCopy isEqualToString:@"TimedOut"])
   {
     v4 = 10;
   }
@@ -186,20 +186,20 @@
   v8.receiver = self;
   v8.super_class = BMPBAlarmEvent;
   v4 = [(BMPBAlarmEvent *)&v8 description];
-  v5 = [(BMPBAlarmEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBAlarmEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSleepAlarm];
-    [v3 setObject:v5 forKey:@"isSleepAlarm"];
+    [dictionary setObject:v5 forKey:@"isSleepAlarm"];
 
     has = self->_has;
   }
@@ -217,13 +217,13 @@
       v7 = off_1E6E54608[eventType];
     }
 
-    [v3 setObject:v7 forKey:@"eventType"];
+    [dictionary setObject:v7 forKey:@"eventType"];
   }
 
   alarmID = self->_alarmID;
   if (alarmID)
   {
-    [v3 setObject:alarmID forKey:@"alarmID"];
+    [dictionary setObject:alarmID forKey:@"alarmID"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -239,15 +239,15 @@
       v10 = off_1E6E54638[lastEventType];
     }
 
-    [v3 setObject:v10 forKey:@"lastEventType"];
+    [dictionary setObject:v10 forKey:@"lastEventType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -274,40 +274,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[24] = self->_isSleepAlarm;
-    v4[28] |= 4u;
+    toCopy[24] = self->_isSleepAlarm;
+    toCopy[28] |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_eventType;
-    v4[28] |= 1u;
+    *(toCopy + 4) = self->_eventType;
+    toCopy[28] |= 1u;
   }
 
   if (self->_alarmID)
   {
-    v6 = v4;
-    [v4 setAlarmID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAlarmID:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 5) = self->_lastEventType;
-    v4[28] |= 2u;
+    *(toCopy + 5) = self->_lastEventType;
+    toCopy[28] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -323,7 +323,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(NSString *)self->_alarmID copyWithZone:a3];
+  v8 = [(NSString *)self->_alarmID copyWithZone:zone];
   v9 = *(v6 + 8);
   *(v6 + 8) = v8;
 
@@ -336,58 +336,58 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_21;
     }
 
-    v7 = *(v4 + 24);
+    v7 = *(equalCopy + 24);
     if (self->_isSleepAlarm)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_eventType != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_eventType != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_21;
   }
 
   alarmID = self->_alarmID;
-  if (alarmID | *(v4 + 1))
+  if (alarmID | *(equalCopy + 1))
   {
     if ([(NSString *)alarmID isEqual:?])
     {
@@ -401,10 +401,10 @@ LABEL_21:
   }
 
 LABEL_16:
-  v9 = (*(v4 + 28) & 2) == 0;
+  v9 = (*(equalCopy + 28) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_lastEventType != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_lastEventType != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
@@ -455,33 +455,33 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_isSleepAlarm = *(v4 + 24);
+    self->_isSleepAlarm = *(fromCopy + 24);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if (v5)
   {
-    self->_eventType = *(v4 + 4);
+    self->_eventType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(BMPBAlarmEvent *)self setAlarmID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
-    self->_lastEventType = *(v4 + 5);
+    self->_lastEventType = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 }

@@ -1,21 +1,21 @@
 @interface TSAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (UIWindow)window;
 - (id)createBridgedAppResolver;
 - (id)createCarPlaySceneContainer;
 - (id)createSceneContainer;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 handleIntent:(id)a4 completionHandler:(id)a5;
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application handleIntent:(id)intent completionHandler:(id)handler;
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)didCommitFirstFrame;
 - (void)didEnterBackground;
-- (void)setWindow:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)setWindow:(id)window;
+- (void)validateCommand:(id)command;
 - (void)willEnterForeground;
 @end
 
@@ -23,7 +23,7 @@
 
 - (id)createBridgedAppResolver
 {
-  v2 = self;
+  selfCopy = self;
   sub_2186C6E00(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);
   v3 = sub_219BE1DA4();
@@ -33,35 +33,35 @@
   return v3;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_2187A5670(&qword_27CC0A758, type metadata accessor for LaunchOptionsKey);
     sub_219BF5214();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = _s7NewsUI211AppDelegateC11application_30willFinishLaunchingWithOptionsSbSo13UIApplicationC_SDySo0k6LaunchJ3KeyaypGSgtF_0();
 
   return v8 & 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_2187A5670(&qword_27CC0A758, type metadata accessor for LaunchOptionsKey);
-    v4 = sub_219BF5214();
+    optionsCopy = sub_219BF5214();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_2187A5BE8(v4);
+  applicationCopy = application;
+  selfCopy = self;
+  v9 = sub_2187A5BE8(optionsCopy);
 
   return v9 & 1;
 }
@@ -72,7 +72,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_2186C72B8();
   (*(v4 + 104))(v6, *MEMORY[0x277D6D550], v3);
   v8 = sub_219BE6B24();
@@ -84,7 +84,7 @@
 
 - (void)didCommitFirstFrame
 {
-  v2 = self;
+  selfCopy = self;
   AppDelegate.didCommitFirstFrame()();
 }
 
@@ -95,18 +95,18 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v5 = OBJC_IVAR___TSAppDelegate_window;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = window;
+  windowCopy = window;
 }
 
 - (id)createCarPlaySceneContainer
 {
-  v2 = self;
+  selfCopy = self;
   sub_2186C72B8();
   v3 = sub_219BE6B04();
 
@@ -115,17 +115,17 @@
 
 - (void)didEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_2191148D4(MEMORY[0x277D6CE50]);
 }
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_2191148D4(MEMORY[0x277D6CE58]);
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
   v7 = sub_219BDB954();
   v8 = *(v7 - 8);
@@ -135,8 +135,8 @@
   type metadata accessor for OpenURLOptionsKey(0);
   sub_2187A5670(&unk_280E8DC50, type metadata accessor for OpenURLOptionsKey);
   v11 = sub_219BF5214();
-  v12 = a3;
-  v13 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_219115F30(v10, v11);
   v15 = v14;
 
@@ -144,43 +144,43 @@
   return v15 & 1;
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_219BF5214();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a3;
-  v11 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_219116344(v8, sub_219116B34, v9);
 }
 
-- (void)application:(id)a3 handleIntent:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleIntent:(id)intent completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_21911654C(v10, v11, v8);
+  applicationCopy = application;
+  intentCopy = intent;
+  selfCopy = self;
+  sub_21911654C(intentCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_219116748(sub_2189A6A5C, v7);
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = self;
-  AppDelegate.forwardingTarget(for:)(a3, v12);
+  selfCopy = self;
+  AppDelegate.forwardingTarget(for:)(selector, v12);
 
   v5 = v13;
   if (v13)
@@ -203,20 +203,20 @@
   return v10;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v5 = sub_219114120();
   [v5 buildMenuWithBuilder_];
 
   swift_unknownObjectRelease();
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
+  commandCopy = command;
+  selfCopy = self;
   v6 = sub_219114120();
   swift_getObjectType();
   sub_219114200();
@@ -230,11 +230,11 @@
   __swift_destroy_boxed_opaque_existential_1(v8);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_219BF70B4();
     swift_unknownObjectRelease();
@@ -243,10 +243,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = AppDelegate.canPerformAction(_:withSender:)(a3, v10);
+  v8 = AppDelegate.canPerformAction(_:withSender:)(action, v10);
 
   sub_21874546C(v10, &qword_280E8B4F0, MEMORY[0x277D84F70] + 8, MEMORY[0x277D83D88], sub_2186C5500);
   return v8 & 1;

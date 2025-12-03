@@ -1,16 +1,16 @@
 @interface TUIHoverRegion
 - (CGRect)bounds;
-- (TUIHoverRegion)initWithBounds:(CGRect)a3;
+- (TUIHoverRegion)initWithBounds:(CGRect)bounds;
 @end
 
 @implementation TUIHoverRegion
 
-- (TUIHoverRegion)initWithBounds:(CGRect)a3
+- (TUIHoverRegion)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = TUIHoverRegion;
   result = [(TUIHoverRegion *)&v8 init];

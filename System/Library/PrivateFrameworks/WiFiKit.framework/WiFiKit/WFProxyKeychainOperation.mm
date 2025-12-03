@@ -1,61 +1,61 @@
 @interface WFProxyKeychainOperation
-+ (id)getPasswordOperationForHost:(id)a3 port:(id)a4 username:(id)a5;
-+ (id)removePasswordOperationForHost:(id)a3 port:(id)a4 username:(id)a5;
-+ (id)savePassswordOperationForHost:(id)a3 port:(id)a4 username:(id)a5 password:(id)a6;
-- (WFProxyKeychainOperation)initWithHost:(id)a3 port:(id)a4 username:(id)a5 password:(id)a6 type:(int64_t)a7;
-- (id)_credentialsForProtectionSpace:(id)a3;
++ (id)getPasswordOperationForHost:(id)host port:(id)port username:(id)username;
++ (id)removePasswordOperationForHost:(id)host port:(id)port username:(id)username;
++ (id)savePassswordOperationForHost:(id)host port:(id)port username:(id)username password:(id)password;
+- (WFProxyKeychainOperation)initWithHost:(id)host port:(id)port username:(id)username password:(id)password type:(int64_t)type;
+- (id)_credentialsForProtectionSpace:(id)space;
 - (void)start;
 @end
 
 @implementation WFProxyKeychainOperation
 
-+ (id)removePasswordOperationForHost:(id)a3 port:(id)a4 username:(id)a5
++ (id)removePasswordOperationForHost:(id)host port:(id)port username:(id)username
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[WFProxyKeychainOperation alloc] initWithHost:v9 port:v8 username:v7 password:0 type:1];
+  usernameCopy = username;
+  portCopy = port;
+  hostCopy = host;
+  v10 = [[WFProxyKeychainOperation alloc] initWithHost:hostCopy port:portCopy username:usernameCopy password:0 type:1];
 
   return v10;
 }
 
-+ (id)getPasswordOperationForHost:(id)a3 port:(id)a4 username:(id)a5
++ (id)getPasswordOperationForHost:(id)host port:(id)port username:(id)username
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[WFProxyKeychainOperation alloc] initWithHost:v9 port:v8 username:v7 password:0 type:0];
+  usernameCopy = username;
+  portCopy = port;
+  hostCopy = host;
+  v10 = [[WFProxyKeychainOperation alloc] initWithHost:hostCopy port:portCopy username:usernameCopy password:0 type:0];
 
   return v10;
 }
 
-+ (id)savePassswordOperationForHost:(id)a3 port:(id)a4 username:(id)a5 password:(id)a6
++ (id)savePassswordOperationForHost:(id)host port:(id)port username:(id)username password:(id)password
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[WFProxyKeychainOperation alloc] initWithHost:v12 port:v11 username:v10 password:v9 type:1];
+  passwordCopy = password;
+  usernameCopy = username;
+  portCopy = port;
+  hostCopy = host;
+  v13 = [[WFProxyKeychainOperation alloc] initWithHost:hostCopy port:portCopy username:usernameCopy password:passwordCopy type:1];
 
   return v13;
 }
 
-- (WFProxyKeychainOperation)initWithHost:(id)a3 port:(id)a4 username:(id)a5 password:(id)a6 type:(int64_t)a7
+- (WFProxyKeychainOperation)initWithHost:(id)host port:(id)port username:(id)username password:(id)password type:(int64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  hostCopy = host;
+  portCopy = port;
+  usernameCopy = username;
+  passwordCopy = password;
   v20.receiver = self;
   v20.super_class = WFProxyKeychainOperation;
   v17 = [(WFProxyKeychainOperation *)&v20 init];
   v18 = v17;
-  if (v17 && (objc_storeStrong(&v17->_password, a6), v14) && v13 && v15)
+  if (v17 && (objc_storeStrong(&v17->_password, password), portCopy) && hostCopy && usernameCopy)
   {
-    objc_storeStrong(&v18->_host, a3);
-    objc_storeStrong(&v18->_username, a5);
-    objc_storeStrong(&v18->_port, a4);
-    v18->_type = a7;
+    objc_storeStrong(&v18->_host, host);
+    objc_storeStrong(&v18->_username, username);
+    objc_storeStrong(&v18->_port, port);
+    v18->_type = type;
   }
 
   else
@@ -77,17 +77,17 @@
   }
 }
 
-- (id)_credentialsForProtectionSpace:(id)a3
+- (id)_credentialsForProtectionSpace:(id)space
 {
   v4 = MEMORY[0x277CBAB88];
-  v5 = a3;
-  v6 = [v4 sharedCredentialStorage];
-  v7 = [v6 credentialsForProtectionSpace:v5];
+  spaceCopy = space;
+  sharedCredentialStorage = [v4 sharedCredentialStorage];
+  v7 = [sharedCredentialStorage credentialsForProtectionSpace:spaceCopy];
 
   if (v7)
   {
-    v8 = [(WFProxyKeychainOperation *)self username];
-    v9 = [v7 objectForKey:v8];
+    username = [(WFProxyKeychainOperation *)self username];
+    v9 = [v7 objectForKey:username];
   }
 
   else

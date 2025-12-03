@@ -1,22 +1,22 @@
 @interface NotificationManager
-- (id)init:(int)a3 withSolarInfo:(BOOL)a4 withModeratePressureVersion:(int)a5;
-- (int64_t)updateThermalPressureLevelNotification:(unint64_t)a3 shouldForceThermalPressure:(BOOL)a4;
+- (id)init:(int)init withSolarInfo:(BOOL)info withModeratePressureVersion:(int)version;
+- (int64_t)updateThermalPressureLevelNotification:(unint64_t)notification shouldForceThermalPressure:(BOOL)pressure;
 - (void)dealloc;
-- (void)sendRadioNotification:(unsigned __int8)a3;
-- (void)setThermalPressureLevelNotification:(unint64_t)a3;
-- (void)updateEarlyThermalNotification:(unsigned __int8)a3;
-- (void)updateMaxValueToken:(unint64_t)a3;
+- (void)sendRadioNotification:(unsigned __int8)notification;
+- (void)setThermalPressureLevelNotification:(unint64_t)notification;
+- (void)updateEarlyThermalNotification:(unsigned __int8)notification;
+- (void)updateMaxValueToken:(unint64_t)token;
 - (void)updateNotifyTokens;
-- (void)updateThermalMitigationNotification:(unsigned __int8)a3;
-- (void)updateThermalNotification:(unint64_t)a3;
-- (void)updatetimeToMitigateNotification:(unsigned __int8)a3 AndReasonCode:(unsigned __int8)a4;
+- (void)updateThermalMitigationNotification:(unsigned __int8)notification;
+- (void)updateThermalNotification:(unint64_t)notification;
+- (void)updatetimeToMitigateNotification:(unsigned __int8)notification AndReasonCode:(unsigned __int8)code;
 @end
 
 @implementation NotificationManager
 
-- (id)init:(int)a3 withSolarInfo:(BOOL)a4 withModeratePressureVersion:(int)a5
+- (id)init:(int)init withSolarInfo:(BOOL)info withModeratePressureVersion:(int)version
 {
-  v6 = a4;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = NotificationManager;
   v8 = [(NotificationManager *)&v22 init];
@@ -24,15 +24,15 @@
   if (v8)
   {
     v8->pressureLevel_previous = 0;
-    v8->totalSensors = a3 + 1;
-    v10 = a3 + 4;
-    if (a3 < -4)
+    v8->totalSensors = init + 1;
+    v10 = init + 4;
+    if (init < -4)
     {
-      v10 = a3 + 7;
+      v10 = init + 7;
     }
 
-    v8->includeSolarInfo = v6;
-    if (v6)
+    v8->includeSolarInfo = infoCopy;
+    if (infoCopy)
     {
       v11 = 2;
     }
@@ -129,7 +129,7 @@
 
     [(NotificationManager *)v9 updateThermalNotification:0];
     [(NotificationManager *)v9 updatetimeToMitigateNotification:0 AndReasonCode:0];
-    v9->moderatePressureVersion = a5;
+    v9->moderatePressureVersion = version;
   }
 
   return v9;
@@ -148,9 +148,9 @@
   [(NotificationManager *)&v4 dealloc];
 }
 
-- (void)updateMaxValueToken:(unint64_t)a3
+- (void)updateMaxValueToken:(unint64_t)token
 {
-  if (notify_set_state(*self->listThermalSensorToken, a3))
+  if (notify_set_state(*self->listThermalSensorToken, token))
   {
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
@@ -220,9 +220,9 @@
   }
 }
 
-- (void)updateThermalNotification:(unint64_t)a3
+- (void)updateThermalNotification:(unint64_t)notification
 {
-  if (notify_set_state(self->thermalStatusToken, a3))
+  if (notify_set_state(self->thermalStatusToken, notification))
   {
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
@@ -236,9 +236,9 @@
   }
 }
 
-- (void)sendRadioNotification:(unsigned __int8)a3
+- (void)sendRadioNotification:(unsigned __int8)notification
 {
-  if (notify_set_state(self->radioNotificationToken, a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+  if (notify_set_state(self->radioNotificationToken, notification) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
     sub_100051A2C();
   }
@@ -252,19 +252,19 @@
   }
 }
 
-- (int64_t)updateThermalPressureLevelNotification:(unint64_t)a3 shouldForceThermalPressure:(BOOL)a4
+- (int64_t)updateThermalPressureLevelNotification:(unint64_t)notification shouldForceThermalPressure:(BOOL)pressure
 {
-  if (a3 > 9)
+  if (notification > 9)
   {
-    if (a3 <= 12)
+    if (notification <= 12)
     {
-      if (a3 == 10)
+      if (notification == 10)
       {
         v9 = 30;
         goto LABEL_25;
       }
 
-      if (a3 != 11)
+      if (notification != 11)
       {
         v9 = 40;
         goto LABEL_25;
@@ -276,7 +276,7 @@
       goto LABEL_22;
     }
 
-    if (a3 - 13 < 3)
+    if (notification - 13 < 3)
     {
       v6 = self->pressureLevel_previous > 0x28;
       v7 = 40;
@@ -284,7 +284,7 @@
       goto LABEL_22;
     }
 
-    if (a3 == 16)
+    if (notification == 16)
     {
       v9 = 50;
       goto LABEL_25;
@@ -293,7 +293,7 @@
 
   else
   {
-    if (a3 > 4)
+    if (notification > 4)
     {
       v6 = self->pressureLevel_previous > 0x14;
       v7 = 20;
@@ -301,12 +301,12 @@
       goto LABEL_22;
     }
 
-    if (a3 - 2 < 2)
+    if (notification - 2 < 2)
     {
       goto LABEL_11;
     }
 
-    if (a3 == 1)
+    if (notification == 1)
     {
 LABEL_12:
       v6 = self->pressureLevel_previous > 0xA;
@@ -326,7 +326,7 @@ LABEL_22:
       goto LABEL_25;
     }
 
-    if (a3 == 4)
+    if (notification == 4)
     {
       if (self->moderatePressureVersion == 1)
       {
@@ -354,7 +354,7 @@ LABEL_11:
     }
   }
 
-  if (a4 || self->lightPressureOverride)
+  if (pressure || self->lightPressureOverride)
   {
     v9 = 10;
   }
@@ -394,7 +394,7 @@ LABEL_25:
       v14 = 134218240;
       v15 = v9;
       v16 = 2048;
-      v17 = a3;
+      notificationCopy = notification;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "<Notice> Thermal pressure level %llu thermal level %llu", &v14, 0x16u);
     }
 
@@ -413,16 +413,16 @@ LABEL_40:
   return -1;
 }
 
-- (void)setThermalPressureLevelNotification:(unint64_t)a3
+- (void)setThermalPressureLevelNotification:(unint64_t)notification
 {
-  if (self->pressureLevel_previous == a3 || (pressureLevel_previous = self->pressureLevel_previous, byte_1000A22A0 != 1))
+  if (self->pressureLevel_previous == notification || (pressureLevel_previous = self->pressureLevel_previous, byte_1000A22A0 != 1))
   {
 LABEL_12:
     kdebug_trace();
     return;
   }
 
-  if (notify_set_state(self->thermalPressureLevelToken, a3))
+  if (notify_set_state(self->thermalPressureLevelToken, notification))
   {
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
@@ -439,11 +439,11 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      notificationCopy = notification;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> Thermal pressure level %llu", &v8, 0xCu);
     }
 
-    self->pressureLevel_previous = a3;
+    self->pressureLevel_previous = notification;
     goto LABEL_12;
   }
 
@@ -453,10 +453,10 @@ LABEL_12:
   }
 }
 
-- (void)updatetimeToMitigateNotification:(unsigned __int8)a3 AndReasonCode:(unsigned __int8)a4
+- (void)updatetimeToMitigateNotification:(unsigned __int8)notification AndReasonCode:(unsigned __int8)code
 {
-  v4 = a4;
-  if (notify_set_state(self->timeToMitigateToken, a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+  codeCopy = code;
+  if (notify_set_state(self->timeToMitigateToken, notification) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
     sub_100051A94();
   }
@@ -466,7 +466,7 @@ LABEL_12:
     sub_100051AC8();
   }
 
-  if (notify_set_state(self->mitigationReasonCodeToken, v4) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+  if (notify_set_state(self->mitigationReasonCodeToken, codeCopy) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
     sub_100051AFC();
   }
@@ -480,9 +480,9 @@ LABEL_12:
   }
 }
 
-- (void)updateThermalMitigationNotification:(unsigned __int8)a3
+- (void)updateThermalMitigationNotification:(unsigned __int8)notification
 {
-  if (notify_set_state(self->thermalMitigationToken, a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+  if (notify_set_state(self->thermalMitigationToken, notification) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
     sub_100051B64();
   }
@@ -496,9 +496,9 @@ LABEL_12:
   }
 }
 
-- (void)updateEarlyThermalNotification:(unsigned __int8)a3
+- (void)updateEarlyThermalNotification:(unsigned __int8)notification
 {
-  if (notify_set_state(self->earlyThermalNotificationToken, a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+  if (notify_set_state(self->earlyThermalNotificationToken, notification) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
     sub_100051BCC();
   }

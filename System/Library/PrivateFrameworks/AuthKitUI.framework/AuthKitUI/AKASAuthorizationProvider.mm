@@ -1,43 +1,43 @@
 @interface AKASAuthorizationProvider
-- (AKASAuthorizationProvider)initWithAppName:(id)a3 teamIdentifier:(id)a4 bundleIdentifier:(id)a5 authorizationRequest:(id)a6;
-- (BOOL)_shouldContinueWithPasswordForError:(id)a3;
-- (BOOL)alertHandlerShowAlert:(id)a3 primaryAction:(id)a4 altAction:(id)a5;
+- (AKASAuthorizationProvider)initWithAppName:(id)name teamIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier authorizationRequest:(id)request;
+- (BOOL)_shouldContinueWithPasswordForError:(id)error;
+- (BOOL)alertHandlerShowAlert:(id)alert primaryAction:(id)action altAction:(id)altAction;
 - (_ASAuthenticationPresentationProvider)presentationProvider;
 - (_ASAuthenticationProviderLoginRowData)loginRowData;
-- (id)_accountNameForLoginChoice:(id)a3;
-- (id)_detailTextForLoginChoice:(id)a3;
-- (id)_iconImageForLoginChoice:(id)a3;
-- (id)_paneTitleForLoginChoice:(id)a3;
-- (id)loginRowDataForLoginChoice:(id)a3;
-- (void)_handleAuthorizationError:(id)a3;
-- (void)_performAuthorizationWithCompletionHandler:(id)a3;
+- (id)_accountNameForLoginChoice:(id)choice;
+- (id)_detailTextForLoginChoice:(id)choice;
+- (id)_iconImageForLoginChoice:(id)choice;
+- (id)_paneTitleForLoginChoice:(id)choice;
+- (id)loginRowDataForLoginChoice:(id)choice;
+- (void)_handleAuthorizationError:(id)error;
+- (void)_performAuthorizationWithCompletionHandler:(id)handler;
 - (void)_showPasswordAuthenticationViewController;
-- (void)passwordAuthenticationCompletedWithResults:(id)a3 error:(id)a4;
-- (void)performAuthorizationWithCompletionHandler:(id)a3;
-- (void)performAuthorizationWithLoginChoice:(id)a3 completionHandler:(id)a4;
+- (void)passwordAuthenticationCompletedWithResults:(id)results error:(id)error;
+- (void)performAuthorizationWithCompletionHandler:(id)handler;
+- (void)performAuthorizationWithLoginChoice:(id)choice completionHandler:(id)handler;
 @end
 
 @implementation AKASAuthorizationProvider
 
-- (AKASAuthorizationProvider)initWithAppName:(id)a3 teamIdentifier:(id)a4 bundleIdentifier:(id)a5 authorizationRequest:(id)a6
+- (AKASAuthorizationProvider)initWithAppName:(id)name teamIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier authorizationRequest:(id)request
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, identifier);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, bundleIdentifier);
   v32 = 0;
-  objc_storeStrong(&v32, a6);
-  v6 = v36;
-  v36 = 0;
+  objc_storeStrong(&v32, request);
+  v6 = selfCopy;
+  selfCopy = 0;
   v31.receiver = v6;
   v31.super_class = AKASAuthorizationProvider;
   v25 = [(AKASAuthorizationProvider *)&v31 init];
-  v36 = v25;
-  objc_storeStrong(&v36, v25);
+  selfCopy = v25;
+  objc_storeStrong(&selfCopy, v25);
   if (v25)
   {
     v29 = objc_alloc_init(MEMORY[0x277CF02B0]);
@@ -45,12 +45,12 @@
     [v29 setBundleID:v33];
     [v29 setShouldSkipAuthorizationUI:1];
     v7 = [objc_alloc(MEMORY[0x277CF0210]) initWithProxiedClientContext:v29];
-    v8 = *(v36 + 1);
-    *(v36 + 1) = v7;
+    v8 = *(selfCopy + 1);
+    *(selfCopy + 1) = v7;
     *&v9 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    v21 = [v32 authkitAccount];
-    v10 = MEMORY[0x277D82BD8](v21).n128_u64[0];
-    if (!v21)
+    authkitAccount = [v32 authkitAccount];
+    v10 = MEMORY[0x277D82BD8](authkitAccount).n128_u64[0];
+    if (!authkitAccount)
     {
       v28 = _AKLogSystem();
       v27 = 16;
@@ -63,26 +63,26 @@
       }
 
       objc_storeStrong(&v28, 0);
-      v18 = [MEMORY[0x277CF0130] sharedInstance];
-      v17 = [v18 authKitAccountRequestingAuthorization];
+      mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+      authKitAccountRequestingAuthorization = [mEMORY[0x277CF0130] authKitAccountRequestingAuthorization];
       [v32 setAuthkitAccount:?];
-      MEMORY[0x277D82BD8](v17);
-      v10 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+      MEMORY[0x277D82BD8](authKitAccountRequestingAuthorization);
+      v10 = MEMORY[0x277D82BD8](mEMORY[0x277CF0130]).n128_u64[0];
     }
 
-    [*(v36 + 1) setAuthorizationRequest:{v32, *&v10}];
+    [*(selfCopy + 1) setAuthorizationRequest:{v32, *&v10}];
     v14 = v33;
-    v15 = [*(v36 + 1) authorizationRequest];
-    [v15 setClientID:v14];
-    MEMORY[0x277D82BD8](v15);
-    objc_storeStrong(v36 + 4, location[0]);
+    authorizationRequest = [*(selfCopy + 1) authorizationRequest];
+    [authorizationRequest setClientID:v14];
+    MEMORY[0x277D82BD8](authorizationRequest);
+    objc_storeStrong(selfCopy + 4, location[0]);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.AuthKit.AKASAuthorizationProvider", v16);
-    v12 = *(v36 + 2);
-    *(v36 + 2) = v11;
+    v12 = *(selfCopy + 2);
+    *(selfCopy + 2) = v11;
     MEMORY[0x277D82BD8](v12);
     MEMORY[0x277D82BD8](v16);
-    v37 = MEMORY[0x277D82BE0](v36);
+    v37 = MEMORY[0x277D82BE0](selfCopy);
     v30 = 1;
     objc_storeStrong(&v29, 0);
   }
@@ -97,23 +97,23 @@
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v37;
 }
 
-- (void)performAuthorizationWithCompletionHandler:(id)a3
+- (void)performAuthorizationWithCompletionHandler:(id)handler
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_requestQueue;
+  objc_storeStrong(location, handler);
+  queue = selfCopy->_requestQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __71__AKASAuthorizationProvider_performAuthorizationWithCompletionHandler___block_invoke;
   v8 = &unk_2784A63C8;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -214,14 +214,14 @@ void __71__AKASAuthorizationProvider_performAuthorizationWithCompletionHandler__
   }
 }
 
-- (void)performAuthorizationWithLoginChoice:(id)a3 completionHandler:(id)a4
+- (void)performAuthorizationWithLoginChoice:(id)choice completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, handler);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -237,53 +237,53 @@ void __71__AKASAuthorizationProvider_performAuthorizationWithCompletionHandler__
 
     objc_storeStrong(&v15, 0);
     v12 = MEMORY[0x277D82BE0](location[0]);
-    v7 = [v12 sharedAccount];
-    v6 = [(AKCredentialRequestContext *)v18->_requestContext authorizationRequest];
-    [v6 set_sharedAccount:v7];
-    MEMORY[0x277D82BD8](v6);
-    *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    v8 = [(AKCredentialRequestContext *)v18->_requestContext authorizationRequest];
-    [v8 set_isAuthorizingUsingSharedAccount:1];
-    MEMORY[0x277D82BD8](v8);
+    sharedAccount = [v12 sharedAccount];
+    authorizationRequest = [(AKCredentialRequestContext *)selfCopy->_requestContext authorizationRequest];
+    [authorizationRequest set_sharedAccount:sharedAccount];
+    MEMORY[0x277D82BD8](authorizationRequest);
+    *&v4 = MEMORY[0x277D82BD8](sharedAccount).n128_u64[0];
+    authorizationRequest2 = [(AKCredentialRequestContext *)selfCopy->_requestContext authorizationRequest];
+    [authorizationRequest2 set_isAuthorizingUsingSharedAccount:1];
+    MEMORY[0x277D82BD8](authorizationRequest2);
     objc_storeStrong(&v12, 0);
   }
 
-  [(AKASAuthorizationProvider *)v18 performAuthorizationWithCompletionHandler:v16, &v16];
+  [(AKASAuthorizationProvider *)selfCopy performAuthorizationWithCompletionHandler:v16, &v16];
   objc_storeStrong(v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_showPasswordAuthenticationViewController
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = objc_alloc_init(AKAuthorizationPasswordAuthenticationViewController);
   v3 = objc_alloc(MEMORY[0x277CF01A8]);
-  v6 = [(AKCredentialRequestContext *)v10->_requestContext authorizationRequest];
-  v5 = [v6 authkitAccount];
-  v4 = [v5 username];
+  authorizationRequest = [(AKCredentialRequestContext *)selfCopy->_requestContext authorizationRequest];
+  authkitAccount = [authorizationRequest authkitAccount];
+  username = [authkitAccount username];
   v8 = [v3 initWithUsername:?];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  *&v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  MEMORY[0x277D82BD8](username);
+  MEMORY[0x277D82BD8](authkitAccount);
+  *&v2 = MEMORY[0x277D82BD8](authorizationRequest).n128_u64[0];
   [v9[0] setPresentationContext:{v8, v2}];
-  [v9[0] setDelegate:v10];
-  WeakRetained = objc_loadWeakRetained(&v10->_presentationProvider);
-  [WeakRetained authenticationProvider:v10 showViewController:v9[0]];
+  [v9[0] setDelegate:selfCopy];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_presentationProvider);
+  [WeakRetained authenticationProvider:selfCopy showViewController:v9[0]];
   MEMORY[0x277D82BD8](WeakRetained);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(v9, 0);
 }
 
-- (void)_performAuthorizationWithCompletionHandler:(id)a3
+- (void)_performAuthorizationWithCompletionHandler:(id)handler
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v11 = objc_alloc_init(MEMORY[0x277CF01A0]);
   v4 = v11;
-  requestContext = v13->_requestContext;
+  requestContext = selfCopy->_requestContext;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
@@ -308,30 +308,30 @@ void __72__AKASAuthorizationProvider__performAuthorizationWithCompletionHandler_
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAuthorizationError:(id)a3
+- (void)_handleAuthorizationError:(id)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKASAuthorizationProvider *)v13 _shouldContinueWithPasswordForError:location[0]])
+  objc_storeStrong(location, error);
+  if ([(AKASAuthorizationProvider *)selfCopy _shouldContinueWithPasswordForError:location[0]])
   {
-    v13->_didFailWithErrorRequiringPasswordAuth = 1;
+    selfCopy->_didFailWithErrorRequiringPasswordAuth = 1;
   }
 
-  v11 = [MEMORY[0x277CF0150] sharedInstance];
-  [v11 setUiProvider:v13];
-  v4 = v11;
+  mEMORY[0x277CF0150] = [MEMORY[0x277CF0150] sharedInstance];
+  [mEMORY[0x277CF0150] setUiProvider:selfCopy];
+  v4 = mEMORY[0x277CF0150];
   v3 = location[0];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke;
   v9 = &unk_2784A6D00;
-  v10 = MEMORY[0x277D82BE0](v13);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   [v4 showAlertForError:v3 withCompletion:&v5];
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&mEMORY[0x277CF0150], 0);
   objc_storeStrong(location, 0);
 }
 
@@ -384,15 +384,15 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)_shouldContinueWithPasswordForError:(id)a3
+- (BOOL)_shouldContinueWithPasswordForError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CEFF48]];
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  objc_storeStrong(location, error);
+  domain = [location[0] domain];
+  v7 = [domain isEqualToString:*MEMORY[0x277CEFF48]];
+  *&v3 = MEMORY[0x277D82BD8](domain).n128_u64[0];
   if (v7)
   {
     v9 = 0;
@@ -415,14 +415,14 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
 
 - (_ASAuthenticationProviderLoginRowData)loginRowData
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [(AKASAuthorizationProvider *)self _accountNameForLoginChoice:?];
-  v8 = [(AKASAuthorizationProvider *)v10 _paneTitleForLoginChoice:0];
-  v7 = [(AKASAuthorizationProvider *)v10 _detailTextForLoginChoice:0];
-  v6 = [(AKASAuthorizationProvider *)v10 _iconImageForLoginChoice:0];
+  v8 = [(AKASAuthorizationProvider *)selfCopy _paneTitleForLoginChoice:0];
+  v7 = [(AKASAuthorizationProvider *)selfCopy _detailTextForLoginChoice:0];
+  v6 = [(AKASAuthorizationProvider *)selfCopy _iconImageForLoginChoice:0];
   v4 = [AKLoginRowData alloc];
-  if (([(AKCredentialRequestContext *)v10->_requestContext _requirePassword]& 1) != 0)
+  if (([(AKCredentialRequestContext *)selfCopy->_requestContext _requirePassword]& 1) != 0)
   {
     v2 = 3;
   }
@@ -441,18 +441,18 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   return v5;
 }
 
-- (id)loginRowDataForLoginChoice:(id)a3
+- (id)loginRowDataForLoginChoice:(id)choice
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(AKASAuthorizationProvider *)v12 _accountNameForLoginChoice:location[0]];
-  v9 = [(AKASAuthorizationProvider *)v12 _paneTitleForLoginChoice:location[0]];
-  v8 = [(AKASAuthorizationProvider *)v12 _detailTextForLoginChoice:location[0]];
-  v7 = [(AKASAuthorizationProvider *)v12 _iconImageForLoginChoice:location[0]];
+  objc_storeStrong(location, choice);
+  v10 = [(AKASAuthorizationProvider *)selfCopy _accountNameForLoginChoice:location[0]];
+  v9 = [(AKASAuthorizationProvider *)selfCopy _paneTitleForLoginChoice:location[0]];
+  v8 = [(AKASAuthorizationProvider *)selfCopy _detailTextForLoginChoice:location[0]];
+  v7 = [(AKASAuthorizationProvider *)selfCopy _iconImageForLoginChoice:location[0]];
   v5 = [AKLoginRowData alloc];
-  if (([(AKCredentialRequestContext *)v12->_requestContext _requirePassword]& 1) != 0)
+  if (([(AKCredentialRequestContext *)selfCopy->_requestContext _requirePassword]& 1) != 0)
   {
     v3 = 3;
   }
@@ -472,41 +472,41 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   return v6;
 }
 
-- (id)_accountNameForLoginChoice:(id)a3
+- (id)_accountNameForLoginChoice:(id)choice
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   v18 = 0;
   if (location[0])
   {
-    v3 = [location[0] user];
+    user = [location[0] user];
     v4 = v18;
-    v18 = v3;
+    v18 = user;
     MEMORY[0x277D82BD8](v4);
   }
 
   else
   {
     v17 = objc_alloc_init(MEMORY[0x277CCAC00]);
-    v10 = [MEMORY[0x277CF0130] sharedInstance];
-    v9 = [(AKCredentialRequestContext *)v20->_requestContext authorizationRequest];
-    v8 = [v9 authkitAccount];
-    v7 = [v10 familyNameForAccount:?];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    authorizationRequest = [(AKCredentialRequestContext *)selfCopy->_requestContext authorizationRequest];
+    authkitAccount = [authorizationRequest authkitAccount];
+    v7 = [mEMORY[0x277CF0130] familyNameForAccount:?];
     [v17 setFamilyName:?];
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    v14 = [MEMORY[0x277CF0130] sharedInstance];
-    v13 = [(AKCredentialRequestContext *)v20->_requestContext authorizationRequest];
-    v12 = [v13 authkitAccount];
-    v11 = [v14 givenNameForAccount:?];
+    MEMORY[0x277D82BD8](authkitAccount);
+    MEMORY[0x277D82BD8](authorizationRequest);
+    mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+    authorizationRequest2 = [(AKCredentialRequestContext *)selfCopy->_requestContext authorizationRequest];
+    authkitAccount2 = [authorizationRequest2 authkitAccount];
+    v11 = [mEMORY[0x277CF0130]2 givenNameForAccount:?];
     [v17 setGivenName:?];
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](authkitAccount2);
+    MEMORY[0x277D82BD8](authorizationRequest2);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0130]2);
     v16 = objc_alloc_init(MEMORY[0x277CCAC08]);
     v15 = [v16 stringFromPersonNameComponents:v17];
     objc_storeStrong(&v18, v15);
@@ -522,12 +522,12 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   return v6;
 }
 
-- (id)_iconImageForLoginChoice:(id)a3
+- (id)_iconImageForLoginChoice:(id)choice
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   +[AKAuthorizationSubPaneMetrics scopeImageViewSize];
   v16 = v3;
   v15 = 0;
@@ -537,13 +537,13 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
     if (objc_opt_isKindOfClass())
     {
       v14 = MEMORY[0x277D82BE0](location[0]);
-      v12 = [v14 sharedAccount];
-      v11 = [v12 shareInfo];
-      v13 = [v11 participantHandle];
-      MEMORY[0x277D82BD8](v11);
-      MEMORY[0x277D82BD8](v12);
-      v18 = [AKSignInWithAppleAvatarManager avatarImageForUserHandle:v13 diameter:v16];
-      objc_storeStrong(&v13, 0);
+      sharedAccount = [v14 sharedAccount];
+      shareInfo = [sharedAccount shareInfo];
+      participantHandle = [shareInfo participantHandle];
+      MEMORY[0x277D82BD8](shareInfo);
+      MEMORY[0x277D82BD8](sharedAccount);
+      v18 = [AKSignInWithAppleAvatarManager avatarImageForUserHandle:participantHandle diameter:v16];
+      objc_storeStrong(&participantHandle, 0);
       objc_storeStrong(&v14, 0);
     }
 
@@ -557,9 +557,9 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   {
     CGSizeMake_4();
     v10 = [AKIcon iconWithName:@"blackLogo" size:v4, v5];
-    v6 = [(AKIcon *)v10 automaskedImage];
+    automaskedImage = [(AKIcon *)v10 automaskedImage];
     v7 = v15;
-    v15 = v6;
+    v15 = automaskedImage;
     MEMORY[0x277D82BD8](v7);
     MEMORY[0x277D82BD8](v10);
     v18 = MEMORY[0x277D82BE0](v15);
@@ -572,19 +572,19 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   return v8;
 }
 
-- (id)_paneTitleForLoginChoice:(id)a3
+- (id)_paneTitleForLoginChoice:(id)choice
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   if (location[0] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v12 localizedStringForKey:@"CREDENTIAL_PICKER_SHARED_ACCOUNT" value:&stru_28358EF68 table:@"Localizable"];
-    appName = v14->_appName;
-    v10 = [(AKASAuthorizationProvider *)v14 _accountNameForLoginChoice:location[0]];
+    appName = selfCopy->_appName;
+    v10 = [(AKASAuthorizationProvider *)selfCopy _accountNameForLoginChoice:location[0]];
     v15 = [v9 stringWithFormat:v11, appName, v10];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
@@ -596,7 +596,7 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
     v5 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v7 localizedStringForKey:@"AUTHORIZE_APPLE_ACCOUNT_WELCOME_BACK_APPNAME_FORMAT" value:&stru_28358EF68 table:@"Localizable"];
-    v15 = [v5 stringWithFormat:v14->_appName];
+    v15 = [v5 stringWithFormat:selfCopy->_appName];
     MEMORY[0x277D82BD8](v6);
     MEMORY[0x277D82BD8](v7);
   }
@@ -607,12 +607,12 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   return v3;
 }
 
-- (id)_detailTextForLoginChoice:(id)a3
+- (id)_detailTextForLoginChoice:(id)choice
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   if (location[0])
   {
     objc_opt_class();
@@ -658,15 +658,15 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
   return v3;
 }
 
-- (void)passwordAuthenticationCompletedWithResults:(id)a3 error:(id)a4
+- (void)passwordAuthenticationCompletedWithResults:(id)results error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, error);
   if (v16)
   {
     if (![v16 ak_isUserCancelError])
@@ -682,26 +682,26 @@ void __55__AKASAuthorizationProvider__handleAuthorizationError___block_invoke(vo
       objc_storeStrong(&v15, 0);
     }
 
-    if (v18->_completionHandlerForCurrentRequest)
+    if (selfCopy->_completionHandlerForCurrentRequest)
     {
-      (*(v18->_completionHandlerForCurrentRequest + 2))();
+      (*(selfCopy->_completionHandlerForCurrentRequest + 2))();
     }
 
-    completionHandlerForCurrentRequest = v18->_completionHandlerForCurrentRequest;
-    v18->_completionHandlerForCurrentRequest = 0;
+    completionHandlerForCurrentRequest = selfCopy->_completionHandlerForCurrentRequest;
+    selfCopy->_completionHandlerForCurrentRequest = 0;
     MEMORY[0x277D82BD8](completionHandlerForCurrentRequest);
     v13 = 1;
   }
 
   else
   {
-    v5 = v18;
+    v5 = selfCopy;
     v7 = MEMORY[0x277D85DD0];
     v8 = -1073741824;
     v9 = 0;
     v10 = __78__AKASAuthorizationProvider_passwordAuthenticationCompletedWithResults_error___block_invoke;
     v11 = &unk_2784A6CB0;
-    v12 = MEMORY[0x277D82BE0](v18);
+    v12 = MEMORY[0x277D82BE0](selfCopy);
     [(AKASAuthorizationProvider *)v5 _performAuthorizationWithCompletionHandler:&v7];
     objc_storeStrong(&v12, 0);
     v13 = 0;
@@ -752,18 +752,18 @@ uint64_t __78__AKASAuthorizationProvider_passwordAuthenticationCompletedWithResu
   return MEMORY[0x277D82BD8](v4);
 }
 
-- (BOOL)alertHandlerShowAlert:(id)a3 primaryAction:(id)a4 altAction:(id)a5
+- (BOOL)alertHandlerShowAlert:(id)alert primaryAction:(id)action altAction:(id)altAction
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, action);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  WeakRetained = objc_loadWeakRetained(&v12->_presentationProvider);
-  [WeakRetained authenticationProvider:v12 presentAlert:location[0] primaryAction:v10 alternateAction:v9];
+  objc_storeStrong(&v9, altAction);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_presentationProvider);
+  [WeakRetained authenticationProvider:selfCopy presentAlert:location[0] primaryAction:v10 alternateAction:v9];
   MEMORY[0x277D82BD8](WeakRetained);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);

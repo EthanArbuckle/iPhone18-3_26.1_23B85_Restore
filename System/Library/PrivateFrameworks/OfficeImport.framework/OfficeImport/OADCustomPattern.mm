@@ -1,13 +1,13 @@
 @interface OADCustomPattern
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADCustomPattern)initWithDefaults;
 - (id)blipRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
-- (void)setBlipRef:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
+- (void)setBlipRef:(id)ref;
 @end
 
 @implementation OADCustomPattern
@@ -28,11 +28,11 @@
 {
   v5.receiver = self;
   v5.super_class = OADCustomPattern;
-  v2 = [(OADProperties *)&v5 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v5 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADCustomPattern *)v2 setBlipRef:0];
+    [(OADCustomPattern *)initWithDefaults setBlipRef:0];
   }
 
   return v3;
@@ -55,12 +55,12 @@
   return [(OADPattern *)&v5 hash]^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (self->mIsBlipRefOverridden)
   {
-    v6 = [(OADBlipRef *)self->mBlipRef copyWithZone:a3];
+    v6 = [(OADBlipRef *)self->mBlipRef copyWithZone:zone];
     [v5 setBlipRef:v6];
   }
 
@@ -81,39 +81,39 @@ void __37__OADCustomPattern_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADCustomPattern *)self isBlipRefOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v11.receiver = self;
   v11.super_class = OADCustomPattern;
-  [(OADProperties *)&v11 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if (self->mIsBlipRefOverridden || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v11 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if (self->mIsBlipRefOverridden || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isBlipRefOverridden];
 
     if (v6)
     {
-      v7 = [(OADCustomPattern *)self blipRef];
+      blipRef = [(OADCustomPattern *)self blipRef];
     }
 
     else
     {
-      v7 = 0;
+      blipRef = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_isBlipRefOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isBlipRefOverridden];
 
     if (v8)
     {
-      v9 = [v4 blipRef];
+      blipRef2 = [valuesCopy blipRef];
     }
 
     else
     {
-      v9 = 0;
+      blipRef2 = 0;
     }
 
-    if (TCObjectEqual(v7, v9))
+    if (TCObjectEqual(blipRef, blipRef2))
     {
       mBlipRef = self->mBlipRef;
       self->mBlipRef = 0;
@@ -123,7 +123,7 @@ void __37__OADCustomPattern_defaultProperties__block_invoke()
 
     else if (!self->mIsBlipRefOverridden && v6)
     {
-      [(OADCustomPattern *)self setBlipRef:v7];
+      [(OADCustomPattern *)self setBlipRef:blipRef];
     }
   }
 }
@@ -137,26 +137,26 @@ void __37__OADCustomPattern_defaultProperties__block_invoke()
   return v3;
 }
 
-- (void)setBlipRef:(id)a3
+- (void)setBlipRef:(id)ref
 {
-  v5 = a3;
-  if (self->mBlipRef != v5)
+  refCopy = ref;
+  if (self->mBlipRef != refCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mBlipRef, a3);
-    v5 = v6;
+    v6 = refCopy;
+    objc_storeStrong(&self->mBlipRef, ref);
+    refCopy = v6;
     self->mIsBlipRefOverridden = 1;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADCustomPattern;
-  if ([(OADPattern *)&v8 isEqual:v4])
+  if ([(OADPattern *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->mIsBlipRefOverridden == *(v5 + 32))
     {
       v6 = !self->mIsBlipRefOverridden || [(OADBlipRef *)self->mBlipRef isEqual:v5[3]];

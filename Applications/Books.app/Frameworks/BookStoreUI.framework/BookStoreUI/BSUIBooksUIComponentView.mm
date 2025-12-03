@@ -1,45 +1,45 @@
 @interface BSUIBooksUIComponentView
-+ (id)renderModelWithIdentifier:(id)a3 rawComponentModel:(id)a4;
-- (void)_configureHostingControllerWithRawComponentModel:(id)a3 size:(CGSize)a4;
-- (void)_configureWithModel:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (id)renderModelWithIdentifier:(id)identifier rawComponentModel:(id)model;
+- (void)_configureHostingControllerWithRawComponentModel:(id)model size:(CGSize)size;
+- (void)_configureWithModel:(id)model;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation BSUIBooksUIComponentView
 
-+ (id)renderModelWithIdentifier:(id)a3 rawComponentModel:(id)a4
++ (id)renderModelWithIdentifier:(id)identifier rawComponentModel:(id)model
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_BSUIRenderModelBooksUIComponent alloc] initWithRawComponentModel:v5 identifier:v6];
+  modelCopy = model;
+  identifierCopy = identifier;
+  v7 = [[_BSUIRenderModelBooksUIComponent alloc] initWithRawComponentModel:modelCopy identifier:identifierCopy];
 
-  v8 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierBooksUIComponentView" identifier:v6 submodel:v7];
+  v8 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierBooksUIComponentView" identifier:identifierCopy submodel:v7];
 
   return v8;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = BSUIBooksUIComponentView;
-  v4 = a3;
-  [(BSUIBooksUIComponentView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(BSUIBooksUIComponentView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(BSUIBooksUIComponentView *)self _configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(BSUIBooksUIComponentView *)self _configureWithModel:submodel];
 }
 
-- (void)_configureWithModel:(id)a3
+- (void)_configureWithModel:(id)model
 {
-  v6 = a3;
-  if (([v6 isEqualToRenderModel:self->_renderModel] & 1) == 0)
+  modelCopy = model;
+  if (([modelCopy isEqualToRenderModel:self->_renderModel] & 1) == 0)
   {
-    objc_storeStrong(&self->_renderModel, a3);
-    v5 = [v6 rawComponentModel];
-    [v6 size];
-    [(BSUIBooksUIComponentView *)self _configureHostingControllerWithRawComponentModel:v5 size:?];
+    objc_storeStrong(&self->_renderModel, model);
+    rawComponentModel = [modelCopy rawComponentModel];
+    [modelCopy size];
+    [(BSUIBooksUIComponentView *)self _configureHostingControllerWithRawComponentModel:rawComponentModel size:?];
   }
 }
 
@@ -53,36 +53,36 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BSUIBooksUIComponentView *)self hostingViewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  hostingViewController = [(BSUIBooksUIComponentView *)self hostingViewController];
+  view = [hostingViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)_configureHostingControllerWithRawComponentModel:(id)a3 size:(CGSize)a4
+- (void)_configureHostingControllerWithRawComponentModel:(id)model size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  modelCopy = model;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (!self->_hostingViewController)
   {
     v8 = +[BSUIBooksUIComponentHostingControllerFactory create];
     [(BSUIBooksUIComponentView *)self setHostingViewController:v8];
 
-    v9 = [(BSUIBooksUIComponentView *)self feedControllerHost];
-    [v9 addChildViewController:self->_hostingViewController];
+    feedControllerHost = [(BSUIBooksUIComponentView *)self feedControllerHost];
+    [feedControllerHost addChildViewController:self->_hostingViewController];
 
-    v10 = [(BSUIBooksUIComponentView *)self hostingViewController];
-    v11 = [v10 view];
-    [(BSUIBooksUIComponentView *)self addSubview:v11];
+    hostingViewController = [(BSUIBooksUIComponentView *)self hostingViewController];
+    view = [hostingViewController view];
+    [(BSUIBooksUIComponentView *)self addSubview:view];
 
-    v12 = [(BSUIBooksUIComponentView *)self feedControllerHost];
-    [v12 didAddChildViewController:self->_hostingViewController];
+    feedControllerHost2 = [(BSUIBooksUIComponentView *)self feedControllerHost];
+    [feedControllerHost2 didAddChildViewController:self->_hostingViewController];
   }
 
-  v14 = [(BSUIBooksUIComponentView *)self hostingViewController];
-  v13 = [(BSUIBooksUIComponentView *)self feedControllerHost];
-  [v14 updateWithRawComponentModel:v7 size:v13 feedControllerHost:{width, height}];
+  hostingViewController2 = [(BSUIBooksUIComponentView *)self hostingViewController];
+  feedControllerHost3 = [(BSUIBooksUIComponentView *)self feedControllerHost];
+  [hostingViewController2 updateWithRawComponentModel:modelCopy size:feedControllerHost3 feedControllerHost:{width, height}];
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface BCSheetTransitionCoverController
-- (void)_observeImageChangeForArtworkSource:(id)a3;
-- (void)configureCoverViewWithFrame:(CGRect)a3;
+- (void)_observeImageChangeForArtworkSource:(id)source;
+- (void)configureCoverViewWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)setupWithArtworkSource:(id)a3;
-- (void)setupWithArtworkSource:(id)a3 cardArtworkSource:(id)a4 isDismiss:(BOOL)a5;
+- (void)setupWithArtworkSource:(id)source;
+- (void)setupWithArtworkSource:(id)source cardArtworkSource:(id)artworkSource isDismiss:(BOOL)dismiss;
 @end
 
 @implementation BCSheetTransitionCoverController
 
-- (void)setupWithArtworkSource:(id)a3 cardArtworkSource:(id)a4 isDismiss:(BOOL)a5
+- (void)setupWithArtworkSource:(id)source cardArtworkSource:(id)artworkSource isDismiss:(BOOL)dismiss
 {
-  v5 = a5;
-  v20 = a3;
-  v8 = a4;
-  if (v5)
+  dismissCopy = dismiss;
+  sourceCopy = source;
+  artworkSourceCopy = artworkSource;
+  if (dismissCopy)
   {
-    v9 = v8;
+    v9 = artworkSourceCopy;
   }
 
   else
   {
-    v9 = v20;
+    v9 = sourceCopy;
   }
 
-  if (v5)
+  if (dismissCopy)
   {
-    v10 = v20;
+    v10 = sourceCopy;
   }
 
   else
   {
-    v10 = v8;
+    v10 = artworkSourceCopy;
   }
 
   v11 = v9;
@@ -41,42 +41,42 @@
   coverView = self->_coverView;
   self->_coverView = v14;
 
-  v16 = [v12 image];
-  v17 = v16;
-  if (v16)
+  image = [v12 image];
+  v17 = image;
+  if (image)
   {
-    v18 = v16;
+    image2 = image;
   }
 
   else
   {
-    v18 = [v11 image];
+    image2 = [v11 image];
   }
 
-  v19 = v18;
+  v19 = image2;
 
   [(BCCardStackTransitionCoverView *)self->_coverView setImage:v19];
   [(BCSheetTransitionCoverController *)self _observeImageChangeForArtworkSource:v12];
 }
 
-- (void)setupWithArtworkSource:(id)a3
+- (void)setupWithArtworkSource:(id)source
 {
-  v8 = a3;
+  sourceCopy = source;
   v4 = [BCCardStackTransitionCoverView alloc];
-  [v8 frame];
+  [sourceCopy frame];
   v5 = [(BCCardStackTransitionCoverView *)v4 initWithFrame:?];
   coverView = self->_coverView;
   self->_coverView = v5;
 
-  v7 = [v8 image];
-  [(BCCardStackTransitionCoverView *)self->_coverView setImage:v7];
+  image = [sourceCopy image];
+  [(BCCardStackTransitionCoverView *)self->_coverView setImage:image];
 
-  [(BCSheetTransitionCoverController *)self _observeImageChangeForArtworkSource:v8];
+  [(BCSheetTransitionCoverController *)self _observeImageChangeForArtworkSource:sourceCopy];
 }
 
-- (void)configureCoverViewWithFrame:(CGRect)a3
+- (void)configureCoverViewWithFrame:(CGRect)frame
 {
-  [(BCCardStackTransitionCoverView *)self->_coverView setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BCCardStackTransitionCoverView *)self->_coverView setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   coverView = self->_coverView;
 
   [(BCCardStackTransitionCoverView *)coverView updateContentFrame];
@@ -90,19 +90,19 @@
   [(BCSheetTransitionCoverController *)&v3 dealloc];
 }
 
-- (void)_observeImageChangeForArtworkSource:(id)a3
+- (void)_observeImageChangeForArtworkSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    [(BCSheetTransitionCoverController *)self setObservedArtworkSource:v4];
+    [(BCSheetTransitionCoverController *)self setObservedArtworkSource:sourceCopy];
     objc_initWeak(&location, self);
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_60F1C;
     v5[3] = &unk_2CA028;
     objc_copyWeak(&v6, &location);
-    [v4 setImageChangeObserverBlock:v5];
+    [sourceCopy setImageChangeObserverBlock:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }

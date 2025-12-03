@@ -1,27 +1,27 @@
 @interface PSUIAppDataUsageGroup
 - (PSListController)hostController;
 - (PSSpecifier)groupSpecifier;
-- (PSUIAppDataUsageGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUIAppDataUsageGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)calculateUsage;
-- (void)didFailToSetPolicyForSpecifier:(id)a3;
+- (void)didFailToSetPolicyForSpecifier:(id)specifier;
 @end
 
 @implementation PSUIAppDataUsageGroup
 
-- (PSUIAppDataUsageGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUIAppDataUsageGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = PSUIAppDataUsageGroup;
   v8 = [(PSUIAppDataUsageGroup *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_hostController, v6);
-    objc_storeWeak(&v9->_groupSpecifier, v7);
-    v10 = [[CTUIListLoadingGroup alloc] initWithHostController:v6 groupSpecifier:v7];
+    objc_storeWeak(&v8->_hostController, controllerCopy);
+    objc_storeWeak(&v9->_groupSpecifier, specifierCopy);
+    v10 = [[CTUIListLoadingGroup alloc] initWithHostController:controllerCopy groupSpecifier:specifierCopy];
     loadingGroup = v9->_loadingGroup;
     v9->_loadingGroup = v10;
   }
@@ -31,22 +31,22 @@
 
 - (id)specifiers
 {
-  v2 = [(PSUIAppDataUsageGroup *)self loadingGroup];
-  v3 = [v2 specifiers];
+  loadingGroup = [(PSUIAppDataUsageGroup *)self loadingGroup];
+  specifiers = [loadingGroup specifiers];
 
-  return v3;
+  return specifiers;
 }
 
-- (void)didFailToSetPolicyForSpecifier:(id)a3
+- (void)didFailToSetPolicyForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__PSUIAppDataUsageGroup_didFailToSetPolicyForSpecifier___block_invoke;
   v6[3] = &unk_279BA9D30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = specifierCopy;
+  v5 = specifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -66,14 +66,14 @@ void __56__PSUIAppDataUsageGroup_didFailToSetPolicyForSpecifier___block_invoke(u
 - (void)calculateUsage
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277D4D860] sharedInstance];
+  mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__PSUIAppDataUsageGroup_calculateUsage__block_invoke;
   v4[3] = &unk_279BA9DA8;
   v4[4] = self;
   objc_copyWeak(&v5, &location);
-  [v3 fetchDeviceDataUsageWithCompletion:v4];
+  [mEMORY[0x277D4D860] fetchDeviceDataUsageWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);

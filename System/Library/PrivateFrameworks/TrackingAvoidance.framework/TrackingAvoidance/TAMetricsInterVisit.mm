@@ -38,11 +38,11 @@ LABEL_5:
       goto LABEL_9;
     }
 
-    v4 = [currentInterVisitMetric latestAdvertisement];
-    v5 = [v4 address];
-    v6 = [(TAInterVisitMetricPerDevice *)self->_totalInterVisitMetric latestAdvertisement];
-    v7 = [v6 address];
-    v8 = [v5 isEqualToData:v7];
+    latestAdvertisement = [currentInterVisitMetric latestAdvertisement];
+    address = [latestAdvertisement address];
+    latestAdvertisement2 = [(TAInterVisitMetricPerDevice *)self->_totalInterVisitMetric latestAdvertisement];
+    address2 = [latestAdvertisement2 address];
+    v8 = [address isEqualToData:address2];
 
     if (v8)
     {
@@ -72,13 +72,13 @@ LABEL_9:
   v4 = NSStringFromClass(v3);
   v13[0] = v4;
   v12[1] = @"CurrentInterVisitMetric";
-  v5 = [(TAMetricsInterVisit *)self currentInterVisitMetric];
-  v6 = [v5 descriptionDictionary];
-  v13[1] = v6;
+  currentInterVisitMetric = [(TAMetricsInterVisit *)self currentInterVisitMetric];
+  descriptionDictionary = [currentInterVisitMetric descriptionDictionary];
+  v13[1] = descriptionDictionary;
   v12[2] = @"TotalInterVisitMetric";
-  v7 = [(TAMetricsInterVisit *)self totalInterVisitMetric];
-  v8 = [v7 descriptionDictionary];
-  v13[2] = v8;
+  totalInterVisitMetric = [(TAMetricsInterVisit *)self totalInterVisitMetric];
+  descriptionDictionary2 = [totalInterVisitMetric descriptionDictionary];
+  v13[2] = descriptionDictionary2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -88,9 +88,9 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = [(TAMetricsInterVisit *)self descriptionDictionary];
+  descriptionDictionary = [(TAMetricsInterVisit *)self descriptionDictionary];
   v9 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v2 error:&v9];
+  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v9];
   v4 = v9;
   if (v4)
   {
@@ -100,15 +100,15 @@ LABEL_9:
       [(TAInterVisitMetricPerDevice *)v5 description];
     }
 
-    v6 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v6 = v3;
+    string = v3;
   }
 
-  v7 = v6;
+  v7 = string;
 
   return v7;
 }

@@ -19,18 +19,18 @@
   v9 = v8;
   if (a4)
   {
-    v10 = v8;
+    stringByDeletingLastPathComponent = v8;
   }
 
   else
   {
-    v10 = [v8 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
   }
 
-  v11 = v10;
-  if ([a1 fileExistsAtPath:v10 isDirectory:0])
+  v11 = stringByDeletingLastPathComponent;
+  if ([self fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:0])
   {
-    v12 = [a1 removeItemAtPath:v11 error:a5];
+    v12 = [self removeItemAtPath:v11 error:a5];
   }
 
   else
@@ -46,7 +46,7 @@
   v16 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v13 = 0;
-  v7 = [a1 triRemoveCachedANEBinariesForModelsFromPath:v6 error:&v13];
+  v7 = [self triRemoveCachedANEBinariesForModelsFromPath:v6 error:&v13];
   v8 = v13;
   if ((v7 & 1) == 0)
   {
@@ -59,7 +59,7 @@
     }
   }
 
-  v10 = [a1 triRemoveItemAtPath:v6 error:a4];
+  v10 = [self triRemoveItemAtPath:v6 error:a4];
 
   v11 = *MEMORY[0x277D85DE8];
   return v10;
@@ -71,11 +71,11 @@
   v3 = a3;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3 isDirectory:1];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = *MEMORY[0x277CBE868];
   v32[0] = *MEMORY[0x277CBE868];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v9 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:v8 options:8 errorHandler:0];
+  v9 = [defaultManager enumeratorAtURL:v5 includingPropertiesForKeys:v8 options:8 errorHandler:0];
 
   v10 = objc_opt_new();
   if (v10)
@@ -83,15 +83,15 @@
     v24 = v4;
     v25 = v3;
     v11 = objc_autoreleasePoolPush();
-    v12 = [v9 nextObject];
-    if (v12)
+    nextObject = [v9 nextObject];
+    if (nextObject)
     {
-      v13 = v12;
+      nextObject2 = nextObject;
       while (1)
       {
         v26 = 0;
         v27 = 0;
-        v14 = [v13 getResourceValue:&v27 forKey:v7 error:{&v26, v24, v25}];
+        v14 = [nextObject2 getResourceValue:&v27 forKey:v7 error:{&v26, v24, v25}];
         v15 = v27;
         v16 = v26;
         if ((v14 & 1) == 0)
@@ -99,13 +99,13 @@
           break;
         }
 
-        v17 = [v15 BOOLValue];
-        if (!v17 || [v9 isEnumeratingDirectoryPostOrder])
+        bOOLValue = [v15 BOOLValue];
+        if (!bOOLValue || [v9 isEnumeratingDirectoryPostOrder])
         {
-          v18 = [v13 path];
-          if (v18)
+          path = [nextObject2 path];
+          if (path)
           {
-            v19 = v17;
+            v19 = bOOLValue;
           }
 
           else
@@ -113,7 +113,7 @@
             v19 = 0;
           }
 
-          if (v19 == 1 && ![v10 addString:v18])
+          if (v19 == 1 && ![v10 addString:path])
           {
 
             goto LABEL_20;
@@ -122,8 +122,8 @@
 
         objc_autoreleasePoolPop(v11);
         v11 = objc_autoreleasePoolPush();
-        v13 = [v9 nextObject];
-        if (!v13)
+        nextObject2 = [v9 nextObject];
+        if (!nextObject2)
         {
           goto LABEL_14;
         }
@@ -133,7 +133,7 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v29 = v13;
+        v29 = nextObject2;
         v30 = 2114;
         v31 = v16;
         _os_log_error_impl(&dword_26F567000, v21, OS_LOG_TYPE_ERROR, "Failed to determine if url %@ is a directory: %{public}@", buf, 0x16u);
@@ -237,8 +237,8 @@ LABEL_14:
   v49 = v9;
   v50 = v5;
   v51 = v4;
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v12 enumeratorAtURL:v6 includingPropertiesForKeys:0 options:16 errorHandler:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v13 = [defaultManager enumeratorAtURL:v6 includingPropertiesForKeys:0 options:16 errorHandler:0];
   v48 = v11;
 
   v14 = 0;
@@ -247,9 +247,9 @@ LABEL_14:
   do
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = [v13 nextObject];
-    v18 = v17;
-    if (!v17)
+    nextObject = [v13 nextObject];
+    v18 = nextObject;
+    if (!nextObject)
     {
       v29 = 2;
       goto LABEL_19;
@@ -257,43 +257,43 @@ LABEL_14:
 
     v64 = 0;
     v65 = 0;
-    v19 = [v17 getResourceValue:&v65 forKey:v15 error:&v64];
+    v19 = [nextObject getResourceValue:&v65 forKey:v15 error:&v64];
     v20 = v65;
     v21 = v64;
 
     if ((v19 & 1) != 0 && ([v20 BOOLValue] & 1) == 0)
     {
-      v22 = [v18 lastPathComponent];
-      v23 = [v22 hasSuffix:@".espresso.net"];
+      lastPathComponent = [v18 lastPathComponent];
+      v23 = [lastPathComponent hasSuffix:@".espresso.net"];
 
       if (v23)
       {
-        v24 = [v18 relativePath];
-        if (!v24)
+        relativePath = [v18 relativePath];
+        if (!relativePath)
         {
-          v39 = [MEMORY[0x277CCA890] currentHandler];
-          [v39 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+Server.m" lineNumber:150 description:{@"Expression was unexpectedly nil/false: %@", @"currentURL.relativePath"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileManager+Server.m" lineNumber:150 description:{@"Expression was unexpectedly nil/false: %@", @"currentURL.relativePath"}];
         }
 
-        v25 = [v6 URLByAppendingPathComponent:v24 isDirectory:0];
+        v25 = [v6 URLByAppendingPathComponent:relativePath isDirectory:0];
         if (!v25)
         {
-          v40 = [MEMORY[0x277CCA890] currentHandler];
-          [v40 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+Server.m" lineNumber:152 description:{@"Expression was unexpectedly nil/false: %@", @"[topLevelURL URLByAppendingPathComponent:currentRelativePath isDirectory:NO]"}];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSFileManager+Server.m" lineNumber:152 description:{@"Expression was unexpectedly nil/false: %@", @"[topLevelURL URLByAppendingPathComponent:currentRelativePath isDirectory:NO]"}];
         }
 
-        v26 = [v6 path];
-        if (!v26)
+        path = [v6 path];
+        if (!path)
         {
-          v41 = [MEMORY[0x277CCA890] currentHandler];
-          [v41 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+Server.m" lineNumber:154 description:{@"Expression was unexpectedly nil/false: %@", @"topLevelURL.path"}];
+          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:self file:@"NSFileManager+Server.m" lineNumber:154 description:{@"Expression was unexpectedly nil/false: %@", @"topLevelURL.path"}];
         }
 
-        v27 = [TRISandboxExtensionFactory extensionTokenForPath:v26 extensionClass:0];
+        v27 = [TRISandboxExtensionFactory extensionTokenForPath:path extensionClass:0];
         if (!v27)
         {
-          v56 = [MEMORY[0x277CCA890] currentHandler];
-          [v56 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+Server.m" lineNumber:156 description:{@"Expression was unexpectedly nil/false: %@", @"[TRISandboxExtensionFactory extensionTokenForPath:pathToExtend extensionClass:TRISandboxExtensionClassRead]"}];
+          currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler4 handleFailureInMethod:a2 object:self file:@"NSFileManager+Server.m" lineNumber:156 description:{@"Expression was unexpectedly nil/false: %@", @"[TRISandboxExtensionFactory extensionTokenForPath:pathToExtend extensionClass:TRISandboxExtensionClassRead]"}];
         }
 
         v58 = 0;
@@ -308,7 +308,7 @@ LABEL_14:
         v57[3] = &unk_279DE09F8;
         v57[4] = &v58;
         [v54 removeCachedANESegmentsForModelAtURL:v25 pathExtension:v27 completion:v57];
-        v55 = v24;
+        v55 = relativePath;
         v28 = v68[5];
         if (v28)
         {
@@ -332,7 +332,7 @@ LABEL_24:
         v30 = v28;
         v31 = v21;
         v32 = v27;
-        v33 = v26;
+        v33 = path;
         v34 = v13;
         v35 = v25;
         v36 = v15;
@@ -342,7 +342,7 @@ LABEL_24:
         v15 = v36;
         v25 = v35;
         v13 = v34;
-        v26 = v33;
+        path = v33;
         v27 = v32;
         v21 = v38;
         goto LABEL_24;
@@ -399,9 +399,9 @@ LABEL_19:
   v31 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [v5 fileSystemRepresentation];
-  v8 = [v6 fileSystemRepresentation];
-  rename(v7, v8, v9);
+  fileSystemRepresentation = [v5 fileSystemRepresentation];
+  fileSystemRepresentation2 = [v6 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v9);
   if (v10)
   {
     v11 = TRILogCategory_ClientFramework();
@@ -423,9 +423,9 @@ LABEL_19:
 
     if (v5)
     {
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v22 = 0;
-      v16 = [v15 moveItemAtPath:v5 toPath:v6 error:&v22];
+      v16 = [defaultManager moveItemAtPath:v5 toPath:v6 error:&v22];
       v17 = v22;
 
       if (v16)
@@ -480,14 +480,14 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v9 = [v8 triForceRemoveItemAtPath:v7 error:&v15];
+  v9 = [defaultManager triForceRemoveItemAtPath:v7 error:&v15];
   v10 = v15;
 
   if (v9)
   {
-    v11 = [a1 triRenameOrFaultWithSourcePath:v6 destPath:v7];
+    v11 = [self triRenameOrFaultWithSourcePath:v6 destPath:v7];
   }
 
   else
@@ -641,8 +641,8 @@ LABEL_10:
   v45 = a3;
   context = objc_autoreleasePoolPush();
   v61[0] = 0;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v45 isDirectory:v61];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v45 isDirectory:v61];
 
   if (v4)
   {
@@ -665,13 +665,13 @@ LABEL_10:
       v65[3] = v6;
       v42 = v6;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:4];
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
       v60[2] = __53__NSFileManager_TRIServer__triDiskUsageForDirectory___block_invoke;
       v60[3] = &unk_279DE2410;
       v60[4] = &buf;
-      v49 = [v7 enumeratorAtURL:v33 includingPropertiesForKeys:v34 options:24 errorHandler:v60];
+      v49 = [defaultManager2 enumeratorAtURL:v33 includingPropertiesForKeys:v34 options:24 errorHandler:v60];
 
       if (v49)
       {
@@ -685,9 +685,9 @@ LABEL_10:
         while (1)
         {
           v8 = objc_autoreleasePoolPush();
-          v9 = [v49 nextObject];
-          v10 = v9;
-          if (v9)
+          nextObject = [v49 nextObject];
+          v10 = nextObject;
+          if (nextObject)
           {
             break;
           }
@@ -704,7 +704,7 @@ LABEL_24:
 
         v58 = 0;
         v59 = 0;
-        [v9 getResourceValue:&v59 forKey:v44 error:&v58];
+        [nextObject getResourceValue:&v59 forKey:v44 error:&v58];
         v11 = v59;
         v12 = v58;
         v56 = 0;
@@ -752,8 +752,8 @@ LABEL_23:
         {
           if (!v19)
           {
-            v26 = [MEMORY[0x277CCA890] currentHandler];
-            [v26 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+Server.m" lineNumber:363 description:@"no resource identifier for regular file"];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileManager+Server.m" lineNumber:363 description:@"no resource identifier for regular file"];
           }
 
           if (([log containsObject:v19]& 1) != 0)
@@ -766,24 +766,24 @@ LABEL_17:
               goto LABEL_23;
             }
 
-            v35 = [v13 unsignedLongValue];
-            v23 = [v10 relativePath];
-            if (!v23)
+            unsignedLongValue = [v13 unsignedLongValue];
+            relativePath = [v10 relativePath];
+            if (!relativePath)
             {
-              v27 = [MEMORY[0x277CCA890] currentHandler];
-              [v27 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+Server.m" lineNumber:376 description:{@"Expression was unexpectedly nil/false: %@", @"relURL.relativePath"}];
+              currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSFileManager+Server.m" lineNumber:376 description:{@"Expression was unexpectedly nil/false: %@", @"relURL.relativePath"}];
             }
 
-            v24 = [v45 stringByAppendingPathComponent:v23];
+            v24 = [v45 stringByAppendingPathComponent:relativePath];
 
-            v25 = [a1 triCompressedSizeForFileAtPath:v24 shouldFault:v61];
-            if (v25 == -1)
+            unsignedLongValue2 = [self triCompressedSizeForFileAtPath:v24 shouldFault:v61];
+            if (unsignedLongValue2 == -1)
             {
-              v25 = [v13 unsignedLongValue];
+              unsignedLongValue2 = [v13 unsignedLongValue];
             }
 
-            v47 += v35;
-            v21 = v25 + v46;
+            v47 += unsignedLongValue;
+            v21 = unsignedLongValue2 + v46;
             goto LABEL_8;
           }
 

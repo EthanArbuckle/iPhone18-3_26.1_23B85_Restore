@@ -1,15 +1,15 @@
 @interface AMSUIMessagingActionContext
-- (AMSUIMessagingActionContext)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5;
+- (AMSUIMessagingActionContext)initWithBag:(id)bag account:(id)account clientInfo:(id)info;
 @end
 
 @implementation AMSUIMessagingActionContext
 
-- (AMSUIMessagingActionContext)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5
+- (AMSUIMessagingActionContext)initWithBag:(id)bag account:(id)account clientInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = a5;
-  return ActionContext.init(bag:account:clientInfo:)(a3, a4, a5);
+  accountCopy = account;
+  infoCopy = info;
+  return ActionContext.init(bag:account:clientInfo:)(bag, account, info);
 }
 
 @end

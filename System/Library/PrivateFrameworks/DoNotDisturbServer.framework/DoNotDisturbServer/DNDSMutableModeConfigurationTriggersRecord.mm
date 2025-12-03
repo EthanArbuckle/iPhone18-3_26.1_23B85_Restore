@@ -1,24 +1,24 @@
 @interface DNDSMutableModeConfigurationTriggersRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setTriggers:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setTriggers:(id)triggers;
 @end
 
 @implementation DNDSMutableModeConfigurationTriggersRecord
 
-- (void)setTriggers:(id)a3
+- (void)setTriggers:(id)triggers
 {
-  v4 = [a3 copy];
+  v4 = [triggers copy];
   triggers = self->super._triggers;
   self->super._triggers = v4;
 
   MEMORY[0x2821F96F8](v4, triggers);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDSModeConfigurationTriggersRecord allocWithZone:a3];
-  v5 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
-  v6 = [(DNDSModeConfigurationTriggersRecord *)v4 initWithTriggers:v5];
+  v4 = [DNDSModeConfigurationTriggersRecord allocWithZone:zone];
+  triggers = [(DNDSModeConfigurationTriggersRecord *)self triggers];
+  v6 = [(DNDSModeConfigurationTriggersRecord *)v4 initWithTriggers:triggers];
 
   return v6;
 }

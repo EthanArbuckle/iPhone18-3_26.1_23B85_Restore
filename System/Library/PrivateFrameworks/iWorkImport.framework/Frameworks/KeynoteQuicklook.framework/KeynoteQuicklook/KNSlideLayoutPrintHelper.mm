@@ -1,28 +1,28 @@
 @interface KNSlideLayoutPrintHelper
 - (BOOL)incrementPage;
 - (BOOL)shouldDrawSlide;
-- (KNSlideLayoutPrintHelper)initWithRenderingExporter:(id)a3;
+- (KNSlideLayoutPrintHelper)initWithRenderingExporter:(id)exporter;
 - (KNSlideLayoutPrintHelperDataSource)dataSource;
-- (id)p_segmentsForSlideNode:(id)a3;
+- (id)p_segmentsForSlideNode:(id)node;
 - (unint64_t)pageCount;
 - (void)p_segmentSlideNodes;
 - (void)resetPage;
-- (void)setCurrentSlideNode:(id)a3;
-- (void)setDataSource:(id)a3;
+- (void)setCurrentSlideNode:(id)node;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation KNSlideLayoutPrintHelper
 
-- (KNSlideLayoutPrintHelper)initWithRenderingExporter:(id)a3
+- (KNSlideLayoutPrintHelper)initWithRenderingExporter:(id)exporter
 {
-  v4 = a3;
+  exporterCopy = exporter;
   v8.receiver = self;
   v8.super_class = KNSlideLayoutPrintHelper;
   v5 = [(KNSlideLayoutPrintHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_renderingExporter, v4);
+    objc_storeWeak(&v5->_renderingExporter, exporterCopy);
   }
 
   return v6;
@@ -113,9 +113,9 @@ LABEL_8:
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -127,10 +127,10 @@ LABEL_8:
   }
 }
 
-- (void)setCurrentSlideNode:(id)a3
+- (void)setCurrentSlideNode:(id)node
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodeCopy = node;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -153,7 +153,7 @@ LABEL_8:
         v13 = *(*(&v15 + 1) + 8 * i);
         v14 = objc_msgSend_slideNode(v13, v8, v9, v15);
 
-        if (v14 == v4)
+        if (v14 == nodeCopy)
         {
           objc_storeStrong(&self->_currentSegment, v13);
           goto LABEL_11;
@@ -227,15 +227,15 @@ LABEL_11:
   }
 }
 
-- (id)p_segmentsForSlideNode:(id)a3
+- (id)p_segmentsForSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v7 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6);
   WeakRetained = objc_loadWeakRetained(&self->_renderingExporter);
   if (objc_msgSend_isPrintingComments(WeakRetained, v9, v10))
   {
     v11 = objc_loadWeakRetained(&self->_dataSource);
-    v13 = objc_msgSend_printHelper_commentsPageCountForSlideNode_(v11, v12, self, v4);
+    v13 = objc_msgSend_printHelper_commentsPageCountForSlideNode_(v11, v12, self, nodeCopy);
   }
 
   else
@@ -251,11 +251,11 @@ LABEL_11:
   v16 = objc_loadWeakRetained(&self->_renderingExporter);
   v75 = TSUDynamicCast();
 
-  if ((v15 || objc_msgSend_isPrintingNotes(v75, v17, v18)) && objc_msgSend_hasNote(v4, v17, v18))
+  if ((v15 || objc_msgSend_isPrintingNotes(v75, v17, v18)) && objc_msgSend_hasNote(nodeCopy, v17, v18))
   {
     v19 = objc_loadWeakRetained(&self->_dataSource);
-    v74 = self;
-    v21 = objc_msgSend_printHelper_noteSegmentsForSlideNode_(v19, v20, self, v4);
+    selfCopy = self;
+    v21 = objc_msgSend_printHelper_noteSegmentsForSlideNode_(v19, v20, self, nodeCopy);
 
     if (v13)
     {
@@ -267,7 +267,7 @@ LABEL_11:
         if (v24 >= objc_msgSend_count(v21, v22, v23, v73))
         {
           v43 = [KNPrintSegment alloc];
-          v41 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_commentsPageIndex_span_(v43, v44, v4, 0, 0, v24, 0);
+          v41 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_commentsPageIndex_span_(v43, v44, nodeCopy, 0, 0, v24, 0);
         }
 
         else
@@ -310,14 +310,14 @@ LABEL_11:
       objc_msgSend_addObjectsFromArray_(v7, v22, v21);
     }
 
-    self = v74;
+    self = selfCopy;
   }
 
   v51 = objc_msgSend_count(v7, v17, v18) != 0;
   v52 = objc_loadWeakRetained(&self->_renderingExporter);
-  if (objc_msgSend_isPrintingBuilds(v52, v53, v54) && objc_msgSend_safeHasBuildEvents(v4, v55, v56))
+  if (objc_msgSend_isPrintingBuilds(v52, v53, v54) && objc_msgSend_safeHasBuildEvents(nodeCopy, v55, v56))
   {
-    v59 = objc_msgSend_safeBuildEventCount(v4, v57, v58);
+    v59 = objc_msgSend_safeBuildEventCount(nodeCopy, v57, v58);
   }
 
   else
@@ -332,7 +332,7 @@ LABEL_11:
       for (i = 0; i != v13; ++i)
       {
         v63 = [KNPrintSegment alloc];
-        v65 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_commentsPageIndex_span_(v63, v64, v4, v51, 0, i, 0);
+        v65 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_commentsPageIndex_span_(v63, v64, nodeCopy, v51, 0, i, 0);
         objc_msgSend_addObject_(v7, v66, v65);
       }
     }
@@ -340,7 +340,7 @@ LABEL_11:
     else
     {
       v67 = [KNPrintSegment alloc];
-      v69 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_span_(v67, v68, v4, v51, 0, 0);
+      v69 = objc_msgSend_initWithSlideNode_buildIndex_notesIndex_span_(v67, v68, nodeCopy, v51, 0, 0);
       objc_msgSend_addObject_(v7, v70, v69);
     }
   }

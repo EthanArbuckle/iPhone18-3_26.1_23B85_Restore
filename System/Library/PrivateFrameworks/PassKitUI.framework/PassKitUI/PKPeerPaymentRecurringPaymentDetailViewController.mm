@@ -1,103 +1,103 @@
 @interface PKPeerPaymentRecurringPaymentDetailViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
 - (BOOL)_shouldShowDashboardMessages;
-- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)a3 recipient:(id)a4 mode:(unint64_t)a5 context:(int64_t)a6 peerPaymentController:(id)a7 remoteMessagesComposer:(id)a8;
-- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)a3 recipientAddress:(id)a4 mode:(unint64_t)a5 context:(int64_t)a6 peerPaymentController:(id)a7 remoteMessagesComposer:(id)a8;
+- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)payment recipient:(id)recipient mode:(unint64_t)mode context:(int64_t)context peerPaymentController:(id)controller remoteMessagesComposer:(id)composer;
+- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)payment recipientAddress:(id)address mode:(unint64_t)mode context:(int64_t)context peerPaymentController:(id)controller remoteMessagesComposer:(id)composer;
 - (PKPeerPaymentRecurringPaymentDetailViewControllerDelegate)delegate;
 - (id)_cancelEditingItem;
-- (id)_composeRecipientForAddress:(id)a3;
+- (id)_composeRecipientForAddress:(id)address;
 - (id)_dashboardMessages;
 - (id)_dismissItem;
 - (id)_doneItem;
 - (id)_editItem;
-- (id)_messageForErrorCode:(unint64_t)a3 paymentDate:(id)a4;
+- (id)_messageForErrorCode:(unint64_t)code paymentDate:(id)date;
 - (id)_pendingRecurringPayment;
 - (id)_recipientName;
-- (id)_titleForErrorCode:(unint64_t)a3;
-- (void)_authorizeRecurringPaymentWithCompletion:(id)a3;
+- (id)_titleForErrorCode:(unint64_t)code;
+- (void)_authorizeRecurringPaymentWithCompletion:(id)completion;
 - (void)_cancelEditsAction;
-- (void)_cancelRecurringPaymentWithCompletion:(id)a3;
+- (void)_cancelRecurringPaymentWithCompletion:(id)completion;
 - (void)_configureAvatarView;
 - (void)_didCompleteSetupFlow;
 - (void)_dismissAction;
-- (void)_keyboardWillChange:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_pauseRecurringPaymentWithCompletion:(id)a3;
+- (void)_keyboardWillChange:(id)change;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_pauseRecurringPaymentWithCompletion:(id)completion;
 - (void)_presentPeerPaymentAddDebitFlow;
-- (void)_processEditsIfNeededWithCompletion:(id)a3;
-- (void)_reloadWithPayments:(id)a3;
+- (void)_processEditsIfNeededWithCompletion:(id)completion;
+- (void)_reloadWithPayments:(id)payments;
 - (void)_rightBarButtonAction;
 - (void)_setUpNavigationBar;
-- (void)_showAlertForError:(id)a3 completion:(id)a4;
-- (void)_showConfirmationAlertIfNeededForAction:(unint64_t)a3 withItem:(id)a4 completion:(id)a5;
+- (void)_showAlertForError:(id)error completion:(id)completion;
+- (void)_showConfirmationAlertIfNeededForAction:(unint64_t)action withItem:(id)item completion:(id)completion;
 - (void)_updateBarButtonItems;
 - (void)_updateCancelSectionFooter;
 - (void)_updateDetailSectionFooter;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)_updatePauseSectionFooter;
-- (void)_updateRecurringPaymentsWithCompletion:(id)a3;
+- (void)_updateRecurringPaymentsWithCompletion:(id)completion;
 - (void)_updateSections;
-- (void)_validatePaymentEditsWithCompletion:(id)a3;
+- (void)_validatePaymentEditsWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)didSelectAmountSection;
 - (void)fundingSourceSectionSelected;
-- (void)makeCellFirstResponderWithItem:(id)a3;
-- (void)memoIconChooserDidChooseMemo:(id)a3;
+- (void)makeCellFirstResponderWithItem:(id)item;
+- (void)memoIconChooserDidChooseMemo:(id)memo;
 - (void)memoIconWasTapped;
-- (void)paymentMethodSelectionViewController:(id)a3 didSelectPaymentMethod:(id)a4;
-- (void)paymentMethodSelectionViewController:(id)a3 didToggleUseAppleCashBalance:(BOOL)a4;
-- (void)performAction:(unint64_t)a3 forItem:(id)a4 startHandler:(id)a5 completion:(id)a6;
+- (void)paymentMethodSelectionViewController:(id)controller didSelectPaymentMethod:(id)method;
+- (void)paymentMethodSelectionViewController:(id)controller didToggleUseAppleCashBalance:(BOOL)balance;
+- (void)performAction:(unint64_t)action forItem:(id)item startHandler:(id)handler completion:(id)completion;
 - (void)recurringPaymentsChanged;
-- (void)setShowCancelButton:(BOOL)a3;
-- (void)updateFooterForSectionIdentifier:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setShowCancelButton:(BOOL)button;
+- (void)updateFooterForSectionIdentifier:(id)identifier;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentDetailViewController
 
-- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)a3 recipientAddress:(id)a4 mode:(unint64_t)a5 context:(int64_t)a6 peerPaymentController:(id)a7 remoteMessagesComposer:(id)a8
+- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)payment recipientAddress:(id)address mode:(unint64_t)mode context:(int64_t)context peerPaymentController:(id)controller remoteMessagesComposer:(id)composer
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
-  v17 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _composeRecipientForAddress:a4];
-  v18 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self initWithRecurringPayment:v16 recipient:v17 mode:a5 context:a6 peerPaymentController:v15 remoteMessagesComposer:v14];
+  composerCopy = composer;
+  controllerCopy = controller;
+  paymentCopy = payment;
+  v17 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _composeRecipientForAddress:address];
+  v18 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self initWithRecurringPayment:paymentCopy recipient:v17 mode:mode context:context peerPaymentController:controllerCopy remoteMessagesComposer:composerCopy];
 
   return v18;
 }
 
-- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)a3 recipient:(id)a4 mode:(unint64_t)a5 context:(int64_t)a6 peerPaymentController:(id)a7 remoteMessagesComposer:(id)a8
+- (PKPeerPaymentRecurringPaymentDetailViewController)initWithRecurringPayment:(id)payment recipient:(id)recipient mode:(unint64_t)mode context:(int64_t)context peerPaymentController:(id)controller remoteMessagesComposer:(id)composer
 {
   v91[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  obj = a8;
-  v18 = a8;
+  paymentCopy = payment;
+  recipientCopy = recipient;
+  controllerCopy = controller;
+  obj = composer;
+  composerCopy = composer;
   v90.receiver = self;
   v90.super_class = PKPeerPaymentRecurringPaymentDetailViewController;
   v19 = [(PKDynamicCollectionViewController *)&v90 init];
   v20 = v19;
   if (v19)
   {
-    v89 = v18;
-    objc_storeStrong(&v19->_recurringPayment, a3);
-    objc_storeStrong(&v20->_recipient, a4);
-    v21 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v87 = v15;
-    v22 = [v15 fundingSource];
-    v23 = [v22 fpanIdentifier];
-    v24 = [v21 passWithFPANIdentifier:v23];
+    v89 = composerCopy;
+    objc_storeStrong(&v19->_recurringPayment, payment);
+    objc_storeStrong(&v20->_recipient, recipient);
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v87 = paymentCopy;
+    fundingSource = [paymentCopy fundingSource];
+    fpanIdentifier = [fundingSource fpanIdentifier];
+    v24 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:fpanIdentifier];
     selectedPass = v20->_selectedPass;
     v20->_selectedPass = v24;
 
-    v20->_mode = a5;
-    v20->_context = a6;
-    objc_storeStrong(&v20->_peerPaymentController, a7);
+    v20->_mode = mode;
+    v20->_context = context;
+    objc_storeStrong(&v20->_peerPaymentController, controller);
     v26 = objc_alloc_init(PKAvatarView);
     avatarView = v20->_avatarView;
     v20->_avatarView = v26;
@@ -107,21 +107,21 @@
       [(PKAvatarView *)v20->_avatarView setDiameter:44.0];
     }
 
-    v28 = [(PKPeerPaymentController *)v20->_peerPaymentController account];
-    v29 = [v28 recurringPaymentsFeatureDescriptor];
-    v30 = [v29 supportedFundingSourceCountryCodes];
-    v31 = v30;
-    if (v30)
+    account = [(PKPeerPaymentController *)v20->_peerPaymentController account];
+    recurringPaymentsFeatureDescriptor = [account recurringPaymentsFeatureDescriptor];
+    supportedFundingSourceCountryCodes = [recurringPaymentsFeatureDescriptor supportedFundingSourceCountryCodes];
+    v31 = supportedFundingSourceCountryCodes;
+    if (supportedFundingSourceCountryCodes)
     {
-      v32 = v30;
+      v32 = supportedFundingSourceCountryCodes;
     }
 
     else
     {
       v33 = MEMORY[0x1E695DFD8];
-      v34 = [(PKPeerPaymentController *)v20->_peerPaymentController account];
-      v35 = [v34 countryCode];
-      v32 = [v33 setWithObject:v35];
+      account2 = [(PKPeerPaymentController *)v20->_peerPaymentController account];
+      countryCode = [account2 countryCode];
+      v32 = [v33 setWithObject:countryCode];
     }
 
     v36 = objc_alloc_init(MEMORY[0x1E69B8FE8]);
@@ -129,17 +129,17 @@
     v20->_paymentRequest = v36;
 
     v38 = v20->_paymentRequest;
-    v39 = [v29 merchantIdentifier];
-    [(PKPeerPaymentRequest *)v38 setMerchantIdentifier:v39];
+    merchantIdentifier = [recurringPaymentsFeatureDescriptor merchantIdentifier];
+    [(PKPeerPaymentRequest *)v38 setMerchantIdentifier:merchantIdentifier];
 
     v40 = v20->_paymentRequest;
-    v41 = [v29 supportedNetworks];
-    [(PKPeerPaymentRequest *)v40 setSupportedNetworks:v41];
+    supportedNetworks = [recurringPaymentsFeatureDescriptor supportedNetworks];
+    [(PKPeerPaymentRequest *)v40 setSupportedNetworks:supportedNetworks];
 
-    -[PKPeerPaymentRequest setMerchantCapabilities:](v20->_paymentRequest, "setMerchantCapabilities:", [v29 merchantCapabilities]);
+    -[PKPeerPaymentRequest setMerchantCapabilities:](v20->_paymentRequest, "setMerchantCapabilities:", [recurringPaymentsFeatureDescriptor merchantCapabilities]);
     [(PKPeerPaymentRequest *)v20->_paymentRequest setSupportedCountries:v32];
     [(PKPeerPaymentRequest *)v20->_paymentRequest setPeerPaymentType:2];
-    if (v18)
+    if (composerCopy)
     {
       objc_storeStrong(&v20->_remoteMessagesComposer, obj);
       [(PKPeerPaymentRemoteMessagesComposer *)v20->_remoteMessagesComposer setActionType:2];
@@ -152,9 +152,9 @@
       v20->_remoteMessagesComposer = v42;
     }
 
-    v44 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     peerPaymentService = v20->_peerPaymentService;
-    v20->_peerPaymentService = v44;
+    v20->_peerPaymentService = mEMORY[0x1E69B9000];
 
     [(PKPeerPaymentService *)v20->_peerPaymentService registerObserver:v20];
     [(PKDynamicCollectionViewController *)v20 setUseItemIdentityWhenUpdating:1];
@@ -167,90 +167,90 @@
     else if (mode == 1)
     {
       v20->_allowEdits = 1;
-      v47 = [MEMORY[0x1E69B8A58] sharedInstance];
-      v48 = [v28 associatedPassUniqueID];
-      v49 = [v47 passWithUniqueID:v48];
-      v50 = [v49 paymentPass];
+      mEMORY[0x1E69B8A58]2 = [MEMORY[0x1E69B8A58] sharedInstance];
+      associatedPassUniqueID = [account associatedPassUniqueID];
+      v49 = [mEMORY[0x1E69B8A58]2 passWithUniqueID:associatedPassUniqueID];
+      paymentPass = [v49 paymentPass];
 
-      -[PKPeerPaymentRecurringPayment setUsesAppleCashBalance:](v20->_recurringPayment, "setUsesAppleCashBalance:", ([v50 settings] & 0x800) == 0);
+      -[PKPeerPaymentRecurringPayment setUsesAppleCashBalance:](v20->_recurringPayment, "setUsesAppleCashBalance:", ([paymentPass settings] & 0x800) == 0);
     }
 
     v51 = [PKPeerPaymentRecurringPaymentDetailAmountSectionController alloc];
-    v52 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment amount];
-    v53 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment currency];
-    v54 = [(PKPeerPaymentRecurringPaymentDetailAmountSectionController *)v51 initWithAmount:v52 currency:v53 delegate:v20];
+    amount = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment amount];
+    currency = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment currency];
+    v54 = [(PKPeerPaymentRecurringPaymentDetailAmountSectionController *)v51 initWithAmount:amount currency:currency delegate:v20];
     amountSectionController = v20->_amountSectionController;
     v20->_amountSectionController = v54;
 
     v56 = [PKDashboardMessageSectionController alloc];
-    v57 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v20 _dashboardMessages];
-    v58 = [(PKDashboardMessageSectionController *)v56 initWithMessages:v57 delegate:v20];
+    _dashboardMessages = [(PKPeerPaymentRecurringPaymentDetailViewController *)v20 _dashboardMessages];
+    v58 = [(PKDashboardMessageSectionController *)v56 initWithMessages:_dashboardMessages delegate:v20];
     messageSectionController = v20->_messageSectionController;
     v20->_messageSectionController = v58;
 
     v60 = [PKPeerPaymentRecurringPaymentDetailSectionController alloc];
     recurringPayment = v20->_recurringPayment;
-    v62 = [v29 productTimeZone];
-    v63 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)v60 initWithRecurringPayment:recurringPayment productTimeZone:v62 mode:v20->_mode delegate:v20];
+    productTimeZone = [recurringPaymentsFeatureDescriptor productTimeZone];
+    v63 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)v60 initWithRecurringPayment:recurringPayment productTimeZone:productTimeZone mode:v20->_mode delegate:v20];
     detailSectionController = v20->_detailSectionController;
     v20->_detailSectionController = v63;
 
     v65 = v20->_detailSectionController;
-    v66 = [v29 frequencyOptions];
-    [(PKPeerPaymentRecurringPaymentDetailSectionController *)v65 setFrequencyOptions:v66];
+    frequencyOptions = [recurringPaymentsFeatureDescriptor frequencyOptions];
+    [(PKPeerPaymentRecurringPaymentDetailSectionController *)v65 setFrequencyOptions:frequencyOptions];
 
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)v20->_detailSectionController setIsEditable:v20->_allowEdits];
     v67 = [PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController alloc];
-    v68 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment fundingSource];
-    v69 = [v68 name];
-    v70 = [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)v67 initWithFundingSource:v69 useAppleCashBalance:[(PKPeerPaymentRecurringPayment *)v20->_recurringPayment usesAppleCashBalance] delegate:v20];
+    fundingSource2 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment fundingSource];
+    name = [fundingSource2 name];
+    v70 = [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)v67 initWithFundingSource:name useAppleCashBalance:[(PKPeerPaymentRecurringPayment *)v20->_recurringPayment usesAppleCashBalance] delegate:v20];
     fundingSourceSectionController = v20->_fundingSourceSectionController;
     v20->_fundingSourceSectionController = v70;
 
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)v20->_fundingSourceSectionController setIsEditable:v20->_allowEdits];
     if ((PKIsVision() & 1) == 0)
     {
-      v72 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment actions];
-      v73 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment status];
-      if (v72)
+      actions = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment actions];
+      status = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment status];
+      if (actions)
       {
         v74 = [[PKPeerPaymentRecurringPaymentDetailActionSectionController alloc] initWithAction:1 delegate:v20];
         pauseSectionController = v20->_pauseSectionController;
         v20->_pauseSectionController = v74;
 
-        [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)v20->_pauseSectionController setStatus:v73];
+        [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)v20->_pauseSectionController setStatus:status];
       }
 
-      if ((v72 & 2) != 0)
+      if ((actions & 2) != 0)
       {
         v76 = [[PKPeerPaymentRecurringPaymentDetailActionSectionController alloc] initWithAction:2 delegate:v20];
         cancelSectionController = v20->_cancelSectionController;
         v20->_cancelSectionController = v76;
 
-        [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)v20->_cancelSectionController setStatus:v73];
+        [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)v20->_cancelSectionController setStatus:status];
       }
     }
 
     v78 = [PKPeerPaymentRecurringPaymentMemoSectionController alloc];
-    v79 = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment memo];
-    v80 = [(CNComposeRecipient *)v20->_recipient contact];
-    v81 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)v78 initWithRecurringPaymentMemo:v79 contact:v80 delegate:v20];
+    memo = [(PKPeerPaymentRecurringPayment *)v20->_recurringPayment memo];
+    contact = [(CNComposeRecipient *)v20->_recipient contact];
+    v81 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)v78 initWithRecurringPaymentMemo:memo contact:contact delegate:v20];
     memoSectionController = v20->_memoSectionController;
     v20->_memoSectionController = v81;
 
     [(PKPeerPaymentRecurringPaymentMemoSectionController *)v20->_memoSectionController setIsEditable:v20->_allowEdits];
     [(PKPeerPaymentRecurringPaymentDetailViewController *)v20 _updateSections];
     [(PKPeerPaymentRecurringPaymentDetailViewController *)v20 _setUpNavigationBar];
-    v83 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v83 addObserver:v20 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v83 addObserver:v20 selector:sel__keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-    [v83 addObserver:v20 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v20 selector:sel__keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+    [defaultCenter addObserver:v20 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
     v91[0] = objc_opt_class();
     v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:1];
     v85 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v20 registerForTraitChanges:v84 withHandler:&__block_literal_global_1];
 
-    v15 = v87;
-    v18 = v89;
+    paymentCopy = v87;
+    composerCopy = v89;
   }
 
   return v20;
@@ -270,19 +270,19 @@ void __146__PKPeerPaymentRecurringPaymentDetailViewController_initWithRecurringP
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPeerPaymentRecurringPaymentDetailViewController;
   [(PKPeerPaymentRecurringPaymentDetailViewController *)&v4 dealloc];
 }
 
-- (void)setShowCancelButton:(BOOL)a3
+- (void)setShowCancelButton:(BOOL)button
 {
-  if (self->_showCancelButton != a3)
+  if (self->_showCancelButton != button)
   {
-    self->_showCancelButton = a3;
+    self->_showCancelButton = button;
     [(PKPeerPaymentRecurringPaymentDetailViewController *)self _setUpNavigationBar];
   }
 }
@@ -294,21 +294,21 @@ void __146__PKPeerPaymentRecurringPaymentDetailViewController_initWithRecurringP
   [(PKDynamicCollectionViewController *)&v5 viewDidLoad];
   [(PKPeerPaymentRecurringPaymentDetailViewController *)self _configureAvatarView];
   [(PKPeerPaymentRecurringPaymentDetailViewController *)self _setUpNavigationBar];
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v3 setKeyboardDismissMode:1];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setKeyboardDismissMode:1];
 
-  v4 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self view];
-  [v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9B38]];
+  view = [(PKPeerPaymentRecurringPaymentDetailViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9B38]];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKPeerPaymentRecurringPaymentDetailViewController;
-  [(PKDynamicCollectionViewController *)&v7 viewWillAppear:a3];
-  v4 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self overrideUserInterfaceStyle];
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  if (v4 == 2)
+  [(PKDynamicCollectionViewController *)&v7 viewWillAppear:appear];
+  overrideUserInterfaceStyle = [(PKPeerPaymentRecurringPaymentDetailViewController *)self overrideUserInterfaceStyle];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  if (overrideUserInterfaceStyle == 2)
   {
     +[PKPeerPaymentTheme backgroundColor];
   }
@@ -318,7 +318,7 @@ void __146__PKPeerPaymentRecurringPaymentDetailViewController_initWithRecurringP
     [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
   v6 = ;
-  [v5 setBackgroundColor:v6];
+  [collectionView setBackgroundColor:v6];
 }
 
 - (void)viewWillLayoutSubviews
@@ -326,27 +326,27 @@ void __146__PKPeerPaymentRecurringPaymentDetailViewController_initWithRecurringP
   v14.receiver = self;
   v14.super_class = PKPeerPaymentRecurringPaymentDetailViewController;
   [(PKDynamicCollectionViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self view];
-  v4 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v4 contentInset];
+  view = [(PKPeerPaymentRecurringPaymentDetailViewController *)self view];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView contentInset];
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [v3 bounds];
+  [view bounds];
   v13 = 0.0;
   if (self->_keyboardVisible)
   {
     v13 = fmax(v11 + v12 - self->_keyboardFrame.origin.y, 0.0);
   }
 
-  [v4 setContentInset:{v6, v8, v13, v10}];
+  [collectionView setContentInset:{v6, v8, v13, v10}];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = PKPeerPaymentRecurringPaymentDetailViewController;
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)&v10 viewDidDisappear:a3];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)&v10 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -357,16 +357,16 @@ void __146__PKPeerPaymentRecurringPaymentDetailViewController_initWithRecurringP
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      v9 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _pendingRecurringPayment];
-      [v8 recurringPaymentDetailViewControllerDidDisappearWithRecurringPayment:v9];
+      _pendingRecurringPayment = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _pendingRecurringPayment];
+      [v8 recurringPaymentDetailViewControllerDidDisappearWithRecurringPayment:_pendingRecurringPayment];
     }
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -437,14 +437,14 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillShow__
   return !v25;
 }
 
-- (void)_keyboardWillChange:(id)a3
+- (void)_keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -517,7 +517,7 @@ BOOL __73__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillChange
   return !v24;
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -543,17 +543,17 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(PKPeerPaymentRecurringPaymentDetailViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      if (v4[2](v4))
+      [viewIfLoaded layoutIfNeeded];
+      if (actionCopy[2](actionCopy))
       {
         [v6 setNeedsLayout];
         v7 = MEMORY[0x1E69DD250];
@@ -568,7 +568,7 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
 
     else
     {
-      v4[2](v4);
+      actionCopy[2](actionCopy);
     }
   }
 }
@@ -595,8 +595,8 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
   if ([(PKPeerPaymentRecurringPaymentDetailViewController *)self _shouldShowDashboardMessages])
   {
     messageSectionController = self->_messageSectionController;
-    v5 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _dashboardMessages];
-    [(PKDashboardMessageSectionController *)messageSectionController updateWithMessages:v5 currentMessageIndex:0];
+    _dashboardMessages = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _dashboardMessages];
+    [(PKDashboardMessageSectionController *)messageSectionController updateWithMessages:_dashboardMessages currentMessageIndex:0];
 
     [v13 addObject:self->_messageSectionController];
   }
@@ -609,9 +609,9 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
   {
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController setHideAmount:0];
     fundingSourceSectionController = self->_fundingSourceSectionController;
-    v7 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
-    v8 = [v7 name];
-    [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)fundingSourceSectionController setFundingSource:v8];
+    fundingSource = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
+    name = [fundingSource name];
+    [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)fundingSourceSectionController setFundingSource:name];
 
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self->_fundingSourceSectionController setUseAppleCashBalance:[(PKPeerPaymentRecurringPayment *)self->_recurringPayment usesAppleCashBalance]];
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self->_fundingSourceSectionController setIsEditable:self->_allowEdits];
@@ -622,8 +622,8 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
   [(PKPeerPaymentRecurringPaymentMemoSectionController *)self->_memoSectionController setIsEditable:self->_allowEdits];
   [(PKPeerPaymentRecurringPaymentMemoSectionController *)self->_memoSectionController setMemoTextColor:v3];
   memoSectionController = self->_memoSectionController;
-  v10 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment memo];
-  [(PKPeerPaymentRecurringPaymentMemoSectionController *)memoSectionController setRecurringPaymentMemo:v10];
+  memo = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment memo];
+  [(PKPeerPaymentRecurringPaymentMemoSectionController *)memoSectionController setRecurringPaymentMemo:memo];
 
   [v13 addObject:self->_memoSectionController];
   pauseSectionController = self->_pauseSectionController;
@@ -646,44 +646,44 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
   [(PKPeerPaymentRecurringPaymentDetailViewController *)self _updateCancelSectionFooter];
 }
 
-- (id)_composeRecipientForAddress:(id)a3
+- (id)_composeRecipientForAddress:(id)address
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695CE18]);
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [(PKAvatarView *)self->_avatarView descriptorForRequiredKeys];
-    v8 = v7;
-    if (v7)
+    array = [MEMORY[0x1E695DF70] array];
+    descriptorForRequiredKeys = [(PKAvatarView *)self->_avatarView descriptorForRequiredKeys];
+    v8 = descriptorForRequiredKeys;
+    if (descriptorForRequiredKeys)
     {
-      v27[0] = v7;
+      v27[0] = descriptorForRequiredKeys;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      [v6 addObjectsFromArray:v9];
+      [array addObjectsFromArray:v9];
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v5 keysToFetch:v6];
-    v11 = [v10 contactForHandle:v4];
-    v12 = [MEMORY[0x1E69B8EF8] sharedService];
-    v13 = [v12 context];
-    v14 = [v13 configuration];
-    v15 = [v14 contactFormatConfiguration];
+    v10 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v5 keysToFetch:array];
+    v11 = [v10 contactForHandle:addressCopy];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    context = [mEMORY[0x1E69B8EF8] context];
+    configuration = [context configuration];
+    contactFormatConfiguration = [configuration contactFormatConfiguration];
 
-    v16 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:v15];
-    if ([v16 emailAddressIsValid:v4])
+    v16 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:contactFormatConfiguration];
+    if ([v16 emailAddressIsValid:addressCopy])
     {
       v17 = 0;
     }
 
     else
     {
-      [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v4];
-      v26 = v12;
+      [MEMORY[0x1E695CF50] phoneNumberWithStringValue:addressCopy];
+      v26 = mEMORY[0x1E69B8EF8];
       v19 = v11;
       v20 = v10;
       v21 = v8;
-      v22 = v6;
+      v22 = array;
       v24 = v23 = v5;
       if ([v16 phoneNumberIsValid:v24 forCountryCode:0])
       {
@@ -696,14 +696,14 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
       }
 
       v5 = v23;
-      v6 = v22;
+      array = v22;
       v8 = v21;
       v10 = v20;
       v11 = v19;
-      v12 = v26;
+      mEMORY[0x1E69B8EF8] = v26;
     }
 
-    v18 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v11 address:v4 kind:v17];
+    v18 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v11 address:addressCopy kind:v17];
   }
 
   else
@@ -716,11 +716,11 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
 
 - (void)_configureAvatarView
 {
-  v4 = [(CNComposeRecipient *)self->_recipient contact];
-  if (v4)
+  contact = [(CNComposeRecipient *)self->_recipient contact];
+  if (contact)
   {
     [(PKAvatarView *)self->_avatarView setShowsName:self->_mode == 2];
-    [(PKAvatarView *)self->_avatarView setContact:v4];
+    [(PKAvatarView *)self->_avatarView setContact:contact];
   }
 
   else
@@ -733,12 +733,12 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
 
 - (void)_setUpNavigationBar
 {
-  v4 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationItem];
-  [v4 setBackButtonDisplayMode:2];
+  navigationItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
   if (self->_context != 9)
   {
-    v3 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationItem];
-    [v3 setTitleView:self->_avatarView];
+    navigationItem2 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationItem];
+    [navigationItem2 setTitleView:self->_avatarView];
   }
 
   [(PKPeerPaymentRecurringPaymentDetailViewController *)self _updateBarButtonItems];
@@ -748,9 +748,9 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
 {
   if (self->_showActivityIndicator)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    [v3 startAnimating];
-    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v3];
+    v10Amount = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [v10Amount startAnimating];
+    _doneItem = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v10Amount];
     v4 = 0;
     goto LABEL_3;
   }
@@ -765,61 +765,61 @@ BOOL __71__PKPeerPaymentRecurringPaymentDetailViewController__keyboardWillHide__
 
     if (self->_allowEdits)
     {
-      v11 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _doneItem];
-      v9 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _cancelEditingItem];
+      _doneItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _doneItem];
+      _cancelEditingItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _cancelEditingItem];
     }
 
     else
     {
-      v11 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _editItem];
+      _doneItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _editItem];
       if (!self->_showCancelButton)
       {
-        v5 = 0;
+        _dismissItem = 0;
         goto LABEL_24;
       }
 
-      v9 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _dismissItem];
+      _cancelEditingItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _dismissItem];
     }
 
-    v5 = v9;
+    _dismissItem = _cancelEditingItem;
 LABEL_24:
-    v10 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
-    v3 = [v10 amount];
+    amount = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
+    v10Amount = [amount amount];
 
-    v4 = v3 && [(NSDecimalNumber *)self->_minimumAmount compare:v3]!= NSOrderedDescending && [(NSDecimalNumber *)self->_maximumAmount compare:v3]!= NSOrderedAscending;
+    v4 = v10Amount && [(NSDecimalNumber *)self->_minimumAmount compare:v10Amount]!= NSOrderedDescending && [(NSDecimalNumber *)self->_maximumAmount compare:v10Amount]!= NSOrderedAscending;
     goto LABEL_4;
   }
 
   if (mode == 1)
   {
-    v11 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _doneItem];
-    v7 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
-    v3 = [v7 amount];
+    _doneItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _doneItem];
+    amount2 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
+    v10Amount = [amount2 amount];
 
-    v4 = v3 && [(NSDecimalNumber *)self->_minimumAmount compare:v3]!= NSOrderedDescending && [(NSDecimalNumber *)self->_maximumAmount compare:v3]!= NSOrderedAscending;
+    v4 = v10Amount && [(NSDecimalNumber *)self->_minimumAmount compare:v10Amount]!= NSOrderedDescending && [(NSDecimalNumber *)self->_maximumAmount compare:v10Amount]!= NSOrderedAscending;
     if (self->_showCancelButton)
     {
-      v5 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _dismissItem];
+      _dismissItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _dismissItem];
       goto LABEL_4;
     }
 
 LABEL_3:
-    v5 = 0;
+    _dismissItem = 0;
 LABEL_4:
 
     goto LABEL_12;
   }
 
 LABEL_11:
-  v5 = 0;
-  v11 = 0;
+  _dismissItem = 0;
+  _doneItem = 0;
   v4 = 1;
 LABEL_12:
-  [v11 setEnabled:v4];
-  v8 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v11];
-  [v8 setLeftBarButtonItem:v5];
-  [v8 setHidesBackButton:v5 != 0];
+  [_doneItem setEnabled:v4];
+  navigationItem = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:_doneItem];
+  [navigationItem setLeftBarButtonItem:_dismissItem];
+  [navigationItem setHidesBackButton:_dismissItem != 0];
 }
 
 - (id)_doneItem
@@ -970,18 +970,18 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditingItem_
   objc_initWeak(&location, self);
   if (self->_mode == 1)
   {
-    v3 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController startDate];
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v5 = [v4 isDateInToday:v3];
+    startDate = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController startDate];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v5 = [currentCalendar isDateInToday:startDate];
 
     detailSectionController = self->_detailSectionController;
     if (v5)
     {
-      v7 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)detailSectionController frequency];
+      frequency = [(PKPeerPaymentRecurringPaymentDetailSectionController *)detailSectionController frequency];
       v8 = 0;
-      if (v7 <= 2)
+      if (frequency <= 2)
       {
-        if (v7 != 1 && v7 != 2)
+        if (frequency != 1 && frequency != 2)
         {
           goto LABEL_29;
         }
@@ -989,9 +989,9 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditingItem_
         goto LABEL_6;
       }
 
-      if (v7 != 3)
+      if (frequency != 3)
       {
-        if (v7 == 4)
+        if (frequency == 4)
         {
           v8 = PKLocalizedPeerPaymentRecurringString(&cfstr_CreateFrequenc_3.isa);
         }
@@ -999,8 +999,8 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditingItem_
         goto LABEL_29;
       }
 
-      v13 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v14 = [v13 component:16 fromDate:v3];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v14 = [currentCalendar2 component:16 fromDate:startDate];
 
       v9 = PKOrdinalStringForInteger();
       PKMediumDateString();
@@ -1017,11 +1017,11 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditingItem_
 
     else
     {
-      v12 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)detailSectionController frequency];
+      frequency2 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)detailSectionController frequency];
       v8 = 0;
-      if (v12 <= 2)
+      if (frequency2 <= 2)
       {
-        if (v12 != 1 && v12 != 2)
+        if (frequency2 != 1 && frequency2 != 2)
         {
           goto LABEL_29;
         }
@@ -1036,9 +1036,9 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      if (v12 != 3)
+      if (frequency2 != 3)
       {
-        if (v12 != 4)
+        if (frequency2 != 4)
         {
 LABEL_29:
 
@@ -1052,8 +1052,8 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v15 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v16 = [v15 component:16 fromDate:v3];
+      currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v16 = [currentCalendar3 component:16 fromDate:startDate];
 
       v9 = PKOrdinalStringForInteger();
       PKMediumDateString();
@@ -1106,8 +1106,8 @@ void __79__PKPeerPaymentRecurringPaymentDetailViewController__updateDetailSectio
     objc_initWeak(&location, self);
     if ([(PKPeerPaymentRecurringPayment *)self->_recurringPayment status]== 2)
     {
-      v3 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _recipientName];
-      v4 = PKLocalizedPeerPaymentRecurringString(&cfstr_PauseSectionFo.isa, &stru_1F3BD5BF0.isa, v3);
+      _recipientName = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _recipientName];
+      v4 = PKLocalizedPeerPaymentRecurringString(&cfstr_PauseSectionFo.isa, &stru_1F3BD5BF0.isa, _recipientName);
     }
 
     else
@@ -1213,8 +1213,8 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditsAction_
 
 - (void)_dismissAction
 {
-  v2 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKPeerPaymentRecurringPaymentDetailViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_rightBarButtonAction
@@ -1244,9 +1244,9 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditsAction_
           goto LABEL_15;
         }
 
-        v9 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _pendingRecurringPayment];
+        _pendingRecurringPayment = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _pendingRecurringPayment];
         recurringPayment = self->_recurringPayment;
-        self->_recurringPayment = v9;
+        self->_recurringPayment = _pendingRecurringPayment;
 
         v11 = objc_loadWeakRetained(&self->_delegate);
         v12 = self->_recurringPayment;
@@ -1269,9 +1269,9 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditsAction_
         aBlock[4] = self;
         objc_copyWeak(&v23, &location);
         v13 = _Block_copy(aBlock);
-        v14 = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
+        recipient = [(PKPeerPaymentController *)self->_peerPaymentController recipient];
 
-        if (v14)
+        if (recipient)
         {
           v13[2](v13);
         }
@@ -1279,14 +1279,14 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__cancelEditsAction_
         else
         {
           remoteMessagesComposer = self->_remoteMessagesComposer;
-          v16 = [(CNComposeRecipient *)self->_recipient address];
+          address = [(CNComposeRecipient *)self->_recipient address];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __74__PKPeerPaymentRecurringPaymentDetailViewController__rightBarButtonAction__block_invoke_5;
           v19[3] = &unk_1E8010EE0;
           v20 = v13;
           objc_copyWeak(&v21, &location);
-          [(PKPeerPaymentRemoteMessagesComposer *)remoteMessagesComposer validateRecipientWithAddress:v16 completion:v19];
+          [(PKPeerPaymentRemoteMessagesComposer *)remoteMessagesComposer validateRecipientWithAddress:address completion:v19];
 
           objc_destroyWeak(&v21);
         }
@@ -1452,19 +1452,19 @@ void __74__PKPeerPaymentRecurringPaymentDetailViewController__rightBarButtonActi
   }
 }
 
-- (void)_processEditsIfNeededWithCompletion:(id)a3
+- (void)_processEditsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_allowEdits)
   {
     objc_initWeak(&location, self);
-    v6 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _pendingRecurringPayment];
-    v7 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment memo];
-    v8 = v7;
-    if (v7)
+    _pendingRecurringPayment = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _pendingRecurringPayment];
+    memo = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment memo];
+    v8 = memo;
+    if (memo)
     {
-      v30 = v7;
+      v30 = memo;
     }
 
     else
@@ -1472,12 +1472,12 @@ void __74__PKPeerPaymentRecurringPaymentDetailViewController__rightBarButtonActi
       v30 = objc_alloc_init(MEMORY[0x1E69B8FE0]);
     }
 
-    v9 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
-    v10 = [v9 fpanIdentifier];
-    v11 = [v6 fundingSource];
-    v12 = [v11 fpanIdentifier];
-    v13 = v10;
-    v14 = v12;
+    fundingSource = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
+    fpanIdentifier = [fundingSource fpanIdentifier];
+    fundingSource2 = [_pendingRecurringPayment fundingSource];
+    fpanIdentifier2 = [fundingSource2 fpanIdentifier];
+    v13 = fpanIdentifier;
+    v14 = fpanIdentifier2;
     v15 = v14;
     if (v13 == v14)
     {
@@ -1492,19 +1492,19 @@ LABEL_15:
         v18 = 1;
 LABEL_16:
 
-        v19 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment amount];
-        v20 = [v6 amount];
-        if (![v19 compare:v20])
+        amount = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment amount];
+        amount2 = [_pendingRecurringPayment amount];
+        if (![amount compare:amount2])
         {
-          v21 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment upcomingPaymentDates];
-          v22 = [v21 firstObject];
-          v23 = [v6 startDate];
+          upcomingPaymentDates = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment upcomingPaymentDates];
+          firstObject = [upcomingPaymentDates firstObject];
+          startDate = [_pendingRecurringPayment startDate];
           if (PKEqualObjects())
           {
-            v24 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment frequency];
-            if (v24 == [v6 frequency])
+            frequency = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment frequency];
+            if (frequency == [_pendingRecurringPayment frequency])
             {
-              v25 = [v6 memo];
+              memo2 = [_pendingRecurringPayment memo];
               v29 = PKEqualObjects();
 
               if (v29)
@@ -1527,7 +1527,7 @@ LABEL_16:
                 v27 = &v33;
                 objc_copyWeak(&v33, &location);
                 v32 = v5;
-                v31[4] = v6;
+                v31[4] = _pendingRecurringPayment;
                 [(PKPeerPaymentRecurringPaymentDetailViewController *)self _validatePaymentEditsWithCompletion:v31];
                 v28 = &v32;
 LABEL_25:
@@ -1548,7 +1548,7 @@ LABEL_24:
               v27 = &v36;
               objc_copyWeak(&v36, &location);
               v35 = v5;
-              v34[4] = v6;
+              v34[4] = _pendingRecurringPayment;
               v34[5] = self;
               [(PKPeerPaymentRecurringPaymentDetailViewController *)self _validatePaymentEditsWithCompletion:v34];
               v28 = &v35;
@@ -1568,14 +1568,14 @@ LABEL_24:
       }
     }
 
-    v17 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment usesAppleCashBalance];
-    v18 = v17 ^ [v6 usesAppleCashBalance];
+    usesAppleCashBalance = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment usesAppleCashBalance];
+    v18 = usesAppleCashBalance ^ [_pendingRecurringPayment usesAppleCashBalance];
     goto LABEL_16;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_27:
@@ -1746,15 +1746,15 @@ void __89__PKPeerPaymentRecurringPaymentDetailViewController__processEditsIfNeed
   }
 }
 
-- (void)_validatePaymentEditsWithCompletion:(id)a3
+- (void)_validatePaymentEditsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PKPeerPaymentRecurringPaymentDetailViewController__validatePaymentEditsWithCompletion___block_invoke;
   aBlock[3] = &unk_1E8010DD0;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v43 = v5;
   v6 = _Block_copy(aBlock);
   v7 = v6;
@@ -1765,9 +1765,9 @@ void __89__PKPeerPaymentRecurringPaymentDetailViewController__processEditsIfNeed
 
   else
   {
-    v8 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v9 = [v8 _defaultPaymentPassForPaymentRequest:self->_paymentRequest];
-    v10 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v9 = [mEMORY[0x1E69B8A58] _defaultPaymentPassForPaymentRequest:self->_paymentRequest];
+    status = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status];
     v11 = @"DEBIT_CARD_REQUIRED_MESSAGE_EDIT_SELECT_CARD";
     if (!v9)
     {
@@ -1780,7 +1780,7 @@ void __89__PKPeerPaymentRecurringPaymentDetailViewController__processEditsIfNeed
       v12 = @"DEBIT_CARD_REQUIRED_MESSAGE_RESUME_SELECT_CARD";
     }
 
-    if (v10 == 2)
+    if (status == 2)
     {
       v11 = v12;
     }
@@ -1925,14 +1925,14 @@ void __89__PKPeerPaymentRecurringPaymentDetailViewController__validatePaymentEdi
 - (void)_presentPeerPaymentAddDebitFlow
 {
   v4 = [PKPeerPaymentActionController startProvisionToAddDebitWithNetworkAllowlist:0];
-  v3 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  navigationController = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationController];
+  [navigationController presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_authorizeRecurringPaymentWithCompletion:(id)a3
+- (void)_authorizeRecurringPaymentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
+  completionCopy = completion;
+  amount = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
   objc_initWeak(&location, self);
   if ([(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self->_fundingSourceSectionController useAppleCashBalance])
   {
@@ -1947,17 +1947,17 @@ void __89__PKPeerPaymentRecurringPaymentDetailViewController__validatePaymentEdi
   [(PKPeerPaymentController *)self->_peerPaymentController selectMode:1];
   peerPaymentController = self->_peerPaymentController;
   selectedPass = self->_selectedPass;
-  v9 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
-  v10 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController frequency];
-  v11 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController startDate];
+  identifier = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
+  frequency = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController frequency];
+  startDate = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController startDate];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__PKPeerPaymentRecurringPaymentDetailViewController__authorizeRecurringPaymentWithCompletion___block_invoke;
   v13[3] = &unk_1E8010FF8;
   objc_copyWeak(&v15, &location);
-  v12 = v4;
+  v12 = completionCopy;
   v14 = v12;
-  [(PKPeerPaymentController *)peerPaymentController quoteWithAmount:v5 source:3 requestToken:0 alternateFundingSource:selectedPass preserveCurrentBalance:v6 recurringPaymentIdentifier:v9 frequency:v10 startDate:v11 threshold:0 completion:v13];
+  [(PKPeerPaymentController *)peerPaymentController quoteWithAmount:amount source:3 requestToken:0 alternateFundingSource:selectedPass preserveCurrentBalance:v6 recurringPaymentIdentifier:identifier frequency:frequency startDate:startDate threshold:0 completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -2089,21 +2089,21 @@ uint64_t __94__PKPeerPaymentRecurringPaymentDetailViewController__authorizeRecur
   return result;
 }
 
-- (void)_showConfirmationAlertIfNeededForAction:(unint64_t)a3 withItem:(id)a4 completion:(id)a5
+- (void)_showConfirmationAlertIfNeededForAction:(unint64_t)action withItem:(id)item completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 2)
+  itemCopy = item;
+  completionCopy = completion;
+  if (action == 2)
   {
     v23 = MEMORY[0x1E69DC650];
     v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_CancelAlertTit.isa);
-    v25 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _recipientName];
-    v26 = PKLocalizedPeerPaymentRecurringString(&cfstr_CancelAlertMes.isa, &stru_1F3BD5BF0.isa, v25);
+    _recipientName = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _recipientName];
+    v26 = PKLocalizedPeerPaymentRecurringString(&cfstr_CancelAlertMes.isa, &stru_1F3BD5BF0.isa, _recipientName);
     v14 = [v23 alertControllerWithTitle:v24 message:v26 preferredStyle:0];
 
-    v22 = [(PKDynamicCollectionViewController *)self cellForItem:v8];
-    v27 = [v14 popoverPresentationController];
-    [v27 setSourceView:v22];
+    v22 = [(PKDynamicCollectionViewController *)self cellForItem:itemCopy];
+    popoverPresentationController = [v14 popoverPresentationController];
+    [popoverPresentationController setSourceView:v22];
 
     v28 = MEMORY[0x1E69DC648];
     v29 = PKLocalizedPeerPaymentRecurringString(&cfstr_CancelAlertCon.isa);
@@ -2111,7 +2111,7 @@ uint64_t __94__PKPeerPaymentRecurringPaymentDetailViewController__authorizeRecur
     v42[1] = 3221225472;
     v42[2] = __113__PKPeerPaymentRecurringPaymentDetailViewController__showConfirmationAlertIfNeededForAction_withItem_completion___block_invoke_3;
     v42[3] = &unk_1E8011248;
-    v30 = v9;
+    v30 = completionCopy;
     v43 = v30;
     v31 = [v28 actionWithTitle:v29 style:2 handler:v42];
 
@@ -2130,15 +2130,15 @@ uint64_t __94__PKPeerPaymentRecurringPaymentDetailViewController__authorizeRecur
 
   else
   {
-    if (a3 != 1 || [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status]!= 1)
+    if (action != 1 || [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status]!= 1)
     {
       goto LABEL_8;
     }
 
     v10 = MEMORY[0x1E69DC650];
     v11 = PKLocalizedPeerPaymentRecurringString(&cfstr_PauseAlertTitl.isa);
-    v12 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _recipientName];
-    v13 = PKLocalizedPeerPaymentRecurringString(&cfstr_PauseAlertMess.isa, &stru_1F3BD5BF0.isa, v12);
+    _recipientName2 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _recipientName];
+    v13 = PKLocalizedPeerPaymentRecurringString(&cfstr_PauseAlertMess.isa, &stru_1F3BD5BF0.isa, _recipientName2);
     v14 = [v10 alertControllerWithTitle:v11 message:v13 preferredStyle:1];
 
     v15 = MEMORY[0x1E69DC648];
@@ -2147,7 +2147,7 @@ uint64_t __94__PKPeerPaymentRecurringPaymentDetailViewController__authorizeRecur
     v46[1] = 3221225472;
     v46[2] = __113__PKPeerPaymentRecurringPaymentDetailViewController__showConfirmationAlertIfNeededForAction_withItem_completion___block_invoke;
     v46[3] = &unk_1E8011248;
-    v17 = v9;
+    v17 = completionCopy;
     v47 = v17;
     v18 = [v15 actionWithTitle:v16 style:0 handler:v46];
 
@@ -2186,9 +2186,9 @@ uint64_t __94__PKPeerPaymentRecurringPaymentDetailViewController__authorizeRecur
   }
 
 LABEL_8:
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_10:
@@ -2251,21 +2251,21 @@ void __113__PKPeerPaymentRecurringPaymentDetailViewController__showConfirmationA
 
 - (id)_recipientName
 {
-  v3 = [(CNComposeRecipient *)self->_recipient contact];
-  v4 = [v3 givenName];
+  contact = [(CNComposeRecipient *)self->_recipient contact];
+  givenName = [contact givenName];
 
-  if (!v4)
+  if (!givenName)
   {
-    v4 = [(CNComposeRecipient *)self->_recipient address];
+    givenName = [(CNComposeRecipient *)self->_recipient address];
   }
 
-  return v4;
+  return givenName;
 }
 
-- (void)_showAlertForError:(id)a3 completion:(id)a4
+- (void)_showAlertForError:(id)error completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69B8F28] displayableErrorForError:a3];
+  completionCopy = completion;
+  v7 = [MEMORY[0x1E69B8F28] displayableErrorForError:error];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -2273,8 +2273,8 @@ void __113__PKPeerPaymentRecurringPaymentDetailViewController__showConfirmationA
   v10[3] = &unk_1E80111F8;
   objc_copyWeak(&v13, &location);
   v11 = v7;
-  v12 = v6;
-  v8 = v6;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v7;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
@@ -2354,9 +2354,9 @@ void __74__PKPeerPaymentRecurringPaymentDetailViewController__didCompleteSetupFl
   }
 }
 
-- (void)_updateRecurringPaymentsWithCompletion:(id)a3
+- (void)_updateRecurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   peerPaymentService = self->_peerPaymentService;
   v7[0] = MEMORY[0x1E69E9820];
@@ -2364,7 +2364,7 @@ void __74__PKPeerPaymentRecurringPaymentDetailViewController__didCompleteSetupFl
   v7[2] = __92__PKPeerPaymentRecurringPaymentDetailViewController__updateRecurringPaymentsWithCompletion___block_invoke;
   v7[3] = &unk_1E8011130;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(PKPeerPaymentService *)peerPaymentService updateRecurringPaymentsWithCompletion:v7];
 
@@ -2418,18 +2418,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_reloadWithPayments:(id)a3
+- (void)_reloadWithPayments:(id)payments
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  paymentsCopy = payments;
+  v5 = paymentsCopy;
   if (self->_mode == 2)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
+    v6 = paymentsCopy;
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v7)
     {
@@ -2445,9 +2445,9 @@ LABEL_11:
           }
 
           v10 = *(*(&v20 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
-          v13 = [v11 isEqualToString:v12];
+          identifier = [v10 identifier];
+          identifier2 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
+          v13 = [identifier isEqualToString:identifier2];
 
           if (v13)
           {
@@ -2518,27 +2518,27 @@ void __73__PKPeerPaymentRecurringPaymentDetailViewController__reloadWithPayments
 
 - (id)_pendingRecurringPayment
 {
-  v3 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
+  fundingSource = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
   if (self->_selectedPass)
   {
     v4 = [MEMORY[0x1E69B8FD8] fundingSourceWithPass:?];
 
-    v3 = v4;
+    fundingSource = v4;
   }
 
   v5 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment copy];
-  v6 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
-  v7 = [v6 amount];
-  [v5 setAmount:v7];
+  amount = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController amount];
+  v6Amount = [amount amount];
+  [v5 setAmount:v6Amount];
 
-  v8 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController startDate];
-  [v5 setStartDate:v8];
+  startDate = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController startDate];
+  [v5 setStartDate:startDate];
 
   [v5 setFrequency:{-[PKPeerPaymentRecurringPaymentDetailSectionController frequency](self->_detailSectionController, "frequency")}];
-  v9 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self->_memoSectionController recurringPaymentMemo];
-  [v5 setMemo:v9];
+  recurringPaymentMemo = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self->_memoSectionController recurringPaymentMemo];
+  [v5 setMemo:recurringPaymentMemo];
 
-  [v5 setFundingSource:v3];
+  [v5 setFundingSource:fundingSource];
   [v5 setUsesAppleCashBalance:{-[PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController useAppleCashBalance](self->_fundingSourceSectionController, "useAppleCashBalance")}];
 
   return v5;
@@ -2546,10 +2546,10 @@ void __73__PKPeerPaymentRecurringPaymentDetailViewController__reloadWithPayments
 
 - (BOOL)_shouldShowDashboardMessages
 {
-  v3 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status];
-  v4 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment lastExecutedTransaction];
-  v5 = v4;
-  if ((v3 - 3) <= 1 && [v4 status] == 3)
+  status = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status];
+  lastExecutedTransaction = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment lastExecutedTransaction];
+  v5 = lastExecutedTransaction;
+  if ((status - 3) <= 1 && [lastExecutedTransaction status] == 3)
   {
     v6 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment lastExecutedTransactionAppearsInHistory]^ 1;
   }
@@ -2564,21 +2564,21 @@ void __73__PKPeerPaymentRecurringPaymentDetailViewController__reloadWithPayments
 
 - (id)_dashboardMessages
 {
-  v3 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment lastExecutedTransaction];
-  v4 = [v3 errorCode];
-  v5 = [v3 executionDate];
+  lastExecutedTransaction = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment lastExecutedTransaction];
+  errorCode = [lastExecutedTransaction errorCode];
+  executionDate = [lastExecutedTransaction executionDate];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v7 = objc_alloc_init(PKDashboardPassMessage);
-  v8 = [v3 identifier];
-  [(PKDashboardPassMessage *)v7 setIdentifier:v8];
+  identifier = [lastExecutedTransaction identifier];
+  [(PKDashboardPassMessage *)v7 setIdentifier:identifier];
 
-  v9 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _titleForErrorCode:v4];
+  v9 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _titleForErrorCode:errorCode];
   [(PKDashboardPassMessage *)v7 setTitle:v9];
 
-  v10 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _messageForErrorCode:v4 paymentDate:v5];
+  v10 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self _messageForErrorCode:errorCode paymentDate:executionDate];
   [(PKDashboardPassMessage *)v7 setMessage:v10];
 
-  if ([v3 exceedsAppleCashLimits])
+  if ([lastExecutedTransaction exceedsAppleCashLimits])
   {
     v11 = PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorLe.isa);
     [(PKDashboardPassMessage *)v7 setButtonTitle:v11];
@@ -2604,9 +2604,9 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__dashboardMessages_
   PKOpenURL();
 }
 
-- (id)_titleForErrorCode:(unint64_t)a3
+- (id)_titleForErrorCode:(unint64_t)code
 {
-  if (a3 == 40338)
+  if (code == 40338)
   {
     v3 = @"PAYMENT_ERROR_PAYMENT_PAUSED_TITLE";
   }
@@ -2621,15 +2621,15 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__dashboardMessages_
   return v4;
 }
 
-- (id)_messageForErrorCode:(unint64_t)a3 paymentDate:(id)a4
+- (id)_messageForErrorCode:(unint64_t)code paymentDate:(id)date
 {
-  v6 = a4;
-  if (a3 > 40340)
+  dateCopy = date;
+  if (code > 40340)
   {
-    if (a3 <= 40342)
+    if (code <= 40342)
     {
       v7 = PKMediumDayAndMonthStringFromDate();
-      if (a3 == 40341)
+      if (code == 40341)
       {
         PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorRe.isa, &stru_1F3BD5BF0.isa, v7);
       }
@@ -2642,19 +2642,19 @@ void __71__PKPeerPaymentRecurringPaymentDetailViewController__dashboardMessages_
       goto LABEL_24;
     }
 
-    if (a3 == 40343)
+    if (code == 40343)
     {
       v7 = PKMediumDayAndMonthStringFromDate();
       PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorGe.isa, &stru_1F3BD5BF0.isa, v7);
       goto LABEL_24;
     }
 
-    if (a3 == 40344)
+    if (code == 40344)
     {
       goto LABEL_19;
     }
 
-    if (a3 != 40345)
+    if (code != 40345)
     {
 LABEL_23:
       v7 = PKMediumDayAndMonthStringFromDate();
@@ -2663,20 +2663,20 @@ LABEL_23:
     }
 
 LABEL_16:
-    v8 = [(CNComposeRecipient *)self->_recipient contact];
-    v9 = [v8 givenName];
-    v10 = v9;
-    if (v9)
+    contact = [(CNComposeRecipient *)self->_recipient contact];
+    givenName = [contact givenName];
+    v10 = givenName;
+    if (givenName)
     {
-      v11 = v9;
+      address = givenName;
     }
 
     else
     {
-      v11 = [(CNComposeRecipient *)self->_recipient address];
+      address = [(CNComposeRecipient *)self->_recipient address];
     }
 
-    v7 = v11;
+    v7 = address;
 
     v14 = PKMediumDayAndMonthStringFromDate();
     v12 = PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorIn.isa, &stru_1F3BD6370.isa, v14, v7);
@@ -2684,17 +2684,17 @@ LABEL_16:
     goto LABEL_25;
   }
 
-  if (a3 > 40336)
+  if (code > 40336)
   {
-    if (a3 != 40337)
+    if (code != 40337)
     {
-      if (a3 == 40338)
+      if (code == 40338)
       {
         v12 = PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorCo.isa);
         goto LABEL_26;
       }
 
-      if (a3 == 40340)
+      if (code == 40340)
       {
         v7 = PKMediumDayAndMonthStringFromDate();
         PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorCa_0.isa, &stru_1F3BD5BF0.isa, v7);
@@ -2707,9 +2707,9 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 - 40305 >= 2)
+  if (code - 40305 >= 2)
   {
-    if (a3 == 40311)
+    if (code == 40311)
     {
 LABEL_19:
       v7 = PKMediumDayAndMonthStringFromDate();
@@ -2730,21 +2730,21 @@ LABEL_26:
   return v12;
 }
 
-- (void)makeCellFirstResponderWithItem:(id)a3
+- (void)makeCellFirstResponderWithItem:(id)item
 {
-  v3 = [(PKDynamicCollectionViewController *)self cellForItem:a3];
+  v3 = [(PKDynamicCollectionViewController *)self cellForItem:item];
   if ([v3 canBecomeFirstResponder])
   {
     [v3 becomeFirstResponder];
   }
 }
 
-- (void)updateFooterForSectionIdentifier:(id)a3
+- (void)updateFooterForSectionIdentifier:(id)identifier
 {
-  v13 = a3;
-  v4 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController identifiers];
-  v5 = [v4 firstObject];
-  v6 = [v13 isEqualToString:v5];
+  identifierCopy = identifier;
+  identifiers = [(PKPeerPaymentRecurringPaymentDetailSectionController *)self->_detailSectionController identifiers];
+  firstObject = [identifiers firstObject];
+  v6 = [identifierCopy isEqualToString:firstObject];
 
   if (v6)
   {
@@ -2753,9 +2753,9 @@ LABEL_26:
 
   else
   {
-    v7 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self->_pauseSectionController identifiers];
-    v8 = [v7 firstObject];
-    v9 = [v13 isEqualToString:v8];
+    identifiers2 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self->_pauseSectionController identifiers];
+    firstObject2 = [identifiers2 firstObject];
+    v9 = [identifierCopy isEqualToString:firstObject2];
 
     if (v9)
     {
@@ -2764,9 +2764,9 @@ LABEL_26:
 
     else
     {
-      v10 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self->_cancelSectionController identifiers];
-      v11 = [v10 firstObject];
-      v12 = [v13 isEqualToString:v11];
+      identifiers3 = [(PKPeerPaymentRecurringPaymentDetailActionSectionController *)self->_cancelSectionController identifiers];
+      firstObject3 = [identifiers3 firstObject];
+      v12 = [identifierCopy isEqualToString:firstObject3];
 
       if (v12)
       {
@@ -2776,18 +2776,18 @@ LABEL_26:
   }
 }
 
-- (void)performAction:(unint64_t)a3 forItem:(id)a4 startHandler:(id)a5 completion:(id)a6
+- (void)performAction:(unint64_t)action forItem:(id)item startHandler:(id)handler completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  itemCopy = item;
+  handlerCopy = handler;
+  completionCopy = completion;
+  v13 = completionCopy;
   if (self->_performingAction)
   {
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -2809,10 +2809,10 @@ LABEL_26:
     v16[2] = __99__PKPeerPaymentRecurringPaymentDetailViewController_performAction_forItem_startHandler_completion___block_invoke;
     v16[3] = &unk_1E8011040;
     objc_copyWeak(v19, buf);
-    v17 = v11;
-    v19[1] = a3;
+    v17 = handlerCopy;
+    v19[1] = action;
     v18 = v13;
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)self _showConfirmationAlertIfNeededForAction:a3 withItem:v10 completion:v16];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)self _showConfirmationAlertIfNeededForAction:action withItem:itemCopy completion:v16];
 
     objc_destroyWeak(v19);
     objc_destroyWeak(buf);
@@ -2910,17 +2910,17 @@ void __99__PKPeerPaymentRecurringPaymentDetailViewController_performAction_forIt
   }
 }
 
-- (void)_pauseRecurringPaymentWithCompletion:(id)a3
+- (void)_pauseRecurringPaymentWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status];
-  if (v5 > 2)
+  status = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment status];
+  if (status > 2)
   {
-    if (v5 != 3)
+    if (status != 3)
     {
-      if (v5 != 4)
+      if (status != 4)
       {
         goto LABEL_4;
       }
@@ -2930,26 +2930,26 @@ void __99__PKPeerPaymentRecurringPaymentDetailViewController_performAction_forIt
 
 LABEL_11:
     peerPaymentService = self->_peerPaymentService;
-    v11 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
+    identifier = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __90__PKPeerPaymentRecurringPaymentDetailViewController__pauseRecurringPaymentWithCompletion___block_invoke;
     v15[3] = &unk_1E8011068;
     v8 = &v17;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
-    [(PKPeerPaymentService *)peerPaymentService performRecurringPaymentAction:1 identifier:v11 completion:v15];
+    v16 = completionCopy;
+    [(PKPeerPaymentService *)peerPaymentService performRecurringPaymentAction:1 identifier:identifier completion:v15];
 
     v9 = &v16;
     goto LABEL_12;
   }
 
-  if (v5 == 1)
+  if (status == 1)
   {
     goto LABEL_11;
   }
 
-  if (v5 == 2)
+  if (status == 2)
   {
 LABEL_10:
     v12[0] = MEMORY[0x1E69E9820];
@@ -2958,7 +2958,7 @@ LABEL_10:
     v12[3] = &unk_1E80110B8;
     v8 = &v14;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = completionCopy;
     [(PKPeerPaymentRecurringPaymentDetailViewController *)self _validatePaymentEditsWithCompletion:v12];
     v9 = &v13;
 LABEL_12:
@@ -2977,9 +2977,9 @@ LABEL_4:
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentRecurringPaymentDetailViewController: Unable to perform action, recurring payment is in an ineligible state: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_13:
@@ -3159,20 +3159,20 @@ void __90__PKPeerPaymentRecurringPaymentDetailViewController__pauseRecurringPaym
   }
 }
 
-- (void)_cancelRecurringPaymentWithCompletion:(id)a3
+- (void)_cancelRecurringPaymentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   peerPaymentService = self->_peerPaymentService;
-  v6 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
+  identifier = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment identifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__PKPeerPaymentRecurringPaymentDetailViewController__cancelRecurringPaymentWithCompletion___block_invoke;
   v8[3] = &unk_1E8011068;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [(PKPeerPaymentService *)peerPaymentService performRecurringPaymentAction:2 identifier:v6 completion:v8];
+  [(PKPeerPaymentService *)peerPaymentService performRecurringPaymentAction:2 identifier:identifier completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -3293,9 +3293,9 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)memoIconChooserDidChooseMemo:(id)a3
+- (void)memoIconChooserDidChooseMemo:(id)memo
 {
-  [(PKPeerPaymentRecurringPaymentMemoSectionController *)self->_memoSectionController setRecurringPaymentMemoWithTextSuggestion:a3];
+  [(PKPeerPaymentRecurringPaymentMemoSectionController *)self->_memoSectionController setRecurringPaymentMemoWithTextSuggestion:memo];
   [(PKDynamicCollectionViewController *)self reloadDataForSection:self->_memoSectionController animated:1];
   memoSectionController = self->_memoSectionController;
 
@@ -3306,15 +3306,15 @@ LABEL_10:
 {
   if (self->_paymentRequest)
   {
-    v3 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
-    v4 = [v3 fpanIdentifier];
+    fundingSource = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment fundingSource];
+    fpanIdentifier = [fundingSource fpanIdentifier];
 
     if (!self->_selectedPass)
     {
-      if ([v4 length])
+      if ([fpanIdentifier length])
       {
-        v5 = [MEMORY[0x1E69B8A58] sharedInstance];
-        v6 = [v5 passWithFPANIdentifier:v4];
+        mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+        v6 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:fpanIdentifier];
         selectedPass = self->_selectedPass;
         self->_selectedPass = v6;
       }
@@ -3362,21 +3362,21 @@ void __81__PKPeerPaymentRecurringPaymentDetailViewController_fundingSourceSectio
   }
 }
 
-- (void)paymentMethodSelectionViewController:(id)a3 didSelectPaymentMethod:(id)a4
+- (void)paymentMethodSelectionViewController:(id)controller didSelectPaymentMethod:(id)method
 {
-  v16 = a4;
-  v6 = [(PKPaymentPass *)self->_selectedPass uniqueID];
-  v7 = [v16 uniqueID];
-  v8 = v6;
-  v9 = v7;
+  methodCopy = method;
+  uniqueID = [(PKPaymentPass *)self->_selectedPass uniqueID];
+  uniqueID2 = [methodCopy uniqueID];
+  localizedDescription = uniqueID;
+  v9 = uniqueID2;
   v10 = v9;
-  if (v8 == v9)
+  if (localizedDescription == v9)
   {
   }
 
   else
   {
-    if (v8)
+    if (localizedDescription)
     {
       v11 = v9 == 0;
     }
@@ -3392,7 +3392,7 @@ void __81__PKPeerPaymentRecurringPaymentDetailViewController_fundingSourceSectio
 
     else
     {
-      v12 = [v8 isEqualToString:v9];
+      v12 = [localizedDescription isEqualToString:v9];
 
       if (v12)
       {
@@ -3400,49 +3400,49 @@ void __81__PKPeerPaymentRecurringPaymentDetailViewController_fundingSourceSectio
       }
     }
 
-    objc_storeStrong(&self->_selectedPass, a4);
+    objc_storeStrong(&self->_selectedPass, method);
     fundingSourceSectionController = self->_fundingSourceSectionController;
-    v8 = [(PKPaymentPass *)self->_selectedPass localizedDescription];
-    [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)fundingSourceSectionController setFundingSource:v8];
+    localizedDescription = [(PKPaymentPass *)self->_selectedPass localizedDescription];
+    [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)fundingSourceSectionController setFundingSource:localizedDescription];
   }
 
 LABEL_12:
-  v14 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationController];
-  if ([v14 pk_settings_useStateDrivenNavigation])
+  navigationController = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v14 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v15 = [v14 popViewControllerAnimated:1];
+    v15 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)paymentMethodSelectionViewController:(id)a3 didToggleUseAppleCashBalance:(BOOL)a4
+- (void)paymentMethodSelectionViewController:(id)controller didToggleUseAppleCashBalance:(BOOL)balance
 {
-  v4 = a4;
-  v6 = [(PKPeerPaymentController *)self->_peerPaymentController peerPaymentPass];
+  balanceCopy = balance;
+  peerPaymentPass = [(PKPeerPaymentController *)self->_peerPaymentController peerPaymentPass];
   PKUpdatePeerPaymentBalanceUsagePreference();
 
   fundingSourceSectionController = self->_fundingSourceSectionController;
 
-  [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)fundingSourceSectionController setUseAppleCashBalance:v4];
+  [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)fundingSourceSectionController setUseAppleCashBalance:balanceCopy];
 }
 
 - (void)didSelectAmountSection
 {
   if (self->_mode == 1)
   {
-    v4 = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationController];
-    if ([v4 pk_settings_useStateDrivenNavigation])
+    navigationController = [(PKPeerPaymentRecurringPaymentDetailViewController *)self navigationController];
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v4 pk_settings_popViewController];
+      [navigationController pk_settings_popViewController];
     }
 
     else
     {
-      v3 = [v4 popViewControllerAnimated:1];
+      v3 = [navigationController popViewControllerAnimated:1];
     }
   }
 }

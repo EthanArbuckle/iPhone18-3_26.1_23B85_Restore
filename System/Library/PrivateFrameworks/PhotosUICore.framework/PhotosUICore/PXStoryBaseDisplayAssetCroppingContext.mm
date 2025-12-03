@@ -1,16 +1,16 @@
 @interface PXStoryBaseDisplayAssetCroppingContext
 - (PXStoryBaseDisplayAssetCroppingContext)init;
-- (id)orderedFacesForAsset:(id)a3 featuredFaceCount:(int64_t *)a4;
-- (void)requestIndividualFaceRectsInAsset:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
+- (id)orderedFacesForAsset:(id)asset featuredFaceCount:(int64_t *)count;
+- (void)requestIndividualFaceRectsInAsset:(id)asset options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryBaseDisplayAssetCroppingContext
 
-- (void)requestIndividualFaceRectsInAsset:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (void)requestIndividualFaceRectsInAsset:(id)asset options:(unint64_t)options resultHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -20,16 +20,16 @@
     v12 = v11;
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
-      v13 = [v7 uuid];
+      uuid = [assetCopy uuid];
       *buf = 138412290;
-      *&buf[4] = v13;
+      *&buf[4] = uuid;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "StoryIndividualFaceRectsRequest", "uuid=%{signpost.description:attribute}@", buf, 0xCu);
     }
 
     v26[0] = v10;
 
     *buf = 0;
-    v14 = [(PXStoryBaseDisplayAssetCroppingContext *)self orderedFacesForAsset:v7 featuredFaceCount:buf];
+    v14 = [(PXStoryBaseDisplayAssetCroppingContext *)self orderedFacesForAsset:assetCopy featuredFaceCount:buf];
     v15 = [v14 count];
     v26[1] = v26;
     *&v16 = MEMORY[0x1EEE9AC00](v15).n128_u64[0];
@@ -54,7 +54,7 @@
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v24, OS_SIGNPOST_INTERVAL_END, v26[0], "StoryIndividualFaceRectsRequest", "", v27, 2u);
     }
 
-    v8[2](v8, v15, v18, *buf, v14);
+    handlerCopy[2](handlerCopy, v15, v18, *buf, v14);
   }
 
   else
@@ -62,18 +62,18 @@
     v25 = *(MEMORY[0x1E695F050] + 16);
     *buf = *MEMORY[0x1E695F050];
     v29 = v25;
-    v8[2](v8, 0, buf, 0, 0);
+    handlerCopy[2](handlerCopy, 0, buf, 0, 0);
   }
 }
 
-- (id)orderedFacesForAsset:(id)a3 featuredFaceCount:(int64_t *)a4
+- (id)orderedFacesForAsset:(id)asset featuredFaceCount:(int64_t *)count
 {
   v6 = MEMORY[0x1E69787C8];
-  v7 = a3;
-  v8 = [(PXStoryBaseDisplayAssetCroppingContext *)self fetchOptions];
-  v9 = [v6 fetchFacesInAsset:v7 options:v8];
+  assetCopy = asset;
+  fetchOptions = [(PXStoryBaseDisplayAssetCroppingContext *)self fetchOptions];
+  v9 = [v6 fetchFacesInAsset:assetCopy options:fetchOptions];
 
-  v10 = [(PXStoryBaseDisplayAssetCroppingContext *)self adjustOrderedFaces:v9 featuredFaceCount:a4];
+  v10 = [(PXStoryBaseDisplayAssetCroppingContext *)self adjustOrderedFaces:v9 featuredFaceCount:count];
 
   return v10;
 }

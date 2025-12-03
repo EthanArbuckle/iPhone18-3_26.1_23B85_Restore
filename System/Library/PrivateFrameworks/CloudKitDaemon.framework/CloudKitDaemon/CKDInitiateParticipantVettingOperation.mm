@@ -1,33 +1,33 @@
 @interface CKDInitiateParticipantVettingOperation
-- (CKDInitiateParticipantVettingOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)a3 forShareWithURL:(id)a4 error:(id *)a5;
-- (id)_encryptedKeyDataWithShareMetadata:(id)a3 error:(id *)a4;
+- (CKDInitiateParticipantVettingOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)s forShareWithURL:(id)l error:(id *)error;
+- (id)_encryptedKeyDataWithShareMetadata:(id)metadata error:(id *)error;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleVettingInitiationProgress:(id)a3;
-- (void)_sendRequest:(BOOL)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleVettingInitiationProgress:(id)progress;
+- (void)_sendRequest:(BOOL)request;
 - (void)main;
 @end
 
 @implementation CKDInitiateParticipantVettingOperation
 
-- (CKDInitiateParticipantVettingOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDInitiateParticipantVettingOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = CKDInitiateParticipantVettingOperation;
-  v9 = [(CKDOperation *)&v21 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v21 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_shareMetadata(v6, v7, v8);
+    v10 = objc_msgSend_shareMetadata(infoCopy, v7, v8);
     shareMetadata = v9->_shareMetadata;
     v9->_shareMetadata = v10;
 
-    v14 = objc_msgSend_participantID(v6, v12, v13);
+    v14 = objc_msgSend_participantID(infoCopy, v12, v13);
     participantID = v9->_participantID;
     v9->_participantID = v14;
 
-    v18 = objc_msgSend_address(v6, v16, v17);
+    v18 = objc_msgSend_address(infoCopy, v16, v17);
     address = v9->_address;
     v9->_address = v18;
   }
@@ -42,26 +42,26 @@
   return v2;
 }
 
-- (void)_handleVettingInitiationProgress:(id)a3
+- (void)_handleVettingInitiationProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v7 = objc_msgSend_callbackQueue(self, v5, v6);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = sub_2252354A4;
   v13 = &unk_278545898;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v15 = progressCopy;
+  v8 = progressCopy;
   dispatch_async(v7, &v10);
 
-  objc_msgSend_setError_(self, v9, v8, v10, v11, v12, v13, v14);
+  objc_msgSend_setError_(self, v9, v8, v10, v11, v12, v13, selfCopy);
 }
 
-- (id)_encryptedKeyDataWithShareMetadata:(id)a3 error:(id *)a4
+- (id)_encryptedKeyDataWithShareMetadata:(id)metadata error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  metadataCopy = metadata;
   v7 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -73,18 +73,18 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v12 = v9;
-    v15 = objc_msgSend_share(v6, v13, v14);
+    v15 = objc_msgSend_share(metadataCopy, v13, v14);
     v18 = objc_msgSend_recordID(v15, v16, v17);
     v32 = 138412290;
     v33 = v18;
     _os_log_impl(&dword_22506F000, v12, OS_LOG_TYPE_INFO, "Preparing encrypted key for vetting: adding ourselves to the public PCS for share %@", &v32, 0xCu);
   }
 
-  v19 = objc_msgSend_share(v6, v10, v11);
+  v19 = objc_msgSend_share(metadataCopy, v10, v11);
   v22 = objc_msgSend_URL(v19, v20, v21);
-  v24 = objc_msgSend__addSelfIdentityToShareMetadataPublicPCS_forShareWithURL_error_(self, v23, v6, v22, a4);
+  v24 = objc_msgSend__addSelfIdentityToShareMetadataPublicPCS_forShareWithURL_error_(self, v23, metadataCopy, v22, error);
 
-  if (*a4)
+  if (*error)
   {
     if (*v7 != -1)
     {
@@ -94,7 +94,7 @@
     v27 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
     {
-      v31 = *a4;
+      v31 = *error;
       v32 = 138412290;
       v33 = v31;
       _os_log_error_impl(&dword_22506F000, v27, OS_LOG_TYPE_ERROR, "Unable to generate encrypted key to initiate share vetting: %@", &v32, 0xCu);
@@ -113,13 +113,13 @@
   return v28;
 }
 
-- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)a3 forShareWithURL:(id)a4 error:(id *)a5
+- (id)_addSelfIdentityToShareMetadataPublicPCS:(id)s forShareWithURL:(id)l error:(id *)error
 {
   v110 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  sCopy = s;
+  lCopy = l;
   v12 = objc_msgSend_container(self, v10, v11);
-  v15 = objc_msgSend_share(v8, v13, v14);
+  v15 = objc_msgSend_share(sCopy, v13, v14);
   v18 = objc_msgSend_publicProtectionData(v15, v16, v17);
   v21 = MEMORY[0x277CBC880];
   v22 = MEMORY[0x277CBC830];
@@ -130,7 +130,7 @@
   }
 
   v23 = v18;
-  v24 = objc_msgSend_privateToken(v8, v19, v20);
+  v24 = objc_msgSend_privateToken(sCopy, v19, v20);
 
   if (!v24)
   {
@@ -144,11 +144,11 @@ LABEL_17:
     if (os_log_type_enabled(*v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v107 = v9;
+      v107 = lCopy;
       _os_log_impl(&dword_22506F000, v59, OS_LOG_TYPE_INFO, "Share metadata for the share at URL %@ doesn't have protection data on it, skipping", buf, 0xCu);
     }
 
-    v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v60, *MEMORY[0x277CBC120], 5001, @"Share metadata for the share at URL %@ doesn't have protection data on it", v9);
+    v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v60, *MEMORY[0x277CBC120], 5001, @"Share metadata for the share at URL %@ doesn't have protection data on it", lCopy);
     goto LABEL_34;
   }
 
@@ -161,16 +161,16 @@ LABEL_17:
   if (os_log_type_enabled(*v22, OS_LOG_TYPE_INFO))
   {
     v28 = v25;
-    v31 = objc_msgSend_privateToken(v8, v29, v30);
+    v31 = objc_msgSend_privateToken(sCopy, v29, v30);
     *buf = 138412546;
-    v107 = v9;
+    v107 = lCopy;
     v108 = 2112;
     v109 = v31;
     _os_log_impl(&dword_22506F000, v28, OS_LOG_TYPE_INFO, "Preparing public PCS metadata for share at URL %@ using public sharing token %@", buf, 0x16u);
   }
 
   v32 = objc_msgSend_pcsManager(v12, v26, v27);
-  v35 = objc_msgSend_privateToken(v8, v33, v34);
+  v35 = objc_msgSend_privateToken(sCopy, v33, v34);
   v105 = 0;
   v37 = objc_msgSend_createSharingIdentityFromData_error_(v32, v36, v35, &v105);
   v38 = v105;
@@ -186,7 +186,7 @@ LABEL_17:
     if (os_log_type_enabled(*v22, OS_LOG_TYPE_ERROR))
     {
       v84 = v61;
-      v87 = objc_msgSend_privateToken(v8, v85, v86);
+      v87 = objc_msgSend_privateToken(sCopy, v85, v86);
       *buf = 138412546;
       v107 = v87;
       v108 = 2112;
@@ -214,7 +214,7 @@ LABEL_33:
   }
 
   v41 = objc_msgSend_pcsManager(v12, v39, v40);
-  v44 = objc_msgSend_share(v8, v42, v43);
+  v44 = objc_msgSend_share(sCopy, v42, v43);
   v47 = objc_msgSend_publicProtectionData(v44, v45, v46);
   v104 = 0;
   v49 = objc_msgSend_createSharePCSFromData_sharingIdentity_error_(v41, v48, v47, v37, &v104);
@@ -232,7 +232,7 @@ LABEL_33:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
       v88 = v64;
-      v91 = objc_msgSend_share(v8, v89, v90);
+      v91 = objc_msgSend_share(sCopy, v89, v90);
       v94 = objc_msgSend_publicProtectionData(v91, v92, v93);
       *buf = 138543618;
       v107 = v94;
@@ -267,7 +267,7 @@ LABEL_33:
     if (os_log_type_enabled(*v57, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v107 = v9;
+      v107 = lCopy;
       v108 = 2112;
       v109 = v38;
       _os_log_error_impl(&dword_22506F000, v58, OS_LOG_TYPE_ERROR, "Couldn't add our self identity to the public PCS for share at URL %@: %@", buf, 0x16u);
@@ -300,7 +300,7 @@ LABEL_33:
         if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
         {
           v95 = v80;
-          v101 = objc_msgSend_share(v8, v96, v97);
+          v101 = objc_msgSend_share(sCopy, v96, v97);
           v100 = objc_msgSend_recordID(v101, v98, v99);
           *buf = 138412290;
           v107 = v100;
@@ -326,7 +326,7 @@ LABEL_33:
     if (os_log_type_enabled(*v57, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v107 = v9;
+      v107 = lCopy;
       v108 = 2112;
       v109 = v38;
       _os_log_error_impl(&dword_22506F000, v82, OS_LOG_TYPE_ERROR, "Couldn't serialize share public PCS for share at URL %@: %@", buf, 0x16u);
@@ -349,16 +349,16 @@ LABEL_59:
     if (os_log_type_enabled(*v57, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v107 = v9;
+      v107 = lCopy;
       _os_log_impl(&dword_22506F000, v83, OS_LOG_TYPE_INFO, "Successfully added our public identity to the share's public PCS at %@", buf, 0xCu);
     }
   }
 
 LABEL_35:
-  if (a5)
+  if (error)
   {
     v67 = v38;
-    *a5 = v38;
+    *error = v38;
   }
 
   if (v66)
@@ -434,9 +434,9 @@ LABEL_7:
   objc_msgSend_finishWithError_(self, v5, 0);
 }
 
-- (void)_sendRequest:(BOOL)a3
+- (void)_sendRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   v50 = *MEMORY[0x277D85DE8];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -447,7 +447,7 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v38 = @"first";
-    if (v3)
+    if (requestCopy)
     {
       v38 = @"second";
     }
@@ -478,7 +478,7 @@ LABEL_7:
   v42[2] = sub_225236574;
   v42[3] = &unk_27854AB00;
   objc_copyWeak(&v43, &location);
-  v44 = v3;
+  v44 = requestCopy;
   v42[4] = self;
   v42[5] = &buf;
   objc_msgSend_setVettingInitiationRequestCompletionBlock_(v29, v30, v42);
@@ -504,13 +504,13 @@ LABEL_7:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setParticipantVettingProgressBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDInitiateParticipantVettingOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

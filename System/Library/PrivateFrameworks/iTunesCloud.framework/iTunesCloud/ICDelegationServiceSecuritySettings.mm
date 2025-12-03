@@ -1,6 +1,6 @@
 @interface ICDelegationServiceSecuritySettings
-+ (void)getDeviceReceiverSettingsWithCompletion:(id)a3;
-+ (void)getDeviceSenderSettingsForReceiverName:(id)a3 securityMode:(int64_t)a4 completion:(id)a5;
++ (void)getDeviceReceiverSettingsWithCompletion:(id)completion;
++ (void)getDeviceSenderSettingsForReceiverName:(id)name securityMode:(int64_t)mode completion:(id)completion;
 - (id)_init;
 - (id)description;
 @end
@@ -35,26 +35,26 @@
   return [(ICDelegationServiceSecuritySettings *)&v3 init];
 }
 
-+ (void)getDeviceSenderSettingsForReceiverName:(id)a3 securityMode:(int64_t)a4 completion:(id)a5
++ (void)getDeviceSenderSettingsForReceiverName:(id)name securityMode:(int64_t)mode completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4 == 4)
+  nameCopy = name;
+  completionCopy = completion;
+  if (mode == 4)
   {
     if (getDeviceSenderSettingsForReceiverName_securityMode_completion__sOnceToken != -1)
     {
       dispatch_once(&getDeviceSenderSettingsForReceiverName_securityMode_completion__sOnceToken, &__block_literal_global_17);
     }
 
-    v10 = v8;
+    v10 = completionCopy;
     MRMediaRemoteGetSavedAVRoutePassword();
   }
 
   else
   {
-    v9 = [[ICDelegationServiceSecuritySettings alloc] _init];
-    v9[1] = a4;
-    (*(v8 + 2))(v8, v9, 0);
+    _init = [[ICDelegationServiceSecuritySettings alloc] _init];
+    _init[1] = mode;
+    (*(completionCopy + 2))(completionCopy, _init, 0);
   }
 }
 
@@ -75,16 +75,16 @@ uint64_t __102__ICDelegationServiceSecuritySettings_getDeviceSenderSettingsForRe
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (void)getDeviceReceiverSettingsWithCompletion:(id)a3
++ (void)getDeviceReceiverSettingsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (getDeviceReceiverSettingsWithCompletion__sOnceToken != -1)
   {
     dispatch_once(&getDeviceReceiverSettingsWithCompletion__sOnceToken, &__block_literal_global_31933);
   }
 
-  v5 = v3;
-  v4 = v3;
+  v5 = completionCopy;
+  v4 = completionCopy;
   MRMediaRemoteGetReceiverAirPlaySecuritySettings();
 }
 

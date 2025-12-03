@@ -1,12 +1,12 @@
 @interface CPLRejectedRecords
-- (BOOL)isEqual:(id)a3;
-- (BOOL)rejectsTheSameRecordsAs:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)rejectsTheSameRecordsAs:(id)as;
 - (CPLRejectedRecords)init;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (id)rejectedDescriptions;
-- (void)enumerateRecordsAndReasonsUsingBlock:(id)a3;
-- (void)removeRejectedRecordsWithScopedIdentifiers:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)enumerateRecordsAndReasonsUsingBlock:(id)block;
+- (void)removeRejectedRecordsWithScopedIdentifiers:(id)identifiers;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation CPLRejectedRecords
@@ -38,23 +38,23 @@ void __42__CPLRejectedRecords_rejectedDescriptions__block_invoke(uint64_t a1, vo
   [*(a1 + 32) addObject:v11];
 }
 
-- (BOOL)rejectsTheSameRecordsAs:(id)a3
+- (BOOL)rejectsTheSameRecordsAs:(id)as
 {
-  if (a3 == self)
+  if (as == self)
   {
     return 1;
   }
 
   else
   {
-    return [*(a3 + 1) isEqual:self->_records];
+    return [*(as + 1) isEqual:self->_records];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -62,9 +62,9 @@ void __42__CPLRejectedRecords_rejectedDescriptions__block_invoke(uint64_t a1, vo
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && [(NSMutableDictionary *)v4->_records isEqual:self->_records])
+    if (v5 == objc_opt_class() && [(NSMutableDictionary *)equalCopy->_records isEqual:self->_records])
     {
-      v6 = [(NSMutableDictionary *)v4->_reasons isEqual:self->_reasons];
+      v6 = [(NSMutableDictionary *)equalCopy->_reasons isEqual:self->_reasons];
     }
 
     else
@@ -76,17 +76,17 @@ void __42__CPLRejectedRecords_rejectedDescriptions__block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (void)enumerateRecordsAndReasonsUsingBlock:(id)a3
+- (void)enumerateRecordsAndReasonsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   records = self->_records;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CPLRejectedRecords_enumerateRecordsAndReasonsUsingBlock___block_invoke;
   v7[3] = &unk_1E861FD78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)records enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -98,38 +98,38 @@ void __59__CPLRejectedRecords_enumerateRecordsAndReasonsUsingBlock___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeRejectedRecordsWithScopedIdentifiers:(id)a3
+- (void)removeRejectedRecordsWithScopedIdentifiers:(id)identifiers
 {
   records = self->_records;
-  v5 = a3;
-  [(NSMutableDictionary *)records removeObjectsForKeys:v5];
-  [(NSMutableDictionary *)self->_reasons removeObjectsForKeys:v5];
+  identifiersCopy = identifiers;
+  [(NSMutableDictionary *)records removeObjectsForKeys:identifiersCopy];
+  [(NSMutableDictionary *)self->_reasons removeObjectsForKeys:identifiersCopy];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 scopedIdentifier];
+  objectCopy = object;
+  subscriptCopy = subscript;
+  scopedIdentifier = [subscriptCopy scopedIdentifier];
   records = self->_records;
-  if (v9)
+  if (objectCopy)
   {
-    [(NSMutableDictionary *)records setObject:v6 forKeyedSubscript:v7];
-    [(NSMutableDictionary *)self->_reasons setObject:v9 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)records setObject:subscriptCopy forKeyedSubscript:scopedIdentifier];
+    [(NSMutableDictionary *)self->_reasons setObject:objectCopy forKeyedSubscript:scopedIdentifier];
   }
 
   else
   {
-    [(NSMutableDictionary *)records removeObjectForKey:v7];
-    [(NSMutableDictionary *)self->_reasons removeObjectForKey:v7];
+    [(NSMutableDictionary *)records removeObjectForKey:scopedIdentifier];
+    [(NSMutableDictionary *)self->_reasons removeObjectForKey:scopedIdentifier];
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   reasons = self->_reasons;
-  v4 = [a3 scopedIdentifier];
-  v5 = [(NSMutableDictionary *)reasons objectForKeyedSubscript:v4];
+  scopedIdentifier = [subscript scopedIdentifier];
+  v5 = [(NSMutableDictionary *)reasons objectForKeyedSubscript:scopedIdentifier];
 
   return v5;
 }

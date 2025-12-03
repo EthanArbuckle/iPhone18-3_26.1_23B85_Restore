@@ -1,23 +1,23 @@
 @interface CRKConcreteNetworkInterface
-- (CRKConcreteNetworkInterface)initWithUnderlyingInterface:(id)a3;
+- (CRKConcreteNetworkInterface)initWithUnderlyingInterface:(id)interface;
 - (CRKNetworkEndpoint)ipv4Endpoint;
 - (CRKNetworkEndpoint)ipv6Endpoint;
 - (NSString)name;
-- (id)makeLocalEndpointForRemoteEndpointWithHost:(id)a3 port:(id)a4;
+- (id)makeLocalEndpointForRemoteEndpointWithHost:(id)host port:(id)port;
 @end
 
 @implementation CRKConcreteNetworkInterface
 
-- (CRKConcreteNetworkInterface)initWithUnderlyingInterface:(id)a3
+- (CRKConcreteNetworkInterface)initWithUnderlyingInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v9.receiver = self;
   v9.super_class = CRKConcreteNetworkInterface;
   v6 = [(CRKConcreteNetworkInterface *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingInterface, a3);
+    objc_storeStrong(&v6->_underlyingInterface, interface);
   }
 
   return v7;
@@ -83,17 +83,17 @@ uint64_t __35__CRKConcreteNetworkInterface_name__block_invoke(uint64_t a1)
   return ipv6Endpoint;
 }
 
-- (id)makeLocalEndpointForRemoteEndpointWithHost:(id)a3 port:(id)a4
+- (id)makeLocalEndpointForRemoteEndpointWithHost:(id)host port:(id)port
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a3 UTF8String];
-  v10 = [v8 UTF8String];
+  hostCopy = host;
+  portCopy = port;
+  uTF8String = [host UTF8String];
+  uTF8String2 = [portCopy UTF8String];
 
-  host = nw_endpoint_create_host(v9, v10);
+  host = nw_endpoint_create_host(uTF8String, uTF8String2);
   if (host)
   {
-    v12 = [(CRKConcreteNetworkInterface *)self underlyingInterface];
+    underlyingInterface = [(CRKConcreteNetworkInterface *)self underlyingInterface];
     v13 = nw_interface_copy_local_address_for_remote_address();
 
     if (v13)

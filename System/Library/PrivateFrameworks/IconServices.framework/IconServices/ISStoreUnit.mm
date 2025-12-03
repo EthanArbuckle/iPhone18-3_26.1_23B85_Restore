@@ -1,24 +1,24 @@
 @interface ISStoreUnit
-+ (id)storeUnitWithData:(id)a3;
-+ (id)storeUnitWithStoreURL:(id)a3 UUID:(id)a4;
++ (id)storeUnitWithData:(id)data;
++ (id)storeUnitWithStoreURL:(id)l UUID:(id)d;
 - (BOOL)isValid;
-- (ISStoreUnit)initWithData:(id)a3 UUID:(id)a4;
-- (void)remapWithStoreURL:(id)a3;
+- (ISStoreUnit)initWithData:(id)data UUID:(id)d;
+- (void)remapWithStoreURL:(id)l;
 @end
 
 @implementation ISStoreUnit
 
-+ (id)storeUnitWithStoreURL:(id)a3 UUID:(id)a4
++ (id)storeUnitWithStoreURL:(id)l UUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 UUIDString];
-  v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+  dCopy = d;
+  lCopy = l;
+  uUIDString = [dCopy UUIDString];
+  v8 = [lCopy URLByAppendingPathComponent:uUIDString isDirectory:0];
 
   v9 = [v8 URLByAppendingPathExtension:@"isdata"];
-  v10 = [v9 path];
+  path = [v9 path];
 
-  v11 = open([v10 UTF8String], 0, 256);
+  v11 = open([path UTF8String], 0, 256);
   if (v11 == -1)
   {
     v15 = _ISDefaultLog();
@@ -54,17 +54,17 @@
     {
       v17 = objc_alloc(MEMORY[0x1E695DEF0]);
       v18 = [v17 initWithBytesNoCopy:v14 length:v13 deallocator:*MEMORY[0x1E696A268]];
-      v16 = [[ISStoreUnit alloc] initWithData:v18 UUID:v5];
+      v16 = [[ISStoreUnit alloc] initWithData:v18 UUID:dCopy];
     }
   }
 
   return v16;
 }
 
-+ (id)storeUnitWithData:(id)a3
++ (id)storeUnitWithData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if (!v4)
   {
     v9 = _ISDefaultLog();
@@ -104,8 +104,8 @@ LABEL_8:
 
   v15 = objc_alloc(MEMORY[0x1E695DEF0]);
   v10 = [v15 initWithBytesNoCopy:v8 length:v5 deallocator:*MEMORY[0x1E696A268]];
-  v16 = [v10 bytes];
-  v17 = [v3 bytes];
+  bytes = [v10 bytes];
+  bytes2 = [dataCopy bytes];
   v18 = [v10 length];
   if (v5 >= v18)
   {
@@ -117,13 +117,13 @@ LABEL_8:
     v19 = v5;
   }
 
-  memcpy(v16, v17, v19);
+  memcpy(bytes, bytes2, v19);
   *&v8[v6 - 8] = v5;
   v20 = [MEMORY[0x1E696AFB0] _IF_UUIDWithBytes:v8 size:v5];
   v21 = MEMORY[0x1E696AEC0];
   v22 = +[ISDefaults sharedInstance];
-  v23 = [v22 cacheSaltString];
-  v24 = [v21 stringWithFormat:@"%@-%@", v20, v23];
+  cacheSaltString = [v22 cacheSaltString];
+  v24 = [v21 stringWithFormat:@"%@-%@", v20, cacheSaltString];
 
   v11 = [MEMORY[0x1E696AFB0] _IF_UUIDWithString:v24];
 
@@ -139,18 +139,18 @@ LABEL_10:
   return v12;
 }
 
-- (ISStoreUnit)initWithData:(id)a3 UUID:(id)a4
+- (ISStoreUnit)initWithData:(id)data UUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = ISStoreUnit;
   v9 = [(ISStoreUnit *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_UUID, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_UUID, d);
   }
 
   return v10;
@@ -167,14 +167,14 @@ LABEL_10:
   return v3;
 }
 
-- (void)remapWithStoreURL:(id)a3
+- (void)remapWithStoreURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(ISStoreUnit *)self isValid])
   {
-    v5 = [v4 path];
-    v6 = [(NSUUID *)self->_UUID UUIDString];
-    v7 = [v5 stringByAppendingPathComponent:v6];
+    path = [lCopy path];
+    uUIDString = [(NSUUID *)self->_UUID UUIDString];
+    v7 = [path stringByAppendingPathComponent:uUIDString];
     v8 = [v7 stringByAppendingPathExtension:@"isdata"];
 
     v9 = open([v8 UTF8String], 0, 256);
@@ -190,11 +190,11 @@ LABEL_10:
     else
     {
       v10 = v9;
-      v11 = [(NSData *)self->_data bytes];
+      bytes = [(NSData *)self->_data bytes];
       v12 = lseek(v10, 0, 2);
       if (v12 && (v13 = v12, v12 == [(NSData *)self->_data length]))
       {
-        mmap(v11, v13, 1, 17, v10, 0);
+        mmap(bytes, v13, 1, 17, v10, 0);
       }
 
       else

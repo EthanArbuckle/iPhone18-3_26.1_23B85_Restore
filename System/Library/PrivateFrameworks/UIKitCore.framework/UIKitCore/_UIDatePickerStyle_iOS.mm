@@ -1,11 +1,11 @@
 @interface _UIDatePickerStyle_iOS
 - (CGSize)compactLabelBackgroundPadding;
-- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)a3;
+- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)mode;
 - (id)compactLabelBackgroundButtonConfiguration;
-- (id)compactLabelBackgroundColorForEnabledState:(BOOL)a3;
-- (id)compactLabelTextColorForEditingState:(BOOL)a3;
+- (id)compactLabelBackgroundColorForEnabledState:(BOOL)state;
+- (id)compactLabelTextColorForEditingState:(BOOL)state;
 - (id)createOverlayBackgroundView;
-- (void)addSubview:(id)a3 toOverlayBackgroundView:(id)a4;
+- (void)addSubview:(id)subview toOverlayBackgroundView:(id)view;
 @end
 
 @implementation _UIDatePickerStyle_iOS
@@ -17,39 +17,39 @@
   v5 = [(UIVisualEffectView *)v3 initWithEffect:v4];
 
   [(UIView *)v5 setAutoresizingMask:18];
-  v6 = [(UIVisualEffectView *)v5 contentView];
-  [v6 setClipsToBounds:1];
+  contentView = [(UIVisualEffectView *)v5 contentView];
+  [contentView setClipsToBounds:1];
 
   [(_UIDatePickerStyle_iOS *)self overlayPlatterCornerRadius];
   [(UIVisualEffectView *)v5 _setContinuousCornerRadius:?];
   [(_UIDatePickerStyle_iOS *)self overlayPlatterCornerRadius];
   v8 = v7;
-  v9 = [(UIView *)v5 layer];
-  [v9 setCornerRadius:v8];
+  layer = [(UIView *)v5 layer];
+  [layer setCornerRadius:v8];
 
   return v5;
 }
 
-- (void)addSubview:(id)a3 toOverlayBackgroundView:(id)a4
+- (void)addSubview:(id)subview toOverlayBackgroundView:(id)view
 {
-  v5 = a3;
-  v6 = [a4 contentView];
-  [v6 addSubview:v5];
+  subviewCopy = subview;
+  contentView = [view contentView];
+  [contentView addSubview:subviewCopy];
 }
 
-- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)a3
+- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)mode
 {
   v3 = 172.0;
   v4 = 218.0;
   v5 = 0.0;
   v6 = 320.0;
-  if (a3 == 3)
+  if (mode == 3)
   {
     v6 = 218.0;
     v5 = 172.0;
   }
 
-  if (a3)
+  if (mode)
   {
     v4 = v6;
     v3 = v5;
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (id)compactLabelTextColorForEditingState:(BOOL)a3
+- (id)compactLabelTextColorForEditingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     +[UIColor tintColor];
   }
@@ -85,9 +85,9 @@
   return v3;
 }
 
-- (id)compactLabelBackgroundColorForEnabledState:(BOOL)a3
+- (id)compactLabelBackgroundColorForEnabledState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     +[UIColor tertiarySystemFillColor];
   }
@@ -107,12 +107,12 @@
   [v3 setCornerStyle:-1];
   [(_UIDatePickerStyle_iOS *)self compactLabelCornerRadius];
   v5 = v4;
-  v6 = [v3 background];
-  [v6 setCornerRadius:v5];
+  background = [v3 background];
+  [background setCornerRadius:v5];
 
   v7 = +[UIColor tertiarySystemFillColor];
-  v8 = [v3 background];
-  [v8 setBackgroundColor:v7];
+  background2 = [v3 background];
+  [background2 setBackgroundColor:v7];
 
   return v3;
 }

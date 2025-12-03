@@ -1,20 +1,20 @@
 @interface FTMessageDelivery
-+ (id)_errorForTDMessageDeliveryStatus:(int64_t)a3 userInfo:(id)a4;
++ (id)_errorForTDMessageDeliveryStatus:(int64_t)status userInfo:(id)info;
 + (id)alloc;
 + (id)createAPSConnection;
 - (BOOL)bagDisablesVMTraffic;
-- (BOOL)isTrafficDisabledOnVMForMessage:(id)a3;
-- (FTMessageDelivery)initWithAPSConnection:(id)a3;
+- (BOOL)isTrafficDisabledOnVMForMessage:(id)message;
+- (FTMessageDelivery)initWithAPSConnection:(id)connection;
 - (void)_clearRetryTimer;
-- (void)_correctServerTimestampForDriftOnMessage:(id)a3 currentDate:(id)a4;
-- (void)_informDelegateAboutMessage:(id)a3 error:(id)a4 result:(id)a5 resultCode:(int64_t)a6 interface:(unint64_t)a7;
-- (void)_retryTimerHit:(id)a3;
-- (void)_setRetryTimer:(double)a3;
-- (void)_signMessage:(id)a3 useDataSignatures:(BOOL)a4 authKitHeadersPresent:(BOOL)a5 body:(id)a6 queryString:(id)a7 completion:(id)a8;
-- (void)addRequestObserver:(id)a3;
+- (void)_correctServerTimestampForDriftOnMessage:(id)message currentDate:(id)date;
+- (void)_informDelegateAboutMessage:(id)message error:(id)error result:(id)result resultCode:(int64_t)code interface:(unint64_t)interface;
+- (void)_retryTimerHit:(id)hit;
+- (void)_setRetryTimer:(double)timer;
+- (void)_signMessage:(id)message useDataSignatures:(BOOL)signatures authKitHeadersPresent:(BOOL)present body:(id)body queryString:(id)string completion:(id)completion;
+- (void)addRequestObserver:(id)observer;
 - (void)dealloc;
 - (void)networkStateChanged;
-- (void)signDataWithPushIdentity:(id)a3 serverTimestamp:(id)a4 withCompletion:(id)a5;
+- (void)signDataWithPushIdentity:(id)identity serverTimestamp:(id)timestamp withCompletion:(id)completion;
 @end
 
 @implementation FTMessageDelivery
@@ -30,7 +30,7 @@
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___FTMessageDelivery;
     return objc_msgSendSuper2(&v5, sel_alloc);
   }
@@ -53,7 +53,7 @@
     *buf = 134218498;
     v12 = v7;
     v13 = 1024;
-    v14 = [v7 messageSize];
+    messageSize = [v7 messageSize];
     v15 = 2112;
     v16 = v2;
     _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "Created APSConnection: %p  (Max size: %d  Environment: %@)", buf, 0x1Cu);
@@ -70,9 +70,9 @@
   return v7;
 }
 
-- (FTMessageDelivery)initWithAPSConnection:(id)a3
+- (FTMessageDelivery)initWithAPSConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = FTMessageDelivery;
   v5 = [(FTMessageDelivery *)&v18 init];
@@ -85,18 +85,18 @@
     v6->_queue = v7;
 
     [(FTMessageQueue *)v6->_queue setDelegate:v6];
-    if (v4)
+    if (connectionCopy)
     {
-      v9 = v4;
+      createAPSConnection = connectionCopy;
     }
 
     else
     {
-      v9 = [objc_opt_class() createAPSConnection];
+      createAPSConnection = [objc_opt_class() createAPSConnection];
     }
 
     connection = v6->_connection;
-    v6->_connection = v9;
+    v6->_connection = createAPSConnection;
 
     v11 = MEMORY[0x19A8B8550](@"IDSBAASigner", @"IDS");
     if (v11)
@@ -108,8 +108,8 @@
       v6->_baaSigner = v14;
     }
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v6 selector:sel_networkStateChanged name:*MEMORY[0x1E69A5FE8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_networkStateChanged name:*MEMORY[0x1E69A5FE8] object:0];
   }
 
   return v6;
@@ -117,8 +117,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 
   [(FTMessageDelivery *)self _clearRetryTimer];
   [(FTMessageQueue *)self->_queue setDelegate:0];
@@ -129,64 +129,64 @@
   [(FTMessageDelivery *)&v4 dealloc];
 }
 
-- (void)addRequestObserver:(id)a3
+- (void)addRequestObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerMap = self->_observerMap;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observerMap)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observerMap;
-    self->_observerMap = v6;
+    self->_observerMap = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observerMap = self->_observerMap;
   }
 
-  [(NSHashTable *)observerMap addObject:v4];
+  [(NSHashTable *)observerMap addObject:observerCopy];
 }
 
-+ (id)_errorForTDMessageDeliveryStatus:(int64_t)a3 userInfo:(id)a4
++ (id)_errorForTDMessageDeliveryStatus:(int64_t)status userInfo:(id)info
 {
-  v5 = a4;
-  if (a3)
+  infoCopy = info;
+  if (status)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       v6 = @"FTMessageDeliveryNoResultCodeError";
-      v7 = 1;
+      statusCopy = 1;
     }
 
     else
     {
       v6 = FTErrorDomain;
-      v7 = a3;
+      statusCopy = status;
     }
 
-    a3 = [MEMORY[0x1E696ABC0] errorWithDomain:v6 code:v7 userInfo:v5];
+    status = [MEMORY[0x1E696ABC0] errorWithDomain:v6 code:statusCopy userInfo:infoCopy];
   }
 
-  return a3;
+  return status;
 }
 
-- (void)_informDelegateAboutMessage:(id)a3 error:(id)a4 result:(id)a5 resultCode:(int64_t)a6 interface:(unint64_t)a7
+- (void)_informDelegateAboutMessage:(id)message error:(id)error result:(id)result resultCode:(int64_t)code interface:(unint64_t)interface
 {
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v27 = v14;
-  if (v13)
+  messageCopy = message;
+  errorCopy = error;
+  resultCopy = result;
+  v27 = resultCopy;
+  if (errorCopy)
   {
     v15 = MEMORY[0x1E696ABC0];
-    v16 = [v13 domain];
-    v26 = [v15 errorWithDomain:v16 code:objc_msgSend(v13 userInfo:{"code"), 0}];
+    domain = [errorCopy domain];
+    v26 = [v15 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), 0}];
   }
 
   else
   {
-    v26 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:a6 userInfo:v14];
+    v26 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:code userInfo:resultCopy];
   }
 
   v30 = 0u;
@@ -211,8 +211,8 @@
         v22 = *(*(&v28 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v23 = [v12 copy];
-          [v22 completedRequest:v23 resultCode:a6 interface:a7];
+          v23 = [messageCopy copy];
+          [v22 completedRequest:v23 resultCode:code interface:interface];
         }
       }
 
@@ -222,20 +222,20 @@
     while (v19);
   }
 
-  v24 = [v12 completionBlock];
-  [v12 stopEventTracingWithError:v26];
-  if (v24)
+  completionBlock = [messageCopy completionBlock];
+  [messageCopy stopEventTracingWithError:v26];
+  if (completionBlock)
   {
-    (v24)[2](v24, v12, v26, a6, v27);
+    (completionBlock)[2](completionBlock, messageCopy, v26, code, v27);
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_retryTimerHit:(id)a3
+- (void)_retryTimerHit:(id)hit
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hitCopy = hit;
   [(IMTimer *)self->_timer invalidate];
   timer = self->_timer;
   self->_timer = 0;
@@ -262,34 +262,34 @@
 
   if ([(FTMessageDelivery *)self logToRegistration])
   {
-    v7 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "...Should retry", buf, 2u);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "...Should retry", buf, 2u);
     }
   }
 
-  v8 = [(FTMessageQueue *)self->_queue currentMessage];
-  v9 = v8;
-  if (v8)
+  currentMessage = [(FTMessageQueue *)self->_queue currentMessage];
+  v9 = currentMessage;
+  if (currentMessage)
   {
-    v10 = [v8 retryCount];
-    v11 = [v10 integerValue];
+    retryCount = [currentMessage retryCount];
+    integerValue = [retryCount integerValue];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:v11 + 1];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
     [v9 setRetryCount:v12];
 
     v18 = 0;
-    LOBYTE(v10) = [(FTMessageDelivery *)self _sendMessageAsynchronously:v9 error:&v18];
-    v13 = v18;
-    if ((v10 & 1) == 0)
+    LOBYTE(retryCount) = [(FTMessageDelivery *)self _sendMessageAsynchronously:v9 error:&v18];
+    registration3 = v18;
+    if ((retryCount & 1) == 0)
     {
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v20 = v13;
+        v20 = registration3;
         _os_log_impl(&dword_195925000, v14, OS_LOG_TYPE_ERROR, "Failed retrying message: %@", buf, 0xCu);
       }
 
@@ -297,17 +297,17 @@
       {
         _IDSWarnV();
         _IDSLogV();
-        v17 = v13;
+        v17 = registration3;
         _IDSLogTransport();
       }
 
       if ([(FTMessageDelivery *)self logToRegistration])
       {
-        v15 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+        registration2 = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_195925000, v15, OS_LOG_TYPE_DEFAULT, "...Failed retrying", buf, 2u);
+          _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "...Failed retrying", buf, 2u);
         }
       }
     }
@@ -319,11 +319,11 @@ LABEL_25:
 
   if ([(FTMessageDelivery *)self logToRegistration])
   {
-    v13 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    registration3 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_195925000, v13, OS_LOG_TYPE_DEFAULT, "No message to retry -- returning", buf, 2u);
+      _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, "No message to retry -- returning", buf, 2u);
     }
 
     goto LABEL_25;
@@ -341,12 +341,12 @@ LABEL_26:
   self->_timer = 0;
 }
 
-- (void)_setRetryTimer:(double)a3
+- (void)_setRetryTimer:(double)timer
 {
   [(FTMessageDelivery *)self _clearRetryTimer];
   v5 = objc_alloc(MEMORY[0x1E69A6168]);
   v8 = im_primary_queue();
-  v6 = [v5 initWithTimeInterval:@"com.apple.imagent.http-delivery" name:1 shouldWake:self target:sel__retryTimerHit_ selector:0 userInfo:v8 queue:a3];
+  v6 = [v5 initWithTimeInterval:@"com.apple.imagent.http-delivery" name:1 shouldWake:self target:sel__retryTimerHit_ selector:0 userInfo:v8 queue:timer];
   timer = self->_timer;
   self->_timer = v6;
 }
@@ -369,42 +369,42 @@ LABEL_26:
   }
 }
 
-- (void)_correctServerTimestampForDriftOnMessage:(id)a3 currentDate:(id)a4
+- (void)_correctServerTimestampForDriftOnMessage:(id)message currentDate:(id)date
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 serverTimestamp];
-  v8 = v7;
-  if (v7)
+  messageCopy = message;
+  dateCopy = date;
+  serverTimestamp = [messageCopy serverTimestamp];
+  v8 = serverTimestamp;
+  if (serverTimestamp)
   {
-    v9 = v7;
+    ftMessageDeliveryServerTimestamp = serverTimestamp;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69A6180] ftMessageDeliveryServerTimestamp];
+    ftMessageDeliveryServerTimestamp = [MEMORY[0x1E69A6180] ftMessageDeliveryServerTimestamp];
   }
 
-  v10 = v9;
+  v10 = ftMessageDeliveryServerTimestamp;
 
-  v11 = [v5 serverTimestampReceivedDate];
-  v12 = v11;
-  if (v11)
+  serverTimestampReceivedDate = [messageCopy serverTimestampReceivedDate];
+  v12 = serverTimestampReceivedDate;
+  if (serverTimestampReceivedDate)
   {
-    v13 = v11;
+    ftMessageDeliveryServerTimestampReceivedDate = serverTimestampReceivedDate;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69A6180] ftMessageDeliveryServerTimestampReceivedDate];
+    ftMessageDeliveryServerTimestampReceivedDate = [MEMORY[0x1E69A6180] ftMessageDeliveryServerTimestampReceivedDate];
   }
 
-  v14 = v13;
+  v14 = ftMessageDeliveryServerTimestampReceivedDate;
 
   if (v10)
   {
-    [v6 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v16 = v15;
     [v14 doubleValue];
     v18 = v16 - v17;
@@ -415,13 +415,13 @@ LABEL_26:
       v21 = v20 / 1000.0;
       v22 = v18 + v20 / 1000.0;
       v23 = [MEMORY[0x1E696AD98] numberWithDouble:v22 * 1000.0];
-      [v5 setServerTimestamp:v23];
+      [messageCopy setServerTimestamp:v23];
 
       v24 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
-      [v5 setServerTimestampReceivedDate:v24];
+      [messageCopy setServerTimestampReceivedDate:v24];
 
-      v25 = [MEMORY[0x1E69A6138] nonce];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      nonce = [MEMORY[0x1E69A6138] nonce];
+      if (os_log_type_enabled(nonce, OS_LOG_TYPE_DEFAULT))
       {
         v26 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v19];
         v27 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v21];
@@ -434,7 +434,7 @@ LABEL_26:
         v35 = v27;
         v36 = 2112;
         v37 = v28;
-        _os_log_impl(&dword_195925000, v25, OS_LOG_TYPE_DEFAULT, "Timestamp received %@, delta %f servertimestamp %@ newServerTimestamp %@", &v30, 0x2Au);
+        _os_log_impl(&dword_195925000, nonce, OS_LOG_TYPE_DEFAULT, "Timestamp received %@, delta %f servertimestamp %@ newServerTimestamp %@", &v30, 0x2Au);
       }
     }
   }
@@ -442,17 +442,17 @@ LABEL_26:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_signMessage:(id)a3 useDataSignatures:(BOOL)a4 authKitHeadersPresent:(BOOL)a5 body:(id)a6 queryString:(id)a7 completion:(id)a8
+- (void)_signMessage:(id)message useDataSignatures:(BOOL)signatures authKitHeadersPresent:(BOOL)present body:(id)body queryString:(id)string completion:(id)completion
 {
-  v49 = a5;
+  presentCopy = present;
   v78 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  if ([v13 wantsBodySignature])
+  messageCopy = message;
+  bodyCopy = body;
+  stringCopy = string;
+  completionCopy = completion;
+  if ([messageCopy wantsBodySignature])
   {
-    v17 = v14;
+    v17 = bodyCopy;
   }
 
   else
@@ -461,9 +461,9 @@ LABEL_26:
   }
 
   v18 = v17;
-  if ([v13 wantsBAASigning])
+  if ([messageCopy wantsBAASigning])
   {
-    v19 = v14;
+    v19 = bodyCopy;
   }
 
   else
@@ -473,43 +473,43 @@ LABEL_26:
 
   v51 = v19;
   v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v21 = [v13 bagKey];
-  v22 = [MEMORY[0x1E695DF00] date];
-  [(FTMessageDelivery *)self _correctServerTimestampForDriftOnMessage:v13 currentDate:v22];
+  bagKey = [messageCopy bagKey];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FTMessageDelivery *)self _correctServerTimestampForDriftOnMessage:messageCopy currentDate:date];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19592F8D0;
   block[3] = &unk_1E7434F08;
   block[4] = self;
-  v23 = v13;
+  v23 = messageCopy;
   v67 = v23;
-  v73 = a4;
-  v24 = v21;
+  signaturesCopy = signatures;
+  v24 = bagKey;
   v68 = v24;
-  v52 = v15;
+  v52 = stringCopy;
   v69 = v52;
   v25 = v18;
   v70 = v25;
   v26 = v20;
   v71 = v26;
-  v50 = v16;
+  v50 = completionCopy;
   v72 = v50;
   v27 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  v28 = [v23 signingSession];
-  if (v28)
+  signingSession = [v23 signingSession];
+  if (signingSession)
   {
-    v29 = v28;
-    v30 = [v23 signingSession];
-    v31 = [v30 isInitializedForSigning];
+    v29 = signingSession;
+    signingSession2 = [v23 signingSession];
+    isInitializedForSigning = [signingSession2 isInitializedForSigning];
 
-    if (v31)
+    if (isInitializedForSigning)
     {
-      v32 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         v33 = @"NO";
-        if (v49)
+        if (presentCopy)
         {
           v33 = @"YES";
         }
@@ -518,29 +518,29 @@ LABEL_26:
         v75 = v23;
         v76 = 2112;
         v77 = v33;
-        _os_log_impl(&dword_195925000, v32, OS_LOG_TYPE_DEFAULT, "Validation session signing for message %@, authKitBAAHeadersPresent? %@", buf, 0x16u);
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Validation session signing for message %@, authKitBAAHeadersPresent? %@", buf, 0x16u);
       }
 
       if ([v23 wantsBodySigningOnly])
       {
-        v34 = [v23 serverTimestamp];
+        serverTimestamp = [v23 serverTimestamp];
         v65 = 0;
-        _FTGenerateDigestForSigningFromPayload(2, v25, v34, 0, &v65);
+        _FTGenerateDigestForSigningFromPayload(2, v25, serverTimestamp, 0, &v65);
         v35 = v65;
       }
 
       else
       {
-        v34 = [v23 pushToken];
-        v41 = [v23 serverTimestamp];
+        serverTimestamp = [v23 pushToken];
+        serverTimestamp2 = [v23 serverTimestamp];
         v64 = 0;
-        _FTGenerateDigestForSigningFromComponents(2, v24, v52, v34, v25, v41, 0, &v64);
+        _FTGenerateDigestForSigningFromComponents(2, v24, v52, serverTimestamp, v25, serverTimestamp2, 0, &v64);
         v35 = v64;
       }
 
       v42 = objc_alloc(MEMORY[0x1E69A51D8]);
-      v43 = [v23 serverTimestamp];
-      v44 = [v42 initWithSHA256Digest:v35 requestBody:v25 serverTimestamp:v43 includeIcloudBAA:!v49];
+      serverTimestamp3 = [v23 serverTimestamp];
+      v44 = [v42 initWithSHA256Digest:v35 requestBody:v25 serverTimestamp:serverTimestamp3 includeIcloudBAA:!presentCopy];
 
       if (qword_1EAED7788 != -1)
       {
@@ -549,7 +549,7 @@ LABEL_26:
 
       v45 = [objc_alloc(MEMORY[0x1E69A5260]) initWithName:@"Validation Session Signing" uniqueIdentifier:0];
       [v23 addSubEventTracingOperation:v45];
-      v46 = [v23 signingSession];
+      signingSession3 = [v23 signingSession];
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
       v59[2] = sub_1959304F4;
@@ -559,13 +559,13 @@ LABEL_26:
       v62 = v45;
       v63 = v27;
       v47 = v45;
-      [v46 headersBySigningData:v44 completion:v59];
+      [signingSession3 headersBySigningData:v44 completion:v59];
 
       goto LABEL_26;
     }
   }
 
-  if (![v23 wantsBAASigning] || !_os_feature_enabled_impl() || v49)
+  if (![v23 wantsBAASigning] || !_os_feature_enabled_impl() || presentCopy)
   {
     v27[2](v27);
 LABEL_26:
@@ -573,40 +573,40 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v36 = [MEMORY[0x1E69A6138] registration];
+  registration2 = [MEMORY[0x1E69A6138] registration];
   v37 = v51;
-  if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v75 = v23;
     v76 = 2112;
     v77 = @"NO";
-    _os_log_impl(&dword_195925000, v36, OS_LOG_TYPE_DEFAULT, "BAA signer signing for message %@, authKitBAAHeadersPresent? %@", buf, 0x16u);
+    _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "BAA signer signing for message %@, authKitBAAHeadersPresent? %@", buf, 0x16u);
   }
 
-  v38 = [(FTMessageDelivery *)self baaSigner];
-  v39 = [v38 queue];
+  baaSigner = [(FTMessageDelivery *)self baaSigner];
+  queue = [baaSigner queue];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = sub_19593078C;
   v53[3] = &unk_1E7434FC8;
   v54 = v23;
-  v55 = self;
+  selfCopy = self;
   v56 = v51;
   v57 = v26;
   v58 = v27;
   v40 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v53);
-  dispatch_async(v39, v40);
+  dispatch_async(queue, v40);
 
 LABEL_27:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)signDataWithPushIdentity:(id)a3 serverTimestamp:(id)a4 withCompletion:(id)a5
+- (void)signDataWithPushIdentity:(id)identity serverTimestamp:(id)timestamp withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  timestampCopy = timestamp;
+  completionCopy = completion;
   if (qword_1EAED77A0 != -1)
   {
     sub_195962848();
@@ -614,24 +614,24 @@ LABEL_27:
 
   if (qword_1EAED7798)
   {
-    v11 = objc_alloc_init(qword_1EAED7798);
-    [v11 setData:v8];
-    [v11 setTime:v9];
+    registration = objc_alloc_init(qword_1EAED7798);
+    [registration setData:identityCopy];
+    [registration setTime:timestampCopy];
     connection = self->_connection;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_195930BBC;
     v13[3] = &unk_1E7435018;
-    v14 = v10;
-    [(FTMessageDeliveryAPSConnection *)connection signDataWithDeviceIdentity:v11 withCompletion:v13];
+    v14 = completionCopy;
+    [(FTMessageDeliveryAPSConnection *)connection signDataWithDeviceIdentity:registration withCompletion:v13];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
     {
-      sub_19596285C(v11);
+      sub_19596285C(registration);
     }
   }
 }
@@ -645,10 +645,10 @@ LABEL_27:
   return v4;
 }
 
-- (BOOL)isTrafficDisabledOnVMForMessage:(id)a3
+- (BOOL)isTrafficDisabledOnVMForMessage:(id)message
 {
-  v4 = a3;
-  v5 = _os_feature_enabled_impl() && [v4 isIDSMessage] && IDSIsVirtualMachine() && -[FTMessageDelivery bagDisablesVMTraffic](self, "bagDisablesVMTraffic");
+  messageCopy = message;
+  v5 = _os_feature_enabled_impl() && [messageCopy isIDSMessage] && IDSIsVirtualMachine() && -[FTMessageDelivery bagDisablesVMTraffic](self, "bagDisablesVMTraffic");
 
   return v5;
 }

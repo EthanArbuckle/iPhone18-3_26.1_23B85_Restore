@@ -1,31 +1,31 @@
 @interface SXAdAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXAdAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F53EBCA8 factory:&__block_literal_global_70];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F53EBCA8 factory:&__block_literal_global_70];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F5424910 factory:&__block_literal_global_56];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F5424910 factory:&__block_literal_global_56];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_1F53EC3F8 factory:&__block_literal_global_62_0];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerProtocol:&unk_1F53EC3F8 factory:&__block_literal_global_62_0];
 
-  v10 = [v3 callback];
+  callback = [registryCopy callback];
   v11 = TFCallbackScopeAny();
-  [v10 whenResolvingProtocol:&unk_1F53E7178 scope:v11 callbackBlock:&__block_literal_global_76_1];
+  [callback whenResolvingProtocol:&unk_1F53E7178 scope:v11 callbackBlock:&__block_literal_global_76_1];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_80];
+  publicContainer4 = [registryCopy publicContainer];
+  v13 = [publicContainer4 registerClass:objc_opt_class() factory:&__block_literal_global_80];
 
-  v16 = [v3 privateContainer];
+  privateContainer = [registryCopy privateContainer];
 
-  v14 = [v16 registerProtocol:&unk_1F54053A0 name:@"ad-insertion" factory:&__block_literal_global_96];
+  v14 = [privateContainer registerProtocol:&unk_1F54053A0 name:@"ad-insertion" factory:&__block_literal_global_96];
   v15 = [v14 withConfiguration:&__block_literal_global_100_0];
 }
 

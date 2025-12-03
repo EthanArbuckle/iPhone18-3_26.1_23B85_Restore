@@ -1,44 +1,44 @@
 @interface HKAllergyReaction
-+ (id)allergyReactionWithManifestationCodings:(id)a3 onsetDate:(id)a4 severityCoding:(id)a5;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)allergyReactionWithManifestationCodings:(id)codings onsetDate:(id)date severityCoding:(id)coding;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKAllergyReaction)init;
-- (HKAllergyReaction)initWithCoder:(id)a3;
-- (HKAllergyReaction)initWithManifestationCodings:(id)a3 onsetDate:(id)a4 severityCoding:(id)a5;
+- (HKAllergyReaction)initWithCoder:(id)coder;
+- (HKAllergyReaction)initWithManifestationCodings:(id)codings onsetDate:(id)date severityCoding:(id)coding;
 - (HKConcept)severity;
 - (HKMedicalCodingCollection)severityCodingCollection;
 - (NSArray)manifestationCodingCollections;
 - (NSArray)manifestations;
 - (NSString)description;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAllergyReaction
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"manifestations";
   v9[1] = @"severity";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [v3 arrayWithObjects:v9 count:2];
-  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:v4];
+  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:prefixCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-+ (id)allergyReactionWithManifestationCodings:(id)a3 onsetDate:(id)a4 severityCoding:(id)a5
++ (id)allergyReactionWithManifestationCodings:(id)codings onsetDate:(id)date severityCoding:(id)coding
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithManifestationCodings:v10 onsetDate:v9 severityCoding:v8];
+  codingCopy = coding;
+  dateCopy = date;
+  codingsCopy = codings;
+  v11 = [[self alloc] initWithManifestationCodings:codingsCopy onsetDate:dateCopy severityCoding:codingCopy];
 
   return v11;
 }
@@ -53,17 +53,17 @@
   return 0;
 }
 
-- (HKAllergyReaction)initWithManifestationCodings:(id)a3 onsetDate:(id)a4 severityCoding:(id)a5
+- (HKAllergyReaction)initWithManifestationCodings:(id)codings onsetDate:(id)date severityCoding:(id)coding
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  codingsCopy = codings;
+  dateCopy = date;
+  codingCopy = coding;
+  if (!codingsCopy)
   {
     [HKAllergyReaction initWithManifestationCodings:a2 onsetDate:self severityCoding:?];
   }
 
-  if (![v9 count])
+  if (![codingsCopy count])
   {
     [HKAllergyReaction initWithManifestationCodings:a2 onsetDate:self severityCoding:?];
   }
@@ -73,27 +73,27 @@
   v12 = [(HKAllergyReaction *)&v26 init];
   if (v12)
   {
-    v13 = [v9 hk_map:&__block_literal_global_110];
+    v13 = [codingsCopy hk_map:&__block_literal_global_110];
     manifestationCodings = v12->_manifestationCodings;
     v12->_manifestationCodings = v13;
 
-    v15 = [v10 copy];
+    v15 = [dateCopy copy];
     onsetDate = v12->_onsetDate;
     v12->_onsetDate = v15;
 
-    v17 = [v11 copy];
+    v17 = [codingCopy copy];
     severityCoding = v12->_severityCoding;
     v12->_severityCoding = v17;
 
-    v19 = [(HKAllergyReaction *)v12 manifestationCodingCollections];
-    v20 = [v19 hk_map:&__block_literal_global_31];
+    manifestationCodingCollections = [(HKAllergyReaction *)v12 manifestationCodingCollections];
+    v20 = [manifestationCodingCollections hk_map:&__block_literal_global_31];
     manifestations = v12->_manifestations;
     v12->_manifestations = v20;
 
     if (v12->_severityCoding)
     {
-      v22 = [(HKAllergyReaction *)v12 severityCodingCollection];
-      v23 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v22];
+      severityCodingCollection = [(HKAllergyReaction *)v12 severityCodingCollection];
+      v23 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:severityCodingCollection];
       severity = v12->_severity;
       v12->_severity = v23;
     }
@@ -114,18 +114,18 @@ id __75__HKAllergyReaction_initWithManifestationCodings_onsetDate_severityCoding
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKAllergyReaction *)self manifestationCodings];
-  v7 = [(HKAllergyReaction *)self manifestations];
-  v8 = [(HKAllergyReaction *)self severityCoding];
-  v9 = [(HKAllergyReaction *)self severity];
-  v10 = [v3 stringWithFormat:@"<%@:%p manifestationCodings = %@, manifestations = %@, severityCoding = %@, severity = %@>", v5, self, v6, v7, v8, v9, 0];
+  manifestationCodings = [(HKAllergyReaction *)self manifestationCodings];
+  manifestations = [(HKAllergyReaction *)self manifestations];
+  severityCoding = [(HKAllergyReaction *)self severityCoding];
+  severity = [(HKAllergyReaction *)self severity];
+  v10 = [v3 stringWithFormat:@"<%@:%p manifestationCodings = %@, manifestations = %@, severityCoding = %@, severity = %@>", v5, self, manifestationCodings, manifestations, severityCoding, severity, 0];
 
   return v10;
 }
 
-- (HKAllergyReaction)initWithCoder:(id)a3
+- (HKAllergyReaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = HKAllergyReaction;
   v5 = [(HKAllergyReaction *)&v22 init];
@@ -134,7 +134,7 @@ id __75__HKAllergyReaction_initWithManifestationCodings_onsetDate_severityCoding
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ManifestationCodings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ManifestationCodings"];
     manifestationCodings = v5->_manifestationCodings;
     v5->_manifestationCodings = v9;
 
@@ -144,20 +144,20 @@ id __75__HKAllergyReaction_initWithManifestationCodings_onsetDate_severityCoding
       goto LABEL_6;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OnsetDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OnsetDate"];
     onsetDate = v5->_onsetDate;
     v5->_onsetDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SeverityCoding"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SeverityCoding"];
     severityCoding = v5->_severityCoding;
     v5->_severityCoding = v13;
 
     v15 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"Manifestations"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"Manifestations"];
     manifestations = v5->_manifestations;
     v5->_manifestations = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Severity"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Severity"];
     severity = v5->_severity;
     v5->_severity = v18;
   }
@@ -168,33 +168,33 @@ LABEL_6:
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKAllergyReaction *)self manifestationCodings];
-  [v4 encodeObject:v5 forKey:@"ManifestationCodings"];
+  coderCopy = coder;
+  manifestationCodings = [(HKAllergyReaction *)self manifestationCodings];
+  [coderCopy encodeObject:manifestationCodings forKey:@"ManifestationCodings"];
 
-  v6 = [(HKAllergyReaction *)self onsetDate];
-  [v4 encodeObject:v6 forKey:@"OnsetDate"];
+  onsetDate = [(HKAllergyReaction *)self onsetDate];
+  [coderCopy encodeObject:onsetDate forKey:@"OnsetDate"];
 
-  v7 = [(HKAllergyReaction *)self severityCoding];
-  [v4 encodeObject:v7 forKey:@"SeverityCoding"];
+  severityCoding = [(HKAllergyReaction *)self severityCoding];
+  [coderCopy encodeObject:severityCoding forKey:@"SeverityCoding"];
 
-  v8 = [(HKAllergyReaction *)self manifestations];
-  [v4 encodeObject:v8 forKey:@"Manifestations"];
+  manifestations = [(HKAllergyReaction *)self manifestations];
+  [coderCopy encodeObject:manifestations forKey:@"Manifestations"];
 
-  v9 = [(HKAllergyReaction *)self severity];
-  [v4 encodeObject:v9 forKey:@"Severity"];
+  severity = [(HKAllergyReaction *)self severity];
+  [coderCopy encodeObject:severity forKey:@"Severity"];
 }
 
 - (HKMedicalCodingCollection)severityCodingCollection
 {
-  v3 = [(HKAllergyReaction *)self severityCoding];
+  severityCoding = [(HKAllergyReaction *)self severityCoding];
 
-  if (v3)
+  if (severityCoding)
   {
-    v4 = [(HKAllergyReaction *)self severityCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    severityCoding2 = [(HKAllergyReaction *)self severityCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:severityCoding2];
   }
 
   else
@@ -207,8 +207,8 @@ LABEL_6:
 
 - (NSArray)manifestationCodingCollections
 {
-  v2 = [(HKAllergyReaction *)self manifestationCodings];
-  v3 = [v2 hk_map:&__block_literal_global_58];
+  manifestationCodings = [(HKAllergyReaction *)self manifestationCodings];
+  v3 = [manifestationCodings hk_map:&__block_literal_global_58];
 
   return v3;
 }
@@ -223,8 +223,8 @@ LABEL_6:
 
   else
   {
-    v4 = [(HKAllergyReaction *)self manifestationCodingCollections];
-    v3 = [v4 hk_map:&__block_literal_global_60_1];
+    manifestationCodingCollections = [(HKAllergyReaction *)self manifestationCodingCollections];
+    v3 = [manifestationCodingCollections hk_map:&__block_literal_global_60_1];
   }
 
   return v3;
@@ -242,8 +242,8 @@ LABEL_6:
 
     else
     {
-      v4 = [(HKAllergyReaction *)self severityCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      severityCodingCollection = [(HKAllergyReaction *)self severityCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:severityCodingCollection];
     }
   }
 
@@ -257,20 +257,20 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(HKAllergyReaction *)self manifestationCodings];
-  v4 = [v3 hash];
-  v5 = [(HKAllergyReaction *)self onsetDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HKAllergyReaction *)self severityCoding];
-  v8 = [v7 hash];
+  manifestationCodings = [(HKAllergyReaction *)self manifestationCodings];
+  v4 = [manifestationCodings hash];
+  onsetDate = [(HKAllergyReaction *)self onsetDate];
+  v6 = [onsetDate hash] ^ v4;
+  severityCoding = [(HKAllergyReaction *)self severityCoding];
+  v8 = [severityCoding hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -280,26 +280,26 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKAllergyReaction *)self manifestationCodings];
-      v7 = [(HKAllergyReaction *)v5 manifestationCodings];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      manifestationCodings = [(HKAllergyReaction *)self manifestationCodings];
+      manifestationCodings2 = [(HKAllergyReaction *)v5 manifestationCodings];
+      v8 = manifestationCodings2;
+      if (manifestationCodings == manifestationCodings2)
       {
       }
 
       else
       {
-        v9 = [(HKAllergyReaction *)v5 manifestationCodings];
-        if (!v9)
+        manifestationCodings3 = [(HKAllergyReaction *)v5 manifestationCodings];
+        if (!manifestationCodings3)
         {
           goto LABEL_29;
         }
 
-        v10 = v9;
-        v11 = [(HKAllergyReaction *)self manifestationCodings];
-        v12 = [(HKAllergyReaction *)v5 manifestationCodings];
-        v13 = [v11 isEqual:v12];
+        v10 = manifestationCodings3;
+        manifestationCodings4 = [(HKAllergyReaction *)self manifestationCodings];
+        manifestationCodings5 = [(HKAllergyReaction *)v5 manifestationCodings];
+        v13 = [manifestationCodings4 isEqual:manifestationCodings5];
 
         if (!v13)
         {
@@ -307,25 +307,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKAllergyReaction *)self onsetDate];
-      v15 = [(HKAllergyReaction *)v5 onsetDate];
-      v8 = v15;
-      if (v6 == v15)
+      manifestationCodings = [(HKAllergyReaction *)self onsetDate];
+      onsetDate = [(HKAllergyReaction *)v5 onsetDate];
+      v8 = onsetDate;
+      if (manifestationCodings == onsetDate)
       {
       }
 
       else
       {
-        v16 = [(HKAllergyReaction *)v5 onsetDate];
-        if (!v16)
+        onsetDate2 = [(HKAllergyReaction *)v5 onsetDate];
+        if (!onsetDate2)
         {
           goto LABEL_29;
         }
 
-        v17 = v16;
-        v18 = [(HKAllergyReaction *)self onsetDate];
-        v19 = [(HKAllergyReaction *)v5 onsetDate];
-        v20 = [v18 isEqual:v19];
+        v17 = onsetDate2;
+        onsetDate3 = [(HKAllergyReaction *)self onsetDate];
+        onsetDate4 = [(HKAllergyReaction *)v5 onsetDate];
+        v20 = [onsetDate3 isEqual:onsetDate4];
 
         if (!v20)
         {
@@ -333,25 +333,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKAllergyReaction *)self severityCoding];
-      v21 = [(HKAllergyReaction *)v5 severityCoding];
-      v8 = v21;
-      if (v6 == v21)
+      manifestationCodings = [(HKAllergyReaction *)self severityCoding];
+      severityCoding = [(HKAllergyReaction *)v5 severityCoding];
+      v8 = severityCoding;
+      if (manifestationCodings == severityCoding)
       {
       }
 
       else
       {
-        v22 = [(HKAllergyReaction *)v5 severityCoding];
-        if (!v22)
+        severityCoding2 = [(HKAllergyReaction *)v5 severityCoding];
+        if (!severityCoding2)
         {
           goto LABEL_29;
         }
 
-        v23 = v22;
-        v24 = [(HKAllergyReaction *)self severityCoding];
-        v25 = [(HKAllergyReaction *)v5 severityCoding];
-        v26 = [v24 isEqual:v25];
+        v23 = severityCoding2;
+        severityCoding3 = [(HKAllergyReaction *)self severityCoding];
+        severityCoding4 = [(HKAllergyReaction *)v5 severityCoding];
+        v26 = [severityCoding3 isEqual:severityCoding4];
 
         if (!v26)
         {
@@ -359,25 +359,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKAllergyReaction *)self manifestations];
-      v27 = [(HKAllergyReaction *)v5 manifestations];
-      v8 = v27;
-      if (v6 == v27)
+      manifestationCodings = [(HKAllergyReaction *)self manifestations];
+      manifestations = [(HKAllergyReaction *)v5 manifestations];
+      v8 = manifestations;
+      if (manifestationCodings == manifestations)
       {
       }
 
       else
       {
-        v28 = [(HKAllergyReaction *)v5 manifestations];
-        if (!v28)
+        manifestations2 = [(HKAllergyReaction *)v5 manifestations];
+        if (!manifestations2)
         {
           goto LABEL_29;
         }
 
-        v29 = v28;
-        v30 = [(HKAllergyReaction *)self manifestations];
-        v31 = [(HKAllergyReaction *)v5 manifestations];
-        v32 = [v30 isEqualToArray:v31];
+        v29 = manifestations2;
+        manifestations3 = [(HKAllergyReaction *)self manifestations];
+        manifestations4 = [(HKAllergyReaction *)v5 manifestations];
+        v32 = [manifestations3 isEqualToArray:manifestations4];
 
         if (!v32)
         {
@@ -385,10 +385,10 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKAllergyReaction *)self severity];
-      v33 = [(HKAllergyReaction *)v5 severity];
-      v8 = v33;
-      if (v6 == v33)
+      manifestationCodings = [(HKAllergyReaction *)self severity];
+      severity = [(HKAllergyReaction *)v5 severity];
+      v8 = severity;
+      if (manifestationCodings == severity)
       {
 
 LABEL_34:
@@ -396,13 +396,13 @@ LABEL_34:
         goto LABEL_31;
       }
 
-      v34 = [(HKAllergyReaction *)v5 severity];
-      if (v34)
+      severity2 = [(HKAllergyReaction *)v5 severity];
+      if (severity2)
       {
-        v35 = v34;
-        v36 = [(HKAllergyReaction *)self severity];
-        v37 = [(HKAllergyReaction *)v5 severity];
-        v38 = [v36 isEqual:v37];
+        v35 = severity2;
+        severity3 = [(HKAllergyReaction *)self severity];
+        severity4 = [(HKAllergyReaction *)v5 severity];
+        v38 = [severity3 isEqual:severity4];
 
         if (v38)
         {
@@ -429,25 +429,25 @@ LABEL_32:
   return v14;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"manifestations"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"manifestations"])
   {
-    v7 = [(HKAllergyReaction *)self manifestationCodingCollections];
-    v8 = [HKConceptIndexUtilities indexedCodingsForCodingCollections:v7 context:v6 error:a4];
+    manifestationCodingCollections = [(HKAllergyReaction *)self manifestationCodingCollections];
+    v8 = [HKConceptIndexUtilities indexedCodingsForCodingCollections:manifestationCodingCollections context:pathCopy error:error];
 LABEL_6:
 
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"severity"])
+  if ([pathCopy isEqualToString:@"severity"])
   {
     if (self->_severityCoding)
     {
-      v7 = [HKMedicalCodingCollection collectionWithCoding:?];
-      v9 = [HKIndexableObject indexableObjectWithObject:v7];
+      manifestationCodingCollections = [HKMedicalCodingCollection collectionWithCoding:?];
+      v9 = [HKIndexableObject indexableObjectWithObject:manifestationCodingCollections];
       v12[0] = v9;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
@@ -459,7 +459,7 @@ LABEL_6:
 
   else
   {
-    [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
     v8 = 0;
   }
 
@@ -470,17 +470,17 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqualToString:@"severity"])
+  conceptsCopy = concepts;
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"severity"])
   {
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], self->_severityCoding != 0, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], self->_severityCoding != 0, pathCopy, error))
     {
-      v10 = [v8 firstObject];
-      v11 = [v10 object];
-      v12 = [v11 copy];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      v12 = [object copy];
       severity = self->_severity;
       self->_severity = v12;
 
@@ -493,13 +493,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v9 isEqualToString:@"manifestations"])
+  if (![pathCopy isEqualToString:@"manifestations"])
   {
-    [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v9 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
     goto LABEL_9;
   }
 
-  v15 = [HKConceptIndexUtilities conceptsForIndexedConcepts:v8 expectedCount:[(NSArray *)self->_manifestationCodings count] context:v9 error:a5];
+  v15 = [HKConceptIndexUtilities conceptsForIndexedConcepts:conceptsCopy expectedCount:[(NSArray *)self->_manifestationCodings count] context:pathCopy error:error];
   v14 = v15 != 0;
   if (v15)
   {

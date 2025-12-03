@@ -1,23 +1,23 @@
 @interface AMSHandleDialogResultTask
 - (AMSDialogRequest)request;
-- (AMSHandleDialogResultTask)initWithResult:(id)a3 bag:(id)a4;
+- (AMSHandleDialogResultTask)initWithResult:(id)result bag:(id)bag;
 - (id)perform;
 @end
 
 @implementation AMSHandleDialogResultTask
 
-- (AMSHandleDialogResultTask)initWithResult:(id)a3 bag:(id)a4
+- (AMSHandleDialogResultTask)initWithResult:(id)result bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSHandleDialogResultTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_result, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_result, result);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;
@@ -25,10 +25,10 @@
 
 - (AMSDialogRequest)request
 {
-  v2 = [(AMSHandleDialogResultTask *)self result];
-  v3 = [v2 originalRequest];
+  result = [(AMSHandleDialogResultTask *)self result];
+  originalRequest = [result originalRequest];
 
-  return v3;
+  return originalRequest;
 }
 
 - (id)perform

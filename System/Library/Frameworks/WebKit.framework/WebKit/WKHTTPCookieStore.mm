@@ -1,32 +1,32 @@
 @interface WKHTTPCookieStore
 - (Ref<API::HTTPCookieStore,)_protectedCookieStore;
-- (uint64_t)deleteCookie:(WTF *)this completionHandler:(void *)a2;
-- (uint64_t)deleteCookie:(uint64_t)a1 completionHandler:;
+- (uint64_t)deleteCookie:(WTF *)this completionHandler:(void *)handler;
+- (uint64_t)deleteCookie:(uint64_t)cookie completionHandler:;
 - (uint64_t)getAllCookies:(WTF *)this;
-- (uint64_t)getAllCookies:(uint64_t)a1;
-- (uint64_t)getCookiePolicy:(const void *)a1;
-- (uint64_t)getCookiePolicy:(uint64_t)a1;
-- (uint64_t)setCookie:(WTF *)this completionHandler:(void *)a2;
-- (uint64_t)setCookie:(uint64_t)a1 completionHandler:;
-- (uint64_t)setCookiePolicy:(const void *)a1 completionHandler:;
-- (uint64_t)setCookiePolicy:(uint64_t)a1 completionHandler:;
-- (uint64_t)setCookies:(const void *)a1 completionHandler:;
-- (uint64_t)setCookies:(uint64_t)a1 completionHandler:;
-- (void)_flushCookiesToDiskWithCompletionHandler:(id)a3;
-- (void)_getCookiesForURL:(id)a3 completionHandler:(id)a4;
-- (void)_setCookieAcceptPolicy:(unint64_t)a3 completionHandler:(id)a4;
+- (uint64_t)getAllCookies:(uint64_t)cookies;
+- (uint64_t)getCookiePolicy:(const void *)policy;
+- (uint64_t)getCookiePolicy:(uint64_t)policy;
+- (uint64_t)setCookie:(WTF *)this completionHandler:(void *)handler;
+- (uint64_t)setCookie:(uint64_t)cookie completionHandler:;
+- (uint64_t)setCookiePolicy:(const void *)policy completionHandler:;
+- (uint64_t)setCookiePolicy:(uint64_t)policy completionHandler:;
+- (uint64_t)setCookies:(const void *)cookies completionHandler:;
+- (uint64_t)setCookies:(uint64_t)cookies completionHandler:;
+- (void)_flushCookiesToDiskWithCompletionHandler:(id)handler;
+- (void)_getCookiesForURL:(id)l completionHandler:(id)handler;
+- (void)_setCookieAcceptPolicy:(unint64_t)policy completionHandler:(id)handler;
 - (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)deleteCookie:(NSHTTPCookie *)cookie completionHandler:(void *)completionHandler;
-- (void)deleteCookie:(void *)a1 completionHandler:;
-- (void)getAllCookies:(void *)a1;
+- (void)deleteCookie:(void *)cookie completionHandler:;
 - (void)getAllCookies:(void *)completionHandler;
+- (void)getAllCookies:(void *)cookies;
 - (void)getCookiePolicy:(void *)completionHandler;
 - (void)removeObserver:(id)observer;
 - (void)setCookie:(NSHTTPCookie *)cookie completionHandler:(void *)completionHandler;
-- (void)setCookie:(void *)a1 completionHandler:;
+- (void)setCookie:(void *)cookie completionHandler:;
 - (void)setCookiePolicy:(WKCookiePolicy)policy completionHandler:(void *)completionHandler;
-- (void)setCookies:(id)a3 completionHandler:(id)a4;
+- (void)setCookies:(id)cookies completionHandler:(id)handler;
 @end
 
 @implementation WKHTTPCookieStore
@@ -211,7 +211,7 @@ LABEL_15:
   }
 }
 
-- (void)setCookies:(id)a3 completionHandler:(id)a4
+- (void)setCookies:(id)cookies completionHandler:(id)handler
 {
   if (self)
   {
@@ -225,7 +225,7 @@ LABEL_15:
     v23 = 0;
   }
 
-  v7 = [a3 count];
+  v7 = [cookies count];
   v8 = v7;
   v22 = 0uLL;
   if (v7)
@@ -245,7 +245,7 @@ LABEL_15:
     v22.n128_u32[2] = v9 / 0x90;
     do
     {
-      v13 = [a3 objectAtIndexedSubscript:{v12, v21, v22.n128_u64[0], v22.n128_u64[1]}];
+      v13 = [cookies objectAtIndexedSubscript:{v12, v21, v22.n128_u64[0], v22.n128_u64[1]}];
       if (v13)
       {
         objc_opt_class();
@@ -281,7 +281,7 @@ LABEL_15:
   }
 
   WTF::Vector<WebCore::Cookie,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&v22, v16);
-  v17 = _Block_copy(a4);
+  v17 = _Block_copy(handler);
   v18 = WTF::fastMalloc(0x10);
   *v18 = &unk_1F10F66B8;
   v18[1] = v17;
@@ -655,7 +655,7 @@ LABEL_10:
   }
 }
 
-- (void)_getCookiesForURL:(id)a3 completionHandler:(id)a4
+- (void)_getCookiesForURL:(id)l completionHandler:(id)handler
 {
   if (self)
   {
@@ -669,8 +669,8 @@ LABEL_10:
     v15 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v14, a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x19EB01DE0](v14, l);
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10F6758;
   v8[1] = v7;
@@ -699,7 +699,7 @@ LABEL_10:
   }
 }
 
-- (void)_setCookieAcceptPolicy:(unint64_t)a3 completionHandler:(id)a4
+- (void)_setCookieAcceptPolicy:(unint64_t)policy completionHandler:(id)handler
 {
   if (self)
   {
@@ -713,17 +713,17 @@ LABEL_10:
     v12 = 0;
   }
 
-  if (a3 >= 4)
+  if (policy >= 4)
   {
-    LOBYTE(a3) = 1;
+    LOBYTE(policy) = 1;
   }
 
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10F6780;
   v8[1] = v7;
   v11 = v8;
-  API::HTTPCookieStore::setHTTPCookieAcceptPolicy(v6, a3, &v11);
+  API::HTTPCookieStore::setHTTPCookieAcceptPolicy(v6, policy, &v11);
   v9 = v11;
   v11 = 0;
   if (v9)
@@ -740,7 +740,7 @@ LABEL_10:
   }
 }
 
-- (void)_flushCookiesToDiskWithCompletionHandler:(id)a3
+- (void)_flushCookiesToDiskWithCompletionHandler:(id)handler
 {
   if (self)
   {
@@ -754,7 +754,7 @@ LABEL_10:
     v10 = 0;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F67A8;
   v6[1] = v5;
@@ -776,16 +776,16 @@ LABEL_10:
   }
 }
 
-- (void)getAllCookies:(void *)a1
+- (void)getAllCookies:(void *)cookies
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F6668;
-  a1[1] = 0;
+  v2 = cookies[1];
+  *cookies = &unk_1F10F6668;
+  cookies[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return cookies;
 }
 
 - (uint64_t)getAllCookies:(WTF *)this
@@ -800,28 +800,28 @@ LABEL_10:
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)getAllCookies:(uint64_t)a1
+- (uint64_t)getAllCookies:(uint64_t)cookies
 {
-  v2 = *(a1 + 8);
+  v2 = *(cookies + 8);
   v3 = coreCookiesToNSCookies(a2);
   v4 = *(v2 + 16);
 
   return v4(v2, v3);
 }
 
-- (void)setCookie:(void *)a1 completionHandler:
+- (void)setCookie:(void *)cookie completionHandler:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F6690;
-  a1[1] = 0;
+  v2 = cookie[1];
+  *cookie = &unk_1F10F6690;
+  cookie[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return cookie;
 }
 
-- (uint64_t)setCookie:(WTF *)this completionHandler:(void *)a2
+- (uint64_t)setCookie:(WTF *)this completionHandler:(void *)handler
 {
   v3 = *(this + 1);
   *this = &unk_1F10F6690;
@@ -830,12 +830,12 @@ LABEL_10:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, handler);
 }
 
-- (uint64_t)setCookie:(uint64_t)a1 completionHandler:
+- (uint64_t)setCookie:(uint64_t)cookie completionHandler:
 {
-  result = *(a1 + 8);
+  result = *(cookie + 8);
   if (result)
   {
     return (*(result + 16))();
@@ -844,34 +844,34 @@ LABEL_10:
   return result;
 }
 
-- (uint64_t)setCookies:(uint64_t)a1 completionHandler:
+- (uint64_t)setCookies:(uint64_t)cookies completionHandler:
 {
-  *a1 = &unk_1F10F66B8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *cookies = &unk_1F10F66B8;
+  _Block_release(*(cookies + 8));
+  return cookies;
 }
 
-- (uint64_t)setCookies:(const void *)a1 completionHandler:
+- (uint64_t)setCookies:(const void *)cookies completionHandler:
 {
-  *a1 = &unk_1F10F66B8;
-  _Block_release(a1[1]);
+  *cookies = &unk_1F10F66B8;
+  _Block_release(cookies[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(cookies, v2);
 }
 
-- (void)deleteCookie:(void *)a1 completionHandler:
+- (void)deleteCookie:(void *)cookie completionHandler:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F66E0;
-  a1[1] = 0;
+  v2 = cookie[1];
+  *cookie = &unk_1F10F66E0;
+  cookie[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return cookie;
 }
 
-- (uint64_t)deleteCookie:(WTF *)this completionHandler:(void *)a2
+- (uint64_t)deleteCookie:(WTF *)this completionHandler:(void *)handler
 {
   v3 = *(this + 1);
   *this = &unk_1F10F66E0;
@@ -880,12 +880,12 @@ LABEL_10:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, handler);
 }
 
-- (uint64_t)deleteCookie:(uint64_t)a1 completionHandler:
+- (uint64_t)deleteCookie:(uint64_t)cookie completionHandler:
 {
-  result = *(a1 + 8);
+  result = *(cookie + 8);
   if (result)
   {
     return (*(result + 16))();
@@ -894,9 +894,9 @@ LABEL_10:
   return result;
 }
 
-- (uint64_t)setCookiePolicy:(uint64_t)a1 completionHandler:
+- (uint64_t)setCookiePolicy:(uint64_t)policy completionHandler:
 {
-  result = *(a1 + 8);
+  result = *(policy + 8);
   if (result)
   {
     return (*(result + 16))();
@@ -905,27 +905,27 @@ LABEL_10:
   return result;
 }
 
-- (uint64_t)setCookiePolicy:(const void *)a1 completionHandler:
+- (uint64_t)setCookiePolicy:(const void *)policy completionHandler:
 {
-  *a1 = &unk_1F10F6708;
-  _Block_release(a1[1]);
+  *policy = &unk_1F10F6708;
+  _Block_release(policy[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(policy, v2);
 }
 
-- (uint64_t)getCookiePolicy:(uint64_t)a1
+- (uint64_t)getCookiePolicy:(uint64_t)policy
 {
-  *a1 = &unk_1F10F6730;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *policy = &unk_1F10F6730;
+  _Block_release(*(policy + 8));
+  return policy;
 }
 
-- (uint64_t)getCookiePolicy:(const void *)a1
+- (uint64_t)getCookiePolicy:(const void *)policy
 {
-  *a1 = &unk_1F10F6730;
-  _Block_release(a1[1]);
+  *policy = &unk_1F10F6730;
+  _Block_release(policy[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(policy, v2);
 }
 
 @end

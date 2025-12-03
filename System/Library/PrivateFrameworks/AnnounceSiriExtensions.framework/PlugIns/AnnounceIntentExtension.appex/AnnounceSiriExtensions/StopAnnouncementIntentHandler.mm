@@ -1,18 +1,18 @@
 @interface StopAnnouncementIntentHandler
 - (_TtC23AnnounceIntentExtension29StopAnnouncementIntentHandler)init;
-- (void)handleStopAnnouncement:(id)a3 completion:(id)a4;
+- (void)handleStopAnnouncement:(id)announcement completion:(id)completion;
 @end
 
 @implementation StopAnnouncementIntentHandler
 
-- (void)handleStopAnnouncement:(id)a3 completion:(id)a4
+- (void)handleStopAnnouncement:(id)announcement completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_100001974(v8, sub_100002DA0, v7);
+  announcementCopy = announcement;
+  selfCopy = self;
+  sub_100001974(announcementCopy, sub_100002DA0, v7);
 }
 
 - (_TtC23AnnounceIntentExtension29StopAnnouncementIntentHandler)init

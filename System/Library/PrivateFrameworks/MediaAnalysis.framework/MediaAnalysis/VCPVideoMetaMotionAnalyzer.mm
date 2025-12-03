@@ -1,8 +1,8 @@
 @interface VCPVideoMetaMotionAnalyzer
-- (BOOL)decideSegmentPointBasedOn:(float)a3;
+- (BOOL)decideSegmentPointBasedOn:(float)on;
 - (VCPVideoMetaMotionAnalyzer)init;
 - (int)finalizeAnalysis;
-- (int)processFrameMetadata:(id)a3;
+- (int)processFrameMetadata:(id)metadata;
 - (void)mergeSimilarSegments;
 @end
 
@@ -15,13 +15,13 @@
   v2 = [(VCPVideoMetaMotionAnalyzer *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     internalResults = v2->_internalResults;
-    v2->_internalResults = v3;
+    v2->_internalResults = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     mutableResults = v2->_mutableResults;
-    v2->_mutableResults = v5;
+    v2->_mutableResults = array2;
 
     v7 = objc_alloc_init(VCPVideoMetaMotionSegment);
     activeSegment = v2->_activeSegment;
@@ -58,21 +58,21 @@
   return v12;
 }
 
-- (BOOL)decideSegmentPointBasedOn:(float)a3
+- (BOOL)decideSegmentPointBasedOn:(float)on
 {
-  v10 = a3;
+  onCopy = on;
   v4 = [(VCPMetaSegment *)self->_activeSegment numOfFrames]+ 1;
-  if (self->_hinkleyDetector.min_length_ < v4 && ([(VCPVideoMetaMotionSegment *)self->_activeSegment stabilityScore], v9 = v5, ma::HinkleyDetector::Test(&self->_hinkleyDetector, &v9, &v10, v4)))
+  if (self->_hinkleyDetector.min_length_ < v4 && ([(VCPVideoMetaMotionSegment *)self->_activeSegment stabilityScore], v9 = v5, ma::HinkleyDetector::Test(&self->_hinkleyDetector, &v9, &onCopy, v4)))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(VCPMetaSegment *)self->_activeSegment numOfFrames];
+    numOfFrames = [(VCPMetaSegment *)self->_activeSegment numOfFrames];
     v6 = 0;
     result = 0;
-    if (v7)
+    if (numOfFrames)
     {
       return result;
     }
@@ -82,10 +82,10 @@
   return v6;
 }
 
-- (int)processFrameMetadata:(id)a3
+- (int)processFrameMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"privECMVct"];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:@"privECMVct"];
   v6 = v5;
   if (v5)
   {
@@ -100,7 +100,7 @@
     y = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  CMTimeRangeMakeFromDictionary(&v23, v4);
+  CMTimeRangeMakeFromDictionary(&v23, metadataCopy);
   v10 = *&v23.start.epoch;
   *&self->_frameTimeRange.start.value = *&v23.start.value;
   *&self->_frameTimeRange.start.epoch = v10;

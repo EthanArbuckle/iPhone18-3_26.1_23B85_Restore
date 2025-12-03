@@ -1,9 +1,9 @@
 @interface MapsSuggestionsLeechingLocationUpdater
 - (MapsSuggestionsLeechingLocationUpdater)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)onStartImplementation;
 - (void)onStopImplementation;
 @end
@@ -33,19 +33,19 @@
 
   if (self->_locationManagerForLeeching)
   {
-    v4 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    location = GEOFindOrCreateLog();
+    if (os_log_type_enabled(location, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v10) = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "Already running", &v10, 2u);
+      _os_log_impl(&_mh_execute_header, location, OS_LOG_TYPE_ERROR, "Already running", &v10, 2u);
     }
   }
 
   else
   {
     v5 = [MapsSuggestionsLimitingLocationManager alloc];
-    v6 = [(MapsSuggestionsLeechingLocationUpdater *)self dispatchQueue];
-    v7 = [v5 initWithEffectiveBundlePath:@"/System/Library/LocationBundles/DestinationdLocationBundleiOS.bundle" limitingBundleIdentifier:MapsAppBundleId delegate:self onQueue:v6];
+    dispatchQueue = [(MapsSuggestionsLeechingLocationUpdater *)self dispatchQueue];
+    v7 = [v5 initWithEffectiveBundlePath:@"/System/Library/LocationBundles/DestinationdLocationBundleiOS.bundle" limitingBundleIdentifier:MapsAppBundleId delegate:self onQueue:dispatchQueue];
     locationManagerForLeeching = self->_locationManagerForLeeching;
     self->_locationManagerForLeeching = v7;
 
@@ -55,15 +55,15 @@
     [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching startUpdatingLocation];
     [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching startMonitoringSignificantLocationChanges];
     [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching startMonitoringVisits];
-    v9 = [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching _limitsPrecision];
-    [(MapsSuggestionsLeechingLocationUpdater *)self considerMyAllowanceAsLimited:v9];
-    if (v9)
+    _limitsPrecision = [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching _limitsPrecision];
+    [(MapsSuggestionsLeechingLocationUpdater *)self considerMyAllowanceAsLimited:_limitsPrecision];
+    if (_limitsPrecision)
     {
       return;
     }
 
-    v4 = [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching location];
-    [(MapsSuggestionsLeechingLocationUpdater *)self considerMyNewLocation:v4];
+    location = [(MapsSuggestionsLimitingLocationManager *)self->_locationManagerForLeeching location];
+    [(MapsSuggestionsLeechingLocationUpdater *)self considerMyNewLocation:location];
   }
 }
 
@@ -88,10 +88,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if (MapsSuggestionsLoggingIsVerbose())
   {
     v8 = GEOFindOrCreateLog();
@@ -102,37 +102,37 @@
     }
   }
 
-  if ([v7 count])
+  if ([locationsCopy count])
   {
     objc_initWeak(buf, self);
-    v9 = [(MapsSuggestionsLeechingLocationUpdater *)self dispatchQueue];
+    dispatchQueue = [(MapsSuggestionsLeechingLocationUpdater *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000265BC;
     block[3] = &unk_1000750D8;
     objc_copyWeak(&v13, buf);
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v9, block);
+    v11 = managerCopy;
+    v12 = locationsCopy;
+    dispatch_async(dispatchQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
-  v5 = [v4 code];
-  if (v5)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code)
   {
-    if (v5 != 3)
+    if (code != 3)
     {
       v6 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = errorCopy;
         v7 = "Location error: %@";
         v8 = v6;
         v9 = OS_LOG_TYPE_ERROR;
@@ -163,31 +163,31 @@ LABEL_9:
   }
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  visitCopy = visit;
   objc_initWeak(&location, self);
-  v8 = [(MapsSuggestionsLeechingLocationUpdater *)self dispatchQueue];
+  dispatchQueue = [(MapsSuggestionsLeechingLocationUpdater *)self dispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100026B10;
   v11[3] = &unk_100075B60;
-  v12 = v7;
-  v9 = v7;
+  v12 = visitCopy;
+  v9 = visitCopy;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v13 = managerCopy;
+  v10 = managerCopy;
+  dispatch_async(dispatchQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  -[MapsSuggestionsLeechingLocationUpdater considerMyAllowanceAsLimited:](self, "considerMyAllowanceAsLimited:", [v4 _limitsPrecision]);
+  authorizationCopy = authorization;
+  -[MapsSuggestionsLeechingLocationUpdater considerMyAllowanceAsLimited:](self, "considerMyAllowanceAsLimited:", [authorizationCopy _limitsPrecision]);
 }
 
 @end

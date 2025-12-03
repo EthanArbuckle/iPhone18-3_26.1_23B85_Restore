@@ -1,12 +1,12 @@
 @interface AFSpeechRecognition
-+ (id)fakeOneBestFromPhrases:(id)a3;
-+ (id)tokenListFromUtterance:(id)a3 phrases:(id)a4;
-+ (id)transcriptFromTokens:(id)a3;
-- (AFSpeechRecognition)initWithCoder:(id)a3;
-- (AFSpeechRecognition)initWithDictionary:(id)a3;
-- (AFSpeechRecognition)initWithPhrases:(id)a3;
-- (AFSpeechRecognition)initWithPhrases:(id)a3 utterances:(id)a4 processedAudioDuration:(double)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)fakeOneBestFromPhrases:(id)phrases;
++ (id)tokenListFromUtterance:(id)utterance phrases:(id)phrases;
++ (id)transcriptFromTokens:(id)tokens;
+- (AFSpeechRecognition)initWithCoder:(id)coder;
+- (AFSpeechRecognition)initWithDictionary:(id)dictionary;
+- (AFSpeechRecognition)initWithPhrases:(id)phrases;
+- (AFSpeechRecognition)initWithPhrases:(id)phrases utterances:(id)utterances processedAudioDuration:(double)duration;
+- (BOOL)isEqual:(id)equal;
 - (double)averageOneBestConfidenceScore;
 - (id)aceRecognition;
 - (id)dictionaryRepresentation;
@@ -16,7 +16,7 @@
 - (id)oneBestTokenList;
 - (id)oneBestTranscript;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechRecognition
@@ -44,8 +44,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v24 objects:v31 count:16];
@@ -74,8 +74,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
-        [v10 addObject:v16];
+        dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
+        [v10 addObject:dictionaryRepresentation2];
       }
 
       v13 = [(NSArray *)v11 countByEnumeratingWithState:&v20 objects:v30 count:16];
@@ -95,10 +95,10 @@
   return v17;
 }
 
-- (AFSpeechRecognition)initWithDictionary:(id)a3
+- (AFSpeechRecognition)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"phrases"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"phrases"];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = v5;
@@ -124,12 +124,12 @@
     [v8 enumerateObjectsUsingBlock:v24];
     if ((v32[3] & 1) != 0 || ![v26[5] count])
     {
-      v15 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v9 = [v4 objectForKey:@"utterances"];
+      v9 = [dictionaryCopy objectForKey:@"utterances"];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = v9;
@@ -154,13 +154,13 @@
         [v12 enumerateObjectsUsingBlock:v17];
         if ((v32[3] & 1) != 0 || ![v19[5] count])
         {
-          v15 = 0;
+          selfCopy = 0;
         }
 
         else
         {
           self = [(AFSpeechRecognition *)self initWithPhrases:v26[5] utterances:v19[5]];
-          v15 = self;
+          selfCopy = self;
         }
 
         _Block_object_dispose(&v18, 8);
@@ -169,7 +169,7 @@
       else
       {
 
-        v15 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -181,10 +181,10 @@
   else
   {
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 void __42__AFSpeechRecognition_initWithDictionary___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -279,11 +279,11 @@ void __42__AFSpeechRecognition_initWithDictionary___block_invoke_2(uint64_t a1, 
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v12 = [v11 interpretations];
-        v13 = [v12 firstObject];
-        v14 = [v13 tokens];
+        interpretations = [v11 interpretations];
+        firstObject = [interpretations firstObject];
+        tokens = [firstObject tokens];
 
-        v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v15 = [tokens countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v15)
         {
           v16 = v15;
@@ -294,19 +294,19 @@ void __42__AFSpeechRecognition_initWithDictionary___block_invoke_2(uint64_t a1, 
             {
               if (*v26 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(tokens);
               }
 
-              v19 = [*(*(&v25 + 1) + 8 * j) confidenceScore];
-              v20 = [v19 integerValue];
+              confidenceScore = [*(*(&v25 + 1) + 8 * j) confidenceScore];
+              integerValue = [confidenceScore integerValue];
 
-              if (v20 < v9)
+              if (integerValue < v9)
               {
-                v9 = v20;
+                v9 = integerValue;
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v16 = [tokens countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v16);
@@ -368,37 +368,37 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
   return v4;
 }
 
-- (AFSpeechRecognition)initWithPhrases:(id)a3 utterances:(id)a4 processedAudioDuration:(double)a5
+- (AFSpeechRecognition)initWithPhrases:(id)phrases utterances:(id)utterances processedAudioDuration:(double)duration
 {
-  v8 = a3;
-  v9 = a4;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
   v16.receiver = self;
   v16.super_class = AFSpeechRecognition;
   v10 = [(AFSpeechRecognition *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [phrasesCopy copy];
     phrases = v10->_phrases;
     v10->_phrases = v11;
 
-    v13 = [v9 copy];
+    v13 = [utterancesCopy copy];
     utterances = v10->_utterances;
     v10->_utterances = v13;
 
-    v10->_processedAudioDuration = a5;
+    v10->_processedAudioDuration = duration;
   }
 
   return v10;
 }
 
-- (AFSpeechRecognition)initWithPhrases:(id)a3
+- (AFSpeechRecognition)initWithPhrases:(id)phrases
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() fakeOneBestFromPhrases:v4];
+  phrasesCopy = phrases;
+  v5 = [objc_opt_class() fakeOneBestFromPhrases:phrasesCopy];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v7 = [(AFSpeechRecognition *)self initWithPhrases:v4 utterances:v6];
+  v7 = [(AFSpeechRecognition *)self initWithPhrases:phrasesCopy utterances:v6];
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
@@ -407,8 +407,8 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
 - (id)nBestTokenListsLossless
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(AFSpeechRecognition *)self utterances];
-  v4 = [v3 count];
+  utterances = [(AFSpeechRecognition *)self utterances];
+  v4 = [utterances count];
 
   if (v4)
   {
@@ -418,17 +418,17 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
     v18 = v7;
     do
     {
-      v8 = [(AFSpeechRecognition *)self utterances];
-      v9 = [v8 objectAtIndex:v6];
+      utterances2 = [(AFSpeechRecognition *)self utterances];
+      v9 = [utterances2 objectAtIndex:v6];
 
-      v10 = [v9 interpretation];
-      v11 = [v10 tokens];
+      interpretation = [v9 interpretation];
+      tokens = [interpretation tokens];
 
-      if (v11)
+      if (tokens)
       {
-        v12 = [v9 interpretation];
-        v13 = [v12 tokens];
-        [v5 addObject:v13];
+        interpretation2 = [v9 interpretation];
+        tokens2 = [interpretation2 tokens];
+        [v5 addObject:tokens2];
       }
 
       else
@@ -469,19 +469,19 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
 
 - (id)nBestTokenListsFromSausage
 {
-  v3 = [(AFSpeechRecognition *)self utterances];
-  v4 = [v3 count];
+  utterances = [(AFSpeechRecognition *)self utterances];
+  v4 = [utterances count];
 
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
     for (i = 0; i != v4; ++i)
     {
-      v7 = [(AFSpeechRecognition *)self utterances];
-      v8 = [v7 objectAtIndex:i];
+      utterances2 = [(AFSpeechRecognition *)self utterances];
+      v8 = [utterances2 objectAtIndex:i];
 
-      v9 = [(AFSpeechRecognition *)self phrases];
-      v10 = [AFSpeechRecognition tokenListFromUtterance:v8 phrases:v9];
+      phrases = [(AFSpeechRecognition *)self phrases];
+      v10 = [AFSpeechRecognition tokenListFromUtterance:v8 phrases:phrases];
 
       if (v10)
       {
@@ -501,8 +501,8 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
 - (double)averageOneBestConfidenceScore
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(AFSpeechRecognition *)self oneBestTokenList];
-  v3 = [v2 count];
+  oneBestTokenList = [(AFSpeechRecognition *)self oneBestTokenList];
+  v3 = [oneBestTokenList count];
   if (v3)
   {
     v4 = v3;
@@ -510,7 +510,7 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v2;
+    v5 = oneBestTokenList;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -554,26 +554,26 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
 
 - (id)oneBestTokenList
 {
-  v3 = [(AFSpeechRecognition *)self utterances];
-  v4 = [v3 firstObject];
+  utterances = [(AFSpeechRecognition *)self utterances];
+  firstObject = [utterances firstObject];
 
-  v5 = [(AFSpeechRecognition *)self phrases];
-  v6 = [AFSpeechRecognition tokenListFromUtterance:v4 phrases:v5];
+  phrases = [(AFSpeechRecognition *)self phrases];
+  v6 = [AFSpeechRecognition tokenListFromUtterance:firstObject phrases:phrases];
 
   return v6;
 }
 
 - (id)nBestTranscripts
 {
-  v2 = [(AFSpeechRecognition *)self nBestTokenListsFromSausage];
-  v3 = [v2 count];
+  nBestTokenListsFromSausage = [(AFSpeechRecognition *)self nBestTokenListsFromSausage];
+  v3 = [nBestTokenListsFromSausage count];
   if (v3)
   {
     v4 = v3;
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v3];
     for (i = 0; i != v4; ++i)
     {
-      v7 = [v2 objectAtIndex:i];
+      v7 = [nBestTokenListsFromSausage objectAtIndex:i];
       v8 = [AFSpeechRecognition transcriptFromTokens:v7];
       [v5 addObject:v8];
     }
@@ -589,16 +589,16 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
 
 - (id)oneBestTranscript
 {
-  v2 = [(AFSpeechRecognition *)self oneBestTokenList];
-  v3 = [AFSpeechRecognition transcriptFromTokens:v2];
+  oneBestTokenList = [(AFSpeechRecognition *)self oneBestTokenList];
+  v3 = [AFSpeechRecognition transcriptFromTokens:oneBestTokenList];
 
   return v3;
 }
 
-- (AFSpeechRecognition)initWithCoder:(id)a3
+- (AFSpeechRecognition)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = AFSpeechRecognition;
   v5 = [(AFSpeechRecognition *)&v19 init];
@@ -609,7 +609,7 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
     v21[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_phrases"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_phrases"];
     phrases = v5->_phrases;
     v5->_phrases = v9;
 
@@ -618,11 +618,11 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
     v20[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_utterances"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_utterances"];
     utterances = v5->_utterances;
     v5->_utterances = v14;
 
-    [v4 decodeDoubleForKey:@"_processedAudioDuration"];
+    [coderCopy decodeDoubleForKey:@"_processedAudioDuration"];
     v5->_processedAudioDuration = v16;
   }
 
@@ -630,34 +630,34 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   phrases = self->_phrases;
-  v5 = a3;
-  [v5 encodeObject:phrases forKey:@"_phrases"];
-  [v5 encodeObject:self->_utterances forKey:@"_utterances"];
-  [v5 encodeDouble:@"_processedAudioDuration" forKey:self->_processedAudioDuration];
+  coderCopy = coder;
+  [coderCopy encodeObject:phrases forKey:@"_phrases"];
+  [coderCopy encodeObject:self->_utterances forKey:@"_utterances"];
+  [coderCopy encodeDouble:@"_processedAudioDuration" forKey:self->_processedAudioDuration];
 }
 
 - (unint64_t)hash
 {
   v3 = [(NSArray *)self->_phrases hash];
-  v4 = [(NSArray *)self->_phrases firstObject];
-  v5 = [v4 hash];
+  firstObject = [(NSArray *)self->_phrases firstObject];
+  v5 = [firstObject hash];
   v6 = v5 ^ v3 ^ [(NSArray *)self->_utterances hash];
-  v7 = [(NSArray *)self->_utterances firstObject];
-  v8 = [v7 hash];
+  firstObject2 = [(NSArray *)self->_utterances firstObject];
+  v8 = [firstObject2 hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = v4[1], v5 == self->_phrases) || [(NSArray *)v5 isEqualToArray:?]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = equalCopy[1], v5 == self->_phrases) || [(NSArray *)v5 isEqualToArray:?]))
   {
-    v6 = v4[2];
+    v6 = equalCopy[2];
     if (v6 == self->_utterances)
     {
       v7 = 1;
@@ -677,10 +677,10 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
   return v7;
 }
 
-+ (id)fakeOneBestFromPhrases:(id)a3
++ (id)fakeOneBestFromPhrases:(id)phrases
 {
-  v3 = a3;
-  v4 = [v3 count];
+  phrasesCopy = phrases;
+  v4 = [phrasesCopy count];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
   if (v4)
   {
@@ -689,13 +689,13 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
     for (i = 0; i != v4; ++i)
     {
       [v5 addObject:&unk_1F056D4E8];
-      v9 = [v3 objectAtIndex:i];
-      v10 = [v9 interpretations];
-      v11 = v10;
-      if (v10 && [v10 count])
+      v9 = [phrasesCopy objectAtIndex:i];
+      interpretations = [v9 interpretations];
+      v11 = interpretations;
+      if (interpretations && [interpretations count])
       {
-        v12 = [v11 firstObject];
-        v6 += [v12 averageConfidenceScore];
+        firstObject = [v11 firstObject];
+        v6 += [firstObject averageConfidenceScore];
 
         ++v7;
       }
@@ -717,27 +717,27 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
   return v13;
 }
 
-+ (id)tokenListFromUtterance:(id)a3 phrases:(id)a4
++ (id)tokenListFromUtterance:(id)utterance phrases:(id)phrases
 {
-  v5 = a4;
-  v6 = [a3 interpretationIndices];
-  v7 = [v6 count];
-  if (v7 && (v8 = v7, [v5 count]))
+  phrasesCopy = phrases;
+  interpretationIndices = [utterance interpretationIndices];
+  v7 = [interpretationIndices count];
+  if (v7 && (v8 = v7, [phrasesCopy count]))
   {
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
     for (i = 0; i != v8; ++i)
     {
-      v11 = [v5 objectAtIndex:i];
-      v12 = [v11 interpretations];
+      v11 = [phrasesCopy objectAtIndex:i];
+      interpretations = [v11 interpretations];
 
-      if ([v12 count])
+      if ([interpretations count])
       {
-        v13 = [v6 objectAtIndex:i];
-        v14 = [v13 unsignedIntegerValue];
+        v13 = [interpretationIndices objectAtIndex:i];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-        v15 = [v12 objectAtIndex:v14];
-        v16 = [v15 tokens];
-        [v9 addObjectsFromArray:v16];
+        v15 = [interpretations objectAtIndex:unsignedIntegerValue];
+        tokens = [v15 tokens];
+        [v9 addObjectsFromArray:tokens];
       }
     }
   }
@@ -750,24 +750,24 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
   return v9;
 }
 
-+ (id)transcriptFromTokens:(id)a3
++ (id)transcriptFromTokens:(id)tokens
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  tokensCopy = tokens;
+  if ([tokensCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = tokensCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v16;
-      v9 = 1;
+      removeSpaceAfter = 1;
       do
       {
         for (i = 0; i != v7; ++i)
@@ -778,18 +778,18 @@ id __37__AFSpeechRecognition_aceRecognition__block_invoke_2(uint64_t a1, void *a
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          if (((v9 | [v11 removeSpaceBefore]) & 1) == 0)
+          if (((removeSpaceAfter | [v11 removeSpaceBefore]) & 1) == 0)
           {
             [v4 appendString:@" "];
           }
 
-          v12 = [v11 text];
-          if (v12)
+          text = [v11 text];
+          if (text)
           {
-            [v4 appendString:v12];
+            [v4 appendString:text];
           }
 
-          v9 = [v11 removeSpaceAfter];
+          removeSpaceAfter = [v11 removeSpaceAfter];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];

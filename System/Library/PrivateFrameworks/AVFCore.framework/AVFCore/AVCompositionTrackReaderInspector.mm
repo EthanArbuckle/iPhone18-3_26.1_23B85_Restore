@@ -1,25 +1,25 @@
 @interface AVCompositionTrackReaderInspector
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - (id)segments;
 - (void)dealloc;
 @end
 
 @implementation AVCompositionTrackReaderInspector
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
   v9.receiver = self;
   v9.super_class = AVCompositionTrackReaderInspector;
-  v6 = [(AVTrackReaderInspector *)&v9 _initWithAsset:a3 trackID:*&a4 trackIndex:a5];
+  v6 = [(AVTrackReaderInspector *)&v9 _initWithAsset:asset trackID:*&d trackIndex:index];
   if (v6)
   {
-    v7 = [a3 _mutableComposition];
-    if (v7)
+    _mutableComposition = [asset _mutableComposition];
+    if (_mutableComposition)
     {
-      v7 = CFRetain(v7);
+      _mutableComposition = CFRetain(_mutableComposition);
     }
 
-    v6[12] = v7;
+    v6[12] = _mutableComposition;
   }
 
   return v6;
@@ -40,11 +40,11 @@
 
 - (id)segments
 {
-  v3 = [(AVCompositionTrackReaderInspector *)self _mutableComposition];
-  v4 = [(AVTrackReaderInspector *)self trackID];
+  _mutableComposition = [(AVCompositionTrackReaderInspector *)self _mutableComposition];
+  trackID = [(AVTrackReaderInspector *)self trackID];
   v23 = 0;
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 56);
-  if (!v5 || v5(v3, v4, &v23, 0, 0) || v23 < 1)
+  if (!v5 || v5(_mutableComposition, trackID, &v23, 0, 0) || v23 < 1)
   {
     v6 = 0;
 LABEL_14:
@@ -65,7 +65,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v8(v3, v4, 0, v7, v6))
+  if (v8(_mutableComposition, trackID, 0, v7, v6))
   {
     goto LABEL_14;
   }

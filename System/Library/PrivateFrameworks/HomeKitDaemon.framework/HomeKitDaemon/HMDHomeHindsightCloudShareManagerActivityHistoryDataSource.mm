@@ -1,24 +1,24 @@
 @interface HMDHomeHindsightCloudShareManagerActivityHistoryDataSource
-- (id)zoneUUIDForHome:(id)a3;
-- (void)cloudShareManagerDidCreateZone:(id)a3;
+- (id)zoneUUIDForHome:(id)home;
+- (void)cloudShareManagerDidCreateZone:(id)zone;
 @end
 
 @implementation HMDHomeHindsightCloudShareManagerActivityHistoryDataSource
 
-- (void)cloudShareManagerDidCreateZone:(id)a3
+- (void)cloudShareManagerDidCreateZone:(id)zone
 {
-  v3 = [a3 home];
-  if (v3)
+  home = [zone home];
+  if (home)
   {
-    v4 = v3;
-    [v3 prepareNewCloudKitZone];
-    v3 = v4;
+    v4 = home;
+    [home prepareNewCloudKitZone];
+    home = v4;
   }
 }
 
-- (id)zoneUUIDForHome:(id)a3
+- (id)zoneUUIDForHome:(id)home
 {
-  v3 = [a3 spiClientIdentifier];
+  spiClientIdentifier = [home spiClientIdentifier];
   v4 = HMVConfigurationZoneUUIDForHomeIdentifier();
 
   return v4;

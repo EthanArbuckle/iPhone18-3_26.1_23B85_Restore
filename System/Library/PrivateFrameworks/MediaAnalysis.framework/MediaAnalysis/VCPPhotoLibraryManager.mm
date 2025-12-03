@@ -1,17 +1,17 @@
 @interface VCPPhotoLibraryManager
 + (id)sharedManager;
-- (VCPPhotoLibraryManager)initWithPhotoLibraryPaths:(id)a3;
+- (VCPPhotoLibraryManager)initWithPhotoLibraryPaths:(id)paths;
 - (id)allPhotoLibraries;
-- (id)photoLibraryWithURL:(id)a3;
+- (id)photoLibraryWithURL:(id)l;
 - (void)dealloc;
 - (void)persistPhotoLibraries;
 @end
 
 @implementation VCPPhotoLibraryManager
 
-- (VCPPhotoLibraryManager)initWithPhotoLibraryPaths:(id)a3
+- (VCPPhotoLibraryManager)initWithPhotoLibraryPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v17.receiver = self;
   v17.super_class = VCPPhotoLibraryManager;
   v5 = [(VCPPhotoLibraryManager *)&v17 init];
@@ -25,7 +25,7 @@
     openPhotoLibraries = v5->_openPhotoLibraries;
     v5->_openPhotoLibraries = v8;
 
-    v10 = [NSMutableArray arrayWithArray:v4];
+    v10 = [NSMutableArray arrayWithArray:pathsCopy];
     knownPhotoLibraries = v5->_knownPhotoLibraries;
     v5->_knownPhotoLibraries = v10;
 
@@ -113,22 +113,22 @@
   }
 }
 
-- (id)photoLibraryWithURL:(id)a3
+- (id)photoLibraryWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v5 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [v4 path];
+      path = [lCopy path];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "Request for photo library at path %@", &buf, 0xCu);
     }
   }
 
-  if (v4)
+  if (lCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -141,9 +141,9 @@
     block[1] = 3221225472;
     block[2] = sub_10014A4FC;
     block[3] = &unk_1002873C8;
-    v13 = self;
+    selfCopy = self;
     p_buf = &buf;
-    v12 = v4;
+    v12 = lCopy;
     dispatch_sync(queue, block);
     v8 = *(*(&buf + 1) + 40);
 

@@ -1,6 +1,6 @@
 @interface TRIFBMobileAssetReference
 - (BOOL)hasOnDemandFlag;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOnDemand;
 - (BOOL)verifyUTF8Fields;
 - (NSData)assetNameAsData;
@@ -11,14 +11,14 @@
 - (NSString)specifier;
 - (NSString)type;
 - (NSString)version;
-- (TRIFBMobileAssetReference)initWithBufRef:(id)a3 cppPointer:(const MobileAssetReference *)a4;
+- (TRIFBMobileAssetReference)initWithBufRef:(id)ref cppPointer:(const MobileAssetReference *)pointer;
 - (const)assetNameAsCString;
 - (const)specifierAsCString;
 - (const)typeAsCString;
 - (const)versionAsCString;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)downloadSize;
 - (unint64_t)hash;
 - (unsigned)fileType;
@@ -44,8 +44,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1903 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1903 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -67,8 +67,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1924 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1924 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -90,8 +90,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1945 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1945 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -233,8 +233,8 @@ LABEL_19:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1909 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1909 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -253,18 +253,18 @@ LABEL_19:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1915 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1915 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     var0 = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = var0 - [v10 bytes];
+  data = [(AFBBufRef *)self->_br data];
+  v11 = var0 - [data bytes];
 
-  v12 = [(AFBBufRef *)self->_br data];
-  v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
   objc_autoreleasePoolPop(v9);
 
@@ -282,8 +282,8 @@ LABEL_19:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1930 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1930 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -302,18 +302,18 @@ LABEL_19:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1936 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1936 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     var0 = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = var0 - [v10 bytes];
+  data = [(AFBBufRef *)self->_br data];
+  v11 = var0 - [data bytes];
 
-  v12 = [(AFBBufRef *)self->_br data];
-  v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
   objc_autoreleasePoolPop(v9);
 
@@ -331,8 +331,8 @@ LABEL_19:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1951 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1951 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -351,18 +351,18 @@ LABEL_19:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1957 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1957 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     var0 = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = var0 - [v10 bytes];
+  data = [(AFBBufRef *)self->_br data];
+  v11 = var0 - [data bytes];
 
-  v12 = [(AFBBufRef *)self->_br data];
-  v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
   objc_autoreleasePoolPop(v9);
 
@@ -408,12 +408,12 @@ LABEL_19:
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -433,36 +433,36 @@ LABEL_19:
   return *v3->var0 >= 0x13u && (v4 = *v3[18].var0) != 0 && ptr[v4].var0[0] != 0;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(TRIFBMobileAssetReference *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(TRIFBMobileAssetReference *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:2030 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:2030 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_6;
   }
 
-  if (v8[8] == 1)
+  if (changesCopy[8] == 1)
   {
-    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 3)];
+    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 3)];
     goto LABEL_13;
   }
 
-  if (v8[8])
+  if (changesCopy[8])
   {
     v12 = 0;
   }
@@ -471,10 +471,10 @@ LABEL_19:
   {
 LABEL_6:
     v10 = objc_autoreleasePoolPush();
-    v11 = [(TRIFBMobileAssetReference *)self typeAsCString];
-    if (v11)
+    typeAsCString = [(TRIFBMobileAssetReference *)self typeAsCString];
+    if (typeAsCString)
     {
-      v12 = [v7 createStringWithCString:v11];
+      v12 = [builderCopy createStringWithCString:typeAsCString];
     }
 
     else
@@ -483,14 +483,14 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (!v8)
+    if (!changesCopy)
     {
 LABEL_15:
       v13 = objc_autoreleasePoolPush();
-      v14 = [(TRIFBMobileAssetReference *)self specifierAsCString];
-      if (v14)
+      specifierAsCString = [(TRIFBMobileAssetReference *)self specifierAsCString];
+      if (specifierAsCString)
       {
-        v15 = [v7 createStringWithCString:v14];
+        v15 = [builderCopy createStringWithCString:specifierAsCString];
       }
 
       else
@@ -499,7 +499,7 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v13);
-      if (!v8)
+      if (!changesCopy)
       {
         goto LABEL_23;
       }
@@ -509,14 +509,14 @@ LABEL_15:
   }
 
 LABEL_13:
-  if (v8[16] == 1)
+  if (changesCopy[16] == 1)
   {
-    v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 5)];
+    v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 5)];
   }
 
   else
   {
-    if (!v8[16])
+    if (!changesCopy[16])
     {
       goto LABEL_15;
     }
@@ -525,13 +525,13 @@ LABEL_13:
   }
 
 LABEL_21:
-  if (v8[24] == 1)
+  if (changesCopy[24] == 1)
   {
-    v18 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 7)];
+    v18 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 7)];
     goto LABEL_29;
   }
 
-  if (v8[24])
+  if (changesCopy[24])
   {
     v18 = 0;
     goto LABEL_29;
@@ -539,10 +539,10 @@ LABEL_21:
 
 LABEL_23:
   v16 = objc_autoreleasePoolPush();
-  v17 = [(TRIFBMobileAssetReference *)self versionAsCString];
-  if (v17)
+  versionAsCString = [(TRIFBMobileAssetReference *)self versionAsCString];
+  if (versionAsCString)
   {
-    v18 = [v7 createStringWithCString:v17];
+    v18 = [builderCopy createStringWithCString:versionAsCString];
   }
 
   else
@@ -551,27 +551,27 @@ LABEL_23:
   }
 
   objc_autoreleasePoolPop(v16);
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_31;
   }
 
 LABEL_29:
-  if (v8[48] == 1)
+  if (changesCopy[48] == 1)
   {
-    v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 13)];
+    v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 13)];
   }
 
   else
   {
-    if (!v8[48])
+    if (!changesCopy[48])
     {
 LABEL_31:
       v19 = objc_autoreleasePoolPush();
-      v20 = [(TRIFBMobileAssetReference *)self assetNameAsCString];
-      if (v20)
+      assetNameAsCString = [(TRIFBMobileAssetReference *)self assetNameAsCString];
+      if (assetNameAsCString)
       {
-        v21 = [v7 createStringWithCString:v20];
+        v21 = [builderCopy createStringWithCString:assetNameAsCString];
       }
 
       else
@@ -597,12 +597,12 @@ LABEL_37:
   v32 = v23;
   v24 = v18;
   v33 = v24;
-  v25 = v8;
+  v25 = changesCopy;
   v34 = v25;
-  v35 = self;
+  selfCopy = self;
   v36 = v21;
   v26 = v21;
-  v27 = [v7 trifbCreateMobileAssetReferenceUsingBlock:v30];
+  v27 = [builderCopy trifbCreateMobileAssetReferenceUsingBlock:v30];
 
   objc_autoreleasePoolPop(v9);
 
@@ -724,30 +724,30 @@ LABEL_31:
 LABEL_32:
 }
 
-- (TRIFBMobileAssetReference)initWithBufRef:(id)a3 cppPointer:(const MobileAssetReference *)a4
+- (TRIFBMobileAssetReference)initWithBufRef:(id)ref cppPointer:(const MobileAssetReference *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TRIFBMobileAssetReference;
   v8 = [(TRIFBMobileAssetReference *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -755,13 +755,13 @@ LABEL_32:
     v13 = &emptyCArrayStorage;
   }
 
-  v14 = [v10 length];
+  v14 = [dataCopy length];
   v23 = v13;
   v24 = v14;
   LODWORD(v25) = 0;
-  HIDWORD(v25) = a5;
+  HIDWORD(v25) = depth;
   LODWORD(v26) = 0;
-  HIDWORD(v26) = a6;
+  HIDWORD(v26) = tables;
   v27 = 0;
   LOBYTE(v28) = 1;
   if (v14 >= 0x7FFFFFFF)
@@ -773,24 +773,24 @@ LABEL_32:
   {
     v17 = *v13->var0;
     v18 = objc_alloc(MEMORY[0x277CED178]);
-    v19 = [v18 initWithData:{v10, v23, v24, v25, v26, v27, v28}];
+    v19 = [v18 initWithData:{dataCopy, v23, v24, v25, v26, v27, v28}];
     self = [(TRIFBMobileAssetReference *)self initWithBufRef:v19 cppPointer:&v13[v17]];
 
-    v20 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(TRIFBMobileAssetReference *)self verifyUTF8Fields])
       {
-        v20 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v21 = v20;
+    v21 = selfCopy2;
   }
 
   else
@@ -806,42 +806,42 @@ LABEL_32:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIFBMobileAssetReference *)self type];
-  v5 = [v4 hash];
+  type = [(TRIFBMobileAssetReference *)self type];
+  v5 = [type hash];
 
-  v6 = [(TRIFBMobileAssetReference *)self specifier];
-  v7 = [v6 hash];
+  specifier = [(TRIFBMobileAssetReference *)self specifier];
+  v7 = [specifier hash];
 
-  v8 = [(TRIFBMobileAssetReference *)self version];
-  v9 = [v8 hash];
+  version = [(TRIFBMobileAssetReference *)self version];
+  v9 = [version hash];
 
-  v10 = [(TRIFBMobileAssetReference *)self fileType];
-  v11 = [(TRIFBMobileAssetReference *)self isOnDemand];
-  v12 = [(TRIFBMobileAssetReference *)self downloadSize];
-  v13 = [(TRIFBMobileAssetReference *)self assetName];
-  v14 = [v13 hash] + 37 * (v12 + 37 * (37 * (37 * (v9 + 37 * (v7 + 37 * v5)) + v10) + v11));
+  fileType = [(TRIFBMobileAssetReference *)self fileType];
+  isOnDemand = [(TRIFBMobileAssetReference *)self isOnDemand];
+  downloadSize = [(TRIFBMobileAssetReference *)self downloadSize];
+  assetName = [(TRIFBMobileAssetReference *)self assetName];
+  v14 = [assetName hash] + 37 * (downloadSize + 37 * (37 * (37 * (v9 + 37 * (v7 + 37 * v5)) + fileType) + isOnDemand));
 
   v15 = 37 * v14 + [(TRIFBMobileAssetReference *)self hasOnDemandFlag];
   objc_autoreleasePoolPop(v3);
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [(TRIFBMobileAssetReference *)self type];
-      v9 = [v6 type];
-      if (v8 | v9)
+      type = [(TRIFBMobileAssetReference *)self type];
+      type2 = [v6 type];
+      if (type | type2)
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [type isEqual:type2];
 
         if (!v10)
         {
@@ -849,11 +849,11 @@ LABEL_32:
         }
       }
 
-      v11 = [(TRIFBMobileAssetReference *)self specifier];
-      v12 = [v6 specifier];
-      if (v11 | v12)
+      specifier = [(TRIFBMobileAssetReference *)self specifier];
+      specifier2 = [v6 specifier];
+      if (specifier | specifier2)
       {
-        v13 = [v11 isEqual:v12];
+        v13 = [specifier isEqual:specifier2];
 
         if (!v13)
         {
@@ -861,11 +861,11 @@ LABEL_32:
         }
       }
 
-      v14 = [(TRIFBMobileAssetReference *)self version];
-      v15 = [v6 version];
-      if (v14 | v15)
+      version = [(TRIFBMobileAssetReference *)self version];
+      version2 = [v6 version];
+      if (version | version2)
       {
-        v16 = [v14 isEqual:v15];
+        v16 = [version isEqual:version2];
 
         if (!v16)
         {
@@ -873,30 +873,30 @@ LABEL_32:
         }
       }
 
-      v17 = [(TRIFBMobileAssetReference *)self fileType];
-      if (v17 != [v6 fileType])
+      fileType = [(TRIFBMobileAssetReference *)self fileType];
+      if (fileType != [v6 fileType])
       {
         goto LABEL_17;
       }
 
-      v18 = [(TRIFBMobileAssetReference *)self isOnDemand];
-      if (v18 != [v6 isOnDemand])
+      isOnDemand = [(TRIFBMobileAssetReference *)self isOnDemand];
+      if (isOnDemand != [v6 isOnDemand])
       {
         goto LABEL_17;
       }
 
-      v19 = [(TRIFBMobileAssetReference *)self downloadSize];
-      if (v19 != [v6 downloadSize])
+      downloadSize = [(TRIFBMobileAssetReference *)self downloadSize];
+      if (downloadSize != [v6 downloadSize])
       {
         goto LABEL_17;
       }
 
-      v20 = [(TRIFBMobileAssetReference *)self assetName];
-      v21 = [v6 assetName];
-      if (!(v20 | v21) || (v22 = [v20 isEqual:v21], v21, v20, v22))
+      assetName = [(TRIFBMobileAssetReference *)self assetName];
+      assetName2 = [v6 assetName];
+      if (!(assetName | assetName2) || (v22 = [assetName isEqual:assetName2], assetName2, assetName, v22))
       {
-        v23 = [(TRIFBMobileAssetReference *)self hasOnDemandFlag];
-        v24 = v23 ^ [v6 hasOnDemandFlag] ^ 1;
+        hasOnDemandFlag = [(TRIFBMobileAssetReference *)self hasOnDemandFlag];
+        v24 = hasOnDemandFlag ^ [v6 hasOnDemandFlag] ^ 1;
       }
 
       else

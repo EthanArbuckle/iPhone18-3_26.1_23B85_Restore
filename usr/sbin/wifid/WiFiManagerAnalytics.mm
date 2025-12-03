@@ -1,22 +1,22 @@
 @interface WiFiManagerAnalytics
 + (id)sharedInstance;
 - (WiFiManagerAnalytics)init;
-- (id)__copyHashOfSSID:(id)a3;
+- (id)__copyHashOfSSID:(id)d;
 - (id)_initPrivate;
-- (int)_getAssociationEventIDForEventTypeString:(id)a3;
-- (void)_populateDPSAPInfoMessage:(__CFDictionary *)a3 andReply:(id)a4;
-- (void)_populateDPSLinkStateChangeMessage:(id *)a3 andReply:(id)a4;
-- (void)_populateDPSNotificationMessage:(__CFDictionary *)a3 andReply:(id)a4;
-- (void)_populateDPSProbeResultMessage:(id *)a3 andReply:(id)a4;
-- (void)_populateSlowWiFiNotificationMessage:(__CFDictionary *)a3 andReply:(id)a4;
+- (int)_getAssociationEventIDForEventTypeString:(id)string;
+- (void)_populateDPSAPInfoMessage:(__CFDictionary *)message andReply:(id)reply;
+- (void)_populateDPSLinkStateChangeMessage:(id *)message andReply:(id)reply;
+- (void)_populateDPSNotificationMessage:(__CFDictionary *)message andReply:(id)reply;
+- (void)_populateDPSProbeResultMessage:(id *)message andReply:(id)reply;
+- (void)_populateSlowWiFiNotificationMessage:(__CFDictionary *)message andReply:(id)reply;
 - (void)_register;
-- (void)getDeviceAnalyticsConfigurationWithCompletion:(id)a3;
-- (void)setDeviceAnalyticsConfiguration:(id)a3;
-- (void)setWiFiManagerQueue:(id)a3;
-- (void)submitWiFiAnalytics:(id)a3 data:(id)a4;
-- (void)submitWiFiAnalyticsMessage:(id)a3;
-- (void)triggerDatapathDiagnosticsNoReply:(id)a3;
-- (void)triggerDeviceAnalyticsStoreMigrationWithCompletion:(id)a3;
+- (void)getDeviceAnalyticsConfigurationWithCompletion:(id)completion;
+- (void)setDeviceAnalyticsConfiguration:(id)configuration;
+- (void)setWiFiManagerQueue:(id)queue;
+- (void)submitWiFiAnalytics:(id)analytics data:(id)data;
+- (void)submitWiFiAnalyticsMessage:(id)message;
+- (void)triggerDatapathDiagnosticsNoReply:(id)reply;
+- (void)triggerDeviceAnalyticsStoreMigrationWithCompletion:(id)completion;
 @end
 
 @implementation WiFiManagerAnalytics
@@ -52,9 +52,9 @@
   [v4 registerMessageGroup:4 andReply:v5];
 }
 
-- (void)setWiFiManagerQueue:(id)a3
+- (void)setWiFiManagerQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -63,93 +63,93 @@
 
   objc_autoreleasePoolPop(v5);
   wifiManagerQueue = self->_wifiManagerQueue;
-  self->_wifiManagerQueue = v4;
+  self->_wifiManagerQueue = queueCopy;
 }
 
-- (void)submitWiFiAnalyticsMessage:(id)a3
+- (void)submitWiFiAnalyticsMessage:(id)message
 {
-  v8 = a3;
+  messageCopy = message;
   v4 = objc_autoreleasePoolPush();
   v5 = off_100298C40;
   if (off_100298C40)
   {
-    v6 = [v8 metricName];
-    [v5 WFLog:3 message:{"%s Received call to submit WiFi Analytics message with (%@) value", "-[WiFiManagerAnalytics submitWiFiAnalyticsMessage:]", v6}];
+    metricName = [messageCopy metricName];
+    [v5 WFLog:3 message:{"%s Received call to submit WiFi Analytics message with (%@) value", "-[WiFiManagerAnalytics submitWiFiAnalyticsMessage:]", metricName}];
   }
 
   objc_autoreleasePoolPop(v4);
-  v7 = [(WiFiManagerAnalytics *)self waClient];
-  [v7 submitWiFiAnalyticsMessageAdvanced:v8];
+  waClient = [(WiFiManagerAnalytics *)self waClient];
+  [waClient submitWiFiAnalyticsMessageAdvanced:messageCopy];
 }
 
-- (void)submitWiFiAnalytics:(id)a3 data:(id)a4
+- (void)submitWiFiAnalytics:(id)analytics data:(id)data
 {
-  v9 = a3;
-  v6 = a4;
+  analyticsCopy = analytics;
+  dataCopy = data;
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s Received call to submit WiFi Analytics event for %@", "-[WiFiManagerAnalytics submitWiFiAnalytics:data:]", v9}];
+    [off_100298C40 WFLog:3 message:{"%s Received call to submit WiFi Analytics event for %@", "-[WiFiManagerAnalytics submitWiFiAnalytics:data:]", analyticsCopy}];
   }
 
   objc_autoreleasePoolPop(v7);
-  v8 = [(WiFiManagerAnalytics *)self waClient];
-  [v8 submitWiFiAnalytics:v9 data:v6];
+  waClient = [(WiFiManagerAnalytics *)self waClient];
+  [waClient submitWiFiAnalytics:analyticsCopy data:dataCopy];
 }
 
-- (void)triggerDatapathDiagnosticsNoReply:(id)a3
+- (void)triggerDatapathDiagnosticsNoReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(WiFiManagerAnalytics *)self waClient];
+  replyCopy = reply;
+  waClient = [(WiFiManagerAnalytics *)self waClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010B8D8;
   v7[3] = &unk_100262A40;
-  v8 = v4;
-  v6 = v4;
-  [v5 triggerDatapathDiagnosticsAndCollectUpdates:0 waMessage:v6 andReply:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [waClient triggerDatapathDiagnosticsAndCollectUpdates:0 waMessage:v6 andReply:v7];
 }
 
-- (void)setDeviceAnalyticsConfiguration:(id)a3
+- (void)setDeviceAnalyticsConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
-  v5 = [(WiFiManagerAnalytics *)self waClient];
+  waClient = [(WiFiManagerAnalytics *)self waClient];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10010BA9C;
   v6[3] = &unk_100262A68;
   objc_copyWeak(&v7, &location);
-  [v5 setDeviceAnalyticsConfiguration:v4 andReply:v6];
+  [waClient setDeviceAnalyticsConfiguration:configurationCopy andReply:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)getDeviceAnalyticsConfigurationWithCompletion:(id)a3
+- (void)getDeviceAnalyticsConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WiFiManagerAnalytics *)self waClient];
+  completionCopy = completion;
+  waClient = [(WiFiManagerAnalytics *)self waClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010BC08;
   v7[3] = &unk_100262A90;
-  v8 = v4;
-  v6 = v4;
-  [v5 getDeviceAnalyticsConfigurationAndReply:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [waClient getDeviceAnalyticsConfigurationAndReply:v7];
 }
 
-- (void)triggerDeviceAnalyticsStoreMigrationWithCompletion:(id)a3
+- (void)triggerDeviceAnalyticsStoreMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[WAClient sharedClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010BDCC;
   v7[3] = &unk_100262AB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 triggerDeviceAnalyticsStoreMigrationAndReply:v7];
 }
 
@@ -159,19 +159,19 @@
   objc_exception_throw(v2);
 }
 
-- (id)__copyHashOfSSID:(id)a3
+- (id)__copyHashOfSSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
   v5 = +[LSApplicationWorkspace defaultWorkspace];
-  v6 = [v5 deviceIdentifierForVendor];
+  deviceIdentifierForVendor = [v5 deviceIdentifierForVendor];
 
-  if (v6)
+  if (deviceIdentifierForVendor)
   {
-    v7 = [v6 UUIDString];
-    v8 = [v7 cStringUsingEncoding:4];
+    uUIDString = [deviceIdentifierForVendor UUIDString];
+    v8 = [uUIDString cStringUsingEncoding:4];
 
-    v9 = [v3 cStringUsingEncoding:4];
+    v9 = [dCopy cStringUsingEncoding:4];
     *&v10 = 0xAAAAAAAAAAAAAAAALL;
     *(&v10 + 1) = 0xAAAAAAAAAAAAAAAALL;
     macOut[0] = v10;
@@ -196,73 +196,73 @@
   return v13;
 }
 
-- (void)_populateDPSNotificationMessage:(__CFDictionary *)a3 andReply:(id)a4
+- (void)_populateDPSNotificationMessage:(__CFDictionary *)message andReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = +[WAClient sharedClient];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010C774;
   v8[3] = &unk_100262B58;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = replyCopy;
+  messageCopy = message;
+  v7 = replyCopy;
   [v6 getNewMessageForKey:@"DPSN" groupType:4 andReply:v8];
 }
 
-- (void)_populateDPSProbeResultMessage:(id *)a3 andReply:(id)a4
+- (void)_populateDPSProbeResultMessage:(id *)message andReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = +[WAClient sharedClient];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010CC08;
   v8[3] = &unk_100262B58;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = replyCopy;
+  messageCopy = message;
+  v7 = replyCopy;
   [v6 getNewMessageForKey:@"DPSAPS" groupType:4 andReply:v8];
 }
 
-- (void)_populateDPSLinkStateChangeMessage:(id *)a3 andReply:(id)a4
+- (void)_populateDPSLinkStateChangeMessage:(id *)message andReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = +[WAClient sharedClient];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010CEB4;
   v8[3] = &unk_100262B58;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = replyCopy;
+  messageCopy = message;
+  v7 = replyCopy;
   [v6 getNewMessageForKey:@"WFAAWDWADAAD" groupType:4 andReply:v8];
 }
 
-- (void)_populateDPSAPInfoMessage:(__CFDictionary *)a3 andReply:(id)a4
+- (void)_populateDPSAPInfoMessage:(__CFDictionary *)message andReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = +[WAClient sharedClient];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010D170;
   v8[3] = &unk_100262B58;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = replyCopy;
+  messageCopy = message;
+  v7 = replyCopy;
   [v6 getNewMessageForKey:@"WFAAWDWAAAPI" groupType:4 andReply:v8];
 }
 
-- (void)_populateSlowWiFiNotificationMessage:(__CFDictionary *)a3 andReply:(id)a4
+- (void)_populateSlowWiFiNotificationMessage:(__CFDictionary *)message andReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = +[WAClient sharedClient];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010D434;
   v8[3] = &unk_100262B58;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
+  v9 = replyCopy;
+  messageCopy = message;
+  v7 = replyCopy;
   [v6 getNewMessageForKey:@"WFAAWDSWFN" groupType:4 andReply:v8];
 }
 
@@ -286,13 +286,13 @@
   return v2;
 }
 
-- (int)_getAssociationEventIDForEventTypeString:(id)a3
+- (int)_getAssociationEventIDForEventTypeString:(id)string
 {
   v3 = 6;
-  if (a3)
+  if (string)
   {
-    v4 = a3;
-    if ([v4 isEqualToString:@"AUTH"])
+    stringCopy = string;
+    if ([stringCopy isEqualToString:@"AUTH"])
     {
       v5 = 0;
     }
@@ -302,22 +302,22 @@
       v5 = 6;
     }
 
-    if ([v4 isEqualToString:@"ASSOC"])
+    if ([stringCopy isEqualToString:@"ASSOC"])
     {
       v5 = 1;
     }
 
-    if ([v4 isEqualToString:@"ASSOC_DONE"])
+    if ([stringCopy isEqualToString:@"ASSOC_DONE"])
     {
       v5 = 2;
     }
 
-    if ([v4 isEqualToString:@"LINK STATUS EVENT"])
+    if ([stringCopy isEqualToString:@"LINK STATUS EVENT"])
     {
       v5 = 3;
     }
 
-    if ([v4 isEqualToString:@"LINK CHANGED"])
+    if ([stringCopy isEqualToString:@"LINK CHANGED"])
     {
       v6 = 4;
     }
@@ -327,7 +327,7 @@
       v6 = v5;
     }
 
-    v7 = [v4 isEqualToString:@"SSID CHANGED"];
+    v7 = [stringCopy isEqualToString:@"SSID CHANGED"];
 
     if (v7)
     {

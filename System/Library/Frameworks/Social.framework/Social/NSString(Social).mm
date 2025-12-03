@@ -7,9 +7,9 @@
 
 - (id)sl_urlEncodedSHA256
 {
-  v1 = [a1 _SHA256String];
-  v2 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v3 = [v1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  _SHA256String = [self _SHA256String];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v3 = [_SHA256String stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v4 = [v3 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
@@ -23,9 +23,9 @@
 - (id)_SHA256String
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = [a1 UTF8String];
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, md);
+  uTF8String = [self UTF8String];
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, md);
   v3 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
   v4 = [v3 base64EncodedStringWithOptions:0];
 

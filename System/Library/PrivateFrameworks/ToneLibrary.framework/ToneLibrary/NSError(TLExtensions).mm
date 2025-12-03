@@ -34,7 +34,7 @@
     v15 = 0;
   }
 
-  v16 = [a1 errorWithDomain:v11 code:0 userInfo:{v15, v19}];
+  v16 = [self errorWithDomain:v11 code:0 userInfo:{v15, v19}];
 
   v17 = *MEMORY[0x1E69E9840];
 
@@ -43,10 +43,10 @@
 
 - (id)tl_nonRedundantDescription
 {
-  v2 = [a1 description];
-  v3 = [a1 userInfo];
+  v2 = [self description];
+  userInfo = [self userInfo];
   v4 = *MEMORY[0x1E696A578];
-  v5 = [v3 objectForKey:*MEMORY[0x1E696A578]];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

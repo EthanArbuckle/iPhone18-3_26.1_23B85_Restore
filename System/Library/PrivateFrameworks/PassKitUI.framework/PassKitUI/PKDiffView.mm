@@ -1,6 +1,6 @@
 @interface PKDiffView
 - (void)dealloc;
-- (void)performStrokeWithCompletion:(id)a3;
+- (void)performStrokeWithCompletion:(id)completion;
 - (void)updateShapeLayer;
 @end
 
@@ -24,11 +24,11 @@
     v8 = [v7 URLForResource:@"DiffCircle" withExtension:@"caar"];
 
     v9 = [MEMORY[0x1E6979400] packageWithContentsOfURL:v8 type:*MEMORY[0x1E6979EF0] options:0 error:0];
-    v10 = [v9 rootLayer];
+    rootLayer = [v9 rootLayer];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = rootLayer;
     }
 
     else
@@ -70,9 +70,9 @@
     v21 = CGPathCreateMutableCopyByTransformingPath(v16, &transform);
     [(CAShapeLayer *)self->_shapeLayer setPath:v21];
     CFRelease(v21);
-    v22 = [(CAShapeLayer *)self->_shapeLayer mask];
+    mask = [(CAShapeLayer *)self->_shapeLayer mask];
     v26 = transform;
-    [v22 setAffineTransform:&v26];
+    [mask setAffineTransform:&v26];
 
     CGPathRelease(v16);
     shapeLayer = self->_shapeLayer;
@@ -80,14 +80,14 @@
     [(CAShapeLayer *)shapeLayer setFrame:?];
     [(CAShapeLayer *)self->_shapeLayer setGeometryFlipped:1];
     [(CAShapeLayer *)self->_shapeLayer setStrokeEnd:0.0];
-    v24 = [(PKDiffView *)self layer];
-    [v24 addSublayer:self->_shapeLayer];
+    layer = [(PKDiffView *)self layer];
+    [layer addSublayer:self->_shapeLayer];
   }
 }
 
-- (void)performStrokeWithCompletion:(id)a3
+- (void)performStrokeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(PKDiffView *)self updateShapeLayer];
   v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:0];
@@ -100,7 +100,7 @@
   [(CAShapeLayer *)self->_shapeLayer addAnimation:v9 forKey:@"strokeEnd"];
   [MEMORY[0x1E6979518] animationDuration];
   v8 = dispatch_time(0, ((v7 + 0.100000001) * 1000000000.0));
-  dispatch_after(v8, MEMORY[0x1E69E96A0], v4);
+  dispatch_after(v8, MEMORY[0x1E69E96A0], completionCopy);
 }
 
 @end

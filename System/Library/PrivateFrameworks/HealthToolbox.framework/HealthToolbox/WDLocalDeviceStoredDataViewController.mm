@@ -1,78 +1,78 @@
 @interface WDLocalDeviceStoredDataViewController
 - (BOOL)_shouldDisplayPrivacySection;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WDLocalDeviceStoredDataViewController
 
 - (BOOL)_shouldDisplayPrivacySection
 {
-  v2 = [(WDStoredDataByCategoryViewController *)self profile];
-  v3 = [v2 healthStore];
-  v4 = [v3 profileIdentifier];
-  v5 = [v4 type] != 3;
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  v5 = [profileIdentifier type] != 3;
 
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v6.receiver = self;
   v6.super_class = WDLocalDeviceStoredDataViewController;
-  v4 = [(WDStoredDataByCategoryViewController *)&v6 numberOfSectionsInTableView:a3];
+  v4 = [(WDStoredDataByCategoryViewController *)&v6 numberOfSectionsInTableView:view];
   return v4 + [(WDLocalDeviceStoredDataViewController *)self _shouldDisplayPrivacySection];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(WDLocalDeviceStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
-    if (!a4)
+    if (!section)
     {
       v8 = 1;
       goto LABEL_6;
     }
 
-    v7 = [(WDStoredDataByCategoryViewController *)&v10 tableView:v6 numberOfRowsInSection:a4 - 1, self, WDLocalDeviceStoredDataViewController, v11.receiver, v11.super_class];
+    wDLocalDeviceStoredDataViewController = [(WDStoredDataByCategoryViewController *)&v10 tableView:viewCopy numberOfRowsInSection:section - 1, self, WDLocalDeviceStoredDataViewController, v11.receiver, v11.super_class];
   }
 
   else
   {
-    v7 = [(WDStoredDataByCategoryViewController *)&v11 tableView:v6 numberOfRowsInSection:a4, v10.receiver, v10.super_class, self, WDLocalDeviceStoredDataViewController];
+    wDLocalDeviceStoredDataViewController = [(WDStoredDataByCategoryViewController *)&v11 tableView:viewCopy numberOfRowsInSection:section, v10.receiver, v10.super_class, self, WDLocalDeviceStoredDataViewController];
   }
 
-  v8 = v7;
+  v8 = wDLocalDeviceStoredDataViewController;
 LABEL_6:
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(WDLocalDeviceStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
-    v8 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v7 inSection:{"row"), objc_msgSend(v7, "section")}];
-    [(WDStoredDataByCategoryViewController *)&v20 tableView:v6 cellForRowAtIndexPath:v8, v19.receiver, v19.super_class, self, WDLocalDeviceStoredDataViewController];
+    v8 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row"), objc_msgSend(pathCopy, "section")}];
+    [(WDStoredDataByCategoryViewController *)&v20 tableView:viewCopy cellForRowAtIndexPath:v8, v19.receiver, v19.super_class, self, WDLocalDeviceStoredDataViewController];
     goto LABEL_5;
   }
 
-  if ([v7 section])
+  if ([pathCopy section])
   {
-    v8 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v7 inSection:{"row"), objc_msgSend(v7, "section") - 1}];
-    [(WDStoredDataByCategoryViewController *)&v19 tableView:v6 cellForRowAtIndexPath:v8, self, WDLocalDeviceStoredDataViewController, v20.receiver, v20.super_class];
+    v8 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row"), objc_msgSend(pathCopy, "section") - 1}];
+    [(WDStoredDataByCategoryViewController *)&v19 tableView:viewCopy cellForRowAtIndexPath:v8, self, WDLocalDeviceStoredDataViewController, v20.receiver, v20.super_class];
     v9 = LABEL_5:;
 
     goto LABEL_6;
   }
 
-  v9 = [v6 dequeueReusableCellWithIdentifier:@"WDLocalDeviceStoredDataViewControllerCellIdentifier"];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:@"WDLocalDeviceStoredDataViewControllerCellIdentifier"];
   if (!v9)
   {
     v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WDLocalDeviceStoredDataViewControllerCellIdentifier"];
@@ -80,61 +80,61 @@ LABEL_6:
 
   v11 = WDBundle();
   v12 = [v11 localizedStringForKey:@"PRIVACY_SETTINGS" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-  v13 = [v9 textLabel];
-  [v13 setText:v12];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v12];
 
-  v14 = [(WDLocalDeviceStoredDataViewController *)self view];
-  v15 = [v14 tintColor];
-  v16 = [v9 textLabel];
-  [v16 setTextColor:v15];
+  view = [(WDLocalDeviceStoredDataViewController *)self view];
+  tintColor = [view tintColor];
+  textLabel2 = [v9 textLabel];
+  [textLabel2 setTextColor:tintColor];
 
-  v17 = [(WDStoredDataByCategoryViewController *)self bodyFont];
-  v18 = [v9 textLabel];
-  [v18 setFont:v17];
+  bodyFont = [(WDStoredDataByCategoryViewController *)self bodyFont];
+  textLabel3 = [v9 textLabel];
+  [textLabel3 setFont:bodyFont];
 
 LABEL_6:
 
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(WDLocalDeviceStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
-    if (!a4)
+    if (!section)
     {
       goto LABEL_6;
     }
 
-    [(WDStoredDataByCategoryViewController *)&v8 tableView:v6 titleForHeaderInSection:a4 - 1, self, WDLocalDeviceStoredDataViewController, v9.receiver, v9.super_class];
+    [(WDStoredDataByCategoryViewController *)&v8 tableView:viewCopy titleForHeaderInSection:section - 1, self, WDLocalDeviceStoredDataViewController, v9.receiver, v9.super_class];
   }
 
   else
   {
-    [(WDStoredDataByCategoryViewController *)&v9 tableView:v6 titleForHeaderInSection:a4, v8.receiver, v8.super_class, self, WDLocalDeviceStoredDataViewController];
+    [(WDStoredDataByCategoryViewController *)&v9 tableView:viewCopy titleForHeaderInSection:section, v8.receiver, v8.super_class, self, WDLocalDeviceStoredDataViewController];
   }
-  a4 = ;
+  section = ;
 LABEL_6:
 
-  return a4;
+  return section;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 reuseIdentifier];
-  v10 = [v9 isEqualToString:@"WDLocalDeviceStoredDataViewControllerCellIdentifier"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  reuseIdentifier = [v8 reuseIdentifier];
+  v10 = [reuseIdentifier isEqualToString:@"WDLocalDeviceStoredDataViewControllerCellIdentifier"];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [MEMORY[0x277D0FD48] internalPrivacySettingsURLString];
-    v14 = [v12 URLWithString:v13];
-    [v11 openSensitiveURL:v14 withOptions:0];
+    internalPrivacySettingsURLString = [MEMORY[0x277D0FD48] internalPrivacySettingsURLString];
+    v14 = [v12 URLWithString:internalPrivacySettingsURLString];
+    [defaultWorkspace openSensitiveURL:v14 withOptions:0];
 
     [v8 setSelected:0];
   }
@@ -143,7 +143,7 @@ LABEL_6:
   {
     v15.receiver = self;
     v15.super_class = WDLocalDeviceStoredDataViewController;
-    [(WDStoredDataByCategoryViewController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(WDStoredDataByCategoryViewController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

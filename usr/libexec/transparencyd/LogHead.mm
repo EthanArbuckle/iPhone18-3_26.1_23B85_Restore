@@ -26,15 +26,15 @@
   [v3 setObject:v4 forKeyedSubscript:@"logBeginningMs"];
 
   v5 = [NSDate dateWithTimeIntervalSince1970:([(LogHead *)self logBeginningMs]/ 0x3E8)];
-  v6 = [v5 kt_toISO_8601_UTCString];
-  [v3 setObject:v6 forKeyedSubscript:@"logBeginningDateReadable"];
+  kt_toISO_8601_UTCString = [v5 kt_toISO_8601_UTCString];
+  [v3 setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"logBeginningDateReadable"];
 
   v7 = [NSNumber numberWithUnsignedLongLong:[(LogHead *)self logSize]];
   [v3 setObject:v7 forKeyedSubscript:@"logSize"];
 
-  v8 = [(LogHead *)self logHeadHash];
-  v9 = [v8 kt_hexString];
-  [v3 setObject:v9 forKeyedSubscript:@"logHeadHash"];
+  logHeadHash = [(LogHead *)self logHeadHash];
+  kt_hexString = [logHeadHash kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"logHeadHash"];
 
   v10 = [NSNumber numberWithUnsignedLongLong:[(LogHead *)self revision]];
   [v3 setObject:v10 forKeyedSubscript:@"revision"];
@@ -50,8 +50,8 @@
   [v3 setObject:v14 forKeyedSubscript:@"timestampMs"];
 
   v15 = [NSDate dateWithTimeIntervalSince1970:([(LogHead *)self timestampMs]/ 0x3E8)];
-  v16 = [v15 kt_toISO_8601_UTCString];
-  [v3 setObject:v16 forKeyedSubscript:@"timestampReadable"];
+  kt_toISO_8601_UTCString2 = [v15 kt_toISO_8601_UTCString];
+  [v3 setObject:kt_toISO_8601_UTCString2 forKeyedSubscript:@"timestampReadable"];
 
   if (Application_IsValidValue([(LogHead *)self application]))
   {

@@ -1,21 +1,21 @@
 @interface _UITextInteractableLinkItem
-- (BOOL)isEqual:(id)a3;
-- (id)_itemRepresentationWithRange:(_NSRange)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_itemRepresentationWithRange:(_NSRange)range;
 @end
 
 @implementation _UITextInteractableLinkItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _UITextInteractableLinkItem;
-  if ([(_UITextInteractableItem *)&v12 isEqual:v4])
+  if ([(_UITextInteractableItem *)&v12 isEqual:equalCopy])
   {
-    v5 = [v4 link];
-    v6 = [(_UITextInteractableLinkItem *)self link];
-    v7 = v5;
-    v8 = v6;
+    link = [equalCopy link];
+    link2 = [(_UITextInteractableLinkItem *)self link];
+    v7 = link;
+    v8 = link2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -40,12 +40,12 @@
   return v10;
 }
 
-- (id)_itemRepresentationWithRange:(_NSRange)a3
+- (id)_itemRepresentationWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(_UITextInteractableLinkItem *)self link];
-  v6 = [UITextItem _itemWithLink:v5 range:location, length];
+  length = range.length;
+  location = range.location;
+  link = [(_UITextInteractableLinkItem *)self link];
+  v6 = [UITextItem _itemWithLink:link range:location, length];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface MTInterest
-- (MTInterest)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (MTInterest)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation MTInterest
 
-- (MTInterest)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (MTInterest)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MTInterest();
-  return [(MTInterest *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(MTInterest *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

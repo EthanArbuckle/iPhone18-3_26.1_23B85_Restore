@@ -1,30 +1,30 @@
 @interface NavTrafficIncidentCoordinator
-- (BOOL)_alertRequiresOptIn:(id)a3;
-- (BOOL)_alertVotable:(id)a3;
+- (BOOL)_alertRequiresOptIn:(id)in;
+- (BOOL)_alertVotable:(id)votable;
 - (BOOL)_hasValidRerouteTimer;
 - (NavTrafficIncidentContaineeViewController)trafficIncidentViewController;
 - (NavTrafficIncidentCoordinator)init;
 - (NavTrafficIncidentPresentation)presentationDelegate;
 - (double)_timeoutTimerProgress;
-- (int)_GEOTrafficFeedbackTypeForAction:(int64_t)a3;
-- (int)_voteTypeAlertWithResult:(int64_t)a3;
-- (void)_animateProgressWithDuration:(double)a3 startValue:(double)a4;
-- (void)_didBecomeActive:(id)a3;
-- (void)_didVoteAlert:(id)a3 type:(int)a4 target:(int)a5;
-- (void)_dismissTrafficAlertWithActionType:(int64_t)a3 target:(int)a4;
-- (void)_dismissTrafficAlertWithTimer:(id)a3;
-- (void)_getTimeoutTimerProgress:(double *)a3 timeRemaining:(double *)a4;
-- (void)_sendTrafficFeedbackForAlert:(id)a3 actionType:(int)a4;
-- (void)_updateProgressTimerForAlert:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)didTapAcceptButtonOnTrafficIncidentViewControllerTarget:(int)a3;
-- (void)didTapRejectButtonOnTrafficIncidentViewControllerTarget:(int)a3;
-- (void)dismissAlertViewForTrafficIncidentAlert:(id)a3 acceptedNewRoute:(BOOL)a4;
-- (void)dismissAlertViewForTrafficIncidentAlert:(id)a3 actionType:(int64_t)a4 target:(int)a5;
-- (void)dismissVisibleTrafficAlertView:(BOOL)a3;
-- (void)presentAlertViewForTrafficIncidentAlert:(id)a3 responseCallback:(id)a4;
-- (void)setPresentedAlert:(id)a3;
-- (void)updatedAlertViewWithTrafficIncidentAlert:(id)a3;
+- (int)_GEOTrafficFeedbackTypeForAction:(int64_t)action;
+- (int)_voteTypeAlertWithResult:(int64_t)result;
+- (void)_animateProgressWithDuration:(double)duration startValue:(double)value;
+- (void)_didBecomeActive:(id)active;
+- (void)_didVoteAlert:(id)alert type:(int)type target:(int)target;
+- (void)_dismissTrafficAlertWithActionType:(int64_t)type target:(int)target;
+- (void)_dismissTrafficAlertWithTimer:(id)timer;
+- (void)_getTimeoutTimerProgress:(double *)progress timeRemaining:(double *)remaining;
+- (void)_sendTrafficFeedbackForAlert:(id)alert actionType:(int)type;
+- (void)_updateProgressTimerForAlert:(id)alert;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)didTapAcceptButtonOnTrafficIncidentViewControllerTarget:(int)target;
+- (void)didTapRejectButtonOnTrafficIncidentViewControllerTarget:(int)target;
+- (void)dismissAlertViewForTrafficIncidentAlert:(id)alert acceptedNewRoute:(BOOL)route;
+- (void)dismissAlertViewForTrafficIncidentAlert:(id)alert actionType:(int64_t)type target:(int)target;
+- (void)dismissVisibleTrafficAlertView:(BOOL)view;
+- (void)presentAlertViewForTrafficIncidentAlert:(id)alert responseCallback:(id)callback;
+- (void)setPresentedAlert:(id)alert;
+- (void)updatedAlertViewWithTrafficIncidentAlert:(id)alert;
 @end
 
 @implementation NavTrafficIncidentCoordinator
@@ -53,13 +53,13 @@
   return WeakRetained;
 }
 
-- (BOOL)_alertVotable:(id)a3
+- (BOOL)_alertVotable:(id)votable
 {
-  v3 = a3;
-  if ([v3 alertType] == 1 || objc_msgSend(v3, "alertType") == 2)
+  votableCopy = votable;
+  if ([votableCopy alertType] == 1 || objc_msgSend(votableCopy, "alertType") == 2)
   {
-    v4 = [v3 acceptButtonInfo];
-    v5 = v4 != 0;
+    acceptButtonInfo = [votableCopy acceptButtonInfo];
+    v5 = acceptButtonInfo != 0;
   }
 
   else
@@ -70,12 +70,12 @@
   return v5;
 }
 
-- (BOOL)_alertRequiresOptIn:(id)a3
+- (BOOL)_alertRequiresOptIn:(id)in
 {
-  v3 = a3;
-  if ([v3 isReroute])
+  inCopy = in;
+  if ([inCopy isReroute])
   {
-    v4 = [v3 isAutomaticReroute] ^ 1;
+    v4 = [inCopy isAutomaticReroute] ^ 1;
   }
 
   else
@@ -86,72 +86,72 @@
   return v4;
 }
 
-- (void)_sendTrafficFeedbackForAlert:(id)a3 actionType:(int)a4
+- (void)_sendTrafficFeedbackForAlert:(id)alert actionType:(int)type
 {
-  v4 = *&a4;
-  v29 = a3;
+  v4 = *&type;
+  alertCopy = alert;
   v6 = objc_alloc_init(GEOTrafficRerouteFeedback);
-  v7 = [v29 etaResponseID];
-  [v6 setResponseId:v7];
+  etaResponseID = [alertCopy etaResponseID];
+  [v6 setResponseId:etaResponseID];
 
-  v8 = [v29 alternateRoute];
-  v9 = [v8 serverRouteID];
-  [v6 setReroutedRouteID:v9];
+  alternateRoute = [alertCopy alternateRoute];
+  serverRouteID = [alternateRoute serverRouteID];
+  [v6 setReroutedRouteID:serverRouteID];
 
-  [v29 newEstimatedTime];
+  [alertCopy newEstimatedTime];
   [v6 setReroutedRouteTravelTime:v10];
-  v11 = [v29 alternateRoute];
-  [v6 setReroutedRouteHistoricTravelTime:{objc_msgSend(v11, "historicTravelTime")}];
+  alternateRoute2 = [alertCopy alternateRoute];
+  [v6 setReroutedRouteHistoricTravelTime:{objc_msgSend(alternateRoute2, "historicTravelTime")}];
 
-  v12 = [v29 originalRoute];
-  v13 = [v12 serverRouteID];
-  [v6 setOldRouteID:v13];
+  originalRoute = [alertCopy originalRoute];
+  serverRouteID2 = [originalRoute serverRouteID];
+  [v6 setOldRouteID:serverRouteID2];
 
-  [v29 oldEstimatedTime];
+  [alertCopy oldEstimatedTime];
   [v6 setOldRouteTravelTime:v14];
-  [v29 oldHistoricTime];
+  [alertCopy oldHistoricTime];
   [v6 setOldRouteHistoricTravelTime:v15];
-  v16 = [v29 oldRouteIncidents];
-  [v6 setOldRouteIncidents:v16];
+  oldRouteIncidents = [alertCopy oldRouteIncidents];
+  [v6 setOldRouteIncidents:oldRouteIncidents];
 
   [v6 setActionType:v4];
   [v6 setBackgrounded:{+[UIApplication _maps_isAnyApplicationOrCarPlayApplicationSceneForeground](UIApplication, "_maps_isAnyApplicationOrCarPlayApplicationSceneForeground") ^ 1}];
-  v17 = [v29 bannerID];
-  [v6 setDisplayedBannerId:v17];
+  bannerID = [alertCopy bannerID];
+  [v6 setDisplayedBannerId:bannerID];
 
-  [v29 distanceToDestination];
+  [alertCopy distanceToDestination];
   [v6 setDistanceToDestination:?];
-  v18 = [(NavTrafficIncidentCoordinator *)self displayTime];
-  if (v18)
+  displayTime = [(NavTrafficIncidentCoordinator *)self displayTime];
+  if (displayTime)
   {
-    v19 = v18;
-    v20 = [(NavTrafficIncidentCoordinator *)self dismissTime];
+    v19 = displayTime;
+    dismissTime = [(NavTrafficIncidentCoordinator *)self dismissTime];
 
-    if (v20)
+    if (dismissTime)
     {
-      v21 = [(NavTrafficIncidentCoordinator *)self dismissTime];
-      v22 = [(NavTrafficIncidentCoordinator *)self displayTime];
-      [v21 timeIntervalSinceDate:v22];
+      dismissTime2 = [(NavTrafficIncidentCoordinator *)self dismissTime];
+      displayTime2 = [(NavTrafficIncidentCoordinator *)self displayTime];
+      [dismissTime2 timeIntervalSinceDate:displayTime2];
       v24 = v23;
 
       [v6 setBannerDurationSeconds:v24];
     }
   }
 
-  v25 = [v29 alertType];
-  if (v25 <= 7)
+  alertType = [alertCopy alertType];
+  if (alertType <= 7)
   {
-    if (((1 << v25) & 0x18) != 0)
+    if (((1 << alertType) & 0x18) != 0)
     {
       v26 = 2;
       goto LABEL_16;
     }
 
-    if (((1 << v25) & 0x44) != 0)
+    if (((1 << alertType) & 0x44) != 0)
     {
-      v27 = [v29 incident];
+      incident = [alertCopy incident];
 
-      if (v27)
+      if (incident)
       {
         v26 = 5;
       }
@@ -164,13 +164,13 @@
       goto LABEL_16;
     }
 
-    if (((1 << v25) & 0xA0) != 0)
+    if (((1 << alertType) & 0xA0) != 0)
     {
       goto LABEL_11;
     }
   }
 
-  if (!v25)
+  if (!alertType)
   {
 LABEL_11:
     v26 = 0;
@@ -178,7 +178,7 @@ LABEL_11:
 
   else
   {
-    if (v25 != 1)
+    if (alertType != 1)
     {
       goto LABEL_17;
     }
@@ -195,28 +195,28 @@ LABEL_17:
 
 - (BOOL)_hasValidRerouteTimer
 {
-  v3 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
-  if ([v3 isValid])
+  timeoutTimer = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
+  if ([timeoutTimer isValid])
   {
-    v4 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-    if ([v4 isReroute])
+    presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+    if ([presentedAlert isReroute])
     {
-      v5 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-      v6 = [v5 isAutomaticReroute];
+      presentedAlert2 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+      isAutomaticReroute = [presentedAlert2 isAutomaticReroute];
     }
 
     else
     {
-      v6 = 0;
+      isAutomaticReroute = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    isAutomaticReroute = 0;
   }
 
-  return v6;
+  return isAutomaticReroute;
 }
 
 - (double)_timeoutTimerProgress
@@ -226,31 +226,31 @@ LABEL_17:
   return v3;
 }
 
-- (void)_getTimeoutTimerProgress:(double *)a3 timeRemaining:(double *)a4
+- (void)_getTimeoutTimerProgress:(double *)progress timeRemaining:(double *)remaining
 {
-  v7 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  [v7 alertDisplayDuration];
+  presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  [presentedAlert alertDisplayDuration];
   v9 = v8;
 
-  v10 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
-  v11 = [v10 fireDate];
-  [v11 timeIntervalSinceNow];
+  timeoutTimer = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
+  fireDate = [timeoutTimer fireDate];
+  [fireDate timeIntervalSinceNow];
   v12 = 0.0;
   if (v13 > 0.0)
   {
-    v14 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
-    v15 = [v14 fireDate];
-    [v15 timeIntervalSinceNow];
+    timeoutTimer2 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
+    fireDate2 = [timeoutTimer2 fireDate];
+    [fireDate2 timeIntervalSinceNow];
     v12 = v16;
   }
 
   v17 = fmin(v12, v9);
-  if (a4)
+  if (remaining)
   {
-    *a4 = v17;
+    *remaining = v17;
   }
 
-  if (a3)
+  if (progress)
   {
     if (v9 == 0.0)
     {
@@ -262,11 +262,11 @@ LABEL_17:
       v18 = fmin(fmax((v9 - v17) / v9, 0.0), 1.0);
     }
 
-    *a3 = v18;
+    *progress = v18;
   }
 }
 
-- (void)_didBecomeActive:(id)a3
+- (void)_didBecomeActive:(id)active
 {
   if ([(NavTrafficIncidentCoordinator *)self _hasValidRerouteTimer]|| ([(NavTrafficIncidentCoordinator *)self presentedAlert], v4 = objc_claimAutoreleasedReturnValue(), v5 = [(NavTrafficIncidentCoordinator *)self _alertVotable:v4], v4, v5))
   {
@@ -280,19 +280,19 @@ LABEL_17:
   }
 }
 
-- (void)_animateProgressWithDuration:(double)a3 startValue:(double)a4
+- (void)_animateProgressWithDuration:(double)duration startValue:(double)value
 {
-  v7 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-  v8 = [v7 view];
-  v9 = [v8 layer];
-  [v9 removeAllAnimations];
+  trafficIncidentViewController = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+  view = [trafficIncidentViewController view];
+  layer = [view layer];
+  [layer removeAllAnimations];
 
-  v10 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-  [v10 setRerouteTimerProgress:a4];
+  trafficIncidentViewController2 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+  [trafficIncidentViewController2 setRerouteTimerProgress:value];
 
-  v11 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-  v12 = [v11 view];
-  [v12 layoutIfNeeded];
+  trafficIncidentViewController3 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+  view2 = [trafficIncidentViewController3 view];
+  [view2 layoutIfNeeded];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -304,12 +304,12 @@ LABEL_17:
   v13[2] = sub_100713650;
   v13[3] = &unk_101661738;
   v13[4] = self;
-  [UIView animateWithDuration:v14 animations:v13 completion:a3];
+  [UIView animateWithDuration:v14 animations:v13 completion:duration];
 }
 
-- (void)_dismissTrafficAlertWithActionType:(int64_t)a3 target:(int)a4
+- (void)_dismissTrafficAlertWithActionType:(int64_t)type target:(int)target
 {
-  v4 = *&a4;
+  v4 = *&target;
   obj = self;
   objc_sync_enter(obj);
   if ([(NavTrafficIncidentCoordinator *)obj isDismissing]|| ([(NavTrafficIncidentCoordinator *)obj presentedAlert], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
@@ -325,34 +325,34 @@ LABEL_17:
     v7 = +[NSDate date];
     [(NavTrafficIncidentCoordinator *)obj setDismissTime:v7];
 
-    v8 = [(NavTrafficIncidentCoordinator *)obj timeoutTimer];
-    [v8 invalidate];
+    timeoutTimer = [(NavTrafficIncidentCoordinator *)obj timeoutTimer];
+    [timeoutTimer invalidate];
 
     v9 = sub_100713A00();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v24 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Dismissing TrafficAlert with actionType: %ld", buf, 0xCu);
     }
 
-    v10 = [(NavTrafficIncidentCoordinator *)obj trafficIncidentViewController];
-    v11 = [(NavTrafficIncidentCoordinator *)obj presentedAlert];
+    trafficIncidentViewController = [(NavTrafficIncidentCoordinator *)obj trafficIncidentViewController];
+    presentedAlert = [(NavTrafficIncidentCoordinator *)obj presentedAlert];
     [(NavTrafficIncidentCoordinator *)obj setPresentedAlert:0];
-    v12 = [(NavTrafficIncidentCoordinator *)obj responseCallback];
-    v13 = v12 == 0;
+    responseCallback = [(NavTrafficIncidentCoordinator *)obj responseCallback];
+    v13 = responseCallback == 0;
 
     if (!v13)
     {
       v14 = obj;
-      if (a3 == 1)
+      if (type == 1)
       {
         v15 = 1;
       }
 
-      else if (a3 == 6)
+      else if (type == 6)
       {
-        v15 = [(NavTrafficIncidentCoordinator *)obj _alertRequiresOptIn:v11]^ 1;
+        v15 = [(NavTrafficIncidentCoordinator *)obj _alertRequiresOptIn:presentedAlert]^ 1;
         v14 = obj;
       }
 
@@ -361,48 +361,48 @@ LABEL_17:
         v15 = 0;
       }
 
-      v16 = [(NavTrafficIncidentCoordinator *)v14 responseCallback];
-      v16[2](v16, v15);
+      responseCallback2 = [(NavTrafficIncidentCoordinator *)v14 responseCallback];
+      responseCallback2[2](responseCallback2, v15);
 
       [(NavTrafficIncidentCoordinator *)obj setResponseCallback:0];
     }
 
-    v17 = [(NavTrafficIncidentCoordinator *)obj presentationDelegate];
-    [v17 dismissTrafficIncidentViewController:v10];
+    presentationDelegate = [(NavTrafficIncidentCoordinator *)obj presentationDelegate];
+    [presentationDelegate dismissTrafficIncidentViewController:trafficIncidentViewController];
 
-    [(NavTrafficIncidentCoordinator *)obj _sendTrafficFeedbackForAlert:v11 actionType:[(NavTrafficIncidentCoordinator *)obj _GEOTrafficFeedbackTypeForAction:a3]];
+    [(NavTrafficIncidentCoordinator *)obj _sendTrafficFeedbackForAlert:presentedAlert actionType:[(NavTrafficIncidentCoordinator *)obj _GEOTrafficFeedbackTypeForAction:type]];
     v18 = +[IPCServer sharedServer];
-    [v18 dismissTrafficIncidentAlert:v11];
+    [v18 dismissTrafficIncidentAlert:presentedAlert];
 
     v19 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-    v20 = [v11 alertID];
-    [v19 clearTrafficIncidentBulletinWithAlertID:v20];
+    alertID = [presentedAlert alertID];
+    [v19 clearTrafficIncidentBulletinWithAlertID:alertID];
 
-    v21 = ![(NavTrafficIncidentCoordinator *)obj _alertVotable:v11];
-    if (a3 == 5)
+    v21 = ![(NavTrafficIncidentCoordinator *)obj _alertVotable:presentedAlert];
+    if (type == 5)
     {
       LOBYTE(v21) = 1;
     }
 
     if ((v21 & 1) == 0)
     {
-      [(NavTrafficIncidentCoordinator *)obj _didVoteAlert:v11 type:[(NavTrafficIncidentCoordinator *)obj _voteTypeAlertWithResult:a3] target:v4];
+      [(NavTrafficIncidentCoordinator *)obj _didVoteAlert:presentedAlert type:[(NavTrafficIncidentCoordinator *)obj _voteTypeAlertWithResult:type] target:v4];
     }
 
     [(NavTrafficIncidentCoordinator *)obj setIsDismissing:0];
   }
 }
 
-- (void)_dismissTrafficAlertWithTimer:(id)a3
+- (void)_dismissTrafficAlertWithTimer:(id)timer
 {
-  v11 = a3;
-  v4 = [v11 userInfo];
+  timerCopy = timer;
+  userInfo = [timerCopy userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [v11 userInfo];
+    [timerCopy userInfo];
   }
 
   else
@@ -410,10 +410,10 @@ LABEL_17:
     [(NavTrafficIncidentCoordinator *)self presentedAlert];
   }
   v6 = ;
-  v7 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  v8 = [v7 bannerID];
-  v9 = [v6 bannerID];
-  v10 = [v8 isEqualToString:v9];
+  presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  bannerID = [presentedAlert bannerID];
+  bannerID2 = [v6 bannerID];
+  v10 = [bannerID isEqualToString:bannerID2];
 
   if (v10)
   {
@@ -421,16 +421,16 @@ LABEL_17:
   }
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  v10 = [(NavTrafficIncidentCoordinator *)self presentedAlert:a3];
-  v5 = [v10 originalRoute];
-  if ([v5 isEVRoute])
+  v10 = [(NavTrafficIncidentCoordinator *)self presentedAlert:state];
+  originalRoute = [v10 originalRoute];
+  if ([originalRoute isEVRoute])
   {
-    v6 = [v10 originalRouteNavigability];
-    v7 = [v6 isEvFeasible];
+    originalRouteNavigability = [v10 originalRouteNavigability];
+    isEvFeasible = [originalRouteNavigability isEvFeasible];
 
-    if (!v7)
+    if (!isEvFeasible)
     {
       v8 = 6099;
       goto LABEL_6;
@@ -449,87 +449,87 @@ LABEL_6:
   [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:v10 actionType:5 target:739];
 }
 
-- (int)_GEOTrafficFeedbackTypeForAction:(int64_t)a3
+- (int)_GEOTrafficFeedbackTypeForAction:(int64_t)action
 {
-  if ((a3 - 1) > 5)
+  if ((action - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_1012133C8[a3 - 1];
+    return dword_1012133C8[action - 1];
   }
 }
 
-- (int)_voteTypeAlertWithResult:(int64_t)a3
+- (int)_voteTypeAlertWithResult:(int64_t)result
 {
-  if ((a3 - 3) > 3)
+  if ((result - 3) > 3)
   {
     return 1;
   }
 
   else
   {
-    return dword_101212BF0[a3 - 3];
+    return dword_101212BF0[result - 3];
   }
 }
 
-- (void)_didVoteAlert:(id)a3 type:(int)a4 target:(int)a5
+- (void)_didVoteAlert:(id)alert type:(int)type target:(int)target
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
-  v37 = v8;
-  if (v6 != 4 || ([v8 acceptButtonInfo], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "buttonDisplay"), v9, v8 = v37, v10 == 1))
+  v5 = *&target;
+  v6 = *&type;
+  alertCopy = alert;
+  v37 = alertCopy;
+  if (v6 != 4 || ([alertCopy acceptButtonInfo], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "buttonDisplay"), v9, alertCopy = v37, v10 == 1))
   {
-    v11 = [v8 incident];
-    v12 = [v11 incidentId];
+    incident = [alertCopy incident];
+    incidentId = [incident incidentId];
 
-    v13 = [v37 incident];
-    if ([v13 hasPosition])
+    incident2 = [v37 incident];
+    if ([incident2 hasPosition])
     {
       v14 = [GEOLocation alloc];
-      v15 = [v37 incident];
-      v16 = [v15 position];
-      [v16 lat];
+      incident3 = [v37 incident];
+      position = [incident3 position];
+      [position lat];
       v18 = v17;
-      v19 = [v37 incident];
-      v20 = [v19 position];
-      [v20 lng];
-      v22 = [v14 initWithLatitude:v18 longitude:v21];
+      incident4 = [v37 incident];
+      position2 = [incident4 position];
+      [position2 lng];
+      currentLocation = [v14 initWithLatitude:v18 longitude:v21];
     }
 
     else
     {
-      v15 = +[MKLocationManager sharedLocationManager];
-      v22 = [v15 currentLocation];
+      incident3 = +[MKLocationManager sharedLocationManager];
+      currentLocation = [incident3 currentLocation];
     }
 
-    v23 = [v37 incident];
-    v24 = +[MKTrafficSupport GEOTrafficIncidentTypeForGEORouteIncidentType:](MKTrafficSupport, "GEOTrafficIncidentTypeForGEORouteIncidentType:", [v23 type]);
+    incident5 = [v37 incident];
+    v24 = +[MKTrafficSupport GEOTrafficIncidentTypeForGEORouteIncidentType:](MKTrafficSupport, "GEOTrafficIncidentTypeForGEORouteIncidentType:", [incident5 type]);
 
-    v25 = [[TrafficIncidentReport alloc] initWithIncidentLocation:v22 type:v24 userPath:3];
-    v26 = [v37 incident];
+    v25 = [[TrafficIncidentReport alloc] initWithIncidentLocation:currentLocation type:v24 userPath:3];
+    incident6 = [v37 incident];
 
-    if (v6 == 3 && v26)
+    if (v6 == 3 && incident6)
     {
       v27 = [VKTrafficIncidentFeature alloc];
-      v28 = [v37 incident];
-      v29 = [v27 initWithRouteIncident:v28 routeOffsetInMeters:0 routeRelevance:0 onRoute:0];
+      incident7 = [v37 incident];
+      v29 = [v27 initWithRouteIncident:incident7 routeOffsetInMeters:0 routeRelevance:0 onRoute:0];
 
       v30 = +[TrafficIncidentsStorageManager sharedInstance];
       [v30 removeTrafficIncidentFeature:v29];
     }
 
-    [(TrafficIncidentReport *)v25 submitFeedbackForType:v6 incidentId:v12 completionHandler:0];
+    [(TrafficIncidentReport *)v25 submitFeedbackForType:v6 incidentId:incidentId completionHandler:0];
     v31 = +[MKMapService sharedService];
     v32 = [TrafficIncidentReport actionForVoteType:v6];
-    v33 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-    v34 = [v33 incident];
-    v35 = [v34 type];
+    presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+    incident8 = [presentedAlert incident];
+    type = [incident8 type];
     v36 = @"ACCIDENT";
-    switch(v35)
+    switch(type)
     {
       case 0:
         break;
@@ -573,7 +573,7 @@ LABEL_6:
         v36 = @"AREA_INCIDENT";
         break;
       default:
-        if (v35 == 100)
+        if (type == 100)
         {
           v36 = @"TIME_BASED_RESTRICTION";
         }
@@ -581,7 +581,7 @@ LABEL_6:
         else
         {
 LABEL_13:
-          v36 = [NSString stringWithFormat:@"(unknown: %i)", v35];
+          v36 = [NSString stringWithFormat:@"(unknown: %i)", type];
         }
 
         break;
@@ -589,15 +589,15 @@ LABEL_13:
 
     [v31 captureUserAction:v32 onTarget:v5 eventValue:v36];
 
-    v8 = v37;
+    alertCopy = v37;
   }
 }
 
-- (void)didTapAcceptButtonOnTrafficIncidentViewControllerTarget:(int)a3
+- (void)didTapAcceptButtonOnTrafficIncidentViewControllerTarget:(int)target
 {
-  v3 = *&a3;
-  v5 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  if ([v5 isReroute])
+  v3 = *&target;
+  presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  if ([presentedAlert isReroute])
   {
     v6 = 1;
   }
@@ -607,15 +607,15 @@ LABEL_13:
     v6 = 3;
   }
 
-  v7 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:v7 actionType:v6 target:v3];
+  presentedAlert2 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:presentedAlert2 actionType:v6 target:v3];
 }
 
-- (void)didTapRejectButtonOnTrafficIncidentViewControllerTarget:(int)a3
+- (void)didTapRejectButtonOnTrafficIncidentViewControllerTarget:(int)target
 {
-  v3 = *&a3;
-  v5 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  if ([v5 isReroute])
+  v3 = *&target;
+  presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  if ([presentedAlert isReroute])
   {
     v6 = 2;
   }
@@ -625,38 +625,38 @@ LABEL_13:
     v6 = 4;
   }
 
-  v7 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:v7 actionType:v6 target:v3];
+  presentedAlert2 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:presentedAlert2 actionType:v6 target:v3];
 }
 
-- (void)updatedAlertViewWithTrafficIncidentAlert:(id)a3
+- (void)updatedAlertViewWithTrafficIncidentAlert:(id)alert
 {
-  v12 = a3;
-  v4 = [v12 bannerID];
-  v5 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-  v6 = [v5 bannerID];
-  v7 = [v4 isEqualToString:v6];
+  alertCopy = alert;
+  bannerID = [alertCopy bannerID];
+  presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  bannerID2 = [presentedAlert bannerID];
+  v7 = [bannerID isEqualToString:bannerID2];
 
   if (v7)
   {
-    v8 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
-    v9 = [v8 shouldShowTimer];
-    v10 = [v12 shouldShowTimer];
+    presentedAlert2 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+    shouldShowTimer = [presentedAlert2 shouldShowTimer];
+    shouldShowTimer2 = [alertCopy shouldShowTimer];
 
-    if (v9 != v10)
+    if (shouldShowTimer != shouldShowTimer2)
     {
-      [(NavTrafficIncidentCoordinator *)self _updateProgressTimerForAlert:v12];
+      [(NavTrafficIncidentCoordinator *)self _updateProgressTimerForAlert:alertCopy];
     }
 
-    [(NavTrafficIncidentCoordinator *)self setPresentedAlert:v12];
-    v11 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-    [v11 setIncidentAlert:v12];
+    [(NavTrafficIncidentCoordinator *)self setPresentedAlert:alertCopy];
+    trafficIncidentViewController = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+    [trafficIncidentViewController setIncidentAlert:alertCopy];
   }
 }
 
-- (void)dismissVisibleTrafficAlertView:(BOOL)a3
+- (void)dismissVisibleTrafficAlertView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 5;
   }
@@ -669,21 +669,21 @@ LABEL_13:
   [(NavTrafficIncidentCoordinator *)self _dismissTrafficAlertWithActionType:v3 target:739];
 }
 
-- (void)dismissAlertViewForTrafficIncidentAlert:(id)a3 actionType:(int64_t)a4 target:(int)a5
+- (void)dismissAlertViewForTrafficIncidentAlert:(id)alert actionType:(int64_t)type target:(int)target
 {
-  v7 = a3;
-  v8 = [(NavTrafficIncidentCoordinator *)self presentedAlert];
+  alertCopy = alert;
+  presentedAlert = [(NavTrafficIncidentCoordinator *)self presentedAlert];
 
-  if (v8 == v7)
+  if (presentedAlert == alertCopy)
   {
 
-    [(NavTrafficIncidentCoordinator *)self _dismissTrafficAlertWithActionType:a4 target:739];
+    [(NavTrafficIncidentCoordinator *)self _dismissTrafficAlertWithActionType:type target:739];
   }
 }
 
-- (void)dismissAlertViewForTrafficIncidentAlert:(id)a3 acceptedNewRoute:(BOOL)a4
+- (void)dismissAlertViewForTrafficIncidentAlert:(id)alert acceptedNewRoute:(BOOL)route
 {
-  if (a4)
+  if (route)
   {
     v4 = 1;
   }
@@ -693,31 +693,31 @@ LABEL_13:
     v4 = 2;
   }
 
-  [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:a3 actionType:v4 target:739];
+  [(NavTrafficIncidentCoordinator *)self dismissAlertViewForTrafficIncidentAlert:alert actionType:v4 target:739];
 }
 
-- (void)_updateProgressTimerForAlert:(id)a3
+- (void)_updateProgressTimerForAlert:(id)alert
 {
-  v4 = a3;
-  [v4 alertDisplayDuration];
+  alertCopy = alert;
+  [alertCopy alertDisplayDuration];
   v6 = v5;
-  if (![v4 shouldShowTimer] || v6 <= 0.0)
+  if (![alertCopy shouldShowTimer] || v6 <= 0.0)
   {
-    v11 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-    [v11 setProgressionHidden:1];
+    trafficIncidentViewController = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+    [trafficIncidentViewController setProgressionHidden:1];
 
-    v12 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
-    [v12 invalidate];
+    timeoutTimer = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
+    [timeoutTimer invalidate];
 
     goto LABEL_6;
   }
 
-  v7 = [(NavTrafficIncidentCoordinator *)self _alertRequiresOptIn:v4];
-  v8 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-  [v8 setProgressionHidden:v7];
+  v7 = [(NavTrafficIncidentCoordinator *)self _alertRequiresOptIn:alertCopy];
+  trafficIncidentViewController2 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+  [trafficIncidentViewController2 setProgressionHidden:v7];
 
-  v9 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
-  [v9 invalidate];
+  timeoutTimer2 = [(NavTrafficIncidentCoordinator *)self timeoutTimer];
+  [timeoutTimer2 invalidate];
 
   if (v7)
   {
@@ -733,80 +733,80 @@ LABEL_6:
   block[3] = &unk_10165E668;
   block[4] = self;
   v15 = v6;
-  v14 = v4;
+  v14 = alertCopy;
   dispatch_after(v10, &_dispatch_main_q, block);
 
 LABEL_7:
 }
 
-- (void)presentAlertViewForTrafficIncidentAlert:(id)a3 responseCallback:(id)a4
+- (void)presentAlertViewForTrafficIncidentAlert:(id)alert responseCallback:(id)callback
 {
-  v6 = a3;
-  if (v6)
+  alertCopy = alert;
+  if (alertCopy)
   {
-    v7 = a4;
-    [(NavTrafficIncidentCoordinator *)self setPresentedAlert:v6];
-    [(NavTrafficIncidentCoordinator *)self setResponseCallback:v7];
+    callbackCopy = callback;
+    [(NavTrafficIncidentCoordinator *)self setPresentedAlert:alertCopy];
+    [(NavTrafficIncidentCoordinator *)self setResponseCallback:callbackCopy];
 
     v8 = +[NSDate date];
     [(NavTrafficIncidentCoordinator *)self setDisplayTime:v8];
 
     [(NavTrafficIncidentCoordinator *)self setDismissTime:0];
-    v9 = [v6 isReroute];
-    [v6 alertDisplayDuration];
+    isReroute = [alertCopy isReroute];
+    [alertCopy alertDisplayDuration];
     v11 = v10;
     v12 = 1;
-    if ([v6 shouldShowTimer] && v11 > 0.0)
+    if ([alertCopy shouldShowTimer] && v11 > 0.0)
     {
-      v12 = [(NavTrafficIncidentCoordinator *)self _alertRequiresOptIn:v6];
+      v12 = [(NavTrafficIncidentCoordinator *)self _alertRequiresOptIn:alertCopy];
     }
 
-    v13 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-    [v13 setIncidentAlert:v6];
+    trafficIncidentViewController = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+    [trafficIncidentViewController setIncidentAlert:alertCopy];
 
-    v14 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
-    [v14 setProgressionHidden:v12];
+    trafficIncidentViewController2 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+    [trafficIncidentViewController2 setProgressionHidden:v12];
 
-    [(NavTrafficIncidentCoordinator *)self _updateProgressTimerForAlert:v6];
-    v15 = [(NavTrafficIncidentCoordinator *)self presentationDelegate];
-    v16 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
+    [(NavTrafficIncidentCoordinator *)self _updateProgressTimerForAlert:alertCopy];
+    presentationDelegate = [(NavTrafficIncidentCoordinator *)self presentationDelegate];
+    trafficIncidentViewController3 = [(NavTrafficIncidentCoordinator *)self trafficIncidentViewController];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100714824;
     v24[3] = &unk_1016574C0;
     v24[4] = self;
-    v25 = v9;
-    [v15 presentTrafficIncidentViewController:v16 completion:v24];
+    v25 = isReroute;
+    [presentationDelegate presentTrafficIncidentViewController:trafficIncidentViewController3 completion:v24];
 
     v17 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-    v18 = [v6 alertID];
-    v19 = [v6 isReroute];
-    v20 = [v6 alertTitles];
-    v21 = [v20 firstObject];
-    v22 = [v6 alertDescriptions];
-    v23 = [v22 firstObject];
-    [v17 showTrafficIncidentAlertWithID:v18 withReroute:v19 title:v21 description:v23];
+    alertID = [alertCopy alertID];
+    isReroute2 = [alertCopy isReroute];
+    alertTitles = [alertCopy alertTitles];
+    firstObject = [alertTitles firstObject];
+    alertDescriptions = [alertCopy alertDescriptions];
+    firstObject2 = [alertDescriptions firstObject];
+    [v17 showTrafficIncidentAlertWithID:alertID withReroute:isReroute2 title:firstObject description:firstObject2];
 
-    [(NavTrafficIncidentCoordinator *)self _sendTrafficFeedbackForAlert:v6 actionType:4];
+    [(NavTrafficIncidentCoordinator *)self _sendTrafficFeedbackForAlert:alertCopy actionType:4];
   }
 }
 
-- (void)setPresentedAlert:(id)a3
+- (void)setPresentedAlert:(id)alert
 {
-  v5 = a3;
-  if (self->_presentedAlert != v5)
+  alertCopy = alert;
+  if (self->_presentedAlert != alertCopy)
   {
     v6 = sub_100713A00();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v5;
+      v10 = alertCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Updating traffic incident alert: %@", &v7, 0x16u);
     }
 
-    objc_storeStrong(&self->_presentedAlert, a3);
+    objc_storeStrong(&self->_presentedAlert, alert);
   }
 }
 

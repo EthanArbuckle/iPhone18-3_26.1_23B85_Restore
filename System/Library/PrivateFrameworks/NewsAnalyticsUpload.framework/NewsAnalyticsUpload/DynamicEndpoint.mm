@@ -1,7 +1,7 @@
 @interface DynamicEndpoint
 - (NSString)name;
 - (NSURL)url;
-- (id)endpointURLWithContentType:(int64_t)a3;
+- (id)endpointURLWithContentType:(int64_t)type;
 @end
 
 @implementation DynamicEndpoint
@@ -33,13 +33,13 @@
   return v2;
 }
 
-- (id)endpointURLWithContentType:(int64_t)a3
+- (id)endpointURLWithContentType:(int64_t)type
 {
   v4 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FBDEBC8, &unk_25BE167A0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v6 = &v13 - v5;
 
-  sub_25BE03BE4(a3, v6);
+  sub_25BE03BE4(type, v6);
 
   v7 = sub_25BE14C88();
   v8 = *(v7 - 8);

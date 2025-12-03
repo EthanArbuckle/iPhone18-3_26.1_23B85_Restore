@@ -1,19 +1,19 @@
 @interface CLBarometerCalibrationSourceLocation
-- (CLBarometerCalibrationSourceLocation)initWithUniverse:(id)a3 delegate:(id)a4;
-- (void)copyLocationFields:(shared_ptr<CLBarometerCalibration_Types:(NotificationData *)a4 :CLBarometerCalibrationLocationData>)a3 fromData:;
+- (CLBarometerCalibrationSourceLocation)initWithUniverse:(id)universe delegate:(id)delegate;
+- (void)copyLocationFields:(shared_ptr<CLBarometerCalibration_Types:(NotificationData *)fields :CLBarometerCalibrationLocationData>)a3 fromData:;
 - (void)disableSource;
 - (void)enableSource;
-- (void)onLocationNotification:(int)a3 data:(NotificationData *)a4;
-- (void)updateAltitudeStateWithLocationData:(shared_ptr<CLBarometerCalibration_Types:(double)a4 :(double)a5 CLBarometerCalibrationLocationData>)a3 sampleAltitude:sampleVerticalUncertainty:;
+- (void)onLocationNotification:(int)notification data:(NotificationData *)data;
+- (void)updateAltitudeStateWithLocationData:(shared_ptr<CLBarometerCalibration_Types:(double)data :(double)a5 CLBarometerCalibrationLocationData>)a3 sampleAltitude:sampleVerticalUncertainty:;
 @end
 
 @implementation CLBarometerCalibrationSourceLocation
 
-- (CLBarometerCalibrationSourceLocation)initWithUniverse:(id)a3 delegate:(id)a4
+- (CLBarometerCalibrationSourceLocation)initWithUniverse:(id)universe delegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CLBarometerCalibrationSourceLocation;
-  if ([(CLBarometerCalibrationSource *)&v5 initWithUniverse:a3 delegate:a4])
+  if ([(CLBarometerCalibrationSource *)&v5 initWithUniverse:universe delegate:delegate])
   {
     sub_100678564();
   }
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)onLocationNotification:(int)a3 data:(NotificationData *)a4
+- (void)onLocationNotification:(int)notification data:(NotificationData *)data
 {
-  sub_100022008(v7, a4);
+  sub_100022008(v7, data);
   v5 = [CLBarometerCalibrationSourceAggregator isLocationUsefulForCalibration:v7];
 
   if (v12)
@@ -74,7 +74,7 @@
     sub_100008080(v8);
   }
 
-  if (a3 == 4)
+  if (notification == 4)
   {
     v6 = v5;
   }
@@ -90,7 +90,7 @@
   }
 }
 
-- (void)copyLocationFields:(shared_ptr<CLBarometerCalibration_Types:(NotificationData *)a4 :CLBarometerCalibrationLocationData>)a3 fromData:
+- (void)copyLocationFields:(shared_ptr<CLBarometerCalibration_Types:(NotificationData *)fields :CLBarometerCalibrationLocationData>)a3 fromData:
 {
   v4 = *a3.var0;
   *v4 = *(a3.var1 + 76);
@@ -110,7 +110,7 @@
   *(v4 + 152) = *(a3.var1 + 62);
 }
 
-- (void)updateAltitudeStateWithLocationData:(shared_ptr<CLBarometerCalibration_Types:(double)a4 :(double)a5 CLBarometerCalibrationLocationData>)a3 sampleAltitude:sampleVerticalUncertainty:
+- (void)updateAltitudeStateWithLocationData:(shared_ptr<CLBarometerCalibration_Types:(double)data :(double)a5 CLBarometerCalibrationLocationData>)a3 sampleAltitude:sampleVerticalUncertainty:
 {
   var0 = a3.var0;
   if (*(*a3.var0 + 100) != 1 || (v9 = **a3.var0, [(CLBarometerCalibrationSourceClient *)self->super._delegate getLastAltitudeTime], vabdd_f64(v9, v10) >= 5.0))
@@ -119,9 +119,9 @@
     goto LABEL_12;
   }
 
-  v11 = [(CLBarometerCalibrationSourceClient *)self->super._delegate isInOutdoorWorkout];
+  isInOutdoorWorkout = [(CLBarometerCalibrationSourceClient *)self->super._delegate isInOutdoorWorkout];
   v12 = *var0;
-  if (v11)
+  if (isInOutdoorWorkout)
   {
     *(v12 + 65) |= 2u;
   }
@@ -237,7 +237,7 @@ LABEL_12:
     v43 = 1024;
     *v44 = v23;
     *&v44[4] = 2048;
-    *&v44[6] = a4;
+    *&v44[6] = data;
     *&v44[14] = 2048;
     *&v44[16] = a5;
     *&v44[24] = 2048;

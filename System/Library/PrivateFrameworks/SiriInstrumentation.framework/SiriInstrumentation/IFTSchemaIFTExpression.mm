@@ -1,5 +1,5 @@
 @interface IFTSchemaIFTExpression
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTCallExpression)call;
 - (IFTSchemaIFTCancelExpression)cancel;
 - (IFTSchemaIFTConfirmExpression)confirm;
@@ -7,8 +7,8 @@
 - (IFTSchemaIFTDotExpression)dot;
 - (IFTSchemaIFTEndOfPlanExpression)endOfPlan;
 - (IFTSchemaIFTExplicitResolutionRequest)explicitResolutionRequest;
-- (IFTSchemaIFTExpression)initWithDictionary:(id)a3;
-- (IFTSchemaIFTExpression)initWithJSON:(id)a3;
+- (IFTSchemaIFTExpression)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTExpression)initWithJSON:(id)n;
 - (IFTSchemaIFTFormatExpression)format;
 - (IFTSchemaIFTGetMentionedAppsExpression)getMentionedApps;
 - (IFTSchemaIFTIndexExpression)index;
@@ -29,7 +29,7 @@
 - (IFTSchemaIFTUpdateParametersExpression)updateParameters;
 - (IFTSchemaIFTValueExpression)value;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -59,46 +59,46 @@
 - (void)deleteUndo;
 - (void)deleteUpdateParameters;
 - (void)deleteValue;
-- (void)setCall:(id)a3;
-- (void)setCancel:(id)a3;
-- (void)setConfirm:(id)a3;
-- (void)setContinuePlanning:(id)a3;
-- (void)setDot:(id)a3;
-- (void)setEndOfPlan:(id)a3;
-- (void)setExplicitResolutionRequest:(id)a3;
-- (void)setFormat:(id)a3;
-- (void)setGetMentionedApps:(id)a3;
-- (void)setIndex:(id)a3;
-- (void)setInfix:(id)a3;
-- (void)setNoMatchingTool:(id)a3;
-- (void)setOpen:(id)a3;
-- (void)setPayload:(id)a3;
-- (void)setPick:(id)a3;
-- (void)setPickOne:(id)a3;
-- (void)setPrefix:(id)a3;
-- (void)setReject:(id)a3;
-- (void)setResolveTool:(id)a3;
-- (void)setSay:(id)a3;
-- (void)setSearch:(id)a3;
-- (void)setStatementId:(id)a3;
-- (void)setStructuredSearch:(id)a3;
-- (void)setUndo:(id)a3;
-- (void)setUpdateParameters:(id)a3;
-- (void)setValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCall:(id)call;
+- (void)setCancel:(id)cancel;
+- (void)setConfirm:(id)confirm;
+- (void)setContinuePlanning:(id)planning;
+- (void)setDot:(id)dot;
+- (void)setEndOfPlan:(id)plan;
+- (void)setExplicitResolutionRequest:(id)request;
+- (void)setFormat:(id)format;
+- (void)setGetMentionedApps:(id)apps;
+- (void)setIndex:(id)index;
+- (void)setInfix:(id)infix;
+- (void)setNoMatchingTool:(id)tool;
+- (void)setOpen:(id)open;
+- (void)setPayload:(id)payload;
+- (void)setPick:(id)pick;
+- (void)setPickOne:(id)one;
+- (void)setPrefix:(id)prefix;
+- (void)setReject:(id)reject;
+- (void)setResolveTool:(id)tool;
+- (void)setSay:(id)say;
+- (void)setSearch:(id)search;
+- (void)setStatementId:(id)id;
+- (void)setStructuredSearch:(id)search;
+- (void)setUndo:(id)undo;
+- (void)setUpdateParameters:(id)parameters;
+- (void)setValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTExpression
 
-- (IFTSchemaIFTExpression)initWithDictionary:(id)a3
+- (IFTSchemaIFTExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v79.receiver = self;
   v79.super_class = IFTSchemaIFTExpression;
   v5 = [(IFTSchemaIFTExpression *)&v79 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"value"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
       [(IFTSchemaIFTExpression *)v5 setValue:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"statementId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
       [(IFTSchemaIFTExpression *)v5 setStatementId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"prefix"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"prefix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
       [(IFTSchemaIFTExpression *)v5 setPrefix:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"infix"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"infix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,7 +130,7 @@
       [(IFTSchemaIFTExpression *)v5 setInfix:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"dot"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"dot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
       [(IFTSchemaIFTExpression *)v5 setDot:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"index"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
       [(IFTSchemaIFTExpression *)v5 setIndex:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"updateParameters"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"updateParameters"];
     objc_opt_class();
     v78 = v18;
     if (objc_opt_isKindOfClass())
@@ -155,7 +155,7 @@
       [(IFTSchemaIFTExpression *)v5 setUpdateParameters:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"call"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"call"];
     objc_opt_class();
     v77 = v20;
     if (objc_opt_isKindOfClass())
@@ -164,7 +164,7 @@
       [(IFTSchemaIFTExpression *)v5 setCall:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"say"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"say"];
     objc_opt_class();
     v76 = v22;
     if (objc_opt_isKindOfClass())
@@ -173,7 +173,7 @@
       [(IFTSchemaIFTExpression *)v5 setSay:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"pick"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"pick"];
     objc_opt_class();
     v75 = v24;
     if (objc_opt_isKindOfClass())
@@ -182,7 +182,7 @@
       [(IFTSchemaIFTExpression *)v5 setPick:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"confirm"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"confirm"];
     objc_opt_class();
     v74 = v26;
     if (objc_opt_isKindOfClass())
@@ -191,7 +191,7 @@
       [(IFTSchemaIFTExpression *)v5 setConfirm:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"search"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"search"];
     objc_opt_class();
     v73 = v28;
     if (objc_opt_isKindOfClass())
@@ -200,7 +200,7 @@
       [(IFTSchemaIFTExpression *)v5 setSearch:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"pickOne"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"pickOne"];
     objc_opt_class();
     v72 = v30;
     if (objc_opt_isKindOfClass())
@@ -209,7 +209,7 @@
       [(IFTSchemaIFTExpression *)v5 setPickOne:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"resolveTool"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"resolveTool"];
     objc_opt_class();
     v71 = v32;
     if (objc_opt_isKindOfClass())
@@ -218,7 +218,7 @@
       [(IFTSchemaIFTExpression *)v5 setResolveTool:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"undo"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"undo"];
     objc_opt_class();
     v70 = v34;
     if (objc_opt_isKindOfClass())
@@ -227,7 +227,7 @@
       [(IFTSchemaIFTExpression *)v5 setUndo:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"reject"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"reject"];
     objc_opt_class();
     v69 = v36;
     if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@
       [(IFTSchemaIFTExpression *)v5 setReject:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"cancel"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"cancel"];
     objc_opt_class();
     v68 = v38;
     if (objc_opt_isKindOfClass())
@@ -245,7 +245,7 @@
       [(IFTSchemaIFTExpression *)v5 setCancel:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"noMatchingTool"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"noMatchingTool"];
     objc_opt_class();
     v67 = v40;
     if (objc_opt_isKindOfClass())
@@ -255,7 +255,7 @@
     }
 
     v65 = v8;
-    v42 = [v4 objectForKeyedSubscript:@"continuePlanning"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"continuePlanning"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -264,7 +264,7 @@
     }
 
     v64 = v10;
-    v44 = [v4 objectForKeyedSubscript:{@"endOfPlan", v42}];
+    v44 = [dictionaryCopy objectForKeyedSubscript:{@"endOfPlan", v42}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -273,7 +273,7 @@
     }
 
     v63 = v12;
-    v46 = [v4 objectForKeyedSubscript:@"getMentionedApps"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"getMentionedApps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -282,7 +282,7 @@
     }
 
     v62 = v14;
-    v48 = [v4 objectForKeyedSubscript:@"open"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"open"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -291,7 +291,7 @@
     }
 
     v61 = v16;
-    v50 = [v4 objectForKeyedSubscript:@"explicitResolutionRequest"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"explicitResolutionRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -300,7 +300,7 @@
     }
 
     v66 = v6;
-    v52 = [v4 objectForKeyedSubscript:@"payload"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"payload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -308,7 +308,7 @@
       [(IFTSchemaIFTExpression *)v5 setPayload:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"format"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"format"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -316,7 +316,7 @@
       [(IFTSchemaIFTExpression *)v5 setFormat:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"structuredSearch"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"structuredSearch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -330,30 +330,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTExpression)initWithJSON:(id)a3
+- (IFTSchemaIFTExpression)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTExpression *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTExpression *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTExpression *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -366,427 +366,427 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_call)
   {
-    v4 = [(IFTSchemaIFTExpression *)self call];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    call = [(IFTSchemaIFTExpression *)self call];
+    dictionaryRepresentation = [call dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"call"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"call"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"call"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"call"];
     }
   }
 
   if (self->_cancel)
   {
-    v7 = [(IFTSchemaIFTExpression *)self cancel];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cancel = [(IFTSchemaIFTExpression *)self cancel];
+    dictionaryRepresentation2 = [cancel dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cancel"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cancel"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cancel"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cancel"];
     }
   }
 
   if (self->_confirm)
   {
-    v10 = [(IFTSchemaIFTExpression *)self confirm];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    confirm = [(IFTSchemaIFTExpression *)self confirm];
+    dictionaryRepresentation3 = [confirm dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"confirm"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"confirm"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"confirm"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"confirm"];
     }
   }
 
   if (self->_continuePlanning)
   {
-    v13 = [(IFTSchemaIFTExpression *)self continuePlanning];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    continuePlanning = [(IFTSchemaIFTExpression *)self continuePlanning];
+    dictionaryRepresentation4 = [continuePlanning dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"continuePlanning"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"continuePlanning"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"continuePlanning"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"continuePlanning"];
     }
   }
 
   if (self->_dot)
   {
     v16 = [(IFTSchemaIFTExpression *)self dot];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    dictionaryRepresentation5 = [v16 dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"dot"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"dot"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"dot"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"dot"];
     }
   }
 
   if (self->_endOfPlan)
   {
-    v19 = [(IFTSchemaIFTExpression *)self endOfPlan];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    endOfPlan = [(IFTSchemaIFTExpression *)self endOfPlan];
+    dictionaryRepresentation6 = [endOfPlan dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"endOfPlan"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"endOfPlan"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"endOfPlan"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"endOfPlan"];
     }
   }
 
   if (self->_explicitResolutionRequest)
   {
-    v22 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    explicitResolutionRequest = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+    dictionaryRepresentation7 = [explicitResolutionRequest dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"explicitResolutionRequest"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"explicitResolutionRequest"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"explicitResolutionRequest"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"explicitResolutionRequest"];
     }
   }
 
   if (self->_format)
   {
-    v25 = [(IFTSchemaIFTExpression *)self format];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    format = [(IFTSchemaIFTExpression *)self format];
+    dictionaryRepresentation8 = [format dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"format"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"format"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"format"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"format"];
     }
   }
 
   if (self->_getMentionedApps)
   {
-    v28 = [(IFTSchemaIFTExpression *)self getMentionedApps];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    getMentionedApps = [(IFTSchemaIFTExpression *)self getMentionedApps];
+    dictionaryRepresentation9 = [getMentionedApps dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"getMentionedApps"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"getMentionedApps"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"getMentionedApps"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"getMentionedApps"];
     }
   }
 
   if (self->_index)
   {
-    v31 = [(IFTSchemaIFTExpression *)self index];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    index = [(IFTSchemaIFTExpression *)self index];
+    dictionaryRepresentation10 = [index dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"index"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"index"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"index"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"index"];
     }
   }
 
   if (self->_infix)
   {
-    v34 = [(IFTSchemaIFTExpression *)self infix];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    infix = [(IFTSchemaIFTExpression *)self infix];
+    dictionaryRepresentation11 = [infix dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"infix"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"infix"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"infix"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"infix"];
     }
   }
 
   if (self->_noMatchingTool)
   {
-    v37 = [(IFTSchemaIFTExpression *)self noMatchingTool];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    noMatchingTool = [(IFTSchemaIFTExpression *)self noMatchingTool];
+    dictionaryRepresentation12 = [noMatchingTool dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"noMatchingTool"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"noMatchingTool"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"noMatchingTool"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"noMatchingTool"];
     }
   }
 
   if (self->_open)
   {
-    v40 = [(IFTSchemaIFTExpression *)self open];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    open = [(IFTSchemaIFTExpression *)self open];
+    dictionaryRepresentation13 = [open dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"open"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"open"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"open"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"open"];
     }
   }
 
   if (self->_payload)
   {
-    v43 = [(IFTSchemaIFTExpression *)self payload];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    payload = [(IFTSchemaIFTExpression *)self payload];
+    dictionaryRepresentation14 = [payload dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"payload"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"payload"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"payload"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"payload"];
     }
   }
 
   if (self->_pick)
   {
-    v46 = [(IFTSchemaIFTExpression *)self pick];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    pick = [(IFTSchemaIFTExpression *)self pick];
+    dictionaryRepresentation15 = [pick dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"pick"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"pick"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"pick"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"pick"];
     }
   }
 
   if (self->_pickOne)
   {
-    v49 = [(IFTSchemaIFTExpression *)self pickOne];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    pickOne = [(IFTSchemaIFTExpression *)self pickOne];
+    dictionaryRepresentation16 = [pickOne dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"pickOne"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"pickOne"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"pickOne"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"pickOne"];
     }
   }
 
   if (self->_prefix)
   {
-    v52 = [(IFTSchemaIFTExpression *)self prefix];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    prefix = [(IFTSchemaIFTExpression *)self prefix];
+    dictionaryRepresentation17 = [prefix dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"prefix"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"prefix"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"prefix"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"prefix"];
     }
   }
 
   if (self->_reject)
   {
-    v55 = [(IFTSchemaIFTExpression *)self reject];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    reject = [(IFTSchemaIFTExpression *)self reject];
+    dictionaryRepresentation18 = [reject dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"reject"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"reject"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"reject"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"reject"];
     }
   }
 
   if (self->_resolveTool)
   {
-    v58 = [(IFTSchemaIFTExpression *)self resolveTool];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    resolveTool = [(IFTSchemaIFTExpression *)self resolveTool];
+    dictionaryRepresentation19 = [resolveTool dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"resolveTool"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"resolveTool"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"resolveTool"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"resolveTool"];
     }
   }
 
   if (self->_say)
   {
     v61 = [(IFTSchemaIFTExpression *)self say];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    dictionaryRepresentation20 = [v61 dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"say"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"say"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"say"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"say"];
     }
   }
 
   if (self->_search)
   {
-    v64 = [(IFTSchemaIFTExpression *)self search];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    search = [(IFTSchemaIFTExpression *)self search];
+    dictionaryRepresentation21 = [search dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"search"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"search"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"search"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"search"];
     }
   }
 
   if (self->_statementId)
   {
-    v67 = [(IFTSchemaIFTExpression *)self statementId];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    statementId = [(IFTSchemaIFTExpression *)self statementId];
+    dictionaryRepresentation22 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"statementId"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_structuredSearch)
   {
-    v70 = [(IFTSchemaIFTExpression *)self structuredSearch];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    structuredSearch = [(IFTSchemaIFTExpression *)self structuredSearch];
+    dictionaryRepresentation23 = [structuredSearch dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"structuredSearch"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"structuredSearch"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"structuredSearch"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"structuredSearch"];
     }
   }
 
   if (self->_undo)
   {
-    v73 = [(IFTSchemaIFTExpression *)self undo];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    undo = [(IFTSchemaIFTExpression *)self undo];
+    dictionaryRepresentation24 = [undo dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"undo"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"undo"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"undo"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"undo"];
     }
   }
 
   if (self->_updateParameters)
   {
-    v76 = [(IFTSchemaIFTExpression *)self updateParameters];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    updateParameters = [(IFTSchemaIFTExpression *)self updateParameters];
+    dictionaryRepresentation25 = [updateParameters dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"updateParameters"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"updateParameters"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"updateParameters"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"updateParameters"];
     }
   }
 
   if (self->_value)
   {
-    v79 = [(IFTSchemaIFTExpression *)self value];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    value = [(IFTSchemaIFTExpression *)self value];
+    dictionaryRepresentation26 = [value dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"value"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"value"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"value"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v82 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v82 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -819,34 +819,34 @@
   return v24 ^ v27 ^ [(IFTSchemaIFTStructuredSearchExpression *)self->_structuredSearch hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_133;
   }
 
   whichOneof_Expression = self->_whichOneof_Expression;
-  if (whichOneof_Expression != [v4 whichOneof_Expression])
+  if (whichOneof_Expression != [equalCopy whichOneof_Expression])
   {
     goto LABEL_133;
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self value];
-  v7 = [v4 value];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self value];
+  value2 = [equalCopy value];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v8 = [(IFTSchemaIFTExpression *)self value];
-  if (v8)
+  value3 = [(IFTSchemaIFTExpression *)self value];
+  if (value3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTExpression *)self value];
-    v11 = [v4 value];
-    v12 = [v10 isEqual:v11];
+    v9 = value3;
+    value4 = [(IFTSchemaIFTExpression *)self value];
+    value5 = [equalCopy value];
+    v12 = [value4 isEqual:value5];
 
     if (!v12)
     {
@@ -858,20 +858,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self statementId];
-  v7 = [v4 statementId];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self statementId];
+  value2 = [equalCopy statementId];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v13 = [(IFTSchemaIFTExpression *)self statementId];
-  if (v13)
+  statementId = [(IFTSchemaIFTExpression *)self statementId];
+  if (statementId)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTExpression *)self statementId];
-    v16 = [v4 statementId];
-    v17 = [v15 isEqual:v16];
+    v14 = statementId;
+    statementId2 = [(IFTSchemaIFTExpression *)self statementId];
+    statementId3 = [equalCopy statementId];
+    v17 = [statementId2 isEqual:statementId3];
 
     if (!v17)
     {
@@ -883,20 +883,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self prefix];
-  v7 = [v4 prefix];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self prefix];
+  value2 = [equalCopy prefix];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v18 = [(IFTSchemaIFTExpression *)self prefix];
-  if (v18)
+  prefix = [(IFTSchemaIFTExpression *)self prefix];
+  if (prefix)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTExpression *)self prefix];
-    v21 = [v4 prefix];
-    v22 = [v20 isEqual:v21];
+    v19 = prefix;
+    prefix2 = [(IFTSchemaIFTExpression *)self prefix];
+    prefix3 = [equalCopy prefix];
+    v22 = [prefix2 isEqual:prefix3];
 
     if (!v22)
     {
@@ -908,20 +908,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self infix];
-  v7 = [v4 infix];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self infix];
+  value2 = [equalCopy infix];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v23 = [(IFTSchemaIFTExpression *)self infix];
-  if (v23)
+  infix = [(IFTSchemaIFTExpression *)self infix];
+  if (infix)
   {
-    v24 = v23;
-    v25 = [(IFTSchemaIFTExpression *)self infix];
-    v26 = [v4 infix];
-    v27 = [v25 isEqual:v26];
+    v24 = infix;
+    infix2 = [(IFTSchemaIFTExpression *)self infix];
+    infix3 = [equalCopy infix];
+    v27 = [infix2 isEqual:infix3];
 
     if (!v27)
     {
@@ -933,9 +933,9 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self dot];
-  v7 = [v4 dot];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self dot];
+  value2 = [equalCopy dot];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
@@ -945,7 +945,7 @@
   {
     v29 = v28;
     v30 = [(IFTSchemaIFTExpression *)self dot];
-    v31 = [v4 dot];
+    v31 = [equalCopy dot];
     v32 = [v30 isEqual:v31];
 
     if (!v32)
@@ -958,20 +958,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self index];
-  v7 = [v4 index];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self index];
+  value2 = [equalCopy index];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v33 = [(IFTSchemaIFTExpression *)self index];
-  if (v33)
+  index = [(IFTSchemaIFTExpression *)self index];
+  if (index)
   {
-    v34 = v33;
-    v35 = [(IFTSchemaIFTExpression *)self index];
-    v36 = [v4 index];
-    v37 = [v35 isEqual:v36];
+    v34 = index;
+    index2 = [(IFTSchemaIFTExpression *)self index];
+    index3 = [equalCopy index];
+    v37 = [index2 isEqual:index3];
 
     if (!v37)
     {
@@ -983,20 +983,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self updateParameters];
-  v7 = [v4 updateParameters];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self updateParameters];
+  value2 = [equalCopy updateParameters];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v38 = [(IFTSchemaIFTExpression *)self updateParameters];
-  if (v38)
+  updateParameters = [(IFTSchemaIFTExpression *)self updateParameters];
+  if (updateParameters)
   {
-    v39 = v38;
-    v40 = [(IFTSchemaIFTExpression *)self updateParameters];
-    v41 = [v4 updateParameters];
-    v42 = [v40 isEqual:v41];
+    v39 = updateParameters;
+    updateParameters2 = [(IFTSchemaIFTExpression *)self updateParameters];
+    updateParameters3 = [equalCopy updateParameters];
+    v42 = [updateParameters2 isEqual:updateParameters3];
 
     if (!v42)
     {
@@ -1008,20 +1008,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self call];
-  v7 = [v4 call];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self call];
+  value2 = [equalCopy call];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v43 = [(IFTSchemaIFTExpression *)self call];
-  if (v43)
+  call = [(IFTSchemaIFTExpression *)self call];
+  if (call)
   {
-    v44 = v43;
-    v45 = [(IFTSchemaIFTExpression *)self call];
-    v46 = [v4 call];
-    v47 = [v45 isEqual:v46];
+    v44 = call;
+    call2 = [(IFTSchemaIFTExpression *)self call];
+    call3 = [equalCopy call];
+    v47 = [call2 isEqual:call3];
 
     if (!v47)
     {
@@ -1033,9 +1033,9 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self say];
-  v7 = [v4 say];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self say];
+  value2 = [equalCopy say];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
@@ -1045,7 +1045,7 @@
   {
     v49 = v48;
     v50 = [(IFTSchemaIFTExpression *)self say];
-    v51 = [v4 say];
+    v51 = [equalCopy say];
     v52 = [v50 isEqual:v51];
 
     if (!v52)
@@ -1058,20 +1058,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self pick];
-  v7 = [v4 pick];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self pick];
+  value2 = [equalCopy pick];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v53 = [(IFTSchemaIFTExpression *)self pick];
-  if (v53)
+  pick = [(IFTSchemaIFTExpression *)self pick];
+  if (pick)
   {
-    v54 = v53;
-    v55 = [(IFTSchemaIFTExpression *)self pick];
-    v56 = [v4 pick];
-    v57 = [v55 isEqual:v56];
+    v54 = pick;
+    pick2 = [(IFTSchemaIFTExpression *)self pick];
+    pick3 = [equalCopy pick];
+    v57 = [pick2 isEqual:pick3];
 
     if (!v57)
     {
@@ -1083,20 +1083,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self confirm];
-  v7 = [v4 confirm];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self confirm];
+  value2 = [equalCopy confirm];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v58 = [(IFTSchemaIFTExpression *)self confirm];
-  if (v58)
+  confirm = [(IFTSchemaIFTExpression *)self confirm];
+  if (confirm)
   {
-    v59 = v58;
-    v60 = [(IFTSchemaIFTExpression *)self confirm];
-    v61 = [v4 confirm];
-    v62 = [v60 isEqual:v61];
+    v59 = confirm;
+    confirm2 = [(IFTSchemaIFTExpression *)self confirm];
+    confirm3 = [equalCopy confirm];
+    v62 = [confirm2 isEqual:confirm3];
 
     if (!v62)
     {
@@ -1108,20 +1108,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self search];
-  v7 = [v4 search];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self search];
+  value2 = [equalCopy search];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v63 = [(IFTSchemaIFTExpression *)self search];
-  if (v63)
+  search = [(IFTSchemaIFTExpression *)self search];
+  if (search)
   {
-    v64 = v63;
-    v65 = [(IFTSchemaIFTExpression *)self search];
-    v66 = [v4 search];
-    v67 = [v65 isEqual:v66];
+    v64 = search;
+    search2 = [(IFTSchemaIFTExpression *)self search];
+    search3 = [equalCopy search];
+    v67 = [search2 isEqual:search3];
 
     if (!v67)
     {
@@ -1133,20 +1133,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self pickOne];
-  v7 = [v4 pickOne];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self pickOne];
+  value2 = [equalCopy pickOne];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v68 = [(IFTSchemaIFTExpression *)self pickOne];
-  if (v68)
+  pickOne = [(IFTSchemaIFTExpression *)self pickOne];
+  if (pickOne)
   {
-    v69 = v68;
-    v70 = [(IFTSchemaIFTExpression *)self pickOne];
-    v71 = [v4 pickOne];
-    v72 = [v70 isEqual:v71];
+    v69 = pickOne;
+    pickOne2 = [(IFTSchemaIFTExpression *)self pickOne];
+    pickOne3 = [equalCopy pickOne];
+    v72 = [pickOne2 isEqual:pickOne3];
 
     if (!v72)
     {
@@ -1158,20 +1158,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self resolveTool];
-  v7 = [v4 resolveTool];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self resolveTool];
+  value2 = [equalCopy resolveTool];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v73 = [(IFTSchemaIFTExpression *)self resolveTool];
-  if (v73)
+  resolveTool = [(IFTSchemaIFTExpression *)self resolveTool];
+  if (resolveTool)
   {
-    v74 = v73;
-    v75 = [(IFTSchemaIFTExpression *)self resolveTool];
-    v76 = [v4 resolveTool];
-    v77 = [v75 isEqual:v76];
+    v74 = resolveTool;
+    resolveTool2 = [(IFTSchemaIFTExpression *)self resolveTool];
+    resolveTool3 = [equalCopy resolveTool];
+    v77 = [resolveTool2 isEqual:resolveTool3];
 
     if (!v77)
     {
@@ -1183,20 +1183,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self undo];
-  v7 = [v4 undo];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self undo];
+  value2 = [equalCopy undo];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v78 = [(IFTSchemaIFTExpression *)self undo];
-  if (v78)
+  undo = [(IFTSchemaIFTExpression *)self undo];
+  if (undo)
   {
-    v79 = v78;
-    v80 = [(IFTSchemaIFTExpression *)self undo];
-    v81 = [v4 undo];
-    v82 = [v80 isEqual:v81];
+    v79 = undo;
+    undo2 = [(IFTSchemaIFTExpression *)self undo];
+    undo3 = [equalCopy undo];
+    v82 = [undo2 isEqual:undo3];
 
     if (!v82)
     {
@@ -1208,20 +1208,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self reject];
-  v7 = [v4 reject];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self reject];
+  value2 = [equalCopy reject];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v83 = [(IFTSchemaIFTExpression *)self reject];
-  if (v83)
+  reject = [(IFTSchemaIFTExpression *)self reject];
+  if (reject)
   {
-    v84 = v83;
-    v85 = [(IFTSchemaIFTExpression *)self reject];
-    v86 = [v4 reject];
-    v87 = [v85 isEqual:v86];
+    v84 = reject;
+    reject2 = [(IFTSchemaIFTExpression *)self reject];
+    reject3 = [equalCopy reject];
+    v87 = [reject2 isEqual:reject3];
 
     if (!v87)
     {
@@ -1233,20 +1233,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self cancel];
-  v7 = [v4 cancel];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self cancel];
+  value2 = [equalCopy cancel];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v88 = [(IFTSchemaIFTExpression *)self cancel];
-  if (v88)
+  cancel = [(IFTSchemaIFTExpression *)self cancel];
+  if (cancel)
   {
-    v89 = v88;
-    v90 = [(IFTSchemaIFTExpression *)self cancel];
-    v91 = [v4 cancel];
-    v92 = [v90 isEqual:v91];
+    v89 = cancel;
+    cancel2 = [(IFTSchemaIFTExpression *)self cancel];
+    cancel3 = [equalCopy cancel];
+    v92 = [cancel2 isEqual:cancel3];
 
     if (!v92)
     {
@@ -1258,20 +1258,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self noMatchingTool];
-  v7 = [v4 noMatchingTool];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self noMatchingTool];
+  value2 = [equalCopy noMatchingTool];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v93 = [(IFTSchemaIFTExpression *)self noMatchingTool];
-  if (v93)
+  noMatchingTool = [(IFTSchemaIFTExpression *)self noMatchingTool];
+  if (noMatchingTool)
   {
-    v94 = v93;
-    v95 = [(IFTSchemaIFTExpression *)self noMatchingTool];
-    v96 = [v4 noMatchingTool];
-    v97 = [v95 isEqual:v96];
+    v94 = noMatchingTool;
+    noMatchingTool2 = [(IFTSchemaIFTExpression *)self noMatchingTool];
+    noMatchingTool3 = [equalCopy noMatchingTool];
+    v97 = [noMatchingTool2 isEqual:noMatchingTool3];
 
     if (!v97)
     {
@@ -1283,20 +1283,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self continuePlanning];
-  v7 = [v4 continuePlanning];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self continuePlanning];
+  value2 = [equalCopy continuePlanning];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v98 = [(IFTSchemaIFTExpression *)self continuePlanning];
-  if (v98)
+  continuePlanning = [(IFTSchemaIFTExpression *)self continuePlanning];
+  if (continuePlanning)
   {
-    v99 = v98;
-    v100 = [(IFTSchemaIFTExpression *)self continuePlanning];
-    v101 = [v4 continuePlanning];
-    v102 = [v100 isEqual:v101];
+    v99 = continuePlanning;
+    continuePlanning2 = [(IFTSchemaIFTExpression *)self continuePlanning];
+    continuePlanning3 = [equalCopy continuePlanning];
+    v102 = [continuePlanning2 isEqual:continuePlanning3];
 
     if (!v102)
     {
@@ -1308,20 +1308,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self endOfPlan];
-  v7 = [v4 endOfPlan];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self endOfPlan];
+  value2 = [equalCopy endOfPlan];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v103 = [(IFTSchemaIFTExpression *)self endOfPlan];
-  if (v103)
+  endOfPlan = [(IFTSchemaIFTExpression *)self endOfPlan];
+  if (endOfPlan)
   {
-    v104 = v103;
-    v105 = [(IFTSchemaIFTExpression *)self endOfPlan];
-    v106 = [v4 endOfPlan];
-    v107 = [v105 isEqual:v106];
+    v104 = endOfPlan;
+    endOfPlan2 = [(IFTSchemaIFTExpression *)self endOfPlan];
+    endOfPlan3 = [equalCopy endOfPlan];
+    v107 = [endOfPlan2 isEqual:endOfPlan3];
 
     if (!v107)
     {
@@ -1333,20 +1333,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self getMentionedApps];
-  v7 = [v4 getMentionedApps];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self getMentionedApps];
+  value2 = [equalCopy getMentionedApps];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v108 = [(IFTSchemaIFTExpression *)self getMentionedApps];
-  if (v108)
+  getMentionedApps = [(IFTSchemaIFTExpression *)self getMentionedApps];
+  if (getMentionedApps)
   {
-    v109 = v108;
-    v110 = [(IFTSchemaIFTExpression *)self getMentionedApps];
-    v111 = [v4 getMentionedApps];
-    v112 = [v110 isEqual:v111];
+    v109 = getMentionedApps;
+    getMentionedApps2 = [(IFTSchemaIFTExpression *)self getMentionedApps];
+    getMentionedApps3 = [equalCopy getMentionedApps];
+    v112 = [getMentionedApps2 isEqual:getMentionedApps3];
 
     if (!v112)
     {
@@ -1358,20 +1358,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self open];
-  v7 = [v4 open];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self open];
+  value2 = [equalCopy open];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v113 = [(IFTSchemaIFTExpression *)self open];
-  if (v113)
+  open = [(IFTSchemaIFTExpression *)self open];
+  if (open)
   {
-    v114 = v113;
-    v115 = [(IFTSchemaIFTExpression *)self open];
-    v116 = [v4 open];
-    v117 = [v115 isEqual:v116];
+    v114 = open;
+    open2 = [(IFTSchemaIFTExpression *)self open];
+    open3 = [equalCopy open];
+    v117 = [open2 isEqual:open3];
 
     if (!v117)
     {
@@ -1383,20 +1383,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
-  v7 = [v4 explicitResolutionRequest];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+  value2 = [equalCopy explicitResolutionRequest];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v118 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
-  if (v118)
+  explicitResolutionRequest = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+  if (explicitResolutionRequest)
   {
-    v119 = v118;
-    v120 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
-    v121 = [v4 explicitResolutionRequest];
-    v122 = [v120 isEqual:v121];
+    v119 = explicitResolutionRequest;
+    explicitResolutionRequest2 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+    explicitResolutionRequest3 = [equalCopy explicitResolutionRequest];
+    v122 = [explicitResolutionRequest2 isEqual:explicitResolutionRequest3];
 
     if (!v122)
     {
@@ -1408,20 +1408,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self payload];
-  v7 = [v4 payload];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self payload];
+  value2 = [equalCopy payload];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v123 = [(IFTSchemaIFTExpression *)self payload];
-  if (v123)
+  payload = [(IFTSchemaIFTExpression *)self payload];
+  if (payload)
   {
-    v124 = v123;
-    v125 = [(IFTSchemaIFTExpression *)self payload];
-    v126 = [v4 payload];
-    v127 = [v125 isEqual:v126];
+    v124 = payload;
+    payload2 = [(IFTSchemaIFTExpression *)self payload];
+    payload3 = [equalCopy payload];
+    v127 = [payload2 isEqual:payload3];
 
     if (!v127)
     {
@@ -1433,20 +1433,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self format];
-  v7 = [v4 format];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self format];
+  value2 = [equalCopy format];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_132;
   }
 
-  v128 = [(IFTSchemaIFTExpression *)self format];
-  if (v128)
+  format = [(IFTSchemaIFTExpression *)self format];
+  if (format)
   {
-    v129 = v128;
-    v130 = [(IFTSchemaIFTExpression *)self format];
-    v131 = [v4 format];
-    v132 = [v130 isEqual:v131];
+    v129 = format;
+    format2 = [(IFTSchemaIFTExpression *)self format];
+    format3 = [equalCopy format];
+    v132 = [format2 isEqual:format3];
 
     if (!v132)
     {
@@ -1458,12 +1458,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self structuredSearch];
-  v7 = [v4 structuredSearch];
-  if ((v6 != 0) != (v7 == 0))
+  value = [(IFTSchemaIFTExpression *)self structuredSearch];
+  value2 = [equalCopy structuredSearch];
+  if ((value != 0) != (value2 == 0))
   {
-    v133 = [(IFTSchemaIFTExpression *)self structuredSearch];
-    if (!v133)
+    structuredSearch = [(IFTSchemaIFTExpression *)self structuredSearch];
+    if (!structuredSearch)
     {
 
 LABEL_136:
@@ -1471,10 +1471,10 @@ LABEL_136:
       goto LABEL_134;
     }
 
-    v134 = v133;
-    v135 = [(IFTSchemaIFTExpression *)self structuredSearch];
-    v136 = [v4 structuredSearch];
-    v137 = [v135 isEqual:v136];
+    v134 = structuredSearch;
+    structuredSearch2 = [(IFTSchemaIFTExpression *)self structuredSearch];
+    structuredSearch3 = [equalCopy structuredSearch];
+    v137 = [structuredSearch2 isEqual:structuredSearch3];
 
     if (v137)
     {
@@ -1494,38 +1494,38 @@ LABEL_134:
   return v138;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v57 = a3;
-  v4 = [(IFTSchemaIFTExpression *)self value];
+  toCopy = to;
+  value = [(IFTSchemaIFTExpression *)self value];
 
-  if (v4)
+  if (value)
   {
-    v5 = [(IFTSchemaIFTExpression *)self value];
+    value2 = [(IFTSchemaIFTExpression *)self value];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTExpression *)self statementId];
+  statementId = [(IFTSchemaIFTExpression *)self statementId];
 
-  if (v6)
+  if (statementId)
   {
-    v7 = [(IFTSchemaIFTExpression *)self statementId];
+    statementId2 = [(IFTSchemaIFTExpression *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTExpression *)self prefix];
+  prefix = [(IFTSchemaIFTExpression *)self prefix];
 
-  if (v8)
+  if (prefix)
   {
-    v9 = [(IFTSchemaIFTExpression *)self prefix];
+    prefix2 = [(IFTSchemaIFTExpression *)self prefix];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTExpression *)self infix];
+  infix = [(IFTSchemaIFTExpression *)self infix];
 
-  if (v10)
+  if (infix)
   {
-    v11 = [(IFTSchemaIFTExpression *)self infix];
+    infix2 = [(IFTSchemaIFTExpression *)self infix];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1537,27 +1537,27 @@ LABEL_134:
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(IFTSchemaIFTExpression *)self index];
+  index = [(IFTSchemaIFTExpression *)self index];
 
-  if (v14)
+  if (index)
   {
-    v15 = [(IFTSchemaIFTExpression *)self index];
+    index2 = [(IFTSchemaIFTExpression *)self index];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(IFTSchemaIFTExpression *)self updateParameters];
+  updateParameters = [(IFTSchemaIFTExpression *)self updateParameters];
 
-  if (v16)
+  if (updateParameters)
   {
-    v17 = [(IFTSchemaIFTExpression *)self updateParameters];
+    updateParameters2 = [(IFTSchemaIFTExpression *)self updateParameters];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(IFTSchemaIFTExpression *)self call];
+  call = [(IFTSchemaIFTExpression *)self call];
 
-  if (v18)
+  if (call)
   {
-    v19 = [(IFTSchemaIFTExpression *)self call];
+    call2 = [(IFTSchemaIFTExpression *)self call];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1569,143 +1569,143 @@ LABEL_134:
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(IFTSchemaIFTExpression *)self pick];
+  pick = [(IFTSchemaIFTExpression *)self pick];
 
-  if (v22)
+  if (pick)
   {
-    v23 = [(IFTSchemaIFTExpression *)self pick];
+    pick2 = [(IFTSchemaIFTExpression *)self pick];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(IFTSchemaIFTExpression *)self confirm];
+  confirm = [(IFTSchemaIFTExpression *)self confirm];
 
-  if (v24)
+  if (confirm)
   {
-    v25 = [(IFTSchemaIFTExpression *)self confirm];
+    confirm2 = [(IFTSchemaIFTExpression *)self confirm];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(IFTSchemaIFTExpression *)self search];
+  search = [(IFTSchemaIFTExpression *)self search];
 
-  if (v26)
+  if (search)
   {
-    v27 = [(IFTSchemaIFTExpression *)self search];
+    search2 = [(IFTSchemaIFTExpression *)self search];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(IFTSchemaIFTExpression *)self pickOne];
+  pickOne = [(IFTSchemaIFTExpression *)self pickOne];
 
-  if (v28)
+  if (pickOne)
   {
-    v29 = [(IFTSchemaIFTExpression *)self pickOne];
+    pickOne2 = [(IFTSchemaIFTExpression *)self pickOne];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(IFTSchemaIFTExpression *)self resolveTool];
+  resolveTool = [(IFTSchemaIFTExpression *)self resolveTool];
 
-  if (v30)
+  if (resolveTool)
   {
-    v31 = [(IFTSchemaIFTExpression *)self resolveTool];
+    resolveTool2 = [(IFTSchemaIFTExpression *)self resolveTool];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(IFTSchemaIFTExpression *)self undo];
+  undo = [(IFTSchemaIFTExpression *)self undo];
 
-  if (v32)
+  if (undo)
   {
-    v33 = [(IFTSchemaIFTExpression *)self undo];
+    undo2 = [(IFTSchemaIFTExpression *)self undo];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(IFTSchemaIFTExpression *)self reject];
+  reject = [(IFTSchemaIFTExpression *)self reject];
 
-  if (v34)
+  if (reject)
   {
-    v35 = [(IFTSchemaIFTExpression *)self reject];
+    reject2 = [(IFTSchemaIFTExpression *)self reject];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(IFTSchemaIFTExpression *)self cancel];
+  cancel = [(IFTSchemaIFTExpression *)self cancel];
 
-  if (v36)
+  if (cancel)
   {
-    v37 = [(IFTSchemaIFTExpression *)self cancel];
+    cancel2 = [(IFTSchemaIFTExpression *)self cancel];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(IFTSchemaIFTExpression *)self noMatchingTool];
+  noMatchingTool = [(IFTSchemaIFTExpression *)self noMatchingTool];
 
-  if (v38)
+  if (noMatchingTool)
   {
-    v39 = [(IFTSchemaIFTExpression *)self noMatchingTool];
+    noMatchingTool2 = [(IFTSchemaIFTExpression *)self noMatchingTool];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(IFTSchemaIFTExpression *)self continuePlanning];
+  continuePlanning = [(IFTSchemaIFTExpression *)self continuePlanning];
 
-  if (v40)
+  if (continuePlanning)
   {
-    v41 = [(IFTSchemaIFTExpression *)self continuePlanning];
+    continuePlanning2 = [(IFTSchemaIFTExpression *)self continuePlanning];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(IFTSchemaIFTExpression *)self endOfPlan];
+  endOfPlan = [(IFTSchemaIFTExpression *)self endOfPlan];
 
-  if (v42)
+  if (endOfPlan)
   {
-    v43 = [(IFTSchemaIFTExpression *)self endOfPlan];
+    endOfPlan2 = [(IFTSchemaIFTExpression *)self endOfPlan];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(IFTSchemaIFTExpression *)self getMentionedApps];
+  getMentionedApps = [(IFTSchemaIFTExpression *)self getMentionedApps];
 
-  if (v44)
+  if (getMentionedApps)
   {
-    v45 = [(IFTSchemaIFTExpression *)self getMentionedApps];
+    getMentionedApps2 = [(IFTSchemaIFTExpression *)self getMentionedApps];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(IFTSchemaIFTExpression *)self open];
+  open = [(IFTSchemaIFTExpression *)self open];
 
-  if (v46)
+  if (open)
   {
-    v47 = [(IFTSchemaIFTExpression *)self open];
+    open2 = [(IFTSchemaIFTExpression *)self open];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+  explicitResolutionRequest = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
 
-  if (v48)
+  if (explicitResolutionRequest)
   {
-    v49 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+    explicitResolutionRequest2 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(IFTSchemaIFTExpression *)self payload];
+  payload = [(IFTSchemaIFTExpression *)self payload];
 
-  if (v50)
+  if (payload)
   {
-    v51 = [(IFTSchemaIFTExpression *)self payload];
+    payload2 = [(IFTSchemaIFTExpression *)self payload];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(IFTSchemaIFTExpression *)self format];
+  format = [(IFTSchemaIFTExpression *)self format];
 
-  if (v52)
+  if (format)
   {
-    v53 = [(IFTSchemaIFTExpression *)self format];
+    format2 = [(IFTSchemaIFTExpression *)self format];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(IFTSchemaIFTExpression *)self structuredSearch];
+  structuredSearch = [(IFTSchemaIFTExpression *)self structuredSearch];
 
-  v55 = v57;
-  if (v54)
+  v55 = toCopy;
+  if (structuredSearch)
   {
-    v56 = [(IFTSchemaIFTExpression *)self structuredSearch];
+    structuredSearch2 = [(IFTSchemaIFTExpression *)self structuredSearch];
     PBDataWriterWriteSubmessage();
 
-    v55 = v57;
+    v55 = toCopy;
   }
 }
 
@@ -1734,9 +1734,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setStructuredSearch:(id)a3
+- (void)setStructuredSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   value = self->_value;
   self->_value = 0;
 
@@ -1813,14 +1813,14 @@ LABEL_134:
   self->_format = 0;
 
   v30 = 27;
-  if (!v4)
+  if (!searchCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   structuredSearch = self->_structuredSearch;
-  self->_structuredSearch = v4;
+  self->_structuredSearch = searchCopy;
 }
 
 - (void)deleteFormat
@@ -1848,9 +1848,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setFormat:(id)a3
+- (void)setFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   value = self->_value;
   self->_value = 0;
 
@@ -1927,14 +1927,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 26;
-  if (!v4)
+  if (!formatCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   format = self->_format;
-  self->_format = v4;
+  self->_format = formatCopy;
 }
 
 - (void)deletePayload
@@ -1962,9 +1962,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   value = self->_value;
   self->_value = 0;
 
@@ -2041,14 +2041,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 25;
-  if (!v4)
+  if (!payloadCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   payload = self->_payload;
-  self->_payload = v4;
+  self->_payload = payloadCopy;
 }
 
 - (void)deleteExplicitResolutionRequest
@@ -2076,9 +2076,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setExplicitResolutionRequest:(id)a3
+- (void)setExplicitResolutionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   value = self->_value;
   self->_value = 0;
 
@@ -2155,14 +2155,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 24;
-  if (!v4)
+  if (!requestCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   explicitResolutionRequest = self->_explicitResolutionRequest;
-  self->_explicitResolutionRequest = v4;
+  self->_explicitResolutionRequest = requestCopy;
 }
 
 - (void)deleteOpen
@@ -2190,9 +2190,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setOpen:(id)a3
+- (void)setOpen:(id)open
 {
-  v4 = a3;
+  openCopy = open;
   value = self->_value;
   self->_value = 0;
 
@@ -2269,14 +2269,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 23;
-  if (!v4)
+  if (!openCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   open = self->_open;
-  self->_open = v4;
+  self->_open = openCopy;
 }
 
 - (void)deleteGetMentionedApps
@@ -2304,9 +2304,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setGetMentionedApps:(id)a3
+- (void)setGetMentionedApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   value = self->_value;
   self->_value = 0;
 
@@ -2383,14 +2383,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 22;
-  if (!v4)
+  if (!appsCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   getMentionedApps = self->_getMentionedApps;
-  self->_getMentionedApps = v4;
+  self->_getMentionedApps = appsCopy;
 }
 
 - (void)deleteEndOfPlan
@@ -2418,9 +2418,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setEndOfPlan:(id)a3
+- (void)setEndOfPlan:(id)plan
 {
-  v4 = a3;
+  planCopy = plan;
   value = self->_value;
   self->_value = 0;
 
@@ -2497,14 +2497,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 21;
-  if (!v4)
+  if (!planCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   endOfPlan = self->_endOfPlan;
-  self->_endOfPlan = v4;
+  self->_endOfPlan = planCopy;
 }
 
 - (void)deleteContinuePlanning
@@ -2532,9 +2532,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setContinuePlanning:(id)a3
+- (void)setContinuePlanning:(id)planning
 {
-  v4 = a3;
+  planningCopy = planning;
   value = self->_value;
   self->_value = 0;
 
@@ -2611,14 +2611,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 20;
-  if (!v4)
+  if (!planningCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   continuePlanning = self->_continuePlanning;
-  self->_continuePlanning = v4;
+  self->_continuePlanning = planningCopy;
 }
 
 - (void)deleteNoMatchingTool
@@ -2646,9 +2646,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setNoMatchingTool:(id)a3
+- (void)setNoMatchingTool:(id)tool
 {
-  v4 = a3;
+  toolCopy = tool;
   value = self->_value;
   self->_value = 0;
 
@@ -2725,14 +2725,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 19;
-  if (!v4)
+  if (!toolCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   noMatchingTool = self->_noMatchingTool;
-  self->_noMatchingTool = v4;
+  self->_noMatchingTool = toolCopy;
 }
 
 - (void)deleteCancel
@@ -2760,9 +2760,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setCancel:(id)a3
+- (void)setCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   value = self->_value;
   self->_value = 0;
 
@@ -2839,14 +2839,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 18;
-  if (!v4)
+  if (!cancelCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   cancel = self->_cancel;
-  self->_cancel = v4;
+  self->_cancel = cancelCopy;
 }
 
 - (void)deleteReject
@@ -2874,9 +2874,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setReject:(id)a3
+- (void)setReject:(id)reject
 {
-  v4 = a3;
+  rejectCopy = reject;
   value = self->_value;
   self->_value = 0;
 
@@ -2953,14 +2953,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 17;
-  if (!v4)
+  if (!rejectCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   reject = self->_reject;
-  self->_reject = v4;
+  self->_reject = rejectCopy;
 }
 
 - (void)deleteUndo
@@ -2988,9 +2988,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setUndo:(id)a3
+- (void)setUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   value = self->_value;
   self->_value = 0;
 
@@ -3066,9 +3066,9 @@ LABEL_134:
   structuredSearch = self->_structuredSearch;
   self->_structuredSearch = 0;
 
-  self->_whichOneof_Expression = 16 * (v4 != 0);
+  self->_whichOneof_Expression = 16 * (undoCopy != 0);
   undo = self->_undo;
-  self->_undo = v4;
+  self->_undo = undoCopy;
 }
 
 - (void)deleteResolveTool
@@ -3096,9 +3096,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setResolveTool:(id)a3
+- (void)setResolveTool:(id)tool
 {
-  v4 = a3;
+  toolCopy = tool;
   value = self->_value;
   self->_value = 0;
 
@@ -3175,14 +3175,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 15;
-  if (!v4)
+  if (!toolCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   resolveTool = self->_resolveTool;
-  self->_resolveTool = v4;
+  self->_resolveTool = toolCopy;
 }
 
 - (void)deletePickOne
@@ -3210,9 +3210,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setPickOne:(id)a3
+- (void)setPickOne:(id)one
 {
-  v4 = a3;
+  oneCopy = one;
   value = self->_value;
   self->_value = 0;
 
@@ -3289,14 +3289,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 14;
-  if (!v4)
+  if (!oneCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   pickOne = self->_pickOne;
-  self->_pickOne = v4;
+  self->_pickOne = oneCopy;
 }
 
 - (void)deleteSearch
@@ -3324,9 +3324,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setSearch:(id)a3
+- (void)setSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   value = self->_value;
   self->_value = 0;
 
@@ -3403,14 +3403,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 13;
-  if (!v4)
+  if (!searchCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   search = self->_search;
-  self->_search = v4;
+  self->_search = searchCopy;
 }
 
 - (void)deleteConfirm
@@ -3438,9 +3438,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setConfirm:(id)a3
+- (void)setConfirm:(id)confirm
 {
-  v4 = a3;
+  confirmCopy = confirm;
   value = self->_value;
   self->_value = 0;
 
@@ -3517,14 +3517,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 12;
-  if (!v4)
+  if (!confirmCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   confirm = self->_confirm;
-  self->_confirm = v4;
+  self->_confirm = confirmCopy;
 }
 
 - (void)deletePick
@@ -3552,9 +3552,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setPick:(id)a3
+- (void)setPick:(id)pick
 {
-  v4 = a3;
+  pickCopy = pick;
   value = self->_value;
   self->_value = 0;
 
@@ -3631,14 +3631,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 10;
-  if (!v4)
+  if (!pickCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   pick = self->_pick;
-  self->_pick = v4;
+  self->_pick = pickCopy;
 }
 
 - (void)deleteSay
@@ -3666,9 +3666,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setSay:(id)a3
+- (void)setSay:(id)say
 {
-  v4 = a3;
+  sayCopy = say;
   value = self->_value;
   self->_value = 0;
 
@@ -3745,14 +3745,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 9;
-  if (!v4)
+  if (!sayCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   say = self->_say;
-  self->_say = v4;
+  self->_say = sayCopy;
 }
 
 - (void)deleteCall
@@ -3780,9 +3780,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setCall:(id)a3
+- (void)setCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   value = self->_value;
   self->_value = 0;
 
@@ -3858,9 +3858,9 @@ LABEL_134:
   structuredSearch = self->_structuredSearch;
   self->_structuredSearch = 0;
 
-  self->_whichOneof_Expression = 8 * (v4 != 0);
+  self->_whichOneof_Expression = 8 * (callCopy != 0);
   call = self->_call;
-  self->_call = v4;
+  self->_call = callCopy;
 }
 
 - (void)deleteUpdateParameters
@@ -3888,9 +3888,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setUpdateParameters:(id)a3
+- (void)setUpdateParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   value = self->_value;
   self->_value = 0;
 
@@ -3967,14 +3967,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 7;
-  if (!v4)
+  if (!parametersCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   updateParameters = self->_updateParameters;
-  self->_updateParameters = v4;
+  self->_updateParameters = parametersCopy;
 }
 
 - (void)deleteIndex
@@ -4002,9 +4002,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setIndex:(id)a3
+- (void)setIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   value = self->_value;
   self->_value = 0;
 
@@ -4081,14 +4081,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 6;
-  if (!v4)
+  if (!indexCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   index = self->_index;
-  self->_index = v4;
+  self->_index = indexCopy;
 }
 
 - (void)deleteDot
@@ -4116,9 +4116,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setDot:(id)a3
+- (void)setDot:(id)dot
 {
-  v4 = a3;
+  dotCopy = dot;
   value = self->_value;
   self->_value = 0;
 
@@ -4195,14 +4195,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 5;
-  if (!v4)
+  if (!dotCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   dot = self->_dot;
-  self->_dot = v4;
+  self->_dot = dotCopy;
 }
 
 - (void)deleteInfix
@@ -4230,9 +4230,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setInfix:(id)a3
+- (void)setInfix:(id)infix
 {
-  v4 = a3;
+  infixCopy = infix;
   value = self->_value;
   self->_value = 0;
 
@@ -4308,9 +4308,9 @@ LABEL_134:
   structuredSearch = self->_structuredSearch;
   self->_structuredSearch = 0;
 
-  self->_whichOneof_Expression = 4 * (v4 != 0);
+  self->_whichOneof_Expression = 4 * (infixCopy != 0);
   infix = self->_infix;
-  self->_infix = v4;
+  self->_infix = infixCopy;
 }
 
 - (void)deletePrefix
@@ -4338,9 +4338,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   value = self->_value;
   self->_value = 0;
 
@@ -4417,14 +4417,14 @@ LABEL_134:
   self->_structuredSearch = 0;
 
   v30 = 3;
-  if (!v4)
+  if (!prefixCopy)
   {
     v30 = 0;
   }
 
   self->_whichOneof_Expression = v30;
   prefix = self->_prefix;
-  self->_prefix = v4;
+  self->_prefix = prefixCopy;
 }
 
 - (void)deleteStatementId
@@ -4452,9 +4452,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setStatementId:(id)a3
+- (void)setStatementId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   value = self->_value;
   self->_value = 0;
 
@@ -4530,9 +4530,9 @@ LABEL_134:
   structuredSearch = self->_structuredSearch;
   self->_structuredSearch = 0;
 
-  self->_whichOneof_Expression = 2 * (v4 != 0);
+  self->_whichOneof_Expression = 2 * (idCopy != 0);
   statementId = self->_statementId;
-  self->_statementId = v4;
+  self->_statementId = idCopy;
 }
 
 - (void)deleteValue
@@ -4560,9 +4560,9 @@ LABEL_134:
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   statementId = self->_statementId;
   self->_statementId = 0;
 
@@ -4638,247 +4638,247 @@ LABEL_134:
   structuredSearch = self->_structuredSearch;
   self->_structuredSearch = 0;
 
-  self->_whichOneof_Expression = v4 != 0;
+  self->_whichOneof_Expression = valueCopy != 0;
   value = self->_value;
-  self->_value = v4;
+  self->_value = valueCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v85.receiver = self;
   v85.super_class = IFTSchemaIFTExpression;
-  v5 = [(SISchemaInstrumentationMessage *)&v85 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTExpression *)self value];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v85 applySensitiveConditionsPolicy:policyCopy];
+  value = [(IFTSchemaIFTExpression *)self value];
+  v7 = [value applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTExpression *)self deleteValue];
   }
 
-  v9 = [(IFTSchemaIFTExpression *)self statementId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  statementId = [(IFTSchemaIFTExpression *)self statementId];
+  v10 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTExpression *)self deleteStatementId];
   }
 
-  v12 = [(IFTSchemaIFTExpression *)self prefix];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  prefix = [(IFTSchemaIFTExpression *)self prefix];
+  v13 = [prefix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTExpression *)self deletePrefix];
   }
 
-  v15 = [(IFTSchemaIFTExpression *)self infix];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  infix = [(IFTSchemaIFTExpression *)self infix];
+  v16 = [infix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTExpression *)self deleteInfix];
   }
 
   v18 = [(IFTSchemaIFTExpression *)self dot];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  v19 = [v18 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(IFTSchemaIFTExpression *)self deleteDot];
   }
 
-  v21 = [(IFTSchemaIFTExpression *)self index];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  index = [(IFTSchemaIFTExpression *)self index];
+  v22 = [index applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(IFTSchemaIFTExpression *)self deleteIndex];
   }
 
-  v24 = [(IFTSchemaIFTExpression *)self updateParameters];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  updateParameters = [(IFTSchemaIFTExpression *)self updateParameters];
+  v25 = [updateParameters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(IFTSchemaIFTExpression *)self deleteUpdateParameters];
   }
 
-  v27 = [(IFTSchemaIFTExpression *)self call];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  call = [(IFTSchemaIFTExpression *)self call];
+  v28 = [call applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(IFTSchemaIFTExpression *)self deleteCall];
   }
 
   v30 = [(IFTSchemaIFTExpression *)self say];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  v31 = [v30 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(IFTSchemaIFTExpression *)self deleteSay];
   }
 
-  v33 = [(IFTSchemaIFTExpression *)self pick];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  pick = [(IFTSchemaIFTExpression *)self pick];
+  v34 = [pick applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(IFTSchemaIFTExpression *)self deletePick];
   }
 
-  v36 = [(IFTSchemaIFTExpression *)self confirm];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  confirm = [(IFTSchemaIFTExpression *)self confirm];
+  v37 = [confirm applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(IFTSchemaIFTExpression *)self deleteConfirm];
   }
 
-  v39 = [(IFTSchemaIFTExpression *)self search];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  search = [(IFTSchemaIFTExpression *)self search];
+  v40 = [search applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(IFTSchemaIFTExpression *)self deleteSearch];
   }
 
-  v42 = [(IFTSchemaIFTExpression *)self pickOne];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  pickOne = [(IFTSchemaIFTExpression *)self pickOne];
+  v43 = [pickOne applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(IFTSchemaIFTExpression *)self deletePickOne];
   }
 
-  v45 = [(IFTSchemaIFTExpression *)self resolveTool];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  resolveTool = [(IFTSchemaIFTExpression *)self resolveTool];
+  v46 = [resolveTool applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(IFTSchemaIFTExpression *)self deleteResolveTool];
   }
 
-  v48 = [(IFTSchemaIFTExpression *)self undo];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  undo = [(IFTSchemaIFTExpression *)self undo];
+  v49 = [undo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(IFTSchemaIFTExpression *)self deleteUndo];
   }
 
-  v51 = [(IFTSchemaIFTExpression *)self reject];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  reject = [(IFTSchemaIFTExpression *)self reject];
+  v52 = [reject applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(IFTSchemaIFTExpression *)self deleteReject];
   }
 
-  v54 = [(IFTSchemaIFTExpression *)self cancel];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  cancel = [(IFTSchemaIFTExpression *)self cancel];
+  v55 = [cancel applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(IFTSchemaIFTExpression *)self deleteCancel];
   }
 
-  v57 = [(IFTSchemaIFTExpression *)self noMatchingTool];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  noMatchingTool = [(IFTSchemaIFTExpression *)self noMatchingTool];
+  v58 = [noMatchingTool applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(IFTSchemaIFTExpression *)self deleteNoMatchingTool];
   }
 
-  v60 = [(IFTSchemaIFTExpression *)self continuePlanning];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  continuePlanning = [(IFTSchemaIFTExpression *)self continuePlanning];
+  v61 = [continuePlanning applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(IFTSchemaIFTExpression *)self deleteContinuePlanning];
   }
 
-  v63 = [(IFTSchemaIFTExpression *)self endOfPlan];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  endOfPlan = [(IFTSchemaIFTExpression *)self endOfPlan];
+  v64 = [endOfPlan applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(IFTSchemaIFTExpression *)self deleteEndOfPlan];
   }
 
-  v66 = [(IFTSchemaIFTExpression *)self getMentionedApps];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  getMentionedApps = [(IFTSchemaIFTExpression *)self getMentionedApps];
+  v67 = [getMentionedApps applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(IFTSchemaIFTExpression *)self deleteGetMentionedApps];
   }
 
-  v69 = [(IFTSchemaIFTExpression *)self open];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  open = [(IFTSchemaIFTExpression *)self open];
+  v70 = [open applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(IFTSchemaIFTExpression *)self deleteOpen];
   }
 
-  v72 = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  explicitResolutionRequest = [(IFTSchemaIFTExpression *)self explicitResolutionRequest];
+  v73 = [explicitResolutionRequest applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(IFTSchemaIFTExpression *)self deleteExplicitResolutionRequest];
   }
 
-  v75 = [(IFTSchemaIFTExpression *)self payload];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  payload = [(IFTSchemaIFTExpression *)self payload];
+  v76 = [payload applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(IFTSchemaIFTExpression *)self deletePayload];
   }
 
-  v78 = [(IFTSchemaIFTExpression *)self format];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  format = [(IFTSchemaIFTExpression *)self format];
+  v79 = [format applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(IFTSchemaIFTExpression *)self deleteFormat];
   }
 
-  v81 = [(IFTSchemaIFTExpression *)self structuredSearch];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  structuredSearch = [(IFTSchemaIFTExpression *)self structuredSearch];
+  v82 = [structuredSearch applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(IFTSchemaIFTExpression *)self deleteStructuredSearch];
   }

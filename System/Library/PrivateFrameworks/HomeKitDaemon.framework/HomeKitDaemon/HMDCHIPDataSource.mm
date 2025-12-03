@@ -1,10 +1,10 @@
 @interface HMDCHIPDataSource
 + (id)logCategory;
 - (BOOL)_getLocationAuthorized;
-- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)a3;
+- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)d;
 - (BOOL)isCurrentDevicePrimaryResident;
-- (HMDCHIPDataSource)initWithHomeManager:(id)a3 notificationCenter:(id)a4 vendorMetadataRefreshTimer:(id)a5 attestationDataRefreshTimer:(id)a6 dialogPresenter:(id)a7 threadClientFactory:(id)a8;
-- (HMDCHIPDataSource)initWithHomeManager:(id)a3 threadClientFactory:(id)a4;
+- (HMDCHIPDataSource)initWithHomeManager:(id)manager notificationCenter:(id)center vendorMetadataRefreshTimer:(id)timer attestationDataRefreshTimer:(id)refreshTimer dialogPresenter:(id)presenter threadClientFactory:(id)factory;
+- (HMDCHIPDataSource)initWithHomeManager:(id)manager threadClientFactory:(id)factory;
 - (HMDHomeManager)homeManager;
 - (HMMTRAccessoryServerBrowser)matterAccessoryServerBrowser;
 - (HMMTRThreadRadioManager)matterThreadRadioManager;
@@ -12,70 +12,70 @@
 - (NSSet)allPairedHAPServerIdentifiers;
 - (NSSet)allTargetFabricUUIDs;
 - (NSUUID)currentFabricUUID;
-- (id)appleHomeFabricWithTargetFabricUUID:(id)a3;
-- (id)fabricIDFromFabricUUID:(id)a3;
+- (id)appleHomeFabricWithTargetFabricUUID:(id)d;
+- (id)fabricIDFromFabricUUID:(id)d;
 - (id)getDefaultThreadNetworkMetadataStore;
 - (id)home;
-- (id)homeWithCHIPFabric:(id)a3;
-- (id)storageDataSourceForFabricUUID:(id)a3;
-- (int64_t)getThreadNetworkConnectionStateWithFabricUUID:(id)a3;
-- (int64_t)getThreadNetworkNodeTypeWithFabricUUID:(id)a3;
-- (int64_t)getUserPreferredThreadNetworkConnectionStateWithError:(id *)a3;
-- (int64_t)getUserPreferredThreadNetworkNodeTypeWithError:(id *)a3;
-- (void)_getPreferredNetworkExistsWithCompletion:(id)a3;
+- (id)homeWithCHIPFabric:(id)fabric;
+- (id)storageDataSourceForFabricUUID:(id)d;
+- (int64_t)getThreadNetworkConnectionStateWithFabricUUID:(id)d;
+- (int64_t)getThreadNetworkNodeTypeWithFabricUUID:(id)d;
+- (int64_t)getUserPreferredThreadNetworkConnectionStateWithError:(id *)error;
+- (int64_t)getUserPreferredThreadNetworkNodeTypeWithError:(id *)error;
+- (void)_getPreferredNetworkExistsWithCompletion:(id)completion;
 - (void)_scheduleThreadNetworkRestart;
 - (void)_stopNetworkListenerForUserPreferredNetwork;
-- (void)browser:(id)a3 didRemoveAccessoryPairingWithNodeID:(id)a4;
-- (void)configureWithAccessoryServerBrowser:(id)a3;
-- (void)configureWithAttestationDataStore:(id)a3;
-- (void)configureWithResidentStateManager:(id)a3;
-- (void)configureWithStorage:(id)a3;
-- (void)configureWithThreadRadioManager:(id)a3;
-- (void)configureWithUIDialogPresenter:(id)a3;
-- (void)configureWithVendorMetadataStore:(id)a3;
-- (void)connectToAccessoryForUserPreferredNetworkWithExtendedMACAddress:(id)a3 completion:(id)a4;
-- (void)connectToAccessoryWithExtendedMACAddress:(id)a3 withFabricUUID:(id)a4 completion:(id)a5;
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4;
-- (void)forAllPairedMatterServersFetchVidPid:(id)a3;
-- (void)forAllStorageDataSourcesDo:(id)a3;
-- (void)handleAccessoryCHIPStorageChangedNotification:(id)a3;
-- (void)handleDataReadyAfterBecomingPrimaryNotification:(id)a3;
-- (void)handleHomeCHIPStorageChangedNotification:(id)a3;
-- (void)handleHomeDidArriveHomeNotification:(id)a3;
-- (void)handleHomeDidLeaveHomeNotification:(id)a3;
-- (void)handleHomeRemovedNotification:(id)a3;
-- (void)handleLocationAuthorizationChangedNotification:(id)a3;
+- (void)browser:(id)browser didRemoveAccessoryPairingWithNodeID:(id)d;
+- (void)configureWithAccessoryServerBrowser:(id)browser;
+- (void)configureWithAttestationDataStore:(id)store;
+- (void)configureWithResidentStateManager:(id)manager;
+- (void)configureWithStorage:(id)storage;
+- (void)configureWithThreadRadioManager:(id)manager;
+- (void)configureWithUIDialogPresenter:(id)presenter;
+- (void)configureWithVendorMetadataStore:(id)store;
+- (void)connectToAccessoryForUserPreferredNetworkWithExtendedMACAddress:(id)address completion:(id)completion;
+- (void)connectToAccessoryWithExtendedMACAddress:(id)address withFabricUUID:(id)d completion:(id)completion;
+- (void)dispatchAfter:(unint64_t)after block:(id)block;
+- (void)forAllPairedMatterServersFetchVidPid:(id)pid;
+- (void)forAllStorageDataSourcesDo:(id)do;
+- (void)handleAccessoryCHIPStorageChangedNotification:(id)notification;
+- (void)handleDataReadyAfterBecomingPrimaryNotification:(id)notification;
+- (void)handleHomeCHIPStorageChangedNotification:(id)notification;
+- (void)handleHomeDidArriveHomeNotification:(id)notification;
+- (void)handleHomeDidLeaveHomeNotification:(id)notification;
+- (void)handleHomeRemovedNotification:(id)notification;
+- (void)handleLocationAuthorizationChangedNotification:(id)notification;
 - (void)handleNetworkStateChange;
-- (void)handlePrimaryResidentUpdatedNotification:(id)a3;
-- (void)handleResidentReachabilityNotification:(id)a3;
-- (void)handleThreadBTCallStateChange:(BOOL)a3;
-- (void)handleThreadNetworkPeripheralDeviceNodeTypeChangedNotification:(id)a3;
-- (void)handleThreadNetworkStateChangedNotification:(id)a3;
-- (void)handleThreadNetworkWakeOnConnectionStateChangedNotification:(id)a3;
-- (void)handleUpdatedDataWithIsLocalChange:(BOOL)a3;
-- (void)hasValidGeoOrPreferredNetworkForHome:(id)a3 completion:(id)a4;
-- (void)overrideLocationCheckForPairingForFabricUUID:(id)a3;
-- (void)registerForArrivalNotifications:(id)a3;
-- (void)registerForLeaveNotifications:(id)a3;
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)requestUserPermissionForUnauthenticatedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 fabricUUID:(id)a4 isWedDevice:(BOOL)a5 completion:(id)a6;
-- (void)startAccessoryPairingWithExtendedMACAddress:(id)a3 fabricUUID:(id)a4 isWedDevice:(BOOL)a5 completion:(id)a6;
-- (void)startThreadRadioForHomeWithFabricUUID:(id)a3;
+- (void)handlePrimaryResidentUpdatedNotification:(id)notification;
+- (void)handleResidentReachabilityNotification:(id)notification;
+- (void)handleThreadBTCallStateChange:(BOOL)change;
+- (void)handleThreadNetworkPeripheralDeviceNodeTypeChangedNotification:(id)notification;
+- (void)handleThreadNetworkStateChangedNotification:(id)notification;
+- (void)handleThreadNetworkWakeOnConnectionStateChangedNotification:(id)notification;
+- (void)handleUpdatedDataWithIsLocalChange:(BOOL)change;
+- (void)hasValidGeoOrPreferredNetworkForHome:(id)home completion:(id)completion;
+- (void)overrideLocationCheckForPairingForFabricUUID:(id)d;
+- (void)registerForArrivalNotifications:(id)notifications;
+- (void)registerForLeaveNotifications:(id)notifications;
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForUnauthenticatedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address fabricUUID:(id)d isWedDevice:(BOOL)device completion:(id)completion;
+- (void)startAccessoryPairingWithExtendedMACAddress:(id)address fabricUUID:(id)d isWedDevice:(BOOL)device completion:(id)completion;
+- (void)startThreadRadioForHomeWithFabricUUID:(id)d;
 - (void)startThreadRadioForUserPreferredNetwork;
 - (void)startThreadRadioForUserPreferredNetworkWithGeoAndBorderRouterCheck;
-- (void)stopAccessoryFirmwareUpdateWithFabricUUID:(id)a3 completion:(id)a4;
-- (void)stopAccessoryPairingWithFabricUUID:(id)a3 completion:(id)a4;
-- (void)stopThreadRadioForHome:(id)a3;
-- (void)stopThreadRadioForHomeWithFabricUUID:(id)a3;
+- (void)stopAccessoryFirmwareUpdateWithFabricUUID:(id)d completion:(id)completion;
+- (void)stopAccessoryPairingWithFabricUUID:(id)d completion:(id)completion;
+- (void)stopThreadRadioForHome:(id)home;
+- (void)stopThreadRadioForHomeWithFabricUUID:(id)d;
 - (void)stopThreadRadioForUserPreferredNetwork;
 - (void)stopThreadRadioOnDeviceLock;
-- (void)timerDidFire:(id)a3;
-- (void)unprotectedRegisterForArrivalNotifications:(id)a3;
-- (void)unprotectedRegisterForLeaveNotifications:(id)a3;
-- (void)unregisterForArrivalNotifications:(id)a3;
-- (void)unregisterForLeaveNotifications:(id)a3;
-- (void)unregisterPresenceNotificationsForHome:(id)a3;
+- (void)timerDidFire:(id)fire;
+- (void)unprotectedRegisterForArrivalNotifications:(id)notifications;
+- (void)unprotectedRegisterForLeaveNotifications:(id)notifications;
+- (void)unregisterForArrivalNotifications:(id)notifications;
+- (void)unregisterForLeaveNotifications:(id)notifications;
+- (void)unregisterPresenceNotificationsForHome:(id)home;
 @end
 
 @implementation HMDCHIPDataSource
@@ -101,22 +101,22 @@
   return WeakRetained;
 }
 
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4
+- (void)dispatchAfter:(unint64_t)after block:(id)block
 {
   v6 = dispatch_get_global_queue(21, 0);
-  dispatch_after(a3, v6, a4);
+  dispatch_after(after, v6, block);
 }
 
-- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)a3
+- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)d
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (!v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (!homeManager)
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -134,10 +134,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -155,13 +155,13 @@ LABEL_30:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = [v5 homes];
-  v8 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  homes = [homeManager homes];
+  v8 = [homes countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v42;
-    v36 = v7;
+    v36 = homes;
     v34 = *v42;
     do
     {
@@ -171,12 +171,12 @@ LABEL_30:
       {
         if (*v42 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(homes);
         }
 
         v12 = *(*(&v41 + 1) + 8 * v11);
-        v13 = [v12 targetFabricUUID];
-        v14 = [v13 isEqual:v4];
+        targetFabricUUID = [v12 targetFabricUUID];
+        v14 = [targetFabricUUID isEqual:dCopy];
 
         if (v14)
         {
@@ -184,8 +184,8 @@ LABEL_30:
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v15 = [v12 hapAccessories];
-          v16 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          hapAccessories = [v12 hapAccessories];
+          v16 = [hapAccessories countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v16)
           {
             v17 = v16;
@@ -196,26 +196,26 @@ LABEL_30:
               {
                 if (*v38 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(hapAccessories);
                 }
 
                 v20 = *(*(&v37 + 1) + 8 * i);
                 if ([v20 supportsCHIP])
                 {
-                  v21 = [v20 supportedLinkLayerTypes];
+                  supportedLinkLayerTypes = [v20 supportedLinkLayerTypes];
 
-                  if (!v21)
+                  if (!supportedLinkLayerTypes)
                   {
                     goto LABEL_26;
                   }
 
-                  v22 = [v20 supportedLinkLayerTypes];
-                  v23 = [v22 unsignedIntValue];
+                  supportedLinkLayerTypes2 = [v20 supportedLinkLayerTypes];
+                  unsignedIntValue = [supportedLinkLayerTypes2 unsignedIntValue];
 
-                  v24 = [v20 supportedLinkLayerTypes];
-                  v25 = [v24 unsignedIntValue];
+                  supportedLinkLayerTypes3 = [v20 supportedLinkLayerTypes];
+                  unsignedIntValue2 = [supportedLinkLayerTypes3 unsignedIntValue];
 
-                  if ((v23 & 0x10) != 0 || !v25)
+                  if ((unsignedIntValue & 0x10) != 0 || !unsignedIntValue2)
                   {
 LABEL_26:
 
@@ -225,7 +225,7 @@ LABEL_26:
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v17 = [hapAccessories countByEnumeratingWithState:&v37 objects:v45 count:16];
               if (v17)
               {
                 continue;
@@ -236,7 +236,7 @@ LABEL_26:
           }
 
           v9 = v35;
-          v7 = v36;
+          homes = v36;
           v10 = v34;
         }
 
@@ -244,7 +244,7 @@ LABEL_26:
       }
 
       while (v11 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v9 = [homes countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v9);
@@ -258,17 +258,17 @@ LABEL_32:
   return v31;
 }
 
-- (void)stopAccessoryFirmwareUpdateWithFabricUUID:(id)a3 completion:(id)a4
+- (void)stopAccessoryFirmwareUpdateWithFabricUUID:(id)d completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCHIPDataSource *)self homeManager];
-  v9 = v8;
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v9 = homeManager;
+  if (!homeManager)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -283,15 +283,15 @@ LABEL_20:
 LABEL_21:
 
     objc_autoreleasePoolPop(v22);
-    v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    v7[2](v7, v10);
+    homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+    completionCopy[2](completionCopy, homes);
     goto LABEL_22;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -309,9 +309,9 @@ LABEL_21:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v28 = v8;
-  v10 = [v8 homes];
-  v11 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v28 = homeManager;
+  homes = [homeManager homes];
+  v11 = [homes countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
@@ -322,12 +322,12 @@ LABEL_21:
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(homes);
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 targetFabricUUID];
-        v17 = [v16 isEqual:v6];
+        targetFabricUUID = [v15 targetFabricUUID];
+        v17 = [targetFabricUUID isEqual:dCopy];
 
         if (v17)
         {
@@ -336,14 +336,14 @@ LABEL_21:
           v29[2] = __74__HMDCHIPDataSource_stopAccessoryFirmwareUpdateWithFabricUUID_completion___block_invoke;
           v29[3] = &unk_278689A68;
           v29[4] = self;
-          v30 = v7;
+          v30 = completionCopy;
           [v15 stopThreadAccessoryFirmwareUpdateWithCompletion:v29];
 
           goto LABEL_17;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v12 = [homes countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v12)
       {
         continue;
@@ -354,7 +354,7 @@ LABEL_21:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy3 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -362,13 +362,13 @@ LABEL_21:
     *buf = 138543618;
     v36 = v21;
     v37 = 2112;
-    v38 = v6;
+    v38 = dCopy;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find home with CHIP fabric: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  v7[2](v7, v10);
+  homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+  completionCopy[2](completionCopy, homes);
 LABEL_17:
   v9 = v28;
 LABEL_22:
@@ -403,19 +403,19 @@ void __74__HMDCHIPDataSource_stopAccessoryFirmwareUpdateWithFabricUUID_completio
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 fabricUUID:(id)a4 isWedDevice:(BOOL)a5 completion:(id)a6
+- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address fabricUUID:(id)d isWedDevice:(BOOL)device completion:(id)completion
 {
-  v7 = a5;
+  deviceCopy = device;
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HMDCHIPDataSource *)self homeManager];
-  v14 = v13;
-  if (!v13)
+  addressCopy = address;
+  dCopy = d;
+  completionCopy = completion;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v14 = homeManager;
+  if (!homeManager)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -430,15 +430,15 @@ LABEL_20:
 LABEL_21:
 
     objc_autoreleasePoolPop(v27);
-    v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    v12[2](v12, v15);
+    homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+    completionCopy[2](completionCopy, homes);
     goto LABEL_22;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -452,15 +452,15 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v33 = v7;
-  v34 = v13;
-  v35 = v10;
+  v33 = deviceCopy;
+  v34 = homeManager;
+  v35 = addressCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v15 = [v13 homes];
-  v16 = [v15 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  homes = [homeManager homes];
+  v16 = [homes countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v16)
   {
     v17 = v16;
@@ -471,12 +471,12 @@ LABEL_21:
       {
         if (*v40 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(homes);
         }
 
         v20 = *(*(&v39 + 1) + 8 * i);
-        v21 = [v20 targetFabricUUID];
-        v22 = [v21 isEqual:v11];
+        targetFabricUUID = [v20 targetFabricUUID];
+        v22 = [targetFabricUUID isEqual:dCopy];
 
         if (v22)
         {
@@ -485,16 +485,16 @@ LABEL_21:
           v36[2] = __106__HMDCHIPDataSource_startAccessoryFirmwareUpdateWithExtendedMACAddress_fabricUUID_isWedDevice_completion___block_invoke;
           v36[3] = &unk_278689358;
           v36[4] = self;
-          v10 = v35;
+          addressCopy = v35;
           v37 = v35;
-          v38 = v12;
+          v38 = completionCopy;
           [v20 startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:v37 isWedDevice:v33 completion:v36];
 
           goto LABEL_17;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v17 = [homes countByEnumeratingWithState:&v39 objects:v47 count:16];
       if (v17)
       {
         continue;
@@ -505,7 +505,7 @@ LABEL_21:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy3 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -513,14 +513,14 @@ LABEL_21:
     *buf = 138543618;
     v44 = v26;
     v45 = 2112;
-    v46 = v11;
+    v46 = dCopy;
     _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find home with CHIP fabric: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v23);
-  v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  v12[2](v12, v15);
-  v10 = v35;
+  homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+  completionCopy[2](completionCopy, homes);
+  addressCopy = v35;
 LABEL_17:
   v14 = v34;
 LABEL_22:
@@ -558,17 +558,17 @@ void __106__HMDCHIPDataSource_startAccessoryFirmwareUpdateWithExtendedMACAddress
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAccessoryPairingWithFabricUUID:(id)a3 completion:(id)a4
+- (void)stopAccessoryPairingWithFabricUUID:(id)d completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCHIPDataSource *)self homeManager];
-  v9 = v8;
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v9 = homeManager;
+  if (!homeManager)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -583,15 +583,15 @@ LABEL_22:
 LABEL_23:
 
     objc_autoreleasePoolPop(v22);
-    v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    v7[2](v7, v10);
+    homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+    completionCopy[2](completionCopy, homes);
     goto LABEL_24;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -609,9 +609,9 @@ LABEL_23:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v32 = v8;
-  v10 = [v8 homes];
-  v11 = [v10 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  v32 = homeManager;
+  homes = [homeManager homes];
+  v11 = [homes countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v11)
   {
     v12 = v11;
@@ -622,12 +622,12 @@ LABEL_23:
       {
         if (*v36 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(homes);
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [v15 targetFabricUUID];
-        v17 = [v16 isEqual:v6];
+        targetFabricUUID = [v15 targetFabricUUID];
+        v17 = [targetFabricUUID isEqual:dCopy];
 
         if (v17)
         {
@@ -636,12 +636,12 @@ LABEL_23:
           v33[2] = __67__HMDCHIPDataSource_stopAccessoryPairingWithFabricUUID_completion___block_invoke;
           v33[3] = &unk_278689A68;
           v33[4] = self;
-          v34 = v7;
+          v34 = completionCopy;
           [v15 stopThreadAccessoryPairingWithCompletion:v33];
           [(HMDCHIPDataSource *)self setThreadPairingOverride:0];
           [(HMDCHIPDataSource *)self setThreadPairingFabricUUID:0];
           v27 = objc_autoreleasePoolPush();
-          v28 = self;
+          selfCopy3 = self;
           v29 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
@@ -658,7 +658,7 @@ LABEL_23:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v12 = [homes countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v12)
       {
         continue;
@@ -669,7 +669,7 @@ LABEL_23:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy4 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -677,13 +677,13 @@ LABEL_23:
     *buf = 138543618;
     v40 = v21;
     v41 = 2112;
-    v42 = v6;
+    v42 = dCopy;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find home with CHIP fabric: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  v7[2](v7, v10);
+  homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+  completionCopy[2](completionCopy, homes);
 LABEL_19:
   v9 = v32;
 LABEL_24:
@@ -718,25 +718,25 @@ void __67__HMDCHIPDataSource_stopAccessoryPairingWithFabricUUID_completion___blo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideLocationCheckForPairingForFabricUUID:(id)a3
+- (void)overrideLocationCheckForPairingForFabricUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     [(HMDCHIPDataSource *)self setThreadPairingOverride:1];
-    [(HMDCHIPDataSource *)self setThreadPairingFabricUUID:v4];
+    [(HMDCHIPDataSource *)self setThreadPairingFabricUUID:dCopy];
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [(HMDCHIPDataSource *)v6 threadPairingFabricUUID];
+      threadPairingFabricUUID = [(HMDCHIPDataSource *)selfCopy threadPairingFabricUUID];
       v13 = 138543618;
       v14 = v8;
       v15 = 2112;
-      v16 = v9;
+      v16 = threadPairingFabricUUID;
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Allowing thread start for pairing with fabric: %@", &v13, 0x16u);
     }
   }
@@ -744,7 +744,7 @@ void __67__HMDCHIPDataSource_stopAccessoryPairingWithFabricUUID_completion___blo
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -759,19 +759,19 @@ void __67__HMDCHIPDataSource_stopAccessoryPairingWithFabricUUID_completion___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAccessoryPairingWithExtendedMACAddress:(id)a3 fabricUUID:(id)a4 isWedDevice:(BOOL)a5 completion:(id)a6
+- (void)startAccessoryPairingWithExtendedMACAddress:(id)address fabricUUID:(id)d isWedDevice:(BOOL)device completion:(id)completion
 {
-  v7 = a5;
+  deviceCopy = device;
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HMDCHIPDataSource *)self homeManager];
-  v14 = v13;
-  if (!v13)
+  addressCopy = address;
+  dCopy = d;
+  completionCopy = completion;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v14 = homeManager;
+  if (!homeManager)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -786,15 +786,15 @@ LABEL_20:
 LABEL_21:
 
     objc_autoreleasePoolPop(v27);
-    v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    v12[2](v12, v15);
+    homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+    completionCopy[2](completionCopy, homes);
     goto LABEL_22;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -808,15 +808,15 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v33 = v7;
-  v34 = v13;
-  v35 = v10;
+  v33 = deviceCopy;
+  v34 = homeManager;
+  v35 = addressCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v15 = [v13 homes];
-  v16 = [v15 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  homes = [homeManager homes];
+  v16 = [homes countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v16)
   {
     v17 = v16;
@@ -827,31 +827,31 @@ LABEL_21:
       {
         if (*v40 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(homes);
         }
 
         v20 = *(*(&v39 + 1) + 8 * i);
-        v21 = [v20 targetFabricUUID];
-        v22 = [v21 isEqual:v11];
+        targetFabricUUID = [v20 targetFabricUUID];
+        v22 = [targetFabricUUID isEqual:dCopy];
 
         if (v22)
         {
-          [(HMDCHIPDataSource *)self overrideLocationCheckForPairingForFabricUUID:v11];
+          [(HMDCHIPDataSource *)self overrideLocationCheckForPairingForFabricUUID:dCopy];
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __99__HMDCHIPDataSource_startAccessoryPairingWithExtendedMACAddress_fabricUUID_isWedDevice_completion___block_invoke;
           v36[3] = &unk_278689358;
           v36[4] = self;
-          v10 = v35;
+          addressCopy = v35;
           v37 = v35;
-          v38 = v12;
+          v38 = completionCopy;
           [v20 startThreadAccessoryPairingWithExtendedMACAddress:v37 isWedDevice:v33 completion:v36];
 
           goto LABEL_17;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v17 = [homes countByEnumeratingWithState:&v39 objects:v47 count:16];
       if (v17)
       {
         continue;
@@ -862,7 +862,7 @@ LABEL_21:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy3 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -870,14 +870,14 @@ LABEL_21:
     *buf = 138543618;
     v44 = v26;
     v45 = 2112;
-    v46 = v11;
+    v46 = dCopy;
     _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find home with CHIP fabric: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v23);
-  v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  v12[2](v12, v15);
-  v10 = v35;
+  homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+  completionCopy[2](completionCopy, homes);
+  addressCopy = v35;
 LABEL_17:
   v14 = v34;
 LABEL_22:
@@ -915,56 +915,56 @@ void __99__HMDCHIPDataSource_startAccessoryPairingWithExtendedMACAddress_fabricU
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)getUserPreferredThreadNetworkNodeTypeWithError:(id *)a3
+- (int64_t)getUserPreferredThreadNetworkNodeTypeWithError:(id *)error
 {
-  v5 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
+  userPreferredThreadNetworkEventListener = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
 
-  if (v5)
+  if (userPreferredThreadNetworkEventListener)
   {
-    *a3 = 0;
-    v6 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
-    v7 = [v6 threadNetworkNodeType];
+    *error = 0;
+    userPreferredThreadNetworkEventListener2 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
+    threadNetworkNodeType = [userPreferredThreadNetworkEventListener2 threadNetworkNodeType];
 
-    return v7;
+    return threadNetworkNodeType;
   }
 
   else
   {
-    *a3 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
     return 0;
   }
 }
 
-- (int64_t)getUserPreferredThreadNetworkConnectionStateWithError:(id *)a3
+- (int64_t)getUserPreferredThreadNetworkConnectionStateWithError:(id *)error
 {
-  v5 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
+  userPreferredThreadNetworkEventListener = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
 
-  if (v5)
+  if (userPreferredThreadNetworkEventListener)
   {
-    *a3 = 0;
-    v6 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
-    v7 = [v6 threadNetworkConnectionState];
+    *error = 0;
+    userPreferredThreadNetworkEventListener2 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
+    threadNetworkConnectionState = [userPreferredThreadNetworkEventListener2 threadNetworkConnectionState];
 
-    return v7;
+    return threadNetworkConnectionState;
   }
 
   else
   {
-    *a3 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
     return 0;
   }
 }
 
-- (int64_t)getThreadNetworkNodeTypeWithFabricUUID:(id)a3
+- (int64_t)getThreadNetworkNodeTypeWithFabricUUID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (!v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (!homeManager)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -981,10 +981,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1002,8 +1002,8 @@ LABEL_18:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v5 homes];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  homes = [homeManager homes];
+  v8 = [homes countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1014,22 +1014,22 @@ LABEL_18:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(homes);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 targetFabricUUID];
-        v14 = [v13 isEqual:v4];
+        targetFabricUUID = [v12 targetFabricUUID];
+        v14 = [targetFabricUUID isEqual:dCopy];
 
         if (v14)
         {
-          v22 = [v12 threadNetworkNodeType];
+          threadNetworkNodeType = [v12 threadNetworkNodeType];
 
           goto LABEL_21;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v9 = [homes countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v9)
       {
         continue;
@@ -1040,7 +1040,7 @@ LABEL_18:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy3 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
@@ -1048,7 +1048,7 @@ LABEL_18:
     *buf = 138543618;
     v30 = v18;
     v31 = 2112;
-    v32 = v4;
+    v32 = dCopy;
     v19 = "%{public}@No home found with fabric %@";
     v20 = v17;
     v21 = 22;
@@ -1059,23 +1059,23 @@ LABEL_19:
 LABEL_20:
 
   objc_autoreleasePoolPop(v15);
-  v22 = 0;
+  threadNetworkNodeType = 0;
 LABEL_21:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v22;
+  return threadNetworkNodeType;
 }
 
-- (int64_t)getThreadNetworkConnectionStateWithFabricUUID:(id)a3
+- (int64_t)getThreadNetworkConnectionStateWithFabricUUID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (!v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (!homeManager)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1092,10 +1092,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1113,8 +1113,8 @@ LABEL_18:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v5 homes];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  homes = [homeManager homes];
+  v8 = [homes countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1125,22 +1125,22 @@ LABEL_18:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(homes);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 targetFabricUUID];
-        v14 = [v13 isEqual:v4];
+        targetFabricUUID = [v12 targetFabricUUID];
+        v14 = [targetFabricUUID isEqual:dCopy];
 
         if (v14)
         {
-          v22 = [v12 threadNetworkConnectionState];
+          threadNetworkConnectionState = [v12 threadNetworkConnectionState];
 
           goto LABEL_21;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v9 = [homes countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v9)
       {
         continue;
@@ -1151,7 +1151,7 @@ LABEL_18:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy3 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
@@ -1159,7 +1159,7 @@ LABEL_18:
     *buf = 138543618;
     v30 = v18;
     v31 = 2112;
-    v32 = v4;
+    v32 = dCopy;
     v19 = "%{public}@No home found with fabric %@";
     v20 = v17;
     v21 = 22;
@@ -1170,22 +1170,22 @@ LABEL_19:
 LABEL_20:
 
   objc_autoreleasePoolPop(v15);
-  v22 = 0;
+  threadNetworkConnectionState = 0;
 LABEL_21:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v22;
+  return threadNetworkConnectionState;
 }
 
-- (void)handleThreadNetworkPeripheralDeviceNodeTypeChangedNotification:(id)a3
+- (void)handleThreadNetworkPeripheralDeviceNodeTypeChangedNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -1197,14 +1197,14 @@ LABEL_21:
 
   if (v7)
   {
-    v8 = [(HMDCHIPDataSource *)self matterThreadRadioManager];
-    [v8 notifyPeripheralDeviceNodeTypeChanged:{objc_msgSend(v7, "peripheralDeviceNodeType")}];
+    matterThreadRadioManager = [(HMDCHIPDataSource *)self matterThreadRadioManager];
+    [matterThreadRadioManager notifyPeripheralDeviceNodeTypeChanged:{objc_msgSend(v7, "peripheralDeviceNodeType")}];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1220,15 +1220,15 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleThreadNetworkWakeOnConnectionStateChangedNotification:(id)a3
+- (void)handleThreadNetworkWakeOnConnectionStateChangedNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -1240,16 +1240,16 @@ LABEL_21:
 
   if (v7)
   {
-    v8 = [(HMDCHIPDataSource *)self matterThreadRadioManager];
-    v9 = [v7 connectionState];
-    v10 = [v7 eMACAddressAsString];
-    [v8 notifyWakeOnDeviceConnectionChanged:v9 eMACAddress:v10];
+    matterThreadRadioManager = [(HMDCHIPDataSource *)self matterThreadRadioManager];
+    connectionState = [v7 connectionState];
+    eMACAddressAsString = [v7 eMACAddressAsString];
+    [matterThreadRadioManager notifyWakeOnDeviceConnectionChanged:connectionState eMACAddress:eMACAddressAsString];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1265,15 +1265,15 @@ LABEL_21:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleThreadNetworkStateChangedNotification:(id)a3
+- (void)handleThreadNetworkStateChangedNotification:(id)notification
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -1306,7 +1306,7 @@ LABEL_21:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1333,32 +1333,32 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
   [v2 notifyThreadRadioStateChanged:v3 nodeType:v4 fabricUUID:v5];
 }
 
-- (void)connectToAccessoryForUserPreferredNetworkWithExtendedMACAddress:(id)a3 completion:(id)a4
+- (void)connectToAccessoryForUserPreferredNetworkWithExtendedMACAddress:(id)address completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCHIPDataSource *)self getSharedThreadResidentCommissioner];
-  [v8 connectToThreadAccessoryWithExtendedMACAddress:v7 completion:v6];
+  completionCopy = completion;
+  addressCopy = address;
+  getSharedThreadResidentCommissioner = [(HMDCHIPDataSource *)self getSharedThreadResidentCommissioner];
+  [getSharedThreadResidentCommissioner connectToThreadAccessoryWithExtendedMACAddress:addressCopy completion:completionCopy];
 }
 
-- (void)connectToAccessoryWithExtendedMACAddress:(id)a3 withFabricUUID:(id)a4 completion:(id)a5
+- (void)connectToAccessoryWithExtendedMACAddress:(id)address withFabricUUID:(id)d completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCHIPDataSource *)self homeManager];
-  v12 = v11;
-  if (v11)
+  addressCopy = address;
+  dCopy = d;
+  completionCopy = completion;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v12 = homeManager;
+  if (homeManager)
   {
-    v30 = v10;
-    v31 = v8;
+    v30 = completionCopy;
+    v31 = addressCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = [v11 homes];
-    v14 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    homes = [homeManager homes];
+    v14 = [homes countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1369,14 +1369,14 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
         {
           if (*v36 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(homes);
           }
 
-          if (v9)
+          if (dCopy)
           {
             v18 = *(*(&v35 + 1) + 8 * i);
-            v19 = [v18 targetFabricUUID];
-            v20 = [v19 isEqual:v9];
+            targetFabricUUID = [v18 targetFabricUUID];
+            v20 = [targetFabricUUID isEqual:dCopy];
 
             if (v20)
             {
@@ -1385,9 +1385,9 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
               v32[2] = __88__HMDCHIPDataSource_connectToAccessoryWithExtendedMACAddress_withFabricUUID_completion___block_invoke;
               v32[3] = &unk_278689358;
               v32[4] = self;
-              v8 = v31;
+              addressCopy = v31;
               v33 = v31;
-              v10 = v30;
+              completionCopy = v30;
               v34 = v30;
               [v18 connectToThreadAccessoryWithExtendedMACAddress:v33 completion:v32];
 
@@ -1396,7 +1396,7 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v15 = [homes countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v15)
         {
           continue;
@@ -1407,7 +1407,7 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
     }
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -1415,21 +1415,21 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
       *buf = 138543618;
       v40 = v24;
       v41 = 2112;
-      v42 = v9;
+      v42 = dCopy;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find home with CHIP fabric: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v21);
-    v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    v10 = v30;
-    (v30)[2](v30, v13);
-    v8 = v31;
+    homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    completionCopy = v30;
+    (v30)[2](v30, homes);
+    addressCopy = v31;
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -1440,8 +1440,8 @@ void __65__HMDCHIPDataSource_handleThreadNetworkStateChangedNotification___block
     }
 
     objc_autoreleasePoolPop(v25);
-    v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    (*(v10 + 2))(v10, v13);
+    homes = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+    (*(completionCopy + 2))(completionCopy, homes);
   }
 
 LABEL_18:
@@ -1483,7 +1483,7 @@ void __88__HMDCHIPDataSource_connectToAccessoryWithExtendedMACAddress_withFabric
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1494,13 +1494,13 @@ void __88__HMDCHIPDataSource_connectToAccessoryWithExtendedMACAddress_withFabric
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCHIPDataSource *)v4 getSharedThreadResidentCommissioner];
+  getSharedThreadResidentCommissioner = [(HMDCHIPDataSource *)selfCopy getSharedThreadResidentCommissioner];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__HMDCHIPDataSource_stopThreadRadioOnDeviceLock__block_invoke;
   v9[3] = &unk_27868A250;
-  v9[4] = v4;
-  [v7 stopThreadNetworkOnDeviceLockWithCompletion:v9];
+  v9[4] = selfCopy;
+  [getSharedThreadResidentCommissioner stopThreadNetworkOnDeviceLockWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1550,8 +1550,8 @@ LABEL_6:
 - (void)_stopNetworkListenerForUserPreferredNetwork
 {
   [(HMDCHIPDataSource *)self setThreadNetworkShouldRestartOnNetworkChange:0];
-  v3 = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
-  [v3 stopListeningForEvents];
+  userPreferredThreadNetworkEventListener = [(HMDCHIPDataSource *)self userPreferredThreadNetworkEventListener];
+  [userPreferredThreadNetworkEventListener stopListeningForEvents];
 
   [(HMDCHIPDataSource *)self setUserPreferredThreadNetworkEventListener:0];
 }
@@ -1560,7 +1560,7 @@ LABEL_6:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1571,14 +1571,14 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDCHIPDataSource *)v4 _stopNetworkListenerForUserPreferredNetwork];
-  v7 = [(HMDCHIPDataSource *)v4 getSharedThreadResidentCommissioner];
+  [(HMDCHIPDataSource *)selfCopy _stopNetworkListenerForUserPreferredNetwork];
+  getSharedThreadResidentCommissioner = [(HMDCHIPDataSource *)selfCopy getSharedThreadResidentCommissioner];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HMDCHIPDataSource_stopThreadRadioForUserPreferredNetwork__block_invoke;
   v9[3] = &unk_27868A250;
-  v9[4] = v4;
-  [v7 stopThreadNetworkWithCompletion:v9];
+  v9[4] = selfCopy;
+  [getSharedThreadResidentCommissioner stopThreadNetworkWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1638,7 +1638,7 @@ LABEL_6:
   else
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1649,20 +1649,20 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDCHIPDataSource *)v5 getDefaultThreadNetworkMetadataStore];
-    if (v8)
+    getDefaultThreadNetworkMetadataStore = [(HMDCHIPDataSource *)selfCopy getDefaultThreadNetworkMetadataStore];
+    if (getDefaultThreadNetworkMetadataStore)
     {
-      v9 = [(HMDCHIPDataSource *)v5 getSharedThreadResidentCommissioner];
-      [(HMDCHIPDataSource *)v5 _startNetworkListenerForUserPreferredNetwork:0];
-      objc_initWeak(buf, v5);
+      getSharedThreadResidentCommissioner = [(HMDCHIPDataSource *)selfCopy getSharedThreadResidentCommissioner];
+      [(HMDCHIPDataSource *)selfCopy _startNetworkListenerForUserPreferredNetwork:0];
+      objc_initWeak(buf, selfCopy);
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invoke;
       v16[3] = &unk_27867B800;
       objc_copyWeak(&v18, buf);
-      v10 = v9;
+      v10 = getSharedThreadResidentCommissioner;
       v17 = v10;
-      [v8 retrievePreferredNetwork:0 completion:v16];
+      [getDefaultThreadNetworkMetadataStore retrievePreferredNetwork:0 completion:v16];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(buf);
@@ -1671,7 +1671,7 @@ LABEL_6:
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = v5;
+      v12 = selfCopy;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -1815,7 +1815,7 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
 {
   v83 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1826,10 +1826,10 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
   }
 
   objc_autoreleasePoolPop(v3);
-  v51 = [(HMDCHIPDataSource *)v4 getDefaultThreadNetworkMetadataStore];
-  if (v51)
+  getDefaultThreadNetworkMetadataStore = [(HMDCHIPDataSource *)selfCopy getDefaultThreadNetworkMetadataStore];
+  if (getDefaultThreadNetworkMetadataStore)
   {
-    v50 = [(HMDCHIPDataSource *)v4 _getLocationAuthorized];
+    _getLocationAuthorized = [(HMDCHIPDataSource *)selfCopy _getLocationAuthorized];
     v67 = 0;
     v68 = &v67;
     v69 = 0x2020000000;
@@ -1841,10 +1841,10 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
     v81 = __Block_byref_object_dispose__150014;
     v82 = 0;
     group = dispatch_group_create();
-    v7 = [(HMDCHIPDataSource *)v4 homeManager];
-    if (v7)
+    homeManager = [(HMDCHIPDataSource *)selfCopy homeManager];
+    if (homeManager)
     {
-      v8 = v50;
+      v8 = _getLocationAuthorized;
     }
 
     else
@@ -1852,11 +1852,11 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
       v8 = 0;
     }
 
-    v49 = v7;
+    v49 = homeManager;
     if (v8)
     {
-      v9 = [v7 homes];
-      v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_166];
+      homes = [homeManager homes];
+      v10 = [homes sortedArrayUsingComparator:&__block_literal_global_166];
 
       v65 = 0u;
       v66 = 0u;
@@ -1877,25 +1877,25 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
             }
 
             v15 = *(*(&v63 + 1) + 8 * i);
-            v16 = [v15 fabric];
-            v17 = [v16 fabricID];
+            fabric = [v15 fabric];
+            fabricID = [fabric fabricID];
 
-            if (v17)
+            if (fabricID)
             {
-              v18 = [v15 matterAccessories];
-              if ([v18 count])
+              matterAccessories = [v15 matterAccessories];
+              if ([matterAccessories count])
               {
                 dispatch_group_enter(group);
                 v59[0] = MEMORY[0x277D85DD0];
                 v59[1] = 3221225472;
                 v59[2] = __87__HMDCHIPDataSource_startThreadRadioForUserPreferredNetworkWithGeoAndBorderRouterCheck__block_invoke_2;
                 v59[3] = &unk_27867B788;
-                v59[4] = v4;
+                v59[4] = selfCopy;
                 v59[5] = v15;
                 v61 = &v67;
                 p_buf = &buf;
                 v60 = group;
-                [(HMDCHIPDataSource *)v4 hasValidGeoOrPreferredNetworkForHome:v15 completion:v59];
+                [(HMDCHIPDataSource *)selfCopy hasValidGeoOrPreferredNetworkForHome:v15 completion:v59];
               }
             }
           }
@@ -1910,7 +1910,7 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v4;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -1927,7 +1927,7 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
     if (dispatch_group_wait(group, v27))
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = v4;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -1941,7 +1941,7 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
     }
 
     v32 = objc_autoreleasePoolPush();
-    v33 = v4;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
@@ -1959,7 +1959,7 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
     }
 
     objc_autoreleasePoolPop(v32);
-    if (v50 && (v68[3] & 1) == 0)
+    if (_getLocationAuthorized && (v68[3] & 1) == 0)
     {
       v39 = CFPreferencesGetAppBooleanValue(@"StartThreadOnWakeBypassAccessoryRequirement", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0) == 0;
       v40 = objc_autoreleasePoolPush();
@@ -1991,7 +1991,7 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
       objc_autoreleasePoolPop(v40);
     }
 
-    v44 = [(HMDCHIPDataSource *)v33 getSharedThreadResidentCommissioner];
+    getSharedThreadResidentCommissioner = [(HMDCHIPDataSource *)v33 getSharedThreadResidentCommissioner];
     [(HMDCHIPDataSource *)v33 _startNetworkListenerForUserPreferredNetwork:1];
     objc_initWeak(v71, v33);
     v53[0] = MEMORY[0x277D85DD0];
@@ -1999,9 +1999,9 @@ void __60__HMDCHIPDataSource_startThreadRadioForUserPreferredNetwork__block_invo
     v53[2] = __87__HMDCHIPDataSource_startThreadRadioForUserPreferredNetworkWithGeoAndBorderRouterCheck__block_invoke_171;
     v53[3] = &unk_27867B7D8;
     objc_copyWeak(&v58, v71);
-    v54 = v51;
+    v54 = getDefaultThreadNetworkMetadataStore;
     v56 = &buf;
-    v45 = v44;
+    v45 = getSharedThreadResidentCommissioner;
     v55 = v45;
     v57 = &v67;
     [v54 retrieveBorderRouterPreferredNetworkWithCompletion:v53];
@@ -2017,7 +2017,7 @@ LABEL_39:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = v4;
+  v20 = selfCopy;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -2378,15 +2378,15 @@ uint64_t __87__HMDCHIPDataSource_startThreadRadioForUserPreferredNetworkWithGeoA
   return v11;
 }
 
-- (void)_getPreferredNetworkExistsWithCompletion:(id)a3
+- (void)_getPreferredNetworkExistsWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v21 = 0;
   v5 = WiFiCopyCurrentNetworkInfoEx();
   v6 = [v5 objectForKeyedSubscript:@"ssid"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -2401,18 +2401,18 @@ uint64_t __87__HMDCHIPDataSource_startThreadRadioForUserPreferredNetworkWithGeoA
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDCHIPDataSource *)v8 setPnExistsOnCurrentNetwork:0];
-  v11 = [(HMDCHIPDataSource *)v8 getDefaultThreadNetworkMetadataStore];
-  if (v11)
+  [(HMDCHIPDataSource *)selfCopy setPnExistsOnCurrentNetwork:0];
+  getDefaultThreadNetworkMetadataStore = [(HMDCHIPDataSource *)selfCopy getDefaultThreadNetworkMetadataStore];
+  if (getDefaultThreadNetworkMetadataStore)
   {
-    objc_initWeak(buf, v8);
+    objc_initWeak(buf, selfCopy);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__HMDCHIPDataSource__getPreferredNetworkExistsWithCompletion___block_invoke;
     v18[3] = &unk_27867B760;
     objc_copyWeak(&v20, buf);
-    v19 = v4;
-    [v11 retrievePreferredNetwork:0 completion:v18];
+    v19 = completionCopy;
+    [getDefaultThreadNetworkMetadataStore retrievePreferredNetwork:0 completion:v18];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -2421,7 +2421,7 @@ uint64_t __87__HMDCHIPDataSource_startThreadRadioForUserPreferredNetworkWithGeoA
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v8;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -2433,7 +2433,7 @@ uint64_t __87__HMDCHIPDataSource_startThreadRadioForUserPreferredNetworkWithGeoA
 
     objc_autoreleasePoolPop(v12);
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-    (*(v4 + 2))(v4, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2523,7 +2523,7 @@ void __62__HMDCHIPDataSource__getPreferredNetworkExistsWithCompletion___block_in
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2534,20 +2534,20 @@ void __62__HMDCHIPDataSource__getPreferredNetworkExistsWithCompletion___block_in
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCHIPDataSource *)v4 matterThreadRadioManager];
-  v8 = [(HMDCHIPDataSource *)v4 userPreferredThreadNetworkEventListener];
-  v9 = [v8 threadNetworkConnectionState];
-  v10 = [(HMDCHIPDataSource *)v4 userPreferredThreadNetworkEventListener];
-  [v7 notifyThreadRadioStateChanged:v9 nodeType:objc_msgSend(v10 fabricUUID:{"threadNetworkNodeType"), 0}];
+  matterThreadRadioManager = [(HMDCHIPDataSource *)selfCopy matterThreadRadioManager];
+  userPreferredThreadNetworkEventListener = [(HMDCHIPDataSource *)selfCopy userPreferredThreadNetworkEventListener];
+  threadNetworkConnectionState = [userPreferredThreadNetworkEventListener threadNetworkConnectionState];
+  userPreferredThreadNetworkEventListener2 = [(HMDCHIPDataSource *)selfCopy userPreferredThreadNetworkEventListener];
+  [matterThreadRadioManager notifyThreadRadioStateChanged:threadNetworkConnectionState nodeType:objc_msgSend(userPreferredThreadNetworkEventListener2 fabricUUID:{"threadNetworkNodeType"), 0}];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleThreadBTCallStateChange:(BOOL)a3
+- (void)handleThreadBTCallStateChange:(BOOL)change
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2561,24 +2561,24 @@ void __62__HMDCHIPDataSource__getPreferredNetworkExistsWithCompletion___block_in
   }
 
   objc_autoreleasePoolPop(v5);
-  if (!a3)
+  if (!change)
   {
-    [(HMDCHIPDataSource *)v6 startThreadRadioForUserPreferredNetwork];
+    [(HMDCHIPDataSource *)selfCopy startThreadRadioForUserPreferredNetwork];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadRadioForHomeWithFabricUUID:(id)a3
+- (void)stopThreadRadioForHomeWithFabricUUID:(id)d
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (!v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (!homeManager)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2596,10 +2596,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2617,8 +2617,8 @@ LABEL_18:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 homes];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  homes = [homeManager homes];
+  v8 = [homes countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2629,12 +2629,12 @@ LABEL_18:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(homes);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 targetFabricUUID];
-        v14 = [v13 isEqual:v4];
+        targetFabricUUID = [v12 targetFabricUUID];
+        v14 = [targetFabricUUID isEqual:dCopy];
 
         if (v14)
         {
@@ -2644,7 +2644,7 @@ LABEL_18:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v9 = [homes countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v9)
       {
         continue;
@@ -2655,7 +2655,7 @@ LABEL_18:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy3 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -2663,7 +2663,7 @@ LABEL_18:
     *buf = 138543618;
     v29 = v18;
     v30 = 2112;
-    v31 = v4;
+    v31 = dCopy;
     v19 = "%{public}@Could not find home with CHIP fabric: %@";
     v20 = v17;
     v21 = OS_LOG_TYPE_DEFAULT;
@@ -2680,51 +2680,51 @@ LABEL_21:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadRadioForHome:(id)a3
+- (void)stopThreadRadioForHome:(id)home
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 targetFabricUUID];
+    targetFabricUUID = [homeCopy targetFabricUUID];
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v9;
+    v14 = targetFabricUUID;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Calling thread stop for home with fabric: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [v4 stopThreadNetwork:1];
-  [(HMDCHIPDataSource *)v6 unregisterPresenceNotificationsForHome:v4];
-  if ([(HMDCHIPDataSource *)v6 startThreadOnWakeEnabled])
+  [homeCopy stopThreadNetwork:1];
+  [(HMDCHIPDataSource *)selfCopy unregisterPresenceNotificationsForHome:homeCopy];
+  if ([(HMDCHIPDataSource *)selfCopy startThreadOnWakeEnabled])
   {
-    [(HMDCHIPDataSource *)v6 _startNetworkListenerForUserPreferredNetwork:1];
+    [(HMDCHIPDataSource *)selfCopy _startNetworkListenerForUserPreferredNetwork:1];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startThreadRadioForHomeWithFabricUUID:(id)a3
+- (void)startThreadRadioForHomeWithFabricUUID:(id)d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (homeManager)
   {
-    if (v4)
+    if (dCopy)
     {
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v7 = [v5 homes];
-      v8 = [v7 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      homes = [homeManager homes];
+      v8 = [homes countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (!v8)
       {
         goto LABEL_11;
@@ -2738,12 +2738,12 @@ LABEL_5:
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(homes);
         }
 
         v12 = *(*(&v32 + 1) + 8 * v11);
-        v13 = [v12 targetFabricUUID];
-        v14 = [v13 isEqual:v4];
+        targetFabricUUID = [v12 targetFabricUUID];
+        v14 = [targetFabricUUID isEqual:dCopy];
 
         if (v14)
         {
@@ -2752,7 +2752,7 @@ LABEL_5:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          v9 = [homes countByEnumeratingWithState:&v32 objects:v40 count:16];
           if (v9)
           {
             goto LABEL_5;
@@ -2761,7 +2761,7 @@ LABEL_5:
 LABEL_11:
 
           v15 = objc_autoreleasePoolPush();
-          v16 = self;
+          selfCopy5 = self;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
@@ -2769,7 +2769,7 @@ LABEL_11:
             *buf = 138543618;
             v37 = v18;
             v38 = 2112;
-            v39 = v4;
+            v39 = dCopy;
             v19 = "%{public}@Could not find home with fabric: %@";
             v20 = v17;
             v21 = OS_LOG_TYPE_DEFAULT;
@@ -2786,7 +2786,7 @@ LABEL_11:
         if (([(HMDCHIPDataSource *)self checkPresenceForHome:v12]& 0xFFFFFFFFFFFFFFFELL) == 2)
         {
           v23 = objc_autoreleasePoolPush();
-          v24 = self;
+          selfCopy2 = self;
           v25 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
@@ -2794,12 +2794,12 @@ LABEL_11:
             *buf = 138543618;
             v37 = v26;
             v38 = 2112;
-            v39 = v4;
+            v39 = dCopy;
             _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@Not calling thread start for home with fabric: %@ as user is not home", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v23);
-          [(HMDCHIPDataSource *)v24 registerForArrivalNotifications:v12];
+          [(HMDCHIPDataSource *)selfCopy2 registerForArrivalNotifications:v12];
 LABEL_31:
 
           goto LABEL_32;
@@ -2815,7 +2815,7 @@ LABEL_31:
 
       [(HMDCHIPDataSource *)self registerForLeaveNotifications:v12];
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -2823,7 +2823,7 @@ LABEL_31:
         *buf = 138543618;
         v37 = v30;
         v38 = 2112;
-        v39 = v4;
+        v39 = dCopy;
         _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Calling thread start for home with fabric: %@", buf, 0x16u);
       }
 
@@ -2833,7 +2833,7 @@ LABEL_31:
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy5 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2849,7 +2849,7 @@ LABEL_31:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy5 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2943,18 +2943,18 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasValidGeoOrPreferredNetworkForHome:(id)a3 completion:(id)a4
+- (void)hasValidGeoOrPreferredNetworkForHome:(id)home completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  homeCopy = home;
+  completionCopy = completion;
+  if (homeCopy)
   {
-    v8 = [(HMDCHIPDataSource *)self checkPresenceForHome:v6];
+    v8 = [(HMDCHIPDataSource *)self checkPresenceForHome:homeCopy];
     if (v8 == 1)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -2962,12 +2962,12 @@ LABEL_13:
         *buf = 138543618;
         v30 = v12;
         v31 = 2112;
-        v32 = v6;
+        v32 = homeCopy;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Allowing geo as user is at home for: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -2979,9 +2979,9 @@ LABEL_13:
       aBlock[3] = &unk_27867B738;
       aBlock[4] = self;
       v28 = v8 == 0;
-      v15 = v6;
+      v15 = homeCopy;
       v25 = v15;
-      v26 = v7;
+      v26 = completionCopy;
       v27 = v14;
       v16 = _Block_copy(aBlock);
       if ([(HMDCHIPDataSource *)self pnExistsOnCurrentNetwork])
@@ -2992,7 +2992,7 @@ LABEL_13:
       else
       {
         v17 = objc_autoreleasePoolPush();
-        v18 = self;
+        selfCopy2 = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
@@ -3009,9 +3009,9 @@ LABEL_13:
         v22[1] = 3221225472;
         v22[2] = __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___block_invoke_157;
         v22[3] = &unk_278689A68;
-        v22[4] = v18;
+        v22[4] = selfCopy2;
         v23 = v16;
-        [(HMDCHIPDataSource *)v18 _getPreferredNetworkExistsWithCompletion:v22];
+        [(HMDCHIPDataSource *)selfCopy2 _getPreferredNetworkExistsWithCompletion:v22];
       }
     }
   }
@@ -3019,7 +3019,7 @@ LABEL_13:
   else
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-    (v7)[2](v7, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -3106,41 +3106,41 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterPresenceNotificationsForHome:(id)a3
+- (void)unregisterPresenceNotificationsForHome:(id)home
 {
-  v12 = a3;
+  homeCopy = home;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCHIPDataSource *)self activeThreadHome];
-  v5 = [v4 uuid];
-  v6 = [v12 uuid];
-  v7 = [v5 isEqual:v6];
+  activeThreadHome = [(HMDCHIPDataSource *)self activeThreadHome];
+  uuid = [activeThreadHome uuid];
+  uuid2 = [homeCopy uuid];
+  v7 = [uuid isEqual:uuid2];
 
   if (v7)
   {
-    [(HMDCHIPDataSource *)self unregisterForLeaveNotifications:v12];
+    [(HMDCHIPDataSource *)self unregisterForLeaveNotifications:homeCopy];
     [(HMDCHIPDataSource *)self setActiveThreadHome:0];
   }
 
-  v8 = [(HMDCHIPDataSource *)self pendingThreadHome];
-  v9 = [v8 uuid];
-  v10 = [v12 uuid];
-  v11 = [v9 isEqual:v10];
+  pendingThreadHome = [(HMDCHIPDataSource *)self pendingThreadHome];
+  uuid3 = [pendingThreadHome uuid];
+  uuid4 = [homeCopy uuid];
+  v11 = [uuid3 isEqual:uuid4];
 
   if (v11)
   {
-    [(HMDCHIPDataSource *)self unregisterForArrivalNotifications:v12];
+    [(HMDCHIPDataSource *)self unregisterForArrivalNotifications:homeCopy];
     [(HMDCHIPDataSource *)self setPendingThreadHome:0];
   }
 
   os_unfair_lock_unlock(&self->_geo_lock);
 }
 
-- (void)unregisterForArrivalNotifications:(id)a3
+- (void)unregisterForArrivalNotifications:(id)notifications
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3151,33 +3151,33 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCHIPDataSource *)v6 notificationCenter];
-  [v9 removeObserver:v6 name:@"HMDHomeDidArriveHomeNotificationKey" object:v4];
+  notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter removeObserver:selfCopy name:@"HMDHomeDidArriveHomeNotificationKey" object:notificationsCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForArrivalNotifications:(id)a3
+- (void)registerForArrivalNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock_with_options();
-  [(HMDCHIPDataSource *)self unprotectedRegisterForArrivalNotifications:v4];
+  [(HMDCHIPDataSource *)self unprotectedRegisterForArrivalNotifications:notificationsCopy];
   os_unfair_lock_unlock(&self->_geo_lock);
 }
 
-- (void)unprotectedRegisterForArrivalNotifications:(id)a3
+- (void)unprotectedRegisterForArrivalNotifications:(id)notifications
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self pendingThreadHome];
-  v6 = [v5 uuid];
-  v7 = [v4 uuid];
-  v8 = [v6 isEqual:v7];
+  notificationsCopy = notifications;
+  pendingThreadHome = [(HMDCHIPDataSource *)self pendingThreadHome];
+  uuid = [pendingThreadHome uuid];
+  uuid2 = [notificationsCopy uuid];
+  v8 = [uuid isEqual:uuid2];
 
-  if (v4 && (v8 & 1) == 0)
+  if (notificationsCopy && (v8 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -3188,29 +3188,29 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDCHIPDataSource *)v10 pendingThreadHome];
+    pendingThreadHome2 = [(HMDCHIPDataSource *)selfCopy pendingThreadHome];
 
-    if (v13)
+    if (pendingThreadHome2)
     {
-      v14 = [(HMDCHIPDataSource *)v10 pendingThreadHome];
-      [(HMDCHIPDataSource *)v10 unregisterForArrivalNotifications:v14];
+      pendingThreadHome3 = [(HMDCHIPDataSource *)selfCopy pendingThreadHome];
+      [(HMDCHIPDataSource *)selfCopy unregisterForArrivalNotifications:pendingThreadHome3];
     }
 
-    v15 = [(HMDCHIPDataSource *)v10 notificationCenter];
-    [v15 addObserver:v10 selector:sel_handleHomeDidArriveHomeNotification_ name:@"HMDHomeDidArriveHomeNotificationKey" object:v4];
+    notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+    [notificationCenter addObserver:selfCopy selector:sel_handleHomeDidArriveHomeNotification_ name:@"HMDHomeDidArriveHomeNotificationKey" object:notificationsCopy];
 
-    [(HMDCHIPDataSource *)v10 setPendingThreadHome:v4];
+    [(HMDCHIPDataSource *)selfCopy setPendingThreadHome:notificationsCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterForLeaveNotifications:(id)a3
+- (void)unregisterForLeaveNotifications:(id)notifications
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3221,33 +3221,33 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCHIPDataSource *)v6 notificationCenter];
-  [v9 removeObserver:v6 name:@"HMDHomeDidLeaveHomeNotificationKey" object:v4];
+  notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter removeObserver:selfCopy name:@"HMDHomeDidLeaveHomeNotificationKey" object:notificationsCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForLeaveNotifications:(id)a3
+- (void)registerForLeaveNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock_with_options();
-  [(HMDCHIPDataSource *)self unprotectedRegisterForLeaveNotifications:v4];
+  [(HMDCHIPDataSource *)self unprotectedRegisterForLeaveNotifications:notificationsCopy];
   os_unfair_lock_unlock(&self->_geo_lock);
 }
 
-- (void)unprotectedRegisterForLeaveNotifications:(id)a3
+- (void)unprotectedRegisterForLeaveNotifications:(id)notifications
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self activeThreadHome];
-  v6 = [v5 uuid];
-  v7 = [v4 uuid];
-  v8 = [v6 isEqual:v7];
+  notificationsCopy = notifications;
+  activeThreadHome = [(HMDCHIPDataSource *)self activeThreadHome];
+  uuid = [activeThreadHome uuid];
+  uuid2 = [notificationsCopy uuid];
+  v8 = [uuid isEqual:uuid2];
 
-  if (v4 && (v8 & 1) == 0)
+  if (notificationsCopy && (v8 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -3258,32 +3258,32 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDCHIPDataSource *)v10 activeThreadHome];
+    activeThreadHome2 = [(HMDCHIPDataSource *)selfCopy activeThreadHome];
 
-    if (v13)
+    if (activeThreadHome2)
     {
-      v14 = [(HMDCHIPDataSource *)v10 activeThreadHome];
-      [(HMDCHIPDataSource *)v10 unregisterForLeaveNotifications:v14];
+      activeThreadHome3 = [(HMDCHIPDataSource *)selfCopy activeThreadHome];
+      [(HMDCHIPDataSource *)selfCopy unregisterForLeaveNotifications:activeThreadHome3];
     }
 
-    v15 = [(HMDCHIPDataSource *)v10 notificationCenter];
-    [v15 addObserver:v10 selector:sel_handleHomeDidLeaveHomeNotification_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:v4];
+    notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+    [notificationCenter addObserver:selfCopy selector:sel_handleHomeDidLeaveHomeNotification_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:notificationsCopy];
 
-    [(HMDCHIPDataSource *)v10 setActiveThreadHome:v4];
+    [(HMDCHIPDataSource *)selfCopy setActiveThreadHome:notificationsCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeDidArriveHomeNotification:(id)a3
+- (void)handleHomeDidArriveHomeNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCHIPDataSource *)self pendingThreadHome];
+  pendingThreadHome = [(HMDCHIPDataSource *)self pendingThreadHome];
   [(HMDCHIPDataSource *)self setPendingThreadHome:0];
-  [(HMDCHIPDataSource *)self unregisterForArrivalNotifications:v5];
-  [(HMDCHIPDataSource *)self unprotectedRegisterForLeaveNotifications:v5];
+  [(HMDCHIPDataSource *)self unregisterForArrivalNotifications:pendingThreadHome];
+  [(HMDCHIPDataSource *)self unprotectedRegisterForLeaveNotifications:pendingThreadHome];
   os_unfair_lock_unlock(&self->_geo_lock);
   if ([(HMDCHIPDataSource *)self startThreadOnWakeEnabled])
   {
@@ -3291,76 +3291,76 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 fabric];
-    v11 = [v10 fabricID];
+    fabric = [pendingThreadHome fabric];
+    fabricID = [fabric fabricID];
     v13 = 138543618;
     v14 = v9;
     v15 = 2112;
-    v16 = v11;
+    v16 = fabricID;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@User arrived home, starting thread network for fabric ID: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [v5 startThreadNetwork:1];
+  [pendingThreadHome startThreadNetwork:1];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeDidLeaveHomeNotification:(id)a3
+- (void)handleHomeDidLeaveHomeNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCHIPDataSource *)self activeThreadHome];
+  activeThreadHome = [(HMDCHIPDataSource *)self activeThreadHome];
   [(HMDCHIPDataSource *)self setActiveThreadHome:0];
-  [(HMDCHIPDataSource *)self unregisterForLeaveNotifications:v5];
-  [(HMDCHIPDataSource *)self unprotectedRegisterForArrivalNotifications:v5];
+  [(HMDCHIPDataSource *)self unregisterForLeaveNotifications:activeThreadHome];
+  [(HMDCHIPDataSource *)self unprotectedRegisterForArrivalNotifications:activeThreadHome];
   os_unfair_lock_unlock(&self->_geo_lock);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 fabric];
-    v11 = [v10 fabricID];
+    fabric = [activeThreadHome fabric];
+    fabricID = [fabric fabricID];
     v13 = 138543618;
     v14 = v9;
     v15 = 2112;
-    v16 = v11;
+    v16 = fabricID;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@User left home, stopping thread network for fabric ID: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [v5 stopThreadNetwork:1];
-  if ([(HMDCHIPDataSource *)v7 startThreadOnWakeEnabled])
+  [activeThreadHome stopThreadNetwork:1];
+  if ([(HMDCHIPDataSource *)selfCopy startThreadOnWakeEnabled])
   {
-    [(HMDCHIPDataSource *)v7 _startNetworkListenerForUserPreferredNetwork:1];
+    [(HMDCHIPDataSource *)selfCopy _startNetworkListenerForUserPreferredNetwork:1];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleLocationAuthorizationChangedNotification:(id)a3
+- (void)handleLocationAuthorizationChangedNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_numberForKey:@"HMLocationAuthorizationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo hmf_numberForKey:@"HMLocationAuthorizationKey"];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
-    if ([(HMDCHIPDataSource *)self locationAuthorization]!= v7)
+    integerValue = [v6 integerValue];
+    if ([(HMDCHIPDataSource *)self locationAuthorization]!= integerValue)
     {
-      [(HMDCHIPDataSource *)self setLocationAuthorization:v7];
+      [(HMDCHIPDataSource *)self setLocationAuthorization:integerValue];
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -3374,14 +3374,14 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
       }
 
       objc_autoreleasePoolPop(v8);
-      v13 = [(HMDCHIPDataSource *)v9 activeThreadHome];
+      activeThreadHome = [(HMDCHIPDataSource *)selfCopy activeThreadHome];
 
-      if (v13)
+      if (activeThreadHome)
       {
-        v14 = [(HMDCHIPDataSource *)v9 activeThreadHome];
-        [v14 stopThreadNetwork:1];
+        activeThreadHome2 = [(HMDCHIPDataSource *)selfCopy activeThreadHome];
+        [activeThreadHome2 stopThreadNetwork:1];
 
-        [(HMDCHIPDataSource *)v9 setActiveThreadHome:0];
+        [(HMDCHIPDataSource *)selfCopy setActiveThreadHome:0];
       }
     }
   }
@@ -3389,7 +3389,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -3405,24 +3405,24 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browser:(id)a3 didRemoveAccessoryPairingWithNodeID:(id)a4
+- (void)browser:(id)browser didRemoveAccessoryPairingWithNodeID:(id)d
 {
   v56 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v6 = a4;
+  browserCopy = browser;
+  dCopy = d;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v36 = self;
-  v7 = [(HMDCHIPDataSource *)self homeManager];
-  v8 = [v7 homes];
+  selfCopy = self;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  homes = [homeManager homes];
 
-  v32 = [v8 countByEnumeratingWithState:&v44 objects:v55 count:16];
+  v32 = [homes countByEnumeratingWithState:&v44 objects:v55 count:16];
   if (v32)
   {
     v9 = *v45;
-    v35 = v8;
+    v35 = homes;
     v31 = *v45;
     do
     {
@@ -3431,7 +3431,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
       {
         if (*v45 != v9)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(homes);
         }
 
         v11 = *(*(&v44 + 1) + 8 * v10);
@@ -3441,8 +3441,8 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
         v43 = 0u;
         v33 = v10;
         v34 = v11;
-        v12 = [v11 hapAccessories];
-        v13 = [v12 countByEnumeratingWithState:&v40 objects:v54 count:16];
+        hapAccessories = [v11 hapAccessories];
+        v13 = [hapAccessories countByEnumeratingWithState:&v40 objects:v54 count:16];
         if (v13)
         {
           v14 = v13;
@@ -3453,35 +3453,35 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
             {
               if (*v41 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(hapAccessories);
               }
 
               v17 = *(*(&v40 + 1) + 8 * i);
-              v18 = [v17 matterNodeID];
-              if ([v18 isEqual:&unk_283E73280])
+              matterNodeID = [v17 matterNodeID];
+              if ([matterNodeID isEqual:&unk_283E73280])
               {
               }
 
               else
               {
-                v19 = [v17 matterNodeID];
-                v20 = [v19 isEqualToNumber:v6];
+                matterNodeID2 = [v17 matterNodeID];
+                v20 = [matterNodeID2 isEqualToNumber:dCopy];
 
                 if (v20)
                 {
                   v25 = objc_autoreleasePoolPush();
-                  v26 = v36;
+                  v26 = selfCopy;
                   v27 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
                   {
                     v28 = HMFGetLogIdentifier();
-                    v29 = [v17 shortDescription];
+                    shortDescription = [v17 shortDescription];
                     *buf = 138543874;
                     v49 = v28;
                     v50 = 2112;
-                    v51 = v6;
+                    v51 = dCopy;
                     v52 = 2112;
-                    v53 = v29;
+                    v53 = shortDescription;
                     _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Found accessory to remove from Apple Home with Matter node ID %@: %@", buf, 0x20u);
                   }
 
@@ -3491,7 +3491,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
                   v38[2] = __65__HMDCHIPDataSource_browser_didRemoveAccessoryPairingWithNodeID___block_invoke;
                   v38[3] = &unk_27868A1D8;
                   v38[4] = v26;
-                  v39 = v6;
+                  v39 = dCopy;
                   [v34 handleRemoveAccessory:v17 completion:v38];
 
                   goto LABEL_24;
@@ -3499,7 +3499,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v40 objects:v54 count:16];
+            v14 = [hapAccessories countByEnumeratingWithState:&v40 objects:v54 count:16];
             if (v14)
             {
               continue;
@@ -3510,7 +3510,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
         }
 
         v10 = v33 + 1;
-        v8 = v35;
+        homes = v35;
         v9 = v31;
       }
 
@@ -3522,7 +3522,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = v36;
+  v22 = selfCopy;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
@@ -3530,7 +3530,7 @@ void __69__HMDCHIPDataSource_hasValidGeoOrPreferredNetworkForHome_completion___b
     *buf = 138543618;
     v49 = v24;
     v50 = 2112;
-    v51 = v6;
+    v51 = dCopy;
     _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@No accessory found in any homes with matter node id %@", buf, 0x16u);
   }
 
@@ -3588,25 +3588,25 @@ LABEL_6:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__HMDCHIPDataSource_requestUserPermissionForBridgeAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_278688978;
-  v21 = v12;
-  v22 = v13;
+  v21 = queueCopy;
+  v22 = handlerCopy;
   block[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
+  v19 = accessoryCopy;
+  v20 = contextCopy;
+  v14 = queueCopy;
+  v15 = contextCopy;
+  v16 = accessoryCopy;
+  v17 = handlerCopy;
   dispatch_async(v14, block);
 }
 
@@ -3660,25 +3660,25 @@ void __97__HMDCHIPDataSource_requestUserPermissionForBridgeAccessory_withContext
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForUnauthenticatedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForUnauthenticatedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_278688978;
-  v21 = v12;
-  v22 = v13;
+  v21 = queueCopy;
+  v22 = handlerCopy;
   block[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
+  v19 = accessoryCopy;
+  v20 = contextCopy;
+  v14 = queueCopy;
+  v15 = contextCopy;
+  v16 = accessoryCopy;
+  v17 = handlerCopy;
   dispatch_async(v14, block);
 }
 
@@ -3732,16 +3732,16 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self vendorMetadataRefreshTimer];
+  fireCopy = fire;
+  vendorMetadataRefreshTimer = [(HMDCHIPDataSource *)self vendorMetadataRefreshTimer];
 
-  if (v5 == v4)
+  if (vendorMetadataRefreshTimer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -3752,16 +3752,16 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMDCHIPDataSource *)v7 vendorMetadataStore];
-    [v10 fetchCloudMetadata];
+    vendorMetadataStore = [(HMDCHIPDataSource *)selfCopy vendorMetadataStore];
+    [vendorMetadataStore fetchCloudMetadata];
   }
 
-  v11 = [(HMDCHIPDataSource *)self attestationDataRefreshTimer];
+  attestationDataRefreshTimer = [(HMDCHIPDataSource *)self attestationDataRefreshTimer];
 
-  if (v11 == v4)
+  if (attestationDataRefreshTimer == fireCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -3772,27 +3772,27 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(HMDCHIPDataSource *)v13 attestationDataStore];
-    [v16 fetchCloudAttestationData];
+    attestationDataStore = [(HMDCHIPDataSource *)selfCopy2 attestationDataStore];
+    [attestationDataStore fetchCloudAttestationData];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forAllPairedMatterServersFetchVidPid:(id)a3
+- (void)forAllPairedMatterServersFetchVidPid:(id)pid
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v5)
+  pidCopy = pid;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (homeManager)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = v5;
-    obj = [v5 homes];
+    v24 = homeManager;
+    obj = [homeManager homes];
     v7 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v7)
     {
@@ -3812,8 +3812,8 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v11 = [v10 matterAccessories];
-          v12 = [v11 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          matterAccessories = [v10 matterAccessories];
+          v12 = [matterAccessories countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v12)
           {
             v13 = v12;
@@ -3824,16 +3824,16 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
               {
                 if (*v28 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(matterAccessories);
                 }
 
                 v16 = *(*(&v27 + 1) + 8 * j);
-                v17 = [v16 matterVendorID];
-                v18 = [v16 matterProductID];
-                v4[2](v4, v17, v18);
+                matterVendorID = [v16 matterVendorID];
+                matterProductID = [v16 matterProductID];
+                pidCopy[2](pidCopy, matterVendorID, matterProductID);
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v13 = [matterAccessories countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v13);
@@ -3852,7 +3852,7 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -3868,21 +3868,21 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forAllStorageDataSourcesDo:(id)a3
+- (void)forAllStorageDataSourcesDo:(id)do
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v5)
+  doCopy = do;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (homeManager)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v5;
-    v7 = [v5 homes];
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v22 = homeManager;
+    homes = [homeManager homes];
+    v8 = [homes countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3893,18 +3893,18 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(homes);
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [v12 matterFabricID];
-          v14 = v13;
-          if (v13)
+          matterFabricID = [v12 matterFabricID];
+          v14 = matterFabricID;
+          if (matterFabricID)
           {
-            if (([v13 isEqualToNumber:&unk_283E73280] & 1) == 0)
+            if (([matterFabricID isEqualToNumber:&unk_283E73280] & 1) == 0)
             {
               v15 = [[HMDCHIPHomeDataSource alloc] initWithFabricID:v14 home:v12];
-              v16 = v4[2](v4, v15);
+              v16 = doCopy[2](doCopy, v15);
 
               if ((v16 & 1) == 0)
               {
@@ -3915,7 +3915,7 @@ void __106__HMDCHIPDataSource_requestUserPermissionForUnauthenticatedAccessory_w
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v9 = [homes countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v9)
         {
           continue;
@@ -3933,7 +3933,7 @@ LABEL_17:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -3949,22 +3949,22 @@ LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)storageDataSourceForFabricUUID:(id)a3
+- (id)storageDataSourceForFabricUUID:(id)d
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (homeManager)
   {
-    v28 = self;
-    v29 = v5;
+    selfCopy = self;
+    v29 = homeManager;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = [v5 homes];
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    homes = [homeManager homes];
+    v8 = [homes countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3975,18 +3975,18 @@ LABEL_17:
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(homes);
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
-          v13 = [v12 matterFabricID];
-          v14 = v13;
-          if (v13)
+          matterFabricID = [v12 matterFabricID];
+          v14 = matterFabricID;
+          if (matterFabricID)
           {
-            if (([v13 isEqual:&unk_283E73280] & 1) == 0)
+            if (([matterFabricID isEqual:&unk_283E73280] & 1) == 0)
             {
-              v15 = [v12 targetFabricUUID];
-              v16 = [v15 isEqual:v4];
+              targetFabricUUID = [v12 targetFabricUUID];
+              v16 = [targetFabricUUID isEqual:dCopy];
 
               if (v16)
               {
@@ -3998,7 +3998,7 @@ LABEL_17:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v9 = [homes countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v9)
         {
           continue;
@@ -4009,7 +4009,7 @@ LABEL_17:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v28;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -4017,7 +4017,7 @@ LABEL_17:
       *buf = 138543618;
       v35 = v20;
       v36 = 2112;
-      v37 = v4;
+      v37 = dCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Could not find home with valid fabric ID corresponding to fabric UUID: %@", buf, 0x16u);
     }
 
@@ -4030,7 +4030,7 @@ LABEL_19:
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -4049,20 +4049,20 @@ LABEL_19:
   return v21;
 }
 
-- (id)appleHomeFabricWithTargetFabricUUID:(id)a3
+- (id)appleHomeFabricWithTargetFabricUUID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (homeManager)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [v5 homes];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    homes = [homeManager homes];
+    v8 = [homes countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -4073,22 +4073,22 @@ LABEL_19:
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(homes);
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 targetFabricUUID];
-          v14 = [v13 isEqual:v4];
+          targetFabricUUID = [v12 targetFabricUUID];
+          v14 = [targetFabricUUID isEqual:dCopy];
 
           if (v14)
           {
-            v15 = [v12 fabric];
+            fabric = [v12 fabric];
 
             goto LABEL_16;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [homes countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
           continue;
@@ -4102,7 +4102,7 @@ LABEL_19:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -4115,28 +4115,28 @@ LABEL_19:
     objc_autoreleasePoolPop(v16);
   }
 
-  v15 = 0;
+  fabric = 0;
 LABEL_16:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return fabric;
 }
 
-- (id)fabricIDFromFabricUUID:(id)a3
+- (id)fabricIDFromFabricUUID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (homeManager)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [v5 homes];
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    homes = [homeManager homes];
+    v8 = [homes countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v8)
     {
       v9 = v8;
@@ -4147,31 +4147,31 @@ LABEL_16:
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(homes);
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = [v12 targetFabricUUID];
-          v14 = [v13 isEqual:v4];
+          targetFabricUUID = [v12 targetFabricUUID];
+          v14 = [targetFabricUUID isEqual:dCopy];
 
           if (v14)
           {
-            v15 = [v12 matterFabricID];
-            if (!v15)
+            matterFabricID = [v12 matterFabricID];
+            if (!matterFabricID)
             {
               v16 = objc_autoreleasePoolPush();
-              v17 = self;
+              selfCopy = self;
               v18 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
                 v19 = HMFGetLogIdentifier();
-                v20 = [v12 uuid];
+                uuid = [v12 uuid];
                 *buf = 138543874;
                 v32 = v19;
                 v33 = 2112;
-                v34 = v4;
+                v34 = dCopy;
                 v35 = 2112;
-                v36 = v20;
+                v36 = uuid;
                 _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Data source retrieved nil fabric ID from fabric %@ from home %@", buf, 0x20u);
               }
 
@@ -4182,7 +4182,7 @@ LABEL_16:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v37 count:16];
+        v9 = [homes countByEnumeratingWithState:&v27 objects:v37 count:16];
         if (v9)
         {
           continue;
@@ -4196,7 +4196,7 @@ LABEL_16:
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -4209,33 +4209,33 @@ LABEL_16:
     objc_autoreleasePoolPop(v21);
   }
 
-  v15 = 0;
+  matterFabricID = 0;
 LABEL_20:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return matterFabricID;
 }
 
 - (NSUUID)currentFabricUUID
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPDataSource *)self homeManager];
-  v4 = v3;
-  if (v3)
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v4 = homeManager;
+  if (homeManager)
   {
-    v5 = [v3 homes];
-    v6 = [v5 na_filter:&__block_literal_global_138_150105];
+    homes = [homeManager homes];
+    v6 = [homes na_filter:&__block_literal_global_138_150105];
 
     v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_140_150106];
-    v8 = [v7 firstObject];
-    v9 = [v8 targetFabricUUID];
+    firstObject = [v7 firstObject];
+    targetFabricUUID = [firstObject targetFabricUUID];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -4246,12 +4246,12 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v10);
-    v9 = 0;
+    targetFabricUUID = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return targetFabricUUID;
 }
 
 uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -4281,20 +4281,20 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 - (NSSet)allTargetFabricUUIDs
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPDataSource *)self homeManager];
-  v4 = v3;
-  if (v3)
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v4 = homeManager;
+  if (homeManager)
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [v3 homes];
-    v7 = [v6 na_map:&__block_literal_global_136];
+    homes = [homeManager homes];
+    v7 = [homes na_map:&__block_literal_global_136];
     v8 = [v5 setWithArray:v7];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -4316,20 +4316,20 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 - (NSSet)allFabricIDs
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPDataSource *)self homeManager];
-  v4 = v3;
-  if (v3)
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v4 = homeManager;
+  if (homeManager)
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [v3 homes];
-    v7 = [v6 na_map:&__block_literal_global_133_150113];
+    homes = [homeManager homes];
+    v7 = [homes na_map:&__block_literal_global_133_150113];
     v8 = [v5 setWithArray:v7];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -4351,17 +4351,17 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 - (NSSet)allPairedHAPServerIdentifiers
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPDataSource *)self homeManager];
-  if (v3)
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  if (homeManager)
   {
     v4 = [MEMORY[0x277CBEB58] set];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = v3;
-    v5 = [v3 homes];
-    v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    v24 = homeManager;
+    homes = [homeManager homes];
+    v6 = [homes countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v6)
     {
       v7 = v6;
@@ -4372,7 +4372,7 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
         {
           if (*v30 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(homes);
           }
 
           v10 = *(*(&v29 + 1) + 8 * i);
@@ -4380,8 +4380,8 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v11 = [v10 hapAccessories];
-          v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          hapAccessories = [v10 hapAccessories];
+          v12 = [hapAccessories countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v12)
           {
             v13 = v12;
@@ -4392,34 +4392,34 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
               {
                 if (*v26 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(hapAccessories);
                 }
 
-                v16 = [*(*(&v25 + 1) + 8 * j) identifier];
-                [v4 addObject:v16];
+                identifier = [*(*(&v25 + 1) + 8 * j) identifier];
+                [v4 addObject:identifier];
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v13 = [hapAccessories countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v13);
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v7 = [homes countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v7);
     }
 
     v17 = [v4 copy];
-    v3 = v24;
+    homeManager = v24;
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -4440,18 +4440,18 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 
 - (BOOL)isCurrentDevicePrimaryResident
 {
-  v2 = [(HMDCHIPDataSource *)self home];
-  v3 = [v2 isCurrentDevicePrimaryResident];
+  home = [(HMDCHIPDataSource *)self home];
+  isCurrentDevicePrimaryResident = [home isCurrentDevicePrimaryResident];
 
-  return v3;
+  return isCurrentDevicePrimaryResident;
 }
 
-- (void)handleHomeRemovedNotification:(id)a3
+- (void)handleHomeRemovedNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -4462,8 +4462,8 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKey:@"HMDHomeNotificationKey"];
+  userInfo = [notificationCopy userInfo];
+  v10 = [userInfo objectForKey:@"HMDHomeNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4478,35 +4478,35 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 
   v12 = v11;
 
-  v13 = [v12 homeManager];
-  v14 = [v13 accessoryBrowser];
-  v15 = [v14 chipAccessoryServerBrowser];
-  v16 = [v12 targetFabricUUID];
-  [v15 handleHomeDeletionWithFabricUUID:v16];
+  homeManager = [v12 homeManager];
+  accessoryBrowser = [homeManager accessoryBrowser];
+  chipAccessoryServerBrowser = [accessoryBrowser chipAccessoryServerBrowser];
+  targetFabricUUID = [v12 targetFabricUUID];
+  [chipAccessoryServerBrowser handleHomeDeletionWithFabricUUID:targetFabricUUID];
 
-  [(HMDCHIPDataSource *)v6 stopThreadRadioForHome:v12];
-  v17 = [(HMDCHIPDataSource *)v6 chipStorage];
-  [v17 handleUpdatedDataWithIsLocalChange:0];
+  [(HMDCHIPDataSource *)selfCopy stopThreadRadioForHome:v12];
+  chipStorage = [(HMDCHIPDataSource *)selfCopy chipStorage];
+  [chipStorage handleUpdatedDataWithIsLocalChange:0];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryCHIPStorageChangedNotification:(id)a3
+- (void)handleAccessoryCHIPStorageChangedNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_numberForKey:@"HMDAccessoryCHIPStorageIsLocalChangeNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo hmf_numberForKey:@"HMDAccessoryCHIPStorageIsLocalChangeNotificationKey"];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -4522,30 +4522,30 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  [(HMDCHIPDataSource *)self handleUpdatedDataWithIsLocalChange:v7];
+  [(HMDCHIPDataSource *)self handleUpdatedDataWithIsLocalChange:bOOLValue];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeCHIPStorageChangedNotification:(id)a3
+- (void)handleHomeCHIPStorageChangedNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_numberForKey:@"HMDHomeCHIPStorageIsLocalChangeNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo hmf_numberForKey:@"HMDHomeCHIPStorageIsLocalChangeNotificationKey"];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -4561,20 +4561,20 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  [(HMDCHIPDataSource *)self handleUpdatedDataWithIsLocalChange:v7];
+  [(HMDCHIPDataSource *)self handleUpdatedDataWithIsLocalChange:bOOLValue];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResidentReachabilityNotification:(id)a3
+- (void)handleResidentReachabilityNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"HMDResidentDeviceManagerHomeUUIDNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceManagerHomeUUIDNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4589,16 +4589,16 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 
   v8 = v7;
 
-  v9 = [(HMDCHIPDataSource *)self homeManager];
-  v10 = [v9 _homeWithUUID:v8];
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v10 = [homeManager _homeWithUUID:v8];
 
-  v11 = [v10 primaryResident];
-  v12 = [v11 isReachable];
+  primaryResident = [v10 primaryResident];
+  isReachable = [primaryResident isReachable];
 
-  if (v12)
+  if (isReachable)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -4615,7 +4615,7 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
     v20[2] = __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invoke;
     v20[3] = &unk_278687540;
     objc_copyWeak(&v21, buf);
-    v20[4] = v14;
+    v20[4] = selfCopy;
     [v10 setUpSharedUserFabricDataWithForceFetch:0 completion:v20];
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
@@ -4623,9 +4623,9 @@ uint64_t __38__HMDCHIPDataSource_currentFabricUUID__block_invoke_2(uint64_t a1, 
 
   else if (isFeatureMatteriPhoneOnlyPairingControlEnabled())
   {
-    v17 = [(HMDCHIPDataSource *)self chipResidentStateManager];
-    v18 = [v10 fabric];
-    [v17 handleResidentReachabilityChangeForFabric:v18];
+    chipResidentStateManager = [(HMDCHIPDataSource *)self chipResidentStateManager];
+    fabric = [v10 fabric];
+    [chipResidentStateManager handleResidentReachabilityChangeForFabric:fabric];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -4662,12 +4662,12 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDataReadyAfterBecomingPrimaryNotification:(id)a3
+- (void)handleDataReadyAfterBecomingPrimaryNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -4678,18 +4678,18 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCHIPDataSource *)v6 chipStorage];
-  [v9 handlePrimaryResidentDataReady];
+  chipStorage = [(HMDCHIPDataSource *)selfCopy chipStorage];
+  [chipStorage handlePrimaryResidentDataReady];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePrimaryResidentUpdatedNotification:(id)a3
+- (void)handlePrimaryResidentUpdatedNotification:(id)notification
 {
   v40 = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  notificationCopy = notification;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -4704,10 +4704,10 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [(HMDCHIPDataSource *)v5 homeManager];
-  v9 = [v8 homes];
+  homeManager = [(HMDCHIPDataSource *)selfCopy homeManager];
+  homes = [homeManager homes];
 
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v39 count:16];
+  v10 = [homes countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4720,7 +4720,7 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(homes);
         }
 
         v14 = *(*(&v29 + 1) + 8 * v13);
@@ -4730,14 +4730,14 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
           [v14 setUpOperationalFabricDataWithError:&v28];
           v15 = v28;
           v16 = objc_autoreleasePoolPush();
-          v17 = v5;
+          v17 = selfCopy;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
             v19 = v12;
-            v20 = v9;
-            v22 = v21 = v5;
+            v20 = homes;
+            v22 = v21 = selfCopy;
             *buf = 138543874;
             v34 = v22;
             v35 = 2112;
@@ -4746,8 +4746,8 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
             v38 = v15;
             _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Set up operational fabric data for primary resident of home: %@ with error: %@", buf, 0x20u);
 
-            v5 = v21;
-            v9 = v20;
+            selfCopy = v21;
+            homes = v20;
             v12 = v19;
             v11 = v27;
           }
@@ -4759,34 +4759,34 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v39 count:16];
+      v11 = [homes countByEnumeratingWithState:&v29 objects:v39 count:16];
     }
 
     while (v11);
   }
 
-  v23 = [(HMDCHIPDataSource *)v5 chipResidentStateManager];
-  [v23 handleResidentStateUpdated];
+  chipResidentStateManager = [(HMDCHIPDataSource *)selfCopy chipResidentStateManager];
+  [chipResidentStateManager handleResidentStateUpdated];
 
-  v24 = [(HMDCHIPDataSource *)v5 chipStorage];
-  [v24 handleUpdatedCurrentFabricIndex];
+  chipStorage = [(HMDCHIPDataSource *)selfCopy chipStorage];
+  [chipStorage handleUpdatedCurrentFabricIndex];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
 - (id)getDefaultThreadNetworkMetadataStore
 {
-  v2 = [(HMDCHIPDataSource *)self threadClientFactory];
-  v3 = [HMDThreadNetworkMetadataStore storeWithThreadClientFactory:v2];
+  threadClientFactory = [(HMDCHIPDataSource *)self threadClientFactory];
+  v3 = [HMDThreadNetworkMetadataStore storeWithThreadClientFactory:threadClientFactory];
 
   return v3;
 }
 
-- (void)handleUpdatedDataWithIsLocalChange:(BOOL)a3
+- (void)handleUpdatedDataWithIsLocalChange:(BOOL)change
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -4797,36 +4797,36 @@ void __60__HMDCHIPDataSource_handleResidentReachabilityNotification___block_invo
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDCHIPDataSource *)v5 chipStorage];
-  [v8 handleUpdatedDataWithIsLocalChange:0];
+  chipStorage = [(HMDCHIPDataSource *)selfCopy chipStorage];
+  [chipStorage handleUpdatedDataWithIsLocalChange:0];
 
-  v9 = [(HMDCHIPDataSource *)v5 chipStorage];
-  [v9 handleUpdatedDataWithIsLocalChange:1];
+  chipStorage2 = [(HMDCHIPDataSource *)selfCopy chipStorage];
+  [chipStorage2 handleUpdatedDataWithIsLocalChange:1];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)homeWithCHIPFabric:(id)a3
+- (id)homeWithCHIPFabric:(id)fabric
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPDataSource *)self homeManager];
-  v6 = v5;
-  if (v4 && v5)
+  fabricCopy = fabric;
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v6 = homeManager;
+  if (fabricCopy && homeManager)
   {
-    v7 = [v5 homes];
+    homes = [homeManager homes];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __40__HMDCHIPDataSource_homeWithCHIPFabric___block_invoke;
     v15[3] = &unk_278685BA0;
-    v16 = v4;
-    v8 = [v7 na_firstObjectPassingTest:v15];
+    v16 = fabricCopy;
+    v8 = [homes na_firstObjectPassingTest:v15];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -4856,18 +4856,18 @@ BOOL __40__HMDCHIPDataSource_homeWithCHIPFabric___block_invoke(uint64_t a1, void
 - (id)home
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPDataSource *)self homeManager];
-  v4 = v3;
-  if (v3)
+  homeManager = [(HMDCHIPDataSource *)self homeManager];
+  v4 = homeManager;
+  if (homeManager)
   {
-    v5 = [v3 homes];
-    v6 = [v5 na_filter:&__block_literal_global_118_150133];
+    homes = [homeManager homes];
+    v6 = [homes na_filter:&__block_literal_global_118_150133];
 
     v7 = [v6 na_firstObjectPassingTest:&__block_literal_global_120_150134];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      firstObject = v7;
     }
 
     else
@@ -4882,7 +4882,7 @@ BOOL __40__HMDCHIPDataSource_homeWithCHIPFabric___block_invoke(uint64_t a1, void
       v16 = v15;
       if (v15)
       {
-        v9 = v15;
+        firstObject = v15;
       }
 
       else
@@ -4896,17 +4896,17 @@ BOOL __40__HMDCHIPDataSource_homeWithCHIPFabric___block_invoke(uint64_t a1, void
         v18 = v17;
         if (v17)
         {
-          v9 = v17;
+          firstObject = v17;
         }
 
         else
         {
           v19 = [v6 sortedArrayUsingComparator:{&__block_literal_global_123_150135, v23, v24, v25, v26}];
-          v9 = [v19 firstObject];
+          firstObject = [v19 firstObject];
 
-          if (v9)
+          if (firstObject)
           {
-            v20 = v9;
+            v20 = firstObject;
           }
         }
       }
@@ -4916,7 +4916,7 @@ BOOL __40__HMDCHIPDataSource_homeWithCHIPFabric___block_invoke(uint64_t a1, void
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -4927,12 +4927,12 @@ BOOL __40__HMDCHIPDataSource_homeWithCHIPFabric___block_invoke(uint64_t a1, void
     }
 
     objc_autoreleasePoolPop(v10);
-    v9 = 0;
+    firstObject = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return firstObject;
 }
 
 uint64_t __25__HMDCHIPDataSource_home__block_invoke_3(uint64_t a1, void *a2)
@@ -4975,27 +4975,27 @@ BOOL __25__HMDCHIPDataSource_home__block_invoke_2(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)configureWithUIDialogPresenter:(id)a3
+- (void)configureWithUIDialogPresenter:(id)presenter
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  presenterCopy = presenter;
+  if (!presenterCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDCHIPDataSource *)self uiDialogPresenter];
+  v5 = presenterCopy;
+  uiDialogPresenter = [(HMDCHIPDataSource *)self uiDialogPresenter];
 
-  if (v6)
+  if (uiDialogPresenter)
   {
     goto LABEL_7;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -5008,34 +5008,34 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDCHIPDataSource *)v8 setUiDialogPresenter:v5];
-  v11 = [(HMDCHIPDataSource *)v8 uiDialogPresenter];
-  [v11 setDialogDelegate:v8];
+  [(HMDCHIPDataSource *)selfCopy setUiDialogPresenter:v5];
+  uiDialogPresenter2 = [(HMDCHIPDataSource *)selfCopy uiDialogPresenter];
+  [uiDialogPresenter2 setDialogDelegate:selfCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithAttestationDataStore:(id)a3
+- (void)configureWithAttestationDataStore:(id)store
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  storeCopy = store;
+  if (!storeCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDCHIPDataSource *)self attestationDataStore];
+  v5 = storeCopy;
+  attestationDataStore = [(HMDCHIPDataSource *)self attestationDataStore];
 
-  if (v6)
+  if (attestationDataStore)
   {
     goto LABEL_7;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -5048,40 +5048,40 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDCHIPDataSource *)v8 setAttestationDataStore:v5];
-  v11 = [(HMDCHIPDataSource *)v8 attestationDataStore];
-  [v11 fetchCloudAttestationData];
+  [(HMDCHIPDataSource *)selfCopy setAttestationDataStore:v5];
+  attestationDataStore2 = [(HMDCHIPDataSource *)selfCopy attestationDataStore];
+  [attestationDataStore2 fetchCloudAttestationData];
 
-  v12 = [(HMDCHIPDataSource *)v8 attestationDataRefreshTimer];
-  [v12 setDelegate:v8];
+  attestationDataRefreshTimer = [(HMDCHIPDataSource *)selfCopy attestationDataRefreshTimer];
+  [attestationDataRefreshTimer setDelegate:selfCopy];
 
-  v13 = [(HMDCHIPDataSource *)v8 attestationDataRefreshTimer];
-  [v13 resume];
+  attestationDataRefreshTimer2 = [(HMDCHIPDataSource *)selfCopy attestationDataRefreshTimer];
+  [attestationDataRefreshTimer2 resume];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithVendorMetadataStore:(id)a3
+- (void)configureWithVendorMetadataStore:(id)store
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  storeCopy = store;
+  if (!storeCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDCHIPDataSource *)self vendorMetadataStore];
+  v5 = storeCopy;
+  vendorMetadataStore = [(HMDCHIPDataSource *)self vendorMetadataStore];
 
-  if (v6)
+  if (vendorMetadataStore)
   {
     goto LABEL_7;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -5094,43 +5094,43 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDCHIPDataSource *)v8 setVendorMetadataStore:v5];
-  v11 = [(HMDCHIPDataSource *)v8 vendorMetadataStore];
-  [v11 setDelegate:v8];
+  [(HMDCHIPDataSource *)selfCopy setVendorMetadataStore:v5];
+  vendorMetadataStore2 = [(HMDCHIPDataSource *)selfCopy vendorMetadataStore];
+  [vendorMetadataStore2 setDelegate:selfCopy];
 
-  v12 = [(HMDCHIPDataSource *)v8 vendorMetadataStore];
-  [v12 fetchCloudMetadata];
+  vendorMetadataStore3 = [(HMDCHIPDataSource *)selfCopy vendorMetadataStore];
+  [vendorMetadataStore3 fetchCloudMetadata];
 
-  v13 = [(HMDCHIPDataSource *)v8 vendorMetadataRefreshTimer];
-  [v13 setDelegate:v8];
+  vendorMetadataRefreshTimer = [(HMDCHIPDataSource *)selfCopy vendorMetadataRefreshTimer];
+  [vendorMetadataRefreshTimer setDelegate:selfCopy];
 
-  v14 = [(HMDCHIPDataSource *)v8 vendorMetadataRefreshTimer];
-  [v14 resume];
+  vendorMetadataRefreshTimer2 = [(HMDCHIPDataSource *)selfCopy vendorMetadataRefreshTimer];
+  [vendorMetadataRefreshTimer2 resume];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithStorage:(id)a3
+- (void)configureWithStorage:(id)storage
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  storageCopy = storage;
+  if (!storageCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDCHIPDataSource *)self chipStorage];
+  v5 = storageCopy;
+  chipStorage = [(HMDCHIPDataSource *)self chipStorage];
 
-  if (v6)
+  if (chipStorage)
   {
     goto LABEL_7;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -5143,38 +5143,38 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDCHIPDataSource *)v8 setChipStorage:v5];
-  v11 = [(HMDCHIPDataSource *)v8 chipStorage];
-  [v11 setDataSource:v8];
+  [(HMDCHIPDataSource *)selfCopy setChipStorage:v5];
+  chipStorage2 = [(HMDCHIPDataSource *)selfCopy chipStorage];
+  [chipStorage2 setDataSource:selfCopy];
 
-  v12 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  [v12 addObserver:v8 selector:sel_handleHomeCHIPStorageChangedNotification_ name:@"HMDHomeCHIPStorageUpdatedNotification" object:0];
+  notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleHomeCHIPStorageChangedNotification_ name:@"HMDHomeCHIPStorageUpdatedNotification" object:0];
 
-  v13 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  [v13 addObserver:v8 selector:sel_handleAccessoryCHIPStorageChangedNotification_ name:@"HMDAccessoryCHIPStorageUpdatedNotification" object:0];
+  notificationCenter2 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handleAccessoryCHIPStorageChangedNotification_ name:@"HMDAccessoryCHIPStorageUpdatedNotification" object:0];
 
-  v14 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  v15 = [(HMDCHIPDataSource *)v8 homeManager];
-  [v14 addObserver:v8 selector:sel_handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:v15];
+  notificationCenter3 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  homeManager = [(HMDCHIPDataSource *)selfCopy homeManager];
+  [notificationCenter3 addObserver:selfCopy selector:sel_handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:homeManager];
 
-  v16 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  [v16 addObserver:v8 selector:sel_handleLocationAuthorizationChangedNotification_ name:@"HMLocationAuthorizationChangedNotification" object:0];
+  notificationCenter4 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter4 addObserver:selfCopy selector:sel_handleLocationAuthorizationChangedNotification_ name:@"HMLocationAuthorizationChangedNotification" object:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithThreadRadioManager:(id)a3
+- (void)configureWithThreadRadioManager:(id)manager
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = managerCopy;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -5187,29 +5187,29 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDCHIPDataSource *)v7 setMatterThreadRadioManager:v5];
-  [v5 setDelegate:v7];
-  v10 = [(HMDCHIPDataSource *)v7 notificationCenter];
-  [v10 addObserver:v7 selector:sel_handleThreadNetworkStateChangedNotification_ name:@"HMDHomeThreadNetworkConnectionStateChangeNotification" object:0];
+  [(HMDCHIPDataSource *)selfCopy setMatterThreadRadioManager:v5];
+  [v5 setDelegate:selfCopy];
+  notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleThreadNetworkStateChangedNotification_ name:@"HMDHomeThreadNetworkConnectionStateChangeNotification" object:0];
 
-  v11 = [(HMDCHIPDataSource *)v7 notificationCenter];
-  [v11 addObserver:v7 selector:sel_handleThreadNetworkStateChangedNotification_ name:@"HMDHomeThreadNetworkNodeTypeChangeNotification" object:0];
+  notificationCenter2 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handleThreadNetworkStateChangedNotification_ name:@"HMDHomeThreadNetworkNodeTypeChangeNotification" object:0];
 
-  v12 = [(HMDCHIPDataSource *)v7 notificationCenter];
-  [v12 addObserver:v7 selector:sel_handleThreadNetworkWakeOnConnectionStateChangedNotification_ name:@"HMDHomeThreadNetworkWakeOnConnectionStateChangeNotification" object:0];
+  notificationCenter3 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter3 addObserver:selfCopy selector:sel_handleThreadNetworkWakeOnConnectionStateChangedNotification_ name:@"HMDHomeThreadNetworkWakeOnConnectionStateChangeNotification" object:0];
 
-  v13 = [(HMDCHIPDataSource *)v7 notificationCenter];
-  [v13 addObserver:v7 selector:sel_handleThreadNetworkPeripheralDeviceNodeTypeChangedNotification_ name:@"HMDHomeThreadNetworkPeripheralDeviceNodeTypeChangedNotification" object:0];
+  notificationCenter4 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter4 addObserver:selfCopy selector:sel_handleThreadNetworkPeripheralDeviceNodeTypeChangedNotification_ name:@"HMDHomeThreadNetworkPeripheralDeviceNodeTypeChangedNotification" object:0];
 
-  v14 = [(HMDCHIPDataSource *)v7 notificationCenter];
-  [v14 addObserver:v7 selector:sel_handleCurrentWiFiNetworkChangedNotification_ name:*MEMORY[0x277D0F768] object:0];
+  notificationCenter5 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter5 addObserver:selfCopy selector:sel_handleCurrentWiFiNetworkChangedNotification_ name:*MEMORY[0x277D0F768] object:0];
 
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
   {
     v15 = +[HMDDeviceCapabilities deviceCapabilities];
-    v16 = [v15 supportsThreadService];
+    supportsThreadService = [v15 supportsThreadService];
 
-    if (v16)
+    if (supportsThreadService)
     {
       [v5 setDeviceSupportsThreadService:1];
     }
@@ -5218,27 +5218,27 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithResidentStateManager:(id)a3
+- (void)configureWithResidentStateManager:(id)manager
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure();
 LABEL_10:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDCHIPDataSource *)self chipResidentStateManager];
+  v5 = managerCopy;
+  chipResidentStateManager = [(HMDCHIPDataSource *)self chipResidentStateManager];
 
-  if (v6)
+  if (chipResidentStateManager)
   {
     goto LABEL_10;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -5251,93 +5251,93 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDCHIPDataSource *)v8 setChipResidentStateManager:v5];
-  v11 = [(HMDCHIPDataSource *)v8 chipResidentStateManager];
-  [v11 setDataSource:v8];
+  [(HMDCHIPDataSource *)selfCopy setChipResidentStateManager:v5];
+  chipResidentStateManager2 = [(HMDCHIPDataSource *)selfCopy chipResidentStateManager];
+  [chipResidentStateManager2 setDataSource:selfCopy];
 
-  v12 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  [v12 addObserver:v8 selector:sel_handlePrimaryResidentUpdatedNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
+  notificationCenter = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handlePrimaryResidentUpdatedNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
 
-  v13 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  [v13 addObserver:v8 selector:sel_handlePrimaryResidentUpdatedNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  notificationCenter2 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handlePrimaryResidentUpdatedNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-  if ((isFeatureMatteriPhoneOnlyPairingControlEnabled() & 1) != 0 || (-[HMDCHIPDataSource homeManager](v8, "homeManager"), v14 = objc_claimAutoreleasedReturnValue(), [v14 featuresDataSource], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isRVCEnabled"), v15, v14, v16))
+  if ((isFeatureMatteriPhoneOnlyPairingControlEnabled() & 1) != 0 || (-[HMDCHIPDataSource homeManager](selfCopy, "homeManager"), v14 = objc_claimAutoreleasedReturnValue(), [v14 featuresDataSource], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isRVCEnabled"), v15, v14, v16))
   {
-    v17 = [(HMDCHIPDataSource *)v8 notificationCenter];
-    [v17 addObserver:v8 selector:sel_handleResidentReachabilityNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
+    notificationCenter3 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+    [notificationCenter3 addObserver:selfCopy selector:sel_handleResidentReachabilityNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
 
-    v18 = [(HMDCHIPDataSource *)v8 notificationCenter];
-    [v18 addObserver:v8 selector:sel_handleResidentReachabilityNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
+    notificationCenter4 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+    [notificationCenter4 addObserver:selfCopy selector:sel_handleResidentReachabilityNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
   }
 
-  v19 = [(HMDCHIPDataSource *)v8 notificationCenter];
-  [v19 addObserver:v8 selector:sel_handleDataReadyAfterBecomingPrimaryNotification_ name:@"HMDHomeDataReadyAfterBecomingPrimaryNotification" object:0];
+  notificationCenter5 = [(HMDCHIPDataSource *)selfCopy notificationCenter];
+  [notificationCenter5 addObserver:selfCopy selector:sel_handleDataReadyAfterBecomingPrimaryNotification_ name:@"HMDHomeDataReadyAfterBecomingPrimaryNotification" object:0];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithAccessoryServerBrowser:(id)a3
+- (void)configureWithAccessoryServerBrowser:(id)browser
 {
-  v10 = a3;
-  [v10 setAccessoryServerBrowserDelegate:self];
-  v4 = [v10 residentStateManager];
-  [(HMDCHIPDataSource *)self configureWithResidentStateManager:v4];
+  browserCopy = browser;
+  [browserCopy setAccessoryServerBrowserDelegate:self];
+  residentStateManager = [browserCopy residentStateManager];
+  [(HMDCHIPDataSource *)self configureWithResidentStateManager:residentStateManager];
 
-  v5 = [v10 threadRadioManager];
-  [(HMDCHIPDataSource *)self configureWithThreadRadioManager:v5];
+  threadRadioManager = [browserCopy threadRadioManager];
+  [(HMDCHIPDataSource *)self configureWithThreadRadioManager:threadRadioManager];
 
-  [(HMDCHIPDataSource *)self setMatterAccessoryServerBrowser:v10];
+  [(HMDCHIPDataSource *)self setMatterAccessoryServerBrowser:browserCopy];
   if (CFPreferencesGetAppBooleanValue(@"StartThreadOnWake", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0))
   {
     [(HMDCHIPDataSource *)self setStartThreadOnWakeEnabled:1];
   }
 
-  v6 = [v10 storage];
-  [(HMDCHIPDataSource *)self configureWithStorage:v6];
+  storage = [browserCopy storage];
+  [(HMDCHIPDataSource *)self configureWithStorage:storage];
 
-  v7 = [v10 vendorMetadataStore];
-  [(HMDCHIPDataSource *)self configureWithVendorMetadataStore:v7];
+  vendorMetadataStore = [browserCopy vendorMetadataStore];
+  [(HMDCHIPDataSource *)self configureWithVendorMetadataStore:vendorMetadataStore];
 
-  v8 = [v10 attestationDataStore];
-  [(HMDCHIPDataSource *)self configureWithAttestationDataStore:v8];
+  attestationDataStore = [browserCopy attestationDataStore];
+  [(HMDCHIPDataSource *)self configureWithAttestationDataStore:attestationDataStore];
 
-  v9 = [v10 uiDialogPresenter];
-  [(HMDCHIPDataSource *)self configureWithUIDialogPresenter:v9];
+  uiDialogPresenter = [browserCopy uiDialogPresenter];
+  [(HMDCHIPDataSource *)self configureWithUIDialogPresenter:uiDialogPresenter];
 }
 
-- (HMDCHIPDataSource)initWithHomeManager:(id)a3 notificationCenter:(id)a4 vendorMetadataRefreshTimer:(id)a5 attestationDataRefreshTimer:(id)a6 dialogPresenter:(id)a7 threadClientFactory:(id)a8
+- (HMDCHIPDataSource)initWithHomeManager:(id)manager notificationCenter:(id)center vendorMetadataRefreshTimer:(id)timer attestationDataRefreshTimer:(id)refreshTimer dialogPresenter:(id)presenter threadClientFactory:(id)factory
 {
-  v14 = a3;
-  v27 = a4;
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  centerCopy = center;
+  timerCopy = timer;
+  refreshTimerCopy = refreshTimer;
+  presenterCopy = presenter;
+  factoryCopy = factory;
   v28.receiver = self;
   v28.super_class = HMDCHIPDataSource;
   v18 = [(HMDCHIPDataSource *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_homeManager, v14);
-    objc_storeStrong(&v19->_notificationCenter, a4);
-    objc_storeStrong(&v19->_vendorMetadataRefreshTimer, a5);
-    objc_storeStrong(&v19->_attestationDataRefreshTimer, a6);
-    objc_storeStrong(&v19->_dialogPresenter, a7);
+    objc_storeWeak(&v18->_homeManager, managerCopy);
+    objc_storeStrong(&v19->_notificationCenter, center);
+    objc_storeStrong(&v19->_vendorMetadataRefreshTimer, timer);
+    objc_storeStrong(&v19->_attestationDataRefreshTimer, refreshTimer);
+    objc_storeStrong(&v19->_dialogPresenter, presenter);
     v20 = objc_alloc_init(HMDFileManager);
     fileManager = v19->_fileManager;
     v19->_fileManager = v20;
 
     v19->_pnExistsOnCurrentNetwork = 0;
     v19->_geo_lock._os_unfair_lock_opaque = 0;
-    v22 = [HMDLocation sharedManager:v26];
+    v22 = [HMDLocation sharedManager:timerCopy];
     v19->_locationAuthorization = [v22 locationAuthorized];
 
     v19->_pendingRadioStateChangeNotification = 0;
     v19->_threadNetworkShouldRestartOnNetworkChange = 0;
     v19->_startThreadOnWakeEnabled = 0;
     v19->_threadPairingOverride = 0;
-    v23 = _Block_copy(v17);
+    v23 = _Block_copy(factoryCopy);
     threadClientFactory = v19->_threadClientFactory;
     v19->_threadClientFactory = v23;
 
@@ -5347,18 +5347,18 @@ LABEL_10:
   return v19;
 }
 
-- (HMDCHIPDataSource)initWithHomeManager:(id)a3 threadClientFactory:(id)a4
+- (HMDCHIPDataSource)initWithHomeManager:(id)manager threadClientFactory:(id)factory
 {
   v6 = MEMORY[0x277CCAB98];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
+  factoryCopy = factory;
+  managerCopy = manager;
+  defaultCenter = [v6 defaultCenter];
   v10 = objc_alloc(MEMORY[0x277D0F920]);
   v11 = [v10 initWithTimeInterval:4 options:*&vendorInfoFetchPeriod];
   v12 = objc_alloc(MEMORY[0x277D0F920]);
   v13 = [v12 initWithTimeInterval:4 options:*&attestationInfoFetchPeriod];
   v14 = +[HMDUIDialogPresenter sharedUIDialogPresenter];
-  v15 = [(HMDCHIPDataSource *)self initWithHomeManager:v8 notificationCenter:v9 vendorMetadataRefreshTimer:v11 attestationDataRefreshTimer:v13 dialogPresenter:v14 threadClientFactory:v7];
+  v15 = [(HMDCHIPDataSource *)self initWithHomeManager:managerCopy notificationCenter:defaultCenter vendorMetadataRefreshTimer:v11 attestationDataRefreshTimer:v13 dialogPresenter:v14 threadClientFactory:factoryCopy];
 
   return v15;
 }

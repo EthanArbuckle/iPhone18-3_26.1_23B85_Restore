@@ -1,37 +1,37 @@
 @interface DTKPCPUEvent
-- (BOOL)isEqual:(id)a3;
-- (DTKPCPUEvent)initWithName:(id)a3 alias:(id)a4 definition:(id)a5 kpepEvent:(kpep_event *)a6;
+- (BOOL)isEqual:(id)equal;
+- (DTKPCPUEvent)initWithName:(id)name alias:(id)alias definition:(id)definition kpepEvent:(kpep_event *)event;
 - (NSString)aliasOrName;
 - (id)description;
 @end
 
 @implementation DTKPCPUEvent
 
-- (DTKPCPUEvent)initWithName:(id)a3 alias:(id)a4 definition:(id)a5 kpepEvent:(kpep_event *)a6
+- (DTKPCPUEvent)initWithName:(id)name alias:(id)alias definition:(id)definition kpepEvent:(kpep_event *)event
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  aliasCopy = alias;
+  definitionCopy = definition;
   v23.receiver = self;
   v23.super_class = DTKPCPUEvent;
   v13 = [(DTKPCPUEvent *)&v23 init];
   if (v13)
   {
-    if (![v10 length])
+    if (![nameCopy length])
     {
       sub_2480301FC();
     }
 
-    if (!a6)
+    if (!event)
     {
       sub_2480301D0();
     }
 
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v16 = [v11 copy];
+    v16 = [aliasCopy copy];
     alias = v13->_alias;
     v13->_alias = v16;
 
@@ -48,11 +48,11 @@
     displayName = v13->_displayName;
     v13->_displayName = v18;
 
-    v20 = [v12 copy];
+    v20 = [definitionCopy copy];
     definition = v13->_definition;
     v13->_definition = v20;
 
-    v13->_kpepEvent = a6;
+    v13->_kpepEvent = event;
   }
 
   return v13;
@@ -71,9 +71,9 @@
     alias = @"no alias";
   }
 
-  v7 = [v3 stringByAppendingFormat:@" %@ (%@)", self->_name, alias];
+  alias = [v3 stringByAppendingFormat:@" %@ (%@)", self->_name, alias];
 
-  return v7;
+  return alias;
 }
 
 - (NSString)aliasOrName
@@ -90,15 +90,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     name = self->_name;
-    v6 = [v4 name];
-    v7 = [(NSString *)name isEqualToString:v6];
+    name = [equalCopy name];
+    v7 = [(NSString *)name isEqualToString:name];
   }
 
   else

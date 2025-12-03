@@ -1,14 +1,14 @@
 @interface TTRIInsetTextField
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (_TtC15RemindersUICore18TTRIInsetTextField)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore18TTRIInsetTextField)initWithFrame:(CGRect)a3;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (_TtC15RemindersUICore18TTRIInsetTextField)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore18TTRIInsetTextField)initWithFrame:(CGRect)frame;
 - (double)horizontalInset;
 - (double)verticalInset;
-- (void)setHorizontalInset:(double)a3;
-- (void)setVerticalInset:(double)a3;
+- (void)setHorizontalInset:(double)inset;
+- (void)setVerticalInset:(double)inset;
 @end
 
 @implementation TTRIInsetTextField
@@ -20,11 +20,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setHorizontalInset:(double)a3
+- (void)setHorizontalInset:(double)inset
 {
   v5 = OBJC_IVAR____TtC15RemindersUICore18TTRIInsetTextField_horizontalInset;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = inset;
 }
 
 - (double)verticalInset
@@ -34,16 +34,16 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setVerticalInset:(double)a3
+- (void)setVerticalInset:(double)inset
 {
   v5 = OBJC_IVAR____TtC15RemindersUICore18TTRIInsetTextField_verticalInset;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = inset;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  v3 = sub_21D3FF130(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, &selRef_textRectForBounds_);
+  v3 = sub_21D3FF130(self, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height, a2, &selRef_textRectForBounds_);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -51,9 +51,9 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  v3 = sub_21D3FF130(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, &selRef_editingRectForBounds_);
+  v3 = sub_21D3FF130(self, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height, a2, &selRef_editingRectForBounds_);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -61,9 +61,9 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  v3 = sub_21D3FF130(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, &selRef_placeholderRectForBounds_);
+  v3 = sub_21D3FF130(self, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height, a2, &selRef_placeholderRectForBounds_);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -71,12 +71,12 @@
   return result;
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v21.receiver = self;
   v21.super_class = swift_getObjectType();
   v7 = v21.receiver;
@@ -104,12 +104,12 @@
   return result;
 }
 
-- (_TtC15RemindersUICore18TTRIInsetTextField)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore18TTRIInsetTextField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore18TTRIInsetTextField_horizontalInset) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore18TTRIInsetTextField_verticalInset) = 0;
@@ -118,15 +118,15 @@
   return [(TTRITextField *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC15RemindersUICore18TTRIInsetTextField)initWithCoder:(id)a3
+- (_TtC15RemindersUICore18TTRIInsetTextField)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore18TTRIInsetTextField_horizontalInset) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore18TTRIInsetTextField_verticalInset) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(TTRITextField *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(TTRITextField *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

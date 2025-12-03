@@ -1,7 +1,7 @@
 @interface FMFindingExperiencePresenter
 - (_TtC6FindMy28FMFindingExperiencePresenter)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 @end
 
 @implementation FMFindingExperiencePresenter
@@ -13,14 +13,14 @@
   return result;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = [objc_allocWithZone(type metadata accessor for FMR1FindingViewPresentedTransition()) init];
 
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [objc_allocWithZone(type metadata accessor for FMR1FindingViewDismissedTransition()) init];
 

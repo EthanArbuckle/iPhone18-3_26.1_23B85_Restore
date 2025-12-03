@@ -1,13 +1,13 @@
 @interface CHFriendInboxBarButtonView
-- (BOOL)_touchesInside:(id)a3;
+- (BOOL)_touchesInside:(id)inside;
 - (CHFriendInboxBarButtonView)init;
 - (CHFriendInboxBarButtonViewDelegate)delegate;
-- (void)_animateToTappedState:(BOOL)a3;
+- (void)_animateToTappedState:(BOOL)state;
 - (void)layoutSubviews;
-- (void)setBadgeText:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setBadgeText:(id)text;
+- (void)setTintColor:(id)color;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CHFriendInboxBarButtonView
@@ -54,23 +54,23 @@
   [(CHFriendInboxBadgeView *)self->_badgeView setCenter:v4, CGRectGetMidX(v9) + -5.0];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = CHFriendInboxBarButtonView;
-  v4 = a3;
-  [(CHFriendInboxBarButtonView *)&v5 setTintColor:v4];
-  [(CHFriendInboxBadgeView *)self->_badgeView setTintColor:v4, v5.receiver, v5.super_class];
-  [(UIImageView *)self->_contactsImageView setTintColor:v4];
+  colorCopy = color;
+  [(CHFriendInboxBarButtonView *)&v5 setTintColor:colorCopy];
+  [(CHFriendInboxBadgeView *)self->_badgeView setTintColor:colorCopy, v5.receiver, v5.super_class];
+  [(UIImageView *)self->_contactsImageView setTintColor:colorCopy];
 }
 
-- (void)setBadgeText:(id)a3
+- (void)setBadgeText:(id)text
 {
-  v5 = a3;
-  [(CHFriendInboxBadgeView *)self->_badgeView setBadgeText:v5];
-  if (v5)
+  textCopy = text;
+  [(CHFriendInboxBadgeView *)self->_badgeView setBadgeText:textCopy];
+  if (textCopy)
   {
-    v4 = [v5 length] == 0;
+    v4 = [textCopy length] == 0;
   }
 
   else
@@ -82,21 +82,21 @@
   [(CHFriendInboxBarButtonView *)self setNeedsLayout];
 }
 
-- (void)_animateToTappedState:(BOOL)a3
+- (void)_animateToTappedState:(BOOL)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000B3EB8;
   v3[3] = &unk_10083A8D8;
   v3[4] = self;
-  v4 = a3;
+  stateCopy = state;
   [UIView animateWithDuration:v3 animations:0.2];
 }
 
-- (BOOL)_touchesInside:(id)a3
+- (BOOL)_touchesInside:(id)inside
 {
-  v4 = [a3 anyObject];
-  [v4 locationInView:self];
+  anyObject = [inside anyObject];
+  [anyObject locationInView:self];
   v6 = v5;
   v8 = v7;
 
@@ -107,11 +107,11 @@
   return CGRectContainsPoint(*&v9, *&v13);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
+  endedCopy = ended;
   [(CHFriendInboxBarButtonView *)self _animateToTappedState:0];
-  v6 = [(CHFriendInboxBarButtonView *)self _touchesInside:v5];
+  v6 = [(CHFriendInboxBarButtonView *)self _touchesInside:endedCopy];
 
   if (v6)
   {
@@ -120,11 +120,11 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [(CHFriendInboxBarButtonView *)self _touchesInside:a3, a4];
+  event = [(CHFriendInboxBarButtonView *)self _touchesInside:moved, event];
 
-  [(CHFriendInboxBarButtonView *)self _animateToTappedState:v5];
+  [(CHFriendInboxBarButtonView *)self _animateToTappedState:event];
 }
 
 - (CHFriendInboxBarButtonViewDelegate)delegate

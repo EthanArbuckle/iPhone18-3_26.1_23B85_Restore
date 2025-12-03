@@ -1,38 +1,38 @@
 @interface WFScanMachineReadableCodeActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithCode:(id)a3 error:(id)a4;
-- (void)showWithCompletionHandler:(id)a3;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithCode:(id)code error:(id)error;
+- (void)showWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFScanMachineReadableCodeActionUIKitUserInterface
 
-- (void)finishWithCode:(id)a3 error:(id)a4
+- (void)finishWithCode:(id)code error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFScanMachineReadableCodeActionUIKitUserInterface *)self completionHandler];
+  codeCopy = code;
+  errorCopy = error;
+  completionHandler = [(WFScanMachineReadableCodeActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFScanMachineReadableCodeActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFScanMachineReadableCodeActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, codeCopy, errorCopy);
   }
 
   [(WFScanMachineReadableCodeActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFScanMachineReadableCodeActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -47,19 +47,19 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   return v4();
 }
 
-- (void)showWithCompletionHandler:(id)a3
+- (void)showWithCompletionHandler:(id)handler
 {
   v94 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
-    v5 = 0;
+    handlerCopy = 0;
   }
 
-  v79 = v5;
+  v79 = handlerCopy;
   [(WFScanMachineReadableCodeActionUIKitUserInterface *)self setCompletionHandler:?];
   v88 = 0;
   v89 = &v88;
@@ -82,9 +82,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v6)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeUPCECode(void)"];
-    [v48 handleFailureInFunction:v49 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v49 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -112,9 +112,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v9)
   {
-    v50 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeCode39Code(void)"];
-    [v50 handleFailureInFunction:v51 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:20 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v51 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:20 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -142,9 +142,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v12)
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeCode39Mod43Code(void)"];
-    [v52 handleFailureInFunction:v53 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:21 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v53 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:21 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -172,9 +172,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v15)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeEAN13Code(void)"];
-    [v54 handleFailureInFunction:v55 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler5 handleFailureInFunction:v55 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:22 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -202,9 +202,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v17)
   {
-    v56 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
     v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeEAN8Code(void)"];
-    [v56 handleFailureInFunction:v57 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler6 handleFailureInFunction:v57 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:23 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -232,9 +232,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v19)
   {
-    v58 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
     v59 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeCode93Code(void)"];
-    [v58 handleFailureInFunction:v59 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:24 description:{@"%s", dlerror()}];
+    [currentHandler7 handleFailureInFunction:v59 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:24 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -262,9 +262,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v22)
   {
-    v60 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
     v61 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeCode128Code(void)"];
-    [v60 handleFailureInFunction:v61 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler8 handleFailureInFunction:v61 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -292,9 +292,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v25)
   {
-    v62 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
     v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypePDF417Code(void)"];
-    [v62 handleFailureInFunction:v63 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:26 description:{@"%s", dlerror()}];
+    [currentHandler9 handleFailureInFunction:v63 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:26 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -322,16 +322,16 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v28)
   {
-    v64 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
     v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeQRCode(void)"];
-    [v64 handleFailureInFunction:v65 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler10 handleFailureInFunction:v65 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:27 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
 
   v75 = v8;
   v76 = v11;
-  v74 = self;
+  selfCopy = self;
   v30 = *v28;
   v92[8] = v30;
   v88 = 0;
@@ -355,9 +355,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v31)
   {
-    v66 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
     v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeAztecCode(void)"];
-    [v66 handleFailureInFunction:v67 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler11 handleFailureInFunction:v67 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:28 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -385,9 +385,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v34)
   {
-    v68 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
     v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeInterleaved2of5Code(void)"];
-    [v68 handleFailureInFunction:v69 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:29 description:{@"%s", dlerror()}];
+    [currentHandler12 handleFailureInFunction:v69 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:29 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -415,9 +415,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v37)
   {
-    v70 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
     v71 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeITF14Code(void)"];
-    [v70 handleFailureInFunction:v71 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler13 handleFailureInFunction:v71 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:30 description:{@"%s", dlerror()}];
 
     goto LABEL_56;
   }
@@ -445,9 +445,9 @@ uint64_t __93__WFScanMachineReadableCodeActionUIKitUserInterface_cancelPresentat
   _Block_object_dispose(&v88, 8);
   if (!v40)
   {
-    v72 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler14 = [MEMORY[0x277CCA890] currentHandler];
     v73 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeDataMatrixCode(void)"];
-    [v72 handleFailureInFunction:v73 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:31 description:{@"%s", dlerror()}];
+    [currentHandler14 handleFailureInFunction:v73 file:@"WFScanMachineReadableCodeActionUIKitUserInterface.m" lineNumber:31 description:{@"%s", dlerror()}];
 
 LABEL_56:
     __break(1u);
@@ -463,7 +463,7 @@ LABEL_56:
   block[2] = __79__WFScanMachineReadableCodeActionUIKitUserInterface_showWithCompletionHandler___block_invoke;
   block[3] = &unk_278C375A0;
   v81 = v44;
-  v82 = v74;
+  v82 = selfCopy;
   v45 = v44;
   dispatch_async(MEMORY[0x277D85CD0], block);
 

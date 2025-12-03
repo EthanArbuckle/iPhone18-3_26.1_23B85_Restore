@@ -1,11 +1,11 @@
 @interface PXFlexMusicArtworkAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)acceptableCropRect;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (NSString)uuid;
 - (PXFlexMusicArtworkAsset)init;
-- (PXFlexMusicArtworkAsset)initWithAudioAsset:(id)a3;
+- (PXFlexMusicArtworkAsset)initWithAudioAsset:(id)asset;
 @end
 
 @implementation PXFlexMusicArtworkAsset
@@ -49,15 +49,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 audioAsset];
-    v6 = [(PXFlexMusicArtworkAsset *)self audioAsset];
-    v7 = [v5 isEqual:v6];
+    audioAsset = [equalCopy audioAsset];
+    audioAsset2 = [(PXFlexMusicArtworkAsset *)self audioAsset];
+    v7 = [audioAsset isEqual:audioAsset2];
   }
 
   else
@@ -70,30 +70,30 @@
 
 - (NSString)uuid
 {
-  v2 = [(PXFlexMusicArtworkAsset *)self audioAsset];
-  v3 = [v2 identifier];
+  audioAsset = [(PXFlexMusicArtworkAsset *)self audioAsset];
+  identifier = [audioAsset identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (PXFlexMusicArtworkAsset)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFlexMusicArtworkAsset.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXFlexMusicArtworkAsset init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFlexMusicArtworkAsset.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXFlexMusicArtworkAsset init]"}];
 
   abort();
 }
 
-- (PXFlexMusicArtworkAsset)initWithAudioAsset:(id)a3
+- (PXFlexMusicArtworkAsset)initWithAudioAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PXFlexMusicArtworkAsset;
   v6 = [(PXFlexMusicArtworkAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioAsset, a3);
+    objc_storeStrong(&v6->_audioAsset, asset);
   }
 
   return v7;

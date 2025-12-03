@@ -9,25 +9,25 @@
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [v4 dictionary];
-  v7 = [v5 configuration];
+  dictionary = [v4 dictionary];
+  configuration = [v5 configuration];
 
-  v8 = [v7 copy];
+  v8 = [configuration copy];
   [v8 setLocationIncludesTimestamp:0];
   v9 = [[INJSONEncoder alloc] initWithConfiguration:v8];
-  v10 = [a1 location];
-  v11 = [(INJSONEncoder *)v9 encodeObject:v10];
-  [v6 if_setObjectIfNonNil:v11 forKey:@"location"];
+  location = [self location];
+  v11 = [(INJSONEncoder *)v9 encodeObject:location];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"location"];
 
-  v12 = [a1 name];
-  v13 = [(INJSONEncoder *)v9 encodeObject:v12];
-  [v6 if_setObjectIfNonNil:v13 forKey:@"name"];
+  name = [self name];
+  v13 = [(INJSONEncoder *)v9 encodeObject:name];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"name"];
 
-  v14 = [a1 postalAddress];
-  v15 = [v14 dictionaryRepresentation];
-  [v6 if_setObjectIfNonNil:v15 forKey:@"postalAddress"];
+  postalAddress = [self postalAddress];
+  dictionaryRepresentation = [postalAddress dictionaryRepresentation];
+  [dictionary if_setObjectIfNonNil:dictionaryRepresentation forKey:@"postalAddress"];
 
-  return v6;
+  return dictionary;
 }
 
 + (id)_intents_decodeWithJSONDecoder:()INJSONSerialization codableDescription:from:

@@ -9,21 +9,21 @@
 {
   v37[3] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 typeIdentifier];
-  v6 = 0;
-  if (v5 <= 7)
+  typeIdentifier = [self typeIdentifier];
+  lastPathComponent = 0;
+  if (typeIdentifier <= 7)
   {
-    if (v5 != 3)
+    if (typeIdentifier != 3)
     {
-      if (v5 != 4)
+      if (typeIdentifier != 4)
       {
-        if (v5 != 7)
+        if (typeIdentifier != 7)
         {
           goto LABEL_56;
         }
 
-        v7 = [v4 value];
-        if (v7)
+        value = [v4 value];
+        if (value)
         {
           goto LABEL_21;
         }
@@ -33,15 +33,15 @@ LABEL_24:
 LABEL_25:
         v13 = v12;
 
-        v14 = [v13 title];
+        title = [v13 title];
 LABEL_44:
-        v6 = v14;
+        lastPathComponent = title;
 
         goto LABEL_56;
       }
 
-      v7 = [v4 value];
-      if (!v7)
+      value = [v4 value];
+      if (!value)
       {
         goto LABEL_24;
       }
@@ -50,7 +50,7 @@ LABEL_21:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v7;
+        v12 = value;
       }
 
       else
@@ -62,13 +62,13 @@ LABEL_21:
     }
 
     v36[0] = @"familyName";
-    v10 = [v4 value];
-    if (v10)
+    value2 = [v4 value];
+    if (value2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = value2;
       }
 
       else
@@ -84,18 +84,18 @@ LABEL_21:
 
     v17 = v11;
 
-    v18 = [v17 nameComponents];
+    nameComponents = [v17 nameComponents];
 
-    v19 = [v18 familyName];
-    v37[0] = v19;
+    familyName = [nameComponents familyName];
+    v37[0] = familyName;
     v36[1] = @"givenName";
-    v20 = [v4 value];
-    if (v20)
+    value3 = [v4 value];
+    if (value3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = v20;
+        v21 = value3;
       }
 
       else
@@ -111,18 +111,18 @@ LABEL_21:
 
     v22 = v21;
 
-    v23 = [v22 nameComponents];
+    nameComponents2 = [v22 nameComponents];
 
-    v24 = [v23 givenName];
-    v37[1] = v24;
+    givenName = [nameComponents2 givenName];
+    v37[1] = givenName;
     v36[2] = @"nickname";
-    v25 = [v4 value];
-    if (v25)
+    value4 = [v4 value];
+    if (value4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = v25;
+        v26 = value4;
       }
 
       else
@@ -138,19 +138,19 @@ LABEL_21:
 
     v27 = v26;
 
-    v28 = [v27 nameComponents];
+    nameComponents3 = [v27 nameComponents];
 
-    v29 = [v28 nickname];
-    v37[2] = v29;
-    v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:3];
+    nickname = [nameComponents3 nickname];
+    v37[2] = nickname;
+    lastPathComponent = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:3];
 
     goto LABEL_54;
   }
 
-  if (v5 == 8)
+  if (typeIdentifier == 8)
   {
-    v7 = [v4 value];
-    if (!v7)
+    value = [v4 value];
+    if (!value)
     {
       goto LABEL_24;
     }
@@ -158,20 +158,20 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (v5 != 12)
+  if (typeIdentifier != 12)
   {
-    if (v5 != 13)
+    if (typeIdentifier != 13)
     {
       goto LABEL_56;
     }
 
-    v8 = [v4 value];
-    if (v8)
+    value5 = [v4 value];
+    if (value5)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = value5;
       }
 
       else
@@ -187,17 +187,17 @@ LABEL_21:
 
     v13 = v9;
 
-    v14 = [v13 name];
+    title = [v13 name];
     goto LABEL_44;
   }
 
-  v15 = [v4 value];
-  if (v15)
+  value6 = [v4 value];
+  if (value6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = value6;
     }
 
     else
@@ -213,17 +213,17 @@ LABEL_21:
 
   v30 = v16;
 
-  v18 = [v30 filename];
+  nameComponents = [v30 filename];
 
-  if (!v18)
+  if (!nameComponents)
   {
-    v31 = [v4 value];
-    if (v31)
+    value7 = [v4 value];
+    if (value7)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = v31;
+        v32 = value7;
       }
 
       else
@@ -239,34 +239,34 @@ LABEL_21:
 
     v33 = v32;
 
-    v19 = [v33 fileURL];
+    familyName = [v33 fileURL];
 
-    v6 = [v19 lastPathComponent];
+    lastPathComponent = [familyName lastPathComponent];
 LABEL_54:
 
     goto LABEL_55;
   }
 
-  v6 = v18;
+  lastPathComponent = nameComponents;
 LABEL_55:
 
 LABEL_56:
   v34 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return lastPathComponent;
 }
 
 - (__CFString)cat_dialogType
 {
-  v1 = [a1 typeIdentifier];
-  if (v1 > 0xE)
+  typeIdentifier = [self typeIdentifier];
+  if (typeIdentifier > 0xE)
   {
     return @"dialog.Person";
   }
 
   else
   {
-    return off_1E74B1718[v1];
+    return off_1E74B1718[typeIdentifier];
   }
 }
 

@@ -3,43 +3,43 @@
 + (id)carScreenGestureManager;
 + (id)defaultGestureManager;
 + (id)mainScreenGestureManager;
-+ (id)managerForDisplayID:(unsigned int)a3;
++ (id)managerForDisplayID:(unsigned int)d;
 + (void)initializeSharedManagerTable;
 - (AXPIFingerController)fingerController;
 - (BOOL)isInDragGesture;
-- (CACSpokenCommandGestureManager)initWithDisplayID:(unsigned int)a3;
-- (CGPoint)_fingerControllerPointForPortraitUpPoint:(CGPoint)a3;
-- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)a3;
-- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)a3 shouldToggleSelectionOptions:(BOOL)a4;
+- (CACSpokenCommandGestureManager)initWithDisplayID:(unsigned int)d;
+- (CGPoint)_fingerControllerPointForPortraitUpPoint:(CGPoint)point;
+- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)point;
+- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)point shouldToggleSelectionOptions:(BOOL)options;
 - (CGPoint)defaultPortraitUpPointForGestures;
 - (CGPoint)startPointForDrag;
 - (void)_clearStateFlags;
-- (void)_performGesture:(id)a3;
-- (void)_startDragWithHold:(BOOL)a3 atPoint:(CGPoint)a4;
-- (void)endDragAtPoint:(CGPoint)a3;
-- (void)performDoubleTapAtPoint:(CGPoint)a3 numberOfFingers:(unint64_t)a4;
-- (void)performLongPressAtPoint:(CGPoint)a3 numberOfFingers:(unint64_t)a4;
-- (void)performPinchInGestureAtPoint:(CGPoint)a3;
-- (void)performPinchOutGestureAtPoint:(CGPoint)a3;
-- (void)performRotateLeftGestureAtPoint:(CGPoint)a3;
-- (void)performRotateRightGestureAtPoint:(CGPoint)a3;
-- (void)performSwipeGestureAtPoint:(CGPoint)a3 inDirection:(int64_t)a4 fast:(BOOL)a5 numberOfFingers:(unint64_t)a6;
-- (void)performSwipeGestureFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 fast:(BOOL)a5 numberOfFingers:(unint64_t)a6;
-- (void)performTapAtPoint:(CGPoint)a3 numberOfFingers:(unint64_t)a4;
+- (void)_performGesture:(id)gesture;
+- (void)_startDragWithHold:(BOOL)hold atPoint:(CGPoint)point;
+- (void)endDragAtPoint:(CGPoint)point;
+- (void)performDoubleTapAtPoint:(CGPoint)point numberOfFingers:(unint64_t)fingers;
+- (void)performLongPressAtPoint:(CGPoint)point numberOfFingers:(unint64_t)fingers;
+- (void)performPinchInGestureAtPoint:(CGPoint)point;
+- (void)performPinchOutGestureAtPoint:(CGPoint)point;
+- (void)performRotateLeftGestureAtPoint:(CGPoint)point;
+- (void)performRotateRightGestureAtPoint:(CGPoint)point;
+- (void)performSwipeGestureAtPoint:(CGPoint)point inDirection:(int64_t)direction fast:(BOOL)fast numberOfFingers:(unint64_t)fingers;
+- (void)performSwipeGestureFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint fast:(BOOL)fast numberOfFingers:(unint64_t)fingers;
+- (void)performTapAtPoint:(CGPoint)point numberOfFingers:(unint64_t)fingers;
 - (void)resetState;
-- (void)setDidStartDrag:(BOOL)a3;
+- (void)setDidStartDrag:(BOOL)drag;
 @end
 
 @implementation CACSpokenCommandGestureManager
 
-- (CACSpokenCommandGestureManager)initWithDisplayID:(unsigned int)a3
+- (CACSpokenCommandGestureManager)initWithDisplayID:(unsigned int)d
 {
   v5.receiver = self;
   v5.super_class = CACSpokenCommandGestureManager;
   result = [(CACSpokenCommandGestureManager *)&v5 init];
   if (result)
   {
-    result->_displayID = a3;
+    result->_displayID = d;
   }
 
   return result;
@@ -63,11 +63,11 @@ uint64_t __62__CACSpokenCommandGestureManager_initializeSharedManagerTable__bloc
 + (id)carScreenGestureManager
 {
   v2 = +[CACDisplayManager sharedManager];
-  v3 = [v2 carPlayDisplayID];
+  carPlayDisplayID = [v2 carPlayDisplayID];
 
-  if (v3)
+  if (carPlayDisplayID)
   {
-    v4 = [CACSpokenCommandGestureManager managerForDisplayID:v3];
+    v4 = [CACSpokenCommandGestureManager managerForDisplayID:carPlayDisplayID];
   }
 
   else
@@ -80,60 +80,60 @@ uint64_t __62__CACSpokenCommandGestureManager_initializeSharedManagerTable__bloc
 
 + (id)mainScreenGestureManager
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = +[CACSpokenCommandGestureManager managerForDisplayID:](CACSpokenCommandGestureManager, "managerForDisplayID:", [v2 _integerDisplayID]);
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v3 = +[CACSpokenCommandGestureManager managerForDisplayID:](CACSpokenCommandGestureManager, "managerForDisplayID:", [mainScreen _integerDisplayID]);
 
   return v3;
 }
 
 + (id)allManagers
 {
-  [a1 initializeSharedManagerTable];
+  [self initializeSharedManagerTable];
   v2 = _sharedManagerTable;
   objc_sync_enter(v2);
-  v3 = [_sharedManagerTable allValues];
+  allValues = [_sharedManagerTable allValues];
   objc_sync_exit(v2);
 
-  return v3;
+  return allValues;
 }
 
 + (id)defaultGestureManager
 {
   v3 = +[CACDisplayManager sharedManager];
-  v4 = [v3 carPlayConnected];
+  carPlayConnected = [v3 carPlayConnected];
 
-  if (v4)
+  if (carPlayConnected)
   {
-    [a1 carScreenGestureManager];
+    [self carScreenGestureManager];
   }
 
   else
   {
-    [a1 mainScreenGestureManager];
+    [self mainScreenGestureManager];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)managerForDisplayID:(unsigned int)a3
++ (id)managerForDisplayID:(unsigned int)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = *&a3;
-    [a1 initializeSharedManagerTable];
+    v3 = *&d;
+    [self initializeSharedManagerTable];
     v4 = _sharedManagerTable;
     objc_sync_enter(v4);
     v5 = _sharedManagerTable;
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
-    v7 = [v5 objectForKey:v6];
+    defaultGestureManager = [v5 objectForKey:v6];
 
-    if (!v7)
+    if (!defaultGestureManager)
     {
-      v7 = [[CACSpokenCommandGestureManager alloc] initWithDisplayID:v3];
+      defaultGestureManager = [[CACSpokenCommandGestureManager alloc] initWithDisplayID:v3];
       v8 = _sharedManagerTable;
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
-      [v8 setObject:v7 forKey:v9];
+      [v8 setObject:defaultGestureManager forKey:v9];
     }
 
     objc_sync_exit(v4);
@@ -141,10 +141,10 @@ uint64_t __62__CACSpokenCommandGestureManager_initializeSharedManagerTable__bloc
 
   else
   {
-    v7 = [a1 defaultGestureManager];
+    defaultGestureManager = [self defaultGestureManager];
   }
 
-  return v7;
+  return defaultGestureManager;
 }
 
 - (AXPIFingerController)fingerController
@@ -156,19 +156,19 @@ uint64_t __62__CACSpokenCommandGestureManager_initializeSharedManagerTable__bloc
     v5 = [v4 overlayViewForDisplayID:self->_displayID];
 
     v6 = objc_alloc(MEMORY[0x277CE7160]);
-    v7 = [v5 window];
-    v8 = [v7 screen];
-    v9 = [v8 displayConfiguration];
-    v10 = [v9 hardwareIdentifier];
-    v11 = [v6 initWithDisplayUUID:v10];
+    window = [v5 window];
+    screen = [window screen];
+    displayConfiguration = [screen displayConfiguration];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+    v11 = [v6 initWithDisplayUUID:hardwareIdentifier];
     v12 = self->_fingerController;
     self->_fingerController = v11;
 
-    v13 = [(AXPIFingerController *)self->_fingerController fingerContainerView];
+    fingerContainerView = [(AXPIFingerController *)self->_fingerController fingerContainerView];
     [v5 bounds];
-    [v13 setFrame:?];
-    [v13 setAutoresizingMask:18];
-    [v5 addSubview:v13];
+    [fingerContainerView setFrame:?];
+    [fingerContainerView setAutoresizingMask:18];
+    [v5 addSubview:fingerContainerView];
 
     fingerController = self->_fingerController;
   }
@@ -176,13 +176,13 @@ uint64_t __62__CACSpokenCommandGestureManager_initializeSharedManagerTable__bloc
   return fingerController;
 }
 
-- (CGPoint)_fingerControllerPointForPortraitUpPoint:(CGPoint)a3
+- (CGPoint)_fingerControllerPointForPortraitUpPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v6 = [v5 fingerContainerView];
-  v7 = CACViewPointFromPortraitUpPoint(v6, x, y);
+  y = point.y;
+  x = point.x;
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  v7 = CACViewPointFromPortraitUpPoint(fingerContainerView, x, y);
   v9 = v8;
 
   v10 = v7;
@@ -192,16 +192,16 @@ uint64_t __62__CACSpokenCommandGestureManager_initializeSharedManagerTable__bloc
   return result;
 }
 
-- (void)_performGesture:(id)a3
+- (void)_performGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommandGestureManager *)self fingerController];
+  gestureCopy = gesture;
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__CACSpokenCommandGestureManager__performGesture___block_invoke;
   v6[3] = &unk_279CEB760;
   v6[4] = self;
-  [v5 performGesture:v4 completion:v6];
+  [fingerController performGesture:gestureCopy completion:v6];
 }
 
 void __50__CACSpokenCommandGestureManager__performGesture___block_invoke(uint64_t a1)
@@ -223,88 +223,88 @@ void __50__CACSpokenCommandGestureManager__performGesture___block_invoke_2(uint6
   [v3 clearAllFingersAnimated:1 endPointForAnimation:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 }
 
-- (void)performPinchInGestureAtPoint:(CGPoint)a3
+- (void)performPinchInGestureAtPoint:(CGPoint)point
 {
   v4 = MEMORY[0x277CE7DD0];
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
   v6 = v5;
   v8 = v7;
-  v15 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v9 = [v15 fingerContainerView];
-  [v9 bounds];
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v14 = [v4 pinchInGestureWithPoint:v6 bounds:{v8, v10, v11, v12, v13}];
   [(CACSpokenCommandGestureManager *)self _performGesture:v14];
 }
 
-- (void)performPinchOutGestureAtPoint:(CGPoint)a3
+- (void)performPinchOutGestureAtPoint:(CGPoint)point
 {
   v4 = MEMORY[0x277CE7DD0];
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
   v6 = v5;
   v8 = v7;
-  v15 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v9 = [v15 fingerContainerView];
-  [v9 bounds];
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v14 = [v4 pinchOutGestureWithPoint:v6 bounds:{v8, v10, v11, v12, v13}];
   [(CACSpokenCommandGestureManager *)self _performGesture:v14];
 }
 
-- (void)performRotateRightGestureAtPoint:(CGPoint)a3
+- (void)performRotateRightGestureAtPoint:(CGPoint)point
 {
   v4 = MEMORY[0x277CE7DD0];
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
   v6 = v5;
   v8 = v7;
-  v15 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v9 = [v15 fingerContainerView];
-  [v9 bounds];
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v14 = [v4 rotateRightGestureWithPoint:v6 bounds:{v8, v10, v11, v12, v13}];
   [(CACSpokenCommandGestureManager *)self _performGesture:v14];
 }
 
-- (void)performRotateLeftGestureAtPoint:(CGPoint)a3
+- (void)performRotateLeftGestureAtPoint:(CGPoint)point
 {
   v4 = MEMORY[0x277CE7DD0];
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
   v6 = v5;
   v8 = v7;
-  v15 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v9 = [v15 fingerContainerView];
-  [v9 bounds];
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v14 = [v4 rotateLeftGestureWithPoint:v6 bounds:{v8, v10, v11, v12, v13}];
   [(CACSpokenCommandGestureManager *)self _performGesture:v14];
 }
 
-- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)a3
+- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)point
 {
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:0 shouldToggleSelectionOptions:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:0 shouldToggleSelectionOptions:point.x, point.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)a3 shouldToggleSelectionOptions:(BOOL)a4
+- (CGPoint)_pointForGestureGivenPortraitUpPoint:(CGPoint)point shouldToggleSelectionOptions:(BOOL)options
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != v8)
+  if (point.x != *MEMORY[0x277CBF348] || point.y != v8)
   {
     goto LABEL_20;
   }
 
-  if (a4)
+  if (options)
   {
     v10 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v11 = [v10 focusedElement];
+    focusedElement = [v10 focusedElement];
 
-    if (v11)
+    if (focusedElement)
     {
-      v12 = [v11 selectedTextRange];
-      if (v12 != 0x7FFFFFFF)
+      selectedTextRange = [focusedElement selectedTextRange];
+      if (selectedTextRange != 0x7FFFFFFF)
       {
-        [v11 boundsForTextRange:{v12, 0}];
+        [focusedElement boundsForTextRange:{selectedTextRange, 0}];
         v13 = v28.origin.x;
         v14 = v28.origin.y;
         width = v28.size.width;
@@ -314,7 +314,7 @@ void __50__CACSpokenCommandGestureManager__performGesture___block_invoke_2(uint6
         y = *(MEMORY[0x277CBF398] + 8);
         if (v17 || (v29.origin.x = v13, v29.origin.y = v14, v29.size.width = width, v29.size.height = height, CGRectEqualToRect(v29, *MEMORY[0x277CBF398])))
         {
-          [v11 performAction:2057];
+          [focusedElement performAction:2057];
         }
 
         else
@@ -334,7 +334,7 @@ void __50__CACSpokenCommandGestureManager__performGesture___block_invoke_2(uint6
     x = v21;
     y = v22;
 LABEL_20:
-    [(CACSpokenCommandGestureManager *)self _fingerControllerPointForPortraitUpPoint:a4, x, y];
+    [(CACSpokenCommandGestureManager *)self _fingerControllerPointForPortraitUpPoint:options, x, y];
     x = v23;
     y = v24;
   }
@@ -346,18 +346,18 @@ LABEL_20:
   return result;
 }
 
-- (void)performSwipeGestureAtPoint:(CGPoint)a3 inDirection:(int64_t)a4 fast:(BOOL)a5 numberOfFingers:(unint64_t)a6
+- (void)performSwipeGestureAtPoint:(CGPoint)point inDirection:(int64_t)direction fast:(BOOL)fast numberOfFingers:(unint64_t)fingers
 {
-  v7 = a5;
+  fastCopy = fast;
   v49[2] = *MEMORY[0x277D85DE8];
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
   v11 = v10;
   v13 = v12;
-  if (!v7)
+  if (!fastCopy)
   {
-    v29 = [(CACSpokenCommandGestureManager *)self fingerController];
-    v30 = [v29 fingerContainerView];
-    [v30 bounds];
+    fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+    fingerContainerView = [fingerController fingerContainerView];
+    [fingerContainerView bounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -380,16 +380,16 @@ LABEL_20:
 
     v41 = Height * 0.25;
     v42 = 0.0;
-    if (a4 <= 1)
+    if (direction <= 1)
     {
-      if (!a4)
+      if (!direction)
       {
         v42 = v11 - fmin(v41, v11);
         goto LABEL_17;
       }
 
       v43 = 0.0;
-      if (a4 == 1)
+      if (direction == 1)
       {
         v44 = v41;
         v56.origin.x = v32;
@@ -418,7 +418,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (a4 == 3)
+    if (direction == 3)
     {
       v46 = v41;
       v57.origin.x = v32;
@@ -431,7 +431,7 @@ LABEL_20:
     else
     {
       v43 = 0.0;
-      if (a4 != 2)
+      if (direction != 2)
       {
         goto LABEL_20;
       }
@@ -444,18 +444,18 @@ LABEL_20:
   }
 
   v14 = 0.0;
-  if (a4 <= 3)
+  if (direction <= 3)
   {
-    v14 = dbl_26B404F70[a4];
+    v14 = dbl_26B404F70[direction];
   }
 
-  v15 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v16 = [v15 fingerContainerView];
-  [v16 bounds];
+  fingerController2 = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView2 = [fingerController2 fingerContainerView];
+  [fingerContainerView2 bounds];
   v18 = v17;
   v20 = v19;
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((direction & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v21 = __sincos_stret(v14);
     v22 = MEMORY[0x277CE7DD0];
@@ -472,22 +472,22 @@ LABEL_20:
     v27 = v25;
     v28 = fmax(v18 / v20 / 0.461538462, 1.0) * 0.1;
 LABEL_21:
-    v45 = [v26 lineGestureBetweenPoints:v27 duration:a6 numberOfFingers:v28];
+    v45 = [v26 lineGestureBetweenPoints:v27 duration:fingers numberOfFingers:v28];
 
     goto LABEL_22;
   }
 
-  v45 = [MEMORY[0x277CE7DD0] flickGestureAtPoint:a6 angle:v11 numberOfFingers:{v13, v14}];
+  v45 = [MEMORY[0x277CE7DD0] flickGestureAtPoint:fingers angle:v11 numberOfFingers:{v13, v14}];
 LABEL_22:
   [(CACSpokenCommandGestureManager *)self _performGesture:v45];
 }
 
-- (void)performSwipeGestureFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 fast:(BOOL)a5 numberOfFingers:(unint64_t)a6
+- (void)performSwipeGestureFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint fast:(BOOL)fast numberOfFingers:(unint64_t)fingers
 {
-  y = a4.y;
-  x = a4.x;
+  y = toPoint.y;
+  x = toPoint.x;
   v16[2] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (fast)
   {
     v10 = 0.1;
   }
@@ -498,46 +498,46 @@ LABEL_22:
   }
 
   v11 = MEMORY[0x277CE7DD0];
-  v12 = NSStringFromCGPoint(a3);
+  v12 = NSStringFromCGPoint(point);
   v16[0] = v12;
   v17.x = x;
   v17.y = y;
   v13 = NSStringFromCGPoint(v17);
   v16[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-  v15 = [v11 lineGestureBetweenPoints:v14 duration:a6 numberOfFingers:v10];
+  v15 = [v11 lineGestureBetweenPoints:v14 duration:fingers numberOfFingers:v10];
 
   [(CACSpokenCommandGestureManager *)self _performGesture:v15];
 }
 
-- (void)performTapAtPoint:(CGPoint)a3 numberOfFingers:(unint64_t)a4
+- (void)performTapAtPoint:(CGPoint)point numberOfFingers:(unint64_t)fingers
 {
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a4 == 1 shouldToggleSelectionOptions:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:fingers == 1 shouldToggleSelectionOptions:point.x, point.y];
   if (v7 != *MEMORY[0x277CBF398] || v6 != *(MEMORY[0x277CBF398] + 8))
   {
-    v9 = [MEMORY[0x277CE7DD0] tapGestureAtPoint:0 isDoubleTap:a4 numberOfFingers:?];
+    v9 = [MEMORY[0x277CE7DD0] tapGestureAtPoint:0 isDoubleTap:fingers numberOfFingers:?];
     [(CACSpokenCommandGestureManager *)self _performGesture:v9];
   }
 }
 
-- (void)performDoubleTapAtPoint:(CGPoint)a3 numberOfFingers:(unint64_t)a4
+- (void)performDoubleTapAtPoint:(CGPoint)point numberOfFingers:(unint64_t)fingers
 {
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
-  v6 = [MEMORY[0x277CE7DD0] tapGestureAtPoint:1 isDoubleTap:a4 numberOfFingers:?];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
+  v6 = [MEMORY[0x277CE7DD0] tapGestureAtPoint:1 isDoubleTap:fingers numberOfFingers:?];
   [(CACSpokenCommandGestureManager *)self _performGesture:v6];
 }
 
-- (void)performLongPressAtPoint:(CGPoint)a3 numberOfFingers:(unint64_t)a4
+- (void)performLongPressAtPoint:(CGPoint)point numberOfFingers:(unint64_t)fingers
 {
   v36 = *MEMORY[0x277D85DE8];
-  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:a3.x, a3.y];
+  [(CACSpokenCommandGestureManager *)self _pointForGestureGivenPortraitUpPoint:point.x, point.y];
   v7 = v6;
   v9 = v8;
   v10 = MEMORY[0x277CE7170];
-  v11 = [(CACSpokenCommandGestureManager *)self fingerController];
-  v12 = [v11 fingerContainerView];
-  [v12 bounds];
-  v17 = [v10 defaultLocationsForNumberOfFingers:a4 aroundPoint:v7 withinBounds:{v9, v13, v14, v15, v16}];
+  fingerController = [(CACSpokenCommandGestureManager *)self fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
+  v17 = [v10 defaultLocationsForNumberOfFingers:fingers aroundPoint:v7 withinBounds:{v9, v13, v14, v15, v16}];
 
   v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count")}];
   v31 = 0u;
@@ -575,11 +575,11 @@ LABEL_22:
     while (v21);
   }
 
-  v27 = [(CACSpokenCommandGestureManager *)self fingerController];
-  [v27 showFingerModels:v18 animated:0 startPointForAnimation:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  fingerController2 = [(CACSpokenCommandGestureManager *)self fingerController];
+  [fingerController2 showFingerModels:v18 animated:0 startPointForAnimation:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
-  v28 = [(CACSpokenCommandGestureManager *)self fingerController];
-  [v28 pressFingersDownAnimated:1];
+  fingerController3 = [(CACSpokenCommandGestureManager *)self fingerController];
+  [fingerController3 pressFingersDownAnimated:1];
 
   v29 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -601,94 +601,94 @@ void __74__CACSpokenCommandGestureManager_performLongPressAtPoint_numberOfFinger
 
 - (BOOL)isInDragGesture
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CACSpokenCommandGestureManager *)v2 didStartDrag];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  didStartDrag = [(CACSpokenCommandGestureManager *)selfCopy didStartDrag];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return didStartDrag;
 }
 
-- (void)setDidStartDrag:(BOOL)a3
+- (void)setDidStartDrag:(BOOL)drag
 {
-  if (self->_didStartDrag != a3)
+  if (self->_didStartDrag != drag)
   {
-    self->_didStartDrag = a3;
+    self->_didStartDrag = drag;
     v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
     [v4 synchronizeRecognizersWithReason:kSRUISyncReasonGestureStateChange];
   }
 }
 
-- (void)_startDragWithHold:(BOOL)a3 atPoint:(CGPoint)a4
+- (void)_startDragWithHold:(BOOL)hold atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = point.y;
+  x = point.x;
+  holdCopy = hold;
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
   if (x == *MEMORY[0x277CBF348] && y == v9)
   {
-    [(CACSpokenCommandGestureManager *)v7 defaultPortraitUpPointForGestures];
+    [(CACSpokenCommandGestureManager *)selfCopy defaultPortraitUpPointForGestures];
     x = v11;
     y = v12;
   }
 
-  [(CACSpokenCommandGestureManager *)v7 setDidStartDrag:1];
-  [(CACSpokenCommandGestureManager *)v7 setShouldHoldStartPointForDrag:v6];
-  [(CACSpokenCommandGestureManager *)v7 setStartPointForDrag:x, y];
-  objc_sync_exit(v7);
+  [(CACSpokenCommandGestureManager *)selfCopy setDidStartDrag:1];
+  [(CACSpokenCommandGestureManager *)selfCopy setShouldHoldStartPointForDrag:holdCopy];
+  [(CACSpokenCommandGestureManager *)selfCopy setStartPointForDrag:x, y];
+  objc_sync_exit(selfCopy);
 
-  v13 = [(CACSpokenCommandGestureManager *)v7 fingerController];
+  fingerController = [(CACSpokenCommandGestureManager *)selfCopy fingerController];
   v14 = MEMORY[0x277CE7168];
-  [(CACSpokenCommandGestureManager *)v7 _fingerControllerPointForPortraitUpPoint:x, y];
+  [(CACSpokenCommandGestureManager *)selfCopy _fingerControllerPointForPortraitUpPoint:x, y];
   v15 = [v14 fingerModelForLocation:?];
   v18[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  [v13 showFingerModels:v16 animated:1 startPointForAnimation:{v8, v9}];
+  [fingerController showFingerModels:v16 animated:1 startPointForAnimation:{v8, v9}];
 
-  if (v6)
+  if (holdCopy)
   {
-    v17 = [(CACSpokenCommandGestureManager *)v7 fingerController];
-    [v17 pressFingersDownAnimated:1];
+    fingerController2 = [(CACSpokenCommandGestureManager *)selfCopy fingerController];
+    [fingerController2 pressFingersDownAnimated:1];
   }
 }
 
-- (void)endDragAtPoint:(CGPoint)a3
+- (void)endDragAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v20[2] = *MEMORY[0x277D85DE8];
   [(CACSpokenCommandGestureManager *)self _clearStateFlags];
   [(CACSpokenCommandGestureManager *)self startPointForDrag];
   AX_CGPointGetDistanceToPoint();
   v7 = v6;
-  v8 = self;
-  objc_sync_enter(v8);
-  [(CACSpokenCommandGestureManager *)v8 startPointForDrag];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CACSpokenCommandGestureManager *)selfCopy startPointForDrag];
   v10 = v9;
   v12 = v11;
-  v13 = [(CACSpokenCommandGestureManager *)v8 shouldHoldStartPointForDrag];
-  objc_sync_exit(v8);
+  shouldHoldStartPointForDrag = [(CACSpokenCommandGestureManager *)selfCopy shouldHoldStartPointForDrag];
+  objc_sync_exit(selfCopy);
 
   v14 = MEMORY[0x277CE7DD0];
-  [(CACSpokenCommandGestureManager *)v8 _fingerControllerPointForPortraitUpPoint:v10, v12];
+  [(CACSpokenCommandGestureManager *)selfCopy _fingerControllerPointForPortraitUpPoint:v10, v12];
   v15 = NSStringFromCGPoint(v21);
   v20[0] = v15;
-  [(CACSpokenCommandGestureManager *)v8 _fingerControllerPointForPortraitUpPoint:x, y];
+  [(CACSpokenCommandGestureManager *)selfCopy _fingerControllerPointForPortraitUpPoint:x, y];
   v16 = NSStringFromCGPoint(v22);
   v20[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v18 = 0.0;
-  if (v13)
+  if (shouldHoldStartPointForDrag)
   {
     v18 = 0.5;
   }
 
   v19 = [v14 lineGestureBetweenPoints:v17 duration:1 numberOfFingers:v7 / 140.0 initialHoldDuration:v18];
-  [(CACSpokenCommandGestureManager *)v8 _performGesture:v19];
+  [(CACSpokenCommandGestureManager *)selfCopy _performGesture:v19];
 }
 
 - (void)_clearStateFlags

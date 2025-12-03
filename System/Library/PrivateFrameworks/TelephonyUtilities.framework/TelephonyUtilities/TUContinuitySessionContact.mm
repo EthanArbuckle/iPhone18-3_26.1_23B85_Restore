@@ -1,27 +1,27 @@
 @interface TUContinuitySessionContact
 - (NSString)displayName;
-- (TUContinuitySessionContact)initWithCoder:(id)a3;
-- (TUContinuitySessionContact)initWithContact:(id)a3 contactIdentifier:(id)a4 anonyms:(id)a5;
+- (TUContinuitySessionContact)initWithCoder:(id)coder;
+- (TUContinuitySessionContact)initWithContact:(id)contact contactIdentifier:(id)identifier anonyms:(id)anonyms;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUContinuitySessionContact
 
-- (TUContinuitySessionContact)initWithContact:(id)a3 contactIdentifier:(id)a4 anonyms:(id)a5
+- (TUContinuitySessionContact)initWithContact:(id)contact contactIdentifier:(id)identifier anonyms:(id)anonyms
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  identifierCopy = identifier;
+  anonymsCopy = anonyms;
   v15.receiver = self;
   v15.super_class = TUContinuitySessionContact;
   v12 = [(TUContinuitySessionContact *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contact, a3);
-    objc_storeStrong(&v13->_contactIdentifier, a4);
-    objc_storeStrong(&v13->_anonyms, a5);
+    objc_storeStrong(&v12->_contact, contact);
+    objc_storeStrong(&v13->_contactIdentifier, identifier);
+    objc_storeStrong(&v13->_anonyms, anonyms);
   }
 
   return v13;
@@ -45,22 +45,22 @@
 
 - (NSString)displayName
 {
-  v3 = [(TUContinuitySessionContact *)self contact];
-  v4 = [v3 displayName];
+  contact = [(TUContinuitySessionContact *)self contact];
+  displayName = [contact displayName];
 
-  if (v4 && [v4 length])
+  if (displayName && [displayName length])
   {
-    v5 = v4;
+    v5 = displayName;
   }
 
   else
   {
-    v6 = [(TUContinuitySessionContact *)self contact];
-    v7 = [v6 organizationName];
+    contact2 = [(TUContinuitySessionContact *)self contact];
+    organizationName = [contact2 organizationName];
 
-    if (v7 && [v7 length])
+    if (organizationName && [organizationName length])
     {
-      v5 = v7;
+      v5 = organizationName;
     }
 
     else
@@ -72,39 +72,39 @@
   return v5;
 }
 
-- (TUContinuitySessionContact)initWithCoder:(id)a3
+- (TUContinuitySessionContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_contact);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_contactIdentifier);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
   v14 = NSStringFromSelector(sel_anonyms);
-  v15 = [v4 decodeObjectOfClasses:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClasses:v13 forKey:v14];
 
   v16 = [(TUContinuitySessionContact *)self initWithContact:v7 contactIdentifier:v10 anonyms:v15];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contact = self->_contact;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_contact);
-  [v5 encodeObject:contact forKey:v6];
+  [coderCopy encodeObject:contact forKey:v6];
 
   contactIdentifier = self->_contactIdentifier;
   v8 = NSStringFromSelector(sel_contactIdentifier);
-  [v5 encodeObject:contactIdentifier forKey:v8];
+  [coderCopy encodeObject:contactIdentifier forKey:v8];
 
   anonyms = self->_anonyms;
   v10 = NSStringFromSelector(sel_anonyms);
-  [v5 encodeObject:anonyms forKey:v10];
+  [coderCopy encodeObject:anonyms forKey:v10];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface AVTColorLayerProvider
 - (id)providerForColorIntoLayer;
 - (id)providerForGradientFromColor;
-- (void)renderColorGradientForModelColor:(id)a3 skinColor:(id)a4 handler:(id)a5;
+- (void)renderColorGradientForModelColor:(id)color skinColor:(id)skinColor handler:(id)handler;
 @end
 
 @implementation AVTColorLayerProvider
@@ -30,22 +30,22 @@
   return v2;
 }
 
-- (void)renderColorGradientForModelColor:(id)a3 skinColor:(id)a4 handler:(id)a5
+- (void)renderColorGradientForModelColor:(id)color skinColor:(id)skinColor handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v17 = [v9 baseColorPreset];
-  [v9 rangeMin];
+  handlerCopy = handler;
+  skinColorCopy = skinColor;
+  colorCopy = color;
+  baseColorPreset = [colorCopy baseColorPreset];
+  [colorCopy rangeMin];
   v11 = v10;
-  [v9 rangeMax];
+  [colorCopy rangeMax];
   v13 = v12;
 
   LODWORD(v14) = v11;
   LODWORD(v15) = v13;
-  v16 = [v17 gradientLayerWithRangeMin:v8 max:v14 withSkinColor:v15];
+  v16 = [baseColorPreset gradientLayerWithRangeMin:skinColorCopy max:v14 withSkinColor:v15];
 
-  v7[2](v7, v16);
+  handlerCopy[2](handlerCopy, v16);
 }
 
 @end

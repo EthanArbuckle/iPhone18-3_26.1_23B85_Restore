@@ -1,27 +1,27 @@
 @interface CKComposeRecipientView
-- (CKComposeRecipientView)initWithFrame:(CGRect)a3;
+- (CKComposeRecipientView)initWithFrame:(CGRect)frame;
 - (CKComposeRecipientViewDelegate)layoutDelegate;
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)safeAreaInsets;
-- (void)atomTextViewDidBecomeFirstResponder:(id)a3;
+- (void)atomTextViewDidBecomeFirstResponder:(id)responder;
 - (void)layoutSubviews;
 - (void)reset;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CKComposeRecipientView
 
-- (CKComposeRecipientView)initWithFrame:(CGRect)a3
+- (CKComposeRecipientView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CKComposeRecipientView;
-  v3 = [(CNComposeRecipientTextView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNComposeRecipientTextView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CNComposeRecipientTextView *)v3 setExpandRecipientsInNamedGroups:0];
-    v5 = [(CNComposeRecipientTextView *)v4 textView];
-    [v5 setAccessibilityIdentifier:@"To:"];
+    textView = [(CNComposeRecipientTextView *)v4 textView];
+    [textView setAccessibilityIdentifier:@"To:"];
 
     v6 = +[CKUIBehavior sharedBehaviors];
     [v6 toFieldInternalMarginInsets];
@@ -43,14 +43,14 @@
   [(CNComposeRecipientTextView *)&v2 layoutSubviews];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKComposeRecipientView *)self traitCollection];
-  [v8 displayScale];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitCollection = [(CKComposeRecipientView *)self traitCollection];
+  [traitCollection displayScale];
   v10 = round(x * v9) / v9;
   v11 = round(y * v9) / v9;
   v12 = round(width * v9) / v9;
@@ -63,22 +63,22 @@
 
 - (void)reset
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
-  [(CNComposeRecipientTextView *)self setRecipients:v3];
+  array = [MEMORY[0x1E695DEC8] array];
+  [(CNComposeRecipientTextView *)self setRecipients:array];
 
-  v4 = [MEMORY[0x1E695DEC8] array];
-  [(CNComposeRecipientTextView *)self setAddresses:v4];
+  array2 = [MEMORY[0x1E695DEC8] array];
+  [(CNComposeRecipientTextView *)self setAddresses:array2];
 
   [(CNComposeRecipientTextView *)self clearText];
 }
 
-- (void)atomTextViewDidBecomeFirstResponder:(id)a3
+- (void)atomTextViewDidBecomeFirstResponder:(id)responder
 {
   v5.receiver = self;
   v5.super_class = CKComposeRecipientView;
-  [(CNComposeRecipientTextView *)&v5 atomTextViewDidBecomeFirstResponder:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"com.apple.ChatKit.CKComposeRecipientView.BecameFirstResponder" object:self];
+  [(CNComposeRecipientTextView *)&v5 atomTextViewDidBecomeFirstResponder:responder];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.ChatKit.CKComposeRecipientView.BecameFirstResponder" object:self];
 }
 
 - (UIEdgeInsets)safeAreaInsets
@@ -92,10 +92,10 @@
   v10 = v3;
   if (v6 > 0.0 || v3 > 0.0)
   {
-    v11 = [(CKComposeRecipientView *)self window];
-    v12 = [v11 windowScene];
+    window = [(CKComposeRecipientView *)self window];
+    windowScene = [window windowScene];
 
-    if (v12 && ([v12 interfaceOrientation] - 3) <= 1)
+    if (windowScene && ([windowScene interfaceOrientation] - 3) <= 1)
     {
       v13 = +[CKUIBehavior sharedBehaviors];
       [v13 landscapeKeyboardInsets];
@@ -128,16 +128,16 @@
 - (UIEdgeInsets)layoutMargins
 {
   [(CKComposeRecipientView *)self safeAreaInsets];
-  v3 = [(CKComposeRecipientView *)self layoutDelegate];
-  [v3 layoutMarginsForComposeRecipientView:self];
+  layoutDelegate = [(CKComposeRecipientView *)self layoutDelegate];
+  [layoutDelegate layoutMarginsForComposeRecipientView:self];
 
   UIEdgeInsetsAdd();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CKComposeRecipientView *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(CKComposeRecipientView *)self traitCollection];
+  [traitCollection displayScale];
   if (v13 == 0.0)
   {
     if (CKMainScreenScale_once_48 != -1)

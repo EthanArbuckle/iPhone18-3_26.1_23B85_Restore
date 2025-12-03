@@ -1,12 +1,12 @@
 @interface BankConnectAuthorizationSessionProvider
-+ (id)makeProviderAndReturnError:(id *)a3;
++ (id)makeProviderAndReturnError:(id *)error;
 - (_TtC10FinanceKit39BankConnectAuthorizationSessionProvider)init;
-- (void)authorizationSessionWithCompletion:(id)a3;
+- (void)authorizationSessionWithCompletion:(id)completion;
 @end
 
 @implementation BankConnectAuthorizationSessionProvider
 
-+ (id)makeProviderAndReturnError:(id *)a3
++ (id)makeProviderAndReturnError:(id *)error
 {
   if (qword_1EDAF9E30 != -1)
   {
@@ -19,8 +19,8 @@
   *&v5[OBJC_IVAR____TtC10FinanceKit39BankConnectAuthorizationSessionProvider_store] = v3;
   v6 = *(v3 + 16);
   swift_retain_n();
-  v7 = [v6 newBackgroundContext];
-  *&v5[OBJC_IVAR____TtC10FinanceKit39BankConnectAuthorizationSessionProvider_context] = v7;
+  newBackgroundContext = [v6 newBackgroundContext];
+  *&v5[OBJC_IVAR____TtC10FinanceKit39BankConnectAuthorizationSessionProvider_context] = newBackgroundContext;
   v10.receiver = v5;
   v10.super_class = v4;
   v8 = objc_msgSendSuper2(&v10, sel_init);
@@ -28,9 +28,9 @@
   return v8;
 }
 
-- (void)authorizationSessionWithCompletion:(id)a3
+- (void)authorizationSessionWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC10FinanceKit39BankConnectAuthorizationSessionProvider_context);
@@ -45,7 +45,7 @@
   v10[2] = sub_1B72A58C8;
   v10[3] = &block_descriptor_12;
   v8 = _Block_copy(v10);
-  v9 = self;
+  selfCopy = self;
 
   [v6 performBlock_];
 

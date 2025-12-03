@@ -1,70 +1,70 @@
 @interface PKAccountPendingFamilyMember
-- (BOOL)_isEqualToAccountPendingFamilyMember:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKAccountPendingFamilyMember)initWithCoder:(id)a3;
-- (PKAccountPendingFamilyMember)initWithPendingFamilyMember:(id)a3 accountIdentifier:(id)a4;
+- (BOOL)_isEqualToAccountPendingFamilyMember:(id)member;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountPendingFamilyMember)initWithCoder:(id)coder;
+- (PKAccountPendingFamilyMember)initWithPendingFamilyMember:(id)member accountIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountPendingFamilyMember
 
-- (PKAccountPendingFamilyMember)initWithPendingFamilyMember:(id)a3 accountIdentifier:(id)a4
+- (PKAccountPendingFamilyMember)initWithPendingFamilyMember:(id)member accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = PKAccountPendingFamilyMember;
   v8 = [(PKAccountPendingFamilyMember *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accountIdentifier, a4);
-    v10 = [v6 invitationDate];
+    objc_storeStrong(&v8->_accountIdentifier, identifier);
+    invitationDate = [memberCopy invitationDate];
     inviteDate = v9->_inviteDate;
-    v9->_inviteDate = v10;
+    v9->_inviteDate = invitationDate;
 
-    v12 = [v6 inviteEmail];
+    inviteEmail = [memberCopy inviteEmail];
     inviteEmail = v9->_inviteEmail;
-    v9->_inviteEmail = v12;
+    v9->_inviteEmail = inviteEmail;
 
     v9->_displayedNotification = 0;
-    v14 = [v6 altDSID];
+    altDSID = [memberCopy altDSID];
     altDSID = v9->_altDSID;
-    v9->_altDSID = v14;
+    v9->_altDSID = altDSID;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountPendingFamilyMember *)self _isEqualToAccountPendingFamilyMember:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountPendingFamilyMember *)self _isEqualToAccountPendingFamilyMember:v5];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToAccountPendingFamilyMember:(id)a3
+- (BOOL)_isEqualToAccountPendingFamilyMember:(id)member
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  memberCopy = member;
+  v5 = memberCopy;
+  if (!memberCopy)
   {
     goto LABEL_19;
   }
 
-  v6 = *(v4 + 3);
+  v6 = *(memberCopy + 3);
   v7 = self->_inviteEmail;
   v8 = v6;
   v9 = v8;
@@ -173,28 +173,28 @@ LABEL_27:
   return v5;
 }
 
-- (PKAccountPendingFamilyMember)initWithCoder:(id)a3
+- (PKAccountPendingFamilyMember)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKAccountPendingFamilyMember;
   v5 = [(PKAccountPendingFamilyMember *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteDate"];
     inviteDate = v5->_inviteDate;
     v5->_inviteDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteEmail"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteEmail"];
     inviteEmail = v5->_inviteEmail;
     v5->_inviteEmail = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v10;
 
-    v5->_displayedNotification = [v4 decodeBoolForKey:@"displayedNotification"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v5->_displayedNotification = [coderCopy decodeBoolForKey:@"displayedNotification"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v12;
   }
@@ -202,15 +202,15 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayedNotification = self->_displayedNotification;
-  v5 = a3;
-  [v5 encodeBool:displayedNotification forKey:@"displayedNotification"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_inviteEmail forKey:@"inviteEmail"];
-  [v5 encodeObject:self->_inviteDate forKey:@"inviteDate"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
+  coderCopy = coder;
+  [coderCopy encodeBool:displayedNotification forKey:@"displayedNotification"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_inviteEmail forKey:@"inviteEmail"];
+  [coderCopy encodeObject:self->_inviteDate forKey:@"inviteDate"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
 }
 
 - (id)description

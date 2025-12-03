@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationships
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationships)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationships)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -48,16 +48,16 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationships)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationships)initWithDictionary:(id)dictionary
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v60.receiver = self;
   v60.super_class = GKPlayerActivityRelationships;
   v5 = [(GKPlayerActivityRelationships *)&v60 init];
   if (v5)
   {
-    [v4 objectForKeyedSubscript:@"players"];
+    [dictionaryCopy objectForKeyedSubscript:@"players"];
     v6 = v43 = v5;
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v56 = 0u;
@@ -94,7 +94,7 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
     v41 = v9;
 
     [(GKPlayerActivityRelationships *)v43 setPlayers:v7];
-    v15 = [v4 objectForKeyedSubscript:@"games"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"games"];
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v52 = 0u;
     v53 = 0u;
@@ -126,17 +126,17 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
     }
 
     [(GKPlayerActivityRelationships *)v43 setGames:v16];
-    v23 = [v4 objectForKeyedSubscript:@"leaderboards"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"leaderboards"];
 
-    v42 = v4;
+    v42 = dictionaryCopy;
     if (v23)
     {
-      v24 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v25 = [v4 objectForKeyedSubscript:@"leaderboards"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"leaderboards"];
       v26 = [v25 countByEnumeratingWithState:&v48 objects:v62 count:16];
       if (v26)
       {
@@ -152,7 +152,7 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
             }
 
             v30 = [[GKPlayerActivityRelationshipLeaderboard alloc] initWithDictionary:*(*(&v48 + 1) + 8 * k)];
-            [v24 addObject:v30];
+            [array addObject:v30];
           }
 
           v27 = [v25 countByEnumeratingWithState:&v48 objects:v62 count:16];
@@ -162,21 +162,21 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
       }
 
       v5 = v43;
-      [(GKPlayerActivityRelationships *)v43 setLeaderboards:v24];
+      [(GKPlayerActivityRelationships *)v43 setLeaderboards:array];
 
-      v4 = v42;
+      dictionaryCopy = v42;
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"achievements"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"achievements"];
 
     if (v31)
     {
-      v32 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v33 = [v4 objectForKeyedSubscript:@"achievements"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"achievements"];
       v34 = [v33 countByEnumeratingWithState:&v44 objects:v61 count:16];
       if (v34)
       {
@@ -192,7 +192,7 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
             }
 
             v38 = [[GKPlayerActivityRelationshipAchievement alloc] initWithDictionary:*(*(&v44 + 1) + 8 * m)];
-            [v32 addObject:v38];
+            [array2 addObject:v38];
           }
 
           v35 = [v33 countByEnumeratingWithState:&v44 objects:v61 count:16];
@@ -202,9 +202,9 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
       }
 
       v5 = v43;
-      [(GKPlayerActivityRelationships *)v43 setAchievements:v32];
+      [(GKPlayerActivityRelationships *)v43 setAchievements:array2];
 
-      v4 = v42;
+      dictionaryCopy = v42;
     }
   }
 
@@ -215,11 +215,11 @@ void __56__GKPlayerActivityRelationships_secureCodedPropertyKeys__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKPlayerActivityRelationships *)self players];
-  v5 = [(GKPlayerActivityRelationships *)self games];
-  v6 = [(GKPlayerActivityRelationships *)self leaderboards];
-  v7 = [(GKPlayerActivityRelationships *)self achievements];
-  v8 = [v3 stringWithFormat:@"players: %@ \ngames: %@ \nleaderboard: %@ \nachievements: %@", v4, v5, v6, v7];
+  players = [(GKPlayerActivityRelationships *)self players];
+  games = [(GKPlayerActivityRelationships *)self games];
+  leaderboards = [(GKPlayerActivityRelationships *)self leaderboards];
+  achievements = [(GKPlayerActivityRelationships *)self achievements];
+  v8 = [v3 stringWithFormat:@"players: %@ \ngames: %@ \nleaderboard: %@ \nachievements: %@", players, games, leaderboards, achievements];
 
   return v8;
 }

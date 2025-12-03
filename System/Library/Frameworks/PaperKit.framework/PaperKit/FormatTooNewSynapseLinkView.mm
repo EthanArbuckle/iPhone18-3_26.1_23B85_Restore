@@ -1,11 +1,11 @@
 @interface FormatTooNewSynapseLinkView
-- (_TtC8PaperKit27FormatTooNewSynapseLinkView)initWithCoder:(id)a3;
+- (_TtC8PaperKit27FormatTooNewSynapseLinkView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation FormatTooNewSynapseLinkView
 
-- (_TtC8PaperKit27FormatTooNewSynapseLinkView)initWithCoder:(id)a3
+- (_TtC8PaperKit27FormatTooNewSynapseLinkView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKit27FormatTooNewSynapseLinkView____lazy_storage___imageView) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();

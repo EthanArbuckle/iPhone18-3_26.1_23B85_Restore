@@ -1,29 +1,29 @@
 @interface PXCMMActionPerformer
-- (id)performActionWithSession:(id)a3 completionHandler:(id)a4;
+- (id)performActionWithSession:(id)session completionHandler:(id)handler;
 @end
 
 @implementation PXCMMActionPerformer
 
-- (id)performActionWithSession:(id)a3 completionHandler:(id)a4
+- (id)performActionWithSession:(id)session completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  sessionCopy = session;
+  handlerCopy = handler;
+  if (!sessionCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCMMActionManager.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"session"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMActionManager.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"session"}];
   }
 
   session = self->_session;
-  self->_session = v7;
+  self->_session = sessionCopy;
 
-  v10 = [(PXCMMActionPerformer *)self createActionProgress];
-  [(PXCMMActionPerformer *)self setProgress:v10];
+  createActionProgress = [(PXCMMActionPerformer *)self createActionProgress];
+  [(PXCMMActionPerformer *)self setProgress:createActionProgress];
 
-  [(PXActionPerformer *)self performActionWithCompletionHandler:v8];
-  v11 = [(PXCMMActionPerformer *)self progress];
+  [(PXActionPerformer *)self performActionWithCompletionHandler:handlerCopy];
+  progress = [(PXCMMActionPerformer *)self progress];
 
-  return v11;
+  return progress;
 }
 
 @end

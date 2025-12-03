@@ -2,20 +2,20 @@
 + (id)defaultTextGeneration;
 + (id)workQueue;
 - (TGTextGenerationSession)init;
-- (TGTextGenerationSession)initWithConfiguration:(id)a3;
-- (TGTextGenerationSession)initWithConfiguration:(id)a3 textGeneration:(id)a4;
+- (TGTextGenerationSession)initWithConfiguration:(id)configuration;
+- (TGTextGenerationSession)initWithConfiguration:(id)configuration textGeneration:(id)generation;
 - (TGTextGenerationSessionDelegate)delegate;
-- (id)enqueueOperationSync:(id)a3;
-- (id)executionUUIDForOperation:(id)a3;
-- (void)cancelOperation:(id)a3;
+- (id)enqueueOperationSync:(id)sync;
+- (id)executionUUIDForOperation:(id)operation;
+- (void)cancelOperation:(id)operation;
 - (void)createTgdSessionSync;
-- (void)didStartOperationWithExecutionUUID:(id)a3;
-- (void)enqueueOperation:(id)a3;
-- (void)executeOperation:(id)a3 callback:(id)a4;
-- (void)operation:(id)a3 didUpdateOutputStream:(id)a4;
-- (void)operationWithExecutionUUID:(id)a3 didFailWithError:(id)a4;
-- (void)operationWithExecutionUUID:(id)a3 didFinishWithOutputs:(id)a4;
-- (void)operationWithExecutionUUID:(id)a3 didStreamOutput:(id)a4;
+- (void)didStartOperationWithExecutionUUID:(id)d;
+- (void)enqueueOperation:(id)operation;
+- (void)executeOperation:(id)operation callback:(id)callback;
+- (void)operation:(id)operation didUpdateOutputStream:(id)stream;
+- (void)operationWithExecutionUUID:(id)d didFailWithError:(id)error;
+- (void)operationWithExecutionUUID:(id)d didFinishWithOutputs:(id)outputs;
+- (void)operationWithExecutionUUID:(id)d didStreamOutput:(id)output;
 @end
 
 @implementation TGTextGenerationSession
@@ -87,25 +87,25 @@ uint64_t __48__TGTextGenerationSession_defaultTextGeneration__block_invoke()
 - (TGTextGenerationSession)init
 {
   v3 = +[TGTextGenerationConfiguration defaultConfiguration];
-  v4 = [objc_opt_class() defaultTextGeneration];
-  v5 = [(TGTextGenerationSession *)self initWithConfiguration:v3 textGeneration:v4];
+  defaultTextGeneration = [objc_opt_class() defaultTextGeneration];
+  v5 = [(TGTextGenerationSession *)self initWithConfiguration:v3 textGeneration:defaultTextGeneration];
 
   return v5;
 }
 
-- (TGTextGenerationSession)initWithConfiguration:(id)a3
+- (TGTextGenerationSession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultTextGeneration];
-  v6 = [(TGTextGenerationSession *)self initWithConfiguration:v4 textGeneration:v5];
+  configurationCopy = configuration;
+  defaultTextGeneration = [objc_opt_class() defaultTextGeneration];
+  v6 = [(TGTextGenerationSession *)self initWithConfiguration:configurationCopy textGeneration:defaultTextGeneration];
 
   return v6;
 }
 
-- (TGTextGenerationSession)initWithConfiguration:(id)a3 textGeneration:(id)a4
+- (TGTextGenerationSession)initWithConfiguration:(id)configuration textGeneration:(id)generation
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  generationCopy = generation;
   v22.receiver = self;
   v22.super_class = TGTextGenerationSession;
   v8 = [(TGTextGenerationSession *)&v22 init];
@@ -115,26 +115,26 @@ uint64_t __48__TGTextGenerationSession_defaultTextGeneration__block_invoke()
     workQueue = v8->_workQueue;
     v8->_workQueue = v9;
 
-    v11 = [v6 copy];
+    v11 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v11;
 
-    v13 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v8->_uuid;
-    v8->_uuid = v13;
+    v8->_uuid = uUID;
 
-    objc_storeStrong(&v8->_textGeneration, a4);
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v8->_textGeneration, generation);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     callbackByExecutionUUID = v8->_callbackByExecutionUUID;
-    v8->_callbackByExecutionUUID = v15;
+    v8->_callbackByExecutionUUID = dictionary;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     operationByExecutionUUID = v8->_operationByExecutionUUID;
-    v8->_operationByExecutionUUID = v17;
+    v8->_operationByExecutionUUID = dictionary2;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     outputStreamByExecutionUUID = v8->_outputStreamByExecutionUUID;
-    v8->_outputStreamByExecutionUUID = v19;
+    v8->_outputStreamByExecutionUUID = dictionary3;
   }
 
   return v8;
@@ -142,37 +142,37 @@ uint64_t __48__TGTextGenerationSession_defaultTextGeneration__block_invoke()
 
 - (void)createTgdSessionSync
 {
-  v3 = [(TGTextGenerationSession *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(TGTextGenerationSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(TGTextGenerationSession *)self tgdSession];
+  tgdSession = [(TGTextGenerationSession *)self tgdSession];
 
-  if (!v4)
+  if (!tgdSession)
   {
-    v5 = [(TGTextGenerationSession *)self textGeneration];
-    v6 = [(TGTextGenerationSession *)self uuid];
-    v7 = [(TGTextGenerationSession *)self configuration];
-    v8 = [v5 createSessionWithUUID:v6 configuration:v7];
+    textGeneration = [(TGTextGenerationSession *)self textGeneration];
+    uuid = [(TGTextGenerationSession *)self uuid];
+    configuration = [(TGTextGenerationSession *)self configuration];
+    v8 = [textGeneration createSessionWithUUID:uuid configuration:configuration];
     [(TGTextGenerationSession *)self setTgdSession:v8];
 
-    v9 = [(TGTextGenerationSession *)self tgdSession];
-    [v9 setDelegate:self];
+    tgdSession2 = [(TGTextGenerationSession *)self tgdSession];
+    [tgdSession2 setDelegate:self];
   }
 }
 
-- (id)executionUUIDForOperation:(id)a3
+- (id)executionUUIDForOperation:(id)operation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TGTextGenerationSession *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  operationCopy = operation;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(TGTextGenerationSession *)self operationByExecutionUUID];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  operationByExecutionUUID = [(TGTextGenerationSession *)self operationByExecutionUUID];
+  v7 = [operationByExecutionUUID countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -183,21 +183,21 @@ uint64_t __48__TGTextGenerationSession_defaultTextGeneration__block_invoke()
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(operationByExecutionUUID);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(TGTextGenerationSession *)self operationByExecutionUUID];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        operationByExecutionUUID2 = [(TGTextGenerationSession *)self operationByExecutionUUID];
+        v13 = [operationByExecutionUUID2 objectForKeyedSubscript:v11];
 
-        if (v13 == v4)
+        if (v13 == operationCopy)
         {
           v14 = v11;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [operationByExecutionUUID countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -215,37 +215,37 @@ LABEL_11:
   return v14;
 }
 
-- (id)enqueueOperationSync:(id)a3
+- (id)enqueueOperationSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(TGTextGenerationSession *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  syncCopy = sync;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(TGTextGenerationSession *)self createTgdSessionSync];
-  v6 = [(TGTextGenerationSession *)self tgdSession];
-  v7 = [v6 enqueueOperation:v4];
+  tgdSession = [(TGTextGenerationSession *)self tgdSession];
+  v7 = [tgdSession enqueueOperation:syncCopy];
 
   return v7;
 }
 
-- (void)executeOperation:(id)a3 callback:(id)a4
+- (void)executeOperation:(id)operation callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 copy];
-  v9 = [(TGTextGenerationSession *)self workQueue];
+  operationCopy = operation;
+  callbackCopy = callback;
+  v8 = [operationCopy copy];
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__TGTextGenerationSession_executeOperation_callback___block_invoke;
   v13[3] = &unk_279D9BF20;
   v13[4] = self;
-  v14 = v6;
+  v14 = operationCopy;
   v15 = v8;
-  v16 = v7;
+  v16 = callbackCopy;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v13);
+  v11 = callbackCopy;
+  v12 = operationCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __53__TGTextGenerationSession_executeOperation_callback___block_invoke(uint64_t a1)
@@ -276,21 +276,21 @@ void __53__TGTextGenerationSession_executeOperation_callback___block_invoke(uint
   }
 }
 
-- (void)enqueueOperation:(id)a3
+- (void)enqueueOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = [(TGTextGenerationSession *)self workQueue];
+  operationCopy = operation;
+  v5 = [operationCopy copy];
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__TGTextGenerationSession_enqueueOperation___block_invoke;
   block[3] = &unk_279D9BF48;
   block[4] = self;
-  v10 = v4;
+  v10 = operationCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = operationCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __44__TGTextGenerationSession_enqueueOperation___block_invoke(uint64_t a1)
@@ -314,18 +314,18 @@ void __44__TGTextGenerationSession_enqueueOperation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelOperation:(id)a3
+- (void)cancelOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(TGTextGenerationSession *)self workQueue];
+  operationCopy = operation;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__TGTextGenerationSession_cancelOperation___block_invoke;
   v7[3] = &unk_279D9BF70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = operationCopy;
+  v6 = operationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __43__TGTextGenerationSession_cancelOperation___block_invoke(uint64_t a1)
@@ -348,21 +348,21 @@ void __43__TGTextGenerationSession_cancelOperation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)operation:(id)a3 didUpdateOutputStream:(id)a4
+- (void)operation:(id)operation didUpdateOutputStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TGTextGenerationSession *)self workQueue];
+  operationCopy = operation;
+  streamCopy = stream;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__TGTextGenerationSession_operation_didUpdateOutputStream___block_invoke;
   block[3] = &unk_279D9BF48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = operationCopy;
+  v13 = streamCopy;
+  v9 = streamCopy;
+  v10 = operationCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __59__TGTextGenerationSession_operation_didUpdateOutputStream___block_invoke(uint64_t a1)
@@ -377,18 +377,18 @@ void __59__TGTextGenerationSession_operation_didUpdateOutputStream___block_invok
   }
 }
 
-- (void)didStartOperationWithExecutionUUID:(id)a3
+- (void)didStartOperationWithExecutionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TGTextGenerationSession *)self workQueue];
+  dCopy = d;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__TGTextGenerationSession_didStartOperationWithExecutionUUID___block_invoke;
   v7[3] = &unk_279D9BF70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __62__TGTextGenerationSession_didStartOperationWithExecutionUUID___block_invoke(uint64_t a1)
@@ -413,21 +413,21 @@ void __62__TGTextGenerationSession_didStartOperationWithExecutionUUID___block_in
   }
 }
 
-- (void)operationWithExecutionUUID:(id)a3 didFailWithError:(id)a4
+- (void)operationWithExecutionUUID:(id)d didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TGTextGenerationSession *)self workQueue];
+  dCopy = d;
+  errorCopy = error;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__TGTextGenerationSession_operationWithExecutionUUID_didFailWithError___block_invoke;
   block[3] = &unk_279D9BF48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = dCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __71__TGTextGenerationSession_operationWithExecutionUUID_didFailWithError___block_invoke(uint64_t a1)
@@ -470,21 +470,21 @@ void __71__TGTextGenerationSession_operationWithExecutionUUID_didFailWithError__
   }
 }
 
-- (void)operationWithExecutionUUID:(id)a3 didFinishWithOutputs:(id)a4
+- (void)operationWithExecutionUUID:(id)d didFinishWithOutputs:(id)outputs
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TGTextGenerationSession *)self workQueue];
+  dCopy = d;
+  outputsCopy = outputs;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__TGTextGenerationSession_operationWithExecutionUUID_didFinishWithOutputs___block_invoke;
   block[3] = &unk_279D9BF48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = outputsCopy;
+  v9 = outputsCopy;
+  v10 = dCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __75__TGTextGenerationSession_operationWithExecutionUUID_didFinishWithOutputs___block_invoke(uint64_t a1)
@@ -527,21 +527,21 @@ void __75__TGTextGenerationSession_operationWithExecutionUUID_didFinishWithOutpu
   }
 }
 
-- (void)operationWithExecutionUUID:(id)a3 didStreamOutput:(id)a4
+- (void)operationWithExecutionUUID:(id)d didStreamOutput:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TGTextGenerationSession *)self workQueue];
+  dCopy = d;
+  outputCopy = output;
+  workQueue = [(TGTextGenerationSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__TGTextGenerationSession_operationWithExecutionUUID_didStreamOutput___block_invoke;
   block[3] = &unk_279D9BF48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = outputCopy;
+  v9 = outputCopy;
+  v10 = dCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __70__TGTextGenerationSession_operationWithExecutionUUID_didStreamOutput___block_invoke(uint64_t a1)

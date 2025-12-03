@@ -1,8 +1,8 @@
 @interface BCCloudSyncVersions
 - (NSPersistentHistoryToken)historyToken;
 - (id)mutableCopy;
-- (void)configureFromSyncVersions:(id)a3;
-- (void)setHistoryToken:(id)a3;
+- (void)configureFromSyncVersions:(id)versions;
+- (void)setHistoryToken:(id)token;
 @end
 
 @implementation BCCloudSyncVersions
@@ -14,24 +14,24 @@
   return [(BCMutableCloudSyncVersions *)v3 initWithCloudSyncVersions:self];
 }
 
-- (void)configureFromSyncVersions:(id)a3
+- (void)configureFromSyncVersions:(id)versions
 {
-  v4 = a3;
-  -[BCCloudSyncVersions setCloudVersion:](self, "setCloudVersion:", [v4 cloudVersion]);
-  -[BCCloudSyncVersions setLocalVersion:](self, "setLocalVersion:", [v4 localVersion]);
-  -[BCCloudSyncVersions setSyncVersion:](self, "setSyncVersion:", [v4 syncVersion]);
-  v5 = [v4 historyToken];
-  [(BCCloudSyncVersions *)self setHistoryToken:v5];
+  versionsCopy = versions;
+  -[BCCloudSyncVersions setCloudVersion:](self, "setCloudVersion:", [versionsCopy cloudVersion]);
+  -[BCCloudSyncVersions setLocalVersion:](self, "setLocalVersion:", [versionsCopy localVersion]);
+  -[BCCloudSyncVersions setSyncVersion:](self, "setSyncVersion:", [versionsCopy syncVersion]);
+  historyToken = [versionsCopy historyToken];
+  [(BCCloudSyncVersions *)self setHistoryToken:historyToken];
 
-  v6 = [v4 historyTokenOffset];
+  historyTokenOffset = [versionsCopy historyTokenOffset];
 
-  [(BCCloudSyncVersions *)self setHistoryTokenOffset:v6];
+  [(BCCloudSyncVersions *)self setHistoryTokenOffset:historyTokenOffset];
 }
 
-- (void)setHistoryToken:(id)a3
+- (void)setHistoryToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     v6 = 0;
 LABEL_6:
@@ -40,7 +40,7 @@ LABEL_6:
   }
 
   v7 = 0;
-  v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v7];
+  v5 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v7];
   v6 = v7;
   if (!v5)
   {
@@ -58,11 +58,11 @@ LABEL_7:
 
 - (NSPersistentHistoryToken)historyToken
 {
-  v2 = [(BCCloudSyncVersions *)self rawHistoryToken];
-  if (v2)
+  rawHistoryToken = [(BCCloudSyncVersions *)self rawHistoryToken];
+  if (rawHistoryToken)
   {
     v8 = 0;
-    v3 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v8];
+    v3 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:rawHistoryToken error:&v8];
     v4 = v8;
     objc_opt_class();
     if (objc_opt_isKindOfClass())

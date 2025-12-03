@@ -1,16 +1,16 @@
 @interface SUUIContextActionsPresentationController
-- (SUUIContextActionsPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (SUUIContextActionsPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation SUUIContextActionsPresentationController
 
-- (SUUIContextActionsPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (SUUIContextActionsPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v9.receiver = self;
   v9.super_class = SUUIContextActionsPresentationController;
-  v4 = [(SUUIContextActionsPresentationController *)&v9 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(SUUIContextActionsPresentationController *)&v9 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
@@ -30,35 +30,35 @@
   v26.receiver = self;
   v26.super_class = SUUIContextActionsPresentationController;
   [(SUUIContextActionsPresentationController *)&v26 presentationTransitionWillBegin];
-  v3 = [(SUUIContextActionsPresentationController *)self presentedViewController];
-  v4 = [(SUUIContextActionsPresentationController *)self containerView];
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 statusBar];
+  presentedViewController = [(SUUIContextActionsPresentationController *)self presentedViewController];
+  containerView = [(SUUIContextActionsPresentationController *)self containerView];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBar = [mEMORY[0x277D75128] statusBar];
 
-  LODWORD(v5) = [v3 isOrbPresentation];
-  v7 = [(SUUIContextActionsPresentationController *)self backgroundView];
-  [v4 addSubview:v7];
+  LODWORD(mEMORY[0x277D75128]) = [presentedViewController isOrbPresentation];
+  backgroundView = [(SUUIContextActionsPresentationController *)self backgroundView];
+  [containerView addSubview:backgroundView];
 
-  [v4 bounds];
+  [containerView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SUUIContextActionsPresentationController *)self backgroundView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  backgroundView2 = [(SUUIContextActionsPresentationController *)self backgroundView];
+  [backgroundView2 setFrame:{v9, v11, v13, v15}];
 
-  v17 = [(SUUIContextActionsPresentationController *)self backgroundView];
-  [v17 setAlpha:0.0];
+  backgroundView3 = [(SUUIContextActionsPresentationController *)self backgroundView];
+  [backgroundView3 setAlpha:0.0];
 
-  if (v5)
+  if (mEMORY[0x277D75128])
   {
     [MEMORY[0x277D75DA0] _synchronizeDrawing];
-    v18 = [(SUUIContextActionsPresentationController *)self backgroundView];
-    [v4 insertSubview:v6 belowSubview:v18];
+    backgroundView4 = [(SUUIContextActionsPresentationController *)self backgroundView];
+    [containerView insertSubview:statusBar belowSubview:backgroundView4];
   }
 
-  v19 = [(SUUIContextActionsPresentationController *)self presentedViewController];
-  v20 = [v19 transitionCoordinator];
+  presentedViewController2 = [(SUUIContextActionsPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController2 transitionCoordinator];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __75__SUUIContextActionsPresentationController_presentationTransitionWillBegin__block_invoke;
@@ -68,10 +68,10 @@
   v22[1] = 3221225472;
   v22[2] = __75__SUUIContextActionsPresentationController_presentationTransitionWillBegin__block_invoke_2;
   v22[3] = &unk_2798FBAB0;
-  v23 = v6;
-  v24 = self;
-  v21 = v6;
-  [v20 animateAlongsideTransition:v25 completion:v22];
+  v23 = statusBar;
+  selfCopy = self;
+  v21 = statusBar;
+  [transitionCoordinator animateAlongsideTransition:v25 completion:v22];
 }
 
 void __75__SUUIContextActionsPresentationController_presentationTransitionWillBegin__block_invoke(uint64_t a1)
@@ -107,13 +107,13 @@ void __75__SUUIContextActionsPresentationController_presentationTransitionWillBe
   v14.receiver = self;
   v14.super_class = SUUIContextActionsPresentationController;
   [(SUUIContextActionsPresentationController *)&v14 dismissalTransitionWillBegin];
-  v3 = [(SUUIContextActionsPresentationController *)self presentedViewController];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 statusBar];
+  presentedViewController = [(SUUIContextActionsPresentationController *)self presentedViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBar = [mEMORY[0x277D75128] statusBar];
 
-  v6 = [v3 isOrbPresentation];
-  v7 = [(SUUIContextActionsPresentationController *)self presentedViewController];
-  v8 = [v7 transitionCoordinator];
+  isOrbPresentation = [presentedViewController isOrbPresentation];
+  presentedViewController2 = [(SUUIContextActionsPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController2 transitionCoordinator];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__SUUIContextActionsPresentationController_dismissalTransitionWillBegin__block_invoke;
@@ -123,10 +123,10 @@ void __75__SUUIContextActionsPresentationController_presentationTransitionWillBe
   v10[1] = 3221225472;
   v10[2] = __72__SUUIContextActionsPresentationController_dismissalTransitionWillBegin__block_invoke_2;
   v10[3] = &unk_2798FD418;
-  v12 = v6;
-  v11 = v5;
-  v9 = v5;
-  [v8 animateAlongsideTransition:v13 completion:v10];
+  v12 = isOrbPresentation;
+  v11 = statusBar;
+  v9 = statusBar;
+  [transitionCoordinator animateAlongsideTransition:v13 completion:v10];
 }
 
 void __72__SUUIContextActionsPresentationController_dismissalTransitionWillBegin__block_invoke(uint64_t a1)

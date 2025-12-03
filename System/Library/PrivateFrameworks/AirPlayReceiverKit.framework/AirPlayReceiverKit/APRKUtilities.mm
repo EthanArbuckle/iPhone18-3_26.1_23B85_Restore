@@ -1,26 +1,26 @@
 @interface APRKUtilities
-+ (id)baseDictionaryForResponseToRequestWithDictionary:(id)a3;
-+ (id)baseDictionaryForUpstreamMessageWithType:(id)a3;
-+ (id)dictionaryForError:(id)a3;
++ (id)baseDictionaryForResponseToRequestWithDictionary:(id)dictionary;
++ (id)baseDictionaryForUpstreamMessageWithType:(id)type;
++ (id)dictionaryForError:(id)error;
 + (id)secureStopURL;
 @end
 
 @implementation APRKUtilities
 
-+ (id)baseDictionaryForResponseToRequestWithDictionary:(id)a3
++ (id)baseDictionaryForResponseToRequestWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
-    v5 = [v3 objectForKey:@"type"];
+    v5 = [dictionaryCopy objectForKey:@"type"];
     if (v5)
     {
       [v4 setObject:v5 forKey:@"type"];
     }
 
     [v4 setObject:@"response" forKey:@"kind"];
-    v6 = [v3 objectForKey:@"messageID"];
+    v6 = [dictionaryCopy objectForKey:@"messageID"];
 
     if (v6)
     {
@@ -36,14 +36,14 @@
   return v4;
 }
 
-+ (id)baseDictionaryForUpstreamMessageWithType:(id)a3
++ (id)baseDictionaryForUpstreamMessageWithType:(id)type
 {
-  if (a3)
+  if (type)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = a3;
+    typeCopy = type;
     v5 = [[v3 alloc] initWithCapacity:2];
-    [v5 setObject:v4 forKey:@"type"];
+    [v5 setObject:typeCopy forKey:@"type"];
   }
 
   else
@@ -54,21 +54,21 @@
   return v5;
 }
 
-+ (id)dictionaryForError:(id)a3
++ (id)dictionaryForError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v5 = [v3 domain];
+    domain = [errorCopy domain];
 
-    if (v5)
+    if (domain)
     {
-      v6 = [v3 domain];
-      [v4 setObject:v6 forKey:@"domain"];
+      domain2 = [errorCopy domain];
+      [v4 setObject:domain2 forKey:@"domain"];
     }
 
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "code")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v4 setObject:v7 forKey:@"code"];
   }
 

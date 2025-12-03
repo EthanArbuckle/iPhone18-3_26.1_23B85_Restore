@@ -1,59 +1,59 @@
 @interface WGWidgetInfo
 + (double)maximumContentHeightForCompactDisplayMode;
 + (id)_productVersion;
-+ (id)widgetInfoWithExtension:(id)a3;
++ (id)widgetInfoWithExtension:(id)extension;
 + (void)_updateRowHeightForContentSizeCategory;
-- (BOOL)isLinkedOnOrAfterSystemVersion:(id)a3;
+- (BOOL)isLinkedOnOrAfterSystemVersion:(id)version;
 - (BOOL)wantsVisibleFrame;
 - (CGSize)preferredContentSize;
 - (NSString)_sdkVersion;
 - (NSString)displayName;
-- (WGWidgetInfo)initWithExtension:(id)a3;
-- (WGWidgetInfo)widgetInfoWithExtension:(id)a3;
+- (WGWidgetInfo)initWithExtension:(id)extension;
+- (WGWidgetInfo)widgetInfoWithExtension:(id)extension;
 - (double)initialHeight;
-- (id)_queue_iconFromWidgetBundleForWidgetWithIdentifier:(id)a3 extension:(id)a4;
-- (id)_queue_iconWithOutlineForWidgetWithIdentifier:(id)a3 extension:(id)a4;
-- (id)_queue_iconWithSize:(CGSize)a3 scale:(double)a4 forWidgetWithIdentifier:(id)a5 extension:(id)a6;
-- (void)_requestIcon:(BOOL)a3 withHandler:(id)a4;
+- (id)_queue_iconFromWidgetBundleForWidgetWithIdentifier:(id)identifier extension:(id)extension;
+- (id)_queue_iconWithOutlineForWidgetWithIdentifier:(id)identifier extension:(id)extension;
+- (id)_queue_iconWithSize:(CGSize)size scale:(double)scale forWidgetWithIdentifier:(id)identifier extension:(id)extension;
+- (void)_requestIcon:(BOOL)icon withHandler:(id)handler;
 - (void)_resetIcons;
 - (void)_resetIconsImpl;
-- (void)_setWantsVisibleFrame:(BOOL)a3;
-- (void)registerWidgetHost:(id)a3;
-- (void)requestIconWithHandler:(id)a3;
-- (void)requestSettingsIconWithHandler:(id)a3;
-- (void)updatePreferredContentSize:(CGSize)a3 forWidgetHost:(id)a4;
+- (void)_setWantsVisibleFrame:(BOOL)frame;
+- (void)registerWidgetHost:(id)host;
+- (void)requestIconWithHandler:(id)handler;
+- (void)requestSettingsIconWithHandler:(id)handler;
+- (void)updatePreferredContentSize:(CGSize)size forWidgetHost:(id)host;
 @end
 
 @implementation WGWidgetInfo
 
-+ (id)widgetInfoWithExtension:(id)a3
++ (id)widgetInfoWithExtension:(id)extension
 {
-  v4 = a3;
-  if ([WGCalendarWidgetInfo isCalendarExtension:v4])
+  extensionCopy = extension;
+  if ([WGCalendarWidgetInfo isCalendarExtension:extensionCopy])
   {
-    v5 = WGCalendarWidgetInfo;
+    selfCopy = WGCalendarWidgetInfo;
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  v6 = [[v5 alloc] initWithExtension:v4];
+  v6 = [[selfCopy alloc] initWithExtension:extensionCopy];
 
   return v6;
 }
 
 + (void)_updateRowHeightForContentSizeCategory
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"WGWidgetRowHeightDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGWidgetRowHeightDidChangeNotification" object:0];
 }
 
 + (double)maximumContentHeightForCompactDisplayMode
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"WGAzulWidgetsType"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"WGAzulWidgetsType"];
 
   if ((v3 - 1) < 2)
   {
@@ -96,45 +96,45 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (WGWidgetInfo)initWithExtension:(id)a3
+- (WGWidgetInfo)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v9.receiver = self;
   v9.super_class = WGWidgetInfo;
   v6 = [(WGWidgetInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extension, a3);
+    objc_storeStrong(&v6->_extension, extension);
     v7->_largestAllowedDisplayMode = 1;
   }
 
   return v7;
 }
 
-- (WGWidgetInfo)widgetInfoWithExtension:(id)a3
+- (WGWidgetInfo)widgetInfoWithExtension:(id)extension
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v7 = [(WGWidgetInfo *)self extension];
-  v8 = [v7 identifier];
-  v9 = [v6 isEqual:v8];
+  extensionCopy = extension;
+  identifier = [extensionCopy identifier];
+  extension = [(WGWidgetInfo *)self extension];
+  identifier2 = [extension identifier];
+  v9 = [identifier isEqual:identifier2];
 
   if (v9)
   {
-    objc_storeStrong(&self->_extension, a3);
+    objc_storeStrong(&self->_extension, extension);
     displayName = self->_displayName;
     self->_displayName = 0;
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSString)displayName
@@ -154,9 +154,9 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
         {
           v8 = v7;
-          v9 = [(NSExtension *)v5 identifier];
+          identifier = [(NSExtension *)v5 identifier];
           v18 = 138543618;
-          v19 = v9;
+          v19 = identifier;
           v20 = 2114;
           v21 = @"CFBundleDisplayName";
           _os_log_impl(&dword_27425E000, v8, OS_LOG_TYPE_DEFAULT, "No display name found for identifier (%{public}@): specify a display name with the '%{public}@' key in the widget's Info.plist", &v18, 0x16u);
@@ -172,20 +172,20 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
     if (![v6 length])
     {
       v10 = MEMORY[0x277CC1E60];
-      v11 = [(NSExtension *)v5 identifier];
-      v12 = WGContainingBundleIdentifierForWidgetWithBundleIdentifier(v11);
+      identifier2 = [(NSExtension *)v5 identifier];
+      v12 = WGContainingBundleIdentifierForWidgetWithBundleIdentifier(identifier2);
       v13 = [v10 applicationProxyForIdentifier:v12];
 
-      v14 = [v13 localizedName];
+      localizedName = [v13 localizedName];
 
-      v6 = v14;
+      v6 = localizedName;
     }
 
     if (![v6 length])
     {
-      v15 = [(NSExtension *)v5 identifier];
+      identifier3 = [(NSExtension *)v5 identifier];
 
-      v6 = v15;
+      v6 = identifier3;
     }
 
     v16 = self->_displayName;
@@ -197,14 +197,14 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
   return displayName;
 }
 
-- (id)_queue_iconFromWidgetBundleForWidgetWithIdentifier:(id)a3 extension:(id)a4
+- (id)_queue_iconFromWidgetBundleForWidgetWithIdentifier:(id)identifier extension:(id)extension
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  extensionCopy = extension;
   BSDispatchQueueAssertNotMain();
-  if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] != 1 || ((objc_msgSend(v6, "objectForInfoDictionaryKey:", @"CFBundleIconFilesRightToLeft"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_class(), v9 = v7, !v8) ? (v10 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v10 = 0) : (v10 = v9), v11 = v10, v9, v9, objc_msgSend(v11, "firstObject"), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] != 1 || ((objc_msgSend(extensionCopy, "objectForInfoDictionaryKey:", @"CFBundleIconFilesRightToLeft"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_class(), v9 = v7, !v8) ? (v10 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v10 = 0) : (v10 = v9), v11 = v10, v9, v9, objc_msgSend(v11, "firstObject"), firstObject = objc_claimAutoreleasedReturnValue(), v11, !firstObject))
   {
-    v13 = [v6 objectForInfoDictionaryKey:@"CFBundleIcons"];
+    v13 = [extensionCopy objectForInfoDictionaryKey:@"CFBundleIcons"];
     v14 = objc_opt_class();
     v15 = v13;
     if (v14)
@@ -273,11 +273,11 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
       v26 = 0;
     }
 
-    v12 = v26;
+    firstObject = v26;
 
-    if (!v12)
+    if (!firstObject)
     {
-      v27 = [v6 objectForInfoDictionaryKey:@"CFBundleIconFiles"];
+      v27 = [extensionCopy objectForInfoDictionaryKey:@"CFBundleIconFiles"];
       v28 = objc_opt_class();
       v29 = v27;
       if (v28)
@@ -300,18 +300,18 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
 
       v31 = v30;
 
-      v12 = [v31 firstObject];
+      firstObject = [v31 firstObject];
     }
   }
 
-  if ([v12 length])
+  if ([firstObject length])
   {
     v32 = MEMORY[0x277D755B8];
     v33 = MEMORY[0x277CCA8D8];
-    v34 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v5];
-    v35 = [v34 bundleURL];
-    v36 = [v33 bundleWithURL:v35];
-    v37 = [v32 imageNamed:v12 inBundle:v36];
+    v34 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:identifierCopy];
+    bundleURL = [v34 bundleURL];
+    v36 = [v33 bundleWithURL:bundleURL];
+    v37 = [v32 imageNamed:firstObject inBundle:v36];
   }
 
   else
@@ -322,21 +322,21 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
   return v37;
 }
 
-- (id)_queue_iconWithSize:(CGSize)a3 scale:(double)a4 forWidgetWithIdentifier:(id)a5 extension:(id)a6
+- (id)_queue_iconWithSize:(CGSize)size scale:(double)scale forWidgetWithIdentifier:(id)identifier extension:(id)extension
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27[1] = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  extensionCopy = extension;
   BSDispatchQueueAssertNotMain();
-  if ([v11 hasPrefix:@"com.apple."] && (-[WGWidgetInfo _queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:](self, "_queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:", v11, v12), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([identifierCopy hasPrefix:@"com.apple."] && (-[WGWidgetInfo _queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:](self, "_queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:", identifierCopy, extensionCopy), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
     v15 = objc_alloc(MEMORY[0x277D1B160]);
-    v16 = [v14 CGImage];
+    cGImage = [v14 CGImage];
     [v14 scale];
-    v17 = [v15 initWithCGImage:v16 scale:?];
+    v17 = [v15 initWithCGImage:cGImage scale:?];
     v18 = objc_alloc(MEMORY[0x277D1B1A8]);
     v27[0] = v17;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
@@ -345,33 +345,33 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
 
   else
   {
-    v14 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v11];
+    v14 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:identifierCopy];
     v20 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithResourceProxy:v14];
   }
 
-  v21 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:width scale:{height, a4}];
+  v21 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:width scale:{height, scale}];
   v22 = [v20 imageForImageDescriptor:v21];
   v23 = MEMORY[0x277D755B8];
-  v24 = [v22 CGImage];
+  cGImage2 = [v22 CGImage];
   [v22 scale];
-  v25 = [v23 imageWithCGImage:v24 scale:0 orientation:?];
+  v25 = [v23 imageWithCGImage:cGImage2 scale:0 orientation:?];
 
   return v25;
 }
 
-- (id)_queue_iconWithOutlineForWidgetWithIdentifier:(id)a3 extension:(id)a4
+- (id)_queue_iconWithOutlineForWidgetWithIdentifier:(id)identifier extension:(id)extension
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  extensionCopy = extension;
   BSDispatchQueueAssertNotMain();
-  if ([v6 hasPrefix:@"com.apple."] && (-[WGWidgetInfo _queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:](self, "_queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:", v6, v7), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([identifierCopy hasPrefix:@"com.apple."] && (-[WGWidgetInfo _queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:](self, "_queue_iconFromWidgetBundleForWidgetWithIdentifier:extension:", identifierCopy, extensionCopy), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     v10 = objc_alloc(MEMORY[0x277D1B160]);
-    v11 = [v9 CGImage];
+    cGImage = [v9 CGImage];
     [v9 scale];
-    v12 = [v10 initWithCGImage:v11 scale:?];
+    v12 = [v10 initWithCGImage:cGImage scale:?];
     v13 = objc_alloc(MEMORY[0x277D1B1A8]);
     v22[0] = v12;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
@@ -380,7 +380,7 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
 
   else
   {
-    v9 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v6];
+    v9 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:identifierCopy];
     v15 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithResourceProxy:v9];
   }
 
@@ -388,20 +388,20 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
   [v16 setDrawBorder:1];
   v17 = [v15 imageForImageDescriptor:v16];
   v18 = MEMORY[0x277D755B8];
-  v19 = [v17 CGImage];
+  cGImage2 = [v17 CGImage];
   [v17 scale];
-  v20 = [v18 imageWithCGImage:v19 scale:0 orientation:?];
+  v20 = [v18 imageWithCGImage:cGImage2 scale:0 orientation:?];
 
   return v20;
 }
 
-- (void)_requestIcon:(BOOL)a3 withHandler:(id)a4
+- (void)_requestIcon:(BOOL)icon withHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [(WGWidgetInfo *)self widgetIdentifier];
-    v8 = [(WGWidgetInfo *)self extension];
+    widgetIdentifier = [(WGWidgetInfo *)self widgetIdentifier];
+    extension = [(WGWidgetInfo *)self extension];
     objc_initWeak(&location, self);
     v9 = dispatch_get_global_queue(25, 0);
     v12[0] = MEMORY[0x277D85DD0];
@@ -409,12 +409,12 @@ uint64_t __31__WGWidgetInfo__productVersion__block_invoke()
     v12[2] = __41__WGWidgetInfo__requestIcon_withHandler___block_invoke;
     v12[3] = &unk_279ED0F48;
     objc_copyWeak(&v16, &location);
-    v17 = a3;
-    v13 = v7;
-    v14 = v8;
-    v15 = v6;
-    v10 = v8;
-    v11 = v7;
+    iconCopy = icon;
+    v13 = widgetIdentifier;
+    v14 = extension;
+    v15 = handlerCopy;
+    v10 = extension;
+    v11 = widgetIdentifier;
     dispatch_async(v9, v12);
 
     objc_destroyWeak(&v16);
@@ -444,21 +444,21 @@ void __41__WGWidgetInfo__requestIcon_withHandler___block_invoke(uint64_t a1)
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)requestIconWithHandler:(id)a3
+- (void)requestIconWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(WGWidgetInfo *)self _icon];
-    if (v5)
+    _icon = [(WGWidgetInfo *)self _icon];
+    if (_icon)
     {
       v6 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __39__WGWidgetInfo_requestIconWithHandler___block_invoke;
       block[3] = &unk_279ED0F70;
-      v12 = v4;
-      v11 = v5;
+      v12 = handlerCopy;
+      v11 = _icon;
       dispatch_async(v6, block);
 
       v7 = v12;
@@ -471,7 +471,7 @@ void __41__WGWidgetInfo__requestIcon_withHandler___block_invoke(uint64_t a1)
       v8[2] = __39__WGWidgetInfo_requestIconWithHandler___block_invoke_2;
       v8[3] = &unk_279ED0F98;
       v8[4] = self;
-      v9 = v4;
+      v9 = handlerCopy;
       [(WGWidgetInfo *)self _requestIcon:1 withHandler:v8];
       v7 = v9;
     }
@@ -502,21 +502,21 @@ void __39__WGWidgetInfo_requestIconWithHandler___block_invoke_3(uint64_t a1)
   [WeakRetained _setIcon:*(a1 + 32)];
 }
 
-- (void)requestSettingsIconWithHandler:(id)a3
+- (void)requestSettingsIconWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(WGWidgetInfo *)self _outlineIcon];
-    if (v5)
+    _outlineIcon = [(WGWidgetInfo *)self _outlineIcon];
+    if (_outlineIcon)
     {
       v6 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __47__WGWidgetInfo_requestSettingsIconWithHandler___block_invoke;
       block[3] = &unk_279ED0F70;
-      v12 = v4;
-      v11 = v5;
+      v12 = handlerCopy;
+      v11 = _outlineIcon;
       dispatch_async(v6, block);
 
       v7 = v12;
@@ -529,7 +529,7 @@ void __39__WGWidgetInfo_requestIconWithHandler___block_invoke_3(uint64_t a1)
       v8[2] = __47__WGWidgetInfo_requestSettingsIconWithHandler___block_invoke_2;
       v8[3] = &unk_279ED0F98;
       v8[4] = self;
-      v9 = v4;
+      v9 = handlerCopy;
       [(WGWidgetInfo *)self _requestIcon:0 withHandler:v8];
       v7 = v9;
     }
@@ -565,8 +565,8 @@ void __47__WGWidgetInfo_requestSettingsIconWithHandler___block_invoke_3(uint64_t
   BSDispatchQueueAssertMain();
   [(WGWidgetInfo *)self _setIcon:0];
   [(WGWidgetInfo *)self _setOutlineIcon:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"WGWidgetInfoIconDidInvalidateNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGWidgetInfoIconDidInvalidateNotification" object:0];
 }
 
 - (void)_resetIcons
@@ -594,25 +594,25 @@ void __27__WGWidgetInfo__resetIcons__block_invoke(uint64_t a1)
   if (!sdkVersion)
   {
     v4 = MEMORY[0x277CC1E60];
-    v5 = [(WGWidgetInfo *)self widgetIdentifier];
-    v6 = WGContainingBundleIdentifierForWidgetWithBundleIdentifier(v5);
+    widgetIdentifier = [(WGWidgetInfo *)self widgetIdentifier];
+    v6 = WGContainingBundleIdentifierForWidgetWithBundleIdentifier(widgetIdentifier);
     v7 = [v4 applicationProxyForIdentifier:v6];
 
-    v8 = [v7 sdkVersion];
-    v9 = [v8 copy];
+    sdkVersion = [v7 sdkVersion];
+    v9 = [sdkVersion copy];
     v10 = self->_sdkVersion;
     self->_sdkVersion = v9;
 
     if (!self->_sdkVersion)
     {
-      v11 = [(WGWidgetInfo *)self widgetIdentifier];
-      v12 = [v11 hasPrefix:@"com.apple."];
+      widgetIdentifier2 = [(WGWidgetInfo *)self widgetIdentifier];
+      v12 = [widgetIdentifier2 hasPrefix:@"com.apple."];
 
       if (v12)
       {
-        v13 = [objc_opt_class() _productVersion];
+        _productVersion = [objc_opt_class() _productVersion];
         v14 = self->_sdkVersion;
-        self->_sdkVersion = v13;
+        self->_sdkVersion = _productVersion;
       }
     }
 
@@ -622,11 +622,11 @@ void __27__WGWidgetInfo__resetIcons__block_invoke(uint64_t a1)
   return sdkVersion;
 }
 
-- (BOOL)isLinkedOnOrAfterSystemVersion:(id)a3
+- (BOOL)isLinkedOnOrAfterSystemVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(WGWidgetInfo *)self _sdkVersion];
-  v6 = _WGIsSystemVersionSameOrAfterSystemVersion(v5, v4);
+  versionCopy = version;
+  _sdkVersion = [(WGWidgetInfo *)self _sdkVersion];
+  v6 = _WGIsSystemVersionSameOrAfterSystemVersion(_sdkVersion, versionCopy);
 
   return v6;
 }
@@ -644,11 +644,11 @@ void __27__WGWidgetInfo__resetIcons__block_invoke(uint64_t a1)
   if ((*&self->_widgetInfoFlags & 1) == 0)
   {
     *&self->_widgetInfoFlags |= 1u;
-    v3 = [(WGWidgetInfo *)self widgetIdentifier];
-    v4 = [v3 hasPrefix:@"com.apple."];
+    widgetIdentifier = [(WGWidgetInfo *)self widgetIdentifier];
+    v4 = [widgetIdentifier hasPrefix:@"com.apple."];
     if (v4)
     {
-      LOBYTE(v4) = _WGBoolValueForInfoDictionaryKey(v3, @"NCWidgetWantsVisibleFrame");
+      LOBYTE(v4) = _WGBoolValueForInfoDictionaryKey(widgetIdentifier, @"NCWidgetWantsVisibleFrame");
     }
 
     self->_wantsVisibleFrame = v4;
@@ -657,51 +657,51 @@ void __27__WGWidgetInfo__resetIcons__block_invoke(uint64_t a1)
   return self->_wantsVisibleFrame;
 }
 
-- (void)_setWantsVisibleFrame:(BOOL)a3
+- (void)_setWantsVisibleFrame:(BOOL)frame
 {
   widgetInfoFlags = self->_widgetInfoFlags;
-  if (self->_wantsVisibleFrame != a3 || (widgetInfoFlags & 1) == 0)
+  if (self->_wantsVisibleFrame != frame || (widgetInfoFlags & 1) == 0)
   {
     *&self->_widgetInfoFlags = widgetInfoFlags | 1;
-    self->_wantsVisibleFrame = a3;
+    self->_wantsVisibleFrame = frame;
   }
 }
 
-- (void)registerWidgetHost:(id)a3
+- (void)registerWidgetHost:(id)host
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  hostCopy = host;
+  v5 = hostCopy;
+  if (hostCopy)
   {
     registeredWidgetHosts = self->_registeredWidgetHosts;
     v9 = v5;
     if (!registeredWidgetHosts)
     {
-      v7 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+      weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
       v8 = self->_registeredWidgetHosts;
-      self->_registeredWidgetHosts = v7;
+      self->_registeredWidgetHosts = weakObjectsPointerArray;
 
       registeredWidgetHosts = self->_registeredWidgetHosts;
     }
 
     [(NSPointerArray *)registeredWidgetHosts addPointer:v9];
     [(WGWidgetInfo *)self preferredContentSize];
-    v4 = [v9 setPreferredContentSize:?];
+    hostCopy = [v9 setPreferredContentSize:?];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](hostCopy, v5);
 }
 
-- (void)updatePreferredContentSize:(CGSize)a3 forWidgetHost:(id)a4
+- (void)updatePreferredContentSize:(CGSize)size forWidgetHost:(id)host
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [v7 widgetInfo];
+  hostCopy = host;
+  widgetInfo = [hostCopy widgetInfo];
 
-  if (v8 == self)
+  if (widgetInfo == self)
   {
     [(WGWidgetInfo *)self preferredContentSize];
     v10 = v9;
@@ -731,7 +731,7 @@ void __27__WGWidgetInfo__resetIcons__block_invoke(uint64_t a1)
             }
 
             v18 = *(*(&v19 + 1) + 8 * v17);
-            if (v18 != v7)
+            if (v18 != hostCopy)
             {
               [v18 setPreferredContentSize:{width, height, v19}];
             }

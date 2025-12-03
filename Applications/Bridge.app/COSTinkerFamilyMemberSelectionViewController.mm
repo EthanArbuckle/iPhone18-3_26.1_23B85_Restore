@@ -1,18 +1,18 @@
 @interface COSTinkerFamilyMemberSelectionViewController
 - (COSTinkerFamilyMemberSelectionViewController)init;
 - (id)detailString;
-- (id)familyMemberAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)familyMemberAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)titleString;
-- (int64_t)logicalSectionFromSectionNumber:(int64_t)a3;
-- (int64_t)sectionNumberFromSection:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)showMustUnpairFirstAlert:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (int64_t)logicalSectionFromSectionNumber:(int64_t)number;
+- (int64_t)sectionNumberFromSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)showMustUnpairFirstAlert:(id)alert;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = COSTinkerFamilyMemberSelectionViewController;
-  [(COSTinkerFamilyMemberSelectionViewController *)&v8 viewDidAppear:a3];
+  [(COSTinkerFamilyMemberSelectionViewController *)&v8 viewDidAppear:appear];
   if (self)
   {
     v4 = self->_tableView;
@@ -50,14 +50,14 @@
   }
 
   v6 = tableView;
-  v7 = [(UITableView *)v6 indexPathForSelectedRow];
-  [(UITableView *)v4 deselectRowAtIndexPath:v7 animated:1];
+  indexPathForSelectedRow = [(UITableView *)v6 indexPathForSelectedRow];
+  [(UITableView *)v4 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (int64_t)sectionNumberFromSection:(int64_t)a3
+- (int64_t)sectionNumberFromSection:(int64_t)section
 {
   v5 = 0;
-  while ([(COSTinkerFamilyMemberSelectionViewController *)self logicalSectionFromSectionNumber:v5]!= a3)
+  while ([(COSTinkerFamilyMemberSelectionViewController *)self logicalSectionFromSectionNumber:v5]!= section)
   {
     if (++v5 == 3)
     {
@@ -84,24 +84,24 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[COSTinkerFamilyMemberSelectionViewController logicalSectionFromSectionNumber:](self, "logicalSectionFromSectionNumber:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[COSTinkerFamilyMemberSelectionViewController logicalSectionFromSectionNumber:](self, "logicalSectionFromSectionNumber:", [pathCopy section]);
   if (v8 == 2)
   {
-    sub_10018C2F4(v6, self, &v15);
+    sub_10018C2F4(viewCopy, self, &v15);
     v9 = v15;
   }
 
   else
   {
     v10 = v8 == 1;
-    v11 = [(COSTinkerFamilyMemberSelectionViewController *)self familyMemberAtIndexPath:v7];
+    v11 = [(COSTinkerFamilyMemberSelectionViewController *)self familyMemberAtIndexPath:pathCopy];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v9 = [v6 dequeueReusableCellWithIdentifier:v13];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v13];
 
     sub_10018B2C0(v9, v11, v10);
   }
@@ -109,9 +109,9 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(COSTinkerFamilyMemberSelectionViewController *)self logicalSectionFromSectionNumber:a4];
+  v4 = [(COSTinkerFamilyMemberSelectionViewController *)self logicalSectionFromSectionNumber:section];
   if (!v4)
   {
     v5 = @"TINKER_FAMILY_MEMBER_READY_FOR_SETUP_HEADER";
@@ -134,9 +134,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(COSTinkerFamilyMemberSelectionViewController *)self logicalSectionFromSectionNumber:a4];
+  v4 = [(COSTinkerFamilyMemberSelectionViewController *)self logicalSectionFromSectionNumber:section];
   if (v4 == 1)
   {
     v5 = @"TINKER_FAMILY_MEMBER_ALREADY_SETUP_FOOTER";
@@ -159,10 +159,10 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[COSTinkerFamilyMemberSelectionViewController logicalSectionFromSectionNumber:](self, "logicalSectionFromSectionNumber:", [v5 section]);
+  pathCopy = path;
+  v6 = -[COSTinkerFamilyMemberSelectionViewController logicalSectionFromSectionNumber:](self, "logicalSectionFromSectionNumber:", [pathCopy section]);
   if (v6 == 2)
   {
     v7 = pbb_accountsignin_log();
@@ -172,20 +172,20 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating a new family member", &v15, 2u);
     }
 
-    v8 = [UIApp setupController];
-    [v8 setTinkerFamilyMember:0];
+    setupController = [UIApp setupController];
+    [setupController setTinkerFamilyMember:0];
 
-    v9 = [(COSTinkerFamilyMemberSelectionViewController *)self delegate];
-    [v9 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+    delegate = [(COSTinkerFamilyMemberSelectionViewController *)self delegate];
+    [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
   }
 
   else
   {
     v10 = v6;
-    v9 = [(COSTinkerFamilyMemberSelectionViewController *)self familyMemberAtIndexPath:v5];
+    delegate = [(COSTinkerFamilyMemberSelectionViewController *)self familyMemberAtIndexPath:pathCopy];
     if (v10 == 1)
     {
-      sub_10018C4D8(self, v9, v5);
+      sub_10018C4D8(self, delegate, pathCopy);
     }
 
     else
@@ -193,32 +193,32 @@ LABEL_7:
       v11 = pbb_accountsignin_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v9 appleID];
+        appleID = [delegate appleID];
         v15 = 138412290;
-        v16 = v12;
+        v16 = appleID;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Selected family member -- %@", &v15, 0xCu);
       }
 
-      v13 = [UIApp setupController];
-      [v13 setTinkerFamilyMember:v9];
+      setupController2 = [UIApp setupController];
+      [setupController2 setTinkerFamilyMember:delegate];
 
-      v14 = [(COSTinkerFamilyMemberSelectionViewController *)self delegate];
-      [v14 buddyControllerDone:self];
+      delegate2 = [(COSTinkerFamilyMemberSelectionViewController *)self delegate];
+      [delegate2 buddyControllerDone:self];
     }
   }
 }
 
-- (void)showMustUnpairFirstAlert:(id)a3
+- (void)showMustUnpairFirstAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = +[NSBundle mainBundle];
   v14 = [v5 localizedStringForKey:@"TINKER_FAMILY_MEMBER_UNPAIR_FIRST_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
 
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"TINKER_FAMILY_MEMBER_UNPAIR_FIRST_DETAIL" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v8 = [v4 firstName];
+  firstName = [alertCopy firstName];
 
-  v9 = [NSString stringWithFormat:v7, v8];
+  v9 = [NSString stringWithFormat:v7, firstName];
 
   v10 = [UIAlertController alertControllerWithTitle:v14 message:v9 preferredStyle:1];
   v11 = +[NSBundle mainBundle];
@@ -239,30 +239,30 @@ LABEL_7:
   v73.super_class = COSTinkerFamilyMemberSelectionViewController;
   [(COSTinkerFamilyMemberSelectionViewController *)&v73 viewDidLoad];
   v6 = [COSSelfSizingTableView alloc];
-  v7 = [v5 contentView];
-  [v7 bounds];
+  contentView = [v5 contentView];
+  [contentView bounds];
   v8 = [(COSSelfSizingTableView *)v6 initWithFrame:2 style:?];
   sub_10018BB68(v5, v8);
 
-  v9 = [v5 contentView];
-  v10 = v9;
+  contentView2 = [v5 contentView];
+  v10 = contentView2;
   if (v5)
   {
-    [v9 addSubview:*(v5 + 56)];
+    [contentView2 addSubview:*(v5 + 56)];
 
     v11 = *(v5 + 56);
   }
 
   else
   {
-    [v9 addSubview:0];
+    [contentView2 addSubview:0];
 
     v11 = 0;
   }
 
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v65 = [v5 contentView];
-  v12 = [v65 topAnchor];
+  contentView3 = [v5 contentView];
+  topAnchor = [contentView3 topAnchor];
   if (v5)
   {
     sub_10012EB88();
@@ -274,11 +274,11 @@ LABEL_7:
   }
 
   v63 = v13;
-  v62 = [v63 topAnchor];
-  v61 = [v12 constraintEqualToAnchor:?];
+  topAnchor2 = [v63 topAnchor];
+  v61 = [topAnchor constraintEqualToAnchor:?];
   v74 = v61;
-  v60 = [v5 contentView];
-  v14 = [v60 bottomAnchor];
+  contentView4 = [v5 contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
   if (v5)
   {
     sub_10012EB88();
@@ -290,11 +290,11 @@ LABEL_7:
   }
 
   v58 = v15;
-  v57 = [v58 bottomAnchor];
-  v56 = [v14 constraintEqualToAnchor:?];
+  bottomAnchor2 = [v58 bottomAnchor];
+  v56 = [bottomAnchor constraintEqualToAnchor:?];
   v75 = v56;
-  v55 = [v5 contentView];
-  v16 = [v55 leadingAnchor];
+  contentView5 = [v5 contentView];
+  leadingAnchor = [contentView5 leadingAnchor];
   if (v5)
   {
     sub_10012EB88();
@@ -306,14 +306,14 @@ LABEL_7:
   }
 
   v18 = v17;
-  v19 = [v18 leadingAnchor];
-  v54 = v16;
-  v20 = [v16 constraintEqualToAnchor:v19];
+  leadingAnchor2 = [v18 leadingAnchor];
+  v54 = leadingAnchor;
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v76 = v20;
-  v21 = [v5 contentView];
-  v22 = [v21 trailingAnchor];
-  v64 = v12;
-  v59 = v14;
+  contentView6 = [v5 contentView];
+  trailingAnchor = [contentView6 trailingAnchor];
+  v64 = topAnchor;
+  v59 = bottomAnchor;
   if (v5)
   {
     sub_10012EB88();
@@ -325,8 +325,8 @@ LABEL_7:
   }
 
   v24 = v23;
-  v25 = [v24 trailingAnchor];
-  v26 = [v22 constraintEqualToAnchor:v25];
+  trailingAnchor2 = [v24 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v77 = v26;
   v27 = [NSArray arrayWithObjects:&v74 count:4];
   [NSLayoutConstraint activateConstraints:v27];
@@ -388,19 +388,19 @@ LABEL_7:
   }
 
   [v37 setDataSource:v5];
-  v38 = [UIApp setupController];
-  v39 = [v38 activePairingDevice];
+  setupController = [UIApp setupController];
+  activePairingDevice = [setupController activePairingDevice];
 
-  v40 = [v39 valueForProperty:NRDevicePropertySerialNumber];
+  v40 = [activePairingDevice valueForProperty:NRDevicePropertySerialNumber];
   sub_10018BB7C(v5, v40);
 
-  v41 = [UIApp setupController];
-  v42 = [v41 familyCircle];
+  setupController2 = [UIApp setupController];
+  familyCircle = [setupController2 familyCircle];
 
   v43 = sub_1000093AC();
   v44 = +[NSMutableArray array];
   v45 = +[NSMutableDictionary dictionary];
-  v46 = [v42 members];
+  members = [familyCircle members];
   v66 = _NSConcreteStackBlock;
   v67 = 3221225472;
   v68 = sub_10012E198;
@@ -411,12 +411,12 @@ LABEL_7:
   v48 = v45;
   v72 = v48;
   v49 = v43;
-  [v46 enumerateObjectsUsingBlock:&v66];
+  [members enumerateObjectsUsingBlock:&v66];
 
   sub_10018BB90(v5, v47);
   sub_10018BBA4(v5, v48);
-  v50 = [v42 members];
-  v51 = [v50 count];
+  members2 = [familyCircle members];
+  v51 = [members2 count];
   if (v5)
   {
     *(v5 + 24) = v51 >= 6;
@@ -437,7 +437,7 @@ LABEL_7:
   sub_10012EBA0();
 }
 
-- (int64_t)logicalSectionFromSectionNumber:(int64_t)a3
+- (int64_t)logicalSectionFromSectionNumber:(int64_t)number
 {
   sub_10012EBBC();
   v4 = v3;
@@ -483,8 +483,8 @@ LABEL_7:
         }
 
         v16 = v15;
-        v17 = [v14 appleID];
-        v18 = [v16 objectForKey:v17];
+        appleID = [v14 appleID];
+        v18 = [v16 objectForKey:appleID];
 
         v19 = [v18 valueForProperty:v12];
         v20 = v19;
@@ -514,11 +514,11 @@ LABEL_7:
   return result;
 }
 
-- (id)familyMemberAtIndexPath:(id)a3
+- (id)familyMemberAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[COSTinkerFamilyMemberSelectionViewController logicalSectionFromSectionNumber:](self, "logicalSectionFromSectionNumber:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[COSTinkerFamilyMemberSelectionViewController logicalSectionFromSectionNumber:](self, "logicalSectionFromSectionNumber:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   if (self)
   {
@@ -543,7 +543,7 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   sub_10012EBBC();
   v5 = v4;
@@ -591,8 +591,8 @@ LABEL_7:
         }
 
         v19 = v18;
-        v20 = [v17 appleID];
-        v21 = [v19 objectForKey:v20];
+        appleID = [v17 appleID];
+        v21 = [v19 objectForKey:appleID];
 
         v22 = [v21 valueForProperty:v15];
         v23 = v22;
@@ -622,7 +622,7 @@ LABEL_7:
   return result;
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   if (self)
   {

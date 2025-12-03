@@ -12,8 +12,8 @@
   [(LPiTunesMediaMovieBundleMetadata *)v3 setStoreIdentifier:self->_storeIdentifier];
   [(LPiTunesMediaMovieBundleMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaMovieBundleMetadata *)v3 setGenre:self->_genre];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaMovieBundleMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaMovieBundleMetadata *)v3 setArtworkMetadata:metadata];
 
   return v3;
 }

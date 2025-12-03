@@ -1,63 +1,63 @@
 @interface AKSecurePakeController
-- (AKSecurePakeController)initWithEngine:(id)a3 completionHandler:(id)a4;
-- (void)_callCompletionHandlerWithDerivedKey:(id)a3 error:(id)a4;
-- (void)_sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)processMessage:(id)a3 completionHandler:(id)a4;
-- (void)securePakeEngine:(id)a3 didDeriveKey:(id)a4;
-- (void)securePakeEngine:(id)a3 didFailToDeriveKeyWithError:(id)a4;
-- (void)securePakeEngineDidActivate:(id)a3;
-- (void)securePakeEngineDidInvalidate:(id)a3;
+- (AKSecurePakeController)initWithEngine:(id)engine completionHandler:(id)handler;
+- (void)_callCompletionHandlerWithDerivedKey:(id)key error:(id)error;
+- (void)_sendMessage:(id)message completionHandler:(id)handler;
+- (void)processMessage:(id)message completionHandler:(id)handler;
+- (void)securePakeEngine:(id)engine didDeriveKey:(id)key;
+- (void)securePakeEngine:(id)engine didFailToDeriveKeyWithError:(id)error;
+- (void)securePakeEngineDidActivate:(id)activate;
+- (void)securePakeEngineDidInvalidate:(id)invalidate;
 @end
 
 @implementation AKSecurePakeController
 
-- (AKSecurePakeController)initWithEngine:(id)a3 completionHandler:(id)a4
+- (AKSecurePakeController)initWithEngine:(id)engine completionHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, engine);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v4 = v16;
-  v16 = 0;
+  objc_storeStrong(&v14, handler);
+  v4 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v4;
   v13.super_class = AKSecurePakeController;
-  v16 = [(AKSecurePakeController *)&v13 init];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(AKSecurePakeController *)&v13 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v16->_engine, location[0]);
+    objc_storeStrong(&selfCopy->_engine, location[0]);
     v5 = objc_retainBlock(v14);
-    completionHandler = v16->_completionHandler;
-    v16->_completionHandler = v5;
+    completionHandler = selfCopy->_completionHandler;
+    selfCopy->_completionHandler = v5;
     _objc_release(completionHandler);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("com.apple.akd.secure-pake-engine", v11);
-    engineQueue = v16->_engineQueue;
-    v16->_engineQueue = v7;
+    engineQueue = selfCopy->_engineQueue;
+    selfCopy->_engineQueue = v7;
     _objc_release(engineQueue);
     _objc_release(v11);
-    [location[0] prepareWithController:v16 queue:v16->_engineQueue];
+    [location[0] prepareWithController:selfCopy queue:selfCopy->_engineQueue];
   }
 
-  v10 = _objc_retain(v16);
+  v10 = _objc_retain(selfCopy);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)processMessage:(id)a3 completionHandler:(id)a4
+- (void)processMessage:(id)message completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&from, v18);
-  v5 = [(AKSecurePakeController *)v18 engine];
+  objc_storeStrong(&v16, handler);
+  objc_initWeak(&from, selfCopy);
+  engine = [(AKSecurePakeController *)selfCopy engine];
   v4 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -67,8 +67,8 @@
   objc_copyWeak(v14, &from);
   v13 = _objc_retain(v16);
   v12 = _objc_retain(location[0]);
-  [(AKSecurePakeEngine *)v5 processMessage:v4 completionHandler:&v7];
-  _objc_release(v5);
+  [(AKSecurePakeEngine *)engine processMessage:v4 completionHandler:&v7];
+  _objc_release(engine);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_destroyWeak(v14);
@@ -77,14 +77,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_sendMessage:(id)a3 completionHandler:(id)a4
+- (void)_sendMessage:(id)message completionHandler:(id)handler
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, handler);
   v37 = _AKLogSystem();
   v36 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -104,18 +104,18 @@
   if (v13)
   {
     v27 = objc_alloc_init(AKAppleIDAuthenticationContext);
-    v7 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     [v27 setAltDSID:?];
-    _objc_release(v7);
+    _objc_release(altDSID);
     v4 = [AKGrandSlamRequestProvider alloc];
     v26 = [(AKURLRequestProviderImpl *)v4 initWithContext:v27 urlBagKey:AKURLBagKeySecurePakeStep];
-    v10 = [(AKSecurePakeController *)v40 engine];
-    v9 = [(AKSecurePakeEngine *)v10 context];
-    v8 = [v9 client];
+    engine = [(AKSecurePakeController *)selfCopy engine];
+    context = [(AKSecurePakeEngine *)engine context];
+    client = [context client];
     [(AKURLRequestProviderImpl *)v26 setClient:?];
-    _objc_release(v8);
-    _objc_release(v9);
-    _objc_release(v10);
+    _objc_release(client);
+    _objc_release(context);
+    _objc_release(engine);
     [(AKGrandSlamRequestProvider *)v26 setAuthenticatedRequest:1];
     [(AKGrandSlamRequestProvider *)v26 setShouldSendIdentityToken:1];
     [(AKGrandSlamRequestProvider *)v26 setRequestBodyType:1];
@@ -193,62 +193,62 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)securePakeEngineDidActivate:(id)a3
+- (void)securePakeEngineDidActivate:(id)activate
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activate);
   objc_storeStrong(location, 0);
 }
 
-- (void)securePakeEngineDidInvalidate:(id)a3
+- (void)securePakeEngineDidInvalidate:(id)invalidate
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, invalidate);
   objc_storeStrong(location, 0);
 }
 
-- (void)securePakeEngine:(id)a3 didDeriveKey:(id)a4
+- (void)securePakeEngine:(id)engine didDeriveKey:(id)key
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, engine);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKSecurePakeController *)v7 _callCompletionHandlerWithDerivedKey:v5 error:0];
+  objc_storeStrong(&v5, key);
+  [(AKSecurePakeController *)selfCopy _callCompletionHandlerWithDerivedKey:v5 error:0];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)securePakeEngine:(id)a3 didFailToDeriveKeyWithError:(id)a4
+- (void)securePakeEngine:(id)engine didFailToDeriveKeyWithError:(id)error
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, engine);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKSecurePakeController *)v7 _callCompletionHandlerWithDerivedKey:0 error:v5];
+  objc_storeStrong(&v5, error);
+  [(AKSecurePakeController *)selfCopy _callCompletionHandlerWithDerivedKey:0 error:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_callCompletionHandlerWithDerivedKey:(id)a3 error:(id)a4
+- (void)_callCompletionHandlerWithDerivedKey:(id)key error:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = objc_retainBlock(v11->_completionHandler);
+  objc_storeStrong(&v9, error);
+  v8 = objc_retainBlock(selfCopy->_completionHandler);
   v4 = objc_retainBlock(&stru_100323430);
-  completionHandler = v11->_completionHandler;
-  v11->_completionHandler = v4;
+  completionHandler = selfCopy->_completionHandler;
+  selfCopy->_completionHandler = v4;
   _objc_release(completionHandler);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))

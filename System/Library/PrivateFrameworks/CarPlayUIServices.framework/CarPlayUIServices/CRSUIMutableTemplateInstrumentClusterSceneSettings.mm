@@ -2,46 +2,46 @@
 - (NSString)description;
 - (NSString)proxiedApplicationBundleIdentifier;
 - (OS_xpc_object)templateEndpoint;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setProxiedApplicationBundleIdentifier:(id)a3;
-- (void)setTemplateEndpoint:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setProxiedApplicationBundleIdentifier:(id)identifier;
+- (void)setTemplateEndpoint:(id)endpoint;
 @end
 
 @implementation CRSUIMutableTemplateInstrumentClusterSceneSettings
 
 - (NSString)proxiedApplicationBundleIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273413];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273413];
 
   return v3;
 }
 
-- (void)setProxiedApplicationBundleIdentifier:(id)a3
+- (void)setProxiedApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:4293273413];
+  identifierCopy = identifier;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:identifierCopy forSetting:4293273413];
 }
 
 - (OS_xpc_object)templateEndpoint
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273414];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273414];
 
   return v3;
 }
 
-- (void)setTemplateEndpoint:(id)a3
+- (void)setTemplateEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:4293273414];
+  endpointCopy = endpoint;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:endpointCopy forSetting:4293273414];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUITemplateInstrumentClusterSceneSettings allocWithZone:a3];
+  v4 = [CRSUITemplateInstrumentClusterSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = CRSUIMutableTemplateInstrumentClusterSceneSettings;
   v4 = [(CRSUIMutableInstrumentClusterSceneSettings *)&v8 description];
-  v5 = [(CRSUIMutableTemplateInstrumentClusterSceneSettings *)self proxiedApplicationBundleIdentifier];
-  v6 = [v3 stringWithFormat:@"%@: proxied bundle identifier: %@", v4, v5];
+  proxiedApplicationBundleIdentifier = [(CRSUIMutableTemplateInstrumentClusterSceneSettings *)self proxiedApplicationBundleIdentifier];
+  v6 = [v3 stringWithFormat:@"%@: proxied bundle identifier: %@", v4, proxiedApplicationBundleIdentifier];
 
   return v6;
 }

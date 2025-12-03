@@ -1,8 +1,8 @@
 @interface XBApplicationSnapshotGenerationScheduler
 + (id)sharedInstance;
 - (id)_init;
-- (void)performImageDataGenerationAsync:(id)a3 withHandler:(id)a4;
-- (void)performImageDataGenerationAsyncAndWait:(id)a3 withHandler:(id)a4;
+- (void)performImageDataGenerationAsync:(id)async withHandler:(id)handler;
+- (void)performImageDataGenerationAsyncAndWait:(id)wait withHandler:(id)handler;
 @end
 
 @implementation XBApplicationSnapshotGenerationScheduler
@@ -49,20 +49,20 @@ uint64_t __58__XBApplicationSnapshotGenerationScheduler_sharedInstance__block_in
   return v2;
 }
 
-- (void)performImageDataGenerationAsync:(id)a3 withHandler:(id)a4
+- (void)performImageDataGenerationAsync:(id)async withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  asyncCopy = async;
+  handlerCopy = handler;
   dataGenerationWorkloop = self->_dataGenerationWorkloop;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__XBApplicationSnapshotGenerationScheduler_performImageDataGenerationAsync_withHandler___block_invoke;
   block[3] = &unk_279CF9620;
-  v12 = v6;
-  v13 = v7;
+  v12 = asyncCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = asyncCopy;
   dispatch_async(dataGenerationWorkloop, block);
 }
 
@@ -83,20 +83,20 @@ void __88__XBApplicationSnapshotGenerationScheduler_performImageDataGenerationAs
   }
 }
 
-- (void)performImageDataGenerationAsyncAndWait:(id)a3 withHandler:(id)a4
+- (void)performImageDataGenerationAsyncAndWait:(id)wait withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  waitCopy = wait;
+  handlerCopy = handler;
   dataGenerationWorkloop = self->_dataGenerationWorkloop;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__XBApplicationSnapshotGenerationScheduler_performImageDataGenerationAsyncAndWait_withHandler___block_invoke;
   block[3] = &unk_279CF9620;
-  v12 = v6;
-  v13 = v7;
+  v12 = waitCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = waitCopy;
   dispatch_async_and_wait(dataGenerationWorkloop, block);
 }
 

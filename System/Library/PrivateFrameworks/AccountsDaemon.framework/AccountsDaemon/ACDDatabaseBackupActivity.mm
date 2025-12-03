@@ -1,9 +1,9 @@
 @interface ACDDatabaseBackupActivity
 - (ACDDatabaseBackupActivity)init;
-- (ACDDatabaseBackupActivity)initWithDatabase:(id)a3;
+- (ACDDatabaseBackupActivity)initWithDatabase:(id)database;
 - (id)activityCriteria;
-- (void)_registerActivityIfNeededSchedulingBackup:(BOOL)a3;
-- (void)_registerActivitySchedulingBackup:(BOOL)a3;
+- (void)_registerActivityIfNeededSchedulingBackup:(BOOL)backup;
+- (void)_registerActivitySchedulingBackup:(BOOL)backup;
 - (void)scheduleBackupIfNonexistent;
 @end
 
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (ACDDatabaseBackupActivity)initWithDatabase:(id)a3
+- (ACDDatabaseBackupActivity)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = ACDDatabaseBackupActivity;
   v6 = [(ACDDatabaseBackupActivity *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.accounts.databasebackup.queue", v8);
     queue = v7->_queue;
@@ -54,7 +54,7 @@
   return activityExecutionCriteria;
 }
 
-- (void)_registerActivityIfNeededSchedulingBackup:(BOOL)a3
+- (void)_registerActivityIfNeededSchedulingBackup:(BOOL)backup
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -62,7 +62,7 @@
   v4[2] = __71__ACDDatabaseBackupActivity__registerActivityIfNeededSchedulingBackup___block_invoke;
   v4[3] = &unk_27848C108;
   v4[4] = self;
-  v5 = a3;
+  backupCopy = backup;
   dispatch_async(queue, v4);
 }
 
@@ -88,9 +88,9 @@ void __71__ACDDatabaseBackupActivity__registerActivityIfNeededSchedulingBackup__
   }
 }
 
-- (void)_registerActivitySchedulingBackup:(BOOL)a3
+- (void)_registerActivitySchedulingBackup:(BOOL)backup
 {
-  v3 = a3;
+  backupCopy = backup;
   v14 = *MEMORY[0x277D85DE8];
   v5 = _ACDLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -98,7 +98,7 @@ void __71__ACDDatabaseBackupActivity__registerActivityIfNeededSchedulingBackup__
     *buf = 136315394;
     v11 = "com.apple.accounts.databasebackup.activity";
     v12 = 1024;
-    v13 = v3;
+    v13 = backupCopy;
     _os_log_impl(&dword_221D2F000, v5, OS_LOG_TYPE_DEFAULT, "Registering activity %s (scheduling backup: %d)", buf, 0x12u);
   }
 
@@ -107,7 +107,7 @@ void __71__ACDDatabaseBackupActivity__registerActivityIfNeededSchedulingBackup__
   v8[1] = 3221225472;
   v8[2] = __63__ACDDatabaseBackupActivity__registerActivitySchedulingBackup___block_invoke;
   v8[3] = &unk_27848D038;
-  v9 = v3;
+  v9 = backupCopy;
   v8[4] = self;
   xpc_activity_register("com.apple.accounts.databasebackup.activity", v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -218,11 +218,11 @@ void __63__ACDDatabaseBackupActivity__registerActivitySchedulingBackup___block_i
 
 - (void)scheduleBackupIfNonexistent
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(ACDDatabaseBackupActivity *)self database];
-  v5 = [v4 databaseURL];
-  v6 = [v5 path];
-  v7 = [v3 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  database = [(ACDDatabaseBackupActivity *)self database];
+  databaseURL = [database databaseURL];
+  path = [databaseURL path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {

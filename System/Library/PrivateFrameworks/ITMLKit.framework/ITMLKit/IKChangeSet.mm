@@ -1,40 +1,40 @@
 @interface IKChangeSet
-- (IKChangeSet)initWithAddedIndexes:(id)a3 removedIndexes:(id)a4 movedIndexesByNewIndex:(id)a5 updatedIndexesByNewIndex:(id)a6;
-- (id)changeSetByConcatenatingChangeSet:(id)a3;
-- (id)changeSetByConvertingOldIndexesUsingChangeSet:(id)a3 andNewIndexesUsingChangeSet:(id)a4;
-- (id)changeSetBySubtractingChangeSet:(id)a3;
+- (IKChangeSet)initWithAddedIndexes:(id)indexes removedIndexes:(id)removedIndexes movedIndexesByNewIndex:(id)index updatedIndexesByNewIndex:(id)newIndex;
+- (id)changeSetByConcatenatingChangeSet:(id)set;
+- (id)changeSetByConvertingOldIndexesUsingChangeSet:(id)set andNewIndexesUsingChangeSet:(id)changeSet;
+- (id)changeSetBySubtractingChangeSet:(id)set;
 - (id)inverseChangeSet;
-- (int64_t)newIndexByShiftingOldIndex:(int64_t)a3 grouped:(BOOL)a4;
-- (int64_t)newIndexForOldIndex:(int64_t)a3;
-- (int64_t)oldIndexForNewIndex:(int64_t)a3;
+- (int64_t)newIndexByShiftingOldIndex:(int64_t)index grouped:(BOOL)grouped;
+- (int64_t)newIndexForOldIndex:(int64_t)index;
+- (int64_t)oldIndexForNewIndex:(int64_t)index;
 @end
 
 @implementation IKChangeSet
 
-- (IKChangeSet)initWithAddedIndexes:(id)a3 removedIndexes:(id)a4 movedIndexesByNewIndex:(id)a5 updatedIndexesByNewIndex:(id)a6
+- (IKChangeSet)initWithAddedIndexes:(id)indexes removedIndexes:(id)removedIndexes movedIndexesByNewIndex:(id)index updatedIndexesByNewIndex:(id)newIndex
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  indexesCopy = indexes;
+  removedIndexesCopy = removedIndexes;
+  indexCopy = index;
+  newIndexCopy = newIndex;
   v24.receiver = self;
   v24.super_class = IKChangeSet;
   v14 = [(IKChangeSet *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [indexesCopy copy];
     addedIndexes = v14->_addedIndexes;
     v14->_addedIndexes = v15;
 
-    v17 = [v11 copy];
+    v17 = [removedIndexesCopy copy];
     removedIndexes = v14->_removedIndexes;
     v14->_removedIndexes = v17;
 
-    v19 = [v12 copy];
+    v19 = [indexCopy copy];
     movedIndexesByNewIndex = v14->_movedIndexesByNewIndex;
     v14->_movedIndexesByNewIndex = v19;
 
-    v21 = [v13 copy];
+    v21 = [newIndexCopy copy];
     updatedIndexesByNewIndex = v14->_updatedIndexesByNewIndex;
     v14->_updatedIndexesByNewIndex = v21;
   }
@@ -42,10 +42,10 @@
   return v14;
 }
 
-- (int64_t)newIndexForOldIndex:(int64_t)a3
+- (int64_t)newIndexForOldIndex:(int64_t)index
 {
-  v5 = [(IKChangeSet *)self removedIndexes];
-  v6 = [v5 containsIndex:a3];
+  removedIndexes = [(IKChangeSet *)self removedIndexes];
+  v6 = [removedIndexes containsIndex:index];
 
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   if ((v6 & 1) == 0)
@@ -54,55 +54,55 @@
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [(IKChangeSet *)self movedIndexesByNewIndex];
+    movedIndexesByNewIndex = [(IKChangeSet *)self movedIndexesByNewIndex];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __35__IKChangeSet_newIndexForOldIndex___block_invoke;
     v28[3] = &unk_27979B4F0;
     v28[4] = &v29;
-    v28[5] = a3;
-    [v8 enumerateKeysAndObjectsUsingBlock:v28];
+    v28[5] = index;
+    [movedIndexesByNewIndex enumerateKeysAndObjectsUsingBlock:v28];
 
     v7 = v30[3];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v30[3] = a3;
-      v9 = [(IKChangeSet *)self removedIndexes];
-      if (v9)
+      v30[3] = index;
+      removedIndexes2 = [(IKChangeSet *)self removedIndexes];
+      if (removedIndexes2)
       {
-        v10 = [(IKChangeSet *)self removedIndexes];
-        v11 = [v10 mutableCopy];
+        removedIndexes3 = [(IKChangeSet *)self removedIndexes];
+        indexSet = [removedIndexes3 mutableCopy];
       }
 
       else
       {
-        v11 = [MEMORY[0x277CCAB58] indexSet];
+        indexSet = [MEMORY[0x277CCAB58] indexSet];
       }
 
-      v12 = [(IKChangeSet *)self addedIndexes];
-      if (v12)
+      addedIndexes = [(IKChangeSet *)self addedIndexes];
+      if (addedIndexes)
       {
-        v13 = [(IKChangeSet *)self addedIndexes];
-        v14 = [v13 mutableCopy];
+        addedIndexes2 = [(IKChangeSet *)self addedIndexes];
+        indexSet2 = [addedIndexes2 mutableCopy];
       }
 
       else
       {
-        v14 = [MEMORY[0x277CCAB58] indexSet];
+        indexSet2 = [MEMORY[0x277CCAB58] indexSet];
       }
 
-      v15 = [(IKChangeSet *)self movedIndexesByNewIndex];
+      movedIndexesByNewIndex2 = [(IKChangeSet *)self movedIndexesByNewIndex];
       v22 = MEMORY[0x277D85DD0];
       v23 = 3221225472;
       v24 = __35__IKChangeSet_newIndexForOldIndex___block_invoke_2;
       v25 = &unk_27979B518;
-      v16 = v11;
+      v16 = indexSet;
       v26 = v16;
-      v17 = v14;
+      v17 = indexSet2;
       v27 = v17;
-      [v15 enumerateKeysAndObjectsUsingBlock:&v22];
+      [movedIndexesByNewIndex2 enumerateKeysAndObjectsUsingBlock:&v22];
 
-      for (i = [v16 indexLessThanIndex:{a3, v22, v23, v24, v25}]; i != 0x7FFFFFFFFFFFFFFFLL; i = objc_msgSend(v16, "indexLessThanIndex:"))
+      for (i = [v16 indexLessThanIndex:{index, v22, v23, v24, v25}]; i != 0x7FFFFFFFFFFFFFFFLL; i = objc_msgSend(v16, "indexLessThanIndex:"))
       {
         --v30[3];
       }
@@ -148,86 +148,86 @@ uint64_t __35__IKChangeSet_newIndexForOldIndex___block_invoke_2(uint64_t a1, voi
   return [v7 addIndex:v8];
 }
 
-- (int64_t)oldIndexForNewIndex:(int64_t)a3
+- (int64_t)oldIndexForNewIndex:(int64_t)index
 {
-  v5 = [(IKChangeSet *)self addedIndexes];
-  v6 = [v5 containsIndex:a3];
+  addedIndexes = [(IKChangeSet *)self addedIndexes];
+  v6 = [addedIndexes containsIndex:index];
 
   if (v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = [(IKChangeSet *)self movedIndexesByNewIndex];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  movedIndexesByNewIndex = [(IKChangeSet *)self movedIndexesByNewIndex];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v10 = [movedIndexesByNewIndex objectForKeyedSubscript:v9];
 
   if (!v10)
   {
     goto LABEL_5;
   }
 
-  v11 = [(IKChangeSet *)self movedIndexesByNewIndex];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v13 = [v11 objectForKeyedSubscript:v12];
-  v7 = [v13 integerValue];
+  movedIndexesByNewIndex2 = [(IKChangeSet *)self movedIndexesByNewIndex];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v13 = [movedIndexesByNewIndex2 objectForKeyedSubscript:v12];
+  integerValue = [v13 integerValue];
 
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
-    v14 = [(IKChangeSet *)self removedIndexes];
-    if (v14)
+    removedIndexes = [(IKChangeSet *)self removedIndexes];
+    if (removedIndexes)
     {
-      v15 = [(IKChangeSet *)self removedIndexes];
-      v16 = [v15 mutableCopy];
+      removedIndexes2 = [(IKChangeSet *)self removedIndexes];
+      indexSet = [removedIndexes2 mutableCopy];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
     }
 
-    v17 = [(IKChangeSet *)self addedIndexes];
-    if (v17)
+    addedIndexes2 = [(IKChangeSet *)self addedIndexes];
+    if (addedIndexes2)
     {
-      v18 = [(IKChangeSet *)self addedIndexes];
-      v19 = [v18 mutableCopy];
+      addedIndexes3 = [(IKChangeSet *)self addedIndexes];
+      indexSet2 = [addedIndexes3 mutableCopy];
     }
 
     else
     {
-      v19 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     }
 
-    v20 = [(IKChangeSet *)self movedIndexesByNewIndex];
+    movedIndexesByNewIndex3 = [(IKChangeSet *)self movedIndexesByNewIndex];
     v29 = MEMORY[0x277D85DD0];
     v30 = 3221225472;
     v31 = __35__IKChangeSet_oldIndexForNewIndex___block_invoke;
     v32 = &unk_27979B518;
-    v21 = v16;
+    v21 = indexSet;
     v33 = v21;
-    v22 = v19;
+    v22 = indexSet2;
     v34 = v22;
-    [v20 enumerateKeysAndObjectsUsingBlock:&v29];
+    [movedIndexesByNewIndex3 enumerateKeysAndObjectsUsingBlock:&v29];
 
-    v23 = [v22 indexLessThanIndex:{a3, v29, v30, v31, v32}];
+    v23 = [v22 indexLessThanIndex:{index, v29, v30, v31, v32}];
     if (v23 != 0x7FFFFFFFFFFFFFFFLL)
     {
       for (i = v23; i != 0x7FFFFFFFFFFFFFFFLL; i = [v22 indexLessThanIndex:i])
       {
-        --a3;
+        --index;
       }
     }
 
-    v25 = [v21 firstIndex];
-    if (v25 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v21 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v26 = v25;
-      if (v25 <= a3)
+      v26 = firstIndex;
+      if (firstIndex <= index)
       {
         do
         {
-          ++a3;
+          ++index;
           v27 = [v21 indexGreaterThanIndex:v26];
           if (v27 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -237,14 +237,14 @@ LABEL_5:
           v26 = v27;
         }
 
-        while (v27 <= a3);
+        while (v27 <= index);
       }
     }
 
-    return a3;
+    return index;
   }
 
-  return v7;
+  return integerValue;
 }
 
 uint64_t __35__IKChangeSet_oldIndexForNewIndex___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -258,83 +258,83 @@ uint64_t __35__IKChangeSet_oldIndexForNewIndex___block_invoke(uint64_t a1, void 
   return [v7 addIndex:v8];
 }
 
-- (int64_t)newIndexByShiftingOldIndex:(int64_t)a3 grouped:(BOOL)a4
+- (int64_t)newIndexByShiftingOldIndex:(int64_t)index grouped:(BOOL)grouped
 {
-  v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  indexCopy2 = 0x7FFFFFFFFFFFFFFFLL;
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a4;
-    v8 = [(IKChangeSet *)self removedIndexes];
-    if (v8)
+    groupedCopy = grouped;
+    removedIndexes = [(IKChangeSet *)self removedIndexes];
+    if (removedIndexes)
     {
-      v9 = [(IKChangeSet *)self removedIndexes];
-      v10 = [v9 mutableCopy];
+      removedIndexes2 = [(IKChangeSet *)self removedIndexes];
+      indexSet = [removedIndexes2 mutableCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
     }
 
-    v11 = [(IKChangeSet *)self addedIndexes];
-    if (v11)
+    addedIndexes = [(IKChangeSet *)self addedIndexes];
+    if (addedIndexes)
     {
-      v12 = [(IKChangeSet *)self addedIndexes];
-      v13 = [v12 mutableCopy];
+      addedIndexes2 = [(IKChangeSet *)self addedIndexes];
+      indexSet2 = [addedIndexes2 mutableCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     }
 
-    v14 = [(IKChangeSet *)self movedIndexesByNewIndex];
+    movedIndexesByNewIndex = [(IKChangeSet *)self movedIndexesByNewIndex];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __50__IKChangeSet_newIndexByShiftingOldIndex_grouped___block_invoke;
     v26 = &unk_27979B518;
-    v15 = v10;
+    v15 = indexSet;
     v27 = v15;
-    v16 = v13;
+    v16 = indexSet2;
     v28 = v16;
-    [v14 enumerateKeysAndObjectsUsingBlock:&v23];
+    [movedIndexesByNewIndex enumerateKeysAndObjectsUsingBlock:&v23];
 
-    v17 = [v15 firstIndex];
-    if (v17 >= a3)
+    firstIndex = [v15 firstIndex];
+    if (firstIndex >= index)
     {
-      v4 = a3;
+      indexCopy2 = index;
     }
 
     else
     {
-      v18 = v17;
-      v4 = a3;
+      v18 = firstIndex;
+      indexCopy2 = index;
       do
       {
-        --v4;
+        --indexCopy2;
         v18 = [v15 indexGreaterThanIndex:v18];
       }
 
-      while (v18 < a3);
+      while (v18 < index);
     }
 
-    v19 = [v16 firstIndex];
-    if (v19 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex2 = [v16 firstIndex];
+    if (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v19; i != 0x7FFFFFFFFFFFFFFFLL; i = [v16 indexGreaterThanIndex:?])
+      for (i = firstIndex2; i != 0x7FFFFFFFFFFFFFFFLL; i = [v16 indexGreaterThanIndex:?])
       {
-        v21 = v4 == i && v5;
-        if (i >= v4 && !v21)
+        v21 = indexCopy2 == i && groupedCopy;
+        if (i >= indexCopy2 && !v21)
         {
           break;
         }
 
-        ++v4;
+        ++indexCopy2;
       }
     }
   }
 
-  return v4;
+  return indexCopy2;
 }
 
 uint64_t __50__IKChangeSet_newIndexByShiftingOldIndex_grouped___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -350,33 +350,33 @@ uint64_t __50__IKChangeSet_newIndexByShiftingOldIndex_grouped___block_invoke(uin
 
 - (id)inverseChangeSet
 {
-  v3 = [(IKChangeSet *)self removedIndexes];
-  v4 = [(IKChangeSet *)self addedIndexes];
+  removedIndexes = [(IKChangeSet *)self removedIndexes];
+  addedIndexes = [(IKChangeSet *)self addedIndexes];
   v5 = MEMORY[0x277CBEB38];
-  v6 = [(IKChangeSet *)self movedIndexesByNewIndex];
-  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  movedIndexesByNewIndex = [(IKChangeSet *)self movedIndexesByNewIndex];
+  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(movedIndexesByNewIndex, "count")}];
 
-  v8 = [(IKChangeSet *)self movedIndexesByNewIndex];
+  movedIndexesByNewIndex2 = [(IKChangeSet *)self movedIndexesByNewIndex];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __31__IKChangeSet_inverseChangeSet__block_invoke;
   v26[3] = &unk_27979B540;
   v9 = v7;
   v27 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v26];
+  [movedIndexesByNewIndex2 enumerateKeysAndObjectsUsingBlock:v26];
 
   v10 = MEMORY[0x277CBEB38];
-  v11 = [(IKChangeSet *)self updatedIndexesByNewIndex];
-  v12 = [v10 dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
+  updatedIndexesByNewIndex = [(IKChangeSet *)self updatedIndexesByNewIndex];
+  v12 = [v10 dictionaryWithCapacity:{objc_msgSend(updatedIndexesByNewIndex, "count")}];
 
-  v13 = [(IKChangeSet *)self updatedIndexesByNewIndex];
+  updatedIndexesByNewIndex2 = [(IKChangeSet *)self updatedIndexesByNewIndex];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __31__IKChangeSet_inverseChangeSet__block_invoke_2;
   v24 = &unk_27979B540;
   v14 = v12;
   v25 = v14;
-  [v13 enumerateKeysAndObjectsUsingBlock:&v21];
+  [updatedIndexesByNewIndex2 enumerateKeysAndObjectsUsingBlock:&v21];
 
   v15 = [IKChangeSet alloc];
   v16 = [v9 count];
@@ -393,7 +393,7 @@ uint64_t __50__IKChangeSet_newIndexByShiftingOldIndex_grouped___block_invoke(uin
   if ([v14 count])
   {
     v18 = [v14 copy];
-    v19 = [(IKChangeSet *)v15 initWithAddedIndexes:v3 removedIndexes:v4 movedIndexesByNewIndex:v17 updatedIndexesByNewIndex:v18];
+    v19 = [(IKChangeSet *)v15 initWithAddedIndexes:removedIndexes removedIndexes:addedIndexes movedIndexesByNewIndex:v17 updatedIndexesByNewIndex:v18];
 
     if (!v16)
     {
@@ -403,7 +403,7 @@ uint64_t __50__IKChangeSet_newIndexByShiftingOldIndex_grouped___block_invoke(uin
     goto LABEL_6;
   }
 
-  v19 = [(IKChangeSet *)v15 initWithAddedIndexes:v3 removedIndexes:v4 movedIndexesByNewIndex:v17 updatedIndexesByNewIndex:0];
+  v19 = [(IKChangeSet *)v15 initWithAddedIndexes:removedIndexes removedIndexes:addedIndexes movedIndexesByNewIndex:v17 updatedIndexesByNewIndex:0];
   if (v16)
   {
 LABEL_6:
@@ -415,37 +415,37 @@ LABEL_7:
   return v19;
 }
 
-- (id)changeSetByConcatenatingChangeSet:(id)a3
+- (id)changeSetByConcatenatingChangeSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 addedIndexes];
-  if (v5)
+  setCopy = set;
+  addedIndexes = [setCopy addedIndexes];
+  if (addedIndexes)
   {
-    v6 = [v4 addedIndexes];
-    v7 = [v6 mutableCopy];
+    addedIndexes2 = [setCopy addedIndexes];
+    indexSet = [addedIndexes2 mutableCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
   }
 
-  v8 = [(IKChangeSet *)self addedIndexes];
-  if (v8)
+  addedIndexes3 = [(IKChangeSet *)self addedIndexes];
+  if (addedIndexes3)
   {
-    v9 = [(IKChangeSet *)self addedIndexes];
-    v10 = [v9 firstIndex];
+    addedIndexes4 = [(IKChangeSet *)self addedIndexes];
+    firstIndex = [addedIndexes4 firstIndex];
 
-    while (v10 != 0x7FFFFFFFFFFFFFFFLL)
+    while (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v4 newIndexForOldIndex:v10];
+      v11 = [setCopy newIndexForOldIndex:firstIndex];
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v7 addIndex:v11];
+        [indexSet addIndex:v11];
       }
 
-      v12 = [(IKChangeSet *)self addedIndexes];
-      v10 = [v12 indexGreaterThanIndex:v10];
+      addedIndexes5 = [(IKChangeSet *)self addedIndexes];
+      firstIndex = [addedIndexes5 indexGreaterThanIndex:firstIndex];
     }
   }
 
@@ -453,34 +453,34 @@ LABEL_7:
   {
   }
 
-  v13 = [(IKChangeSet *)self removedIndexes];
-  if (v13)
+  removedIndexes = [(IKChangeSet *)self removedIndexes];
+  if (removedIndexes)
   {
-    v14 = [(IKChangeSet *)self removedIndexes];
-    v15 = [v14 mutableCopy];
+    removedIndexes2 = [(IKChangeSet *)self removedIndexes];
+    indexSet2 = [removedIndexes2 mutableCopy];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   }
 
-  v16 = [v4 removedIndexes];
-  if (v16)
+  removedIndexes3 = [setCopy removedIndexes];
+  if (removedIndexes3)
   {
-    v17 = [v4 removedIndexes];
-    v18 = [v17 firstIndex];
+    removedIndexes4 = [setCopy removedIndexes];
+    firstIndex2 = [removedIndexes4 firstIndex];
 
-    while (v18 != 0x7FFFFFFFFFFFFFFFLL)
+    while (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = [(IKChangeSet *)self oldIndexForNewIndex:v18];
+      v19 = [(IKChangeSet *)self oldIndexForNewIndex:firstIndex2];
       if (v19 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v15 addIndex:v19];
+        [indexSet2 addIndex:v19];
       }
 
-      v20 = [v4 removedIndexes];
-      v18 = [v20 indexGreaterThanIndex:v18];
+      removedIndexes5 = [setCopy removedIndexes];
+      firstIndex2 = [removedIndexes5 indexGreaterThanIndex:firstIndex2];
     }
   }
 
@@ -489,23 +489,23 @@ LABEL_7:
   }
 
   v21 = MEMORY[0x277CBEB38];
-  v22 = [(IKChangeSet *)self movedIndexesByNewIndex];
-  v23 = [v22 count];
-  v24 = [v4 movedIndexesByNewIndex];
-  v25 = [v21 dictionaryWithCapacity:{objc_msgSend(v24, "count") + v23}];
+  movedIndexesByNewIndex = [(IKChangeSet *)self movedIndexesByNewIndex];
+  v23 = [movedIndexesByNewIndex count];
+  movedIndexesByNewIndex2 = [setCopy movedIndexesByNewIndex];
+  v25 = [v21 dictionaryWithCapacity:{objc_msgSend(movedIndexesByNewIndex2, "count") + v23}];
 
-  v26 = [(IKChangeSet *)self movedIndexesByNewIndex];
+  movedIndexesByNewIndex3 = [(IKChangeSet *)self movedIndexesByNewIndex];
   v86[0] = MEMORY[0x277D85DD0];
   v86[1] = 3221225472;
   v86[2] = __49__IKChangeSet_changeSetByConcatenatingChangeSet___block_invoke;
   v86[3] = &unk_27979B518;
-  v27 = v4;
+  v27 = setCopy;
   v87 = v27;
   v28 = v25;
   v88 = v28;
-  [v26 enumerateKeysAndObjectsUsingBlock:v86];
+  [movedIndexesByNewIndex3 enumerateKeysAndObjectsUsingBlock:v86];
 
-  v29 = [v27 movedIndexesByNewIndex];
+  movedIndexesByNewIndex4 = [v27 movedIndexesByNewIndex];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
   v84[2] = __49__IKChangeSet_changeSetByConcatenatingChangeSet___block_invoke_2;
@@ -513,29 +513,29 @@ LABEL_7:
   v84[4] = self;
   v71 = v28;
   v85 = v71;
-  [v29 enumerateKeysAndObjectsUsingBlock:v84];
+  [movedIndexesByNewIndex4 enumerateKeysAndObjectsUsingBlock:v84];
 
-  v68 = v15;
-  v69 = v7;
+  v68 = indexSet2;
+  v69 = indexSet;
   if ([v27 isReducing])
   {
     v66 = v27;
-    v67 = [v27 addedIndexes];
-    v70 = [(IKChangeSet *)self removedIndexes];
+    addedIndexes6 = [v27 addedIndexes];
+    removedIndexes6 = [(IKChangeSet *)self removedIndexes];
     v81[0] = MEMORY[0x277D85DD0];
     v81[1] = 3221225472;
     v81[2] = __49__IKChangeSet_changeSetByConcatenatingChangeSet___block_invoke_3;
     v81[3] = &unk_27979B518;
-    v30 = v15;
+    v30 = indexSet2;
     v82 = v30;
-    v31 = v7;
+    v31 = indexSet;
     v83 = v31;
     v32 = v71;
     [v71 enumerateKeysAndObjectsUsingBlock:v81];
-    v33 = [v30 firstIndex];
-    if (v33 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex3 = [v30 firstIndex];
+    if (firstIndex3 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v33; i != 0x7FFFFFFFFFFFFFFFLL; i = [v30 indexGreaterThanIndex:i])
+      for (i = firstIndex3; i != 0x7FFFFFFFFFFFFFFFLL; i = [v30 indexGreaterThanIndex:i])
       {
         v35 = [v30 indexLessThanIndex:i];
         v36 = i;
@@ -552,10 +552,10 @@ LABEL_7:
           while (v37 != 0x7FFFFFFFFFFFFFFFLL);
         }
 
-        v38 = [v31 firstIndex];
-        if (v38 != 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex4 = [v31 firstIndex];
+        if (firstIndex4 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v39 = v38;
+          v39 = firstIndex4;
           while (v39 < v36)
           {
             ++v36;
@@ -566,7 +566,7 @@ LABEL_7:
             }
           }
 
-          if ([v70 containsIndex:i] && (objc_msgSend(v67, "containsIndex:", v39) & 1) != 0)
+          if ([removedIndexes6 containsIndex:i] && (objc_msgSend(addedIndexes6, "containsIndex:", v39) & 1) != 0)
           {
             goto LABEL_35;
           }
@@ -600,18 +600,18 @@ LABEL_36:
     v80 = v31;
     [v32 enumerateKeysAndObjectsUsingBlock:v78];
 
-    v15 = v68;
-    v7 = v69;
+    indexSet2 = v68;
+    indexSet = v69;
     v27 = v66;
   }
 
   v45 = MEMORY[0x277CBEB38];
-  v46 = [(IKChangeSet *)self updatedIndexesByNewIndex];
-  v47 = [v46 count];
-  v48 = [v27 updatedIndexesByNewIndex];
-  v49 = [v45 dictionaryWithCapacity:{objc_msgSend(v48, "count") + v47}];
+  updatedIndexesByNewIndex = [(IKChangeSet *)self updatedIndexesByNewIndex];
+  v47 = [updatedIndexesByNewIndex count];
+  updatedIndexesByNewIndex2 = [v27 updatedIndexesByNewIndex];
+  v49 = [v45 dictionaryWithCapacity:{objc_msgSend(updatedIndexesByNewIndex2, "count") + v47}];
 
-  v50 = [(IKChangeSet *)self updatedIndexesByNewIndex];
+  updatedIndexesByNewIndex3 = [(IKChangeSet *)self updatedIndexesByNewIndex];
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __49__IKChangeSet_changeSetByConcatenatingChangeSet___block_invoke_5;
@@ -620,9 +620,9 @@ LABEL_36:
   v76 = v51;
   v52 = v49;
   v77 = v52;
-  [v50 enumerateKeysAndObjectsUsingBlock:v75];
+  [updatedIndexesByNewIndex3 enumerateKeysAndObjectsUsingBlock:v75];
 
-  v53 = [v51 updatedIndexesByNewIndex];
+  updatedIndexesByNewIndex4 = [v51 updatedIndexesByNewIndex];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __49__IKChangeSet_changeSetByConcatenatingChangeSet___block_invoke_6;
@@ -632,13 +632,13 @@ LABEL_36:
   v73 = v54;
   v55 = v51;
   v74 = v55;
-  [v53 enumerateKeysAndObjectsUsingBlock:v72];
+  [updatedIndexesByNewIndex4 enumerateKeysAndObjectsUsingBlock:v72];
 
   v56 = [IKChangeSet alloc];
-  v57 = [v7 count];
+  v57 = [indexSet count];
   if (v57)
   {
-    v58 = [v7 copy];
+    v58 = [indexSet copy];
   }
 
   else
@@ -646,10 +646,10 @@ LABEL_36:
     v58 = 0;
   }
 
-  v59 = [v15 count];
+  v59 = [indexSet2 count];
   if (v59)
   {
-    v60 = [v15 copy];
+    v60 = [indexSet2 copy];
   }
 
   else
@@ -777,21 +777,21 @@ void __49__IKChangeSet_changeSetByConcatenatingChangeSet___block_invoke_6(id *a1
   }
 }
 
-- (id)changeSetBySubtractingChangeSet:(id)a3
+- (id)changeSetBySubtractingChangeSet:(id)set
 {
-  v4 = [a3 inverseChangeSet];
-  v5 = [(IKChangeSet *)self changeSetByConcatenatingChangeSet:v4];
+  inverseChangeSet = [set inverseChangeSet];
+  v5 = [(IKChangeSet *)self changeSetByConcatenatingChangeSet:inverseChangeSet];
 
   return v5;
 }
 
-- (id)changeSetByConvertingOldIndexesUsingChangeSet:(id)a3 andNewIndexesUsingChangeSet:(id)a4
+- (id)changeSetByConvertingOldIndexesUsingChangeSet:(id)set andNewIndexesUsingChangeSet:(id)changeSet
 {
-  v6 = a3;
-  v7 = [(IKChangeSet *)self changeSetByConcatenatingChangeSet:a4];
-  v8 = [v6 inverseChangeSet];
+  setCopy = set;
+  v7 = [(IKChangeSet *)self changeSetByConcatenatingChangeSet:changeSet];
+  inverseChangeSet = [setCopy inverseChangeSet];
 
-  v9 = [v8 changeSetByConcatenatingChangeSet:v7];
+  v9 = [inverseChangeSet changeSetByConcatenatingChangeSet:v7];
 
   return v9;
 }

@@ -1,27 +1,27 @@
 @interface GSSCredXPCHelperClient
-+ (id)createXPCConnection:(unsigned int)a3;
-+ (int)acquireForCred:(HeimCred_s *)a3 expireTime:(int64_t *)a4;
-+ (int)refreshForCred:(HeimCred_s *)a3 expireTime:(int64_t *)a4;
-+ (void)sendWakeup:(id)a3;
++ (id)createXPCConnection:(unsigned int)connection;
++ (int)acquireForCred:(HeimCred_s *)cred expireTime:(int64_t *)time;
++ (int)refreshForCred:(HeimCred_s *)cred expireTime:(int64_t *)time;
++ (void)sendWakeup:(id)wakeup;
 @end
 
 @implementation GSSCredXPCHelperClient
 
-+ (id)createXPCConnection:(unsigned int)a3
++ (id)createXPCConnection:(unsigned int)connection
 {
-  v10 = a1;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  connectionCopy = connection;
   v7 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.GSSCred" options:4096];
 
   [v7 setInterruptionHandler:?];
   [v7 setInvalidationHandler:?];
   memset(uu, 0, sizeof(uu));
   uuid_parse("D58511E6-6A96-41F0-B5CB-885DF4E3A531", uu);
-  if (v8)
+  if (connectionCopy)
   {
-    *uu = v8;
-    v6 = [v7 _xpcConnection];
+    *uu = connectionCopy;
+    _xpcConnection = [v7 _xpcConnection];
     xpc_connection_set_oneshot_instance();
   }
 
@@ -32,34 +32,34 @@
   return v5;
 }
 
-+ (void)sendWakeup:(id)a3
++ (void)sendWakeup:(id)wakeup
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, wakeup);
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, "command", "wakeup");
-  v3 = [location[0] _xpcConnection];
-  xpc_connection_send_message(v3, v4);
+  _xpcConnection = [location[0] _xpcConnection];
+  xpc_connection_send_message(_xpcConnection, v4);
 
   objc_storeStrong(&v4, 0);
   objc_storeStrong(location, 0);
 }
 
-+ (int)acquireForCred:(HeimCred_s *)a3 expireTime:(int64_t *)a4
++ (int)acquireForCred:(HeimCred_s *)cred expireTime:(int64_t *)time
 {
-  v35 = a1;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
-  v32 = a4;
+  credCopy = cred;
+  timeCopy = time;
   v31 = sub_10000E120();
   v30 = 2;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
     log = v31;
     type = v30;
-    v38 = CFUUIDCreateString(0, v33->var1);
+    v38 = CFUUIDCreateString(0, credCopy->var1);
     v4 = v38;
     v14 = v38;
     v29 = v14;
@@ -70,17 +70,17 @@
   }
 
   objc_storeStrong(&v31, 0);
-  v28 = [v35 createXPCConnection:v33->var11];
-  [v35 sendWakeup:v28];
-  v27[1] = v33->var2;
+  v28 = [selfCopy createXPCConnection:credCopy->var11];
+  [selfCopy sendWakeup:v28];
+  v27[1] = credCopy->var2;
   v27[0] = _CFXPCCreateXPCObjectFromCFObject();
   if (v27[0])
   {
     v25 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v25, "command", "acquire");
     xpc_dictionary_set_value(v25, "attributes", v27[0]);
-    v11 = [v28 _xpcConnection];
-    v24 = xpc_connection_send_message_with_reply_sync(v11, v25);
+    _xpcConnection = [v28 _xpcConnection];
+    v24 = xpc_connection_send_message_with_reply_sync(_xpcConnection, v25);
 
     [v28 invalidate];
     if (!v24)
@@ -120,9 +120,9 @@
       v17 = [v18 objectForKeyedSubscript:@"result"];
       v16 = [v17 objectForKeyedSubscript:@"status"];
       v15 = [v17 objectForKeyedSubscript:@"expire"];
-      v6 = [v15 longValue];
-      *v32 = v6;
-      v36 = [v16 intValue];
+      longValue = [v15 longValue];
+      *timeCopy = longValue;
+      intValue = [v16 intValue];
       v26 = 1;
       objc_storeStrong(&v15, 0);
       objc_storeStrong(&v16, 0);
@@ -132,7 +132,7 @@
 
     else
     {
-      v36 = 1;
+      intValue = 1;
       v26 = 1;
     }
 
@@ -142,28 +142,28 @@
 
   else
   {
-    v36 = -1765328188;
+    intValue = -1765328188;
     v26 = 1;
   }
 
   objc_storeStrong(v27, 0);
   objc_storeStrong(&v28, 0);
-  return v36;
+  return intValue;
 }
 
-+ (int)refreshForCred:(HeimCred_s *)a3 expireTime:(int64_t *)a4
++ (int)refreshForCred:(HeimCred_s *)cred expireTime:(int64_t *)time
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
-  v29 = a4;
+  credCopy = cred;
+  timeCopy = time;
   v28 = sub_10000E120();
   v27 = 2;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
     log = v28;
     type = v27;
-    v35 = CFUUIDCreateString(0, v30->var1);
+    v35 = CFUUIDCreateString(0, credCopy->var1);
     v4 = v35;
     v12 = v35;
     v26 = v12;
@@ -174,17 +174,17 @@
   }
 
   objc_storeStrong(&v28, 0);
-  v25 = [v32 createXPCConnection:v30->var11];
-  [v32 sendWakeup:v25];
-  v24[1] = v30->var2;
+  v25 = [selfCopy createXPCConnection:credCopy->var11];
+  [selfCopy sendWakeup:v25];
+  v24[1] = credCopy->var2;
   v24[0] = _CFXPCCreateXPCObjectFromCFObject();
   if (v24[0])
   {
     v22 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v22, "command", "refresh");
     xpc_dictionary_set_value(v22, "attributes", v24[0]);
-    v9 = [v25 _xpcConnection];
-    v21 = xpc_connection_send_message_with_reply_sync(v9, v22);
+    _xpcConnection = [v25 _xpcConnection];
+    v21 = xpc_connection_send_message_with_reply_sync(_xpcConnection, v22);
 
     [v25 invalidate];
     if (!v21)
@@ -222,9 +222,9 @@
       v15 = [v16 objectForKeyedSubscript:@"result"];
       v14 = [v15 objectForKeyedSubscript:@"status"];
       v13 = [v15 objectForKeyedSubscript:@"expire"];
-      v6 = [v13 longValue];
-      *v29 = v6;
-      v33 = [v14 intValue];
+      longValue = [v13 longValue];
+      *timeCopy = longValue;
+      intValue = [v14 intValue];
       v23 = 1;
       objc_storeStrong(&v13, 0);
       objc_storeStrong(&v14, 0);
@@ -234,7 +234,7 @@
 
     else
     {
-      v33 = 1;
+      intValue = 1;
       v23 = 1;
     }
 
@@ -244,13 +244,13 @@
 
   else
   {
-    v33 = -1765328188;
+    intValue = -1765328188;
     v23 = 1;
   }
 
   objc_storeStrong(v24, 0);
   objc_storeStrong(&v25, 0);
-  return v33;
+  return intValue;
 }
 
 @end

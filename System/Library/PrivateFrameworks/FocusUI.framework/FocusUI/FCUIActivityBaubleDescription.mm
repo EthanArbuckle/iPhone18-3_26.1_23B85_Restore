@@ -1,41 +1,41 @@
 @interface FCUIActivityBaubleDescription
-- (FCUIActivityBaubleDescription)initWithActivityDescription:(id)a3;
-- (FCUIActivityBaubleDescription)initWithSystemImageName:(id)a3 tintColor:(id)a4;
-- (id)completeDescriptionWithReferencePointSize:(double)a3 maximumPointSize:(double)a4 referenceDimension:(double)a5;
+- (FCUIActivityBaubleDescription)initWithActivityDescription:(id)description;
+- (FCUIActivityBaubleDescription)initWithSystemImageName:(id)name tintColor:(id)color;
+- (id)completeDescriptionWithReferencePointSize:(double)size maximumPointSize:(double)pointSize referenceDimension:(double)dimension;
 @end
 
 @implementation FCUIActivityBaubleDescription
 
-- (FCUIActivityBaubleDescription)initWithSystemImageName:(id)a3 tintColor:(id)a4
+- (FCUIActivityBaubleDescription)initWithSystemImageName:(id)name tintColor:(id)color
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v12.receiver = self;
   v12.super_class = FCUIActivityBaubleDescription;
   v9 = [(FCUIActivityBaubleDescription *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_systemImageName, a3);
-    objc_storeStrong(&v10->_tintColor, a4);
+    objc_storeStrong(&v9->_systemImageName, name);
+    objc_storeStrong(&v10->_tintColor, color);
   }
 
   return v10;
 }
 
-- (FCUIActivityBaubleDescription)initWithActivityDescription:(id)a3
+- (FCUIActivityBaubleDescription)initWithActivityDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 activitySymbolImageName];
-  v6 = [MEMORY[0x277D75348] fcui_colorForActivity:v4];
+  descriptionCopy = description;
+  activitySymbolImageName = [descriptionCopy activitySymbolImageName];
+  v6 = [MEMORY[0x277D75348] fcui_colorForActivity:descriptionCopy];
 
-  v7 = [(FCUIActivityBaubleDescription *)self initWithSystemImageName:v5 tintColor:v6];
+  v7 = [(FCUIActivityBaubleDescription *)self initWithSystemImageName:activitySymbolImageName tintColor:v6];
   return v7;
 }
 
-- (id)completeDescriptionWithReferencePointSize:(double)a3 maximumPointSize:(double)a4 referenceDimension:(double)a5
+- (id)completeDescriptionWithReferencePointSize:(double)size maximumPointSize:(double)pointSize referenceDimension:(double)dimension
 {
-  v5 = [[FCUIActivityBaubleCompleteDescription alloc] initWithSystemImageName:self->_systemImageName tintColor:self->_tintColor referencePointSize:a3 maximumPointSize:a4 referenceDimension:a5];
+  v5 = [[FCUIActivityBaubleCompleteDescription alloc] initWithSystemImageName:self->_systemImageName tintColor:self->_tintColor referencePointSize:size maximumPointSize:pointSize referenceDimension:dimension];
 
   return v5;
 }

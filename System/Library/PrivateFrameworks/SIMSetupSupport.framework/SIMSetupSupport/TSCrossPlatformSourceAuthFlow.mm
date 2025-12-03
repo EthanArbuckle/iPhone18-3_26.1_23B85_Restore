@@ -1,22 +1,22 @@
 @interface TSCrossPlatformSourceAuthFlow
-- (TSCrossPlatformSourceAuthFlow)initWithCode:(id)a3;
+- (TSCrossPlatformSourceAuthFlow)initWithCode:(id)code;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)_connectToDevice:(id)a3 completion:(id)a4;
-- (void)_findEligiblePlans:(id)a3;
-- (void)_showCancelAlert:(id)a3 withMessage:(id)a4;
+- (id)nextViewControllerFrom:(id)from;
+- (void)_connectToDevice:(id)device completion:(id)completion;
+- (void)_findEligiblePlans:(id)plans;
+- (void)_showCancelAlert:(id)alert withMessage:(id)message;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
-- (void)onCodeDetected:(id)a3 completion:(id)a4;
-- (void)transferEventUpdate:(id)a3;
-- (void)viewControllerDidComplete:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)onCodeDetected:(id)detected completion:(id)completion;
+- (void)transferEventUpdate:(id)update;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSCrossPlatformSourceAuthFlow
 
-- (TSCrossPlatformSourceAuthFlow)initWithCode:(id)a3
+- (TSCrossPlatformSourceAuthFlow)initWithCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   v11.receiver = self;
   v11.super_class = TSCrossPlatformSourceAuthFlow;
   v6 = [(TSSIMSetupFlow *)&v11 init];
@@ -28,7 +28,7 @@
     v6->_client = v8;
 
     [(CoreTelephonyClient *)v6->_client setDelegate:v6];
-    objc_storeStrong(&v6->dctCode, a3);
+    objc_storeStrong(&v6->dctCode, code);
   }
 
   return v6;
@@ -45,11 +45,11 @@
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v5 = objc_alloc_init(CrossPlatformTransferIntroViewController);
     [(TSSIMSetupFlow *)self setTopViewController:v5];
@@ -64,7 +64,7 @@
       _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "first view - %@ @%s", &v16, 0x16u);
     }
 
-    v4[2](v4, v5);
+    controllerCopy[2](controllerCopy, v5);
   }
 
   else
@@ -79,10 +79,10 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -107,7 +107,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
+    v9 = fromCopy;
     if ([v9 isEnterManuallyTapped])
     {
       v10 = objc_alloc_init(CrossPlatformManualDetailsViewController);
@@ -122,8 +122,8 @@
       v21[0] = &unk_287583DF0;
       v21[1] = MEMORY[0x277CBEC38];
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
-      v15 = [v9 navigationController];
-      v10 = [(TSSubFlowViewController *)v13 initWithOptions:v14 navigationController:v15 delegate:self];
+      navigationController = [v9 navigationController];
+      v10 = [(TSSubFlowViewController *)v13 initWithOptions:v14 navigationController:navigationController delegate:self];
     }
 
     goto LABEL_14;
@@ -142,8 +142,8 @@
     v8 = v18;
 LABEL_10:
     v11 = [v6 dictionaryWithObjects:v7 forKeys:v8 count:2];
-    v12 = [v4 navigationController];
-    v10 = [(TSSubFlowViewController *)v5 initWithOptions:v11 navigationController:v12 delegate:self];
+    navigationController2 = [fromCopy navigationController];
+    v10 = [(TSSubFlowViewController *)v5 initWithOptions:v11 navigationController:navigationController2 delegate:self];
 
     goto LABEL_14;
   }
@@ -156,9 +156,9 @@ LABEL_14:
   return v10;
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && self->dctCode)
   {
@@ -169,8 +169,8 @@ LABEL_14:
     v7[2] = __59__TSCrossPlatformSourceAuthFlow_viewControllerDidComplete___block_invoke;
     v7[3] = &unk_279B444B8;
     objc_copyWeak(&v10, &location);
-    v8 = v4;
-    v9 = self;
+    v8 = completeCopy;
+    selfCopy = self;
     [(TSCrossPlatformSourceAuthFlow *)self onCodeDetected:dctCode completion:v7];
 
     objc_destroyWeak(&v10);
@@ -181,7 +181,7 @@ LABEL_14:
   {
     v6.receiver = self;
     v6.super_class = TSCrossPlatformSourceAuthFlow;
-    [(TSSIMSetupFlow *)&v6 viewControllerDidComplete:v4];
+    [(TSSIMSetupFlow *)&v6 viewControllerDidComplete:completeCopy];
   }
 }
 
@@ -208,13 +208,13 @@ void __59__TSCrossPlatformSourceAuthFlow_viewControllerDidComplete___block_invok
   }
 }
 
-- (void)transferEventUpdate:(id)a3
+- (void)transferEventUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kCrossTransferConnectFailReason"];
+  updateCopy = update;
+  v5 = [updateCopy objectForKey:@"kCrossTransferConnectFailReason"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v7 = [v4 objectForKeyedSubscript:@"kIsCodeError"];
+    v7 = [updateCopy objectForKeyedSubscript:@"kIsCodeError"];
     if ([v7 BOOLValue])
     {
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -239,31 +239,31 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__TSCrossPlatformSourceAuthFlow_transferEventUpdate___block_invoke;
   v15[3] = &unk_279B44B38;
   v15[4] = self;
-  [TSFlowHelper showBluetoothOffAlertForCrossPlatformTransfer:v6 withCloseHandler:v15];
+  [TSFlowHelper showBluetoothOffAlertForCrossPlatformTransfer:topViewController withCloseHandler:v15];
 
 LABEL_9:
 }
 
-- (void)onCodeDetected:(id)a3 completion:(id)a4
+- (void)onCodeDetected:(id)detected completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  detectedCopy = detected;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __59__TSCrossPlatformSourceAuthFlow_onCodeDetected_completion___block_invoke;
     v17[3] = &unk_279B45B00;
     v17[4] = self;
-    v19 = v7;
-    v18 = v6;
+    v19 = completionCopy;
+    v18 = detectedCopy;
     [(TSCrossPlatformSourceAuthFlow *)self _findEligiblePlans:v17];
   }
 
@@ -363,17 +363,17 @@ void __59__TSCrossPlatformSourceAuthFlow_onCodeDetected_completion___block_invok
   }
 }
 
-- (void)_connectToDevice:(id)a3 completion:(id)a4
+- (void)_connectToDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__TSCrossPlatformSourceAuthFlow__connectToDevice_completion___block_invoke;
   v9[3] = &unk_279B44DB8;
-  v10 = v6;
-  v8 = v6;
-  [(CoreTelephonyClient *)client connectCrossPlatformTransportWithCode:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CoreTelephonyClient *)client connectCrossPlatformTransportWithCode:device completion:v9];
 }
 
 void __61__TSCrossPlatformSourceAuthFlow__connectToDevice_completion___block_invoke(uint64_t a1, void *a2)
@@ -398,9 +398,9 @@ void __61__TSCrossPlatformSourceAuthFlow__connectToDevice_completion___block_inv
   v5();
 }
 
-- (void)_showCancelAlert:(id)a3 withMessage:(id)a4
+- (void)_showCancelAlert:(id)alert withMessage:(id)message
 {
-  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:alert message:message preferredStyle:1];
   v6 = MEMORY[0x277D750F8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"OK" value:&stru_28753DF48 table:@"Localizable"];
@@ -434,9 +434,9 @@ void __62__TSCrossPlatformSourceAuthFlow__showCancelAlert_withMessage___block_in
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)_findEligiblePlans:(id)a3
+- (void)_findEligiblePlans:(id)plans
 {
-  v4 = a3;
+  plansCopy = plans;
   objc_initWeak(&location, self);
   v5 = +[TSCellularPlanManagerCache sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
@@ -444,7 +444,7 @@ void __62__TSCrossPlatformSourceAuthFlow__showCancelAlert_withMessage___block_in
   v7[2] = __52__TSCrossPlatformSourceAuthFlow__findEligiblePlans___block_invoke;
   v7[3] = &unk_279B45180;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = plansCopy;
   v8 = v6;
   [v5 planItemsWithCompletion:v7];
 
@@ -507,7 +507,7 @@ uint64_t __52__TSCrossPlatformSourceAuthFlow__findEligiblePlans___block_invoke_2
 - (void)firstViewController
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]unimplemented - please use async version @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]unimplemented - please use async version @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

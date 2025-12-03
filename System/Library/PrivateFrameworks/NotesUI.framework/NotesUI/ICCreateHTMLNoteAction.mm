@@ -1,32 +1,32 @@
 @interface ICCreateHTMLNoteAction
-- (ICCreateHTMLNoteAction)initWithHTMLNoteContext:(id)a3 folder:(id)a4;
-- (id)performWithTitle:(id)a3 contents:(id)a4 pinned:(BOOL)a5 error:(id *)a6;
+- (ICCreateHTMLNoteAction)initWithHTMLNoteContext:(id)context folder:(id)folder;
+- (id)performWithTitle:(id)title contents:(id)contents pinned:(BOOL)pinned error:(id *)error;
 @end
 
 @implementation ICCreateHTMLNoteAction
 
-- (ICCreateHTMLNoteAction)initWithHTMLNoteContext:(id)a3 folder:(id)a4
+- (ICCreateHTMLNoteAction)initWithHTMLNoteContext:(id)context folder:(id)folder
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  folderCopy = folder;
   v12.receiver = self;
   v12.super_class = ICCreateHTMLNoteAction;
   v9 = [(ICCreateHTMLNoteAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_folder, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_folder, folder);
   }
 
   return v10;
 }
 
-- (id)performWithTitle:(id)a3 contents:(id)a4 pinned:(BOOL)a5 error:(id *)a6
+- (id)performWithTitle:(id)title contents:(id)contents pinned:(BOOL)pinned error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  pinnedCopy = pinned;
+  titleCopy = title;
+  contentsCopy = contents;
   v12 = [MEMORY[0x1E695DF00] now];
   v31 = 0;
   v32 = &v31;
@@ -40,12 +40,12 @@
   v28 = __Block_byref_object_copy__80;
   v29 = __Block_byref_object_dispose__80;
   v30 = 0;
-  if (v7)
+  if (pinnedCopy)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B79F0] code:236 userInfo:0];
-      *a6 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -56,45 +56,45 @@
 
   else
   {
-    if ([v10 length])
+    if ([titleCopy length])
     {
-      if ([v11 length])
+      if ([contentsCopy length])
       {
         v14 = objc_alloc_init(MEMORY[0x1E696AD40]);
-        [v14 ic_appendString:v10];
+        [v14 ic_appendString:titleCopy];
         [v14 ic_appendString:@"\n"];
-        [v14 appendAttributedString:v11];
+        [v14 appendAttributedString:contentsCopy];
         v15 = [v14 copy];
 
-        v11 = v15;
+        contentsCopy = v15;
       }
 
       else
       {
-        v14 = v11;
-        v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v10];
+        v14 = contentsCopy;
+        contentsCopy = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy];
       }
     }
 
-    v16 = [(ICCreateHTMLNoteAction *)self context];
+    context = [(ICCreateHTMLNoteAction *)self context];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __65__ICCreateHTMLNoteAction_performWithTitle_contents_pinned_error___block_invoke;
     v19[3] = &unk_1E846E5B8;
-    v11 = v11;
-    v20 = v11;
-    v21 = self;
+    contentsCopy = contentsCopy;
+    v20 = contentsCopy;
+    selfCopy = self;
     v22 = v12;
     v23 = &v31;
     v24 = &v25;
-    [v16 performBlockAndWait:v19];
+    [context performBlockAndWait:v19];
 
-    if (a6)
+    if (error)
     {
       v17 = v32[5];
       if (v17)
       {
-        *a6 = v17;
+        *error = v17;
       }
     }
 

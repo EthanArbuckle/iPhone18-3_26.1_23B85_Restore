@@ -1,9 +1,9 @@
 @interface VUIDelayOperation
-+ (id)delayOperationWithDelay:(double)a3;
-+ (id)delayOperationWithFireDate:(id)a3;
++ (id)delayOperationWithDelay:(double)delay;
++ (id)delayOperationWithFireDate:(id)date;
 - (VUIDelayOperation)init;
-- (VUIDelayOperation)initWithDelay:(double)a3 tolerance:(double)a4;
-- (VUIDelayOperation)initWithFireDate:(id)a3 tolerance:(double)a4;
+- (VUIDelayOperation)initWithDelay:(double)delay tolerance:(double)tolerance;
+- (VUIDelayOperation)initWithFireDate:(id)date tolerance:(double)tolerance;
 - (void)_cancelTimer;
 - (void)cancel;
 - (void)dealloc;
@@ -12,26 +12,26 @@
 
 @implementation VUIDelayOperation
 
-+ (id)delayOperationWithDelay:(double)a3
++ (id)delayOperationWithDelay:(double)delay
 {
-  v3 = [[VUIDelayOperation alloc] initWithDelay:a3 tolerance:a3 / 10.0];
+  v3 = [[VUIDelayOperation alloc] initWithDelay:delay tolerance:delay / 10.0];
 
   return v3;
 }
 
-+ (id)delayOperationWithFireDate:(id)a3
++ (id)delayOperationWithFireDate:(id)date
 {
-  v3 = a3;
-  v4 = [[VUIDelayOperation alloc] initWithFireDate:v3 tolerance:0.0];
+  dateCopy = date;
+  v4 = [[VUIDelayOperation alloc] initWithFireDate:dateCopy tolerance:0.0];
 
   [(VUIDelayOperation *)v4 setShouldIgnoreTolerance:1];
 
   return v4;
 }
 
-- (VUIDelayOperation)initWithDelay:(double)a3 tolerance:(double)a4
+- (VUIDelayOperation)initWithDelay:(double)delay tolerance:(double)tolerance
 {
-  if (a3 <= 0.0)
+  if (delay <= 0.0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The delay argument must be greater than zero."];
   }
@@ -41,17 +41,17 @@
   result = [(VUIDelayOperation *)&v8 init];
   if (result)
   {
-    result->_delay = a3;
-    result->_tolerance = a4;
+    result->_delay = delay;
+    result->_tolerance = tolerance;
   }
 
   return result;
 }
 
-- (VUIDelayOperation)initWithFireDate:(id)a3 tolerance:(double)a4
+- (VUIDelayOperation)initWithFireDate:(id)date tolerance:(double)tolerance
 {
-  v6 = a3;
-  if (!v6)
+  dateCopy = date;
+  if (!dateCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"The %@ parameter must not be nil.", @"fireDate"}];
   }
@@ -61,11 +61,11 @@
   v7 = [(VUIDelayOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dateCopy copy];
     fireDate = v7->_fireDate;
     v7->_fireDate = v8;
 
-    v7->_tolerance = a4;
+    v7->_tolerance = tolerance;
   }
 
   return v7;
@@ -121,11 +121,11 @@
   v7 = v6;
   [(VUIDelayOperation *)self tolerance];
   v9 = v8;
-  v10 = [(VUIDelayOperation *)self fireDate];
-  v11 = v10;
-  if (v10)
+  fireDate = [(VUIDelayOperation *)self fireDate];
+  v11 = fireDate;
+  if (fireDate)
   {
-    [v10 timeIntervalSinceNow];
+    [fireDate timeIntervalSinceNow];
     v7 = v12;
     if ([(VUIDelayOperation *)self shouldIgnoreTolerance])
     {
@@ -148,7 +148,7 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270E6E000, v14, OS_LOG_TYPE_DEFAULT, "Delay operation timer will begin %@", buf, 0xCu);
   }
 

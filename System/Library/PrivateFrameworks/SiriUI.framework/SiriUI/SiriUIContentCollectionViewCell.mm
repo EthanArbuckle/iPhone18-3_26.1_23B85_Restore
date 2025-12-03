@@ -1,7 +1,7 @@
 @interface SiriUIContentCollectionViewCell
 + (UIEdgeInsets)defaultInsets;
 + (id)reuseIdentifier;
-- (SiriUIContentCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SiriUIContentCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)customViewEdgeInsets;
 - (UIEdgeInsets)textAndAccessoryInsets;
 - (UIOffset)accessoryOffset;
@@ -11,31 +11,31 @@
 - (void)_updateSubviewConstraints;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryOffset:(UIOffset)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setCustomView:(id)a3;
-- (void)setHasChevron:(BOOL)a3;
-- (void)setKeylineType:(int64_t)a3;
-- (void)setTextLabel:(id)a3;
-- (void)setTextOffset:(UIOffset)a3;
-- (void)setVerticalAlignment:(int64_t)a3;
+- (void)setAccessoryOffset:(UIOffset)offset;
+- (void)setAccessoryView:(id)view;
+- (void)setCustomView:(id)view;
+- (void)setHasChevron:(BOOL)chevron;
+- (void)setKeylineType:(int64_t)type;
+- (void)setTextLabel:(id)label;
+- (void)setTextOffset:(UIOffset)offset;
+- (void)setVerticalAlignment:(int64_t)alignment;
 - (void)updateConstraints;
 @end
 
 @implementation SiriUIContentCollectionViewCell
 
-- (SiriUIContentCollectionViewCell)initWithFrame:(CGRect)a3
+- (SiriUIContentCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = SiriUIContentCollectionViewCell;
-  v3 = [(SiriUIClearBackgroundCell *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIClearBackgroundCell *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v5 setAutoresizingMask:18];
-    v6 = [MEMORY[0x277D75348] siriui_highlightColor];
-    [v5 setBackgroundColor:v6];
+    siriui_highlightColor = [MEMORY[0x277D75348] siriui_highlightColor];
+    [v5 setBackgroundColor:siriui_highlightColor];
 
     [(SiriUIContentCollectionViewCell *)v3 setSelectedBackgroundView:v5];
     v3->_keylineType = 1;
@@ -44,14 +44,14 @@
     v3->_keyline = v7;
 
     [(SiriUIKeyline *)v3->_keyline setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(SiriUIContentCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v3->_keyline];
+    contentView = [(SiriUIContentCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_keyline];
 
     v10 = [MEMORY[0x277D755B8] siriui_semiTransparentChevronImageAndAllowNaturalLayout:1];
-    v11 = [objc_opt_class() chevronBlendEffectEnabled];
+    chevronBlendEffectEnabled = [objc_opt_class() chevronBlendEffectEnabled];
     v12 = objc_alloc(MEMORY[0x277D755E8]);
     v13 = v10;
-    if (v11)
+    if (chevronBlendEffectEnabled)
     {
       v13 = [v10 imageWithRenderingMode:2];
     }
@@ -60,7 +60,7 @@
     chevronView = v3->_chevronView;
     v3->_chevronView = v14;
 
-    if (v11)
+    if (chevronBlendEffectEnabled)
     {
     }
 
@@ -69,14 +69,14 @@
     [(UIImageView *)v3->_chevronView setContentHuggingPriority:0 forAxis:v16];
     [(UIImageView *)v3->_chevronView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_chevronView setHidden:1];
-    v17 = [(SiriUIContentCollectionViewCell *)v3 contentView];
-    [v17 addSubview:v3->_chevronView];
+    contentView2 = [(SiriUIContentCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_chevronView];
 
-    if (v11)
+    if (chevronBlendEffectEnabled)
     {
       v18 = v3->_chevronView;
-      v19 = [MEMORY[0x277D75348] siriui_blendEffectColor];
-      [(UIImageView *)v18 setTintColor:v19];
+      siriui_blendEffectColor = [MEMORY[0x277D75348] siriui_blendEffectColor];
+      [(UIImageView *)v18 setTintColor:siriui_blendEffectColor];
 
       [(UIImageView *)v3->_chevronView siriui_setBlendEffectEnabled:1];
     }
@@ -87,19 +87,19 @@
     v3->_textAndAccessoryInsets.bottom = v22;
     v3->_textAndAccessoryInsets.right = v23;
     v3->_verticalAlignment = 0;
-    v24 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     subviewConstraints = v3->_subviewConstraints;
-    v3->_subviewConstraints = v24;
+    v3->_subviewConstraints = array;
   }
 
   return v3;
 }
 
-- (void)setKeylineType:(int64_t)a3
+- (void)setKeylineType:(int64_t)type
 {
-  if (self->_keylineType != a3)
+  if (self->_keylineType != type)
   {
-    self->_keylineType = a3;
+    self->_keylineType = type;
     [(SiriUIKeyline *)self->_keyline setKeylineType:?];
 
     [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
@@ -148,14 +148,14 @@
   v10 = MEMORY[0x277CCAAD0];
   if (self->_hasChevron)
   {
-    v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:6 relatedBy:0 toItem:self->_chevronView attribute:5 multiplier:1.0 constant:-v8];
-    [(NSMutableArray *)v9 addObject:v11];
+    contentView = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:6 relatedBy:0 toItem:self->_chevronView attribute:5 multiplier:1.0 constant:-v8];
+    [(NSMutableArray *)v9 addObject:contentView];
   }
 
   else
   {
-    v11 = [(SiriUIContentCollectionViewCell *)self contentView];
-    v12 = [v10 constraintWithItem:v6 attribute:6 relatedBy:0 toItem:v11 attribute:6 multiplier:1.0 constant:-v8];
+    contentView = [(SiriUIContentCollectionViewCell *)self contentView];
+    v12 = [v10 constraintWithItem:v6 attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-v8];
     [(NSMutableArray *)v9 addObject:v12];
   }
 
@@ -165,16 +165,16 @@ LABEL_15:
   {
     v14 = self->_subviewConstraints;
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(SiriUIContentCollectionViewCell *)self contentView];
-    v17 = [v15 constraintWithItem:textLabel attribute:5 relatedBy:0 toItem:v16 attribute:5 multiplier:1.0 constant:self->_textAndAccessoryInsets.left + self->_textOffset.horizontal];
+    contentView2 = [(SiriUIContentCollectionViewCell *)self contentView];
+    v17 = [v15 constraintWithItem:textLabel attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:self->_textAndAccessoryInsets.left + self->_textOffset.horizontal];
     [(NSMutableArray *)v14 addObject:v17];
   }
 
-  v18 = [MEMORY[0x277CBEB18] array];
-  v19 = v18;
+  array = [MEMORY[0x277CBEB18] array];
+  v19 = array;
   if (self->_chevronView)
   {
-    [v18 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_textLabel)
@@ -193,8 +193,8 @@ LABEL_15:
   {
     v21 = self->_subviewConstraints;
     v22 = MEMORY[0x277CCAAD0];
-    v23 = [(SiriUIContentCollectionViewCell *)self contentView];
-    v24 = [v22 constraintWithItem:keyline attribute:4 relatedBy:0 toItem:v23 attribute:4 multiplier:1.0 constant:0.0];
+    contentView3 = [(SiriUIContentCollectionViewCell *)self contentView];
+    v24 = [v22 constraintWithItem:keyline attribute:4 relatedBy:0 toItem:contentView3 attribute:4 multiplier:1.0 constant:0.0];
     [(NSMutableArray *)v21 addObject:v24];
 
     v25 = self->_subviewConstraints;
@@ -257,13 +257,13 @@ LABEL_37:
 
           v37 = self->_subviewConstraints;
           v38 = MEMORY[0x277CCAAD0];
-          v39 = [(SiriUIContentCollectionViewCell *)self contentView];
+          contentView4 = [(SiriUIContentCollectionViewCell *)self contentView];
           top = v34 + self->_textAndAccessoryInsets.top;
           v41 = 1.0;
           v42 = v38;
           v43 = v33;
           v44 = 3;
-          v45 = v39;
+          v45 = contentView4;
           v46 = 3;
         }
 
@@ -271,13 +271,13 @@ LABEL_37:
         {
           v37 = self->_subviewConstraints;
           v47 = MEMORY[0x277CCAAD0];
-          v39 = [(SiriUIContentCollectionViewCell *)self contentView];
+          contentView4 = [(SiriUIContentCollectionViewCell *)self contentView];
           top = self->_textAndAccessoryInsets.top;
           v41 = 1.0;
           v42 = v47;
           v43 = v33;
           v44 = 10;
-          v45 = v39;
+          v45 = contentView4;
           v46 = 10;
         }
 
@@ -291,8 +291,8 @@ LABEL_37:
     while (v30);
   }
 
-  v49 = [(SiriUIContentCollectionViewCell *)self contentView];
-  [v49 addConstraints:self->_subviewConstraints];
+  contentView5 = [(SiriUIContentCollectionViewCell *)self contentView];
+  [contentView5 addConstraints:self->_subviewConstraints];
 }
 
 - (void)updateConstraints
@@ -304,13 +304,13 @@ LABEL_37:
   {
     if (self->_chevronView)
     {
-      v3 = [(SiriUIContentCollectionViewCell *)self contentView];
+      contentView = [(SiriUIContentCollectionViewCell *)self contentView];
       v4 = MEMORY[0x277CCAAD0];
       chevronView = self->_chevronView;
-      v6 = [(SiriUIContentCollectionViewCell *)self contentView];
+      contentView2 = [(SiriUIContentCollectionViewCell *)self contentView];
       [objc_opt_class() defaultInsets];
-      v8 = [v4 constraintWithItem:chevronView attribute:6 relatedBy:0 toItem:v6 attribute:6 multiplier:1.0 constant:-v7];
-      [v3 addConstraint:v8];
+      v8 = [v4 constraintWithItem:chevronView attribute:6 relatedBy:0 toItem:contentView2 attribute:6 multiplier:1.0 constant:-v7];
+      [contentView addConstraint:v8];
     }
 
     self->_hasSetupStaticSubviewConstraints = 1;
@@ -368,44 +368,44 @@ LABEL_37:
   v38.size.width = v14;
   v38.size.height = v16;
   v28 = v26 + CGRectGetHeight(v38);
-  v29 = [(SiriUIContentCollectionViewCell *)self selectedBackgroundView];
-  [v29 setFrame:{v20, v27, v24, v28}];
+  selectedBackgroundView = [(SiriUIContentCollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView setFrame:{v20, v27, v24, v28}];
 
   [(UIView *)self->_customView setFrame:v31 + self->_customViewEdgeInsets.left, v30 + self->_customViewEdgeInsets.top, v32 - (self->_customViewEdgeInsets.left + self->_customViewEdgeInsets.right), v33 - (self->_customViewEdgeInsets.top + self->_customViewEdgeInsets.bottom)];
 }
 
-- (void)setCustomView:(id)a3
+- (void)setCustomView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customView = self->_customView;
-  if (customView != v5)
+  if (customView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)customView removeFromSuperview];
-    objc_storeStrong(&self->_customView, a3);
-    v7 = [(SiriUIContentCollectionViewCell *)self contentView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_customView, view);
+    contentView = [(SiriUIContentCollectionViewCell *)self contentView];
+    [contentView addSubview:v8];
 
     customView = [(SiriUIContentCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](customView, v5);
+  MEMORY[0x2821F96F8](customView, viewCopy);
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryView = self->_accessoryView;
-  if (accessoryView != v5)
+  if (accessoryView != viewCopy)
   {
-    v16 = v5;
+    v16 = viewCopy;
     [(UIView *)accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     if (self->_accessoryView)
     {
-      v7 = [(SiriUIContentCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_accessoryView];
+      contentView = [(SiriUIContentCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_accessoryView];
 
       [(UIView *)self->_accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
       v8 = self->_accessoryView;
@@ -422,68 +422,68 @@ LABEL_37:
     }
 
     accessoryView = [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
-    v5 = v16;
+    viewCopy = v16;
   }
 
-  MEMORY[0x2821F96F8](accessoryView, v5);
+  MEMORY[0x2821F96F8](accessoryView, viewCopy);
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
-  if (self->_verticalAlignment != a3)
+  if (self->_verticalAlignment != alignment)
   {
-    self->_verticalAlignment = a3;
+    self->_verticalAlignment = alignment;
     [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
   }
 }
 
-- (void)setTextLabel:(id)a3
+- (void)setTextLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   textLabel = self->_textLabel;
-  if (textLabel != v5)
+  if (textLabel != labelCopy)
   {
-    v9 = v5;
+    v9 = labelCopy;
     [(UILabel *)textLabel removeFromSuperview];
-    objc_storeStrong(&self->_textLabel, a3);
+    objc_storeStrong(&self->_textLabel, label);
     v7 = self->_textLabel;
     if (v7)
     {
       [(UILabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v8 = [(SiriUIContentCollectionViewCell *)self contentView];
-      [v8 addSubview:self->_textLabel];
+      contentView = [(SiriUIContentCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_textLabel];
     }
 
     textLabel = [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
-    v5 = v9;
+    labelCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](textLabel, v5);
+  MEMORY[0x2821F96F8](textLabel, labelCopy);
 }
 
-- (void)setTextOffset:(UIOffset)a3
+- (void)setTextOffset:(UIOffset)offset
 {
-  if (a3.horizontal != self->_textOffset.horizontal || a3.vertical != self->_textOffset.vertical)
+  if (offset.horizontal != self->_textOffset.horizontal || offset.vertical != self->_textOffset.vertical)
   {
-    self->_textOffset = a3;
+    self->_textOffset = offset;
     [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
   }
 }
 
-- (void)setAccessoryOffset:(UIOffset)a3
+- (void)setAccessoryOffset:(UIOffset)offset
 {
-  if (a3.horizontal != self->_accessoryOffset.horizontal || a3.vertical != self->_accessoryOffset.vertical)
+  if (offset.horizontal != self->_accessoryOffset.horizontal || offset.vertical != self->_accessoryOffset.vertical)
   {
-    self->_accessoryOffset = a3;
+    self->_accessoryOffset = offset;
     [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
   }
 }
 
-- (void)setHasChevron:(BOOL)a3
+- (void)setHasChevron:(BOOL)chevron
 {
-  if (self->_hasChevron != a3)
+  if (self->_hasChevron != chevron)
   {
-    self->_hasChevron = a3;
+    self->_hasChevron = chevron;
     [(SiriUIContentCollectionViewCell *)self setNeedsUpdateSubviewConstraints];
     chevronView = self->_chevronView;
     v5 = !self->_hasChevron;
@@ -494,8 +494,8 @@ LABEL_37:
 
 + (UIEdgeInsets)defaultInsets
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = ceil(16.0);
   if (v3 >= 2.0)
   {
@@ -579,10 +579,10 @@ LABEL_37:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(SiriUIContentCollectionViewCell *)self contentView];
-  v11 = [v10 subviews];
+  contentView = [(SiriUIContentCollectionViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v12 = [subviews countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -594,7 +594,7 @@ LABEL_37:
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         v16 = *(*(&v17 + 1) + 8 * v15);
@@ -607,7 +607,7 @@ LABEL_37:
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v13 = [subviews countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v13);

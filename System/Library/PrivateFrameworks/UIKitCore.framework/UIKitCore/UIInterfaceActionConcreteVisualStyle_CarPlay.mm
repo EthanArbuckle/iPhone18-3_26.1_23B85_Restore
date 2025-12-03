@@ -1,21 +1,21 @@
 @interface UIInterfaceActionConcreteVisualStyle_CarPlay
-- (BOOL)_shouldHighlightAppearanceForViewState:(id)a3;
+- (BOOL)_shouldHighlightAppearanceForViewState:(id)state;
 - (CGSize)minimumActionContentSize;
 - (UIEdgeInsets)actionSequenceEdgeInsets;
 - (UIEdgeInsets)contentMargin;
-- (double)actionSpacingForGroupViewState:(id)a3;
+- (double)actionSpacingForGroupViewState:(id)state;
 - (double)contentCornerRadius;
-- (id)_highlightedActionTitleLabelColorForViewState:(id)a3;
-- (id)_normalActionTitleLabelColorForViewState:(id)a3;
+- (id)_highlightedActionTitleLabelColorForViewState:(id)state;
+- (id)_normalActionTitleLabelColorForViewState:(id)state;
 - (id)_regularActionFont;
-- (id)actionBackgroundColorForViewState:(id)a3;
-- (id)actionTitleLabelColorForViewState:(id)a3;
-- (id)actionTitleLabelFontForViewState:(id)a3;
-- (id)newActionBackgroundViewForViewState:(id)a3;
-- (id)newActionSeparatorViewForGroupViewState:(id)a3;
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3;
-- (void)configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5;
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5;
+- (id)actionBackgroundColorForViewState:(id)state;
+- (id)actionTitleLabelColorForViewState:(id)state;
+- (id)actionTitleLabelFontForViewState:(id)state;
+- (id)newActionBackgroundViewForViewState:(id)state;
+- (id)newActionSeparatorViewForGroupViewState:(id)state;
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state;
+- (void)configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state;
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_CarPlay
@@ -54,9 +54,9 @@
   return result;
 }
 
-- (id)actionTitleLabelFontForViewState:(id)a3
+- (id)actionTitleLabelFontForViewState:(id)state
 {
-  if ([a3 isPreferred])
+  if ([state isPreferred])
   {
     [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _preferredActionFont];
   }
@@ -70,30 +70,30 @@
   return v4;
 }
 
-- (id)actionTitleLabelColorForViewState:(id)a3
+- (id)actionTitleLabelColorForViewState:(id)state
 {
-  v4 = a3;
-  if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:v4])
+  stateCopy = state;
+  if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:stateCopy])
   {
-    [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _highlightedActionTitleLabelColorForViewState:v4];
+    [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _highlightedActionTitleLabelColorForViewState:stateCopy];
   }
 
   else
   {
-    [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _normalActionTitleLabelColorForViewState:v4];
+    [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _normalActionTitleLabelColorForViewState:stateCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)actionBackgroundColorForViewState:(id)a3
+- (id)actionBackgroundColorForViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (_UISolariumEnabled())
   {
     v5 = +[UIColor tertiarySystemFillColor];
-    if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:v4])
+    if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:stateCopy])
     {
       v6 = +[UIColor _carSystemFocusColor];
 LABEL_4:
@@ -103,12 +103,12 @@ LABEL_4:
       goto LABEL_15;
     }
 
-    if ([v4 isPreferred])
+    if ([stateCopy isPreferred])
     {
-      v9 = [v4 action];
-      v10 = [v9 type];
+      action = [stateCopy action];
+      type = [action type];
 
-      if (v10 != 2)
+      if (type != 2)
       {
         v6 = +[UIColor systemBlueColor];
         goto LABEL_4;
@@ -118,17 +118,17 @@ LABEL_4:
 
   else
   {
-    if ([v4 isPreferred])
+    if ([stateCopy isPreferred])
     {
-      v8 = [v4 tintColor];
+      tintColor = [stateCopy tintColor];
     }
 
     else
     {
-      v11 = [v4 action];
-      v12 = [v11 type];
+      action2 = [stateCopy action];
+      type2 = [action2 type];
 
-      if (v12 == 2)
+      if (type2 == 2)
       {
         +[UIColor _alertDestructiveActionBackgroundColor];
       }
@@ -137,10 +137,10 @@ LABEL_4:
       {
         +[UIColor _alertDefaultActionBackgroundColor];
       }
-      v8 = ;
+      tintColor = ;
     }
 
-    v5 = v8;
+    v5 = tintColor;
   }
 
 LABEL_15:
@@ -148,32 +148,32 @@ LABEL_15:
   return v5;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (_UISolariumEnabled())
   {
     v5 = objc_alloc_init(_UIAlertControllerCarBackgroundView);
-    v6 = [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self actionBackgroundColorForViewState:v4];
+    v6 = [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self actionBackgroundColorForViewState:stateCopy];
 
     [(_UIAlertControllerCarBackgroundView *)v5 setFillColor:v6];
-    v7 = +[UIColor _carSystemFocusColor];
-    [(_UIAlertControllerCarBackgroundView *)v5 setHighlightColor:v7];
+    action = +[UIColor _carSystemFocusColor];
+    [(_UIAlertControllerCarBackgroundView *)v5 setHighlightColor:action];
   }
 
   else
   {
-    v7 = [v4 action];
-    v8 = [v4 isHighlighted];
+    action = [stateCopy action];
+    isHighlighted = [stateCopy isHighlighted];
 
-    if (v8)
+    if (isHighlighted)
     {
       v9 = off_1E70EAFE0;
     }
 
     else
     {
-      if ([v7 type] != 1)
+      if ([action type] != 1)
       {
         v5 = 0;
         goto LABEL_9;
@@ -190,7 +190,7 @@ LABEL_9:
   return v5;
 }
 
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state
 {
   v3 = _UISolariumEnabled();
   v4 = off_1E70EAD78;
@@ -204,7 +204,7 @@ LABEL_9:
   return objc_alloc_init(v5);
 }
 
-- (id)newActionSeparatorViewForGroupViewState:(id)a3
+- (id)newActionSeparatorViewForGroupViewState:(id)state
 {
   if (_UISolariumEnabled())
   {
@@ -214,7 +214,7 @@ LABEL_9:
   return objc_opt_new();
 }
 
-- (double)actionSpacingForGroupViewState:(id)a3
+- (double)actionSpacingForGroupViewState:(id)state
 {
   v3 = _UISolariumEnabled();
   result = 0.0;
@@ -245,23 +245,23 @@ LABEL_9:
   return result;
 }
 
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state
 {
-  v12 = a3;
-  v7 = a5;
+  labelCopy = label;
+  stateCopy = state;
   if (_UISolariumEnabled())
   {
-    if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:v7])
+    if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:stateCopy])
     {
-      v8 = [v12 traitCollection];
-      v9 = [v8 userInterfaceStyle];
+      traitCollection = [labelCopy traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
       v10 = 1;
-      if (v9 != 2)
+      if (userInterfaceStyle != 2)
       {
-        v10 = v9;
+        v10 = userInterfaceStyle;
       }
 
-      if (v9 == 1)
+      if (userInterfaceStyle == 1)
       {
         v11 = 2;
       }
@@ -271,33 +271,33 @@ LABEL_9:
         v11 = v10;
       }
 
-      [v12 setOverrideUserInterfaceStyle:v11];
+      [labelCopy setOverrideUserInterfaceStyle:v11];
     }
 
     else
     {
-      [v12 setOverrideUserInterfaceStyle:0];
+      [labelCopy setOverrideUserInterfaceStyle:0];
     }
   }
 }
 
-- (void)configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state
 {
-  v11 = a3;
-  v6 = a5;
+  viewCopy = view;
+  stateCopy = state;
   if (_UISolariumEnabled())
   {
-    if ([v6 isHighlighted] && (objc_msgSend(v6, "isPreferred") & 1) == 0)
+    if ([stateCopy isHighlighted] && (objc_msgSend(stateCopy, "isPreferred") & 1) == 0)
     {
-      v7 = [v11 traitCollection];
-      v8 = [v7 userInterfaceStyle];
+      traitCollection = [viewCopy traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
       v9 = 1;
-      if (v8 != 2)
+      if (userInterfaceStyle != 2)
       {
-        v9 = v8;
+        v9 = userInterfaceStyle;
       }
 
-      if (v8 == 1)
+      if (userInterfaceStyle == 1)
       {
         v10 = 2;
       }
@@ -307,12 +307,12 @@ LABEL_9:
         v10 = v9;
       }
 
-      [v11 setOverrideUserInterfaceStyle:v10];
+      [viewCopy setOverrideUserInterfaceStyle:v10];
     }
 
     else
     {
-      [v11 setOverrideUserInterfaceStyle:0];
+      [viewCopy setOverrideUserInterfaceStyle:0];
     }
   }
 }
@@ -333,12 +333,12 @@ LABEL_9:
   return v2;
 }
 
-- (id)_highlightedActionTitleLabelColorForViewState:(id)a3
+- (id)_highlightedActionTitleLabelColorForViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (_UISolariumEnabled())
   {
-    [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _normalActionTitleLabelColorForViewState:v4];
+    [(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _normalActionTitleLabelColorForViewState:stateCopy];
   }
 
   else
@@ -350,63 +350,63 @@ LABEL_9:
   return v5;
 }
 
-- (id)_normalActionTitleLabelColorForViewState:(id)a3
+- (id)_normalActionTitleLabelColorForViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = _UISolariumEnabled();
-  v6 = [v4 action];
-  v7 = v6;
+  action = [stateCopy action];
+  v7 = action;
   if (!v5)
   {
-    v12 = [v6 type];
+    type = [action type];
 
-    if (v12 >= 2)
+    if (type >= 2)
     {
-      if (v12 == 2)
+      if (type == 2)
       {
-        v13 = +[UIColor systemRedColor];
+        tintColor = +[UIColor systemRedColor];
         goto LABEL_17;
       }
 
-      if (v12 != 100)
+      if (type != 100)
       {
         goto LABEL_18;
       }
     }
 
-    v13 = [v4 tintColor];
+    tintColor = [stateCopy tintColor];
 LABEL_17:
-    v7 = v13;
+    v7 = tintColor;
     goto LABEL_18;
   }
 
-  v8 = [v6 isEnabled];
+  isEnabled = [action isEnabled];
 
-  if ((v8 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v13 = +[UIColor _carSystemTertiaryColor];
+    tintColor = +[UIColor _carSystemTertiaryColor];
     goto LABEL_17;
   }
 
   v7 = +[UIColor labelColor];
-  v9 = [v4 action];
-  v10 = [v9 type];
+  action2 = [stateCopy action];
+  type2 = [action2 type];
 
-  if (v10 == 2)
+  if (type2 == 2)
   {
     v11 = +[UIColor systemRedColor];
     goto LABEL_23;
   }
 
-  v14 = [v4 action];
-  v15 = [v14 type];
+  action3 = [stateCopy action];
+  type3 = [action3 type];
 
-  if (v15 == 100)
+  if (type3 == 100)
   {
-    v16 = [v4 tintColor];
+    tintColor2 = [stateCopy tintColor];
 
     v17 = +[UIColor systemBlueColor];
-    v18 = v16;
+    v18 = tintColor2;
     v19 = v17;
     v7 = v19;
     if (v18 == v19)
@@ -439,14 +439,14 @@ LABEL_25:
     v7 = v18;
   }
 
-  if ([v4 isPreferred])
+  if ([stateCopy isPreferred])
   {
     v22 = +[UIColor systemWhiteColor];
 
     v7 = v22;
   }
 
-  if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:v4])
+  if ([(UIInterfaceActionConcreteVisualStyle_CarPlay *)self _shouldHighlightAppearanceForViewState:stateCopy])
   {
     v23 = +[UIColor labelColor];
 
@@ -458,20 +458,20 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)_shouldHighlightAppearanceForViewState:(id)a3
+- (BOOL)_shouldHighlightAppearanceForViewState:(id)state
 {
-  v3 = a3;
-  if ([v3 isHighlighted])
+  stateCopy = state;
+  if ([stateCopy isHighlighted])
   {
-    v4 = 1;
+    isFocused = 1;
   }
 
   else
   {
-    v4 = [v3 isFocused];
+    isFocused = [stateCopy isFocused];
   }
 
-  return v4;
+  return isFocused;
 }
 
 @end

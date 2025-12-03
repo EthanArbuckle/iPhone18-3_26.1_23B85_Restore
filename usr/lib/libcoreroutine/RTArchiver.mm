@@ -1,20 +1,20 @@
 @interface RTArchiver
-+ (BOOL)extractArchiveAtURL:(id)a3 error:(id *)a4;
-- (RTArchiver)initWithOutputURL:(id)a3 compress:(BOOL)a4;
-- (void)addDirectoryToArchive:(id)a3;
-- (void)addFileToArchive:(id)a3;
++ (BOOL)extractArchiveAtURL:(id)l error:(id *)error;
+- (RTArchiver)initWithOutputURL:(id)l compress:(BOOL)compress;
+- (void)addDirectoryToArchive:(id)archive;
+- (void)addFileToArchive:(id)archive;
 - (void)closeArchive;
 - (void)dealloc;
 @end
 
 @implementation RTArchiver
 
-- (RTArchiver)initWithOutputURL:(id)a3 compress:(BOOL)a4
+- (RTArchiver)initWithOutputURL:(id)l compress:(BOOL)compress
 {
-  v4 = a4;
+  compressCopy = compress;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@
   if (self)
   {
     self->_archive = archive_write_new();
-    if (v4)
+    if (compressCopy)
     {
       v7 = archive_write_add_filter_gzip();
     }
@@ -51,10 +51,10 @@
       v10 = archive_write_set_format_pax();
       if (!v10)
       {
-        v13 = [v6 path];
-        v14 = [v13 UTF8String];
+        path = [lCopy path];
+        uTF8String = [path UTF8String];
 
-        v15 = open_dprotected_np(v14, 514, 2, 0, 416);
+        v15 = open_dprotected_np(uTF8String, 514, 2, 0, 416);
         self->_archive_fd = v15;
         if (v15 < 0)
         {
@@ -63,7 +63,7 @@
           {
             v17 = *__error();
             *buf = 138412546;
-            v20 = v6;
+            v20 = lCopy;
             v21 = 1024;
             v22 = v17;
             _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Unable to create archive at path %@ with data protection, errno, %{errno}d", buf, 0x12u);
@@ -88,7 +88,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v6;
+      v20 = lCopy;
       v21 = 1024;
       v22 = v9;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Error creating archive at path %@ %d", buf, 0x12u);
@@ -113,12 +113,12 @@ LABEL_16:
   [(RTArchiver *)&v3 dealloc];
 }
 
-- (void)addFileToArchive:(id)a3
+- (void)addFileToArchive:(id)archive
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  archiveCopy = archive;
+  v4 = archiveCopy;
+  if (!archiveCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -133,19 +133,19 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v5 = [v3 path];
-  v6 = [v5 UTF8String];
+  path = [archiveCopy path];
+  uTF8String = [path UTF8String];
 
-  if (!v6)
+  if (!uTF8String)
   {
     goto LABEL_10;
   }
 
-  stat(v6, &v24);
+  stat(uTF8String, &v24);
   archive_entry_new();
   archive_entry_copy_stat();
-  v7 = [v4 relativePath];
-  [v7 UTF8String];
+  relativePath = [v4 relativePath];
+  [relativePath UTF8String];
   archive_entry_set_pathname();
 
   if (archive_write_header())
@@ -153,11 +153,11 @@ LABEL_16:
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v4 path];
+      path2 = [v4 path];
       v21 = archive_errno();
       v22 = archive_error_string();
       *buf = 138412802;
-      v32 = v20;
+      v32 = path2;
       v33 = 1024;
       v34 = v21;
       v35 = 2080;
@@ -168,17 +168,17 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v10 = open(v6, 0);
+  v10 = open(uTF8String, 0);
   if (v10 == -1)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v4 path];
+      path3 = [v4 path];
       v16 = *__error();
       v17 = *__error();
       *buf = 138412802;
-      v32 = v15;
+      v32 = path3;
       v33 = 1024;
       v34 = v16;
       v35 = 1024;
@@ -215,9 +215,9 @@ LABEL_9:
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v4 path];
+      path4 = [v4 path];
       *v25 = 138412802;
-      v26 = v23;
+      v26 = path4;
       v27 = 2048;
       v28 = v13;
       v29 = 2048;
@@ -232,16 +232,16 @@ LABEL_22:
 LABEL_10:
 }
 
-- (void)addDirectoryToArchive:(id)a3
+- (void)addDirectoryToArchive:(id)archive
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  archiveCopy = archive;
+  if (archiveCopy)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [v3 path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [archiveCopy path];
     v33 = 0;
-    v6 = [v4 contentsOfDirectoryAtPath:v5 error:&v33];
+    v6 = [defaultManager contentsOfDirectoryAtPath:path error:&v33];
     v7 = v33;
 
     if (v7)
@@ -281,21 +281,21 @@ LABEL_10:
 
             v14 = *(*(&v29 + 1) + 8 * i);
             v15 = objc_autoreleasePoolPush();
-            v16 = [v3 path];
-            v17 = [v16 stringByAppendingPathComponent:v14];
+            path2 = [archiveCopy path];
+            v17 = [path2 stringByAppendingPathComponent:v14];
 
-            v18 = [v3 relativePath];
-            v19 = [v18 stringByAppendingPathComponent:v14];
+            relativePath = [archiveCopy relativePath];
+            v19 = [relativePath stringByAppendingPathComponent:v14];
 
-            v20 = [*(v10 + 2560) defaultManager];
-            v21 = [v20 fileExistsAtPath:v17 isDirectory:buf];
+            defaultManager2 = [*(v10 + 2560) defaultManager];
+            v21 = [defaultManager2 fileExistsAtPath:v17 isDirectory:buf];
 
             if (v21)
             {
               v22 = MEMORY[0x277CBEBC0];
               v23 = buf[0];
-              v24 = [v3 baseURL];
-              v25 = [v22 fileURLWithPath:v19 isDirectory:v23 relativeToURL:v24];
+              baseURL = [archiveCopy baseURL];
+              v25 = [v22 fileURLWithPath:v19 isDirectory:v23 relativeToURL:baseURL];
 
               if (buf[0] == 1)
               {
@@ -354,11 +354,11 @@ LABEL_10:
   }
 }
 
-+ (BOOL)extractArchiveAtURL:(id)a3 error:(id *)a4
++ (BOOL)extractArchiveAtURL:(id)l error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -371,34 +371,34 @@ LABEL_10:
     }
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v5 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
     archive_read_new();
     archive_read_support_format_all();
     archive_read_support_filter_all();
-    v10 = [v5 path];
-    [v10 UTF8String];
+    path2 = [lCopy path];
+    [path2 UTF8String];
     open_filename = archive_read_open_filename();
 
     if (open_filename)
     {
-      if (a4)
+      if (error)
       {
         v12 = MEMORY[0x277CCA9B8];
         v13 = *MEMORY[0x277D01448];
         v46 = *MEMORY[0x277CCA450];
         v14 = MEMORY[0x277CCACA8];
-        v15 = [v5 path];
-        v16 = [v14 stringWithFormat:@"failed to open archive, %@, %s", v15, archive_error_string()];
+        path3 = [lCopy path];
+        v16 = [v14 stringWithFormat:@"failed to open archive, %@, %s", path3, archive_error_string()];
         v47 = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-        *a4 = [v12 errorWithDomain:v13 code:0 userInfo:v17];
+        *error = [v12 errorWithDomain:v13 code:0 userInfo:v17];
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
@@ -482,7 +482,7 @@ LABEL_29:
 LABEL_30:
           if (archive_write_finish_entry())
           {
-            if (a4)
+            if (error)
             {
               v34 = MEMORY[0x277CCA9B8];
               v35 = *MEMORY[0x277D01448];
@@ -502,11 +502,11 @@ LABEL_30:
 
       if (next_header == 1)
       {
-        LOBYTE(a4) = 1;
+        LOBYTE(error) = 1;
         goto LABEL_39;
       }
 
-      if (a4)
+      if (error)
       {
         v34 = MEMORY[0x277CCA9B8];
         v35 = *MEMORY[0x277D01448];
@@ -518,10 +518,10 @@ LABEL_30:
         v39 = &v44;
 LABEL_37:
         v40 = [v37 dictionaryWithObjects:v38 forKeys:v39 count:1];
-        *a4 = [v34 errorWithDomain:v35 code:0 userInfo:v40];
+        *error = [v34 errorWithDomain:v35 code:0 userInfo:v40];
 
 LABEL_38:
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
 
 LABEL_39:
@@ -531,22 +531,22 @@ LABEL_39:
     archive_read_free();
   }
 
-  else if (a4)
+  else if (error)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D01448];
     v48 = *MEMORY[0x277CCA450];
     v20 = MEMORY[0x277CCACA8];
-    v21 = [v5 path];
-    v22 = [v20 stringWithFormat:@"archive doesn't exist at path, %@", v21];
+    path4 = [lCopy path];
+    v22 = [v20 stringWithFormat:@"archive doesn't exist at path, %@", path4];
     v49 = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    *a4 = [v18 errorWithDomain:v19 code:0 userInfo:v23];
+    *error = [v18 errorWithDomain:v19 code:0 userInfo:v23];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
 @end

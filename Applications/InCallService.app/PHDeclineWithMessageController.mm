@@ -1,20 +1,20 @@
 @interface PHDeclineWithMessageController
 - (BOOL)isMessagesTheDefaultTextApp;
 - (NSString)displayName;
-- (PHDeclineWithMessageController)initWithIncomingCall:(id)a3 customMessagePresentingViewController:(id)a4 declineCallService:(id)a5;
+- (PHDeclineWithMessageController)initWithIncomingCall:(id)call customMessagePresentingViewController:(id)controller declineCallService:(id)service;
 - (TUHandle)recipientHandle;
 - (UIViewController)customMessagePresentingViewController;
 - (id)declineMessageMenu;
 - (id)replyWithMessageStore;
 - (int)addressBookIdentifier;
-- (void)configureDeclineMessageForButton:(id)a3;
+- (void)configureDeclineMessageForButton:(id)button;
 - (void)declineCall;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)openDefaultMessagingAppWithReply:(id)a3;
-- (void)sendDeclineViaChatKitWithMessageResponse:(id)a3;
-- (void)sendDeclineViaIntentWithMessageResponse:(id)a3 extension:(id)a4;
-- (void)sendDeclineWithMessageResponse:(id)a3;
-- (void)setContextForCustomReplyWithSubscriptionIdentifier:(id)a3;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)openDefaultMessagingAppWithReply:(id)reply;
+- (void)sendDeclineViaChatKitWithMessageResponse:(id)response;
+- (void)sendDeclineViaIntentWithMessageResponse:(id)response extension:(id)extension;
+- (void)sendDeclineWithMessageResponse:(id)response;
+- (void)setContextForCustomReplyWithSubscriptionIdentifier:(id)identifier;
 - (void)showCustomReplyWithMessageComposer;
 @end
 
@@ -23,18 +23,18 @@
 - (id)declineMessageMenu
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(PHDeclineWithMessageController *)self replyWithMessageStore];
-  v23 = [v4 defaultReplies];
+  replyWithMessageStore = [(PHDeclineWithMessageController *)self replyWithMessageStore];
+  defaultReplies = [replyWithMessageStore defaultReplies];
 
-  v5 = [(PHDeclineWithMessageController *)self replyWithMessageStore];
-  v6 = [v5 customReplies];
+  replyWithMessageStore2 = [(PHDeclineWithMessageController *)self replyWithMessageStore];
+  customReplies = [replyWithMessageStore2 customReplies];
 
-  v22 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v7 = 0;
   do
   {
-    v8 = [v6 objectAtIndex:{v7, v22}];
+    v8 = [customReplies objectAtIndex:{v7, selfCopy}];
     if ([v8 length])
     {
       v9 = v8;
@@ -43,7 +43,7 @@
 
     else
     {
-      v9 = [v23 objectAtIndex:v7];
+      v9 = [defaultReplies objectAtIndex:v7];
       v11 = [&off_10036AF28 objectAtIndex:v7];
       if ([v11 length])
       {
@@ -70,10 +70,10 @@
   }
 
   while (v7 != 3);
-  v13 = [(PHDeclineWithMessageController *)v22 incomingCall];
-  v14 = [v13 hasSendCustomMessageCapability];
+  incomingCall = [(PHDeclineWithMessageController *)selfCopy incomingCall];
+  hasSendCustomMessageCapability = [incomingCall hasSendCustomMessageCapability];
 
-  if (v14)
+  if (hasSendCustomMessageCapability)
   {
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"CUSTOM" value:&stru_100361FD0 table:@"InCallService"];
@@ -97,39 +97,39 @@
   return v20;
 }
 
-- (void)configureDeclineMessageForButton:(id)a3
+- (void)configureDeclineMessageForButton:(id)button
 {
-  v4 = a3;
-  [v4 setContextMenuEnabled:1];
-  [v4 setContextMenuIsPrimary:1];
+  buttonCopy = button;
+  [buttonCopy setContextMenuEnabled:1];
+  [buttonCopy setContextMenuIsPrimary:1];
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100108DE8;
   v5[3] = &unk_100359920;
   objc_copyWeak(&v6, &location);
-  [v4 _setMenuProvider:v5];
+  [buttonCopy _setMenuProvider:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (PHDeclineWithMessageController)initWithIncomingCall:(id)a3 customMessagePresentingViewController:(id)a4 declineCallService:(id)a5
+- (PHDeclineWithMessageController)initWithIncomingCall:(id)call customMessagePresentingViewController:(id)controller declineCallService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  callCopy = call;
+  controllerCopy = controller;
+  serviceCopy = service;
   v16.receiver = self;
   v16.super_class = PHDeclineWithMessageController;
   v12 = [(PHDeclineWithMessageController *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_incomingCall, a3);
-    objc_storeWeak(&v13->_customMessagePresentingViewController, v10);
+    objc_storeStrong(&v12->_incomingCall, call);
+    objc_storeWeak(&v13->_customMessagePresentingViewController, controllerCopy);
     cachedPreviouslyUsedLastAddressHandle = v13->_cachedPreviouslyUsedLastAddressHandle;
     v13->_cachedPreviouslyUsedLastAddressHandle = &stru_100361FD0;
 
-    objc_storeStrong(&v13->_declineCallService, a5);
+    objc_storeStrong(&v13->_declineCallService, service);
   }
 
   return v13;
@@ -137,28 +137,28 @@
 
 - (TUHandle)recipientHandle
 {
-  v3 = [(PHDeclineWithMessageController *)self incomingCall];
-  v4 = [v3 handle];
+  incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+  handle = [incomingCall handle];
 
-  v34 = v4;
-  v5 = [v4 value];
-  v6 = [v5 destinationIdIsPseudonym];
+  v34 = handle;
+  value = [handle value];
+  destinationIdIsPseudonym = [value destinationIdIsPseudonym];
 
-  if (!v6)
+  if (!destinationIdIsPseudonym)
   {
     goto LABEL_19;
   }
 
   v7 = +[TUCallCenter sharedInstance];
-  v8 = [(PHDeclineWithMessageController *)self incomingCall];
-  v9 = [v7 activeConversationForCall:v8];
+  incomingCall2 = [(PHDeclineWithMessageController *)self incomingCall];
+  v9 = [v7 activeConversationForCall:incomingCall2];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = [v9 remoteMembers];
-  v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  remoteMembers = [v9 remoteMembers];
+  v11 = [remoteMembers countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v11)
   {
     goto LABEL_18;
@@ -173,24 +173,24 @@
     {
       if (*v37 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(remoteMembers);
       }
 
       v15 = *(*(&v36 + 1) + 8 * i);
       if ([v15 validationSource] == 2)
       {
-        v16 = [v15 association];
-        if (v16)
+        association = [v15 association];
+        if (association)
         {
-          v17 = v16;
-          v18 = [v15 association];
-          if ([v18 type] != 2)
+          v17 = association;
+          association2 = [v15 association];
+          if ([association2 type] != 2)
           {
             goto LABEL_14;
           }
 
-          v19 = [v15 association];
-          if (([v19 isPrimary] & 1) == 0)
+          association3 = [v15 association];
+          if (([association3 isPrimary] & 1) == 0)
           {
 
 LABEL_14:
@@ -198,23 +198,23 @@ LABEL_14:
           }
 
           [v15 association];
-          v21 = v20 = v10;
-          v22 = [v21 handle];
-          v35 = [v22 isEqualToHandle:v34];
+          v21 = v20 = remoteMembers;
+          handle2 = [v21 handle];
+          v35 = [handle2 isEqualToHandle:v34];
 
-          v10 = v20;
+          remoteMembers = v20;
           if (v35)
           {
-            v23 = [v15 handle];
+            handle3 = [v15 handle];
 
-            v34 = v23;
+            v34 = handle3;
             goto LABEL_17;
           }
         }
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    v12 = [remoteMembers countByEnumeratingWithState:&v36 objects:v40 count:16];
   }
 
   while (v12);
@@ -239,7 +239,7 @@ LABEL_19:
 
     v27 = v26;
 
-    v28 = [v34 value];
+    value2 = [v34 value];
     v29 = TUNetworkCountryCode();
     v30 = TUNumberToDial();
 
@@ -252,25 +252,25 @@ LABEL_19:
 
 - (NSString)displayName
 {
-  v2 = [(PHDeclineWithMessageController *)self incomingCall];
-  v3 = [v2 displayName];
+  incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+  displayName = [incomingCall displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (int)addressBookIdentifier
 {
-  v2 = [(PHDeclineWithMessageController *)self incomingCall];
-  v3 = [v2 abUID];
+  incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+  abUID = [incomingCall abUID];
 
-  return v3;
+  return abUID;
 }
 
 - (void)declineCall
 {
   declineCallService = self->_declineCallService;
-  v3 = [(PHDeclineWithMessageController *)self incomingCall];
-  [(PHDeclineCallServiceProtocol *)declineCallService declineAnsweringWithCall:v3 anayticsSourceForDismissal:@"SBSUIInCallTransitionAnalyticsSourceDeclineWithMessage" reason:4 completionHandler:&stru_100359940];
+  incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+  [(PHDeclineCallServiceProtocol *)declineCallService declineAnsweringWithCall:incomingCall anayticsSourceForDismissal:@"SBSUIInCallTransitionAnalyticsSourceDeclineWithMessage" reason:4 completionHandler:&stru_100359940];
 }
 
 - (id)replyWithMessageStore
@@ -288,40 +288,40 @@ LABEL_19:
   return cachedReplyStore;
 }
 
-- (void)sendDeclineWithMessageResponse:(id)a3
+- (void)sendDeclineWithMessageResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(PHDeclineWithMessageController *)self recipientHandle];
+  responseCopy = response;
+  recipientHandle = [(PHDeclineWithMessageController *)self recipientHandle];
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412546;
-    v20 = v4;
+    v20 = responseCopy;
     v21 = 2112;
-    v22 = v5;
+    v22 = recipientHandle;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "response: %@ recipientHandle: %@", &v19, 0x16u);
   }
 
-  v7 = [v5 value];
-  v8 = [v7 destinationIdIsPseudonym];
+  value = [recipientHandle value];
+  destinationIdIsPseudonym = [value destinationIdIsPseudonym];
 
-  if ((v8 & 1) == 0)
+  if ((destinationIdIsPseudonym & 1) == 0)
   {
-    v9 = [v5 value];
-    if ([v9 length])
+    value2 = [recipientHandle value];
+    if ([value2 length])
     {
-      v10 = [v4 length];
+      v10 = [responseCopy length];
 
       if (v10)
       {
         if ([(PHDeclineWithMessageController *)self isMessagesTheDefaultTextApp])
         {
-          v11 = [(PHDeclineWithMessageController *)self incomingCall];
-          v12 = [v11 sendMessageIntentExtension];
+          incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+          sendMessageIntentExtension = [incomingCall sendMessageIntentExtension];
 
           v13 = sub_100004F84();
           v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-          if (v12)
+          if (sendMessageIntentExtension)
           {
             if (v14)
             {
@@ -329,7 +329,7 @@ LABEL_19:
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Using send message intent to send response", &v19, 2u);
             }
 
-            [(PHDeclineWithMessageController *)self sendDeclineViaIntentWithMessageResponse:v4 extension:v12];
+            [(PHDeclineWithMessageController *)self sendDeclineViaIntentWithMessageResponse:responseCopy extension:sendMessageIntentExtension];
           }
 
           else
@@ -340,9 +340,9 @@ LABEL_19:
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Using ChatKit to send response", &v19, 2u);
             }
 
-            [(PHDeclineWithMessageController *)self sendDeclineViaChatKitWithMessageResponse:v4];
-            v17 = [(PHDeclineWithMessageController *)self displayName];
-            v18 = [v5 value];
+            [(PHDeclineWithMessageController *)self sendDeclineViaChatKitWithMessageResponse:responseCopy];
+            displayName = [(PHDeclineWithMessageController *)self displayName];
+            value3 = [recipientHandle value];
             [(PHDeclineWithMessageController *)self addressBookIdentifier];
             TUNotifyOfReplyWithMessage();
           }
@@ -357,7 +357,7 @@ LABEL_19:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Messages app not installed, trying to open default messaging app", &v19, 2u);
           }
 
-          [(PHDeclineWithMessageController *)self openDefaultMessagingAppWithReply:v4];
+          [(PHDeclineWithMessageController *)self openDefaultMessagingAppWithReply:responseCopy];
         }
 
         goto LABEL_15;
@@ -449,18 +449,18 @@ LABEL_15:
   return v9;
 }
 
-- (void)openDefaultMessagingAppWithReply:(id)a3
+- (void)openDefaultMessagingAppWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PHDeclineWithMessageController *)self recipientHandle];
+  replyCopy = reply;
+  recipientHandle = [(PHDeclineWithMessageController *)self recipientHandle];
   v6 = objc_alloc_init(NSURLComponents);
   [v6 setScheme:@"im"];
-  v7 = [v5 value];
-  [v6 setPath:v7];
+  value = [recipientHandle value];
+  [v6 setPath:value];
 
-  if (v4)
+  if (replyCopy)
   {
-    v8 = [[NSURLQueryItem alloc] initWithName:@"body" value:v4];
+    v8 = [[NSURLQueryItem alloc] initWithName:@"body" value:replyCopy];
     v17 = v8;
     v9 = [NSArray arrayWithObjects:&v17 count:1];
     [v6 setQueryItems:v9];
@@ -492,23 +492,23 @@ LABEL_15:
 {
   if ([(PHDeclineWithMessageController *)self isMessagesTheDefaultTextApp])
   {
-    v3 = [(PHDeclineWithMessageController *)self incomingCall];
-    v4 = [v3 provider];
-    v5 = [v4 isSystemProvider];
+    incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+    provider = [incomingCall provider];
+    isSystemProvider = [provider isSystemProvider];
 
-    v6 = [(PHDeclineWithMessageController *)self incomingCall];
-    v7 = v6;
-    if (v5)
+    incomingCall2 = [(PHDeclineWithMessageController *)self incomingCall];
+    v7 = incomingCall2;
+    if (isSystemProvider)
     {
-      v8 = [v6 localSenderIdentity];
-      v9 = [v8 accountUUID];
-      v10 = [v9 UUIDString];
-      [(PHDeclineWithMessageController *)self setContextForCustomReplyWithSubscriptionIdentifier:v10];
+      localSenderIdentity = [incomingCall2 localSenderIdentity];
+      accountUUID = [localSenderIdentity accountUUID];
+      uUIDString = [accountUUID UUIDString];
+      [(PHDeclineWithMessageController *)self setContextForCustomReplyWithSubscriptionIdentifier:uUIDString];
 
       v11 = objc_alloc_init(PHMessageComposeViewController);
-      v12 = [(PHDeclineWithMessageController *)self recipientHandle];
-      v13 = [v12 value];
-      v20 = v13;
+      recipientHandle = [(PHDeclineWithMessageController *)self recipientHandle];
+      value = [recipientHandle value];
+      v20 = value;
       v14 = [NSArray arrayWithObjects:&v20 count:1];
       [(PHMessageComposeViewController *)v11 setRecipients:v14];
 
@@ -516,15 +516,15 @@ LABEL_15:
       [(PHMessageComposeViewController *)v11 setMessageComposeDelegate:self];
       [(PHMessageComposeViewController *)v11 _setCanEditRecipients:0];
       [(PHMessageComposeViewController *)v11 disableUserAttachments];
-      v15 = [(PHDeclineWithMessageController *)self customMessagePresentingViewController];
-      [v15 presentViewController:v11 animated:1 completion:0];
+      customMessagePresentingViewController = [(PHDeclineWithMessageController *)self customMessagePresentingViewController];
+      [customMessagePresentingViewController presentViewController:v11 animated:1 completion:0];
     }
 
     else
     {
-      v17 = [v6 hasSendCustomMessageCapability];
+      hasSendCustomMessageCapability = [incomingCall2 hasSendCustomMessageCapability];
 
-      if (!v17)
+      if (!hasSendCustomMessageCapability)
       {
         return;
       }
@@ -536,8 +536,8 @@ LABEL_15:
       v18[4] = self;
       v11 = objc_retainBlock(v18);
       [(PHDeclineWithMessageController *)self declineCall];
-      v15 = +[PHInCallUtilities sharedInstance];
-      [v15 requestPasscodeUnlockWithCompletion:v11];
+      customMessagePresentingViewController = +[PHInCallUtilities sharedInstance];
+      [customMessagePresentingViewController requestPasscodeUnlockWithCompletion:v11];
     }
   }
 
@@ -555,21 +555,21 @@ LABEL_15:
   }
 }
 
-- (void)sendDeclineViaChatKitWithMessageResponse:(id)a3
+- (void)sendDeclineViaChatKitWithMessageResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = responseCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "response: %@", buf, 0xCu);
   }
 
   v6 = +[IMDaemonController sharedInstance];
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 bundleIdentifier];
-  [v6 addListenerID:v8 capabilities:(kFZListenerCapChats | kFZListenerCapAccounts)];
+  bundleIdentifier = [v7 bundleIdentifier];
+  [v6 addListenerID:bundleIdentifier capabilities:(kFZListenerCapChats | kFZListenerCapAccounts)];
 
   v9 = +[IMDaemonController sharedInstance];
   [v9 _setBlocksConnectionAtResume:1];
@@ -586,32 +586,32 @@ LABEL_15:
   [v11 _forceResumed];
 
   v12 = off_1003B0EF0;
-  v13 = [(PHDeclineWithMessageController *)self recipientHandle];
-  v14 = [v13 value];
-  v20 = v14;
+  recipientHandle = [(PHDeclineWithMessageController *)self recipientHandle];
+  value = [recipientHandle value];
+  v20 = value;
   v15 = [NSArray arrayWithObjects:&v20 count:1];
-  v16 = [(PHDeclineWithMessageController *)self incomingCall];
-  v17 = [v16 localSenderIdentity];
-  v18 = [v17 accountUUID];
-  v19 = [v18 UUIDString];
-  v12(v15, v4, v19);
+  incomingCall = [(PHDeclineWithMessageController *)self incomingCall];
+  localSenderIdentity = [incomingCall localSenderIdentity];
+  accountUUID = [localSenderIdentity accountUUID];
+  uUIDString = [accountUUID UUIDString];
+  v12(v15, responseCopy, uUIDString);
 }
 
-- (void)setContextForCustomReplyWithSubscriptionIdentifier:(id)a3
+- (void)setContextForCustomReplyWithSubscriptionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setContextForCustomReplyWithSubscriptionIdenitifier: %@", buf, 0xCu);
   }
 
   v6 = +[IMDaemonController sharedInstance];
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 bundleIdentifier];
-  [v6 addListenerID:v8 capabilities:(kFZListenerCapChats | kFZListenerCapAccounts)];
+  bundleIdentifier = [v7 bundleIdentifier];
+  [v6 addListenerID:bundleIdentifier capabilities:(kFZListenerCapChats | kFZListenerCapAccounts)];
 
   v9 = +[IMDaemonController sharedInstance];
   [v9 _setBlocksConnectionAtResume:1];
@@ -630,45 +630,45 @@ LABEL_15:
     [v11 _forceResumed];
 
     v12 = off_1003B0F00;
-    v13 = [(PHDeclineWithMessageController *)self recipientHandle];
-    v14 = [v13 value];
-    v17 = v14;
+    recipientHandle = [(PHDeclineWithMessageController *)self recipientHandle];
+    value = [recipientHandle value];
+    v17 = value;
     v15 = [NSArray arrayWithObjects:&v17 count:1];
-    v16 = v12(v15, v4);
+    v16 = v12(v15, identifierCopy);
 
     [(PHDeclineWithMessageController *)self setCachedPreviouslyUsedLastAddressHandle:v16];
   }
 }
 
-- (void)sendDeclineViaIntentWithMessageResponse:(id)a3 extension:(id)a4
+- (void)sendDeclineViaIntentWithMessageResponse:(id)response extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  extensionCopy = extension;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = responseCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "response: %@", buf, 0xCu);
   }
 
-  v9 = [(PHDeclineWithMessageController *)self recipientHandle];
-  v10 = [v9 personHandle];
+  recipientHandle = [(PHDeclineWithMessageController *)self recipientHandle];
+  personHandle = [recipientHandle personHandle];
 
-  v11 = [[INPerson alloc] initWithPersonHandle:v10 nameComponents:0 displayName:0 image:0 contactIdentifier:0 customIdentifier:0];
+  v11 = [[INPerson alloc] initWithPersonHandle:personHandle nameComponents:0 displayName:0 image:0 contactIdentifier:0 customIdentifier:0];
   v12 = [INSendMessageIntent alloc];
   v33 = v11;
   v13 = [NSArray arrayWithObjects:&v33 count:1];
-  v14 = [v12 initWithRecipients:v13 content:v6 groupName:0 serviceName:0 sender:0];
+  v14 = [v12 initWithRecipients:v13 content:responseCopy groupName:0 serviceName:0 sender:0];
 
   v15 = +[AFPreferences sharedPreferences];
-  v16 = [v15 languageCode];
+  languageCode = [v15 languageCode];
 
-  if (v16)
+  if (languageCode)
   {
     v17 = objc_alloc_init(NSExtensionItem);
     v31 = _INExtensionItemSiriLanguageCodeKey;
-    v32 = v16;
+    v32 = languageCode;
     v18 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     [v17 setUserInfo:v18];
 
@@ -685,7 +685,7 @@ LABEL_15:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v7;
+    v27 = extensionCopy;
     v28 = 2112;
     v29 = v19;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Beginning extension request for %@ with input items: %@", buf, 0x16u);
@@ -695,19 +695,19 @@ LABEL_15:
   v23[1] = 3221225472;
   v23[2] = sub_10010A88C;
   v23[3] = &unk_1003599F0;
-  v24 = v7;
+  v24 = extensionCopy;
   v25 = v14;
   v21 = v14;
-  v22 = v7;
+  v22 = extensionCopy;
   [v22 beginExtensionRequestWithOptions:1 inputItems:v19 completion:v23];
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  if (a4)
+  controllerCopy = controller;
+  if (result)
   {
-    if (a4 == 1)
+    if (result == 1)
     {
       [(PHDeclineWithMessageController *)self declineCall];
     }
@@ -730,7 +730,7 @@ LABEL_15:
   v9 = self->_cachedPreviouslyUsedLastAddressHandle;
   self->_cachedPreviouslyUsedLastAddressHandle = &stru_100361FD0;
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (UIViewController)customMessagePresentingViewController

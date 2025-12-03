@@ -1,14 +1,14 @@
 @interface ProfilePrivacyActionImplementation
-- (void)didUpdateProfilePrivacy:(id)a3;
+- (void)didUpdateProfilePrivacy:(id)privacy;
 @end
 
 @implementation ProfilePrivacyActionImplementation
 
-- (void)didUpdateProfilePrivacy:(id)a3
+- (void)didUpdateProfilePrivacy:(id)privacy
 {
-  v4 = self;
-  v5 = a3;
-  sub_24E30E6E8(a3);
+  selfCopy = self;
+  privacyCopy = privacy;
+  sub_24E30E6E8(privacy);
 }
 
 @end

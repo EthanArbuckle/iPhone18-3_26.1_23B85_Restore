@@ -1,27 +1,27 @@
 @interface PFCloudKitCKQueryBackedImportWorkItem
-- (BOOL)applyAccumulatedChangesToStore:(id)a3 inManagedObjectContext:(id)a4 withStoreMonitor:(id)a5 madeChanges:(BOOL *)a6 error:(id *)a7;
-- (BOOL)commitMetadataChangesWithContext:(id)a3 forStore:(id)a4 error:(id *)a5;
-- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)a3 inStore:(id)a4 error:(id *)a5;
+- (BOOL)applyAccumulatedChangesToStore:(id)store inManagedObjectContext:(id)context withStoreMonitor:(id)monitor madeChanges:(BOOL *)changes error:(id *)error;
+- (BOOL)commitMetadataChangesWithContext:(id)context forStore:(id)store error:(id *)error;
+- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)context inStore:(id)store error:(id *)error;
 - (id)description;
-- (id)initForRecordType:(id)a3 withOptions:(id)a4 request:(id)a5;
-- (void)addUpdatedRecord:(id)a3;
+- (id)initForRecordType:(id)type withOptions:(id)options request:(id)request;
+- (void)addUpdatedRecord:(id)record;
 - (void)dealloc;
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4;
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion;
 @end
 
 @implementation PFCloudKitCKQueryBackedImportWorkItem
 
-- (id)initForRecordType:(id)a3 withOptions:(id)a4 request:(id)a5
+- (id)initForRecordType:(id)type withOptions:(id)options request:(id)request
 {
   v10.receiver = self;
   v10.super_class = PFCloudKitCKQueryBackedImportWorkItem;
-  v7 = [(PFCloudKitImportRecordsWorkItem *)&v10 initWithOptions:a4 request:a5];
+  v7 = [(PFCloudKitImportRecordsWorkItem *)&v10 initWithOptions:options request:request];
   if (v7)
   {
-    v7->_recordType = a3;
-    if (a4)
+    v7->_recordType = type;
+    if (options)
     {
-      v8 = *(a4 + 3);
+      v8 = *(options + 3);
     }
 
     else
@@ -63,7 +63,7 @@
   return v5;
 }
 
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
   if (!self)
@@ -106,7 +106,7 @@
   location[2] = __101__PFCloudKitCKQueryBackedImportWorkItem_newCKQueryOperationFromMetadataInManagedObjectContext_error___block_invoke;
   location[3] = &unk_1E6EC1AA0;
   location[4] = monitor;
-  location[5] = a3;
+  location[5] = context;
   location[6] = self;
   location[7] = &v26;
   location[8] = &v32;
@@ -164,7 +164,7 @@
         storeIdentifier = v17->_storeIdentifier;
 LABEL_21:
         v19 = [(NSCloudKitMirroringResult *)v14 initWithRequest:request storeIdentifier:storeIdentifier success:0 madeChanges:0 error:v8];
-        (*(a4 + 2))(a4, v19);
+        (*(completion + 2))(completion, v19);
 
         v11 = 0;
         goto LABEL_22;
@@ -193,7 +193,7 @@ LABEL_24:
   v21[2] = __120__PFCloudKitCKQueryBackedImportWorkItem_executeImportOperationsAndAccumulateRecordsWithManagedObjectContext_completion___block_invoke_2;
   v21[3] = &unk_1E6EC1A78;
   objc_copyWeak(&v22, location);
-  v21[4] = a4;
+  v21[4] = completion;
   [v11 setQueryCompletionBlock:v21];
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v24);
@@ -422,9 +422,9 @@ void __101__PFCloudKitCKQueryBackedImportWorkItem_newCKQueryOperationFromMetadat
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addUpdatedRecord:(id)a3
+- (void)addUpdatedRecord:(id)record
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->super._encounteredErrors;
@@ -432,28 +432,28 @@ void __101__PFCloudKitCKQueryBackedImportWorkItem_newCKQueryOperationFromMetadat
 
   if (![(PFCloudKitCKQueryBackedImportWorkItem *)self count])
   {
-    maxModificationDate = v4->_maxModificationDate;
+    maxModificationDate = selfCopy->_maxModificationDate;
     if (!maxModificationDate)
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    if (-[NSDate compare:](maxModificationDate, "compare:", [a3 modificationDate]) == NSOrderedAscending)
+    if (-[NSDate compare:](maxModificationDate, "compare:", [record modificationDate]) == NSOrderedAscending)
     {
-      v6 = v4->_maxModificationDate;
+      v6 = selfCopy->_maxModificationDate;
 LABEL_8:
 
-      v4->_maxModificationDate = [a3 modificationDate];
+      selfCopy->_maxModificationDate = [record modificationDate];
     }
   }
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = PFCloudKitCKQueryBackedImportWorkItem;
-  [(PFCloudKitImportRecordsWorkItem *)&v7 addUpdatedRecord:a3];
+  [(PFCloudKitImportRecordsWorkItem *)&v7 addUpdatedRecord:record];
 }
 
-- (BOOL)applyAccumulatedChangesToStore:(id)a3 inManagedObjectContext:(id)a4 withStoreMonitor:(id)a5 madeChanges:(BOOL *)a6 error:(id *)a7
+- (BOOL)applyAccumulatedChangesToStore:(id)store inManagedObjectContext:(id)context withStoreMonitor:(id)monitor madeChanges:(BOOL *)changes error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -467,21 +467,21 @@ LABEL_8:
   v23 = 0x2020000000;
   v20.receiver = self;
   v20.super_class = PFCloudKitCKQueryBackedImportWorkItem;
-  v24 = [(PFCloudKitImportRecordsWorkItem *)&v20 applyAccumulatedChangesToStore:a3 inManagedObjectContext:a4 withStoreMonitor:a5 madeChanges:a6 error:&v30];
+  v24 = [(PFCloudKitImportRecordsWorkItem *)&v20 applyAccumulatedChangesToStore:store inManagedObjectContext:context withStoreMonitor:monitor madeChanges:changes error:&v30];
   if (*(v22 + 24) == 1)
   {
-    if (!a5 || (*(a5 + 21) & 1) == 0)
+    if (!monitor || (*(monitor + 21) & 1) == 0)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __130__PFCloudKitCKQueryBackedImportWorkItem_applyAccumulatedChangesToStore_inManagedObjectContext_withStoreMonitor_madeChanges_error___block_invoke;
       v19[3] = &unk_1E6EC1900;
       v19[4] = self;
-      v19[5] = a3;
-      v19[6] = a4;
+      v19[5] = store;
+      v19[6] = context;
       v19[7] = &v25;
       v19[8] = &v21;
-      [a4 performBlockAndWait:v19];
+      [context performBlockAndWait:v19];
     }
   }
 
@@ -495,9 +495,9 @@ LABEL_8:
     v16 = v26[5];
     if (v16)
     {
-      if (a7)
+      if (error)
       {
-        *a7 = v16;
+        *error = v16;
       }
     }
 
@@ -602,7 +602,7 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)a3 inStore:(id)a4 error:(id *)a5
+- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)context inStore:(id)store error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -618,11 +618,11 @@ LABEL_14:
     database = 0;
   }
 
-  v12 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:[(CKDatabase *)database databaseScope] inDatabaseWithScope:a4 forStore:a3 inContext:&v22 error:?];
+  v12 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:[(CKDatabase *)database databaseScope] inDatabaseWithScope:store forStore:context inContext:&v22 error:?];
   if (v12)
   {
     v13 = v12;
-    v14 = [NSCKRecordZoneQuery zoneQueryForRecordType:v12 inZone:a4 inStore:a3 managedObjectContext:&v22 error:?];
+    v14 = [NSCKRecordZoneQuery zoneQueryForRecordType:v12 inZone:store inStore:context managedObjectContext:&v22 error:?];
     if (v14)
     {
       v15 = v14;
@@ -630,7 +630,7 @@ LABEL_14:
       [(NSManagedObject *)v15 setLastFetchDate:[(NSManagedObject *)v13 lastFetchDate]];
       v21.receiver = self;
       v21.super_class = PFCloudKitCKQueryBackedImportWorkItem;
-      if ([(PFCloudKitImportRecordsWorkItem *)&v21 updateMetadataForAccumulatedChangesInContext:a3 inStore:a4 error:a5])
+      if ([(PFCloudKitImportRecordsWorkItem *)&v21 updateMetadataForAccumulatedChangesInContext:context inStore:store error:error])
       {
         LOBYTE(v16) = 1;
         goto LABEL_15;
@@ -640,10 +640,10 @@ LABEL_14:
 
   if (v22)
   {
-    if (a5)
+    if (error)
     {
       LOBYTE(v16) = 0;
-      *a5 = v22;
+      *error = v22;
       goto LABEL_15;
     }
 
@@ -679,7 +679,7 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)commitMetadataChangesWithContext:(id)a3 forStore:(id)a4 error:(id *)a5
+- (BOOL)commitMetadataChangesWithContext:(id)context forStore:(id)store error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v31 = 0;
@@ -695,12 +695,12 @@ LABEL_15:
     database = 0;
   }
 
-  v12 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:[(CKDatabase *)database databaseScope] inDatabaseWithScope:a4 forStore:a3 inContext:&v31 error:?];
+  v12 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:[(CKDatabase *)database databaseScope] inDatabaseWithScope:store forStore:context inContext:&v31 error:?];
   if (v12)
   {
     v13 = v12;
     -[NSManagedObject setLastFetchDate:](v12, "setLastFetchDate:", [MEMORY[0x1E695DF00] date]);
-    v14 = [NSCKRecordZoneQuery zoneQueryForRecordType:v13 inZone:a4 inStore:a3 managedObjectContext:&v31 error:?];
+    v14 = [NSCKRecordZoneQuery zoneQueryForRecordType:v13 inZone:store inStore:context managedObjectContext:&v31 error:?];
     if (v14)
     {
       v15 = v14;
@@ -711,8 +711,8 @@ LABEL_15:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v16 = [(NSManagedObject *)v13 queries];
-      v17 = [v16 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      queries = [(NSManagedObject *)v13 queries];
+      v17 = [queries countByEnumeratingWithState:&v27 objects:v36 count:16];
       if (v17)
       {
         v18 = v17;
@@ -723,7 +723,7 @@ LABEL_15:
           {
             if (*v28 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(queries);
             }
 
             if ([*(*(&v27 + 1) + 8 * i) queryCursor])
@@ -733,7 +733,7 @@ LABEL_15:
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v27 objects:v36 count:16];
+          v18 = [queries countByEnumeratingWithState:&v27 objects:v36 count:16];
           if (v18)
           {
             continue;
@@ -746,7 +746,7 @@ LABEL_15:
 LABEL_15:
       v26.receiver = self;
       v26.super_class = PFCloudKitCKQueryBackedImportWorkItem;
-      if ([(PFCloudKitImportRecordsWorkItem *)&v26 commitMetadataChangesWithContext:a3 forStore:a4 error:&v31])
+      if ([(PFCloudKitImportRecordsWorkItem *)&v26 commitMetadataChangesWithContext:context forStore:store error:&v31])
       {
         LOBYTE(v21) = 1;
         goto LABEL_25;
@@ -756,10 +756,10 @@ LABEL_15:
 
   if (v31)
   {
-    if (a5)
+    if (error)
     {
       LOBYTE(v21) = 0;
-      *a5 = v31;
+      *error = v31;
       goto LABEL_25;
     }
 

@@ -12,7 +12,7 @@
 - (NSString)fgColor;
 - (NSString)linkColor;
 - (NSString)vlinkColor;
-- (id)_createDocumentFragmentWithMarkupString:(id)a3 baseURLString:(id)a4;
+- (id)_createDocumentFragmentWithMarkupString:(id)string baseURLString:(id)lString;
 - (void)close;
 - (void)open;
 - (void)setAlinkColor:(NSString *)alinkColor;
@@ -158,9 +158,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)_createDocumentFragmentWithMarkupString:(id)a3 baseURLString:(id)a4
+- (id)_createDocumentFragmentWithMarkupString:(id)string baseURLString:(id)lString
 {
-  MEMORY[0x1CCA63A40](&v12, a4);
+  MEMORY[0x1CCA63A40](&v12, lString);
   WebCore::Document::completeURL();
   WTF::URL::createCFURL(&v14, &v13);
   v7 = v13;
@@ -177,7 +177,7 @@ LABEL_11:
     WTF::StringImpl::destroy(v8, v6);
   }
 
-  result = [(DOMHTMLDocument *)self createDocumentFragmentWithMarkupString:a3 baseURL:v14];
+  result = [(DOMHTMLDocument *)self createDocumentFragmentWithMarkupString:string baseURL:v14];
   v10 = v14;
   v14 = 0;
   if (v10)

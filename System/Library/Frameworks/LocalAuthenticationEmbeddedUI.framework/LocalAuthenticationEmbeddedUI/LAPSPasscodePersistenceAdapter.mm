@@ -1,12 +1,12 @@
 @interface LAPSPasscodePersistenceAdapter
-- (BOOL)canRemovePasscode:(id *)a3;
-- (BOOL)verifyFixedLengthNumericPasscodeIsStrong:(id)a3;
-- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)a3 error:(id *)a4;
-- (BOOL)verifyVariableLengthAlphanumericPasscodeIsStrong:(id)a3;
+- (BOOL)canRemovePasscode:(id *)passcode;
+- (BOOL)verifyFixedLengthNumericPasscodeIsStrong:(id)strong;
+- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)requirements error:(id *)error;
+- (BOOL)verifyVariableLengthAlphanumericPasscodeIsStrong:(id)strong;
 - (LAPSPasscodePersistenceAdapter)init;
-- (id)verifyPasscode:(id)a3;
-- (id)verifyRecoveryPasscode:(id)a3;
-- (void)reportPasscodeDidChangeTo:(id)a3 completion:(id)a4;
+- (id)verifyPasscode:(id)passcode;
+- (id)verifyRecoveryPasscode:(id)passcode;
+- (void)reportPasscodeDidChangeTo:(id)to completion:(id)completion;
 @end
 
 @implementation LAPSPasscodePersistenceAdapter
@@ -42,71 +42,71 @@
   return v2;
 }
 
-- (BOOL)canRemovePasscode:(id *)a3
+- (BOOL)canRemovePasscode:(id *)passcode
 {
   v5 = [(LAPSPasscodePersistenceMCAdapter *)self->_mcAdapter canRemovePasscode:?];
   if (v5)
   {
     laAdapter = self->_laAdapter;
 
-    LOBYTE(v5) = [(LAPSPasscodePersistenceLAAdapter *)laAdapter canRemovePasscode:a3];
+    LOBYTE(v5) = [(LAPSPasscodePersistenceLAAdapter *)laAdapter canRemovePasscode:passcode];
   }
 
   return v5;
 }
 
-- (id)verifyPasscode:(id)a3
+- (id)verifyPasscode:(id)passcode
 {
   mkbAdapter = self->_mkbAdapter;
-  v4 = [a3 data];
-  v5 = [(LAPSPasscodePersistenceMKBAdapter *)mkbAdapter verifyPasscode:v4];
+  data = [passcode data];
+  v5 = [(LAPSPasscodePersistenceMKBAdapter *)mkbAdapter verifyPasscode:data];
 
   return v5;
 }
 
-- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)a3 error:(id *)a4
+- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)requirements error:(id *)error
 {
   mcAdapter = self->_mcAdapter;
-  v6 = [a3 passcode];
-  LOBYTE(a4) = [(LAPSPasscodePersistenceMCAdapter *)mcAdapter verifyNewPasscodeMeetsPlatformRequirements:v6 error:a4];
+  passcode = [requirements passcode];
+  LOBYTE(error) = [(LAPSPasscodePersistenceMCAdapter *)mcAdapter verifyNewPasscodeMeetsPlatformRequirements:passcode error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)verifyFixedLengthNumericPasscodeIsStrong:(id)a3
+- (BOOL)verifyFixedLengthNumericPasscodeIsStrong:(id)strong
 {
   secAdapter = self->_secAdapter;
-  v4 = [a3 passcode];
-  LOBYTE(secAdapter) = [(LAPSPasscodePersistenceSecAdapter *)secAdapter verifyFixedLengthNumericPasscodeIsStrong:v4];
+  passcode = [strong passcode];
+  LOBYTE(secAdapter) = [(LAPSPasscodePersistenceSecAdapter *)secAdapter verifyFixedLengthNumericPasscodeIsStrong:passcode];
 
   return secAdapter;
 }
 
-- (BOOL)verifyVariableLengthAlphanumericPasscodeIsStrong:(id)a3
+- (BOOL)verifyVariableLengthAlphanumericPasscodeIsStrong:(id)strong
 {
   secAdapter = self->_secAdapter;
-  v4 = [a3 passcode];
-  LOBYTE(secAdapter) = [(LAPSPasscodePersistenceSecAdapter *)secAdapter verifyVariableLengthAlphanumericPasscodeIsStrong:v4];
+  passcode = [strong passcode];
+  LOBYTE(secAdapter) = [(LAPSPasscodePersistenceSecAdapter *)secAdapter verifyVariableLengthAlphanumericPasscodeIsStrong:passcode];
 
   return secAdapter;
 }
 
-- (void)reportPasscodeDidChangeTo:(id)a3 completion:(id)a4
+- (void)reportPasscodeDidChangeTo:(id)to completion:(id)completion
 {
   cdpAdapter = self->_cdpAdapter;
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 passcode];
-  v8 = [v7 type];
+  completionCopy = completion;
+  toCopy = to;
+  passcode = [toCopy passcode];
+  type = [toCopy type];
 
-  [(LAPSPasscodePersistenceCDPAdapter *)cdpAdapter reportPasscodeDidChangeTo:v9 passcodeType:v8 completion:v6];
+  [(LAPSPasscodePersistenceCDPAdapter *)cdpAdapter reportPasscodeDidChangeTo:passcode passcodeType:type completion:completionCopy];
 }
 
-- (id)verifyRecoveryPasscode:(id)a3
+- (id)verifyRecoveryPasscode:(id)passcode
 {
   mkbAdapter = self->_mkbAdapter;
-  v4 = [a3 data];
-  v5 = [(LAPSPasscodePersistenceMKBAdapter *)mkbAdapter verifyRecoveryPasscode:v4];
+  data = [passcode data];
+  v5 = [(LAPSPasscodePersistenceMKBAdapter *)mkbAdapter verifyRecoveryPasscode:data];
 
   return v5;
 }

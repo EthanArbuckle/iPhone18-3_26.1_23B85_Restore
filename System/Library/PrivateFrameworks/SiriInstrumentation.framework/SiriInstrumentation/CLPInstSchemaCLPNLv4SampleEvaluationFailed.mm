@@ -1,41 +1,41 @@
 @interface CLPInstSchemaCLPNLv4SampleEvaluationFailed
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithDictionary:(id)a3;
-- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasXpcClientDisconnected:(BOOL)a3;
-- (void)setHasXpcClientNLURequestTimeout:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasXpcClientDisconnected:(BOOL)disconnected;
+- (void)setHasXpcClientNLURequestTimeout:(BOOL)timeout;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaCLPNLv4SampleEvaluationFailed
 
-- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithDictionary:(id)a3
+- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = CLPInstSchemaCLPNLv4SampleEvaluationFailed;
   v5 = [(CLPInstSchemaCLPNLv4SampleEvaluationFailed *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userProfileSandboxFailure"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userProfileSandboxFailure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPNLv4SampleEvaluationFailed setUserProfileSandboxFailure:](v5, "setUserProfileSandboxFailure:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"xpcClientDisconnected"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"xpcClientDisconnected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPNLv4SampleEvaluationFailed setXpcClientDisconnected:](v5, "setXpcClientDisconnected:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"xpcClientNLURequestTimeout"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"xpcClientNLURequestTimeout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithJSON:(id)a3
+- (CLPInstSchemaCLPNLv4SampleEvaluationFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaCLPNLv4SampleEvaluationFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaCLPNLv4SampleEvaluationFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaCLPNLv4SampleEvaluationFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_xpcClientNLURequestTimeout + 1);
   if (v4)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaCLPNLv4SampleEvaluationFailed userProfileSandboxFailure](self, "userProfileSandboxFailure")}];
-    [v3 setObject:v7 forKeyedSubscript:@"userProfileSandboxFailure"];
+    [dictionary setObject:v7 forKeyedSubscript:@"userProfileSandboxFailure"];
 
     v4 = *(&self->_xpcClientNLURequestTimeout + 1);
     if ((v4 & 2) == 0)
@@ -110,19 +110,19 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaCLPNLv4SampleEvaluationFailed xpcClientDisconnected](self, "xpcClientDisconnected")}];
-  [v3 setObject:v8 forKeyedSubscript:@"xpcClientDisconnected"];
+  [dictionary setObject:v8 forKeyedSubscript:@"xpcClientDisconnected"];
 
   if ((*(&self->_xpcClientNLURequestTimeout + 1) & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaCLPNLv4SampleEvaluationFailed xpcClientNLURequestTimeout](self, "xpcClientNLURequestTimeout")}];
-    [v3 setObject:v5 forKeyedSubscript:@"xpcClientNLURequestTimeout"];
+    [dictionary setObject:v5 forKeyedSubscript:@"xpcClientNLURequestTimeout"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,16 +165,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   v5 = *(&self->_xpcClientNLURequestTimeout + 1);
-  v6 = v4[11];
+  v6 = equalCopy[11];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -183,13 +183,13 @@ LABEL_4:
   if (v5)
   {
     userProfileSandboxFailure = self->_userProfileSandboxFailure;
-    if (userProfileSandboxFailure != [v4 userProfileSandboxFailure])
+    if (userProfileSandboxFailure != [equalCopy userProfileSandboxFailure])
     {
       goto LABEL_14;
     }
 
     v5 = *(&self->_xpcClientNLURequestTimeout + 1);
-    v6 = v4[11];
+    v6 = equalCopy[11];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -201,10 +201,10 @@ LABEL_4:
   if (v8)
   {
     xpcClientDisconnected = self->_xpcClientDisconnected;
-    if (xpcClientDisconnected == [v4 xpcClientDisconnected])
+    if (xpcClientDisconnected == [equalCopy xpcClientDisconnected])
     {
       v5 = *(&self->_xpcClientNLURequestTimeout + 1);
-      v6 = v4[11];
+      v6 = equalCopy[11];
       goto LABEL_10;
     }
 
@@ -223,7 +223,7 @@ LABEL_10:
   if (v10)
   {
     xpcClientNLURequestTimeout = self->_xpcClientNLURequestTimeout;
-    if (xpcClientNLURequestTimeout != [v4 xpcClientNLURequestTimeout])
+    if (xpcClientNLURequestTimeout != [equalCopy xpcClientNLURequestTimeout])
     {
       goto LABEL_14;
     }
@@ -235,15 +235,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_xpcClientNLURequestTimeout + 1);
-  v6 = v4;
+  v6 = toCopy;
   if (v5)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     v5 = *(&self->_xpcClientNLURequestTimeout + 1);
     if ((v5 & 2) == 0)
     {
@@ -263,20 +263,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*(&self->_xpcClientNLURequestTimeout + 1) & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasXpcClientNLURequestTimeout:(BOOL)a3
+- (void)setHasXpcClientNLURequestTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_5:
   *(&self->_xpcClientNLURequestTimeout + 1) = *(&self->_xpcClientNLURequestTimeout + 1) & 0xFB | v3;
 }
 
-- (void)setHasXpcClientDisconnected:(BOOL)a3
+- (void)setHasXpcClientDisconnected:(BOOL)disconnected
 {
-  if (a3)
+  if (disconnected)
   {
     v3 = 2;
   }

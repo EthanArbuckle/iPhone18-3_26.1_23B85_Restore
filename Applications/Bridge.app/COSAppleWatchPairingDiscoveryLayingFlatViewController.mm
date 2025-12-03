@@ -2,8 +2,8 @@
 - (COSAppleWatchPairingDiscoveryLayingFlatViewController)init;
 - (id)detailString;
 - (id)titleString;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -28,51 +28,51 @@
   v21.receiver = self;
   v21.super_class = COSAppleWatchPairingDiscoveryLayingFlatViewController;
   [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)&v21 viewDidLoad];
-  v3 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self view];
+  view = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [[COSAppleWatchCameraAlignementView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   instructionView = self->_instructionView;
   self->_instructionView = v5;
 
-  v7 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
-  [v7 addSubview:self->_instructionView];
+  contentView = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
+  [contentView addSubview:self->_instructionView];
 
   [(COSAppleWatchCameraAlignementView *)self->_instructionView setContentMode:1];
   [(COSAppleWatchCameraAlignementView *)self->_instructionView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [(COSAppleWatchCameraAlignementView *)self->_instructionView topAnchor];
-  v20 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
-  v18 = [v20 topAnchor];
-  v8 = [v19 constraintEqualToAnchor:v18 constant:25.0];
+  topAnchor = [(COSAppleWatchCameraAlignementView *)self->_instructionView topAnchor];
+  contentView2 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:25.0];
   v22[0] = v8;
-  v9 = [(COSAppleWatchCameraAlignementView *)self->_instructionView bottomAnchor];
-  v10 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  bottomAnchor = [(COSAppleWatchCameraAlignementView *)self->_instructionView bottomAnchor];
+  contentView3 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[1] = v12;
-  v13 = [(COSAppleWatchCameraAlignementView *)self->_instructionView centerXAnchor];
-  v14 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
-  v15 = [v14 centerXAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  centerXAnchor = [(COSAppleWatchCameraAlignementView *)self->_instructionView centerXAnchor];
+  contentView4 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v22[2] = v16;
   v17 = [NSArray arrayWithObjects:v22 count:3];
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSAppleWatchPairingDiscoveryLayingFlatViewController;
-  [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)&v4 viewDidAppear:a3];
+  [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)&v4 viewDidAppear:appear];
   [(COSAppleWatchCameraAlignementView *)self->_instructionView setAnimationsEnabled:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = COSAppleWatchPairingDiscoveryLayingFlatViewController;
-  [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)&v4 viewDidDisappear:a3];
+  [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)&v4 viewDidDisappear:disappear];
   [(COSAppleWatchCameraAlignementView *)self->_instructionView setAnimationsEnabled:0];
 }
 

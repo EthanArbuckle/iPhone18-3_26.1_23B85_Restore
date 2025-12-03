@@ -1,31 +1,31 @@
 @interface _INVocabularyValidator
 + (void)initialize;
-- (BOOL)_bundleID:(id)a3 isWhitelistedForVocabularyType:(int64_t)a4;
-- (id)_intentsUsingVocabularyType:(int64_t)a3;
-- (id)_pathToAppWithBundleID:(id)a3;
-- (id)_validatedItemsFromVocabularyObject:(id)a3 ofType:(int64_t)a4 loggingWarnings:(BOOL)a5 withItemFactory:(id)a6;
-- (unint64_t)maximumNumberOfVocabularyStringsForType:(int64_t)a3;
-- (void)_confirmExistenceOfWatchAppForCompanionBundleID:(id)a3 handlingIntents:(id)a4 completion:(id)a5;
-- (void)_determineIfBundleID:(id)a3 appPath:(id)a4 canProvideVocabularyOfType:(int64_t)a5 completion:(id)a6;
-- (void)determineIfBundleID:(id)a3 canProvideVocabularyOfType:(int64_t)a4 completion:(id)a5;
+- (BOOL)_bundleID:(id)d isWhitelistedForVocabularyType:(int64_t)type;
+- (id)_intentsUsingVocabularyType:(int64_t)type;
+- (id)_pathToAppWithBundleID:(id)d;
+- (id)_validatedItemsFromVocabularyObject:(id)object ofType:(int64_t)type loggingWarnings:(BOOL)warnings withItemFactory:(id)factory;
+- (unint64_t)maximumNumberOfVocabularyStringsForType:(int64_t)type;
+- (void)_confirmExistenceOfWatchAppForCompanionBundleID:(id)d handlingIntents:(id)intents completion:(id)completion;
+- (void)_determineIfBundleID:(id)d appPath:(id)path canProvideVocabularyOfType:(int64_t)type completion:(id)completion;
+- (void)determineIfBundleID:(id)d canProvideVocabularyOfType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation _INVocabularyValidator
 
-- (unint64_t)maximumNumberOfVocabularyStringsForType:(int64_t)a3
+- (unint64_t)maximumNumberOfVocabularyStringsForType:(int64_t)type
 {
-  if (a3 > 699)
+  if (type > 699)
   {
-    if (a3 > 49999)
+    if (type > 49999)
     {
-      if (a3 > 50001)
+      if (type > 50001)
       {
-        if (a3 == 50002)
+        if (type == 50002)
         {
           return 10;
         }
 
-        if (a3 == 50003)
+        if (type == 50003)
         {
           return 2000;
         }
@@ -33,7 +33,7 @@
         return 0;
       }
 
-      if (a3 != 50000)
+      if (type != 50000)
       {
         return 500;
       }
@@ -41,7 +41,7 @@
       return 1000;
     }
 
-    if ((a3 - 700) < 5)
+    if ((type - 700) < 5)
     {
       return 500;
     }
@@ -49,13 +49,13 @@
 
   else
   {
-    if (a3 > 299)
+    if (type > 299)
     {
-      if ((a3 - 300) >= 2)
+      if ((type - 300) >= 2)
       {
-        if ((a3 - 400) >= 2)
+        if ((type - 400) >= 2)
         {
-          if ((a3 - 500) < 2)
+          if ((type - 500) < 2)
           {
             return 200;
           }
@@ -69,20 +69,20 @@
       return 1000;
     }
 
-    if (a3 <= 99)
+    if (type <= 99)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         return 1500;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         return 1000;
       }
     }
 
-    else if ((a3 - 100) < 2 || a3 == 200)
+    else if ((type - 100) < 2 || type == 200)
     {
       return 500;
     }
@@ -91,31 +91,31 @@
   return 0;
 }
 
-- (void)determineIfBundleID:(id)a3 canProvideVocabularyOfType:(int64_t)a4 completion:(id)a5
+- (void)determineIfBundleID:(id)d canProvideVocabularyOfType:(int64_t)type completion:(id)completion
 {
-  v10 = a3;
-  v8 = a5;
-  if (v8)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([(_INVocabularyValidator *)self _bundleID:v10 isWhitelistedForVocabularyType:a4])
+    if ([(_INVocabularyValidator *)self _bundleID:dCopy isWhitelistedForVocabularyType:type])
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
     {
-      v9 = [(_INVocabularyValidator *)self _pathToAppWithBundleID:v10];
-      [(_INVocabularyValidator *)self _determineIfBundleID:v10 appPath:v9 canProvideVocabularyOfType:a4 completion:v8];
+      v9 = [(_INVocabularyValidator *)self _pathToAppWithBundleID:dCopy];
+      [(_INVocabularyValidator *)self _determineIfBundleID:dCopy appPath:v9 canProvideVocabularyOfType:type completion:completionCopy];
     }
   }
 }
 
-- (id)_pathToAppWithBundleID:(id)a3
+- (id)_pathToAppWithBundleID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v12 = 0;
-  v4 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v12];
+  v4 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v12];
   v5 = v12;
   if (!v4)
   {
@@ -125,39 +125,39 @@
       *buf = 136315650;
       v14 = "[_INVocabularyValidator _pathToAppWithBundleID:]";
       v15 = 2114;
-      v16 = v3;
+      v16 = dCopy;
       v17 = 2114;
       v18 = v5;
       _os_log_error_impl(&dword_18E991000, v6, OS_LOG_TYPE_ERROR, "%s Could not get a bundle record for %{public}@ %{public}@", buf, 0x20u);
     }
   }
 
-  v7 = [v4 if_containingAppRecord];
-  v8 = [v7 URL];
-  v9 = [v8 path];
+  if_containingAppRecord = [v4 if_containingAppRecord];
+  v8 = [if_containingAppRecord URL];
+  path = [v8 path];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return path;
 }
 
-- (void)_determineIfBundleID:(id)a3 appPath:(id)a4 canProvideVocabularyOfType:(int64_t)a5 completion:(id)a6
+- (void)_determineIfBundleID:(id)d appPath:(id)path canProvideVocabularyOfType:(int64_t)type completion:(id)completion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v12)
+  dCopy = d;
+  pathCopy = path;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v13 = INPluginKitCompatiblePathFromPath(v11);
+    v13 = INPluginKitCompatiblePathFromPath(pathCopy);
     if (v13)
     {
-      v14 = [(_INVocabularyValidator *)self _intentsUsingVocabularyType:a5];
+      v14 = [(_INVocabularyValidator *)self _intentsUsingVocabularyType:type];
       if ([v14 count])
       {
         v32 = v13;
-        v33 = v10;
-        v30 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v10 allowPlaceholder:0 error:0];
+        v33 = dCopy;
+        v30 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
         v15 = [INAppInfo appInfoWithApplicationRecord:?];
         v39 = 0u;
         v40 = 0u;
@@ -180,14 +180,14 @@
               }
 
               v21 = *(*(&v39 + 1) + 8 * i);
-              v22 = [v15 supportedIntents];
-              LODWORD(v21) = [v22 containsObject:v21];
+              supportedIntents = [v15 supportedIntents];
+              LODWORD(v21) = [supportedIntents containsObject:v21];
 
               if (v21)
               {
-                v12[2](v12, 1);
+                completionCopy[2](completionCopy, 1);
                 v13 = v32;
-                v10 = v33;
+                dCopy = v33;
                 goto LABEL_17;
               }
             }
@@ -215,10 +215,10 @@
         v34[1] = 3221225472;
         v34[2] = __93___INVocabularyValidator__determineIfBundleID_appPath_canProvideVocabularyOfType_completion___block_invoke;
         v34[3] = &unk_1E7282378;
-        v38 = v12;
-        v10 = v33;
+        v38 = completionCopy;
+        dCopy = v33;
         v35 = v33;
-        v36 = self;
+        selfCopy = self;
         v37 = v16;
         [v24 extensionsWithMatchingAttributes:v23 completion:v34];
 
@@ -234,7 +234,7 @@ LABEL_17:
         if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
         {
           v28 = v26;
-          v29 = _INStringFromVocabularyStringType(a5);
+          v29 = _INStringFromVocabularyStringType(type);
           *buf = 136315394;
           v47 = "[_INVocabularyValidator _determineIfBundleID:appPath:canProvideVocabularyOfType:completion:]";
           v48 = 2114;
@@ -242,7 +242,7 @@ LABEL_17:
           _os_log_error_impl(&dword_18E991000, v28, OS_LOG_TYPE_ERROR, "%s No intents use user-vocabulary of type %{public}@", buf, 0x16u);
         }
 
-        v12[2](v12, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -254,26 +254,26 @@ LABEL_17:
         *buf = 136315650;
         v47 = "[_INVocabularyValidator _determineIfBundleID:appPath:canProvideVocabularyOfType:completion:]";
         v48 = 2114;
-        v49 = v10;
+        v49 = dCopy;
         v50 = 2114;
-        v51 = v11;
+        v51 = pathCopy;
         _os_log_error_impl(&dword_18E991000, v25, OS_LOG_TYPE_ERROR, "%s Couldn't get realpath() to %{public}@ %{public}@", buf, 0x20u);
       }
 
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_confirmExistenceOfWatchAppForCompanionBundleID:(id)a3 handlingIntents:(id)a4 completion:(id)a5
+- (void)_confirmExistenceOfWatchAppForCompanionBundleID:(id)d handlingIntents:(id)intents completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  dCopy = d;
+  intentsCopy = intents;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (INSupportsPairedDevice_onceToken != -1)
     {
@@ -300,16 +300,16 @@ LABEL_17:
 
       v11 = v10;
       _Block_object_dispose(&v20, 8);
-      v12 = [v10 sharedDeviceConnection];
+      sharedDeviceConnection = [v10 sharedDeviceConnection];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __101___INVocabularyValidator__confirmExistenceOfWatchAppForCompanionBundleID_handlingIntents_completion___block_invoke;
       v16[3] = &unk_1E7282350;
-      v19 = v9;
-      v17 = v12;
-      v18 = v8;
-      v13 = v12;
-      [v13 fetchWatchAppBundleIDForCompanionAppBundleID:v7 completion:v16];
+      v19 = completionCopy;
+      v17 = sharedDeviceConnection;
+      v18 = intentsCopy;
+      v13 = sharedDeviceConnection;
+      [v13 fetchWatchAppBundleIDForCompanionAppBundleID:dCopy completion:v16];
     }
 
     else
@@ -322,47 +322,47 @@ LABEL_17:
         _os_log_impl(&dword_18E991000, v14, OS_LOG_TYPE_INFO, "%s No watch pairing capability", &buf, 0xCu);
       }
 
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_bundleID:(id)a3 isWhitelistedForVocabularyType:(int64_t)a4
+- (BOOL)_bundleID:(id)d isWhitelistedForVocabularyType:(int64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 isEqualToString:@"com.apple.mobileslideshow"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.mobileslideshow"])
   {
-    v6 = (a4 - 100) < 2 || a4 == 50003;
-    v7 = (a4 - 1) < 2 || v6;
+    v6 = (type - 100) < 2 || type == 50003;
+    v7 = (type - 1) < 2 || v6;
     goto LABEL_29;
   }
 
   v7 = 0;
-  if (a4 > 49999)
+  if (type > 49999)
   {
-    if (a4 == 50003)
+    if (type == 50003)
     {
       goto LABEL_20;
     }
 
-    if (a4 == 50000)
+    if (type == 50000)
     {
-      v8 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:v5];
+      v8 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:dCopy];
       v9 = v8;
       if (v8)
       {
-        v10 = [v8 bundleType];
-        if ([v10 isEqualToString:*MEMORY[0x1E6963570]] && (objc_msgSend(v9, "bundleURL"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "path"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasPrefix:", @"/System/Library/"), v12, v11, (v13 & 1) != 0) || (objc_msgSend(v10, "isEqualToString:", *MEMORY[0x1E6963578]) & 1) != 0)
+        bundleType = [v8 bundleType];
+        if ([bundleType isEqualToString:*MEMORY[0x1E6963570]] && (objc_msgSend(v9, "bundleURL"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "path"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasPrefix:", @"/System/Library/"), v12, v11, (v13 & 1) != 0) || (objc_msgSend(bundleType, "isEqualToString:", *MEMORY[0x1E6963578]) & 1) != 0)
         {
           v7 = 1;
         }
 
         else
         {
-          v7 = [v10 isEqualToString:*MEMORY[0x1E69635A8]];
+          v7 = [bundleType isEqualToString:*MEMORY[0x1E69635A8]];
         }
       }
 
@@ -375,14 +375,14 @@ LABEL_17:
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
-      if (a4 != 301)
+      if (type != 301)
       {
         goto LABEL_29;
       }
 
-      if (([v5 isEqualToString:@"com.apple.passd"] & 1) == 0)
+      if (([dCopy isEqualToString:@"com.apple.passd"] & 1) == 0)
       {
 LABEL_24:
         v7 = 0;
@@ -394,7 +394,7 @@ LABEL_20:
       goto LABEL_29;
     }
 
-    if (![v5 isEqualToString:@"com.apple.MobileSMS"])
+    if (![dCopy isEqualToString:@"com.apple.MobileSMS"])
     {
       goto LABEL_24;
     }
@@ -415,15 +415,15 @@ LABEL_29:
   return v7;
 }
 
-- (id)_validatedItemsFromVocabularyObject:(id)a3 ofType:(int64_t)a4 loggingWarnings:(BOOL)a5 withItemFactory:(id)a6
+- (id)_validatedItemsFromVocabularyObject:(id)object ofType:(int64_t)type loggingWarnings:(BOOL)warnings withItemFactory:(id)factory
 {
-  v7 = a5;
+  warningsCopy = warnings;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(_INVocabularyValidator *)self maximumNumberOfVocabularyStringsForType:a4];
+  objectCopy = object;
+  factoryCopy = factory;
+  v12 = [(_INVocabularyValidator *)self maximumNumberOfVocabularyStringsForType:type];
   v13 = objc_alloc(MEMORY[0x1E695DF70]);
-  v14 = [v10 count];
+  v14 = [objectCopy count];
   if (v14 >= v12)
   {
     v15 = v12;
@@ -439,13 +439,13 @@ LABEL_29:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = v10;
+  v17 = objectCopy;
   v34 = [v17 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v34)
   {
     v18 = *v40;
     v32 = v17;
-    v33 = v11;
+    v33 = factoryCopy;
     v31 = *v40;
     do
     {
@@ -456,7 +456,7 @@ LABEL_29:
           objc_enumerationMutation(v17);
         }
 
-        v20 = v11[2](v11, *(*(&v39 + 1) + 8 * i));
+        v20 = factoryCopy[2](factoryCopy, *(*(&v39 + 1) + 8 * i));
         v21 = v20;
         if (!v20 || ![v20 count])
         {
@@ -486,14 +486,14 @@ LABEL_29:
             }
 
             v26 = *(*(&v35 + 1) + 8 * j);
-            v27 = [v26 validate];
-            if (v27 == 1)
+            validate = [v26 validate];
+            if (validate == 1)
             {
               if ([v16 count] >= v12)
               {
 
                 v17 = v32;
-                v11 = v33;
+                factoryCopy = v33;
                 goto LABEL_32;
               }
 
@@ -502,25 +502,25 @@ LABEL_29:
 
             else
             {
-              if (!v7)
+              if (!warningsCopy)
               {
                 continue;
               }
 
-              if (v27 == 4)
+              if (validate == 4)
               {
-                v28 = _INStringFromVocabularyStringType(a4);
+                v28 = _INStringFromVocabularyStringType(type);
                 NSLog(@"WARNING: ignoring a vocabulary item of type %@ because the vocabulary identifier is too long", v28);
               }
 
               else
               {
-                if (v27 != 3)
+                if (validate != 3)
                 {
                   continue;
                 }
 
-                v28 = _INStringFromVocabularyStringType(a4);
+                v28 = _INStringFromVocabularyStringType(type);
                 NSLog(@"WARNING: ignoring a vocabulary item of type %@ because the string is too long", v28);
               }
             }
@@ -538,7 +538,7 @@ LABEL_29:
 LABEL_27:
 
         v17 = v32;
-        v11 = v33;
+        factoryCopy = v33;
         v18 = v31;
 LABEL_28:
       }
@@ -556,7 +556,7 @@ LABEL_32:
   return v16;
 }
 
-- (id)_intentsUsingVocabularyType:(int64_t)a3
+- (id)_intentsUsingVocabularyType:(int64_t)type
 {
   if (_intentsUsingVocabularyType__onceToken != -1)
   {
@@ -564,7 +564,7 @@ LABEL_32:
   }
 
   v4 = _intentsUsingVocabularyType__sIntentsUsingSyncSlot;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -572,7 +572,7 @@ LABEL_32:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

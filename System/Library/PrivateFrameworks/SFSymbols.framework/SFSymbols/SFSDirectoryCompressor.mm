@@ -1,16 +1,16 @@
 @interface SFSDirectoryCompressor
-+ (BOOL)compressDirectoryAtURL:(id)a3 intoURL:(id)a4 withDenylist:(id)a5 error:(id *)a6;
++ (BOOL)compressDirectoryAtURL:(id)l intoURL:(id)rL withDenylist:(id)denylist error:(id *)error;
 @end
 
 @implementation SFSDirectoryCompressor
 
-+ (BOOL)compressDirectoryAtURL:(id)a3 intoURL:(id)a4 withDenylist:(id)a5 error:(id *)a6
++ (BOOL)compressDirectoryAtURL:(id)l intoURL:(id)rL withDenylist:(id)denylist error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 path];
-  v13 = soft_AAFileStreamOpenWithPath([v12 fileSystemRepresentation], 513);
+  lCopy = l;
+  rLCopy = rL;
+  denylistCopy = denylist;
+  path = [rLCopy path];
+  v13 = soft_AAFileStreamOpenWithPath([path fileSystemRepresentation], 513);
 
   if (!v13)
   {
@@ -106,8 +106,8 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v25 = [v9 path];
-  v26 = [v25 fileSystemRepresentation];
+  path2 = [lCopy path];
+  fileSystemRepresentation = [path2 fileSystemRepresentation];
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -131,7 +131,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v29 = (v27)(v26, 0, v11, filter_denylist, 0, 0);
+  v29 = (v27)(fileSystemRepresentation, 0, denylistCopy, filter_denylist, 0, 0);
 
   v41 = v29;
   if (!v29)
@@ -139,8 +139,8 @@ LABEL_35:
     goto LABEL_26;
   }
 
-  v30 = [v9 path];
-  v31 = [v30 fileSystemRepresentation];
+  path3 = [lCopy path];
+  fileSystemRepresentation2 = [path3 fileSystemRepresentation];
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -160,7 +160,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v34 = (v32)(v21, v41, v40, v31, v11, filter_denylist, 0, 0);
+  v34 = (v32)(v21, v41, v40, fileSystemRepresentation2, denylistCopy, filter_denylist, 0, 0);
 
   v42 = 0;
   v43 = &v42;
@@ -192,7 +192,7 @@ LABEL_36:
   {
 LABEL_29:
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:-1 userInfo:0];
-    *a6 = v37 = 0;
+    *error = v37 = 0;
     goto LABEL_30;
   }
 

@@ -1,83 +1,83 @@
 @interface SSPersonalAnswerResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSPersonalAnswerResultBuilder)initWithResult:(id)a3;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSPersonalAnswerResultBuilder)initWithResult:(id)result;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildDescriptions;
 - (id)buildInlineCardSections;
 - (id)buildThumbnail;
 - (id)buildTitle;
-- (id)processRawTitleString:(id)a3;
+- (id)processRawTitleString:(id)string;
 @end
 
 @implementation SSPersonalAnswerResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v8.receiver = a1;
+  resultCopy = result;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SSPersonalAnswerResultBuilder;
-  if (objc_msgSendSuper2(&v8, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v8, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 applicationBundleIdentifier];
-    v5 = [v6 isEqualToString:@"com.apple.spotlight.events"];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier isEqualToString:@"com.apple.spotlight.events"];
   }
 
   return v5;
 }
 
-- (SSPersonalAnswerResultBuilder)initWithResult:(id)a3
+- (SSPersonalAnswerResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = SSPersonalAnswerResultBuilder;
-  v5 = [(SSResultBuilder *)&v12 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v12 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
     [(SSPersonalAnswerResultBuilder *)v5 setDisplayName:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
     v8 = [(SSPersonalAnswerResultBuilder *)v5 processRawTitleString:v7];
     [(SSPersonalAnswerResultBuilder *)v5 setTitleString:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
     [(SSPersonalAnswerResultBuilder *)v5 setStartDate:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E6963FE8] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E6963FE8] withType:objc_opt_class()];
     [(SSPersonalAnswerResultBuilder *)v5 setEndDate:v10];
   }
 
   return v5;
 }
 
-- (id)processRawTitleString:(id)a3
+- (id)processRawTitleString:(id)string
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"Flight: "])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"Flight: "])
   {
-    v5 = [v4 stringByReplacingOccurrencesOfString:@": " withString:@" "];
+    v5 = [stringCopy stringByReplacingOccurrencesOfString:@": " withString:@" "];
 
     [(SSPersonalAnswerResultBuilder *)self setIsFlight:1];
   }
 
-  else if ([v4 hasPrefix:@"Stay: "])
+  else if ([stringCopy hasPrefix:@"Stay: "])
   {
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"Stay: " withString:&stru_1F556FE60];
+    v5 = [stringCopy stringByReplacingOccurrencesOfString:@"Stay: " withString:&stru_1F556FE60];
 
     [(SSPersonalAnswerResultBuilder *)self setIsHotel:1];
   }
 
   else
   {
-    v5 = v4;
-    if ([v4 hasPrefix:@"Reservation: "])
+    v5 = stringCopy;
+    if ([stringCopy hasPrefix:@"Reservation: "])
     {
-      v5 = [v4 stringByReplacingOccurrencesOfString:@"Reservation: " withString:&stru_1F556FE60];
+      v5 = [stringCopy stringByReplacingOccurrencesOfString:@"Reservation: " withString:&stru_1F556FE60];
 
       [(SSPersonalAnswerResultBuilder *)self setIsRestaurant:1];
     }
@@ -92,31 +92,31 @@
 {
   v4.receiver = self;
   v4.super_class = SSPersonalAnswerResultBuilder;
-  v2 = [(SSResultBuilder *)&v4 buildInlineCardSections];
+  buildInlineCardSections = [(SSResultBuilder *)&v4 buildInlineCardSections];
 
-  return v2;
+  return buildInlineCardSections;
 }
 
 - (id)buildTitle
 {
-  v3 = [(SSPersonalAnswerResultBuilder *)self displayName];
-  v4 = [v3 length];
+  displayName = [(SSPersonalAnswerResultBuilder *)self displayName];
+  v4 = [displayName length];
 
   if (v4)
   {
-    v5 = [(SSPersonalAnswerResultBuilder *)self displayName];
+    displayName2 = [(SSPersonalAnswerResultBuilder *)self displayName];
     goto LABEL_5;
   }
 
-  v6 = [(SSPersonalAnswerResultBuilder *)self titleString];
-  v7 = [v6 length];
+  titleString = [(SSPersonalAnswerResultBuilder *)self titleString];
+  v7 = [titleString length];
 
   if (v7)
   {
-    v5 = [(SSPersonalAnswerResultBuilder *)self titleString];
+    displayName2 = [(SSPersonalAnswerResultBuilder *)self titleString];
 LABEL_5:
-    v8 = v5;
-    if (v5)
+    v8 = displayName2;
+    if (displayName2)
     {
       goto LABEL_6;
     }
@@ -136,8 +136,8 @@ LABEL_9:
 
 LABEL_6:
   v9 = [MEMORY[0x1E69CA3A0] textWithString:v8];
-  v10 = [(SSPersonalAnswerResultBuilder *)self displayName];
-  v11 = [v10 length];
+  displayName3 = [(SSPersonalAnswerResultBuilder *)self displayName];
+  v11 = [displayName3 length];
 
   if (v11)
   {
@@ -152,26 +152,26 @@ LABEL_10:
 - (id)buildDescriptions
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(SSPersonalAnswerResultBuilder *)self displayName];
+  displayName = [(SSPersonalAnswerResultBuilder *)self displayName];
 
-  if (v3)
+  if (displayName)
   {
-    v3 = self->_titleString;
+    displayName = self->_titleString;
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v4 setDateFormat:@"MMMM d, yyyy"];
-  v5 = [(SSPersonalAnswerResultBuilder *)self startDate];
-  v6 = [v4 stringFromDate:v5];
+  startDate = [(SSPersonalAnswerResultBuilder *)self startDate];
+  v6 = [v4 stringFromDate:startDate];
 
   [v4 setDateFormat:@"h:mm a"];
-  v7 = [(SSPersonalAnswerResultBuilder *)self startDate];
-  v8 = [v4 stringFromDate:v7];
+  startDate2 = [(SSPersonalAnswerResultBuilder *)self startDate];
+  v8 = [v4 stringFromDate:startDate2];
 
   if ([(SSPersonalAnswerResultBuilder *)self isFlight])
   {
-    v9 = [(SSPersonalAnswerResultBuilder *)self endDate];
-    v10 = [v4 stringFromDate:v9];
+    endDate = [(SSPersonalAnswerResultBuilder *)self endDate];
+    v10 = [v4 stringFromDate:endDate];
 
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ to %@", v8, v10];
   }
@@ -181,7 +181,7 @@ LABEL_10:
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Check in at %@", v8];
   }
 
-  v12 = [MEMORY[0x1E69CA3A0] textWithString:v3];
+  v12 = [MEMORY[0x1E69CA3A0] textWithString:displayName];
   v18[0] = v12;
   v13 = [MEMORY[0x1E69CA3A0] textWithString:v6];
   v18[1] = v13;
@@ -224,7 +224,7 @@ LABEL_8:
   return v3;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
   v3 = objc_opt_new();
   [v3 setSymbolName:@"envelope.fill"];

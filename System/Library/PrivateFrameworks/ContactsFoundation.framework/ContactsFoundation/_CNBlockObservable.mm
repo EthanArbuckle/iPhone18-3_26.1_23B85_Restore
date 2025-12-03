@@ -1,18 +1,18 @@
 @interface _CNBlockObservable
-- (_CNBlockObservable)initWithBlock:(id)a3;
+- (_CNBlockObservable)initWithBlock:(id)block;
 @end
 
 @implementation _CNBlockObservable
 
-- (_CNBlockObservable)initWithBlock:(id)a3
+- (_CNBlockObservable)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = _CNBlockObservable;
   v5 = [(_CNBlockObservable *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 

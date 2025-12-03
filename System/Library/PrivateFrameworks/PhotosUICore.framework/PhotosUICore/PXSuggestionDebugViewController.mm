@@ -1,35 +1,35 @@
 @interface PXSuggestionDebugViewController
-- (PXSuggestionDebugViewController)initWithSuggestion:(id)a3 suggestionInfo:(id)a4;
-- (id)existingSectionsWithSuggestion:(id)a3 suggestionInfo:(id)a4;
-- (id)infoSectionsWithSuggestion:(id)a3 suggestionInfo:(id)a4 compact:(BOOL)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_sendByEmailAction:(id)a3;
-- (void)_switchLogsAction:(id)a3;
+- (PXSuggestionDebugViewController)initWithSuggestion:(id)suggestion suggestionInfo:(id)info;
+- (id)existingSectionsWithSuggestion:(id)suggestion suggestionInfo:(id)info;
+- (id)infoSectionsWithSuggestion:(id)suggestion suggestionInfo:(id)info compact:(BOOL)compact;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_sendByEmailAction:(id)action;
+- (void)_switchLogsAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation PXSuggestionDebugViewController
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"KeywordsCell"];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"KeywordsCell"];
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"KeywordsCell"];
   }
 
-  v9 = -[PXSuggestionDebugViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", v7, [v6 section]);
+  v9 = -[PXSuggestionDebugViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", viewCopy, [pathCopy section]);
 
   v10 = [(NSDictionary *)self->_tableContent objectForKeyedSubscript:v9];
-  v11 = [v6 row];
+  v11 = [pathCopy row];
 
   v12 = [v10 objectAtIndexedSubscript:v11];
 
-  v13 = [v9 lowercaseString];
-  LODWORD(v11) = [v13 isEqualToString:@"location"];
+  lowercaseString = [v9 lowercaseString];
+  LODWORD(v11) = [lowercaseString isEqualToString:@"location"];
 
   if (v11)
   {
@@ -61,38 +61,38 @@
     v12 = v18;
   }
 
-  v19 = [v8 textLabel];
-  [v19 setText:v12];
+  textLabel = [v8 textLabel];
+  [textLabel setText:v12];
 
-  v20 = [v8 textLabel];
+  textLabel2 = [v8 textLabel];
   v21 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0];
-  [v20 setFont:v21];
+  [textLabel2 setFont:v21];
 
-  v22 = [v8 textLabel];
-  [v22 setNumberOfLines:0];
+  textLabel3 = [v8 textLabel];
+  [textLabel3 setNumberOfLines:0];
 
-  v23 = [v8 textLabel];
-  [v23 sizeToFit];
+  textLabel4 = [v8 textLabel];
+  [textLabel4 sizeToFit];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PXSuggestionDebugViewController *)self tableView:a3 titleForHeaderInSection:a4];
+  v5 = [(PXSuggestionDebugViewController *)self tableView:view titleForHeaderInSection:section];
   v6 = [(NSDictionary *)self->_tableContent objectForKeyedSubscript:v5];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (void)_sendByEmailAction:(id)a3
+- (void)_sendByEmailAction:(id)action
 {
   v19 = *MEMORY[0x1E69E9840];
   if ([getMFMailComposeViewControllerClass_35356() canSendMail])
   {
-    v4 = [(PXSuggestionDebugViewController *)self title];
-    v5 = [@"PhotosGraph " stringByAppendingString:v4];
+    title = [(PXSuggestionDebugViewController *)self title];
+    v5 = [@"PhotosGraph " stringByAppendingString:title];
 
     v6 = [MEMORY[0x1E695DEC8] arrayWithObject:@"photos-memories-feedback@group.apple.com"];
     v7 = objc_alloc_init(getMFMailComposeViewControllerClass_35356());
@@ -113,8 +113,8 @@
       if (v10)
       {
         v11 = MEMORY[0x1E696AEC0];
-        v12 = [v10 localizedDescription];
-        v13 = [v11 stringWithFormat:@"Cannot attach results.plist: %@.", v12];
+        localizedDescription = [v10 localizedDescription];
+        v13 = [v11 stringWithFormat:@"Cannot attach results.plist: %@.", localizedDescription];
 
         v14 = v13;
         v15 = PLUIGetLog();
@@ -153,33 +153,33 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)existingSectionsWithSuggestion:(id)a3 suggestionInfo:(id)a4
+- (id)existingSectionsWithSuggestion:(id)suggestion suggestionInfo:(id)info
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  infoCopy = info;
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v5 setDateStyle:1];
   [v5 setTimeStyle:2];
-  v6 = [v4 objectForKeyedSubscript:@"identicalExistingSuggestionInfo"];
+  v6 = [infoCopy objectForKeyedSubscript:@"identicalExistingSuggestionInfo"];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 objectForKeyedSubscript:@"uuid"];
     if (v8)
     {
-      v9 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-      v10 = [v9 librarySpecificFetchOptions];
+      px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+      librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
       v11 = [MEMORY[0x1E6978AE8] localIdentifierWithUUID:v8];
       v12 = v8;
       v13 = MEMORY[0x1E6978650];
       v59[0] = v11;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:1];
-      v15 = [v13 fetchAssetCollectionsWithLocalIdentifiers:v14 options:v10];
-      v16 = [v15 firstObject];
+      v15 = [v13 fetchAssetCollectionsWithLocalIdentifiers:v14 options:librarySpecificFetchOptions];
+      firstObject = [v15 firstObject];
 
       v8 = v12;
-      v17 = v16;
+      v17 = firstObject;
     }
 
     else
@@ -193,20 +193,20 @@ LABEL_14:
   else
   {
     v47 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = [v4 objectForKeyedSubscript:@"suggestionsByCollisionReason"];
+    v8 = [infoCopy objectForKeyedSubscript:@"suggestionsByCollisionReason"];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v18 = [v8 allKeys];
-    v19 = [v18 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [v8 allKeys];
+    v19 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     obj = v19;
     v43 = [v19 countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v43)
     {
       v38 = v5;
-      v39 = v4;
+      v39 = infoCopy;
       v41 = *v53;
       v42 = v8;
       do
@@ -243,23 +243,23 @@ LABEL_14:
                 v26 = [*(*(&v48 + 1) + 8 * i) objectForKeyedSubscript:@"uuid"];
                 if (v26)
                 {
-                  v27 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-                  v28 = [v27 librarySpecificFetchOptions];
+                  px_deprecated_appPhotoLibrary2 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+                  librarySpecificFetchOptions2 = [px_deprecated_appPhotoLibrary2 librarySpecificFetchOptions];
 
                   v29 = [MEMORY[0x1E6978AE8] localIdentifierWithUUID:v26];
                   v30 = MEMORY[0x1E6978650];
                   v56 = v29;
                   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-                  v32 = [v30 fetchAssetCollectionsWithLocalIdentifiers:v31 options:v28];
-                  v33 = [v32 firstObject];
+                  v32 = [v30 fetchAssetCollectionsWithLocalIdentifiers:v31 options:librarySpecificFetchOptions2];
+                  firstObject2 = [v32 firstObject];
                 }
 
                 else
                 {
-                  v33 = 0;
+                  firstObject2 = 0;
                 }
 
-                v34 = [(PXSuggestionDebugViewController *)self infoSectionsWithSuggestion:v33 suggestionInfo:0 compact:1];
+                v34 = [(PXSuggestionDebugViewController *)self infoSectionsWithSuggestion:firstObject2 suggestionInfo:0 compact:1];
                 v35 = [v34 objectForKeyedSubscript:@"1. Info"];
                 v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %d", v21, 0];
                 [v47 setObject:v35 forKey:v36];
@@ -281,7 +281,7 @@ LABEL_14:
 
       while (v43);
       v5 = v38;
-      v4 = v39;
+      infoCopy = v39;
       v7 = 0;
     }
 
@@ -291,106 +291,106 @@ LABEL_14:
   return v47;
 }
 
-- (id)infoSectionsWithSuggestion:(id)a3 suggestionInfo:(id)a4 compact:(BOOL)a5
+- (id)infoSectionsWithSuggestion:(id)suggestion suggestionInfo:(id)info compact:(BOOL)compact
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionCopy = suggestion;
+  infoCopy = info;
   v78 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v9 setDateStyle:1];
   [v9 setTimeStyle:2];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = MEMORY[0x1E696AEC0];
-  [v7 type];
+  [suggestionCopy type];
   v12 = PHSuggestionStringWithType();
   v13 = [v11 stringWithFormat:@"[Type] %@", v12];
   [v10 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  [v7 subtype];
+  [suggestionCopy subtype];
   v15 = PHSuggestionStringWithSubtype();
   v16 = [v14 stringWithFormat:@"[Subtype] %@", v15];
   [v10 addObject:v16];
 
-  v17 = [v7 uuid];
-  if (v17 || ([v8 objectForKeyedSubscript:@"uuid"], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  uuid = [suggestionCopy uuid];
+  if (uuid || ([infoCopy objectForKeyedSubscript:@"uuid"], (uuid = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = v17;
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[UUID] %@", v17];
+    v18 = uuid;
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[UUID] %@", uuid];
     [v10 addObject:v19];
   }
 
-  v20 = [v7 creationDate];
-  if (v20 || ([v8 objectForKeyedSubscript:@"creationDate"], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+  creationDate = [suggestionCopy creationDate];
+  if (creationDate || ([infoCopy objectForKeyedSubscript:@"creationDate"], (creationDate = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v21 = v20;
+    v21 = creationDate;
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [v9 stringFromDate:v20];
+    v23 = [v9 stringFromDate:creationDate];
     v24 = [v22 stringWithFormat:@"[Creation Date] %@", v23];
     [v10 addObject:v24];
   }
 
   v25 = MEMORY[0x1E696AEC0];
-  [v7 state];
+  [suggestionCopy state];
   v26 = PHSuggestionStateStringWithState();
   v27 = [v25 stringWithFormat:@"[State] %@", v26];
   [v10 addObject:v27];
 
   v28 = MEMORY[0x1E696AEC0];
-  [v7 notificationState];
+  [suggestionCopy notificationState];
   v29 = PHSuggestionNotificationStateStringWithNotificationState();
   v30 = [v28 stringWithFormat:@"[Notification state] %@", v29];
   [v10 addObject:v30];
 
-  v31 = [v7 localizedTitle];
-  if (v31 || ([v8 objectForKeyedSubscript:@"title"], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+  localizedTitle = [suggestionCopy localizedTitle];
+  if (localizedTitle || ([infoCopy objectForKeyedSubscript:@"title"], (localizedTitle = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v32 = v31;
-    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Title] %@", v31];
+    v32 = localizedTitle;
+    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Title] %@", localizedTitle];
     [v10 addObject:v33];
   }
 
-  v34 = [v7 localizedSubtitle];
-  if (v34 || ([v8 objectForKeyedSubscript:@"subtitle"], (v34 = objc_claimAutoreleasedReturnValue()) != 0))
+  localizedSubtitle = [suggestionCopy localizedSubtitle];
+  if (localizedSubtitle || ([infoCopy objectForKeyedSubscript:@"subtitle"], (localizedSubtitle = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v35 = v34;
-    v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Subtitle] %@", v34];
+    v35 = localizedSubtitle;
+    v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Subtitle] %@", localizedSubtitle];
     [v10 addObject:v36];
   }
 
-  v37 = [v7 startDate];
-  if (v37 || ([v8 objectForKeyedSubscript:@"universalStartDate"], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
+  startDate = [suggestionCopy startDate];
+  if (startDate || ([infoCopy objectForKeyedSubscript:@"universalStartDate"], (startDate = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v38 = v37;
+    v38 = startDate;
     v39 = MEMORY[0x1E696AEC0];
-    v40 = [v9 stringFromDate:v37];
+    v40 = [v9 stringFromDate:startDate];
     v41 = [v39 stringWithFormat:@"[Start Date] %@", v40];
     [v10 addObject:v41];
   }
 
-  v42 = [v7 endDate];
-  if (v42 || ([v8 objectForKeyedSubscript:@"universalEndDate"], (v42 = objc_claimAutoreleasedReturnValue()) != 0))
+  endDate = [suggestionCopy endDate];
+  if (endDate || ([infoCopy objectForKeyedSubscript:@"universalEndDate"], (endDate = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v43 = v42;
+    v43 = endDate;
     v44 = MEMORY[0x1E696AEC0];
-    v45 = [v9 stringFromDate:v42];
+    v45 = [v9 stringFromDate:endDate];
     v46 = [v44 stringWithFormat:@"[End Date] %@", v45];
     [v10 addObject:v46];
   }
 
-  v47 = [v7 context];
-  if (v47)
+  context = [suggestionCopy context];
+  if (context)
   {
-    v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Context] %@", v47];
+    v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Context] %@", context];
     [v10 addObject:v48];
   }
 
-  v49 = [v7 relevantUntilDate];
-  v75 = v49;
-  if (v49)
+  relevantUntilDate = [suggestionCopy relevantUntilDate];
+  v75 = relevantUntilDate;
+  if (relevantUntilDate)
   {
     v50 = MEMORY[0x1E696AEC0];
-    v51 = [v9 stringFromDate:v49];
+    v51 = [v9 stringFromDate:relevantUntilDate];
     v52 = [v50 stringWithFormat:@"[Relevant Until Date] %@", v51];
     [v10 addObject:v52];
   }
@@ -399,30 +399,30 @@ LABEL_14:
   [v78 setObject:v10 forKeyedSubscript:@"1. Info"];
   v53 = v10;
   v54 = v53;
-  if (!a5)
+  if (!compact)
   {
     v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
 
     [v78 setObject:v54 forKeyedSubscript:@"2. Assets"];
   }
 
-  v55 = [v8 objectForKeyedSubscript:@"keyAssetUUID"];
-  v56 = v8;
-  v57 = v55;
+  v55 = [infoCopy objectForKeyedSubscript:@"keyAssetUUID"];
+  v56 = infoCopy;
+  uuid2 = v55;
   v77 = v56;
   v58 = [v56 objectForKeyedSubscript:@"keyAssetCreationDate"];
-  if (!v57)
+  if (!uuid2)
   {
-    v59 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:v7 options:0];
-    v60 = [v59 firstObject];
+    v59 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:suggestionCopy options:0];
+    firstObject = [v59 firstObject];
 
-    v57 = [v60 uuid];
-    v61 = [v60 creationDate];
+    uuid2 = [firstObject uuid];
+    creationDate2 = [firstObject creationDate];
 
-    v58 = v61;
+    v58 = creationDate2;
   }
 
-  v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Key Asset UUID] %@", v57];
+  v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Key Asset UUID] %@", uuid2];
   [v54 addObject:v62];
 
   v63 = MEMORY[0x1E696AEC0];
@@ -436,13 +436,13 @@ LABEL_14:
     [v78 setObject:v66 forKeyedSubscript:@"3. Reasons"];
   }
 
-  v67 = [v7 featuresProperties];
-  v68 = v67;
-  if (v67)
+  featuresProperties = [suggestionCopy featuresProperties];
+  v68 = featuresProperties;
+  if (featuresProperties)
   {
     v74 = v53;
-    v69 = v47;
-    v70 = [v67 objectForKeyedSubscript:@"widgetIdentifier"];
+    v69 = context;
+    v70 = [featuresProperties objectForKeyedSubscript:@"widgetIdentifier"];
     v71 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v70)
     {
@@ -455,19 +455,19 @@ LABEL_14:
       [v78 setObject:v71 forKeyedSubscript:@"4. Featured Properties"];
     }
 
-    v47 = v69;
+    context = v69;
     v53 = v74;
   }
 
   return v78;
 }
 
-- (void)_switchLogsAction:(id)a3
+- (void)_switchLogsAction:(id)action
 {
-  v4 = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
-  if (v4)
+  selectedSegmentIndex = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
+  if (selectedSegmentIndex)
   {
-    if (v4 != 1)
+    if (selectedSegmentIndex != 1)
     {
       goto LABEL_6;
     }
@@ -484,8 +484,8 @@ LABEL_14:
   self->_tableContent = v5;
 
 LABEL_6:
-  v7 = [(NSDictionary *)self->_tableContent allKeys];
-  v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSDictionary *)self->_tableContent allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:sel_compare_];
   sectionTitles = self->_sectionTitles;
   self->_sectionTitles = v8;
 
@@ -500,12 +500,12 @@ LABEL_6:
   v36.receiver = self;
   v36.super_class = PXSuggestionDebugViewController;
   [(PXSuggestionDebugViewController *)&v36 viewDidLoad];
-  v3 = [(PXSuggestionDebugViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(PXSuggestionDebugViewController *)self view];
+  [view setAutoresizingMask:18];
 
-  v4 = [(PXSuggestionDebugViewController *)self view];
-  v5 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  view2 = [(PXSuggestionDebugViewController *)self view];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [view2 setBackgroundColor:systemGroupedBackgroundColor];
 
   v6 = [(NSDictionary *)self->_suggestionInfo objectForKeyedSubscript:@"identicalExistingSuggestionInfo"];
   if (v6)
@@ -547,34 +547,34 @@ LABEL_8:
 
   [(UISegmentedControl *)self->_segmentedControl addTarget:self action:sel__switchLogsAction_ forControlEvents:4096];
   [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:0];
-  v14 = [(PXSuggestionDebugViewController *)self view];
-  [v14 addSubview:self->_segmentedControl];
+  view3 = [(PXSuggestionDebugViewController *)self view];
+  [view3 addSubview:self->_segmentedControl];
 
   v15 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v16 = [(PXSuggestionDebugViewController *)self view];
-  [v16 addSubview:v15];
+  view4 = [(PXSuggestionDebugViewController *)self view];
+  [view4 addSubview:v15];
 
   [(UISegmentedControl *)self->_segmentedControl setTranslatesAutoresizingMaskIntoConstraints:0];
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
-  v18 = [(PXSuggestionDebugViewController *)self view];
-  v19 = [v18 safeAreaLayoutGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20 constant:10.0];
+  topAnchor = [(UISegmentedControl *)self->_segmentedControl topAnchor];
+  view5 = [(PXSuggestionDebugViewController *)self view];
+  safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   [v21 setActive:1];
 
   v22 = _NSDictionaryOfVariableBindings(&cfstr_Segmentedcontr.isa, self->_segmentedControl, v15, 0);
-  v23 = [(PXSuggestionDebugViewController *)self view];
+  view6 = [(PXSuggestionDebugViewController *)self view];
   v24 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:[_segmentedControl(<=44)]-10-[contentView]-0-|" options:0 metrics:0 views:v22];
-  [v23 addConstraints:v24];
+  [view6 addConstraints:v24];
 
-  v25 = [(PXSuggestionDebugViewController *)self view];
+  view7 = [(PXSuggestionDebugViewController *)self view];
   v26 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-[_segmentedControl]-|" options:0 metrics:0 views:v22];
-  [v25 addConstraints:v26];
+  [view7 addConstraints:v26];
 
-  v27 = [(PXSuggestionDebugViewController *)self view];
+  view8 = [(PXSuggestionDebugViewController *)self view];
   v28 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:0 views:v22];
-  [v27 addConstraints:v28];
+  [view8 addConstraints:v28];
 
   v29 = objc_alloc(MEMORY[0x1E69DD020]);
   [v15 frame];
@@ -587,20 +587,20 @@ LABEL_8:
   [(UITableView *)self->_tableView setAllowsSelection:0];
   [v15 addSubview:self->_tableView];
   v32 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Close" style:2 target:self action:sel__closeAction_];
-  v33 = [(PXSuggestionDebugViewController *)self navigationItem];
-  [v33 setLeftBarButtonItem:v32];
+  navigationItem = [(PXSuggestionDebugViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v32];
 
   v34 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:7 target:self action:sel__sendByEmailAction_];
-  v35 = [(PXSuggestionDebugViewController *)self navigationItem];
-  [v35 setRightBarButtonItem:v34];
+  navigationItem2 = [(PXSuggestionDebugViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v34];
 
   [(PXSuggestionDebugViewController *)self _switchLogsAction:0];
 }
 
-- (PXSuggestionDebugViewController)initWithSuggestion:(id)a3 suggestionInfo:(id)a4
+- (PXSuggestionDebugViewController)initWithSuggestion:(id)suggestion suggestionInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionCopy = suggestion;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = PXSuggestionDebugViewController;
   v9 = [(PXSuggestionDebugViewController *)&v12 init];
@@ -608,8 +608,8 @@ LABEL_8:
   if (v9)
   {
     [(PXSuggestionDebugViewController *)v9 setTitle:@"Suggestion Debug"];
-    objc_storeStrong(&v10->_suggestion, a3);
-    objc_storeStrong(&v10->_suggestionInfo, a4);
+    objc_storeStrong(&v10->_suggestion, suggestion);
+    objc_storeStrong(&v10->_suggestionInfo, info);
   }
 
   return v10;

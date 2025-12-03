@@ -9,8 +9,8 @@
   v9[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = WFLinkInsertIntelligenceTextAction;
-  v2 = [(WFOverridableLinkAction *)&v7 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v7 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
 
   v8 = @"Hidden";
   v9[0] = MEMORY[0x1E695E118];

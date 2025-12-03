@@ -1,5 +1,5 @@
 @interface OSLogDoublyLinkedListNode
-- (OSLogDoublyLinkedListNode)initWithKey:(id)a3 data:(id)a4;
+- (OSLogDoublyLinkedListNode)initWithKey:(id)key data:(id)data;
 - (OSLogDoublyLinkedListNode)prev;
 @end
 
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (OSLogDoublyLinkedListNode)initWithKey:(id)a3 data:(id)a4
+- (OSLogDoublyLinkedListNode)initWithKey:(id)key data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = OSLogDoublyLinkedListNode;
   v9 = [(OSLogDoublyLinkedListNode *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_data, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_data, data);
   }
 
   return v10;

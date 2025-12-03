@@ -1,7 +1,7 @@
 @interface MessageListSearchViewController
 + (OS_os_log)log;
 - (BOOL)_shouldKeepDisplayingSearchingFooter;
-- (BOOL)_shouldUpdateSearchForOptions:(int64_t)a3;
+- (BOOL)_shouldUpdateSearchForOptions:(int64_t)options;
 - (BOOL)hasSuggestions;
 - (BOOL)isFilterButtonEnabled;
 - (BOOL)isSearchSuggestionsVisible;
@@ -12,150 +12,150 @@
 - (MFSearchProgressView)searchProgressView;
 - (MFSearchSuggestionsViewControllable)suggestionsViewController;
 - (MUISearchSuggestionsGenerator)suggestionsGenerator;
-- (MessageListSearchViewController)initWithMainScene:(id)a3 mailboxes:(id)a4 accountsProvider:(id)a5 favoritesShortcutsProvider:(id)a6 contactStore:(id)a7;
+- (MessageListSearchViewController)initWithMainScene:(id)scene mailboxes:(id)mailboxes accountsProvider:(id)provider favoritesShortcutsProvider:(id)shortcutsProvider contactStore:(id)store;
 - (NSDictionary)indexStatistics;
 - (double)_searchingFooterDisplayTimeLeft;
-- (id)SectionCategoryForSuggestion:(id)a3;
+- (id)SectionCategoryForSuggestion:(id)suggestion;
 - (id)_additionalBarButtonItems;
-- (id)_currentEditingStringForSearchBar:(id)a3;
+- (id)_currentEditingStringForSearchBar:(id)bar;
 - (id)_excludeJunkTrashPredicate;
 - (id)_excludedMailboxes;
-- (id)_excludedMailboxesInPredicate:(id)a3;
-- (id)_groupForRecentSearchSuggestionItems:(id)a3;
-- (id)_latencyMsFromTimestamp:(id)a3 toTimestamp:(id)a4;
+- (id)_excludedMailboxesInPredicate:(id)predicate;
+- (id)_groupForRecentSearchSuggestionItems:(id)items;
+- (id)_latencyMsFromTimestamp:(id)timestamp toTimestamp:(id)toTimestamp;
 - (id)_localMailboxPredicate;
-- (id)_objectFromSelectionInSearchTextField:(id)a3;
-- (id)_parsecEmbeddingStateWithSearchInfo:(id)a3;
-- (id)_parsecMessageResultForVisibleIndexPath:(id)a3;
-- (id)_parsecSuggestionForSuggestion:(id)a3;
-- (id)_phraseManagerForPhrase:(id)a3;
+- (id)_objectFromSelectionInSearchTextField:(id)field;
+- (id)_parsecEmbeddingStateWithSearchInfo:(id)info;
+- (id)_parsecMessageResultForVisibleIndexPath:(id)path;
+- (id)_parsecSuggestionForSuggestion:(id)suggestion;
+- (id)_phraseManagerForPhrase:(id)phrase;
 - (id)_scopeIdentifierForPeopleSuggestions;
-- (id)_scopeTitlesForSearchAtom:(id)a3;
+- (id)_scopeTitlesForSearchAtom:(id)atom;
 - (id)_searchTapToRadarButtonItem;
-- (id)_updatedSuggestionsGroups:(id)a3 phraseKind:(unsigned __int8)a4;
-- (id)attributedSpotlightTitle:(id)a3;
-- (id)categoryForSuggestion:(id)a3;
-- (id)categoryForTokenKind:(int64_t)a3;
-- (id)messageListDataSource:(id)a3 sectionDataSourceForSection:(id)a4 messageList:(id)a5;
+- (id)_updatedSuggestionsGroups:(id)groups phraseKind:(unsigned __int8)kind;
+- (id)attributedSpotlightTitle:(id)title;
+- (id)categoryForSuggestion:(id)suggestion;
+- (id)categoryForTokenKind:(int64_t)kind;
+- (id)messageListDataSource:(id)source sectionDataSourceForSection:(id)section messageList:(id)list;
 - (id)navigationController;
 - (id)navigationItem;
 - (id)navigationTitleForSearch;
 - (id)searchBar;
-- (id)searchScopeForSuggestionCategoryScope:(id)a3;
-- (id)searchTextField:(id)a3 itemProviderForCopyingToken:(id)a4;
-- (id)sectionDataSourceConfigurationWithSection:(id)a3 messageList:(id)a4;
-- (id)sectionHeaderTitleForMessageListSectionDataSource:(id)a3;
+- (id)searchScopeForSuggestionCategoryScope:(id)scope;
+- (id)searchTextField:(id)field itemProviderForCopyingToken:(id)token;
+- (id)sectionDataSourceConfigurationWithSection:(id)section messageList:(id)list;
+- (id)sectionHeaderTitleForMessageListSectionDataSource:(id)source;
 - (id)splitViewController;
-- (id)targetViewControllerForAction:(SEL)a3 sender:(id)a4;
+- (id)targetViewControllerForAction:(SEL)action sender:(id)sender;
 - (id)toolbarItems;
-- (id)viewForKeyboardAvoidance:(id)a3;
+- (id)viewForKeyboardAvoidance:(id)avoidance;
 - (int64_t)_numberOfTopHitResults;
 - (unint64_t)_computeBGSystemTaskFeatureCheckpoint;
-- (unint64_t)_countOfSuggestionAtomsInSearchbar:(id)a3;
-- (void)_addSuggestionToRecentSuggester:(id)a3;
+- (unint64_t)_countOfSuggestionAtomsInSearchbar:(id)searchbar;
+- (void)_addSuggestionToRecentSuggester:(id)suggester;
 - (void)_beginSearchWithRepresentedObjectsForInitialSearch;
 - (void)_clearSearchResultSections;
-- (void)_configureLayoutListConfiguration:(id)a3 atSection:(int64_t)a4;
-- (void)_didCompleteDismissalTransition:(id)a3;
-- (void)_didCompletePresentationTransition:(id)a3;
+- (void)_configureLayoutListConfiguration:(id)configuration atSection:(int64_t)section;
+- (void)_didCompleteDismissalTransition:(id)transition;
+- (void)_didCompletePresentationTransition:(id)transition;
 - (void)_displaySearchingFooter;
 - (void)_endSearchSession;
-- (void)_generateSuggestionsForPhrase:(id)a3;
-- (void)_getDefaultPersonScopeIdentifier:(id *)a3 alternativeScopeIdentifier:(id *)a4;
+- (void)_generateSuggestionsForPhrase:(id)phrase;
+- (void)_getDefaultPersonScopeIdentifier:(id *)identifier alternativeScopeIdentifier:(id *)scopeIdentifier;
 - (void)_initializeSearchUserActivity;
 - (void)_invokeSearchFeedbackTapToRadar;
-- (void)_notePredicateUpdated:(int64_t)a3;
+- (void)_notePredicateUpdated:(int64_t)updated;
 - (void)_preheatCoreSpotlightModel;
 - (void)_prepareSnapshotViewForDismissal;
-- (void)_reportMessageResultsFetchedIsFinished:(BOOL)a3;
+- (void)_reportMessageResultsFetchedIsFinished:(BOOL)finished;
 - (void)_reportSearchQueryStateForScopeChange;
 - (void)_resetFooterState;
 - (void)_resetGlobalScopeTitles;
 - (void)_resetSearchFeedbackIfNeeded;
 - (void)_sceneDidEnterBackground;
 - (void)_scheduleIndexStateStatistics;
-- (void)_sendAnalyticsForIndexState:(id)a3;
+- (void)_sendAnalyticsForIndexState:(id)state;
 - (void)_startSearchSession;
 - (void)_stopAnimatingSearchingFooter;
 - (void)_updateFooter;
 - (void)_updateIndexStatistics;
 - (void)_updateIndexStatisticsIfNeeded;
-- (void)_updateSearchBarUsingSuggestionToken:(id)a3;
-- (void)_updateSearchFeedbackCount:(BOOL)a3;
+- (void)_updateSearchBarUsingSuggestionToken:(id)token;
+- (void)_updateSearchFeedbackCount:(BOOL)count;
 - (void)_updateSearchResultsControllerVisibility;
-- (void)_updateSearchResultsForSearchController:(id)a3;
+- (void)_updateSearchResultsForSearchController:(id)controller;
 - (void)_updateSearchingCompletionState;
-- (void)beginSearchWithQueryString:(id)a3 scope:(id)a4;
-- (void)beginSearchWithSuggestion:(id)a3 scope:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)beginSearchWithQueryString:(id)string scope:(id)scope;
+- (void)beginSearchWithSuggestion:(id)suggestion scope:(id)scope;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didTapCheckInUrlFor:(id)a3;
-- (void)didTapMapAddressFor:(id)a3;
-- (void)didTapViewMessageFor:(id)a3;
-- (void)dismissToastViewController:(id)a3;
-- (void)globalSearchScopeChanged:(int64_t)a3;
+- (void)didTapCheckInUrlFor:(id)for;
+- (void)didTapMapAddressFor:(id)for;
+- (void)didTapViewMessageFor:(id)for;
+- (void)dismissToastViewController:(id)controller;
+- (void)globalSearchScopeChanged:(int64_t)changed;
 - (void)invokeTapToRadar;
-- (void)keyboardAvoidance:(id)a3 adjustForFrameOverlap:(CGRect)a4;
+- (void)keyboardAvoidance:(id)avoidance adjustForFrameOverlap:(CGRect)overlap;
 - (void)loadView;
-- (void)messageListDataSource:(id)a3 didUpdateWithChange:(id)a4 section:(id)a5 animated:(BOOL)a6;
-- (void)messageListDataSource:(id)a3 willUpdateWithChange:(id)a4 section:(id)a5 animated:(BOOL)a6 cleanSnapshot:(BOOL)a7;
-- (void)messageListSectionDataSource:(id)a3 collectionFailedSearching:(id)a4 remote:(BOOL)a5 searchInfo:(id)a6;
-- (void)messageListSectionDataSource:(id)a3 collectionFinishedSearching:(id)a4 remote:(BOOL)a5 searchInfo:(id)a6;
-- (void)performOnLocalAndRemoteSearchCompletion:(id)a3;
-- (void)performOnRemoteSearchCompletion:(id)a3;
+- (void)messageListDataSource:(id)source didUpdateWithChange:(id)change section:(id)section animated:(BOOL)animated;
+- (void)messageListDataSource:(id)source willUpdateWithChange:(id)change section:(id)section animated:(BOOL)animated cleanSnapshot:(BOOL)snapshot;
+- (void)messageListSectionDataSource:(id)source collectionFailedSearching:(id)searching remote:(BOOL)remote searchInfo:(id)info;
+- (void)messageListSectionDataSource:(id)source collectionFinishedSearching:(id)searching remote:(BOOL)remote searchInfo:(id)info;
+- (void)performOnLocalAndRemoteSearchCompletion:(id)completion;
+- (void)performOnRemoteSearchCompletion:(id)completion;
 - (void)presentToastViewController;
-- (void)redrawSearchBarWithSuggestion:(id)a3;
+- (void)redrawSearchBarWithSuggestion:(id)suggestion;
 - (void)removeObservers;
-- (void)reportInstantAnswerButtonSelected:(id)a3 cardSectionID:(id)a4 command:(id)a5;
-- (void)reportInstantAnswerCardSelected:(id)a3 cardSectionID:(id)a4;
-- (void)reportQueryClearedEvent:(int64_t)a3;
+- (void)reportInstantAnswerButtonSelected:(id)selected cardSectionID:(id)d command:(id)command;
+- (void)reportInstantAnswerCardSelected:(id)selected cardSectionID:(id)d;
+- (void)reportQueryClearedEvent:(int64_t)event;
 - (void)reportSearchDidBecomeActive;
-- (void)reportSearchEndedEvent:(int64_t)a3;
-- (void)reportSearchQueryStateWithTriggerEvent:(unint64_t)a3 searchType:(unint64_t)a4;
-- (void)reportSearchViewAppeared:(BOOL)a3 currentMailboxScope:(BOOL)a4;
-- (void)reportSuggestionSelected:(id)a3;
-- (void)reportSuggestionsFetched:(id)a3;
-- (void)reportSuggestionsVisible:(id)a3;
-- (void)reportTopHitSelected:(id)a3;
-- (void)reportVisibleMessageListResultsAlwaysReportItems:(BOOL)a3 isFinished:(BOOL)a4;
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchSuggestionsViewController:(id)a3 deleteRecentSuggestion:(id)a4;
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 instantAnswerSuggestion:(id)a5 cardSectionID:(id)a6;
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 instantAnswerSuggestion:(id)a5 cardSectionID:(id)a6 command:(id)a7;
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 messageList:(id)a5;
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 messageList:(id)a5 indexInformation:(id)a6;
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 messageList:(id)a5 indexInformation:(id)a6 topHitSuggestion:(id)a7;
-- (void)searchSuggestionsViewController:(id)a3 didSelectSuggestion:(id)a4;
-- (void)searchTokenScopeChanged:(int64_t)a3;
-- (void)setGenerateCannedSuggestions:(BOOL)a3;
-- (void)setIndexStatistics:(id)a3;
-- (void)setSearchStartTimestamp:(id)a3;
-- (void)setSearchSuggestionsVisible:(BOOL)a3;
-- (void)setSearching:(BOOL)a3;
-- (void)setSnapshotViewForDismissal:(id)a3;
-- (void)setSuggestionStartTimestamp:(id)a3;
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4;
+- (void)reportSearchEndedEvent:(int64_t)event;
+- (void)reportSearchQueryStateWithTriggerEvent:(unint64_t)event searchType:(unint64_t)type;
+- (void)reportSearchViewAppeared:(BOOL)appeared currentMailboxScope:(BOOL)scope;
+- (void)reportSuggestionSelected:(id)selected;
+- (void)reportSuggestionsFetched:(id)fetched;
+- (void)reportSuggestionsVisible:(id)visible;
+- (void)reportTopHitSelected:(id)selected;
+- (void)reportVisibleMessageListResultsAlwaysReportItems:(BOOL)items isFinished:(BOOL)finished;
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchSuggestionsViewController:(id)controller deleteRecentSuggestion:(id)suggestion;
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d instantAnswerSuggestion:(id)suggestion cardSectionID:(id)iD;
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d instantAnswerSuggestion:(id)suggestion cardSectionID:(id)iD command:(id)command;
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d messageList:(id)list;
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d messageList:(id)list indexInformation:(id)information;
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d messageList:(id)list indexInformation:(id)information topHitSuggestion:(id)suggestion;
+- (void)searchSuggestionsViewController:(id)controller didSelectSuggestion:(id)suggestion;
+- (void)searchTokenScopeChanged:(int64_t)changed;
+- (void)setGenerateCannedSuggestions:(BOOL)suggestions;
+- (void)setIndexStatistics:(id)statistics;
+- (void)setSearchStartTimestamp:(id)timestamp;
+- (void)setSearchSuggestionsVisible:(BOOL)visible;
+- (void)setSearching:(BOOL)searching;
+- (void)setSnapshotViewForDismissal:(id)dismissal;
+- (void)setSuggestionStartTimestamp:(id)timestamp;
+- (void)setToolbarItems:(id)items animated:(BOOL)animated;
 - (void)setUpAppSwitcherObserver;
-- (void)shouldTriggerTapToRadarForViewController:(id)a3 shouldTrigger:(BOOL)a4;
-- (void)suggestionsGenerator:(id)a3 didCompleteRequestID:(id)a4;
-- (void)suggestionsGenerator:(id)a3 didProduceResult:(id)a4;
-- (void)textFieldDidChangeSelection:(id)a3;
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4;
-- (void)updateUserActivityState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)shouldTriggerTapToRadarForViewController:(id)controller shouldTrigger:(BOOL)trigger;
+- (void)suggestionsGenerator:(id)generator didCompleteRequestID:(id)d;
+- (void)suggestionsGenerator:(id)generator didProduceResult:(id)result;
+- (void)textFieldDidChangeSelection:(id)selection;
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion;
+- (void)updateUserActivityState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willDismissSearchController:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willDismissSearchController:(id)controller;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation MessageListSearchViewController
@@ -175,20 +175,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setSearchStartTimestamp:(id)a3
+- (void)setSearchStartTimestamp:(id)timestamp
 {
-  objc_storeStrong(&self->_searchStartTimestamp, a3);
-  if (a3)
+  objc_storeStrong(&self->_searchStartTimestamp, timestamp);
+  if (timestamp)
   {
 
     [(MessageListSearchViewController *)self setDidReportFirstVisibleResults:0];
   }
 }
 
-- (void)setSuggestionStartTimestamp:(id)a3
+- (void)setSuggestionStartTimestamp:(id)timestamp
 {
-  objc_storeStrong(&self->_suggestionStartTimestamp, a3);
-  if (a3)
+  objc_storeStrong(&self->_suggestionStartTimestamp, timestamp);
+  if (timestamp)
   {
 
     [(MessageListSearchViewController *)self setDidReportFirstVisibleSuggestions:0];
@@ -201,7 +201,7 @@
   block[1] = 3221225472;
   block[2] = sub_100159038;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD320 != -1)
   {
     dispatch_once(&qword_1006DD320, block);
@@ -212,15 +212,15 @@
   return v2;
 }
 
-- (MessageListSearchViewController)initWithMainScene:(id)a3 mailboxes:(id)a4 accountsProvider:(id)a5 favoritesShortcutsProvider:(id)a6 contactStore:(id)a7
+- (MessageListSearchViewController)initWithMainScene:(id)scene mailboxes:(id)mailboxes accountsProvider:(id)provider favoritesShortcutsProvider:(id)shortcutsProvider contactStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  sceneCopy = scene;
+  mailboxesCopy = mailboxes;
+  providerCopy = provider;
+  storeCopy = store;
   v38.receiver = self;
   v38.super_class = MessageListSearchViewController;
-  v15 = [(MessageListViewController *)&v38 initWithMainScene:v11 mailboxes:v12 accountsProvider:v13 favoritesShortcutsProvider:0 contactStore:v14 diagnosticsHelper:0];
+  v15 = [(MessageListViewController *)&v38 initWithMainScene:sceneCopy mailboxes:mailboxesCopy accountsProvider:providerCopy favoritesShortcutsProvider:0 contactStore:storeCopy diagnosticsHelper:0];
   v16 = v15;
   if (v15)
   {
@@ -233,9 +233,9 @@
     groupedSuggestionsByCategory = v16->_groupedSuggestionsByCategory;
     v16->_groupedSuggestionsByCategory = v19;
 
-    v21 = [v11 daemonInterface];
-    v22 = [v21 senderRepository];
-    [(MessageListSearchViewController *)v16 setSenderRepository:v22];
+    daemonInterface = [sceneCopy daemonInterface];
+    senderRepository = [daemonInterface senderRepository];
+    [(MessageListSearchViewController *)v16 setSenderRepository:senderRepository];
 
     [(MessageListSearchViewController *)v16 _scheduleIndexStateStatistics];
     [(MessageListSearchViewController *)v16 setInSearchSession:0];
@@ -285,20 +285,20 @@
   [(MUISearchSuggestionsGenerator *)self->_suggestionsGenerator cancel];
   [(EFDebouncer *)self->_indexingStatusDebouncer cancel];
   [(EFDebouncer *)self->_searchDebouncer cancel];
-  v3 = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
-  [v3 cancel];
+  localSearchInitialLoadPromise = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
+  [localSearchInitialLoadPromise cancel];
 
-  v4 = [(MessageListSearchViewController *)self localSearchRemotePromise];
-  [v4 cancel];
+  localSearchRemotePromise = [(MessageListSearchViewController *)self localSearchRemotePromise];
+  [localSearchRemotePromise cancel];
 
-  v5 = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
-  [v5 cancel];
+  remoteSearchInitialLoadPromise = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
+  [remoteSearchInitialLoadPromise cancel];
 
-  v6 = [(MessageListSearchViewController *)self remoteSearchServerPromise];
-  [v6 cancel];
+  remoteSearchServerPromise = [(MessageListSearchViewController *)self remoteSearchServerPromise];
+  [remoteSearchServerPromise cancel];
 
-  v7 = [(MessageListSearchViewController *)self canShowMenuSuggestionsPromise];
-  [v7 cancel];
+  canShowMenuSuggestionsPromise = [(MessageListSearchViewController *)self canShowMenuSuggestionsPromise];
+  [canShowMenuSuggestionsPromise cancel];
 
   v8.receiver = self;
   v8.super_class = MessageListSearchViewController;
@@ -333,9 +333,9 @@
   if (_os_feature_enabled_impl())
   {
     v7 = +[EFDevice currentDevice];
-    v8 = [v7 isInternal];
+    isInternal = [v7 isInternal];
 
-    if (v8)
+    if (isInternal)
     {
       [(MessageListSearchViewController *)self _resetSearchFeedbackIfNeeded];
     }
@@ -344,7 +344,7 @@
 
 - (BOOL)isFilterButtonEnabled
 {
-  v3 = [(MessageListSearchViewController *)self presentingViewController];
+  presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -352,10 +352,10 @@
     return 0;
   }
 
-  v5 = [(MessageListSearchViewController *)self presentingViewController];
-  v6 = [v5 isFilterButtonEnabled];
+  presentingViewController2 = [(MessageListSearchViewController *)self presentingViewController];
+  isFilterButtonEnabled = [presentingViewController2 isFilterButtonEnabled];
 
-  return v6;
+  return isFilterButtonEnabled;
 }
 
 - (void)viewDidLoad
@@ -363,56 +363,56 @@
   v4.receiver = self;
   v4.super_class = MessageListSearchViewController;
   [(MessageListViewController *)&v4 viewDidLoad];
-  v3 = [(MessageListSearchViewController *)self collectionView];
-  [v3 setKeyboardDismissMode:1];
-  [v3 setSelectionFollowsFocus:1];
+  collectionView = [(MessageListSearchViewController *)self collectionView];
+  [collectionView setKeyboardDismissMode:1];
+  [collectionView setSelectionFollowsFocus:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v7 viewDidAppear:a3];
+  [(MessageListViewController *)&v7 viewDidAppear:appear];
   if (![(MessageListSearchViewController *)self isSearchSuggestionsVisible])
   {
     [(MessageListSearchViewController *)self reportSearchDidBecomeActive];
   }
 
-  v4 = [(MessageListViewController *)self indexStatus];
+  indexStatus = [(MessageListViewController *)self indexStatus];
 
-  if (v4)
+  if (indexStatus)
   {
-    v5 = [(MessageListSearchViewController *)self _computeBGSystemTaskFeatureCheckpoint];
+    _computeBGSystemTaskFeatureCheckpoint = [(MessageListSearchViewController *)self _computeBGSystemTaskFeatureCheckpoint];
     v6 = +[MessageListSearchViewController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v9 = v5;
+      v9 = _computeBGSystemTaskFeatureCheckpoint;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Reporting Search Indexer feature checkpoint: %ld", buf, 0xCu);
     }
 
-    [BGSystemTaskCheckpoints reportFeatureCheckpoint:v5 forFeature:302 error:0];
+    [BGSystemTaskCheckpoints reportFeatureCheckpoint:_computeBGSystemTaskFeatureCheckpoint forFeature:302 error:0];
   }
 }
 
-- (void)setIndexStatistics:(id)a3
+- (void)setIndexStatistics:(id)statistics
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  indexStatistics = v4->_indexStatistics;
-  v4->_indexStatistics = v5;
+  statisticsCopy = statistics;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [statisticsCopy copy];
+  indexStatistics = selfCopy->_indexStatistics;
+  selfCopy->_indexStatistics = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDictionary)indexStatistics
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_indexStatistics;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_indexStatistics;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -435,53 +435,53 @@
 
   if ((MUISolariumFeatureEnabled() & 1) == 0 && (v4 & 1) == 0)
   {
-    v5 = [(MessageListSearchViewController *)self suggestionsViewController];
-    v6 = [(MessageListSearchViewController *)self collectionView];
-    [v6 layoutMargins];
-    [v5 updateLayoutMargins:?];
+    suggestionsViewController = [(MessageListSearchViewController *)self suggestionsViewController];
+    collectionView = [(MessageListSearchViewController *)self collectionView];
+    [collectionView layoutMargins];
+    [suggestionsViewController updateLayoutMargins:?];
   }
 }
 
 - (MUISearchSuggestionsGenerator)suggestionsGenerator
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suggestionsGenerator = v2->_suggestionsGenerator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suggestionsGenerator = selfCopy->_suggestionsGenerator;
   if (!suggestionsGenerator)
   {
-    v4 = sub_1001598FC(v2);
-    v5 = [[MUISearchSuggestionsGenerator alloc] initWithSuggesters:v4 delegate:v2];
-    v6 = v2->_suggestionsGenerator;
-    v2->_suggestionsGenerator = v5;
+    v4 = sub_1001598FC(selfCopy);
+    v5 = [[MUISearchSuggestionsGenerator alloc] initWithSuggesters:v4 delegate:selfCopy];
+    v6 = selfCopy->_suggestionsGenerator;
+    selfCopy->_suggestionsGenerator = v5;
 
-    suggestionsGenerator = v2->_suggestionsGenerator;
+    suggestionsGenerator = selfCopy->_suggestionsGenerator;
   }
 
   v7 = suggestionsGenerator;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (MFSearchSuggestionsViewControllable)suggestionsViewController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suggestionsViewController = v2->_suggestionsViewController;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suggestionsViewController = selfCopy->_suggestionsViewController;
   if (!suggestionsViewController)
   {
     v4 = [_TtC10MobileMail31SearchSuggestionsViewController alloc];
-    v5 = [(MessageListViewController *)v2 scene];
-    v6 = [(MessageListSearchViewController *)v2 contactStore];
-    v7 = [(SearchSuggestionsViewController *)v4 initWithMailScene:v5 contactStore:v6 delegate:v2];
-    v8 = v2->_suggestionsViewController;
-    v2->_suggestionsViewController = v7;
+    scene = [(MessageListViewController *)selfCopy scene];
+    contactStore = [(MessageListSearchViewController *)selfCopy contactStore];
+    v7 = [(SearchSuggestionsViewController *)v4 initWithMailScene:scene contactStore:contactStore delegate:selfCopy];
+    v8 = selfCopy->_suggestionsViewController;
+    selfCopy->_suggestionsViewController = v7;
 
-    suggestionsViewController = v2->_suggestionsViewController;
+    suggestionsViewController = selfCopy->_suggestionsViewController;
   }
 
   v9 = suggestionsViewController;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -508,45 +508,45 @@
 
   *v3 = MessageListSectionServerSearch;
   v5 = [NSArray arrayWithObjects:"arrayWithObjects:count:" count:?];
-  v6 = [(MessageListSearchViewController *)self dataSource];
-  v4 = [v6 numberOfItemsInSections:v5] > 0;
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v4 = [dataSource numberOfItemsInSections:v5] > 0;
 
   return v4;
 }
 
-- (void)_configureLayoutListConfiguration:(id)a3 atSection:(int64_t)a4
+- (void)_configureLayoutListConfiguration:(id)configuration atSection:(int64_t)section
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v23 _configureLayoutListConfiguration:v6 atSection:a4];
-  v7 = [(MessageListSearchViewController *)self dataSource];
-  v8 = [v7 isSection:MessageListSectionIndexedSearch atIndex:a4];
-  v9 = [v7 isSection:MessageListSectionServerSearch atIndex:a4];
-  v10 = [v7 shouldDisplaySupplementaryKind:UICollectionElementKindSectionHeader forSectionAtIndex:a4];
-  v11 = [v7 shouldDisplaySupplementaryKind:UICollectionElementKindSectionFooter forSectionAtIndex:a4];
-  [v6 setFooterMode:0];
-  v12 = [(MessageListSearchViewController *)self remoteSearchServerPromise];
-  v13 = [v12 future];
-  v14 = [v13 resultIfAvailable];
+  [(MessageListViewController *)&v23 _configureLayoutListConfiguration:configurationCopy atSection:section];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v8 = [dataSource isSection:MessageListSectionIndexedSearch atIndex:section];
+  v9 = [dataSource isSection:MessageListSectionServerSearch atIndex:section];
+  v10 = [dataSource shouldDisplaySupplementaryKind:UICollectionElementKindSectionHeader forSectionAtIndex:section];
+  v11 = [dataSource shouldDisplaySupplementaryKind:UICollectionElementKindSectionFooter forSectionAtIndex:section];
+  [configurationCopy setFooterMode:0];
+  remoteSearchServerPromise = [(MessageListSearchViewController *)self remoteSearchServerPromise];
+  future = [remoteSearchServerPromise future];
+  resultIfAvailable = [future resultIfAvailable];
 
-  v15 = [(MessageListSearchViewController *)self hasReceivedFirstRemoteSearchResult];
-  if (v14)
+  hasReceivedFirstRemoteSearchResult = [(MessageListSearchViewController *)self hasReceivedFirstRemoteSearchResult];
+  if (resultIfAvailable)
   {
     v16 = 1;
   }
 
   else
   {
-    v16 = v15;
+    v16 = hasReceivedFirstRemoteSearchResult;
   }
 
   if (v16 == 1 && ![(MessageListSearchViewController *)self _shouldKeepDisplayingSearchingFooter])
   {
-    v18 = [(MessageListViewController *)self indexStatus];
-    v19 = [v18 isNotFullyIndexed];
+    indexStatus = [(MessageListViewController *)self indexStatus];
+    isNotFullyIndexed = [indexStatus isNotFullyIndexed];
 
-    v17 = v19 ^ 1;
+    v17 = isNotFullyIndexed ^ 1;
     if (v9)
     {
       goto LABEL_7;
@@ -559,7 +559,7 @@
     if (v9)
     {
 LABEL_7:
-      [v6 setHeaderMode:v10];
+      [configurationCopy setHeaderMode:v10];
       goto LABEL_13;
     }
   }
@@ -568,7 +568,7 @@ LABEL_7:
   {
     if (((v11 ^ 1 | v17) & 1) == 0)
     {
-      [v6 setFooterMode:1];
+      [configurationCopy setFooterMode:1];
     }
 
     [(MessageListSearchViewController *)self setIsOptimizingSearchFooterVisible:((v11 ^ 1 | v17) & 1) == 0];
@@ -577,7 +577,7 @@ LABEL_7:
 LABEL_13:
   if ((_os_feature_enabled_impl() & v8 & v10) == 1)
   {
-    [v6 setHeaderMode:{-[MessageListSearchViewController _numberOfTopHitResults](self, "_numberOfTopHitResults") > 0}];
+    [configurationCopy setHeaderMode:{-[MessageListSearchViewController _numberOfTopHitResults](self, "_numberOfTopHitResults") > 0}];
   }
 
   if (v9)
@@ -585,7 +585,7 @@ LABEL_13:
     if (v11 && (-[MessageListSearchViewController searchProgressView](self, "searchProgressView"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isAnimating] & v17, v20, v21 == 1))
     {
       v22 = 1;
-      [v6 setFooterMode:1];
+      [configurationCopy setFooterMode:1];
     }
 
     else
@@ -599,20 +599,20 @@ LABEL_13:
 
 - (int64_t)_numberOfTopHitResults
 {
-  v3 = [(MessageListSearchViewController *)self dataSource];
-  v4 = [v3 sectionIndexForSection:MessageListSectionTopHits];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v4 = [dataSource sectionIndexForSection:MessageListSectionTopHits];
 
-  v5 = [(MessageListSearchViewController *)self dataSource];
-  v6 = [v5 numberOfItemsAtSectionIndex:v4];
+  dataSource2 = [(MessageListSearchViewController *)self dataSource];
+  v6 = [dataSource2 numberOfItemsAtSectionIndex:v4];
 
   return v6;
 }
 
-- (id)sectionHeaderTitleForMessageListSectionDataSource:(id)a3
+- (id)sectionHeaderTitleForMessageListSectionDataSource:(id)source
 {
-  v4 = [a3 section];
-  v5 = [(MessageListSearchViewController *)self _numberOfTopHitResults];
-  if ([v4 isEqualToString:MessageListSectionServerSearch])
+  section = [source section];
+  _numberOfTopHitResults = [(MessageListSearchViewController *)self _numberOfTopHitResults];
+  if ([section isEqualToString:MessageListSectionServerSearch])
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"SEARCH_SECTION_TITLE_SERVER" value:&stru_100662A88 table:@"Main"];
@@ -623,18 +623,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:MessageListSectionIndexedSearch])
+  if ([section isEqualToString:MessageListSectionIndexedSearch])
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"SEARCH_SECTION_TITLE_INDEXED" value:&stru_100662A88 table:@"Main"];
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:MessageListSectionTopHits])
+  if ([section isEqualToString:MessageListSectionTopHits])
   {
     v6 = +[NSBundle mainBundle];
     v10 = [v6 localizedStringForKey:@"SEARCH_SECTION_TITLE_TOP_HITS%1$lu" value:&stru_100662A88 table:@"Main"];
-    v8 = [NSString localizedStringWithFormat:v10, v5];
+    v8 = [NSString localizedStringWithFormat:v10, _numberOfTopHitResults];
 
     goto LABEL_6;
   }
@@ -649,16 +649,16 @@ LABEL_7:
 {
   if ((*&self->_flags & 2) != 0)
   {
-    v3 = [(MessageListSearchViewController *)self mailboxes];
-    v4 = [v3 firstObject];
+    mailboxes = [(MessageListSearchViewController *)self mailboxes];
+    firstObject = [mailboxes firstObject];
 
-    v5 = [v4 account];
-    [v4 name];
-    if (v5)
+    account = [firstObject account];
+    [firstObject name];
+    if (account)
       v6 = {;
-      v7 = [v4 account];
-      v8 = [v7 name];
-      v9 = [NSString localizedStringWithFormat:@"%@ – %@", v6, v8];
+      account2 = [firstObject account];
+      name = [account2 name];
+      v9 = [NSString localizedStringWithFormat:@"%@ – %@", v6, name];
     }
 
     else
@@ -679,11 +679,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v9 = a3;
-  v4 = [(MessageListViewController *)self conversationViewController];
-  [v4 setDelegate:self];
+  controllerCopy = controller;
+  conversationViewController = [(MessageListViewController *)self conversationViewController];
+  [conversationViewController setDelegate:self];
 
   [(MessageListSearchViewController *)self setGenerateCannedSuggestions:1];
   *&self->_flags &= ~0x10u;
@@ -694,20 +694,20 @@ LABEL_7:
   [(MessageListSearchViewController *)self setSnapshotViewForDismissal:0];
   [(MessageListSearchViewController *)self setEnablePresentationAnimation:1];
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 addObserver:self selector:"_didCompletePresentationTransition:" name:UIPresentationControllerPresentationTransitionDidEndNotification object:v9];
+  [v5 addObserver:self selector:"_didCompletePresentationTransition:" name:UIPresentationControllerPresentationTransitionDidEndNotification object:controllerCopy];
 
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 addObserver:self selector:"_didCompleteDismissalTransition:" name:UIPresentationControllerDismissalTransitionDidEndNotification object:v9];
+  [v6 addObserver:self selector:"_didCompleteDismissalTransition:" name:UIPresentationControllerDismissalTransitionDidEndNotification object:controllerCopy];
 
-  v7 = [(MessageListSearchViewController *)self suggestionForInitialSearch];
+  suggestionForInitialSearch = [(MessageListSearchViewController *)self suggestionForInitialSearch];
 
-  if (v7)
+  if (suggestionForInitialSearch)
   {
     [(MessageListSearchViewController *)self _beginSearchWithRepresentedObjectsForInitialSearch];
   }
 
-  v8 = [(MessageListSearchViewController *)self userActivity];
-  [v8 becomeCurrent];
+  userActivity = [(MessageListSearchViewController *)self userActivity];
+  [userActivity becomeCurrent];
 }
 
 - (void)_preheatCoreSpotlightModel
@@ -743,33 +743,33 @@ LABEL_7:
   [(MessageListSearchViewController *)self setUpAppSwitcherObserver];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v22.receiver = self;
   v22.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v22 viewWillAppear:a3];
+  [(MessageListViewController *)&v22 viewWillAppear:appear];
   v4 = +[MFKeyboardAvoidance sharedController];
   [v4 registerKeyboardAvoidable:self];
 
   [(MessageListSearchViewController *)self setLastSelectedTopHitItemID:0];
   if ([(MessageListSearchViewController *)self enablePresentationAnimation])
   {
-    v5 = [(MessageListSearchViewController *)self view];
-    [v5 frame];
+    view = [(MessageListSearchViewController *)self view];
+    [view frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [(MessageListSearchViewController *)self navigationController];
-    v15 = [v14 navigationBar];
-    [v15 frame];
+    navigationController = [(MessageListSearchViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v17 = v9 + v16;
 
-    v18 = [(MessageListSearchViewController *)self view];
-    [v18 setFrame:{v7, v17, v11, v13}];
+    view2 = [(MessageListSearchViewController *)self view];
+    [view2 setFrame:{v7, v17, v11, v13}];
 
-    v19 = [(MessageListSearchViewController *)self transitionCoordinator];
+    transitionCoordinator = [(MessageListSearchViewController *)self transitionCoordinator];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10015B050;
@@ -784,22 +784,22 @@ LABEL_7:
     v20[2] = sub_10015B0D8;
     v20[3] = &unk_10064CC00;
     v20[4] = self;
-    [v19 animateAlongsideTransition:v21 completion:v20];
+    [transitionCoordinator animateAlongsideTransition:v21 completion:v20];
 
     [(MessageListSearchViewController *)self setEnablePresentationAnimation:0];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = MessageListSearchViewController;
-  [(MessageListSearchViewController *)&v4 viewIsAppearing:a3];
+  [(MessageListSearchViewController *)&v4 viewIsAppearing:appearing];
   [(MessageListViewController *)self _updateTitle];
   [(MessageListViewController *)self _updateNavigationBarButtonsWithForce:1];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   [(MessageListSearchViewController *)self _prepareSnapshotViewForDismissal];
   [(MessageListSearchViewController *)self setGenerateCannedSuggestions:0];
@@ -815,34 +815,34 @@ LABEL_7:
   if (_os_feature_enabled_impl())
   {
     v7 = +[EFDevice currentDevice];
-    v4 = [v7 isInternal];
+    isInternal = [v7 isInternal];
 
-    if (v4)
+    if (isInternal)
     {
-      v5 = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
+      activeSearchFeedbackToastController = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
 
-      if (v5)
+      if (activeSearchFeedbackToastController)
       {
-        v8 = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
+        activeSearchFeedbackToastController2 = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
         [(MessageListSearchViewController *)self dismissToastViewController:?];
       }
     }
   }
 
   [(MessageListSearchViewController *)self _endSearchSession];
-  v9 = [(MessageListSearchViewController *)self beginSearchTimer];
-  [v9 invalidate];
+  beginSearchTimer = [(MessageListSearchViewController *)self beginSearchTimer];
+  [beginSearchTimer invalidate];
 
   [(MessageListSearchViewController *)self setBeginSearchTimer:0];
   [(MessageListSearchViewController *)self setLocalSearchInitialLoadPromise:0];
   [(MessageListSearchViewController *)self setLocalSearchRemotePromise:0];
   [(MessageListSearchViewController *)self setRemoteSearchInitialLoadPromise:0];
   [(MessageListSearchViewController *)self setRemoteSearchServerPromise:0];
-  v10 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
-  [v10 removeAllObjects];
+  groupedSuggestionsByCategory = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
+  [groupedSuggestionsByCategory removeAllObjects];
 
-  v11 = [(MessageListSearchViewController *)self userActivity];
-  [v11 resignCurrent];
+  userActivity = [(MessageListSearchViewController *)self userActivity];
+  [userActivity resignCurrent];
 }
 
 - (void)_clearSearchResultSections
@@ -855,11 +855,11 @@ LABEL_7:
   v4 = [NSArray arrayWithObjects:v8 count:4];
   v5 = [v3 initWithSectionUpdates:0 sectionsToRemove:v4 startsWithEmptySnapshot:1];
 
-  v6 = [(MessageListSearchViewController *)self dataSource];
-  [v6 applyMessageListDataSourceUpdate:v5];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  [dataSource applyMessageListDataSourceUpdate:v5];
 
-  v7 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
-  [v7 removeAllObjects];
+  groupedSuggestionsByCategory = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
+  [groupedSuggestionsByCategory removeAllObjects];
 
   [(MessageListSearchViewController *)self setSuggestionStartTimestamp:0];
   [(MessageListSearchViewController *)self setSuggestionsCompletionTimestamp:0];
@@ -873,68 +873,68 @@ LABEL_7:
   [(MessageListSearchViewController *)self removeObservers];
 }
 
-- (void)setSnapshotViewForDismissal:(id)a3
+- (void)setSnapshotViewForDismissal:(id)dismissal
 {
-  v5 = a3;
+  dismissalCopy = dismissal;
   snapshotViewForDismissal = self->_snapshotViewForDismissal;
-  v7 = v5;
-  if (snapshotViewForDismissal != v5)
+  v7 = dismissalCopy;
+  if (snapshotViewForDismissal != dismissalCopy)
   {
     [(UIView *)snapshotViewForDismissal removeFromSuperview];
-    objc_storeStrong(&self->_snapshotViewForDismissal, a3);
+    objc_storeStrong(&self->_snapshotViewForDismissal, dismissal);
   }
 }
 
 - (void)_prepareSnapshotViewForDismissal
 {
-  v14 = [(MessageListSearchViewController *)self view];
-  v3 = [v14 snapshotViewAfterScreenUpdates:0];
+  view = [(MessageListSearchViewController *)self view];
+  v3 = [view snapshotViewAfterScreenUpdates:0];
   [(MessageListSearchViewController *)self setSnapshotViewForDismissal:v3];
 
-  v15 = [(MessageListSearchViewController *)self view];
-  [v15 bounds];
+  view2 = [(MessageListSearchViewController *)self view];
+  [view2 bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MessageListSearchViewController *)self snapshotViewForDismissal];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  snapshotViewForDismissal = [(MessageListSearchViewController *)self snapshotViewForDismissal];
+  [snapshotViewForDismissal setFrame:{v5, v7, v9, v11}];
 
-  v16 = [(MessageListSearchViewController *)self view];
-  v13 = [(MessageListSearchViewController *)self snapshotViewForDismissal];
-  [v16 addSubview:v13];
+  view3 = [(MessageListSearchViewController *)self view];
+  snapshotViewForDismissal2 = [(MessageListSearchViewController *)self snapshotViewForDismissal];
+  [view3 addSubview:snapshotViewForDismissal2];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MessageListSearchViewController *)self setInSearchSession:0];
   v24.receiver = self;
   v24.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v24 viewWillDisappear:v3];
+  [(MessageListViewController *)&v24 viewWillDisappear:disappearCopy];
   v5 = +[MFKeyboardAvoidance sharedController];
   [v5 unregisterKeyboardAvoidable:self];
 
-  v6 = [(MessageListSearchViewController *)self searchBar];
-  [v6 resignFirstResponder];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  [searchBar resignFirstResponder];
 
-  v7 = [(MessageListSearchViewController *)self snapshotViewForDismissal];
+  snapshotViewForDismissal = [(MessageListSearchViewController *)self snapshotViewForDismissal];
 
-  if (v7)
+  if (snapshotViewForDismissal)
   {
-    v8 = [(MessageListSearchViewController *)self view];
-    [v8 frame];
+    view = [(MessageListSearchViewController *)self view];
+    [view frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [(MessageListSearchViewController *)self navigationController];
-    v18 = [v17 navigationBar];
-    [v18 frame];
+    navigationController = [(MessageListSearchViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v20 = v12 + v19;
 
-    v21 = [(MessageListSearchViewController *)self transitionCoordinator];
+    transitionCoordinator = [(MessageListSearchViewController *)self transitionCoordinator];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10015B954;
@@ -953,30 +953,30 @@ LABEL_7:
     *&v22[6] = v12;
     v22[7] = v14;
     v22[8] = v16;
-    [v21 animateAlongsideTransition:v23 completion:v22];
+    [transitionCoordinator animateAlongsideTransition:v23 completion:v22];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5.receiver = self;
   v5.super_class = MessageListSearchViewController;
-  [(MessageListSearchViewController *)&v5 willMoveToParentViewController:v4];
-  if (!v4)
+  [(MessageListSearchViewController *)&v5 willMoveToParentViewController:controllerCopy];
+  if (!controllerCopy)
   {
     [(MessageListSearchViewController *)self _generateSuggestionsForPhrase:0];
   }
 }
 
-- (void)_didCompletePresentationTransition:(id)a3
+- (void)_didCompletePresentationTransition:(id)transition
 {
-  v4 = [(MessageListSearchViewController *)self canShowMenuSuggestionsPromise];
+  canShowMenuSuggestionsPromise = [(MessageListSearchViewController *)self canShowMenuSuggestionsPromise];
   v3 = +[NSNull null];
-  [v4 finishWithResult:v3];
+  [canShowMenuSuggestionsPromise finishWithResult:v3];
 }
 
-- (void)_didCompleteDismissalTransition:(id)a3
+- (void)_didCompleteDismissalTransition:(id)transition
 {
   v4 = +[EFPromise promise];
   [(MessageListSearchViewController *)self setCanShowMenuSuggestionsPromise:?];
@@ -986,47 +986,47 @@ LABEL_7:
 {
   v8.receiver = self;
   v8.super_class = MessageListSearchViewController;
-  v3 = [(MessageListSearchViewController *)&v8 splitViewController];
-  v4 = v3;
-  if (v3)
+  splitViewController = [(MessageListSearchViewController *)&v8 splitViewController];
+  v4 = splitViewController;
+  if (splitViewController)
   {
-    v5 = v3;
+    splitViewController2 = splitViewController;
   }
 
   else
   {
-    v6 = [(MessageListSearchViewController *)self presentingViewController];
-    v5 = [v6 splitViewController];
+    presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
+    splitViewController2 = [presentingViewController splitViewController];
   }
 
-  return v5;
+  return splitViewController2;
 }
 
 - (id)navigationController
 {
   v8.receiver = self;
   v8.super_class = MessageListSearchViewController;
-  v3 = [(MessageListSearchViewController *)&v8 navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(MessageListSearchViewController *)&v8 navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v5 = v3;
+    navigationController2 = navigationController;
   }
 
   else
   {
-    v6 = [(MessageListSearchViewController *)self presentingViewController];
-    v5 = [v6 navigationController];
+    presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
+    navigationController2 = [presentingViewController navigationController];
   }
 
-  return v5;
+  return navigationController2;
 }
 
-- (id)targetViewControllerForAction:(SEL)a3 sender:(id)a4
+- (id)targetViewControllerForAction:(SEL)action sender:(id)sender
 {
-  v6 = a4;
-  v7 = [(MessageListSearchViewController *)self presentingViewController];
-  v8 = [v7 targetViewControllerForAction:a3 sender:v6];
+  senderCopy = sender;
+  presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
+  v8 = [presentingViewController targetViewControllerForAction:action sender:senderCopy];
   v9 = v8;
   if (v8)
   {
@@ -1037,7 +1037,7 @@ LABEL_7:
   {
     v13.receiver = self;
     v13.super_class = MessageListSearchViewController;
-    v10 = [(MessageListSearchViewController *)&v13 targetViewControllerForAction:a3 sender:v6];
+    v10 = [(MessageListSearchViewController *)&v13 targetViewControllerForAction:action sender:senderCopy];
   }
 
   v11 = v10;
@@ -1045,63 +1045,63 @@ LABEL_7:
   return v11;
 }
 
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4
+- (void)setToolbarItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(MessageListSearchViewController *)self presentingViewController];
-  [v6 setToolbarItems:v7 animated:v4];
+  animatedCopy = animated;
+  itemsCopy = items;
+  presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
+  [presentingViewController setToolbarItems:itemsCopy animated:animatedCopy];
 }
 
 - (id)toolbarItems
 {
-  v2 = [(MessageListSearchViewController *)self presentingViewController];
-  v3 = [v2 toolbarItems];
+  presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
+  toolbarItems = [presentingViewController toolbarItems];
 
-  return v3;
+  return toolbarItems;
 }
 
 - (id)navigationItem
 {
-  v2 = [(MessageListSearchViewController *)self presentingViewController];
-  v3 = [v2 navigationItem];
+  presentingViewController = [(MessageListSearchViewController *)self presentingViewController];
+  navigationItem = [presentingViewController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (id)searchBar
 {
-  v2 = [(MessageListSearchViewController *)self parentViewController];
-  v3 = [v2 searchBar];
+  parentViewController = [(MessageListSearchViewController *)self parentViewController];
+  searchBar = [parentViewController searchBar];
 
-  return v3;
+  return searchBar;
 }
 
-- (id)_currentEditingStringForSearchBar:(id)a3
+- (id)_currentEditingStringForSearchBar:(id)bar
 {
-  v3 = [(MessageListSearchViewController *)self searchBar];
-  v4 = [v3 text];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  text = [searchBar text];
 
-  v5 = [v4 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+  ef_stringByTrimmingWhitespaceAndNewlineCharacters = [text ef_stringByTrimmingWhitespaceAndNewlineCharacters];
 
-  return v5;
+  return ef_stringByTrimmingWhitespaceAndNewlineCharacters;
 }
 
-- (unint64_t)_countOfSuggestionAtomsInSearchbar:(id)a3
+- (unint64_t)_countOfSuggestionAtomsInSearchbar:(id)searchbar
 {
-  v3 = [a3 representedSuggestionTokens];
-  v4 = [v3 count];
+  representedSuggestionTokens = [searchbar representedSuggestionTokens];
+  v4 = [representedSuggestionTokens count];
 
   return v4;
 }
 
 - (void)_resetGlobalScopeTitles
 {
-  v3 = [(MessageListSearchViewController *)self searchBar];
-  v4 = v3;
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  v4 = searchBar;
   if (*&self->_flags)
   {
-    [v3 setScopeButtonTitles:0];
+    [searchBar setScopeButtonTitles:0];
   }
 
   else
@@ -1121,9 +1121,9 @@ LABEL_7:
   [(MessageListViewController *)self _updateTitle];
 }
 
-- (void)globalSearchScopeChanged:(int64_t)a3
+- (void)globalSearchScopeChanged:(int64_t)changed
 {
-  *&self->_flags = *&self->_flags & 0xFD | (2 * (a3 == 1));
+  *&self->_flags = *&self->_flags & 0xFD | (2 * (changed == 1));
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 setBool:(*&self->_flags >> 1) & 1 forKey:kMUILocalMailboxSearchOnlyKey];
 
@@ -1133,34 +1133,34 @@ LABEL_7:
   [(MessageListSearchViewController *)self _notePredicateUpdated:2];
 }
 
-- (void)searchTokenScopeChanged:(int64_t)a3
+- (void)searchTokenScopeChanged:(int64_t)changed
 {
-  v5 = [(MessageListSearchViewController *)self searchBar];
-  v6 = [v5 searchTextField];
-  v7 = [(MessageListSearchViewController *)self _objectFromSelectionInSearchTextField:v6];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  v7 = [(MessageListSearchViewController *)self _objectFromSelectionInSearchTextField:searchTextField];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    [v8 setSelectedScopeIndex:a3];
-    v9 = [(MessageListSearchViewController *)self currentSuggestion];
-    v10 = [v8 csToken];
-    v11 = [CSSuggestion updatedSuggestionWithCurrentSuggestion:v9 token:v10 scopeSelection:a3];
+    [v8 setSelectedScopeIndex:changed];
+    currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
+    csToken = [v8 csToken];
+    v11 = [CSSuggestion updatedSuggestionWithCurrentSuggestion:currentSuggestion token:csToken scopeSelection:changed];
 
     [(MessageListSearchViewController *)self redrawSearchBarWithSuggestion:v11];
     v12 = +[MessageListSearchViewController log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 userQueryString];
-      v14 = [EFPrivacy partiallyRedactedStringForString:v13];
-      v15 = [v11 suggestionTokens];
+      userQueryString = [v11 userQueryString];
+      v14 = [EFPrivacy partiallyRedactedStringForString:userQueryString];
+      suggestionTokens = [v11 suggestionTokens];
       v16 = 138412802;
       v17 = v11;
       v18 = 2112;
       v19 = v14;
       v20 = 2112;
-      v21 = v15;
+      v21 = suggestionTokens;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Suggestion was updated. Reason: Scope changed. Suggestion: %@ UserQueryString: %@ SuggestionTokens: %@", &v16, 0x20u);
     }
   }
@@ -1169,39 +1169,39 @@ LABEL_7:
   [(MessageListSearchViewController *)self _notePredicateUpdated:2];
 }
 
-- (void)beginSearchWithQueryString:(id)a3 scope:(id)a4
+- (void)beginSearchWithQueryString:(id)string scope:(id)scope
 {
-  v7 = a4;
-  v6 = [CSSuggestion mui_suggestionForSpotlightQueryWithString:a3];
-  [(MessageListSearchViewController *)self beginSearchWithSuggestion:v6 scope:v7];
+  scopeCopy = scope;
+  v6 = [CSSuggestion mui_suggestionForSpotlightQueryWithString:string];
+  [(MessageListSearchViewController *)self beginSearchWithSuggestion:v6 scope:scopeCopy];
 }
 
-- (void)beginSearchWithSuggestion:(id)a3 scope:(id)a4
+- (void)beginSearchWithSuggestion:(id)suggestion scope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  scopeCopy = scope;
   v8 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = suggestionCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = scopeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "beginSearchWithSuggestion suggestion=%@, scope=%@", &v12, 0x16u);
   }
 
   *&self->_flags = *&self->_flags & 0xF3 | 4;
-  [(MessageListSearchViewController *)self setSuggestionForInitialSearch:v6];
-  v9 = [MFSearchScope indexFromScopeKey:v7];
-  v10 = [(MessageListSearchViewController *)self searchBar];
-  [v10 setSelectedScopeButtonIndex:v9];
+  [(MessageListSearchViewController *)self setSuggestionForInitialSearch:suggestionCopy];
+  v9 = [MFSearchScope indexFromScopeKey:scopeCopy];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  [searchBar setSelectedScopeButtonIndex:v9];
 
   *&self->_flags = *&self->_flags & 0xFD | (2 * (v9 == 1));
   [(MessageListViewController *)self _updateTitle];
-  v11 = [(MessageListSearchViewController *)self searchController];
-  LODWORD(v10) = [v11 isActive];
+  searchController = [(MessageListSearchViewController *)self searchController];
+  LODWORD(searchBar) = [searchController isActive];
 
-  if (v10)
+  if (searchBar)
   {
     [(MessageListSearchViewController *)self _beginSearchWithRepresentedObjectsForInitialSearch];
   }
@@ -1216,11 +1216,11 @@ LABEL_7:
   v3 = block[3] = &unk_10064C7E8;
   v6 = v3;
   dispatch_async(&_dispatch_main_q, block);
-  v4 = [(MessageListSearchViewController *)self suggestionForInitialSearch];
-  if (v4)
+  suggestionForInitialSearch = [(MessageListSearchViewController *)self suggestionForInitialSearch];
+  if (suggestionForInitialSearch)
   {
-    [(MessageListSearchViewController *)self redrawSearchBarWithSuggestion:v4];
-    [(MessageListSearchViewController *)self _addSuggestionToRecentSuggester:v4];
+    [(MessageListSearchViewController *)self redrawSearchBarWithSuggestion:suggestionForInitialSearch];
+    [(MessageListSearchViewController *)self _addSuggestionToRecentSuggester:suggestionForInitialSearch];
   }
 
   [(MessageListSearchViewController *)self setSearchSuggestionsVisible:0];
@@ -1229,77 +1229,77 @@ LABEL_7:
   [(MessageListSearchViewController *)self setSuggestionForInitialSearch:0];
 }
 
-- (id)_objectFromSelectionInSearchTextField:(id)a3
+- (id)_objectFromSelectionInSearchTextField:(id)field
 {
-  v3 = a3;
-  v4 = [v3 selectedTextRange];
-  if (v4)
+  fieldCopy = field;
+  selectedTextRange = [fieldCopy selectedTextRange];
+  if (selectedTextRange)
   {
-    v5 = [v3 tokensInRange:v4];
+    v5 = [fieldCopy tokensInRange:selectedTextRange];
     if ([v5 count] == 1)
     {
-      v6 = [v5 firstObject];
-      v7 = [v6 representedObject];
+      firstObject = [v5 firstObject];
+      representedObject = [firstObject representedObject];
     }
 
     else
     {
-      v7 = 0;
+      representedObject = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    representedObject = 0;
   }
 
-  return v7;
+  return representedObject;
 }
 
-- (id)_scopeTitlesForSearchAtom:(id)a3
+- (id)_scopeTitlesForSearchAtom:(id)atom
 {
-  v3 = [a3 suggestion];
-  v4 = [v3 category];
-  v5 = [v4 scopes];
+  suggestion = [atom suggestion];
+  category = [suggestion category];
+  scopes = [category scopes];
 
-  if ([v5 count] < 2)
+  if ([scopes count] < 2)
   {
     v6 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [v5 ef_map:&stru_100651B58];
+    v6 = [scopes ef_map:&stru_100651B58];
   }
 
   return v6;
 }
 
-- (void)_addSuggestionToRecentSuggester:(id)a3
+- (void)_addSuggestionToRecentSuggester:(id)suggester
 {
-  v7 = a3;
-  v4 = [(MessageListSearchViewController *)self recentSuggester];
-  v5 = [v7 copy];
+  suggesterCopy = suggester;
+  recentSuggester = [(MessageListSearchViewController *)self recentSuggester];
+  v5 = [suggesterCopy copy];
   v6 = [MUISearchAtomSuggestion suggestionFromSpotlightSuggestion:v5 shouldShowAvaters:0];
-  [v4 addSuggestion:v6];
+  [recentSuggester addSuggestion:v6];
 }
 
-- (id)_excludedMailboxesInPredicate:(id)a3
+- (id)_excludedMailboxesInPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[EFPromise promise];
-  v6 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:v4 sortDescriptors:&__NSArray0__struct];
-  v7 = [(MessageListSearchViewController *)self mailboxRepository];
+  v6 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:predicateCopy sortDescriptors:&__NSArray0__struct];
+  mailboxRepository = [(MessageListSearchViewController *)self mailboxRepository];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10015CD74;
   v14[3] = &unk_10064CE98;
   v8 = v5;
   v15 = v8;
-  [v7 performQuery:v6 completionHandler:v14];
+  [mailboxRepository performQuery:v6 completionHandler:v14];
 
-  v9 = [v8 future];
-  v10 = [v9 result:0];
+  future = [v8 future];
+  v10 = [future result:0];
 
   if (v10)
   {
@@ -1318,16 +1318,16 @@ LABEL_7:
 
 - (id)_excludedMailboxes
 {
-  v3 = [(MessageListSearchViewController *)self _excludeJunkTrashPredicate];
-  if (v3)
+  _excludeJunkTrashPredicate = [(MessageListSearchViewController *)self _excludeJunkTrashPredicate];
+  if (_excludeJunkTrashPredicate)
   {
-    v4 = [(MessageListSearchViewController *)self mailboxes];
-    v5 = [(MessageListSearchViewController *)self _excludedMailboxesInPredicate:v3];
+    mailboxes = [(MessageListSearchViewController *)self mailboxes];
+    v5 = [(MessageListSearchViewController *)self _excludedMailboxesInPredicate:_excludeJunkTrashPredicate];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10015CEB8;
     v9[3] = &unk_10064CEC0;
-    v6 = v4;
+    v6 = mailboxes;
     v10 = v6;
     v7 = [v5 ef_filter:v9];
   }
@@ -1384,26 +1384,26 @@ LABEL_9:
   return v6;
 }
 
-- (void)_getDefaultPersonScopeIdentifier:(id *)a3 alternativeScopeIdentifier:(id *)a4
+- (void)_getDefaultPersonScopeIdentifier:(id *)identifier alternativeScopeIdentifier:(id *)scopeIdentifier
 {
-  v6 = [(MessageListSearchViewController *)self mailboxes];
-  v7 = [v6 ef_any:&stru_100651B78];
+  mailboxes = [(MessageListSearchViewController *)self mailboxes];
+  v7 = [mailboxes ef_any:&stru_100651B78];
 
   if (v7)
   {
     v8 = MFSearchSuggestionPeopleCategoryToScope;
     v9 = MFSearchSuggestionPeopleCategoryToScope;
     v10 = 0;
-    *a3 = v8;
+    *identifier = v8;
   }
 
   else
   {
-    *a3 = MFSearchSuggestionPeopleCategoryFromScope;
+    *identifier = MFSearchSuggestionPeopleCategoryFromScope;
     v10 = MFSearchSuggestionPeopleCategoryToScope;
   }
 
-  *a4 = v10;
+  *scopeIdentifier = v10;
 }
 
 - (id)_scopeIdentifierForPeopleSuggestions
@@ -1418,16 +1418,16 @@ LABEL_9:
   return v2;
 }
 
-- (id)_phraseManagerForPhrase:(id)a3
+- (id)_phraseManagerForPhrase:(id)phrase
 {
-  v4 = a3;
+  phraseCopy = phrase;
   if (-[MessageListSearchViewController _shouldSearchCurrentMailboxOnly](self, "_shouldSearchCurrentMailboxOnly") && (-[MessageListSearchViewController mailboxes](self, "mailboxes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6))
   {
-    v7 = [(MessageListSearchViewController *)self mailboxes];
-    v8 = [SearchMailboxSuggestion suggestionForMailboxes:v7];
+    mailboxes = [(MessageListSearchViewController *)self mailboxes];
+    v8 = [SearchMailboxSuggestion suggestionForMailboxes:mailboxes];
 
-    v9 = [v8 category];
-    v10 = [v9 indexOfScopeWithIdentifier:MFSearchSuggestionMailboxCategoryScope];
+    category = [v8 category];
+    v10 = [category indexOfScopeWithIdentifier:MFSearchSuggestionMailboxCategoryScope];
 
     v11 = [MUISearchScopedSuggestion scopedSuggestion:v8 selectedScopeIndex:v10];
     v22 = v11;
@@ -1440,23 +1440,23 @@ LABEL_9:
   }
 
   v13 = +[VIPManager defaultInstance];
-  v14 = [(MessageListSearchViewController *)self currentSuggestion];
-  v15 = [(MessageListSearchViewController *)self _excludedMailboxes];
-  v16 = [(MessageListViewController *)self inputLanguages];
-  v17 = [(MessageListViewController *)self session];
-  v18 = [v17 feedbackQueryID];
+  currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
+  _excludedMailboxes = [(MessageListSearchViewController *)self _excludedMailboxes];
+  inputLanguages = [(MessageListViewController *)self inputLanguages];
+  session = [(MessageListViewController *)self session];
+  feedbackQueryID = [session feedbackQueryID];
   LOBYTE(v21) = ![(MessageListSearchViewController *)self shouldShowMenuSuggestions];
-  v19 = [MFSearchSuggestionPhraseManager phraseManagerWithPhrase:v4 selectedSuggestions:0 vipManager:v13 updatedSuggestion:v14 filterQuery:0 implicitSuggestions:v12 excludedMailboxes:v15 inputLanguages:v16 feedbackQueryID:v18 includeTopHitsAndInstantAnswers:v21];
+  v19 = [MFSearchSuggestionPhraseManager phraseManagerWithPhrase:phraseCopy selectedSuggestions:0 vipManager:v13 updatedSuggestion:currentSuggestion filterQuery:0 implicitSuggestions:v12 excludedMailboxes:_excludedMailboxes inputLanguages:inputLanguages feedbackQueryID:feedbackQueryID includeTopHitsAndInstantAnswers:v21];
 
   return v19;
 }
 
-- (void)_generateSuggestionsForPhrase:(id)a3
+- (void)_generateSuggestionsForPhrase:(id)phrase
 {
-  v13 = a3;
-  v4 = [(MessageListSearchViewController *)self suggestionsGenerator];
-  v5 = [(MessageListSearchViewController *)self suggestionsIdentifier];
-  [v4 stopGeneratingSuggestionsWithIdentifier:v5];
+  phraseCopy = phrase;
+  suggestionsGenerator = [(MessageListSearchViewController *)self suggestionsGenerator];
+  suggestionsIdentifier = [(MessageListSearchViewController *)self suggestionsIdentifier];
+  [suggestionsGenerator stopGeneratingSuggestionsWithIdentifier:suggestionsIdentifier];
 
   [(MessageListSearchViewController *)self setSuggestionsIdentifier:0];
   [(MessageListSearchViewController *)self setSuggestionsCompletionTimestamp:0];
@@ -1466,48 +1466,48 @@ LABEL_9:
     *&self->_flags &= ~4u;
   }
 
-  v6 = [(MessageListSearchViewController *)self _phraseManagerForPhrase:v13];
-  v7 = [(MessageListSearchViewController *)self lastPhrase];
-  v8 = [(MessageListSearchViewController *)self suggestionsViewController];
-  if ([v13 length])
+  v6 = [(MessageListSearchViewController *)self _phraseManagerForPhrase:phraseCopy];
+  lastPhrase = [(MessageListSearchViewController *)self lastPhrase];
+  suggestionsViewController = [(MessageListSearchViewController *)self suggestionsViewController];
+  if ([phraseCopy length])
   {
     v9 = +[NSDate date];
     [(MessageListSearchViewController *)self setSuggestionStartTimestamp:v9];
 
-    if (!v7 || [v13 localizedStandardRangeOfString:v7] && objc_msgSend(v7, "localizedStandardRangeOfString:", v13))
+    if (!lastPhrase || [phraseCopy localizedStandardRangeOfString:lastPhrase] && objc_msgSend(lastPhrase, "localizedStandardRangeOfString:", phraseCopy))
     {
-      [v8 clearSuggestions];
-      v10 = v13;
+      [suggestionsViewController clearSuggestions];
+      v10 = phraseCopy;
     }
 
     else
     {
-      [v8 beginUpdatingSuggestions];
-      v10 = v13;
+      [suggestionsViewController beginUpdatingSuggestions];
+      v10 = phraseCopy;
     }
   }
 
   else
   {
-    [v8 clearSuggestions];
+    [suggestionsViewController clearSuggestions];
     v10 = 0;
   }
 
   [(MessageListSearchViewController *)self setLastPhrase:v10];
-  if (v13)
+  if (phraseCopy)
   {
-    v11 = [(MessageListSearchViewController *)self suggestionsGenerator];
-    v12 = [v11 startGeneratingSuggestionsUsingPhraseManager:v6];
+    suggestionsGenerator2 = [(MessageListSearchViewController *)self suggestionsGenerator];
+    v12 = [suggestionsGenerator2 startGeneratingSuggestionsUsingPhraseManager:v6];
     [(MessageListSearchViewController *)self setSuggestionsIdentifier:v12];
   }
 }
 
-- (void)setGenerateCannedSuggestions:(BOOL)a3
+- (void)setGenerateCannedSuggestions:(BOOL)suggestions
 {
-  if (self->_generateCannedSuggestions != a3)
+  if (self->_generateCannedSuggestions != suggestions)
   {
-    self->_generateCannedSuggestions = a3;
-    if (a3 && (*&self->_flags & 8) != 0)
+    self->_generateCannedSuggestions = suggestions;
+    if (suggestions && (*&self->_flags & 8) != 0)
     {
       [(MessageListSearchViewController *)self _generateSuggestionsForPhrase:0];
 
@@ -1516,19 +1516,19 @@ LABEL_9:
   }
 }
 
-- (void)performOnRemoteSearchCompletion:(id)a3
+- (void)performOnRemoteSearchCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
-  v6 = [v5 future];
+  completionCopy = completion;
+  remoteSearchInitialLoadPromise = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
+  future = [remoteSearchInitialLoadPromise future];
 
-  v7 = [(MessageListSearchViewController *)self remoteSearchServerPromise];
-  v8 = [v7 future];
+  remoteSearchServerPromise = [(MessageListSearchViewController *)self remoteSearchServerPromise];
+  future2 = [remoteSearchServerPromise future];
 
-  if (v6 && v8)
+  if (future && future2)
   {
-    v22[0] = v6;
-    v22[1] = v8;
+    v22[0] = future;
+    v22[1] = future2;
     v9 = [NSArray arrayWithObjects:v22 count:2];
     v10 = [EFFuture combine:v9];
 
@@ -1539,9 +1539,9 @@ LABEL_9:
     v15 = sub_10015D9D4;
     v16 = &unk_100651BA0;
     objc_copyWeak(&v20, &location);
-    v17 = v6;
-    v18 = v8;
-    v19 = v4;
+    v17 = future;
+    v18 = future2;
+    v19 = completionCopy;
     [v10 onScheduler:v11 addSuccessBlock:&v13];
 
     v12 = [EFScheduler mainThreadScheduler:v13];
@@ -1552,9 +1552,9 @@ LABEL_9:
   }
 }
 
-- (void)performOnLocalAndRemoteSearchCompletion:(id)a3
+- (void)performOnLocalAndRemoteSearchCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1562,24 +1562,24 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Waiting for local and remote search to complete", &buf, 2u);
   }
 
-  v6 = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
-  v7 = [v6 future];
+  localSearchInitialLoadPromise = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
+  future = [localSearchInitialLoadPromise future];
 
-  v8 = [(MessageListSearchViewController *)self localSearchRemotePromise];
-  v9 = [v8 future];
+  localSearchRemotePromise = [(MessageListSearchViewController *)self localSearchRemotePromise];
+  future2 = [localSearchRemotePromise future];
 
-  v10 = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
-  v11 = [v10 future];
+  remoteSearchInitialLoadPromise = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
+  future3 = [remoteSearchInitialLoadPromise future];
 
-  v12 = [(MessageListSearchViewController *)self remoteSearchServerPromise];
-  v13 = [v12 future];
+  remoteSearchServerPromise = [(MessageListSearchViewController *)self remoteSearchServerPromise];
+  future4 = [remoteSearchServerPromise future];
 
-  if (v7 && v9 && v11 && v13)
+  if (future && future2 && future3 && future4)
   {
-    v29[0] = v7;
-    v29[1] = v9;
-    v29[2] = v11;
-    v29[3] = v13;
+    v29[0] = future;
+    v29[1] = future2;
+    v29[2] = future3;
+    v29[3] = future4;
     v14 = [NSArray arrayWithObjects:v29 count:4];
     v15 = [EFFuture combine:v14];
 
@@ -1590,11 +1590,11 @@ LABEL_9:
     v20 = sub_10015E01C;
     v21 = &unk_100651BE8;
     objc_copyWeak(&v27, &buf);
-    v22 = v7;
-    v23 = v9;
-    v24 = v11;
-    v25 = v13;
-    v26 = v4;
+    v22 = future;
+    v23 = future2;
+    v24 = future3;
+    v25 = future4;
+    v26 = completionCopy;
     [v15 onScheduler:v16 addSuccessBlock:&v18];
 
     v17 = [EFScheduler mainThreadScheduler:v18];
@@ -1607,70 +1607,70 @@ LABEL_9:
 
 - (BOOL)isSearchSuggestionsVisible
 {
-  v2 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController parentViewController];
-  v3 = v2 != 0;
+  parentViewController = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController parentViewController];
+  v3 = parentViewController != 0;
 
   return v3;
 }
 
 - (BOOL)hasSuggestions
 {
-  v2 = [(MessageListSearchViewController *)self suggestionsViewController];
-  v3 = [v2 hasSuggestions];
+  suggestionsViewController = [(MessageListSearchViewController *)self suggestionsViewController];
+  hasSuggestions = [suggestionsViewController hasSuggestions];
 
-  return v3;
+  return hasSuggestions;
 }
 
-- (void)setSearchSuggestionsVisible:(BOOL)a3
+- (void)setSearchSuggestionsVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(MessageListSearchViewController *)self isSearchSuggestionsVisible];
-  v6 = !v3 || [(MessageListSearchViewController *)self shouldShowMenuSuggestions];
-  if (v6 & v5)
+  visibleCopy = visible;
+  isSearchSuggestionsVisible = [(MessageListSearchViewController *)self isSearchSuggestionsVisible];
+  v6 = !visibleCopy || [(MessageListSearchViewController *)self shouldShowMenuSuggestions];
+  if (v6 & isSearchSuggestionsVisible)
   {
-    v7 = [(MessageListSearchViewController *)self collectionView];
-    [v7 setScrollsToTop:1];
+    collectionView = [(MessageListSearchViewController *)self collectionView];
+    [collectionView setScrollsToTop:1];
 
     [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController willMoveToParentViewController:0];
-    v8 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController viewIfLoaded];
-    [v8 removeFromSuperview];
+    viewIfLoaded = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController viewIfLoaded];
+    [viewIfLoaded removeFromSuperview];
 
     [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController removeFromParentViewController];
-    v9 = [(MessageListSearchViewController *)self collectionView];
-    [(MessageListSearchViewController *)self setContentScrollView:v9 forEdge:5];
+    collectionView2 = [(MessageListSearchViewController *)self collectionView];
+    [(MessageListSearchViewController *)self setContentScrollView:collectionView2 forEdge:5];
 
     [(MessageListViewController *)self updateBarButtons];
     [(MessageListSearchViewController *)self setLastSelectedTopHitItemID:0];
   }
 
-  else if (!(v6 | v5))
+  else if (!(v6 | isSearchSuggestionsVisible))
   {
     if (self->_suggestionsViewController)
     {
-      v10 = [(MessageListSearchViewController *)self collectionView];
-      [v10 setScrollsToTop:0];
+      collectionView3 = [(MessageListSearchViewController *)self collectionView];
+      [collectionView3 setScrollsToTop:0];
 
       if (![(MessageListSearchViewController *)self shouldShowMenuSuggestions])
       {
         [(MessageListSearchViewController *)self addChildViewController:self->_suggestionsViewController];
-        v11 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController observableScrollView];
-        [(MessageListSearchViewController *)self setContentScrollView:v11 forEdge:5];
+        observableScrollView = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController observableScrollView];
+        [(MessageListSearchViewController *)self setContentScrollView:observableScrollView forEdge:5];
 
-        v12 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController view];
-        [v12 setAutoresizingMask:18];
+        view = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController view];
+        [view setAutoresizingMask:18];
 
-        v13 = [(MessageListSearchViewController *)self view];
-        [v13 bounds];
+        view2 = [(MessageListSearchViewController *)self view];
+        [view2 bounds];
         v15 = v14;
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        v22 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController view];
-        [v22 setFrame:{v15, v17, v19, v21}];
+        view3 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController view];
+        [view3 setFrame:{v15, v17, v19, v21}];
 
-        v23 = [(MessageListSearchViewController *)self view];
-        v24 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController view];
-        [v23 addSubview:v24];
+        view4 = [(MessageListSearchViewController *)self view];
+        view5 = [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController view];
+        [view4 addSubview:view5];
 
         [(MFSearchSuggestionsViewControllable *)self->_suggestionsViewController didMoveToParentViewController:self];
       }
@@ -1688,55 +1688,55 @@ LABEL_9:
     }
   }
 
-  v26 = [(MessageListSearchViewController *)self searchBar];
-  [v26 setShowsProgress:v6];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  [searchBar setShowsProgress:v6];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v20 = a3;
-  v19 = [v20 searchBar];
+  controllerCopy = controller;
+  searchBar = [controllerCopy searchBar];
   v4 = [(MessageListSearchViewController *)self _currentEditingStringForSearchBar:?];
   v5 = [v4 length];
   v6 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MessageListViewController *)self currentUserTypedPhrase];
-    v8 = [EFPrivacy partiallyRedactedStringForString:v7];
-    v9 = [(MessageListSearchViewController *)self currentSuggestion];
-    v10 = [EMCSLoggingAdditions publicDescriptionForSuggestion:v9];
-    v11 = [(MessageListSearchViewController *)self currentSuggestion];
-    v12 = [v11 suggestionTokens];
+    currentUserTypedPhrase = [(MessageListViewController *)self currentUserTypedPhrase];
+    v8 = [EFPrivacy partiallyRedactedStringForString:currentUserTypedPhrase];
+    currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
+    v10 = [EMCSLoggingAdditions publicDescriptionForSuggestion:currentSuggestion];
+    currentSuggestion2 = [(MessageListSearchViewController *)self currentSuggestion];
+    suggestionTokens = [currentSuggestion2 suggestionTokens];
     *buf = 138412802;
     v22 = v8;
     v23 = 2112;
     v24 = v10;
     v25 = 2112;
-    v26 = v12;
+    v26 = suggestionTokens;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Searching with userString: %@ suggestion: %@ suggestionTokens: %@", buf, 0x20u);
   }
 
   if (v5)
   {
-    v13 = 0;
+    mui_isEmpty = 0;
   }
 
   else
   {
-    v14 = [(MessageListSearchViewController *)self currentSuggestion];
-    v13 = [v14 mui_isEmpty];
+    currentSuggestion3 = [(MessageListSearchViewController *)self currentSuggestion];
+    mui_isEmpty = [currentSuggestion3 mui_isEmpty];
 
-    if (v13)
+    if (mui_isEmpty)
     {
       if ([(MessageListSearchViewController *)self inSearchSession])
       {
-        v15 = [(MessageListSearchViewController *)self lastPhrase];
-        v13 = v15 != 0;
+        lastPhrase = [(MessageListSearchViewController *)self lastPhrase];
+        mui_isEmpty = lastPhrase != 0;
       }
 
       else
       {
-        v13 = 1;
+        mui_isEmpty = 1;
       }
     }
   }
@@ -1756,7 +1756,7 @@ LABEL_9:
     v16 = 0;
   }
 
-  if ((v13 | v16))
+  if ((mui_isEmpty | v16))
   {
     if (!((v5 != 0) | [(MessageListSearchViewController *)self generateCannedSuggestions]))
     {
@@ -1770,13 +1770,13 @@ LABEL_9:
   [(MessageListSearchViewController *)self _updateSearchResultsControllerVisibility];
   if ((v16 & [(MessageListSearchViewController *)self shouldShowMenuSuggestions]) == 1)
   {
-    v17 = [(MessageListSearchViewController *)self searchDebouncer];
-    [v17 debounceResult:v20];
+    searchDebouncer = [(MessageListSearchViewController *)self searchDebouncer];
+    [searchDebouncer debounceResult:controllerCopy];
   }
 
   else if ([(MessageListSearchViewController *)self _shouldUpdateSearchForOptions:2])
   {
-    v18 = [(MessageListSearchViewController *)self _countOfSuggestionAtomsInSearchbar:v19];
+    v18 = [(MessageListSearchViewController *)self _countOfSuggestionAtomsInSearchbar:searchBar];
     if (v18)
     {
       if ([(MessageListSearchViewController *)self countOfAtomsInLastSearch]!= v18)
@@ -1787,11 +1787,11 @@ LABEL_9:
   }
 }
 
-- (void)_updateSearchResultsForSearchController:(id)a3
+- (void)_updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 representedObjects];
-  v6 = [v5 count];
+  searchBar = [controller searchBar];
+  representedObjects = [searchBar representedObjects];
+  v6 = [representedObjects count];
 
   if (v6)
   {
@@ -1809,28 +1809,28 @@ LABEL_9:
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion
 {
-  v8 = a4;
-  v5 = [v8 representedObject];
+  suggestionCopy = suggestion;
+  representedObject = [suggestionCopy representedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v8 representedObject];
-    [(MessageListSearchViewController *)self searchSuggestionsViewController:0 didSelectSuggestion:v7];
+    representedObject2 = [suggestionCopy representedObject];
+    [(MessageListSearchViewController *)self searchSuggestionsViewController:0 didSelectSuggestion:representedObject2];
   }
 }
 
-- (BOOL)_shouldUpdateSearchForOptions:(int64_t)a3
+- (BOOL)_shouldUpdateSearchForOptions:(int64_t)options
 {
   if ([(MessageListSearchViewController *)self isSearchSuggestionsVisible])
   {
     return 0;
   }
 
-  if (a3 == 2)
+  if (options == 2)
   {
     return (*&self->_flags & 0x10) != 0;
   }
@@ -1840,44 +1840,44 @@ LABEL_9:
 
 - (void)_updateSearchResultsControllerVisibility
 {
-  v6 = [(MessageListSearchViewController *)self searchController];
-  if (([v6 automaticallyShowsSearchResultsController] & 1) == 0)
+  searchController = [(MessageListSearchViewController *)self searchController];
+  if (([searchController automaticallyShowsSearchResultsController] & 1) == 0)
   {
-    v3 = [(MessageListSearchViewController *)self searchBar];
-    v4 = [v3 representedObjects];
-    v5 = [v4 count];
+    searchBar = [(MessageListSearchViewController *)self searchBar];
+    representedObjects = [searchBar representedObjects];
+    v5 = [representedObjects count];
 
-    [v6 setShowsSearchResultsController:v5 != 0];
+    [searchController setShowsSearchResultsController:v5 != 0];
   }
 }
 
-- (void)_notePredicateUpdated:(int64_t)a3
+- (void)_notePredicateUpdated:(int64_t)updated
 {
   [(MessageListSearchViewController *)self _updateIndexStatisticsIfNeeded];
-  v23 = [(MessageListSearchViewController *)self searchBar];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
   *&self->_flags &= ~1u;
-  v5 = [(MessageListSearchViewController *)self _shouldUpdateSearchForOptions:a3];
+  v5 = [(MessageListSearchViewController *)self _shouldUpdateSearchForOptions:updated];
   [(MessageListSearchViewController *)self setSearching:0];
   if ([(MessageListSearchViewController *)self _shouldSearchCurrentMailboxOnly])
   {
-    v6 = [(MessageListSearchViewController *)self mailboxes];
+    mailboxes = [(MessageListSearchViewController *)self mailboxes];
   }
 
   else
   {
-    v6 = 0;
+    mailboxes = 0;
   }
 
-  v7 = [(MessageListSearchViewController *)self searchPredicateForMailboxes:v6];
+  v7 = [(MessageListSearchViewController *)self searchPredicateForMailboxes:mailboxes];
   v8 = +[MessageListSearchViewController log];
-  v9 = (a3 == 1) | v5;
+  v9 = (updated == 1) | v5;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromBOOL();
     v11 = NSStringFromBOOL();
     v12 = NSStringFromBOOL();
     *buf = 134218754;
-    v27 = a3;
+    selfCopy = updated;
     v28 = 2114;
     v29 = v10;
     v30 = 2114;
@@ -1889,17 +1889,17 @@ LABEL_9:
 
   if (((v7 != 0) & v9) == 1)
   {
-    v13 = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
-    [v13 cancel];
+    localSearchInitialLoadPromise = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
+    [localSearchInitialLoadPromise cancel];
 
-    v14 = [(MessageListSearchViewController *)self localSearchRemotePromise];
-    [v14 cancel];
+    localSearchRemotePromise = [(MessageListSearchViewController *)self localSearchRemotePromise];
+    [localSearchRemotePromise cancel];
 
-    v15 = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
-    [v15 cancel];
+    remoteSearchInitialLoadPromise = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
+    [remoteSearchInitialLoadPromise cancel];
 
-    v16 = [(MessageListSearchViewController *)self remoteSearchServerPromise];
-    [v16 cancel];
+    remoteSearchServerPromise = [(MessageListSearchViewController *)self remoteSearchServerPromise];
+    [remoteSearchServerPromise cancel];
 
     v17 = +[EFPromise promise];
     [(MessageListSearchViewController *)self setLocalSearchInitialLoadPromise:v17];
@@ -1923,7 +1923,7 @@ LABEL_9:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v27 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "noteCriterionUpdated startingSearch: %@", buf, 0xCu);
     }
 
@@ -1931,7 +1931,7 @@ LABEL_9:
     [(MessageListSearchViewController *)self setSearching:1];
     *&self->_flags |= 0x10u;
     [(MessageListSearchViewController *)self setSearchStartAbsoluteTime:mach_absolute_time()];
-    [(MessageListSearchViewController *)self setCountOfAtomsInLastSearch:[(MessageListSearchViewController *)self _countOfSuggestionAtomsInSearchbar:v23]];
+    [(MessageListSearchViewController *)self setCountOfAtomsInLastSearch:[(MessageListSearchViewController *)self _countOfSuggestionAtomsInSearchbar:searchBar]];
     [(MessageListSearchViewController *)self _initializeSearchUserActivity];
     objc_initWeak(buf, self);
     v24[0] = _NSConcreteStackBlock;
@@ -1952,14 +1952,14 @@ LABEL_9:
 
 - (void)_initializeSearchUserActivity
 {
-  v11 = [(MessageListSearchViewController *)self mailboxes];
-  v3 = [(MessageListSearchViewController *)self accountRepository];
-  v4 = [v11 firstObject];
-  v5 = [v4 accountIdentifier];
-  v6 = [v3 accountForIdentifier:v5];
+  mailboxes = [(MessageListSearchViewController *)self mailboxes];
+  accountRepository = [(MessageListSearchViewController *)self accountRepository];
+  firstObject = [mailboxes firstObject];
+  accountIdentifier = [firstObject accountIdentifier];
+  v6 = [accountRepository accountForIdentifier:accountIdentifier];
 
-  v7 = [(MessageListSearchViewController *)self searchActivityPayloadDictionary];
-  v8 = [(MessageListViewController *)self continuityMailboxActivityPayloadFromMailboxes:v11 account:v6 currentActivityPayload:v7];
+  searchActivityPayloadDictionary = [(MessageListSearchViewController *)self searchActivityPayloadDictionary];
+  v8 = [(MessageListViewController *)self continuityMailboxActivityPayloadFromMailboxes:mailboxes account:v6 currentActivityPayload:searchActivityPayloadDictionary];
 
   [(MessageListSearchViewController *)self setSearchActivityPayloadDictionary:0];
   if (v8)
@@ -1967,22 +1967,22 @@ LABEL_9:
     v9 = [[NSMutableDictionary alloc] initWithDictionary:v8];
     [(MessageListSearchViewController *)self setSearchActivityPayloadDictionary:v9];
 
-    v10 = [(MessageListSearchViewController *)self searchActivityPayloadDictionary];
-    [v10 setObject:MSMailActivityHandoffTypeSearch forKeyedSubscript:MSMailActivityHandoffTypeKey];
+    searchActivityPayloadDictionary2 = [(MessageListSearchViewController *)self searchActivityPayloadDictionary];
+    [searchActivityPayloadDictionary2 setObject:MSMailActivityHandoffTypeSearch forKeyedSubscript:MSMailActivityHandoffTypeKey];
   }
 }
 
-- (void)updateUserActivityState:(id)a3
+- (void)updateUserActivityState:(id)state
 {
-  v5 = a3;
-  v4 = [(MessageListSearchViewController *)self searchActivityPayloadDictionary];
-  [v5 setUserInfo:v4];
+  stateCopy = state;
+  searchActivityPayloadDictionary = [(MessageListSearchViewController *)self searchActivityPayloadDictionary];
+  [stateCopy setUserInfo:searchActivityPayloadDictionary];
 }
 
 - (id)_localMailboxPredicate
 {
-  v2 = [(MessageListSearchViewController *)self mailboxes];
-  v3 = [EMMessageListItemPredicates predicateForMessagesInMailboxes:v2];
+  mailboxes = [(MessageListSearchViewController *)self mailboxes];
+  v3 = [EMMessageListItemPredicates predicateForMessagesInMailboxes:mailboxes];
 
   return v3;
 }
@@ -2003,16 +2003,16 @@ LABEL_9:
   return searchProgressView;
 }
 
-- (void)setSearching:(BOOL)a3
+- (void)setSearching:(BOOL)searching
 {
-  if (self->_searching != a3)
+  if (self->_searching != searching)
   {
-    v3 = a3;
+    searchingCopy = searching;
     v5 = +[MessageListSearchViewController log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"No";
-      if (v3)
+      if (searchingCopy)
       {
         v6 = @"Yes";
       }
@@ -2022,7 +2022,7 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating searching to %@", &v7, 0xCu);
     }
 
-    self->_searching = v3;
+    self->_searching = searchingCopy;
     [(MessageListSearchViewController *)self _updateFooter];
   }
 }
@@ -2036,15 +2036,15 @@ LABEL_9:
       return;
     }
 
-    v3 = [(MessageListSearchViewController *)self searchProgressViewDisplayCancellable];
-    [v3 cancel];
+    searchProgressViewDisplayCancellable = [(MessageListSearchViewController *)self searchProgressViewDisplayCancellable];
+    [searchProgressViewDisplayCancellable cancel];
 
-    v4 = [(MessageListSearchViewController *)self searchProgressView];
-    LOBYTE(v3) = [v4 isAnimating];
+    searchProgressView = [(MessageListSearchViewController *)self searchProgressView];
+    LOBYTE(searchProgressViewDisplayCancellable) = [searchProgressView isAnimating];
 
     v5 = +[MessageListSearchViewController log];
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (searchProgressViewDisplayCancellable)
     {
       if (v6)
       {
@@ -2075,9 +2075,9 @@ LABEL_9:
       objc_destroyWeak(buf);
     }
 
-    v8 = [(MessageListSearchViewController *)self collectionView];
-    v9 = [v8 collectionViewLayout];
-    [v9 invalidateLayout];
+    collectionView = [(MessageListSearchViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 
   else
@@ -2095,31 +2095,31 @@ LABEL_9:
     }
 
     [(MessageListSearchViewController *)self _stopAnimatingSearchingFooter];
-    v8 = [(MessageListSearchViewController *)self collectionView];
-    v9 = [v8 collectionViewLayout];
-    [v9 invalidateLayout];
+    collectionView = [(MessageListSearchViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
 - (void)_displaySearchingFooter
 {
-  v3 = [(MessageListSearchViewController *)self searchProgressView];
-  v4 = [v3 superview];
-  [v4 bounds];
-  [v3 setFrame:?];
+  searchProgressView = [(MessageListSearchViewController *)self searchProgressView];
+  superview = [searchProgressView superview];
+  [superview bounds];
+  [searchProgressView setFrame:?];
 
-  [v3 setAnimating:1 fade:1];
+  [searchProgressView setAnimating:1 fade:1];
   v5 = +[NSDate date];
   [(MessageListSearchViewController *)self setSearchProgressViewDisplayStartTime:v5];
 
-  v6 = [(MessageListSearchViewController *)self collectionView];
-  v7 = [v6 collectionViewLayout];
-  [v7 invalidateLayout];
+  collectionView = [(MessageListSearchViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   if (![(MessageListSearchViewController *)self hasReceivedFirstRemoteSearchResult])
   {
-    v8 = [(MessageListSearchViewController *)self dataSource];
-    [v8 suspendUpdates];
+    dataSource = [(MessageListSearchViewController *)self dataSource];
+    [dataSource suspendUpdates];
   }
 
   v9 = +[EFScheduler mainThreadScheduler];
@@ -2134,8 +2134,8 @@ LABEL_9:
 
 - (void)_stopAnimatingSearchingFooter
 {
-  v3 = [(MessageListSearchViewController *)self searchProgressView];
-  [v3 setAnimating:0 fade:0];
+  searchProgressView = [(MessageListSearchViewController *)self searchProgressView];
+  [searchProgressView setAnimating:0 fade:0];
 
   [(MessageListSearchViewController *)self setSearchProgressViewDisplayCancellable:0];
 
@@ -2150,28 +2150,28 @@ LABEL_9:
     return 1;
   }
 
-  v4 = [(MessageListSearchViewController *)self dataSource];
-  if ([v4 isUpdateQueueSuspended])
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  if ([dataSource isUpdateQueueSuspended])
   {
-    v5 = [(MessageListSearchViewController *)self dataSource];
-    v6 = [v5 hasQueuedUpdates];
+    dataSource2 = [(MessageListSearchViewController *)self dataSource];
+    hasQueuedUpdates = [dataSource2 hasQueuedUpdates];
   }
 
   else
   {
-    v6 = 0;
+    hasQueuedUpdates = 0;
   }
 
-  return v6;
+  return hasQueuedUpdates;
 }
 
 - (double)_searchingFooterDisplayTimeLeft
 {
-  v2 = [(MessageListSearchViewController *)self searchProgressViewDisplayStartTime];
-  if (v2)
+  searchProgressViewDisplayStartTime = [(MessageListSearchViewController *)self searchProgressViewDisplayStartTime];
+  if (searchProgressViewDisplayStartTime)
   {
     v3 = +[NSDate date];
-    [v3 timeIntervalSinceDate:v2];
+    [v3 timeIntervalSinceDate:searchProgressViewDisplayStartTime];
     v5 = v4;
 
     v6 = fmax(1.5 - v5, 0.0);
@@ -2187,42 +2187,42 @@ LABEL_9:
 
 - (void)_resetFooterState
 {
-  v4 = [(MessageListSearchViewController *)self footerUpdateCancelable];
-  [v4 cancel];
+  footerUpdateCancelable = [(MessageListSearchViewController *)self footerUpdateCancelable];
+  [footerUpdateCancelable cancel];
 
   [(MessageListSearchViewController *)self setFooterUpdateCancelable:0];
   [(MessageListSearchViewController *)self _stopAnimatingSearchingFooter];
-  v5 = [(MessageListSearchViewController *)self dataSource];
-  v3 = [v5 isUpdateQueueSuspended];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  isUpdateQueueSuspended = [dataSource isUpdateQueueSuspended];
 
-  if (v3)
+  if (isUpdateQueueSuspended)
   {
-    v6 = [(MessageListSearchViewController *)self dataSource];
-    [v6 resumeUpdates];
+    dataSource2 = [(MessageListSearchViewController *)self dataSource];
+    [dataSource2 resumeUpdates];
   }
 }
 
 - (void)_updateSearchingCompletionState
 {
-  v3 = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
-  v4 = [v3 future];
-  v5 = [v4 resultIfAvailable];
+  localSearchInitialLoadPromise = [(MessageListSearchViewController *)self localSearchInitialLoadPromise];
+  future = [localSearchInitialLoadPromise future];
+  resultIfAvailable = [future resultIfAvailable];
 
-  v6 = [(MessageListSearchViewController *)self localSearchRemotePromise];
-  v7 = [v6 future];
-  v8 = [v7 resultIfAvailable];
+  localSearchRemotePromise = [(MessageListSearchViewController *)self localSearchRemotePromise];
+  future2 = [localSearchRemotePromise future];
+  resultIfAvailable2 = [future2 resultIfAvailable];
 
-  v9 = [(MessageListSearchViewController *)self remoteSearchServerPromise];
-  v10 = [v9 future];
-  v11 = [v10 resultIfAvailable];
+  remoteSearchServerPromise = [(MessageListSearchViewController *)self remoteSearchServerPromise];
+  future3 = [remoteSearchServerPromise future];
+  resultIfAvailable3 = [future3 resultIfAvailable];
 
-  v12 = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
-  v13 = [v12 future];
-  v14 = [v13 resultIfAvailable];
+  remoteSearchInitialLoadPromise = [(MessageListSearchViewController *)self remoteSearchInitialLoadPromise];
+  future4 = [remoteSearchInitialLoadPromise future];
+  resultIfAvailable4 = [future4 resultIfAvailable];
 
-  if (v5)
+  if (resultIfAvailable)
   {
-    v15 = v8 == 0;
+    v15 = resultIfAvailable2 == 0;
   }
 
   else
@@ -2230,7 +2230,7 @@ LABEL_9:
     v15 = 1;
   }
 
-  v17 = v15 || v14 == 0 || v11 == 0;
+  v17 = v15 || resultIfAvailable4 == 0 || resultIfAvailable3 == 0;
   v18 = !v17;
   if (!v17)
   {
@@ -2243,47 +2243,47 @@ LABEL_9:
     [v19 performBlock:v21];
   }
 
-  v20 = [(MessageListSearchViewController *)self lastSelectedTopHitItemID];
+  lastSelectedTopHitItemID = [(MessageListSearchViewController *)self lastSelectedTopHitItemID];
 
-  if (!v20)
+  if (!lastSelectedTopHitItemID)
   {
     [(MessageListSearchViewController *)self _reportMessageResultsFetchedIsFinished:v18];
   }
 }
 
-- (void)messageListSectionDataSource:(id)a3 collectionFinishedSearching:(id)a4 remote:(BOOL)a5 searchInfo:(id)a6
+- (void)messageListSectionDataSource:(id)source collectionFinishedSearching:(id)searching remote:(BOOL)remote searchInfo:(id)info
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 section];
+  remoteCopy = remote;
+  sourceCopy = source;
+  searchingCopy = searching;
+  infoCopy = info;
+  section = [sourceCopy section];
   v14 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 134218754;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2114;
-    v27 = v13;
+    v27 = section;
     v28 = 1024;
-    LODWORD(v29[0]) = v7;
+    LODWORD(v29[0]) = remoteCopy;
     WORD2(v29[0]) = 2114;
-    *(v29 + 6) = v11;
+    *(v29 + 6) = searchingCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%p: Did finish search with section %{public}@ remote=%{BOOL}d collection %{public}@ ", &v24, 0x26u);
   }
 
-  v15 = [(MessageListSearchViewController *)self dataSource];
-  v16 = [v15 messageListForSection:v13];
-  v17 = [v16 isEqual:v11];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v16 = [dataSource messageListForSection:section];
+  v17 = [v16 isEqual:searchingCopy];
 
   if (v17)
   {
-    v18 = [v13 isEqual:MessageListSectionIndexedSearch];
-    v19 = [v13 isEqual:MessageListSectionServerSearch];
+    v18 = [section isEqual:MessageListSectionIndexedSearch];
+    v19 = [section isEqual:MessageListSectionServerSearch];
     v20 = v19;
     if (v18)
     {
-      if (v7)
+      if (remoteCopy)
       {
         [(MessageListSearchViewController *)self localSearchRemotePromise];
       }
@@ -2301,7 +2301,7 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      if (v7)
+      if (remoteCopy)
       {
         [(MessageListSearchViewController *)self remoteSearchServerPromise];
       }
@@ -2316,9 +2316,9 @@ LABEL_9:
     [v21 finishWithResult:v22];
 
 LABEL_16:
-    if (v12)
+    if (infoCopy)
     {
-      [(MessageListSearchViewController *)self setSearchInfo:v12];
+      [(MessageListSearchViewController *)self setSearchInfo:infoCopy];
     }
 
     if ((v18 | v20))
@@ -2333,177 +2333,177 @@ LABEL_16:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v24 = 134218498;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2114;
-    v27 = v13;
+    v27 = section;
     v28 = 2114;
-    v29[0] = v11;
+    v29[0] = searchingCopy;
     _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%p: Attempting to update section %{public}@ with outdated collection %{public}@", &v24, 0x20u);
   }
 
 LABEL_20:
 }
 
-- (void)messageListSectionDataSource:(id)a3 collectionFailedSearching:(id)a4 remote:(BOOL)a5 searchInfo:(id)a6
+- (void)messageListSectionDataSource:(id)source collectionFailedSearching:(id)searching remote:(BOOL)remote searchInfo:(id)info
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 section];
+  remoteCopy = remote;
+  sourceCopy = source;
+  searchingCopy = searching;
+  infoCopy = info;
+  section = [sourceCopy section];
   v14 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v13;
+    v25 = section;
     v26 = 1024;
-    v27 = v7;
+    v27 = remoteCopy;
     v28 = 2114;
-    v29 = v11;
+    v29 = searchingCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%p: Did fail search with section %{public}@ remote=%{BOOL}d collection %{public}@ ", buf, 0x26u);
   }
 
-  v15 = [(MessageListSearchViewController *)self dataSource];
-  v16 = [v15 messageListForSection:v13];
-  v17 = [v16 isEqual:v11];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v16 = [dataSource messageListForSection:section];
+  v17 = [v16 isEqual:searchingCopy];
 
   if ((v17 & 1) == 0)
   {
     v18 = +[MessageListSearchViewController log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_100489F00(self, v11, v18);
+      sub_100489F00(self, searchingCopy, v18);
     }
 
     goto LABEL_8;
   }
 
-  if ([v13 isEqual:MessageListSectionIndexedSearch])
+  if ([section isEqual:MessageListSectionIndexedSearch])
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100160938;
     v19[3] = &unk_100651C30;
-    v20 = v12;
-    v21 = self;
+    v20 = infoCopy;
+    selfCopy2 = self;
     [(MessageListViewController *)self parsecEventQueuePerformBlock:v19];
     v18 = v20;
 LABEL_8:
   }
 }
 
-- (void)searchSuggestionsViewController:(id)a3 didSelectSuggestion:(id)a4
+- (void)searchSuggestionsViewController:(id)controller didSelectSuggestion:(id)suggestion
 {
-  v8 = a4;
+  suggestionCopy = suggestion;
   *&self->_flags |= 4u;
-  v5 = [(MessageListSearchViewController *)self recentSuggester];
-  [v5 addSuggestion:v8];
+  recentSuggester = [(MessageListSearchViewController *)self recentSuggester];
+  [recentSuggester addSuggestion:suggestionCopy];
 
-  v6 = [v8 spotlightSuggestion];
-  [(MessageListSearchViewController *)self redrawSearchBarWithSuggestion:v6];
+  spotlightSuggestion = [suggestionCopy spotlightSuggestion];
+  [(MessageListSearchViewController *)self redrawSearchBarWithSuggestion:spotlightSuggestion];
 
-  v7 = [(MessageListSearchViewController *)self _parsecSuggestionForSuggestion:v8];
+  v7 = [(MessageListSearchViewController *)self _parsecSuggestionForSuggestion:suggestionCopy];
   [(MessageListSearchViewController *)self reportSuggestionSelected:v7];
   [(MessageListSearchViewController *)self setSearchSuggestionsVisible:0];
   [(MessageListSearchViewController *)self _notePredicateUpdated:1];
   [(MessageListSearchViewController *)self reportSearchQueryStateWithTriggerEvent:8 searchType:3];
 }
 
-- (void)searchSuggestionsViewController:(id)a3 deleteRecentSuggestion:(id)a4
+- (void)searchSuggestionsViewController:(id)controller deleteRecentSuggestion:(id)suggestion
 {
-  v6 = a4;
-  v5 = [(MessageListSearchViewController *)self recentSuggester];
-  [v5 deleteSuggestion:v6];
+  suggestionCopy = suggestion;
+  recentSuggester = [(MessageListSearchViewController *)self recentSuggester];
+  [recentSuggester deleteSuggestion:suggestionCopy];
 }
 
-- (id)_parsecSuggestionForSuggestion:(id)a3
+- (id)_parsecSuggestionForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 category];
+  suggestionCopy = suggestion;
+  category = [suggestionCopy category];
   v6 = +[MUISearchSuggestionCategory topHitsCategory];
 
-  if (v5 == v6)
+  if (category == v6)
   {
-    v19 = v4;
-    v20 = [v19 itemID];
-    v21 = [v19 message];
-    v22 = [v21 date];
-    v23 = [v19 mailRankingSignals];
-    v24 = [(MessageListViewController *)self parsecTopHitForItemID:v20 date:v22 mailRankingSignals:v23];
+    v19 = suggestionCopy;
+    itemID = [v19 itemID];
+    message = [v19 message];
+    date = [message date];
+    mailRankingSignals = [v19 mailRankingSignals];
+    v24 = [(MessageListViewController *)self parsecTopHitForItemID:itemID date:date mailRankingSignals:mailRankingSignals];
 LABEL_9:
 
     goto LABEL_24;
   }
 
-  v7 = [v4 category];
+  category2 = [suggestionCopy category];
   v8 = +[MUISearchSuggestionCategory instantAnswersCategory];
 
-  if (v7 == v8)
+  if (category2 == v8)
   {
-    v19 = v4;
-    v20 = [v19 itemID];
-    v21 = [v19 message];
-    v22 = [v21 date];
-    v23 = [v19 feedbackInlineCard];
-    v25 = [v19 instantAnswer];
-    v26 = [v25 flightInfoIsLive];
-    v24 = [(MessageListViewController *)self parsecInstantAnswerForItemID:v20 date:v22 inlineCard:v23 isUpdated:v26 != 0];
+    v19 = suggestionCopy;
+    itemID = [v19 itemID];
+    message = [v19 message];
+    date = [message date];
+    mailRankingSignals = [v19 feedbackInlineCard];
+    instantAnswer = [v19 instantAnswer];
+    flightInfoIsLive = [instantAnswer flightInfoIsLive];
+    v24 = [(MessageListViewController *)self parsecInstantAnswerForItemID:itemID date:date inlineCard:mailRankingSignals isUpdated:flightInfoIsLive != 0];
 
     goto LABEL_9;
   }
 
-  v9 = [v4 category];
+  category3 = [suggestionCopy category];
   v10 = +[MUISearchSuggestionCategory documentCategory];
-  if (v9 == v10)
+  if (category3 == v10)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v11 = [v4 category];
+  category4 = [suggestionCopy category];
   v12 = +[MUISearchSuggestionCategory locationCategory];
   v13 = v12;
-  if (v11 == v12)
+  if (category4 == v12)
   {
 
     goto LABEL_11;
   }
 
-  v14 = [v4 category];
+  category5 = [suggestionCopy category];
   v15 = +[MUISearchSuggestionCategory linkCategory];
 
-  if (v14 == v15)
+  if (category5 == v15)
   {
 LABEL_12:
-    v40 = [NSString stringWithFormat:@"%p", v4];
-    v18 = 0;
+    suggestionCopy = [NSString stringWithFormat:@"%p", suggestionCopy];
+    option = 0;
     goto LABEL_13;
   }
 
-  v16 = v4;
-  v17 = [v16 atomTitle];
-  v40 = [NSString stringWithFormat:@"%@-%p", v17, v16];
+  v16 = suggestionCopy;
+  atomTitle = [v16 atomTitle];
+  suggestionCopy = [NSString stringWithFormat:@"%@-%p", atomTitle, v16];
 
-  v18 = [v16 option];
+  option = [v16 option];
 LABEL_13:
-  v27 = [EFPrivacy fullyRedactedStringForString:v40];
-  v28 = [(MessageListSearchViewController *)self categoryForSuggestion:v4];
+  v27 = [EFPrivacy fullyRedactedStringForString:suggestionCopy];
+  v28 = [(MessageListSearchViewController *)self categoryForSuggestion:suggestionCopy];
   v29 = objc_alloc_init(SFMailResultDetails);
-  v30 = [v4 spotlightSuggestion];
-  v31 = [v30 score];
-  [v29 setSuggestionScore:v31];
+  spotlightSuggestion = [suggestionCopy spotlightSuggestion];
+  score = [spotlightSuggestion score];
+  [v29 setSuggestionScore:score];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v32 = [v4 spotlightSuggestion];
-  v33 = [v32 suggestionDataSources];
+  spotlightSuggestion2 = [suggestionCopy spotlightSuggestion];
+  suggestionDataSources = [spotlightSuggestion2 suggestionDataSources];
 
-  v34 = [v33 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  v34 = [suggestionDataSources countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v34)
   {
     v35 = *v42;
@@ -2513,7 +2513,7 @@ LABEL_13:
       {
         if (*v42 != v35)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(suggestionDataSources);
         }
 
         v37 = [*(*(&v41 + 1) + 8 * i) integerValue] - 1;
@@ -2530,58 +2530,58 @@ LABEL_13:
         [v29 setDataSources:v38];
       }
 
-      v34 = [v33 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v34 = [suggestionDataSources countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v34);
   }
 
-  v24 = [MSParsecSearchSessionSuggestion suggestionWithIdentifier:v27 category:v28 option:v18 resultDetails:v29];
+  v24 = [MSParsecSearchSessionSuggestion suggestionWithIdentifier:v27 category:v28 option:option resultDetails:v29];
 
 LABEL_24:
 
   return v24;
 }
 
-- (void)redrawSearchBarWithSuggestion:(id)a3
+- (void)redrawSearchBarWithSuggestion:(id)suggestion
 {
-  v8 = a3;
+  suggestionCopy = suggestion;
   [(MessageListSearchViewController *)self setCurrentSuggestion:?];
-  v4 = [v8 userQueryString];
-  [(MessageListViewController *)self setCurrentUserTypedPhrase:v4];
-  v5 = [v8 currentTokens];
-  v6 = [v5 ef_map:&stru_100651C70];
+  userQueryString = [suggestionCopy userQueryString];
+  [(MessageListViewController *)self setCurrentUserTypedPhrase:userQueryString];
+  currentTokens = [suggestionCopy currentTokens];
+  v6 = [currentTokens ef_map:&stru_100651C70];
 
-  [(MessageListSearchViewController *)self setLastPhrase:v4];
-  v7 = [(MessageListSearchViewController *)self searchBar];
-  [v7 replaceSearchBarWithTokens:v6 userQueryString:v4];
+  [(MessageListSearchViewController *)self setLastPhrase:userQueryString];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  [searchBar replaceSearchBarWithTokens:v6 userQueryString:userQueryString];
 }
 
-- (void)_updateSearchBarUsingSuggestionToken:(id)a3
+- (void)_updateSearchBarUsingSuggestionToken:(id)token
 {
-  v4 = a3;
-  v5 = [(MessageListSearchViewController *)self currentSuggestion];
-  v6 = [v5 userQueryString];
+  tokenCopy = token;
+  currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
+  userQueryString = [currentSuggestion userQueryString];
   v7 = +[NSCharacterSet controlCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [userQueryString stringByTrimmingCharactersInSet:v7];
 
   v9 = +[CSSuggestion emptySuggestion];
-  v10 = [v4 csToken];
-  v20 = v10;
-  v11 = [NSArray arrayWithObjects:&v20 count:1];
-  v12 = [CSSuggestion updatedSuggestionWithCurrentSuggestion:v9 userString:v8 tokens:v11];
+  csToken = [tokenCopy csToken];
+  v20 = csToken;
+  userQueryString3 = [NSArray arrayWithObjects:&v20 count:1];
+  v12 = [CSSuggestion updatedSuggestionWithCurrentSuggestion:v9 userString:v8 tokens:userQueryString3];
 
-  v13 = [(MessageListSearchViewController *)self currentSuggestion];
-  v14 = [CSSuggestion mui_mergeCurrentSuggestion:v13 suggestion:v12];
+  currentSuggestion2 = [(MessageListSearchViewController *)self currentSuggestion];
+  v14 = [CSSuggestion mui_mergeCurrentSuggestion:currentSuggestion2 suggestion:v12];
 
   [(MessageListSearchViewController *)self redrawSearchBarWithSuggestion:v14];
-  v15 = [v14 userQueryString];
+  userQueryString2 = [v14 userQueryString];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v11 = [v14 userQueryString];
-    v17 = [v11 length] != 0;
+    userQueryString3 = [v14 userQueryString];
+    v17 = [userQueryString3 length] != 0;
   }
 
   else
@@ -2596,9 +2596,9 @@ LABEL_24:
 
   if ([(MessageListSearchViewController *)self isSearchSuggestionsVisible])
   {
-    v18 = [(MessageListSearchViewController *)self currentSuggestion];
-    v19 = [v18 userQueryString];
-    [(MessageListSearchViewController *)self _generateSuggestionsForPhrase:v19];
+    currentSuggestion3 = [(MessageListSearchViewController *)self currentSuggestion];
+    userQueryString4 = [currentSuggestion3 userQueryString];
+    [(MessageListSearchViewController *)self _generateSuggestionsForPhrase:userQueryString4];
   }
 
   else
@@ -2607,192 +2607,192 @@ LABEL_24:
   }
 }
 
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 messageList:(id)a5 indexInformation:(id)a6 topHitSuggestion:(id)a7
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d messageList:(id)list indexInformation:(id)information topHitSuggestion:(id)suggestion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
+  dCopy = d;
+  listCopy = list;
+  suggestionCopy = suggestion;
   v29 = MessageListSectionIndexedSearch;
   v13 = [NSArray arrayWithObjects:&v29 count:1];
-  [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:v11 sections:v13 applyEmptySnapshot:1];
+  [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:listCopy sections:v13 applyEmptySnapshot:1];
 
-  v14 = [v12 message];
-  v15 = [v14 date];
-  v16 = [v12 mailRankingSignals];
-  v17 = [(MessageListViewController *)self parsecTopHitForItemID:v10 date:v15 mailRankingSignals:v16];
+  message = [suggestionCopy message];
+  date = [message date];
+  mailRankingSignals = [suggestionCopy mailRankingSignals];
+  v17 = [(MessageListViewController *)self parsecTopHitForItemID:dCopy date:date mailRankingSignals:mailRankingSignals];
 
   [(MessageListSearchViewController *)self reportTopHitSelected:v17];
   v18 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 134218498;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2048;
-    v28 = v11;
+    v28 = listCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "searchSuggestionsController: %p, didSelectItemID: %{public}@, messageList: %p", &v23, 0x20u);
   }
 
-  v19 = [(MessageListSearchViewController *)self lastSelectedTopHitItemID];
-  v20 = v19 == v10;
+  lastSelectedTopHitItemID = [(MessageListSearchViewController *)self lastSelectedTopHitItemID];
+  v20 = lastSelectedTopHitItemID == dCopy;
 
   if (!v20)
   {
-    v21 = [(MessageListViewController *)self scene];
-    v22 = [v21 isInExpandedEnvironment];
+    scene = [(MessageListViewController *)self scene];
+    isInExpandedEnvironment = [scene isInExpandedEnvironment];
 
-    [(MessageListViewController *)self didSelectTopHitWithItemID:v10 messageList:v11 animated:v22 ^ 1];
-    [(MessageListSearchViewController *)self setLastSelectedTopHitItemID:v10];
+    [(MessageListViewController *)self didSelectTopHitWithItemID:dCopy messageList:listCopy animated:isInExpandedEnvironment ^ 1];
+    [(MessageListSearchViewController *)self setLastSelectedTopHitItemID:dCopy];
   }
 }
 
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 messageList:(id)a5 indexInformation:(id)a6
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d messageList:(id)list indexInformation:(id)information
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  listCopy = list;
   v23 = MessageListSectionIndexedSearch;
   v10 = [NSArray arrayWithObjects:&v23 count:1];
-  [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:v9 sections:v10 applyEmptySnapshot:1];
+  [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:listCopy sections:v10 applyEmptySnapshot:1];
 
-  v11 = [(MessageListViewController *)self parsecTopHitForItemID:v8 date:0 mailRankingSignals:0];
+  v11 = [(MessageListViewController *)self parsecTopHitForItemID:dCopy date:0 mailRankingSignals:0];
   [(MessageListSearchViewController *)self reportTopHitSelected:v11];
   v12 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134218498;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v8;
+    v20 = dCopy;
     v21 = 2048;
-    v22 = v9;
+    v22 = listCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "searchSuggestionsController: %p, didSelectItemID: %{public}@, messageList: %p", &v17, 0x20u);
   }
 
-  v13 = [(MessageListSearchViewController *)self lastSelectedTopHitItemID];
-  v14 = v13 == v8;
+  lastSelectedTopHitItemID = [(MessageListSearchViewController *)self lastSelectedTopHitItemID];
+  v14 = lastSelectedTopHitItemID == dCopy;
 
   if (!v14)
   {
-    v15 = [(MessageListViewController *)self scene];
-    v16 = [v15 isInExpandedEnvironment];
+    scene = [(MessageListViewController *)self scene];
+    isInExpandedEnvironment = [scene isInExpandedEnvironment];
 
-    [(MessageListViewController *)self didSelectTopHitWithItemID:v8 messageList:v9 animated:v16 ^ 1];
-    [(MessageListSearchViewController *)self setLastSelectedTopHitItemID:v8];
+    [(MessageListViewController *)self didSelectTopHitWithItemID:dCopy messageList:listCopy animated:isInExpandedEnvironment ^ 1];
+    [(MessageListSearchViewController *)self setLastSelectedTopHitItemID:dCopy];
   }
 }
 
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 instantAnswerSuggestion:(id)a5 cardSectionID:(id)a6 command:(id)a7
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d instantAnswerSuggestion:(id)suggestion cardSectionID:(id)iD command:(id)command
 {
-  v20 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v11 message];
-  v15 = [v14 date];
-  v16 = [v11 feedbackInlineCard];
-  v17 = [v11 instantAnswer];
-  v18 = [v17 flightInfoIsLive];
-  v19 = [(MessageListViewController *)self parsecInstantAnswerForItemID:v20 date:v15 inlineCard:v16 isUpdated:v18 != 0];
+  dCopy = d;
+  suggestionCopy = suggestion;
+  iDCopy = iD;
+  commandCopy = command;
+  message = [suggestionCopy message];
+  date = [message date];
+  feedbackInlineCard = [suggestionCopy feedbackInlineCard];
+  instantAnswer = [suggestionCopy instantAnswer];
+  flightInfoIsLive = [instantAnswer flightInfoIsLive];
+  v19 = [(MessageListViewController *)self parsecInstantAnswerForItemID:dCopy date:date inlineCard:feedbackInlineCard isUpdated:flightInfoIsLive != 0];
 
-  [(MessageListSearchViewController *)self reportInstantAnswerButtonSelected:v19 cardSectionID:v12 command:v13];
+  [(MessageListSearchViewController *)self reportInstantAnswerButtonSelected:v19 cardSectionID:iDCopy command:commandCopy];
 }
 
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 instantAnswerSuggestion:(id)a5 cardSectionID:(id)a6
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d instantAnswerSuggestion:(id)suggestion cardSectionID:(id)iD
 {
-  v9 = a4;
-  v10 = a5;
-  v24 = a6;
-  v11 = [v10 messageList];
-  v12 = v11;
-  if (v11)
+  dCopy = d;
+  suggestionCopy = suggestion;
+  iDCopy = iD;
+  messageList = [suggestionCopy messageList];
+  v12 = messageList;
+  if (messageList)
   {
-    v13 = v11;
+    v13 = messageList;
     v14 = MessageListSectionIndexedSearch;
   }
 
   else
   {
-    v15 = [(MessageListSearchViewController *)self dataSource];
+    dataSource = [(MessageListSearchViewController *)self dataSource];
     v14 = MessageListSectionIndexedSearch;
-    v13 = [v15 messageListForSection:MessageListSectionIndexedSearch];
+    v13 = [dataSource messageListForSection:MessageListSectionIndexedSearch];
   }
 
   v25 = v14;
   v16 = [NSArray arrayWithObjects:&v25 count:1];
   [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:v13 sections:v16 applyEmptySnapshot:1];
 
-  v17 = [v10 message];
-  v18 = [v17 date];
-  v19 = [v10 feedbackInlineCard];
-  v20 = [v10 instantAnswer];
-  v21 = [v20 flightInfoIsLive];
-  v22 = [(MessageListViewController *)self parsecInstantAnswerForItemID:v9 date:v18 inlineCard:v19 isUpdated:v21 != 0];
+  message = [suggestionCopy message];
+  date = [message date];
+  feedbackInlineCard = [suggestionCopy feedbackInlineCard];
+  instantAnswer = [suggestionCopy instantAnswer];
+  flightInfoIsLive = [instantAnswer flightInfoIsLive];
+  v22 = [(MessageListViewController *)self parsecInstantAnswerForItemID:dCopy date:date inlineCard:feedbackInlineCard isUpdated:flightInfoIsLive != 0];
 
-  [(MessageListSearchViewController *)self reportInstantAnswerCardSelected:v22 cardSectionID:v24];
-  v23 = [(MessageListViewController *)self scene];
-  LODWORD(v17) = [v23 isInExpandedEnvironment];
+  [(MessageListSearchViewController *)self reportInstantAnswerCardSelected:v22 cardSectionID:iDCopy];
+  scene = [(MessageListViewController *)self scene];
+  LODWORD(message) = [scene isInExpandedEnvironment];
 
-  [(MessageListViewController *)self didSelectTopHitWithItemID:v9 messageList:v13 animated:v17 ^ 1];
+  [(MessageListViewController *)self didSelectTopHitWithItemID:dCopy messageList:v13 animated:message ^ 1];
 }
 
-- (void)searchSuggestionsViewController:(id)a3 didSelectItemID:(id)a4 messageList:(id)a5
+- (void)searchSuggestionsViewController:(id)controller didSelectItemID:(id)d messageList:(id)list
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  listCopy = list;
   v12 = MessageListSectionIndexedSearch;
   v9 = [NSArray arrayWithObjects:&v12 count:1];
-  [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:v8 sections:v9 applyEmptySnapshot:1];
+  [(MessageListSearchViewController *)self reloadDataSourceWithMessageList:listCopy sections:v9 applyEmptySnapshot:1];
 
-  v10 = [(MessageListViewController *)self scene];
-  v11 = [v10 isInExpandedEnvironment];
+  scene = [(MessageListViewController *)self scene];
+  isInExpandedEnvironment = [scene isInExpandedEnvironment];
 
-  [(MessageListViewController *)self didSelectTopHitWithItemID:v7 messageList:v8 animated:v11 ^ 1];
+  [(MessageListViewController *)self didSelectTopHitWithItemID:dCopy messageList:listCopy animated:isInExpandedEnvironment ^ 1];
 }
 
-- (void)reportSuggestionsFetched:(id)a3
+- (void)reportSuggestionsFetched:(id)fetched
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10016202C;
   v4[3] = &unk_100651C30;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MessageListViewController *)v5 parsecEventQueuePerformBlock:v4];
+  selfCopy = self;
+  fetchedCopy = fetched;
+  v3 = fetchedCopy;
+  [(MessageListViewController *)selfCopy parsecEventQueuePerformBlock:v4];
 }
 
-- (id)_latencyMsFromTimestamp:(id)a3 toTimestamp:(id)a4
+- (id)_latencyMsFromTimestamp:(id)timestamp toTimestamp:(id)toTimestamp
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 timeIntervalSinceDate:v5];
+  timestampCopy = timestamp;
+  toTimestampCopy = toTimestamp;
+  [toTimestampCopy timeIntervalSinceDate:timestampCopy];
   v8 = [NSNumber numberWithInt:(v7 * 1000.0)];
 
   return v8;
 }
 
-- (void)reportSuggestionsVisible:(id)a3
+- (void)reportSuggestionsVisible:(id)visible
 {
-  v4 = a3;
-  if ([v4 count])
+  visibleCopy = visible;
+  if ([visibleCopy count])
   {
-    v5 = [(MessageListSearchViewController *)self suggestionsCompletionTimestamp];
-    if (v5 && ([(MessageListSearchViewController *)self suggestionStartTimestamp], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+    suggestionsCompletionTimestamp = [(MessageListSearchViewController *)self suggestionsCompletionTimestamp];
+    if (suggestionsCompletionTimestamp && ([(MessageListSearchViewController *)self suggestionStartTimestamp], v6 = objc_claimAutoreleasedReturnValue(), v6, suggestionsCompletionTimestamp, v6))
     {
-      v7 = [(MessageListSearchViewController *)self suggestionStartTimestamp];
-      v8 = [(MessageListSearchViewController *)self suggestionsCompletionTimestamp];
-      v9 = [(MessageListSearchViewController *)self _latencyMsFromTimestamp:v7 toTimestamp:v8];
+      suggestionStartTimestamp = [(MessageListSearchViewController *)self suggestionStartTimestamp];
+      suggestionsCompletionTimestamp2 = [(MessageListSearchViewController *)self suggestionsCompletionTimestamp];
+      v9 = [(MessageListSearchViewController *)self _latencyMsFromTimestamp:suggestionStartTimestamp toTimestamp:suggestionsCompletionTimestamp2];
     }
 
     else
     {
-      v10 = [(MessageListSearchViewController *)self suggestionStartTimestamp];
-      if (v10 && (v11 = [(MessageListSearchViewController *)self didReportFirstVisibleSuggestions], v10, (v11 & 1) == 0))
+      suggestionStartTimestamp2 = [(MessageListSearchViewController *)self suggestionStartTimestamp];
+      if (suggestionStartTimestamp2 && (v11 = [(MessageListSearchViewController *)self didReportFirstVisibleSuggestions], suggestionStartTimestamp2, (v11 & 1) == 0))
       {
-        v12 = [(MessageListSearchViewController *)self suggestionStartTimestamp];
+        suggestionStartTimestamp3 = [(MessageListSearchViewController *)self suggestionStartTimestamp];
         v13 = +[NSDate date];
-        v9 = [(MessageListSearchViewController *)self _latencyMsFromTimestamp:v12 toTimestamp:v13];
+        v9 = [(MessageListSearchViewController *)self _latencyMsFromTimestamp:suggestionStartTimestamp3 toTimestamp:v13];
 
         [(MessageListSearchViewController *)self setDidReportFirstVisibleSuggestions:1];
       }
@@ -2807,8 +2807,8 @@ LABEL_24:
     v15[1] = 3221225472;
     v15[2] = sub_1001625D8;
     v15[3] = &unk_100651CE8;
-    v16 = v4;
-    v17 = self;
+    v16 = visibleCopy;
+    selfCopy = self;
     v18 = v9;
     v14 = v9;
     [(MessageListViewController *)self parsecEventQueuePerformBlock:v15];
@@ -2825,9 +2825,9 @@ LABEL_24:
   v3 = +[EFDevice currentDevice];
   if ([v3 isPad])
   {
-    v4 = [(MessageListSearchViewController *)self splitViewController];
-    v5 = [v4 traitCollection];
-    v6 = [v5 horizontalSizeClass] != 1;
+    splitViewController = [(MessageListSearchViewController *)self splitViewController];
+    traitCollection = [splitViewController traitCollection];
+    v6 = [traitCollection horizontalSizeClass] != 1;
   }
 
   else
@@ -2838,29 +2838,29 @@ LABEL_24:
   return v6;
 }
 
-- (void)suggestionsGenerator:(id)a3 didProduceResult:(id)a4
+- (void)suggestionsGenerator:(id)generator didProduceResult:(id)result
 {
-  v5 = a4;
-  v6 = [v5 requestID];
-  v7 = [(MessageListSearchViewController *)self suggestionsIdentifier];
-  v8 = [v6 isEqualToID:v7];
+  resultCopy = result;
+  requestID = [resultCopy requestID];
+  suggestionsIdentifier = [(MessageListSearchViewController *)self suggestionsIdentifier];
+  v8 = [requestID isEqualToID:suggestionsIdentifier];
 
   if (v8)
   {
-    v9 = [v5 suggestions];
-    v10 = [v9 count];
+    suggestions = [resultCopy suggestions];
+    v10 = [suggestions count];
 
     if (v10)
     {
       [(MessageListSearchViewController *)self setSuggestersGeneratedSuggestions:1];
     }
 
-    v11 = [(MessageListSearchViewController *)self suggestionsViewController];
-    v12 = [v11 updateSuggestionsWithResult:v5];
+    suggestionsViewController = [(MessageListSearchViewController *)self suggestionsViewController];
+    v12 = [suggestionsViewController updateSuggestionsWithResult:resultCopy];
 
     if ([(MessageListSearchViewController *)self shouldShowMenuSuggestions])
     {
-      v13 = -[MessageListSearchViewController _updatedSuggestionsGroups:phraseKind:](self, "_updatedSuggestionsGroups:phraseKind:", v12, [v5 phraseKind]);
+      v13 = -[MessageListSearchViewController _updatedSuggestionsGroups:phraseKind:](self, "_updatedSuggestionsGroups:phraseKind:", v12, [resultCopy phraseKind]);
       v14 = [v13 ef_map:&stru_100651D28];
       v15 = +[MessageListSearchViewController log];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2870,48 +2870,48 @@ LABEL_24:
         *buf = 138543874;
         v39 = v17;
         v40 = 2048;
-        v41 = self;
+        selfCopy3 = self;
         v42 = 2112;
         v43 = v14;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Updating search suggestion groups to: %@", buf, 0x20u);
       }
 
-      v18 = [(MessageListSearchViewController *)self canShowMenuSuggestionsPromise];
-      v19 = [v18 future];
+      canShowMenuSuggestionsPromise = [(MessageListSearchViewController *)self canShowMenuSuggestionsPromise];
+      future = [canShowMenuSuggestionsPromise future];
       v20 = +[EFScheduler mainThreadScheduler];
       v30 = _NSConcreteStackBlock;
       v31 = 3221225472;
       v32 = sub_100162D10;
       v33 = &unk_100651DD0;
-      v34 = self;
+      selfCopy2 = self;
       v21 = v13;
       v35 = v21;
       v22 = v14;
       v36 = v22;
-      v37 = v5;
-      [v19 onScheduler:v20 addSuccessBlock:&v30];
+      v37 = resultCopy;
+      [future onScheduler:v20 addSuccessBlock:&v30];
     }
 
     v23 = [(MessageListSearchViewController *)self suggestionsViewController:v30];
-    v24 = [v23 hasSuggestions];
+    hasSuggestions = [v23 hasSuggestions];
 
-    if (v24)
+    if (hasSuggestions)
     {
       [(MessageListViewController *)self suppressNoContentViewAnimated:0];
-      if ([v5 phraseKind] == 1)
+      if ([resultCopy phraseKind] == 1)
       {
-        v25 = [(MessageListSearchViewController *)self suggestionsViewController];
+        suggestionsViewController2 = [(MessageListSearchViewController *)self suggestionsViewController];
         v26 = objc_opt_respondsToSelector();
 
         if (v26)
         {
-          v27 = [(MessageListSearchViewController *)self suggestionsViewController];
-          [v27 scrollToHideIndexStatus];
+          suggestionsViewController3 = [(MessageListSearchViewController *)self suggestionsViewController];
+          [suggestionsViewController3 scrollToHideIndexStatus];
         }
       }
     }
 
-    else if ([v5 phraseKind] == 1)
+    else if ([resultCopy phraseKind] == 1)
     {
       [(MessageListViewController *)self updateNoContentViewAnimated:0];
     }
@@ -2929,17 +2929,17 @@ LABEL_24:
       *buf = 138543618;
       v39 = v29;
       v40 = 2048;
-      v41 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Skipping suggestions result - result is stale", buf, 0x16u);
     }
   }
 }
 
-- (id)attributedSpotlightTitle:(id)a3
+- (id)attributedSpotlightTitle:(id)title
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 length];
+  titleCopy = title;
+  v4 = [titleCopy mutableCopy];
+  v5 = [titleCopy length];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001630AC;
@@ -2952,20 +2952,20 @@ LABEL_24:
   return v7;
 }
 
-- (id)_updatedSuggestionsGroups:(id)a3 phraseKind:(unsigned __int8)a4
+- (id)_updatedSuggestionsGroups:(id)groups phraseKind:(unsigned __int8)kind
 {
-  v4 = a4;
+  kindCopy = kind;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10016348C;
   v19[3] = &unk_100651E20;
   v19[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v19];
-  if (!v4)
+  [groups enumerateKeysAndObjectsUsingBlock:v19];
+  if (!kindCopy)
   {
-    v6 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
+    groupedSuggestionsByCategory = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
     v7 = +[MUISearchSuggestionCategory recentSearchCategory];
-    [v6 setObject:0 forKeyedSubscript:v7];
+    [groupedSuggestionsByCategory setObject:0 forKeyedSubscript:v7];
   }
 
   v8 = +[MessageListSearchViewController log];
@@ -2973,19 +2973,19 @@ LABEL_24:
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
+    groupedSuggestionsByCategory2 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
     *buf = 138544130;
     v21 = v10;
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = v4;
+    v25 = kindCopy;
     v26 = 2114;
-    v27 = v11;
+    v27 = groupedSuggestionsByCategory2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Updated suggestion groups (kind=%ld): %{public}@", buf, 0x2Au);
   }
 
-  v12 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
+  groupedSuggestionsByCategory3 = [(MessageListSearchViewController *)self groupedSuggestionsByCategory];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10016352C;
@@ -2993,16 +2993,16 @@ LABEL_24:
   v17[4] = self;
   v13 = objc_alloc_init(NSMutableArray);
   v18 = v13;
-  [v12 enumerateKeysAndObjectsUsingBlock:v17];
+  [groupedSuggestionsByCategory3 enumerateKeysAndObjectsUsingBlock:v17];
   v14 = v18;
   v15 = v13;
 
   return v13;
 }
 
-- (id)_groupForRecentSearchSuggestionItems:(id)a3
+- (id)_groupForRecentSearchSuggestionItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([_UISearchSuggestionItemGroup instancesRespondToSelector:"initWithHeaderTitle:headerAction:suggestionItems:"])
   {
     objc_initWeak(&location, self);
@@ -3016,7 +3016,7 @@ LABEL_24:
 
     v7 = [_UISearchSuggestionItemGroup alloc];
     v8 = _EFLocalizedString();
-    v9 = [v7 initWithHeaderTitle:v8 headerAction:v6 suggestionItems:{v4, v13, v14, v15, v16}];
+    v9 = [v7 initWithHeaderTitle:v8 headerAction:v6 suggestionItems:{itemsCopy, v13, v14, v15, v16}];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -3026,17 +3026,17 @@ LABEL_24:
   {
     v10 = [_UISearchSuggestionItemGroup alloc];
     v11 = _EFLocalizedString();
-    v9 = [v10 initWithHeaderTitle:v11 suggestionItems:v4];
+    v9 = [v10 initWithHeaderTitle:v11 suggestionItems:itemsCopy];
   }
 
   return v9;
 }
 
-- (void)suggestionsGenerator:(id)a3 didCompleteRequestID:(id)a4
+- (void)suggestionsGenerator:(id)generator didCompleteRequestID:(id)d
 {
-  v12 = a4;
-  v5 = [(MessageListSearchViewController *)self suggestionsIdentifier];
-  v6 = [v12 isEqualToID:v5];
+  dCopy = d;
+  suggestionsIdentifier = [(MessageListSearchViewController *)self suggestionsIdentifier];
+  v6 = [dCopy isEqualToID:suggestionsIdentifier];
 
   if (v6)
   {
@@ -3046,45 +3046,45 @@ LABEL_24:
     [(MessageListSearchViewController *)self setSuggestionsIdentifier:0];
     if (![(MessageListSearchViewController *)self suggestersGeneratedSuggestions])
     {
-      v8 = [(MessageListSearchViewController *)self suggestionsViewController];
-      [v8 clearSuggestions];
+      suggestionsViewController = [(MessageListSearchViewController *)self suggestionsViewController];
+      [suggestionsViewController clearSuggestions];
 
       [(MessageListViewController *)self parsecEventQueuePerformBlock:&stru_100651EB0];
     }
 
     [(MessageListSearchViewController *)self setSuggestersGeneratedSuggestions:0];
-    v9 = [(MessageListSearchViewController *)self suggestionsViewController];
-    [v9 endUpdatingSuggestions];
+    suggestionsViewController2 = [(MessageListSearchViewController *)self suggestionsViewController];
+    [suggestionsViewController2 endUpdatingSuggestions];
 
     *&self->_flags |= 8u;
-    v10 = [(MessageListSearchViewController *)self beginSearchTimer];
-    v11 = v10;
-    if (v10)
+    beginSearchTimer = [(MessageListSearchViewController *)self beginSearchTimer];
+    v11 = beginSearchTimer;
+    if (beginSearchTimer)
     {
-      [v10 invalidate];
+      [beginSearchTimer invalidate];
       [(MessageListSearchViewController *)self setBeginSearchTimer:0];
       [(MessageListSearchViewController *)self _notePredicateUpdated:1];
     }
   }
 }
 
-- (void)textFieldDidChangeSelection:(id)a3
+- (void)textFieldDidChangeSelection:(id)selection
 {
-  v11 = a3;
-  v4 = [(MessageListSearchViewController *)self searchBar];
-  v5 = [(MessageListSearchViewController *)self _objectFromSelectionInSearchTextField:v11];
+  selectionCopy = selection;
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  v5 = [(MessageListSearchViewController *)self _objectFromSelectionInSearchTextField:selectionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [v6 scopeNames];
-    v8 = [v6 selectedScopeIndex];
-    v9 = [v6 hasMultipleScopes];
+    scopeNames = [v6 scopeNames];
+    selectedScopeIndex = [v6 selectedScopeIndex];
+    hasMultipleScopes = [v6 hasMultipleScopes];
 
-    if (v9)
+    if (hasMultipleScopes)
     {
-      [v4 setScopeButtonTitles:v7];
-      [v4 setSelectedScopeButtonIndex:v8];
+      [searchBar setScopeButtonTitles:scopeNames];
+      [searchBar setSelectedScopeButtonIndex:selectedScopeIndex];
       v10 = *&self->_flags | 0x20;
       goto LABEL_6;
     }
@@ -3092,7 +3092,7 @@ LABEL_24:
 
   else
   {
-    v7 = 0;
+    scopeNames = 0;
   }
 
   [(MessageListSearchViewController *)self _resetGlobalScopeTitles];
@@ -3101,56 +3101,56 @@ LABEL_6:
   *&self->_flags = v10;
 }
 
-- (id)searchTextField:(id)a3 itemProviderForCopyingToken:(id)a4
+- (id)searchTextField:(id)field itemProviderForCopyingToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   v6 = objc_alloc_init(NSItemProvider);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100163F40;
   v13[3] = &unk_100651ED8;
   v13[4] = self;
-  v7 = v5;
+  v7 = tokenCopy;
   v14 = v7;
   [v6 registerDataRepresentationForTypeIdentifier:@"com.apple.mobilemail.searchAtom" visibility:3 loadHandler:v13];
-  v8 = [UTTypePlainText identifier];
+  identifier = [UTTypePlainText identifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100163FE4;
   v11[3] = &unk_100651F00;
   v9 = v7;
   v12 = v9;
-  [v6 registerDataRepresentationForTypeIdentifier:v8 visibility:0 loadHandler:v11];
+  [v6 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v11];
 
   return v6;
 }
 
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item
 {
-  v5 = a4;
-  v6 = [v5 itemProvider];
-  v7 = [(MessageListSearchViewController *)self searchBar];
-  v8 = [v7 searchTextField];
+  itemCopy = item;
+  itemProvider = [itemCopy itemProvider];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
 
-  v9 = [(MessageListSearchViewController *)self searchBar];
-  v10 = [v9 representedSuggestionTokens];
-  v11 = [v10 count];
+  searchBar2 = [(MessageListSearchViewController *)self searchBar];
+  representedSuggestionTokens = [searchBar2 representedSuggestionTokens];
+  v11 = [representedSuggestionTokens count];
 
-  if ([v6 hasItemConformingToTypeIdentifier:@"com.apple.mobilemail.searchAtom"])
+  if ([itemProvider hasItemConformingToTypeIdentifier:@"com.apple.mobilemail.searchAtom"])
   {
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1001643FC;
     v25[3] = &unk_100651F28;
     v25[4] = self;
-    v26 = v5;
-    v12 = [v6 loadDataRepresentationForTypeIdentifier:@"com.apple.mobilemail.searchAtom" completionHandler:v25];
+    v26 = itemCopy;
+    v12 = [itemProvider loadDataRepresentationForTypeIdentifier:@"com.apple.mobilemail.searchAtom" completionHandler:v25];
   }
 
   else
   {
-    v13 = [UTTypePlainText identifier];
-    v14 = [v6 hasItemConformingToTypeIdentifier:v13];
+    identifier = [UTTypePlainText identifier];
+    v14 = [itemProvider hasItemConformingToTypeIdentifier:identifier];
     if (v11)
     {
       v15 = v14;
@@ -3163,53 +3163,53 @@ LABEL_6:
 
     if (v15 == 1)
     {
-      v16 = [v8 selectedTextRange];
-      v17 = [v8 positionOfTokenAtIndex:v11 - 1];
-      v18 = [v16 end];
-      v19 = [v8 comparePosition:v18 toPosition:v17];
+      selectedTextRange = [searchTextField selectedTextRange];
+      v17 = [searchTextField positionOfTokenAtIndex:v11 - 1];
+      v18 = [selectedTextRange end];
+      v19 = [searchTextField comparePosition:v18 toPosition:v17];
 
       if (v19 == 1)
       {
-        [v5 setDefaultResult];
+        [itemCopy setDefaultResult];
       }
 
       else
       {
-        v20 = [UTTypePlainText identifier];
+        identifier2 = [UTTypePlainText identifier];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_100164788;
         v22[3] = &unk_100651F28;
-        v23 = v5;
-        v24 = self;
-        v21 = [v6 loadDataRepresentationForTypeIdentifier:v20 completionHandler:v22];
+        v23 = itemCopy;
+        selfCopy = self;
+        v21 = [itemProvider loadDataRepresentationForTypeIdentifier:identifier2 completionHandler:v22];
       }
     }
 
     else
     {
-      [v5 setDefaultResult];
+      [itemCopy setDefaultResult];
     }
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
   *&self->_flags |= 4u;
   [(MessageListSearchViewController *)self setSearchSuggestionsVisible:0];
-  v4 = [(MessageListSearchViewController *)self searchBar];
-  v5 = [v4 representedObjects];
-  v6 = [v5 count];
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  representedObjects = [searchBar representedObjects];
+  v6 = [representedObjects count];
 
   if (v6)
   {
-    v7 = [(MessageListSearchViewController *)self currentSuggestion];
-    [(MessageListSearchViewController *)self _addSuggestionToRecentSuggester:v7];
+    currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
+    [(MessageListSearchViewController *)self _addSuggestionToRecentSuggester:currentSuggestion];
   }
 
-  v8 = [(MessageListSearchViewController *)self suggestionsIdentifier];
+  suggestionsIdentifier = [(MessageListSearchViewController *)self suggestionsIdentifier];
 
-  if (v8)
+  if (suggestionsIdentifier)
   {
     v9 = +[MessageListSearchViewController log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -3237,23 +3237,23 @@ LABEL_6:
   [(MessageListSearchViewController *)self reportSearchQueryStateWithTriggerEvent:23 searchType:3];
 }
 
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change
 {
-  v8 = a3;
+  barCopy = bar;
   if ((*&self->_flags & 0x20) != 0)
   {
-    [(MessageListSearchViewController *)self searchTokenScopeChanged:a4];
+    [(MessageListSearchViewController *)self searchTokenScopeChanged:change];
   }
 
   else
   {
-    [(MessageListSearchViewController *)self globalSearchScopeChanged:a4];
+    [(MessageListSearchViewController *)self globalSearchScopeChanged:change];
   }
 
   if ([(MessageListSearchViewController *)self isSearchSuggestionsVisible])
   {
-    v6 = [(MessageListSearchViewController *)self searchBar];
-    v7 = [(MessageListSearchViewController *)self _currentEditingStringForSearchBar:v6];
+    searchBar = [(MessageListSearchViewController *)self searchBar];
+    v7 = [(MessageListSearchViewController *)self _currentEditingStringForSearchBar:searchBar];
 
     if ([v7 length])
     {
@@ -3262,39 +3262,39 @@ LABEL_6:
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(MessageListSearchViewController *)self searchBar];
-  v7 = [v6 representedObjects];
-  v8 = [v7 count];
+  changeCopy = change;
+  searchBar = [(MessageListSearchViewController *)self searchBar];
+  representedObjects = [searchBar representedObjects];
+  v8 = [representedObjects count];
 
   if (v8)
   {
-    v9 = [(MessageListSearchViewController *)self searchBar];
-    v10 = [v9 representedSuggestionTokens];
-    v11 = [MUISuggestionToken csTokensFromMailSuggestionTokens:v10];
+    searchBar2 = [(MessageListSearchViewController *)self searchBar];
+    representedSuggestionTokens = [searchBar2 representedSuggestionTokens];
+    v11 = [MUISuggestionToken csTokensFromMailSuggestionTokens:representedSuggestionTokens];
 
-    v12 = [(MessageListSearchViewController *)self currentSuggestion];
-    v13 = [CSSuggestion updatedSuggestionWithCurrentSuggestion:v12 userString:v5 tokens:v11];
+    currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
+    v13 = [CSSuggestion updatedSuggestionWithCurrentSuggestion:currentSuggestion userString:changeCopy tokens:v11];
 
     v14 = +[MessageListSearchViewController log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = [EMCSLoggingAdditions publicDescriptionForSuggestion:v13];
-      v16 = [v13 userQueryString];
-      v17 = [EFPrivacy partiallyRedactedStringForString:v16];
-      v18 = [v13 suggestionTokens];
+      userQueryString = [v13 userQueryString];
+      v17 = [EFPrivacy partiallyRedactedStringForString:userQueryString];
+      suggestionTokens = [v13 suggestionTokens];
       v20 = 138412802;
       v21 = v15;
       v22 = 2112;
       v23 = v17;
       v24 = 2112;
-      v25 = v18;
+      v25 = suggestionTokens;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Suggestion was updated. Reason: Text changed. Suggestion: %@ UserQueryString: %@ SuggestionTokens: %@", &v20, 0x20u);
     }
 
-    [(MessageListViewController *)self setCurrentUserTypedPhrase:v5];
+    [(MessageListViewController *)self setCurrentUserTypedPhrase:changeCopy];
     [(MessageListSearchViewController *)self setCurrentSuggestion:v13];
     [(MessageListSearchViewController *)self reportSearchQueryStateWithTriggerEvent:1 searchType:2];
   }
@@ -3314,9 +3314,9 @@ LABEL_6:
 
 - (void)presentToastViewController
 {
-  v3 = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
+  activeSearchFeedbackToastController = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
 
-  if (!v3)
+  if (!activeSearchFeedbackToastController)
   {
     v4 = [MUISearchFeedbackNotificationViewController alloc];
     v5 = +[NSBundle mainBundle];
@@ -3330,44 +3330,44 @@ LABEL_6:
     [v9 setDelegate:self];
     [(MessageListSearchViewController *)self setActiveSearchFeedbackToastController:v9];
     [(MessageListSearchViewController *)self addChildViewController:v9];
-    v10 = [(MessageListSearchViewController *)self view];
-    v11 = [v9 view];
-    [v10 addSubview:v11];
+    view = [(MessageListSearchViewController *)self view];
+    view2 = [v9 view];
+    [view addSubview:view2];
 
     [v9 didMoveToParentViewController:self];
-    v12 = [v9 view];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view3 = [v9 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 }
 
-- (void)dismissToastViewController:(id)a3
+- (void)dismissToastViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [v5 view];
-  [v4 removeFromSuperview];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [(MessageListSearchViewController *)self removeChildViewController:v5];
-  [v5 willMoveToParentViewController:0];
+  [(MessageListSearchViewController *)self removeChildViewController:controllerCopy];
+  [controllerCopy willMoveToParentViewController:0];
   [(MessageListSearchViewController *)self setActiveSearchFeedbackToastController:0];
 }
 
-- (void)shouldTriggerTapToRadarForViewController:(id)a3 shouldTrigger:(BOOL)a4
+- (void)shouldTriggerTapToRadarForViewController:(id)controller shouldTrigger:(BOOL)trigger
 {
-  v4 = a4;
+  triggerCopy = trigger;
   v6 = +[MessageListSearchViewController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [NSNumber numberWithBool:v4];
+    v7 = [NSNumber numberWithBool:triggerCopy];
     v9 = 138412290;
     v10 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User provided search feedback. Should trigger tap to radar:%@", &v9, 0xCu);
   }
 
-  v8 = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
-  [(MessageListSearchViewController *)self dismissToastViewController:v8];
+  activeSearchFeedbackToastController = [(MessageListSearchViewController *)self activeSearchFeedbackToastController];
+  [(MessageListSearchViewController *)self dismissToastViewController:activeSearchFeedbackToastController];
 
-  [(MessageListSearchViewController *)self _updateSearchFeedbackCount:v4];
-  if (v4)
+  [(MessageListSearchViewController *)self _updateSearchFeedbackCount:triggerCopy];
+  if (triggerCopy)
   {
     [(MessageListSearchViewController *)self _invokeSearchFeedbackTapToRadar];
   }
@@ -3387,9 +3387,9 @@ LABEL_6:
   [v5 openTapToRadar];
 }
 
-- (void)_updateSearchFeedbackCount:(BOOL)a3
+- (void)_updateSearchFeedbackCount:(BOOL)count
 {
-  v3 = a3;
+  countCopy = count;
   [(MessageListSearchViewController *)self _resetSearchFeedbackIfNeeded];
   v5 = +[NSUserDefaults em_userDefaults];
   v6 = EMUserDefaultSearchFeedback;
@@ -3402,10 +3402,10 @@ LABEL_6:
   v9 = +[NSDate date];
   v10 = [NSDate ef_weekDayForDate:v9];
 
-  [(MUISearchFeedbackStats *)self->_searchFeedbackStats incrementCountForFailure:v3 forDay:v10];
+  [(MUISearchFeedbackStats *)self->_searchFeedbackStats incrementCountForFailure:countCopy forDay:v10];
   v11 = +[NSUserDefaults em_userDefaults];
-  v12 = [(MUISearchFeedbackStats *)self->_searchFeedbackStats dictionaryRepresentation];
-  [v11 setObject:v12 forKey:v6];
+  dictionaryRepresentation = [(MUISearchFeedbackStats *)self->_searchFeedbackStats dictionaryRepresentation];
+  [v11 setObject:dictionaryRepresentation forKey:v6];
 }
 
 - (void)_resetSearchFeedbackIfNeeded
@@ -3430,18 +3430,18 @@ LABEL_6:
 
     [(MUISearchFeedbackStats *)self->_searchFeedbackStats resetStats];
     v14 = +[NSUserDefaults em_userDefaults];
-    v15 = [(MUISearchFeedbackStats *)self->_searchFeedbackStats dictionaryRepresentation];
-    [v14 setObject:v15 forKey:v10];
+    dictionaryRepresentation = [(MUISearchFeedbackStats *)self->_searchFeedbackStats dictionaryRepresentation];
+    [v14 setObject:dictionaryRepresentation forKey:v10];
   }
 }
 
 - (id)_additionalBarButtonItems
 {
-  v2 = [(MessageListSearchViewController *)self _searchTapToRadarButtonItem];
-  v3 = v2;
-  if (v2)
+  _searchTapToRadarButtonItem = [(MessageListSearchViewController *)self _searchTapToRadarButtonItem];
+  v3 = _searchTapToRadarButtonItem;
+  if (_searchTapToRadarButtonItem)
   {
-    v6 = v2;
+    v6 = _searchTapToRadarButtonItem;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -3486,37 +3486,37 @@ LABEL_6:
 - (void)invokeTapToRadar
 {
   v6 = [MSRadarInteraction interactionWithTitle:@"Mail Search Problem?" message:@"Having trouble with search? We've got a Tap-to-Radar template ready to go." builder:&stru_100651FD8];
-  v3 = [v6 interactionViewController];
-  v4 = [(MessageListViewController *)self scene];
-  v5 = [v4 mf_rootViewController];
-  [v5 presentViewController:v3 animated:1 completion:0];
+  interactionViewController = [v6 interactionViewController];
+  scene = [(MessageListViewController *)self scene];
+  mf_rootViewController = [scene mf_rootViewController];
+  [mf_rootViewController presentViewController:interactionViewController animated:1 completion:0];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v11 collectionView:v8 willDisplayCell:v9 forItemAtIndexPath:v10];
+  [(MessageListViewController *)&v11 collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   [(MessageListSearchViewController *)self reportVisibleMessageListResultsAlwaysReportItems:0];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v11 collectionView:v8 didEndDisplayingCell:v9 forItemAtIndexPath:v10];
+  [(MessageListViewController *)&v11 collectionView:viewCopy didEndDisplayingCell:cellCopy forItemAtIndexPath:pathCopy];
   [(MessageListSearchViewController *)self reportVisibleMessageListResultsAlwaysReportItems:0];
 }
 
-- (void)_sendAnalyticsForIndexState:(id)a3
+- (void)_sendAnalyticsForIndexState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[NSUserDefaults em_userDefaults];
   v6 = EMUserDefaultIndexStatusCollectAfterDate;
   v7 = [v5 objectForKey:EMUserDefaultIndexStatusCollectAfterDate];
@@ -3531,43 +3531,43 @@ LABEL_6:
     [v13 setObject:v12 forKey:v6];
 
     v21[0] = @"percentMessagesIndexed";
-    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 percentMessagesIndexed]);
+    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [stateCopy percentMessagesIndexed]);
     v22[0] = v14;
     v21[1] = @"percentMessageBodiesIndexed";
-    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 percentMessageBodiesIndexed]);
+    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [stateCopy percentMessageBodiesIndexed]);
     v22[1] = v15;
     v21[2] = @"percentUnindexedBodiesInFrecent";
-    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 percentUnindexedBodiesInFrecent]);
+    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [stateCopy percentUnindexedBodiesInFrecent]);
     v22[2] = v16;
     v21[3] = @"percentAttachmentsIndexed";
-    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 percentAttachmentsIndexed]);
+    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [stateCopy percentAttachmentsIndexed]);
     v22[3] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:4];
 
     v19 = [[EMCoreAnalyticsEvent alloc] initWithEventName:@"com.apple.mail.searchableIndex.indexStatus" collectionData:v18];
-    v20 = [(MessageListSearchViewController *)self analyticsCollector];
-    [v20 logOneTimeEvent:v19];
+    analyticsCollector = [(MessageListSearchViewController *)self analyticsCollector];
+    [analyticsCollector logOneTimeEvent:v19];
   }
 }
 
 - (void)_updateIndexStatisticsIfNeeded
 {
-  v2 = [(MessageListSearchViewController *)self indexingStatusDebouncer];
-  [v2 debounceResult:0];
+  indexingStatusDebouncer = [(MessageListSearchViewController *)self indexingStatusDebouncer];
+  [indexingStatusDebouncer debounceResult:0];
 }
 
 - (void)_updateIndexStatistics
 {
   objc_initWeak(&location, self);
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 daemonInterface];
-  v4 = [v3 diagnosticInfoGatherer];
+  daemonInterface = [v2 daemonInterface];
+  diagnosticInfoGatherer = [daemonInterface diagnosticInfoGatherer];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001665C8;
   v5[3] = &unk_10064E0C0;
   objc_copyWeak(&v6, &location);
-  [v4 searchableIndexDatabaseStatisticsWithCompletionHandler:v5];
+  [diagnosticInfoGatherer searchableIndexDatabaseStatisticsWithCompletionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -3575,31 +3575,31 @@ LABEL_6:
 
 - (unint64_t)_computeBGSystemTaskFeatureCheckpoint
 {
-  v3 = [(MessageListSearchViewController *)self indexStatistics];
-  v4 = [v3 objectForKeyedSubscript:EMPersistenceStatisticsKeyMessagesIndexed];
-  v5 = [v4 unsignedIntegerValue];
+  indexStatistics = [(MessageListSearchViewController *)self indexStatistics];
+  v4 = [indexStatistics objectForKeyedSubscript:EMPersistenceStatisticsKeyMessagesIndexed];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [(MessageListSearchViewController *)self indexStatistics];
-  v7 = [v6 objectForKeyedSubscript:EMPersistenceStatisticsKeyRemoteMessagesIndexed];
-  v8 = [v7 unsignedIntegerValue];
+  indexStatistics2 = [(MessageListSearchViewController *)self indexStatistics];
+  v7 = [indexStatistics2 objectForKeyedSubscript:EMPersistenceStatisticsKeyRemoteMessagesIndexed];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-  v9 = [(MessageListSearchViewController *)self indexStatistics];
-  v10 = [v9 objectForKeyedSubscript:EMPersistenceStatisticsKeyIndexableMessages];
-  v11 = [v10 unsignedIntegerValue];
+  indexStatistics3 = [(MessageListSearchViewController *)self indexStatistics];
+  v10 = [indexStatistics3 objectForKeyedSubscript:EMPersistenceStatisticsKeyIndexableMessages];
+  unsignedIntegerValue3 = [v10 unsignedIntegerValue];
 
-  v12 = [(MessageListSearchViewController *)self indexStatistics];
-  v13 = [v12 objectForKeyedSubscript:EMPersistenceStatisticsKeyIndexableRemoteMessages];
-  v14 = [v13 unsignedIntegerValue];
+  indexStatistics4 = [(MessageListSearchViewController *)self indexStatistics];
+  v13 = [indexStatistics4 objectForKeyedSubscript:EMPersistenceStatisticsKeyIndexableRemoteMessages];
+  unsignedIntegerValue4 = [v13 unsignedIntegerValue];
 
   v15 = 1.0;
-  if (v11)
+  if (unsignedIntegerValue3)
   {
-    v15 = v5 / v11;
+    v15 = unsignedIntegerValue / unsignedIntegerValue3;
   }
 
-  if (v14)
+  if (unsignedIntegerValue4)
   {
-    v16 = (v8 / v14) <= kDefaultMaxIndexedToTotalRatio;
+    v16 = (unsignedIntegerValue2 / unsignedIntegerValue4) <= kDefaultMaxIndexedToTotalRatio;
   }
 
   else
@@ -3624,10 +3624,10 @@ LABEL_6:
   }
 }
 
-- (id)searchScopeForSuggestionCategoryScope:(id)a3
+- (id)searchScopeForSuggestionCategoryScope:(id)scope
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:MFSearchSuggestionSubjectCategoryScope])
+  identifier = [scope identifier];
+  if ([identifier isEqualToString:MFSearchSuggestionSubjectCategoryScope])
   {
     v4 = &MSSearchScopeSubject;
 LABEL_11:
@@ -3635,25 +3635,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:MUISearchSuggestionCategoryContentScope])
+  if ([identifier isEqualToString:MUISearchSuggestionCategoryContentScope])
   {
     v4 = &MSSearchScopeMessage;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:MFSearchSuggestionPeopleCategoryFromScope])
+  if ([identifier isEqualToString:MFSearchSuggestionPeopleCategoryFromScope])
   {
     v4 = &MSSearchScopeFrom;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:MFSearchSuggestionPeopleCategoryToScope])
+  if ([identifier isEqualToString:MFSearchSuggestionPeopleCategoryToScope])
   {
     v4 = &MSSearchScopeTo;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:MFSearchSuggestionMailboxCategoryScope])
+  if ([identifier isEqualToString:MFSearchSuggestionMailboxCategoryScope])
   {
     v4 = &MSSearchScopeMailbox;
     goto LABEL_11;
@@ -3665,9 +3665,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)SectionCategoryForSuggestion:(id)a3
+- (id)SectionCategoryForSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3691,20 +3691,20 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [(MessageListSearchViewController *)self categoryForSuggestion:v4];
+  v6 = [(MessageListSearchViewController *)self categoryForSuggestion:suggestionCopy];
 LABEL_8:
   v7 = v6;
 
   return v7;
 }
 
-- (id)categoryForSuggestion:(id)a3
+- (id)categoryForSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = [v5 category];
+  suggestionCopy = suggestion;
+  category = [suggestionCopy category];
   v7 = +[MUISearchSuggestionCategory mailboxCategory];
 
-  if (v6 == v7)
+  if (category == v7)
   {
     v19 = &MSSearchSuggestionCategoryMailboxes;
     goto LABEL_18;
@@ -3712,7 +3712,7 @@ LABEL_8:
 
   v8 = +[MUISearchSuggestionCategory topHitsCategory];
 
-  if (v6 == v8)
+  if (category == v8)
   {
     v19 = &MSSearchSuggestionCategoryTopHit;
     goto LABEL_18;
@@ -3720,7 +3720,7 @@ LABEL_8:
 
   v9 = +[MUISearchSuggestionCategory instantAnswersCategory];
 
-  if (v6 == v9)
+  if (category == v9)
   {
     v19 = &MSSearchSuggestionCategoryInstantAnswer;
     goto LABEL_18;
@@ -3728,7 +3728,7 @@ LABEL_8:
 
   v10 = +[MUISearchSuggestionCategory contactCategory];
 
-  if (v6 == v10)
+  if (category == v10)
   {
     v19 = &MSSearchSuggestionCategoryContact;
     goto LABEL_18;
@@ -3736,7 +3736,7 @@ LABEL_8:
 
   v11 = +[MUISearchSuggestionCategory documentCategory];
 
-  if (v6 == v11)
+  if (category == v11)
   {
     v19 = &MSSearchSuggestionCategoryDocument;
     goto LABEL_18;
@@ -3744,7 +3744,7 @@ LABEL_8:
 
   v12 = +[MUISearchSuggestionCategory locationCategory];
 
-  if (v6 == v12)
+  if (category == v12)
   {
     v19 = &MSSearchSuggestionCategoryLocation;
     goto LABEL_18;
@@ -3752,7 +3752,7 @@ LABEL_8:
 
   v13 = +[MUISearchSuggestionCategory linkCategory];
 
-  if (v6 == v13)
+  if (category == v13)
   {
     v19 = &MSSearchSuggestionCategoryLink;
 LABEL_18:
@@ -3767,7 +3767,7 @@ LABEL_18:
 
   v14 = +[MUISearchSuggestionCategory genericCategory];
   v15 = v14;
-  if (v6 == v14)
+  if (category == v14)
   {
   }
 
@@ -3775,26 +3775,26 @@ LABEL_18:
   {
     v16 = +[MUISearchSuggestionCategory recentGenericCategory];
 
-    if (v6 != v16)
+    if (category != v16)
     {
 LABEL_10:
       v17 = +[NSAssertionHandler currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"MessageListSearchViewController.m" lineNumber:2276 description:{@"No corresponding MSSearchSuggestionCategory for MUISearchAtomSuggestion %@", v5}];
+      [v17 handleFailureInMethod:a2 object:self file:@"MessageListSearchViewController.m" lineNumber:2276 description:{@"No corresponding MSSearchSuggestionCategory for MUISearchAtomSuggestion %@", suggestionCopy}];
 
       v18 = 0;
       goto LABEL_19;
     }
   }
 
-  v21 = [v5 spotlightSuggestion];
-  v22 = [v21 currentToken];
+  spotlightSuggestion = [suggestionCopy spotlightSuggestion];
+  currentToken = [spotlightSuggestion currentToken];
 
-  if (v22)
+  if (currentToken)
   {
-    v23 = [v5 spotlightSuggestion];
-    v24 = [v23 currentToken];
+    spotlightSuggestion2 = [suggestionCopy spotlightSuggestion];
+    currentToken2 = [spotlightSuggestion2 currentToken];
 
-    v18 = -[MessageListSearchViewController categoryForTokenKind:](self, "categoryForTokenKind:", [v24 tokenKind]);
+    v18 = -[MessageListSearchViewController categoryForTokenKind:](self, "categoryForTokenKind:", [currentToken2 tokenKind]);
   }
 
   else
@@ -3831,13 +3831,13 @@ LABEL_19:
   [v4 removeObserver:self name:UIApplicationWillTerminateNotification object:0];
 }
 
-- (id)categoryForTokenKind:(int64_t)a3
+- (id)categoryForTokenKind:(int64_t)kind
 {
-  if (a3 <= 24)
+  if (kind <= 24)
   {
-    if (a3 <= 11)
+    if (kind <= 11)
     {
-      switch(a3)
+      switch(kind)
       {
         case 0:
           v3 = &MSSearchSuggestionCategoryFreeText;
@@ -3851,15 +3851,15 @@ LABEL_19:
       }
     }
 
-    else if (a3 > 15)
+    else if (kind > 15)
     {
-      if (a3 == 16)
+      if (kind == 16)
       {
         v3 = &MSSearchSuggestionCategoryPeople;
         return *v3;
       }
 
-      if (a3 == 19)
+      if (kind == 19)
       {
         v3 = &MSSearchSuggestionCategoryReadStatus;
         return *v3;
@@ -3868,13 +3868,13 @@ LABEL_19:
 
     else
     {
-      if (a3 == 12)
+      if (kind == 12)
       {
         v3 = &MSSearchSuggestionCategoryMailboxes;
         return *v3;
       }
 
-      if (a3 == 14)
+      if (kind == 14)
       {
         v3 = &MSSearchSuggestionCategorySubjectContains;
         return *v3;
@@ -3886,9 +3886,9 @@ LABEL_27:
     return *v3;
   }
 
-  if (a3 >= 33)
+  if (kind >= 33)
   {
-    switch(a3)
+    switch(kind)
     {
       case '!':
         v3 = &MSSearchSuggestionCategoryFlagStatus;
@@ -3908,15 +3908,15 @@ LABEL_27:
   return *v3;
 }
 
-- (void)reportSearchViewAppeared:(BOOL)a3 currentMailboxScope:(BOOL)a4
+- (void)reportSearchViewAppeared:(BOOL)appeared currentMailboxScope:(BOOL)scope
 {
   [(MessageListViewController *)self inputLanguages];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100167450;
   v8[3] = &unk_100652068;
-  v10 = a3;
-  v9 = v11 = a4;
+  appearedCopy = appeared;
+  v9 = v11 = scope;
   v7 = v9;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v8];
 }
@@ -3933,8 +3933,8 @@ LABEL_27:
   [(MessageListViewController *)self parsecEventQueuePerformBlock:&v5];
   if ([(MessageListSearchViewController *)self isSearchSuggestionsVisible:v5])
   {
-    v4 = [(MessageListSearchViewController *)self suggestionsViewController];
-    [v4 reportVisibleSuggestionResults];
+    suggestionsViewController = [(MessageListSearchViewController *)self suggestionsViewController];
+    [suggestionsViewController reportVisibleSuggestionResults];
   }
 
   else
@@ -3948,89 +3948,89 @@ LABEL_27:
   v5.receiver = self;
   v5.super_class = MessageListSearchViewController;
   [(MessageListViewController *)&v5 _sceneDidEnterBackground];
-  v3 = [(MessageListSearchViewController *)self view];
-  v4 = [v3 window];
+  view = [(MessageListSearchViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
     [(MessageListViewController *)self parsecEventQueuePerformBlock:&stru_100652088];
   }
 }
 
-- (void)reportSearchEndedEvent:(int64_t)a3
+- (void)reportSearchEndedEvent:(int64_t)event
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001676A4;
   v3[3] = &unk_1006520C8;
-  v3[4] = a3;
+  v3[4] = event;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v3];
 }
 
-- (void)reportTopHitSelected:(id)a3
+- (void)reportTopHitSelected:(id)selected
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10016775C;
   v5[3] = &unk_1006520F0;
-  v6 = a3;
-  v4 = v6;
+  selectedCopy = selected;
+  v4 = selectedCopy;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v5];
 }
 
-- (void)reportInstantAnswerCardSelected:(id)a3 cardSectionID:(id)a4
+- (void)reportInstantAnswerCardSelected:(id)selected cardSectionID:(id)d
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100167848;
   v8[3] = &unk_100651C30;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  selectedCopy = selected;
+  dCopy = d;
+  v6 = dCopy;
+  v7 = selectedCopy;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v8];
 }
 
-- (void)reportInstantAnswerButtonSelected:(id)a3 cardSectionID:(id)a4 command:(id)a5
+- (void)reportInstantAnswerButtonSelected:(id)selected cardSectionID:(id)d command:(id)command
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10016796C;
   v11[3] = &unk_100651CE8;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  selectedCopy = selected;
+  dCopy = d;
+  commandCopy = command;
+  v8 = commandCopy;
+  v9 = dCopy;
+  v10 = selectedCopy;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v11];
 }
 
-- (void)reportSuggestionSelected:(id)a3
+- (void)reportSuggestionSelected:(id)selected
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100167A28;
   v5[3] = &unk_1006520F0;
-  v6 = a3;
-  v4 = v6;
+  selectedCopy = selected;
+  v4 = selectedCopy;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v5];
 }
 
-- (void)_reportMessageResultsFetchedIsFinished:(BOOL)a3
+- (void)_reportMessageResultsFetchedIsFinished:(BOOL)finished
 {
-  v28 = a3;
-  v4 = [(MessageListSearchViewController *)self dataSource];
-  v5 = [v4 sectionDataSourceForSection:MessageListSectionInstantAnswers];
+  finishedCopy = finished;
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v5 = [dataSource sectionDataSourceForSection:MessageListSectionInstantAnswers];
 
   v32 = v5;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 instantAnswer];
-    if (v6)
+    instantAnswer = [v5 instantAnswer];
+    if (instantAnswer)
     {
-      v31 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:v6];
+      v31 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:instantAnswer];
     }
 
     else
@@ -4044,23 +4044,23 @@ LABEL_27:
     v31 = 0;
   }
 
-  v30 = [(MessageListSearchViewController *)self searchInfo];
-  v27 = [v30 rankingSignalsByObjectID];
-  v7 = [(MessageListSearchViewController *)self dataSource];
+  searchInfo = [(MessageListSearchViewController *)self searchInfo];
+  rankingSignalsByObjectID = [searchInfo rankingSignalsByObjectID];
+  dataSource2 = [(MessageListSearchViewController *)self dataSource];
   v8 = kMSParsecSearchSessionMaximumRankedSectionResultsCount;
-  v9 = [v7 messageListItemsInSection:MessageListSectionTopHits limit:kMSParsecSearchSessionMaximumRankedSectionResultsCount];
+  v9 = [dataSource2 messageListItemsInSection:MessageListSectionTopHits limit:kMSParsecSearchSessionMaximumRankedSectionResultsCount];
 
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_100167F74;
   v44[3] = &unk_100652138;
-  v10 = v27;
+  v10 = rankingSignalsByObjectID;
   v45 = v10;
-  v46 = self;
+  selfCopy = self;
   v29 = [v9 ef_map:v44];
   v11 = [v9 count];
-  v12 = [(MessageListSearchViewController *)self dataSource];
-  v13 = [v12 messageListItemsInSection:MessageListSectionIndexedSearch limit:v8 - v11];
+  dataSource3 = [(MessageListSearchViewController *)self dataSource];
+  v13 = [dataSource3 messageListItemsInSection:MessageListSectionIndexedSearch limit:v8 - v11];
 
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
@@ -4071,8 +4071,8 @@ LABEL_27:
   v15 = [v13 ef_map:v42];
   v16 = [v9 count];
   v17 = [v13 count];
-  v18 = [(MessageListSearchViewController *)self dataSource];
-  v19 = [v18 messageListItemsInSection:MessageListSectionServerSearch limit:v8 - v16 - v17];
+  dataSource4 = [(MessageListSearchViewController *)self dataSource];
+  v19 = [dataSource4 messageListItemsInSection:MessageListSectionServerSearch limit:v8 - v16 - v17];
 
   v20 = [v19 ef_map:&stru_1006521A0];
   v21 = [v15 arrayByAddingObjectsFromArray:v20];
@@ -4081,63 +4081,63 @@ LABEL_27:
   v35[1] = 3221225472;
   v35[2] = sub_1001682C4;
   v35[3] = &unk_1006521C8;
-  v22 = v30;
+  v22 = searchInfo;
   v36 = v22;
-  v37 = self;
+  selfCopy2 = self;
   v23 = v21;
   v38 = v23;
   v24 = v29;
   v39 = v24;
   v25 = v31;
   v40 = v25;
-  v41 = v28;
+  v41 = finishedCopy;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v35];
-  if (v28)
+  if (finishedCopy)
   {
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100168364;
     v33[3] = &unk_10064D9D8;
     v33[4] = self;
-    v34 = v28;
+    v34 = finishedCopy;
     v26 = +[EFScheduler mainThreadScheduler];
     [v26 performBlock:v33];
   }
 }
 
-- (id)_parsecEmbeddingStateWithSearchInfo:(id)a3
+- (id)_parsecEmbeddingStateWithSearchInfo:(id)info
 {
-  v3 = a3;
-  v4 = +[MSParsecSearchEmbeddingState embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:](MSParsecSearchEmbeddingState, "embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:", [v3 queryStatus], objc_msgSend(v3, "hasQueryEmbedding"), objc_msgSend(v3, "hasKeywordResults"), objc_msgSend(v3, "hasEmbeddingResults"));
+  infoCopy = info;
+  v4 = +[MSParsecSearchEmbeddingState embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:](MSParsecSearchEmbeddingState, "embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:", [infoCopy queryStatus], objc_msgSend(infoCopy, "hasQueryEmbedding"), objc_msgSend(infoCopy, "hasKeywordResults"), objc_msgSend(infoCopy, "hasEmbeddingResults"));
 
   return v4;
 }
 
-- (void)reportVisibleMessageListResultsAlwaysReportItems:(BOOL)a3 isFinished:(BOOL)a4
+- (void)reportVisibleMessageListResultsAlwaysReportItems:(BOOL)items isFinished:(BOOL)finished
 {
-  v5 = a3;
-  v7 = [(MessageListViewController *)self initialLoadCompletedFuture];
-  v8 = [v7 resultIfAvailable];
-  v9 = [v8 BOOLValue];
+  itemsCopy = items;
+  initialLoadCompletedFuture = [(MessageListViewController *)self initialLoadCompletedFuture];
+  resultIfAvailable = [initialLoadCompletedFuture resultIfAvailable];
+  bOOLValue = [resultIfAvailable BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [(MessageListSearchViewController *)self collectionView];
-    v11 = [v10 indexPathsForVisibleItems];
+    collectionView = [(MessageListSearchViewController *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100168798;
     v30[3] = &unk_1006521F0;
     v30[4] = self;
-    v12 = [v11 ef_filter:v30];
+    v12 = [indexPathsForVisibleItems ef_filter:v30];
     v13 = [v12 sortedArrayUsingSelector:"compare:"];
 
     if ([v13 count])
     {
-      v14 = [(MessageListSearchViewController *)self lastVisibleIndexPaths];
-      v15 = [v13 isEqualToArray:v14];
+      lastVisibleIndexPaths = [(MessageListSearchViewController *)self lastVisibleIndexPaths];
+      v15 = [v13 isEqualToArray:lastVisibleIndexPaths];
 
-      if (!v15 || v5)
+      if (!v15 || itemsCopy)
       {
         v16 = [v13 copy];
         [(MessageListSearchViewController *)self setLastVisibleIndexPaths:v16];
@@ -4148,11 +4148,11 @@ LABEL_27:
         v29[3] = &unk_100652218;
         v29[4] = self;
         v17 = [v13 ef_compactMap:v29];
-        if (a4 || ![(MessageListSearchViewController *)self didReportFirstVisibleResults])
+        if (finished || ![(MessageListSearchViewController *)self didReportFirstVisibleResults])
         {
-          v19 = [(MessageListSearchViewController *)self searchStartTimestamp];
+          searchStartTimestamp = [(MessageListSearchViewController *)self searchStartTimestamp];
           v20 = +[NSDate date];
-          v18 = [(MessageListSearchViewController *)self _latencyMsFromTimestamp:v19 toTimestamp:v20];
+          v18 = [(MessageListSearchViewController *)self _latencyMsFromTimestamp:searchStartTimestamp toTimestamp:v20];
         }
 
         else
@@ -4183,36 +4183,36 @@ LABEL_27:
   }
 }
 
-- (id)_parsecMessageResultForVisibleIndexPath:(id)a3
+- (id)_parsecMessageResultForVisibleIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MessageListSearchViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  collectionView = [(MessageListSearchViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v7 = [v6 messageListItem];
-  v8 = [v7 itemID];
-  if (!v8)
+  messageListItem = [v6 messageListItem];
+  itemID = [messageListItem itemID];
+  if (!itemID)
   {
     v11 = 0;
     goto LABEL_17;
   }
 
-  v9 = [(MessageListSearchViewController *)self dataSource];
-  v10 = [v9 sectionAtIndex:{objc_msgSend(v4, "section")}];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v10 = [dataSource sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v10 == MessageListSectionInstantAnswers)
   {
-    v12 = [(MessageListSearchViewController *)self collectionView];
-    v13 = [v12 cellForItemAtIndexPath:v4];
+    collectionView2 = [(MessageListSearchViewController *)self collectionView];
+    date = [collectionView2 cellForItemAtIndexPath:pathCopy];
 
-    v14 = [v13 instantAnswer];
-    if (!v14)
+    instantAnswer = [date instantAnswer];
+    if (!instantAnswer)
     {
       v11 = 0;
       goto LABEL_14;
     }
 
-    v15 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:v14];
+    v15 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:instantAnswer];
 LABEL_12:
     v11 = v15;
 LABEL_14:
@@ -4222,8 +4222,8 @@ LABEL_14:
 
   if (v10 == MessageListSectionTopHits)
   {
-    v13 = [v7 date];
-    v11 = [(MessageListViewController *)self parsecTopHitForItemID:v8 date:v13 mailRankingSignals:0];
+    date = [messageListItem date];
+    v11 = [(MessageListViewController *)self parsecTopHitForItemID:itemID date:date mailRankingSignals:0];
 LABEL_15:
 
     goto LABEL_16;
@@ -4231,9 +4231,9 @@ LABEL_15:
 
   if (v10 == MessageListSectionIndexedSearch || v10 == MessageListSectionServerSearch)
   {
-    v13 = [NSString stringWithFormat:@"%@", v8];
-    v14 = [v7 date];
-    v15 = [MSParsecSearchSessionMessageListResult resultWithIdentifier:v13 date:v14];
+    date = [NSString stringWithFormat:@"%@", itemID];
+    instantAnswer = [messageListItem date];
+    v15 = [MSParsecSearchSessionMessageListResult resultWithIdentifier:date date:instantAnswer];
     goto LABEL_12;
   }
 
@@ -4260,57 +4260,57 @@ LABEL_17:
   [(MessageListSearchViewController *)self reportSearchQueryStateWithTriggerEvent:27 searchType:v3];
 }
 
-- (void)reportSearchQueryStateWithTriggerEvent:(unint64_t)a3 searchType:(unint64_t)a4
+- (void)reportSearchQueryStateWithTriggerEvent:(unint64_t)event searchType:(unint64_t)type
 {
-  v8 = [(MessageListViewController *)self inputLanguages];
+  inputLanguages = [(MessageListViewController *)self inputLanguages];
   if (pthread_main_np() != 1)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"MessageListSearchViewController.m" lineNumber:2543 description:@"Current thread must be main"];
   }
 
-  v9 = [(MessageListSearchViewController *)self currentSuggestion];
+  currentSuggestion = [(MessageListSearchViewController *)self currentSuggestion];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100168CF8;
   v13[3] = &unk_100652268;
   objc_copyWeak(v16, &location);
-  v14 = v9;
-  v16[1] = a3;
-  v16[2] = a4;
-  v10 = v8;
+  v14 = currentSuggestion;
+  v16[1] = event;
+  v16[2] = type;
+  v10 = inputLanguages;
   v15 = v10;
-  v11 = v9;
+  v11 = currentSuggestion;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v13];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
 }
 
-- (void)reportQueryClearedEvent:(int64_t)a3
+- (void)reportQueryClearedEvent:(int64_t)event
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001691D0;
   v3[3] = &unk_1006520C8;
-  v3[4] = a3;
+  v3[4] = event;
   [(MessageListViewController *)self parsecEventQueuePerformBlock:v3];
 }
 
-- (id)viewForKeyboardAvoidance:(id)a3
+- (id)viewForKeyboardAvoidance:(id)avoidance
 {
-  v3 = [(MessageListSearchViewController *)self collectionView];
+  collectionView = [(MessageListSearchViewController *)self collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (void)keyboardAvoidance:(id)a3 adjustForFrameOverlap:(CGRect)a4
+- (void)keyboardAvoidance:(id)avoidance adjustForFrameOverlap:(CGRect)overlap
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = overlap.size.height;
+  width = overlap.size.width;
+  y = overlap.origin.y;
+  x = overlap.origin.x;
   [(MessageListSearchViewController *)self currentKeyboardOverlap];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -4324,15 +4324,15 @@ LABEL_17:
   }
 }
 
-- (id)messageListDataSource:(id)a3 sectionDataSourceForSection:(id)a4 messageList:(id)a5
+- (id)messageListDataSource:(id)source sectionDataSourceForSection:(id)section messageList:(id)list
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v9 isEqualToString:MessageListSectionIndexedSearch] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", MessageListSectionServerSearch) & 1) != 0 || objc_msgSend(v9, "isEqualToString:", MessageListSectionTopHits))
+  sourceCopy = source;
+  sectionCopy = section;
+  listCopy = list;
+  if (([sectionCopy isEqualToString:MessageListSectionIndexedSearch] & 1) != 0 || (objc_msgSend(sectionCopy, "isEqualToString:", MessageListSectionServerSearch) & 1) != 0 || objc_msgSend(sectionCopy, "isEqualToString:", MessageListSectionTopHits))
   {
     v11 = [MUIMessageListSearchSectionDataSource alloc];
-    v12 = [(MessageListSearchViewController *)self sectionDataSourceConfigurationWithSection:v9 messageList:v10];
+    v12 = [(MessageListSearchViewController *)self sectionDataSourceConfigurationWithSection:sectionCopy messageList:listCopy];
     v13 = [v11 initWithConfiguration:v12];
 LABEL_5:
     v14 = v13;
@@ -4340,72 +4340,72 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v9 isEqualToString:MessageListSectionInstantAnswers])
+  if ([sectionCopy isEqualToString:MessageListSectionInstantAnswers])
   {
     v16 = [MUIMessageListInstantAnswerSectionDataSource alloc];
-    v12 = [(MessageListSearchViewController *)self sectionDataSourceConfigurationWithSection:v9 messageList:v10];
+    v12 = [(MessageListSearchViewController *)self sectionDataSourceConfigurationWithSection:sectionCopy messageList:listCopy];
     v13 = [v16 initWithConfiguration:v12];
     goto LABEL_5;
   }
 
   v17.receiver = self;
   v17.super_class = MessageListSearchViewController;
-  v14 = [(MessageListSearchViewController *)&v17 messageListDataSource:v8 sectionDataSourceForSection:v9 messageList:v10];
+  v14 = [(MessageListSearchViewController *)&v17 messageListDataSource:sourceCopy sectionDataSourceForSection:sectionCopy messageList:listCopy];
 LABEL_6:
 
   return v14;
 }
 
-- (id)sectionDataSourceConfigurationWithSection:(id)a3 messageList:(id)a4
+- (id)sectionDataSourceConfigurationWithSection:(id)section messageList:(id)list
 {
   v8.receiver = self;
   v8.super_class = MessageListSearchViewController;
-  v5 = [(MessageListSearchViewController *)&v8 sectionDataSourceConfigurationWithSection:a3 messageList:a4];
-  v6 = [(MessageListSearchViewController *)self searchProgressView];
-  [v5 setSearchProgressView:v6];
+  v5 = [(MessageListSearchViewController *)&v8 sectionDataSourceConfigurationWithSection:section messageList:list];
+  searchProgressView = [(MessageListSearchViewController *)self searchProgressView];
+  [v5 setSearchProgressView:searchProgressView];
 
   return v5;
 }
 
-- (void)messageListDataSource:(id)a3 willUpdateWithChange:(id)a4 section:(id)a5 animated:(BOOL)a6 cleanSnapshot:(BOOL)a7
+- (void)messageListDataSource:(id)source willUpdateWithChange:(id)change section:(id)section animated:(BOOL)animated cleanSnapshot:(BOOL)snapshot
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a4;
-  v13 = a5;
+  snapshotCopy = snapshot;
+  animatedCopy = animated;
+  changeCopy = change;
+  sectionCopy = section;
   v15.receiver = self;
   v15.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v15 messageListDataSource:a3 willUpdateWithChange:v12 section:v13 animated:v8 cleanSnapshot:v7];
-  v14 = [v13 section];
-  if (v14 == MessageListSectionServerSearch && !-[MessageListSearchViewController hasReceivedFirstRemoteSearchResult](self, "hasReceivedFirstRemoteSearchResult") && [v12 isAddition] && objc_msgSend(v12, "numberOfChanges") >= 1)
+  [(MessageListViewController *)&v15 messageListDataSource:source willUpdateWithChange:changeCopy section:sectionCopy animated:animatedCopy cleanSnapshot:snapshotCopy];
+  section = [sectionCopy section];
+  if (section == MessageListSectionServerSearch && !-[MessageListSearchViewController hasReceivedFirstRemoteSearchResult](self, "hasReceivedFirstRemoteSearchResult") && [changeCopy isAddition] && objc_msgSend(changeCopy, "numberOfChanges") >= 1)
   {
     [(MessageListSearchViewController *)self setHasReceivedFirstRemoteSearchResult:1];
   }
 }
 
-- (void)messageListDataSource:(id)a3 didUpdateWithChange:(id)a4 section:(id)a5 animated:(BOOL)a6
+- (void)messageListDataSource:(id)source didUpdateWithChange:(id)change section:(id)section animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  animatedCopy = animated;
+  sourceCopy = source;
+  changeCopy = change;
+  sectionCopy = section;
   [(MessageListSearchViewController *)self _updateFooter];
   v13.receiver = self;
   v13.super_class = MessageListSearchViewController;
-  [(MessageListViewController *)&v13 messageListDataSource:v10 didUpdateWithChange:v11 section:v12 animated:v6];
+  [(MessageListViewController *)&v13 messageListDataSource:sourceCopy didUpdateWithChange:changeCopy section:sectionCopy animated:animatedCopy];
 }
 
-- (void)didTapCheckInUrlFor:(id)a3
+- (void)didTapCheckInUrlFor:(id)for
 {
-  v5 = a3;
-  v6 = [v5 instantAnswer];
-  v7 = [v6 flight];
-  v8 = [v7 checkInUrl];
+  forCopy = for;
+  instantAnswer = [forCopy instantAnswer];
+  flight = [instantAnswer flight];
+  checkInUrl = [flight checkInUrl];
 
-  if (v8)
+  if (checkInUrl)
   {
     v9 = +[UIApplication sharedApplication];
-    [v9 openURL:v8 withCompletionHandler:&stru_100652288];
+    [v9 openURL:checkInUrl withCompletionHandler:&stru_100652288];
   }
 
   else
@@ -4414,30 +4414,30 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromSelector(a2);
-      v12 = [v6 message];
-      v13 = [v12 ef_publicDescription];
+      message = [instantAnswer message];
+      ef_publicDescription = [message ef_publicDescription];
       v17 = 138543618;
       v18 = v11;
       v19 = 2114;
-      v20 = v13;
+      v20 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - no checkInURL for message:%{public}@", &v17, 0x16u);
     }
   }
 
-  v14 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:v6];
+  v14 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:instantAnswer];
   v15 = objc_alloc_init(SFManageReservationCommand);
-  v16 = [v6 buttonsCardSectionID];
-  [(MessageListSearchViewController *)self reportInstantAnswerButtonSelected:v14 cardSectionID:v16 command:v15];
+  buttonsCardSectionID = [instantAnswer buttonsCardSectionID];
+  [(MessageListSearchViewController *)self reportInstantAnswerButtonSelected:v14 cardSectionID:buttonsCardSectionID command:v15];
 }
 
-- (void)didTapMapAddressFor:(id)a3
+- (void)didTapMapAddressFor:(id)for
 {
-  v5 = a3;
-  v6 = [v5 instantAnswer];
-  v7 = [v6 hotel];
-  v8 = [v7 address];
+  forCopy = for;
+  instantAnswer = [forCopy instantAnswer];
+  hotel = [instantAnswer hotel];
+  address = [hotel address];
 
-  v9 = [v8 stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+  v9 = [address stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 
   v10 = [@"http://maps.apple.com/?q=" stringByAppendingString:v9];
 
@@ -4454,44 +4454,44 @@ LABEL_6:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = NSStringFromSelector(a2);
-      v15 = [v6 message];
-      v16 = [v15 ef_publicDescription];
+      message = [instantAnswer message];
+      ef_publicDescription = [message ef_publicDescription];
       v20 = 138543618;
       v21 = v14;
       v22 = 2114;
-      v23 = v16;
+      v23 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - no addressUrl for message:%{public}@", &v20, 0x16u);
     }
   }
 
-  v17 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:v6];
+  v17 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:instantAnswer];
   v18 = objc_alloc_init(SFManageReservationCommand);
-  v19 = [v6 buttonsCardSectionID];
-  [(MessageListSearchViewController *)self reportInstantAnswerButtonSelected:v17 cardSectionID:v19 command:v18];
+  buttonsCardSectionID = [instantAnswer buttonsCardSectionID];
+  [(MessageListSearchViewController *)self reportInstantAnswerButtonSelected:v17 cardSectionID:buttonsCardSectionID command:v18];
 }
 
-- (void)didTapViewMessageFor:(id)a3
+- (void)didTapViewMessageFor:(id)for
 {
-  v4 = [a3 instantAnswer];
-  v5 = [v4 message];
-  v6 = [(MessageListSearchViewController *)self dataSource];
-  v7 = [v6 messageListForSection:MessageListSectionInstantAnswers];
+  instantAnswer = [for instantAnswer];
+  message = [instantAnswer message];
+  dataSource = [(MessageListSearchViewController *)self dataSource];
+  v7 = [dataSource messageListForSection:MessageListSectionInstantAnswers];
 
-  [(MessageListViewController *)self setReferenceMessageListItem:v5 referenceMessageList:v7 showAsConversation:1 animated:1];
-  v8 = [(MessageListViewController *)self scene];
-  if (([v8 isInExpandedEnvironment] & 1) == 0)
+  [(MessageListViewController *)self setReferenceMessageListItem:message referenceMessageList:v7 showAsConversation:1 animated:1];
+  scene = [(MessageListViewController *)self scene];
+  if (([scene isInExpandedEnvironment] & 1) == 0)
   {
-    v9 = [v8 splitViewController];
-    [v9 showConversationViewControllerAnimated:1 completion:0];
+    splitViewController = [scene splitViewController];
+    [splitViewController showConversationViewControllerAnimated:1 completion:0];
   }
 
-  v10 = [(MessageListSearchViewController *)self collectionView];
+  collectionView = [(MessageListSearchViewController *)self collectionView];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v10 indexPathsForSelectedItems];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v12 = [indexPathsForSelectedItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = *v18;
@@ -4502,24 +4502,24 @@ LABEL_6:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [v10 deselectItemAtIndexPath:*(*(&v17 + 1) + 8 * v14) animated:1];
+        [collectionView deselectItemAtIndexPath:*(*(&v17 + 1) + 8 * v14) animated:1];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [indexPathsForSelectedItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
   }
 
   [(MessageListViewController *)self setLastSelectedItemID:0];
-  v15 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:v4];
-  v16 = [v4 buttonsCardSectionID];
-  [(MessageListSearchViewController *)self reportInstantAnswerCardSelected:v15 cardSectionID:v16];
+  v15 = [(MessageListViewController *)self parsecInstantAnswerForInstantAnswer:instantAnswer];
+  buttonsCardSectionID = [instantAnswer buttonsCardSectionID];
+  [(MessageListSearchViewController *)self reportInstantAnswerCardSelected:v15 cardSectionID:buttonsCardSectionID];
 }
 
 - (EMCollectionItemID)lastSelectedTopHitItemID

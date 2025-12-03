@@ -1,32 +1,32 @@
 @interface ODDSiriSchemaODDiOSAccessibilityProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAtypicalSpeechEnabled:(BOOL)a3;
-- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)a3;
-- (void)setHasIsTypeToSiriEnabled:(BOOL)a3;
-- (void)setHasIsVoiceOverEnabled:(BOOL)a3;
-- (void)setHasSiriPauseTimeState:(BOOL)a3;
-- (void)setHasSiriSpeechRate:(BOOL)a3;
-- (void)setHasVoiceFeedback:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAtypicalSpeechEnabled:(BOOL)enabled;
+- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)enabled;
+- (void)setHasIsTypeToSiriEnabled:(BOOL)enabled;
+- (void)setHasIsVoiceOverEnabled:(BOOL)enabled;
+- (void)setHasSiriPauseTimeState:(BOOL)state;
+- (void)setHasSiriSpeechRate:(BOOL)rate;
+- (void)setHasVoiceFeedback:(BOOL)feedback;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDiOSAccessibilityProperties
 
-- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = ODDSiriSchemaODDiOSAccessibilityProperties;
   v5 = [(ODDSiriSchemaODDiOSAccessibilityProperties *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,21 +34,21 @@
     }
 
     v16 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"siriPauseTimeState"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"siriPauseTimeState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAccessibilityProperties setSiriPauseTimeState:](v5, "setSiriPauseTimeState:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAccessibilityProperties setIsShowAppsBehindSiriEnabled:](v5, "setIsShowAppsBehindSiriEnabled:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"siriSpeechRate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriSpeechRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,28 +56,28 @@
       [(ODDSiriSchemaODDiOSAccessibilityProperties *)v5 setSiriSpeechRate:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isVoiceOverEnabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isVoiceOverEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAccessibilityProperties setIsVoiceOverEnabled:](v5, "setIsVoiceOverEnabled:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isTypeToSiriEnabled"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isTypeToSiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAccessibilityProperties setIsTypeToSiriEnabled:](v5, "setIsTypeToSiriEnabled:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"voiceFeedback"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"voiceFeedback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAccessibilityProperties setVoiceFeedback:](v5, "setVoiceFeedback:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isAtypicalSpeechEnabled"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isAtypicalSpeechEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDiOSAccessibilityProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDiOSAccessibilityProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDiOSAccessibilityProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDiOSAccessibilityProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,12 +126,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if (v4)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAccessibilityProperties isAlwaysListenForHeySiriEnabled](self, "isAlwaysListenForHeySiriEnabled")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
 
     v4 = *(&self->_isAtypicalSpeechEnabled + 1);
     if ((v4 & 0x80) == 0)
@@ -152,7 +152,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAccessibilityProperties isAtypicalSpeechEnabled](self, "isAtypicalSpeechEnabled")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isAtypicalSpeechEnabled"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isAtypicalSpeechEnabled"];
 
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if ((v4 & 4) == 0)
@@ -168,7 +168,7 @@ LABEL_4:
 
 LABEL_12:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAccessibilityProperties isShowAppsBehindSiriEnabled](self, "isShowAppsBehindSiriEnabled")}];
-  [v3 setObject:v7 forKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
+  [dictionary setObject:v7 forKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
 
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if ((v4 & 0x20) == 0)
@@ -184,7 +184,7 @@ LABEL_5:
 
 LABEL_13:
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAccessibilityProperties isTypeToSiriEnabled](self, "isTypeToSiriEnabled")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isTypeToSiriEnabled"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isTypeToSiriEnabled"];
 
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if ((v4 & 0x10) == 0)
@@ -200,7 +200,7 @@ LABEL_6:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAccessibilityProperties isVoiceOverEnabled](self, "isVoiceOverEnabled")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isVoiceOverEnabled"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isVoiceOverEnabled"];
 
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if ((v4 & 2) == 0)
@@ -215,7 +215,7 @@ LABEL_19:
     v12 = MEMORY[0x1E696AD98];
     [(ODDSiriSchemaODDiOSAccessibilityProperties *)self siriSpeechRate];
     v13 = [v12 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"siriSpeechRate"];
+    [dictionary setObject:v13 forKeyedSubscript:@"siriSpeechRate"];
 
     if ((*(&self->_isAtypicalSpeechEnabled + 1) & 0x40) == 0)
     {
@@ -234,7 +234,7 @@ LABEL_20:
       v15 = off_1E78DD8E8[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"voiceFeedback"];
+    [dictionary setObject:v15 forKeyedSubscript:@"voiceFeedback"];
     goto LABEL_24;
   }
 
@@ -250,7 +250,7 @@ LABEL_15:
     v11 = off_1E78DD8D0[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"siriPauseTimeState"];
+  [dictionary setObject:v11 forKeyedSubscript:@"siriPauseTimeState"];
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if ((v4 & 8) != 0)
   {
@@ -264,9 +264,9 @@ LABEL_8:
   }
 
 LABEL_24:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -397,16 +397,16 @@ LABEL_17:
   return v5 ^ v4 ^ v6 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-  v6 = v4[41];
+  v6 = equalCopy[41];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -415,13 +415,13 @@ LABEL_17:
   if (v5)
   {
     isAlwaysListenForHeySiriEnabled = self->_isAlwaysListenForHeySiriEnabled;
-    if (isAlwaysListenForHeySiriEnabled != [v4 isAlwaysListenForHeySiriEnabled])
+    if (isAlwaysListenForHeySiriEnabled != [equalCopy isAlwaysListenForHeySiriEnabled])
     {
       goto LABEL_34;
     }
 
     v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -433,13 +433,13 @@ LABEL_17:
   if (v8)
   {
     siriPauseTimeState = self->_siriPauseTimeState;
-    if (siriPauseTimeState != [v4 siriPauseTimeState])
+    if (siriPauseTimeState != [equalCopy siriPauseTimeState])
     {
       goto LABEL_34;
     }
 
     v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -451,13 +451,13 @@ LABEL_17:
   if (v10)
   {
     isShowAppsBehindSiriEnabled = self->_isShowAppsBehindSiriEnabled;
-    if (isShowAppsBehindSiriEnabled != [v4 isShowAppsBehindSiriEnabled])
+    if (isShowAppsBehindSiriEnabled != [equalCopy isShowAppsBehindSiriEnabled])
     {
       goto LABEL_34;
     }
 
     v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -469,14 +469,14 @@ LABEL_17:
   if (v12)
   {
     siriSpeechRate = self->_siriSpeechRate;
-    [v4 siriSpeechRate];
+    [equalCopy siriSpeechRate];
     if (siriSpeechRate != v14)
     {
       goto LABEL_34;
     }
 
     v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v15 = (v5 >> 4) & 1;
@@ -488,13 +488,13 @@ LABEL_17:
   if (v15)
   {
     isVoiceOverEnabled = self->_isVoiceOverEnabled;
-    if (isVoiceOverEnabled != [v4 isVoiceOverEnabled])
+    if (isVoiceOverEnabled != [equalCopy isVoiceOverEnabled])
     {
       goto LABEL_34;
     }
 
     v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v17 = (v5 >> 5) & 1;
@@ -506,13 +506,13 @@ LABEL_17:
   if (v17)
   {
     isTypeToSiriEnabled = self->_isTypeToSiriEnabled;
-    if (isTypeToSiriEnabled != [v4 isTypeToSiriEnabled])
+    if (isTypeToSiriEnabled != [equalCopy isTypeToSiriEnabled])
     {
       goto LABEL_34;
     }
 
     v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-    v6 = v4[41];
+    v6 = equalCopy[41];
   }
 
   v19 = (v5 >> 6) & 1;
@@ -524,10 +524,10 @@ LABEL_17:
   if (v19)
   {
     voiceFeedback = self->_voiceFeedback;
-    if (voiceFeedback == [v4 voiceFeedback])
+    if (voiceFeedback == [equalCopy voiceFeedback])
     {
       v5 = *(&self->_isAtypicalSpeechEnabled + 1);
-      v6 = v4[41];
+      v6 = equalCopy[41];
       goto LABEL_30;
     }
 
@@ -545,7 +545,7 @@ LABEL_30:
   if ((v5 & 0x80) != 0)
   {
     isAtypicalSpeechEnabled = self->_isAtypicalSpeechEnabled;
-    if (isAtypicalSpeechEnabled != [v4 isAtypicalSpeechEnabled])
+    if (isAtypicalSpeechEnabled != [equalCopy isAtypicalSpeechEnabled])
     {
       goto LABEL_34;
     }
@@ -557,9 +557,9 @@ LABEL_35:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isAtypicalSpeechEnabled + 1);
   if (v4)
   {
@@ -663,9 +663,9 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)setHasIsAtypicalSpeechEnabled:(BOOL)a3
+- (void)setHasIsAtypicalSpeechEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x80;
   }
@@ -678,9 +678,9 @@ LABEL_9:
   *(&self->_isAtypicalSpeechEnabled + 1) = v3 & 0x80 | *(&self->_isAtypicalSpeechEnabled + 1) & 0x7F;
 }
 
-- (void)setHasVoiceFeedback:(BOOL)a3
+- (void)setHasVoiceFeedback:(BOOL)feedback
 {
-  if (a3)
+  if (feedback)
   {
     v3 = 64;
   }
@@ -693,9 +693,9 @@ LABEL_9:
   *(&self->_isAtypicalSpeechEnabled + 1) = *(&self->_isAtypicalSpeechEnabled + 1) & 0xBF | v3;
 }
 
-- (void)setHasIsTypeToSiriEnabled:(BOOL)a3
+- (void)setHasIsTypeToSiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -708,9 +708,9 @@ LABEL_9:
   *(&self->_isAtypicalSpeechEnabled + 1) = *(&self->_isAtypicalSpeechEnabled + 1) & 0xDF | v3;
 }
 
-- (void)setHasIsVoiceOverEnabled:(BOOL)a3
+- (void)setHasIsVoiceOverEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -723,9 +723,9 @@ LABEL_9:
   *(&self->_isAtypicalSpeechEnabled + 1) = *(&self->_isAtypicalSpeechEnabled + 1) & 0xEF | v3;
 }
 
-- (void)setHasSiriSpeechRate:(BOOL)a3
+- (void)setHasSiriSpeechRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 8;
   }
@@ -738,9 +738,9 @@ LABEL_9:
   *(&self->_isAtypicalSpeechEnabled + 1) = *(&self->_isAtypicalSpeechEnabled + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)a3
+- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -753,9 +753,9 @@ LABEL_9:
   *(&self->_isAtypicalSpeechEnabled + 1) = *(&self->_isAtypicalSpeechEnabled + 1) & 0xFB | v3;
 }
 
-- (void)setHasSiriPauseTimeState:(BOOL)a3
+- (void)setHasSiriPauseTimeState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }

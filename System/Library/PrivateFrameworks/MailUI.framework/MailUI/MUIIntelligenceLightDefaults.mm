@@ -17,37 +17,37 @@
 
 + (void)setInitialSettingsIfNecessary
 {
-  v3 = [a1 _defaults];
-  v4 = [v3 BOOLForKey:@"MUIIntelligenceLightDefaultsKeyHasSetupMessageListIntelligenceLightInitialSettingsKey.v4"];
+  _defaults = [self _defaults];
+  v4 = [_defaults BOOLForKey:@"MUIIntelligenceLightDefaultsKeyHasSetupMessageListIntelligenceLightInitialSettingsKey.v4"];
 
   if ((v4 & 1) == 0)
   {
-    [a1 restoreDefaultValues];
-    v5 = [a1 _defaults];
-    [v5 setBool:1 forKey:@"MUIIntelligenceLightDefaultsKeyHasSetupMessageListIntelligenceLightInitialSettingsKey.v4"];
+    [self restoreDefaultValues];
+    _defaults2 = [self _defaults];
+    [_defaults2 setBool:1 forKey:@"MUIIntelligenceLightDefaultsKeyHasSetupMessageListIntelligenceLightInitialSettingsKey.v4"];
   }
 }
 
 + (int64_t)preferredMessageListBeginningAnimationCurve
 {
-  v2 = [a1 _defaults];
-  v3 = [v2 integerForKey:@"MUIIntelligenceLightDefaultsKeyMessageListBeginningAnimationCurve"];
+  _defaults = [self _defaults];
+  v3 = [_defaults integerForKey:@"MUIIntelligenceLightDefaultsKeyMessageListBeginningAnimationCurve"];
 
   return v3;
 }
 
 + (int64_t)preferredMessageListEndingAnimationCurve
 {
-  v2 = [a1 _defaults];
-  v3 = [v2 integerForKey:@"MUIIntelligenceLightDefaultsKeyMessageListEndingAnimationCurve"];
+  _defaults = [self _defaults];
+  v3 = [_defaults integerForKey:@"MUIIntelligenceLightDefaultsKeyMessageListEndingAnimationCurve"];
 
   return v3;
 }
 
 + (double)preferredMessageListAnimationDelay
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListAnimationDelay"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListAnimationDelay"];
   v4 = v3;
 
   return v4;
@@ -55,8 +55,8 @@
 
 + (double)preferredMessageListFadeInDuration
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListFadeInDuration"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListFadeInDuration"];
   v4 = v3;
 
   return v4;
@@ -64,8 +64,8 @@
 
 + (double)preferredMessageListFadeOutDelay
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDelay"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDelay"];
   v4 = v3;
 
   return v4;
@@ -73,8 +73,8 @@
 
 + (double)preferredMessageListFadeOutDuration
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDuration"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDuration"];
   v4 = v3;
 
   return v4;
@@ -82,8 +82,8 @@
 
 + (double)preferredMessageListBackgroundCornerRadius
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListBackgroundCornerRadius"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListBackgroundCornerRadius"];
   v4 = v3;
 
   return v4;
@@ -91,8 +91,8 @@
 
 + (double)preferredMessageListRimLightThickness
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightThickness"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightThickness"];
   v4 = v3;
 
   return v4;
@@ -100,8 +100,8 @@
 
 + (double)preferredMessageListRimLightSoftRadius
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightSoftRadius"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightSoftRadius"];
   v4 = v3;
 
   return v4;
@@ -109,8 +109,8 @@
 
 + (double)preferredMessageListRimLightColorOpacity
 {
-  v2 = [a1 _defaults];
-  [v2 doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightColorOpacity"];
+  _defaults = [self _defaults];
+  [_defaults doubleForKey:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightColorOpacity"];
   v4 = v3;
 
   return v4;
@@ -118,35 +118,35 @@
 
 + (void)restoreDefaultValues
 {
-  v3 = [a1 _defaults];
-  [v3 setInteger:1 forKey:@"MUIIntelligenceLightDefaultsKeyMessageListBeginningAnimationCurve"];
+  _defaults = [self _defaults];
+  [_defaults setInteger:1 forKey:@"MUIIntelligenceLightDefaultsKeyMessageListBeginningAnimationCurve"];
 
-  v4 = [a1 _defaults];
-  [v4 setInteger:2 forKey:@"MUIIntelligenceLightDefaultsKeyMessageListEndingAnimationCurve"];
+  _defaults2 = [self _defaults];
+  [_defaults2 setInteger:2 forKey:@"MUIIntelligenceLightDefaultsKeyMessageListEndingAnimationCurve"];
 
-  v5 = [a1 _defaults];
-  [v5 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListAnimationDelay" forKey:0.1];
+  _defaults3 = [self _defaults];
+  [_defaults3 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListAnimationDelay" forKey:0.1];
 
-  v6 = [a1 _defaults];
-  [v6 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListFadeInDuration" forKey:1.2];
+  _defaults4 = [self _defaults];
+  [_defaults4 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListFadeInDuration" forKey:1.2];
 
-  v7 = [a1 _defaults];
-  [v7 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDelay" forKey:0.5];
+  _defaults5 = [self _defaults];
+  [_defaults5 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDelay" forKey:0.5];
 
-  v8 = [a1 _defaults];
-  [v8 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDuration" forKey:2.4];
+  _defaults6 = [self _defaults];
+  [_defaults6 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListFadeOutDuration" forKey:2.4];
 
-  v9 = [a1 _defaults];
-  [v9 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListBackgroundCornerRadius" forKey:20.0];
+  _defaults7 = [self _defaults];
+  [_defaults7 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListBackgroundCornerRadius" forKey:20.0];
 
-  v10 = [a1 _defaults];
-  [v10 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightThickness" forKey:0.0];
+  _defaults8 = [self _defaults];
+  [_defaults8 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightThickness" forKey:0.0];
 
-  v11 = [a1 _defaults];
-  [v11 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightSoftRadius" forKey:0.0];
+  _defaults9 = [self _defaults];
+  [_defaults9 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightSoftRadius" forKey:0.0];
 
-  v12 = [a1 _defaults];
-  [v12 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightColorOpacity" forKey:0.0];
+  _defaults10 = [self _defaults];
+  [_defaults10 setDouble:@"MUIIntelligenceLightDefaultsKeyMessageListRimLightColorOpacity" forKey:0.0];
 }
 
 @end

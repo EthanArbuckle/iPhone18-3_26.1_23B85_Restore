@@ -1,11 +1,11 @@
 @interface THGlossaryDividerRep
-- (void)didUpdateLayer:(id)a3;
-- (void)updateLayerGeometryFromLayout:(id)a3;
+- (void)didUpdateLayer:(id)layer;
+- (void)updateLayerGeometryFromLayout:(id)layout;
 @end
 
 @implementation THGlossaryDividerRep
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   v11 = 0u;
   v12 = 0u;
@@ -21,15 +21,15 @@
   v5 = v8;
   v6 = v9;
   v7 = v10;
-  [a3 setIfDifferentFrame:&v5 orTransform:{v11, v12}];
+  [layout setIfDifferentFrame:&v5 orTransform:{v11, v12}];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = THGlossaryDividerRep;
   [(THGlossaryDividerRep *)&v4 didUpdateLayer:?];
-  [a3 setBackgroundColor:{objc_msgSend(objc_msgSend(+[TSUColor blackColor](TSUColor, "blackColor"), "colorWithAlphaComponent:", 0.150000006), "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(objc_msgSend(+[TSUColor blackColor](TSUColor, "blackColor"), "colorWithAlphaComponent:", 0.150000006), "CGColor")}];
 }
 
 @end

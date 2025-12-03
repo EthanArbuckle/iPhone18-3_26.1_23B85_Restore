@@ -1,6 +1,6 @@
 @interface CRSInCallAssertion
 - (BOOL)allowsBanners;
-- (CRSInCallAssertion)initWithReason:(id)a3;
+- (CRSInCallAssertion)initWithReason:(id)reason;
 - (void)_handleConnectionActivated;
 - (void)_handleConnectionInterrupted;
 - (void)activate;
@@ -21,9 +21,9 @@
       _os_log_impl(&dword_242FB5000, v4, OS_LOG_TYPE_DEFAULT, "Requesting presentation!", v7, 2u);
     }
 
-    v5 = [(CRSInCallAssertion *)self connection];
-    v6 = [v5 remoteTarget];
-    [v6 presentInCallService];
+    connection = [(CRSInCallAssertion *)self connection];
+    remoteTarget = [connection remoteTarget];
+    [remoteTarget presentInCallService];
 
     v3 = 13;
   }
@@ -60,15 +60,15 @@
       _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "Requesting presentation!", &v10, 2u);
     }
 
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v6 presentInCallService];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget presentInCallService];
 
     self->_lock_presented = 1;
   }
 
-  v7 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget2 = [(BSServiceConnection *)self->_connection remoteTarget];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_lock_allowsBanners];
-  [v7 setAllowsBanners:v8];
+  [remoteTarget2 setAllowsBanners:v8];
 
   self->_lock_activated = 1;
   os_unfair_lock_unlock(&self->_lock);
@@ -98,16 +98,16 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (CRSInCallAssertion)initWithReason:(id)a3
+- (CRSInCallAssertion)initWithReason:(id)reason
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v26.receiver = self;
   v26.super_class = CRSInCallAssertion;
   v5 = [(CRSInCallAssertion *)&v26 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [reasonCopy copy];
     reason = v5->_reason;
     v5->_reason = v6;
 
@@ -116,8 +116,8 @@
     v8 = __instanceCounter++;
     os_unfair_lock_unlock(&__counterLock);
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(CRSInCallAssertion *)v5 reason];
-    v11 = [v9 stringWithFormat:@"%@-%i-%u", v10, getpid(), v8];
+    reason = [(CRSInCallAssertion *)v5 reason];
+    v11 = [v9 stringWithFormat:@"%@-%i-%u", reason, getpid(), v8];
 
     v12 = MEMORY[0x277CF3288];
     v13 = +[CRSInCallAssertionSpecification identifier];
@@ -215,7 +215,7 @@ void __37__CRSInCallAssertion_initWithReason___block_invoke_4(uint64_t a1, void 
 - (void)_handleConnectionInterrupted
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_242FB5000, a2, OS_LOG_TYPE_ERROR, "Connection interrupted! Reactivating... %@", &v4, 0xCu);

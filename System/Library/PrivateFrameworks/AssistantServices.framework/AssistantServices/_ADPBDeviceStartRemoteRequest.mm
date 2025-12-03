@@ -1,25 +1,25 @@
 @interface _ADPBDeviceStartRemoteRequest
 - (AFRequestInfo)_ad_requestInfo;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_ad_performWithCloudService:(id)a3 fromPeer:(id)a4 completion:(id)a5;
-- (void)_ad_performWithSharedDataRemote:(id)a3 completion:(id)a4;
-- (void)_ad_setRequestInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_ad_performWithCloudService:(id)service fromPeer:(id)peer completion:(id)completion;
+- (void)_ad_performWithSharedDataRemote:(id)remote completion:(id)completion;
+- (void)_ad_setRequestInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBDeviceStartRemoteRequest
 
-- (void)_ad_performWithSharedDataRemote:(id)a3 completion:(id)a4
+- (void)_ad_performWithSharedDataRemote:(id)remote completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  remoteCopy = remote;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -28,14 +28,14 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", &v9, 0xCu);
   }
 
-  [v6 _startRemoteRequest:self completion:v7];
+  [remoteCopy _startRemoteRequest:self completion:completionCopy];
 }
 
-- (void)_ad_performWithCloudService:(id)a3 fromPeer:(id)a4 completion:(id)a5
+- (void)_ad_performWithCloudService:(id)service fromPeer:(id)peer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  peerCopy = peer;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -44,48 +44,48 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s ", &v13, 0xCu);
   }
 
-  v12 = [(_ADPBDeviceStartRemoteRequest *)self _ad_requestInfo];
-  [v8 _notifyObserversOfRequestInfo:v12 fromPeer:v9 completion:v10];
+  _ad_requestInfo = [(_ADPBDeviceStartRemoteRequest *)self _ad_requestInfo];
+  [serviceCopy _notifyObserversOfRequestInfo:_ad_requestInfo fromPeer:peerCopy completion:completionCopy];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(_ADPBDeviceStartRemoteRequest *)self setText:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(_ADPBDeviceStartRemoteRequest *)self setHandoffData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_ADPBDeviceStartRemoteRequest *)self setHandoffUrlString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[52])
+  if (fromCopy[52])
   {
-    self->_requiresUserInteraction = v4[48];
+    self->_requiresUserInteraction = fromCopy[48];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_ADPBDeviceStartRemoteRequest *)self setHandoffNotification:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_ADPBDeviceStartRemoteRequest *)self setHandoffOriginDeviceName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -109,16 +109,16 @@
   return v7 ^ v8 ^ [(NSString *)self->_handoffOriginDeviceName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   text = self->_text;
-  if (text | *(v4 + 5))
+  if (text | *(equalCopy + 5))
   {
     if (![(NSString *)text isEqual:?])
     {
@@ -127,7 +127,7 @@
   }
 
   handoffData = self->_handoffData;
-  if (handoffData | *(v4 + 1))
+  if (handoffData | *(equalCopy + 1))
   {
     if (![(NSData *)handoffData isEqual:?])
     {
@@ -136,7 +136,7 @@
   }
 
   handoffUrlString = self->_handoffUrlString;
-  if (handoffUrlString | *(v4 + 4))
+  if (handoffUrlString | *(equalCopy + 4))
   {
     if (![(NSString *)handoffUrlString isEqual:?])
     {
@@ -144,18 +144,18 @@
     }
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v8 = *(v4 + 48);
+    v8 = *(equalCopy + 48);
     if (self->_requiresUserInteraction)
     {
-      if (*(v4 + 48))
+      if (*(equalCopy + 48))
       {
         goto LABEL_10;
       }
@@ -173,13 +173,13 @@ LABEL_15:
 
 LABEL_10:
   handoffNotification = self->_handoffNotification;
-  if (handoffNotification | *(v4 + 2) && ![(NSString *)handoffNotification isEqual:?])
+  if (handoffNotification | *(equalCopy + 2) && ![(NSString *)handoffNotification isEqual:?])
   {
     goto LABEL_15;
   }
 
   handoffOriginDeviceName = self->_handoffOriginDeviceName;
-  if (handoffOriginDeviceName | *(v4 + 3))
+  if (handoffOriginDeviceName | *(equalCopy + 3))
   {
     v11 = [(NSString *)handoffOriginDeviceName isEqual:?];
   }
@@ -194,18 +194,18 @@ LABEL_16:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_text copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_text copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSData *)self->_handoffData copyWithZone:a3];
+  v8 = [(NSData *)self->_handoffData copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_handoffUrlString copyWithZone:a3];
+  v10 = [(NSString *)self->_handoffUrlString copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
@@ -215,107 +215,107 @@ LABEL_16:
     *(v5 + 52) |= 1u;
   }
 
-  v12 = [(NSString *)self->_handoffNotification copyWithZone:a3];
+  v12 = [(NSString *)self->_handoffNotification copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSString *)self->_handoffOriginDeviceName copyWithZone:a3];
+  v14 = [(NSString *)self->_handoffOriginDeviceName copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_text)
   {
-    [v4 setText:?];
-    v4 = v5;
+    [toCopy setText:?];
+    toCopy = v5;
   }
 
   if (self->_handoffData)
   {
     [v5 setHandoffData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoffUrlString)
   {
     [v5 setHandoffUrlString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[48] = self->_requiresUserInteraction;
-    v4[52] |= 1u;
+    toCopy[48] = self->_requiresUserInteraction;
+    toCopy[52] |= 1u;
   }
 
   if (self->_handoffNotification)
   {
     [v5 setHandoffNotification:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoffOriginDeviceName)
   {
     [v5 setHandoffOriginDeviceName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_text)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoffData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoffUrlString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoffNotification)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoffOriginDeviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -326,18 +326,18 @@ LABEL_16:
       while (1)
       {
         v28 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v28 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v28 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v28 & 0x7F) << v6;
@@ -355,9 +355,9 @@ LABEL_16:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -375,18 +375,18 @@ LABEL_15:
             while (1)
             {
               v29 = 0;
-              v20 = [a3 position] + 1;
-              if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+              v20 = [from position] + 1;
+              if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
               {
-                v22 = [a3 data];
-                [v22 getBytes:&v29 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v29 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v19 |= (v29 & 0x7F) << v17;
@@ -404,7 +404,7 @@ LABEL_15:
               }
             }
 
-            v23 = (v19 != 0) & ~[a3 hasError];
+            v23 = (v19 != 0) & ~[from hasError];
 LABEL_44:
             self->_requiresUserInteraction = v23;
             goto LABEL_41;
@@ -453,13 +453,13 @@ LABEL_36:
       *&self->PBRequest_opaque[v16] = v15;
 
 LABEL_41:
-      v26 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v26 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v24) = [a3 hasError] ^ 1;
+  LOBYTE(v24) = [from hasError] ^ 1;
   return v24;
 }
 
@@ -511,51 +511,51 @@ LABEL_41:
   v7.receiver = self;
   v7.super_class = _ADPBDeviceStartRemoteRequest;
   v3 = [(_ADPBDeviceStartRemoteRequest *)&v7 description];
-  v4 = [(_ADPBDeviceStartRemoteRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBDeviceStartRemoteRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)_ad_setRequestInfo:(id)a3
+- (void)_ad_setRequestInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 text];
-  [(_ADPBDeviceStartRemoteRequest *)self setText:v5];
+  infoCopy = info;
+  text = [infoCopy text];
+  [(_ADPBDeviceStartRemoteRequest *)self setText:text];
 
-  v6 = [v4 handoffRequestData];
-  [(_ADPBDeviceStartRemoteRequest *)self setHandoffData:v6];
+  handoffRequestData = [infoCopy handoffRequestData];
+  [(_ADPBDeviceStartRemoteRequest *)self setHandoffData:handoffRequestData];
 
-  v7 = [v4 handoffURLString];
-  [(_ADPBDeviceStartRemoteRequest *)self setHandoffUrlString:v7];
+  handoffURLString = [infoCopy handoffURLString];
+  [(_ADPBDeviceStartRemoteRequest *)self setHandoffUrlString:handoffURLString];
 
-  -[_ADPBDeviceStartRemoteRequest setRequiresUserInteraction:](self, "setRequiresUserInteraction:", [v4 handoffRequiresUserInteraction]);
-  v8 = [v4 handoffNotification];
-  [(_ADPBDeviceStartRemoteRequest *)self setHandoffNotification:v8];
+  -[_ADPBDeviceStartRemoteRequest setRequiresUserInteraction:](self, "setRequiresUserInteraction:", [infoCopy handoffRequiresUserInteraction]);
+  handoffNotification = [infoCopy handoffNotification];
+  [(_ADPBDeviceStartRemoteRequest *)self setHandoffNotification:handoffNotification];
 
-  v9 = [v4 handoffOriginDeviceName];
+  handoffOriginDeviceName = [infoCopy handoffOriginDeviceName];
 
-  [(_ADPBDeviceStartRemoteRequest *)self setHandoffOriginDeviceName:v9];
+  [(_ADPBDeviceStartRemoteRequest *)self setHandoffOriginDeviceName:handoffOriginDeviceName];
 }
 
 - (AFRequestInfo)_ad_requestInfo
 {
   v3 = objc_alloc_init(AFRequestInfo);
-  v4 = [(_ADPBDeviceStartRemoteRequest *)self text];
-  [v3 setText:v4];
+  text = [(_ADPBDeviceStartRemoteRequest *)self text];
+  [v3 setText:text];
 
-  v5 = [(_ADPBDeviceStartRemoteRequest *)self handoffData];
-  [v3 setHandoffRequestData:v5];
+  handoffData = [(_ADPBDeviceStartRemoteRequest *)self handoffData];
+  [v3 setHandoffRequestData:handoffData];
 
-  v6 = [(_ADPBDeviceStartRemoteRequest *)self handoffUrlString];
-  [v3 setHandoffURLString:v6];
+  handoffUrlString = [(_ADPBDeviceStartRemoteRequest *)self handoffUrlString];
+  [v3 setHandoffURLString:handoffUrlString];
 
   [v3 setHandoffRequiresUserInteraction:{-[_ADPBDeviceStartRemoteRequest requiresUserInteraction](self, "requiresUserInteraction")}];
-  v7 = [(_ADPBDeviceStartRemoteRequest *)self handoffNotification];
-  [v3 setHandoffNotification:v7];
+  handoffNotification = [(_ADPBDeviceStartRemoteRequest *)self handoffNotification];
+  [v3 setHandoffNotification:handoffNotification];
 
-  v8 = [(_ADPBDeviceStartRemoteRequest *)self handoffOriginDeviceName];
-  [v3 setHandoffOriginDeviceName:v8];
+  handoffOriginDeviceName = [(_ADPBDeviceStartRemoteRequest *)self handoffOriginDeviceName];
+  [v3 setHandoffOriginDeviceName:handoffOriginDeviceName];
 
   [v3 setActivationEvent:1];
 

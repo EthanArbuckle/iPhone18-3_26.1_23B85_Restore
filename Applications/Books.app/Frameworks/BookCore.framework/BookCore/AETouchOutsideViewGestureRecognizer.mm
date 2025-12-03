@@ -1,31 +1,31 @@
 @interface AETouchOutsideViewGestureRecognizer
-- (AETouchOutsideViewGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 watchView:(id)a5;
+- (AETouchOutsideViewGestureRecognizer)initWithTarget:(id)target action:(SEL)action watchView:(id)view;
 - (UIView)watchView;
-- (void)addTarget:(id)a3 action:(SEL)a4;
+- (void)addTarget:(id)target action:(SEL)action;
 - (void)dealloc;
-- (void)removeTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)removeTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation AETouchOutsideViewGestureRecognizer
 
-- (AETouchOutsideViewGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 watchView:(id)a5
+- (AETouchOutsideViewGestureRecognizer)initWithTarget:(id)target action:(SEL)action watchView:(id)view
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = AETouchOutsideViewGestureRecognizer;
   v10 = [(AETouchOutsideViewGestureRecognizer *)&v15 initWithTarget:0 action:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->mWatchView, v9);
+    objc_storeWeak(&v10->mWatchView, viewCopy);
     v12 = objc_alloc_init(NSMutableSet);
     mTargets = v11->mTargets;
     v11->mTargets = v12;
 
     [(AETouchOutsideViewGestureRecognizer *)v11 setDelegate:v11];
-    [(AETouchOutsideViewGestureRecognizer *)v11 addTarget:v8 action:a4];
+    [(AETouchOutsideViewGestureRecognizer *)v11 addTarget:targetCopy action:action];
   }
 
   return v11;
@@ -42,19 +42,19 @@
   [(AETouchOutsideViewGestureRecognizer *)&v4 dealloc];
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4
+- (void)addTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v7 = objc_alloc_init(AETouchOutsideViewGestureRecognizerTarget);
-  [(AETouchOutsideViewGestureRecognizerTarget *)v7 setTarget:v6];
+  [(AETouchOutsideViewGestureRecognizerTarget *)v7 setTarget:targetCopy];
 
-  [(AETouchOutsideViewGestureRecognizerTarget *)v7 setAction:a4];
+  [(AETouchOutsideViewGestureRecognizerTarget *)v7 setAction:action];
   [(NSMutableSet *)self->mTargets addObject:v7];
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4
+- (void)removeTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v19 = +[NSMutableSet set];
   v24 = 0u;
   v25 = 0u;
@@ -77,9 +77,9 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        if (!v6 || ([*(*(&v24 + 1) + 8 * v11) target], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == v6))
+        if (!targetCopy || ([*(*(&v24 + 1) + 8 * v11) target], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == targetCopy))
         {
-          if (!a4 || [v12 action] == a4)
+          if (!action || [v12 action] == action)
           {
             [v19 addObject:v12];
           }
@@ -127,16 +127,16 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v41 = self;
-  v8 = [(AETouchOutsideViewGestureRecognizer *)self watchView];
-  v9 = v8;
-  if (v8)
+  beganCopy = began;
+  eventCopy = event;
+  selfCopy = self;
+  watchView = [(AETouchOutsideViewGestureRecognizer *)self watchView];
+  v9 = watchView;
+  if (watchView)
   {
-    [v8 bounds];
+    [watchView bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -145,7 +145,7 @@
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v18 = v6;
+    v18 = beganCopy;
     v19 = [v18 countByEnumeratingWithState:&v50 objects:v56 count:16];
     if (v19)
     {
@@ -192,8 +192,8 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v26 = [v7 allTouches];
-  v27 = [v26 countByEnumeratingWithState:&v46 objects:v55 count:16];
+  allTouches = [eventCopy allTouches];
+  v27 = [allTouches countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (v27)
   {
     v28 = v27;
@@ -205,13 +205,13 @@
       {
         if (*v47 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allTouches);
         }
 
-        v29 |= [v6 containsObject:*(*(&v46 + 1) + 8 * j)] ^ 1;
+        v29 |= [beganCopy containsObject:*(*(&v46 + 1) + 8 * j)] ^ 1;
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      v28 = [allTouches countByEnumeratingWithState:&v46 objects:v55 count:16];
     }
 
     while (v28);
@@ -224,12 +224,12 @@
 
   if (((v21 | v29) & 1) == 0)
   {
-    v40 = v7;
+    v40 = eventCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v32 = v41->mTargets;
+    v32 = selfCopy->mTargets;
     v33 = [(NSMutableSet *)v32 countByEnumeratingWithState:&v42 objects:v54 count:16];
     if (v33)
     {
@@ -245,8 +245,8 @@
           }
 
           v37 = *(*(&v42 + 1) + 8 * k);
-          v38 = [v37 target];
-          [v38 performSelector:objc_msgSend(v37 withObject:{"action"), v41}];
+          target = [v37 target];
+          [target performSelector:objc_msgSend(v37 withObject:{"action"), selfCopy}];
         }
 
         v34 = [(NSMutableSet *)v32 countByEnumeratingWithState:&v42 objects:v54 count:16];
@@ -255,7 +255,7 @@
       while (v34);
     }
 
-    v7 = v40;
+    eventCopy = v40;
   }
 
   if (v21 & 1 | ((v29 & 1) == 0))
@@ -268,7 +268,7 @@
     v39 = 1;
   }
 
-  [(AETouchOutsideViewGestureRecognizer *)v41 setState:v39, v40];
+  [(AETouchOutsideViewGestureRecognizer *)selfCopy setState:v39, v40];
 }
 
 - (UIView)watchView

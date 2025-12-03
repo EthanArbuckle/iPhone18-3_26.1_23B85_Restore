@@ -1,6 +1,6 @@
 @interface CACLabeledElementsOverlayViewController
 - (void)loadView;
-- (void)setLabeledElements:(id)a3;
+- (void)setLabeledElements:(id)elements;
 @end
 
 @implementation CACLabeledElementsOverlayViewController
@@ -8,20 +8,20 @@
 - (void)loadView
 {
   v3 = [CACLabeledElementsOverlayView alloc];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = [(CACLabeledElementsOverlayView *)v3 initWithFrame:?];
   [(CACLabeledElementsOverlayViewController *)self setView:v4];
 }
 
-- (void)setLabeledElements:(id)a3
+- (void)setLabeledElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(CACLabeledElementsOverlayViewController *)self view];
-  [v5 clearLabeledElements];
+  elementsCopy = elements;
+  view = [(CACLabeledElementsOverlayViewController *)self view];
+  [view clearLabeledElements];
 
-  v6 = [(CACLabeledElementsOverlayViewController *)self view];
-  [v6 addLabeledElements:v4];
+  view2 = [(CACLabeledElementsOverlayViewController *)self view];
+  [view2 addLabeledElements:elementsCopy];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface TSDMovieCompatibilityChecker
 - (BOOL)p_assetHasSupportedFileTypeOnAllDevices;
-- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)a3;
-- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3;
-- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3;
+- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)devices;
+- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices;
+- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices;
 - (BOOL)p_isLoadedAssetPlayableOnAllDevices;
-- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3;
-- (BOOL)p_isVideoTrackPlayableOnAllDevices:(id)a3;
-- (TSDMovieCompatibilityChecker)initWithAsset:(id)a3;
-- (id)p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:(opaqueCMFormatDescription *)a3 forAtomType:(id)a4;
-- (void)checkCompatibilityUpToLevel:(int64_t)a3 completionHandler:(id)a4;
-- (void)checkCustomCompatibilityWithVideoCodecTypes:(id)a3 maxPlayableVideoDimensions:(CGSize)a4 maxPlayableVideoPixelsPerFrame:(int)a5 completionHandler:(id)a6;
+- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices;
+- (BOOL)p_isVideoTrackPlayableOnAllDevices:(id)devices;
+- (TSDMovieCompatibilityChecker)initWithAsset:(id)asset;
+- (id)p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:(opaqueCMFormatDescription *)description forAtomType:(id)type;
+- (void)checkCompatibilityUpToLevel:(int64_t)level completionHandler:(id)handler;
+- (void)checkCustomCompatibilityWithVideoCodecTypes:(id)types maxPlayableVideoDimensions:(CGSize)dimensions maxPlayableVideoPixelsPerFrame:(int)frame completionHandler:(id)handler;
 - (void)dealloc;
-- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)a3 actualLevel:(int64_t)a4 didCancel:(BOOL)a5 error:(id)a6 completionHandler:(id)a7;
+- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)level actualLevel:(int64_t)actualLevel didCancel:(BOOL)cancel error:(id)error completionHandler:(id)handler;
 @end
 
 @implementation TSDMovieCompatibilityChecker
 
-- (TSDMovieCompatibilityChecker)initWithAsset:(id)a3
+- (TSDMovieCompatibilityChecker)initWithAsset:(id)asset
 {
-  if (!a3)
+  if (!asset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieCompatibilityChecker initWithAsset:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieCompatibilityChecker.m"), 60, @"invalid nil value for '%s'", "asset"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieCompatibilityChecker.m"), 60, @"invalid nil value for '%s'", "asset"}];
   }
 
   v9.receiver = self;
@@ -30,7 +30,7 @@
   v7 = [(TSDMovieCompatibilityChecker *)&v9 init];
   if (v7)
   {
-    v7->mAsset = a3;
+    v7->mAsset = asset;
   }
 
   return v7;
@@ -43,13 +43,13 @@
   [(TSDMovieCompatibilityChecker *)&v3 dealloc];
 }
 
-- (void)checkCompatibilityUpToLevel:(int64_t)a3 completionHandler:(id)a4
+- (void)checkCompatibilityUpToLevel:(int64_t)level completionHandler:(id)handler
 {
-  if (a3 <= 1)
+  if (level <= 1)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieCompatibilityChecker checkCompatibilityUpToLevel:completionHandler:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieCompatibilityChecker.m"), 87, @"Invalid parameter not satisfying: %s", "maxDesiredCompatibilityLevel > TSDMovieCompatibilityLevelNone"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieCompatibilityChecker.m"), 87, @"Invalid parameter not satisfying: %s", "maxDesiredCompatibilityLevel > TSDMovieCompatibilityLevelNone"}];
   }
 
   mAsset = self->mAsset;
@@ -57,8 +57,8 @@
   v10[1] = 3221225472;
   v10[2] = __78__TSDMovieCompatibilityChecker_checkCompatibilityUpToLevel_completionHandler___block_invoke;
   v10[3] = &unk_279D49340;
-  v10[5] = a4;
-  v10[6] = a3;
+  v10[5] = handler;
+  v10[6] = level;
   v10[4] = self;
   [(AVAsset *)mAsset loadValuesAsynchronouslyForKeys:&unk_287DDCB58 completionHandler:v10];
 }
@@ -259,87 +259,87 @@ LABEL_5:
   return [*(a1 + 32) p_didFinishCheckingCompatibilityUpToLevel:*(a1 + 56) actualLevel:*(*(*(a1 + 48) + 8) + 24) didCancel:v3 error:v5 completionHandler:*(a1 + 40)];
 }
 
-- (void)checkCustomCompatibilityWithVideoCodecTypes:(id)a3 maxPlayableVideoDimensions:(CGSize)a4 maxPlayableVideoPixelsPerFrame:(int)a5 completionHandler:(id)a6
+- (void)checkCustomCompatibilityWithVideoCodecTypes:(id)types maxPlayableVideoDimensions:(CGSize)dimensions maxPlayableVideoPixelsPerFrame:(int)frame completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = dimensions.height;
+  width = dimensions.width;
 
-  self->mCustomPlayableVideoCodecTypes = [a3 copy];
+  self->mCustomPlayableVideoCodecTypes = [types copy];
   self->mCustomMaxPlayableVideoDimensions.width = width;
   self->mCustomMaxPlayableVideoDimensions.height = height;
-  self->mCustomMaxPlayableVideoPixelsPerFrame = a5;
+  self->mCustomMaxPlayableVideoPixelsPerFrame = frame;
 
-  [(TSDMovieCompatibilityChecker *)self checkCompatibilityUpToLevel:5 completionHandler:a6];
+  [(TSDMovieCompatibilityChecker *)self checkCompatibilityUpToLevel:5 completionHandler:handler];
 }
 
-- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)a3 actualLevel:(int64_t)a4 didCancel:(BOOL)a5 error:(id)a6 completionHandler:(id)a7
+- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)level actualLevel:(int64_t)actualLevel didCancel:(BOOL)cancel error:(id)error completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (cancel)
   {
     goto LABEL_16;
   }
 
-  v8 = a6;
-  if (!a4 && a6)
+  errorCopy = error;
+  if (!actualLevel && error)
   {
-    if ([a6 code] != -11828)
+    if ([error code] != -11828)
     {
 LABEL_11:
-      a4 = 0;
+      actualLevel = 0;
       goto LABEL_12;
     }
 
-    v11 = [v8 domain];
-    v12 = [v11 isEqualToString:*MEMORY[0x277CE5DC0]];
+    domain = [errorCopy domain];
+    v12 = [domain isEqualToString:*MEMORY[0x277CE5DC0]];
     if (v12)
     {
-      v8 = 0;
+      errorCopy = 0;
     }
 
-    a4 = v12;
+    actualLevel = v12;
   }
 
-  if (!v8 && !a4)
+  if (!errorCopy && !actualLevel)
   {
     v15 = *MEMORY[0x277CCA450];
     v16[0] = [TSDBundle() localizedStringForKey:@"This movie can\\U2019t be added." value:&stru_287D36338 table:@"TSDrawables"];
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.iWork.TSDErrorDomainMovieCompatibility" code:100 userInfo:v13];
+    errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.iWork.TSDErrorDomainMovieCompatibility" code:100 userInfo:v13];
     goto LABEL_11;
   }
 
 LABEL_12:
-  if (a4 >= a3)
+  if (actualLevel >= level)
   {
-    v14 = a3;
+    actualLevelCopy = level;
   }
 
   else
   {
-    v14 = a4;
+    actualLevelCopy = actualLevel;
   }
 
-  self->mCompatibilityLevel = v14;
-  self->mError = [v8 copy];
+  self->mCompatibilityLevel = actualLevelCopy;
+  self->mError = [errorCopy copy];
 LABEL_16:
-  if (a7)
+  if (handler)
   {
-    (*(a7 + 2))(a7, a2, a3, a4);
+    (*(handler + 2))(handler, a2, level, actualLevel);
   }
 }
 
 - (BOOL)p_isLoadedAssetPlayableOnAllDevices
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(TSDMovieCompatibilityChecker *)self p_assetHasSupportedFileTypeOnAllDevices];
-  if (v3)
+  p_assetHasSupportedFileTypeOnAllDevices = [(TSDMovieCompatibilityChecker *)self p_assetHasSupportedFileTypeOnAllDevices];
+  if (p_assetHasSupportedFileTypeOnAllDevices)
   {
     if ([(AVAsset *)self->mAsset statusOfValueForKey:@"tracks" error:0]!= 2)
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieCompatibilityChecker p_isLoadedAssetPlayableOnAllDevices]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieCompatibilityChecker.m"), 339, @"Asset tracks must be loaded"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieCompatibilityChecker.m"), 339, @"Asset tracks must be loaded"}];
     }
 
     v6 = *MEMORY[0x277CE5EA8];
@@ -349,8 +349,8 @@ LABEL_16:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [(AVAsset *)self->mAsset tracks];
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    tracks = [(AVAsset *)self->mAsset tracks];
+    v9 = [(NSArray *)tracks countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
       v10 = v9;
@@ -364,14 +364,14 @@ LABEL_16:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tracks);
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
           if ([v14 isEnabled])
           {
-            v15 = [v14 mediaType];
-            if ([v7 containsObject:v15])
+            mediaType = [v14 mediaType];
+            if ([v7 containsObject:mediaType])
             {
               if (![v14 isSelfContained] || !objc_msgSend(objc_msgSend(v14, "formatDescriptions"), "count"))
               {
@@ -379,13 +379,13 @@ LABEL_16:
                 goto LABEL_21;
               }
 
-              if ([v15 isEqualToString:v6])
+              if ([mediaType isEqualToString:v6])
               {
                 v11 |= [(TSDMovieCompatibilityChecker *)self p_isVideoTrackPlayableOnAllDevices:v14];
                 LOBYTE(v23) = 1;
               }
 
-              else if ([v15 isEqualToString:v22])
+              else if ([mediaType isEqualToString:v22])
               {
                 HIDWORD(v23) |= [(TSDMovieCompatibilityChecker *)self p_isAudioTrackPlayableOnAllDevices:v14];
                 v21 = 1;
@@ -394,7 +394,7 @@ LABEL_16:
           }
         }
 
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v10 = [(NSArray *)tracks countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v10)
         {
           continue;
@@ -419,10 +419,10 @@ LABEL_21:
       v16 = 1;
     }
 
-    LOBYTE(v3) = (v11 | ~v17) & (v18 | ~v19) & v16;
+    LOBYTE(p_assetHasSupportedFileTypeOnAllDevices) = (v11 | ~v17) & (v18 | ~v19) & v16;
   }
 
-  return v3;
+  return p_assetHasSupportedFileTypeOnAllDevices;
 }
 
 - (BOOL)p_assetHasSupportedFileTypeOnAllDevices
@@ -447,8 +447,8 @@ LABEL_21:
 
         else
         {
-          v5 = [v3 pathExtension];
-          LOBYTE(v2) = [objc_msgSend(MEMORY[0x277CBEB98] setWithObjects:{@"mqv", @"m4r", @"m1a", @"m2a", @"mpa", @"aac", @"adts", @"mod", @"vob", @"m2ts", @"m2t", @"mts", 0), "containsObject:", v5}];
+          pathExtension = [v3 pathExtension];
+          LOBYTE(v2) = [objc_msgSend(MEMORY[0x277CBEB98] setWithObjects:{@"mqv", @"m4r", @"m1a", @"m2a", @"mpa", @"aac", @"adts", @"mod", @"vob", @"m2ts", @"m2t", @"mts", 0), "containsObject:", pathExtension}];
         }
       }
     }
@@ -457,7 +457,7 @@ LABEL_21:
   return v2;
 }
 
-- (BOOL)p_isVideoTrackPlayableOnAllDevices:(id)a3
+- (BOOL)p_isVideoTrackPlayableOnAllDevices:(id)devices
 {
   v33 = *MEMORY[0x277D85DE8];
   mCustomPlayableVideoCodecTypes = self->mCustomPlayableVideoCodecTypes;
@@ -480,13 +480,13 @@ LABEL_21:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [a3 formatDescriptions];
+  obj = [devices formatDescriptions];
   v9 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v29;
-    v20 = a3;
+    devicesCopy = devices;
 LABEL_6:
     v12 = 0;
     while (1)
@@ -545,7 +545,7 @@ LABEL_36:
       if (v10 == ++v12)
       {
         v10 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
-        a3 = v20;
+        devices = devicesCopy;
         if (v10)
         {
           goto LABEL_6;
@@ -562,9 +562,9 @@ LABEL_32:
     v26 = 0u;
     v27 = 0u;
     v25 = 0u;
-    if (a3)
+    if (devices)
     {
-      [a3 preferredTransform];
+      [devices preferredTransform];
     }
 
     v22 = v25;
@@ -583,9 +583,9 @@ LABEL_32:
   return v15;
 }
 
-- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3
+- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices
 {
-  Extension = [(TSDMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:a3 forAtomType:@"avcC"];
+  Extension = [(TSDMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:devices forAtomType:@"avcC"];
   if (Extension)
   {
     v5 = Extension;
@@ -596,7 +596,7 @@ LABEL_32:
 
     else
     {
-      Extension = CMFormatDescriptionGetExtension(a3, *MEMORY[0x277CC4C40]);
+      Extension = CMFormatDescriptionGetExtension(devices, *MEMORY[0x277CC4C40]);
       if (Extension)
       {
         LOBYTE(Extension) = [Extension integerValue] == 1;
@@ -607,20 +607,20 @@ LABEL_32:
   return Extension;
 }
 
-- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3
+- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices
 {
-  v3 = [(TSDMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:a3 forAtomType:@"esds"];
+  v3 = [(TSDMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:devices forAtomType:@"esds"];
   if (v3)
   {
     v4 = v3;
-    v5 = [v3 bytes];
+    bytes = [v3 bytes];
     v6 = [v4 length];
     if (v6 < 5)
     {
       goto LABEL_9;
     }
 
-    v7 = (v5 + 2);
+    v7 = (bytes + 2);
     v8 = 4;
     while (*(v7 - 2) || *(v7 - 1) || *v7 != 1 || v7[1] != 176)
     {
@@ -661,9 +661,9 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3
+- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices
 {
-  v3 = [(TSDMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:a3 forAtomType:@"d263"];
+  v3 = [(TSDMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:devices forAtomType:@"d263"];
   if (v3)
   {
     v4 = v3;
@@ -674,15 +674,15 @@ LABEL_9:
 
     else
     {
-      v5 = [v4 bytes];
-      if (*(v5 + 6))
+      bytes = [v4 bytes];
+      if (*(bytes + 6))
       {
         v6 = 1;
       }
 
       else
       {
-        v6 = *(v5 + 5) >= 0x2Eu;
+        v6 = *(bytes + 5) >= 0x2Eu;
       }
 
       LOBYTE(v3) = !v6;
@@ -692,12 +692,12 @@ LABEL_9:
   return v3;
 }
 
-- (id)p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:(opaqueCMFormatDescription *)a3 forAtomType:(id)a4
+- (id)p_sampleDescriptionExtensionAtomDataFromVideoFormatDescription:(opaqueCMFormatDescription *)description forAtomType:(id)type
 {
-  result = CMFormatDescriptionGetExtension(a3, *MEMORY[0x277CC03B0]);
+  result = CMFormatDescriptionGetExtension(description, *MEMORY[0x277CC03B0]);
   if (result)
   {
-    v6 = [result objectForKeyedSubscript:a4];
+    v6 = [result objectForKeyedSubscript:type];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -727,7 +727,7 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)a3
+- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)devices
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_287DDD620, &unk_287DDD638, &unk_287DDD650, &unk_287DDD668, &unk_287DDD680, &unk_287DDD698, &unk_287DDD6B0, &unk_287DDD6C8, &unk_287DDD6E0, &unk_287DDD6F8, &unk_287DDD710, &unk_287DDD728, &unk_287DDD6C8, &unk_287DDD740, &unk_287DDD758, 0}];
@@ -735,16 +735,16 @@ LABEL_9:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = a3;
-  v6 = [a3 formatDescriptions];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  devicesCopy = devices;
+  formatDescriptions = [devices formatDescriptions];
+  v7 = [formatDescriptions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v7)
   {
     return 1;
   }
 
   v8 = v7;
-  v9 = 0;
+  isEnabled = 0;
   v10 = *v20;
   do
   {
@@ -753,39 +753,39 @@ LABEL_9:
     {
       if (*v20 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(formatDescriptions);
       }
 
       v12 = *(*(&v19 + 1) + 8 * v11);
       MediaSubType = CMFormatDescriptionGetMediaSubType(v12);
-      if ((v9 & 1) == 0 && (v14 = MediaSubType, [v4 containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInt:", MediaSubType)}]) && (StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v12)) != 0 && StreamBasicDescription->mChannelsPerFrame <= 6 && StreamBasicDescription->mSampleRate <= 48000.0)
+      if ((isEnabled & 1) == 0 && (v14 = MediaSubType, [v4 containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInt:", MediaSubType)}]) && (StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v12)) != 0 && StreamBasicDescription->mChannelsPerFrame <= 6 && StreamBasicDescription->mSampleRate <= 48000.0)
       {
         if (v14 == 1885430579 || v14 == 1633889587)
         {
-          v9 = [v5 isEnabled];
+          isEnabled = [devicesCopy isEnabled];
         }
 
         else
         {
-          v9 = 0;
+          isEnabled = 0;
         }
       }
 
       else
       {
-        v9 = 1;
+        isEnabled = 1;
       }
 
       ++v11;
     }
 
     while (v8 != v11);
-    v17 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v17 = [formatDescriptions countByEnumeratingWithState:&v19 objects:v23 count:16];
     v8 = v17;
   }
 
   while (v17);
-  return v9 ^ 1;
+  return isEnabled ^ 1;
 }
 
 @end

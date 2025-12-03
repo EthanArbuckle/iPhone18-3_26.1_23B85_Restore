@@ -1,12 +1,12 @@
 @interface VFXDisplayLink
 - (BOOL)isPaused;
-- (BOOL)setPaused:(BOOL)a3 nextFrameTimeHint:(double)a4 lastUpdate:(double)a5;
+- (BOOL)setPaused:(BOOL)paused nextFrameTimeHint:(double)hint lastUpdate:(double)update;
 - (VFXDisplayLink)init;
-- (VFXDisplayLink)initWithLayer:(id)a3 runLoop:(id)a4 block:(id)a5;
+- (VFXDisplayLink)initWithLayer:(id)layer runLoop:(id)loop block:(id)block;
 - (void)dealloc;
 - (void)invalidate;
-- (void)metalDisplayLink:(id)a3 needsUpdate:(id)a4;
-- (void)setLowLatency:(BOOL)a3;
+- (void)metalDisplayLink:(id)link needsUpdate:(id)update;
+- (void)setLowLatency:(BOOL)latency;
 @end
 
 @implementation VFXDisplayLink
@@ -18,14 +18,14 @@
   return 0;
 }
 
-- (VFXDisplayLink)initWithLayer:(id)a3 runLoop:(id)a4 block:(id)a5
+- (VFXDisplayLink)initWithLayer:(id)layer runLoop:(id)loop block:(id)block
 {
   v23.receiver = self;
   v23.super_class = VFXDisplayLink;
   v11 = [(VFXDisplayLink *)&v23 init];
   if (v11)
   {
-    if (!a3)
+    if (!layer)
     {
       v12 = sub_1AF0D5194();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -34,13 +34,13 @@
       }
     }
 
-    v11->_block = objc_msgSend_copy(a5, v8, v9, v10);
+    v11->_block = objc_msgSend_copy(block, v8, v9, v10);
     v13 = objc_alloc(MEMORY[0x1E69793E0]);
-    v16 = objc_msgSend_initWithMetalLayer_(v13, v14, a3, v15);
+    v16 = objc_msgSend_initWithMetalLayer_(v13, v14, layer, v15);
     v11->_caMetalDisplayLink = v16;
     objc_msgSend_setDelegate_(v16, v17, v11, v18);
     objc_msgSend_setPaused_(v11->_caMetalDisplayLink, v19, 1, v20);
-    objc_msgSend_addToRunLoop_forMode_(v11->_caMetalDisplayLink, v21, a4, *MEMORY[0x1E695DA28]);
+    objc_msgSend_addToRunLoop_forMode_(v11->_caMetalDisplayLink, v21, loop, *MEMORY[0x1E695DA28]);
   }
 
   return v11;
@@ -79,19 +79,19 @@
   }
 }
 
-- (BOOL)setPaused:(BOOL)a3 nextFrameTimeHint:(double)a4 lastUpdate:(double)a5
+- (BOOL)setPaused:(BOOL)paused nextFrameTimeHint:(double)hint lastUpdate:(double)update
 {
-  v7 = a3;
+  pausedCopy = paused;
   v11 = CACurrentMediaTime();
-  v12 = v11 - a5 > 0.25 && a4 - v11 > 0.25;
-  v13 = v7 && v12;
+  v12 = v11 - update > 0.25 && hint - v11 > 0.25;
+  v13 = pausedCopy && v12;
   if (v13 == 1)
   {
     objc_msgSend_setPaused_(self, v9, 1, v10);
-    if (a4 != INFINITY)
+    if (hint != INFINITY)
     {
       v14 = CACurrentMediaTime();
-      v15 = dispatch_time(0, ((a4 - v14 + -0.01) * 1000000000.0));
+      v15 = dispatch_time(0, ((hint - v14 + -0.01) * 1000000000.0));
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = sub_1AF3B4F9C;
@@ -109,18 +109,18 @@
   return v13;
 }
 
-- (void)setLowLatency:(BOOL)a3
+- (void)setLowLatency:(BOOL)latency
 {
-  if (self->_lowLatency != a3)
+  if (self->_lowLatency != latency)
   {
-    self->_lowLatency = a3;
-    (MEMORY[0x1EEE66B58])(self->_caMetalDisplayLink, sel_setPreferredFrameLatency_, a3);
+    self->_lowLatency = latency;
+    (MEMORY[0x1EEE66B58])(self->_caMetalDisplayLink, sel_setPreferredFrameLatency_, latency);
   }
 }
 
-- (void)metalDisplayLink:(id)a3 needsUpdate:(id)a4
+- (void)metalDisplayLink:(id)link needsUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   if ((objc_msgSend_isPaused(self, v5, v6, v7) & 1) == 0)
   {
     (*(self->_block + 2))();

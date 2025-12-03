@@ -1,24 +1,24 @@
 @interface CLGatheringXPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CLGatheringXPCServer)initWithQueue:(id)a3 settings:(id)a4 advStore:(id)a5 btClient:(id)a6;
-- (void)configure:(id)a3 withCompletion:(id)a4;
-- (void)fetchAdvertisementsDetailedWithCompletion:(id)a3;
-- (void)fetchAdvertisementsWithCompletion:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CLGatheringXPCServer)initWithQueue:(id)queue settings:(id)settings advStore:(id)store btClient:(id)client;
+- (void)configure:(id)configure withCompletion:(id)completion;
+- (void)fetchAdvertisementsDetailedWithCompletion:(id)completion;
+- (void)fetchAdvertisementsWithCompletion:(id)completion;
 @end
 
 @implementation CLGatheringXPCServer
 
-- (CLGatheringXPCServer)initWithQueue:(id)a3 settings:(id)a4 advStore:(id)a5 btClient:(id)a6
+- (CLGatheringXPCServer)initWithQueue:(id)queue settings:(id)settings advStore:(id)store btClient:(id)client
 {
   v13.receiver = self;
   v13.super_class = CLGatheringXPCServer;
   v10 = [(CLGatheringXPCServer *)&v13 init];
   if (v10)
   {
-    v10->_queue = a3;
-    v10->_advStore = a5;
-    v10->_btClient = a6;
-    v10->_settings = a4;
+    v10->_queue = queue;
+    v10->_advStore = store;
+    v10->_btClient = client;
+    v10->_settings = settings;
     v11 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.locationd.gathering"];
     v10->_listener = v11;
     [(NSXPCListener *)v11 setDelegate:v10];
@@ -29,14 +29,14 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  if (a4)
+  if (connection)
   {
-    v6 = [a4 valueForEntitlement:@"com.apple.locationd.adpd_gathering"];
+    v6 = [connection valueForEntitlement:@"com.apple.locationd.adpd_gathering"];
     if (!v6 || (v7 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v7 BOOLValue] & 1) == 0)
     {
-      v8 = [a4 processIdentifier];
+      processIdentifier = [connection processIdentifier];
       if (qword_1025D4720 != -1)
       {
         sub_101954984();
@@ -50,7 +50,7 @@
         v19 = 2082;
         v20 = "";
         v21 = 1026;
-        v22 = v8;
+        v22 = processIdentifier;
         _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:process is not entitled to use CLLocationManagerGathering, pid:%{public}d}", buf, 0x18u);
         if (qword_1025D4720 != -1)
         {
@@ -66,22 +66,22 @@
         v19 = 2082;
         v20 = "";
         v21 = 1026;
-        v22 = v8;
+        v22 = processIdentifier;
         _os_signpost_emit_with_name_impl(dword_100000000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "process is not entitled to use CLLocationManagerGathering", "{msg%{public}.0s:process is not entitled to use CLLocationManagerGathering, pid:%{public}d}", buf, 0x18u);
       }
     }
 
-    [a4 setInterruptionHandler:&stru_102476850];
-    [a4 setInvalidationHandler:&stru_102476870];
-    [a4 setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___CLLocationManagerGatheringServerInterface)}];
-    v11 = [a4 exportedInterface];
+    [connection setInterruptionHandler:&stru_102476850];
+    [connection setInvalidationHandler:&stru_102476870];
+    [connection setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___CLLocationManagerGatheringServerInterface)}];
+    exportedInterface = [connection exportedInterface];
     v12 = objc_opt_class();
-    [v11 setClasses:+[NSSet setWithObjects:](NSSet forSelector:"setWithObjects:" argumentIndex:v12 ofReply:{objc_opt_class(), 0), "fetchAdvertisementsWithCompletion:", 0, 1}];
-    v13 = [a4 exportedInterface];
+    [exportedInterface setClasses:+[NSSet setWithObjects:](NSSet forSelector:"setWithObjects:" argumentIndex:v12 ofReply:{objc_opt_class(), 0), "fetchAdvertisementsWithCompletion:", 0, 1}];
+    exportedInterface2 = [connection exportedInterface];
     v14 = objc_opt_class();
-    [v13 setClasses:+[NSSet setWithObjects:](NSSet forSelector:"setWithObjects:" argumentIndex:v14 ofReply:{objc_opt_class(), 0), "fetchAdvertisementsDetailedWithCompletion:", 0, 1}];
-    [a4 setExportedObject:self];
-    [a4 activate];
+    [exportedInterface2 setClasses:+[NSSet setWithObjects:](NSSet forSelector:"setWithObjects:" argumentIndex:v14 ofReply:{objc_opt_class(), 0), "fetchAdvertisementsDetailedWithCompletion:", 0, 1}];
+    [connection setExportedObject:self];
+    [connection activate];
   }
 
   else
@@ -104,10 +104,10 @@
     }
   }
 
-  return a4 != 0;
+  return connection != 0;
 }
 
-- (void)fetchAdvertisementsWithCompletion:(id)a3
+- (void)fetchAdvertisementsWithCompletion:(id)completion
 {
   if (qword_1025D4720 != -1)
   {
@@ -132,11 +132,11 @@
   v7[2] = sub_100845AB4;
   v7[3] = &unk_102476898;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = completion;
   dispatch_async(queue, v7);
 }
 
-- (void)fetchAdvertisementsDetailedWithCompletion:(id)a3
+- (void)fetchAdvertisementsDetailedWithCompletion:(id)completion
 {
   if (qword_1025D4720 != -1)
   {
@@ -161,14 +161,14 @@
   v7[2] = sub_100845CBC;
   v7[3] = &unk_102476898;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = completion;
   dispatch_async(queue, v7);
 }
 
-- (void)configure:(id)a3 withCompletion:(id)a4
+- (void)configure:(id)configure withCompletion:(id)completion
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
+  var0 = configure.var0;
+  var1 = configure.var1;
   if (qword_1025D4720 != -1)
   {
     sub_101954984();
@@ -195,7 +195,7 @@
   block[2] = sub_1008460B8;
   block[3] = &unk_10244FB18;
   block[4] = self;
-  block[5] = a4;
+  block[5] = completion;
   v11 = var0;
   v12 = var1;
   dispatch_async(queue, block);

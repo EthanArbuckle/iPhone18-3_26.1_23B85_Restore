@@ -1,11 +1,11 @@
 @interface SceneDelegate
 - (_TtC7PreviewP33_DAFF9A41E5ADE6EBFD072F745B69EC2013SceneDelegate)init;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -15,17 +15,17 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = j___Block_copy(a5);
+  v7 = j___Block_copy(handler);
   v8 = qword_100206060;
-  v9 = a4;
+  itemCopy = item;
   if (v8 != -1)
   {
     swift_once();
   }
 
-  v10 = v9;
+  v10 = itemCopy;
 
-  sub_100083890(v9);
+  sub_100083890(itemCopy);
 
   v7[2](v7, 1);
 

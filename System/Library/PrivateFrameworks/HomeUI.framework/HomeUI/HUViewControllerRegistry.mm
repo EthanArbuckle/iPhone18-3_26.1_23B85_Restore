@@ -1,8 +1,8 @@
 @interface HUViewControllerRegistry
 + (id)sharedInstance;
-- (Class)viewControllerClassForIdentifier:(id)a3;
+- (Class)viewControllerClassForIdentifier:(id)identifier;
 - (HUViewControllerRegistry)init;
-- (void)registerViewControllerClass:(Class)a3 forIdentifier:(id)a4;
+- (void)registerViewControllerClass:(Class)class forIdentifier:(id)identifier;
 @end
 
 @implementation HUViewControllerRegistry
@@ -41,20 +41,20 @@ void __42__HUViewControllerRegistry_sharedInstance__block_invoke_2()
   return v2;
 }
 
-- (Class)viewControllerClassForIdentifier:(id)a3
+- (Class)viewControllerClassForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HUViewControllerRegistry *)self viewControllerClassesByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  viewControllerClassesByIdentifier = [(HUViewControllerRegistry *)self viewControllerClassesByIdentifier];
+  v6 = [viewControllerClassesByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)registerViewControllerClass:(Class)a3 forIdentifier:(id)a4
+- (void)registerViewControllerClass:(Class)class forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(HUViewControllerRegistry *)self viewControllerClassesByIdentifier];
-  [v7 setObject:a3 forKeyedSubscript:v6];
+  identifierCopy = identifier;
+  viewControllerClassesByIdentifier = [(HUViewControllerRegistry *)self viewControllerClassesByIdentifier];
+  [viewControllerClassesByIdentifier setObject:class forKeyedSubscript:identifierCopy];
 }
 
 @end

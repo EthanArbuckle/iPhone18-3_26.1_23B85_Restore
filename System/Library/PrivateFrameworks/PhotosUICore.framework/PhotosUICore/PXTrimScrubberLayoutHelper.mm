@@ -1,5 +1,5 @@
 @interface PXTrimScrubberLayoutHelper
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForOffsetInScrubberSpace:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForOffsetInScrubberSpace:(SEL)space;
 - (CGRect)durationInsetFilmstripFrame;
 - (CGRect)filmstripFrame;
 - (CGRect)filmstripFrameInScrubberSpace;
@@ -7,15 +7,15 @@
 - (CGRect)visibleFrameInFilmstripSpace;
 - (PXTrimScrubberLayoutHelper)init;
 - (UIEdgeInsets)horizontalTimelineInset;
-- (double)offsetInScrubberSpaceForTime:(id *)a3;
-- (double)offsetInScrubberSpaceForTime:(id *)a3 fallbackAnchor:(double)a4;
-- (double)offsetInViewportSpaceForTime:(id *)a3;
-- (double)offsetInViewportSpaceForTime:(id *)a3 fallbackAnchor:(double)a4;
+- (double)offsetInScrubberSpaceForTime:(id *)time;
+- (double)offsetInScrubberSpaceForTime:(id *)time fallbackAnchor:(double)anchor;
+- (double)offsetInViewportSpaceForTime:(id *)time;
+- (double)offsetInViewportSpaceForTime:(id *)time fallbackAnchor:(double)anchor;
 - (void)_updateIfNeeded;
-- (void)setDuration:(id *)a3;
-- (void)setFilmstripScale:(double)a3;
-- (void)setPivotAnchor:(double)a3;
-- (void)setViewportFrame:(CGRect)a3;
+- (void)setDuration:(id *)duration;
+- (void)setFilmstripScale:(double)scale;
+- (void)setPivotAnchor:(double)anchor;
+- (void)setViewportFrame:(CGRect)frame;
 @end
 
 @implementation PXTrimScrubberLayoutHelper
@@ -75,7 +75,7 @@
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForOffsetInScrubberSpace:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForOffsetInScrubberSpace:(SEL)space
 {
   v7 = MEMORY[0x1E6960CC0];
   *retstr = **&MEMORY[0x1E6960CC0];
@@ -148,9 +148,9 @@ LABEL_7:
   return result;
 }
 
-- (double)offsetInViewportSpaceForTime:(id *)a3 fallbackAnchor:(double)a4
+- (double)offsetInViewportSpaceForTime:(id *)time fallbackAnchor:(double)anchor
 {
-  if ((a3->var2 & 0x1D) == 1)
+  if ((time->var2 & 0x1D) == 1)
   {
     [(PXTrimScrubberLayoutHelper *)self duration];
     if ((v11 & 0x1D) == 1)
@@ -159,7 +159,7 @@ LABEL_7:
       v9 = **&MEMORY[0x1E6960CC0];
       if (CMTimeCompare(&time1, &v9) >= 1)
       {
-        time1 = *a3;
+        time1 = *time;
         CMTimeGetSeconds(&time1);
         [(PXTrimScrubberLayoutHelper *)self duration];
         CMTimeGetSeconds(&time1);
@@ -169,30 +169,30 @@ LABEL_7:
   }
 
   [(PXTrimScrubberLayoutHelper *)self durationInsetFilmstripFrame];
-  v7 = a4 * CGRectGetWidth(v12);
+  v7 = anchor * CGRectGetWidth(v12);
   [(PXTrimScrubberLayoutHelper *)self durationInsetFilmstripFrame];
   return v7 + CGRectGetMinX(v13);
 }
 
-- (double)offsetInViewportSpaceForTime:(id *)a3
+- (double)offsetInViewportSpaceForTime:(id *)time
 {
-  v4 = *a3;
+  v4 = *time;
   [(PXTrimScrubberLayoutHelper *)self offsetInViewportSpaceForTime:&v4 fallbackAnchor:0.0];
   return result;
 }
 
-- (double)offsetInScrubberSpaceForTime:(id *)a3 fallbackAnchor:(double)a4
+- (double)offsetInScrubberSpaceForTime:(id *)time fallbackAnchor:(double)anchor
 {
-  v8 = *a3;
-  [(PXTrimScrubberLayoutHelper *)self offsetInViewportSpaceForTime:&v8 fallbackAnchor:a4];
+  v8 = *time;
+  [(PXTrimScrubberLayoutHelper *)self offsetInViewportSpaceForTime:&v8 fallbackAnchor:anchor];
   v6 = v5;
   [(PXTrimScrubberLayoutHelper *)self viewportFrame];
   return v6 + CGRectGetMinX(v9);
 }
 
-- (double)offsetInScrubberSpaceForTime:(id *)a3
+- (double)offsetInScrubberSpaceForTime:(id *)time
 {
-  v4 = *a3;
+  v4 = *time;
   [(PXTrimScrubberLayoutHelper *)self offsetInScrubberSpaceForTime:&v4 fallbackAnchor:0.0];
   return result;
 }
@@ -239,31 +239,31 @@ LABEL_7:
   return result;
 }
 
-- (void)setPivotAnchor:(double)a3
+- (void)setPivotAnchor:(double)anchor
 {
-  if (self->_pivotAnchor != a3)
+  if (self->_pivotAnchor != anchor)
   {
-    self->_pivotAnchor = a3;
+    self->_pivotAnchor = anchor;
     [(PXTrimScrubberLayoutHelper *)self setNeedsUpdate:1];
   }
 }
 
-- (void)setFilmstripScale:(double)a3
+- (void)setFilmstripScale:(double)scale
 {
-  if (self->_filmstripScale != a3)
+  if (self->_filmstripScale != scale)
   {
-    self->_filmstripScale = a3;
+    self->_filmstripScale = scale;
     [(PXTrimScrubberLayoutHelper *)self setNeedsUpdate:1];
   }
 }
 
-- (void)setViewportFrame:(CGRect)a3
+- (void)setViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_viewportFrame, a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(self->_viewportFrame, frame))
   {
     self->_viewportFrame.origin.x = x;
     self->_viewportFrame.origin.y = y;
@@ -274,22 +274,22 @@ LABEL_7:
   }
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  if ((a3->var2 & 0x1D) == 1)
+  if ((duration->var2 & 0x1D) == 1)
   {
     v10 = v3;
     v11 = v4;
     time1 = self->_duration;
-    v8 = *a3;
+    v8 = *duration;
     if (CMTimeCompare(&time1, &v8))
     {
-      time1 = *a3;
+      time1 = *duration;
       v8 = **&MEMORY[0x1E6960CC0];
       if ((CMTimeCompare(&time1, &v8) & 0x80000000) == 0)
       {
-        v7 = *&a3->var0;
-        self->_duration.epoch = a3->var3;
+        v7 = *&duration->var0;
+        self->_duration.epoch = duration->var3;
         *&self->_duration.value = v7;
         [(PXTrimScrubberLayoutHelper *)self setNeedsUpdate:1];
       }

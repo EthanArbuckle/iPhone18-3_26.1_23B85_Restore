@@ -31,9 +31,9 @@ void __43__DOCSmartFolderManager_OBJC_sharedManager__block_invoke()
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables21DOCSmartFolderManager_database);
-  v3 = self;
+  selfCopy = self;
   [v2 close];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for DOCSmartFolderManager();
   [(DOCSmartFolderManager *)&v4 dealloc];
 }

@@ -1,32 +1,32 @@
 @interface _TUIHostingGeometryReuseMap
-- (_TUIHostingGeometryReuseMap)initWithMap:(id)a3 reuseTypes:(id)a4;
-- (id)geometryForIdentifier:(id)a3 requestedSize:(CGSize)a4;
+- (_TUIHostingGeometryReuseMap)initWithMap:(id)map reuseTypes:(id)types;
+- (id)geometryForIdentifier:(id)identifier requestedSize:(CGSize)size;
 @end
 
 @implementation _TUIHostingGeometryReuseMap
 
-- (_TUIHostingGeometryReuseMap)initWithMap:(id)a3 reuseTypes:(id)a4
+- (_TUIHostingGeometryReuseMap)initWithMap:(id)map reuseTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  typesCopy = types;
   v21.receiver = self;
   v21.super_class = _TUIHostingGeometryReuseMap;
   v8 = [(_TUIHostingGeometryReuseMap *)&v21 init];
   if (v8)
   {
-    v9 = [v6 identifiers];
-    v10 = v7;
+    identifiers = [mapCopy identifiers];
+    v10 = typesCopy;
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_E730C;
     v25 = &unk_261980;
     v26 = v10;
-    v11 = [v9 objectsPassingTest:&v22];
+    v11 = [identifiers objectsPassingTest:&v22];
 
     reuseIdentifiers = v8->_reuseIdentifiers;
     v8->_reuseIdentifiers = v11;
 
-    v13 = [v6 map];
+    v13 = [mapCopy map];
     v14 = v10;
     v15 = objc_opt_new();
     v22 = _NSConcreteStackBlock;
@@ -55,17 +55,17 @@
   return v8;
 }
 
-- (id)geometryForIdentifier:(id)a3 requestedSize:(CGSize)a4
+- (id)geometryForIdentifier:(id)identifier requestedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v8 = [_TUIHostingGeometryReuseKey alloc];
-  v9 = [v7 type];
-  v10 = [v7 identifier];
+  type = [identifierCopy type];
+  identifier = [identifierCopy identifier];
 
-  v11 = [(_TUIHostingGeometryReuseKey *)v8 initWithType:v9 identifier:v10 requestedSize:width, height];
-  v12 = [(NSDictionary *)self->_reuseMap objectForKeyedSubscript:v11];
+  height = [(_TUIHostingGeometryReuseKey *)v8 initWithType:type identifier:identifier requestedSize:width, height];
+  v12 = [(NSDictionary *)self->_reuseMap objectForKeyedSubscript:height];
 
   return v12;
 }

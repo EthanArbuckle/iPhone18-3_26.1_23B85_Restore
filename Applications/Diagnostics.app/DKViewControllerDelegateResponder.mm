@@ -1,11 +1,11 @@
 @interface DKViewControllerDelegateResponder
 - (_TtC11Diagnostics33DKViewControllerDelegateResponder)init;
-- (void)setStatusBarStyle:(int64_t)a3;
+- (void)setStatusBarStyle:(int64_t)style;
 @end
 
 @implementation DKViewControllerDelegateResponder
 
-- (void)setStatusBarStyle:(int64_t)a3
+- (void)setStatusBarStyle:(int64_t)style
 {
   v4 = objc_opt_self();
   v5 = [objc_msgSend(v4 "currentPlatform")];

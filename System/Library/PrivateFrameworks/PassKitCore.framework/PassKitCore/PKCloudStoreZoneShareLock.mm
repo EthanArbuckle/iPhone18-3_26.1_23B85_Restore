@@ -1,66 +1,66 @@
 @interface PKCloudStoreZoneShareLock
-+ (id)recordNameForZoneName:(id)a3;
-+ (id)zoneNameFromRecordName:(id)a3;
-+ (void)_deleteDeviceDataFromCloudStoreRecord:(id)a3;
-+ (void)deleteFromCloudStoreRecord:(id)a3 codingType:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCloudStoreZoneShareLock:(id)a3;
-- (PKCloudStoreZoneShareLock)initWithCloudStoreCoder:(id)a3;
-- (PKCloudStoreZoneShareLock)initWithCoder:(id)a3;
-- (PKCloudStoreZoneShareLock)initWithZoneName:(id)a3 creationDate:(id)a4 originDeviceIdentifier:(id)a5 originDeviceName:(id)a6;
++ (id)recordNameForZoneName:(id)name;
++ (id)zoneNameFromRecordName:(id)name;
++ (void)_deleteDeviceDataFromCloudStoreRecord:(id)record;
++ (void)deleteFromCloudStoreRecord:(id)record codingType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCloudStoreZoneShareLock:(id)lock;
+- (PKCloudStoreZoneShareLock)initWithCloudStoreCoder:(id)coder;
+- (PKCloudStoreZoneShareLock)initWithCoder:(id)coder;
+- (PKCloudStoreZoneShareLock)initWithZoneName:(id)name creationDate:(id)date originDeviceIdentifier:(id)identifier originDeviceName:(id)deviceName;
 - (id)description;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
 - (unint64_t)hash;
-- (void)_encodeDeviceDataForCloudStoreCoder:(id)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_encodeDeviceDataForCloudStoreCoder:(id)coder;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZoneShareLock
 
-- (PKCloudStoreZoneShareLock)initWithZoneName:(id)a3 creationDate:(id)a4 originDeviceIdentifier:(id)a5 originDeviceName:(id)a6
+- (PKCloudStoreZoneShareLock)initWithZoneName:(id)name creationDate:(id)date originDeviceIdentifier:(id)identifier originDeviceName:(id)deviceName
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  dateCopy = date;
+  identifierCopy = identifier;
+  deviceNameCopy = deviceName;
   v18.receiver = self;
   v18.super_class = PKCloudStoreZoneShareLock;
   v15 = [(PKCloudStoreZoneShareLock *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_zoneName, a3);
-    objc_storeStrong(&v16->_creationDate, a4);
-    objc_storeStrong(&v16->_originDeviceIdentifier, a5);
-    objc_storeStrong(&v16->_originDeviceName, a6);
+    objc_storeStrong(&v15->_zoneName, name);
+    objc_storeStrong(&v16->_creationDate, date);
+    objc_storeStrong(&v16->_originDeviceIdentifier, identifier);
+    objc_storeStrong(&v16->_originDeviceName, deviceName);
   }
 
   return v16;
 }
 
-- (PKCloudStoreZoneShareLock)initWithCoder:(id)a3
+- (PKCloudStoreZoneShareLock)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKCloudStoreZoneShareLock;
   v5 = [(PKCloudStoreZoneShareLock *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockCreationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockCreationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originDeviceIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originDeviceIdentifier"];
     originDeviceIdentifier = v5->_originDeviceIdentifier;
     v5->_originDeviceIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originDeviceName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originDeviceName"];
     originDeviceName = v5->_originDeviceName;
     v5->_originDeviceName = v12;
   }
@@ -68,97 +68,97 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   zoneName = self->_zoneName;
-  v5 = a3;
-  [v5 encodeObject:zoneName forKey:@"zoneName"];
-  [v5 encodeObject:self->_creationDate forKey:@"lockCreationDate"];
-  [v5 encodeObject:self->_originDeviceIdentifier forKey:@"originDeviceIdentifier"];
-  [v5 encodeObject:self->_originDeviceName forKey:@"originDeviceName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:zoneName forKey:@"zoneName"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"lockCreationDate"];
+  [coderCopy encodeObject:self->_originDeviceIdentifier forKey:@"originDeviceIdentifier"];
+  [coderCopy encodeObject:self->_originDeviceName forKey:@"originDeviceName"];
 }
 
-- (PKCloudStoreZoneShareLock)initWithCloudStoreCoder:(id)a3
+- (PKCloudStoreZoneShareLock)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKCloudStoreZoneShareLock;
   v5 = [(PKCloudStoreZoneShareLock *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKCloudStoreZoneShareLock *)v5 applyPropertiesFromCloudStoreRecord:v4];
+    [(PKCloudStoreZoneShareLock *)v5 applyPropertiesFromCloudStoreRecord:coderCopy];
   }
 
   return v6;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
-  v4 = [a3 recordsWithRecordType:@"ShareCreationLock"];
-  v13 = [v4 firstObject];
+  v4 = [record recordsWithRecordType:@"ShareCreationLock"];
+  firstObject = [v4 firstObject];
 
-  if (v13)
+  if (firstObject)
   {
-    v5 = [v13 pk_encryptedStringForKey:@"zoneName"];
+    v5 = [firstObject pk_encryptedStringForKey:@"zoneName"];
     zoneName = self->_zoneName;
     self->_zoneName = v5;
 
-    v7 = [v13 pk_encryptedDateForKey:@"lockCreationDate"];
+    v7 = [firstObject pk_encryptedDateForKey:@"lockCreationDate"];
     creationDate = self->_creationDate;
     self->_creationDate = v7;
 
-    v9 = [v13 pk_encryptedStringForKey:@"originDeviceIdentifier"];
+    v9 = [firstObject pk_encryptedStringForKey:@"originDeviceIdentifier"];
     originDeviceIdentifier = self->_originDeviceIdentifier;
     self->_originDeviceIdentifier = v9;
 
-    v11 = [v13 pk_encryptedStringForKey:@"originDeviceName"];
+    v11 = [firstObject pk_encryptedStringForKey:@"originDeviceName"];
     originDeviceName = self->_originDeviceName;
     self->_originDeviceName = v11;
   }
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [(PKCloudStoreZoneShareLock *)self _encodeDeviceDataForCloudStoreCoder:a3];
+    [(PKCloudStoreZoneShareLock *)self _encodeDeviceDataForCloudStoreCoder:coder];
   }
 }
 
-- (void)_encodeDeviceDataForCloudStoreCoder:(id)a3
+- (void)_encodeDeviceDataForCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"ShareCreationLock"];
-  v6 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"ShareCreationLock"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v6 encryptedValues];
-  [v5 setObject:self->_zoneName forKey:@"zoneName"];
-  [v5 setObject:self->_creationDate forKey:@"lockCreationDate"];
-  [v5 setObject:self->_originDeviceIdentifier forKey:@"originDeviceIdentifier"];
-  [v5 setObject:self->_originDeviceName forKey:@"originDeviceName"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:self->_zoneName forKey:@"zoneName"];
+  [encryptedValues setObject:self->_creationDate forKey:@"lockCreationDate"];
+  [encryptedValues setObject:self->_originDeviceIdentifier forKey:@"originDeviceIdentifier"];
+  [encryptedValues setObject:self->_originDeviceName forKey:@"originDeviceName"];
 }
 
-+ (void)deleteFromCloudStoreRecord:(id)a3 codingType:(unint64_t)a4
++ (void)deleteFromCloudStoreRecord:(id)record codingType:(unint64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [a1 _deleteDeviceDataFromCloudStoreRecord:a3];
+    [self _deleteDeviceDataFromCloudStoreRecord:record];
   }
 }
 
-+ (void)_deleteDeviceDataFromCloudStoreRecord:(id)a3
++ (void)_deleteDeviceDataFromCloudStoreRecord:(id)record
 {
-  v3 = [a3 recordsWithRecordType:@"ShareCreationLock"];
-  v5 = [v3 firstObject];
+  v3 = [record recordsWithRecordType:@"ShareCreationLock"];
+  firstObject = [v3 firstObject];
 
-  v4 = [v5 encryptedValues];
-  [v4 setObject:0 forKey:@"zoneName"];
-  [v4 setObject:0 forKey:@"lockCreationDate"];
-  [v4 setObject:0 forKey:@"originDeviceIdentifier"];
-  [v4 setObject:0 forKey:@"originDeviceName"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:0 forKey:@"zoneName"];
+  [encryptedValues setObject:0 forKey:@"lockCreationDate"];
+  [encryptedValues setObject:0 forKey:@"originDeviceIdentifier"];
+  [encryptedValues setObject:0 forKey:@"originDeviceName"];
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_zoneName length])
@@ -179,26 +179,26 @@
   return v6;
 }
 
-+ (id)recordNameForZoneName:(id)a3
++ (id)recordNameForZoneName:(id)name
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 recordNamePrefix];
-  v7 = [v4 stringWithFormat:@"%@%@", v6, v5];
+  nameCopy = name;
+  recordNamePrefix = [self recordNamePrefix];
+  nameCopy = [v4 stringWithFormat:@"%@%@", recordNamePrefix, nameCopy];
 
-  return v7;
+  return nameCopy;
 }
 
-+ (id)zoneNameFromRecordName:(id)a3
++ (id)zoneNameFromRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 recordNamePrefix];
-  v6 = [v4 hasPrefix:v5];
+  nameCopy = name;
+  recordNamePrefix = [self recordNamePrefix];
+  v6 = [nameCopy hasPrefix:recordNamePrefix];
 
   if (v6)
   {
-    v7 = [a1 recordNamePrefix];
-    v8 = [v4 substringFromIndex:{objc_msgSend(v7, "length")}];
+    recordNamePrefix2 = [self recordNamePrefix];
+    v8 = [nameCopy substringFromIndex:{objc_msgSend(recordNamePrefix2, "length")}];
   }
 
   else
@@ -209,27 +209,27 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCloudStoreZoneShareLock *)self isEqualToCloudStoreZoneShareLock:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCloudStoreZoneShareLock *)self isEqualToCloudStoreZoneShareLock:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCloudStoreZoneShareLock:(id)a3
+- (BOOL)isEqualToCloudStoreZoneShareLock:(id)lock
 {
-  v4 = a3;
-  v5 = v4[1];
+  lockCopy = lock;
+  v5 = lockCopy[1];
   v6 = self->_zoneName;
   v7 = v5;
   v8 = v7;
@@ -261,13 +261,13 @@
   {
 LABEL_11:
     creationDate = self->_creationDate;
-    v12 = v4[2];
+    v12 = lockCopy[2];
     if (creationDate && v12)
     {
       if (([(NSDate *)creationDate isEqual:?]& 1) != 0)
       {
 LABEL_14:
-        v13 = v4[3];
+        v13 = lockCopy[3];
         v6 = self->_originDeviceIdentifier;
         v14 = v13;
         v8 = v14;
@@ -276,7 +276,7 @@ LABEL_14:
 
 LABEL_23:
           originDeviceName = self->_originDeviceName;
-          v17 = v4[4];
+          v17 = lockCopy[4];
           v6 = originDeviceName;
           v18 = v17;
           v8 = v18;

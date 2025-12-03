@@ -1,23 +1,23 @@
 @interface SVXMyriadHostDevice
-- (SVXMyriadHostDevice)initWithDelegate:(id)a3 queue:(id)a4;
-- (void)_armEmergencyDispatchTimerFor:(double)a3 toExecute:(id)a4;
+- (SVXMyriadHostDevice)initWithDelegate:(id)delegate queue:(id)queue;
+- (void)_armEmergencyDispatchTimerFor:(double)for toExecute:(id)execute;
 - (void)_disarmMyriadEmergencyTimer;
 - (void)_initializeMyriadEmergencyTimer;
-- (void)_signalEmergencyCallHandledStatus:(BOOL)a3;
-- (void)_startAdvertisingEmergency:(id)a3;
+- (void)_signalEmergencyCallHandledStatus:(BOOL)status;
+- (void)_startAdvertisingEmergency:(id)emergency;
 - (void)preheatMyriad;
 - (void)resetMyriad;
-- (void)scdaCoordinatorDidHandleEmergency:(id)a3;
-- (void)scdaShouldAbortAnotherDeviceBetter:(id)a3;
-- (void)scdaShouldContinue:(id)a3;
-- (void)scdaShouldUnduck:(id)a3;
-- (void)setupEnabled:(BOOL)a3;
-- (void)startAdvertising:(unint64_t)a3 withSCDAGoodnessScoreContext:(id)a4 withSCDAAudioContext:(id)a5 completion:(id)a6;
+- (void)scdaCoordinatorDidHandleEmergency:(id)emergency;
+- (void)scdaShouldAbortAnotherDeviceBetter:(id)better;
+- (void)scdaShouldContinue:(id)continue;
+- (void)scdaShouldUnduck:(id)unduck;
+- (void)setupEnabled:(BOOL)enabled;
+- (void)startAdvertising:(unint64_t)advertising withSCDAGoodnessScoreContext:(id)context withSCDAAudioContext:(id)audioContext completion:(id)completion;
 @end
 
 @implementation SVXMyriadHostDevice
 
-- (void)scdaCoordinatorDidHandleEmergency:(id)a3
+- (void)scdaCoordinatorDidHandleEmergency:(id)emergency
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF098];
@@ -32,7 +32,7 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scdaShouldUnduck:(id)a3
+- (void)scdaShouldUnduck:(id)unduck
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -49,7 +49,7 @@ void __40__SVXMyriadHostDevice_scdaShouldUnduck___block_invoke(uint64_t a1)
   [WeakRetained unduckDevice];
 }
 
-- (void)scdaShouldAbortAnotherDeviceBetter:(id)a3
+- (void)scdaShouldAbortAnotherDeviceBetter:(id)better
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -67,7 +67,7 @@ void __58__SVXMyriadHostDevice_scdaShouldAbortAnotherDeviceBetter___block_invoke
   [WeakRetained deviceLostMyriadElection];
 }
 
-- (void)scdaShouldContinue:(id)a3
+- (void)scdaShouldContinue:(id)continue
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -85,7 +85,7 @@ void __42__SVXMyriadHostDevice_scdaShouldContinue___block_invoke(uint64_t a1)
   [WeakRetained deviceWonMyriadElection];
 }
 
-- (void)_signalEmergencyCallHandledStatus:(BOOL)a3
+- (void)_signalEmergencyCallHandledStatus:(BOOL)status
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -93,7 +93,7 @@ void __42__SVXMyriadHostDevice_scdaShouldContinue___block_invoke(uint64_t a1)
   v4[2] = __57__SVXMyriadHostDevice__signalEmergencyCallHandledStatus___block_invoke;
   v4[3] = &unk_279C681F8;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(queue, v4);
 }
 
@@ -135,10 +135,10 @@ void __57__SVXMyriadHostDevice__signalEmergencyCallHandledStatus___block_invoke(
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startAdvertisingEmergency:(id)a3
+- (void)_startAdvertisingEmergency:(id)emergency
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  emergencyCopy = emergency;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -148,7 +148,7 @@ void __57__SVXMyriadHostDevice__signalEmergencyCallHandledStatus___block_invoke(
   }
 
   [(SCDACoordinator *)self->_scdaCoordinator startAdvertisingEmergency];
-  v6 = [v4 copy];
+  v6 = [emergencyCopy copy];
   completion = self->_emergencyContext.completion;
   self->_emergencyContext.completion = v6;
 
@@ -186,15 +186,15 @@ void __50__SVXMyriadHostDevice__disarmMyriadEmergencyTimer__block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_armEmergencyDispatchTimerFor:(double)a3 toExecute:(id)a4
+- (void)_armEmergencyDispatchTimerFor:(double)for toExecute:(id)execute
 {
   v13 = *MEMORY[0x277D85DE8];
   timer = self->_emergencyContext.timer;
-  v6 = (a3 * 1000000000.0);
-  v7 = a4;
+  v6 = (for * 1000000000.0);
+  executeCopy = execute;
   v8 = dispatch_time(0, v6);
   dispatch_source_set_timer(timer, v8, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
-  dispatch_source_set_event_handler(self->_emergencyContext.timer, v7);
+  dispatch_source_set_event_handler(self->_emergencyContext.timer, executeCopy);
 
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -219,24 +219,24 @@ void __50__SVXMyriadHostDevice__disarmMyriadEmergencyTimer__block_invoke()
   dispatch_resume(v5);
 }
 
-- (void)startAdvertising:(unint64_t)a3 withSCDAGoodnessScoreContext:(id)a4 withSCDAAudioContext:(id)a5 completion:(id)a6
+- (void)startAdvertising:(unint64_t)advertising withSCDAGoodnessScoreContext:(id)context withSCDAAudioContext:(id)audioContext completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  audioContextCopy = audioContext;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__SVXMyriadHostDevice_startAdvertising_withSCDAGoodnessScoreContext_withSCDAAudioContext_completion___block_invoke;
   block[3] = &unk_279C67FC0;
-  v21 = v12;
-  v22 = a3;
-  v18 = v11;
-  v19 = v10;
-  v20 = self;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v21 = completionCopy;
+  advertisingCopy = advertising;
+  v18 = audioContextCopy;
+  v19 = contextCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v15 = contextCopy;
+  v16 = audioContextCopy;
   dispatch_async(queue, block);
 }
 
@@ -316,7 +316,7 @@ LABEL_19:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupEnabled:(BOOL)a3
+- (void)setupEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -324,7 +324,7 @@ LABEL_19:
   v4[2] = __36__SVXMyriadHostDevice_setupEnabled___block_invoke;
   v4[3] = &unk_279C681F8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(queue, v4);
 }
 
@@ -350,10 +350,10 @@ LABEL_19:
   dispatch_async(queue, block);
 }
 
-- (SVXMyriadHostDevice)initWithDelegate:(id)a3 queue:(id)a4
+- (SVXMyriadHostDevice)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = SVXMyriadHostDevice;
   v8 = [(SVXMyriadHostDevice *)&v14 init];
@@ -363,8 +363,8 @@ LABEL_19:
     scdaCoordinator = v8->_scdaCoordinator;
     v8->_scdaCoordinator = v9;
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_queue, queue);
     [(SVXMyriadHostDevice *)v8 _initializeMyriadEmergencyTimer];
     v11 = [[SVXMyriadWiFiAssertion alloc] initWithQueue:v8->_queue delegate:0];
     wifiAssertion = v8->_wifiAssertion;

@@ -1,22 +1,22 @@
 @interface MFOutgoingMessageDelivery
-+ (id)newWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6 charsets:(id)a7;
-+ (id)newWithMessage:(id)a3;
++ (id)newWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other charsets:(id)charsets;
++ (id)newWithMessage:(id)message;
 - (MFOutgoingMessageDelivery)init;
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6 charsets:(id)a7;
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 mixedContent:(id)a4 textPartsAreHTML:(BOOL)a5;
-- (MFOutgoingMessageDelivery)initWithMessage:(id)a3;
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other charsets:(id)charsets;
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers mixedContent:(id)content textPartsAreHTML:(BOOL)l;
+- (MFOutgoingMessageDelivery)initWithMessage:(id)message;
 - (id)_currentDeliveryObject;
-- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)a3;
+- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)settings;
 - (id)_deliveryAccountForInitializers;
 - (id)account;
-- (id)deliverSynchronouslyWithCompletion:(id)a3;
+- (id)deliverSynchronouslyWithCompletion:(id)completion;
 - (id)message;
 - (id)originalHeaders;
 - (int64_t)deliveryStatus;
 - (void)dealloc;
-- (void)setAccount:(id)a3;
-- (void)setArchiveAccount:(id)a3;
-- (void)setCompositionSpecification:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setArchiveAccount:(id)account;
+- (void)setCompositionSpecification:(id)specification;
 @end
 
 @implementation MFOutgoingMessageDelivery
@@ -28,57 +28,57 @@
   return [(MFOutgoingMessageDelivery *)&v3 init];
 }
 
-- (MFOutgoingMessageDelivery)initWithMessage:(id)a3
+- (MFOutgoingMessageDelivery)initWithMessage:(id)message
 {
   v4 = [(MFOutgoingMessageDelivery *)self init];
   if (v4)
   {
-    v4->_message = a3;
+    v4->_message = message;
   }
 
   return v4;
 }
 
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 mixedContent:(id)a4 textPartsAreHTML:(BOOL)a5
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers mixedContent:(id)content textPartsAreHTML:(BOOL)l
 {
   v8 = [(MFOutgoingMessageDelivery *)self init];
   if (v8)
   {
-    v8->_headers = a3;
-    v8->_mixedContent = a4;
-    v8->_textPartsAreHTML = a5;
+    v8->_headers = headers;
+    v8->_mixedContent = content;
+    v8->_textPartsAreHTML = l;
   }
 
   return v8;
 }
 
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6 charsets:(id)a7
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other charsets:(id)charsets
 {
   v12 = [(MFOutgoingMessageDelivery *)self init];
   if (v12)
   {
-    v12->_headers = a3;
-    v12->_htmlBody = a4;
-    v12->_plainTextAlternative = a5;
-    v12->_otherHTMLAndAttachments = a6;
-    v12->_charsets = a7;
+    v12->_headers = headers;
+    v12->_htmlBody = l;
+    v12->_plainTextAlternative = alternative;
+    v12->_otherHTMLAndAttachments = other;
+    v12->_charsets = charsets;
   }
 
   return v12;
 }
 
-+ (id)newWithMessage:(id)a3
++ (id)newWithMessage:(id)message
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
 
-  return [v4 initWithMessage:a3];
+  return [v4 initWithMessage:message];
 }
 
-+ (id)newWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6 charsets:(id)a7
++ (id)newWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other charsets:(id)charsets
 {
-  v12 = [a1 alloc];
+  v12 = [self alloc];
 
-  return [v12 initWithHeaders:a3 HTML:a4 plainTextAlternative:a5 other:a6 charsets:a7];
+  return [v12 initWithHeaders:headers HTML:l plainTextAlternative:alternative other:other charsets:charsets];
 }
 
 - (void)dealloc
@@ -93,9 +93,9 @@
   result = self->_currentDeliveryObject;
   if (!result)
   {
-    v4 = [(MFOutgoingMessageDelivery *)self account];
+    account = [(MFOutgoingMessageDelivery *)self account];
     message = self->_message;
-    if (v4)
+    if (account)
     {
       if (message)
       {
@@ -153,16 +153,16 @@ LABEL_18:
   return result;
 }
 
-- (void)setCompositionSpecification:(id)a3
+- (void)setCompositionSpecification:(id)specification
 {
   compositionSpecification = self->_compositionSpecification;
-  if (compositionSpecification != a3)
+  if (compositionSpecification != specification)
   {
 
-    self->_compositionSpecification = a3;
+    self->_compositionSpecification = specification;
     currentDeliveryObject = self->_currentDeliveryObject;
 
-    [(MFMailDelivery *)currentDeliveryObject setCompositionSpecification:a3];
+    [(MFMailDelivery *)currentDeliveryObject setCompositionSpecification:specification];
   }
 }
 
@@ -179,36 +179,36 @@ LABEL_18:
   }
 }
 
-- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)a3
+- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)settings
 {
-  v3 = a3;
-  v5 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-  if (v5)
+  settingsCopy = settings;
+  _currentDeliveryObject = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+  if (_currentDeliveryObject)
   {
-    v6 = v5;
-    if (v3)
+    v6 = _currentDeliveryObject;
+    if (settingsCopy)
     {
-      [v5 setCellDataOnly:1];
+      [_currentDeliveryObject setCellDataOnly:1];
     }
 
     [v6 setArchiveAccount:self->_archiveAccount];
     [v6 setConversationFlags:{-[MFOutgoingMessageDelivery conversationFlags](self, "conversationFlags")}];
     [v6 setIsUserRequested:{-[MFOutgoingMessageDelivery isUserRequested](self, "isUserRequested")}];
-    v7 = [v6 deliverSynchronously];
-    if ([v7 status])
+    deliverSynchronously = [v6 deliverSynchronously];
+    if ([deliverSynchronously status])
     {
-      if (v7)
+      if (deliverSynchronously)
       {
-        return v7;
+        return deliverSynchronously;
       }
     }
 
     else
     {
       [objc_msgSend(MEMORY[0x277CEC590] "sharedAggregateDictionary")];
-      if (v7)
+      if (deliverSynchronously)
       {
-        return v7;
+        return deliverSynchronously;
       }
     }
 
@@ -225,7 +225,7 @@ LABEL_18:
   return v10;
 }
 
-- (id)deliverSynchronouslyWithCompletion:(id)a3
+- (id)deliverSynchronouslyWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
   if (!-[MailAccount isPrimaryDeliveryAccountDisabled](self->_archiveAccount, "isPrimaryDeliveryAccountDisabled") && -[MFOutgoingMessageDelivery account](self, "account") || [-[MailAccount deliveryAccountAlternates](self->_archiveAccount "deliveryAccountAlternates")] || -[MailAccount canUseCarrierDeliveryFallback](self->_archiveAccount, "canUseCarrierDeliveryFallback"))
@@ -247,12 +247,12 @@ LABEL_18:
 
     if (-[MFDeliveryResult status](v5, "status") == 5 || -[MFDeliveryResult status](v5, "status") == 2 || -[MFDeliveryResult status](v5, "status") == 1 && (v16 = [+[MFActivityMonitor currentMonitor](MFActivityMonitor "currentMonitor")]) != 0 && (v17 = v16, @"MFMessageErrorDomain" == objc_msgSend(v16, "domain")) && objc_msgSend(v17, "code") == 1047)
     {
-      v8 = [(MailAccount *)self->_archiveAccount deliveryAccountAlternates];
+      deliveryAccountAlternates = [(MailAccount *)self->_archiveAccount deliveryAccountAlternates];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [deliveryAccountAlternates countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v9)
       {
         v10 = v9;
@@ -263,7 +263,7 @@ LABEL_13:
         {
           if (*v25 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(deliveryAccountAlternates);
           }
 
           v13 = *(*(&v24 + 1) + 8 * v12);
@@ -281,7 +281,7 @@ LABEL_13:
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v10 = [deliveryAccountAlternates countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v10)
             {
               goto LABEL_13;
@@ -317,9 +317,9 @@ LABEL_13:
       }
     }
 
-    if (a3)
+    if (completion)
     {
-      (*(a3 + 2))(a3, [(MFDeliveryResult *)v5 status]);
+      (*(completion + 2))(completion, [(MFDeliveryResult *)v5 status]);
     }
 
     if ([(MFDeliveryResult *)v5 status])
@@ -358,15 +358,15 @@ LABEL_13:
     return 5;
   }
 
-  v3 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+  _currentDeliveryObject = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
 
-  return [v3 deliveryStatus];
+  return [_currentDeliveryObject deliveryStatus];
 }
 
 - (id)message
 {
-  v3 = [-[MFOutgoingMessageDelivery _currentDeliveryObject](self "_currentDeliveryObject")];
-  if (!v3)
+  message = [-[MFOutgoingMessageDelivery _currentDeliveryObject](self "_currentDeliveryObject")];
+  if (!message)
   {
     if ([(MFOutgoingMessageDelivery *)self account])
     {
@@ -376,12 +376,12 @@ LABEL_13:
     message = self->_message;
     if (message)
     {
-      v3 = message;
+      message = message;
 LABEL_6:
       v5 = 0;
 LABEL_13:
 
-      return v3;
+      return message;
     }
 
     if (self->_mixedContent)
@@ -393,7 +393,7 @@ LABEL_13:
     {
       if (!self->_htmlBody && !self->_plainTextAlternative)
       {
-        v3 = 0;
+        message = 0;
         goto LABEL_6;
       }
 
@@ -401,11 +401,11 @@ LABEL_13:
     }
 
     v5 = v6;
-    v3 = [(MFMailDelivery *)v6 message];
+    message = [(MFMailDelivery *)v6 message];
     goto LABEL_13;
   }
 
-  return v3;
+  return message;
 }
 
 - (id)_deliveryAccountForInitializers
@@ -441,13 +441,13 @@ LABEL_13:
   return result;
 }
 
-- (void)setArchiveAccount:(id)a3
+- (void)setArchiveAccount:(id)account
 {
   archiveAccount = self->_archiveAccount;
-  if (archiveAccount != a3)
+  if (archiveAccount != account)
   {
 
-    archiveAccount = a3;
+    archiveAccount = account;
     self->_archiveAccount = archiveAccount;
   }
 
@@ -456,15 +456,15 @@ LABEL_13:
   [(MFMailDelivery *)currentDeliveryObject setArchiveAccount:archiveAccount];
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   deliveryAccount = self->_deliveryAccount;
-  if (deliveryAccount != a3)
+  if (deliveryAccount != account)
   {
 
-    v6 = a3;
-    self->_deliveryAccount = v6;
-    [(DeliveryAccount *)v6 deliveryClass];
+    accountCopy = account;
+    self->_deliveryAccount = accountCopy;
+    [(DeliveryAccount *)accountCopy deliveryClass];
     if (self->_currentDeliveryObject)
     {
       isKindOfClass = objc_opt_isKindOfClass();

@@ -2,9 +2,9 @@
 - (BOOL)accessibilityActivate;
 - (UIColor)tintColor;
 - (UISwitch)valueSwitch;
-- (_TtC12CoreAudioKit30AUGenericViewBoolParameterCell)initWithCoder:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)switchValueChangedWithSender:(id)a3;
+- (_TtC12CoreAudioKit30AUGenericViewBoolParameterCell)initWithCoder:(id)coder;
+- (void)setTintColor:(id)color;
+- (void)switchValueChangedWithSender:(id)sender;
 @end
 
 @implementation AUGenericViewBoolParameterCell
@@ -20,43 +20,43 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AUGenericViewBoolParameterCell();
-  v2 = [(AUGenericViewParameterCellBase *)&v4 tintColor];
+  tintColor = [(AUGenericViewParameterCellBase *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AUGenericViewBoolParameterCell();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(AUGenericViewParameterCellBase *)&v6 setTintColor:v4];
+  [(AUGenericViewParameterCellBase *)&v6 setTintColor:colorCopy];
   sub_237174F34();
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2371750A0();
 
   return 1;
 }
 
-- (void)switchValueChangedWithSender:(id)a3
+- (void)switchValueChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_237175768();
 }
 
-- (_TtC12CoreAudioKit30AUGenericViewBoolParameterCell)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit30AUGenericViewBoolParameterCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for AUGenericViewBoolParameterCell();
-  v5 = a3;
-  v6 = [(AUGenericViewParameterCellBase *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AUGenericViewParameterCellBase *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

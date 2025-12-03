@@ -1,5 +1,5 @@
 @interface AVAssetVariantAudioRenditionSpecificAttributes
-- (AVAssetVariantAudioRenditionSpecificAttributes)initWithFigAlternateObjC:(id)a3 mediaSelectionOption:(id)a4;
+- (AVAssetVariantAudioRenditionSpecificAttributes)initWithFigAlternateObjC:(id)c mediaSelectionOption:(id)option;
 - (BOOL)isBinaural;
 - (BOOL)isDownmix;
 - (BOOL)isImmersive;
@@ -53,15 +53,15 @@
   [(AVAssetVariantAudioRenditionSpecificAttributes *)&v3 dealloc];
 }
 
-- (AVAssetVariantAudioRenditionSpecificAttributes)initWithFigAlternateObjC:(id)a3 mediaSelectionOption:(id)a4
+- (AVAssetVariantAudioRenditionSpecificAttributes)initWithFigAlternateObjC:(id)c mediaSelectionOption:(id)option
 {
   v8.receiver = self;
   v8.super_class = AVAssetVariantAudioRenditionSpecificAttributes;
   v6 = [(AVAssetVariantAudioRenditionSpecificAttributes *)&v8 init];
   if (v6)
   {
-    v6->_figAlternateObjC = a3;
-    v6->_mediaSelectionOption = a4;
+    v6->_figAlternateObjC = c;
+    v6->_mediaSelectionOption = option;
   }
 
   return v6;

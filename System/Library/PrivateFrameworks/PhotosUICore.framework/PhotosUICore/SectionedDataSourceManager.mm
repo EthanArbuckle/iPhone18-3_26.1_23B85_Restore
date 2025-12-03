@@ -12,7 +12,7 @@
   v5[3] = swift_getAssociatedTypeWitness();
   v5[4] = swift_getAssociatedConformanceWitness();
   __swift_allocate_boxed_opaque_existential_1(v5);
-  v3 = self;
+  selfCopy = self;
   sub_1A5245904();
 }
 

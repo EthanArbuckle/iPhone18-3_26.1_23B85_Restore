@@ -1,244 +1,244 @@
 @interface AVTUILogger
 - (AVTUILogger)init;
-- (void)checkingAccountInfo:(id)a3;
-- (void)checkingIn:(id)a3;
-- (void)copyingStorageAside:(id)a3;
-- (void)deletingRecords:(id)a3;
-- (void)deletingStickerRecentsForRemoteChanges:(id)a3;
-- (void)duplicatingRecords:(id)a3;
-- (void)exportingRecords:(id)a3;
-- (void)fetchingRecords:(id)a3;
-- (void)importingRecords:(id)a3;
-- (void)logAVTViewCancelingRenderingAvatar:(id)a3;
-- (void)logAVTViewDidRenderAvatar:(id)a3 currentAvatar:(id)a4;
-- (void)logAVTViewDidRenderCurrentAvatar:(id)a3;
-- (void)logAVTViewSetAvatar:(id)a3;
-- (void)logAccountInfo:(id)a3 status:(int64_t)a4 deviceToDeviceEncryption:(BOOL)a5;
-- (void)logAnalysisServiceCheckingIn:(id)a3;
-- (void)logAnalysisServiceDidNotProcessState:(id)a3;
+- (void)checkingAccountInfo:(id)info;
+- (void)checkingIn:(id)in;
+- (void)copyingStorageAside:(id)aside;
+- (void)deletingRecords:(id)records;
+- (void)deletingStickerRecentsForRemoteChanges:(id)changes;
+- (void)duplicatingRecords:(id)records;
+- (void)exportingRecords:(id)records;
+- (void)fetchingRecords:(id)records;
+- (void)importingRecords:(id)records;
+- (void)logAVTViewCancelingRenderingAvatar:(id)avatar;
+- (void)logAVTViewDidRenderAvatar:(id)avatar currentAvatar:(id)currentAvatar;
+- (void)logAVTViewDidRenderCurrentAvatar:(id)avatar;
+- (void)logAVTViewSetAvatar:(id)avatar;
+- (void)logAccountInfo:(id)info status:(int64_t)status deviceToDeviceEncryption:(BOOL)encryption;
+- (void)logAnalysisServiceCheckingIn:(id)in;
+- (void)logAnalysisServiceDidNotProcessState:(id)state;
 - (void)logAnalysisServiceDidRun;
 - (void)logAnalysisServiceWillRun;
-- (void)logAvatarPreloadBeginForIdentifier:(id)a3;
+- (void)logAvatarPreloadBeginForIdentifier:(id)identifier;
 - (void)logAvatarPreloadEnd;
-- (void)logAvatarsDaemonClientChecksIn:(int)a3;
+- (void)logAvatarsDaemonClientChecksIn:(int)in;
 - (void)logAvatarsDaemonClientConnectionInterrupted;
 - (void)logAvatarsDaemonClientConnectionInvalidated;
 - (void)logAvatarsDaemonReceivesIncomingConnection;
-- (void)logAvatarsdExitingWithReason:(id)a3;
-- (void)logBackendVersionMismatch:(id)a3 actual:(id)a4;
-- (void)logCancelTransition:(id)a3;
-- (void)logCancelingPreLoadingTask:(id)a3;
+- (void)logAvatarsdExitingWithReason:(id)reason;
+- (void)logBackendVersionMismatch:(id)mismatch actual:(id)actual;
+- (void)logCancelTransition:(id)transition;
+- (void)logCancelingPreLoadingTask:(id)task;
 - (void)logCancellingCleanupBlock;
-- (void)logCarouselAddsTransitionToCoordinator:(id)a3;
-- (void)logCarouselCellStartUsingLiveView:(id)a3 associatedTransition:(id)a4;
-- (void)logCarouselCellStopUsingLiveView:(id)a3 associatedTransition:(id)a4;
-- (void)logCarouselChangesCenterItemTo:(id)a3;
+- (void)logCarouselAddsTransitionToCoordinator:(id)coordinator;
+- (void)logCarouselCellStartUsingLiveView:(id)view associatedTransition:(id)transition;
+- (void)logCarouselCellStopUsingLiveView:(id)view associatedTransition:(id)transition;
+- (void)logCarouselChangesCenterItemTo:(id)to;
 - (void)logCarouselChangingToMultiMode;
 - (void)logCarouselChangingToSingleMode;
-- (void)logCarouselDelegateDidFocusRecord:(id)a3;
-- (void)logCarouselDelegateDidUpdateRecord:(id)a3;
-- (void)logCarouselDelegateNearnessFactorDidChange:(double)a3 towardRecord:(BOOL)a4 editable:(BOOL)a5;
-- (void)logCarouselDelegateWillEndFocusRecord:(id)a3;
-- (void)logCarouselEndsDraggingWithVelocity:(double)a3 willSwitchIndexPathInsteadOfScrollBack:(BOOL)a4 forHighVelocity:(BOOL)a5;
-- (void)logCarouselErrorGettingFrameForElementAtIndex:(unint64_t)a3;
-- (void)logCarouselSnapshotForIndex:(unint64_t)a3 size:(CGSize)a4;
-- (void)logCarouselStopsFocusingOnCenterItem:(id)a3 withCell:(id)a4;
-- (void)logCarouselTransitionCenterItem:(id)a3 withCell:(id)a4;
+- (void)logCarouselDelegateDidFocusRecord:(id)record;
+- (void)logCarouselDelegateDidUpdateRecord:(id)record;
+- (void)logCarouselDelegateNearnessFactorDidChange:(double)change towardRecord:(BOOL)record editable:(BOOL)editable;
+- (void)logCarouselDelegateWillEndFocusRecord:(id)record;
+- (void)logCarouselEndsDraggingWithVelocity:(double)velocity willSwitchIndexPathInsteadOfScrollBack:(BOOL)back forHighVelocity:(BOOL)highVelocity;
+- (void)logCarouselErrorGettingFrameForElementAtIndex:(unint64_t)index;
+- (void)logCarouselSnapshotForIndex:(unint64_t)index size:(CGSize)size;
+- (void)logCarouselStopsFocusingOnCenterItem:(id)item withCell:(id)cell;
+- (void)logCarouselTransitionCenterItem:(id)item withCell:(id)cell;
 - (void)logChangesRequireExport;
 - (void)logChangesRequireThumbnailUpdate;
 - (void)logCheckingIfMigrationNeeded;
 - (void)logCleanupTimerComplete;
-- (void)logCoalesceableEventOccured:(id)a3;
-- (void)logCouldntFindRecordIdentifierForChangeType:(int64_t)a3 managedObjectID:(id)a4;
-- (void)logCreatingBackendDBAtPath:(id)a3;
-- (void)logCreatingBackendFolderAtPath:(id)a3;
-- (void)logCreatingImageStoreForPath:(id)a3;
-- (void)logCreatingStore:(id)a3;
-- (void)logCurrentHistoryTokenFileDoesntExist:(id)a3;
-- (void)logDebug:(id)a3;
-- (void)logDecrementingRemoteRendererTransactionCount:(int64_t)a3;
-- (void)logDeduplicateRecordWithIdentifier:(id)a3 toNewRecordWithIdentifier:(id)a4;
-- (void)logDeletingImagesWithIdentifierPrefix:(id)a3;
-- (void)logDeletingRecordWithIdentifier:(id)a3;
+- (void)logCoalesceableEventOccured:(id)occured;
+- (void)logCouldntFindRecordIdentifierForChangeType:(int64_t)type managedObjectID:(id)d;
+- (void)logCreatingBackendDBAtPath:(id)path;
+- (void)logCreatingBackendFolderAtPath:(id)path;
+- (void)logCreatingImageStoreForPath:(id)path;
+- (void)logCreatingStore:(id)store;
+- (void)logCurrentHistoryTokenFileDoesntExist:(id)exist;
+- (void)logDebug:(id)debug;
+- (void)logDecrementingRemoteRendererTransactionCount:(int64_t)count;
+- (void)logDeduplicateRecordWithIdentifier:(id)identifier toNewRecordWithIdentifier:(id)withIdentifier;
+- (void)logDeletingImagesWithIdentifierPrefix:(id)prefix;
+- (void)logDeletingRecordWithIdentifier:(id)identifier;
 - (void)logDeletingStickerRecents;
-- (void)logDidFinishEditingWithError:(id)a3;
+- (void)logDidFinishEditingWithError:(id)error;
 - (void)logDidFinishEditingWithSuccess;
-- (void)logDidResetZoneWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)logDiscoveredDuplicates:(id)a3 count:(unint64_t)a4;
-- (void)logDispatchingRemoteChangeWithTransactionCount:(unint64_t)a3 handlersCount:(unint64_t)a4;
-- (void)logDonePreLoadingPreset:(id)a3 task:(id)a4;
-- (void)logDonePreLoadingThumbnailForPreLoadingTask:(id)a3;
-- (void)logDroppingUnsupportedAvatarRecord:(id)a3;
-- (void)logDuplicatingRecordWithIdentifier:(id)a3;
-- (void)logErrorAddingPersistentStore:(id)a3;
-- (void)logErrorCopyingStorageAside:(id)a3;
-- (void)logErrorCreatingBackendContent:(id)a3;
-- (void)logErrorDeletingMigratedContent:(id)a3;
-- (void)logErrorDeletingSomeThumbnail:(id)a3;
-- (void)logErrorDeletingThumbnailsForIdentifier:(id)a3 error:(id)a4;
-- (void)logErrorDuplicatingThumbnailsForIdentifier:(id)a3 error:(id)a4;
-- (void)logErrorFetchingChangeHistory:(id)a3;
-- (void)logErrorFetchingRecentStickers:(id)a3;
-- (void)logErrorFetchingRecords:(id)a3;
-- (void)logErrorGettingAccountInfo:(id)a3;
-- (void)logErrorGettingAvatarsDaemonClientProxy:(id)a3;
-- (void)logErrorGettingChangedRecordsContentForIdentifiers:(id)a3 error:(id)a4;
-- (void)logErrorLoadingTemplates:(id)a3;
-- (void)logErrorMergingCopiedAsideContent:(id)a3;
-- (void)logErrorMigratingBackupInclusionStatus:(id)a3;
-- (void)logErrorMitigatingDuplicates:(id)a3;
-- (void)logErrorPinningContextToCurrentQueryGenerationToken:(id)a3;
-- (void)logErrorProcessingChangeTransactionsToUpdateThumbnails:(id)a3;
-- (void)logErrorReadingCurrentHistoryToken:(id)a3;
-- (void)logErrorRemovingStoreFolder:(id)a3;
-- (void)logErrorSandboxInit:(char *)a3;
-- (void)logErrorSavingChangeToken:(id)a3 location:(id)a4;
-- (void)logErrorSavingRecentSticker:(id)a3;
-- (void)logErrorSettingUpStore:(id)a3;
-- (void)logErrorSettingUserDirSuffixForSandbox:(int)a3;
-- (void)logErrorSnapshottingAVTView:(id)a3;
-- (void)logErrorStartingServer:(id)a3;
-- (void)logErrorTearingDownCoreDataStack:(id)a3;
-- (void)logErrorUpdatingBackupInclusionStatus:(id)a3;
-- (void)logErrorUpdatingBodyCarouselVisibleCellAtIndexPath:(id)a3;
-- (void)logErrorUpdatingRecordsForMigration:(id)a3;
-- (void)logErrorUpdatingVersion:(id)a3;
-- (void)logErrorWhileMigratingBackend:(id)a3;
-- (void)logExportRequestResult:(BOOL)a3 error:(id)a4;
-- (void)logFailedToGenerateStickerInService:(id)a3;
-- (void)logFetchedOrphanedRecentSticker:(id)a3;
-- (void)logFetchedRecentStickerWithNoStickerConfiguration:(id)a3;
-- (void)logFetchedRecords:(unint64_t)a3 criteria:(int64_t)a4;
-- (void)logFileSystemError:(id)a3;
+- (void)logDidResetZoneWithSuccess:(BOOL)success error:(id)error;
+- (void)logDiscoveredDuplicates:(id)duplicates count:(unint64_t)count;
+- (void)logDispatchingRemoteChangeWithTransactionCount:(unint64_t)count handlersCount:(unint64_t)handlersCount;
+- (void)logDonePreLoadingPreset:(id)preset task:(id)task;
+- (void)logDonePreLoadingThumbnailForPreLoadingTask:(id)task;
+- (void)logDroppingUnsupportedAvatarRecord:(id)record;
+- (void)logDuplicatingRecordWithIdentifier:(id)identifier;
+- (void)logErrorAddingPersistentStore:(id)store;
+- (void)logErrorCopyingStorageAside:(id)aside;
+- (void)logErrorCreatingBackendContent:(id)content;
+- (void)logErrorDeletingMigratedContent:(id)content;
+- (void)logErrorDeletingSomeThumbnail:(id)thumbnail;
+- (void)logErrorDeletingThumbnailsForIdentifier:(id)identifier error:(id)error;
+- (void)logErrorDuplicatingThumbnailsForIdentifier:(id)identifier error:(id)error;
+- (void)logErrorFetchingChangeHistory:(id)history;
+- (void)logErrorFetchingRecentStickers:(id)stickers;
+- (void)logErrorFetchingRecords:(id)records;
+- (void)logErrorGettingAccountInfo:(id)info;
+- (void)logErrorGettingAvatarsDaemonClientProxy:(id)proxy;
+- (void)logErrorGettingChangedRecordsContentForIdentifiers:(id)identifiers error:(id)error;
+- (void)logErrorLoadingTemplates:(id)templates;
+- (void)logErrorMergingCopiedAsideContent:(id)content;
+- (void)logErrorMigratingBackupInclusionStatus:(id)status;
+- (void)logErrorMitigatingDuplicates:(id)duplicates;
+- (void)logErrorPinningContextToCurrentQueryGenerationToken:(id)token;
+- (void)logErrorProcessingChangeTransactionsToUpdateThumbnails:(id)thumbnails;
+- (void)logErrorReadingCurrentHistoryToken:(id)token;
+- (void)logErrorRemovingStoreFolder:(id)folder;
+- (void)logErrorSandboxInit:(char *)init;
+- (void)logErrorSavingChangeToken:(id)token location:(id)location;
+- (void)logErrorSavingRecentSticker:(id)sticker;
+- (void)logErrorSettingUpStore:(id)store;
+- (void)logErrorSettingUserDirSuffixForSandbox:(int)sandbox;
+- (void)logErrorSnapshottingAVTView:(id)view;
+- (void)logErrorStartingServer:(id)server;
+- (void)logErrorTearingDownCoreDataStack:(id)stack;
+- (void)logErrorUpdatingBackupInclusionStatus:(id)status;
+- (void)logErrorUpdatingBodyCarouselVisibleCellAtIndexPath:(id)path;
+- (void)logErrorUpdatingRecordsForMigration:(id)migration;
+- (void)logErrorUpdatingVersion:(id)version;
+- (void)logErrorWhileMigratingBackend:(id)backend;
+- (void)logExportRequestResult:(BOOL)result error:(id)error;
+- (void)logFailedToGenerateStickerInService:(id)service;
+- (void)logFetchedOrphanedRecentSticker:(id)sticker;
+- (void)logFetchedRecentStickerWithNoStickerConfiguration:(id)configuration;
+- (void)logFetchedRecords:(unint64_t)records criteria:(int64_t)criteria;
+- (void)logFileSystemError:(id)error;
 - (void)logFoundExistingRecordDuringMigration;
-- (void)logFoundExistingRecordDuringMigration:(id)a3;
-- (void)logFoundRecordIdentifier:(id)a3 changeType:(int64_t)a4 managedObjectID:(id)a5;
-- (void)logGeneratingImageError:(id)a3;
-- (void)logGeneratingImageForRecord:(id)a3 scope:(id)a4 type:(int64_t)a5;
-- (void)logGeneratingImageInServiceForRecord:(id)a3;
-- (void)logGenericSandboxError:(id)a3 error:(int)a4;
-- (void)logImageRenderServiceConnectionError:(id)a3;
-- (void)logImageStoreBeginSavingImageForPath:(id)a3;
-- (void)logImageStoreCacheHitForItemDescription:(id)a3 sizeCost:(unint64_t)a4;
-- (void)logImageStoreCacheMiss:(id)a3;
-- (void)logImageStoreDoneInServiceForPath:(id)a3;
-- (void)logImageStoreDoneSavingImageForPath:(id)a3;
-- (void)logImageStoreFailedInServiceForPath:(id)a3 error:(id)a4;
-- (void)logImageStoreSavingError:(id)a3 code:(int64_t)a4;
-- (void)logImportRequestResult:(BOOL)a3 error:(id)a4;
-- (void)logInMemoryCacheEvictsResource:(id)a3;
-- (void)logInMemoryCacheHitForResource:(id)a3;
-- (void)logInMemoryCacheStorageForResource:(id)a3;
-- (void)logIncrementingRemoteRendererTransactionCount:(int64_t)a3;
-- (void)logInspectingChangesForExportAfterToken:(id)a3;
-- (void)logLookingUpPreLoadedPreset:(id)a3 task:(id)a4;
+- (void)logFoundExistingRecordDuringMigration:(id)migration;
+- (void)logFoundRecordIdentifier:(id)identifier changeType:(int64_t)type managedObjectID:(id)d;
+- (void)logGeneratingImageError:(id)error;
+- (void)logGeneratingImageForRecord:(id)record scope:(id)scope type:(int64_t)type;
+- (void)logGeneratingImageInServiceForRecord:(id)record;
+- (void)logGenericSandboxError:(id)error error:(int)a4;
+- (void)logImageRenderServiceConnectionError:(id)error;
+- (void)logImageStoreBeginSavingImageForPath:(id)path;
+- (void)logImageStoreCacheHitForItemDescription:(id)description sizeCost:(unint64_t)cost;
+- (void)logImageStoreCacheMiss:(id)miss;
+- (void)logImageStoreDoneInServiceForPath:(id)path;
+- (void)logImageStoreDoneSavingImageForPath:(id)path;
+- (void)logImageStoreFailedInServiceForPath:(id)path error:(id)error;
+- (void)logImageStoreSavingError:(id)error code:(int64_t)code;
+- (void)logImportRequestResult:(BOOL)result error:(id)error;
+- (void)logInMemoryCacheEvictsResource:(id)resource;
+- (void)logInMemoryCacheHitForResource:(id)resource;
+- (void)logInMemoryCacheStorageForResource:(id)resource;
+- (void)logIncrementingRemoteRendererTransactionCount:(int64_t)count;
+- (void)logInspectingChangesForExportAfterToken:(id)token;
+- (void)logLookingUpPreLoadedPreset:(id)preset task:(id)task;
 - (void)logMaintenanceCompleted;
-- (void)logMigratingSource:(id)a3;
+- (void)logMigratingSource:(id)source;
 - (void)logMigrationXPCActivityFinished;
-- (void)logMirroringRequestErrorWithCode:(int64_t)a3 description:(id)a4;
+- (void)logMirroringRequestErrorWithCode:(int64_t)code description:(id)description;
 - (void)logMissingResetSyncReasonKey;
 - (void)logMissingTombstonedIdentifier;
 - (void)logNilImageReturnedFromAVTAvatarRecordImageProvider;
 - (void)logNilImageReturnedFromAVTUIStickerRenderer;
-- (void)logNoAvatarPreset:(id)a3;
+- (void)logNoAvatarPreset:(id)preset;
 - (void)logNoProxyToAvatarsDaemon;
-- (void)logNotImportingOnLaunchWithRemainingTime:(double)a3;
+- (void)logNotImportingOnLaunchWithRemainingTime:(double)time;
 - (void)logNotificationDoesntContainChangeHistoryToken;
-- (void)logPaddleViewVideoPlayerFailed:(id)a3;
+- (void)logPaddleViewVideoPlayerFailed:(id)failed;
 - (void)logParsingMetadataDefinitions;
-- (void)logParsingMetadataDefinitionsError:(id)a3;
-- (void)logPerformTransition:(id)a3;
-- (void)logPerformedRecentStickersMigration:(BOOL)a3;
-- (void)logPersistentChangeNotOfInterest:(id)a3;
-- (void)logPostingChangeNotificationForIdentifiers:(id)a3;
-- (void)logPreLoadingNeededForIndex:(unint64_t)a3 section:(unint64_t)a4;
-- (void)logPreLoadingPreset:(id)a3 task:(id)a4;
-- (void)logPushConnectionReceivedPublicToken:(id)a3;
-- (void)logPushConnectionReceivedToken:(id)a3 topic:(id)a4 identifier:(id)a5;
-- (void)logPushNotificationReceivedForTopic:(id)a3 payload:(id)a4;
-- (void)logReadingBackendAtPath:(id)a3;
-- (void)logReadingError:(id)a3;
-- (void)logReceivedRemoteChange:(id)a3;
-- (void)logRecordsNotFoundInAnyStore:(id)a3;
-- (void)logRecordsNotFoundInPuppetStore:(id)a3;
-- (void)logRecordsNotFoundInRecordStore:(id)a3;
-- (void)logRenderingConfiguration:(id)a3;
-- (void)logRenderingModelColor:(id)a3;
-- (void)logRenderingModelPreset:(id)a3;
-- (void)logRenderingRecord:(id)a3 size:(CGSize)a4;
-- (void)logRenderingStickerEnd:(id)a3;
-- (void)logRenderingStickerStart:(id)a3 forRecord:(id)a4;
-- (void)logRequestedAnimojiSticker:(id)a3;
-- (void)logRequestingPreLoadingTask:(id)a3 forIndex:(unint64_t)a4 section:(unint64_t)a5;
-- (void)logRequestingThumbnailForIndex:(unint64_t)a3 section:(id)a4;
-- (void)logResetSyncReason:(unint64_t)a3;
-- (void)logRetrievingSnapshotInServiceForPath:(id)a3;
+- (void)logParsingMetadataDefinitionsError:(id)error;
+- (void)logPerformTransition:(id)transition;
+- (void)logPerformedRecentStickersMigration:(BOOL)migration;
+- (void)logPersistentChangeNotOfInterest:(id)interest;
+- (void)logPostingChangeNotificationForIdentifiers:(id)identifiers;
+- (void)logPreLoadingNeededForIndex:(unint64_t)index section:(unint64_t)section;
+- (void)logPreLoadingPreset:(id)preset task:(id)task;
+- (void)logPushConnectionReceivedPublicToken:(id)token;
+- (void)logPushConnectionReceivedToken:(id)token topic:(id)topic identifier:(id)identifier;
+- (void)logPushNotificationReceivedForTopic:(id)topic payload:(id)payload;
+- (void)logReadingBackendAtPath:(id)path;
+- (void)logReadingError:(id)error;
+- (void)logReceivedRemoteChange:(id)change;
+- (void)logRecordsNotFoundInAnyStore:(id)store;
+- (void)logRecordsNotFoundInPuppetStore:(id)store;
+- (void)logRecordsNotFoundInRecordStore:(id)store;
+- (void)logRenderingConfiguration:(id)configuration;
+- (void)logRenderingModelColor:(id)color;
+- (void)logRenderingModelPreset:(id)preset;
+- (void)logRenderingRecord:(id)record size:(CGSize)size;
+- (void)logRenderingStickerEnd:(id)end;
+- (void)logRenderingStickerStart:(id)start forRecord:(id)record;
+- (void)logRequestedAnimojiSticker:(id)sticker;
+- (void)logRequestingPreLoadingTask:(id)task forIndex:(unint64_t)index section:(unint64_t)section;
+- (void)logRequestingThumbnailForIndex:(unint64_t)index section:(id)section;
+- (void)logResetSyncReason:(unint64_t)reason;
+- (void)logRetrievingSnapshotInServiceForPath:(id)path;
 - (void)logSavingBackend;
-- (void)logSavingError:(id)a3;
+- (void)logSavingError:(id)error;
 - (void)logSchedulingImport;
 - (void)logSchedulingUpdateThumbnails;
-- (void)logSetupHandlerCompletedForTransition:(id)a3 state:(int64_t)a4 finished:(BOOL)a5;
+- (void)logSetupHandlerCompletedForTransition:(id)transition state:(int64_t)state finished:(BOOL)finished;
 - (void)logSetupSchedulingExport;
 - (void)logSetupSchedulingImport;
 - (void)logSetupSchedulingMigrationCheck;
 - (void)logSetupUserDataImportCheck;
 - (void)logSetupUserHasNoMemojiData;
-- (void)logSetupUserImportAttempting:(int64_t)a3;
-- (void)logSetupUserImportFailedToRemoveFileWithError:(id)a3;
-- (void)logSetupUserImportFailedToUnarchiveDataAtPath:(id)a3 errorDescription:(id)a4;
-- (void)logSetupUserImportSaveError:(id)a3;
+- (void)logSetupUserImportAttempting:(int64_t)attempting;
+- (void)logSetupUserImportFailedToRemoveFileWithError:(id)error;
+- (void)logSetupUserImportFailedToUnarchiveDataAtPath:(id)path errorDescription:(id)description;
+- (void)logSetupUserImportSaveError:(id)error;
 - (void)logSingleModeCantSnapshotForLackOfWindow;
-- (void)logSingleModeControllerStartUsingLiveView:(id)a3;
-- (void)logSingleModeControllerStopUsingLiveView:(id)a3;
-- (void)logSkippedFetchingRecordsWithReason:(id)a3;
-- (void)logSnapshotReturnedImage:(id)a3;
-- (void)logStartObservingRemoteChangeNotificationFrom:(id)a3;
+- (void)logSingleModeControllerStartUsingLiveView:(id)view;
+- (void)logSingleModeControllerStopUsingLiveView:(id)view;
+- (void)logSkippedFetchingRecordsWithReason:(id)reason;
+- (void)logSnapshotReturnedImage:(id)image;
+- (void)logStartObservingRemoteChangeNotificationFrom:(id)from;
 - (void)logStartObservingResetSync;
-- (void)logStartTransition:(id)a3 state:(int64_t)a4;
-- (void)logStartingPreLoadingTask:(id)a3;
+- (void)logStartTransition:(id)transition state:(int64_t)state;
+- (void)logStartingPreLoadingTask:(id)task;
 - (void)logStartingServer;
-- (void)logStickerGeneratorPoolDidntHaveAvailableGenerator:(int64_t)a3 maxCount:(int64_t)a4;
-- (void)logStickerSchedulerAddedTask:(id)a3 taskCount:(int64_t)a4;
+- (void)logStickerGeneratorPoolDidntHaveAvailableGenerator:(int64_t)generator maxCount:(int64_t)count;
+- (void)logStickerSchedulerAddedTask:(id)task taskCount:(int64_t)count;
 - (void)logStickerSchedulerCancelledAllTasks;
-- (void)logStickerSchedulerCancelledStickerSheetTasksForIdentifier:(id)a3;
-- (void)logStickerSchedulerCancelledTask:(id)a3;
-- (void)logStickerSchedulerStartedTask:(id)a3 forSchedulerRule:(id)a4;
-- (void)logStickerViewSnapshotForBounds:(id)a3 offset:(CGPoint)a4;
+- (void)logStickerSchedulerCancelledStickerSheetTasksForIdentifier:(id)identifier;
+- (void)logStickerSchedulerCancelledTask:(id)task;
+- (void)logStickerSchedulerStartedTask:(id)task forSchedulerRule:(id)rule;
+- (void)logStickerViewSnapshotForBounds:(id)bounds offset:(CGPoint)offset;
 - (void)logSyncEnabled;
-- (void)logTearingDownCoreDataStack:(id)a3;
+- (void)logTearingDownCoreDataStack:(id)stack;
 - (void)logThrottlingAVTView;
-- (void)logTimedOutWaitingForSnapshotInService:(id)a3;
-- (void)logToLivePoseTransitionBegins:(id)a3;
-- (void)logToLivePoseTransitionEnds:(id)a3;
-- (void)logTooManyAvatars:(unint64_t)a3 limit:(unint64_t)a4;
-- (void)logTrackerProcessingChanges:(id)a3 count:(unint64_t)a4 from:(id)a5;
+- (void)logTimedOutWaitingForSnapshotInService:(id)service;
+- (void)logToLivePoseTransitionBegins:(id)begins;
+- (void)logToLivePoseTransitionEnds:(id)ends;
+- (void)logTooManyAvatars:(unint64_t)avatars limit:(unint64_t)limit;
+- (void)logTrackerProcessingChanges:(id)changes count:(unint64_t)count from:(id)from;
 - (void)logTransactionHasChangesButNoToken;
-- (void)logTransition:(id)a3 state:(unint64_t)a4 reachedStage:(unint64_t)a5;
-- (void)logUnableToCreatePushConnection:(id)a3;
-- (void)logUnableToReadRemoteRecord:(id)a3 isCritical:(BOOL)a4;
+- (void)logTransition:(id)transition state:(unint64_t)state reachedStage:(unint64_t)stage;
+- (void)logUnableToCreatePushConnection:(id)connection;
+- (void)logUnableToReadRemoteRecord:(id)record isCritical:(BOOL)critical;
 - (void)logUnthrottlingAVTView;
-- (void)logUpdatingBackupExclusionStatus:(BOOL)a3;
-- (void)logUpdatingLiveAvatarWithConfiguration:(id)a3;
+- (void)logUpdatingBackupExclusionStatus:(BOOL)status;
+- (void)logUpdatingLiveAvatarWithConfiguration:(id)configuration;
 - (void)logUpdatingThumbnails;
-- (void)logUsageTrackingBigDifferencesClusterCount:(unint64_t)a3;
-- (void)logUsageTrackingRecordCount:(unint64_t)a3;
-- (void)logUsageTrackingSmallDifferencesClusterCount:(unint64_t)a3;
+- (void)logUsageTrackingBigDifferencesClusterCount:(unint64_t)count;
+- (void)logUsageTrackingRecordCount:(unint64_t)count;
+- (void)logUsageTrackingSmallDifferencesClusterCount:(unint64_t)count;
 - (void)logUserRequestedBackupXPCActivityFinished;
 - (void)logWarningNoHOME;
 - (void)logWillResetZone;
-- (void)migratingPersistedContent:(id)a3;
-- (void)performingMigrationXPCActivity:(id)a3;
-- (void)performingUserRequestedBackupActivity:(id)a3;
-- (void)postingAvatarStoreChangeNotification:(id)a3;
-- (void)processingDidResetSyncNotification:(id)a3;
-- (void)processingRemoteChangeNotification:(id)a3;
-- (void)processingWillResetSyncNotification:(id)a3;
-- (void)restoringStorage:(id)a3;
-- (void)runningMaintenance:(id)a3;
-- (void)savingChangeTrackerToken:(id)a3;
-- (void)savingRecords:(id)a3;
-- (void)settingUpStore:(id)a3;
-- (void)updatingThumbnailsForRemoteChanges:(id)a3;
+- (void)migratingPersistedContent:(id)content;
+- (void)performingMigrationXPCActivity:(id)activity;
+- (void)performingUserRequestedBackupActivity:(id)activity;
+- (void)postingAvatarStoreChangeNotification:(id)notification;
+- (void)processingDidResetSyncNotification:(id)notification;
+- (void)processingRemoteChangeNotification:(id)notification;
+- (void)processingWillResetSyncNotification:(id)notification;
+- (void)restoringStorage:(id)storage;
+- (void)runningMaintenance:(id)maintenance;
+- (void)savingChangeTrackerToken:(id)token;
+- (void)savingRecords:(id)records;
+- (void)settingUpStore:(id)store;
+- (void)updatingThumbnailsForRemoteChanges:(id)changes;
 @end
 
 @implementation AVTUILogger
@@ -266,21 +266,21 @@
   return v2;
 }
 
-- (void)logDebug:(id)a3
+- (void)logDebug:(id)debug
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  debugCopy = debug;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logDebug:];
   }
 }
 
-- (void)logErrorLoadingTemplates:(id)a3
+- (void)logErrorLoadingTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  templatesCopy = templates;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorLoadingTemplates:];
   }
@@ -288,184 +288,184 @@
 
 - (void)logParsingMetadataDefinitions
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Parsing metadata definitions…", v3, 2u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Parsing metadata definitions…", v3, 2u);
   }
 }
 
-- (void)logParsingMetadataDefinitionsError:(id)a3
+- (void)logParsingMetadataDefinitionsError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logParsingMetadataDefinitionsError:];
   }
 }
 
-- (void)logRenderingModelColor:(id)a3
+- (void)logRenderingModelColor:(id)color
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  colorCopy = color;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Rendering model color %@", &v7, 0xCu);
+    v8 = colorCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Rendering model color %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRenderingModelPreset:(id)a3
+- (void)logRenderingModelPreset:(id)preset
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  presetCopy = preset;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Rendering model preset %@", &v7, 0xCu);
+    v8 = presetCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Rendering model preset %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRenderingConfiguration:(id)a3
+- (void)logRenderingConfiguration:(id)configuration
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  configurationCopy = configuration;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Rendering configuration %@", &v8, 0xCu);
+    v9 = configurationCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Rendering configuration %@", &v8, 0xCu);
   }
 
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v6))
+  generalLog2 = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog2))
   {
     LOWORD(v8) = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "RenderSnapshot", &unk_241967295, &v8, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog2, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "RenderSnapshot", &unk_241967295, &v8, 2u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRenderingRecord:(id)a3 size:(CGSize)a4
+- (void)logRenderingRecord:(id)record size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  recordCopy = record;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412802;
-    v11 = v7;
+    v11 = recordCopy;
     v12 = 2048;
     v13 = width;
     v14 = 2048;
     v15 = height;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "Rendering record %@, at size %2.2fx%2.2f", &v10, 0x20u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Rendering record %@, at size %2.2fx%2.2f", &v10, 0x20u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSnapshotReturnedImage:(id)a3
+- (void)logSnapshotReturnedImage:(id)image
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v5))
+  imageCopy = image;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog))
   {
     LOWORD(v8) = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RenderSnapshot", &unk_241967295, &v8, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RenderSnapshot", &unk_241967295, &v8, 2u);
   }
 
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generalLog2 = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog2, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
-    _os_log_impl(&dword_241932000, v6, OS_LOG_TYPE_DEFAULT, "Snapshot returned %@", &v8, 0xCu);
+    v9 = imageCopy;
+    _os_log_impl(&dword_241932000, generalLog2, OS_LOG_TYPE_DEFAULT, "Snapshot returned %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logNoAvatarPreset:(id)a3
+- (void)logNoAvatarPreset:(id)preset
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  presetCopy = preset;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "No avatar preset for %@", &v7, 0xCu);
+    v8 = presetCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "No avatar preset for %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCreatingStore:(id)a3
+- (void)logCreatingStore:(id)store
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  storeCopy = store;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Creating AVTAvatarStore instance %@", &v7, 0xCu);
+    v8 = storeCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Creating AVTAvatarStore instance %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCreatingBackendDBAtPath:(id)a3
+- (void)logCreatingBackendDBAtPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Creating empty database at path %@", &v7, 0xCu);
+    v8 = pathCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Creating empty database at path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCreatingBackendFolderAtPath:(id)a3
+- (void)logCreatingBackendFolderAtPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Creating Folder at path %@", &v7, 0xCu);
+    v8 = pathCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Creating Folder at path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorCreatingBackendContent:(id)a3
+- (void)logErrorCreatingBackendContent:(id)content
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  contentCopy = content;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorCreatingBackendContent:];
   }
@@ -473,197 +473,197 @@
 
 - (void)logSavingBackend
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Saving backend…", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Saving backend…", v3, 2u);
   }
 }
 
-- (void)logDeletingRecordWithIdentifier:(id)a3
+- (void)logDeletingRecordWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  identifierCopy = identifier;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Deleting record with identifier %@", &v7, 0xCu);
+    v8 = identifierCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Deleting record with identifier %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDeletingImagesWithIdentifierPrefix:(id)a3
+- (void)logDeletingImagesWithIdentifierPrefix:(id)prefix
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  prefixCopy = prefix;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Deleting images with identifier prefix %@", &v7, 0xCu);
+    v8 = prefixCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Deleting images with identifier prefix %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDuplicatingRecordWithIdentifier:(id)a3
+- (void)logDuplicatingRecordWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  identifierCopy = identifier;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Duplicating record with identifier %@", &v7, 0xCu);
+    v8 = identifierCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Duplicating record with identifier %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReadingBackendAtPath:(id)a3
+- (void)logReadingBackendAtPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Reading backend at %@…", &v7, 0xCu);
+    v8 = pathCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Reading backend at %@…", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSavingError:(id)a3
+- (void)logSavingError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logSavingError:];
   }
 }
 
-- (void)logReadingError:(id)a3
+- (void)logReadingError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logReadingError:];
   }
 }
 
-- (void)logRecordsNotFoundInAnyStore:(id)a3
+- (void)logRecordsNotFoundInAnyStore:(id)store
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  storeCopy = store;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Record not found in any store (%@)", &v7, 0xCu);
+    v8 = storeCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Record not found in any store (%@)", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRecordsNotFoundInPuppetStore:(id)a3
+- (void)logRecordsNotFoundInPuppetStore:(id)store
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  storeCopy = store;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Puppet(s) not found (%@)", &v7, 0xCu);
+    v8 = storeCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Puppet(s) not found (%@)", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRecordsNotFoundInRecordStore:(id)a3
+- (void)logRecordsNotFoundInRecordStore:(id)store
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  storeCopy = store;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Avatar Record(s) not found (%@)", &v7, 0xCu);
+    v8 = storeCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Avatar Record(s) not found (%@)", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorSavingRecentSticker:(id)a3
+- (void)logErrorSavingRecentSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  stickerCopy = sticker;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorSavingRecentSticker:];
   }
 }
 
-- (void)logErrorFetchingRecentStickers:(id)a3
+- (void)logErrorFetchingRecentStickers:(id)stickers
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  stickersCopy = stickers;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorFetchingRecentStickers:];
   }
 }
 
-- (void)logFetchedOrphanedRecentSticker:(id)a3
+- (void)logFetchedOrphanedRecentSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  stickerCopy = sticker;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logFetchedOrphanedRecentSticker:];
   }
 }
 
-- (void)logFetchedRecentStickerWithNoStickerConfiguration:(id)a3
+- (void)logFetchedRecentStickerWithNoStickerConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logFetchedRecentStickerWithNoStickerConfiguration:];
   }
 }
 
-- (void)logPerformedRecentStickersMigration:(BOOL)a3
+- (void)logPerformedRecentStickersMigration:(BOOL)migration
 {
-  v3 = a3;
+  migrationCopy = migration;
   v7 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67240192;
-    v6[1] = v3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, "Performed sticker recents migration, found orphaned: %{public}d", v6, 8u);
+    v6[1] = migrationCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Performed sticker recents migration, found orphaned: %{public}d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)savingRecords:(id)a3
+- (void)savingRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = _os_activity_create(&dword_241932000, "SavingRecords", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -676,10 +676,10 @@
   block[1] = 3221225472;
   block[2] = __29__AVTUILogger_savingRecords___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = recordsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = recordsCopy;
   os_activity_apply(v5, block);
 }
 
@@ -691,9 +691,9 @@ void __29__AVTUILogger_savingRecords___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)deletingRecords:(id)a3
+- (void)deletingRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = _os_activity_create(&dword_241932000, "DeletingRecords", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -706,10 +706,10 @@ void __29__AVTUILogger_savingRecords___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__AVTUILogger_deletingRecords___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = recordsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = recordsCopy;
   os_activity_apply(v5, block);
 }
 
@@ -721,9 +721,9 @@ void __31__AVTUILogger_deletingRecords___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)fetchingRecords:(id)a3
+- (void)fetchingRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = _os_activity_create(&dword_241932000, "FetchingRecords", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -736,10 +736,10 @@ void __31__AVTUILogger_deletingRecords___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__AVTUILogger_fetchingRecords___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = recordsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = recordsCopy;
   os_activity_apply(v5, block);
 }
 
@@ -751,9 +751,9 @@ void __31__AVTUILogger_fetchingRecords___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)duplicatingRecords:(id)a3
+- (void)duplicatingRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = _os_activity_create(&dword_241932000, "DuplicatingRecords", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -766,10 +766,10 @@ void __31__AVTUILogger_fetchingRecords___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__AVTUILogger_duplicatingRecords___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = recordsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = recordsCopy;
   os_activity_apply(v5, block);
 }
 
@@ -781,110 +781,110 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)logFetchedRecords:(unint64_t)a3 criteria:(int64_t)a4
+- (void)logFetchedRecords:(unint64_t)records criteria:(int64_t)criteria
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = a3;
+    recordsCopy = records;
     v10 = 2048;
-    v11 = a4;
-    _os_log_impl(&dword_241932000, v6, OS_LOG_TYPE_DEFAULT, "Fetched %lu record(s), criteria: %ld", &v8, 0x16u);
+    criteriaCopy = criteria;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Fetched %lu record(s), criteria: %ld", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSkippedFetchingRecordsWithReason:(id)a3
+- (void)logSkippedFetchingRecordsWithReason:(id)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  reasonCopy = reason;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Skipped fetching records: %@", &v7, 0xCu);
+    v8 = reasonCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Skipped fetching records: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logBackendVersionMismatch:(id)a3 actual:(id)a4
+- (void)logBackendVersionMismatch:(id)mismatch actual:(id)actual
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  mismatchCopy = mismatch;
+  actualCopy = actual;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = mismatchCopy;
     v12 = 2114;
-    v13 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "Detected a version mismatch, found %{public}@, current is %{public}@", &v10, 0x16u);
+    v13 = actualCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Detected a version mismatch, found %{public}@, current is %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDroppingUnsupportedAvatarRecord:(id)a3
+- (void)logDroppingUnsupportedAvatarRecord:(id)record
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  recordCopy = record;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Avatar record has a version lower than what AvatarKit supports, dropping. %@", &v7, 0xCu);
-  }
-
-  v6 = *MEMORY[0x277D85DE8];
-}
-
-- (void)logAvatarsdExitingWithReason:(id)a3
-{
-  v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
-  {
-    v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Exiting avatarsd for reason: %@", &v7, 0xCu);
+    v8 = recordCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Avatar record has a version lower than what AvatarKit supports, dropping. %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorUpdatingVersion:(id)a3
+- (void)logAvatarsdExitingWithReason:(id)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  reasonCopy = reason;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Error updating version %@", &v7, 0xCu);
+    v8 = reasonCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Exiting avatarsd for reason: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorWhileMigratingBackend:(id)a3
+- (void)logErrorUpdatingVersion:(id)version
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  versionCopy = version;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Error migrating backend %@", &v7, 0xCu);
+    v8 = versionCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Error updating version %@", &v7, 0xCu);
+  }
+
+  v6 = *MEMORY[0x277D85DE8];
+}
+
+- (void)logErrorWhileMigratingBackend:(id)backend
+{
+  v9 = *MEMORY[0x277D85DE8];
+  backendCopy = backend;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
+  {
+    v7 = 138412290;
+    v8 = backendCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Error migrating backend %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -892,305 +892,305 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
 
 - (void)logDidFinishEditingWithSuccess
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Did finish editing avatar successfully", v3, 2u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Did finish editing avatar successfully", v3, 2u);
   }
 }
 
-- (void)logDidFinishEditingWithError:(id)a3
+- (void)logDidFinishEditingWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logDidFinishEditingWithError:];
   }
 }
 
-- (void)logFileSystemError:(id)a3
+- (void)logFileSystemError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logFileSystemError:];
   }
 }
 
-- (void)logCreatingImageStoreForPath:(id)a3
+- (void)logCreatingImageStoreForPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  pathCopy = path;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "Creating image store at path %@", &v7, 0xCu);
+    v8 = pathCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Creating image store at path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logImageStoreCacheMiss:(id)a3
+- (void)logImageStoreCacheMiss:(id)miss
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  missCopy = miss;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "Image Store Cache miss: %@", &v7, 0xCu);
+    v8 = missCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Image Store Cache miss: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logImageStoreCacheHitForItemDescription:(id)a3 sizeCost:(unint64_t)a4
+- (void)logImageStoreCacheHitForItemDescription:(id)description sizeCost:(unint64_t)cost
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  descriptionCopy = description;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = descriptionCopy;
     v11 = 2048;
-    v12 = a4;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_INFO, "Image Store Cache HIT for %@, size %lu", &v9, 0x16u);
+    costCopy = cost;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Image Store Cache HIT for %@, size %lu", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logImageStoreSavingError:(id)a3 code:(int64_t)a4
+- (void)logImageStoreSavingError:(id)error code:(int64_t)code
 {
-  v5 = a3;
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_FAULT))
   {
     [AVTUILogger logImageStoreSavingError:code:];
   }
 }
 
-- (void)logImageStoreBeginSavingImageForPath:(id)a3
+- (void)logImageStoreBeginSavingImageForPath:(id)path
 {
-  v3 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v3))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog))
   {
     *v4 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SavingImage", &unk_241967295, v4, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SavingImage", &unk_241967295, v4, 2u);
   }
 }
 
-- (void)logImageStoreDoneSavingImageForPath:(id)a3
+- (void)logImageStoreDoneSavingImageForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v5))
+  pathCopy = path;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SavingImage", &unk_241967295, v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SavingImage", &unk_241967295, v7, 2u);
   }
 
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  generalLog2 = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog2, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logImageStoreDoneSavingImageForPath:];
   }
 }
 
-- (void)logInMemoryCacheStorageForResource:(id)a3
+- (void)logInMemoryCacheStorageForResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  resourceCopy = resource;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logInMemoryCacheStorageForResource:];
   }
 }
 
-- (void)logInMemoryCacheHitForResource:(id)a3
+- (void)logInMemoryCacheHitForResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  resourceCopy = resource;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logInMemoryCacheHitForResource:];
   }
 }
 
-- (void)logInMemoryCacheEvictsResource:(id)a3
+- (void)logInMemoryCacheEvictsResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  resourceCopy = resource;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logInMemoryCacheEvictsResource:];
   }
 }
 
-- (void)logGeneratingImageForRecord:(id)a3 scope:(id)a4 type:(int64_t)a5
+- (void)logGeneratingImageForRecord:(id)record scope:(id)scope type:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  recordCopy = record;
+  scopeCopy = scope;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412802;
-    v13 = v8;
+    v13 = recordCopy;
     v14 = 2112;
-    v15 = v9;
+    v15 = scopeCopy;
     v16 = 2048;
-    v17 = a5;
-    _os_log_impl(&dword_241932000, v10, OS_LOG_TYPE_DEFAULT, "Generating image for record %@, with scope %@, type %ld", &v12, 0x20u);
+    typeCopy = type;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Generating image for record %@, with scope %@, type %ld", &v12, 0x20u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logGeneratingImageError:(id)a3
+- (void)logGeneratingImageError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logGeneratingImageError:];
   }
 }
 
-- (void)logErrorDeletingThumbnailsForIdentifier:(id)a3 error:(id)a4
+- (void)logErrorDeletingThumbnailsForIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorDeletingThumbnailsForIdentifier:error:];
   }
 }
 
-- (void)logErrorDeletingSomeThumbnail:(id)a3
+- (void)logErrorDeletingSomeThumbnail:(id)thumbnail
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  thumbnailCopy = thumbnail;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorDeletingSomeThumbnail:];
   }
 }
 
-- (void)logErrorDuplicatingThumbnailsForIdentifier:(id)a3 error:(id)a4
+- (void)logErrorDuplicatingThumbnailsForIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorDuplicatingThumbnailsForIdentifier:error:];
   }
 }
 
-- (void)logErrorFetchingRecords:(id)a3
+- (void)logErrorFetchingRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  recordsCopy = records;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorFetchingRecords:];
   }
 }
 
-- (void)logPreLoadingNeededForIndex:(unint64_t)a3 section:(unint64_t)a4
+- (void)logPreLoadingNeededForIndex:(unint64_t)index section:(unint64_t)section
 {
-  v4 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logPreLoadingNeededForIndex:section:];
   }
 }
 
-- (void)logRequestingPreLoadingTask:(id)a3 forIndex:(unint64_t)a4 section:(unint64_t)a5
+- (void)logRequestingPreLoadingTask:(id)task forIndex:(unint64_t)index section:(unint64_t)section
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412802;
-    v12 = v8;
+    v12 = taskCopy;
     v13 = 2048;
-    v14 = a5;
+    sectionCopy = section;
     v15 = 2048;
-    v16 = a4;
-    _os_log_debug_impl(&dword_241932000, v9, OS_LOG_TYPE_DEBUG, "[PreLoading] %@ requested - %lu|%lu", &v11, 0x20u);
+    indexCopy = index;
+    _os_log_debug_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEBUG, "[PreLoading] %@ requested - %lu|%lu", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logStartingPreLoadingTask:(id)a3
+- (void)logStartingPreLoadingTask:(id)task
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "[PreLoading] %@ starts", &v7, 0xCu);
+    v8 = taskCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "[PreLoading] %@ starts", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCancelingPreLoadingTask:(id)a3
+- (void)logCancelingPreLoadingTask:(id)task
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logCancelingPreLoadingTask:];
   }
 }
 
-- (void)logLookingUpPreLoadedPreset:(id)a3 task:(id)a4
+- (void)logLookingUpPreLoadedPreset:(id)preset task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  presetCopy = preset;
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logLookingUpPreLoadedPreset:task:];
   }
 }
 
-- (void)logPreLoadingPreset:(id)a3 task:(id)a4
+- (void)logPreLoadingPreset:(id)preset task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  presetCopy = preset;
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logPreLoadingPreset:task:];
   }
 
-  v9 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v9))
+  generalLog2 = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog2))
   {
     *v10 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "PreLoadingPreset", &unk_241967295, v10, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog2, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "PreLoadingPreset", &unk_241967295, v10, 2u);
   }
 }
 
-- (void)logDonePreLoadingPreset:(id)a3 task:(id)a4
+- (void)logDonePreLoadingPreset:(id)preset task:(id)task
 {
-  v4 = [(AVTUILogger *)self generalLog:a3];
+  v4 = [(AVTUILogger *)self generalLog:preset];
   if (os_signpost_enabled(v4))
   {
     *v5 = 0;
@@ -1198,36 +1198,36 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
   }
 }
 
-- (void)logDonePreLoadingThumbnailForPreLoadingTask:(id)a3
+- (void)logDonePreLoadingThumbnailForPreLoadingTask:(id)task
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logDonePreLoadingThumbnailForPreLoadingTask:];
   }
 }
 
-- (void)logUpdatingLiveAvatarWithConfiguration:(id)a3
+- (void)logUpdatingLiveAvatarWithConfiguration:(id)configuration
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  configurationCopy = configuration;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "Updating live avatar with %@", &v7, 0xCu);
+    v8 = configurationCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Updating live avatar with %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRequestingThumbnailForIndex:(unint64_t)a3 section:(id)a4
+- (void)logRequestingThumbnailForIndex:(unint64_t)index section:(id)section
 {
-  v5 = a4;
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  sectionCopy = section;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logRequestingThumbnailForIndex:section:];
   }
@@ -1235,78 +1235,78 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
 
 - (void)logThrottlingAVTView
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_INFO, "Throttling AVTView", v3, 2u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Throttling AVTView", v3, 2u);
   }
 }
 
 - (void)logUnthrottlingAVTView
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_INFO, "Unthrottling AVTView", v3, 2u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Unthrottling AVTView", v3, 2u);
   }
 }
 
-- (void)logErrorSnapshottingAVTView:(id)a3
+- (void)logErrorSnapshottingAVTView:(id)view
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  viewCopy = view;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorSnapshottingAVTView:];
   }
 }
 
-- (void)logCarouselSnapshotForIndex:(unint64_t)a3 size:(CGSize)a4
+- (void)logCarouselSnapshotForIndex:(unint64_t)index size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v15 = *MEMORY[0x277D85DE8];
-  v7 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v9 = 134218496;
-    v10 = a3;
+    indexCopy = index;
     v11 = 2048;
     v12 = width;
     v13 = 2048;
     v14 = height;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_INFO, "Carousel snapshot for record at index %lu, size %2.2fx%2.2f", &v9, 0x20u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Carousel snapshot for record at index %lu, size %2.2fx%2.2f", &v9, 0x20u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAvatarPreloadBeginForIdentifier:(id)a3
+- (void)logAvatarPreloadBeginForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  identifierCopy = identifier;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logAvatarPreloadBeginForIdentifier:];
   }
 
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v6))
+  generalLog2 = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog2))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AvatarPreLoad", &unk_241967295, v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog2, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AvatarPreLoad", &unk_241967295, v7, 2u);
   }
 }
 
 - (void)logAvatarPreloadEnd
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v2))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog))
   {
     *v3 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v2, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "AvatarPreLoad", &unk_241967295, v3, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "AvatarPreLoad", &unk_241967295, v3, 2u);
   }
 }
 
@@ -1317,33 +1317,33 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)logUsageTrackingRecordCount:(unint64_t)a3
+- (void)logUsageTrackingRecordCount:(unint64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = a3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_INFO, "We have %ld memoji(s)", &v6, 0xCu);
+    countCopy = count;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "We have %ld memoji(s)", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logUsageTrackingSmallDifferencesClusterCount:(unint64_t)a3
+- (void)logUsageTrackingSmallDifferencesClusterCount:(unint64_t)count
 {
-  v3 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logUsageTrackingSmallDifferencesClusterCount:];
   }
 }
 
-- (void)logUsageTrackingBigDifferencesClusterCount:(unint64_t)a3
+- (void)logUsageTrackingBigDifferencesClusterCount:(unint64_t)count
 {
-  v3 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logUsageTrackingBigDifferencesClusterCount:];
   }
@@ -1351,17 +1351,17 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
 
 - (void)logStartingServer
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Starting up server…", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Starting up server…", v3, 2u);
   }
 }
 
-- (void)settingUpStore:(id)a3
+- (void)settingUpStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v4 = _os_activity_create(&dword_241932000, "SettingUpStore", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1374,10 +1374,10 @@ void __34__AVTUILogger_duplicatingRecords___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__AVTUILogger_settingUpStore___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = storeCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = storeCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1389,9 +1389,9 @@ void __30__AVTUILogger_settingUpStore___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)exportingRecords:(id)a3
+- (void)exportingRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = _os_activity_create(&dword_241932000, "ExportingRecords", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1404,10 +1404,10 @@ void __30__AVTUILogger_settingUpStore___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__AVTUILogger_exportingRecords___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = recordsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = recordsCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1419,9 +1419,9 @@ void __32__AVTUILogger_exportingRecords___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)importingRecords:(id)a3
+- (void)importingRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = _os_activity_create(&dword_241932000, "ImportingRecords", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1434,10 +1434,10 @@ void __32__AVTUILogger_exportingRecords___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__AVTUILogger_importingRecords___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = recordsCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = recordsCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1449,9 +1449,9 @@ void __32__AVTUILogger_importingRecords___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)performingMigrationXPCActivity:(id)a3
+- (void)performingMigrationXPCActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = _os_activity_create(&dword_241932000, "XPCActivityPostInstallMigration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1464,10 +1464,10 @@ void __32__AVTUILogger_importingRecords___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __46__AVTUILogger_performingMigrationXPCActivity___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = activityCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = activityCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1481,17 +1481,17 @@ void __46__AVTUILogger_performingMigrationXPCActivity___block_invoke(uint64_t a1
 
 - (void)logMigrationXPCActivityFinished
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Finished running migration XPC activity!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Finished running migration XPC activity!", v3, 2u);
   }
 }
 
-- (void)performingUserRequestedBackupActivity:(id)a3
+- (void)performingUserRequestedBackupActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = _os_activity_create(&dword_241932000, "XPCActivityUserRequestedBackup", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1504,10 +1504,10 @@ void __46__AVTUILogger_performingMigrationXPCActivity___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __53__AVTUILogger_performingUserRequestedBackupActivity___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = activityCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = activityCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1521,77 +1521,77 @@ void __53__AVTUILogger_performingUserRequestedBackupActivity___block_invoke(uint
 
 - (void)logUserRequestedBackupXPCActivityFinished
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Finished running User Requested Backup XPC activity!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Finished running User Requested Backup XPC activity!", v3, 2u);
   }
 }
 
 - (void)logSyncEnabled
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Sync is ENABLED", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Sync is ENABLED", v3, 2u);
   }
 }
 
-- (void)logImportRequestResult:(BOOL)a3 error:(id)a4
+- (void)logImportRequestResult:(BOOL)result error:(id)error
 {
-  v6 = a4;
-  v7 = [(AVTUILogger *)self backendLog];
-  v8 = v7;
-  if (a3)
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  v8 = backendLog;
+  if (result)
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
       _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "CloudKit Import Request SUCCEEDED", v9, 2u);
     }
   }
 
-  else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logImportRequestResult:error:];
   }
 }
 
-- (void)logExportRequestResult:(BOOL)a3 error:(id)a4
+- (void)logExportRequestResult:(BOOL)result error:(id)error
 {
-  v6 = a4;
-  v7 = [(AVTUILogger *)self backendLog];
-  v8 = v7;
-  if (a3)
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  v8 = backendLog;
+  if (result)
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
       _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "CloudKit Export Request SUCCEEDED", v9, 2u);
     }
   }
 
-  else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logExportRequestResult:error:];
   }
 }
 
-- (void)logMirroringRequestErrorWithCode:(int64_t)a3 description:(id)a4
+- (void)logMirroringRequestErrorWithCode:(int64_t)code description:(id)description
 {
-  v5 = a4;
-  v6 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  descriptionCopy = description;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logMirroringRequestErrorWithCode:description:];
   }
 }
 
-- (void)migratingPersistedContent:(id)a3
+- (void)migratingPersistedContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = _os_activity_create(&dword_241932000, "Migration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1604,10 +1604,10 @@ void __53__AVTUILogger_performingUserRequestedBackupActivity___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __41__AVTUILogger_migratingPersistedContent___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = contentCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = contentCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1619,51 +1619,51 @@ void __41__AVTUILogger_migratingPersistedContent___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)logMigratingSource:(id)a3
+- (void)logMigratingSource:(id)source
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  sourceCopy = source;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Migrating source %@", &v7, 0xCu);
+    v8 = sourceCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Migrating source %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorUpdatingRecordsForMigration:(id)a3
+- (void)logErrorUpdatingRecordsForMigration:(id)migration
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  migrationCopy = migration;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorUpdatingRecordsForMigration:];
   }
 }
 
-- (void)logFoundExistingRecordDuringMigration:(id)a3
+- (void)logFoundExistingRecordDuringMigration:(id)migration
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  migrationCopy = migration;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Found existing record during migration with identifier %@", &v7, 0xCu);
+    v8 = migrationCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Found existing record during migration with identifier %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorDeletingMigratedContent:(id)a3
+- (void)logErrorDeletingMigratedContent:(id)content
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  contentCopy = content;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorDeletingMigratedContent:];
   }
@@ -1671,111 +1671,111 @@ void __41__AVTUILogger_migratingPersistedContent___block_invoke(uint64_t a1)
 
 - (void)logFoundExistingRecordDuringMigration
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Found an existing record with same identifier during migration!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Found an existing record with same identifier during migration!", v3, 2u);
   }
 }
 
-- (void)logErrorAddingPersistentStore:(id)a3
+- (void)logErrorAddingPersistentStore:(id)store
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  storeCopy = store;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorAddingPersistentStore:];
   }
 }
 
-- (void)logErrorStartingServer:(id)a3
+- (void)logErrorStartingServer:(id)server
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  serverCopy = server;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorStartingServer:];
   }
 }
 
-- (void)logErrorSettingUpStore:(id)a3
+- (void)logErrorSettingUpStore:(id)store
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  storeCopy = store;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorSettingUpStore:];
   }
 }
 
-- (void)logPushConnectionReceivedPublicToken:(id)a3
+- (void)logPushConnectionReceivedPublicToken:(id)token
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  tokenCopy = token;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Received public token %@", &v7, 0xCu);
+    v8 = tokenCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Received public token %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPushConnectionReceivedToken:(id)a3 topic:(id)a4 identifier:(id)a5
+- (void)logPushConnectionReceivedToken:(id)token topic:(id)topic identifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = tokenCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = topicCopy;
     v17 = 2112;
-    v18 = v10;
-    _os_log_impl(&dword_241932000, v11, OS_LOG_TYPE_DEFAULT, "Received per-topic push token %@ for topic %@ identifier %@", &v13, 0x20u);
+    v18 = identifierCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Received per-topic push token %@ for topic %@ identifier %@", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPushNotificationReceivedForTopic:(id)a3 payload:(id)a4
+- (void)logPushNotificationReceivedForTopic:(id)topic payload:(id)payload
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  topicCopy = topic;
+  payloadCopy = payload;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = topicCopy;
     v12 = 2112;
-    v13 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "Received Push Notification for topic: %@, payload: %@", &v10, 0x16u);
+    v13 = payloadCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Received Push Notification for topic: %@, payload: %@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logUnableToCreatePushConnection:(id)a3
+- (void)logUnableToCreatePushConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  connectionCopy = connection;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logUnableToCreatePushConnection:];
   }
 }
 
-- (void)processingRemoteChangeNotification:(id)a3
+- (void)processingRemoteChangeNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = _os_activity_create(&dword_241932000, "ProcessingRemoteChanges", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1788,10 +1788,10 @@ void __41__AVTUILogger_migratingPersistedContent___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __50__AVTUILogger_processingRemoteChangeNotification___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = notificationCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = notificationCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1803,57 +1803,57 @@ void __50__AVTUILogger_processingRemoteChangeNotification___block_invoke(uint64_
   os_activity_scope_leave(&v1);
 }
 
-- (void)logStartObservingRemoteChangeNotificationFrom:(id)a3
+- (void)logStartObservingRemoteChangeNotificationFrom:(id)from
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  fromCopy = from;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Start observing NSPersistentStoreRemoteChangeNotification from %@", &v7, 0xCu);
+    v8 = fromCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Start observing NSPersistentStoreRemoteChangeNotification from %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReceivedRemoteChange:(id)a3
+- (void)logReceivedRemoteChange:(id)change
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  changeCopy = change;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Received NSPersistentStoreRemoteChangeNotification: %@", &v7, 0xCu);
+    v8 = changeCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Received NSPersistentStoreRemoteChangeNotification: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDispatchingRemoteChangeWithTransactionCount:(unint64_t)a3 handlersCount:(unint64_t)a4
+- (void)logDispatchingRemoteChangeWithTransactionCount:(unint64_t)count handlersCount:(unint64_t)handlersCount
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = a3;
+    countCopy = count;
     v10 = 2048;
-    v11 = a4;
-    _os_log_impl(&dword_241932000, v6, OS_LOG_TYPE_DEFAULT, "Dispatching NSPersistentStoreRemoteChangeNotification with %lu transactions; %lu handlers listening", &v8, 0x16u);
+    handlersCountCopy = handlersCount;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Dispatching NSPersistentStoreRemoteChangeNotification with %lu transactions; %lu handlers listening", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorFetchingChangeHistory:(id)a3
+- (void)logErrorFetchingChangeHistory:(id)history
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  historyCopy = history;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorFetchingChangeHistory:];
   }
@@ -1861,77 +1861,77 @@ void __50__AVTUILogger_processingRemoteChangeNotification___block_invoke(uint64_
 
 - (void)logNotificationDoesntContainChangeHistoryToken
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "notification.userInfo doesn't contain a value for NSPersistentHistoryTokenKey", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "notification.userInfo doesn't contain a value for NSPersistentHistoryTokenKey", v3, 2u);
   }
 }
 
 - (void)logChangesRequireExport
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Changes require export!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Changes require export!", v3, 2u);
   }
 }
 
 - (void)logChangesRequireThumbnailUpdate
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Changes require thumbnail update!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Changes require thumbnail update!", v3, 2u);
   }
 }
 
-- (void)logErrorPinningContextToCurrentQueryGenerationToken:(id)a3
+- (void)logErrorPinningContextToCurrentQueryGenerationToken:(id)token
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  tokenCopy = token;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorPinningContextToCurrentQueryGenerationToken:];
   }
 }
 
-- (void)logInspectingChangesForExportAfterToken:(id)a3
+- (void)logInspectingChangesForExportAfterToken:(id)token
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  tokenCopy = token;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logInspectingChangesForExportAfterToken:];
   }
 }
 
-- (void)logUnableToReadRemoteRecord:(id)a3 isCritical:(BOOL)a4
+- (void)logUnableToReadRemoteRecord:(id)record isCritical:(BOOL)critical
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AVTUILogger *)self backendLog];
-  v8 = v7;
-  if (v4)
+  criticalCopy = critical;
+  recordCopy = record;
+  backendLog = [(AVTUILogger *)self backendLog];
+  v8 = backendLog;
+  if (criticalCopy)
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    if (os_log_type_enabled(backendLog, OS_LOG_TYPE_FAULT))
     {
       [AVTUILogger logUnableToReadRemoteRecord:isCritical:];
     }
   }
 
-  else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logUnableToReadRemoteRecord:isCritical:];
   }
 }
 
-- (void)savingChangeTrackerToken:(id)a3
+- (void)savingChangeTrackerToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = _os_activity_create(&dword_241932000, "SavingChangeTrackerToken", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1944,10 +1944,10 @@ void __50__AVTUILogger_processingRemoteChangeNotification___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __40__AVTUILogger_savingChangeTrackerToken___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = tokenCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = tokenCopy;
   os_activity_apply(v5, block);
 }
 
@@ -1959,46 +1959,46 @@ void __40__AVTUILogger_savingChangeTrackerToken___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)logCurrentHistoryTokenFileDoesntExist:(id)a3
+- (void)logCurrentHistoryTokenFileDoesntExist:(id)exist
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  existCopy = exist;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Current history token file doesn't exist at path %@", &v7, 0xCu);
+    v8 = existCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Current history token file doesn't exist at path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorReadingCurrentHistoryToken:(id)a3
+- (void)logErrorReadingCurrentHistoryToken:(id)token
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  tokenCopy = token;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorReadingCurrentHistoryToken:];
   }
 }
 
-- (void)logTrackerProcessingChanges:(id)a3 count:(unint64_t)a4 from:(id)a5
+- (void)logTrackerProcessingChanges:(id)changes count:(unint64_t)count from:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  changesCopy = changes;
+  fromCopy = from;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412802;
-    v13 = v9;
+    v13 = fromCopy;
     v14 = 2048;
-    v15 = a4;
+    countCopy = count;
     v16 = 2112;
-    v17 = v8;
-    _os_log_impl(&dword_241932000, v10, OS_LOG_TYPE_DEFAULT, "Author %@ is processing %lu changes: %@", &v12, 0x20u);
+    v17 = changesCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Author %@ is processing %lu changes: %@", &v12, 0x20u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2011,57 +2011,57 @@ void __40__AVTUILogger_savingChangeTrackerToken___block_invoke(uint64_t a1)
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)logErrorSavingChangeToken:(id)a3 location:(id)a4
+- (void)logErrorSavingChangeToken:(id)token location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+  tokenCopy = token;
+  locationCopy = location;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_FAULT))
   {
     [AVTUILogger logErrorSavingChangeToken:location:];
   }
 }
 
-- (void)logFoundRecordIdentifier:(id)a3 changeType:(int64_t)a4 managedObjectID:(id)a5
+- (void)logFoundRecordIdentifier:(id)identifier changeType:(int64_t)type managedObjectID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  identifierCopy = identifier;
+  dCopy = d;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412802;
-    v13 = v8;
+    v13 = identifierCopy;
     v14 = 2048;
-    v15 = a4;
+    typeCopy = type;
     v16 = 2112;
-    v17 = v9;
-    _os_log_impl(&dword_241932000, v10, OS_LOG_TYPE_DEFAULT, "Found record identifier %@ for change type %ld, managedObjectID %@", &v12, 0x20u);
+    v17 = dCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Found record identifier %@ for change type %ld, managedObjectID %@", &v12, 0x20u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCouldntFindRecordIdentifierForChangeType:(int64_t)a3 managedObjectID:(id)a4
+- (void)logCouldntFindRecordIdentifierForChangeType:(int64_t)type managedObjectID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  dCopy = d;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = a3;
+    typeCopy = type;
     v11 = 2112;
-    v12 = v6;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_DEFAULT, "Did NOT find record identifier for change type %ld, managedObjectID %@ - could be processing ancient history.", &v9, 0x16u);
+    v12 = dCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Did NOT find record identifier for change type %ld, managedObjectID %@ - could be processing ancient history.", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletingStickerRecentsForRemoteChanges:(id)a3
+- (void)deletingStickerRecentsForRemoteChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = _os_activity_create(&dword_241932000, "DeletingStickerRecentsForRemoteChanges", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2074,10 +2074,10 @@ void __40__AVTUILogger_savingChangeTrackerToken___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __54__AVTUILogger_deletingStickerRecentsForRemoteChanges___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = changesCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = changesCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2091,17 +2091,17 @@ void __54__AVTUILogger_deletingStickerRecentsForRemoteChanges___block_invoke(uin
 
 - (void)logDeletingStickerRecents
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Deleting sticker recents for sync", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Deleting sticker recents for sync", v3, 2u);
   }
 }
 
-- (void)updatingThumbnailsForRemoteChanges:(id)a3
+- (void)updatingThumbnailsForRemoteChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = _os_activity_create(&dword_241932000, "UpdatingThumbnailsForRemoteChanges", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2114,10 +2114,10 @@ void __54__AVTUILogger_deletingStickerRecentsForRemoteChanges___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __50__AVTUILogger_updatingThumbnailsForRemoteChanges___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = changesCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = changesCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2129,11 +2129,11 @@ void __50__AVTUILogger_updatingThumbnailsForRemoteChanges___block_invoke(uint64_
   os_activity_scope_leave(&v1);
 }
 
-- (void)logErrorProcessingChangeTransactionsToUpdateThumbnails:(id)a3
+- (void)logErrorProcessingChangeTransactionsToUpdateThumbnails:(id)thumbnails
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  thumbnailsCopy = thumbnails;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorProcessingChangeTransactionsToUpdateThumbnails:];
   }
@@ -2141,108 +2141,108 @@ void __50__AVTUILogger_updatingThumbnailsForRemoteChanges___block_invoke(uint64_
 
 - (void)logCheckingIfMigrationNeeded
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Checking if migration needed…", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Checking if migration needed…", v3, 2u);
   }
 }
 
 - (void)logUpdatingThumbnails
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Updating thumbnails if needed", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Updating thumbnails if needed", v3, 2u);
   }
 }
 
 - (void)logSchedulingImport
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Scheduling import of records", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Scheduling import of records", v3, 2u);
   }
 }
 
 - (void)logSchedulingUpdateThumbnails
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Scheduling thumbnail update", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Scheduling thumbnail update", v3, 2u);
   }
 }
 
 - (void)logWillResetZone
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "WILL RESET CLOUDKIT ZONE!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "WILL RESET CLOUDKIT ZONE!", v3, 2u);
   }
 }
 
-- (void)logDidResetZoneWithSuccess:(BOOL)a3 error:(id)a4
+- (void)logDidResetZoneWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109378;
-    v9[1] = v4;
+    v9[1] = successCopy;
     v10 = 2112;
-    v11 = v6;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_DEFAULT, "Did reset CloudKit zone with success %d, error %@", v9, 0x12u);
+    v11 = errorCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Did reset CloudKit zone with success %d, error %@", v9, 0x12u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logTearingDownCoreDataStack:(id)a3
+- (void)logTearingDownCoreDataStack:(id)stack
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  stackCopy = stack;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Will tear down CoreData stack for path %@", &v7, 0xCu);
+    v8 = stackCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Will tear down CoreData stack for path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorTearingDownCoreDataStack:(id)a3
+- (void)logErrorTearingDownCoreDataStack:(id)stack
 {
-  v3 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorTearingDownCoreDataStack:];
   }
 }
 
-- (void)logErrorRemovingStoreFolder:(id)a3
+- (void)logErrorRemovingStoreFolder:(id)folder
 {
-  v3 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorRemovingStoreFolder:];
   }
 }
 
-- (void)postingAvatarStoreChangeNotification:(id)a3
+- (void)postingAvatarStoreChangeNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = _os_activity_create(&dword_241932000, "AVTAvatarStoreDidChangeNotification", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2255,10 +2255,10 @@ void __50__AVTUILogger_updatingThumbnailsForRemoteChanges___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __52__AVTUILogger_postingAvatarStoreChangeNotification___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = notificationCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = notificationCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2270,67 +2270,67 @@ void __52__AVTUILogger_postingAvatarStoreChangeNotification___block_invoke(uint6
   os_activity_scope_leave(&v1);
 }
 
-- (void)logPostingChangeNotificationForIdentifiers:(id)a3
+- (void)logPostingChangeNotificationForIdentifiers:(id)identifiers
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  identifiersCopy = identifiers;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
-    v7 = [v4 componentsJoinedByString:{@", "}];
+    v6 = [identifiersCopy count];
+    v7 = [identifiersCopy componentsJoinedByString:{@", "}];
     v9 = 134218242;
     v10 = v6;
     v11 = 2112;
     v12 = v7;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Posting change notification for %lu record id(s) %@", &v9, 0x16u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Posting change notification for %lu record id(s) %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logNotImportingOnLaunchWithRemainingTime:(double)a3
+- (void)logNotImportingOnLaunchWithRemainingTime:(double)time
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = a3 % 3600;
+    v5 = time % 3600;
     v7 = 134218496;
-    v8 = (a3 / 3600.0);
+    v8 = (time / 3600.0);
     v9 = 2048;
     v10 = ((((34953 * v5) >> 16) >> 5) + (((v5 + ((-30583 * v5) >> 16)) & 0x8000) >> 15));
     v11 = 2048;
     v12 = (v5 - 60 * ((((34953 * v5) >> 16) >> 5) + (((v5 + ((-30583 * v5) >> 16)) & 0x8000) >> 15)));
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, "Not importing on launch, still remains %02luh %02lum %02lus", &v7, 0x20u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Not importing on launch, still remains %02luh %02lum %02lus", &v7, 0x20u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorSettingUserDirSuffixForSandbox:(int)a3
+- (void)logErrorSettingUserDirSuffixForSandbox:(int)sandbox
 {
-  v3 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorSettingUserDirSuffixForSandbox:];
   }
 }
 
-- (void)logGenericSandboxError:(id)a3 error:(int)a4
+- (void)logGenericSandboxError:(id)error error:(int)a4
 {
-  v5 = a3;
-  v6 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logGenericSandboxError:error:];
   }
 }
 
-- (void)logErrorSandboxInit:(char *)a3
+- (void)logErrorSandboxInit:(char *)init
 {
-  v3 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorSandboxInit:];
   }
@@ -2343,9 +2343,9 @@ void __52__AVTUILogger_postingAvatarStoreChangeNotification___block_invoke(uint6
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)processingWillResetSyncNotification:(id)a3
+- (void)processingWillResetSyncNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = _os_activity_create(&dword_241932000, "WillResetSync", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2358,10 +2358,10 @@ void __52__AVTUILogger_postingAvatarStoreChangeNotification___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __51__AVTUILogger_processingWillResetSyncNotification___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = notificationCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = notificationCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2373,9 +2373,9 @@ void __51__AVTUILogger_processingWillResetSyncNotification___block_invoke(uint64
   os_activity_scope_leave(&v1);
 }
 
-- (void)processingDidResetSyncNotification:(id)a3
+- (void)processingDidResetSyncNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = _os_activity_create(&dword_241932000, "DidResetSync", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2388,10 +2388,10 @@ void __51__AVTUILogger_processingWillResetSyncNotification___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __50__AVTUILogger_processingDidResetSyncNotification___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = notificationCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = notificationCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2403,9 +2403,9 @@ void __50__AVTUILogger_processingDidResetSyncNotification___block_invoke(uint64_
   os_activity_scope_leave(&v1);
 }
 
-- (void)copyingStorageAside:(id)a3
+- (void)copyingStorageAside:(id)aside
 {
-  v3 = a3;
+  asideCopy = aside;
   v4 = _os_activity_create(&dword_241932000, "CopyingStorageAside", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2418,10 +2418,10 @@ void __50__AVTUILogger_processingDidResetSyncNotification___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __35__AVTUILogger_copyingStorageAside___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = asideCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = asideCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2433,9 +2433,9 @@ void __35__AVTUILogger_copyingStorageAside___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)restoringStorage:(id)a3
+- (void)restoringStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   v4 = _os_activity_create(&dword_241932000, "RestoringStorage", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2448,10 +2448,10 @@ void __35__AVTUILogger_copyingStorageAside___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__AVTUILogger_restoringStorage___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = storageCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = storageCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2465,11 +2465,11 @@ void __32__AVTUILogger_restoringStorage___block_invoke(uint64_t a1)
 
 - (void)logStartObservingResetSync
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Starting to observe NSCloudKitMirroringDelegateWillResetSyncNotificationName / NSCloudKitMirroringDelegateDidResetSyncNotificationName…", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Starting to observe NSCloudKitMirroringDelegateWillResetSyncNotificationName / NSCloudKitMirroringDelegateDidResetSyncNotificationName…", v3, 2u);
   }
 }
 
@@ -2487,50 +2487,50 @@ void __32__AVTUILogger_restoringStorage___block_invoke(uint64_t a1)
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)logPersistentChangeNotOfInterest:(id)a3
+- (void)logPersistentChangeNotOfInterest:(id)interest
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  interestCopy = interest;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Got a change that didn't seem interesting: %@", &v7, 0xCu);
+    v8 = interestCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Got a change that didn't seem interesting: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logResetSyncReason:(unint64_t)a3
+- (void)logResetSyncReason:(unint64_t)reason
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, "Reset Sync reason: %lu", &v6, 0xCu);
+    reasonCopy = reason;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Reset Sync reason: %lu", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorCopyingStorageAside:(id)a3
+- (void)logErrorCopyingStorageAside:(id)aside
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  asideCopy = aside;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorCopyingStorageAside:];
   }
 }
 
-- (void)logErrorMergingCopiedAsideContent:(id)a3
+- (void)logErrorMergingCopiedAsideContent:(id)content
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  contentCopy = content;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorMergingCopiedAsideContent:];
   }
@@ -2538,72 +2538,72 @@ void __32__AVTUILogger_restoringStorage___block_invoke(uint64_t a1)
 
 - (void)logSetupSchedulingMigrationCheck
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Setup - will check if migration is needed", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Setup - will check if migration is needed", v3, 2u);
   }
 }
 
 - (void)logSetupSchedulingImport
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Setup - scheduling import", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Setup - scheduling import", v3, 2u);
   }
 }
 
 - (void)logSetupSchedulingExport
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Setup - scheduling export", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Setup - scheduling export", v3, 2u);
   }
 }
 
-- (void)logCoalesceableEventOccured:(id)a3
+- (void)logCoalesceableEventOccured:(id)occured
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  occuredCopy = occured;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Coalescable event occured: %{public}@", &v7, 0xCu);
+    v8 = occuredCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Coalescable event occured: %{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorGettingChangedRecordsContentForIdentifiers:(id)a3 error:(id)a4
+- (void)logErrorGettingChangedRecordsContentForIdentifiers:(id)identifiers error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  identifiersCopy = identifiers;
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorGettingChangedRecordsContentForIdentifiers:error:];
   }
 }
 
-- (void)logTooManyAvatars:(unint64_t)a3 limit:(unint64_t)a4
+- (void)logTooManyAvatars:(unint64_t)avatars limit:(unint64_t)limit
 {
-  v4 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logTooManyAvatars:limit:];
   }
 }
 
-- (void)checkingAccountInfo:(id)a3
+- (void)checkingAccountInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = _os_activity_create(&dword_241932000, "CheckingAccount", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2616,10 +2616,10 @@ void __32__AVTUILogger_restoringStorage___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__AVTUILogger_checkingAccountInfo___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = infoCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = infoCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2631,62 +2631,62 @@ void __35__AVTUILogger_checkingAccountInfo___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)logAccountInfo:(id)a3 status:(int64_t)a4 deviceToDeviceEncryption:(BOOL)a5
+- (void)logAccountInfo:(id)info status:(int64_t)status deviceToDeviceEncryption:(BOOL)encryption
 {
-  v5 = a5;
+  encryptionCopy = encryption;
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  infoCopy = info;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v11[0] = 67109634;
-    v11[1] = v5;
+    v11[1] = encryptionCopy;
     v12 = 2048;
-    v13 = a4;
+    statusCopy = status;
     v14 = 2112;
-    v15 = v8;
-    _os_log_impl(&dword_241932000, v9, OS_LOG_TYPE_DEFAULT, "Got account info! HSA2: %d, status: %ld, description: %@", v11, 0x1Cu);
+    v15 = infoCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Got account info! HSA2: %d, status: %ld, description: %@", v11, 0x1Cu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logErrorGettingAccountInfo:(id)a3
+- (void)logErrorGettingAccountInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorGettingAccountInfo:];
   }
 }
 
-- (void)logErrorMigratingBackupInclusionStatus:(id)a3
+- (void)logErrorMigratingBackupInclusionStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  statusCopy = status;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorMigratingBackupInclusionStatus:];
   }
 }
 
-- (void)logErrorUpdatingBackupInclusionStatus:(id)a3
+- (void)logErrorUpdatingBackupInclusionStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  statusCopy = status;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorUpdatingBackupInclusionStatus:];
   }
 }
 
-- (void)logUpdatingBackupExclusionStatus:(BOOL)a3
+- (void)logUpdatingBackupExclusionStatus:(BOOL)status
 {
-  v3 = a3;
-  v4 = [(AVTUILogger *)self backendLog];
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  statusCopy = status;
+  backendLog = [(AVTUILogger *)self backendLog];
+  v5 = os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT);
+  if (statusCopy)
   {
     if (v5)
     {
@@ -2694,7 +2694,7 @@ void __35__AVTUILogger_checkingAccountInfo___block_invoke(uint64_t a1)
       v6 = "Will NOT include database in backup.";
       v7 = &v9;
 LABEL_6:
-      _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, v6, v7, 2u);
+      _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, v6, v7, 2u);
     }
   }
 
@@ -2709,23 +2709,23 @@ LABEL_6:
 
 - (void)logAvatarsDaemonReceivesIncomingConnection
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_INFO, "Accepting incoming connection on side channel", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_INFO, "Accepting incoming connection on side channel", v3, 2u);
   }
 }
 
-- (void)logAvatarsDaemonClientChecksIn:(int)a3
+- (void)logAvatarsDaemonClientChecksIn:(int)in
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, "CheckIn from client with pid %d", v6, 8u);
+    v6[1] = in;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "CheckIn from client with pid %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -2740,19 +2740,19 @@ LABEL_6:
 
 - (void)logAvatarsDaemonClientConnectionInvalidated
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Connection to avatarsd invalidated", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Connection to avatarsd invalidated", v3, 2u);
   }
 }
 
-- (void)logErrorGettingAvatarsDaemonClientProxy:(id)a3
+- (void)logErrorGettingAvatarsDaemonClientProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  proxyCopy = proxy;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorGettingAvatarsDaemonClientProxy:];
   }
@@ -2765,9 +2765,9 @@ LABEL_6:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)checkingIn:(id)a3
+- (void)checkingIn:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _os_activity_create(&dword_241932000, "CheckingIn", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2780,10 +2780,10 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __26__AVTUILogger_checkingIn___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = inCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = inCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2795,9 +2795,9 @@ void __26__AVTUILogger_checkingIn___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)runningMaintenance:(id)a3
+- (void)runningMaintenance:(id)maintenance
 {
-  v3 = a3;
+  maintenanceCopy = maintenance;
   v4 = _os_activity_create(&dword_241932000, "RunningStoreMaintenance", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2810,10 +2810,10 @@ void __26__AVTUILogger_checkingIn___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__AVTUILogger_runningMaintenance___block_invoke_2;
   block[3] = &unk_278CFB018;
-  v10 = v3;
+  v10 = maintenanceCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = maintenanceCopy;
   os_activity_apply(v5, block);
 }
 
@@ -2825,11 +2825,11 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v1);
 }
 
-- (void)logErrorMitigatingDuplicates:(id)a3
+- (void)logErrorMitigatingDuplicates:(id)duplicates
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  duplicatesCopy = duplicates;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logErrorMitigatingDuplicates:];
   }
@@ -2837,169 +2837,169 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
 
 - (void)logMaintenanceCompleted
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Store maintenance completed!", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Store maintenance completed!", v3, 2u);
   }
 }
 
-- (void)logDiscoveredDuplicates:(id)a3 count:(unint64_t)a4
+- (void)logDiscoveredDuplicates:(id)duplicates count:(unint64_t)count
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  duplicatesCopy = duplicates;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = a4;
+    countCopy = count;
     v11 = 2112;
-    v12 = v6;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_DEFAULT, "Discovered %lu group(s) of duplicates: %@", &v9, 0x16u);
+    v12 = duplicatesCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Discovered %lu group(s) of duplicates: %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDeduplicateRecordWithIdentifier:(id)a3 toNewRecordWithIdentifier:(id)a4
+- (void)logDeduplicateRecordWithIdentifier:(id)identifier toNewRecordWithIdentifier:(id)withIdentifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = identifierCopy;
     v12 = 2112;
-    v13 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "Fixing duplicate with identifier %@ to have identifier %@", &v10, 0x16u);
+    v13 = withIdentifierCopy;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Fixing duplicate with identifier %@ to have identifier %@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logStickerGeneratorPoolDidntHaveAvailableGenerator:(int64_t)a3 maxCount:(int64_t)a4
+- (void)logStickerGeneratorPoolDidntHaveAvailableGenerator:(int64_t)generator maxCount:(int64_t)count
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_INFO))
   {
     v8 = 134218240;
-    v9 = a3;
+    generatorCopy = generator;
     v10 = 2048;
-    v11 = a4;
-    _os_log_impl(&dword_241932000, v6, OS_LOG_TYPE_INFO, "Sticker Generator Pool has to steal a generator in Use, %ld in use, %ld max", &v8, 0x16u);
+    countCopy = count;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_INFO, "Sticker Generator Pool has to steal a generator in Use, %ld in use, %ld max", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPaddleViewVideoPlayerFailed:(id)a3
+- (void)logPaddleViewVideoPlayerFailed:(id)failed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  failedCopy = failed;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "PaddleView Video Player failed with error %@; restarting videos", &v7, 0xCu);
+    v8 = failedCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "PaddleView Video Player failed with error %@; restarting videos", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRenderingStickerStart:(id)a3 forRecord:(id)a4
+- (void)logRenderingStickerStart:(id)start forRecord:(id)record
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  startCopy = start;
+  recordCopy = record;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = startCopy;
     v13 = 2112;
-    v14 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "Rendering sticker %@ for record %@", &v11, 0x16u);
+    v14 = recordCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Rendering sticker %@ for record %@", &v11, 0x16u);
   }
 
-  v9 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v9))
+  generalLog2 = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog2))
   {
     LOWORD(v11) = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "RenderSticker", &unk_241967295, &v11, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog2, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "RenderSticker", &unk_241967295, &v11, 2u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRenderingStickerEnd:(id)a3
+- (void)logRenderingStickerEnd:(id)end
 {
-  v3 = [(AVTUILogger *)self generalLog];
-  if (os_signpost_enabled(v3))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_signpost_enabled(generalLog))
   {
     *v4 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v3, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RenderSticker", &unk_241967295, v4, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, generalLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RenderSticker", &unk_241967295, v4, 2u);
   }
 }
 
-- (void)logStickerViewSnapshotForBounds:(id)a3 offset:(CGPoint)a4
+- (void)logStickerViewSnapshotForBounds:(id)bounds offset:(CGPoint)offset
 {
-  y = a4.y;
+  y = offset.y;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  boundsCopy = bounds;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = boundsCopy;
     v11 = 2048;
     v12 = y;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_INFO, "StickerViewController preparing for snapshot for bounds %@ offset %f", &v9, 0x16u);
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "StickerViewController preparing for snapshot for bounds %@ offset %f", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logStickerSchedulerAddedTask:(id)a3 taskCount:(int64_t)a4
+- (void)logStickerSchedulerAddedTask:(id)task taskCount:(int64_t)count
 {
-  v5 = a3;
-  v6 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logStickerSchedulerAddedTask:taskCount:];
   }
 }
 
-- (void)logStickerSchedulerStartedTask:(id)a3 forSchedulerRule:(id)a4
+- (void)logStickerSchedulerStartedTask:(id)task forSchedulerRule:(id)rule
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  taskCopy = task;
+  ruleCopy = rule;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logStickerSchedulerStartedTask:forSchedulerRule:];
   }
 }
 
-- (void)logStickerSchedulerCancelledTask:(id)a3
+- (void)logStickerSchedulerCancelledTask:(id)task
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  taskCopy = task;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logStickerSchedulerCancelledTask:];
   }
 }
 
-- (void)logStickerSchedulerCancelledStickerSheetTasksForIdentifier:(id)a3
+- (void)logStickerSchedulerCancelledStickerSheetTasksForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  identifierCopy = identifier;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logStickerSchedulerCancelledStickerSheetTasksForIdentifier:];
   }
@@ -3012,11 +3012,11 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)logErrorUpdatingBodyCarouselVisibleCellAtIndexPath:(id)a3
+- (void)logErrorUpdatingBodyCarouselVisibleCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  pathCopy = path;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logErrorUpdatingBodyCarouselVisibleCellAtIndexPath:];
   }
@@ -3036,11 +3036,11 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
   _os_log_fault_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)logAnalysisServiceCheckingIn:(id)a3
+- (void)logAnalysisServiceCheckingIn:(id)in
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  inCopy = in;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logAnalysisServiceCheckingIn:];
   }
@@ -3060,11 +3060,11 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)logAnalysisServiceDidNotProcessState:(id)a3
+- (void)logAnalysisServiceDidNotProcessState:(id)state
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  stateCopy = state;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logAnalysisServiceDidNotProcessState:];
   }
@@ -3072,411 +3072,411 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
 
 - (void)logCarouselChangingToSingleMode
 {
-  v2 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_INFO, "Carousel changing to single avatar mode", v3, 2u);
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Carousel changing to single avatar mode", v3, 2u);
   }
 }
 
 - (void)logCarouselChangingToMultiMode
 {
-  v2 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_INFO, "Carousel changing to multi avatar mode", v3, 2u);
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Carousel changing to multi avatar mode", v3, 2u);
   }
 }
 
-- (void)logCarouselChangesCenterItemTo:(id)a3
+- (void)logCarouselChangesCenterItemTo:(id)to
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  toCopy = to;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "Carousel changes center item to:%@", &v7, 0xCu);
+    v8 = toCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Carousel changes center item to:%@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCarouselTransitionCenterItem:(id)a3 withCell:(id)a4
+- (void)logCarouselTransitionCenterItem:(id)item withCell:(id)cell
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  itemCopy = item;
+  cellCopy = cell;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = itemCopy;
     v12 = 2112;
-    v13 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_INFO, "Carousel transtioning center item:%@, center cell:%@", &v10, 0x16u);
+    v13 = cellCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Carousel transtioning center item:%@, center cell:%@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCarouselStopsFocusingOnCenterItem:(id)a3 withCell:(id)a4
+- (void)logCarouselStopsFocusingOnCenterItem:(id)item withCell:(id)cell
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  itemCopy = item;
+  cellCopy = cell;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = itemCopy;
     v12 = 2112;
-    v13 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_INFO, "Carousel stops focusing on center item:%@, center cell:%@", &v10, 0x16u);
+    v13 = cellCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Carousel stops focusing on center item:%@, center cell:%@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSingleModeControllerStartUsingLiveView:(id)a3
+- (void)logSingleModeControllerStartUsingLiveView:(id)view
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  viewCopy = view;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "Single mode controller STARTS using liveView: %@", &v7, 0xCu);
+    v8 = viewCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Single mode controller STARTS using liveView: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSingleModeControllerStopUsingLiveView:(id)a3
+- (void)logSingleModeControllerStopUsingLiveView:(id)view
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  viewCopy = view;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "Single mode controller STOPS using liveView: %@", &v7, 0xCu);
+    v8 = viewCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Single mode controller STOPS using liveView: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCarouselCellStartUsingLiveView:(id)a3 associatedTransition:(id)a4
+- (void)logCarouselCellStartUsingLiveView:(id)view associatedTransition:(id)transition
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  viewCopy = view;
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v7;
+    v11 = transitionCopy;
     v12 = 2112;
-    v13 = v6;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_INFO, "[AVTTransition:%@] Carousel Cell STARTS using liveView, cell:%@", &v10, 0x16u);
+    v13 = viewCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] Carousel Cell STARTS using liveView, cell:%@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCarouselCellStopUsingLiveView:(id)a3 associatedTransition:(id)a4
+- (void)logCarouselCellStopUsingLiveView:(id)view associatedTransition:(id)transition
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  viewCopy = view;
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v7;
+    v11 = transitionCopy;
     v12 = 2112;
-    v13 = v6;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_INFO, "[AVTTransition:%@] Carousel Cell STOPS using liveView, cell:%@", &v10, 0x16u);
+    v13 = viewCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] Carousel Cell STOPS using liveView, cell:%@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCarouselAddsTransitionToCoordinator:(id)a3
+- (void)logCarouselAddsTransitionToCoordinator:(id)coordinator
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  coordinatorCopy = coordinator;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> Carousel adds transition to coordinator", &v7, 0xCu);
+    v8 = coordinatorCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> Carousel adds transition to coordinator", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logStartTransition:(id)a3 state:(int64_t)a4
+- (void)logStartTransition:(id)transition state:(int64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = transitionCopy;
     v11 = 2048;
-    v12 = a4;
-    _os_log_impl(&dword_241932000, v7, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> starts, state: %ld", &v9, 0x16u);
+    stateCopy = state;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> starts, state: %ld", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSetupHandlerCompletedForTransition:(id)a3 state:(int64_t)a4 finished:(BOOL)a5
+- (void)logSetupHandlerCompletedForTransition:(id)transition state:(int64_t)state finished:(BOOL)finished
 {
-  v5 = a5;
+  finishedCopy = finished;
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v10 = @"NO";
     v12 = 138412802;
-    v13 = v8;
-    if (v5)
+    v13 = transitionCopy;
+    if (finishedCopy)
     {
       v10 = @"YES";
     }
 
     v14 = 2048;
-    v15 = a4;
+    stateCopy = state;
     v16 = 2112;
     v17 = v10;
-    _os_log_impl(&dword_241932000, v9, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> Setup done, state: %ld, finished %@", &v12, 0x20u);
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> Setup done, state: %ld, finished %@", &v12, 0x20u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPerformTransition:(id)a3
+- (void)logPerformTransition:(id)transition
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> Perform", &v7, 0xCu);
+    v8 = transitionCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> Perform", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCancelTransition:(id)a3
+- (void)logCancelTransition:(id)transition
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> CANCEL!", &v7, 0xCu);
+    v8 = transitionCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> CANCEL!", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logTransition:(id)a3 state:(unint64_t)a4 reachedStage:(unint64_t)a5
+- (void)logTransition:(id)transition state:(unint64_t)state reachedStage:(unint64_t)stage
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  transitionCopy = transition;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v11 = 138412802;
-    v12 = v8;
+    v12 = transitionCopy;
     v13 = 2048;
-    v14 = a5;
+    stageCopy = stage;
     v15 = 2048;
-    v16 = a4;
-    _os_log_impl(&dword_241932000, v9, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> reached stage %lu, state: %lu", &v11, 0x20u);
+    stateCopy = state;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTTransition:%@] -> reached stage %lu, state: %lu", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logToLivePoseTransitionBegins:(id)a3
+- (void)logToLivePoseTransitionBegins:(id)begins
 {
-  v3 = [(AVTUILogger *)self interactionLog];
-  if (os_signpost_enabled(v3))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_signpost_enabled(interactionLog))
   {
     *v4 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ToLive", &unk_241967295, v4, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, interactionLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ToLive", &unk_241967295, v4, 2u);
   }
 }
 
-- (void)logToLivePoseTransitionEnds:(id)a3
+- (void)logToLivePoseTransitionEnds:(id)ends
 {
-  v3 = [(AVTUILogger *)self interactionLog];
-  if (os_signpost_enabled(v3))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_signpost_enabled(interactionLog))
   {
     *v4 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v3, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ToLive", &unk_241967295, v4, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, interactionLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ToLive", &unk_241967295, v4, 2u);
   }
 }
 
-- (void)logAVTViewSetAvatar:(id)a3
+- (void)logAVTViewSetAvatar:(id)avatar
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  avatarCopy = avatar;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_INFO, "[AVTView] Set avatar: %@", &v8, 0xCu);
+    v9 = avatarCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTView] Set avatar: %@", &v8, 0xCu);
   }
 
-  v6 = [(AVTUILogger *)self interactionLog];
-  if (os_signpost_enabled(v6))
+  interactionLog2 = [(AVTUILogger *)self interactionLog];
+  if (os_signpost_enabled(interactionLog2))
   {
     LOWORD(v8) = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AVTViewSetAvatar", &unk_241967295, &v8, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, interactionLog2, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AVTViewSetAvatar", &unk_241967295, &v8, 2u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAVTViewDidRenderAvatar:(id)a3 currentAvatar:(id)a4
+- (void)logAVTViewDidRenderAvatar:(id)avatar currentAvatar:(id)currentAvatar
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  avatarCopy = avatar;
+  currentAvatarCopy = currentAvatar;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 isEqual:v7];
+    v9 = [avatarCopy isEqual:currentAvatarCopy];
     v10 = @"NO";
     v12 = 138412802;
-    v13 = v6;
+    v13 = avatarCopy;
     v14 = 2112;
     if (v9)
     {
       v10 = @"YES";
     }
 
-    v15 = v7;
+    v15 = currentAvatarCopy;
     v16 = 2112;
     v17 = v10;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_INFO, "[AVTView] Did render avatar: %@, current avatar %@, match %@", &v12, 0x20u);
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "[AVTView] Did render avatar: %@, current avatar %@, match %@", &v12, 0x20u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAVTViewDidRenderCurrentAvatar:(id)a3
+- (void)logAVTViewDidRenderCurrentAvatar:(id)avatar
 {
-  v3 = [(AVTUILogger *)self interactionLog];
-  if (os_signpost_enabled(v3))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_signpost_enabled(interactionLog))
   {
     *v4 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v3, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "AVTViewSetAvatar", &unk_241967295, v4, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, interactionLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "AVTViewSetAvatar", &unk_241967295, v4, 2u);
   }
 }
 
-- (void)logAVTViewCancelingRenderingAvatar:(id)a3
+- (void)logAVTViewCancelingRenderingAvatar:(id)avatar
 {
-  v3 = [(AVTUILogger *)self interactionLog];
-  if (os_signpost_enabled(v3))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_signpost_enabled(interactionLog))
   {
     *v4 = 0;
-    _os_signpost_emit_with_name_impl(&dword_241932000, v3, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "AVTViewSetAvatar", &unk_241967295, v4, 2u);
+    _os_signpost_emit_with_name_impl(&dword_241932000, interactionLog, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "AVTViewSetAvatar", &unk_241967295, v4, 2u);
   }
 }
 
-- (void)logCarouselErrorGettingFrameForElementAtIndex:(unint64_t)a3
+- (void)logCarouselErrorGettingFrameForElementAtIndex:(unint64_t)index
 {
-  v3 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_FAULT))
   {
     [AVTUILogger logCarouselErrorGettingFrameForElementAtIndex:];
   }
 }
 
-- (void)logCarouselDelegateDidFocusRecord:(id)a3
+- (void)logCarouselDelegateDidFocusRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  recordCopy = record;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logCarouselDelegateDidFocusRecord:];
   }
 }
 
-- (void)logCarouselDelegateWillEndFocusRecord:(id)a3
+- (void)logCarouselDelegateWillEndFocusRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  recordCopy = record;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logCarouselDelegateWillEndFocusRecord:];
   }
 }
 
-- (void)logCarouselDelegateNearnessFactorDidChange:(double)a3 towardRecord:(BOOL)a4 editable:(BOOL)a5
+- (void)logCarouselDelegateNearnessFactorDidChange:(double)change towardRecord:(BOOL)record editable:(BOOL)editable
 {
-  v5 = a5;
-  v6 = a4;
+  editableCopy = editable;
+  recordCopy = record;
   v16 = *MEMORY[0x277D85DE8];
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_DEBUG))
   {
     v10 = 134218496;
-    v11 = a3;
+    changeCopy = change;
     v12 = 1024;
-    v13 = v6;
+    v13 = recordCopy;
     v14 = 1024;
-    v15 = v5;
-    _os_log_debug_impl(&dword_241932000, v8, OS_LOG_TYPE_DEBUG, "[Delegate] Did Move (%2.2lf) Toward record %d, editable %d", &v10, 0x18u);
+    v15 = editableCopy;
+    _os_log_debug_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_DEBUG, "[Delegate] Did Move (%2.2lf) Toward record %d, editable %d", &v10, 0x18u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCarouselDelegateDidUpdateRecord:(id)a3
+- (void)logCarouselDelegateDidUpdateRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  recordCopy = record;
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_DEBUG))
   {
     [AVTUILogger logCarouselDelegateDidUpdateRecord:];
   }
 }
 
-- (void)logCarouselEndsDraggingWithVelocity:(double)a3 willSwitchIndexPathInsteadOfScrollBack:(BOOL)a4 forHighVelocity:(BOOL)a5
+- (void)logCarouselEndsDraggingWithVelocity:(double)velocity willSwitchIndexPathInsteadOfScrollBack:(BOOL)back forHighVelocity:(BOOL)highVelocity
 {
-  v5 = a5;
-  v6 = a4;
+  highVelocityCopy = highVelocity;
+  backCopy = back;
   v16 = *MEMORY[0x277D85DE8];
-  v8 = [(AVTUILogger *)self interactionLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  interactionLog = [(AVTUILogger *)self interactionLog];
+  if (os_log_type_enabled(interactionLog, OS_LOG_TYPE_INFO))
   {
     v10 = 134218496;
-    v11 = a3;
+    velocityCopy = velocity;
     v12 = 1024;
-    v13 = v6;
+    v13 = backCopy;
     v14 = 1024;
-    v15 = v5;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_INFO, "Carousel ends dragging with velocity:%2.2lf, switch instead of scroll back: %d, switch for high velocity: %d", &v10, 0x18u);
+    v15 = highVelocityCopy;
+    _os_log_impl(&dword_241932000, interactionLog, OS_LOG_TYPE_INFO, "Carousel ends dragging with velocity:%2.2lf, switch instead of scroll back: %d, switch for high velocity: %d", &v10, 0x18u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -3484,44 +3484,44 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
 
 - (void)logSetupUserHasNoMemojiData
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_INFO, "Setup User has no Memoji data to import", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_INFO, "Setup User has no Memoji data to import", v3, 2u);
   }
 }
 
-- (void)logSetupUserImportFailedToUnarchiveDataAtPath:(id)a3 errorDescription:(id)a4
+- (void)logSetupUserImportFailedToUnarchiveDataAtPath:(id)path errorDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  pathCopy = path;
+  descriptionCopy = description;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logSetupUserImportFailedToUnarchiveDataAtPath:errorDescription:];
   }
 }
 
-- (void)logSetupUserImportAttempting:(int64_t)a3
+- (void)logSetupUserImportAttempting:(int64_t)attempting
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = a3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_INFO, "Setup User import attempting to save %ld records", &v6, 0xCu);
+    attemptingCopy = attempting;
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_INFO, "Setup User import attempting to save %ld records", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSetupUserImportSaveError:(id)a3
+- (void)logSetupUserImportSaveError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logSetupUserImportSaveError:];
   }
@@ -3529,160 +3529,160 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
 
 - (void)logSetupUserDataImportCheck
 {
-  v2 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Setup - checking for Setup User data to import", v3, 2u);
+    _os_log_impl(&dword_241932000, backendLog, OS_LOG_TYPE_DEFAULT, "Setup - checking for Setup User data to import", v3, 2u);
   }
 }
 
-- (void)logSetupUserImportFailedToRemoveFileWithError:(id)a3
+- (void)logSetupUserImportFailedToRemoveFileWithError:(id)error
 {
-  v3 = [(AVTUILogger *)self backendLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  backendLog = [(AVTUILogger *)self backendLog];
+  if (os_log_type_enabled(backendLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logSetupUserImportFailedToRemoveFileWithError:];
   }
 }
 
-- (void)logRequestedAnimojiSticker:(id)a3
+- (void)logRequestedAnimojiSticker:(id)sticker
 {
-  v3 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logRequestedAnimojiSticker:];
   }
 }
 
-- (void)logImageRenderServiceConnectionError:(id)a3
+- (void)logImageRenderServiceConnectionError:(id)error
 {
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_ERROR))
   {
     [AVTUILogger logImageRenderServiceConnectionError:];
   }
 }
 
-- (void)logGeneratingImageInServiceForRecord:(id)a3
+- (void)logGeneratingImageInServiceForRecord:(id)record
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  recordCopy = record;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Generating image and writing to cache in service for record: %@", &v7, 0xCu);
+    v8 = recordCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Generating image and writing to cache in service for record: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logImageStoreDoneInServiceForPath:(id)a3
+- (void)logImageStoreDoneInServiceForPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Image saved to cache by MemojiImageRenderService at path %@", &v7, 0xCu);
+    v8 = pathCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Image saved to cache by MemojiImageRenderService at path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logImageStoreFailedInServiceForPath:(id)a3 error:(id)a4
+- (void)logImageStoreFailedInServiceForPath:(id)path error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  errorCopy = error;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = pathCopy;
     v12 = 2112;
-    v13 = v7;
-    _os_log_impl(&dword_241932000, v8, OS_LOG_TYPE_DEFAULT, "Image save failed in MemojiImageRenderService at path %@, with error: %@", &v10, 0x16u);
+    v13 = errorCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Image save failed in MemojiImageRenderService at path %@, with error: %@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRetrievingSnapshotInServiceForPath:(id)a3
+- (void)logRetrievingSnapshotInServiceForPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Retrieving snapshot in service from cache at path %@", &v7, 0xCu);
+    v8 = pathCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Retrieving snapshot in service from cache at path %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logTimedOutWaitingForSnapshotInService:(id)a3
+- (void)logTimedOutWaitingForSnapshotInService:(id)service
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218242;
     v8 = 0x4024000000000000;
     v9 = 2112;
-    v10 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Semaphore timed out at %f seconds waiting for snapshot to generate sticker %@", &v7, 0x16u);
+    v10 = serviceCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Semaphore timed out at %f seconds waiting for snapshot to generate sticker %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logFailedToGenerateStickerInService:(id)a3
+- (void)logFailedToGenerateStickerInService:(id)service
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_241932000, v5, OS_LOG_TYPE_DEFAULT, "Failed to generate sticker in service %@", &v7, 0xCu);
+    v8 = serviceCopy;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Failed to generate sticker in service %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logIncrementingRemoteRendererTransactionCount:(int64_t)a3
+- (void)logIncrementingRemoteRendererTransactionCount:(int64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, "Incrementing remote renderer transaction count to  %li", &v6, 0xCu);
+    countCopy = count;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Incrementing remote renderer transaction count to  %li", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDecrementingRemoteRendererTransactionCount:(int64_t)a3
+- (void)logDecrementingRemoteRendererTransactionCount:(int64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
-    _os_log_impl(&dword_241932000, v4, OS_LOG_TYPE_DEFAULT, "Decrementing remote renderer transaction count to  %li", &v6, 0xCu);
+    countCopy = count;
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Decrementing remote renderer transaction count to  %li", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -3690,21 +3690,21 @@ void __34__AVTUILogger_runningMaintenance___block_invoke(uint64_t a1)
 
 - (void)logCancellingCleanupBlock
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Cancelling cleanup block in remote render service", v3, 2u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Cancelling cleanup block in remote render service", v3, 2u);
   }
 }
 
 - (void)logCleanupTimerComplete
 {
-  v2 = [(AVTUILogger *)self generalLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  generalLog = [(AVTUILogger *)self generalLog];
+  if (os_log_type_enabled(generalLog, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_241932000, v2, OS_LOG_TYPE_DEFAULT, "Cleanup timer completed, clean exiting remote render service", v3, 2u);
+    _os_log_impl(&dword_241932000, generalLog, OS_LOG_TYPE_DEFAULT, "Cleanup timer completed, clean exiting remote render service", v3, 2u);
   }
 }
 

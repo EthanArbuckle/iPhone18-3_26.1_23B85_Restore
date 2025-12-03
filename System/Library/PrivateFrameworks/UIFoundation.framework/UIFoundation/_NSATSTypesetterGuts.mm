@@ -1,5 +1,5 @@
 @interface _NSATSTypesetterGuts
-- (_DWORD)initWithTypesetter:(void *)a1;
+- (_DWORD)initWithTypesetter:(void *)typesetter;
 - (void)dealloc;
 - (void)finalize;
 @end
@@ -52,14 +52,14 @@
   [(_NSATSTypesetterGuts *)&v6 finalize];
 }
 
-- (_DWORD)initWithTypesetter:(void *)a1
+- (_DWORD)initWithTypesetter:(void *)typesetter
 {
-  if (!a1)
+  if (!typesetter)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = typesetter;
   v7.super_class = _NSATSTypesetterGuts;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   if (v3)

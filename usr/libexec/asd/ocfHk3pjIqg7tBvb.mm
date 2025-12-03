@@ -1,9 +1,9 @@
 @interface ocfHk3pjIqg7tBvb
 + (id)sharedInstance;
-- (int64_t)dOcbonNWKg7PJwsF:(int64_t)a3 QlGRpofDrDPpBRod:(int64_t)a4 mfJ8r89KwA6nfqNY:(sqlite3 *)a5;
+- (int64_t)dOcbonNWKg7PJwsF:(int64_t)f QlGRpofDrDPpBRod:(int64_t)rod mfJ8r89KwA6nfqNY:(sqlite3 *)y;
 - (ocfHk3pjIqg7tBvb)init;
-- (unsigned)hi5ump20ke7n4x6o:(id)a3 hikv315wqxcu0dpl:(id)a4;
-- (void)zjSRqCgYhfa1wFgr:(id)a3 gqhuZKS8Xs6ugnFL:(id)a4 wRPFKB7h3xbveJFz:(_e97N3ZJrnSwhQeNK *)a5 efc6f2da04fb733f:(int64_t)a6 x1IqrF8Flbgd3Jhk:(id)a7;
+- (unsigned)hi5ump20ke7n4x6o:(id)hi5ump20ke7n4x6o hikv315wqxcu0dpl:(id)hikv315wqxcu0dpl;
+- (void)zjSRqCgYhfa1wFgr:(id)fgr gqhuZKS8Xs6ugnFL:(id)l wRPFKB7h3xbveJFz:(_e97N3ZJrnSwhQeNK *)fz efc6f2da04fb733f:(int64_t)efc6f2da04fb733f x1IqrF8Flbgd3Jhk:(id)jhk;
 @end
 
 @implementation ocfHk3pjIqg7tBvb
@@ -23,19 +23,19 @@
   return v2;
 }
 
-- (int64_t)dOcbonNWKg7PJwsF:(int64_t)a3 QlGRpofDrDPpBRod:(int64_t)a4 mfJ8r89KwA6nfqNY:(sqlite3 *)a5
+- (int64_t)dOcbonNWKg7PJwsF:(int64_t)f QlGRpofDrDPpBRod:(int64_t)rod mfJ8r89KwA6nfqNY:(sqlite3 *)y
 {
-  result = a3;
-  if (a3 > 16)
+  result = f;
+  if (f > 16)
   {
-    if (a3 <= 22)
+    if (f <= 22)
     {
-      if (a3 == 17)
+      if (f == 17)
       {
         return 13711;
       }
 
-      if (a3 == 18)
+      if (f == 18)
       {
         return 13712;
       }
@@ -43,7 +43,7 @@
 
     else
     {
-      switch(a3)
+      switch(f)
       {
         case 513:
           return 13714;
@@ -55,14 +55,14 @@
     }
   }
 
-  else if (a3 <= 8)
+  else if (f <= 8)
   {
-    if (!a3)
+    if (!f)
     {
       return result;
     }
 
-    if (a3 == 7)
+    if (f == 7)
     {
       return 13715;
     }
@@ -70,7 +70,7 @@
 
   else
   {
-    switch(a3)
+    switch(f)
     {
       case 9:
         return 13709;
@@ -82,12 +82,12 @@
   }
 
   v6 = 13799;
-  if (a4 == 1)
+  if (rod == 1)
   {
     v6 = 13710;
   }
 
-  if (a4)
+  if (rod)
   {
     return v6;
   }
@@ -98,10 +98,10 @@
   }
 }
 
-- (unsigned)hi5ump20ke7n4x6o:(id)a3 hikv315wqxcu0dpl:(id)a4
+- (unsigned)hi5ump20ke7n4x6o:(id)hi5ump20ke7n4x6o hikv315wqxcu0dpl:(id)hikv315wqxcu0dpl
 {
-  v5 = a4;
-  if (![a3 isEqualToString:@"/var/mobile/Library/Accounts/Accounts3.sqlite"])
+  hikv315wqxcu0dplCopy = hikv315wqxcu0dpl;
+  if (![hi5ump20ke7n4x6o isEqualToString:@"/var/mobile/Library/Accounts/Accounts3.sqlite"])
   {
     goto LABEL_4;
   }
@@ -109,7 +109,7 @@
   v6 = [NSString stringWithFormat:@"%@\\s*%@\\s*%@", @"zusername", @"(IS|IS NOT|LIKE|GLOB|=|<|>)", @"[A-Z0-9a-z\\._%+-]+"];
   v11 = 0;
   v7 = [NSRegularExpression regularExpressionWithPattern:v6 options:1 error:&v11];
-  v8 = [v7 numberOfMatchesInString:v5 options:8 range:{0, objc_msgSend(v5, "length")}];
+  v8 = [v7 numberOfMatchesInString:hikv315wqxcu0dplCopy options:8 range:{0, objc_msgSend(hikv315wqxcu0dplCopy, "length")}];
 
   if (v8)
   {
@@ -137,26 +137,26 @@ LABEL_4:
   return v3;
 }
 
-- (void)zjSRqCgYhfa1wFgr:(id)a3 gqhuZKS8Xs6ugnFL:(id)a4 wRPFKB7h3xbveJFz:(_e97N3ZJrnSwhQeNK *)a5 efc6f2da04fb733f:(int64_t)a6 x1IqrF8Flbgd3Jhk:(id)a7
+- (void)zjSRqCgYhfa1wFgr:(id)fgr gqhuZKS8Xs6ugnFL:(id)l wRPFKB7h3xbveJFz:(_e97N3ZJrnSwhQeNK *)fz efc6f2da04fb733f:(int64_t)efc6f2da04fb733f x1IqrF8Flbgd3Jhk:(id)jhk
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(ocfHk3pjIqg7tBvb *)self queue];
+  fgrCopy = fgr;
+  lCopy = l;
+  jhkCopy = jhk;
+  queue = [(ocfHk3pjIqg7tBvb *)self queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10000E698;
   v19[3] = &unk_10068F3D0;
-  v23 = a5;
-  v24 = a6;
+  fzCopy = fz;
+  efc6f2da04fb733fCopy = efc6f2da04fb733f;
   v19[4] = self;
-  v20 = v13;
-  v21 = v12;
-  v22 = v14;
-  v16 = v14;
-  v17 = v12;
-  v18 = v13;
-  dispatch_async(v15, v19);
+  v20 = lCopy;
+  v21 = fgrCopy;
+  v22 = jhkCopy;
+  v16 = jhkCopy;
+  v17 = fgrCopy;
+  v18 = lCopy;
+  dispatch_async(queue, v19);
 }
 
 @end

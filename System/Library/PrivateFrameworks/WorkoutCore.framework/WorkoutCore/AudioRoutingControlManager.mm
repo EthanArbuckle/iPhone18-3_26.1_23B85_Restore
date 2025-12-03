@@ -1,16 +1,16 @@
 @interface AudioRoutingControlManager
-- (void)areHeadphonesNearbyAndEligibleToPlayWithCompletionHandler:(id)a3;
+- (void)areHeadphonesNearbyAndEligibleToPlayWithCompletionHandler:(id)handler;
 @end
 
 @implementation AudioRoutingControlManager
 
-- (void)areHeadphonesNearbyAndEligibleToPlayWithCompletionHandler:(id)a3
+- (void)areHeadphonesNearbyAndEligibleToPlayWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

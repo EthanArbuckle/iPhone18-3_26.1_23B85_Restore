@@ -1,26 +1,26 @@
 @interface VIDetectorModelDescription
 - (CGSize)inputImageSize;
-- (VIDetectorModelDescription)initWithModelURL:(id)a3 modelID:(id)a4 modelOutputs:(id)a5 inputImageSize:(CGSize)a6;
+- (VIDetectorModelDescription)initWithModelURL:(id)l modelID:(id)d modelOutputs:(id)outputs inputImageSize:(CGSize)size;
 @end
 
 @implementation VIDetectorModelDescription
 
-- (VIDetectorModelDescription)initWithModelURL:(id)a3 modelID:(id)a4 modelOutputs:(id)a5 inputImageSize:(CGSize)a6
+- (VIDetectorModelDescription)initWithModelURL:(id)l modelID:(id)d modelOutputs:(id)outputs inputImageSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  dCopy = d;
+  outputsCopy = outputs;
   v20.receiver = self;
   v20.super_class = VIDetectorModelDescription;
   v15 = [(VIDetectorModelDescription *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_modelURL, a3);
-    objc_storeStrong(&v16->_modelID, a4);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_modelURL, l);
+    objc_storeStrong(&v16->_modelID, d);
+    v17 = [outputsCopy copy];
     modelOutputs = v16->_modelOutputs;
     v16->_modelOutputs = v17;
 

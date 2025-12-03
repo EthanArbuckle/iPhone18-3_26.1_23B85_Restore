@@ -1,27 +1,27 @@
 @interface VCPMADVIMachineReadableCodeDetectionTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (BOOL)canReuseResultsForRequest;
-- (VCPMADVIMachineReadableCodeDetectionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
+- (VCPMADVIMachineReadableCodeDetectionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 - (void)cancel;
 @end
 
 @implementation VCPMADVIMachineReadableCodeDetectionTask
 
-- (VCPMADVIMachineReadableCodeDetectionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVIMachineReadableCodeDetectionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVIMachineReadableCodeDetectionTask;
   v12 = [(VCPMADVIMachineReadableCodeDetectionTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVIMachineReadableCodeDetectionTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -30,15 +30,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -86,14 +86,14 @@ void __50__VCPMADVIMachineReadableCodeDetectionTask_cancel__block_invoke(uint64_
 
 - (BOOL)canReuseResultsForRequest
 {
-  v3 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
-  if ([v3 count] == 2)
+  symbologies = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
+  if ([symbologies count] == 2)
   {
-    v4 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
-    if ([v4 containsObject:*MEMORY[0x1E69848C0]])
+    symbologies2 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
+    if ([symbologies2 containsObject:*MEMORY[0x1E69848C0]])
     {
-      v5 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
-      v6 = [v5 containsObject:*MEMORY[0x1E69848A0]];
+      symbologies3 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
+      v6 = [symbologies3 containsObject:*MEMORY[0x1E69848A0]];
     }
 
     else
@@ -147,8 +147,8 @@ void __50__VCPMADVIMachineReadableCodeDetectionTask_cancel__block_invoke(uint64_
     v13 = +[VCPMADResourceManager sharedManager];
     v11 = [v13 activateResource:v10];
 
-    v58 = [MEMORY[0x1E69844A0] mad_defaultRequest];
-    if (!v58)
+    mad_defaultRequest = [MEMORY[0x1E69844A0] mad_defaultRequest];
+    if (!mad_defaultRequest)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -170,13 +170,13 @@ void __50__VCPMADVIMachineReadableCodeDetectionTask_cancel__block_invoke(uint64_
       goto LABEL_50;
     }
 
-    v14 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
-    v15 = [v14 count] == 0;
+    symbologies = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
+    v15 = [symbologies count] == 0;
 
     if (!v15)
     {
-      v16 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
-      [v58 setSymbologies:v16];
+      symbologies2 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request symbologies];
+      [mad_defaultRequest setSymbologies:symbologies2];
     }
 
     cancelQueue = self->_cancelQueue;
@@ -185,7 +185,7 @@ void __50__VCPMADVIMachineReadableCodeDetectionTask_cancel__block_invoke(uint64_
     block[2] = __47__VCPMADVIMachineReadableCodeDetectionTask_run__block_invoke;
     block[3] = &unk_1E834D238;
     block[4] = self;
-    v18 = v58;
+    v18 = mad_defaultRequest;
     v61 = v18;
     dispatch_sync(cancelQueue, block);
     v19 = atomic_load(&self->_canceled);
@@ -218,8 +218,8 @@ LABEL_51:
     v30 = objc_alloc(MEMORY[0x1E69845B8]);
     v31 = v63;
     v32 = v62;
-    v33 = [v10 session];
-    v57 = [v30 initWithCVPixelBuffer:v31 orientation:v32 options:MEMORY[0x1E695E0F8] session:v33];
+    session = [v10 session];
+    v57 = [v30 initWithCVPixelBuffer:v31 orientation:v32 options:MEMORY[0x1E695E0F8] session:session];
 
     v34 = VCPSignPostLog();
     v35 = v34;
@@ -264,22 +264,22 @@ LABEL_51:
     {
       v47 = self->_request;
       v48 = objc_alloc(MEMORY[0x1E69AE430]);
-      v49 = [v18 results];
-      v50 = [v48 initWithObservations:v49];
+      results = [v18 results];
+      v50 = [v48 initWithObservations:results];
       v64 = v50;
       v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
       [(MADVIMachineReadableCodeDetectionRequest *)v47 setResults:v51];
 
-      v52 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request results];
-      v53 = [v52 firstObject];
-      [v53 setExecutionNanoseconds:{objc_msgSend(v18, "executionNanoseconds")}];
+      results2 = [(MADVIMachineReadableCodeDetectionRequest *)self->_request results];
+      firstObject = [results2 firstObject];
+      [firstObject setExecutionNanoseconds:{objc_msgSend(v18, "executionNanoseconds")}];
 
       if (VCPPhotosMRCCachingEnabled())
       {
         if ([(VCPMADVIMachineReadableCodeDetectionTask *)self canReuseResultsForRequest])
         {
-          v54 = [v18 results];
-          [(VCPMADServiceImageAsset *)self->_imageAsset setBarcodeObservations:v54];
+          results3 = [v18 results];
+          [(VCPMADServiceImageAsset *)self->_imageAsset setBarcodeObservations:results3];
         }
 
         else if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))

@@ -1,13 +1,13 @@
 @interface HDNanoPairingEntity
-+ (id)_predicateWithRegistryUUID:(uint64_t)a1;
++ (id)_predicateWithRegistryUUID:(uint64_t)d;
 + (id)foreignKeys;
-+ (id)nanoPairingEntityWithRegistryUUID:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)nanoPairingEntityWithRegistryUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)sourceEntityForRegistryUUID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (void)_nanoPairingEntitiesWithPredicate:(void *)a3 database:(uint64_t)a4 error:;
-- (BOOL)saveWithHealthDatabase:(id)a3 error:(id *)a4;
++ (id)nanoPairingEntityWithRegistryUUID:(id)d database:(id)database error:(id *)error;
++ (id)nanoPairingEntityWithRegistryUUID:(id)d profile:(id)profile error:(id *)error;
++ (id)sourceEntityForRegistryUUID:(id)d profile:(id)profile error:(id *)error;
++ (void)_nanoPairingEntitiesWithPredicate:(void *)predicate database:(uint64_t)database error:;
+- (BOOL)saveWithHealthDatabase:(id)database error:(id *)error;
 - (id)description;
-- (id)resetProvenanceForProfile:(id)a3 error:(id *)a4;
+- (id)resetProvenanceForProfile:(id)profile error:(id *)error;
 @end
 
 @implementation HDNanoPairingEntity
@@ -25,14 +25,14 @@ void __170__HDNanoPairingEntity__initWithNanoRegistryUUID_persistentUUID_healthD
   JUMPOUT(0x22AAC6B30);
 }
 
-+ (id)nanoPairingEntityWithRegistryUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)nanoPairingEntityWithRegistryUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  profileCopy = profile;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"HDNanoPairingEntity.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"nanoRegistryUUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNanoPairingEntity.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"nanoRegistryUUID != nil"}];
   }
 
   v24 = 0;
@@ -41,18 +41,18 @@ void __170__HDNanoPairingEntity__initWithNanoRegistryUUID_persistentUUID_healthD
   v27 = __Block_byref_object_copy__76;
   v28 = __Block_byref_object_dispose__76;
   v29 = 0;
-  v11 = [v10 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __71__HDNanoPairingEntity_nanoPairingEntityWithRegistryUUID_profile_error___block_invoke;
   v19[3] = &unk_27861C150;
-  v23 = a1;
-  v12 = v9;
+  selfCopy = self;
+  v12 = dCopy;
   v20 = v12;
   v22 = &v24;
-  v13 = v10;
+  v13 = profileCopy;
   v21 = v13;
-  v14 = [a1 performWriteTransactionWithHealthDatabase:v11 error:a5 block:v19];
+  v14 = [self performWriteTransactionWithHealthDatabase:database error:error block:v19];
 
   if (v14)
   {
@@ -191,22 +191,22 @@ BOOL __71__HDNanoPairingEntity_nanoPairingEntityWithRegistryUUID_profile_error__
   return v12;
 }
 
-+ (id)_predicateWithRegistryUUID:(uint64_t)a1
++ (id)_predicateWithRegistryUUID:(uint64_t)d
 {
   v2 = a2;
   objc_opt_self();
   v3 = MEMORY[0x277D10B18];
-  v4 = [v2 hk_dataForUUIDBytes];
+  hk_dataForUUIDBytes = [v2 hk_dataForUUIDBytes];
 
-  v5 = [v3 predicateWithProperty:@"registry_uuid" equalToValue:v4];
+  v5 = [v3 predicateWithProperty:@"registry_uuid" equalToValue:hk_dataForUUIDBytes];
 
   return v5;
 }
 
-+ (void)_nanoPairingEntitiesWithPredicate:(void *)a3 database:(uint64_t)a4 error:
++ (void)_nanoPairingEntitiesWithPredicate:(void *)predicate database:(uint64_t)database error:
 {
   v19[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = a2;
   v8 = objc_opt_self();
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -218,7 +218,7 @@ BOOL __71__HDNanoPairingEntity_nanoPairingEntityWithRegistryUUID_profile_error__
   v19[5] = @"sync_provenance";
   v19[6] = @"restored";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:7];
-  v11 = [v8 queryWithDatabase:v6 predicate:v7];
+  v11 = [v8 queryWithDatabase:predicateCopy predicate:v7];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -226,7 +226,7 @@ BOOL __71__HDNanoPairingEntity_nanoPairingEntityWithRegistryUUID_profile_error__
   v17[3] = &unk_278615128;
   v18 = v9;
   v12 = v9;
-  if ([v11 enumeratePersistentIDsAndProperties:v10 error:a4 enumerationHandler:v17])
+  if ([v11 enumeratePersistentIDsAndProperties:v10 error:database enumerationHandler:v17])
   {
     v13 = v12;
   }
@@ -242,15 +242,15 @@ BOOL __71__HDNanoPairingEntity_nanoPairingEntityWithRegistryUUID_profile_error__
   return v13;
 }
 
-+ (id)nanoPairingEntityWithRegistryUUID:(id)a3 database:(id)a4 error:(id *)a5
++ (id)nanoPairingEntityWithRegistryUUID:(id)d database:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDNanoPairingEntity *)a1 _predicateWithRegistryUUID:a3];
-  v10 = [(HDNanoPairingEntity *)a1 _nanoPairingEntitiesWithPredicate:v9 database:v8 error:a5];
+  databaseCopy = database;
+  v9 = [(HDNanoPairingEntity *)self _predicateWithRegistryUUID:d];
+  v10 = [(HDNanoPairingEntity *)self _nanoPairingEntitiesWithPredicate:v9 database:databaseCopy error:error];
 
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
 uint64_t __72__HDNanoPairingEntity__nanoPairingEntitiesWithPredicate_database_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -286,14 +286,14 @@ uint64_t __72__HDNanoPairingEntity__nanoPairingEntitiesWithPredicate_database_er
   return 1;
 }
 
-+ (id)sourceEntityForRegistryUUID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)sourceEntityForRegistryUUID:(id)d profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  profileCopy = profile;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"HDNanoPairingEntity.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"registryUUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDNanoPairingEntity.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"registryUUID != nil"}];
   }
 
   v24 = 0;
@@ -302,18 +302,18 @@ uint64_t __72__HDNanoPairingEntity__nanoPairingEntitiesWithPredicate_database_er
   v27 = __Block_byref_object_copy__76;
   v28 = __Block_byref_object_dispose__76;
   v29 = 0;
-  v11 = [v10 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__HDNanoPairingEntity_sourceEntityForRegistryUUID_profile_error___block_invoke;
   v19[3] = &unk_27861C150;
-  v23 = a1;
-  v12 = v9;
+  selfCopy = self;
+  v12 = dCopy;
   v20 = v12;
   v22 = &v24;
-  v13 = v10;
+  v13 = profileCopy;
   v21 = v13;
-  v14 = [a1 performReadTransactionWithHealthDatabase:v11 error:a5 block:v19];
+  v14 = [self performReadTransactionWithHealthDatabase:database error:error block:v19];
 
   if (v14)
   {
@@ -357,7 +357,7 @@ BOOL __65__HDNanoPairingEntity_sourceEntityForRegistryUUID_profile_error___block
   return v13;
 }
 
-- (BOOL)saveWithHealthDatabase:(id)a3 error:(id *)a4
+- (BOOL)saveWithHealthDatabase:(id)database error:(id *)error
 {
   v12[6] = *MEMORY[0x277D85DE8];
   v12[0] = @"persistent_uuid";
@@ -367,17 +367,17 @@ BOOL __65__HDNanoPairingEntity_sourceEntityForRegistryUUID_profile_error___block
   v12[4] = @"sync_provenance";
   v12[5] = @"restored";
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
+  databaseCopy = database;
   v8 = [v6 arrayWithObjects:v12 count:6];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__HDNanoPairingEntity_saveWithHealthDatabase_error___block_invoke;
   v11[3] = &unk_278614508;
   v11[4] = self;
-  LOBYTE(a4) = [(HDHealthEntity *)self updateProperties:v8 healthDatabase:v7 error:a4 bindingHandler:v11];
+  LOBYTE(error) = [(HDHealthEntity *)self updateProperties:v8 healthDatabase:databaseCopy error:error bindingHandler:v11];
 
   v9 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
 void __52__HDNanoPairingEntity_saveWithHealthDatabase_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -392,27 +392,27 @@ void __52__HDNanoPairingEntity_saveWithHealthDatabase_error___block_invoke(uint6
   JUMPOUT(0x22AAC6B30);
 }
 
-- (id)resetProvenanceForProfile:(id)a3 error:(id *)a4
+- (id)resetProvenanceForProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__76;
   v19 = __Block_byref_object_dispose__76;
   v20 = 0;
-  v7 = [v6 database];
+  database = [profileCopy database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HDNanoPairingEntity_resetProvenanceForProfile_error___block_invoke;
   v12[3] = &unk_278615F88;
   v12[4] = self;
-  v8 = v6;
+  v8 = profileCopy;
   v13 = v8;
   v14 = &v15;
-  LODWORD(a4) = [(HDHealthEntity *)HDNanoPairingEntity performWriteTransactionWithHealthDatabase:v7 error:a4 block:v12];
+  LODWORD(error) = [(HDHealthEntity *)HDNanoPairingEntity performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v16[5];
   }
@@ -485,10 +485,10 @@ uint64_t __55__HDNanoPairingEntity_resetProvenanceForProfile_error___block_invok
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSUUID *)self->_nanoRegistryUUID UUIDString];
-  v6 = [(NSUUID *)self->_persistentUUID UUIDString];
-  v7 = [(NSUUID *)self->_healthDatabaseUUID UUIDString];
-  v8 = [v3 stringWithFormat:@"<%@:%p registry:%@ persistent:%@ health:%@ device:%@>", v4, self, v5, v6, v7, self->_deviceIdentifier, 0];
+  uUIDString = [(NSUUID *)self->_nanoRegistryUUID UUIDString];
+  uUIDString2 = [(NSUUID *)self->_persistentUUID UUIDString];
+  uUIDString3 = [(NSUUID *)self->_healthDatabaseUUID UUIDString];
+  v8 = [v3 stringWithFormat:@"<%@:%p registry:%@ persistent:%@ health:%@ device:%@>", v4, self, uUIDString, uUIDString2, uUIDString3, self->_deviceIdentifier, 0];
 
   return v8;
 }

@@ -1,5 +1,5 @@
 @interface RestoreFromBackupHistoryController
-- (void)parseLogsWithCollector:(id)a3;
+- (void)parseLogsWithCollector:(id)collector;
 - (void)start;
 @end
 
@@ -16,9 +16,9 @@
   [(RestoreFromBackupHistoryController *)self setFinished:1];
 }
 
-- (void)parseLogsWithCollector:(id)a3
+- (void)parseLogsWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -48,40 +48,40 @@
   v13[6] = &v22;
   v13[7] = &v14;
   v13[8] = &v28;
-  [v4 enumerateLogLinesWithBlock:v13];
+  [collectorCopy enumerateLogLinesWithBlock:v13];
   if (([(RestoreFromBackupHistoryController *)self isCancelled]& 1) == 0)
   {
-    v5 = [(RestoreFromBackupHistoryController *)self result];
-    [v5 setStatusCode:&off_100004318];
+    result = [(RestoreFromBackupHistoryController *)self result];
+    [result setStatusCode:&off_100004318];
 
     if (*(v19 + 24) == 1)
     {
       if (!v23[5])
       {
-        v6 = [(RestoreFromBackupHistoryController *)self result];
-        [v6 setStatusCode:&off_100004330];
+        result2 = [(RestoreFromBackupHistoryController *)self result];
+        [result2 setStatusCode:&off_100004330];
         goto LABEL_7;
       }
 
       if (*(v15 + 24) == 1)
       {
-        v6 = [(RestoreFromBackupHistoryController *)self result];
-        [v6 setStatusCode:&off_100004348];
+        result2 = [(RestoreFromBackupHistoryController *)self result];
+        [result2 setStatusCode:&off_100004348];
 LABEL_7:
       }
     }
 
     v34[0] = @"lastBackupRestoreEvent";
-    v7 = [v29[5] dictionary];
-    v8 = dictionaryOrNull(v7);
+    dictionary = [v29[5] dictionary];
+    v8 = dictionaryOrNull(dictionary);
     v34[1] = @"lastSuccessfulBackupRestoreEvent";
     v35[0] = v8;
-    v9 = [v23[5] dictionary];
-    v10 = dictionaryOrNull(v9);
+    dictionary2 = [v23[5] dictionary];
+    v10 = dictionaryOrNull(dictionary2);
     v35[1] = v10;
     v11 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
-    v12 = [(RestoreFromBackupHistoryController *)self result];
-    [v12 setData:v11];
+    result3 = [(RestoreFromBackupHistoryController *)self result];
+    [result3 setData:v11];
   }
 
   _Block_object_dispose(&v14, 8);

@@ -1,27 +1,27 @@
 @interface PRSentenceCorrection
 - (BOOL)presentAsGrammarError;
-- (PRSentenceCorrection)initWithCategory:(int)a3 range:(_NSRange)a4 word:(id)a5 corrections:(id)a6;
+- (PRSentenceCorrection)initWithCategory:(int)category range:(_NSRange)range word:(id)word corrections:(id)corrections;
 - (_NSRange)range;
 - (void)dealloc;
 @end
 
 @implementation PRSentenceCorrection
 
-- (PRSentenceCorrection)initWithCategory:(int)a3 range:(_NSRange)a4 word:(id)a5 corrections:(id)a6
+- (PRSentenceCorrection)initWithCategory:(int)category range:(_NSRange)range word:(id)word corrections:(id)corrections
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14.receiver = self;
   v14.super_class = PRSentenceCorrection;
   v11 = [(PRSentenceCorrection *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_category = a3;
+    v11->_category = category;
     v11->_range.location = location;
     v11->_range.length = length;
-    v11->_word = [a5 copy];
-    v12->_corrections = [a6 copy];
+    v11->_word = [word copy];
+    v12->_corrections = [corrections copy];
   }
 
   return v12;

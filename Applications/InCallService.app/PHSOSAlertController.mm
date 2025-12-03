@@ -1,6 +1,6 @@
 @interface PHSOSAlertController
 + (void)playSOSEntryHaptic;
-- (void)playAlertWithAudio:(BOOL)a3 alertTopic:(id)a4;
+- (void)playAlertWithAudio:(BOOL)audio alertTopic:(id)topic;
 - (void)stopAlert;
 @end
 
@@ -14,13 +14,13 @@
   [v2 play];
 }
 
-- (void)playAlertWithAudio:(BOOL)a3 alertTopic:(id)a4
+- (void)playAlertWithAudio:(BOOL)audio alertTopic:(id)topic
 {
-  v4 = a3;
-  v6 = a4;
-  if ([(PHSOSAlertController *)self playingWithAudio]!= v4)
+  audioCopy = audio;
+  topicCopy = topic;
+  if ([(PHSOSAlertController *)self playingWithAudio]!= audioCopy)
   {
-    [(PHSOSAlertController *)self setPlayingWithAudio:v4];
+    [(PHSOSAlertController *)self setPlayingWithAudio:audioCopy];
     [(PHSOSAlertController *)self stopAlert];
   }
 
@@ -29,12 +29,12 @@
   if (v7)
   {
     v9 = 22;
-    if ([(PHSOSAlertController *)self playingWithAudio]&& TLAlertTopicSOSCountdownTick == v6)
+    if ([(PHSOSAlertController *)self playingWithAudio]&& TLAlertTopicSOSCountdownTick == topicCopy)
     {
       v10 = TLAlertTopicIncomingCallFaceTimeParticipantJoined;
 
       v9 = 1;
-      v6 = v10;
+      topicCopy = v10;
     }
   }
 
@@ -43,12 +43,12 @@
     v9 = 22;
   }
 
-  v11 = [(PHSOSAlertController *)self alertConfiguration];
-  if (!v11 || (v12 = v11, -[PHSOSAlertController alertConfiguration](self, "alertConfiguration"), v13 = objc_claimAutoreleasedReturnValue(), [v13 topic], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, v14 != v6))
+  alertConfiguration = [(PHSOSAlertController *)self alertConfiguration];
+  if (!alertConfiguration || (v12 = alertConfiguration, -[PHSOSAlertController alertConfiguration](self, "alertConfiguration"), v13 = objc_claimAutoreleasedReturnValue(), [v13 topic], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, v14 != topicCopy))
   {
     v15 = [[TLAlertConfiguration alloc] initWithType:v9];
-    [v15 setTopic:v6];
-    if (v6 == TLAlertTopicSOSCountdownTick)
+    [v15 setTopic:topicCopy];
+    if (topicCopy == TLAlertTopicSOSCountdownTick)
     {
       [v15 setMaximumDuration:0.850000024];
     }
@@ -61,42 +61,42 @@
     [(PHSOSAlertController *)self setAlertConfiguration:v15];
   }
 
-  v16 = [(PHSOSAlertController *)self alertConfiguration];
-  v17 = [TLAlert alertWithConfiguration:v16];
+  alertConfiguration2 = [(PHSOSAlertController *)self alertConfiguration];
+  v17 = [TLAlert alertWithConfiguration:alertConfiguration2];
 
   [(PHSOSAlertController *)self setAlert:v17];
-  v18 = [(PHSOSAlertController *)self alertActivationAssertion];
-  if (!v18 && v6 != TLAlertTopicSOSButtonChordingTimeout)
+  alertActivationAssertion = [(PHSOSAlertController *)self alertActivationAssertion];
+  if (!alertActivationAssertion && topicCopy != TLAlertTopicSOSButtonChordingTimeout)
   {
     if (v8)
     {
       goto LABEL_20;
     }
 
-    v18 = [[TLAlertActivationAssertion alloc] initWithAlert:v17];
-    [v18 acquire];
-    [(PHSOSAlertController *)self setAlertActivationAssertion:v18];
+    alertActivationAssertion = [[TLAlertActivationAssertion alloc] initWithAlert:v17];
+    [alertActivationAssertion acquire];
+    [(PHSOSAlertController *)self setAlertActivationAssertion:alertActivationAssertion];
   }
 
 LABEL_20:
   v19 = sub_100004F84();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(PHSOSAlertController *)self alertConfiguration];
+    alertConfiguration3 = [(PHSOSAlertController *)self alertConfiguration];
     v22 = 138412290;
-    v23 = v20;
+    v23 = alertConfiguration3;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Playing countdown alert sound with alertConfiguration: %@", &v22, 0xCu);
   }
 
-  v21 = [(PHSOSAlertController *)self alert];
-  [v21 play];
+  alert = [(PHSOSAlertController *)self alert];
+  [alert play];
 }
 
 - (void)stopAlert
 {
-  v3 = [(PHSOSAlertController *)self alert];
+  alert = [(PHSOSAlertController *)self alert];
 
-  if (v3)
+  if (alert)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -105,13 +105,13 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping countdown alert sound...", buf, 2u);
     }
 
-    v5 = [(PHSOSAlertController *)self alert];
-    [v5 stop];
+    alert2 = [(PHSOSAlertController *)self alert];
+    [alert2 stop];
   }
 
-  v6 = [(PHSOSAlertController *)self alertActivationAssertion];
+  alertActivationAssertion = [(PHSOSAlertController *)self alertActivationAssertion];
 
-  if (v6)
+  if (alertActivationAssertion)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -120,15 +120,15 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Relinquishing alert activation assertion...", v10, 2u);
     }
 
-    v8 = [(PHSOSAlertController *)self alertActivationAssertion];
-    [v8 relinquish];
+    alertActivationAssertion2 = [(PHSOSAlertController *)self alertActivationAssertion];
+    [alertActivationAssertion2 relinquish];
 
     [(PHSOSAlertController *)self setAlertActivationAssertion:0];
   }
 
-  v9 = [(PHSOSAlertController *)self alertConfiguration];
+  alertConfiguration = [(PHSOSAlertController *)self alertConfiguration];
 
-  if (v9)
+  if (alertConfiguration)
   {
     [(PHSOSAlertController *)self setAlertConfiguration:0];
   }

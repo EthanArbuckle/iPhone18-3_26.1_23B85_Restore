@@ -2,7 +2,7 @@
 - (BOOL)arePropertiesReadonly;
 - (BOOL)isContentReadonly;
 - (BOOL)isLocal;
-- (DAContactsContainer)initWithCNContainer:(id)a3;
+- (DAContactsContainer)initWithCNContainer:(id)container;
 - (id)accountIdentifier;
 - (id)cTag;
 - (id)constraintsPath;
@@ -14,31 +14,31 @@
 - (id)syncTag;
 - (int64_t)type;
 - (void)asSource;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setArePropertiesReadonly:(BOOL)a3;
-- (void)setCTag:(id)a3;
-- (void)setConstraintsPath:(id)a3;
-- (void)setContentReadonly:(BOOL)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setMeContactIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSyncData:(id)a3;
-- (void)setSyncTag:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)updateSaveRequest:(id)a3;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setArePropertiesReadonly:(BOOL)readonly;
+- (void)setCTag:(id)tag;
+- (void)setConstraintsPath:(id)path;
+- (void)setContentReadonly:(BOOL)readonly;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setMeContactIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setSyncData:(id)data;
+- (void)setSyncTag:(id)tag;
+- (void)setType:(int64_t)type;
+- (void)updateSaveRequest:(id)request;
 @end
 
 @implementation DAContactsContainer
 
-- (DAContactsContainer)initWithCNContainer:(id)a3
+- (DAContactsContainer)initWithCNContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = DAContactsContainer;
   v5 = [(DAContactsContainer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [containerCopy mutableCopy];
     mutableContainer = v5->_mutableContainer;
     v5->_mutableContainer = v6;
   }
@@ -48,152 +48,152 @@
 
 - (id)identifier
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 identifier];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  identifier = [mutableContainer identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)name
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 name];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  name = [mutableContainer name];
 
-  return v3;
+  return name;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setName:v4];
+  nameCopy = name;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setName:nameCopy];
 }
 
 - (BOOL)isLocal
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 type] == 1;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  v3 = [mutableContainer type] == 1;
 
   return v3;
 }
 
 - (int64_t)type
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 type];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  type = [mutableContainer type];
 
-  return v3;
+  return type;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  v4 = [(DAContactsContainer *)self mutableContainer];
-  [v4 setType:a3];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setType:type];
 }
 
 - (id)externalIdentifier
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 externalIdentifier];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  externalIdentifier = [mutableContainer externalIdentifier];
 
-  return v3;
+  return externalIdentifier;
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setExternalIdentifier:v4];
+  identifierCopy = identifier;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setExternalIdentifier:identifierCopy];
 }
 
 - (id)cTag
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 externalModificationTag];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  externalModificationTag = [mutableContainer externalModificationTag];
 
-  return v3;
+  return externalModificationTag;
 }
 
-- (void)setCTag:(id)a3
+- (void)setCTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setExternalModificationTag:v4];
+  tagCopy = tag;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setExternalModificationTag:tagCopy];
 }
 
 - (id)syncTag
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 externalSyncTag];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  externalSyncTag = [mutableContainer externalSyncTag];
 
-  return v3;
+  return externalSyncTag;
 }
 
-- (void)setSyncTag:(id)a3
+- (void)setSyncTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setExternalSyncTag:v4];
+  tagCopy = tag;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setExternalSyncTag:tagCopy];
 }
 
 - (id)syncData
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 externalSyncData];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  externalSyncData = [mutableContainer externalSyncData];
 
-  return v3;
+  return externalSyncData;
 }
 
-- (void)setSyncData:(id)a3
+- (void)setSyncData:(id)data
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setExternalSyncData:v4];
+  dataCopy = data;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setExternalSyncData:dataCopy];
 }
 
 - (id)constraintsPath
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 constraintsPath];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  constraintsPath = [mutableContainer constraintsPath];
 
-  return v3;
+  return constraintsPath;
 }
 
-- (void)setConstraintsPath:(id)a3
+- (void)setConstraintsPath:(id)path
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setConstraintsPath:v4];
+  pathCopy = path;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setConstraintsPath:pathCopy];
 }
 
 - (id)meContactidentifier
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 meIdentifier];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  meIdentifier = [mutableContainer meIdentifier];
 
-  return v3;
+  return meIdentifier;
 }
 
-- (void)setMeContactIdentifier:(id)a3
+- (void)setMeContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setMeIdentifier:v4];
+  identifierCopy = identifier;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setMeIdentifier:identifierCopy];
 }
 
 - (id)accountIdentifier
 {
-  v2 = [(DAContactsContainer *)self mutableContainer];
-  v3 = [v2 accountIdentifier];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  accountIdentifier = [mutableContainer accountIdentifier];
 
-  return v3;
+  return accountIdentifier;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  [v5 setAccountIdentifier:v4];
+  identifierCopy = identifier;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer setAccountIdentifier:identifierCopy];
 }
 
 - (BOOL)isContentReadonly
@@ -205,20 +205,20 @@
 
   else
   {
-    v3 = [(DAContactsContainer *)self mutableContainer];
-    v4 = [v3 restrictions] & 1;
+    mutableContainer = [(DAContactsContainer *)self mutableContainer];
+    v4 = [mutableContainer restrictions] & 1;
   }
 
   return v4;
 }
 
-- (void)setContentReadonly:(BOOL)a3
+- (void)setContentReadonly:(BOOL)readonly
 {
-  v3 = a3;
-  v7 = [(DAContactsContainer *)self mutableContainer];
-  v5 = [v7 restrictions];
-  v6 = [(DAContactsContainer *)self mutableContainer];
-  [v6 setRestrictions:v5 & 0xFFFFFFFFFFFFFFFELL | v3];
+  readonlyCopy = readonly;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  restrictions = [mutableContainer restrictions];
+  mutableContainer2 = [(DAContactsContainer *)self mutableContainer];
+  [mutableContainer2 setRestrictions:restrictions & 0xFFFFFFFFFFFFFFFELL | readonlyCopy];
 }
 
 - (BOOL)arePropertiesReadonly
@@ -230,51 +230,51 @@
 
   else
   {
-    v3 = [(DAContactsContainer *)self mutableContainer];
-    v4 = ([v3 restrictions] >> 1) & 1;
+    mutableContainer = [(DAContactsContainer *)self mutableContainer];
+    v4 = ([mutableContainer restrictions] >> 1) & 1;
   }
 
   return v4;
 }
 
-- (void)setArePropertiesReadonly:(BOOL)a3
+- (void)setArePropertiesReadonly:(BOOL)readonly
 {
-  v3 = a3;
-  v9 = [(DAContactsContainer *)self mutableContainer];
-  v5 = [v9 restrictions];
-  v6 = [(DAContactsContainer *)self mutableContainer];
-  v7 = v6;
+  readonlyCopy = readonly;
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  restrictions = [mutableContainer restrictions];
+  mutableContainer2 = [(DAContactsContainer *)self mutableContainer];
+  v7 = mutableContainer2;
   v8 = 2;
-  if (!v3)
+  if (!readonlyCopy)
   {
     v8 = 0;
   }
 
-  [v6 setRestrictions:v5 & 0xFFFFFFFFFFFFFFFDLL | v8];
+  [mutableContainer2 setRestrictions:restrictions & 0xFFFFFFFFFFFFFFFDLL | v8];
 }
 
-- (void)updateSaveRequest:(id)a3
+- (void)updateSaveRequest:(id)request
 {
-  v8 = a3;
-  v4 = [(DAContactsContainer *)self markedForDeletion];
-  v5 = [(DAContactsContainer *)self mutableContainer];
-  v6 = v5;
-  if (v4)
+  requestCopy = request;
+  markedForDeletion = [(DAContactsContainer *)self markedForDeletion];
+  mutableContainer = [(DAContactsContainer *)self mutableContainer];
+  mutableContainer2 = mutableContainer;
+  if (markedForDeletion)
   {
-    [v8 deleteContainer:v5];
+    [requestCopy deleteContainer:mutableContainer];
   }
 
   else
   {
-    v7 = [v5 iOSLegacyIdentifier];
+    iOSLegacyIdentifier = [mutableContainer iOSLegacyIdentifier];
 
-    if (v7 == -1)
+    if (iOSLegacyIdentifier == -1)
     {
       goto LABEL_6;
     }
 
-    v6 = [(DAContactsContainer *)self mutableContainer];
-    [v8 updateContainer:v6];
+    mutableContainer2 = [(DAContactsContainer *)self mutableContainer];
+    [requestCopy updateContainer:mutableContainer2];
   }
 
 LABEL_6:

@@ -1,6 +1,6 @@
 @interface CPLDaemonConnection
 - (CPLDaemonConnection)init;
-- (id)proxyWithErrorHandler:(id)a3;
+- (id)proxyWithErrorHandler:(id)handler;
 - (void)close;
 - (void)dealloc;
 @end
@@ -24,9 +24,9 @@
     connection = v2->_connection;
     v2->_connection = v3;
 
-    v7 = [(NSXPCConnection *)v2->_connection _queue];
+    _queue = [(NSXPCConnection *)v2->_connection _queue];
     queue = v2->_queue;
-    v2->_queue = v7;
+    v2->_queue = _queue;
 
     [(NSXPCConnection *)v2->_connection resume];
   }
@@ -49,16 +49,16 @@
   self->_connection = 0;
 }
 
-- (id)proxyWithErrorHandler:(id)a3
+- (id)proxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   if (!connection)
   {
     sub_10001D104(a2, self);
   }
 
-  v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v5];
+  v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }

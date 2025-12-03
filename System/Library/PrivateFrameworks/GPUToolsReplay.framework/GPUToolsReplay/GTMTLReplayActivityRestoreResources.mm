@@ -1,50 +1,50 @@
 @interface GTMTLReplayActivityRestoreResources
-- (GTMTLReplayActivityRestoreResources)initWithRequests:(const GTResourceRestoreRequest *)a3 count:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityRestoreResources)initWithRequests:(const GTResourceRestoreRequest *)requests count:(int)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
-- (void)signpostIntervalBegin:(unint64_t)a3;
+- (void)outputToLog:(id)log;
+- (void)signpostIntervalBegin:(unint64_t)begin;
 @end
 
 @implementation GTMTLReplayActivityRestoreResources
 
-- (void)signpostIntervalBegin:(unint64_t)a3
+- (void)signpostIntervalBegin:(unint64_t)begin
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = g_signpostLog;
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (begin - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    v7 = [(GTMTLReplayActivity *)self messageSerial];
+    messageSerial = [(GTMTLReplayActivity *)self messageSerial];
     activityType = self->super._activityType;
     requestCount = self->_requestCount;
     v11[0] = 67109634;
-    v11[1] = v7;
+    v11[1] = messageSerial;
     v12 = 2112;
     v13 = activityType;
     v14 = 1024;
     v15 = requestCount;
-    _os_signpost_emit_with_name_impl(&dword_24D764000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "Replayer-3-commandQueue", "%u. %@ x%d", v11, 0x18u);
+    _os_signpost_emit_with_name_impl(&dword_24D764000, v6, OS_SIGNPOST_INTERVAL_BEGIN, begin, "Replayer-3-commandQueue", "%u. %@ x%d", v11, 0x18u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     requests = self->_requests;
     requestCount = self->_requestCount;
-    v8 = a3;
+    logCopy = log;
     v9 = ArrayFromDownloadRequests(requests, requestCount);
     v11 = 138543618;
     v12 = activityType;
     v13 = 2114;
     v14 = v9;
-    _os_log_impl(&dword_24D764000, v8, OS_LOG_TYPE_INFO, "%{public}@:\t%{public}@", &v11, 0x16u);
+    _os_log_impl(&dword_24D764000, logCopy, OS_LOG_TYPE_INFO, "%{public}@:\t%{public}@", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -71,11 +71,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = GTMTLReplayActivityRestoreResources;
-  result = [(GTMTLReplayActivity *)&v5 copyWithZone:a3];
+  result = [(GTMTLReplayActivity *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 5) = self->_requests;
@@ -85,15 +85,15 @@
   return result;
 }
 
-- (GTMTLReplayActivityRestoreResources)initWithRequests:(const GTResourceRestoreRequest *)a3 count:(int)a4
+- (GTMTLReplayActivityRestoreResources)initWithRequests:(const GTResourceRestoreRequest *)requests count:(int)count
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityRestoreResources;
   result = [(GTMTLReplayActivity *)&v7 initWithType:@"restoreResources"];
   if (result)
   {
-    result->_requests = a3;
-    result->_requestCount = a4;
+    result->_requests = requests;
+    result->_requestCount = count;
   }
 
   return result;

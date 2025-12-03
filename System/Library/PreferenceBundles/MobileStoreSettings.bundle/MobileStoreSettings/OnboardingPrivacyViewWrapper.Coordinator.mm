@@ -11,7 +11,7 @@
   if (v2)
   {
     v3 = *&self->onDismiss[OBJC_IVAR____TtCV19MobileStoreSettings28OnboardingPrivacyViewWrapper11Coordinator_onDismiss];
-    v4 = self;
+    selfCopy = self;
     v5 = sub_C450(v2);
     v2(v5);
 

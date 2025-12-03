@@ -1,21 +1,21 @@
 @interface ATXAnchorModelPBActionUUIDMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasParamCount:(BOOL)a3;
-- (void)setHasSlotHash:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasParamCount:(BOOL)count;
+- (void)setHasSlotHash:(BOOL)hash;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXAnchorModelPBActionUUIDMetadata
 
-- (void)setHasSlotHash:(BOOL)a3
+- (void)setHasSlotHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasParamCount:(BOOL)a3
+- (void)setHasParamCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = ATXAnchorModelPBActionUUIDMetadata;
   v4 = [(ATXAnchorModelPBActionUUIDMetadata *)&v8 description];
-  v5 = [(ATXAnchorModelPBActionUUIDMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXAnchorModelPBActionUUIDMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_actionUUID];
-    [v3 setObject:v9 forKey:@"actionUUID"];
+    [dictionary setObject:v9 forKey:@"actionUUID"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -83,36 +83,36 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_slotHash];
-  [v3 setObject:v10 forKey:@"slotHash"];
+  [dictionary setObject:v10 forKey:@"slotHash"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_paramCount];
-    [v3 setObject:v5 forKey:@"paramCount"];
+    [dictionary setObject:v5 forKey:@"paramCount"];
   }
 
 LABEL_5:
   actionUUIDLaunchHistory = self->_actionUUIDLaunchHistory;
   if (actionUUIDLaunchHistory)
   {
-    v7 = [(ATXAnchorModelPBLaunchHistoryMetadata *)actionUUIDLaunchHistory dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"actionUUIDLaunchHistory"];
+    dictionaryRepresentation = [(ATXAnchorModelPBLaunchHistoryMetadata *)actionUUIDLaunchHistory dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"actionUUIDLaunchHistory"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     actionUUID = self->_actionUUID;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -133,31 +133,31 @@ LABEL_3:
 
   slotHash = self->_slotHash;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     paramCount = self->_paramCount;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_actionUUIDLaunchHistory)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_actionUUID;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_actionUUID;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -176,27 +176,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_slotHash;
-  *(v4 + 36) |= 2u;
+  toCopy[2] = self->_slotHash;
+  *(toCopy + 36) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 8) = self->_paramCount;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 8) = self->_paramCount;
+    *(toCopy + 36) |= 4u;
   }
 
 LABEL_5:
   if (self->_actionUUIDLaunchHistory)
   {
-    v6 = v4;
-    [v4 setActionUUIDLaunchHistory:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setActionUUIDLaunchHistory:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -234,31 +234,31 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(ATXAnchorModelPBLaunchHistoryMetadata *)self->_actionUUIDLaunchHistory copyWithZone:a3];
+  v8 = [(ATXAnchorModelPBLaunchHistoryMetadata *)self->_actionUUIDLaunchHistory copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_actionUUID != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_actionUUID != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_19:
     v7 = 0;
@@ -267,32 +267,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_slotHash != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_slotHash != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_paramCount != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_paramCount != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   actionUUIDLaunchHistory = self->_actionUUIDLaunchHistory;
-  if (actionUUIDLaunchHistory | *(v4 + 3))
+  if (actionUUIDLaunchHistory | *(equalCopy + 3))
   {
     v7 = [(ATXAnchorModelPBLaunchHistoryMetadata *)actionUUIDLaunchHistory isEqual:?];
   }
@@ -347,16 +347,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(ATXAnchorModelPBLaunchHistoryMetadata *)self->_actionUUIDLaunchHistory hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if (v6)
   {
-    self->_actionUUID = *(v4 + 1);
+    self->_actionUUID = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -369,17 +369,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_slotHash = *(v4 + 2);
+  self->_slotHash = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 36) & 4) != 0)
+  if ((*(fromCopy + 36) & 4) != 0)
   {
 LABEL_4:
-    self->_paramCount = *(v4 + 8);
+    self->_paramCount = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 

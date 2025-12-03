@@ -1,14 +1,14 @@
 @interface ParticipantViewDragController
-- (void)handlePanGestureRecognizer:(id)a3;
+- (void)handlePanGestureRecognizer:(id)recognizer;
 @end
 
 @implementation ParticipantViewDragController
 
-- (void)handlePanGestureRecognizer:(id)a3
+- (void)handlePanGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
 
-  ParticipantViewDragController.handlePanGestureRecognizer(_:)(v3);
+  ParticipantViewDragController.handlePanGestureRecognizer(_:)(recognizerCopy);
 }
 
 @end

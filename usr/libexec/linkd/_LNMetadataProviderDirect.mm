@@ -1,36 +1,36 @@
 @interface _LNMetadataProviderDirect
-- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsConformingToSystemProtocol:(id)a3 withParametersOfTypes:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)actionsConformingToSystemProtocols:(id)a3 logicalType:(unint64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)actionsWithFullyQualifiedIdentifiers:(id)a3 error:(id *)a4;
-- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)autoShortcutsForLocaleIdentifier:(id)a3 error:(id *)a4;
-- (id)bundleRegistrationsWithError:(id *)a3;
-- (id)bundlesWithError:(id *)a3;
-- (id)openCollectionActionsForEntityTypeIdentifier:(id)a3 capabilities:(int64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)propertiesForIdentifiers:(id)a3 error:(id *)a4;
-- (id)queriesForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (id)queriesWithCapabilities:(unint64_t)a3 inputValueType:(id)a4 resultValueType:(id)a5 error:(id *)a6;
-- (id)suggestionPhrasesForQueries:(id)a3 error:(id *)a4;
-- (int64_t)metadataVersionForBundleIdentifier:(id)a3 error:(id *)a4;
-- (void)autoShortcutsForBundleIdentifier:(id)a3 localeIdentifier:(id)a4 completion:(id)a5;
-- (void)autoShortcutsForLocaleIdentifier:(id)a3 completion:(id)a4;
-- (void)diagnoseBundleIdentifier:(NSString *)a3 completionHandler:(id)a4;
+- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsConformingToSystemProtocol:(id)protocol withParametersOfTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsConformingToSystemProtocols:(id)protocols logicalType:(unint64_t)type bundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsWithFullyQualifiedIdentifiers:(id)identifiers error:(id *)error;
+- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)autoShortcutsForLocaleIdentifier:(id)identifier error:(id *)error;
+- (id)bundleRegistrationsWithError:(id *)error;
+- (id)bundlesWithError:(id *)error;
+- (id)openCollectionActionsForEntityTypeIdentifier:(id)identifier capabilities:(int64_t)capabilities bundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (id)propertiesForIdentifiers:(id)identifiers error:(id *)error;
+- (id)queriesForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error;
+- (id)queriesWithCapabilities:(unint64_t)capabilities inputValueType:(id)type resultValueType:(id)valueType error:(id *)error;
+- (id)suggestionPhrasesForQueries:(id)queries error:(id *)error;
+- (int64_t)metadataVersionForBundleIdentifier:(id)identifier error:(id *)error;
+- (void)autoShortcutsForBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier completion:(id)completion;
+- (void)autoShortcutsForLocaleIdentifier:(id)identifier completion:(id)completion;
+- (void)diagnoseBundleIdentifier:(NSString *)identifier completionHandler:(id)handler;
 @end
 
 @implementation _LNMetadataProviderDirect
 
-- (id)actionsConformingToSystemProtocols:(id)a3 logicalType:(unint64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)actionsConformingToSystemProtocols:(id)protocols logicalType:(unint64_t)type bundleIdentifier:(id)identifier error:(id *)error
 {
   sub_100003D44(0, &qword_100199040, LNSystemProtocol_ptr);
   sub_100084294(&qword_10019ABB0, &qword_100199040, LNSystemProtocol_ptr);
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v8 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.actionsConforming(to:logicalType:bundleIdentifier:)();
 
   sub_10002EB80(&unk_10019AB90, &unk_100150500);
@@ -39,14 +39,14 @@
   return v9.super.isa;
 }
 
-- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.actionsAndSystemProtocolDefaults(forBundleIdentifier:)();
 
   sub_100003D44(0, &unk_10019ABA0, LNBundleActionsMetadata_ptr);
@@ -55,17 +55,17 @@
   return v6.super.isa;
 }
 
-- (id)actionsConformingToSystemProtocol:(id)a3 withParametersOfTypes:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)actionsConformingToSystemProtocol:(id)protocol withParametersOfTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error
 {
   sub_100003D44(0, &unk_10019BBF0, LNValueType_ptr);
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v9 = a3;
-  v10 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   _LNMetadataProviderDirect.actionsConforming(to:withParametersOfTypes:bundleIdentifier:)();
 
   sub_10002EB80(&unk_10019AB90, &unk_100150500);
@@ -74,11 +74,11 @@
   return v11.super.isa;
 }
 
-- (id)actionsWithFullyQualifiedIdentifiers:(id)a3 error:(id *)a4
+- (id)actionsWithFullyQualifiedIdentifiers:(id)identifiers error:(id *)error
 {
   sub_100003D44(0, &unk_10019BBE0, LNFullyQualifiedActionIdentifier_ptr);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.actions(withFullyQualifiedIdentifiers:)();
 
   sub_10002EB80(&unk_10019AB90, &unk_100150500);
@@ -87,11 +87,11 @@
   return v6.super.isa;
 }
 
-- (id)openCollectionActionsForEntityTypeIdentifier:(id)a3 capabilities:(int64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)openCollectionActionsForEntityTypeIdentifier:(id)identifier capabilities:(int64_t)capabilities bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.openCollectionActions(forEntityTypeIdentifier:capabilities:bundleIdentifier:)();
 
   sub_100003D44(0, &unk_10019AB20, LNActionMetadata_ptr);
@@ -100,9 +100,9 @@
   return v8.super.isa;
 }
 
-- (id)bundlesWithError:(id *)a3
+- (id)bundlesWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.bundles()();
 
   v4.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -110,9 +110,9 @@
   return v4.super.isa;
 }
 
-- (id)bundleRegistrationsWithError:(id *)a3
+- (id)bundleRegistrationsWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.bundleRegistrations()();
 
   sub_100003D44(0, &unk_10019AB80, LNRegisteredBundleMetadata_ptr);
@@ -121,15 +121,15 @@
   return v4.super.isa;
 }
 
-- (id)queriesForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5
+- (id)queriesForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (type)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.queries(forBundleIdentifier:ofType:)();
 
   sub_100003D44(0, &qword_10019B2E0, LNQueryMetadata_ptr);
@@ -138,12 +138,12 @@
   return v8.super.isa;
 }
 
-- (id)queriesWithCapabilities:(unint64_t)a3 inputValueType:(id)a4 resultValueType:(id)a5 error:(id *)a6
+- (id)queriesWithCapabilities:(unint64_t)capabilities inputValueType:(id)type resultValueType:(id)valueType error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  _LNMetadataProviderDirect.queries(with:inputValueType:resultValueType:)(a3, a4, a5);
+  typeCopy = type;
+  valueTypeCopy = valueType;
+  selfCopy = self;
+  _LNMetadataProviderDirect.queries(with:inputValueType:resultValueType:)(capabilities, type, valueType);
 
   sub_10002EB80(&unk_10019AB70, &unk_10014F8C0);
   v13.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
@@ -151,34 +151,34 @@
   return v13.super.isa;
 }
 
-- (int64_t)metadataVersionForBundleIdentifier:(id)a3 error:(id *)a4
+- (int64_t)metadataVersionForBundleIdentifier:(id)identifier error:(id *)error
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
-  v10 = _LNMetadataProviderDirect.metadataVersion(forBundleIdentifier:error:)(v6, v8, a4);
+  selfCopy = self;
+  v10 = _LNMetadataProviderDirect.metadataVersion(forBundleIdentifier:error:)(v6, v8, error);
 
   return v10;
 }
 
-- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)identifier error:(id *)error
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
   _LNMetadataProviderDirect.appShortcutsProviderMangledTypeName(forBundleIdentifier:)(v10);
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = _convertErrorToNSError(_:)();
 
       v13 = v12;
       v14 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -196,11 +196,11 @@
   return v14;
 }
 
-- (id)suggestionPhrasesForQueries:(id)a3 error:(id *)a4
+- (id)suggestionPhrasesForQueries:(id)queries error:(id *)error
 {
   sub_100003D44(0, &unk_10019AB30, LNAssistantSuggestionPhraseQuery_ptr);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.suggestionPhrases(forQueries:)();
 
   sub_10002EB80(&unk_10019B2A0, &unk_1001504E0);
@@ -210,34 +210,34 @@
   return v6.super.isa;
 }
 
-- (void)autoShortcutsForBundleIdentifier:(id)a3 localeIdentifier:(id)a4 completion:(id)a5
+- (void)autoShortcutsForBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   _Block_copy(v6);
-  v13 = self;
-  sub_1000B1500(v7, v9, v10, v12, v13, v6);
+  selfCopy = self;
+  sub_1000B1500(v7, v9, v10, v12, selfCopy, v6);
   _Block_release(v6);
 }
 
-- (void)autoShortcutsForLocaleIdentifier:(id)a3 completion:(id)a4
+- (void)autoShortcutsForLocaleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1000B17BC(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1000B17BC(v6, v8, selfCopy, v5);
   _Block_release(v5);
 }
 
-- (id)autoShortcutsForLocaleIdentifier:(id)a3 error:(id *)a4
+- (id)autoShortcutsForLocaleIdentifier:(id)identifier error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.autoShortcuts(forLocaleIdentifier:)();
 
   sub_10002EB80(&unk_10019BBB0, &unk_10014E220);
@@ -246,11 +246,11 @@
   return v6.super.isa;
 }
 
-- (id)propertiesForIdentifiers:(id)a3 error:(id *)a4
+- (id)propertiesForIdentifiers:(id)identifiers error:(id *)error
 {
   type metadata accessor for UUID();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   _LNMetadataProviderDirect.properties(forIdentifiers:)();
 
   sub_100003D44(0, &qword_10019BBA0, LNProperty_ptr);
@@ -260,15 +260,15 @@
   return v6.super.isa;
 }
 
-- (void)diagnoseBundleIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)diagnoseBundleIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = identifier;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_100006240(&unk_1001504D0, v7);
 }

@@ -1,7 +1,7 @@
 @interface EventPublisher
 + (id)sharedInstance;
-- (void)sendEvent:(id)a3;
-- (void)sendEvent:(id)a3 keyIdentifier:(id)a4;
+- (void)sendEvent:(id)event;
+- (void)sendEvent:(id)event keyIdentifier:(id)identifier;
 @end
 
 @implementation EventPublisher
@@ -18,31 +18,31 @@
   return v3;
 }
 
-- (void)sendEvent:(id)a3 keyIdentifier:(id)a4
+- (void)sendEvent:(id)event keyIdentifier:(id)identifier
 {
-  v8 = a3;
-  if (a4)
+  eventCopy = event;
+  if (identifier)
   {
-    v6 = a4;
+    identifierCopy = identifier;
     v7 = +[_SESSessionManager sessionManager];
-    [v7 sendEvent:v8 keyIdentifier:v6];
+    [v7 sendEvent:eventCopy keyIdentifier:identifierCopy];
   }
 
-  [(EventPublisher *)self sendEvent:v8];
+  [(EventPublisher *)self sendEvent:eventCopy];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"xpcEventName"];
+  eventCopy = event;
+  v5 = [eventCopy objectForKeyedSubscript:@"xpcEventName"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appletIdentifier"];
-    v7 = [v4 objectForKeyedSubscript:@"keyIdentifier"];
+    v6 = [eventCopy objectForKeyedSubscript:@"appletIdentifier"];
+    v7 = [eventCopy objectForKeyedSubscript:@"keyIdentifier"];
     if ([@"com.apple.secureelementservice.dck.event.vehicle.did.ranging.start" isEqualToString:v5])
     {
-      v8 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
-      v9 = [v4 objectForKeyedSubscript:@"rangingTimeoutSec"];
+      v8 = [eventCopy objectForKeyedSubscript:@"readerIdentifier"];
+      v9 = [eventCopy objectForKeyedSubscript:@"rangingTimeoutSec"];
       +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@:%@:%d", v6, v7, v8, [v9 unsignedIntValue]);
       v10 = LABEL_4:;
 LABEL_5:
@@ -53,7 +53,7 @@ LABEL_16:
 
     if ([@"com.apple.secureelementservice.dck.event.vehicle.did.ranging.end" isEqualToString:v5])
     {
-      v8 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
+      v8 = [eventCopy objectForKeyedSubscript:@"readerIdentifier"];
       [NSString stringWithFormat:@"%@:%@:%@", v6, v7, v8];
       v10 = LABEL_15:;
       goto LABEL_16;
@@ -61,37 +61,37 @@ LABEL_16:
 
     if ([@"deprecated" isEqualToString:v5])
     {
-      v8 = [v4 objectForKeyedSubscript:@"rangingSuspensionReasons"];
+      v8 = [eventCopy objectForKeyedSubscript:@"rangingSuspensionReasons"];
       v27 = v7;
-      v28 = [v8 unsignedIntValue];
-      v26 = v6;
+      unsignedIntValue = [v8 unsignedIntValue];
+      unsignedIntValue2 = v6;
       v11 = @"%@:%@:%d";
 LABEL_14:
-      [NSString stringWithFormat:v11, v26, v27, v28];
+      [NSString stringWithFormat:v11, unsignedIntValue2, v27, unsignedIntValue];
       goto LABEL_15;
     }
 
     if ([@"com.apple.secureelementservice.event.did.ranging.suspend" isEqualToString:v5])
     {
-      v8 = [v4 objectForKeyedSubscript:@"rangingSuspensionReasons"];
-      v26 = [v8 unsignedIntValue];
+      v8 = [eventCopy objectForKeyedSubscript:@"rangingSuspensionReasons"];
+      unsignedIntValue2 = [v8 unsignedIntValue];
       v11 = @"%d";
       goto LABEL_14;
     }
 
     if ([@"com.apple.secureelementservice.dck.event.vehicle.did.rke.action.start" isEqualToString:v5])
     {
-      v8 = [v4 objectForKeyedSubscript:@"rkeFunctionID"];
-      v9 = [v4 objectForKeyedSubscript:@"rkeActionID"];
+      v8 = [eventCopy objectForKeyedSubscript:@"rkeFunctionID"];
+      v9 = [eventCopy objectForKeyedSubscript:@"rkeActionID"];
       +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@:%d:%d", v6, v7, [v8 unsignedShortValue], objc_msgSend(v9, "unsignedCharValue"));
       goto LABEL_4;
     }
 
     if ([@"com.apple.secureelementservice.dck.event.vehicle.did.rke.action.complete" isEqualToString:v5])
     {
-      v20 = [v4 objectForKeyedSubscript:@"rkeFunctionID"];
-      v21 = [v4 objectForKeyedSubscript:@"rkeActionID"];
-      v22 = [v4 objectForKeyedSubscript:@"error"];
+      v20 = [eventCopy objectForKeyedSubscript:@"rkeFunctionID"];
+      v21 = [eventCopy objectForKeyedSubscript:@"rkeActionID"];
+      v22 = [eventCopy objectForKeyedSubscript:@"error"];
       if (v22)
       {
         v23 = &off_1004DCA50;
@@ -99,7 +99,7 @@ LABEL_14:
 
       else
       {
-        v23 = [v4 objectForKeyedSubscript:@"rkeExecutionStatus"];
+        v23 = [eventCopy objectForKeyedSubscript:@"rkeExecutionStatus"];
       }
 
       v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@:%d:%d:%d", v6, v7, [v20 unsignedShortValue], objc_msgSend(v21, "unsignedCharValue"), objc_msgSend(v23, "unsignedCharValue"));
@@ -109,10 +109,10 @@ LABEL_14:
 
     if ([@"com.apple.secureelementservice.acwg.event.did.status.update" isEqualToString:v5])
     {
-      v8 = [v4 objectForKeyedSubscript:@"lockStatus"];
-      v9 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
-      v24 = [v4 objectForKeyedSubscript:@"timestamp"];
-      v25 = [v4 objectForKeyedSubscript:@"lockOperationSource"];
+      v8 = [eventCopy objectForKeyedSubscript:@"lockStatus"];
+      v9 = [eventCopy objectForKeyedSubscript:@"readerIdentifier"];
+      v24 = [eventCopy objectForKeyedSubscript:@"timestamp"];
+      v25 = [eventCopy objectForKeyedSubscript:@"lockOperationSource"];
       v10 = [NSString stringWithFormat:@"%@:%@:%@:%@:%@:%@", v6, v7, v9, v24, v8, v25];
     }
 
@@ -146,25 +146,25 @@ LABEL_17:
         {
           count = xpc_dictionary_get_count(v14);
           v17 = SESDefaultLogObject();
-          v18 = v17;
+          eventPublisher = v17;
           if (count)
           {
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v30 = v4;
-              _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Sending event via XPC %@", buf, 0xCu);
+              v30 = eventCopy;
+              _os_log_impl(&_mh_execute_header, eventPublisher, OS_LOG_TYPE_INFO, "Sending event via XPC %@", buf, 0xCu);
             }
 
-            v18 = [(EventPublisher *)self eventPublisher];
-            [v18 sendEvent:v15];
+            eventPublisher = [(EventPublisher *)self eventPublisher];
+            [eventPublisher sendEvent:v15];
             goto LABEL_29;
           }
 
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v30 = v4;
+            v30 = eventCopy;
             v19 = "Created event xpc object has no keys for dictionary %@";
             goto LABEL_28;
           }
@@ -172,14 +172,14 @@ LABEL_17:
 
         else
         {
-          v18 = SESDefaultLogObject();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          eventPublisher = SESDefaultLogObject();
+          if (os_log_type_enabled(eventPublisher, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v30 = v4;
+            v30 = eventCopy;
             v19 = "Failed to get event xpc object from dictionary %@";
 LABEL_28:
-            _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, v19, buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, eventPublisher, OS_LOG_TYPE_ERROR, v19, buf, 0xCu);
           }
         }
 
@@ -188,9 +188,9 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v8 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
-      v9 = [v4 objectForKeyedSubscript:@"timestamp"];
-      v24 = [v4 objectForKeyedSubscript:@"lockOperationSource"];
+      v8 = [eventCopy objectForKeyedSubscript:@"readerIdentifier"];
+      v9 = [eventCopy objectForKeyedSubscript:@"timestamp"];
+      v24 = [eventCopy objectForKeyedSubscript:@"lockOperationSource"];
       v10 = [NSString stringWithFormat:@"%@:%@:%@:%@:%@", v6, v7, v8, v9, v24];
     }
 
@@ -201,7 +201,7 @@ LABEL_29:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v30 = v4;
+    v30 = eventCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Dropping event with no SES_EVENT_KEY_NAME %@", buf, 0xCu);
   }
 

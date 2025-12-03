@@ -1,68 +1,68 @@
 @interface SBAssistantContext
-+ (id)contextForWindowScene:(id)a3;
++ (id)contextForWindowScene:(id)scene;
 @end
 
 @implementation SBAssistantContext
 
-+ (id)contextForWindowScene:(id)a3
++ (id)contextForWindowScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v4 = objc_alloc_init(SBAssistantContext);
-  v5 = [v3 traitsArbiter];
-  [(SBAssistantContext *)v4 setTraitsArbiter:v5];
+  traitsArbiter = [sceneCopy traitsArbiter];
+  [(SBAssistantContext *)v4 setTraitsArbiter:traitsArbiter];
 
-  v6 = [v3 coverSheetViewController];
-  [(SBAssistantContext *)v4 setCoverSheetViewController:v6];
+  coverSheetViewController = [sceneCopy coverSheetViewController];
+  [(SBAssistantContext *)v4 setCoverSheetViewController:coverSheetViewController];
 
-  v7 = [v3 displayLayoutPublisher];
-  [(SBAssistantContext *)v4 setDisplayLayoutPublisher:v7];
+  displayLayoutPublisher = [sceneCopy displayLayoutPublisher];
+  [(SBAssistantContext *)v4 setDisplayLayoutPublisher:displayLayoutPublisher];
 
-  v8 = [v3 lockScreenManager];
-  v9 = [v8 lockScreenEnvironment];
-  [(SBAssistantContext *)v4 setLockScreenEnvironment:v9];
+  lockScreenManager = [sceneCopy lockScreenManager];
+  lockScreenEnvironment = [lockScreenManager lockScreenEnvironment];
+  [(SBAssistantContext *)v4 setLockScreenEnvironment:lockScreenEnvironment];
 
-  v10 = [v3 alertItemsController];
-  [(SBAssistantContext *)v4 setAlertItemsController:v10];
+  alertItemsController = [sceneCopy alertItemsController];
+  [(SBAssistantContext *)v4 setAlertItemsController:alertItemsController];
 
-  v11 = [v3 coverSheetPresentationManager];
-  [(SBAssistantContext *)v4 setCoverSheetPresentationManager:v11];
+  coverSheetPresentationManager = [sceneCopy coverSheetPresentationManager];
+  [(SBAssistantContext *)v4 setCoverSheetPresentationManager:coverSheetPresentationManager];
 
-  v12 = [v3 floatingDockController];
-  [(SBAssistantContext *)v4 setFloatingDockController:v12];
+  floatingDockController = [sceneCopy floatingDockController];
+  [(SBAssistantContext *)v4 setFloatingDockController:floatingDockController];
 
-  v13 = [v3 zStackResolver];
-  [(SBAssistantContext *)v4 setZStackResolver:v13];
+  zStackResolver = [sceneCopy zStackResolver];
+  [(SBAssistantContext *)v4 setZStackResolver:zStackResolver];
 
-  v14 = [v3 systemApertureController];
-  [(SBAssistantContext *)v4 setSystemApertureController:v14];
+  systemApertureController = [sceneCopy systemApertureController];
+  [(SBAssistantContext *)v4 setSystemApertureController:systemApertureController];
 
-  v15 = [v3 homeScreenController];
-  [(SBAssistantContext *)v4 setHomeScreenController:v15];
+  homeScreenController = [sceneCopy homeScreenController];
+  [(SBAssistantContext *)v4 setHomeScreenController:homeScreenController];
 
-  v16 = [v3 lockScreenManager];
-  [(SBAssistantContext *)v4 setLockScreenManager:v16];
+  lockScreenManager2 = [sceneCopy lockScreenManager];
+  [(SBAssistantContext *)v4 setLockScreenManager:lockScreenManager2];
 
-  v17 = [v3 switcherController];
-  [(SBAssistantContext *)v4 setSwitcherController:v17];
+  switcherController = [sceneCopy switcherController];
+  [(SBAssistantContext *)v4 setSwitcherController:switcherController];
 
-  v18 = [v3 modalAlertPresentationCoordinator];
-  [(SBAssistantContext *)v4 setModalAlertPresentationCoordinator:v18];
+  modalAlertPresentationCoordinator = [sceneCopy modalAlertPresentationCoordinator];
+  [(SBAssistantContext *)v4 setModalAlertPresentationCoordinator:modalAlertPresentationCoordinator];
 
-  v19 = [v3 systemGestureManager];
-  [(SBAssistantContext *)v4 setSystemGestureManager:v19];
+  systemGestureManager = [sceneCopy systemGestureManager];
+  [(SBAssistantContext *)v4 setSystemGestureManager:systemGestureManager];
 
-  v20 = [v3 transientOverlayPresenter];
-  [(SBAssistantContext *)v4 setTransientOverlayPresenter:v20];
+  transientOverlayPresenter = [sceneCopy transientOverlayPresenter];
+  [(SBAssistantContext *)v4 setTransientOverlayPresenter:transientOverlayPresenter];
 
-  v21 = [v3 wallpaperController];
-  [(SBAssistantContext *)v4 setWallpaperController:v21];
+  wallpaperController = [sceneCopy wallpaperController];
+  [(SBAssistantContext *)v4 setWallpaperController:wallpaperController];
 
-  v22 = [v3 windowHidingManager];
-  [(SBAssistantContext *)v4 setWindowHidingManager:v22];
+  windowHidingManager = [sceneCopy windowHidingManager];
+  [(SBAssistantContext *)v4 setWindowHidingManager:windowHidingManager];
 
-  v23 = [v3 controlCenterController];
+  controlCenterController = [sceneCopy controlCenterController];
 
-  [(SBAssistantContext *)v4 setControlCenterController:v23];
+  [(SBAssistantContext *)v4 setControlCenterController:controlCenterController];
   [(SBAssistantContext *)v4 setOrientationAccomodation:SBApp];
 
   return v4;

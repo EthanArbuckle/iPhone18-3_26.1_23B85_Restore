@@ -1,24 +1,24 @@
 @interface CHWorkoutTabTracker
 - (CHWorkoutTabTracker)init;
-- (CHWorkoutTabTracker)initWithTabBarController:(id)a3 workoutController:(id)a4;
+- (CHWorkoutTabTracker)initWithTabBarController:(id)controller workoutController:(id)workoutController;
 - (uint64_t)workoutTabDidBecomeInactive;
 - (void)didEnterBackground;
-- (void)updateWorkoutState:(int64_t)a3 shouldShowTimeout:(BOOL)a4;
+- (void)updateWorkoutState:(int64_t)state shouldShowTimeout:(BOOL)timeout;
 - (void)willEnterForeground;
-- (void)workoutController:(id)a3 transitionedWorkout:(id)a4 toState:(int64_t)a5;
+- (void)workoutController:(id)controller transitionedWorkout:(id)workout toState:(int64_t)state;
 - (void)workoutTabDidBecomeActive;
 @end
 
 @implementation CHWorkoutTabTracker
 
-- (CHWorkoutTabTracker)initWithTabBarController:(id)a3 workoutController:(id)a4
+- (CHWorkoutTabTracker)initWithTabBarController:(id)controller workoutController:(id)workoutController
 {
   type metadata accessor for WorkoutDevicesProvider();
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  workoutControllerCopy = workoutController;
   v8 = static WorkoutDevicesProvider.shared.getter();
   v9 = objc_allocWithZone(type metadata accessor for WorkoutTabTracker());
-  v10 = WorkoutTabTracker.init(tabBarController:workoutController:workoutDevicesProvider:)(v6, a4, v8);
+  v10 = WorkoutTabTracker.init(tabBarController:workoutController:workoutDevicesProvider:)(controllerCopy, workoutController, v8);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v10;
@@ -26,19 +26,19 @@
 
 - (void)workoutTabDidBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_100455E40();
 }
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004564AC();
 }
 
 - (void)didEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_100456948();
 }
 
@@ -49,18 +49,18 @@
   return result;
 }
 
-- (void)workoutController:(id)a3 transitionedWorkout:(id)a4 toState:(int64_t)a5
+- (void)workoutController:(id)controller transitionedWorkout:(id)workout toState:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_100458368(a5);
+  controllerCopy = controller;
+  workoutCopy = workout;
+  selfCopy = self;
+  sub_100458368(state);
 }
 
-- (void)updateWorkoutState:(int64_t)a3 shouldShowTimeout:(BOOL)a4
+- (void)updateWorkoutState:(int64_t)state shouldShowTimeout:(BOOL)timeout
 {
-  v6 = self;
-  sub_1004577A4(a3, a4);
+  selfCopy = self;
+  sub_1004577A4(state, timeout);
 }
 
 - (uint64_t)workoutTabDidBecomeInactive

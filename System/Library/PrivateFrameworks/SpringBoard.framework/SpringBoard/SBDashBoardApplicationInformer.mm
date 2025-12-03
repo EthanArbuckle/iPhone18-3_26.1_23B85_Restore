@@ -1,36 +1,36 @@
 @interface SBDashBoardApplicationInformer
-- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)a3;
-- (BOOL)applicationExistsForBundleIdentifier:(id)a3;
-- (BOOL)isBundleIdentifierBlockedForScreenTimeExpiration:(id)a3;
-- (BOOL)isBundleIdentifierUserVisible:(id)a3;
-- (BOOL)isInstallingApplicationWithBundleIdentifier:(id)a3;
+- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)policy;
+- (BOOL)applicationExistsForBundleIdentifier:(id)identifier;
+- (BOOL)isBundleIdentifierBlockedForScreenTimeExpiration:(id)expiration;
+- (BOOL)isBundleIdentifierUserVisible:(id)visible;
+- (BOOL)isInstallingApplicationWithBundleIdentifier:(id)identifier;
 - (BOOL)isSystemRestoringFromBackup;
-- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3;
-- (SBDashBoardApplicationInformer)initWithWindowScene:(id)a3;
+- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier;
+- (SBDashBoardApplicationInformer)initWithWindowScene:(id)scene;
 - (SBWindowScene)windowScene;
-- (void)_installedApplicationsDidChange:(id)a3;
-- (void)_screenTimeNotificationPolicyDidChange:(id)a3;
-- (void)addApplicationInformationObserver:(id)a3;
+- (void)_installedApplicationsDidChange:(id)change;
+- (void)_screenTimeNotificationPolicyDidChange:(id)change;
+- (void)addApplicationInformationObserver:(id)observer;
 - (void)dealloc;
 @end
 
 @implementation SBDashBoardApplicationInformer
 
-- (SBDashBoardApplicationInformer)initWithWindowScene:(id)a3
+- (SBDashBoardApplicationInformer)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = SBDashBoardApplicationInformer;
   v5 = [(SBDashBoardApplicationInformer *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel__screenTimeNotificationPolicyDidChange_ name:@"SBCommunicationPolicyDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__screenTimeNotificationPolicyDidChange_ name:@"SBCommunicationPolicyDidChangeNotification" object:0];
   }
 
   return v6;
@@ -38,104 +38,104 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SBDashBoardApplicationInformer;
   [(SBDashBoardApplicationInformer *)&v4 dealloc];
 }
 
-- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3
+- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBDashBoardApplicationInformer *)self isBundleIdentifierBlockedForScreenTimeExpiration:v4]|| [(SBDashBoardApplicationInformer *)self _isBundleIdentifierBlockedForCommunicationPolicy:v4];
+  identifierCopy = identifier;
+  v5 = [(SBDashBoardApplicationInformer *)self isBundleIdentifierBlockedForScreenTimeExpiration:identifierCopy]|| [(SBDashBoardApplicationInformer *)self _isBundleIdentifierBlockedForCommunicationPolicy:identifierCopy];
 
   return v5;
 }
 
-- (BOOL)isBundleIdentifierBlockedForScreenTimeExpiration:(id)a3
+- (BOOL)isBundleIdentifierBlockedForScreenTimeExpiration:(id)expiration
 {
-  v3 = a3;
+  expirationCopy = expiration;
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:expirationCopy];
 
-  v6 = [v5 info];
-  LOBYTE(v3) = [v6 isBlockedForScreenTimeExpiration];
+  info = [v5 info];
+  LOBYTE(expirationCopy) = [info isBlockedForScreenTimeExpiration];
 
-  return v3;
+  return expirationCopy;
 }
 
-- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)a3
+- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[SBCommunicationPolicyManager sharedInstance];
-  v5 = [v4 shouldScreenTimeSuppressNotificationsForBundleIdentifier:v3];
+  v5 = [v4 shouldScreenTimeSuppressNotificationsForBundleIdentifier:policyCopy];
 
   return v5;
 }
 
-- (BOOL)isBundleIdentifierUserVisible:(id)a3
+- (BOOL)isBundleIdentifierUserVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(SBDashBoardApplicationInformer *)self windowScene];
-  v6 = [v5 iconController];
+  visibleCopy = visible;
+  windowScene = [(SBDashBoardApplicationInformer *)self windowScene];
+  iconController = [windowScene iconController];
 
-  v7 = [v6 visibleIconStateDisplayIdentifiers];
-  v8 = [v7 containsObject:v4];
+  visibleIconStateDisplayIdentifiers = [iconController visibleIconStateDisplayIdentifiers];
+  v8 = [visibleIconStateDisplayIdentifiers containsObject:visibleCopy];
 
   return v8;
 }
 
-- (void)addApplicationInformationObserver:(id)a3
+- (void)addApplicationInformationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (BOOL)isSystemRestoringFromBackup
 {
   v2 = +[SBSyncController sharedInstance];
-  v3 = [v2 isRestoring];
+  isRestoring = [v2 isRestoring];
 
-  return v3;
+  return isRestoring;
 }
 
-- (BOOL)isInstallingApplicationWithBundleIdentifier:(id)a3
+- (BOOL)isInstallingApplicationWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SBApplicationPlaceholderController sharedInstance];
-  v5 = [v4 placeholderForDisplayID:v3];
+  v5 = [v4 placeholderForDisplayID:identifierCopy];
 
   return v5 != 0;
 }
 
-- (BOOL)applicationExistsForBundleIdentifier:(id)a3
+- (BOOL)applicationExistsForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:identifierCopy];
 
   return v5 != 0;
 }
 
-- (void)_installedApplicationsDidChange:(id)a3
+- (void)_installedApplicationsDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
   if (v5)
   {
     v13 = 0u;
@@ -170,11 +170,11 @@
   }
 }
 
-- (void)_screenTimeNotificationPolicyDidChange:(id)a3
+- (void)_screenTimeNotificationPolicyDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBCommunicationPolicyChangedBundleIdentifiersKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBCommunicationPolicyChangedBundleIdentifiersKey"];
   if (v5)
   {
     v13 = 0u;

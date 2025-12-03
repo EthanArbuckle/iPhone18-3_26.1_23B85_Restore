@@ -2,8 +2,8 @@
 + (UserNotificationManager)sharedManager;
 - (UserNotificationManager)init;
 - (id)_bag;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation UserNotificationManager
@@ -50,50 +50,50 @@
   return v3;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(UserNotificationManager *)self delegateQueue];
+  responseCopy = response;
+  handlerCopy = handler;
+  delegateQueue = [(UserNotificationManager *)self delegateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10023ADC4;
   block[3] = &unk_100328C38;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = responseCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = responseCopy;
+  dispatch_async(delegateQueue, block);
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UserNotificationManager *)self delegateQueue];
+  centerCopy = center;
+  settingsCopy = settings;
+  delegateQueue = [(UserNotificationManager *)self delegateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10023B0EC;
   block[3] = &unk_1003281A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = centerCopy;
+  v13 = settingsCopy;
+  v9 = settingsCopy;
+  v10 = centerCopy;
+  dispatch_async(delegateQueue, block);
 }
 
 - (id)_bag
 {
   v2 = objc_alloc_init(ISLoadURLBagOperation);
   [v2 start];
-  v3 = [v2 success];
-  v4 = [v2 error];
-  v5 = v4;
-  if (v3)
+  success = [v2 success];
+  error = [v2 error];
+  v5 = error;
+  if (success)
   {
-    v6 = v4 == 0;
+    v6 = error == 0;
   }
 
   else
@@ -109,19 +109,19 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 &= 2u;
     }
@@ -143,7 +143,7 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v10 = [NSString stringWithCString:v12 encoding:4, v18, v17, *v18, *&v18[16]];
+      oSLogObject = [NSString stringWithCString:v12 encoding:4, v18, v17, *v18, *&v18[16]];
       free(v12);
       SSFileLog();
     }
@@ -153,8 +153,8 @@ LABEL_16:
 
 LABEL_17:
   v13 = [ISAMSBagShim alloc];
-  v14 = [v2 URLBag];
-  v15 = [v13 initWithURLBag:v14];
+  uRLBag = [v2 URLBag];
+  v15 = [v13 initWithURLBag:uRLBag];
 
   return v15;
 }

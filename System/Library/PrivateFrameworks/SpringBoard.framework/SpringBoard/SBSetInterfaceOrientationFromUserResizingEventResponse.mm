@@ -1,20 +1,20 @@
 @interface SBSetInterfaceOrientationFromUserResizingEventResponse
-- (SBSetInterfaceOrientationFromUserResizingEventResponse)initWithDisplayItem:(id)a3 desiredContentOrientation:(int64_t)a4;
+- (SBSetInterfaceOrientationFromUserResizingEventResponse)initWithDisplayItem:(id)item desiredContentOrientation:(int64_t)orientation;
 @end
 
 @implementation SBSetInterfaceOrientationFromUserResizingEventResponse
 
-- (SBSetInterfaceOrientationFromUserResizingEventResponse)initWithDisplayItem:(id)a3 desiredContentOrientation:(int64_t)a4
+- (SBSetInterfaceOrientationFromUserResizingEventResponse)initWithDisplayItem:(id)item desiredContentOrientation:(int64_t)orientation
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBSetInterfaceOrientationFromUserResizingEventResponse;
   v8 = [(SBChainableModifierEventResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_displayItem, a3);
-    v9->_desiredOrientation = a4;
+    objc_storeStrong(&v8->_displayItem, item);
+    v9->_desiredOrientation = orientation;
   }
 
   return v9;

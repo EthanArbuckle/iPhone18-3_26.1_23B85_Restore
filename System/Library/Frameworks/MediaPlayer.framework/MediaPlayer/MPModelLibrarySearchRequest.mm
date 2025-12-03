@@ -1,28 +1,28 @@
 @interface MPModelLibrarySearchRequest
-- (MPModelLibrarySearchRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPModelLibrarySearchRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelLibrarySearchRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibrarySearchRequestOperation);
-  [(MPModelLibrarySearchRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibrarySearchRequestOperation *)v5 setResponseHandler:handlerCopy];
   [(MPModelLibrarySearchRequestOperation *)v5 setRequest:self];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MPModelLibrarySearchRequest;
-  v4 = [(MPModelLibraryRequest *)&v7 copyWithZone:a3];
+  v4 = [(MPModelLibraryRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -34,34 +34,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MPModelLibrarySearchRequest;
-  [(MPModelLibraryRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_maximumResultsPerScope forKey:@"MPModelLibrarySearchRequestMaximumResultsPerScope"];
-  [v4 encodeObject:self->_scopes forKey:@"MPModelLibrarySearchRequestScopes"];
-  [v4 encodeObject:self->_searchString forKey:@"MPModelLibrarySearchRequestSearchString"];
+  [(MPModelLibraryRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_maximumResultsPerScope forKey:@"MPModelLibrarySearchRequestMaximumResultsPerScope"];
+  [coderCopy encodeObject:self->_scopes forKey:@"MPModelLibrarySearchRequestScopes"];
+  [coderCopy encodeObject:self->_searchString forKey:@"MPModelLibrarySearchRequestSearchString"];
 }
 
-- (MPModelLibrarySearchRequest)initWithCoder:(id)a3
+- (MPModelLibrarySearchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MPModelLibrarySearchRequest;
-  v5 = [(MPModelLibraryRequest *)&v14 initWithCoder:v4];
+  v5 = [(MPModelLibraryRequest *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_maximumResultsPerScope = [v4 decodeIntegerForKey:@"MPModelLibrarySearchRequestMaximumResultsPerScope"];
+    v5->_maximumResultsPerScope = [coderCopy decodeIntegerForKey:@"MPModelLibrarySearchRequestMaximumResultsPerScope"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MPModelLibrarySearchRequestScopes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPModelLibrarySearchRequestScopes"];
     scopes = v5->_scopes;
     v5->_scopes = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchRequestSearchString"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibrarySearchRequestSearchString"];
     searchString = v5->_searchString;
     v5->_searchString = v11;
   }

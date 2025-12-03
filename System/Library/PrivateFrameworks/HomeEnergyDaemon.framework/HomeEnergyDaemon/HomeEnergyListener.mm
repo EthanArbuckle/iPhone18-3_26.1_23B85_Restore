@@ -1,14 +1,14 @@
 @interface HomeEnergyListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation HomeEnergyListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = MEMORY[0x23188EEB0]();
-  sub_22B1459E4(v4, &v7);
+  sub_22B1459E4(connectionCopy, &v7);
   objc_autoreleasePoolPop(v5);
 
   return v7;

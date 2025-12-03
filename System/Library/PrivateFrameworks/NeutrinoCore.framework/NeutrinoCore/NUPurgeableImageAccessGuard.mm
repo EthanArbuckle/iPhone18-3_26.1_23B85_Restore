@@ -1,5 +1,5 @@
 @interface NUPurgeableImageAccessGuard
-- (NUPurgeableImageAccessGuard)initWithRegion:(id)a3 image:(id)a4;
+- (NUPurgeableImageAccessGuard)initWithRegion:(id)region image:(id)image;
 - (void)_beginAccess;
 - (void)_endAccess;
 - (void)dealloc;
@@ -61,18 +61,18 @@
   [(NUPurgeableImageAccessGuard *)&v3 dealloc];
 }
 
-- (NUPurgeableImageAccessGuard)initWithRegion:(id)a3 image:(id)a4
+- (NUPurgeableImageAccessGuard)initWithRegion:(id)region image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = NUPurgeableImageAccessGuard;
   v8 = [(NUPurgeableImageAccessGuard *)&v12 init];
-  v9 = [v6 copy];
+  v9 = [regionCopy copy];
   accessRegion = v8->_accessRegion;
   v8->_accessRegion = v9;
 
-  objc_storeStrong(&v8->_accessImage, a4);
+  objc_storeStrong(&v8->_accessImage, image);
   [(NUPurgeableImageAccessGuard *)v8 _beginAccess];
 
   return v8;

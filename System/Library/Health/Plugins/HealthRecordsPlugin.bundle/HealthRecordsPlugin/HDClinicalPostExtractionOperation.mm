@@ -1,6 +1,6 @@
 @interface HDClinicalPostExtractionOperation
 - (HDClinicalPostExtractionOperation)init;
-- (HDClinicalPostExtractionOperation)initWithExtractionResult:(id)a3;
+- (HDClinicalPostExtractionOperation)initWithExtractionResult:(id)result;
 @end
 
 @implementation HDClinicalPostExtractionOperation
@@ -13,15 +13,15 @@
   return 0;
 }
 
-- (HDClinicalPostExtractionOperation)initWithExtractionResult:(id)a3
+- (HDClinicalPostExtractionOperation)initWithExtractionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = HDClinicalPostExtractionOperation;
   v5 = [(HDClinicalPostExtractionOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resultCopy copy];
     extractionResult = v5->_extractionResult;
     v5->_extractionResult = v6;
   }

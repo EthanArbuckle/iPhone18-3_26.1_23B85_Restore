@@ -1,19 +1,19 @@
 @interface ANSTVideoFeatureExtractorConfiguration
-+ (unint64_t)foundationModelVersionOfFeatureExtractorVersion:(unint64_t)a3;
-- (ANSTVideoFeatureExtractorConfiguration)initWithVersion:(unint64_t)a3;
++ (unint64_t)foundationModelVersionOfFeatureExtractorVersion:(unint64_t)version;
+- (ANSTVideoFeatureExtractorConfiguration)initWithVersion:(unint64_t)version;
 - (id)description;
 @end
 
 @implementation ANSTVideoFeatureExtractorConfiguration
 
-- (ANSTVideoFeatureExtractorConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTVideoFeatureExtractorConfiguration)initWithVersion:(unint64_t)version
 {
   v7.receiver = self;
   v7.super_class = ANSTVideoFeatureExtractorConfiguration;
   v5 = [(ANSTConfiguration *)&v7 initWithVersion:?];
   if (v5)
   {
-    v5->_foundationModelVersion = objc_msgSend_foundationModelVersionOfFeatureExtractorVersion_(ANSTVideoFeatureExtractorConfiguration, v4, a3);
+    v5->_foundationModelVersion = objc_msgSend_foundationModelVersionOfFeatureExtractorVersion_(ANSTVideoFeatureExtractorConfiguration, v4, version);
   }
 
   return v5;
@@ -29,9 +29,9 @@
   return v7;
 }
 
-+ (unint64_t)foundationModelVersionOfFeatureExtractorVersion:(unint64_t)a3
++ (unint64_t)foundationModelVersionOfFeatureExtractorVersion:(unint64_t)version
 {
-  if (a3 != 0x10000)
+  if (version != 0x10000)
   {
     v3 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))

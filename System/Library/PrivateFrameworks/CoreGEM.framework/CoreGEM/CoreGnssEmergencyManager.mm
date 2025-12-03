@@ -1,18 +1,18 @@
 @interface CoreGnssEmergencyManager
-- (id)initForComm:(id)a3 sendIndicationToRemoteCallback:(id)a4 dispatch_queue_t:(id)a5;
+- (id)initForComm:(id)comm sendIndicationToRemoteCallback:(id)callback dispatch_queue_t:(id)dispatch_queue_t;
 - (void)dealloc;
-- (void)handleDeviceIndication:(id)a3;
-- (void)handleRemoteRequest:(id)a3 machconttimens:(unint64_t)a4;
+- (void)handleDeviceIndication:(id)indication;
+- (void)handleRemoteRequest:(id)request machconttimens:(unint64_t)machconttimens;
 @end
 
 @implementation CoreGnssEmergencyManager
 
-- (id)initForComm:(id)a3 sendIndicationToRemoteCallback:(id)a4 dispatch_queue_t:(id)a5
+- (id)initForComm:(id)comm sendIndicationToRemoteCallback:(id)callback dispatch_queue_t:(id)dispatch_queue_t
 {
   v12 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = CoreGnssEmergencyManager;
-  v9 = a5;
+  dispatch_queue_tCopy = dispatch_queue_t;
   [(CoreGnssEmergencyManager *)&v8 init];
   if (!qword_2813CF018)
   {
@@ -79,7 +79,7 @@
   [(CoreGnssEmergencyManager *)&v2 dealloc];
 }
 
-- (void)handleDeviceIndication:(id)a3
+- (void)handleDeviceIndication:(id)indication
 {
   v3 = qword_2813CF018;
   if (os_log_type_enabled(qword_2813CF018, OS_LOG_TYPE_DEBUG))
@@ -91,7 +91,7 @@
   sub_245397744();
 }
 
-- (void)handleRemoteRequest:(id)a3 machconttimens:(unint64_t)a4
+- (void)handleRemoteRequest:(id)request machconttimens:(unint64_t)machconttimens
 {
   v4 = qword_2813CF018;
   if (os_log_type_enabled(qword_2813CF018, OS_LOG_TYPE_DEBUG))

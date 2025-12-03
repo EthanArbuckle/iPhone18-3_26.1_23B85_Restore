@@ -1,16 +1,16 @@
 @interface SKUICellScrollView
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SKUICellScrollView
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,19 +23,19 @@
     }
   }
 
-  v17 = v7;
-  v18 = v8;
-  v19 = self;
+  v17 = beganCopy;
+  v18 = eventCopy;
+  selfCopy = self;
   v20 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v20, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v19, a2, v17, v18);
+  (Implementation)(selfCopy, a2, v17, v18);
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -48,19 +48,19 @@
     }
   }
 
-  v17 = v7;
-  v18 = v8;
-  v19 = self;
+  v17 = cancelledCopy;
+  v18 = eventCopy;
+  selfCopy = self;
   v20 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v20, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v19, a2, v17, v18);
+  (Implementation)(selfCopy, a2, v17, v18);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,19 +73,19 @@
     }
   }
 
-  v17 = v7;
-  v18 = v8;
-  v19 = self;
+  v17 = endedCopy;
+  v18 = eventCopy;
+  selfCopy = self;
   v20 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v20, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v19, a2, v17, v18);
+  (Implementation)(selfCopy, a2, v17, v18);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -98,13 +98,13 @@
     }
   }
 
-  v17 = v7;
-  v18 = v8;
-  v19 = self;
+  v17 = movedCopy;
+  v18 = eventCopy;
+  selfCopy = self;
   v20 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v20, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v19, a2, v17, v18);
+  (Implementation)(selfCopy, a2, v17, v18);
 }
 
 @end

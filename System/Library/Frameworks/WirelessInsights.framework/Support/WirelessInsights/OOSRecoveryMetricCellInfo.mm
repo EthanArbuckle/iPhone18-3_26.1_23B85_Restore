@@ -1,27 +1,27 @@
 @interface OOSRecoveryMetricCellInfo
-- (OOSRecoveryMetricCellInfo)initWithTimestamp:(unint64_t)a3 rat:(id)a4 tacOrLac:(id)a5 gci:(id)a6 band:(id)a7;
+- (OOSRecoveryMetricCellInfo)initWithTimestamp:(unint64_t)timestamp rat:(id)rat tacOrLac:(id)lac gci:(id)gci band:(id)band;
 - (id)description;
 @end
 
 @implementation OOSRecoveryMetricCellInfo
 
-- (OOSRecoveryMetricCellInfo)initWithTimestamp:(unint64_t)a3 rat:(id)a4 tacOrLac:(id)a5 gci:(id)a6 band:(id)a7
+- (OOSRecoveryMetricCellInfo)initWithTimestamp:(unint64_t)timestamp rat:(id)rat tacOrLac:(id)lac gci:(id)gci band:(id)band
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  ratCopy = rat;
+  lacCopy = lac;
+  gciCopy = gci;
+  bandCopy = band;
   v21.receiver = self;
   v21.super_class = OOSRecoveryMetricCellInfo;
   v17 = [(OOSRecoveryMetricCellInfo *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    v17->_timestamp = a3;
-    objc_storeStrong(&v17->_rat, a4);
-    objc_storeStrong(&v18->_tacOrLac, a5);
-    objc_storeStrong(&v18->_gci, a6);
-    objc_storeStrong(&v18->_band, a7);
+    v17->_timestamp = timestamp;
+    objc_storeStrong(&v17->_rat, rat);
+    objc_storeStrong(&v18->_tacOrLac, lac);
+    objc_storeStrong(&v18->_gci, gci);
+    objc_storeStrong(&v18->_band, band);
     v19 = v18;
   }
 
@@ -30,10 +30,10 @@
 
 - (id)description
 {
-  v3 = [(OOSRecoveryMetricCellInfo *)self timestamp];
+  timestamp = [(OOSRecoveryMetricCellInfo *)self timestamp];
   v4 = [(OOSRecoveryMetricCellInfo *)self rat];
-  v5 = [(OOSRecoveryMetricCellInfo *)self band];
-  v6 = [NSString stringWithFormat:@"timestamp %llu, rat %@, band %@", v3, v4, v5];
+  band = [(OOSRecoveryMetricCellInfo *)self band];
+  v6 = [NSString stringWithFormat:@"timestamp %llu, rat %@, band %@", timestamp, v4, band];
 
   return v6;
 }

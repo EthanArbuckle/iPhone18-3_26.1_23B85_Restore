@@ -1,22 +1,22 @@
 @interface TLTransliteratorInitParameters
-- (BOOL)isEqual:(id)a3;
-- (TLTransliteratorInitParameters)initWithLocale:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TLTransliteratorInitParameters)initWithLocale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TLTransliteratorInitParameters
 
-- (TLTransliteratorInitParameters)initWithLocale:(id)a3
+- (TLTransliteratorInitParameters)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = TLTransliteratorInitParameters;
   v5 = [(TLTransliteratorInitParameters *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     locale = v5->_locale;
     v5->_locale = v6;
 
@@ -26,41 +26,41 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TLTransliteratorInitParameters allocWithZone:a3];
-  v5 = [(TLTransliteratorInitParameters *)self locale];
-  v6 = [(TLTransliteratorInitParameters *)v4 initWithLocale:v5];
+  v4 = [TLTransliteratorInitParameters allocWithZone:zone];
+  locale = [(TLTransliteratorInitParameters *)self locale];
+  v6 = [(TLTransliteratorInitParameters *)v4 initWithLocale:locale];
 
-  v7 = [(TLTransliteratorInitParameters *)self modelURL];
-  [(TLTransliteratorInitParameters *)v6 setModelURL:v7];
+  modelURL = [(TLTransliteratorInitParameters *)self modelURL];
+  [(TLTransliteratorInitParameters *)v6 setModelURL:modelURL];
 
   [(TLTransliteratorInitParameters *)v6 setUseLanguageModel:[(TLTransliteratorInitParameters *)self useLanguageModel]];
   [(TLTransliteratorInitParameters *)v6 setUseSeq2SeqModel:[(TLTransliteratorInitParameters *)self useSeq2SeqModel]];
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TLMutableTransliteratorInitParameters alloc];
-  v5 = [(TLTransliteratorInitParameters *)self locale];
-  v6 = [(TLTransliteratorInitParameters *)v4 initWithLocale:v5];
+  locale = [(TLTransliteratorInitParameters *)self locale];
+  v6 = [(TLTransliteratorInitParameters *)v4 initWithLocale:locale];
 
-  v7 = [(TLTransliteratorInitParameters *)self modelURL];
-  [(TLTransliteratorInitParameters *)v6 setModelURL:v7];
+  modelURL = [(TLTransliteratorInitParameters *)self modelURL];
+  [(TLTransliteratorInitParameters *)v6 setModelURL:modelURL];
 
   [(TLTransliteratorInitParameters *)v6 setUseLanguageModel:[(TLTransliteratorInitParameters *)self useLanguageModel]];
   [(TLTransliteratorInitParameters *)v6 setUseSeq2SeqModel:[(TLTransliteratorInitParameters *)self useSeq2SeqModel]];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
   }
 
   else
@@ -76,19 +76,19 @@
     goto LABEL_10;
   }
 
-  v3 = [(TLTransliteratorInitParameters *)self locale];
-  v4 = [v8 locale];
-  if (![v3 isEqual:v4])
+  locale = [(TLTransliteratorInitParameters *)self locale];
+  locale2 = [v8 locale];
+  if (![locale isEqual:locale2])
   {
     v11 = 0;
     v10 = 0;
     goto LABEL_10;
   }
 
-  v9 = [(TLTransliteratorInitParameters *)self modelURL];
-  if (v9)
+  modelURL = [(TLTransliteratorInitParameters *)self modelURL];
+  if (modelURL)
   {
-    v21 = v9;
+    v21 = modelURL;
     v10 = 0;
     v11 = 1;
 LABEL_10:
@@ -96,9 +96,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v18 = [v8 modelURL];
+  modelURL2 = [v8 modelURL];
   v11 = 1;
-  if (!v18)
+  if (!modelURL2)
   {
     LOBYTE(v15) = 1;
     goto LABEL_21;
@@ -108,11 +108,11 @@ LABEL_10:
   v10 = 1;
   [(TLTransliteratorInitParameters *)self modelURL];
   v12 = LABEL_11:;
-  v13 = [v8 modelURL];
-  if ([v12 isEqual:v13] && (v14 = -[TLTransliteratorInitParameters useLanguageModel](self, "useLanguageModel"), v14 == objc_msgSend(v8, "useLanguageModel")))
+  modelURL3 = [v8 modelURL];
+  if ([v12 isEqual:modelURL3] && (v14 = -[TLTransliteratorInitParameters useLanguageModel](self, "useLanguageModel"), v14 == objc_msgSend(v8, "useLanguageModel")))
   {
-    v16 = [(TLTransliteratorInitParameters *)self useSeq2SeqModel];
-    v15 = v16 ^ [v8 useSeq2SeqModel] ^ 1;
+    useSeq2SeqModel = [(TLTransliteratorInitParameters *)self useSeq2SeqModel];
+    v15 = useSeq2SeqModel ^ [v8 useSeq2SeqModel] ^ 1;
   }
 
   else
@@ -146,11 +146,11 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(TLTransliteratorInitParameters *)self locale];
-  v4 = [v3 hash];
+  locale = [(TLTransliteratorInitParameters *)self locale];
+  v4 = [locale hash];
 
-  v5 = [(TLTransliteratorInitParameters *)self modelURL];
-  v6 = [v5 hash] ^ v4;
+  modelURL = [(TLTransliteratorInitParameters *)self modelURL];
+  v6 = [modelURL hash] ^ v4;
 
   v7 = v6 ^ [(TLTransliteratorInitParameters *)self useLanguageModel];
   return v7 ^ [(TLTransliteratorInitParameters *)self useSeq2SeqModel];

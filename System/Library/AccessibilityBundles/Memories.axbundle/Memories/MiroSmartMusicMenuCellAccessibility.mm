@@ -1,5 +1,5 @@
 @interface MiroSmartMusicMenuCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axRequiresDownload;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -10,14 +10,14 @@
 
 @implementation MiroSmartMusicMenuCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"cloudStatus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"songName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"progress" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"cloudStatus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"songName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"progress" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MiroSmartMusicMenuCell" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)_axRequiresDownload
@@ -26,8 +26,8 @@
   v3 = [(MiroSmartMusicMenuCellAccessibility *)self safeValueForKey:@"cloudStatus"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 isHidden];
-  return v5 ^ 1;
+  isHidden = [v4 isHidden];
+  return isHidden ^ 1;
 }
 
 - (id)accessibilityLabel

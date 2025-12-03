@@ -10,8 +10,8 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessoryView];
-    v6 = v5 != self;
+    accessoryView = [v3 accessoryView];
+    v6 = accessoryView != self;
   }
 
   else

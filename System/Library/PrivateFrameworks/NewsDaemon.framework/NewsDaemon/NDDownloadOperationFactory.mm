@@ -1,67 +1,67 @@
 @interface NDDownloadOperationFactory
-- (NDDownloadOperationFactory)initWithContext:(id)a3 ANFHelper:(id)a4;
-- (id)_articleOperationForRequest:(id)a3;
-- (id)_audioOperationForRequest:(id)a3;
-- (id)_issueOperationForRequest:(id)a3;
-- (id)_puzzleOperationForRequest:(id)a3;
-- (id)_recipeOperationForRequest:(id)a3;
-- (id)operationForRequest:(id)a3;
-- (int64_t)_operationFlagsForRequest:(id)a3;
+- (NDDownloadOperationFactory)initWithContext:(id)context ANFHelper:(id)helper;
+- (id)_articleOperationForRequest:(id)request;
+- (id)_audioOperationForRequest:(id)request;
+- (id)_issueOperationForRequest:(id)request;
+- (id)_puzzleOperationForRequest:(id)request;
+- (id)_recipeOperationForRequest:(id)request;
+- (id)operationForRequest:(id)request;
+- (int64_t)_operationFlagsForRequest:(id)request;
 @end
 
 @implementation NDDownloadOperationFactory
 
-- (NDDownloadOperationFactory)initWithContext:(id)a3 ANFHelper:(id)a4
+- (NDDownloadOperationFactory)initWithContext:(id)context ANFHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  helperCopy = helper;
   v12.receiver = self;
   v12.super_class = NDDownloadOperationFactory;
   v9 = [(NDDownloadOperationFactory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_ANFHelper, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_ANFHelper, helper);
   }
 
   return v10;
 }
 
-- (id)operationForRequest:(id)a3
+- (id)operationForRequest:(id)request
 {
-  v5 = a3;
-  v6 = [v5 contentType];
-  if (v6 <= 1)
+  requestCopy = request;
+  contentType = [requestCopy contentType];
+  if (contentType <= 1)
   {
-    if (v6)
+    if (contentType)
     {
-      if (v6 != 1)
+      if (contentType != 1)
       {
         goto LABEL_13;
       }
 
-      v7 = [(NDDownloadOperationFactory *)self _audioOperationForRequest:v5];
+      v7 = [(NDDownloadOperationFactory *)self _audioOperationForRequest:requestCopy];
     }
 
     else
     {
-      v7 = [(NDDownloadOperationFactory *)self _articleOperationForRequest:v5];
+      v7 = [(NDDownloadOperationFactory *)self _articleOperationForRequest:requestCopy];
     }
   }
 
   else
   {
-    switch(v6)
+    switch(contentType)
     {
       case 2:
-        v7 = [(NDDownloadOperationFactory *)self _issueOperationForRequest:v5];
+        v7 = [(NDDownloadOperationFactory *)self _issueOperationForRequest:requestCopy];
         break;
       case 3:
-        v7 = [(NDDownloadOperationFactory *)self _puzzleOperationForRequest:v5];
+        v7 = [(NDDownloadOperationFactory *)self _puzzleOperationForRequest:requestCopy];
         break;
       case 4:
-        v7 = [(NDDownloadOperationFactory *)self _recipeOperationForRequest:v5];
+        v7 = [(NDDownloadOperationFactory *)self _recipeOperationForRequest:requestCopy];
         break;
       default:
         goto LABEL_13;
@@ -74,90 +74,90 @@ LABEL_13:
   return v3;
 }
 
-- (id)_articleOperationForRequest:(id)a3
+- (id)_articleOperationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [FCOfflineArticleFetchOperation alloc];
-  v6 = [(NDDownloadOperationFactory *)self context];
-  v7 = [(NDDownloadOperationFactory *)self ANFHelper];
-  v8 = [v4 articleID];
-  v9 = [v5 initWithContext:v6 ANFHelper:v7 articleID:v8];
+  context = [(NDDownloadOperationFactory *)self context];
+  aNFHelper = [(NDDownloadOperationFactory *)self ANFHelper];
+  articleID = [requestCopy articleID];
+  v9 = [v5 initWithContext:context ANFHelper:aNFHelper articleID:articleID];
 
-  v10 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:v4];
+  v10 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:requestCopy];
   [v9 setFlags:v10];
   [v9 setPurpose:FCOperationPurposeOfflineDownload];
 
   return v9;
 }
 
-- (id)_audioOperationForRequest:(id)a3
+- (id)_audioOperationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [FCOfflineAudioFetchOperation alloc];
-  v6 = [(NDDownloadOperationFactory *)self context];
-  v7 = [v4 articleID];
-  v8 = [v5 initWithContext:v6 articleID:v7];
+  context = [(NDDownloadOperationFactory *)self context];
+  articleID = [requestCopy articleID];
+  v8 = [v5 initWithContext:context articleID:articleID];
 
-  v9 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:v4];
+  v9 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:requestCopy];
   [v8 setFlags:v9];
   [v8 setPurpose:FCOperationPurposeOfflineDownload];
 
   return v8;
 }
 
-- (id)_issueOperationForRequest:(id)a3
+- (id)_issueOperationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [FCOfflineIssueFetchOperation alloc];
-  v6 = [(NDDownloadOperationFactory *)self context];
-  v7 = [(NDDownloadOperationFactory *)self ANFHelper];
-  v8 = [v4 issueID];
-  v9 = [v5 initWithContext:v6 ANFHelper:v7 issueID:v8];
+  context = [(NDDownloadOperationFactory *)self context];
+  aNFHelper = [(NDDownloadOperationFactory *)self ANFHelper];
+  issueID = [requestCopy issueID];
+  v9 = [v5 initWithContext:context ANFHelper:aNFHelper issueID:issueID];
 
-  v10 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:v4];
+  v10 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:requestCopy];
   [v9 setFlags:v10];
   [v9 setPurpose:FCOperationPurposeOfflineDownload];
 
   return v9;
 }
 
-- (id)_puzzleOperationForRequest:(id)a3
+- (id)_puzzleOperationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [FCOfflinePuzzleFetchOperation alloc];
-  v6 = [(NDDownloadOperationFactory *)self context];
-  v7 = [v4 puzzleID];
-  v8 = [v5 initWithContext:v6 puzzleID:v7];
+  context = [(NDDownloadOperationFactory *)self context];
+  puzzleID = [requestCopy puzzleID];
+  v8 = [v5 initWithContext:context puzzleID:puzzleID];
 
-  v9 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:v4];
+  v9 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:requestCopy];
   [v8 setFlags:v9];
   [v8 setPurpose:FCOperationPurposeOfflineDownload];
 
   return v8;
 }
 
-- (id)_recipeOperationForRequest:(id)a3
+- (id)_recipeOperationForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [FCOfflineRecipesFetchOperation alloc];
-  v6 = [(NDDownloadOperationFactory *)self context];
-  v7 = [v4 recipeID];
-  v8 = [v5 initWithContext:v6 recipeID:v7];
+  context = [(NDDownloadOperationFactory *)self context];
+  recipeID = [requestCopy recipeID];
+  v8 = [v5 initWithContext:context recipeID:recipeID];
 
-  v9 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:v4];
+  v9 = [(NDDownloadOperationFactory *)self _operationFlagsForRequest:requestCopy];
   [v8 setFlags:v9];
   [v8 setPurpose:FCOperationPurposeOfflineDownload];
 
   return v8;
 }
 
-- (int64_t)_operationFlagsForRequest:(id)a3
+- (int64_t)_operationFlagsForRequest:(id)request
 {
-  v3 = a3;
-  v4 = ([v3 options] << 63) >> 63;
-  v5 = [v3 options];
+  requestCopy = request;
+  v4 = ([requestCopy options] << 63) >> 63;
+  options = [requestCopy options];
 
-  return v5 & 4 | (v4 & 3);
+  return options & 4 | (v4 & 3);
 }
 
 @end

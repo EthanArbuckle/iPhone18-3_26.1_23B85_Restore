@@ -1,36 +1,36 @@
 @interface THMultiLineLabel
 - (CGSize)textShadowOffset;
 - (CGSize)textSize;
-- (THMultiLineLabel)initWithFrame:(CGRect)a3;
+- (THMultiLineLabel)initWithFrame:(CGRect)frame;
 - (__CFAttributedString)p_createAttributedString;
 - (double)firstLineAscent;
 - (unint64_t)lineCount;
-- (unint64_t)lineCountForWidth:(double)a3;
+- (unint64_t)lineCountForWidth:(double)width;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)p_ensureTypesetterCreated;
-- (void)p_enumerateLinesForWidth:(double)a3 withBlock:(id)a4;
-- (void)p_enumerateLinesWithBlock:(id)a3;
+- (void)p_enumerateLinesForWidth:(double)width withBlock:(id)block;
+- (void)p_enumerateLinesWithBlock:(id)block;
 - (void)p_tearDownTypesetter;
 - (void)resizeToFitCurrentWidth;
 - (void)resizeToFitTightly;
-- (void)setAlignment:(int)a3;
-- (void)setFont:(id)a3;
-- (void)setRunIn:(id)a3;
-- (void)setRunInFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextShadowColor:(id)a3;
+- (void)setAlignment:(int)alignment;
+- (void)setFont:(id)font;
+- (void)setRunIn:(id)in;
+- (void)setRunInFont:(id)font;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTextShadowColor:(id)color;
 @end
 
 @implementation THMultiLineLabel
 
-- (THMultiLineLabel)initWithFrame:(CGRect)a3
+- (THMultiLineLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = THMultiLineLabel;
   v7 = [(THMultiLineLabel *)&v10 init];
@@ -68,60 +68,60 @@
   [(THMultiLineLabel *)&v4 dealloc];
 }
 
-- (void)setRunIn:(id)a3
+- (void)setRunIn:(id)in
 {
-  v4 = [a3 copy];
+  v4 = [in copy];
 
   self->_runIn = v4;
 
   [(THMultiLineLabel *)self p_tearDownTypesetter];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
 
   self->_text = v4;
 
   [(THMultiLineLabel *)self p_tearDownTypesetter];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
 
-  self->_font = v4;
+  self->_font = fontCopy;
 
   [(THMultiLineLabel *)self p_tearDownTypesetter];
 }
 
-- (void)setRunInFont:(id)a3
+- (void)setRunInFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
 
-  self->_runInFont = v4;
+  self->_runInFont = fontCopy;
 
   [(THMultiLineLabel *)self p_tearDownTypesetter];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
 
-  self->_textColor = v4;
+  self->_textColor = colorCopy;
 
   [(THMultiLineLabel *)self p_tearDownTypesetter];
 }
 
-- (void)setAlignment:(int)a3
+- (void)setAlignment:(int)alignment
 {
-  self->_alignment = a3;
-  if (a3 <= 1)
+  self->_alignment = alignment;
+  if (alignment <= 1)
   {
-    if (a3)
+    if (alignment)
     {
       v4 = 0.5;
-      if (a3 == 1)
+      if (alignment == 1)
       {
         goto LABEL_12;
       }
@@ -134,11 +134,11 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (a3 != 4)
+  if (alignment != 4)
   {
-    if (a3 != 3)
+    if (alignment != 3)
     {
-      if (a3 == 2)
+      if (alignment == 2)
       {
         v4 = 1.0;
         goto LABEL_12;
@@ -152,9 +152,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [+[UIApplication sharedApplication](UIApplication userInterfaceLayoutDirection];
   v4 = 0.0;
-  if (v5 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v4 = 1.0;
   }
@@ -165,11 +165,11 @@ LABEL_12:
   [(THMultiLineLabel *)self p_tearDownTypesetter];
 }
 
-- (void)setTextShadowColor:(id)a3
+- (void)setTextShadowColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
 
-  self->_textShadowColor = a3;
+  self->_textShadowColor = color;
 
   [(THMultiLineLabel *)self setNeedsDisplay];
 }
@@ -208,7 +208,7 @@ LABEL_12:
   return ascent;
 }
 
-- (unint64_t)lineCountForWidth:(double)a3
+- (unint64_t)lineCountForWidth:(double)width
 {
   [(THMultiLineLabel *)self p_ensureTypesetterCreated];
   if (!self->_typesetter || ![(NSString *)self->_text length])
@@ -220,7 +220,7 @@ LABEL_12:
   v6 = 0;
   do
   {
-    v5 += CTTypesetterSuggestLineBreak(self->_typesetter, v5, a3);
+    v5 += CTTypesetterSuggestLineBreak(self->_typesetter, v5, width);
     ++v6;
   }
 
@@ -265,30 +265,30 @@ LABEL_12:
   _Block_object_dispose(v4, 8);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   textShadowColor = self->_textShadowColor;
   if (textShadowColor)
   {
     width = self->_textShadowOffset.width;
     height = self->_textShadowOffset.height;
     textShadowBlur = self->_textShadowBlur;
-    v9 = [(TSUColor *)textShadowColor CGColor];
+    cGColor = [(TSUColor *)textShadowColor CGColor];
     v12.width = width;
     v12.height = height;
-    CGContextSetShadowWithColor(a3, v12, textShadowBlur, v9);
+    CGContextSetShadowWithColor(context, v12, textShadowBlur, cGColor);
   }
 
   CGAffineTransformMakeScale(&v11, 1.0, -1.0);
-  CGContextSetTextMatrix(a3, &v11);
+  CGContextSetTextMatrix(context, &v11);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_E5CA4;
   v10[3] = &unk_45D3B8;
-  v10[4] = a3;
+  v10[4] = context;
   [(THMultiLineLabel *)self p_enumerateLinesWithBlock:v10];
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - (__CFAttributedString)p_createAttributedString
@@ -310,26 +310,26 @@ LABEL_12:
     text = self->_text;
   }
 
-  v9 = [NSString stringWithFormat:@"%@%@", runIn, text];
+  text = [NSString stringWithFormat:@"%@%@", runIn, text];
   v17.location = 0;
   v17.length = 0;
-  CFAttributedStringReplaceString(Mutable, v17, v9);
+  CFAttributedStringReplaceString(Mutable, v17, text);
   font = self->_font;
   if (font)
   {
-    v11 = [[(TSUFont *)font fontWithScale:self->_scale] CTFont];
+    cTFont = [[(TSUFont *)font fontWithScale:self->_scale] CTFont];
     v18.length = v6 + v5;
     v18.location = 0;
-    CFAttributedStringSetAttribute(Mutable, v18, kCTFontAttributeName, v11);
+    CFAttributedStringSetAttribute(Mutable, v18, kCTFontAttributeName, cTFont);
   }
 
   textColor = self->_textColor;
   if (textColor)
   {
-    v13 = [(TSUColor *)textColor CGColor];
+    cGColor = [(TSUColor *)textColor CGColor];
     v19.length = v6 + v5;
     v19.location = 0;
-    CFAttributedStringSetAttribute(Mutable, v19, kCTForegroundColorAttributeName, v13);
+    CFAttributedStringSetAttribute(Mutable, v19, kCTForegroundColorAttributeName, cGColor);
   }
 
   if (self->_runIn)
@@ -337,10 +337,10 @@ LABEL_12:
     runInFont = self->_runInFont;
     if (runInFont)
     {
-      v15 = [[(TSUFont *)runInFont fontWithScale:self->_scale] CTFont];
+      cTFont2 = [[(TSUFont *)runInFont fontWithScale:self->_scale] CTFont];
       v20.location = 0;
       v20.length = v4;
-      CFAttributedStringSetAttribute(Mutable, v20, kCTFontAttributeName, v15);
+      CFAttributedStringSetAttribute(Mutable, v20, kCTFontAttributeName, cTFont2);
     }
   }
 
@@ -352,10 +352,10 @@ LABEL_12:
 {
   if (!self->_typesetter)
   {
-    v3 = [(THMultiLineLabel *)self p_createAttributedString];
-    self->_typesetter = CTTypesetterCreateWithAttributedString(v3);
+    p_createAttributedString = [(THMultiLineLabel *)self p_createAttributedString];
+    self->_typesetter = CTTypesetterCreateWithAttributedString(p_createAttributedString);
 
-    CFRelease(v3);
+    CFRelease(p_createAttributedString);
   }
 }
 
@@ -371,26 +371,26 @@ LABEL_12:
   [(THMultiLineLabel *)self setNeedsDisplay];
 }
 
-- (void)p_enumerateLinesWithBlock:(id)a3
+- (void)p_enumerateLinesWithBlock:(id)block
 {
   [(THMultiLineLabel *)self bounds];
 
-  [(THMultiLineLabel *)self p_enumerateLinesForWidth:a3 withBlock:v5];
+  [(THMultiLineLabel *)self p_enumerateLinesForWidth:block withBlock:v5];
 }
 
-- (void)p_enumerateLinesForWidth:(double)a3 withBlock:(id)a4
+- (void)p_enumerateLinesForWidth:(double)width withBlock:(id)block
 {
-  v6 = self;
+  selfCopy = self;
   [(THMultiLineLabel *)self p_ensureTypesetterCreated];
   v7 = 112;
-  if (v6->_typesetter)
+  if (selfCopy->_typesetter)
   {
-    lineHeight = v6->_lineHeight;
+    lineHeight = selfCopy->_lineHeight;
     if (lineHeight == 0.0)
     {
-      [(TSUFont *)v6->_font lineHeight];
+      [(TSUFont *)selfCopy->_font lineHeight];
       v10 = v9;
-      runInFont = v6->_runInFont;
+      runInFont = selfCopy->_runInFont;
       if (runInFont)
       {
         [(TSUFont *)runInFont lineHeight];
@@ -404,53 +404,53 @@ LABEL_12:
       lineHeight = fmax(v10, v12);
     }
 
-    scale = v6->_scale;
+    scale = selfCopy->_scale;
     v14 = 16;
-    if ([(NSString *)v6->_text length])
+    if ([(NSString *)selfCopy->_text length])
     {
       v15 = 0;
       v16 = lineHeight * scale;
-      v17 = a4 + 16;
+      v17 = block + 16;
       v18 = 1;
       v19 = &OBJC_IVAR___THWFreeTransformGestureRecognizer_mTouch1;
-      v32 = v6;
+      v32 = selfCopy;
       do
       {
-        v20 = CTTypesetterSuggestLineBreak(*&v6->TSDNoDefaultImplicitActionLayer_opaque[v7], v15, a3);
+        v20 = CTTypesetterSuggestLineBreak(*&selfCopy->TSDNoDefaultImplicitActionLayer_opaque[v7], v15, width);
         v34.location = v15;
         v34.length = v20;
-        Line = CTTypesetterCreateLine(*&v6->TSDNoDefaultImplicitActionLayer_opaque[v7], v34);
+        Line = CTTypesetterCreateLine(*&selfCopy->TSDNoDefaultImplicitActionLayer_opaque[v7], v34);
         v22 = Line;
-        if (*&v6->TSDNoDefaultImplicitActionLayer_opaque[v19[779]] == 3)
+        if (*&selfCopy->TSDNoDefaultImplicitActionLayer_opaque[v19[779]] == 3)
         {
           v23 = v7;
-          v24 = a4;
+          blockCopy = block;
           v25 = v17;
           v26 = v14;
           v27 = v19;
-          JustifiedLine = CTLineCreateJustifiedLine(Line, 1.0, a3);
+          JustifiedLine = CTLineCreateJustifiedLine(Line, 1.0, width);
           CFRelease(v22);
           v22 = JustifiedLine;
           v19 = v27;
           v14 = v26;
           v17 = v25;
-          a4 = v24;
+          block = blockCopy;
           v7 = v23;
-          v6 = v32;
+          selfCopy = v32;
         }
 
-        PenOffsetForFlush = CTLineGetPenOffsetForFlush(v22, v6->_flushFactor, a3);
+        PenOffsetForFlush = CTLineGetPenOffsetForFlush(v22, selfCopy->_flushFactor, width);
         descent = 0.0;
         CTLineGetTypographicBounds(v22, 0, &descent, 0);
         v30 = PenOffsetForFlush;
         v31 = -(descent - v18 * v16);
-        (*(a4 + 2))(a4, v22, roundf(v30), roundf(v31));
+        (*(block + 2))(block, v22, roundf(v30), roundf(v31));
         CFRelease(v22);
         v15 += v20;
         ++v18;
       }
 
-      while (v15 < [*&v6->TSDNoDefaultImplicitActionLayer_opaque[v14] length]);
+      while (v15 < [*&selfCopy->TSDNoDefaultImplicitActionLayer_opaque[v14] length]);
     }
   }
 }

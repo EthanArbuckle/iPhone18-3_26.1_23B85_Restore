@@ -6,48 +6,48 @@
 
 - (id)acs_formattedNameOrStreetAddress
 {
-  v2 = [a1 name];
-  if (![v2 length])
+  name = [self name];
+  if (![name length])
   {
 
 LABEL_5:
-    v4 = [a1 subThoroughfare];
-    if ([v4 length])
+    subThoroughfare = [self subThoroughfare];
+    if ([subThoroughfare length])
     {
-      v5 = [a1 subThoroughfare];
+      subThoroughfare2 = [self subThoroughfare];
     }
 
     else
     {
-      v5 = &stru_2853137F0;
+      subThoroughfare2 = &stru_2853137F0;
     }
 
-    v6 = [a1 thoroughfare];
-    if ([v6 length])
+    thoroughfare = [self thoroughfare];
+    if ([thoroughfare length])
     {
-      v7 = [a1 thoroughfare];
+      thoroughfare2 = [self thoroughfare];
     }
 
     else
     {
-      v7 = &stru_2853137F0;
+      thoroughfare2 = &stru_2853137F0;
     }
 
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v5, v7];
+    name2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", subThoroughfare2, thoroughfare2];
 
     goto LABEL_12;
   }
 
-  v3 = [a1 name];
+  name2 = [self name];
 
-  if (!v3)
+  if (!name2)
   {
     goto LABEL_5;
   }
 
 LABEL_12:
 
-  return v3;
+  return name2;
 }
 
 @end

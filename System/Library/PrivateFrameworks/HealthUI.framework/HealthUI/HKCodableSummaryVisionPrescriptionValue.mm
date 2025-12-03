@@ -1,20 +1,20 @@
 @interface HKCodableSummaryVisionPrescriptionValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasImage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasImage:(BOOL)image;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryVisionPrescriptionValue
 
-- (void)setHasHasImage:(BOOL)a3
+- (void)setHasHasImage:(BOOL)image
 {
-  if (a3)
+  if (image)
   {
     v3 = 2;
   }
@@ -33,124 +33,124 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryVisionPrescriptionValue;
   v4 = [(HKCodableSummaryVisionPrescriptionValue *)&v8 description];
-  v5 = [(HKCodableSummaryVisionPrescriptionValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryVisionPrescriptionValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestampData];
-    [v3 setObject:v4 forKey:@"timestampData"];
+    [dictionary setObject:v4 forKey:@"timestampData"];
   }
 
   prescriptionType = self->_prescriptionType;
   if (prescriptionType)
   {
-    v6 = [(HKCodablePrescriptionType *)prescriptionType dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"prescriptionType"];
+    dictionaryRepresentation = [(HKCodablePrescriptionType *)prescriptionType dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"prescriptionType"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasImage];
-    [v3 setObject:v7 forKey:@"hasImage"];
+    [dictionary setObject:v7 forKey:@"hasImage"];
   }
 
   leftEyeSphere = self->_leftEyeSphere;
   if (leftEyeSphere)
   {
-    v9 = [(HKCodableQuantity *)leftEyeSphere dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"leftEyeSphere"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)leftEyeSphere dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"leftEyeSphere"];
   }
 
   rightEyeSphere = self->_rightEyeSphere;
   if (rightEyeSphere)
   {
-    v11 = [(HKCodableQuantity *)rightEyeSphere dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"rightEyeSphere"];
+    dictionaryRepresentation3 = [(HKCodableQuantity *)rightEyeSphere dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"rightEyeSphere"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_prescriptionType)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_leftEyeSphere)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rightEyeSphere)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_timestampData;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = *&self->_timestampData;
+    *(toCopy + 44) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_prescriptionType)
   {
-    [v4 setPrescriptionType:?];
-    v4 = v5;
+    [toCopy setPrescriptionType:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 40) = self->_hasImage;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 40) = self->_hasImage;
+    *(toCopy + 44) |= 2u;
   }
 
   if (self->_leftEyeSphere)
   {
     [v5 setLeftEyeSphere:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rightEyeSphere)
   {
     [v5 setRightEyeSphere:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -158,7 +158,7 @@
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(HKCodablePrescriptionType *)self->_prescriptionType copyWithZone:a3];
+  v7 = [(HKCodablePrescriptionType *)self->_prescriptionType copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -168,21 +168,21 @@
     *(v6 + 44) |= 2u;
   }
 
-  v9 = [(HKCodableQuantity *)self->_leftEyeSphere copyWithZone:a3];
+  v9 = [(HKCodableQuantity *)self->_leftEyeSphere copyWithZone:zone];
   v10 = *(v6 + 16);
   *(v6 + 16) = v9;
 
-  v11 = [(HKCodableQuantity *)self->_rightEyeSphere copyWithZone:a3];
+  v11 = [(HKCodableQuantity *)self->_rightEyeSphere copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
@@ -190,19 +190,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestampData != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestampData != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_17;
   }
 
   prescriptionType = self->_prescriptionType;
-  if (prescriptionType | *(v4 + 3))
+  if (prescriptionType | *(equalCopy + 3))
   {
     if (![(HKCodablePrescriptionType *)prescriptionType isEqual:?])
     {
@@ -214,7 +214,7 @@
 
   if ((has & 2) == 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_12;
     }
@@ -224,33 +224,33 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ((*(v4 + 44) & 2) == 0)
+  if ((*(equalCopy + 44) & 2) == 0)
   {
     goto LABEL_17;
   }
 
   if (self->_hasImage)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_17;
   }
 
 LABEL_12:
   leftEyeSphere = self->_leftEyeSphere;
-  if (leftEyeSphere | *(v4 + 2) && ![(HKCodableQuantity *)leftEyeSphere isEqual:?])
+  if (leftEyeSphere | *(equalCopy + 2) && ![(HKCodableQuantity *)leftEyeSphere isEqual:?])
   {
     goto LABEL_17;
   }
 
   rightEyeSphere = self->_rightEyeSphere;
-  if (rightEyeSphere | *(v4 + 4))
+  if (rightEyeSphere | *(equalCopy + 4))
   {
     v9 = [(HKCodableQuantity *)rightEyeSphere isEqual:?];
   }
@@ -315,13 +315,13 @@ LABEL_18:
   return v11 ^ [(HKCodableQuantity *)self->_rightEyeSphere hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 44))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 44))
   {
-    self->_timestampData = v4[1];
+    self->_timestampData = fromCopy[1];
     *&self->_has |= 1u;
   }
 

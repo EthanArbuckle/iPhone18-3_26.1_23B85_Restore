@@ -3,10 +3,10 @@
 - (JSVirtualMachine)javaScriptVirtualMachine;
 - (WFRemoteQuarantinePolicyEvaluator)init;
 - (WFRemoteQuarantinePolicyEvaluatorDelegate)delegate;
-- (id)remoteQuarantineHashForWorkflowReference:(id)a3;
-- (void)_evaluatePolicyForRequest:(id)a3 completion:(id)a4;
+- (id)remoteQuarantineHashForWorkflowReference:(id)reference;
+- (void)_evaluatePolicyForRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)evaluatePolicyForRequest:(id)a3 completion:(id)a4;
+- (void)evaluatePolicyForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation WFRemoteQuarantinePolicyEvaluator
@@ -18,23 +18,23 @@
   return WeakRetained;
 }
 
-- (void)_evaluatePolicyForRequest:(id)a3 completion:(id)a4
+- (void)_evaluatePolicyForRequest:(id)request completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AF00] currentThread];
-  v9 = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThread];
-  v10 = [v8 isEqual:v9];
+  requestCopy = request;
+  completionCopy = completion;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  javaScriptEvaluationThread = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThread];
+  v10 = [currentThread isEqual:javaScriptEvaluationThread];
 
   if ((v10 & 1) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"WFRemoteQuarantinePolicyEvaluator.m" lineNumber:151 description:@"This metod should only be run on javaScriptEvaluationThread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteQuarantinePolicyEvaluator.m" lineNumber:151 description:@"This metod should only be run on javaScriptEvaluationThread"];
   }
 
-  v11 = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptVirtualMachine];
-  v12 = [objc_alloc(MEMORY[0x1E696EB40]) initWithVirtualMachine:v11];
+  javaScriptVirtualMachine = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptVirtualMachine];
+  v12 = [objc_alloc(MEMORY[0x1E696EB40]) initWithVirtualMachine:javaScriptVirtualMachine];
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -44,7 +44,7 @@
   aBlock[2] = __74__WFRemoteQuarantinePolicyEvaluator__evaluatePolicyForRequest_completion___block_invoke;
   aBlock[3] = &unk_1E83759A0;
   v56 = &v57;
-  v13 = v7;
+  v13 = completionCopy;
   v55 = v13;
   v14 = _Block_copy(aBlock);
   v52[0] = MEMORY[0x1E69E9820];
@@ -56,11 +56,11 @@
   [v12 setExceptionHandler:v52];
   [v12 setObject:&__block_literal_global_199 forKeyedSubscript:@"WFLocalizedString"];
   v16 = +[WFRemoteQuarantinePolicyManager sharedManager];
-  v17 = [v16 policyString];
+  policyString = [v16 policyString];
 
-  if (v17)
+  if (policyString)
   {
-    v18 = [v12 evaluateScript:v17];
+    v18 = [v12 evaluateScript:policyString];
     if ((v58[3] & 1) == 0)
     {
       v46 = 0;
@@ -79,13 +79,13 @@
       v43 = &v57;
       v19 = v15;
       v41 = v19;
-      v20 = v35;
+      v20 = requestCopy;
       v40 = v20;
       v21 = _Block_copy(v39);
       [v12 setObject:v21 forKeyedSubscript:@"completionHandler"];
 
-      v22 = [v20 policyFunctionName];
-      v34 = [v12 objectForKeyedSubscript:v22];
+      policyFunctionName = [v20 policyFunctionName];
+      v34 = [v12 objectForKeyedSubscript:policyFunctionName];
 
       v23 = [v12 objectForKeyedSubscript:@"completionHandler"];
       v38 = 0;
@@ -286,9 +286,9 @@ id __74__WFRemoteQuarantinePolicyEvaluator__evaluatePolicyForRequest_completion_
   return v4;
 }
 
-- (id)remoteQuarantineHashForWorkflowReference:(id)a3
+- (id)remoteQuarantineHashForWorkflowReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = getWFWorkflowExecutionLogObject();
   v5 = os_signpost_id_generate(v4);
 
@@ -304,8 +304,8 @@ id __74__WFRemoteQuarantinePolicyEvaluator__evaluatePolicyForRequest_completion_
   v9 = +[WFRemoteQuarantinePolicyManager sharedManager];
   v10 = [v8 combineInteger:{objc_msgSend(v9, "policyVersion")}];
 
-  v11 = [v3 syncHash];
-  v12 = [v8 combineInteger:v11];
+  syncHash = [referenceCopy syncHash];
+  v12 = [v8 combineInteger:syncHash];
   v18 = [v8 finalize];
   v13 = getWFWorkflowExecutionLogObject();
   v14 = v13;
@@ -320,25 +320,25 @@ id __74__WFRemoteQuarantinePolicyEvaluator__evaluatePolicyForRequest_completion_
   return v15;
 }
 
-- (void)evaluatePolicyForRequest:(id)a3 completion:(id)a4
+- (void)evaluatePolicyForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = voucher_copy();
-  v9 = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThreadRunLoop];
+  javaScriptEvaluationThreadRunLoop = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThreadRunLoop];
   v10 = *MEMORY[0x1E695E8E0];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __73__WFRemoteQuarantinePolicyEvaluator_evaluatePolicyForRequest_completion___block_invoke;
   v17 = &unk_1E837F510;
-  v18 = self;
-  v19 = v6;
+  selfCopy = self;
+  v19 = requestCopy;
   v20 = v8;
-  v21 = v7;
-  v11 = v7;
+  v21 = completionCopy;
+  v11 = completionCopy;
   v12 = v8;
-  v13 = v6;
-  CFRunLoopPerformBlock(v9, v10, &v14);
+  v13 = requestCopy;
+  CFRunLoopPerformBlock(javaScriptEvaluationThreadRunLoop, v10, &v14);
   CFRunLoopWakeUp([(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThreadRunLoop:v14]);
 }
 
@@ -368,14 +368,14 @@ void __73__WFRemoteQuarantinePolicyEvaluator_evaluatePolicyForRequest_completion
 
 - (JSVirtualMachine)javaScriptVirtualMachine
 {
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThread];
-  v6 = [v4 isEqual:v5];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  javaScriptEvaluationThread = [(WFRemoteQuarantinePolicyEvaluator *)self javaScriptEvaluationThread];
+  v6 = [currentThread isEqual:javaScriptEvaluationThread];
 
   if ((v6 & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFRemoteQuarantinePolicyEvaluator.m" lineNumber:101 description:@"This metod should only be run on javaScriptEvaluationThread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteQuarantinePolicyEvaluator.m" lineNumber:101 description:@"This metod should only be run on javaScriptEvaluationThread"];
   }
 
   [(NSTimer *)self->_javaScriptVirtualMachineDestructionTimer invalidate];

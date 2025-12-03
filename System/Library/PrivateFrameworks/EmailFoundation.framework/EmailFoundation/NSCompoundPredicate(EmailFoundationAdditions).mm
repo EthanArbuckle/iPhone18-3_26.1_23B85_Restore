@@ -11,81 +11,81 @@
 
 - (uint64_t)ef_matchesEverything
 {
-  v1 = a1;
-  v2 = [a1 subpredicates];
-  v3 = [v1 compoundPredicateType];
-  if (v3)
+  selfCopy = self;
+  subpredicates = [self subpredicates];
+  compoundPredicateType = [selfCopy compoundPredicateType];
+  if (compoundPredicateType)
   {
-    if (v3 == 1)
+    if (compoundPredicateType == 1)
     {
-      LOBYTE(v1) = [v2 count] == 0;
+      LOBYTE(selfCopy) = [subpredicates count] == 0;
     }
 
-    else if (v3 == 2)
+    else if (compoundPredicateType == 2)
     {
-      LOBYTE(v1) = [v2 ef_any:&__block_literal_global_20];
+      LOBYTE(selfCopy) = [subpredicates ef_any:&__block_literal_global_20];
     }
   }
 
-  else if ([v2 count] == 1)
+  else if ([subpredicates count] == 1)
   {
-    v4 = [v2 firstObject];
-    LOBYTE(v1) = [v4 ef_matchesNothing];
+    firstObject = [subpredicates firstObject];
+    LOBYTE(selfCopy) = [firstObject ef_matchesNothing];
   }
 
   else
   {
-    LOBYTE(v1) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
-  return v1 & 1;
+  return selfCopy & 1;
 }
 
 - (uint64_t)ef_matchesNothing
 {
-  v1 = a1;
-  v2 = [a1 subpredicates];
-  v3 = [v1 compoundPredicateType];
-  if (v3)
+  selfCopy = self;
+  subpredicates = [self subpredicates];
+  compoundPredicateType = [selfCopy compoundPredicateType];
+  if (compoundPredicateType)
   {
-    if (v3 == 1)
+    if (compoundPredicateType == 1)
     {
-      LOBYTE(v1) = [v2 ef_any:&__block_literal_global_150];
+      LOBYTE(selfCopy) = [subpredicates ef_any:&__block_literal_global_150];
     }
 
-    else if (v3 == 2)
+    else if (compoundPredicateType == 2)
     {
-      LOBYTE(v1) = [v2 count] == 0;
+      LOBYTE(selfCopy) = [subpredicates count] == 0;
     }
   }
 
-  else if ([v2 count] == 1)
+  else if ([subpredicates count] == 1)
   {
-    v4 = [v2 firstObject];
-    LOBYTE(v1) = [v4 ef_matchesEverything];
+    firstObject = [subpredicates firstObject];
+    LOBYTE(selfCopy) = [firstObject ef_matchesEverything];
   }
 
   else
   {
-    LOBYTE(v1) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
-  return v1 & 1;
+  return selfCopy & 1;
 }
 
 - (id)ef_simplifiedPredicate
 {
-  v2 = [a1 compoundPredicateType];
-  v3 = [a1 subpredicates];
-  v4 = v3;
-  if (v2)
+  selfCopy = [self compoundPredicateType];
+  subpredicates = [self subpredicates];
+  v4 = subpredicates;
+  if (selfCopy)
   {
-    if ([v3 count] == 1)
+    if ([subpredicates count] == 1)
     {
-      v5 = [v4 firstObject];
-      v6 = [v5 ef_simplifiedPredicate];
+      firstObject = [v4 firstObject];
+      ef_simplifiedPredicate = [firstObject ef_simplifiedPredicate];
 LABEL_17:
-      v2 = v6;
+      selfCopy = ef_simplifiedPredicate;
 LABEL_18:
 
       goto LABEL_34;
@@ -109,7 +109,7 @@ LABEL_18:
     v31[2] = __71__NSCompoundPredicate_EmailFoundationAdditions__ef_simplifiedPredicate__block_invoke;
     v31[3] = &unk_1E82492C8;
     v34 = &v36;
-    v35 = v2;
+    v35 = selfCopy;
     v33 = &v42;
     v8 = v7;
     v32 = v8;
@@ -119,7 +119,7 @@ LABEL_18:
     {
       v10 = v9;
 LABEL_9:
-      v2 = v10;
+      selfCopy = v10;
 LABEL_10:
       v11 = 0;
       v4 = v8;
@@ -133,7 +133,7 @@ LABEL_10:
       v14 = [v12 count];
       if (!v14)
       {
-        if (v2 == 1)
+        if (selfCopy == 1)
         {
           [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
         }
@@ -148,8 +148,8 @@ LABEL_10:
 
       if (v14 == 1)
       {
-        v15 = [v37[5] firstObject];
-        v2 = [v15 ef_simplifiedPredicate];
+        firstObject2 = [v37[5] firstObject];
+        selfCopy = [firstObject2 ef_simplifiedPredicate];
 
         goto LABEL_10;
       }
@@ -165,24 +165,24 @@ LABEL_10:
     v27[2] = __71__NSCompoundPredicate_EmailFoundationAdditions__ef_simplifiedPredicate__block_invoke_2;
     v27[3] = &unk_1E82492F0;
     v29 = &v36;
-    v30 = v2;
+    v30 = selfCopy;
     v4 = v13;
     v28 = v4;
     [v4 enumerateObjectsUsingBlock:v27];
     v22 = v37[5];
     if (v22)
     {
-      v2 = v22;
+      selfCopy = v22;
 
-      v4 = v2;
+      v4 = selfCopy;
     }
 
     v11 = v4 == v8;
     if (v4 != v8)
     {
       v23 = objc_alloc(MEMORY[0x1E696AB28]);
-      v24 = [a1 compoundPredicateType];
-      v2 = [v23 initWithType:v24 subpredicates:v37[5]];
+      compoundPredicateType = [self compoundPredicateType];
+      selfCopy = [v23 initWithType:compoundPredicateType subpredicates:v37[5]];
     }
 
 LABEL_32:
@@ -197,35 +197,35 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if ([v3 count] == 1)
+  if ([subpredicates count] == 1)
   {
-    v5 = [v4 firstObject];
-    if ([v5 ef_matchesEverything])
+    firstObject = [v4 firstObject];
+    if ([firstObject ef_matchesEverything])
     {
-      v6 = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
+      ef_simplifiedPredicate = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
       goto LABEL_17;
     }
 
-    if ([v5 ef_matchesNothing])
+    if ([firstObject ef_matchesNothing])
     {
-      v6 = [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
+      ef_simplifiedPredicate = [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
       goto LABEL_17;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v5;
+      v16 = firstObject;
       if (![v16 compoundPredicateType])
       {
-        v17 = [v16 subpredicates];
-        v18 = [v17 count];
+        subpredicates2 = [v16 subpredicates];
+        v18 = [subpredicates2 count];
 
         if (v18 == 1)
         {
-          v19 = [v16 subpredicates];
-          v20 = [v19 firstObject];
-          v2 = [v20 ef_simplifiedPredicate];
+          subpredicates3 = [v16 subpredicates];
+          firstObject3 = [subpredicates3 firstObject];
+          selfCopy = [firstObject3 ef_simplifiedPredicate];
 
 LABEL_40:
           goto LABEL_18;
@@ -233,38 +233,38 @@ LABEL_40:
       }
     }
 
-    v26 = [v5 ef_simplifiedPredicate];
-    v16 = v26;
-    if (v5 != v26)
+    ef_simplifiedPredicate2 = [firstObject ef_simplifiedPredicate];
+    v16 = ef_simplifiedPredicate2;
+    if (firstObject != ef_simplifiedPredicate2)
     {
-      v2 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v26];
+      selfCopy = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:ef_simplifiedPredicate2];
       goto LABEL_40;
     }
   }
 
 LABEL_33:
-  v2 = a1;
+  selfCopy = self;
 LABEL_34:
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)ef_publicDescription
 {
-  v2 = [a1 compoundPredicateType];
-  if (v2 > 2)
+  compoundPredicateType = [self compoundPredicateType];
+  if (compoundPredicateType > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E8249338[v2];
+    v3 = off_1E8249338[compoundPredicateType];
   }
 
-  v4 = [a1 subpredicates];
-  v5 = [v4 count];
-  v6 = [a1 compoundPredicateType];
+  subpredicates = [self subpredicates];
+  v5 = [subpredicates count];
+  compoundPredicateType2 = [self compoundPredicateType];
   if (v5)
   {
     if (v5 != 1)
@@ -278,46 +278,46 @@ LABEL_34:
       v19 = v3;
       v20 = v5;
       v18 = v10;
-      [v4 enumerateObjectsUsingBlock:v17];
+      [subpredicates enumerateObjectsUsingBlock:v17];
       v11 = v19;
       v12 = v10;
 
       goto LABEL_15;
     }
 
-    if (!v6)
+    if (!compoundPredicateType2)
     {
       v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v7 = [v4 firstObject];
-      v15 = [v7 _ef_parenthesizedPublicDescription];
-      v12 = [v14 initWithFormat:@"%@ %@", v3, v15];
+      firstObject = [subpredicates firstObject];
+      _ef_parenthesizedPublicDescription = [firstObject _ef_parenthesizedPublicDescription];
+      v12 = [v14 initWithFormat:@"%@ %@", v3, _ef_parenthesizedPublicDescription];
 
       goto LABEL_14;
     }
 
-    v7 = [v4 firstObject];
-    v8 = [v7 ef_publicDescription];
+    firstObject = [subpredicates firstObject];
+    ef_publicDescription = [firstObject ef_publicDescription];
   }
 
-  else if (v6 == 1)
+  else if (compoundPredicateType2 == 1)
   {
-    v7 = [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
-    v8 = [v7 ef_publicDescription];
+    firstObject = [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
+    ef_publicDescription = [firstObject ef_publicDescription];
   }
 
   else
   {
-    if (!v6)
+    if (!compoundPredicateType2)
     {
       v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Can't have a NOT predicate with no subpredicate." userInfo:0];
       objc_exception_throw(v16);
     }
 
-    v7 = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
-    v8 = [v7 ef_publicDescription];
+    firstObject = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
+    ef_publicDescription = [firstObject ef_publicDescription];
   }
 
-  v12 = v8;
+  v12 = ef_publicDescription;
 LABEL_14:
 
 LABEL_15:
@@ -328,14 +328,14 @@ LABEL_15:
 - (uint64_t)ef_containsKeyPath:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 subpredicates];
+  subpredicates = [self subpredicates];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__NSCompoundPredicate_EmailFoundationAdditions__ef_containsKeyPath___block_invoke;
   v9[3] = &unk_1E8249318;
   v6 = v4;
   v10 = v6;
-  v7 = [v5 ef_any:v9];
+  v7 = [subpredicates ef_any:v9];
 
   return v7;
 }
@@ -343,14 +343,14 @@ LABEL_15:
 - (uint64_t)ef_containsSubpredicate:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 subpredicates];
+  subpredicates = [self subpredicates];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__NSCompoundPredicate_EmailFoundationAdditions__ef_containsSubpredicate___block_invoke;
   v9[3] = &unk_1E8249318;
   v6 = v4;
   v10 = v6;
-  v7 = [v5 ef_any:v9];
+  v7 = [subpredicates ef_any:v9];
 
   return v7;
 }

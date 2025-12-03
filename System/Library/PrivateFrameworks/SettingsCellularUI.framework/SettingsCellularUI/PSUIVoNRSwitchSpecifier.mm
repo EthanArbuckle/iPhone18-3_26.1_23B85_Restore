@@ -1,25 +1,25 @@
 @interface PSUIVoNRSwitchSpecifier
 - (BOOL)shouldEnableVoNRSwitchCell;
 - (BOOL)showDisableVoNRWarningsIfNeeded;
-- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4;
-- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 callCache:(id)a5 capabilitiesCache:(id)a6 carrierBundleCache:(id)a7;
+- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier;
+- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier callCache:(id)cache capabilitiesCache:(id)capabilitiesCache carrierBundleCache:(id)bundleCache;
 - (id)getVoNREnabled;
 - (id)groupFooterText;
 - (void)reloadSelfInListController;
 - (void)setUpPhoneCallWillEndWarningSpecifier;
-- (void)setVoNREnabled:(id)a3 specifier:(id)a4;
+- (void)setVoNREnabled:(id)enabled specifier:(id)specifier;
 - (void)showPhoneCallWillEndWarning;
 @end
 
 @implementation PSUIVoNRSwitchSpecifier
 
-- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 callCache:(id)a5 capabilitiesCache:(id)a6 carrierBundleCache:(id)a7
+- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier callCache:(id)cache capabilitiesCache:(id)capabilitiesCache carrierBundleCache:(id)bundleCache
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v27 = a6;
-  v26 = a7;
+  controllerCopy = controller;
+  specifierCopy = specifier;
+  cacheCopy = cache;
+  capabilitiesCacheCopy = capabilitiesCache;
+  bundleCacheCopy = bundleCache;
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v16 = [v15 localizedStringForKey:@"VoNR" value:&stru_287733598 table:@"VONR-D63"];
   v28.receiver = self;
@@ -28,20 +28,20 @@
 
   if (v17)
   {
-    objc_storeWeak(&v17->_listController, v12);
-    objc_storeStrong(&v17->_parentSpecifier, a4);
-    v18 = [v13 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeWeak(&v17->_listController, controllerCopy);
+    objc_storeStrong(&v17->_parentSpecifier, specifier);
+    v18 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
     subscriptionContext = v17->_subscriptionContext;
     v17->_subscriptionContext = v18;
 
-    objc_storeStrong(&v17->_callCache, a5);
-    objc_storeStrong(&v17->_capabilitiesCache, a6);
-    objc_storeStrong(&v17->_carrierBundleCache, a7);
+    objc_storeStrong(&v17->_callCache, cache);
+    objc_storeStrong(&v17->_capabilitiesCache, capabilitiesCache);
+    objc_storeStrong(&v17->_carrierBundleCache, bundleCache);
     v20 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v17->_subscriptionContext];
-    v21 = [v20 instance];
-    v22 = [v21 stringValue];
+    instance = [v20 instance];
+    stringValue = [instance stringValue];
     instance = v17->_instance;
-    v17->_instance = v22;
+    v17->_instance = stringValue;
   }
 
   v24 = [MEMORY[0x277CCABB0] numberWithBool:{-[PSUIVoNRSwitchSpecifier shouldEnableVoNRSwitchCell](v17, "shouldEnableVoNRSwitchCell")}];
@@ -51,14 +51,14 @@
   return v17;
 }
 
-- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4
+- (PSUIVoNRSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   v8 = +[PSUICoreTelephonyCallCache sharedInstance];
   v9 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
   v10 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-  v11 = [(PSUIVoNRSwitchSpecifier *)self initWithHostController:v7 parentSpecifier:v6 callCache:v8 capabilitiesCache:v9 carrierBundleCache:v10];
+  v11 = [(PSUIVoNRSwitchSpecifier *)self initWithHostController:controllerCopy parentSpecifier:specifierCopy callCache:v8 capabilitiesCache:v9 carrierBundleCache:v10];
 
   return v11;
 }
@@ -77,8 +77,8 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = [(PSUICoreTelephonyCapabilitiesCache *)self->_capabilitiesCache capabilityEnabledVoNR:self->_subscriptionContext];
-  v4 = [(PSUIVoNRSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIVoNRSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "OFF";
     if (v3)
@@ -88,7 +88,7 @@
 
     v9 = 136315138;
     v10 = v5;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "VoNR state is : %s", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "VoNR state is : %s", &v9, 0xCu);
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
@@ -97,27 +97,27 @@
   return v6;
 }
 
-- (void)setVoNREnabled:(id)a3 specifier:(id)a4
+- (void)setVoNREnabled:(id)enabled specifier:(id)specifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a3 BOOLValue];
-  v6 = [(PSUIVoNRSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  bOOLValue = [enabled BOOLValue];
+  getLogger = [(PSUIVoNRSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"disable";
-    if (v5)
+    if (bOOLValue)
     {
       v7 = @"enable";
     }
 
     v9 = 138412290;
     v10 = v7;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "attempting to %@ VoNR", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "attempting to %@ VoNR", &v9, 0xCu);
   }
 
-  if ((v5 & 1) != 0 || ![(PSUIVoNRSwitchSpecifier *)self showDisableVoNRWarningsIfNeeded])
+  if ((bOOLValue & 1) != 0 || ![(PSUIVoNRSwitchSpecifier *)self showDisableVoNRWarningsIfNeeded])
   {
-    [(PSUIVoNRSwitchSpecifier *)self setVoNREnabled:v5];
+    [(PSUIVoNRSwitchSpecifier *)self setVoNREnabled:bOOLValue];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -125,22 +125,22 @@
 
 - (BOOL)showDisableVoNRWarningsIfNeeded
 {
-  v3 = [(PSUIVoNRSwitchSpecifier *)self shouldShowCallWillEndWarning];
-  if (v3)
+  shouldShowCallWillEndWarning = [(PSUIVoNRSwitchSpecifier *)self shouldShowCallWillEndWarning];
+  if (shouldShowCallWillEndWarning)
   {
     [(PSUIVoNRSwitchSpecifier *)self showPhoneCallWillEndWarning];
   }
 
-  return v3;
+  return shouldShowCallWillEndWarning;
 }
 
 - (void)showPhoneCallWillEndWarning
 {
-  v3 = [(PSUIVoNRSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIVoNRSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "User tried to disable VoNR during a call, showing warning", v5, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "User tried to disable VoNR during a call, showing warning", v5, 2u);
   }
 
   [(PSUIVoNRSwitchSpecifier *)self setUpPhoneCallWillEndWarningSpecifier];
@@ -152,11 +152,11 @@
 {
   if (self->_phoneCallWillEndWarning)
   {
-    v3 = [(PSUIVoNRSwitchSpecifier *)self getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    getLogger = [(PSUIVoNRSwitchSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEBUG, "Call will end warning has already been set up", buf, 2u);
+      _os_log_debug_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEBUG, "Call will end warning has already been set up", buf, 2u);
     }
   }
 
@@ -166,24 +166,24 @@
     phoneCallWillEndWarning = self->_phoneCallWillEndWarning;
     self->_phoneCallWillEndWarning = v4;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"ON_CALL_CANCEL" value:&stru_287733598 table:@"VONR-D63"];
-    [v16 setObject:v7 forKey:*MEMORY[0x277D3FE78]];
+    [dictionary setObject:v7 forKey:*MEMORY[0x277D3FE78]];
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"ON_CALL_OK_DISABLE" value:&stru_287733598 table:@"VONR-D63"];
-    [v16 setObject:v9 forKey:*MEMORY[0x277D3FE88]];
+    [dictionary setObject:v9 forKey:*MEMORY[0x277D3FE88]];
 
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"RAT_ON_CALL_WARNING_DISABLE_VONR" value:&stru_287733598 table:@"VONR-D63"];
-    [v16 setObject:v11 forKey:*MEMORY[0x277D3FE90]];
+    [dictionary setObject:v11 forKey:*MEMORY[0x277D3FE90]];
 
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"DISABLE_VONR" value:&stru_287733598 table:@"VONR-D63"];
-    [v16 setObject:v13 forKey:*MEMORY[0x277D3FE98]];
+    [dictionary setObject:v13 forKey:*MEMORY[0x277D3FE98]];
 
-    [(PSConfirmationSpecifier *)self->_phoneCallWillEndWarning setupWithDictionary:v16];
+    [(PSConfirmationSpecifier *)self->_phoneCallWillEndWarning setupWithDictionary:dictionary];
     v14 = self->_phoneCallWillEndWarning;
     v15 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(PSConfirmationSpecifier *)v14 setProperty:v15 forKey:*MEMORY[0x277D3FE80]];

@@ -1,68 +1,68 @@
 @interface AXBluetoothDevicesController
 - (AXBluetoothDevicesController)init;
-- (BOOL)_brailleConfigMatch:(id)a3 withConfig:(id)a4;
+- (BOOL)_brailleConfigMatch:(id)match withConfig:(id)config;
 - (BOOL)_isBluetoothPowerFooterShowing;
-- (BOOL)peripheralMatchesUnadvertisedService:(id)a3;
+- (BOOL)peripheralMatchesUnadvertisedService:(id)service;
 - (id)allowedServices;
-- (id)getDeviceForPeripheral:(id)a3;
+- (id)getDeviceForPeripheral:(id)peripheral;
 - (id)pairedDeviceSpecifiers;
-- (id)specifierForDevice:(id)a3;
+- (id)specifierForDevice:(id)device;
 - (id)specifierImmediatelyPrecedingDevices;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)window;
-- (void)_addDevice:(id)a3;
+- (void)_addDevice:(id)device;
 - (void)_cleanupPairing;
-- (void)_peripheralDidCompletePairing:(id)a3;
-- (void)_pinRequestHandler:(id)a3;
-- (void)_removeDevice:(id)a3;
-- (void)_setDeviceState:(int)a3 forSpecifier:(id)a4;
-- (void)_setupCentralScanning:(BOOL)a3;
-- (void)_showBluetoothPowerFooter:(BOOL)a3;
-- (void)_showScanningUI:(BOOL)a3;
-- (void)_sspConfirmationHandler:(id)a3;
-- (void)_sspNumericComparisonHandler:(id)a3;
-- (void)_sspPasskeyDisplayHandler:(id)a3;
+- (void)_peripheralDidCompletePairing:(id)pairing;
+- (void)_pinRequestHandler:(id)handler;
+- (void)_removeDevice:(id)device;
+- (void)_setDeviceState:(int)state forSpecifier:(id)specifier;
+- (void)_setupCentralScanning:(BOOL)scanning;
+- (void)_showBluetoothPowerFooter:(BOOL)footer;
+- (void)_showScanningUI:(BOOL)i;
+- (void)_sspConfirmationHandler:(id)handler;
+- (void)_sspNumericComparisonHandler:(id)handler;
+- (void)_sspPasskeyDisplayHandler:(id)handler;
 - (void)_startConnectable;
 - (void)_startDiscoverable;
 - (void)_startScanning;
 - (void)_stopConnectable;
 - (void)_stopDiscoverable;
 - (void)_stopScanning;
-- (void)_updateDevicePosition:(id)a3;
-- (void)alertSheetDismissed:(id)a3;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)authenticationRequestHandler:(id)a3;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)_updateDevicePosition:(id)position;
+- (void)alertSheetDismissed:(id)dismissed;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)authenticationRequestHandler:(id)handler;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
-- (void)deviceConnectedHandler:(id)a3;
-- (void)deviceDisconnectedHandler:(id)a3;
-- (void)deviceDiscoveredHandler:(id)a3;
-- (void)devicePairedHandler:(id)a3;
-- (void)deviceRemovedHandler:(id)a3;
-- (void)deviceUnpairedHandler:(id)a3;
-- (void)deviceUpdatedHandler:(id)a3;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)peripheralConnectionTimeout:(id)a3;
-- (void)peripheralDidUpdateName:(id)a3;
-- (void)powerChangedHandler:(id)a3;
+- (void)deviceConnectedHandler:(id)handler;
+- (void)deviceDisconnectedHandler:(id)handler;
+- (void)deviceDiscoveredHandler:(id)handler;
+- (void)devicePairedHandler:(id)handler;
+- (void)deviceRemovedHandler:(id)handler;
+- (void)deviceUnpairedHandler:(id)handler;
+- (void)deviceUpdatedHandler:(id)handler;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)peripheralConnectionTimeout:(id)timeout;
+- (void)peripheralDidUpdateName:(id)name;
+- (void)powerChangedHandler:(id)handler;
 - (void)reloadSpecifiers;
-- (void)setBluetoothIsBusy:(BOOL)a3;
-- (void)setMainSpecifiersGroup:(id)a3;
-- (void)setScanningEnabled:(BOOL)a3;
-- (void)showBluetoothPowerAlert:(BOOL)a3;
-- (void)showPairingAlertForPairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setBluetoothIsBusy:(BOOL)busy;
+- (void)setMainSpecifiersGroup:(id)group;
+- (void)setScanningEnabled:(BOOL)enabled;
+- (void)showBluetoothPowerAlert:(BOOL)alert;
+- (void)showPairingAlertForPairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePairedDevices;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -87,8 +87,8 @@
     centralManager = v2->_centralManager;
     v2->_centralManager = v7;
 
-    v9 = [(CBCentralManager *)v2->_centralManager sharedPairingAgent];
-    [v9 setDelegate:v2];
+    sharedPairingAgent = [(CBCentralManager *)v2->_centralManager sharedPairingAgent];
+    [sharedPairingAgent setDelegate:v2];
 
     [(AXBluetoothDevicesController *)v2 setAuthorizedServices:0];
     v10 = +[NSNotificationCenter defaultCenter];
@@ -154,12 +154,12 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(AXBluetoothDevicesController *)self centralManager];
-  v5 = [v4 sharedPairingAgent];
-  [v5 setDelegate:0];
+  centralManager = [(AXBluetoothDevicesController *)self centralManager];
+  sharedPairingAgent = [centralManager sharedPairingAgent];
+  [sharedPairingAgent setDelegate:0];
 
-  v6 = [(AXBluetoothDevicesController *)self centralManager];
-  [v6 setDelegate:0];
+  centralManager2 = [(AXBluetoothDevicesController *)self centralManager];
+  [centralManager2 setDelegate:0];
 
   [(AXBluetoothDevicesController *)self _stopScanning];
   [(AXBluetoothDevicesController *)self _stopDiscoverable];
@@ -181,11 +181,11 @@
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXBluetoothDevicesController;
-  [(AXBluetoothDevicesController *)&v4 viewDidAppear:a3];
+  [(AXBluetoothDevicesController *)&v4 viewDidAppear:appear];
   if (!self->_bluetoothInitialized)
   {
     self->_bluetoothInitialized = 1;
@@ -200,13 +200,13 @@
   v6.receiver = self;
   v6.super_class = AXBluetoothDevicesController;
   [(AXBluetoothDevicesController *)&v6 viewDidLoad];
-  v3 = [(AXBluetoothDevicesController *)self table];
+  table = [(AXBluetoothDevicesController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUIVoiceOverBluetoothDeviceTableCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   [(AXBluetoothDevicesController *)self _stopScanning];
   [(AXBluetoothDevicesController *)self _stopDiscoverable];
@@ -214,7 +214,7 @@
   [(AXBluetoothDevicesController *)self _stopConnectable];
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   [(AXBluetoothDevicesController *)self _stopScanning];
   [(AXBluetoothDevicesController *)self _stopDiscoverable];
@@ -226,7 +226,7 @@
   [(AXBluetoothDevicesController *)self _cleanupPairing];
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   [(AXBluetoothDevicesController *)self reloadSpecifiers];
   [(AXBluetoothDevicesController *)self _startScanning];
@@ -235,16 +235,16 @@
   [(AXBluetoothDevicesController *)self _startConnectable];
 }
 
-- (void)powerChangedHandler:(id)a3
+- (void)powerChangedHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = +[VOSBluetoothManager sharedInstance];
-  v7 = [v6 enabled];
+  enabled = [v6 enabled];
 
   v8 = +[AXSubsystemBrailleHardware sharedInstance];
-  v9 = [v8 ignoreLogging];
+  ignoreLogging = [v8 ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v10 = +[AXSubsystemBrailleHardware identifier];
     v11 = AXLoggerForFacility();
@@ -254,7 +254,7 @@
     {
       v13 = AXColorizeFormatLog();
       v14 = NSStringFromSelector(a2);
-      v17 = [v5 name];
+      name = [handlerCopy name];
       v15 = _AXStringForArgs();
 
       if (os_log_type_enabled(v11, v12))
@@ -266,9 +266,9 @@
     }
   }
 
-  if (self->_power != v7)
+  if (self->_power != enabled)
   {
-    self->_power = v7;
+    self->_power = enabled;
     self->_togglingPower = 0;
     [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] setUserInteractionEnabled:1];
     [(AXBluetoothDevicesController *)self setBluetoothIsBusy:0];
@@ -278,77 +278,77 @@
   }
 }
 
-- (void)deviceUpdatedHandler:(id)a3
+- (void)deviceUpdatedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_power && !self->_togglingPower)
   {
-    v13 = v4;
-    v4 = [(AXBluetoothDevicesController *)self scanningEnabled];
+    v13 = handlerCopy;
+    handlerCopy = [(AXBluetoothDevicesController *)self scanningEnabled];
     v5 = v13;
-    if (v4)
+    if (handlerCopy)
     {
-      v6 = [v13 object];
+      object = [v13 object];
       devicesDict = self->_devicesDict;
-      v8 = [v6 identifier];
-      v9 = [(NSMutableDictionary *)devicesDict objectForKey:v8];
+      identifier = [object identifier];
+      v9 = [(NSMutableDictionary *)devicesDict objectForKey:identifier];
 
       if (v9)
       {
-        v10 = [v6 identifier];
-        v11 = [(AXBluetoothDevicesController *)self specifierForID:v10];
+        identifier2 = [object identifier];
+        v11 = [(AXBluetoothDevicesController *)self specifierForID:identifier2];
 
-        v12 = [v6 name];
-        [v11 setName:v12];
-        [v11 setProperty:v12 forKey:PSTitleKey];
-        [(AXBluetoothDevicesController *)self _updateDevicePosition:v6];
+        name = [object name];
+        [v11 setName:name];
+        [v11 setProperty:name forKey:PSTitleKey];
+        [(AXBluetoothDevicesController *)self _updateDevicePosition:object];
       }
 
       else
       {
-        [(AXBluetoothDevicesController *)self _addDevice:v6];
+        [(AXBluetoothDevicesController *)self _addDevice:object];
       }
 
       v5 = v13;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(handlerCopy, v5);
 }
 
-- (void)deviceDiscoveredHandler:(id)a3
+- (void)deviceDiscoveredHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_power && !self->_togglingPower)
   {
-    v7 = v4;
-    v4 = [(AXBluetoothDevicesController *)self scanningEnabled];
+    v7 = handlerCopy;
+    handlerCopy = [(AXBluetoothDevicesController *)self scanningEnabled];
     v5 = v7;
-    if (v4)
+    if (handlerCopy)
     {
-      v6 = [v7 object];
-      if ([v6 isNameCached])
+      object = [v7 object];
+      if ([object isNameCached])
       {
-        [(AXBluetoothDevicesController *)self _addDevice:v6];
+        [(AXBluetoothDevicesController *)self _addDevice:object];
       }
 
       v5 = v7;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(handlerCopy, v5);
 }
 
-- (void)deviceRemovedHandler:(id)a3
+- (void)deviceRemovedHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = +[AXSubsystemBrailleHardware sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemBrailleHardware identifier];
     v10 = AXLoggerForFacility();
@@ -358,8 +358,8 @@
     {
       v12 = AXColorizeFormatLog();
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
-      v19 = [v6 name];
+      name = [handlerCopy name];
+      name2 = [object name];
       v15 = _AXStringForArgs();
 
       if (os_log_type_enabled(v10, v11))
@@ -375,52 +375,52 @@
   {
     if ([(AXBluetoothDevicesController *)self scanningEnabled])
     {
-      if (([v6 paired] & 1) == 0)
+      if (([object paired] & 1) == 0)
       {
         v16 = +[VOSBluetoothManager sharedInstance];
-        v17 = [v16 connectingDevices];
-        v18 = [v17 containsObject:v6];
+        connectingDevices = [v16 connectingDevices];
+        v18 = [connectingDevices containsObject:object];
 
         if ((v18 & 1) == 0)
         {
-          [(AXBluetoothDevicesController *)self _removeDevice:v6];
+          [(AXBluetoothDevicesController *)self _removeDevice:object];
         }
       }
     }
   }
 }
 
-- (void)deviceUnpairedHandler:(id)a3
+- (void)deviceUnpairedHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = AXLogBrailleHW();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v5 name];
-    v10 = [v6 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     v15 = 138543874;
     v16 = v8;
     v17 = 2114;
-    v18 = v9;
+    v18 = name;
     v19 = 2114;
-    v20 = v10;
+    v20 = name2;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received %{public}@ for device %{public}@", &v15, 0x20u);
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (+[VOSBluetoothManager sharedInstance](VOSBluetoothManager, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 wasDeviceDiscovered:v6], v11, (v12))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (+[VOSBluetoothManager sharedInstance](VOSBluetoothManager, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 wasDeviceDiscovered:object], v11, (v12))
   {
     v13 = AXLogBrailleHW();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v6;
+      v16 = object;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Device %{public}@ was unpaired and was discovered - updating position", &v15, 0xCu);
     }
 
-    [(AXBluetoothDevicesController *)self _updateDevicePosition:v6];
+    [(AXBluetoothDevicesController *)self _updateDevicePosition:object];
   }
 
   else
@@ -429,55 +429,55 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v6;
+      v16 = object;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Device %{public}@ was unpaired and wasn't discovered - removing", &v15, 0xCu);
     }
 
-    [(AXBluetoothDevicesController *)self _removeDevice:v6];
+    [(AXBluetoothDevicesController *)self _removeDevice:object];
   }
 }
 
-- (void)deviceConnectedHandler:(id)a3
+- (void)deviceConnectedHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = AXLogBrailleHW();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v5 name];
-    v10 = [v6 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     v26 = 138543874;
     v27 = v8;
     v28 = 2114;
-    v29 = v9;
+    v29 = name;
     v30 = 2114;
-    v31 = v10;
+    v31 = name2;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received %{public}@ for device %{public}@", &v26, 0x20u);
   }
 
-  if (self->_power && !self->_togglingPower && -[AXBluetoothDevicesController scanningEnabled](self, "scanningEnabled") || [v6 isBTLEDevice])
+  if (self->_power && !self->_togglingPower && -[AXBluetoothDevicesController scanningEnabled](self, "scanningEnabled") || [object isBTLEDevice])
   {
-    v11 = [v6 address];
-    v12 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-    v13 = [v11 isEqualToString:v12];
+    address = [object address];
+    identifier = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+    v13 = [address isEqualToString:identifier];
 
     if (!v13)
     {
 LABEL_19:
-      v25 = [(AXBluetoothDevicesController *)self specifierForID:v11];
+      v25 = [(AXBluetoothDevicesController *)self specifierForID:address];
       [(AXBluetoothDevicesController *)self _setDeviceState:5 forSpecifier:v25];
-      [(AXBluetoothDevicesController *)self reloadSpecifierID:v11];
+      [(AXBluetoothDevicesController *)self reloadSpecifierID:address];
 
       goto LABEL_20;
     }
 
-    v14 = [v5 name];
-    v15 = [v14 isEqualToString:VOSBluetoothDeviceConnectSuccessNotification];
+    name3 = [handlerCopy name];
+    v15 = [name3 isEqualToString:VOSBluetoothDeviceConnectSuccessNotification];
 
     if (v15)
     {
-      [(AXBluetoothDevicesController *)self deviceConnected:v6];
+      [(AXBluetoothDevicesController *)self deviceConnected:object];
 LABEL_16:
       v24 = AXLogBrailleHW();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -491,11 +491,11 @@ LABEL_16:
     }
 
     [(AXBluetoothDevicesController *)self _cleanupPairing];
-    v16 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
-    v17 = [v16 objectForKey:@"PIN-ended"];
+    userInfo = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
+    v17 = [userInfo objectForKey:@"PIN-ended"];
 
-    v18 = [v5 name];
-    if ([v18 isEqualToString:VOSBluetoothDeviceConnectFailedNotification] && !self->_alert)
+    name4 = [handlerCopy name];
+    if ([name4 isEqualToString:VOSBluetoothDeviceConnectFailedNotification] && !self->_alert)
     {
       v19 = [v17 isEqualToString:@"cancelled"];
 
@@ -506,14 +506,14 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v20 = [objc_allocWithZone(VoiceOverBluetoothAlert) initWithDevice:v6];
+      v20 = [objc_allocWithZone(VoiceOverBluetoothAlert) initWithDevice:object];
       alert = self->_alert;
       self->_alert = v20;
 
       [(VoiceOverBluetoothAlert *)self->_alert setDelegate:self];
       v22 = self->_alert;
-      v18 = [v5 userInfo];
-      v23 = [v18 objectForKey:VOSBluetoothErrorKey];
+      name4 = [handlerCopy userInfo];
+      v23 = [name4 objectForKey:VOSBluetoothErrorKey];
       [(VoiceOverBluetoothAlert *)v22 showAlertWithResult:v23];
     }
 
@@ -525,20 +525,20 @@ LABEL_20:
 
 - (id)window
 {
-  v2 = [(AXBluetoothDevicesController *)self view];
-  v3 = [v2 window];
+  view = [(AXBluetoothDevicesController *)self view];
+  window = [view window];
 
-  return v3;
+  return window;
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = +[AXSubsystemBrailleHardware sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemBrailleHardware identifier];
     v10 = AXLoggerForFacility();
@@ -548,8 +548,8 @@ LABEL_20:
     {
       v12 = AXColorizeFormatLog();
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
-      v20 = [v6 name];
+      name = [handlerCopy name];
+      name2 = [object name];
       v15 = _AXStringForArgs();
 
       if (os_log_type_enabled(v10, v11))
@@ -566,26 +566,26 @@ LABEL_20:
     if ([(AXBluetoothDevicesController *)self scanningEnabled])
     {
       devicesDict = self->_devicesDict;
-      v17 = [v6 identifier];
-      v18 = [(NSMutableDictionary *)devicesDict objectForKey:v17];
+      identifier = [object identifier];
+      v18 = [(NSMutableDictionary *)devicesDict objectForKey:identifier];
 
       if (v18)
       {
-        v19 = [v6 identifier];
-        [(AXBluetoothDevicesController *)self reloadSpecifierID:v19];
+        identifier2 = [object identifier];
+        [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier2];
       }
     }
   }
 }
 
-- (void)devicePairedHandler:(id)a3
+- (void)devicePairedHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = +[AXSubsystemBrailleHardware sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemBrailleHardware identifier];
     v10 = AXLoggerForFacility();
@@ -595,9 +595,9 @@ LABEL_20:
     {
       v12 = AXColorizeFormatLog();
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
-      [v6 name];
-      v42 = v41 = v14;
+      name = [handlerCopy name];
+      [object name];
+      v42 = v41 = name;
       v40 = v13;
       v15 = _AXStringForArgs();
 
@@ -615,28 +615,28 @@ LABEL_20:
 
   if (self->_power && !self->_togglingPower && [(AXBluetoothDevicesController *)self scanningEnabled])
   {
-    v18 = [v6 address];
-    v19 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-    v20 = [v18 isEqualToString:v19];
+    address = [object address];
+    identifier = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+    v20 = [address isEqualToString:identifier];
 
     if (v20)
     {
       [(AXBluetoothDevicesController *)self _cleanupPairing];
-      v21 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
-      v22 = [v21 objectForKey:@"reverse-pairing"];
-      v23 = [v22 BOOLValue];
+      userInfo = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
+      v22 = [userInfo objectForKey:@"reverse-pairing"];
+      bOOLValue = [v22 BOOLValue];
 
-      if (v23)
+      if (bOOLValue)
       {
         [(AXBluetoothDevicesController *)self setBluetoothIsBusy:0];
       }
 
-      v24 = [v5 name];
-      v25 = [v24 isEqualToString:VOSBluetoothPairingPINResultFailedNotification];
+      name2 = [handlerCopy name];
+      v25 = [name2 isEqualToString:VOSBluetoothPairingPINResultFailedNotification];
 
       if (!v25)
       {
-        [(AXBluetoothDevicesController *)self _updateDevicePosition:v6];
+        [(AXBluetoothDevicesController *)self _updateDevicePosition:object];
         goto LABEL_34;
       }
 
@@ -644,33 +644,33 @@ LABEL_20:
       {
 LABEL_29:
         v35 = +[VOSBluetoothManager sharedInstance];
-        if ([v35 wasDeviceDiscovered:v6])
+        if ([v35 wasDeviceDiscovered:object])
         {
         }
 
         else
         {
-          v36 = [v6 paired];
+          paired = [object paired];
 
-          if ((v36 & 1) == 0)
+          if ((paired & 1) == 0)
           {
-            [(AXBluetoothDevicesController *)self _removeDevice:v6];
+            [(AXBluetoothDevicesController *)self _removeDevice:object];
             goto LABEL_34;
           }
         }
 
-        v37 = [v6 address];
-        [(AXBluetoothDevicesController *)self reloadSpecifierID:v37];
+        address2 = [object address];
+        [(AXBluetoothDevicesController *)self reloadSpecifierID:address2];
 
 LABEL_34:
-        v38 = [v6 address];
-        v39 = [(AXBluetoothDevicesController *)self specifierForID:v38];
+        address3 = [object address];
+        v39 = [(AXBluetoothDevicesController *)self specifierForID:address3];
 
         [(AXBluetoothDevicesController *)self _setDeviceState:2 forSpecifier:v39];
         goto LABEL_35;
       }
 
-      v26 = [objc_allocWithZone(VoiceOverBluetoothAlert) initWithDevice:v6];
+      v26 = [objc_allocWithZone(VoiceOverBluetoothAlert) initWithDevice:object];
       alert = self->_alert;
       self->_alert = v26;
 
@@ -679,8 +679,8 @@ LABEL_34:
       {
         if (![v17 isEqualToString:@"entered"])
         {
-          v34 = [v5 userInfo];
-          v33 = [v34 objectForKey:VOSBluetoothErrorKey];
+          userInfo2 = [handlerCopy userInfo];
+          v33 = [userInfo2 objectForKey:VOSBluetoothErrorKey];
 
           goto LABEL_28;
         }
@@ -700,23 +700,23 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    [(AXBluetoothDevicesController *)self _addDevice:v6];
-    [(AXBluetoothDevicesController *)self _updateDevicePosition:v6];
+    [(AXBluetoothDevicesController *)self _addDevice:object];
+    [(AXBluetoothDevicesController *)self _updateDevicePosition:object];
   }
 
 LABEL_35:
 }
 
-- (void)authenticationRequestHandler:(id)a3
+- (void)authenticationRequestHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (!self->_power || self->_togglingPower || ![(AXBluetoothDevicesController *)self scanningEnabled])
   {
     goto LABEL_13;
   }
 
-  v6 = [(AXBluetoothDevicesController *)self rootController];
-  v7 = [v6 visibleViewController];
+  rootController = [(AXBluetoothDevicesController *)self rootController];
+  visibleViewController = [rootController visibleViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || self->_sspAlert)
   {
@@ -728,25 +728,25 @@ LABEL_35:
 
   if (!alert)
   {
-    v16 = [v5 name];
+    name = [handlerCopy name];
     v108 = VOSBluetoothPairingUserNumericComparisionNotification;
-    if ([v16 isEqualToString:?])
+    if ([name isEqualToString:?])
     {
     }
 
     else
     {
-      v17 = [v5 name];
-      v18 = [v17 isEqualToString:VOSBluetoothPairingPassKeyDisplayNotification];
+      name2 = [handlerCopy name];
+      v18 = [name2 isEqualToString:VOSBluetoothPairingPassKeyDisplayNotification];
 
       if (!v18)
       {
-        v11 = [v5 object];
+        object = [handlerCopy object];
 LABEL_20:
         v20 = +[AXSubsystemBrailleHardware sharedInstance];
-        v21 = [v20 ignoreLogging];
+        ignoreLogging = [v20 ignoreLogging];
 
-        if ((v21 & 1) == 0)
+        if ((ignoreLogging & 1) == 0)
         {
           v22 = +[AXSubsystemBrailleHardware identifier];
           v23 = AXLoggerForFacility();
@@ -757,9 +757,9 @@ LABEL_20:
             v25 = AXColorizeFormatLog();
             NSStringFromSelector(a2);
             v26 = oslog = v23;
-            [v5 name];
+            [handlerCopy name];
             v27 = v105 = v24;
-            [v11 name];
+            [object name];
             v98 = v96 = v27;
             v93 = v26;
             type = v25;
@@ -779,23 +779,23 @@ LABEL_20:
         currentDeviceSpecifier = self->_currentDeviceSpecifier;
         if (currentDeviceSpecifier)
         {
-          v30 = [(PSSpecifier *)currentDeviceSpecifier userInfo];
-          [v30 removeObjectForKey:@"reverse-pairing"];
+          userInfo = [(PSSpecifier *)currentDeviceSpecifier userInfo];
+          [userInfo removeObjectForKey:@"reverse-pairing"];
         }
 
         else
         {
-          if ([v11 majorClass]== 256)
+          if ([object majorClass]== 256)
           {
-            v31 = [v5 userInfo];
-            v32 = [v31 valueForKey:@"delayedPairingForNR"];
+            userInfo2 = [handlerCopy userInfo];
+            v32 = [userInfo2 valueForKey:@"delayedPairingForNR"];
 
             if (!v32)
             {
               v78 = +[AXSubsystemBrailleHardware sharedInstance];
-              v79 = [v78 ignoreLogging];
+              ignoreLogging2 = [v78 ignoreLogging];
 
-              if ((v79 & 1) == 0)
+              if ((ignoreLogging2 & 1) == 0)
               {
                 v80 = +[AXSubsystemBrailleHardware identifier];
                 v81 = AXLoggerForFacility();
@@ -814,28 +814,28 @@ LABEL_20:
                 }
               }
 
-              v85 = [v5 userInfo];
-              v61 = [NSMutableDictionary dictionaryWithDictionary:v85];
+              userInfo3 = [handlerCopy userInfo];
+              v61 = [NSMutableDictionary dictionaryWithDictionary:userInfo3];
 
               [v61 setValue:&stru_25D420 forKey:@"delayedPairingForNR"];
-              v86 = [v5 name];
-              v87 = [v5 object];
-              v88 = [NSNotification notificationWithName:v86 object:v87 userInfo:v61];
+              name3 = [handlerCopy name];
+              object2 = [handlerCopy object];
+              v88 = [NSNotification notificationWithName:name3 object:object2 userInfo:v61];
               [(AXBluetoothDevicesController *)self performSelector:"authenticationRequestHandler:" withObject:v88 afterDelay:1.0];
 
               goto LABEL_75;
             }
           }
 
-          v33 = [v11 address];
-          v30 = [(AXBluetoothDevicesController *)self specifierForID:v33];
+          address = [object address];
+          userInfo = [(AXBluetoothDevicesController *)self specifierForID:address];
 
           v34 = +[AXSubsystemBrailleHardware sharedInstance];
-          v35 = [v34 ignoreLogging];
+          ignoreLogging3 = [v34 ignoreLogging];
 
-          if (v30)
+          if (userInfo)
           {
-            if ((v35 & 1) == 0)
+            if ((ignoreLogging3 & 1) == 0)
             {
               v36 = +[AXSubsystemBrailleHardware identifier];
               v37 = AXLoggerForFacility();
@@ -846,7 +846,7 @@ LABEL_20:
                 AXColorizeFormatLog();
                 v39 = v99 = v37;
                 v94 = NSStringFromSelector(a2);
-                v97 = v30;
+                v97 = userInfo;
                 osloga = v39;
                 v37 = v99;
                 v106 = _AXStringForArgs();
@@ -860,13 +860,13 @@ LABEL_20:
               }
             }
 
-            objc_storeStrong(&self->_currentDeviceSpecifier, v30);
+            objc_storeStrong(&self->_currentDeviceSpecifier, userInfo);
             [(AXBluetoothDevicesController *)self reloadSpecifier:self->_currentDeviceSpecifier];
           }
 
           else
           {
-            if ((v35 & 1) == 0)
+            if ((ignoreLogging3 & 1) == 0)
             {
               v40 = +[AXSubsystemBrailleHardware identifier];
               v41 = AXLoggerForFacility();
@@ -890,26 +890,26 @@ LABEL_20:
               }
             }
 
-            v44 = [(AXBluetoothDevicesController *)self specifierForDevice:v11, v94];
+            v44 = [(AXBluetoothDevicesController *)self specifierForDevice:object, v94];
             v45 = self->_currentDeviceSpecifier;
             self->_currentDeviceSpecifier = v44;
 
-            [(AXBluetoothDevicesController *)self _addDevice:v11];
+            [(AXBluetoothDevicesController *)self _addDevice:object];
           }
 
           v46 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo:v94];
           [v46 setObject:kCFBooleanTrue forKey:@"reverse-pairing"];
         }
 
-        v47 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
-        [v47 removeObjectForKey:@"PIN-ended"];
+        userInfo4 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
+        [userInfo4 removeObjectForKey:@"PIN-ended"];
 
-        if (!self->_currentDeviceSpecifier || (-[NSObject address](v11, "address"), v48 = objc_claimAutoreleasedReturnValue(), -[PSSpecifier identifier](self->_currentDeviceSpecifier, "identifier"), v49 = objc_claimAutoreleasedReturnValue(), v50 = [v48 isEqualToString:v49], v49, v48, !v50))
+        if (!self->_currentDeviceSpecifier || (-[NSObject address](object, "address"), v48 = objc_claimAutoreleasedReturnValue(), -[PSSpecifier identifier](self->_currentDeviceSpecifier, "identifier"), v49 = objc_claimAutoreleasedReturnValue(), v50 = [v48 isEqualToString:v49], v49, v48, !v50))
         {
           v67 = +[AXSubsystemBrailleHardware sharedInstance];
-          v68 = [v67 ignoreLogging];
+          ignoreLogging4 = [v67 ignoreLogging];
 
-          if ((v68 & 1) == 0)
+          if ((ignoreLogging4 & 1) == 0)
           {
             v69 = +[AXSubsystemBrailleHardware identifier];
             v70 = AXLoggerForFacility();
@@ -933,18 +933,18 @@ LABEL_20:
           goto LABEL_12;
         }
 
-        if ([v11 type]== 24)
+        if ([object type]== 24)
         {
-          v51 = [v5 name];
+          name4 = [handlerCopy name];
           v52 = VOSBluetoothPairingPINRequestNotification;
-          v53 = [v51 isEqualToString:VOSBluetoothPairingPINRequestNotification];
+          v53 = [name4 isEqualToString:VOSBluetoothPairingPINRequestNotification];
 
           if (v53)
           {
             v54 = +[AXSubsystemBrailleHardware sharedInstance];
-            v55 = [v54 ignoreLogging];
+            ignoreLogging5 = [v54 ignoreLogging];
 
-            if ((v55 & 1) == 0)
+            if ((ignoreLogging5 & 1) == 0)
             {
               v56 = +[AXSubsystemBrailleHardware identifier];
               v57 = AXLoggerForFacility();
@@ -965,16 +965,16 @@ LABEL_20:
 
             v61 = [NSNumber numberWithInt:(random() % 10000)];
             v62 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%04u", [v61 unsignedIntValue]);
-            [v11 setPIN:v62];
+            [object setPIN:v62];
 
-            v63 = [objc_allocWithZone(VOSBluetoothSSPPairingRequest) initWithDevice:v11 andSpecifier:self->_currentDeviceSpecifier];
+            v63 = [objc_allocWithZone(VOSBluetoothSSPPairingRequest) initWithDevice:object andSpecifier:self->_currentDeviceSpecifier];
             sspAlert = self->_sspAlert;
             self->_sspAlert = v63;
 
             [(VOSBluetoothSSPPairingRequest *)self->_sspAlert setPairingStyle:3 andPasskey:v61];
             v65 = self->_sspAlert;
-            v66 = [(AXBluetoothDevicesController *)self window];
-            [(VOSBluetoothSSPPairingRequest *)v65 showWithWindow:v66];
+            window = [(AXBluetoothDevicesController *)self window];
+            [(VOSBluetoothSSPPairingRequest *)v65 showWithWindow:window];
 
 LABEL_75:
 LABEL_12:
@@ -988,42 +988,42 @@ LABEL_12:
           v52 = VOSBluetoothPairingPINRequestNotification;
         }
 
-        v74 = [v5 name];
-        v75 = [v74 isEqualToString:v52];
+        name5 = [handlerCopy name];
+        v75 = [name5 isEqualToString:v52];
 
         if (v75)
         {
-          [(AXBluetoothDevicesController *)self _pinRequestHandler:v5];
+          [(AXBluetoothDevicesController *)self _pinRequestHandler:handlerCopy];
         }
 
         else
         {
-          v76 = [v5 name];
-          v77 = [v76 isEqualToString:VOSBluetoothPairingUserConfirmationNotification];
+          name6 = [handlerCopy name];
+          v77 = [name6 isEqualToString:VOSBluetoothPairingUserConfirmationNotification];
 
           if (v77)
           {
-            [(AXBluetoothDevicesController *)self _sspConfirmationHandler:v5];
+            [(AXBluetoothDevicesController *)self _sspConfirmationHandler:handlerCopy];
           }
 
           else
           {
-            v89 = [v5 name];
-            v90 = [v89 isEqualToString:v108];
+            name7 = [handlerCopy name];
+            v90 = [name7 isEqualToString:v108];
 
             if (v90)
             {
-              [(AXBluetoothDevicesController *)self _sspNumericComparisonHandler:v5];
+              [(AXBluetoothDevicesController *)self _sspNumericComparisonHandler:handlerCopy];
             }
 
             else
             {
-              v91 = [v5 name];
-              v92 = [v91 isEqualToString:VOSBluetoothPairingPassKeyDisplayNotification];
+              name8 = [handlerCopy name];
+              v92 = [name8 isEqualToString:VOSBluetoothPairingPassKeyDisplayNotification];
 
               if (v92)
               {
-                [(AXBluetoothDevicesController *)self _sspPasskeyDisplayHandler:v5];
+                [(AXBluetoothDevicesController *)self _sspPasskeyDisplayHandler:handlerCopy];
               }
             }
           }
@@ -1033,31 +1033,31 @@ LABEL_12:
       }
     }
 
-    v19 = [v5 object];
-    v11 = [v19 valueForKey:@"device"];
+    object3 = [handlerCopy object];
+    object = [object3 valueForKey:@"device"];
 
     goto LABEL_20;
   }
 
 LABEL_7:
   v8 = +[AXSubsystemBrailleHardware sharedInstance];
-  v9 = [v8 ignoreLogging];
+  ignoreLogging6 = [v8 ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging6 & 1) == 0)
   {
     v10 = +[AXSubsystemBrailleHardware identifier];
-    v11 = AXLoggerForFacility();
+    object = AXLoggerForFacility();
 
     v12 = AXOSLogLevelFromAXLogLevel();
-    if (os_log_type_enabled(v11, v12))
+    if (os_log_type_enabled(object, v12))
     {
       v13 = AXColorizeFormatLog();
       v14 = _AXStringForArgs();
-      if (os_log_type_enabled(v11, v12))
+      if (os_log_type_enabled(object, v12))
       {
         *buf = 138543362;
         v110 = v14;
-        _os_log_impl(&dword_0, v11, v12, "%{public}@", buf, 0xCu);
+        _os_log_impl(&dword_0, object, v12, "%{public}@", buf, 0xCu);
       }
     }
 
@@ -1067,14 +1067,14 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)_pinRequestHandler:(id)a3
+- (void)_pinRequestHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = +[AXSubsystemBrailleHardware sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemBrailleHardware identifier];
     v10 = AXLoggerForFacility();
@@ -1084,8 +1084,8 @@ LABEL_13:
     {
       v12 = AXColorizeFormatLog();
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
-      v18 = [v6 name];
+      name = [handlerCopy name];
+      name2 = [object name];
       v15 = _AXStringForArgs();
 
       if (os_log_type_enabled(v10, v11))
@@ -1099,8 +1099,8 @@ LABEL_13:
 
   v16 = [objc_allocWithZone(AXUIVoiceOverBluetoothPairSetup) init];
   [(AXBluetoothDevicesController *)self setShowingSetupController:1];
-  v17 = [(AXBluetoothDevicesController *)self rootController];
-  [v16 setRootController:v17];
+  rootController = [(AXBluetoothDevicesController *)self rootController];
+  [v16 setRootController:rootController];
 
   [v16 setParentController:self];
   [v16 setSpecifier:self->_currentDeviceSpecifier];
@@ -1108,14 +1108,14 @@ LABEL_13:
   [(AXBluetoothDevicesController *)self showController:v16 animate:1];
 }
 
-- (void)_sspConfirmationHandler:(id)a3
+- (void)_sspConfirmationHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = +[AXSubsystemBrailleHardware sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemBrailleHardware identifier];
     v10 = AXLoggerForFacility();
@@ -1125,8 +1125,8 @@ LABEL_13:
     {
       v12 = AXColorizeFormatLog();
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 name];
-      v20 = [v6 name];
+      name = [handlerCopy name];
+      name2 = [object name];
       v15 = _AXStringForArgs();
 
       if (os_log_type_enabled(v10, v11))
@@ -1138,26 +1138,26 @@ LABEL_13:
     }
   }
 
-  v16 = [objc_allocWithZone(VOSBluetoothSSPPairingRequest) initWithDevice:v6 andSpecifier:self->_currentDeviceSpecifier];
+  v16 = [objc_allocWithZone(VOSBluetoothSSPPairingRequest) initWithDevice:object andSpecifier:self->_currentDeviceSpecifier];
   sspAlert = self->_sspAlert;
   self->_sspAlert = v16;
 
   [(VOSBluetoothSSPPairingRequest *)self->_sspAlert setPairingStyle:1 andPasskey:0];
   v18 = self->_sspAlert;
-  v19 = [(AXBluetoothDevicesController *)self window];
-  [(VOSBluetoothSSPPairingRequest *)v18 showWithWindow:v19];
+  window = [(AXBluetoothDevicesController *)self window];
+  [(VOSBluetoothSSPPairingRequest *)v18 showWithWindow:window];
 }
 
-- (void)_sspNumericComparisonHandler:(id)a3
+- (void)_sspNumericComparisonHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [v6 valueForKey:@"device"];
-  v8 = [v6 valueForKey:@"value"];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  v7 = [object valueForKey:@"device"];
+  v8 = [object valueForKey:@"value"];
   v9 = +[AXSubsystemBrailleHardware sharedInstance];
-  v10 = [v9 ignoreLogging];
+  ignoreLogging = [v9 ignoreLogging];
 
-  if ((v10 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v11 = +[AXSubsystemBrailleHardware identifier];
     v12 = AXLoggerForFacility();
@@ -1168,8 +1168,8 @@ LABEL_13:
       AXColorizeFormatLog();
       v14 = v23 = v13;
       v15 = NSStringFromSelector(a2);
-      v16 = [v5 name];
-      v22 = [v7 name];
+      name = [handlerCopy name];
+      name2 = [v7 name];
       v24 = v14;
       v17 = _AXStringForArgs();
 
@@ -1188,20 +1188,20 @@ LABEL_13:
 
   [(VOSBluetoothSSPPairingRequest *)self->_sspAlert setPairingStyle:0 andPasskey:v8];
   v20 = self->_sspAlert;
-  v21 = [(AXBluetoothDevicesController *)self window];
-  [(VOSBluetoothSSPPairingRequest *)v20 showWithWindow:v21];
+  window = [(AXBluetoothDevicesController *)self window];
+  [(VOSBluetoothSSPPairingRequest *)v20 showWithWindow:window];
 }
 
-- (void)_sspPasskeyDisplayHandler:(id)a3
+- (void)_sspPasskeyDisplayHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [v6 valueForKey:@"device"];
-  v8 = [v6 valueForKey:@"value"];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  v7 = [object valueForKey:@"device"];
+  v8 = [object valueForKey:@"value"];
   v9 = +[AXSubsystemBrailleHardware sharedInstance];
-  v10 = [v9 ignoreLogging];
+  ignoreLogging = [v9 ignoreLogging];
 
-  if ((v10 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v11 = +[AXSubsystemBrailleHardware identifier];
     v12 = AXLoggerForFacility();
@@ -1212,8 +1212,8 @@ LABEL_13:
       AXColorizeFormatLog();
       v14 = v23 = v13;
       v15 = NSStringFromSelector(a2);
-      v16 = [v5 name];
-      v22 = [v7 name];
+      name = [handlerCopy name];
+      name2 = [v7 name];
       v24 = v14;
       v17 = _AXStringForArgs();
 
@@ -1232,59 +1232,59 @@ LABEL_13:
 
   [(VOSBluetoothSSPPairingRequest *)self->_sspAlert setPairingStyle:2 andPasskey:v8];
   v20 = self->_sspAlert;
-  v21 = [(AXBluetoothDevicesController *)self window];
-  [(VOSBluetoothSSPPairingRequest *)v20 showWithWindow:v21];
+  window = [(AXBluetoothDevicesController *)self window];
+  [(VOSBluetoothSSPPairingRequest *)v20 showWithWindow:window];
 }
 
-- (void)_addDevice:(id)a3
+- (void)_addDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isClassicDevice]&& ![(AXBluetoothDevicesController *)self shouldAddClassicDevice:v4])
+  deviceCopy = device;
+  if ([deviceCopy isClassicDevice]&& ![(AXBluetoothDevicesController *)self shouldAddClassicDevice:deviceCopy])
   {
-    v8 = AXLogBrailleHW();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    identifier = AXLogBrailleHW();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v4;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Not addding classic device: %@", buf, 0xCu);
+      v39 = deviceCopy;
+      _os_log_impl(&dword_0, identifier, OS_LOG_TYPE_DEFAULT, "Not addding classic device: %@", buf, 0xCu);
     }
 
     goto LABEL_31;
   }
 
-  v5 = [v4 isBTLEDevice];
-  if (!v5 || (-[NSObject name](v4, "name"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsString:@"Apple Pencil"], v6, (v7 & 1) == 0))
+  isBTLEDevice = [deviceCopy isBTLEDevice];
+  if (!isBTLEDevice || (-[NSObject name](deviceCopy, "name"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsString:@"Apple Pencil"], v6, (v7 & 1) == 0))
   {
-    v8 = [v4 identifier];
+    identifier = [deviceCopy identifier];
     v9 = AXLogBrailleHW();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v39 = v8;
+      v39 = identifier;
       v40 = 2112;
-      v41 = v4;
+      v41 = deviceCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Device id: %@ %@", buf, 0x16u);
     }
 
-    if ([v8 length])
+    if ([identifier length])
     {
-      v10 = [(NSMutableDictionary *)self->_devicesDict objectForKey:v8];
+      v10 = [(NSMutableDictionary *)self->_devicesDict objectForKey:identifier];
 
       if (!v10)
       {
-        v11 = [(AXBluetoothDevicesController *)self specifierForDevice:v4];
+        v11 = [(AXBluetoothDevicesController *)self specifierForDevice:deviceCopy];
         v12 = AXLogBrailleHW();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
           v39 = v11;
           v40 = 2112;
-          v41 = v4;
+          v41 = deviceCopy;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Spec: %@ %@", buf, 0x16u);
         }
 
         v13 = [(NSMutableDictionary *)self->_devicesDict count];
-        [(NSMutableDictionary *)self->_devicesDict setObject:v4 forKey:v8];
+        [(NSMutableDictionary *)self->_devicesDict setObject:deviceCopy forKey:identifier];
         if (v13)
         {
           v14 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] count];
@@ -1299,8 +1299,8 @@ LABEL_13:
             do
             {
               v19 = [(AXBluetoothDevicesController *)self specifierAtIndex:v17];
-              v20 = [v19 userInfo];
-              v21 = [v20 objectForKey:@"bt-device"];
+              userInfo = [v19 userInfo];
+              v21 = [userInfo objectForKey:@"bt-device"];
 
               if (v21)
               {
@@ -1329,11 +1329,11 @@ LABEL_13:
             v22 = 1;
           }
 
-          [v16 addObject:v4];
+          [v16 addObject:deviceCopy];
           [v16 sortUsingSelector:"compare:"];
           v28 = [(NSMutableArray *)self->_deviceSpecifiersGroup objectAtIndex:0];
           v29 = [(AXBluetoothDevicesController *)self indexOfSpecifier:v28];
-          v30 = [v16 indexOfObject:v4]+ v22;
+          v30 = [v16 indexOfObject:deviceCopy]+ v22;
 
           v31 = AXLogBrailleHW();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -1367,10 +1367,10 @@ LABEL_13:
           }
         }
 
-        if (v5)
+        if (isBTLEDevice)
         {
           v33 = +[VOSBluetoothManager sharedInstance];
-          [v33 postNotificationName:VOSBluetoothDeviceConnectSuccessNotification object:v4];
+          [v33 postNotificationName:VOSBluetoothDeviceConnectSuccessNotification object:deviceCopy];
         }
       }
     }
@@ -1379,24 +1379,24 @@ LABEL_31:
   }
 }
 
-- (void)_removeDevice:(id)a3
+- (void)_removeDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_devicesDict objectForKey:v5];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_devicesDict objectForKey:identifier];
 
   if (v6)
   {
-    v7 = [(AXBluetoothDevicesController *)self specifierForID:v5, 0, 0];
-    v8 = [(AXBluetoothDevicesController *)self indexOfSpecifierID:v5];
+    v7 = [(AXBluetoothDevicesController *)self specifierForID:identifier, 0, 0];
+    v8 = [(AXBluetoothDevicesController *)self indexOfSpecifierID:identifier];
     if (v7 && v7 == self->_currentDeviceSpecifier)
     {
-      [v4 disconnect];
+      [deviceCopy disconnect];
       [(AXBluetoothDevicesController *)self setBluetoothIsBusy:0];
     }
 
     [(AXBluetoothDevicesController *)self getGroup:&v15 row:&v14 ofSpecifierAtIndex:v8];
-    [(NSMutableDictionary *)self->_devicesDict removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_devicesDict removeObjectForKey:identifier];
     if ([(NSMutableDictionary *)self->_devicesDict count])
     {
       [(AXBluetoothDevicesController *)self removeSpecifierAtIndex:v8 animated:1];
@@ -1433,11 +1433,11 @@ LABEL_31:
     v7 = +[VOSBluetoothManager sharedInstance];
     [(NSMutableDictionary *)self->_devicesDict removeAllObjects];
     v60 = v7;
-    v8 = [v7 enabled];
-    self->_power = v8;
+    enabled = [v7 enabled];
+    self->_power = enabled;
     if (!self->_deviceSpecifiersGroup)
     {
-      [(AXBluetoothDevicesController *)self _showBluetoothPowerFooter:v8 ^ 1];
+      [(AXBluetoothDevicesController *)self _showBluetoothPowerFooter:enabled ^ 1];
       v9 = [objc_allocWithZone(NSMutableDictionary) initWithCapacity:4];
       pairingPINDict = self->_pairingPINDict;
       self->_pairingPINDict = v9;
@@ -1461,8 +1461,8 @@ LABEL_31:
       deviceSpecifiersGroup = self->_deviceSpecifiersGroup;
       self->_deviceSpecifiersGroup = v20;
 
-      v22 = [(AXBluetoothDevicesController *)self devicesGroupName];
-      v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:0 set:0 get:0 detail:0 cell:0 edit:0];
+      devicesGroupName = [(AXBluetoothDevicesController *)self devicesGroupName];
+      v23 = [PSSpecifier preferenceSpecifierNamed:devicesGroupName target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
@@ -1481,31 +1481,31 @@ LABEL_31:
     }
 
     v29 = objc_allocWithZone(NSMutableArray);
-    v30 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
-    v31 = [v29 initWithArray:v30];
+    mainSpecifiersGroup = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
+    v31 = [v29 initWithArray:mainSpecifiersGroup];
 
     if (self->_power)
     {
-      v32 = [(AXBluetoothDevicesController *)self scanningEnabled];
+      scanningEnabled = [(AXBluetoothDevicesController *)self scanningEnabled];
     }
 
     else
     {
-      v32 = 0;
+      scanningEnabled = 0;
     }
 
     v33 = [(NSMutableArray *)self->_deviceSpecifiersGroup objectAtIndex:0];
     [v31 addObject:v33];
 
-    v34 = 0;
-    if (v32)
+    pairedDeviceSpecifiers = 0;
+    if (scanningEnabled)
     {
-      v34 = [(AXBluetoothDevicesController *)self pairedDeviceSpecifiers];
+      pairedDeviceSpecifiers = [(AXBluetoothDevicesController *)self pairedDeviceSpecifiers];
     }
 
-    if ([v34 count])
+    if ([pairedDeviceSpecifiers count])
     {
-      [v31 addObjectsFromArray:v34];
+      [v31 addObjectsFromArray:pairedDeviceSpecifiers];
       v35 = [v31 specifierForID:@"DEVICES"];
       [v35 setProperty:kCFBooleanTrue forKey:@"VoiceOverTextSpinnerViewEnabled"];
     }
@@ -1516,13 +1516,13 @@ LABEL_31:
       [v31 addObject:v35];
     }
 
-    if (v32)
+    if (scanningEnabled)
     {
-      v36 = [v7 connectingDevices];
+      connectingDevices = [v7 connectingDevices];
       v37 = +[AXSubsystemBrailleHardware sharedInstance];
-      v38 = [v37 ignoreLogging];
+      ignoreLogging = [v37 ignoreLogging];
 
-      if ((v38 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v39 = +[AXSubsystemBrailleHardware identifier];
         v40 = AXLoggerForFacility();
@@ -1532,8 +1532,8 @@ LABEL_31:
         {
           v42 = AXColorizeFormatLog();
           v43 = NSStringFromSelector(a2);
-          v57 = [v36 count];
-          v58 = v36;
+          v57 = [connectingDevices count];
+          v58 = connectingDevices;
           v56 = v43;
           v44 = _AXStringForArgs();
 
@@ -1546,12 +1546,12 @@ LABEL_31:
         }
       }
 
-      v59 = v34;
+      v59 = pairedDeviceSpecifiers;
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v45 = v36;
+      v45 = connectingDevices;
       v46 = [v45 countByEnumeratingWithState:&v61 objects:v65 count:16];
       if (v46)
       {
@@ -1566,8 +1566,8 @@ LABEL_31:
               objc_enumerationMutation(v45);
             }
 
-            v50 = [*(*(&v61 + 1) + 8 * i) address];
-            v51 = [v31 specifierForID:v50];
+            address = [*(*(&v61 + 1) + 8 * i) address];
+            v51 = [v31 specifierForID:address];
 
             if (v51)
             {
@@ -1582,11 +1582,11 @@ LABEL_31:
         while (v47);
       }
 
-      v34 = v59;
+      pairedDeviceSpecifiers = v59;
     }
 
-    v52 = [(AXBluetoothDevicesController *)self postDevicesSpecifiersGroup];
-    [v31 addObjectsFromArray:v52];
+    postDevicesSpecifiersGroup = [(AXBluetoothDevicesController *)self postDevicesSpecifiersGroup];
+    [v31 addObjectsFromArray:postDevicesSpecifiersGroup];
 
     v53 = *&self->AXUISettingsBaseListController_opaque[v2];
     *&self->AXUISettingsBaseListController_opaque[v2] = v31;
@@ -1600,33 +1600,33 @@ LABEL_31:
 
 - (id)specifierImmediatelyPrecedingDevices
 {
-  v2 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
-  v3 = [v2 lastObject];
+  mainSpecifiersGroup = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
+  lastObject = [mainSpecifiersGroup lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (BOOL)_isBluetoothPowerFooterShowing
 {
-  v2 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
-  v3 = [v2 objectAtIndex:0];
+  mainSpecifiersGroup = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
+  v3 = [mainSpecifiersGroup objectAtIndex:0];
 
   v4 = [v3 propertyForKey:PSFooterTextGroupKey];
-  LOBYTE(v2) = v4 != 0;
+  LOBYTE(mainSpecifiersGroup) = v4 != 0;
 
-  return v2;
+  return mainSpecifiersGroup;
 }
 
-- (void)_showBluetoothPowerFooter:(BOOL)a3
+- (void)_showBluetoothPowerFooter:(BOOL)footer
 {
-  v3 = a3;
-  v5 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
-  v7 = [v5 objectAtIndex:0];
+  footerCopy = footer;
+  mainSpecifiersGroup = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
+  v7 = [mainSpecifiersGroup objectAtIndex:0];
 
-  if (v3)
+  if (footerCopy)
   {
-    v6 = [(AXBluetoothDevicesController *)self bluetoothPoweredOffFooter];
-    [v7 setProperty:v6 forKey:PSFooterTextGroupKey];
+    bluetoothPoweredOffFooter = [(AXBluetoothDevicesController *)self bluetoothPoweredOffFooter];
+    [v7 setProperty:bluetoothPoweredOffFooter forKey:PSFooterTextGroupKey];
   }
 
   else
@@ -1635,11 +1635,11 @@ LABEL_31:
   }
 }
 
-- (void)setScanningEnabled:(BOOL)a3
+- (void)setScanningEnabled:(BOOL)enabled
 {
-  if (self->_scanningEnabled != a3)
+  if (self->_scanningEnabled != enabled)
   {
-    self->_scanningEnabled = a3;
+    self->_scanningEnabled = enabled;
     [(AXBluetoothDevicesController *)self _showScanningUI:?];
   }
 }
@@ -1665,7 +1665,7 @@ LABEL_31:
     v34 = +[NSMutableArray array];
   }
 
-  v36 = self;
+  selfCopy = self;
   v37 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
@@ -1687,8 +1687,8 @@ LABEL_31:
         }
 
         v13 = *(*(&v43 + 1) + 8 * i);
-        v14 = [v13 userInfo];
-        v15 = [v14 objectForKeyedSubscript:@"bt-device"];
+        userInfo = [v13 userInfo];
+        v15 = [userInfo objectForKeyedSubscript:@"bt-device"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1704,13 +1704,13 @@ LABEL_31:
     while (v10);
   }
 
-  v17 = self;
+  selfCopy2 = self;
   [(AXBluetoothDevicesController *)self removeContiguousSpecifiers:v37];
-  v18 = [(AXBluetoothDevicesController *)self pairedDeviceSpecifiers];
+  pairedDeviceSpecifiers = [(AXBluetoothDevicesController *)self pairedDeviceSpecifiers];
   v19 = v34;
-  if ([v18 count])
+  if ([pairedDeviceSpecifiers count])
   {
-    v20 = [(NSMutableArray *)v36->_deviceSpecifiersGroup objectAtIndex:1];
+    v20 = [(NSMutableArray *)selfCopy->_deviceSpecifiersGroup objectAtIndex:1];
     v21 = [v34 indexOfObject:v20];
 
     if (v21 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1719,7 +1719,7 @@ LABEL_31:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v22 = v18;
+      v22 = pairedDeviceSpecifiers;
       v23 = [v22 countByEnumeratingWithState:&v39 objects:v47 count:16];
       if (v23)
       {
@@ -1735,7 +1735,7 @@ LABEL_31:
             }
 
             v27 = *(*(&v39 + 1) + 8 * j);
-            v28 = *&v36->AXUISettingsBaseListController_opaque[v35];
+            v28 = *&selfCopy->AXUISettingsBaseListController_opaque[v35];
             v38[0] = _NSConcreteStackBlock;
             v38[1] = 3221225472;
             v38[2] = __51__AXBluetoothDevicesController_updatePairedDevices__block_invoke;
@@ -1753,13 +1753,13 @@ LABEL_31:
         while (v24);
       }
 
-      v17 = v36;
+      selfCopy2 = selfCopy;
       v19 = v34;
     }
 
     else
     {
-      [v34 replaceObjectsInRange:v21 withObjectsFromArray:{1, v18}];
+      [v34 replaceObjectsInRange:v21 withObjectsFromArray:{1, pairedDeviceSpecifiers}];
     }
 
     v29 = [v19 specifierForID:@"DEVICES"];
@@ -1772,13 +1772,13 @@ LABEL_31:
 
   if (v33 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v32 = [(AXBluetoothDevicesController *)v17 specifierImmediatelyPrecedingDevices];
-    [(AXBluetoothDevicesController *)v17 insertContiguousSpecifiers:v19 afterSpecifier:v32 animated:1];
+    specifierImmediatelyPrecedingDevices = [(AXBluetoothDevicesController *)selfCopy2 specifierImmediatelyPrecedingDevices];
+    [(AXBluetoothDevicesController *)selfCopy2 insertContiguousSpecifiers:v19 afterSpecifier:specifierImmediatelyPrecedingDevices animated:1];
   }
 
   else
   {
-    [(AXBluetoothDevicesController *)v17 insertContiguousSpecifiers:v19 atIndex:v33 + 1];
+    [(AXBluetoothDevicesController *)selfCopy2 insertContiguousSpecifiers:v19 atIndex:v33 + 1];
   }
 }
 
@@ -1792,7 +1792,7 @@ id __51__AXBluetoothDevicesController_updatePairedDevices__block_invoke(uint64_t
   return v6;
 }
 
-- (void)_showScanningUI:(BOOL)a3
+- (void)_showScanningUI:(BOOL)i
 {
   v3 = OBJC_IVAR___PSListController__specifiers;
   if (!*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers])
@@ -1800,18 +1800,18 @@ id __51__AXBluetoothDevicesController_updatePairedDevices__block_invoke(uint64_t
     return;
   }
 
-  v4 = a3;
+  iCopy = i;
   currentDeviceSpecifier = self->_currentDeviceSpecifier;
   self->_currentDeviceSpecifier = 0;
 
   [(AXBluetoothDevicesController *)self beginUpdates];
-  if (v4)
+  if (iCopy)
   {
     if (self->_power && [(AXBluetoothDevicesController *)self _isBluetoothPowerFooterShowing])
     {
       [(AXBluetoothDevicesController *)self _showBluetoothPowerFooter:0];
-      v7 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
-      v8 = [v7 objectAtIndex:0];
+      mainSpecifiersGroup = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
+      v8 = [mainSpecifiersGroup objectAtIndex:0];
 
       [(AXBluetoothDevicesController *)self reloadSpecifier:v8 animated:1];
     }
@@ -1826,9 +1826,9 @@ id __51__AXBluetoothDevicesController_updatePairedDevices__block_invoke(uint64_t
     if (self->_power)
     {
       v9 = +[UIApplication sharedApplication];
-      v10 = [v9 applicationState];
+      applicationState = [v9 applicationState];
 
-      if (!v10)
+      if (!applicationState)
       {
         [(AXBluetoothDevicesController *)self _startScanning];
         [(AXBluetoothDevicesController *)self _startDiscoverable];
@@ -1844,9 +1844,9 @@ id __51__AXBluetoothDevicesController_updatePairedDevices__block_invoke(uint64_t
   v12 = [(NSMutableArray *)self->_deviceSpecifiersGroup objectAtIndex:0];
   if ([v11 indexOfObject:v12] != 0x7FFFFFFFFFFFFFFFLL && -[NSMutableArray count](self->_deviceSpecifiersGroup, "count") >= 2)
   {
-    v13 = [(AXBluetoothDevicesController *)self numberOfGroups];
+    numberOfGroups = [(AXBluetoothDevicesController *)self numberOfGroups];
 
-    if (v13 < 2)
+    if (numberOfGroups < 2)
     {
       goto LABEL_17;
     }
@@ -1861,8 +1861,8 @@ LABEL_17:
   if (!self->_power && ![(AXBluetoothDevicesController *)self _isBluetoothPowerFooterShowing])
   {
     [(AXBluetoothDevicesController *)self _showBluetoothPowerFooter:1];
-    v15 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
-    v16 = [v15 objectAtIndex:0];
+    mainSpecifiersGroup2 = [(AXBluetoothDevicesController *)self mainSpecifiersGroup];
+    v16 = [mainSpecifiersGroup2 objectAtIndex:0];
 
     [(AXBluetoothDevicesController *)self reloadSpecifier:v16 animated:1];
   }
@@ -1876,11 +1876,11 @@ LABEL_17:
   [(AXBluetoothDevicesController *)self _stopConnectable];
 }
 
-- (void)setMainSpecifiersGroup:(id)a3
+- (void)setMainSpecifiersGroup:(id)group
 {
-  if (self->_mainSpecifiersGroup != a3)
+  if (self->_mainSpecifiersGroup != group)
   {
-    v4 = [a3 mutableCopyWithZone:0];
+    v4 = [group mutableCopyWithZone:0];
     mainSpecifiersGroup = self->_mainSpecifiersGroup;
     self->_mainSpecifiersGroup = v4;
 
@@ -1912,9 +1912,9 @@ LABEL_17:
   v51 = 0u;
   v52 = 0u;
   v4 = +[VOSBluetoothManager sharedInstance];
-  v5 = [v4 pairedDevices];
+  pairedDevices = [v4 pairedDevices];
 
-  v6 = [v5 countByEnumeratingWithState:&v49 objects:v56 count:16];
+  v6 = [pairedDevices countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1925,7 +1925,7 @@ LABEL_17:
       {
         if (*v50 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pairedDevices);
         }
 
         v10 = *(*(&v49 + 1) + 8 * i);
@@ -1935,28 +1935,28 @@ LABEL_17:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v49 objects:v56 count:16];
+      v7 = [pairedDevices countByEnumeratingWithState:&v49 objects:v56 count:16];
     }
 
     while (v7);
   }
 
   v11 = +[VOSBluetoothManager sharedInstance];
-  v12 = [v11 pairedBTLEDevices];
-  [v3 axSafelyAddObjectsFromArray:v12];
+  pairedBTLEDevices = [v11 pairedBTLEDevices];
+  [v3 axSafelyAddObjectsFromArray:pairedBTLEDevices];
 
-  v13 = [(AXBluetoothDevicesController *)self centralManager];
-  v14 = [v13 state];
+  centralManager = [(AXBluetoothDevicesController *)self centralManager];
+  state = [centralManager state];
 
-  if (v14 == &dword_4 + 1)
+  if (state == &dword_4 + 1)
   {
     v15 = v3;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v16 = [(AXBluetoothDevicesController *)self centralManager];
-    v17 = [v16 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
+    centralManager2 = [(AXBluetoothDevicesController *)self centralManager];
+    v17 = [centralManager2 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
 
     v18 = [v17 countByEnumeratingWithState:&v45 objects:v55 count:16];
     if (v18)
@@ -1973,9 +1973,9 @@ LABEL_17:
           }
 
           v22 = *(*(&v45 + 1) + 8 * j);
-          v23 = [v22 name];
-          v24 = v23;
-          if (!v23 || ([v23 containsString:@"Apple Pencil"] & 1) == 0)
+          name = [v22 name];
+          v24 = name;
+          if (!name || ([name containsString:@"Apple Pencil"] & 1) == 0)
           {
             v25 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:v22];
             if (v25 && ([v15 containsObject:v25] & 1) == 0 && -[AXBluetoothDevicesController shouldAddBTLEDevice:](self, "shouldAddBTLEDevice:", v25))
@@ -2024,8 +2024,8 @@ LABEL_17:
         v35 = [(AXBluetoothDevicesController *)self specifierForDevice:v34];
         [v29 addObject:v35];
         devicesDict = self->_devicesDict;
-        v37 = [v34 identifier];
-        [(NSMutableDictionary *)devicesDict setObject:v34 forKey:v37];
+        identifier = [v34 identifier];
+        [(NSMutableDictionary *)devicesDict setObject:v34 forKey:identifier];
       }
 
       v31 = [obj countByEnumeratingWithState:&v41 objects:v53 count:16];
@@ -2037,24 +2037,24 @@ LABEL_17:
   return v29;
 }
 
-- (id)specifierForDevice:(id)a3
+- (id)specifierForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if (![(__CFString *)v5 length])
+  deviceCopy = device;
+  name = [deviceCopy name];
+  if (![(__CFString *)name length])
   {
 
-    v5 = &stru_25D420;
+    name = &stru_25D420;
   }
 
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+  v6 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
   v7 = [objc_allocWithZone(NSMutableDictionary) initWithDictionary:self->_pairingPINDict];
-  [v7 setObject:v5 forKey:PSTitleKey];
+  [v7 setObject:name forKey:PSTitleKey];
   v8 = [NSNumber numberWithInteger:[(AXBluetoothDevicesController *)self axDeviceControllerType]];
   [v7 setObject:v8 forKey:@"axDeviceControllerType"];
 
-  v9 = [v4 identifier];
-  [v7 setObject:v9 forKey:PSIDKey];
+  identifier = [deviceCopy identifier];
+  [v7 setObject:identifier forKey:PSIDKey];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
@@ -2062,18 +2062,18 @@ LABEL_17:
 
   [v6 setProperties:v7];
   v12 = [objc_allocWithZone(NSMutableDictionary) init];
-  [v12 setObject:v4 forKey:@"bt-device"];
+  [v12 setObject:deviceCopy forKey:@"bt-device"];
 
   [v6 setUserInfo:v12];
 
   return v6;
 }
 
-- (void)_updateDevicePosition:(id)a3
+- (void)_updateDevicePosition:(id)position
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(AXBluetoothDevicesController *)self specifierForID:v5];
+  positionCopy = position;
+  identifier = [positionCopy identifier];
+  v6 = [(AXBluetoothDevicesController *)self specifierForID:identifier];
 
   v7 = AXLogBrailleHW();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2085,17 +2085,17 @@ LABEL_17:
   {
     v8 = [(AXBluetoothDevicesController *)self indexOfSpecifier:v6];
     v9 = [(AXBluetoothDevicesController *)self specifierAtIndex:v8 - 1];
-    v10 = [v9 userInfo];
-    v11 = [v10 objectForKey:@"bt-device"];
+    userInfo = [v9 userInfo];
+    v11 = [userInfo objectForKey:@"bt-device"];
 
     v12 = [(AXBluetoothDevicesController *)self specifierAtIndex:v8 + 1];
-    v13 = [v12 userInfo];
-    v14 = [v13 objectForKey:@"bt-device"];
+    userInfo2 = [v12 userInfo];
+    v14 = [userInfo2 objectForKey:@"bt-device"];
 
     if (v11)
     {
-      v15 = [v11 paired];
-      if (v15 != [v4 paired])
+      paired = [v11 paired];
+      if (paired != [positionCopy paired])
       {
         v16 = 1;
         if (!v14)
@@ -2104,16 +2104,16 @@ LABEL_17:
         }
 
 LABEL_9:
-        v17 = [v14 paired];
-        if (v17 != [v4 paired])
+        paired2 = [v14 paired];
+        if (paired2 != [positionCopy paired])
         {
           goto LABEL_14;
         }
 
-        v18 = [v14 name];
-        [v4 name];
+        name = [v14 name];
+        [positionCopy name];
         v20 = v19 = v14;
-        v21 = [v18 caseInsensitiveCompare:v20] != &dword_0 + 1;
+        v21 = [name caseInsensitiveCompare:v20] != &dword_0 + 1;
 
         v14 = v19;
 LABEL_13:
@@ -2140,8 +2140,8 @@ LABEL_14:
           while (1)
           {
             v29 = [(AXBluetoothDevicesController *)self specifierAtIndex:v27];
-            v30 = [v29 userInfo];
-            v31 = [v30 objectForKey:@"bt-device"];
+            userInfo3 = [v29 userInfo];
+            v31 = [userInfo3 objectForKey:@"bt-device"];
 
             if (v31)
             {
@@ -2166,7 +2166,7 @@ LABEL_14:
         }
 
 LABEL_22:
-        if (([v4 paired] & 1) == 0)
+        if (([positionCopy paired] & 1) == 0)
         {
           v32 = v27;
           v33 = [(AXBluetoothDevicesController *)self specifierAtIndex:v27];
@@ -2176,11 +2176,11 @@ LABEL_22:
             while (1)
             {
               v35 = [(AXBluetoothDevicesController *)self specifierAtIndex:v32];
-              v36 = [v35 userInfo];
-              v37 = [v36 objectForKey:@"bt-device"];
-              v38 = [v37 paired];
+              userInfo4 = [v35 userInfo];
+              v37 = [userInfo4 objectForKey:@"bt-device"];
+              paired3 = [v37 paired];
 
-              if (!v38)
+              if (!paired3)
               {
                 break;
               }
@@ -2200,23 +2200,23 @@ LABEL_22:
 LABEL_29:
         v39 = v32;
         v40 = [(AXBluetoothDevicesController *)self specifierAtIndex:v32];
-        v41 = [v40 userInfo];
-        v42 = [v41 objectForKey:@"bt-device"];
+        userInfo5 = [v40 userInfo];
+        v42 = [userInfo5 objectForKey:@"bt-device"];
 
         v11 = v51;
         if (v42)
         {
           do
           {
-            v43 = [v4 paired];
-            if (v43 != [v42 paired])
+            paired4 = [positionCopy paired];
+            if (paired4 != [v42 paired])
             {
               break;
             }
 
-            v44 = [v4 name];
-            v45 = [v42 name];
-            v46 = [v44 compare:v45 options:1];
+            name2 = [positionCopy name];
+            name3 = [v42 name];
+            v46 = [name2 compare:name3 options:1];
 
             if (v46 == -1)
             {
@@ -2225,8 +2225,8 @@ LABEL_29:
 
             v32 = (v32 + 1);
             v47 = [(AXBluetoothDevicesController *)self specifierAtIndex:v32];
-            v48 = [v47 userInfo];
-            v49 = [v48 objectForKey:@"bt-device"];
+            userInfo6 = [v47 userInfo];
+            v49 = [userInfo6 objectForKey:@"bt-device"];
 
             v42 = v49;
           }
@@ -2240,10 +2240,10 @@ LABEL_29:
         goto LABEL_35;
       }
 
-      v22 = [v11 name];
-      [v4 name];
+      name4 = [v11 name];
+      [positionCopy name];
       v24 = v23 = v14;
-      v16 = [v22 caseInsensitiveCompare:v24] != -1;
+      v16 = [name4 caseInsensitiveCompare:v24] != -1;
 
       v14 = v23;
       if (v23)
@@ -2269,26 +2269,26 @@ LABEL_12:
 LABEL_36:
 }
 
-- (void)_setDeviceState:(int)a3 forSpecifier:(id)a4
+- (void)_setDeviceState:(int)state forSpecifier:(id)specifier
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&state;
+  specifierCopy = specifier;
   v6 = [NSMutableDictionary alloc];
-  v7 = [v5 userInfo];
-  v9 = [v6 initWithDictionary:v7];
+  userInfo = [specifierCopy userInfo];
+  v9 = [v6 initWithDictionary:userInfo];
 
   v8 = [NSNumber numberWithUnsignedInt:v4];
   [v9 setObject:v8 forKey:@"bt-state"];
 
-  [v5 setUserInfo:v9];
+  [specifierCopy setUserInfo:v9];
 }
 
 - (void)_startDiscoverable
 {
   v2 = +[AXSubsystemBrailleHardware sharedInstance];
-  v3 = [v2 ignoreLogging];
+  ignoreLogging = [v2 ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v4 = +[AXSubsystemBrailleHardware identifier];
     v5 = AXLoggerForFacility();
@@ -2314,9 +2314,9 @@ LABEL_36:
 - (void)_stopDiscoverable
 {
   v2 = +[AXSubsystemBrailleHardware sharedInstance];
-  v3 = [v2 ignoreLogging];
+  ignoreLogging = [v2 ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v4 = +[AXSubsystemBrailleHardware identifier];
     v5 = AXLoggerForFacility();
@@ -2342,9 +2342,9 @@ LABEL_36:
 - (void)_startConnectable
 {
   v2 = +[AXSubsystemBrailleHardware sharedInstance];
-  v3 = [v2 ignoreLogging];
+  ignoreLogging = [v2 ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v4 = +[AXSubsystemBrailleHardware identifier];
     v5 = AXLoggerForFacility();
@@ -2370,9 +2370,9 @@ LABEL_36:
 - (void)_stopConnectable
 {
   v2 = +[AXSubsystemBrailleHardware sharedInstance];
-  v3 = [v2 ignoreLogging];
+  ignoreLogging = [v2 ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v4 = +[AXSubsystemBrailleHardware identifier];
     v5 = AXLoggerForFacility();
@@ -2398,9 +2398,9 @@ LABEL_36:
 - (void)_startScanning
 {
   v3 = +[AXSubsystemBrailleHardware sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemBrailleHardware identifier];
     v6 = AXLoggerForFacility();
@@ -2428,9 +2428,9 @@ LABEL_36:
 - (void)_stopScanning
 {
   v3 = +[AXSubsystemBrailleHardware sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemBrailleHardware identifier];
     v6 = AXLoggerForFacility();
@@ -2458,12 +2458,12 @@ LABEL_36:
   [(AXBluetoothDevicesController *)self _setupCentralScanning:0];
 }
 
-- (BOOL)_brailleConfigMatch:(id)a3 withConfig:(id)a4
+- (BOOL)_brailleConfigMatch:(id)match withConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:kSCROBrailleDisplayBluetoothAddress];
-  v8 = [v6 objectForKeyedSubscript:kSCROBrailleDisplayBluetoothAddress];
+  matchCopy = match;
+  configCopy = config;
+  v7 = [matchCopy objectForKeyedSubscript:kSCROBrailleDisplayBluetoothAddress];
+  v8 = [configCopy objectForKeyedSubscript:kSCROBrailleDisplayBluetoothAddress];
   v9 = [v7 isEqualToString:v8];
 
   if (v9)
@@ -2473,26 +2473,26 @@ LABEL_36:
 
   else
   {
-    v11 = [v5 objectForKeyedSubscript:kSCROBrailleDisplayBrailleVendorProductId];
-    v12 = [v6 objectForKeyedSubscript:kSCROBrailleDisplayBrailleVendorProductId];
+    v11 = [matchCopy objectForKeyedSubscript:kSCROBrailleDisplayBrailleVendorProductId];
+    v12 = [configCopy objectForKeyedSubscript:kSCROBrailleDisplayBrailleVendorProductId];
     v10 = [v11 isEqualToString:v12];
   }
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = AXBluetoothDevicesController;
-  v7 = [(AXBluetoothDevicesController *)&v31 tableView:a3 cellForRowAtIndexPath:v6];
+  v7 = [(AXBluetoothDevicesController *)&v31 tableView:view cellForRowAtIndexPath:pathCopy];
   if ([v7 tag] == &dword_0 + 1)
   {
-    v8 = [(AXBluetoothDevicesController *)self indexForIndexPath:v6];
+    v8 = [(AXBluetoothDevicesController *)self indexForIndexPath:pathCopy];
     v9 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-    v10 = [v9 userInfo];
-    v11 = [v10 objectForKey:@"bt-device"];
+    userInfo = [v9 userInfo];
+    v11 = [userInfo objectForKey:@"bt-device"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2503,9 +2503,9 @@ LABEL_23:
     }
 
     v12 = +[AXSubsystemBrailleHardware sharedInstance];
-    v13 = [v12 ignoreLogging];
+    ignoreLogging = [v12 ignoreLogging];
 
-    if ((v13 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v14 = +[AXSubsystemBrailleHardware identifier];
       v15 = AXLoggerForFacility();
@@ -2514,12 +2514,12 @@ LABEL_23:
       if (os_log_type_enabled(v15, v16))
       {
         v17 = AXColorizeFormatLog();
-        v18 = [v7 title];
-        v19 = [v11 paired];
-        v29 = [v11 connected];
+        title = [v7 title];
+        paired = [v11 paired];
+        connected = [v11 connected];
         v30 = v11;
-        v27 = v18;
-        v28 = v19;
+        v27 = title;
+        v28 = paired;
         v26 = v11;
         v20 = _AXStringForArgs();
 
@@ -2534,13 +2534,13 @@ LABEL_23:
 
     if ([(AXBluetoothDevicesController *)self bluetoothIsBusy:v26])
     {
-      v21 = [v11 identifier];
-      v22 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-      if ([v21 isEqualToString:v22])
+      identifier = [v11 identifier];
+      identifier2 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v23 = [v11 connected];
+        connected2 = [v11 connected];
 
-        if ((v23 & 1) == 0)
+        if ((connected2 & 1) == 0)
         {
           if ([v11 paired])
           {
@@ -2587,33 +2587,33 @@ LABEL_24:
   return v7;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v7 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[AXBluetoothDevicesController indexForIndexPath:](self, "indexForIndexPath:", a4)}];
+  v7 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[AXBluetoothDevicesController indexForIndexPath:](self, "indexForIndexPath:", path)}];
   v5 = [objc_allocWithZone(*&v7[OBJC_IVAR___PSSpecifier_detailControllerClass]) init];
   [(AXBluetoothDevicesController *)self setShowingSetupController:0];
-  v6 = [(AXBluetoothDevicesController *)self rootController];
-  [v5 setRootController:v6];
+  rootController = [(AXBluetoothDevicesController *)self rootController];
+  [v5 setRootController:rootController];
 
   [v5 setParentController:self];
   [v5 setSpecifier:v7];
   [(AXBluetoothDevicesController *)self showController:v5 animate:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXBluetoothDevicesController *)self specifierAtIndex:[(AXBluetoothDevicesController *)self indexForIndexPath:v7]];
-  v9 = [v8 userInfo];
-  v10 = [v9 objectForKey:@"bt-device"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXBluetoothDevicesController *)self specifierAtIndex:[(AXBluetoothDevicesController *)self indexForIndexPath:pathCopy]];
+  userInfo = [v8 userInfo];
+  v10 = [userInfo objectForKey:@"bt-device"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v17.receiver = self;
     v17.super_class = AXBluetoothDevicesController;
-    [(AXBluetoothDevicesController *)&v17 tableView:v6 didSelectRowAtIndexPath:v7, v15.receiver, v15.super_class];
+    [(AXBluetoothDevicesController *)&v17 tableView:viewCopy didSelectRowAtIndexPath:pathCopy, v15.receiver, v15.super_class];
   }
 
   else if (v10)
@@ -2623,14 +2623,14 @@ LABEL_24:
       objc_storeStrong(&self->_currentDeviceSpecifier, v8);
       [(AXBluetoothDevicesController *)self setBluetoothIsBusy:1];
       [v10 connectWithServices:{-[AXBluetoothDevicesController authorizedServices](self, "authorizedServices")}];
-      v11 = [v10 identifier];
-      v12 = [(AXBluetoothDevicesController *)self indexOfSpecifierID:v11];
+      identifier = [v10 identifier];
+      v12 = [(AXBluetoothDevicesController *)self indexOfSpecifierID:identifier];
 
       if (v12 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v16.receiver = self;
         v16.super_class = AXBluetoothDevicesController;
-        v13 = [(AXBluetoothDevicesController *)&v16 tableView:v6 cellForRowAtIndexPath:v7];
+        v13 = [(AXBluetoothDevicesController *)&v16 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2660,13 +2660,13 @@ LABEL_24:
 
   else
   {
-    [(AXBluetoothDevicesController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7, self, AXBluetoothDevicesController];
+    [(AXBluetoothDevicesController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy, self, AXBluetoothDevicesController];
   }
 }
 
-- (void)showBluetoothPowerAlert:(BOOL)a3
+- (void)showBluetoothPowerAlert:(BOOL)alert
 {
-  if (a3)
+  if (alert)
   {
     v19 = +[VOSBluetoothManager sharedInstance];
     if (([v19 available] & 1) == 0)
@@ -2683,15 +2683,15 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v6 = [(AXBluetoothDevicesController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 isKeyWindow];
+    view = [(AXBluetoothDevicesController *)self view];
+    window = [view window];
+    isKeyWindow = [window isKeyWindow];
 
-    if (v8)
+    if (isKeyWindow)
     {
       v9 = settingsLocString(@"BLUETOOTH_POWER_TITLE", @"VoiceOverBluetoothDevices");
-      v10 = [(AXBluetoothDevicesController *)self bluetoothPowerAlertMessage];
-      v11 = [UIAlertController alertControllerWithTitle:v9 message:v10 preferredStyle:1];
+      bluetoothPowerAlertMessage = [(AXBluetoothDevicesController *)self bluetoothPowerAlertMessage];
+      v11 = [UIAlertController alertControllerWithTitle:v9 message:bluetoothPowerAlertMessage preferredStyle:1];
       powerAlert = self->_powerAlert;
       self->_powerAlert = v11;
 
@@ -2713,9 +2713,9 @@ LABEL_5:
       v16 = [UIAlertAction actionWithTitle:v15 style:1 handler:v20];
 
       [(UIAlertController *)self->_powerAlert addAction:v16];
-      v17 = [(AXBluetoothDevicesController *)self window];
-      v18 = [v17 rootViewController];
-      [v18 presentViewController:self->_powerAlert animated:1 completion:0];
+      window2 = [(AXBluetoothDevicesController *)self window];
+      rootViewController = [window2 rootViewController];
+      [rootViewController presentViewController:self->_powerAlert animated:1 completion:0];
     }
   }
 
@@ -2735,13 +2735,13 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
   *(*(a1 + 32) + 208) = 1;
 }
 
-- (void)setBluetoothIsBusy:(BOOL)a3
+- (void)setBluetoothIsBusy:(BOOL)busy
 {
-  v3 = a3;
+  busyCopy = busy;
   v5 = +[AXSubsystemBrailleHardware sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemBrailleHardware identifier];
     v8 = AXLoggerForFacility();
@@ -2750,7 +2750,7 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v14 = [NSNumber numberWithBool:v3];
+      v14 = [NSNumber numberWithBool:busyCopy];
       v11 = _AXStringForArgs();
 
       if (os_log_type_enabled(v8, v9))
@@ -2762,7 +2762,7 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
     }
   }
 
-  if (v3)
+  if (busyCopy)
   {
     v12 = 1;
   }
@@ -2778,22 +2778,22 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
   self->_bluetoothIsBusy = v12;
 }
 
-- (void)alertSheetDismissed:(id)a3
+- (void)alertSheetDismissed:(id)dismissed
 {
   alert = self->_alert;
   self->_alert = 0;
 
-  v5 = [(AXBluetoothDevicesController *)self rootController];
-  v6 = [v5 visibleViewController];
+  rootController = [(AXBluetoothDevicesController *)self rootController];
+  visibleViewController = [rootController visibleViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(AXBluetoothDevicesController *)self rootController];
-    v8 = [v10 visibleViewController];
-    v9 = [v8 parentViewController];
-    [v9 dismiss];
+    rootController2 = [(AXBluetoothDevicesController *)self rootController];
+    visibleViewController2 = [rootController2 visibleViewController];
+    parentViewController = [visibleViewController2 parentViewController];
+    [parentViewController dismiss];
   }
 }
 
@@ -2803,31 +2803,31 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
   sspAlert = self->_sspAlert;
   self->_sspAlert = 0;
 
-  v4 = [(AXBluetoothDevicesController *)self rootController];
-  v5 = [v4 visibleViewController];
+  rootController = [(AXBluetoothDevicesController *)self rootController];
+  visibleViewController = [rootController visibleViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(AXBluetoothDevicesController *)self rootController];
-    v7 = [v9 visibleViewController];
-    v8 = [v7 parentViewController];
-    [v8 dismiss];
+    rootController2 = [(AXBluetoothDevicesController *)self rootController];
+    visibleViewController2 = [rootController2 visibleViewController];
+    parentViewController = [visibleViewController2 parentViewController];
+    [parentViewController dismiss];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  if ([a3 state] == &dword_4 + 1 && self->_power && *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers])
+  if ([state state] == &dword_4 + 1 && self->_power && *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
     v4 = +[NSMutableArray array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v5 = [(AXBluetoothDevicesController *)self centralManager];
-    v6 = [v5 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
+    centralManager = [(AXBluetoothDevicesController *)self centralManager];
+    v6 = [centralManager retrieveConnectedPeripheralsWithServices:0 allowAll:1];
 
     v7 = [v6 countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v7)
@@ -2855,9 +2855,9 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
           if ([(AXBluetoothDevicesController *)self peripheralMatchesUnadvertisedService:v11])
           {
             v13 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:v11];
-            v14 = [v11 identifier];
-            v15 = [v14 UUIDString];
-            [v4 addObject:v15];
+            identifier = [v11 identifier];
+            uUIDString = [identifier UUIDString];
+            [v4 addObject:uUIDString];
 
             v16 = AXLogBrailleHW();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2884,9 +2884,9 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [(AXBluetoothDevicesController *)self centralManager];
-    v18 = [(AXBluetoothDevicesController *)self allowedServices];
-    v19 = [v17 retrieveConnectedPeripheralsWithServices:v18 allowAll:0];
+    centralManager2 = [(AXBluetoothDevicesController *)self centralManager];
+    allowedServices = [(AXBluetoothDevicesController *)self allowedServices];
+    v19 = [centralManager2 retrieveConnectedPeripheralsWithServices:allowedServices allowAll:0];
 
     v20 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v20)
@@ -2911,9 +2911,9 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
             _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "Retrieved periperal (some): %@", buf, 0xCu);
           }
 
-          v26 = [v24 identifier];
-          v27 = [v26 UUIDString];
-          v28 = [v4 containsObject:v27];
+          identifier2 = [v24 identifier];
+          uUIDString2 = [identifier2 UUIDString];
+          v28 = [v4 containsObject:uUIDString2];
 
           if ((v28 & 1) == 0)
           {
@@ -2935,28 +2935,28 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
   }
 }
 
-- (BOOL)peripheralMatchesUnadvertisedService:(id)a3
+- (BOOL)peripheralMatchesUnadvertisedService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 name];
-  if ([v4 hasPrefix:@"DotPad"])
+  serviceCopy = service;
+  name = [serviceCopy name];
+  if ([name hasPrefix:@"DotPad"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 name];
-    v5 = [v6 hasPrefix:@"DotPocket"];
+    name2 = [serviceCopy name];
+    v5 = [name2 hasPrefix:@"DotPocket"];
   }
 
   return v5;
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v8 = a4;
-  [a5 objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
+  peripheralCopy = peripheral;
+  [data objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -2977,8 +2977,8 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
-        v15 = [(AXBluetoothDevicesController *)self allowedServices];
-        LOBYTE(v14) = [v15 containsObject:v14];
+        allowedServices = [(AXBluetoothDevicesController *)self allowedServices];
+        LOBYTE(v14) = [allowedServices containsObject:v14];
 
         if (v14)
         {
@@ -3001,14 +3001,14 @@ void __56__AXBluetoothDevicesController_showBluetoothPowerAlert___block_invoke(u
     }
   }
 
-  v16 = [(AXBluetoothDevicesController *)self peripheralMatchesUnadvertisedService:v8];
+  v16 = [(AXBluetoothDevicesController *)self peripheralMatchesUnadvertisedService:peripheralCopy];
 LABEL_11:
   v17 = AXLogBrailleHW();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = [NSNumber numberWithBool:v16];
     *buf = 138412546;
-    v33 = v8;
+    v33 = peripheralCopy;
     v34 = 2112;
     v35 = v18;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Discovered periperal: %@, allowed %@", buf, 0x16u);
@@ -3016,15 +3016,15 @@ LABEL_11:
 
   if (v16)
   {
-    v19 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:v8];
+    v19 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:peripheralCopy];
     if (v19)
     {
       v20 = AXLogBrailleHW();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         devicesDict = self->_devicesDict;
-        v22 = [v19 identifier];
-        v23 = [(NSMutableDictionary *)devicesDict objectForKey:v22];
+        identifier = [v19 identifier];
+        v23 = [(NSMutableDictionary *)devicesDict objectForKey:identifier];
         *buf = 138412546;
         v33 = v19;
         v34 = 2112;
@@ -3033,14 +3033,14 @@ LABEL_11:
       }
 
       v24 = self->_devicesDict;
-      v25 = [v19 identifier];
-      v26 = [(NSMutableDictionary *)v24 objectForKey:v25];
+      identifier2 = [v19 identifier];
+      v26 = [(NSMutableDictionary *)v24 objectForKey:identifier2];
 
       if (v26)
       {
         [(AXBluetoothDevicesController *)self _updateDevicePosition:v19];
-        v27 = [v19 identifier];
-        [(AXBluetoothDevicesController *)self reloadSpecifierID:v27 animated:0];
+        identifier3 = [v19 identifier];
+        [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier3 animated:0];
       }
 
       else
@@ -3051,11 +3051,11 @@ LABEL_11:
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:v7];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v9 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:peripheralCopy];
   v10 = AXLogBrailleHW();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -3064,23 +3064,23 @@ LABEL_11:
 
   if (v9)
   {
-    v11 = [v9 identifier];
-    v12 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-    v13 = [v11 isEqualToString:v12];
+    identifier = [v9 identifier];
+    identifier2 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+    v13 = [identifier isEqualToString:identifier2];
 
     if (v13)
     {
       [(AXBluetoothDevicesController *)self setBluetoothIsBusy:0];
     }
 
-    v14 = [v9 identifier];
-    [(AXBluetoothDevicesController *)self reloadSpecifierID:v14];
+    identifier3 = [v9 identifier];
+    [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier3];
   }
 }
 
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state
 {
-  v5 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:a4];
+  v5 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:state];
   if (v5)
   {
     v10 = v5;
@@ -3091,9 +3091,9 @@ LABEL_11:
 
     else
     {
-      v6 = [v10 identifier];
-      v7 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-      v8 = [v6 isEqualToString:v7];
+      identifier = [v10 identifier];
+      identifier2 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+      v8 = [identifier isEqualToString:identifier2];
 
       if (v8)
       {
@@ -3102,41 +3102,41 @@ LABEL_11:
     }
 
     [(AXBluetoothDevicesController *)self _updateDevicePosition:v10];
-    v9 = [v10 identifier];
-    [(AXBluetoothDevicesController *)self reloadSpecifierID:v9];
+    identifier3 = [v10 identifier];
+    [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier3];
 
     v5 = v10;
   }
 }
 
-- (void)_peripheralDidCompletePairing:(id)a3
+- (void)_peripheralDidCompletePairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   v5 = AXLogBrailleHW();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = pairingCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Completed pairing to %@", &v10, 0xCu);
   }
 
-  v6 = [v4 identifier];
-  v7 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-  v8 = [v6 isEqualToString:v7];
+  identifier = [pairingCopy identifier];
+  identifier2 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if (v8)
   {
     [(AXBluetoothDevicesController *)self setBluetoothIsBusy:0];
   }
 
-  [(AXBluetoothDevicesController *)self _updateDevicePosition:v4];
-  v9 = [v4 identifier];
-  [(AXBluetoothDevicesController *)self reloadSpecifierID:v9];
+  [(AXBluetoothDevicesController *)self _updateDevicePosition:pairingCopy];
+  identifier3 = [pairingCopy identifier];
+  [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier3];
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v5 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:a4];
+  v5 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:pairing];
   v6 = v5;
   if (v5)
   {
@@ -3151,21 +3151,21 @@ LABEL_11:
   _objc_release_x1(v5, v6);
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v13 = a4;
-  v6 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:v13];
-  if ([v13 state])
+  pairingCopy = pairing;
+  v6 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:pairingCopy];
+  if ([pairingCopy state])
   {
-    v7 = [(AXBluetoothDevicesController *)self centralManager];
-    [v7 cancelPeripheralConnection:v13];
+    centralManager = [(AXBluetoothDevicesController *)self centralManager];
+    [centralManager cancelPeripheralConnection:pairingCopy];
   }
 
   if (v6)
   {
-    v8 = [v6 identifier];
-    v9 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-    v10 = [v8 isEqualToString:v9];
+    identifier = [v6 identifier];
+    identifier2 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+    v10 = [identifier isEqualToString:identifier2];
 
     if (v10)
     {
@@ -3181,16 +3181,16 @@ LABEL_11:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v5 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:a4];
+  v5 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:unpair];
   v6 = v5;
   if (v5)
   {
     v9 = v5;
     [(AXBluetoothDevicesController *)self _updateDevicePosition:v5];
-    v7 = [v9 identifier];
-    [(AXBluetoothDevicesController *)self reloadSpecifierID:v7];
+    identifier = [v9 identifier];
+    [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier];
 
     v8 = +[VOSBluetoothManager sharedInstance];
     [v8 postNotificationName:VOSBluetoothDeviceDisconnectSuccessNotification object:v9];
@@ -3201,59 +3201,59 @@ LABEL_11:
   _objc_release_x1(v5, v6);
 }
 
-- (void)peripheralDidUpdateName:(id)a3
+- (void)peripheralDidUpdateName:(id)name
 {
-  v4 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:a3];
+  v4 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:name];
   if (v4)
   {
     v9 = v4;
-    v5 = [v4 identifier];
-    v6 = [(AXBluetoothDevicesController *)self specifierForID:v5];
+    identifier = [v4 identifier];
+    v6 = [(AXBluetoothDevicesController *)self specifierForID:identifier];
 
-    v7 = [v9 name];
-    [v6 setName:v7];
+    name = [v9 name];
+    [v6 setName:name];
 
-    v8 = [v9 name];
-    [v6 setProperty:v8 forKey:PSTitleKey];
+    name2 = [v9 name];
+    [v6 setProperty:name2 forKey:PSTitleKey];
 
     [(AXBluetoothDevicesController *)self _updateDevicePosition:v9];
     v4 = v9;
   }
 }
 
-- (void)peripheralConnectionTimeout:(id)a3
+- (void)peripheralConnectionTimeout:(id)timeout
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 identifier];
-  v5 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-  v6 = [v4 isEqualToString:v5];
+  userInfo = [timeout userInfo];
+  identifier = [userInfo identifier];
+  identifier2 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   if (v6)
   {
-    if (([v10 connected] & 1) == 0)
+    if (([userInfo connected] & 1) == 0)
     {
-      v7 = [objc_allocWithZone(VoiceOverBluetoothAlert) initWithDevice:v10];
+      v7 = [objc_allocWithZone(VoiceOverBluetoothAlert) initWithDevice:userInfo];
       alert = self->_alert;
       self->_alert = v7;
 
       [(VoiceOverBluetoothAlert *)self->_alert setDelegate:self];
       [(VoiceOverBluetoothAlert *)self->_alert showAlertWithResult:&off_27A440];
-      [v10 disconnect];
+      [userInfo disconnect];
     }
 
     [(AXBluetoothDevicesController *)self setBluetoothIsBusy:0];
-    v9 = [v10 identifier];
-    [(AXBluetoothDevicesController *)self reloadSpecifierID:v9];
+    identifier3 = [userInfo identifier];
+    [(AXBluetoothDevicesController *)self reloadSpecifierID:identifier3];
   }
 }
 
-- (id)getDeviceForPeripheral:(id)a3
+- (id)getDeviceForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
+  peripheralCopy = peripheral;
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  v7 = [(NSMutableDictionary *)self->_devicesDict objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_devicesDict objectForKey:uUIDString];
   v8 = AXLogBrailleHW();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3264,18 +3264,18 @@ LABEL_11:
 
   if (!v7)
   {
-    v9 = [v4 name];
-    if ([v9 length])
+    name = [peripheralCopy name];
+    if ([name length])
     {
-      v10 = [v4 visibleInSettings];
+      visibleInSettings = [peripheralCopy visibleInSettings];
 
-      if (v10)
+      if (visibleInSettings)
       {
         v11 = [AXUIBluetoothDevice alloc];
         v12 = +[VOSBluetoothManager sharedInstance];
-        v7 = [v11 initWithPeripheral:v4 helper:v12];
+        v7 = [v11 initWithPeripheral:peripheralCopy helper:v12];
 
-        [v4 setDelegate:self];
+        [peripheralCopy setDelegate:self];
         goto LABEL_9;
       }
     }
@@ -3292,43 +3292,43 @@ LABEL_9:
   return v7;
 }
 
-- (void)_setupCentralScanning:(BOOL)a3
+- (void)_setupCentralScanning:(BOOL)scanning
 {
-  v3 = a3;
-  v5 = [(AXBluetoothDevicesController *)self centralManager];
-  v6 = [v5 state];
+  scanningCopy = scanning;
+  centralManager = [(AXBluetoothDevicesController *)self centralManager];
+  state = [centralManager state];
 
-  if (v6 == &dword_4 + 1)
+  if (state == &dword_4 + 1)
   {
-    v7 = [(AXBluetoothDevicesController *)self centralManager];
-    v8 = v7;
-    if (v3)
+    centralManager2 = [(AXBluetoothDevicesController *)self centralManager];
+    v8 = centralManager2;
+    if (scanningCopy)
     {
-      [v7 scanForPeripheralsWithServices:0 options:0];
+      [centralManager2 scanForPeripheralsWithServices:0 options:0];
     }
 
     else
     {
-      [v7 stopScan];
+      [centralManager2 stopScan];
     }
   }
 }
 
-- (void)showPairingAlertForPairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)showPairingAlertForPairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v11;
+    v13 = pairingCopy;
     v14 = [(AXBluetoothDevicesController *)self getDeviceForPeripheral:v13];
     v15 = v14;
     if (v14)
     {
-      v16 = a5 == 4 || a5 == 1;
-      if (a5 == 1 || a5 == 4 || !a5)
+      v16 = type == 4 || type == 1;
+      if (type == 1 || type == 4 || !type)
       {
         v24 = v14;
         objc_initWeak(location, self);
@@ -3339,12 +3339,12 @@ LABEL_9:
         v29[2] = __99__AXBluetoothDevicesController_showPairingAlertForPairingAgent_peerDidRequestPairing_type_passkey___block_invoke;
         v29[3] = &unk_257B20;
         v34 = v16;
-        v30 = v10;
+        v30 = agentCopy;
         v31 = v13;
-        v33[1] = a5;
-        v19 = v12;
+        v33[1] = type;
+        v19 = passkeyCopy;
         v32 = v19;
-        v35 = a5 == 0;
+        v35 = type == 0;
         objc_copyWeak(v33, location);
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
@@ -3352,14 +3352,14 @@ LABEL_9:
         v25[3] = &unk_257B48;
         v26 = v30;
         v27 = v31;
-        v28[1] = a5;
+        v28[1] = type;
         objc_copyWeak(v28, location);
         v15 = v24;
         v20 = [v23 initWithDevice:v24 andSpecifier:currentDeviceSpecifier acceptPairingBlock:v29 cancelPairingBlock:v25];
         sspAlert = self->_sspAlert;
         self->_sspAlert = v20;
 
-        [(VOSBluetoothSSPPairingRequest *)self->_sspAlert setPairingStyle:a5 == 0 andPasskey:v19];
+        [(VOSBluetoothSSPPairingRequest *)self->_sspAlert setPairingStyle:type == 0 andPasskey:v19];
         [(VOSBluetoothSSPPairingRequest *)self->_sspAlert showWithViewController:self];
         objc_destroyWeak(v28);
 
@@ -3369,9 +3369,9 @@ LABEL_9:
 
       else
       {
-        [v10 respondToPairingRequest:v13 type:a5 accept:0 data:0];
-        v17 = [(AXBluetoothDevicesController *)self centralManager];
-        [v17 cancelPeripheralConnection:v13];
+        [agentCopy respondToPairingRequest:v13 type:type accept:0 data:0];
+        centralManager = [(AXBluetoothDevicesController *)self centralManager];
+        [centralManager cancelPeripheralConnection:v13];
 
         v18 = self->_sspAlert;
         self->_sspAlert = 0;

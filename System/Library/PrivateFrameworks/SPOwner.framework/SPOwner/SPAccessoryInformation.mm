@@ -1,40 +1,40 @@
 @interface SPAccessoryInformation
-- (SPAccessoryInformation)initWithCoder:(id)a3;
-- (SPAccessoryInformation)initWithProductData:(id)a3 manufacturerName:(id)a4 modelName:(id)a5 firmwareVersion:(id)a6 protocolVersion:(id)a7 accessoryCategory:(unint64_t)a8 accessoryCapabilities:(unsigned int)a9 batteryType:(unsigned __int8)a10 batteryState:(unsigned __int8)a11;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPAccessoryInformation)initWithCoder:(id)coder;
+- (SPAccessoryInformation)initWithProductData:(id)data manufacturerName:(id)name modelName:(id)modelName firmwareVersion:(id)version protocolVersion:(id)protocolVersion accessoryCategory:(unint64_t)category accessoryCapabilities:(unsigned int)capabilities batteryType:(unsigned __int8)self0 batteryState:(unsigned __int8)self1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPAccessoryInformation
 
-- (SPAccessoryInformation)initWithProductData:(id)a3 manufacturerName:(id)a4 modelName:(id)a5 firmwareVersion:(id)a6 protocolVersion:(id)a7 accessoryCategory:(unint64_t)a8 accessoryCapabilities:(unsigned int)a9 batteryType:(unsigned __int8)a10 batteryState:(unsigned __int8)a11
+- (SPAccessoryInformation)initWithProductData:(id)data manufacturerName:(id)name modelName:(id)modelName firmwareVersion:(id)version protocolVersion:(id)protocolVersion accessoryCategory:(unint64_t)category accessoryCapabilities:(unsigned int)capabilities batteryType:(unsigned __int8)self0 batteryState:(unsigned __int8)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v25 = a5;
-  v24 = a6;
-  v20 = a7;
+  dataCopy = data;
+  nameCopy = name;
+  modelNameCopy = modelName;
+  versionCopy = version;
+  protocolVersionCopy = protocolVersion;
   v26.receiver = self;
   v26.super_class = SPAccessoryInformation;
   v21 = [(SPAccessoryInformation *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_productData, a3);
-    objc_storeStrong(&v22->_manufacturerName, a4);
-    objc_storeStrong(&v22->_modelName, a5);
-    objc_storeStrong(&v22->_firmwareVersion, a6);
-    objc_storeStrong(&v22->_protocolVersion, a7);
-    v22->_accessoryCategory = a8;
-    v22->_accessoryCapabilities = a9;
-    v22->_batteryType = a10;
-    v22->_batteryState = a11;
+    objc_storeStrong(&v21->_productData, data);
+    objc_storeStrong(&v22->_manufacturerName, name);
+    objc_storeStrong(&v22->_modelName, modelName);
+    objc_storeStrong(&v22->_firmwareVersion, version);
+    objc_storeStrong(&v22->_protocolVersion, protocolVersion);
+    v22->_accessoryCategory = category;
+    v22->_accessoryCapabilities = capabilities;
+    v22->_batteryType = type;
+    v22->_batteryState = state;
   }
 
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPAccessoryInformation alloc];
   WORD2(v6) = *&self->_batteryType;
@@ -42,48 +42,48 @@
   return [SPAccessoryInformation initWithProductData:v4 manufacturerName:"initWithProductData:manufacturerName:modelName:firmwareVersion:protocolVersion:accessoryCategory:accessoryCapabilities:batteryType:batteryState:" modelName:self->_productData firmwareVersion:self->_manufacturerName protocolVersion:self->_modelName accessoryCategory:self->_firmwareVersion accessoryCapabilities:self->_protocolVersion batteryType:self->_accessoryCategory batteryState:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   productData = self->_productData;
-  v5 = a3;
-  [v5 encodeObject:productData forKey:@"productData"];
-  [v5 encodeObject:self->_manufacturerName forKey:@"manufacturerName"];
-  [v5 encodeObject:self->_modelName forKey:@"modelName"];
-  [v5 encodeObject:self->_firmwareVersion forKey:@"firmwareVersion"];
-  [v5 encodeObject:self->_protocolVersion forKey:@"protocolVersion"];
-  [v5 encodeInt64:self->_accessoryCategory forKey:@"accessoryCategory"];
-  [v5 encodeInt32:self->_accessoryCapabilities forKey:@"accessoryCapabilities"];
-  [v5 encodeInt32:self->_batteryType forKey:@"batteryType"];
-  [v5 encodeInt32:self->_batteryState forKey:@"batteryState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:productData forKey:@"productData"];
+  [coderCopy encodeObject:self->_manufacturerName forKey:@"manufacturerName"];
+  [coderCopy encodeObject:self->_modelName forKey:@"modelName"];
+  [coderCopy encodeObject:self->_firmwareVersion forKey:@"firmwareVersion"];
+  [coderCopy encodeObject:self->_protocolVersion forKey:@"protocolVersion"];
+  [coderCopy encodeInt64:self->_accessoryCategory forKey:@"accessoryCategory"];
+  [coderCopy encodeInt32:self->_accessoryCapabilities forKey:@"accessoryCapabilities"];
+  [coderCopy encodeInt32:self->_batteryType forKey:@"batteryType"];
+  [coderCopy encodeInt32:self->_batteryState forKey:@"batteryState"];
 }
 
-- (SPAccessoryInformation)initWithCoder:(id)a3
+- (SPAccessoryInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productData"];
   productData = self->_productData;
   self->_productData = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerName"];
   manufacturerName = self->_manufacturerName;
   self->_manufacturerName = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
   modelName = self->_modelName;
   self->_modelName = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
   firmwareVersion = self->_firmwareVersion;
   self->_firmwareVersion = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protocolVersion"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protocolVersion"];
   protocolVersion = self->_protocolVersion;
   self->_protocolVersion = v13;
 
-  self->_accessoryCategory = [v4 decodeInt64ForKey:@"accessoryCategory"];
-  self->_accessoryCapabilities = [v4 decodeInt32ForKey:@"accessoryCapabilities"];
-  self->_batteryType = [v4 decodeInt32ForKey:@"batteryType"];
-  v15 = [v4 decodeInt32ForKey:@"batteryState"];
+  self->_accessoryCategory = [coderCopy decodeInt64ForKey:@"accessoryCategory"];
+  self->_accessoryCapabilities = [coderCopy decodeInt32ForKey:@"accessoryCapabilities"];
+  self->_batteryType = [coderCopy decodeInt32ForKey:@"batteryType"];
+  v15 = [coderCopy decodeInt32ForKey:@"batteryState"];
 
   self->_batteryState = v15;
   return self;

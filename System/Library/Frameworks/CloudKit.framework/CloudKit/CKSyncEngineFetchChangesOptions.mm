@@ -2,11 +2,11 @@
 - (CKOperationGroup)operationGroup;
 - (CKSyncEngineFetchChangesOptions)init;
 - (CKSyncEngineFetchChangesOptions)initWithScope:(CKSyncEngineFetchChangesScope *)scope;
-- (CKSyncEngineFetchChangesOptions)initWithZoneIDs:(id)a3;
+- (CKSyncEngineFetchChangesOptions)initWithZoneIDs:(id)ds;
 - (CKSyncEngineFetchChangesScope)scope;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)setOperationGroup:(id)a3 updateName:(BOOL)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)setOperationGroup:(id)group updateName:(BOOL)name;
 - (void)setScope:(CKSyncEngineFetchChangesScope *)scope;
 - (void)updateOperationGroupName;
 @end
@@ -15,26 +15,26 @@
 
 - (void)updateOperationGroupName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1883F58E8(sub_1883F63D4, sub_1883F6734);
 }
 
 - (CKOperationGroup)operationGroup
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_operationGroup;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_operationGroup;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (CKSyncEngineFetchChangesScope)scope
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_scope;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_scope;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -90,20 +90,20 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CKSyncEngineFetchChangesOptions alloc];
   v8 = objc_msgSend_scope(self, v6, v7);
   v11 = objc_msgSend_copy(v8, v9, v10);
   v13 = objc_msgSend_initWithScope_(v5, v12, v11);
 
-  v15 = objc_msgSend_copyWithZone_(self->_prioritizedZoneIDs, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_prioritizedZoneIDs, v14, zone);
   objc_msgSend_setPrioritizedZoneIDs_(v13, v16, v15);
 
-  v18 = objc_msgSend_copyWithZone_(self->_zoneConfigurations, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_zoneConfigurations, v17, zone);
   objc_msgSend_setZoneConfigurations_(v13, v19, v18);
 
-  v21 = objc_msgSend_copyWithZone_(self->_defaultZoneConfiguration, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_defaultZoneConfiguration, v20, zone);
   objc_msgSend_setDefaultZoneConfiguration_(v13, v22, v21);
 
   v25 = objc_msgSend_operationGroup(v13, v23, v24);
@@ -112,13 +112,13 @@
   return v13;
 }
 
-- (CKSyncEngineFetchChangesOptions)initWithZoneIDs:(id)a3
+- (CKSyncEngineFetchChangesOptions)initWithZoneIDs:(id)ds
 {
-  v4 = a3;
-  if (v4)
+  dsCopy = ds;
+  if (dsCopy)
   {
     v5 = [CKSyncEngineFetchChangesScope alloc];
-    v7 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v6, v4);
+    v7 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v6, dsCopy);
     v9 = objc_msgSend_initWithZoneIDs_(v5, v8, v7);
   }
 
@@ -132,26 +132,26 @@
   return v11;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v36 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_scope(self, v4, v5);
-  objc_msgSend_addProperty_value_shouldRedact_(v36, v7, @"scope", v6, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v7, @"scope", v6, 0);
 
   v10 = objc_msgSend_operationGroup(self, v8, v9);
   v13 = objc_msgSend_name(v10, v11, v12);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v36, v14, @"group", v13, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v14, @"group", v13, 0);
 
   if (objc_msgSend_forceFetchChanges(self, v15, v16))
   {
     v19 = MEMORY[0x1E696AD98];
     Changes = objc_msgSend_forceFetchChanges(self, v17, v18);
     v22 = objc_msgSend_numberWithBool_(v19, v21, Changes);
-    objc_msgSend_addProperty_value_shouldRedact_(v36, v23, @"forceFetchChanges", v22, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v23, @"forceFetchChanges", v22, 0);
   }
 
   v24 = objc_msgSend_defaultZoneConfiguration(self, v17, v18);
-  objc_msgSend_addProperty_value_shouldRedact_(v36, v25, @"defaultZoneConfiguration", v24, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v25, @"defaultZoneConfiguration", v24, 0);
 
   v28 = objc_msgSend_zoneConfigurations(self, v26, v27);
   v31 = objc_msgSend_count(v28, v29, v30);
@@ -159,36 +159,36 @@
   if (v31)
   {
     v34 = objc_msgSend_zoneConfigurations(self, v32, v33);
-    objc_msgSend_addProperty_value_shouldRedact_(v36, v35, @"zoneConfigurations", v34, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v35, @"zoneConfigurations", v34, 0);
   }
 }
 
 - (void)setScope:(CKSyncEngineFetchChangesScope *)scope
 {
   v11 = scope;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_msgSend_copy(v11, v5, v6);
-  v8 = v4->_scope;
-  v4->_scope = v7;
+  v8 = selfCopy->_scope;
+  selfCopy->_scope = v7;
 
-  objc_msgSend_updateOperationGroupName(v4, v9, v10);
-  objc_sync_exit(v4);
+  objc_msgSend_updateOperationGroupName(selfCopy, v9, v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setOperationGroup:(id)a3 updateName:(BOOL)a4
+- (void)setOperationGroup:(id)group updateName:(BOOL)name
 {
-  v4 = a4;
-  v10 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  objc_storeStrong(&v7->_operationGroup, a3);
-  if (v4)
+  nameCopy = name;
+  groupCopy = group;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_operationGroup, group);
+  if (nameCopy)
   {
-    objc_msgSend_updateOperationGroupName(v7, v8, v9);
+    objc_msgSend_updateOperationGroupName(selfCopy, v8, v9);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 @end

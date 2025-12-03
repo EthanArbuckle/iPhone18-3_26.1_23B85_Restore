@@ -1,37 +1,37 @@
 @interface TCRegionCollider
-- (BOOL)containsPoint:(CGPoint)a3;
-- (TCRegionCollider)initWithRegion:(int64_t)a3 TouchController:(id)a4;
+- (BOOL)containsPoint:(CGPoint)point;
+- (TCRegionCollider)initWithRegion:(int64_t)region TouchController:(id)controller;
 - (int64_t)colliderShape;
 @end
 
 @implementation TCRegionCollider
 
-- (TCRegionCollider)initWithRegion:(int64_t)a3 TouchController:(id)a4
+- (TCRegionCollider)initWithRegion:(int64_t)region TouchController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = TCRegionCollider;
   v7 = [(TCRegionCollider *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_region = a3;
+    v7->_region = region;
     v7->_enabled = 1;
-    objc_storeWeak(&v7->_touchController, v6);
+    objc_storeWeak(&v7->_touchController, controllerCopy);
   }
 
   return v8;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
   if (!self->_enabled)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_touchController);
   [WeakRetained size];
   v8 = v7;

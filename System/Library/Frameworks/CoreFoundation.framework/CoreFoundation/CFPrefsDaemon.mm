@@ -1,10 +1,10 @@
 @interface CFPrefsDaemon
-+ (BOOL)_getUncanonicalizedSourcePath:(__CFString *)a3 withDomain:(__CFString *)a4 user:(int)a5 byHost:(const __CFString *)a6 containerPath:(int)a7 managed:(int)a8 managedUsesContainer:;
-+ (CFStringRef)_copyUncanonicalizedSourcePathWithDomain:(__CFString *)a3 user:(int)a4 byHost:(const __CFString *)a5 containerPath:(int)a6 managed:(int)a7 managedUsesContainer:;
-- (CFPDContainerSource)_createSourceWithDomain:(const void *)a3 user:(uint64_t)a4 container:(uint64_t)a5 byHost:(uint64_t)a6 managed:(uint64_t)a7 shmemIndex:;
-- (os_unfair_lock_s)initWithRole:(int)a3 testMode:;
++ (BOOL)_getUncanonicalizedSourcePath:(__CFString *)path withDomain:(__CFString *)domain user:(int)user byHost:(const __CFString *)host containerPath:(int)containerPath managed:(int)managed managedUsesContainer:;
++ (CFStringRef)_copyUncanonicalizedSourcePathWithDomain:(__CFString *)domain user:(int)user byHost:(const __CFString *)host containerPath:(int)path managed:(int)managed managedUsesContainer:;
+- (CFPDContainerSource)_createSourceWithDomain:(const void *)domain user:(uint64_t)user container:(uint64_t)container byHost:(uint64_t)host managed:(uint64_t)managed shmemIndex:;
+- (os_unfair_lock_s)initWithRole:(int)role testMode:;
 - (uint64_t)_initializeShmemPage:(uint64_t)result;
-- (uint64_t)_setSource:(int)a3 isDead:;
+- (uint64_t)_setSource:(int)source isDead:;
 - (uint64_t)getShmemName:(uint64_t)result bufLen:;
 - (uint64_t)isInTestMode;
 - (uint64_t)listener;
@@ -14,19 +14,19 @@
 - (uint64_t)updateShmemForDomain:(uint64_t)result;
 - (uint64_t)updateShmemIndex:(uint64_t)result;
 - (uint64_t)userID;
-- (void)handleAgentCheckInMessage:(uint64_t)a1;
-- (void)handleFlushManagedMessage:(uint64_t)a3 replyHandler:;
-- (void)handleFlushSourceForDomainMessage:(uint64_t)a1 replyHandler:;
-- (void)handleMessage:(uint64_t)a3 fromPeer:(uint64_t)a4 replyHandler:;
-- (void)handleMultiMessage:(uint64_t)a3 replyHandler:;
+- (void)handleAgentCheckInMessage:(uint64_t)message;
+- (void)handleFlushManagedMessage:(uint64_t)message replyHandler:;
+- (void)handleFlushSourceForDomainMessage:(uint64_t)message replyHandler:;
+- (void)handleMessage:(uint64_t)message fromPeer:(uint64_t)peer replyHandler:;
+- (void)handleMultiMessage:(uint64_t)message replyHandler:;
 - (void)handleSimulateTimerSynchronizeForTesting;
-- (void)handleSourceMessage:(uint64_t)a3 replyHandler:;
-- (void)handleUserDeletedMessage:(uint64_t)a1 replyHandler:(void *)a2;
-- (void)logDomainInconsistencyForProcess:(void *)a3 message:(void *)a4 source:;
-- (void)synchronousWithSourceCache:(uint64_t)a1;
-- (void)withAllKnownManagedSources:(uint64_t)a1;
-- (void)withSnapshotOfSourcesForDomainIdentifier:(uint64_t)a3 performBlock:;
-- (void)withSourceForDomain:(const __CFString *)a3 inContainer:(__CFString *)a4 user:(int)a5 byHost:(int)a6 managed:(int)a7 managedUsesContainer:(uint64_t)a8 cloudStoreEntitlement:(const void *)a9 cloudConfigurationPath:(uint64_t)a10 performWithSourceLock:(uint64_t)a11 afterReleasingSourceLock:;
+- (void)handleSourceMessage:(uint64_t)message replyHandler:;
+- (void)handleUserDeletedMessage:(uint64_t)message replyHandler:(void *)handler;
+- (void)logDomainInconsistencyForProcess:(void *)process message:(void *)message source:;
+- (void)synchronousWithSourceCache:(uint64_t)cache;
+- (void)withAllKnownManagedSources:(uint64_t)sources;
+- (void)withSnapshotOfSourcesForDomainIdentifier:(uint64_t)identifier performBlock:;
+- (void)withSourceForDomain:(const __CFString *)domain inContainer:(__CFString *)container user:(int)user byHost:(int)host managed:(int)managed managedUsesContainer:(uint64_t)usesContainer cloudStoreEntitlement:(const void *)entitlement cloudConfigurationPath:(uint64_t)self0 performWithSourceLock:(uint64_t)self1 afterReleasingSourceLock:;
 @end
 
 @implementation CFPrefsDaemon
@@ -92,10 +92,10 @@
   return result;
 }
 
-- (void)withSnapshotOfSourcesForDomainIdentifier:(uint64_t)a3 performBlock:
+- (void)withSnapshotOfSourcesForDomainIdentifier:(uint64_t)identifier performBlock:
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v13 = 0;
     v14 = &v13;
@@ -112,10 +112,10 @@
     v8[4] = &v9;
     v8[5] = &v13;
     v8[6] = a2;
-    os_unfair_lock_lock((a1 + 48));
-    (__86__CFPrefsDaemon_SourceSupport__withSnapshotOfSourcesForDomainIdentifier_performBlock___block_invoke)(v8, *(a1 + 32), *(a1 + 40));
-    os_unfair_lock_unlock((a1 + 48));
-    (*(a3 + 16))(a3, v14[3], v10[3]);
+    os_unfair_lock_lock((self + 48));
+    (__86__CFPrefsDaemon_SourceSupport__withSnapshotOfSourcesForDomainIdentifier_performBlock___block_invoke)(v8, *(self + 32), *(self + 40));
+    os_unfair_lock_unlock((self + 48));
+    (*(identifier + 16))(identifier, v14[3], v10[3]);
     v5 = v14[3];
     if (v5)
     {
@@ -180,10 +180,10 @@ uint64_t __86__CFPrefsDaemon_SourceSupport__withSnapshotOfSourcesForDomainIdenti
   return result;
 }
 
-- (void)withAllKnownManagedSources:(uint64_t)a1
+- (void)withAllKnownManagedSources:(uint64_t)sources
 {
   v60 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (sources)
   {
     v20 = 0;
     v21 = &v20;
@@ -245,11 +245,11 @@ uint64_t __86__CFPrefsDaemon_SourceSupport__withSnapshotOfSourcesForDomainIdenti
     v7[7] = &v8;
     v7[8] = &v16;
     v7[9] = &v24;
-    v7[4] = a1;
+    v7[4] = sources;
     v7[5] = &v20;
-    os_unfair_lock_lock((a1 + 48));
-    (__59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_invoke)(v7, *(a1 + 32), *(a1 + 40));
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_lock((sources + 48));
+    (__59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_invoke)(v7, *(sources + 32), *(sources + 40));
+    os_unfair_lock_unlock((sources + 48));
     (*(a2 + 16))(a2, v21[3], v13[3], v17[3], v9[3], v25 + 4);
     if (v21[3])
     {
@@ -344,17 +344,17 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
   return result;
 }
 
-+ (BOOL)_getUncanonicalizedSourcePath:(__CFString *)a3 withDomain:(__CFString *)a4 user:(int)a5 byHost:(const __CFString *)a6 containerPath:(int)a7 managed:(int)a8 managedUsesContainer:
++ (BOOL)_getUncanonicalizedSourcePath:(__CFString *)path withDomain:(__CFString *)domain user:(int)user byHost:(const __CFString *)host containerPath:(int)containerPath managed:(int)managed managedUsesContainer:
 {
   objc_opt_self();
-  if (a7)
+  if (containerPath)
   {
-    PathForManagedBundleID = _CFPrefsGetPathForManagedBundleID(a3, a4, a8, a2);
+    PathForManagedBundleID = _CFPrefsGetPathForManagedBundleID(path, domain, managed, a2);
   }
 
   else
   {
-    PathForManagedBundleID = _CFPrefsGetPathForTriplet(a3, a4, a5, a6, a2);
+    PathForManagedBundleID = _CFPrefsGetPathForTriplet(path, domain, user, host, a2);
   }
 
   if (!strncmp("/private/var/empty", a2, 0x12uLL) || !strncmp("/var/empty", a2, 0xAuLL))
@@ -373,12 +373,12 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
   return PathForManagedBundleID;
 }
 
-+ (CFStringRef)_copyUncanonicalizedSourcePathWithDomain:(__CFString *)a3 user:(int)a4 byHost:(const __CFString *)a5 containerPath:(int)a6 managed:(int)a7 managedUsesContainer:
++ (CFStringRef)_copyUncanonicalizedSourcePathWithDomain:(__CFString *)domain user:(int)user byHost:(const __CFString *)host containerPath:(int)path managed:(int)managed managedUsesContainer:
 {
   v17 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   bzero(cStr, 0x402uLL);
-  if ([CFPrefsDaemon _getUncanonicalizedSourcePath:a2 withDomain:a3 user:a4 byHost:a5 containerPath:a6 managed:a7 managedUsesContainer:?])
+  if ([CFPrefsDaemon _getUncanonicalizedSourcePath:a2 withDomain:domain user:user byHost:host containerPath:path managed:managed managedUsesContainer:?])
   {
     v13 = CFStringFileSystemEncoding();
     result = CFStringCreateWithCString(&__kCFAllocatorSystemDefault, cStr, v13);
@@ -393,28 +393,28 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
   return result;
 }
 
-- (void)withSourceForDomain:(const __CFString *)a3 inContainer:(__CFString *)a4 user:(int)a5 byHost:(int)a6 managed:(int)a7 managedUsesContainer:(uint64_t)a8 cloudStoreEntitlement:(const void *)a9 cloudConfigurationPath:(uint64_t)a10 performWithSourceLock:(uint64_t)a11 afterReleasingSourceLock:
+- (void)withSourceForDomain:(const __CFString *)domain inContainer:(__CFString *)container user:(int)user byHost:(int)host managed:(int)managed managedUsesContainer:(uint64_t)usesContainer cloudStoreEntitlement:(const void *)entitlement cloudConfigurationPath:(uint64_t)self0 performWithSourceLock:(uint64_t)self1 afterReleasingSourceLock:
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (a7 && (a6 & 1) == 0)
+    if (managed && (host & 1) == 0)
     {
       [CFPrefsDaemon withSourceForDomain:inContainer:user:byHost:managed:managedUsesContainer:cloudStoreEntitlement:cloudConfigurationPath:performWithSourceLock:afterReleasingSourceLock:];
     }
 
     v18 = 0;
-    if (a2 && a4)
+    if (a2 && container)
     {
-      v19 = a5;
-      if ([(CFPrefsDaemon *)a1 shmem])
+      userCopy = user;
+      if ([(CFPrefsDaemon *)self shmem])
       {
-        v24 = a8;
-        v20 = [CFPrefsDaemon _copyUncanonicalizedSourcePathWithDomain:a2 user:a4 byHost:v19 containerPath:a3 managed:a6 managedUsesContainer:a7];
+        usesContainerCopy = usesContainer;
+        v20 = [CFPrefsDaemon _copyUncanonicalizedSourcePathWithDomain:a2 user:container byHost:userCopy containerPath:domain managed:host managedUsesContainer:managed];
         v18 = objc_alloc_init(CFPDSourceLookUpKey);
-        if (a9)
+        if (entitlement)
         {
-          v21 = CFRetain(a9);
+          v21 = CFRetain(entitlement);
         }
 
         else
@@ -434,7 +434,7 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
           v18->uncanonicalizedPath = 0;
         }
 
-        a8 = v24;
+        usesContainer = usesContainerCopy;
       }
 
       else
@@ -442,7 +442,7 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
         v18 = 0;
       }
 
-      LOBYTE(a5) = v19;
+      LOBYTE(user) = userCopy;
     }
 
     v30 = 0;
@@ -456,19 +456,19 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
     v26[2] = __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_byHost_managed_managedUsesContainer_cloudStoreEntitlement_cloudConfigurationPath_performWithSourceLock_afterReleasingSourceLock___block_invoke;
     v26[3] = &unk_1E6DD1948;
     v26[8] = a2;
-    v26[9] = a3;
-    v27 = a5;
-    v28 = a6;
-    v26[10] = a4;
-    v26[11] = a9;
+    v26[9] = domain;
+    userCopy2 = user;
+    hostCopy = host;
+    v26[10] = container;
+    v26[11] = entitlement;
     v26[4] = v18;
-    v26[5] = a8;
-    v26[6] = a1;
+    v26[5] = usesContainer;
+    v26[6] = self;
     v26[7] = &v30;
-    v29 = a7;
-    os_unfair_lock_lock((a1 + 48));
-    __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_byHost_managed_managedUsesContainer_cloudStoreEntitlement_cloudConfigurationPath_performWithSourceLock_afterReleasingSourceLock___block_invoke(v26, *(a1 + 32), *(a1 + 40));
-    os_unfair_lock_unlock((a1 + 48));
+    managedCopy = managed;
+    os_unfair_lock_lock((self + 48));
+    __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_byHost_managed_managedUsesContainer_cloudStoreEntitlement_cloudConfigurationPath_performWithSourceLock_afterReleasingSourceLock___block_invoke(v26, *(self + 32), *(self + 40));
+    os_unfair_lock_unlock((self + 48));
     v22 = v31[5];
     if (v22)
     {
@@ -476,20 +476,20 @@ uint64_t __59__CFPrefsDaemon_SourceSupport__withAllKnownManagedSources___block_i
       v25[1] = 3221225472;
       v25[2] = __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_byHost_managed_managedUsesContainer_cloudStoreEntitlement_cloudConfigurationPath_performWithSourceLock_afterReleasingSourceLock___block_invoke_2;
       v25[3] = &unk_1E6DD1998;
-      v25[5] = a10;
+      v25[5] = path;
       v25[6] = &v30;
-      v25[4] = a1;
+      v25[4] = self;
       [v22 lockedSync:v25];
     }
 
     else
     {
-      (*(a10 + 16))(a10, 0);
+      (*(path + 16))(path, 0);
     }
 
-    if (a11)
+    if (lock)
     {
-      (*(a11 + 16))(a11, v31[5]);
+      (*(lock + 16))(lock, v31[5]);
     }
 
     _Block_object_dispose(&v30, 8);
@@ -732,9 +732,9 @@ uint64_t __65__CFPrefsDaemon_logDomainInconsistencyForProcess_message_source___b
   return result;
 }
 
-- (void)handleMessage:(uint64_t)a3 fromPeer:(uint64_t)a4 replyHandler:
+- (void)handleMessage:(uint64_t)message fromPeer:(uint64_t)peer replyHandler:
 {
-  if (a1)
+  if (self)
   {
     Class = object_getClass(a2);
     if (Class != MEMORY[0x1E69E9E98])
@@ -744,15 +744,15 @@ uint64_t __65__CFPrefsDaemon_logDomainInconsistencyForProcess_message_source___b
         [CFPrefsDaemon handleMessage:fromPeer:replyHandler:];
       }
 
-      [(CFPrefsDaemon *)a3 handleMessage:a2 fromPeer:a4 replyHandler:a1];
+      [(CFPrefsDaemon *)message handleMessage:a2 fromPeer:peer replyHandler:self];
     }
   }
 }
 
-- (void)handleSourceMessage:(uint64_t)a3 replyHandler:
+- (void)handleSourceMessage:(uint64_t)message replyHandler:
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_84;
   }
@@ -902,7 +902,7 @@ LABEL_34:
 LABEL_36:
   v19 = xpc_dictionary_get_string(a2, "Key") == 0;
 LABEL_37:
-  v38 = a3;
+  messageCopy = message;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3052000000;
@@ -1028,7 +1028,7 @@ LABEL_63:
     }
 
     populateErrorReply("Using kCFPreferencesAnyUser with a container is only allowed for System Containers", reply, 1u);
-    (*(v38 + 16))(v38, reply);
+    (*(messageCopy + 16))(messageCopy, reply);
     goto LABEL_74;
   }
 
@@ -1042,7 +1042,7 @@ LABEL_63:
     }
 
     populateErrorReply("'com.apple.developer.ubiquity-kvstore-identifier' entitlement needed to use cloud preferences", reply, 1u);
-    (*(v38 + 16))(v38, reply);
+    (*(messageCopy + 16))(messageCopy, reply);
 LABEL_74:
     xpc_release(reply);
     xpc_release(a2);
@@ -1057,17 +1057,17 @@ LABEL_74:
   v43[1] = 3221225472;
   v43[2] = __50__CFPrefsDaemon_handleSourceMessage_replyHandler___block_invoke_3;
   v43[3] = &unk_1E6DD1FB8;
-  v43[6] = v38;
+  v43[6] = messageCopy;
   v43[7] = &v54;
   v43[4] = a2;
-  v43[5] = a1;
+  v43[5] = self;
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __50__CFPrefsDaemon_handleSourceMessage_replyHandler___block_invoke_4;
   v42[3] = &unk_1E6DD1FE0;
   v42[4] = a2;
   v42[5] = &v54;
-  [(CFPrefsDaemon *)a1 withSourceForDomain:v16 inContainer:v5 user:v39 byHost:v41 managed:v37 & 1 managedUsesContainer:v31 cloudStoreEntitlement:v25 cloudConfigurationPath:v43 performWithSourceLock:v42 afterReleasingSourceLock:?];
+  [(CFPrefsDaemon *)self withSourceForDomain:v16 inContainer:v5 user:v39 byHost:v41 managed:v37 & 1 managedUsesContainer:v31 cloudStoreEntitlement:v25 cloudConfigurationPath:v43 performWithSourceLock:v42 afterReleasingSourceLock:?];
   _Block_object_dispose(&v54, 8);
 LABEL_75:
   v33 = *(v49 + 40);
@@ -1096,15 +1096,15 @@ LABEL_84:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMultiMessage:(uint64_t)a3 replyHandler:
+- (void)handleMultiMessage:(uint64_t)message replyHandler:
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  v5 = a1;
+  selfCopy = self;
   if (!xpc_dictionary_get_remote_connection(xdict))
   {
     value = xpc_dictionary_get_value(xdict, "connection");
@@ -1164,7 +1164,7 @@ LABEL_18:
       v15[i] = xpc_array_get_value(v8, i);
     }
 
-    v29 = a3;
+    messageCopy = message;
     v18 = 0;
     v19 = MEMORY[0x1E69E9E80];
     do
@@ -1179,7 +1179,7 @@ LABEL_18:
         v35 = &__block_descriptor_44_e33_v16__0__NSObject_OS_xpc_object__8l;
         v36 = v15;
         v37 = v18;
-        [CFPrefsDaemon handleMessage:v5 fromPeer:v20 replyHandler:?];
+        [CFPrefsDaemon handleMessage:selfCopy fromPeer:v20 replyHandler:?];
       }
 
       if (!v15[v18])
@@ -1192,7 +1192,7 @@ LABEL_18:
 
     while (v12 != v18);
     v21 = 0;
-    a3 = v29;
+    message = messageCopy;
     goto LABEL_27;
   }
 
@@ -1225,7 +1225,7 @@ LABEL_27:
     while (v12);
   }
 
-  (*(a3 + 16))(a3, reply);
+  (*(message + 16))(message, reply);
   xpc_release(reply);
   free(v22);
 LABEL_8:
@@ -1454,19 +1454,19 @@ xpc_object_t __49__CFPrefsDaemon_handleMultiMessage_replyHandler___block_invoke_
   return result;
 }
 
-- (os_unfair_lock_s)initWithRole:(int)a3 testMode:
+- (os_unfair_lock_s)initWithRole:(int)role testMode:
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = CFPrefsDaemon;
     v5 = objc_msgSendSuper2(&v17, sel_init);
     v6 = v5;
     if (v5)
     {
-      LOBYTE(v5[142]._os_unfair_lock_opaque) = a3;
-      if (a3)
+      LOBYTE(v5[142]._os_unfair_lock_opaque) = role;
+      if (role)
       {
         os_transaction_create();
       }
@@ -1749,9 +1749,9 @@ uint64_t __39__CFPrefsDaemon_initWithRole_testMode___block_invoke_6(uint64_t a1,
   return result;
 }
 
-- (void)synchronousWithSourceCache:(uint64_t)a1
+- (void)synchronousWithSourceCache:(uint64_t)cache
 {
-  if (a1)
+  if (cache)
   {
     OUTLINED_FUNCTION_11_0();
     os_unfair_lock_lock(v3 + 12);
@@ -1761,7 +1761,7 @@ uint64_t __39__CFPrefsDaemon_initWithRole_testMode___block_invoke_6(uint64_t a1,
   }
 }
 
-- (uint64_t)_setSource:(int)a3 isDead:
+- (uint64_t)_setSource:(int)source isDead:
 {
   if (result)
   {
@@ -1774,7 +1774,7 @@ uint64_t __39__CFPrefsDaemon_initWithRole_testMode___block_invoke_6(uint64_t a1,
       v6 = *(v5 + 56 + 8 * (result >> 6));
       v7 = v6 | (1 << result);
       v8 = v6 & ~(1 << result);
-      if (a3)
+      if (source)
       {
         v8 = v7;
       }
@@ -1786,30 +1786,30 @@ uint64_t __39__CFPrefsDaemon_initWithRole_testMode___block_invoke_6(uint64_t a1,
   return result;
 }
 
-- (CFPDContainerSource)_createSourceWithDomain:(const void *)a3 user:(uint64_t)a4 container:(uint64_t)a5 byHost:(uint64_t)a6 managed:(uint64_t)a7 shmemIndex:
+- (CFPDContainerSource)_createSourceWithDomain:(const void *)domain user:(uint64_t)user container:(uint64_t)container byHost:(uint64_t)host managed:(uint64_t)managed shmemIndex:
 {
   if (result)
   {
-    v7 = a6;
-    v8 = a5;
+    hostCopy = host;
+    containerCopy = container;
     v11 = result;
-    if (a4)
+    if (user)
     {
-      return [[CFPDContainerSource alloc] initWithDomain:cf1 userName:a3 container:a4 byHost:a5 managed:a6 shmemIndex:a7 daemon:result];
+      return [[CFPDContainerSource alloc] initWithDomain:cf1 userName:domain container:user byHost:container managed:host shmemIndex:managed daemon:result];
     }
 
     else
     {
       if (CFEqual(cf1, @"kCFPreferencesAnyApplication"))
       {
-        if (CFEqual(a3, @"kCFPreferencesAnyUser"))
+        if (CFEqual(domain, @"kCFPreferencesAnyUser"))
         {
           v12 = 0;
         }
 
         else
         {
-          v12 = (v8 | v7) ^ 1;
+          v12 = (containerCopy | hostCopy) ^ 1;
         }
       }
 
@@ -1849,13 +1849,13 @@ void __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_by
   }
 }
 
-- (void)logDomainInconsistencyForProcess:(void *)a3 message:(void *)a4 source:
+- (void)logDomainInconsistencyForProcess:(void *)process message:(void *)message source:
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v8 = a4;
-    xpc_retain(a3);
+    messageCopy = message;
+    xpc_retain(process);
     v9 = qos_class_main();
     global_queue = dispatch_get_global_queue(v9, 2uLL);
     block[0] = MEMORY[0x1E69E9820];
@@ -1863,19 +1863,19 @@ void __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_by
     block[2] = __65__CFPrefsDaemon_logDomainInconsistencyForProcess_message_source___block_invoke;
     block[3] = &unk_1E6DD1F68;
     v13 = a2;
-    block[4] = a3;
-    block[5] = a1;
-    block[6] = a4;
+    block[4] = process;
+    block[5] = self;
+    block[6] = message;
     dispatch_async(global_queue, block);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFlushManagedMessage:(uint64_t)a3 replyHandler:
+- (void)handleFlushManagedMessage:(uint64_t)message replyHandler:
 {
   v8[7] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     log_client_activity(a2, "requested flush of managed sources", 0);
     _CFPrefsResetManagedPreferencesStateCache();
@@ -1890,18 +1890,18 @@ void __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_by
     v8[2] = __56__CFPrefsDaemon_handleFlushManagedMessage_replyHandler___block_invoke;
     v8[3] = &unk_1E6DD2030;
     v8[5] = reply;
-    v8[6] = a3;
-    v8[4] = a1;
-    [(CFPrefsDaemon *)a1 withAllKnownManagedSources:v8];
+    v8[6] = message;
+    v8[4] = self;
+    [(CFPrefsDaemon *)self withAllKnownManagedSources:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAgentCheckInMessage:(uint64_t)a1
+- (void)handleAgentCheckInMessage:(uint64_t)message
 {
   v4 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (message)
   {
     v1 = _CFPrefsDaemonLog();
     if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
@@ -1914,9 +1914,9 @@ void __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_by
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFlushSourceForDomainMessage:(uint64_t)a1 replyHandler:
+- (void)handleFlushSourceForDomainMessage:(uint64_t)message replyHandler:
 {
-  if (a1)
+  if (message)
   {
     OUTLINED_FUNCTION_3_6();
     v3 = v2;
@@ -1948,17 +1948,17 @@ void __197__CFPrefsDaemon_SourceSupport__withSourceForDomain_inContainer_user_by
   }
 }
 
-- (void)handleUserDeletedMessage:(uint64_t)a1 replyHandler:(void *)a2
+- (void)handleUserDeletedMessage:(uint64_t)message replyHandler:(void *)handler
 {
-  if (a1)
+  if (message)
   {
-    log_client_activity(a2, "reported a user was deleted", 0);
+    log_client_activity(handler, "reported a user was deleted", 0);
   }
 }
 
 - (void)handleSimulateTimerSynchronizeForTesting
 {
-  if (a1)
+  if (self)
   {
     v1 = +[_CFPrefsSynchronizer sharedInstance];
 
@@ -1986,8 +1986,8 @@ uint64_t __56__CFPrefsDaemon_handleFlushManagedMessage_replyHandler___block_invo
 {
   if (result)
   {
-    v3 = [(CFPrefsDaemon *)result shmem];
-    result = OUTLINED_FUNCTION_6_3(v3);
+    shmem = [(CFPrefsDaemon *)result shmem];
+    result = OUTLINED_FUNCTION_6_3(shmem);
     if (v5)
     {
       atomic_store(v4, (result + 4 * a2));
@@ -2046,9 +2046,9 @@ uint64_t __56__CFPrefsDaemon_handleFlushManagedMessage_replyHandler___block_invo
 
 - (uint64_t)isInTestMode
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 568);
+    v1 = *(self + 568);
   }
 
   else
@@ -2166,7 +2166,7 @@ LABEL_15:
 
 - (uint64_t)userID
 {
-  if (a1 && (*(a1 + 24) | 2) == 3)
+  if (self && (*(self + 24) | 2) == 3)
   {
     return cfprefsdEuid();
   }

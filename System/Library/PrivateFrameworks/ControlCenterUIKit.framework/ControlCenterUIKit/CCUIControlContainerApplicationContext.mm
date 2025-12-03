@@ -1,16 +1,16 @@
 @interface CCUIControlContainerApplicationContext
-- (CCUIControlContainerApplicationContext)initWithApplicationBundleIdentifier:(id)a3;
+- (CCUIControlContainerApplicationContext)initWithApplicationBundleIdentifier:(id)identifier;
 - (NSArray)applicationShortcuts;
 - (UIMenu)contextMenuForApplicationShortcuts;
 - (id)_application;
 - (id)_assetProvider;
-- (id)_menuItemForShortcutItem:(id)a3;
+- (id)_menuItemForShortcutItem:(id)item;
 - (id)_queue_fetchDynamicApplicationShortcutItems;
 - (id)_queue_fetchStaticApplicationShortcutItems;
-- (void)_activateApplicationForShortcutItem:(id)a3;
+- (void)_activateApplicationForShortcutItem:(id)item;
 - (void)_fetchApplicationIfNeeded;
-- (void)_queue_setFetchedDynamicMenuItems:(id)a3;
-- (void)_queue_setFetchedStaticMenuItems:(id)a3;
+- (void)_queue_setFetchedDynamicMenuItems:(id)items;
+- (void)_queue_setFetchedStaticMenuItems:(id)items;
 - (void)_queue_updateDynamicApplicationShortcutsActions;
 - (void)_queue_updateStaticApplicationShortcutsActions;
 - (void)_updateApplicationShortcutsActionsIfNecessary;
@@ -18,15 +18,15 @@
 
 @implementation CCUIControlContainerApplicationContext
 
-- (CCUIControlContainerApplicationContext)initWithApplicationBundleIdentifier:(id)a3
+- (CCUIControlContainerApplicationContext)initWithApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CCUIControlContainerApplicationContext;
   v5 = [(CCUIControlContainerApplicationContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     applicationBundleIdentifier = v5->_applicationBundleIdentifier;
     v5->_applicationBundleIdentifier = v6;
 
@@ -42,11 +42,11 @@
 
 - (NSArray)applicationShortcuts
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_fetchedStaticMenuItems)
   {
-    [v3 addObjectsFromArray:?];
+    [array addObjectsFromArray:?];
   }
 
   if (self->_fetchedDynamicMenuItems)
@@ -60,10 +60,10 @@
 - (UIMenu)contextMenuForApplicationShortcuts
 {
   [(CCUIControlContainerApplicationContext *)self _updateApplicationShortcutsActionsIfNecessary];
-  v3 = [(CCUIControlContainerApplicationContext *)self applicationShortcuts];
-  if ([v3 count])
+  applicationShortcuts = [(CCUIControlContainerApplicationContext *)self applicationShortcuts];
+  if ([applicationShortcuts count])
   {
-    v4 = [MEMORY[0x1E69DCC60] menuWithChildren:v3];
+    v4 = [MEMORY[0x1E69DCC60] menuWithChildren:applicationShortcuts];
   }
 
   else
@@ -125,8 +125,8 @@
   if (!obj->_application)
   {
     v3 = objc_alloc(MEMORY[0x1E69D3FA8]);
-    v4 = [(CCUIControlContainerApplicationContext *)obj applicationBundleIdentifier];
-    v5 = [v3 initWithApplicationBundleIdentifier:v4];
+    applicationBundleIdentifier = [(CCUIControlContainerApplicationContext *)obj applicationBundleIdentifier];
+    v5 = [v3 initWithApplicationBundleIdentifier:applicationBundleIdentifier];
     application = obj->_application;
     obj->_application = v5;
 
@@ -139,22 +139,22 @@
 - (void)_queue_updateStaticApplicationShortcutsActions
 {
   BSDispatchQueueAssert();
-  v3 = [(CCUIControlContainerApplicationContext *)self _queue_fetchStaticApplicationShortcutItems];
-  [(CCUIControlContainerApplicationContext *)self _queue_setFetchedStaticMenuItems:v3];
+  _queue_fetchStaticApplicationShortcutItems = [(CCUIControlContainerApplicationContext *)self _queue_fetchStaticApplicationShortcutItems];
+  [(CCUIControlContainerApplicationContext *)self _queue_setFetchedStaticMenuItems:_queue_fetchStaticApplicationShortcutItems];
 }
 
 - (id)_queue_fetchStaticApplicationShortcutItems
 {
   v17 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssert();
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CCUIControlContainerApplicationContext *)self _application];
+  array = [MEMORY[0x1E695DF70] array];
+  _application = [(CCUIControlContainerApplicationContext *)self _application];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 staticApplicationShortcutItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  staticApplicationShortcutItems = [_application staticApplicationShortcutItems];
+  v6 = [staticApplicationShortcutItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -165,41 +165,41 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(staticApplicationShortcutItems);
         }
 
         v10 = [(CCUIControlContainerApplicationContext *)self _menuItemForShortcutItem:*(*(&v12 + 1) + 8 * i)];
-        [v3 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [staticApplicationShortcutItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_queue_updateDynamicApplicationShortcutsActions
 {
   BSDispatchQueueAssert();
-  v3 = [(CCUIControlContainerApplicationContext *)self _queue_fetchDynamicApplicationShortcutItems];
-  [(CCUIControlContainerApplicationContext *)self _queue_setFetchedDynamicMenuItems:v3];
+  _queue_fetchDynamicApplicationShortcutItems = [(CCUIControlContainerApplicationContext *)self _queue_fetchDynamicApplicationShortcutItems];
+  [(CCUIControlContainerApplicationContext *)self _queue_setFetchedDynamicMenuItems:_queue_fetchDynamicApplicationShortcutItems];
 }
 
 - (id)_queue_fetchDynamicApplicationShortcutItems
 {
   v17 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssert();
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CCUIControlContainerApplicationContext *)self _application];
+  array = [MEMORY[0x1E695DF70] array];
+  _application = [(CCUIControlContainerApplicationContext *)self _application];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 dynamicApplicationShortcutItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  dynamicApplicationShortcutItems = [_application dynamicApplicationShortcutItems];
+  v6 = [dynamicApplicationShortcutItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -210,32 +210,32 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dynamicApplicationShortcutItems);
         }
 
         v10 = [(CCUIControlContainerApplicationContext *)self _menuItemForShortcutItem:*(*(&v12 + 1) + 8 * i)];
-        [v3 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [dynamicApplicationShortcutItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)_menuItemForShortcutItem:(id)a3
+- (id)_menuItemForShortcutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v5 = [v4 icon];
+  icon = [itemCopy icon];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = icon;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -254,10 +254,10 @@
       v8 = 0;
     }
 
-    v12 = v8;
+    icon2 = v8;
 
-    v13 = [v12 systemImageName];
-    v14 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v13];
+    systemImageName = [icon2 systemImageName];
+    v14 = [MEMORY[0x1E69DCAB8] _systemImageNamed:systemImageName];
   }
 
   else
@@ -266,7 +266,7 @@
     if (objc_opt_isKindOfClass())
     {
       v9 = objc_opt_class();
-      v10 = v5;
+      v10 = icon;
       if (v9)
       {
         if (objc_opt_isKindOfClass())
@@ -285,56 +285,56 @@
         v11 = 0;
       }
 
-      v12 = v11;
+      icon2 = v11;
 
-      v13 = [v12 systemImageName];
-      v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:v13];
+      systemImageName = [icon2 systemImageName];
+      v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:systemImageName];
     }
 
     else
     {
-      v12 = [v4 icon];
-      v13 = [(CCUIControlContainerApplicationContext *)self _assetProvider];
-      v14 = [v12 scui_iconImageWithAssetProvider:v13];
+      icon2 = [itemCopy icon];
+      systemImageName = [(CCUIControlContainerApplicationContext *)self _assetProvider];
+      v14 = [icon2 scui_iconImageWithAssetProvider:systemImageName];
     }
   }
 
   v15 = v14;
 
   v16 = [CCUIApplicationShortcutMenuModuleItem alloc];
-  v17 = [v4 localizedTitle];
-  v18 = [MEMORY[0x1E696AFB0] UUID];
-  v19 = [v18 UUIDString];
+  localizedTitle = [itemCopy localizedTitle];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __67__CCUIControlContainerApplicationContext__menuItemForShortcutItem___block_invoke;
   v36[3] = &unk_1E83EA9F0;
   objc_copyWeak(&v38, &location);
-  v20 = v4;
+  v20 = itemCopy;
   v37 = v20;
-  v21 = [(CCUIMenuModuleItem *)v16 initWithTitle:v17 identifier:v19 handler:v36];
+  v21 = [(CCUIMenuModuleItem *)v16 initWithTitle:localizedTitle identifier:uUIDString handler:v36];
 
-  v22 = [v20 localizedSubtitle];
-  [(CCUIMenuModuleItem *)v21 setSubtitle:v22];
+  localizedSubtitle = [v20 localizedSubtitle];
+  [(CCUIMenuModuleItem *)v21 setSubtitle:localizedSubtitle];
 
   [(CCUIApplicationShortcutMenuModuleItem *)v21 setIcon:v15];
   v23 = MEMORY[0x1E69DC628];
-  v24 = [(CCUIMenuModuleItem *)v21 title];
-  v25 = [(CCUIApplicationShortcutMenuModuleItem *)v21 icon];
+  title = [(CCUIMenuModuleItem *)v21 title];
+  icon3 = [(CCUIApplicationShortcutMenuModuleItem *)v21 icon];
   v31 = MEMORY[0x1E69E9820];
   v32 = 3221225472;
   v33 = __67__CCUIControlContainerApplicationContext__menuItemForShortcutItem___block_invoke_2;
   v34 = &unk_1E83EA648;
   v26 = v21;
   v35 = v26;
-  v27 = [v23 actionWithTitle:v24 image:v25 identifier:0 handler:&v31];
+  v27 = [v23 actionWithTitle:title image:icon3 identifier:0 handler:&v31];
 
   v28 = [(CCUIMenuModuleItem *)v26 subtitle:v31];
 
   if (v28)
   {
-    v29 = [(CCUIMenuModuleItem *)v26 subtitle];
-    [v27 setSubtitle:v29];
+    subtitle = [(CCUIMenuModuleItem *)v26 subtitle];
+    [v27 setSubtitle:subtitle];
   }
 
   objc_destroyWeak(&v38);
@@ -356,10 +356,10 @@ uint64_t __67__CCUIControlContainerApplicationContext__menuItemForShortcutItem__
   assetProvider = self->_assetProvider;
   if (!assetProvider)
   {
-    v4 = [(CCUIControlContainerApplicationContext *)self _application];
+    _application = [(CCUIControlContainerApplicationContext *)self _application];
     v5 = objc_alloc(MEMORY[0x1E69CDFF0]);
-    v6 = [v4 bundleURL];
-    v7 = [v5 initWithBundleURL:v6];
+    bundleURL = [_application bundleURL];
+    v7 = [v5 initWithBundleURL:bundleURL];
     v8 = self->_assetProvider;
     self->_assetProvider = v7;
 
@@ -369,26 +369,26 @@ uint64_t __67__CCUIControlContainerApplicationContext__menuItemForShortcutItem__
   return assetProvider;
 }
 
-- (void)_activateApplicationForShortcutItem:(id)a3
+- (void)_activateApplicationForShortcutItem:(id)item
 {
   v21[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bundleIdentifierToLaunch];
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  bundleIdentifierToLaunch = [itemCopy bundleIdentifierToLaunch];
+  v6 = bundleIdentifierToLaunch;
+  if (bundleIdentifierToLaunch)
   {
-    v7 = v5;
+    applicationBundleIdentifier = bundleIdentifierToLaunch;
   }
 
   else
   {
-    v7 = [(CCUIControlContainerApplicationContext *)self applicationBundleIdentifier];
+    applicationBundleIdentifier = [(CCUIControlContainerApplicationContext *)self applicationBundleIdentifier];
   }
 
-  v8 = v7;
+  v8 = applicationBundleIdentifier;
 
-  v9 = [v4 activationMode] == 1;
-  v10 = [objc_alloc(MEMORY[0x1E69DCA98]) initWithSBSShortcutItem:v4];
+  v9 = [itemCopy activationMode] == 1;
+  v10 = [objc_alloc(MEMORY[0x1E69DCA98]) initWithSBSShortcutItem:itemCopy];
 
   v20[0] = *MEMORY[0x1E699F8E8];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:v9];
@@ -408,38 +408,38 @@ uint64_t __67__CCUIControlContainerApplicationContext__menuItemForShortcutItem__
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:5];
 
   v16 = [CCUIContentModuleContext alloc];
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [(CCUIContentModuleContext *)v16 initWithModuleIdentifier:v8 uniqueIdentifier:v17];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v18 = [(CCUIContentModuleContext *)v16 initWithModuleIdentifier:v8 uniqueIdentifier:uUID];
 
   [(CCUIContentModuleContext *)v18 openApplication:v8 withOptions:v15 completionHandler:0];
 }
 
-- (void)_queue_setFetchedStaticMenuItems:(id)a3
+- (void)_queue_setFetchedStaticMenuItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   BSDispatchQueueAssert();
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_fetchedStaticMenuItems != v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fetchedStaticMenuItems != itemsCopy)
   {
-    objc_storeStrong(&v5->_fetchedStaticMenuItems, a3);
+    objc_storeStrong(&selfCopy->_fetchedStaticMenuItems, items);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_queue_setFetchedDynamicMenuItems:(id)a3
+- (void)_queue_setFetchedDynamicMenuItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   BSDispatchQueueAssert();
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_fetchedDynamicMenuItems != v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fetchedDynamicMenuItems != itemsCopy)
   {
-    objc_storeStrong(&v5->_fetchedDynamicMenuItems, a3);
+    objc_storeStrong(&selfCopy->_fetchedDynamicMenuItems, items);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

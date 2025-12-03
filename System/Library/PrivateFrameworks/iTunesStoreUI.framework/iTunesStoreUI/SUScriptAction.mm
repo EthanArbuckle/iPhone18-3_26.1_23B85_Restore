@@ -1,26 +1,26 @@
 @interface SUScriptAction
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)actionType;
-- (SUScriptAction)initWithActionType:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUScriptAction)initWithActionType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
 - (void)performAction;
-- (void)setActionType:(id)a3;
+- (void)setActionType:(id)type;
 @end
 
 @implementation SUScriptAction
 
-- (SUScriptAction)initWithActionType:(id)a3
+- (SUScriptAction)initWithActionType:(id)type
 {
   v6.receiver = self;
   v6.super_class = SUScriptAction;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_actionType = [a3 copy];
+    v4->_actionType = [type copy];
   }
 
   return v4;
@@ -35,7 +35,7 @@
 
 - (void)performAction
 {
-  v3 = [(SUScriptAction *)self actionType];
+  actionType = [(SUScriptAction *)self actionType];
   IsCurrent = WebThreadIsCurrent();
   if (IsCurrent)
   {
@@ -47,7 +47,7 @@
     v5 = &__block_literal_global_4;
   }
 
-  if ([(NSString *)v3 isEqualToString:@"SUScriptActionTypeReturnToLibrary"])
+  if ([(NSString *)actionType isEqualToString:@"SUScriptActionTypeReturnToLibrary"])
   {
     if (IsCurrent)
     {
@@ -67,7 +67,7 @@
     v6[2](v5, v11);
   }
 
-  else if ([(NSString *)v3 isEqualToString:@"SUScriptActionTypeDismissWindows"])
+  else if ([(NSString *)actionType isEqualToString:@"SUScriptActionTypeDismissWindows"])
   {
     if (IsCurrent)
     {
@@ -84,7 +84,7 @@
     v8(v5, &__block_literal_global_7);
   }
 
-  else if ([(NSString *)v3 isEqualToString:@"SUScriptActionTypeDismissSheet"])
+  else if ([(NSString *)actionType isEqualToString:@"SUScriptActionTypeDismissSheet"])
   {
     if (IsCurrent)
     {
@@ -134,12 +134,12 @@ uint64_t __31__SUScriptAction_performAction__block_invoke_5(uint64_t a1)
   return v3;
 }
 
-- (void)setActionType:(id)a3
+- (void)setActionType:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    type = 0;
   }
 
   [(SUScriptObject *)self lock];
@@ -147,46 +147,46 @@ uint64_t __31__SUScriptAction_performAction__block_invoke_5(uint64_t a1)
   if (objc_opt_isKindOfClass())
   {
     actionType = self->_actionType;
-    if (actionType != a3)
+    if (actionType != type)
     {
 
-      self->_actionType = [a3 copy];
+      self->_actionType = [type copy];
     }
   }
 
   [(SUScriptObject *)self unlock];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SUScriptObject *)self lock];
-  v5[9] = [(NSString *)self->_actionType copyWithZone:a3];
+  v5[9] = [(NSString *)self->_actionType copyWithZone:zone];
   [(SUScriptObject *)self unlock];
   return v5;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_57 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAction;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_42, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_42, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAction;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -196,14 +196,14 @@ uint64_t __31__SUScriptAction_performAction__block_invoke_5(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptAction;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_57 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_57 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_42 = sel_performAction;
     *algn_1EBF3B528 = @"performAction";

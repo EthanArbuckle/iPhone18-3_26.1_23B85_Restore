@@ -1,46 +1,46 @@
 @interface HDRaceRouteClusterManager
-- (BOOL)generateRaceRouteClustersWithLimit:(unint64_t)a3 error:(id *)a4;
-- (HDRaceRouteClusterManager)initWithProfile:(id)a3;
-- (id)raceRouteClustersForActivityType:(unint64_t)a3 error:(id *)a4;
+- (BOOL)generateRaceRouteClustersWithLimit:(unint64_t)limit error:(id *)error;
+- (HDRaceRouteClusterManager)initWithProfile:(id)profile;
+- (id)raceRouteClustersForActivityType:(unint64_t)type error:(id *)error;
 @end
 
 @implementation HDRaceRouteClusterManager
 
-- (HDRaceRouteClusterManager)initWithProfile:(id)a3
+- (HDRaceRouteClusterManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDRaceRouteClusterManager;
   v5 = [(HDRaceRouteClusterManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)raceRouteClustersForActivityType:(unint64_t)a3 error:(id *)a4
+- (id)raceRouteClustersForActivityType:(unint64_t)type error:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [HDRaceRouteClusterEntity raceRouteClustersForActivityType:a3 profile:WeakRetained error:a4];
+  v7 = [HDRaceRouteClusterEntity raceRouteClustersForActivityType:type profile:WeakRetained error:error];
 
   return v7;
 }
 
-- (BOOL)generateRaceRouteClustersWithLimit:(unint64_t)a3 error:(id *)a4
+- (BOOL)generateRaceRouteClustersWithLimit:(unint64_t)limit error:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __70__HDRaceRouteClusterManager_generateRaceRouteClustersWithLimit_error___block_invoke;
   v21[3] = &__block_descriptor_40_e35_B24__0__HDDatabaseTransaction_8__16l;
-  v21[4] = a3;
-  LODWORD(a3) = [(HDHealthEntity *)HDRaceRouteGenerationQueueEntity performWriteTransactionWithHealthDatabase:v8 error:a4 block:v21];
+  v21[4] = limit;
+  LODWORD(limit) = [(HDHealthEntity *)HDRaceRouteGenerationQueueEntity performWriteTransactionWithHealthDatabase:database error:error block:v21];
 
-  if (!a3)
+  if (!limit)
   {
     return 0;
   }
@@ -52,14 +52,14 @@
   while (1)
   {
     v9 = objc_loadWeakRetained(&self->_profile);
-    v10 = [v9 database];
+    database2 = [v9 database];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __70__HDRaceRouteClusterManager_generateRaceRouteClustersWithLimit_error___block_invoke_2;
     v16[3] = &unk_278619398;
     v16[4] = self;
     v16[5] = &v17;
-    v11 = [(HDHealthEntity *)HDRaceRouteClusterEntity performWriteTransactionWithHealthDatabase:v10 error:a4 block:v16];
+    v11 = [(HDHealthEntity *)HDRaceRouteClusterEntity performWriteTransactionWithHealthDatabase:database2 error:error block:v16];
 
     if (!v11)
     {
@@ -69,8 +69,8 @@
     if ((v18[3] & 1) == 0)
     {
       v12 = objc_loadWeakRetained(&self->_profile);
-      v13 = [v12 database];
-      v14 = [(HDHealthEntity *)HDRaceRouteClusterEntity performWriteTransactionWithHealthDatabase:v13 error:a4 block:&__block_literal_global_246];
+      database3 = [v12 database];
+      v14 = [(HDHealthEntity *)HDRaceRouteClusterEntity performWriteTransactionWithHealthDatabase:database3 error:error block:&__block_literal_global_246];
 
       goto LABEL_8;
     }

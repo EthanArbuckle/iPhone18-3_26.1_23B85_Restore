@@ -1,10 +1,10 @@
 @interface RMModelServicesBackgroundTasksDeclaration_LaunchdItem
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithFileAssetReference:(id)a3 context:(id)a4;
-+ (id)buildWithFileAssetReference:(id)a3 context:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithFileAssetReference:(id)reference context:(id)context;
++ (id)buildWithFileAssetReference:(id)reference context:(id)context;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelServicesBackgroundTasksDeclaration_LaunchdItem
@@ -23,36 +23,36 @@
   return v4;
 }
 
-+ (id)buildWithFileAssetReference:(id)a3 context:(id)a4
++ (id)buildWithFileAssetReference:(id)reference context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  referenceCopy = reference;
   v7 = objc_opt_new();
-  [v7 setPayloadFileAssetReference:v6];
+  [v7 setPayloadFileAssetReference:referenceCopy];
 
-  [v7 setPayloadContext:v5];
+  [v7 setPayloadContext:contextCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithFileAssetReference:(id)a3 context:(id)a4
++ (id)buildRequiredOnlyWithFileAssetReference:(id)reference context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  referenceCopy = reference;
   v7 = objc_opt_new();
-  [v7 setPayloadFileAssetReference:v6];
+  [v7 setPayloadFileAssetReference:referenceCopy];
 
-  [v7 setPayloadContext:v5];
+  [v7 setPayloadContext:contextCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelServicesBackgroundTasksDeclaration_LaunchdItem allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -60,9 +60,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"FileAssetReference" forKeyPath:@"payloadFileAssetReference" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"FileAssetReference" forKeyPath:@"payloadFileAssetReference" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Context" forKeyPath:@"payloadContext" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Context" forKeyPath:@"payloadContext" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -73,25 +73,25 @@
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelServicesBackgroundTasksDeclaration_LaunchdItem *)self payloadFileAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"FileAssetReference" value:v5 isRequired:1 defaultValue:0];
+  payloadFileAssetReference = [(RMModelServicesBackgroundTasksDeclaration_LaunchdItem *)self payloadFileAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"FileAssetReference" value:payloadFileAssetReference isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelServicesBackgroundTasksDeclaration_LaunchdItem *)self payloadContext];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Context" value:v6 isRequired:1 defaultValue:0];
+  payloadContext = [(RMModelServicesBackgroundTasksDeclaration_LaunchdItem *)self payloadContext];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Context" value:payloadContext isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelServicesBackgroundTasksDeclaration_LaunchdItem;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadFileAssetReference copy];
   v6 = v4[2];
   v4[2] = v5;

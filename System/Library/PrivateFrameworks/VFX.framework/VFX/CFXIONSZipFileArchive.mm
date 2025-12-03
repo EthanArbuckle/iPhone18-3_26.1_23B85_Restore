@@ -1,24 +1,24 @@
 @interface CFXIONSZipFileArchive
-- (BOOL)writeContentsForEntryName:(id)a3 toFile:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (CFXIONSZipFileArchive)initWithData:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (CFXIONSZipFileArchive)initWithEntryNames:(id)a3 contents:(id)a4 properties:(id)a5 options:(unint64_t)a6;
-- (CFXIONSZipFileArchive)initWithEntryNames:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5;
-- (CFXIONSZipFileArchive)initWithPath:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)writeContentsForEntryName:(id)name toFile:(id)file options:(unint64_t)options error:(id *)error;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
+- (CFXIONSZipFileArchive)initWithData:(id)data options:(unint64_t)options error:(id *)error;
+- (CFXIONSZipFileArchive)initWithEntryNames:(id)names contents:(id)contents properties:(id)properties options:(unint64_t)options;
+- (CFXIONSZipFileArchive)initWithEntryNames:(id)names dataProvider:(id)provider options:(unint64_t)options;
+- (CFXIONSZipFileArchive)initWithPath:(id)path options:(unint64_t)options error:(id *)error;
 - (id)archiveData;
 - (id)archiveStream;
-- (id)contentsForEntryName:(id)a3;
-- (id)propertiesForEntryName:(id)a3;
-- (id)streamForEntryName:(id)a3;
+- (id)contentsForEntryName:(id)name;
+- (id)propertiesForEntryName:(id)name;
+- (id)streamForEntryName:(id)name;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation CFXIONSZipFileArchive
 
-- (CFXIONSZipFileArchive)initWithPath:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (CFXIONSZipFileArchive)initWithPath:(id)path options:(unint64_t)options error:(id *)error
 {
-  if (!a3 || !objc_msgSend_length(a3, a2, a3, a4))
+  if (!path || !objc_msgSend_length(path, a2, path, options))
   {
     return 0;
   }
@@ -33,22 +33,22 @@
     *(v9 + 88) = 0u;
     *(v9 + 104) = 0u;
     *(v9 + 15) = 0;
-    if ((a4 & 3) > 1)
+    if ((options & 3) > 1)
     {
-      if ((a4 & 3) == 2)
+      if ((options & 3) == 2)
       {
-        v14 = objc_msgSend_dataWithContentsOfFile_options_error_(MEMORY[0x1E695DEF0], v10, a3, 1, a5);
+        v14 = objc_msgSend_dataWithContentsOfFile_options_error_(MEMORY[0x1E695DEF0], v10, path, 1, error);
         goto LABEL_9;
       }
 
-      v17 = sub_1AF1D6724(a3, v10, v11, v12);
+      v17 = sub_1AF1D6724(path, v10, v11, v12);
       if ((v17 & 0x8000000000000000) == 0)
       {
         v21 = v17;
-        *(v13 + 40) = objc_msgSend_copy(a3, v18, v19, v20);
+        *(v13 + 40) = objc_msgSend_copy(path, v18, v19, v20);
         close(v21);
 LABEL_16:
-        if ((a4 & 4) != 0)
+        if ((options & 4) != 0)
         {
           *(v13 + 80) |= 8u;
         }
@@ -59,16 +59,16 @@ LABEL_16:
 
     else
     {
-      if ((a4 & 3) == 0)
+      if ((options & 3) == 0)
       {
-        v14 = objc_msgSend_dataWithContentsOfFile_options_error_(MEMORY[0x1E695DEF0], v10, a3, 0, a5);
+        v14 = objc_msgSend_dataWithContentsOfFile_options_error_(MEMORY[0x1E695DEF0], v10, path, 0, error);
 LABEL_9:
         if (!v14)
         {
           goto LABEL_18;
         }
 
-        v13 = objc_msgSend_initWithData_options_error_(v13, v15, v14, a4, a5);
+        v13 = objc_msgSend_initWithData_options_error_(v13, v15, v14, options, error);
         if (!v13)
         {
           goto LABEL_18;
@@ -77,7 +77,7 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      v16 = sub_1AF1D6724(a3, v10, v11, v12);
+      v16 = sub_1AF1D6724(path, v10, v11, v12);
       *(v13 + 32) = v16;
       if ((v16 & 0x8000000000000000) == 0)
       {
@@ -94,15 +94,15 @@ LABEL_18:
   return v13;
 }
 
-- (CFXIONSZipFileArchive)initWithData:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (CFXIONSZipFileArchive)initWithData:(id)data options:(unint64_t)options error:(id *)error
 {
-  v5 = a4;
+  optionsCopy = options;
   v96[5] = *MEMORY[0x1E69E9840];
   v94.receiver = self;
   v94.super_class = CFXIONSZipFileArchive;
-  v7 = [(CFXIONSZipFileArchive *)&v94 init:a3];
+  v7 = [(CFXIONSZipFileArchive *)&v94 init:data];
   v11 = v7;
-  if (!a3)
+  if (!data)
   {
     goto LABEL_75;
   }
@@ -112,12 +112,12 @@ LABEL_18:
     goto LABEL_75;
   }
 
-  v82 = v5;
+  v82 = optionsCopy;
   v87 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10);
   v86 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v12, v13, v14);
-  v18 = objc_msgSend_bytes(a3, v15, v16, v17);
-  v81 = a3;
-  v22 = objc_msgSend_length(a3, v19, v20, v21);
+  v18 = objc_msgSend_bytes(data, v15, v16, v17);
+  dataCopy = data;
+  v22 = objc_msgSend_length(data, v19, v20, v21);
   if (v22 < 0x15)
   {
     goto LABEL_75;
@@ -363,7 +363,7 @@ LABEL_69:
   v11 = v80;
   if (v83)
   {
-    v80->_data = v81;
+    v80->_data = dataCopy;
     v80->_names = v87;
     v80->_properties = v86;
     if ((v82 & 4) != 0)
@@ -384,9 +384,9 @@ LABEL_75:
   return v11;
 }
 
-- (CFXIONSZipFileArchive)initWithEntryNames:(id)a3 contents:(id)a4 properties:(id)a5 options:(unint64_t)a6
+- (CFXIONSZipFileArchive)initWithEntryNames:(id)names contents:(id)contents properties:(id)properties options:(unint64_t)options
 {
-  v10 = objc_msgSend_count(a3, a2, a3, a4, a5, a6);
+  v10 = objc_msgSend_count(names, a2, names, contents, properties, options);
   v29.receiver = self;
   v29.super_class = CFXIONSZipFileArchive;
   v14 = [(CFXIONSZipFileArchive *)&v29 init];
@@ -395,8 +395,8 @@ LABEL_75:
     v15 = 1;
     do
     {
-      v16 = objc_msgSend_objectAtIndex_(a3, v11, v15 - 1, v13);
-      v19 = objc_msgSend_objectForKey_(a4, v17, v16, v18);
+      v16 = objc_msgSend_objectAtIndex_(names, v11, v15 - 1, v13);
+      v19 = objc_msgSend_objectForKey_(contents, v17, v16, v18);
       v20 = v19 != 0;
       if (v19)
       {
@@ -412,7 +412,7 @@ LABEL_75:
     }
 
     while (!v21);
-    if (!a3)
+    if (!names)
     {
       goto LABEL_16;
     }
@@ -421,17 +421,17 @@ LABEL_75:
   else
   {
     v20 = 1;
-    if (!a3)
+    if (!names)
     {
       goto LABEL_16;
     }
   }
 
-  if (a4 && v20 && v14 && v10)
+  if (contents && v20 && v14 && v10)
   {
-    v14->_contents = objc_msgSend_copy(a4, v11, v12, v13);
-    v14->_names = objc_msgSend_copy(a3, v22, v23, v24);
-    v14->_properties = objc_msgSend_copy(a5, v25, v26, v27);
+    v14->_contents = objc_msgSend_copy(contents, v11, v12, v13);
+    v14->_names = objc_msgSend_copy(names, v22, v23, v24);
+    v14->_properties = objc_msgSend_copy(properties, v25, v26, v27);
     *&v14->_zFlags |= 8u;
     return v14;
   }
@@ -446,9 +446,9 @@ LABEL_16:
   return v14;
 }
 
-- (CFXIONSZipFileArchive)initWithEntryNames:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5
+- (CFXIONSZipFileArchive)initWithEntryNames:(id)names dataProvider:(id)provider options:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = CFXIONSZipFileArchive;
   v8 = [(CFXIONSZipFileArchive *)&v14 init];
@@ -480,9 +480,9 @@ LABEL_16:
 
   if ((v12 & 3) != 0)
   {
-    *(v8 + 3) = a4;
-    *(v8 + 6) = objc_msgSend_copy(a3, v9, v10, v11);
-    if ((v5 & 4) != 0)
+    *(v8 + 3) = provider;
+    *(v8 + 6) = objc_msgSend_copy(names, v9, v10, v11);
+    if ((optionsCopy & 4) != 0)
     {
       *(v8 + 20) |= 8u;
     }
@@ -505,12 +505,12 @@ LABEL_16:
   [(CFXIONSZipFileArchive *)&v5 dealloc];
 }
 
-- (id)contentsForEntryName:(id)a3
+- (id)contentsForEntryName:(id)name
 {
   contents = self->_contents;
   if (contents)
   {
-    v7 = objc_msgSend_objectForKey_(contents, a2, a3, v3);
+    v7 = objc_msgSend_objectForKey_(contents, a2, name, v3);
 LABEL_3:
     v9 = v7;
     goto LABEL_4;
@@ -518,7 +518,7 @@ LABEL_3:
 
   if (self->_data)
   {
-    v11 = objc_msgSend_objectForKey_(self->_properties, a2, a3, v3);
+    v11 = objc_msgSend_objectForKey_(self->_properties, a2, name, v3);
     if (v11)
     {
       v14 = v11;
@@ -610,7 +610,7 @@ LABEL_4:
     return 0;
   }
 
-  if (!objc_msgSend_containsObject_(self->_names, a2, a3, v3))
+  if (!objc_msgSend_containsObject_(self->_names, a2, name, v3))
   {
     return 0;
   }
@@ -620,7 +620,7 @@ LABEL_4:
   {
     if ((*&zFlags & 2) != 0)
     {
-      objc_msgSend_archive_streamForEntryName_(self->_provider, v63, self, a3);
+      objc_msgSend_archive_streamForEntryName_(self->_provider, v63, self, name);
     }
 
     else if ((*&zFlags & 0x10) == 0)
@@ -639,10 +639,10 @@ LABEL_4:
     return 0;
   }
 
-  v9 = objc_msgSend_objectForKey_(self->_cachedContents, v63, a3, v65);
+  v9 = objc_msgSend_objectForKey_(self->_cachedContents, v63, name, v65);
   if (!v9)
   {
-    v7 = objc_msgSend_archive_contentsForEntryName_(self->_provider, v8, self, a3);
+    v7 = objc_msgSend_archive_contentsForEntryName_(self->_provider, v8, self, name);
     goto LABEL_3;
   }
 
@@ -656,18 +656,18 @@ LABEL_5:
       self->_cachedContents = cachedContents;
     }
 
-    objc_msgSend_setObject_forKey_(cachedContents, v8, v9, a3, v78.next_in, *&v78.avail_in, *&v78.next_out);
+    objc_msgSend_setObject_forKey_(cachedContents, v8, v9, name, v78.next_in, *&v78.avail_in, *&v78.next_out);
   }
 
   return v9;
 }
 
-- (id)streamForEntryName:(id)a3
+- (id)streamForEntryName:(id)name
 {
   contents = self->_contents;
   if (contents)
   {
-    v7 = objc_msgSend_objectForKey_(contents, a2, a3, v3);
+    v7 = objc_msgSend_objectForKey_(contents, a2, name, v3);
     if (v7)
     {
       v9 = v7;
@@ -680,7 +680,7 @@ LABEL_4:
     return 0;
   }
 
-  if (self->_data || !objc_msgSend_containsObject_(self->_names, a2, a3, v3))
+  if (self->_data || !objc_msgSend_containsObject_(self->_names, a2, name, v3))
   {
     return 0;
   }
@@ -688,10 +688,10 @@ LABEL_4:
   zFlags = self->_zFlags;
   if (*&zFlags)
   {
-    v18 = objc_msgSend_objectForKey_(self->_cachedContents, v11, a3, v13);
+    v18 = objc_msgSend_objectForKey_(self->_cachedContents, v11, name, v13);
     if (!v18)
     {
-      v20 = objc_msgSend_archive_contentsForEntryName_(self->_provider, v17, self, a3);
+      v20 = objc_msgSend_archive_contentsForEntryName_(self->_provider, v17, self, name);
       if (!v20)
       {
         return 0;
@@ -707,7 +707,7 @@ LABEL_4:
           self->_cachedContents = cachedContents;
         }
 
-        objc_msgSend_setObject_forKey_(cachedContents, v21, v18, a3);
+        objc_msgSend_setObject_forKey_(cachedContents, v21, v18, name);
       }
     }
 
@@ -736,29 +736,29 @@ LABEL_4:
 
   provider = self->_provider;
 
-  return objc_msgSend_archive_streamForEntryName_(provider, v11, self, a3);
+  return objc_msgSend_archive_streamForEntryName_(provider, v11, self, name);
 }
 
-- (BOOL)writeContentsForEntryName:(id)a3 toFile:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)writeContentsForEntryName:(id)name toFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v8 = objc_msgSend_contentsForEntryName_(self, a2, a3, a4);
+  v8 = objc_msgSend_contentsForEntryName_(self, a2, name, file);
   if (v8)
   {
 
-    LOBYTE(v8) = MEMORY[0x1EEE66B58](v8, sel_writeToFile_options_error_, a4, a5);
+    LOBYTE(v8) = MEMORY[0x1EEE66B58](v8, sel_writeToFile_options_error_, file, options);
   }
 
   return v8;
 }
 
-- (id)propertiesForEntryName:(id)a3
+- (id)propertiesForEntryName:(id)name
 {
-  result = objc_msgSend_objectForKey_(self->_properties, a2, a3, v3);
+  result = objc_msgSend_objectForKey_(self->_properties, a2, name, v3);
   if (!result)
   {
-    if (objc_msgSend_containsObject_(self->_names, v7, a3, v8))
+    if (objc_msgSend_containsObject_(self->_names, v7, name, v8))
     {
-      if ((*&self->_zFlags & 4) == 0 || (result = objc_msgSend_archive_propertiesForEntryName_(self->_provider, v9, self, a3)) == 0)
+      if ((*&self->_zFlags & 4) == 0 || (result = objc_msgSend_archive_propertiesForEntryName_(self->_provider, v9, self, name)) == 0)
       {
         v12 = MEMORY[0x1E695DF20];
 
@@ -784,11 +784,11 @@ LABEL_4:
   if (v11)
   {
     v15 = 0;
-    v116 = self;
+    selfCopy = self;
     v117 = v11;
     do
     {
-      v16 = objc_msgSend_objectAtIndex_(self->_names, v12, v15, v13, v116, v117);
+      v16 = objc_msgSend_objectAtIndex_(self->_names, v12, v15, v13, selfCopy, v117);
       v20 = objc_msgSend_UTF8String(v16, v17, v18, v19);
       v21 = strlen(v20);
       v24 = objc_msgSend_contentsForEntryName_(self, v22, v16, v23);
@@ -908,7 +908,7 @@ LABEL_4:
         objc_msgSend_appendData_(v119, v93, v74, v94);
         objc_msgSend_appendData_(v119, v95, v24, v96);
         objc_msgSend_appendData_(v118, v97, v83, v98);
-        self = v116;
+        self = selfCopy;
         v14 = v117;
       }
 
@@ -944,13 +944,13 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v7 = objc_msgSend_archiveData(self, a2, a3, a4);
+  v7 = objc_msgSend_archiveData(self, a2, file, options);
   if (v7)
   {
 
-    LOBYTE(v7) = MEMORY[0x1EEE66B58](v7, sel_writeToFile_options_error_, a3, a4);
+    LOBYTE(v7) = MEMORY[0x1EEE66B58](v7, sel_writeToFile_options_error_, file, options);
   }
 
   return v7;

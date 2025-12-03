@@ -1,5 +1,5 @@
 @interface ANCActiveCallAlert
-- (ANCActiveCallAlert)initWithCall:(id)a3 callCenter:(id)a4;
+- (ANCActiveCallAlert)initWithCall:(id)call callCenter:(id)center;
 - (BOOL)performNegativeAction;
 - (id)message;
 - (id)negativeActionLabel;
@@ -7,11 +7,11 @@
 
 @implementation ANCActiveCallAlert
 
-- (ANCActiveCallAlert)initWithCall:(id)a3 callCenter:(id)a4
+- (ANCActiveCallAlert)initWithCall:(id)call callCenter:(id)center
 {
   v5.receiver = self;
   v5.super_class = ANCActiveCallAlert;
-  return [(ANCCallAlert *)&v5 initWithCall:a3 callCenter:a4 categoryID:12];
+  return [(ANCCallAlert *)&v5 initWithCall:call callCenter:center categoryID:12];
 }
 
 - (id)message
@@ -32,9 +32,9 @@
 
 - (BOOL)performNegativeAction
 {
-  v3 = [(ANCCallAlert *)self callCenter];
-  v4 = [(ANCCallAlert *)self call];
-  [v3 disconnectCall:v4];
+  callCenter = [(ANCCallAlert *)self callCenter];
+  call = [(ANCCallAlert *)self call];
+  [callCenter disconnectCall:call];
 
   return 1;
 }

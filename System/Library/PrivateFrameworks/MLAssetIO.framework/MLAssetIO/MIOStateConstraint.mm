@@ -1,6 +1,6 @@
 @interface MIOStateConstraint
-- (BOOL)isEqual:(id)a3;
-- (MIOStateConstraint)initWithSpecification:(const void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIOStateConstraint)initWithSpecification:(const void *)specification;
 - (NSString)description;
 - (int64_t)dataType;
 - (unint64_t)hash;
@@ -8,7 +8,7 @@
 
 @implementation MIOStateConstraint
 
-- (MIOStateConstraint)initWithSpecification:(const void *)a3
+- (MIOStateConstraint)initWithSpecification:(const void *)specification
 {
   v14.receiver = self;
   v14.super_class = MIOStateConstraint;
@@ -16,10 +16,10 @@
   v5 = v4;
   if (v4)
   {
-    CoreML::Specification::StateFeatureType::CopyFrom((v4 + 8), a3);
+    CoreML::Specification::StateFeatureType::CopyFrom((v4 + 8), specification);
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = *(a3 + 2);
-    if (*(a3 + 7) != 1)
+    v7 = *(specification + 2);
+    if (*(specification + 7) != 1)
     {
       v7 = &CoreML::Specification::_ArrayFeatureType_default_instance_;
     }
@@ -51,18 +51,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIOStateConstraint *)self bufferShape];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  bufferShape = [(MIOStateConstraint *)self bufferShape];
+  v5 = [bufferShape componentsJoinedByString:{@", "}];
   v6 = MIOMultiArrayDataTypeToString([(MIOStateConstraint *)self dataType]);
   v7 = [v3 stringWithFormat:@"MIOStateConstraint { bufferShape: [%@] dataType: %@ }", v5, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -72,15 +72,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOStateConstraint *)self bufferShape];
-      v7 = [(MIOStateConstraint *)v5 bufferShape];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      bufferShape = [(MIOStateConstraint *)self bufferShape];
+      bufferShape2 = [(MIOStateConstraint *)v5 bufferShape];
+      v8 = [bufferShape isEqual:bufferShape2];
 
       if (v8)
       {
-        v9 = [(MIOStateConstraint *)self dataType];
-        v10 = v9 == [(MIOStateConstraint *)v5 dataType];
+        dataType = [(MIOStateConstraint *)self dataType];
+        v10 = dataType == [(MIOStateConstraint *)v5 dataType];
       }
 
       else
@@ -105,8 +105,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MIOStateConstraint *)self bufferShape];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  bufferShape = [(MIOStateConstraint *)self bufferShape];
+  v4 = [bufferShape countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -117,13 +117,13 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(bufferShape);
         }
 
         v6 ^= [*(*(&v11 + 1) + 8 * i) hash];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [bufferShape countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -134,9 +134,9 @@
     v6 = 1;
   }
 
-  v8 = [(MIOStateConstraint *)self dataType];
+  dataType = [(MIOStateConstraint *)self dataType];
   v9 = *MEMORY[0x1E69E9840];
-  return v8 ^ v6;
+  return dataType ^ v6;
 }
 
 - (int64_t)dataType

@@ -26,34 +26,34 @@
 - (double)initialColorMaskScale;
 - (double)initialColorMatrixOpacity;
 - (double)initialMeshScale;
-- (void)setAberrationColorBrightnessFactor:(double)a3;
-- (void)setAberrationColorSaturation:(double)a3;
-- (void)setAberrationEDRGain:(double)a3;
-- (void)setAberrationIntensity:(double)a3;
-- (void)setAberrationMagnitude:(CGPoint)a3;
-- (void)setChromaticAberrationFinalDonutMask:(id)a3;
-- (void)setChromaticAberrationInitialDonutMask:(id)a3;
-- (void)setColorMatrix:(id)a3;
-- (void)setColorOverlayFinalRadialMask:(id)a3;
-- (void)setColorOverlayInitialRadialMask:(id)a3;
-- (void)setCriticallyDampedSpringSettings:(id)a3;
-- (void)setDefaultSpringSettings:(id)a3;
+- (void)setAberrationColorBrightnessFactor:(double)factor;
+- (void)setAberrationColorSaturation:(double)saturation;
+- (void)setAberrationEDRGain:(double)gain;
+- (void)setAberrationIntensity:(double)intensity;
+- (void)setAberrationMagnitude:(CGPoint)magnitude;
+- (void)setChromaticAberrationFinalDonutMask:(id)mask;
+- (void)setChromaticAberrationInitialDonutMask:(id)mask;
+- (void)setColorMatrix:(id)matrix;
+- (void)setColorOverlayFinalRadialMask:(id)mask;
+- (void)setColorOverlayInitialRadialMask:(id)mask;
+- (void)setCriticallyDampedSpringSettings:(id)settings;
+- (void)setDefaultSpringSettings:(id)settings;
 - (void)setDefaultValues;
-- (void)setFinalColorBlurRadius:(double)a3;
-- (void)setFinalColorMaskBlurRadius:(double)a3;
-- (void)setFinalColorMaskScale:(double)a3;
-- (void)setFinalColorMatrixOpacity:(double)a3;
-- (void)setFinalMeshScale:(double)a3;
-- (void)setInitialColorBlurRadius:(double)a3;
-- (void)setInitialColorMaskBlurRadius:(double)a3;
-- (void)setInitialColorMaskScale:(double)a3;
-- (void)setInitialColorMatrixOpacity:(double)a3;
-- (void)setInitialMeshScale:(double)a3;
-- (void)setOverlayColor:(id)a3;
-- (void)setReallyDampedSpringSettings:(id)a3;
-- (void)setReallyReallyDampedSpringSettings:(id)a3;
-- (void)setSlowCriticallyDampedSpringSettings:(id)a3;
-- (void)setUsesGaussianBlurMask:(BOOL)a3;
+- (void)setFinalColorBlurRadius:(double)radius;
+- (void)setFinalColorMaskBlurRadius:(double)radius;
+- (void)setFinalColorMaskScale:(double)scale;
+- (void)setFinalColorMatrixOpacity:(double)opacity;
+- (void)setFinalMeshScale:(double)scale;
+- (void)setInitialColorBlurRadius:(double)radius;
+- (void)setInitialColorMaskBlurRadius:(double)radius;
+- (void)setInitialColorMaskScale:(double)scale;
+- (void)setInitialColorMatrixOpacity:(double)opacity;
+- (void)setInitialMeshScale:(double)scale;
+- (void)setOverlayColor:(id)color;
+- (void)setReallyDampedSpringSettings:(id)settings;
+- (void)setReallyReallyDampedSpringSettings:(id)settings;
+- (void)setSlowCriticallyDampedSpringSettings:(id)settings;
+- (void)setUsesGaussianBlurMask:(BOOL)mask;
 @end
 
 @implementation SUIAStingPrototypeSettings
@@ -65,13 +65,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setDefaultSpringSettings:(id)a3
+- (void)setDefaultSpringSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_defaultSpringSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)criticallyDampedSpringSettings
@@ -81,13 +81,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCriticallyDampedSpringSettings:(id)a3
+- (void)setCriticallyDampedSpringSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_criticallyDampedSpringSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)slowCriticallyDampedSpringSettings
@@ -97,13 +97,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setSlowCriticallyDampedSpringSettings:(id)a3
+- (void)setSlowCriticallyDampedSpringSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_slowCriticallyDampedSpringSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)reallyDampedSpringSettings
@@ -113,13 +113,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setReallyDampedSpringSettings:(id)a3
+- (void)setReallyDampedSpringSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_reallyDampedSpringSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)reallyReallyDampedSpringSettings
@@ -129,13 +129,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setReallyReallyDampedSpringSettings:(id)a3
+- (void)setReallyReallyDampedSpringSettings:(id)settings
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_reallyReallyDampedSpringSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (double)initialMeshScale
@@ -145,11 +145,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setInitialMeshScale:(double)a3
+- (void)setInitialMeshScale:(double)scale
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_initialMeshScale;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = scale;
 }
 
 - (double)finalMeshScale
@@ -159,11 +159,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFinalMeshScale:(double)a3
+- (void)setFinalMeshScale:(double)scale
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_finalMeshScale;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = scale;
 }
 
 - (CGPoint)aberrationMagnitude
@@ -177,10 +177,10 @@
   return result;
 }
 
-- (void)setAberrationMagnitude:(CGPoint)a3
+- (void)setAberrationMagnitude:(CGPoint)magnitude
 {
-  y = a3.y;
-  x = a3.x;
+  y = magnitude.y;
+  x = magnitude.x;
   v5 = (self + OBJC_IVAR___SUIAStingPrototypeSettings_aberrationMagnitude);
   swift_beginAccess();
   *v5 = x;
@@ -194,11 +194,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setAberrationEDRGain:(double)a3
+- (void)setAberrationEDRGain:(double)gain
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_aberrationEDRGain;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = gain;
 }
 
 - (double)aberrationColorBrightnessFactor
@@ -208,11 +208,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setAberrationColorBrightnessFactor:(double)a3
+- (void)setAberrationColorBrightnessFactor:(double)factor
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_aberrationColorBrightnessFactor;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = factor;
 }
 
 - (double)aberrationColorSaturation
@@ -222,11 +222,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setAberrationColorSaturation:(double)a3
+- (void)setAberrationColorSaturation:(double)saturation
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_aberrationColorSaturation;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = saturation;
 }
 
 - (double)aberrationIntensity
@@ -236,11 +236,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setAberrationIntensity:(double)a3
+- (void)setAberrationIntensity:(double)intensity
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_aberrationIntensity;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = intensity;
 }
 
 - (SUIAShockwaveRadialMaskSettings)chromaticAberrationInitialDonutMask
@@ -250,13 +250,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setChromaticAberrationInitialDonutMask:(id)a3
+- (void)setChromaticAberrationInitialDonutMask:(id)mask
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_chromaticAberrationInitialDonutMask;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = mask;
+  maskCopy = mask;
 }
 
 - (SUIAShockwaveRadialMaskSettings)chromaticAberrationFinalDonutMask
@@ -266,13 +266,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setChromaticAberrationFinalDonutMask:(id)a3
+- (void)setChromaticAberrationFinalDonutMask:(id)mask
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_chromaticAberrationFinalDonutMask;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = mask;
+  maskCopy = mask;
 }
 
 - (UIColor)overlayColor
@@ -282,13 +282,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setOverlayColor:(id)a3
+- (void)setOverlayColor:(id)color
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_overlayColor;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = color;
+  colorCopy = color;
 }
 
 - (SUIAColorMatrixPrototypeSettings)colorMatrix
@@ -298,13 +298,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setColorMatrix:(id)a3
+- (void)setColorMatrix:(id)matrix
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_colorMatrix;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = matrix;
+  matrixCopy = matrix;
 }
 
 - (double)initialColorMatrixOpacity
@@ -314,11 +314,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setInitialColorMatrixOpacity:(double)a3
+- (void)setInitialColorMatrixOpacity:(double)opacity
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_initialColorMatrixOpacity;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = opacity;
 }
 
 - (double)finalColorMatrixOpacity
@@ -328,11 +328,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFinalColorMatrixOpacity:(double)a3
+- (void)setFinalColorMatrixOpacity:(double)opacity
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_finalColorMatrixOpacity;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = opacity;
 }
 
 - (double)initialColorBlurRadius
@@ -342,11 +342,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setInitialColorBlurRadius:(double)a3
+- (void)setInitialColorBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_initialColorBlurRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (double)finalColorBlurRadius
@@ -356,11 +356,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFinalColorBlurRadius:(double)a3
+- (void)setFinalColorBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_finalColorBlurRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (BOOL)usesGaussianBlurMask
@@ -370,11 +370,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setUsesGaussianBlurMask:(BOOL)a3
+- (void)setUsesGaussianBlurMask:(BOOL)mask
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_usesGaussianBlurMask;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = mask;
 }
 
 - (double)initialColorMaskScale
@@ -384,11 +384,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setInitialColorMaskScale:(double)a3
+- (void)setInitialColorMaskScale:(double)scale
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_initialColorMaskScale;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = scale;
 }
 
 - (double)finalColorMaskScale
@@ -398,11 +398,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFinalColorMaskScale:(double)a3
+- (void)setFinalColorMaskScale:(double)scale
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_finalColorMaskScale;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = scale;
 }
 
 - (double)initialColorMaskBlurRadius
@@ -412,11 +412,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setInitialColorMaskBlurRadius:(double)a3
+- (void)setInitialColorMaskBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_initialColorMaskBlurRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (double)finalColorMaskBlurRadius
@@ -426,11 +426,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFinalColorMaskBlurRadius:(double)a3
+- (void)setFinalColorMaskBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_finalColorMaskBlurRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (SUIAShockwaveRadialMaskSettings)colorOverlayInitialRadialMask
@@ -440,13 +440,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setColorOverlayInitialRadialMask:(id)a3
+- (void)setColorOverlayInitialRadialMask:(id)mask
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_colorOverlayInitialRadialMask;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = mask;
+  maskCopy = mask;
 }
 
 - (SUIAShockwaveRadialMaskSettings)colorOverlayFinalRadialMask
@@ -456,22 +456,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setColorOverlayFinalRadialMask:(id)a3
+- (void)setColorOverlayFinalRadialMask:(id)mask
 {
   v5 = OBJC_IVAR___SUIAStingPrototypeSettings_colorOverlayFinalRadialMask;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = mask;
+  maskCopy = mask;
 }
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_26C60D934();
   sub_26C60DC34();
-  [(SUIAStingPrototypeSettings *)v2 setInitialMeshScale:0.5];
-  [(SUIAStingPrototypeSettings *)v2 setFinalMeshScale:2.0];
+  [(SUIAStingPrototypeSettings *)selfCopy setInitialMeshScale:0.5];
+  [(SUIAStingPrototypeSettings *)selfCopy setFinalMeshScale:2.0];
   sub_26C60E698();
 }
 

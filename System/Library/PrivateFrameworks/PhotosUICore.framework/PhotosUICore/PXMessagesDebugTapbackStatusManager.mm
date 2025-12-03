@@ -1,18 +1,18 @@
 @interface PXMessagesDebugTapbackStatusManager
-- (id)tapbackUserDataForAsset:(id)a3 previousAsset:(id)a4;
+- (id)tapbackUserDataForAsset:(id)asset previousAsset:(id)previousAsset;
 @end
 
 @implementation PXMessagesDebugTapbackStatusManager
 
-- (id)tapbackUserDataForAsset:(id)a3 previousAsset:(id)a4
+- (id)tapbackUserDataForAsset:(id)asset previousAsset:(id)previousAsset
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  previousAssetCopy = previousAsset;
   v7 = objc_alloc_init(PXMessagesDebugTapbackUserData);
-  if ([v5 isFavorite])
+  if ([assetCopy isFavorite])
   {
-    v8 = [v5 isFavorite];
-    v9 = v8 ^ [v6 isFavorite];
+    isFavorite = [assetCopy isFavorite];
+    v9 = isFavorite ^ [previousAssetCopy isFavorite];
   }
 
   else
@@ -21,7 +21,7 @@
   }
 
   [(PXMessagesDebugTapbackUserData *)v7 setShouldAnimate:v9];
-  [(PXMessagesDebugTapbackUserData *)v7 setAsset:v5];
+  [(PXMessagesDebugTapbackUserData *)v7 setAsset:assetCopy];
 
   return v7;
 }

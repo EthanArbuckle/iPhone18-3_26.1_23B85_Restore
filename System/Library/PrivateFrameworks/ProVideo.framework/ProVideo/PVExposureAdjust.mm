@@ -1,31 +1,31 @@
 @interface PVExposureAdjust
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVExposureAdjust
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v9 withProperties:v6];
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"displayName", @"BuiltIn", @"contentGroup", 0}];
+  dCopy = d;
+  nameCopy = name;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v6];
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"displayName", @"BuiltIn", @"contentGroup", 0}];
   v8 = +[PVContentRegistry sharedInstance];
-  [v8 registerContentClass:objc_opt_class() forID:v9 type:@"effect.video.filter" withProperties:v7];
+  [v8 registerContentClass:objc_opt_class() forID:dCopy type:@"effect.video.filter" withProperties:v7];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v9 = v6;
-  [(NSLock *)self->super.super._inspectablePropertiesLock lock:a3];
+  [(NSLock *)self->super.super._inspectablePropertiesLock lock:time];
   v10 = [(NSMutableDictionary *)self->super.super._inspectableProperties objectForKeyedSubscript:@"kPVExposureAdjustOffset"];
   [v10 floatValue];
   v12 = v11;
 
   [(NSLock *)self->super.super._inspectablePropertiesLock unlock];
-  Node = PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v15);
+  Node = PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v15);
   if (fabsf(v12) >= 0.0001)
   {
     v14 = HGObject::operator new(0x1A0uLL);

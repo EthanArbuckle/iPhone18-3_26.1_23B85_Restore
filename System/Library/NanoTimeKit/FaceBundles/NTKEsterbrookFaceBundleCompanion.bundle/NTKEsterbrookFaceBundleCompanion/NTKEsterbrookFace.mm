@@ -1,11 +1,11 @@
 @interface NTKEsterbrookFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKEsterbrookFace
@@ -18,21 +18,21 @@
   return v6;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  v7 = objc_msgSend_deviceCategory(v3, v4, v5, v6);
+  deviceCopy = device;
+  v7 = objc_msgSend_deviceCategory(deviceCopy, v4, v5, v6);
   v8 = _os_feature_enabled_impl();
-  v11 = objc_msgSend_supportsPDRCapability_(v3, v9, 3887189377, v10);
-  v14 = objc_msgSend_supportsPDRCapability_(v3, v12, 822091474, v13);
+  v11 = objc_msgSend_supportsPDRCapability_(deviceCopy, v9, 3887189377, v10);
+  v14 = objc_msgSend_supportsPDRCapability_(deviceCopy, v12, 822091474, v13);
 
   return !((v7 != 1) & (v8 & v11) & v14);
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = objc_msgSend_device(self, a2, a3, a4);
-  if (a3 == 11)
+  v6 = objc_msgSend_device(self, a2, mode, slot);
+  if (mode == 11)
   {
     v7 = objc_msgSend_optionWithDensity_forDevice_(NTKEsterbrookDensityEditOption, v5, 1, v6);
   }
@@ -45,37 +45,37 @@
   return v7;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = objc_msgSend__optionClassForCustomEditMode_(self, a2, a3, a4);
+  v5 = objc_msgSend__optionClassForCustomEditMode_(self, a2, mode, slot);
   v9 = objc_msgSend_device(self, v6, v7, v8);
   v12 = objc_msgSend_numberOfOptionsForDevice_(v5, v10, v9, v11);
 
   return v12;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = objc_msgSend__optionClassForCustomEditMode_(self, a2, a4, a4, a5);
+  v7 = objc_msgSend__optionClassForCustomEditMode_(self, a2, mode, mode, slot);
   v11 = objc_msgSend_device(self, v8, v9, v10);
-  v13 = objc_msgSend_optionAtIndex_forDevice_(v7, v12, a3, v11);
+  v13 = objc_msgSend_optionAtIndex_forDevice_(v7, v12, index, v11);
 
   return v13;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v10 = objc_msgSend__optionClassForCustomEditMode_(self, v8, a4, v9);
+  optionCopy = option;
+  v10 = objc_msgSend__optionClassForCustomEditMode_(self, v8, mode, v9);
   v14 = objc_msgSend_device(self, v11, v12, v13);
-  v16 = objc_msgSend_indexOfOption_forDevice_(v10, v15, v7, v14);
+  v16 = objc_msgSend_indexOfOption_forDevice_(v10, v15, optionCopy, v14);
 
   return v16;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = objc_opt_class();
   }

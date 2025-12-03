@@ -1,8 +1,8 @@
 @interface IMDMessageHistorySyncTaskLiveFactory
 - (IMDMessageHistorySyncTaskLiveFactory)init;
-- (id)_initWithAccountController:(id)a3 replayController:(id)a4;
+- (id)_initWithAccountController:(id)controller replayController:(id)replayController;
 - (id)_newFirstUnlockReplaySyncTask;
-- (id)newSyncTaskForType:(unint64_t)a3;
+- (id)newSyncTaskForType:(unint64_t)type;
 - (void)dealloc;
 @end
 
@@ -26,23 +26,23 @@
   [(IMDMessageHistorySyncTaskLiveFactory *)&v3 dealloc];
 }
 
-- (id)_initWithAccountController:(id)a3 replayController:(id)a4
+- (id)_initWithAccountController:(id)controller replayController:(id)replayController
 {
   v8.receiver = self;
   v8.super_class = IMDMessageHistorySyncTaskLiveFactory;
   v6 = [(IMDMessageHistorySyncTaskLiveFactory *)&v8 init];
   if (v6)
   {
-    v6->_accountController = a3;
-    v6->_replayController = a4;
+    v6->_accountController = controller;
+    v6->_replayController = replayController;
   }
 
   return v6;
 }
 
-- (id)newSyncTaskForType:(unint64_t)a3
+- (id)newSyncTaskForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return 0;
   }

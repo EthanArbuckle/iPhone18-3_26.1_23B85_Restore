@@ -1,12 +1,12 @@
 @interface EBColorTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBColorTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   XlColorTable::XlColorTable(&v4);
   XlColorTable::init(&v4);
 }

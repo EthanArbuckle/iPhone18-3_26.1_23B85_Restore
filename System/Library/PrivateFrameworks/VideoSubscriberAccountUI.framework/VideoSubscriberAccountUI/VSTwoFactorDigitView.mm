@@ -1,21 +1,21 @@
 @interface VSTwoFactorDigitView
 - (BOOL)canBecomeFirstResponder;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
 - (UITextInputDelegate)inputDelegate;
 - (UITextPosition)beginningOfDocument;
 - (UITextPosition)endOfDocument;
-- (VSTwoFactorDigitView)initWithDigitCount:(unint64_t)a3;
+- (VSTwoFactorDigitView)initWithDigitCount:(unint64_t)count;
 - (VSTwoFactorDigitViewDelegate)delegate;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setCodeText:(id)a3;
+- (void)insertText:(id)text;
+- (void)setCodeText:(id)text;
 - (void)setupDigitViews;
 @end
 
 @implementation VSTwoFactorDigitView
 
-- (VSTwoFactorDigitView)initWithDigitCount:(unint64_t)a3
+- (VSTwoFactorDigitView)initWithDigitCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = VSTwoFactorDigitView;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_digitCount = a3;
+    v4->_digitCount = count;
     v4->_keyboardType = 4;
     v4->_returnKeyType = 11;
     objc_storeStrong(&v4->_textContentType, *MEMORY[0x277D77020]);
@@ -34,29 +34,29 @@
   return v5;
 }
 
-- (void)setCodeText:(id)a3
+- (void)setCodeText:(id)text
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v25 = v4;
-  if (v4)
+  textCopy = text;
+  v25 = textCopy;
+  if (textCopy)
   {
-    v5 = v4;
-    v6 = [(VSTwoFactorDigitView *)self digitCount];
+    v5 = textCopy;
+    digitCount = [(VSTwoFactorDigitView *)self digitCount];
     v7 = [v5 length];
-    if (v6 >= v7)
+    if (digitCount >= v7)
     {
-      v6 = v7;
+      digitCount = v7;
     }
 
-    v8 = [v5 substringToIndex:v6];
+    v8 = [v5 substringToIndex:digitCount];
 
     if (!v8)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [codeText substringToIndex:index] parameter must not be nil."];
     }
 
-    v9 = [v5 substringToIndex:v6];
+    v9 = [v5 substringToIndex:digitCount];
   }
 
   else
@@ -69,9 +69,9 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v24 = self;
-  v11 = [(VSTwoFactorDigitView *)self digits];
-  v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  digits = [(VSTwoFactorDigitView *)self digits];
+  v12 = [digits countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
@@ -83,7 +83,7 @@
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(digits);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
@@ -94,31 +94,31 @@
           v18 = [MEMORY[0x277CCACA8] stringWithCharacters:&v26 length:1];
         }
 
-        v19 = [v17 label];
-        [v19 setText:v18];
+        label = [v17 label];
+        [label setText:v18];
 
         ++v14;
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v13 = [digits countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v13);
   }
 
-  objc_storeStrong(&v24->_codeText, v9);
-  v24->_hasText = v10 != 0;
-  v20 = [(VSTwoFactorDigitView *)v24 delegate];
-  if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
+  objc_storeStrong(&selfCopy->_codeText, v9);
+  selfCopy->_hasText = v10 != 0;
+  delegate = [(VSTwoFactorDigitView *)selfCopy delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v21 = [(__CFString *)v9 copy];
-    [v20 twoFactorDigitView:v24 textDidChange:v21];
+    [delegate twoFactorDigitView:selfCopy textDidChange:v21];
   }
 
   v22 = [(__CFString *)v9 length];
-  if (v22 == [(VSTwoFactorDigitView *)v24 digitCount])
+  if (v22 == [(VSTwoFactorDigitView *)selfCopy digitCount])
   {
-    [(VSTwoFactorDigitView *)v24 resignFirstResponder];
+    [(VSTwoFactorDigitView *)selfCopy resignFirstResponder];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -140,11 +140,11 @@
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(VSTwoFactorDigitView *)self digitCount];
-  v5 = v4;
-  if (v4)
+  digitCount = [(VSTwoFactorDigitView *)self digitCount];
+  v5 = digitCount;
+  if (digitCount)
   {
-    v6 = v4;
+    v6 = digitCount;
     do
     {
       v7 = objc_alloc_init(VSDigitView);
@@ -183,27 +183,27 @@
         }
 
         v15 = *(*(&v29 + 1) + 8 * v13);
-        v16 = [v15 topAnchor];
-        v17 = [(VSTwoFactorDigitView *)self topAnchor];
-        v18 = [v16 constraintEqualToAnchor:v17];
+        topAnchor = [v15 topAnchor];
+        topAnchor2 = [(VSTwoFactorDigitView *)self topAnchor];
+        v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
         [v18 setActive:1];
 
-        v19 = [v15 bottomAnchor];
-        v20 = [(VSTwoFactorDigitView *)self bottomAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        bottomAnchor = [v15 bottomAnchor];
+        bottomAnchor2 = [(VSTwoFactorDigitView *)self bottomAnchor];
+        v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         [v21 setActive:1];
 
-        v22 = [v15 leftAnchor];
+        leftAnchor = [v15 leftAnchor];
         if (v14)
         {
-          v23 = [v14 rightAnchor];
-          [v22 constraintEqualToAnchor:v23 constant:10.0];
+          rightAnchor = [v14 rightAnchor];
+          [leftAnchor constraintEqualToAnchor:rightAnchor constant:10.0];
         }
 
         else
         {
-          v23 = [(VSTwoFactorDigitView *)self leftAnchor];
-          [v22 constraintEqualToAnchor:v23];
+          rightAnchor = [(VSTwoFactorDigitView *)self leftAnchor];
+          [leftAnchor constraintEqualToAnchor:rightAnchor];
         }
         v24 = ;
         [v24 setActive:1];
@@ -222,8 +222,8 @@
     v5 = v28;
   }
 
-  v25 = [(VSTwoFactorDigitView *)self widthAnchor];
-  v26 = [v25 constraintEqualToConstant:v5 * 50.0 + -10.0];
+  widthAnchor = [(VSTwoFactorDigitView *)self widthAnchor];
+  v26 = [widthAnchor constraintEqualToConstant:v5 * 50.0 + -10.0];
   [v26 setActive:1];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -240,31 +240,31 @@
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v7, 0xCu);
   }
 
-  v4 = [(VSTwoFactorDigitView *)self codeText];
-  if ([v4 length])
+  codeText = [(VSTwoFactorDigitView *)self codeText];
+  if ([codeText length])
   {
-    v5 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 1}];
+    v5 = [codeText substringToIndex:{objc_msgSend(codeText, "length") - 1}];
     [(VSTwoFactorDigitView *)self setCodeText:v5];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSTwoFactorDigitView *)self codeText];
-  v6 = [v5 length];
+  textCopy = text;
+  codeText = [(VSTwoFactorDigitView *)self codeText];
+  v6 = [codeText length];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-    v8 = [v7 invertedSet];
+    alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+    invertedSet = [alphanumericCharacterSet invertedSet];
 
-    v9 = [(VSTwoFactorDigitView *)self codeText];
-    v10 = [v9 copy];
-    v11 = [v10 componentsSeparatedByCharactersInSet:v8];
+    codeText2 = [(VSTwoFactorDigitView *)self codeText];
+    v10 = [codeText2 copy];
+    v11 = [v10 componentsSeparatedByCharactersInSet:invertedSet];
     v12 = [v11 componentsJoinedByString:&stru_2880B8BB0];
 
     if (!v12)
@@ -272,9 +272,9 @@
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[[[self codeText] copy] componentsSeparatedByCharactersInSet:removalCharacters] componentsJoinedByString:@] parameter must not be nil."];
     }
 
-    v13 = [(VSTwoFactorDigitView *)self codeText];
-    v14 = [v13 copy];
-    v15 = [v14 componentsSeparatedByCharactersInSet:v8];
+    codeText3 = [(VSTwoFactorDigitView *)self codeText];
+    v14 = [codeText3 copy];
+    v15 = [v14 componentsSeparatedByCharactersInSet:invertedSet];
     v16 = [v15 componentsJoinedByString:&stru_2880B8BB0];
   }
 
@@ -283,12 +283,12 @@
     v16 = &stru_2880B8BB0;
   }
 
-  v17 = [(__CFString *)v16 stringByAppendingString:v4];
+  v17 = [(__CFString *)v16 stringByAppendingString:textCopy];
   if ([(VSTwoFactorDigitView *)self autocapitalizationType])
   {
-    v18 = [v17 uppercaseString];
+    uppercaseString = [v17 uppercaseString];
 
-    v17 = v18;
+    v17 = uppercaseString;
   }
 
   v19 = VSDefaultLogObject();
@@ -317,7 +317,7 @@
   return v2;
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -330,7 +330,7 @@
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);

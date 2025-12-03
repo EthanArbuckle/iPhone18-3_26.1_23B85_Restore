@@ -1,12 +1,12 @@
 @interface PLBackgroundJobSyndicationSyncWorker
-+ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)a3;
-- (PLBackgroundJobSyndicationSyncWorker)initWithLibraryBundle:(id)a3;
-- (id)_syncManagerWithPhotoLibrary:(id)a3;
-- (id)photoLibraryWithDatabaseContext:(id)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
-- (void)workerDidFinishWithDatabaseContext:(id)a3;
++ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)identifier;
+- (PLBackgroundJobSyndicationSyncWorker)initWithLibraryBundle:(id)bundle;
+- (id)_syncManagerWithPhotoLibrary:(id)library;
+- (id)photoLibraryWithDatabaseContext:(id)context;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
+- (void)workerDidFinishWithDatabaseContext:(id)context;
 @end
 
 @implementation PLBackgroundJobSyndicationSyncWorker
@@ -19,10 +19,10 @@ void __59__PLBackgroundJobSyndicationSyncWorker__releaseSyncManager__block_invok
   *(v1 + 112) = 0;
 }
 
-- (id)_syncManagerWithPhotoLibrary:(id)a3
+- (id)_syncManagerWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v3 = v6;
+  libraryCopy = library;
+  v3 = libraryCopy;
   v4 = PLResultWithUnfairLock();
 
   return v4;
@@ -54,22 +54,22 @@ LABEL_5:
   return v3;
 }
 
-- (void)workerDidFinishWithDatabaseContext:(id)a3
+- (void)workerDidFinishWithDatabaseContext:(id)context
 {
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   databaseContext = self->_databaseContext;
   if (databaseContext)
   {
-    if (databaseContext != v5)
+    if (databaseContext != contextCopy)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationSyncWorker.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"_databaseContext == databaseContext"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationSyncWorker.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"_databaseContext == databaseContext"}];
     }
 
     [(PLBackgroundJobSyndicationSyncWorker *)self _releaseSyncManager];
-    v8 = [(PLDatabaseContext *)v6 syndicationIngestMutex];
-    [v8 stopUsingSyndicationIngestLibraryWithIdentifier:1];
+    syndicationIngestMutex = [(PLDatabaseContext *)v6 syndicationIngestMutex];
+    [syndicationIngestMutex stopUsingSyndicationIngestLibraryWithIdentifier:1];
 
     v9 = self->_databaseContext;
     self->_databaseContext = 0;
@@ -98,22 +98,22 @@ LABEL_8:
   }
 }
 
-- (id)photoLibraryWithDatabaseContext:(id)a3
+- (id)photoLibraryWithDatabaseContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 syndicationIngestMutex];
-  v8 = [v7 tryUsingSyndicationIngestLibraryWithIdentifier:1 forceRetry:0];
+  contextCopy = context;
+  syndicationIngestMutex = [contextCopy syndicationIngestMutex];
+  v8 = [syndicationIngestMutex tryUsingSyndicationIngestLibraryWithIdentifier:1 forceRetry:0];
 
   if (v8)
   {
     if (self->_databaseContext)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationSyncWorker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"_databaseContext == nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationSyncWorker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"_databaseContext == nil"}];
     }
 
-    objc_storeStrong(&self->_databaseContext, a3);
+    objc_storeStrong(&self->_databaseContext, context);
   }
 
   else
@@ -121,10 +121,10 @@ LABEL_8:
     v9 = PLSyndicationGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 syndicationIngestMutex];
-      v11 = [v10 syndicationIngestMutexStateDescription];
+      syndicationIngestMutex2 = [contextCopy syndicationIngestMutex];
+      syndicationIngestMutexStateDescription = [syndicationIngestMutex2 syndicationIngestMutexStateDescription];
       *buf = 138412290;
-      v15 = v11;
+      v15 = syndicationIngestMutexStateDescription;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "[sync.worker] (MUTEX) not allowed to run right now: %@", buf, 0xCu);
     }
   }
@@ -132,7 +132,7 @@ LABEL_8:
   return v8;
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = self->_lock_syncManager;
@@ -140,57 +140,57 @@ LABEL_8:
   [(PLSyndicationSyncServiceWrapper *)v4 cancelWorkOnCurrentItem];
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(PLBackgroundJobWorker *)self hasEnoughDiskSpaceToContinue:v9])
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  if ([(PLBackgroundJobWorker *)self hasEnoughDiskSpaceToContinue:completionCopy])
   {
-    v10 = [(PLBackgroundJobSyndicationSyncWorker *)self _syncManagerWithPhotoLibrary:v8];
-    [v10 performWorkOnItem:v11 completion:v9];
+    v10 = [(PLBackgroundJobSyndicationSyncWorker *)self _syncManagerWithPhotoLibrary:libraryCopy];
+    [v10 performWorkOnItem:itemCopy completion:completionCopy];
   }
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v8 = +[PLBackgroundJobCriteria criteriaForHubbleWorker];
-  v9 = [v7 containsObject:v8];
+  v9 = [criteriasCopy containsObject:v8];
 
   if (v9)
   {
-    v10 = [(PLBackgroundJobSyndicationSyncWorker *)self _syncManagerWithPhotoLibrary:v6];
-    v11 = [v10 workItemsNeedingProcessing];
-    v12 = [v11 count];
+    v10 = [(PLBackgroundJobSyndicationSyncWorker *)self _syncManagerWithPhotoLibrary:libraryCopy];
+    workItemsNeedingProcessing = [v10 workItemsNeedingProcessing];
+    v12 = [workItemsNeedingProcessing count];
     v13 = [PLBackgroundJobWorkerPendingWorkItems alloc];
     if (v12)
     {
-      v14 = [(PLBackgroundJobWorkerPendingWorkItems *)v13 initWithCriteria:v8 workItemsNeedingProcessing:v11];
+      initWithZeroWorkItems = [(PLBackgroundJobWorkerPendingWorkItems *)v13 initWithCriteria:v8 workItemsNeedingProcessing:workItemsNeedingProcessing];
     }
 
     else
     {
-      v14 = [(PLBackgroundJobWorkerPendingWorkItems *)v13 initWithZeroWorkItems];
+      initWithZeroWorkItems = [(PLBackgroundJobWorkerPendingWorkItems *)v13 initWithZeroWorkItems];
     }
 
-    v15 = v14;
+    initWithZeroWorkItemsForValidCriteria = initWithZeroWorkItems;
   }
 
   else
   {
-    v15 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
   }
 
-  return v15;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
-- (PLBackgroundJobSyndicationSyncWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobSyndicationSyncWorker)initWithLibraryBundle:(id)bundle
 {
   v4.receiver = self;
   v4.super_class = PLBackgroundJobSyndicationSyncWorker;
-  result = [(PLBackgroundJobWorker *)&v4 initWithLibraryBundle:a3];
+  result = [(PLBackgroundJobWorker *)&v4 initWithLibraryBundle:bundle];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -199,9 +199,9 @@ LABEL_8:
   return result;
 }
 
-+ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)a3
++ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)identifier
 {
-  if ((a3 | 2) != 3)
+  if ((identifier | 2) != 3)
   {
     return 0;
   }

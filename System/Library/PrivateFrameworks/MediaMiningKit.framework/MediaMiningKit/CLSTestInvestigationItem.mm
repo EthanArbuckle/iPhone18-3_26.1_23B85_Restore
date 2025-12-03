@@ -1,6 +1,6 @@
 @interface CLSTestInvestigationItem
-+ (id)itemWithPeopleNames:(id)a3 universalDate:(id)a4 coordinate:(CLLocationCoordinate2D)a5;
-+ (id)itemWithUniversalDate:(id)a3 sceneClassifications:(id)a4;
++ (id)itemWithPeopleNames:(id)names universalDate:(id)date coordinate:(CLLocationCoordinate2D)coordinate;
++ (id)itemWithUniversalDate:(id)date sceneClassifications:(id)classifications;
 - (CLLocationCoordinate2D)pl_coordinate;
 - (CLSTestInvestigationItem)init;
 - (NSArray)clsPersonAndPetLocalIdentifiers;
@@ -13,12 +13,12 @@
 
 - (CLLocationCoordinate2D)pl_coordinate
 {
-  v3 = [(CLSTestInvestigationItem *)self location];
+  location = [(CLSTestInvestigationItem *)self location];
 
-  if (v3)
+  if (location)
   {
-    v4 = [(CLSTestInvestigationItem *)self location];
-    [v4 coordinate];
+    location2 = [(CLSTestInvestigationItem *)self location];
+    [location2 coordinate];
     v6 = v5;
     v8 = v7;
   }
@@ -38,30 +38,30 @@
 
 - (NSDateComponents)cls_localDateComponents
 {
-  v3 = [(CLSTestInvestigationItem *)self cls_universalDate];
-  v4 = [(CLSTestInvestigationItem *)self cls_localDate];
-  v5 = [CLSCalendar dateComponentsWithUTCDate:v3 localDate:v4];
+  cls_universalDate = [(CLSTestInvestigationItem *)self cls_universalDate];
+  cls_localDate = [(CLSTestInvestigationItem *)self cls_localDate];
+  v5 = [CLSCalendar dateComponentsWithUTCDate:cls_universalDate localDate:cls_localDate];
 
   return v5;
 }
 
 - (NSDate)cls_localDate
 {
-  v3 = [(CLSTestInvestigationItem *)self cls_universalDate];
-  v4 = [(CLSTestInvestigationItem *)self clsLocation];
-  v5 = [CLSCalendar localDateFromUniversalDate:v3 atLocation:v4];
+  cls_universalDate = [(CLSTestInvestigationItem *)self cls_universalDate];
+  clsLocation = [(CLSTestInvestigationItem *)self clsLocation];
+  v5 = [CLSCalendar localDateFromUniversalDate:cls_universalDate atLocation:clsLocation];
 
   return v5;
 }
 
 - (NSArray)clsPersonAndPetLocalIdentifiers
 {
-  v3 = [(CLSTestInvestigationItem *)self clsPersonLocalIdentifiers];
-  v4 = v3;
+  clsPersonLocalIdentifiers = [(CLSTestInvestigationItem *)self clsPersonLocalIdentifiers];
+  v4 = clsPersonLocalIdentifiers;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (clsPersonLocalIdentifiers)
   {
-    v6 = v3;
+    v6 = clsPersonLocalIdentifiers;
   }
 
   else
@@ -71,11 +71,11 @@
 
   v7 = v6;
 
-  v8 = [(CLSTestInvestigationItem *)self clsPetLocalIdentifiers];
-  v9 = v8;
-  if (v8)
+  clsPetLocalIdentifiers = [(CLSTestInvestigationItem *)self clsPetLocalIdentifiers];
+  v9 = clsPetLocalIdentifiers;
+  if (clsPetLocalIdentifiers)
   {
-    v10 = v8;
+    v10 = clsPetLocalIdentifiers;
   }
 
   else
@@ -92,8 +92,8 @@
 
 - (unint64_t)clsPeopleCount
 {
-  v2 = [(CLSTestInvestigationItem *)self clsPersonLocalIdentifiers];
-  v3 = [v2 count];
+  clsPersonLocalIdentifiers = [(CLSTestInvestigationItem *)self clsPersonLocalIdentifiers];
+  v3 = [clsPersonLocalIdentifiers count];
 
   return v3;
 }
@@ -105,10 +105,10 @@
   v2 = [(CLSTestInvestigationItem *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     clsIdentifier = v2->_clsIdentifier;
-    v2->_clsIdentifier = v4;
+    v2->_clsIdentifier = uUIDString;
 
     v2->_clsAestheticScore = 0.5;
   }
@@ -116,26 +116,26 @@
   return v2;
 }
 
-+ (id)itemWithUniversalDate:(id)a3 sceneClassifications:(id)a4
++ (id)itemWithUniversalDate:(id)date sceneClassifications:(id)classifications
 {
-  v5 = a4;
-  v6 = a3;
+  classificationsCopy = classifications;
+  dateCopy = date;
   v7 = objc_opt_new();
-  [v7 setCls_universalDate:v6];
+  [v7 setCls_universalDate:dateCopy];
 
-  v8 = [MEMORY[0x277CBEB98] setWithArray:v5];
+  v8 = [MEMORY[0x277CBEB98] setWithArray:classificationsCopy];
 
   [v7 setClsSceneClassifications:v8];
 
   return v7;
 }
 
-+ (id)itemWithPeopleNames:(id)a3 universalDate:(id)a4 coordinate:(CLLocationCoordinate2D)a5
++ (id)itemWithPeopleNames:(id)names universalDate:(id)date coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v8 = a3;
-  v9 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  namesCopy = names;
+  dateCopy = date;
   v10 = objc_opt_new();
   v14.latitude = latitude;
   v14.longitude = longitude;
@@ -145,8 +145,8 @@
     [v10 setClsLocation:v11];
   }
 
-  [v10 setClsPersonLocalIdentifiers:v8];
-  [v10 setCls_universalDate:v9];
+  [v10 setClsPersonLocalIdentifiers:namesCopy];
+  [v10 setCls_universalDate:dateCopy];
 
   return v10;
 }

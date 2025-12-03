@@ -1,60 +1,60 @@
 @interface _PKAnimatableBorderCornerRadiusView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIColor)borderColor;
 - (double)borderWidth;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
 @end
 
 @implementation _PKAnimatableBorderCornerRadiusView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _PKAnimatableBorderCornerRadiusView;
-  if ([(_PKAnimatableBorderCornerRadiusView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(_PKAnimatableBorderCornerRadiusView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"cornerRadius"];
+    v5 = [keyCopy isEqualToString:@"cornerRadius"];
   }
 
   return v5;
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v4 = [(_PKAnimatableBorderCornerRadiusView *)self layer];
-  [v4 setBorderWidth:a3];
+  layer = [(_PKAnimatableBorderCornerRadiusView *)self layer];
+  [layer setBorderWidth:width];
 }
 
 - (double)borderWidth
 {
-  v2 = [(_PKAnimatableBorderCornerRadiusView *)self layer];
-  [v2 borderWidth];
+  layer = [(_PKAnimatableBorderCornerRadiusView *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v4 = a3;
-  v6 = [(_PKAnimatableBorderCornerRadiusView *)self layer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  layer = [(_PKAnimatableBorderCornerRadiusView *)self layer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setBorderColor:v5];
+  [layer setBorderColor:cGColor];
 }
 
 - (UIColor)borderColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [(_PKAnimatableBorderCornerRadiusView *)self layer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "borderColor")}];
+  layer = [(_PKAnimatableBorderCornerRadiusView *)self layer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(layer, "borderColor")}];
 
   return v4;
 }

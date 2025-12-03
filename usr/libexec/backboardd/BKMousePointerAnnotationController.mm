@@ -2,40 +2,40 @@
 - (void)_updateEventsPerSecond;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeMouseAbsolutePointDidChange:(CGPoint)a3;
-- (void)observeMouseAvailabilityDidChange:(BOOL)a3;
-- (void)observeMouseButtonMaskDidChange:(unsigned int)a3;
-- (void)observeMouseModelPointDidChange:(CGPoint)a3 display:(id)a4 reason:(id)a5;
-- (void)observeMouseRelativePointDidChange:(CGPoint)a3;
-- (void)observeMouseScrollPhaseDidChange:(unsigned __int16)a3;
-- (void)observeMouseTouchCountDidChange:(int64_t)a3;
+- (void)observeMouseAbsolutePointDidChange:(CGPoint)change;
+- (void)observeMouseAvailabilityDidChange:(BOOL)change;
+- (void)observeMouseButtonMaskDidChange:(unsigned int)change;
+- (void)observeMouseModelPointDidChange:(CGPoint)change display:(id)display reason:(id)reason;
+- (void)observeMouseRelativePointDidChange:(CGPoint)change;
+- (void)observeMouseScrollPhaseDidChange:(unsigned __int16)change;
+- (void)observeMouseTouchCountDidChange:(int64_t)change;
 @end
 
 @implementation BKMousePointerAnnotationController
 
-- (void)observeMouseAvailabilityDidChange:(BOOL)a3
+- (void)observeMouseAvailabilityDidChange:(BOOL)change
 {
-  if (!a3)
+  if (!change)
   {
     [(BKDisplayAnnotationController *)self->_currentAnnotationController removeAnnotationsForKeyPath:@"mouse"];
   }
 }
 
-- (void)observeMouseTouchCountDidChange:(int64_t)a3
+- (void)observeMouseTouchCountDidChange:(int64_t)change
 {
   v4 = self->_currentAnnotationController;
   if (v4)
   {
     v7 = v4;
-    if (a3 < 1)
+    if (change < 1)
     {
       [(BKDisplayAnnotationController *)v4 removeAnnotationsForKeyPath:@"mouse.touchState"];
     }
 
     else
     {
-      v5 = [NSString stringWithFormat:@"touches:%d", a3];
-      v6 = [BKDisplayAnnotation subannotationWithString:v5];
+      change = [NSString stringWithFormat:@"touches:%d", change];
+      v6 = [BKDisplayAnnotation subannotationWithString:change];
       [(BKDisplayAnnotationController *)v7 setAnnotation:v6 forKeyPath:@"mouse.touchState"];
     }
 
@@ -43,28 +43,28 @@
   }
 }
 
-- (void)observeMouseButtonMaskDidChange:(unsigned int)a3
+- (void)observeMouseButtonMaskDidChange:(unsigned int)change
 {
   v4 = self->_currentAnnotationController;
   v6 = v4;
   if (v4)
   {
-    if (a3)
+    if (change)
     {
-      if (a3 == 1)
+      if (change == 1)
       {
         v7 = @"primary button down";
       }
 
-      else if (a3 == 2)
+      else if (change == 2)
       {
         v7 = @"secondary button down";
       }
 
       else
       {
-        v8 = a3;
-        v5.i32[0] = a3;
+        changeCopy = change;
+        v5.i32[0] = change;
         v9 = vcnt_s8(v5);
         v9.i16[0] = vaddlv_u8(v9);
         v10 = v9.i32[0];
@@ -94,7 +94,7 @@
         v22 = 0;
         do
         {
-          if (((1 << v13) & v8) != 0)
+          if (((1 << v13) & changeCopy) != 0)
           {
             v16(v12);
             if (v22)
@@ -130,14 +130,14 @@
   }
 }
 
-- (void)observeMouseScrollPhaseDidChange:(unsigned __int16)a3
+- (void)observeMouseScrollPhaseDidChange:(unsigned __int16)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = self->_currentAnnotationController;
   if (v4)
   {
     v8 = v4;
-    if (v3)
+    if (changeCopy)
     {
       v5 = BKNSStringFromIOHIDEventPhase();
       v6 = [NSString stringWithFormat:@"phased scroll (%@)", v5];
@@ -155,18 +155,18 @@
   }
 }
 
-- (void)observeMouseModelPointDidChange:(CGPoint)a3 display:(id)a4 reason:(id)a5
+- (void)observeMouseModelPointDidChange:(CGPoint)change display:(id)display reason:(id)reason
 {
-  y = a3.y;
-  x = a3.x;
-  v22 = a4;
-  v10 = a5;
+  y = change.y;
+  x = change.x;
+  displayCopy = display;
+  reasonCopy = reason;
   v11 = self->_currentAnnotationController;
-  if (self->_currentDisplay != v22)
+  if (self->_currentDisplay != displayCopy)
   {
-    objc_storeStrong(&self->_currentDisplay, a4);
+    objc_storeStrong(&self->_currentDisplay, display);
     [(BKDisplayAnnotationController *)self->_currentAnnotationController removeAnnotationsForKeyPath:@"mouse"];
-    v12 = [BKDisplayAnnotationController annotationControllerForDisplay:v22];
+    v12 = [BKDisplayAnnotationController annotationControllerForDisplay:displayCopy];
     currentAnnotationController = self->_currentAnnotationController;
     self->_currentAnnotationController = v12;
   }
@@ -194,18 +194,18 @@
     [(BKDisplayAnnotationController *)v11 setAnnotation:v17 forKeyPath:@"mouse"];
   }
 
-  v20 = [NSString stringWithFormat:@"%g, %g -- %@", *&x, *&y, v10];
-  v21 = [BKDisplayAnnotation subannotationWithString:v20];
+  reasonCopy = [NSString stringWithFormat:@"%g, %g -- %@", *&x, *&y, reasonCopy];
+  v21 = [BKDisplayAnnotation subannotationWithString:reasonCopy];
   [(BKDisplayAnnotationController *)v11 setAnnotation:v21 forKeyPath:@"mouse.location"];
 }
 
-- (void)observeMouseAbsolutePointDidChange:(CGPoint)a3
+- (void)observeMouseAbsolutePointDidChange:(CGPoint)change
 {
   currentAnnotationController = self->_currentAnnotationController;
   if (currentAnnotationController)
   {
-    y = a3.y;
-    x = a3.x;
+    y = change.y;
+    x = change.x;
     v6 = currentAnnotationController;
     v8 = [NSString stringWithFormat:@"abs: %.4g, %.4g", *&x, *&y];
     v7 = [BKDisplayAnnotation subannotationWithString:v8];
@@ -213,13 +213,13 @@
   }
 }
 
-- (void)observeMouseRelativePointDidChange:(CGPoint)a3
+- (void)observeMouseRelativePointDidChange:(CGPoint)change
 {
   currentAnnotationController = self->_currentAnnotationController;
   if (currentAnnotationController)
   {
-    y = a3.y;
-    x = a3.x;
+    y = change.y;
+    x = change.x;
     v6 = currentAnnotationController;
     v8 = [NSString stringWithFormat:@"rel: %.4g, %.4g", *&x, *&y];
     v7 = [BKDisplayAnnotation subannotationWithString:v8];
@@ -239,8 +239,8 @@
       inputEventsPerSecond = self->_inputEventsPerSecond;
       outputEventsPerSecond = self->_outputEventsPerSecond;
       v8 = currentAnnotationController;
-      v9 = [NSString stringWithFormat:@"Hz in:%d / out:%d", inputEventsPerSecond, outputEventsPerSecond];
-      v10 = [BKDisplayAnnotation subannotationWithString:v9];
+      outputEventsPerSecond = [NSString stringWithFormat:@"Hz in:%d / out:%d", inputEventsPerSecond, outputEventsPerSecond];
+      v10 = [BKDisplayAnnotation subannotationWithString:outputEventsPerSecond];
       [(BKDisplayAnnotationController *)v8 setAnnotation:v10 forKeyPath:@"mouse.Hz"];
     }
 
@@ -275,7 +275,7 @@
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKMousePointerAnnotationController.m";
       v17 = 1024;

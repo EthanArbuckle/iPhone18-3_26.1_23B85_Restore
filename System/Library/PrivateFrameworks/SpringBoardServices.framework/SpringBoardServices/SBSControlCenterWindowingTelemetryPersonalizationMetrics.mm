@@ -1,14 +1,14 @@
 @interface SBSControlCenterWindowingTelemetryPersonalizationMetrics
-- (SBSControlCenterWindowingTelemetryPersonalizationMetrics)initWithPreviousMultitaskingMode:(int64_t)a3 currentMultitaskingMode:(int64_t)a4;
+- (SBSControlCenterWindowingTelemetryPersonalizationMetrics)initWithPreviousMultitaskingMode:(int64_t)mode currentMultitaskingMode:(int64_t)multitaskingMode;
 @end
 
 @implementation SBSControlCenterWindowingTelemetryPersonalizationMetrics
 
-- (SBSControlCenterWindowingTelemetryPersonalizationMetrics)initWithPreviousMultitaskingMode:(int64_t)a3 currentMultitaskingMode:(int64_t)a4
+- (SBSControlCenterWindowingTelemetryPersonalizationMetrics)initWithPreviousMultitaskingMode:(int64_t)mode currentMultitaskingMode:(int64_t)multitaskingMode
 {
   v5.receiver = self;
   v5.super_class = SBSControlCenterWindowingTelemetryPersonalizationMetrics;
-  return [(SBSAbstractWindowingTelemetryPersonalizationMetrics *)&v5 _initWithPreviousMultitaskingMode:a3 currentMultitaskingMode:a4 source:3 multitaskingBuddyPanePresentation:0];
+  return [(SBSAbstractWindowingTelemetryPersonalizationMetrics *)&v5 _initWithPreviousMultitaskingMode:mode currentMultitaskingMode:multitaskingMode source:3 multitaskingBuddyPanePresentation:0];
 }
 
 @end

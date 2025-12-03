@@ -1,18 +1,18 @@
 @interface REPredictedActionServer
 + (id)sharedInstance;
 - (REPredictedActionServer)init;
-- (void)_accessOrEnqueueDataRequest:(id)a3 error:(id)a4;
+- (void)_accessOrEnqueueDataRequest:(id)request error:(id)error;
 - (void)_clearConnection;
 - (void)_finishProcessingData;
 - (void)_invalidateConnection;
 - (void)_queue_fetchPredicitions;
 - (void)_queue_setupConnection;
-- (void)_requestPredictions:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_requestPredictions:(id)predictions;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)fetchFirstPerformedActionDate:(id)a3;
-- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)a3 actionIdentifier:(unint64_t)a4 completion:(id)a5;
-- (void)fetchPredictedActions:(id)a3;
+- (void)fetchFirstPerformedActionDate:(id)date;
+- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)identifer actionIdentifier:(unint64_t)identifier completion:(id)completion;
+- (void)fetchPredictedActions:(id)actions;
 @end
 
 @implementation REPredictedActionServer
@@ -58,9 +58,9 @@ uint64_t __41__REPredictedActionServer_sharedInstance__block_invoke()
     v3->_queue = v7;
 
     v3->_fetchingData = 0;
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     fetchCompletionBlocks = v3->_fetchCompletionBlocks;
-    v3->_fetchCompletionBlocks = v9;
+    v3->_fetchCompletionBlocks = array;
 
     v11 = objc_alloc_init(REObserverStore);
     observers = v3->_observers;
@@ -79,19 +79,19 @@ uint64_t __41__REPredictedActionServer_sharedInstance__block_invoke()
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, REHandlePredictedActionsUpdated, @"com.apple.relevanceengine.predictedactionsupdated", 0, CFNotificationSuspensionBehaviorCoalesce);
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v3 selector:sel__requestPredictions_ name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__requestPredictions_ name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v19 = soft_RESignificantLocationUpdateNotification();
-    [v18 addObserver:v3 selector:sel__requestPredictions_ name:v19 object:0];
+    [defaultCenter2 addObserver:v3 selector:sel__requestPredictions_ name:v19 object:0];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v21 = RESignificantTimeChangeNotification();
-    [v20 addObserver:v3 selector:sel__requestPredictions_ name:v21 object:0];
+    [defaultCenter3 addObserver:v3 selector:sel__requestPredictions_ name:v21 object:0];
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v3 selector:sel__requestPredictions_ name:@"REDeviceLockStateChangedNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v3 selector:sel__requestPredictions_ name:@"REDeviceLockStateChangedNotification" object:0];
 
     v23 = v3->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -118,44 +118,44 @@ void __31__REPredictedActionServer_init__block_invoke(uint64_t a1)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.relevanceengine.predictedactionsupdated", 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"REShowRecentDeveloperDonationsChangedNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = soft_RESignificantLocationUpdateNotification();
-  [v5 removeObserver:self name:v6 object:0];
+  [defaultCenter2 removeObserver:self name:v6 object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = RESignificantTimeChangeNotification();
-  [v7 removeObserver:self name:v8 object:0];
+  [defaultCenter3 removeObserver:self name:v8 object:0];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 removeObserver:self name:@"REDeviceLockStateChangedNotification" object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 removeObserver:self name:@"REDeviceLockStateChangedNotification" object:0];
 
   v10.receiver = self;
   v10.super_class = REPredictedActionServer;
   [(REPredictedActionServer *)&v10 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   observers = self->_observers;
-  v4 = a3;
-  [(REObserverStore *)observers addObserver:v4];
-  [v4 predictedActionsDidUpdate];
+  observerCopy = observer;
+  [(REObserverStore *)observers addObserver:observerCopy];
+  [observerCopy predictedActionsDidUpdate];
 }
 
-- (void)fetchPredictedActions:(id)a3
+- (void)fetchPredictedActions:(id)actions
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  actionsCopy = actions;
+  v5 = actionsCopy;
+  if (actionsCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__REPredictedActionServer_fetchPredictedActions___block_invoke;
     v8[3] = &unk_2785FB6B0;
-    v9 = v4;
+    v9 = actionsCopy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __49__REPredictedActionServer_fetchPredictedActions___block_invoke_2;
@@ -172,17 +172,17 @@ uint64_t __49__REPredictedActionServer_fetchPredictedActions___block_invoke(uint
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchFirstPerformedActionDate:(id)a3
+- (void)fetchFirstPerformedActionDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (dateCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__REPredictedActionServer_fetchFirstPerformedActionDate___block_invoke;
     v8[3] = &unk_2785FB6B0;
-    v9 = v4;
+    v9 = dateCopy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __57__REPredictedActionServer_fetchFirstPerformedActionDate___block_invoke_2;
@@ -192,20 +192,20 @@ uint64_t __49__REPredictedActionServer_fetchPredictedActions___block_invoke(uint
   }
 }
 
-- (void)_accessOrEnqueueDataRequest:(id)a3 error:(id)a4
+- (void)_accessOrEnqueueDataRequest:(id)request error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__REPredictedActionServer__accessOrEnqueueDataRequest_error___block_invoke;
   block[3] = &unk_2785FB700;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -253,11 +253,11 @@ void __61__REPredictedActionServer__accessOrEnqueueDataRequest_error___block_inv
   }
 }
 
-- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)a3 actionIdentifier:(unint64_t)a4 completion:(id)a5
+- (void)fetchPerformedTodayCountForActionWithBundleIdentifer:(id)identifer actionIdentifier:(unint64_t)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  identiferCopy = identifer;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     v11[0] = MEMORY[0x277D85DD0];
@@ -265,9 +265,9 @@ void __61__REPredictedActionServer__accessOrEnqueueDataRequest_error___block_inv
     v11[2] = __108__REPredictedActionServer_fetchPerformedTodayCountForActionWithBundleIdentifer_actionIdentifier_completion___block_invoke;
     v11[3] = &unk_2785FB258;
     v11[4] = self;
-    v12 = v8;
-    v14 = a4;
-    v13 = v9;
+    v12 = identiferCopy;
+    identifierCopy = identifier;
+    v13 = completionCopy;
     dispatch_async(queue, v11);
   }
 }
@@ -302,27 +302,27 @@ void __108__REPredictedActionServer_fetchPerformedTodayCountForActionWithBundleI
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestPredictions:(id)a3
+- (void)_requestPredictions:(id)predictions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  predictionsCopy = predictions;
+  if (predictionsCopy)
   {
     v5 = RELogForDomain(12);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 name];
+      name = [predictionsCopy name];
       v13 = 138543362;
-      v14 = v6;
+      v14 = name;
       _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_INFO, "Received %{public}@ notification that will trigger a prediction fetch from relevanced.", &v13, 0xCu);
     }
   }
 
-  v7 = [v4 name];
-  v8 = [v7 isEqualToString:@"com.apple.relevanceengine.predictedactionsupdated"];
+  name2 = [predictionsCopy name];
+  v8 = [name2 isEqualToString:@"com.apple.relevanceengine.predictedactionsupdated"];
 
-  v9 = [v4 name];
-  v10 = [v9 isEqualToString:@"REShowRecentDeveloperDonationsChangedNotification"];
+  name3 = [predictionsCopy name];
+  v10 = [name3 isEqualToString:@"REShowRecentDeveloperDonationsChangedNotification"];
 
   [(NSDate *)self->_lastFetchedDate timeIntervalSinceNow];
   if (v11 < 0.0)
@@ -358,9 +358,9 @@ void __108__REPredictedActionServer_fetchPerformedTodayCountForActionWithBundleI
   else
   {
     self->_fetchingData = 1;
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastFetchedDate = self->_lastFetchedDate;
-    self->_lastFetchedDate = v6;
+    self->_lastFetchedDate = date;
 
     if (!self->_connection)
     {

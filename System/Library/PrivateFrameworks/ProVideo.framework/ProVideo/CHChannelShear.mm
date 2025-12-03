@@ -1,14 +1,14 @@
 @interface CHChannelShear
-- (void)getDefaultCurveX:(double *)a3 curveY:(double *)a4;
-- (void)getMaxCurveX:(double *)a3 curveY:(double *)a4;
-- (void)getMinCurveX:(double *)a3 curveY:(double *)a4;
-- (void)getShearAtTime:(id *)a3 curveX:(double *)a4 curveY:(double *)a5;
-- (void)getShearAtTime:(id *)a3 x:(double *)a4 y:(double *)a5;
+- (void)getDefaultCurveX:(double *)x curveY:(double *)y;
+- (void)getMaxCurveX:(double *)x curveY:(double *)y;
+- (void)getMinCurveX:(double *)x curveY:(double *)y;
+- (void)getShearAtTime:(id *)time curveX:(double *)x curveY:(double *)y;
+- (void)getShearAtTime:(id *)time x:(double *)x y:(double *)y;
 - (void)ozChannel;
-- (void)setDefaultCurveX:(double)a3 curveY:(double)a4;
-- (void)setMaxCurveX:(double)a3 curveY:(double)a4;
-- (void)setMinCurveX:(double)a3 curveY:(double)a4;
-- (void)setShearAtTime:(id *)a3 curveX:(double)a4 curveY:(double)a5 options:(unsigned int)a6;
+- (void)setDefaultCurveX:(double)x curveY:(double)y;
+- (void)setMaxCurveX:(double)x curveY:(double)y;
+- (void)setMinCurveX:(double)x curveY:(double)y;
+- (void)setShearAtTime:(id *)time curveX:(double)x curveY:(double)y options:(unsigned int)options;
 @end
 
 @implementation CHChannelShear
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (void)getShearAtTime:(id *)a3 x:(double *)a4 y:(double *)a5
+- (void)getShearAtTime:(id *)time x:(double *)x y:(double *)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -35,13 +35,13 @@
     v9 = 0;
   }
 
-  OZChannel::getValueAsDouble((v9 + 136), a3, 0.0);
-  *a4 = v10;
-  OZChannel::getValueAsDouble((v9 + 288), a3, 0.0);
-  *a5 = v11;
+  OZChannel::getValueAsDouble((v9 + 136), time, 0.0);
+  *x = v10;
+  OZChannel::getValueAsDouble((v9 + 288), time, 0.0);
+  *y = v11;
 }
 
-- (void)getShearAtTime:(id *)a3 curveX:(double *)a4 curveY:(double *)a5
+- (void)getShearAtTime:(id *)time curveX:(double *)x curveY:(double *)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -54,23 +54,23 @@
   }
 
   memset(&v13, 0, sizeof(v13));
-  v11 = *&a3->var0;
-  var3 = a3->var3;
+  v11 = *&time->var0;
+  var3 = time->var3;
   [(CHChannelBase *)self convertGlobalToLocal:&v11];
-  if (a4)
+  if (x)
   {
-    *a4 = OZChannel::getCurveValue((v10 + 136), &v13, 0);
+    *x = OZChannel::getCurveValue((v10 + 136), &v13, 0);
   }
 
-  if (a5)
+  if (y)
   {
-    *a5 = OZChannel::getCurveValue((v10 + 288), &v13, 0);
+    *y = OZChannel::getCurveValue((v10 + 288), &v13, 0);
   }
 }
 
-- (void)setShearAtTime:(id *)a3 curveX:(double)a4 curveY:(double)a5 options:(unsigned int)a6
+- (void)setShearAtTime:(id *)time curveX:(double)x curveY:(double)y options:(unsigned int)options
 {
-  v6 = a6;
+  optionsCopy = options;
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
@@ -82,27 +82,27 @@
     v11 = 0;
   }
 
-  if ((~a3->var2 & 0x11) == 0)
+  if ((~time->var2 & 0x11) == 0)
   {
     v12 = *MEMORY[0x277CC08F0];
-    a3->var3 = *(MEMORY[0x277CC08F0] + 16);
-    *&a3->var0 = v12;
+    time->var3 = *(MEMORY[0x277CC08F0] + 16);
+    *&time->var0 = v12;
   }
 
   Instance = OZCoreGlobals::getInstance(pOZChannel);
   v14 = *(Instance + 8);
-  *(OZCoreGlobals::getInstance(Instance) + 8) = v6 & 1;
-  OZChannel::setValue((v11 + 136), a3, a4, 0);
-  v15 = OZChannel::setValue((v11 + 288), a3, a5, 0);
+  *(OZCoreGlobals::getInstance(Instance) + 8) = optionsCopy & 1;
+  OZChannel::setValue((v11 + 136), time, x, 0);
+  v15 = OZChannel::setValue((v11 + 288), time, y, 0);
   *(OZCoreGlobals::getInstance(v15) + 8) = v14;
 }
 
-- (void)getDefaultCurveX:(double *)a3 curveY:(double *)a4
+- (void)getDefaultCurveX:(double *)x curveY:(double *)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
-    if (!a3)
+    if (!x)
     {
       goto LABEL_4;
     }
@@ -111,20 +111,20 @@
   }
 
   v7 = 0;
-  if (a3)
+  if (x)
   {
 LABEL_3:
-    *a3 = OZChannel::getDefaultValue((v7 + 136));
+    *x = OZChannel::getDefaultValue((v7 + 136));
   }
 
 LABEL_4:
-  if (a4)
+  if (y)
   {
-    *a4 = OZChannel::getDefaultValue((v7 + 288));
+    *y = OZChannel::getDefaultValue((v7 + 288));
   }
 }
 
-- (void)setDefaultCurveX:(double)a3 curveY:(double)a4
+- (void)setDefaultCurveX:(double)x curveY:(double)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -162,8 +162,8 @@ LABEL_4:
     v15 = (*(v14 + 496))(v7 + 288, 1) ^ 1;
   }
 
-  OZChannel::setDefaultValue(v8, a3);
-  OZChannel::setDefaultValue(v12, a4);
+  OZChannel::setDefaultValue(v8, x);
+  OZChannel::setDefaultValue(v12, y);
   if (v11)
   {
     (*(v8->var0 + 36))(v8, 0);
@@ -177,12 +177,12 @@ LABEL_4:
   }
 }
 
-- (void)getMinCurveX:(double *)a3 curveY:(double *)a4
+- (void)getMinCurveX:(double *)x curveY:(double *)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
-    if (!a3)
+    if (!x)
     {
       goto LABEL_4;
     }
@@ -191,24 +191,24 @@ LABEL_4:
   }
 
   v7 = 0;
-  if (a3)
+  if (x)
   {
 LABEL_3:
     v8 = 0;
     (*(**(v7[31] + 8) + 264))(*(v7[31] + 8), &v8);
-    *a3 = v8;
+    *x = v8;
   }
 
 LABEL_4:
-  if (a4)
+  if (y)
   {
     v8 = 0;
     (*(**(v7[50] + 8) + 264))(*(v7[50] + 8), &v8);
-    *a4 = v8;
+    *y = v8;
   }
 }
 
-- (void)setMinCurveX:(double)a3 curveY:(double)a4
+- (void)setMinCurveX:(double)x curveY:(double)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -220,17 +220,17 @@ LABEL_4:
     v7 = 0;
   }
 
-  OZChannel::setMin((v7 + 136), a3);
+  OZChannel::setMin((v7 + 136), x);
 
-  OZChannel::setMin((v7 + 288), a4);
+  OZChannel::setMin((v7 + 288), y);
 }
 
-- (void)getMaxCurveX:(double *)a3 curveY:(double *)a4
+- (void)getMaxCurveX:(double *)x curveY:(double *)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
-    if (!a3)
+    if (!x)
     {
       goto LABEL_4;
     }
@@ -239,24 +239,24 @@ LABEL_4:
   }
 
   v7 = 0;
-  if (a3)
+  if (x)
   {
 LABEL_3:
     v8 = 0;
     (*(**(v7[31] + 8) + 256))(*(v7[31] + 8), &v8);
-    *a3 = v8;
+    *x = v8;
   }
 
 LABEL_4:
-  if (a4)
+  if (y)
   {
     v8 = 0;
     (*(**(v7[50] + 8) + 256))(*(v7[50] + 8), &v8);
-    *a4 = v8;
+    *y = v8;
   }
 }
 
-- (void)setMaxCurveX:(double)a3 curveY:(double)a4
+- (void)setMaxCurveX:(double)x curveY:(double)y
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
@@ -268,9 +268,9 @@ LABEL_4:
     v7 = 0;
   }
 
-  OZChannel::setMax((v7 + 136), a3);
+  OZChannel::setMax((v7 + 136), x);
 
-  OZChannel::setMax((v7 + 288), a4);
+  OZChannel::setMax((v7 + 288), y);
 }
 
 @end

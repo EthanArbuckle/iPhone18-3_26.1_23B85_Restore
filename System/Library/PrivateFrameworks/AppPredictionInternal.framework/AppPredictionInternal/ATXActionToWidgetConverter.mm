@@ -1,59 +1,59 @@
 @interface ATXActionToWidgetConverter
-+ (BOOL)isWidgetIntent:(id)a3 validConversionFromActionIntent:(id)a4;
-- (ATXActionToWidgetConverter)initWithIntentMetadataCache:(id)a3 widgetDescriptorCache:(id)a4 infoConfidenceMapper:(id)a5 engagementRecordManager:(id)a6 metadataProvider:(id)a7 allowsSendMessageIntentConversion:(BOOL)a8;
-- (id)_convertedSuggestionFromInfoSuggestion:(id)a3 originalSuggestion:(id)a4;
-- (id)_infoSuggestionForAction:(id)a3;
-- (id)_infoSuggestionForLinkActionContainer:(id)a3;
-- (id)_peopleInfoSuggestionForSendMessageIntent:(id)a3 action:(id)a4;
-- (id)_selectPersonIntentForSendMessageIntent:(id)a3;
-- (id)_widgetForIntent:(id)a3;
-- (id)convertSuggestions:(id)a3;
++ (BOOL)isWidgetIntent:(id)intent validConversionFromActionIntent:(id)actionIntent;
+- (ATXActionToWidgetConverter)initWithIntentMetadataCache:(id)cache widgetDescriptorCache:(id)descriptorCache infoConfidenceMapper:(id)mapper engagementRecordManager:(id)manager metadataProvider:(id)provider allowsSendMessageIntentConversion:(BOOL)conversion;
+- (id)_convertedSuggestionFromInfoSuggestion:(id)suggestion originalSuggestion:(id)originalSuggestion;
+- (id)_infoSuggestionForAction:(id)action;
+- (id)_infoSuggestionForLinkActionContainer:(id)container;
+- (id)_peopleInfoSuggestionForSendMessageIntent:(id)intent action:(id)action;
+- (id)_selectPersonIntentForSendMessageIntent:(id)intent;
+- (id)_widgetForIntent:(id)intent;
+- (id)convertSuggestions:(id)suggestions;
 @end
 
 @implementation ATXActionToWidgetConverter
 
-- (ATXActionToWidgetConverter)initWithIntentMetadataCache:(id)a3 widgetDescriptorCache:(id)a4 infoConfidenceMapper:(id)a5 engagementRecordManager:(id)a6 metadataProvider:(id)a7 allowsSendMessageIntentConversion:(BOOL)a8
+- (ATXActionToWidgetConverter)initWithIntentMetadataCache:(id)cache widgetDescriptorCache:(id)descriptorCache infoConfidenceMapper:(id)mapper engagementRecordManager:(id)manager metadataProvider:(id)provider allowsSendMessageIntentConversion:(BOOL)conversion
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  cacheCopy = cache;
+  descriptorCacheCopy = descriptorCache;
+  mapperCopy = mapper;
+  managerCopy = manager;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = ATXActionToWidgetConverter;
   v18 = [(ATXActionToWidgetConverter *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_descriptorCache, a4);
-    objc_storeStrong(&v19->_intentMetadataCache, a3);
-    objc_storeStrong(&v19->_infoConfidenceMapper, a5);
-    objc_storeStrong(&v19->_engagementRecordManager, a6);
-    objc_storeStrong(&v19->_metadataProvider, a7);
-    v19->_allowsSendMessageIntentConversion = a8;
+    objc_storeStrong(&v18->_descriptorCache, descriptorCache);
+    objc_storeStrong(&v19->_intentMetadataCache, cache);
+    objc_storeStrong(&v19->_infoConfidenceMapper, mapper);
+    objc_storeStrong(&v19->_engagementRecordManager, manager);
+    objc_storeStrong(&v19->_metadataProvider, provider);
+    v19->_allowsSendMessageIntentConversion = conversion;
   }
 
   return v19;
 }
 
-- (id)convertSuggestions:(id)a3
+- (id)convertSuggestions:(id)suggestions
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = suggestionsCopy;
   v28 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v28)
   {
     v27 = *v31;
     *&v7 = 138412546;
     v24 = v7;
-    v25 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v28; ++i)
@@ -64,10 +64,10 @@
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
-        v10 = [v9 atxActionExecutableObject];
-        if (v10)
+        atxActionExecutableObject = [v9 atxActionExecutableObject];
+        if (atxActionExecutableObject)
         {
-          v11 = [(ATXActionToWidgetConverter *)self _infoSuggestionForAction:v10];
+          v11 = [(ATXActionToWidgetConverter *)self _infoSuggestionForAction:atxActionExecutableObject];
         }
 
         else
@@ -75,10 +75,10 @@
           v11 = 0;
         }
 
-        v12 = [v9 linkActionExecutableObject];
-        if (v12)
+        linkActionExecutableObject = [v9 linkActionExecutableObject];
+        if (linkActionExecutableObject)
         {
-          v13 = [(ATXActionToWidgetConverter *)self _infoSuggestionForLinkActionContainer:v12];
+          v13 = [(ATXActionToWidgetConverter *)self _infoSuggestionForLinkActionContainer:linkActionExecutableObject];
 
           v11 = v13;
         }
@@ -99,24 +99,24 @@
               _os_log_impl(&dword_2263AA000, v16, OS_LOG_TYPE_DEFAULT, "ATXActionToWidgetConverter: Converted action suggestion: %@, to widget suggestion: %@", buf, 0x16u);
             }
 
-            v17 = [v14 clientModelSpecification];
-            v18 = [v17 clientModelId];
+            clientModelSpecification = [v14 clientModelSpecification];
+            clientModelId = [clientModelSpecification clientModelId];
 
-            v19 = [v5 objectForKeyedSubscript:v18];
+            v19 = [v5 objectForKeyedSubscript:clientModelId];
 
             if (!v19)
             {
               v20 = objc_opt_new();
-              [v5 setObject:v20 forKeyedSubscript:v18];
+              [v5 setObject:v20 forKeyedSubscript:clientModelId];
             }
 
-            v21 = [v5 objectForKeyedSubscript:v18];
+            v21 = [v5 objectForKeyedSubscript:clientModelId];
             [v21 addObject:v14];
 
             v6 = v15;
             [v15 addObject:v14];
 
-            self = v25;
+            self = selfCopy;
           }
         }
 
@@ -141,32 +141,32 @@
   return v6;
 }
 
-- (id)_infoSuggestionForLinkActionContainer:(id)a3
+- (id)_infoSuggestionForLinkActionContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 cachedAppIntent];
+  containerCopy = container;
+  cachedAppIntent = [containerCopy cachedAppIntent];
 
-  if (v5)
+  if (cachedAppIntent)
   {
-    v6 = [v4 cachedAppIntent];
+    cachedAppIntent2 = [containerCopy cachedAppIntent];
   }
 
   else
   {
     metadataProvider = self->_metadataProvider;
-    v8 = [v4 bundleId];
-    v9 = [v4 action];
-    v10 = [v9 identifier];
+    bundleId = [containerCopy bundleId];
+    action = [containerCopy action];
+    identifier = [action identifier];
     v24 = 0;
-    v11 = [(LNMetadataProvider *)metadataProvider actionForBundleIdentifier:v8 andActionIdentifier:v10 error:&v24];
-    v6 = v24;
+    v11 = [(LNMetadataProvider *)metadataProvider actionForBundleIdentifier:bundleId andActionIdentifier:identifier error:&v24];
+    cachedAppIntent2 = v24;
 
-    if (v6 || !v11)
+    if (cachedAppIntent2 || !v11)
     {
-      v17 = __atxlog_handle_blending();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      launchId = __atxlog_handle_blending();
+      if (os_log_type_enabled(launchId, OS_LOG_TYPE_ERROR))
       {
-        [(ATXActionToWidgetConverter *)v4 _infoSuggestionForLinkActionContainer:v6, v17];
+        [(ATXActionToWidgetConverter *)containerCopy _infoSuggestionForLinkActionContainer:cachedAppIntent2, launchId];
       }
 
       v22 = 0;
@@ -174,14 +174,14 @@
     }
 
     v12 = objc_alloc(MEMORY[0x277CD3A70]);
-    v13 = [v4 bundleId];
-    v14 = [v4 action];
-    v6 = [v12 initWithAppBundleIdentifier:v13 linkAction:v14 linkActionMetadata:v11];
+    bundleId2 = [containerCopy bundleId];
+    action2 = [containerCopy action];
+    cachedAppIntent2 = [v12 initWithAppBundleIdentifier:bundleId2 linkAction:action2 linkActionMetadata:v11];
 
-    [v4 setCachedAppIntent:v6];
+    [containerCopy setCachedAppIntent:cachedAppIntent2];
   }
 
-  v11 = [(ATXActionToWidgetConverter *)self _widgetForIntent:v6];
+  v11 = [(ATXActionToWidgetConverter *)self _widgetForIntent:cachedAppIntent2];
   if (!v11)
   {
     v22 = 0;
@@ -189,14 +189,14 @@
   }
 
   v15 = MEMORY[0x277D42040];
-  v6 = v6;
+  cachedAppIntent2 = cachedAppIntent2;
   v16 = [v15 alloc];
-  v17 = [v6 launchId];
-  v18 = [v11 extensionBundleIdentifier];
-  v19 = [v11 kind];
-  v20 = [v11 atx_layoutOptions];
-  v21 = [v6 appIntentIdentifier];
-  v22 = [v16 initWithAppBundleIdentifier:v17 widgetBundleIdentifier:v18 widgetKind:v19 criterion:&stru_2839A6058 applicableLayouts:v20 suggestionIdentifier:v21 startDate:0 endDate:0 intent:v6 metadata:0 relevanceScore:0];
+  launchId = [cachedAppIntent2 launchId];
+  extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+  kind = [v11 kind];
+  atx_layoutOptions = [v11 atx_layoutOptions];
+  appIntentIdentifier = [cachedAppIntent2 appIntentIdentifier];
+  v22 = [v16 initWithAppBundleIdentifier:launchId widgetBundleIdentifier:extensionBundleIdentifier widgetKind:kind criterion:&stru_2839A6058 applicableLayouts:atx_layoutOptions suggestionIdentifier:appIntentIdentifier startDate:0 endDate:0 intent:cachedAppIntent2 metadata:0 relevanceScore:0];
 
 LABEL_12:
 LABEL_13:
@@ -204,20 +204,20 @@ LABEL_13:
   return v22;
 }
 
-- (id)_infoSuggestionForAction:(id)a3
+- (id)_infoSuggestionForAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 intent];
-  v6 = v5;
-  if (v5)
+  actionCopy = action;
+  intent = [actionCopy intent];
+  v6 = intent;
+  if (intent)
   {
     if (!self->_allowsSendMessageIntentConversion)
     {
       goto LABEL_9;
     }
 
-    v7 = [v5 launchId];
-    if (([v7 isEqualToString:@"com.apple.MobileSMS"] & 1) == 0)
+    launchId = [intent launchId];
+    if (([launchId isEqualToString:@"com.apple.MobileSMS"] & 1) == 0)
     {
 
       goto LABEL_9;
@@ -226,13 +226,13 @@ LABEL_13:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) == 0 || ([(ATXActionToWidgetConverter *)self _peopleInfoSuggestionForSendMessageIntent:v6 action:v4], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((isKindOfClass & 1) == 0 || ([(ATXActionToWidgetConverter *)self _peopleInfoSuggestionForSendMessageIntent:v6 action:actionCopy], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_9:
       v10 = [(ATXActionToWidgetConverter *)self _widgetForIntent:v6];
       if (v10)
       {
-        v9 = createInfoSuggestion(v4, v10, v6);
+        v9 = createInfoSuggestion(actionCopy, v10, v6);
       }
 
       else
@@ -250,14 +250,14 @@ LABEL_9:
   return v9;
 }
 
-- (id)_widgetForIntent:(id)a3
+- (id)_widgetForIntent:(id)intent
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || [(ATXIntentMetadataCache *)self->_intentMetadataCache isEligibleForWidgetsForIntent:v4])
+  if ((objc_opt_isKindOfClass() & 1) != 0 || [(ATXIntentMetadataCache *)self->_intentMetadataCache isEligibleForWidgetsForIntent:intentCopy])
   {
-    v5 = [(ATXWidgetDescriptorCache *)self->_descriptorCache homeScreenDescriptorForIntent:v4];
+    v5 = [(ATXWidgetDescriptorCache *)self->_descriptorCache homeScreenDescriptorForIntent:intentCopy];
     v6 = __atxlog_handle_blending();
     v7 = v6;
     if (v5)
@@ -267,7 +267,7 @@ LABEL_9:
         v11 = 138412546;
         v12 = v5;
         v13 = 2112;
-        v14 = v4;
+        v14 = intentCopy;
         _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "ATXActionToWidgetConverter: Found descriptor %@ for eligible intent %@", &v11, 0x16u);
       }
 
@@ -278,7 +278,7 @@ LABEL_9:
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(ATXActionToWidgetConverter *)v4 _widgetForIntent:v7];
+        [(ATXActionToWidgetConverter *)intentCopy _widgetForIntent:v7];
       }
     }
   }
@@ -293,44 +293,44 @@ LABEL_9:
   return v5;
 }
 
-- (id)_convertedSuggestionFromInfoSuggestion:(id)a3 originalSuggestion:(id)a4
+- (id)_convertedSuggestionFromInfoSuggestion:(id)suggestion originalSuggestion:(id)originalSuggestion
 {
   infoConfidenceMapper = self->_infoConfidenceMapper;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 scoreSpecification];
-  [v7 setConfidenceLevel:{-[ATXInfoToBlendingConfidenceMapper minInfoConfidenceLevelForBlendingConfidenceCategory:](infoConfidenceMapper, "minInfoConfidenceLevelForBlendingConfidenceCategory:", objc_msgSend(v8, "suggestedConfidenceCategory"))}];
+  originalSuggestionCopy = originalSuggestion;
+  suggestionCopy = suggestion;
+  scoreSpecification = [originalSuggestionCopy scoreSpecification];
+  [suggestionCopy setConfidenceLevel:{-[ATXInfoToBlendingConfidenceMapper minInfoConfidenceLevelForBlendingConfidenceCategory:](infoConfidenceMapper, "minInfoConfidenceLevelForBlendingConfidenceCategory:", objc_msgSend(scoreSpecification, "suggestedConfidenceCategory"))}];
 
   v9 = MEMORY[0x277D42070];
-  v10 = [v6 clientModelSpecification];
-  v11 = [v10 clientModelId];
-  v12 = [v9 clientModelTypeFromClientModelId:v11];
+  clientModelSpecification = [originalSuggestionCopy clientModelSpecification];
+  clientModelId = [clientModelSpecification clientModelId];
+  v12 = [v9 clientModelTypeFromClientModelId:clientModelId];
 
   v13 = [MEMORY[0x277D42070] actionConversionTypeForClientModelType:v12];
   v14 = MEMORY[0x277D42040];
   v15 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:v13];
-  v16 = [v6 clientModelSpecification];
-  v17 = [v16 clientModelVersion];
-  v18 = [v6 scoreSpecification];
-  [v18 rawScore];
+  clientModelSpecification2 = [originalSuggestionCopy clientModelSpecification];
+  clientModelVersion = [clientModelSpecification2 clientModelVersion];
+  scoreSpecification2 = [originalSuggestionCopy scoreSpecification];
+  [scoreSpecification2 rawScore];
   v20 = v19;
-  v21 = [v6 scoreSpecification];
+  scoreSpecification3 = [originalSuggestionCopy scoreSpecification];
 
-  v22 = [v14 proactiveSuggestionForInfoSuggestion:v7 withClientModelId:v15 clientModelVersion:v17 rawScore:objc_msgSend(v21 confidenceCategory:{"suggestedConfidenceCategory"), v20}];
+  v22 = [v14 proactiveSuggestionForInfoSuggestion:suggestionCopy withClientModelId:v15 clientModelVersion:clientModelVersion rawScore:objc_msgSend(scoreSpecification3 confidenceCategory:{"suggestedConfidenceCategory"), v20}];
 
   return v22;
 }
 
-- (id)_peopleInfoSuggestionForSendMessageIntent:(id)a3 action:(id)a4
+- (id)_peopleInfoSuggestionForSendMessageIntent:(id)intent action:(id)action
 {
-  v6 = a4;
-  v7 = [(ATXActionToWidgetConverter *)self _selectPersonIntentForSendMessageIntent:a3];
+  actionCopy = action;
+  v7 = [(ATXActionToWidgetConverter *)self _selectPersonIntentForSendMessageIntent:intent];
   if (v7)
   {
     v8 = [(ATXWidgetDescriptorCache *)self->_descriptorCache homeScreenDescriptorForIntent:v7];
     if (v8)
     {
-      v9 = createInfoSuggestion(v6, v8, v7);
+      v9 = createInfoSuggestion(actionCopy, v8, v7);
     }
 
     else
@@ -353,29 +353,29 @@ LABEL_9:
   return v9;
 }
 
-- (id)_selectPersonIntentForSendMessageIntent:(id)a3
+- (id)_selectPersonIntentForSendMessageIntent:(id)intent
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 recipients];
-  v5 = [v4 count];
+  intentCopy = intent;
+  recipients = [intentCopy recipients];
+  v5 = [recipients count];
 
   if (v5 == 1)
   {
-    v6 = [v3 recipients];
-    v7 = [v6 firstObject];
+    recipients2 = [intentCopy recipients];
+    firstObject = [recipients2 firstObject];
 
-    v8 = [v7 contactIdentifier];
+    contactIdentifier = [firstObject contactIdentifier];
 
-    if (v8)
+    if (contactIdentifier)
     {
       v9 = objc_alloc(MEMORY[0x277CD3A70]);
       v21 = @"person";
-      v10 = [v7 contactIdentifier];
+      contactIdentifier2 = [firstObject contactIdentifier];
       v19[1] = @"displayString";
-      v20[0] = v10;
-      v11 = [v7 displayName];
-      v20[1] = v11;
+      v20[0] = contactIdentifier2;
+      displayName = [firstObject displayName];
+      v20[1] = displayName;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
       v22 = v12;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
@@ -408,13 +408,13 @@ LABEL_9:
 
   else
   {
-    v7 = __atxlog_handle_blending();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    firstObject = __atxlog_handle_blending();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v3 recipients];
+      recipients3 = [intentCopy recipients];
       *buf = 134217984;
-      v24 = [v16 count];
-      _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "ATXActionToWidgetConverter: Not converting INSendMessageIntent: recipient count (%lu) is not 1", buf, 0xCu);
+      v24 = [recipients3 count];
+      _os_log_impl(&dword_2263AA000, firstObject, OS_LOG_TYPE_DEFAULT, "ATXActionToWidgetConverter: Not converting INSendMessageIntent: recipient count (%lu) is not 1", buf, 0xCu);
     }
 
     v14 = 0;
@@ -427,29 +427,29 @@ LABEL_13:
   return v14;
 }
 
-+ (BOOL)isWidgetIntent:(id)a3 validConversionFromActionIntent:(id)a4
++ (BOOL)isWidgetIntent:(id)intent validConversionFromActionIntent:(id)actionIntent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 launchId];
-  if (([v7 isEqualToString:@"com.apple.PeopleViewService"] & 1) == 0)
+  intentCopy = intent;
+  actionIntentCopy = actionIntent;
+  launchId = [intentCopy launchId];
+  if (([launchId isEqualToString:@"com.apple.PeopleViewService"] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v6 launchId];
-  v9 = [v8 isEqualToString:@"com.apple.MobileSMS"];
+  launchId2 = [actionIntentCopy launchId];
+  v9 = [launchId2 isEqualToString:@"com.apple.MobileSMS"];
 
   if (!v9)
   {
 LABEL_8:
-    v13 = [v5 atx_isEqualToIntent:v6];
+    v13 = [intentCopy atx_isEqualToIntent:actionIntentCopy];
     goto LABEL_30;
   }
 
   v10 = NSClassFromString(&cfstr_Insendmessagei.isa);
-  v11 = v6;
+  v11 = actionIntentCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -470,19 +470,19 @@ LABEL_8:
 
   v14 = v12;
 
-  v15 = [v14 recipients];
-  v16 = [v15 count];
+  recipients = [v14 recipients];
+  v16 = [recipients count];
 
   if (v16 == 1)
   {
-    v17 = [v14 recipients];
-    v18 = [v17 objectAtIndexedSubscript:0];
-    v19 = [v18 contactIdentifier];
+    recipients2 = [v14 recipients];
+    v18 = [recipients2 objectAtIndexedSubscript:0];
+    contactIdentifier = [v18 contactIdentifier];
 
-    if (v19)
+    if (contactIdentifier)
     {
       v20 = NSClassFromString(&cfstr_Inappintent.isa);
-      v21 = v5;
+      v21 = intentCopy;
       if (v20)
       {
         if (objc_opt_isKindOfClass())
@@ -505,8 +505,8 @@ LABEL_8:
 
       if (v23)
       {
-        v24 = [v23 serializedParameters];
-        v25 = [v24 objectForKeyedSubscript:@"person"];
+        serializedParameters = [v23 serializedParameters];
+        v25 = [serializedParameters objectForKeyedSubscript:@"person"];
         v26 = NSClassFromString(&cfstr_Nsdictionary.isa);
         v27 = v25;
         if (v26)
@@ -531,7 +531,7 @@ LABEL_8:
 
         v30 = [v29 objectForKeyedSubscript:@"identifier"];
 
-        v13 = [v19 isEqualToString:v30];
+        v13 = [contactIdentifier isEqualToString:v30];
       }
 
       else

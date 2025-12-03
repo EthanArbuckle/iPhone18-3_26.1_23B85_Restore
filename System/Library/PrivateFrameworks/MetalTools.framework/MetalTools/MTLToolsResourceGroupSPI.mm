@@ -1,15 +1,15 @@
 @interface MTLToolsResourceGroupSPI
-- (BOOL)containsResource:(id)a3;
+- (BOOL)containsResource:(id)resource;
 @end
 
 @implementation MTLToolsResourceGroupSPI
 
-- (BOOL)containsResource:(id)a3
+- (BOOL)containsResource:(id)resource
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [resource baseObject];
 
-  return [v4 containsResource:v5];
+  return [baseObject containsResource:baseObject2];
 }
 
 @end

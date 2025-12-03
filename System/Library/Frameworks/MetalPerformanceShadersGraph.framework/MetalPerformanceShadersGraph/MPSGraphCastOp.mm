@@ -1,23 +1,23 @@
 @interface MPSGraphCastOp
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphCastOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v28 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphCastOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", v29);
-  v11 = v28;
+  v11 = nameCopy;
   v36 = 260;
   v35[0] = v29;
-  StringAttr = mlir::Builder::getStringAttr(a3, v35);
+  StringAttr = mlir::Builder::getStringAttr(builder, v35);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x347u, 0);
   if (v11)
   {
-    v15 = [v11 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v11 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -32,7 +32,7 @@
     v34 = v16;
     if (v16)
     {
-      memmove(&__dst, v15, v16);
+      memmove(&__dst, uTF8String, v16);
     }
 
     v18 = (&__dst + v17);
@@ -46,7 +46,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -62,7 +62,7 @@
   }
 
   LOBYTE(v36) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v35);
+  v21 = mlir::Builder::getStringAttr(builder, v35);
   v22 = mlir::NameLoc::get(v21, v14);
   if ((SHIBYTE(__p.__r_.__value_.__r.__words[2]) & 0x80000000) == 0)
   {
@@ -98,32 +98,32 @@ LABEL_16:
 LABEL_21:
   operator delete(v29[0]);
 LABEL_17:
-  MLIRElementType = getMLIRElementType(*a3, self->_destType);
-  v25 = a5;
-  v24 = *a5;
-  if (v25[1] == v24)
+  MLIRElementType = getMLIRElementType(*builder, self->_destType);
+  valuesCopy = values;
+  v24 = *values;
+  if (valuesCopy[1] == v24)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
   __dst = mlir::TypeAttr::get(MLIRElementType);
-  v35[0] = mlir::OpBuilder::create<mlir::mps::CastOp,mlir::Value &,mlir::TypeAttr>(a3, v22, v24, &__dst) - 16;
+  v35[0] = mlir::OpBuilder::create<mlir::mps::CastOp,mlir::Value &,mlir::TypeAttr>(builder, v22, v24, &__dst) - 16;
   DefiningOp = mlir::Value::getDefiningOp(v35);
 
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
-  v13 = [v9 dataType];
+  dataType = [tensorCopy dataType];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(MPSGraphOperation *)self name];
-  v16 = [v14 stringWithFormat:@"%@/%@/castGradient", v11, v15];
-  v17 = [WeakRetained castTensor:v10 toType:v13 name:v16];
+  name = [(MPSGraphOperation *)self name];
+  v16 = [v14 stringWithFormat:@"%@/%@/castGradient", nameCopy, name];
+  v17 = [WeakRetained castTensor:gradientCopy toType:dataType name:v16];
 
   return v17;
 }

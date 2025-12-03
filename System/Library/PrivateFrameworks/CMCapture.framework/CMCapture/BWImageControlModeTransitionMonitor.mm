@@ -1,6 +1,6 @@
 @interface BWImageControlModeTransitionMonitor
 + (void)initialize;
-- (BOOL)isTransitionCompleteWithSampleBuffer:(opaqueCMSampleBuffer *)a3 masterCaptureStreamPortType:(id)a4 activeSlaveStreamPortType:(id)a5;
+- (BOOL)isTransitionCompleteWithSampleBuffer:(opaqueCMSampleBuffer *)buffer masterCaptureStreamPortType:(id)type activeSlaveStreamPortType:(id)portType;
 - (BWImageControlModeTransitionMonitor)init;
 - (id)description;
 - (void)dealloc;
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -52,9 +52,9 @@
   return [v3 stringWithFormat:@"<%@ %p> Frame wait count %d.\nExpectedSphereModes %@, Actual %@\nExpectedMinimumFrameRates %@, ExpectedMaximumFrameRates %@, ActualFramerates %@", NSStringFromClass(v4), self, HIDWORD(self->_firstFramePTS.epoch), self->_expectedSphereModesByPortType, self->_currentSphereModesByPortType, self->_expectedMinimumFrameRatesByPortType, self->_expectedMaximumFrameRatesByPortType, self->_currentFrameRatesByPortType];
 }
 
-- (BOOL)isTransitionCompleteWithSampleBuffer:(opaqueCMSampleBuffer *)a3 masterCaptureStreamPortType:(id)a4 activeSlaveStreamPortType:(id)a5
+- (BOOL)isTransitionCompleteWithSampleBuffer:(opaqueCMSampleBuffer *)buffer masterCaptureStreamPortType:(id)type activeSlaveStreamPortType:(id)portType
 {
-  v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v9 = [v8 objectForKeyedSubscript:*off_1E798B540];
   v65 = [v8 objectForKeyedSubscript:*off_1E798B710];
   v66 = v9;
@@ -81,7 +81,7 @@
           }
 
           v15 = *(*(&v97 + 1) + 8 * i);
-          if ((([v15 isEqualToString:a4] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", a5)) && !objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_expectedSphereModesByPortType, "objectForKeyedSubscript:", v15), "isEqualToString:", -[NSMutableDictionary objectForKeyedSubscript:](self->_currentSphereModesByPortType, "objectForKeyedSubscript:", v15)))
+          if ((([v15 isEqualToString:type] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", portType)) && !objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_expectedSphereModesByPortType, "objectForKeyedSubscript:", v15), "isEqualToString:", -[NSMutableDictionary objectForKeyedSubscript:](self->_currentSphereModesByPortType, "objectForKeyedSubscript:", v15)))
           {
             v16 = 0;
             v9 = v66;
@@ -139,7 +139,7 @@ LABEL_16:
             }
 
             v23 = *(*(&v92 + 1) + 8 * j);
-            if (([v23 isEqualToString:a4] & 1) != 0 || objc_msgSend(v23, "isEqualToString:", a5))
+            if (([v23 isEqualToString:type] & 1) != 0 || objc_msgSend(v23, "isEqualToString:", portType))
             {
               [-[NSDictionary objectForKeyedSubscript:](self->_expectedMinimumFrameRatesByPortType objectForKeyedSubscript:{v23), "floatValue"}];
               v25 = v24;
@@ -195,7 +195,7 @@ LABEL_35:
           }
 
           v32 = *(*(&v87 + 1) + 8 * v31);
-          if (([v32 isEqualToString:a4] & 1) != 0 || objc_msgSend(v32, "isEqualToString:", a5))
+          if (([v32 isEqualToString:type] & 1) != 0 || objc_msgSend(v32, "isEqualToString:", portType))
           {
             [-[NSDictionary objectForKeyedSubscript:](self->_expectedMaximumFrameRatesByPortType objectForKeyedSubscript:{v32), "floatValue"}];
             v34 = v33;
@@ -267,7 +267,7 @@ LABEL_48:
         }
 
         v41 = *(*(&v82 + 1) + 8 * k);
-        if (([v41 isEqualToString:a4] & 1) != 0 || objc_msgSend(v41, "isEqualToString:", a5))
+        if (([v41 isEqualToString:type] & 1) != 0 || objc_msgSend(v41, "isEqualToString:", portType))
         {
           v42 = [-[NSDictionary objectForKeyedSubscript:](self->_expectedLTMCurvesByPortType objectForKeyedSubscript:{v41), "intValue"}];
           if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_currentLTMCurvesByPortType objectForKeyedSubscript:{v41), "intValue"}] != v42)
@@ -329,7 +329,7 @@ LABEL_69:
     if (v46 == 2)
     {
       memset(v68, 0, 24);
-      CMSampleBufferGetPresentationTimeStamp(v68, a3);
+      CMSampleBufferGetPresentationTimeStamp(v68, buffer);
       if (self->_firstFramePTS.timescale)
       {
         lhs = *v68;
@@ -370,7 +370,7 @@ LABEL_69:
 
       else
       {
-        CMSampleBufferGetPresentationTimeStamp(&time, a3);
+        CMSampleBufferGetPresentationTimeStamp(&time, buffer);
         *(&self->_ltmCurvesTransitionFrameWaitCount + 1) = time;
       }
 
@@ -380,7 +380,7 @@ LABEL_69:
 
   if (self->_waitForTorchToRampUp)
   {
-    if (([CMGetAttachment(a3 @"DropFrameWaitingForTorchToRampUp"] ^ 1) & v16)
+    if (([CMGetAttachment(buffer @"DropFrameWaitingForTorchToRampUp"] ^ 1) & v16)
     {
 LABEL_84:
       v51 = 1;

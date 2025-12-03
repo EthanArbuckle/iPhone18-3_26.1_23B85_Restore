@@ -1,16 +1,16 @@
 @interface MFiAccessoryConnection
 - (MFiAccessoryConnection)init;
-- (id)accClientPropertyStringFromCharacteristicString:(id)a3;
-- (id)accConnTypeToString:(unsigned __int8)a3;
-- (void)activateConnectionWithIdentifier:(id)a3;
+- (id)accClientPropertyStringFromCharacteristicString:(id)string;
+- (id)accConnTypeToString:(unsigned __int8)string;
+- (void)activateConnectionWithIdentifier:(id)identifier;
 - (void)activateGenericEndpoint;
 - (void)deactivate;
 - (void)dealloc;
-- (void)sendDataToGenericEndpoint:(id)a3 withProperty:(id)a4;
-- (void)setAccessoryInfo:(id)a3;
+- (void)sendDataToGenericEndpoint:(id)endpoint withProperty:(id)property;
+- (void)setAccessoryInfo:(id)info;
 - (void)setAuthenticated;
-- (void)setUpPeerChannel:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)setUpPeerChannel:(id)channel;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 - (void)tearDownPeerChannel;
 @end
 
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (void)activateConnectionWithIdentifier:(id)a3
+- (void)activateConnectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ACCTransportClient sharedClient];
-  v6 = [v5 createConnectionWithType:2 andIdentifier:v4];
+  v6 = [v5 createConnectionWithType:2 andIdentifier:identifierCopy];
   connectionUUID = self->_connectionUUID;
   self->_connectionUUID = v6;
 
@@ -42,7 +42,7 @@
   {
     v9 = self->_connectionUUID;
     v10 = 138412546;
-    v11 = v4;
+    v11 = identifierCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating accTransportClient connection for identifier %@ and connectionUUID %@", &v10, 0x16u);
@@ -64,50 +64,50 @@
   self->_genericMFiEndpointUUID = v5;
 }
 
-- (void)sendDataToGenericEndpoint:(id)a3 withProperty:(id)a4
+- (void)sendDataToGenericEndpoint:(id)endpoint withProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  propertyCopy = property;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v7;
+    v14 = propertyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending data to Generic Endpoint with type %@", buf, 0xCu);
   }
 
-  if ([v7 isEqualToString:CBUUIDCommandCharacteristicString])
+  if ([propertyCopy isEqualToString:CBUUIDCommandCharacteristicString])
   {
     v9 = +[ACCTransportClient sharedClient];
-    [v9 processIncomingData:v6 forEndpointWithUUID:self->_genericMFiEndpointUUID];
+    [v9 processIncomingData:endpointCopy forEndpointWithUUID:self->_genericMFiEndpointUUID];
   }
 
   else
   {
-    v9 = [(MFiAccessoryConnection *)self accClientPropertyStringFromCharacteristicString:v7];
+    v9 = [(MFiAccessoryConnection *)self accClientPropertyStringFromCharacteristicString:propertyCopy];
     v10 = +[ACCTransportClient sharedClient];
-    v12 = v6;
+    v12 = endpointCopy;
     v11 = [NSArray arrayWithObjects:&v12 count:1];
     [v10 appendToArrayProperty:v9 values:v11 forEndpointWithUUID:self->_genericMFiEndpointUUID];
   }
 }
 
-- (void)setAccessoryInfo:(id)a3
+- (void)setAccessoryInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     genericMFiEndpointUUID = self->_genericMFiEndpointUUID;
     v9 = 138412546;
-    v10 = v4;
+    v10 = infoCopy;
     v11 = 2112;
     v12 = genericMFiEndpointUUID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting accessory info %@ to generic endpoint UUID %@ and publishing connection", &v9, 0x16u);
   }
 
   v7 = +[ACCTransportClient sharedClient];
-  [v7 setAccessoryInfo:v4 forEndpointWithUUID:self->_genericMFiEndpointUUID];
+  [v7 setAccessoryInfo:infoCopy forEndpointWithUUID:self->_genericMFiEndpointUUID];
 
   v8 = +[ACCTransportClient sharedClient];
   [v8 publishConnectionWithUUID:self->_connectionUUID];
@@ -152,34 +152,34 @@
   [(MFiAccessoryConnection *)&v3 dealloc];
 }
 
-- (void)setUpPeerChannel:(id)a3
+- (void)setUpPeerChannel:(id)channel
 {
-  objc_storeStrong(&self->_peerChannel, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_peerChannel, channel);
+  channelCopy = channel;
   v6 = voucher_copy();
   mfiVoucher = self->_mfiVoucher;
   self->_mfiVoucher = v6;
 
-  v8 = [v5 inputStream];
-  [v8 setDelegate:self];
+  inputStream = [channelCopy inputStream];
+  [inputStream setDelegate:self];
 
-  v9 = [v5 outputStream];
-  [v9 setDelegate:self];
+  outputStream = [channelCopy outputStream];
+  [outputStream setDelegate:self];
 
-  v10 = [v5 inputStream];
+  inputStream2 = [channelCopy inputStream];
   v11 = +[NSRunLoop currentRunLoop];
-  [v10 scheduleInRunLoop:v11 forMode:NSDefaultRunLoopMode];
+  [inputStream2 scheduleInRunLoop:v11 forMode:NSDefaultRunLoopMode];
 
-  v12 = [v5 outputStream];
+  outputStream2 = [channelCopy outputStream];
   v13 = +[NSRunLoop currentRunLoop];
-  [v12 scheduleInRunLoop:v13 forMode:NSDefaultRunLoopMode];
+  [outputStream2 scheduleInRunLoop:v13 forMode:NSDefaultRunLoopMode];
 
-  v14 = [v5 inputStream];
-  [v14 open];
+  inputStream3 = [channelCopy inputStream];
+  [inputStream3 open];
 
-  v15 = [v5 outputStream];
+  outputStream3 = [channelCopy outputStream];
 
-  [v15 open];
+  [outputStream3 open];
 }
 
 - (void)tearDownPeerChannel
@@ -195,25 +195,25 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Tearing down peer channel for connectionUUID %@", &v15, 0xCu);
     }
 
-    v5 = [(CBL2CAPChannel *)self->_peerChannel inputStream];
+    inputStream = [(CBL2CAPChannel *)self->_peerChannel inputStream];
     v6 = +[NSRunLoop currentRunLoop];
-    [v5 removeFromRunLoop:v6 forMode:NSDefaultRunLoopMode];
+    [inputStream removeFromRunLoop:v6 forMode:NSDefaultRunLoopMode];
 
-    v7 = [(CBL2CAPChannel *)self->_peerChannel outputStream];
+    outputStream = [(CBL2CAPChannel *)self->_peerChannel outputStream];
     v8 = +[NSRunLoop currentRunLoop];
-    [v7 removeFromRunLoop:v8 forMode:NSDefaultRunLoopMode];
+    [outputStream removeFromRunLoop:v8 forMode:NSDefaultRunLoopMode];
 
-    v9 = [(CBL2CAPChannel *)self->_peerChannel inputStream];
-    [v9 setDelegate:0];
+    inputStream2 = [(CBL2CAPChannel *)self->_peerChannel inputStream];
+    [inputStream2 setDelegate:0];
 
-    v10 = [(CBL2CAPChannel *)self->_peerChannel outputStream];
-    [v10 setDelegate:0];
+    outputStream2 = [(CBL2CAPChannel *)self->_peerChannel outputStream];
+    [outputStream2 setDelegate:0];
 
-    v11 = [(CBL2CAPChannel *)self->_peerChannel inputStream];
-    [v11 close];
+    inputStream3 = [(CBL2CAPChannel *)self->_peerChannel inputStream];
+    [inputStream3 close];
 
-    v12 = [(CBL2CAPChannel *)self->_peerChannel outputStream];
-    [v12 close];
+    outputStream3 = [(CBL2CAPChannel *)self->_peerChannel outputStream];
+    [outputStream3 close];
   }
 
   mfiVoucher = self->_mfiVoucher;
@@ -224,14 +224,14 @@
   self->_peerChannel = 0;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 != 16)
+  streamCopy = stream;
+  if (event != 16)
   {
-    if (a4 != 8)
+    if (event != 8)
     {
-      if (a4 == 2)
+      if (event == 2)
       {
         v7 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -241,7 +241,7 @@
         }
 
         bzero(v15, 0x1000uLL);
-        v8 = [v6 read:v15 maxLength:4096];
+        v8 = [streamCopy read:v15 maxLength:4096];
         if (v8 >= 1)
         {
           v9 = v8;
@@ -263,7 +263,7 @@
     v13 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_1000747AC(v13, v6);
+      sub_1000747AC(v13, streamCopy);
     }
   }
 
@@ -278,15 +278,15 @@
 LABEL_15:
 }
 
-- (id)accConnTypeToString:(unsigned __int8)a3
+- (id)accConnTypeToString:(unsigned __int8)string
 {
   v3 = @"none";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"MFi4";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"iAP2";
   }
@@ -297,10 +297,10 @@ LABEL_15:
   }
 }
 
-- (id)accClientPropertyStringFromCharacteristicString:(id)a3
+- (id)accClientPropertyStringFromCharacteristicString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:CBUUIDTeamIDCharacteristicString])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:CBUUIDTeamIDCharacteristicString])
   {
     v4 = &kACCProperties_Endpoint_MFi_AppMatch_TeamIDs_TLV;
 LABEL_9:
@@ -308,19 +308,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:CBUUIDProtocolStringCharacteristicString])
+  if ([stringCopy isEqualToString:CBUUIDProtocolStringCharacteristicString])
   {
     v4 = &kACCProperties_Endpoint_MFi_AppMatch_ProtocolStrings_TLV;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:CBUUIDAccessoryTypeCharacteristicString])
+  if ([stringCopy isEqualToString:CBUUIDAccessoryTypeCharacteristicString])
   {
     v4 = &kACCProperties_Endpoint_MFi_AccessoryTypes_TLV;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:CBUUIDAccessoryAttributesCharacteristicString])
+  if ([stringCopy isEqualToString:CBUUIDAccessoryAttributesCharacteristicString])
   {
     v4 = &kACCProperties_Endpoint_MFi_AccessoryAttributes_TLV;
     goto LABEL_9;

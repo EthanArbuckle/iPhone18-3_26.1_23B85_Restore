@@ -14,9 +14,9 @@
 
 - (UIFont)vibrationPickerCellTextFont
 {
-  v2 = [objc_opt_self() preferredFontForTextStyle_];
+  preferredFontForTextStyle_ = [objc_opt_self() preferredFontForTextStyle_];
 
-  return v2;
+  return preferredFontForTextStyle_;
 }
 
 @end

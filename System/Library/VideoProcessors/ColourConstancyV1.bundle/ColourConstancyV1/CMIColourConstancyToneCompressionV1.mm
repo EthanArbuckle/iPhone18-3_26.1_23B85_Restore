@@ -1,20 +1,20 @@
 @interface CMIColourConstancyToneCompressionV1
-- (CMIColourConstancyToneCompressionV1)initWithMetalContext:(id)a3;
-- (id)calculateToneCompressionCurve:(double)a3 strobeComponentRGBTexture:(double)a4 strobeCCM:(uint64_t)a5;
-- (int)_clearHistogramBuffer:(id)a3 outputHistogramBuffer:(id)a4;
-- (int)_encodeBalancedIntensityDensityHistogramCalculate:(id)a3 inputIntensityHistogramBuffer:(id)a4 histogramScaleFactor:(float)a5 balanceDenseToSparseExponentFactor:(float)a6 minimumProbabilityDensity:(float)a7 outputBalancedIntensityDensityHistogramTexture:(id)a8;
-- (int)_encodeGaussianWeightedSupportApply:(id)a3 inputBalancedIntensityDensityHistogramTexture:(id)a4 kernelSupportGaussianSigma:(float)a5 sigmaToFilterScale:(float)a6 outputKernelWeightedIntensityDensityHistogramTexture:(id)a7;
-- (int)_encodeToneCompressionCurveCalculate:(id)a3 inputKernelWeightedIntensityDensityHistogramTexture:(id)a4 outputToneCompressionCurveTexture:(id)a5;
-- (int)prepareToProcessWithConfig:(id)a3;
+- (CMIColourConstancyToneCompressionV1)initWithMetalContext:(id)context;
+- (id)calculateToneCompressionCurve:(double)curve strobeComponentRGBTexture:(double)texture strobeCCM:(uint64_t)m;
+- (int)_clearHistogramBuffer:(id)buffer outputHistogramBuffer:(id)histogramBuffer;
+- (int)_encodeBalancedIntensityDensityHistogramCalculate:(id)calculate inputIntensityHistogramBuffer:(id)buffer histogramScaleFactor:(float)factor balanceDenseToSparseExponentFactor:(float)exponentFactor minimumProbabilityDensity:(float)density outputBalancedIntensityDensityHistogramTexture:(id)texture;
+- (int)_encodeGaussianWeightedSupportApply:(id)apply inputBalancedIntensityDensityHistogramTexture:(id)texture kernelSupportGaussianSigma:(float)sigma sigmaToFilterScale:(float)scale outputKernelWeightedIntensityDensityHistogramTexture:(id)histogramTexture;
+- (int)_encodeToneCompressionCurveCalculate:(id)calculate inputKernelWeightedIntensityDensityHistogramTexture:(id)texture outputToneCompressionCurveTexture:(id)curveTexture;
+- (int)prepareToProcessWithConfig:(id)config;
 - (int)purgeResources;
-- (uint64_t)_encodeIntensityHistogramCalculate:(__n128)a3 strobeComponentRGBTexture:(__n128)a4 strobeCCM:(uint64_t)a5 numHistogramBins:(void *)a6 outputIntensityHistogramBuffer:(void *)a7;
+- (uint64_t)_encodeIntensityHistogramCalculate:(__n128)calculate strobeComponentRGBTexture:(__n128)texture strobeCCM:(uint64_t)m numHistogramBins:(void *)bins outputIntensityHistogramBuffer:(void *)buffer;
 @end
 
 @implementation CMIColourConstancyToneCompressionV1
 
-- (CMIColourConstancyToneCompressionV1)initWithMetalContext:(id)a3
+- (CMIColourConstancyToneCompressionV1)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = CMIColourConstancyToneCompressionV1;
   v6 = [(CMIColourConstancyToneCompressionV1 *)&v18 init];
@@ -27,13 +27,13 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     sub_FAD8();
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v8 = [(FigMetalContext *)v7->_metalContext computePipelineStateFor:@"ColourConstancy::calculateIntensityHistogramV1" constants:0];
   calculateIntensityHistogramPipelineState = v7->_calculateIntensityHistogramPipelineState;
   v7->_calculateIntensityHistogramPipelineState = v8;
@@ -89,73 +89,73 @@ LABEL_8:
   return 0;
 }
 
-- (int)prepareToProcessWithConfig:(id)a3
+- (int)prepareToProcessWithConfig:(id)config
 {
-  v5 = a3;
-  if (!v5)
+  configCopy = config;
+  if (!configCopy)
   {
     sub_FE80();
-    v12 = 0;
-    v7 = 0;
+    newTextureDescriptor = 0;
+    newBufferDescriptor = 0;
     v29 = 8;
     goto LABEL_9;
   }
 
-  objc_storeStrong(&self->_config, a3);
-  v6 = [(FigMetalContext *)self->_metalContext allocator];
-  v7 = [v6 newBufferDescriptor];
+  objc_storeStrong(&self->_config, config);
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  newBufferDescriptor = [allocator newBufferDescriptor];
 
-  if (!v7)
+  if (!newBufferDescriptor)
   {
     sub_FE0C();
-    v12 = 0;
+    newTextureDescriptor = 0;
 LABEL_14:
     v29 = 7;
     goto LABEL_9;
   }
 
-  [v7 setLength:{4 * -[CMIColourConstancyToneCompressionConfigurationV1 numIntensityHistogramBins](self->_config, "numIntensityHistogramBins")}];
-  [v7 setOptions:0];
-  [v7 setLabel:0];
-  v8 = [(FigMetalContext *)self->_metalContext allocator];
-  v9 = [v8 newBufferWithDescriptor:v7];
+  [newBufferDescriptor setLength:{4 * -[CMIColourConstancyToneCompressionConfigurationV1 numIntensityHistogramBins](self->_config, "numIntensityHistogramBins")}];
+  [newBufferDescriptor setOptions:0];
+  [newBufferDescriptor setLabel:0];
+  allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+  v9 = [allocator2 newBufferWithDescriptor:newBufferDescriptor];
   intensityHistogramBuffer = self->_intensityHistogramBuffer;
   self->_intensityHistogramBuffer = v9;
 
   if (!self->_intensityHistogramBuffer)
   {
     sub_FD98();
-    v12 = 0;
+    newTextureDescriptor = 0;
 LABEL_18:
     v29 = 6;
     goto LABEL_9;
   }
 
-  v11 = [(FigMetalContext *)self->_metalContext allocator];
-  v12 = [v11 newTextureDescriptor];
+  allocator3 = [(FigMetalContext *)self->_metalContext allocator];
+  newTextureDescriptor = [allocator3 newTextureDescriptor];
 
-  if (!v12)
+  if (!newTextureDescriptor)
   {
     sub_FD24();
     goto LABEL_14;
   }
 
-  v13 = [v12 desc];
-  [v13 setTextureType:0];
+  desc = [newTextureDescriptor desc];
+  [desc setTextureType:0];
 
-  v14 = [(CMIColourConstancyToneCompressionConfigurationV1 *)self->_config numIntensityHistogramBins];
-  v15 = [v12 desc];
-  [v15 setWidth:v14];
+  numIntensityHistogramBins = [(CMIColourConstancyToneCompressionConfigurationV1 *)self->_config numIntensityHistogramBins];
+  desc2 = [newTextureDescriptor desc];
+  [desc2 setWidth:numIntensityHistogramBins];
 
-  v16 = [v12 desc];
-  [v16 setHeight:1];
+  desc3 = [newTextureDescriptor desc];
+  [desc3 setHeight:1];
 
-  v17 = [v12 desc];
-  [v17 setPixelFormat:55];
+  desc4 = [newTextureDescriptor desc];
+  [desc4 setPixelFormat:55];
 
-  [v12 setLabel:0];
-  v18 = [(FigMetalContext *)self->_metalContext allocator];
-  v19 = [v18 newTextureWithDescriptor:v12];
+  [newTextureDescriptor setLabel:0];
+  allocator4 = [(FigMetalContext *)self->_metalContext allocator];
+  v19 = [allocator4 newTextureWithDescriptor:newTextureDescriptor];
   balancedIntensityDensityHistogramTexture = self->_balancedIntensityDensityHistogramTexture;
   self->_balancedIntensityDensityHistogramTexture = v19;
 
@@ -165,9 +165,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  [v12 setLabel:0];
-  v21 = [(FigMetalContext *)self->_metalContext allocator];
-  v22 = [v21 newTextureWithDescriptor:v12];
+  [newTextureDescriptor setLabel:0];
+  allocator5 = [(FigMetalContext *)self->_metalContext allocator];
+  v22 = [allocator5 newTextureWithDescriptor:newTextureDescriptor];
   kernelWeightedIntensityDensityHistogramTexture = self->_kernelWeightedIntensityDensityHistogramTexture;
   self->_kernelWeightedIntensityDensityHistogramTexture = v22;
 
@@ -178,12 +178,12 @@ LABEL_18:
   }
 
   v24 = [(CMIColourConstancyToneCompressionConfigurationV1 *)self->_config numIntensityHistogramBins]+ 1;
-  v25 = [v12 desc];
-  [v25 setWidth:v24];
+  desc5 = [newTextureDescriptor desc];
+  [desc5 setWidth:v24];
 
-  [v12 setLabel:0];
-  v26 = [(FigMetalContext *)self->_metalContext allocator];
-  v27 = [v26 newTextureWithDescriptor:v12];
+  [newTextureDescriptor setLabel:0];
+  allocator6 = [(FigMetalContext *)self->_metalContext allocator];
+  v27 = [allocator6 newTextureWithDescriptor:newTextureDescriptor];
   toneCompressionCurveTexture = self->_toneCompressionCurveTexture;
   self->_toneCompressionCurveTexture = v27;
 
@@ -199,14 +199,14 @@ LABEL_9:
   return v29;
 }
 
-- (int)_clearHistogramBuffer:(id)a3 outputHistogramBuffer:(id)a4
+- (int)_clearHistogramBuffer:(id)buffer outputHistogramBuffer:(id)histogramBuffer
 {
-  v5 = a4;
-  v6 = [a3 blitCommandEncoder];
-  if (v6)
+  histogramBufferCopy = histogramBuffer;
+  blitCommandEncoder = [buffer blitCommandEncoder];
+  if (blitCommandEncoder)
   {
-    [v6 fillBuffer:v5 range:0 value:{objc_msgSend(v5, "length"), 0}];
-    [v6 endEncoding];
+    [blitCommandEncoder fillBuffer:histogramBufferCopy range:0 value:{objc_msgSend(histogramBufferCopy, "length"), 0}];
+    [blitCommandEncoder endEncoding];
     v7 = 0;
   }
 
@@ -219,16 +219,16 @@ LABEL_9:
   return v7;
 }
 
-- (uint64_t)_encodeIntensityHistogramCalculate:(__n128)a3 strobeComponentRGBTexture:(__n128)a4 strobeCCM:(uint64_t)a5 numHistogramBins:(void *)a6 outputIntensityHistogramBuffer:(void *)a7
+- (uint64_t)_encodeIntensityHistogramCalculate:(__n128)calculate strobeComponentRGBTexture:(__n128)texture strobeCCM:(uint64_t)m numHistogramBins:(void *)bins outputIntensityHistogramBuffer:(void *)buffer
 {
   v25[0] = a2;
-  v25[1] = a3;
-  v25[2] = a4;
-  v13 = a6;
-  v14 = a7;
+  v25[1] = calculate;
+  v25[2] = texture;
+  binsCopy = bins;
+  bufferCopy = buffer;
   v24 = a8;
   v15 = a9;
-  if (!v13)
+  if (!binsCopy)
   {
     sub_FFDC();
 LABEL_7:
@@ -236,25 +236,25 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v16 = [v13 computeCommandEncoder];
-  if (!v16)
+  computeCommandEncoder = [binsCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_FF68();
     goto LABEL_7;
   }
 
-  v17 = v16;
-  [v16 setComputePipelineState:*(a1 + 24)];
-  [v17 setTexture:v14 atIndex:0];
+  v17 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:*(self + 24)];
+  [v17 setTexture:bufferCopy atIndex:0];
   [v17 setBytes:v25 length:48 atIndex:0];
   [v17 setBytes:&v24 length:4 atIndex:1];
   [v17 setBuffer:v15 offset:0 atIndex:2];
-  v18 = [*(a1 + 24) threadExecutionWidth];
-  v19 = [*(a1 + 24) maxTotalThreadsPerThreadgroup] / v18;
-  v23[0] = [v14 width];
-  v23[1] = [v14 height];
+  threadExecutionWidth = [*(self + 24) threadExecutionWidth];
+  v19 = [*(self + 24) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+  v23[0] = [bufferCopy width];
+  v23[1] = [bufferCopy height];
   v23[2] = 1;
-  v22[0] = v18;
+  v22[0] = threadExecutionWidth;
   v22[1] = v19;
   v22[2] = 1;
   [v17 dispatchThreads:v23 threadsPerThreadgroup:v22];
@@ -266,15 +266,15 @@ LABEL_4:
   return v20;
 }
 
-- (int)_encodeBalancedIntensityDensityHistogramCalculate:(id)a3 inputIntensityHistogramBuffer:(id)a4 histogramScaleFactor:(float)a5 balanceDenseToSparseExponentFactor:(float)a6 minimumProbabilityDensity:(float)a7 outputBalancedIntensityDensityHistogramTexture:(id)a8
+- (int)_encodeBalancedIntensityDensityHistogramCalculate:(id)calculate inputIntensityHistogramBuffer:(id)buffer histogramScaleFactor:(float)factor balanceDenseToSparseExponentFactor:(float)exponentFactor minimumProbabilityDensity:(float)density outputBalancedIntensityDensityHistogramTexture:(id)texture
 {
-  v14 = a3;
-  v15 = a4;
-  v26 = a6;
-  v27 = a5;
-  v25 = a7;
-  v16 = a8;
-  if (!v14)
+  calculateCopy = calculate;
+  bufferCopy = buffer;
+  exponentFactorCopy = exponentFactor;
+  factorCopy = factor;
+  densityCopy = density;
+  textureCopy = texture;
+  if (!calculateCopy)
   {
     sub_100C4();
 LABEL_7:
@@ -282,26 +282,26 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v17 = [v14 computeCommandEncoder];
-  if (!v17)
+  computeCommandEncoder = [calculateCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_10050();
     goto LABEL_7;
   }
 
-  v18 = v17;
-  [v17 setComputePipelineState:self->_calculateBalancedIntensityDensityHistogramPipelineState];
-  [v18 setBuffer:v15 offset:0 atIndex:0];
-  [v18 setBytes:&v27 length:4 atIndex:1];
-  [v18 setBytes:&v26 length:4 atIndex:2];
-  [v18 setBytes:&v25 length:4 atIndex:3];
-  [v18 setTexture:v16 atIndex:0];
-  v19 = [(MTLComputePipelineState *)self->_calculateBalancedIntensityDensityHistogramPipelineState threadExecutionWidth];
-  v20 = [(MTLComputePipelineState *)self->_calculateBalancedIntensityDensityHistogramPipelineState maxTotalThreadsPerThreadgroup]/ v19;
-  v24[0] = [v16 width];
-  v24[1] = [v16 height];
+  v18 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_calculateBalancedIntensityDensityHistogramPipelineState];
+  [v18 setBuffer:bufferCopy offset:0 atIndex:0];
+  [v18 setBytes:&factorCopy length:4 atIndex:1];
+  [v18 setBytes:&exponentFactorCopy length:4 atIndex:2];
+  [v18 setBytes:&densityCopy length:4 atIndex:3];
+  [v18 setTexture:textureCopy atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_calculateBalancedIntensityDensityHistogramPipelineState threadExecutionWidth];
+  v20 = [(MTLComputePipelineState *)self->_calculateBalancedIntensityDensityHistogramPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  v24[0] = [textureCopy width];
+  v24[1] = [textureCopy height];
   v24[2] = 1;
-  v23[0] = v19;
+  v23[0] = threadExecutionWidth;
   v23[1] = v20;
   v23[2] = 1;
   [v18 dispatchThreads:v24 threadsPerThreadgroup:v23];
@@ -313,14 +313,14 @@ LABEL_4:
   return v21;
 }
 
-- (int)_encodeGaussianWeightedSupportApply:(id)a3 inputBalancedIntensityDensityHistogramTexture:(id)a4 kernelSupportGaussianSigma:(float)a5 sigmaToFilterScale:(float)a6 outputKernelWeightedIntensityDensityHistogramTexture:(id)a7
+- (int)_encodeGaussianWeightedSupportApply:(id)apply inputBalancedIntensityDensityHistogramTexture:(id)texture kernelSupportGaussianSigma:(float)sigma sigmaToFilterScale:(float)scale outputKernelWeightedIntensityDensityHistogramTexture:(id)histogramTexture
 {
-  v12 = a3;
-  v13 = a4;
-  v23 = a6;
-  v24 = a5;
-  v14 = a7;
-  if (!v12)
+  applyCopy = apply;
+  textureCopy = texture;
+  scaleCopy = scale;
+  sigmaCopy = sigma;
+  histogramTextureCopy = histogramTexture;
+  if (!applyCopy)
   {
     sub_101AC();
 LABEL_7:
@@ -328,25 +328,25 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v15 = [v12 computeCommandEncoder];
-  if (!v15)
+  computeCommandEncoder = [applyCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_10138();
     goto LABEL_7;
   }
 
-  v16 = v15;
-  [v15 setComputePipelineState:self->_applyGaussianWeightedSupportPipelineState];
-  [v16 setTexture:v13 atIndex:0];
-  [v16 setTexture:v14 atIndex:1];
-  [v16 setBytes:&v24 length:4 atIndex:0];
-  [v16 setBytes:&v23 length:4 atIndex:1];
-  v17 = [(MTLComputePipelineState *)self->_applyGaussianWeightedSupportPipelineState threadExecutionWidth];
-  v18 = [(MTLComputePipelineState *)self->_applyGaussianWeightedSupportPipelineState maxTotalThreadsPerThreadgroup]/ v17;
-  v22[0] = [v14 width];
-  v22[1] = [v14 height];
+  v16 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_applyGaussianWeightedSupportPipelineState];
+  [v16 setTexture:textureCopy atIndex:0];
+  [v16 setTexture:histogramTextureCopy atIndex:1];
+  [v16 setBytes:&sigmaCopy length:4 atIndex:0];
+  [v16 setBytes:&scaleCopy length:4 atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_applyGaussianWeightedSupportPipelineState threadExecutionWidth];
+  v18 = [(MTLComputePipelineState *)self->_applyGaussianWeightedSupportPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  v22[0] = [histogramTextureCopy width];
+  v22[1] = [histogramTextureCopy height];
   v22[2] = 1;
-  v21[0] = v17;
+  v21[0] = threadExecutionWidth;
   v21[1] = v18;
   v21[2] = 1;
   [v16 dispatchThreads:v22 threadsPerThreadgroup:v21];
@@ -358,12 +358,12 @@ LABEL_4:
   return v19;
 }
 
-- (int)_encodeToneCompressionCurveCalculate:(id)a3 inputKernelWeightedIntensityDensityHistogramTexture:(id)a4 outputToneCompressionCurveTexture:(id)a5
+- (int)_encodeToneCompressionCurveCalculate:(id)calculate inputKernelWeightedIntensityDensityHistogramTexture:(id)texture outputToneCompressionCurveTexture:(id)curveTexture
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  calculateCopy = calculate;
+  textureCopy = texture;
+  curveTextureCopy = curveTexture;
+  if (!calculateCopy)
   {
     sub_10294();
 LABEL_7:
@@ -371,23 +371,23 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v11 = [v8 computeCommandEncoder];
-  if (!v11)
+  computeCommandEncoder = [calculateCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_10220();
     goto LABEL_7;
   }
 
-  v12 = v11;
-  [v11 setComputePipelineState:self->_calculateToneCompressionCurvePipelineState];
-  [v12 setTexture:v9 atIndex:0];
-  [v12 setTexture:v10 atIndex:1];
-  v13 = [(MTLComputePipelineState *)self->_calculateToneCompressionCurvePipelineState threadExecutionWidth];
-  v14 = [(MTLComputePipelineState *)self->_calculateToneCompressionCurvePipelineState maxTotalThreadsPerThreadgroup];
+  v12 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_calculateToneCompressionCurvePipelineState];
+  [v12 setTexture:textureCopy atIndex:0];
+  [v12 setTexture:curveTextureCopy atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_calculateToneCompressionCurvePipelineState threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_calculateToneCompressionCurvePipelineState maxTotalThreadsPerThreadgroup];
   v18 = vdupq_n_s64(1uLL);
   v19 = 1;
-  v17[0] = v13;
-  v17[1] = v14 / v13;
+  v17[0] = threadExecutionWidth;
+  v17[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v17[2] = 1;
   [v12 dispatchThreads:&v18 threadsPerThreadgroup:v17];
   [v12 endEncoding];
@@ -398,11 +398,11 @@ LABEL_4:
   return v15;
 }
 
-- (id)calculateToneCompressionCurve:(double)a3 strobeComponentRGBTexture:(double)a4 strobeCCM:(uint64_t)a5
+- (id)calculateToneCompressionCurve:(double)curve strobeComponentRGBTexture:(double)texture strobeCCM:(uint64_t)m
 {
   v9 = a6;
   v10 = a7;
-  v11 = [a1 _clearHistogramBuffer:v9 outputHistogramBuffer:*(a1 + 56)];
+  v11 = [self _clearHistogramBuffer:v9 outputHistogramBuffer:*(self + 56)];
   if (v11)
   {
     v30 = v11;
@@ -411,7 +411,7 @@ LABEL_4:
 
   else
   {
-    v12 = [a1 _encodeIntensityHistogramCalculate:v9 strobeComponentRGBTexture:v10 strobeCCM:objc_msgSend(*(a1 + 16) numHistogramBins:"numIntensityHistogramBins") outputIntensityHistogramBuffer:{*(a1 + 56), a2, a3, a4}];
+    v12 = [self _encodeIntensityHistogramCalculate:v9 strobeComponentRGBTexture:v10 strobeCCM:objc_msgSend(*(self + 16) numHistogramBins:"numIntensityHistogramBins") outputIntensityHistogramBuffer:{*(self + 56), a2, curve, texture}];
     if (v12)
     {
       v30 = v12;
@@ -420,16 +420,16 @@ LABEL_4:
 
     else
     {
-      v13 = [v10 width];
-      v14 = ([v10 height] * v13);
-      v15 = *(a1 + 56);
-      [*(a1 + 16) balanceDenseToSparseExponentFactor];
+      width = [v10 width];
+      v14 = ([v10 height] * width);
+      v15 = *(self + 56);
+      [*(self + 16) balanceDenseToSparseExponentFactor];
       v17 = v16;
-      [*(a1 + 16) minimumProbabilityDensity];
+      [*(self + 16) minimumProbabilityDensity];
       LODWORD(v19) = v18;
       *&v20 = v14;
       LODWORD(v21) = v17;
-      v22 = [a1 _encodeBalancedIntensityDensityHistogramCalculate:v9 inputIntensityHistogramBuffer:v15 histogramScaleFactor:*(a1 + 64) balanceDenseToSparseExponentFactor:v20 minimumProbabilityDensity:v21 outputBalancedIntensityDensityHistogramTexture:v19];
+      v22 = [self _encodeBalancedIntensityDensityHistogramCalculate:v9 inputIntensityHistogramBuffer:v15 histogramScaleFactor:*(self + 64) balanceDenseToSparseExponentFactor:v20 minimumProbabilityDensity:v21 outputBalancedIntensityDensityHistogramTexture:v19];
       if (v22)
       {
         v30 = v22;
@@ -438,13 +438,13 @@ LABEL_4:
 
       else
       {
-        v23 = *(a1 + 64);
-        [*(a1 + 16) kernelSupportGaussianSigma];
+        v23 = *(self + 64);
+        [*(self + 16) kernelSupportGaussianSigma];
         v25 = v24;
-        [*(a1 + 16) kernelSupportSigmaToFilterScale];
+        [*(self + 16) kernelSupportSigmaToFilterScale];
         LODWORD(v27) = v26;
         LODWORD(v28) = v25;
-        v29 = [a1 _encodeGaussianWeightedSupportApply:v9 inputBalancedIntensityDensityHistogramTexture:v23 kernelSupportGaussianSigma:*(a1 + 72) sigmaToFilterScale:v28 outputKernelWeightedIntensityDensityHistogramTexture:v27];
+        v29 = [self _encodeGaussianWeightedSupportApply:v9 inputBalancedIntensityDensityHistogramTexture:v23 kernelSupportGaussianSigma:*(self + 72) sigmaToFilterScale:v28 outputKernelWeightedIntensityDensityHistogramTexture:v27];
         if (v29)
         {
           v30 = v29;
@@ -453,7 +453,7 @@ LABEL_4:
 
         else
         {
-          v30 = [a1 _encodeToneCompressionCurveCalculate:v9 inputKernelWeightedIntensityDensityHistogramTexture:*(a1 + 72) outputToneCompressionCurveTexture:*(a1 + 80)];
+          v30 = [self _encodeToneCompressionCurveCalculate:v9 inputKernelWeightedIntensityDensityHistogramTexture:*(self + 72) outputToneCompressionCurveTexture:*(self + 80)];
           if (v30)
           {
             sub_104E8();

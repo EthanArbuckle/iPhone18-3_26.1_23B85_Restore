@@ -6,15 +6,15 @@
 
 - (uint64_t)isEmptyOrTerminatedByParagraphSeparator
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 1;
   }
 
   v3 = v2;
-  v4 = [a1 string];
-  v5 = [v4 characterAtIndex:v3 - 1];
+  string = [self string];
+  v5 = [string characterAtIndex:v3 - 1];
 
   v6 = v5 == 8233;
   if (v5 == 13)

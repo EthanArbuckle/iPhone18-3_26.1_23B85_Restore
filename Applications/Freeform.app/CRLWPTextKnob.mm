@@ -1,19 +1,19 @@
 @interface CRLWPTextKnob
-- (CRLWPTextKnob)initWithType:(unint64_t)a3 position:(CGPoint)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7;
+- (CRLWPTextKnob)initWithType:(unint64_t)type position:(CGPoint)position radius:(double)radius tag:(unint64_t)tag onRep:(id)rep;
 - (id)createKnobRenderable;
 @end
 
 @implementation CRLWPTextKnob
 
-- (CRLWPTextKnob)initWithType:(unint64_t)a3 position:(CGPoint)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7
+- (CRLWPTextKnob)initWithType:(unint64_t)type position:(CGPoint)position radius:(double)radius tag:(unint64_t)tag onRep:(id)rep
 {
   v10.receiver = self;
   v10.super_class = CRLWPTextKnob;
-  v7 = [(CRLCanvasKnob *)&v10 initWithType:a3 position:a6 radius:a7 tag:a4.x onRep:a4.y, a5];
-  v8 = v7;
-  if (v7)
+  radius = [(CRLCanvasKnob *)&v10 initWithType:type position:tag radius:rep tag:position.x onRep:position.y, radius];
+  v8 = radius;
+  if (radius)
   {
-    [(CRLCanvasKnob *)v7 setWorksWhenEditingDisabled:1];
+    [(CRLCanvasKnob *)radius setWorksWhenEditingDisabled:1];
   }
 
   return v8;
@@ -23,13 +23,13 @@
 {
   v4.receiver = self;
   v4.super_class = CRLWPTextKnob;
-  v2 = [(CRLCanvasKnob *)&v4 createKnobRenderable];
+  createKnobRenderable = [(CRLCanvasKnob *)&v4 createKnobRenderable];
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isRedesignedTextCursorEnabled])
   {
-    [v2 setOpacity:0.0];
+    [createKnobRenderable setOpacity:0.0];
   }
 
-  return v2;
+  return createKnobRenderable;
 }
 
 @end

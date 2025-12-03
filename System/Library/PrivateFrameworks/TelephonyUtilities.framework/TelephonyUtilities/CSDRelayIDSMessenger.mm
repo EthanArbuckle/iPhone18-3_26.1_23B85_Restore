@@ -1,15 +1,15 @@
 @interface CSDRelayIDSMessenger
 - (CSDRelayIDSMessengerDelegate)delegate;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation CSDRelayIDSMessenger
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface NCBSMainMenuViewController
 - (id)bundle;
 - (id)localizedPaneTitle;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation NCBSMainMenuViewController
@@ -21,25 +21,25 @@
   return [NSBundle bundleForClass:v2];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v20.receiver = self;
   v20.super_class = NCBSMainMenuViewController;
-  v6 = a4;
-  [(NCBSMainMenuViewController *)&v20 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(NCBSMainMenuViewController *)self indexForIndexPath:v6, v20.receiver, v20.super_class];
-  v8 = [(NCBSMainMenuViewController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(NCBSMainMenuViewController *)&v20 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(NCBSMainMenuViewController *)self indexForIndexPath:pathCopy, v20.receiver, v20.super_class];
+  specifiers = [(NCBSMainMenuViewController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(NCBSMainMenuViewController *)self specifierAtIndex:[(NCBSMainMenuViewController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(NCBSMainMenuViewController *)self specifierAtIndex:[(NCBSMainMenuViewController *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:PSIsRadioGroupKey];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
-    v14 = [v11 identifier];
-    v15 = [v14 isEqualToString:@"TapToSpeakTimeSettingsGroupID"];
+    identifier = [v11 identifier];
+    v15 = [identifier isEqualToString:@"TapToSpeakTimeSettingsGroupID"];
 
     if (v15)
     {
@@ -47,9 +47,9 @@
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 integerValue];
+        integerValue = [v16 integerValue];
         v19 = +[AXTimeOutputPreferences sharedInstance];
-        [v19 setTapToSpeakTimeAvailability:v18];
+        [v19 setTapToSpeakTimeAvailability:integerValue];
 
         [(NCBSMainMenuViewController *)self reloadSpecifiers];
       }

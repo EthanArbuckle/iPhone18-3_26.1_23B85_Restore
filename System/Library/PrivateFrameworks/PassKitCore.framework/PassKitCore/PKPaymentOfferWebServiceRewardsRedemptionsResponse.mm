@@ -1,15 +1,15 @@
 @interface PKPaymentOfferWebServiceRewardsRedemptionsResponse
-- (PKPaymentOfferWebServiceRewardsRedemptionsResponse)initWithData:(id)a3;
+- (PKPaymentOfferWebServiceRewardsRedemptionsResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentOfferWebServiceRewardsRedemptionsResponse
 
-- (PKPaymentOfferWebServiceRewardsRedemptionsResponse)initWithData:(id)a3
+- (PKPaymentOfferWebServiceRewardsRedemptionsResponse)initWithData:(id)data
 {
   v37 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = PKPaymentOfferWebServiceRewardsRedemptionsResponse;
-  v3 = [(PKWebServiceResponse *)&v31 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v31 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,11 +18,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"rewardsRedemptions"];
+    v6 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"rewardsRedemptions"];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v27 = 0u;
     v28 = 0u;
@@ -55,8 +55,8 @@ LABEL_19:
       while (v10);
     }
 
-    v4->_moreComing = [v5 PKBoolForKey:@"moreComing"];
-    v16 = [v5 PKDateForKey:@"lastUpdated"];
+    v4->_moreComing = [jSONObject PKBoolForKey:@"moreComing"];
+    v16 = [jSONObject PKDateForKey:@"lastUpdated"];
     lastUpdated = v4->_lastUpdated;
     v4->_lastUpdated = v16;
 

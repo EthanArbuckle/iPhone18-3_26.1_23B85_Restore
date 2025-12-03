@@ -1,37 +1,37 @@
 @interface NTKMagmaTimeChangeEffect
-- (NTKMagmaTimeChangeEffect)initWithStart:(double)a3 duration:(double)a4 magnitude:(double)a5 radius:(double)a6;
-- (void)applyForTime:(double)a3 quad:(id)a4;
+- (NTKMagmaTimeChangeEffect)initWithStart:(double)start duration:(double)duration magnitude:(double)magnitude radius:(double)radius;
+- (void)applyForTime:(double)time quad:(id)quad;
 @end
 
 @implementation NTKMagmaTimeChangeEffect
 
-- (NTKMagmaTimeChangeEffect)initWithStart:(double)a3 duration:(double)a4 magnitude:(double)a5 radius:(double)a6
+- (NTKMagmaTimeChangeEffect)initWithStart:(double)start duration:(double)duration magnitude:(double)magnitude radius:(double)radius
 {
   v11.receiver = self;
   v11.super_class = NTKMagmaTimeChangeEffect;
   result = [(NTKMagmaTimeChangeEffect *)&v11 init];
   if (result)
   {
-    result->_start = a3;
-    result->_duration = a4;
-    result->_magnitude = a5;
-    result->_radius = a6;
+    result->_start = start;
+    result->_duration = duration;
+    result->_magnitude = magnitude;
+    result->_radius = radius;
   }
 
   return result;
 }
 
-- (void)applyForTime:(double)a3 quad:(id)a4
+- (void)applyForTime:(double)time quad:(id)quad
 {
   start = self->_start;
   duration = self->_duration;
-  if (start + duration >= a3)
+  if (start + duration >= time)
   {
-    v7 = (a3 - start) / duration;
-    v23 = a4;
-    [v23 size];
+    v7 = (time - start) / duration;
+    quadCopy = quad;
+    [quadCopy size];
     v22 = v8;
-    [v23 size];
+    [quadCopy size];
     __asm { FMOV            V0.2D, #0.5 }
 
     v14.f64[0] = v22;
@@ -48,7 +48,7 @@
 
     *&v19 = magnitude * v21;
     *&v20 = self->_radius;
-    [v23 applyQuadraticRepuslorWithOrigin:v16 magnitude:v19 radius:v20];
+    [quadCopy applyQuadraticRepuslorWithOrigin:v16 magnitude:v19 radius:v20];
   }
 
   else

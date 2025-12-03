@@ -1,47 +1,47 @@
 @interface SecureStorageMock
 - (id)_notSupportedError;
-- (void)aclForKey:(int64_t)a3 contextUUID:(id)a4 connection:(id)a5 completionHandler:(id)a6;
-- (void)objectForKey:(int64_t)a3 contextUUID:(id)a4 connection:(id)a5 completionHandler:(id)a6;
-- (void)processError:(id)a3 completionHandler:(id)a4;
-- (void)removeObjectForKey:(int64_t)a3 contextUUID:(id)a4 connection:(id)a5 completionHandler:(id)a6;
-- (void)setObject:(id)a3 acl:(id)a4 forKey:(int64_t)a5 options:(id)a6 contextUUID:(id)a7 connection:(id)a8 completionHandler:(id)a9;
+- (void)aclForKey:(int64_t)key contextUUID:(id)d connection:(id)connection completionHandler:(id)handler;
+- (void)objectForKey:(int64_t)key contextUUID:(id)d connection:(id)connection completionHandler:(id)handler;
+- (void)processError:(id)error completionHandler:(id)handler;
+- (void)removeObjectForKey:(int64_t)key contextUUID:(id)d connection:(id)connection completionHandler:(id)handler;
+- (void)setObject:(id)object acl:(id)acl forKey:(int64_t)key options:(id)options contextUUID:(id)d connection:(id)connection completionHandler:(id)handler;
 @end
 
 @implementation SecureStorageMock
 
-- (void)setObject:(id)a3 acl:(id)a4 forKey:(int64_t)a5 options:(id)a6 contextUUID:(id)a7 connection:(id)a8 completionHandler:(id)a9
+- (void)setObject:(id)object acl:(id)acl forKey:(int64_t)key options:(id)options contextUUID:(id)d connection:(id)connection completionHandler:(id)handler
 {
-  v10 = a9;
-  v11 = [(SecureStorageMock *)self _notSupportedError];
-  (*(a9 + 2))(v10, 0, v11);
+  handlerCopy = handler;
+  _notSupportedError = [(SecureStorageMock *)self _notSupportedError];
+  (*(handler + 2))(handlerCopy, 0, _notSupportedError);
 }
 
-- (void)objectForKey:(int64_t)a3 contextUUID:(id)a4 connection:(id)a5 completionHandler:(id)a6
+- (void)objectForKey:(int64_t)key contextUUID:(id)d connection:(id)connection completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = [(SecureStorageMock *)self _notSupportedError];
-  (*(a6 + 2))(v8, 0, v9);
+  handlerCopy = handler;
+  _notSupportedError = [(SecureStorageMock *)self _notSupportedError];
+  (*(handler + 2))(handlerCopy, 0, _notSupportedError);
 }
 
-- (void)removeObjectForKey:(int64_t)a3 contextUUID:(id)a4 connection:(id)a5 completionHandler:(id)a6
+- (void)removeObjectForKey:(int64_t)key contextUUID:(id)d connection:(id)connection completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = [(SecureStorageMock *)self _notSupportedError];
-  (*(a6 + 2))(v8, 0, v9);
+  handlerCopy = handler;
+  _notSupportedError = [(SecureStorageMock *)self _notSupportedError];
+  (*(handler + 2))(handlerCopy, 0, _notSupportedError);
 }
 
-- (void)aclForKey:(int64_t)a3 contextUUID:(id)a4 connection:(id)a5 completionHandler:(id)a6
+- (void)aclForKey:(int64_t)key contextUUID:(id)d connection:(id)connection completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = [(SecureStorageMock *)self _notSupportedError];
-  (*(a6 + 2))(v8, 0, v9);
+  handlerCopy = handler;
+  _notSupportedError = [(SecureStorageMock *)self _notSupportedError];
+  (*(handler + 2))(handlerCopy, 0, _notSupportedError);
 }
 
-- (void)processError:(id)a3 completionHandler:(id)a4
+- (void)processError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(SecureStorageMock *)self _notSupportedError];
-  (*(a4 + 2))(v6, v7);
+  handlerCopy = handler;
+  _notSupportedError = [(SecureStorageMock *)self _notSupportedError];
+  (*(handler + 2))(handlerCopy, _notSupportedError);
 }
 
 - (id)_notSupportedError

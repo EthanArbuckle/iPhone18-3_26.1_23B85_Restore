@@ -1,37 +1,37 @@
 @interface SBCollectionViewCell
 - (SBCollectionViewCellDelegate)delegate;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 afterDelay:(double)a4;
+- (void)setHighlighted:(BOOL)highlighted afterDelay:(double)delay;
 @end
 
 @implementation SBCollectionViewCell
 
-- (void)setHighlighted:(BOOL)a3 afterDelay:(double)a4
+- (void)setHighlighted:(BOOL)highlighted afterDelay:(double)delay
 {
-  v5 = a3;
+  highlightedCopy = highlighted;
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a4 > 0.0 || !self->_protectDelayedUnhighlights || a3)
+  if (delay > 0.0 || !self->_protectDelayedUnhighlights || highlighted)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__performSetHighlighted object:0];
-    if ([(SBCollectionViewCell *)self isHighlighted]!= v5)
+    if ([(SBCollectionViewCell *)self isHighlighted]!= highlightedCopy)
     {
-      if (a4 <= 0.0)
+      if (delay <= 0.0)
       {
         v8.receiver = self;
         v8.super_class = SBCollectionViewCell;
-        [(SBCollectionViewCell *)&v8 setHighlighted:v5];
-        if ([(SBCollectionViewCell *)self isHighlighted]== v5)
+        [(SBCollectionViewCell *)&v8 setHighlighted:highlightedCopy];
+        if ([(SBCollectionViewCell *)self isHighlighted]== highlightedCopy)
         {
-          [(SBCollectionViewCell *)self _didSetHighlighted:v5];
+          [(SBCollectionViewCell *)self _didSetHighlighted:highlightedCopy];
         }
       }
 
       else
       {
-        self->_performSetHighlighted = v5;
+        self->_performSetHighlighted = highlightedCopy;
         v9[0] = *MEMORY[0x277CBE738];
         v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-        [(SBCollectionViewCell *)self performSelector:sel__performSetHighlighted withObject:0 afterDelay:v7 inModes:a4];
+        [(SBCollectionViewCell *)self performSelector:sel__performSetHighlighted withObject:0 afterDelay:v7 inModes:delay];
       }
     }
   }

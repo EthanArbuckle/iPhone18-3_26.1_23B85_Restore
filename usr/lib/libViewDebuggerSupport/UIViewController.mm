@@ -1,8 +1,8 @@
 @interface UIViewController
 + (id)fallback_debugHierarchyAdditionalGroupingIDs;
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIViewController
@@ -15,37 +15,37 @@
   return v2;
 }
 
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.UIKit.UIViewController"])
+  dCopy = d;
+  objectCopy = object;
+  if ([dCopy isEqualToString:@"com.apple.UIKit.UIViewController"])
   {
-    v8 = [v7 childViewControllers];
+    childViewControllers = [objectCopy childViewControllers];
   }
 
-  else if ([v6 isEqualToString:@"com.apple.UIKit.UIView"])
+  else if ([dCopy isEqualToString:@"com.apple.UIKit.UIView"])
   {
-    v9 = [v7 viewIfLoaded];
-    v10 = v9;
-    if (v9)
+    viewIfLoaded = [objectCopy viewIfLoaded];
+    v10 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      v12 = v9;
-      v8 = [NSArray arrayWithObjects:&v12 count:1];
+      v12 = viewIfLoaded;
+      childViewControllers = [NSArray arrayWithObjects:&v12 count:1];
     }
 
     else
     {
-      v8 = 0;
+      childViewControllers = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    childViewControllers = 0;
   }
 
-  return v8;
+  return childViewControllers;
 }
 
 + (id)fallback_debugHierarchyPropertyDescriptions
@@ -262,48 +262,48 @@
   return v11;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"nibBundlePath"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"nibBundlePath"])
   {
-    v10 = [v9 nibBundle];
-    v11 = [v10 bundlePath];
+    nibBundle = [objectCopy nibBundle];
+    bundlePath = [nibBundle bundlePath];
   }
 
   else
   {
-    if ([v8 isEqualToString:@"view"])
+    if ([nameCopy isEqualToString:@"view"])
     {
-      a6 = [v9 viewIfLoaded];
+      error = [objectCopy viewIfLoaded];
       goto LABEL_16;
     }
 
-    if ([v8 isEqualToString:@"traitCollectionUserInterfaceStyle"])
+    if ([nameCopy isEqualToString:@"traitCollectionUserInterfaceStyle"])
     {
-      v10 = [v9 traitCollection];
-      v12 = [v10 userInterfaceStyle];
+      nibBundle = [objectCopy traitCollection];
+      userInterfaceStyle = [nibBundle userInterfaceStyle];
     }
 
-    else if ([v8 isEqualToString:@"traitCollectionVerticalSizeClass"])
+    else if ([nameCopy isEqualToString:@"traitCollectionVerticalSizeClass"])
     {
-      v10 = [v9 traitCollection];
-      v12 = [v10 verticalSizeClass];
+      nibBundle = [objectCopy traitCollection];
+      userInterfaceStyle = [nibBundle verticalSizeClass];
     }
 
-    else if ([v8 isEqualToString:@"traitCollectionHorizontalSizeClass"])
+    else if ([nameCopy isEqualToString:@"traitCollectionHorizontalSizeClass"])
     {
-      v10 = [v9 traitCollection];
-      v12 = [v10 horizontalSizeClass];
+      nibBundle = [objectCopy traitCollection];
+      userInterfaceStyle = [nibBundle horizontalSizeClass];
     }
 
     else
     {
-      if (![v8 isEqualToString:@"traitCollectionLayoutDirection"])
+      if (![nameCopy isEqualToString:@"traitCollectionLayoutDirection"])
       {
-        v10 = v9;
-        v14 = v8;
+        nibBundle = objectCopy;
+        v14 = nameCopy;
         if (![v14 length])
         {
           goto LABEL_31;
@@ -319,36 +319,36 @@
         {
           if ([v14 length] < 2)
           {
-            v19 = [v14 uppercaseString];
+            uppercaseString = [v14 uppercaseString];
           }
 
           else
           {
             v16 = [v14 substringToIndex:1];
-            v17 = [v16 uppercaseString];
+            uppercaseString2 = [v16 uppercaseString];
             v18 = [v14 substringFromIndex:1];
-            v19 = [v17 stringByAppendingString:v18];
+            uppercaseString = [uppercaseString2 stringByAppendingString:v18];
           }
 
-          v20 = [@"is" stringByAppendingString:v19];
+          v20 = [@"is" stringByAppendingString:uppercaseString];
           NSSelectorFromString(v20);
           v15 = (objc_opt_respondsToSelector() & 1) != 0 ? v20 : 0;
         }
 
         if (v15)
         {
-          a6 = [v10 valueForKey:v15];
+          error = [nibBundle valueForKey:v15];
         }
 
         else
         {
 LABEL_31:
-          if (a6)
+          if (error)
           {
             v21 = v14;
-            if (v10)
+            if (nibBundle)
             {
-              v22 = [NSString stringWithFormat:@"%@", v10];
+              v22 = [NSString stringWithFormat:@"%@", nibBundle];
             }
 
             else
@@ -377,10 +377,10 @@ LABEL_31:
             v26 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v25];
 
             v27 = v26;
-            *a6 = v26;
+            *error = v26;
 
             v15 = 0;
-            a6 = 0;
+            error = 0;
           }
 
           else
@@ -392,19 +392,19 @@ LABEL_31:
         goto LABEL_15;
       }
 
-      v10 = [v9 traitCollection];
-      v12 = [v10 layoutDirection];
+      nibBundle = [objectCopy traitCollection];
+      userInterfaceStyle = [nibBundle layoutDirection];
     }
 
-    v11 = [NSNumber numberWithInteger:v12];
+    bundlePath = [NSNumber numberWithInteger:userInterfaceStyle];
   }
 
-  a6 = v11;
+  error = bundlePath;
 LABEL_15:
 
 LABEL_16:
 
-  return a6;
+  return error;
 }
 
 @end

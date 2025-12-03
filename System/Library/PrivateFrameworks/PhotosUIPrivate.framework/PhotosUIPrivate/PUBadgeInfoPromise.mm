@@ -1,21 +1,21 @@
 @interface PUBadgeInfoPromise
-- (BOOL)isEqual:(id)a3;
-- (PUBadgeInfoPromise)badgeInfoPromiseWithAdjustments:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PUBadgeInfoPromise)badgeInfoPromiseWithAdjustments:(id)adjustments;
 - (PUBadgeInfoPromise)init;
-- (PUBadgeInfoPromise)initWithBadgeInfo:(PXAssetBadgeInfo *)a3;
-- (PUBadgeInfoPromise)initWithBadgeInfoProvider:(id)a3 countProvider:(id)a4;
+- (PUBadgeInfoPromise)initWithBadgeInfo:(PXAssetBadgeInfo *)info;
+- (PUBadgeInfoPromise)initWithBadgeInfoProvider:(id)provider countProvider:(id)countProvider;
 - (PXAssetBadgeInfo)badgeInfo;
 @end
 
 @implementation PUBadgeInfoPromise
 
-- (PUBadgeInfoPromise)badgeInfoPromiseWithAdjustments:(id)a3
+- (PUBadgeInfoPromise)badgeInfoPromiseWithAdjustments:(id)adjustments
 {
-  v5 = a3;
-  if (!v5)
+  adjustmentsCopy = adjustments;
+  if (!adjustmentsCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUBadgeInfoPromise.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"adjuster != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeInfoPromise.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"adjuster != nil"}];
   }
 
   v6 = [PUBadgeInfoPromise alloc];
@@ -24,9 +24,9 @@
   v12[2] = __54__PUBadgeInfoPromise_badgeInfoPromiseWithAdjustments___block_invoke;
   v12[3] = &unk_1E7B75A08;
   v12[4] = self;
-  v13 = v5;
+  v13 = adjustmentsCopy;
   countProvider = self->_countProvider;
-  v8 = v5;
+  v8 = adjustmentsCopy;
   v9 = [(PUBadgeInfoPromise *)v6 initWithBadgeInfoProvider:v12 countProvider:countProvider];
 
   return v9;
@@ -55,41 +55,41 @@ uint64_t __54__PUBadgeInfoPromise_badgeInfoPromiseWithAdjustments___block_invoke
 
 - (PXAssetBadgeInfo)badgeInfo
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  badgeProvider = v4->_badgeProvider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  badgeProvider = selfCopy->_badgeProvider;
   if (badgeProvider)
   {
     badgeProvider[2](v13);
     v6 = v13[1];
-    *&v4->_badgeInfo.badges = v13[0];
-    *&v4->_badgeInfo.count = v6;
-    v7 = v4->_badgeProvider;
-    v4->_badgeProvider = 0;
+    *&selfCopy->_badgeInfo.badges = v13[0];
+    *&selfCopy->_badgeInfo.count = v6;
+    v7 = selfCopy->_badgeProvider;
+    selfCopy->_badgeProvider = 0;
   }
 
-  countProvider = v4->_countProvider;
+  countProvider = selfCopy->_countProvider;
   if (countProvider)
   {
     v9 = _Block_copy(countProvider);
-    v10 = v4->_countProvider;
-    v4->_countProvider = 0;
+    v10 = selfCopy->_countProvider;
+    selfCopy->_countProvider = 0;
 
-    v4->_badgeInfo.count = v9[2](v9);
+    selfCopy->_badgeInfo.count = v9[2](v9);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v12 = *&v4->_badgeInfo.count;
-  *&retstr->badges = *&v4->_badgeInfo.badges;
+  v12 = *&selfCopy->_badgeInfo.count;
+  *&retstr->badges = *&selfCopy->_badgeInfo.badges;
   *&retstr->count = v12;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -99,7 +99,7 @@ uint64_t __54__PUBadgeInfoPromise_badgeInfoPromiseWithAdjustments___block_invoke
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_badgeInfo.badges == v5->_badgeInfo.badges)
       {
         if (PXAssetBadgeInfoRequiresCountForBadges())
@@ -126,26 +126,26 @@ uint64_t __54__PUBadgeInfoPromise_badgeInfoPromiseWithAdjustments___block_invoke
   return v6;
 }
 
-- (PUBadgeInfoPromise)initWithBadgeInfoProvider:(id)a3 countProvider:(id)a4
+- (PUBadgeInfoPromise)initWithBadgeInfoProvider:(id)provider countProvider:(id)countProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  countProviderCopy = countProvider;
   v16.receiver = self;
   v16.super_class = PUBadgeInfoPromise;
   v9 = [(PUBadgeInfoPromise *)&v16 init];
   if (v9)
   {
-    if (!v7)
+    if (!providerCopy)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v9 file:@"PUBadgeInfoPromise.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"badgeProvider != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PUBadgeInfoPromise.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"badgeProvider != nil"}];
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(providerCopy);
     badgeProvider = v9->_badgeProvider;
     v9->_badgeProvider = v10;
 
-    v12 = _Block_copy(v8);
+    v12 = _Block_copy(countProviderCopy);
     countProvider = v9->_countProvider;
     v9->_countProvider = v12;
   }
@@ -153,14 +153,14 @@ uint64_t __54__PUBadgeInfoPromise_badgeInfoPromiseWithAdjustments___block_invoke
   return v9;
 }
 
-- (PUBadgeInfoPromise)initWithBadgeInfo:(PXAssetBadgeInfo *)a3
+- (PUBadgeInfoPromise)initWithBadgeInfo:(PXAssetBadgeInfo *)info
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__PUBadgeInfoPromise_initWithBadgeInfo___block_invoke;
   v5[3] = &__block_descriptor_64_e27__PXAssetBadgeInfo_Qdqq_8__0l;
-  v3 = *&a3->count;
-  v6 = *&a3->badges;
+  v3 = *&info->count;
+  v6 = *&info->badges;
   v7 = v3;
   return [(PUBadgeInfoPromise *)self initWithBadgeInfoProvider:v5 countProvider:0];
 }

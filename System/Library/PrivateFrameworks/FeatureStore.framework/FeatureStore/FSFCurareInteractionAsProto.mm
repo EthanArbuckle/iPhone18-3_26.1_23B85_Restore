@@ -1,14 +1,14 @@
 @interface FSFCurareInteractionAsProto
-- (FSFCurareInteractionAsProto)initWithProto:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5;
-- (FSFCurareInteractionAsProto)initWithProto:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5 jsonStr:(id)a6;
+- (FSFCurareInteractionAsProto)initWithProto:(id)proto interactionId:(id)id dataVersion:(unsigned int)version;
+- (FSFCurareInteractionAsProto)initWithProto:(id)proto interactionId:(id)id dataVersion:(unsigned int)version jsonStr:(id)str;
 @end
 
 @implementation FSFCurareInteractionAsProto
 
-- (FSFCurareInteractionAsProto)initWithProto:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5
+- (FSFCurareInteractionAsProto)initWithProto:(id)proto interactionId:(id)id dataVersion:(unsigned int)version
 {
-  v9 = a3;
-  v10 = a4;
+  protoCopy = proto;
+  idCopy = id;
   if (+[FSFUtils isSupportedPlatform])
   {
     v15.receiver = self;
@@ -17,29 +17,29 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_interactionId, a4);
-      objc_storeStrong(&v12->_content, a3);
-      v12->_dataVersion = a5;
+      objc_storeStrong(&v11->_interactionId, id);
+      objc_storeStrong(&v12->_content, proto);
+      v12->_dataVersion = version;
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (FSFCurareInteractionAsProto)initWithProto:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5 jsonStr:(id)a6
+- (FSFCurareInteractionAsProto)initWithProto:(id)proto interactionId:(id)id dataVersion:(unsigned int)version jsonStr:(id)str
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  protoCopy = proto;
+  idCopy = id;
+  strCopy = str;
   if (+[FSFUtils isSupportedPlatform])
   {
     v18.receiver = self;
@@ -48,23 +48,23 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_interactionId, a4);
-      objc_storeStrong(&v15->_content, a3);
-      v15->_dataVersion = a5;
-      objc_storeStrong(&v15->_jsonStr, a6);
+      objc_storeStrong(&v14->_interactionId, id);
+      objc_storeStrong(&v15->_content, proto);
+      v15->_dataVersion = version;
+      objc_storeStrong(&v15->_jsonStr, str);
     }
 
     self = v15;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

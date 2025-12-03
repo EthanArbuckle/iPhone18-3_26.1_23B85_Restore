@@ -1,21 +1,21 @@
 @interface PHAInvoker
-- (PHAInvoker)initWithDelegate:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)handleInvocation:(id)a3 withTarget:(id)a4 service:(id)a5;
+- (PHAInvoker)initWithDelegate:(id)delegate;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)handleInvocation:(id)invocation withTarget:(id)target service:(id)service;
 @end
 
 @implementation PHAInvoker
 
-- (void)handleInvocation:(id)a3 withTarget:(id)a4 service:(id)a5
+- (void)handleInvocation:(id)invocation withTarget:(id)target service:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = NSStringFromSelector([v10 selector]);
+  serviceCopy = service;
+  targetCopy = target;
+  invocationCopy = invocation;
+  v11 = NSStringFromSelector([invocationCopy selector]);
   [v11 UTF8String];
   v12 = os_transaction_create();
-  [v10 setTarget:v9];
-  v13 = [[PHAServiceCancelableOperation alloc] initWithOperationId:0 invocation:v10];
+  [invocationCopy setTarget:targetCopy];
+  v13 = [[PHAServiceCancelableOperation alloc] initWithOperationId:0 invocation:invocationCopy];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -25,38 +25,38 @@
   v14 = v12;
   [(PHAServiceCancelableOperation *)v13 addCompletionBlock:v16];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dispatchOperation:v13 toTarget:v9 service:v8];
+  [WeakRetained dispatchOperation:v13 toTarget:targetCopy service:serviceCopy];
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v7 = a4;
-  v8 = a3;
-  v11 = [v7 target];
+  invocationCopy = invocation;
+  connectionCopy = connection;
+  target = [invocationCopy target];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v10 = [WeakRetained targetForOriginalTarget:v11 connection:v8 selector:{objc_msgSend(v7, "selector")}];
+  v10 = [WeakRetained targetForOriginalTarget:target connection:connectionCopy selector:{objc_msgSend(invocationCopy, "selector")}];
 
   if (v10)
   {
-    [(PHAInvoker *)self handleInvocation:v7 withTarget:v10 service:v11];
+    [(PHAInvoker *)self handleInvocation:invocationCopy withTarget:v10 service:target];
   }
 
   else
   {
-    [v7 invoke];
+    [invocationCopy invoke];
   }
 }
 
-- (PHAInvoker)initWithDelegate:(id)a3
+- (PHAInvoker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PHAInvoker;
   v5 = [(PHAInvoker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

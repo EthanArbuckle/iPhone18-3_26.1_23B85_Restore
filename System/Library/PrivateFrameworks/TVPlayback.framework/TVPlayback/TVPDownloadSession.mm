@@ -2,16 +2,16 @@
 + (TVPDownloadSession)sharedInstance;
 - (TVPDownloadSession)init;
 - (TVPDownloadSessionDelegate)delegate;
-- (id)assetDownloadTaskWithConfiguration:(id)a3;
-- (id)downloadForMediaItem:(id)a3;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 didLoadTimeRange:(id *)a5 totalTimeRangesLoaded:(id)a6 timeRangeExpectedToLoad:(id *)a7;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadToURL:(id)a5;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadVariants:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
-- (void)initializeWithDownloadingMediaItems:(id)a3;
-- (void)registerDownloadTask:(id)a3 forDownload:(id)a4;
-- (void)unregisterDownloadTaskForDownload:(id)a3;
+- (id)assetDownloadTaskWithConfiguration:(id)configuration;
+- (id)downloadForMediaItem:(id)item;
+- (void)URLSession:(id)session assetDownloadTask:(id)task didLoadTimeRange:(id *)range totalTimeRangesLoaded:(id)loaded timeRangeExpectedToLoad:(id *)load;
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadToURL:(id)l;
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadVariants:(id)variants;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
+- (void)initializeWithDownloadingMediaItems:(id)items;
+- (void)registerDownloadTask:(id)task forDownload:(id)download;
+- (void)unregisterDownloadTaskForDownload:(id)download;
 @end
 
 @implementation TVPDownloadSession
@@ -61,9 +61,9 @@ uint64_t __36__TVPDownloadSession_sharedInstance__block_invoke()
   return WeakRetained;
 }
 
-- (void)initializeWithDownloadingMediaItems:(id)a3
+- (void)initializeWithDownloadingMediaItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -71,9 +71,9 @@ uint64_t __36__TVPDownloadSession_sharedInstance__block_invoke()
   v7[3] = &unk_279D7C4C0;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
+  v8 = itemsCopy;
   v5 = initializeWithDownloadingMediaItems__onceToken;
-  v6 = v4;
+  v6 = itemsCopy;
   if (v5 != -1)
   {
     dispatch_once(&initializeWithDownloadingMediaItems__onceToken, v7);
@@ -375,33 +375,33 @@ LABEL_32:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)downloadForMediaItem:(id)a3
+- (id)downloadForMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [[TVPDownload alloc] initWithMediaItem:v4 downloadSession:self existingDownloadTask:0];
+  itemCopy = item;
+  v5 = [[TVPDownload alloc] initWithMediaItem:itemCopy downloadSession:self existingDownloadTask:0];
 
   return v5;
 }
 
-- (id)assetDownloadTaskWithConfiguration:(id)a3
+- (id)assetDownloadTaskWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(TVPDownloadSession *)self downloadSession];
-  v6 = [v5 assetDownloadTaskWithConfiguration:v4];
+  configurationCopy = configuration;
+  downloadSession = [(TVPDownloadSession *)self downloadSession];
+  v6 = [downloadSession assetDownloadTaskWithConfiguration:configurationCopy];
 
   return v6;
 }
 
-- (void)registerDownloadTask:(id)a3 forDownload:(id)a4
+- (void)registerDownloadTask:(id)task forDownload:(id)download
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  taskCopy = task;
+  downloadCopy = download;
+  v8 = downloadCopy;
+  if (taskCopy && downloadCopy)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "taskIdentifier")}];
-    v10 = [(TVPDownloadSession *)self taskIDsToDownloads];
-    v11 = [v10 objectForKey:v9];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "taskIdentifier")}];
+    taskIDsToDownloads = [(TVPDownloadSession *)self taskIDsToDownloads];
+    v11 = [taskIDsToDownloads objectForKey:v9];
 
     if (v11)
     {
@@ -414,8 +414,8 @@ LABEL_32:
 
     else
     {
-      v28 = [(TVPDownloadSession *)self taskIDsToDownloads];
-      [v28 setObject:v8 forKey:v9];
+      taskIDsToDownloads2 = [(TVPDownloadSession *)self taskIDsToDownloads];
+      [taskIDsToDownloads2 setObject:v8 forKey:v9];
     }
   }
 
@@ -429,10 +429,10 @@ LABEL_32:
   }
 }
 
-- (void)unregisterDownloadTaskForDownload:(id)a3
+- (void)unregisterDownloadTaskForDownload:(id)download
 {
-  v4 = a3;
-  if (v4)
+  downloadCopy = download;
+  if (downloadCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -440,19 +440,19 @@ LABEL_32:
     v23 = __Block_byref_object_copy__2;
     v24 = __Block_byref_object_dispose__2;
     v25 = 0;
-    v5 = [(TVPDownloadSession *)self taskIDsToDownloads];
+    taskIDsToDownloads = [(TVPDownloadSession *)self taskIDsToDownloads];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__TVPDownloadSession_unregisterDownloadTaskForDownload___block_invoke;
     v17[3] = &unk_279D7CF08;
-    v18 = v4;
+    v18 = downloadCopy;
     v19 = &v20;
-    [v5 enumerateKeysAndObjectsUsingBlock:v17];
+    [taskIDsToDownloads enumerateKeysAndObjectsUsingBlock:v17];
 
     if (v21[5])
     {
-      v6 = [(TVPDownloadSession *)self taskIDsToDownloads];
-      [v6 removeObjectForKey:v21[5]];
+      taskIDsToDownloads2 = [(TVPDownloadSession *)self taskIDsToDownloads];
+      [taskIDsToDownloads2 removeObjectForKey:v21[5]];
     }
 
     else
@@ -494,23 +494,23 @@ void __56__TVPDownloadSession_unregisterDownloadTaskForDownload___block_invoke(u
   }
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadToURL:(id)a5
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadToURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__TVPDownloadSession_URLSession_assetDownloadTask_willDownloadToURL___block_invoke;
   v15[3] = &unk_279D7C3D0;
   objc_copyWeak(v19, &location);
-  v12 = v10;
+  v12 = taskCopy;
   v16 = v12;
   v19[1] = a2;
-  v13 = v9;
+  v13 = sessionCopy;
   v17 = v13;
-  v14 = v11;
+  v14 = lCopy;
   v18 = v14;
   TVPPerformBlockOnMainThreadIfNeeded(v15);
 
@@ -555,23 +555,23 @@ void __69__TVPDownloadSession_URLSession_assetDownloadTask_willDownloadToURL___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadVariants:(id)a5
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadVariants:(id)variants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  variantsCopy = variants;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__TVPDownloadSession_URLSession_assetDownloadTask_willDownloadVariants___block_invoke;
   v15[3] = &unk_279D7C3D0;
   objc_copyWeak(v19, &location);
-  v12 = v10;
+  v12 = taskCopy;
   v16 = v12;
   v19[1] = a2;
-  v13 = v9;
+  v13 = sessionCopy;
   v17 = v13;
-  v14 = v11;
+  v14 = variantsCopy;
   v18 = v14;
   TVPPerformBlockOnMainThreadIfNeeded(v15);
 
@@ -616,32 +616,32 @@ void __72__TVPDownloadSession_URLSession_assetDownloadTask_willDownloadVariants_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 didLoadTimeRange:(id *)a5 totalTimeRangesLoaded:(id)a6 timeRangeExpectedToLoad:(id *)a7
+- (void)URLSession:(id)session assetDownloadTask:(id)task didLoadTimeRange:(id *)range totalTimeRangesLoaded:(id)loaded timeRangeExpectedToLoad:(id *)load
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  loadedCopy = loaded;
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __114__TVPDownloadSession_URLSession_assetDownloadTask_didLoadTimeRange_totalTimeRangesLoaded_timeRangeExpectedToLoad___block_invoke;
   v21[3] = &unk_279D7CF30;
   objc_copyWeak(v25, &location);
-  v16 = v14;
+  v16 = taskCopy;
   v22 = v16;
   v25[1] = a2;
-  v17 = v13;
+  v17 = sessionCopy;
   v23 = v17;
-  v18 = *&a5->var0.var3;
-  v26 = *&a5->var0.var0;
+  v18 = *&range->var0.var3;
+  v26 = *&range->var0.var0;
   v27 = v18;
-  v28 = *&a5->var1.var1;
-  v19 = v15;
+  v28 = *&range->var1.var1;
+  v19 = loadedCopy;
   v24 = v19;
-  v20 = *&a7->var0.var3;
-  v29 = *&a7->var0.var0;
+  v20 = *&load->var0.var3;
+  v29 = *&load->var0.var0;
   v30 = v20;
-  v31 = *&a7->var1.var1;
+  v31 = *&load->var1.var1;
   TVPPerformBlockOnMainThreadIfNeeded(v21);
 
   objc_destroyWeak(v25);
@@ -696,7 +696,7 @@ void __114__TVPDownloadSession_URLSession_assetDownloadTask_didLoadTimeRange_tot
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = sLogObject_3;
@@ -724,23 +724,23 @@ void __71__TVPDownloadSession_URLSessionDidFinishEventsForBackgroundURLSession__
   [v2 postNotificationName:@"TVPDownloadSessionDidFinishEventsForBackgroundURLSessionNotification" object:*(a1 + 32)];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__TVPDownloadSession_URLSession_task_didCompleteWithError___block_invoke;
   v15[3] = &unk_279D7C3D0;
   objc_copyWeak(v19, &location);
-  v12 = v10;
+  v12 = taskCopy;
   v16 = v12;
   v19[1] = a2;
-  v13 = v9;
+  v13 = sessionCopy;
   v17 = v13;
-  v14 = v11;
+  v14 = errorCopy;
   v18 = v14;
   TVPPerformBlockOnMainThreadIfNeeded(v15);
 

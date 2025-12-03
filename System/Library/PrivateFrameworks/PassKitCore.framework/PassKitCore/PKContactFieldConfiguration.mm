@@ -1,22 +1,22 @@
 @interface PKContactFieldConfiguration
-+ (id)contactFieldConfigurationWithDictionary:(id)a3;
-- (PKContactFieldConfiguration)initWithCoder:(id)a3;
-- (PKContactFieldConfiguration)initWithType:(int64_t)a3;
++ (id)contactFieldConfigurationWithDictionary:(id)dictionary;
+- (PKContactFieldConfiguration)initWithCoder:(id)coder;
+- (PKContactFieldConfiguration)initWithType:(int64_t)type;
 - (id)description;
 @end
 
 @implementation PKContactFieldConfiguration
 
-+ (id)contactFieldConfigurationWithDictionary:(id)a3
++ (id)contactFieldConfigurationWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"type"];
   if ([@"text" isEqualToString:v4])
   {
 
     v5 = off_1E79C1B00;
 LABEL_5:
-    v7 = [objc_alloc(*v5) initWithDictionary:v3];
+    v7 = [objc_alloc(*v5) initWithDictionary:dictionaryCopy];
     goto LABEL_7;
   }
 
@@ -34,14 +34,14 @@ LABEL_7:
   return v7;
 }
 
-- (PKContactFieldConfiguration)initWithType:(int64_t)a3
+- (PKContactFieldConfiguration)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKContactFieldConfiguration;
   result = [(PKContactFieldConfiguration *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -75,15 +75,15 @@ LABEL_7:
   return v8;
 }
 
-- (PKContactFieldConfiguration)initWithCoder:(id)a3
+- (PKContactFieldConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKContactFieldConfiguration;
   v5 = [(PKContactFieldConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;

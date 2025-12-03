@@ -1,29 +1,29 @@
 @interface NSString
-+ (id)_maps_ridesharingETA:(id)a3 partySize:(id)a4;
-+ (id)_maps_ridesharingPairDetailString:(id)a3 withPartySize:(id)a4;
-+ (id)_maps_ridesharingPartySizeString:(id)a3;
-+ (id)_maps_ridesharingScheduledPickupWindowStart:(id)a3 partySize:(id)a4;
-+ (id)distanceStringFromLocation:(id)a3 toCoordinate:(CLLocationCoordinate2D)a4 withMapItem:(id)a5 showsDistance:(BOOL *)a6 onlyUseThreshold:(BOOL)a7 maximumDistance:(id)a8 useShortThreshold:(BOOL)a9;
-+ (id)distanceStringFromLocation:(id)a3 toMapItem:(id)a4 showsDistance:(BOOL *)a5;
++ (id)_maps_ridesharingETA:(id)a partySize:(id)size;
++ (id)_maps_ridesharingPairDetailString:(id)string withPartySize:(id)size;
++ (id)_maps_ridesharingPartySizeString:(id)string;
++ (id)_maps_ridesharingScheduledPickupWindowStart:(id)start partySize:(id)size;
++ (id)distanceStringFromLocation:(id)location toCoordinate:(CLLocationCoordinate2D)coordinate withMapItem:(id)item showsDistance:(BOOL *)distance onlyUseThreshold:(BOOL)threshold maximumDistance:(id)maximumDistance useShortThreshold:(BOOL)shortThreshold;
++ (id)distanceStringFromLocation:(id)location toMapItem:(id)item showsDistance:(BOOL *)distance;
 - (BOOL)_maps_containsExcessiveHeightCharacters;
 - (BOOL)_maps_isEmailAddress;
 - (BOOL)_maps_isEqualToSearchStringForCurrentLocationSearchResult;
-- (BOOL)maps_isSubstringStartingAtRangeEscaped:(_NSRange)a3;
-- (CGSize)_maps_sizeWithFont:(id)a3;
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4;
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4 options:(int64_t)a5;
+- (BOOL)maps_isSubstringStartingAtRangeEscaped:(_NSRange)escaped;
+- (CGSize)_maps_sizeWithFont:(id)font;
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size;
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size options:(int64_t)options;
 - (NSString)_maps_sha1Hash;
 - (NSString)_maps_stringByTrimmingLeadingWhitespace;
 - (NSString)sha1Hash;
 - (id)_maps_dataFromDataDescription;
 - (id)_maps_debugPanelShortcutRepresentation;
-- (id)_maps_prefixMatchesForSearchString:(id)a3;
-- (id)_rap_substringWithNumberOfCharacters:(unint64_t)a3;
+- (id)_maps_prefixMatchesForSearchString:(id)string;
+- (id)_rap_substringWithNumberOfCharacters:(unint64_t)characters;
 - (id)stringByRemovingPunctuation;
-- (int64_t)fileCreationDateDescendingSort:(id)a3;
+- (int64_t)fileCreationDateDescendingSort:(id)sort;
 - (unint64_t)_rap_charactersCount;
-- (void)_maps_drawAtPoint:(CGPoint)a3 withFont:(id)a4;
-- (void)_maps_drawInRect:(CGRect)a3 withFont:(id)a4;
+- (void)_maps_drawAtPoint:(CGPoint)point withFont:(id)font;
+- (void)_maps_drawInRect:(CGRect)rect withFont:(id)font;
 @end
 
 @implementation NSString
@@ -48,16 +48,16 @@
     }
 
 LABEL_7:
-    v5 = [(NSString *)self substringFromIndex:v4];
+    selfCopy = [(NSString *)self substringFromIndex:v4];
   }
 
   else
   {
 LABEL_8:
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
@@ -75,18 +75,18 @@ LABEL_8:
   return v4;
 }
 
-- (void)_maps_drawInRect:(CGRect)a3 withFont:(id)a4
+- (void)_maps_drawInRect:(CGRect)rect withFont:(id)font
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (font)
   {
     v11 = NSFontAttributeName;
-    v12 = a4;
-    v9 = a4;
-    v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v10 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v11 count:1];
   }
 
   else
@@ -97,16 +97,16 @@ LABEL_8:
   [(NSString *)self drawInRect:v10 withAttributes:x, y, width, height];
 }
 
-- (void)_maps_drawAtPoint:(CGPoint)a3 withFont:(id)a4
+- (void)_maps_drawAtPoint:(CGPoint)point withFont:(id)font
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (font)
   {
     v9 = NSFontAttributeName;
-    v10 = a4;
-    v7 = a4;
-    v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v8 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v9 count:1];
   }
 
   else
@@ -117,16 +117,16 @@ LABEL_8:
   [(NSString *)self drawAtPoint:v8 withAttributes:x, y];
 }
 
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4 options:(int64_t)a5
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size options:(int64_t)options
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  if (font)
   {
     v17 = NSFontAttributeName;
-    v18 = a3;
-    v9 = a3;
-    v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v10 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v17 count:1];
   }
 
   else
@@ -134,7 +134,7 @@ LABEL_8:
     v10 = 0;
   }
 
-  [(NSString *)self boundingRectWithSize:a5 options:v10 attributes:0 context:width, height];
+  [(NSString *)self boundingRectWithSize:options options:v10 attributes:0 context:width, height];
   v12 = v11;
   v14 = v13;
 
@@ -145,16 +145,16 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  if (font)
   {
     v15 = NSFontAttributeName;
-    v16 = a3;
-    v7 = a3;
-    v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v8 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v15 count:1];
   }
 
   else
@@ -173,14 +173,14 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)_maps_sizeWithFont:(id)a3
+- (CGSize)_maps_sizeWithFont:(id)font
 {
-  if (a3)
+  if (font)
   {
     v12 = NSFontAttributeName;
-    v13 = a3;
-    v4 = a3;
-    v5 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v5 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v12 count:1];
   }
 
   else
@@ -199,16 +199,16 @@ LABEL_8:
   return result;
 }
 
-+ (id)_maps_ridesharingPartySizeString:(id)a3
++ (id)_maps_ridesharingPartySizeString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"[ridesharing] max party size" value:@"localized string not found" table:0];
 
-    v6 = [v3 unsignedLongLongValue];
-    v7 = [NSString localizedStringWithFormat:v5, v6];
+    unsignedLongLongValue = [stringCopy unsignedLongLongValue];
+    v7 = [NSString localizedStringWithFormat:v5, unsignedLongLongValue];
   }
 
   else
@@ -219,27 +219,27 @@ LABEL_8:
   return v7;
 }
 
-+ (id)_maps_ridesharingPairDetailString:(id)a3 withPartySize:(id)a4
++ (id)_maps_ridesharingPairDetailString:(id)string withPartySize:(id)size
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  sizeCopy = size;
   v7 = +[NSString string];
-  v8 = [NSString _maps_ridesharingPartySizeString:v6];
+  v8 = [NSString _maps_ridesharingPartySizeString:sizeCopy];
 
-  if (v5 && v8)
+  if (stringCopy && v8)
   {
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"detail • party size [ridesharing]" value:@"localized string not found" table:0];
-    v11 = [NSString localizedStringWithFormat:v10, v5, v8];
+    v11 = [NSString localizedStringWithFormat:v10, stringCopy, v8];
 
     v7 = v9;
   }
 
   else
   {
-    if (v5)
+    if (stringCopy)
     {
-      v12 = v5;
+      v12 = stringCopy;
     }
 
     else
@@ -261,11 +261,11 @@ LABEL_10:
   return v7;
 }
 
-+ (id)_maps_ridesharingScheduledPickupWindowStart:(id)a3 partySize:(id)a4
++ (id)_maps_ridesharingScheduledPickupWindowStart:(id)start partySize:(id)size
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  startCopy = start;
+  sizeCopy = size;
+  if (startCopy)
   {
     if (qword_10195CDF8 != -1)
     {
@@ -276,36 +276,36 @@ LABEL_10:
     v7 = +[NSLocale autoupdatingCurrentLocale];
     [qword_10195CDF0 setLocale:v7];
 
-    v8 = [v5 timeZone];
-    [qword_10195CDF0 setTimeZone:v8];
+    timeZone = [startCopy timeZone];
+    [qword_10195CDF0 setTimeZone:timeZone];
 
     v9 = +[NSCalendar autoupdatingCurrentCalendar];
-    v10 = [v9 dateFromComponents:v5];
+    v10 = [v9 dateFromComponents:startCopy];
 
     v11 = [qword_10195CDF0 stringFromDate:v10];
-    v12 = [v5 timeZone];
-    v13 = [v12 abbreviation];
+    timeZone2 = [startCopy timeZone];
+    abbreviation = [timeZone2 abbreviation];
 
     v14 = +[NSCalendar autoupdatingCurrentCalendar];
-    v15 = [v14 timeZone];
-    v16 = [v5 timeZone];
-    v17 = [v15 isEqualToTimeZone:v16];
+    timeZone3 = [v14 timeZone];
+    timeZone4 = [startCopy timeZone];
+    v17 = [timeZone3 isEqualToTimeZone:timeZone4];
 
     if (v17)
     {
 
-      v13 = 0;
+      abbreviation = 0;
     }
 
     v32 = 0;
     v18 = +[NSCalendar autoupdatingCurrentCalendar];
-    v19 = [v5 timeZone];
-    v20 = [v18 _navigation_transitRelativeDateStringForDate:v10 context:4 inTimeZone:v19 outUsedFormat:&v32];
+    timeZone5 = [startCopy timeZone];
+    v20 = [v18 _navigation_transitRelativeDateStringForDate:v10 context:4 inTimeZone:timeZone5 outUsedFormat:&v32];
 
-    v21 = [v5 hour];
-    if (v13)
+    hour = [startCopy hour];
+    if (abbreviation)
     {
-      if (v21 == 1 || [v5 hour] == 13)
+      if (hour == 1 || [startCopy hour] == 13)
       {
         v22 = +[NSBundle mainBundle];
         v23 = v22;
@@ -326,7 +326,7 @@ LABEL_14:
 
     else
     {
-      if (v21 == 1 || [v5 hour] == 13)
+      if (hour == 1 || [startCopy hour] == 13)
       {
         v22 = +[NSBundle mainBundle];
         v23 = v22;
@@ -355,42 +355,42 @@ LABEL_18:
 
   v25 = 0;
 LABEL_19:
-  v17 = [NSString _maps_ridesharingPairDetailString:v25 withPartySize:v6];
+  v17 = [NSString _maps_ridesharingPairDetailString:v25 withPartySize:sizeCopy];
 LABEL_20:
 
   return v17;
 }
 
-+ (id)_maps_ridesharingETA:(id)a3 partySize:(id)a4
++ (id)_maps_ridesharingETA:(id)a partySize:(id)size
 {
-  v5 = a4;
-  if (a3)
+  sizeCopy = size;
+  if (a)
   {
-    v6 = +[NSString _navigation_stringWithSeconds:abbreviated:](NSString, "_navigation_stringWithSeconds:abbreviated:", 60 * [a3 unsignedIntegerValue], 1);
+    v6 = +[NSString _navigation_stringWithSeconds:abbreviated:](NSString, "_navigation_stringWithSeconds:abbreviated:", 60 * [a unsignedIntegerValue], 1);
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"%@ wait [ridesharing]" value:@"localized string not found" table:0];
-    a3 = [NSString localizedStringWithFormat:v8, v6];
+    a = [NSString localizedStringWithFormat:v8, v6];
   }
 
-  v9 = [NSString _maps_ridesharingPairDetailString:a3 withPartySize:v5];
+  v9 = [NSString _maps_ridesharingPairDetailString:a withPartySize:sizeCopy];
 
   return v9;
 }
 
-- (id)_maps_prefixMatchesForSearchString:(id)a3
+- (id)_maps_prefixMatchesForSearchString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = +[NSMutableArray array];
   v6 = objc_autoreleasePoolPush();
   v7 = +[NSMutableArray array];
-  v8 = [v4 length];
+  v8 = [stringCopy length];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_1006F716C;
   v44[3] = &unk_101627088;
   v9 = v7;
   v45 = v9;
-  [v4 enumerateSubstringsInRange:0 options:v8 usingBlock:{1027, v44}];
+  [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{1027, v44}];
   v10 = +[NSMutableArray array];
   v11 = [(NSString *)self length];
   v42[0] = _NSConcreteStackBlock;
@@ -411,7 +411,7 @@ LABEL_20:
     v31 = v5;
     v32 = *v39;
     context = v6;
-    v28 = v4;
+    v28 = stringCopy;
     v30 = v12;
     while (1)
     {
@@ -448,7 +448,7 @@ LABEL_8:
         v20 = *(*(&v34 + 1) + 8 * v19);
         v21 = [v20 objectAtIndexedSubscript:0];
         v22 = [v20 objectAtIndexedSubscript:1];
-        v23 = [v22 rangeValue];
+        rangeValue = [v22 rangeValue];
 
         if (![v21 localizedStandardRangeOfString:v14])
         {
@@ -467,7 +467,7 @@ LABEL_8:
         }
       }
 
-      v24 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", v23, [v14 length]);
+      v24 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", rangeValue, [v14 length]);
       v5 = v31;
       [v31 addObject:v24];
 
@@ -480,7 +480,7 @@ LABEL_8:
       }
 
       v6 = context;
-      v4 = v28;
+      stringCopy = v28;
       v33 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (!v33)
       {
@@ -492,7 +492,7 @@ LABEL_18:
 
     objc_autoreleasePoolPop(context);
     v25 = 0;
-    v4 = v28;
+    stringCopy = v28;
     v5 = v31;
   }
 
@@ -523,12 +523,12 @@ LABEL_17:
 - (id)_maps_debugPanelShortcutRepresentation
 {
   v2 = [[NSData alloc] initWithBase64EncodedString:self options:0];
-  v3 = [v2 _maps_debugPanelShortcutRepresentation];
+  _maps_debugPanelShortcutRepresentation = [v2 _maps_debugPanelShortcutRepresentation];
 
-  return v3;
+  return _maps_debugPanelShortcutRepresentation;
 }
 
-- (id)_rap_substringWithNumberOfCharacters:(unint64_t)a3
+- (id)_rap_substringWithNumberOfCharacters:(unint64_t)characters
 {
   v17[0] = 0;
   v17[1] = v17;
@@ -547,7 +547,7 @@ LABEL_17:
   v8[2] = sub_1009873C0;
   v8[3] = &unk_1016304F8;
   v8[4] = v17;
-  v9[1] = a3;
+  v9[1] = characters;
   objc_copyWeak(v9, &location);
   v8[5] = &v11;
   [(NSString *)self enumerateSubstringsInRange:0 options:v5 usingBlock:2, v8];
@@ -587,15 +587,15 @@ LABEL_17:
   {
     do
     {
-      v6 = [v5 scanLocation];
+      scanLocation = [v5 scanLocation];
       v11 = 0;
       [v5 scanHexInt:&v11];
-      if (v3 - v6 < 5)
+      if (v3 - scanLocation < 5)
       {
-        if (v3 - v6 != 2)
+        if (v3 - scanLocation != 2)
         {
-          v7 = &v6[2 - v3];
-          v8 = (&v11 + v3 - 3 - v6);
+          v7 = &scanLocation[2 - v3];
+          v8 = (&v11 + v3 - 3 - scanLocation);
           do
           {
             [v4 appendBytes:v8-- length:1];
@@ -653,37 +653,37 @@ LABEL_17:
   while (v5 > v9++);
   if (v8)
   {
-    v11 = [NSString stringWithCharacters:v6 length:v8];
+    selfCopy = [NSString stringWithCharacters:v6 length:v8];
   }
 
   else
   {
 LABEL_10:
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (int64_t)fileCreationDateDescendingSort:(id)a3
+- (int64_t)fileCreationDateDescendingSort:(id)sort
 {
-  v4 = a3;
+  sortCopy = sort;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 attributesOfItemAtPath:self error:0];
-  v7 = [v6 fileModificationDate];
+  fileModificationDate = [v6 fileModificationDate];
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 attributesOfItemAtPath:v4 error:0];
-  v10 = [v9 fileModificationDate];
+  v9 = [v8 attributesOfItemAtPath:sortCopy error:0];
+  fileModificationDate2 = [v9 fileModificationDate];
 
-  if ([v7 isEqualToDate:v10])
+  if ([fileModificationDate isEqualToDate:fileModificationDate2])
   {
-    v11 = [(NSString *)self compare:v4];
+    v11 = [(NSString *)self compare:sortCopy];
   }
 
   else
   {
-    [v7 timeIntervalSinceDate:v10];
+    [fileModificationDate timeIntervalSinceDate:fileModificationDate2];
     if (v12 <= 0.0)
     {
       v11 = NSOrderedDescending;
@@ -706,14 +706,14 @@ LABEL_10:
   return self;
 }
 
-+ (id)distanceStringFromLocation:(id)a3 toCoordinate:(CLLocationCoordinate2D)a4 withMapItem:(id)a5 showsDistance:(BOOL *)a6 onlyUseThreshold:(BOOL)a7 maximumDistance:(id)a8 useShortThreshold:(BOOL)a9
++ (id)distanceStringFromLocation:(id)location toCoordinate:(CLLocationCoordinate2D)coordinate withMapItem:(id)item showsDistance:(BOOL *)distance onlyUseThreshold:(BOOL)threshold maximumDistance:(id)maximumDistance useShortThreshold:(BOOL)shortThreshold
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v16 = a3;
-  v17 = a5;
-  v18 = a8;
-  if (!v16)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  locationCopy = location;
+  itemCopy = item;
+  maximumDistanceCopy = maximumDistance;
+  if (!locationCopy)
   {
     goto LABEL_7;
   }
@@ -721,12 +721,12 @@ LABEL_10:
   v19 = 0;
   if (fabs(longitude) <= 180.0 && latitude >= -90.0 && latitude <= 90.0)
   {
-    [v16 coordinate];
+    [locationCopy coordinate];
     GEOCalculateDistance();
     v21 = v20;
-    if (v18)
+    if (maximumDistanceCopy)
     {
-      [v18 doubleValue];
+      [maximumDistanceCopy doubleValue];
       if (v21 > v22)
       {
 LABEL_7:
@@ -735,12 +735,12 @@ LABEL_7:
       }
     }
 
-    v24 = [v17 _geoMapItem];
-    v25 = [v24 _resultSnippetDistanceDisplayThreshold];
+    _geoMapItem = [itemCopy _geoMapItem];
+    _resultSnippetDistanceDisplayThreshold = [_geoMapItem _resultSnippetDistanceDisplayThreshold];
 
-    if (v21 < v25 || ([v17 _geoMapItem], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "_resultSnippetLocationString"), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v19 = 0, !v27) && !a7)
+    if (v21 < _resultSnippetDistanceDisplayThreshold || ([itemCopy _geoMapItem], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "_resultSnippetLocationString"), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v19 = 0, !v27) && !threshold)
     {
-      if (v21 <= 50.0 && a9)
+      if (v21 <= 50.0 && shortThreshold)
       {
         v28 = +[NSBundle mainBundle];
         v29 = [v28 localizedStringForKey:@"Less than %@" value:@"localized string not found" table:0];
@@ -750,7 +750,7 @@ LABEL_7:
 
       else
       {
-        *a6 = 1;
+        *distance = 1;
         v19 = [NSString _navigation_localizedStringForDistance:0 detail:1 unitFormat:0 locale:0 useMetric:0 useYards:v21];
       }
     }
@@ -761,12 +761,12 @@ LABEL_8:
   return v19;
 }
 
-+ (id)distanceStringFromLocation:(id)a3 toMapItem:(id)a4 showsDistance:(BOOL *)a5
++ (id)distanceStringFromLocation:(id)location toMapItem:(id)item showsDistance:(BOOL *)distance
 {
-  v8 = a4;
-  v9 = a3;
-  [v8 _coordinate];
-  v10 = [a1 distanceStringFromLocation:v9 toCoordinate:v8 withMapItem:a5 showsDistance:0 onlyUseThreshold:0 maximumDistance:1 useShortThreshold:?];
+  itemCopy = item;
+  locationCopy = location;
+  [itemCopy _coordinate];
+  v10 = [self distanceStringFromLocation:locationCopy toCoordinate:itemCopy withMapItem:distance showsDistance:0 onlyUseThreshold:0 maximumDistance:1 useShortThreshold:?];
 
   return v10;
 }
@@ -779,14 +779,14 @@ LABEL_8:
   return self;
 }
 
-- (BOOL)maps_isSubstringStartingAtRangeEscaped:(_NSRange)a3
+- (BOOL)maps_isSubstringStartingAtRangeEscaped:(_NSRange)escaped
 {
-  if (!a3.location)
+  if (!escaped.location)
   {
     return 0;
   }
 
-  v3 = [(NSString *)self substringWithRange:a3.location - 1, 1];
+  v3 = [(NSString *)self substringWithRange:escaped.location - 1, 1];
   v4 = [v3 isEqualToString:@"\\""];
 
   return v4;

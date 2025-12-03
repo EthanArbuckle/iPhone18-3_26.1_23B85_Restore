@@ -1,11 +1,11 @@
 @interface SASPreferencesManager
 + (SASPreferencesManager)shared;
-- (BOOL)_canAccessKey:(unint64_t)a3;
-- (__CFString)_userForKey:(unint64_t)a3;
-- (id)_nameForKey:(unint64_t)a3;
-- (id)readValueForKey:(unint64_t)a3;
-- (void)removeValueForKey:(unint64_t)a3;
-- (void)setValue:(id)a3 forKey:(unint64_t)a4;
+- (BOOL)_canAccessKey:(unint64_t)key;
+- (__CFString)_userForKey:(unint64_t)key;
+- (id)_nameForKey:(unint64_t)key;
+- (id)readValueForKey:(unint64_t)key;
+- (void)removeValueForKey:(unint64_t)key;
+- (void)setValue:(id)value forKey:(unint64_t)key;
 @end
 
 @implementation SASPreferencesManager
@@ -37,13 +37,13 @@ void __31__SASPreferencesManager_shared__block_invoke()
   }
 }
 
-- (id)readValueForKey:(unint64_t)a3
+- (id)readValueForKey:(unint64_t)key
 {
   if ([(SASPreferencesManager *)self _canAccessKey:?])
   {
-    v5 = [(SASPreferencesManager *)self _nameForKey:a3];
-    v6 = [(SASPreferencesManager *)self _domainForKey:a3];
-    v7 = [(SASPreferencesManager *)self _userForKey:a3];
+    v5 = [(SASPreferencesManager *)self _nameForKey:key];
+    v6 = [(SASPreferencesManager *)self _domainForKey:key];
+    v7 = [(SASPreferencesManager *)self _userForKey:key];
     v8 = CFPreferencesCopyValue(v5, v6, v7, *MEMORY[0x277CBF030]);
   }
 
@@ -55,53 +55,53 @@ void __31__SASPreferencesManager_shared__block_invoke()
   return v8;
 }
 
-- (void)removeValueForKey:(unint64_t)a3
+- (void)removeValueForKey:(unint64_t)key
 {
   if ([(SASPreferencesManager *)self _canAccessKey:?])
   {
-    key = [(SASPreferencesManager *)self _nameForKey:a3];
-    v5 = [(SASPreferencesManager *)self _domainForKey:a3];
-    v6 = [(SASPreferencesManager *)self _userForKey:a3];
+    key = [(SASPreferencesManager *)self _nameForKey:key];
+    v5 = [(SASPreferencesManager *)self _domainForKey:key];
+    v6 = [(SASPreferencesManager *)self _userForKey:key];
     CFPreferencesSetValue(key, 0, v5, v6, *MEMORY[0x277CBF030]);
   }
 }
 
-- (void)setValue:(id)a3 forKey:(unint64_t)a4
+- (void)setValue:(id)value forKey:(unint64_t)key
 {
-  value = a3;
-  if ([(SASPreferencesManager *)self _canAccessKey:a4])
+  value = value;
+  if ([(SASPreferencesManager *)self _canAccessKey:key])
   {
     if (value)
     {
-      v6 = [(SASPreferencesManager *)self _nameForKey:a4];
-      v7 = [(SASPreferencesManager *)self _domainForKey:a4];
-      v8 = [(SASPreferencesManager *)self _userForKey:a4];
+      v6 = [(SASPreferencesManager *)self _nameForKey:key];
+      v7 = [(SASPreferencesManager *)self _domainForKey:key];
+      v8 = [(SASPreferencesManager *)self _userForKey:key];
       CFPreferencesSetValue(v6, value, v7, v8, *MEMORY[0x277CBF030]);
     }
 
     else
     {
-      [(SASPreferencesManager *)self removeValueForKey:a4];
+      [(SASPreferencesManager *)self removeValueForKey:key];
     }
   }
 }
 
-- (id)_nameForKey:(unint64_t)a3
+- (id)_nameForKey:(unint64_t)key
 {
-  if (a3 - 1 > 4)
+  if (key - 1 > 4)
   {
     return @"animateWithLogoOverride";
   }
 
   else
   {
-    return off_279BB2C50[a3 - 1];
+    return off_279BB2C50[key - 1];
   }
 }
 
-- (__CFString)_userForKey:(unint64_t)a3
+- (__CFString)_userForKey:(unint64_t)key
 {
-  if (a3 - 2 >= 4)
+  if (key - 2 >= 4)
   {
     return @"root";
   }
@@ -112,16 +112,16 @@ void __31__SASPreferencesManager_shared__block_invoke()
   }
 }
 
-- (BOOL)_canAccessKey:(unint64_t)a3
+- (BOOL)_canAccessKey:(unint64_t)key
 {
-  if (a3 > 5)
+  if (key > 5)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  [v4 UTF8String];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [bundleIdentifier UTF8String];
   has_internal_ui = os_variant_has_internal_ui();
 
   return has_internal_ui;

@@ -1,31 +1,31 @@
 @interface SFCreateCalendarEventCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCreateCalendarEventCommand)initWithCoder:(id)a3;
-- (SFCreateCalendarEventCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCreateCalendarEventCommand)initWithCoder:(id)coder;
+- (SFCreateCalendarEventCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCreateCalendarEventCommand
 
-- (SFCreateCalendarEventCommand)initWithProtobuf:(id)a3
+- (SFCreateCalendarEventCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFCreateCalendarEventCommand;
   v5 = [(SFCreateCalendarEventCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 event];
+    event = [protobufCopy event];
 
-    if (v6)
+    if (event)
     {
       v7 = [SFCalendarEvent alloc];
-      v8 = [v4 event];
-      v9 = [(SFCalendarEvent *)v7 initWithProtobuf:v8];
+      event2 = [protobufCopy event];
+      v9 = [(SFCalendarEvent *)v7 initWithProtobuf:event2];
       [(SFCreateCalendarEventCommand *)v5 setEvent:v9];
     }
 
@@ -40,38 +40,38 @@
   v7.receiver = self;
   v7.super_class = SFCreateCalendarEventCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFCreateCalendarEventCommand *)self event];
-  v5 = [v4 hash];
+  event = [(SFCreateCalendarEventCommand *)self event];
+  v5 = [event hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFCreateCalendarEventCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFCreateCalendarEventCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFCreateCalendarEventCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFCreateCalendarEventCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFCreateCalendarEventCommand *)self event];
-    v7 = [(SFCreateCalendarEventCommand *)v5 event];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    event = [(SFCreateCalendarEventCommand *)self event];
+    event2 = [(SFCreateCalendarEventCommand *)v5 event];
+    if ((event != 0) == (event2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFCreateCalendarEventCommand *)self event];
-      if (v8)
+      event3 = [(SFCreateCalendarEventCommand *)self event];
+      if (event3)
       {
-        v9 = [(SFCreateCalendarEventCommand *)self event];
-        v10 = [(SFCreateCalendarEventCommand *)v5 event];
-        v11 = [v9 isEqual:v10];
+        event4 = [(SFCreateCalendarEventCommand *)self event];
+        event5 = [(SFCreateCalendarEventCommand *)v5 event];
+        v11 = [event4 isEqual:event5];
       }
 
       else
@@ -89,13 +89,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFCreateCalendarEventCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFCreateCalendarEventCommand *)self event];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  event = [(SFCreateCalendarEventCommand *)self event];
+  v6 = [event copy];
   [v4 setEvent:v6];
 
   return v4;
@@ -104,51 +104,51 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBCreateCalendarEventCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCreateCalendarEventCommand *)v2 jsonData];
+  jsonData = [(_SFPBCreateCalendarEventCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCreateCalendarEventCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCreateCalendarEventCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCreateCalendarEventCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFCreateCalendarEventCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFCreateCalendarEventCommand)initWithCoder:(id)a3
+- (SFCreateCalendarEventCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCreateCalendarEventCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 event];
-    [(SFCreateCalendarEventCommand *)v5 setEvent:v9];
+    event = [(SFCommand *)v8 event];
+    [(SFCreateCalendarEventCommand *)v5 setEvent:event];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

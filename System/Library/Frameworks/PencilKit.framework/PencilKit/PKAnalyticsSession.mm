@@ -26,19 +26,19 @@
 
 - (void)_sendSessionAnalyticsMainThread
 {
-  if (a1)
+  if (self)
   {
     v2 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
     [(PKCanvasSessionStatisticsManager *)v2 endSession];
 
-    v3 = a1[2];
+    v3 = self[2];
     if (v3 >= 1)
     {
-      v4 = a1[1];
-      v5 = [MEMORY[0x1E696AAE8] mainBundle];
-      v6 = [v5 bundleIdentifier];
+      v4 = self[1];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      v7 = [PKPencilStatisticsManager allowedBundleIDFromBundleID:v6];
+      v7 = [PKPencilStatisticsManager allowedBundleIDFromBundleID:bundleIdentifier];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __53__PKAnalyticsSession__sendSessionAnalyticsMainThread__block_invoke;
@@ -53,9 +53,9 @@
     v9 = +[PKStatisticsManager sharedStatisticsManager];
     [PKStatisticsManager recordTextLineStraighteningPerSession:v9 Undos:?];
 
-    a1[1] = 0;
-    a1[2] = 0;
-    a1[3] = 0;
+    self[1] = 0;
+    self[2] = 0;
+    self[3] = 0;
   }
 }
 
@@ -67,12 +67,12 @@ void __53__PKAnalyticsSession__sendSessionAnalyticsMainThread__block_invoke(uint
 
 - (void)endSessionAndSendAnalytics
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
 
-      [(PKAnalyticsSession *)a1 _sendSessionAnalyticsMainThread];
+      [(PKAnalyticsSession *)self _sendSessionAnalyticsMainThread];
     }
 
     else
@@ -81,7 +81,7 @@ void __53__PKAnalyticsSession__sendSessionAnalyticsMainThread__block_invoke(uint
       block[1] = 3221225472;
       block[2] = __48__PKAnalyticsSession_endSessionAndSendAnalytics__block_invoke;
       block[3] = &unk_1E82D7148;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -89,16 +89,16 @@ void __53__PKAnalyticsSession__sendSessionAnalyticsMainThread__block_invoke(uint
 
 - (void)incrementUndoCount
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      ++a1[1];
+      ++self[1];
     }
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v2[0] = MEMORY[0x1E69E9820];
       v2[1] = 3221225472;
       v2[2] = __40__PKAnalyticsSession_incrementUndoCount__block_invoke;
@@ -122,16 +122,16 @@ void __40__PKAnalyticsSession_incrementUndoCount__block_invoke(uint64_t a1)
 
 - (void)incrementStrokeCount
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      ++a1[2];
+      ++self[2];
     }
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v2[0] = MEMORY[0x1E69E9820];
       v2[1] = 3221225472;
       v2[2] = __42__PKAnalyticsSession_incrementStrokeCount__block_invoke;
@@ -155,16 +155,16 @@ void __42__PKAnalyticsSession_incrementStrokeCount__block_invoke(uint64_t a1)
 
 - (void)incrementTextLineStraighteningCount
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      ++a1[3];
+      ++self[3];
     }
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v2[0] = MEMORY[0x1E69E9820];
       v2[1] = 3221225472;
       v2[2] = __57__PKAnalyticsSession_incrementTextLineStraighteningCount__block_invoke;

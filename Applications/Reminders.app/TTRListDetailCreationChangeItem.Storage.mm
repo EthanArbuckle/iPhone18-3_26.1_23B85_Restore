@@ -1,10 +1,10 @@
 @interface TTRListDetailCreationChangeItem.Storage
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation TTRListDetailCreationChangeItem.Storage
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   TTRListDetailCreationChangeItem.Storage.copy(with:)(v5);

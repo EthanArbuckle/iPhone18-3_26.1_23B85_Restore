@@ -1,5 +1,5 @@
 @interface StoreKitMessagesDatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (id)storeDescriptor;
 @end
 
@@ -15,10 +15,10 @@
   return v2;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  v4 = a3;
-  if ([v4 currentSchemaVersion] > 15999)
+  schemaCopy = schema;
+  if ([schemaCopy currentSchemaVersion] > 15999)
   {
 LABEL_2:
     v6 = 1;
@@ -29,19 +29,19 @@ LABEL_2:
   v27 = v5;
   while (1)
   {
-    v7 = [v4 currentSchemaVersion];
-    if (v7 <= 15199)
+    currentSchemaVersion = [schemaCopy currentSchemaVersion];
+    if (currentSchemaVersion <= 15199)
     {
-      if (v7)
+      if (currentSchemaVersion)
       {
-        if (v7 != 13400)
+        if (currentSchemaVersion != 13400)
         {
-          if (v7 != 14000)
+          if (currentSchemaVersion != 14000)
           {
             goto LABEL_41;
           }
 
-          v8 = [v4 migrateToVersion:15200 usingBlock:&stru_100381428];
+          v8 = [schemaCopy migrateToVersion:15200 usingBlock:&stru_100381428];
           if (qword_1003D4088 != -1)
           {
             sub_1002CB024();
@@ -54,11 +54,11 @@ LABEL_2:
           }
 
           v10 = v9;
-          v11 = [v4 currentSchemaVersion];
+          currentSchemaVersion2 = [schemaCopy currentSchemaVersion];
           *buf = v27;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = v11;
+          *&buf[14] = currentSchemaVersion2;
           *&buf[22] = 2048;
           v29 = 15200;
           LOWORD(v30) = 1024;
@@ -68,7 +68,7 @@ LABEL_2:
           goto LABEL_31;
         }
 
-        v8 = [v4 migrateToVersion:14000 usingBlock:&stru_100381408];
+        v8 = [schemaCopy migrateToVersion:14000 usingBlock:&stru_100381408];
         if (qword_1003D4088 != -1)
         {
           sub_1002CB024();
@@ -78,11 +78,11 @@ LABEL_2:
         if (os_log_type_enabled(qword_1003D4048, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v19;
-          v20 = [v4 currentSchemaVersion];
+          currentSchemaVersion3 = [schemaCopy currentSchemaVersion];
           *buf = v27;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = v20;
+          *&buf[14] = currentSchemaVersion3;
           *&buf[22] = 2048;
           v29 = 14000;
           LOWORD(v30) = 1024;
@@ -101,7 +101,7 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v8 = [v4 migrateToVersion:16000 usingBlock:&stru_1003813E8];
+      v8 = [schemaCopy migrateToVersion:16000 usingBlock:&stru_1003813E8];
       if (qword_1003D4088 != -1)
       {
         sub_1002CB024();
@@ -114,11 +114,11 @@ LABEL_32:
       }
 
       v10 = v14;
-      v15 = [v4 currentSchemaVersion];
+      currentSchemaVersion4 = [schemaCopy currentSchemaVersion];
       *buf = v27;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v15;
+      *&buf[14] = currentSchemaVersion4;
       *&buf[22] = 2048;
       v29 = 16000;
       LOWORD(v30) = 1024;
@@ -131,9 +131,9 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (v7 == 15200)
+    if (currentSchemaVersion == 15200)
     {
-      if ([v4 column:@"allow_developer_control" existsInTable:@"storekit_messages"])
+      if ([schemaCopy column:@"allow_developer_control" existsInTable:@"storekit_messages"])
       {
         v16 = &stru_100381448;
       }
@@ -143,7 +143,7 @@ LABEL_31:
         v16 = &stru_100381428;
       }
 
-      v8 = [v4 migrateToVersion:15400 usingBlock:v16];
+      v8 = [schemaCopy migrateToVersion:15400 usingBlock:v16];
       if (qword_1003D4088 != -1)
       {
         sub_1002CB024();
@@ -156,11 +156,11 @@ LABEL_31:
       }
 
       v10 = v17;
-      v18 = [v4 currentSchemaVersion];
+      currentSchemaVersion5 = [schemaCopy currentSchemaVersion];
       *buf = v27;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v18;
+      *&buf[14] = currentSchemaVersion5;
       *&buf[22] = 2048;
       v29 = 15400;
       LOWORD(v30) = 1024;
@@ -170,12 +170,12 @@ LABEL_31:
       goto LABEL_31;
     }
 
-    if (v7 != 15400)
+    if (currentSchemaVersion != 15400)
     {
       break;
     }
 
-    v21 = [v4 migrateToVersion:16000 usingBlock:&stru_100381468];
+    v21 = [schemaCopy migrateToVersion:16000 usingBlock:&stru_100381468];
     if (qword_1003D4088 != -1)
     {
       sub_1002CB024();
@@ -185,11 +185,11 @@ LABEL_31:
     if (os_log_type_enabled(qword_1003D4048, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v4 currentSchemaVersion];
+      currentSchemaVersion6 = [schemaCopy currentSchemaVersion];
       *buf = v27;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v24;
+      *&buf[14] = currentSchemaVersion6;
       *&buf[22] = 2048;
       v29 = 16000;
       LOWORD(v30) = 1024;
@@ -203,13 +203,13 @@ LABEL_31:
     }
 
 LABEL_33:
-    if ([v4 currentSchemaVersion] > 15999)
+    if ([schemaCopy currentSchemaVersion] > 15999)
     {
       goto LABEL_2;
     }
   }
 
-  if (v7 == 16000)
+  if (currentSchemaVersion == 16000)
   {
     goto LABEL_33;
   }
@@ -223,7 +223,7 @@ LABEL_41:
   v25 = qword_1003D4048;
   if (os_log_type_enabled(qword_1003D4048, OS_LOG_TYPE_ERROR))
   {
-    sub_1002CB04C(v25, v4);
+    sub_1002CB04C(v25, schemaCopy);
   }
 
 LABEL_45:

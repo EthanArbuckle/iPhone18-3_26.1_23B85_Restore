@@ -1,10 +1,10 @@
 @interface VUIFamilySharingMenuDataSource
-- (VUIFamilySharingMenuDataSource)initWithValidCategories:(id)a3;
+- (VUIFamilySharingMenuDataSource)initWithValidCategories:(id)categories;
 - (id)_constructGenreMenuItems;
 - (id)_constructGenreTypes;
 - (id)_constructMainMenuItems;
 - (id)_constructVUIMenuDataSource;
-- (id)getGenreByGenreTitle:(id)a3;
+- (id)getGenreByGenreTitle:(id)title;
 - (void)_fetchGenres;
 - (void)_fetchMovies;
 - (void)_fetchRecentPurchases;
@@ -15,11 +15,11 @@
 
 @implementation VUIFamilySharingMenuDataSource
 
-- (VUIFamilySharingMenuDataSource)initWithValidCategories:(id)a3
+- (VUIFamilySharingMenuDataSource)initWithValidCategories:(id)categories
 {
   v7.receiver = self;
   v7.super_class = VUIFamilySharingMenuDataSource;
-  v3 = [(VUILibraryMenuDataSource *)&v7 initWithValidCategories:a3];
+  v3 = [(VUILibraryMenuDataSource *)&v7 initWithValidCategories:categories];
   if (v3)
   {
     +[VUIMediaAPIClient initializeWithAppleTVClientIdentifier];
@@ -48,16 +48,16 @@
   [(VUIFamilySharingMenuDataSource *)self _fetchShows];
 }
 
-- (id)getGenreByGenreTitle:(id)a3
+- (id)getGenreByGenreTitle:(id)title
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  titleCopy = title;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VUIFamilySharingMenuDataSource *)self genres];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  genres = [(VUIFamilySharingMenuDataSource *)self genres];
+  v6 = [genres countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -67,12 +67,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(genres);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 genreTitle];
-        v11 = [v10 isEqualToString:v4];
+        genreTitle = [v9 genreTitle];
+        v11 = [genreTitle isEqualToString:titleCopy];
 
         if (v11)
         {
@@ -81,7 +81,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [genres countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -98,17 +98,17 @@ LABEL_11:
 
 - (void)_fetchGenres
 {
-  v3 = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
-  v4 = [VUIMediaAPIRequestFactory genresRequestWithOwnerIdentifier:v3];
+  ownerIdentifier = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
+  v4 = [VUIMediaAPIRequestFactory genresRequestWithOwnerIdentifier:ownerIdentifier];
 
   objc_initWeak(&location, self);
-  v5 = [(VUIFamilySharingMenuDataSource *)self mediaClient];
+  mediaClient = [(VUIFamilySharingMenuDataSource *)self mediaClient];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__VUIFamilySharingMenuDataSource__fetchGenres__block_invoke;
   v6[3] = &unk_1E872EA80;
   objc_copyWeak(&v7, &location);
-  [v5 fetchContentForUrl:v4 completion:v6];
+  [mediaClient fetchContentForUrl:v4 completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -136,17 +136,17 @@ void __46__VUIFamilySharingMenuDataSource__fetchGenres__block_invoke(uint64_t a1
 
 - (void)_fetchRecentPurchases
 {
-  v3 = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
-  v4 = [VUIMediaAPIRequestFactory recentPurchasesRequestWithOwnerIdentifier:v3];
+  ownerIdentifier = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
+  v4 = [VUIMediaAPIRequestFactory recentPurchasesRequestWithOwnerIdentifier:ownerIdentifier];
 
   objc_initWeak(&location, self);
-  v5 = [(VUIFamilySharingMenuDataSource *)self mediaClient];
+  mediaClient = [(VUIFamilySharingMenuDataSource *)self mediaClient];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__VUIFamilySharingMenuDataSource__fetchRecentPurchases__block_invoke;
   v6[3] = &unk_1E872EA80;
   objc_copyWeak(&v7, &location);
-  [v5 fetchContentForUrl:v4 completion:v6];
+  [mediaClient fetchContentForUrl:v4 completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -174,17 +174,17 @@ void __55__VUIFamilySharingMenuDataSource__fetchRecentPurchases__block_invoke(ui
 
 - (void)_fetchMovies
 {
-  v3 = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
-  v4 = [VUIMediaAPIRequestFactory moviesPurchasesRequestWithOwnerIdentifier:v3 sortType:0];
+  ownerIdentifier = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
+  v4 = [VUIMediaAPIRequestFactory moviesPurchasesRequestWithOwnerIdentifier:ownerIdentifier sortType:0];
 
   objc_initWeak(&location, self);
-  v5 = [(VUIFamilySharingMenuDataSource *)self mediaClient];
+  mediaClient = [(VUIFamilySharingMenuDataSource *)self mediaClient];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__VUIFamilySharingMenuDataSource__fetchMovies__block_invoke;
   v6[3] = &unk_1E872EA80;
   objc_copyWeak(&v7, &location);
-  [v5 fetchContentForUrl:v4 completion:v6];
+  [mediaClient fetchContentForUrl:v4 completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -212,17 +212,17 @@ void __46__VUIFamilySharingMenuDataSource__fetchMovies__block_invoke(uint64_t a1
 
 - (void)_fetchShows
 {
-  v3 = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
-  v4 = [VUIMediaAPIRequestFactory showsPurchasesRequestWithOwnerIdentifier:v3 sortType:0];
+  ownerIdentifier = [(VUIFamilySharingMenuDataSource *)self ownerIdentifier];
+  v4 = [VUIMediaAPIRequestFactory showsPurchasesRequestWithOwnerIdentifier:ownerIdentifier sortType:0];
 
   objc_initWeak(&location, self);
-  v5 = [(VUIFamilySharingMenuDataSource *)self mediaClient];
+  mediaClient = [(VUIFamilySharingMenuDataSource *)self mediaClient];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke;
   v6[3] = &unk_1E872EA80;
   objc_copyWeak(&v7, &location);
-  [v5 fetchContentForUrl:v4 completion:v6];
+  [mediaClient fetchContentForUrl:v4 completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -250,11 +250,11 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
 
 - (id)_constructVUIMenuDataSource
 {
-  v3 = [(VUIFamilySharingMenuDataSource *)self _constructMainMenuItems];
-  v4 = [(VUIFamilySharingMenuDataSource *)self _constructGenreMenuItems];
-  v5 = [[VUIMenuDataSource alloc] initWithMainMenuItems:v3 genreMenuItems:v4];
-  v6 = [(VUIFamilySharingMenuDataSource *)self _constructGenreTypes];
-  [(VUIMenuDataSource *)v5 setGenreTypes:v6];
+  _constructMainMenuItems = [(VUIFamilySharingMenuDataSource *)self _constructMainMenuItems];
+  _constructGenreMenuItems = [(VUIFamilySharingMenuDataSource *)self _constructGenreMenuItems];
+  v5 = [[VUIMenuDataSource alloc] initWithMainMenuItems:_constructMainMenuItems genreMenuItems:_constructGenreMenuItems];
+  _constructGenreTypes = [(VUIFamilySharingMenuDataSource *)self _constructGenreTypes];
+  [(VUIMenuDataSource *)v5 setGenreTypes:_constructGenreTypes];
 
   return v5;
 }
@@ -277,8 +277,8 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
     [v3 addObject:&unk_1F5E5CCC0];
   }
 
-  v4 = [(VUIFamilySharingMenuDataSource *)self _categoryTypesSortComparator];
-  [v3 sortUsingComparator:v4];
+  _categoryTypesSortComparator = [(VUIFamilySharingMenuDataSource *)self _categoryTypesSortComparator];
+  [v3 sortUsingComparator:_categoryTypesSortComparator];
 
   v5 = [v3 copy];
 
@@ -293,8 +293,8 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VUIFamilySharingMenuDataSource *)self genres];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  genres = [(VUIFamilySharingMenuDataSource *)self genres];
+  v5 = [genres countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -305,14 +305,14 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(genres);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) genreTitle];
-        [v3 addObject:v9];
+        genreTitle = [*(*(&v12 + 1) + 8 * i) genreTitle];
+        [v3 addObject:genreTitle];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [genres countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -331,8 +331,8 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(VUIFamilySharingMenuDataSource *)self genres];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  genres = [(VUIFamilySharingMenuDataSource *)self genres];
+  v5 = [genres countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -343,15 +343,15 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(genres);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) genreIdentifiers];
-        v10 = [v9 firstObject];
+        genreIdentifiers = [*(*(&v15 + 1) + 8 * i) genreIdentifiers];
+        firstObject = [genreIdentifiers firstObject];
 
-        if (v10)
+        if (firstObject)
         {
-          v11 = VUILibraryGenreFromGenreID([v10 integerValue]);
+          v11 = VUILibraryGenreFromGenreID([firstObject integerValue]);
         }
 
         else
@@ -363,7 +363,7 @@ void __45__VUIFamilySharingMenuDataSource__fetchShows__block_invoke(uint64_t a1,
         [v3 addObject:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [genres countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

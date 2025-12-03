@@ -1,54 +1,54 @@
 @interface ASVSnapDeceleration
-- (ASVSnapDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4 startingOffset:(float)a5 minOffset:(float)a6 maxOffset:(float)a7;
+- (ASVSnapDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta startingOffset:(float)offset minOffset:(float)minOffset maxOffset:(float)maxOffset;
 - (float)decelerationDelta;
-- (void)calculateSnapFromStartingOffset:(float)a3 startingVelocity:(float)a4 deltaTime:(float)a5 outOffset:(float *)a6 outVelocity:(float *)a7;
+- (void)calculateSnapFromStartingOffset:(float)offset startingVelocity:(float)velocity deltaTime:(float)time outOffset:(float *)outOffset outVelocity:(float *)outVelocity;
 @end
 
 @implementation ASVSnapDeceleration
 
-- (ASVSnapDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4 startingOffset:(float)a5 minOffset:(float)a6 maxOffset:(float)a7
+- (ASVSnapDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta startingOffset:(float)offset minOffset:(float)minOffset maxOffset:(float)maxOffset
 {
   v11.receiver = self;
   v11.super_class = ASVSnapDeceleration;
   result = [ASVDeceleration initWithVelocity:sel_initWithVelocity_minEndDelta_ minEndDelta:?];
   if (result)
   {
-    result->_currentOffset = a5;
-    result->_minOffset = a6;
-    result->_maxOffset = a7;
+    result->_currentOffset = offset;
+    result->_minOffset = minOffset;
+    result->_maxOffset = maxOffset;
   }
 
   return result;
 }
 
-- (void)calculateSnapFromStartingOffset:(float)a3 startingVelocity:(float)a4 deltaTime:(float)a5 outOffset:(float *)a6 outVelocity:(float *)a7
+- (void)calculateSnapFromStartingOffset:(float)offset startingVelocity:(float)velocity deltaTime:(float)time outOffset:(float *)outOffset outVelocity:(float *)outVelocity
 {
-  v12 = (a4 / 1000.0) * powf(0.998, a5);
+  v12 = (velocity / 1000.0) * powf(0.998, time);
   [(ASVSnapDeceleration *)self maxOffset];
-  if (v13 < a3)
+  if (v13 < offset)
   {
     [(ASVSnapDeceleration *)self maxOffset];
     v15 = v14;
     [(ASVSnapDeceleration *)self maxOffset];
-    a3 = v15 + ((a3 - v16) * powf(0.99, a5));
+    offset = v15 + ((offset - v16) * powf(0.99, time));
 LABEL_5:
-    v12 = pow(0.99, a5) * v12;
+    v12 = pow(0.99, time) * v12;
     goto LABEL_6;
   }
 
   [(ASVSnapDeceleration *)self minOffset];
-  if (v17 > a3)
+  if (v17 > offset)
   {
     [(ASVSnapDeceleration *)self minOffset];
     v19 = v18;
     [(ASVSnapDeceleration *)self minOffset];
-    a3 = v19 - ((v20 - a3) * powf(0.99, a5));
+    offset = v19 - ((v20 - offset) * powf(0.99, time));
     goto LABEL_5;
   }
 
 LABEL_6:
-  *a6 = a3 + (v12 * a5);
-  *a7 = v12 * 1000.0;
+  *outOffset = offset + (v12 * time);
+  *outVelocity = v12 * 1000.0;
 }
 
 - (float)decelerationDelta

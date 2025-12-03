@@ -1,12 +1,12 @@
 @interface PTEffectPersonSegmentationViSegHQVisionCoreE5
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)a3;
-- (BOOL)createEspressoBuffer:(e5rt_buffer_object *)a3 fromNetwork:(int)a4 name:(id)a5 isInput:(BOOL)a6;
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)size;
+- (BOOL)createEspressoBuffer:(e5rt_buffer_object *)buffer fromNetwork:(int)network name:(id)name isInput:(BOOL)input;
 - (CGSize)colorSize;
-- (PTEffectPersonSegmentationViSegHQVisionCoreE5)initWithMetalContext:(id)a3 colorSize:(CGSize)a4;
+- (PTEffectPersonSegmentationViSegHQVisionCoreE5)initWithMetalContext:(id)context colorSize:(CGSize)size;
 - (__CVBuffer)outputPixelBuffer;
 - (id)debugTextures;
-- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)a3;
-- (unsigned)clearIOSurface:(__IOSurface *)a3 value:(float)a4;
+- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)buffer;
+- (unsigned)clearIOSurface:(__IOSurface *)surface value:(float)value;
 - (unsigned)reset;
 - (void)dealloc;
 - (void)postProcessUpdateFrame;
@@ -15,12 +15,12 @@
 
 @implementation PTEffectPersonSegmentationViSegHQVisionCoreE5
 
-- (PTEffectPersonSegmentationViSegHQVisionCoreE5)initWithMetalContext:(id)a3 colorSize:(CGSize)a4
+- (PTEffectPersonSegmentationViSegHQVisionCoreE5)initWithMetalContext:(id)context colorSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v114 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  contextCopy = context;
   v101.receiver = self;
   v101.super_class = PTEffectPersonSegmentationViSegHQVisionCoreE5;
   v9 = [(PTEffectPersonSegmentationViSegHQVisionCoreE5 *)&v101 init];
@@ -33,7 +33,7 @@
   kdebug_trace();
   v9->_colorSize.width = width;
   v9->_colorSize.height = height;
-  objc_storeStrong(&v9->_metalContext, a3);
+  objc_storeStrong(&v9->_metalContext, context);
   v10 = dispatch_semaphore_create(0);
   semaphore = v9->_semaphore;
   v9->_semaphore = v10;
@@ -49,12 +49,12 @@
   }
 
   v13 = [objc_alloc(MEMORY[0x277D784D8]) initWithMajor:1 minor:0];
-  v14 = [PTEffectUtil closestAspectRatio:width, height];
+  height = [PTEffectUtil closestAspectRatio:width, height];
   v111 = 0;
   v112 = 0;
   v113 = 0;
-  v15 = v14 - 1;
-  if (v14 - 1 >= 3)
+  v15 = height - 1;
+  if (height - 1 >= 3)
   {
     v32 = _PTLogSystem();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -120,8 +120,8 @@
   }
 
   v30 = [(VisionCoreVideoSegmentationE5NetworkDescriptor *)v29 URL];
-  v31 = [v30 path];
-  [v31 UTF8String];
+  path = [v30 path];
+  [path UTF8String];
 
   v99 = 0;
   if (e5rt_program_library_create())
@@ -213,7 +213,7 @@ LABEL_26:
     }
   }
 
-  v83 = v8;
+  v83 = contextCopy;
   v37 = +[PTInference ANEConfigForSynchronousWork];
   v38 = 0;
   e5Functions = v9->_e5Functions;
@@ -292,8 +292,8 @@ LABEL_86:
     }
 
     v98 = 0;
-    v45 = [(VisionCoreE5RTFunction *)e5Functions[v38] name];
-    [v45 UTF8String];
+    name = [(VisionCoreE5RTFunction *)e5Functions[v38] name];
+    [name UTF8String];
     v46 = e5rt_program_library_retain_program_function();
 
     if (v46)
@@ -311,7 +311,7 @@ LABEL_86:
     if (e5rt_precompiled_compute_op_create_options_create_with_program_function())
     {
       v51 = _PTLogSystem();
-      v8 = v83;
+      contextCopy = v83;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
         [PTEffectPersonSegmentationViSegHQVisionCoreE5 initWithMetalContext:colorSize:];
@@ -330,7 +330,7 @@ LABEL_86:
       }
 
 LABEL_107:
-      v8 = v83;
+      contextCopy = v83;
 LABEL_108:
 
       v27 = 0;
@@ -434,7 +434,7 @@ LABEL_106:
         [PTEffectPersonSegmentationViSegHQVisionCoreE5 initWithMetalContext:colorSize:];
       }
 
-      v8 = v83;
+      contextCopy = v83;
       goto LABEL_108;
     }
 
@@ -455,7 +455,7 @@ LABEL_87:
     v27 = 0;
 LABEL_88:
     v33 = 0;
-    v8 = v83;
+    contextCopy = v83;
     goto LABEL_109;
   }
 
@@ -485,7 +485,7 @@ LABEL_88:
         {
           v27 = 0;
           v33 = 0;
-          v8 = v83;
+          contextCopy = v83;
           goto LABEL_141;
         }
       }
@@ -565,8 +565,8 @@ LABEL_128:
       v71 = &v9->_pixelBufferMatting[v64];
       CVPixelBufferCreate(allocator, v69, v70, 0x4C303068u, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v103 forKeys:v102 count:{2, v80}], v71);
       v72 = *v71;
-      v73 = [(PTMetalContext *)v9->_metalContext device];
-      v74 = [PTPixelBufferUtil createTextureFromPixelBuffer:v72 device:v73];
+      device = [(PTMetalContext *)v9->_metalContext device];
+      v74 = [PTPixelBufferUtil createTextureFromPixelBuffer:v72 device:device];
       v75 = textureMatting[v64];
       textureMatting[v64] = v74;
 
@@ -587,11 +587,11 @@ LABEL_128:
     }
 
     while ((v68 & 1) != 0);
-    v76 = [(PTEffectPersonSegmentationViSegHQVisionCoreE5 *)v9 reset];
+    reset = [(PTEffectPersonSegmentationViSegHQVisionCoreE5 *)v9 reset];
     [v85 major];
     [v85 minor];
     kdebug_trace();
-    if (!v76)
+    if (!reset)
     {
       v33 = v9;
       v27 = 0;
@@ -609,7 +609,7 @@ LABEL_139:
   v27 = 0;
   v33 = 0;
 LABEL_140:
-  v8 = v83;
+  contextCopy = v83;
   v13 = v85;
 LABEL_141:
   v37 = v82;
@@ -767,23 +767,23 @@ LABEL_30:
   [(PTEffectPersonSegmentationViSegHQVisionCoreE5 *)&v38 dealloc];
 }
 
-- (BOOL)createEspressoBuffer:(e5rt_buffer_object *)a3 fromNetwork:(int)a4 name:(id)a5 isInput:(BOOL)a6
+- (BOOL)createEspressoBuffer:(e5rt_buffer_object *)buffer fromNetwork:(int)network name:(id)name isInput:(BOOL)input
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = self->_e5Functions[a4];
-  if (v6)
+  inputCopy = input;
+  nameCopy = name;
+  v10 = self->_e5Functions[network];
+  if (inputCopy)
   {
     v19 = 0;
     v11 = &v19;
-    v12 = [(VisionCoreE5RTFunction *)v10 descriptorForInput:v9 error:&v19];
+    v12 = [(VisionCoreE5RTFunction *)v10 descriptorForInput:nameCopy error:&v19];
   }
 
   else
   {
     v18 = 0;
     v11 = &v18;
-    v12 = [(VisionCoreE5RTFunction *)v10 descriptorForOutput:v9 error:&v18];
+    v12 = [(VisionCoreE5RTFunction *)v10 descriptorForOutput:nameCopy error:&v18];
   }
 
   v13 = v12;
@@ -840,9 +840,9 @@ LABEL_11:
   return v6;
 }
 
-- (unsigned)clearIOSurface:(__IOSurface *)a3 value:(float)a4
+- (unsigned)clearIOSurface:(__IOSurface *)surface value:(float)value
 {
-  if (!a3)
+  if (!surface)
   {
     v24 = _PTLogSystem();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -853,23 +853,23 @@ LABEL_11:
     return -1;
   }
 
-  _S8 = a4;
-  if (IOSurfaceGetPixelFormat(a3) != 1278226536)
+  _S8 = value;
+  if (IOSurfaceGetPixelFormat(surface) != 1278226536)
   {
     v25 = _PTLogSystem();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [PTEffectPersonSegmentationViSegHQVisionCoreE5 clearIOSurface:a3 value:?];
+      [PTEffectPersonSegmentationViSegHQVisionCoreE5 clearIOSurface:surface value:?];
     }
 
     return -1;
   }
 
-  IOSurfaceLock(a3, 0, 0);
-  Width = IOSurfaceGetWidth(a3);
-  Height = IOSurfaceGetHeight(a3);
-  BytesPerRow = IOSurfaceGetBytesPerRow(a3);
-  BaseAddress = IOSurfaceGetBaseAddress(a3);
+  IOSurfaceLock(surface, 0, 0);
+  Width = IOSurfaceGetWidth(surface);
+  Height = IOSurfaceGetHeight(surface);
+  BytesPerRow = IOSurfaceGetBytesPerRow(surface);
+  BaseAddress = IOSurfaceGetBaseAddress(surface);
   if (Height)
   {
     v10 = 0;
@@ -934,15 +934,15 @@ LABEL_11:
     while (v10 != Height);
   }
 
-  IOSurfaceUnlock(a3, 0, 0);
+  IOSurfaceUnlock(surface, 0, 0);
   return 0;
 }
 
-- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)a3
+- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)buffer
 {
   frameCount = self->_frameCount;
-  CVPixelBufferGetWidth(a3);
-  CVPixelBufferGetHeight(a3);
+  CVPixelBufferGetWidth(buffer);
+  CVPixelBufferGetHeight(buffer);
   kdebug_trace();
   if (frameCount)
   {
@@ -950,9 +950,9 @@ LABEL_11:
   }
 
   boundInputIOSurface = self->_boundInputIOSurface;
-  if (boundInputIOSurface != CVPixelBufferGetIOSurface(a3))
+  if (boundInputIOSurface != CVPixelBufferGetIOSurface(buffer))
   {
-    self->_boundInputIOSurface = CVPixelBufferGetIOSurface(a3);
+    self->_boundInputIOSurface = CVPixelBufferGetIOSurface(buffer);
     if (self->_inputE5Surface && e5rt_surface_object_release())
     {
       v7 = _PTLogSystem();
@@ -1283,7 +1283,7 @@ uint64_t __85__PTEffectPersonSegmentationViSegHQVisionCoreE5_runPersonSegmentati
   }
 }
 
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)a3
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)size
 {
   v12 = *&a4.height;
   result = [PTEffectUtil closestAspectRatio:?];

@@ -1,43 +1,43 @@
 @interface CKMessagesCarouselView
-+ (id)resolvedBackgroundColorFor:(id)a3;
++ (id)resolvedBackgroundColorFor:(id)for;
 - (CKMessagesCarouselView)init;
 - (CKMessagesCarouselViewDelegate)carouselDelegate;
-- (double)_getHeightForUserData:(id)a3;
-- (double)itemsLayout:(id)a3 aspectRatioForItem:(int64_t)a4;
-- (id)viewUserDataForItemAtIndex:(int64_t)a3 inStackLayout:(id)a4;
-- (void)primaryItemDidChange:(BOOL)a3 didChangeIndex:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setViewClass:(Class)a3;
+- (double)_getHeightForUserData:(id)data;
+- (double)itemsLayout:(id)layout aspectRatioForItem:(int64_t)item;
+- (id)viewUserDataForItemAtIndex:(int64_t)index inStackLayout:(id)layout;
+- (void)primaryItemDidChange:(BOOL)change didChangeIndex:(BOOL)index;
+- (void)setBounds:(CGRect)bounds;
+- (void)setViewClass:(Class)class;
 @end
 
 @implementation CKMessagesCarouselView
 
-- (id)viewUserDataForItemAtIndex:(int64_t)a3 inStackLayout:(id)a4
+- (id)viewUserDataForItemAtIndex:(int64_t)index inStackLayout:(id)layout
 {
-  v6 = [(PXBaseMessagesStackView *)self dataSourceManager:a3];
-  v7 = [v6 dataSource];
-  v8 = [(PXBaseMessagesStackView *)self dataSourceManager];
-  v9 = [v8 dataSource];
-  v12[0] = [v9 identifier];
+  v6 = [(PXBaseMessagesStackView *)self dataSourceManager:index];
+  dataSource = [v6 dataSource];
+  dataSourceManager = [(PXBaseMessagesStackView *)self dataSourceManager];
+  dataSource2 = [dataSourceManager dataSource];
+  v12[0] = [dataSource2 identifier];
   v12[1] = 0;
-  v12[2] = a3;
+  v12[2] = index;
   v12[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v10 = [v7 objectAtIndexPath:v12];
+  v10 = [dataSource objectAtIndexPath:v12];
 
   return v10;
 }
 
-- (double)itemsLayout:(id)a3 aspectRatioForItem:(int64_t)a4
+- (double)itemsLayout:(id)layout aspectRatioForItem:(int64_t)item
 {
-  v6 = [(PXBaseMessagesStackView *)self dataSourceManager];
-  v7 = [v6 dataSource];
-  v8 = [(PXBaseMessagesStackView *)self dataSourceManager];
-  v9 = [v8 dataSource];
-  v16[0] = [v9 identifier];
+  dataSourceManager = [(PXBaseMessagesStackView *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  dataSourceManager2 = [(PXBaseMessagesStackView *)self dataSourceManager];
+  dataSource2 = [dataSourceManager2 dataSource];
+  v16[0] = [dataSource2 identifier];
   v16[1] = 0;
-  v16[2] = a4;
+  v16[2] = item;
   v16[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v10 = [v7 objectAtIndexPath:v16];
+  v10 = [dataSource objectAtIndexPath:v16];
 
   [(CKMessagesCarouselView *)self _getHeightForUserData:v10];
   v12 = 1.0;
@@ -51,10 +51,10 @@
   return v12;
 }
 
-- (double)_getHeightForUserData:(id)a3
+- (double)_getHeightForUserData:(id)data
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->sizeCache objectForKey:v4];
+  dataCopy = data;
+  v5 = [(NSMutableDictionary *)self->sizeCache objectForKey:dataCopy];
   v6 = v5;
   if (!v5 || ([v5 doubleValue], v7 == 0.0))
   {
@@ -71,7 +71,7 @@
 
     if ([(UIView *)self->sizingView conformsToProtocol:&unk_1F06805A8])
     {
-      [(UIView *)self->sizingView setUserData:v4];
+      [(UIView *)self->sizingView setUserData:dataCopy];
     }
 
     sizingView = self->sizingView;
@@ -80,7 +80,7 @@
     v9 = v13;
     sizeCache = self->sizeCache;
     v15 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-    [(NSMutableDictionary *)sizeCache setObject:v15 forKey:v4];
+    [(NSMutableDictionary *)sizeCache setObject:v15 forKey:dataCopy];
   }
 
   else
@@ -92,13 +92,13 @@
   return v9;
 }
 
-- (void)primaryItemDidChange:(BOOL)a3 didChangeIndex:(BOOL)a4
+- (void)primaryItemDidChange:(BOOL)change didChangeIndex:(BOOL)index
 {
   v6.receiver = self;
   v6.super_class = CKMessagesCarouselView;
-  [(PXBaseMessagesStackView *)&v6 primaryItemDidChange:a3 didChangeIndex:a4];
-  v5 = [(CKMessagesCarouselView *)self carouselDelegate];
-  [v5 carousel:self didScrollToIndex:{-[PXBaseMessagesStackView currentIndex](self, "currentIndex")}];
+  [(PXBaseMessagesStackView *)&v6 primaryItemDidChange:change didChangeIndex:index];
+  carouselDelegate = [(CKMessagesCarouselView *)self carouselDelegate];
+  [carouselDelegate carousel:self didScrollToIndex:{-[PXBaseMessagesStackView currentIndex](self, "currentIndex")}];
 }
 
 - (CKMessagesCarouselView)init
@@ -110,34 +110,34 @@
   if (v2)
   {
     [(PXBaseMessagesStackView *)v2 setUseAspectTiles:1];
-    v4 = [(PXBaseMessagesStackView *)v3 layout];
-    [v4 setDelegate:v3];
-    [v4 setMediaKind:10];
+    layout = [(PXBaseMessagesStackView *)v3 layout];
+    [layout setDelegate:v3];
+    [layout setMediaKind:10];
     if (objc_opt_respondsToSelector())
     {
-      [v4 setKeepItemAspectRatioConstant:1];
+      [layout setKeepItemAspectRatioConstant:1];
     }
 
     if (objc_opt_respondsToSelector())
     {
       +[CKCarouselBalloonView minAspectRatio];
-      [v4 setMinItemAspectRatio:?];
+      [layout setMinItemAspectRatio:?];
     }
 
     if (objc_opt_respondsToSelector())
     {
       +[CKCarouselBalloonView maxAspectRatio];
-      [v4 setMaxItemAspectRatio:?];
+      [layout setMaxItemAspectRatio:?];
     }
   }
 
   return v3;
 }
 
-- (void)setViewClass:(Class)a3
+- (void)setViewClass:(Class)class
 {
-  self->viewClass = a3;
-  v4 = objc_alloc_init(a3);
+  self->viewClass = class;
+  v4 = objc_alloc_init(class);
   sizingView = self->sizingView;
   self->sizingView = v4;
 
@@ -146,32 +146,32 @@
   self->sizeCache = v6;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(NSMutableDictionary *)self->sizeCache removeAllObjects];
   v8.receiver = self;
   v8.super_class = CKMessagesCarouselView;
   [(CKMessagesCarouselView *)&v8 setBounds:x, y, width, height];
 }
 
-+ (id)resolvedBackgroundColorFor:(id)a3
++ (id)resolvedBackgroundColorFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _resolvedBackgroundColor];
+    _resolvedBackgroundColor = [forCopy _resolvedBackgroundColor];
   }
 
   else
   {
-    v4 = 0;
+    _resolvedBackgroundColor = 0;
   }
 
-  return v4;
+  return _resolvedBackgroundColor;
 }
 
 - (CKMessagesCarouselViewDelegate)carouselDelegate

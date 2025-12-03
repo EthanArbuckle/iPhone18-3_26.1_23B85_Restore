@@ -1,23 +1,23 @@
 @interface PLActivityCriterionTime
 + (double)minTimeInterval;
-+ (id)timeCriterionWithInterval:(double)a3;
-- (PLActivityCriterionTime)initWithInterval:(double)a3;
++ (id)timeCriterionWithInterval:(double)interval;
+- (PLActivityCriterionTime)initWithInterval:(double)interval;
 - (double)rescheduleDelay;
 - (id)description;
 - (void)dealloc;
-- (void)didCompleteActivity:(id)a3;
-- (void)didDisableActivity:(id)a3;
-- (void)didEnableActivity:(id)a3;
-- (void)didInterruptActivity:(id)a3;
+- (void)didCompleteActivity:(id)activity;
+- (void)didDisableActivity:(id)activity;
+- (void)didEnableActivity:(id)activity;
+- (void)didInterruptActivity:(id)activity;
 @end
 
 @implementation PLActivityCriterionTime
 
-- (PLActivityCriterionTime)initWithInterval:(double)a3
+- (PLActivityCriterionTime)initWithInterval:(double)interval
 {
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -28,24 +28,24 @@
     if (v4)
     {
       [objc_opt_class() minTimeInterval];
-      if (v5 <= a3)
+      if (intervalCopy <= interval)
       {
-        v5 = a3;
+        intervalCopy = interval;
       }
 
-      v4->_interval = v5;
+      v4->_interval = intervalCopy;
     }
 
     self = v4;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)timeCriterionWithInterval:(double)a3
++ (id)timeCriterionWithInterval:(double)interval
 {
-  v3 = [[PLActivityCriterionTime alloc] initWithInterval:a3];
+  v3 = [[PLActivityCriterionTime alloc] initWithInterval:interval];
 
   return v3;
 }
@@ -83,9 +83,9 @@ uint64_t __42__PLActivityCriterionTime_minTimeInterval__block_invoke(uint64_t a1
   [(PLActivityCriterionTime *)&v3 dealloc];
 }
 
-- (void)didEnableActivity:(id)a3
+- (void)didEnableActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -101,11 +101,11 @@ uint64_t __42__PLActivityCriterionTime_minTimeInterval__block_invoke(uint64_t a1
 
     if (didEnableActivity__classDebugEnabled_1 == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didEnableActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didEnableActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterionTime.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterionTime didEnableActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:49];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:49];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -117,22 +117,22 @@ uint64_t __42__PLActivityCriterionTime_minTimeInterval__block_invoke(uint64_t a1
 
   v26.receiver = self;
   v26.super_class = PLActivityCriterionTime;
-  [(PLActivityCriterion *)&v26 didEnableActivity:v4];
-  v11 = [(PLActivityCriterion *)self delegate];
-  v12 = [v11 lastCompletedDate];
-  if (v12)
+  [(PLActivityCriterion *)&v26 didEnableActivity:activityCopy];
+  delegate = [(PLActivityCriterion *)self delegate];
+  lastCompletedDate = [delegate lastCompletedDate];
+  if (lastCompletedDate)
   {
-    v13 = [(PLActivityCriterion *)self delegate];
-    v14 = [v13 lastCompletedDate];
+    delegate2 = [(PLActivityCriterion *)self delegate];
+    lastCompletedDate2 = [delegate2 lastCompletedDate];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DF00] distantPast];
+    lastCompletedDate2 = [MEMORY[0x1E695DF00] distantPast];
   }
 
   [(PLActivityCriterionTime *)self interval];
-  v15 = [v14 dateByAddingTimeInterval:?];
+  v15 = [lastCompletedDate2 dateByAddingTimeInterval:?];
   if (+[PLDefaults debugEnabled])
   {
     v16 = objc_opt_class();
@@ -148,11 +148,11 @@ uint64_t __42__PLActivityCriterionTime_minTimeInterval__block_invoke(uint64_t a1
 
     if (didEnableActivity__classDebugEnabled_24 == 1)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didEnableActivity:%@ for criterion=%@, lastCompletedDate=%@, fireDate=%@", v4, self, v14, v15];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didEnableActivity:%@ for criterion=%@, lastCompletedDate=%@, fireDate=%@", activityCopy, self, lastCompletedDate2, v15];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterionTime.m"];
-      v19 = [v18 lastPathComponent];
+      lastPathComponent2 = [v18 lastPathComponent];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterionTime didEnableActivity:]"];
-      [PLCoreStorage logMessage:v17 fromFile:v19 fromFunction:v20 fromLineNumber:55];
+      [PLCoreStorage logMessage:v17 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:55];
 
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -228,9 +228,9 @@ BOOL __45__PLActivityCriterionTime_didEnableActivity___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)didCompleteActivity:(id)a3
+- (void)didCompleteActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -246,11 +246,11 @@ BOOL __45__PLActivityCriterionTime_didEnableActivity___block_invoke_2(uint64_t a
 
     if (didCompleteActivity__classDebugEnabled_0 == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didCompleteActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didCompleteActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterionTime.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterionTime didCompleteActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:68];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:68];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -262,13 +262,13 @@ BOOL __45__PLActivityCriterionTime_didEnableActivity___block_invoke_2(uint64_t a
 
   v14.receiver = self;
   v14.super_class = PLActivityCriterionTime;
-  [(PLActivityCriterion *)&v14 didCompleteActivity:v4];
+  [(PLActivityCriterion *)&v14 didCompleteActivity:activityCopy];
   [(PLActivityCriterion *)self setSatisfied:0];
   v11 = MEMORY[0x1E695DF00];
   [(PLActivityCriterionTime *)self interval];
   v12 = [v11 monotonicDateWithTimeIntervalSinceNow:?];
-  v13 = [(PLActivityCriterionTime *)self timer];
-  [v13 setMonotonicFireDate:v12];
+  timer = [(PLActivityCriterionTime *)self timer];
+  [timer setMonotonicFireDate:v12];
 }
 
 BOOL __47__PLActivityCriterionTime_didCompleteActivity___block_invoke(uint64_t a1)
@@ -278,9 +278,9 @@ BOOL __47__PLActivityCriterionTime_didCompleteActivity___block_invoke(uint64_t a
   return result;
 }
 
-- (void)didInterruptActivity:(id)a3
+- (void)didInterruptActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -296,11 +296,11 @@ BOOL __47__PLActivityCriterionTime_didCompleteActivity___block_invoke(uint64_t a
 
     if (didInterruptActivity__classDebugEnabled_0 == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didInterruptActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didInterruptActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterionTime.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterionTime didInterruptActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:79];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:79];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -312,13 +312,13 @@ BOOL __47__PLActivityCriterionTime_didCompleteActivity___block_invoke(uint64_t a
 
   v14.receiver = self;
   v14.super_class = PLActivityCriterionTime;
-  [(PLActivityCriterion *)&v14 didInterruptActivity:v4];
+  [(PLActivityCriterion *)&v14 didInterruptActivity:activityCopy];
   [(PLActivityCriterion *)self setSatisfied:0];
   v11 = MEMORY[0x1E695DF00];
   [(PLActivityCriterionTime *)self rescheduleDelay];
   v12 = [v11 monotonicDateWithTimeIntervalSinceNow:?];
-  v13 = [(PLActivityCriterionTime *)self timer];
-  [v13 setMonotonicFireDate:v12];
+  timer = [(PLActivityCriterionTime *)self timer];
+  [timer setMonotonicFireDate:v12];
 }
 
 BOOL __48__PLActivityCriterionTime_didInterruptActivity___block_invoke(uint64_t a1)
@@ -328,9 +328,9 @@ BOOL __48__PLActivityCriterionTime_didInterruptActivity___block_invoke(uint64_t 
   return result;
 }
 
-- (void)didDisableActivity:(id)a3
+- (void)didDisableActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -346,11 +346,11 @@ BOOL __48__PLActivityCriterionTime_didInterruptActivity___block_invoke(uint64_t 
 
     if (didDisableActivity__classDebugEnabled_1 == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didDisableActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterionTime::didDisableActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterionTime.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterionTime didDisableActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:90];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:90];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -362,9 +362,9 @@ BOOL __48__PLActivityCriterionTime_didInterruptActivity___block_invoke(uint64_t 
 
   v12.receiver = self;
   v12.super_class = PLActivityCriterionTime;
-  [(PLActivityCriterion *)&v12 didDisableActivity:v4];
-  v11 = [(PLActivityCriterionTime *)self timer];
-  [v11 cancel];
+  [(PLActivityCriterion *)&v12 didDisableActivity:activityCopy];
+  timer = [(PLActivityCriterionTime *)self timer];
+  [timer cancel];
 
   [(PLActivityCriterionTime *)self setTimer:0];
 }

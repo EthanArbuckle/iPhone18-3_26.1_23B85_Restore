@@ -1,13 +1,13 @@
 @interface MSSetupFailedEvent
-- (MSSetupFailedEvent)initWithErrorNamed:(id)a3;
+- (MSSetupFailedEvent)initWithErrorNamed:(id)named;
 - (id)encoded;
 @end
 
 @implementation MSSetupFailedEvent
 
-- (MSSetupFailedEvent)initWithErrorNamed:(id)a3
+- (MSSetupFailedEvent)initWithErrorNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v8.receiver = self;
   v8.super_class = MSSetupFailedEvent;
   v5 = [(MSBaseSetupEvent *)&v8 init];
@@ -15,7 +15,7 @@
   if (v5)
   {
     [(MSBaseSetupEvent *)v5 setEventName:@"com.apple.cloudmediaservices.setupfailed"];
-    [(MSSetupFailedEvent *)v6 setErrorName:v4];
+    [(MSSetupFailedEvent *)v6 setErrorName:namedCopy];
   }
 
   return v6;

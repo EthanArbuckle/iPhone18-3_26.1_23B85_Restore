@@ -1,22 +1,22 @@
 @interface BRCCloudDocsAppsMonitor
 + (id)cloudDocsAppsMonitor;
 - (BOOL)hasFetchedInitialApps;
-- (BOOL)isApplicationInstalledForContainerID:(id)a3;
+- (BOOL)isApplicationInstalledForContainerID:(id)d;
 - (BRCCloudDocsAppsMonitor)init;
 - (id)allApplicationIdentifiers;
-- (id)applicationIdentifiersForContainerID:(id)a3;
-- (id)containerIDsForApplicationIdentifier:(id)a3;
-- (void)_dumpAppIDsByAppLibraryIDToContext:(id)a3;
-- (void)_dumpCloudDocsAppLibrariesByAppIDToContext:(id)a3;
+- (id)applicationIdentifiersForContainerID:(id)d;
+- (id)containerIDsForApplicationIdentifier:(id)identifier;
+- (void)_dumpAppIDsByAppLibraryIDToContext:(id)context;
+- (void)_dumpCloudDocsAppLibrariesByAppIDToContext:(id)context;
 - (void)_refetchApps;
 - (void)_refetchPendingApps;
 - (void)_start;
-- (void)_updateMappingsAndNotifyObservers:(id)a3 appIDsByAppLibraryID:(id)a4 markInitialFetch:(BOOL)a5;
-- (void)addObserver:(id)a3;
-- (void)appListDidUpdateForBundleIDs:(id)a3;
-- (void)dumpToContext:(id)a3;
+- (void)_updateMappingsAndNotifyObservers:(id)observers appIDsByAppLibraryID:(id)d markInitialFetch:(BOOL)fetch;
+- (void)addObserver:(id)observer;
+- (void)appListDidUpdateForBundleIDs:(id)ds;
+- (void)dumpToContext:(id)context;
 - (void)forceRefetchAppList;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BRCCloudDocsAppsMonitor
@@ -40,22 +40,22 @@
   return v3;
 }
 
-- (void)_updateMappingsAndNotifyObservers:(id)a3 appIDsByAppLibraryID:(id)a4 markInitialFetch:(BOOL)a5
+- (void)_updateMappingsAndNotifyObservers:(id)observers appIDsByAppLibraryID:(id)d markInitialFetch:(BOOL)fetch
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  observersCopy = observers;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__BRCCloudDocsAppsMonitor__updateMappingsAndNotifyObservers_appIDsByAppLibraryID_markInitialFetch___block_invoke;
   block[3] = &unk_2785044D8;
   block[4] = self;
-  v11 = v8;
+  v11 = observersCopy;
   v28 = v11;
-  v12 = v9;
+  v12 = dCopy;
   v29 = v12;
-  v30 = a5;
+  fetchCopy = fetch;
   dispatch_sync(queue, block);
   callbackQueue = self->_callbackQueue;
   v25[0] = MEMORY[0x277D85DD0];
@@ -160,35 +160,35 @@ void __99__BRCCloudDocsAppsMonitor__updateMappingsAndNotifyObservers_appIDsByApp
     [(BRCCloudDocsAppsMonitor *)v24 _refetchApps];
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v7 = [MEMORY[0x277CBEB98] setWithObject:@"com.apple.TextInput"];
-  [v5 setObject:v7 forKey:@"com.apple.kbd"];
+  [dictionary setObject:v7 forKey:@"com.apple.kbd"];
 
   v8 = [MEMORY[0x277CBEB98] setWithObject:@"com.apple.shoebox"];
-  [v5 setObject:v8 forKey:@"com.apple.passd"];
+  [dictionary setObject:v8 forKey:@"com.apple.passd"];
 
   v9 = [MEMORY[0x277CBEB58] setWithObject:@"com.apple.kbd"];
-  [v6 setObject:v9 forKey:@"com.apple.TextInput"];
+  [dictionary2 setObject:v9 forKey:@"com.apple.TextInput"];
 
   v10 = [MEMORY[0x277CBEB58] setWithObject:@"com.apple.passd"];
-  [v6 setObject:v10 forKey:*MEMORY[0x277CFACE0]];
+  [dictionary2 setObject:v10 forKey:*MEMORY[0x277CFACE0]];
 
   v11 = [BRCUserDefaults defaultsForMangledID:0];
-  v12 = [v11 bundleIDsExcludedFromAppLibraryExtraction];
+  bundleIDsExcludedFromAppLibraryExtraction = [v11 bundleIDsExcludedFromAppLibraryExtraction];
 
-  v13 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __39__BRCCloudDocsAppsMonitor__refetchApps__block_invoke;
   v20 = &unk_278508030;
-  v14 = v12;
+  v14 = bundleIDsExcludedFromAppLibraryExtraction;
   v21 = v14;
-  v15 = v5;
+  v15 = dictionary;
   v22 = v15;
-  v16 = v6;
+  v16 = dictionary2;
   v23 = v16;
-  [v13 enumerateBundlesOfType:1 block:&v17];
+  [defaultWorkspace enumerateBundlesOfType:1 block:&v17];
 
   [(BRCCloudDocsAppsMonitor *)self _updateMappingsAndNotifyObservers:v15 appIDsByAppLibraryID:v16 markInitialFetch:1, v17, v18, v19, v20];
   __brc_leave_section(v24);
@@ -291,9 +291,9 @@ LABEL_17:
   br_pacer_signal();
 }
 
-- (void)appListDidUpdateForBundleIDs:(id)a3
+- (void)appListDidUpdateForBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -307,8 +307,8 @@ LABEL_17:
   v9[2] = __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke;
   v9[3] = &unk_2784FF478;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dsCopy;
+  v8 = dsCopy;
   dispatch_async(fetchInstalledAppsQueue, v9);
 }
 
@@ -378,7 +378,7 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
   pendingBundleIDsToRefetch = self->_pendingBundleIDsToRefetch;
   if (pendingBundleIDsToRefetch && [(NSMutableSet *)pendingBundleIDsToRefetch count])
   {
-    v36 = self;
+    selfCopy = self;
     v4 = self->_pendingBundleIDsToRefetch;
     memset(v64, 0, sizeof(v64));
     __brc_create_section(0, "[BRCCloudDocsAppsMonitor _refetchPendingApps]", 187, 0, v64);
@@ -407,12 +407,12 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
     v61 = __Block_byref_object_copy__55;
     v62 = __Block_byref_object_dispose__55;
     v63 = 0;
-    queue = v36->_queue;
+    queue = selfCopy->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__BRCCloudDocsAppsMonitor__refetchPendingApps__block_invoke;
     block[3] = &unk_2784FFB30;
-    block[4] = v36;
+    block[4] = selfCopy;
     block[5] = v72;
     block[6] = &v58;
     dispatch_sync(queue, block);
@@ -443,20 +443,20 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
           v41 = v12;
           if (v12)
           {
-            v13 = [v12 entitlements];
+            entitlements = [v12 entitlements];
             v43 = BREntitledContainerIdentifiersForPropertyList();
           }
 
           else
           {
-            v13 = brc_bread_crumbs();
+            entitlements = brc_bread_crumbs();
             v14 = brc_default_log();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
               v68 = v11;
               v69 = 2112;
-              v70 = v13;
+              v70 = entitlements;
               _os_log_debug_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] No bundleRecord found for bundle identifier %@ - treating as uninstalled app%@", buf, 0x16u);
             }
 
@@ -514,16 +514,16 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
             if (v23)
             {
               v25 = MEMORY[0x277CBEB98];
-              v26 = [v42 allObjects];
-              v27 = [v25 setWithArray:v26];
+              allObjects = [v42 allObjects];
+              v27 = [v25 setWithArray:allObjects];
               [v24 setObject:v27 forKey:v11];
 
               v46 = 0u;
               v47 = 0u;
               v44 = 0u;
               v45 = 0u;
-              v28 = [v42 allObjects];
-              v29 = [v28 countByEnumeratingWithState:&v44 objects:v65 count:16];
+              allObjects2 = [v42 allObjects];
+              v29 = [allObjects2 countByEnumeratingWithState:&v44 objects:v65 count:16];
               if (v29)
               {
                 v30 = *v45;
@@ -533,7 +533,7 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
                   {
                     if (*v45 != v30)
                     {
-                      objc_enumerationMutation(v28);
+                      objc_enumerationMutation(allObjects2);
                     }
 
                     v32 = *(*(&v44 + 1) + 8 * k);
@@ -547,7 +547,7 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
                     [v33 addObject:v11];
                   }
 
-                  v29 = [v28 countByEnumeratingWithState:&v44 objects:v65 count:16];
+                  v29 = [allObjects2 countByEnumeratingWithState:&v44 objects:v65 count:16];
                 }
 
                 while (v29);
@@ -568,17 +568,17 @@ void __56__BRCCloudDocsAppsMonitor_appListDidUpdateForBundleIDs___block_invoke(u
 
       while (v8);
 
-      v34 = v36;
+      v34 = selfCopy;
       if (v9)
       {
-        [(BRCCloudDocsAppsMonitor *)v36 _updateMappingsAndNotifyObservers:*(*&v72[8] + 40) appIDsByAppLibraryID:v59[5] markInitialFetch:0];
+        [(BRCCloudDocsAppsMonitor *)selfCopy _updateMappingsAndNotifyObservers:*(*&v72[8] + 40) appIDsByAppLibraryID:v59[5] markInitialFetch:0];
       }
     }
 
     else
     {
 
-      v34 = v36;
+      v34 = selfCopy;
     }
 
     [(NSMutableSet *)v34->_pendingBundleIDsToRefetch removeAllObjects];
@@ -624,17 +624,17 @@ uint64_t __46__BRCCloudDocsAppsMonitor__refetchPendingApps__block_invoke(void *a
   __brc_leave_section(v6);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   callbackQueue = self->_callbackQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__BRCCloudDocsAppsMonitor_addObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(callbackQueue, v7);
 }
 
@@ -674,24 +674,24 @@ uint64_t __39__BRCCloudDocsAppsMonitor_addObserver___block_invoke_2(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   callbackQueue = self->_callbackQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__BRCCloudDocsAppsMonitor_removeObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(callbackQueue, v7);
 }
 
-- (id)applicationIdentifiersForContainerID:(id)a3
+- (id)applicationIdentifiersForContainerID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   memset(v17, 0, sizeof(v17));
   __brc_create_section(0, "[BRCCloudDocsAppsMonitor applicationIdentifiersForContainerID:]", 290, 0, v17);
   v5 = brc_bread_crumbs();
@@ -701,7 +701,7 @@ uint64_t __39__BRCCloudDocsAppsMonitor_addObserver___block_invoke_2(uint64_t a1)
     *buf = 134218498;
     *&buf[4] = v17[0];
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
     v19 = v5;
     _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx asked appIDs for %@%@", buf, 0x20u);
@@ -720,7 +720,7 @@ uint64_t __39__BRCCloudDocsAppsMonitor_addObserver___block_invoke_2(uint64_t a1)
   v14[3] = &unk_278500D08;
   v16 = buf;
   v14[4] = self;
-  v8 = v4;
+  v8 = dCopy;
   v15 = v8;
   dispatch_sync(queue, v14);
   v9 = brc_bread_crumbs();
@@ -749,10 +749,10 @@ uint64_t __64__BRCCloudDocsAppsMonitor_applicationIdentifiersForContainerID___bl
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)containerIDsForApplicationIdentifier:(id)a3
+- (id)containerIDsForApplicationIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   memset(v17, 0, sizeof(v17));
   __brc_create_section(0, "[BRCCloudDocsAppsMonitor containerIDsForApplicationIdentifier:]", 301, 0, v17);
   v5 = brc_bread_crumbs();
@@ -762,7 +762,7 @@ uint64_t __64__BRCCloudDocsAppsMonitor_applicationIdentifiersForContainerID___bl
     *buf = 134218498;
     *&buf[4] = v17[0];
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 2112;
     v19 = v5;
     _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx asked containerIDs for %@%@", buf, 0x20u);
@@ -781,7 +781,7 @@ uint64_t __64__BRCCloudDocsAppsMonitor_applicationIdentifiersForContainerID___bl
   v14[3] = &unk_278500D08;
   v16 = buf;
   v14[4] = self;
-  v8 = v4;
+  v8 = identifierCopy;
   v15 = v8;
   dispatch_sync(queue, v14);
   v9 = brc_bread_crumbs();
@@ -860,9 +860,9 @@ void __52__BRCCloudDocsAppsMonitor_allApplicationIdentifiers__block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isApplicationInstalledForContainerID:(id)a3
+- (BOOL)isApplicationInstalledForContainerID:(id)d
 {
-  v3 = [(BRCCloudDocsAppsMonitor *)self applicationIdentifiersForContainerID:a3];
+  v3 = [(BRCCloudDocsAppsMonitor *)self applicationIdentifiersForContainerID:d];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -969,32 +969,32 @@ void __31__BRCCloudDocsAppsMonitor_init__block_invoke_2(uint64_t a1)
   [WeakRetained _refetchPendingApps];
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v4 = a3;
-  [v4 writeLineWithFormat:@"apps monitor"];
-  [v4 writeLineWithFormat:@"-----------------------------------------------------"];
-  [v4 pushIndentation];
-  [(BRCCloudDocsAppsMonitor *)self _dumpCloudDocsAppLibrariesByAppIDToContext:v4];
-  [v4 writeLineWithFormat:&stru_2837504F0];
-  [(BRCCloudDocsAppsMonitor *)self _dumpAppIDsByAppLibraryIDToContext:v4];
-  [v4 popIndentation];
-  [v4 writeLineWithFormat:&stru_2837504F0];
+  contextCopy = context;
+  [contextCopy writeLineWithFormat:@"apps monitor"];
+  [contextCopy writeLineWithFormat:@"-----------------------------------------------------"];
+  [contextCopy pushIndentation];
+  [(BRCCloudDocsAppsMonitor *)self _dumpCloudDocsAppLibrariesByAppIDToContext:contextCopy];
+  [contextCopy writeLineWithFormat:&stru_2837504F0];
+  [(BRCCloudDocsAppsMonitor *)self _dumpAppIDsByAppLibraryIDToContext:contextCopy];
+  [contextCopy popIndentation];
+  [contextCopy writeLineWithFormat:&stru_2837504F0];
 }
 
-- (void)_dumpCloudDocsAppLibrariesByAppIDToContext:(id)a3
+- (void)_dumpCloudDocsAppLibrariesByAppIDToContext:(id)context
 {
-  v4 = a3;
-  [v4 writeLineWithFormat:@"app library IDs by App ID"];
-  [v4 writeLineWithFormat:@"======================="];
+  contextCopy = context;
+  [contextCopy writeLineWithFormat:@"app library IDs by App ID"];
+  [contextCopy writeLineWithFormat:@"======================="];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__BRCCloudDocsAppsMonitor__dumpCloudDocsAppLibrariesByAppIDToContext___block_invoke;
   v7[3] = &unk_2784FF478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1043,19 +1043,19 @@ void __70__BRCCloudDocsAppsMonitor__dumpCloudDocsAppLibrariesByAppIDToContext___
   [v2 addObject:v3];
 }
 
-- (void)_dumpAppIDsByAppLibraryIDToContext:(id)a3
+- (void)_dumpAppIDsByAppLibraryIDToContext:(id)context
 {
-  v4 = a3;
-  [v4 writeLineWithFormat:@"app IDs by app library IDs"];
-  [v4 writeLineWithFormat:@"======================="];
+  contextCopy = context;
+  [contextCopy writeLineWithFormat:@"app IDs by app library IDs"];
+  [contextCopy writeLineWithFormat:@"======================="];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__BRCCloudDocsAppsMonitor__dumpAppIDsByAppLibraryIDToContext___block_invoke;
   v7[3] = &unk_2784FF478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_sync(queue, v7);
 }
 

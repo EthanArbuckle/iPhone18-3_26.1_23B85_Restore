@@ -1,50 +1,50 @@
 @interface CalendarAssistantUISnippetSection
-+ (id)sectionWithDate:(id)a3;
-- (CalendarAssistantUISnippetSection)initWithDate:(id)a3;
-- (void)addEvent:(id)a3;
++ (id)sectionWithDate:(id)date;
+- (CalendarAssistantUISnippetSection)initWithDate:(id)date;
+- (void)addEvent:(id)event;
 @end
 
 @implementation CalendarAssistantUISnippetSection
 
-+ (id)sectionWithDate:(id)a3
++ (id)sectionWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDate:v4];
+  dateCopy = date;
+  v5 = [[self alloc] initWithDate:dateCopy];
 
   return v5;
 }
 
-- (CalendarAssistantUISnippetSection)initWithDate:(id)a3
+- (CalendarAssistantUISnippetSection)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = CalendarAssistantUISnippetSection;
   v5 = [(CalendarAssistantUISnippetSection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CalendarAssistantUISnippetSection *)v5 setDate:v4];
+    [(CalendarAssistantUISnippetSection *)v5 setDate:dateCopy];
   }
 
   return v6;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CalendarAssistantUISnippetSection *)self events];
+  eventCopy = event;
+  events = [(CalendarAssistantUISnippetSection *)self events];
 
-  if (v5)
+  if (events)
   {
-    v6 = [(CalendarAssistantUISnippetSection *)self events];
-    v7 = [v6 arrayByAddingObject:v4];
+    events2 = [(CalendarAssistantUISnippetSection *)self events];
+    v7 = [events2 arrayByAddingObject:eventCopy];
 
-    v4 = v6;
+    eventCopy = events2;
   }
 
   else
   {
-    v7 = [[NSArray alloc] initWithObjects:{v4, 0}];
+    v7 = [[NSArray alloc] initWithObjects:{eventCopy, 0}];
   }
 
   [(CalendarAssistantUISnippetSection *)self setEvents:v7];

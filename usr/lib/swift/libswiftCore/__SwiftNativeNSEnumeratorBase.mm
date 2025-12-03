@@ -1,12 +1,12 @@
 @interface __SwiftNativeNSEnumeratorBase
-- (__SwiftNativeNSEnumeratorBase)initWithCoder:(id)a3;
+- (__SwiftNativeNSEnumeratorBase)initWithCoder:(id)coder;
 - (void)_noteAssociatedObjects;
 - (void)_setWeaklyReferenced;
 @end
 
 @implementation __SwiftNativeNSEnumeratorBase
 
-- (__SwiftNativeNSEnumeratorBase)initWithCoder:(id)a3
+- (__SwiftNativeNSEnumeratorBase)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = __SwiftNativeNSEnumeratorBase;

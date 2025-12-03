@@ -1,67 +1,67 @@
 @interface CRRegister
-+ (id)registerWithType:(unint64_t)a3 contents:(id)a4 document:(id)a5;
++ (id)registerWithType:(unint64_t)type contents:(id)contents document:(id)document;
 - (CRDocument)document;
-- (CRRegister)initWithCRCoder:(id)a3;
-- (CRRegister)initWithDocument:(id)a3;
-- (id)deltaSince:(id)a3 in:(id)a4;
+- (CRRegister)initWithCRCoder:(id)coder;
+- (CRRegister)initWithDocument:(id)document;
+- (id)deltaSince:(id)since in:(id)in;
 - (id)tombstone;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation CRRegister
 
-+ (id)registerWithType:(unint64_t)a3 contents:(id)a4 document:(id)a5
++ (id)registerWithType:(unint64_t)type contents:(id)contents document:(id)document
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 > 4)
+  contentsCopy = contents;
+  documentCopy = document;
+  if (type > 4)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [objc_alloc(*off_1E7509F40[a3]) initWithContents:v7 document:v8];
+    v9 = [objc_alloc(*off_1E7509F40[type]) initWithContents:contentsCopy document:documentCopy];
   }
 
   return v9;
 }
 
-- (CRRegister)initWithDocument:(id)a3
+- (CRRegister)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v8.receiver = self;
   v8.super_class = CRRegister;
   v5 = [(CRRegister *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_document, v4);
+    objc_storeWeak(&v5->_document, documentCopy);
   }
 
   return v6;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Subclass must implement." userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v5 = a3;
-  v6 = a4;
+  sinceCopy = since;
+  inCopy = in;
   v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Subclass must implement." userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v3 = a3;
+  graphCopy = graph;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Subclass must implement." userInfo:0];
   objc_exception_throw(v4);
 }
@@ -72,16 +72,16 @@
   objc_exception_throw(v2);
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Subclass must implement." userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (CRRegister)initWithCRCoder:(id)a3
+- (CRRegister)initWithCRCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Subclass must implement." userInfo:0];
   objc_exception_throw(v4);
 }

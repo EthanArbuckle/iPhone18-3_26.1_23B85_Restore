@@ -91,7 +91,7 @@
   v54 = v6;
   CGAffineTransformMakeTranslation(&v57, -1.0, -1.0);
   v9 = [v8 imageByApplyingTransform:&v57];
-  v10 = [(CIPhotoGrain *)self _interpolateGrainKernel];
+  _interpolateGrainKernel = [(CIPhotoGrain *)self _interpolateGrainKernel];
   [v9 extent];
   v12 = v11;
   v14 = v13;
@@ -101,7 +101,7 @@
   v55 = v7;
   *&v11 = v7;
   v62[1] = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-  v19 = [v10 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v62, 2), v12, v14, v16, v18}];
+  v19 = [_interpolateGrainKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v62, 2), v12, v14, v16, v18}];
   [v19 extent];
   v21 = v20 + -2.0;
   [v19 extent];
@@ -109,7 +109,7 @@
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(CIPhotoGrain *)self _paddedTileKernel];
+  _paddedTileKernel = [(CIPhotoGrain *)self _paddedTileKernel];
   v32 = *MEMORY[0x1E695F040];
   v31 = *(MEMORY[0x1E695F040] + 8);
   v33 = *(MEMORY[0x1E695F040] + 16);
@@ -123,7 +123,7 @@
   v59[6] = v27;
   v59[7] = v29;
   v61 = [CIVector vectorWithX:v21 Y:v21 Z:1.0 / v21 W:1.0 / v21];
-  v34 = [v30 applyWithExtent:v59 roiCallback:v19 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v61, 1), v32, v31, v33, v53}];
+  v34 = [_paddedTileKernel applyWithExtent:v59 roiCallback:v19 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v61, 1), v32, v31, v33, v53}];
   [(NSNumber *)self->inputSeed doubleValue];
   __src = v35;
   if (v35 != 0.0)
@@ -157,21 +157,21 @@
 
   v39 = log10f(flt_19CF285F0[v38]);
   v40 = fmaxf(flt_19CF28600[v38] + ((flt_19CF28600[v38 + 1] - flt_19CF28600[v38]) * ((v55 - v39) / (log10f(flt_19CF285F0[v38 + 1]) - v39))), 0.2);
-  v41 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-  v42 = [(CIPhotoGrain *)self _grainBlendAndMixKernel];
-  [(CIImage *)v41 extent];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+  _grainBlendAndMixKernel = [(CIPhotoGrain *)self _grainBlendAndMixKernel];
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
   v44 = v43;
   v46 = v45;
   v48 = v47;
   v50 = v49;
-  v60[0] = v41;
+  v60[0] = imageByUnpremultiplyingAlpha;
   v60[1] = v34;
   *&v43 = v40;
   v51 = [MEMORY[0x1E696AD98] numberWithFloat:v43];
   inputAmount = self->inputAmount;
   v60[2] = v51;
   v60[3] = inputAmount;
-  return [objc_msgSend(v42 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v60, 4), v44, v46, v48, v50), "imageByPremultiplyingAlpha"}];
+  return [objc_msgSend(_grainBlendAndMixKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v60, 4), v44, v46, v48, v50), "imageByPremultiplyingAlpha"}];
 }
 
 CIImage *__27__CIPhotoGrain_outputImage__block_invoke()

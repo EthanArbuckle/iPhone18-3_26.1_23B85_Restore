@@ -1,30 +1,30 @@
 @interface ADImageDescriptor
-+ (id)descriptorForSupportedSizes:(id)a3 pixelFormat:(unsigned int)a4;
-+ (id)descriptorWithDefaultSize:(CGSize)a3 pixelFormat:(unsigned int)a4;
-- (ADImageDescriptor)initWithSupportedSizes:(id)a3 pixelFormat:(unsigned int)a4;
++ (id)descriptorForSupportedSizes:(id)sizes pixelFormat:(unsigned int)format;
++ (id)descriptorWithDefaultSize:(CGSize)size pixelFormat:(unsigned int)format;
+- (ADImageDescriptor)initWithSupportedSizes:(id)sizes pixelFormat:(unsigned int)format;
 - (ADImageDimensions)dimensions;
-- (BOOL)conformedByPixelBuffer:(__CVBuffer *)a3 forLayout:(unint64_t)a4;
-- (BOOL)supportsLayout:(unint64_t)a3;
-- (CGSize)sizeForLayout:(unint64_t)a3;
-- (id)cloneWithDifferentFormat:(unsigned int)a3;
-- (id)customStridesForLayout:(unint64_t)a3;
-- (unint64_t)layoutForSize:(CGSize)a3;
+- (BOOL)conformedByPixelBuffer:(__CVBuffer *)buffer forLayout:(unint64_t)layout;
+- (BOOL)supportsLayout:(unint64_t)layout;
+- (CGSize)sizeForLayout:(unint64_t)layout;
+- (id)cloneWithDifferentFormat:(unsigned int)format;
+- (id)customStridesForLayout:(unint64_t)layout;
+- (unint64_t)layoutForSize:(CGSize)size;
 @end
 
 @implementation ADImageDescriptor
 
-- (BOOL)conformedByPixelBuffer:(__CVBuffer *)a3 forLayout:(unint64_t)a4
+- (BOOL)conformedByPixelBuffer:(__CVBuffer *)buffer forLayout:(unint64_t)layout
 {
   v50 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
 
-  [(ADImageDescriptor *)self sizeForLayout:a4];
+  [(ADImageDescriptor *)self sizeForLayout:layout];
   v8 = v7;
   v10 = v9;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (PixelFormatType != self->_pixelFormat)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -72,10 +72,10 @@
     return 0;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(buffer);
   v13 = Width;
   v14 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(buffer);
   if (v8 != v14 || v10 != Height)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -98,10 +98,10 @@
     return 0;
   }
 
-  v25 = [(ADImageDescriptor *)self customStridesForLayout:a4];
+  v25 = [(ADImageDescriptor *)self customStridesForLayout:layout];
   if (v25)
   {
-    PlaneCount = CVPixelBufferGetPlaneCount(a3);
+    PlaneCount = CVPixelBufferGetPlaneCount(buffer);
     v27 = PlaneCount;
     if (PlaneCount >= 0x20)
     {
@@ -113,7 +113,7 @@
       v28 = 0;
       do
       {
-        *&buf[8 * v28] = CVPixelBufferGetBytesPerRowOfPlane(a3, v28);
+        *&buf[8 * v28] = CVPixelBufferGetBytesPerRowOfPlane(buffer, v28);
         ++v28;
       }
 
@@ -122,7 +122,7 @@
 
     else
     {
-      *buf = CVPixelBufferGetBytesPerRow(a3);
+      *buf = CVPixelBufferGetBytesPerRow(buffer);
       v27 = 1;
     }
 
@@ -133,9 +133,9 @@
       {
         v30 = *&buf[8 * v29];
         v31 = [v25 objectAtIndexedSubscript:v29];
-        v32 = [v31 unsignedLongLongValue];
+        unsignedLongLongValue = [v31 unsignedLongLongValue];
 
-        if (v30 != v32)
+        if (v30 != unsignedLongLongValue)
         {
           break;
         }
@@ -154,7 +154,7 @@
         v35 = 2048;
         v36 = v29;
         v37 = 2048;
-        v38 = [v33 unsignedLongValue];
+        unsignedLongValue = [v33 unsignedLongValue];
         _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "PixelBuffer with %zu bytes-per-row for plane %zu does not conform to descriptor with bytes-per-row %lu", __p, 0x20u);
       }
     }
@@ -180,10 +180,10 @@ LABEL_34:
   return v23;
 }
 
-- (unint64_t)layoutForSize:(CGSize)a3
+- (unint64_t)layoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [ADLayoutUtils layoutForSize:?];
   if (![(ADImageDescriptor *)self supportsLayout:v6])
   {
@@ -206,7 +206,7 @@ LABEL_34:
   return v6;
 }
 
-- (id)customStridesForLayout:(unint64_t)a3
+- (id)customStridesForLayout:(unint64_t)layout
 {
   v12 = *MEMORY[0x277D85DE8];
   sizeForLayout = self->_sizeForLayout;
@@ -215,26 +215,26 @@ LABEL_34:
 
   if (v6)
   {
-    v7 = [v6 customStrides];
+    customStrides = [v6 customStrides];
   }
 
   else
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v9 = [ADLayoutUtils layoutAsString:a3];
+      v9 = [ADLayoutUtils layoutAsString:layout];
       v10 = 138543362;
       v11 = v9;
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unsupported layout: %{public}@", &v10, 0xCu);
     }
 
-    v7 = 0;
+    customStrides = 0;
   }
 
-  return v7;
+  return customStrides;
 }
 
-- (CGSize)sizeForLayout:(unint64_t)a3
+- (CGSize)sizeForLayout:(unint64_t)layout
 {
   v16 = *MEMORY[0x277D85DE8];
   sizeForLayout = self->_sizeForLayout;
@@ -254,7 +254,7 @@ LABEL_34:
     v10 = 0.0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v13 = [ADLayoutUtils layoutAsString:a3];
+      v13 = [ADLayoutUtils layoutAsString:layout];
       v14 = 138543362;
       v15 = v13;
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unsupported layout: %{public}@", &v14, 0xCu);
@@ -268,9 +268,9 @@ LABEL_34:
   return result;
 }
 
-- (BOOL)supportsLayout:(unint64_t)a3
+- (BOOL)supportsLayout:(unint64_t)layout
 {
-  if (a3 == 254)
+  if (layout == 254)
   {
     return 0;
   }
@@ -283,10 +283,10 @@ LABEL_34:
   return v3;
 }
 
-- (ADImageDescriptor)initWithSupportedSizes:(id)a3 pixelFormat:(unsigned int)a4
+- (ADImageDescriptor)initWithSupportedSizes:(id)sizes pixelFormat:(unsigned int)format
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sizesCopy = sizes;
   v22.receiver = self;
   v22.super_class = ADImageDescriptor;
   v6 = [(ADImageDescriptor *)&v22 init];
@@ -300,7 +300,7 @@ LABEL_34:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v5;
+    v9 = sizesCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
@@ -326,16 +326,16 @@ LABEL_34:
       while (v10);
     }
 
-    v6->_pixelFormat = a4;
+    v6->_pixelFormat = format;
   }
 
   return v6;
 }
 
-- (id)cloneWithDifferentFormat:(unsigned int)a3
+- (id)cloneWithDifferentFormat:(unsigned int)format
 {
   v5 = objc_opt_new();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = format;
   objc_storeStrong((v5 + 8), self->_sizeForLayout);
 
   return v5;
@@ -345,8 +345,8 @@ LABEL_34:
 {
   if ([(NSMutableDictionary *)self->_sizeForLayout count]== 1)
   {
-    v3 = [(NSMutableDictionary *)self->_sizeForLayout allValues];
-    v4 = [v3 objectAtIndexedSubscript:0];
+    allValues = [(NSMutableDictionary *)self->_sizeForLayout allValues];
+    v4 = [allValues objectAtIndexedSubscript:0];
     [v4 size];
     v6 = v5;
     v8 = v7;
@@ -368,11 +368,11 @@ LABEL_34:
   return v9;
 }
 
-+ (id)descriptorWithDefaultSize:(CGSize)a3 pixelFormat:(unsigned int)a4
++ (id)descriptorWithDefaultSize:(CGSize)size pixelFormat:(unsigned int)format
 {
-  v4 = *&a4;
+  v4 = *&format;
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = [ADImageSupportedSize createWithSize:255 andLayout:a3.width, a3.height];
+  v5 = [ADImageSupportedSize createWithSize:255 andLayout:size.width, size.height];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v7 = [ADImageDescriptor descriptorForSupportedSizes:v6 pixelFormat:v4];
@@ -380,11 +380,11 @@ LABEL_34:
   return v7;
 }
 
-+ (id)descriptorForSupportedSizes:(id)a3 pixelFormat:(unsigned int)a4
++ (id)descriptorForSupportedSizes:(id)sizes pixelFormat:(unsigned int)format
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [[ADImageDescriptor alloc] initWithSupportedSizes:v5 pixelFormat:v4];
+  v4 = *&format;
+  sizesCopy = sizes;
+  v6 = [[ADImageDescriptor alloc] initWithSupportedSizes:sizesCopy pixelFormat:v4];
 
   return v6;
 }

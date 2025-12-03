@@ -14,10 +14,10 @@
 
 - (id)musicKit_playerPath_route
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 route];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  route = [_musicKit_self_playerPath route];
 
-  return v2;
+  return route;
 }
 
 - (id)_musicKit_self_playerPath
@@ -25,66 +25,66 @@
   getMPCPlayerPathClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_playerPath_playerID
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 playerID];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  playerID = [_musicKit_self_playerPath playerID];
 
-  return v2;
+  return playerID;
 }
 
 - (id)musicKit_playerPath_bundleID
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 bundleID];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  bundleID = [_musicKit_self_playerPath bundleID];
 
-  return v2;
+  return bundleID;
 }
 
 - (uint64_t)musicKit_playerPath_isInProcess
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 isInProcess];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  isInProcess = [_musicKit_self_playerPath isInProcess];
 
-  return v2;
+  return isInProcess;
 }
 
 - (uint64_t)musicKit_playerPath_isLocal
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 isLocalDevice];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  isLocalDevice = [_musicKit_self_playerPath isLocalDevice];
 
-  return v2;
+  return isLocalDevice;
 }
 
 - (uint64_t)musicKit_playerPath_hasNonLocalEndpointRoute
 {
   v19 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 route];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  route = [_musicKit_self_playerPath route];
   getMPAVEndpointRouteClass();
   v3 = 0;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v2)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && route)
   {
-    v4 = [v2 endpointObject];
-    v5 = [v4 outputDevices];
+    endpointObject = [route endpointObject];
+    outputDevices = [endpointObject outputDevices];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = outputDevices;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -132,30 +132,30 @@ LABEL_16:
 
 - (uint64_t)musicKit_playerPath_isCompanion
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 route];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  route = [_musicKit_self_playerPath route];
   getMPAVEndpointRouteClass();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v3 = v2) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v3 = route) != 0)
   {
     v4 = v3;
-    v5 = [v3 endpointObject];
-    v6 = [v5 isCompanionEndpoint];
+    endpointObject = [v3 endpointObject];
+    isCompanionEndpoint = [endpointObject isCompanionEndpoint];
   }
 
   else
   {
-    v6 = 0;
+    isCompanionEndpoint = 0;
   }
 
-  return v6;
+  return isCompanionEndpoint;
 }
 
 - (id)musicKit_playerPath_mrPlayerPath
 {
-  v1 = [a1 _musicKit_self_playerPath];
-  v2 = [v1 mrPlayerPath];
+  _musicKit_self_playerPath = [self _musicKit_self_playerPath];
+  mrPlayerPath = [_musicKit_self_playerPath mrPlayerPath];
 
-  return v2;
+  return mrPlayerPath;
 }
 
 @end

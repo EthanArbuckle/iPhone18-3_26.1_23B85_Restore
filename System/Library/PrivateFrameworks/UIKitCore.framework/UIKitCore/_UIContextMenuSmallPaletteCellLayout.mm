@@ -5,38 +5,38 @@
 - (UIHoverStyle)hoverStyle;
 - (UIShape)contentShape;
 - (_UIContextMenuCellContentView)contentView;
-- (_UIContextMenuSmallPaletteCellLayout)initWithContentView:(id)a3;
-- (id)preferredIconFontUsingBoldFont:(BOOL)a3;
+- (_UIContextMenuSmallPaletteCellLayout)initWithContentView:(id)view;
+- (id)preferredIconFontUsingBoldFont:(BOOL)font;
 - (void)installConstraints;
 - (void)removeConstraints;
 @end
 
 @implementation _UIContextMenuSmallPaletteCellLayout
 
-- (_UIContextMenuSmallPaletteCellLayout)initWithContentView:(id)a3
+- (_UIContextMenuSmallPaletteCellLayout)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _UIContextMenuSmallPaletteCellLayout;
   v5 = [(_UIContextMenuSmallPaletteCellLayout *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIContextMenuSmallPaletteCellLayout *)v5 setContentView:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(_UIContextMenuSmallPaletteCellLayout *)v6 setManagedConstraints:v7];
+    [(_UIContextMenuSmallPaletteCellLayout *)v5 setContentView:viewCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(_UIContextMenuSmallPaletteCellLayout *)v6 setManagedConstraints:array];
   }
 
   return v6;
 }
 
-- (id)preferredIconFontUsingBoldFont:(BOOL)a3
+- (id)preferredIconFontUsingBoldFont:(BOOL)font
 {
-  v4 = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
-  v5 = [v4 traitCollection];
-  v6 = _UIContextMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v6 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
   v7 = v6;
-  if (a3)
+  if (font)
   {
     [v6 titleEmphasizedFont];
   }
@@ -46,17 +46,17 @@
     [v6 titleFont];
   }
   v8 = ;
-  v9 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v5];
+  v9 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
   return v9;
 }
 
 - (UIColor)preferredContentColorForCurrentState
 {
-  v2 = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
-  v3 = [v2 options];
+  contentView = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
+  options = [contentView options];
 
-  if (v3)
+  if (options)
   {
     v4 = +[UIColor tertiaryLabelColor];
   }
@@ -71,91 +71,91 @@
 
 - (void)installConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v58[2] = *MEMORY[0x1E69E9840];
   [(_UIContextMenuSmallPaletteCellLayout *)self removeConstraints];
-  v3 = [(_UIContextMenuSmallPaletteCellLayout *)v2 contentView];
-  v4 = [v3 traitCollection];
-  v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuSmallPaletteCellLayout *)selfCopy contentView];
+  traitCollection = [contentView traitCollection];
+  v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v6 = [v3 labelStackView];
-  [v6 removeFromSuperview];
+  labelStackView = [contentView labelStackView];
+  [labelStackView removeFromSuperview];
 
-  v7 = [v3 iconView];
-  v8 = [v3 titleLabel];
-  v9 = v8;
-  if (v7)
+  iconView = [contentView iconView];
+  titleLabel = [contentView titleLabel];
+  v9 = titleLabel;
+  if (iconView)
   {
-    v53 = v2;
-    v55 = v8;
+    v53 = selfCopy;
+    v55 = titleLabel;
     v10 = v5;
-    [v3 addSubview:v7];
-    v11 = [v7 centerYAnchor];
-    v12 = [v3 centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    [contentView addSubview:iconView];
+    centerYAnchor = [iconView centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v58[0] = v13;
-    v14 = [v7 centerXAnchor];
-    v15 = [v3 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerXAnchor = [iconView centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v58[1] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v7;
-      v19 = [v18 _currentImage];
-      v20 = [v3 traitCollection];
+      v18 = iconView;
+      _currentImage = [v18 _currentImage];
+      traitCollection2 = [contentView traitCollection];
       v21 = 0.0;
-      if ([v19 isSymbolImage])
+      if ([_currentImage isSymbolImage])
       {
         v5 = v10;
-        v2 = v53;
+        selfCopy = v53;
         v9 = v55;
-        if ([v20 userInterfaceStyle] == 1)
+        if ([traitCollection2 userInterfaceStyle] == 1)
         {
-          v49 = v20;
-          v51 = v19;
-          v22 = [v19 symbolConfiguration];
-          v23 = [v22 _colors];
-          v24 = [v23 firstObject];
+          v49 = traitCollection2;
+          v51 = _currentImage;
+          symbolConfiguration = [_currentImage symbolConfiguration];
+          _colors = [symbolConfiguration _colors];
+          firstObject = [_colors firstObject];
 
-          if (v24)
+          if (firstObject)
           {
-            [v24 _luminance];
-            v20 = v49;
-            v19 = v51;
+            [firstObject _luminance];
+            traitCollection2 = v49;
+            _currentImage = v51;
             if (v25 > 0.8)
             {
               v46 = [UIColor colorWithWhite:0.0 alpha:0.15];
-              v26 = [v3 traitCollection];
-              [v26 displayScale];
+              traitCollection3 = [contentView traitCollection];
+              [traitCollection3 displayScale];
               v28 = 1.0 / v27;
-              v29 = [v18 layer];
-              [v29 setRimWidth:v28];
+              layer = [v18 layer];
+              [layer setRimWidth:v28];
 
-              v30 = [v18 layer];
+              layer2 = [v18 layer];
               v21 = 1.0;
               LODWORD(v31) = 1.0;
-              [v30 setRimOpacity:v31];
+              [layer2 setRimOpacity:v31];
 
-              v32 = [v24 _colorBlendedWithColor:v46 compositingFilter:*MEMORY[0x1E6979CE8]];
-              v33 = [v32 CGColor];
+              v32 = [firstObject _colorBlendedWithColor:v46 compositingFilter:*MEMORY[0x1E6979CE8]];
+              cGColor = [v32 CGColor];
               [v18 layer];
               v34 = v47 = v18;
-              v35 = v33;
-              v20 = v49;
+              v35 = cGColor;
+              traitCollection2 = v49;
               [v34 setRimColor:v35];
 
               v18 = v47;
-              v19 = v51;
+              _currentImage = v51;
             }
           }
 
           else
           {
-            v20 = v49;
-            v19 = v51;
+            traitCollection2 = v49;
+            _currentImage = v51;
           }
         }
       }
@@ -163,56 +163,56 @@
       else
       {
         v5 = v10;
-        v2 = v53;
+        selfCopy = v53;
         v9 = v55;
       }
 
-      v37 = [v18 layer];
+      layer3 = [v18 layer];
       *&v45 = v21;
-      [v37 setRimOpacity:v45];
+      [layer3 setRimOpacity:v45];
       goto LABEL_16;
     }
 
     v5 = v10;
-    v2 = v53;
+    selfCopy = v53;
     v9 = v55;
   }
 
   else
   {
-    if (v8)
+    if (titleLabel)
     {
       v36 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleFootnote"];
       [v9 setFont:v36];
 
-      [v3 addSubview:v9];
-      v48 = [v9 centerYAnchor];
-      v52 = [v3 centerYAnchor];
-      v50 = [v48 constraintEqualToAnchor:v52];
+      [contentView addSubview:v9];
+      centerYAnchor3 = [v9 centerYAnchor];
+      centerYAnchor4 = [contentView centerYAnchor];
+      v50 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v57[0] = v50;
-      v37 = [v9 leadingAnchor];
-      v54 = [v3 leadingAnchor];
+      layer3 = [v9 leadingAnchor];
+      leadingAnchor = [contentView leadingAnchor];
       [v5 paletteItemMinimumHorizontalMargin];
-      v38 = [v37 constraintEqualToAnchor:v54 constant:?];
+      v38 = [layer3 constraintEqualToAnchor:leadingAnchor constant:?];
       v57[1] = v38;
-      v39 = [v9 trailingAnchor];
-      [v3 trailingAnchor];
+      trailingAnchor = [v9 trailingAnchor];
+      [contentView trailingAnchor];
       v40 = v56 = v9;
       [v5 paletteItemMinimumHorizontalMargin];
-      [v39 constraintEqualToAnchor:v40 constant:-v41];
-      v42 = v2;
+      [trailingAnchor constraintEqualToAnchor:v40 constant:-v41];
+      v42 = selfCopy;
       v44 = v43 = v5;
       v57[2] = v44;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:3];
 
       v5 = v43;
-      v2 = v42;
-      v19 = v52;
+      selfCopy = v42;
+      _currentImage = centerYAnchor4;
 
       v9 = v56;
-      v20 = v50;
+      traitCollection2 = v50;
 
-      v18 = v48;
+      v18 = centerYAnchor3;
 LABEL_16:
 
       goto LABEL_17;
@@ -223,14 +223,14 @@ LABEL_16:
 
 LABEL_17:
   [MEMORY[0x1E69977A0] activateConstraints:v17];
-  [(_UIContextMenuSmallPaletteCellLayout *)v2 setManagedConstraints:v17];
+  [(_UIContextMenuSmallPaletteCellLayout *)selfCopy setManagedConstraints:v17];
 }
 
 - (void)removeConstraints
 {
   v3 = MEMORY[0x1E69977A0];
-  v4 = [(_UIContextMenuSmallPaletteCellLayout *)self managedConstraints];
-  [v3 deactivateConstraints:v4];
+  managedConstraints = [(_UIContextMenuSmallPaletteCellLayout *)self managedConstraints];
+  [v3 deactivateConstraints:managedConstraints];
 
   managedConstraints = self->_managedConstraints;
   self->_managedConstraints = 0;
@@ -238,18 +238,18 @@ LABEL_17:
 
 - (UIHoverStyle)hoverStyle
 {
-  v3 = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
-  v4 = [v3 iconView];
-  if (v4 || ([v3 titleLabel], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  contentView = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
+  iconView = [contentView iconView];
+  if (iconView || ([contentView titleLabel], (iconView = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    v5 = iconView;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 image];
-      if ([v6 isSymbolImage])
+      image = [v5 image];
+      if ([image isSymbolImage])
       {
-        v7 = _UIImageName(v6);
+        v7 = _UIImageName(image);
         if ([v7 containsString:@"circle.fill"] & 1) != 0 || (objc_msgSend(v7, "containsString:", @"square.fill"))
         {
           v8 = 1;
@@ -329,30 +329,30 @@ LABEL_17:
 
 - (BOOL)useContentShapeForSelectionHighlight
 {
-  v2 = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
-  v3 = [v2 selectedIconBehavior] != 2;
+  contentView = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
+  v3 = [contentView selectedIconBehavior] != 2;
 
   return v3;
 }
 
 - (CGRect)_rectForHighlightContentShape
 {
-  v2 = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
-  v3 = [v2 iconView];
-  v4 = v3;
-  if (v3)
+  contentView = [(_UIContextMenuSmallPaletteCellLayout *)self contentView];
+  iconView = [contentView iconView];
+  v4 = iconView;
+  if (iconView)
   {
-    v5 = v3;
+    titleLabel = iconView;
   }
 
   else
   {
-    v5 = [v2 titleLabel];
+    titleLabel = [contentView titleLabel];
   }
 
-  v6 = v5;
+  v6 = titleLabel;
 
-  [v2 bounds];
+  [contentView bounds];
   v8 = v7;
   v10 = v9;
   v36 = v9;
@@ -361,8 +361,8 @@ LABEL_17:
   v15 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleBody"];
   [v15 _scaledValueForValue:8.0];
   v17 = v16;
-  v18 = [v2 traitCollection];
-  [v18 displayScale];
+  traitCollection = [contentView traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale(v17, v19);
   v21 = v20;
 
@@ -392,7 +392,7 @@ LABEL_17:
     v28 = v27;
   }
 
-  [v2 bounds];
+  [contentView bounds];
   v29 = CGRectGetWidth(v41);
   v42.origin.x = x;
   v42.origin.y = y;

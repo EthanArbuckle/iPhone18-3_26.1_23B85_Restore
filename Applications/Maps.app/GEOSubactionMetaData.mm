@@ -1,18 +1,18 @@
 @interface GEOSubactionMetaData
-+ (id)subactionMetaDataWithChildItems:(id)a3 selectedChildItemIndexPath:(id)a4;
++ (id)subactionMetaDataWithChildItems:(id)items selectedChildItemIndexPath:(id)path;
 @end
 
 @implementation GEOSubactionMetaData
 
-+ (id)subactionMetaDataWithChildItems:(id)a3 selectedChildItemIndexPath:(id)a4
++ (id)subactionMetaDataWithChildItems:(id)items selectedChildItemIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  pathCopy = path;
   v7 = objc_alloc_init(GEOSubactionMetaData);
-  v25 = v6;
-  if (v6)
+  v25 = pathCopy;
+  if (pathCopy)
   {
-    v8 = [v6 row];
+    v8 = [pathCopy row];
   }
 
   else
@@ -25,7 +25,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v5;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -44,37 +44,37 @@
         v15 = [ChildItemButton buttonTitleWithChildItem:v14];
         [v7 addDisplayedText:v15];
 
-        v16 = [v14 childItemAction];
+        childItemAction = [v14 childItemAction];
 
-        if (v16)
+        if (childItemAction)
         {
-          v17 = [v14 childItemAction];
-          v18 = [v14 childItemAction];
-          v19 = [v17 childActionTypeAsString:{objc_msgSend(v18, "childActionType")}];
+          childItemAction2 = [v14 childItemAction];
+          childItemAction3 = [v14 childItemAction];
+          v19 = [childItemAction2 childActionTypeAsString:{objc_msgSend(childItemAction3, "childActionType")}];
           [v7 addChildItemSubactionType:v19];
         }
 
-        v20 = [v14 childItemType];
-        if (v20 == 1)
+        childItemType = [v14 childItemType];
+        if (childItemType == 1)
         {
           v23 = 2;
           goto LABEL_18;
         }
 
-        if (v20 == 3)
+        if (childItemType == 3)
         {
           v23 = 3;
           goto LABEL_18;
         }
 
-        if (v20 == 2)
+        if (childItemType == 2)
         {
-          v21 = [v14 childItemAction];
-          v22 = [v21 childActionType];
+          childItemAction4 = [v14 childItemAction];
+          childActionType = [childItemAction4 childActionType];
 
-          if ((v22 - 1) < 8)
+          if ((childActionType - 1) < 8)
           {
-            v23 = dword_1012131F8[(v22 - 1)];
+            v23 = dword_1012131F8[(childActionType - 1)];
 LABEL_18:
             [v7 addSubaction:v23];
             continue;

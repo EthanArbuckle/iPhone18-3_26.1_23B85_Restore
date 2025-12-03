@@ -1,18 +1,18 @@
 @interface AXUIAlert
-+ (id)alertWithType:(unint64_t)a3 text:(id)a4 subtitleText:(id)a5 iconImage:(id)a6 styleProvider:(id)a7 userInfo:(id)a8;
++ (id)alertWithType:(unint64_t)type text:(id)text subtitleText:(id)subtitleText iconImage:(id)image styleProvider:(id)provider userInfo:(id)info;
 - (AXUIAlertContext)context;
 @end
 
 @implementation AXUIAlert
 
-+ (id)alertWithType:(unint64_t)a3 text:(id)a4 subtitleText:(id)a5 iconImage:(id)a6 styleProvider:(id)a7 userInfo:(id)a8
++ (id)alertWithType:(unint64_t)type text:(id)text subtitleText:(id)subtitleText iconImage:(id)image styleProvider:(id)provider userInfo:(id)info
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (a3 == 5)
+  textCopy = text;
+  subtitleTextCopy = subtitleText;
+  imageCopy = image;
+  providerCopy = provider;
+  infoCopy = info;
+  if (type == 5)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:5];
     _AXAssert();
@@ -22,7 +22,7 @@
 
   else
   {
-    v18 = [[AXStyleProviderUIAlert alloc] initWithType:a3 text:v13 subtitleText:v14 iconImage:v15 styleProvider:v16 userInfo:v17];
+    v18 = [[AXStyleProviderUIAlert alloc] initWithType:type text:textCopy subtitleText:subtitleTextCopy iconImage:imageCopy styleProvider:providerCopy userInfo:infoCopy];
   }
 
   return v18;

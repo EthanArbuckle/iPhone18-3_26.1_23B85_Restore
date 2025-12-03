@@ -1,32 +1,32 @@
 @interface SHMaths
-+ (double)interpolateValue:(double)a3 leftMin:(double)a4 leftMax:(double)a5 rightMin:(double)a6 rightMax:(double)a7;
++ (double)interpolateValue:(double)value leftMin:(double)min leftMax:(double)max rightMin:(double)rightMin rightMax:(double)rightMax;
 @end
 
 @implementation SHMaths
 
-+ (double)interpolateValue:(double)a3 leftMin:(double)a4 leftMax:(double)a5 rightMin:(double)a6 rightMax:(double)a7
++ (double)interpolateValue:(double)value leftMin:(double)min leftMax:(double)max rightMin:(double)rightMin rightMax:(double)rightMax
 {
-  if (a3 <= a5)
+  if (value <= max)
   {
-    v7 = a3;
+    maxCopy = value;
   }
 
   else
   {
-    v7 = a5;
+    maxCopy = max;
   }
 
-  if (a3 >= a4)
+  if (value >= min)
   {
-    v8 = v7;
+    minCopy = maxCopy;
   }
 
   else
   {
-    v8 = a4;
+    minCopy = min;
   }
 
-  return a6 + (v8 - a4) / (a5 - a4) * (a7 - a6);
+  return rightMin + (minCopy - min) / (max - min) * (rightMax - rightMin);
 }
 
 @end

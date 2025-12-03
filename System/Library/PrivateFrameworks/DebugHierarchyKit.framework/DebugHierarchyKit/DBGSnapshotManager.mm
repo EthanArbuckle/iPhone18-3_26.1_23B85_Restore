@@ -1,33 +1,33 @@
 @interface DBGSnapshotManager
-+ (DBGSnapshotManager)snapshotManagerWithSnapshot:(id)a3 primaryDataCoordinator:(id)a4;
-- (DBGSnapshotManager)initWithSnapshot:(id)a3 primaryDataCoordinator:(id)a4;
++ (DBGSnapshotManager)snapshotManagerWithSnapshot:(id)snapshot primaryDataCoordinator:(id)coordinator;
+- (DBGSnapshotManager)initWithSnapshot:(id)snapshot primaryDataCoordinator:(id)coordinator;
 - (void)cancelAllRequests;
 - (void)clearData;
-- (void)setPrimaryDataCoordinator:(id)a3;
+- (void)setPrimaryDataCoordinator:(id)coordinator;
 @end
 
 @implementation DBGSnapshotManager
 
-+ (DBGSnapshotManager)snapshotManagerWithSnapshot:(id)a3 primaryDataCoordinator:(id)a4
++ (DBGSnapshotManager)snapshotManagerWithSnapshot:(id)snapshot primaryDataCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSnapshot:v7 primaryDataCoordinator:v6];
+  coordinatorCopy = coordinator;
+  snapshotCopy = snapshot;
+  v8 = [[self alloc] initWithSnapshot:snapshotCopy primaryDataCoordinator:coordinatorCopy];
 
   return v8;
 }
 
-- (DBGSnapshotManager)initWithSnapshot:(id)a3 primaryDataCoordinator:(id)a4
+- (DBGSnapshotManager)initWithSnapshot:(id)snapshot primaryDataCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  snapshotCopy = snapshot;
+  coordinatorCopy = coordinator;
   v17.receiver = self;
   v17.super_class = DBGSnapshotManager;
   v9 = [(DBGSnapshotManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_snapshot, a3);
+    objc_storeStrong(&v9->_snapshot, snapshot);
     snapshot = v10->_snapshot;
     if (!snapshot)
     {
@@ -43,7 +43,7 @@
     runtimeInfo = v10->_runtimeInfo;
     v10->_runtimeInfo = v14;
 
-    objc_storeStrong(&v10->_primaryDataCoordinator, a4);
+    objc_storeStrong(&v10->_primaryDataCoordinator, coordinator);
     [(DBGDataCoordinator *)v10->_primaryDataCoordinator setSnapshotManager:v10];
   }
 
@@ -52,25 +52,25 @@
 
 - (void)clearData
 {
-  v3 = [(DBGSnapshotManager *)self snapshot];
-  [v3 clearData];
+  snapshot = [(DBGSnapshotManager *)self snapshot];
+  [snapshot clearData];
 
-  v4 = [(DBGSnapshotManager *)self runtimeInfo];
-  [v4 clearData];
+  runtimeInfo = [(DBGSnapshotManager *)self runtimeInfo];
+  [runtimeInfo clearData];
 }
 
 - (void)cancelAllRequests
 {
-  v2 = [(DBGSnapshotManager *)self primaryDataCoordinator];
-  [v2 cancelAllRequests];
+  primaryDataCoordinator = [(DBGSnapshotManager *)self primaryDataCoordinator];
+  [primaryDataCoordinator cancelAllRequests];
 }
 
-- (void)setPrimaryDataCoordinator:(id)a3
+- (void)setPrimaryDataCoordinator:(id)coordinator
 {
-  v4 = a3;
-  [(DBGDataCoordinator *)v4 setSnapshotManager:self];
+  coordinatorCopy = coordinator;
+  [(DBGDataCoordinator *)coordinatorCopy setSnapshotManager:self];
   primaryDataCoordinator = self->_primaryDataCoordinator;
-  self->_primaryDataCoordinator = v4;
+  self->_primaryDataCoordinator = coordinatorCopy;
 }
 
 @end

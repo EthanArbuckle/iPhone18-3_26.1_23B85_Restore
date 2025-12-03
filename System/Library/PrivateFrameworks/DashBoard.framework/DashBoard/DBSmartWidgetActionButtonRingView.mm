@@ -1,26 +1,26 @@
 @interface DBSmartWidgetActionButtonRingView
-- (void)drawRect:(CGRect)a3;
-- (void)setFillColor:(id)a3;
-- (void)setFocusHighlightColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFillColor:(id)color;
+- (void)setFocusHighlightColor:(id)color;
 @end
 
 @implementation DBSmartWidgetActionButtonRingView
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  objc_storeStrong(&self->_fillColor, a3);
+  objc_storeStrong(&self->_fillColor, color);
 
   [(DBSmartWidgetActionButtonRingView *)self setNeedsDisplay];
 }
 
-- (void)setFocusHighlightColor:(id)a3
+- (void)setFocusHighlightColor:(id)color
 {
-  objc_storeStrong(&self->_focusHighlightColor, a3);
+  objc_storeStrong(&self->_focusHighlightColor, color);
 
   [(DBSmartWidgetActionButtonRingView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(DBSmartWidgetActionButtonRingView *)self bounds];
@@ -33,23 +33,23 @@
   v10 = v23.origin.y;
   v11 = v23.size.width;
   v12 = v23.size.height;
-  v20 = [(DBSmartWidgetActionButtonRingView *)self fillColor];
+  fillColor = [(DBSmartWidgetActionButtonRingView *)self fillColor];
   if ([(DBSmartWidgetActionButtonRingView *)self isSelected])
   {
-    v13 = [MEMORY[0x277D75348] _carSystemPrimaryColor];
+    _carSystemPrimaryColor = [MEMORY[0x277D75348] _carSystemPrimaryColor];
 
-    v20 = v13;
+    fillColor = _carSystemPrimaryColor;
   }
 
   if ([(DBSmartWidgetActionButtonRingView *)self isHighlighted])
   {
-    v14 = [v20 colorWithAlphaComponent:0.5];
+    v14 = [fillColor colorWithAlphaComponent:0.5];
     [v14 setFill];
   }
 
   else
   {
-    [v20 setFill];
+    [fillColor setFill];
   }
 
   if ([(DBSmartWidgetActionButtonRingView *)self isFocusRingVisible])
@@ -63,8 +63,8 @@
     v16 = v25.origin.y;
     v17 = v25.size.width;
     v18 = v25.size.height;
-    v19 = [(DBSmartWidgetActionButtonRingView *)self focusHighlightColor];
-    [v19 setStroke];
+    focusHighlightColor = [(DBSmartWidgetActionButtonRingView *)self focusHighlightColor];
+    [focusHighlightColor setStroke];
 
     CGContextSetLineWidth(CurrentContext, 2.0);
     v26.origin.x = v15;

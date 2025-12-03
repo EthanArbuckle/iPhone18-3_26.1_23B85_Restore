@@ -1,5 +1,5 @@
 @interface APSNetworkMonitor
-+ (unint64_t)powerCostForPushOnRAT:(int)a3 withLinkQuality:(int)a4;
++ (unint64_t)powerCostForPushOnRAT:(int)t withLinkQuality:(int)quality;
 - (APSNetworkMonitor)init;
 - (BOOL)_checkPiggybackBudget;
 - (BOOL)_wifiIsHistoricallyCheap;
@@ -9,29 +9,29 @@
 - (void)_clearPiggybackConnectionTimer;
 - (void)_connectionThrottleTimerFired;
 - (void)_deregisterFromWoWNotifications;
-- (void)_flushStaleElementsFrom:(id *)a3 withThreshold:(double)a4;
+- (void)_flushStaleElementsFrom:(id *)from withThreshold:(double)threshold;
 - (void)_handleSignificantTimeChange;
 - (void)_piggybackConnectionTimerFired;
-- (void)_processSSIDChangeWithSSID:(id)a3 querySSID:(BOOL)a4;
+- (void)_processSSIDChangeWithSSID:(id)d querySSID:(BOOL)iD;
 - (void)_registerForWoWNotifications;
 - (void)_reloadDualMode;
 - (void)_toggleWiFiAutoAssociateIfNecessary;
-- (void)closedSecondChannel:(int64_t)a3;
-- (void)cutWiFiManager:(id)a3 generatedPowerReading:(id)a4;
-- (void)cutWiFiManagerLinkDidChange:(id)a3 context:(id)a4;
+- (void)closedSecondChannel:(int64_t)channel;
+- (void)cutWiFiManager:(id)manager generatedPowerReading:(id)reading;
+- (void)cutWiFiManagerLinkDidChange:(id)change context:(id)context;
 - (void)dealloc;
-- (void)decayTimerFired:(id)a3;
-- (void)interfaceConstraintChanged:(id)a3;
-- (void)notePushWithCost:(unint64_t)a3;
+- (void)decayTimerFired:(id)fired;
+- (void)interfaceConstraintChanged:(id)changed;
+- (void)notePushWithCost:(unint64_t)cost;
 - (void)openedSecondChannel;
-- (void)setCostDrivenDualChannelAttempts:(id)a3;
-- (void)setCriticalReliability:(BOOL)a3;
-- (void)setCurrentWiFiKeepAliveInterval:(double)a3 growAttempts:(unint64_t)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDisableCostDrivenDualChannelAttempts:(id)a3;
-- (void)setDisableDualModePiggybackTimer:(id)a3;
-- (void)setPiggybackDualChannelAttempts:(id)a3;
-- (void)setServerSupportsDualMode:(BOOL)a3;
+- (void)setCostDrivenDualChannelAttempts:(id)attempts;
+- (void)setCriticalReliability:(BOOL)reliability;
+- (void)setCurrentWiFiKeepAliveInterval:(double)interval growAttempts:(unint64_t)attempts;
+- (void)setDelegate:(id)delegate;
+- (void)setDisableCostDrivenDualChannelAttempts:(id)attempts;
+- (void)setDisableDualModePiggybackTimer:(id)timer;
+- (void)setPiggybackDualChannelAttempts:(id)attempts;
+- (void)setServerSupportsDualMode:(BOOL)mode;
 - (void)systemDidLock;
 - (void)systemDidUnlock;
 @end
@@ -63,7 +63,7 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v3 = 138412290;
-    v4 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ systemDidUnlock, refreshing state", &v3, 0xCu);
   }
 
@@ -73,9 +73,9 @@
 - (void)__toggleWiFiAutoAssociateIfNecessary
 {
   [(APSDecayTimer *)self->_decayTimer performDecay];
-  v3 = [(APSDecayTimer *)self->_decayTimer currentCost];
-  v4 = [(APSNetworkMonitor *)self _wifiIsHistoricallyCheap];
-  v5 = v4;
+  currentCost = [(APSDecayTimer *)self->_decayTimer currentCost];
+  _wifiIsHistoricallyCheap = [(APSNetworkMonitor *)self _wifiIsHistoricallyCheap];
+  v5 = _wifiIsHistoricallyCheap;
   shouldThrottleConnection = self->_shouldThrottleConnection;
   dualMode = self->_dualMode;
   if (dualMode == -1)
@@ -94,7 +94,7 @@
 
   if (dualMode != 1)
   {
-    if (v3 >= 0x3E9 && ((v4 ^ 1) & 1) == 0 && !shouldThrottleConnection && !self->_disableCostDrivenDualMode || self->_criticalReliability || self->_isWoWEnabled)
+    if (currentCost >= 0x3E9 && ((_wifiIsHistoricallyCheap ^ 1) & 1) == 0 && !shouldThrottleConnection && !self->_disableCostDrivenDualMode || self->_criticalReliability || self->_isWoWEnabled)
     {
       v8 = 1;
 LABEL_17:
@@ -104,10 +104,10 @@ LABEL_17:
 
     if ([(APSNetworkMonitor *)self _checkPiggybackBudget])
     {
-      v35 = [(APSNetworkMonitor *)self wifiManager];
-      v36 = [v35 isWiFiAssociated];
+      wifiManager = [(APSNetworkMonitor *)self wifiManager];
+      isWiFiAssociated = [wifiManager isWiFiAssociated];
 
-      if (v36)
+      if (isWiFiAssociated)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
@@ -156,9 +156,9 @@ LABEL_22:
   [v12 enableWiFiAutoAssociation:v11 forDelegate:self];
 
   v13 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
-  v14 = [v13 interfaceConstraint];
+  interfaceConstraint = [v13 interfaceConstraint];
 
-  v15 = serverSupportsDualMode & (v10 | _os_feature_enabled_impl() ^ 1 | (v14 != 1));
+  v15 = serverSupportsDualMode & (v10 | _os_feature_enabled_impl() ^ 1 | (interfaceConstraint != 1));
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     criticalReliability = self->_criticalReliability;
@@ -184,7 +184,7 @@ LABEL_22:
     }
 
     isWoWEnabled = self->_isWoWEnabled;
-    if (v3 >= 0x3E9)
+    if (currentCost >= 0x3E9)
     {
       v25 = @"YES";
     }
@@ -273,7 +273,7 @@ LABEL_22:
     }
 
     *&v39[10] = 2112;
-    if (v14 == 1)
+    if (interfaceConstraint == 1)
     {
       v19 = @"YES";
     }
@@ -350,7 +350,7 @@ LABEL_22:
     wifiKeepAliveInterval = self->_wifiKeepAliveInterval;
     v9 = self->_wifiGrowAttempts - self->_wifiGrowAttemptsBeforeSSID;
     v11 = 138413314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v7;
     v15 = 2048;
@@ -391,15 +391,15 @@ LABEL_22:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) value];
-        v11 = [v10 objectForKey:v7];
-        v12 = [v11 unsignedIntegerValue];
+        value = [*(*(&v18 + 1) + 8 * i) value];
+        v11 = [value objectForKey:v7];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-        v13 = [v10 objectForKey:v8];
-        v14 = [v13 unsignedIntegerValue];
+        v13 = [value objectForKey:v8];
+        unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-        v6 += v12;
-        v5 += v14;
+        v6 += unsignedIntegerValue;
+        v5 += unsignedIntegerValue2;
       }
 
       v4 = [(NSMutableArray *)obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -437,7 +437,7 @@ LABEL_22:
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 2080;
     v11 = "[APSNetworkMonitor _registerForWoWNotifications]";
     v7 = "%p %s failed to create wifi manager";
@@ -462,7 +462,7 @@ LABEL_22:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 2080;
     v11 = "[APSNetworkMonitor _registerForWoWNotifications]";
     v7 = "%p %s registered for WoW notifications";
@@ -495,7 +495,7 @@ LABEL_12:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218242;
-      v7 = self;
+      selfCopy = self;
       v8 = 2080;
       v9 = "[APSNetworkMonitor _deregisterFromWoWNotifications]";
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%p %s completed deregistration from WoW notifications", &v6, 0x16u);
@@ -518,14 +518,14 @@ LABEL_12:
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, sub_1000B8DB8, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     v5 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v5, v3, sub_1000B8E68, @"com.apple.aps.internalsettings.changenotification", 0, CFNotificationSuspensionBehaviorCoalesce);
-    v6 = [(APSNetworkMonitor *)v3 systemMonitor];
-    [v6 setActive:1];
+    systemMonitor = [(APSNetworkMonitor *)v3 systemMonitor];
+    [systemMonitor setActive:1];
 
-    v7 = [(APSNetworkMonitor *)v3 systemMonitor];
-    [v7 setWatchesSystemLockState:1];
+    systemMonitor2 = [(APSNetworkMonitor *)v3 systemMonitor];
+    [systemMonitor2 setWatchesSystemLockState:1];
 
-    v8 = [(APSNetworkMonitor *)v3 systemMonitor];
-    [v8 addListener:v3];
+    systemMonitor3 = [(APSNetworkMonitor *)v3 systemMonitor];
+    [systemMonitor3 addListener:v3];
 
     if (_os_feature_enabled_impl())
     {
@@ -539,8 +539,8 @@ LABEL_12:
     v3->_decayTimer = v10;
 
     [(APSDecayTimer *)v3->_decayTimer setDelegate:v3];
-    v12 = [(APSNetworkMonitor *)v3 wifiManager];
-    [v12 addDelegate:v3];
+    wifiManager = [(APSNetworkMonitor *)v3 wifiManager];
+    [wifiManager addDelegate:v3];
 
     [(APSNetworkMonitor *)v3 _processSSIDChangeWithSSID:0 querySSID:1];
     [(APSNetworkMonitor *)v3 _registerForWoWNotifications];
@@ -556,8 +556,8 @@ LABEL_12:
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.aps.internalsettings.changenotification", 0);
   v4 = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(v4, self, @"SignificantTimeChangeNotification", 0);
-  v5 = [(APSNetworkMonitor *)self wifiManager];
-  [v5 removeDelegate:self];
+  wifiManager = [(APSNetworkMonitor *)self wifiManager];
+  [wifiManager removeDelegate:self];
 
   v6 = +[PCPersistentInterfaceManager sharedInstance];
   [v6 enableWiFiAutoAssociation:0 forDelegate:self];
@@ -576,29 +576,29 @@ LABEL_12:
   [(APSNetworkMonitor *)&v8 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = [(CUTWeakReference *)self->_delegate object];
+  delegateCopy = delegate;
+  object = [(CUTWeakReference *)self->_delegate object];
 
-  v5 = v8;
-  if (v4 != v8)
+  v5 = delegateCopy;
+  if (object != delegateCopy)
   {
-    v6 = [CUTWeakReference weakRefWithObject:v8];
+    v6 = [CUTWeakReference weakRefWithObject:delegateCopy];
     delegate = self->_delegate;
     self->_delegate = v6;
 
-    v5 = v8;
+    v5 = delegateCopy;
   }
 }
 
-- (void)setServerSupportsDualMode:(BOOL)a3
+- (void)setServerSupportsDualMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (modeCopy)
     {
       v6 = @"YES";
     }
@@ -620,9 +620,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Server supports dual mode %@  old value %@", &v7, 0x16u);
   }
 
-  if (self->_serverSupportsDualMode != v3)
+  if (self->_serverSupportsDualMode != modeCopy)
   {
-    self->_serverSupportsDualMode = v3;
+    self->_serverSupportsDualMode = modeCopy;
     [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
   }
 }
@@ -639,12 +639,12 @@ LABEL_12:
   }
 }
 
-- (void)decayTimerFired:(id)a3
+- (void)decayTimerFired:(id)fired
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ decay timer fired", &v4, 0xCu);
   }
 
@@ -656,7 +656,7 @@ LABEL_12:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ systemDidLock, refreshing state", &v4, 0xCu);
   }
 
@@ -666,72 +666,72 @@ LABEL_12:
   [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
 }
 
-- (void)cutWiFiManagerLinkDidChange:(id)a3 context:(id)a4
+- (void)cutWiFiManagerLinkDidChange:(id)change context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  contextCopy = context;
   shouldUseDualMode = self->_shouldUseDualMode;
   v9 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (shouldUseDualMode)
   {
     if (v9)
     {
-      v10 = [v6 isWiFiAssociated];
+      isWiFiAssociated = [changeCopy isWiFiAssociated];
       v11 = @"NO";
       *v16 = 138412802;
       *&v16[4] = self;
       *&v16[12] = 2112;
-      if (v10)
+      if (isWiFiAssociated)
       {
         v11 = @"YES";
       }
 
       *&v16[14] = v11;
       v17 = 2112;
-      v18 = v7;
+      v18 = contextCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ received cutWiFiManagerLinkDidChange - alerting the delegate. isWiFiAssociated? %@ context %@", v16, 0x20u);
     }
 
-    v12 = [(APSNetworkMonitor *)self delegate];
+    delegate = [(APSNetworkMonitor *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 networkMonitorWiFiBecameAssociated:self];
+      [delegate networkMonitorWiFiBecameAssociated:self];
     }
   }
 
   else if (v9)
   {
-    v13 = [v6 isWiFiAssociated];
+    isWiFiAssociated2 = [changeCopy isWiFiAssociated];
     v14 = @"NO";
     *v16 = 138412802;
     *&v16[4] = self;
     *&v16[12] = 2112;
-    if (v13)
+    if (isWiFiAssociated2)
     {
       v14 = @"YES";
     }
 
     *&v16[14] = v14;
     v17 = 2112;
-    v18 = v7;
+    v18 = contextCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ received cutWiFiManagerLinkDidChange - ignoring since _shouldUseDualMode = NO. isWiFiAssociated? %@ context %@", v16, 0x20u);
   }
 
-  v15 = [v7 objectForKey:{CUTWiFiManagerSSIDKey, *v16, *&v16[8]}];
+  v15 = [contextCopy objectForKey:{CUTWiFiManagerSSIDKey, *v16, *&v16[8]}];
   [(APSNetworkMonitor *)self _processSSIDChangeWithSSID:v15 querySSID:0];
   [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
 }
 
-- (void)cutWiFiManager:(id)a3 generatedPowerReading:(id)a4
+- (void)cutWiFiManager:(id)manager generatedPowerReading:(id)reading
 {
-  v6 = a3;
-  v7 = COERCE_DOUBLE(a4);
+  managerCopy = manager;
+  v7 = COERCE_DOUBLE(reading);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v28 = 138412802;
     *&v28[4] = self;
     *&v28[12] = 2112;
-    *&v28[14] = v6;
+    *&v28[14] = managerCopy;
     *&v28[22] = 2112;
     v29 = v7;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ wifi manager %@ generated power reading %@", v28, 0x20u);
@@ -741,7 +741,7 @@ LABEL_12:
   [(APSNetworkMonitor *)self _processSSIDChangeWithSSID:v8 querySSID:0];
   v9 = CUTWiFiManagerPMDurationKey;
   v10 = [*&v7 objectForKey:CUTWiFiManagerPMDurationKey];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
   v12 = [*&v7 objectForKey:CUTWiFiManagerTotalDurationKey];
   v13 = COERCE_DOUBLE([v12 unsignedIntegerValue]);
@@ -750,9 +750,9 @@ LABEL_12:
   [v14 doubleValue];
   v16 = v15;
 
-  if (v11 <= *&v13)
+  if (unsignedIntegerValue <= *&v13)
   {
-    v19 = 1.0 - v11 / *&v13;
+    v19 = 1.0 - unsignedIntegerValue / *&v13;
     if (v19 >= 0.05 && v16 >= 0.15)
     {
       v20 = v19 * (1.0 - v16);
@@ -768,7 +768,7 @@ LABEL_12:
         *&v28[12] = 2048;
         *&v28[14] = v13;
         *&v28[22] = 2048;
-        v29 = 1.0 - v11 / *&v13;
+        v29 = 1.0 - unsignedIntegerValue / *&v13;
         LOWORD(v30) = 2048;
         *(&v30 + 2) = v16;
         v17 = "%@ ignoring measurement with duration %lu, awakePercentage %f, maxError %f";
@@ -812,7 +812,7 @@ LABEL_12:
     *v28 = 138412802;
     *&v28[4] = self;
     *&v28[12] = 2048;
-    *&v28[14] = v11;
+    *&v28[14] = unsignedIntegerValue;
     *&v28[22] = 2048;
     v29 = v13;
     v17 = "%@ ignoring seemingly invalid WiFi measurement pmDur %lu, totalDur %lu";
@@ -826,36 +826,36 @@ LABEL_16:
   [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
 }
 
-- (void)_processSSIDChangeWithSSID:(id)a3 querySSID:(BOOL)a4
+- (void)_processSSIDChangeWithSSID:(id)d querySSID:(BOOL)iD
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  iDCopy = iD;
+  dCopy = d;
+  currentSSID = dCopy;
+  if (!dCopy)
   {
-    v7 = 0;
-    if (v4)
+    currentSSID = 0;
+    if (iDCopy)
     {
-      v8 = [(APSNetworkMonitor *)self wifiManager];
-      v7 = [v8 currentSSID];
+      wifiManager = [(APSNetworkMonitor *)self wifiManager];
+      currentSSID = [wifiManager currentSSID];
     }
   }
 
-  if (v7 && ![(NSString *)self->_lastSSID isEqualToString:v7])
+  if (currentSSID && ![(NSString *)self->_lastSSID isEqualToString:currentSSID])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       lastSSID = self->_lastSSID;
       v14 = 138412802;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = lastSSID;
       v18 = 2112;
-      v19 = v7;
+      v19 = currentSSID;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: ssid changed from %@ to %@, flushing wifi measurements", &v14, 0x20u);
     }
 
-    v10 = [v7 copy];
+    v10 = [currentSSID copy];
     v11 = self->_lastSSID;
     self->_lastSSID = v10;
 
@@ -866,25 +866,25 @@ LABEL_16:
   }
 }
 
-- (void)setCurrentWiFiKeepAliveInterval:(double)a3 growAttempts:(unint64_t)a4
+- (void)setCurrentWiFiKeepAliveInterval:(double)interval growAttempts:(unint64_t)attempts
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412802;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    intervalCopy = interval;
     v11 = 2048;
-    v12 = a4;
+    attemptsCopy = attempts;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ updating wifi keepAliveInterval %f  growAttempts %lu", &v7, 0x20u);
   }
 
-  self->_wifiGrowAttempts = a4;
-  self->_wifiKeepAliveInterval = a3;
+  self->_wifiGrowAttempts = attempts;
+  self->_wifiKeepAliveInterval = interval;
   [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
 }
 
-- (void)_flushStaleElementsFrom:(id *)a3 withThreshold:(double)a4
+- (void)_flushStaleElementsFrom:(id *)from withThreshold:(double)threshold
 {
   v6 = objc_alloc_init(NSMutableArray);
   v7 = +[NSDate date];
@@ -892,7 +892,7 @@ LABEL_16:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = *a3;
+  v8 = *from;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -908,16 +908,16 @@ LABEL_3:
       }
 
       v13 = *(*(&v18 + 1) + 8 * v12);
-      v14 = [v13 date];
-      if ([v14 compare:v7] != 1)
+      date = [v13 date];
+      if ([date compare:v7] != 1)
       {
-        [v14 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
         if (v15 < 0.0)
         {
           v15 = -v15;
         }
 
-        if (v15 <= a4)
+        if (v15 <= threshold)
         {
           [v6 addObject:v13];
         }
@@ -943,12 +943,12 @@ LABEL_3:
     }
   }
 
-  v17 = *a3;
-  *a3 = 0;
+  v17 = *from;
+  *from = 0;
 
   if ([v6 count])
   {
-    objc_storeStrong(a3, v6);
+    objc_storeStrong(from, v6);
   }
 }
 
@@ -959,17 +959,17 @@ LABEL_3:
   [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
 }
 
-- (void)notePushWithCost:(unint64_t)a3
+- (void)notePushWithCost:(unint64_t)cost
 {
-  [(APSDecayTimer *)self->_decayTimer addCost:a3];
+  [(APSDecayTimer *)self->_decayTimer addCost:cost];
 
   [(APSNetworkMonitor *)self _toggleWiFiAutoAssociateIfNecessary];
 }
 
 - (BOOL)_checkPiggybackBudget
 {
-  v3 = [(APSNetworkMonitor *)self systemMonitor];
-  v4 = [v3 isSystemLocked];
+  systemMonitor = [(APSNetworkMonitor *)self systemMonitor];
+  isSystemLocked = [systemMonitor isSystemLocked];
 
   lastPiggybackConnection = self->_lastPiggybackConnection;
   if (lastPiggybackConnection)
@@ -983,13 +983,13 @@ LABEL_3:
     v7 = 0;
   }
 
-  if ((v4 | v7))
+  if ((isSystemLocked | v7))
   {
     v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
     if (v8)
     {
       v9 = @"NO";
-      if (v4)
+      if (isSystemLocked)
       {
         v10 = @"YES";
       }
@@ -1000,7 +1000,7 @@ LABEL_3:
       }
 
       v20 = 138412802;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2112;
       v23 = v10;
       if (v7)
@@ -1030,7 +1030,7 @@ LABEL_3:
       {
         v15 = self->_lastPiggybackReset;
         v20 = 138412546;
-        v21 = self;
+        selfCopy3 = self;
         v22 = 2112;
         v23 = v15;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ last piggyback budget reset was %@, resetting now.", &v20, 0x16u);
@@ -1050,7 +1050,7 @@ LABEL_3:
       if (v8)
       {
         v20 = 138412290;
-        v21 = self;
+        selfCopy3 = self;
         v11 = "%@ We have exceeded our piggybacking limit.  Do not piggyback.";
         v12 = 12;
 LABEL_22:
@@ -1102,19 +1102,19 @@ LABEL_22:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: informed that second channel opened", buf, 0xCu);
   }
 
-  v3 = [(APSNetworkMonitor *)self isPiggybacking];
-  if (v3)
+  isPiggybacking = [(APSNetworkMonitor *)self isPiggybacking];
+  if (isPiggybacking)
   {
     ++self->_piggybackCount;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       piggybackCount = self->_piggybackCount;
       *buf = 138412546;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2048;
       v29 = piggybackCount;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ this is a piggybacked connection. PiggybackCount %lu, starting piggyback connection timer", buf, 0x16u);
@@ -1136,10 +1136,10 @@ LABEL_22:
       [(PCSimpleTimer *)v10 scheduleInRunLoop:v11];
     }
 
-    v12 = [(APSNetworkMonitor *)self delegate];
+    delegate = [(APSNetworkMonitor *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 networkMonitor:self enableWiFiAssertionForPiggybackConnection:0];
+      [delegate networkMonitor:self enableWiFiAssertionForPiggybackConnection:0];
     }
   }
 
@@ -1148,7 +1148,7 @@ LABEL_22:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ rescheduling our connection throttle timer", buf, 0xCu);
     }
 
@@ -1162,12 +1162,12 @@ LABEL_22:
 
     [(PCSimpleTimer *)self->_connectionThrottleTimer setDisableSystemWaking:1];
     v18 = self->_connectionThrottleTimer;
-    v12 = +[NSRunLoop mainRunLoop];
-    [(PCSimpleTimer *)v18 scheduleInRunLoop:v12];
+    delegate = +[NSRunLoop mainRunLoop];
+    [(PCSimpleTimer *)v18 scheduleInRunLoop:delegate];
   }
 
   v24[0] = @"Piggybacked";
-  v19 = [NSNumber numberWithBool:v3];
+  v19 = [NSNumber numberWithBool:isPiggybacking];
   v25[0] = v19;
   v24[1] = @"Piggyback Count";
   v20 = [NSNumber numberWithUnsignedInteger:self->_piggybackCount];
@@ -1184,30 +1184,30 @@ LABEL_22:
   APSPowerLog();
 }
 
-- (void)closedSecondChannel:(int64_t)a3
+- (void)closedSecondChannel:(int64_t)channel
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = sub_1000067F8(a3);
+    v5 = sub_1000067F8(channel);
     *buf = 138412546;
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2112;
     v21 = v5;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: informed that second channel closed - %@", buf, 0x16u);
   }
 
-  v6 = [(APSNetworkMonitor *)self isPiggybacking];
-  if (a3 == 1 && v6)
+  isPiggybacking = [(APSNetworkMonitor *)self isPiggybacking];
+  if (channel == 1 && isPiggybacking)
   {
-    v7 = [(APSNetworkMonitor *)self systemMonitor];
-    v8 = [v7 isSystemLocked];
+    systemMonitor = [(APSNetworkMonitor *)self systemMonitor];
+    isSystemLocked = [systemMonitor isSystemLocked];
 
-    if ((v8 & 1) == 0)
+    if ((isSystemLocked & 1) == 0)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: This connection was piggybacked and we are unlocked - disabling piggybacking for some time (or until next lock)", buf, 0xCu);
       }
 
@@ -1220,8 +1220,8 @@ LABEL_14:
 
   else
   {
-    v11 = v6 ^ 1;
-    if (a3)
+    v11 = isPiggybacking ^ 1;
+    if (channel)
     {
       v11 = 1;
     }
@@ -1243,7 +1243,7 @@ LABEL_14:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Throttling second connection since we're still within the time period required between second channel attempts.", buf, 0xCu);
     }
 
@@ -1271,14 +1271,14 @@ LABEL_21:
   APSPowerLog();
 }
 
-+ (unint64_t)powerCostForPushOnRAT:(int)a3 withLinkQuality:(int)a4
++ (unint64_t)powerCostForPushOnRAT:(int)t withLinkQuality:(int)quality
 {
   v5 = 1;
-  if (a3 <= 2)
+  if (t <= 2)
   {
-    if (a3 < 0xFFFFFFFE)
+    if (t < 0xFFFFFFFE)
     {
-      if (a3 && a3 != 2)
+      if (t && t != 2)
       {
         return 0x3E8 / v5;
       }
@@ -1286,15 +1286,15 @@ LABEL_21:
       goto LABEL_10;
     }
 
-    v8 = a4 <= 50;
+    v8 = quality <= 50;
     v5 = 6;
     v9 = 18;
     goto LABEL_29;
   }
 
-  if (a3 <= 6)
+  if (t <= 6)
   {
-    if (a4 <= 50)
+    if (quality <= 50)
     {
       v7 = 1;
     }
@@ -1304,7 +1304,7 @@ LABEL_21:
       v7 = 18;
     }
 
-    if ((a3 - 3) >= 3)
+    if ((t - 3) >= 3)
     {
       v5 = 1;
     }
@@ -1317,17 +1317,17 @@ LABEL_21:
     return 0x3E8 / v5;
   }
 
-  if ((a3 - 7) >= 2)
+  if ((t - 7) >= 2)
   {
-    if (a3 != 10)
+    if (t != 10)
     {
-      if (a3 != 9)
+      if (t != 9)
       {
         return 0x3E8 / v5;
       }
 
 LABEL_10:
-      v6 = a4 <= 50;
+      v6 = quality <= 50;
       v5 = 8;
       goto LABEL_11;
     }
@@ -1338,19 +1338,19 @@ LABEL_10:
     if (v11)
     {
       v12 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
-      v13 = [v12 interface5GMode];
+      interface5GMode = [v12 interface5GMode];
 
-      if (v13 == 3)
+      if (interface5GMode == 3)
       {
-        v8 = a4 <= 50;
+        v8 = quality <= 50;
         v5 = 3;
         v9 = 20;
         goto LABEL_29;
       }
 
-      if (v13 == 2)
+      if (interface5GMode == 2)
       {
-        v6 = a4 <= 50;
+        v6 = quality <= 50;
         v5 = 5;
 LABEL_11:
         if (v6)
@@ -1368,14 +1368,14 @@ LABEL_11:
 
   if ((v15 & 1) != 0 && (+[PCInterfaceMonitor sharedInstanceForIdentifier:](PCInterfaceMonitor, "sharedInstanceForIdentifier:", 1), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isLTEWithCDRX], v16, v17))
   {
-    v8 = a4 <= 50;
+    v8 = quality <= 50;
     v5 = 6;
     v9 = 40;
   }
 
   else
   {
-    v8 = a4 <= 50;
+    v8 = quality <= 50;
     v5 = 6;
     v9 = 10;
   }
@@ -1389,46 +1389,46 @@ LABEL_29:
   return 0x3E8 / v5;
 }
 
-- (void)setCriticalReliability:(BOOL)a3
+- (void)setCriticalReliability:(BOOL)reliability
 {
-  if (self->_criticalReliability != a3)
+  if (self->_criticalReliability != reliability)
   {
-    v3 = a3;
+    reliabilityCopy = reliability;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v5 = @"disabled";
-      if (v3)
+      if (reliabilityCopy)
       {
         v5 = @"enabled";
       }
 
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
       v9 = v5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ critical reliability is now %@", &v6, 0x16u);
     }
 
-    self->_criticalReliability = v3;
-    if (v3)
+    self->_criticalReliability = reliabilityCopy;
+    if (reliabilityCopy)
     {
       [(APSDecayTimer *)self->_decayTimer forceTimerFire];
     }
   }
 }
 
-- (void)setDisableCostDrivenDualChannelAttempts:(id)a3
+- (void)setDisableCostDrivenDualChannelAttempts:(id)attempts
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attemptsCopy = attempts;
+  v5 = attemptsCopy;
+  if (attemptsCopy)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [attemptsCopy BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -1446,8 +1446,8 @@ LABEL_29:
       v9 = @"NO";
     }
 
-    v11 = self;
-    if (v6)
+    selfCopy = self;
+    if (bOOLValue)
     {
       v7 = @"YES";
     }
@@ -1461,24 +1461,24 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ setDisableCostDrivenDualChannelAttempts: changing from %@ to %@ (got number %@)", &v10, 0x2Au);
   }
 
-  self->_disableCostDrivenDualMode = v6;
+  self->_disableCostDrivenDualMode = bOOLValue;
 }
 
-- (void)setCostDrivenDualChannelAttempts:(id)a3
+- (void)setCostDrivenDualChannelAttempts:(id)attempts
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attemptsCopy = attempts;
+  v5 = attemptsCopy;
+  if (attemptsCopy)
   {
-    v6 = [v4 unsignedIntegerValue];
-    if (v6 <= 0x32)
+    unsignedIntegerValue = [attemptsCopy unsignedIntegerValue];
+    if (unsignedIntegerValue <= 0x32)
     {
       v7 = 50;
     }
 
     else
     {
-      v7 = v6;
+      v7 = unsignedIntegerValue;
     }
   }
 
@@ -1491,7 +1491,7 @@ LABEL_29:
   {
     maxCostDrivenConnectionsPerDay = self->_maxCostDrivenConnectionsPerDay;
     v9 = 138413058;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = maxCostDrivenConnectionsPerDay;
     v13 = 2048;
@@ -1504,21 +1504,21 @@ LABEL_29:
   self->_maxCostDrivenConnectionsPerDay = v7;
 }
 
-- (void)setPiggybackDualChannelAttempts:(id)a3
+- (void)setPiggybackDualChannelAttempts:(id)attempts
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attemptsCopy = attempts;
+  v5 = attemptsCopy;
+  if (attemptsCopy)
   {
-    v6 = [v4 unsignedIntegerValue];
-    if (v6 <= 0x32)
+    unsignedIntegerValue = [attemptsCopy unsignedIntegerValue];
+    if (unsignedIntegerValue <= 0x32)
     {
       v7 = 50;
     }
 
     else
     {
-      v7 = v6;
+      v7 = unsignedIntegerValue;
     }
   }
 
@@ -1531,7 +1531,7 @@ LABEL_29:
   {
     maxPiggybackConnectionsPerDay = self->_maxPiggybackConnectionsPerDay;
     v9 = 138413058;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = maxPiggybackConnectionsPerDay;
     v13 = 2048;
@@ -1544,18 +1544,18 @@ LABEL_29:
   self->_maxPiggybackConnectionsPerDay = v7;
 }
 
-- (void)setDisableDualModePiggybackTimer:(id)a3
+- (void)setDisableDualModePiggybackTimer:(id)timer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  timerCopy = timer;
+  v5 = timerCopy;
+  if (timerCopy)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [timerCopy BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -1573,8 +1573,8 @@ LABEL_29:
       v9 = @"NO";
     }
 
-    v11 = self;
-    if (v6)
+    selfCopy = self;
+    if (bOOLValue)
     {
       v7 = @"YES";
     }
@@ -1588,19 +1588,19 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ setDisableDualModePiggybackTimer: changing from %@ to %@ (got number %@)", &v10, 0x2Au);
   }
 
-  self->_disableDualModePiggybackTimer = v6;
+  self->_disableDualModePiggybackTimer = bOOLValue;
 }
 
-- (void)interfaceConstraintChanged:(id)a3
+- (void)interfaceConstraintChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 interfaceConstraint] == 1 && self->_shouldUseDualMode;
-  v6 = [v4 interfaceConstraint] != 1 && !self->_shouldUseDualMode;
+  changedCopy = changed;
+  v5 = [changedCopy interfaceConstraint] == 1 && self->_shouldUseDualMode;
+  v6 = [changedCopy interfaceConstraint] != 1 && !self->_shouldUseDualMode;
   if (v5 || v6)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 interfaceConstraint];
+      interfaceConstraint = [changedCopy interfaceConstraint];
       shouldUseDualMode = self->_shouldUseDualMode;
       *v10 = 138412802;
       *&v10[4] = self;
@@ -1615,7 +1615,7 @@ LABEL_29:
       }
 
       *&v10[12] = 2048;
-      *&v10[14] = v7;
+      *&v10[14] = interfaceConstraint;
       v11 = 2112;
       v12 = v9;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ interfaceConstraintChanged: %ld changing current dual mode %@)", v10, 0x20u);

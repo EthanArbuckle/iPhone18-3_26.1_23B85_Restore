@@ -1,8 +1,8 @@
 @interface WFLinkActionDurationParameterDefinition
 - (Class)parameterClass;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)linkValueWithValue:(id)a3;
-- (id)parameterStateFromLinkValue:(id)a3;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)linkValueWithValue:(id)value;
+- (id)parameterStateFromLinkValue:(id)value;
 @end
 
 @implementation WFLinkActionDurationParameterDefinition
@@ -14,20 +14,20 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1CA48E318(a3);
+  valueCopy = value;
+  selfCopy = self;
+  v7 = sub_1CA48E318(value);
 
   return v7;
 }
 
-- (id)linkValueWithValue:(id)a3
+- (id)linkValueWithValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1CA94D258();
     swift_unknownObjectRelease();
@@ -36,7 +36,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1CA48E448(v8);
@@ -46,12 +46,12 @@
   return v6;
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1CA48E670(a3);
+  actionCopy = action;
+  selfCopy = self;
+  v9 = sub_1CA48E670(state);
   swift_unknownObjectRelease();
 
   return v9;

@@ -1,10 +1,10 @@
 @interface CSStudiesServerUploader
-- (BOOL)addOutOfBandMetadata:(id)a3 error:(id *)a4;
-- (BOOL)enqueueFileWithFilename:(id)a3 andMetadata:(id)a4 error:(id *)a5;
-- (BOOL)isFileOldEnoughForDeletion:(id)a3;
-- (BOOL)registerForUploadingWithError:(id *)a3;
-- (BOOL)startMonitoringWithError:(id *)a3;
-- (CSStudiesServerUploader)initWithSpoolerFolder:(id)a3 serverConfiguration:(id)a4 registrationPeriodInSeconds:(unint64_t)a5 retentionPeriodInSeconds:(unint64_t)a6 outOfBandMetadataTimeout:(double)a7 defaultsKeyPostfix:(id)a8;
+- (BOOL)addOutOfBandMetadata:(id)metadata error:(id *)error;
+- (BOOL)enqueueFileWithFilename:(id)filename andMetadata:(id)metadata error:(id *)error;
+- (BOOL)isFileOldEnoughForDeletion:(id)deletion;
+- (BOOL)registerForUploadingWithError:(id *)error;
+- (BOOL)startMonitoringWithError:(id *)error;
+- (CSStudiesServerUploader)initWithSpoolerFolder:(id)folder serverConfiguration:(id)configuration registrationPeriodInSeconds:(unint64_t)seconds retentionPeriodInSeconds:(unint64_t)inSeconds outOfBandMetadataTimeout:(double)timeout defaultsKeyPostfix:(id)postfix;
 - (void)checkForPersistedRegistration;
 - (void)createSubmitterIfRegistered;
 - (void)dealloc;
@@ -12,17 +12,17 @@
 
 @implementation CSStudiesServerUploader
 
-- (CSStudiesServerUploader)initWithSpoolerFolder:(id)a3 serverConfiguration:(id)a4 registrationPeriodInSeconds:(unint64_t)a5 retentionPeriodInSeconds:(unint64_t)a6 outOfBandMetadataTimeout:(double)a7 defaultsKeyPostfix:(id)a8
+- (CSStudiesServerUploader)initWithSpoolerFolder:(id)folder serverConfiguration:(id)configuration registrationPeriodInSeconds:(unint64_t)seconds retentionPeriodInSeconds:(unint64_t)inSeconds outOfBandMetadataTimeout:(double)timeout defaultsKeyPostfix:(id)postfix
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  folderCopy = folder;
+  configurationCopy = configuration;
+  postfixCopy = postfix;
   v30.receiver = self;
   v30.super_class = CSStudiesServerUploader;
   v17 = [(CSStudiesServerUploader *)&v30 init];
   if (v17)
   {
-    v18 = [[NSURL alloc] initFileURLWithPath:v14 isDirectory:1];
+    v18 = [[NSURL alloc] initFileURLWithPath:folderCopy isDirectory:1];
     folderURL = v17->_folderURL;
     v17->_folderURL = v18;
 
@@ -40,19 +40,19 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Starting uploader with spooler at: %{public}@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v17->_configuration, a4);
-    v17->_registrationPeriodInSeconds = a5;
-    v17->_retentionPeriodInSeconds = a6;
-    objc_storeStrong(&v17->_postfix, a8);
-    v22 = [@"StudiesServerUploaderDefaultsSubjectID" stringByAppendingString:v16];
+    objc_storeStrong(&v17->_configuration, configuration);
+    v17->_registrationPeriodInSeconds = seconds;
+    v17->_retentionPeriodInSeconds = inSeconds;
+    objc_storeStrong(&v17->_postfix, postfix);
+    v22 = [@"StudiesServerUploaderDefaultsSubjectID" stringByAppendingString:postfixCopy];
     defaultsSubjectIDKeyName = v17->_defaultsSubjectIDKeyName;
     v17->_defaultsSubjectIDKeyName = v22;
 
-    v24 = [@"StudiesServerUploaderDefaultsSubjectAuthorizationToken" stringByAppendingString:v16];
+    v24 = [@"StudiesServerUploaderDefaultsSubjectAuthorizationToken" stringByAppendingString:postfixCopy];
     defaultsSubjectAuthTokenKeyName = v17->_defaultsSubjectAuthTokenKeyName;
     v17->_defaultsSubjectAuthTokenKeyName = v24;
 
-    v26 = [@"StudiesServerUploaderDefaultsRegistrationDate" stringByAppendingString:v16];
+    v26 = [@"StudiesServerUploaderDefaultsRegistrationDate" stringByAppendingString:postfixCopy];
     defaultsRegistrationDateKeyName = v17->_defaultsRegistrationDateKeyName;
     v17->_defaultsRegistrationDateKeyName = v26;
 
@@ -61,7 +61,7 @@
     v17->_submitter = 0;
 
     [(CSStudiesServerUploader *)v17 createSubmitterIfRegistered];
-    v17->_oobTimeout = a7;
+    v17->_oobTimeout = timeout;
   }
 
   return v17;
@@ -70,8 +70,8 @@
 - (void)checkForPersistedRegistration
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(CSStudiesServerUploader *)self defaultsRegistrationDateKeyName];
-  v5 = [v3 integerForKey:v4];
+  defaultsRegistrationDateKeyName = [(CSStudiesServerUploader *)self defaultsRegistrationDateKeyName];
+  v5 = [v3 integerForKey:defaultsRegistrationDateKeyName];
 
   if (v5)
   {
@@ -92,7 +92,7 @@
         v22 = 134349312;
         v23 = v8;
         v24 = 2050;
-        v25 = [(CSStudiesServerUploader *)self registrationPeriodInSeconds];
+        registrationPeriodInSeconds = [(CSStudiesServerUploader *)self registrationPeriodInSeconds];
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Expired HDS UUID found: %{public}llu > %{public}llu", &v22, 0x16u);
       }
 
@@ -101,22 +101,22 @@
 
     else
     {
-      v9 = self;
-      objc_sync_enter(v9);
-      [(CSStudiesServerUploader *)v9 setRegistered:1];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(CSStudiesServerUploader *)selfCopy setRegistered:1];
       v10 = [NSUUID alloc];
       v11 = +[NSUserDefaults standardUserDefaults];
-      v12 = [(CSStudiesServerUploader *)v9 defaultsSubjectIDKeyName];
-      v13 = [v11 stringForKey:v12];
+      defaultsSubjectIDKeyName = [(CSStudiesServerUploader *)selfCopy defaultsSubjectIDKeyName];
+      v13 = [v11 stringForKey:defaultsSubjectIDKeyName];
       v14 = [v10 initWithUUIDString:v13];
-      [(CSStudiesServerUploader *)v9 setSubjectID:v14];
+      [(CSStudiesServerUploader *)selfCopy setSubjectID:v14];
 
       v15 = +[NSUserDefaults standardUserDefaults];
-      v16 = [(CSStudiesServerUploader *)v9 defaultsSubjectAuthTokenKeyName];
-      v17 = [v15 stringForKey:v16];
-      [(CSStudiesServerUploader *)v9 setSubjectAuthorizationToken:v17];
+      defaultsSubjectAuthTokenKeyName = [(CSStudiesServerUploader *)selfCopy defaultsSubjectAuthTokenKeyName];
+      v17 = [v15 stringForKey:defaultsSubjectAuthTokenKeyName];
+      [(CSStudiesServerUploader *)selfCopy setSubjectAuthorizationToken:v17];
 
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
       if (qword_1004568C8 != -1)
       {
         sub_100357D64();
@@ -125,9 +125,9 @@
       v18 = qword_1004568D0;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(CSStudiesServerUploader *)v9 subjectID];
+        subjectID = [(CSStudiesServerUploader *)selfCopy subjectID];
         v22 = 138543362;
-        v23 = v19;
+        v23 = subjectID;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Persisted HDS UUID found: %{public}@", &v22, 0xCu);
       }
     }
@@ -163,59 +163,59 @@
     v3 = qword_1004568D0;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CSStudiesServerUploader *)self subjectID];
+      subjectID = [(CSStudiesServerUploader *)self subjectID];
       v15 = 138543362;
-      v16 = v4;
+      v16 = subjectID;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Registered with Studies Server as %{public}@", &v15, 0xCu);
     }
 
-    v5 = [(CSStudiesServerUploader *)self configuration];
-    v6 = [v5 server];
-    v7 = [NSURL URLWithString:v6];
+    configuration = [(CSStudiesServerUploader *)self configuration];
+    server = [configuration server];
+    v7 = [NSURL URLWithString:server];
     v8 = [v7 URLByAppendingPathComponent:@"/ingest/v2/submit/"];
 
-    v9 = [(CSStudiesServerUploader *)self submitter];
-    LODWORD(v5) = v9 == 0;
+    submitter = [(CSStudiesServerUploader *)self submitter];
+    LODWORD(configuration) = submitter == 0;
 
-    if (v5)
+    if (configuration)
     {
       v12 = [CSStudiesServerSubmitter alloc];
-      v10 = [(CSStudiesServerUploader *)self configuration];
-      v11 = [v10 auth];
-      v13 = [(CSStudiesServerUploader *)self subjectAuthorizationToken];
-      v14 = [(CSStudiesServerSubmitter *)v12 initWithEndpoint:v8 authorization:v11 subjectToken:v13];
+      configuration2 = [(CSStudiesServerUploader *)self configuration];
+      auth = [configuration2 auth];
+      subjectAuthorizationToken = [(CSStudiesServerUploader *)self subjectAuthorizationToken];
+      v14 = [(CSStudiesServerSubmitter *)v12 initWithEndpoint:v8 authorization:auth subjectToken:subjectAuthorizationToken];
       [(CSStudiesServerUploader *)self setSubmitter:v14];
     }
 
     else
     {
-      v10 = [(CSStudiesServerUploader *)self submitter];
-      v11 = [(CSStudiesServerUploader *)self subjectAuthorizationToken];
-      [v10 updateRegistrationWithSubjectToken:v11];
+      configuration2 = [(CSStudiesServerUploader *)self submitter];
+      auth = [(CSStudiesServerUploader *)self subjectAuthorizationToken];
+      [configuration2 updateRegistrationWithSubjectToken:auth];
     }
   }
 }
 
-- (BOOL)registerForUploadingWithError:(id *)a3
+- (BOOL)registerForUploadingWithError:(id *)error
 {
   [(CSStudiesServerUploader *)self checkForPersistedRegistration];
   if (![(CSStudiesServerUploader *)self registered])
   {
-    v23 = a3;
-    v5 = [(CSStudiesServerUploader *)self configuration];
-    v6 = [v5 server];
-    v7 = [NSURL URLWithString:v6];
+    errorCopy = error;
+    configuration = [(CSStudiesServerUploader *)self configuration];
+    server = [configuration server];
+    v7 = [NSURL URLWithString:server];
     v8 = [v7 URLByAppendingPathComponent:@"/ingest/v2/register/"];
-    v9 = [(CSStudiesServerUploader *)self configuration];
-    v10 = [v9 studyUUID];
-    v11 = [v10 UUIDString];
-    v12 = [v11 lowercaseString];
-    v13 = [v8 URLByAppendingPathComponent:v12];
+    configuration2 = [(CSStudiesServerUploader *)self configuration];
+    studyUUID = [configuration2 studyUUID];
+    uUIDString = [studyUUID UUIDString];
+    lowercaseString = [uUIDString lowercaseString];
+    v13 = [v8 URLByAppendingPathComponent:lowercaseString];
 
     v14 = [CSStudiesServerRegistrar alloc];
-    v15 = [(CSStudiesServerUploader *)self configuration];
-    v16 = [v15 auth];
-    v17 = [(CSStudiesServerRegistrar *)v14 initWithEndpoint:v13 authorization:v16 cellularAccess:1 timeoutInSeconds:60];
+    configuration3 = [(CSStudiesServerUploader *)self configuration];
+    auth = [configuration3 auth];
+    v17 = [(CSStudiesServerRegistrar *)v14 initWithEndpoint:v13 authorization:auth cellularAccess:1 timeoutInSeconds:60];
 
     v18 = dispatch_semaphore_create(0);
     objc_initWeak(&location, self);
@@ -239,7 +239,7 @@
     v21 = v29[5];
     if (v21)
     {
-      *v23 = v21;
+      *errorCopy = v21;
     }
 
     [(CSStudiesServerUploader *)self createSubmitterIfRegistered];
@@ -253,13 +253,13 @@
   return [(CSStudiesServerUploader *)self registered];
 }
 
-- (BOOL)isFileOldEnoughForDeletion:(id)a3
+- (BOOL)isFileOldEnoughForDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
+  path = [deletionCopy path];
   v19 = 0;
-  v7 = [v5 attributesOfItemAtPath:v6 error:&v19];
+  v7 = [v5 attributesOfItemAtPath:path error:&v19];
   v8 = v19;
   if (v8)
   {
@@ -272,7 +272,7 @@
     if (os_log_type_enabled(qword_1004568D0, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = v4;
+      v21 = deletionCopy;
       v22 = 2114;
       v23 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Unable to get attributes for file %{public}@: %{public}@", buf, 0x16u);
@@ -283,8 +283,8 @@
 
   else
   {
-    v11 = [v7 fileCreationDate];
-    [v11 timeIntervalSinceReferenceDate];
+    fileCreationDate = [v7 fileCreationDate];
+    [fileCreationDate timeIntervalSinceReferenceDate];
     v13 = v12;
 
     v14 = +[NSDate date];
@@ -303,7 +303,7 @@
   if (os_log_type_enabled(qword_1004568D0, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v21 = v4;
+    v21 = deletionCopy;
     v22 = 1026;
     LODWORD(v23) = v10;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "File %{public}@ for deletion? %{public}d", buf, 0x12u);
@@ -312,7 +312,7 @@
   return v10;
 }
 
-- (BOOL)startMonitoringWithError:(id *)a3
+- (BOOL)startMonitoringWithError:(id *)error
 {
   if ([(CSStudiesServerUploader *)self monitoring])
   {
@@ -321,7 +321,7 @@ LABEL_13:
     return v5;
   }
 
-  v5 = sub_10001B724(self, a3, @"starter");
+  v5 = sub_10001B724(self, error, @"starter");
   if (v5)
   {
     objc_initWeak(location, self);
@@ -329,7 +329,7 @@ LABEL_13:
     v50[1] = 3221225472;
     v50[2] = sub_100013574;
     v50[3] = &unk_100413058;
-    v50[4] = a3;
+    v50[4] = error;
     v42 = objc_retainBlock(v50);
     v6 = [NSURL alloc];
     v7 = NSTemporaryDirectory();
@@ -338,14 +338,14 @@ LABEL_13:
 
     v41 = v9;
     v10 = [CSFolderMonitor alloc];
-    v11 = [v9 path];
+    path = [v9 path];
     v12 = dispatch_get_global_queue(0, 0);
-    v13 = [(CSFolderMonitor *)v10 initWithFolder:v11 fileExtension:@"protodata" queue:v12 postfix:@".fba_holding.cleanup" andAction:v42];
+    v13 = [(CSFolderMonitor *)v10 initWithFolder:path fileExtension:@"protodata" queue:v12 postfix:@".fba_holding.cleanup" andAction:v42];
     [(CSStudiesServerUploader *)self setFeedbackHoldingMonitor:v13];
 
     v40 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
-    v14 = [(CSStudiesServerUploader *)self feedbackHoldingMonitor];
-    [v14 setupRecurringScanningWithConfiguration:v40 runNow:1];
+    feedbackHoldingMonitor = [(CSStudiesServerUploader *)self feedbackHoldingMonitor];
+    [feedbackHoldingMonitor setupRecurringScanningWithConfiguration:v40 runNow:1];
 
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
@@ -355,10 +355,10 @@ LABEL_13:
     v48[4] = self;
     v43 = objc_retainBlock(v48);
     v15 = [CSFolderMonitor alloc];
-    v16 = [(CSStudiesServerUploader *)self folderURL];
-    v17 = [v16 path];
-    v18 = [(CSStudiesServerUploader *)self postfix];
-    v19 = [(CSFolderMonitor *)v15 initWithFolder:v17 fileExtension:@"protodata" queue:v12 postfix:v18 andAction:v43];
+    folderURL = [(CSStudiesServerUploader *)self folderURL];
+    path2 = [folderURL path];
+    postfix = [(CSStudiesServerUploader *)self postfix];
+    v19 = [(CSFolderMonitor *)v15 initWithFolder:path2 fileExtension:@"protodata" queue:v12 postfix:postfix andAction:v43];
     [(CSStudiesServerUploader *)self setOobMetadataMonitor:v19];
 
     v20 = +[CSPersistentConfiguration sharedConfiguration];
@@ -366,15 +366,15 @@ LABEL_13:
 
     if (v21)
     {
-      v22 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
-      v23 = [(CSStudiesServerUploader *)self oobMetadataMonitor];
-      [v23 setupRecurringScanningWithConfiguration:v22 runNow:1];
+      oobMetadataMonitor2 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
+      oobMetadataMonitor = [(CSStudiesServerUploader *)self oobMetadataMonitor];
+      [oobMetadataMonitor setupRecurringScanningWithConfiguration:oobMetadataMonitor2 runNow:1];
     }
 
     else
     {
-      v22 = [(CSStudiesServerUploader *)self oobMetadataMonitor];
-      [(CSFolderMonitorBackgroundScanningConfiguration *)v22 registerForFolderMonitorActivity];
+      oobMetadataMonitor2 = [(CSStudiesServerUploader *)self oobMetadataMonitor];
+      [(CSFolderMonitorBackgroundScanningConfiguration *)oobMetadataMonitor2 registerForFolderMonitorActivity];
     }
 
     v46[0] = _NSConcreteStackBlock;
@@ -385,48 +385,48 @@ LABEL_13:
     v46[4] = self;
     v24 = objc_retainBlock(v46);
     v25 = [CSFolderMonitor alloc];
-    v26 = [(CSStudiesServerUploader *)self folderURL];
-    v27 = [v26 path];
-    v28 = [(CSStudiesServerUploader *)self postfix];
-    v29 = [(CSFolderMonitor *)v25 initWithFolder:v27 fileExtension:@"metadata" queue:v12 postfix:v28 andAction:v24];
+    folderURL2 = [(CSStudiesServerUploader *)self folderURL];
+    path3 = [folderURL2 path];
+    postfix2 = [(CSStudiesServerUploader *)self postfix];
+    v29 = [(CSFolderMonitor *)v25 initWithFolder:path3 fileExtension:@"metadata" queue:v12 postfix:postfix2 andAction:v24];
     [(CSStudiesServerUploader *)self setEncryptMonitor:v29];
 
     if (v21)
     {
-      v30 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
-      v31 = [(CSStudiesServerUploader *)self encryptMonitor];
-      [v31 setupRecurringScanningWithConfiguration:v30 runNow:1];
+      encryptMonitor2 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
+      encryptMonitor = [(CSStudiesServerUploader *)self encryptMonitor];
+      [encryptMonitor setupRecurringScanningWithConfiguration:encryptMonitor2 runNow:1];
     }
 
     else
     {
-      v30 = [(CSStudiesServerUploader *)self encryptMonitor];
-      [(CSFolderMonitorBackgroundScanningConfiguration *)v30 registerForFolderMonitorActivity];
+      encryptMonitor2 = [(CSStudiesServerUploader *)self encryptMonitor];
+      [(CSFolderMonitorBackgroundScanningConfiguration *)encryptMonitor2 registerForFolderMonitorActivity];
     }
 
     v32 = [CSFolderMonitor alloc];
-    v33 = [(CSStudiesServerUploader *)self folderURL];
-    v34 = [v33 path];
-    v35 = [(CSStudiesServerUploader *)self postfix];
+    folderURL3 = [(CSStudiesServerUploader *)self folderURL];
+    path4 = [folderURL3 path];
+    postfix3 = [(CSStudiesServerUploader *)self postfix];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_100014F3C;
     v44[3] = &unk_1004130F8;
     objc_copyWeak(&v45, location);
-    v36 = [(CSFolderMonitor *)v32 initWithFolder:v34 fileExtension:@"encrypted" queue:v12 postfix:v35 andAction:v44];
+    v36 = [(CSFolderMonitor *)v32 initWithFolder:path4 fileExtension:@"encrypted" queue:v12 postfix:postfix3 andAction:v44];
     [(CSStudiesServerUploader *)self setSubmitMonitor:v36];
 
     if (v21)
     {
-      v37 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUntilFirstUserAuthentication allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
-      v38 = [(CSStudiesServerUploader *)self submitMonitor];
-      [v38 setupRecurringScanningWithConfiguration:v37 runNow:1];
+      submitMonitor2 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUntilFirstUserAuthentication allowBattery:1 periodInseconds:XPC_ACTIVITY_INTERVAL_1_HOUR];
+      submitMonitor = [(CSStudiesServerUploader *)self submitMonitor];
+      [submitMonitor setupRecurringScanningWithConfiguration:submitMonitor2 runNow:1];
     }
 
     else
     {
-      v37 = [(CSStudiesServerUploader *)self submitMonitor];
-      [(CSFolderMonitorBackgroundScanningConfiguration *)v37 registerForFolderMonitorActivity];
+      submitMonitor2 = [(CSStudiesServerUploader *)self submitMonitor];
+      [(CSFolderMonitorBackgroundScanningConfiguration *)submitMonitor2 registerForFolderMonitorActivity];
     }
 
     [(CSStudiesServerUploader *)self setMonitoring:1];
@@ -442,75 +442,75 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)enqueueFileWithFilename:(id)a3 andMetadata:(id)a4 error:(id *)a5
+- (BOOL)enqueueFileWithFilename:(id)filename andMetadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  filenameCopy = filename;
+  metadataCopy = metadata;
   v10 = +[NSFileManager defaultManager];
-  if ([v10 fileExistsAtPath:v8])
+  if ([v10 fileExistsAtPath:filenameCopy])
   {
-    v22 = v9;
-    v11 = [[NSURL alloc] initFileURLWithPath:v8 isDirectory:0];
-    v12 = [v11 URLByDeletingLastPathComponent];
-    v13 = [v12 absoluteString];
-    v14 = [(CSStudiesServerUploader *)self folderURL];
-    v15 = [v14 absoluteString];
-    v16 = [v13 isEqualToString:v15];
+    v22 = metadataCopy;
+    v11 = [[NSURL alloc] initFileURLWithPath:filenameCopy isDirectory:0];
+    uRLByDeletingLastPathComponent = [v11 URLByDeletingLastPathComponent];
+    absoluteString = [uRLByDeletingLastPathComponent absoluteString];
+    folderURL = [(CSStudiesServerUploader *)self folderURL];
+    absoluteString2 = [folderURL absoluteString];
+    v16 = [absoluteString isEqualToString:absoluteString2];
 
-    v17 = [(CSStudiesServerUploader *)self folderURL];
+    folderURL2 = [(CSStudiesServerUploader *)self folderURL];
     v18 = +[NSDate now];
     [v18 timeIntervalSinceReferenceDate];
-    LOBYTE(a5) = [(CSStudiesServerUploader *)self persistToDiskWithSpooledFile:v16 spoolerDir:v17 fileURL:v11 enqueueTime:v22 metadata:a5 error:?];
+    LOBYTE(error) = [(CSStudiesServerUploader *)self persistToDiskWithSpooledFile:v16 spoolerDir:folderURL2 fileURL:v11 enqueueTime:v22 metadata:error error:?];
 
-    v9 = v22;
+    metadataCopy = v22;
   }
 
-  else if (a5)
+  else if (error)
   {
     v23 = NSLocalizedDescriptionKey;
-    v19 = [NSString stringWithFormat:@"While enqueuing, file doesnt exist: %@", v8];
-    v24 = v19;
+    filenameCopy = [NSString stringWithFormat:@"While enqueuing, file doesnt exist: %@", filenameCopy];
+    v24 = filenameCopy;
     v20 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v20];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v20];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (BOOL)addOutOfBandMetadata:(id)a3 error:(id *)a4
+- (BOOL)addOutOfBandMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
+  metadataCopy = metadata;
   v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v7 encodeObject:v6 forKey:@"oobMetadata"];
+  [v7 encodeObject:metadataCopy forKey:@"oobMetadata"];
   v8 = +[NSDate now];
   [v8 timeIntervalSinceReferenceDate];
   [v7 encodeDouble:@"enqueueTime" forKey:?];
 
   [v7 finishEncoding];
   v9 = +[NSUUID UUID];
-  v10 = [(CSStudiesServerUploader *)self folderURL];
-  v11 = [v9 UUIDString];
-  v12 = [v10 URLByAppendingPathComponent:v11];
+  folderURL = [(CSStudiesServerUploader *)self folderURL];
+  uUIDString = [v9 UUIDString];
+  v12 = [folderURL URLByAppendingPathComponent:uUIDString];
   v13 = [v12 URLByAppendingPathExtension:@"oob"];
 
-  v14 = [v7 encodedData];
-  LOBYTE(a4) = [v14 writeToURL:v13 options:805306369 error:a4];
+  encodedData = [v7 encodedData];
+  LOBYTE(error) = [encodedData writeToURL:v13 options:805306369 error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)dealloc
 {
-  v3 = [(CSStudiesServerUploader *)self submitMonitor];
-  [v3 stopRecurringScanning];
+  submitMonitor = [(CSStudiesServerUploader *)self submitMonitor];
+  [submitMonitor stopRecurringScanning];
 
-  v4 = [(CSStudiesServerUploader *)self encryptMonitor];
-  [v4 stopRecurringScanning];
+  encryptMonitor = [(CSStudiesServerUploader *)self encryptMonitor];
+  [encryptMonitor stopRecurringScanning];
 
-  v5 = [(CSStudiesServerUploader *)self oobMetadataMonitor];
-  [v5 stopRecurringScanning];
+  oobMetadataMonitor = [(CSStudiesServerUploader *)self oobMetadataMonitor];
+  [oobMetadataMonitor stopRecurringScanning];
 
   v6.receiver = self;
   v6.super_class = CSStudiesServerUploader;

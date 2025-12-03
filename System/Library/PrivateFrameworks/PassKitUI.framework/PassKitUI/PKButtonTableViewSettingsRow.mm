@@ -1,34 +1,34 @@
 @interface PKButtonTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (PKButtonTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 tapHandler:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKButtonTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title tapHandler:(id)handler;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
 - (unint64_t)hash;
 - (void)handleCellSelection;
 @end
 
 @implementation PKButtonTableViewSettingsRow
 
-- (PKButtonTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 tapHandler:(id)a5
+- (PKButtonTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title tapHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = PKButtonTableViewSettingsRow;
   v11 = [(PKButtonTableViewSettingsRow *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v14;
 
-    v16 = [v10 copy];
+    v16 = [handlerCopy copy];
     changeHandler = v11->_changeHandler;
     v11->_changeHandler = v16;
   }
@@ -49,18 +49,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -122,54 +122,54 @@ LABEL_20:
   return NSStringFromClass(v2);
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:cellReuseIdentifier];
   }
 
-  v8 = [v7 textLabel];
-  [v8 setText:self->_title];
+  textLabel = [v7 textLabel];
+  [textLabel setText:self->_title];
 
-  v9 = [v7 textLabel];
-  [v9 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
 
   style = self->_style;
   switch(style)
   {
     case 2:
-      v12 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
       v13 = 1;
       goto LABEL_10;
     case 1:
-      v11 = [MEMORY[0x1E69DC888] systemRedColor];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
       goto LABEL_8;
     case 0:
-      v11 = [MEMORY[0x1E69DC888] linkColor];
+      systemRedColor = [MEMORY[0x1E69DC888] linkColor];
 LABEL_8:
-      v12 = v11;
+      labelColor = systemRedColor;
       v13 = 0;
 LABEL_10:
       [v7 setAccessoryType:v13];
       goto LABEL_12;
   }
 
-  v12 = 0;
+  labelColor = 0;
 LABEL_12:
   if (!self->_enabled)
   {
-    v14 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
 
-    v12 = v14;
+    labelColor = systemGrayColor;
   }
 
-  v15 = [v7 textLabel];
-  [v15 setTextColor:v12];
+  textLabel3 = [v7 textLabel];
+  [textLabel3 setTextColor:labelColor];
 
   [v7 setAccessibilityIdentifier:self->_identifier];
   [(PKButtonTableViewSettingsRow *)self setSourceItem:v7];

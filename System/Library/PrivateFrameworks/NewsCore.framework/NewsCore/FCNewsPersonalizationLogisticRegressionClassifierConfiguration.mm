@@ -1,35 +1,35 @@
 @interface FCNewsPersonalizationLogisticRegressionClassifierConfiguration
-- (FCNewsPersonalizationLogisticRegressionClassifierConfiguration)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationLogisticRegressionClassifierConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationLogisticRegressionClassifierConfiguration
 
-- (FCNewsPersonalizationLogisticRegressionClassifierConfiguration)initWithDictionary:(id)a3
+- (FCNewsPersonalizationLogisticRegressionClassifierConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = FCNewsPersonalizationLogisticRegressionClassifierConfiguration;
   v5 = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)&v17 init];
   if (v5)
   {
-    v6 = FCAppConfigurationNumberValue(v4, @"l2Penalty", &unk_1F2E71C18);
+    v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"l2Penalty", &unk_1F2E71C18);
     l2Penalty = v5->_l2Penalty;
     v5->_l2Penalty = v6;
 
-    v8 = FCAppConfigurationNumberValue(v4, @"l1Penalty", 0);
+    v8 = FCAppConfigurationNumberValue(dictionaryCopy, @"l1Penalty", 0);
     l1Penalty = v5->_l1Penalty;
     v5->_l1Penalty = v8;
 
-    v10 = FCAppConfigurationNumberValue(v4, @"maximumIterations", &unk_1F2E70EF0);
+    v10 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumIterations", &unk_1F2E70EF0);
     maximumIterations = v5->_maximumIterations;
     v5->_maximumIterations = v10;
 
-    v12 = FCAppConfigurationNumberValue(v4, @"stepSize", &unk_1F2E71C18);
+    v12 = FCAppConfigurationNumberValue(dictionaryCopy, @"stepSize", &unk_1F2E71C18);
     stepSize = v5->_stepSize;
     v5->_stepSize = v12;
 
-    v14 = FCAppConfigurationNumberValue(v4, @"convergenceThreshold", &unk_1F2E71C28);
+    v14 = FCAppConfigurationNumberValue(dictionaryCopy, @"convergenceThreshold", &unk_1F2E71C28);
     convergenceThreshold = v5->_convergenceThreshold;
     v5->_convergenceThreshold = v14;
   }
@@ -40,20 +40,20 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self l2Penalty];
-  [v3 appendFormat:@"; l2Penalty: %@", v4];
+  l2Penalty = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self l2Penalty];
+  [v3 appendFormat:@"; l2Penalty: %@", l2Penalty];
 
-  v5 = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self l1Penalty];
-  [v3 appendFormat:@"; l1Penalty: %@", v5];
+  l1Penalty = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self l1Penalty];
+  [v3 appendFormat:@"; l1Penalty: %@", l1Penalty];
 
-  v6 = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self maximumIterations];
-  [v3 appendFormat:@"; maximumIterations: %@", v6];
+  maximumIterations = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self maximumIterations];
+  [v3 appendFormat:@"; maximumIterations: %@", maximumIterations];
 
-  v7 = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self stepSize];
-  [v3 appendFormat:@"; stepSize: %@", v7];
+  stepSize = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self stepSize];
+  [v3 appendFormat:@"; stepSize: %@", stepSize];
 
-  v8 = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self convergenceThreshold];
-  [v3 appendFormat:@"; convergenceThreshold: %@", v8];
+  convergenceThreshold = [(FCNewsPersonalizationLogisticRegressionClassifierConfiguration *)self convergenceThreshold];
+  [v3 appendFormat:@"; convergenceThreshold: %@", convergenceThreshold];
 
   [v3 appendString:@">"];
 

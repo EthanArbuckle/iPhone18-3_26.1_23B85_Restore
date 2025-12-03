@@ -1,9 +1,9 @@
 @interface TUIEmojiVariantCell
 + (id)_createDraggableEmojiLabel;
-- (TUIEmojiVariantCell)initWithFrame:(CGRect)a3 token:(id)a4;
+- (TUIEmojiVariantCell)initWithFrame:(CGRect)frame token:(id)token;
 - (TUIEmojiVariantSelectorView)variantSelectorView;
-- (void)dragDidEnd:(id)a3 withOperation:(unint64_t)a4;
-- (void)dragWillBegin:(id)a3;
+- (void)dragDidEnd:(id)end withOperation:(unint64_t)operation;
+- (void)dragWillBegin:(id)begin;
 - (void)layoutSubviews;
 @end
 
@@ -16,20 +16,20 @@
   return WeakRetained;
 }
 
-- (void)dragDidEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)dragDidEnd:(id)end withOperation:(unint64_t)operation
 {
   WeakRetained = objc_loadWeakRetained(&self->_variantSelectorView);
-  v5 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v6 = objc_loadWeakRetained(&self->_variantSelectorView);
-  [v5 dragAndDropDidEnd:v6];
+  [delegate dragAndDropDidEnd:v6];
 }
 
-- (void)dragWillBegin:(id)a3
+- (void)dragWillBegin:(id)begin
 {
   WeakRetained = objc_loadWeakRetained(&self->_variantSelectorView);
-  v4 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v5 = objc_loadWeakRetained(&self->_variantSelectorView);
-  [v4 dragAndDropWillBegin:v5];
+  [delegate dragAndDropWillBegin:v5];
 }
 
 - (void)layoutSubviews
@@ -46,20 +46,20 @@
   [(_TUIKeyboardEmojiDraggableView *)self->_labelView setFrame:v4, v6, v8, v10];
 }
 
-- (TUIEmojiVariantCell)initWithFrame:(CGRect)a3 token:(id)a4
+- (TUIEmojiVariantCell)initWithFrame:(CGRect)frame token:(id)token
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  tokenCopy = token;
   v33.receiver = self;
   v33.super_class = TUIEmojiVariantCell;
-  v11 = [(TUIEmojiVariantCell *)&v33 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(TUIEmojiVariantCell *)&v33 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_emojiToken, a4);
+    objc_storeStrong(&height->_emojiToken, token);
     v13 = objc_alloc(MEMORY[0x1E69DD250]);
     v14 = *MEMORY[0x1E695F058];
     v15 = *(MEMORY[0x1E695F058] + 8);
@@ -69,19 +69,19 @@
     backgroundView = v12->_backgroundView;
     v12->_backgroundView = v18;
 
-    v20 = [(UIView *)v12->_backgroundView layer];
-    [v20 setCornerRadius:5.0];
+    layer = [(UIView *)v12->_backgroundView layer];
+    [layer setCornerRadius:5.0];
 
-    v21 = [(UIView *)v12->_backgroundView layer];
-    [v21 setMasksToBounds:1];
+    layer2 = [(UIView *)v12->_backgroundView layer];
+    [layer2 setMasksToBounds:1];
 
-    v22 = [(TUIEmojiVariantCell *)v12 tintColor];
-    [(UIView *)v12->_backgroundView setBackgroundColor:v22];
+    tintColor = [(TUIEmojiVariantCell *)v12 tintColor];
+    [(UIView *)v12->_backgroundView setBackgroundColor:tintColor];
 
     [(TUIEmojiVariantCell *)v12 addSubview:v12->_backgroundView];
-    v23 = [objc_opt_class() _createDraggableEmojiLabel];
+    _createDraggableEmojiLabel = [objc_opt_class() _createDraggableEmojiLabel];
     labelView = v12->_labelView;
-    v12->_labelView = v23;
+    v12->_labelView = _createDraggableEmojiLabel;
 
     v25 = v12->_labelView;
     if (v25)
@@ -99,9 +99,9 @@
 
     [(TUIEmojiVariantCell *)v12 addSubview:v12->_labelView];
     v28 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v29 = [v10 string];
+    string = [tokenCopy string];
     v30 = +[TUIEmojiVariantSelectorView emojiTextAttributes];
-    v31 = [v28 initWithString:v29 attributes:v30];
+    v31 = [v28 initWithString:string attributes:v30];
 
     [(_TUIKeyboardEmojiDraggableView *)v12->_labelView setAttributedText:v31];
     [(TUIEmojiVariantCell *)v12 setHighlighted:0];

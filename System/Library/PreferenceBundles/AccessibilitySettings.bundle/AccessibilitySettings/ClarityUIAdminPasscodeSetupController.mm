@@ -1,21 +1,21 @@
 @interface ClarityUIAdminPasscodeSetupController
-- (ClarityUIAdminPasscodeSetupController)initWithCompletion:(id)a3;
+- (ClarityUIAdminPasscodeSetupController)initWithCompletion:(id)completion;
 - (id)_axPasscodeInputView;
-- (void)_axShowDoneControllerWithPasscode:(id)a3;
-- (void)_axShowWarmingView:(id)a3;
-- (void)_axTransitionToPasscodeInput:(id)a3 withAnimation:(int)a4;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_axShowDoneControllerWithPasscode:(id)passcode;
+- (void)_axShowWarmingView:(id)view;
+- (void)_axTransitionToPasscodeInput:(id)input withAnimation:(int)animation;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ClarityUIAdminPasscodeSetupController
 
-- (ClarityUIAdminPasscodeSetupController)initWithCompletion:(id)a3
+- (ClarityUIAdminPasscodeSetupController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = settingsLocString(@"ADMIN_PASSCODE_TITLE", @"ClarityUISettings");
   v29.receiver = self;
   v29.super_class = ClarityUIAdminPasscodeSetupController;
@@ -23,38 +23,38 @@
 
   if (v6)
   {
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(completionCopy);
     completionHandler = v6->_completionHandler;
     v6->_completionHandler = v7;
 
-    v9 = [(ClarityUIAdminPasscodeSetupController *)v6 contentView];
+    contentView = [(ClarityUIAdminPasscodeSetupController *)v6 contentView];
     v6->_passcodeState = 0;
-    v10 = [(ClarityUIAdminPasscodeSetupController *)v6 _axPasscodeInputView];
+    _axPasscodeInputView = [(ClarityUIAdminPasscodeSetupController *)v6 _axPasscodeInputView];
     passcodeInputView = v6->_passcodeInputView;
-    v6->_passcodeInputView = v10;
+    v6->_passcodeInputView = _axPasscodeInputView;
 
     [(BFFPasscodeInputView *)v6->_passcodeInputView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(BFFPasscodeInputView *)v6->_passcodeInputView setDelegate:v6];
-    v12 = [(ClarityUIAdminPasscodeSetupController *)v6 contentView];
-    [v12 addSubview:v6->_passcodeInputView];
+    contentView2 = [(ClarityUIAdminPasscodeSetupController *)v6 contentView];
+    [contentView2 addSubview:v6->_passcodeInputView];
 
-    v13 = [(BFFPasscodeInputView *)v6->_passcodeInputView bottomAnchor];
-    v14 = [v9 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(BFFPasscodeInputView *)v6->_passcodeInputView bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
     [(ClarityUIAdminPasscodeSetupController *)v6 setPasscodeBottomConstraint:v15];
-    v27 = [(BFFPasscodeInputView *)v6->_passcodeInputView trailingAnchor];
-    v26 = [v9 trailingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    trailingAnchor = [(BFFPasscodeInputView *)v6->_passcodeInputView trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[0] = v25;
-    v24 = [(BFFPasscodeInputView *)v6->_passcodeInputView leadingAnchor];
-    v28 = v9;
-    v16 = [v9 leadingAnchor];
-    v17 = [v24 constraintEqualToAnchor:v16];
+    leadingAnchor = [(BFFPasscodeInputView *)v6->_passcodeInputView leadingAnchor];
+    v28 = contentView;
+    leadingAnchor2 = [contentView leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[1] = v17;
-    v18 = [(BFFPasscodeInputView *)v6->_passcodeInputView topAnchor];
-    v19 = [v9 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [(BFFPasscodeInputView *)v6->_passcodeInputView topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[2] = v20;
     v30[3] = v15;
     v21 = [NSArray arrayWithObjects:v30 count:4];
@@ -68,11 +68,11 @@
   return v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = ClarityUIAdminPasscodeSetupController;
-  [(ClarityUIAdminPasscodeSetupController *)&v8 viewWillAppear:a3];
+  [(ClarityUIAdminPasscodeSetupController *)&v8 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"keyboardWillShow:" name:UIKeyboardWillShowNotification object:0];
 
@@ -82,29 +82,29 @@
   [(ClarityUIAdminPasscodeSetupController *)self setPasscodeState:0];
   [(ClarityUIAdminPasscodeSetupController *)self setInitialPasscode:&stru_25D420];
   v6 = settingsLocString(@"ADMIN_PASSCODE_DESCRIPTION_INITIAL_ENTRY", @"ClarityUISettings");
-  v7 = [(BFFPasscodeInputView *)self->_passcodeInputView instructions];
-  [v7 setText:v6];
+  instructions = [(BFFPasscodeInputView *)self->_passcodeInputView instructions];
+  [instructions setText:v6];
 
   [(BFFPasscodeInputView *)self->_passcodeInputView sizeToFit];
   [(BFFPasscodeInputView *)self->_passcodeInputView setPasscode:&stru_25D420];
   [(BFFPasscodeInputView *)self->_passcodeInputView invalidateIntrinsicContentSize];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ClarityUIAdminPasscodeSetupController;
-  [(ClarityUIAdminPasscodeSetupController *)&v4 viewDidAppear:a3];
+  [(ClarityUIAdminPasscodeSetupController *)&v4 viewDidAppear:appear];
   [(BFFPasscodeInputView *)self->_passcodeInputView becomeFirstResponder];
 }
 
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode
 {
-  v6 = a4;
-  v12 = v6;
+  passcodeCopy = passcode;
+  v12 = passcodeCopy;
   if (self->_passcodeState == 1)
   {
-    if ([(NSString *)self->_initialPasscode isEqualToString:v6])
+    if ([(NSString *)self->_initialPasscode isEqualToString:passcodeCopy])
     {
       [(ClarityUIAdminPasscodeSetupController *)self _axShowWarmingView:v12];
       goto LABEL_7;
@@ -115,24 +115,24 @@
     self->_initialPasscode = 0;
 
     [(BFFPasscodeInputView *)self->_passcodeInputView setPasscode:&stru_25D420];
-    v7 = [(ClarityUIAdminPasscodeSetupController *)self _axPasscodeInputView];
-    v8 = self;
-    v9 = v7;
+    _axPasscodeInputView = [(ClarityUIAdminPasscodeSetupController *)self _axPasscodeInputView];
+    selfCopy2 = self;
+    v9 = _axPasscodeInputView;
     v10 = 1;
   }
 
   else
   {
     self->_passcodeState = 1;
-    objc_storeStrong(&self->_initialPasscode, a4);
+    objc_storeStrong(&self->_initialPasscode, passcode);
     [(BFFPasscodeInputView *)self->_passcodeInputView setPasscode:&stru_25D420];
-    v7 = [(ClarityUIAdminPasscodeSetupController *)self _axPasscodeInputView];
-    v8 = self;
-    v9 = v7;
+    _axPasscodeInputView = [(ClarityUIAdminPasscodeSetupController *)self _axPasscodeInputView];
+    selfCopy2 = self;
+    v9 = _axPasscodeInputView;
     v10 = 2;
   }
 
-  [(ClarityUIAdminPasscodeSetupController *)v8 _axTransitionToPasscodeInput:v9 withAnimation:v10];
+  [(ClarityUIAdminPasscodeSetupController *)selfCopy2 _axTransitionToPasscodeInput:v9 withAnimation:v10];
 
 LABEL_7:
 }
@@ -141,61 +141,61 @@ LABEL_7:
 {
   v3 = [BFFSimplePasscodeInputView alloc];
   v4 = [v3 initWithFrame:AXBackBoardServerClarityUIAdminPasscodeLength numberOfEntryFields:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v5 = [(ClarityUIAdminPasscodeSetupController *)self passcodeState];
-  if (v5 <= 2)
+  passcodeState = [(ClarityUIAdminPasscodeSetupController *)self passcodeState];
+  if (passcodeState <= 2)
   {
-    v6 = settingsLocString(off_2578B0[v5], @"ClarityUISettings");
-    v7 = [v4 instructions];
-    [v7 setText:v6];
+    v6 = settingsLocString(off_2578B0[passcodeState], @"ClarityUISettings");
+    instructions = [v4 instructions];
+    [instructions setText:v6];
   }
 
   return v4;
 }
 
-- (void)_axTransitionToPasscodeInput:(id)a3 withAnimation:(int)a4
+- (void)_axTransitionToPasscodeInput:(id)input withAnimation:(int)animation
 {
-  v7 = a3;
-  v8 = [(ClarityUIAdminPasscodeSetupController *)self view];
-  v9 = [v8 _shouldReverseLayoutDirection];
+  inputCopy = input;
+  view = [(ClarityUIAdminPasscodeSetupController *)self view];
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
 
-  v10 = [(ClarityUIAdminPasscodeSetupController *)self contentView];
-  if (((a4 == 2) & v9) != 0)
+  contentView = [(ClarityUIAdminPasscodeSetupController *)self contentView];
+  if (((animation == 2) & _shouldReverseLayoutDirection) != 0)
   {
-    v11 = 1;
+    animationCopy = 1;
   }
 
   else
   {
-    v11 = a4;
+    animationCopy = animation;
   }
 
-  if (((a4 == 1) & v9) != 0)
+  if (((animation == 1) & _shouldReverseLayoutDirection) != 0)
   {
     v12 = 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = animationCopy;
   }
 
   v13 = self->_passcodeInputView;
   [(BFFPasscodeInputView *)v13 setEnabled:0];
   [(BFFPasscodeInputView *)v13 setDelegate:0];
-  objc_storeStrong(&self->_passcodeInputView, a3);
-  [v7 becomeFirstResponder];
-  [v10 frame];
+  objc_storeStrong(&self->_passcodeInputView, input);
+  [inputCopy becomeFirstResponder];
+  [contentView frame];
   v15 = v14;
   [(BFFPasscodeInputView *)v13 center];
   v17 = v16;
   v19 = v18;
   v20 = v16 + v15;
   v21 = v16 - v15;
-  [v7 frame];
+  [inputCopy frame];
   v23 = v22;
   v25 = v24;
   [(BFFPasscodeInputView *)v13 frame];
-  [v7 setFrame:{v23, v25}];
+  [inputCopy setFrame:{v23, v25}];
   if (v12 == 2)
   {
     v26 = v20;
@@ -206,8 +206,8 @@ LABEL_7:
     v26 = v21;
   }
 
-  [v7 setCenter:{v26, v19}];
-  [v10 addSubview:v7];
+  [inputCopy setCenter:{v26, v19}];
+  [contentView addSubview:inputCopy];
   [UITransitionView defaultDurationForTransition:v12];
   v28 = v27;
   v35[0] = _NSConcreteStackBlock;
@@ -220,7 +220,7 @@ LABEL_7:
   v39 = v19;
   v40 = v20;
   v41 = v19;
-  v37 = v7;
+  v37 = inputCopy;
   v42 = v17;
   v43 = v19;
   v31[0] = _NSConcreteStackBlock;
@@ -229,7 +229,7 @@ LABEL_7:
   v31[3] = &unk_257818;
   v32 = v36;
   v33 = v37;
-  v34 = self;
+  selfCopy = self;
   v29 = v37;
   v30 = v36;
   [UIView animateWithDuration:v35 animations:v31 completion:v28];
@@ -268,9 +268,9 @@ void __84__ClarityUIAdminPasscodeSetupController__axTransitionToPasscodeInput_wi
   UIAccessibilityPostNotification(v2, v3);
 }
 
-- (void)_axShowWarmingView:(id)a3
+- (void)_axShowWarmingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v5 = [ClarityUIPasswordRecoveryWarmingController alloc];
   v9 = _NSConcreteStackBlock;
@@ -278,9 +278,9 @@ void __84__ClarityUIAdminPasscodeSetupController__axTransitionToPasscodeInput_wi
   v11 = __60__ClarityUIAdminPasscodeSetupController__axShowWarmingView___block_invoke;
   v12 = &unk_257840;
   objc_copyWeak(&v15, &location);
-  v6 = v4;
+  v6 = viewCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v7 = [(ClarityUIPasswordRecoveryWarmingController *)v5 initWithCompletion:&v9];
   v8 = [(ClarityUIAdminPasscodeSetupController *)self navigationController:v9];
   [v8 pushViewController:v7 animated:1];
@@ -309,9 +309,9 @@ void __60__ClarityUIAdminPasscodeSetupController__axShowWarmingView___block_invo
   }
 }
 
-- (void)_axShowDoneControllerWithPasscode:(id)a3
+- (void)_axShowDoneControllerWithPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = objc_opt_new();
   [v5 setIsEphemeral:1];
   [v5 setAuthenticationType:2];
@@ -334,9 +334,9 @@ void __60__ClarityUIAdminPasscodeSetupController__axShowWarmingView___block_invo
   v12[1] = 3221225472;
   v12[2] = __75__ClarityUIAdminPasscodeSetupController__axShowDoneControllerWithPasscode___block_invoke;
   v12[3] = &unk_257890;
-  v13 = v4;
-  v14 = self;
-  v11 = v4;
+  v13 = passcodeCopy;
+  selfCopy = self;
+  v11 = passcodeCopy;
   [v10 authenticateWithContext:v5 completion:v12];
 }
 
@@ -487,25 +487,25 @@ uint64_t __75__ClarityUIAdminPasscodeSetupController__axShowDoneControllerWithPa
   return v4();
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(ClarityUIAdminPasscodeSetupController *)self view];
-  [v14 convertRect:0 fromView:{v7, v9, v11, v13}];
+  view = [(ClarityUIAdminPasscodeSetupController *)self view];
+  [view convertRect:0 fromView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(ClarityUIAdminPasscodeSetupController *)self view];
-  [v23 bounds];
+  view2 = [(ClarityUIAdminPasscodeSetupController *)self view];
+  [view2 bounds];
   MaxY = CGRectGetMaxY(v29);
   v30.origin.x = v16;
   v30.origin.y = v18;
@@ -523,14 +523,14 @@ uint64_t __75__ClarityUIAdminPasscodeSetupController__axShowDoneControllerWithPa
     v26 = -v25;
   }
 
-  v27 = [(ClarityUIAdminPasscodeSetupController *)self passcodeBottomConstraint];
-  [v27 setConstant:v26];
+  passcodeBottomConstraint = [(ClarityUIAdminPasscodeSetupController *)self passcodeBottomConstraint];
+  [passcodeBottomConstraint setConstant:v26];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v3 = [(ClarityUIAdminPasscodeSetupController *)self passcodeBottomConstraint];
-  [v3 setConstant:0.0];
+  passcodeBottomConstraint = [(ClarityUIAdminPasscodeSetupController *)self passcodeBottomConstraint];
+  [passcodeBottomConstraint setConstant:0.0];
 }
 
 void __75__ClarityUIAdminPasscodeSetupController__axShowDoneControllerWithPasscode___block_invoke_2_cold_1(uint64_t *a1, NSObject *a2)

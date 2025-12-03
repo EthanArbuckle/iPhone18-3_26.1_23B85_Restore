@@ -1,33 +1,33 @@
 @interface BandCombo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBandInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBandInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BandCombo
 
-- (void)addBandInfo:(id)a3
+- (void)addBandInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   bandInfos = self->_bandInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!bandInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_bandInfos;
     self->_bandInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     bandInfos = self->_bandInfos;
   }
 
-  [(NSMutableArray *)bandInfos addObject:v4];
+  [(NSMutableArray *)bandInfos addObject:infoCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = BandCombo;
   v3 = [(BandCombo *)&v7 description];
-  v4 = [(BandCombo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BandCombo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -88,9 +88,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     numBandComponents = self->_numBandComponents;
@@ -130,23 +130,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_numBandComponents;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_numBandComponents;
+    *(toCopy + 20) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(BandCombo *)self bandInfosCount])
   {
     [v9 clearBandInfos];
-    v5 = [(BandCombo *)self bandInfosCount];
-    if (v5)
+    bandInfosCount = [(BandCombo *)self bandInfosCount];
+    if (bandInfosCount)
     {
-      v6 = v5;
+      v6 = bandInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BandCombo *)self bandInfoAtIndex:i];
@@ -156,9 +156,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addBandInfo:v12];
 
         v11 = v11 + 1;
@@ -202,24 +202,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_numBandComponents != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_numBandComponents != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -227,7 +227,7 @@ LABEL_9:
   }
 
   bandInfos = self->_bandInfos;
-  if (bandInfos | *(v4 + 1))
+  if (bandInfos | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)bandInfos isEqual:?];
   }
@@ -257,13 +257,13 @@ LABEL_10:
   return [(NSMutableArray *)self->_bandInfos hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_numBandComponents = *(v4 + 4);
+    self->_numBandComponents = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -271,7 +271,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

@@ -1,7 +1,7 @@
 @interface STKStickerUsageManager
 + (STKStickerUsageManager)sharedManager;
-- (unint64_t)stickerCountsForBundleIdentifier:(id)a3;
-- (void)logStickerWithStickerIdentifier:(id)a3 bundleIdentifier:(id)a4;
+- (unint64_t)stickerCountsForBundleIdentifier:(id)identifier;
+- (void)logStickerWithStickerIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation STKStickerUsageManager
@@ -18,21 +18,21 @@
   return v3;
 }
 
-- (void)logStickerWithStickerIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (void)logStickerWithStickerIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v5 = sub_1B8A23F24();
   v7 = v6;
   v8 = sub_1B8A23F24();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1B8A1DF20(v5, v7, v8, v10);
 }
 
-- (unint64_t)stickerCountsForBundleIdentifier:(id)a3
+- (unint64_t)stickerCountsForBundleIdentifier:(id)identifier
 {
   v4 = sub_1B8A23F24();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1B8A1E44C(v4, v6);
 
   return v8;

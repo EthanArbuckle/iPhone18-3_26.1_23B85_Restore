@@ -1,5 +1,5 @@
 @interface OTModifyUserControllableViewStatusOperation
-- (OTModifyUserControllableViewStatusOperation)initWithDependencies:(id)a3 intendedViewStatus:(int)a4 intendedState:(id)a5 peerMissingState:(id)a6 errorState:(id)a7;
+- (OTModifyUserControllableViewStatusOperation)initWithDependencies:(id)dependencies intendedViewStatus:(int)status intendedState:(id)state peerMissingState:(id)missingState errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -10,16 +10,16 @@
   if ([(OTModifyUserControllableViewStatusOperation *)self intendedViewStatus]== 3)
   {
     objc_initWeak(&location, self);
-    v3 = [(OTModifyUserControllableViewStatusOperation *)self deps];
-    v4 = [v3 sosAdapter];
-    v5 = [v4 sosEnabled];
+    deps = [(OTModifyUserControllableViewStatusOperation *)self deps];
+    sosAdapter = [deps sosAdapter];
+    sosEnabled = [sosAdapter sosEnabled];
 
-    if (v5)
+    if (sosEnabled)
     {
-      v6 = [(OTModifyUserControllableViewStatusOperation *)self deps];
-      v7 = [v6 sosAdapter];
+      deps2 = [(OTModifyUserControllableViewStatusOperation *)self deps];
+      sosAdapter2 = [deps2 sosAdapter];
       v28 = 0;
-      v8 = [v7 safariViewSyncingEnabled:&v28];
+      v8 = [sosAdapter2 safariViewSyncingEnabled:&v28];
       v9 = v28;
 
       if (v9)
@@ -68,10 +68,10 @@
 
     else
     {
-      v12 = [(OTModifyUserControllableViewStatusOperation *)self deps];
-      v13 = [v12 stateHolder];
+      deps3 = [(OTModifyUserControllableViewStatusOperation *)self deps];
+      stateHolder = [deps3 stateHolder];
       v27 = 0;
-      v14 = [v13 loadOrCreateAccountMetadata:&v27];
+      v14 = [stateHolder loadOrCreateAccountMetadata:&v27];
       v9 = v27;
 
       if (!v14 || v9)
@@ -84,12 +84,12 @@
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Failed to load account metadata: %@", buf, 0xCu);
         }
 
-        v15 = 0;
+        isInheritedAccount = 0;
       }
 
       else
       {
-        v15 = [v14 isInheritedAccount];
+        isInheritedAccount = [v14 isInheritedAccount];
       }
 
       v17 = sub_100006274("octagon-ckks");
@@ -99,16 +99,16 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Determining peers' user-controllable views policy", buf, 2u);
       }
 
-      v18 = [(OTModifyUserControllableViewStatusOperation *)self deps];
-      v19 = [v18 cuttlefishXPCWrapper];
-      v20 = [(OTModifyUserControllableViewStatusOperation *)self deps];
-      v21 = [v20 activeAccount];
+      deps4 = [(OTModifyUserControllableViewStatusOperation *)self deps];
+      cuttlefishXPCWrapper = [deps4 cuttlefishXPCWrapper];
+      deps5 = [(OTModifyUserControllableViewStatusOperation *)self deps];
+      activeAccount = [deps5 activeAccount];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_1000987F8;
       v25[3] = &unk_100338738;
       objc_copyWeak(&v26, &location);
-      [v19 fetchCurrentPolicyWithSpecificUser:v21 modelIDOverride:0 isInheritedAccount:v15 reply:v25];
+      [cuttlefishXPCWrapper fetchCurrentPolicyWithSpecificUser:activeAccount modelIDOverride:0 isInheritedAccount:isInheritedAccount reply:v25];
 
       objc_destroyWeak(&v26);
     }
@@ -118,29 +118,29 @@
 
   else
   {
-    v11 = [(OTModifyUserControllableViewStatusOperation *)self intendedViewStatus];
+    intendedViewStatus = [(OTModifyUserControllableViewStatusOperation *)self intendedViewStatus];
 
-    [(OTModifyUserControllableViewStatusOperation *)self performWithStatus:v11];
+    [(OTModifyUserControllableViewStatusOperation *)self performWithStatus:intendedViewStatus];
   }
 }
 
-- (OTModifyUserControllableViewStatusOperation)initWithDependencies:(id)a3 intendedViewStatus:(int)a4 intendedState:(id)a5 peerMissingState:(id)a6 errorState:(id)a7
+- (OTModifyUserControllableViewStatusOperation)initWithDependencies:(id)dependencies intendedViewStatus:(int)status intendedState:(id)state peerMissingState:(id)missingState errorState:(id)errorState
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  missingStateCopy = missingState;
+  errorStateCopy = errorState;
   v20.receiver = self;
   v20.super_class = OTModifyUserControllableViewStatusOperation;
   v17 = [(CKKSGroupOperation *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong((v17 + 148), a3);
-    *(v18 + 32) = a4;
-    objc_storeStrong((v18 + 132), a5);
-    objc_storeStrong((v18 + 156), a6);
-    objc_storeStrong((v18 + 140), a7);
+    objc_storeStrong((v17 + 148), dependencies);
+    *(v18 + 32) = status;
+    objc_storeStrong((v18 + 132), state);
+    objc_storeStrong((v18 + 156), missingState);
+    objc_storeStrong((v18 + 140), errorState);
   }
 
   return v18;

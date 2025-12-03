@@ -1,25 +1,25 @@
 @interface FAFamilyRequest
-- (FAFamilyRequest)initWithGrandSlamSigner:(id)a3;
+- (FAFamilyRequest)initWithGrandSlamSigner:(id)signer;
 - (id)urlRequest;
-- (void)URLRequestWithCompletion:(id)a3;
-- (void)_baseURLForEndpoint:(id)a3 withCompletion:(id)a4;
-- (void)_configureRequest:(id)a3 includePayload:(BOOL)a4;
-- (void)_decoratedURLWithCompletion:(id)a3;
+- (void)URLRequestWithCompletion:(id)completion;
+- (void)_baseURLForEndpoint:(id)endpoint withCompletion:(id)completion;
+- (void)_configureRequest:(id)request includePayload:(BOOL)payload;
+- (void)_decoratedURLWithCompletion:(id)completion;
 @end
 
 @implementation FAFamilyRequest
 
-- (FAFamilyRequest)initWithGrandSlamSigner:(id)a3
+- (FAFamilyRequest)initWithGrandSlamSigner:(id)signer
 {
-  v4 = a3;
+  signerCopy = signer;
   v11.receiver = self;
   v11.super_class = FAFamilyRequest;
-  v5 = [(AAFamilyRequest *)&v11 initWithGrandSlamSigner:v4];
+  v5 = [(AAFamilyRequest *)&v11 initWithGrandSlamSigner:signerCopy];
   if (v5)
   {
-    v6 = [v4 accountStore];
-    v7 = [v4 grandSlamAccount];
-    v8 = [v6 aida_iCloudAccountMatchingAppleIDAuthAccount:v7];
+    accountStore = [signerCopy accountStore];
+    grandSlamAccount = [signerCopy grandSlamAccount];
+    v8 = [accountStore aida_iCloudAccountMatchingAppleIDAuthAccount:grandSlamAccount];
     appleAccount = v5->_appleAccount;
     v5->_appleAccount = v8;
   }
@@ -27,35 +27,35 @@
   return v5;
 }
 
-- (void)_configureRequest:(id)a3 includePayload:(BOOL)a4
+- (void)_configureRequest:(id)request includePayload:(BOOL)payload
 {
-  v4 = a4;
-  v9 = a3;
+  payloadCopy = payload;
+  requestCopy = request;
   v6 = objc_alloc(MEMORY[0x277D082E8]);
-  v7 = [(FAFamilyRequest *)self appleAccount];
-  v8 = [v6 initWithAccount:v7];
+  appleAccount = [(FAFamilyRequest *)self appleAccount];
+  v8 = [v6 initWithAccount:appleAccount];
 
   [v8 setAttachSetupHeader:0];
-  [v8 addFresnoHeadersToRequest:v9];
-  if (v4)
+  [v8 addFresnoHeadersToRequest:requestCopy];
+  if (payloadCopy)
   {
-    [v8 addFresnoPayloadToRequest:v9 additionalPayload:0];
+    [v8 addFresnoPayloadToRequest:requestCopy additionalPayload:0];
   }
 }
 
-- (void)_baseURLForEndpoint:(id)a3 withCompletion:(id)a4
+- (void)_baseURLForEndpoint:(id)endpoint withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  endpointCopy = endpoint;
+  completionCopy = completion;
   v7 = objc_opt_new();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__FAFamilyRequest__baseURLForEndpoint_withCompletion___block_invoke;
   v10[3] = &unk_2782F43D8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = endpointCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = endpointCopy;
   [v7 URLForEndpoint:v9 withCompletion:v10];
 }
 
@@ -86,18 +86,18 @@ void __54__FAFamilyRequest__baseURLForEndpoint_withCompletion___block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_decoratedURLWithCompletion:(id)a3
+- (void)_decoratedURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FAFamilyRequest *)self _endpoint];
+  completionCopy = completion;
+  _endpoint = [(FAFamilyRequest *)self _endpoint];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__FAFamilyRequest__decoratedURLWithCompletion___block_invoke;
   v7[3] = &unk_2782F4400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(FAFamilyRequest *)self _baseURLForEndpoint:v5 withCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(FAFamilyRequest *)self _baseURLForEndpoint:_endpoint withCompletion:v7];
 }
 
 void __47__FAFamilyRequest__decoratedURLWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -128,22 +128,22 @@ void __47__FAFamilyRequest__decoratedURLWithCompletion___block_invoke(uint64_t a
   }
 }
 
-- (void)URLRequestWithCompletion:(id)a3
+- (void)URLRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13.receiver = self;
   v13.super_class = FAFamilyRequest;
-  v5 = [(AAFamilyRequest *)&v13 urlRequest];
-  v6 = [v5 mutableCopy];
+  urlRequest = [(AAFamilyRequest *)&v13 urlRequest];
+  v6 = [urlRequest mutableCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__FAFamilyRequest_URLRequestWithCompletion___block_invoke;
   v9[3] = &unk_2782F4428;
   v10 = v6;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v7 = completionCopy;
   v8 = v6;
   [(FAFamilyRequest *)self _decoratedURLWithCompletion:v9];
 }

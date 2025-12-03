@@ -1,32 +1,32 @@
 @interface AnalogDialView
-+ (id)richCircularLevelSubdialForDevice:(id)a3 andComplicationFamily:(int64_t)a4;
-- (AnalogDialView)initWithDialDiameter:(double)a3;
++ (id)richCircularLevelSubdialForDevice:(id)device andComplicationFamily:(int64_t)family;
+- (AnalogDialView)initWithDialDiameter:(double)diameter;
 - (CGSize)intrinsicContentSize;
-- (void)addTicksWithCount:(unint64_t)a3 moduloGroups:(id)a4 sizes:(id)a5 roundedCorners:(id)a6;
-- (void)applyTickColor:(id)a3 toGroupIndex:(unint64_t)a4;
-- (void)applyTickColor:(id)a3 toModulo:(unint64_t)a4;
+- (void)addTicksWithCount:(unint64_t)count moduloGroups:(id)groups sizes:(id)sizes roundedCorners:(id)corners;
+- (void)applyTickColor:(id)color toGroupIndex:(unint64_t)index;
+- (void)applyTickColor:(id)color toModulo:(unint64_t)modulo;
 - (void)layoutSubviews;
 @end
 
 @implementation AnalogDialView
 
-+ (id)richCircularLevelSubdialForDevice:(id)a3 andComplicationFamily:(int64_t)a4
++ (id)richCircularLevelSubdialForDevice:(id)device andComplicationFamily:(int64_t)family
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  sub_23BD2F7BC(a1, a3);
-  if (a4 == 12)
+  sub_23BD2F7BC(self, device);
+  if (family == 12)
   {
     v6 = &xmmword_27E1C4BC0;
   }
 
   else
   {
-    if (a4 != 10)
+    if (family != 10)
     {
       v5 = NCLogForCategory(1uLL);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        sub_23BD65900(a4, v5);
+        sub_23BD65900(family, v5);
       }
     }
 
@@ -70,14 +70,14 @@
   return v13;
 }
 
-- (AnalogDialView)initWithDialDiameter:(double)a3
+- (AnalogDialView)initWithDialDiameter:(double)diameter
 {
   v5.receiver = self;
   v5.super_class = AnalogDialView;
-  result = [(AnalogDialView *)&v5 initWithFrame:0.0, 0.0, a3, a3];
+  result = [(AnalogDialView *)&v5 initWithFrame:0.0, 0.0, diameter, diameter];
   if (result)
   {
-    result->_dialDiameter = a3;
+    result->_dialDiameter = diameter;
   }
 
   return result;
@@ -100,17 +100,17 @@
   return result;
 }
 
-- (void)addTicksWithCount:(unint64_t)a3 moduloGroups:(id)a4 sizes:(id)a5 roundedCorners:(id)a6
+- (void)addTicksWithCount:(unint64_t)count moduloGroups:(id)groups sizes:(id)sizes roundedCorners:(id)corners
 {
   v193 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v185 = a5;
-  v12 = a6;
+  groupsCopy = groups;
+  sizesCopy = sizes;
+  cornersCopy = corners;
   v188 = 0u;
   v189 = 0u;
   v190 = 0u;
   v191 = 0u;
-  v184 = self;
+  selfCopy = self;
   v13 = self->_tickGroups;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v188, v192, 16);
   if (v15)
@@ -135,55 +135,55 @@
     while (v19);
   }
 
-  v22 = v184;
-  objc_msgSend_removeFromSuperview(v184->_tickContainer, v23, v24, v25);
+  v22 = selfCopy;
+  objc_msgSend_removeFromSuperview(selfCopy->_tickContainer, v23, v24, v25);
   v26 = objc_alloc(MEMORY[0x277D75D18]);
-  objc_msgSend_bounds(v184, v27, v28, v29);
+  objc_msgSend_bounds(selfCopy, v27, v28, v29);
   v33 = objc_msgSend_initWithFrame_(v26, v30, v31, v32);
-  tickContainer = v184->_tickContainer;
-  v184->_tickContainer = v33;
+  tickContainer = selfCopy->_tickContainer;
+  selfCopy->_tickContainer = v33;
 
   objc_msgSend_addSubview_(v22, v35, v22->_tickContainer, v36);
-  objc_storeStrong(&v184->_moduloGroups, a4);
+  objc_storeStrong(&selfCopy->_moduloGroups, groups);
   v37 = objc_opt_new();
-  if (objc_msgSend_count(v11, v38, v39, v40))
+  if (objc_msgSend_count(groupsCopy, v38, v39, v40))
   {
     v43 = 0;
     do
     {
       v44 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v41, v43, v42);
-      v47 = objc_msgSend_objectAtIndexedSubscript_(v11, v45, v43, v46);
+      v47 = objc_msgSend_objectAtIndexedSubscript_(groupsCopy, v45, v43, v46);
       objc_msgSend_setObject_forKeyedSubscript_(v37, v48, v44, v47);
 
       ++v43;
     }
 
-    while (v43 < objc_msgSend_count(v11, v49, v50, v51));
+    while (v43 < objc_msgSend_count(groupsCopy, v49, v50, v51));
   }
 
   v181 = v37;
-  objc_storeStrong(&v184->_moduloToGroup, v37);
-  dialDiameter = v184->_dialDiameter;
+  objc_storeStrong(&selfCopy->_moduloToGroup, v37);
+  dialDiameter = selfCopy->_dialDiameter;
   v183 = objc_opt_new();
-  if (objc_msgSend_count(v11, v53, v54, v55))
+  if (objc_msgSend_count(groupsCopy, v53, v54, v55))
   {
     v58 = 0;
     v59 = dialDiameter * 0.5;
     v61 = -(dialDiameter * 0.5);
-    v182 = v12;
+    v182 = cornersCopy;
     do
     {
-      v62 = objc_msgSend_objectAtIndexedSubscript_(v11, v56, v58, v57);
+      v62 = objc_msgSend_objectAtIndexedSubscript_(groupsCopy, v56, v58, v57);
       v66 = objc_msgSend_unsignedIntegerValue(v62, v63, v64, v65);
 
-      v69 = objc_msgSend_objectAtIndexedSubscript_(v185, v67, v58, v68);
+      v69 = objc_msgSend_objectAtIndexedSubscript_(sizesCopy, v67, v58, v68);
       objc_msgSend_CGSizeValue(v69, v70, v71, v72);
       v74 = v73;
       v76 = v75;
 
-      if (v12)
+      if (cornersCopy)
       {
-        v80 = objc_msgSend_objectAtIndexedSubscript_(v12, v77, v58, v79);
+        v80 = objc_msgSend_objectAtIndexedSubscript_(cornersCopy, v77, v58, v79);
         v84 = objc_msgSend_BOOLValue(v80, v81, v82, v83) ^ 1;
       }
 
@@ -198,7 +198,7 @@
       objc_msgSend_screenScale(v92, v93, v94, v95);
       objc_msgSend_setContentsScale_(v85, v96, v97, v98);
 
-      if (a3)
+      if (count)
       {
         v102 = 0;
         if (v74 >= v76)
@@ -231,7 +231,7 @@
               v106 = 0;
               while (1)
               {
-                v107 = objc_msgSend_objectAtIndexedSubscript_(v11, v99, v106, v101);
+                v107 = objc_msgSend_objectAtIndexedSubscript_(groupsCopy, v99, v106, v101);
                 v111 = v102 % objc_msgSend_unsignedIntegerValue(v107, v108, v109, v110);
 
                 if (!v111)
@@ -249,7 +249,7 @@
             else
             {
 LABEL_28:
-              v60 = 6.28318531 / a3;
+              v60 = 6.28318531 / count;
               v112 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v99, v100, v101);
               objc_msgSend_setFrame_(v112, v113, v114, v115, 0.0, 0.0, v74, v76);
               objc_msgSend_setAnchorPoint_(v112, v116, v117, v118, 0.5, 0.0);
@@ -271,7 +271,7 @@ LABEL_28:
           ++v102;
         }
 
-        while (v102 != a3);
+        while (v102 != count);
       }
 
       objc_msgSend_bounds(v85, v99, v100, v101);
@@ -286,8 +286,8 @@ LABEL_28:
       v150 = objc_msgSend_imageWithRenderingMode_(v146, v148, 2, v149);
       v153 = objc_msgSend_initWithImage_(v147, v151, v150, v152);
 
-      v22 = v184;
-      objc_msgSend_bounds(v184, v154, v155, v156);
+      v22 = selfCopy;
+      objc_msgSend_bounds(selfCopy, v154, v155, v156);
       objc_msgSend_setFrame_(v153, v157, v158, v159);
       v163 = objc_msgSend_colorWithRed_green_blue_alpha_(MEMORY[0x277D75348], v160, v161, v162, 1.0, 0.333333343, 0.0313725509, 1.0);
       objc_msgSend_setTintColor_(v153, v164, v163, v165);
@@ -302,37 +302,37 @@ LABEL_28:
       objc_msgSend_setActions_(v170, v171, v166, v172);
 
       objc_msgSend_addObject_(v183, v173, v153, v174);
-      objc_msgSend_addSubview_(v184->_tickContainer, v175, v153, v176);
+      objc_msgSend_addSubview_(selfCopy->_tickContainer, v175, v153, v176);
 
       ++v58;
-      v12 = v182;
+      cornersCopy = v182;
     }
 
-    while (v58 < objc_msgSend_count(v11, v177, v178, v179));
+    while (v58 < objc_msgSend_count(groupsCopy, v177, v178, v179));
   }
 
   tickGroups = v22->_tickGroups;
   v22->_tickGroups = v183;
 }
 
-- (void)applyTickColor:(id)a3 toModulo:(unint64_t)a4
+- (void)applyTickColor:(id)color toModulo:(unint64_t)modulo
 {
   moduloToGroup = self->_moduloToGroup;
   v7 = MEMORY[0x277CCABB0];
-  v19 = a3;
-  v10 = objc_msgSend_numberWithUnsignedInteger_(v7, v8, a4, v9);
+  colorCopy = color;
+  v10 = objc_msgSend_numberWithUnsignedInteger_(v7, v8, modulo, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(moduloToGroup, v11, v10, v12);
   v17 = objc_msgSend_unsignedIntegerValue(v13, v14, v15, v16);
 
-  objc_msgSend_applyTickColor_toGroupIndex_(self, v18, v19, v17);
+  objc_msgSend_applyTickColor_toGroupIndex_(self, v18, colorCopy, v17);
 }
 
-- (void)applyTickColor:(id)a3 toGroupIndex:(unint64_t)a4
+- (void)applyTickColor:(id)color toGroupIndex:(unint64_t)index
 {
   tickGroups = self->_tickGroups;
-  v6 = a3;
-  v11 = objc_msgSend_objectAtIndexedSubscript_(tickGroups, v7, a4, v8);
-  objc_msgSend_setTintColor_(v11, v9, v6, v10);
+  colorCopy = color;
+  v11 = objc_msgSend_objectAtIndexedSubscript_(tickGroups, v7, index, v8);
+  objc_msgSend_setTintColor_(v11, v9, colorCopy, v10);
 }
 
 @end

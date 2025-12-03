@@ -1,12 +1,12 @@
 @interface SBHIconLibraryQuery
-+ (BOOL)string:(id)a3 matchesSearchString:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)string:(id)string matchesSearchString:(id)searchString;
+- (BOOL)isEqual:(id)equal;
 - (NSPredicate)predicate;
-- (SBHIconLibraryQuery)initWithMarkedTextSearchString:(id)a3 markedTextRange:(id)a4 markedTextArray:(id)a5;
-- (SBHIconLibraryQuery)initWithSearchString:(id)a3;
-- (id)_composeComparator:(id)a3 andComparator:(id)a4;
+- (SBHIconLibraryQuery)initWithMarkedTextSearchString:(id)string markedTextRange:(id)range markedTextArray:(id)array;
+- (SBHIconLibraryQuery)initWithSearchString:(id)string;
+- (id)_composeComparator:(id)comparator andComparator:(id)andComparator;
 - (id)comparator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)prefixComparator;
 - (unint64_t)hash;
@@ -14,33 +14,33 @@
 
 @implementation SBHIconLibraryQuery
 
-- (SBHIconLibraryQuery)initWithSearchString:(id)a3
+- (SBHIconLibraryQuery)initWithSearchString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = SBHIconLibraryQuery;
   v5 = [(SBHIconLibraryQuery *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v7 = _SBHIconLibraryQueryCanonicalizedString(v4, @" ", v6);
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v7 = _SBHIconLibraryQueryCanonicalizedString(stringCopy, @" ", whitespaceAndNewlineCharacterSet);
     v8 = [v7 copy];
     searchString = v5->_searchString;
     v5->_searchString = v8;
 
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     queryId = v5->_queryId;
-    v5->_queryId = v10;
+    v5->_queryId = uUID;
   }
 
   return v5;
 }
 
-- (SBHIconLibraryQuery)initWithMarkedTextSearchString:(id)a3 markedTextRange:(id)a4 markedTextArray:(id)a5
+- (SBHIconLibraryQuery)initWithMarkedTextSearchString:(id)string markedTextRange:(id)range markedTextArray:(id)array
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  rangeCopy = range;
+  arrayCopy = array;
   v23.receiver = self;
   v23.super_class = SBHIconLibraryQuery;
   v11 = [(SBHIconLibraryQuery *)&v23 init];
@@ -49,15 +49,15 @@
   {
     if (v11->_markedTextRange || v11->_markedTextArray)
     {
-      v13 = [v9 copy];
+      v13 = [rangeCopy copy];
       markedTextRange = v12->_markedTextRange;
       v12->_markedTextRange = v13;
 
-      v15 = [v10 copy];
+      v15 = [arrayCopy copy];
       markedTextArray = v12->_markedTextArray;
       v12->_markedTextArray = v15;
 
-      v17 = [v8 copy];
+      v17 = [stringCopy copy];
       searchString = v12->_searchString;
       v12->_searchString = v17;
     }
@@ -65,7 +65,7 @@
     else
     {
       searchString = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v20 = _SBHIconLibraryQueryCanonicalizedString(v8, @" ", searchString);
+      v20 = _SBHIconLibraryQueryCanonicalizedString(stringCopy, @" ", searchString);
       v21 = [v20 copy];
       v22 = v12->_searchString;
       v12->_searchString = v21;
@@ -81,9 +81,9 @@
   if (!predicate)
   {
     objc_initWeak(&location, self);
-    v4 = [(SBHIconLibraryQuery *)self _hasSearchString];
+    _hasSearchString = [(SBHIconLibraryQuery *)self _hasSearchString];
     v5 = MEMORY[0x1E696AE18];
-    if (v4)
+    if (_hasSearchString)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -157,31 +157,31 @@ LABEL_11:
   return v7;
 }
 
-+ (BOOL)string:(id)a3 matchesSearchString:(id)a4
++ (BOOL)string:(id)string matchesSearchString:(id)searchString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 localizedCaseInsensitiveContainsString:v6];
-  if (v7 & 1) != 0 || (__50__SBHIconLibraryQuery_string_matchesSearchString___block_invoke(v7, v5), v8 = objc_claimAutoreleasedReturnValue(), __50__SBHIconLibraryQuery_string_matchesSearchString___block_invoke(v8, v6), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 localizedCaseInsensitiveContainsString:v9], v9, v8, (v10))
+  stringCopy = string;
+  searchStringCopy = searchString;
+  v7 = [stringCopy localizedCaseInsensitiveContainsString:searchStringCopy];
+  if (v7 & 1) != 0 || (__50__SBHIconLibraryQuery_string_matchesSearchString___block_invoke(v7, stringCopy), v8 = objc_claimAutoreleasedReturnValue(), __50__SBHIconLibraryQuery_string_matchesSearchString___block_invoke(v8, searchStringCopy), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 localizedCaseInsensitiveContainsString:v9], v9, v8, (v10))
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AD48] punctuationCharacterSet];
-    v13 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    [v12 formUnionWithCharacterSet:v13];
+    punctuationCharacterSet = [MEMORY[0x1E696AD48] punctuationCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    [punctuationCharacterSet formUnionWithCharacterSet:whitespaceCharacterSet];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50__SBHIconLibraryQuery_string_matchesSearchString___block_invoke_2;
     aBlock[3] = &unk_1E808F310;
-    v20 = v12;
-    v14 = v12;
+    v20 = punctuationCharacterSet;
+    v14 = punctuationCharacterSet;
     v15 = _Block_copy(aBlock);
-    v16 = v15[2](v15, v5);
-    v17 = v15[2](v15, v6);
+    v16 = v15[2](v15, stringCopy);
+    v17 = v15[2](v15, searchStringCopy);
     v11 = [v16 localizedCaseInsensitiveContainsString:v17];
   }
 
@@ -249,18 +249,18 @@ uint64_t __39__SBHIconLibraryQuery_prefixComparator__block_invoke(uint64_t a1, v
   return v11;
 }
 
-- (id)_composeComparator:(id)a3 andComparator:(id)a4
+- (id)_composeComparator:(id)comparator andComparator:(id)andComparator
 {
-  v5 = a3;
-  v6 = a4;
+  comparatorCopy = comparator;
+  andComparatorCopy = andComparator;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __56__SBHIconLibraryQuery__composeComparator_andComparator___block_invoke;
   v11[3] = &unk_1E808F380;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = comparatorCopy;
+  v13 = andComparatorCopy;
+  v7 = andComparatorCopy;
+  v8 = comparatorCopy;
   v9 = _Block_copy(v11);
 
   return v9;
@@ -281,88 +281,88 @@ uint64_t __56__SBHIconLibraryQuery__composeComparator_andComparator___block_invo
 
 - (id)comparator
 {
-  v3 = [(SBHIconLibraryQuery *)self aToZComparator];
+  aToZComparator = [(SBHIconLibraryQuery *)self aToZComparator];
   if ([(SBHIconLibraryQuery *)self _hasSearchString])
   {
-    v4 = [(SBHIconLibraryQuery *)self prefixComparator];
-    v5 = [(SBHIconLibraryQuery *)self _composeComparator:v4 andComparator:v3];
+    prefixComparator = [(SBHIconLibraryQuery *)self prefixComparator];
+    v5 = [(SBHIconLibraryQuery *)self _composeComparator:prefixComparator andComparator:aToZComparator];
 
-    v3 = v5;
+    aToZComparator = v5;
   }
 
-  v6 = _Block_copy(v3);
+  v6 = _Block_copy(aToZComparator);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(SBHIconLibraryQuery *)self searchString];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  searchString = [(SBHIconLibraryQuery *)self searchString];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __31__SBHIconLibraryQuery_isEqual___block_invoke;
   v28[3] = &unk_1E808F3A8;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
-  v8 = [v5 appendString:v6 counterpart:v28];
+  v8 = [v5 appendString:searchString counterpart:v28];
 
-  v9 = [(SBHIconLibraryQuery *)self keyboardLanguageHint];
+  keyboardLanguageHint = [(SBHIconLibraryQuery *)self keyboardLanguageHint];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __31__SBHIconLibraryQuery_isEqual___block_invoke_2;
   v26[3] = &unk_1E808F3A8;
   v10 = v7;
   v27 = v10;
-  v11 = [v5 appendString:v9 counterpart:v26];
+  v11 = [v5 appendString:keyboardLanguageHint counterpart:v26];
 
-  v12 = [(SBHIconLibraryQuery *)self markedTextRange];
+  markedTextRange = [(SBHIconLibraryQuery *)self markedTextRange];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __31__SBHIconLibraryQuery_isEqual___block_invoke_3;
   v24[3] = &unk_1E808F3D0;
   v13 = v10;
   v25 = v13;
-  v14 = [v5 appendObject:v12 counterpart:v24];
+  v14 = [v5 appendObject:markedTextRange counterpart:v24];
 
-  v15 = [(SBHIconLibraryQuery *)self markedTextArray];
+  markedTextArray = [(SBHIconLibraryQuery *)self markedTextArray];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __31__SBHIconLibraryQuery_isEqual___block_invoke_4;
   v22 = &unk_1E808F3D0;
   v23 = v13;
   v16 = v13;
-  v17 = [v5 appendObject:v15 counterpart:&v19];
+  v17 = [v5 appendObject:markedTextArray counterpart:&v19];
 
-  LOBYTE(v15) = [v5 isEqual];
-  return v15;
+  LOBYTE(markedTextArray) = [v5 isEqual];
+  return markedTextArray;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(SBHIconLibraryQuery *)self searchString];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  searchString = [(SBHIconLibraryQuery *)self searchString];
+  v5 = [builder appendString:searchString];
 
-  v6 = [(SBHIconLibraryQuery *)self keyboardLanguageHint];
-  v7 = [v3 appendString:v6];
+  keyboardLanguageHint = [(SBHIconLibraryQuery *)self keyboardLanguageHint];
+  v7 = [builder appendString:keyboardLanguageHint];
 
-  v8 = [(SBHIconLibraryQuery *)self markedTextRange];
-  v9 = [v3 appendObject:v8];
+  markedTextRange = [(SBHIconLibraryQuery *)self markedTextRange];
+  v9 = [builder appendObject:markedTextRange];
 
-  v10 = [(SBHIconLibraryQuery *)self markedTextArray];
-  v11 = [v3 appendObject:v10];
+  markedTextArray = [(SBHIconLibraryQuery *)self markedTextArray];
+  v11 = [builder appendObject:markedTextArray];
 
-  v12 = [v3 hash];
+  v12 = [builder hash];
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithMarkedTextSearchString:self->_searchString markedTextRange:self->_markedTextRange markedTextArray:self->_markedTextArray];
-  v5 = [(SBHIconLibraryQuery *)self keyboardLanguageHint];
-  [v4 setKeyboardLanguageHint:v5];
+  keyboardLanguageHint = [(SBHIconLibraryQuery *)self keyboardLanguageHint];
+  [v4 setKeyboardLanguageHint:keyboardLanguageHint];
 
   return v4;
 }
@@ -373,9 +373,9 @@ uint64_t __56__SBHIconLibraryQuery__composeComparator_andComparator___block_invo
   v4 = [v3 appendObject:self->_queryId withName:@"queryId"];
   v5 = [v3 appendObject:self->_markedTextRange withName:@"markedTextRange"];
   v6 = [v3 appendObject:self->_markedTextArray withName:@"markedTextArray"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface DBAutomakerOverlayStateMonitor
 - (BOOL)lockOut;
 - (NSArray)overlays;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)overlayViewService:(id)a3 didUpdateOn:(BOOL)a4;
-- (void)setLockOut:(BOOL)a3;
-- (void)setOverlays:(id)a3;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)overlayViewService:(id)service didUpdateOn:(BOOL)on;
+- (void)setLockOut:(BOOL)out;
+- (void)setOverlays:(id)overlays;
 @end
 
 @implementation DBAutomakerOverlayStateMonitor
@@ -17,10 +17,10 @@
   return *(self + v3);
 }
 
-- (void)setLockOut:(BOOL)a3
+- (void)setLockOut:(BOOL)out
 {
-  v4 = self;
-  sub_24830B768(a3);
+  selfCopy = self;
+  sub_24830B768(out);
 }
 
 - (NSArray)overlays
@@ -33,7 +33,7 @@
   return v2;
 }
 
-- (void)setOverlays:(id)a3
+- (void)setOverlays:(id)overlays
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE938E0);
   v4 = sub_248383B10();
@@ -41,30 +41,30 @@
   swift_beginAccess();
   v6 = *(self + v5);
   *(self + v5) = v4;
-  v7 = self;
+  selfCopy = self;
   sub_24830BBF8(v6);
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24830E1D4(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  sub_24830E1D4(car);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
+  accessoriesCopy = accessories;
+  selfCopy = self;
   _s9DashBoard30DBAutomakerOverlayStateMonitorC23carDidUpdateAccessoriesyySo6CAFCarCF_0();
 }
 
-- (void)overlayViewService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)overlayViewService:(id)service didUpdateOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  DBAutomakerOverlayStateMonitor.overlayViewService(_:didUpdateOn:)(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  DBAutomakerOverlayStateMonitor.overlayViewService(_:didUpdateOn:)(serviceCopy, on);
 }
 
 @end

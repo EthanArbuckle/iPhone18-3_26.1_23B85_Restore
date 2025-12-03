@@ -1,42 +1,42 @@
 @interface ASDTSelectorControl
-- (ASDTSelectorControl)initWithConfig:(id)a3 withDevice:(id)a4;
+- (ASDTSelectorControl)initWithConfig:(id)config withDevice:(id)device;
 @end
 
 @implementation ASDTSelectorControl
 
-- (ASDTSelectorControl)initWithConfig:(id)a3 withDevice:(id)a4
+- (ASDTSelectorControl)initWithConfig:(id)config withDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  deviceCopy = device;
   v35 = 0;
-  if (![v6 asdtControlClassID:&v35])
+  if (![configCopy asdtControlClassID:&v35])
   {
 LABEL_24:
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
-  v8 = [v6 asdtIsSettable];
-  v9 = [v6 asdtElement];
-  v10 = [v6 asdtScope];
-  v11 = [v7 plugin];
+  asdtIsSettable = [configCopy asdtIsSettable];
+  asdtElement = [configCopy asdtElement];
+  asdtScope = [configCopy asdtScope];
+  plugin = [deviceCopy plugin];
   v34.receiver = self;
   v34.super_class = ASDTSelectorControl;
-  self = [(ASDSelectorControl *)&v34 initWithIsSettable:v8 forElement:v9 inScope:v10 withPlugin:v11 andObjectClassID:v35];
+  self = [(ASDSelectorControl *)&v34 initWithIsSettable:asdtIsSettable forElement:asdtElement inScope:asdtScope withPlugin:plugin andObjectClassID:v35];
 
   if (!self)
   {
     goto LABEL_14;
   }
 
-  v12 = [v6 asdtSelectorControlItems];
-  if (![v12 count])
+  asdtSelectorControlItems = [configCopy asdtSelectorControlItems];
+  if (![asdtSelectorControlItems count])
   {
     v24 = ASDTBaseLogType();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [ASDTSelectorControl initWithConfig:v7 withDevice:?];
+      [ASDTSelectorControl initWithConfig:deviceCopy withDevice:?];
     }
 
 LABEL_23:
@@ -47,8 +47,8 @@ LABEL_23:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v12;
-  v13 = [v12 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  asdtSelectorControlItems = asdtSelectorControlItems;
+  v13 = [asdtSelectorControlItems countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (!v13)
   {
     goto LABEL_13;
@@ -56,25 +56,25 @@ LABEL_23:
 
   v14 = v13;
   v15 = *v31;
-  v28 = v7;
+  v28 = deviceCopy;
   while (2)
   {
     for (i = 0; i != v14; ++i)
     {
       if (*v31 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(asdtSelectorControlItems);
       }
 
       v17 = *(*(&v30 + 1) + 8 * i);
-      v18 = [v17 asdtName];
-      v19 = [v17 asdtSelectorControlItemKind];
-      v20 = [v17 asdtSelectorControlItemSelected];
+      asdtName = [v17 asdtName];
+      asdtSelectorControlItemKind = [v17 asdtSelectorControlItemKind];
+      asdtSelectorControlItemSelected = [v17 asdtSelectorControlItemSelected];
       v29 = 0;
       if (([v17 asdtSelectorControlItemValue:&v29] & 1) == 0)
       {
         v25 = ASDTBaseLogType();
-        v7 = v28;
+        deviceCopy = v28;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           [ASDTSelectorControl initWithConfig:v28 withDevice:?];
@@ -83,11 +83,11 @@ LABEL_23:
         goto LABEL_22;
       }
 
-      v21 = [MEMORY[0x277CEFB70] withValue:v29 name:v18 andKind:v19 selected:v20];
+      v21 = [MEMORY[0x277CEFB70] withValue:v29 name:asdtName andKind:asdtSelectorControlItemKind selected:asdtSelectorControlItemSelected];
       if (!v21)
       {
         v25 = ASDTBaseLogType();
-        v7 = v28;
+        deviceCopy = v28;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           [ASDTSelectorControl initWithConfig:v28 withDevice:?];
@@ -102,8 +102,8 @@ LABEL_22:
       [(ASDSelectorControl *)self addValue:v21];
     }
 
-    v14 = [v12 countByEnumeratingWithState:&v30 objects:v36 count:16];
-    v7 = v28;
+    v14 = [asdtSelectorControlItems countByEnumeratingWithState:&v30 objects:v36 count:16];
+    deviceCopy = v28;
     if (v14)
     {
       continue;
@@ -116,11 +116,11 @@ LABEL_13:
 
 LABEL_14:
   self = self;
-  v23 = self;
+  selfCopy = self;
 LABEL_25:
 
   v26 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy;
 }
 
 - (void)initWithConfig:(void *)a1 withDevice:.cold.1(void *a1)

@@ -1,13 +1,13 @@
 @interface BLArtworkHelper
-+ (id)writeArtworkDownloadID:(id)a3 artworkURL:(id)a4 error:(id *)a5;
++ (id)writeArtworkDownloadID:(id)d artworkURL:(id)l error:(id *)error;
 @end
 
 @implementation BLArtworkHelper
 
-+ (id)writeArtworkDownloadID:(id)a3 artworkURL:(id)a4 error:(id *)a5
++ (id)writeArtworkDownloadID:(id)d artworkURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  lCopy = l;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -20,10 +20,10 @@
   v40 = sub_100083B24;
   v41 = sub_100083B34;
   v42 = 0;
-  if (v8 && [v7 length])
+  if (lCopy && [dCopy length])
   {
     context = objc_autoreleasePoolPush();
-    v9 = [BLDownloadManager downloadDirectoryForDownloadID:v7];
+    v9 = [BLDownloadManager downloadDirectoryForDownloadID:dCopy];
     v10 = [v9 URLByAppendingPathComponent:off_10013E0A8];
 
     if (v10)
@@ -31,18 +31,18 @@
       v11 = BLBookInstallLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v10 path];
+        path = [v10 path];
         *buf = 138543874;
-        v50 = v7;
+        v50 = dCopy;
         v51 = 2112;
-        v52 = v8;
+        v52 = lCopy;
         v53 = 2112;
-        v54 = v12;
+        v54 = path;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Artwork-Helper]: Downloading Artwork from URL %@ to %@", buf, 0x20u);
       }
 
       v13 = dispatch_group_create();
-      v14 = [[NSMutableURLRequest alloc] initWithURL:v8];
+      v14 = [[NSMutableURLRequest alloc] initWithURL:lCopy];
       [v14 setCachePolicy:1];
       v15 = +[NSURLSessionConfiguration defaultSessionConfiguration];
       v16 = [NSURLSession sessionWithConfiguration:v15];
@@ -50,7 +50,7 @@
       v31[1] = 3221225472;
       v31[2] = sub_100083B3C;
       v31[3] = &unk_10011DBD8;
-      v32 = v7;
+      v32 = dCopy;
       v35 = &v37;
       v33 = v10;
       v36 = &v43;
@@ -108,12 +108,12 @@
     v38[5] = v19;
   }
 
-  if (a5)
+  if (error)
   {
     v27 = v38[5];
     if (v27)
     {
-      *a5 = v27;
+      *error = v27;
     }
   }
 

@@ -10,7 +10,7 @@
   if (a5 < a3 || a5 - a3 >= a4)
   {
     v9 = a3 + a4;
-    if (a3 + a4 != a5 && [a1 firstIndex] != 0x7FFFFFFFFFFFFFFFLL)
+    if (a3 + a4 != a5 && [self firstIndex] != 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v9 >= a5)
       {
@@ -32,21 +32,21 @@
       v13[5] = a3;
       v13[6] = a4;
       v13[7] = v11;
-      [a1 enumerateRangesInRange:a3 options:a4 usingBlock:{0, v13}];
-      [a1 shiftIndexesStartingAtIndex:a3 + a4 by:-a4];
-      [a1 shiftIndexesStartingAtIndex:v11 by:a4];
-      [a1 addIndexes:v12];
+      [self enumerateRangesInRange:a3 options:a4 usingBlock:{0, v13}];
+      [self shiftIndexesStartingAtIndex:a3 + a4 by:-a4];
+      [self shiftIndexesStartingAtIndex:v11 by:a4];
+      [self addIndexes:v12];
     }
   }
 }
 
 - (void)tsu_intersectionWithIndexSet:()TSUAdditions
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{objc_msgSend(a1, "firstIndex"), objc_msgSend(a1, "lastIndex") - objc_msgSend(a1, "firstIndex") + 1}];
+    v5 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{objc_msgSend(self, "firstIndex"), objc_msgSend(self, "lastIndex") - objc_msgSend(self, "firstIndex") + 1}];
     [v5 removeIndexes:a3];
-    [a1 removeIndexes:v5];
+    [self removeIndexes:v5];
   }
 }
 

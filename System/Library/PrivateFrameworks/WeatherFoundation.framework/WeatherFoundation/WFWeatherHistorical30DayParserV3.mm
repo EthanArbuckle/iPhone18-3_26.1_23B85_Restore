@@ -1,9 +1,9 @@
 @interface WFWeatherHistorical30DayParserV3
 + (id)dateFormatter;
 + (id)daysOfWeek;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9;
-- (id)parseHistorical30DayForecastDataFromJson:(id)a3 location:(id)a4 date:(id)a5 error:(id *)a6;
-- (int64_t)getDataIndexFromFirstDayOfWeek:(id)a3 andRequestedDate:(id)a4;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules;
+- (id)parseHistorical30DayForecastDataFromJson:(id)json location:(id)location date:(id)date error:(id *)error;
+- (int64_t)getDataIndexFromFirstDayOfWeek:(id)week andRequestedDate:(id)date;
 @end
 
 @implementation WFWeatherHistorical30DayParserV3
@@ -47,20 +47,20 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a7;
-  if (a4 == 64)
+  locationCopy = location;
+  dateCopy = date;
+  if (types == 64)
   {
     v26 = 0;
-    v16 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v26];
+    v16 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v26];
     v17 = v26;
     v18 = objc_alloc_init(WFParsedForecastData);
     if (v16)
     {
-      v19 = [(WFWeatherHistorical30DayParserV3 *)self parseHistorical30DayForecastDataFromJson:v16 location:v14 date:v15 error:a8];
+      v19 = [(WFWeatherHistorical30DayParserV3 *)self parseHistorical30DayForecastDataFromJson:v16 location:locationCopy date:dateCopy error:error];
       [(WFParsedForecastData *)v18 setCurrentConditions:v19];
 
       v20 = v18;
@@ -80,7 +80,7 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
         v27 = *MEMORY[0x277CCA450];
         v28[0] = @"Failed to parse historical 30 day JSON forecast data";
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-        *a8 = [v23 wf_errorWithCode:1 encapsulatedError:v17 userInfo:v24];
+        *error = [v23 wf_errorWithCode:1 encapsulatedError:v17 userInfo:v24];
       }
 
       v20 = 0;
@@ -96,29 +96,29 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
     }
 
     [MEMORY[0x277CCA9B8] wf_errorWithCode:6 userInfo:MEMORY[0x277CBEC10]];
-    *a8 = v20 = 0;
+    *error = v20 = 0;
   }
 
   return v20;
 }
 
-- (id)parseHistorical30DayForecastDataFromJson:(id)a3 location:(id)a4 date:(id)a5 error:(id *)a6
+- (id)parseHistorical30DayForecastDataFromJson:(id)json location:(id)location date:(id)date error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 arrayForKey:@"dayOfWeek"];
-  if (v13 && (v14 = v13, [v10 arrayForKey:@"dayOfWeek"], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectAtIndexedSubscript:", 0), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16))
+  jsonCopy = json;
+  locationCopy = location;
+  dateCopy = date;
+  v13 = [jsonCopy arrayForKey:@"dayOfWeek"];
+  if (v13 && (v14 = v13, [jsonCopy arrayForKey:@"dayOfWeek"], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectAtIndexedSubscript:", 0), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16))
   {
-    v17 = [v10 arrayForKey:@"dayOfWeek"];
+    v17 = [jsonCopy arrayForKey:@"dayOfWeek"];
     v18 = [v17 objectAtIndexedSubscript:0];
-    v19 = [(WFWeatherHistorical30DayParserV3 *)self getDataIndexFromFirstDayOfWeek:v18 andRequestedDate:v12];
+    v19 = [(WFWeatherHistorical30DayParserV3 *)self getDataIndexFromFirstDayOfWeek:v18 andRequestedDate:dateCopy];
 
     v20 = objc_alloc_init(WFWeatherConditions);
-    [(WFWeatherConditions *)v20 setLocation:v11];
-    [(WFWeatherConditions *)v20 setObject:v12 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
-    v21 = [v10 arrayForKey:@"precip24Hour"];
+    [(WFWeatherConditions *)v20 setLocation:locationCopy];
+    [(WFWeatherConditions *)v20 setObject:dateCopy forKeyedSubscript:@"WFWeatherForecastDateComponent"];
+    v21 = [jsonCopy arrayForKey:@"precip24Hour"];
     v22 = v21;
     if (v21)
     {
@@ -131,7 +131,7 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
       }
     }
 
-    v25 = [v10 arrayForKey:@"temperatureMax"];
+    v25 = [jsonCopy arrayForKey:@"temperatureMax"];
     v26 = v25;
     if (v25)
     {
@@ -147,7 +147,7 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
       }
     }
 
-    v31 = [v10 arrayForKey:@"temperatureMin"];
+    v31 = [jsonCopy arrayForKey:@"temperatureMin"];
     v32 = v31;
     if (v31)
     {
@@ -176,7 +176,7 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
     v41 = *MEMORY[0x277CCA068];
     v42[0] = @"Failed to parse last twenty-four hours of observations from response.";
     v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-    *a6 = [v38 wf_errorWithCode:1 userInfo:v39];
+    *error = [v38 wf_errorWithCode:1 userInfo:v39];
 
     v20 = 0;
   }
@@ -184,30 +184,30 @@ uint64_t __49__WFWeatherHistorical30DayParserV3_dateFormatter__block_invoke()
   return v20;
 }
 
-- (int64_t)getDataIndexFromFirstDayOfWeek:(id)a3 andRequestedDate:(id)a4
+- (int64_t)getDataIndexFromFirstDayOfWeek:(id)week andRequestedDate:(id)date
 {
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  weekCopy = week;
   v8 = objc_alloc_init(v5);
-  v9 = [objc_opt_class() dateFormatter];
-  [v9 setDateFormat:@"EEEE"];
-  v10 = [v9 stringFromDate:v8];
-  v11 = [objc_opt_class() daysOfWeek];
-  v12 = [v11 indexOfObject:v10];
+  dateFormatter = [objc_opt_class() dateFormatter];
+  [dateFormatter setDateFormat:@"EEEE"];
+  v10 = [dateFormatter stringFromDate:v8];
+  daysOfWeek = [objc_opt_class() daysOfWeek];
+  v12 = [daysOfWeek indexOfObject:v10];
 
-  v13 = [objc_opt_class() daysOfWeek];
-  v14 = [v13 indexOfObject:v7];
+  daysOfWeek2 = [objc_opt_class() daysOfWeek];
+  v14 = [daysOfWeek2 indexOfObject:weekCopy];
 
   v15 = v12 - v14;
   if (v12 - v14 < 0)
   {
-    v16 = [objc_opt_class() daysOfWeek];
-    v15 += [v16 count];
+    daysOfWeek3 = [objc_opt_class() daysOfWeek];
+    v15 += [daysOfWeek3 count];
   }
 
-  v17 = [MEMORY[0x277CBEA80] currentCalendar];
-  v18 = [v17 components:16 fromDate:v6 toDate:v8 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v18 = [currentCalendar components:16 fromDate:dateCopy toDate:v8 options:0];
 
   v19 = [v18 day] - v15;
   return v19;

@@ -1,22 +1,22 @@
 @interface FPFSVolume
-+ (id)eventStreamUUIDForDevice:(int)a3;
-- (BOOL)setupForPath:(id)a3 error:(id *)a4;
++ (id)eventStreamUUIDForDevice:(int)device;
+- (BOOL)setupForPath:(id)path error:(id *)error;
 - (id)freeSize;
-- (id)getFSEventStreamConfigWithError:(id *)a3;
+- (id)getFSEventStreamConfigWithError:(id *)error;
 - (id)totalSize;
 @end
 
 @implementation FPFSVolume
 
-- (BOOL)setupForPath:(id)a3 error:(id *)a4
+- (BOOL)setupForPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  [a3 fileSystemRepresentation];
+  pathCopy = path;
+  [path fileSystemRepresentation];
   v7 = fpfs_open();
   v8 = v7;
-  if (a4 && v7 < 0)
+  if (error && v7 < 0)
   {
-    *a4 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
   }
 
   return v8 >= 0;
@@ -69,9 +69,9 @@ LABEL_10:
 
 - (id)freeSize
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(FPFSVolume *)self mountPath];
-  v5 = [v3 attributesOfFileSystemForPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  mountPath = [(FPFSVolume *)self mountPath];
+  v5 = [defaultManager attributesOfFileSystemForPath:mountPath error:0];
 
   if (v5)
   {
@@ -88,9 +88,9 @@ LABEL_10:
 
 - (id)totalSize
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(FPFSVolume *)self mountPath];
-  v5 = [v3 attributesOfFileSystemForPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  mountPath = [(FPFSVolume *)self mountPath];
+  v5 = [defaultManager attributesOfFileSystemForPath:mountPath error:0];
 
   if (v5)
   {
@@ -105,9 +105,9 @@ LABEL_10:
   return v6;
 }
 
-+ (id)eventStreamUUIDForDevice:(int)a3
++ (id)eventStreamUUIDForDevice:(int)device
 {
-  v3 = FSEventsCopyUUIDForDevice(a3);
+  v3 = FSEventsCopyUUIDForDevice(device);
   if (v3)
   {
     v4 = v3;
@@ -125,9 +125,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)getFSEventStreamConfigWithError:(id *)a3
+- (id)getFSEventStreamConfigWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1CF194514();
 
   return v4;

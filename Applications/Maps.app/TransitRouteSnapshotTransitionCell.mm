@@ -1,12 +1,12 @@
 @interface TransitRouteSnapshotTransitionCell
-+ (id)snapshotToTransitionFromCell:(id)a3 toCell:(id)a4 withBackgroundBlur:(BOOL)a5;
-- (id)initToTransitionFromCell:(id)a3 toCell:(id)a4 withBackgroundBlur:(BOOL)a5;
-- (void)updateWithTransitionProgress:(double)a3;
++ (id)snapshotToTransitionFromCell:(id)cell toCell:(id)toCell withBackgroundBlur:(BOOL)blur;
+- (id)initToTransitionFromCell:(id)cell toCell:(id)toCell withBackgroundBlur:(BOOL)blur;
+- (void)updateWithTransitionProgress:(double)progress;
 @end
 
 @implementation TransitRouteSnapshotTransitionCell
 
-- (void)updateWithTransitionProgress:(double)a3
+- (void)updateWithTransitionProgress:(double)progress
 {
   v9 = 0u;
   v10 = 0u;
@@ -28,7 +28,7 @@
           objc_enumerationMutation(v4);
         }
 
-        (*(*(*(&v9 + 1) + 8 * v8) + 16))(a3);
+        (*(*(*(&v9 + 1) + 8 * v8) + 16))(progress);
         v8 = v8 + 1;
       }
 
@@ -40,12 +40,12 @@
   }
 }
 
-- (id)initToTransitionFromCell:(id)a3 toCell:(id)a4 withBackgroundBlur:(BOOL)a5
+- (id)initToTransitionFromCell:(id)cell toCell:(id)toCell withBackgroundBlur:(BOOL)blur
 {
-  v5 = a5;
-  v8 = a3;
-  v68 = a4;
-  [v8 frame];
+  blurCopy = blur;
+  cellCopy = cell;
+  toCellCopy = toCell;
+  [cellCopy frame];
   v86.receiver = self;
   v86.super_class = TransitRouteSnapshotTransitionCell;
   v9 = [(TransitRouteSnapshotTransitionCell *)&v86 initWithFrame:?];
@@ -55,7 +55,7 @@
     updateHandlers = v9->_updateHandlers;
     v9->_updateHandlers = v10;
 
-    if (v5)
+    if (blurCopy)
     {
       v12 = +[RoutingAppearanceManager customGrayBlurCellBackgroundView];
     }
@@ -65,15 +65,15 @@
       v12 = 0;
     }
 
-    [v8 bounds];
+    [cellCopy bounds];
     v14 = v13;
     v16 = v15;
-    [v68 bounds];
+    [toCellCopy bounds];
     v18 = v17;
     v20 = v19;
     [(TransitRouteSnapshotTransitionCell *)v9 frame];
     [(TransitRouteSnapshotTransitionCell *)v9 setFrame:?];
-    if (v5)
+    if (blurCopy)
     {
       [v12 setFrame:{CGRectZero.origin.x, CGRectZero.origin.y, *&v14, *&v16}];
     }
@@ -89,24 +89,24 @@
     v83[3] = v18;
     v83[4] = v20;
     objc_copyWeak(v83, &location);
-    v84 = v5;
+    v84 = blurCopy;
     v66 = v12;
     v82 = v66;
     v22 = objc_retainBlock(v81);
     [(NSMutableArray *)v21 addObject:v22];
 
-    if (v5)
+    if (blurCopy)
     {
       [(TransitRouteSnapshotTransitionCell *)v9 addSubview:v66];
     }
 
-    v23 = [v8 _indexedContentSubviewOrNullArray];
-    v69 = [v68 _indexedContentSubviewOrNullArray];
+    _indexedContentSubviewOrNullArray = [cellCopy _indexedContentSubviewOrNullArray];
+    _indexedContentSubviewOrNullArray2 = [toCellCopy _indexedContentSubviewOrNullArray];
     v24 = 0;
-    v67 = v8;
+    v67 = cellCopy;
     while (1)
     {
-      if (v24 >= [v23 count])
+      if (v24 >= [_indexedContentSubviewOrNullArray count])
       {
         v64 = v9;
 
@@ -116,7 +116,7 @@
         goto LABEL_38;
       }
 
-      v25 = [v23 objectAtIndexedSubscript:v24];
+      v25 = [_indexedContentSubviewOrNullArray objectAtIndexedSubscript:v24];
       v26 = +[NSNull null];
       if (v25 == v26)
       {
@@ -125,10 +125,10 @@
 
       else
       {
-        v27 = [v23 objectAtIndexedSubscript:v24];
+        v27 = [_indexedContentSubviewOrNullArray objectAtIndexedSubscript:v24];
       }
 
-      v28 = [v69 objectAtIndexedSubscript:v24];
+      v28 = [_indexedContentSubviewOrNullArray2 objectAtIndexedSubscript:v24];
       v29 = +[NSNull null];
       if (v28 == v29)
       {
@@ -137,7 +137,7 @@
 
       else
       {
-        v30 = [v69 objectAtIndexedSubscript:v24];
+        v30 = [_indexedContentSubviewOrNullArray2 objectAtIndexedSubscript:v24];
       }
 
       if (!v27)
@@ -152,7 +152,7 @@
       {
         v36 = [v27 snapshotViewAfterScreenUpdates:1];
         [v27 bounds];
-        [v8 convertRect:v27 fromView:?];
+        [cellCopy convertRect:v27 fromView:?];
         [v36 setFrame:?];
         [v36 setAlpha:1.0];
         v37 = v9->_updateHandlers;
@@ -212,23 +212,23 @@
         v47 = v46;
         [v30 bounds];
         v49 = v48;
-        [v8 convertPoint:v27 fromView:{v43, v45}];
+        [cellCopy convertPoint:v27 fromView:{v43, v45}];
         v51 = v50;
         v53 = v52;
-        [v68 convertPoint:v30 fromView:{v47, v49}];
+        [toCellCopy convertPoint:v30 fromView:{v47, v49}];
         v55 = v54;
         v57 = v56;
         [v39 setAlpha:0.0];
         [v40 setAlpha:1.0];
-        v58 = [v39 layer];
-        [v58 setAnchorPoint:{v41, 0.0}];
-        v59 = [v40 layer];
-        [v59 setAnchorPoint:{v41, 0.0}];
+        layer = [v39 layer];
+        [layer setAnchorPoint:{v41, 0.0}];
+        layer2 = [v40 layer];
+        [layer2 setAnchorPoint:{v41, 0.0}];
 
-        v60 = [v39 layer];
-        [v60 setPosition:{v51, v53}];
-        v61 = [v40 layer];
-        [v61 setPosition:{v51, v53}];
+        layer3 = [v39 layer];
+        [layer3 setPosition:{v51, v53}];
+        layer4 = [v40 layer];
+        [layer4 setPosition:{v51, v53}];
 
         v62 = v9->_updateHandlers;
         v70[0] = _NSConcreteStackBlock;
@@ -249,7 +249,7 @@
         [(TransitRouteSnapshotTransitionCell *)v9 addSubview:v35];
         [(TransitRouteSnapshotTransitionCell *)v9 addSubview:v33];
 
-        v8 = v67;
+        cellCopy = v67;
         goto LABEL_35;
       }
 
@@ -260,7 +260,7 @@ LABEL_36:
 
     v31 = [v30 snapshotViewAfterScreenUpdates:1];
     [v30 bounds];
-    [v68 convertRect:v30 fromView:?];
+    [toCellCopy convertRect:v30 fromView:?];
     [v31 setFrame:?];
     [v31 setAlpha:0.0];
     v32 = v9->_updateHandlers;
@@ -285,12 +285,12 @@ LABEL_38:
   return v9;
 }
 
-+ (id)snapshotToTransitionFromCell:(id)a3 toCell:(id)a4 withBackgroundBlur:(BOOL)a5
++ (id)snapshotToTransitionFromCell:(id)cell toCell:(id)toCell withBackgroundBlur:(BOOL)blur
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initToTransitionFromCell:v9 toCell:v8 withBackgroundBlur:v5];
+  blurCopy = blur;
+  toCellCopy = toCell;
+  cellCopy = cell;
+  v10 = [[self alloc] initToTransitionFromCell:cellCopy toCell:toCellCopy withBackgroundBlur:blurCopy];
 
   return v10;
 }

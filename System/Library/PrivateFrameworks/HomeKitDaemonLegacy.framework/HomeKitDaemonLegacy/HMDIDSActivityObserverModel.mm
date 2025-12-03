@@ -1,18 +1,18 @@
 @interface HMDIDSActivityObserverModel
 + (id)hmbProperties;
 + (id)sentinelParentUUID;
-- (HMDIDSActivityObserverModel)initWithModelID:(id)a3;
+- (HMDIDSActivityObserverModel)initWithModelID:(id)d;
 @end
 
 @implementation HMDIDSActivityObserverModel
 
-- (HMDIDSActivityObserverModel)initWithModelID:(id)a3
+- (HMDIDSActivityObserverModel)initWithModelID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() sentinelParentUUID];
+  dCopy = d;
+  sentinelParentUUID = [objc_opt_class() sentinelParentUUID];
   v8.receiver = self;
   v8.super_class = HMDIDSActivityObserverModel;
-  v6 = [(HMBModel *)&v8 initWithModelID:v4 parentModelID:v5];
+  v6 = [(HMBModel *)&v8 initWithModelID:dCopy parentModelID:sentinelParentUUID];
 
   return v6;
 }

@@ -1,55 +1,55 @@
 @interface ICQUIManageSubHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_openAMSUIWithBag:(id)a3 version:(id)a4 key:(id)a5 query:(id)a6 completion:(id)a7;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
+- (void)_openAMSUIWithBag:(id)bag version:(id)version key:(id)key query:(id)query completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
 @end
 
 @implementation ICQUIManageSubHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"ICQManageSubAction"];
+  name = [element name];
+  v4 = [name isEqualToString:@"ICQManageSubAction"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
   v5 = [v4 isEqualToString:@"ICQManageSubAction"];
 
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = a4;
+  elementCopy = element;
+  completionCopy = completion;
+  attributesCopy = attributes;
   v12 = _ICQGetLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 name];
+    name = [elementCopy name];
     v19 = 138412290;
-    v20 = v13;
+    v20 = name;
     _os_log_impl(&dword_275623000, v12, OS_LOG_TYPE_DEFAULT, "Processing Manage Sub RUI hook with element %@", &v19, 0xCu);
   }
 
-  v14 = [v11 objectForKeyedSubscript:@"bagProfile"];
-  v15 = [v11 objectForKeyedSubscript:@"bagProfileVersion"];
-  v16 = [v11 objectForKeyedSubscript:@"bagURLKey"];
-  v17 = [v11 objectForKeyedSubscript:@"queryParams"];
+  v14 = [attributesCopy objectForKeyedSubscript:@"bagProfile"];
+  v15 = [attributesCopy objectForKeyedSubscript:@"bagProfileVersion"];
+  v16 = [attributesCopy objectForKeyedSubscript:@"bagURLKey"];
+  v17 = [attributesCopy objectForKeyedSubscript:@"queryParams"];
 
   if (v14 && v15 && v16)
   {
-    [(ICQUIManageSubHook *)self _openAMSUIWithBag:v14 version:v15 key:v16 query:v17 completion:v10];
+    [(ICQUIManageSubHook *)self _openAMSUIWithBag:v14 version:v15 key:v16 query:v17 completion:completionCopy];
   }
 
   else
@@ -70,35 +70,35 @@
   }
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 name];
+    name = [modelCopy name];
     v19 = 138412290;
-    v20 = v9;
+    v20 = name;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Processing Manage Sub RUI hook with model %@", &v19, 0xCu);
   }
 
-  v10 = [v6 clientInfo];
-  v11 = [v10 objectForKeyedSubscript:@"bagProfile"];
+  clientInfo = [modelCopy clientInfo];
+  v11 = [clientInfo objectForKeyedSubscript:@"bagProfile"];
 
-  v12 = [v6 clientInfo];
-  v13 = [v12 objectForKeyedSubscript:@"bagProfileVersion"];
+  clientInfo2 = [modelCopy clientInfo];
+  v13 = [clientInfo2 objectForKeyedSubscript:@"bagProfileVersion"];
 
-  v14 = [v6 clientInfo];
-  v15 = [v14 objectForKeyedSubscript:@"bagURLKey"];
+  clientInfo3 = [modelCopy clientInfo];
+  v15 = [clientInfo3 objectForKeyedSubscript:@"bagURLKey"];
 
-  v16 = [v6 clientInfo];
-  v17 = [v16 objectForKeyedSubscript:@"queryParams"];
+  clientInfo4 = [modelCopy clientInfo];
+  v17 = [clientInfo4 objectForKeyedSubscript:@"queryParams"];
 
   if (v11 && v13 && v15)
   {
-    [(ICQUIManageSubHook *)self _openAMSUIWithBag:v11 version:v13 key:v15 query:v17 completion:v7];
+    [(ICQUIManageSubHook *)self _openAMSUIWithBag:v11 version:v13 key:v15 query:v17 completion:completionCopy];
   }
 
   else
@@ -119,18 +119,18 @@
   }
 }
 
-- (void)_openAMSUIWithBag:(id)a3 version:(id)a4 key:(id)a5 query:(id)a6 completion:(id)a7
+- (void)_openAMSUIWithBag:(id)bag version:(id)version key:(id)key query:(id)query completion:(id)completion
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [MEMORY[0x277CEE3F8] bagForProfile:a3 profileVersion:a4];
-  v16 = [MEMORY[0x277CB8F48] defaultStore];
-  v17 = [v16 ams_activeiCloudAccount];
+  keyCopy = key;
+  queryCopy = query;
+  completionCopy = completion;
+  v15 = [MEMORY[0x277CEE3F8] bagForProfile:bag profileVersion:version];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  ams_activeiCloudAccount = [defaultStore ams_activeiCloudAccount];
 
-  v18 = [objc_alloc(MEMORY[0x277CEE940]) initWithBag:v15 account:v17 clientInfo:0];
-  v19 = [v15 URLForKey:v12];
+  v18 = [objc_alloc(MEMORY[0x277CEE940]) initWithBag:v15 account:ams_activeiCloudAccount clientInfo:0];
+  v19 = [v15 URLForKey:keyCopy];
   [v18 setDelegate:self];
   v34 = @"source";
   v35[0] = @"iCloudFreshmint";
@@ -145,15 +145,15 @@
   v28[2] = __69__ICQUIManageSubHook__openAMSUIWithBag_version_key_query_completion___block_invoke;
   v28[3] = &unk_27A65C6D8;
   v32 = v22;
-  v33 = v14;
-  v29 = v12;
-  v30 = v13;
+  v33 = completionCopy;
+  v29 = keyCopy;
+  v30 = queryCopy;
   v31 = v18;
   v23 = v22;
   v24 = v18;
-  v25 = v13;
-  v26 = v14;
-  v27 = v12;
+  v25 = queryCopy;
+  v26 = completionCopy;
+  v27 = keyCopy;
   [v19 valueWithCompletion:v28];
 }
 
@@ -244,22 +244,22 @@ void __69__ICQUIManageSubHook__openAMSUIWithBag_version_key_query_completion___b
   }
 }
 
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  resultCopy = result;
+  errorCopy = error;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICQUIManageSubHook webViewController:v6 didFinishPurchaseWithResult:v7 error:v8];
+    [ICQUIManageSubHook webViewController:resultCopy didFinishPurchaseWithResult:errorCopy error:v8];
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v9 = _ICQGetLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ICQUIManageSubHook webViewController:v7 didFinishPurchaseWithResult:v9 error:?];
+      [ICQUIManageSubHook webViewController:errorCopy didFinishPurchaseWithResult:v9 error:?];
     }
   }
 

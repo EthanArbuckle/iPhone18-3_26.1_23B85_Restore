@@ -1,26 +1,26 @@
 @interface AMSUIPrivacyViewController
-+ (id)privacyControllerWithIdentifier:(id)a3 acknowledgementHandler:(id)a4;
++ (id)privacyControllerWithIdentifier:(id)identifier acknowledgementHandler:(id)handler;
 @end
 
 @implementation AMSUIPrivacyViewController
 
-+ (id)privacyControllerWithIdentifier:(id)a3 acknowledgementHandler:(id)a4
++ (id)privacyControllerWithIdentifier:(id)identifier acknowledgementHandler:(id)handler
 {
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (identifier)
   {
     v7 = getOBBundleClass[0];
-    v8 = a3;
-    v26 = [(objc_class *)v7() bundleWithIdentifier:v8];
+    identifierCopy = identifier;
+    v26 = [(objc_class *)v7() bundleWithIdentifier:identifierCopy];
 
-    v9 = [v26 privacyFlow];
-    v10 = [v9 localizedTitle];
-    v11 = [v9 localizedButtonCaption];
-    v12 = [a1 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+    privacyFlow = [v26 privacyFlow];
+    localizedTitle = [privacyFlow localizedTitle];
+    localizedButtonCaption = [privacyFlow localizedButtonCaption];
+    v12 = [self alertControllerWithTitle:localizedTitle message:localizedButtonCaption preferredStyle:1];
 
     v13 = [AMSUIPrivacyIconViewController alloc];
-    v14 = [v9 buttonIcon];
-    v15 = [(AMSUIPrivacyIconViewController *)v13 initWithImage:v14];
+    buttonIcon = [privacyFlow buttonIcon];
+    v15 = [(AMSUIPrivacyIconViewController *)v13 initWithImage:buttonIcon];
     [v12 _setHeaderContentViewController:v15];
 
     v16 = MEMORY[0x1E69DC648];
@@ -30,7 +30,7 @@
     v29[1] = 3221225472;
     v29[2] = __85__AMSUIPrivacyViewController_privacyControllerWithIdentifier_acknowledgementHandler___block_invoke;
     v29[3] = &unk_1E7F25900;
-    v19 = v6;
+    v19 = handlerCopy;
     v30 = v19;
     v20 = [v16 actionWithTitle:v18 style:0 handler:v29];
 

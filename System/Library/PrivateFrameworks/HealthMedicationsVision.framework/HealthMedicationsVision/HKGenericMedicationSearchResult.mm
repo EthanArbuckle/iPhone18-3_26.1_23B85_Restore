@@ -1,20 +1,20 @@
 @interface HKGenericMedicationSearchResult
-- (BOOL)isEqual:(id)a3;
-- (HKGenericMedicationSearchResult)initWithGenericMedicationId:(id)a3 genericMedicationName:(id)a4 brandName:(id)a5 ingredients:(id)a6;
-- (id)copyByReplacingWithIngredients:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKGenericMedicationSearchResult)initWithGenericMedicationId:(id)id genericMedicationName:(id)name brandName:(id)brandName ingredients:(id)ingredients;
+- (id)copyByReplacingWithIngredients:(id)ingredients;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 @end
 
 @implementation HKGenericMedicationSearchResult
 
-- (HKGenericMedicationSearchResult)initWithGenericMedicationId:(id)a3 genericMedicationName:(id)a4 brandName:(id)a5 ingredients:(id)a6
+- (HKGenericMedicationSearchResult)initWithGenericMedicationId:(id)id genericMedicationName:(id)name brandName:(id)brandName ingredients:(id)ingredients
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  idCopy = id;
+  nameCopy = name;
+  brandNameCopy = brandName;
+  ingredientsCopy = ingredients;
+  if (!idCopy)
   {
     [HKGenericMedicationSearchResult initWithGenericMedicationId:a2 genericMedicationName:self brandName:? ingredients:?];
   }
@@ -25,24 +25,24 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_genericMedicationId, a3);
-    objc_storeStrong(&v17->_genericMedicationName, a4);
-    objc_storeStrong(&v17->_brandName, a5);
-    objc_storeStrong(&v17->_ingredients, a6);
+    objc_storeStrong(&v16->_genericMedicationId, id);
+    objc_storeStrong(&v17->_genericMedicationName, name);
+    objc_storeStrong(&v17->_brandName, brandName);
+    objc_storeStrong(&v17->_ingredients, ingredients);
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 genericMedicationId];
-    v6 = [(HKGenericMedicationSearchResult *)self genericMedicationId];
-    v7 = [v5 isEqualToString:v6];
+    genericMedicationId = [equalCopy genericMedicationId];
+    genericMedicationId2 = [(HKGenericMedicationSearchResult *)self genericMedicationId];
+    v7 = [genericMedicationId isEqualToString:genericMedicationId2];
   }
 
   else
@@ -55,20 +55,20 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HKGenericMedicationSearchResult *)self genericMedicationId];
-  v3 = [v2 hash];
+  genericMedicationId = [(HKGenericMedicationSearchResult *)self genericMedicationId];
+  v3 = [genericMedicationId hash];
 
   return v3;
 }
 
-- (id)copyByReplacingWithIngredients:(id)a3
+- (id)copyByReplacingWithIngredients:(id)ingredients
 {
-  v4 = a3;
+  ingredientsCopy = ingredients;
   v5 = [HKGenericMedicationSearchResult alloc];
-  v6 = [(HKGenericMedicationSearchResult *)self genericMedicationId];
-  v7 = [(HKGenericMedicationSearchResult *)self genericMedicationName];
-  v8 = [(HKGenericMedicationSearchResult *)self brandName];
-  v9 = [(HKGenericMedicationSearchResult *)v5 initWithGenericMedicationId:v6 genericMedicationName:v7 brandName:v8 ingredients:v4];
+  genericMedicationId = [(HKGenericMedicationSearchResult *)self genericMedicationId];
+  genericMedicationName = [(HKGenericMedicationSearchResult *)self genericMedicationName];
+  brandName = [(HKGenericMedicationSearchResult *)self brandName];
+  v9 = [(HKGenericMedicationSearchResult *)v5 initWithGenericMedicationId:genericMedicationId genericMedicationName:genericMedicationName brandName:brandName ingredients:ingredientsCopy];
 
   return v9;
 }
@@ -81,8 +81,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(HKGenericMedicationSearchResult *)self ingredients];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  ingredients = [(HKGenericMedicationSearchResult *)self ingredients];
+  v5 = [ingredients countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -93,25 +93,25 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(ingredients);
         }
 
-        v9 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v6 = [ingredients countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v6);
   }
 
   v26[0] = @"genericMedicationId";
-  v10 = [(HKGenericMedicationSearchResult *)self genericMedicationId];
-  v11 = v10;
-  if (v10)
+  genericMedicationId = [(HKGenericMedicationSearchResult *)self genericMedicationId];
+  v11 = genericMedicationId;
+  if (genericMedicationId)
   {
-    v12 = v10;
+    v12 = genericMedicationId;
   }
 
   else
@@ -121,11 +121,11 @@
 
   v27[0] = v12;
   v26[1] = @"genericMedicationName";
-  v13 = [(HKGenericMedicationSearchResult *)self genericMedicationName];
-  v14 = v13;
-  if (v13)
+  genericMedicationName = [(HKGenericMedicationSearchResult *)self genericMedicationName];
+  v14 = genericMedicationName;
+  if (genericMedicationName)
   {
-    v15 = v13;
+    v15 = genericMedicationName;
   }
 
   else
@@ -135,11 +135,11 @@
 
   v27[1] = v15;
   v26[2] = @"brandName";
-  v16 = [(HKGenericMedicationSearchResult *)self brandName];
-  v17 = v16;
-  if (v16)
+  brandName = [(HKGenericMedicationSearchResult *)self brandName];
+  v17 = brandName;
+  if (brandName)
   {
-    v18 = v16;
+    v18 = brandName;
   }
 
   else

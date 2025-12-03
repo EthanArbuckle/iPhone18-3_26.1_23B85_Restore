@@ -1,18 +1,18 @@
 @interface TTRWorkflowViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithRootViewController:(id)a3;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)handleCachedControl:(id)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithRootViewController:(id)controller;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)handleCachedControl:(id)control;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRWorkflowViewController
 
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithCoder:(id)a3
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC12PhotosUICore25TTRWorkflowViewController_actionCache;
   *(&self->super.super.super.super.isa + v3) = sub_1A4A0357C(MEMORY[0x1E69E7CC0]);
@@ -28,64 +28,64 @@
   v2 = v6.receiver;
   [(TTRWorkflowViewController *)&v6 viewDidLoad];
   [v2 setNavigationBarHidden:1 animated:{0, v6.receiver, v6.super_class}];
-  v3 = [v2 interactivePopGestureRecognizer];
-  if (v3)
+  interactivePopGestureRecognizer = [v2 interactivePopGestureRecognizer];
+  if (interactivePopGestureRecognizer)
   {
-    v4 = v3;
-    [v3 setDelegate_];
+    v4 = interactivePopGestureRecognizer;
+    [interactivePopGestureRecognizer setDelegate_];
   }
 
-  v5 = [v2 interactivePopGestureRecognizer];
-  [v5 setEnabled_];
+  interactivePopGestureRecognizer2 = [v2 interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer2 setEnabled_];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A4A036C8(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1A4A036C8(controllerCopy);
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1A4A037D0();
 
   return v4;
 }
 
-- (void)handleCachedControl:(id)a3
+- (void)handleCachedControl:(id)control
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A49FCFD4(v4);
+  controlCopy = control;
+  selfCopy = self;
+  sub_1A49FCFD4(controlCopy);
 }
 
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithRootViewController:(id)a3
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PhotosUICore25TTRWorkflowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v3 = self;
-  v4 = [(TTRWorkflowViewController *)v3 viewControllers];
+  selfCopy = self;
+  viewControllers = [(TTRWorkflowViewController *)selfCopy viewControllers];
   sub_1A3C52C70(0, &qword_1EB126B10);
   v5 = sub_1A524CA34();
 

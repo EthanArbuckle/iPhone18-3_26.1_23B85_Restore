@@ -1,9 +1,9 @@
 @interface CSAudioMetricProvidingProxy
 - (CSAudioMetricProviding)audioMetricProvider;
-- (CSAudioMetricProvidingProxy)initWithXPCConnection:(id)a3;
+- (CSAudioMetricProvidingProxy)initWithXPCConnection:(id)connection;
 - (CSClientXPCConnection)xpcConnection;
-- (void)_handleMetricProvidingRequestTypeAudioMetricMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
+- (void)_handleMetricProvidingRequestTypeAudioMetricMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client;
 @end
 
 @implementation CSAudioMetricProvidingProxy
@@ -22,16 +22,16 @@
   return WeakRetained;
 }
 
-- (void)_handleMetricProvidingRequestTypeAudioMetricMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleMetricProvidingRequestTypeAudioMetricMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  reply = xpc_dictionary_create_reply(a3);
+  clientCopy = client;
+  reply = xpc_dictionary_create_reply(message);
   WeakRetained = objc_loadWeakRetained(&self->_audioMetricProvider);
 
   if (WeakRetained)
   {
     v10 = objc_loadWeakRetained(&self->_audioMetricProvider);
-    v11 = [v10 audioMetric];
+    audioMetric = [v10 audioMetric];
 
     v12 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -39,13 +39,13 @@
       v15 = 136315394;
       v16 = "[CSAudioMetricProvidingProxy _handleMetricProvidingRequestTypeAudioMetricMessage:messageBody:client:]";
       v17 = 2114;
-      v18 = v11;
+      v18 = audioMetric;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s audioMetric = %{public}@", &v15, 0x16u);
     }
 
     xpc_dictionary_set_BOOL(reply, "result", 1);
-    v13 = [v11 _cs_xpcObject];
-    xpc_dictionary_set_value(reply, "audioMetric", v13);
+    _cs_xpcObject = [audioMetric _cs_xpcObject];
+    xpc_dictionary_set_value(reply, "audioMetric", _cs_xpcObject);
   }
 
   else
@@ -61,15 +61,15 @@
     xpc_dictionary_set_BOOL(reply, "result", 0);
   }
 
-  xpc_connection_send_message(v7, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v9, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v12 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -82,7 +82,7 @@
 
   if (int64 == 1)
   {
-    [(CSAudioMetricProvidingProxy *)self _handleMetricProvidingRequestTypeAudioMetricMessage:v8 messageBody:v9 client:v10];
+    [(CSAudioMetricProvidingProxy *)self _handleMetricProvidingRequestTypeAudioMetricMessage:messageCopy messageBody:bodyCopy client:clientCopy];
   }
 
   else
@@ -99,16 +99,16 @@
   }
 }
 
-- (CSAudioMetricProvidingProxy)initWithXPCConnection:(id)a3
+- (CSAudioMetricProvidingProxy)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CSAudioMetricProvidingProxy;
   v5 = [(CSAudioMetricProvidingProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSAudioMetricProvidingProxy *)v5 setXpcConnection:v4];
+    [(CSAudioMetricProvidingProxy *)v5 setXpcConnection:connectionCopy];
   }
 
   return v6;

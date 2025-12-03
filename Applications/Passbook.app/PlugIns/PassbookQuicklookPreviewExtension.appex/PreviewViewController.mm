@@ -1,7 +1,7 @@
 @interface PreviewViewController
-- (void)_addVCToHierarchy:(id)a3;
-- (void)preparePreviewOfFileAtURL:(id)a3 completionHandler:(id)a4;
-- (void)preparePreviewOfSearchableItemWithIdentifier:(id)a3 queryString:(id)a4 completionHandler:(id)a5;
+- (void)_addVCToHierarchy:(id)hierarchy;
+- (void)preparePreviewOfFileAtURL:(id)l completionHandler:(id)handler;
+- (void)preparePreviewOfSearchableItemWithIdentifier:(id)identifier queryString:(id)string completionHandler:(id)handler;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -12,8 +12,8 @@
   v14.receiver = self;
   v14.super_class = PreviewViewController;
   [(PreviewViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(PreviewViewController *)self view];
-  [v3 bounds];
+  view = [(PreviewViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -22,39 +22,39 @@
   detailVC = self->_detailVC;
   if (detailVC)
   {
-    v13 = [(UIViewController *)detailVC view];
-    [v13 setFrame:{v5, v7, v9, v11}];
+    view2 = [(UIViewController *)detailVC view];
+    [view2 setFrame:{v5, v7, v9, v11}];
   }
 }
 
-- (void)_addVCToHierarchy:(id)a3
+- (void)_addVCToHierarchy:(id)hierarchy
 {
-  v8 = a3;
-  objc_storeStrong(&self->_detailVC, a3);
-  [(PreviewViewController *)self addChildViewController:v8];
-  v5 = [v8 view];
-  v6 = [(PreviewViewController *)self view];
-  [v6 addSubview:v5];
+  hierarchyCopy = hierarchy;
+  objc_storeStrong(&self->_detailVC, hierarchy);
+  [(PreviewViewController *)self addChildViewController:hierarchyCopy];
+  view = [hierarchyCopy view];
+  view2 = [(PreviewViewController *)self view];
+  [view2 addSubview:view];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = view;
     [v7 setShowsVerticalScrollIndicator:0];
     [v7 setShowsHorizontalScrollIndicator:0];
   }
 }
 
-- (void)preparePreviewOfSearchableItemWithIdentifier:(id)a3 queryString:(id)a4 completionHandler:(id)a5
+- (void)preparePreviewOfSearchableItemWithIdentifier:(id)identifier queryString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v27 = a4;
-  v28 = a5;
+  identifierCopy = identifier;
+  stringCopy = string;
+  handlerCopy = handler;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "preparePreviewOfSearchableItemWithIdentifier:%@", &buf, 0xCu);
   }
 
@@ -63,15 +63,15 @@
   library = self->_library;
   self->_library = v10;
 
-  v12 = [PKCoreSpotlightUtilities transactionIdentifierFromSpotlightIdentifier:v8];
+  v12 = [PKCoreSpotlightUtilities transactionIdentifierFromSpotlightIdentifier:identifierCopy];
   transactionIdentifier = self->_transactionIdentifier;
   self->_transactionIdentifier = v12;
 
-  v14 = [PKCoreSpotlightUtilities passUniqueIdentifierFromSpotlightIdentifier:v8];
+  v14 = [PKCoreSpotlightUtilities passUniqueIdentifierFromSpotlightIdentifier:identifierCopy];
   v15 = v14;
   if (!v14)
   {
-    v15 = [PKCoreSpotlightUtilities passUniqueIdentifierFromCardInformationSpotlightIdentifier:v8];
+    v15 = [PKCoreSpotlightUtilities passUniqueIdentifierFromCardInformationSpotlightIdentifier:identifierCopy];
   }
 
   objc_storeStrong(&self->_passUniqueIdentifier, v15);
@@ -135,7 +135,7 @@
     v51[4] = self;
     objc_copyWeak(&v55, &location);
     p_buf = &buf;
-    v19 = v8;
+    v19 = identifierCopy;
     v52 = v19;
     v54 = v56;
     [v18 addOperation:v51];
@@ -198,7 +198,7 @@
     v33[1] = 3221225472;
     v33[2] = sub_1000029EC;
     v33[3] = &unk_1000083F8;
-    v34 = v28;
+    v34 = handlerCopy;
     v35 = v56;
     v21 = [v18 evaluateWithInput:v20 completion:v33];
 
@@ -239,7 +239,7 @@
       block[3] = &unk_100008420;
       objc_copyWeak(&v32, &buf);
       v30 = v24;
-      v31 = v28;
+      v31 = handlerCopy;
       dispatch_async(&_dispatch_main_q, block);
 
       objc_destroyWeak(&v32);
@@ -251,12 +251,12 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Pass not found with identifier %@", &buf, 0xCu);
       }
 
       v26 = [NSError errorWithDomain:@"PassbookQuicklookPreviewExtensionErrorDomain" code:2 userInfo:0];
-      (*(v28 + 2))(v28, v26);
+      (*(handlerCopy + 2))(handlerCopy, v26);
     }
   }
 
@@ -265,33 +265,33 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Non presentable identifier: %@", &buf, 0xCu);
     }
 
     v25 = [NSError errorWithDomain:@"PassbookQuicklookPreviewExtensionErrorDomain" code:0 userInfo:0];
-    (*(v28 + 2))(v28, v25);
+    (*(handlerCopy + 2))(handlerCopy, v25);
   }
 
   objc_destroyWeak(&location);
 }
 
-- (void)preparePreviewOfFileAtURL:(id)a3 completionHandler:(id)a4
+- (void)preparePreviewOfFileAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Generating quicklook for file URL: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (lCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [NSData dataWithContentsOfURL:v6];
+    v10 = [NSData dataWithContentsOfURL:lCopy];
     v14 = 0;
     v11 = [PKPass createWithData:v10 warnings:0 error:&v14];
     v12 = v14;
@@ -303,7 +303,7 @@
       objc_autoreleasePoolPop(v9);
       v13 = [[PKDashboardPassGroupViewController alloc] initWithPass:v11];
       [(PreviewViewController *)self _addVCToHierarchy:v13];
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -317,14 +317,14 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Pass quicklook could not be generated with error %@", buf, 0xCu);
       }
 
-      (v7)[2](v7, v12);
+      (handlerCopy)[2](handlerCopy, v12);
     }
   }
 
   else
   {
     v11 = [NSError errorWithDomain:@"PassbookQuicklookPreviewExtensionErrorDomain" code:2 userInfo:0];
-    (v7)[2](v7, v11);
+    (handlerCopy)[2](handlerCopy, v11);
   }
 }
 

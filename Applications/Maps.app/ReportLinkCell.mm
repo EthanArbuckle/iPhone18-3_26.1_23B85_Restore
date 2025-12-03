@@ -1,28 +1,28 @@
 @interface ReportLinkCell
-- (ReportLinkCell)initWithFrame:(CGRect)a3;
-- (void)setReportLink:(id)a3;
+- (ReportLinkCell)initWithFrame:(CGRect)frame;
+- (void)setReportLink:(id)link;
 @end
 
 @implementation ReportLinkCell
 
-- (void)setReportLink:(id)a3
+- (void)setReportLink:(id)link
 {
-  v8 = a3;
+  linkCopy = link;
   if (([(ReportLink *)self->_reportLink isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_reportLink, a3);
-    v5 = [v8 title];
-    v6 = [v8 subtitle];
-    v7 = [v8 icon];
-    [(UserProfilePersonalizationLinkCell *)self updateTitle:v5 subtitle:v6 icon:v7];
+    objc_storeStrong(&self->_reportLink, link);
+    title = [linkCopy title];
+    subtitle = [linkCopy subtitle];
+    icon = [linkCopy icon];
+    [(UserProfilePersonalizationLinkCell *)self updateTitle:title subtitle:subtitle icon:icon];
   }
 }
 
-- (ReportLinkCell)initWithFrame:(CGRect)a3
+- (ReportLinkCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = ReportLinkCell;
-  v3 = [(UserProfilePersonalizationLinkCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UserProfilePersonalizationLinkCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -35,8 +35,8 @@
     v7 = +[UIColor systemLightGrayColor];
     [(UserProfilePersonalizationLinkCell *)v3 setGlyphBackgroundColor:v7];
 
-    v8 = [(UserProfilePersonalizationLinkCell *)v3 titleLabel];
-    [v8 setNumberOfLines:2];
+    titleLabel = [(UserProfilePersonalizationLinkCell *)v3 titleLabel];
+    [titleLabel setNumberOfLines:2];
   }
 
   return v3;

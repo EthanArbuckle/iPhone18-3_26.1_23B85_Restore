@@ -2,8 +2,8 @@
 - (TIWordTokenizer)init;
 - (_NSRange)advanceToNextToken;
 - (_NSRange)rangeOfCurrentToken;
-- (id)allTokensForString:(id)a3;
-- (void)setString:(id)a3 withSearchRange:(_NSRange)a4;
+- (id)allTokensForString:(id)string;
+- (void)setString:(id)string withSearchRange:(_NSRange)range;
 @end
 
 @implementation TIWordTokenizer
@@ -305,22 +305,22 @@ LABEL_78:
   return result;
 }
 
-- (id)allTokensForString:(id)a3
+- (id)allTokensForString:(id)string
 {
-  v4 = a3;
-  -[TIWordTokenizer setString:withSearchRange:](self, "setString:withSearchRange:", v4, 0, [v4 length]);
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(TIWordTokenizer *)self advanceToNextToken];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  stringCopy = string;
+  -[TIWordTokenizer setString:withSearchRange:](self, "setString:withSearchRange:", stringCopy, 0, [stringCopy length]);
+  array = [MEMORY[0x1E695DF70] array];
+  advanceToNextToken = [(TIWordTokenizer *)self advanceToNextToken];
+  if (advanceToNextToken != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [(TIWordTokenizer *)self advanceToNextToken])
+    for (i = advanceToNextToken; i != 0x7FFFFFFFFFFFFFFFLL; i = [(TIWordTokenizer *)self advanceToNextToken])
     {
-      v9 = [v4 substringWithRange:{i, v7}];
-      [v5 addObject:v9];
+      v9 = [stringCopy substringWithRange:{i, v7}];
+      [array addObject:v9];
     }
   }
 
-  return v5;
+  return array;
 }
 
 - (_NSRange)rangeOfCurrentToken
@@ -332,12 +332,12 @@ LABEL_78:
   return result;
 }
 
-- (void)setString:(id)a3 withSearchRange:(_NSRange)a4
+- (void)setString:(id)string withSearchRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v17 = a3;
-  if (!v17)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (!stringCopy)
   {
     m_string = self->m_string;
     self->m_string = 0;
@@ -349,12 +349,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v17];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:stringCopy];
   v8 = self->m_string;
   self->m_string = v7;
 
   self->m_tokenRange = xmmword_186483EA0;
-  if (location >= [v17 length])
+  if (location >= [stringCopy length])
   {
     v12 = xmmword_186483EA0;
     goto LABEL_7;
@@ -362,14 +362,14 @@ LABEL_7:
 
   self->m_searchRange.location = location;
   self->m_searchRange.length = length;
-  if (location + length <= [v17 length])
+  if (location + length <= [stringCopy length])
   {
     v10 = self->m_searchRange.location;
   }
 
   else
   {
-    v9 = [v17 length];
+    v9 = [stringCopy length];
     v10 = self->m_searchRange.location;
     self->m_searchRange.length = v9 - v10;
   }

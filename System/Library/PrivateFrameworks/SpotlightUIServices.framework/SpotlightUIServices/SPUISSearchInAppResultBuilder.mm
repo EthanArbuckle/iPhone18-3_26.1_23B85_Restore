@@ -8,37 +8,37 @@
 
 - (id)buildResult
 {
-  v3 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
-  v4 = [v3 componentsSeparatedByString:@"."];
-  v5 = [v4 lastObject];
+  appBundleId = [(SPUISSearchInAppResultBuilder *)self appBundleId];
+  v4 = [appBundleId componentsSeparatedByString:@"."];
+  lastObject = [v4 lastObject];
 
-  v6 = [@"com.apple.other:search_" stringByAppendingString:v5];
+  v6 = [@"com.apple.other:search_" stringByAppendingString:lastObject];
   v7 = objc_alloc(MEMORY[0x277D4C5D8]);
-  v8 = [(SPUISSearchInAppResultBuilder *)self searchString];
-  v9 = [(SPUISSearchInAppResultBuilder *)self searchString];
-  v10 = [v7 initWithSuggestion:v8 query:v9 score:13 type:0.0];
+  searchString = [(SPUISSearchInAppResultBuilder *)self searchString];
+  searchString2 = [(SPUISSearchInAppResultBuilder *)self searchString];
+  v10 = [v7 initWithSuggestion:searchString query:searchString2 score:13 type:0.0];
 
-  v11 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
-  [v10 setBundleIdentifier:v11];
+  appBundleId2 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
+  [v10 setBundleIdentifier:appBundleId2];
 
   v15.receiver = self;
   v15.super_class = SPUISSearchInAppResultBuilder;
-  v12 = [(SPUISResultBuilder *)&v15 buildResult];
-  [v12 setResultBundleId:v6];
-  [v12 setIdentifier:v6];
-  [v12 setType:16];
-  [v12 setSuggestion:v10];
-  v13 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
-  [v12 setApplicationBundleIdentifier:v13];
+  buildResult = [(SPUISResultBuilder *)&v15 buildResult];
+  [buildResult setResultBundleId:v6];
+  [buildResult setIdentifier:v6];
+  [buildResult setType:16];
+  [buildResult setSuggestion:v10];
+  appBundleId3 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
+  [buildResult setApplicationBundleIdentifier:appBundleId3];
 
-  return v12;
+  return buildResult;
 }
 
 - (id)buildInlineCardSections
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
-  v4 = [v3 isEqual:@"com.apple.AppStore"];
+  appBundleId = [(SPUISSearchInAppResultBuilder *)self appBundleId];
+  v4 = [appBundleId isEqual:@"com.apple.AppStore"];
 
   if (v4)
   {
@@ -49,8 +49,8 @@
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = [SPUISUtilities localizedStringForKey:@"SEARCH_IN_APP"];
-    v8 = [(SPUISSearchInAppResultBuilder *)self appName];
-    v5 = [v6 stringWithFormat:v7, v8];
+    appName = [(SPUISSearchInAppResultBuilder *)self appName];
+    v5 = [v6 stringWithFormat:v7, appName];
   }
 
   v9 = [MEMORY[0x277D4C3A0] textWithString:v5];
@@ -61,15 +61,15 @@
   [v10 setFormattedTextPieces:v11];
 
   v12 = objc_opt_new();
-  v13 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
-  [v12 setBundleIdentifier:v13];
+  appBundleId2 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
+  [v12 setBundleIdentifier:appBundleId2];
 
   v14 = objc_opt_new();
   [v14 setSuggestionText:v10];
   [v14 setSuggestionType:2];
   [v14 setThumbnail:v12];
-  v15 = [(SPUISSearchInAppResultBuilder *)self buildCommand];
-  [v14 setCommand:v15];
+  buildCommand = [(SPUISSearchInAppResultBuilder *)self buildCommand];
+  [v14 setCommand:buildCommand];
 
   v19 = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
@@ -82,11 +82,11 @@
 - (id)buildCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISSearchInAppResultBuilder *)self searchString];
-  [v3 setSearchString:v4];
+  searchString = [(SPUISSearchInAppResultBuilder *)self searchString];
+  [v3 setSearchString:searchString];
 
-  v5 = [(SPUISSearchInAppResultBuilder *)self appBundleId];
-  [v3 setApplicationBundleIdentifier:v5];
+  appBundleId = [(SPUISSearchInAppResultBuilder *)self appBundleId];
+  [v3 setApplicationBundleIdentifier:appBundleId];
 
   [v3 setSearchInAppType:{-[SPUISSearchInAppResultBuilder searchInAppType](self, "searchInAppType")}];
 

@@ -1,5 +1,5 @@
 @interface VMSharedJetsamAssertion
-- (VMSharedJetsamAssertion)initWithJetsamAssertion:(shared_ptr<VMJetsamAssertion>)a3;
+- (VMSharedJetsamAssertion)initWithJetsamAssertion:(shared_ptr<VMJetsamAssertion>)assertion;
 - (id).cxx_construct;
 - (id)description;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation VMSharedJetsamAssertion
 
-- (VMSharedJetsamAssertion)initWithJetsamAssertion:(shared_ptr<VMJetsamAssertion>)a3
+- (VMSharedJetsamAssertion)initWithJetsamAssertion:(shared_ptr<VMJetsamAssertion>)assertion
 {
-  ptr = a3.__ptr_;
+  ptr = assertion.__ptr_;
   v17.receiver = self;
   v17.super_class = VMSharedJetsamAssertion;
-  v4 = [(VMSharedJetsamAssertion *)&v17 init:a3.__ptr_];
+  v4 = [(VMSharedJetsamAssertion *)&v17 init:assertion.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -81,7 +81,7 @@
     v19 = 2080;
     v20 = v8;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v9 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ [%lu, %s, %p] deleted", buf, 0x3Eu);
   }

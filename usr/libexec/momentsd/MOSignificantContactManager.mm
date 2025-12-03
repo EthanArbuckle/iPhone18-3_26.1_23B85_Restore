@@ -1,86 +1,86 @@
 @interface MOSignificantContactManager
-- (BOOL)_eligibleInteraction:(id)a3;
-- (MOSignificantContactManager)initWithDuetStore:(id)a3 ppContactStore:(id)a4 cnContactStore:(id)a5 momentStore:(id)a6 configurationManager:(id)a7;
-- (MOSignificantContactManager)initWithUniverse:(id)a3;
-- (id)_collectSignificantContactsFromInteractions:(id)a3;
-- (id)_conversationsFromInteractions:(id)a3;
-- (id)_createEventFromConversation:(id)a3;
-- (id)_createEventsFromConversations:(id)a3;
-- (id)_createNewEventsFromConversations:(id)a3 storedEvents:(id)a4;
-- (id)_fetchClassificationForSignificantContacts:(id)a3;
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 conversations:(id)a4;
-- (id)_rehydrateStoredEvents:(id)a3 fromConversations:(id)a4;
+- (BOOL)_eligibleInteraction:(id)interaction;
+- (MOSignificantContactManager)initWithDuetStore:(id)store ppContactStore:(id)contactStore cnContactStore:(id)cnContactStore momentStore:(id)momentStore configurationManager:(id)manager;
+- (MOSignificantContactManager)initWithUniverse:(id)universe;
+- (id)_collectSignificantContactsFromInteractions:(id)interactions;
+- (id)_conversationsFromInteractions:(id)interactions;
+- (id)_createEventFromConversation:(id)conversation;
+- (id)_createEventsFromConversations:(id)conversations;
+- (id)_createNewEventsFromConversations:(id)conversations storedEvents:(id)events;
+- (id)_fetchClassificationForSignificantContacts:(id)contacts;
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events conversations:(id)conversations;
+- (id)_rehydrateStoredEvents:(id)events fromConversations:(id)conversations;
 - (id)initializeVisualIdentifierView;
 - (id)intializeEntityTaggingService;
-- (void)_fetchConversationEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_fetchInteractionsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_rehydrateConversations:(id)a3 handler:(id)a4;
-- (void)_saveConversations:(id)a3 handler:(id)a4;
-- (void)_setDynamicPropertiesForEvent:(id)a3 fromCoversation:(id)a4;
-- (void)_updateClassificationForEvent:(id)a3 withClassificationDict:(id)a4 contactDict:(id)a5;
-- (void)_updateClassificationForEvents:(id)a3;
-- (void)fetchConversationEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
+- (void)_fetchConversationEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_fetchInteractionsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_rehydrateConversations:(id)conversations handler:(id)handler;
+- (void)_saveConversations:(id)conversations handler:(id)handler;
+- (void)_setDynamicPropertiesForEvent:(id)event fromCoversation:(id)coversation;
+- (void)_updateClassificationForEvent:(id)event withClassificationDict:(id)dict contactDict:(id)contactDict;
+- (void)_updateClassificationForEvents:(id)events;
+- (void)fetchConversationEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
 - (void)intializeEntityTaggingService;
-- (void)rehydrateConversations:(id)a3 handler:(id)a4;
+- (void)rehydrateConversations:(id)conversations handler:(id)handler;
 @end
 
 @implementation MOSignificantContactManager
 
-- (MOSignificantContactManager)initWithUniverse:(id)a3
+- (MOSignificantContactManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = +[_CDInteractionStore defaultDatabaseDirectory];
   v6 = [_CDInteractionStore storeWithDirectory:v5 readOnly:1];
   v7 = objc_alloc_init(PPContactStore);
   v8 = objc_opt_new();
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v4 getService:v10];
+  v11 = [universeCopy getService:v10];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v4 getService:v13];
+  v14 = [universeCopy getService:v13];
 
   v15 = [(MOSignificantContactManager *)self initWithDuetStore:v6 ppContactStore:v7 cnContactStore:v8 momentStore:v11 configurationManager:v14];
   return v15;
 }
 
-- (MOSignificantContactManager)initWithDuetStore:(id)a3 ppContactStore:(id)a4 cnContactStore:(id)a5 momentStore:(id)a6 configurationManager:(id)a7
+- (MOSignificantContactManager)initWithDuetStore:(id)store ppContactStore:(id)contactStore cnContactStore:(id)cnContactStore momentStore:(id)momentStore configurationManager:(id)manager
 {
-  v14 = a3;
-  v15 = a4;
-  v86 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v16)
+  storeCopy = store;
+  contactStoreCopy = contactStore;
+  cnContactStoreCopy = cnContactStore;
+  momentStoreCopy = momentStore;
+  managerCopy = manager;
+  if (momentStoreCopy)
   {
     v84 = a2;
-    v18 = 0;
-    if (v14 && v15 && v86)
+    selfCopy = 0;
+    if (storeCopy && contactStoreCopy && cnContactStoreCopy)
     {
-      v83 = v17;
+      v83 = managerCopy;
       v89.receiver = self;
       v89.super_class = MOSignificantContactManager;
       v19 = [(MOSignificantContactManager *)&v89 init];
       if (v19)
       {
-        v81 = v14;
+        v81 = storeCopy;
         v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         v21 = dispatch_queue_create("MOSignificantContactManager", v20);
         queue = v19->_queue;
         v19->_queue = v21;
 
-        objc_storeStrong(&v19->_interactionStore, a3);
-        objc_storeStrong(&v19->_ppContactStore, a4);
-        objc_storeStrong(&v19->_cnContactStore, a5);
-        objc_storeStrong(&v19->_momentStore, a6);
-        objc_storeStrong(&v19->_configurationManager, a7);
-        v23 = [(MOSignificantContactManager *)v19 initializeVisualIdentifierView];
+        objc_storeStrong(&v19->_interactionStore, store);
+        objc_storeStrong(&v19->_ppContactStore, contactStore);
+        objc_storeStrong(&v19->_cnContactStore, cnContactStore);
+        objc_storeStrong(&v19->_momentStore, momentStore);
+        objc_storeStrong(&v19->_configurationManager, manager);
+        initializeVisualIdentifierView = [(MOSignificantContactManager *)v19 initializeVisualIdentifierView];
         visualIdentifierView = v19->_visualIdentifierView;
-        v19->_visualIdentifierView = v23;
+        v19->_visualIdentifierView = initializeVisualIdentifierView;
 
-        v25 = [(MOSignificantContactManager *)v19 intializeEntityTaggingService];
+        intializeEntityTaggingService = [(MOSignificantContactManager *)v19 intializeEntityTaggingService];
         entityTaggingSerice = v19->_entityTaggingSerice;
-        v19->_entityTaggingSerice = v25;
+        v19->_entityTaggingSerice = intializeEntityTaggingService;
 
         v27 = [[NSSet alloc] initWithObjects:{@"+1800", @"+1833", @"+1844", @"+1855", @"+1866", @"+1877", @"+1888", @"+1822", @"+1880", @"+1881", @"+1882", @"+1883", @"+1884", @"+1885", @"+1886", @"+1887", @"+1889", @"+1900", @"+1976", @"800", @"833", @"844", @"855", @"866", @"877", @"888", @"822", @"880", @"881", @"882", @"883", @"884", @"885", @"886", @"887", @"889", @"900", @"976", 0}];
         tollFreeNumberPrefixes = v19->_tollFreeNumberPrefixes;
@@ -101,14 +101,14 @@
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           v36 = NSStringFromSelector(v84);
-          v37 = [v33 identifier];
-          v38 = [v33 givenName];
-          [v38 mask];
+          identifier = [v33 identifier];
+          givenName = [v33 givenName];
+          [givenName mask];
           v40 = v39 = v33;
           *buf = 138413058;
           v91 = v36;
           v92 = 2112;
-          v93 = v37;
+          v93 = identifier;
           v94 = 2112;
           v95 = v40;
           v96 = 2112;
@@ -118,19 +118,19 @@
           v33 = v39;
         }
 
-        v80 = v15;
+        v80 = contactStoreCopy;
 
         v41 = objc_opt_new();
         meIdentifiers = v19->_meIdentifiers;
         v19->_meIdentifiers = v41;
 
-        v43 = [v33 identifier];
+        identifier2 = [v33 identifier];
 
-        if (v43)
+        if (identifier2)
         {
           v44 = v19->_meIdentifiers;
-          v45 = [v33 identifier];
-          [(NSMutableSet *)v44 addObject:v45];
+          identifier3 = [v33 identifier];
+          [(NSMutableSet *)v44 addObject:identifier3];
         }
 
         v46 = [NSPredicate predicateWithFormat:@"%K == %i", @"mechanism", 4];
@@ -145,13 +145,13 @@
         v49 = [NSArray arrayWithObjects:v101 count:3];
         v50 = [NSCompoundPredicate andPredicateWithSubpredicates:v49];
 
-        v51 = [(MOSignificantContactManager *)v19 interactionStore];
+        interactionStore = [(MOSignificantContactManager *)v19 interactionStore];
         v52 = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:0];
         v100 = v52;
         v53 = [NSArray arrayWithObjects:&v100 count:1];
         v87 = v34;
         v76 = v50;
-        v54 = [v51 queryInteractionsUsingPredicate:v50 sortDescriptors:v53 limit:1 error:&v87];
+        v54 = [interactionStore queryInteractionsUsingPredicate:v50 sortDescriptors:v53 limit:1 error:&v87];
         v82 = v87;
 
         v55 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
@@ -159,22 +159,22 @@
         {
           v56 = NSStringFromSelector(v84);
           v73 = [v54 count];
-          v75 = [v54 firstObject];
-          v74 = [v75 sender];
-          v57 = [v74 personId];
-          v58 = [v54 firstObject];
-          v59 = [v58 sender];
-          [v59 displayName];
+          firstObject = [v54 firstObject];
+          sender = [firstObject sender];
+          personId = [sender personId];
+          firstObject2 = [v54 firstObject];
+          sender2 = [firstObject2 sender];
+          [sender2 displayName];
           v60 = v85 = v33;
-          v61 = [v60 mask];
+          mask = [v60 mask];
           *buf = 138413314;
           v91 = v56;
           v92 = 2048;
           v93 = v73;
           v94 = 2112;
-          v95 = v57;
+          v95 = personId;
           v96 = 2112;
-          v97 = v61;
+          v97 = mask;
           v98 = 2112;
           v99 = v82;
           _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "%@, fetched result count, %lu, sender info, identifier, %@, name, %@, error, %@", buf, 0x34u);
@@ -182,32 +182,32 @@
           v33 = v85;
         }
 
-        v62 = [v54 firstObject];
-        v63 = [v62 sender];
-        v64 = [v63 personId];
+        firstObject3 = [v54 firstObject];
+        sender3 = [firstObject3 sender];
+        personId2 = [sender3 personId];
 
-        if (v64)
+        if (personId2)
         {
           v65 = v19->_meIdentifiers;
-          v66 = [v54 firstObject];
-          v67 = [v66 sender];
-          v68 = [v67 personId];
-          [(NSMutableSet *)v65 addObject:v68];
+          firstObject4 = [v54 firstObject];
+          sender4 = [firstObject4 sender];
+          personId3 = [sender4 personId];
+          [(NSMutableSet *)v65 addObject:personId3];
         }
 
-        v15 = v80;
-        v14 = v81;
+        contactStoreCopy = v80;
+        storeCopy = v81;
       }
 
       self = v19;
-      v18 = self;
-      v17 = v83;
+      selfCopy = self;
+      managerCopy = v83;
     }
   }
 
   else
   {
-    v69 = v17;
+    v69 = managerCopy;
     v70 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
     {
@@ -217,11 +217,11 @@
     v71 = +[NSAssertionHandler currentHandler];
     [v71 handleFailureInMethod:a2 object:self file:@"MOSignificantContactManager.m" lineNumber:93 description:@"Invalid parameter not satisfying: momentStore"];
 
-    v18 = 0;
-    v17 = v69;
+    selfCopy = 0;
+    managerCopy = v69;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)initializeVisualIdentifierView
@@ -297,62 +297,62 @@
   return v7;
 }
 
-- (BOOL)_eligibleInteraction:(id)a3
+- (BOOL)_eligibleInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   callLikeMechanismsSet = self->_callLikeMechanismsSet;
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 mechanism]);
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [interactionCopy mechanism]);
   LODWORD(callLikeMechanismsSet) = [(NSSet *)callLikeMechanismsSet containsObject:v7];
 
   if (callLikeMechanismsSet)
   {
-    v8 = [v5 sender];
-    if (v8)
+    sender = [interactionCopy sender];
+    if (sender)
     {
-      v9 = v8;
-      v10 = [v5 sender];
-      v11 = [v10 type];
+      v9 = sender;
+      sender2 = [interactionCopy sender];
+      type = [sender2 type];
 
-      if (v11 == 1)
+      if (type == 1)
       {
-        v12 = [v5 sender];
-        v13 = [v12 identifier];
-        if ([v13 length] < 5)
+        sender3 = [interactionCopy sender];
+        identifier = [sender3 identifier];
+        if ([identifier length] < 5)
         {
           v16 = 0;
         }
 
         else
         {
-          v14 = [v5 sender];
-          v15 = [v14 identifier];
-          v16 = [v15 substringToIndex:5];
+          sender4 = [interactionCopy sender];
+          identifier2 = [sender4 identifier];
+          v16 = [identifier2 substringToIndex:5];
         }
 
-        v17 = [v5 sender];
-        v18 = [v17 identifier];
-        if ([v18 length] < 3)
+        sender5 = [interactionCopy sender];
+        identifier3 = [sender5 identifier];
+        if ([identifier3 length] < 3)
         {
           v21 = 0;
         }
 
         else
         {
-          v19 = [v5 sender];
-          v20 = [v19 identifier];
-          v21 = [v20 substringToIndex:3];
+          sender6 = [interactionCopy sender];
+          identifier4 = [sender6 identifier];
+          v21 = [identifier4 substringToIndex:3];
         }
 
         if (v16 && [(NSSet *)self->_tollFreeNumberPrefixes containsObject:v16]|| v21 && [(NSSet *)self->_tollFreeNumberPrefixes containsObject:v21])
         {
-          v22 = [v5 sender];
-          v23 = [v22 identifier];
+          sender7 = [interactionCopy sender];
+          identifier5 = [sender7 identifier];
 
 LABEL_39:
           v39 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
           {
-            [(MOSignificantContactManager *)a2 _eligibleInteraction:v23, v39];
+            [(MOSignificantContactManager *)a2 _eligibleInteraction:identifier5, v39];
           }
 
           v37 = 0;
@@ -363,8 +363,8 @@ LABEL_43:
       }
     }
 
-    v24 = [v5 recipients];
-    v25 = [v24 count];
+    recipients = [interactionCopy recipients];
+    v25 = [recipients count];
 
     if (v25)
     {
@@ -372,13 +372,13 @@ LABEL_43:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v23 = [v5 recipients];
-      v26 = [v23 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      identifier5 = [interactionCopy recipients];
+      v26 = [identifier5 countByEnumeratingWithState:&v43 objects:v47 count:16];
       if (v26)
       {
         v27 = v26;
         v41 = a2;
-        v42 = v5;
+        v42 = interactionCopy;
         v28 = *v44;
         while (2)
         {
@@ -386,49 +386,49 @@ LABEL_43:
           {
             if (*v44 != v28)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(identifier5);
             }
 
             v30 = *(*(&v43 + 1) + 8 * i);
             if ([v30 type] == 1)
             {
-              v31 = [v30 identifier];
-              if ([v31 length] < 5)
+              identifier6 = [v30 identifier];
+              if ([identifier6 length] < 5)
               {
                 v33 = 0;
               }
 
               else
               {
-                v32 = [v30 identifier];
-                v33 = [v32 substringToIndex:5];
+                identifier7 = [v30 identifier];
+                v33 = [identifier7 substringToIndex:5];
               }
 
-              v34 = [v30 identifier];
-              if ([v34 length] < 3)
+              identifier8 = [v30 identifier];
+              if ([identifier8 length] < 3)
               {
                 v36 = 0;
               }
 
               else
               {
-                v35 = [v30 identifier];
-                v36 = [v35 substringToIndex:3];
+                identifier9 = [v30 identifier];
+                v36 = [identifier9 substringToIndex:3];
               }
 
               if (v33 && [(NSSet *)self->_tollFreeNumberPrefixes containsObject:v33]|| v36 && [(NSSet *)self->_tollFreeNumberPrefixes containsObject:v36])
               {
-                v38 = [v30 identifier];
+                identifier10 = [v30 identifier];
 
-                v23 = v38;
+                identifier5 = identifier10;
                 a2 = v41;
-                v5 = v42;
+                interactionCopy = v42;
                 goto LABEL_39;
               }
             }
           }
 
-          v27 = [v23 countByEnumeratingWithState:&v43 objects:v47 count:16];
+          v27 = [identifier5 countByEnumeratingWithState:&v43 objects:v47 count:16];
           if (v27)
           {
             continue;
@@ -438,7 +438,7 @@ LABEL_43:
         }
 
         v37 = 1;
-        v5 = v42;
+        interactionCopy = v42;
       }
 
       else
@@ -456,29 +456,29 @@ LABEL_44:
   return v37;
 }
 
-- (void)_fetchInteractionsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchInteractionsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && v10 && ![v10 isBeforeDate:v9])
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (dateCopy && endDateCopy && ![endDateCopy isBeforeDate:dateCopy])
   {
     if (_fetchInteractionsBetweenStartDate_EndDate_CompletionHandler__onceToken != -1)
     {
       [MOSignificantContactManager _fetchInteractionsBetweenStartDate:EndDate:CompletionHandler:];
     }
 
-    v14 = [(MOSignificantContactManager *)self queue];
+    queue = [(MOSignificantContactManager *)self queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __92__MOSignificantContactManager__fetchInteractionsBetweenStartDate_EndDate_CompletionHandler___block_invoke_2;
     v15[3] = &unk_1003376B8;
-    v16 = v9;
-    v17 = v10;
-    v18 = self;
+    v16 = dateCopy;
+    v17 = endDateCopy;
+    selfCopy = self;
     v20 = a2;
-    v19 = v11;
-    dispatch_async(v14, v15);
+    v19 = handlerCopy;
+    dispatch_async(queue, v15);
 
     v13 = v16;
   }
@@ -490,7 +490,7 @@ LABEL_44:
     v12 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v13 = [NSError errorWithDomain:@"MOErrorDomain" code:7 userInfo:v12];
 
-    (*(v11 + 2))(v11, &__NSArray0__struct, v13);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, v13);
   }
 }
 
@@ -730,15 +730,15 @@ void __92__MOSignificantContactManager__fetchInteractionsBetweenStartDate_EndDat
   }
 }
 
-- (id)_collectSignificantContactsFromInteractions:(id)a3
+- (id)_collectSignificantContactsFromInteractions:(id)interactions
 {
-  v4 = a3;
+  interactionsCopy = interactions;
   v5 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = interactionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
@@ -755,13 +755,13 @@ void __92__MOSignificantContactManager__fetchInteractionsBetweenStartDate_EndDat
 
         v11 = *(*(&v31 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 participants];
-        v14 = [v13 count];
+        participants = [v11 participants];
+        v14 = [participants count];
 
         if (v14)
         {
-          v15 = [v11 participants];
-          [v5 addObjectsFromArray:v15];
+          participants2 = [v11 participants];
+          [v5 addObjectsFromArray:participants2];
         }
 
         objc_autoreleasePoolPop(v12);
@@ -788,8 +788,8 @@ void __92__MOSignificantContactManager__fetchInteractionsBetweenStartDate_EndDat
   if ([v5 count])
   {
     v19 = objc_opt_new();
-    v20 = [v5 allObjects];
-    [v19 setMatchingIdentifiers:v20];
+    allObjects = [v5 allObjects];
+    [v19 setMatchingIdentifiers:allObjects];
 
     ppContactStore = self->_ppContactStore;
     v29 = a2;
@@ -872,9 +872,9 @@ LABEL_14:
   }
 }
 
-- (id)_conversationsFromInteractions:(id)a3
+- (id)_conversationsFromInteractions:(id)interactions
 {
-  v4 = a3;
+  interactionsCopy = interactions;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -882,15 +882,15 @@ LABEL_14:
     *buf = 138412546;
     v111 = v6;
     v112 = 2048;
-    v113 = [v4 count];
+    v113 = [interactionsCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@, interaction count, %lu", buf, 0x16u);
   }
 
   v81 = objc_opt_new();
-  if (v4 && [v4 count])
+  if (interactionsCopy && [interactionsCopy count])
   {
-    v78 = v4;
-    v7 = [(MOSignificantContactManager *)self _collectSignificantContactsFromInteractions:v4];
+    v78 = interactionsCopy;
+    v7 = [(MOSignificantContactManager *)self _collectSignificantContactsFromInteractions:interactionsCopy];
     v8 = v7;
     if (v7 && [v7 count])
     {
@@ -936,8 +936,8 @@ LABEL_14:
               v102 = 0u;
               v103 = 0u;
               v91 = v14;
-              v18 = [v14 participants];
-              v19 = [v18 countByEnumeratingWithState:&v102 objects:v123 count:16];
+              participants = [v14 participants];
+              v19 = [participants countByEnumeratingWithState:&v102 objects:v123 count:16];
               if (v19)
               {
                 v20 = v19;
@@ -950,7 +950,7 @@ LABEL_14:
                   {
                     if (*v103 != v22)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(participants);
                     }
 
                     v25 = [v8 objectForKeyedSubscript:*(*(&v102 + 1) + 8 * i)];
@@ -973,7 +973,7 @@ LABEL_14:
                     }
                   }
 
-                  v20 = [v18 countByEnumeratingWithState:&v102 objects:v123 count:16];
+                  v20 = [participants countByEnumeratingWithState:&v102 objects:v123 count:16];
                 }
 
                 while (v20);
@@ -1035,34 +1035,34 @@ LABEL_14:
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
             {
               v58 = NSStringFromSelector(a2);
-              v59 = [v38 interactionKey];
-              v80 = v59;
-              v86 = [v38 scoredContact];
-              v83 = [v86 contact];
-              v60 = [v83 identifier];
-              v61 = [v38 isScoredContactUsable];
+              interactionKey = [v38 interactionKey];
+              v80 = interactionKey;
+              scoredContact = [v38 scoredContact];
+              contact = [scoredContact contact];
+              identifier = [contact identifier];
+              isScoredContactUsable = [v38 isScoredContactUsable];
               v62 = @"NO";
-              if (v61)
+              if (isScoredContactUsable)
               {
                 v62 = @"YES";
               }
 
               v79 = v62;
-              v63 = [v38 interactionScore];
-              v64 = [v38 interactions];
-              v65 = [v64 count];
+              interactionScore = [v38 interactionScore];
+              interactions = [v38 interactions];
+              v65 = [interactions count];
               *buf = 138413570;
               v111 = v58;
               v112 = 2112;
-              v113 = v59;
+              v113 = interactionKey;
               v114 = 2112;
-              v115 = v60;
-              v66 = v60;
+              v115 = identifier;
+              v66 = identifier;
               v116 = 2112;
               v117 = v79;
               v34 = v94;
               v118 = 2112;
-              v119 = v63;
+              v119 = interactionScore;
               v120 = 2048;
               v121 = v65;
               _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "%@, grouped interactions for compound key: %@, main scored contact id: %@, usable %@, score %@, num interactions: %lu", buf, 0x3Eu);
@@ -1070,31 +1070,31 @@ LABEL_14:
               v36 = v92;
             }
 
-            v40 = [v38 interactions];
-            v41 = [v40 count];
+            interactions2 = [v38 interactions];
+            v41 = [interactions2 count];
 
             if ([v38 isScoredContactUsable] && (objc_msgSend(v38, "interactions"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "count"), v42, v43))
             {
               v44 = [MOConversation alloc];
-              v45 = [v38 interactionKey];
-              v46 = [v38 scoredContact];
-              v47 = [v38 interactions];
-              v48 = [(MOConversation *)v44 initWithContactIdentifier:v45 scoredContact:v46 interactions:v47];
+              interactionKey2 = [v38 interactionKey];
+              scoredContact2 = [v38 scoredContact];
+              interactions3 = [v38 interactions];
+              v48 = [(MOConversation *)v44 initWithContactIdentifier:interactionKey2 scoredContact:scoredContact2 interactions:interactions3];
 
               v49 = +[NSCalendar currentCalendar];
-              v50 = [v48 endDate];
-              v51 = [v49 startOfDayForDate:v50];
+              endDate = [v48 endDate];
+              v51 = [v49 startOfDayForDate:endDate];
 
               v52 = [NSDateFormatter localizedStringFromDate:v51 dateStyle:4 timeStyle:3];
               v53 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
               if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
               {
-                v87 = [v48 contactIdentifier];
-                v67 = [v87 mask];
-                v84 = [v48 interactions];
-                v68 = [v84 count];
+                contactIdentifier = [v48 contactIdentifier];
+                mask = [contactIdentifier mask];
+                interactions4 = [v48 interactions];
+                v68 = [interactions4 count];
                 *buf = 138412802;
-                v111 = v67;
+                v111 = mask;
                 v112 = 2112;
                 v113 = v52;
                 v114 = 2048;
@@ -1102,13 +1102,13 @@ LABEL_14:
                 _os_log_debug_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "new conversation created for compound key: %@, for date %@, interaction count, %lu", buf, 0x20u);
               }
 
-              v54 = [v48 interactions];
+              interactions5 = [v48 interactions];
               v97[0] = _NSConcreteStackBlock;
               v97[1] = 3221225472;
               v97[2] = __62__MOSignificantContactManager__conversationsFromInteractions___block_invoke;
               v97[3] = &__block_descriptor_40_e30_v32__0__MOInteraction_8Q16_B24l;
               v97[4] = a2;
-              [v54 enumerateObjectsUsingBlock:v97];
+              [interactions5 enumerateObjectsUsingBlock:v97];
 
               [v81 addObject:v48];
               v36 = v92;
@@ -1120,11 +1120,11 @@ LABEL_14:
               v48 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
               if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
               {
-                v55 = [v38 interactionKey];
-                v56 = [v38 interactions];
-                v57 = [v56 count];
+                interactionKey3 = [v38 interactionKey];
+                interactions6 = [v38 interactions];
+                v57 = [interactions6 count];
                 *buf = 138412546;
-                v111 = v55;
+                v111 = interactionKey3;
                 v112 = 2048;
                 v113 = v57;
                 _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "daily grouped interactions not used to make any conversation, compound key: %@, interaction count, %lu", buf, 0x16u);
@@ -1173,7 +1173,7 @@ LABEL_14:
       v73 = v81;
     }
 
-    v4 = v78;
+    interactionsCopy = v78;
   }
 
   else
@@ -1202,40 +1202,40 @@ void __62__MOSignificantContactManager__conversationsFromInteractions___block_in
   }
 }
 
-- (id)_createEventFromConversation:(id)a3
+- (id)_createEventFromConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
+  startDate = [conversationCopy startDate];
+  endDate = [conversationCopy endDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:3 category:10];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v9 provider:3 category:10];
 
-  v11 = [v4 endDate];
-  v12 = [(MOSignificantContactManager *)self configurationManager];
+  endDate2 = [conversationCopy endDate];
+  configurationManager = [(MOSignificantContactManager *)self configurationManager];
   LODWORD(v13) = 1242802176;
-  [v12 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
-  v15 = [v11 dateByAddingTimeInterval:v14];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
+  v15 = [endDate2 dateByAddingTimeInterval:v14];
   [(MOEvent *)v10 setExpirationDate:v15];
 
-  v16 = [v4 providerId];
+  providerId = [conversationCopy providerId];
 
-  [(MOEvent *)v10 setIdentifierFromProvider:v16];
+  [(MOEvent *)v10 setIdentifierFromProvider:providerId];
 
   return v10;
 }
 
-- (void)_saveConversations:(id)a3 handler:(id)a4
+- (void)_saveConversations:(id)conversations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  conversationsCopy = conversations;
+  handlerCopy = handler;
   v8 = +[NSDate distantFuture];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v6;
+  v9 = conversationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
@@ -1250,14 +1250,14 @@ void __62__MOSignificantContactManager__conversationsFromInteractions___block_in
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v13 startDate];
-        v15 = [v8 isAfterDate:v14];
+        startDate = [v13 startDate];
+        v15 = [v8 isAfterDate:startDate];
 
         if (v15)
         {
-          v16 = [v13 startDate];
+          startDate2 = [v13 startDate];
 
-          v8 = v16;
+          v8 = startDate2;
         }
       }
 
@@ -1279,14 +1279,14 @@ void __62__MOSignificantContactManager__conversationsFromInteractions___block_in
   v28[3] = __Block_byref_object_copy__8;
   v28[4] = __Block_byref_object_dispose__8;
   v29 = 0;
-  v17 = [(MOSignificantContactManager *)self momentStore];
+  momentStore = [(MOSignificantContactManager *)self momentStore];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __58__MOSignificantContactManager__saveConversations_handler___block_invoke;
   v27[3] = &unk_100337768;
   v27[4] = &v30;
   v27[5] = v28;
-  [v17 fetchEventsWithStartDateAfter:v8 Category:10 CompletionHandler:v27];
+  [momentStore fetchEventsWithStartDateAfter:v8 Category:10 CompletionHandler:v27];
 
   if (*(v31[0] + 40))
   {
@@ -1302,9 +1302,9 @@ void __62__MOSignificantContactManager__conversationsFromInteractions___block_in
       [MOSignificantContactManager _saveConversations:handler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, *(v31[0] + 40), &__NSDictionary0__struct);
+      handlerCopy[2](handlerCopy, *(v31[0] + 40), &__NSDictionary0__struct);
     }
   }
 
@@ -1317,15 +1317,15 @@ void __62__MOSignificantContactManager__conversationsFromInteractions___block_in
     v26[4] = self;
     v26[5] = v28;
     v20 = [v9 _pas_mappedArrayWithTransform:v26];
-    v21 = [(MOSignificantContactManager *)self momentStore];
+    momentStore2 = [(MOSignificantContactManager *)self momentStore];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = __58__MOSignificantContactManager__saveConversations_handler___block_invoke_2_339;
     v23[3] = &unk_1003377B8;
     v22 = v20;
     v24 = v22;
-    v25 = v7;
-    [v21 storeEvents:v22 CompletionHandler:v23];
+    v25 = handlerCopy;
+    [momentStore2 storeEvents:v22 CompletionHandler:v23];
   }
 
   _Block_object_dispose(v28, 8);
@@ -1396,11 +1396,11 @@ void __58__MOSignificantContactManager__saveConversations_handler___block_invoke
   }
 }
 
-- (id)_rehydrateStoredEvents:(id)a3 fromConversations:(id)a4
+- (id)_rehydrateStoredEvents:(id)events fromConversations:(id)conversations
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  eventsCopy = events;
+  conversationsCopy = conversations;
+  if (![eventsCopy count])
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1412,7 +1412,7 @@ void __58__MOSignificantContactManager__saveConversations_handler___block_invoke
     goto LABEL_33;
   }
 
-  if (![v6 count])
+  if (![conversationsCopy count])
   {
     v38 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -1422,10 +1422,10 @@ void __58__MOSignificantContactManager__saveConversations_handler___block_invoke
     }
 
     v39 = [MORehydrationMetrics alloc];
-    v40 = [v5 firstObject];
-    v41 = [v40 category];
-    v42 = [v5 firstObject];
-    v7 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v39, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v41, [v42 provider], 1, 0, objc_msgSend(v5, "count"), 3, objc_msgSend(v5, "count"), 0.0);
+    firstObject = [eventsCopy firstObject];
+    category = [firstObject category];
+    firstObject2 = [eventsCopy firstObject];
+    v7 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v39, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(eventsCopy, "count"), 3, objc_msgSend(eventsCopy, "count"), 0.0);
 
     v61 = 0;
     [v7 submitMetricsWithError:&v61];
@@ -1434,15 +1434,15 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v45 = v5;
+  v45 = eventsCopy;
   v7 = objc_opt_new();
   v46 = objc_opt_new();
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v44 = v6;
-  v8 = v6;
+  v44 = conversationsCopy;
+  v8 = conversationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v9)
   {
@@ -1459,21 +1459,21 @@ LABEL_33:
 
         v13 = *(*(&v57 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 providerId];
-        v16 = v15;
-        if (v15)
+        providerId = [v13 providerId];
+        v16 = providerId;
+        if (providerId)
         {
-          if ([v15 length])
+          if ([providerId length])
           {
             [v7 setObject:v13 forKeyedSubscript:v16];
-            v17 = [v13 interactions];
-            v18 = [v17 count];
+            interactions = [v13 interactions];
+            v18 = [interactions count];
 
             if (v18)
             {
-              v19 = [v13 interactions];
-              v20 = [v19 firstObject];
-              [v46 addObject:v20];
+              interactions2 = [v13 interactions];
+              firstObject3 = [interactions2 firstObject];
+              [v46 addObject:firstObject3];
             }
           }
         }
@@ -1509,8 +1509,8 @@ LABEL_33:
         }
 
         v25 = *(*(&v53 + 1) + 8 * j);
-        v26 = [v25 identifierFromProvider];
-        v27 = [v7 objectForKeyedSubscript:v26];
+        identifierFromProvider = [v25 identifierFromProvider];
+        v27 = [v7 objectForKeyedSubscript:identifierFromProvider];
 
         if (v27)
         {
@@ -1546,24 +1546,24 @@ LABEL_33:
   }
 
   v33 = [MORehydrationMetrics alloc];
-  v34 = [obj firstObject];
-  v35 = [v34 category];
-  v36 = [obj firstObject];
-  v37 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v33, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v35, [v36 provider], 1, 0, objc_msgSend(obj, "count"), 3, (objc_msgSend(obj, "count") - objc_msgSend(v50, "count")), objc_msgSend(v47, "count"));
+  firstObject4 = [obj firstObject];
+  category2 = [firstObject4 category];
+  firstObject5 = [obj firstObject];
+  v37 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v33, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category2, [firstObject5 provider], 1, 0, objc_msgSend(obj, "count"), 3, (objc_msgSend(obj, "count") - objc_msgSend(v50, "count")), objc_msgSend(v47, "count"));
 
   v51 = 0;
   [(MORehydrationMetrics *)v37 submitMetricsWithError:&v51];
 
-  v6 = v44;
-  v5 = v45;
+  conversationsCopy = v44;
+  eventsCopy = v45;
 LABEL_34:
 
   return v50;
 }
 
-- (id)_fetchClassificationForSignificantContacts:(id)a3
+- (id)_fetchClassificationForSignificantContacts:(id)contacts
 {
-  v70 = a3;
+  contactsCopy = contacts;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = v4;
   if (!self->_visualIdentifierView)
@@ -1598,7 +1598,7 @@ LABEL_55:
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = [v70 allKeys];
+  obj = [contactsCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v84 objects:v93 count:16];
   if (v6)
   {
@@ -1623,8 +1623,8 @@ LABEL_55:
         }
 
         v12 = [(GDVisualIdentifierView *)self->_visualIdentifierView personForIdentifier:v10];
-        v13 = [v12 entityIdentifier];
-        v14 = [v13 stringValue];
+        entityIdentifier = [v12 entityIdentifier];
+        stringValue = [entityIdentifier stringValue];
 
         v15 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1632,13 +1632,13 @@ LABEL_55:
           *buf = 138412546;
           *v92 = v10;
           *&v92[8] = 2112;
-          *&v92[10] = v14;
+          *&v92[10] = stringValue;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "#megadome,CNContactID,%@,contactIdentifierMD,%@", buf, 0x16u);
         }
 
-        if (v14)
+        if (stringValue)
         {
-          [v69 setObject:v10 forKey:v14];
+          [v69 setObject:v10 forKey:stringValue];
         }
 
         else
@@ -1651,7 +1651,7 @@ LABEL_55:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "#megadome,could not get MD identifier for contactIdentifier %@", buf, 0xCu);
           }
 
-          v17 = [v70 objectForKey:v10];
+          v17 = [contactsCopy objectForKey:v10];
           v18 = [NSNumber numberWithInt:0xFFFFFFFFLL];
           [v64 setObject:v18 forKey:v17];
         }
@@ -1664,16 +1664,16 @@ LABEL_55:
   }
 
   v19 = v69;
-  v20 = [v69 allKeys];
-  v21 = [v20 count];
+  allKeys = [v69 allKeys];
+  v21 = [allKeys count];
 
   if (v21)
   {
     v22 = [[GDPersonTaggingOptions alloc] initWithTagThresholds:&off_10036EA90];
     entityTaggingSerice = self->_entityTaggingSerice;
-    v24 = [v69 allKeys];
+    allKeys2 = [v69 allKeys];
     v83 = 0;
-    v25 = [(GDEntityTaggingService *)entityTaggingSerice entityTagsForIdentifiers:v24 options:v22 error:&v83];
+    v25 = [(GDEntityTaggingService *)entityTaggingSerice entityTagsForIdentifiers:allKeys2 options:v22 error:&v83];
     v26 = v83;
 
     v5 = v64;
@@ -1689,8 +1689,8 @@ LABEL_55:
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v63 = [v69 allKeys];
-      v49 = [v63 countByEnumeratingWithState:&v79 objects:v90 count:16];
+      allKeys3 = [v69 allKeys];
+      v49 = [allKeys3 countByEnumeratingWithState:&v79 objects:v90 count:16];
       if (v49)
       {
         v50 = v49;
@@ -1702,16 +1702,16 @@ LABEL_55:
           {
             if (*v80 != v51)
             {
-              objc_enumerationMutation(v63);
+              objc_enumerationMutation(allKeys3);
             }
 
             v53 = [v69 objectForKey:*(*(&v79 + 1) + 8 * j)];
-            v54 = [v70 objectForKey:v53];
+            v54 = [contactsCopy objectForKey:v53];
             v55 = [NSNumber numberWithInt:0xFFFFFFFFLL];
             [v64 setObject:v55 forKey:v54];
           }
 
-          v50 = [v63 countByEnumeratingWithState:&v79 objects:v90 count:16];
+          v50 = [allKeys3 countByEnumeratingWithState:&v79 objects:v90 count:16];
         }
 
         while (v50);
@@ -1725,8 +1725,8 @@ LABEL_55:
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v63 = [v69 allKeys];
-      v62 = [v63 countByEnumeratingWithState:&v75 objects:v89 count:16];
+      allKeys3 = [v69 allKeys];
+      v62 = [allKeys3 countByEnumeratingWithState:&v75 objects:v89 count:16];
       if (v62)
       {
         v58 = v22;
@@ -1739,22 +1739,22 @@ LABEL_55:
           {
             if (*v76 != v61)
             {
-              objc_enumerationMutation(v63);
+              objc_enumerationMutation(allKeys3);
             }
 
             obja = v27;
             v65 = *(*(&v75 + 1) + 8 * v27);
             v28 = [v25 objectForKey:v58];
-            v29 = [v28 scoredPersonEntityTags];
+            scoredPersonEntityTags = [v28 scoredPersonEntityTags];
 
-            v66 = v29;
-            if ([v29 count])
+            v66 = scoredPersonEntityTags;
+            if ([scoredPersonEntityTags count])
             {
               v73 = 0u;
               v74 = 0u;
               v71 = 0u;
               v72 = 0u;
-              v30 = v29;
+              v30 = scoredPersonEntityTags;
               v31 = [v30 countByEnumeratingWithState:&v71 objects:v88 count:16];
               if (v31)
               {
@@ -1831,7 +1831,7 @@ LABEL_55:
             }
 
             v41 = [v19 objectForKey:v65];
-            v42 = [v70 objectForKey:v41];
+            v42 = [contactsCopy objectForKey:v41];
             v43 = [NSNumber numberWithInt:v33];
             [v5 setObject:v43 forKey:v42];
 
@@ -1839,7 +1839,7 @@ LABEL_55:
           }
 
           while (obja + 1 != v62);
-          v62 = [v63 countByEnumeratingWithState:&v75 objects:v89 count:16];
+          v62 = [allKeys3 countByEnumeratingWithState:&v75 objects:v89 count:16];
         }
 
         while (v62);
@@ -1868,52 +1868,52 @@ LABEL_71:
   return v5;
 }
 
-- (void)_setDynamicPropertiesForEvent:(id)a3 fromCoversation:(id)a4
+- (void)_setDynamicPropertiesForEvent:(id)event fromCoversation:(id)coversation
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 scoredContact];
-  [v7 score];
+  eventCopy = event;
+  coversationCopy = coversation;
+  scoredContact = [coversationCopy scoredContact];
+  [scoredContact score];
   v8 = [NSNumber numberWithDouble:?];
-  [v5 setInteractionContactScore:v8];
+  [eventCopy setInteractionContactScore:v8];
 
-  v9 = [v6 scoredContact];
-  [v5 setInteractionScoredContact:v9];
+  scoredContact2 = [coversationCopy scoredContact];
+  [eventCopy setInteractionScoredContact:scoredContact2];
 
-  v10 = [v6 interactions];
-  v11 = [v10 count];
+  interactions = [coversationCopy interactions];
+  v11 = [interactions count];
 
   if (v11)
   {
-    v12 = [v6 interactions];
-    v13 = [v12 objectAtIndexedSubscript:0];
-    v14 = [v13 groupName];
-    [v5 setInteractionGroupName:v14];
+    interactions2 = [coversationCopy interactions];
+    v13 = [interactions2 objectAtIndexedSubscript:0];
+    groupName = [v13 groupName];
+    [eventCopy setInteractionGroupName:groupName];
   }
 
   v15 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [MOSignificantContactManager _setDynamicPropertiesForEvent:v5 fromCoversation:v15];
+    [MOSignificantContactManager _setDynamicPropertiesForEvent:eventCopy fromCoversation:v15];
   }
 
-  v16 = [v5 significantContactEvent];
-  [v16 setContainsOrganizationContact:0];
+  significantContactEvent = [eventCopy significantContactEvent];
+  [significantContactEvent setContainsOrganizationContact:0];
 
-  v17 = [v5 significantContactEvent];
-  v18 = [v17 interactionScoredContact];
-  v19 = [v18 contact];
-  v20 = [v19 organizationName];
-  if (![v20 length])
+  significantContactEvent2 = [eventCopy significantContactEvent];
+  interactionScoredContact = [significantContactEvent2 interactionScoredContact];
+  contact = [interactionScoredContact contact];
+  organizationName = [contact organizationName];
+  if (![organizationName length])
   {
     goto LABEL_8;
   }
 
-  v21 = [v5 significantContactEvent];
-  v22 = [v21 interactionScoredContact];
-  v23 = [v22 contact];
-  v24 = [v23 familyName];
-  if ([v24 length])
+  significantContactEvent3 = [eventCopy significantContactEvent];
+  interactionScoredContact2 = [significantContactEvent3 interactionScoredContact];
+  contact2 = [interactionScoredContact2 contact];
+  familyName = [contact2 familyName];
+  if ([familyName length])
   {
 
 LABEL_8:
@@ -1922,35 +1922,35 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v57 = [v5 significantContactEvent];
-  v55 = [v57 interactionScoredContact];
-  [v55 contact];
-  v62 = v17;
-  v43 = v42 = v6;
+  significantContactEvent4 = [eventCopy significantContactEvent];
+  interactionScoredContact3 = [significantContactEvent4 interactionScoredContact];
+  [interactionScoredContact3 contact];
+  v62 = significantContactEvent2;
+  v43 = v42 = coversationCopy;
   [v43 givenName];
-  v44 = v59 = v21;
+  v44 = v59 = significantContactEvent3;
   v61 = [v44 length];
 
-  v6 = v42;
+  coversationCopy = v42;
   if (!v61)
   {
-    v45 = [v5 significantContactEvent];
-    [v45 setContainsOrganizationContact:1];
+    significantContactEvent5 = [eventCopy significantContactEvent];
+    [significantContactEvent5 setContainsOrganizationContact:1];
 
-    v17 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    significantContactEvent2 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
+    if (os_log_type_enabled(significantContactEvent2, OS_LOG_TYPE_INFO))
     {
-      v46 = [v5 significantContactEvent];
-      v47 = [v46 interactionScoredContact];
-      v48 = [v47 contact];
-      v49 = [v48 localizedFullName];
-      v50 = [v49 mask];
-      v51 = [v5 significantContactEvent];
+      significantContactEvent6 = [eventCopy significantContactEvent];
+      interactionScoredContact4 = [significantContactEvent6 interactionScoredContact];
+      contact3 = [interactionScoredContact4 contact];
+      localizedFullName = [contact3 localizedFullName];
+      mask = [localizedFullName mask];
+      significantContactEvent7 = [eventCopy significantContactEvent];
       *buf = 138412546;
-      v74 = v50;
+      v74 = mask;
       v75 = 2112;
-      v76 = v51;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "contact with full name, %@,  is business contact based on names for event, %@", buf, 0x16u);
+      v76 = significantContactEvent7;
+      _os_log_impl(&_mh_execute_header, significantContactEvent2, OS_LOG_TYPE_INFO, "contact with full name, %@,  is business contact based on names for event, %@", buf, 0x16u);
     }
 
     goto LABEL_9;
@@ -1962,8 +1962,8 @@ LABEL_10:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v52 = v6;
-  obj = [v6 interactions];
+  v52 = coversationCopy;
+  obj = [coversationCopy interactions];
   v58 = [obj countByEnumeratingWithState:&v67 objects:v72 count:16];
   if (v58)
   {
@@ -1983,20 +1983,20 @@ LABEL_10:
         v27 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v26 mechanism]);
         [v56 addObject:v27];
 
-        v28 = [v26 sender];
-        v29 = [v28 isOrganization];
+        sender = [v26 sender];
+        isOrganization = [sender isOrganization];
 
-        if (v29)
+        if (isOrganization)
         {
-          v30 = [v5 significantContactEvent];
-          [v30 setContainsOrganizationContact:1];
+          significantContactEvent8 = [eventCopy significantContactEvent];
+          [significantContactEvent8 setContainsOrganizationContact:1];
 
           v31 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
           if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
           {
-            v32 = [v5 eventIdentifier];
+            eventIdentifier = [eventCopy eventIdentifier];
             *buf = 138412290;
-            v74 = v32;
+            v74 = eventIdentifier;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "sender is business contact based on contact id type for event, %@", buf, 0xCu);
           }
         }
@@ -2005,8 +2005,8 @@ LABEL_10:
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v33 = [v26 recipients];
-        v34 = [v33 countByEnumeratingWithState:&v63 objects:v71 count:16];
+        recipients = [v26 recipients];
+        v34 = [recipients countByEnumeratingWithState:&v63 objects:v71 count:16];
         if (v34)
         {
           v35 = v34;
@@ -2017,26 +2017,26 @@ LABEL_10:
             {
               if (*v64 != v36)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(recipients);
               }
 
               if ([*(*(&v63 + 1) + 8 * i) isOrganization])
               {
-                v38 = [v5 significantContactEvent];
-                [v38 setContainsOrganizationContact:1];
+                significantContactEvent9 = [eventCopy significantContactEvent];
+                [significantContactEvent9 setContainsOrganizationContact:1];
 
                 v39 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
                 {
-                  v40 = [v5 eventIdentifier];
+                  eventIdentifier2 = [eventCopy eventIdentifier];
                   *buf = 138412290;
-                  v74 = v40;
+                  v74 = eventIdentifier2;
                   _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "recipient is business contact based on contact id type for event, %@", buf, 0xCu);
                 }
               }
             }
 
-            v35 = [v33 countByEnumeratingWithState:&v63 objects:v71 count:16];
+            v35 = [recipients countByEnumeratingWithState:&v63 objects:v71 count:16];
           }
 
           while (v35);
@@ -2052,45 +2052,45 @@ LABEL_10:
     while (v58);
   }
 
-  [v5 setInteractionMechanisms:v56];
-  v41 = [v52 interactions];
-  [v5 setInteractions:v41];
+  [eventCopy setInteractionMechanisms:v56];
+  interactions3 = [v52 interactions];
+  [eventCopy setInteractions:interactions3];
 }
 
-- (void)rehydrateConversations:(id)a3 handler:(id)a4
+- (void)rehydrateConversations:(id)conversations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOSignificantContactManager *)self queue];
+  conversationsCopy = conversations;
+  handlerCopy = handler;
+  queue = [(MOSignificantContactManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __62__MOSignificantContactManager_rehydrateConversations_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = conversationsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateConversations:(id)a3 handler:(id)a4
+- (void)_rehydrateConversations:(id)conversations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getDurationOfMOEventArray];
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
+  conversationsCopy = conversations;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [conversationsCopy getDurationOfMOEventArray];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __63__MOSignificantContactManager__rehydrateConversations_handler___block_invoke;
   v13[3] = &unk_1003377E0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  [(MOSignificantContactManager *)self _fetchInteractionsBetweenStartDate:v9 EndDate:v10 CompletionHandler:v13];
+  v14 = conversationsCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = conversationsCopy;
+  [(MOSignificantContactManager *)self _fetchInteractionsBetweenStartDate:startDate EndDate:endDate CompletionHandler:v13];
 }
 
 void __63__MOSignificantContactManager__rehydrateConversations_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2103,35 +2103,35 @@ void __63__MOSignificantContactManager__rehydrateConversations_handler___block_i
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchConversationEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchConversationEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOSignificantContactManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOSignificantContactManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __104__MOSignificantContactManager_fetchConversationEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchConversationEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchConversationEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
   v14 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 10];
   v15 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 3];
   v30[0] = v14;
@@ -2139,21 +2139,21 @@ void __63__MOSignificantContactManager__rehydrateConversations_handler___block_i
   v16 = [NSArray arrayWithObjects:v30 count:2];
   v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
-  [v12 filteredArrayUsingPredicate:v17];
+  [eventsCopy filteredArrayUsingPredicate:v17];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __105__MOSignificantContactManager__fetchConversationEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v23[3] = &unk_100337828;
-  v24 = v12;
+  v24 = eventsCopy;
   v26 = v25 = self;
-  v27 = v10;
-  v28 = v11;
-  v29 = v13;
-  v18 = v11;
-  v19 = v10;
+  v27 = dateCopy;
+  v28 = endDateCopy;
+  v29 = handlerCopy;
+  v18 = endDateCopy;
+  v19 = dateCopy;
   v20 = v26;
-  v21 = v12;
-  v22 = v13;
+  v21 = eventsCopy;
+  v22 = handlerCopy;
   [(MOSignificantContactManager *)self _fetchInteractionsBetweenStartDate:v19 EndDate:v18 CompletionHandler:v23];
 }
 
@@ -2236,15 +2236,15 @@ void __105__MOSignificantContactManager__fetchConversationEventsBetweenStartDate
   }
 }
 
-- (void)_updateClassificationForEvents:(id)a3
+- (void)_updateClassificationForEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v7)
   {
@@ -2260,16 +2260,16 @@ void __105__MOSignificantContactManager__fetchConversationEventsBetweenStartDate
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v11 significantContactEvent];
-        v13 = [v12 interactions];
-        v14 = [v13 count];
+        significantContactEvent = [v11 significantContactEvent];
+        interactions = [significantContactEvent interactions];
+        v14 = [interactions count];
 
         if (v14)
         {
-          v15 = [v11 significantContactEvent];
-          v16 = [v15 interactions];
-          v17 = [v16 firstObject];
-          [v5 addObject:v17];
+          significantContactEvent2 = [v11 significantContactEvent];
+          interactions2 = [significantContactEvent2 interactions];
+          firstObject = [interactions2 firstObject];
+          [v5 addObject:firstObject];
         }
       }
 
@@ -2332,36 +2332,36 @@ void __105__MOSignificantContactManager__fetchConversationEventsBetweenStartDate
   }
 }
 
-- (void)_updateClassificationForEvent:(id)a3 withClassificationDict:(id)a4 contactDict:(id)a5
+- (void)_updateClassificationForEvent:(id)event withClassificationDict:(id)dict contactDict:(id)contactDict
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  dictCopy = dict;
+  contactDictCopy = contactDict;
   v73 = objc_opt_new();
   v10 = objc_alloc_init(NSMutableDictionary);
-  v11 = [v7 significantContactEvent];
-  v12 = [v11 interactions];
+  significantContactEvent = [eventCopy significantContactEvent];
+  interactions = [significantContactEvent interactions];
   v66 = v10;
-  if ([v12 count])
+  if ([interactions count])
   {
-    v13 = [v7 significantContactEvent];
-    v14 = [v13 interactions];
-    v15 = [v14 objectAtIndexedSubscript:0];
-    v16 = [v15 sender];
-    v17 = [v16 personId];
-    if (v17)
+    significantContactEvent2 = [eventCopy significantContactEvent];
+    interactions2 = [significantContactEvent2 interactions];
+    v15 = [interactions2 objectAtIndexedSubscript:0];
+    sender = [v15 sender];
+    personId = [sender personId];
+    if (personId)
     {
-      v18 = v17;
-      v63 = [v7 significantContactEvent];
-      [v63 interactions];
-      v60 = v71 = v11;
+      v18 = personId;
+      significantContactEvent3 = [eventCopy significantContactEvent];
+      [significantContactEvent3 interactions];
+      v60 = v71 = significantContactEvent;
       [v60 objectAtIndexedSubscript:0];
-      v19 = v69 = v14;
+      v19 = v69 = interactions2;
       [v19 sender];
-      v20 = v67 = v13;
+      v20 = v67 = significantContactEvent2;
       [v20 personId];
       v21 = v61 = v15;
-      v22 = [v9 objectForKey:v21];
+      v22 = [contactDictCopy objectForKey:v21];
 
       v10 = v66;
       if (!v22)
@@ -2369,14 +2369,14 @@ void __105__MOSignificantContactManager__fetchConversationEventsBetweenStartDate
         goto LABEL_7;
       }
 
-      v23 = [v7 significantContactEvent];
-      v24 = [v23 interactions];
-      v25 = [v24 objectAtIndexedSubscript:0];
-      v26 = [v25 sender];
-      v11 = [v26 personId];
+      significantContactEvent4 = [eventCopy significantContactEvent];
+      interactions3 = [significantContactEvent4 interactions];
+      v25 = [interactions3 objectAtIndexedSubscript:0];
+      sender2 = [v25 sender];
+      significantContactEvent = [sender2 personId];
 
-      v12 = [v9 objectForKey:v11];
-      [v73 addObject:v12];
+      interactions = [contactDictCopy objectForKey:significantContactEvent];
+      [v73 addObject:interactions];
     }
 
     else
@@ -2387,24 +2387,24 @@ void __105__MOSignificantContactManager__fetchConversationEventsBetweenStartDate
   }
 
 LABEL_7:
-  v27 = [v7 significantContactEvent];
-  v28 = [v27 interactions];
-  v29 = [v28 count];
+  significantContactEvent5 = [eventCopy significantContactEvent];
+  interactions4 = [significantContactEvent5 interactions];
+  v29 = [interactions4 count];
 
   if (v29)
   {
-    v64 = v8;
+    v64 = dictCopy;
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v30 = v7;
-    v31 = [v7 significantContactEvent];
-    v32 = [v31 interactions];
-    v33 = [v32 objectAtIndexedSubscript:0];
-    v34 = [v33 recipients];
+    v30 = eventCopy;
+    significantContactEvent6 = [eventCopy significantContactEvent];
+    interactions5 = [significantContactEvent6 interactions];
+    v33 = [interactions5 objectAtIndexedSubscript:0];
+    recipients = [v33 recipients];
 
-    v35 = [v34 countByEnumeratingWithState:&v78 objects:v89 count:16];
+    v35 = [recipients countByEnumeratingWithState:&v78 objects:v89 count:16];
     if (v35)
     {
       v36 = v35;
@@ -2415,38 +2415,38 @@ LABEL_7:
         {
           if (*v79 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(recipients);
           }
 
           v39 = *(*(&v78 + 1) + 8 * i);
-          v40 = [v39 personId];
-          if (v40)
+          personId2 = [v39 personId];
+          if (personId2)
           {
-            v41 = v40;
-            v42 = [v39 personId];
-            v43 = [v9 objectForKey:v42];
+            v41 = personId2;
+            personId3 = [v39 personId];
+            v43 = [contactDictCopy objectForKey:personId3];
 
             if (v43)
             {
-              v44 = [v39 personId];
-              v45 = [v9 objectForKey:v44];
+              personId4 = [v39 personId];
+              v45 = [contactDictCopy objectForKey:personId4];
               [v73 addObject:v45];
             }
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v78 objects:v89 count:16];
+        v36 = [recipients countByEnumeratingWithState:&v78 objects:v89 count:16];
       }
 
       while (v36);
     }
 
-    v7 = v30;
-    v8 = v64;
+    eventCopy = v30;
+    dictCopy = v64;
     v10 = v66;
   }
 
-  if ([v73 count] && (objc_msgSend(v8, "allKeys"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "count"), v46, v47))
+  if ([v73 count] && (objc_msgSend(dictCopy, "allKeys"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "count"), v46, v47))
   {
     v76 = 0u;
     v77 = 0u;
@@ -2457,9 +2457,9 @@ LABEL_7:
     if (v49)
     {
       v50 = v49;
-      v62 = v7;
+      v62 = eventCopy;
       v51 = *v75;
-      v65 = v8;
+      v65 = dictCopy;
       do
       {
         for (j = 0; j != v50; j = j + 1)
@@ -2470,28 +2470,28 @@ LABEL_7:
           }
 
           v53 = *(*(&v74 + 1) + 8 * j);
-          v54 = [v8 objectForKey:v53];
+          v54 = [dictCopy objectForKey:v53];
           if (v54)
           {
             [v10 setObject:v54 forKey:v53];
             v55 = _mo_log_facility_get_os_log(&MOLogFacilitySignificantContact);
             if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
             {
-              v72 = [v53 contact];
-              v68 = [v72 identifier];
-              v70 = [v53 contact];
-              v56 = [v70 givenName];
-              v57 = [v56 mask];
+              contact = [v53 contact];
+              identifier = [contact identifier];
+              contact2 = [v53 contact];
+              givenName = [contact2 givenName];
+              mask = [givenName mask];
               *buf = 138412802;
               v83 = v54;
               v84 = 2112;
-              v85 = v68;
+              v85 = identifier;
               v86 = 2112;
-              v87 = v57;
+              v87 = mask;
               _os_log_debug_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEBUG, "_updateClassificationForEvent, classification, %@, contactID, %@, name, %@", buf, 0x20u);
 
               v10 = v66;
-              v8 = v65;
+              dictCopy = v65;
             }
           }
         }
@@ -2500,7 +2500,7 @@ LABEL_7:
       }
 
       while (v50);
-      v7 = v62;
+      eventCopy = v62;
     }
   }
 
@@ -2514,24 +2514,24 @@ LABEL_7:
     }
   }
 
-  v58 = [v7 significantContactEvent];
-  [v58 setContactClassificationMap:v10];
+  significantContactEvent7 = [eventCopy significantContactEvent];
+  [significantContactEvent7 setContactClassificationMap:v10];
 
-  v59 = [v7 significantContactEvent];
-  [v59 setInteractionContacts:v73];
+  significantContactEvent8 = [eventCopy significantContactEvent];
+  [significantContactEvent8 setInteractionContacts:v73];
 }
 
-- (id)_createEventsFromConversations:(id)a3
+- (id)_createEventsFromConversations:(id)conversations
 {
-  v4 = a3;
-  if ([v4 count])
+  conversationsCopy = conversations;
+  if ([conversationsCopy count])
   {
     v5 = objc_opt_new();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = conversationsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -2574,22 +2574,22 @@ LABEL_7:
   return v5;
 }
 
-- (id)_createNewEventsFromConversations:(id)a3 storedEvents:(id)a4
+- (id)_createNewEventsFromConversations:(id)conversations storedEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  conversationsCopy = conversations;
+  eventsCopy = events;
+  if ([conversationsCopy count])
   {
-    if ([v7 count])
+    if ([eventsCopy count])
     {
-      v28 = self;
+      selfCopy = self;
       v8 = objc_opt_new();
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v29 = v7;
-      v9 = v7;
+      v29 = eventsCopy;
+      v9 = eventsCopy;
       v10 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
       if (v10)
       {
@@ -2604,8 +2604,8 @@ LABEL_7:
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v34 + 1) + 8 * i) identifierFromProvider];
-            [v8 addObject:v14];
+            identifierFromProvider = [*(*(&v34 + 1) + 8 * i) identifierFromProvider];
+            [v8 addObject:identifierFromProvider];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
@@ -2619,7 +2619,7 @@ LABEL_7:
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v16 = v6;
+      v16 = conversationsCopy;
       v17 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
       if (v17)
       {
@@ -2635,8 +2635,8 @@ LABEL_7:
             }
 
             v21 = *(*(&v30 + 1) + 8 * j);
-            v22 = [v21 providerId];
-            v23 = [v8 containsObject:v22];
+            providerId = [v21 providerId];
+            v23 = [v8 containsObject:providerId];
 
             if ((v23 & 1) == 0)
             {
@@ -2650,9 +2650,9 @@ LABEL_7:
         while (v18);
       }
 
-      v24 = [(MOSignificantContactManager *)v28 _createEventsFromConversations:v15];
+      v24 = [(MOSignificantContactManager *)selfCopy _createEventsFromConversations:v15];
 
-      v7 = v29;
+      eventsCopy = v29;
     }
 
     else
@@ -2664,7 +2664,7 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "no stored events to check for creating new contact events", buf, 2u);
       }
 
-      v24 = [(MOSignificantContactManager *)self _createEventsFromConversations:v6];
+      v24 = [(MOSignificantContactManager *)self _createEventsFromConversations:conversationsCopy];
     }
   }
 
@@ -2683,21 +2683,21 @@ LABEL_7:
   return v24;
 }
 
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 conversations:(id)a4
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events conversations:(id)conversations
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  eventsCopy = events;
+  conversationsCopy = conversations;
+  if ([eventsCopy count])
   {
-    if ([v6 count])
+    if ([conversationsCopy count])
     {
-      v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+      v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(conversationsCopy, "count")}];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v33 = v6;
-      v8 = v6;
+      v33 = conversationsCopy;
+      v8 = conversationsCopy;
       v9 = [v8 countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (v9)
       {
@@ -2713,8 +2713,8 @@ LABEL_7:
             }
 
             v13 = *(*(&v38 + 1) + 8 * i);
-            v14 = [v13 providerId];
-            [v7 setObject:v13 forKeyedSubscript:v14];
+            providerId = [v13 providerId];
+            [v7 setObject:v13 forKeyedSubscript:providerId];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v38 objects:v47 count:16];
@@ -2728,7 +2728,7 @@ LABEL_7:
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v16 = v5;
+      v16 = eventsCopy;
       v17 = [v16 countByEnumeratingWithState:&v34 objects:v46 count:16];
       if (v17)
       {
@@ -2744,8 +2744,8 @@ LABEL_7:
             }
 
             v21 = *(*(&v34 + 1) + 8 * j);
-            v22 = [v21 identifierFromProvider];
-            v23 = [v7 objectForKeyedSubscript:v22];
+            identifierFromProvider = [v21 identifierFromProvider];
+            v23 = [v7 objectForKeyedSubscript:identifierFromProvider];
 
             if (!v23)
             {
@@ -2760,7 +2760,7 @@ LABEL_7:
         while (v18);
       }
 
-      v6 = v33;
+      conversationsCopy = v33;
     }
 
     else
@@ -2769,7 +2769,7 @@ LABEL_7:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v25 = v5;
+      v25 = eventsCopy;
       v26 = [v25 countByEnumeratingWithState:&v42 objects:v50 count:16];
       if (v26)
       {
@@ -2830,7 +2830,7 @@ LABEL_7:
 
 - (void)intializeEntityTaggingService
 {
-  v3 = [*a1 localizedDescription];
+  localizedDescription = [*self localizedDescription];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "#megadome,GDEntityTaggingService init failed,error,%@", v4, 0xCu);
 }

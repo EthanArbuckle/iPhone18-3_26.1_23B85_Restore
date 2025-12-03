@@ -1,10 +1,10 @@
 @interface MRGroupSessionEligibilityMonitor
 - (MRGroupSessionEligibilityMonitor)init;
 - (MRGroupSessionEligibilityStatus)status;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)registerNotifications;
-- (void)removeObserver:(id)a3;
-- (void)updateStatus:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)updateStatus:(id)status;
 @end
 
 @implementation MRGroupSessionEligibilityMonitor
@@ -16,15 +16,15 @@
   v2 = [(MRGroupSessionEligibilityMonitor *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v5 = +[MRGroupSessionRequestManager sharedManager];
-    v6 = [v5 eligibilityStatus];
+    eligibilityStatus = [v5 eligibilityStatus];
     status = v2->_status;
-    v2->_status = v6;
+    v2->_status = eligibilityStatus;
 
     [(MRGroupSessionEligibilityMonitor *)v2 registerNotifications];
   }
@@ -34,26 +34,26 @@
 
 - (void)registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_updateStatus_ name:@"MRGroupSessionEligibilityDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_updateStatus_ name:@"MRGroupSessionEligibilityDidChangeNotification" object:0];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRGroupSessionEligibilityMonitor *)self observers];
-  [v5 addObject:v4];
+  observers = [(MRGroupSessionEligibilityMonitor *)self observers];
+  [observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRGroupSessionEligibilityMonitor *)self observers];
-  [v5 removeObject:v4];
+  observers = [(MRGroupSessionEligibilityMonitor *)self observers];
+  [observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -67,24 +67,24 @@
   return v3;
 }
 
-- (void)updateStatus:(id)a3
+- (void)updateStatus:(id)status
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"MRGroupSessionEligibilityStatusUserInfoKey"];
+  userInfo = [status userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"MRGroupSessionEligibilityStatusUserInfoKey"];
 
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_status;
   objc_storeStrong(&self->_status, v5);
-  v7 = [(MRGroupSessionEligibilityMonitor *)self observers];
-  v8 = [v7 allObjects];
+  observers = [(MRGroupSessionEligibilityMonitor *)self observers];
+  allObjects = [observers allObjects];
 
   os_unfair_lock_unlock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {

@@ -1,9 +1,9 @@
 @interface BLSHEnvironmentTransitionStateTarget
-- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)a3 backlightState:(int64_t)a4 triggerEvent:(id)a5 backlightRampBlock:(id)a6 forIdentifier:(id)a7 previousTarget:(id)a8;
-- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)a3 backlightState:(int64_t)a4 visualState:(id)a5 presentationDate:(id)a6 triggerEvent:(id)a7 pendingBacklightRamp:(id)a8;
-- (BLSHEnvironmentTransitionStateTarget)initWithTarget:(id)a3 visualState:(id)a4 presentationDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVisualState:(id)a3 presentationDate:(id)a4;
+- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)d backlightState:(int64_t)state triggerEvent:(id)event backlightRampBlock:(id)block forIdentifier:(id)identifier previousTarget:(id)target;
+- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)d backlightState:(int64_t)state visualState:(id)visualState presentationDate:(id)date triggerEvent:(id)event pendingBacklightRamp:(id)ramp;
+- (BLSHEnvironmentTransitionStateTarget)initWithTarget:(id)target visualState:(id)state presentationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVisualState:(id)state presentationDate:(id)date;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
@@ -11,122 +11,122 @@
 
 @implementation BLSHEnvironmentTransitionStateTarget
 
-- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)a3 backlightState:(int64_t)a4 triggerEvent:(id)a5 backlightRampBlock:(id)a6 forIdentifier:(id)a7 previousTarget:(id)a8
+- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)d backlightState:(int64_t)state triggerEvent:(id)event backlightRampBlock:(id)block forIdentifier:(id)identifier previousTarget:(id)target
 {
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (!v17)
+  eventCopy = event;
+  blockCopy = block;
+  identifierCopy = identifier;
+  targetCopy = target;
+  if (!targetCopy)
   {
     goto LABEL_15;
   }
 
   IsActive = BLSBacklightStateIsActive();
-  [v17 backlightState];
+  [targetCopy backlightState];
   if (IsActive != BLSBacklightStateIsActive())
   {
     goto LABEL_15;
   }
 
-  if (v15)
+  if (blockCopy)
   {
-    v19 = 0;
+    pendingBacklightRamp = 0;
   }
 
   else
   {
-    v19 = [v17 pendingBacklightRamp];
-    if ([(BLSHPendingBacklightRamp *)v19 hasPendingRamp])
+    pendingBacklightRamp = [targetCopy pendingBacklightRamp];
+    if ([(BLSHPendingBacklightRamp *)pendingBacklightRamp hasPendingRamp])
     {
       v20 = bls_scenes_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = NSStringFromBLSBacklightState();
         v27 = 134219010;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2114;
-        v30 = v16;
+        v30 = identifierCopy;
         v31 = 2114;
         v32 = v21;
         v33 = 2114;
-        v34 = v17;
+        v34 = targetCopy;
         v35 = 2114;
-        v36 = v14;
+        v36 = eventCopy;
         _os_log_impl(&dword_21FD11000, v20, OS_LOG_TYPE_INFO, "ETS:%p:%{public}@ update to state:%{public}@ – inheriting old backlight ramp existingInProgress:%{public}@ – event:%{public}@", &v27, 0x34u);
       }
     }
   }
 
-  if (!v14)
+  if (!eventCopy)
   {
-    v14 = [v17 triggerEvent];
-    if (v14)
+    eventCopy = [targetCopy triggerEvent];
+    if (eventCopy)
     {
       v22 = bls_scenes_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = NSStringFromBLSBacklightState();
         v27 = 134219010;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2114;
-        v30 = v16;
+        v30 = identifierCopy;
         v31 = 2114;
         v32 = v23;
         v33 = 2114;
-        v34 = v17;
+        v34 = targetCopy;
         v35 = 2114;
-        v36 = v14;
+        v36 = eventCopy;
         _os_log_impl(&dword_21FD11000, v22, OS_LOG_TYPE_INFO, "ETS:%p:%{public}@ update to state:%{public}@ – inheriting old triggerEvent existingInProgress:%{public}@ – event:%{public}@", &v27, 0x34u);
       }
     }
   }
 
-  if (!v19)
+  if (!pendingBacklightRamp)
   {
 LABEL_15:
-    v19 = [[BLSHPendingBacklightRamp alloc] initWithBacklightRampBlock:v15];
+    pendingBacklightRamp = [[BLSHPendingBacklightRamp alloc] initWithBacklightRampBlock:blockCopy];
   }
 
-  v24 = [(BLSHEnvironmentTransitionStateTarget *)self initWithSequenceID:a3 backlightState:a4 visualState:0 presentationDate:0 triggerEvent:v14 pendingBacklightRamp:v19];
+  v24 = [(BLSHEnvironmentTransitionStateTarget *)self initWithSequenceID:d backlightState:state visualState:0 presentationDate:0 triggerEvent:eventCopy pendingBacklightRamp:pendingBacklightRamp];
 
   v25 = *MEMORY[0x277D85DE8];
   return v24;
 }
 
-- (BLSHEnvironmentTransitionStateTarget)initWithTarget:(id)a3 visualState:(id)a4 presentationDate:(id)a5
+- (BLSHEnvironmentTransitionStateTarget)initWithTarget:(id)target visualState:(id)state presentationDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 sequenceID];
-  v12 = [v10 backlightState];
-  v13 = [v10 triggerEvent];
-  v14 = [v10 pendingBacklightRamp];
+  dateCopy = date;
+  stateCopy = state;
+  targetCopy = target;
+  sequenceID = [targetCopy sequenceID];
+  backlightState = [targetCopy backlightState];
+  triggerEvent = [targetCopy triggerEvent];
+  pendingBacklightRamp = [targetCopy pendingBacklightRamp];
 
-  v15 = [(BLSHEnvironmentTransitionStateTarget *)self initWithSequenceID:v11 backlightState:v12 visualState:v9 presentationDate:v8 triggerEvent:v13 pendingBacklightRamp:v14];
+  v15 = [(BLSHEnvironmentTransitionStateTarget *)self initWithSequenceID:sequenceID backlightState:backlightState visualState:stateCopy presentationDate:dateCopy triggerEvent:triggerEvent pendingBacklightRamp:pendingBacklightRamp];
   return v15;
 }
 
-- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)a3 backlightState:(int64_t)a4 visualState:(id)a5 presentationDate:(id)a6 triggerEvent:(id)a7 pendingBacklightRamp:(id)a8
+- (BLSHEnvironmentTransitionStateTarget)initWithSequenceID:(unint64_t)d backlightState:(int64_t)state visualState:(id)visualState presentationDate:(id)date triggerEvent:(id)event pendingBacklightRamp:(id)ramp
 {
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  visualStateCopy = visualState;
+  dateCopy = date;
+  eventCopy = event;
+  rampCopy = ramp;
   v22.receiver = self;
   v22.super_class = BLSHEnvironmentTransitionStateTarget;
   v18 = [(BLSHEnvironmentTransitionStateTarget *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    v18->_sequenceID = a3;
-    v18->_backlightState = a4;
-    objc_storeStrong(&v18->_visualState, a5);
-    objc_storeStrong(&v19->_presentationDate, a6);
-    objc_storeStrong(&v19->_triggerEvent, a7);
-    objc_storeStrong(&v19->_pendingBacklightRamp, a8);
+    v18->_sequenceID = d;
+    v18->_backlightState = state;
+    objc_storeStrong(&v18->_visualState, visualState);
+    objc_storeStrong(&v19->_presentationDate, date);
+    objc_storeStrong(&v19->_triggerEvent, event);
+    objc_storeStrong(&v19->_pendingBacklightRamp, ramp);
   }
 
   return v19;
@@ -140,7 +140,7 @@ LABEL_15:
   v9 = __51__BLSHEnvironmentTransitionStateTarget_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
   v5 = [v4 description];
@@ -198,37 +198,37 @@ id __51__BLSHEnvironmentTransitionStateTarget_description__block_invoke(uint64_t
   [v3 appendString:v5 withName:@"backlightState"];
 
   v6 = [v3 appendObject:self->_visualState withName:@"visualState"];
-  v7 = [(NSDate *)self->_presentationDate bls_shortLoggingString];
-  v8 = [v3 appendObject:v7 withName:@"presentationDate"];
+  bls_shortLoggingString = [(NSDate *)self->_presentationDate bls_shortLoggingString];
+  v8 = [v3 appendObject:bls_shortLoggingString withName:@"presentationDate"];
 
   v9 = [v3 appendBool:-[BLSHEnvironmentTransitionStateTarget didUpdateInitialState](self withName:"didUpdateInitialState") ifEqualTo:{@"updatedInitialState", 1}];
   v10 = [v3 appendBool:-[BLSHPendingBacklightRamp hasPendingRamp](self->_pendingBacklightRamp withName:"hasPendingRamp") ifEqualTo:{@"hasPendingBacklightRamp", 1}];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInt64:self->_sequenceID];
-  v5 = [v3 appendObject:self->_visualState];
-  v6 = [v3 appendObject:self->_presentationDate];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInt64:self->_sequenceID];
+  v5 = [builder appendObject:self->_visualState];
+  v6 = [builder appendObject:self->_presentationDate];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   sequenceID = self->_sequenceID;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __48__BLSHEnvironmentTransitionStateTarget_isEqual___block_invoke;
   v20[3] = &unk_27841EB18;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendInt64:sequenceID counterpart:v20];
   visualState = self->_visualState;
@@ -252,9 +252,9 @@ id __51__BLSHEnvironmentTransitionStateTarget_description__block_invoke(uint64_t
   return presentationDate;
 }
 
-- (BOOL)isEqualToVisualState:(id)a3 presentationDate:(id)a4
+- (BOOL)isEqualToVisualState:(id)state presentationDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   visualState = self->_visualState;
   if (BSEqualObjects())
   {

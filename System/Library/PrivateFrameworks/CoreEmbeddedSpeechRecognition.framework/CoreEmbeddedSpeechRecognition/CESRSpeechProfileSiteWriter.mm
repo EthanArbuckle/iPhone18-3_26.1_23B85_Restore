@@ -1,20 +1,20 @@
 @interface CESRSpeechProfileSiteWriter
-- (BOOL)_removeProfileInstance:(id)a3;
+- (BOOL)_removeProfileInstance:(id)instance;
 - (BOOL)_shouldDeferRadioStationUpdate;
-- (BOOL)_shouldDeferUpdateForProfileInstance:(id)a3 categoryGroup:(id)a4 sets:(id)a5;
-- (BOOL)_updateProfileInstance:(id)a3 categoryGroup:(id)a4 shouldDefer:(id)a5;
-- (BOOL)_updateRequiredProfileInstancesWithSets:(id)a3 shouldDefer:(id)a4;
-- (BOOL)_verifyAllProfileInstances:(BOOL)a3 shouldDefer:(id)a4;
-- (BOOL)_verifyProfileInstance:(id)a3 shouldDefer:(id)a4;
-- (CESRSpeechProfileSiteWriter)initWithSpeechProfileSite:(id)a3 settings:(id)a4 setEnumerator:(id)a5;
-- (id)_filterSetsForCategoryGroup:(id)a3 sets:(id)a4;
-- (id)_filterSetsForProfileInstance:(id)a3 sets:(id)a4;
-- (id)_filterSetsForSite:(id)a3;
-- (id)_requiredSetsForProfileInstance:(id)a3 categoryGroup:(id)a4;
+- (BOOL)_shouldDeferUpdateForProfileInstance:(id)instance categoryGroup:(id)group sets:(id)sets;
+- (BOOL)_updateProfileInstance:(id)instance categoryGroup:(id)group shouldDefer:(id)defer;
+- (BOOL)_updateRequiredProfileInstancesWithSets:(id)sets shouldDefer:(id)defer;
+- (BOOL)_verifyAllProfileInstances:(BOOL)instances shouldDefer:(id)defer;
+- (BOOL)_verifyProfileInstance:(id)instance shouldDefer:(id)defer;
+- (CESRSpeechProfileSiteWriter)initWithSpeechProfileSite:(id)site settings:(id)settings setEnumerator:(id)enumerator;
+- (id)_filterSetsForCategoryGroup:(id)group sets:(id)sets;
+- (id)_filterSetsForProfileInstance:(id)instance sets:(id)sets;
+- (id)_filterSetsForSite:(id)site;
+- (id)_requiredSetsForProfileInstance:(id)instance categoryGroup:(id)group;
 - (id)_siteApplicableSets;
-- (id)_sortInstancesByLocale:(id)a3;
+- (id)_sortInstancesByLocale:(id)locale;
 - (id)description;
-- (void)addBookmarksForLocale:(id)a3 toChangeRegistry:(id)a4;
+- (void)addBookmarksForLocale:(id)locale toChangeRegistry:(id)registry;
 - (void)logRequiredProfileInstances;
 @end
 
@@ -23,8 +23,8 @@
 - (BOOL)_shouldDeferRadioStationUpdate
 {
   v2 = BiomeLibrary();
-  v3 = [v2 CarPlay];
-  v4 = [v3 Connected];
+  carPlay = [v2 CarPlay];
+  connected = [carPlay Connected];
 
   v5 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:0 lastN:1 reversed:0];
   v15 = 0;
@@ -35,7 +35,7 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v6 = [v4 publisherWithUseCase:@"SpeechProfile" options:v5];
+  v6 = [connected publisherWithUseCase:@"SpeechProfile" options:v5];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__CESRSpeechProfileSiteWriter__shouldDeferRadioStationUpdate__block_invoke_2;
@@ -61,13 +61,13 @@ void __61__CESRSpeechProfileSiteWriter__shouldDeferRadioStationUpdate__block_inv
   *(*(*(a1 + 40) + 8) + 24) = [v5 starting];
 }
 
-- (BOOL)_shouldDeferUpdateForProfileInstance:(id)a3 categoryGroup:(id)a4 sets:(id)a5
+- (BOOL)_shouldDeferUpdateForProfileInstance:(id)instance categoryGroup:(id)group sets:(id)sets
 {
   v89 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [CESRSpeechProfileSettings updateCadenceForSets:v10];
+  instanceCopy = instance;
+  groupCopy = group;
+  setsCopy = sets;
+  v11 = [CESRSpeechProfileSettings updateCadenceForSets:setsCopy];
   if (v11 == 1)
   {
     v12 = *MEMORY[0x277CEF0E8];
@@ -80,7 +80,7 @@ void __61__CESRSpeechProfileSiteWriter__shouldDeferRadioStationUpdate__block_inv
     *buf = 136315394;
     v78 = "[CESRSpeechProfileSiteWriter _shouldDeferUpdateForProfileInstance:categoryGroup:sets:]";
     v79 = 2112;
-    v80 = v8;
+    v80 = instanceCopy;
     v14 = "%s (%@) Deferring update due to platform constraints.";
     goto LABEL_8;
   }
@@ -100,7 +100,7 @@ void __61__CESRSpeechProfileSiteWriter__shouldDeferRadioStationUpdate__block_inv
     *buf = 136315394;
     v78 = "[CESRSpeechProfileSiteWriter _shouldDeferUpdateForProfileInstance:categoryGroup:sets:]";
     v79 = 2112;
-    v80 = v8;
+    v80 = instanceCopy;
     v14 = "%s (%@) Deferring update due to power conditions.";
 LABEL_8:
     v18 = v12;
@@ -111,7 +111,7 @@ LABEL_9:
   }
 
   v76 = 0;
-  v20 = [CESRSpeechProfileUpdater updateModeForSets:v10 speechProfileInstance:v8 speechProfileSite:self->_speechProfileSite isAnySetNew:&v76];
+  v20 = [CESRSpeechProfileUpdater updateModeForSets:setsCopy speechProfileInstance:instanceCopy speechProfileSite:self->_speechProfileSite isAnySetNew:&v76];
   if (v76 == 1)
   {
     v21 = *MEMORY[0x277CEF0E8];
@@ -120,7 +120,7 @@ LABEL_9:
       *buf = 136315394;
       v78 = "[CESRSpeechProfileSiteWriter _shouldDeferUpdateForProfileInstance:categoryGroup:sets:]";
       v79 = 2112;
-      v80 = v8;
+      v80 = instanceCopy;
       _os_log_impl(&dword_225EEB000, v21, OS_LOG_TYPE_INFO, "%s (%@) No deferral. One or more sets are new.", buf, 0x16u);
     }
 
@@ -140,23 +140,23 @@ LABEL_9:
     *buf = 136315650;
     v78 = "[CESRSpeechProfileSiteWriter _shouldDeferUpdateForProfileInstance:categoryGroup:sets:]";
     v79 = 2112;
-    v80 = v8;
+    v80 = instanceCopy;
     v81 = 2112;
-    v82 = v10;
+    v82 = setsCopy;
     v14 = "%s (%@) Skipping empty update for sets: %@";
     v18 = v50;
     v19 = 32;
     goto LABEL_9;
   }
 
-  v61 = v9;
-  v66 = v8;
+  v61 = groupCopy;
+  v66 = instanceCopy;
   v67 = +[CESRSpeechProfileSettings itemTypesRequiringImmediateUpdate];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v10;
+  obj = setsCopy;
   v22 = [obj countByEnumeratingWithState:&v72 objects:v88 count:16];
   if (v22)
   {
@@ -208,8 +208,8 @@ LABEL_9:
 LABEL_59:
 
           v13 = 0;
-          v8 = v66;
-          v9 = v61;
+          instanceCopy = v66;
+          groupCopy = v61;
           goto LABEL_64;
         }
       }
@@ -241,14 +241,14 @@ LABEL_59:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v9 = v61;
+  groupCopy = v61;
   obja = [v61 speechCategories];
   v31 = [obja countByEnumeratingWithState:&v68 objects:v87 count:16];
   if (!v31)
   {
     v56 = 0;
     v49 = 1;
-    v8 = v66;
+    instanceCopy = v66;
     goto LABEL_61;
   }
 
@@ -257,7 +257,7 @@ LABEL_59:
   v34 = *v69;
   *&v32 = 136315650;
   v60 = v32;
-  v8 = v66;
+  instanceCopy = v66;
   while (2)
   {
     for (j = 0; j != v33; ++j)
@@ -268,8 +268,8 @@ LABEL_59:
       }
 
       v36 = *(*(&v68 + 1) + 8 * j);
-      v37 = [v8 lastCompletedVersionForSpeechCategory:{v36, v60}];
-      v38 = [v8 lastRegisteredVersionForSpeechCategory:v36];
+      v37 = [instanceCopy lastCompletedVersionForSpeechCategory:{v36, v60}];
+      v38 = [instanceCopy lastRegisteredVersionForSpeechCategory:v36];
       v39 = v38;
       if (!v37)
       {
@@ -286,7 +286,7 @@ LABEL_59:
         }
 
         v49 = 0;
-        v8 = v66;
+        instanceCopy = v66;
         goto LABEL_56;
       }
 
@@ -309,10 +309,10 @@ LABEL_59:
         goto LABEL_41;
       }
 
-      v40 = [v37 longLongValue];
-      v41 = [v39 longLongValue];
-      v42 = v41 - v40;
-      if (v41 < v40)
+      longLongValue = [v37 longLongValue];
+      longLongValue2 = [v39 longLongValue];
+      v42 = longLongValue2 - longLongValue;
+      if (longLongValue2 < longLongValue)
       {
         v43 = *MEMORY[0x277CEF0E8];
         if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -357,7 +357,7 @@ LABEL_41:
 
 LABEL_46:
 
-      v8 = v66;
+      instanceCopy = v66;
     }
 
     v33 = [obja countByEnumeratingWithState:&v68 objects:v87 count:16];
@@ -371,7 +371,7 @@ LABEL_46:
 
   v49 = 1;
 LABEL_56:
-  v9 = v61;
+  groupCopy = v61;
   v56 = v62;
 LABEL_61:
 
@@ -392,23 +392,23 @@ LABEL_65:
   return v13;
 }
 
-- (BOOL)_updateProfileInstance:(id)a3 categoryGroup:(id)a4 shouldDefer:(id)a5
+- (BOOL)_updateProfileInstance:(id)instance categoryGroup:(id)group shouldDefer:(id)defer
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  instanceCopy = instance;
+  groupCopy = group;
+  deferCopy = defer;
   v11 = MEMORY[0x277CCABB0];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  [v12 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v14 = [v11 numberWithLongLong:(v13 * 1000000.0)];
 
-  v15 = [v9 speechCategories];
-  [v8 registerUpdateForSpeechCategories:v15 version:v14];
+  speechCategories = [groupCopy speechCategories];
+  [instanceCopy registerUpdateForSpeechCategories:speechCategories version:v14];
 
-  if (!v10 || !v10[2](v10))
+  if (!deferCopy || !deferCopy[2](deferCopy))
   {
-    v18 = [(CESRSpeechProfileSiteWriter *)self _requiredSetsForProfileInstance:v8 categoryGroup:v9];
+    v18 = [(CESRSpeechProfileSiteWriter *)self _requiredSetsForProfileInstance:instanceCopy categoryGroup:groupCopy];
     if (![v18 count])
     {
       v38 = *MEMORY[0x277CEF0E8];
@@ -417,9 +417,9 @@ LABEL_65:
         *buf = 136315650;
         v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
         v52 = 2112;
-        v53 = v8;
+        v53 = instanceCopy;
         v54 = 2112;
-        *v55 = v9;
+        *v55 = groupCopy;
         _os_log_impl(&dword_225EEB000, v38, OS_LOG_TYPE_INFO, "%s (%@) No required sets for category group: %@", buf, 0x20u);
       }
 
@@ -429,7 +429,7 @@ LABEL_65:
     }
 
     v19 = +[CESRSpeechProfileCategoryGroup all];
-    v20 = [v9 isEqual:v19];
+    v20 = [groupCopy isEqual:v19];
 
     v21 = MEMORY[0x277CEF0E8];
     v22 = *MEMORY[0x277CEF0E8];
@@ -446,15 +446,15 @@ LABEL_65:
       }
 
       v24 = v22;
-      v25 = [v9 speechCategories];
+      speechCategories2 = [groupCopy speechCategories];
       *buf = 136315906;
       v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
       v52 = 2112;
-      v53 = v8;
+      v53 = instanceCopy;
       v54 = 2112;
       *v55 = v23;
       *&v55[8] = 2112;
-      *&v55[10] = v25;
+      *&v55[10] = speechCategories2;
       _os_log_impl(&dword_225EEB000, v24, OS_LOG_TYPE_INFO, "%s (%@) Preparing to rebuild %@ categories: %@", buf, 0x2Au);
 
       v21 = MEMORY[0x277CEF0E8];
@@ -462,8 +462,8 @@ LABEL_65:
 
     if (v20)
     {
-      v26 = [v8 changeRegistry];
-      [v26 clearAllBookmarks];
+      changeRegistry = [instanceCopy changeRegistry];
+      [changeRegistry clearAllBookmarks];
     }
 
     v27 = *v21;
@@ -474,7 +474,7 @@ LABEL_65:
       *buf = 136315906;
       v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
       v52 = 2112;
-      v53 = v8;
+      v53 = instanceCopy;
       v54 = 1024;
       *v55 = v29;
       *&v55[4] = 2112;
@@ -482,14 +482,14 @@ LABEL_65:
       _os_log_impl(&dword_225EEB000, v28, OS_LOG_TYPE_INFO, "%s (%@) About to perform an update with %u required sets: %@", buf, 0x26u);
     }
 
-    v30 = [CESRSpeechProfileUpdater updaterForInstance:v8 atSpeechProfileSite:self->_speechProfileSite];
+    v30 = [CESRSpeechProfileUpdater updaterForInstance:instanceCopy atSpeechProfileSite:self->_speechProfileSite];
     v49 = 0;
-    v31 = [v30 rebuildCategoryGroup:v9 withSets:v18 version:v14 error:&v49];
+    v31 = [v30 rebuildCategoryGroup:groupCopy withSets:v18 version:v14 error:&v49];
     v32 = v49;
     if (v31)
     {
-      v33 = [v9 speechCategories];
-      [v8 recordUpdateCompletedForSpeechCategories:v33 version:v14];
+      speechCategories3 = [groupCopy speechCategories];
+      [instanceCopy recordUpdateCompletedForSpeechCategories:speechCategories3 version:v14];
 
       v34 = *v21;
       if (os_log_type_enabled(*v21, OS_LOG_TYPE_INFO))
@@ -497,17 +497,17 @@ LABEL_65:
         *buf = 136315906;
         v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
         v52 = 2112;
-        v53 = v8;
+        v53 = instanceCopy;
         v54 = 2112;
-        *v55 = v9;
+        *v55 = groupCopy;
         *&v55[8] = 2112;
         *&v55[10] = v18;
         _os_log_impl(&dword_225EEB000, v34, OS_LOG_TYPE_INFO, "%s (%@) Completed speech profile update for category group: %@ with sets: %@", buf, 0x2Au);
       }
 
-      v35 = [v8 changeRegistry];
+      changeRegistry2 = [instanceCopy changeRegistry];
       v48 = v32;
-      v36 = [v35 commitAllBookmarkUpdates:&v48];
+      v36 = [changeRegistry2 commitAllBookmarkUpdates:&v48];
       v37 = v48;
 
       if (v36)
@@ -526,15 +526,15 @@ LABEL_29:
         *buf = 136315650;
         v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
         v52 = 2112;
-        v53 = v8;
+        v53 = instanceCopy;
         v54 = 2112;
         *v55 = v37;
         _os_log_error_impl(&dword_225EEB000, v43, OS_LOG_TYPE_ERROR, "%s (%@) Failed to commit change registry transaction: %@", buf, 0x20u);
       }
 
-      v44 = [v8 changeRegistry];
+      changeRegistry3 = [instanceCopy changeRegistry];
       v47 = v37;
-      v45 = [v44 clearAllBookmarksAndCommit:&v47];
+      v45 = [changeRegistry3 clearAllBookmarksAndCommit:&v47];
       v32 = v47;
 
       if (v45)
@@ -549,7 +549,7 @@ LABEL_29:
         *buf = 136315650;
         v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
         v52 = 2112;
-        v53 = v8;
+        v53 = instanceCopy;
         v54 = 2112;
         *v55 = v32;
         _os_log_error_impl(&dword_225EEB000, v46, OS_LOG_TYPE_ERROR, "%s (%@) Failed to reset change registry: %@", buf, 0x20u);
@@ -564,9 +564,9 @@ LABEL_29:
         *buf = 136316162;
         v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
         v52 = 2112;
-        v53 = v8;
+        v53 = instanceCopy;
         v54 = 2112;
-        *v55 = v9;
+        *v55 = groupCopy;
         *&v55[8] = 2112;
         *&v55[10] = v18;
         v56 = 2112;
@@ -574,8 +574,8 @@ LABEL_29:
         _os_log_error_impl(&dword_225EEB000, v39, OS_LOG_TYPE_ERROR, "%s (%@) Failed to rebuild category group: %@ with sets: %@ error: %@", buf, 0x34u);
       }
 
-      v40 = [v8 changeRegistry];
-      [v40 rollbackAllBookmarkUpdates];
+      changeRegistry4 = [instanceCopy changeRegistry];
+      [changeRegistry4 rollbackAllBookmarkUpdates];
     }
 
     v17 = 0;
@@ -588,9 +588,9 @@ LABEL_29:
     *buf = 136315650;
     v51 = "[CESRSpeechProfileSiteWriter _updateProfileInstance:categoryGroup:shouldDefer:]";
     v52 = 2112;
-    v53 = v8;
+    v53 = instanceCopy;
     v54 = 2112;
-    *v55 = v9;
+    *v55 = groupCopy;
     _os_log_impl(&dword_225EEB000, v16, OS_LOG_TYPE_INFO, "%s (%@) Deferring update to category group: %@", buf, 0x20u);
   }
 
@@ -601,19 +601,19 @@ LABEL_30:
   return v17;
 }
 
-- (BOOL)_updateRequiredProfileInstancesWithSets:(id)a3 shouldDefer:(id)a4
+- (BOOL)_updateRequiredProfileInstancesWithSets:(id)sets shouldDefer:(id)defer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  setsCopy = sets;
+  deferCopy = defer;
+  if (!setsCopy)
   {
-    v8 = [(CESRSpeechProfileSiteWriter *)self _siteApplicableSets];
+    _siteApplicableSets = [(CESRSpeechProfileSiteWriter *)self _siteApplicableSets];
     goto LABEL_6;
   }
 
-  v8 = [(CESRSpeechProfileSiteWriter *)self _filterSetsForSite:v6];
-  if ([v8 count])
+  _siteApplicableSets = [(CESRSpeechProfileSiteWriter *)self _filterSetsForSite:setsCopy];
+  if ([_siteApplicableSets count])
   {
 LABEL_6:
     *buf = 0;
@@ -627,9 +627,9 @@ LABEL_6:
     v15[3] = &unk_27857F2C0;
     v15[4] = self;
     v17 = buf;
-    v8 = v8;
-    v16 = v8;
-    v18 = v6 == 0;
+    _siteApplicableSets = _siteApplicableSets;
+    v16 = _siteApplicableSets;
+    v18 = setsCopy == 0;
     [(CESRSpeechProfileSettings *)settings enumerateRequiredInstances:v15];
     v10 = *(*&buf[8] + 24);
 
@@ -733,11 +733,11 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   }
 }
 
-- (BOOL)_removeProfileInstance:(id)a3
+- (BOOL)_removeProfileInstance:(id)instance
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CESRSpeechProfileUpdater updaterForInstance:v4 atSpeechProfileSite:self->_speechProfileSite];
+  instanceCopy = instance;
+  v5 = [CESRSpeechProfileUpdater updaterForInstance:instanceCopy atSpeechProfileSite:self->_speechProfileSite];
   v19 = 0;
   v6 = [v5 removeProfile:&v19];
   v7 = v19;
@@ -745,7 +745,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   {
     speechProfileSite = self->_speechProfileSite;
     v18 = v7;
-    v9 = [(CESRSpeechProfileSite *)speechProfileSite removeInstance:v4 error:&v18];
+    v9 = [(CESRSpeechProfileSite *)speechProfileSite removeInstance:instanceCopy error:&v18];
     v10 = v18;
 
     if (v9)
@@ -764,7 +764,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
         v22 = 2112;
         v23 = v17;
         v24 = 2112;
-        v25 = v4;
+        v25 = instanceCopy;
         v26 = 2112;
         v27 = v10;
         _os_log_error_impl(&dword_225EEB000, v13, OS_LOG_TYPE_ERROR, "%s Site (%@) failed to remove profile instance info (%@) error: %@", buf, 0x2Au);
@@ -787,7 +787,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       v22 = 2112;
       v23 = v16;
       v24 = 2112;
-      v25 = v4;
+      v25 = instanceCopy;
       v26 = 2112;
       v27 = v7;
       _os_log_error_impl(&dword_225EEB000, v12, OS_LOG_TYPE_ERROR, "%s Site (%@) failed to remove profile (%@) error: %@", buf, 0x2Au);
@@ -800,12 +800,12 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   return v11;
 }
 
-- (BOOL)_verifyProfileInstance:(id)a3 shouldDefer:(id)a4
+- (BOOL)_verifyProfileInstance:(id)instance shouldDefer:(id)defer
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [CESRSpeechProfileUpdater updaterForInstance:v6 atSpeechProfileSite:self->_speechProfileSite];
+  instanceCopy = instance;
+  deferCopy = defer;
+  v8 = [CESRSpeechProfileUpdater updaterForInstance:instanceCopy atSpeechProfileSite:self->_speechProfileSite];
   v28 = 0;
   v29 = 0;
   v9 = [v8 detectCategoriesToRebuild:&v29 error:&v28];
@@ -821,13 +821,13 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       *buf = 136315650;
       v32 = "[CESRSpeechProfileSiteWriter _verifyProfileInstance:shouldDefer:]";
       v33 = 2112;
-      v34 = v6;
+      v34 = instanceCopy;
       v35 = 2112;
       v36 = v10;
       _os_log_impl(&dword_225EEB000, v13, OS_LOG_TYPE_INFO, "%s (%@) Categories with an invalid version: %@", buf, 0x20u);
     }
 
-    v15 = [(CESRSpeechProfileSiteWriter *)self _requiredSetsForProfileInstance:v6 categoryGroup:0];
+    v15 = [(CESRSpeechProfileSiteWriter *)self _requiredSetsForProfileInstance:instanceCopy categoryGroup:0];
     v16 = [v8 categoriesToRebuildForAllSets:v15];
     v17 = *v12;
     if (os_log_type_enabled(*v12, OS_LOG_TYPE_INFO))
@@ -835,7 +835,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       *buf = 136315650;
       v32 = "[CESRSpeechProfileSiteWriter _verifyProfileInstance:shouldDefer:]";
       v33 = 2112;
-      v34 = v6;
+      v34 = instanceCopy;
       v35 = 2112;
       v36 = v16;
       _os_log_impl(&dword_225EEB000, v17, OS_LOG_TYPE_INFO, "%s (%@) Categories with a set update: %@", buf, 0x20u);
@@ -848,12 +848,12 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
         v30[0] = v10;
         v30[1] = v16;
         [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
-        v18 = v7;
+        v18 = deferCopy;
         v20 = v19 = v11;
         v21 = [CESRSpeechProfileCategoryGroup mergeGroups:v20];
 
         v11 = v19;
-        v7 = v18;
+        deferCopy = v18;
         v12 = MEMORY[0x277CEF0E8];
         v10 = v21;
       }
@@ -876,7 +876,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       *buf = 136315650;
       v32 = "[CESRSpeechProfileSiteWriter _verifyProfileInstance:shouldDefer:]";
       v33 = 2112;
-      v34 = v6;
+      v34 = instanceCopy;
       v35 = 2112;
       v36 = v11;
       _os_log_error_impl(&dword_225EEB000, v13, OS_LOG_TYPE_ERROR, "%s (%@) Failed to detect categories for rebuild: %@", buf, 0x20u);
@@ -894,13 +894,13 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       *buf = 136315650;
       v32 = "[CESRSpeechProfileSiteWriter _verifyProfileInstance:shouldDefer:]";
       v33 = 2112;
-      v34 = v6;
+      v34 = instanceCopy;
       v35 = 2112;
       v36 = v22;
       _os_log_impl(&dword_225EEB000, v23, OS_LOG_TYPE_INFO, "%s (%@) Profile instance requires rebuild for category group: %@", buf, 0x20u);
     }
 
-    v24 = [(CESRSpeechProfileSiteWriter *)self _updateProfileInstance:v6 categoryGroup:v22 shouldDefer:v7];
+    v24 = [(CESRSpeechProfileSiteWriter *)self _updateProfileInstance:instanceCopy categoryGroup:v22 shouldDefer:deferCopy];
   }
 
   else
@@ -911,7 +911,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       *buf = 136315394;
       v32 = "[CESRSpeechProfileSiteWriter _verifyProfileInstance:shouldDefer:]";
       v33 = 2112;
-      v34 = v6;
+      v34 = instanceCopy;
       _os_log_impl(&dword_225EEB000, v25, OS_LOG_TYPE_INFO, "%s (%@) Verified profile instance. No rebuild required.", buf, 0x16u);
     }
 
@@ -922,16 +922,16 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   return v24;
 }
 
-- (id)_sortInstancesByLocale:(id)a3
+- (id)_sortInstancesByLocale:(id)locale
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  localeCopy = locale;
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(localeCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = localeCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -947,8 +947,8 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 locale];
-        [v4 setObject:v10 forKey:v11];
+        locale = [v10 locale];
+        [v4 setObject:v10 forKey:locale];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -962,12 +962,12 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   return v4;
 }
 
-- (BOOL)_verifyAllProfileInstances:(BOOL)a3 shouldDefer:(id)a4
+- (BOOL)_verifyAllProfileInstances:(BOOL)instances shouldDefer:(id)defer
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CESRSpeechProfileSite *)self->_speechProfileSite instances];
-  v8 = [(CESRSpeechProfileSiteWriter *)self _sortInstancesByLocale:v7];
+  deferCopy = defer;
+  instances = [(CESRSpeechProfileSite *)self->_speechProfileSite instances];
+  v8 = [(CESRSpeechProfileSiteWriter *)self _sortInstancesByLocale:instances];
 
   v34 = 0;
   v35 = &v34;
@@ -979,11 +979,11 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   v28[2] = __70__CESRSpeechProfileSiteWriter__verifyAllProfileInstances_shouldDefer___block_invoke;
   v28[3] = &unk_27857F270;
   v10 = v8;
-  v33 = a3;
+  instancesCopy = instances;
   v32 = &v34;
   v29 = v10;
-  v30 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = deferCopy;
   v31 = v11;
   [(CESRSpeechProfileSettings *)settings enumerateRequiredInstances:v28];
   v22 = v11;
@@ -992,8 +992,8 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [v10 allValues];
-  v13 = [v12 countByEnumeratingWithState:&v24 objects:v42 count:16];
+  allValues = [v10 allValues];
+  v13 = [allValues countByEnumeratingWithState:&v24 objects:v42 count:16];
   if (v13)
   {
     v14 = *v25;
@@ -1004,7 +1004,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
@@ -1021,7 +1021,7 @@ uint64_t __83__CESRSpeechProfileSiteWriter__updateRequiredProfileInstancesWithSe
         [(CESRSpeechProfileSiteWriter *)self _removeProfileInstance:v17];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v42 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v24 objects:v42 count:16];
     }
 
     while (v13);
@@ -1061,17 +1061,17 @@ LABEL_7:
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)_filterSetsForCategoryGroup:(id)a3 sets:(id)a4
+- (id)_filterSetsForCategoryGroup:(id)group sets:(id)sets
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  groupCopy = group;
+  setsCopy = sets;
   v19 = [MEMORY[0x277CBEB58] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = setsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -1087,9 +1087,9 @@ LABEL_7:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v5 itemTypes];
+        itemTypes = [groupCopy itemTypes];
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "itemType")}];
-        v15 = [v13 containsObject:v14];
+        v15 = [itemTypes containsObject:v14];
 
         if (v15)
         {
@@ -1103,24 +1103,24 @@ LABEL_7:
     while (v9);
   }
 
-  v16 = [v19 allObjects];
+  allObjects = [v19 allObjects];
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)_filterSetsForProfileInstance:(id)a3 sets:(id)a4
+- (id)_filterSetsForProfileInstance:(id)instance sets:(id)sets
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  instanceCopy = instance;
+  setsCopy = sets;
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(setsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = setsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -1136,7 +1136,7 @@ LABEL_7:
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if (-[CESRSpeechProfileSettings isSupportedSet:instanceOptions:](self->_settings, "isSupportedSet:instanceOptions:", v14, [v6 options]))
+        if (-[CESRSpeechProfileSettings isSupportedSet:instanceOptions:](self->_settings, "isSupportedSet:instanceOptions:", v14, [instanceCopy options]))
         {
           [v8 addObject:v14];
         }
@@ -1153,16 +1153,16 @@ LABEL_7:
   return v8;
 }
 
-- (id)_filterSetsForSite:(id)a3
+- (id)_filterSetsForSite:(id)site
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v37 = [MEMORY[0x277CBEB18] array];
+  siteCopy = site;
+  array = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = siteCopy;
   v40 = [obj countByEnumeratingWithState:&v41 objects:v53 count:16];
   if (v40)
   {
@@ -1180,13 +1180,13 @@ LABEL_7:
         }
 
         v10 = *(*(&v41 + 1) + 8 * i);
-        v11 = [(__CFString *)v10 personaIdentifier];
-        if (v11)
+        personaIdentifier = [(__CFString *)v10 personaIdentifier];
+        if (personaIdentifier)
         {
-          v12 = v11;
-          v13 = [MEMORY[0x277CDCEB0] sharedInstance];
-          v14 = [(__CFString *)v10 personaIdentifier];
-          v15 = [v13 personaMatchesEnrolledUser:v14];
+          v12 = personaIdentifier;
+          mEMORY[0x277CDCEB0] = [MEMORY[0x277CDCEB0] sharedInstance];
+          personaIdentifier2 = [(__CFString *)v10 personaIdentifier];
+          v15 = [mEMORY[0x277CDCEB0] personaMatchesEnrolledUser:personaIdentifier2];
 
           if ((v15 & 1) == 0)
           {
@@ -1209,12 +1209,12 @@ LABEL_7:
           }
         }
 
-        v16 = [(CESRSpeechProfileSite *)self->_speechProfileSite personaId];
-        if (v16)
+        personaId = [(CESRSpeechProfileSite *)self->_speechProfileSite personaId];
+        if (personaId)
         {
-          v3 = [(CESRSpeechProfileSite *)self->_speechProfileSite personaId];
-          v4 = [(__CFString *)v10 personaIdentifier];
-          if (([v3 isEqualToString:v4] & 1) == 0)
+          personaId2 = [(CESRSpeechProfileSite *)self->_speechProfileSite personaId];
+          personaIdentifier3 = [(__CFString *)v10 personaIdentifier];
+          if (([personaId2 isEqualToString:personaIdentifier3] & 1) == 0)
           {
 
 LABEL_18:
@@ -1239,15 +1239,15 @@ LABEL_20:
           }
         }
 
-        v17 = [(__CFString *)v10 personaIdentifier];
-        if (v17)
+        personaIdentifier4 = [(__CFString *)v10 personaIdentifier];
+        if (personaIdentifier4)
         {
-          v18 = v17;
-          v19 = [(__CFString *)v10 personaIdentifier];
-          v20 = [(CESRSpeechProfileSite *)self->_speechProfileSite personaId];
-          v21 = [v19 isEqualToString:v20];
+          v18 = personaIdentifier4;
+          personaIdentifier5 = [(__CFString *)v10 personaIdentifier];
+          personaId3 = [(CESRSpeechProfileSite *)self->_speechProfileSite personaId];
+          v21 = [personaIdentifier5 isEqualToString:personaId3];
 
-          if (v16)
+          if (personaId)
           {
           }
 
@@ -1258,14 +1258,14 @@ LABEL_20:
           }
         }
 
-        else if (v16)
+        else if (personaId)
         {
         }
 
-        v28 = [(CESRSpeechProfileSite *)self->_speechProfileSite isInUserVault];
-        if (v28 == [(__CFString *)v10 isInUserVault])
+        isInUserVault = [(CESRSpeechProfileSite *)self->_speechProfileSite isInUserVault];
+        if (isInUserVault == [(__CFString *)v10 isInUserVault])
         {
-          [v37 addObject:v10];
+          [array addObject:v10];
         }
 
         else
@@ -1275,10 +1275,10 @@ LABEL_20:
           {
             v30 = self->_speechProfileSite;
             v31 = v29;
-            v32 = [(__CFString *)v10 isInUserVault];
+            isInUserVault2 = [(__CFString *)v10 isInUserVault];
             *buf = v36;
             v33 = @"is NOT";
-            if (v32)
+            if (isInUserVault2)
             {
               v33 = @"is";
             }
@@ -1304,7 +1304,7 @@ LABEL_20:
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v37;
+  return array;
 }
 
 - (id)_siteApplicableSets
@@ -1363,34 +1363,34 @@ void __50__CESRSpeechProfileSiteWriter__siteApplicableSets__block_invoke(uint64_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_requiredSetsForProfileInstance:(id)a3 categoryGroup:(id)a4
+- (id)_requiredSetsForProfileInstance:(id)instance categoryGroup:(id)group
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CESRSpeechProfileSiteWriter *)self _siteApplicableSets];
-  v9 = v8;
-  if (v8)
+  instanceCopy = instance;
+  groupCopy = group;
+  _siteApplicableSets = [(CESRSpeechProfileSiteWriter *)self _siteApplicableSets];
+  v9 = _siteApplicableSets;
+  if (_siteApplicableSets)
   {
-    v10 = v8;
+    array = _siteApplicableSets;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v11 = v10;
+  v11 = array;
 
   if ([v11 count])
   {
-    v12 = [(CESRSpeechProfileSiteWriter *)self _filterSetsForProfileInstance:v6 sets:v11];
+    v12 = [(CESRSpeechProfileSiteWriter *)self _filterSetsForProfileInstance:instanceCopy sets:v11];
 
     if ([v12 count])
     {
-      if (v7)
+      if (groupCopy)
       {
-        v11 = [(CESRSpeechProfileSiteWriter *)self _filterSetsForCategoryGroup:v7 sets:v12];
+        v11 = [(CESRSpeechProfileSiteWriter *)self _filterSetsForCategoryGroup:groupCopy sets:v12];
 
         if (![v11 count])
         {
@@ -1400,9 +1400,9 @@ void __50__CESRSpeechProfileSiteWriter__siteApplicableSets__block_invoke(uint64_
             v22 = 136315650;
             v23 = "[CESRSpeechProfileSiteWriter _requiredSetsForProfileInstance:categoryGroup:]";
             v24 = 2112;
-            v25 = v6;
+            v25 = instanceCopy;
             v26 = 2112;
-            v27 = v7;
+            v27 = groupCopy;
             v14 = "%s (%@) No instance applicable sets belong to this category group: %@";
             v15 = v13;
 LABEL_12:
@@ -1423,7 +1423,7 @@ LABEL_12:
         v22 = 136315394;
         v23 = "[CESRSpeechProfileSiteWriter _requiredSetsForProfileInstance:categoryGroup:]";
         v24 = 2112;
-        v25 = v6;
+        v25 = instanceCopy;
         _os_log_impl(&dword_225EEB000, v18, OS_LOG_TYPE_INFO, "%s (%@) No site applicable sets are supported by this profile instance.", &v22, 0x16u);
       }
     }
@@ -1439,7 +1439,7 @@ LABEL_12:
     v22 = 136315650;
     v23 = "[CESRSpeechProfileSiteWriter _requiredSetsForProfileInstance:categoryGroup:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = instanceCopy;
     v26 = 2112;
     v27 = speechProfileSite;
     v14 = "%s (%@) No applicable sets for site: %@";
@@ -1454,20 +1454,20 @@ LABEL_16:
   return v11;
 }
 
-- (void)addBookmarksForLocale:(id)a3 toChangeRegistry:(id)a4
+- (void)addBookmarksForLocale:(id)locale toChangeRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  registryCopy = registry;
   settings = self->_settings;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__CESRSpeechProfileSiteWriter_addBookmarksForLocale_toChangeRegistry___block_invoke;
   v11[3] = &unk_27857F248;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = localeCopy;
+  selfCopy = self;
+  v14 = registryCopy;
+  v9 = registryCopy;
+  v10 = localeCopy;
   [(CESRSpeechProfileSettings *)settings enumerateRequiredInstances:v11];
 }
 
@@ -1627,9 +1627,9 @@ void __70__CESRSpeechProfileSiteWriter_addBookmarksForLocale_toChangeRegistry___
 
 - (void)logRequiredProfileInstances
 {
-  v3 = [(CESRSpeechProfileSiteWriter *)self _siteApplicableSets];
-  v4 = v3;
-  if (v3)
+  _siteApplicableSets = [(CESRSpeechProfileSiteWriter *)self _siteApplicableSets];
+  v4 = _siteApplicableSets;
+  if (_siteApplicableSets)
   {
     settings = self->_settings;
     v6[0] = MEMORY[0x277D85DD0];
@@ -1637,7 +1637,7 @@ void __70__CESRSpeechProfileSiteWriter_addBookmarksForLocale_toChangeRegistry___
     v6[2] = __58__CESRSpeechProfileSiteWriter_logRequiredProfileInstances__block_invoke;
     v6[3] = &unk_27857F1F8;
     v6[4] = self;
-    v7 = v3;
+    v7 = _siteApplicableSets;
     [(CESRSpeechProfileSettings *)settings enumerateRequiredInstances:v6];
   }
 }
@@ -1900,11 +1900,11 @@ void __58__CESRSpeechProfileSiteWriter_logRequiredProfileInstances__block_invoke
   return v5;
 }
 
-- (CESRSpeechProfileSiteWriter)initWithSpeechProfileSite:(id)a3 settings:(id)a4 setEnumerator:(id)a5
+- (CESRSpeechProfileSiteWriter)initWithSpeechProfileSite:(id)site settings:(id)settings setEnumerator:(id)enumerator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  siteCopy = site;
+  settingsCopy = settings;
+  enumeratorCopy = enumerator;
   v25.receiver = self;
   v25.super_class = CESRSpeechProfileSiteWriter;
   v12 = [(CESRSpeechProfileSiteWriter *)&v25 init];
@@ -1915,20 +1915,20 @@ void __58__CESRSpeechProfileSiteWriter_logRequiredProfileInstances__block_invoke
     v15 = [v14 cStringUsingEncoding:4];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     dispatch_queue_attr_make_with_qos_class(v16, QOS_CLASS_UTILITY, 0);
-    obj = a5;
-    v17 = v11;
-    v18 = v10;
-    v20 = v19 = v9;
+    obj = enumerator;
+    v17 = enumeratorCopy;
+    v18 = settingsCopy;
+    v20 = v19 = siteCopy;
     v21 = dispatch_queue_create(v15, v20);
     queue = v12->_queue;
     v12->_queue = v21;
 
-    v9 = v19;
-    v10 = v18;
-    v11 = v17;
+    siteCopy = v19;
+    settingsCopy = v18;
+    enumeratorCopy = v17;
 
-    objc_storeStrong(&v12->_speechProfileSite, a3);
-    objc_storeStrong(&v12->_settings, a4);
+    objc_storeStrong(&v12->_speechProfileSite, site);
+    objc_storeStrong(&v12->_settings, settings);
     objc_storeStrong(&v12->_setEnumerator, obj);
     v12->_didEnumerateSets = 0;
   }

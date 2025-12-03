@@ -1,19 +1,19 @@
 @interface HUUserNotificationTopicServiceListModuleController
-- (Class)cellClassForItem:(id)a3;
-- (id)showNotificationSettingsForServiceLikeItem:(id)a3 animated:(BOOL)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (Class)cellClassForItem:(id)item;
+- (id)showNotificationSettingsForServiceLikeItem:(id)item animated:(BOOL)animated;
+- (unint64_t)didSelectItem:(id)item;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUUserNotificationTopicServiceListModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -26,7 +26,7 @@
 
   v6 = v5;
 
-  v7 = [v6 sourceItem];
+  sourceItem = [v6 sourceItem];
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -35,45 +35,45 @@
   return v8;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v4 = a3;
-  [v4 setHideIcon:1];
-  [v4 setAccessoryView:0];
-  [v4 setAccessoryType:1];
+  cellCopy = cell;
+  [cellCopy setHideIcon:1];
+  [cellCopy setAccessoryView:0];
+  [cellCopy setAccessoryType:1];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = HUUserNotificationTopicServiceListModuleController;
-  [(HUItemModuleController *)&v15 updateCell:v8 forItem:v9 animated:v5];
-  v10 = [v9 latestResults];
-  v11 = [v10 objectForKeyedSubscript:@"HUUserNotificationTopicSubtitleResultKey"];
+  [(HUItemModuleController *)&v15 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  latestResults = [itemCopy latestResults];
+  v11 = [latestResults objectForKeyedSubscript:@"HUUserNotificationTopicSubtitleResultKey"];
 
   if (v11)
   {
-    v12 = v8;
+    v12 = cellCopy;
     [v12 setDescriptionText:v11];
-    v13 = [v9 latestResults];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    latestResults2 = [itemCopy latestResults];
+    v14 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     [v12 setValueText:v14];
   }
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = HUUserNotificationTopicServiceListModuleController;
-  v7 = a4;
-  [(HUItemModuleController *)&v15 configureCell:v6 forItem:v7];
+  itemCopy = item;
+  [(HUItemModuleController *)&v15 configureCell:cellCopy forItem:itemCopy];
   objc_opt_class();
-  v8 = v6;
+  v8 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -86,8 +86,8 @@
 
   v10 = v9;
 
-  v11 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v12 = [HUListContentConfigurationUtilities labelConfiguration:v11 forItem:v7];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  v12 = [HUListContentConfigurationUtilities labelConfiguration:valueCellConfiguration forItem:itemCopy];
 
   [v10 setContentConfiguration:v12];
   v13 = objc_alloc_init(MEMORY[0x277D75258]);
@@ -96,11 +96,11 @@
   [v10 setAccessories:v14];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 serviceLikeItemForItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module serviceLikeItemForItem:itemCopy];
 
   if (v6)
   {
@@ -109,26 +109,26 @@
 
   else
   {
-    NSLog(&cfstr_MissingService.isa, v4);
+    NSLog(&cfstr_MissingService.isa, itemCopy);
   }
 
   return 0;
 }
 
-- (id)showNotificationSettingsForServiceLikeItem:(id)a3 animated:(BOOL)a4
+- (id)showNotificationSettingsForServiceLikeItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v7 = [HUStatusAndNotificationsViewController alloc];
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 home];
-  v10 = [(HUStatusAndNotificationsViewController *)v7 initWithServiceItem:v6 inHome:v9 displayingDetails:0];
+  module = [(HUItemModuleController *)self module];
+  home = [module home];
+  v10 = [(HUStatusAndNotificationsViewController *)v7 initWithServiceItem:itemCopy inHome:home displayingDetails:0];
 
   v11 = [HUViewControllerPresentationRequest requestWithViewController:v10];
   [v11 setPreferredPresentationType:1];
-  [v11 setAnimated:v4];
-  v12 = [(HUItemModuleController *)self host];
-  v13 = [v12 moduleController:self presentViewControllerForRequest:v11];
+  [v11 setAnimated:animatedCopy];
+  host = [(HUItemModuleController *)self host];
+  v13 = [host moduleController:self presentViewControllerForRequest:v11];
 
   return v13;
 }

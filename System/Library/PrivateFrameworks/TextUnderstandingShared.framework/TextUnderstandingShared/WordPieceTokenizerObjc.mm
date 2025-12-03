@@ -1,12 +1,12 @@
 @interface WordPieceTokenizerObjc
-- (WordPieceTokenizerObjc)initWithVocab:(id)a3;
+- (WordPieceTokenizerObjc)initWithVocab:(id)vocab;
 - (float)endId;
 - (float)padId;
 - (float)startId;
 - (float)unkId;
-- (id)tokenize:(id)a3 withLength:(unint64_t)a4;
-- (int)toWordTokens:(_NSRange *)a3 wordTokensUTF8:(_NSRange *)a4 fromInput:(id)a5 withLength:(unint64_t)a6;
-- (int)tokenizeToIds:(float *)a3 ranges:(_NSRange *)a4 wordIndexes:(int64_t *)a5 fromString:(id)a6 wordTokens:(_NSRange *)a7 wordTokensUTF8:(_NSRange *)a8 wordCount:(int)a9 length:(unint64_t)a10;
+- (id)tokenize:(id)tokenize withLength:(unint64_t)length;
+- (int)toWordTokens:(_NSRange *)tokens wordTokensUTF8:(_NSRange *)f8 fromInput:(id)input withLength:(unint64_t)length;
+- (int)tokenizeToIds:(float *)ids ranges:(_NSRange *)ranges wordIndexes:(int64_t *)indexes fromString:(id)string wordTokens:(_NSRange *)tokens wordTokensUTF8:(_NSRange *)f8 wordCount:(int)count length:(unint64_t)self0;
 @end
 
 @implementation WordPieceTokenizerObjc
@@ -16,8 +16,8 @@
   v4 = [(BurstTrieDictionary *)self->_vocab payloadForString:@"[UNK]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"unkId != BurstTrieDictionaryNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"unkId != BurstTrieDictionaryNotFound"}];
   }
 
   return v4;
@@ -28,8 +28,8 @@
   v4 = [(BurstTrieDictionary *)self->_vocab payloadForString:@"[PAD]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:300 description:{@"Invalid parameter not satisfying: %@", @"padId != BurstTrieDictionaryNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:300 description:{@"Invalid parameter not satisfying: %@", @"padId != BurstTrieDictionaryNotFound"}];
   }
 
   return v4;
@@ -40,8 +40,8 @@
   v4 = [(BurstTrieDictionary *)self->_vocab payloadForString:@"[SEP]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"endId != BurstTrieDictionaryNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"endId != BurstTrieDictionaryNotFound"}];
   }
 
   return v4;
@@ -52,56 +52,56 @@
   v4 = [(BurstTrieDictionary *)self->_vocab payloadForString:@"[CLS]"];
   if (v4 == -1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"startId != BurstTrieDictionaryNotFound"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"startId != BurstTrieDictionaryNotFound"}];
   }
 
   return v4;
 }
 
-- (int)tokenizeToIds:(float *)a3 ranges:(_NSRange *)a4 wordIndexes:(int64_t *)a5 fromString:(id)a6 wordTokens:(_NSRange *)a7 wordTokensUTF8:(_NSRange *)a8 wordCount:(int)a9 length:(unint64_t)a10
+- (int)tokenizeToIds:(float *)ids ranges:(_NSRange *)ranges wordIndexes:(int64_t *)indexes fromString:(id)string wordTokens:(_NSRange *)tokens wordTokensUTF8:(_NSRange *)f8 wordCount:(int)count length:(unint64_t)self0
 {
-  v12 = a9;
-  v64 = a6;
+  countCopy3 = count;
+  stringCopy = string;
   v13 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:206];
   [@"##" getCharacters:objc_msgSend(v13 range:{"mutableBytes"), 0, 2}];
   v73 = objc_opt_new();
   v56 = v13;
-  v63 = [v13 mutableBytes];
+  mutableBytes = [v13 mutableBytes];
   LODWORD(location) = 1;
-  if (a9 >= 1)
+  if (count >= 1)
   {
-    v15 = a10;
-    if (a10 != 1)
+    lengthCopy4 = length;
+    if (length != 1)
     {
       v16 = 0;
-      v17 = (v63 + 4);
+      v17 = (mutableBytes + 4);
       v18 = *MEMORY[0x277CBED00];
       v19 = 1;
       v20 = 1;
-      v58 = a7;
-      v59 = a8;
+      tokensCopy = tokens;
+      f8Copy = f8;
       do
       {
-        v21 = &a7[v16];
+        v21 = &tokens[v16];
         length = v21->length;
         if (length < 0x65)
         {
-          v24 = v12;
-          v25 = a7;
-          v26 = a8;
-          v69 = a8[v16];
+          v24 = countCopy3;
+          tokensCopy2 = tokens;
+          f8Copy2 = f8;
+          v69 = f8[v16];
           v68 = v19;
           location = v21->location;
           v27 = length + v21->location;
-          [v64 getCharacters:v17 range:v21->location];
+          [stringCopy getCharacters:v17 range:v21->location];
           if (location >= v27)
           {
             location = v20;
-            a8 = v26;
-            a7 = v25;
-            v12 = v24;
-            v15 = a10;
+            f8 = f8Copy2;
+            tokens = tokensCopy2;
+            countCopy3 = v24;
+            lengthCopy4 = length;
           }
 
           else
@@ -127,7 +127,7 @@
                 break;
               }
 
-              v34 = (v63 + 4 * v32);
+              v34 = (mutableBytes + 4 * v32);
               v35 = v65 - v30;
               v36 = 2 * (v31 != v70);
               while (1)
@@ -204,19 +204,19 @@
                 }
               }
 
-              v15 = a10;
-              if (v66 >= a10)
+              lengthCopy4 = length;
+              if (v66 >= length)
               {
                 v53 = 0;
               }
 
               else
               {
-                v52 = &a4[v66];
+                v52 = &ranges[v66];
                 v52->location = v72;
                 v52->length = v35;
-                a5[v66] = v16;
-                a3[v66] = v39;
+                indexes[v66] = v16;
+                ids[v66] = v39;
                 v53 = 1;
               }
 
@@ -226,9 +226,9 @@
               v30 = v35 + v72;
               v31 = v33 + v71;
               v47 = v67 > v33 + v71;
-              a7 = v58;
-              a8 = v59;
-              v12 = a9;
+              tokens = tokensCopy;
+              f8 = f8Copy;
+              countCopy3 = count;
               v29 = v70;
               if (!v47)
               {
@@ -237,39 +237,39 @@
             }
 
 LABEL_41:
-            v15 = a10;
-            if (v68 >= a10)
+            lengthCopy4 = length;
+            if (v68 >= length)
             {
               v54 = 0;
             }
 
             else
             {
-              a4[v68] = v69;
-              a5[v68] = v16;
-              a3[v68] = self->_unkId;
+              ranges[v68] = v69;
+              indexes[v68] = v16;
+              ids[v68] = self->_unkId;
               v54 = 1;
             }
 
-            a7 = v58;
-            a8 = v59;
-            v12 = a9;
+            tokens = tokensCopy;
+            f8 = f8Copy;
+            countCopy3 = count;
             location = (v54 + v57);
           }
         }
 
         else
         {
-          if (v19 >= v15)
+          if (v19 >= lengthCopy4)
           {
             v23 = 0;
           }
 
           else
           {
-            a4[v19] = a8[v16];
-            a5[v19] = v16;
-            a3[v19] = self->_unkId;
+            ranges[v19] = f8[v16];
+            indexes[v19] = v16;
+            ids[v19] = self->_unkId;
             v23 = 1;
           }
 
@@ -277,7 +277,7 @@ LABEL_41:
         }
 
 LABEL_45:
-        if (++v16 >= v12)
+        if (++v16 >= countCopy3)
         {
           break;
         }
@@ -286,16 +286,16 @@ LABEL_45:
         v20 = location;
       }
 
-      while (location != v15);
+      while (location != lengthCopy4);
     }
   }
 
   return location;
 }
 
-- (int)toWordTokens:(_NSRange *)a3 wordTokensUTF8:(_NSRange *)a4 fromInput:(id)a5 withLength:(unint64_t)a6
+- (int)toWordTokens:(_NSRange *)tokens wordTokensUTF8:(_NSRange *)f8 fromInput:(id)input withLength:(unint64_t)length
 {
-  v9 = a5;
+  inputCopy = input;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -330,7 +330,7 @@ LABEL_45:
   v12 = *(v37 + 6);
   if (v29[3])
   {
-    if (v12 >= a6)
+    if (v12 >= length)
     {
       v17 = 0;
     }
@@ -338,11 +338,11 @@ LABEL_45:
     else
     {
       v13 = v21[3];
-      v14 = &a4[v12];
+      v14 = &f8[v12];
       v14->location = v25[3];
       v14->length = v13;
       v15 = v10[3];
-      v16 = &a3[v12];
+      v16 = &tokens[v12];
       v16->location = v33[3];
       v16->length = v15;
       v17 = 1;
@@ -362,30 +362,30 @@ LABEL_45:
   return v12;
 }
 
-- (id)tokenize:(id)a3 withLength:(unint64_t)a4
+- (id)tokenize:(id)tokenize withLength:(unint64_t)length
 {
-  v6 = a3;
+  tokenizeCopy = tokenize;
   v36 = 0;
   memptr = 0;
-  if (a4 >= 0x200)
+  if (length >= 0x200)
   {
-    v7 = 512;
+    lengthCopy = 512;
   }
 
   else
   {
-    v7 = a4;
+    lengthCopy = length;
   }
 
   v34 = 0;
   v35 = 0;
   v33 = 0;
-  malloc_type_posix_memalign(&memptr, 8uLL, 4 * v7, 0x6EC6001uLL);
-  malloc_type_posix_memalign(&v36, 8uLL, 16 * v7, 0x5C467CE2uLL);
-  malloc_type_posix_memalign(&v35, 8uLL, 16 * v7, 0xD565F747uLL);
-  malloc_type_posix_memalign(&v34, 8uLL, 16 * v7, 0x91983592uLL);
-  malloc_type_posix_memalign(&v33, 8uLL, 8 * v7, 0x345C9D88uLL);
-  if (a4)
+  malloc_type_posix_memalign(&memptr, 8uLL, 4 * lengthCopy, 0x6EC6001uLL);
+  malloc_type_posix_memalign(&v36, 8uLL, 16 * lengthCopy, 0x5C467CE2uLL);
+  malloc_type_posix_memalign(&v35, 8uLL, 16 * lengthCopy, 0xD565F747uLL);
+  malloc_type_posix_memalign(&v34, 8uLL, 16 * lengthCopy, 0x91983592uLL);
+  malloc_type_posix_memalign(&v33, 8uLL, 8 * lengthCopy, 0x345C9D88uLL);
+  if (length)
   {
     v8 = v34;
     *v34 = 0;
@@ -395,11 +395,11 @@ LABEL_45:
   }
 
   v9 = objc_autoreleasePoolPush();
-  LODWORD(v32) = [(WordPieceTokenizerObjc *)self toWordTokens:v36 wordTokensUTF8:v35 fromInput:v6 withLength:v7];
-  v10 = [(WordPieceTokenizerObjc *)self tokenizeToIds:memptr ranges:v34 wordIndexes:v33 fromString:v6 wordTokens:v36 wordTokensUTF8:v35 wordCount:v32 length:v7];
-  if (v7 <= v10)
+  LODWORD(v32) = [(WordPieceTokenizerObjc *)self toWordTokens:v36 wordTokensUTF8:v35 fromInput:tokenizeCopy withLength:lengthCopy];
+  v10 = [(WordPieceTokenizerObjc *)self tokenizeToIds:memptr ranges:v34 wordIndexes:v33 fromString:tokenizeCopy wordTokens:v36 wordTokensUTF8:v35 wordCount:v32 length:lengthCopy];
+  if (lengthCopy <= v10)
   {
-    v11 = v7 - 1;
+    v11 = lengthCopy - 1;
   }
 
   else
@@ -409,7 +409,7 @@ LABEL_45:
 
   v12 = v34;
   v13 = v11;
-  if (v7 <= v11)
+  if (lengthCopy <= v11)
   {
     v15 = memptr;
     v16 = v33;
@@ -427,11 +427,11 @@ LABEL_45:
   }
 
   v17 = v13 + 1;
-  if (v7 > v17)
+  if (lengthCopy > v17)
   {
     v18 = v17;
     padId = self->_padId;
-    v20 = v7 - v17;
+    v20 = lengthCopy - v17;
     v21 = &v16[8 * v18];
     v22 = &v15[4 * v18];
     v23 = &v12[16 * v18];
@@ -453,23 +453,23 @@ LABEL_45:
   free(v36);
   free(v35);
   v24 = objc_alloc(MEMORY[0x277CBEA90]);
-  v25 = [v24 initWithBytesNoCopy:memptr length:4 * v7 freeWhenDone:1];
+  v25 = [v24 initWithBytesNoCopy:memptr length:4 * lengthCopy freeWhenDone:1];
   v26 = objc_alloc(MEMORY[0x277CBEA90]);
-  v27 = [v26 initWithBytesNoCopy:v34 length:16 * v7 freeWhenDone:1];
+  v27 = [v26 initWithBytesNoCopy:v34 length:16 * lengthCopy freeWhenDone:1];
   v28 = objc_alloc(MEMORY[0x277CBEA90]);
-  v29 = [v28 initWithBytesNoCopy:v33 length:8 * v7 freeWhenDone:1];
+  v29 = [v28 initWithBytesNoCopy:v33 length:8 * lengthCopy freeWhenDone:1];
   v30 = [[TokenizerOutputObjc alloc] initWithTokenIds:v25 tokenRanges:v27 wordIndexes:v29];
 
   return v30;
 }
 
-- (WordPieceTokenizerObjc)initWithVocab:(id)a3
+- (WordPieceTokenizerObjc)initWithVocab:(id)vocab
 {
-  v6 = a3;
-  if (!v6)
+  vocabCopy = vocab;
+  if (!vocabCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"vocab"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WordPieceTokenizerObjc.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"vocab"}];
   }
 
   v15.receiver = self;
@@ -478,7 +478,7 @@ LABEL_45:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_vocab, a3);
+    objc_storeStrong(&v7->_vocab, vocab);
     [(WordPieceTokenizerObjc *)v8 startId];
     v8->_startId = v9;
     [(WordPieceTokenizerObjc *)v8 endId];

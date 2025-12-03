@@ -1,26 +1,26 @@
 @interface CAFValueMonitor
 - (BOOL)_locked_receivedAllValues;
 - (BOOL)receivedAllValues;
-- (BOOL)valueReceivedFor:(id)a3;
-- (CAFValueMonitor)initWithDelegate:(id)a3;
+- (BOOL)valueReceivedFor:(id)for;
+- (CAFValueMonitor)initWithDelegate:(id)delegate;
 - (CAFValueMonitorDelegate)delegate;
-- (void)monitorForValue:(id)a3;
-- (void)setSignaledReadyToMonitor:(BOOL)a3;
+- (void)monitorForValue:(id)value;
+- (void)setSignaledReadyToMonitor:(BOOL)monitor;
 - (void)signalReadyToMonitor;
 @end
 
 @implementation CAFValueMonitor
 
-- (CAFValueMonitor)initWithDelegate:(id)a3
+- (CAFValueMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = CAFValueMonitor;
   v5 = [(CAFValueMonitor *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_new();
     monitoringForValue = v6->_monitoringForValue;
     v6->_monitoringForValue = v7;
@@ -30,8 +30,8 @@
 
     v11 = MEMORY[0x277CCACA8];
     v12 = objc_opt_class();
-    v13 = [v4 uniqueIdentifier];
-    v14 = [v11 stringWithFormat:@"com.apple.CarAccessoryFramework.%@.%@.valueMonitor", v12, v13];
+    uniqueIdentifier = [delegateCopy uniqueIdentifier];
+    v14 = [v11 stringWithFormat:@"com.apple.CarAccessoryFramework.%@.%@.valueMonitor", v12, uniqueIdentifier];
     v15 = dispatch_queue_create([v14 UTF8String], v10);
     monitorQueue = v6->_monitorQueue;
     v6->_monitorQueue = v15;
@@ -42,23 +42,23 @@
 
 - (BOOL)receivedAllValues
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CAFValueMonitor *)self monitorQueue];
+  monitorQueue = [(CAFValueMonitor *)self monitorQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__CAFValueMonitor_receivedAllValues__block_invoke;
   v5[3] = &unk_27890D4F8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(monitorQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __36__CAFValueMonitor_receivedAllValues__block_invoke(uint64_t a1)
@@ -70,32 +70,32 @@ uint64_t __36__CAFValueMonitor_receivedAllValues__block_invoke(uint64_t a1)
 
 - (BOOL)_locked_receivedAllValues
 {
-  v3 = [(CAFValueMonitor *)self monitoringForValue];
-  if ([v3 count])
+  monitoringForValue = [(CAFValueMonitor *)self monitoringForValue];
+  if ([monitoringForValue count])
   {
-    v4 = 0;
+    signaledReadyToMonitor = 0;
   }
 
   else
   {
-    v4 = [(CAFValueMonitor *)self signaledReadyToMonitor];
+    signaledReadyToMonitor = [(CAFValueMonitor *)self signaledReadyToMonitor];
   }
 
-  return v4;
+  return signaledReadyToMonitor;
 }
 
-- (void)monitorForValue:(id)a3
+- (void)monitorForValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CAFValueMonitor *)self monitorQueue];
+  valueCopy = value;
+  monitorQueue = [(CAFValueMonitor *)self monitorQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__CAFValueMonitor_monitorForValue___block_invoke;
   v7[3] = &unk_27890D548;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = valueCopy;
+  v6 = valueCopy;
+  dispatch_sync(monitorQueue, v7);
 }
 
 void __35__CAFValueMonitor_monitorForValue___block_invoke(uint64_t a1)
@@ -118,13 +118,13 @@ void __35__CAFValueMonitor_monitorForValue___block_invoke(uint64_t a1)
 
 - (void)signalReadyToMonitor
 {
-  v3 = [(CAFValueMonitor *)self monitorQueue];
+  monitorQueue = [(CAFValueMonitor *)self monitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__CAFValueMonitor_signalReadyToMonitor__block_invoke;
   block[3] = &unk_27890D4D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(monitorQueue, block);
 }
 
 uint64_t __39__CAFValueMonitor_signalReadyToMonitor__block_invoke(uint64_t a1)
@@ -145,27 +145,27 @@ uint64_t __39__CAFValueMonitor_signalReadyToMonitor__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)valueReceivedFor:(id)a3
+- (BOOL)valueReceivedFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CAFValueMonitor *)self monitorQueue];
+  monitorQueue = [(CAFValueMonitor *)self monitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__CAFValueMonitor_valueReceivedFor___block_invoke;
   block[3] = &unk_27890D900;
   block[4] = self;
-  v9 = v4;
+  v9 = forCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = forCopy;
+  dispatch_sync(monitorQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(forCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return forCopy;
 }
 
 void __36__CAFValueMonitor_valueReceivedFor___block_invoke(uint64_t a1)
@@ -195,13 +195,13 @@ void __36__CAFValueMonitor_valueReceivedFor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSignaledReadyToMonitor:(BOOL)a3
+- (void)setSignaledReadyToMonitor:(BOOL)monitor
 {
-  if (self->_signaledReadyToMonitor != a3)
+  if (self->_signaledReadyToMonitor != monitor)
   {
-    if (a3)
+    if (monitor)
     {
-      self->_signaledReadyToMonitor = a3;
+      self->_signaledReadyToMonitor = monitor;
     }
 
     else

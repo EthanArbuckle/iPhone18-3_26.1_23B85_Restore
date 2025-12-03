@@ -1,54 +1,54 @@
 @interface SBSAContainerDynamicsPulseAnimationProvider
-- (BOOL)_isTimerExpiredWithIdentifier:(id)a3 context:(id)a4;
-- (SBSAContainerDynamicsPulseAnimationProvider)initWithElementIdentity:(id)a3 pulseStyle:(int64_t)a4;
+- (BOOL)_isTimerExpiredWithIdentifier:(id)identifier context:(id)context;
+- (SBSAContainerDynamicsPulseAnimationProvider)initWithElementIdentity:(id)identity pulseStyle:(int64_t)style;
 - (id)_pulseSettings;
-- (id)_startTimerForDuration:(double)a3 preferencesMutator:(id)a4;
-- (id)preferencesFromContext:(id)a3;
-- (void)_checkContextForCompletedContractionAnimationMilestone:(id)a3;
-- (void)_pulseContractWithPreferencesMutator:(id)a3 context:(id)a4;
-- (void)_pulseExpandWithPreferencesMutator:(id)a3 context:(id)a4;
-- (void)_pulseWaitingToExpandWithPreferencesMutator:(id)a3 context:(id)a4;
-- (void)_updatePreferencesContainerWithInterfaceElementIdentifier:(id)a3 toScale:(double)a4 settings:(id)a5 preferencesMutator:(id)a6 context:(id)a7;
-- (void)didRequestAdditionalPulse:(id)a3;
+- (id)_startTimerForDuration:(double)duration preferencesMutator:(id)mutator;
+- (id)preferencesFromContext:(id)context;
+- (void)_checkContextForCompletedContractionAnimationMilestone:(id)milestone;
+- (void)_pulseContractWithPreferencesMutator:(id)mutator context:(id)context;
+- (void)_pulseExpandWithPreferencesMutator:(id)mutator context:(id)context;
+- (void)_pulseWaitingToExpandWithPreferencesMutator:(id)mutator context:(id)context;
+- (void)_updatePreferencesContainerWithInterfaceElementIdentifier:(id)identifier toScale:(double)scale settings:(id)settings preferencesMutator:(id)mutator context:(id)context;
+- (void)didRequestAdditionalPulse:(id)pulse;
 @end
 
 @implementation SBSAContainerDynamicsPulseAnimationProvider
 
-- (SBSAContainerDynamicsPulseAnimationProvider)initWithElementIdentity:(id)a3 pulseStyle:(int64_t)a4
+- (SBSAContainerDynamicsPulseAnimationProvider)initWithElementIdentity:(id)identity pulseStyle:(int64_t)style
 {
-  v6 = a3;
+  identityCopy = identity;
   v17.receiver = self;
   v17.super_class = SBSAContainerDynamicsPulseAnimationProvider;
   v7 = [(SBSABasePreferencesProvider *)&v17 initWithParentProvider:0];
   if (v7)
   {
-    v8 = [v6 clientIdentifier];
-    if (v8)
+    clientIdentifier = [identityCopy clientIdentifier];
+    if (clientIdentifier)
     {
-      v9 = v8;
-      v10 = [v6 elementIdentifier];
+      v9 = clientIdentifier;
+      elementIdentifier = [identityCopy elementIdentifier];
 
-      if (v10)
+      if (elementIdentifier)
       {
         v11 = [SBSAElementIdentification alloc];
-        v12 = [v6 clientIdentifier];
-        v13 = [v6 elementIdentifier];
-        v14 = [(SBSAElementIdentification *)v11 initWithClientIdentifier:v12 elementIdentifier:v13];
+        clientIdentifier2 = [identityCopy clientIdentifier];
+        elementIdentifier2 = [identityCopy elementIdentifier];
+        v14 = [(SBSAElementIdentification *)v11 initWithClientIdentifier:clientIdentifier2 elementIdentifier:elementIdentifier2];
         elementIdentity = v7->_elementIdentity;
         v7->_elementIdentity = v14;
       }
     }
 
-    v7->_pulseStyle = a4;
+    v7->_pulseStyle = style;
   }
 
   return v7;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   phase = self->_phase;
   v35 = 0;
   v36 = &v35;
@@ -56,7 +56,7 @@
   v38 = __Block_byref_object_copy__36;
   v39 = __Block_byref_object_dispose__36;
   v40 = 0;
-  v7 = v5;
+  v7 = contextCopy;
   if (!v7)
   {
     goto LABEL_9;
@@ -94,9 +94,9 @@ LABEL_9:
   v12 = v36[5];
   v36[5] = v11;
 
-  v13 = [v36[5] preferences];
+  preferences = [v36[5] preferences];
   v14 = objc_opt_class();
-  v15 = v13;
+  v15 = preferences;
   if (v14)
   {
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@ LABEL_9:
     v25 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [v36[5] queryIteration];
+      queryIteration = [v36[5] queryIteration];
       if ((phase - 1) > 3)
       {
         v30 = @"Idle";
@@ -181,7 +181,7 @@ LABEL_9:
       }
 
       *buf = 134349570;
-      v42 = v29;
+      v42 = queryIteration;
       v43 = 2112;
       v44 = v30;
       v45 = 2112;
@@ -280,9 +280,9 @@ void __70__SBSAContainerDynamicsPulseAnimationProvider_preferencesFromContext___
 LABEL_20:
 }
 
-- (void)didRequestAdditionalPulse:(id)a3
+- (void)didRequestAdditionalPulse:(id)pulse
 {
-  v17 = a3;
+  pulseCopy = pulse;
   phase = self->_phase;
   if (phase == 1)
   {
@@ -300,31 +300,31 @@ LABEL_5:
   }
 
   self->_phase = 0;
-  v8 = [v17 participantIdentifier];
-  v9 = [v8 clientIdentifier];
-  if (v9 && (v10 = v9, [v8 elementIdentifier], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  participantIdentifier = [pulseCopy participantIdentifier];
+  clientIdentifier = [participantIdentifier clientIdentifier];
+  if (clientIdentifier && (v10 = clientIdentifier, [participantIdentifier elementIdentifier], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
     v12 = [SBSAElementIdentification alloc];
-    v13 = [v8 clientIdentifier];
-    v14 = [v8 elementIdentifier];
-    v15 = [(SBSAElementIdentification *)v12 initWithClientIdentifier:v13 elementIdentifier:v14];
+    clientIdentifier2 = [participantIdentifier clientIdentifier];
+    elementIdentifier = [participantIdentifier elementIdentifier];
+    v15 = [(SBSAElementIdentification *)v12 initWithClientIdentifier:clientIdentifier2 elementIdentifier:elementIdentifier];
     elementIdentity = self->_elementIdentity;
     self->_elementIdentity = v15;
   }
 
   else
   {
-    v13 = self->_elementIdentity;
+    clientIdentifier2 = self->_elementIdentity;
     self->_elementIdentity = 0;
   }
 
-  self->_pulseStyle = [v17 pulseStyle];
+  self->_pulseStyle = [pulseCopy pulseStyle];
 }
 
 - (id)_pulseSettings
 {
-  v3 = [objc_opt_class() settings];
-  v4 = v3;
+  settings = [objc_opt_class() settings];
+  v4 = settings;
   pulseStyle = self->_pulseStyle;
   if (pulseStyle)
   {
@@ -333,81 +333,81 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v6 = [v3 pulseIndicatorSettings];
+    pulseIndicatorSettings = [settings pulseIndicatorSettings];
   }
 
   else
   {
-    v6 = [v3 pulseNoActionSettings];
+    pulseIndicatorSettings = [settings pulseNoActionSettings];
   }
 
-  self = v6;
+  self = pulseIndicatorSettings;
 LABEL_6:
 
   return self;
 }
 
-- (void)_pulseWaitingToExpandWithPreferencesMutator:(id)a3 context:(id)a4
+- (void)_pulseWaitingToExpandWithPreferencesMutator:(id)mutator context:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  if ([(SBSAContainerDynamicsPulseAnimationProvider *)self _isTimerExpiredWithIdentifier:self->_expandingTimerIdentifier context:v6])
+  mutatorCopy = mutator;
+  contextCopy = context;
+  if ([(SBSAContainerDynamicsPulseAnimationProvider *)self _isTimerExpiredWithIdentifier:self->_expandingTimerIdentifier context:contextCopy])
   {
     self->_phase = 2;
-    [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseExpandWithPreferencesMutator:v10 context:v6];
+    [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseExpandWithPreferencesMutator:mutatorCopy context:contextCopy];
   }
 
   else if (!self->_expandingTimerIdentifier)
   {
-    v7 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
-    [v7 expandDelay];
-    v8 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _startTimerForDuration:v10 preferencesMutator:?];
+    _pulseSettings = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
+    [_pulseSettings expandDelay];
+    v8 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _startTimerForDuration:mutatorCopy preferencesMutator:?];
     expandingTimerIdentifier = self->_expandingTimerIdentifier;
     self->_expandingTimerIdentifier = v8;
   }
 }
 
-- (void)_pulseExpandWithPreferencesMutator:(id)a3 context:(id)a4
+- (void)_pulseExpandWithPreferencesMutator:(id)mutator context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(SBSAContainerDynamicsPulseAnimationProvider *)self _isTimerExpiredWithIdentifier:self->_expandingTimerIdentifier context:v7])
+  mutatorCopy = mutator;
+  contextCopy = context;
+  if ([(SBSAContainerDynamicsPulseAnimationProvider *)self _isTimerExpiredWithIdentifier:self->_expandingTimerIdentifier context:contextCopy])
   {
     self->_phase = 3;
-    [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseContractWithPreferencesMutator:v6 context:v7];
+    [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseContractWithPreferencesMutator:mutatorCopy context:contextCopy];
   }
 
   else
   {
     if (!self->_expandingTimerIdentifier)
     {
-      v8 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
-      [v8 expandDuration];
-      v9 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _startTimerForDuration:v6 preferencesMutator:?];
+      _pulseSettings = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
+      [_pulseSettings expandDuration];
+      v9 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _startTimerForDuration:mutatorCopy preferencesMutator:?];
       expandingTimerIdentifier = self->_expandingTimerIdentifier;
       self->_expandingTimerIdentifier = v9;
     }
 
-    v11 = [v6 containerViewDescriptions];
+    containerViewDescriptions = [mutatorCopy containerViewDescriptions];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __90__SBSAContainerDynamicsPulseAnimationProvider__pulseExpandWithPreferencesMutator_context___block_invoke;
     v22[3] = &unk_2783B0210;
     v22[4] = self;
-    v12 = [v11 bs_firstObjectPassingTest:v22];
+    v12 = [containerViewDescriptions bs_firstObjectPassingTest:v22];
 
-    v13 = [v12 interfaceElementIdentifier];
-    if (v13)
+    interfaceElementIdentifier = [v12 interfaceElementIdentifier];
+    if (interfaceElementIdentifier)
     {
-      v14 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
-      [v14 expandScale];
+      _pulseSettings2 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
+      [_pulseSettings2 expandScale];
       v16 = v15;
-      v17 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
-      v18 = [v17 expandBehaviorSettings];
-      [(SBSAContainerDynamicsPulseAnimationProvider *)self _updatePreferencesContainerWithInterfaceElementIdentifier:v13 toScale:v18 settings:v6 preferencesMutator:v7 context:v16];
+      _pulseSettings3 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
+      expandBehaviorSettings = [_pulseSettings3 expandBehaviorSettings];
+      [(SBSAContainerDynamicsPulseAnimationProvider *)self _updatePreferencesContainerWithInterfaceElementIdentifier:interfaceElementIdentifier toScale:expandBehaviorSettings settings:mutatorCopy preferencesMutator:contextCopy context:v16];
 
-      objc_storeWeak(&self->_expandedInterfaceElementIdentifier, v13);
+      objc_storeWeak(&self->_expandedInterfaceElementIdentifier, interfaceElementIdentifier);
     }
 
     else
@@ -416,10 +416,10 @@ LABEL_6:
       v19 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v7 queryIteration];
+        queryIteration = [contextCopy queryIteration];
         elementIdentity = self->_elementIdentity;
         *buf = 134349314;
-        v24 = v20;
+        v24 = queryIteration;
         v25 = 2112;
         v26 = elementIdentity;
         _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}lu] [Pulse] Element requested for pulse not found. Ignoring pulse request for: '%@'", buf, 0x16u);
@@ -436,10 +436,10 @@ uint64_t __90__SBSAContainerDynamicsPulseAnimationProvider__pulseExpandWithPrefe
   return v3;
 }
 
-- (void)_pulseContractWithPreferencesMutator:(id)a3 context:(id)a4
+- (void)_pulseContractWithPreferencesMutator:(id)mutator context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  mutatorCopy = mutator;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_expandedInterfaceElementIdentifier);
   if (!WeakRetained)
   {
@@ -450,15 +450,15 @@ uint64_t __90__SBSAContainerDynamicsPulseAnimationProvider__pulseExpandWithPrefe
     v13 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [SBSAContainerDynamicsPulseAnimationProvider _pulseContractWithPreferencesMutator:v7 context:?];
+      [SBSAContainerDynamicsPulseAnimationProvider _pulseContractWithPreferencesMutator:contextCopy context:?];
     }
 
     goto LABEL_6;
   }
 
-  v9 = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
-  v10 = [v9 contractBehaviorSettings];
-  [(SBSAContainerDynamicsPulseAnimationProvider *)self _updatePreferencesContainerWithInterfaceElementIdentifier:WeakRetained toScale:v10 settings:v6 preferencesMutator:v7 context:1.0];
+  _pulseSettings = [(SBSAContainerDynamicsPulseAnimationProvider *)self _pulseSettings];
+  contractBehaviorSettings = [_pulseSettings contractBehaviorSettings];
+  [(SBSAContainerDynamicsPulseAnimationProvider *)self _updatePreferencesContainerWithInterfaceElementIdentifier:WeakRetained toScale:contractBehaviorSettings settings:mutatorCopy preferencesMutator:contextCopy context:1.0];
 
   if (!self->_contractionCompletionMilestonePropertyIdentity)
   {
@@ -467,17 +467,17 @@ uint64_t __90__SBSAContainerDynamicsPulseAnimationProvider__pulseExpandWithPrefe
     self->_contractionCompletionMilestonePropertyIdentity = v11;
 
     v13 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{0x28336F620, 0}];
-    [v6 addMilestones:v13 forPropertyIdentity:self->_contractionCompletionMilestonePropertyIdentity];
+    [mutatorCopy addMilestones:v13 forPropertyIdentity:self->_contractionCompletionMilestonePropertyIdentity];
 LABEL_6:
   }
 
   objc_storeWeak(&self->_expandedInterfaceElementIdentifier, 0);
 }
 
-- (void)_checkContextForCompletedContractionAnimationMilestone:(id)a3
+- (void)_checkContextForCompletedContractionAnimationMilestone:(id)milestone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  milestoneCopy = milestone;
   if (self->_phase == 3)
   {
     if (!self->_contractionCompletionMilestonePropertyIdentity)
@@ -489,9 +489,9 @@ LABEL_6:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v15 = v5;
-    v6 = [v5 animatedTransitionResults];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v15 = milestoneCopy;
+    animatedTransitionResults = [milestoneCopy animatedTransitionResults];
+    v7 = [animatedTransitionResults countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -502,11 +502,11 @@ LABEL_6:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(animatedTransitionResults);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 associatedInterfaceElementPropertyIdentity];
+          associatedInterfaceElementPropertyIdentity = [v11 associatedInterfaceElementPropertyIdentity];
           v13 = BSEqualObjects();
 
           if (v13 && [v11 isTransitionEndTargeted])
@@ -517,28 +517,28 @@ LABEL_6:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [animatedTransitionResults countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
     }
 
-    v5 = v15;
+    milestoneCopy = v15;
   }
 }
 
-- (BOOL)_isTimerExpiredWithIdentifier:(id)a3 context:(id)a4
+- (BOOL)_isTimerExpiredWithIdentifier:(id)identifier context:(id)context
 {
-  v6 = a3;
-  v7 = [a4 elapsedTimerDescriptions];
-  if ([v7 count])
+  identifierCopy = identifier;
+  elapsedTimerDescriptions = [context elapsedTimerDescriptions];
+  if ([elapsedTimerDescriptions count])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __85__SBSAContainerDynamicsPulseAnimationProvider__isTimerExpiredWithIdentifier_context___block_invoke;
     v12[3] = &unk_2783B2950;
-    v13 = v6;
-    v8 = [v7 indexOfObjectPassingTest:v12];
+    v13 = identifierCopy;
+    v8 = [elapsedTimerDescriptions indexOfObjectPassingTest:v12];
     v9 = v8 != 0x7FFFFFFFFFFFFFFFLL;
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -563,16 +563,16 @@ uint64_t __85__SBSAContainerDynamicsPulseAnimationProvider__isTimerExpiredWithId
   return v3;
 }
 
-- (id)_startTimerForDuration:(double)a3 preferencesMutator:(id)a4
+- (id)_startTimerForDuration:(double)duration preferencesMutator:(id)mutator
 {
-  v5 = a4;
-  v6 = [[SBSATimerDescription alloc] initWithTimeInterval:a3];
-  v7 = [(SBSATimerDescription *)v6 timerDescriptionIdentifier];
-  v8 = [v5 timerDescriptions];
-  if (v8)
+  mutatorCopy = mutator;
+  v6 = [[SBSATimerDescription alloc] initWithTimeInterval:duration];
+  timerDescriptionIdentifier = [(SBSATimerDescription *)v6 timerDescriptionIdentifier];
+  timerDescriptions = [mutatorCopy timerDescriptions];
+  if (timerDescriptions)
   {
-    v9 = [v5 timerDescriptions];
-    v10 = [v9 mutableCopy];
+    timerDescriptions2 = [mutatorCopy timerDescriptions];
+    v10 = [timerDescriptions2 mutableCopy];
   }
 
   else
@@ -581,25 +581,25 @@ uint64_t __85__SBSAContainerDynamicsPulseAnimationProvider__isTimerExpiredWithId
   }
 
   [v10 addObject:v6];
-  [v5 setTimerDescriptions:v10];
+  [mutatorCopy setTimerDescriptions:v10];
 
-  return v7;
+  return timerDescriptionIdentifier;
 }
 
-- (void)_updatePreferencesContainerWithInterfaceElementIdentifier:(id)a3 toScale:(double)a4 settings:(id)a5 preferencesMutator:(id)a6 context:(id)a7
+- (void)_updatePreferencesContainerWithInterfaceElementIdentifier:(id)identifier toScale:(double)scale settings:(id)settings preferencesMutator:(id)mutator context:(id)context
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 containerViewDescriptions];
-  v18 = [v17 mutableCopy];
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  mutatorCopy = mutator;
+  contextCopy = context;
+  containerViewDescriptions = [mutatorCopy containerViewDescriptions];
+  v18 = [containerViewDescriptions mutableCopy];
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __149__SBSAContainerDynamicsPulseAnimationProvider__updatePreferencesContainerWithInterfaceElementIdentifier_toScale_settings_preferencesMutator_context___block_invoke;
   v45[3] = &unk_2783B0210;
-  v19 = v13;
+  v19 = identifierCopy;
   v46 = v19;
   v20 = [v18 bs_firstObjectPassingTest:v45];
   v21 = v20;
@@ -613,36 +613,36 @@ uint64_t __85__SBSAContainerDynamicsPulseAnimationProvider__isTimerExpiredWithId
     v40[4] = self;
     v22 = v20;
     v41 = v22;
-    v44 = a4;
-    v42 = v16;
+    scaleCopy = scale;
+    v42 = contextCopy;
     v38 = [v22 copyWithBlock:v40];
     [v18 replaceObjectAtIndex:0 withObject:v38];
-    [v15 setContainerViewDescriptions:v18];
-    v23 = [objc_opt_class() newAnimatedTransitionDescriptionWithBehaviorSettings:v14];
+    [mutatorCopy setContainerViewDescriptions:v18];
+    v23 = [objc_opt_class() newAnimatedTransitionDescriptionWithBehaviorSettings:settingsCopy];
     v24 = [SBSAInterfaceElementPropertyIdentity alloc];
     [v22 interfaceElementIdentifier];
-    v25 = v39 = v14;
+    v25 = v39 = settingsCopy;
     v26 = [(SBSAInterfaceElementPropertyIdentity *)v24 initWithAssociatedInterfaceElementIdentifier:v25 andProperty:@"bounds"];
 
-    [v15 setAnimatedTransitionDescription:v23 forProperty:v26 withMilestones:0];
+    [mutatorCopy setAnimatedTransitionDescription:v23 forProperty:v26 withMilestones:0];
     v27 = [SBSAInterfaceElementPropertyIdentity alloc];
     [v22 interfaceElementIdentifier];
-    v29 = v28 = v16;
+    v29 = v28 = contextCopy;
     v30 = [(SBSAInterfaceElementPropertyIdentity *)v27 initWithAssociatedInterfaceElementIdentifier:v29 andProperty:@"contentScale"];
-    [v15 associateAnimatedTransitionDescriptionOfProperty:v26 withProperty:v30 withMilestones:0];
+    [mutatorCopy associateAnimatedTransitionDescriptionOfProperty:v26 withProperty:v30 withMilestones:0];
 
     v31 = [SBSAInterfaceElementPropertyIdentity alloc];
-    v32 = [v22 interfaceElementIdentifier];
-    v33 = [(SBSAInterfaceElementPropertyIdentity *)v31 initWithAssociatedInterfaceElementIdentifier:v32 andProperty:@"contentBounds"];
-    [v15 associateAnimatedTransitionDescriptionOfProperty:v26 withProperty:v33 withMilestones:0];
+    interfaceElementIdentifier = [v22 interfaceElementIdentifier];
+    v33 = [(SBSAInterfaceElementPropertyIdentity *)v31 initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier andProperty:@"contentBounds"];
+    [mutatorCopy associateAnimatedTransitionDescriptionOfProperty:v26 withProperty:v33 withMilestones:0];
 
     v34 = [SBSAInterfaceElementPropertyIdentity alloc];
-    v35 = [v22 interfaceElementIdentifier];
-    v36 = [(SBSAInterfaceElementPropertyIdentity *)v34 initWithAssociatedInterfaceElementIdentifier:v35 andProperty:@"contentCenter"];
-    [v15 associateAnimatedTransitionDescriptionOfProperty:v26 withProperty:v36 withMilestones:0];
+    interfaceElementIdentifier2 = [v22 interfaceElementIdentifier];
+    v36 = [(SBSAInterfaceElementPropertyIdentity *)v34 initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier2 andProperty:@"contentCenter"];
+    [mutatorCopy associateAnimatedTransitionDescriptionOfProperty:v26 withProperty:v36 withMilestones:0];
 
-    v14 = v39;
-    v16 = v28;
+    settingsCopy = v39;
+    contextCopy = v28;
   }
 
   else
@@ -651,7 +651,7 @@ uint64_t __85__SBSAContainerDynamicsPulseAnimationProvider__isTimerExpiredWithId
     v37 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
-      [SBSAContainerDynamicsPulseAnimationProvider _updatePreferencesContainerWithInterfaceElementIdentifier:v16 toScale:? settings:? preferencesMutator:? context:?];
+      [SBSAContainerDynamicsPulseAnimationProvider _updatePreferencesContainerWithInterfaceElementIdentifier:contextCopy toScale:? settings:? preferencesMutator:? context:?];
     }
   }
 }

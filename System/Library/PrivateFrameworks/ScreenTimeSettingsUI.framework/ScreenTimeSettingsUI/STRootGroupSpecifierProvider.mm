@@ -1,15 +1,15 @@
 @interface STRootGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3;
++ (id)providerWithCoordinator:(id)coordinator;
 - (void)invalidate;
 @end
 
 @implementation STRootGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3
++ (id)providerWithCoordinator:(id)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   v4 = objc_opt_new();
-  [v4 setCoordinator:v3];
+  [v4 setCoordinator:coordinatorCopy];
 
   return v4;
 }

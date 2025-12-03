@@ -1,41 +1,41 @@
 @interface HMCameraClipEncryptionManager
 - (HMCameraClipEncryptionManager)init;
-- (HMCameraClipEncryptionManager)initWithKey:(id)a3;
-- (id)encryptedDataContextFromData:(id)a3;
+- (HMCameraClipEncryptionManager)initWithKey:(id)key;
+- (id)encryptedDataContextFromData:(id)data;
 @end
 
 @implementation HMCameraClipEncryptionManager
 
-- (id)encryptedDataContextFromData:(id)a3
+- (id)encryptedDataContextFromData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(v4, "length")}];
+  dataCopy = data;
+  v5 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(dataCopy, "length")}];
   v6 = [MEMORY[0x1E695DF88] dataWithLength:16];
   v7 = [HMCameraClipCryptoUtilities secureRandomZeroingDataWithLength:16];
   if (v7)
   {
     v8 = [(HMCameraClipEncryptionManager *)self key];
     [v8 bytes];
-    v29 = self;
+    selfCopy = self;
     v9 = [(HMCameraClipEncryptionManager *)self key];
     [v9 length];
     [v7 bytes];
     [v7 length];
-    [v4 bytes];
-    v10 = [v4 length];
-    v11 = [v5 mutableBytes];
-    v27 = [v6 mutableBytes];
+    [dataCopy bytes];
+    v10 = [dataCopy length];
+    mutableBytes = [v5 mutableBytes];
+    mutableBytes2 = [v6 mutableBytes];
     v28 = [v6 length];
     v25 = v10;
-    v26 = v11;
+    v26 = mutableBytes;
     v12 = CCCryptorGCMOneshotEncrypt();
 
     if (v12)
     {
       v13 = v6;
       v14 = objc_autoreleasePoolPush();
-      v15 = v29;
+      v15 = selfCopy;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -43,7 +43,7 @@
         *buf = 138543874;
         v31 = v17;
         v32 = 2048;
-        v33 = [v4 length];
+        v33 = [dataCopy length];
         v34 = 1024;
         v35 = v12;
         _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to encrypt %lu bytes: %d", buf, 0x1Cu);
@@ -56,14 +56,14 @@
 
     else
     {
-      v18 = [[HMCameraClipEncryptedDataContext alloc] initWithInitializationVector:v7 ciphertext:v5 tag:v6, v25, v11, v27, v28];
+      v18 = [[HMCameraClipEncryptedDataContext alloc] initWithInitializationVector:v7 ciphertext:v5 tag:v6, v25, mutableBytes, mutableBytes2, v28];
     }
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -82,17 +82,17 @@
   return v18;
 }
 
-- (HMCameraClipEncryptionManager)initWithKey:(id)a3
+- (HMCameraClipEncryptionManager)initWithKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v6 = v5;
-  if ([v5 length] != 32)
+  v6 = keyCopy;
+  if ([keyCopy length] != 32)
   {
 LABEL_7:
     v10 = _HMFPreconditionFailure();
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_key, a3);
+    objc_storeStrong(&v7->_key, key);
   }
 
   return v8;

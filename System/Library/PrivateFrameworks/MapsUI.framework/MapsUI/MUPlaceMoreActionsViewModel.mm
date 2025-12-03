@@ -1,8 +1,8 @@
 @interface MUPlaceMoreActionsViewModel
-- (MUPlaceMoreActionsViewModel)initWithGroupedExternalActions:(id)a3 promotedSystemActionTypes:(id)a4 excludedSystemActionTypes:(id)a5 menuActionProvider:(id)a6 amsResultProvider:(id)a7 iconCache:(id)a8 analyticsModuleType:(int64_t)a9 singleVendorAnalyticsTarget:(int)a10 multipleVendorAnalyticsTarget:(int)a11 appleMediaServicesSource:(int64_t)a12 externalActionHandler:(id)a13 analyticsHandler:(id)a14;
+- (MUPlaceMoreActionsViewModel)initWithGroupedExternalActions:(id)actions promotedSystemActionTypes:(id)types excludedSystemActionTypes:(id)actionTypes menuActionProvider:(id)provider amsResultProvider:(id)resultProvider iconCache:(id)cache analyticsModuleType:(int64_t)type singleVendorAnalyticsTarget:(int)self0 multipleVendorAnalyticsTarget:(int)self1 appleMediaServicesSource:(int64_t)self2 externalActionHandler:(id)self3 analyticsHandler:(id)self4;
 - (id)_allExternalActionMenuRevealButtons;
 - (id)analyticsButtonValues;
-- (id)buildMenuWithPresentationOptions:(id)a3;
+- (id)buildMenuWithPresentationOptions:(id)options;
 @end
 
 @implementation MUPlaceMoreActionsViewModel
@@ -30,9 +30,9 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v24 + 1) + 8 * i) actionController];
-        v10 = [v9 externalAction];
-        v11 = MUExternalActionRevealedAnalyticsModuleButtonsForAction(v10);
+        actionController = [*(*(&v24 + 1) + 8 * i) actionController];
+        externalAction = [actionController externalAction];
+        v11 = MUExternalActionRevealedAnalyticsModuleButtonsForAction(externalAction);
 
         if ([v11 count] >= 2)
         {
@@ -84,8 +84,8 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MUPlaceMoreActionsViewModel *)self _allExternalActionMenuRevealButtons];
-  [v3 _mapsui_addObjectsFromArrayIfNotNil:v4];
+  _allExternalActionMenuRevealButtons = [(MUPlaceMoreActionsViewModel *)self _allExternalActionMenuRevealButtons];
+  [v3 _mapsui_addObjectsFromArrayIfNotNil:_allExternalActionMenuRevealButtons];
   v5 = MUMap(self->_promotedSystemActionTypes, &__block_literal_global_10160);
   [v3 _mapsui_addObjectsFromArrayIfNotNil:v5];
   v16 = 0u;
@@ -130,16 +130,16 @@ uint64_t __52__MUPlaceMoreActionsViewModel_analyticsButtonValues__block_invoke(u
   return [v3 moduleButtonForType:v2];
 }
 
-- (id)buildMenuWithPresentationOptions:(id)a3
+- (id)buildMenuWithPresentationOptions:(id)options
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->_externalActionMenuHelpers;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v5)
@@ -156,31 +156,31 @@ uint64_t __52__MUPlaceMoreActionsViewModel_analyticsButtonValues__block_invoke(u
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
-        v10 = [v9 actionController];
-        v11 = [v10 externalAction];
-        v12 = [v11 actionProviders];
-        v13 = [v12 count];
+        actionController = [v9 actionController];
+        externalAction = [actionController externalAction];
+        actionProviders = [externalAction actionProviders];
+        v13 = [actionProviders count];
 
         if (v13 == 1)
         {
-          v14 = [v9 buildMenuElementsWithPresentationOptions:v4];
-          [v29 addObjectsFromArray:v14];
+          symbolName = [v9 buildMenuElementsWithPresentationOptions:optionsCopy];
+          [v29 addObjectsFromArray:symbolName];
         }
 
         else
         {
-          v14 = [v9 symbolName];
-          v15 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v14 shape:0 fill:0];
+          symbolName = [v9 symbolName];
+          v15 = [MEMORY[0x1E69DCAB8] _systemImageNamed:symbolName shape:0 fill:0];
           if (!v15)
           {
-            v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:v14];
+            v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:symbolName];
           }
 
           v16 = MEMORY[0x1E69DCC60];
-          v17 = [v9 actionName];
-          v18 = [v9 actionName];
-          v19 = [v9 buildMenuElementsWithPresentationOptions:v4];
-          v20 = [v16 menuWithTitle:v17 image:v15 identifier:v18 options:0 children:v19];
+          actionName = [v9 actionName];
+          actionName2 = [v9 actionName];
+          v19 = [v9 buildMenuElementsWithPresentationOptions:optionsCopy];
+          v20 = [v16 menuWithTitle:actionName image:v15 identifier:actionName2 options:0 children:v19];
 
           [v29 addObject:v20];
         }
@@ -192,11 +192,11 @@ uint64_t __52__MUPlaceMoreActionsViewModel_analyticsButtonValues__block_invoke(u
     while (v6);
   }
 
-  WeakRetained = objc_loadWeakRetained(&v27->_menuProvider);
-  v22 = [WeakRetained createHeaderButtonsMenuWithPromotedSystemActionTypes:v27->_promotedSystemActionTypes excludedSystemActionTypes:v27->_excludedSystemActionTypes presentationOptions:v4];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_menuProvider);
+  v22 = [WeakRetained createHeaderButtonsMenuWithPromotedSystemActionTypes:selfCopy->_promotedSystemActionTypes excludedSystemActionTypes:selfCopy->_excludedSystemActionTypes presentationOptions:optionsCopy];
 
-  v23 = [v22 children];
-  [v29 addObjectsFromArray:v23];
+  children = [v22 children];
+  [v29 addObjectsFromArray:children];
 
   v24 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F44CA030 image:0 identifier:@"Parent" options:1 children:v29];
 
@@ -205,40 +205,40 @@ uint64_t __52__MUPlaceMoreActionsViewModel_analyticsButtonValues__block_invoke(u
   return v24;
 }
 
-- (MUPlaceMoreActionsViewModel)initWithGroupedExternalActions:(id)a3 promotedSystemActionTypes:(id)a4 excludedSystemActionTypes:(id)a5 menuActionProvider:(id)a6 amsResultProvider:(id)a7 iconCache:(id)a8 analyticsModuleType:(int64_t)a9 singleVendorAnalyticsTarget:(int)a10 multipleVendorAnalyticsTarget:(int)a11 appleMediaServicesSource:(int64_t)a12 externalActionHandler:(id)a13 analyticsHandler:(id)a14
+- (MUPlaceMoreActionsViewModel)initWithGroupedExternalActions:(id)actions promotedSystemActionTypes:(id)types excludedSystemActionTypes:(id)actionTypes menuActionProvider:(id)provider amsResultProvider:(id)resultProvider iconCache:(id)cache analyticsModuleType:(int64_t)type singleVendorAnalyticsTarget:(int)self0 multipleVendorAnalyticsTarget:(int)self1 appleMediaServicesSource:(int64_t)self2 externalActionHandler:(id)self3 analyticsHandler:(id)self4
 {
   v55 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v48 = a7;
-  v47 = a8;
-  v46 = a13;
-  v45 = a14;
+  actionsCopy = actions;
+  typesCopy = types;
+  actionTypesCopy = actionTypes;
+  providerCopy = provider;
+  resultProviderCopy = resultProvider;
+  cacheCopy = cache;
+  handlerCopy = handler;
+  analyticsHandlerCopy = analyticsHandler;
   v53.receiver = self;
   v53.super_class = MUPlaceMoreActionsViewModel;
   v24 = [(MUActionRowItemViewModel *)&v53 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeWeak(&v24->_menuProvider, v23);
-    v26 = [v21 copy];
+    objc_storeWeak(&v24->_menuProvider, providerCopy);
+    v26 = [typesCopy copy];
     promotedSystemActionTypes = v25->_promotedSystemActionTypes;
     v25->_promotedSystemActionTypes = v26;
 
-    v28 = [v22 copy];
+    v28 = [actionTypesCopy copy];
     excludedSystemActionTypes = v25->_excludedSystemActionTypes;
     v42 = v25;
     v25->_excludedSystemActionTypes = v28;
 
-    v43 = v20;
+    v43 = actionsCopy;
     v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v30 = v20;
+    v30 = actionsCopy;
     v31 = [v30 countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v31)
     {
@@ -256,12 +256,12 @@ uint64_t __52__MUPlaceMoreActionsViewModel_analyticsButtonValues__block_invoke(u
           v35 = *(*(&v49 + 1) + 8 * i);
           if ([v35 possiblyHasSupportedIntegrations])
           {
-            v36 = [[MUGroupedExternalActionController alloc] initWithGroupedExternalAction:v35 amsResultProvider:v48 supportsMultipleVendorSelection:1 actionHandler:v46 analyticsHandler:v45];
-            [(MUGroupedExternalActionController *)v36 setMultipleVendorAnalyticsTarget:a11];
-            [(MUGroupedExternalActionController *)v36 setSingleVendorAnalyticsTarget:a10];
-            [(MUGroupedExternalActionController *)v36 setAnalyticsModuleType:a9];
-            [(MUGroupedExternalActionController *)v36 setSource:a12];
-            v37 = [[MUPlaceExternalActionMenuHelper alloc] initWithExternalActionController:v36 iconCache:v47];
+            v36 = [[MUGroupedExternalActionController alloc] initWithGroupedExternalAction:v35 amsResultProvider:resultProviderCopy supportsMultipleVendorSelection:1 actionHandler:handlerCopy analyticsHandler:analyticsHandlerCopy];
+            [(MUGroupedExternalActionController *)v36 setMultipleVendorAnalyticsTarget:analyticsTarget];
+            [(MUGroupedExternalActionController *)v36 setSingleVendorAnalyticsTarget:target];
+            [(MUGroupedExternalActionController *)v36 setAnalyticsModuleType:type];
+            [(MUGroupedExternalActionController *)v36 setSource:source];
+            v37 = [[MUPlaceExternalActionMenuHelper alloc] initWithExternalActionController:v36 iconCache:cacheCopy];
             [(MUPlaceExternalActionMenuHelper *)v37 setIsQuickAction:1];
             [v44 addObject:v37];
           }
@@ -278,7 +278,7 @@ uint64_t __52__MUPlaceMoreActionsViewModel_analyticsButtonValues__block_invoke(u
     externalActionMenuHelpers = v42->_externalActionMenuHelpers;
     v42->_externalActionMenuHelpers = v38;
 
-    v20 = v43;
+    actionsCopy = v43;
   }
 
   v40 = *MEMORY[0x1E69E9840];

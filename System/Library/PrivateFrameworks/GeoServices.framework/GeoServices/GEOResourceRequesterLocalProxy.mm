@@ -1,15 +1,15 @@
 @interface GEOResourceRequesterLocalProxy
 - (GEOResourceRequesterLocalProxy)init;
-- (id)_finished:(id)a3 withResult:(id)a4 error:(id)a5;
-- (void)_cleanUpFinishedHandlers:(id)a3;
+- (id)_finished:(id)_finished withResult:(id)result error:(id)error;
+- (void)_cleanUpFinishedHandlers:(id)handlers;
 - (void)_failAllPendingRequests;
-- (void)_fetchResources:(id)a3 force:(BOOL)a4 manifestConfiguration:(id)a5 destination:(id)a6 additionalDestination:(id)a7 auditToken:(id)a8 signpostID:(unint64_t)a9;
+- (void)_fetchResources:(id)resources force:(BOOL)force manifestConfiguration:(id)configuration destination:(id)destination additionalDestination:(id)additionalDestination auditToken:(id)token signpostID:(unint64_t)d;
 - (void)_resetRequestTimeout;
 - (void)dealloc;
-- (void)didResolvePaths:(id)a3 forResources:(id)a4;
-- (void)failedToResolveResources:(id)a3 withError:(id)a4;
-- (void)fetchResources:(id)a3 force:(BOOL)a4 unpack:(BOOL)a5 manifestConfiguration:(id)a6 auditToken:(id)a7 signpostID:(unint64_t)a8 queue:(id)a9 handler:(id)a10;
-- (void)reportCorruptUnpackedResource:(id)a3 fileURL:(id)a4;
+- (void)didResolvePaths:(id)paths forResources:(id)resources;
+- (void)failedToResolveResources:(id)resources withError:(id)error;
+- (void)fetchResources:(id)resources force:(BOOL)force unpack:(BOOL)unpack manifestConfiguration:(id)configuration auditToken:(id)token signpostID:(unint64_t)d queue:(id)queue handler:(id)self0;
+- (void)reportCorruptUnpackedResource:(id)resource fileURL:(id)l;
 @end
 
 @implementation GEOResourceRequesterLocalProxy
@@ -78,8 +78,8 @@ LABEL_4:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [(NSMutableDictionary *)self->_requestHandlersPending allValues];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  allValues = [(NSMutableDictionary *)self->_requestHandlersPending allValues];
+  v5 = [allValues countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -91,7 +91,7 @@ LABEL_4:
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [v3 addObjectsFromArray:*(*(&v32 + 1) + 8 * v8)];
@@ -99,7 +99,7 @@ LABEL_4:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v6);
@@ -192,18 +192,18 @@ LABEL_4:
   }
 }
 
-- (void)failedToResolveResources:(id)a3 withError:(id)a4
+- (void)failedToResolveResources:(id)resources withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  resourcesCopy = resources;
+  errorCopy = error;
+  if ([resourcesCopy count])
   {
     v8 = +[NSMutableArray array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v6;
+    v9 = resourcesCopy;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v10)
     {
@@ -219,7 +219,7 @@ LABEL_4:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [(GEOResourceRequesterLocalProxy *)self _finished:*(*(&v17 + 1) + 8 * v13) withResult:0 error:v7, v17];
+          v14 = [(GEOResourceRequesterLocalProxy *)self _finished:*(*(&v17 + 1) + 8 * v13) withResult:0 error:errorCopy, v17];
           [v8 addObjectsFromArray:v14];
 
           v13 = v13 + 1;
@@ -236,53 +236,53 @@ LABEL_4:
     v15 = sub_1000018BC();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [(NSMutableDictionary *)self->_requestHandlersPending allKeys];
+      allKeys = [(NSMutableDictionary *)self->_requestHandlersPending allKeys];
       *buf = 138477827;
-      v22 = v16;
+      v22 = allKeys;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Remaining requests in progress: %{private}@", buf, 0xCu);
     }
   }
 }
 
-- (void)didResolvePaths:(id)a3 forResources:(id)a4
+- (void)didResolvePaths:(id)paths forResources:(id)resources
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  pathsCopy = paths;
+  resourcesCopy = resources;
+  if ([pathsCopy count])
   {
     v8 = +[NSMutableArray array];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000445E4;
     v12[3] = &unk_100083508;
-    v13 = v7;
+    v13 = resourcesCopy;
     v9 = v8;
     v14 = v9;
-    v15 = self;
-    [v6 enumerateObjectsUsingBlock:v12];
+    selfCopy = self;
+    [pathsCopy enumerateObjectsUsingBlock:v12];
     [(GEOResourceRequesterLocalProxy *)self _cleanUpFinishedHandlers:v9];
     v10 = sub_1000018BC();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(NSMutableDictionary *)self->_requestHandlersPending allKeys];
+      allKeys = [(NSMutableDictionary *)self->_requestHandlersPending allKeys];
       *buf = 138477827;
-      v17 = v11;
+      v17 = allKeys;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Remaining requests in progress: %{private}@", buf, 0xCu);
     }
   }
 }
 
-- (void)_cleanUpFinishedHandlers:(id)a3
+- (void)_cleanUpFinishedHandlers:(id)handlers
 {
-  v4 = a3;
-  if ([v4 count] && -[NSMutableDictionary count](self->_requestHandlersPending, "count"))
+  handlersCopy = handlers;
+  if ([handlersCopy count] && -[NSMutableDictionary count](self->_requestHandlersPending, "count"))
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NSMutableDictionary *)self->_requestHandlersPending allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allKeys = [(NSMutableDictionary *)self->_requestHandlersPending allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -293,19 +293,19 @@ LABEL_4:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_requestHandlersPending objectForKeyedSubscript:v10];
-          [v11 removeObjectsInArray:v4];
+          [v11 removeObjectsInArray:handlersCopy];
           if (![v11 count])
           {
             [(NSMutableDictionary *)self->_requestHandlersPending removeObjectForKey:v10];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -313,14 +313,14 @@ LABEL_4:
   }
 }
 
-- (id)_finished:(id)a3 withResult:(id)a4 error:(id)a5
+- (id)_finished:(id)_finished withResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  _finishedCopy = _finished;
+  resultCopy = result;
+  errorCopy = error;
+  if (_finishedCopy)
   {
-    v11 = [(NSMutableDictionary *)self->_requestHandlersPending objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)self->_requestHandlersPending objectForKeyedSubscript:_finishedCopy];
     if (v11)
     {
       *v32 = 0;
@@ -331,7 +331,7 @@ LABEL_4:
       v29[1] = 3221225472;
       v29[2] = sub_100044B4C;
       v29[3] = &unk_1000834B8;
-      v12 = v8;
+      v12 = _finishedCopy;
       v30 = v12;
       v31 = v32;
       [v11 enumerateObjectsUsingBlock:v29];
@@ -339,7 +339,7 @@ LABEL_4:
       {
         v13 = sub_1000018BC();
         v28 = 0;
-        v14 = [GEOResourceLoader unpackResource:v12 at:v9 log:v13 error:&v28];
+        v14 = [GEOResourceLoader unpackResource:v12 at:resultCopy log:v13 error:&v28];
         v15 = v28;
 
         if (v14)
@@ -355,7 +355,7 @@ LABEL_4:
             *buf = 138412802;
             v37 = v12;
             v38 = 2112;
-            v39 = v9;
+            v39 = resultCopy;
             v40 = 2112;
             v41 = v15;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Unable to unpack resource %@ at %@ - %@", buf, 0x20u);
@@ -365,7 +365,7 @@ LABEL_4:
 
       else
       {
-        v14 = v9;
+        v14 = resultCopy;
       }
 
       v18 = +[NSMutableArray array];
@@ -374,9 +374,9 @@ LABEL_4:
       v23[2] = sub_100044B94;
       v23[3] = &unk_1000834E0;
       v24 = v12;
-      v9 = v14;
-      v25 = v9;
-      v26 = v10;
+      resultCopy = v14;
+      v25 = resultCopy;
+      v26 = errorCopy;
       v19 = v18;
       v27 = v19;
       [v11 enumerateObjectsUsingBlock:v23];
@@ -420,41 +420,41 @@ LABEL_4:
   [(GEOResourceRequesterLocalProxy *)&v4 dealloc];
 }
 
-- (void)reportCorruptUnpackedResource:(id)a3 fileURL:(id)a4
+- (void)reportCorruptUnpackedResource:(id)resource fileURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
+  lCopy = l;
+  resourceCopy = resource;
   v7 = sub_1000018BC();
-  [GEOResourceLoader removeUnpackedResource:v6 at:v5 log:v7 error:0];
+  [GEOResourceLoader removeUnpackedResource:resourceCopy at:lCopy log:v7 error:0];
 }
 
-- (void)_fetchResources:(id)a3 force:(BOOL)a4 manifestConfiguration:(id)a5 destination:(id)a6 additionalDestination:(id)a7 auditToken:(id)a8 signpostID:(unint64_t)a9
+- (void)_fetchResources:(id)resources force:(BOOL)force manifestConfiguration:(id)configuration destination:(id)destination additionalDestination:(id)additionalDestination auditToken:(id)token signpostID:(unint64_t)d
 {
-  v35 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v33 = v14;
-  v18 = [GEOResourceManifestManager modernManagerForConfiguration:v14];
-  v19 = [v18 activeTileGroup];
+  resourcesCopy = resources;
+  configurationCopy = configuration;
+  destinationCopy = destination;
+  additionalDestinationCopy = additionalDestination;
+  tokenCopy = token;
+  v33 = configurationCopy;
+  v18 = [GEOResourceManifestManager modernManagerForConfiguration:configurationCopy];
+  activeTileGroup = [v18 activeTileGroup];
 
-  v20 = [v19 urlInfoSet];
-  v21 = [v20 resourcesURL];
-  v22 = [v21 nsURL];
+  urlInfoSet = [activeTileGroup urlInfoSet];
+  resourcesURL = [urlInfoSet resourcesURL];
+  nsURL = [resourcesURL nsURL];
 
-  v23 = [v19 urlInfoSet];
-  v24 = [v23 alternateResourcesNSURLs];
+  urlInfoSet2 = [activeTileGroup urlInfoSet];
+  alternateResourcesNSURLs = [urlInfoSet2 alternateResourcesNSURLs];
 
-  v25 = [v19 urlInfoSet];
-  v26 = [v25 resourcesProxyURL];
+  urlInfoSet3 = [activeTileGroup urlInfoSet];
+  resourcesProxyURL = [urlInfoSet3 resourcesProxyURL];
 
   v27 = [GEOResourceLoader alloc];
   v28 = sub_1000018BC();
-  v34 = v16;
-  LOBYTE(v32) = a4;
-  v37 = v17;
-  v29 = [v27 initWithTargetDirectory:v15 auditToken:v17 baseURL:v22 alternateURLs:v24 proxyURL:v26 resources:v35 forceUpdateCheck:v32 maximumConcurrentLoads:6 additionalDirectoryToConsider:v16 log:v28 signpostID:a9];
+  v34 = additionalDestinationCopy;
+  LOBYTE(v32) = force;
+  v37 = tokenCopy;
+  v29 = [v27 initWithTargetDirectory:destinationCopy auditToken:tokenCopy baseURL:nsURL alternateURLs:alternateResourcesNSURLs proxyURL:resourcesProxyURL resources:resourcesCopy forceUpdateCheck:v32 maximumConcurrentLoads:6 additionalDirectoryToConsider:additionalDestinationCopy log:v28 signpostID:d];
 
   [(NSMutableArray *)self->_inProgressLoaders addObject:v29];
   objc_initWeak(&location, v29);
@@ -464,9 +464,9 @@ LABEL_4:
   v38[3] = &unk_100083470;
   v38[4] = self;
   objc_copyWeak(&v41, &location);
-  v30 = v35;
+  v30 = resourcesCopy;
   v39 = v30;
-  v31 = v15;
+  v31 = destinationCopy;
   v40 = v31;
   [v29 startWithCompletionHandler:v38 callbackQueue:self->_workQueue];
   [(GEOResourceRequesterLocalProxy *)self _resetRequestTimeout];
@@ -475,32 +475,32 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)fetchResources:(id)a3 force:(BOOL)a4 unpack:(BOOL)a5 manifestConfiguration:(id)a6 auditToken:(id)a7 signpostID:(unint64_t)a8 queue:(id)a9 handler:(id)a10
+- (void)fetchResources:(id)resources force:(BOOL)force unpack:(BOOL)unpack manifestConfiguration:(id)configuration auditToken:(id)token signpostID:(unint64_t)d queue:(id)queue handler:(id)self0
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
+  resourcesCopy = resources;
+  configurationCopy = configuration;
+  tokenCopy = token;
+  queueCopy = queue;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100045F78;
   v28[3] = &unk_1000833B8;
   v28[4] = self;
-  v29 = v16;
-  v35 = a4;
-  v36 = a5;
-  v30 = v17;
-  v31 = v18;
-  v33 = v20;
-  v34 = a8;
-  v32 = v19;
-  v22 = v20;
-  v23 = v19;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
+  v29 = resourcesCopy;
+  forceCopy = force;
+  unpackCopy = unpack;
+  v30 = configurationCopy;
+  v31 = tokenCopy;
+  v33 = handlerCopy;
+  dCopy = d;
+  v32 = queueCopy;
+  v22 = handlerCopy;
+  v23 = queueCopy;
+  v24 = tokenCopy;
+  v25 = configurationCopy;
+  v26 = resourcesCopy;
   v27 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v28);
   dispatch_async(workQueue, v27);
 }

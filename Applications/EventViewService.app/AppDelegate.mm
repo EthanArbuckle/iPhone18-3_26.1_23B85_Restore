@@ -1,17 +1,17 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
 - (_TtC16EventViewService11AppDelegate)init;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  LOBYTE(self) = sub_1001AA914(v10);
+  v8 = _Block_copy(handler);
+  applicationCopy = application;
+  activityCopy = activity;
+  selfCopy = self;
+  LOBYTE(self) = sub_1001AA914(activityCopy);
   _Block_release(v8);
 
   return self & 1;

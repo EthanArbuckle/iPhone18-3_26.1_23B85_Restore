@@ -1,5 +1,5 @@
 @interface UIColorAccessibility_ElectricTouch_UIKit
-+ (id)axHueNameForValue:(double)a3;
++ (id)axHueNameForValue:(double)value;
 - (double)axHue;
 - (double)axSaturation;
 - (id)axApproximateColorDescription;
@@ -27,8 +27,8 @@
 
 - (id)axApproximateColorDescription
 {
-  v3 = [(UIColorAccessibility_ElectricTouch_UIKit *)self _axCachedApproximateColorDescription];
-  if (!v3)
+  _axCachedApproximateColorDescription = [(UIColorAccessibility_ElectricTouch_UIKit *)self _axCachedApproximateColorDescription];
+  if (!_axCachedApproximateColorDescription)
   {
     [(UIColorAccessibility_ElectricTouch_UIKit *)self axHue];
     v5 = v4;
@@ -44,29 +44,29 @@
         {
           v16 = MEMORY[0x29EDBA0F8];
           v17 = accessibilityLocalizedString(@"color.format.lightness.saturation.hue");
-          v18 = [(UIColorAccessibility_ElectricTouch_UIKit *)self axLightnessModifier];
-          v19 = [(UIColorAccessibility_ElectricTouch_UIKit *)self axSaturationModifier];
+          axLightnessModifier = [(UIColorAccessibility_ElectricTouch_UIKit *)self axLightnessModifier];
+          axSaturationModifier = [(UIColorAccessibility_ElectricTouch_UIKit *)self axSaturationModifier];
           if (v5 <= 0.0560000017 || v5 >= 0.111000001 || v9 >= 0.430000007)
           {
-            v20 = [(UIColorAccessibility_ElectricTouch_UIKit *)self axHueName];
+            axHueName = [(UIColorAccessibility_ElectricTouch_UIKit *)self axHueName];
           }
 
           else
           {
-            v20 = accessibilityLocalizedString(@"color.brown");
+            axHueName = accessibilityLocalizedString(@"color.brown");
           }
 
-          v21 = v20;
-          v3 = [v16 stringWithFormat:v17, v18, v19, v20];
+          v21 = axHueName;
+          _axCachedApproximateColorDescription = [v16 stringWithFormat:v17, axLightnessModifier, axSaturationModifier, axHueName];
         }
 
         else
         {
           v12 = MEMORY[0x29EDBA0F8];
           v13 = accessibilityLocalizedString(@"color.format.lightness.hue");
-          v14 = [(UIColorAccessibility_ElectricTouch_UIKit *)self axLightnessModifier];
+          axLightnessModifier2 = [(UIColorAccessibility_ElectricTouch_UIKit *)self axLightnessModifier];
           v15 = accessibilityLocalizedString(@"color.gray");
-          v3 = [v12 stringWithFormat:v13, v14, v15];
+          _axCachedApproximateColorDescription = [v12 stringWithFormat:v13, axLightnessModifier2, v15];
         }
 
         goto LABEL_7;
@@ -80,12 +80,12 @@
       v10 = @"color.white";
     }
 
-    v3 = accessibilityLocalizedString(v10);
+    _axCachedApproximateColorDescription = accessibilityLocalizedString(v10);
 LABEL_7:
-    [(UIColorAccessibility_ElectricTouch_UIKit *)self _axSetCachedApproximateColorDescription:v3];
+    [(UIColorAccessibility_ElectricTouch_UIKit *)self _axSetCachedApproximateColorDescription:_axCachedApproximateColorDescription];
   }
 
-  return v3;
+  return _axCachedApproximateColorDescription;
 }
 
 - (id)axHueName
@@ -146,102 +146,102 @@ LABEL_8:
   return v5;
 }
 
-+ (id)axHueNameForValue:(double)a3
++ (id)axHueNameForValue:(double)value
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (value < 0.0 || value > 1.0)
   {
     _AXAssert();
     v4 = 0;
     goto LABEL_40;
   }
 
-  if (a3 >= 0.0280000009)
+  if (value >= 0.0280000009)
   {
-    if (a3 < 0.0560000017)
+    if (value < 0.0560000017)
     {
       v5 = @"color.hue.red.orange";
       goto LABEL_39;
     }
 
-    if (a3 < 0.111000001)
+    if (value < 0.111000001)
     {
       v5 = @"color.hue.orange";
       goto LABEL_39;
     }
 
-    if (a3 < 0.128999993)
+    if (value < 0.128999993)
     {
       v5 = @"color.hue.orange.yellow";
       goto LABEL_39;
     }
 
-    if (a3 < 0.166999996)
+    if (value < 0.166999996)
     {
       v5 = @"color.hue.yellow";
       goto LABEL_39;
     }
 
-    if (a3 < 0.222000003)
+    if (value < 0.222000003)
     {
       v5 = @"color.hue.yellow.green";
       goto LABEL_39;
     }
 
-    if (a3 < 0.388999999)
+    if (value < 0.388999999)
     {
       v5 = @"color.hue.green";
       goto LABEL_39;
     }
 
-    if (a3 < 0.469000012)
+    if (value < 0.469000012)
     {
       v5 = @"color.hue.green.cyan";
       goto LABEL_39;
     }
 
-    if (a3 < 0.540000021)
+    if (value < 0.540000021)
     {
       v5 = @"color.hue.cyan";
       goto LABEL_39;
     }
 
-    if (a3 < 0.611000001)
+    if (value < 0.611000001)
     {
       v5 = @"color.hue.cyan.blue";
       goto LABEL_39;
     }
 
-    if (a3 < 0.666999996)
+    if (value < 0.666999996)
     {
       v5 = @"color.hue.blue";
       goto LABEL_39;
     }
 
-    if (a3 < 0.800000012)
+    if (value < 0.800000012)
     {
       v5 = @"color.hue.blue.magenta";
       goto LABEL_39;
     }
 
-    if (a3 < 0.888999999)
+    if (value < 0.888999999)
     {
       v5 = @"color.hue.magenta";
       goto LABEL_39;
     }
 
-    if (a3 < 0.916999996)
+    if (value < 0.916999996)
     {
       v5 = @"color.hue.magenta.pink";
       goto LABEL_39;
     }
 
-    if (a3 < 0.958000004)
+    if (value < 0.958000004)
     {
       v5 = @"color.hue.pink";
       goto LABEL_39;
     }
 
-    if (a3 < 0.986000001)
+    if (value < 0.986000001)
     {
       v5 = @"color.hue.pink.red";
       goto LABEL_39;
@@ -260,9 +260,9 @@ LABEL_40:
 {
   [(UIColorAccessibility_ElectricTouch_UIKit *)self axLuminance];
   v3 = MEMORY[0x29EDBA0F8];
-  v4 = [(UIColorAccessibility_ElectricTouch_UIKit *)self axApproximateColorDescription];
+  axApproximateColorDescription = [(UIColorAccessibility_ElectricTouch_UIKit *)self axApproximateColorDescription];
   v5 = AXFormatInteger();
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ %@", axApproximateColorDescription, v5];
 
   return v6;
 }

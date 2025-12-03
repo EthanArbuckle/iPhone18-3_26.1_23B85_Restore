@@ -16,8 +16,8 @@
     [(STStorageOtherFakeApp *)v2 setBundleIdentifier:comApplePrefs];
     [(STStorageOtherFakeApp *)v3 setAppIdentifier:v4];
     v5 = [LSApplicationRecord alloc];
-    v6 = [(STStorageOtherFakeApp *)v3 bundleIdentifier];
-    v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+    bundleIdentifier = [(STStorageOtherFakeApp *)v3 bundleIdentifier];
+    v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
     [(STStorageOtherFakeApp *)v3 setAppRecord:v7];
 
     v8 = STStorageLocStr(@"OTHER");

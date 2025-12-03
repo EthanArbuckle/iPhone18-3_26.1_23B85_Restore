@@ -1,26 +1,26 @@
 @interface NSPPrivacyProxyPolicyHandler
 + (id)sharedHandler;
-- (BOOL)addPoliciesForMPTCPConverterProxy:(id)a3;
+- (BOOL)addPoliciesForMPTCPConverterProxy:(id)proxy;
 - (BOOL)addPoliciesForProbing;
-- (BOOL)set:(id)a3 flowDivertHandle:(id)a4 inProcessFlowDivert:(BOOL)a5 ingressProxyURL:(id)a6 ingressFallbackProxyURL:(id)a7 exceptionBundleIDs:(id)a8 exceptionProcessPaths:(id)a9;
+- (BOOL)set:(id)set flowDivertHandle:(id)handle inProcessFlowDivert:(BOOL)divert ingressProxyURL:(id)l ingressFallbackProxyURL:(id)rL exceptionBundleIDs:(id)ds exceptionProcessPaths:(id)paths;
 - (NSPPrivacyProxyPolicyHandler)init;
 - (id)currentPolicy;
-- (void)addNetworkDiscoveryProxyAgent:(id)a3 with:(id)a4;
-- (void)addObliviousProxyAgent:(id)a3 processes:(id)a4 hostname:(id)a5;
-- (void)addPreferredProxy:(id)a3 agentUUID:(id)a4 withDomainFilter:(id)a5;
-- (void)addProxiedContentAgent:(id)a3 maps:(id)a4;
-- (void)cellularDisabled:(BOOL)a3;
-- (void)handleAppInstallation:(id)a3;
-- (void)handleAppUninstallation:(id)a3;
-- (void)interface:(id)a3 disabled:(BOOL)a4;
-- (void)remove:(BOOL)a3;
-- (void)removeObliviousProxyAgent:(id)a3 forHostname:(id)a4 apply:(BOOL)a5;
-- (void)removePoliciesForMPTCPConverterProxy:(BOOL)a3;
-- (void)removePreferredProxy:(id)a3 apply:(BOOL)a4;
-- (void)removeProxiedContentAgent:(id)a3 apply:(BOOL)a4;
-- (void)replaceDisabledInterfaces:(id)a3;
-- (void)setCaptivePortalExceptionHostname:(id)a3;
-- (void)wifiDisabled:(BOOL)a3;
+- (void)addNetworkDiscoveryProxyAgent:(id)agent with:(id)with;
+- (void)addObliviousProxyAgent:(id)agent processes:(id)processes hostname:(id)hostname;
+- (void)addPreferredProxy:(id)proxy agentUUID:(id)d withDomainFilter:(id)filter;
+- (void)addProxiedContentAgent:(id)agent maps:(id)maps;
+- (void)cellularDisabled:(BOOL)disabled;
+- (void)handleAppInstallation:(id)installation;
+- (void)handleAppUninstallation:(id)uninstallation;
+- (void)interface:(id)interface disabled:(BOOL)disabled;
+- (void)remove:(BOOL)remove;
+- (void)removeObliviousProxyAgent:(id)agent forHostname:(id)hostname apply:(BOOL)apply;
+- (void)removePoliciesForMPTCPConverterProxy:(BOOL)proxy;
+- (void)removePreferredProxy:(id)proxy apply:(BOOL)apply;
+- (void)removeProxiedContentAgent:(id)agent apply:(BOOL)apply;
+- (void)replaceDisabledInterfaces:(id)interfaces;
+- (void)setCaptivePortalExceptionHostname:(id)hostname;
+- (void)wifiDisabled:(BOOL)disabled;
 @end
 
 @implementation NSPPrivacyProxyPolicyHandler
@@ -100,44 +100,44 @@
   return v3;
 }
 
-- (BOOL)set:(id)a3 flowDivertHandle:(id)a4 inProcessFlowDivert:(BOOL)a5 ingressProxyURL:(id)a6 ingressFallbackProxyURL:(id)a7 exceptionBundleIDs:(id)a8 exceptionProcessPaths:(id)a9
+- (BOOL)set:(id)set flowDivertHandle:(id)handle inProcessFlowDivert:(BOOL)divert ingressProxyURL:(id)l ingressFallbackProxyURL:(id)rL exceptionBundleIDs:(id)ds exceptionProcessPaths:(id)paths
 {
-  v15 = a3;
-  v16 = a4;
-  v48 = a6;
-  v49 = a7;
-  v50 = a8;
-  v51 = a9;
-  v17 = self;
-  objc_sync_enter(v17);
-  v46 = v15;
-  sub_10003B8A4(v17, v15);
-  v47 = v16;
-  sub_100006664(v17, v16);
-  if (v17)
+  setCopy = set;
+  handleCopy = handle;
+  lCopy = l;
+  rLCopy = rL;
+  dsCopy = ds;
+  pathsCopy = paths;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v46 = setCopy;
+  sub_10003B8A4(selfCopy, setCopy);
+  v47 = handleCopy;
+  sub_100006664(selfCopy, handleCopy);
+  if (selfCopy)
   {
-    v17->_inProcessFlowDivert = a5;
-    objc_storeStrong(&v17->_ingressProxyURL, a6);
-    objc_storeStrong(&v17->_ingressFallbackProxyURL, a7);
-    objc_storeStrong(&v17->_exceptionBundleIDs, a8);
-    objc_storeStrong(&v17->_exceptionProcessPaths, a9);
+    selfCopy->_inProcessFlowDivert = divert;
+    objc_storeStrong(&selfCopy->_ingressProxyURL, l);
+    objc_storeStrong(&selfCopy->_ingressFallbackProxyURL, rL);
+    objc_storeStrong(&selfCopy->_exceptionBundleIDs, ds);
+    objc_storeStrong(&selfCopy->_exceptionProcessPaths, paths);
   }
 
-  sub_100095A18(&v17->super.isa);
-  sub_1000960D0(&v17->super.isa);
-  sub_100096200(&v17->super.isa);
-  sub_100096330(v17);
-  [(NSPPrivacyProxyPolicyHandler *)v17 removePoliciesForMPTCPConverterProxy:0];
-  sub_100096464(&v17->super.isa);
-  if (v17)
+  sub_100095A18(&selfCopy->super.isa);
+  sub_1000960D0(&selfCopy->super.isa);
+  sub_100096200(&selfCopy->super.isa);
+  sub_100096330(selfCopy);
+  [(NSPPrivacyProxyPolicyHandler *)selfCopy removePoliciesForMPTCPConverterProxy:0];
+  sub_100096464(&selfCopy->super.isa);
+  if (selfCopy)
   {
-    policy = v17->_policy;
-    inProcessFlowDivert = v17->_inProcessFlowDivert;
-    flowDivertHandle = v17->_flowDivertHandle;
-    ingressProxyURL = v17->_ingressProxyURL;
-    ingressFallbackProxyURL = v17->_ingressFallbackProxyURL;
-    exceptionProcessPaths = v17->_exceptionProcessPaths;
-    v24 = v17->_exceptionBundleIDs;
+    policy = selfCopy->_policy;
+    inProcessFlowDivert = selfCopy->_inProcessFlowDivert;
+    flowDivertHandle = selfCopy->_flowDivertHandle;
+    ingressProxyURL = selfCopy->_ingressProxyURL;
+    ingressFallbackProxyURL = selfCopy->_ingressFallbackProxyURL;
+    exceptionProcessPaths = selfCopy->_exceptionProcessPaths;
+    v24 = selfCopy->_exceptionBundleIDs;
     v25 = ingressFallbackProxyURL;
     v26 = ingressProxyURL;
     v27 = flowDivertHandle;
@@ -169,13 +169,13 @@
             if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v58 = v17;
+              v58 = selfCopy;
               v59 = 2112;
               v60 = v33;
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "%@ adding policy %@", buf, 0x16u);
             }
 
-            v35 = [(NEPolicySession *)v17->_session addPolicy:v33];
+            v35 = [(NEPolicySession *)selfCopy->_session addPolicy:v33];
             v36 = nplog_obj();
             v37 = v36;
             if (!v35)
@@ -183,7 +183,7 @@
               if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v58 = v17;
+                v58 = selfCopy;
                 _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%@ failed to add policy", buf, 0xCu);
               }
 
@@ -193,13 +193,13 @@
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v58 = v17;
+              v58 = selfCopy;
               v59 = 2048;
               v60 = v35;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "%@ added policy %lu", buf, 0x16u);
             }
 
-            v38 = v17->_mainPolicyIDs;
+            v38 = selfCopy->_mainPolicyIDs;
             v39 = [NSNumber numberWithUnsignedInteger:v35];
             [(NSMutableArray *)v38 addObject:v39];
           }
@@ -214,38 +214,38 @@
         }
       }
 
-      if (sub_100096CA8(&v17->super.isa))
+      if (sub_100096CA8(&selfCopy->super.isa))
       {
-        if (sub_100096F38(v17))
+        if (sub_100096F38(selfCopy))
         {
-          if (sub_1000971E0(&v17->super.isa))
+          if (sub_1000971E0(&selfCopy->super.isa))
           {
-            if (sub_100097508(&v17->super.isa))
+            if (sub_100097508(&selfCopy->super.isa))
             {
 
 LABEL_31:
-              session = v17->_session;
+              session = selfCopy->_session;
               goto LABEL_32;
             }
 
-            sub_100096464(&v17->super.isa);
+            sub_100096464(&selfCopy->super.isa);
           }
 
           else
           {
-            sub_100096330(v17);
+            sub_100096330(selfCopy);
           }
         }
 
         else
         {
-          sub_100096200(&v17->super.isa);
+          sub_100096200(&selfCopy->super.isa);
         }
       }
 
       else
       {
-        sub_1000960D0(&v17->super.isa);
+        sub_1000960D0(&selfCopy->super.isa);
       }
     }
 
@@ -255,7 +255,7 @@ LABEL_31:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v58 = v17;
+        v58 = selfCopy;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%@ there are no privacy proxy policies to add", buf, 0xCu);
       }
 
@@ -263,8 +263,8 @@ LABEL_28:
     }
   }
 
-  sub_100095A18(&v17->super.isa);
-  if (v17)
+  sub_100095A18(&selfCopy->super.isa);
+  if (selfCopy)
   {
     goto LABEL_31;
   }
@@ -272,9 +272,9 @@ LABEL_28:
   session = 0;
 LABEL_32:
   v41 = session;
-  v42 = [(NEPolicySession *)v41 apply];
+  apply = [(NEPolicySession *)v41 apply];
 
-  if (v42)
+  if (apply)
   {
     v43 = +[NEFileHandleMaintainer sharedMaintainer];
     [v43 commit];
@@ -283,19 +283,19 @@ LABEL_32:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
       *v61 = 138412290;
-      v62 = v17;
+      v62 = selfCopy;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "%@ sucessfully applied all the policies", v61, 0xCu);
     }
   }
 
-  objc_sync_exit(v17);
+  objc_sync_exit(selfCopy);
 
-  return v42;
+  return apply;
 }
 
-- (void)remove:(BOOL)a3
+- (void)remove:(BOOL)remove
 {
-  v3 = a3;
+  removeCopy = remove;
   obj = self;
   objc_sync_enter(obj);
   sub_100095A18(&obj->super.isa);
@@ -303,7 +303,7 @@ LABEL_32:
   sub_100096200(&obj->super.isa);
   sub_100096330(obj);
   sub_100096464(&obj->super.isa);
-  if (v3)
+  if (removeCopy)
   {
     if (obj)
     {
@@ -341,8 +341,8 @@ LABEL_32:
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v10 = [(NSMutableDictionary *)obj->_domainFilterPolicyIDs allValues];
-      v11 = [v10 countByEnumeratingWithState:&v60 objects:v72 count:16];
+      allValues = [(NSMutableDictionary *)obj->_domainFilterPolicyIDs allValues];
+      v11 = [allValues countByEnumeratingWithState:&v60 objects:v72 count:16];
       if (v11)
       {
         v12 = *v61;
@@ -352,7 +352,7 @@ LABEL_32:
           {
             if (*v61 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allValues);
             }
 
             v14 = *(*(&v60 + 1) + 8 * j);
@@ -386,7 +386,7 @@ LABEL_32:
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v60 objects:v72 count:16];
+          v11 = [allValues countByEnumeratingWithState:&v60 objects:v72 count:16];
         }
 
         while (v11);
@@ -397,8 +397,8 @@ LABEL_32:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v21 = [(NSMutableDictionary *)obj->_domainFilterIDs allValues];
-      v22 = [v21 countByEnumeratingWithState:&v52 objects:&v64 count:16];
+      allValues2 = [(NSMutableDictionary *)obj->_domainFilterIDs allValues];
+      v22 = [allValues2 countByEnumeratingWithState:&v52 objects:&v64 count:16];
       if (v22)
       {
         v23 = *v53;
@@ -408,7 +408,7 @@ LABEL_32:
           {
             if (*v53 != v23)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(allValues2);
             }
 
             v25 = *(*(&v52 + 1) + 8 * m);
@@ -416,7 +416,7 @@ LABEL_32:
             -[NEPolicySession removeDomainFilterWithID:](v26, "removeDomainFilterWithID:", [v25 unsignedIntegerValue]);
           }
 
-          v22 = [v21 countByEnumeratingWithState:&v52 objects:&v64 count:16];
+          v22 = [allValues2 countByEnumeratingWithState:&v52 objects:&v64 count:16];
         }
 
         while (v22);
@@ -574,38 +574,38 @@ LABEL_32:
 
 - (id)currentPolicy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2 && (policy = v2->_policy) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && (policy = selfCopy->_policy) != 0)
   {
     v4 = policy;
-    v5 = [(NSPPrivacyProxyPolicy *)v4 dictionaryRepresentation];
+    dictionaryRepresentation = [(NSPPrivacyProxyPolicy *)v4 dictionaryRepresentation];
   }
 
   else
   {
-    v5 = 0;
+    dictionaryRepresentation = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return dictionaryRepresentation;
 }
 
-- (void)addPreferredProxy:(id)a3 agentUUID:(id)a4 withDomainFilter:(id)a5
+- (void)addPreferredProxy:(id)proxy agentUUID:(id)d withDomainFilter:(id)filter
 {
-  v8 = a3;
-  v35 = a4;
-  v36 = a5;
-  v37 = v8;
-  if (v8)
+  proxyCopy = proxy;
+  dCopy = d;
+  filterCopy = filter;
+  v37 = proxyCopy;
+  if (proxyCopy)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    [(NSPPrivacyProxyPolicyHandler *)v9 removePreferredProxy:v8 apply:0];
-    if (v9)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSPPrivacyProxyPolicyHandler *)selfCopy removePreferredProxy:proxyCopy apply:0];
+    if (selfCopy)
     {
-      session = v9->_session;
+      session = selfCopy->_session;
     }
 
     else
@@ -614,7 +614,7 @@ LABEL_32:
     }
 
     v11 = session;
-    v12 = [(NEPolicySession *)v11 addDomainFilterWithData:v36];
+    v12 = [(NEPolicySession *)v11 addDomainFilterWithData:filterCopy];
 
     if (v12)
     {
@@ -622,7 +622,7 @@ LABEL_32:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v45 = v9;
+        v45 = selfCopy;
         v46 = 1024;
         *v47 = v12;
         *&v47[4] = 2112;
@@ -631,9 +631,9 @@ LABEL_32:
       }
 
       v14 = [NSNumber numberWithUnsignedInteger:v12];
-      if (v9)
+      if (selfCopy)
       {
-        domainFilterIDs = v9->_domainFilterIDs;
+        domainFilterIDs = selfCopy->_domainFilterIDs;
       }
 
       else
@@ -645,7 +645,7 @@ LABEL_32:
       [(NSMutableDictionary *)v16 setObject:v14 forKeyedSubscript:v37];
 
       v17 = +[NSMutableArray array];
-      sub_100083650(NSPPrivacyProxyPolicySerialization, v35, v12);
+      sub_100083650(NSPPrivacyProxyPolicySerialization, dCopy, v12);
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
@@ -669,15 +669,15 @@ LABEL_32:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v45 = v9;
+              v45 = selfCopy;
               v46 = 2112;
               *v47 = v21;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%@ adding domain filter policy %@", buf, 0x16u);
             }
 
-            if (v9)
+            if (selfCopy)
             {
-              v23 = v9->_session;
+              v23 = selfCopy->_session;
             }
 
             else
@@ -694,7 +694,7 @@ LABEL_32:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v45 = v9;
+                v45 = selfCopy;
                 v46 = 1024;
                 *v47 = v25;
                 _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%@ added domain filter policy %u", buf, 0x12u);
@@ -710,7 +710,7 @@ LABEL_32:
               if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v45 = v9;
+                v45 = selfCopy;
                 _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%@ failed to add domain filter policy", buf, 0xCu);
               }
             }
@@ -726,9 +726,9 @@ LABEL_32:
         while (v28);
       }
 
-      if (v9)
+      if (selfCopy)
       {
-        domainFilterPolicyIDs = v9->_domainFilterPolicyIDs;
+        domainFilterPolicyIDs = selfCopy->_domainFilterPolicyIDs;
       }
 
       else
@@ -739,9 +739,9 @@ LABEL_32:
       v30 = domainFilterPolicyIDs;
       [(NSMutableDictionary *)v30 setObject:v17 forKeyedSubscript:v37];
 
-      if (v9)
+      if (selfCopy)
       {
-        v31 = v9->_session;
+        v31 = selfCopy->_session;
       }
 
       else
@@ -759,13 +759,13 @@ LABEL_32:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v45 = v9;
+        v45 = selfCopy;
         _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%@ failed to add domain filter", buf, 0xCu);
       }
 
-      if (v9)
+      if (selfCopy)
       {
-        v34 = v9->_session;
+        v34 = selfCopy->_session;
       }
 
       else
@@ -777,32 +777,32 @@ LABEL_32:
       [(NEPolicySession *)v17 apply];
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = nplog_obj();
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v45 = "[NSPPrivacyProxyPolicyHandler addPreferredProxy:agentUUID:withDomainFilter:]";
-      _os_log_fault_impl(&_mh_execute_header, &v9->super, OS_LOG_TYPE_FAULT, "%s called with null proxyName", buf, 0xCu);
+      _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, "%s called with null proxyName", buf, 0xCu);
     }
   }
 }
 
-- (void)removePreferredProxy:(id)a3 apply:(BOOL)a4
+- (void)removePreferredProxy:(id)proxy apply:(BOOL)apply
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  applyCopy = apply;
+  proxyCopy = proxy;
+  if (proxyCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (v7)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      domainFilterPolicyIDs = v7->_domainFilterPolicyIDs;
+      domainFilterPolicyIDs = selfCopy->_domainFilterPolicyIDs;
     }
 
     else
@@ -811,7 +811,7 @@ LABEL_32:
     }
 
     v9 = domainFilterPolicyIDs;
-    v10 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:proxyCopy];
 
     v32 = 0u;
     v33 = 0u;
@@ -832,9 +832,9 @@ LABEL_32:
             objc_enumerationMutation(v11);
           }
 
-          if (v7)
+          if (selfCopy)
           {
-            session = v7->_session;
+            session = selfCopy->_session;
           }
 
           else
@@ -857,9 +857,9 @@ LABEL_32:
       while (v18);
     }
 
-    if (v7)
+    if (selfCopy)
     {
-      v19 = v7->_domainFilterPolicyIDs;
+      v19 = selfCopy->_domainFilterPolicyIDs;
     }
 
     else
@@ -868,11 +868,11 @@ LABEL_32:
     }
 
     v20 = v19;
-    [(NSMutableDictionary *)v20 setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)v20 setObject:0 forKeyedSubscript:proxyCopy];
 
-    if (v7)
+    if (selfCopy)
     {
-      domainFilterIDs = v7->_domainFilterIDs;
+      domainFilterIDs = selfCopy->_domainFilterIDs;
     }
 
     else
@@ -881,13 +881,13 @@ LABEL_32:
     }
 
     v22 = domainFilterIDs;
-    v23 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v6];
+    v23 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:proxyCopy];
 
     if (v23)
     {
-      if (v7)
+      if (selfCopy)
       {
-        v24 = v7->_session;
+        v24 = selfCopy->_session;
       }
 
       else
@@ -898,9 +898,9 @@ LABEL_32:
       v25 = v24;
       -[NEPolicySession removeDomainFilterWithID:](v25, "removeDomainFilterWithID:", [v23 unsignedIntegerValue]);
 
-      if (v7)
+      if (selfCopy)
       {
-        v26 = v7->_domainFilterIDs;
+        v26 = selfCopy->_domainFilterIDs;
       }
 
       else
@@ -909,14 +909,14 @@ LABEL_32:
       }
 
       v27 = v26;
-      [(NSMutableDictionary *)v27 setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)v27 setObject:0 forKeyedSubscript:proxyCopy];
     }
 
-    if ([v11 count] && v4)
+    if ([v11 count] && applyCopy)
     {
-      if (v7)
+      if (selfCopy)
       {
-        v28 = v7->_session;
+        v28 = selfCopy->_session;
       }
 
       else
@@ -928,38 +928,38 @@ LABEL_32:
       [(NEPolicySession *)v29 apply];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = nplog_obj();
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v36 = "[NSPPrivacyProxyPolicyHandler removePreferredProxy:apply:]";
-      _os_log_fault_impl(&_mh_execute_header, &v7->super, OS_LOG_TYPE_FAULT, "%s called with null proxyName", buf, 0xCu);
+      _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, "%s called with null proxyName", buf, 0xCu);
     }
   }
 }
 
-- (void)wifiDisabled:(BOOL)a3
+- (void)wifiDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   obj = self;
   objc_sync_enter(obj);
   if (obj)
   {
-    if (obj->_wifiDisabled == v3)
+    if (obj->_wifiDisabled == disabledCopy)
     {
       goto LABEL_5;
     }
 
-    obj->_wifiDisabled = v3;
+    obj->_wifiDisabled = disabledCopy;
     goto LABEL_4;
   }
 
-  if (v3)
+  if (disabledCopy)
   {
 LABEL_4:
     sub_10009810C(obj);
@@ -969,23 +969,23 @@ LABEL_5:
   objc_sync_exit(obj);
 }
 
-- (void)cellularDisabled:(BOOL)a3
+- (void)cellularDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   obj = self;
   objc_sync_enter(obj);
   if (obj)
   {
-    if (obj->_cellularDisabled == v3)
+    if (obj->_cellularDisabled == disabledCopy)
     {
       goto LABEL_5;
     }
 
-    obj->_cellularDisabled = v3;
+    obj->_cellularDisabled = disabledCopy;
     goto LABEL_4;
   }
 
-  if (v3)
+  if (disabledCopy)
   {
 LABEL_4:
     sub_10009810C(obj);
@@ -995,17 +995,17 @@ LABEL_5:
   objc_sync_exit(obj);
 }
 
-- (void)interface:(id)a3 disabled:(BOOL)a4
+- (void)interface:(id)interface disabled:(BOOL)disabled
 {
-  v16 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (a4)
+  interfaceCopy = interface;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (disabled)
   {
-    if (v6 && v6->_disabledInterfaces || (v7 = objc_alloc_init(NSMutableSet), sub_10001FCA8(v6, v7), v7, v6))
+    if (selfCopy && selfCopy->_disabledInterfaces || (v7 = objc_alloc_init(NSMutableSet), sub_10001FCA8(selfCopy, v7), v7, selfCopy))
     {
       v8 = 0;
-      disabledInterfaces = v6->_disabledInterfaces;
+      disabledInterfaces = selfCopy->_disabledInterfaces;
     }
 
     else
@@ -1015,7 +1015,7 @@ LABEL_5:
     }
 
     v10 = disabledInterfaces;
-    v11 = [(NSMutableSet *)v10 containsObject:v16];
+    v11 = [(NSMutableSet *)v10 containsObject:interfaceCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -1026,49 +1026,49 @@ LABEL_5:
 
       else
       {
-        v12 = v6->_disabledInterfaces;
+        v12 = selfCopy->_disabledInterfaces;
       }
 
       v13 = v12;
-      [(NSMutableSet *)v13 addObject:v16];
+      [(NSMutableSet *)v13 addObject:interfaceCopy];
       goto LABEL_14;
     }
   }
 
-  else if (v6)
+  else if (selfCopy)
   {
-    if (v6->_disabledInterfaces)
+    if (selfCopy->_disabledInterfaces)
     {
-      v14 = v6->_disabledInterfaces;
-      v15 = [(NSMutableSet *)v14 containsObject:v16];
+      v14 = selfCopy->_disabledInterfaces;
+      v15 = [(NSMutableSet *)v14 containsObject:interfaceCopy];
 
       if (v15)
       {
-        v13 = v6->_disabledInterfaces;
-        [(NSMutableSet *)v13 removeObject:v16];
+        v13 = selfCopy->_disabledInterfaces;
+        [(NSMutableSet *)v13 removeObject:interfaceCopy];
 LABEL_14:
 
-        sub_10009810C(v6);
+        sub_10009810C(selfCopy);
       }
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)replaceDisabledInterfaces:(id)a3
+- (void)replaceDisabledInterfaces:(id)interfaces
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 count])
+  interfacesCopy = interfaces;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([interfacesCopy count])
   {
     v6 = objc_alloc_init(NSMutableSet);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v4;
+    v7 = interfacesCopy;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -1094,9 +1094,9 @@ LABEL_14:
       while (v8);
     }
 
-    if (v5)
+    if (selfCopy)
     {
-      disabledInterfaces = v5->_disabledInterfaces;
+      disabledInterfaces = selfCopy->_disabledInterfaces;
     }
 
     else
@@ -1108,12 +1108,12 @@ LABEL_14:
   else
   {
     v6 = 0;
-    if (!v5)
+    if (!selfCopy)
     {
       goto LABEL_15;
     }
 
-    disabledInterfaces = v5->_disabledInterfaces;
+    disabledInterfaces = selfCopy->_disabledInterfaces;
     if (!disabledInterfaces)
     {
       goto LABEL_15;
@@ -1125,26 +1125,26 @@ LABEL_14:
 
   if ((v13 & 1) == 0)
   {
-    sub_10001FCA8(v5, v6);
-    sub_10009810C(v5);
+    sub_10001FCA8(selfCopy, v6);
+    sub_10009810C(selfCopy);
   }
 
 LABEL_15:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setCaptivePortalExceptionHostname:(id)a3
+- (void)setCaptivePortalExceptionHostname:(id)hostname
 {
-  v10 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5)
+  hostnameCopy = hostname;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v6 = v5->_captiveNetworkExceptionHostname;
-    if (v6 != v10)
+    v6 = selfCopy->_captiveNetworkExceptionHostname;
+    if (v6 != hostnameCopy)
     {
-      captiveNetworkExceptionHostname = v5->_captiveNetworkExceptionHostname;
+      captiveNetworkExceptionHostname = selfCopy->_captiveNetworkExceptionHostname;
       goto LABEL_4;
     }
 
@@ -1155,40 +1155,40 @@ LABEL_9:
 
   v6 = 0;
   captiveNetworkExceptionHostname = 0;
-  if (!v10)
+  if (!hostnameCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
   v8 = captiveNetworkExceptionHostname;
-  v9 = [(NSString *)v8 isEqualToString:v10];
+  v9 = [(NSString *)v8 isEqualToString:hostnameCopy];
 
   if ((v9 & 1) == 0)
   {
-    if (v5)
+    if (selfCopy)
     {
-      objc_storeStrong(&v5->_captiveNetworkExceptionHostname, a3);
+      objc_storeStrong(&selfCopy->_captiveNetworkExceptionHostname, hostname);
     }
 
-    sub_10009810C(v5);
+    sub_10009810C(selfCopy);
   }
 
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addObliviousProxyAgent:(id)a3 processes:(id)a4 hostname:(id)a5
+- (void)addObliviousProxyAgent:(id)agent processes:(id)processes hostname:(id)hostname
 {
-  v8 = a3;
-  v33 = a4;
-  v9 = a5;
-  v31 = v8;
-  v32 = v9;
-  if (!v8)
+  agentCopy = agent;
+  processesCopy = processes;
+  hostnameCopy = hostname;
+  v31 = agentCopy;
+  v32 = hostnameCopy;
+  if (!agentCopy)
   {
-    v11 = nplog_obj();
-    if (!os_log_type_enabled(&v11->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (!os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_27;
     }
@@ -1197,15 +1197,15 @@ LABEL_10:
     v39 = "[NSPPrivacyProxyPolicyHandler addObliviousProxyAgent:processes:hostname:]";
     v30 = "%s called with null agentUUID";
 LABEL_32:
-    _os_log_fault_impl(&_mh_execute_header, &v11->super, OS_LOG_TYPE_FAULT, v30, buf, 0xCu);
+    _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, v30, buf, 0xCu);
     goto LABEL_27;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = hostnameCopy;
+  if (!hostnameCopy)
   {
-    v11 = nplog_obj();
-    if (!os_log_type_enabled(&v11->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (!os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_27;
     }
@@ -1216,11 +1216,11 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  [(NSPPrivacyProxyPolicyHandler *)v11 removeObliviousProxyAgent:v8 forHostname:v10 apply:0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPPrivacyProxyPolicyHandler *)selfCopy removeObliviousProxyAgent:agentCopy forHostname:v10 apply:0];
   v12 = +[NSMutableArray array];
-  sub_100084558(NSPPrivacyProxyPolicySerialization, v10, v33, v8);
+  sub_100084558(NSPPrivacyProxyPolicySerialization, v10, processesCopy, agentCopy);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -1244,15 +1244,15 @@ LABEL_32:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v39 = v11;
+          v39 = selfCopy;
           v40 = 2112;
           v41 = v17;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%@ adding oblivious agent policy %@", buf, 0x16u);
         }
 
-        if (v11)
+        if (selfCopy)
         {
-          controlSession = v11->_controlSession;
+          controlSession = selfCopy->_controlSession;
         }
 
         else
@@ -1269,7 +1269,7 @@ LABEL_32:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v39 = v11;
+            v39 = selfCopy;
             v40 = 1024;
             LODWORD(v41) = v21;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%@ added oblivious agent policy %u", buf, 0x12u);
@@ -1285,7 +1285,7 @@ LABEL_32:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v39 = v11;
+            v39 = selfCopy;
             _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@ failed to add oblivious agent policy", buf, 0xCu);
           }
         }
@@ -1302,9 +1302,9 @@ LABEL_32:
   }
 
   v25 = [NSString stringWithFormat:@"%@-%@", v32, v31];
-  if (v11)
+  if (selfCopy)
   {
-    obliviousAgentPolicyIDs = v11->_obliviousAgentPolicyIDs;
+    obliviousAgentPolicyIDs = selfCopy->_obliviousAgentPolicyIDs;
   }
 
   else
@@ -1315,9 +1315,9 @@ LABEL_32:
   v27 = obliviousAgentPolicyIDs;
   [(NSMutableDictionary *)v27 setObject:v12 forKeyedSubscript:v25];
 
-  if (v11)
+  if (selfCopy)
   {
-    v28 = v11->_controlSession;
+    v28 = selfCopy->_controlSession;
   }
 
   else
@@ -1328,24 +1328,24 @@ LABEL_32:
   v29 = v28;
   [(NEPolicySession *)v29 apply];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 LABEL_27:
 }
 
-- (void)removeObliviousProxyAgent:(id)a3 forHostname:(id)a4 apply:(BOOL)a5
+- (void)removeObliviousProxyAgent:(id)agent forHostname:(id)hostname apply:(BOOL)apply
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  applyCopy = apply;
+  agentCopy = agent;
+  hostnameCopy = hostname;
+  if (hostnameCopy)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [NSString stringWithFormat:@"%@-%@", v9, v8];
-    v28 = v5;
-    if (v10)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    agentCopy = [NSString stringWithFormat:@"%@-%@", hostnameCopy, agentCopy];
+    v28 = applyCopy;
+    if (selfCopy)
     {
-      obliviousAgentPolicyIDs = v10->_obliviousAgentPolicyIDs;
+      obliviousAgentPolicyIDs = selfCopy->_obliviousAgentPolicyIDs;
     }
 
     else
@@ -1354,7 +1354,7 @@ LABEL_27:
     }
 
     v13 = obliviousAgentPolicyIDs;
-    v14 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:v11];
+    v14 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:agentCopy];
 
     v31 = 0u;
     v32 = 0u;
@@ -1375,9 +1375,9 @@ LABEL_27:
             objc_enumerationMutation(v15);
           }
 
-          if (v10)
+          if (selfCopy)
           {
-            controlSession = v10->_controlSession;
+            controlSession = selfCopy->_controlSession;
           }
 
           else
@@ -1400,9 +1400,9 @@ LABEL_27:
       while (v22);
     }
 
-    if (v10)
+    if (selfCopy)
     {
-      v23 = v10->_obliviousAgentPolicyIDs;
+      v23 = selfCopy->_obliviousAgentPolicyIDs;
     }
 
     else
@@ -1411,13 +1411,13 @@ LABEL_27:
     }
 
     v24 = v23;
-    [(NSMutableDictionary *)v24 setObject:0 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)v24 setObject:0 forKeyedSubscript:agentCopy];
 
     if ([v15 count] && v28)
     {
-      if (v10)
+      if (selfCopy)
       {
-        v25 = v10->_controlSession;
+        v25 = selfCopy->_controlSession;
       }
 
       else
@@ -1433,45 +1433,45 @@ LABEL_27:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v34 = v10;
+      v34 = selfCopy;
       v35 = 2112;
-      v36 = v9;
+      v36 = hostnameCopy;
       v37 = 2112;
-      v38 = v8;
+      v38 = agentCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%@ removed oblivious agent policies for %@ (%@)", buf, 0x20u);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v10 = nplog_obj();
-    if (os_log_type_enabled(&v10->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v34 = "[NSPPrivacyProxyPolicyHandler removeObliviousProxyAgent:forHostname:apply:]";
-      _os_log_fault_impl(&_mh_execute_header, &v10->super, OS_LOG_TYPE_FAULT, "%s called with null hostname", buf, 0xCu);
+      _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, "%s called with null hostname", buf, 0xCu);
     }
   }
 }
 
-- (void)addNetworkDiscoveryProxyAgent:(id)a3 with:(id)a4
+- (void)addNetworkDiscoveryProxyAgent:(id)agent with:(id)with
 {
-  v6 = a3;
-  v36 = a4;
-  v37 = v6;
-  if (v6)
+  agentCopy = agent;
+  withCopy = with;
+  v37 = agentCopy;
+  if (agentCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (v7 && [(NSMutableDictionary *)v7->_networkSpecificProxyPolicyIDs count])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy && [(NSMutableDictionary *)selfCopy->_networkSpecificProxyPolicyIDs count])
     {
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      obj = v7->_networkSpecificProxyPolicyIDs;
+      obj = selfCopy->_networkSpecificProxyPolicyIDs;
       v8 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v47 objects:buf count:16];
       if (v8)
       {
@@ -1490,7 +1490,7 @@ LABEL_27:
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v12 = [(NSMutableDictionary *)v7->_networkSpecificProxyPolicyIDs objectForKeyedSubscript:v11];
+            v12 = [(NSMutableDictionary *)selfCopy->_networkSpecificProxyPolicyIDs objectForKeyedSubscript:v11];
             v13 = [v12 countByEnumeratingWithState:&v43 objects:v52 count:16];
             if (v13)
             {
@@ -1505,7 +1505,7 @@ LABEL_27:
                   }
 
                   v16 = *(*(&v43 + 1) + 8 * j);
-                  v17 = v7->_session;
+                  v17 = selfCopy->_session;
                   -[NEPolicySession removePolicyWithID:](v17, "removePolicyWithID:", [v16 unsignedIntegerValue]);
                 }
 
@@ -1522,11 +1522,11 @@ LABEL_27:
         while (v8);
       }
 
-      [(NSMutableDictionary *)v7->_networkSpecificProxyPolicyIDs removeAllObjects];
+      [(NSMutableDictionary *)selfCopy->_networkSpecificProxyPolicyIDs removeAllObjects];
     }
 
     v18 = +[NSMutableArray array];
-    sub_1000838A8(NSPPrivacyProxyPolicySerialization, v37, v36);
+    sub_1000838A8(NSPPrivacyProxyPolicySerialization, v37, withCopy);
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -1550,15 +1550,15 @@ LABEL_27:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v54 = v7;
+            v54 = selfCopy;
             v55 = 2112;
             v56 = v23;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@ adding network based proxy policy %@", buf, 0x16u);
           }
 
-          if (v7)
+          if (selfCopy)
           {
-            session = v7->_session;
+            session = selfCopy->_session;
           }
 
           else
@@ -1575,7 +1575,7 @@ LABEL_27:
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v54 = v7;
+              v54 = selfCopy;
               v55 = 1024;
               LODWORD(v56) = v27;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@ added network based proxy policy %u", buf, 0x12u);
@@ -1591,7 +1591,7 @@ LABEL_27:
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v54 = v7;
+              v54 = selfCopy;
               _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%@ failed to add network based proxy policy", buf, 0xCu);
             }
           }
@@ -1607,10 +1607,10 @@ LABEL_27:
       while (v30);
     }
 
-    v31 = [v37 UUIDString];
-    if (v7)
+    uUIDString = [v37 UUIDString];
+    if (selfCopy)
     {
-      networkSpecificProxyPolicyIDs = v7->_networkSpecificProxyPolicyIDs;
+      networkSpecificProxyPolicyIDs = selfCopy->_networkSpecificProxyPolicyIDs;
     }
 
     else
@@ -1619,11 +1619,11 @@ LABEL_27:
     }
 
     v33 = networkSpecificProxyPolicyIDs;
-    [(NSMutableDictionary *)v33 setObject:v18 forKeyedSubscript:v31];
+    [(NSMutableDictionary *)v33 setObject:v18 forKeyedSubscript:uUIDString];
 
-    if (v7)
+    if (selfCopy)
     {
-      v34 = v7->_session;
+      v34 = selfCopy->_session;
     }
 
     else
@@ -1634,33 +1634,33 @@ LABEL_27:
     v35 = v34;
     [(NEPolicySession *)v35 apply];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = nplog_obj();
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v54 = "[NSPPrivacyProxyPolicyHandler addNetworkDiscoveryProxyAgent:with:]";
-      _os_log_fault_impl(&_mh_execute_header, &v7->super, OS_LOG_TYPE_FAULT, "%s called with null agentUUID", buf, 0xCu);
+      _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, "%s called with null agentUUID", buf, 0xCu);
     }
   }
 }
 
-- (void)addProxiedContentAgent:(id)a3 maps:(id)a4
+- (void)addProxiedContentAgent:(id)agent maps:(id)maps
 {
-  v6 = a3;
-  v38 = a4;
-  v39 = v6;
-  if (v6)
+  agentCopy = agent;
+  mapsCopy = maps;
+  v39 = agentCopy;
+  if (agentCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    [(NSPPrivacyProxyPolicyHandler *)v7 removeProxiedContentAgent:v6 apply:0];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSPPrivacyProxyPolicyHandler *)selfCopy removeProxiedContentAgent:agentCopy apply:0];
     v42 = +[NSMutableArray array];
-    sub_100084E24(NSPPrivacyProxyPolicySerialization, v6, v38);
+    sub_100084E24(NSPPrivacyProxyPolicySerialization, agentCopy, mapsCopy);
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -1684,15 +1684,15 @@ LABEL_27:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v59 = v7;
+            v59 = selfCopy;
             v60 = 2112;
             v61 = v11;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@ adding proxied content policy %@", buf, 0x16u);
           }
 
-          if (v7)
+          if (selfCopy)
           {
-            session = v7->_session;
+            session = selfCopy->_session;
           }
 
           else
@@ -1709,7 +1709,7 @@ LABEL_27:
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v59 = v7;
+              v59 = selfCopy;
               v60 = 1024;
               LODWORD(v61) = v15;
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@ added proxied content policy %u", buf, 0x12u);
@@ -1725,7 +1725,7 @@ LABEL_27:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v59 = v7;
+              v59 = selfCopy;
               _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ failed to add proxied content policy", buf, 0xCu);
             }
           }
@@ -1741,10 +1741,10 @@ LABEL_27:
       while (v18);
     }
 
-    v37 = [v39 UUIDString];
-    if (v7)
+    uUIDString = [v39 UUIDString];
+    if (selfCopy)
     {
-      proxiedContentPolicyIDs = v7->_proxiedContentPolicyIDs;
+      proxiedContentPolicyIDs = selfCopy->_proxiedContentPolicyIDs;
     }
 
     else
@@ -1753,11 +1753,11 @@ LABEL_27:
     }
 
     v20 = proxiedContentPolicyIDs;
-    [(NSMutableDictionary *)v20 setObject:v42 forKeyedSubscript:v37];
+    [(NSMutableDictionary *)v20 setObject:v42 forKeyedSubscript:uUIDString];
 
-    if (v7)
+    if (selfCopy)
     {
-      v21 = v7->_session;
+      v21 = selfCopy->_session;
     }
 
     else
@@ -1772,7 +1772,7 @@ LABEL_27:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v40 = v38;
+    v40 = mapsCopy;
     v23 = [v40 countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (v23)
     {
@@ -1794,8 +1794,8 @@ LABEL_27:
             v47 = 0u;
             v44 = 0u;
             v45 = 0u;
-            v27 = [v26 processes];
-            v28 = [v27 countByEnumeratingWithState:&v44 objects:v56 count:16];
+            processes = [v26 processes];
+            v28 = [processes countByEnumeratingWithState:&v44 objects:v56 count:16];
             if (v28)
             {
               v29 = *v45;
@@ -1805,7 +1805,7 @@ LABEL_27:
                 {
                   if (*v45 != v29)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(processes);
                   }
 
                   v31 = [&off_100114350 objectForKeyedSubscript:*(*(&v44 + 1) + 8 * j)];
@@ -1816,7 +1816,7 @@ LABEL_27:
                   }
                 }
 
-                v28 = [v27 countByEnumeratingWithState:&v44 objects:v56 count:16];
+                v28 = [processes countByEnumeratingWithState:&v44 objects:v56 count:16];
               }
 
               while (v28);
@@ -1832,9 +1832,9 @@ LABEL_27:
       if (v24)
       {
         v33 = [NSNumber numberWithUnsignedLongLong:v24];
-        if (v7)
+        if (selfCopy)
         {
-          proxiedContentNotifyFlags = v7->_proxiedContentNotifyFlags;
+          proxiedContentNotifyFlags = selfCopy->_proxiedContentNotifyFlags;
         }
 
         else
@@ -1843,12 +1843,12 @@ LABEL_27:
         }
 
         v35 = proxiedContentNotifyFlags;
-        [(NSMutableDictionary *)v35 setObject:v33 forKeyedSubscript:v37];
+        [(NSMutableDictionary *)v35 setObject:v33 forKeyedSubscript:uUIDString];
 
 LABEL_51:
-        sub_100099210(&v7->super.isa);
+        sub_100099210(&selfCopy->super.isa);
 
-        objc_sync_exit(v7);
+        objc_sync_exit(selfCopy);
         goto LABEL_52;
       }
     }
@@ -1857,9 +1857,9 @@ LABEL_51:
     {
     }
 
-    if (v7)
+    if (selfCopy)
     {
-      v36 = v7->_proxiedContentNotifyFlags;
+      v36 = selfCopy->_proxiedContentNotifyFlags;
     }
 
     else
@@ -1868,33 +1868,33 @@ LABEL_51:
     }
 
     v33 = v36;
-    [(NSMutableDictionary *)v33 setObject:0 forKeyedSubscript:v37];
+    [(NSMutableDictionary *)v33 setObject:0 forKeyedSubscript:uUIDString];
     goto LABEL_51;
   }
 
-  v7 = nplog_obj();
-  if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_FAULT))
+  selfCopy = nplog_obj();
+  if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
   {
     *buf = 136315138;
     v59 = "[NSPPrivacyProxyPolicyHandler addProxiedContentAgent:maps:]";
-    _os_log_fault_impl(&_mh_execute_header, &v7->super, OS_LOG_TYPE_FAULT, "%s called with null agentUUID", buf, 0xCu);
+    _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, "%s called with null agentUUID", buf, 0xCu);
   }
 
 LABEL_52:
 }
 
-- (void)removeProxiedContentAgent:(id)a3 apply:(BOOL)a4
+- (void)removeProxiedContentAgent:(id)agent apply:(BOOL)apply
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  applyCopy = apply;
+  agentCopy = agent;
+  if (agentCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [v6 UUIDString];
-    if (v7)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    uUIDString = [agentCopy UUIDString];
+    if (selfCopy)
     {
-      proxiedContentPolicyIDs = v7->_proxiedContentPolicyIDs;
+      proxiedContentPolicyIDs = selfCopy->_proxiedContentPolicyIDs;
     }
 
     else
@@ -1903,7 +1903,7 @@ LABEL_52:
     }
 
     v10 = proxiedContentPolicyIDs;
-    v11 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:uUIDString];
 
     v28 = 0u;
     v29 = 0u;
@@ -1924,9 +1924,9 @@ LABEL_52:
             objc_enumerationMutation(v12);
           }
 
-          if (v7)
+          if (selfCopy)
           {
-            session = v7->_session;
+            session = selfCopy->_session;
           }
 
           else
@@ -1949,9 +1949,9 @@ LABEL_52:
       while (v19);
     }
 
-    if (v7)
+    if (selfCopy)
     {
-      v20 = v7->_proxiedContentPolicyIDs;
+      v20 = selfCopy->_proxiedContentPolicyIDs;
     }
 
     else
@@ -1960,11 +1960,11 @@ LABEL_52:
     }
 
     v21 = v20;
-    [(NSMutableDictionary *)v21 setObject:0 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)v21 setObject:0 forKeyedSubscript:uUIDString];
 
-    if (v7)
+    if (selfCopy)
     {
-      proxiedContentNotifyFlags = v7->_proxiedContentNotifyFlags;
+      proxiedContentNotifyFlags = selfCopy->_proxiedContentNotifyFlags;
     }
 
     else
@@ -1973,13 +1973,13 @@ LABEL_52:
     }
 
     v23 = proxiedContentNotifyFlags;
-    [(NSMutableDictionary *)v23 setObject:0 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)v23 setObject:0 forKeyedSubscript:uUIDString];
 
-    if ([v12 count] && v4)
+    if ([v12 count] && applyCopy)
     {
-      if (v7)
+      if (selfCopy)
       {
-        v24 = v7->_session;
+        v24 = selfCopy->_session;
       }
 
       else
@@ -1991,19 +1991,19 @@ LABEL_52:
       [(NEPolicySession *)v25 apply];
     }
 
-    sub_100099210(&v7->super.isa);
+    sub_100099210(&selfCopy->super.isa);
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = nplog_obj();
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_FAULT))
+    selfCopy = nplog_obj();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
       v32 = "[NSPPrivacyProxyPolicyHandler removeProxiedContentAgent:apply:]";
-      _os_log_fault_impl(&_mh_execute_header, &v7->super, OS_LOG_TYPE_FAULT, "%s called with null agentUUID", buf, 0xCu);
+      _os_log_fault_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_FAULT, "%s called with null agentUUID", buf, 0xCu);
     }
   }
 }
@@ -2037,7 +2037,7 @@ LABEL_52:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           *buf = v21;
-          v27 = self;
+          selfCopy3 = self;
           v28 = 2112;
           v29 = v9;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%@ adding probe policy %@", buf, 0x16u);
@@ -2061,7 +2061,7 @@ LABEL_52:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v27 = self;
+            selfCopy3 = self;
             _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@ failed to add probe policy", buf, 0xCu);
           }
 
@@ -2072,7 +2072,7 @@ LABEL_52:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           *buf = v21;
-          v27 = self;
+          selfCopy3 = self;
           v28 = 2048;
           v29 = v12;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@ added probe policy %lu", buf, 0x16u);
@@ -2113,19 +2113,19 @@ LABEL_24:
   return v19;
 }
 
-- (void)handleAppInstallation:(id)a3
+- (void)handleAppInstallation:(id)installation
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![v4 containsObject:@"com.apple.SafariTechnologyPreview"])
+  installationCopy = installation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![installationCopy containsObject:@"com.apple.SafariTechnologyPreview"])
   {
     goto LABEL_14;
   }
 
-  if (v5)
+  if (selfCopy)
   {
-    safariTechnologyPreviewPolicyIDs = v5->_safariTechnologyPreviewPolicyIDs;
+    safariTechnologyPreviewPolicyIDs = selfCopy->_safariTechnologyPreviewPolicyIDs;
   }
 
   else
@@ -2142,19 +2142,19 @@ LABEL_24:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v23 = 138412546;
-      v24 = v5;
+      v24 = selfCopy;
       v25 = 2112;
       v26 = @"com.apple.SafariTechnologyPreview";
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ adding policies for '%@'", &v23, 0x16u);
     }
 
-    if (sub_100096CA8(&v5->super.isa))
+    if (sub_100096CA8(&selfCopy->super.isa))
     {
       v10 = nplog_obj();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v23 = 138412546;
-        v24 = v5;
+        v24 = selfCopy;
         v25 = 2112;
         v26 = @"com.apple.SafariTechnologyPreview";
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%@ successfully added policies for '%@'", &v23, 0x16u);
@@ -2162,24 +2162,24 @@ LABEL_24:
 
       v11 = 1;
 LABEL_15:
-      if ([v4 containsObject:@"com.apple.mobilesafari"])
+      if ([installationCopy containsObject:@"com.apple.mobilesafari"])
       {
-        sub_100096200(&v5->super.isa);
+        sub_100096200(&selfCopy->super.isa);
         v13 = nplog_obj();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v23 = 138412290;
-          v24 = v5;
+          v24 = selfCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@ adding policies for Safari Bundles", &v23, 0xCu);
         }
 
-        if (sub_100096F38(v5))
+        if (sub_100096F38(selfCopy))
         {
           v14 = nplog_obj();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             v23 = 138412290;
-            v24 = v5;
+            v24 = selfCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@ successfully added policies for Safari Bundles", &v23, 0xCu);
           }
 
@@ -2192,49 +2192,49 @@ LABEL_15:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             v23 = 138412290;
-            v24 = v5;
+            v24 = selfCopy;
             _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@ failed to add policies for Safari Bundles", &v23, 0xCu);
           }
 
-          sub_100096200(&v5->super.isa);
+          sub_100096200(&selfCopy->super.isa);
         }
       }
 
-      if ([v4 containsObject:@"com.apple.mobilemail"])
+      if ([installationCopy containsObject:@"com.apple.mobilemail"])
       {
         v16 = nplog_obj();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v23 = 138412546;
-          v24 = v5;
+          v24 = selfCopy;
           v25 = 2112;
           v26 = @"com.apple.mobilemail";
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ '%@' was installed", &v23, 0x16u);
         }
 
-        v17 = sub_100096330(v5);
+        v17 = sub_100096330(selfCopy);
         v18 = nplog_obj();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           v23 = 138412290;
-          v24 = v5;
+          v24 = selfCopy;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@ adding policies for Mail App", &v23, 0xCu);
         }
 
-        if (sub_1000971E0(&v5->super.isa))
+        if (sub_1000971E0(&selfCopy->super.isa))
         {
           v19 = nplog_obj();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             v23 = 138412290;
-            v24 = v5;
+            v24 = selfCopy;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@ successfully added policies for Mail App", &v23, 0xCu);
           }
 
 LABEL_38:
-          if (v5)
+          if (selfCopy)
           {
-            session = v5->_session;
+            session = selfCopy->_session;
           }
 
           else
@@ -2252,11 +2252,11 @@ LABEL_38:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           v23 = 138412290;
-          v24 = v5;
+          v24 = selfCopy;
           _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%@ failed to add policies for Mail App", &v23, 0xCu);
         }
 
-        sub_100096330(v5);
+        sub_100096330(selfCopy);
         v11 |= v17;
       }
 
@@ -2272,61 +2272,61 @@ LABEL_38:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v23 = 138412546;
-      v24 = v5;
+      v24 = selfCopy;
       v25 = 2112;
       v26 = @"com.apple.SafariTechnologyPreview";
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@ failed to add policies for '%@'", &v23, 0x16u);
     }
 
-    sub_1000960D0(&v5->super.isa);
+    sub_1000960D0(&selfCopy->super.isa);
 LABEL_14:
     v11 = 0;
     goto LABEL_15;
   }
 
 LABEL_41:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)handleAppUninstallation:(id)a3
+- (void)handleAppUninstallation:(id)uninstallation
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 containsObject:@"com.apple.SafariTechnologyPreview"];
+  uninstallationCopy = uninstallation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [uninstallationCopy containsObject:@"com.apple.SafariTechnologyPreview"];
   if (v6)
   {
     v7 = nplog_obj();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
-      v15 = v5;
+      v15 = selfCopy;
       v16 = 2112;
       v17 = @"com.apple.SafariTechnologyPreview";
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ removing policies for '%@'", &v14, 0x16u);
     }
 
-    sub_1000960D0(&v5->super.isa);
+    sub_1000960D0(&selfCopy->super.isa);
   }
 
-  if ([v4 containsObject:@"com.apple.mobilesafari"])
+  if ([uninstallationCopy containsObject:@"com.apple.mobilesafari"])
   {
-    sub_100096200(&v5->super.isa);
+    sub_100096200(&selfCopy->super.isa);
     v8 = nplog_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = selfCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ adding policies for Safari Bundles", &v14, 0xCu);
     }
 
-    if (sub_100096F38(v5))
+    if (sub_100096F38(selfCopy))
     {
       v9 = nplog_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = selfCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ successfully added policies for Safari Bundles", &v14, 0xCu);
       }
 
@@ -2339,15 +2339,15 @@ LABEL_41:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = selfCopy;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@ failed to add policies for Safari Bundles", &v14, 0xCu);
       }
 
-      sub_100096200(&v5->super.isa);
+      sub_100096200(&selfCopy->super.isa);
     }
   }
 
-  if (![v4 containsObject:@"com.apple.mobilemail"])
+  if (![uninstallationCopy containsObject:@"com.apple.mobilemail"])
   {
     if (!v6)
     {
@@ -2361,18 +2361,18 @@ LABEL_41:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v14 = 138412546;
-    v15 = v5;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = @"com.apple.mobilemail";
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ '%@' was uninstalled", &v14, 0x16u);
   }
 
-  if ((sub_100096330(v5) | v6))
+  if ((sub_100096330(selfCopy) | v6))
   {
 LABEL_21:
-    if (v5)
+    if (selfCopy)
     {
-      session = v5->_session;
+      session = selfCopy->_session;
     }
 
     else
@@ -2385,12 +2385,12 @@ LABEL_21:
   }
 
 LABEL_24:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)addPoliciesForMPTCPConverterProxy:(id)a3
+- (BOOL)addPoliciesForMPTCPConverterProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   if (self)
   {
     mptcpProxyPolicyIDs = self->_mptcpProxyPolicyIDs;
@@ -2403,13 +2403,13 @@ LABEL_24:
 
   if ([(NSMutableArray *)mptcpProxyPolicyIDs count])
   {
-    v6 = 0;
+    apply = 0;
   }
 
   else
   {
-    v24 = v4;
-    sub_100086BFC(NSPPrivacyProxyPolicySerialization, v4);
+    v24 = proxyCopy;
+    sub_100086BFC(NSPPrivacyProxyPolicySerialization, proxyCopy);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -2434,7 +2434,7 @@ LABEL_24:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v30 = self;
+            selfCopy3 = self;
             v31 = 2112;
             v32 = v12;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@ adding MPTCP converter proxy policy %@", buf, 0x16u);
@@ -2458,19 +2458,19 @@ LABEL_24:
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v30 = self;
+              selfCopy3 = self;
               _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ failed to add MPTCP converter proxy policy", buf, 0xCu);
             }
 
-            v6 = 0;
-            v4 = v24;
+            apply = 0;
+            proxyCopy = v24;
             goto LABEL_30;
           }
 
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v30 = self;
+            selfCopy3 = self;
             v31 = 2048;
             v32 = v15;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@ added MPTCP converter proxy policy %lu", buf, 0x16u);
@@ -2515,17 +2515,17 @@ LABEL_24:
       v22 = 0;
     }
 
-    v4 = v24;
-    v6 = [(NEPolicySession *)v22 apply];
+    proxyCopy = v24;
+    apply = [(NEPolicySession *)v22 apply];
 LABEL_30:
   }
 
-  return v6;
+  return apply;
 }
 
-- (void)removePoliciesForMPTCPConverterProxy:(BOOL)a3
+- (void)removePoliciesForMPTCPConverterProxy:(BOOL)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -2581,7 +2581,7 @@ LABEL_30:
     while (v14);
   }
 
-  if (v3)
+  if (proxyCopy)
   {
     if (self)
     {

@@ -1,9 +1,9 @@
 @interface WFRunnerPrewarmManager
 + (WFRunnerPrewarmManager)sharedManager;
 - (WFRunnerConnection)connection;
-- (void)prewarmRunnerWithHostIfNecessary:(id)a3;
+- (void)prewarmRunnerWithHostIfNecessary:(id)necessary;
 - (void)reset;
-- (void)setConnection:(id)a3;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation WFRunnerPrewarmManager
@@ -24,22 +24,22 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1DF9964();
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
-  v6 = self;
-  RunnerPrewarmManager.connection.setter(a3);
+  connectionCopy = connection;
+  selfCopy = self;
+  RunnerPrewarmManager.connection.setter(connection);
 }
 
-- (void)prewarmRunnerWithHostIfNecessary:(id)a3
+- (void)prewarmRunnerWithHostIfNecessary:(id)necessary
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1B1E08548(a3);
+  selfCopy = self;
+  sub_1B1E08548(necessary);
   swift_unknownObjectRelease();
 }
 

@@ -1,5 +1,5 @@
 @interface AVVCRecordDeviceInfo
-- (AVVCRecordDeviceInfo)initWithRecordingEngine:(shared_ptr<AVVCRecordingEngine>)a3;
+- (AVVCRecordDeviceInfo)initWithRecordingEngine:(shared_ptr<AVVCRecordingEngine>)engine;
 - (void)dealloc;
 @end
 
@@ -23,7 +23,7 @@
           v9 = 1024;
           v10 = 231;
           v11 = 2048;
-          v12 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1BA5AC000, v4, OS_LOG_TYPE_DEBUG, "%25s:%-5d AVVCRecordDeviceInfo dealloc. self(%p)", buf, 0x1Cu);
         }
       }
@@ -36,13 +36,13 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (AVVCRecordDeviceInfo)initWithRecordingEngine:(shared_ptr<AVVCRecordingEngine>)a3
+- (AVVCRecordDeviceInfo)initWithRecordingEngine:(shared_ptr<AVVCRecordingEngine>)engine
 {
-  var0 = a3.var0;
+  var0 = engine.var0;
   v48 = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = AVVCRecordDeviceInfo;
-  v4 = [(AVVCRecordDeviceInfo *)&v39 init:a3.var0];
+  v4 = [(AVVCRecordDeviceInfo *)&v39 init:engine.var0];
   if (v4)
   {
     if (!kAVVCScope)

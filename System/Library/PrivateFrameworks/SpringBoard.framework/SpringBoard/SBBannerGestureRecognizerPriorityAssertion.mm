@@ -1,9 +1,9 @@
 @interface SBBannerGestureRecognizerPriorityAssertion
 - (NSString)description;
-- (SBBannerGestureRecognizerPriorityAssertion)initWithPriority:(int64_t)a3 reason:(id)a4 enablementChangeHandler:(id)a5 invalidationHandler:(id)a6;
+- (SBBannerGestureRecognizerPriorityAssertion)initWithPriority:(int64_t)priority reason:(id)reason enablementChangeHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SBBannerGestureRecognizerPriorityAssertion
@@ -41,23 +41,23 @@
   [(SBBannerGestureRecognizerPriorityAssertion *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     (*(self->_enablementChangeHandler + 2))();
   }
 }
 
-- (SBBannerGestureRecognizerPriorityAssertion)initWithPriority:(int64_t)a3 reason:(id)a4 enablementChangeHandler:(id)a5 invalidationHandler:(id)a6
+- (SBBannerGestureRecognizerPriorityAssertion)initWithPriority:(int64_t)priority reason:(id)reason enablementChangeHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([objc_opt_class() isValidBannerGestureRecognizerPriority:a3])
+  reasonCopy = reason;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
+  if ([objc_opt_class() isValidBannerGestureRecognizerPriority:priority])
   {
-    if (v10)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -66,17 +66,17 @@
   else
   {
     [SBBannerGestureRecognizerPriorityAssertion initWithPriority:reason:enablementChangeHandler:invalidationHandler:];
-    if (v10)
+    if (reasonCopy)
     {
 LABEL_3:
-      if (v11)
+      if (handlerCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [SBBannerGestureRecognizerPriorityAssertion initWithPriority:reason:enablementChangeHandler:invalidationHandler:];
-      if (v12)
+      if (invalidationHandlerCopy)
       {
         goto LABEL_5;
       }
@@ -86,13 +86,13 @@ LABEL_10:
   }
 
   [SBBannerGestureRecognizerPriorityAssertion initWithPriority:reason:enablementChangeHandler:invalidationHandler:];
-  if (!v11)
+  if (!handlerCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v12)
+  if (invalidationHandlerCopy)
   {
     goto LABEL_5;
   }
@@ -107,16 +107,16 @@ LABEL_5:
   if (v13)
   {
     v13->_enabled = 1;
-    v13->_priority = a3;
-    v15 = [v10 copy];
+    v13->_priority = priority;
+    v15 = [reasonCopy copy];
     reason = v14->_reason;
     v14->_reason = v15;
 
-    v17 = [v11 copy];
+    v17 = [handlerCopy copy];
     enablementChangeHandler = v14->_enablementChangeHandler;
     v14->_enablementChangeHandler = v17;
 
-    v19 = [v12 copy];
+    v19 = [invalidationHandlerCopy copy];
     invalidationHandler = v14->_invalidationHandler;
     v14->_invalidationHandler = v19;
   }

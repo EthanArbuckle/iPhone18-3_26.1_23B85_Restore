@@ -4,10 +4,10 @@
 - (id)gradient;
 - (id)mutableCopy;
 - (void)dealloc;
-- (void)setAppearance:(id)a3;
-- (void)setColor:(CGColor *)a3;
-- (void)setGradient:(id)a3;
-- (void)setImage:(CGImage *)a3;
+- (void)setAppearance:(id)appearance;
+- (void)setColor:(CGColor *)color;
+- (void)setGradient:(id)gradient;
+- (void)setImage:(CGImage *)image;
 @end
 
 @implementation CUIMutableNamedLayerImage
@@ -58,46 +58,46 @@
   [(CUINamedLayerImage *)&v3 dealloc];
 }
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   image = self->_image;
-  if (image != a3)
+  if (image != image)
   {
     CGImageRelease(image);
-    CGImageRetain(a3);
-    self->_image = a3;
+    CGImageRetain(image);
+    self->_image = image;
   }
 }
 
-- (void)setColor:(CGColor *)a3
+- (void)setColor:(CGColor *)color
 {
   gradientOrColor = self->_gradientOrColor;
-  if (gradientOrColor != a3)
+  if (gradientOrColor != color)
   {
 
-    v6 = a3;
-    self->_gradientOrColor = a3;
+    colorCopy = color;
+    self->_gradientOrColor = color;
   }
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
   gradientOrColor = self->_gradientOrColor;
-  if (gradientOrColor != a3)
+  if (gradientOrColor != gradient)
   {
 
-    v6 = a3;
-    self->_gradientOrColor = a3;
+    gradientCopy = gradient;
+    self->_gradientOrColor = gradient;
   }
 }
 
-- (void)setAppearance:(id)a3
+- (void)setAppearance:(id)appearance
 {
   appearance = self->_appearance;
-  if (appearance != a3)
+  if (appearance != appearance)
   {
 
-    self->_appearance = a3;
+    self->_appearance = appearance;
   }
 }
 

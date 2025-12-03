@@ -1,50 +1,50 @@
 @interface BCCardSetPushedContractedState
-- (void)cardViewController:(id)a3 contentScrollViewDidChange:(id)a4 cardData:(id)a5;
-- (void)cardViewController:(id)a3 scrollToTopAnimated:(BOOL)a4 cardData:(id)a5;
-- (void)didBecomeCurrentStateCardViewController:(id)a3 previousState:(id)a4 cardData:(id)a5;
-- (void)willStopBeingCurrentStateCardViewController:(id)a3 newState:(id)a4 cardDate:(id)a5;
+- (void)cardViewController:(id)controller contentScrollViewDidChange:(id)change cardData:(id)data;
+- (void)cardViewController:(id)controller scrollToTopAnimated:(BOOL)animated cardData:(id)data;
+- (void)didBecomeCurrentStateCardViewController:(id)controller previousState:(id)state cardData:(id)data;
+- (void)willStopBeingCurrentStateCardViewController:(id)controller newState:(id)state cardDate:(id)date;
 @end
 
 @implementation BCCardSetPushedContractedState
 
-- (void)didBecomeCurrentStateCardViewController:(id)a3 previousState:(id)a4 cardData:(id)a5
+- (void)didBecomeCurrentStateCardViewController:(id)controller previousState:(id)state cardData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 contentContainerView];
-  [v11 setClipsToBounds:1];
+  controllerCopy = controller;
+  stateCopy = state;
+  dataCopy = data;
+  contentContainerView = [controllerCopy contentContainerView];
+  [contentContainerView setClipsToBounds:1];
 
   v12 = +[BCCardSetState contractedState];
 
-  if (v12 == v9)
+  if (v12 == stateCopy)
   {
     y = CGPointZero.y;
-    v14 = [v8 scrollView];
-    [v14 setContentOffset:{CGPointZero.x, y}];
+    scrollView = [controllerCopy scrollView];
+    [scrollView setContentOffset:{CGPointZero.x, y}];
 
-    v15 = [v8 cardView];
+    cardView = [controllerCopy cardView];
     v23 = *&CGAffineTransformIdentity.c;
     v29 = *&CGAffineTransformIdentity.a;
     v24 = v29;
     v30 = v23;
     v31 = *&CGAffineTransformIdentity.tx;
     v22 = v31;
-    [v15 setTransform:&v29];
+    [cardView setTransform:&v29];
 
-    v16 = [v8 cardNavigationController];
-    v17 = [v16 view];
+    cardNavigationController = [controllerCopy cardNavigationController];
+    view = [cardNavigationController view];
     v29 = v24;
     v30 = v23;
     v31 = v22;
-    [v17 setTransform:&v29];
+    [view setTransform:&v29];
 
-    v18 = [v8 cardNavigationController];
-    v19 = [v18 view];
-    v20 = v19;
-    if (v19)
+    cardNavigationController2 = [controllerCopy cardNavigationController];
+    view2 = [cardNavigationController2 view];
+    v20 = view2;
+    if (view2)
     {
-      [v19 transform];
+      [view2 transform];
     }
 
     else
@@ -54,66 +54,66 @@
       v26 = 0u;
     }
 
-    v21 = [v8 auxiliaryNavigationBarView];
+    auxiliaryNavigationBarView = [controllerCopy auxiliaryNavigationBarView];
     v29 = v26;
     v30 = v27;
     v31 = v28;
-    [v21 setTransform:&v29];
+    [auxiliaryNavigationBarView setTransform:&v29];
   }
 
-  [v10 _updateScrollViewContentInset];
+  [dataCopy _updateScrollViewContentInset];
   v25.receiver = self;
   v25.super_class = BCCardSetPushedContractedState;
-  [(BCCardSetContractedState *)&v25 didBecomeCurrentStateCardViewController:v8 previousState:v9 cardData:v10];
+  [(BCCardSetContractedState *)&v25 didBecomeCurrentStateCardViewController:controllerCopy previousState:stateCopy cardData:dataCopy];
 }
 
-- (void)cardViewController:(id)a3 contentScrollViewDidChange:(id)a4 cardData:(id)a5
+- (void)cardViewController:(id)controller contentScrollViewDidChange:(id)change cardData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(BCCardSetContractedState *)self cardViewController:v10 cardScrollViewOffsetForContentScrollView:v9 cardData:v8];
+  dataCopy = data;
+  changeCopy = change;
+  controllerCopy = controller;
+  [(BCCardSetContractedState *)self cardViewController:controllerCopy cardScrollViewOffsetForContentScrollView:changeCopy cardData:dataCopy];
   v12 = v11;
-  v13 = [v10 scrollView];
-  [v13 contentOffset];
+  scrollView = [controllerCopy scrollView];
+  [scrollView contentOffset];
   v15 = v14;
 
-  v16 = [v10 scrollView];
-  [v16 setContentOffset:{v15, v12}];
+  scrollView2 = [controllerCopy scrollView];
+  [scrollView2 setContentOffset:{v15, v12}];
 
-  [(BCCardSetContractedState *)self cardViewController:v10 repositionOffsetsWithContentScrollView:v9 cardData:v8];
-  v18 = [v8 configuration];
+  [(BCCardSetContractedState *)self cardViewController:controllerCopy repositionOffsetsWithContentScrollView:changeCopy cardData:dataCopy];
+  configuration = [dataCopy configuration];
 
-  LODWORD(v8) = [v18 cardsCanExpand];
-  v17 = [v10 scrollView];
+  LODWORD(dataCopy) = [configuration cardsCanExpand];
+  scrollView3 = [controllerCopy scrollView];
 
-  [v17 setShowsVerticalScrollIndicator:v8 ^ 1];
+  [scrollView3 setShowsVerticalScrollIndicator:dataCopy ^ 1];
 }
 
-- (void)willStopBeingCurrentStateCardViewController:(id)a3 newState:(id)a4 cardDate:(id)a5
+- (void)willStopBeingCurrentStateCardViewController:(id)controller newState:(id)state cardDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if (([v10 transitioning] & 1) == 0)
+  controllerCopy = controller;
+  dateCopy = date;
+  stateCopy = state;
+  if (([stateCopy transitioning] & 1) == 0)
   {
-    v11 = [v8 contentScrollView];
-    [(BCCardSetContractedState *)self cardViewController:v8 repositionOffsetsWithContentScrollView:v11 cardData:v9];
+    contentScrollView = [controllerCopy contentScrollView];
+    [(BCCardSetContractedState *)self cardViewController:controllerCopy repositionOffsetsWithContentScrollView:contentScrollView cardData:dateCopy];
   }
 
   [(BCCardSetPushedContractedState *)self setPopping:1];
-  [v9 _updateScrollViewContentInset];
+  [dateCopy _updateScrollViewContentInset];
   [(BCCardSetPushedContractedState *)self setPopping:0];
   v12.receiver = self;
   v12.super_class = BCCardSetPushedContractedState;
-  [(BCCardSetState *)&v12 willStopBeingCurrentStateCardViewController:v8 newState:v10 cardDate:v9];
+  [(BCCardSetState *)&v12 willStopBeingCurrentStateCardViewController:controllerCopy newState:stateCopy cardDate:dateCopy];
 }
 
-- (void)cardViewController:(id)a3 scrollToTopAnimated:(BOOL)a4 cardData:(id)a5
+- (void)cardViewController:(id)controller scrollToTopAnimated:(BOOL)animated cardData:(id)data
 {
-  v5 = a4;
-  v7 = [a3 scrollView];
-  [(BCCardSetState *)self _scrollScrollViewToTopForCardViewController:v7 animated:v5];
+  animatedCopy = animated;
+  scrollView = [controller scrollView];
+  [(BCCardSetState *)self _scrollScrollViewToTopForCardViewController:scrollView animated:animatedCopy];
 }
 
 @end

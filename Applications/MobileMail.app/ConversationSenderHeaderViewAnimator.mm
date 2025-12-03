@@ -5,13 +5,13 @@
 - (_TtP10MobileMail44ConversationSenderHeaderViewAnimatorDelegate_)delegate;
 - (double)currentHeight;
 - (int64_t)currentExpansionStatus;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCurrentExpansionStatus:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)updateHeaderWithExpansionStatus:(int64_t)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCurrentExpansionStatus:(int64_t)status;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderView:(id)view;
+- (void)updateHeaderWithExpansionStatus:(int64_t)status;
 @end
 
 @implementation ConversationSenderHeaderViewAnimator
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  _objc_retain(a3);
+  _objc_retain(view);
   _objc_retain(self);
-  sub_1002AF184(a3);
+  sub_1002AF184(view);
   _objc_release(self);
 }
 
@@ -42,7 +42,7 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -58,10 +58,10 @@
   return v4;
 }
 
-- (void)setCurrentExpansionStatus:(int64_t)a3
+- (void)setCurrentExpansionStatus:(int64_t)status
 {
   _objc_retain(self);
-  sub_1002AF4E8(a3);
+  sub_1002AF4E8(status);
   _objc_release(self);
 }
 
@@ -87,38 +87,38 @@
   return sub_1002AF7F8();
 }
 
-- (void)updateHeaderWithExpansionStatus:(int64_t)a3
+- (void)updateHeaderWithExpansionStatus:(int64_t)status
 {
   _objc_retain(self);
-  sub_1002B0034(a3);
+  sub_1002B0034(status);
   _objc_release(self);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  _objc_retain(a3);
+  _objc_retain(dragging);
   _objc_retain(self);
-  sub_1002B0618(a3);
+  sub_1002B0618(dragging);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(dragging);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  _objc_retain(a3);
+  _objc_retain(scroll);
   _objc_retain(self);
-  sub_1002B0778(a3);
+  sub_1002B0778(scroll);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(scroll);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  _objc_retain(a3);
+  _objc_retain(dragging);
   _objc_retain(self);
-  sub_1002B1A60(a3, a5, a4.x, a4.y);
+  sub_1002B1A60(dragging, offset, velocity.x, velocity.y);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(dragging);
 }
 
 @end

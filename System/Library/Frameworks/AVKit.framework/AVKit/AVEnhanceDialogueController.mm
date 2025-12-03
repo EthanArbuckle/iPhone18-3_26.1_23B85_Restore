@@ -7,16 +7,16 @@
 - (void)_updateCurrentAudioRouteSupported;
 - (void)_updateCurrentContentSupported;
 - (void)dealloc;
-- (void)setCurrentLevel:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPlayerController:(id)a3;
+- (void)setCurrentLevel:(int64_t)level;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPlayerController:(id)controller;
 @end
 
 @implementation AVEnhanceDialogueController
 
 - (void)_updateCurrentAudioRouteSupported
 {
-  if (a1)
+  if (self)
   {
     v2 = _AVLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -25,17 +25,17 @@
       _os_log_impl(&dword_18B49C000, v2, OS_LOG_TYPE_DEFAULT, "Checking Enhance Dialogue support for current audio route.", buf, 2u);
     }
 
-    v3 = [a1 playerController];
-    v4 = [v3 player];
-    objc_initWeak(buf, a1);
+    playerController = [self playerController];
+    player = [playerController player];
+    objc_initWeak(buf, self);
     v5 = +[AVEnhanceDialogueController queue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __64__AVEnhanceDialogueController__updateCurrentAudioRouteSupported__block_invoke;
     v7[3] = &unk_1E7209A10;
     objc_copyWeak(&v9, buf);
-    v8 = v4;
-    v6 = v4;
+    v8 = player;
+    v6 = player;
     dispatch_async(v5, v7);
 
     objc_destroyWeak(&v9);
@@ -219,29 +219,29 @@ LABEL_37:
 - (void)_updateCurrentContentSupported
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AVEnhanceDialogueController *)self playerController];
-  v4 = [v3 hasEnabledAudio];
+  playerController = [(AVEnhanceDialogueController *)self playerController];
+  hasEnabledAudio = [playerController hasEnabledAudio];
 
-  v5 = [(AVEnhanceDialogueController *)self cachedAudioSessionMode];
+  cachedAudioSessionMode = [(AVEnhanceDialogueController *)self cachedAudioSessionMode];
   v6 = *MEMORY[0x1E6958148];
 
-  if (v5 == v6)
+  if (cachedAudioSessionMode == v6)
   {
-    v8 = [(AVEnhanceDialogueController *)self playerController];
-    v7 = [v8 hasEnhancedDialogueEligibleAudio];
+    playerController2 = [(AVEnhanceDialogueController *)self playerController];
+    hasEnhancedDialogueEligibleAudio = [playerController2 hasEnhancedDialogueEligibleAudio];
   }
 
   else
   {
-    v7 = 0;
+    hasEnhancedDialogueEligibleAudio = 0;
   }
 
   v9 = _AVLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = v4 & v7;
+    v10 = hasEnabledAudio & hasEnhancedDialogueEligibleAudio;
     v11 = "NO";
-    if ((v4 & v7) != 0)
+    if ((hasEnabledAudio & hasEnhancedDialogueEligibleAudio) != 0)
     {
       v12 = "YES";
     }
@@ -251,7 +251,7 @@ LABEL_37:
       v12 = "NO";
     }
 
-    if (v4)
+    if (hasEnabledAudio)
     {
       v13 = "YES";
     }
@@ -263,7 +263,7 @@ LABEL_37:
 
     v15 = 136446978;
     v16 = v12;
-    if (v5 == v6)
+    if (cachedAudioSessionMode == v6)
     {
       v14 = "YES";
     }
@@ -277,7 +277,7 @@ LABEL_37:
     v18 = v13;
     v19 = 2082;
     v20 = v14;
-    if (v7)
+    if (hasEnhancedDialogueEligibleAudio)
     {
       v11 = "YES";
     }
@@ -289,7 +289,7 @@ LABEL_37:
 
   else
   {
-    v10 = v4 & v7;
+    v10 = hasEnabledAudio & hasEnhancedDialogueEligibleAudio;
   }
 
   [(AVEnhanceDialogueController *)self setCurrentContentSupported:v10 & 1];
@@ -297,23 +297,23 @@ LABEL_37:
 
 - (NSArray)availableLevels
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[AVKitGlobalSettings shared];
   if ([v4 enhanceDialogueEnabled] && -[AVEnhanceDialogueController currentAudioRouteSupported](self, "currentAudioRouteSupported"))
   {
-    v5 = [(AVEnhanceDialogueController *)self playerController];
-    v6 = [v5 hasEnhancedDialogueEligibleAudio];
+    playerController = [(AVEnhanceDialogueController *)self playerController];
+    hasEnhancedDialogueEligibleAudio = [playerController hasEnhancedDialogueEligibleAudio];
 
-    if (v6)
+    if (hasEnhancedDialogueEligibleAudio)
     {
       if (_AXSExtendedVoiceIsolationMediaModesEnabled())
       {
-        [v3 addObject:&unk_1EFF12BF0];
+        [array addObject:&unk_1EFF12BF0];
       }
 
-      [v3 addObject:&unk_1EFF12C08];
-      [v3 addObject:&unk_1EFF12C20];
-      [v3 addObject:&unk_1EFF12C38];
+      [array addObject:&unk_1EFF12C08];
+      [array addObject:&unk_1EFF12C20];
+      [array addObject:&unk_1EFF12C38];
     }
   }
 
@@ -321,21 +321,21 @@ LABEL_37:
   {
   }
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
 
-- (void)setCurrentLevel:(int64_t)a3
+- (void)setCurrentLevel:(int64_t)level
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = +[AVKitGlobalSettings shared];
-  v6 = [v5 enhanceDialogueEnabled];
+  enhanceDialogueEnabled = [v5 enhanceDialogueEnabled];
 
-  if (v6)
+  if (enhanceDialogueEnabled)
   {
     [(AVEnhanceDialogueController *)self willChangeValueForKey:@"currentLevel"];
-    if (a3 == 3)
+    if (level == 3)
     {
       if (!_AXSExtendedVoiceIsolationMediaModesEnabled())
       {
@@ -348,38 +348,38 @@ LABEL_37:
       }
 
       objc_opt_self();
-      a3 = 3;
+      level = 3;
     }
 
     else
     {
       objc_opt_self();
-      if (a3 >= 4)
+      if (level >= 4)
       {
         v8 = _AVLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v16 = a3;
+          levelCopy = level;
           _os_log_error_impl(&dword_18B49C000, v8, OS_LOG_TYPE_ERROR, "Unknown AVEnhanceDialogueLevel: %ld", buf, 0xCu);
         }
 
-        a3 = 0;
+        level = 0;
       }
     }
 
     v14 = 0;
-    v9 = [MEMORY[0x1E69583C0] setEnhanceDialogueLevel:a3 error:&v14];
+    v9 = [MEMORY[0x1E69583C0] setEnhanceDialogueLevel:level error:&v14];
     v10 = v14;
     if ((v9 & 1) == 0)
     {
       v11 = _AVLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v10 localizedDescription];
-        v13 = [v12 cStringUsingEncoding:4];
+        localizedDescription = [v10 localizedDescription];
+        v13 = [localizedDescription cStringUsingEncoding:4];
         *buf = 136315138;
-        v16 = v13;
+        levelCopy = v13;
         _os_log_error_impl(&dword_18B49C000, v11, OS_LOG_TYPE_ERROR, "Unable to set Enhance Dialogue level: %s", buf, 0xCu);
       }
     }
@@ -399,9 +399,9 @@ LABEL_37:
     goto LABEL_18;
   }
 
-  v4 = [(AVEnhanceDialogueController *)self currentContentSupported];
+  currentContentSupported = [(AVEnhanceDialogueController *)self currentContentSupported];
 
-  if (!v4)
+  if (!currentContentSupported)
   {
 LABEL_18:
     objc_opt_self();
@@ -416,8 +416,8 @@ LABEL_18:
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v6 localizedDescription];
-      v13 = [v12 cStringUsingEncoding:4];
+      localizedDescription = [v6 localizedDescription];
+      v13 = [localizedDescription cStringUsingEncoding:4];
       *buf = 136315138;
       v17 = v13;
       _os_log_error_impl(&dword_18B49C000, v7, OS_LOG_TYPE_ERROR, "Unable to get Enhance Dialogue level: %s", buf, 0xCu);
@@ -452,26 +452,26 @@ LABEL_18:
   return v9;
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_playerController != v5)
+  controllerCopy = controller;
+  if (self->_playerController != controllerCopy)
   {
-    v12 = v5;
+    v12 = controllerCopy;
     [(AVEnhanceDialogueController *)self willChangeValueForKey:@"playerController"];
     [(AVObservationController *)self->_observationController stopAllObservation];
-    objc_storeStrong(&self->_playerController, a3);
+    objc_storeStrong(&self->_playerController, controller);
     *buf = @"playerController.currentAssetIfReady";
     v15 = @"playerController.rate";
     v16 = @"cachedAudioSessionMode";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:3];
-    v7 = [(AVEnhanceDialogueController *)self observationController];
-    v8 = [v7 startObserving:self keyPaths:v6 includeInitialValue:1 observationHandler:&__block_literal_global_46];
-    [v7 startObservingNotificationForName:*MEMORY[0x1E69586A8] object:0 notificationCenter:0 observationHandler:&__block_literal_global_49_26638];
-    [v7 startObservingNotificationForName:*MEMORY[0x1E69586B0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_51_26639];
-    v9 = [v7 startObserving:self keyPath:@"mode" includeInitialValue:0 observationHandler:&__block_literal_global_56_26641];
-    [v7 startObservingNotificationForName:*MEMORY[0x1E6987A30] object:0 notificationCenter:0 observationHandler:&__block_literal_global_58_26642];
+    observationController = [(AVEnhanceDialogueController *)self observationController];
+    v8 = [observationController startObserving:self keyPaths:v6 includeInitialValue:1 observationHandler:&__block_literal_global_46];
+    [observationController startObservingNotificationForName:*MEMORY[0x1E69586A8] object:0 notificationCenter:0 observationHandler:&__block_literal_global_49_26638];
+    [observationController startObservingNotificationForName:*MEMORY[0x1E69586B0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_51_26639];
+    v9 = [observationController startObserving:self keyPath:@"mode" includeInitialValue:0 observationHandler:&__block_literal_global_56_26641];
+    [observationController startObservingNotificationForName:*MEMORY[0x1E6987A30] object:0 notificationCenter:0 observationHandler:&__block_literal_global_58_26642];
 
     [(AVEnhanceDialogueController *)self _updateActuallyEnabledStateIfNeeded];
     [(AVEnhanceDialogueController *)self _updateCurrentAudioRouteSupported];
@@ -494,40 +494,40 @@ LABEL_18:
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
     [(AVEnhanceDialogueController *)self didChangeValueForKey:@"playerController"];
-    v5 = v12;
+    controllerCopy = v12;
   }
 }
 
 - (void)_updateActuallyEnabledStateIfNeeded
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 enabled];
-    v3 = [a1 playerController];
-    v4 = [v3 hasEnabledAudio];
+    enabled = [self enabled];
+    playerController = [self playerController];
+    hasEnabledAudio = [playerController hasEnabledAudio];
 
-    v5 = [a1 cachedAudioSessionMode];
+    cachedAudioSessionMode = [self cachedAudioSessionMode];
     v6 = *MEMORY[0x1E6958148];
 
-    if (v5 == v6)
+    if (cachedAudioSessionMode == v6)
     {
-      v8 = [a1 playerController];
-      v7 = [v8 hasEnhancedDialogueEligibleAudio];
+      playerController2 = [self playerController];
+      hasEnhancedDialogueEligibleAudio = [playerController2 hasEnhancedDialogueEligibleAudio];
     }
 
     else
     {
-      v7 = 0;
+      hasEnhancedDialogueEligibleAudio = 0;
     }
 
-    v9 = [a1 playerController];
-    [v9 rate];
+    playerController3 = [self playerController];
+    [playerController3 rate];
     v11 = v10;
 
     if (v11 > 0.0)
     {
-      v12 = v2 & v4 & v7;
+      v12 = enabled & hasEnabledAudio & hasEnhancedDialogueEligibleAudio;
     }
 
     else
@@ -536,14 +536,14 @@ LABEL_18:
     }
 
     v13 = +[AVEnhanceDialogueOptInManager sharedInstance];
-    v14 = [v13 isEnhanceDialogueAllowedUsingController:a1];
+    v14 = [v13 isEnhanceDialogueAllowedUsingController:self];
 
     v15 = _AVLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 136447746;
       v16 = "NO";
-      if (v2)
+      if (enabled)
       {
         v17 = "YES";
       }
@@ -553,7 +553,7 @@ LABEL_18:
         v17 = "NO";
       }
 
-      if (v4)
+      if (hasEnabledAudio)
       {
         v18 = "YES";
       }
@@ -563,7 +563,7 @@ LABEL_18:
         v18 = "NO";
       }
 
-      if (v7)
+      if (hasEnhancedDialogueEligibleAudio)
       {
         v19 = "YES";
       }
@@ -573,7 +573,7 @@ LABEL_18:
         v19 = "NO";
       }
 
-      if (v5 == v6)
+      if (cachedAudioSessionMode == v6)
       {
         v20 = "YES";
       }
@@ -632,13 +632,13 @@ LABEL_18:
       }
 
       v23 = +[AVEnhanceDialogueOptInManager sharedInstance];
-      [v23 optOutEnhanceDialogueController:a1];
+      [v23 optOutEnhanceDialogueController:self];
     }
 
     else
     {
       v23 = +[AVEnhanceDialogueOptInManager sharedInstance];
-      [v23 optInEnhanceDialogueController:a1];
+      [v23 optInEnhanceDialogueController:self];
     }
   }
 }
@@ -742,12 +742,12 @@ void __49__AVEnhanceDialogueController__startObservations__block_invoke(uint64_t
   [(AVEnhanceDialogueController *)v2 _updateCurrentAudioRouteSupported];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     [(AVEnhanceDialogueController *)self willChangeValueForKey:@"enabled"];
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVEnhanceDialogueController *)self _updateActuallyEnabledStateIfNeeded];
     [(AVEnhanceDialogueController *)self _updateCurrentAudioRouteSupported];
 
@@ -757,8 +757,8 @@ void __49__AVEnhanceDialogueController__startObservations__block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [(AVEnhanceDialogueController *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVEnhanceDialogueController *)self observationController];
+  [observationController stopAllObservation];
 
   v4 = +[AVEnhanceDialogueOptInManager sharedInstance];
   v5 = [v4 isEnhanceDialogueAllowedUsingController:self];

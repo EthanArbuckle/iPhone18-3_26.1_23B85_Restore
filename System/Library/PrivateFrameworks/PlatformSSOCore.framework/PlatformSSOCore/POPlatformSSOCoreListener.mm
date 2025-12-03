@@ -1,16 +1,16 @@
 @interface POPlatformSSOCoreListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)initForLogin:(BOOL)a3 identifierProvider:(id)a4 jwksStroageProvider:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)initForLogin:(BOOL)login identifierProvider:(id)provider jwksStroageProvider:(id)stroageProvider;
 @end
 
 @implementation POPlatformSSOCoreListener
 
-- (id)initForLogin:(BOOL)a3 identifierProvider:(id)a4 jwksStroageProvider:(id)a5
+- (id)initForLogin:(BOOL)login identifierProvider:(id)provider jwksStroageProvider:(id)stroageProvider
 {
-  v7 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v7)
+  loginCopy = login;
+  providerCopy = provider;
+  stroageProviderCopy = stroageProvider;
+  if (loginCopy)
   {
     v11 = @"com.apple.PlatformSSO.login.service-xpc";
   }
@@ -26,17 +26,17 @@
   p_isa = &v12->super.super.super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_userIdentifierProvider, a4);
-    objc_storeStrong(p_isa + 8, a5);
+    objc_storeStrong(&v12->_userIdentifierProvider, provider);
+    objc_storeStrong(p_isa + 8, stroageProvider);
   }
 
   return p_isa;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (PO_LOG_POAgentListener_once != -1)
   {
     [POPlatformSSOCoreListener listener:shouldAcceptNewConnection:];
@@ -45,19 +45,19 @@
   v8 = PO_LOG_POAgentListener_log;
   if (os_log_type_enabled(PO_LOG_POAgentListener_log, OS_LOG_TYPE_DEBUG))
   {
-    [(POPlatformSSOCoreListener *)v6 listener:v7 shouldAcceptNewConnection:v8];
+    [(POPlatformSSOCoreListener *)listenerCopy listener:connectionCopy shouldAcceptNewConnection:v8];
   }
 
   v9 = [POAgentCoreProcess alloc];
-  v10 = [(POPlatformSSOCoreListener *)self userIdentifierProvider];
-  v11 = [(POPlatformSSOCoreListener *)self jwksStorageProvider];
-  v12 = [(POAgentCoreProcess *)v9 initWithXPCConnection:v7 identifierProvider:v10 jwksStroageProvider:v11];
+  userIdentifierProvider = [(POPlatformSSOCoreListener *)self userIdentifierProvider];
+  jwksStorageProvider = [(POPlatformSSOCoreListener *)self jwksStorageProvider];
+  v12 = [(POAgentCoreProcess *)v9 initWithXPCConnection:connectionCopy identifierProvider:userIdentifierProvider jwksStroageProvider:jwksStorageProvider];
 
   v13 = [POInternalProtocols interfaceWithInternalProtocol:&unk_2870B1AB8];
-  [v7 setExportedInterface:v13];
+  [connectionCopy setExportedInterface:v13];
 
-  [v7 setExportedObject:v12];
-  [v7 resume];
+  [connectionCopy setExportedObject:v12];
+  [connectionCopy resume];
   objc_initWeak(&location, v12);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
@@ -66,7 +66,7 @@
   objc_copyWeak(&v20, &location);
   [(POAgentCoreProcess *)v12 setInvalidationHandler:&v16];
   v14 = [(POAgentCoreProcess *)v12 invalidationHandler:v16];
-  [v7 setInvalidationHandler:v14];
+  [connectionCopy setInvalidationHandler:v14];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);

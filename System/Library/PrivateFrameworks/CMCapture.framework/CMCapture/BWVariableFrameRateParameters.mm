@@ -1,13 +1,13 @@
 @interface BWVariableFrameRateParameters
-- (BWVariableFrameRateParameters)initWithPortType:(id)a3 sensorIDDictionary:(id)a4;
+- (BWVariableFrameRateParameters)initWithPortType:(id)type sensorIDDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation BWVariableFrameRateParameters
 
-- (BWVariableFrameRateParameters)initWithPortType:(id)a3 sensorIDDictionary:(id)a4
+- (BWVariableFrameRateParameters)initWithPortType:(id)type sensorIDDictionary:(id)dictionary
 {
-  if (a3 && (v6 = [a4 objectForKeyedSubscript:@"VariableFrameRateVideoParameters"]) != 0)
+  if (type && (v6 = [dictionary objectForKeyedSubscript:@"VariableFrameRateVideoParameters"]) != 0)
   {
     v7 = v6;
     v10.receiver = self;
@@ -15,7 +15,7 @@
     v8 = [(BWVariableFrameRateParameters *)&v10 init];
     if (v8)
     {
-      v8->_portType = a3;
+      v8->_portType = type;
       v8->_motionThreshold = [objc_msgSend(v7 objectForKeyedSubscript:{@"MotionThreshold", "intValue"}];
       v8->_aeMaxGain = [objc_msgSend(v7 objectForKeyedSubscript:{@"AEMaxGainForFrameRate", "copy"}];
     }

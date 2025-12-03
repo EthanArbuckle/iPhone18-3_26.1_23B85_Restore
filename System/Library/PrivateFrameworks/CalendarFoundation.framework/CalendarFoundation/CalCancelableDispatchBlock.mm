@@ -1,20 +1,20 @@
 @interface CalCancelableDispatchBlock
-- (CalCancelableDispatchBlock)initWithBlock:(id)a3 inQueue:(id)a4;
+- (CalCancelableDispatchBlock)initWithBlock:(id)block inQueue:(id)queue;
 - (void)cancel;
-- (void)performAfterDelay:(double)a3;
+- (void)performAfterDelay:(double)delay;
 - (void)performAsync;
 @end
 
 @implementation CalCancelableDispatchBlock
 
-- (CalCancelableDispatchBlock)initWithBlock:(id)a3 inQueue:(id)a4
+- (CalCancelableDispatchBlock)initWithBlock:(id)block inQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  blockCopy = block;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (blockCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -40,13 +40,13 @@ LABEL_3:
     v15 = 3221225472;
     v16 = __52__CalCancelableDispatchBlock_initWithBlock_inQueue___block_invoke;
     v17 = &unk_1E7EC6A08;
-    v19 = v7;
+    v19 = blockCopy;
     v11 = v10;
     v18 = v11;
     v12 = dispatch_block_create(0, &v14);
     [v11 setBlock:{v12, v14, v15, v16, v17}];
 
-    objc_storeStrong(v11 + 2, a4);
+    objc_storeStrong(v11 + 2, queue);
   }
 
   return v10;
@@ -64,29 +64,29 @@ uint64_t __52__CalCancelableDispatchBlock_initWithBlock_inQueue___block_invoke(u
 - (void)performAsync
 {
   queue = [(CalCancelableDispatchBlock *)self queue];
-  v3 = [(CalCancelableDispatchBlock *)self block];
-  dispatch_async(queue, v3);
+  block = [(CalCancelableDispatchBlock *)self block];
+  dispatch_async(queue, block);
 }
 
-- (void)performAfterDelay:(double)a3
+- (void)performAfterDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (delay * 1000000000.0));
   queue = [(CalCancelableDispatchBlock *)self queue];
-  v5 = [(CalCancelableDispatchBlock *)self block];
-  dispatch_after(v4, queue, v5);
+  block = [(CalCancelableDispatchBlock *)self block];
+  dispatch_after(v4, queue, block);
 }
 
 - (void)cancel
 {
-  v3 = [(CalCancelableDispatchBlock *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CalCancelableDispatchBlock *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CalCancelableDispatchBlock *)self block];
+  block = [(CalCancelableDispatchBlock *)self block];
 
-  if (v4)
+  if (block)
   {
-    v5 = [(CalCancelableDispatchBlock *)self block];
-    dispatch_block_cancel(v5);
+    block2 = [(CalCancelableDispatchBlock *)self block];
+    dispatch_block_cancel(block2);
 
     [(CalCancelableDispatchBlock *)self setBlock:0];
   }

@@ -1,19 +1,19 @@
 @interface CMHeadphoneActivityUtils
-+ (int)motionActivityForHeadphoneActivity:(int64_t)a3;
++ (int)motionActivityForHeadphoneActivity:(int64_t)activity;
 @end
 
 @implementation CMHeadphoneActivityUtils
 
-+ (int)motionActivityForHeadphoneActivity:(int64_t)a3
++ (int)motionActivityForHeadphoneActivity:(int64_t)activity
 {
-  if (a3 > 4)
+  if (activity > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_19B7BD468[a3];
+    return dword_19B7BD468[activity];
   }
 }
 

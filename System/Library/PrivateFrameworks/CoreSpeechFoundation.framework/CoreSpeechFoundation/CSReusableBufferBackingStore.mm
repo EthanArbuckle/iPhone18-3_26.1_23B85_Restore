@@ -1,27 +1,27 @@
 @interface CSReusableBufferBackingStore
-- (BOOL)configureWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (CSReusableBufferBackingStore)initWithBuffer:(void *)a3 bufferSize:(unint64_t)a4 deallocator:(id)a5;
+- (BOOL)configureWithBytes:(const void *)bytes length:(unint64_t)length;
+- (CSReusableBufferBackingStore)initWithBuffer:(void *)buffer bufferSize:(unint64_t)size deallocator:(id)deallocator;
 - (void)dealloc;
 @end
 
 @implementation CSReusableBufferBackingStore
 
-- (BOOL)configureWithBytes:(const void *)a3 length:(unint64_t)a4
+- (BOOL)configureWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (length)
   {
-    if (self->_bufferSize >= a4)
+    if (self->_bufferSize >= length)
     {
       buffer = self->_buffer;
-      if (a3)
+      if (bytes)
       {
-        memmove(buffer, a3, a4);
+        memmove(buffer, bytes, length);
       }
 
       else
       {
-        bzero(buffer, a4);
+        bzero(buffer, length);
       }
 
       LOBYTE(v5) = 1;
@@ -73,18 +73,18 @@ LABEL_7:
   [(CSReusableBufferBackingStore *)&v4 dealloc];
 }
 
-- (CSReusableBufferBackingStore)initWithBuffer:(void *)a3 bufferSize:(unint64_t)a4 deallocator:(id)a5
+- (CSReusableBufferBackingStore)initWithBuffer:(void *)buffer bufferSize:(unint64_t)size deallocator:(id)deallocator
 {
-  v8 = a5;
+  deallocatorCopy = deallocator;
   v14.receiver = self;
   v14.super_class = CSReusableBufferBackingStore;
   v9 = [(CSReusableBufferBackingStore *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_buffer = a3;
-    v9->_bufferSize = a4;
-    v11 = [v8 copy];
+    v9->_buffer = buffer;
+    v9->_bufferSize = size;
+    v11 = [deallocatorCopy copy];
     deallocator = v10->_deallocator;
     v10->_deallocator = v11;
   }

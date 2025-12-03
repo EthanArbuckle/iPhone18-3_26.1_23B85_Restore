@@ -1,24 +1,24 @@
 @interface AXValueChangeUtilities
-+ (id)handleValueChangeForPhoneDeletionWithOldString:(id)a3 newString:(id)a4;
-+ (id)phoneNumberWithoutFormattingCharacters:(id)a3;
-+ (int64_t)findLocationOfDifferenceInOldString:(id)a3 withNewString:(id)a4;
++ (id)handleValueChangeForPhoneDeletionWithOldString:(id)string newString:(id)newString;
++ (id)phoneNumberWithoutFormattingCharacters:(id)characters;
++ (int64_t)findLocationOfDifferenceInOldString:(id)string withNewString:(id)newString;
 @end
 
 @implementation AXValueChangeUtilities
 
-+ (id)phoneNumberWithoutFormattingCharacters:(id)a3
++ (id)phoneNumberWithoutFormattingCharacters:(id)characters
 {
-  v3 = a3;
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"[-()\\s]" withString:&stru_1EFE6D570 options:1024 range:{0, objc_msgSend(v3, "length")}];
+  charactersCopy = characters;
+  v4 = [charactersCopy stringByReplacingOccurrencesOfString:@"[-()\\s]" withString:&stru_1EFE6D570 options:1024 range:{0, objc_msgSend(charactersCopy, "length")}];
 
   return v4;
 }
 
-+ (id)handleValueChangeForPhoneDeletionWithOldString:(id)a3 newString:(id)a4
++ (id)handleValueChangeForPhoneDeletionWithOldString:(id)string newString:(id)newString
 {
-  v5 = a4;
-  v6 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:a3];
-  v7 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:v5];
+  newStringCopy = newString;
+  v6 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:string];
+  v7 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:newStringCopy];
 
   if ([v6 length] && objc_msgSend(v7, "length"))
   {
@@ -44,12 +44,12 @@
   return v9;
 }
 
-+ (int64_t)findLocationOfDifferenceInOldString:(id)a3 withNewString:(id)a4
++ (int64_t)findLocationOfDifferenceInOldString:(id)string withNewString:(id)newString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  v8 = [v6 length];
+  stringCopy = string;
+  newStringCopy = newString;
+  v7 = [stringCopy length];
+  v8 = [newStringCopy length];
   v9 = v8;
   if (v7 >= v8)
   {
@@ -71,8 +71,8 @@
     v11 = 0;
     while (1)
     {
-      v12 = [v5 characterAtIndex:v11];
-      v13 = [v6 characterAtIndex:v11];
+      v12 = [stringCopy characterAtIndex:v11];
+      v13 = [newStringCopy characterAtIndex:v11];
       if (v12 != 160 || v13 != 32)
       {
         v14 = v12 == 32 && v13 == 160;

@@ -1,16 +1,16 @@
 @interface DayViewRingsConfigurationCell
-- (_TtC10FitnessApp29DayViewRingsConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)onLeftButtonPressed:(id)a3;
-- (void)onRightButtonPressed:(id)a3;
+- (_TtC10FitnessApp29DayViewRingsConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)onLeftButtonPressed:(id)pressed;
+- (void)onRightButtonPressed:(id)pressed;
 @end
 
 @implementation DayViewRingsConfigurationCell
 
-- (_TtC10FitnessApp29DayViewRingsConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp29DayViewRingsConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,21 +19,21 @@
     v6 = 0;
   }
 
-  sub_100434B28(a3, a4, v6);
+  sub_100434B28(style, identifier, v6);
   return result;
 }
 
-- (void)onLeftButtonPressed:(id)a3
+- (void)onLeftButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_100435D64(&OBJC_IVAR____TtC10FitnessApp29DayViewRingsConfigurationCell_onUnpauseRings, &OBJC_IVAR____TtC10FitnessApp29DayViewRingsConfigurationCell_onChangeGoals);
 }
 
-- (void)onRightButtonPressed:(id)a3
+- (void)onRightButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_100435D64(&OBJC_IVAR____TtC10FitnessApp29DayViewRingsConfigurationCell_onEditPauseRings, &OBJC_IVAR____TtC10FitnessApp29DayViewRingsConfigurationCell_onPauseRings);
 }
 

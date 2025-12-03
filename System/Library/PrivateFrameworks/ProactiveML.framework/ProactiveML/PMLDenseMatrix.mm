@@ -1,15 +1,15 @@
 @interface PMLDenseMatrix
-+ (id)denseMatrixFromData:(id)a3 numberOfRows:(unint64_t)a4 numberOfColumns:(unint64_t)a5;
-+ (id)denseMatrixFromNumbers:(id)a3;
-- (PMLDenseMatrix)initWithData:(id)a3 numberOfRows:(unint64_t)a4 numberOfColumns:(unint64_t)a5;
-- (void)enumerateNonZeroValuesWithBlock:(id)a3;
++ (id)denseMatrixFromData:(id)data numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns;
++ (id)denseMatrixFromNumbers:(id)numbers;
+- (PMLDenseMatrix)initWithData:(id)data numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns;
+- (void)enumerateNonZeroValuesWithBlock:(id)block;
 @end
 
 @implementation PMLDenseMatrix
 
-- (void)enumerateNonZeroValuesWithBlock:(id)a3
+- (void)enumerateNonZeroValuesWithBlock:(id)block
 {
-  v12 = a3;
+  blockCopy = block;
   v4 = [(PMLDenseVector *)self->_data ptr];
   numberOfRows = self->_numberOfRows;
   if (numberOfRows)
@@ -28,7 +28,7 @@
         {
           if (*(&v6[v11] + v7 * v10) != 0.0)
           {
-            v12[2](v12, v8, v11);
+            blockCopy[2](blockCopy, v8, v11);
             numberOfColumns = self->_numberOfColumns;
           }
 
@@ -49,30 +49,30 @@
   }
 }
 
-- (PMLDenseMatrix)initWithData:(id)a3 numberOfRows:(unint64_t)a4 numberOfColumns:(unint64_t)a5
+- (PMLDenseMatrix)initWithData:(id)data numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns
 {
-  v9 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = PMLDenseMatrix;
   v10 = [(PMLDenseMatrix *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_numberOfRows = a4;
-    v10->_numberOfColumns = a5;
-    objc_storeStrong(&v10->_data, a3);
+    v10->_numberOfRows = rows;
+    v10->_numberOfColumns = columns;
+    objc_storeStrong(&v10->_data, data);
   }
 
   return v11;
 }
 
-+ (id)denseMatrixFromNumbers:(id)a3
++ (id)denseMatrixFromNumbers:(id)numbers
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:0];
+  numbersCopy = numbers;
+  v5 = [numbersCopy objectAtIndexedSubscript:0];
   v6 = [v5 count];
 
-  v7 = malloc_type_calloc([v4 count] * v6, 4uLL, 0x100004052888210uLL);
+  v7 = malloc_type_calloc([numbersCopy count] * v6, 4uLL, 0x100004052888210uLL);
   if (!v7)
   {
     v19 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE728] reason:@"malloc failed" userInfo:0];
@@ -80,13 +80,13 @@
   }
 
   v8 = v7;
-  if ([v4 count])
+  if ([numbersCopy count])
   {
     v9 = 0;
     v10 = v8;
     do
     {
-      v11 = [v4 objectAtIndexedSubscript:v9];
+      v11 = [numbersCopy objectAtIndexedSubscript:v9];
       if ([v11 count] == v6)
       {
         if (v6)
@@ -97,8 +97,8 @@
 
       else
       {
-        v15 = [MEMORY[0x277CCA890] currentHandler];
-        [v15 handleFailureInMethod:a2 object:a1 file:@"PMLDenseMatrix.m" lineNumber:59 description:{@"Invalid shape, all rows must be the same length (row %lu length: %lu, first row length: %lu)", v9, objc_msgSend(v11, "count"), v6}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PMLDenseMatrix.m" lineNumber:59 description:{@"Invalid shape, all rows must be the same length (row %lu length: %lu, first row length: %lu)", v9, objc_msgSend(v11, "count"), v6}];
 
         if (v6)
         {
@@ -116,19 +116,19 @@ LABEL_6:
       v10 += 4 * v6;
     }
 
-    while (v9 < [v4 count]);
+    while (v9 < [numbersCopy count]);
   }
 
-  v16 = -[PMLDenseVector initWithFloatsNoCopy:count:freeWhenDone:]([PMLMutableDenseVector alloc], "initWithFloatsNoCopy:count:freeWhenDone:", v8, [v4 count] * v6, 1);
-  v17 = [a1 denseMatrixFromData:v16 numberOfRows:objc_msgSend(v4 numberOfColumns:{"count"), v6}];
+  v16 = -[PMLDenseVector initWithFloatsNoCopy:count:freeWhenDone:]([PMLMutableDenseVector alloc], "initWithFloatsNoCopy:count:freeWhenDone:", v8, [numbersCopy count] * v6, 1);
+  v17 = [self denseMatrixFromData:v16 numberOfRows:objc_msgSend(numbersCopy numberOfColumns:{"count"), v6}];
 
   return v17;
 }
 
-+ (id)denseMatrixFromData:(id)a3 numberOfRows:(unint64_t)a4 numberOfColumns:(unint64_t)a5
++ (id)denseMatrixFromData:(id)data numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithData:v8 numberOfRows:a4 numberOfColumns:a5];
+  dataCopy = data;
+  v9 = [[self alloc] initWithData:dataCopy numberOfRows:rows numberOfColumns:columns];
 
   return v9;
 }

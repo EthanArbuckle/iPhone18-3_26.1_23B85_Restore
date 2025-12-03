@@ -8,8 +8,8 @@
 - (void)_didFinishTimeViewSetup;
 - (void)_setupAnalogHandsView;
 - (void)_setupDigitalTimeViews;
-- (void)setBrightnessFilterInputAmount:(double)a3;
-- (void)setSaturationFilterInputAmount:(double)a3;
+- (void)setBrightnessFilterInputAmount:(double)amount;
+- (void)setSaturationFilterInputAmount:(double)amount;
 - (void)updateFilters;
 @end
 
@@ -18,12 +18,12 @@
 - (void)_setupAnalogHandsView
 {
   v3 = [NTKSiderealHandsView alloc];
-  v4 = [(NTKSiderealTimeView *)self device];
-  v5 = [(NTKSiderealHandsView *)v3 initForDevice:v4];
+  device = [(NTKSiderealTimeView *)self device];
+  v5 = [(NTKSiderealHandsView *)v3 initForDevice:device];
   [(NTKSiderealTimeView *)self setAnalogHandsView:v5];
 
-  v6 = [(NTKSiderealTimeView *)self analogHandsView];
-  [(NTKSiderealTimeView *)self addSubview:v6];
+  analogHandsView = [(NTKSiderealTimeView *)self analogHandsView];
+  [(NTKSiderealTimeView *)self addSubview:analogHandsView];
 }
 
 - (void)_setupDigitalTimeViews
@@ -35,22 +35,22 @@
 
 - (void)_didFinishTimeViewSetup
 {
-  v3 = [(NTKSiderealTimeView *)self analogTickContainerView];
-  v4 = [v3 layer];
-  [v4 setCompositingFilter:kCAFilterPlusL];
+  analogTickContainerView = [(NTKSiderealTimeView *)self analogTickContainerView];
+  layer = [analogTickContainerView layer];
+  [layer setCompositingFilter:kCAFilterPlusL];
 
-  v5 = [(NTKSiderealTimeView *)self analogTickContainerView];
-  v6 = [v5 layer];
-  [v6 setAllowsGroupOpacity:1];
+  analogTickContainerView2 = [(NTKSiderealTimeView *)self analogTickContainerView];
+  layer2 = [analogTickContainerView2 layer];
+  [layer2 setAllowsGroupOpacity:1];
 
-  v7 = [(NTKSiderealTimeView *)self analogTickContainerView];
-  v8 = [v7 layer];
-  [v8 setAllowsGroupBlending:1];
+  analogTickContainerView3 = [(NTKSiderealTimeView *)self analogTickContainerView];
+  layer3 = [analogTickContainerView3 layer];
+  [layer3 setAllowsGroupBlending:1];
 
-  v11 = [(NTKSiderealTimeView *)self analogTickContainerView];
-  v9 = [v11 layer];
+  analogTickContainerView4 = [(NTKSiderealTimeView *)self analogTickContainerView];
+  layer4 = [analogTickContainerView4 layer];
   LODWORD(v10) = 1058642330;
-  [v9 setOpacity:v10];
+  [layer4 setOpacity:v10];
 }
 
 - (id)_customDialBackgroundView
@@ -64,25 +64,25 @@
   return v4;
 }
 
-- (void)setBrightnessFilterInputAmount:(double)a3
+- (void)setBrightnessFilterInputAmount:(double)amount
 {
   v5 = [CAFilter filterWithType:kCAFilterColorBrightness];
   brightnessFilter = self->_brightnessFilter;
   self->_brightnessFilter = v5;
 
   v7 = self->_brightnessFilter;
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:amount];
   [(CAFilter *)v7 setValue:v8 forKey:@"inputAmount"];
 }
 
-- (void)setSaturationFilterInputAmount:(double)a3
+- (void)setSaturationFilterInputAmount:(double)amount
 {
   v5 = [CAFilter filterWithType:kCAFilterColorSaturate];
   saturationFilter = self->_saturationFilter;
   self->_saturationFilter = v5;
 
   v7 = self->_saturationFilter;
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:amount];
   [(CAFilter *)v7 setValue:v8 forKey:@"inputAmount"];
 }
 
@@ -99,8 +99,8 @@
 
 - (double)_minuteTickInset
 {
-  v2 = [(NTKSiderealTimeView *)self device];
-  sub_1744(v2, v5);
+  device = [(NTKSiderealTimeView *)self device];
+  sub_1744(device, v5);
   v3 = v5[0];
 
   return v3;
@@ -108,8 +108,8 @@
 
 - (CGSize)_hourTickSize
 {
-  v2 = [(NTKSiderealTimeView *)self device];
-  sub_1744(v2, &v7);
+  device = [(NTKSiderealTimeView *)self device];
+  sub_1744(device, &v7);
   v3 = *(&v7 + 1);
   v4 = v8;
 
@@ -122,8 +122,8 @@
 
 - (CGSize)_minuteTickSize
 {
-  v2 = [(NTKSiderealTimeView *)self device];
-  sub_1744(v2, &v7);
+  device = [(NTKSiderealTimeView *)self device];
+  sub_1744(device, &v7);
   v3 = v8;
   v4 = v9;
 
@@ -136,8 +136,8 @@
 
 - (CGSize)_secondTickSize
 {
-  v2 = [(NTKSiderealTimeView *)self device];
-  sub_1744(v2, &v7);
+  device = [(NTKSiderealTimeView *)self device];
+  sub_1744(device, &v7);
   v3 = v8;
   v4 = v9;
 
@@ -150,8 +150,8 @@
 
 - (double)_digitalTimeLabelFontSize
 {
-  v2 = [(NTKSiderealTimeView *)self device];
-  sub_1744(v2, v5);
+  device = [(NTKSiderealTimeView *)self device];
+  sub_1744(device, v5);
   v3 = v6;
 
   return v3;

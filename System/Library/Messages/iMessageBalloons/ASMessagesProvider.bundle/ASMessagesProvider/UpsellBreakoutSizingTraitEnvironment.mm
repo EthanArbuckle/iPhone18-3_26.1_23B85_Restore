@@ -3,16 +3,16 @@
 - (UIEdgeInsets)pageMarginInsets;
 - (_TtC18ASMessagesProviderP33_D89785D43D474E56A3F9554F0AC4E17F36UpsellBreakoutSizingTraitEnvironment)init;
 - (_TtP18ASMessagesProvider20PageTraitEnvironment_)snapshotPageTraitEnvironment;
-- (void)setTraitCollection:(id)a3;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation UpsellBreakoutSizingTraitEnvironment
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_D89785D43D474E56A3F9554F0AC4E17F36UpsellBreakoutSizingTraitEnvironment_traitCollection);
-  *(&self->super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_D89785D43D474E56A3F9554F0AC4E17F36UpsellBreakoutSizingTraitEnvironment_traitCollection) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_D89785D43D474E56A3F9554F0AC4E17F36UpsellBreakoutSizingTraitEnvironment_traitCollection) = collection;
+  collectionCopy = collection;
 }
 
 - (CGSize)pageContainerSize

@@ -1,18 +1,18 @@
 @interface _MKFTimePeriodBulletinCondition
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFTimePeriodBulletinConditionDatabaseID)databaseID;
-- (id)createEndElementRelationOfType:(id)a3 modelID:(id)a4;
-- (id)createStartElementRelationOfType:(id)a3 modelID:(id)a4;
-- (id)materializeOrCreateEndElementRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (id)materializeOrCreateStartElementRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
+- (id)createEndElementRelationOfType:(id)type modelID:(id)d;
+- (id)createStartElementRelationOfType:(id)type modelID:(id)d;
+- (id)materializeOrCreateEndElementRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (id)materializeOrCreateStartElementRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
 @end
 
 @implementation _MKFTimePeriodBulletinCondition
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -24,48 +24,48 @@
   objc_exception_throw(v10);
 }
 
-- (id)createStartElementRelationOfType:(id)a3 modelID:(id)a4
+- (id)createStartElementRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"startElement" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"startElement" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateStartElementRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateStartElementRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"startElement" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"startElement" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
 
-- (id)createEndElementRelationOfType:(id)a3 modelID:(id)a4
+- (id)createEndElementRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"endElement" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"endElement" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateEndElementRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateEndElementRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"endElement" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"endElement" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFTimePeriodBulletinCondition *)self bulletinRegistration];
-  v3 = [v2 home];
+  bulletinRegistration = [(_MKFTimePeriodBulletinCondition *)self bulletinRegistration];
+  home = [bulletinRegistration home];
 
-  return v3;
+  return home;
 }
 
 - (MKFTimePeriodBulletinConditionDatabaseID)databaseID

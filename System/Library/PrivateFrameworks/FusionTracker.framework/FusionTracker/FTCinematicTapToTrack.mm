@@ -1,47 +1,47 @@
 @interface FTCinematicTapToTrack
 + (id)tracker;
-- ($7E6FF06E1E2A477A0598F669E6D2B004)_unsafeStepTrackingWithFrame:(SEL)a3;
-- ($7E6FF06E1E2A477A0598F669E6D2B004)predictRectForPoint:(SEL)a3 inColorBuffer:(CGPoint)a4;
-- (BOOL)_unsafeStartTrackingRect:(CGRect)a3 colorBuffer:(__CVBuffer *)a4;
+- ($7E6FF06E1E2A477A0598F669E6D2B004)_unsafeStepTrackingWithFrame:(SEL)frame;
+- ($7E6FF06E1E2A477A0598F669E6D2B004)predictRectForPoint:(SEL)point inColorBuffer:(CGPoint)buffer;
+- (BOOL)_unsafeStartTrackingRect:(CGRect)rect colorBuffer:(__CVBuffer *)buffer;
 - (BOOL)reset;
 - (EspressoConfig)_espressoConfigFromDescriptor:(EspressoConfig *__return_ptr)retstr engine:;
-- (FTCinematicTapToTrack)initWithEspressoEngine:(int)a3 scalingBackend:(int)a4 commandQueue:(id)a5;
+- (FTCinematicTapToTrack)initWithEspressoEngine:(int)engine scalingBackend:(int)backend commandQueue:(id)queue;
 - (basic_string<char,)_resolveNetworkPath:(std::allocator<char>> *__return_ptr)retstr;
 - (id).cxx_construct;
-- (id)_maybeFetchTrackByCommittingState:(id)a3;
-- (void)_preprocessBuffer:(__CVBuffer *)a3 andValidateState:(id)a4 isOp:(int64_t)a5;
-- (void)_setupNetworksWithEngine:(const void *)a3;
-- (void)_setupScalerWithBackend:(int)a3;
+- (id)_maybeFetchTrackByCommittingState:(id)state;
+- (void)_preprocessBuffer:(__CVBuffer *)buffer andValidateState:(id)state isOp:(int64_t)op;
+- (void)_setupNetworksWithEngine:(const void *)engine;
+- (void)_setupScalerWithBackend:(int)backend;
 @end
 
 @implementation FTCinematicTapToTrack
 
 + (id)tracker
 {
-  v2 = [[a1 alloc] initWithEspressoEngine:10007 scalingBackend:0 commandQueue:0];
+  v2 = [[self alloc] initWithEspressoEngine:10007 scalingBackend:0 commandQueue:0];
 
   return v2;
 }
 
-- (FTCinematicTapToTrack)initWithEspressoEngine:(int)a3 scalingBackend:(int)a4 commandQueue:(id)a5
+- (FTCinematicTapToTrack)initWithEspressoEngine:(int)engine scalingBackend:(int)backend commandQueue:(id)queue
 {
-  v6 = *&a4;
-  v9 = a5;
+  v6 = *&backend;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = FTCinematicTapToTrack;
   v10 = [(FTCinematicTapToTrack *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_commandQueue, a5);
+    objc_storeStrong(&v10->_commandQueue, queue);
     v12 = objc_alloc_init(FTTapToBox);
     tapToBox = v11->_tapToBox;
     v11->_tapToBox = v12;
 
     [(FTCinematicTapToTrack *)v11 _setupScalerWithBackend:v6];
-    v16 = a3;
+    engineCopy = engine;
     v17 = 1;
-    [(FTCinematicTapToTrack *)v11 _setupNetworksWithEngine:&v16];
+    [(FTCinematicTapToTrack *)v11 _setupNetworksWithEngine:&engineCopy];
     v14 = v11;
   }
 
@@ -53,16 +53,16 @@
   return v14;
 }
 
-- (void)_setupScalerWithBackend:(int)a3
+- (void)_setupScalerWithBackend:(int)backend
 {
-  if (a3 == 1)
+  if (backend == 1)
   {
     v4 = [[FTVTScaler alloc] initWithCommandQueue:self->_commandQueue];
   }
 
   else
   {
-    if (a3)
+    if (backend)
     {
       goto LABEL_6;
     }
@@ -79,7 +79,7 @@ LABEL_6:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setupNetworksWithEngine:(const void *)a3
+- (void)_setupNetworksWithEngine:(const void *)engine
 {
   v7 = *MEMORY[0x277D85DE8];
   v5 = +[FTCinematicTracker highPriorityExemplarNetworkDescriptor];
@@ -88,7 +88,7 @@ LABEL_6:
 
   [(FTNetworkDescriptor *)self->_exemplarNetDesc name];
   [(FTCinematicTapToTrack *)self _resolveNetworkPath:objc_claimAutoreleasedReturnValue()];
-  [(FTCinematicTapToTrack *)self _espressoConfigFromDescriptor:self->_exemplarNetDesc engine:a3];
+  [(FTCinematicTapToTrack *)self _espressoConfigFromDescriptor:self->_exemplarNetDesc engine:engine];
   operator new();
 }
 
@@ -112,8 +112,8 @@ LABEL_6:
     __cxa_throw(exception, MEMORY[0x277D82760], MEMORY[0x277D82600]);
   }
 
-  v5 = [v3 UTF8String];
-  v6 = strlen(v5);
+  uTF8String = [v3 UTF8String];
+  v6 = strlen(uTF8String);
   if (v6 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -128,7 +128,7 @@ LABEL_6:
   *(&retstr->var0.var1 + 23) = v6;
   if (v6)
   {
-    memmove(retstr, v5, v6);
+    memmove(retstr, uTF8String, v6);
   }
 
   retstr->var0.var0.var0[v7] = 0;
@@ -160,8 +160,8 @@ LABEL_6:
   v17 = 0u;
   v18 = 0u;
   v14 = v5;
-  v6 = [v5 outputNames];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  outputNames = [v5 outputNames];
+  v7 = [outputNames countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -171,11 +171,11 @@ LABEL_6:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(outputNames);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) UTF8String];
-        v11 = strlen(v10);
+        uTF8String = [*(*(&v17 + 1) + 8 * i) UTF8String];
+        v11 = strlen(uTF8String);
         if (v11 >= 0x7FFFFFFFFFFFFFF8)
         {
           std::string::__throw_length_error[abi:ne200100]();
@@ -190,7 +190,7 @@ LABEL_6:
         v16 = v11;
         if (v11)
         {
-          memmove(&__dst, v10, v11);
+          memmove(&__dst, uTF8String, v11);
         }
 
         *(&__dst + v12) = 0;
@@ -201,7 +201,7 @@ LABEL_6:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [outputNames countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -210,10 +210,10 @@ LABEL_6:
   return result;
 }
 
-- ($7E6FF06E1E2A477A0598F669E6D2B004)predictRectForPoint:(SEL)a3 inColorBuffer:(CGPoint)a4
+- ($7E6FF06E1E2A477A0598F669E6D2B004)predictRectForPoint:(SEL)point inColorBuffer:(CGPoint)buffer
 {
-  y = a4.y;
-  x = a4.x;
+  y = buffer.y;
+  x = buffer.x;
   result = [(FTTapToTrackPreprocessor *)self->_preprocessor preprocessBuffer:a5];
   if (result)
   {
@@ -243,20 +243,20 @@ LABEL_6:
   return result;
 }
 
-- (id)_maybeFetchTrackByCommittingState:(id)a3
+- (id)_maybeFetchTrackByCommittingState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 commit];
-  v5 = v4;
-  if (!v4)
+  stateCopy = state;
+  commit = [stateCopy commit];
+  v5 = commit;
+  if (!commit)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Tracking result was nil.");
     __cxa_throw(exception, MEMORY[0x277D82760], MEMORY[0x277D82600]);
   }
 
-  v6 = [v4 tracks];
-  v7 = [v6 count];
+  tracks = [commit tracks];
+  v7 = [tracks count];
 
   if (v7 >= 2)
   {
@@ -275,44 +275,44 @@ LABEL_6:
 
   if (v7 == 1)
   {
-    v8 = [v5 tracks];
-    v9 = [v8 firstObject];
+    tracks2 = [v5 tracks];
+    firstObject = [tracks2 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (void)_preprocessBuffer:(__CVBuffer *)a3 andValidateState:(id)a4 isOp:(int64_t)a5
+- (void)_preprocessBuffer:(__CVBuffer *)buffer andValidateState:(id)state isOp:(int64_t)op
 {
-  v8 = a4;
-  v17 = v8;
-  if (!v8)
+  stateCopy = state;
+  v17 = stateCopy;
+  if (!stateCopy)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Tracking state was nil.");
     __cxa_throw(exception, MEMORY[0x277D82760], MEMORY[0x277D82600]);
   }
 
-  v9 = [v8 highPriorityTrackerState];
-  v10 = v9;
-  if (!v9)
+  highPriorityTrackerState = [stateCopy highPriorityTrackerState];
+  v10 = highPriorityTrackerState;
+  if (!highPriorityTrackerState)
   {
     v12 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v12, "High priority tracking state was nil.");
     goto LABEL_12;
   }
 
-  if ([v9 op] != a5)
+  if ([highPriorityTrackerState op] != op)
   {
     v13 = __cxa_allocate_exception(0x10uLL);
     [v10 opDescription];
-    v14 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    std::string::basic_string[abi:ne200100]<0>(&v18, v14);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    std::string::basic_string[abi:ne200100]<0>(&v18, uTF8String);
     v15 = std::string::insert(&v18, 0, "Invalid high priority tracking op encountered: ");
     v16 = *&v15->__r_.__value_.__l.__data_;
     v19.__r_.__value_.__r.__words[2] = v15->__r_.__value_.__r.__words[2];
@@ -324,7 +324,7 @@ LABEL_6:
     __cxa_throw(v13, MEMORY[0x277D82760], MEMORY[0x277D82600]);
   }
 
-  if (![(FTTapToTrackPreprocessor *)self->_preprocessor preprocessBuffer:a3])
+  if (![(FTTapToTrackPreprocessor *)self->_preprocessor preprocessBuffer:buffer])
   {
     v12 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v12, "Color buffer preprocessing failed");
@@ -333,12 +333,12 @@ LABEL_12:
   }
 }
 
-- (BOOL)_unsafeStartTrackingRect:(CGRect)a3 colorBuffer:(__CVBuffer *)a4
+- (BOOL)_unsafeStartTrackingRect:(CGRect)rect colorBuffer:(__CVBuffer *)buffer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v57 = *MEMORY[0x277D85DE8];
   v10 = objc_alloc_init(FTCinematicConfig);
   v11 = [[FTCinematicTracker alloc] initWithConfig:v10];
@@ -362,12 +362,12 @@ LABEL_12:
   [(FTCinematicTapRequest *)v13 setTapPoint:MidX, CGRectGetMidY(v59)];
   [(FTCinematicInput *)v43 setTapRequest:v13];
   v15 = [(FTCinematicTracker *)self->_tracker computeTrackingStateForInput:v43];
-  v44 = [v15 highPriorityTrackerState];
-  [(FTCinematicTapToTrack *)self _preprocessBuffer:a4 andValidateState:v15 isOp:3];
-  v16 = [(FTTapToTrackPreprocessor *)self->_preprocessor bgraPixelBuffer];
+  highPriorityTrackerState = [v15 highPriorityTrackerState];
+  [(FTCinematicTapToTrack *)self _preprocessBuffer:buffer andValidateState:v15 isOp:3];
+  bgraPixelBuffer = [(FTTapToTrackPreprocessor *)self->_preprocessor bgraPixelBuffer];
   v17 = *(self->_exemplarCrop.storage_.__ptr_ + 1);
   [(FTTapToTrackPreprocessor *)self->_preprocessor meanPixel];
-  if (([v44 preProcessExemplarInputFromSourceBuffer:v16 toDestinationBuffer:v17 forTargetRect:vuzp1_s8(v18 meanPixel:v18).u32[0] scaler:{self->_scaler, x, y, width, height}] & 1) == 0)
+  if (([highPriorityTrackerState preProcessExemplarInputFromSourceBuffer:bgraPixelBuffer toDestinationBuffer:v17 forTargetRect:vuzp1_s8(v18 meanPixel:v18).u32[0] scaler:{self->_scaler, x, y, width, height}] & 1) == 0)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Exemplar preprocessing failed.");
@@ -375,11 +375,11 @@ LABEL_12:
   }
 
   ptr = self->_exemplarNet.__ptr_;
-  v41 = [(FTNetworkDescriptor *)self->_exemplarNetDesc onlyImageInput];
-  v20 = [v41 name];
-  v21 = v20;
-  v22 = [v20 UTF8String];
-  v23 = strlen(v22);
+  onlyImageInput = [(FTNetworkDescriptor *)self->_exemplarNetDesc onlyImageInput];
+  name = [onlyImageInput name];
+  v21 = name;
+  uTF8String = [name UTF8String];
+  v23 = strlen(uTF8String);
   if (v23 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -394,7 +394,7 @@ LABEL_12:
   HIBYTE(__dst.epoch) = v23;
   if (v23)
   {
-    memmove(&__dst, v22, v23);
+    memmove(&__dst, uTF8String, v23);
   }
 
   *(&__dst.value + v24) = 0;
@@ -474,7 +474,7 @@ LABEL_12:
 LABEL_21:
 
   v33 = AsEspressoBufferDictionary(v48);
-  v34 = [v44 postProcessExemplarOutputs:v33 forTargetRect:{x, y, width, height}];
+  v34 = [highPriorityTrackerState postProcessExemplarOutputs:v33 forTargetRect:{x, y, width, height}];
 
   if ((v34 & 1) == 0)
   {
@@ -490,7 +490,7 @@ LABEL_21:
   return v36;
 }
 
-- ($7E6FF06E1E2A477A0598F669E6D2B004)_unsafeStepTrackingWithFrame:(SEL)a3
+- ($7E6FF06E1E2A477A0598F669E6D2B004)_unsafeStepTrackingWithFrame:(SEL)frame
 {
   v88 = *MEMORY[0x277D85DE8];
   if (!self->_tracker)
@@ -504,12 +504,12 @@ LABEL_21:
   CMTimeMake(&__dst, 1, 1);
   [(FTCinematicInput *)v66 setSourceFrameTimestamp:&__dst];
   v67 = [(FTCinematicTracker *)self->_tracker computeTrackingStateForInput:v66];
-  v68 = [v67 highPriorityTrackerState];
+  highPriorityTrackerState = [v67 highPriorityTrackerState];
   [(FTCinematicTapToTrack *)self _preprocessBuffer:a4 andValidateState:v67 isOp:2];
-  v6 = [(FTTapToTrackPreprocessor *)self->_preprocessor bgraPixelBuffer];
+  bgraPixelBuffer = [(FTTapToTrackPreprocessor *)self->_preprocessor bgraPixelBuffer];
   v7 = *(self->_instanceCrop.storage_.__ptr_ + 1);
   [(FTTapToTrackPreprocessor *)self->_preprocessor meanPixel];
-  if (([v68 preProcessInstanceInputFromSourceBuffer:v6 toDestinationBuffer:v7 meanPixel:vuzp1_s8(v8 scaler:{v8).u32[0], self->_scaler}] & 1) == 0)
+  if (([highPriorityTrackerState preProcessInstanceInputFromSourceBuffer:bgraPixelBuffer toDestinationBuffer:v7 meanPixel:vuzp1_s8(v8 scaler:{v8).u32[0], self->_scaler}] & 1) == 0)
   {
     v63 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v63, "Instance preprocessing failed.");
@@ -518,12 +518,12 @@ LABEL_21:
 
   memset(v84, 0, sizeof(v84));
   v85 = 1065353216;
-  v9 = [(FTNetworkDescriptor *)self->_instanceNetDesc onlyImageInput];
-  v10 = [v9 name];
-  v11 = v10;
+  onlyImageInput = [(FTNetworkDescriptor *)self->_instanceNetDesc onlyImageInput];
+  name = [onlyImageInput name];
+  v11 = name;
   v70 = retstr;
-  v12 = [v10 UTF8String];
-  v13 = strlen(v12);
+  uTF8String = [name UTF8String];
+  v13 = strlen(uTF8String);
   if (v13 > 0x7FFFFFFFFFFFFFF7)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -538,7 +538,7 @@ LABEL_21:
   HIBYTE(__dst.epoch) = v13;
   if (v13)
   {
-    memmove(&__dst, v12, v13);
+    memmove(&__dst, uTF8String, v13);
   }
 
   v15 = v70;
@@ -587,15 +587,15 @@ LABEL_17:
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v21 = [(FTNetworkDescriptor *)self->_instanceNetDesc inputReferences];
-  v22 = [v21 countByEnumeratingWithState:&v80 objects:v87 count:16];
+  inputReferences = [(FTNetworkDescriptor *)self->_instanceNetDesc inputReferences];
+  v22 = [inputReferences countByEnumeratingWithState:&v80 objects:v87 count:16];
   if (!v22)
   {
     goto LABEL_55;
   }
 
   v23 = *v81;
-  obj = v21;
+  obj = inputReferences;
   do
   {
     v24 = 0;
@@ -608,10 +608,10 @@ LABEL_17:
 
       v25 = *(*(&v80 + 1) + 8 * v24);
       v26 = self->_exemplarNet.__ptr_;
-      v27 = [v25 sourceOutputName];
-      v28 = v27;
-      v29 = [v27 UTF8String];
-      v30 = strlen(v29);
+      sourceOutputName = [v25 sourceOutputName];
+      v28 = sourceOutputName;
+      uTF8String2 = [sourceOutputName UTF8String];
+      v30 = strlen(uTF8String2);
       if (v30 > 0x7FFFFFFFFFFFFFF7)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -626,16 +626,16 @@ LABEL_17:
       v75 = v30;
       if (v30)
       {
-        memmove(&p_dst, v29, v30);
+        memmove(&p_dst, uTF8String2, v30);
       }
 
       *(&p_dst + v31) = 0;
 
       ik::core::GetOutput(&__dst, *(v26 + 1), &p_dst);
-      v32 = [v25 destinationInputName];
-      v33 = v32;
-      v34 = [v32 UTF8String];
-      v35 = strlen(v34);
+      destinationInputName = [v25 destinationInputName];
+      v33 = destinationInputName;
+      uTF8String3 = [destinationInputName UTF8String];
+      v35 = strlen(uTF8String3);
       if (v35 > 0x7FFFFFFFFFFFFFF7)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -650,7 +650,7 @@ LABEL_17:
       v73 = v35;
       if (v35)
       {
-        memmove(&__p, v34, v35);
+        memmove(&__p, uTF8String3, v35);
       }
 
       *(&__p + v36) = 0;
@@ -730,7 +730,7 @@ LABEL_46:
     }
 
     while (v22 != v24);
-    v21 = obj;
+    inputReferences = obj;
     v44 = [obj countByEnumeratingWithState:&v80 objects:v87 count:16];
     v22 = v44;
   }
@@ -752,7 +752,7 @@ LABEL_55:
 
   ik::EspressoNet::Predict(v45, v84, v47, &__dst);
   v50 = AsEspressoBufferDictionary(&__dst);
-  v51 = [v68 postProcessInstanceOutputs:v50];
+  v51 = [highPriorityTrackerState postProcessInstanceOutputs:v50];
 
   if ((v51 & 1) == 0)
   {

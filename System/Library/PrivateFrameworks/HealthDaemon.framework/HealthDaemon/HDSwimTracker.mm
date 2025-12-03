@@ -2,10 +2,10 @@
 - (_TtC12HealthDaemon13HDSwimTracker)init;
 - (_TtP12HealthDaemon20HDCMSwimTrackerProxy_)tracker;
 - (id)makeSwimTracker;
-- (void)fetchLatestDataWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setTracker:(id)a3;
-- (void)startWith:(id)a3;
+- (void)fetchLatestDataWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)setTracker:(id)tracker;
+- (void)startWith:(id)with;
 - (void)stop;
 @end
 
@@ -13,16 +13,16 @@
 
 - (_TtP12HealthDaemon20HDCMSwimTrackerProxy_)tracker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2289C88D8();
 
   return v3;
 }
 
-- (void)setTracker:(id)a3
+- (void)setTracker:(id)tracker
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC12HealthDaemon13HDSwimTracker____lazy_storage___tracker);
-  *(&self->super.isa + OBJC_IVAR____TtC12HealthDaemon13HDSwimTracker____lazy_storage___tracker) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC12HealthDaemon13HDSwimTracker____lazy_storage___tracker) = tracker;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
 - (id)makeSwimTracker
 {
   v3 = objc_allocWithZone(MEMORY[0x277CC1D60]);
-  v4 = self;
+  selfCopy = self;
   v5 = [v3 init];
   v6 = type metadata accessor for HDCMSwimTracker();
   v7 = objc_allocWithZone(v6);
@@ -43,7 +43,7 @@
   return v8;
 }
 
-- (void)startWith:(id)a3
+- (void)startWith:(id)with
 {
   v4 = sub_22911B8DC();
   v5 = *(v4 - 8);
@@ -51,32 +51,32 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22911B8CC();
-  v9 = self;
+  selfCopy = self;
   sub_2289C8E94();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)fetchLatestDataWithCompletion:(id)a3
+- (void)fetchLatestDataWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_2289C9A90(0, sub_2289CADB0, v5);
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_2289C97C4();
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2289CAAB8(a3, v5);
+  selfCopy = self;
+  sub_2289CAAB8(observer, selfCopy);
   swift_unknownObjectRelease();
 }
 

@@ -1,15 +1,15 @@
 @interface BKExpandedContentResource
-+ (id)resourceForURL:(id)a3;
++ (id)resourceForURL:(id)l;
 - (CGSize)contentSize;
 @end
 
 @implementation BKExpandedContentResource
 
-+ (id)resourceForURL:(id)a3
++ (id)resourceForURL:(id)l
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setResource:v4];
+  lCopy = l;
+  v5 = objc_alloc_init(self);
+  [v5 setResource:lCopy];
 
   return v5;
 }

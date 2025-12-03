@@ -1,40 +1,40 @@
 @interface TSTLayoutHint
-- (BOOL)overlapsWithSelection:(id)a3;
+- (BOOL)overlapsWithSelection:(id)selection;
 - (CGSize)effectiveSize;
 - (CGSize)maximumSize;
 - (NSString)description;
-- (TSTLayoutHint)initWithCoder:(id)a3;
-- (TSTLayoutHint)initWithRange:(id)a3 hintId:(id)a4 partitionPosition:(unsigned int)a5 maximumSize:(CGSize)a6 effectiveSize:(CGSize)a7 layout:(id)a8 validity:(BOOL)a9 horizontal:(BOOL)a10;
+- (TSTLayoutHint)initWithCoder:(id)coder;
+- (TSTLayoutHint)initWithRange:(id)range hintId:(id)id partitionPosition:(unsigned int)position maximumSize:(CGSize)size effectiveSize:(CGSize)effectiveSize layout:(id)layout validity:(BOOL)validity horizontal:(BOOL)self0;
 - (id)copyForArchiving;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)release;
 @end
 
 @implementation TSTLayoutHint
 
-- (TSTLayoutHint)initWithRange:(id)a3 hintId:(id)a4 partitionPosition:(unsigned int)a5 maximumSize:(CGSize)a6 effectiveSize:(CGSize)a7 layout:(id)a8 validity:(BOOL)a9 horizontal:(BOOL)a10
+- (TSTLayoutHint)initWithRange:(id)range hintId:(id)id partitionPosition:(unsigned int)position maximumSize:(CGSize)size effectiveSize:(CGSize)effectiveSize layout:(id)layout validity:(BOOL)validity horizontal:(BOOL)self0
 {
-  height = a7.height;
-  width = a7.width;
-  v17 = a6.height;
-  v18 = a6.width;
+  height = effectiveSize.height;
+  width = effectiveSize.width;
+  v17 = size.height;
+  v18 = size.width;
   v21.receiver = self;
   v21.super_class = TSTLayoutHint;
   result = [(TSTLayoutHint *)&v21 init];
   if (result)
   {
-    result->mCellRange = a3;
-    result->mCacheHintID = a4;
-    result->mPartitionPosition = a5;
+    result->mCellRange = range;
+    result->mCacheHintID = id;
+    result->mPartitionPosition = position;
     result->mMaximumSize.width = v18;
     result->mMaximumSize.height = v17;
     result->mEffectiveSize.width = width;
     result->mEffectiveSize.height = height;
-    result->mLayout = a8;
-    result->mIsValid = a9;
-    result->mHorizontal = a10;
+    result->mLayout = layout;
+    result->mIsValid = validity;
+    result->mHorizontal = horizontal;
     result->mPartitioningPass = 0;
   }
 
@@ -74,15 +74,15 @@
 
   else
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTLayoutHint copyForArchiving]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutHint.mm"), 111, @"invalid nil value for '%s'", "copy"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutHint.mm"), 111, @"invalid nil value for '%s'", "copy"}];
   }
 
   return v3;
 }
 
-- (BOOL)overlapsWithSelection:(id)a3
+- (BOOL)overlapsWithSelection:(id)selection
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -203,13 +203,13 @@ LABEL_26:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(TSTLayoutHint *)self cacheHintID];
-  -[NSString appendFormat:](v3, "appendFormat:", @"ID: %@ ", [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", BYTE2(v4), v4]);
-  v5 = [(TSTLayoutHint *)self cellRange];
+  string = [MEMORY[0x277CCAB68] string];
+  cacheHintID = [(TSTLayoutHint *)self cacheHintID];
+  -[NSString appendFormat:](string, "appendFormat:", @"ID: %@ ", [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", BYTE2(cacheHintID), cacheHintID]);
+  cellRange = [(TSTLayoutHint *)self cellRange];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", v5.var0.var1, v5.var0.var0];
-  -[NSString appendFormat:](v3, "appendFormat:", @"Range: %@ ", [v6 stringWithFormat:@"(%@, %@)", v7, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%hux%hu", v5.var1.var0, HIWORD(*&v5))]);
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", cellRange.var0.var1, cellRange.var0.var0];
+  -[NSString appendFormat:](string, "appendFormat:", @"Range: %@ ", [v6 stringWithFormat:@"(%@, %@)", v7, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%hux%hu", cellRange.var1.var0, HIWORD(*&cellRange))]);
   if ([(TSTLayoutHint *)self horizontal])
   {
     v8 = @"H";
@@ -220,13 +220,13 @@ LABEL_26:
     v8 = @"V";
   }
 
-  [(NSString *)v3 appendString:v8];
-  return v3;
+  [(NSString *)string appendString:v8];
+  return string;
 }
 
-- (TSTLayoutHint)initWithCoder:(id)a3
+- (TSTLayoutHint)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"maximumSize"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"maximumSize"];
   if (v5)
   {
     [v5 CGSizeValue];
@@ -240,7 +240,7 @@ LABEL_26:
     v9 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"effectiveSize"];
+  v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"effectiveSize"];
   if (v10)
   {
     [v10 CGSizeValue];
@@ -254,31 +254,31 @@ LABEL_26:
     v14 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v15 = -[TSTLayoutHint initWithRange:hintId:partitionPosition:maximumSize:effectiveSize:layout:validity:horizontal:](self, "initWithRange:hintId:partitionPosition:maximumSize:effectiveSize:layout:validity:horizontal:", ([a3 decodeIntegerForKey:@"cellRangeSizeRows"] << 48) | (objc_msgSend(a3, "decodeIntegerForKey:", @"cellRangeSizeColumns") << 32) | (objc_msgSend(a3, "decodeIntegerForKey:", @"cellRangeOriginColumn") << 16) | objc_msgSend(a3, "decodeIntegerForKey:", @"cellRangeOriginRow"), objc_msgSend(a3, "decodeIntegerForKey:", @"cacheHintIDRow") | (objc_msgSend(a3, "decodeIntegerForKey:", @"cacheHintIDColumn") << 16), objc_msgSend(a3, "decodeIntForKey:", @"partitionPosition"), 0, objc_msgSend(a3, "decodeBoolForKey:", @"isValid"), objc_msgSend(a3, "decodeBoolForKey:", @"horizontal"), v7, v9, v12, v14);
+  v15 = -[TSTLayoutHint initWithRange:hintId:partitionPosition:maximumSize:effectiveSize:layout:validity:horizontal:](self, "initWithRange:hintId:partitionPosition:maximumSize:effectiveSize:layout:validity:horizontal:", ([coder decodeIntegerForKey:@"cellRangeSizeRows"] << 48) | (objc_msgSend(coder, "decodeIntegerForKey:", @"cellRangeSizeColumns") << 32) | (objc_msgSend(coder, "decodeIntegerForKey:", @"cellRangeOriginColumn") << 16) | objc_msgSend(coder, "decodeIntegerForKey:", @"cellRangeOriginRow"), objc_msgSend(coder, "decodeIntegerForKey:", @"cacheHintIDRow") | (objc_msgSend(coder, "decodeIntegerForKey:", @"cacheHintIDColumn") << 16), objc_msgSend(coder, "decodeIntForKey:", @"partitionPosition"), 0, objc_msgSend(coder, "decodeBoolForKey:", @"isValid"), objc_msgSend(coder, "decodeBoolForKey:", @"horizontal"), v7, v9, v12, v14);
   if (v15)
   {
-    v15->mPartitioningPass = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"partitioningPass", "copy"}];
+    v15->mPartitioningPass = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"partitioningPass", "copy"}];
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->mCellRange.origin.row forKey:@"cellRangeOriginRow"];
-  [a3 encodeInteger:self->mCellRange.origin.column forKey:@"cellRangeOriginColumn"];
-  [a3 encodeInteger:self->mCellRange.size.numberOfColumns forKey:@"cellRangeSizeColumns"];
-  [a3 encodeInteger:self->mCellRange.size.numberOfRows forKey:@"cellRangeSizeRows"];
-  [a3 encodeInteger:self->mCacheHintID.column forKey:@"cacheHintIDColumn"];
-  [a3 encodeInteger:self->mCacheHintID.row forKey:@"cacheHintIDRow"];
-  [a3 encodeBool:self->mIsValid forKey:@"isValid"];
-  [a3 encodeInt:self->mPartitionPosition forKey:@"partitionPosition"];
-  [a3 encodeBool:self->mHorizontal forKey:@"horizontal"];
-  [a3 encodeObject:self->mPartitioningPass forKey:@"partitioningPass"];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGSize:", self->mMaximumSize.width, self->mMaximumSize.height), @"maximumSize"}];
+  [coder encodeInteger:self->mCellRange.origin.row forKey:@"cellRangeOriginRow"];
+  [coder encodeInteger:self->mCellRange.origin.column forKey:@"cellRangeOriginColumn"];
+  [coder encodeInteger:self->mCellRange.size.numberOfColumns forKey:@"cellRangeSizeColumns"];
+  [coder encodeInteger:self->mCellRange.size.numberOfRows forKey:@"cellRangeSizeRows"];
+  [coder encodeInteger:self->mCacheHintID.column forKey:@"cacheHintIDColumn"];
+  [coder encodeInteger:self->mCacheHintID.row forKey:@"cacheHintIDRow"];
+  [coder encodeBool:self->mIsValid forKey:@"isValid"];
+  [coder encodeInt:self->mPartitionPosition forKey:@"partitionPosition"];
+  [coder encodeBool:self->mHorizontal forKey:@"horizontal"];
+  [coder encodeObject:self->mPartitioningPass forKey:@"partitioningPass"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGSize:", self->mMaximumSize.width, self->mMaximumSize.height), @"maximumSize"}];
   v5 = [MEMORY[0x277CCAE60] valueWithCGSize:{self->mEffectiveSize.width, self->mEffectiveSize.height}];
 
-  [a3 encodeObject:v5 forKey:@"effectiveSize"];
+  [coder encodeObject:v5 forKey:@"effectiveSize"];
 }
 
 - (CGSize)maximumSize

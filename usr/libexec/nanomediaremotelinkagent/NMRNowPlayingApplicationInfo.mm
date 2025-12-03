@@ -1,11 +1,11 @@
 @interface NMRNowPlayingApplicationInfo
 - (NMRNowPlayingApplicationInfo)init;
-- (NMRNowPlayingApplicationInfo)initWithProtobufData:(id)a3;
-- (void)setCompanionBundleIdentifier:(id)a3;
-- (void)setIconDigest:(id)a3;
-- (void)setLocalizedDisplayName:(id)a3;
-- (void)setPlaybackState:(unsigned int)a3;
-- (void)setWatchBundleIdentifier:(id)a3;
+- (NMRNowPlayingApplicationInfo)initWithProtobufData:(id)data;
+- (void)setCompanionBundleIdentifier:(id)identifier;
+- (void)setIconDigest:(id)digest;
+- (void)setLocalizedDisplayName:(id)name;
+- (void)setPlaybackState:(unsigned int)state;
+- (void)setWatchBundleIdentifier:(id)identifier;
 @end
 
 @implementation NMRNowPlayingApplicationInfo
@@ -27,72 +27,72 @@
   return v2;
 }
 
-- (void)setCompanionBundleIdentifier:(id)a3
+- (void)setCompanionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setCompanionBundleIdentifier:v4];
+    [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setCompanionBundleIdentifier:identifierCopy];
   }
 }
 
-- (void)setWatchBundleIdentifier:(id)a3
+- (void)setWatchBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setWatchBundleIdentifier:v4];
+    [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setWatchBundleIdentifier:identifierCopy];
   }
 }
 
-- (void)setLocalizedDisplayName:(id)a3
+- (void)setLocalizedDisplayName:(id)name
 {
-  if (a3)
+  if (name)
   {
     [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setLocalizedDisplayName:?];
   }
 }
 
-- (void)setPlaybackState:(unsigned int)a3
+- (void)setPlaybackState:(unsigned int)state
 {
-  if (a3)
+  if (state)
   {
     [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setPlaybackState:?];
   }
 }
 
-- (void)setIconDigest:(id)a3
+- (void)setIconDigest:(id)digest
 {
-  v4 = a3;
-  if ([v4 length])
+  digestCopy = digest;
+  if ([digestCopy length])
   {
-    [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setIconDigest:v4];
+    [(_NMRNowPlayingApplicationStateProtobuf *)self->_protobuf setIconDigest:digestCopy];
   }
 }
 
-- (NMRNowPlayingApplicationInfo)initWithProtobufData:(id)a3
+- (NMRNowPlayingApplicationInfo)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = NMRNowPlayingApplicationInfo;
   v5 = [(NMRNowPlayingApplicationInfo *)&v11 init];
   if (v5)
   {
-    v6 = [[_NMRNowPlayingApplicationStateProtobuf alloc] initWithData:v4];
+    v6 = [[_NMRNowPlayingApplicationStateProtobuf alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 
     if ([(_NMRNowPlayingApplicationStateProtobuf *)v5->_protobuf hasProcessID])
     {
-      v8 = [(_NMRNowPlayingApplicationStateProtobuf *)v5->_protobuf processID];
+      processID = [(_NMRNowPlayingApplicationStateProtobuf *)v5->_protobuf processID];
     }
 
     else
     {
-      v8 = [objc_opt_class() _getNextPlaceholderProcessID];
+      processID = [objc_opt_class() _getNextPlaceholderProcessID];
     }
 
-    v5->_processID = v8;
+    v5->_processID = processID;
     v9 = v5;
   }
 

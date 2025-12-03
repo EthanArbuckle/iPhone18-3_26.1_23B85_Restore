@@ -1,29 +1,29 @@
 @interface DBSLargeTextSliderListController
 - (DBSLargeTextController)largeTextController;
-- (id)getDynamicTypeValueForSpecifier:(id)a3;
-- (id)initUsingExtendedRange:(BOOL)a3;
+- (id)getDynamicTypeValueForSpecifier:(id)specifier;
+- (id)initUsingExtendedRange:(BOOL)range;
 - (id)specifiers;
 - (void)loadView;
 - (void)resetSliderValue;
-- (void)setDynamicTypeValue:(id)a3 forSpecifier:(id)a4;
-- (void)setSelectedCategoryIndex:(int64_t)a3;
+- (void)setDynamicTypeValue:(id)value forSpecifier:(id)specifier;
+- (void)setSelectedCategoryIndex:(int64_t)index;
 - (void)updateSliderValue;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DBSLargeTextSliderListController
 
-- (id)initUsingExtendedRange:(BOOL)a3
+- (id)initUsingExtendedRange:(BOOL)range
 {
   v5.receiver = self;
   v5.super_class = DBSLargeTextSliderListController;
   result = [(DBSLargeTextSliderListController *)&v5 init];
   if (result)
   {
-    *(result + 1466) = a3;
+    *(result + 1466) = range;
   }
 
   return result;
@@ -43,19 +43,19 @@
   [(DBSLargeTextSliderListController *)self setContentSizeCategories:v6];
 
   [(DBSLargeTextSliderListController *)self updateSliderValue];
-  v7 = [(DBSLargeTextSliderListController *)self contentSizeCategories];
-  v8 = [v7 indexOfObject:v5];
+  contentSizeCategories = [(DBSLargeTextSliderListController *)self contentSizeCategories];
+  v8 = [contentSizeCategories indexOfObject:v5];
 
   v9 = ![(DBSLargeTextSliderListController *)self showsExtendedRangeSwitch]&& ![(DBSLargeTextSliderListController *)self usesExtendedRange]&& [(DBSLargeTextSliderListController *)self selectedCategoryIndex]== v8;
   [(DBSLargeTextSliderListController *)self setShowsLargerSizesHelpText:v9];
-  v10 = [(DBSLargeTextSliderListController *)self table];
-  [v10 setScrollEnabled:0];
+  table = [(DBSLargeTextSliderListController *)self table];
+  [table setScrollEnabled:0];
 
-  v11 = [(DBSLargeTextSliderListController *)self table];
-  [v11 _setTopPadding:0.0];
+  table2 = [(DBSLargeTextSliderListController *)self table];
+  [table2 _setTopPadding:0.0];
 
-  v12 = [(DBSLargeTextSliderListController *)self table];
-  [v12 _setDisableReuseQueuePurgeOnTextSizeChanges:1];
+  table3 = [(DBSLargeTextSliderListController *)self table];
+  [table3 _setDisableReuseQueuePurgeOnTextSizeChanges:1];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -63,62 +63,62 @@
   v11.receiver = self;
   v11.super_class = DBSLargeTextSliderListController;
   [(DBSLargeTextSliderListController *)&v11 viewSafeAreaInsetsDidChange];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if (([v3 sf_isiPhone] & 1) == 0)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (([currentDevice sf_isiPhone] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(DBSLargeTextSliderListController *)self view];
-  [v4 safeAreaInsets];
+  view = [(DBSLargeTextSliderListController *)self view];
+  [view safeAreaInsets];
   v6 = v5;
 
   if (v6 <= 0.0)
   {
 LABEL_5:
-    v7 = [(DBSLargeTextSliderListController *)self table];
-    [v7 _setBottomPadding:0.0];
+    table = [(DBSLargeTextSliderListController *)self table];
+    [table _setBottomPadding:0.0];
     goto LABEL_6;
   }
 
-  v7 = [(DBSLargeTextSliderListController *)self view];
-  [v7 safeAreaInsets];
+  table = [(DBSLargeTextSliderListController *)self view];
+  [table safeAreaInsets];
   v9 = v8;
-  v10 = [(DBSLargeTextSliderListController *)self table];
-  [v10 _setBottomPadding:v9];
+  table2 = [(DBSLargeTextSliderListController *)self table];
+  [table2 _setBottomPadding:v9];
 
 LABEL_6:
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DBSLargeTextSliderListController;
-  [(DBSLargeTextSliderListController *)&v4 viewWillAppear:a3];
+  [(DBSLargeTextSliderListController *)&v4 viewWillAppear:appear];
   self->_viewIsDisappearing = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = DBSLargeTextSliderListController;
-  [(DBSLargeTextSliderListController *)&v16 viewDidAppear:a3];
+  [(DBSLargeTextSliderListController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Display/TEXT_SIZE"];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:currentLocale bundleURL:bundleURL];
 
     v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
     v12 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v13 = [v12 bundleURL];
-    v14 = [v10 initWithKey:@"TEXT_SIZE" defaultValue:0 table:@"Display" locale:v11 bundleURL:v13];
+    bundleURL2 = [v12 bundleURL];
+    v14 = [v10 initWithKey:@"TEXT_SIZE" defaultValue:0 table:@"Display" locale:currentLocale2 bundleURL:bundleURL2];
 
     v17[0] = v9;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -126,11 +126,11 @@ LABEL_6:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = DBSLargeTextSliderListController;
-  [(DBSLargeTextSliderListController *)&v4 viewWillDisappear:a3];
+  [(DBSLargeTextSliderListController *)&v4 viewWillDisappear:disappear];
   self->_viewIsDisappearing = 1;
 }
 
@@ -146,14 +146,14 @@ LABEL_6:
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (!self->_sliderGroupSpecifier)
   {
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     sliderGroupSpecifier = self->_sliderGroupSpecifier;
-    self->_sliderGroupSpecifier = v6;
+    self->_sliderGroupSpecifier = emptyGroupSpecifier;
   }
 
-  v8 = [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText];
+  showsLargerSizesHelpText = [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText];
   v9 = self->_sliderGroupSpecifier;
-  if (v8)
+  if (showsLargerSizesHelpText)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -165,8 +165,8 @@ LABEL_6:
     [(PSSpecifier *)self->_sliderGroupSpecifier removePropertyForKey:*MEMORY[0x277D3FFA0]];
   }
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  if ([v12 sf_isiPhone])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isiPhone])
   {
   }
 
@@ -196,15 +196,15 @@ LABEL_12:
   [v17 setProperty:v18 forKey:*MEMORY[0x277D400C8]];
   [v17 setProperty:&unk_28349F4D8 forKey:*MEMORY[0x277D3FEC0]];
   [v17 setProperty:&unk_28349F6D8 forKey:*MEMORY[0x277D40140]];
-  v19 = [(DBSLargeTextSliderListController *)self contentSizeCategories];
-  v20 = [(DBSLargeTextSliderListController *)self usesExtendedRange];
+  contentSizeCategories = [(DBSLargeTextSliderListController *)self contentSizeCategories];
+  usesExtendedRange = [(DBSLargeTextSliderListController *)self usesExtendedRange];
   v21 = MEMORY[0x277D767E8];
-  if (!v20)
+  if (!usesExtendedRange)
   {
     v21 = MEMORY[0x277D76818];
   }
 
-  v22 = [v19 indexOfObject:*v21];
+  v22 = [contentSizeCategories indexOfObject:*v21];
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
   [v17 setProperty:v23 forKey:*MEMORY[0x277D3FEB8]];
@@ -215,8 +215,8 @@ LABEL_12:
   [v5 addObject:v17];
   if (self->_showsResetSliderButton)
   {
-    v25 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 addObject:v25];
+    emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v5 addObject:emptyGroupSpecifier2];
     v26 = MEMORY[0x277D3FAD8];
     v27 = DBS_LocalizedStringForLargeFontSettings(@"RESET_BUTTON_TEXT");
     v28 = [v26 preferenceSpecifierNamed:v27 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -236,48 +236,48 @@ LABEL_17:
   return v4;
 }
 
-- (void)setSelectedCategoryIndex:(int64_t)a3
+- (void)setSelectedCategoryIndex:(int64_t)index
 {
   if (![(DBSLargeTextSliderListController *)self usesExtendedRange])
   {
-    v5 = [(DBSLargeTextSliderListController *)self contentSizeCategories];
-    v6 = [v5 indexOfObject:*MEMORY[0x277D76818]];
+    contentSizeCategories = [(DBSLargeTextSliderListController *)self contentSizeCategories];
+    v6 = [contentSizeCategories indexOfObject:*MEMORY[0x277D76818]];
 
-    if (v6 < a3)
+    if (v6 < index)
     {
-      a3 = v6;
+      index = v6;
     }
   }
 
-  self->_selectedCategoryIndex = a3;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  self->_selectedCategoryIndex = index;
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [(DBSLargeTextSliderListController *)self setDynamicTypeValue:v7 forSpecifier:0];
 }
 
-- (void)setDynamicTypeValue:(id)a3 forSpecifier:(id)a4
+- (void)setDynamicTypeValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   if (!self->_viewIsDisappearing)
   {
-    v8 = [v6 integerValue];
-    if (v8 != [(DBSLargeTextSliderListController *)self selectedCategoryIndex]|| !v7 && *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
+    integerValue = [valueCopy integerValue];
+    if (integerValue != [(DBSLargeTextSliderListController *)self selectedCategoryIndex]|| !specifierCopy && *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
     {
-      v9 = [(DBSLargeTextSliderListController *)self contentSizeCategories];
-      v10 = [v9 indexOfObject:*MEMORY[0x277D76818]];
+      contentSizeCategories = [(DBSLargeTextSliderListController *)self contentSizeCategories];
+      v10 = [contentSizeCategories indexOfObject:*MEMORY[0x277D76818]];
 
-      v11 = [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText];
-      self->_selectedCategoryIndex = [v6 integerValue];
-      v12 = [(DBSLargeTextSliderListController *)self view];
-      [v12 setNeedsLayout];
+      showsLargerSizesHelpText = [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText];
+      self->_selectedCategoryIndex = [valueCopy integerValue];
+      view = [(DBSLargeTextSliderListController *)self view];
+      [view setNeedsLayout];
 
       v13 = ![(DBSLargeTextSliderListController *)self showsExtendedRangeSwitch]&& ![(DBSLargeTextSliderListController *)self usesExtendedRange]&& [(DBSLargeTextSliderListController *)self selectedCategoryIndex]== v10;
       [(DBSLargeTextSliderListController *)self setShowsLargerSizesHelpText:v13];
-      if (v11 != [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText])
+      if (showsLargerSizesHelpText != [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText])
       {
-        v14 = [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText];
+        showsLargerSizesHelpText2 = [(DBSLargeTextSliderListController *)self showsLargerSizesHelpText];
         sliderGroupSpecifier = self->_sliderGroupSpecifier;
-        if (v14)
+        if (showsLargerSizesHelpText2)
         {
           v16 = objc_opt_class();
           v17 = NSStringFromClass(v16);
@@ -294,8 +294,8 @@ LABEL_17:
       v18[1] = 3221225472;
       v18[2] = __69__DBSLargeTextSliderListController_setDynamicTypeValue_forSpecifier___block_invoke;
       v18[3] = &unk_2784594B8;
-      v19 = v7;
-      v20 = self;
+      v19 = specifierCopy;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v18);
     }
   }
@@ -323,16 +323,16 @@ void __69__DBSLargeTextSliderListController_setDynamicTypeValue_forSpecifier___b
   [v0 postNotificationName:@"DidPostContentSizeChanged" object:0];
 }
 
-- (id)getDynamicTypeValueForSpecifier:(id)a3
+- (id)getDynamicTypeValueForSpecifier:(id)specifier
 {
-  v4 = [(DBSLargeTextSliderListController *)self largeTextController];
-  v5 = [v4 readPreferredContentSizeCategoryName];
+  largeTextController = [(DBSLargeTextSliderListController *)self largeTextController];
+  readPreferredContentSizeCategoryName = [largeTextController readPreferredContentSizeCategoryName];
 
   v6 = MEMORY[0x277CCABB0];
-  if (v5)
+  if (readPreferredContentSizeCategoryName)
   {
-    v7 = [(DBSLargeTextSliderListController *)self contentSizeCategories];
-    v8 = [v6 numberWithInteger:{objc_msgSend(v7, "indexOfObject:", v5)}];
+    contentSizeCategories = [(DBSLargeTextSliderListController *)self contentSizeCategories];
+    v8 = [v6 numberWithInteger:{objc_msgSend(contentSizeCategories, "indexOfObject:", readPreferredContentSizeCategoryName)}];
   }
 
   else
@@ -345,13 +345,13 @@ void __69__DBSLargeTextSliderListController_setDynamicTypeValue_forSpecifier___b
 
 - (void)updateSliderValue
 {
-  v3 = [(DBSLargeTextSliderListController *)self largeTextController];
-  v6 = [v3 readPreferredContentSizeCategoryName];
+  largeTextController = [(DBSLargeTextSliderListController *)self largeTextController];
+  readPreferredContentSizeCategoryName = [largeTextController readPreferredContentSizeCategoryName];
 
-  v4 = [(DBSLargeTextSliderListController *)self contentSizeCategories];
-  if (v6)
+  contentSizeCategories = [(DBSLargeTextSliderListController *)self contentSizeCategories];
+  if (readPreferredContentSizeCategoryName)
   {
-    v5 = v6;
+    v5 = readPreferredContentSizeCategoryName;
   }
 
   else
@@ -359,13 +359,13 @@ void __69__DBSLargeTextSliderListController_setDynamicTypeValue_forSpecifier___b
     v5 = *MEMORY[0x277D76838];
   }
 
-  -[DBSLargeTextSliderListController setSelectedCategoryIndex:](self, "setSelectedCategoryIndex:", [v4 indexOfObject:v5]);
+  -[DBSLargeTextSliderListController setSelectedCategoryIndex:](self, "setSelectedCategoryIndex:", [contentSizeCategories indexOfObject:v5]);
 }
 
 - (void)resetSliderValue
 {
-  v3 = [(DBSLargeTextSliderListController *)self largeTextController];
-  [v3 resetContentSizeCategoryName];
+  largeTextController = [(DBSLargeTextSliderListController *)self largeTextController];
+  [largeTextController resetContentSizeCategoryName];
 
   [(DBSLargeTextSliderListController *)self reloadSpecifiers];
 }

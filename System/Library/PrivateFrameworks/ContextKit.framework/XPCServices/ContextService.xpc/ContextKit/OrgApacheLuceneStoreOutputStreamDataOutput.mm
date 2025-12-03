@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneStoreOutputStreamDataOutput
-- (OrgApacheLuceneStoreOutputStreamDataOutput)initWithJavaIoOutputStream:(id)a3;
+- (OrgApacheLuceneStoreOutputStreamDataOutput)initWithJavaIoOutputStream:(id)stream;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneStoreOutputStreamDataOutput
 
-- (OrgApacheLuceneStoreOutputStreamDataOutput)initWithJavaIoOutputStream:(id)a3
+- (OrgApacheLuceneStoreOutputStreamDataOutput)initWithJavaIoOutputStream:(id)stream
 {
   OrgApacheLuceneStoreDataOutput_init(self, a2);
-  JreStrongAssign(&self->os_, a3);
+  JreStrongAssign(&self->os_, stream);
   return self;
 }
 

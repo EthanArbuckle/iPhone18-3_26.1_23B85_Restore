@@ -9,7 +9,7 @@
 - (void)moviePlayerTapped;
 - (void)pauseIfPlaying;
 - (void)play;
-- (void)setActiveMovieAttachmentView:(id)a3;
+- (void)setActiveMovieAttachmentView:(id)view;
 - (void)stopIfPlaying;
 - (void)updatePlayer;
 @end
@@ -20,8 +20,8 @@
 {
   if (sDidCreateSharedController == 1)
   {
-    v3 = [a1 sharedController];
-    [v3 stopIfPlaying];
+    sharedController = [self sharedController];
+    [sharedController stopIfPlaying];
   }
 }
 
@@ -29,8 +29,8 @@
 {
   if (sDidCreateSharedController == 1)
   {
-    v3 = [a1 sharedController];
-    [v3 pauseIfPlaying];
+    sharedController = [self sharedController];
+    [sharedController pauseIfPlaying];
   }
 }
 
@@ -41,10 +41,10 @@
     return 0;
   }
 
-  v2 = [a1 sharedController];
-  v3 = [v2 isFullScreen];
+  sharedController = [self sharedController];
+  isFullScreen = [sharedController isFullScreen];
 
-  return v3;
+  return isFullScreen;
 }
 
 + (ICMovieController)sharedController
@@ -79,83 +79,83 @@ void __37__ICMovieController_sharedController__block_invoke()
 
 - (id)ic_viewControllerManager
 {
-  v2 = [(ICMovieController *)self activeMovieAttachmentView];
-  v3 = [v2 ic_viewControllerManager];
+  activeMovieAttachmentView = [(ICMovieController *)self activeMovieAttachmentView];
+  ic_viewControllerManager = [activeMovieAttachmentView ic_viewControllerManager];
 
-  return v3;
+  return ic_viewControllerManager;
 }
 
 - (void)updatePlayer
 {
   v3 = MEMORY[0x277CE65B0];
-  v4 = [(ICMovieController *)self activeAsset];
-  v14 = [v3 playerItemWithAsset:v4];
+  activeAsset = [(ICMovieController *)self activeAsset];
+  v14 = [v3 playerItemWithAsset:activeAsset];
 
   v5 = [MEMORY[0x277CE6598] playerWithPlayerItem:v14];
-  v6 = [(ICMovieController *)self moviePlayerController];
-  if (v6)
+  moviePlayerController = [(ICMovieController *)self moviePlayerController];
+  if (moviePlayerController)
   {
-    v7 = v6;
-    v8 = [(ICMovieController *)self moviePlayerController];
-    v9 = [v8 player];
-    v10 = [v9 currentItem];
-    v11 = [v10 asset];
-    v12 = [(ICMovieController *)self activeAsset];
+    v7 = moviePlayerController;
+    moviePlayerController2 = [(ICMovieController *)self moviePlayerController];
+    player = [moviePlayerController2 player];
+    currentItem = [player currentItem];
+    asset = [currentItem asset];
+    activeAsset2 = [(ICMovieController *)self activeAsset];
 
-    if (v11 != v12)
+    if (asset != activeAsset2)
     {
-      v13 = [(ICMovieController *)self moviePlayerController];
-      [v13 setPlayer:v5];
+      moviePlayerController3 = [(ICMovieController *)self moviePlayerController];
+      [moviePlayerController3 setPlayer:v5];
     }
   }
 }
 
 - (BOOL)prepareForPlayback
 {
-  v3 = [(ICMovieController *)self activeMovieAttachmentView];
-  v4 = [v3 attachment];
-  v5 = [v4 attachmentModel];
-  v6 = [v5 isReadyToPresent];
+  activeMovieAttachmentView = [(ICMovieController *)self activeMovieAttachmentView];
+  attachment = [activeMovieAttachmentView attachment];
+  attachmentModel = [attachment attachmentModel];
+  isReadyToPresent = [attachmentModel isReadyToPresent];
 
-  if (v6)
+  if (isReadyToPresent)
   {
     v7 = objc_opt_new();
     v8 = v7;
     if (v7)
     {
       [v7 setDelegate:self];
-      v9 = [(ICMovieController *)self activeMovieAttachmentView];
-      [v8 setAllowsPictureInPicturePlayback:{objc_msgSend(v9, "allowsPictureInPicture")}];
+      activeMovieAttachmentView2 = [(ICMovieController *)self activeMovieAttachmentView];
+      [v8 setAllowsPictureInPicturePlayback:{objc_msgSend(activeMovieAttachmentView2, "allowsPictureInPicture")}];
 
       [v8 setAllowsEnteringFullScreen:{objc_msgSend(MEMORY[0x277D75418], "ic_isVision") ^ 1}];
       [(ICMovieController *)self setMoviePlayerController:v8];
-      v10 = [(ICMovieController *)self activeMovieAttachmentView];
-      v11 = [v10 shouldPlayFullscreenOnly];
+      activeMovieAttachmentView3 = [(ICMovieController *)self activeMovieAttachmentView];
+      shouldPlayFullscreenOnly = [activeMovieAttachmentView3 shouldPlayFullscreenOnly];
 
-      if ((v11 & 1) == 0)
+      if ((shouldPlayFullscreenOnly & 1) == 0)
       {
-        v12 = [v8 view];
-        v13 = [(ICMovieController *)self activeMovieAttachmentView];
-        [v13 bounds];
-        [v12 setFrame:?];
+        view = [v8 view];
+        activeMovieAttachmentView4 = [(ICMovieController *)self activeMovieAttachmentView];
+        [activeMovieAttachmentView4 bounds];
+        [view setFrame:?];
 
-        v14 = [(ICMovieController *)self activeMovieAttachmentView];
-        v15 = [v8 view];
-        [v14 addSubview:v15];
+        activeMovieAttachmentView5 = [(ICMovieController *)self activeMovieAttachmentView];
+        view2 = [v8 view];
+        [activeMovieAttachmentView5 addSubview:view2];
       }
 
-      v16 = [(ICMovieController *)self activeMovieAttachmentView];
-      [v16 setIcaxIsShowingPlayer:1];
+      activeMovieAttachmentView6 = [(ICMovieController *)self activeMovieAttachmentView];
+      [activeMovieAttachmentView6 setIcaxIsShowingPlayer:1];
 
-      LODWORD(v16) = *MEMORY[0x277D76488];
-      v17 = [v8 view];
-      UIAccessibilityPostNotification(v16, v17);
+      LODWORD(activeMovieAttachmentView6) = *MEMORY[0x277D76488];
+      view3 = [v8 view];
+      UIAccessibilityPostNotification(activeMovieAttachmentView6, view3);
     }
 
-    v18 = [MEMORY[0x277CB83F8] sharedInstance];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
     v19 = *MEMORY[0x277CB8030];
     v22 = 0;
-    if (([v18 setCategory:v19 error:&v22] & 1) == 0)
+    if (([mEMORY[0x277CB83F8] setCategory:v19 error:&v22] & 1) == 0)
     {
       v20 = os_log_create("com.apple.notes", "UI");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -167,55 +167,55 @@ void __37__ICMovieController_sharedController__block_invoke()
     [(ICMovieController *)self updatePlayer];
   }
 
-  return v6;
+  return isReadyToPresent;
 }
 
 - (void)play
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(ICMovieController *)self activeMovieAttachmentView];
-  v5 = [v4 attachment];
-  [v3 postNotificationName:@"ICMovieAttachmentViewWillPlayMovieNotification" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  activeMovieAttachmentView = [(ICMovieController *)self activeMovieAttachmentView];
+  attachment = [activeMovieAttachmentView attachment];
+  [defaultCenter postNotificationName:@"ICMovieAttachmentViewWillPlayMovieNotification" object:attachment];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v7 = *MEMORY[0x277D35D78];
   v23 = *MEMORY[0x277D35D70];
-  v8 = [(ICMovieController *)self activeMovieAttachmentView];
-  v9 = [v8 attachment];
-  v24[0] = v9;
+  activeMovieAttachmentView2 = [(ICMovieController *)self activeMovieAttachmentView];
+  attachment2 = [activeMovieAttachmentView2 attachment];
+  v24[0] = attachment2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  [v6 postNotificationName:v7 object:0 userInfo:v10];
+  [defaultCenter2 postNotificationName:v7 object:0 userInfo:v10];
 
-  v11 = [(ICMovieController *)self moviePlayerController];
-  v12 = [v11 player];
+  moviePlayerController = [(ICMovieController *)self moviePlayerController];
+  player = [moviePlayerController player];
 
-  [v12 setUsesExternalPlaybackWhileExternalScreenIsActive:1];
-  v13 = [(ICMovieController *)self playbackForPreview];
-  v14 = [(ICMovieController *)self activeMovieAttachmentView];
-  LODWORD(v9) = [v14 shouldPlayFullscreenOnly];
+  [player setUsesExternalPlaybackWhileExternalScreenIsActive:1];
+  playbackForPreview = [(ICMovieController *)self playbackForPreview];
+  activeMovieAttachmentView3 = [(ICMovieController *)self activeMovieAttachmentView];
+  LODWORD(attachment2) = [activeMovieAttachmentView3 shouldPlayFullscreenOnly];
 
-  if (!v9 || v13)
+  if (!attachment2 || playbackForPreview)
   {
-    [v12 play];
+    [player play];
   }
 
   else
   {
-    v15 = [(ICMovieController *)self activeMovieAttachmentView];
-    [v15 setUserInteractionEnabled:0];
+    activeMovieAttachmentView4 = [(ICMovieController *)self activeMovieAttachmentView];
+    [activeMovieAttachmentView4 setUserInteractionEnabled:0];
 
-    v16 = [(ICMovieController *)self activeMovieAttachmentView];
-    v17 = [v16 window];
-    v18 = [v17 rootViewController];
-    v19 = [(ICMovieController *)self moviePlayerController];
+    activeMovieAttachmentView5 = [(ICMovieController *)self activeMovieAttachmentView];
+    window = [activeMovieAttachmentView5 window];
+    rootViewController = [window rootViewController];
+    moviePlayerController2 = [(ICMovieController *)self moviePlayerController];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __25__ICMovieController_play__block_invoke;
     v20[3] = &unk_2781ABEB8;
-    v21 = v12;
-    v22 = self;
-    [v18 presentViewController:v19 animated:1 completion:v20];
+    v21 = player;
+    selfCopy = self;
+    [rootViewController presentViewController:moviePlayerController2 animated:1 completion:v20];
   }
 }
 
@@ -228,37 +228,37 @@ void __25__ICMovieController_play__block_invoke(uint64_t a1)
 
 - (void)pauseIfPlaying
 {
-  v2 = [(ICMovieController *)self moviePlayerController];
-  v3 = [v2 player];
+  moviePlayerController = [(ICMovieController *)self moviePlayerController];
+  player = [moviePlayerController player];
 
-  [v3 pause];
+  [player pause];
 }
 
 - (void)stopIfPlaying
 {
-  v2 = [(ICMovieController *)self moviePlayerController];
-  v3 = [v2 player];
+  moviePlayerController = [(ICMovieController *)self moviePlayerController];
+  player = [moviePlayerController player];
 
-  [v3 pause];
+  [player pause];
   v4 = *MEMORY[0x277CC08F0];
   v5 = *(MEMORY[0x277CC08F0] + 16);
-  [v3 seekToTime:&v4];
+  [player seekToTime:&v4];
 }
 
 - (void)moviePlayerTapped
 {
-  v3 = [(ICMovieController *)self moviePlayerController];
-  v4 = [v3 player];
-  v5 = [v4 currentItem];
-  v6 = [v5 asset];
-  v7 = [(ICMovieController *)self activeAsset];
+  moviePlayerController = [(ICMovieController *)self moviePlayerController];
+  player = [moviePlayerController player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
+  activeAsset = [(ICMovieController *)self activeAsset];
 
-  v8 = [(ICMovieController *)self moviePlayerController];
-  v9 = v8;
-  if (v6 != v7)
+  moviePlayerController2 = [(ICMovieController *)self moviePlayerController];
+  v9 = moviePlayerController2;
+  if (asset != activeAsset)
   {
-    v10 = [v8 player];
-    [v10 rate];
+    player2 = [moviePlayerController2 player];
+    [player2 rate];
     v12 = v11;
 
     if (v12 != 0.0)
@@ -266,9 +266,9 @@ void __25__ICMovieController_play__block_invoke(uint64_t a1)
       [(ICMovieController *)self stopIfPlaying];
     }
 
-    v13 = self;
+    selfCopy2 = self;
 LABEL_5:
-    if (![(ICMovieController *)v13 prepareForPlayback])
+    if (![(ICMovieController *)selfCopy2 prepareForPlayback])
     {
       return;
     }
@@ -276,15 +276,15 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v13 = self;
+  selfCopy2 = self;
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  v14 = [(ICMovieController *)self moviePlayerController];
-  v15 = [v14 player];
-  [v15 rate];
+  moviePlayerController3 = [(ICMovieController *)self moviePlayerController];
+  player3 = [moviePlayerController3 player];
+  [player3 rate];
   v17 = v16;
 
   if (v17 == 0.0)
@@ -298,26 +298,26 @@ LABEL_9:
   [(ICMovieController *)self pauseIfPlaying];
 }
 
-- (void)setActiveMovieAttachmentView:(id)a3
+- (void)setActiveMovieAttachmentView:(id)view
 {
-  v5 = a3;
-  if (self->_activeMovieAttachmentView != v5)
+  viewCopy = view;
+  if (self->_activeMovieAttachmentView != viewCopy)
   {
-    v11 = v5;
+    v11 = viewCopy;
     [(ICMovieController *)self stopIfPlaying];
     [(ICMovieController *)self setPlaybackForPreview:0];
-    v6 = [(ICMovieController *)self moviePlayerController];
-    v7 = [v6 view];
-    [v7 removeFromSuperview];
+    moviePlayerController = [(ICMovieController *)self moviePlayerController];
+    view = [moviePlayerController view];
+    [view removeFromSuperview];
 
     [(ICMovieController *)self setMoviePlayerController:0];
-    objc_storeStrong(&self->_activeMovieAttachmentView, a3);
-    v8 = [(ICMovieAttachmentView *)v11 attachment];
-    v9 = [v8 attachmentModel];
-    v10 = [v9 asset];
-    [(ICMovieController *)self setActiveAsset:v10];
+    objc_storeStrong(&self->_activeMovieAttachmentView, view);
+    attachment = [(ICMovieAttachmentView *)v11 attachment];
+    attachmentModel = [attachment attachmentModel];
+    asset = [attachmentModel asset];
+    [(ICMovieController *)self setActiveAsset:asset];
 
-    v5 = v11;
+    viewCopy = v11;
   }
 }
 

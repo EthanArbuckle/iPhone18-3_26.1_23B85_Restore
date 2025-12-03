@@ -1,6 +1,6 @@
 @interface THGlossaryEntryFloatingRep
 - (void)dealloc;
-- (void)drawInLayerContext:(CGContext *)a3;
+- (void)drawInLayerContext:(CGContext *)context;
 @end
 
 @implementation THGlossaryEntryFloatingRep
@@ -12,7 +12,7 @@
   [(THGlossaryEntryFloatingRep *)&v2 dealloc];
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THGlossaryEntryFloatingRep drawInLayerContext:]"];

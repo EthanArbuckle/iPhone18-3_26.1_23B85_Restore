@@ -1,6 +1,6 @@
 @interface AEAPolicyDeactivationRunner
 - (BOOL)isFailable;
-- (void)deactivateWithCompletion:(id)a3;
+- (void)deactivateWithCompletion:(id)completion;
 @end
 
 @implementation AEAPolicyDeactivationRunner
@@ -17,13 +17,13 @@
   return v5 & 1;
 }
 
-- (void)deactivateWithCompletion:(id)a3
+- (void)deactivateWithCompletion:(id)completion
 {
   v5 = sub_100003F6C(&qword_1000BA380, &qword_100080750);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;

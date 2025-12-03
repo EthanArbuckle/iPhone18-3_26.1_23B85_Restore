@@ -1,19 +1,19 @@
 @interface WDHeartRhythmSectionHeaderView
 - (NSString)titleText;
-- (WDHeartRhythmSectionHeaderView)initWithReuseIdentifier:(id)a3;
-- (void)setTitleText:(id)a3;
+- (WDHeartRhythmSectionHeaderView)initWithReuseIdentifier:(id)identifier;
+- (void)setTitleText:(id)text;
 - (void)setUpUI;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraintConstants;
 @end
 
 @implementation WDHeartRhythmSectionHeaderView
 
-- (WDHeartRhythmSectionHeaderView)initWithReuseIdentifier:(id)a3
+- (WDHeartRhythmSectionHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = WDHeartRhythmSectionHeaderView;
-  v3 = [(WDHeartRhythmSectionHeaderView *)&v8 initWithReuseIdentifier:a3];
+  v3 = [(WDHeartRhythmSectionHeaderView *)&v8 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -30,60 +30,60 @@
 - (void)setUpUI
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v3 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v4 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v5 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v5 setTextAlignment:4];
+  titleLabel3 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel3 setTextAlignment:4];
 
-  v6 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v6 setNumberOfLines:0];
+  titleLabel4 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
   v7 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A20] addingSymbolicTraits:32770 options:0];
   v8 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:0.0];
-  v9 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v9 setFont:v8];
+  titleLabel5 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel5 setFont:v8];
 
-  v10 = [MEMORY[0x277D75348] labelColor];
-  v11 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v11 setTextColor:v10];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  titleLabel6 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel6 setTextColor:labelColor];
 
-  v12 = [(WDHeartRhythmSectionHeaderView *)self contentView];
-  v13 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v12 addSubview:v13];
+  contentView = [(WDHeartRhythmSectionHeaderView *)self contentView];
+  titleLabel7 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [contentView addSubview:titleLabel7];
 
-  v14 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  v15 = [v14 topAnchor];
-  v16 = [(WDHeartRhythmSectionHeaderView *)self contentView];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:12.0];
+  titleLabel8 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  topAnchor = [titleLabel8 topAnchor];
+  contentView2 = [(WDHeartRhythmSectionHeaderView *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
   [v18 setActive:1];
 
-  v19 = [(WDHeartRhythmSectionHeaderView *)self contentView];
-  v20 = [v19 bottomAnchor];
-  v21 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  v22 = [v21 lastBaselineAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  contentView3 = [(WDHeartRhythmSectionHeaderView *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  titleLabel9 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel9 lastBaselineAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
   bottomToTitleLastBaselineConstraint = self->_bottomToTitleLastBaselineConstraint;
   self->_bottomToTitleLastBaselineConstraint = v23;
 
   [(WDHeartRhythmSectionHeaderView *)self updateConstraintConstants];
-  v25 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  v26 = [v25 leadingAnchor];
-  v27 = [(WDHeartRhythmSectionHeaderView *)self contentView];
-  v28 = [v27 layoutMarginsGuide];
-  v29 = [v28 leadingAnchor];
-  v30 = [v26 constraintEqualToAnchor:v29];
+  titleLabel10 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  leadingAnchor = [titleLabel10 leadingAnchor];
+  contentView4 = [(WDHeartRhythmSectionHeaderView *)self contentView];
+  layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v31 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  v32 = [v31 trailingAnchor];
-  v33 = [(WDHeartRhythmSectionHeaderView *)self contentView];
-  v34 = [v33 layoutMarginsGuide];
-  v35 = [v34 trailingAnchor];
-  v36 = [v32 constraintEqualToAnchor:v35];
+  titleLabel11 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  trailingAnchor = [titleLabel11 trailingAnchor];
+  contentView5 = [(WDHeartRhythmSectionHeaderView *)self contentView];
+  layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v37 = self->_bottomToTitleLastBaselineConstraint;
   v38 = MEMORY[0x277CCAAD0];
@@ -102,22 +102,22 @@
   v7 = [v3 initForTextStyle:*MEMORY[0x277D76A20]];
   [v7 scaledValueForValue:12.0];
   v5 = v4;
-  v6 = [(WDHeartRhythmSectionHeaderView *)self bottomToTitleLastBaselineConstraint];
-  [v6 setConstant:v5];
+  bottomToTitleLastBaselineConstraint = [(WDHeartRhythmSectionHeaderView *)self bottomToTitleLastBaselineConstraint];
+  [bottomToTitleLastBaselineConstraint setConstant:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v8 = a3;
-  if (!v8)
+  changeCopy = change;
+  if (!changeCopy)
   {
     goto LABEL_3;
   }
 
-  v4 = [(WDHeartRhythmSectionHeaderView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [v8 preferredContentSizeCategory];
-  v7 = [v5 isEqualToString:v6];
+  traitCollection = [(WDHeartRhythmSectionHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
@@ -126,19 +126,19 @@ LABEL_3:
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
 - (NSString)titleText
 {
-  v2 = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(WDHeartRhythmSectionHeaderView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

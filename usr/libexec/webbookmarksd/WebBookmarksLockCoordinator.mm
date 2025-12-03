@@ -1,7 +1,7 @@
 @interface WebBookmarksLockCoordinator
 - (WebBookmarksLockCoordinator)init;
 - (void)_tryLock;
-- (void)accessBookmarkForWritingWithBlock:(id)a3;
+- (void)accessBookmarkForWritingWithBlock:(id)block;
 @end
 
 @implementation WebBookmarksLockCoordinator
@@ -87,17 +87,17 @@
   }
 }
 
-- (void)accessBookmarkForWritingWithBlock:(id)a3
+- (void)accessBookmarkForWritingWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001974;
   v7[3] = &unk_100028BD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 

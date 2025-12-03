@@ -1,13 +1,13 @@
 @interface PXPhotosDetailsAssetsSpec
-+ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)a3;
++ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)collection;
 - (CGSize)gridInterItemSpacing;
 - (CGSize)gridItemSize;
-- (PXPhotosDetailsAssetsSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 detailsOptions:(unint64_t)a5;
+- (PXPhotosDetailsAssetsSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options detailsOptions:(unint64_t)detailsOptions;
 - (UIEdgeInsets)contentGuideInsets;
 - (UIEdgeInsets)gridContentInsets;
-- (void)_computeEditorialWithExtendedTraitCollection:(id)a3;
-- (void)_computeGridWithExtendedTraitCollection:(id)a3;
-- (void)_computeSpecWithExtendedTraitCollection:(id)a3;
+- (void)_computeEditorialWithExtendedTraitCollection:(id)collection;
+- (void)_computeGridWithExtendedTraitCollection:(id)collection;
+- (void)_computeSpecWithExtendedTraitCollection:(id)collection;
 @end
 
 @implementation PXPhotosDetailsAssetsSpec
@@ -56,17 +56,17 @@
   return result;
 }
 
-- (void)_computeGridWithExtendedTraitCollection:(id)a3
+- (void)_computeGridWithExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  [v4 layoutReferenceSize];
+  collectionCopy = collection;
+  traitCollection = [collectionCopy traitCollection];
+  [collectionCopy layoutReferenceSize];
   v7 = v6;
   [(PXPhotosDetailsAssetsSpec *)self contentGuideInsets];
   v10 = v7 - (v8 + v9);
-  v11 = [objc_opt_class() shouldUsePhoneLayoutWithTraitCollection:v5];
-  v12 = [v5 userInterfaceIdiom];
-  if (v12 == 2)
+  v11 = [objc_opt_class() shouldUsePhoneLayoutWithTraitCollection:traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  if (userInterfaceIdiom == 2)
   {
     v22 = *MEMORY[0x1E69DDCE0];
     v21 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -111,7 +111,7 @@ LABEL_5:
   }
 
   v13 = [off_1E7721798 photosGridLayoutColumnsForWidth:v10];
-  [v4 displayScale];
+  [collectionCopy displayScale];
   v28 = 0.0;
   v29 = 0.0;
   [off_1E7721798 bestItemSizeForAvailableWidth:v13 screenScale:&v29 columns:&v28 bestSpacing:v10 bestInset:v14];
@@ -131,13 +131,13 @@ LABEL_6:
   self->_gridItemSize.width = v15;
   self->_gridItemSize.height = v16;
   self->_gridContentMode = v20;
-  self->_enableBadges = v12 != 2;
+  self->_enableBadges = userInterfaceIdiom != 2;
 }
 
-- (void)_computeEditorialWithExtendedTraitCollection:(id)a3
+- (void)_computeEditorialWithExtendedTraitCollection:(id)collection
 {
-  v9 = a3;
-  if ([v9 userInterfaceIdiom] == 1 && objc_msgSend(v9, "layoutOrientation") == 1)
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] == 1 && objc_msgSend(collectionCopy, "layoutOrientation") == 1)
   {
     p_editorialNumberOfColumns = &self->_editorialNumberOfColumns;
 LABEL_6:
@@ -146,10 +146,10 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if ([v9 userInterfaceIdiom] == 2)
+  if ([collectionCopy userInterfaceIdiom] == 2)
   {
     p_editorialNumberOfColumns = &self->_editorialNumberOfColumns;
-    if ([v9 layoutSizeClass] == 1)
+    if ([collectionCopy layoutSizeClass] == 1)
     {
       goto LABEL_6;
     }
@@ -164,39 +164,39 @@ LABEL_6:
   v5 = 3.0;
 LABEL_9:
   self->_editorialInterTileSpacing = v5;
-  if ([v9 userInterfaceIdiom] == 3)
+  if ([collectionCopy userInterfaceIdiom] == 3)
   {
     self->_editorialInterTileSpacing = 50.0;
   }
 
   v6 = +[PXPhotosDetailsSettings sharedInstance];
-  v7 = [v6 editorialLayoutEdit];
+  editorialLayoutEdit = [v6 editorialLayoutEdit];
 
-  if (v7)
+  if (editorialLayoutEdit)
   {
     v8 = +[PXPhotosDetailsSettings sharedInstance];
     *p_editorialNumberOfColumns = [v8 editorialLayoutColumns];
   }
 }
 
-- (void)_computeSpecWithExtendedTraitCollection:(id)a3
+- (void)_computeSpecWithExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
-  [(PXPhotosDetailsAssetsSpec *)self _computeEditorialWithExtendedTraitCollection:v4];
-  [(PXPhotosDetailsAssetsSpec *)self _computeGridWithExtendedTraitCollection:v4];
+  collectionCopy = collection;
+  [(PXPhotosDetailsAssetsSpec *)self _computeEditorialWithExtendedTraitCollection:collectionCopy];
+  [(PXPhotosDetailsAssetsSpec *)self _computeGridWithExtendedTraitCollection:collectionCopy];
 }
 
-- (PXPhotosDetailsAssetsSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 detailsOptions:(unint64_t)a5
+- (PXPhotosDetailsAssetsSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options detailsOptions:(unint64_t)detailsOptions
 {
-  v8 = a3;
+  collectionCopy = collection;
   v20.receiver = self;
   v20.super_class = PXPhotosDetailsAssetsSpec;
-  v9 = [(PXPhotosDetailsAssetsSpec *)&v20 initWithExtendedTraitCollection:v8 options:a4];
+  v9 = [(PXPhotosDetailsAssetsSpec *)&v20 initWithExtendedTraitCollection:collectionCopy options:options];
   v10 = v9;
   if (v9)
   {
-    v9->_detailsOptions = a5;
-    v11 = [[PXWidgetSpec alloc] initWithExtendedTraitCollection:v8 detailsOptions:a5];
+    v9->_detailsOptions = detailsOptions;
+    v11 = [[PXWidgetSpec alloc] initWithExtendedTraitCollection:collectionCopy detailsOptions:detailsOptions];
     widgetSpec = v10->__widgetSpec;
     v10->__widgetSpec = v11;
 
@@ -211,29 +211,29 @@ LABEL_9:
       v10->_contentGuideInsets.left = 0.0;
     }
 
-    v10->_shouldShowTitle = (a5 & 8) == 0;
+    v10->_shouldShowTitle = (detailsOptions & 8) == 0;
     v10->_defaultCornerRadius = 0.0;
     v17 = +[PXCuratedLibrarySettings sharedInstance];
     [v17 interitemSpacingForDays];
     v10->_exploreInteritemSpacing = v18;
 
-    if ([v8 userInterfaceIdiom] == 5)
+    if ([collectionCopy userInterfaceIdiom] == 5)
     {
       v10->_defaultCornerRadius = 2.0;
       v10->_shouldShowTitle = 0;
       v10->_exploreInteritemSpacing = 2.0;
     }
 
-    [(PXPhotosDetailsAssetsSpec *)v10 _computeSpecWithExtendedTraitCollection:v8];
+    [(PXPhotosDetailsAssetsSpec *)v10 _computeSpecWithExtendedTraitCollection:collectionCopy];
   }
 
   return v10;
 }
 
-+ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)a3
++ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 horizontalSizeClass] == 1 || objc_msgSend(v3, "verticalSizeClass") == 1;
+  collectionCopy = collection;
+  v4 = [collectionCopy horizontalSizeClass] == 1 || objc_msgSend(collectionCopy, "verticalSizeClass") == 1;
 
   return v4;
 }

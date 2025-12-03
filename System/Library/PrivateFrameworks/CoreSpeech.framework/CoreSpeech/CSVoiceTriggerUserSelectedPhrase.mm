@@ -1,12 +1,12 @@
 @interface CSVoiceTriggerUserSelectedPhrase
 - (BOOL)multiPhraseSelected;
-- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)a3 vtPreferences:(id)a4;
+- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)id vtPreferences:(id)preferences;
 - (CSVoiceTriggerUserSelectedPhraseDelegate)delegate;
 - (unint64_t)_fetchUserSelectedPhraseType;
 - (unint64_t)userSelectedPhraseType;
 - (void)_registerForNotification;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)vtPhraseTypeDidChangeNotificationReceived;
 @end
 
@@ -129,34 +129,34 @@
   [(CSVoiceTriggerUserSelectedPhrase *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014336C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)a3 vtPreferences:(id)a4
+- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)id vtPreferences:(id)preferences
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  preferencesCopy = preferences;
   v17.receiver = self;
   v17.super_class = CSVoiceTriggerUserSelectedPhrase;
   v9 = [(CSVoiceTriggerUserSelectedPhrase *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointDeviceId, a3);
-    if (v8)
+    objc_storeStrong(&v9->_endpointDeviceId, id);
+    if (preferencesCopy)
     {
-      v11 = v8;
+      v11 = preferencesCopy;
     }
 
     else
@@ -171,9 +171,9 @@
     queue = v10->_queue;
     v10->_queue = v13;
 
-    v15 = [(CSVoiceTriggerUserSelectedPhrase *)v10 _fetchUserSelectedPhraseType];
-    v10->_uSelectedPhraseType = v15;
-    v10->_mphSelected = [(CSVoiceTriggerUserSelectedPhrase *)v10 _isMultiPhrase:v15];
+    _fetchUserSelectedPhraseType = [(CSVoiceTriggerUserSelectedPhrase *)v10 _fetchUserSelectedPhraseType];
+    v10->_uSelectedPhraseType = _fetchUserSelectedPhraseType;
+    v10->_mphSelected = [(CSVoiceTriggerUserSelectedPhrase *)v10 _isMultiPhrase:_fetchUserSelectedPhraseType];
     [(CSVoiceTriggerUserSelectedPhrase *)v10 _registerForNotification];
   }
 

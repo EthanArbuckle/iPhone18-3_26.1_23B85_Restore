@@ -24,8 +24,8 @@
 {
   predicate = self->_predicate;
   v4 = system;
-  v5 = [(GKRuleSystem *)v4 state];
-  LOBYTE(predicate) = [(NSPredicate *)predicate evaluateWithObject:v4 substitutionVariables:v5];
+  state = [(GKRuleSystem *)v4 state];
+  LOBYTE(predicate) = [(NSPredicate *)predicate evaluateWithObject:v4 substitutionVariables:state];
 
   return predicate;
 }

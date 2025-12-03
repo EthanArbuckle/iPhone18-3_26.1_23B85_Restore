@@ -1,22 +1,22 @@
 @interface PRAppIntentsHandshakeAction
-- (PRAppIntentsHandshakeAction)initWithHandler:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (void)respondWithListenerEndpoint:(id)a3 error:(id)a4;
+- (PRAppIntentsHandshakeAction)initWithHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (void)respondWithListenerEndpoint:(id)endpoint error:(id)error;
 @end
 
 @implementation PRAppIntentsHandshakeAction
 
-- (PRAppIntentsHandshakeAction)initWithHandler:(id)a3
+- (PRAppIntentsHandshakeAction)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
   v6 = MEMORY[0x1E698E5F8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__PRAppIntentsHandshakeAction_initWithHandler___block_invoke;
   v12[3] = &unk_1E7844F60;
-  v13 = v4;
-  v7 = v4;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
   v8 = [v6 responderWithHandler:v12];
   v11.receiver = self;
   v11.super_class = PRAppIntentsHandshakeAction;
@@ -49,11 +49,11 @@ void __47__PRAppIntentsHandshakeAction_initWithHandler___block_invoke(uint64_t a
   (*(v8 + 16))(v8, v9, v10, v7);
 }
 
-- (void)respondWithListenerEndpoint:(id)a3 error:(id)a4
+- (void)respondWithListenerEndpoint:(id)endpoint error:(id)error
 {
-  v10 = a3;
-  v7 = a4;
-  if (!(v10 | v7))
+  endpointCopy = endpoint;
+  errorCopy = error;
+  if (!(endpointCopy | errorCopy))
   {
     [PRAppIntentsHandshakeAction respondWithListenerEndpoint:a2 error:self];
   }
@@ -61,22 +61,22 @@ void __47__PRAppIntentsHandshakeAction_initWithHandler___block_invoke(uint64_t a
   if ([(PRAppIntentsHandshakeAction *)self isValid]&& [(PRAppIntentsHandshakeAction *)self canSendResponse])
   {
     v8 = objc_alloc_init(MEMORY[0x1E698E700]);
-    [v8 setObject:v10 forSetting:2];
-    [v8 setObject:v7 forSetting:1];
+    [v8 setObject:endpointCopy forSetting:2];
+    [v8 setObject:errorCopy forSetting:1];
     v9 = [objc_alloc(MEMORY[0x1E698E600]) initWithInfo:v8 error:0];
     [(PRAppIntentsHandshakeAction *)self sendResponse:v9];
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"endpoint";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"error";
   }

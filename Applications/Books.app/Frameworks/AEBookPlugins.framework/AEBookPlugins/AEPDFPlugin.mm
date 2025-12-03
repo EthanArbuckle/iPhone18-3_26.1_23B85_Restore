@@ -1,32 +1,32 @@
 @interface AEPDFPlugin
-+ (id)generateImageForDocument:(id)a3 pageIndex:(unint64_t)a4 size:(CGSize)a5 showBookmark:(BOOL)a6;
-- (BOOL)isPdfURL:(id)a3;
-- (id)_bookInfoForAssetAtURL:(id)a3 withMoc:(id)a4 error:(id *)a5 needsCoordination:(BOOL)a6;
-- (id)_updateBook:(id)a3 onMoc:(id)a4 forCurrentURL:(id)a5;
-- (id)helper:(id)a3 annotationProviderForURL:(id)a4 needsCoordination:(BOOL)a5 forAssetID:(id)a6;
-- (id)helper:(id)a3 coverImageForURL:(id)a4 size:(CGSize)a5;
-- (id)helper:(id)a3 metadataForKey:(id)a4 forURL:(id)a5 needsCoordination:(BOOL)a6;
-- (id)helperForURL:(id)a3 withOptions:(id)a4;
-- (void)_logLoadErrorForURL:(id)a3;
-- (void)helper:(id)a3 deletePersistentCacheForURL:(id)a4;
-- (void)helper:(id)a3 setMetadata:(id)a4 forKey:(id)a5 forURL:(id)a6;
-- (void)helper:(id)a3 updateCachedURLFrom:(id)a4 to:(id)a5;
-- (void)helper:(id)a3 viewControllerWithOptions:(id)a4 completion:(id)a5;
-- (void)loadError:(id)a3;
-- (void)sendError:(id)a3 toCompletion:(id)a4;
-- (void)sendViewControllerForBook:(id)a3 toCompletion:(id)a4;
-- (void)showPasswordDialogForBook:(id)a3 transaction:(id)a4 withCompletion:(id)a5;
++ (id)generateImageForDocument:(id)document pageIndex:(unint64_t)index size:(CGSize)size showBookmark:(BOOL)bookmark;
+- (BOOL)isPdfURL:(id)l;
+- (id)_bookInfoForAssetAtURL:(id)l withMoc:(id)moc error:(id *)error needsCoordination:(BOOL)coordination;
+- (id)_updateBook:(id)book onMoc:(id)moc forCurrentURL:(id)l;
+- (id)helper:(id)helper annotationProviderForURL:(id)l needsCoordination:(BOOL)coordination forAssetID:(id)d;
+- (id)helper:(id)helper coverImageForURL:(id)l size:(CGSize)size;
+- (id)helper:(id)helper metadataForKey:(id)key forURL:(id)l needsCoordination:(BOOL)coordination;
+- (id)helperForURL:(id)l withOptions:(id)options;
+- (void)_logLoadErrorForURL:(id)l;
+- (void)helper:(id)helper deletePersistentCacheForURL:(id)l;
+- (void)helper:(id)helper setMetadata:(id)metadata forKey:(id)key forURL:(id)l;
+- (void)helper:(id)helper updateCachedURLFrom:(id)from to:(id)to;
+- (void)helper:(id)helper viewControllerWithOptions:(id)options completion:(id)completion;
+- (void)loadError:(id)error;
+- (void)sendError:(id)error toCompletion:(id)completion;
+- (void)sendViewControllerForBook:(id)book toCompletion:(id)completion;
+- (void)showPasswordDialogForBook:(id)book transaction:(id)transaction withCompletion:(id)completion;
 @end
 
 @implementation AEPDFPlugin
 
-- (BOOL)isPdfURL:(id)a3
+- (BOOL)isPdfURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 pathExtension];
-    v5 = [v4 caseInsensitiveCompare:@"pdf"] == 0;
+    pathExtension = [lCopy pathExtension];
+    v5 = [pathExtension caseInsensitiveCompare:@"pdf"] == 0;
   }
 
   else
@@ -37,15 +37,15 @@
   return v5;
 }
 
-+ (id)generateImageForDocument:(id)a3 pageIndex:(unint64_t)a4 size:(CGSize)a5 showBookmark:(BOOL)a6
++ (id)generateImageForDocument:(id)document pageIndex:(unint64_t)index size:(CGSize)size showBookmark:(BOOL)bookmark
 {
   v6 = 0;
-  if (a3 && a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (document && index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = a6;
-    height = a5.height;
-    width = a5.width;
-    v10 = [a3 pageAtIndex:a4];
+    bookmarkCopy = bookmark;
+    height = size.height;
+    width = size.width;
+    v10 = [document pageAtIndex:index];
     v11 = v10;
     if (width == CGSizeZero.width && height == CGSizeZero.height)
     {
@@ -67,7 +67,7 @@
     v24 = BKImageSizeForScreenSize(width);
     v26 = v25;
     v30[0] = PDFPageImageProperty_DrawBookmark;
-    v27 = [NSNumber numberWithBool:v7];
+    v27 = [NSNumber numberWithBool:bookmarkCopy];
     v30[1] = PDFPageImageProperty_WithRotation;
     v31[0] = v27;
     v31[1] = &__kCFBooleanTrue;
@@ -78,91 +78,91 @@
   return v6;
 }
 
-- (id)helperForURL:(id)a3 withOptions:(id)a4
+- (id)helperForURL:(id)l withOptions:(id)options
 {
-  v5 = a3;
-  v6 = [[AEPDFBookHelper alloc] initWithDelegate:self forURL:v5];
+  lCopy = l;
+  v6 = [[AEPDFBookHelper alloc] initWithDelegate:self forURL:lCopy];
 
   return v6;
 }
 
-- (id)helper:(id)a3 annotationProviderForURL:(id)a4 needsCoordination:(BOOL)a5 forAssetID:(id)a6
+- (id)helper:(id)helper annotationProviderForURL:(id)l needsCoordination:(BOOL)coordination forAssetID:(id)d
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(AEPDFPlugin *)self sharedAnnotationProvider];
-  if (v11)
+  coordinationCopy = coordination;
+  helperCopy = helper;
+  dCopy = d;
+  lCopy = l;
+  sharedAnnotationProvider = [(AEPDFPlugin *)self sharedAnnotationProvider];
+  if (dCopy)
   {
-    v14 = v11;
+    v14 = dCopy;
   }
 
   else
   {
-    v14 = [v10 helperMetadataForKey:AEHelperStringMetadataAssetIDKey needsCoordination:v7];
+    v14 = [helperCopy helperMetadataForKey:AEHelperStringMetadataAssetIDKey needsCoordination:coordinationCopy];
   }
 
   v15 = v14;
-  v16 = [IMLibraryPlist isManagedBookFromURL:v12];
-  v17 = [v16 BOOLValue];
+  v16 = [IMLibraryPlist isManagedBookFromURL:lCopy];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [AEAnnotationSerializationManager annotationSerializationManagerWithAssetID:v15 assetURL:v12 bookVersionString:0 pathToAssetContextDirectory:0 isManagedBook:v17];
+  v18 = [AEAnnotationSerializationManager annotationSerializationManagerWithAssetID:v15 assetURL:lCopy bookVersionString:0 pathToAssetContextDirectory:0 isManagedBook:bOOLValue];
 
-  if (([v18 isAssetOfflineWithAssetID:v15] & 1) != 0 || objc_msgSend(v18, "takeBookOfflineIfManagedWithAnnotationProvider:assetID:", v13, v15))
+  if (([v18 isAssetOfflineWithAssetID:v15] & 1) != 0 || objc_msgSend(v18, "takeBookOfflineIfManagedWithAnnotationProvider:assetID:", sharedAnnotationProvider, v15))
   {
     v19 = [v18 annotationProviderForOfflineDBWithAssetID:v15];
 
-    v13 = v19;
+    sharedAnnotationProvider = v19;
   }
 
-  return v13;
+  return sharedAnnotationProvider;
 }
 
-- (id)_updateBook:(id)a3 onMoc:(id)a4 forCurrentURL:(id)a5
+- (id)_updateBook:(id)book onMoc:(id)moc forCurrentURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  bookCopy = book;
+  mocCopy = moc;
+  lCopy = l;
+  v11 = bookCopy;
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 fileSize];
-    v14 = [v13 longLongValue];
+    fileSize = [v11 fileSize];
+    longLongValue = [fileSize longLongValue];
 
     v15 = +[NSFileManager defaultManager];
-    v16 = [v10 path];
+    path = [lCopy path];
     v30 = 0;
-    v17 = [v15 attributesOfItemAtPath:v16 error:&v30];
+    v17 = [v15 attributesOfItemAtPath:path error:&v30];
     v18 = v30;
 
-    v19 = [v17 fileSize];
+    fileSize2 = [v17 fileSize];
     v20 = v12;
-    if (v19)
+    if (fileSize2)
     {
-      v21 = v19;
+      v21 = fileSize2;
       v20 = v12;
-      if (v14 != v19)
+      if (longLongValue != fileSize2)
       {
         v29 = 0;
         v22 = +[AEEpubInfoSource sharedInstance];
-        [v22 resetBookForURL:v10];
+        [v22 resetBookForURL:lCopy];
 
-        v20 = [(AEPDFPlugin *)self _bookInfoForAssetAtURL:v10 withMoc:v9 error:&v29 needsCoordination:1];
+        v20 = [(AEPDFPlugin *)self _bookInfoForAssetAtURL:lCopy withMoc:mocCopy error:&v29 needsCoordination:1];
 
         v23 = [NSNumber numberWithLongLong:v21];
         [v20 setFileSize:v23];
 
-        if ([v9 hasChanges])
+        if ([mocCopy hasChanges])
         {
           v28 = 0;
-          v24 = [v9 save:&v28];
+          v24 = [mocCopy save:&v28];
           v25 = v28;
           v26 = v25;
           if ((v24 & 1) == 0)
           {
-            NSLog(@"Error updating book's file size: %@ -- %@", v10, v25);
+            NSLog(@"Error updating book's file size: %@ -- %@", lCopy, v25);
           }
         }
       }
@@ -177,49 +177,49 @@
   return v20;
 }
 
-- (id)helper:(id)a3 coverImageForURL:(id)a4 size:(CGSize)a5
+- (id)helper:(id)helper coverImageForURL:(id)l size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4;
-  if ([(AEPDFPlugin *)self isPdfURL:v8])
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  if ([(AEPDFPlugin *)self isPdfURL:lCopy])
   {
     v9 = +[AEPdfCache sharedInstance];
-    v10 = [v9 copyCacheObjectForURL:v8];
+    v10 = [v9 copyCacheObjectForURL:lCopy];
 
-    v11 = [v10 document];
-    if (v11 && ([v10 document], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEncrypted"), v12, (v13 & 1) == 0))
+    document = [v10 document];
+    if (document && ([v10 document], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEncrypted"), v12, (v13 & 1) == 0))
     {
-      v14 = [AEPDFPlugin generateImageForDocument:v11 pageIndex:0 size:width, height];
+      height = [AEPDFPlugin generateImageForDocument:document pageIndex:0 size:width, height];
     }
 
     else
     {
-      v14 = 0;
+      height = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    height = 0;
   }
 
-  return v14;
+  return height;
 }
 
-- (id)helper:(id)a3 metadataForKey:(id)a4 forURL:(id)a5 needsCoordination:(BOOL)a6
+- (id)helper:(id)helper metadataForKey:(id)key forURL:(id)l needsCoordination:(BOOL)coordination
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  if ([(AEPDFPlugin *)self isPdfURL:v10])
+  coordinationCopy = coordination;
+  keyCopy = key;
+  lCopy = l;
+  if ([(AEPDFPlugin *)self isPdfURL:lCopy])
   {
-    if ([v9 isEqualToString:AEHelperStringMetadataDefaultCollectionNameKey])
+    if ([keyCopy isEqualToString:AEHelperStringMetadataDefaultCollectionNameKey])
     {
       v11 = @"PDF";
     }
 
-    else if ([v9 isEqualToString:AEHelperStringMetadataCoverArtEffectKey])
+    else if ([keyCopy isEqualToString:AEHelperStringMetadataCoverArtEffectKey])
     {
       v11 = AEHelperStringMetadataCoverArtEffectEdgeSpiralValue;
     }
@@ -227,7 +227,7 @@
     else
     {
       v13 = +[AEEpubInfoSource sharedInstance];
-      v11 = [v13 metadataForKey:v9 forURL:v10 needsCoordination:v6];
+      v11 = [v13 metadataForKey:keyCopy forURL:lCopy needsCoordination:coordinationCopy];
     }
   }
 
@@ -239,47 +239,47 @@
   return v11;
 }
 
-- (void)helper:(id)a3 setMetadata:(id)a4 forKey:(id)a5 forURL:(id)a6
+- (void)helper:(id)helper setMetadata:(id)metadata forKey:(id)key forURL:(id)l
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
-  if ([(AEPDFPlugin *)self isPdfURL:v10])
+  metadataCopy = metadata;
+  keyCopy = key;
+  lCopy = l;
+  if ([(AEPDFPlugin *)self isPdfURL:lCopy])
   {
     v11 = +[AEEpubInfoSource sharedInstance];
-    [v11 setMetadata:v12 forKey:v9 forURL:v10];
+    [v11 setMetadata:metadataCopy forKey:keyCopy forURL:lCopy];
   }
 }
 
-- (void)helper:(id)a3 deletePersistentCacheForURL:(id)a4
+- (void)helper:(id)helper deletePersistentCacheForURL:(id)l
 {
-  v4 = a4;
+  lCopy = l;
   v5 = +[AEEpubInfoSource sharedInstance];
-  [v5 resetBookForURL:v4];
+  [v5 resetBookForURL:lCopy];
 
   v6 = +[AEPdfCache sharedInstance];
   [v6 clearNativeObjectCache];
 }
 
-- (void)helper:(id)a3 updateCachedURLFrom:(id)a4 to:(id)a5
+- (void)helper:(id)helper updateCachedURLFrom:(id)from to:(id)to
 {
-  v6 = a5;
-  v7 = a4;
+  toCopy = to;
+  fromCopy = from;
   v8 = +[AEEpubInfoSource sharedInstance];
-  [v8 updateCachedURLFrom:v7 to:v6];
+  [v8 updateCachedURLFrom:fromCopy to:toCopy];
 
   v9 = +[AEPdfCache sharedInstance];
   [v9 clearNativeObjectCache];
 }
 
-- (void)sendViewControllerForBook:(id)a3 toCompletion:(id)a4
+- (void)sendViewControllerForBook:(id)book toCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BKPDFModernBookViewController alloc] initWithBook:v7 storeID:0];
+  completionCopy = completion;
+  bookCopy = book;
+  v8 = [[BKPDFModernBookViewController alloc] initWithBook:bookCopy storeID:0];
 
-  v9 = [(AEPDFPlugin *)self sharedBookCoverResetter];
-  [(BKPDFModernBookViewController *)v8 setSharedBookCoverResetter:v9];
+  sharedBookCoverResetter = [(AEPDFPlugin *)self sharedBookCoverResetter];
+  [(BKPDFModernBookViewController *)v8 setSharedBookCoverResetter:sharedBookCoverResetter];
 
   v10 = v8;
   v12[0] = _NSConcreteStackBlock;
@@ -287,52 +287,52 @@
   v12[2] = sub_3A6C0;
   v12[3] = &unk_1E3258;
   v13 = v10;
-  v14 = v6;
-  v11 = v6;
+  v14 = completionCopy;
+  v11 = completionCopy;
   dispatch_async(&_dispatch_main_q, v12);
 }
 
-- (void)sendError:(id)a3 toCompletion:(id)a4
+- (void)sendError:(id)error toCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_3A790;
   v7[3] = &unk_1E3258;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  v6 = v9;
+  errorCopy = error;
+  completionCopy = completion;
+  v5 = errorCopy;
+  v6 = completionCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)loadError:(id)a3
+- (void)loadError:(id)error
 {
   v3 = AssetEngineErrorDomain;
-  v4 = a3;
+  errorCopy = error;
   v5 = [NSError errorWithDomain:v3 code:3001 userInfo:0];
-  v4[2](v4, 0, v5);
+  errorCopy[2](errorCopy, 0, v5);
 }
 
-- (void)_logLoadErrorForURL:(id)a3
+- (void)_logLoadErrorForURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
-    v5 = [v3 path];
+    path = [lCopy path];
     v6 = +[NSFileManager defaultManager];
-    if ([v6 fileExistsAtPath:v5])
+    if ([v6 fileExistsAtPath:path])
     {
-      if ([v6 isReadableFileAtPath:v5])
+      if ([v6 isReadableFileAtPath:path])
       {
         v7 = +[AEPdfCache sharedInstance];
         v8 = [v7 copyCacheObjectForURL:v4];
 
-        v9 = [v8 document];
-        v10 = v9;
-        if (v9)
+        document = [v8 document];
+        v10 = document;
+        if (document)
         {
-          if ([v9 isLocked])
+          if ([document isLocked])
           {
             v11 = BKModernPDFLog();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -343,10 +343,10 @@
 
           else
           {
-            v12 = [v10 pageCount];
+            pageCount = [v10 pageCount];
             v11 = BKModernPDFLog();
             v13 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
-            if (v12)
+            if (pageCount)
             {
               if (v13)
               {
@@ -393,19 +393,19 @@
 
   else
   {
-    v5 = BKModernPDFLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    path = BKModernPDFLog();
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
-      sub_1374DC(v5);
+      sub_1374DC(path);
     }
   }
 }
 
-- (void)helper:(id)a3 viewControllerWithOptions:(id)a4 completion:(id)a5
+- (void)helper:(id)helper viewControllerWithOptions:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 url];
+  optionsCopy = options;
+  completionCopy = completion;
+  v10 = [helper url];
   if ([(AEPDFPlugin *)self isPdfURL:v10])
   {
     v11 = dispatch_get_global_queue(0, 0);
@@ -414,35 +414,35 @@
     v12[2] = sub_3AB3C;
     v12[3] = &unk_1E38C0;
     v13 = v10;
-    v14 = self;
-    v16 = v9;
-    v15 = v8;
+    selfCopy = self;
+    v16 = completionCopy;
+    v15 = optionsCopy;
     dispatch_async(v11, v12);
   }
 }
 
-- (id)_bookInfoForAssetAtURL:(id)a3 withMoc:(id)a4 error:(id *)a5 needsCoordination:(BOOL)a6
+- (id)_bookInfoForAssetAtURL:(id)l withMoc:(id)moc error:(id *)error needsCoordination:(BOOL)coordination
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a3;
+  coordinationCopy = coordination;
+  mocCopy = moc;
+  lCopy = l;
   v11 = +[AEEpubInfoSource sharedInstance];
-  v12 = [v11 bookInfoForURL:v10 fromManagedObjectContext:v9 error:a5 needsCoordination:v6 updateDate:0];
+  v12 = [v11 bookInfoForURL:lCopy fromManagedObjectContext:mocCopy error:error needsCoordination:coordinationCopy updateDate:0];
 
   return v12;
 }
 
-- (void)showPasswordDialogForBook:(id)a3 transaction:(id)a4 withCompletion:(id)a5
+- (void)showPasswordDialogForBook:(id)book transaction:(id)transaction withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  bookCopy = book;
+  transactionCopy = transaction;
+  completionCopy = completion;
+  if (!transactionCopy)
   {
     sub_1375AC();
   }
 
-  v29 = [v7 managedObjectContext];
+  managedObjectContext = [bookCopy managedObjectContext];
   v10 = AEBundle();
   v11 = [v10 localizedStringForKey:@"PDF Password Protected" value:&stru_1E7188 table:0];
   v12 = AEBundle();
@@ -456,7 +456,7 @@
   v38[2] = sub_3B8E8;
   v38[3] = &unk_1E38E8;
   v38[4] = self;
-  v17 = v9;
+  v17 = completionCopy;
   v40 = v17;
   v18 = v14;
   v39 = v18;
@@ -470,15 +470,15 @@
   v31[2] = sub_3B96C;
   v31[3] = &unk_1E3910;
   v32 = v18;
-  v33 = v7;
-  v34 = v29;
-  v35 = self;
-  v36 = v8;
+  v33 = bookCopy;
+  v34 = managedObjectContext;
+  selfCopy = self;
+  v36 = transactionCopy;
   v37 = v17;
-  v22 = v8;
+  v22 = transactionCopy;
   v23 = v17;
-  v24 = v29;
-  v25 = v7;
+  v24 = managedObjectContext;
+  v25 = bookCopy;
   v26 = v18;
   v27 = [UIAlertAction actionWithTitle:v21 style:0 handler:v31];
   [v26 addAction:v27];

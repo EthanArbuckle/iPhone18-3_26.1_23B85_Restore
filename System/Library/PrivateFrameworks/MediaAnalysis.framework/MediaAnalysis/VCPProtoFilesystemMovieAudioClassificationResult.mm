@@ -1,24 +1,24 @@
 @interface VCPProtoFilesystemMovieAudioClassificationResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoFilesystemMovieAudioClassificationResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v13, 0, sizeof(v13));
-  CMTimeRangeMakeFromDictionary(&v13, v3);
+  CMTimeRangeMakeFromDictionary(&v13, dictionaryCopy);
   start = v13.start;
   duration = v13.duration;
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"quality"];
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"quality"];
   v5 = v4;
   if (v13.start.flags)
   {
@@ -79,45 +79,45 @@
   v8.receiver = self;
   v8.super_class = VCPProtoFilesystemMovieAudioClassificationResult;
   v4 = [(VCPProtoFilesystemMovieAudioClassificationResult *)&v8 description];
-  v5 = [(VCPProtoFilesystemMovieAudioClassificationResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoFilesystemMovieAudioClassificationResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_start;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"start"];
+  [dictionary setObject:v5 forKey:@"start"];
 
   *&v6 = self->_duration;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"duration"];
+  [dictionary setObject:v7 forKey:@"duration"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = LODWORD(self->_start);
   *(result + 2) = LODWORD(self->_duration);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_start == v4[3] && self->_duration == v4[2];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_start == equalCopy[3] && self->_duration == equalCopy[2];
 
   return v5;
 }

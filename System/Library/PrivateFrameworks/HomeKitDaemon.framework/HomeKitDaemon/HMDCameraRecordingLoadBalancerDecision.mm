@@ -1,6 +1,6 @@
 @interface HMDCameraRecordingLoadBalancerDecision
 - (BOOL)isExpired;
-- (HMDCameraRecordingLoadBalancerDecision)initWithCameraUUID:(id)a3 numberOfAvailableDevices:(int64_t)a4 totalNumberOfJobSlots:(int64_t)a5 remainingNumberOfJobSlots:(int64_t)a6 analysisNode:(id)a7 decisionDate:(id)a8 deviceWithSessionToHandOff:(id)a9;
+- (HMDCameraRecordingLoadBalancerDecision)initWithCameraUUID:(id)d numberOfAvailableDevices:(int64_t)devices totalNumberOfJobSlots:(int64_t)slots remainingNumberOfJobSlots:(int64_t)jobSlots analysisNode:(id)node decisionDate:(id)date deviceWithSessionToHandOff:(id)off;
 - (NSUUID)deviceUUID;
 - (id)attributeDescriptions;
 @end
@@ -11,12 +11,12 @@
 {
   v28[7] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v27 = [(HMDCameraRecordingLoadBalancerDecision *)self cameraUUID];
-  v26 = [v3 initWithName:@"Camera UUID" value:v27];
+  cameraUUID = [(HMDCameraRecordingLoadBalancerDecision *)self cameraUUID];
+  v26 = [v3 initWithName:@"Camera UUID" value:cameraUUID];
   v28[0] = v26;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v25 = [(HMDCameraRecordingLoadBalancerDecision *)self deviceUUID];
-  v24 = [v4 initWithName:@"Device UUID" value:v25];
+  deviceUUID = [(HMDCameraRecordingLoadBalancerDecision *)self deviceUUID];
+  v24 = [v4 initWithName:@"Device UUID" value:deviceUUID];
   v28[1] = v24;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDCameraRecordingLoadBalancerDecision numberOfAvailableDevices](self, "numberOfAvailableDevices")}];
@@ -31,13 +31,13 @@
   v11 = [v9 initWithName:@"Remaining Job Slots Count" value:v10];
   v28[4] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMDCameraRecordingLoadBalancerDecision *)self decisionDate];
-  v14 = [v12 initWithName:@"Decision Date" value:v13];
+  decisionDate = [(HMDCameraRecordingLoadBalancerDecision *)self decisionDate];
+  v14 = [v12 initWithName:@"Decision Date" value:decisionDate];
   v28[5] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMDCameraRecordingLoadBalancerDecision *)self deviceWithSessionToHandOff];
-  v17 = [v16 identifier];
-  v18 = [v15 initWithName:@"HandOff Device UUID" value:v17];
+  deviceWithSessionToHandOff = [(HMDCameraRecordingLoadBalancerDecision *)self deviceWithSessionToHandOff];
+  identifier = [deviceWithSessionToHandOff identifier];
+  v18 = [v15 initWithName:@"HandOff Device UUID" value:identifier];
   v28[6] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:7];
 
@@ -48,8 +48,8 @@
 
 - (BOOL)isExpired
 {
-  v2 = [(HMDCameraRecordingLoadBalancerDecision *)self decisionDate];
-  [v2 timeIntervalSinceNow];
+  decisionDate = [(HMDCameraRecordingLoadBalancerDecision *)self decisionDate];
+  [decisionDate timeIntervalSinceNow];
   v4 = v3 < -15.0;
 
   return v4;
@@ -57,47 +57,47 @@
 
 - (NSUUID)deviceUUID
 {
-  v2 = [(HMDCameraRecordingLoadBalancerDecision *)self analysisNode];
-  v3 = [v2 residentDevice];
-  v4 = [v3 device];
-  v5 = [v4 identifier];
+  analysisNode = [(HMDCameraRecordingLoadBalancerDecision *)self analysisNode];
+  residentDevice = [analysisNode residentDevice];
+  device = [residentDevice device];
+  identifier = [device identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (HMDCameraRecordingLoadBalancerDecision)initWithCameraUUID:(id)a3 numberOfAvailableDevices:(int64_t)a4 totalNumberOfJobSlots:(int64_t)a5 remainingNumberOfJobSlots:(int64_t)a6 analysisNode:(id)a7 decisionDate:(id)a8 deviceWithSessionToHandOff:(id)a9
+- (HMDCameraRecordingLoadBalancerDecision)initWithCameraUUID:(id)d numberOfAvailableDevices:(int64_t)devices totalNumberOfJobSlots:(int64_t)slots remainingNumberOfJobSlots:(int64_t)jobSlots analysisNode:(id)node decisionDate:(id)date deviceWithSessionToHandOff:(id)off
 {
-  v15 = a3;
-  v25 = a7;
-  v16 = a8;
-  v17 = a9;
-  if (!v15)
+  dCopy = d;
+  nodeCopy = node;
+  dateCopy = date;
+  offCopy = off;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v16)
+  if (!dateCopy)
   {
 LABEL_7:
     v22 = _HMFPreconditionFailure();
     return +[(_MKFMatterCommandAction *)v22];
   }
 
-  v18 = v17;
+  v18 = offCopy;
   v26.receiver = self;
   v26.super_class = HMDCameraRecordingLoadBalancerDecision;
   v19 = [(HMDCameraRecordingLoadBalancerDecision *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_cameraUUID, a3);
-    v20->_numberOfAvailableDevices = a4;
-    v20->_totalNumberOfJobSlots = a5;
-    v20->_remainingNumberOfJobSlots = a6;
-    objc_storeStrong(&v20->_analysisNode, a7);
-    objc_storeStrong(&v20->_decisionDate, a8);
-    objc_storeStrong(&v20->_deviceWithSessionToHandOff, a9);
+    objc_storeStrong(&v19->_cameraUUID, d);
+    v20->_numberOfAvailableDevices = devices;
+    v20->_totalNumberOfJobSlots = slots;
+    v20->_remainingNumberOfJobSlots = jobSlots;
+    objc_storeStrong(&v20->_analysisNode, node);
+    objc_storeStrong(&v20->_decisionDate, date);
+    objc_storeStrong(&v20->_deviceWithSessionToHandOff, off);
   }
 
   return v20;

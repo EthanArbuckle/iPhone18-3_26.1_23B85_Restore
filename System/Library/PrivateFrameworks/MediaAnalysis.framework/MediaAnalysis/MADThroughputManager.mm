@@ -1,33 +1,33 @@
 @interface MADThroughputManager
-+ (id)throughputManagerForTask:(unint64_t)a3 BGSystemTask:(id)a4;
-- (id)initManagerForTask:(unint64_t)a3 BGSystemTask:(id)a4;
-- (id)metricsForActivity:(unint64_t)a3;
-- (id)sessionLogFromCoreAnalyticsManager:(unint64_t)a3;
-- (id)sessionLogFromDB:(unint64_t)a3;
++ (id)throughputManagerForTask:(unint64_t)task BGSystemTask:(id)systemTask;
+- (id)initManagerForTask:(unint64_t)task BGSystemTask:(id)systemTask;
+- (id)metricsForActivity:(unint64_t)activity;
+- (id)sessionLogFromCoreAnalyticsManager:(unint64_t)manager;
+- (id)sessionLogFromDB:(unint64_t)b;
 - (void)finish;
 @end
 
 @implementation MADThroughputManager
 
-- (id)initManagerForTask:(unint64_t)a3 BGSystemTask:(id)a4
+- (id)initManagerForTask:(unint64_t)task BGSystemTask:(id)systemTask
 {
-  v7 = a4;
+  systemTaskCopy = systemTask;
   v34.receiver = self;
   v34.super_class = MADThroughputManager;
   v8 = [(MADThroughputManager *)&v34 init];
   v9 = v8;
   if (v8)
   {
-    v8->_taskID = a3;
-    v10 = a3 - 1;
-    if (a3 - 1 < 0xC && ((0xA07u >> v10) & 1) != 0)
+    v8->_taskID = task;
+    v10 = task - 1;
+    if (task - 1 < 0xC && ((0xA07u >> v10) & 1) != 0)
     {
       v11 = (&off_100288870)[v10];
     }
 
     else
     {
-      v12 = [NSNumber numberWithUnsignedInteger:a3];
+      v12 = [NSNumber numberWithUnsignedInteger:task];
       v36 = v12;
       v11 = [NSArray arrayWithObjects:&v36 count:1];
     }
@@ -36,7 +36,7 @@
     reportingTasks = v9->_reportingTasks;
     v9->_reportingTasks = v13;
 
-    objc_storeStrong(&v9->_systemTask, a4);
+    objc_storeStrong(&v9->_systemTask, systemTask);
     v15 = +[NSMutableArray array];
     v32 = 0u;
     v33 = 0u;
@@ -89,26 +89,26 @@
   return v9;
 }
 
-+ (id)throughputManagerForTask:(unint64_t)a3 BGSystemTask:(id)a4
++ (id)throughputManagerForTask:(unint64_t)task BGSystemTask:(id)systemTask
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initManagerForTask:a3 BGSystemTask:v6];
+  systemTaskCopy = systemTask;
+  v7 = [[self alloc] initManagerForTask:task BGSystemTask:systemTaskCopy];
 
   return v7;
 }
 
-- (id)metricsForActivity:(unint64_t)a3
+- (id)metricsForActivity:(unint64_t)activity
 {
   v5 = +[NSMutableArray array];
-  if (a3 <= 18)
+  if (activity <= 18)
   {
-    if (a3 <= 9)
+    if (activity <= 9)
     {
-      if (a3 != 1)
+      if (activity != 1)
       {
-        if (a3 != 2)
+        if (activity != 2)
         {
-          if (a3 != 3)
+          if (activity != 3)
           {
             goto LABEL_27;
           }
@@ -154,12 +154,12 @@
       goto LABEL_21;
     }
 
-    if (a3 == 10 || a3 == 12 || a3 == 16)
+    if (activity == 10 || activity == 12 || activity == 16)
     {
 LABEL_15:
       v7 = MADThroughputSubCategory_Assets;
       v8 = [NSSet setWithObject:@"NumberOfAssetsAnalyzed"];
-      v9 = [MADBGSTThroughputMetric metricForTask:a3 subCategory:v7 keys:v8 BGSystemTask:self->_systemTask];
+      v9 = [MADBGSTThroughputMetric metricForTask:activity subCategory:v7 keys:v8 BGSystemTask:self->_systemTask];
       [v5 addObject:v9];
 
       goto LABEL_27;
@@ -168,9 +168,9 @@ LABEL_15:
     goto LABEL_27;
   }
 
-  if (a3 > 256)
+  if (activity > 256)
   {
-    if (a3 == 257)
+    if (activity == 257)
     {
       v29 = MADThroughputSubCategory_Backup;
       v30 = @"BackupStart";
@@ -181,9 +181,9 @@ LABEL_15:
 
     else
     {
-      if (a3 != 258)
+      if (activity != 258)
       {
-        if (a3 == 259)
+        if (activity == 259)
         {
           v10 = VCPAnalyticsFieldMigrationInsertedForTable(@"Overall");
           v11 = MADThroughputSubCategory_Migration;
@@ -209,7 +209,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  switch(a3)
+  switch(activity)
   {
     case 0x13uLL:
       v28 = [MADBGSTAtomicThroughputMetric metricForTask:19 subCategory:MADThroughputSubCategory_ComputeSync startsKey:@"ComputeSyncStart" durationKey:@"ComputeSyncDuration" BGSystemTask:self->_systemTask];
@@ -248,7 +248,7 @@ LABEL_21:
       v25 = [NSArray arrayWithObjects:v43 count:2];
       v26 = [NSSet setWithArray:v25];
 
-      v27 = [MADBGSTThroughputMetric metricForTask:a3 subCategory:MADThroughputSubCategory_Clustering keys:v26 BGSystemTask:self->_systemTask];
+      v27 = [MADBGSTThroughputMetric metricForTask:activity subCategory:MADThroughputSubCategory_Clustering keys:v26 BGSystemTask:self->_systemTask];
       [v5 addObject:v27];
 
       break;
@@ -259,9 +259,9 @@ LABEL_27:
   return v5;
 }
 
-- (id)sessionLogFromCoreAnalyticsManager:(unint64_t)a3
+- (id)sessionLogFromCoreAnalyticsManager:(unint64_t)manager
 {
-  if (a3 == 16)
+  if (manager == 16)
   {
     +[VCPMADCoreAnalyticsManager sharedAuxiliaryManager];
   }
@@ -291,9 +291,9 @@ LABEL_27:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v16 + 1) + 8 * i) unsignedIntegerValue];
         v12 = VCPTaskIDDescription();
-        v13 = VCPCoreAnalyticsSessionEventName(v11);
+        v13 = VCPCoreAnalyticsSessionEventName(unsignedIntegerValue);
         v14 = [v4 fetchSessionEvent:v13];
         [v5 setObject:v14 forKeyedSubscript:v12];
       }
@@ -307,7 +307,7 @@ LABEL_27:
   return v5;
 }
 
-- (id)sessionLogFromDB:(unint64_t)a3
+- (id)sessionLogFromDB:(unint64_t)b
 {
   if (!_os_feature_enabled_impl())
   {
@@ -316,8 +316,8 @@ LABEL_27:
 
     v28 = 0;
     v10 = [(NSDate *)self->_startTime dateByAddingTimeInterval:-10800.0];
-    v11 = [v9 querySchedulingHistoryRecords:&v28 forActivityID:a3 sinceDate:v10];
-    v6 = v28;
+    v11 = [v9 querySchedulingHistoryRecords:&v28 forActivityID:b sinceDate:v10];
+    newManagedObjectContext = v28;
 
     if (v11)
     {
@@ -327,7 +327,7 @@ LABEL_27:
         if (os_log_type_enabled(&_os_log_default, v12))
         {
           LODWORD(buf) = 67109120;
-          DWORD1(buf) = a3;
+          DWORD1(buf) = b;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "[MADThroughputManager] Unable to get scheduling history for task %d", &buf, 8u);
         }
       }
@@ -336,17 +336,17 @@ LABEL_27:
       goto LABEL_31;
     }
 
-    v14 = [v6 lastObject];
-    v15 = v14;
-    if (v14)
+    lastObject = [newManagedObjectContext lastObject];
+    v15 = lastObject;
+    if (lastObject)
     {
-      v16 = [v14 sessionLog];
-      v17 = v16 == 0;
+      sessionLog = [lastObject sessionLog];
+      v17 = sessionLog == 0;
 
       if (!v17)
       {
-        v18 = [v15 sessionLog];
-        v19 = [v18 dataUsingEncoding:4];
+        sessionLog2 = [v15 sessionLog];
+        v19 = [sessionLog2 dataUsingEncoding:4];
         v27 = 0;
         v20 = [NSJSONSerialization JSONObjectWithData:v19 options:0 error:&v27];
         v21 = v27;
@@ -358,9 +358,9 @@ LABEL_27:
             v22 = VCPLogToOSLogType[3];
             if (os_log_type_enabled(&_os_log_default, v22))
             {
-              v23 = [v21 localizedDescription];
+              localizedDescription = [v21 localizedDescription];
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v23;
+              *(&buf + 4) = localizedDescription;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[MADThroughputManager] Unable to decode session log - %@", &buf, 0xCu);
             }
           }
@@ -387,7 +387,7 @@ LABEL_31:
       }
 
       LODWORD(buf) = 67109120;
-      DWORD1(buf) = a3;
+      DWORD1(buf) = b;
       v25 = "[MADThroughputManager] Unable to get session log for task %d";
     }
 
@@ -405,7 +405,7 @@ LABEL_31:
       }
 
       LODWORD(buf) = 67109120;
-      DWORD1(buf) = a3;
+      DWORD1(buf) = b;
       v25 = "[MADThroughputManager] Unable to get last scheduling record for task %d";
     }
 
@@ -414,9 +414,9 @@ LABEL_31:
   }
 
   v5 = +[MADSystemDataStore systemDataStore];
-  v6 = [v5 newManagedObjectContext];
+  newManagedObjectContext = [v5 newManagedObjectContext];
 
-  if (v6)
+  if (newManagedObjectContext)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -428,11 +428,11 @@ LABEL_31:
     v29[1] = 3221225472;
     v29[2] = sub_1001B7570;
     v29[3] = &unk_100288850;
-    v32 = a3;
-    v6 = v6;
-    v30 = v6;
+    bCopy = b;
+    newManagedObjectContext = newManagedObjectContext;
+    v30 = newManagedObjectContext;
     p_buf = &buf;
-    [v6 performBlockAndWait:v29];
+    [newManagedObjectContext performBlockAndWait:v29];
     v7 = *(*(&buf + 1) + 40);
 
     _Block_object_dispose(&buf, 8);

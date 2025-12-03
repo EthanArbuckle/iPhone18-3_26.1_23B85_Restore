@@ -1,8 +1,8 @@
 @interface DSDeepLinkSpecifier
 - (DSDeepLinkSpecifier)init;
-- (DSDeepLinkSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
+- (DSDeepLinkSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
 - (NSURL)inputURL;
-- (void)setInputURL:(id)a3;
+- (void)setInputURL:(id)l;
 @end
 
 @implementation DSDeepLinkSpecifier
@@ -30,12 +30,12 @@
   return v10;
 }
 
-- (void)setInputURL:(id)a3
+- (void)setInputURL:(id)l
 {
   v5 = (*(*(sub_5210(&qword_166F0, &qword_C6C0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     sub_87F8();
     v8 = sub_8808();
@@ -50,7 +50,7 @@
 
   v10 = OBJC_IVAR___DSDeepLinkSpecifier_inputURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_5860(v7, self + v10);
   swift_endAccess();
 }
@@ -70,9 +70,9 @@
   return v7;
 }
 
-- (DSDeepLinkSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
+- (DSDeepLinkSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  if (a4)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_8AA8();

@@ -1,5 +1,5 @@
 @interface MusicInstrumentalContentView
-- (MusicInstrumentalContentView)initWithFrame:(CGRect)a3;
+- (MusicInstrumentalContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047D3BC();
 }
 
-- (MusicInstrumentalContentView)initWithFrame:(CGRect)a3
+- (MusicInstrumentalContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

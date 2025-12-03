@@ -1,50 +1,50 @@
 @interface ICQUsageStorageController
 + (id)storageAvailableSpecifier;
 + (id)storageUsedSpecifier;
-+ (id)systemSizeAvailable:(id)a3;
-+ (id)systemSizeUsed:(id)a3;
-- (BOOL)mediaCache:(id)a3 hasGroups:(id)a4;
++ (id)systemSizeAvailable:(id)available;
++ (id)systemSizeUsed:(id)used;
+- (BOOL)mediaCache:(id)cache hasGroups:(id)groups;
 - (BOOL)storageExpired;
-- (Class)usageDetailControllerForBundleID:(id)a3;
+- (Class)usageDetailControllerForBundleID:(id)d;
 - (ICQUsageStorageController)init;
-- (id)_specifierForApp:(id)a3;
-- (id)_specifierForBundle:(id)a3;
-- (id)controllerForSpecifier:(id)a3;
+- (id)_specifierForApp:(id)app;
+- (id)_specifierForBundle:(id)bundle;
+- (id)controllerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)stringWithAppSizeForSpecifier:(id)a3;
-- (id)tapToRadarURLForAttributes:(id)a3;
-- (void)addStorageSpecifiers:(id)a3 completed:(BOOL)a4;
+- (id)stringWithAppSizeForSpecifier:(id)specifier;
+- (id)tapToRadarURLForAttributes:(id)attributes;
+- (void)addStorageSpecifiers:(id)specifiers completed:(BOOL)completed;
 - (void)checkForPendingUpdate;
 - (void)dealloc;
 - (void)didUnlock;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)prepareForSnapshot;
 - (void)refreshSoftwareUpdateRequiredSpace;
 - (void)reloadSpecifiers;
 - (void)reloadStorageSummary;
-- (void)removeStorageSpecifier:(id)a3;
-- (void)setDelayUsagePopulation:(BOOL)a3;
-- (void)sizeChangedForSpecifier:(id)a3;
+- (void)removeStorageSpecifier:(id)specifier;
+- (void)setDelayUsagePopulation:(BOOL)population;
+- (void)sizeChangedForSpecifier:(id)specifier;
 - (void)snapshotAndReportDiskSpace;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICQUsageStorageController
 
-- (id)tapToRadarURLForAttributes:(id)a3
+- (id)tapToRadarURLForAttributes:(id)attributes
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  attributesCopy = attributes;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(attributesCopy, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__ICQUsageStorageController_BugReporting__tapToRadarURLForAttributes___block_invoke;
   v10[3] = &unk_27A65A658;
   v11 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v7 setScheme:@"tap-to-radar"];
@@ -65,14 +65,14 @@ void __70__ICQUsageStorageController_BugReporting__tapToRadarURLForAttributes___
 - (void)snapshotAndReportDiskSpace
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQUsageStorageController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  [v4 setEnabled:0];
+  navigationItem = [(ICQUsageStorageController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v7 = [(ICQUsageStorageController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem2 = [(ICQUsageStorageController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v6];
 
   [v5 startAnimating];
   v15[0] = 0;
@@ -109,13 +109,13 @@ LABEL_4:
   v10 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.FilesystemMetadataSnapshotService"];
   [v10 setRemoteObjectInterface:v9];
   [v10 resume];
-  v11 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__ICQUsageStorageController_BugReporting__snapshotAndReportDiskSpace__block_invoke;
   v14[3] = &unk_27A65A6A8;
   v14[4] = self;
-  v12 = [v11 generateFilesystemMetadataSnapshotWithOptions:0 reply:v14];
+  v12 = [remoteObjectProxy generateFilesystemMetadataSnapshotWithOptions:0 reply:v14];
 }
 
 void __69__ICQUsageStorageController_BugReporting__snapshotAndReportDiskSpace__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -204,14 +204,14 @@ void __69__ICQUsageStorageController_BugReporting__snapshotAndReportDiskSpace__b
   v2 = [(ICQUsageStorageController *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_prepareForSnapshot name:@"preferencesPrepareForSnapshotNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_prepareForSnapshot name:@"preferencesPrepareForSnapshotNotification" object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_didEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_didEnterForeground name:*MEMORY[0x277D76758] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_appDeletionComplete name:@"AppDeletionCompleted" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_appDeletionComplete name:@"AppDeletionCompleted" object:0];
 
     v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
     appsStorageGroup = v2->_appsStorageGroup;
@@ -237,19 +237,19 @@ void __69__ICQUsageStorageController_BugReporting__snapshotAndReportDiskSpace__b
   v4 = +[ICQUsageStorageMonitor sharedMonitor];
   [v4 deregisterUsageStorageClient];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = ICQUsageStorageController;
   [(ICQUsageStorageController *)&v6 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ICQUsageStorageController;
-  [(ICQUsageStorageController *)&v4 viewWillAppear:a3];
+  [(ICQUsageStorageController *)&v4 viewWillAppear:appear];
   if (([(ICQUsageStorageController *)self isMovingToParentViewController]& 1) == 0)
   {
     [(ICQUsageStorageController *)self reloadStorageSummary];
@@ -269,16 +269,16 @@ void __69__ICQUsageStorageController_BugReporting__snapshotAndReportDiskSpace__b
   if (CPIsInternalDevice())
   {
     v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:@"Radar" style:0 target:self action:sel_snapshotAndReportDiskSpace];
-    v6 = [(ICQUsageStorageController *)self navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    navigationItem = [(ICQUsageStorageController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v5];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ICQUsageStorageController;
-  [(ICQUsageStorageController *)&v5 viewDidDisappear:a3];
+  [(ICQUsageStorageController *)&v5 viewDidDisappear:disappear];
   if ([(ICQUsageStorageController *)self isMovingFromParentViewController])
   {
     v4 = +[ICQUsageStorageMonitor sharedMonitor];
@@ -464,9 +464,9 @@ void __50__ICQUsageStorageController_checkForPendingUpdate__block_invoke_2(uint6
       goto LABEL_8;
     }
 
-    v8 = [(ICQUsageStorageController *)self table];
-    v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:v20];
-    [v8 _reloadSectionHeaderFooters:v9 withRowAnimation:100];
+    table = [(ICQUsageStorageController *)self table];
+    table2 = [MEMORY[0x277CCAA78] indexSetWithIndex:v20];
+    [table _reloadSectionHeaderFooters:table2 withRowAnimation:100];
     goto LABEL_6;
   }
 
@@ -474,25 +474,25 @@ void __50__ICQUsageStorageController_checkForPendingUpdate__block_invoke_2(uint6
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"UPDATE_STORAGE_REQUIREMENT_%@" value:&stru_28844FC60 table:@"Usage Statistics"];
   v13 = [MEMORY[0x277CCA8E8] stringFromByteCount:v7 countStyle:2];
-  v8 = [v10 stringWithFormat:v12, v13];
+  table = [v10 stringWithFormat:v12, v13];
 
   v14 = *MEMORY[0x277D3FF88];
   v15 = [v3 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
-  LOBYTE(v13) = [v15 isEqualToString:v8];
+  LOBYTE(v13) = [v15 isEqualToString:table];
 
   if ((v13 & 1) == 0)
   {
-    [v3 setObject:v8 forKeyedSubscript:v14];
-    v9 = [(ICQUsageStorageController *)self table];
+    [v3 setObject:table forKeyedSubscript:v14];
+    table2 = [(ICQUsageStorageController *)self table];
     v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:v20];
-    [v9 _reloadSectionHeaderFooters:v16 withRowAnimation:100];
+    [table2 _reloadSectionHeaderFooters:v16 withRowAnimation:100];
 
 LABEL_6:
   }
 
 LABEL_8:
   v17 = [(PSSpecifier *)self->_storageAvailableSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
-  v18 = [v17 detailTextLabel];
+  detailTextLabel = [v17 detailTextLabel];
   if (v7 > 0.0)
   {
     [MEMORY[0x277D75348] systemRedColor];
@@ -503,10 +503,10 @@ LABEL_8:
     [MEMORY[0x277D75348] tableCellGrayTextColor];
   }
   v19 = ;
-  [v18 setTextColor:v19];
+  [detailTextLabel setTextColor:v19];
 }
 
-+ (id)systemSizeUsed:(id)a3
++ (id)systemSizeUsed:(id)used
 {
   v3 = MEMORY[0x277CCA8E8];
   v4 = +[ICQUsageStorageMonitor sharedMonitor];
@@ -516,7 +516,7 @@ LABEL_8:
   return v6;
 }
 
-+ (id)systemSizeAvailable:(id)a3
++ (id)systemSizeAvailable:(id)available
 {
   v3 = MEMORY[0x277CCA8E8];
   v4 = +[ICQUsageStorageMonitor sharedMonitor];
@@ -531,7 +531,7 @@ LABEL_8:
   v3 = MEMORY[0x277D3FAD8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"USED" value:&stru_28844FC60 table:@"Usage Statistics"];
-  v6 = [v3 preferenceSpecifierNamed:v5 target:a1 set:0 get:sel_systemSizeUsed_ detail:0 cell:4 edit:0];
+  v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:sel_systemSizeUsed_ detail:0 cell:4 edit:0];
 
   return v6;
 }
@@ -541,7 +541,7 @@ LABEL_8:
   v3 = MEMORY[0x277D3FAD8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"AVAILABLE" value:&stru_28844FC60 table:@"Usage Statistics"];
-  v6 = [v3 preferenceSpecifierNamed:v5 target:a1 set:0 get:sel_systemSizeAvailable_ detail:0 cell:4 edit:0];
+  v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:sel_systemSizeAvailable_ detail:0 cell:4 edit:0];
 
   return v6;
 }
@@ -557,14 +557,14 @@ LABEL_8:
   [(ICQUsageStorageController *)self refreshSoftwareUpdateRequiredSpace];
 }
 
-- (void)addStorageSpecifiers:(id)a3 completed:(BOOL)a4
+- (void)addStorageSpecifiers:(id)specifiers completed:(BOOL)completed
 {
-  v4 = a4;
-  v22 = a3;
+  completedCopy = completed;
+  specifiersCopy = specifiers;
   [(ICQUsageStorageController *)self beginUpdates];
   v6 = [(ICQUsageStorageController *)self indexOfSpecifierID:@"SPINNER_CELL"];
   v7 = v6;
-  if (v4)
+  if (completedCopy)
   {
     [(ICQUsageStorageController *)self removeSpecifierID:@"SPINNER_CELL" animated:1];
   }
@@ -580,37 +580,37 @@ LABEL_8:
     [ICQUsageStorageController addStorageSpecifiers:completed:];
   }
 
-  v9 = [v22 count];
+  v9 = [specifiersCopy count];
   v10 = [*(&self->super.super.super.super.super.isa + v8) count] + v9;
   if (v7 < v10)
   {
     v11 = 0;
     do
     {
-      if (v11 >= [v22 count])
+      if (v11 >= [specifiersCopy count])
       {
         break;
       }
 
       if (v7 >= [*(&self->super.super.super.super.super.isa + v8) count])
       {
-        v14 = 0;
+        unsignedIntegerValue = 0;
       }
 
       else
       {
         v12 = [*(&self->super.super.super.super.super.isa + v8) objectAtIndexedSubscript:v7];
         v13 = [v12 objectForKeyedSubscript:kTotalSizeProperty];
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
       }
 
-      v15 = [v22 objectAtIndexedSubscript:v11];
+      v15 = [specifiersCopy objectAtIndexedSubscript:v11];
       v16 = [v15 objectForKeyedSubscript:kTotalSizeProperty];
-      v17 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-      if (v17 > v14)
+      if (unsignedIntegerValue2 > unsignedIntegerValue)
       {
-        v18 = [v22 objectAtIndexedSubscript:v11];
+        v18 = [specifiersCopy objectAtIndexedSubscript:v11];
         [(ICQUsageStorageController *)self insertSpecifier:v18 atIndex:v7];
 
         ++v11;
@@ -623,22 +623,22 @@ LABEL_8:
   }
 
   [(ICQUsageStorageController *)self endUpdates];
-  if (v4)
+  if (completedCopy)
   {
-    v19 = [MEMORY[0x277D75128] sharedApplication];
-    v20 = [v19 isRunningTest:@"EnterManageStoragePane"];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v20 = [mEMORY[0x277D75128] isRunningTest:@"EnterManageStoragePane"];
 
     if (v20)
     {
-      v21 = [MEMORY[0x277D75128] sharedApplication];
-      [v21 finishedTest:@"EnterManageStoragePane"];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128]2 finishedTest:@"EnterManageStoragePane"];
     }
   }
 }
 
-- (id)stringWithAppSizeForSpecifier:(id)a3
+- (id)stringWithAppSizeForSpecifier:(id)specifier
 {
-  v3 = [a3 objectForKeyedSubscript:kTotalSizeProperty];
+  v3 = [specifier objectForKeyedSubscript:kTotalSizeProperty];
   [v3 floatValue];
   v5 = v4;
 
@@ -656,10 +656,10 @@ LABEL_8:
   return v6;
 }
 
-- (Class)usageDetailControllerForBundleID:(id)a3
+- (Class)usageDetailControllerForBundleID:(id)d
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = usageDetailControllerForBundleID__specialDetailControllerMap;
   if (!usageDetailControllerForBundleID__specialDetailControllerMap)
   {
@@ -676,7 +676,7 @@ LABEL_8:
     v4 = usageDetailControllerForBundleID__specialDetailControllerMap;
   }
 
-  v7 = [v4 objectForKeyedSubscript:v3];
+  v7 = [v4 objectForKeyedSubscript:dCopy];
   if (!v7)
   {
     v7 = objc_opt_class();
@@ -694,8 +694,8 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_storageExpiry];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_storageExpiry];
   v5 = v4 > self->_timeoutLimit;
 
   return v5;
@@ -727,71 +727,71 @@ LABEL_8:
   [(ICQUsageStorageController *)self insertContiguousSpecifiers:v6 atIndex:v3 animated:0];
 }
 
-- (id)_specifierForApp:(id)a3
+- (id)_specifierForApp:(id)app
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
+  appCopy = app;
+  bundleIdentifier = [appCopy bundleIdentifier];
   v6 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 name];
-    [v4 totalSize];
+    name = [appCopy name];
+    [appCopy totalSize];
     *buf = 138412802;
-    v22 = v7;
+    v22 = name;
     v23 = 2112;
-    v24 = v5;
+    v24 = bundleIdentifier;
     v25 = 2048;
     v26 = v8;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Usage item '%@' in bundle %@ has total size %f", buf, 0x20u);
   }
 
   v9 = MEMORY[0x277D3FAD8];
-  v10 = [v4 name];
-  v11 = [v9 preferenceSpecifierNamed:v10 target:self set:0 get:sel_stringWithAppSizeForSpecifier_ detail:-[ICQUsageStorageController usageDetailControllerForBundleID:](self cell:"usageDetailControllerForBundleID:" edit:{v5), 2, 0}];
+  name2 = [appCopy name];
+  v11 = [v9 preferenceSpecifierNamed:name2 target:self set:0 get:sel_stringWithAppSizeForSpecifier_ detail:-[ICQUsageStorageController usageDetailControllerForBundleID:](self cell:"usageDetailControllerForBundleID:" edit:{bundleIdentifier), 2, 0}];
 
   [v11 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  [v11 setProperty:v5 forKey:*MEMORY[0x277D3FFB8]];
-  [v11 setProperty:v5 forKey:*MEMORY[0x277D40008]];
+  [v11 setProperty:bundleIdentifier forKey:*MEMORY[0x277D3FFB8]];
+  [v11 setProperty:bundleIdentifier forKey:*MEMORY[0x277D40008]];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v11 setProperty:v12 forKey:*MEMORY[0x277D40020]];
 
-  v13 = [v4 bundleVersion];
-  [v11 setProperty:v13 forKey:@"VERSION"];
+  bundleVersion = [appCopy bundleVersion];
+  [v11 setProperty:bundleVersion forKey:@"VERSION"];
 
-  if (([v4 isSystemApp] & 1) == 0)
+  if (([appCopy isSystemApp] & 1) == 0)
   {
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"APP_SIZE" value:&stru_28844FC60 table:@"Usage Statistics"];
     [v11 setProperty:v15 forKey:@"SIZE_TITLE"];
 
     v16 = MEMORY[0x277CCABB0];
-    [v4 staticSize];
+    [appCopy staticSize];
     v17 = [v16 numberWithFloat:?];
     [v11 setProperty:v17 forKey:@"SIZE_VALUE"];
   }
 
-  [v11 setProperty:v4 forKey:@"USAGE_APP"];
+  [v11 setProperty:appCopy forKey:@"USAGE_APP"];
   v18 = MEMORY[0x277CCABB0];
-  [v4 totalSize];
+  [appCopy totalSize];
   v19 = [v18 numberWithFloat:?];
   [v11 setProperty:v19 forKey:kTotalSizeProperty];
 
   return v11;
 }
 
-- (id)_specifierForBundle:(id)a3
+- (id)_specifierForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
   v6 = objc_opt_class();
-  v7 = [v4 usageBundleStorageReporter];
+  usageBundleStorageReporter = [bundleCopy usageBundleStorageReporter];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [v4 usageBundleStorageReporter];
-    v10 = [v9 usageDetailControllerClassForUsageBundleApp:v4];
+    usageBundleStorageReporter2 = [bundleCopy usageBundleStorageReporter];
+    v10 = [usageBundleStorageReporter2 usageDetailControllerClassForUsageBundleApp:bundleCopy];
 
     if (v10)
     {
@@ -800,16 +800,16 @@ LABEL_8:
   }
 
   v11 = MEMORY[0x277D3FAD8];
-  v12 = [v4 name];
-  v13 = [v11 preferenceSpecifierNamed:v12 target:self set:0 get:sel_stringWithAppSizeForSpecifier_ detail:v6 cell:2 edit:0];
+  name = [bundleCopy name];
+  v13 = [v11 preferenceSpecifierNamed:name target:self set:0 get:sel_stringWithAppSizeForSpecifier_ detail:v6 cell:2 edit:0];
 
   [v13 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  [v13 setProperty:v5 forKey:*MEMORY[0x277D3FFB8]];
-  [v13 setProperty:v5 forKey:*MEMORY[0x277D40008]];
+  [v13 setProperty:bundleIdentifier forKey:*MEMORY[0x277D3FFB8]];
+  [v13 setProperty:bundleIdentifier forKey:*MEMORY[0x277D40008]];
   [v13 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
-  [v13 setProperty:v4 forKey:@"USAGE_BUNDLE_APP"];
+  [v13 setProperty:bundleCopy forKey:@"USAGE_BUNDLE_APP"];
   v14 = MEMORY[0x277CCABB0];
-  [v4 totalSize];
+  [bundleCopy totalSize];
   v15 = [v14 numberWithFloat:?];
   [v13 setProperty:v15 forKey:kTotalSizeProperty];
 
@@ -817,14 +817,14 @@ LABEL_8:
   v17 = [objc_msgSend(v13 "detailControllerClass")];
   [v16 setupSpecifier:v13 forMediaGroups:v17];
 
-  v18 = [v4 usageBundleStorageReporter];
+  usageBundleStorageReporter3 = [bundleCopy usageBundleStorageReporter];
   LOBYTE(v17) = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v19 = [v4 usageBundleStorageReporter];
+    usageBundleStorageReporter4 = [bundleCopy usageBundleStorageReporter];
     v22 = v13;
-    [v19 usageBundleApp:v4 willDisplaySpecifier:&v22];
+    [usageBundleStorageReporter4 usageBundleApp:bundleCopy willDisplaySpecifier:&v22];
     v20 = v22;
 
     v13 = v20;
@@ -833,16 +833,16 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)mediaCache:(id)a3 hasGroups:(id)a4
+- (BOOL)mediaCache:(id)cache hasGroups:(id)groups
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  cacheCopy = cache;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  groupsCopy = groups;
+  v7 = [groupsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -853,10 +853,10 @@ LABEL_8:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(groupsCopy);
         }
 
-        v11 = [v5 objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [cacheCopy objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
 
         if (!v11)
         {
@@ -865,7 +865,7 @@ LABEL_8:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [groupsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -881,12 +881,12 @@ LABEL_11:
   return v12;
 }
 
-- (void)setDelayUsagePopulation:(BOOL)a3
+- (void)setDelayUsagePopulation:(BOOL)population
 {
-  if (self->_delayUsagePopulation != a3)
+  if (self->_delayUsagePopulation != population)
   {
-    self->_delayUsagePopulation = a3;
-    if (!a3)
+    self->_delayUsagePopulation = population;
+    if (!population)
     {
       [(ICQUsageStorageController *)self reloadSpecifiers];
     }
@@ -895,14 +895,14 @@ LABEL_11:
 
 - (id)specifiers
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"kPreferenceTimeoutLimitKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"kPreferenceTimeoutLimitKey"];
   [v4 doubleValue];
   self->_timeoutLimit = v5;
 
-  v6 = [(ICQUsageStorageController *)self storageExpired];
+  storageExpired = [(ICQUsageStorageController *)self storageExpired];
   v7 = MEMORY[0x277D3FC48];
-  if (v6)
+  if (storageExpired)
   {
     v8 = *MEMORY[0x277D3FC48];
     v9 = *(&self->super.super.super.super.super.isa + v8);
@@ -919,9 +919,9 @@ LABEL_11:
     if (!self->_storageLookupInProgress && !self->_delayUsagePopulation)
     {
       self->_storageLookupInProgress = 1;
-      v13 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       storageExpiry = self->_storageExpiry;
-      self->_storageExpiry = v13;
+      self->_storageExpiry = date;
 
       v15 = +[ICQUsageStorageMonitor sharedMonitor];
       v25[0] = MEMORY[0x277D85DD0];
@@ -935,13 +935,13 @@ LABEL_11:
     }
 
     v16 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SUMMARY_GROUP"];
-    v17 = [objc_opt_class() storageUsedSpecifier];
+    storageUsedSpecifier = [objc_opt_class() storageUsedSpecifier];
     storageUsedSpecifier = self->_storageUsedSpecifier;
-    self->_storageUsedSpecifier = v17;
+    self->_storageUsedSpecifier = storageUsedSpecifier;
 
-    v19 = [objc_opt_class() storageAvailableSpecifier];
+    storageAvailableSpecifier = [objc_opt_class() storageAvailableSpecifier];
     storageAvailableSpecifier = self->_storageAvailableSpecifier;
-    self->_storageAvailableSpecifier = v19;
+    self->_storageAvailableSpecifier = storageAvailableSpecifier;
 
     v21 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28844FC60 target:0 set:0 get:0 detail:0 cell:15 edit:0];
     [v21 setProperty:@"SPINNER_CELL" forKey:*MEMORY[0x277D3FFB8]];
@@ -1228,11 +1228,11 @@ uint64_t __39__ICQUsageStorageController_specifiers__block_invoke_446(uint64_t a
   return v8;
 }
 
-- (id)controllerForSpecifier:(id)a3
+- (id)controllerForSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = ICQUsageStorageController;
-  v4 = [(ICQUsageStorageController *)&v6 controllerForSpecifier:a3];
+  v4 = [(ICQUsageStorageController *)&v6 controllerForSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1242,24 +1242,24 @@ uint64_t __39__ICQUsageStorageController_specifiers__block_invoke_446(uint64_t a
   return v4;
 }
 
-- (void)removeStorageSpecifier:(id)a3
+- (void)removeStorageSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if ([*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) count] < 3)
   {
     [ICQUsageStorageController removeStorageSpecifier:];
   }
 
-  [(ICQUsageStorageController *)self removeSpecifier:v4 animated:1];
+  [(ICQUsageStorageController *)self removeSpecifier:specifierCopy animated:1];
   [(ICQUsageStorageController *)self reloadStorageSummary];
 }
 
-- (void)sizeChangedForSpecifier:(id)a3
+- (void)sizeChangedForSpecifier:(id)specifier
 {
   v4 = kTotalSizeProperty;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 unsignedLongLongValue];
+  specifierCopy = specifier;
+  v6 = [specifierCopy objectForKeyedSubscript:v4];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = [(ICQUsageStorageController *)self indexOfSpecifier:self->_appsStorageGroup];
   v9 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
@@ -1268,11 +1268,11 @@ uint64_t __39__ICQUsageStorageController_specifiers__block_invoke_446(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __53__ICQUsageStorageController_sizeChangedForSpecifier___block_invoke;
   v13[3] = &__block_descriptor_40_e24_i24__0__PSSpecifier_8q16l;
-  v13[4] = v7;
+  v13[4] = unsignedLongLongValue;
   v11 = [v9 sortedInsertionIndexWithRange:v8 block:{v10 - v8, v13}];
-  v12 = [(ICQUsageStorageController *)self indexOfSpecifier:v5];
+  v12 = [(ICQUsageStorageController *)self indexOfSpecifier:specifierCopy];
   [(ICQUsageStorageController *)self removeSpecifierAtIndex:v12];
-  [(ICQUsageStorageController *)self insertSpecifier:v5 atIndex:((__PAIR128__(v11 animated:v12) - v11) >> 64), 0];
+  [(ICQUsageStorageController *)self insertSpecifier:specifierCopy atIndex:((__PAIR128__(v11 animated:v12) - v11) >> 64), 0];
 
   [(ICQUsageStorageController *)self reloadStorageSummary];
 }
@@ -1296,20 +1296,20 @@ uint64_t __53__ICQUsageStorageController_sizeChangedForSpecifier___block_invoke(
   }
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICQUsageStorageController *)self specifierIDPendingPush];
+  lCopy = l;
+  specifierIDPendingPush = [(ICQUsageStorageController *)self specifierIDPendingPush];
 
-  if (v5)
+  if (specifierIDPendingPush)
   {
-    v6 = [(ICQUsageStorageController *)self specifierIDPendingPush];
-    v7 = [(ICQUsageStorageController *)self specifierForID:v6];
+    specifierIDPendingPush2 = [(ICQUsageStorageController *)self specifierIDPendingPush];
+    v7 = [(ICQUsageStorageController *)self specifierForID:specifierIDPendingPush2];
 
     v8 = [(ICQUsageStorageController *)self controllerForSpecifier:v7];
     [v8 setParentController:self];
-    v9 = [(ICQUsageStorageController *)self rootController];
-    [v8 setRootController:v9];
+    rootController = [(ICQUsageStorageController *)self rootController];
+    [v8 setRootController:rootController];
 
     [v8 setSpecifier:v7];
     [(ICQUsageStorageController *)self showController:v8];
@@ -1319,7 +1319,7 @@ uint64_t __53__ICQUsageStorageController_sizeChangedForSpecifier___block_invoke(
   {
     v10.receiver = self;
     v10.super_class = ICQUsageStorageController;
-    [(ICQUsageStorageController *)&v10 handleURL:v4];
+    [(ICQUsageStorageController *)&v10 handleURL:lCopy];
   }
 }
 

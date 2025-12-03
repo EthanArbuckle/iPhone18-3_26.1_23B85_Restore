@@ -28,17 +28,17 @@
 
 - (id)cmsCoded
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_2856BA800;
   v2 = objc_msgSendSuper2(&v7, sel_cmsCoded);
   [v2 setObject:@"UpdateMediaAffinityIntent" forKey:@"class"];
-  v3 = [a1 mediaItems];
-  [v2 cmsSetOptionalCodedObject:v3 forKey:@"mediaItems"];
+  mediaItems = [self mediaItems];
+  [v2 cmsSetOptionalCodedObject:mediaItems forKey:@"mediaItems"];
 
-  v4 = [a1 mediaSearch];
-  [v2 cmsSetOptionalCodedObject:v4 forKey:@"mediaSearch"];
+  mediaSearch = [self mediaSearch];
+  [v2 cmsSetOptionalCodedObject:mediaSearch forKey:@"mediaSearch"];
 
-  v5 = INMediaAffinityTypeToString([a1 affinityType]);
+  v5 = INMediaAffinityTypeToString([self affinityType]);
   [v2 cmsSetOptionalObject:v5 forKey:@"affinityType"];
 
   return v2;

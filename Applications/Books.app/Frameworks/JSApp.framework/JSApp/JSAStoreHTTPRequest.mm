@@ -1,26 +1,26 @@
 @interface JSAStoreHTTPRequest
 + (void)incrementPostLaunchCacheCount;
 - (JSAStoreHTTPRequest)init;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
 - (void)cancel;
 - (void)send;
-- (void)setBody:(id)a3;
-- (void)setCompletion:(id)a3;
-- (void)setCookiesToSuppress:(id)a3;
-- (void)setDisableATS:(BOOL)a3;
-- (void)setHeaders:(id)a3;
-- (void)setMethod:(id)a3;
-- (void)setOnResponse:(id)a3;
-- (void)setPersonalized:(BOOL)a3;
-- (void)setPriority:(float)a3;
-- (void)setQueryItems:(id)a3;
-- (void)setRetryCount:(id)a3;
-- (void)setShouldSuppressMetrics:(BOOL)a3;
-- (void)setShouldSuppressResponseDialogs:(BOOL)a3;
-- (void)setTimeout:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setBody:(id)body;
+- (void)setCompletion:(id)completion;
+- (void)setCookiesToSuppress:(id)suppress;
+- (void)setDisableATS:(BOOL)s;
+- (void)setHeaders:(id)headers;
+- (void)setMethod:(id)method;
+- (void)setOnResponse:(id)response;
+- (void)setPersonalized:(BOOL)personalized;
+- (void)setPriority:(float)priority;
+- (void)setQueryItems:(id)items;
+- (void)setRetryCount:(id)count;
+- (void)setShouldSuppressMetrics:(BOOL)metrics;
+- (void)setShouldSuppressResponseDialogs:(BOOL)dialogs;
+- (void)setTimeout:(id)timeout;
+- (void)setUrl:(id)url;
 @end
 
 @implementation JSAStoreHTTPRequest
@@ -47,9 +47,9 @@
   self->_dataTask = 0;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
-  self->_priority = a3;
+  self->_priority = priority;
   dataTask = self->_dataTask;
   if (dataTask)
   {
@@ -91,19 +91,19 @@
   return v3;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
+  completionCopy = completion;
+  requestCopy = request;
   if ([(JSAStoreHTTPRequest *)self shouldSuppressResponseDialogs])
   {
     v10 = [(JSAStoreHTTPRequest *)self url];
-    v11 = [v9 title];
-    v12 = [v9 message];
+    title = [requestCopy title];
+    message = [requestCopy message];
 
-    v13 = [NSString stringWithFormat:@"[JSAStoreHTTPRequest] (%@) caller suppressed dialog of title '%@' and message '%@'", v10, v11, v12];
+    v13 = [NSString stringWithFormat:@"[JSAStoreHTTPRequest] (%@) caller suppressed dialog of title '%@' and message '%@'", v10, title, message];
 
-    v14 = objc_retainBlock(v8);
+    v14 = objc_retainBlock(completionCopy);
     if (v14)
     {
       v21 = NSLocalizedDescriptionKey;
@@ -118,44 +118,44 @@
   {
     v17 = [AMSUIAlertDialogTask alloc];
     v18 = [UIViewController jsa_topMostViewControllerForWindow:0];
-    v20 = [v17 initWithRequest:v9 presentingViewController:v18];
+    v20 = [v17 initWithRequest:requestCopy presentingViewController:v18];
 
-    v19 = [v20 present];
-    [v19 addFinishBlock:v8];
+    present = [v20 present];
+    [present addFinishBlock:completionCopy];
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = [AMSUIAuthenticateTask alloc];
   v10 = [UIViewController jsa_topMostViewControllerForWindow:0];
-  v12 = [v9 initWithRequest:v8 presentingViewController:v10];
+  v12 = [v9 initWithRequest:requestCopy presentingViewController:v10];
 
-  v11 = [v12 performAuthentication];
-  [v11 addFinishBlock:v7];
+  performAuthentication = [v12 performAuthentication];
+  [performAuthentication addFinishBlock:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
+  completionCopy = completion;
+  requestCopy = request;
   v13 = +[BUBag defaultBag];
   v9 = [AMSUIEngagementTask alloc];
   v10 = [UIViewController jsa_topMostViewControllerForWindow:0];
-  v11 = [v9 initWithRequest:v8 bag:v13 presentingViewController:v10];
+  v11 = [v9 initWithRequest:requestCopy bag:v13 presentingViewController:v10];
 
-  v12 = [v11 presentEngagement];
-  [v12 addFinishBlock:v7];
+  presentEngagement = [v11 presentEngagement];
+  [presentEngagement addFinishBlock:completionCopy];
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   if (!self->_frozen)
   {
-    v5 = [NSURL URLWithString:v4];
+    v5 = [NSURL URLWithString:urlCopy];
     url = self->_url;
     self->_url = v5;
 
@@ -170,15 +170,15 @@
   }
 }
 
-- (void)setMethod:(id)a3
+- (void)setMethod:(id)method
 {
-  v5 = a3;
-  v6 = v5;
+  methodCopy = method;
+  v6 = methodCopy;
   if (!self->_frozen)
   {
-    if (([v5 isEqualToString:@"GET"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"HEAD") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"POST") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"PUT") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"PATCH") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"DELETE"))
+    if (([methodCopy isEqualToString:@"GET"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"HEAD") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"POST") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"PUT") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"PATCH") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"DELETE"))
     {
-      objc_storeStrong(&self->_method, a3);
+      objc_storeStrong(&self->_method, method);
     }
 
     else
@@ -192,36 +192,36 @@
   }
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v5 = a3;
+  bodyCopy = body;
   if (!self->_frozen)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_body, a3);
-    v5 = v6;
+    v6 = bodyCopy;
+    objc_storeStrong(&self->_body, body);
+    bodyCopy = v6;
   }
 }
 
-- (void)setQueryItems:(id)a3
+- (void)setQueryItems:(id)items
 {
   if (!self->_frozen)
   {
-    v5 = [a3 jsa_stringDictionaryForRequestHeaderOrURLParam];
+    jsa_stringDictionaryForRequestHeaderOrURLParam = [items jsa_stringDictionaryForRequestHeaderOrURLParam];
     queryItems = self->_queryItems;
-    self->_queryItems = v5;
+    self->_queryItems = jsa_stringDictionaryForRequestHeaderOrURLParam;
 
     _objc_release_x1();
   }
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
-  v4 = a3;
-  v5 = v4;
+  headersCopy = headers;
+  v5 = headersCopy;
   if (!self->_frozen)
   {
-    v6 = [v4 jsa_stringDictionaryForRequestHeaderOrURLParam];
+    jsa_stringDictionaryForRequestHeaderOrURLParam = [headersCopy jsa_stringDictionaryForRequestHeaderOrURLParam];
     v7 = objc_opt_new();
     objc_initWeak(&location, self);
     v11[0] = _NSConcreteStackBlock;
@@ -231,7 +231,7 @@
     objc_copyWeak(&v13, &location);
     v8 = v7;
     v12 = v8;
-    [v6 enumerateKeysAndObjectsUsingBlock:v11];
+    [jsa_stringDictionaryForRequestHeaderOrURLParam enumerateKeysAndObjectsUsingBlock:v11];
     v9 = [v8 copy];
     headers = self->_headers;
     self->_headers = v9;
@@ -241,82 +241,82 @@
   }
 }
 
-- (void)setTimeout:(id)a3
+- (void)setTimeout:(id)timeout
 {
   if (!self->_frozen)
   {
-    [a3 doubleValue];
+    [timeout doubleValue];
     self->_timeout = v4;
   }
 }
 
-- (void)setRetryCount:(id)a3
+- (void)setRetryCount:(id)count
 {
   if (!self->_frozen)
   {
-    self->_retryCount = [a3 integerValue];
+    self->_retryCount = [count integerValue];
   }
 }
 
-- (void)setShouldSuppressResponseDialogs:(BOOL)a3
+- (void)setShouldSuppressResponseDialogs:(BOOL)dialogs
 {
   if (!self->_frozen)
   {
-    self->_shouldSuppressResponseDialogs = a3;
+    self->_shouldSuppressResponseDialogs = dialogs;
   }
 }
 
-- (void)setShouldSuppressMetrics:(BOOL)a3
+- (void)setShouldSuppressMetrics:(BOOL)metrics
 {
   if (!self->_frozen)
   {
-    self->_shouldSuppressMetrics = a3;
+    self->_shouldSuppressMetrics = metrics;
   }
 }
 
-- (void)setPersonalized:(BOOL)a3
+- (void)setPersonalized:(BOOL)personalized
 {
   if (!self->_frozen)
   {
-    self->_personalized = a3;
+    self->_personalized = personalized;
   }
 }
 
-- (void)setCookiesToSuppress:(id)a3
+- (void)setCookiesToSuppress:(id)suppress
 {
-  v5 = a3;
+  suppressCopy = suppress;
   if (!self->_frozen)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cookiesToSuppress, a3);
-    v5 = v6;
+    v6 = suppressCopy;
+    objc_storeStrong(&self->_cookiesToSuppress, suppress);
+    suppressCopy = v6;
   }
 }
 
-- (void)setDisableATS:(BOOL)a3
+- (void)setDisableATS:(BOOL)s
 {
   if (!self->_frozen)
   {
-    self->_disableATS = a3;
+    self->_disableATS = s;
   }
 }
 
-- (void)setOnResponse:(id)a3
+- (void)setOnResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   if (!self->_frozen)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_onResponse, a3);
-    v5 = v6;
+    v6 = responseCopy;
+    objc_storeStrong(&self->_onResponse, response);
+    responseCopy = v6;
   }
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
   if (!self->_frozen)
   {
-    v5 = objc_retainBlock(a3);
+    v5 = objc_retainBlock(completion);
     completion = self->_completion;
     self->_completion = v5;
 

@@ -1,5 +1,5 @@
 @interface DAActivity
-- (DAActivity)initWithAccount:(id)a3;
+- (DAActivity)initWithAccount:(id)account;
 - (void)dealloc;
 @end
 
@@ -13,16 +13,16 @@
   [(DAActivity *)&v3 dealloc];
 }
 
-- (DAActivity)initWithAccount:(id)a3
+- (DAActivity)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = DAActivity;
   v6 = [(DAActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     [(DAAccount *)v7->_account incrementXpcActivityContinueCount];
   }
 

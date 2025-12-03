@@ -44,39 +44,39 @@ uint64_t __47__BYSilentLoginUpgradeGuarantor_sharedInstance__block_invoke()
 
 - (void)_ensureQueuesAndStartSilentLoginUpgrade
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(BYSilentLoginUpgradeGuarantor *)v2 didEnsureQueuesAndStartSilentLoginUpgrade])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(BYSilentLoginUpgradeGuarantor *)selfCopy didEnsureQueuesAndStartSilentLoginUpgrade])
   {
     v3 = dispatch_queue_create("com.apple.purplebuddy.silentloginupgradecompletion", 0);
-    [(BYSilentLoginUpgradeGuarantor *)v2 setSilentLoginUpgradeCompletionQueue:v3];
+    [(BYSilentLoginUpgradeGuarantor *)selfCopy setSilentLoginUpgradeCompletionQueue:v3];
 
-    v4 = [(BYSilentLoginUpgradeGuarantor *)v2 silentLoginUpgradeCompletionQueue];
-    dispatch_suspend(v4);
+    silentLoginUpgradeCompletionQueue = [(BYSilentLoginUpgradeGuarantor *)selfCopy silentLoginUpgradeCompletionQueue];
+    dispatch_suspend(silentLoginUpgradeCompletionQueue);
 
     v5 = dispatch_queue_create("com.apple.purplebuddy.shortlivedtokenupgradecompletion", 0);
-    [(BYSilentLoginUpgradeGuarantor *)v2 setShortLivedTokenUpgradeCompletionQueue:v5];
+    [(BYSilentLoginUpgradeGuarantor *)selfCopy setShortLivedTokenUpgradeCompletionQueue:v5];
 
-    v6 = [(BYSilentLoginUpgradeGuarantor *)v2 shortLivedTokenUpgradeCompletionQueue];
-    dispatch_suspend(v6);
+    shortLivedTokenUpgradeCompletionQueue = [(BYSilentLoginUpgradeGuarantor *)selfCopy shortLivedTokenUpgradeCompletionQueue];
+    dispatch_suspend(shortLivedTokenUpgradeCompletionQueue);
 
     v7 = +[BYManagedAppleIDBootstrap sharedManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__BYSilentLoginUpgradeGuarantor__ensureQueuesAndStartSilentLoginUpgrade__block_invoke;
     v9[3] = &unk_1E7D02FC8;
-    v9[4] = v2;
+    v9[4] = selfCopy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __72__BYSilentLoginUpgradeGuarantor__ensureQueuesAndStartSilentLoginUpgrade__block_invoke_5;
     v8[3] = &unk_1E7D027A8;
-    v8[4] = v2;
+    v8[4] = selfCopy;
     [v7 runSilentLoginUpgradeIfNeededWithCompletion:v9 shortLivedTokenUpgradeCompletion:v8];
 
-    [(BYSilentLoginUpgradeGuarantor *)v2 setDidEnsureQueuesAndStartSilentLoginUpgrade:1];
+    [(BYSilentLoginUpgradeGuarantor *)selfCopy setDidEnsureQueuesAndStartSilentLoginUpgrade:1];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __72__BYSilentLoginUpgradeGuarantor__ensureQueuesAndStartSilentLoginUpgrade__block_invoke(uint64_t a1)
@@ -115,8 +115,8 @@ void __72__BYSilentLoginUpgradeGuarantor__ensureQueuesAndStartSilentLoginUpgrade
     _os_log_impl(&dword_1B862F000, v3, OS_LOG_TYPE_DEFAULT, "blockUntilSilentLoginUpgradeCompletesForNonLoginUser will schedule block.", v5, 2u);
   }
 
-  v4 = [(BYSilentLoginUpgradeGuarantor *)self silentLoginUpgradeCompletionQueue];
-  dispatch_sync(v4, &__block_literal_global_7);
+  silentLoginUpgradeCompletionQueue = [(BYSilentLoginUpgradeGuarantor *)self silentLoginUpgradeCompletionQueue];
+  dispatch_sync(silentLoginUpgradeCompletionQueue, &__block_literal_global_7);
 }
 
 void __85__BYSilentLoginUpgradeGuarantor_blockUntilSilentLoginUpgradeCompletesForNonLoginUser__block_invoke()
@@ -132,9 +132,9 @@ void __85__BYSilentLoginUpgradeGuarantor_blockUntilSilentLoginUpgradeCompletesFo
 - (void)blockUntilSilentLoginUpgradeCompletes
 {
   v3 = +[BYManagedAppleIDBootstrap sharedManager];
-  v4 = [v3 isLoginUser];
+  isLoginUser = [v3 isLoginUser];
 
-  if (v4)
+  if (isLoginUser)
   {
 
     [(BYSilentLoginUpgradeGuarantor *)self didShortCircuitSilentLoginUpgrade];
@@ -150,9 +150,9 @@ void __85__BYSilentLoginUpgradeGuarantor_blockUntilSilentLoginUpgradeCompletesFo
 - (void)blockUntilShortLivedTokenUpgradeCompletes
 {
   v3 = +[BYManagedAppleIDBootstrap sharedManager];
-  v4 = [v3 isLoginUser];
+  isLoginUser = [v3 isLoginUser];
 
-  if (v4)
+  if (isLoginUser)
   {
 
     [(BYSilentLoginUpgradeGuarantor *)self didShortCircuitShortLivedTokenUpgrade];
@@ -168,8 +168,8 @@ void __85__BYSilentLoginUpgradeGuarantor_blockUntilSilentLoginUpgradeCompletesFo
       _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, "blockUntilShortLivedTokenUpgradeCompletes will schedule block.", v7, 2u);
     }
 
-    v6 = [(BYSilentLoginUpgradeGuarantor *)self shortLivedTokenUpgradeCompletionQueue];
-    dispatch_sync(v6, &__block_literal_global_9);
+    shortLivedTokenUpgradeCompletionQueue = [(BYSilentLoginUpgradeGuarantor *)self shortLivedTokenUpgradeCompletionQueue];
+    dispatch_sync(shortLivedTokenUpgradeCompletionQueue, &__block_literal_global_9);
   }
 }
 

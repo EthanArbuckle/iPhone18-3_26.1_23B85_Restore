@@ -12,11 +12,11 @@
   v7 = a4;
   if (!a3)
   {
-    [NSKeyedUnarchiver(CATSecureCoding) cat_unarchiveObjectOfClass:a2 withData:a1];
+    [NSKeyedUnarchiver(CATSecureCoding) cat_unarchiveObjectOfClass:a2 withData:self];
   }
 
   v8 = [MEMORY[0x277CBEB98] setWithObject:a3];
-  v9 = [a1 cat_unarchiveObjectOfClasses:v8 withData:v7];
+  v9 = [self cat_unarchiveObjectOfClasses:v8 withData:v7];
 
   return v9;
 }
@@ -26,11 +26,11 @@
   v9 = a4;
   if (!a3)
   {
-    [NSKeyedUnarchiver(CATSecureCoding) cat_unarchiveObjectOfClass:a2 withData:a1 error:?];
+    [NSKeyedUnarchiver(CATSecureCoding) cat_unarchiveObjectOfClass:a2 withData:self error:?];
   }
 
   v10 = [MEMORY[0x277CBEB98] setWithObject:a3];
-  v11 = [a1 cat_unarchiveObjectOfClasses:v10 withData:v9 error:a5];
+  v11 = [self cat_unarchiveObjectOfClasses:v10 withData:v9 error:a5];
 
   return v11;
 }
@@ -45,14 +45,14 @@
     if (v10)
     {
 LABEL_3:
-      v12 = [a1 unarchivedObjectOfClasses:v9 fromData:v11 error:a5];
+      v12 = [self unarchivedObjectOfClasses:v9 fromData:v11 error:a5];
       goto LABEL_6;
     }
   }
 
   else
   {
-    [NSKeyedUnarchiver(CATSecureCoding) cat_unarchiveObjectOfClasses:a2 withData:a1 error:?];
+    [NSKeyedUnarchiver(CATSecureCoding) cat_unarchiveObjectOfClasses:a2 withData:self error:?];
     if (v11)
     {
       goto LABEL_3;
@@ -70,7 +70,7 @@ LABEL_6:
   if (a3)
   {
     v6 = a3;
-    v7 = [[a1 alloc] initForReadingFromData:v6 error:a4];
+    v7 = [[self alloc] initForReadingFromData:v6 error:a4];
 
     v8 = [v7 decodePropertyListForKey:*MEMORY[0x277CCA308]];
   }

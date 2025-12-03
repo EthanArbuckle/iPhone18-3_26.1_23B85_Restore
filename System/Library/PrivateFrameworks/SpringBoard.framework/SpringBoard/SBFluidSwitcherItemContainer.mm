@@ -1,43 +1,43 @@
 @interface SBFluidSwitcherItemContainer
-+ (double)preferredRestingVisibleMarginForBounds:(CGRect)a3;
-- (BOOL)_scrollViewShouldPanGestureTryToBegin:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)appSwitcherPageView:(id)a3 shouldBeginPointerInteractionAtLocation:(CGPoint)a4 window:(id)a5;
++ (double)preferredRestingVisibleMarginForBounds:(CGRect)bounds;
+- (BOOL)_scrollViewShouldPanGestureTryToBegin:(id)begin;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)appSwitcherPageView:(id)view shouldBeginPointerInteractionAtLocation:(CGPoint)location window:(id)window;
 - (BOOL)contentViewHasSceneOverlay;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isDeceleratingTowardsKillZone;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)positionAnimationsBeginFromModelState;
 - (BOOL)transformAnimationsAreLegacyCounterRotations;
-- (CGPoint)_CGPointFromScalarBasedOnKillAxis:(double)a3;
+- (CGPoint)_CGPointFromScalarBasedOnKillAxis:(double)axis;
 - (CGPoint)_contentOffsetAtRest;
-- (CGPoint)_contentOffsetForKillingProgress:(double)a3;
+- (CGPoint)_contentOffsetForKillingProgress:(double)progress;
 - (CGPoint)meshWarpCollapsedTargetPosition;
 - (CGPoint)meshWarpExpandedSourcePosition;
 - (CGPoint)pageViewAnchorPoint;
 - (CGPoint)pageViewOffset;
 - (CGRect)_frameForPageView;
-- (CGRect)_frameForPageViewWithFullPresentedSize:(CGSize)a3;
+- (CGRect)_frameForPageViewWithFullPresentedSize:(CGSize)size;
 - (CGRect)_frameForScrollView;
-- (CGRect)_frameForScrollViewWithFullPresentedSize:(CGSize)a3;
+- (CGRect)_frameForScrollViewWithFullPresentedSize:(CGSize)size;
 - (CGRect)effectivePageViewPresentationFrame;
-- (CGSize)_CGSizeFromLengthBasedOnKillAxis:(double)a3;
+- (CGSize)_CGSizeFromLengthBasedOnKillAxis:(double)axis;
 - (CGSize)_contentSizeForScrollView;
 - (CGSize)sizeForContainingSpace;
 - (NSString)description;
 - (SBDragPreviewShadowParameters)initialDiffuseShadowParameters;
 - (SBDragPreviewShadowParameters)initialRimShadowParameters;
-- (SBFluidSwitcherItemContainer)initWithCoder:(id)a3;
-- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)a3;
-- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)a3 appLayout:(id)a4 delegate:(id)a5 active:(BOOL)a6 windowScene:(id)a7;
+- (SBFluidSwitcherItemContainer)initWithCoder:(id)coder;
+- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)frame;
+- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)frame appLayout:(id)layout delegate:(id)delegate active:(BOOL)active windowScene:(id)scene;
 - (SBFluidSwitcherItemContainerDelegate)delegate;
 - (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributes;
 - (UIRectCornerRadii)contentCornerRadii;
-- (double)_CGPointXOrYBasedOnKillAxis:(CGPoint)a3;
-- (double)_CGSizeWidthOrHeightBasedOnKillAxis:(CGSize)a3;
+- (double)_CGPointXOrYBasedOnKillAxis:(CGPoint)axis;
+- (double)_CGSizeWidthOrHeightBasedOnKillAxis:(CGSize)axis;
 - (double)_inverseScaleTransformFactor;
-- (double)_killingProgressForContentOffset:(CGPoint)a3;
+- (double)_killingProgressForContentOffset:(CGPoint)offset;
 - (double)_scaleForHighlightFromCursorHover;
 - (double)_scaleForHighlightFromDirectTouch;
 - (double)currentStatusBarHeight;
@@ -45,80 +45,80 @@
 - (double)killingProgress;
 - (id)_createScrollView;
 - (id)_springLoadingEffectTargetView;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
 - (id)initialCornerRadiusConfiguration;
 - (id)initialDiffuseShadowFilters;
 - (id)initialRimShadowFilters;
 - (id)layer;
 - (void)_addPageView;
 - (void)_ensureSubviewOrder;
-- (void)_handleHoverGesture:(id)a3;
-- (void)_handlePageViewTap:(id)a3;
-- (void)_handleSelectionHighlightGesture:(id)a3;
+- (void)_handleHoverGesture:(id)gesture;
+- (void)_handlePageViewTap:(id)tap;
+- (void)_handleSelectionHighlightGesture:(id)gesture;
 - (void)_notifyDelegateScrollViewDidChange;
 - (void)_resetKillProgressScrollState;
-- (void)_returnKeyPressed:(id)a3;
-- (void)_setWantsOverlayPortalView:(BOOL)a3;
+- (void)_returnKeyPressed:(id)pressed;
+- (void)_setWantsOverlayPortalView:(BOOL)view;
 - (void)_updateAccessibilityIdentifier;
-- (void)_updateFooterAnimated:(BOOL)a3;
+- (void)_updateFooterAnimated:(BOOL)animated;
 - (void)_updateFooterVisibility;
-- (void)_updateForPointerHoveringOverEdge:(unint64_t)a3;
+- (void)_updateForPointerHoveringOverEdge:(unint64_t)edge;
 - (void)_updateKillScrollViewEnabled;
 - (void)_updatePageViewContentClippingFrame;
 - (void)_updatePageViewContentViewClipping;
 - (void)_updateShadowVisibility;
 - (void)_updateTransformForCurrentHighlight;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)genieEffectViewDidInvalidate:(id)a3;
-- (void)gestureRecognizerTransitionedToFailed:(id)a3;
-- (void)itemContainerFooterView:(id)a3 didSelectTitleItem:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)genieEffectViewDidInvalidate:(id)invalidate;
+- (void)gestureRecognizerTransitionedToFailed:(id)failed;
+- (void)itemContainerFooterView:(id)view didSelectTitleItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setActive:(BOOL)a3;
-- (void)setAppLayout:(id)a3;
-- (void)setBlurred:(BOOL)a3 duration:(double)a4 blurDelay:(double)a5 iconViewScale:(double)a6 began:(id)a7 completion:(id)a8;
-- (void)setBlurthoughView:(id)a3;
-- (void)setBlurthroughPortalView:(id)a3;
-- (void)setClipsToUnobscuredMargin:(BOOL)a3;
-- (void)setContentCornerRadii:(UIRectCornerRadii)a3;
-- (void)setContentOverlay:(id)a3 animated:(BOOL)a4;
-- (void)setContentPageViewScale:(double)a3;
-- (void)setDraggable:(BOOL)a3;
-- (void)setDragging:(BOOL)a3;
-- (void)setDrawsFooter:(BOOL)a3;
-- (void)setFocusable:(BOOL)a3;
-- (void)setFooterStyle:(unint64_t)a3;
-- (void)setHighlightedFromCursorHover:(BOOL)a3;
-- (void)setHighlightedFromDirectTouch:(BOOL)a3;
-- (void)setIconOpacity:(double)a3;
-- (void)setKillAxis:(unint64_t)a3;
-- (void)setKillable:(BOOL)a3;
-- (void)setLifted:(BOOL)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setMeshTransform:(id)a3;
-- (void)setMinimumTranslationForKillingContainer:(double)a3;
-- (void)setOverlayPortalView:(id)a3;
-- (void)setPageViewAnchorPoint:(CGPoint)a3;
-- (void)setPageViewOffset:(CGPoint)a3;
-- (void)setPointerInteractionEnabled:(BOOL)a3;
-- (void)setPointerInteractionHitTestPadding:(double)a3;
-- (void)setPositionAnimationsBeginFromModelState:(BOOL)a3;
-- (void)setPreferredPointerLockStatusSuppressed:(BOOL)a3;
-- (void)setRubberbandable:(BOOL)a3;
-- (void)setShouldScaleOverlayToFillBounds:(BOOL)a3;
-- (void)setTitleAndIconOpacity:(double)a3;
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4;
-- (void)setTitleOpacity:(double)a3;
-- (void)setTransformAnimationsAreLegacyCounterRotations:(BOOL)a3;
-- (void)setUnobscuredMargin:(double)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setActive:(BOOL)active;
+- (void)setAppLayout:(id)layout;
+- (void)setBlurred:(BOOL)blurred duration:(double)duration blurDelay:(double)delay iconViewScale:(double)scale began:(id)began completion:(id)completion;
+- (void)setBlurthoughView:(id)view;
+- (void)setBlurthroughPortalView:(id)view;
+- (void)setClipsToUnobscuredMargin:(BOOL)margin;
+- (void)setContentCornerRadii:(UIRectCornerRadii)radii;
+- (void)setContentOverlay:(id)overlay animated:(BOOL)animated;
+- (void)setContentPageViewScale:(double)scale;
+- (void)setDraggable:(BOOL)draggable;
+- (void)setDragging:(BOOL)dragging;
+- (void)setDrawsFooter:(BOOL)footer;
+- (void)setFocusable:(BOOL)focusable;
+- (void)setFooterStyle:(unint64_t)style;
+- (void)setHighlightedFromCursorHover:(BOOL)hover;
+- (void)setHighlightedFromDirectTouch:(BOOL)touch;
+- (void)setIconOpacity:(double)opacity;
+- (void)setKillAxis:(unint64_t)axis;
+- (void)setKillable:(BOOL)killable;
+- (void)setLifted:(BOOL)lifted;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setMeshTransform:(id)transform;
+- (void)setMinimumTranslationForKillingContainer:(double)container;
+- (void)setOverlayPortalView:(id)view;
+- (void)setPageViewAnchorPoint:(CGPoint)point;
+- (void)setPageViewOffset:(CGPoint)offset;
+- (void)setPointerInteractionEnabled:(BOOL)enabled;
+- (void)setPointerInteractionHitTestPadding:(double)padding;
+- (void)setPositionAnimationsBeginFromModelState:(BOOL)state;
+- (void)setPreferredPointerLockStatusSuppressed:(BOOL)suppressed;
+- (void)setRubberbandable:(BOOL)rubberbandable;
+- (void)setShouldScaleOverlayToFillBounds:(BOOL)bounds;
+- (void)setTitleAndIconOpacity:(double)opacity;
+- (void)setTitleItems:(id)items animated:(BOOL)animated;
+- (void)setTitleOpacity:(double)opacity;
+- (void)setTransformAnimationsAreLegacyCounterRotations:(BOOL)rotations;
+- (void)setUnobscuredMargin:(double)margin;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation SBFluidSwitcherItemContainer
@@ -161,8 +161,8 @@
 
 - (void)_updateShadowVisibility
 {
-  v3 = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
-  [v3 setHidden:self->_dragging];
+  _shadowView = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
+  [_shadowView setHidden:self->_dragging];
 }
 
 - (void)_updateAccessibilityIdentifier
@@ -172,9 +172,9 @@
   {
     v8 = [(SBAppLayout *)appLayout itemForLayoutRole:1];
     v4 = MEMORY[0x277CCACA8];
-    v5 = [v8 bundleIdentifier];
-    v6 = [v8 uniqueIdentifier];
-    v7 = [v4 stringWithFormat:@"card:%@:%@", v5, v6];
+    bundleIdentifier = [v8 bundleIdentifier];
+    uniqueIdentifier = [v8 uniqueIdentifier];
+    v7 = [v4 stringWithFormat:@"card:%@:%@", bundleIdentifier, uniqueIdentifier];
     [(SBFluidSwitcherItemContainer *)self setAccessibilityIdentifier:v7];
   }
 
@@ -189,9 +189,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBFluidSwitcherItemContainer;
-  v2 = [(SBFluidSwitcherItemContainer *)&v4 layer];
+  layer = [(SBFluidSwitcherItemContainer *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 - (void)layoutSubviews
@@ -199,14 +199,14 @@
   v50.receiver = self;
   v50.super_class = SBFluidSwitcherItemContainer;
   [(SBFTouchPassThroughClippingView *)&v50 layoutSubviews];
-  v3 = [(SBFluidSwitcherItemContainer *)self delegate];
+  delegate = [(SBFluidSwitcherItemContainer *)self delegate];
   [(SBFluidSwitcherItemContainer *)self bounds];
   v5 = v4;
   v7 = v6;
   v46 = v9;
   v47 = v8;
   [(SBSwitcherGenieEffectView *)self->_genieEffectView sb_setBoundsAndPositionFromFrame:?];
-  [v3 frameForPageViewOfContainer:self fullyPresented:1];
+  [delegate frameForPageViewOfContainer:self fullyPresented:1];
   v11 = v10;
   v13 = v12;
   [(SBFluidSwitcherItemContainer *)self _frameForScrollViewWithFullPresentedSize:v10, v12];
@@ -264,7 +264,7 @@
   [(SBAppSwitcherPageView *)pageView setBounds:?];
   UIRectGetCenter();
   [(SBAppSwitcherPageView *)self->_pageView setCenter:v36 + v32 * (self->_pageViewAnchorPoint.x + -0.5) + self->_pageViewOffset.x, v37 + v34 * (self->_pageViewAnchorPoint.y + -0.5) + self->_pageViewOffset.y];
-  -[SBAppSwitcherPageView setOrientation:](self->_pageView, "setOrientation:", [v3 switcherInterfaceOrientation]);
+  -[SBAppSwitcherPageView setOrientation:](self->_pageView, "setOrientation:", [delegate switcherInterfaceOrientation]);
   [(SBAppSwitcherPageView *)self->_pageView setOverlayViewSize:v11, v13];
   [(SBAppSwitcherPageView *)self->_pageView setFullyPresentedSize:v11, v13];
   blurView = self->_blurView;
@@ -299,8 +299,8 @@
     v54.size.width = v47;
     v54.size.height = v46;
     CGRectGetMaxY(v54);
-    v41 = [(SBFluidSwitcherItemContainer *)self traitCollection];
-    [v41 displayScale];
+    traitCollection = [(SBFluidSwitcherItemContainer *)self traitCollection];
+    [traitCollection displayScale];
 
     UIRectIntegralWithScale();
     [(SBFluidSwitcherItemContainerFooterView *)self->_iconAndLabelFooter sb_setBoundsAndPositionFromFrame:?];
@@ -470,16 +470,16 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setPagingEnabled:1];
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setShowsHorizontalScrollIndicator:0];
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setShowsVerticalScrollIndicator:0];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setBackgroundColor:clearColor];
 
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setDelegate:self];
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setClipsToBounds:0];
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 _setAutoScrollEnabled:0];
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setTracksImmediatelyWhileDecelerating:0];
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 _setSupportsPointerDragScrolling:1];
-  v9 = [(SBFluidSwitcherTouchPassThroughScrollView *)v7 panGestureRecognizer];
-  [v9 setAllowedScrollTypesMask:2];
+  panGestureRecognizer = [(SBFluidSwitcherTouchPassThroughScrollView *)v7 panGestureRecognizer];
+  [panGestureRecognizer setAllowedScrollTypesMask:2];
 
   [(SBFluidSwitcherTouchPassThroughScrollView *)v7 setAlwaysBounceVertical:1];
 
@@ -488,8 +488,8 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
 
 - (CGRect)_frameForScrollView
 {
-  v3 = [(SBFluidSwitcherItemContainer *)self delegate];
-  [v3 frameForPageViewOfContainer:self fullyPresented:1];
+  delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+  [delegate frameForPageViewOfContainer:self fullyPresented:1];
   [(SBFluidSwitcherItemContainer *)self _frameForScrollViewWithFullPresentedSize:v4, v5];
   v7 = v6;
   v9 = v8;
@@ -509,8 +509,8 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
 
 - (void)_addPageView
 {
-  v18 = [(SBFluidSwitcherItemContainer *)self delegate];
-  [v18 frameForPageViewOfContainer:self fullyPresented:1];
+  delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+  [delegate frameForPageViewOfContainer:self fullyPresented:1];
   SBRectWithSize();
   v7 = [[SBAppSwitcherPageView alloc] initWithFrame:v3, v4, v5, v6];
   pageView = self->_pageView;
@@ -523,8 +523,8 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   [(SBAppSwitcherPageView *)self->_pageView setDelegate:self];
   [(SBAppSwitcherPageView *)self->_pageView setMaskedCorners:self->_maskedCorners];
   [(SBAppSwitcherPageView *)self->_pageView setPointerInteractionHitTestPadding:self->_pointerInteractionHitTestPadding];
-  v9 = [(SBAppSwitcherPageView *)self->_pageView layer];
-  [v9 setAnchorPoint:{self->_pageViewAnchorPoint.x, self->_pageViewAnchorPoint.y}];
+  layer = [(SBAppSwitcherPageView *)self->_pageView layer];
+  [layer setAnchorPoint:{self->_pageViewAnchorPoint.x, self->_pageViewAnchorPoint.y}];
 
   [(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView addSubview:self->_pageView];
   v10 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__handleSelectionHighlightGesture_];
@@ -565,27 +565,27 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
 - (void)_updateKillScrollViewEnabled
 {
   killScrollView = self->_killScrollView;
-  v4 = [(SBFluidSwitcherItemContainer *)self isKillable]|| [(SBFluidSwitcherItemContainer *)self isRubberbandable];
+  isRubberbandable = [(SBFluidSwitcherItemContainer *)self isKillable]|| [(SBFluidSwitcherItemContainer *)self isRubberbandable];
 
-  [(SBFluidSwitcherTouchPassThroughScrollView *)killScrollView setScrollEnabled:v4];
+  [(SBFluidSwitcherTouchPassThroughScrollView *)killScrollView setScrollEnabled:isRubberbandable];
 }
 
-- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)a3
+- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherItemContainer.m" lineNumber:210 description:@"Override initWithFrame:delegate: instead"];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherItemContainer.m" lineNumber:210 description:@"Override initWithFrame:delegate: instead"];
 
   return [(SBFluidSwitcherItemContainer *)self initWithFrame:0 appLayout:0 delegate:0 active:0 windowScene:x, y, width, height];
 }
 
-- (SBFluidSwitcherItemContainer)initWithCoder:(id)a3
+- (SBFluidSwitcherItemContainer)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherItemContainer.m" lineNumber:216 description:@"Override initWithFrame:delegate: instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherItemContainer.m" lineNumber:216 description:@"Override initWithFrame:delegate: instead"];
 
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
@@ -595,28 +595,28 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   return [(SBFluidSwitcherItemContainer *)self initWithFrame:0 appLayout:0 delegate:0 active:0 windowScene:v6, v7, v8, v9];
 }
 
-- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)a3 appLayout:(id)a4 delegate:(id)a5 active:(BOOL)a6 windowScene:(id)a7
+- (SBFluidSwitcherItemContainer)initWithFrame:(CGRect)frame appLayout:(id)layout delegate:(id)delegate active:(BOOL)active windowScene:(id)scene
 {
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  if (!v18)
+  activeCopy = active;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  delegateCopy = delegate;
+  sceneCopy = scene;
+  if (!delegateCopy)
   {
     [SBFluidSwitcherItemContainer initWithFrame:a2 appLayout:self delegate:? active:? windowScene:?];
   }
 
   v44.receiver = self;
   v44.super_class = SBFluidSwitcherItemContainer;
-  v20 = [(SBFTouchPassThroughClippingView *)&v44 initWithFrame:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(SBFTouchPassThroughClippingView *)&v44 initWithFrame:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    objc_storeStrong(&v20->_appLayout, a4);
+    objc_storeStrong(&height->_appLayout, layout);
     v22 = +[SBAppSwitcherDomain rootSettings];
     settings = v21->_settings;
     v21->_settings = v22;
@@ -633,7 +633,7 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
     v45.size.width = width;
     v45.size.height = height;
     v21->_unobscuredMargin = CGRectGetWidth(v45);
-    objc_storeWeak(&v21->_delegate, v18);
+    objc_storeWeak(&v21->_delegate, delegateCopy);
     v26 = objc_alloc(MEMORY[0x277D65F80]);
     v27 = [v26 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     contentContainerView = v21->_contentContainerView;
@@ -648,19 +648,19 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
     [(SBSwitcherGenieEffectView *)v21->_genieEffectView setPortaledContentShouldMatchSource:0];
     [(SBFTouchPassThroughClippingView *)v21 addSubview:v21->_genieEffectView];
     [(SBSwitcherGenieEffectView *)v21->_genieEffectView setChildContentView:v21->_contentContainerView];
-    v32 = [(SBFluidSwitcherItemContainer *)v21 _createScrollView];
+    _createScrollView = [(SBFluidSwitcherItemContainer *)v21 _createScrollView];
     killScrollView = v21->_killScrollView;
-    v21->_killScrollView = v32;
+    v21->_killScrollView = _createScrollView;
 
     [(SBFluidSwitcherTouchPassThroughScrollView *)v21->_killScrollView velocityScaleFactor];
     v21->_killScrollViewInitialVelocityScaleFactor = v34;
     [(UIView *)v21->_contentContainerView addSubview:v21->_killScrollView];
     [(SBFluidSwitcherItemContainer *)v21 _addPageView];
-    [(SBFluidSwitcherItemContainer *)v21 setActive:v8];
-    v35 = [(SBFluidSwitcherItemContainer *)v21 layer];
-    v36 = [(SBFluidSwitcherItemContainer *)v21 traitCollection];
-    [v36 displayScale];
-    [v35 setRasterizationScale:?];
+    [(SBFluidSwitcherItemContainer *)v21 setActive:activeCopy];
+    layer = [(SBFluidSwitcherItemContainer *)v21 layer];
+    traitCollection = [(SBFluidSwitcherItemContainer *)v21 traitCollection];
+    [traitCollection displayScale];
+    [layer setRasterizationScale:?];
 
     [(SBFluidSwitcherItemContainer *)v21 _setSafeAreaInsetsFrozen:1];
     v37 = [objc_alloc(MEMORY[0x277D755A0]) initWithTarget:v21 action:sel__handleHoverGesture_];
@@ -676,7 +676,7 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
     [(SBFluidSwitcherItemContainer *)v21 _updateAccessibilityIdentifier];
     [(SBFluidSwitcherItemContainer *)v21 setPageViewAnchorPoint:0.5, 0.5];
     [(SBFluidSwitcherItemContainer *)v21 _updateKillScrollViewEnabled];
-    v41 = [[SBAffordancePresenceController alloc] initWithDelegate:v21 windowScene:v19];
+    v41 = [[SBAffordancePresenceController alloc] initWithDelegate:v21 windowScene:sceneCopy];
     affordancePresenceController = v21->_affordancePresenceController;
     v21->_affordancePresenceController = v41;
   }
@@ -686,14 +686,14 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
 
 - (void)prepareForReuse
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBFluidSwitcherItemContainer.m" lineNumber:328 description:@"Can't recycle active view"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBFluidSwitcherItemContainer.m" lineNumber:328 description:@"Can't recycle active view"];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -702,7 +702,7 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   {
     v7.receiver = self;
     v7.super_class = SBFluidSwitcherItemContainer;
-    v5 = [(SBFluidSwitcherItemContainer *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBFluidSwitcherItemContainer *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -713,18 +713,18 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   v7.receiver = self;
   v7.super_class = SBFluidSwitcherItemContainer;
   v3 = [(SBFluidSwitcherItemContainer *)&v7 description];
-  v4 = [(SBAppLayout *)self->_appLayout succinctDescription];
-  v5 = [v3 stringByAppendingFormat:@" appLayout: %@", v4];
+  succinctDescription = [(SBAppLayout *)self->_appLayout succinctDescription];
+  v5 = [v3 stringByAppendingFormat:@" appLayout: %@", succinctDescription];
 
   return v5;
 }
 
-+ (double)preferredRestingVisibleMarginForBounds:(CGRect)a3
++ (double)preferredRestingVisibleMarginForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   +[SBFluidSwitcherItemContainerHeaderView distanceFromBoundingLeadingEdgeToIconTrailingEdge];
   v9.origin.x = x;
   v9.origin.y = y;
@@ -747,46 +747,46 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setAppLayout:(id)a3
+- (void)setAppLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_appLayout != v5)
+  layoutCopy = layout;
+  if (self->_appLayout != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_appLayout, a3);
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_appLayout, layout);
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
     [(SBFluidSwitcherItemContainer *)self _updateAccessibilityIdentifier];
-    v5 = v6;
+    layoutCopy = v6;
   }
 }
 
-- (void)setMeshTransform:(id)a3
+- (void)setMeshTransform:(id)transform
 {
-  if (a3 | self->_meshTransform)
+  if (transform | self->_meshTransform)
   {
-    v4 = [a3 copy];
+    v4 = [transform copy];
     meshTransform = self->_meshTransform;
     self->_meshTransform = v4;
 
-    v6 = [(SBFluidSwitcherItemContainer *)self layer];
-    [v6 setValue:self->_meshTransform forKey:@"meshTransform"];
+    layer = [(SBFluidSwitcherItemContainer *)self layer];
+    [layer setValue:self->_meshTransform forKey:@"meshTransform"];
   }
 }
 
-- (void)setContentCornerRadii:(UIRectCornerRadii)a3
+- (void)setContentCornerRadii:(UIRectCornerRadii)radii
 {
   v13 = *MEMORY[0x277D85DE8];
   p_contentCornerRadii = &self->_contentCornerRadii;
-  v4.f64[0] = a3.topLeft;
-  v4.f64[1] = a3.bottomLeft;
-  v5.f64[0] = a3.bottomRight;
-  v5.f64[1] = a3.topRight;
+  v4.f64[0] = radii.topLeft;
+  v4.f64[1] = radii.bottomLeft;
+  v5.f64[0] = radii.bottomRight;
+  v5.f64[1] = radii.topRight;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *&self->_contentCornerRadii.topLeft), vceqq_f64(v5, *&self->_contentCornerRadii.bottomRight)))) & 1) == 0)
   {
-    p_contentCornerRadii->topLeft = a3.topLeft;
-    self->_contentCornerRadii.bottomLeft = a3.bottomLeft;
-    self->_contentCornerRadii.bottomRight = a3.bottomRight;
-    self->_contentCornerRadii.topRight = a3.topRight;
+    p_contentCornerRadii->topLeft = radii.topLeft;
+    self->_contentCornerRadii.bottomLeft = radii.bottomLeft;
+    self->_contentCornerRadii.bottomRight = radii.bottomRight;
+    self->_contentCornerRadii.topRight = radii.topRight;
     [(SBAppSwitcherPageView *)self->_pageView setCornerRadii:?];
     topLeft = p_contentCornerRadii->topLeft;
     topRight = p_contentCornerRadii->topRight;
@@ -808,83 +808,83 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  if (self->_maskedCorners != a3)
+  if (self->_maskedCorners != corners)
   {
-    self->_maskedCorners = a3;
+    self->_maskedCorners = corners;
     [(SBAppSwitcherPageView *)self->_pageView setMaskedCorners:?];
-    v4 = [(UIView *)self->_blurthroughContainerView layer];
-    [v4 setMaskedCorners:self->_maskedCorners];
+    layer = [(UIView *)self->_blurthroughContainerView layer];
+    [layer setMaskedCorners:self->_maskedCorners];
   }
 }
 
-- (void)setDrawsFooter:(BOOL)a3
+- (void)setDrawsFooter:(BOOL)footer
 {
-  if (self->_drawsFooter != a3)
+  if (self->_drawsFooter != footer)
   {
-    self->_drawsFooter = a3;
+    self->_drawsFooter = footer;
     [(SBFluidSwitcherItemContainer *)self _updateFooterVisibility];
   }
 }
 
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4
+- (void)setTitleItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemsCopy = items;
   titleItems = self->_titleItems;
-  if (titleItems != v6)
+  if (titleItems != itemsCopy)
   {
-    v11 = v6;
-    v8 = [(NSArray *)titleItems isEqual:v6];
-    v6 = v11;
+    v11 = itemsCopy;
+    v8 = [(NSArray *)titleItems isEqual:itemsCopy];
+    itemsCopy = v11;
     if ((v8 & 1) == 0)
     {
       v9 = [(NSArray *)v11 copy];
       v10 = self->_titleItems;
       self->_titleItems = v9;
 
-      [(SBFluidSwitcherItemContainer *)self _updateFooterAnimated:v4];
-      v6 = v11;
+      [(SBFluidSwitcherItemContainer *)self _updateFooterAnimated:animatedCopy];
+      itemsCopy = v11;
     }
   }
 }
 
-- (void)setTitleAndIconOpacity:(double)a3
+- (void)setTitleAndIconOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_titleAndIconOpacity = a3;
+    self->_titleAndIconOpacity = opacity;
 
     [(SBFluidSwitcherItemContainer *)self _updateFooterAnimated:1];
   }
 }
 
-- (void)setTitleOpacity:(double)a3
+- (void)setTitleOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_titleOpacity = a3;
+    self->_titleOpacity = opacity;
 
     [(SBFluidSwitcherItemContainer *)self _updateFooterAnimated:1];
   }
 }
 
-- (void)setIconOpacity:(double)a3
+- (void)setIconOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_iconOpacity = a3;
+    self->_iconOpacity = opacity;
 
     [(SBFluidSwitcherItemContainer *)self _updateFooterAnimated:1];
   }
 }
 
-- (void)setContentPageViewScale:(double)a3
+- (void)setContentPageViewScale:(double)scale
 {
-  if (self->_contentPageViewScale != a3)
+  if (self->_contentPageViewScale != scale)
   {
-    self->_contentPageViewScale = a3;
+    self->_contentPageViewScale = scale;
     [(SBAppSwitcherPageView *)self->_pageView setSwitcherCardScale:?];
     [(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView setVelocityScaleFactor:self->_killScrollViewInitialVelocityScaleFactor * self->_contentPageViewScale];
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
@@ -893,11 +893,11 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   }
 }
 
-- (void)setPreferredPointerLockStatusSuppressed:(BOOL)a3
+- (void)setPreferredPointerLockStatusSuppressed:(BOOL)suppressed
 {
-  if (self->_preferredPointerLockStatusSuppressed != a3)
+  if (self->_preferredPointerLockStatusSuppressed != suppressed)
   {
-    self->_preferredPointerLockStatusSuppressed = a3;
+    self->_preferredPointerLockStatusSuppressed = suppressed;
     [(SBFluidSwitcherItemContainer *)self setContentViewBlocksTouches:[(SBFluidSwitcherItemContainer *)self contentViewBlocksTouches]];
     selectable = self->_selectable;
 
@@ -905,39 +905,39 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
   }
 }
 
-- (void)setContentOverlay:(id)a3 animated:(BOOL)a4
+- (void)setContentOverlay:(id)overlay animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3 != 0;
-  v7 = a3;
+  animatedCopy = animated;
+  v6 = overlay != 0;
+  overlayCopy = overlay;
   [(SBFTouchPassThroughClippingView *)self setHitTestsSubviewsOutsideBounds:v6];
   [(SBHitTestExtendedView *)self->_pageView setHitTestsSubviewsOutsideBounds:[(SBFTouchPassThroughClippingView *)self hitTestsSubviewsOutsideBounds]];
-  [(SBAppSwitcherPageView *)self->_pageView setOverlay:v7 animated:v4];
+  [(SBAppSwitcherPageView *)self->_pageView setOverlay:overlayCopy animated:animatedCopy];
 }
 
-- (void)setBlurthroughPortalView:(id)a3
+- (void)setBlurthroughPortalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   blurthroughPortalView = self->_blurthroughPortalView;
-  if (blurthroughPortalView != v5)
+  if (blurthroughPortalView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)blurthroughPortalView removeFromSuperview];
-    objc_storeStrong(&self->_blurthroughPortalView, a3);
+    objc_storeStrong(&self->_blurthroughPortalView, view);
     [(UIView *)self->_contentContainerView addSubview:self->_blurthroughPortalView];
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setBlurthoughView:(id)a3
+- (void)setBlurthoughView:(id)view
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   blurthroughView = self->_blurthroughView;
-  if (blurthroughView != v5)
+  if (blurthroughView != viewCopy)
   {
-    v17 = v5;
+    v17 = viewCopy;
     if (!self->_blurthroughContainerView)
     {
       v7 = objc_alloc(MEMORY[0x277D75D18]);
@@ -946,8 +946,8 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
       self->_blurthroughContainerView = v8;
 
       v10 = self->_blurthroughContainerView;
-      v11 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v10 setBackgroundColor:v11];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v10 setBackgroundColor:clearColor];
 
       [(UIView *)self->_blurthroughContainerView setUserInteractionEnabled:0];
       [(UIView *)self->_blurthroughContainerView setClipsToBounds:1];
@@ -963,12 +963,12 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
       }
 
       [(UIView *)self->_blurthroughContainerView _setContinuousCornerRadius:topLeft];
-      v14 = [(UIView *)self->_blurthroughContainerView layer];
-      [v14 setMaskedCorners:{-[SBFluidSwitcherItemContainer maskedCorners](self, "maskedCorners")}];
+      layer = [(UIView *)self->_blurthroughContainerView layer];
+      [layer setMaskedCorners:{-[SBFluidSwitcherItemContainer maskedCorners](self, "maskedCorners")}];
 
       [(UIView *)self->_contentContainerView addSubview:self->_blurthroughContainerView];
       blurthroughView = self->_blurthroughView;
-      v5 = v17;
+      viewCopy = v17;
     }
 
     if (blurthroughView)
@@ -977,12 +977,12 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
       v15 = self->_blurthroughView;
       self->_blurthroughView = 0;
 
-      v5 = v17;
+      viewCopy = v17;
     }
 
-    if (v5)
+    if (viewCopy)
     {
-      objc_storeStrong(&self->_blurthroughView, a3);
+      objc_storeStrong(&self->_blurthroughView, view);
       [(UIView *)self->_blurthroughContainerView addSubview:self->_blurthroughView];
     }
 
@@ -994,57 +994,57 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
     }
 
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
-    v5 = v18;
+    viewCopy = v18;
   }
 }
 
-- (void)setBlurred:(BOOL)a3 duration:(double)a4 blurDelay:(double)a5 iconViewScale:(double)a6 began:(id)a7 completion:(id)a8
+- (void)setBlurred:(BOOL)blurred duration:(double)duration blurDelay:(double)delay iconViewScale:(double)scale began:(id)began completion:(id)completion
 {
-  v11 = a3;
+  blurredCopy = blurred;
   v45 = *MEMORY[0x277D85DE8];
-  v13 = a7;
-  v14 = a8;
-  if (self->_blurred != v11)
+  beganCopy = began;
+  completionCopy = completion;
+  if (self->_blurred != blurredCopy)
   {
-    self->_blurred = v11;
-    if (v13)
+    self->_blurred = blurredCopy;
+    if (beganCopy)
     {
-      v13[2](v13);
+      beganCopy[2](beganCopy);
     }
 
-    v15 = [MEMORY[0x277CF0D38] factoryWithDuration:a4];
+    v15 = [MEMORY[0x277CF0D38] factoryWithDuration:duration];
     if (self->_blurred)
     {
       if (!self->_blurView)
       {
-        v20 = [(SBAppLayout *)self->_appLayout allItems];
-        v21 = [v20 firstObject];
-        v22 = [v21 bundleIdentifier];
+        allItems = [(SBAppLayout *)self->_appLayout allItems];
+        firstObject = [allItems firstObject];
+        bundleIdentifier = [firstObject bundleIdentifier];
 
-        v23 = [(SBAppSwitcherPageView *)self->_pageView overlay];
-        v24 = v23;
-        if (v23)
+        overlay = [(SBAppSwitcherPageView *)self->_pageView overlay];
+        v24 = overlay;
+        if (overlay)
         {
-          v25 = v23;
+          view = overlay;
         }
 
         else
         {
-          v25 = [(SBAppSwitcherPageView *)self->_pageView view];
+          view = [(SBAppSwitcherPageView *)self->_pageView view];
         }
 
-        v26 = v25;
+        v26 = view;
 
         v27 = [SBApplicationBlurContentView alloc];
         [(SBAppSwitcherPageView *)self->_pageView frame];
-        v28 = [SBApplicationBlurContentView initWithFrame:v27 bundleIdentifier:"initWithFrame:bundleIdentifier:targetViewToBlur:initialIconScale:" targetViewToBlur:v22 initialIconScale:v26];
+        v28 = [SBApplicationBlurContentView initWithFrame:v27 bundleIdentifier:"initWithFrame:bundleIdentifier:targetViewToBlur:initialIconScale:" targetViewToBlur:bundleIdentifier initialIconScale:v26];
         blurView = self->_blurView;
         self->_blurView = v28;
 
-        [(SBApplicationBlurContentView *)self->_blurView setBlurDelay:a5];
+        [(SBApplicationBlurContentView *)self->_blurView setBlurDelay:delay];
         [(SBApplicationBlurContentView *)self->_blurView setClipsToBounds:1];
-        v30 = [(SBApplicationBlurContentView *)self->_blurView layer];
-        [v30 setAllowsGroupOpacity:1];
+        layer = [(SBApplicationBlurContentView *)self->_blurView layer];
+        [layer setAllowsGroupOpacity:1];
 
         [(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView addSubview:self->_blurView];
         topLeft = self->_contentCornerRadii.topLeft;
@@ -1066,7 +1066,7 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
         v40[2] = __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconViewScale_began_completion___block_invoke;
         v40[3] = &unk_2783A98A0;
         v40[4] = self;
-        v41 = v14;
+        v41 = completionCopy;
         [(SBApplicationBlurContentView *)v33 generateAndAnimateToBlurredSnapshotWithAnimationFactory:v15 completion:v40];
 
         goto LABEL_20;
@@ -1083,21 +1083,21 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
       v37[2] = __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconViewScale_began_completion___block_invoke_3;
       v37[3] = &unk_2783A9C98;
       v37[4] = self;
-      v38 = v14;
+      v38 = completionCopy;
       [v16 animateWithFactory:v15 options:4 actions:v39 completion:v37];
       v17 = v38;
     }
 
     else
     {
-      v18 = [(SBAppSwitcherPageView *)self->_pageView overlay];
-      [v18 setHidden:0];
+      overlay2 = [(SBAppSwitcherPageView *)self->_pageView overlay];
+      [overlay2 setHidden:0];
 
       if (!self->_blurView)
       {
-        if (v14)
+        if (completionCopy)
         {
-          v14[2](v14);
+          completionCopy[2](completionCopy);
         }
 
         goto LABEL_20;
@@ -1114,7 +1114,7 @@ void __46__SBFluidSwitcherItemContainer_layoutSubviews__block_invoke(uint64_t a1
       v34[2] = __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconViewScale_began_completion___block_invoke_5;
       v34[3] = &unk_2783A9C98;
       v34[4] = self;
-      v35 = v14;
+      v35 = completionCopy;
       [v19 animateWithFactory:v15 options:4 actions:v36 completion:v34];
       v17 = v35;
     }
@@ -1185,18 +1185,18 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
   return result;
 }
 
-- (void)setUnobscuredMargin:(double)a3
+- (void)setUnobscuredMargin:(double)margin
 {
-  if (self->_unobscuredMargin != a3)
+  if (self->_unobscuredMargin != margin)
   {
-    v5 = [(SBFluidSwitcherItemContainer *)self layer];
-    v6 = [v5 shouldRasterize];
+    layer = [(SBFluidSwitcherItemContainer *)self layer];
+    shouldRasterize = [layer shouldRasterize];
 
-    if (v6)
+    if (shouldRasterize)
     {
-      if (self->_unobscuredMargin < a3)
+      if (self->_unobscuredMargin < margin)
       {
-        v7 = a3 + a3;
+        v7 = margin + margin;
         [(SBFluidSwitcherItemContainer *)self bounds];
         Width = CGRectGetWidth(v10);
         if (v7 < Width)
@@ -1213,18 +1213,18 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
 
     else
     {
-      self->_unobscuredMargin = a3;
+      self->_unobscuredMargin = margin;
 
       [(SBFluidSwitcherItemContainer *)self _updatePageViewContentClippingFrame];
     }
   }
 }
 
-- (void)setClipsToUnobscuredMargin:(BOOL)a3
+- (void)setClipsToUnobscuredMargin:(BOOL)margin
 {
-  if (self->_clipsToUnobscuredMargin != a3)
+  if (self->_clipsToUnobscuredMargin != margin)
   {
-    self->_clipsToUnobscuredMargin = a3;
+    self->_clipsToUnobscuredMargin = margin;
     [(SBFluidSwitcherItemContainer *)self _updatePageViewContentViewClipping];
 
     [(SBFluidSwitcherItemContainer *)self _updatePageViewContentClippingFrame];
@@ -1238,11 +1238,11 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
   [(SBAppSwitcherPageView *)pageView setShouldClipContentView:v4];
 }
 
-- (void)setKillAxis:(unint64_t)a3
+- (void)setKillAxis:(unint64_t)axis
 {
-  if (self->_killAxis != a3)
+  if (self->_killAxis != axis)
   {
-    self->_killAxis = a3;
+    self->_killAxis = axis;
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
     [(SBFluidSwitcherItemContainer *)self layoutIfNeeded];
 
@@ -1250,22 +1250,22 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
   }
 }
 
-- (void)setRubberbandable:(BOOL)a3
+- (void)setRubberbandable:(BOOL)rubberbandable
 {
-  if (self->_rubberbandable != a3)
+  if (self->_rubberbandable != rubberbandable)
   {
-    self->_rubberbandable = a3;
+    self->_rubberbandable = rubberbandable;
     [(SBFluidSwitcherItemContainer *)self _updateKillScrollViewEnabled];
   }
 }
 
-- (void)setKillable:(BOOL)a3
+- (void)setKillable:(BOOL)killable
 {
-  if (self->_killable != a3)
+  if (self->_killable != killable)
   {
-    self->_killable = a3;
+    self->_killable = killable;
     [(SBFluidSwitcherItemContainer *)self _updateKillScrollViewEnabled];
-    if (a3)
+    if (killable)
     {
       [(SBSwitcherGenieEffectView *)self->_genieEffectView invalidate];
     }
@@ -1289,9 +1289,9 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
 
 - (double)effectivePageViewPresentationCornerRadius
 {
-  v2 = [(SBAppSwitcherPageView *)self->_pageView layer];
-  v3 = [v2 presentationLayer];
-  [v3 cornerRadius];
+  layer = [(SBAppSwitcherPageView *)self->_pageView layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer cornerRadius];
   v5 = v4;
 
   return v5;
@@ -1299,27 +1299,27 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
 
 - (CGRect)effectivePageViewPresentationFrame
 {
-  v3 = [(SBAppSwitcherPageView *)self->_pageView layer];
-  v4 = v3;
+  layer = [(SBAppSwitcherPageView *)self->_pageView layer];
+  v4 = layer;
   if (self->_hasPageViewBeenCommitted)
   {
-    v5 = [v3 presentationLayer];
+    presentationLayer = [layer presentationLayer];
   }
 
   else
   {
-    v5 = v3;
+    presentationLayer = layer;
   }
 
-  v6 = v5;
+  v6 = presentationLayer;
   hasPageViewBeenCommitted = self->_hasPageViewBeenCommitted;
-  v8 = [(SBFluidSwitcherItemContainer *)self layer];
-  v9 = v8;
+  layer2 = [(SBFluidSwitcherItemContainer *)self layer];
+  v9 = layer2;
   if (hasPageViewBeenCommitted)
   {
-    v10 = [v8 presentationLayer];
+    presentationLayer2 = [layer2 presentationLayer];
 
-    v9 = v10;
+    v9 = presentationLayer2;
   }
 
   [v6 bounds];
@@ -1340,10 +1340,10 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
   return result;
 }
 
-- (double)_killingProgressForContentOffset:(CGPoint)a3
+- (double)_killingProgressForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   minimumTranslationForKillingContainer = self->_minimumTranslationForKillingContainer;
   [(SBFluidSwitcherItemContainer *)self contentPageViewScale];
   v8 = v7;
@@ -1360,13 +1360,13 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
   return v10 / (minimumTranslationForKillingContainer / v8 + v12);
 }
 
-- (CGPoint)_contentOffsetForKillingProgress:(double)a3
+- (CGPoint)_contentOffsetForKillingProgress:(double)progress
 {
   minimumTranslationForKillingContainer = self->_minimumTranslationForKillingContainer;
   [(SBFluidSwitcherItemContainer *)self contentPageViewScale];
   v7 = minimumTranslationForKillingContainer / v6;
   [(SBFluidSwitcherItemContainer *)self _CGSizeWidthOrHeightBasedOnKillAxis:self->_sizeForContainingSpace.width, self->_sizeForContainingSpace.height];
-  v9 = (v7 + v8) * a3;
+  v9 = (v7 + v8) * progress;
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1 && self->_killAxis == 1)
   {
     [(SBFluidSwitcherItemContainer *)self _contentOffsetAtRest];
@@ -1379,50 +1379,50 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
   return result;
 }
 
-- (void)setFocusable:(BOOL)a3
+- (void)setFocusable:(BOOL)focusable
 {
-  if (self->_focusable != a3)
+  if (self->_focusable != focusable)
   {
     if (self->_focusable)
     {
       [(SBFluidSwitcherItemContainer *)self resignFirstResponder];
     }
 
-    self->_focusable = a3;
+    self->_focusable = focusable;
   }
 }
 
-- (void)setDraggable:(BOOL)a3
+- (void)setDraggable:(BOOL)draggable
 {
-  if (self->_draggable != a3)
+  if (self->_draggable != draggable)
   {
-    self->_draggable = a3;
+    self->_draggable = draggable;
   }
 }
 
 - (BOOL)contentViewHasSceneOverlay
 {
-  v2 = [(SBFluidSwitcherItemContainer *)self contentView];
+  contentView = [(SBFluidSwitcherItemContainer *)self contentView];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 hasSceneOverlayView];
+    hasSceneOverlayView = [contentView hasSceneOverlayView];
   }
 
   else
   {
-    v3 = 0;
+    hasSceneOverlayView = 0;
   }
 
-  return v3;
+  return hasSceneOverlayView;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
-    if (a3)
+    activeCopy = active;
+    self->_active = active;
+    if (active)
     {
       [(SBFluidSwitcherItemContainer *)self _resetKillProgressScrollState];
       [(SBFluidSwitcherItemContainer *)self _updateShadowVisibility];
@@ -1438,7 +1438,7 @@ uint64_t __93__SBFluidSwitcherItemContainer_setBlurred_duration_blurDelay_iconVi
       objc_destroyWeak(&location);
     }
 
-    [(SBAppSwitcherPageView *)self->_pageView setActive:v3, v6, v7, v8, v9];
+    [(SBAppSwitcherPageView *)self->_pageView setActive:activeCopy, v6, v7, v8, v9];
   }
 }
 
@@ -1451,13 +1451,13 @@ void __42__SBFluidSwitcherItemContainer_setActive___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    v4 = a3;
-    self->_visible = a3;
-    if (a3)
+    visibleCopy = visible;
+    self->_visible = visible;
+    if (visible)
     {
       [(SBFluidSwitcherItemContainer *)self _resetKillProgressScrollState];
       self->_sentKillRequest = 0;
@@ -1470,126 +1470,126 @@ void __42__SBFluidSwitcherItemContainer_setActive___block_invoke(uint64_t a1)
 
     pageView = self->_pageView;
 
-    [(SBAppSwitcherPageView *)pageView setVisible:v4];
+    [(SBAppSwitcherPageView *)pageView setVisible:visibleCopy];
   }
 }
 
-- (void)setPointerInteractionEnabled:(BOOL)a3
+- (void)setPointerInteractionEnabled:(BOOL)enabled
 {
-  if (self->_pointerInteractionEnabled != a3)
+  if (self->_pointerInteractionEnabled != enabled)
   {
-    self->_pointerInteractionEnabled = a3;
+    self->_pointerInteractionEnabled = enabled;
     [(SBFluidSwitcherItemContainer *)self _updateTransformForCurrentHighlight];
   }
 }
 
-- (void)setPointerInteractionHitTestPadding:(double)a3
+- (void)setPointerInteractionHitTestPadding:(double)padding
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_pointerInteractionHitTestPadding = a3;
+    self->_pointerInteractionHitTestPadding = padding;
     pageView = self->_pageView;
 
-    [(SBAppSwitcherPageView *)pageView setPointerInteractionHitTestPadding:a3];
+    [(SBAppSwitcherPageView *)pageView setPointerInteractionHitTestPadding:padding];
   }
 }
 
-- (void)setMinimumTranslationForKillingContainer:(double)a3
+- (void)setMinimumTranslationForKillingContainer:(double)container
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_minimumTranslationForKillingContainer = a3;
+    self->_minimumTranslationForKillingContainer = container;
 
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldScaleOverlayToFillBounds:(BOOL)a3
+- (void)setShouldScaleOverlayToFillBounds:(BOOL)bounds
 {
-  if (self->_shouldScaleOverlayToFillBounds != a3)
+  if (self->_shouldScaleOverlayToFillBounds != bounds)
   {
-    self->_shouldScaleOverlayToFillBounds = a3;
+    self->_shouldScaleOverlayToFillBounds = bounds;
     [(SBAppSwitcherPageView *)self->_pageView setShouldScaleOverlayToFillBounds:?];
   }
 }
 
 - (BOOL)isDeceleratingTowardsKillZone
 {
-  v3 = [(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView isDecelerating];
-  if (v3)
+  isDecelerating = [(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView isDecelerating];
+  if (isDecelerating)
   {
     [(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView _pageDecelerationTarget];
     v5 = v4;
     v7 = v6;
     [(SBFluidSwitcherItemContainer *)self _contentOffsetAtRest];
-    LOBYTE(v3) = v7 != v9 || v5 != v8;
+    LOBYTE(isDecelerating) = v7 != v9 || v5 != v8;
   }
 
-  return v3;
+  return isDecelerating;
 }
 
-- (void)setPageViewAnchorPoint:(CGPoint)a3
+- (void)setPageViewAnchorPoint:(CGPoint)point
 {
   p_pageViewAnchorPoint = &self->_pageViewAnchorPoint;
-  if (a3.x != self->_pageViewAnchorPoint.x || a3.y != self->_pageViewAnchorPoint.y)
+  if (point.x != self->_pageViewAnchorPoint.x || point.y != self->_pageViewAnchorPoint.y)
   {
-    p_pageViewAnchorPoint->x = a3.x;
-    self->_pageViewAnchorPoint.y = a3.y;
-    v6 = [(SBAppSwitcherPageView *)self->_pageView layer];
-    [v6 setAnchorPoint:{p_pageViewAnchorPoint->x, p_pageViewAnchorPoint->y}];
+    p_pageViewAnchorPoint->x = point.x;
+    self->_pageViewAnchorPoint.y = point.y;
+    layer = [(SBAppSwitcherPageView *)self->_pageView layer];
+    [layer setAnchorPoint:{p_pageViewAnchorPoint->x, p_pageViewAnchorPoint->y}];
 
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
   }
 }
 
-- (void)setPageViewOffset:(CGPoint)a3
+- (void)setPageViewOffset:(CGPoint)offset
 {
-  if (a3.x != self->_pageViewOffset.x || a3.y != self->_pageViewOffset.y)
+  if (offset.x != self->_pageViewOffset.x || offset.y != self->_pageViewOffset.y)
   {
-    self->_pageViewOffset = a3;
+    self->_pageViewOffset = offset;
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
   }
 }
 
-- (void)setPositionAnimationsBeginFromModelState:(BOOL)a3
+- (void)setPositionAnimationsBeginFromModelState:(BOOL)state
 {
-  v3 = a3;
-  v4 = [(SBFluidSwitcherItemContainer *)self layer];
-  [v4 setPositionAnimationsBeginFromModelState:v3];
+  stateCopy = state;
+  layer = [(SBFluidSwitcherItemContainer *)self layer];
+  [layer setPositionAnimationsBeginFromModelState:stateCopy];
 }
 
 - (BOOL)positionAnimationsBeginFromModelState
 {
-  v2 = [(SBFluidSwitcherItemContainer *)self layer];
-  v3 = [v2 positionAnimationsBeginFromModelState];
+  layer = [(SBFluidSwitcherItemContainer *)self layer];
+  positionAnimationsBeginFromModelState = [layer positionAnimationsBeginFromModelState];
 
-  return v3;
+  return positionAnimationsBeginFromModelState;
 }
 
-- (void)setTransformAnimationsAreLegacyCounterRotations:(BOOL)a3
+- (void)setTransformAnimationsAreLegacyCounterRotations:(BOOL)rotations
 {
-  v3 = a3;
-  v4 = [(SBFluidSwitcherItemContainer *)self layer];
-  [v4 setTransformAnimationsAreLegacyCounterRotations:v3];
+  rotationsCopy = rotations;
+  layer = [(SBFluidSwitcherItemContainer *)self layer];
+  [layer setTransformAnimationsAreLegacyCounterRotations:rotationsCopy];
 }
 
 - (BOOL)transformAnimationsAreLegacyCounterRotations
 {
-  v2 = [(SBFluidSwitcherItemContainer *)self layer];
-  v3 = [v2 transformAnimationsAreLegacyCounterRotations];
+  layer = [(SBFluidSwitcherItemContainer *)self layer];
+  transformAnimationsAreLegacyCounterRotations = [layer transformAnimationsAreLegacyCounterRotations];
 
-  return v3;
+  return transformAnimationsAreLegacyCounterRotations;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v36.receiver = self;
   v36.super_class = SBFluidSwitcherItemContainer;
-  v8 = [(SBFluidSwitcherItemContainer *)&v36 pointInside:v7 withEvent:x, y];
+  v8 = [(SBFluidSwitcherItemContainer *)&v36 pointInside:eventCopy withEvent:x, y];
   [(SBFluidSwitcherItemContainer *)self bounds];
   if ((v8 & 1) != 0 || (v13 = v9, v14 = v10, v15 = v11, v16 = v12, v41.origin.x = v9 + -5.0, v41.origin.y = v10 + *MEMORY[0x277D768C8], v41.size.width = v11 + 10.0, v41.size.height = v12 - (*MEMORY[0x277D768C8] + *(MEMORY[0x277D768C8] + 16)), v39.x = x, v39.y = y, CGRectContainsPoint(v41, v39)))
   {
@@ -1605,8 +1605,8 @@ LABEL_17:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v17 = [(SBFluidSwitcherItemContainer *)self subviews];
-      v18 = [v17 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      subviews = [(SBFluidSwitcherItemContainer *)self subviews];
+      v18 = [subviews countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v18)
       {
         v19 = v18;
@@ -1617,19 +1617,19 @@ LABEL_17:
           {
             if (*v33 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(subviews);
             }
 
             v22 = *(*(&v32 + 1) + 8 * i);
             [(SBFluidSwitcherItemContainer *)self convertPoint:v22 toView:x, y];
-            if ([v22 pointInside:v7 withEvent:?])
+            if ([v22 pointInside:eventCopy withEvent:?])
             {
 
               goto LABEL_17;
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v19 = [subviews countByEnumeratingWithState:&v32 objects:v37 count:16];
           if (v19)
           {
             continue;
@@ -1721,22 +1721,22 @@ uint64_t __55__SBFluidSwitcherItemContainer__updateFooterVisibility__block_invok
   return [v7 layoutIfNeeded];
 }
 
-- (void)_updateFooterAnimated:(BOOL)a3
+- (void)_updateFooterAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBFluidSwitcherItemContainerFooterView *)self->_iconAndLabelFooter setAlpha:self->_titleAndIconOpacity];
   [(SBFluidSwitcherItemContainerFooterView *)self->_iconAndLabelFooter setIconAlpha:self->_iconOpacity];
   [(SBFluidSwitcherItemContainerFooterView *)self->_iconAndLabelFooter setTextAlpha:self->_titleOpacity];
   iconAndLabelFooter = self->_iconAndLabelFooter;
   titleItems = self->_titleItems;
 
-  [(SBFluidSwitcherItemContainerFooterView *)iconAndLabelFooter setTitleItems:titleItems animated:v3];
+  [(SBFluidSwitcherItemContainerFooterView *)iconAndLabelFooter setTitleItems:titleItems animated:animatedCopy];
 }
 
-- (CGRect)_frameForScrollViewWithFullPresentedSize:(CGSize)a3
+- (CGRect)_frameForScrollViewWithFullPresentedSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   SBRectWithSize();
   [(SBFluidSwitcherItemContainer *)self _CGSizeWidthOrHeightBasedOnKillAxis:v6, v7];
   [(SBFluidSwitcherItemContainer *)self _CGSizeFromLengthBasedOnKillAxis:v8 * 0.5];
@@ -1758,8 +1758,8 @@ uint64_t __55__SBFluidSwitcherItemContainer__updateFooterVisibility__block_invok
 
 - (CGRect)_frameForPageView
 {
-  v3 = [(SBFluidSwitcherItemContainer *)self delegate];
-  [v3 frameForPageViewOfContainer:self fullyPresented:1];
+  delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+  [delegate frameForPageViewOfContainer:self fullyPresented:1];
   [(SBFluidSwitcherItemContainer *)self _frameForPageViewWithFullPresentedSize:v4, v5];
   v7 = v6;
   v9 = v8;
@@ -1777,12 +1777,12 @@ uint64_t __55__SBFluidSwitcherItemContainer__updateFooterVisibility__block_invok
   return result;
 }
 
-- (CGRect)_frameForPageViewWithFullPresentedSize:(CGSize)a3
+- (CGRect)_frameForPageViewWithFullPresentedSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SBFluidSwitcherItemContainer *)self delegate];
-  [v6 frameForPageViewOfContainer:self fullyPresented:0];
+  height = size.height;
+  width = size.width;
+  delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+  [delegate frameForPageViewOfContainer:self fullyPresented:0];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1817,16 +1817,16 @@ uint64_t __55__SBFluidSwitcherItemContainer__updateFooterVisibility__block_invok
   return result;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   if (self->_draggable && ([(SBFluidSwitcherTouchPassThroughScrollView *)self->_killScrollView isDecelerating]& 1) == 0)
   {
-    v9 = [(SBFluidSwitcherItemContainer *)self appLayout];
-    v10 = [v9 itemForLayoutRole:1];
-    v11 = [v10 bundleIdentifier];
+    appLayout = [(SBFluidSwitcherItemContainer *)self appLayout];
+    v10 = [appLayout itemForLayoutRole:1];
+    bundleIdentifier = [v10 bundleIdentifier];
     v12 = objc_alloc_init(MEMORY[0x277CCAA88]);
     [v12 registerDataRepresentationForTypeIdentifier:*MEMORY[0x277D66E40] visibility:3 loadHandler:&__block_literal_global_155];
     if (self->_supportsSwitcherDragAndDrop)
@@ -1839,9 +1839,9 @@ uint64_t __55__SBFluidSwitcherItemContainer__updateFooterVisibility__block_invok
       v13 = 12;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277D66998]) initWithUniqueIdentifier:v11 withLaunchActions:0 startLocation:v13];
-    v15 = [v10 uniqueIdentifier];
-    [v14 setDraggedSceneIdentifier:v15];
+    v14 = [objc_alloc(MEMORY[0x277D66998]) initWithUniqueIdentifier:bundleIdentifier withLaunchActions:0 startLocation:v13];
+    uniqueIdentifier = [v10 uniqueIdentifier];
+    [v14 setDraggedSceneIdentifier:uniqueIdentifier];
 
     [v14 setSourceLocal:1];
     [v14 setLaunchURL:0];
@@ -1870,24 +1870,24 @@ uint64_t __73__SBFluidSwitcherItemContainer_dragInteraction_itemsForBeginningSes
   return 0;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v6 = a4;
-  v7 = [(UIView *)self _sbWindowScene];
-  v32 = [v7 homeScreenController];
-  v8 = [v32 iconManager];
-  v9 = [v8 iconModel];
-  v30 = [(SBFluidSwitcherItemContainer *)self appLayout];
-  v10 = [v30 itemForLayoutRole:1];
-  v11 = [v10 bundleIdentifier];
-  v31 = v9;
-  v12 = [v9 leafIconForIdentifier:v11];
+  itemCopy = item;
+  _sbWindowScene = [(UIView *)self _sbWindowScene];
+  homeScreenController = [_sbWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  iconModel = [iconManager iconModel];
+  appLayout = [(SBFluidSwitcherItemContainer *)self appLayout];
+  v10 = [appLayout itemForLayoutRole:1];
+  bundleIdentifier = [v10 bundleIdentifier];
+  v31 = iconModel;
+  v12 = [iconModel leafIconForIdentifier:bundleIdentifier];
   v13 = [objc_alloc(MEMORY[0x277D663F0]) initWithConfigurationOptions:6];
   [v13 setLocation:*MEMORY[0x277D666D0]];
-  v14 = [v8 listLayoutProvider];
-  [v13 setListLayoutProvider:v14];
+  listLayoutProvider = [iconManager listLayoutProvider];
+  [v13 setListLayoutProvider:listLayoutProvider];
 
-  [v13 setDelegate:v8];
+  [v13 setDelegate:iconManager];
   [v13 setIcon:v12];
   [v13 setEnabled:0];
   pageView = self->_pageView;
@@ -1913,18 +1913,18 @@ uint64_t __73__SBFluidSwitcherItemContainer_dragInteraction_itemsForBeginningSes
   v33[1] = 3221225472;
   v33[2] = __78__SBFluidSwitcherItemContainer_dragInteraction_previewForLiftingItem_session___block_invoke;
   v33[3] = &unk_2783B5AF0;
-  v34 = v8;
-  v20 = v8;
+  v34 = iconManager;
+  v20 = iconManager;
   [(SBAppPlatterDragPreview *)v17 setCleanUpHandler:v33];
-  v21 = [v20 iconDragManager];
-  [v21 addPlatterViewToMedusaDragOffscreenWindow:v17 forWindowScene:v7];
+  iconDragManager = [v20 iconDragManager];
+  [iconDragManager addPlatterViewToMedusaDragOffscreenWindow:v17 forWindowScene:_sbWindowScene];
 
   [(SBFluidSwitcherItemContainer *)self bounds];
   UIRectGetCenter();
   v23 = v22;
   v25 = v24;
-  v26 = [(SBAppPlatterDragPreview *)v17 window];
-  [(SBFluidSwitcherItemContainer *)self convertPoint:v26 toView:v23, v25];
+  window = [(SBAppPlatterDragPreview *)v17 window];
+  [(SBFluidSwitcherItemContainer *)self convertPoint:window toView:v23, v25];
   [(SBAppPlatterDragPreview *)v17 setCenter:?];
 
   [(SBAppPlatterDragPreview *)v17 setDragState:1];
@@ -1932,9 +1932,9 @@ uint64_t __73__SBFluidSwitcherItemContainer_dragInteraction_itemsForBeginningSes
   [(SBAppPlatterDragPreview *)v17 layoutIfNeeded];
   v27 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v17];
   [v27 set_springboardPlatterStyle:1];
-  v28 = [v6 sbh_appDragLocalContext];
+  sbh_appDragLocalContext = [itemCopy sbh_appDragLocalContext];
 
-  [v28 setPortaledPreview:v17];
+  [sbh_appDragLocalContext setPortaledPreview:v17];
 
   return v27;
 }
@@ -1947,15 +1947,15 @@ void __78__SBFluidSwitcherItemContainer_dragInteraction_previewForLiftingItem_se
   [v4 removePlatterViewFromMedusaDragOffscreenWindow:v3];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v11 = a3;
-  v5 = [(SBFluidSwitcherItemContainer *)self delegate];
-  v6 = [v11 nextFocusedItem];
+  contextCopy = context;
+  delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v6 == self)
+  if (nextFocusedItem == self)
   {
-    [v5 container:self didBecomeFocused:1];
+    [delegate container:self didBecomeFocused:1];
     v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__returnKeyPressed_];
     returnKeyGestureRecognizer = self->_returnKeyGestureRecognizer;
     self->_returnKeyGestureRecognizer = v9;
@@ -1966,11 +1966,11 @@ void __78__SBFluidSwitcherItemContainer_dragInteraction_previewForLiftingItem_se
 
   else
   {
-    v7 = [v11 previouslyFocusedItem];
+    previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-    if (v7 == self)
+    if (previouslyFocusedItem == self)
     {
-      [v5 container:self didBecomeFocused:0];
+      [delegate container:self didBecomeFocused:0];
       [(SBFluidSwitcherItemContainer *)self removeGestureRecognizer:self->_returnKeyGestureRecognizer];
       v8 = self->_returnKeyGestureRecognizer;
       self->_returnKeyGestureRecognizer = 0;
@@ -1978,82 +1978,82 @@ void __78__SBFluidSwitcherItemContainer_dragInteraction_previewForLiftingItem_se
   }
 }
 
-- (void)_returnKeyPressed:(id)a3
+- (void)_returnKeyPressed:(id)pressed
 {
-  v5 = a3;
+  pressedCopy = pressed;
   if ([(SBFluidSwitcherItemContainer *)self isFocusable]&& [(SBFluidSwitcherItemContainer *)self isSelectable])
   {
-    v4 = [(SBFluidSwitcherItemContainer *)self delegate];
-    [v4 didSelectContainer:self modifierFlags:{objc_msgSend(v5, "modifierFlags")}];
+    delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+    [delegate didSelectContainer:self modifierFlags:{objc_msgSend(pressedCopy, "modifierFlags")}];
   }
 }
 
-- (double)_CGSizeWidthOrHeightBasedOnKillAxis:(CGSize)a3
+- (double)_CGSizeWidthOrHeightBasedOnKillAxis:(CGSize)axis
 {
   if (!self->_killAxis)
   {
-    a3.width = a3.height;
+    axis.width = axis.height;
   }
 
-  return a3.width;
+  return axis.width;
 }
 
-- (double)_CGPointXOrYBasedOnKillAxis:(CGPoint)a3
+- (double)_CGPointXOrYBasedOnKillAxis:(CGPoint)axis
 {
   if (!self->_killAxis)
   {
-    a3.x = a3.y;
+    axis.x = axis.y;
   }
 
-  return a3.x;
+  return axis.x;
 }
 
-- (CGSize)_CGSizeFromLengthBasedOnKillAxis:(double)a3
+- (CGSize)_CGSizeFromLengthBasedOnKillAxis:(double)axis
 {
   killAxis = self->_killAxis;
-  v4 = 0.0;
+  axisCopy2 = 0.0;
   if (killAxis)
   {
-    v5 = a3;
+    axisCopy = axis;
   }
 
   else
   {
-    v5 = 0.0;
+    axisCopy = 0.0;
   }
 
   if (!killAxis)
   {
-    v4 = a3;
+    axisCopy2 = axis;
   }
 
-  v6 = v5;
-  result.height = v4;
+  v6 = axisCopy;
+  result.height = axisCopy2;
   result.width = v6;
   return result;
 }
 
-- (CGPoint)_CGPointFromScalarBasedOnKillAxis:(double)a3
+- (CGPoint)_CGPointFromScalarBasedOnKillAxis:(double)axis
 {
   killAxis = self->_killAxis;
-  v4 = 0.0;
+  axisCopy2 = 0.0;
   if (killAxis)
   {
-    v5 = a3;
+    axisCopy = axis;
   }
 
   else
   {
-    v5 = 0.0;
+    axisCopy = 0.0;
   }
 
   if (!killAxis)
   {
-    v4 = a3;
+    axisCopy2 = axis;
   }
 
-  v6 = v5;
-  result.y = v4;
+  v6 = axisCopy;
+  result.y = axisCopy2;
   result.x = v6;
   return result;
 }
@@ -2074,8 +2074,8 @@ void __78__SBFluidSwitcherItemContainer_dragInteraction_previewForLiftingItem_se
 
 - (id)_springLoadingEffectTargetView
 {
-  v3 = [(SBAppSwitcherPageView *)self->_pageView overlay];
-  if (v3)
+  overlay = [(SBAppSwitcherPageView *)self->_pageView overlay];
+  if (overlay)
   {
     [(SBAppSwitcherPageView *)self->_pageView overlay];
   }
@@ -2089,72 +2089,72 @@ void __78__SBFluidSwitcherItemContainer_dragInteraction_previewForLiftingItem_se
   return v4;
 }
 
-- (void)_handlePageViewTap:(id)a3
+- (void)_handlePageViewTap:(id)tap
 {
-  v5 = a3;
+  tapCopy = tap;
   if ([(SBFluidSwitcherItemContainer *)self isSelectable])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained didSelectContainer:self modifierFlags:{objc_msgSend(v5, "modifierFlags")}];
+    [WeakRetained didSelectContainer:self modifierFlags:{objc_msgSend(tapCopy, "modifierFlags")}];
   }
 }
 
-- (void)_handleSelectionHighlightGesture:(id)a3
+- (void)_handleSelectionHighlightGesture:(id)gesture
 {
-  v9 = a3;
-  if ([v9 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v4 = [(SBFluidSwitcherItemContainer *)self delegate];
-    v5 = [v4 canSelectContainer:self numberOfTaps:1];
+    delegate = [(SBFluidSwitcherItemContainer *)self delegate];
+    isHighlightedFromDirectTouch = [delegate canSelectContainer:self numberOfTaps:1];
 
-    [v9 locationInView:self];
+    [gestureCopy locationInView:self];
     self->_highlightTapDownLocation.x = v6;
     self->_highlightTapDownLocation.y = v7;
     goto LABEL_9;
   }
 
-  if ([v9 state] != 3 && objc_msgSend(v9, "state") != 4)
+  if ([gestureCopy state] != 3 && objc_msgSend(gestureCopy, "state") != 4)
   {
-    if ([v9 state] == 2)
+    if ([gestureCopy state] == 2)
     {
-      v5 = [(SBFluidSwitcherItemContainer *)self isHighlightedFromDirectTouch];
+      isHighlightedFromDirectTouch = [(SBFluidSwitcherItemContainer *)self isHighlightedFromDirectTouch];
       goto LABEL_9;
     }
 
-    [v9 state];
+    [gestureCopy state];
   }
 
-  v5 = 0;
+  isHighlightedFromDirectTouch = 0;
 LABEL_9:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained containerSelectionStateChanged:self toState:objc_msgSend(v9 hover:"state") pencilHover:{0, 0}];
+  [WeakRetained containerSelectionStateChanged:self toState:objc_msgSend(gestureCopy hover:"state") pencilHover:{0, 0}];
 
-  [(SBFluidSwitcherItemContainer *)self setHighlightedFromDirectTouch:v5];
+  [(SBFluidSwitcherItemContainer *)self setHighlightedFromDirectTouch:isHighlightedFromDirectTouch];
 }
 
-- (void)setHighlightedFromDirectTouch:(BOOL)a3
+- (void)setHighlightedFromDirectTouch:(BOOL)touch
 {
-  if (self->_highlightedFromDirectTouch != a3)
+  if (self->_highlightedFromDirectTouch != touch)
   {
-    self->_highlightedFromDirectTouch = a3;
+    self->_highlightedFromDirectTouch = touch;
     [(SBFluidSwitcherItemContainer *)self _updateTransformForCurrentHighlight];
   }
 }
 
-- (void)setHighlightedFromCursorHover:(BOOL)a3
+- (void)setHighlightedFromCursorHover:(BOOL)hover
 {
-  if (self->_highlightedFromCursorHover != a3)
+  if (self->_highlightedFromCursorHover != hover)
   {
-    self->_highlightedFromCursorHover = a3;
+    self->_highlightedFromCursorHover = hover;
     [(SBFluidSwitcherItemContainer *)self _updateTransformForCurrentHighlight];
   }
 }
 
-- (void)setLifted:(BOOL)a3
+- (void)setLifted:(BOOL)lifted
 {
-  if (self->_lifted != a3)
+  if (self->_lifted != lifted)
   {
-    self->_lifted = a3;
+    self->_lifted = lifted;
     [(SBFluidSwitcherItemContainer *)self _updateTransformForCurrentHighlight];
   }
 }
@@ -2195,8 +2195,8 @@ LABEL_9:
     CGAffineTransformMakeScale(&v13, v3, v3);
     self->_animatingPageViewScale = 1;
     [(SBFluidSwitcherItemContainer *)self _updatePageViewContentViewClipping];
-    v6 = [(SBAppSwitcherSettings *)self->_settings animationSettings];
-    v7 = [v6 appSelectionSquishSettings];
+    animationSettings = [(SBAppSwitcherSettings *)self->_settings animationSettings];
+    appSelectionSquishSettings = [animationSettings appSelectionSquishSettings];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -2212,7 +2212,7 @@ LABEL_9:
     v9[3] = &unk_2783A9158;
     v9[4] = self;
     *&v9[5] = v3;
-    [MEMORY[0x277D75D18] sb_animateWithSettings:v7 mode:3 animations:v10 completion:v9];
+    [MEMORY[0x277D75D18] sb_animateWithSettings:appSelectionSquishSettings mode:3 animations:v10 completion:v9];
   }
 }
 
@@ -2292,20 +2292,20 @@ void __67__SBFluidSwitcherItemContainer__updateTransformForCurrentHighlight__blo
   return result;
 }
 
-- (void)setFooterStyle:(unint64_t)a3
+- (void)setFooterStyle:(unint64_t)style
 {
-  if (self->_footerStyle != a3)
+  if (self->_footerStyle != style)
   {
-    self->_footerStyle = a3;
+    self->_footerStyle = style;
     [(SBFluidSwitcherItemContainerFooterView *)self->_iconAndLabelFooter setFooterStyle:?];
 
     [(SBFluidSwitcherItemContainer *)self setNeedsLayout];
   }
 }
 
-- (void)itemContainerFooterView:(id)a3 didSelectTitleItem:(id)a4
+- (void)itemContainerFooterView:(id)view didSelectTitleItem:(id)item
 {
-  v5 = [(NSArray *)self->_titleItems indexOfObject:a4];
+  v5 = [(NSArray *)self->_titleItems indexOfObject:item];
   switch(v5)
   {
     case 0uLL:
@@ -2327,24 +2327,24 @@ LABEL_8:
   [WeakRetained itemContainer:self didSelectTitleForRole:v7];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_tapGestureRecognizer != a3)
+  if (self->_tapGestureRecognizer != recognizer)
   {
     return 0;
   }
 
   iconAndLabelFooter = self->_iconAndLabelFooter;
-  v6 = a4;
-  v7 = [(SBFluidSwitcherItemContainerFooterView *)iconAndLabelFooter tapGestureRecognizer];
-  v4 = v7 == v6;
+  gestureRecognizerCopy = gestureRecognizer;
+  tapGestureRecognizer = [(SBFluidSwitcherItemContainerFooterView *)iconAndLabelFooter tapGestureRecognizer];
+  v4 = tapGestureRecognizer == gestureRecognizerCopy;
 
   return v4;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ([(SBAppSwitcherPageView *)self->_pageView blocksTouches])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2359,24 +2359,24 @@ LABEL_8:
     }
 
     tapGestureRecognizer = self->_tapGestureRecognizer;
-    if (tapGestureRecognizer == v4 && !v6)
+    if (tapGestureRecognizer == beginCopy && !v6)
     {
       v7 = 0;
       goto LABEL_21;
     }
 
-    if (tapGestureRecognizer != v4)
+    if (tapGestureRecognizer != beginCopy)
     {
-      doubleTapGestureRecognizer = v4;
-      if (self->_doubleTapGestureRecognizer == v4)
+      doubleTapGestureRecognizer = beginCopy;
+      if (self->_doubleTapGestureRecognizer == beginCopy)
       {
         goto LABEL_17;
       }
 
-      if (self->_pressDownGestureRecognizer != v4)
+      if (self->_pressDownGestureRecognizer != beginCopy)
       {
         doubleTapGestureRecognizer = self->_doubleTapGestureRecognizer;
-        if (self->_selectionHighlightGestureRecognizer != v4)
+        if (self->_selectionHighlightGestureRecognizer != beginCopy)
         {
           v7 = 1;
 LABEL_21:
@@ -2385,7 +2385,7 @@ LABEL_21:
         }
 
 LABEL_17:
-        if (doubleTapGestureRecognizer == v4)
+        if (doubleTapGestureRecognizer == beginCopy)
         {
           v11 = 2;
         }
@@ -2410,9 +2410,9 @@ LABEL_22:
   return v7;
 }
 
-- (void)gestureRecognizerTransitionedToFailed:(id)a3
+- (void)gestureRecognizerTransitionedToFailed:(id)failed
 {
-  if (self->_tapGestureRecognizer == a3)
+  if (self->_tapGestureRecognizer == failed)
   {
     [(UILongPressGestureRecognizer *)self->_selectionHighlightGestureRecognizer setEnabled:0];
     selectionHighlightGestureRecognizer = self->_selectionHighlightGestureRecognizer;
@@ -2421,16 +2421,16 @@ LABEL_22:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  if (self->_killScrollView == v4)
+  scrollCopy = scroll;
+  if (self->_killScrollView == scrollCopy)
   {
-    v7 = v4;
-    v5 = [(SBFluidSwitcherTouchPassThroughScrollView *)v4 window];
+    v7 = scrollCopy;
+    window = [(SBFluidSwitcherTouchPassThroughScrollView *)scrollCopy window];
 
-    v4 = v7;
-    if (v5)
+    scrollCopy = v7;
+    if (window)
     {
       [(SBSwitcherGenieEffectView *)self->_genieEffectView invalidate];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2450,14 +2450,14 @@ LABEL_22:
       [MEMORY[0x277CD9FF0] setLowLatency:0];
       [(SBFluidSwitcherItemContainer *)self setHighlightedFromDirectTouch:[(SBFluidSwitcherTouchPassThroughScrollView *)v7 isTracking]];
 
-      v4 = v7;
+      scrollCopy = v7;
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  if (self->_killScrollView == a3)
+  if (self->_killScrollView == dragging)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained containerWillBeginSwipingToKill:self];
@@ -2468,11 +2468,11 @@ LABEL_22:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  if (self->_killScrollView == a3)
+  if (self->_killScrollView == dragging)
   {
-    [a3 contentOffset];
+    [dragging contentOffset];
     if (!self->_killAxis)
     {
       v8 = v9;
@@ -2480,29 +2480,29 @@ LABEL_22:
 
     if (v8 >= 62.0)
     {
-      x = a5->x;
-      y = a5->y;
+      x = offset->x;
+      y = offset->y;
     }
 
     else
     {
       [(SBFluidSwitcherItemContainer *)self _contentOffsetAtRest];
-      a5->x = x;
-      a5->y = y;
+      offset->x = x;
+      offset->y = y;
     }
 
     [(SBFluidSwitcherItemContainer *)self _killingProgressForContentOffset:x, y];
     if (v12 >= 1.0)
     {
-      v13 = a5->x;
-      v14 = a5->y;
+      v13 = offset->x;
+      v14 = offset->y;
     }
 
     else
     {
       [(SBFluidSwitcherItemContainer *)self _contentOffsetAtRest];
-      a5->x = v13;
-      a5->y = v14;
+      offset->x = v13;
+      offset->y = v14;
     }
 
     [(SBFluidSwitcherItemContainer *)self _killingProgressForContentOffset:v13, v14];
@@ -2512,25 +2512,25 @@ LABEL_22:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (self->_killScrollView == a3)
+  if (self->_killScrollView == dragging)
   {
     [(SBFluidSwitcherItemContainer *)self _notifyDelegateScrollViewDidChange];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  if (self->_killScrollView == a3)
+  if (self->_killScrollView == decelerating)
   {
     [(SBFluidSwitcherItemContainer *)self _notifyDelegateScrollViewDidChange];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  if (self->_killScrollView == a3)
+  if (self->_killScrollView == decelerating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained containerDidEndSwipingToKill:self];
@@ -2558,12 +2558,12 @@ LABEL_22:
   [WeakRetained scrollViewKillingProgressUpdated:v3 translation:self isDragging:? decelerationTargetProgress:? forContainer:?];
 }
 
-- (BOOL)_scrollViewShouldPanGestureTryToBegin:(id)a3
+- (BOOL)_scrollViewShouldPanGestureTryToBegin:(id)begin
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 panGestureRecognizer];
-  [v5 translationInView:v4];
+  beginCopy = begin;
+  panGestureRecognizer = [beginCopy panGestureRecognizer];
+  [panGestureRecognizer translationInView:beginCopy];
   v7 = v6;
   v9 = v8;
 
@@ -2614,17 +2614,17 @@ LABEL_22:
   return v13;
 }
 
-- (void)_handleHoverGesture:(id)a3
+- (void)_handleHoverGesture:(id)gesture
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 _activeEventOfType:11];
+  gestureCopy = gesture;
+  v5 = [gestureCopy _activeEventOfType:11];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 allTouches];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allTouches = [v5 allTouches];
+  v7 = [allTouches countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -2634,7 +2634,7 @@ LABEL_22:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allTouches);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) type] == 2)
@@ -2644,7 +2644,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allTouches countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -2656,8 +2656,8 @@ LABEL_22:
 
 LABEL_11:
 
-  v10 = [v4 state];
-  if ((v10 - 3) < 2)
+  state = [gestureCopy state];
+  if ((state - 3) < 2)
   {
     v11 = 0;
 LABEL_15:
@@ -2665,7 +2665,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v10 == 1)
+  if (state == 1)
   {
     v11 = 1;
     goto LABEL_15;
@@ -2673,7 +2673,7 @@ LABEL_15:
 
 LABEL_16:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained containerSelectionStateChanged:self toState:objc_msgSend(v4 hover:"state") pencilHover:{1, v7}];
+  [WeakRetained containerSelectionStateChanged:self toState:objc_msgSend(gestureCopy hover:"state") pencilHover:{1, v7}];
 }
 
 - (id)initialCornerRadiusConfiguration
@@ -2685,15 +2685,15 @@ LABEL_16:
 
 - (SBDragPreviewShadowParameters)initialDiffuseShadowParameters
 {
-  v3 = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
-  v4 = [v3 _diffuseShadowView];
-  v5 = [v4 layer];
+  _shadowView = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
+  _diffuseShadowView = [_shadowView _diffuseShadowView];
+  layer = [_diffuseShadowView layer];
 
-  if (v5)
+  if (layer)
   {
-    [v5 shadowOpacity];
-    [v5 shadowRadius];
-    [v5 shadowOffset];
+    [layer shadowOpacity];
+    [layer shadowRadius];
+    [layer shadowOffset];
   }
 
   return result;
@@ -2701,15 +2701,15 @@ LABEL_16:
 
 - (SBDragPreviewShadowParameters)initialRimShadowParameters
 {
-  v3 = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
-  v4 = [v3 _rimShadowView];
-  v5 = [v4 layer];
+  _shadowView = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
+  _rimShadowView = [_shadowView _rimShadowView];
+  layer = [_rimShadowView layer];
 
-  if (v5)
+  if (layer)
   {
-    [v5 shadowOpacity];
-    [v5 shadowRadius];
-    [v5 shadowOffset];
+    [layer shadowOpacity];
+    [layer shadowRadius];
+    [layer shadowOffset];
   }
 
   return result;
@@ -2717,38 +2717,38 @@ LABEL_16:
 
 - (id)initialDiffuseShadowFilters
 {
-  v2 = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
-  v3 = [v2 _diffuseShadowView];
-  v4 = [v3 layer];
-  v5 = [v4 filters];
+  _shadowView = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
+  _diffuseShadowView = [_shadowView _diffuseShadowView];
+  layer = [_diffuseShadowView layer];
+  filters = [layer filters];
 
-  return v5;
+  return filters;
 }
 
 - (id)initialRimShadowFilters
 {
-  v2 = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
-  v3 = [v2 _rimShadowView];
-  v4 = [v3 layer];
-  v5 = [v4 filters];
+  _shadowView = [(SBAppSwitcherPageView *)self->_pageView _shadowView];
+  _rimShadowView = [_shadowView _rimShadowView];
+  layer = [_rimShadowView layer];
+  filters = [layer filters];
 
-  return v5;
+  return filters;
 }
 
-- (void)setDragging:(BOOL)a3
+- (void)setDragging:(BOOL)dragging
 {
-  if (self->_dragging != a3)
+  if (self->_dragging != dragging)
   {
-    self->_dragging = a3;
+    self->_dragging = dragging;
     [(SBFluidSwitcherItemContainer *)self _updateShadowVisibility];
   }
 }
 
-- (void)_updateForPointerHoveringOverEdge:(unint64_t)a3
+- (void)_updateForPointerHoveringOverEdge:(unint64_t)edge
 {
-  if (self->_hoveringOverEdge != a3)
+  if (self->_hoveringOverEdge != edge)
   {
-    self->_hoveringOverEdge = a3;
+    self->_hoveringOverEdge = edge;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = WeakRetained;
     if (self->_hoveringOverEdge)
@@ -2763,26 +2763,26 @@ LABEL_16:
   }
 }
 
-- (BOOL)appSwitcherPageView:(id)a3 shouldBeginPointerInteractionAtLocation:(CGPoint)a4 window:(id)a5
+- (BOOL)appSwitcherPageView:(id)view shouldBeginPointerInteractionAtLocation:(CGPoint)location window:(id)window
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
+  y = location.y;
+  x = location.x;
+  windowCopy = window;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([WeakRetained hitTestedToTopAffordance:v8 window:self ofItemContainer:{x, y}] & 1) != 0 || (objc_msgSend(WeakRetained, "hitTestedToFloatingElement:window:ofItemContainer:", v8, self, x, y) & 1) != 0 || (objc_msgSend(WeakRetained, "hitTestedToSplitViewHandle:window:", v8, x, y) & 1) != 0 || (objc_msgSend(WeakRetained, "hitTestedToHomeAffordance:window:ofItemContainer:", v8, self, x, y))
+  if ([WeakRetained hitTestedToTopAffordance:windowCopy window:self ofItemContainer:{x, y}] & 1) != 0 || (objc_msgSend(WeakRetained, "hitTestedToFloatingElement:window:ofItemContainer:", windowCopy, self, x, y) & 1) != 0 || (objc_msgSend(WeakRetained, "hitTestedToSplitViewHandle:window:", windowCopy, x, y) & 1) != 0 || (objc_msgSend(WeakRetained, "hitTestedToHomeAffordance:window:ofItemContainer:", windowCopy, self, x, y))
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v10 = [WeakRetained hitTestedToSlideOverTongue:v8 window:{x, y}] ^ 1;
+    v10 = [WeakRetained hitTestedToSlideOverTongue:windowCopy window:{x, y}] ^ 1;
   }
 
   return v10;
 }
 
-- (void)genieEffectViewDidInvalidate:(id)a3
+- (void)genieEffectViewDidInvalidate:(id)invalidate
 {
   [(SBFluidSwitcherItemContainer *)self _setWantsOverlayPortalView:0];
   genieEffectView = self->_genieEffectView;
@@ -2791,23 +2791,23 @@ LABEL_16:
   [(SBSwitcherGenieEffectView *)genieEffectView setPortaledContentViews:v5];
 }
 
-- (void)_setWantsOverlayPortalView:(BOOL)a3
+- (void)_setWantsOverlayPortalView:(BOOL)view
 {
-  if (self->_wantsOverlayPortal != a3 || ([(SBFluidSwitcherItemContainer *)self overlayPortalView], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (self->_wantsOverlayPortal != view || ([(SBFluidSwitcherItemContainer *)self overlayPortalView], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    self->_wantsOverlayPortal = a3;
+    self->_wantsOverlayPortal = view;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained itemContainerDidUpdateWantsOverlayPortal:self];
   }
 }
 
-- (void)setOverlayPortalView:(id)a3
+- (void)setOverlayPortalView:(id)view
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_overlayPortalView != v5)
+  viewCopy = view;
+  if (self->_overlayPortalView != viewCopy)
   {
-    objc_storeStrong(&self->_overlayPortalView, a3);
+    objc_storeStrong(&self->_overlayPortalView, view);
     overlayPortalView = self->_overlayPortalView;
     genieEffectView = self->_genieEffectView;
     if (overlayPortalView)

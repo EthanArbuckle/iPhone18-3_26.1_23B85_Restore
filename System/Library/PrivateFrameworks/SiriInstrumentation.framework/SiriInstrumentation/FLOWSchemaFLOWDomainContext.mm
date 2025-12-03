@@ -1,8 +1,8 @@
 @interface FLOWSchemaFLOWDomainContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FLOWSchemaFLOWBriefingContext)briefingContext;
-- (FLOWSchemaFLOWDomainContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWDomainContext)initWithJSON:(id)a3;
+- (FLOWSchemaFLOWDomainContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWDomainContext)initWithJSON:(id)n;
 - (FLOWSchemaFLOWHomeAutomationContext)homeAutomationContext;
 - (FLOWSchemaFLOWHomeCommunicationContext)homeCommunicationContext;
 - (FLOWSchemaFLOWIdentityContext)identityContext;
@@ -16,7 +16,7 @@
 - (FLOWSchemaFLOWSmsContext)smsContext;
 - (FLOWSchemaFLOWVoiceShortcutContext)voiceShortcutContext;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -33,20 +33,20 @@
 - (void)deleteSafariContext;
 - (void)deleteSmsContext;
 - (void)deleteVoiceShortcutContext;
-- (void)setBriefingContext:(id)a3;
-- (void)setHomeAutomationContext:(id)a3;
-- (void)setHomeCommunicationContext:(id)a3;
-- (void)setIdentityContext:(id)a3;
-- (void)setInformationPluginContext:(id)a3;
-- (void)setMediaPlayerContext:(id)a3;
-- (void)setNotificationContext:(id)a3;
-- (void)setPegasusContext:(id)a3;
-- (void)setPhoneCallContext:(id)a3;
-- (void)setPhotosContext:(id)a3;
-- (void)setSafariContext:(id)a3;
-- (void)setSmsContext:(id)a3;
-- (void)setVoiceShortcutContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setBriefingContext:(id)context;
+- (void)setHomeAutomationContext:(id)context;
+- (void)setHomeCommunicationContext:(id)context;
+- (void)setIdentityContext:(id)context;
+- (void)setInformationPluginContext:(id)context;
+- (void)setMediaPlayerContext:(id)context;
+- (void)setNotificationContext:(id)context;
+- (void)setPegasusContext:(id)context;
+- (void)setPhoneCallContext:(id)context;
+- (void)setPhotosContext:(id)context;
+- (void)setSafariContext:(id)context;
+- (void)setSmsContext:(id)context;
+- (void)setVoiceShortcutContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWDomainContext
@@ -246,15 +246,15 @@
   return v3;
 }
 
-- (FLOWSchemaFLOWDomainContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWDomainContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = FLOWSchemaFLOWDomainContext;
   v5 = [(FLOWSchemaFLOWDomainContext *)&v41 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceShortcutContext"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceShortcutContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,7 +262,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setVoiceShortcutContext:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"homeAutomationContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,7 +270,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setHomeAutomationContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"phoneCallContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"phoneCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -278,7 +278,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setPhoneCallContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"smsContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"smsContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -286,7 +286,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setSmsContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"mediaPlayerContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"mediaPlayerContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -294,7 +294,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setMediaPlayerContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"identityContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"identityContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -303,7 +303,7 @@
     }
 
     v36 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"briefingContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"briefingContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -312,7 +312,7 @@
     }
 
     v40 = v6;
-    v20 = [v4 objectForKeyedSubscript:{@"pegasusContext", v18}];
+    v20 = [dictionaryCopy objectForKeyedSubscript:{@"pegasusContext", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -321,7 +321,7 @@
     }
 
     v39 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"informationPluginContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"informationPluginContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -331,7 +331,7 @@
 
     v37 = v14;
     v38 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"homeCommunicationContext"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"homeCommunicationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -340,7 +340,7 @@
     }
 
     v26 = v12;
-    v27 = [v4 objectForKeyedSubscript:@"notificationContext"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"notificationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -348,7 +348,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setNotificationContext:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"photosContext"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"photosContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -356,7 +356,7 @@
       [(FLOWSchemaFLOWDomainContext *)v5 setPhotosContext:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"safariContext"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"safariContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -370,30 +370,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWDomainContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWDomainContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWDomainContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWDomainContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWDomainContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -406,218 +406,218 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_briefingContext)
   {
-    v4 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    briefingContext = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+    dictionaryRepresentation = [briefingContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"briefingContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"briefingContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"briefingContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"briefingContext"];
     }
   }
 
   if (self->_homeAutomationContext)
   {
-    v7 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    homeAutomationContext = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+    dictionaryRepresentation2 = [homeAutomationContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"homeAutomationContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"homeAutomationContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"homeAutomationContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"homeAutomationContext"];
     }
   }
 
   if (self->_homeCommunicationContext)
   {
-    v10 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    homeCommunicationContext = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+    dictionaryRepresentation3 = [homeCommunicationContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"homeCommunicationContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"homeCommunicationContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"homeCommunicationContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"homeCommunicationContext"];
     }
   }
 
   if (self->_identityContext)
   {
-    v13 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    identityContext = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+    dictionaryRepresentation4 = [identityContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"identityContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"identityContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"identityContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"identityContext"];
     }
   }
 
   if (self->_informationPluginContext)
   {
-    v16 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    informationPluginContext = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+    dictionaryRepresentation5 = [informationPluginContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"informationPluginContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"informationPluginContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"informationPluginContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"informationPluginContext"];
     }
   }
 
   if (self->_mediaPlayerContext)
   {
-    v19 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    mediaPlayerContext = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+    dictionaryRepresentation6 = [mediaPlayerContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"mediaPlayerContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"mediaPlayerContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"mediaPlayerContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"mediaPlayerContext"];
     }
   }
 
   if (self->_notificationContext)
   {
-    v22 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    notificationContext = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+    dictionaryRepresentation7 = [notificationContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"notificationContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"notificationContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"notificationContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"notificationContext"];
     }
   }
 
   if (self->_pegasusContext)
   {
-    v25 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    pegasusContext = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+    dictionaryRepresentation8 = [pegasusContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"pegasusContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pegasusContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"pegasusContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"pegasusContext"];
     }
   }
 
   if (self->_phoneCallContext)
   {
-    v28 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    phoneCallContext = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+    dictionaryRepresentation9 = [phoneCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"phoneCallContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"phoneCallContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"phoneCallContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"phoneCallContext"];
     }
   }
 
   if (self->_photosContext)
   {
-    v31 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    photosContext = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+    dictionaryRepresentation10 = [photosContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"photosContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"photosContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"photosContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"photosContext"];
     }
   }
 
   if (self->_safariContext)
   {
-    v34 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    safariContext = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+    dictionaryRepresentation11 = [safariContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"safariContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"safariContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"safariContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"safariContext"];
     }
   }
 
   if (self->_smsContext)
   {
-    v37 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    smsContext = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+    dictionaryRepresentation12 = [smsContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"smsContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"smsContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"smsContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"smsContext"];
     }
   }
 
   if (self->_voiceShortcutContext)
   {
-    v40 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+    dictionaryRepresentation13 = [voiceShortcutContext dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"voiceShortcutContext"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"voiceShortcutContext"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"voiceShortcutContext"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"voiceShortcutContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -637,34 +637,34 @@
   return v13 ^ v14 ^ [(FLOWSchemaFLOWSafariContext *)self->_safariContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_68;
   }
 
   whichDomaincontext = self->_whichDomaincontext;
-  if (whichDomaincontext != [v4 whichDomaincontext])
+  if (whichDomaincontext != [equalCopy whichDomaincontext])
   {
     goto LABEL_68;
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
-  v7 = [v4 voiceShortcutContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+  voiceShortcutContext2 = [equalCopy voiceShortcutContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v8 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
-  if (v8)
+  voiceShortcutContext3 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+  if (voiceShortcutContext3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
-    v11 = [v4 voiceShortcutContext];
-    v12 = [v10 isEqual:v11];
+    v9 = voiceShortcutContext3;
+    voiceShortcutContext4 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+    voiceShortcutContext5 = [equalCopy voiceShortcutContext];
+    v12 = [voiceShortcutContext4 isEqual:voiceShortcutContext5];
 
     if (!v12)
     {
@@ -676,20 +676,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
-  v7 = [v4 homeAutomationContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+  voiceShortcutContext2 = [equalCopy homeAutomationContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v13 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
-  if (v13)
+  homeAutomationContext = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+  if (homeAutomationContext)
   {
-    v14 = v13;
-    v15 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
-    v16 = [v4 homeAutomationContext];
-    v17 = [v15 isEqual:v16];
+    v14 = homeAutomationContext;
+    homeAutomationContext2 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+    homeAutomationContext3 = [equalCopy homeAutomationContext];
+    v17 = [homeAutomationContext2 isEqual:homeAutomationContext3];
 
     if (!v17)
     {
@@ -701,20 +701,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
-  v7 = [v4 phoneCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+  voiceShortcutContext2 = [equalCopy phoneCallContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v18 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
-  if (v18)
+  phoneCallContext = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+  if (phoneCallContext)
   {
-    v19 = v18;
-    v20 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
-    v21 = [v4 phoneCallContext];
-    v22 = [v20 isEqual:v21];
+    v19 = phoneCallContext;
+    phoneCallContext2 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+    phoneCallContext3 = [equalCopy phoneCallContext];
+    v22 = [phoneCallContext2 isEqual:phoneCallContext3];
 
     if (!v22)
     {
@@ -726,20 +726,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
-  v7 = [v4 smsContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+  voiceShortcutContext2 = [equalCopy smsContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v23 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
-  if (v23)
+  smsContext = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+  if (smsContext)
   {
-    v24 = v23;
-    v25 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
-    v26 = [v4 smsContext];
-    v27 = [v25 isEqual:v26];
+    v24 = smsContext;
+    smsContext2 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+    smsContext3 = [equalCopy smsContext];
+    v27 = [smsContext2 isEqual:smsContext3];
 
     if (!v27)
     {
@@ -751,20 +751,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
-  v7 = [v4 mediaPlayerContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+  voiceShortcutContext2 = [equalCopy mediaPlayerContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v28 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
-  if (v28)
+  mediaPlayerContext = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+  if (mediaPlayerContext)
   {
-    v29 = v28;
-    v30 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
-    v31 = [v4 mediaPlayerContext];
-    v32 = [v30 isEqual:v31];
+    v29 = mediaPlayerContext;
+    mediaPlayerContext2 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+    mediaPlayerContext3 = [equalCopy mediaPlayerContext];
+    v32 = [mediaPlayerContext2 isEqual:mediaPlayerContext3];
 
     if (!v32)
     {
@@ -776,20 +776,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
-  v7 = [v4 identityContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+  voiceShortcutContext2 = [equalCopy identityContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v33 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
-  if (v33)
+  identityContext = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+  if (identityContext)
   {
-    v34 = v33;
-    v35 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
-    v36 = [v4 identityContext];
-    v37 = [v35 isEqual:v36];
+    v34 = identityContext;
+    identityContext2 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+    identityContext3 = [equalCopy identityContext];
+    v37 = [identityContext2 isEqual:identityContext3];
 
     if (!v37)
     {
@@ -801,20 +801,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
-  v7 = [v4 briefingContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+  voiceShortcutContext2 = [equalCopy briefingContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v38 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
-  if (v38)
+  briefingContext = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+  if (briefingContext)
   {
-    v39 = v38;
-    v40 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
-    v41 = [v4 briefingContext];
-    v42 = [v40 isEqual:v41];
+    v39 = briefingContext;
+    briefingContext2 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+    briefingContext3 = [equalCopy briefingContext];
+    v42 = [briefingContext2 isEqual:briefingContext3];
 
     if (!v42)
     {
@@ -826,20 +826,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
-  v7 = [v4 pegasusContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+  voiceShortcutContext2 = [equalCopy pegasusContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v43 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
-  if (v43)
+  pegasusContext = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+  if (pegasusContext)
   {
-    v44 = v43;
-    v45 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
-    v46 = [v4 pegasusContext];
-    v47 = [v45 isEqual:v46];
+    v44 = pegasusContext;
+    pegasusContext2 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+    pegasusContext3 = [equalCopy pegasusContext];
+    v47 = [pegasusContext2 isEqual:pegasusContext3];
 
     if (!v47)
     {
@@ -851,20 +851,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
-  v7 = [v4 informationPluginContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+  voiceShortcutContext2 = [equalCopy informationPluginContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v48 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
-  if (v48)
+  informationPluginContext = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+  if (informationPluginContext)
   {
-    v49 = v48;
-    v50 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
-    v51 = [v4 informationPluginContext];
-    v52 = [v50 isEqual:v51];
+    v49 = informationPluginContext;
+    informationPluginContext2 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+    informationPluginContext3 = [equalCopy informationPluginContext];
+    v52 = [informationPluginContext2 isEqual:informationPluginContext3];
 
     if (!v52)
     {
@@ -876,20 +876,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
-  v7 = [v4 homeCommunicationContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+  voiceShortcutContext2 = [equalCopy homeCommunicationContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v53 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
-  if (v53)
+  homeCommunicationContext = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+  if (homeCommunicationContext)
   {
-    v54 = v53;
-    v55 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
-    v56 = [v4 homeCommunicationContext];
-    v57 = [v55 isEqual:v56];
+    v54 = homeCommunicationContext;
+    homeCommunicationContext2 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+    homeCommunicationContext3 = [equalCopy homeCommunicationContext];
+    v57 = [homeCommunicationContext2 isEqual:homeCommunicationContext3];
 
     if (!v57)
     {
@@ -901,20 +901,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
-  v7 = [v4 notificationContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+  voiceShortcutContext2 = [equalCopy notificationContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v58 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
-  if (v58)
+  notificationContext = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+  if (notificationContext)
   {
-    v59 = v58;
-    v60 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
-    v61 = [v4 notificationContext];
-    v62 = [v60 isEqual:v61];
+    v59 = notificationContext;
+    notificationContext2 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+    notificationContext3 = [equalCopy notificationContext];
+    v62 = [notificationContext2 isEqual:notificationContext3];
 
     if (!v62)
     {
@@ -926,20 +926,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
-  v7 = [v4 photosContext];
-  if ((v6 != 0) == (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+  voiceShortcutContext2 = [equalCopy photosContext];
+  if ((voiceShortcutContext != 0) == (voiceShortcutContext2 == 0))
   {
     goto LABEL_67;
   }
 
-  v63 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
-  if (v63)
+  photosContext = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+  if (photosContext)
   {
-    v64 = v63;
-    v65 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
-    v66 = [v4 photosContext];
-    v67 = [v65 isEqual:v66];
+    v64 = photosContext;
+    photosContext2 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+    photosContext3 = [equalCopy photosContext];
+    v67 = [photosContext2 isEqual:photosContext3];
 
     if (!v67)
     {
@@ -951,12 +951,12 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
-  v7 = [v4 safariContext];
-  if ((v6 != 0) != (v7 == 0))
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+  voiceShortcutContext2 = [equalCopy safariContext];
+  if ((voiceShortcutContext != 0) != (voiceShortcutContext2 == 0))
   {
-    v68 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
-    if (!v68)
+    safariContext = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+    if (!safariContext)
     {
 
 LABEL_71:
@@ -964,10 +964,10 @@ LABEL_71:
       goto LABEL_69;
     }
 
-    v69 = v68;
-    v70 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
-    v71 = [v4 safariContext];
-    v72 = [v70 isEqual:v71];
+    v69 = safariContext;
+    safariContext2 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+    safariContext3 = [equalCopy safariContext];
+    v72 = [safariContext2 isEqual:safariContext3];
 
     if (v72)
     {
@@ -987,114 +987,114 @@ LABEL_69:
   return v73;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v31 = a3;
-  v4 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+  toCopy = to;
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
 
-  if (v4)
+  if (voiceShortcutContext)
   {
-    v5 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+    voiceShortcutContext2 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+  homeAutomationContext = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
 
-  if (v6)
+  if (homeAutomationContext)
   {
-    v7 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+    homeAutomationContext2 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+  phoneCallContext = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
 
-  if (v8)
+  if (phoneCallContext)
   {
-    v9 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+    phoneCallContext2 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+  smsContext = [(FLOWSchemaFLOWDomainContext *)self smsContext];
 
-  if (v10)
+  if (smsContext)
   {
-    v11 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+    smsContext2 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+  mediaPlayerContext = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
 
-  if (v12)
+  if (mediaPlayerContext)
   {
-    v13 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+    mediaPlayerContext2 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+  identityContext = [(FLOWSchemaFLOWDomainContext *)self identityContext];
 
-  if (v14)
+  if (identityContext)
   {
-    v15 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+    identityContext2 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+  briefingContext = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
 
-  if (v16)
+  if (briefingContext)
   {
-    v17 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+    briefingContext2 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+  pegasusContext = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
 
-  if (v18)
+  if (pegasusContext)
   {
-    v19 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+    pegasusContext2 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+  informationPluginContext = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
 
-  if (v20)
+  if (informationPluginContext)
   {
-    v21 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+    informationPluginContext2 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+  homeCommunicationContext = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
 
-  if (v22)
+  if (homeCommunicationContext)
   {
-    v23 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+    homeCommunicationContext2 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+  notificationContext = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
 
-  if (v24)
+  if (notificationContext)
   {
-    v25 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+    notificationContext2 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+  photosContext = [(FLOWSchemaFLOWDomainContext *)self photosContext];
 
-  if (v26)
+  if (photosContext)
   {
-    v27 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+    photosContext2 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+  safariContext = [(FLOWSchemaFLOWDomainContext *)self safariContext];
 
-  v29 = v31;
-  if (v28)
+  v29 = toCopy;
+  if (safariContext)
   {
-    v30 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+    safariContext2 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
     PBDataWriterWriteSubmessage();
 
-    v29 = v31;
+    v29 = toCopy;
   }
 }
 
@@ -1108,9 +1108,9 @@ LABEL_69:
   }
 }
 
-- (void)setSafariContext:(id)a3
+- (void)setSafariContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1148,14 +1148,14 @@ LABEL_69:
   self->_photosContext = 0;
 
   v17 = 13;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   safariContext = self->_safariContext;
-  self->_safariContext = v4;
+  self->_safariContext = contextCopy;
 }
 
 - (void)deletePhotosContext
@@ -1168,9 +1168,9 @@ LABEL_69:
   }
 }
 
-- (void)setPhotosContext:(id)a3
+- (void)setPhotosContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1208,14 +1208,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 12;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   photosContext = self->_photosContext;
-  self->_photosContext = v4;
+  self->_photosContext = contextCopy;
 }
 
 - (void)deleteNotificationContext
@@ -1228,9 +1228,9 @@ LABEL_69:
   }
 }
 
-- (void)setNotificationContext:(id)a3
+- (void)setNotificationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1268,14 +1268,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 11;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   notificationContext = self->_notificationContext;
-  self->_notificationContext = v4;
+  self->_notificationContext = contextCopy;
 }
 
 - (void)deleteHomeCommunicationContext
@@ -1288,9 +1288,9 @@ LABEL_69:
   }
 }
 
-- (void)setHomeCommunicationContext:(id)a3
+- (void)setHomeCommunicationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1328,14 +1328,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 10;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   homeCommunicationContext = self->_homeCommunicationContext;
-  self->_homeCommunicationContext = v4;
+  self->_homeCommunicationContext = contextCopy;
 }
 
 - (void)deleteInformationPluginContext
@@ -1348,9 +1348,9 @@ LABEL_69:
   }
 }
 
-- (void)setInformationPluginContext:(id)a3
+- (void)setInformationPluginContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1388,14 +1388,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 9;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   informationPluginContext = self->_informationPluginContext;
-  self->_informationPluginContext = v4;
+  self->_informationPluginContext = contextCopy;
 }
 
 - (void)deletePegasusContext
@@ -1408,9 +1408,9 @@ LABEL_69:
   }
 }
 
-- (void)setPegasusContext:(id)a3
+- (void)setPegasusContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1447,9 +1447,9 @@ LABEL_69:
   safariContext = self->_safariContext;
   self->_safariContext = 0;
 
-  self->_whichDomaincontext = 8 * (v4 != 0);
+  self->_whichDomaincontext = 8 * (contextCopy != 0);
   pegasusContext = self->_pegasusContext;
-  self->_pegasusContext = v4;
+  self->_pegasusContext = contextCopy;
 }
 
 - (void)deleteBriefingContext
@@ -1462,9 +1462,9 @@ LABEL_69:
   }
 }
 
-- (void)setBriefingContext:(id)a3
+- (void)setBriefingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1502,14 +1502,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 7;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   briefingContext = self->_briefingContext;
-  self->_briefingContext = v4;
+  self->_briefingContext = contextCopy;
 }
 
 - (void)deleteIdentityContext
@@ -1522,9 +1522,9 @@ LABEL_69:
   }
 }
 
-- (void)setIdentityContext:(id)a3
+- (void)setIdentityContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1562,14 +1562,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 6;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   identityContext = self->_identityContext;
-  self->_identityContext = v4;
+  self->_identityContext = contextCopy;
 }
 
 - (void)deleteMediaPlayerContext
@@ -1582,9 +1582,9 @@ LABEL_69:
   }
 }
 
-- (void)setMediaPlayerContext:(id)a3
+- (void)setMediaPlayerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1622,14 +1622,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 5;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   mediaPlayerContext = self->_mediaPlayerContext;
-  self->_mediaPlayerContext = v4;
+  self->_mediaPlayerContext = contextCopy;
 }
 
 - (void)deleteSmsContext
@@ -1642,9 +1642,9 @@ LABEL_69:
   }
 }
 
-- (void)setSmsContext:(id)a3
+- (void)setSmsContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1681,9 +1681,9 @@ LABEL_69:
   safariContext = self->_safariContext;
   self->_safariContext = 0;
 
-  self->_whichDomaincontext = 4 * (v4 != 0);
+  self->_whichDomaincontext = 4 * (contextCopy != 0);
   smsContext = self->_smsContext;
-  self->_smsContext = v4;
+  self->_smsContext = contextCopy;
 }
 
 - (void)deletePhoneCallContext
@@ -1696,9 +1696,9 @@ LABEL_69:
   }
 }
 
-- (void)setPhoneCallContext:(id)a3
+- (void)setPhoneCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1736,14 +1736,14 @@ LABEL_69:
   self->_safariContext = 0;
 
   v17 = 3;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichDomaincontext = v17;
   phoneCallContext = self->_phoneCallContext;
-  self->_phoneCallContext = v4;
+  self->_phoneCallContext = contextCopy;
 }
 
 - (void)deleteHomeAutomationContext
@@ -1756,9 +1756,9 @@ LABEL_69:
   }
 }
 
-- (void)setHomeAutomationContext:(id)a3
+- (void)setHomeAutomationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   voiceShortcutContext = self->_voiceShortcutContext;
   self->_voiceShortcutContext = 0;
 
@@ -1795,9 +1795,9 @@ LABEL_69:
   safariContext = self->_safariContext;
   self->_safariContext = 0;
 
-  self->_whichDomaincontext = 2 * (v4 != 0);
+  self->_whichDomaincontext = 2 * (contextCopy != 0);
   homeAutomationContext = self->_homeAutomationContext;
-  self->_homeAutomationContext = v4;
+  self->_homeAutomationContext = contextCopy;
 }
 
 - (void)deleteVoiceShortcutContext
@@ -1810,9 +1810,9 @@ LABEL_69:
   }
 }
 
-- (void)setVoiceShortcutContext:(id)a3
+- (void)setVoiceShortcutContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   homeAutomationContext = self->_homeAutomationContext;
   self->_homeAutomationContext = 0;
 
@@ -1849,130 +1849,130 @@ LABEL_69:
   safariContext = self->_safariContext;
   self->_safariContext = 0;
 
-  self->_whichDomaincontext = v4 != 0;
+  self->_whichDomaincontext = contextCopy != 0;
   voiceShortcutContext = self->_voiceShortcutContext;
-  self->_voiceShortcutContext = v4;
+  self->_voiceShortcutContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v46.receiver = self;
   v46.super_class = FLOWSchemaFLOWDomainContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v46 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v46 applySensitiveConditionsPolicy:policyCopy];
+  voiceShortcutContext = [(FLOWSchemaFLOWDomainContext *)self voiceShortcutContext];
+  v7 = [voiceShortcutContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteVoiceShortcutContext];
   }
 
-  v9 = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  homeAutomationContext = [(FLOWSchemaFLOWDomainContext *)self homeAutomationContext];
+  v10 = [homeAutomationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteHomeAutomationContext];
   }
 
-  v12 = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  phoneCallContext = [(FLOWSchemaFLOWDomainContext *)self phoneCallContext];
+  v13 = [phoneCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWDomainContext *)self deletePhoneCallContext];
   }
 
-  v15 = [(FLOWSchemaFLOWDomainContext *)self smsContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  smsContext = [(FLOWSchemaFLOWDomainContext *)self smsContext];
+  v16 = [smsContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteSmsContext];
   }
 
-  v18 = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  mediaPlayerContext = [(FLOWSchemaFLOWDomainContext *)self mediaPlayerContext];
+  v19 = [mediaPlayerContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteMediaPlayerContext];
   }
 
-  v21 = [(FLOWSchemaFLOWDomainContext *)self identityContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  identityContext = [(FLOWSchemaFLOWDomainContext *)self identityContext];
+  v22 = [identityContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteIdentityContext];
   }
 
-  v24 = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  briefingContext = [(FLOWSchemaFLOWDomainContext *)self briefingContext];
+  v25 = [briefingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteBriefingContext];
   }
 
-  v27 = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  pegasusContext = [(FLOWSchemaFLOWDomainContext *)self pegasusContext];
+  v28 = [pegasusContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(FLOWSchemaFLOWDomainContext *)self deletePegasusContext];
   }
 
-  v30 = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  informationPluginContext = [(FLOWSchemaFLOWDomainContext *)self informationPluginContext];
+  v31 = [informationPluginContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteInformationPluginContext];
   }
 
-  v33 = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  homeCommunicationContext = [(FLOWSchemaFLOWDomainContext *)self homeCommunicationContext];
+  v34 = [homeCommunicationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteHomeCommunicationContext];
   }
 
-  v36 = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  notificationContext = [(FLOWSchemaFLOWDomainContext *)self notificationContext];
+  v37 = [notificationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteNotificationContext];
   }
 
-  v39 = [(FLOWSchemaFLOWDomainContext *)self photosContext];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  photosContext = [(FLOWSchemaFLOWDomainContext *)self photosContext];
+  v40 = [photosContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(FLOWSchemaFLOWDomainContext *)self deletePhotosContext];
   }
 
-  v42 = [(FLOWSchemaFLOWDomainContext *)self safariContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  safariContext = [(FLOWSchemaFLOWDomainContext *)self safariContext];
+  v43 = [safariContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(FLOWSchemaFLOWDomainContext *)self deleteSafariContext];
   }

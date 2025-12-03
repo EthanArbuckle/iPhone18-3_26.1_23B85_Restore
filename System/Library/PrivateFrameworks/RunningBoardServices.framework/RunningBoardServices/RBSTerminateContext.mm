@@ -1,13 +1,13 @@
 @interface RBSTerminateContext
-+ (id)defaultContextWithExplanation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultContextWithExplanation:(id)explanation;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSTerminateContext)initWithExplanation:(id)a3;
-- (RBSTerminateContext)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RBSTerminateContext)initWithExplanation:(id)explanation;
+- (RBSTerminateContext)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
-- (void)setExplanation:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
+- (void)setExplanation:(id)explanation;
 @end
 
 @implementation RBSTerminateContext
@@ -118,10 +118,10 @@
   return v18;
 }
 
-+ (id)defaultContextWithExplanation:(id)a3
++ (id)defaultContextWithExplanation:(id)explanation
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithExplanation:v4];
+  explanationCopy = explanation;
+  v5 = [[self alloc] initWithExplanation:explanationCopy];
 
   [v5 setReportType:0];
   [v5 setExceptionCode:3735905538];
@@ -131,9 +131,9 @@
   return v5;
 }
 
-- (RBSTerminateContext)initWithExplanation:(id)a3
+- (RBSTerminateContext)initWithExplanation:(id)explanation
 {
-  v4 = a3;
+  explanationCopy = explanation;
   v10.receiver = self;
   v10.super_class = RBSTerminateContext;
   v5 = [(RBSTerminateContext *)&v10 init];
@@ -141,7 +141,7 @@
   if (v5)
   {
     v5->_maximumTerminationResistance = 40;
-    v7 = [v4 copy];
+    v7 = [explanationCopy copy];
     explanation = v6->_explanation;
     v6->_explanation = v7;
   }
@@ -149,9 +149,9 @@
   return v6;
 }
 
-- (void)setExplanation:(id)a3
+- (void)setExplanation:(id)explanation
 {
-  v4 = [a3 copy];
+  v4 = [explanation copy];
   explanation = self->_explanation;
   self->_explanation = v4;
 
@@ -166,23 +166,23 @@
   return v4 ^ (v4 >> 31);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_17;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_reportType != v4->_reportType || self->_maximumTerminationResistance != v4->_maximumTerminationResistance || self->_exceptionDomain != v4->_exceptionDomain || self->_exceptionCode != v4->_exceptionCode || self->_preventIfBeingDebugged != v4->_preventIfBeingDebugged || (explanation = self->_explanation, explanation != v4->_explanation) && ![(NSString *)explanation isEqualToString:?]|| (attributes = self->_attributes, attributes != v4->_attributes) && ![(NSArray *)attributes isEqualToArray:?])
+  if (v5 != objc_opt_class() || self->_reportType != equalCopy->_reportType || self->_maximumTerminationResistance != equalCopy->_maximumTerminationResistance || self->_exceptionDomain != equalCopy->_exceptionDomain || self->_exceptionCode != equalCopy->_exceptionCode || self->_preventIfBeingDebugged != equalCopy->_preventIfBeingDebugged || (explanation = self->_explanation, explanation != equalCopy->_explanation) && ![(NSString *)explanation isEqualToString:?]|| (attributes = self->_attributes, attributes != equalCopy->_attributes) && ![(NSArray *)attributes isEqualToArray:?])
   {
     v10 = 0;
     goto LABEL_18;
   }
 
   additionalPayload = self->_additionalPayload;
-  v9 = v4->_additionalPayload;
+  v9 = equalCopy->_additionalPayload;
   if (additionalPayload == v9)
   {
 LABEL_17:
@@ -201,42 +201,42 @@ LABEL_18:
   return v10;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[RBSTerminateContext exceptionDomain](self forKey:{"exceptionDomain"), @"_exceptionDomain"}];
-  [v4 encodeInt64:-[RBSTerminateContext exceptionCode](self forKey:{"exceptionCode"), @"_exceptionCode"}];
-  [v4 encodeInt64:-[RBSTerminateContext maximumTerminationResistance](self forKey:{"maximumTerminationResistance"), @"_maximumTerminationResistance"}];
-  [v4 encodeBool:-[RBSTerminateContext preventIfBeingDebugged](self forKey:{"preventIfBeingDebugged"), @"_preventIfBeingDebugged"}];
-  [v4 encodeInt64:-[RBSTerminateContext reportType](self forKey:{"reportType"), @"_reportType"}];
-  v5 = [(RBSTerminateContext *)self attributes];
-  [v4 encodeObject:v5 forKey:@"_attributes"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[RBSTerminateContext exceptionDomain](self forKey:{"exceptionDomain"), @"_exceptionDomain"}];
+  [coderCopy encodeInt64:-[RBSTerminateContext exceptionCode](self forKey:{"exceptionCode"), @"_exceptionCode"}];
+  [coderCopy encodeInt64:-[RBSTerminateContext maximumTerminationResistance](self forKey:{"maximumTerminationResistance"), @"_maximumTerminationResistance"}];
+  [coderCopy encodeBool:-[RBSTerminateContext preventIfBeingDebugged](self forKey:{"preventIfBeingDebugged"), @"_preventIfBeingDebugged"}];
+  [coderCopy encodeInt64:-[RBSTerminateContext reportType](self forKey:{"reportType"), @"_reportType"}];
+  attributes = [(RBSTerminateContext *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"_attributes"];
 
-  v6 = [(RBSTerminateContext *)self explanation];
-  [v4 encodeObject:v6 forKey:@"_explanation"];
+  explanation = [(RBSTerminateContext *)self explanation];
+  [coderCopy encodeObject:explanation forKey:@"_explanation"];
 
   v7 = RBSXPCPackObject(self->_additionalPayload);
-  [v4 encodeXPCObject:v7 forKey:@"_additionalPayload"];
+  [coderCopy encodeXPCObject:v7 forKey:@"_additionalPayload"];
 }
 
-- (RBSTerminateContext)initWithRBSXPCCoder:(id)a3
+- (RBSTerminateContext)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_explanation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_explanation"];
   v6 = [(RBSTerminateContext *)self initWithExplanation:v5];
 
   if (v6)
   {
-    -[RBSTerminateContext setExceptionDomain:](v6, "setExceptionDomain:", [v4 decodeInt64ForKey:@"_exceptionDomain"]);
-    -[RBSTerminateContext setExceptionCode:](v6, "setExceptionCode:", [v4 decodeInt64ForKey:@"_exceptionCode"]);
-    -[RBSTerminateContext setMaximumTerminationResistance:](v6, "setMaximumTerminationResistance:", [v4 decodeInt64ForKey:@"_maximumTerminationResistance"]);
-    -[RBSTerminateContext setPreventIfBeingDebugged:](v6, "setPreventIfBeingDebugged:", [v4 decodeBoolForKey:@"_preventIfBeingDebugged"]);
-    -[RBSTerminateContext setReportType:](v6, "setReportType:", [v4 decodeInt64ForKey:@"_reportType"]);
+    -[RBSTerminateContext setExceptionDomain:](v6, "setExceptionDomain:", [coderCopy decodeInt64ForKey:@"_exceptionDomain"]);
+    -[RBSTerminateContext setExceptionCode:](v6, "setExceptionCode:", [coderCopy decodeInt64ForKey:@"_exceptionCode"]);
+    -[RBSTerminateContext setMaximumTerminationResistance:](v6, "setMaximumTerminationResistance:", [coderCopy decodeInt64ForKey:@"_maximumTerminationResistance"]);
+    -[RBSTerminateContext setPreventIfBeingDebugged:](v6, "setPreventIfBeingDebugged:", [coderCopy decodeBoolForKey:@"_preventIfBeingDebugged"]);
+    -[RBSTerminateContext setReportType:](v6, "setReportType:", [coderCopy decodeInt64ForKey:@"_reportType"]);
     v7 = objc_opt_class();
-    v8 = [v4 decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"_attributes"];
+    v8 = [coderCopy decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"_attributes"];
     [(RBSTerminateContext *)v6 setAttributes:v8];
 
-    v9 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_additionalPayload"];
+    v9 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_additionalPayload"];
     v10 = RBSXPCUnpackObject(v9);
     [(RBSTerminateContext *)v6 setAdditionalPayload:v10];
   }
@@ -244,7 +244,7 @@ LABEL_18:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RBSTerminateContext allocWithZone:?], "initWithExplanation:", self->_explanation];
   [(RBSTerminateContext *)v4 setExceptionCode:self->_exceptionCode];

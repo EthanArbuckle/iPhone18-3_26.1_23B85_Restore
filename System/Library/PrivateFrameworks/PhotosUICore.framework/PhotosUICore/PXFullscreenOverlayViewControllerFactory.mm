@@ -1,20 +1,20 @@
 @interface PXFullscreenOverlayViewControllerFactory
-+ (id)makeViewControllerWithOverlayControllers:(id)a3;
++ (id)makeViewControllerWithOverlayControllers:(id)controllers;
 - (PXFullscreenOverlayViewControllerFactory)init;
 @end
 
 @implementation PXFullscreenOverlayViewControllerFactory
 
-+ (id)makeViewControllerWithOverlayControllers:(id)a3
++ (id)makeViewControllerWithOverlayControllers:(id)controllers
 {
-  v3 = a3;
-  if (a3)
+  controllersCopy = controllers;
+  if (controllers)
   {
     sub_1A3DE7610();
-    v3 = sub_1A524CA34();
+    controllersCopy = sub_1A524CA34();
   }
 
-  v4 = sub_1A3DE7458(v3);
+  v4 = sub_1A3DE7458(controllersCopy);
 
   return v4;
 }

@@ -1,12 +1,12 @@
 @interface CKThrottleManager
 + (id)sharedManager;
-- (BOOL)addThrottle:(id)a3;
+- (BOOL)addThrottle:(id)throttle;
 - (id)CKStatusReportArray;
 - (id)allThrottles;
-- (id)enforcedThrottleForCriteria:(id)a3 willSendRequest:(BOOL)a4 outThrottleError:(id *)a5;
+- (id)enforcedThrottleForCriteria:(id)criteria willSendRequest:(BOOL)request outThrottleError:(id *)error;
 - (id)initInternal;
 - (void)resetThrottles;
-- (void)setThrottleObserver:(id)a3;
+- (void)setThrottleObserver:(id)observer;
 @end
 
 @implementation CKThrottleManager
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = sub_1885A0128;
   block[3] = &unk_1E70BC418;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4B6210 != -1)
   {
     dispatch_once(&qword_1ED4B6210, block);
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (void)setThrottleObserver:(id)a3
+- (void)setThrottleObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   pthread_mutex_lock(&self->_throttleLock);
-  objc_storeWeak(&self->_observer, v4);
+  objc_storeWeak(&self->_observer, observerCopy);
 
   pthread_mutex_unlock(&self->_throttleLock);
 }
@@ -116,14 +116,14 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addThrottle:(id)a3
+- (BOOL)addThrottle:(id)throttle
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  isExpired = objc_msgSend_isExpired(v4, v5, v6);
+  throttleCopy = throttle;
+  isExpired = objc_msgSend_isExpired(throttleCopy, v5, v6);
   pthread_mutex_lock(&self->_throttleLock);
-  v10 = objc_msgSend_label(v4, v8, v9);
-  v14 = objc_msgSend_throttleID(v4, v11, v12);
+  v10 = objc_msgSend_label(throttleCopy, v8, v9);
+  v14 = objc_msgSend_throttleID(throttleCopy, v11, v12);
   if (!(v10 | v14))
   {
     v19 = 0;
@@ -145,7 +145,7 @@
   if (v19)
   {
     v46 = isExpired;
-    v47 = v4;
+    v47 = throttleCopy;
     v20 = *v49;
 LABEL_4:
     v21 = 0;
@@ -198,13 +198,13 @@ LABEL_4:
       v15 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v13, &v61, 1);
       sub_1885A067C(&self->super.isa, v15);
 LABEL_17:
-      v4 = v47;
+      throttleCopy = v47;
       isExpired = v46;
       goto LABEL_19;
     }
 
     v29 = 0;
-    v4 = v47;
+    throttleCopy = v47;
     if ((v46 & 1) == 0)
     {
       goto LABEL_22;
@@ -222,12 +222,12 @@ LABEL_22:
       throttleList = self->_throttleList;
       if (throttleList)
       {
-        objc_msgSend_arrayByAddingObject_(throttleList, v13, v4);
+        objc_msgSend_arrayByAddingObject_(throttleList, v13, throttleCopy);
       }
 
       else
       {
-        v60 = v4;
+        v60 = throttleCopy;
         objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v13, &v60, 1);
       }
       v31 = ;
@@ -238,8 +238,8 @@ LABEL_22:
 
 LABEL_26:
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  objc_msgSend_throttleWasAdded_(self, v34, v4);
-  v37 = objc_msgSend_throttleID(v4, v35, v36);
+  objc_msgSend_throttleWasAdded_(self, v34, throttleCopy);
+  v37 = objc_msgSend_throttleID(throttleCopy, v35, v36);
 
   pthread_mutex_unlock(&self->_throttleLock);
   objc_msgSend_throttleWasAdded(WeakRetained, v38, v39);
@@ -262,7 +262,7 @@ LABEL_26:
     v53 = v41;
     v43 = &stru_1EFA32970;
     v54 = 2114;
-    v55 = v4;
+    v55 = throttleCopy;
     if (!v19)
     {
       v42 = &stru_1EFA32970;
@@ -293,11 +293,11 @@ LABEL_26:
   return v4;
 }
 
-- (id)enforcedThrottleForCriteria:(id)a3 willSendRequest:(BOOL)a4 outThrottleError:(id *)a5
+- (id)enforcedThrottleForCriteria:(id)criteria willSendRequest:(BOOL)request outThrottleError:(id *)error
 {
-  v6 = a4;
+  requestCopy = request;
   v96 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  criteriaCopy = criteria;
   pthread_mutex_lock(&self->_throttleLock);
   v82 = 0u;
   v83 = 0u;
@@ -310,7 +310,7 @@ LABEL_26:
 
     v15 = 0;
     v14 = 0;
-    if (!v6)
+    if (!requestCopy)
     {
       goto LABEL_45;
     }
@@ -318,8 +318,8 @@ LABEL_26:
     goto LABEL_36;
   }
 
-  v76 = v6;
-  v75 = a5;
+  v76 = requestCopy;
+  errorCopy = error;
   v77 = 0;
   v14 = 0;
   v15 = 0;
@@ -347,7 +347,7 @@ LABEL_26:
         objc_msgSend_addObject_(v15, v20, v19);
       }
 
-      else if (objc_msgSend_appliesToCriteria_(v19, v20, v8))
+      else if (objc_msgSend_appliesToCriteria_(v19, v20, criteriaCopy))
       {
         if (!v14)
         {
@@ -435,12 +435,12 @@ LABEL_36:
       v91 = 2048;
       v92 = v17;
       v93 = 2112;
-      v94 = v8;
+      v94 = criteriaCopy;
       _os_log_impl(&dword_1883EA000, v37, OS_LOG_TYPE_DEFAULT, "Throttle %{public}@ triggered, allowed in %lds: %@", buf, 0x20u);
     }
   }
 
-  if (v75)
+  if (errorCopy)
   {
     if (!v14)
     {
@@ -492,7 +492,7 @@ LABEL_36:
 
     v13 = v77;
     v62 = v61;
-    *v75 = v61;
+    *errorCopy = v61;
 
 LABEL_44:
   }

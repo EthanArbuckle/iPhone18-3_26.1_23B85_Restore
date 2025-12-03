@@ -7,7 +7,7 @@
 
 - (void)clearPreview
 {
-  v2 = self;
+  selfCopy = self;
   sub_10083C82C();
 }
 

@@ -1,24 +1,24 @@
 @interface NWSMetricReporter
-- (void)sendHTTPMetrics:(id)a3 onQueue:(id)a4;
-- (void)sendStreamMetrics:(id)a3 onQueue:(id)a4;
+- (void)sendHTTPMetrics:(id)metrics onQueue:(id)queue;
+- (void)sendStreamMetrics:(id)metrics onQueue:(id)queue;
 @end
 
 @implementation NWSMetricReporter
 
-- (void)sendHTTPMetrics:(id)a3 onQueue:(id)a4
+- (void)sendHTTPMetrics:(id)metrics onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  queueCopy = queue;
   if (os_variant_has_internal_content())
   {
-    v8 = [(NWSClientConnection *)self connection];
+    connection = [(NWSClientConnection *)self connection];
 
-    if (!v8)
+    if (!connection)
     {
-      [(NWSClientConnection *)self activateConnectionOn:v7];
+      [(NWSClientConnection *)self activateConnectionOn:queueCopy];
     }
 
-    if (![v6 count] || (objc_msgSend(v6, "objectAtIndex:", 0), v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
+    if (![metricsCopy count] || (objc_msgSend(metricsCopy, "objectAtIndex:", 0), v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
     {
       v11 = nws_log_obj();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -27,17 +27,17 @@
       }
     }
 
-    v12 = [(NWSClientConnection *)self connection];
+    connection2 = [(NWSClientConnection *)self connection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __45__NWSMetricReporter_sendHTTPMetrics_onQueue___block_invoke;
     v15[3] = &unk_27996CFE0;
     v15[4] = self;
-    v13 = [v12 remoteObjectProxyWithErrorHandler:v15];
+    v13 = [connection2 remoteObjectProxyWithErrorHandler:v15];
 
     if (v13)
     {
-      [v13 sendHTTPMetricsWithMetrics:v6];
+      [v13 sendHTTPMetricsWithMetrics:metricsCopy];
     }
 
     else
@@ -66,20 +66,20 @@ void __45__NWSMetricReporter_sendHTTPMetrics_onQueue___block_invoke(uint64_t a1,
   [*(a1 + 32) setConnection:0];
 }
 
-- (void)sendStreamMetrics:(id)a3 onQueue:(id)a4
+- (void)sendStreamMetrics:(id)metrics onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  queueCopy = queue;
   if (os_variant_has_internal_content())
   {
-    v8 = [(NWSClientConnection *)self connection];
+    connection = [(NWSClientConnection *)self connection];
 
-    if (!v8)
+    if (!connection)
     {
-      [(NWSClientConnection *)self activateConnectionOn:v7];
+      [(NWSClientConnection *)self activateConnectionOn:queueCopy];
     }
 
-    if (![v6 count] || (objc_msgSend(v6, "objectAtIndex:", 0), v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
+    if (![metricsCopy count] || (objc_msgSend(metricsCopy, "objectAtIndex:", 0), v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
     {
       v11 = nws_log_obj();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -88,17 +88,17 @@ void __45__NWSMetricReporter_sendHTTPMetrics_onQueue___block_invoke(uint64_t a1,
       }
     }
 
-    v12 = [(NWSClientConnection *)self connection];
+    connection2 = [(NWSClientConnection *)self connection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __47__NWSMetricReporter_sendStreamMetrics_onQueue___block_invoke;
     v15[3] = &unk_27996CFE0;
     v15[4] = self;
-    v13 = [v12 remoteObjectProxyWithErrorHandler:v15];
+    v13 = [connection2 remoteObjectProxyWithErrorHandler:v15];
 
     if (v13)
     {
-      [v13 sendStreamingMetricsWithMetrics:v6];
+      [v13 sendStreamingMetricsWithMetrics:metricsCopy];
     }
 
     else

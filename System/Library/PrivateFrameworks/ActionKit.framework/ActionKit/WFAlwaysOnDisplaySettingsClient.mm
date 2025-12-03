@@ -1,50 +1,50 @@
 @interface WFAlwaysOnDisplaySettingsClient
 + (BOOL)canRunIntent;
 + (id)alwaysOnPublisher;
-+ (id)filteredPublisherForAlwaysOnPublisher:(id)a3;
++ (id)filteredPublisherForAlwaysOnPublisher:(id)publisher;
 + (id)reversalArbiter;
 + (id)reverseAlwaysOnPublisher;
-+ (void)createClientWithCompletionHandler:(id)a3;
-+ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)a3;
-+ (void)getBookmarkForFirstEventAfterBookmark:(id)a3 completionHandler:(id)a4;
-+ (void)getReversalStateWithBookmark:(id)a3 completionHandler:(id)a4;
-- (void)getStateWithCompletionHandler:(id)a3;
++ (void)createClientWithCompletionHandler:(id)handler;
++ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)handler;
++ (void)getBookmarkForFirstEventAfterBookmark:(id)bookmark completionHandler:(id)handler;
++ (void)getReversalStateWithBookmark:(id)bookmark completionHandler:(id)handler;
+- (void)getStateWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFAlwaysOnDisplaySettingsClient
 
-- (void)getStateWithCompletionHandler:(id)a3
+- (void)getStateWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   if (+[WFAlwaysOnDisplaySettingsClient canRunIntent])
   {
-    v6[2](v6, [(WFAlwaysOnDisplaySettingsClient *)self alwaysOnDisplayState], 0);
-    v4 = v6;
+    handlerCopy[2](handlerCopy, [(WFAlwaysOnDisplaySettingsClient *)self alwaysOnDisplayState], 0);
+    v4 = handlerCopy;
   }
 
   else
   {
     v5 = WFSettingsClientError();
-    v6[2](v6, 0, v5);
+    handlerCopy[2](handlerCopy, 0, v5);
 
     v4 = v5;
   }
 }
 
-+ (void)getReversalStateWithBookmark:(id)a3 completionHandler:(id)a4
++ (void)getReversalStateWithBookmark:(id)bookmark completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 reversalArbiter];
-  v9 = [v7 biomeBookmark];
+  handlerCopy = handler;
+  bookmarkCopy = bookmark;
+  reversalArbiter = [self reversalArbiter];
+  biomeBookmark = [bookmarkCopy biomeBookmark];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__WFAlwaysOnDisplaySettingsClient_getReversalStateWithBookmark_completionHandler___block_invoke;
   v11[3] = &unk_278C19310;
-  v12 = v6;
-  v10 = v6;
-  [v8 getReversalStateWithBookmark:v9 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [reversalArbiter getReversalStateWithBookmark:biomeBookmark completionHandler:v11];
 }
 
 void __82__WFAlwaysOnDisplaySettingsClient_getReversalStateWithBookmark_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -66,17 +66,17 @@ void __82__WFAlwaysOnDisplaySettingsClient_getReversalStateWithBookmark_completi
   }
 }
 
-+ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)a3
++ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 reversalArbiter];
+  handlerCopy = handler;
+  reversalArbiter = [self reversalArbiter];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__WFAlwaysOnDisplaySettingsClient_getBookmarkForCurrentStateWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C1D920;
-  v8 = v4;
-  v6 = v4;
-  [v5 getBookmarkForCurrentStateWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [reversalArbiter getBookmarkForCurrentStateWithCompletionHandler:v7];
 }
 
 void __83__WFAlwaysOnDisplaySettingsClient_getBookmarkForCurrentStateWithCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -96,20 +96,20 @@ void __83__WFAlwaysOnDisplaySettingsClient_getBookmarkForCurrentStateWithComplet
   }
 }
 
-+ (void)getBookmarkForFirstEventAfterBookmark:(id)a3 completionHandler:(id)a4
++ (void)getBookmarkForFirstEventAfterBookmark:(id)bookmark completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 reversalArbiter];
-  v9 = [v7 biomeBookmark];
+  handlerCopy = handler;
+  bookmarkCopy = bookmark;
+  reversalArbiter = [self reversalArbiter];
+  biomeBookmark = [bookmarkCopy biomeBookmark];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__WFAlwaysOnDisplaySettingsClient_getBookmarkForFirstEventAfterBookmark_completionHandler___block_invoke;
   v11[3] = &unk_278C1D920;
-  v12 = v6;
-  v10 = v6;
-  [v8 getBookmarkForFirstEventAfterBookmark:v9 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [reversalArbiter getBookmarkForFirstEventAfterBookmark:biomeBookmark completionHandler:v11];
 }
 
 void __91__WFAlwaysOnDisplaySettingsClient_getBookmarkForFirstEventAfterBookmark_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -132,9 +132,9 @@ void __91__WFAlwaysOnDisplaySettingsClient_getBookmarkForFirstEventAfterBookmark
 + (id)reversalArbiter
 {
   v3 = objc_alloc(MEMORY[0x277D7C850]);
-  v4 = [a1 alwaysOnPublisher];
-  v5 = [a1 reverseAlwaysOnPublisher];
-  v6 = [v3 initWithPublisher:v4 reversePublisher:v5];
+  alwaysOnPublisher = [self alwaysOnPublisher];
+  reverseAlwaysOnPublisher = [self reverseAlwaysOnPublisher];
+  v6 = [v3 initWithPublisher:alwaysOnPublisher reversePublisher:reverseAlwaysOnPublisher];
 
   return v6;
 }
@@ -142,12 +142,12 @@ void __91__WFAlwaysOnDisplaySettingsClient_getBookmarkForFirstEventAfterBookmark
 + (id)reverseAlwaysOnPublisher
 {
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 Display];
-  v6 = [v5 AlwaysOn];
-  v7 = [MEMORY[0x277D7C850] reversePublisherOptions];
-  v8 = [v6 publisherWithOptions:v7];
-  v9 = [a1 filteredPublisherForAlwaysOnPublisher:v8];
+  device = [v3 Device];
+  display = [device Display];
+  alwaysOn = [display AlwaysOn];
+  reversePublisherOptions = [MEMORY[0x277D7C850] reversePublisherOptions];
+  v8 = [alwaysOn publisherWithOptions:reversePublisherOptions];
+  v9 = [self filteredPublisherForAlwaysOnPublisher:v8];
 
   return v9;
 }
@@ -155,19 +155,19 @@ void __91__WFAlwaysOnDisplaySettingsClient_getBookmarkForFirstEventAfterBookmark
 + (id)alwaysOnPublisher
 {
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 Display];
-  v6 = [v5 AlwaysOn];
-  v7 = [v6 publisher];
-  v8 = [a1 filteredPublisherForAlwaysOnPublisher:v7];
+  device = [v3 Device];
+  display = [device Display];
+  alwaysOn = [display AlwaysOn];
+  publisher = [alwaysOn publisher];
+  v8 = [self filteredPublisherForAlwaysOnPublisher:publisher];
 
   return v8;
 }
 
-+ (id)filteredPublisherForAlwaysOnPublisher:(id)a3
++ (id)filteredPublisherForAlwaysOnPublisher:(id)publisher
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  publisherCopy = publisher;
   v4 = getWFAlwaysOnSettingsClientLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -176,7 +176,7 @@ void __91__WFAlwaysOnDisplaySettingsClient_getBookmarkForFirstEventAfterBookmark
     _os_log_impl(&dword_23DE30000, v4, OS_LOG_TYPE_DEBUG, "%s Filtering publisher", &v8, 0xCu);
   }
 
-  v5 = [v3 filterWithIsIncluded:&__block_literal_global_181];
+  v5 = [publisherCopy filterWithIsIncluded:&__block_literal_global_181];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -235,25 +235,25 @@ LABEL_8:
 
 + (BOOL)canRunIntent
 {
-  v2 = [MEMORY[0x277D79F18] currentDevice];
-  v3 = ![v2 idiom] && (objc_msgSend(v2, "hasCapability:", *MEMORY[0x277D7A3C0]) & 1) != 0;
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  v3 = ![currentDevice idiom] && (objc_msgSend(currentDevice, "hasCapability:", *MEMORY[0x277D7A3C0]) & 1) != 0;
 
   return v3;
 }
 
-+ (void)createClientWithCompletionHandler:(id)a3
++ (void)createClientWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (+[WFAlwaysOnDisplaySettingsClient canRunIntent])
   {
     v4 = objc_alloc_init(WFAlwaysOnDisplaySettingsClient);
-    v3[2](v3, v4, 0);
+    handlerCopy[2](handlerCopy, v4, 0);
   }
 
   else
   {
     v4 = WFSettingsClientError();
-    (v3)[2](v3, 0, v4);
+    (handlerCopy)[2](handlerCopy, 0, v4);
   }
 }
 

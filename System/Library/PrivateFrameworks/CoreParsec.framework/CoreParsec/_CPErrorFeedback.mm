@@ -1,10 +1,10 @@
 @interface _CPErrorFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPErrorFeedback)init;
-- (_CPErrorFeedback)initWithError:(id)a3;
-- (_CPErrorFeedback)initWithFacade:(id)a3;
+- (_CPErrorFeedback)initWithError:(id)error;
+- (_CPErrorFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPErrorFeedback
@@ -17,34 +17,34 @@
   return v5 ^ [(NSString *)self->_relatedStartNetworkSearchFeedbackId hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_18;
   }
 
-  v6 = [(_CPErrorFeedback *)self error];
-  v7 = [v4 error];
-  if ((v6 != 0) == (v7 == 0))
+  error = [(_CPErrorFeedback *)self error];
+  error2 = [equalCopy error];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(_CPErrorFeedback *)self error];
-  if (v8)
+  error3 = [(_CPErrorFeedback *)self error];
+  if (error3)
   {
-    v9 = v8;
-    v10 = [(_CPErrorFeedback *)self error];
-    v11 = [v4 error];
-    v12 = [v10 isEqual:v11];
+    v9 = error3;
+    error4 = [(_CPErrorFeedback *)self error];
+    error5 = [equalCopy error];
+    v12 = [error4 isEqual:error5];
 
     if (!v12)
     {
@@ -56,20 +56,20 @@
   {
   }
 
-  v6 = [(_CPErrorFeedback *)self underlyingError];
-  v7 = [v4 underlyingError];
-  if ((v6 != 0) == (v7 == 0))
+  error = [(_CPErrorFeedback *)self underlyingError];
+  error2 = [equalCopy underlyingError];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_CPErrorFeedback *)self underlyingError];
-  if (v13)
+  underlyingError = [(_CPErrorFeedback *)self underlyingError];
+  if (underlyingError)
   {
-    v14 = v13;
-    v15 = [(_CPErrorFeedback *)self underlyingError];
-    v16 = [v4 underlyingError];
-    v17 = [v15 isEqual:v16];
+    v14 = underlyingError;
+    underlyingError2 = [(_CPErrorFeedback *)self underlyingError];
+    underlyingError3 = [equalCopy underlyingError];
+    v17 = [underlyingError2 isEqual:underlyingError3];
 
     if (!v17)
     {
@@ -81,12 +81,12 @@
   {
   }
 
-  v6 = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
-  v7 = [v4 relatedStartNetworkSearchFeedbackId];
-  if ((v6 != 0) != (v7 == 0))
+  error = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
+  error2 = [equalCopy relatedStartNetworkSearchFeedbackId];
+  if ((error != 0) != (error2 == 0))
   {
-    v18 = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
-    if (!v18)
+    relatedStartNetworkSearchFeedbackId = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
+    if (!relatedStartNetworkSearchFeedbackId)
     {
 
 LABEL_21:
@@ -94,10 +94,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
-    v21 = [v4 relatedStartNetworkSearchFeedbackId];
-    v22 = [v20 isEqual:v21];
+    v19 = relatedStartNetworkSearchFeedbackId;
+    relatedStartNetworkSearchFeedbackId2 = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
+    relatedStartNetworkSearchFeedbackId3 = [equalCopy relatedStartNetworkSearchFeedbackId];
+    v22 = [relatedStartNetworkSearchFeedbackId2 isEqual:relatedStartNetworkSearchFeedbackId3];
 
     if (v22)
     {
@@ -117,39 +117,39 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(_CPErrorFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPErrorFeedback *)self error];
+  error = [(_CPErrorFeedback *)self error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(_CPErrorFeedback *)self error];
+    error2 = [(_CPErrorFeedback *)self error];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_CPErrorFeedback *)self underlyingError];
+  underlyingError = [(_CPErrorFeedback *)self underlyingError];
 
-  if (v7)
+  if (underlyingError)
   {
-    v8 = [(_CPErrorFeedback *)self underlyingError];
+    underlyingError2 = [(_CPErrorFeedback *)self underlyingError];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
+  relatedStartNetworkSearchFeedbackId = [(_CPErrorFeedback *)self relatedStartNetworkSearchFeedbackId];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (relatedStartNetworkSearchFeedbackId)
   {
     relatedStartNetworkSearchFeedbackId = self->_relatedStartNetworkSearchFeedbackId;
     PBDataWriterWriteStringField();
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
@@ -167,21 +167,21 @@ LABEL_19:
   return v2;
 }
 
-- (_CPErrorFeedback)initWithError:(id)a3
+- (_CPErrorFeedback)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(_CPErrorFeedback *)self init];
   if (v5)
   {
     [(_CPErrorFeedback *)v5 setTimestamp:mach_absolute_time()];
-    if (v4)
+    if (errorCopy)
     {
-      v6 = [[_CPError alloc] initWithFacade:v4];
+      v6 = [[_CPError alloc] initWithFacade:errorCopy];
       [(_CPErrorFeedback *)v5 setError:v6];
     }
 
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:*MEMORY[0x1E696AA08]];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
     if (v8)
     {
@@ -195,15 +195,15 @@ LABEL_19:
   return v5;
 }
 
-- (_CPErrorFeedback)initWithFacade:(id)a3
+- (_CPErrorFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
-  v5 = [v4 error];
-  v6 = [(_CPErrorFeedback *)self initWithError:v5];
+  facadeCopy = facade;
+  error = [facadeCopy error];
+  v6 = [(_CPErrorFeedback *)self initWithError:error];
 
   if (v6)
   {
-    -[_CPErrorFeedback setTimestamp:](v6, "setTimestamp:", [v4 timestamp]);
+    -[_CPErrorFeedback setTimestamp:](v6, "setTimestamp:", [facadeCopy timestamp]);
     v7 = v6;
   }
 

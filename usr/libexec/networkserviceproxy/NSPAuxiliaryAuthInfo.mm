@@ -1,8 +1,8 @@
 @interface NSPAuxiliaryAuthInfo
-- (NSPAuxiliaryAuthInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPAuxiliaryAuthInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPAuxiliaryAuthInfo
@@ -26,19 +26,19 @@
   return v3;
 }
 
-- (NSPAuxiliaryAuthInfo)initWithCoder:(id)a3
+- (NSPAuxiliaryAuthInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NSPAuxiliaryAuthInfo;
   v5 = [(NSPAuxiliaryAuthInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryAuthInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryAuthInfo"];
     auxiliaryAuthInfo = v5->_auxiliaryAuthInfo;
     v5->_auxiliaryAuthInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenExpirationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v8;
   }
@@ -46,25 +46,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v4 encodeObject:objc_getProperty(self forKey:{v5, 8, 1), @"auxiliaryAuthInfo"}];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v5, 8, 1), @"auxiliaryAuthInfo"}];
     Property = objc_getProperty(self, v6, 16, 1);
   }
 
   else
   {
-    [v4 encodeObject:0 forKey:@"auxiliaryAuthInfo"];
+    [coderCopy encodeObject:0 forKey:@"auxiliaryAuthInfo"];
     Property = 0;
   }
 
-  [a3 encodeObject:Property forKey:@"tokenExpirationDate"];
+  [coder encodeObject:Property forKey:@"tokenExpirationDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPAuxiliaryAuthInfo allocWithZone:?]];
   v6 = v4;

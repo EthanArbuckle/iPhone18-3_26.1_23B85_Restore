@@ -1,13 +1,13 @@
 @interface NSPPrivacyProxyNetworkRegistration
-- (void)reportErrorForAgent:(id)a3 error:(int)a4 withOptions:(id)a5;
-- (void)tokenLowWaterMarkReachedForAgent:(id)a3;
+- (void)reportErrorForAgent:(id)agent error:(int)error withOptions:(id)options;
+- (void)tokenLowWaterMarkReachedForAgent:(id)agent;
 @end
 
 @implementation NSPPrivacyProxyNetworkRegistration
 
-- (void)tokenLowWaterMarkReachedForAgent:(id)a3
+- (void)tokenLowWaterMarkReachedForAgent:(id)agent
 {
-  v4 = a3;
+  agentCopy = agent;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -19,19 +19,19 @@
   block[1] = 3221225472;
   block[2] = sub_10004261C;
   block[3] = &unk_100109370;
-  v8 = v4;
-  v9 = self;
+  v8 = agentCopy;
+  selfCopy = self;
   v10 = v11;
-  v6 = v4;
+  v6 = agentCopy;
   dispatch_async(v5, block);
 
   _Block_object_dispose(v11, 8);
 }
 
-- (void)reportErrorForAgent:(id)a3 error:(int)a4 withOptions:(id)a5
+- (void)reportErrorForAgent:(id)agent error:(int)error withOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  agentCopy = agent;
+  optionsCopy = options;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -43,13 +43,13 @@
   block[1] = 3221225472;
   block[2] = sub_1000428AC;
   block[3] = &unk_100109398;
-  v18 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
+  errorCopy = error;
+  v14 = agentCopy;
+  selfCopy = self;
+  v16 = optionsCopy;
   v17 = v19;
-  v11 = v9;
-  v12 = v8;
+  v11 = optionsCopy;
+  v12 = agentCopy;
   dispatch_async(v10, block);
 
   _Block_object_dispose(v19, 8);

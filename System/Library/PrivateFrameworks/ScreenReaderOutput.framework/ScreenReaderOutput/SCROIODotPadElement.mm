@@ -1,22 +1,22 @@
 @interface SCROIODotPadElement
 - (NSString)address;
-- (SCROIODotPadElement)initWithCentral:(id)a3 peripheral:(id)a4;
+- (SCROIODotPadElement)initWithCentral:(id)central peripheral:(id)peripheral;
 @end
 
 @implementation SCROIODotPadElement
 
-- (SCROIODotPadElement)initWithCentral:(id)a3 peripheral:(id)a4
+- (SCROIODotPadElement)initWithCentral:(id)central peripheral:(id)peripheral
 {
-  v7 = a3;
-  v8 = a4;
+  centralCopy = central;
+  peripheralCopy = peripheral;
   v12.receiver = self;
   v12.super_class = SCROIODotPadElement;
   v9 = [(SCROIODotPadElement *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_central, a3);
-    objc_storeStrong(&v10->_peripheral, a4);
+    objc_storeStrong(&v9->_central, central);
+    objc_storeStrong(&v10->_peripheral, peripheral);
     v10->_identifier = atomic_fetch_add_explicit(_currentIdentifier, 1u, memory_order_relaxed);
   }
 
@@ -25,10 +25,10 @@
 
 - (NSString)address
 {
-  v2 = [(CBPeripheral *)self->_peripheral identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(CBPeripheral *)self->_peripheral identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 @end

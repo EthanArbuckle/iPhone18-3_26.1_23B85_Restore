@@ -5,35 +5,35 @@
 - (BOOL)shouldScheduleSnapshot;
 - (BOOL)shouldSnapshot;
 - (id)accountPurposeForHTMLAccount;
-- (id)accountPurposeForModernAccount:(id)a3;
+- (id)accountPurposeForModernAccount:(id)account;
 - (id)backgroundAppRefreshData;
-- (id)deviceSnapshotSummaryForDataType:(Class)a3;
-- (id)drawingSnapshotItemDataForDrawingAttachment:(id)a3;
+- (id)deviceSnapshotSummaryForDataType:(Class)type;
+- (id)drawingSnapshotItemDataForDrawingAttachment:(id)attachment;
 - (id)lastSnapshotRunningTimeStamp;
 - (id)lastSnapshotScheduleTimeStamp;
-- (id)snapshotItemDataForHTMLAccount:(id)a3;
-- (id)snapshotItemDataForModernAccount:(id)a3;
-- (id)sortedFoldersForAccount:(id)a3;
-- (id)tableSnapshotItemDataForTableAttachment:(id)a3;
-- (id)userSnapshotSummaryForDataType:(Class)a3;
-- (unint64_t)pageCountForDocScanAttachment:(id)a3;
+- (id)snapshotItemDataForHTMLAccount:(id)account;
+- (id)snapshotItemDataForModernAccount:(id)account;
+- (id)sortedFoldersForAccount:(id)account;
+- (id)tableSnapshotItemDataForTableAttachment:(id)attachment;
+- (id)userSnapshotSummaryForDataType:(Class)type;
+- (unint64_t)pageCountForDocScanAttachment:(id)attachment;
 - (void)beginMiniSnapshotBackgroundTask;
 - (void)checkIfSnapshotNotFiredForALongTime;
-- (void)performBlockForHTMLManagedObjectContext:(id)a3;
-- (void)performBlockForModernManagedObjectContext:(id)a3;
-- (void)reallyPerformSnapshotWithCompletionHandler:(id)a3;
+- (void)performBlockForHTMLManagedObjectContext:(id)context;
+- (void)performBlockForModernManagedObjectContext:(id)context;
+- (void)reallyPerformSnapshotWithCompletionHandler:(id)handler;
 - (void)scheduleSnapshotIfNecessary;
 - (void)setupContextsIfNecessary;
-- (void)snapshotAttachment:(id)a3 reportedDataToNote:(id)a4 reportedDataToAccount:(id)a5;
+- (void)snapshotAttachment:(id)attachment reportedDataToNote:(id)note reportedDataToAccount:(id)account;
 - (void)snapshotDevice;
-- (void)snapshotHTMLAccount:(id)a3 reportedDataToDevice:(id)a4 reportedDataFromFolderToDevice:(id)a5 reportedDataFromNoteToDevice:(id)a6;
-- (void)snapshotHTMLFolder:(id)a3 reportedDataToAccount:(id)a4 reportedDataToDevice:(id)a5 noteReportToAccount:(id)a6 reportedDataFromNoteToDevice:(id)a7;
-- (void)snapshotHTMLNote:(id)a3 reportedDataToAccount:(id)a4 reportedDataToDevice:(id)a5;
-- (void)snapshotModernAccount:(id)a3 reportedDataToDevice:(id)a4 reportedDataFromFolderToDevice:(id)a5 reportedDataFromNoteToDevice:(id)a6;
-- (void)snapshotModernFolder:(id)a3 reportedDataToParentFolder:(id)a4 reportedDataToAccount:(id)a5 reportedDataToDevice:(id)a6 reportedDataFromNotesToAccount:(id)a7 reportedDataFromAttachmentToAccount:(id)a8 reportedDataFromNoteToDevice:(id)a9;
-- (void)snapshotModernNote:(id)a3 reportedDataToAccount:(id)a4 reportToDevice:(id)a5 reportedDataFromAttachmentToAccount:(id)a6;
+- (void)snapshotHTMLAccount:(id)account reportedDataToDevice:(id)device reportedDataFromFolderToDevice:(id)toDevice reportedDataFromNoteToDevice:(id)noteToDevice;
+- (void)snapshotHTMLFolder:(id)folder reportedDataToAccount:(id)account reportedDataToDevice:(id)device noteReportToAccount:(id)toAccount reportedDataFromNoteToDevice:(id)toDevice;
+- (void)snapshotHTMLNote:(id)note reportedDataToAccount:(id)account reportedDataToDevice:(id)device;
+- (void)snapshotModernAccount:(id)account reportedDataToDevice:(id)device reportedDataFromFolderToDevice:(id)toDevice reportedDataFromNoteToDevice:(id)noteToDevice;
+- (void)snapshotModernFolder:(id)folder reportedDataToParentFolder:(id)parentFolder reportedDataToAccount:(id)account reportedDataToDevice:(id)device reportedDataFromNotesToAccount:(id)toAccount reportedDataFromAttachmentToAccount:(id)attachmentToAccount reportedDataFromNoteToDevice:(id)toDevice;
+- (void)snapshotModernNote:(id)note reportedDataToAccount:(id)account reportToDevice:(id)device reportedDataFromAttachmentToAccount:(id)toAccount;
 - (void)submitMiniSnapshot;
-- (void)submitSnapshotScheduleEventWithResult:(int64_t)a3 error:(id)a4 lastScheduledTime:(id)a5;
+- (void)submitSnapshotScheduleEventWithResult:(int64_t)result error:(id)error lastScheduledTime:(id)time;
 - (void)tearDownContextsIfNecessary;
 @end
 
@@ -62,18 +62,18 @@ uint64_t __38__ICNASnapshotReporter_sharedReporter__block_invoke()
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(ICNASnapshotReporter *)obj modernContext];
+  modernContext = [(ICNASnapshotReporter *)obj modernContext];
 
-  if (!v2)
+  if (!modernContext)
   {
-    v3 = [MEMORY[0x277D35F30] sharedContext];
-    v4 = [v3 workerManagedObjectContext];
-    [(ICNASnapshotReporter *)obj setModernContext:v4];
+    mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x277D35F30] workerManagedObjectContext];
+    [(ICNASnapshotReporter *)obj setModernContext:workerManagedObjectContext];
   }
 
-  v5 = [(ICNASnapshotReporter *)obj htmlContext];
+  htmlContext = [(ICNASnapshotReporter *)obj htmlContext];
 
-  if (!v5)
+  if (!htmlContext)
   {
     v6 = ICNewLegacyContext();
     [(ICNASnapshotReporter *)obj setHtmlContext:v6];
@@ -87,15 +87,15 @@ uint64_t __38__ICNASnapshotReporter_sharedReporter__block_invoke()
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(ICNASnapshotReporter *)obj contextHolderCount];
-  if (v2 <= 1)
+  contextHolderCount = [(ICNASnapshotReporter *)obj contextHolderCount];
+  if (contextHolderCount <= 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = v2;
+    v3 = contextHolderCount;
   }
 
   [(ICNASnapshotReporter *)obj setContextHolderCount:v3 - 1];
@@ -112,7 +112,7 @@ uint64_t __38__ICNASnapshotReporter_sharedReporter__block_invoke()
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_25C6BF000, log, OS_LOG_TYPE_ERROR, "Snapshot scheduled at %@ not run. Last snapshot was ran at %@", &v4, 0x16u);
@@ -121,31 +121,31 @@ uint64_t __38__ICNASnapshotReporter_sharedReporter__block_invoke()
 
 - (void)scheduleSnapshotIfNecessary
 {
-  v3 = [(ICNASnapshotReporter *)self shouldScheduleSnapshot];
+  shouldScheduleSnapshot = [(ICNASnapshotReporter *)self shouldScheduleSnapshot];
   v4 = os_log_create("com.apple.notes", "Analytics");
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (shouldScheduleSnapshot)
   {
     if (v5)
     {
       [ICNASnapshotReporter scheduleSnapshotIfNecessary];
     }
 
-    v6 = [(ICNASnapshotReporter *)self lastSnapshotScheduleTimeStamp];
-    v7 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v7 setObject:v8 forKey:@"analytics_last_snapshot_timestamp"];
+    lastSnapshotScheduleTimeStamp = [(ICNASnapshotReporter *)self lastSnapshotScheduleTimeStamp];
+    mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    date = [MEMORY[0x277CBEAA8] date];
+    [mEMORY[0x277D36180] setObject:date forKey:@"analytics_last_snapshot_timestamp"];
 
-    v9 = [MEMORY[0x277D35E58] sharedScheduler];
+    mEMORY[0x277D35E58] = [MEMORY[0x277D35E58] sharedScheduler];
     v10 = objc_opt_class();
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __51__ICNASnapshotReporter_scheduleSnapshotIfNecessary__block_invoke;
     v12[3] = &unk_2799AF2A0;
     v12[4] = self;
-    v13 = v6;
-    v11 = v6;
-    [v9 scheduleTask:v10 completion:v12];
+    v13 = lastSnapshotScheduleTimeStamp;
+    lastSnapshotScheduleTimeStamp2 = lastSnapshotScheduleTimeStamp;
+    [mEMORY[0x277D35E58] scheduleTask:v10 completion:v12];
   }
 
   else
@@ -155,8 +155,8 @@ uint64_t __38__ICNASnapshotReporter_sharedReporter__block_invoke()
       [ICNASnapshotReporter scheduleSnapshotIfNecessary];
     }
 
-    v11 = [(ICNASnapshotReporter *)self lastSnapshotScheduleTimeStamp];
-    [(ICNASnapshotReporter *)self submitSnapshotScheduleEventWithResult:3 error:0 lastScheduledTime:v11];
+    lastSnapshotScheduleTimeStamp2 = [(ICNASnapshotReporter *)self lastSnapshotScheduleTimeStamp];
+    [(ICNASnapshotReporter *)self submitSnapshotScheduleEventWithResult:3 error:0 lastScheduledTime:lastSnapshotScheduleTimeStamp2];
   }
 }
 
@@ -182,40 +182,40 @@ void __51__ICNASnapshotReporter_scheduleSnapshotIfNecessary__block_invoke(uint64
   [*(a1 + 32) submitSnapshotScheduleEventWithResult:v6 error:v5 lastScheduledTime:*(a1 + 40)];
 }
 
-- (void)submitSnapshotScheduleEventWithResult:(int64_t)a3 error:(id)a4 lastScheduledTime:(id)a5
+- (void)submitSnapshotScheduleEventWithResult:(int64_t)result error:(id)error lastScheduledTime:(id)time
 {
-  v27 = a4;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB18];
-  v9 = a5;
+  timeCopy = time;
   v10 = objc_alloc_init(v8);
-  v11 = [[ICASResultType alloc] initWithResultType:a3];
+  v11 = [[ICASResultType alloc] initWithResultType:result];
   v12 = [[ICASResultData alloc] initWithResultType:v11];
   [v10 addObject:v12];
-  if (v27)
+  if (errorCopy)
   {
     v13 = [ICASSnapshotErrorData alloc];
-    v14 = [v27 domain];
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v27, "code")}];
-    v16 = [(ICASSnapshotErrorData *)v13 initWithErrorDomain:v14 errorCode:v15];
+    domain = [errorCopy domain];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+    v16 = [(ICASSnapshotErrorData *)v13 initWithErrorDomain:domain errorCode:v15];
 
     [v10 addObject:v16];
   }
 
   v17 = [ICASSnapshotTimeData alloc];
   v18 = MEMORY[0x277CCABB0];
-  [v9 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v20 = v19;
 
   v21 = [v18 numberWithDouble:v20];
   v22 = [(ICASSnapshotTimeData *)v17 initWithLastTimeOfAttemptedSchedule:v21];
 
   [v10 addObject:v22];
-  v23 = [(ICNASnapshotReporter *)self backgroundAppRefreshData];
-  [v10 addObject:v23];
+  backgroundAppRefreshData = [(ICNASnapshotReporter *)self backgroundAppRefreshData];
+  [v10 addObject:backgroundAppRefreshData];
   v24 = +[ICNAController sharedController];
   v25 = objc_opt_class();
-  v26 = [(ICNAEventReporter *)self subTracker];
-  [v24 submitEventOfType:v25 pushThenPopDataObjects:v10 subTracker:v26];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v24 submitEventOfType:v25 pushThenPopDataObjects:v10 subTracker:subTracker];
 }
 
 - (void)submitMiniSnapshot
@@ -246,24 +246,24 @@ void __51__ICNASnapshotReporter_scheduleSnapshotIfNecessary__block_invoke(uint64
   [(ICNASnapshotReporter *)self performBlockForHTMLManagedObjectContext:v18];
   v7 = [[ICASMiniSnapshotData alloc] initWithMiniAccountSummary:v6];
   v8 = +[ICNAController sharedController];
-  v9 = [(ICNAEventReporter *)self subTracker];
-  [v8 enterGroupWithSubtracker:v9];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v8 enterGroupWithSubtracker:subTracker];
 
   v10 = +[ICNAController sharedController];
   v11 = objc_opt_class();
   v22[0] = v7;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v13 = [(ICNAEventReporter *)self subTracker];
-  [v10 submitEventOfType:v11 pushThenPopDataObjects:v12 subTracker:v13];
+  subTracker2 = [(ICNAEventReporter *)self subTracker];
+  [v10 submitEventOfType:v11 pushThenPopDataObjects:v12 subTracker:subTracker2];
 
   v14 = +[ICNAController sharedController];
-  v15 = [(ICNAEventReporter *)self subTracker];
+  subTracker3 = [(ICNAEventReporter *)self subTracker];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __42__ICNASnapshotReporter_submitMiniSnapshot__block_invoke_579;
   v17[3] = &unk_2799AF130;
   v17[4] = self;
-  [v14 leaveGroupWithSubtracker:v15 completionHandler:v17];
+  [v14 leaveGroupWithSubtracker:subTracker3 completionHandler:v17];
 
   [(ICNASnapshotReporter *)self tearDownContextsIfNecessary];
   v16 = *MEMORY[0x277D85DE8];
@@ -368,29 +368,29 @@ void __42__ICNASnapshotReporter_submitMiniSnapshot__block_invoke_2(uint64_t a1, 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reallyPerformSnapshotWithCompletionHandler:(id)a3
+- (void)reallyPerformSnapshotWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(ICNASnapshotReporter *)v5 isPerformingSnapshot])
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ICNASnapshotReporter *)selfCopy isPerformingSnapshot])
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(ICNASnapshotReporter *)v5 setIsPerformingSnapshot:1];
-    objc_sync_exit(v5);
+    [(ICNASnapshotReporter *)selfCopy setIsPerformingSnapshot:1];
+    objc_sync_exit(selfCopy);
 
-    v6 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v6 setObject:v7 forKey:@"analytics_last_snapshot_running_timestamp"];
+    mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    date = [MEMORY[0x277CBEAA8] date];
+    [mEMORY[0x277D36180] setObject:date forKey:@"analytics_last_snapshot_running_timestamp"];
 
     v8 = os_log_create("com.apple.notes", "Analytics");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -409,20 +409,20 @@ void __42__ICNASnapshotReporter_submitMiniSnapshot__block_invoke_2(uint64_t a1, 
     }
 
     v10 = v9;
-    [(ICNASnapshotReporter *)v5 setupContextsIfNecessary];
-    [(ICNASnapshotReporter *)v5 snapshotDevice];
-    [(ICNASnapshotReporter *)v5 tearDownContextsIfNecessary];
+    [(ICNASnapshotReporter *)selfCopy setupContextsIfNecessary];
+    [(ICNASnapshotReporter *)selfCopy snapshotDevice];
+    [(ICNASnapshotReporter *)selfCopy tearDownContextsIfNecessary];
     if (objc_opt_respondsToSelector())
     {
       [MEMORY[0x277D35F30] performSelector:sel_endBackgroundTask_ withObject:v10];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
 
-    v11 = v5;
+    v11 = selfCopy;
     objc_sync_enter(v11);
     [(ICNASnapshotReporter *)v11 setIsPerformingSnapshot:0];
     objc_sync_exit(v11);
@@ -482,28 +482,28 @@ void __42__ICNASnapshotReporter_submitMiniSnapshot__block_invoke_2(uint64_t a1, 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[ICNAController startMonth](ICNAController, "startMonth")}];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[ICNAController startYear](ICNAController, "startYear")}];
   v13 = +[ICNAController saltVersion];
-  v14 = [v47[5] accountTypeSummary];
+  accountTypeSummary = [v47[5] accountTypeSummary];
   v53[0] = v31;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v35[5], "countOfPinnedNotes"))}];
   v17 = [(ICNASnapshotReporter *)self deviceSnapshotSummaryForDataType:objc_opt_class()];
   v18 = [(ICNASnapshotReporter *)self userSnapshotSummaryForDataType:objc_opt_class()];
-  v19 = [(ICASDeviceSnapshotData *)v30 initWithUserStartMonth:v11 userStartYear:v12 saltVersion:v13 accountTypeSummary:v14 collabFoldersSummary:v15 totalCountOfPinnedNotes:v16 deviceSnapshotSummary:v17 userSnapshotSummary:v18];
+  v19 = [(ICASDeviceSnapshotData *)v30 initWithUserStartMonth:v11 userStartYear:v12 saltVersion:v13 accountTypeSummary:accountTypeSummary collabFoldersSummary:v15 totalCountOfPinnedNotes:v16 deviceSnapshotSummary:v17 userSnapshotSummary:v18];
 
   v20 = +[ICNAController sharedController];
-  v21 = [(ICNAEventReporter *)self subTracker];
-  [v20 enterGroupWithSubtracker:v21];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v20 enterGroupWithSubtracker:subTracker];
 
   v22 = +[ICNAController sharedController];
   v23 = objc_opt_class();
   v52 = v19;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-  v25 = [(ICNAEventReporter *)self subTracker];
-  [v22 submitEventOfType:v23 pushThenPopDataObjects:v24 subTracker:v25];
+  subTracker2 = [(ICNAEventReporter *)self subTracker];
+  [v22 submitEventOfType:v23 pushThenPopDataObjects:v24 subTracker:subTracker2];
 
   v26 = +[ICNAController sharedController];
-  v27 = [(ICNAEventReporter *)self subTracker];
-  [v26 leaveGroupWithSubtracker:v27];
+  subTracker3 = [(ICNAEventReporter *)self subTracker];
+  [v26 leaveGroupWithSubtracker:subTracker3];
 
   v28 = +[ICNACoreAnalyticsReporter sharedReporter];
   [v28 fireSnapshotWithNoteReportToDevice:v35[5]];
@@ -591,34 +591,34 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotModernAccount:(id)a3 reportedDataToDevice:(id)a4 reportedDataFromFolderToDevice:(id)a5 reportedDataFromNoteToDevice:(id)a6
+- (void)snapshotModernAccount:(id)account reportedDataToDevice:(id)device reportedDataFromFolderToDevice:(id)toDevice reportedDataFromNoteToDevice:(id)noteToDevice
 {
   v329 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
-  if ([v10 isUnsupported])
+  accountCopy = account;
+  deviceCopy = device;
+  toDeviceCopy = toDevice;
+  noteToDeviceCopy = noteToDevice;
+  v14 = accountCopy;
+  if ([accountCopy isUnsupported])
   {
-    [objc_opt_class() faultOutObject:v10];
+    [objc_opt_class() faultOutObject:accountCopy];
   }
 
   else
   {
-    v313 = v13;
-    v314 = v12;
-    v174 = v11;
+    v313 = noteToDeviceCopy;
+    v314 = toDeviceCopy;
+    v174 = deviceCopy;
     v15 = objc_alloc_init(ICNAHistogramManager);
     [(ICNASnapshotReporter *)self setAccountHistogramManager:v15];
 
-    v16 = [(ICNAEventReporter *)self accountTypeForModernAccount:v10];
+    v16 = [(ICNAEventReporter *)self accountTypeForModernAccount:accountCopy];
     v17 = v14;
-    v18 = self;
+    selfCopy = self;
     v19 = [(ICNASnapshotReporter *)self accountPurposeForModernAccount:v17];
     v20 = +[ICNAIdentityManager sharedManager];
-    v21 = [v17 identifier];
-    v22 = [v20 saltedID:v21 forClass:objc_opt_class()];
+    identifier = [v17 identifier];
+    v22 = [v20 saltedID:identifier forClass:objc_opt_class()];
 
     v171 = v22;
     v173 = v16;
@@ -650,10 +650,10 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
 
           v30 = *(*(&v315 + 1) + 8 * v29);
           v31 = objc_alloc_init(_ICNAFolderReportToParentFolder);
-          [(ICNASnapshotReporter *)v18 snapshotModernFolder:v30 reportedDataToParentFolder:v31 reportedDataToAccount:v24 reportedDataToDevice:v314 reportedDataFromNotesToAccount:v23 reportedDataFromAttachmentToAccount:v25 reportedDataFromNoteToDevice:v313];
-          v32 = [(ICNASnapshotReporter *)v18 accountHistogramManager];
-          v33 = [v32 topLevelFolderTotalNoteCountHistogram];
-          [v33 reportValue:{-[_ICNAFolderReportToParentFolder totalNoteCountIncludingSubFolders](v31, "totalNoteCountIncludingSubFolders")}];
+          [(ICNASnapshotReporter *)selfCopy snapshotModernFolder:v30 reportedDataToParentFolder:v31 reportedDataToAccount:v24 reportedDataToDevice:v314 reportedDataFromNotesToAccount:v23 reportedDataFromAttachmentToAccount:v25 reportedDataFromNoteToDevice:v313];
+          accountHistogramManager = [(ICNASnapshotReporter *)selfCopy accountHistogramManager];
+          topLevelFolderTotalNoteCountHistogram = [accountHistogramManager topLevelFolderTotalNoteCountHistogram];
+          [topLevelFolderTotalNoteCountHistogram reportValue:{-[_ICNAFolderReportToParentFolder totalNoteCountIncludingSubFolders](v31, "totalNoteCountIncludingSubFolders")}];
 
           ++v29;
         }
@@ -665,14 +665,14 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
       while (v27);
     }
 
-    v34 = [v310 defaultFolder];
-    v145 = v18;
+    defaultFolder = [v310 defaultFolder];
+    v145 = selfCopy;
     v311 = v24;
     v308 = v25;
-    [(ICNASnapshotReporter *)v18 snapshotModernFolder:v34 reportedDataToParentFolder:0 reportedDataToAccount:v24 reportedDataToDevice:v314 reportedDataFromNotesToAccount:v23 reportedDataFromAttachmentToAccount:v25 reportedDataFromNoteToDevice:v313];
+    [(ICNASnapshotReporter *)selfCopy snapshotModernFolder:defaultFolder reportedDataToParentFolder:0 reportedDataToAccount:v24 reportedDataToDevice:v314 reportedDataFromNotesToAccount:v23 reportedDataFromAttachmentToAccount:v25 reportedDataFromNoteToDevice:v313];
 
-    v35 = [v310 trashFolder];
-    [(ICNASnapshotReporter *)v18 snapshotModernFolder:v35 reportedDataToParentFolder:0 reportedDataToAccount:v24 reportedDataToDevice:v314 reportedDataFromNotesToAccount:v23 reportedDataFromAttachmentToAccount:v25 reportedDataFromNoteToDevice:v313];
+    trashFolder = [v310 trashFolder];
+    [(ICNASnapshotReporter *)selfCopy snapshotModernFolder:trashFolder reportedDataToParentFolder:0 reportedDataToAccount:v24 reportedDataToDevice:v314 reportedDataFromNotesToAccount:v23 reportedDataFromAttachmentToAccount:v25 reportedDataFromNoteToDevice:v313];
 
     v306 = [ICASAccountNotesTwoFactorItemData alloc];
     v304 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfNotesWithFactor:andFactor:](v23, "countOfNotesWithFactor:andFactor:", 0, 1))}];
@@ -828,109 +828,109 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v240 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfLockedNotes](v184, "countOfLockedNotes"))}];
     v238 = [(ICNASnapshotReporter *)v145 deviceSnapshotSummaryForDataType:objc_opt_class()];
     v226 = [(ICNASnapshotReporter *)v145 userSnapshotSummaryForDataType:objc_opt_class()];
-    v234 = [(_ICNAAttachmentReportToAccount *)v308 attachmentUTISummary];
-    v169 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v168 = [v169 folderDirectNoteCountHistogram];
-    v228 = [v168 icasHistogram];
-    v167 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v166 = [v167 collabRootFolderTotalNoteCountHistogram];
-    v220 = [v166 icasHistogram];
-    v165 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v164 = [v165 docScanPageCountHistogram];
-    v224 = [v164 icasHistogram];
-    v163 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v162 = [v163 collabOwnedRootFolderInviteeCountHistogram];
-    v216 = [v162 icasHistogram];
-    v161 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v160 = [v161 collabOwnedRootFolderAcceptanceCountHistogram];
-    v222 = [v160 icasHistogram];
-    v159 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v158 = [v159 collabOwnedRootFolderNoReplyCountHistogram];
-    v214 = [v158 icasHistogram];
-    v157 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v156 = [v157 collabOwnedRootFolderAcceptanceRatioHistogram];
-    v204 = [v156 icasHistogram];
-    v155 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v154 = [v155 collabOwnedSingleNoteInviteeCountHistogram];
-    v218 = [v154 icasHistogram];
-    v151 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v150 = [v151 collabOwnedSingleNoteAcceptanceCountHistogram];
-    v200 = [v150 icasHistogram];
-    v149 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v148 = [v149 collabOwnedSingleNoteNoReplyCountHistogram];
-    v212 = [v148 icasHistogram];
-    v147 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v146 = [v147 collabOwnedSingleNoteAcceptanceRatioHistogram];
-    v210 = [v146 icasHistogram];
-    v144 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v143 = [v144 noteCharCountHistogram];
-    v198 = [v143 icasHistogram];
-    v142 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v141 = [v142 inlineDrawingV1TotalStrokeCountHistogram];
-    v208 = [v141 icasHistogram];
-    v140 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v139 = [v140 inlineDrawingV1PencilStrokeCountHistogram];
-    v196 = [v139 icasHistogram];
-    v138 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v137 = [v138 inlineDrawingV1FingerStrokeCountHistogram];
-    v206 = [v137 icasHistogram];
-    v136 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v135 = [v136 inlineDrawingV1FingerStrokeRatioHistogram];
-    v195 = [v135 icasHistogram];
-    v134 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v133 = [v134 inlineDrawingV2TotalStrokeCountHistogram];
-    v202 = [v133 icasHistogram];
-    v132 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v131 = [v132 inlineDrawingV2PencilStrokeCountHistogram];
-    v199 = [v131 icasHistogram];
-    v130 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v129 = [v130 inlineDrawingV2FingerStrokeCountHistogram];
-    v197 = [v129 icasHistogram];
-    v128 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v127 = [v128 inlineDrawingV2FingerStrokeRatioHistogram];
-    v191 = [v127 icasHistogram];
-    v126 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v125 = [v126 fullscreenDrawingStrokeCountHistogram];
-    v194 = [v125 icasHistogram];
-    v124 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v123 = [v124 tableRowCountHistogram];
-    v190 = [v123 icasHistogram];
-    v122 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v121 = [v122 tableColumnCountHistogram];
-    v193 = [v121 icasHistogram];
-    v120 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v119 = [v120 tableCellCountHistogram];
-    v188 = [v119 icasHistogram];
-    v118 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v117 = [v118 passwordProtectedNoteWeeklyAgeHistogram];
-    v192 = [v117 icasHistogram];
-    v116 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v115 = [v116 topLevelFolderTotalNoteCountHistogram];
-    v186 = [v115 icasHistogram];
-    v114 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v113 = [v114 attachmentCountPerNoteHistogram];
-    v189 = [v113 icasHistogram];
-    v112 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v111 = [v112 drawingCountPerNoteHistogram];
-    v183 = [v111 icasHistogram];
-    v110 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v109 = [v110 inlineDrawingFingerStrokesCountPerNoteHistogram];
-    v187 = [v109 icasHistogram];
-    v108 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v107 = [v108 inlineDrawingPencilStrokesCountPerNoteHistogram];
-    v185 = [v107 icasHistogram];
-    v106 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v105 = [v106 fullScreenDrawingStrokesCountPerNoteHistogram];
-    v182 = [v105 icasHistogram];
-    v104 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v103 = [v104 totalStrokesCountPerNoteHistogram];
-    v181 = [v103 icasHistogram];
-    v102 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v101 = [v102 tagCountPerNoteHistogram];
-    v180 = [v101 icasHistogram];
-    v100 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v99 = [v100 distinctTagCountPerNoteHistogram];
-    v179 = [v99 icasHistogram];
+    attachmentUTISummary = [(_ICNAAttachmentReportToAccount *)v308 attachmentUTISummary];
+    accountHistogramManager2 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    folderDirectNoteCountHistogram = [accountHistogramManager2 folderDirectNoteCountHistogram];
+    icasHistogram = [folderDirectNoteCountHistogram icasHistogram];
+    accountHistogramManager3 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabRootFolderTotalNoteCountHistogram = [accountHistogramManager3 collabRootFolderTotalNoteCountHistogram];
+    icasHistogram2 = [collabRootFolderTotalNoteCountHistogram icasHistogram];
+    accountHistogramManager4 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    docScanPageCountHistogram = [accountHistogramManager4 docScanPageCountHistogram];
+    icasHistogram3 = [docScanPageCountHistogram icasHistogram];
+    accountHistogramManager5 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedRootFolderInviteeCountHistogram = [accountHistogramManager5 collabOwnedRootFolderInviteeCountHistogram];
+    icasHistogram4 = [collabOwnedRootFolderInviteeCountHistogram icasHistogram];
+    accountHistogramManager6 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedRootFolderAcceptanceCountHistogram = [accountHistogramManager6 collabOwnedRootFolderAcceptanceCountHistogram];
+    icasHistogram5 = [collabOwnedRootFolderAcceptanceCountHistogram icasHistogram];
+    accountHistogramManager7 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedRootFolderNoReplyCountHistogram = [accountHistogramManager7 collabOwnedRootFolderNoReplyCountHistogram];
+    icasHistogram6 = [collabOwnedRootFolderNoReplyCountHistogram icasHistogram];
+    accountHistogramManager8 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedRootFolderAcceptanceRatioHistogram = [accountHistogramManager8 collabOwnedRootFolderAcceptanceRatioHistogram];
+    icasHistogram7 = [collabOwnedRootFolderAcceptanceRatioHistogram icasHistogram];
+    accountHistogramManager9 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedSingleNoteInviteeCountHistogram = [accountHistogramManager9 collabOwnedSingleNoteInviteeCountHistogram];
+    icasHistogram8 = [collabOwnedSingleNoteInviteeCountHistogram icasHistogram];
+    accountHistogramManager10 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedSingleNoteAcceptanceCountHistogram = [accountHistogramManager10 collabOwnedSingleNoteAcceptanceCountHistogram];
+    icasHistogram9 = [collabOwnedSingleNoteAcceptanceCountHistogram icasHistogram];
+    accountHistogramManager11 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedSingleNoteNoReplyCountHistogram = [accountHistogramManager11 collabOwnedSingleNoteNoReplyCountHistogram];
+    icasHistogram10 = [collabOwnedSingleNoteNoReplyCountHistogram icasHistogram];
+    accountHistogramManager12 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    collabOwnedSingleNoteAcceptanceRatioHistogram = [accountHistogramManager12 collabOwnedSingleNoteAcceptanceRatioHistogram];
+    icasHistogram11 = [collabOwnedSingleNoteAcceptanceRatioHistogram icasHistogram];
+    accountHistogramManager13 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    noteCharCountHistogram = [accountHistogramManager13 noteCharCountHistogram];
+    icasHistogram12 = [noteCharCountHistogram icasHistogram];
+    accountHistogramManager14 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV1TotalStrokeCountHistogram = [accountHistogramManager14 inlineDrawingV1TotalStrokeCountHistogram];
+    icasHistogram13 = [inlineDrawingV1TotalStrokeCountHistogram icasHistogram];
+    accountHistogramManager15 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV1PencilStrokeCountHistogram = [accountHistogramManager15 inlineDrawingV1PencilStrokeCountHistogram];
+    icasHistogram14 = [inlineDrawingV1PencilStrokeCountHistogram icasHistogram];
+    accountHistogramManager16 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV1FingerStrokeCountHistogram = [accountHistogramManager16 inlineDrawingV1FingerStrokeCountHistogram];
+    icasHistogram15 = [inlineDrawingV1FingerStrokeCountHistogram icasHistogram];
+    accountHistogramManager17 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV1FingerStrokeRatioHistogram = [accountHistogramManager17 inlineDrawingV1FingerStrokeRatioHistogram];
+    icasHistogram16 = [inlineDrawingV1FingerStrokeRatioHistogram icasHistogram];
+    accountHistogramManager18 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV2TotalStrokeCountHistogram = [accountHistogramManager18 inlineDrawingV2TotalStrokeCountHistogram];
+    icasHistogram17 = [inlineDrawingV2TotalStrokeCountHistogram icasHistogram];
+    accountHistogramManager19 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV2PencilStrokeCountHistogram = [accountHistogramManager19 inlineDrawingV2PencilStrokeCountHistogram];
+    icasHistogram18 = [inlineDrawingV2PencilStrokeCountHistogram icasHistogram];
+    accountHistogramManager20 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV2FingerStrokeCountHistogram = [accountHistogramManager20 inlineDrawingV2FingerStrokeCountHistogram];
+    icasHistogram19 = [inlineDrawingV2FingerStrokeCountHistogram icasHistogram];
+    accountHistogramManager21 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingV2FingerStrokeRatioHistogram = [accountHistogramManager21 inlineDrawingV2FingerStrokeRatioHistogram];
+    icasHistogram20 = [inlineDrawingV2FingerStrokeRatioHistogram icasHistogram];
+    accountHistogramManager22 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    fullscreenDrawingStrokeCountHistogram = [accountHistogramManager22 fullscreenDrawingStrokeCountHistogram];
+    icasHistogram21 = [fullscreenDrawingStrokeCountHistogram icasHistogram];
+    accountHistogramManager23 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    tableRowCountHistogram = [accountHistogramManager23 tableRowCountHistogram];
+    icasHistogram22 = [tableRowCountHistogram icasHistogram];
+    accountHistogramManager24 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    tableColumnCountHistogram = [accountHistogramManager24 tableColumnCountHistogram];
+    icasHistogram23 = [tableColumnCountHistogram icasHistogram];
+    accountHistogramManager25 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    tableCellCountHistogram = [accountHistogramManager25 tableCellCountHistogram];
+    icasHistogram24 = [tableCellCountHistogram icasHistogram];
+    accountHistogramManager26 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    passwordProtectedNoteWeeklyAgeHistogram = [accountHistogramManager26 passwordProtectedNoteWeeklyAgeHistogram];
+    icasHistogram25 = [passwordProtectedNoteWeeklyAgeHistogram icasHistogram];
+    accountHistogramManager27 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    topLevelFolderTotalNoteCountHistogram2 = [accountHistogramManager27 topLevelFolderTotalNoteCountHistogram];
+    icasHistogram26 = [topLevelFolderTotalNoteCountHistogram2 icasHistogram];
+    accountHistogramManager28 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    attachmentCountPerNoteHistogram = [accountHistogramManager28 attachmentCountPerNoteHistogram];
+    icasHistogram27 = [attachmentCountPerNoteHistogram icasHistogram];
+    accountHistogramManager29 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    drawingCountPerNoteHistogram = [accountHistogramManager29 drawingCountPerNoteHistogram];
+    icasHistogram28 = [drawingCountPerNoteHistogram icasHistogram];
+    accountHistogramManager30 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingFingerStrokesCountPerNoteHistogram = [accountHistogramManager30 inlineDrawingFingerStrokesCountPerNoteHistogram];
+    icasHistogram29 = [inlineDrawingFingerStrokesCountPerNoteHistogram icasHistogram];
+    accountHistogramManager31 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    inlineDrawingPencilStrokesCountPerNoteHistogram = [accountHistogramManager31 inlineDrawingPencilStrokesCountPerNoteHistogram];
+    icasHistogram30 = [inlineDrawingPencilStrokesCountPerNoteHistogram icasHistogram];
+    accountHistogramManager32 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    fullScreenDrawingStrokesCountPerNoteHistogram = [accountHistogramManager32 fullScreenDrawingStrokesCountPerNoteHistogram];
+    icasHistogram31 = [fullScreenDrawingStrokesCountPerNoteHistogram icasHistogram];
+    accountHistogramManager33 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    totalStrokesCountPerNoteHistogram = [accountHistogramManager33 totalStrokesCountPerNoteHistogram];
+    icasHistogram32 = [totalStrokesCountPerNoteHistogram icasHistogram];
+    accountHistogramManager34 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    tagCountPerNoteHistogram = [accountHistogramManager34 tagCountPerNoteHistogram];
+    icasHistogram33 = [tagCountPerNoteHistogram icasHistogram];
+    accountHistogramManager35 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    distinctTagCountPerNoteHistogram = [accountHistogramManager35 distinctTagCountPerNoteHistogram];
+    icasHistogram34 = [distinctTagCountPerNoteHistogram icasHistogram];
     v178 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfNotesWithTags](v184, "countOfNotesWithTags"))}];
     v98 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfNotesWithCollapsedSections](v184, "countOfNotesWithCollapsedSections"))}];
     v177 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfNotesWithMentions](v184, "countOfNotesWithMentions"))}];
@@ -940,22 +940,22 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v80 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfPinnedScrapPapers](v184, "countOfPinnedScrapPapers"))}];
     v81 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfLockedScrapPapers](v184, "countOfLockedScrapPapers"))}];
     v82 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfCollaboratedScrapPapers](v184, "countOfCollaboratedScrapPapers"))}];
-    v97 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v96 = [v97 mentionCountPerNoteHistogram];
-    v83 = [v96 icasHistogram];
-    v95 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
-    v84 = [v95 distinctMentionCountPerNoteHistogram];
-    v85 = [v84 icasHistogram];
+    accountHistogramManager36 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    mentionCountPerNoteHistogram = [accountHistogramManager36 mentionCountPerNoteHistogram];
+    icasHistogram35 = [mentionCountPerNoteHistogram icasHistogram];
+    accountHistogramManager37 = [(ICNASnapshotReporter *)v145 accountHistogramManager];
+    distinctMentionCountPerNoteHistogram = [accountHistogramManager37 distinctMentionCountPerNoteHistogram];
+    icasHistogram36 = [distinctMentionCountPerNoteHistogram icasHistogram];
     v94 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNANoteReportToAccount countOfNotesWithMathUsage](v184, "countOfNotesWithMathUsage"))}];
-    v153 = [ICASAccountSnapshotData initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:]( v152,  "initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:",  v288,  v283,  v275,  v263,  v254,  v242,  v271,  v279,  v236,  v267,  v260,  v257,  v232,  v251,  v248,  v245,  v230,  v240,  v238,  v226,  v234,  v228,  v220,  v224,  v216,  v222,  v214,  v204,  v218,  v200,  v212,  v210,  v198,  v208,  v196,  v206,  v195,  v202,  v199,  v197,  v191,  v194,  v190,  v193,  v188,  v192,  v186,
-             v189,
-             v183,
-             v187,
-             v185,
-             v182,
-             v181,
-             v180,
-             v179,
+    v153 = [ICASAccountSnapshotData initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:]( v152,  "initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:",  v288,  v283,  v275,  v263,  v254,  v242,  v271,  v279,  v236,  v267,  v260,  v257,  v232,  v251,  v248,  v245,  v230,  v240,  v238,  v226,  attachmentUTISummary,  icasHistogram,  icasHistogram2,  icasHistogram3,  icasHistogram4,  icasHistogram5,  icasHistogram6,  icasHistogram7,  icasHistogram8,  icasHistogram9,  icasHistogram10,  icasHistogram11,  icasHistogram12,  icasHistogram13,  icasHistogram14,  icasHistogram15,  icasHistogram16,  icasHistogram17,  icasHistogram18,  icasHistogram19,  icasHistogram20,  icasHistogram21,  icasHistogram22,  icasHistogram23,  icasHistogram24,  icasHistogram25,  icasHistogram26,
+             icasHistogram27,
+             icasHistogram28,
+             icasHistogram29,
+             icasHistogram30,
+             icasHistogram31,
+             icasHistogram32,
+             icasHistogram33,
+             icasHistogram34,
              v178,
              v98,
              v177,
@@ -967,37 +967,37 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v87 = objc_opt_class();
     v319 = v153;
     v88 = [MEMORY[0x277CBEA60] arrayWithObjects:&v319 count:1];
-    v89 = [(ICNAEventReporter *)v145 subTracker];
-    [v86 submitEventOfType:v87 pushThenPopDataObjects:v88 subTracker:v89];
+    subTracker = [(ICNAEventReporter *)v145 subTracker];
+    [v86 submitEventOfType:v87 pushThenPopDataObjects:v88 subTracker:subTracker];
 
-    v90 = [v173 accountType];
-    v91 = [(_ICNANoteReportToAccount *)v184 countOfNotes];
-    v11 = v174;
-    v92 = v90;
-    v13 = v313;
-    [v174 reportAccountType:v92 noteCount:v91];
+    accountType = [v173 accountType];
+    countOfNotes = [(_ICNANoteReportToAccount *)v184 countOfNotes];
+    deviceCopy = v174;
+    v92 = accountType;
+    noteToDeviceCopy = v313;
+    [v174 reportAccountType:v92 noteCount:countOfNotes];
     v14 = v310;
     [objc_opt_class() faultOutObject:?];
     [(ICNASnapshotReporter *)v145 setAccountHistogramManager:0];
 
-    v12 = v314;
+    toDeviceCopy = v314;
   }
 
   v93 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotHTMLAccount:(id)a3 reportedDataToDevice:(id)a4 reportedDataFromFolderToDevice:(id)a5 reportedDataFromNoteToDevice:(id)a6
+- (void)snapshotHTMLAccount:(id)account reportedDataToDevice:(id)device reportedDataFromFolderToDevice:(id)toDevice reportedDataFromNoteToDevice:(id)noteToDevice
 {
   v150 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v102 = a4;
-  v11 = a5;
-  v12 = a6;
+  accountCopy = account;
+  deviceCopy = device;
+  toDeviceCopy = toDevice;
+  noteToDeviceCopy = noteToDevice;
   v13 = objc_alloc_init(ICNAHistogramManager);
   [(ICNASnapshotReporter *)self setAccountHistogramManager:v13];
 
-  v14 = v10;
-  v15 = [(ICNASnapshotReporter *)self sortedFoldersForAccount:v10];
+  v14 = accountCopy;
+  v15 = [(ICNASnapshotReporter *)self sortedFoldersForAccount:accountCopy];
   v16 = objc_alloc_init(_ICNAFolderReportToAccount);
   v17 = objc_alloc_init(_ICNANoteReportToAccount);
   v143 = 0u;
@@ -1020,7 +1020,7 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
           objc_enumerationMutation(v18);
         }
 
-        [(ICNASnapshotReporter *)self snapshotHTMLFolder:*(*(&v143 + 1) + 8 * v22++) reportedDataToAccount:v16 reportedDataToDevice:v11 noteReportToAccount:v17 reportedDataFromNoteToDevice:v12];
+        [(ICNASnapshotReporter *)self snapshotHTMLFolder:*(*(&v143 + 1) + 8 * v22++) reportedDataToAccount:v16 reportedDataToDevice:toDeviceCopy noteReportToAccount:v17 reportedDataFromNoteToDevice:noteToDeviceCopy];
       }
 
       while (v20 != v22);
@@ -1032,12 +1032,12 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
 
   v76 = v14;
   v142 = [(ICNAEventReporter *)self accountTypeForHTMLAccount:v14];
-  v101 = [(ICNASnapshotReporter *)self accountPurposeForHTMLAccount];
+  accountPurposeForHTMLAccount = [(ICNASnapshotReporter *)self accountPurposeForHTMLAccount];
   v23 = +[ICNAIdentityManager sharedManager];
-  v24 = [v14 accountIdentifier];
-  v100 = [v23 saltedID:v24 forClass:objc_opt_class()];
+  accountIdentifier = [v14 accountIdentifier];
+  v100 = [v23 saltedID:accountIdentifier forClass:objc_opt_class()];
 
-  v99 = [[ICASAccountSnapshotItemData alloc] initWithAccountID:v100 accountType:v142 accountPurpose:v101];
+  v99 = [[ICASAccountSnapshotItemData alloc] initWithAccountID:v100 accountType:v142 accountPurpose:accountPurposeForHTMLAccount];
   v115 = [ICASAccountSnapshotData alloc];
   v141 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[ICNAController startMonth](ICNAController, "startMonth")}];
   v140 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[ICNAController startYear](ICNAController, "startYear")}];
@@ -1049,109 +1049,109 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
   v135 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(-[_ICNAFolderReportToAccount countOfCustomSmartFolders](v16, "countOfCustomSmartFolders"))}];
   v134 = [(ICNASnapshotReporter *)self deviceSnapshotSummaryForDataType:objc_opt_class()];
   v133 = [(ICNASnapshotReporter *)self userSnapshotSummaryForDataType:objc_opt_class()];
-  v98 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v97 = [v98 folderDirectNoteCountHistogram];
-  v132 = [v97 icasHistogram];
-  v96 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v95 = [v96 collabRootFolderTotalNoteCountHistogram];
-  v131 = [v95 icasHistogram];
-  v94 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v93 = [v94 docScanPageCountHistogram];
-  v130 = [v93 icasHistogram];
-  v92 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v91 = [v92 collabOwnedRootFolderInviteeCountHistogram];
-  v129 = [v91 icasHistogram];
-  v90 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v89 = [v90 collabOwnedRootFolderAcceptanceCountHistogram];
-  v128 = [v89 icasHistogram];
-  v88 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v87 = [v88 collabOwnedRootFolderNoReplyCountHistogram];
-  v127 = [v87 icasHistogram];
-  v86 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v85 = [v86 collabOwnedRootFolderAcceptanceRatioHistogram];
-  v126 = [v85 icasHistogram];
-  v84 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v83 = [v84 collabOwnedSingleNoteInviteeCountHistogram];
-  v125 = [v83 icasHistogram];
-  v82 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v81 = [v82 collabOwnedSingleNoteAcceptanceCountHistogram];
-  v124 = [v81 icasHistogram];
-  v80 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v79 = [v80 collabOwnedSingleNoteNoReplyCountHistogram];
-  v123 = [v79 icasHistogram];
-  v78 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v77 = [v78 collabOwnedSingleNoteAcceptanceRatioHistogram];
-  v122 = [v77 icasHistogram];
-  v75 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v74 = [v75 noteCharCountHistogram];
-  v121 = [v74 icasHistogram];
-  v73 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v72 = [v73 inlineDrawingV1TotalStrokeCountHistogram];
-  v120 = [v72 icasHistogram];
-  v71 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v70 = [v71 inlineDrawingV1PencilStrokeCountHistogram];
-  v119 = [v70 icasHistogram];
-  v69 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v68 = [v69 inlineDrawingV1FingerStrokeCountHistogram];
-  v118 = [v68 icasHistogram];
-  v67 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v66 = [v67 inlineDrawingV1FingerStrokeRatioHistogram];
-  v117 = [v66 icasHistogram];
-  v65 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v64 = [v65 inlineDrawingV2TotalStrokeCountHistogram];
-  v114 = [v64 icasHistogram];
-  v63 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v62 = [v63 inlineDrawingV2PencilStrokeCountHistogram];
-  v113 = [v62 icasHistogram];
-  v61 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v60 = [v61 inlineDrawingV2FingerStrokeCountHistogram];
-  v112 = [v60 icasHistogram];
-  v59 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v58 = [v59 inlineDrawingV2FingerStrokeRatioHistogram];
-  v111 = [v58 icasHistogram];
-  v57 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v56 = [v57 fullscreenDrawingStrokeCountHistogram];
-  v110 = [v56 icasHistogram];
-  v55 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v54 = [v55 tableRowCountHistogram];
-  v109 = [v54 icasHistogram];
-  v53 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v52 = [v53 tableColumnCountHistogram];
-  v108 = [v52 icasHistogram];
-  v51 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v50 = [v51 tableCellCountHistogram];
-  v107 = [v50 icasHistogram];
-  v49 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v48 = [v49 passwordProtectedNoteWeeklyAgeHistogram];
-  v106 = [v48 icasHistogram];
-  v47 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v46 = [v47 topLevelFolderTotalNoteCountHistogram];
-  v105 = [v46 icasHistogram];
-  v45 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v44 = [v45 attachmentCountPerNoteHistogram];
-  v104 = [v44 icasHistogram];
-  v43 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v42 = [v43 drawingCountPerNoteHistogram];
-  v103 = [v42 icasHistogram];
-  v41 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v40 = [v41 inlineDrawingFingerStrokesCountPerNoteHistogram];
-  v25 = [v40 icasHistogram];
-  v39 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v38 = [v39 inlineDrawingPencilStrokesCountPerNoteHistogram];
-  v26 = [v38 icasHistogram];
-  v37 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v36 = [v37 fullScreenDrawingStrokesCountPerNoteHistogram];
-  v27 = [v36 icasHistogram];
-  v35 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v34 = [v35 totalStrokesCountPerNoteHistogram];
-  v28 = [v34 icasHistogram];
-  v116 = [ICASAccountSnapshotData initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:]( v115,  "initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:",  v141,  v140,  v139,  v138,  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  v137,  v136,  v135,  &unk_286E5E150,  &unk_286E5E150,  &unk_286E5E150,  &unk_286E5E150,  v134,  v133,  MEMORY[0x277CBEBF8],  v132,  v131,  v130,  v129,  v128,  v127,  v126,  v125,  v124,  v123,  v122,  v121,  v120,  v119,  v118,  v117,  v114,  v113,  v112,  v111,  v110,  v109,  v108,  v107,  v106,  v105,
-           v104,
-           v103,
-           v25,
-           v26,
-           v27,
-           v28,
+  accountHistogramManager = [(ICNASnapshotReporter *)self accountHistogramManager];
+  folderDirectNoteCountHistogram = [accountHistogramManager folderDirectNoteCountHistogram];
+  icasHistogram = [folderDirectNoteCountHistogram icasHistogram];
+  accountHistogramManager2 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabRootFolderTotalNoteCountHistogram = [accountHistogramManager2 collabRootFolderTotalNoteCountHistogram];
+  icasHistogram2 = [collabRootFolderTotalNoteCountHistogram icasHistogram];
+  accountHistogramManager3 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  docScanPageCountHistogram = [accountHistogramManager3 docScanPageCountHistogram];
+  icasHistogram3 = [docScanPageCountHistogram icasHistogram];
+  accountHistogramManager4 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedRootFolderInviteeCountHistogram = [accountHistogramManager4 collabOwnedRootFolderInviteeCountHistogram];
+  icasHistogram4 = [collabOwnedRootFolderInviteeCountHistogram icasHistogram];
+  accountHistogramManager5 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedRootFolderAcceptanceCountHistogram = [accountHistogramManager5 collabOwnedRootFolderAcceptanceCountHistogram];
+  icasHistogram5 = [collabOwnedRootFolderAcceptanceCountHistogram icasHistogram];
+  accountHistogramManager6 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedRootFolderNoReplyCountHistogram = [accountHistogramManager6 collabOwnedRootFolderNoReplyCountHistogram];
+  icasHistogram6 = [collabOwnedRootFolderNoReplyCountHistogram icasHistogram];
+  accountHistogramManager7 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedRootFolderAcceptanceRatioHistogram = [accountHistogramManager7 collabOwnedRootFolderAcceptanceRatioHistogram];
+  icasHistogram7 = [collabOwnedRootFolderAcceptanceRatioHistogram icasHistogram];
+  accountHistogramManager8 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedSingleNoteInviteeCountHistogram = [accountHistogramManager8 collabOwnedSingleNoteInviteeCountHistogram];
+  icasHistogram8 = [collabOwnedSingleNoteInviteeCountHistogram icasHistogram];
+  accountHistogramManager9 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedSingleNoteAcceptanceCountHistogram = [accountHistogramManager9 collabOwnedSingleNoteAcceptanceCountHistogram];
+  icasHistogram9 = [collabOwnedSingleNoteAcceptanceCountHistogram icasHistogram];
+  accountHistogramManager10 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedSingleNoteNoReplyCountHistogram = [accountHistogramManager10 collabOwnedSingleNoteNoReplyCountHistogram];
+  icasHistogram10 = [collabOwnedSingleNoteNoReplyCountHistogram icasHistogram];
+  accountHistogramManager11 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  collabOwnedSingleNoteAcceptanceRatioHistogram = [accountHistogramManager11 collabOwnedSingleNoteAcceptanceRatioHistogram];
+  icasHistogram11 = [collabOwnedSingleNoteAcceptanceRatioHistogram icasHistogram];
+  accountHistogramManager12 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  noteCharCountHistogram = [accountHistogramManager12 noteCharCountHistogram];
+  icasHistogram12 = [noteCharCountHistogram icasHistogram];
+  accountHistogramManager13 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV1TotalStrokeCountHistogram = [accountHistogramManager13 inlineDrawingV1TotalStrokeCountHistogram];
+  icasHistogram13 = [inlineDrawingV1TotalStrokeCountHistogram icasHistogram];
+  accountHistogramManager14 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV1PencilStrokeCountHistogram = [accountHistogramManager14 inlineDrawingV1PencilStrokeCountHistogram];
+  icasHistogram14 = [inlineDrawingV1PencilStrokeCountHistogram icasHistogram];
+  accountHistogramManager15 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV1FingerStrokeCountHistogram = [accountHistogramManager15 inlineDrawingV1FingerStrokeCountHistogram];
+  icasHistogram15 = [inlineDrawingV1FingerStrokeCountHistogram icasHistogram];
+  accountHistogramManager16 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV1FingerStrokeRatioHistogram = [accountHistogramManager16 inlineDrawingV1FingerStrokeRatioHistogram];
+  icasHistogram16 = [inlineDrawingV1FingerStrokeRatioHistogram icasHistogram];
+  accountHistogramManager17 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV2TotalStrokeCountHistogram = [accountHistogramManager17 inlineDrawingV2TotalStrokeCountHistogram];
+  icasHistogram17 = [inlineDrawingV2TotalStrokeCountHistogram icasHistogram];
+  accountHistogramManager18 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV2PencilStrokeCountHistogram = [accountHistogramManager18 inlineDrawingV2PencilStrokeCountHistogram];
+  icasHistogram18 = [inlineDrawingV2PencilStrokeCountHistogram icasHistogram];
+  accountHistogramManager19 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV2FingerStrokeCountHistogram = [accountHistogramManager19 inlineDrawingV2FingerStrokeCountHistogram];
+  icasHistogram19 = [inlineDrawingV2FingerStrokeCountHistogram icasHistogram];
+  accountHistogramManager20 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV2FingerStrokeRatioHistogram = [accountHistogramManager20 inlineDrawingV2FingerStrokeRatioHistogram];
+  icasHistogram20 = [inlineDrawingV2FingerStrokeRatioHistogram icasHistogram];
+  accountHistogramManager21 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  fullscreenDrawingStrokeCountHistogram = [accountHistogramManager21 fullscreenDrawingStrokeCountHistogram];
+  icasHistogram21 = [fullscreenDrawingStrokeCountHistogram icasHistogram];
+  accountHistogramManager22 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  tableRowCountHistogram = [accountHistogramManager22 tableRowCountHistogram];
+  icasHistogram22 = [tableRowCountHistogram icasHistogram];
+  accountHistogramManager23 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  tableColumnCountHistogram = [accountHistogramManager23 tableColumnCountHistogram];
+  icasHistogram23 = [tableColumnCountHistogram icasHistogram];
+  accountHistogramManager24 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  tableCellCountHistogram = [accountHistogramManager24 tableCellCountHistogram];
+  icasHistogram24 = [tableCellCountHistogram icasHistogram];
+  accountHistogramManager25 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  passwordProtectedNoteWeeklyAgeHistogram = [accountHistogramManager25 passwordProtectedNoteWeeklyAgeHistogram];
+  icasHistogram25 = [passwordProtectedNoteWeeklyAgeHistogram icasHistogram];
+  accountHistogramManager26 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  topLevelFolderTotalNoteCountHistogram = [accountHistogramManager26 topLevelFolderTotalNoteCountHistogram];
+  icasHistogram26 = [topLevelFolderTotalNoteCountHistogram icasHistogram];
+  accountHistogramManager27 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  attachmentCountPerNoteHistogram = [accountHistogramManager27 attachmentCountPerNoteHistogram];
+  icasHistogram27 = [attachmentCountPerNoteHistogram icasHistogram];
+  accountHistogramManager28 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  drawingCountPerNoteHistogram = [accountHistogramManager28 drawingCountPerNoteHistogram];
+  icasHistogram28 = [drawingCountPerNoteHistogram icasHistogram];
+  accountHistogramManager29 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingFingerStrokesCountPerNoteHistogram = [accountHistogramManager29 inlineDrawingFingerStrokesCountPerNoteHistogram];
+  icasHistogram29 = [inlineDrawingFingerStrokesCountPerNoteHistogram icasHistogram];
+  accountHistogramManager30 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingPencilStrokesCountPerNoteHistogram = [accountHistogramManager30 inlineDrawingPencilStrokesCountPerNoteHistogram];
+  icasHistogram30 = [inlineDrawingPencilStrokesCountPerNoteHistogram icasHistogram];
+  accountHistogramManager31 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  fullScreenDrawingStrokesCountPerNoteHistogram = [accountHistogramManager31 fullScreenDrawingStrokesCountPerNoteHistogram];
+  icasHistogram31 = [fullScreenDrawingStrokesCountPerNoteHistogram icasHistogram];
+  accountHistogramManager32 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  totalStrokesCountPerNoteHistogram = [accountHistogramManager32 totalStrokesCountPerNoteHistogram];
+  icasHistogram32 = [totalStrokesCountPerNoteHistogram icasHistogram];
+  v116 = [ICASAccountSnapshotData initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:]( v115,  "initWithUserStartMonth:userStartYear:saltVersion:accountSnapshotSummary:accountNotesTwoFactorSummary:collabNotesSummary:collabFoldersSummary:noteAttachmentSummary:scrapPaperAttachmentSummary:lockedNotesSummary:smartFoldersSummary:totalNoteCount:totalFolderCount:totalSmartFolderCount:totalChecklistCount:totalNotesWithChecklistCount:totalCountOfPinnedNotes:totalCountOfLockedNotes:deviceSnapshotSummary:userSnapshotSummary:attachmentUTISummary:folderDirectNoteCountHistogram:collabRootFolderTotalNoteCountHistogram:docScanPageCountHistogram:collabOwnedRootFolderInviteeCountHistogram:collabOwnedRootFolderAcceptanceCountHistogram:collabOwnedRootFolderNoReplyCountHistogram:collabOwnedRootFolderAcceptanceRatioHistogram:collabOwnedSingleNoteInviteeCountHistogram:collabOwnedSingleNoteAcceptanceCountHistogram:collabOwnedSingleNoteNoReplyCountHistogram:collabOwnedSingleNoteAcceptanceRatioHistogram:noteCharCountHistogram:inlineDrawingV1TotalStrokeCountHistogram:inlineDrawingV1PencilStrokeCountHistogram:inlineDrawingV1FingerStrokeCountHistogram:inlineDrawingV1FingerStrokeRatioHistogram:inlineDrawingV2TotalStrokeCountHistogram:inlineDrawingV2PencilStrokeCountHistogram:inlineDrawingV2FingerStrokeCountHistogram:inlineDrawingV2FingerStrokeRatioHistogram:fullscreenDrawingStrokeCountHistogram:tableRowCountHistogram:tableColumnCountHistogram:tableCellCountHistogram:passwordProtectedNoteWeeklyAgeHistogram:topLevelFolderTotalNoteCountHistogram:attachmentCountPerNoteHistogram:drawingCountPerNoteHistogram:inlineDrawingFingerStrokesCountPerNoteHistogram:inlineDrawingPencilStrokesCountPerNoteHistogram:fullScreenDrawingStrokesCountPerNoteHistogram:totalStrokesCountPerNoteHistogram:tagCountPerNoteHistogram:distinctTagCountPerNoteHistogram:totalCountOfNotesWithTags:totalCountOfNotesWithCollapsedSections:totalCountOfNotesWithMentions:totalScrapPaperCount:totalCountOfScrapPapersWithTags:totalCountOfScrapPapersWithMentions:totalCountOfPinnedScrapPapers:totalCountOfLockedScrapPapers:totalCountOfCollaboratedScrapPapers:mentionCountPerNoteHistogram:distinctMentionCountPerNoteHistogram:totalCountOfNotesWithMathUsage:",  v141,  v140,  v139,  v138,  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  MEMORY[0x277CBEBF8],  v137,  v136,  v135,  &unk_286E5E150,  &unk_286E5E150,  &unk_286E5E150,  &unk_286E5E150,  v134,  v133,  MEMORY[0x277CBEBF8],  icasHistogram,  icasHistogram2,  icasHistogram3,  icasHistogram4,  icasHistogram5,  icasHistogram6,  icasHistogram7,  icasHistogram8,  icasHistogram9,  icasHistogram10,  icasHistogram11,  icasHistogram12,  icasHistogram13,  icasHistogram14,  icasHistogram15,  icasHistogram16,  icasHistogram17,  icasHistogram18,  icasHistogram19,  icasHistogram20,  icasHistogram21,  icasHistogram22,  icasHistogram23,  icasHistogram24,  icasHistogram25,  icasHistogram26,
+           icasHistogram27,
+           icasHistogram28,
+           icasHistogram29,
+           icasHistogram30,
+           icasHistogram31,
+           icasHistogram32,
            MEMORY[0x277CBEBF8],
            MEMORY[0x277CBEBF8],
            &unk_286E5E150,
@@ -1165,46 +1165,46 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
   v30 = objc_opt_class();
   v147 = v116;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v147 count:1];
-  v32 = [(ICNAEventReporter *)self subTracker];
-  [v29 submitEventOfType:v30 pushThenPopDataObjects:v31 subTracker:v32];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v29 submitEventOfType:v30 pushThenPopDataObjects:v31 subTracker:subTracker];
 
-  [v102 reportAccountType:objc_msgSend(v142 noteCount:{"accountType"), -[_ICNANoteReportToAccount countOfNotes](v17, "countOfNotes")}];
+  [deviceCopy reportAccountType:objc_msgSend(v142 noteCount:{"accountType"), -[_ICNANoteReportToAccount countOfNotes](v17, "countOfNotes")}];
   [objc_opt_class() faultOutObject:v76];
   [(ICNASnapshotReporter *)self setAccountHistogramManager:0];
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotModernFolder:(id)a3 reportedDataToParentFolder:(id)a4 reportedDataToAccount:(id)a5 reportedDataToDevice:(id)a6 reportedDataFromNotesToAccount:(id)a7 reportedDataFromAttachmentToAccount:(id)a8 reportedDataFromNoteToDevice:(id)a9
+- (void)snapshotModernFolder:(id)folder reportedDataToParentFolder:(id)parentFolder reportedDataToAccount:(id)account reportedDataToDevice:(id)device reportedDataFromNotesToAccount:(id)toAccount reportedDataFromAttachmentToAccount:(id)attachmentToAccount reportedDataFromNoteToDevice:(id)toDevice
 {
   v90 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v70 = a6;
-  v74 = a7;
-  v73 = a8;
-  v72 = a9;
-  if ([v15 isUnsupported])
+  folderCopy = folder;
+  parentFolderCopy = parentFolder;
+  accountCopy = account;
+  deviceCopy = device;
+  toAccountCopy = toAccount;
+  attachmentToAccountCopy = attachmentToAccount;
+  toDeviceCopy = toDevice;
+  if ([folderCopy isUnsupported])
   {
-    [objc_opt_class() faultOutObject:v15];
-    v18 = v17;
+    [objc_opt_class() faultOutObject:folderCopy];
+    v18 = accountCopy;
   }
 
   else
   {
-    v71 = self;
-    if (!v16)
+    selfCopy = self;
+    if (!parentFolderCopy)
     {
-      v16 = objc_alloc_init(_ICNAFolderReportToParentFolder);
+      parentFolderCopy = objc_alloc_init(_ICNAFolderReportToParentFolder);
     }
 
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v19 = [v15 foldersInFolder];
-    v20 = [v19 countByEnumeratingWithState:&v83 objects:v89 count:16];
+    foldersInFolder = [folderCopy foldersInFolder];
+    v20 = [foldersInFolder countByEnumeratingWithState:&v83 objects:v89 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1215,32 +1215,32 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
         {
           if (*v84 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(foldersInFolder);
           }
 
           v24 = *(*(&v83 + 1) + 8 * i);
           v25 = objc_alloc_init(_ICNAFolderReportToParentFolder);
-          [(ICNASnapshotReporter *)v71 snapshotModernFolder:v24 reportedDataToParentFolder:v25 reportedDataToAccount:v17 reportedDataToDevice:v70 reportedDataFromNotesToAccount:v74 reportedDataFromAttachmentToAccount:v73 reportedDataFromNoteToDevice:v72];
-          [(_ICNAFolderReportToParentFolder *)v16 setTotalNoteCountIncludingSubFolders:[(_ICNAFolderReportToParentFolder *)v16 totalNoteCountIncludingSubFolders]+ [(_ICNAFolderReportToParentFolder *)v25 totalNoteCountIncludingSubFolders]];
+          [(ICNASnapshotReporter *)selfCopy snapshotModernFolder:v24 reportedDataToParentFolder:v25 reportedDataToAccount:accountCopy reportedDataToDevice:deviceCopy reportedDataFromNotesToAccount:toAccountCopy reportedDataFromAttachmentToAccount:attachmentToAccountCopy reportedDataFromNoteToDevice:toDeviceCopy];
+          [(_ICNAFolderReportToParentFolder *)parentFolderCopy setTotalNoteCountIncludingSubFolders:[(_ICNAFolderReportToParentFolder *)parentFolderCopy totalNoteCountIncludingSubFolders]+ [(_ICNAFolderReportToParentFolder *)v25 totalNoteCountIncludingSubFolders]];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v83 objects:v89 count:16];
+        v21 = [foldersInFolder countByEnumeratingWithState:&v83 objects:v89 count:16];
       }
 
       while (v21);
     }
 
-    v26 = [v15 isSmartFolder];
+    isSmartFolder = [folderCopy isSmartFolder];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v27 = [v15 visibleNotesInFolder];
-    v28 = [v27 countByEnumeratingWithState:&v79 objects:v88 count:16];
+    visibleNotesInFolder = [folderCopy visibleNotesInFolder];
+    v28 = [visibleNotesInFolder countByEnumeratingWithState:&v79 objects:v88 count:16];
     if (v28)
     {
       v29 = v28;
-      v67 = v15;
+      v67 = folderCopy;
       v30 = 0;
       v31 = *v80;
       do
@@ -1249,27 +1249,27 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
         {
           if (*v80 != v31)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(visibleNotesInFolder);
           }
 
-          if ((v26 & 1) == 0)
+          if ((isSmartFolder & 1) == 0)
           {
             v33 = *(*(&v79 + 1) + 8 * j);
             v34 = objc_autoreleasePoolPush();
-            [(ICNASnapshotReporter *)v71 snapshotModernNote:v33 reportedDataToAccount:v74 reportToDevice:v72 reportedDataFromAttachmentToAccount:v73];
+            [(ICNASnapshotReporter *)selfCopy snapshotModernNote:v33 reportedDataToAccount:toAccountCopy reportToDevice:toDeviceCopy reportedDataFromAttachmentToAccount:attachmentToAccountCopy];
             objc_autoreleasePoolPop(v34);
           }
 
-          [(_ICNAFolderReportToParentFolder *)v16 setTotalNoteCountIncludingSubFolders:[(_ICNAFolderReportToParentFolder *)v16 totalNoteCountIncludingSubFolders]+ 1];
+          [(_ICNAFolderReportToParentFolder *)parentFolderCopy setTotalNoteCountIncludingSubFolders:[(_ICNAFolderReportToParentFolder *)parentFolderCopy totalNoteCountIncludingSubFolders]+ 1];
         }
 
         v30 += v29;
-        v29 = [v27 countByEnumeratingWithState:&v79 objects:v88 count:16];
+        v29 = [visibleNotesInFolder countByEnumeratingWithState:&v79 objects:v88 count:16];
       }
 
       while (v29);
       v35 = v30;
-      v15 = v67;
+      folderCopy = v67;
     }
 
     else
@@ -1277,66 +1277,66 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
       v35 = 0.0;
     }
 
-    v18 = v17;
-    v36 = v71;
-    if (([v15 isDefaultFolderForAccount] & 1) == 0 && (objc_msgSend(v15, "isTrashFolder") & 1) == 0)
+    v18 = accountCopy;
+    v36 = selfCopy;
+    if (([folderCopy isDefaultFolderForAccount] & 1) == 0 && (objc_msgSend(folderCopy, "isTrashFolder") & 1) == 0)
     {
-      v37 = [(ICNAEventReporter *)v71 collaborationStatusForModernObject:v15];
-      v38 = [(ICNAEventReporter *)v71 collaborationTypeForModernObject:v15];
+      v37 = [(ICNAEventReporter *)selfCopy collaborationStatusForModernObject:folderCopy];
+      v38 = [(ICNAEventReporter *)selfCopy collaborationTypeForModernObject:folderCopy];
       if ([v38 collaborationType] == 2)
       {
-        v39 = [(ICNASnapshotReporter *)v71 accountHistogramManager];
-        v40 = [v39 collabRootFolderTotalNoteCountHistogram];
-        [v40 reportValue:{-[_ICNAFolderReportToParentFolder totalNoteCountIncludingSubFolders](v16, "totalNoteCountIncludingSubFolders")}];
+        accountHistogramManager = [(ICNASnapshotReporter *)selfCopy accountHistogramManager];
+        collabRootFolderTotalNoteCountHistogram = [accountHistogramManager collabRootFolderTotalNoteCountHistogram];
+        [collabRootFolderTotalNoteCountHistogram reportValue:{-[_ICNAFolderReportToParentFolder totalNoteCountIncludingSubFolders](parentFolderCopy, "totalNoteCountIncludingSubFolders")}];
       }
 
       if ([v37 collaborationStatus] == 1 && objc_msgSend(v38, "collaborationType") == 2)
       {
-        v41 = [v15 serverShare];
-        v42 = [v41 ic_nonOwnerInvitedParticipantsCount];
-        v43 = [v41 ic_nonOwnerAcceptedParticipantsCount];
-        v44 = [(ICNASnapshotReporter *)v71 accountHistogramManager];
-        [v44 collabOwnedRootFolderInviteeCountHistogram];
+        serverShare = [folderCopy serverShare];
+        ic_nonOwnerInvitedParticipantsCount = [serverShare ic_nonOwnerInvitedParticipantsCount];
+        ic_nonOwnerAcceptedParticipantsCount = [serverShare ic_nonOwnerAcceptedParticipantsCount];
+        accountHistogramManager2 = [(ICNASnapshotReporter *)selfCopy accountHistogramManager];
+        [accountHistogramManager2 collabOwnedRootFolderInviteeCountHistogram];
         v45 = v68 = v38;
-        v46 = v42;
-        [v45 reportValue:v42];
+        v46 = ic_nonOwnerInvitedParticipantsCount;
+        [v45 reportValue:ic_nonOwnerInvitedParticipantsCount];
 
-        v47 = [(ICNASnapshotReporter *)v71 accountHistogramManager];
-        v48 = [v47 collabOwnedRootFolderAcceptanceCountHistogram];
-        [v48 reportValue:v43];
+        accountHistogramManager3 = [(ICNASnapshotReporter *)selfCopy accountHistogramManager];
+        collabOwnedRootFolderAcceptanceCountHistogram = [accountHistogramManager3 collabOwnedRootFolderAcceptanceCountHistogram];
+        [collabOwnedRootFolderAcceptanceCountHistogram reportValue:ic_nonOwnerAcceptedParticipantsCount];
 
-        v49 = [(ICNASnapshotReporter *)v71 accountHistogramManager];
-        v50 = [v49 collabOwnedRootFolderNoReplyCountHistogram];
-        v36 = v71;
-        [v50 reportValue:(v42 - v43)];
+        accountHistogramManager4 = [(ICNASnapshotReporter *)selfCopy accountHistogramManager];
+        collabOwnedRootFolderNoReplyCountHistogram = [accountHistogramManager4 collabOwnedRootFolderNoReplyCountHistogram];
+        v36 = selfCopy;
+        [collabOwnedRootFolderNoReplyCountHistogram reportValue:(ic_nonOwnerInvitedParticipantsCount - ic_nonOwnerAcceptedParticipantsCount)];
 
         v38 = v68;
-        v51 = [(ICNASnapshotReporter *)v71 accountHistogramManager];
-        v52 = [v51 collabOwnedRootFolderAcceptanceRatioHistogram];
-        [v52 reportValue:v43 / v46];
+        accountHistogramManager5 = [(ICNASnapshotReporter *)selfCopy accountHistogramManager];
+        collabOwnedRootFolderAcceptanceRatioHistogram = [accountHistogramManager5 collabOwnedRootFolderAcceptanceRatioHistogram];
+        [collabOwnedRootFolderAcceptanceRatioHistogram reportValue:ic_nonOwnerAcceptedParticipantsCount / v46];
       }
 
-      v53 = [(ICNASnapshotReporter *)v36 accountHistogramManager];
-      v54 = [v53 folderDirectNoteCountHistogram];
-      [v54 reportValue:v35];
+      accountHistogramManager6 = [(ICNASnapshotReporter *)v36 accountHistogramManager];
+      folderDirectNoteCountHistogram = [accountHistogramManager6 folderDirectNoteCountHistogram];
+      [folderDirectNoteCountHistogram reportValue:v35];
 
       [v18 setCountOfFolders:{objc_msgSend(v18, "countOfFolders") + 1}];
-      if ([v15 folderType] == 2)
+      if ([folderCopy folderType] == 2)
       {
         v69 = v38;
         [v18 setCountOfCustomSmartFolders:{objc_msgSend(v18, "countOfCustomSmartFolders") + 1}];
-        v55 = [v15 smartFolderQuery];
-        v56 = [v15 managedObjectContext];
-        v57 = [v15 account];
-        v58 = [v57 objectID];
-        v59 = [v55 filterSelectionWithManagedObjectContext:v56 account:v58];
+        smartFolderQuery = [folderCopy smartFolderQuery];
+        managedObjectContext = [folderCopy managedObjectContext];
+        account = [folderCopy account];
+        objectID = [account objectID];
+        v59 = [smartFolderQuery filterSelectionWithManagedObjectContext:managedObjectContext account:objectID];
 
         v77 = 0u;
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v60 = [v59 filterTypeSelections];
-        v61 = [v60 countByEnumeratingWithState:&v75 objects:v87 count:16];
+        filterTypeSelections = [v59 filterTypeSelections];
+        v61 = [filterTypeSelections countByEnumeratingWithState:&v75 objects:v87 count:16];
         if (v61)
         {
           v62 = v61;
@@ -1347,15 +1347,15 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
             {
               if (*v76 != v63)
               {
-                objc_enumerationMutation(v60);
+                objc_enumerationMutation(filterTypeSelections);
               }
 
-              v65 = [*(*(&v75 + 1) + 8 * k) filterType];
-              if (v65 > 4)
+              filterType = [*(*(&v75 + 1) + 8 * k) filterType];
+              if (filterType > 4)
               {
-                if (v65 > 7)
+                if (filterType > 7)
                 {
-                  switch(v65)
+                  switch(filterType)
                   {
                     case 8:
                       [v18 setCountOfSmartFoldersWithQuickNotesFilter:{objc_msgSend(v18, "countOfSmartFoldersWithQuickNotesFilter") + 1}];
@@ -1369,12 +1369,12 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
                   }
                 }
 
-                else if (v65 == 5)
+                else if (filterType == 5)
                 {
                   [v18 setCountOfSmartFoldersWithChecklistsFilter:{objc_msgSend(v18, "countOfSmartFoldersWithChecklistsFilter") + 1}];
                 }
 
-                else if (v65 == 6)
+                else if (filterType == 6)
                 {
                   [v18 setCountOfSmartFoldersWithAttachmentsFilter:{objc_msgSend(v18, "countOfSmartFoldersWithAttachmentsFilter") + 1}];
                 }
@@ -1385,14 +1385,14 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
                 }
               }
 
-              else if (v65 > 1)
+              else if (filterType > 1)
               {
-                if (v65 == 2)
+                if (filterType == 2)
                 {
                   [v18 setCountOfSmartFoldersWithDateModifiedFilter:{objc_msgSend(v18, "countOfSmartFoldersWithDateModifiedFilter") + 1}];
                 }
 
-                else if (v65 == 3)
+                else if (filterType == 3)
                 {
                   [v18 setCountOfSmartFoldersWithSharedFilter:{objc_msgSend(v18, "countOfSmartFoldersWithSharedFilter") + 1}];
                 }
@@ -1403,14 +1403,14 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
                 }
               }
 
-              else if (v65 == -1)
+              else if (filterType == -1)
               {
                 [v18 setCountOfSmartFoldersWithUnknownFilter:{objc_msgSend(v18, "countOfSmartFoldersWithUnknownFilter") + 1}];
               }
 
-              else if (v65)
+              else if (filterType)
               {
-                if (v65 == 1)
+                if (filterType == 1)
                 {
                   [v18 setCountOfSmartFoldersWithDateCreatedFilter:{objc_msgSend(v18, "countOfSmartFoldersWithDateCreatedFilter") + 1}];
                 }
@@ -1422,7 +1422,7 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
               }
             }
 
-            v62 = [v60 countByEnumeratingWithState:&v75 objects:v87 count:16];
+            v62 = [filterTypeSelections countByEnumeratingWithState:&v75 objects:v87 count:16];
           }
 
           while (v62);
@@ -1432,25 +1432,25 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
       }
 
       [v18 updateFolderCollaborationMatrixWithCollaborationStatus:v37 collaborationType:v38];
-      [v70 updateFolderCollaborationMatrixWithCollaborationStatus:v37 collaborationType:v38];
+      [deviceCopy updateFolderCollaborationMatrixWithCollaborationStatus:v37 collaborationType:v38];
     }
 
-    [objc_opt_class() faultOutObject:v15];
+    [objc_opt_class() faultOutObject:folderCopy];
   }
 
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotHTMLFolder:(id)a3 reportedDataToAccount:(id)a4 reportedDataToDevice:(id)a5 noteReportToAccount:(id)a6 reportedDataFromNoteToDevice:(id)a7
+- (void)snapshotHTMLFolder:(id)folder reportedDataToAccount:(id)account reportedDataToDevice:(id)device noteReportToAccount:(id)toAccount reportedDataFromNoteToDevice:(id)toDevice
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICNASnapshotReporter *)self htmlContext];
-  v18 = [v17 allVisibleNotesInFolder:v12];
+  folderCopy = folder;
+  accountCopy = account;
+  deviceCopy = device;
+  toAccountCopy = toAccount;
+  toDeviceCopy = toDevice;
+  htmlContext = [(ICNASnapshotReporter *)self htmlContext];
+  v18 = [htmlContext allVisibleNotesInFolder:folderCopy];
 
   v40 = 0u;
   v41 = 0u;
@@ -1458,12 +1458,12 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
   v39 = 0u;
   v19 = v18;
   v20 = [v19 countByEnumeratingWithState:&v38 objects:v42 count:16];
-  v37 = v14;
+  v37 = deviceCopy;
   if (v20)
   {
     v21 = v20;
-    v35 = v13;
-    v36 = v12;
+    v35 = accountCopy;
+    v36 = folderCopy;
     v22 = 0;
     v23 = *v39;
     do
@@ -1477,7 +1477,7 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
 
         v25 = *(*(&v38 + 1) + 8 * i);
         v26 = objc_autoreleasePoolPush();
-        [(ICNASnapshotReporter *)self snapshotHTMLNote:v25 reportedDataToAccount:v15 reportedDataToDevice:v16];
+        [(ICNASnapshotReporter *)self snapshotHTMLNote:v25 reportedDataToAccount:toAccountCopy reportedDataToDevice:toDeviceCopy];
         objc_autoreleasePoolPop(v26);
       }
 
@@ -1487,9 +1487,9 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
 
     while (v21);
     v27 = v22;
-    v13 = v35;
-    v12 = v36;
-    v14 = v37;
+    accountCopy = v35;
+    folderCopy = v36;
+    deviceCopy = v37;
   }
 
   else
@@ -1497,71 +1497,71 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v27 = 0.0;
   }
 
-  if ([v12 isCustomFolder])
+  if ([folderCopy isCustomFolder])
   {
     v28 = [[ICASCollaborationStatus alloc] initWithCollaborationStatus:1];
     v29 = [[ICASCollaborationType alloc] initWithCollaborationType:1];
-    v30 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v31 = [v30 topLevelFolderTotalNoteCountHistogram];
-    [v31 reportValue:v27];
+    accountHistogramManager = [(ICNASnapshotReporter *)self accountHistogramManager];
+    topLevelFolderTotalNoteCountHistogram = [accountHistogramManager topLevelFolderTotalNoteCountHistogram];
+    [topLevelFolderTotalNoteCountHistogram reportValue:v27];
 
-    v32 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v33 = [v32 folderDirectNoteCountHistogram];
-    [v33 reportValue:v27];
+    accountHistogramManager2 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    folderDirectNoteCountHistogram = [accountHistogramManager2 folderDirectNoteCountHistogram];
+    [folderDirectNoteCountHistogram reportValue:v27];
 
-    v14 = v37;
-    [v13 setCountOfFolders:{objc_msgSend(v13, "countOfFolders") + 1}];
-    [v13 updateFolderCollaborationMatrixWithCollaborationStatus:v28 collaborationType:v29];
+    deviceCopy = v37;
+    [accountCopy setCountOfFolders:{objc_msgSend(accountCopy, "countOfFolders") + 1}];
+    [accountCopy updateFolderCollaborationMatrixWithCollaborationStatus:v28 collaborationType:v29];
     [v37 updateFolderCollaborationMatrixWithCollaborationStatus:v28 collaborationType:v29];
   }
 
-  [objc_opt_class() faultOutObject:v12];
+  [objc_opt_class() faultOutObject:folderCopy];
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotModernNote:(id)a3 reportedDataToAccount:(id)a4 reportToDevice:(id)a5 reportedDataFromAttachmentToAccount:(id)a6
+- (void)snapshotModernNote:(id)note reportedDataToAccount:(id)account reportToDevice:(id)device reportedDataFromAttachmentToAccount:(id)toAccount
 {
   v157 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v129 = a4;
-  v128 = a5;
-  v11 = a6;
-  v127 = v10;
-  if ([v10 isUnsupported])
+  noteCopy = note;
+  accountCopy = account;
+  deviceCopy = device;
+  toAccountCopy = toAccount;
+  v127 = noteCopy;
+  if ([noteCopy isUnsupported])
   {
-    [objc_opt_class() faultOutObject:v10];
+    [objc_opt_class() faultOutObject:noteCopy];
   }
 
   else
   {
-    v117 = [(ICNAEventReporter *)self collaborationTypeForModernObject:v10];
-    v116 = [(ICNAEventReporter *)self collaborationStatusForModernObject:v10];
-    [v129 updateNoteCollaborationMatrixWithCollaborationStatus:v116 collaborationType:v117];
+    v117 = [(ICNAEventReporter *)self collaborationTypeForModernObject:noteCopy];
+    v116 = [(ICNAEventReporter *)self collaborationStatusForModernObject:noteCopy];
+    [accountCopy updateNoteCollaborationMatrixWithCollaborationStatus:v116 collaborationType:v117];
     if ([v116 collaborationStatus] == 1 && objc_msgSend(v117, "collaborationType") == 2)
     {
-      v12 = [v10 serverShare];
-      v13 = [v12 ic_nonOwnerInvitedParticipantsCount];
-      v14 = [v12 ic_nonOwnerAcceptedParticipantsCount];
-      v15 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v16 = [v15 collabOwnedSingleNoteInviteeCountHistogram];
-      [v16 reportValue:v13];
+      serverShare = [noteCopy serverShare];
+      ic_nonOwnerInvitedParticipantsCount = [serverShare ic_nonOwnerInvitedParticipantsCount];
+      ic_nonOwnerAcceptedParticipantsCount = [serverShare ic_nonOwnerAcceptedParticipantsCount];
+      accountHistogramManager = [(ICNASnapshotReporter *)self accountHistogramManager];
+      collabOwnedSingleNoteInviteeCountHistogram = [accountHistogramManager collabOwnedSingleNoteInviteeCountHistogram];
+      [collabOwnedSingleNoteInviteeCountHistogram reportValue:ic_nonOwnerInvitedParticipantsCount];
 
-      v17 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v18 = [v17 collabOwnedSingleNoteAcceptanceCountHistogram];
-      [v18 reportValue:v14];
+      accountHistogramManager2 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      collabOwnedSingleNoteAcceptanceCountHistogram = [accountHistogramManager2 collabOwnedSingleNoteAcceptanceCountHistogram];
+      [collabOwnedSingleNoteAcceptanceCountHistogram reportValue:ic_nonOwnerAcceptedParticipantsCount];
 
-      v19 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v20 = [v19 collabOwnedSingleNoteNoReplyCountHistogram];
-      [v20 reportValue:(v13 - v14)];
+      accountHistogramManager3 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      collabOwnedSingleNoteNoReplyCountHistogram = [accountHistogramManager3 collabOwnedSingleNoteNoReplyCountHistogram];
+      [collabOwnedSingleNoteNoReplyCountHistogram reportValue:(ic_nonOwnerInvitedParticipantsCount - ic_nonOwnerAcceptedParticipantsCount)];
 
-      v21 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v22 = [v21 collabOwnedSingleNoteAcceptanceRatioHistogram];
-      [v22 reportValue:v14 / v13];
+      accountHistogramManager4 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      collabOwnedSingleNoteAcceptanceRatioHistogram = [accountHistogramManager4 collabOwnedSingleNoteAcceptanceRatioHistogram];
+      [collabOwnedSingleNoteAcceptanceRatioHistogram reportValue:ic_nonOwnerAcceptedParticipantsCount / ic_nonOwnerInvitedParticipantsCount];
     }
 
-    v23 = [v127 textStorage];
-    v126 = v23;
+    textStorage = [v127 textStorage];
+    v126 = textStorage;
     v152 = 0;
     v153 = &v152;
     v154 = 0x2020000000;
@@ -1570,10 +1570,10 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v149 = &v148;
     v150 = 0x2020000000;
     v151 = 0;
-    v24 = v23;
-    if (v23)
+    v24 = textStorage;
+    if (textStorage)
     {
-      v25 = [v23 length];
+      v25 = [textStorage length];
       v144 = 0;
       v145 = &v144;
       v146 = 0x2020000000;
@@ -1584,7 +1584,7 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
       v139[2] = __116__ICNASnapshotReporter_snapshotModernNote_reportedDataToAccount_reportToDevice_reportedDataFromAttachmentToAccount___block_invoke;
       v139[3] = &unk_2799AF368;
       v141 = &v152;
-      v140 = v129;
+      v140 = accountCopy;
       v142 = &v144;
       v143 = &v148;
       [v24 enumerateAttributesInRange:0 options:v26 usingBlock:{0, v139}];
@@ -1603,8 +1603,8 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    v29 = [v127 visibleAttachments];
-    v30 = [v29 countByEnumeratingWithState:&v135 objects:v156 count:16];
+    visibleAttachments = [v127 visibleAttachments];
+    v30 = [visibleAttachments countByEnumeratingWithState:&v135 objects:v156 count:16];
     if (v30)
     {
       v31 = *v136;
@@ -1614,369 +1614,369 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
         {
           if (*v136 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(visibleAttachments);
           }
 
           v33 = *(*(&v135 + 1) + 8 * i);
           v34 = objc_autoreleasePoolPush();
-          v35 = [v33 parentAttachment];
-          v36 = v35 == 0;
+          parentAttachment = [v33 parentAttachment];
+          v36 = parentAttachment == 0;
 
           if (v36)
           {
-            [(ICNASnapshotReporter *)self snapshotAttachment:v33 reportedDataToNote:v28 reportedDataToAccount:v11];
+            [(ICNASnapshotReporter *)self snapshotAttachment:v33 reportedDataToNote:v28 reportedDataToAccount:toAccountCopy];
           }
 
           objc_autoreleasePoolPop(v34);
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v135 objects:v156 count:16];
+        v30 = [visibleAttachments countByEnumeratingWithState:&v135 objects:v156 count:16];
       }
 
       while (v30);
     }
 
-    v111 = [(_ICNAAttachmentReportToNote *)v28 countOfAudioAttachments];
-    v37 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v38 = [v37 objectForKeyedSubscript:*MEMORY[0x277D35BC8]];
-    v115 = [v38 unsignedIntegerValue];
+    countOfAudioAttachments = [(_ICNAAttachmentReportToNote *)v28 countOfAudioAttachments];
+    countOfAttachmentByUTI = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v38 = [countOfAttachmentByUTI objectForKeyedSubscript:*MEMORY[0x277D35BC8]];
+    unsignedIntegerValue = [v38 unsignedIntegerValue];
 
-    v39 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v40 = [v39 objectForKeyedSubscript:*MEMORY[0x277D35BD8]];
-    v124 = [v40 unsignedIntegerValue];
+    countOfAttachmentByUTI2 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v40 = [countOfAttachmentByUTI2 objectForKeyedSubscript:*MEMORY[0x277D35BD8]];
+    unsignedIntegerValue2 = [v40 unsignedIntegerValue];
 
-    v41 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v42 = [v41 objectForKeyedSubscript:*MEMORY[0x277D35BD0]];
-    v123 = [v42 unsignedIntegerValue];
+    countOfAttachmentByUTI3 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v42 = [countOfAttachmentByUTI3 objectForKeyedSubscript:*MEMORY[0x277D35BD0]];
+    unsignedIntegerValue3 = [v42 unsignedIntegerValue];
 
-    v43 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v44 = [v43 objectForKeyedSubscript:*MEMORY[0x277D35BC0]];
-    v125 = [v44 unsignedIntegerValue];
+    countOfAttachmentByUTI4 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v44 = [countOfAttachmentByUTI4 objectForKeyedSubscript:*MEMORY[0x277D35BC0]];
+    unsignedIntegerValue4 = [v44 unsignedIntegerValue];
 
-    v45 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v46 = [v45 objectForKeyedSubscript:*MEMORY[0x277D35C08]];
-    v114 = [v46 unsignedIntegerValue];
+    countOfAttachmentByUTI5 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v46 = [countOfAttachmentByUTI5 objectForKeyedSubscript:*MEMORY[0x277D35C08]];
+    unsignedIntegerValue5 = [v46 unsignedIntegerValue];
 
-    v47 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v48 = [*MEMORY[0x277CE1E90] identifier];
-    v49 = [v47 objectForKeyedSubscript:v48];
-    v122 = [v49 unsignedIntegerValue];
+    countOfAttachmentByUTI6 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    identifier = [*MEMORY[0x277CE1E90] identifier];
+    v49 = [countOfAttachmentByUTI6 objectForKeyedSubscript:identifier];
+    unsignedIntegerValue6 = [v49 unsignedIntegerValue];
 
-    v50 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v51 = [v50 objectForKeyedSubscript:@"com.apple.notes.analytics.appleMaps"];
-    v121 = [v51 unsignedIntegerValue];
+    countOfAttachmentByUTI7 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v51 = [countOfAttachmentByUTI7 objectForKeyedSubscript:@"com.apple.notes.analytics.appleMaps"];
+    unsignedIntegerValue7 = [v51 unsignedIntegerValue];
 
-    v52 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v53 = [v52 objectForKeyedSubscript:*MEMORY[0x277D35C00]];
-    v120 = [v53 unsignedIntegerValue];
+    countOfAttachmentByUTI8 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v53 = [countOfAttachmentByUTI8 objectForKeyedSubscript:*MEMORY[0x277D35C00]];
+    unsignedIntegerValue8 = [v53 unsignedIntegerValue];
 
-    v54 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v55 = [v54 objectForKeyedSubscript:*MEMORY[0x277D35BE8]];
-    v113 = [v55 unsignedIntegerValue];
+    countOfAttachmentByUTI9 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v55 = [countOfAttachmentByUTI9 objectForKeyedSubscript:*MEMORY[0x277D35BE8]];
+    unsignedIntegerValue9 = [v55 unsignedIntegerValue];
 
-    v56 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v57 = [v56 objectForKeyedSubscript:*MEMORY[0x277D35BF0]];
-    v119 = [v57 unsignedIntegerValue];
+    countOfAttachmentByUTI10 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v57 = [countOfAttachmentByUTI10 objectForKeyedSubscript:*MEMORY[0x277D35BF0]];
+    unsignedIntegerValue10 = [v57 unsignedIntegerValue];
 
-    v58 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v59 = [v58 objectForKeyedSubscript:*MEMORY[0x277D35BF8]];
-    v118 = [v59 unsignedIntegerValue];
+    countOfAttachmentByUTI11 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v59 = [countOfAttachmentByUTI11 objectForKeyedSubscript:*MEMORY[0x277D35BF8]];
+    unsignedIntegerValue11 = [v59 unsignedIntegerValue];
 
-    v60 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
-    v61 = [v60 objectForKeyedSubscript:*MEMORY[0x277D35BE0]];
-    v112 = [v61 unsignedIntegerValue];
+    countOfAttachmentByUTI12 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachmentByUTI];
+    v61 = [countOfAttachmentByUTI12 objectForKeyedSubscript:*MEMORY[0x277D35BE0]];
+    unsignedIntegerValue12 = [v61 unsignedIntegerValue];
 
-    v110 = [(_ICNAAttachmentReportToNote *)v28 countOfAttachments];
-    v62 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v63 = [v62 noteCharCountHistogram];
-    [v63 reportValue:v27];
+    countOfAttachments = [(_ICNAAttachmentReportToNote *)v28 countOfAttachments];
+    accountHistogramManager5 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    noteCharCountHistogram = [accountHistogramManager5 noteCharCountHistogram];
+    [noteCharCountHistogram reportValue:v27];
 
-    v64 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v65 = [v64 attachmentCountPerNoteHistogram];
-    [v65 reportValue:{-[_ICNAAttachmentReportToNote countOfAttachments](v28, "countOfAttachments")}];
+    accountHistogramManager6 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    attachmentCountPerNoteHistogram = [accountHistogramManager6 attachmentCountPerNoteHistogram];
+    [attachmentCountPerNoteHistogram reportValue:{-[_ICNAAttachmentReportToNote countOfAttachments](v28, "countOfAttachments")}];
 
-    v66 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v67 = [v66 drawingCountPerNoteHistogram];
-    [v67 reportValue:(v123 + v124 + v125)];
+    accountHistogramManager7 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    drawingCountPerNoteHistogram = [accountHistogramManager7 drawingCountPerNoteHistogram];
+    [drawingCountPerNoteHistogram reportValue:(unsignedIntegerValue3 + unsignedIntegerValue2 + unsignedIntegerValue4)];
 
-    v68 = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV1FingerStrokes];
-    v69 = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV2FingerStrokes];
-    v70 = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV1PencilStrokes];
-    v71 = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV2PencilStrokes];
-    v72 = [(_ICNAAttachmentReportToNote *)v28 countOfFullscreenDrawingStrokes];
-    v73 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v74 = [v73 inlineDrawingFingerStrokesCountPerNoteHistogram];
-    v75 = v69 + v68;
-    [v74 reportValue:v75];
+    countOfInlineDrawingV1FingerStrokes = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV1FingerStrokes];
+    countOfInlineDrawingV2FingerStrokes = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV2FingerStrokes];
+    countOfInlineDrawingV1PencilStrokes = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV1PencilStrokes];
+    countOfInlineDrawingV2PencilStrokes = [(_ICNAAttachmentReportToNote *)v28 countOfInlineDrawingV2PencilStrokes];
+    countOfFullscreenDrawingStrokes = [(_ICNAAttachmentReportToNote *)v28 countOfFullscreenDrawingStrokes];
+    accountHistogramManager8 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingFingerStrokesCountPerNoteHistogram = [accountHistogramManager8 inlineDrawingFingerStrokesCountPerNoteHistogram];
+    v75 = countOfInlineDrawingV2FingerStrokes + countOfInlineDrawingV1FingerStrokes;
+    [inlineDrawingFingerStrokesCountPerNoteHistogram reportValue:v75];
 
-    v76 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v77 = [v76 inlineDrawingPencilStrokesCountPerNoteHistogram];
-    v78 = v71 + v70;
-    [v77 reportValue:v78];
+    accountHistogramManager9 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingPencilStrokesCountPerNoteHistogram = [accountHistogramManager9 inlineDrawingPencilStrokesCountPerNoteHistogram];
+    v78 = countOfInlineDrawingV2PencilStrokes + countOfInlineDrawingV1PencilStrokes;
+    [inlineDrawingPencilStrokesCountPerNoteHistogram reportValue:v78];
 
-    v79 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v80 = [v79 fullScreenDrawingStrokesCountPerNoteHistogram];
-    [v80 reportValue:v72];
+    accountHistogramManager10 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    fullScreenDrawingStrokesCountPerNoteHistogram = [accountHistogramManager10 fullScreenDrawingStrokesCountPerNoteHistogram];
+    [fullScreenDrawingStrokesCountPerNoteHistogram reportValue:countOfFullscreenDrawingStrokes];
 
-    v81 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v82 = [v81 totalStrokesCountPerNoteHistogram];
-    [v82 reportValue:(v78 + v75 + v72)];
+    accountHistogramManager11 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    totalStrokesCountPerNoteHistogram = [accountHistogramManager11 totalStrokesCountPerNoteHistogram];
+    [totalStrokesCountPerNoteHistogram reportValue:(v78 + v75 + countOfFullscreenDrawingStrokes)];
 
-    v83 = [v127 isSystemPaper];
-    [v129 setCountOfNotes:{objc_msgSend(v129, "countOfNotes") + 1}];
-    [v129 setCountOfChecklists:{v149[3] + objc_msgSend(v129, "countOfChecklists")}];
-    [v128 setCountOfModernNotes:{objc_msgSend(v128, "countOfModernNotes") + 1}];
-    if (v83)
+    isSystemPaper = [v127 isSystemPaper];
+    [accountCopy setCountOfNotes:{objc_msgSend(accountCopy, "countOfNotes") + 1}];
+    [accountCopy setCountOfChecklists:{v149[3] + objc_msgSend(accountCopy, "countOfChecklists")}];
+    [deviceCopy setCountOfModernNotes:{objc_msgSend(deviceCopy, "countOfModernNotes") + 1}];
+    if (isSystemPaper)
     {
-      [v128 setCountOfScrapPapers:{objc_msgSend(v128, "countOfScrapPapers") + 1}];
+      [deviceCopy setCountOfScrapPapers:{objc_msgSend(deviceCopy, "countOfScrapPapers") + 1}];
     }
 
     if ([v127 isPinned])
     {
-      [v129 setCountOfPinnedNotes:{objc_msgSend(v129, "countOfPinnedNotes") + 1}];
-      [v128 setCountOfPinnedNotes:{objc_msgSend(v128, "countOfPinnedNotes") + 1}];
-      [v129 updateNoteTwoFactorMatrixWithIndex:8];
-      if (v83)
+      [accountCopy setCountOfPinnedNotes:{objc_msgSend(accountCopy, "countOfPinnedNotes") + 1}];
+      [deviceCopy setCountOfPinnedNotes:{objc_msgSend(deviceCopy, "countOfPinnedNotes") + 1}];
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:8];
+      if (isSystemPaper)
       {
-        [v129 setCountOfPinnedScrapPapers:{objc_msgSend(v129, "countOfPinnedScrapPapers") + 1}];
+        [accountCopy setCountOfPinnedScrapPapers:{objc_msgSend(accountCopy, "countOfPinnedScrapPapers") + 1}];
       }
     }
 
     if ([v127 isPasswordProtected])
     {
-      [v129 setCountOfLockedNotes:{objc_msgSend(v129, "countOfLockedNotes") + 1}];
-      [v129 updateNoteTwoFactorMatrixWithIndex:9];
-      v84 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v85 = [v84 passwordProtectedNoteWeeklyAgeHistogram];
-      v86 = [v127 creationDate];
-      [v85 reportValue:{-[ICNAEventReporter weeksSinceDate:](self, "weeksSinceDate:", v86)}];
+      [accountCopy setCountOfLockedNotes:{objc_msgSend(accountCopy, "countOfLockedNotes") + 1}];
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:9];
+      accountHistogramManager12 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      passwordProtectedNoteWeeklyAgeHistogram = [accountHistogramManager12 passwordProtectedNoteWeeklyAgeHistogram];
+      creationDate = [v127 creationDate];
+      [passwordProtectedNoteWeeklyAgeHistogram reportValue:{-[ICNAEventReporter weeksSinceDate:](self, "weeksSinceDate:", creationDate)}];
 
-      if (v83)
+      if (isSystemPaper)
       {
-        [v129 setCountOfLockedScrapPapers:{objc_msgSend(v129, "countOfLockedScrapPapers") + 1}];
+        [accountCopy setCountOfLockedScrapPapers:{objc_msgSend(accountCopy, "countOfLockedScrapPapers") + 1}];
       }
 
       if ([MEMORY[0x277D35E90] shouldAuthenticateWithCustomPasswordForObject:v127])
       {
-        [v129 setCountOfV1LockedNotes:{objc_msgSend(v129, "countOfV1LockedNotes") + 1}];
-        v87 = [v127 account];
-        v88 = [v87 resolvedLockedNotesMode] == 2;
+        [accountCopy setCountOfV1LockedNotes:{objc_msgSend(accountCopy, "countOfV1LockedNotes") + 1}];
+        account = [v127 account];
+        v88 = [account resolvedLockedNotesMode] == 2;
 
         if (v88)
         {
-          [v129 setCountOfLockedNotesWithDivergedMode:{objc_msgSend(v129, "countOfLockedNotesWithDivergedMode") + 1}];
+          [accountCopy setCountOfLockedNotesWithDivergedMode:{objc_msgSend(accountCopy, "countOfLockedNotesWithDivergedMode") + 1}];
         }
 
-        v89 = [v127 account];
-        v90 = [v89 cryptoStrategy];
-        v91 = [v90 hasSameKeyAsObject:v127];
+        account2 = [v127 account];
+        cryptoStrategy = [account2 cryptoStrategy];
+        v91 = [cryptoStrategy hasSameKeyAsObject:v127];
 
         if ((v91 & 1) == 0)
         {
-          [v129 setCountOfLockedNotesWithDivergedPassword:{objc_msgSend(v129, "countOfLockedNotesWithDivergedPassword") + 1}];
+          [accountCopy setCountOfLockedNotesWithDivergedPassword:{objc_msgSend(accountCopy, "countOfLockedNotesWithDivergedPassword") + 1}];
         }
       }
 
       else if ([MEMORY[0x277D35E90] shouldAuthenticateWithDevicePasswordForObject:v127])
       {
-        [v129 setCountOfV2LockedNotes:{objc_msgSend(v129, "countOfV2LockedNotes") + 1}];
-        v92 = [v127 account];
-        v93 = [v92 resolvedLockedNotesMode] == 1;
+        [accountCopy setCountOfV2LockedNotes:{objc_msgSend(accountCopy, "countOfV2LockedNotes") + 1}];
+        account3 = [v127 account];
+        v93 = [account3 resolvedLockedNotesMode] == 1;
 
         if (v93)
         {
-          [v129 setCountOfLockedNotesWithDivergedMode:{objc_msgSend(v129, "countOfLockedNotesWithDivergedMode") + 1}];
+          [accountCopy setCountOfLockedNotesWithDivergedMode:{objc_msgSend(accountCopy, "countOfLockedNotesWithDivergedMode") + 1}];
         }
       }
     }
 
     if ([v127 isSharedViaICloud])
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:0];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:0];
+      if (isSystemPaper)
       {
-        [v129 setCountOfCollaboratedScrapPapers:{objc_msgSend(v129, "countOfCollaboratedScrapPapers") + 1}];
+        [accountCopy setCountOfCollaboratedScrapPapers:{objc_msgSend(accountCopy, "countOfCollaboratedScrapPapers") + 1}];
       }
     }
 
-    v94 = [v127 outlineState];
-    v95 = [v94 collapsedUUIDs];
-    v96 = [v95 count] == 0;
+    outlineState = [v127 outlineState];
+    collapsedUUIDs = [outlineState collapsedUUIDs];
+    v96 = [collapsedUUIDs count] == 0;
 
     if (!v96)
     {
-      [v129 setCountOfNotesWithCollapsedSections:{objc_msgSend(v129, "countOfNotesWithCollapsedSections") + 1}];
+      [accountCopy setCountOfNotesWithCollapsedSections:{objc_msgSend(accountCopy, "countOfNotesWithCollapsedSections") + 1}];
     }
 
     if (*(v153 + 24) == 1)
     {
-      [v129 setCountOfNotesWithChecklists:{objc_msgSend(v129, "countOfNotesWithChecklists") + 1}];
+      [accountCopy setCountOfNotesWithChecklists:{objc_msgSend(accountCopy, "countOfNotesWithChecklists") + 1}];
     }
 
-    if (v115 | v118)
+    if (unsignedIntegerValue | unsignedIntegerValue11)
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:1];
-      [v129 setCountOfNotesWithDocScan:{objc_msgSend(v129, "countOfNotesWithDocScan") + 1}];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:1];
+      [accountCopy setCountOfNotesWithDocScan:{objc_msgSend(accountCopy, "countOfNotesWithDocScan") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithDocScan:{objc_msgSend(v129, "countOfScrapPapersWithDocScan") + 1}];
+        [accountCopy setCountOfScrapPapersWithDocScan:{objc_msgSend(accountCopy, "countOfScrapPapersWithDocScan") + 1}];
       }
     }
 
-    if (v124)
+    if (unsignedIntegerValue2)
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:2];
-      [v129 setCountOfNotesWithInlineDrawingV1:{objc_msgSend(v129, "countOfNotesWithInlineDrawingV1") + 1}];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:2];
+      [accountCopy setCountOfNotesWithInlineDrawingV1:{objc_msgSend(accountCopy, "countOfNotesWithInlineDrawingV1") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithInlineDrawingV1:{objc_msgSend(v129, "countOfScrapPapersWithInlineDrawingV1") + 1}];
+        [accountCopy setCountOfScrapPapersWithInlineDrawingV1:{objc_msgSend(accountCopy, "countOfScrapPapersWithInlineDrawingV1") + 1}];
       }
     }
 
-    if (v123)
+    if (unsignedIntegerValue3)
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:3];
-      [v129 setCountOfNotesWithInlineDrawingV2:{objc_msgSend(v129, "countOfNotesWithInlineDrawingV2") + 1}];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:3];
+      [accountCopy setCountOfNotesWithInlineDrawingV2:{objc_msgSend(accountCopy, "countOfNotesWithInlineDrawingV2") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithInlineDrawingV2:{objc_msgSend(v129, "countOfScrapPapersWithInlineDrawingV2") + 1}];
+        [accountCopy setCountOfScrapPapersWithInlineDrawingV2:{objc_msgSend(accountCopy, "countOfScrapPapersWithInlineDrawingV2") + 1}];
       }
     }
 
-    if (v125)
+    if (unsignedIntegerValue4)
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:4];
-      [v129 setCountOfNotesWithFullscreenDrawing:{objc_msgSend(v129, "countOfNotesWithFullscreenDrawing") + 1}];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:4];
+      [accountCopy setCountOfNotesWithFullscreenDrawing:{objc_msgSend(accountCopy, "countOfNotesWithFullscreenDrawing") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithFullscreenDrawing:{objc_msgSend(v129, "countOfScrapPapersWithFullscreenDrawing") + 1}];
+        [accountCopy setCountOfScrapPapersWithFullscreenDrawing:{objc_msgSend(accountCopy, "countOfScrapPapersWithFullscreenDrawing") + 1}];
       }
     }
 
-    if (v114)
+    if (unsignedIntegerValue5)
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:5];
-      [v129 setCountOfNotesWithTable:{objc_msgSend(v129, "countOfNotesWithTable") + 1}];
-      [v128 setCountOfModernNotesWithTable:{objc_msgSend(v128, "countOfModernNotesWithTable") + 1}];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:5];
+      [accountCopy setCountOfNotesWithTable:{objc_msgSend(accountCopy, "countOfNotesWithTable") + 1}];
+      [deviceCopy setCountOfModernNotesWithTable:{objc_msgSend(deviceCopy, "countOfModernNotesWithTable") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithTables:{objc_msgSend(v129, "countOfScrapPapersWithTables") + 1}];
-        [v128 setCountOfScrapPapersWithTables:{objc_msgSend(v128, "countOfScrapPapersWithTables") + 1}];
+        [accountCopy setCountOfScrapPapersWithTables:{objc_msgSend(accountCopy, "countOfScrapPapersWithTables") + 1}];
+        [deviceCopy setCountOfScrapPapersWithTables:{objc_msgSend(deviceCopy, "countOfScrapPapersWithTables") + 1}];
       }
     }
 
-    if (v110 - (v118 + v112) - (v115 + v111 + v124 + v123 + v125 + v114 + v122 + v121 + v120 + v113 + v119) >= 1)
+    if (countOfAttachments - (unsignedIntegerValue11 + unsignedIntegerValue12) - (unsignedIntegerValue + countOfAudioAttachments + unsignedIntegerValue2 + unsignedIntegerValue3 + unsignedIntegerValue4 + unsignedIntegerValue5 + unsignedIntegerValue6 + unsignedIntegerValue7 + unsignedIntegerValue8 + unsignedIntegerValue9 + unsignedIntegerValue10) >= 1)
     {
-      [v129 updateNoteTwoFactorMatrixWithIndex:6];
-      [v129 setCountOfNotesWithOtherAttachments:{objc_msgSend(v129, "countOfNotesWithOtherAttachments") + 1}];
-      if (v83)
+      [accountCopy updateNoteTwoFactorMatrixWithIndex:6];
+      [accountCopy setCountOfNotesWithOtherAttachments:{objc_msgSend(accountCopy, "countOfNotesWithOtherAttachments") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithOtherAttachments:{objc_msgSend(v129, "countOfScrapPapersWithOtherAttachments") + 1}];
+        [accountCopy setCountOfScrapPapersWithOtherAttachments:{objc_msgSend(accountCopy, "countOfScrapPapersWithOtherAttachments") + 1}];
       }
     }
 
-    if (v122)
+    if (unsignedIntegerValue6)
     {
-      [v129 setCountOfNotesWithRichURL:{objc_msgSend(v129, "countOfNotesWithRichURL") + 1}];
-      if (v83)
+      [accountCopy setCountOfNotesWithRichURL:{objc_msgSend(accountCopy, "countOfNotesWithRichURL") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithRichUrl:{objc_msgSend(v129, "countOfScrapPapersWithRichUrl") + 1}];
+        [accountCopy setCountOfScrapPapersWithRichUrl:{objc_msgSend(accountCopy, "countOfScrapPapersWithRichUrl") + 1}];
       }
     }
 
-    if (v121)
+    if (unsignedIntegerValue7)
     {
-      [v129 setCountOfNotesWithMapLink:{objc_msgSend(v129, "countOfNotesWithMapLink") + 1}];
-      if (v83)
+      [accountCopy setCountOfNotesWithMapLink:{objc_msgSend(accountCopy, "countOfNotesWithMapLink") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithMapLink:{objc_msgSend(v129, "countOfScrapPapersWithMapLink") + 1}];
+        [accountCopy setCountOfScrapPapersWithMapLink:{objc_msgSend(accountCopy, "countOfScrapPapersWithMapLink") + 1}];
       }
     }
 
-    if (v120)
+    if (unsignedIntegerValue8)
     {
-      [v129 setCountOfNotesWithPaperKit:{objc_msgSend(v129, "countOfNotesWithPaperKit") + 1}];
-      if (v83)
+      [accountCopy setCountOfNotesWithPaperKit:{objc_msgSend(accountCopy, "countOfNotesWithPaperKit") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithPaperKit:{objc_msgSend(v129, "countOfScrapPapersWithPaperKit") + 1}];
+        [accountCopy setCountOfScrapPapersWithPaperKit:{objc_msgSend(accountCopy, "countOfScrapPapersWithPaperKit") + 1}];
       }
     }
 
-    if (v113 || v119 || v118)
+    if (unsignedIntegerValue9 || unsignedIntegerValue10 || unsignedIntegerValue11)
     {
-      [v129 setCountOfNotesWithPaperDocument:{objc_msgSend(v129, "countOfNotesWithPaperDocument") + 1}];
+      [accountCopy setCountOfNotesWithPaperDocument:{objc_msgSend(accountCopy, "countOfNotesWithPaperDocument") + 1}];
     }
 
-    if (v112 | v119)
+    if (unsignedIntegerValue12 | unsignedIntegerValue10)
     {
-      [v129 setCountOfNotesWithPDF:{objc_msgSend(v129, "countOfNotesWithPDF") + 1}];
+      [accountCopy setCountOfNotesWithPDF:{objc_msgSend(accountCopy, "countOfNotesWithPDF") + 1}];
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 hasDeepLink])
     {
-      [v129 setCountOfNotesWithDeepLink:{objc_msgSend(v129, "countOfNotesWithDeepLink") + 1}];
-      [v128 setCountOfModernNotesWithDeeplink:{objc_msgSend(v128, "countOfModernNotesWithDeeplink") + 1}];
-      if (v83)
+      [accountCopy setCountOfNotesWithDeepLink:{objc_msgSend(accountCopy, "countOfNotesWithDeepLink") + 1}];
+      [deviceCopy setCountOfModernNotesWithDeeplink:{objc_msgSend(deviceCopy, "countOfModernNotesWithDeeplink") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithDeepLink:{objc_msgSend(v129, "countOfScrapPapersWithDeepLink") + 1}];
-        [v128 setCountOfScrapPapersWithDeepLink:{objc_msgSend(v128, "countOfScrapPapersWithDeepLink") + 1}];
+        [accountCopy setCountOfScrapPapersWithDeepLink:{objc_msgSend(accountCopy, "countOfScrapPapersWithDeepLink") + 1}];
+        [deviceCopy setCountOfScrapPapersWithDeepLink:{objc_msgSend(deviceCopy, "countOfScrapPapersWithDeepLink") + 1}];
       }
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 hasSafariHighlight])
     {
-      [v128 setCountOfModernNotesWithWebHighlights:{objc_msgSend(v128, "countOfModernNotesWithWebHighlights") + 1}];
-      if (v83)
+      [deviceCopy setCountOfModernNotesWithWebHighlights:{objc_msgSend(deviceCopy, "countOfModernNotesWithWebHighlights") + 1}];
+      if (isSystemPaper)
       {
-        [v128 setCountOfScrapPapersWithWebHighlights:{objc_msgSend(v128, "countOfScrapPapersWithWebHighlights") + 1}];
+        [deviceCopy setCountOfScrapPapersWithWebHighlights:{objc_msgSend(deviceCopy, "countOfScrapPapersWithWebHighlights") + 1}];
       }
     }
 
-    if (v123 + v124 + v120 != -v125)
+    if (unsignedIntegerValue3 + unsignedIntegerValue2 + unsignedIntegerValue8 != -unsignedIntegerValue4)
     {
-      [v128 setCountOfModernNotesWithDrawing:{objc_msgSend(v128, "countOfModernNotesWithDrawing") + 1}];
-      if (v83)
+      [deviceCopy setCountOfModernNotesWithDrawing:{objc_msgSend(deviceCopy, "countOfModernNotesWithDrawing") + 1}];
+      if (isSystemPaper)
       {
-        [v128 setCountOfScrapPapersWithDrawing:{objc_msgSend(v128, "countOfScrapPapersWithDrawing") + 1}];
+        [deviceCopy setCountOfScrapPapersWithDrawing:{objc_msgSend(deviceCopy, "countOfScrapPapersWithDrawing") + 1}];
       }
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 hasImages])
     {
-      [v128 setCountOfModernNotesWithImage:{objc_msgSend(v128, "countOfModernNotesWithImage") + 1}];
-      if (v83)
+      [deviceCopy setCountOfModernNotesWithImage:{objc_msgSend(deviceCopy, "countOfModernNotesWithImage") + 1}];
+      if (isSystemPaper)
       {
-        [v128 setCountOfScrapPapersWithImage:{objc_msgSend(v128, "countOfScrapPapersWithImage") + 1}];
+        [deviceCopy setCountOfScrapPapersWithImage:{objc_msgSend(deviceCopy, "countOfScrapPapersWithImage") + 1}];
       }
     }
 
-    if (v121 != -v122)
+    if (unsignedIntegerValue7 != -unsignedIntegerValue6)
     {
-      [v128 setCountOfModernNotesWithLinks:{objc_msgSend(v128, "countOfModernNotesWithLinks") + 1}];
-      if (v83)
+      [deviceCopy setCountOfModernNotesWithLinks:{objc_msgSend(deviceCopy, "countOfModernNotesWithLinks") + 1}];
+      if (isSystemPaper)
       {
-        [v128 setCountOfScrapPapersWithLinks:{objc_msgSend(v128, "countOfScrapPapersWithLinks") + 1}];
+        [deviceCopy setCountOfScrapPapersWithLinks:{objc_msgSend(deviceCopy, "countOfScrapPapersWithLinks") + 1}];
       }
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 countOfAudioAttachments])
     {
-      [v129 setCountOfNotesWithAttachmentAudio:{objc_msgSend(v129, "countOfNotesWithAttachmentAudio") + 1}];
+      [accountCopy setCountOfNotesWithAttachmentAudio:{objc_msgSend(accountCopy, "countOfNotesWithAttachmentAudio") + 1}];
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 hasAudioTranscript])
     {
-      [v129 setCountOfNotesWithAttachmentAudioTranscript:{objc_msgSend(v129, "countOfNotesWithAttachmentAudioTranscript") + 1}];
+      [accountCopy setCountOfNotesWithAttachmentAudioTranscript:{objc_msgSend(accountCopy, "countOfNotesWithAttachmentAudioTranscript") + 1}];
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 hasAudioSummary])
     {
-      [v129 setCountOfNotesWithAttachmentAudioSummary:{objc_msgSend(v129, "countOfNotesWithAttachmentAudioSummary") + 1}];
+      [accountCopy setCountOfNotesWithAttachmentAudioSummary:{objc_msgSend(accountCopy, "countOfNotesWithAttachmentAudioSummary") + 1}];
     }
 
-    [v129 setCountOfAudioAttachments:{objc_msgSend(v129, "countOfAudioAttachments") + -[_ICNAAttachmentReportToNote countOfAudioAttachments](v28, "countOfAudioAttachments")}];
-    [v129 setCountOfAudioAttachmentsRecordedInNotes:{objc_msgSend(v129, "countOfAudioAttachmentsRecordedInNotes") + -[_ICNAAttachmentReportToNote countOfAudioAttachmentsRecordedInNotes](v28, "countOfAudioAttachmentsRecordedInNotes")}];
-    [v129 setCountOfAudioAttachmentsWithAppendedAudio:{objc_msgSend(v129, "countOfAudioAttachmentsWithAppendedAudio") + -[_ICNAAttachmentReportToNote countOfAudioAttachmentsWithAppendedAudio](v28, "countOfAudioAttachmentsWithAppendedAudio")}];
+    [accountCopy setCountOfAudioAttachments:{objc_msgSend(accountCopy, "countOfAudioAttachments") + -[_ICNAAttachmentReportToNote countOfAudioAttachments](v28, "countOfAudioAttachments")}];
+    [accountCopy setCountOfAudioAttachmentsRecordedInNotes:{objc_msgSend(accountCopy, "countOfAudioAttachmentsRecordedInNotes") + -[_ICNAAttachmentReportToNote countOfAudioAttachmentsRecordedInNotes](v28, "countOfAudioAttachmentsRecordedInNotes")}];
+    [accountCopy setCountOfAudioAttachmentsWithAppendedAudio:{objc_msgSend(accountCopy, "countOfAudioAttachmentsWithAppendedAudio") + -[_ICNAAttachmentReportToNote countOfAudioAttachmentsWithAppendedAudio](v28, "countOfAudioAttachmentsWithAppendedAudio")}];
     v97 = [objc_opt_class() inlineAttachmentReportForModernNote:v127 faultOutInlineAttachmentsAfterDone:1];
     v144 = 0;
     v145 = &v144;
@@ -1988,36 +1988,36 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
     v134 = 0;
     if ([v97 countOfTags])
     {
-      [v129 setCountOfNotesWithTags:{objc_msgSend(v129, "countOfNotesWithTags") + 1}];
-      if (v83)
+      [accountCopy setCountOfNotesWithTags:{objc_msgSend(accountCopy, "countOfNotesWithTags") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithTags:{objc_msgSend(v129, "countOfScrapPapersWithTags") + 1}];
+        [accountCopy setCountOfScrapPapersWithTags:{objc_msgSend(accountCopy, "countOfScrapPapersWithTags") + 1}];
       }
 
-      v98 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v99 = [v98 tagCountPerNoteHistogram];
-      [v99 reportValue:{objc_msgSend(v97, "countOfTags")}];
+      accountHistogramManager13 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      tagCountPerNoteHistogram = [accountHistogramManager13 tagCountPerNoteHistogram];
+      [tagCountPerNoteHistogram reportValue:{objc_msgSend(v97, "countOfTags")}];
 
-      v100 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v101 = [v100 distinctTagCountPerNoteHistogram];
-      [v101 reportValue:{objc_msgSend(v97, "countOfDistinctTags")}];
+      accountHistogramManager14 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      distinctTagCountPerNoteHistogram = [accountHistogramManager14 distinctTagCountPerNoteHistogram];
+      [distinctTagCountPerNoteHistogram reportValue:{objc_msgSend(v97, "countOfDistinctTags")}];
     }
 
     if ([v97 countOfMentions])
     {
-      [v129 setCountOfNotesWithMentions:{objc_msgSend(v129, "countOfNotesWithMentions") + 1}];
-      if (v83)
+      [accountCopy setCountOfNotesWithMentions:{objc_msgSend(accountCopy, "countOfNotesWithMentions") + 1}];
+      if (isSystemPaper)
       {
-        [v129 setCountOfScrapPapersWithMentions:{objc_msgSend(v129, "countOfScrapPapersWithMentions") + 1}];
+        [accountCopy setCountOfScrapPapersWithMentions:{objc_msgSend(accountCopy, "countOfScrapPapersWithMentions") + 1}];
       }
 
-      v102 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v103 = [v102 mentionCountPerNoteHistogram];
-      [v103 reportValue:{objc_msgSend(v97, "countOfMentions")}];
+      accountHistogramManager15 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      mentionCountPerNoteHistogram = [accountHistogramManager15 mentionCountPerNoteHistogram];
+      [mentionCountPerNoteHistogram reportValue:{objc_msgSend(v97, "countOfMentions")}];
 
-      v104 = [(ICNASnapshotReporter *)self accountHistogramManager];
-      v105 = [v104 distinctMentionCountPerNoteHistogram];
-      [v105 reportValue:{objc_msgSend(v97, "countOfDistinctMentions")}];
+      accountHistogramManager16 = [(ICNASnapshotReporter *)self accountHistogramManager];
+      distinctMentionCountPerNoteHistogram = [accountHistogramManager16 distinctMentionCountPerNoteHistogram];
+      [distinctMentionCountPerNoteHistogram reportValue:{objc_msgSend(v97, "countOfDistinctMentions")}];
     }
 
     if ([v97 countOfNoteLinks])
@@ -2037,7 +2037,7 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
 
     if (v126)
     {
-      v106 = [v126 ic_range];
+      ic_range = [v126 ic_range];
       v107 = *MEMORY[0x277D740E8];
       v130[0] = MEMORY[0x277D85DD0];
       v130[1] = 3221225472;
@@ -2046,30 +2046,30 @@ void __38__ICNASnapshotReporter_snapshotDevice__block_invoke_2(uint64_t a1, void
       v130[4] = self;
       v130[5] = &v144;
       v130[6] = &v131;
-      [v126 enumerateAttribute:v107 inRange:v106 options:v108 usingBlock:{0, v130}];
+      [v126 enumerateAttribute:v107 inRange:ic_range options:v108 usingBlock:{0, v130}];
     }
 
     if (*(v145 + 24) == 1)
     {
-      [v129 setCountOfNotesWithNoteLink:{objc_msgSend(v129, "countOfNotesWithNoteLink") + 1}];
+      [accountCopy setCountOfNotesWithNoteLink:{objc_msgSend(accountCopy, "countOfNotesWithNoteLink") + 1}];
     }
 
     if (*(v132 + 24) == 1)
     {
-      [v129 setCountOfNotesWithFolderLink:{objc_msgSend(v129, "countOfNotesWithFolderLink") + 1}];
+      [accountCopy setCountOfNotesWithFolderLink:{objc_msgSend(accountCopy, "countOfNotesWithFolderLink") + 1}];
     }
 
     if ([(_ICNAAttachmentReportToNote *)v28 hasMathUsage])
     {
-      [v129 setCountOfNotesWithMathUsage:{objc_msgSend(v129, "countOfNotesWithMathUsage") + 1}];
+      [accountCopy setCountOfNotesWithMathUsage:{objc_msgSend(accountCopy, "countOfNotesWithMathUsage") + 1}];
     }
 
-    if (v83)
+    if (isSystemPaper)
     {
-      [v129 setScrapPaperCount:{objc_msgSend(v129, "scrapPaperCount") + 1}];
+      [accountCopy setScrapPaperCount:{objc_msgSend(accountCopy, "scrapPaperCount") + 1}];
     }
 
-    [v129 completeTwoFactorMatrixReportingForCurrentNote];
+    [accountCopy completeTwoFactorMatrixReportingForCurrentNote];
     [objc_opt_class() faultOutObject:v127];
     _Block_object_dispose(&v131, 8);
     _Block_object_dispose(&v144, 8);
@@ -2160,40 +2160,40 @@ LABEL_11:
 LABEL_16:
 }
 
-- (void)snapshotHTMLNote:(id)a3 reportedDataToAccount:(id)a4 reportedDataToDevice:(id)a5
+- (void)snapshotHTMLNote:(id)note reportedDataToAccount:(id)account reportedDataToDevice:(id)device
 {
-  v7 = a4;
-  v8 = a3;
-  [v7 setCountOfNotes:{objc_msgSend(v7, "countOfNotes") + 1}];
+  accountCopy = account;
+  noteCopy = note;
+  [accountCopy setCountOfNotes:{objc_msgSend(accountCopy, "countOfNotes") + 1}];
   v13 = [[ICASCollaborationStatus alloc] initWithCollaborationStatus:1];
   v9 = [[ICASCollaborationType alloc] initWithCollaborationType:1];
-  [v7 updateNoteCollaborationMatrixWithCollaborationStatus:v13 collaborationType:v9];
+  [accountCopy updateNoteCollaborationMatrixWithCollaborationStatus:v13 collaborationType:v9];
 
-  v10 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v11 = [v10 noteCharCountHistogram];
-  v12 = [v8 contentAsPlainText];
-  [v11 reportValue:{objc_msgSend(v12, "length")}];
+  accountHistogramManager = [(ICNASnapshotReporter *)self accountHistogramManager];
+  noteCharCountHistogram = [accountHistogramManager noteCharCountHistogram];
+  contentAsPlainText = [noteCopy contentAsPlainText];
+  [noteCharCountHistogram reportValue:{objc_msgSend(contentAsPlainText, "length")}];
 
-  [objc_opt_class() faultOutObject:v8];
+  [objc_opt_class() faultOutObject:noteCopy];
 }
 
-- (void)snapshotAttachment:(id)a3 reportedDataToNote:(id)a4 reportedDataToAccount:(id)a5
+- (void)snapshotAttachment:(id)attachment reportedDataToNote:(id)note reportedDataToAccount:(id)account
 {
-  v65 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [ICNAEventReporter analyticsTypeUTIAttachment:v65];
-  if ([v65 isUnsupported])
+  attachmentCopy = attachment;
+  noteCopy = note;
+  accountCopy = account;
+  v10 = [ICNAEventReporter analyticsTypeUTIAttachment:attachmentCopy];
+  if ([attachmentCopy isUnsupported])
   {
     goto LABEL_38;
   }
 
   if ([v10 isEqualToString:*MEMORY[0x277D35BC8]])
   {
-    v11 = [(ICNASnapshotReporter *)self pageCountForDocScanAttachment:v65];
-    v12 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v13 = [v12 docScanPageCountHistogram];
-    [v13 reportValue:v11];
+    v11 = [(ICNASnapshotReporter *)self pageCountForDocScanAttachment:attachmentCopy];
+    accountHistogramManager = [(ICNASnapshotReporter *)self accountHistogramManager];
+    docScanPageCountHistogram = [accountHistogramManager docScanPageCountHistogram];
+    [docScanPageCountHistogram reportValue:v11];
 LABEL_6:
 
     goto LABEL_7;
@@ -2201,24 +2201,24 @@ LABEL_6:
 
   if ([v10 isEqualToString:*MEMORY[0x277D35C08]])
   {
-    v12 = [(ICNASnapshotReporter *)self tableSnapshotItemDataForTableAttachment:v65];
-    v14 = [v12 tableRowCount];
-    v15 = [v14 unsignedIntegerValue];
+    accountHistogramManager = [(ICNASnapshotReporter *)self tableSnapshotItemDataForTableAttachment:attachmentCopy];
+    tableRowCount = [accountHistogramManager tableRowCount];
+    unsignedIntegerValue = [tableRowCount unsignedIntegerValue];
 
-    v16 = [v12 tableColumnCount];
-    v17 = [v16 unsignedIntegerValue];
+    tableColumnCount = [accountHistogramManager tableColumnCount];
+    unsignedIntegerValue2 = [tableColumnCount unsignedIntegerValue];
 
-    v18 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v19 = [v18 tableRowCountHistogram];
-    [v19 reportValue:v15];
+    accountHistogramManager2 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    tableRowCountHistogram = [accountHistogramManager2 tableRowCountHistogram];
+    [tableRowCountHistogram reportValue:unsignedIntegerValue];
 
-    v20 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v21 = [v20 tableColumnCountHistogram];
-    [v21 reportValue:v17];
+    accountHistogramManager3 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    tableColumnCountHistogram = [accountHistogramManager3 tableColumnCountHistogram];
+    [tableColumnCountHistogram reportValue:unsignedIntegerValue2];
 
-    v13 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v22 = [v13 tableCellCountHistogram];
-    [v22 reportValue:(v17 * v15)];
+    docScanPageCountHistogram = [(ICNASnapshotReporter *)self accountHistogramManager];
+    tableCellCountHistogram = [docScanPageCountHistogram tableCellCountHistogram];
+    [tableCellCountHistogram reportValue:(unsignedIntegerValue2 * unsignedIntegerValue)];
 
     goto LABEL_6;
   }
@@ -2230,62 +2230,62 @@ LABEL_7:
     goto LABEL_17;
   }
 
-  v24 = [(ICNASnapshotReporter *)self drawingSnapshotItemDataForDrawingAttachment:v65];
-  [v8 reportDrawingWithSnapshotData:v24];
+  v24 = [(ICNASnapshotReporter *)self drawingSnapshotItemDataForDrawingAttachment:attachmentCopy];
+  [noteCopy reportDrawingWithSnapshotData:v24];
   if ([v10 isEqualToString:v23])
   {
-    v25 = [v24 countOfInlineDrawingV1FingerStrokes];
-    v26 = [v25 unsignedIntegerValue];
+    countOfInlineDrawingV1FingerStrokes = [v24 countOfInlineDrawingV1FingerStrokes];
+    unsignedIntegerValue3 = [countOfInlineDrawingV1FingerStrokes unsignedIntegerValue];
 
-    v27 = [v24 countOfInlineDrawingV1PencilStrokes];
-    v28 = [v27 unsignedIntegerValue];
+    countOfInlineDrawingV1PencilStrokes = [v24 countOfInlineDrawingV1PencilStrokes];
+    unsignedIntegerValue4 = [countOfInlineDrawingV1PencilStrokes unsignedIntegerValue];
 
-    v29 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v30 = [v29 inlineDrawingV1TotalStrokeCountHistogram];
-    v31 = (v28 + v26);
-    [v30 reportValue:v31];
+    accountHistogramManager4 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV1TotalStrokeCountHistogram = [accountHistogramManager4 inlineDrawingV1TotalStrokeCountHistogram];
+    v31 = (unsignedIntegerValue4 + unsignedIntegerValue3);
+    [inlineDrawingV1TotalStrokeCountHistogram reportValue:v31];
 
-    v32 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v33 = [v32 inlineDrawingV1PencilStrokeCountHistogram];
-    [v33 reportValue:v28];
+    accountHistogramManager5 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV1PencilStrokeCountHistogram = [accountHistogramManager5 inlineDrawingV1PencilStrokeCountHistogram];
+    [inlineDrawingV1PencilStrokeCountHistogram reportValue:unsignedIntegerValue4];
 
-    v34 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v35 = [v34 inlineDrawingV1FingerStrokeCountHistogram];
-    v36 = v26;
-    [v35 reportValue:v26];
+    accountHistogramManager6 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV1FingerStrokeCountHistogram = [accountHistogramManager6 inlineDrawingV1FingerStrokeCountHistogram];
+    v36 = unsignedIntegerValue3;
+    [inlineDrawingV1FingerStrokeCountHistogram reportValue:unsignedIntegerValue3];
 
-    v37 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v38 = [v37 inlineDrawingV1FingerStrokeRatioHistogram];
+    accountHistogramManager7 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV1FingerStrokeRatioHistogram = [accountHistogramManager7 inlineDrawingV1FingerStrokeRatioHistogram];
 LABEL_14:
-    v49 = v38;
+    v49 = inlineDrawingV1FingerStrokeRatioHistogram;
     v50 = v36 / v31;
     goto LABEL_15;
   }
 
   if ([v10 isEqualToString:*MEMORY[0x277D35BD0]])
   {
-    v39 = [v24 countOfInlineDrawingV2FingerStrokes];
-    v40 = [v39 unsignedIntegerValue];
+    countOfInlineDrawingV2FingerStrokes = [v24 countOfInlineDrawingV2FingerStrokes];
+    unsignedIntegerValue5 = [countOfInlineDrawingV2FingerStrokes unsignedIntegerValue];
 
-    v41 = [v24 countOfInlineDrawingV2PencilStrokes];
-    v42 = [v41 unsignedIntegerValue];
+    countOfInlineDrawingV2PencilStrokes = [v24 countOfInlineDrawingV2PencilStrokes];
+    unsignedIntegerValue6 = [countOfInlineDrawingV2PencilStrokes unsignedIntegerValue];
 
-    v43 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v44 = [v43 inlineDrawingV2TotalStrokeCountHistogram];
-    v31 = (v42 + v40);
-    [v44 reportValue:v31];
+    accountHistogramManager8 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV2TotalStrokeCountHistogram = [accountHistogramManager8 inlineDrawingV2TotalStrokeCountHistogram];
+    v31 = (unsignedIntegerValue6 + unsignedIntegerValue5);
+    [inlineDrawingV2TotalStrokeCountHistogram reportValue:v31];
 
-    v45 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v46 = [v45 inlineDrawingV2PencilStrokeCountHistogram];
-    [v46 reportValue:v42];
+    accountHistogramManager9 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV2PencilStrokeCountHistogram = [accountHistogramManager9 inlineDrawingV2PencilStrokeCountHistogram];
+    [inlineDrawingV2PencilStrokeCountHistogram reportValue:unsignedIntegerValue6];
 
-    v47 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v48 = [v47 inlineDrawingV2FingerStrokeCountHistogram];
-    v36 = v40;
-    [v48 reportValue:v40];
+    accountHistogramManager10 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV2FingerStrokeCountHistogram = [accountHistogramManager10 inlineDrawingV2FingerStrokeCountHistogram];
+    v36 = unsignedIntegerValue5;
+    [inlineDrawingV2FingerStrokeCountHistogram reportValue:unsignedIntegerValue5];
 
-    v37 = [(ICNASnapshotReporter *)self accountHistogramManager];
-    v38 = [v37 inlineDrawingV2FingerStrokeRatioHistogram];
+    accountHistogramManager7 = [(ICNASnapshotReporter *)self accountHistogramManager];
+    inlineDrawingV1FingerStrokeRatioHistogram = [accountHistogramManager7 inlineDrawingV2FingerStrokeRatioHistogram];
     goto LABEL_14;
   }
 
@@ -2294,98 +2294,98 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v63 = [v24 countOfFullscreenDrawingStrokes];
-  v64 = [v63 unsignedIntegerValue];
+  countOfFullscreenDrawingStrokes = [v24 countOfFullscreenDrawingStrokes];
+  unsignedIntegerValue7 = [countOfFullscreenDrawingStrokes unsignedIntegerValue];
 
-  v37 = [(ICNASnapshotReporter *)self accountHistogramManager];
-  v38 = [v37 fullscreenDrawingStrokeCountHistogram];
-  v49 = v38;
-  v50 = v64;
+  accountHistogramManager7 = [(ICNASnapshotReporter *)self accountHistogramManager];
+  inlineDrawingV1FingerStrokeRatioHistogram = [accountHistogramManager7 fullscreenDrawingStrokeCountHistogram];
+  v49 = inlineDrawingV1FingerStrokeRatioHistogram;
+  v50 = unsignedIntegerValue7;
 LABEL_15:
-  [v38 reportValue:v50];
+  [inlineDrawingV1FingerStrokeRatioHistogram reportValue:v50];
 
 LABEL_16:
 LABEL_17:
-  v51 = [v65 synapseData];
+  synapseData = [attachmentCopy synapseData];
 
-  if (v51)
+  if (synapseData)
   {
-    [v8 setHasDeepLink:1];
-    if ([objc_opt_class() attachmentHasDeepLinkSafariHighlight:v65])
+    [noteCopy setHasDeepLink:1];
+    if ([objc_opt_class() attachmentHasDeepLinkSafariHighlight:attachmentCopy])
     {
-      [v8 setHasSafariHighlight:1];
+      [noteCopy setHasSafariHighlight:1];
     }
   }
 
-  if ([v65 attachmentType] == 3)
+  if ([attachmentCopy attachmentType] == 3)
   {
-    [v8 setHasImages:1];
+    [noteCopy setHasImages:1];
   }
 
-  if ([v65 attachmentType] == 13)
+  if ([attachmentCopy attachmentType] == 13)
   {
     objc_opt_class();
-    v52 = [v65 attachmentModel];
+    attachmentModel = [attachmentCopy attachmentModel];
     v53 = ICDynamicCast();
 
     if ([v53 paperHasMath])
     {
-      [v8 setHasMathUsage:1];
+      [noteCopy setHasMathUsage:1];
     }
   }
 
-  if ([v65 attachmentType] == 4)
+  if ([attachmentCopy attachmentType] == 4)
   {
-    v54 = [v65 parentAttachment];
+    parentAttachment = [attachmentCopy parentAttachment];
 
-    if (!v54)
+    if (!parentAttachment)
     {
-      [v8 setCountOfAudioAttachments:{objc_msgSend(v8, "countOfAudioAttachments") + 1}];
-      v55 = [v65 audioModel];
-      v56 = [v55 audioDocument];
-      if ([v55 recordedInNotes])
+      [noteCopy setCountOfAudioAttachments:{objc_msgSend(noteCopy, "countOfAudioAttachments") + 1}];
+      audioModel = [attachmentCopy audioModel];
+      audioDocument = [audioModel audioDocument];
+      if ([audioModel recordedInNotes])
       {
-        [v8 setCountOfAudioAttachmentsRecordedInNotes:{objc_msgSend(v8, "countOfAudioAttachmentsRecordedInNotes") + 1}];
+        [noteCopy setCountOfAudioAttachmentsRecordedInNotes:{objc_msgSend(noteCopy, "countOfAudioAttachmentsRecordedInNotes") + 1}];
       }
 
-      v57 = [v56 transcriptAsPlainText];
-      v58 = [v57 length];
+      transcriptAsPlainText = [audioDocument transcriptAsPlainText];
+      v58 = [transcriptAsPlainText length];
 
       if (v58)
       {
-        [v8 setHasAudioTranscript:1];
+        [noteCopy setHasAudioTranscript:1];
       }
 
-      v59 = [v56 recordingSummaryAsPlainText];
-      v60 = [v59 length];
+      recordingSummaryAsPlainText = [audioDocument recordingSummaryAsPlainText];
+      v60 = [recordingSummaryAsPlainText length];
 
       if (v60)
       {
-        [v8 setHasAudioSummary:1];
+        [noteCopy setHasAudioSummary:1];
       }
 
-      v61 = [v56 orderedFragmentUUIDs];
-      v62 = [v61 count];
+      orderedFragmentUUIDs = [audioDocument orderedFragmentUUIDs];
+      v62 = [orderedFragmentUUIDs count];
 
       if (v62 >= 2)
       {
-        [v8 setCountOfAudioAttachmentsWithAppendedAudio:{objc_msgSend(v8, "countOfAudioAttachmentsWithAppendedAudio") + 1}];
+        [noteCopy setCountOfAudioAttachmentsWithAppendedAudio:{objc_msgSend(noteCopy, "countOfAudioAttachmentsWithAppendedAudio") + 1}];
       }
     }
   }
 
-  [v8 reportAttachmentTypeUTI:v10];
-  [v9 reportAttachmentTypeUTI:v10];
+  [noteCopy reportAttachmentTypeUTI:v10];
+  [accountCopy reportAttachmentTypeUTI:v10];
 LABEL_38:
-  [objc_opt_class() faultOutObject:v65];
+  [objc_opt_class() faultOutObject:attachmentCopy];
 }
 
-- (id)deviceSnapshotSummaryForDataType:(Class)a3
+- (id)deviceSnapshotSummaryForDataType:(Class)type
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = +[ICNAIdentityManager sharedManager];
   v5 = +[ICNAController deviceID];
-  v20 = [v4 saltedID:v5 forClass:a3];
+  v20 = [v4 saltedID:v5 forClass:type];
 
   v6 = [ICASDeviceSnapshotItemData alloc];
   v16 = +[ICNAController deviceModel];
@@ -2407,12 +2407,12 @@ LABEL_38:
   return v13;
 }
 
-- (id)userSnapshotSummaryForDataType:(Class)a3
+- (id)userSnapshotSummaryForDataType:(Class)type
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = +[ICNAIdentityManager sharedManager];
   v5 = +[ICNAController userID];
-  v6 = [v4 saltedID:v5 forClass:a3];
+  v6 = [v4 saltedID:v5 forClass:type];
 
   v7 = [ICASUserSnapshotItemData alloc];
   v8 = +[ICNAController storeFrontID];
@@ -2426,48 +2426,48 @@ LABEL_38:
   return v10;
 }
 
-- (unint64_t)pageCountForDocScanAttachment:(id)a3
+- (unint64_t)pageCountForDocScanAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v4 = [v3 attachmentModel];
+  attachmentModel = [attachmentCopy attachmentModel];
 
   v5 = ICDynamicCast();
 
-  v6 = [v5 subAttachmentCount];
-  return v6;
+  subAttachmentCount = [v5 subAttachmentCount];
+  return subAttachmentCount;
 }
 
-- (id)drawingSnapshotItemDataForDrawingAttachment:(id)a3
+- (id)drawingSnapshotItemDataForDrawingAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [ICNAEventReporter analyticsTypeUTIAttachment:v4];
+  attachmentCopy = attachment;
+  v5 = [ICNAEventReporter analyticsTypeUTIAttachment:attachmentCopy];
   v6 = *MEMORY[0x277D35BD8];
   v30 = v5;
   if (([v5 isEqualToString:*MEMORY[0x277D35BD8]] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277D35BD0]))
   {
-    v7 = [v4 attachmentModel];
+    attachmentModel = [attachmentCopy attachmentModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [v8 handwritingRecognitionDrawing];
-      v10 = v9;
-      if (v9)
+      drawing = attachmentModel;
+      handwritingRecognitionDrawing = [drawing handwritingRecognitionDrawing];
+      v10 = handwritingRecognitionDrawing;
+      if (handwritingRecognitionDrawing)
       {
-        v11 = v9;
+        newDrawingFromMergeableData = handwritingRecognitionDrawing;
       }
 
       else
       {
-        v11 = [v8 newDrawingFromMergeableData];
+        newDrawingFromMergeableData = [drawing newDrawingFromMergeableData];
       }
 
-      v12 = v11;
+      commands = newDrawingFromMergeableData;
 
-      v18 = [(ICNAEventReporter *)self pencilStrokeCountForDrawing:v12];
-      v19 = [v12 strokes];
-      v16 = [v19 count] - v18;
+      v18 = [(ICNAEventReporter *)self pencilStrokeCountForDrawing:commands];
+      strokes = [commands strokes];
+      v16 = [strokes count] - v18;
 
       v20 = [v5 isEqualToString:v6];
       v13 = 0;
@@ -2502,7 +2502,7 @@ LABEL_38:
         v17 = 0;
       }
 
-      v7 = v8;
+      attachmentModel = drawing;
       goto LABEL_21;
     }
 
@@ -2511,13 +2511,13 @@ LABEL_38:
 
   if ([v5 isEqualToString:*MEMORY[0x277D35BC0]])
   {
-    v7 = [v4 attachmentModel];
+    attachmentModel = [attachmentCopy attachmentModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 drawing];
-      v12 = [v8 commands];
-      v13 = [v12 count];
+      drawing = [attachmentModel drawing];
+      commands = [drawing commands];
+      v13 = [commands count];
       v14 = 0;
       v15 = 0;
       v16 = 0;
@@ -2534,12 +2534,12 @@ LABEL_9:
     v16 = 0;
     v17 = 0;
 LABEL_22:
-    v21 = v4;
+    v21 = attachmentCopy;
 
     goto LABEL_23;
   }
 
-  v21 = v4;
+  v21 = attachmentCopy;
   v13 = 0;
   v14 = 0;
   v15 = 0;
@@ -2557,77 +2557,77 @@ LABEL_23:
   return v28;
 }
 
-- (id)tableSnapshotItemDataForTableAttachment:(id)a3
+- (id)tableSnapshotItemDataForTableAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v4 = [v3 attachmentModel];
+  attachmentModel = [attachmentCopy attachmentModel];
 
   v5 = ICDynamicCast();
 
-  v6 = [v5 table];
-  v7 = v6;
-  if (v6)
+  table = [v5 table];
+  v7 = table;
+  if (table)
   {
-    v8 = [v6 rowCount];
-    v9 = [v7 columnCount];
+    rowCount = [table rowCount];
+    columnCount = [v7 columnCount];
   }
 
   else
   {
-    v9 = 0;
-    v8 = 0;
+    columnCount = 0;
+    rowCount = 0;
   }
 
   v10 = [ICASTableSnapshotItemData alloc];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:rowCount];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:columnCount];
   v13 = [(ICASTableSnapshotItemData *)v10 initWithTableRowCount:v11 tableColumnCount:v12];
 
   return v13;
 }
 
-- (id)snapshotItemDataForModernAccount:(id)a3
+- (id)snapshotItemDataForModernAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self accountTypeForModernAccount:v4];
-  v6 = [(ICNASnapshotReporter *)self accountPurposeForModernAccount:v4];
+  accountCopy = account;
+  v5 = [(ICNAEventReporter *)self accountTypeForModernAccount:accountCopy];
+  v6 = [(ICNASnapshotReporter *)self accountPurposeForModernAccount:accountCopy];
   v7 = +[ICNAIdentityManager sharedManager];
-  v8 = [v4 identifier];
+  identifier = [accountCopy identifier];
 
-  v9 = [v7 saltedID:v8 forClass:objc_opt_class()];
+  v9 = [v7 saltedID:identifier forClass:objc_opt_class()];
 
   v10 = [[ICASAccountSnapshotItemData alloc] initWithAccountID:v9 accountType:v5 accountPurpose:v6];
 
   return v10;
 }
 
-- (id)snapshotItemDataForHTMLAccount:(id)a3
+- (id)snapshotItemDataForHTMLAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self accountTypeForHTMLAccount:v4];
-  v6 = [(ICNASnapshotReporter *)self accountPurposeForHTMLAccount];
+  accountCopy = account;
+  v5 = [(ICNAEventReporter *)self accountTypeForHTMLAccount:accountCopy];
+  accountPurposeForHTMLAccount = [(ICNASnapshotReporter *)self accountPurposeForHTMLAccount];
   v7 = +[ICNAIdentityManager sharedManager];
-  v8 = [v4 accountIdentifier];
+  accountIdentifier = [accountCopy accountIdentifier];
 
-  v9 = [v7 saltedID:v8 forClass:objc_opt_class()];
+  v9 = [v7 saltedID:accountIdentifier forClass:objc_opt_class()];
 
-  v10 = [[ICASAccountSnapshotItemData alloc] initWithAccountID:v9 accountType:v5 accountPurpose:v6];
+  v10 = [[ICASAccountSnapshotItemData alloc] initWithAccountID:v9 accountType:v5 accountPurpose:accountPurposeForHTMLAccount];
 
   return v10;
 }
 
-- (id)accountPurposeForModernAccount:(id)a3
+- (id)accountPurposeForModernAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [MEMORY[0x277D77BF8] sharedManager];
-  v5 = [v4 currentUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
 
-  if ([v5 userType] == 1)
+  if ([currentUser userType] == 1)
   {
     v11[3] = 3;
   }
@@ -2639,7 +2639,7 @@ LABEL_23:
     v9[2] = __55__ICNASnapshotReporter_accountPurposeForModernAccount___block_invoke;
     v9[3] = &unk_2799AF3B8;
     v9[4] = &v10;
-    [v3 performBlockInPersonaContext:v9];
+    [accountCopy performBlockInPersonaContext:v9];
   }
 
   v6 = [ICASAccountPurpose alloc];
@@ -2674,12 +2674,12 @@ void __55__ICNASnapshotReporter_accountPurposeForModernAccount___block_invoke(ui
 
 - (id)backgroundAppRefreshData
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
   Helper_x8__OBJC_CLASS___MCProfileConnection = gotLoadHelper_x8__OBJC_CLASS___MCProfileConnection(v4);
-  v7 = [*(v6 + 672) sharedConnection];
-  v8 = [v7 isAutomaticAppUpdatesAllowed];
+  sharedConnection = [*(v6 + 672) sharedConnection];
+  isAutomaticAppUpdatesAllowed = [sharedConnection isAutomaticAppUpdatesAllowed];
 
   v9 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.mt"];
   v10 = [v9 objectForKey:@"KeepAppsUpToDateAppList"];
@@ -2688,22 +2688,22 @@ void __55__ICNASnapshotReporter_accountPurposeForModernAccount___block_invoke(ui
 
   if (v12)
   {
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   else
   {
-    v13 = 1;
+    bOOLValue = 1;
   }
 
-  if (v3)
+  if (isLowPowerModeEnabled)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = v8 & v13;
+    v14 = isAutomaticAppUpdatesAllowed & bOOLValue;
   }
 
   v15 = [ICASBackgroundAppRefreshData alloc];
@@ -2713,19 +2713,19 @@ void __55__ICNASnapshotReporter_accountPurposeForModernAccount___block_invoke(ui
   return v17;
 }
 
-- (void)performBlockForHTMLManagedObjectContext:(id)a3
+- (void)performBlockForHTMLManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICNASnapshotReporter *)self htmlContext];
-  v6 = [v5 managedObjectContext];
+  contextCopy = context;
+  htmlContext = [(ICNASnapshotReporter *)self htmlContext];
+  managedObjectContext = [htmlContext managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__ICNASnapshotReporter_performBlockForHTMLManagedObjectContext___block_invoke;
   v8[3] = &unk_2799AF3E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 performBlockAndWait:v8];
+  v9 = contextCopy;
+  v7 = contextCopy;
+  [managedObjectContext performBlockAndWait:v8];
 }
 
 void __64__ICNASnapshotReporter_performBlockForHTMLManagedObjectContext___block_invoke(uint64_t a1)
@@ -2738,18 +2738,18 @@ void __64__ICNASnapshotReporter_performBlockForHTMLManagedObjectContext___block_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)performBlockForModernManagedObjectContext:(id)a3
+- (void)performBlockForModernManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICNASnapshotReporter *)self modernContext];
+  contextCopy = context;
+  modernContext = [(ICNASnapshotReporter *)self modernContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___block_invoke;
   v7[3] = &unk_2799AF3E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = contextCopy;
+  v6 = contextCopy;
+  [modernContext performBlockAndWait:v7];
 }
 
 void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___block_invoke(uint64_t a1)
@@ -2764,14 +2764,14 @@ void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___bloc
 
 - (id)lastSnapshotScheduleTimeStamp
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 objectForKey:@"analytics_last_snapshot_timestamp"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x277D36180] objectForKey:@"analytics_last_snapshot_timestamp"];
 
   if (!v3)
   {
     v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
-    v4 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    [v4 setObject:v3 forKey:@"analytics_last_snapshot_timestamp"];
+    mEMORY[0x277D36180]2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    [mEMORY[0x277D36180]2 setObject:v3 forKey:@"analytics_last_snapshot_timestamp"];
   }
 
   return v3;
@@ -2779,14 +2779,14 @@ void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___bloc
 
 - (id)lastSnapshotRunningTimeStamp
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 objectForKey:@"analytics_last_snapshot_running_timestamp"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x277D36180] objectForKey:@"analytics_last_snapshot_running_timestamp"];
 
   if (!v3)
   {
     v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
-    v4 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    [v4 setObject:v3 forKey:@"analytics_last_snapshot_running_timestamp"];
+    mEMORY[0x277D36180]2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    [mEMORY[0x277D36180]2 setObject:v3 forKey:@"analytics_last_snapshot_running_timestamp"];
   }
 
   return v3;
@@ -2794,12 +2794,12 @@ void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___bloc
 
 - (BOOL)shouldRunSnapshotManually
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"forbid_analytics_snapshot"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"forbid_analytics_snapshot"];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(ICNASnapshotReporter *)self lastSnapshotRunningTimeStamp];
-  [v5 timeIntervalSinceDate:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  lastSnapshotRunningTimeStamp = [(ICNASnapshotReporter *)self lastSnapshotRunningTimeStamp];
+  [date timeIntervalSinceDate:lastSnapshotRunningTimeStamp];
   v8 = v7 > 1814400.0;
 
   return v8 & ~v4;
@@ -2807,60 +2807,60 @@ void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___bloc
 
 - (BOOL)shouldScheduleSnapshot
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"forbid_analytics_snapshot"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"forbid_analytics_snapshot"];
 
   return v3 ^ 1;
 }
 
 - (BOOL)shouldSnapshot
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"forbid_analytics_snapshot"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"forbid_analytics_snapshot"];
 
   if (v4)
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 BOOLForKey:@"allow_analytics_snapshot_every_launch"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults2 BOOLForKey:@"allow_analytics_snapshot_every_launch"];
 
   if (v7)
   {
     return 1;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(ICNASnapshotReporter *)self lastSnapshotRunningTimeStamp];
-  [v8 timeIntervalSinceDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  lastSnapshotRunningTimeStamp = [(ICNASnapshotReporter *)self lastSnapshotRunningTimeStamp];
+  [date timeIntervalSinceDate:lastSnapshotRunningTimeStamp];
   v5 = v10 > 604800.0;
 
   return v5;
 }
 
-- (id)sortedFoldersForAccount:(id)a3
+- (id)sortedFoldersForAccount:(id)account
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(MEMORY[0x277CBE428]);
   v5 = MEMORY[0x277CBE408];
   v6 = ICLegacyEntityNameFolder();
-  v7 = [v3 managedObjectContext];
-  v8 = [v5 entityForName:v6 inManagedObjectContext:v7];
+  managedObjectContext = [accountCopy managedObjectContext];
+  v8 = [v5 entityForName:v6 inManagedObjectContext:managedObjectContext];
   [v4 setEntity:v8];
 
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(account == %@)", v3];
-  [v4 setPredicate:v9];
+  accountCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(account == %@)", accountCopy];
+  [v4 setPredicate:accountCopy];
 
   v10 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"externalIdentifier" ascending:1];
   v19[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   [v4 setSortDescriptors:v11];
 
-  v12 = [v3 managedObjectContext];
+  managedObjectContext2 = [accountCopy managedObjectContext];
   v18 = 0;
-  v13 = [v12 executeFetchRequest:v4 error:&v18];
+  v13 = [managedObjectContext2 executeFetchRequest:v4 error:&v18];
   v14 = v18;
 
   if (v14)
@@ -2868,7 +2868,7 @@ void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___bloc
     v15 = os_log_create("com.apple.notes", "Analytics");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(ICNASnapshotReporter *)v3 sortedFoldersForAccount:v15];
+      [(ICNASnapshotReporter *)accountCopy sortedFoldersForAccount:v15];
     }
   }
 
@@ -2880,9 +2880,9 @@ void __66__ICNASnapshotReporter_performBlockForModernManagedObjectContext___bloc
 - (void)beginMiniSnapshotBackgroundTask
 {
   v3 = +[ICNAController sharedController];
-  v4 = [v3 appDelegate];
+  appDelegate = [v3 appDelegate];
 
-  if (v4)
+  if (appDelegate)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v5, &location);
@@ -2931,31 +2931,31 @@ void __55__ICNASnapshotReporter_beginMiniSnapshotBackgroundTask__block_invoke_2(
 - (BOOL)killMiniSnapshotBackgroundTaskIfNecessary
 {
   v3 = +[ICNAController sharedController];
-  v4 = [v3 appDelegate];
+  appDelegate = [v3 appDelegate];
 
-  if (!v4)
+  if (!appDelegate)
   {
     return 0;
   }
 
-  v5 = [(ICNASnapshotReporter *)self miniSnapshotBackgroundTaskIdentifier];
-  objc_sync_enter(v5);
-  v6 = [(ICNASnapshotReporter *)self miniSnapshotBackgroundTaskIdentifier];
-  v7 = [v6 unsignedIntegerValue];
+  miniSnapshotBackgroundTaskIdentifier = [(ICNASnapshotReporter *)self miniSnapshotBackgroundTaskIdentifier];
+  objc_sync_enter(miniSnapshotBackgroundTaskIdentifier);
+  miniSnapshotBackgroundTaskIdentifier2 = [(ICNASnapshotReporter *)self miniSnapshotBackgroundTaskIdentifier];
+  unsignedIntegerValue = [miniSnapshotBackgroundTaskIdentifier2 unsignedIntegerValue];
 
   v8 = *MEMORY[0x277D767B0];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*MEMORY[0x277D767B0]];
   [(ICNASnapshotReporter *)self setMiniSnapshotBackgroundTaskIdentifier:v9];
 
-  objc_sync_exit(v5);
-  if (v7 == v8)
+  objc_sync_exit(miniSnapshotBackgroundTaskIdentifier);
+  if (unsignedIntegerValue == v8)
   {
     return 0;
   }
 
   v11 = +[ICNAController sharedController];
-  v12 = [v11 appDelegate];
-  [v12 endBackgroundTask:v7];
+  appDelegate2 = [v11 appDelegate];
+  [appDelegate2 endBackgroundTask:unsignedIntegerValue];
 
   return 1;
 }

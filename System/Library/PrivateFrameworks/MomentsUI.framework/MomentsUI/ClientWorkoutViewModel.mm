@@ -1,10 +1,10 @@
 @interface ClientWorkoutViewModel
-- (_TtC9MomentsUI22ClientWorkoutViewModel)initWithCoder:(id)a3;
+- (_TtC9MomentsUI22ClientWorkoutViewModel)initWithCoder:(id)coder;
 @end
 
 @implementation ClientWorkoutViewModel
 
-- (_TtC9MomentsUI22ClientWorkoutViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI22ClientWorkoutViewModel)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI22ClientWorkoutViewModel__routeLocations) = 0;
   swift_weakInit();

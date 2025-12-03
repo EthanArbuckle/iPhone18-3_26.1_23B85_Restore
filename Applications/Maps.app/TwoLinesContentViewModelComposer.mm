@@ -1,221 +1,221 @@
 @interface TwoLinesContentViewModelComposer
 + (BOOL)userInterfaceLayoutDirectionIsRTL;
-+ (id)_cellModelForComposedWaypointToRoute:(id)a3;
-+ (id)_cellModelForHistoryEntryCuratedCollection:(id)a3;
-+ (id)_cellModelForHistoryEntryPlace:(id)a3 showAutocompleteClientSource:(BOOL)a4;
-+ (id)_cellModelForHistoryEntryRoute:(id)a3;
-+ (id)_cellModelForHistoryEntrySearch:(id)a3 showAutocompleteClientSource:(BOOL)a4;
-+ (id)_cellModelForHistoryEntryTransitLineItem:(id)a3;
-+ (id)_cellModelForRouteName:(id)a3 persistentData:(id)a4 thirdLineViewModel:(id)a5 menuProvider:(id)a6;
-+ (id)_convertSymbolToIconImage:(id)a3 RAPType:(int)a4;
++ (id)_cellModelForComposedWaypointToRoute:(id)route;
++ (id)_cellModelForHistoryEntryCuratedCollection:(id)collection;
++ (id)_cellModelForHistoryEntryPlace:(id)place showAutocompleteClientSource:(BOOL)source;
++ (id)_cellModelForHistoryEntryRoute:(id)route;
++ (id)_cellModelForHistoryEntrySearch:(id)search showAutocompleteClientSource:(BOOL)source;
++ (id)_cellModelForHistoryEntryTransitLineItem:(id)item;
++ (id)_cellModelForRouteName:(id)name persistentData:(id)data thirdLineViewModel:(id)model menuProvider:(id)provider;
++ (id)_convertSymbolToIconImage:(id)image RAPType:(int)type;
 + (id)_delimiterString;
-+ (id)_moreButtonAccessoryWithMenuProvider:(id)a3 axID:(id)a4;
-+ (id)_searchResultModelWithSearchResult:(id)a3 title:(id)a4 subtitle:(id)a5 isAuthorizedForPreciseLocation:(BOOL)a6 placeContextViewModel:(id)a7;
-+ (id)backgroundColorForRAPType:(int)a3;
-+ (id)cellModelForAddMissingPlaceWithUserEnteredText:(id)a3;
-+ (id)cellModelForAddressBookAddress:(id)a3;
-+ (id)cellModelForCollection:(id)a3;
-+ (id)cellModelForCollectionMapItem:(id)a3 currentLocation:(id)a4;
-+ (id)cellModelForDroppedPinFromSearchResult:(id)a3;
-+ (id)cellModelForExpiredOfflineMapSubscription:(id)a3 isAvailable:(BOOL)a4 isSupportedOSVersion:(BOOL)a5 downloadBlock:(id)a6;
-+ (id)cellModelForHistoryEntryRecentsItem:(id)a3 showAutocompleteClientSource:(BOOL)a4;
-+ (id)cellModelForHistoryEntryRecentsItemProtocol:(id)a3 showAutocompleteClientSource:(BOOL)a4;
-+ (id)cellModelForLibraryManagementItem:(id)a3;
-+ (id)cellModelForLocalSearchCompletion:(id)a3 userLocationSearchResult:(id)a4 autocompleteClientSourceType:(int64_t)a5;
-+ (id)cellModelForLocationInfo:(id)a3;
-+ (id)cellModelForMapItem:(id)a3;
-+ (id)cellModelForMapsFavoriteItem:(id)a3;
-+ (id)cellModelForMapsFavoriteItem:(id)a3 title:(id)a4 subtitle:(id)a5;
-+ (id)cellModelForMapsSuggestionEntry:(id)a3 menuProvider:(id)a4;
-+ (id)cellModelForMapsSuggestionEntry:(id)a3 title:(id)a4 subtitle:(id)a5 menuProvider:(id)a6;
-+ (id)cellModelForMapsSuggestionsShortcut:(id)a3;
-+ (id)cellModelForOfflineMapSubscriptionInfo:(id)a3 cancelDownloadBlock:(id)a4 resumeDownloadBlock:(id)a5;
-+ (id)cellModelForOfflineMapSuggestion:(id)a3 downloadBlock:(id)a4;
-+ (id)cellModelForOfflineRegionLocalSearchCompletion:(id)a3;
-+ (id)cellModelForOfflineSearchResult:(id)a3;
-+ (id)cellModelForParkedCar:(id)a3;
-+ (id)cellModelForPlaceNotFoundWithUserEnteredText:(id)a3;
-+ (id)cellModelForPublisher:(id)a3 showDisclosureIndicator:(BOOL)a4;
-+ (id)cellModelForRAPReportsHistory:(id)a3 allowDisclosureIndicator:(BOOL)a4;
-+ (id)cellModelForRatingsHistory:(id)a3;
-+ (id)cellModelForRecentContact:(id)a3 showAutocompleteClientSource:(BOOL)a4 autocompleteClientSourceType:(int64_t)a5;
-+ (id)cellModelForRouteData:(id)a3 thirdLineViewModel:(id)a4 menuProvider:(id)a5;
-+ (id)cellModelForSavedRouteCalculatingFailureForOfflineRegion:(id)a3;
-+ (id)cellModelForSavedRouteCalculatingOfflineRegion:(id)a3;
-+ (id)cellModelForSavedRouteOfflineDownload:(id)a3 estimatedSizeInBytes:(int64_t)a4;
-+ (id)cellModelForSavedRouteOfflineRegion:(id)a3 coveredByExistingSubscription:(id)a4;
-+ (id)cellModelForSavedRouteUnavailableOfflineRegion:(id)a3;
-+ (id)cellModelForSearchHomeRecentSearch:(id)a3;
-+ (id)cellModelForSearchResult:(id)a3 typedACQuery:(id)a4 showAutocompleteClientSource:(BOOL)a5;
-+ (id)cellModelForSharedTrip:(id)a3;
-+ (id)cellModelForSharedTripSummary:(id)a3;
-+ (id)cellModelForTransitLine:(id)a3;
-+ (id)cellModelForUGCSuggestionContentType:(int64_t)a3 visitDate:(id)a4;
-+ (id)cellModelForVisitedPlacesWithTitle:(id)a3 subTitle:(id)a4 imageSymbol:(id)a5;
-+ (id)libraryCellModelForMapItem:(id)a3 customName:(id)a4 styleAttributes:(id)a5 thirdLineViewModel:(id)a6 menuProvider:(id)a7;
++ (id)_moreButtonAccessoryWithMenuProvider:(id)provider axID:(id)d;
++ (id)_searchResultModelWithSearchResult:(id)result title:(id)title subtitle:(id)subtitle isAuthorizedForPreciseLocation:(BOOL)location placeContextViewModel:(id)model;
++ (id)backgroundColorForRAPType:(int)type;
++ (id)cellModelForAddMissingPlaceWithUserEnteredText:(id)text;
++ (id)cellModelForAddressBookAddress:(id)address;
++ (id)cellModelForCollection:(id)collection;
++ (id)cellModelForCollectionMapItem:(id)item currentLocation:(id)location;
++ (id)cellModelForDroppedPinFromSearchResult:(id)result;
++ (id)cellModelForExpiredOfflineMapSubscription:(id)subscription isAvailable:(BOOL)available isSupportedOSVersion:(BOOL)version downloadBlock:(id)block;
++ (id)cellModelForHistoryEntryRecentsItem:(id)item showAutocompleteClientSource:(BOOL)source;
++ (id)cellModelForHistoryEntryRecentsItemProtocol:(id)protocol showAutocompleteClientSource:(BOOL)source;
++ (id)cellModelForLibraryManagementItem:(id)item;
++ (id)cellModelForLocalSearchCompletion:(id)completion userLocationSearchResult:(id)result autocompleteClientSourceType:(int64_t)type;
++ (id)cellModelForLocationInfo:(id)info;
++ (id)cellModelForMapItem:(id)item;
++ (id)cellModelForMapsFavoriteItem:(id)item;
++ (id)cellModelForMapsFavoriteItem:(id)item title:(id)title subtitle:(id)subtitle;
++ (id)cellModelForMapsSuggestionEntry:(id)entry menuProvider:(id)provider;
++ (id)cellModelForMapsSuggestionEntry:(id)entry title:(id)title subtitle:(id)subtitle menuProvider:(id)provider;
++ (id)cellModelForMapsSuggestionsShortcut:(id)shortcut;
++ (id)cellModelForOfflineMapSubscriptionInfo:(id)info cancelDownloadBlock:(id)block resumeDownloadBlock:(id)downloadBlock;
++ (id)cellModelForOfflineMapSuggestion:(id)suggestion downloadBlock:(id)block;
++ (id)cellModelForOfflineRegionLocalSearchCompletion:(id)completion;
++ (id)cellModelForOfflineSearchResult:(id)result;
++ (id)cellModelForParkedCar:(id)car;
++ (id)cellModelForPlaceNotFoundWithUserEnteredText:(id)text;
++ (id)cellModelForPublisher:(id)publisher showDisclosureIndicator:(BOOL)indicator;
++ (id)cellModelForRAPReportsHistory:(id)history allowDisclosureIndicator:(BOOL)indicator;
++ (id)cellModelForRatingsHistory:(id)history;
++ (id)cellModelForRecentContact:(id)contact showAutocompleteClientSource:(BOOL)source autocompleteClientSourceType:(int64_t)type;
++ (id)cellModelForRouteData:(id)data thirdLineViewModel:(id)model menuProvider:(id)provider;
++ (id)cellModelForSavedRouteCalculatingFailureForOfflineRegion:(id)region;
++ (id)cellModelForSavedRouteCalculatingOfflineRegion:(id)region;
++ (id)cellModelForSavedRouteOfflineDownload:(id)download estimatedSizeInBytes:(int64_t)bytes;
++ (id)cellModelForSavedRouteOfflineRegion:(id)region coveredByExistingSubscription:(id)subscription;
++ (id)cellModelForSavedRouteUnavailableOfflineRegion:(id)region;
++ (id)cellModelForSearchHomeRecentSearch:(id)search;
++ (id)cellModelForSearchResult:(id)result typedACQuery:(id)query showAutocompleteClientSource:(BOOL)source;
++ (id)cellModelForSharedTrip:(id)trip;
++ (id)cellModelForSharedTripSummary:(id)summary;
++ (id)cellModelForTransitLine:(id)line;
++ (id)cellModelForUGCSuggestionContentType:(int64_t)type visitDate:(id)date;
++ (id)cellModelForVisitedPlacesWithTitle:(id)title subTitle:(id)subTitle imageSymbol:(id)symbol;
++ (id)libraryCellModelForMapItem:(id)item customName:(id)name styleAttributes:(id)attributes thirdLineViewModel:(id)model menuProvider:(id)provider;
 @end
 
 @implementation TwoLinesContentViewModelComposer
 
-+ (id)cellModelForVisitedPlacesWithTitle:(id)a3 subTitle:(id)a4 imageSymbol:(id)a5
++ (id)cellModelForVisitedPlacesWithTitle:(id)title subTitle:(id)subTitle imageSymbol:(id)symbol
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  symbolCopy = symbol;
+  subTitleCopy = subTitle;
+  titleCopy = title;
   v10 = [_BasicTwoLinesContentViewModel alloc];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100C47F3C;
   v15[3] = &unk_10164E908;
-  v16 = v7;
-  v11 = v7;
-  v12 = [(_BasicTwoLinesContentViewModel *)v10 initWithTitleText:v9 subtitleText:v8 imageCreationBlock:v15];
+  v16 = symbolCopy;
+  v11 = symbolCopy;
+  v12 = [(_BasicTwoLinesContentViewModel *)v10 initWithTitleText:titleCopy subtitleText:subTitleCopy imageCreationBlock:v15];
 
   [(_BasicTwoLinesContentViewModel *)v12 setImageStyle:0];
-  v13 = [(_BasicTwoLinesContentViewModel *)v12 titleText];
-  [(_BasicTwoLinesContentViewModel *)v12 setAccessibilityLabel:v13];
+  titleText = [(_BasicTwoLinesContentViewModel *)v12 titleText];
+  [(_BasicTwoLinesContentViewModel *)v12 setAccessibilityLabel:titleText];
 
   return v12;
 }
 
-+ (id)cellModelForSavedRouteOfflineRegion:(id)a3 coveredByExistingSubscription:(id)a4
++ (id)cellModelForSavedRouteOfflineRegion:(id)region coveredByExistingSubscription:(id)subscription
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [_BasicTwoLinesContentViewModel alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_TITLE_ALREADY_DOWNLOADED" value:@"localized string not found" table:@"Offline"];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_SUBTITLE_ALREADY_DOWNLOADED" value:@"localized string not found" table:@"Offline"];
-  v10 = sub_100C481B0(v4);
+  v10 = sub_100C481B0(regionCopy);
   v11 = [(_BasicTwoLinesContentViewModel *)v5 initWithTitleText:v7 subtitleText:v9 cancelableImageCreationBlock:v10];
 
-  sub_100C48254(v11, v4);
+  sub_100C48254(v11, regionCopy);
   [(_BasicTwoLinesContentViewModel *)v11 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v11 setShouldCenterImage:1];
   [(_BasicTwoLinesContentViewModel *)v11 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v11 setAxIdentifier:@"OfflineMapDownloadCell"];
-  v12 = [(_BasicTwoLinesContentViewModel *)v11 titleText];
-  [(_BasicTwoLinesContentViewModel *)v11 setAccessibilityLabel:v12];
+  titleText = [(_BasicTwoLinesContentViewModel *)v11 titleText];
+  [(_BasicTwoLinesContentViewModel *)v11 setAccessibilityLabel:titleText];
 
   return v11;
 }
 
-+ (id)cellModelForSavedRouteUnavailableOfflineRegion:(id)a3
++ (id)cellModelForSavedRouteUnavailableOfflineRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = [_BasicTwoLinesContentViewModel alloc];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_TITLE_UNAVAILABLE" value:@"localized string not found" table:@"Offline"];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_SUBTITLE_UNAVAILABLE" value:@"localized string not found" table:@"Offline"];
-  v9 = sub_100C481B0(v3);
+  v9 = sub_100C481B0(regionCopy);
   v10 = [(_BasicTwoLinesContentViewModel *)v4 initWithTitleText:v6 subtitleText:v8 cancelableImageCreationBlock:v9];
 
-  sub_100C48254(v10, v3);
+  sub_100C48254(v10, regionCopy);
   [(_BasicTwoLinesContentViewModel *)v10 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v10 setShouldCenterImage:1];
   [(_BasicTwoLinesContentViewModel *)v10 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v10 setSubtitleUsesMonospacedNumbers:1];
   [(_BasicTwoLinesContentViewModel *)v10 setDisabled:1];
   [(_BasicTwoLinesContentViewModel *)v10 setAxIdentifier:@"OfflineMapDownloadCell"];
-  v11 = [(_BasicTwoLinesContentViewModel *)v10 titleText];
-  [(_BasicTwoLinesContentViewModel *)v10 setAccessibilityLabel:v11];
+  titleText = [(_BasicTwoLinesContentViewModel *)v10 titleText];
+  [(_BasicTwoLinesContentViewModel *)v10 setAccessibilityLabel:titleText];
 
   return v10;
 }
 
-+ (id)cellModelForSavedRouteCalculatingFailureForOfflineRegion:(id)a3
++ (id)cellModelForSavedRouteCalculatingFailureForOfflineRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = [_BasicTwoLinesContentViewModel alloc];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_TITLE_UNAVAILABLE" value:@"localized string not found" table:@"Offline"];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_SUBTITLE_ERROR" value:@"localized string not found" table:@"Offline"];
-  v9 = sub_100C481B0(v3);
+  v9 = sub_100C481B0(regionCopy);
   v10 = [(_BasicTwoLinesContentViewModel *)v4 initWithTitleText:v6 subtitleText:v8 cancelableImageCreationBlock:v9];
 
-  sub_100C48254(v10, v3);
+  sub_100C48254(v10, regionCopy);
   [(_BasicTwoLinesContentViewModel *)v10 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v10 setShouldCenterImage:1];
   [(_BasicTwoLinesContentViewModel *)v10 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v10 setSubtitleUsesMonospacedNumbers:1];
   [(_BasicTwoLinesContentViewModel *)v10 setDisabled:1];
   [(_BasicTwoLinesContentViewModel *)v10 setAxIdentifier:@"OfflineMapDownloadCell"];
-  v11 = [(_BasicTwoLinesContentViewModel *)v10 titleText];
-  [(_BasicTwoLinesContentViewModel *)v10 setAccessibilityLabel:v11];
+  titleText = [(_BasicTwoLinesContentViewModel *)v10 titleText];
+  [(_BasicTwoLinesContentViewModel *)v10 setAccessibilityLabel:titleText];
 
   return v10;
 }
 
-+ (id)cellModelForSavedRouteCalculatingOfflineRegion:(id)a3
++ (id)cellModelForSavedRouteCalculatingOfflineRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = [_BasicTwoLinesContentViewModel alloc];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_TITLE" value:@"localized string not found" table:@"Offline"];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_SUBTITLE_CALCULATING" value:@"localized string not found" table:@"Offline"];
-  v9 = sub_100C481B0(v3);
+  v9 = sub_100C481B0(regionCopy);
   v10 = [(_BasicTwoLinesContentViewModel *)v4 initWithTitleText:v6 subtitleText:v8 cancelableImageCreationBlock:v9];
 
-  sub_100C48254(v10, v3);
+  sub_100C48254(v10, regionCopy);
   [(_BasicTwoLinesContentViewModel *)v10 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v10 setShouldCenterImage:1];
   [(_BasicTwoLinesContentViewModel *)v10 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v10 setSubtitleUsesMonospacedNumbers:1];
   [(_BasicTwoLinesContentViewModel *)v10 setAxIdentifier:@"OfflineMapDownloadCell"];
-  v11 = [(_BasicTwoLinesContentViewModel *)v10 titleText];
-  [(_BasicTwoLinesContentViewModel *)v10 setAccessibilityLabel:v11];
+  titleText = [(_BasicTwoLinesContentViewModel *)v10 titleText];
+  [(_BasicTwoLinesContentViewModel *)v10 setAccessibilityLabel:titleText];
 
   return v10;
 }
 
-+ (id)cellModelForSavedRouteOfflineDownload:(id)a3 estimatedSizeInBytes:(int64_t)a4
++ (id)cellModelForSavedRouteOfflineDownload:(id)download estimatedSizeInBytes:(int64_t)bytes
 {
-  v5 = a3;
-  v6 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:a4];
+  downloadCopy = download;
+  v6 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:bytes];
   v7 = [_BasicTwoLinesContentViewModel alloc];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"SAVE_ROUTE_DOWNLOAD_MAP_TITLE" value:@"localized string not found" table:@"Offline"];
-  v10 = sub_100C481B0(v5);
+  v10 = sub_100C481B0(downloadCopy);
   v11 = [(_BasicTwoLinesContentViewModel *)v7 initWithTitleText:v9 subtitleText:v6 cancelableImageCreationBlock:v10];
 
-  sub_100C48254(v11, v5);
+  sub_100C48254(v11, downloadCopy);
   [(_BasicTwoLinesContentViewModel *)v11 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v11 setShouldCenterImage:1];
   [(_BasicTwoLinesContentViewModel *)v11 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v11 setSubtitleUsesMonospacedNumbers:1];
   [(_BasicTwoLinesContentViewModel *)v11 setAxIdentifier:@"OfflineMapDownloadCell"];
-  v12 = [(_BasicTwoLinesContentViewModel *)v11 titleText];
-  [(_BasicTwoLinesContentViewModel *)v11 setAccessibilityLabel:v12];
+  titleText = [(_BasicTwoLinesContentViewModel *)v11 titleText];
+  [(_BasicTwoLinesContentViewModel *)v11 setAccessibilityLabel:titleText];
 
   return v11;
 }
 
-+ (id)cellModelForExpiredOfflineMapSubscription:(id)a3 isAvailable:(BOOL)a4 isSupportedOSVersion:(BOOL)a5 downloadBlock:(id)a6
++ (id)cellModelForExpiredOfflineMapSubscription:(id)subscription isAvailable:(BOOL)available isSupportedOSVersion:(BOOL)version downloadBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 displayName];
-  if ([v11 length])
+  versionCopy = version;
+  availableCopy = available;
+  subscriptionCopy = subscription;
+  blockCopy = block;
+  displayName = [subscriptionCopy displayName];
+  if ([displayName length])
   {
-    v12 = [v9 displayName];
+    displayName2 = [subscriptionCopy displayName];
   }
 
   else
   {
     v13 = +[NSBundle mainBundle];
-    v12 = [v13 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+    displayName2 = [v13 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
   }
 
-  if (!v8)
+  if (!availableCopy)
   {
     v22 = +[NSBundle mainBundle];
     v23 = v22;
-    if (v7)
+    if (versionCopy)
     {
       v24 = @"Not Available [List]";
     }
@@ -249,9 +249,9 @@
   if (MapsFeature_IsEnabled_OfflineMapsUIEnhancementsEnabled())
   {
 LABEL_14:
-    v21 = !v8;
-    v25 = [v9 region];
-    v26 = sub_100C481B0(v25);
+    v21 = !availableCopy;
+    region = [subscriptionCopy region];
+    v26 = sub_100C481B0(region);
 
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
@@ -264,18 +264,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v19 = [v9 region];
-  v20 = sub_100C481B0(v19);
+  region2 = [subscriptionCopy region];
+  v20 = sub_100C481B0(region2);
 
   v21 = 0;
 LABEL_15:
-  v28 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v12 subtitleText:v18 cancelableImageCreationBlock:v20];
-  v29 = [v9 region];
-  sub_100C48254(v28, v29);
+  v28 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:displayName2 subtitleText:v18 cancelableImageCreationBlock:v20];
+  region3 = [subscriptionCopy region];
+  sub_100C48254(v28, region3);
 
   [(_BasicTwoLinesContentViewModel *)v28 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v28 setAxIdentifier:@"ExpiredOfflineMapSubscription"];
-  [(_BasicTwoLinesContentViewModel *)v28 setAccessibilityLabel:v12];
+  [(_BasicTwoLinesContentViewModel *)v28 setAccessibilityLabel:displayName2];
   [(_BasicTwoLinesContentViewModel *)v28 setDisabled:v21];
   [(_BasicTwoLinesContentViewModel *)v28 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v28 setSubtitleUsesMonospacedNumbers:1];
@@ -286,7 +286,7 @@ LABEL_15:
     v39 = 3221225472;
     v40 = sub_100C492C4;
     v41 = &unk_101661C18;
-    v42 = v10;
+    v42 = blockCopy;
     v31 = [UIAction actionWithHandler:&v38];
     v32 = [UIButton buttonWithType:0 primaryAction:v31, v38, v39, v40, v41];
 
@@ -304,33 +304,33 @@ LABEL_15:
   return v28;
 }
 
-+ (id)cellModelForOfflineMapSuggestion:(id)a3 downloadBlock:(id)a4
++ (id)cellModelForOfflineMapSuggestion:(id)suggestion downloadBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  suggestionCopy = suggestion;
   v7 = [_BasicTwoLinesContentViewModel alloc];
-  v8 = [v6 regionName];
-  v9 = [v6 suggestionSubtitle];
-  v10 = [v6 mapRegion];
-  v11 = sub_100C481B0(v10);
-  v12 = [(_BasicTwoLinesContentViewModel *)v7 initWithTitleText:v8 subtitleText:v9 cancelableImageCreationBlock:v11];
+  regionName = [suggestionCopy regionName];
+  suggestionSubtitle = [suggestionCopy suggestionSubtitle];
+  mapRegion = [suggestionCopy mapRegion];
+  v11 = sub_100C481B0(mapRegion);
+  v12 = [(_BasicTwoLinesContentViewModel *)v7 initWithTitleText:regionName subtitleText:suggestionSubtitle cancelableImageCreationBlock:v11];
 
-  v13 = [v6 mapRegion];
+  mapRegion2 = [suggestionCopy mapRegion];
 
-  sub_100C48254(v12, v13);
+  sub_100C48254(v12, mapRegion2);
   [(_BasicTwoLinesContentViewModel *)v12 setImageCreationCanBeCached:1];
   [(_BasicTwoLinesContentViewModel *)v12 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v12 setSubtitleUsesMonospacedNumbers:1];
   [(_BasicTwoLinesContentViewModel *)v12 setAxIdentifier:@"OfflineMapSuggestionCell"];
-  v14 = [(_BasicTwoLinesContentViewModel *)v12 titleText];
-  [(_BasicTwoLinesContentViewModel *)v12 setAccessibilityLabel:v14];
+  titleText = [(_BasicTwoLinesContentViewModel *)v12 titleText];
+  [(_BasicTwoLinesContentViewModel *)v12 setAccessibilityLabel:titleText];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100C49A5C;
   v23[3] = &unk_101661C18;
-  v24 = v5;
-  v15 = v5;
+  v24 = blockCopy;
+  v15 = blockCopy;
   v16 = [UIAction actionWithHandler:v23];
   v17 = [UIButton buttonWithType:0 primaryAction:v16];
 
@@ -347,42 +347,42 @@ LABEL_15:
   return v12;
 }
 
-+ (id)cellModelForOfflineMapSubscriptionInfo:(id)a3 cancelDownloadBlock:(id)a4 resumeDownloadBlock:(id)a5
++ (id)cellModelForOfflineMapSubscriptionInfo:(id)info cancelDownloadBlock:(id)block resumeDownloadBlock:(id)downloadBlock
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 subscription];
-  v11 = [v10 displayName];
-  if ([v11 length])
+  infoCopy = info;
+  downloadBlockCopy = downloadBlock;
+  blockCopy = block;
+  subscription = [infoCopy subscription];
+  displayName = [subscription displayName];
+  if ([displayName length])
   {
-    v12 = [v7 subscription];
-    [v12 displayName];
+    subscription2 = [infoCopy subscription];
+    [subscription2 displayName];
   }
 
   else
   {
-    v12 = +[NSBundle mainBundle];
-    [v12 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+    subscription2 = +[NSBundle mainBundle];
+    [subscription2 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
   }
   v13 = ;
 
   v14 = [_OfflineMapSubscriptionTwoLinesContentViewModel alloc];
-  v15 = [v7 subscription];
-  v16 = [v15 region];
-  v17 = sub_100C481B0(v16);
+  subscription3 = [infoCopy subscription];
+  region = [subscription3 region];
+  v17 = sub_100C481B0(region);
   v18 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)v14 initWithTitleText:v13 subtitleText:0 cancelableImageCreationBlock:v17];
 
-  v19 = [v7 subscription];
-  v20 = [v19 region];
-  sub_100C48254(v18, v20);
+  subscription4 = [infoCopy subscription];
+  region2 = [subscription4 region];
+  sub_100C48254(v18, region2);
 
   [(_BasicTwoLinesContentViewModel *)v18 setImageCreationCanBeCached:1];
-  [(_OfflineMapSubscriptionTwoLinesContentViewModel *)v18 setSubscriptionInfo:v7];
-  v21 = [v9 copy];
+  [(_OfflineMapSubscriptionTwoLinesContentViewModel *)v18 setSubscriptionInfo:infoCopy];
+  v21 = [blockCopy copy];
 
   [(_OfflineMapSubscriptionTwoLinesContentViewModel *)v18 setCancelDownloadBlock:v21];
-  v22 = [v8 copy];
+  v22 = [downloadBlockCopy copy];
 
   [(_OfflineMapSubscriptionTwoLinesContentViewModel *)v18 setResumeDownloadBlock:v22];
   [(_BasicTwoLinesContentViewModel *)v18 setAllowsSubtitleWrapping:1];
@@ -393,13 +393,13 @@ LABEL_15:
   return v18;
 }
 
-+ (id)cellModelForUGCSuggestionContentType:(int64_t)a3 visitDate:(id)a4
++ (id)cellModelForUGCSuggestionContentType:(int64_t)type visitDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v6 = &stru_1016631F0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v19 = +[NSBundle mainBundle];
       v7 = [v19 localizedStringForKey:@"[UGC] Add Your Photos to Maps" value:@"localized string not found" table:0];
@@ -412,7 +412,7 @@ LABEL_15:
     else
     {
       v7 = &stru_1016631F0;
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_15;
       }
@@ -428,7 +428,7 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v13 = +[NSBundle mainBundle];
     v7 = [v13 localizedStringForKey:@"[UGC] Rate This Place" value:@"localized string not found" table:0];
@@ -441,10 +441,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     v7 = &stru_1016631F0;
-    if (a3 != 5)
+    if (type != 5)
     {
       goto LABEL_15;
     }
@@ -461,7 +461,7 @@ LABEL_13:
   v14 = +[NSBundle mainBundle];
   v7 = [v14 localizedStringForKey:@"[UGC] Rate This Place" value:@"localized string not found" table:0];
 
-  if (!v5)
+  if (!dateCopy)
   {
     goto LABEL_15;
   }
@@ -471,7 +471,7 @@ LABEL_13:
   [v10 setUnitsStyle:0];
   [v10 setFormattingContext:1];
   v15 = +[NSDate date];
-  v16 = [v10 localizedStringForDate:v5 relativeToDate:v15];
+  v16 = [v10 localizedStringForDate:dateCopy relativeToDate:v15];
 
   v17 = +[NSBundle mainBundle];
   v18 = [v17 localizedStringForKey:@"[UGC] Visited" value:@"localized string not found" table:0];
@@ -485,28 +485,28 @@ LABEL_15:
   return v20;
 }
 
-+ (id)_convertSymbolToIconImage:(id)a3 RAPType:(int)a4
++ (id)_convertSymbolToIconImage:(id)image RAPType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&type;
+  imageCopy = image;
   v7 = objc_alloc_init(ImageIconWithBackgroundConfiguration);
   [(ImageIconWithBackgroundConfiguration *)v7 setIconSize:30.0, 30.0];
   v8 = +[UIColor whiteColor];
   [(ImageIconWithBackgroundConfiguration *)v7 setTintColor:v8];
 
-  v9 = [a1 backgroundColorForRAPType:v4];
+  v9 = [self backgroundColorForRAPType:v4];
   [(ImageIconWithBackgroundConfiguration *)v7 setBackgroundColor:v9];
 
   [(ImageIconWithBackgroundConfiguration *)v7 setCornerRadius:15.0];
-  v10 = [v6 _maps_imageIconWithBackgroundConfiguration:v7];
+  v10 = [imageCopy _maps_imageIconWithBackgroundConfiguration:v7];
 
   return v10;
 }
 
-+ (id)backgroundColorForRAPType:(int)a3
++ (id)backgroundColorForRAPType:(int)type
 {
-  v5 = a3 - 8;
-  if (a3 - 8) <= 9 && ((0x283u >> v5))
+  v5 = type - 8;
+  if (type - 8) <= 9 && ((0x283u >> v5))
   {
     v6 = [UIColor colorNamed:*(&off_10164ECE8 + v5), v3];
   }
@@ -519,35 +519,35 @@ LABEL_15:
   return v6;
 }
 
-+ (id)cellModelForRAPReportsHistory:(id)a3 allowDisclosureIndicator:(BOOL)a4
++ (id)cellModelForRAPReportsHistory:(id)history allowDisclosureIndicator:(BOOL)indicator
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 mapItem];
-  if (v7 && (v8 = v7, [v6 mapItem], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "name"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
+  indicatorCopy = indicator;
+  historyCopy = history;
+  mapItem = [historyCopy mapItem];
+  if (mapItem && (v8 = mapItem, [historyCopy mapItem], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "name"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
   {
-    v11 = [v6 mapItem];
-    v12 = [v11 name];
+    mapItem2 = [historyCopy mapItem];
+    name = [mapItem2 name];
   }
 
   else
   {
-    v12 = [v6 reportTitle];
+    name = [historyCopy reportTitle];
   }
 
   v13 = objc_opt_new();
-  v14 = [v6 reportSummary];
-  v15 = [v6 dateOfReportCreation];
-  v16 = [NSDateFormatter _maps_abbreviatedDateStringWithoutYearForDate:v15];
+  reportSummary = [historyCopy reportSummary];
+  dateOfReportCreation = [historyCopy dateOfReportCreation];
+  v16 = [NSDateFormatter _maps_abbreviatedDateStringWithoutYearForDate:dateOfReportCreation];
 
   if ([v16 length])
   {
     [v13 addObject:v16];
   }
 
-  if ([v14 length])
+  if ([reportSummary length])
   {
-    [v13 addObject:v14];
+    [v13 addObject:reportSummary];
   }
 
   v17 = +[NSBundle mainBundle];
@@ -559,11 +559,11 @@ LABEL_15:
   v29 = 3221225472;
   v30 = sub_100C4B648;
   v31 = &unk_10164EB08;
-  v21 = v6;
+  v21 = historyCopy;
   v32 = v21;
-  v33 = a1;
-  v22 = [(_BasicTwoLinesContentViewModel *)v20 initWithTitleText:v12 subtitleText:v19 imageCreationBlock:&v28];
-  v23 = [a1 backgroundColorForRAPType:{objc_msgSend(v21, "reportType", v28, v29, v30, v31)}];
+  selfCopy = self;
+  v22 = [(_BasicTwoLinesContentViewModel *)v20 initWithTitleText:name subtitleText:v19 imageCreationBlock:&v28];
+  v23 = [self backgroundColorForRAPType:{objc_msgSend(v21, "reportType", v28, v29, v30, v31)}];
   [(_BasicTwoLinesContentViewModel *)v22 setLeadingImageBackgroundColor:v23];
 
   [(_BasicTwoLinesContentViewModel *)v22 setImageStyle:0];
@@ -572,7 +572,7 @@ LABEL_15:
 
   [(_BasicTwoLinesContentViewModel *)v22 setAllowsSubtitleWrapping:1];
   [(_BasicTwoLinesContentViewModel *)v22 setAxIdentifier:@"ReportAProblemHistoryCell"];
-  if (v4 && ([v21 reportStatus] == 2 || objc_msgSend(v21, "reportStatus") == 1))
+  if (indicatorCopy && ([v21 reportStatus] == 2 || objc_msgSend(v21, "reportStatus") == 1))
   {
     v25 = objc_alloc_init(UICellAccessoryDisclosureIndicator);
     v34 = v25;
@@ -583,11 +583,11 @@ LABEL_15:
   return v22;
 }
 
-+ (id)cellModelForRatingsHistory:(id)a3
++ (id)cellModelForRatingsHistory:(id)history
 {
-  v3 = a3;
-  v4 = [v3 mapItem];
-  v5 = [v4 name];
+  historyCopy = history;
+  mapItem = [historyCopy mapItem];
+  name = [mapItem name];
 
   v49 = objc_alloc_init(NSMutableAttributedString);
   v6 = objc_alloc_init(NSMutableAttributedString);
@@ -595,20 +595,20 @@ LABEL_15:
   v8 = +[NSBundle mainBundle];
   v50 = [v8 localizedStringForKey:@"[Ratings History] Your rating" value:@"localized string not found" table:0];
 
-  v9 = [v3 reviewedPlace];
-  v10 = [v9 recommendState];
+  reviewedPlace = [historyCopy reviewedPlace];
+  recommendState = [reviewedPlace recommendState];
 
-  if (v10)
+  if (recommendState)
   {
-    v48 = v5;
-    if (v10 == 2)
+    v48 = name;
+    if (recommendState == 2)
     {
       v11 = @"hand.thumbsup.fill";
     }
 
     else
     {
-      if (v10 != 1)
+      if (recommendState != 1)
       {
         v12 = 0;
         goto LABEL_8;
@@ -636,13 +636,13 @@ LABEL_8:
     v21 = [[NSAttributedString alloc] initWithString:v50];
     [v7 appendAttributedString:v21];
 
-    v5 = v48;
+    name = v48;
   }
 
-  v22 = [v3 reviewedPlace];
-  v23 = [v22 numberOfPhotosAdded];
+  reviewedPlace2 = [historyCopy reviewedPlace];
+  numberOfPhotosAdded = [reviewedPlace2 numberOfPhotosAdded];
 
-  if (!v10 && v23)
+  if (!recommendState && numberOfPhotosAdded)
   {
     v24 = [UIImage systemImageNamed:@"camera.fill"];
     v25 = +[UIColor secondaryLabelColor];
@@ -667,8 +667,8 @@ LABEL_8:
   v34 = [v33 localizedStringForKey:@"[Ratings History] # of photos ratings cell subtitle" value:@"localized string not found" table:0];
 
   v35 = [NSMutableAttributedString alloc];
-  v36 = [v3 reviewedPlace];
-  v37 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v34, [v36 numberOfPhotosAdded]);
+  reviewedPlace3 = [historyCopy reviewedPlace];
+  v37 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v34, [reviewedPlace3 numberOfPhotosAdded]);
   v38 = [v35 initWithString:v37];
   [v6 appendAttributedString:v38];
 
@@ -696,18 +696,18 @@ LABEL_8:
   v51[1] = 3221225472;
   v51[2] = sub_100C4C06C;
   v51[3] = &unk_10164E908;
-  v52 = v3;
-  v44 = v3;
-  v45 = [(_BasicTwoLinesContentViewModel *)v43 initWithTitleText:v5 subtitleText:0 imageCreationBlock:v51];
+  v52 = historyCopy;
+  v44 = historyCopy;
+  v45 = [(_BasicTwoLinesContentViewModel *)v43 initWithTitleText:name subtitleText:0 imageCreationBlock:v51];
   [(_BasicTwoLinesContentViewModel *)v45 setAttributedSubtitleText:v49];
   [(_BasicTwoLinesContentViewModel *)v45 setAxIdentifier:@"RatingsHistoryCell"];
 
   return v45;
 }
 
-+ (id)cellModelForSearchHomeRecentSearch:(id)a3
++ (id)cellModelForSearchHomeRecentSearch:(id)search
 {
-  v3 = a3;
+  searchCopy = search;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -732,7 +732,7 @@ LABEL_8:
   v13[3] = sub_100C4C44C;
   v13[4] = sub_100C4C45C;
   v14 = 0;
-  v4 = [v3 historyEntry];
+  historyEntry = [searchCopy historyEntry];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100C4C464;
@@ -747,7 +747,7 @@ LABEL_8:
   v11[4] = &v23;
   v11[5] = &v17;
   v11[6] = v13;
-  [v4 ifSearch:v12 ifRoute:0 ifPlaceDisplay:v11 ifTransitLineItem:0];
+  [historyEntry ifSearch:v12 ifRoute:0 ifPlaceDisplay:v11 ifTransitLineItem:0];
 
   v5 = [_BasicTwoLinesContentViewModel alloc];
   v6 = v24[5];
@@ -770,27 +770,27 @@ LABEL_8:
   return v8;
 }
 
-+ (id)cellModelForPublisher:(id)a3 showDisclosureIndicator:(BOOL)a4
++ (id)cellModelForPublisher:(id)publisher showDisclosureIndicator:(BOOL)indicator
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 publisherAttribution];
-  v7 = [v6 displayName];
+  indicatorCopy = indicator;
+  publisherCopy = publisher;
+  publisherAttribution = [publisherCopy publisherAttribution];
+  displayName = [publisherAttribution displayName];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"[Curated Collections] %lu Guides" value:@"localized string not found" table:0];
-  v10 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v9, [v5 totalCollectionCount]);
+  v10 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v9, [publisherCopy totalCollectionCount]);
 
   v11 = [_BasicTwoLinesContentViewModel alloc];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100C4C9E4;
   v19[3] = &unk_10164E908;
-  v12 = v5;
+  v12 = publisherCopy;
   v20 = v12;
-  v13 = [(_BasicTwoLinesContentViewModel *)v11 initWithTitleText:v7 subtitleText:v10 imageCreationBlock:v19];
+  v13 = [(_BasicTwoLinesContentViewModel *)v11 initWithTitleText:displayName subtitleText:v10 imageCreationBlock:v19];
   [(_BasicTwoLinesContentViewModel *)v13 setImageStyle:1];
-  if (v4)
+  if (indicatorCopy)
   {
     v14 = objc_alloc_init(UICellAccessoryDisclosureIndicator);
     v15 = +[UIColor tertiaryLabelColor];
@@ -810,44 +810,44 @@ LABEL_8:
   return v13;
 }
 
-+ (id)cellModelForLocationInfo:(id)a3
++ (id)cellModelForLocationInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 locationName];
-  v5 = [v4 length];
+  infoCopy = info;
+  locationName = [infoCopy locationName];
+  v5 = [locationName length];
 
   if (v5)
   {
-    v6 = [v3 locationName];
+    locationName2 = [infoCopy locationName];
   }
 
   else
   {
-    v6 = &stru_1016631F0;
+    locationName2 = &stru_1016631F0;
   }
 
-  v7 = [v3 localityName];
-  v8 = [v7 length];
+  localityName = [infoCopy localityName];
+  v8 = [localityName length];
 
   if (v8)
   {
-    if ([(__CFString *)v6 length])
+    if ([(__CFString *)locationName2 length])
     {
-      v9 = [(__CFString *)v6 stringByAppendingString:@", "];
+      v9 = [(__CFString *)locationName2 stringByAppendingString:@", "];
 
-      v6 = v9;
+      locationName2 = v9;
     }
 
-    v10 = [v3 localityName];
-    v11 = [(__CFString *)v6 stringByAppendingString:v10];
+    localityName2 = [infoCopy localityName];
+    v11 = [(__CFString *)locationName2 stringByAppendingString:localityName2];
 
-    v6 = v11;
+    locationName2 = v11;
   }
 
   v12 = [_BasicTwoLinesContentViewModel alloc];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"[LookAround Rap]" value:@"localized string not found" table:0];
-  v15 = [(_BasicTwoLinesContentViewModel *)v12 initWithTitleText:v14 subtitleText:v6 imageCreationBlock:&stru_10164EA68];
+  v15 = [(_BasicTwoLinesContentViewModel *)v12 initWithTitleText:v14 subtitleText:locationName2 imageCreationBlock:&stru_10164EA68];
 
   [(_BasicTwoLinesContentViewModel *)v15 setImageStyle:0];
   v16 = +[UIColor systemBlueColor];
@@ -858,55 +858,55 @@ LABEL_8:
   return v15;
 }
 
-+ (id)cellModelForSharedTrip:(id)a3
++ (id)cellModelForSharedTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [v4 listCellTitle];
-  v6 = [v4 listCellSubtitle];
+  tripCopy = trip;
+  listCellTitle = [tripCopy listCellTitle];
+  listCellSubtitle = [tripCopy listCellSubtitle];
   v7 = [NSMutableArray arrayWithCapacity:2];
-  if ([v6 length])
+  if ([listCellSubtitle length])
   {
-    [v7 addObject:v6];
+    [v7 addObject:listCellSubtitle];
   }
 
-  v8 = [a1 _delimiterString];
-  v9 = [v7 componentsJoinedByString:v8];
+  _delimiterString = [self _delimiterString];
+  v9 = [v7 componentsJoinedByString:_delimiterString];
 
   v10 = [_BasicTwoLinesContentViewModel alloc];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_100C4CEC0;
   v19 = &unk_10164E908;
-  v20 = v4;
-  v11 = v4;
-  v12 = [(_BasicTwoLinesContentViewModel *)v10 initWithTitleText:v5 subtitleText:v9 imageCreationBlock:&v16];
-  v13 = [v11 groupIdentifier];
-  v14 = [NSString stringWithFormat:@"SharedTripCell.%@", v13, v16, v17, v18, v19];
+  v20 = tripCopy;
+  v11 = tripCopy;
+  v12 = [(_BasicTwoLinesContentViewModel *)v10 initWithTitleText:listCellTitle subtitleText:v9 imageCreationBlock:&v16];
+  groupIdentifier = [v11 groupIdentifier];
+  v14 = [NSString stringWithFormat:@"SharedTripCell.%@", groupIdentifier, v16, v17, v18, v19];
   [(_BasicTwoLinesContentViewModel *)v12 setAxIdentifier:v14];
 
   return v12;
 }
 
-+ (id)cellModelForSharedTripSummary:(id)a3
++ (id)cellModelForSharedTripSummary:(id)summary
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 subtitle];
+  summaryCopy = summary;
+  title = [summaryCopy title];
+  subtitle = [summaryCopy subtitle];
   v6 = [_BasicTwoLinesContentViewModel alloc];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100C4D278;
   v18 = &unk_10164E908;
-  v7 = v3;
+  v7 = summaryCopy;
   v19 = v7;
-  v8 = [(_BasicTwoLinesContentViewModel *)v6 initWithTitleText:v4 subtitleText:v5 imageCreationBlock:&v15];
-  v9 = [v7 sharedTrips];
-  if ([v9 count] == 1)
+  v8 = [(_BasicTwoLinesContentViewModel *)v6 initWithTitleText:title subtitleText:subtitle imageCreationBlock:&v15];
+  sharedTrips = [v7 sharedTrips];
+  if ([sharedTrips count] == 1)
   {
-    v10 = [v7 sharedTrips];
-    v11 = [v10 firstObject];
-    v12 = [v11 groupIdentifier];
-    v13 = [NSString stringWithFormat:@"SharedTripSummaryCell.%@", v12, v15, v16, v17, v18];
+    sharedTrips2 = [v7 sharedTrips];
+    firstObject = [sharedTrips2 firstObject];
+    groupIdentifier = [firstObject groupIdentifier];
+    v13 = [NSString stringWithFormat:@"SharedTripSummaryCell.%@", groupIdentifier, v15, v16, v17, v18];
     [(_BasicTwoLinesContentViewModel *)v8 setAxIdentifier:v13];
   }
 
@@ -918,51 +918,51 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_cellModelForHistoryEntryCuratedCollection:(id)a3
++ (id)_cellModelForHistoryEntryCuratedCollection:(id)collection
 {
-  v4 = [a3 historyEntry];
-  v5 = [v4 placeCollection];
+  historyEntry = [collection historyEntry];
+  placeCollection = [historyEntry placeCollection];
 
-  v6 = [v5 publisherAttribution];
-  v7 = [v6 displayName];
+  publisherAttribution = [placeCollection publisherAttribution];
+  displayName = [publisherAttribution displayName];
 
   v8 = [NSMutableArray arrayWithCapacity:2];
-  if ([v7 length])
+  if ([displayName length])
   {
-    [v8 addObject:v7];
+    [v8 addObject:displayName];
   }
 
-  v9 = [v5 numberOfItems];
-  if (v9)
+  numberOfItems = [placeCollection numberOfItems];
+  if (numberOfItems)
   {
-    v10 = v9;
+    v10 = numberOfItems;
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"Number of places [Curated Collection]" value:@"localized string not found" table:0];
     v13 = [NSString stringWithFormat:v12, v10];
     [v8 addObject:v13];
   }
 
-  if ([a1 userInterfaceLayoutDirectionIsRTL])
+  if ([self userInterfaceLayoutDirectionIsRTL])
   {
-    v14 = [v8 reverseObjectEnumerator];
-    v15 = [v14 allObjects];
-    v16 = [v15 mutableCopy];
+    reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v16 = [allObjects mutableCopy];
 
     v8 = v16;
   }
 
-  v17 = [a1 _delimiterString];
-  v18 = [v8 componentsJoinedByString:v17];
+  _delimiterString = [self _delimiterString];
+  v18 = [v8 componentsJoinedByString:_delimiterString];
 
   v19 = [_BasicTwoLinesContentViewModel alloc];
-  v20 = [v5 collectionTitle];
+  collectionTitle = [placeCollection collectionTitle];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100C4D774;
   v24[3] = &unk_10164E908;
-  v25 = v5;
-  v21 = v5;
-  v22 = [(_BasicTwoLinesContentViewModel *)v19 initWithTitleText:v20 subtitleText:v18 imageCreationBlock:v24];
+  v25 = placeCollection;
+  v21 = placeCollection;
+  v22 = [(_BasicTwoLinesContentViewModel *)v19 initWithTitleText:collectionTitle subtitleText:v18 imageCreationBlock:v24];
 
   [(_BasicTwoLinesContentViewModel *)v22 setImageStyle:3];
   [(_BasicTwoLinesContentViewModel *)v22 setAxIdentifier:@"CuratedGuideCell"];
@@ -970,25 +970,25 @@ LABEL_8:
   return v22;
 }
 
-+ (id)_cellModelForHistoryEntryTransitLineItem:(id)a3
++ (id)_cellModelForHistoryEntryTransitLineItem:(id)item
 {
-  v4 = [a3 historyEntry];
-  v5 = [v4 lineItem];
+  historyEntry = [item historyEntry];
+  lineItem = [historyEntry lineItem];
 
-  v6 = [a1 cellModelForTransitLine:v5];
+  v6 = [self cellModelForTransitLine:lineItem];
 
   return v6;
 }
 
-+ (id)_cellModelForHistoryEntrySearch:(id)a3 showAutocompleteClientSource:(BOOL)a4
++ (id)_cellModelForHistoryEntrySearch:(id)search showAutocompleteClientSource:(BOOL)source
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 historyEntry];
-  v8 = [v7 query];
+  sourceCopy = source;
+  searchCopy = search;
+  historyEntry = [searchCopy historyEntry];
+  query = [historyEntry query];
 
   v9 = +[NSMutableArray array];
-  if (v4)
+  if (sourceCopy)
   {
     v10 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:1];
     if ([v10 length])
@@ -997,42 +997,42 @@ LABEL_8:
     }
   }
 
-  v11 = [v6 historyEntry];
-  v12 = [v11 locationDisplayString];
+  historyEntry2 = [searchCopy historyEntry];
+  locationDisplayString = [historyEntry2 locationDisplayString];
 
-  if ([v12 length])
+  if ([locationDisplayString length])
   {
-    [v9 addObject:v12];
+    [v9 addObject:locationDisplayString];
   }
 
-  if ([a1 userInterfaceLayoutDirectionIsRTL])
+  if ([self userInterfaceLayoutDirectionIsRTL])
   {
-    v13 = [v9 reverseObjectEnumerator];
-    v14 = [v13 allObjects];
-    v15 = [v14 mutableCopy];
+    reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v15 = [allObjects mutableCopy];
 
     v9 = v15;
   }
 
-  v16 = [a1 _delimiterString];
-  v17 = [v9 componentsJoinedByString:v16];
+  _delimiterString = [self _delimiterString];
+  v17 = [v9 componentsJoinedByString:_delimiterString];
 
-  v18 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v8 subtitleText:v17 imageCreationBlock:&stru_10164EA48];
+  v18 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:query subtitleText:v17 imageCreationBlock:&stru_10164EA48];
   [(_BasicTwoLinesContentViewModel *)v18 setAxIdentifier:@"RecentSearchCell"];
 
   return v18;
 }
 
-+ (id)_cellModelForHistoryEntryPlace:(id)a3 showAutocompleteClientSource:(BOOL)a4
++ (id)_cellModelForHistoryEntryPlace:(id)place showAutocompleteClientSource:(BOOL)source
 {
-  v4 = a4;
-  v6 = [a3 historyEntry];
-  v7 = [v6 geoMapItem];
+  sourceCopy = source;
+  historyEntry = [place historyEntry];
+  geoMapItem = [historyEntry geoMapItem];
 
-  v8 = [MKMapItem _itemWithGeoMapItem:v7];
-  v9 = [v8 name];
+  v8 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
+  name = [v8 name];
   v10 = +[NSMutableArray array];
-  if (v4)
+  if (sourceCopy)
   {
     v11 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:2];
     if ([v11 length])
@@ -1043,20 +1043,20 @@ LABEL_8:
 
   if ([v8 _venueFeatureType] == 4)
   {
-    v12 = [v8 venueLabelWithContext:2];
-    v13 = [v8 _venueInfo];
-    v14 = [v13 parent];
-    v15 = [v14 featureType];
+    _addressFormattedAsShortenedAddress = [v8 venueLabelWithContext:2];
+    _venueInfo = [v8 _venueInfo];
+    parent = [_venueInfo parent];
+    featureType = [parent featureType];
 
-    if (v15 != 2)
+    if (featureType != 2)
     {
-      v16 = [v8 _geoMapItem];
-      v17 = [v16 addressObject];
-      v18 = [v17 venueShortAddress];
+      _geoMapItem = [v8 _geoMapItem];
+      addressObject = [_geoMapItem addressObject];
+      venueShortAddress = [addressObject venueShortAddress];
 
-      v19 = [v18 length];
-      v20 = v18;
-      if (v19 || (v21 = [v12 length], v20 = v12, v21))
+      v19 = [venueShortAddress length];
+      v20 = venueShortAddress;
+      if (v19 || (v21 = [_addressFormattedAsShortenedAddress length], v20 = _addressFormattedAsShortenedAddress, v21))
       {
         [v10 addObject:v20];
       }
@@ -1067,54 +1067,54 @@ LABEL_8:
 
   else
   {
-    v12 = [v8 _addressFormattedAsShortenedAddress];
-    if ([v8 _isMapItemTypeAddress] && objc_msgSend(v12, "containsString:", v9))
+    _addressFormattedAsShortenedAddress = [v8 _addressFormattedAsShortenedAddress];
+    if ([v8 _isMapItemTypeAddress] && objc_msgSend(_addressFormattedAsShortenedAddress, "containsString:", name))
     {
-      v22 = [v8 _geoAddress];
-      v23 = [v22 structuredAddress];
-      v24 = [v23 locality];
+      _geoAddress = [v8 _geoAddress];
+      structuredAddress = [_geoAddress structuredAddress];
+      locality = [structuredAddress locality];
     }
 
     else
     {
-      v25 = [v9 uppercaseString];
-      v26 = [v12 uppercaseString];
-      v27 = [v25 isEqualToString:v26];
+      uppercaseString = [name uppercaseString];
+      uppercaseString2 = [_addressFormattedAsShortenedAddress uppercaseString];
+      v27 = [uppercaseString isEqualToString:uppercaseString2];
 
       if (!v27)
       {
         goto LABEL_17;
       }
 
-      v22 = [v8 _geoAddress];
-      v23 = [v22 structuredAddress];
-      v24 = [v23 _cellContent_subtitleWithTitle:v9];
+      _geoAddress = [v8 _geoAddress];
+      structuredAddress = [_geoAddress structuredAddress];
+      locality = [structuredAddress _cellContent_subtitleWithTitle:name];
     }
 
-    v28 = v24;
+    v28 = locality;
 
-    v12 = v28;
+    _addressFormattedAsShortenedAddress = v28;
   }
 
 LABEL_17:
-  if ([v12 length])
+  if ([_addressFormattedAsShortenedAddress length])
   {
-    [v10 addObject:v12];
+    [v10 addObject:_addressFormattedAsShortenedAddress];
   }
 
 LABEL_19:
 
-  if ([a1 userInterfaceLayoutDirectionIsRTL])
+  if ([self userInterfaceLayoutDirectionIsRTL])
   {
-    v29 = [v10 reverseObjectEnumerator];
-    v30 = [v29 allObjects];
-    v31 = [v30 mutableCopy];
+    reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v31 = [allObjects mutableCopy];
 
     v10 = v31;
   }
 
-  v32 = [a1 _delimiterString];
-  v33 = [v10 componentsJoinedByString:v32];
+  _delimiterString = [self _delimiterString];
+  v33 = [v10 componentsJoinedByString:_delimiterString];
 
   v34 = [_BasicTwoLinesContentViewModel alloc];
   v44[0] = _NSConcreteStackBlock;
@@ -1123,42 +1123,42 @@ LABEL_19:
   v44[3] = &unk_10164E908;
   v45 = v8;
   v35 = v8;
-  v36 = [(_BasicTwoLinesContentViewModel *)v34 initWithTitleText:v9 subtitleText:v33 imageCreationBlock:v44];
+  v36 = [(_BasicTwoLinesContentViewModel *)v34 initWithTitleText:name subtitleText:v33 imageCreationBlock:v44];
   v39 = _NSConcreteStackBlock;
   v40 = 3221225472;
   v41 = sub_100C4E11C;
   v42 = &unk_10164E958;
-  v43 = v7;
-  v37 = v7;
+  v43 = geoMapItem;
+  v37 = geoMapItem;
   [(_BasicTwoLinesContentViewModel *)v36 setPersonalizedItemForQuickActionMenuCreator:&v39];
   [(_BasicTwoLinesContentViewModel *)v36 setAxIdentifier:@"RecentPlaceCell", v39, v40, v41, v42];
 
   return v36;
 }
 
-+ (id)_cellModelForRouteName:(id)a3 persistentData:(id)a4 thirdLineViewModel:(id)a5 menuProvider:(id)a6
++ (id)_cellModelForRouteName:(id)name persistentData:(id)data thirdLineViewModel:(id)model menuProvider:(id)provider
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v12 subtitleText:0 imageCreationBlock:&stru_10164EA28];
+  providerCopy = provider;
+  modelCopy = model;
+  dataCopy = data;
+  nameCopy = name;
+  v13 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:nameCopy subtitleText:0 imageCreationBlock:&stru_10164EA28];
 
-  v14 = [v11 distanceAndElevationDescriptionStringWithAttributes:&__NSDictionary0__struct];
+  v14 = [dataCopy distanceAndElevationDescriptionStringWithAttributes:&__NSDictionary0__struct];
 
-  v15 = [v14 attributedString];
-  [(_BasicTwoLinesContentViewModel *)v13 setAttributedSubtitleText:v15];
+  attributedString = [v14 attributedString];
+  [(_BasicTwoLinesContentViewModel *)v13 setAttributedSubtitleText:attributedString];
 
-  [(_BasicTwoLinesContentViewModel *)v13 setPlaceContextViewModel:v10];
+  [(_BasicTwoLinesContentViewModel *)v13 setPlaceContextViewModel:modelCopy];
   [(_BasicTwoLinesContentViewModel *)v13 setAxIdentifier:@"RecentCustomRouteCell"];
-  if (v9)
+  if (providerCopy)
   {
     v16 = [UIButton buttonWithType:0];
     v17 = [UIImage systemImageNamed:@"ellipsis"];
     [v16 setImage:v17 forState:0];
 
     [v16 setShowsMenuAsPrimaryAction:1];
-    [v16 _setMenuProvider:v9];
+    [v16 _setMenuProvider:providerCopy];
     [v16 setAccessibilityIdentifier:@"RecentCustomRouteCellMoreButton"];
     v18 = +[UIColor labelColor];
     [v16 setTintColor:v18];
@@ -1175,87 +1175,87 @@ LABEL_19:
   return v13;
 }
 
-+ (id)cellModelForRouteData:(id)a3 thirdLineViewModel:(id)a4 menuProvider:(id)a5
++ (id)cellModelForRouteData:(id)data thirdLineViewModel:(id)model menuProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 userProvidedName];
-  if ([v11 length])
+  dataCopy = data;
+  providerCopy = provider;
+  modelCopy = model;
+  userProvidedName = [dataCopy userProvidedName];
+  if ([userProvidedName length])
   {
-    [v8 userProvidedName];
+    [dataCopy userProvidedName];
   }
 
   else
   {
-    [v8 routeName];
+    [dataCopy routeName];
   }
   v12 = ;
 
-  v13 = [a1 _cellModelForRouteName:v12 persistentData:v8 thirdLineViewModel:v10 menuProvider:v9];
+  v13 = [self _cellModelForRouteName:v12 persistentData:dataCopy thirdLineViewModel:modelCopy menuProvider:providerCopy];
 
   return v13;
 }
 
-+ (id)_cellModelForComposedWaypointToRoute:(id)a3
++ (id)_cellModelForComposedWaypointToRoute:(id)route
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 route];
+  routeCopy = route;
+  name = [routeCopy name];
+  route = [routeCopy route];
 
-  v7 = [v6 persistentData];
-  v8 = [a1 _cellModelForRouteName:v5 persistentData:v7 thirdLineViewModel:0 menuProvider:0];
+  persistentData = [route persistentData];
+  v8 = [self _cellModelForRouteName:name persistentData:persistentData thirdLineViewModel:0 menuProvider:0];
 
   return v8;
 }
 
-+ (id)_cellModelForHistoryEntryRoute:(id)a3
++ (id)_cellModelForHistoryEntryRoute:(id)route
 {
-  v4 = a3;
-  v5 = [v4 historyEntry];
-  v6 = [v5 endWaypoint];
+  routeCopy = route;
+  historyEntry = [routeCopy historyEntry];
+  endWaypoint = [historyEntry endWaypoint];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 historyEntry];
-    v9 = [v8 endWaypoint];
-    v10 = [a1 _cellModelForComposedWaypointToRoute:v9];
+    historyEntry2 = [routeCopy historyEntry];
+    endWaypoint2 = [historyEntry2 endWaypoint];
+    v10 = [self _cellModelForComposedWaypointToRoute:endWaypoint2];
     goto LABEL_20;
   }
 
   v39 = 0;
   v40 = 0;
-  v11 = [v4 historyEntry];
-  [SearchResult newStartWaypointSearchResult:&v40 endWaypointSearchResult:&v39 forRouteHistoryEntry:v11];
-  v8 = v40;
-  v9 = v39;
+  historyEntry3 = [routeCopy historyEntry];
+  [SearchResult newStartWaypointSearchResult:&v40 endWaypointSearchResult:&v39 forRouteHistoryEntry:historyEntry3];
+  historyEntry2 = v40;
+  endWaypoint2 = v39;
 
-  if ([v9 isAddressBookResult])
+  if ([endWaypoint2 isAddressBookResult])
   {
-    v12 = [v9 address];
-    v13 = [v12 waypointCompositeName];
-    v14 = v13;
-    if (v13)
+    address = [endWaypoint2 address];
+    waypointCompositeName = [address waypointCompositeName];
+    v14 = waypointCompositeName;
+    if (waypointCompositeName)
     {
-      v15 = v13;
+      title = waypointCompositeName;
     }
 
     else
     {
-      v15 = [v9 title];
+      title = [endWaypoint2 title];
     }
 
-    v16 = v15;
+    title2 = title;
   }
 
   else
   {
-    v16 = [v9 title];
+    title2 = [endWaypoint2 title];
   }
 
-  if ([v8 isDynamicCurrentLocation])
+  if ([historyEntry2 isDynamicCurrentLocation])
   {
     v17 = +[NSBundle mainBundle];
     v18 = v17;
@@ -1265,8 +1265,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v20 = [v8 name];
-  v21 = [v20 length];
+  name = [historyEntry2 name];
+  v21 = [name length];
 
   if (!v21)
   {
@@ -1278,17 +1278,17 @@ LABEL_14:
 
   v18 = +[NSBundle mainBundle];
   v22 = [v18 localizedStringForKey:@"From_in_cell" value:@"localized string not found" table:0];
-  v23 = [v8 name];
-  v24 = [NSString stringWithFormat:v22, v23];
+  name2 = [historyEntry2 name];
+  v24 = [NSString stringWithFormat:v22, name2];
 
 LABEL_15:
-  v25 = [v4 historyEntry];
-  v26 = [v25 waypoints];
-  v27 = [v26 count];
+  historyEntry4 = [routeCopy historyEntry];
+  waypoints = [historyEntry4 waypoints];
+  v27 = [waypoints count];
 
   if (v27 >= 3)
   {
-    v38 = v16;
+    v38 = title2;
     v28 = +[NSBundle mainBundle];
     v29 = [v28 localizedStringForKey:@"count_of_stops" value:@"localized string not found" table:0];
     v30 = [NSString localizedStringWithFormat:v29, v27 - 2];
@@ -1296,23 +1296,23 @@ LABEL_15:
     v31 = [NSMutableArray arrayWithCapacity:2];
     [v31 addObject:v24];
     [v31 addObject:v30];
-    if ([a1 userInterfaceLayoutDirectionIsRTL])
+    if ([self userInterfaceLayoutDirectionIsRTL])
     {
-      v32 = [v31 reverseObjectEnumerator];
-      v33 = [v32 allObjects];
-      v34 = [v33 mutableCopy];
+      reverseObjectEnumerator = [v31 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v34 = [allObjects mutableCopy];
 
       v31 = v34;
     }
 
-    v35 = [a1 _delimiterString];
-    v36 = [v31 componentsJoinedByString:v35];
+    _delimiterString = [self _delimiterString];
+    v36 = [v31 componentsJoinedByString:_delimiterString];
 
     v24 = v36;
-    v16 = v38;
+    title2 = v38;
   }
 
-  v10 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v16 subtitleText:v24 imageCreationBlock:&stru_10164EA08];
+  v10 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:title2 subtitleText:v24 imageCreationBlock:&stru_10164EA08];
   [(_BasicTwoLinesContentViewModel *)v10 setAxIdentifier:@"RecentRouteCell"];
 
 LABEL_20:
@@ -1320,13 +1320,13 @@ LABEL_20:
   return v10;
 }
 
-+ (id)cellModelForHistoryEntryRecentsItem:(id)a3 showAutocompleteClientSource:(BOOL)a4
++ (id)cellModelForHistoryEntryRecentsItem:(id)item showAutocompleteClientSource:(BOOL)source
 {
-  v4 = a4;
-  v5 = a3;
+  sourceCopy = source;
+  itemCopy = item;
   v6 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
   objc_opt_class();
-  v7 = v5;
+  v7 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -1385,7 +1385,7 @@ LABEL_46:
 
   if (v21)
   {
-    v13 = [TwoLinesContentViewModelComposer _cellModelForHistoryEntryPlace:v16 showAutocompleteClientSource:v4];
+    v13 = [TwoLinesContentViewModelComposer _cellModelForHistoryEntryPlace:v16 showAutocompleteClientSource:sourceCopy];
     goto LABEL_46;
   }
 
@@ -1417,7 +1417,7 @@ LABEL_46:
 
   if (v29)
   {
-    v13 = [TwoLinesContentViewModelComposer _cellModelForHistoryEntrySearch:v24 showAutocompleteClientSource:v4];
+    v13 = [TwoLinesContentViewModelComposer _cellModelForHistoryEntrySearch:v24 showAutocompleteClientSource:sourceCopy];
     goto LABEL_46;
   }
 
@@ -1491,12 +1491,12 @@ LABEL_47:
   return v46;
 }
 
-+ (id)cellModelForRecentContact:(id)a3 showAutocompleteClientSource:(BOOL)a4 autocompleteClientSourceType:(int64_t)a5
++ (id)cellModelForRecentContact:(id)contact showAutocompleteClientSource:(BOOL)source autocompleteClientSourceType:(int64_t)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 metadata];
-  v9 = [v8 objectForKeyedSubscript:CRRecentContactMetadataFrom];
+  sourceCopy = source;
+  contactCopy = contact;
+  metadata = [contactCopy metadata];
+  v9 = [metadata objectForKeyedSubscript:CRRecentContactMetadataFrom];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1567,10 +1567,10 @@ LABEL_17:
   }
 
 LABEL_22:
-  v20 = [v7 address];
-  if (v6)
+  address = [contactCopy address];
+  if (sourceCopy)
   {
-    v21 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:a5 contactName:v11];
+    v21 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:type contactName:v11];
 LABEL_26:
 
     goto LABEL_27;
@@ -1593,29 +1593,29 @@ LABEL_27:
   v26[1] = 3221225472;
   v26[2] = sub_100C4F270;
   v26[3] = &unk_10164E9E8;
-  v27 = v6;
-  v26[4] = a5;
-  v24 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v20 subtitleText:v21 imageCreationBlock:v26];
+  v27 = sourceCopy;
+  v26[4] = type;
+  v24 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:address subtitleText:v21 imageCreationBlock:v26];
   [(_BasicTwoLinesContentViewModel *)v24 setAxIdentifier:@"RecentContactCell"];
 
   return v24;
 }
 
-+ (id)cellModelForOfflineRegionLocalSearchCompletion:(id)a3
++ (id)cellModelForOfflineRegionLocalSearchCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 titleHighlightRanges];
-  v6 = [v3 subtitle];
-  v7 = [v3 subtitleHighlightRanges];
-  v8 = [v3 _supportsOfflineDownload];
-  if ((v8 & 1) == 0)
+  completionCopy = completion;
+  title = [completionCopy title];
+  titleHighlightRanges = [completionCopy titleHighlightRanges];
+  subtitle = [completionCopy subtitle];
+  subtitleHighlightRanges = [completionCopy subtitleHighlightRanges];
+  _supportsOfflineDownload = [completionCopy _supportsOfflineDownload];
+  if ((_supportsOfflineDownload & 1) == 0)
   {
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"Offline map unavailable [autocomplete]" value:@"localized string not found" table:@"Offline"];
 
-    v7 = 0;
-    v6 = v10;
+    subtitleHighlightRanges = 0;
+    subtitle = v10;
   }
 
   v11 = [_SearchResultTwoLinesContentViewModel alloc];
@@ -1623,114 +1623,114 @@ LABEL_27:
   v15[1] = 3221225472;
   v15[2] = sub_100C4F558;
   v15[3] = &unk_10164E908;
-  v16 = v3;
-  v12 = v3;
-  v13 = [(_BasicTwoLinesContentViewModel *)v11 initWithTitleText:v4 subtitleText:v6 imageCreationBlock:v15];
-  [(_BasicTwoLinesContentViewModel *)v13 setTitleHighlightRanges:v5];
-  [(_BasicTwoLinesContentViewModel *)v13 setSubtitleHighlightRanges:v7];
-  [(_BasicTwoLinesContentViewModel *)v13 setDisabled:v8 ^ 1];
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = [(_BasicTwoLinesContentViewModel *)v11 initWithTitleText:title subtitleText:subtitle imageCreationBlock:v15];
+  [(_BasicTwoLinesContentViewModel *)v13 setTitleHighlightRanges:titleHighlightRanges];
+  [(_BasicTwoLinesContentViewModel *)v13 setSubtitleHighlightRanges:subtitleHighlightRanges];
+  [(_BasicTwoLinesContentViewModel *)v13 setDisabled:_supportsOfflineDownload ^ 1];
   [(_BasicTwoLinesContentViewModel *)v13 setAxIdentifier:@"LocalSearchCompletionCell"];
 
   return v13;
 }
 
-+ (id)cellModelForLocalSearchCompletion:(id)a3 userLocationSearchResult:(id)a4 autocompleteClientSourceType:(int64_t)a5
++ (id)cellModelForLocalSearchCompletion:(id)completion userLocationSearchResult:(id)result autocompleteClientSourceType:(int64_t)type
 {
-  v8 = a3;
-  v83 = a4;
-  v9 = [v8 title];
-  v10 = [v8 titleHighlightRanges];
-  v11 = [v8 subtitle];
-  v85 = [v8 subtitleHighlightRanges];
-  v12 = [v8 category];
+  completionCopy = completion;
+  resultCopy = result;
+  title = [completionCopy title];
+  titleHighlightRanges = [completionCopy titleHighlightRanges];
+  subtitle = [completionCopy subtitle];
+  subtitleHighlightRanges = [completionCopy subtitleHighlightRanges];
+  category = [completionCopy category];
 
-  if (v12)
+  if (category)
   {
-    v81 = [v8 category];
+    category2 = [completionCopy category];
   }
 
   else
   {
-    v81 = 0;
+    category2 = 0;
   }
 
-  v13 = [v8 directionIntent];
+  directionIntent = [completionCopy directionIntent];
 
-  v76 = a1;
-  if (v13)
+  selfCopy = self;
+  if (directionIntent)
   {
     v14 = [UIImage imageNamed:@"RouteAC"];
-    v15 = [[DirectionIntentCellViewModel alloc] initWithLocalSearchCompletion:v8];
-    v16 = [(DirectionIntentCellViewModel *)v15 titleCellString];
+    v15 = [[DirectionIntentCellViewModel alloc] initWithLocalSearchCompletion:completionCopy];
+    titleCellString = [(DirectionIntentCellViewModel *)v15 titleCellString];
 
-    v17 = [(DirectionIntentCellViewModel *)v15 subtitleCellString];
+    subtitleCellString = [(DirectionIntentCellViewModel *)v15 subtitleCellString];
 
     v18 = 0;
-    v19 = 0;
+    meCard = 0;
     v79 = 0;
-    v11 = v17;
-    v84 = v16;
+    subtitle = subtitleCellString;
+    v84 = titleCellString;
     goto LABEL_37;
   }
 
-  v20 = [v8 clientResolved];
+  clientResolved = [completionCopy clientResolved];
 
-  v84 = v9;
-  if (v20)
+  v84 = title;
+  if (clientResolved)
   {
-    v21 = [v8 clientResolved];
-    v22 = [v21 itemType];
+    clientResolved2 = [completionCopy clientResolved];
+    itemType = [clientResolved2 itemType];
 
     v23 = 0;
-    if (v22 <= 2)
+    if (itemType <= 2)
     {
-      if (v22 == 1)
+      if (itemType == 1)
       {
         v79 = +[GEOFeatureStyleAttributes homeStyleAttributes];
-        v24 = +[AddressBookManager sharedManager];
-        v25 = [v24 meCardHomeAddress];
+        parkedCar = +[AddressBookManager sharedManager];
+        meCardHomeAddress = [parkedCar meCardHomeAddress];
         goto LABEL_30;
       }
 
-      if (v22 == 2)
+      if (itemType == 2)
       {
         v79 = +[GEOFeatureStyleAttributes workStyleAttributes];
-        v24 = +[AddressBookManager sharedManager];
-        v25 = [v24 meCardWorkAddress];
+        parkedCar = +[AddressBookManager sharedManager];
+        meCardHomeAddress = [parkedCar meCardWorkAddress];
         goto LABEL_30;
       }
     }
 
     else
     {
-      switch(v22)
+      switch(itemType)
       {
         case 3:
           v79 = +[GEOFeatureStyleAttributes parkedCarStyleAttributes];
-          if ([v11 length])
+          if ([subtitle length])
           {
             v23 = 0;
-            v19 = 0;
+            meCard = 0;
             goto LABEL_32;
           }
 
           v74 = +[ParkedCarManager sharedManager];
-          v24 = [v74 parkedCar];
+          parkedCar = [v74 parkedCar];
 
-          v75 = [v24 locationDisplayString];
+          locationDisplayString = [parkedCar locationDisplayString];
 
           v23 = 0;
-          v19 = 0;
-          v85 = 0;
-          v11 = v75;
+          meCard = 0;
+          subtitleHighlightRanges = 0;
+          subtitle = locationDisplayString;
           goto LABEL_31;
         case 4:
-          v27 = [v11 length];
-          if (v83 && !v27)
+          v27 = [subtitle length];
+          if (resultCopy && !v27)
           {
-            v28 = [v83 mapItem];
-            v29 = [v28 _addressFormattedAsShortenedAddress];
-            v30 = sub_100C47980(v29);
+            mapItem = [resultCopy mapItem];
+            _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
+            v30 = sub_100C47980(_addressFormattedAsShortenedAddress);
             v31 = v30;
             v32 = &stru_1016631F0;
             if (v30)
@@ -1740,58 +1740,58 @@ LABEL_27:
 
             v33 = v32;
 
-            v85 = 0;
-            v11 = v33;
+            subtitleHighlightRanges = 0;
+            subtitle = v33;
           }
 
-          v24 = +[AddressBookManager sharedManager];
-          v19 = [v24 meCard];
+          parkedCar = +[AddressBookManager sharedManager];
+          meCard = [parkedCar meCard];
           v23 = 0;
           v79 = 0;
           goto LABEL_31;
         case 6:
           v79 = +[GEOFeatureStyleAttributes schoolStyleAttributes];
-          v24 = +[AddressBookManager sharedManager];
-          v25 = [v24 meCardSchoolAddress];
+          parkedCar = +[AddressBookManager sharedManager];
+          meCardHomeAddress = [parkedCar meCardSchoolAddress];
 LABEL_30:
-          v23 = v25;
-          v19 = 0;
+          v23 = meCardHomeAddress;
+          meCard = 0;
 LABEL_31:
 
           goto LABEL_32;
       }
     }
 
-    v19 = 0;
+    meCard = 0;
     v79 = 0;
 LABEL_32:
-    if (![v11 length] && v23)
+    if (![subtitle length] && v23)
     {
-      v34 = [v23 shortAddress];
+      shortAddress = [v23 shortAddress];
 
-      v85 = 0;
-      v11 = v34;
+      subtitleHighlightRanges = 0;
+      subtitle = shortAddress;
     }
 
     v18 = 0;
     goto LABEL_36;
   }
 
-  v26 = [v8 _type];
+  _type = [completionCopy _type];
   v18 = 0;
-  if (v26 <= 2)
+  if (_type <= 2)
   {
-    if ((v26 - 1) < 2)
+    if ((_type - 1) < 2)
     {
       v79 = +[GEOFeatureStyleAttributes markerStyleAttributes];
       v18 = 0;
-      v19 = 0;
+      meCard = 0;
 LABEL_36:
       v14 = 0;
       goto LABEL_37;
     }
 
-    if (!v26)
+    if (!_type)
     {
       goto LABEL_57;
     }
@@ -1799,102 +1799,102 @@ LABEL_36:
     goto LABEL_20;
   }
 
-  if (v26 != 4)
+  if (_type != 4)
   {
-    if (v26 == 3)
+    if (_type == 3)
     {
 LABEL_57:
       v14 = [UIImage imageNamed:@"search"];
       v18 = 0;
-      v19 = 0;
+      meCard = 0;
       v79 = 0;
       goto LABEL_37;
     }
 
 LABEL_20:
-    v19 = 0;
+    meCard = 0;
     v79 = 0;
     v14 = 0;
     goto LABEL_37;
   }
 
-  v82 = v11;
-  v57 = [v8 collectionResult];
-  v58 = [v57 collection];
+  v82 = subtitle;
+  collectionResult = [completionCopy collectionResult];
+  collection = [collectionResult collection];
 
   v59 = [NSMutableArray arrayWithCapacity:2];
-  v60 = [v58 publisherAttribution];
-  v61 = [v60 displayName];
+  publisherAttribution = [collection publisherAttribution];
+  displayName = [publisherAttribution displayName];
 
-  if ([v61 length])
+  if ([displayName length])
   {
-    [v59 addObject:v61];
+    [v59 addObject:displayName];
   }
 
-  v80 = v61;
-  v62 = [v58 numberOfItems];
-  if (v62)
+  v80 = displayName;
+  numberOfItems = [collection numberOfItems];
+  if (numberOfItems)
   {
-    v63 = v62;
+    v63 = numberOfItems;
     v64 = +[NSBundle mainBundle];
     v65 = [v64 localizedStringForKey:@"Places [Autocomplete]" value:@"localized string not found" table:0];
     v66 = [NSString localizedStringWithFormat:v65, v63];
     [v59 addObject:v66];
   }
 
-  v67 = v10;
-  if ([a1 userInterfaceLayoutDirectionIsRTL])
+  v67 = titleHighlightRanges;
+  if ([self userInterfaceLayoutDirectionIsRTL])
   {
-    v68 = [v59 reverseObjectEnumerator];
-    v69 = [v68 allObjects];
-    v70 = [v69 mutableCopy];
+    reverseObjectEnumerator = [v59 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v70 = [allObjects mutableCopy];
 
     v59 = v70;
   }
 
-  v71 = [a1 _delimiterString];
-  v72 = [v59 componentsJoinedByString:v71];
+  _delimiterString = [self _delimiterString];
+  v72 = [v59 componentsJoinedByString:_delimiterString];
 
-  v73 = [v58 publisherAttribution];
-  v18 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v73 iconIdentifier]);
+  publisherAttribution2 = [collection publisherAttribution];
+  v18 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [publisherAttribution2 iconIdentifier]);
 
-  v19 = 0;
+  meCard = 0;
   v79 = 0;
   v14 = 0;
-  v10 = v67;
-  v11 = v72;
+  titleHighlightRanges = v67;
+  subtitle = v72;
 LABEL_37:
-  v35 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:a5];
+  v35 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:type];
   v78 = v35;
   if ([v35 length])
   {
     v36 = [NSMutableArray arrayWithCapacity:2];
     [v36 addObject:v35];
-    if ([v11 length])
+    if ([subtitle length])
     {
-      [v36 addObject:v11];
+      [v36 addObject:subtitle];
     }
 
-    v37 = v76;
-    if ([v76 userInterfaceLayoutDirectionIsRTL])
+    v37 = selfCopy;
+    if ([selfCopy userInterfaceLayoutDirectionIsRTL])
     {
-      v38 = [v36 reverseObjectEnumerator];
-      v39 = [v38 allObjects];
-      v40 = v11;
-      v41 = [v39 mutableCopy];
+      reverseObjectEnumerator2 = [v36 reverseObjectEnumerator];
+      allObjects2 = [reverseObjectEnumerator2 allObjects];
+      v40 = subtitle;
+      v41 = [allObjects2 mutableCopy];
 
-      v37 = v76;
+      v37 = selfCopy;
       v36 = v41;
-      v11 = v40;
+      subtitle = v40;
     }
 
-    v42 = [v37 _delimiterString];
-    v43 = [v36 componentsJoinedByString:v42];
+    _delimiterString2 = [v37 _delimiterString];
+    v43 = [v36 componentsJoinedByString:_delimiterString2];
   }
 
   else
   {
-    v43 = v11;
+    v43 = subtitle;
   }
 
   v44 = [_SearchResultTwoLinesContentViewModel alloc];
@@ -1904,28 +1904,28 @@ LABEL_37:
   v88[3] = &unk_10164E9C8;
   v77 = v14;
   v89 = v77;
-  v45 = v81;
+  v45 = category2;
   v90 = v45;
-  v46 = v8;
+  v46 = completionCopy;
   v91 = v46;
   v47 = v79;
   v92 = v47;
-  v48 = v19;
+  v48 = meCard;
   v93 = v48;
   v49 = v18;
   v94 = v49;
   v50 = [(_BasicTwoLinesContentViewModel *)v44 initWithTitleText:v84 subtitleText:v43 imageCreationBlock:v88];
-  v51 = v10;
-  [(_BasicTwoLinesContentViewModel *)v50 setTitleHighlightRanges:v10];
-  [(_BasicTwoLinesContentViewModel *)v50 setSubtitleHighlightRanges:v85];
-  v52 = [v46 clientResolved];
-  if ([v52 itemType] == 4)
+  v51 = titleHighlightRanges;
+  [(_BasicTwoLinesContentViewModel *)v50 setTitleHighlightRanges:titleHighlightRanges];
+  [(_BasicTwoLinesContentViewModel *)v50 setSubtitleHighlightRanges:subtitleHighlightRanges];
+  clientResolved3 = [v46 clientResolved];
+  if ([clientResolved3 itemType] == 4)
   {
     v53 = [v43 length];
 
     if (!v53)
     {
-      [(_SearchResultTwoLinesContentViewModel *)v50 setObservedSearchResult:v83];
+      [(_SearchResultTwoLinesContentViewModel *)v50 setObservedSearchResult:resultCopy];
     }
   }
 
@@ -1933,15 +1933,15 @@ LABEL_37:
   {
   }
 
-  v54 = [v46 mapItem];
-  v55 = v54;
-  if (v54)
+  mapItem2 = [v46 mapItem];
+  v55 = mapItem2;
+  if (mapItem2)
   {
     v86[0] = _NSConcreteStackBlock;
     v86[1] = 3221225472;
     v86[2] = sub_100C502FC;
     v86[3] = &unk_10164E958;
-    v87 = v54;
+    v87 = mapItem2;
     [(_BasicTwoLinesContentViewModel *)v50 setPersonalizedItemForQuickActionMenuCreator:v86];
   }
 
@@ -1955,22 +1955,22 @@ LABEL_37:
   return v50;
 }
 
-+ (id)cellModelForParkedCar:(id)a3
++ (id)cellModelForParkedCar:(id)car
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 locationDisplayString];
+  carCopy = car;
+  title = [carCopy title];
+  locationDisplayString = [carCopy locationDisplayString];
 
-  v6 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v4 subtitleText:v5 imageCreationBlock:&stru_10164E9A0];
+  v6 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:title subtitleText:locationDisplayString imageCreationBlock:&stru_10164E9A0];
   [(_BasicTwoLinesContentViewModel *)v6 setAxIdentifier:@"ParkedCarCell"];
 
   return v6;
 }
 
-+ (id)_moreButtonAccessoryWithMenuProvider:(id)a3 axID:(id)a4
++ (id)_moreButtonAccessoryWithMenuProvider:(id)provider axID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  providerCopy = provider;
   v7 = [UIButton buttonWithType:0];
   v8 = [UIImage systemImageNamed:@"ellipsis"];
   [v7 setImage:v8 forState:0];
@@ -1979,146 +1979,146 @@ LABEL_37:
   [v7 setTintColor:v9];
 
   [v7 setShowsMenuAsPrimaryAction:1];
-  [v7 _setMenuProvider:v6];
+  [v7 _setMenuProvider:providerCopy];
 
-  [v7 setAccessibilityIdentifier:v5];
+  [v7 setAccessibilityIdentifier:dCopy];
   v10 = [[UICellAccessoryCustomView alloc] initWithCustomView:v7 placement:1];
   [v10 setDisplayedState:2];
 
   return v10;
 }
 
-+ (id)libraryCellModelForMapItem:(id)a3 customName:(id)a4 styleAttributes:(id)a5 thirdLineViewModel:(id)a6 menuProvider:(id)a7
++ (id)libraryCellModelForMapItem:(id)item customName:(id)name styleAttributes:(id)attributes thirdLineViewModel:(id)model menuProvider:(id)provider
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MKMapItem _itemWithGeoMapItem:a3];
+  nameCopy = name;
+  attributesCopy = attributes;
+  modelCopy = model;
+  providerCopy = provider;
+  v16 = [MKMapItem _itemWithGeoMapItem:item];
   v17 = v16;
-  if (v12)
+  if (nameCopy)
   {
-    v18 = v12;
+    name = nameCopy;
   }
 
   else
   {
-    v18 = [v16 name];
+    name = [v16 name];
   }
 
-  v37 = v18;
+  v37 = name;
   v19 = +[NSMutableArray array];
-  v20 = [v17 _firstLocalizedCategoryName];
-  if (v20)
+  _firstLocalizedCategoryName = [v17 _firstLocalizedCategoryName];
+  if (_firstLocalizedCategoryName)
   {
-    [v19 addObject:v20];
+    [v19 addObject:_firstLocalizedCategoryName];
   }
 
-  v21 = [v17 _geoMapItem];
-  v22 = [v21 _resultSnippetLocationString];
+  _geoMapItem = [v17 _geoMapItem];
+  _resultSnippetLocationString = [_geoMapItem _resultSnippetLocationString];
 
-  if (v22)
+  if (_resultSnippetLocationString)
   {
-    [v19 addObject:v22];
+    [v19 addObject:_resultSnippetLocationString];
   }
 
-  v23 = [a1 _delimiterString];
-  v24 = [v19 componentsJoinedByString:v23];
+  _delimiterString = [self _delimiterString];
+  v24 = [v19 componentsJoinedByString:_delimiterString];
 
   if (![v24 length])
   {
-    v25 = [v17 _addressFormattedAsShortenedAddress];
+    _addressFormattedAsShortenedAddress = [v17 _addressFormattedAsShortenedAddress];
 
-    v24 = v25;
+    v24 = _addressFormattedAsShortenedAddress;
   }
 
   v35 = v17;
-  v36 = v12;
+  v36 = nameCopy;
   v26 = [_BasicTwoLinesContentViewModel alloc];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_100C50A38;
   v38[3] = &unk_10164E908;
-  v39 = v13;
-  v27 = v13;
+  v39 = attributesCopy;
+  v27 = attributesCopy;
   v28 = [(_BasicTwoLinesContentViewModel *)v26 initWithTitleText:v37 subtitleText:v24 imageCreationBlock:v38];
   [(_BasicTwoLinesContentViewModel *)v28 setAxIdentifier:@"LibraryPlaceCell"];
-  if (v14)
+  if (modelCopy)
   {
-    [(_BasicTwoLinesContentViewModel *)v28 setPlaceContextViewModel:v14];
+    [(_BasicTwoLinesContentViewModel *)v28 setPlaceContextViewModel:modelCopy];
   }
 
-  v29 = [TwoLinesContentViewModelComposer _moreButtonAccessoryWithMenuProvider:v15 axID:@"LibraryPlaceCellMoreButton"];
+  v29 = [TwoLinesContentViewModelComposer _moreButtonAccessoryWithMenuProvider:providerCopy axID:@"LibraryPlaceCellMoreButton"];
   v30 = objc_alloc_init(UICellAccessoryMultiselect);
   [v30 setDisplayedState:1];
   v40[0] = v29;
   v40[1] = v30;
   [NSArray arrayWithObjects:v40 count:2];
-  v32 = v31 = v14;
+  v32 = v31 = modelCopy;
   [(_BasicTwoLinesContentViewModel *)v28 setCellAccessories:v32];
 
   return v28;
 }
 
-+ (id)cellModelForMapItem:(id)a3
++ (id)cellModelForMapItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 _addressFormattedAsShortenedAddress];
+  itemCopy = item;
+  name = [itemCopy name];
+  _addressFormattedAsShortenedAddress = [itemCopy _addressFormattedAsShortenedAddress];
   v6 = [_BasicTwoLinesContentViewModel alloc];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100C50C08;
   v10[3] = &unk_10164E908;
-  v11 = v3;
-  v7 = v3;
-  v8 = [(_BasicTwoLinesContentViewModel *)v6 initWithTitleText:v4 subtitleText:v5 imageCreationBlock:v10];
+  v11 = itemCopy;
+  v7 = itemCopy;
+  v8 = [(_BasicTwoLinesContentViewModel *)v6 initWithTitleText:name subtitleText:_addressFormattedAsShortenedAddress imageCreationBlock:v10];
   [(_BasicTwoLinesContentViewModel *)v8 setAxIdentifier:@"PlaceCell"];
 
   return v8;
 }
 
-+ (id)cellModelForCollectionMapItem:(id)a3 currentLocation:(id)a4
++ (id)cellModelForCollectionMapItem:(id)item currentLocation:(id)location
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 name];
-  v8 = [v5 _firstLocalizedCategoryName];
-  if (v6)
+  itemCopy = item;
+  locationCopy = location;
+  name = [itemCopy name];
+  _firstLocalizedCategoryName = [itemCopy _firstLocalizedCategoryName];
+  if (locationCopy)
   {
     v25 = 0;
-    v9 = [NSString distanceStringFromLocation:v6 toMapItem:v5 showsDistance:&v25];
-    if (!v9)
+    _resultSnippetLocationString = [NSString distanceStringFromLocation:locationCopy toMapItem:itemCopy showsDistance:&v25];
+    if (!_resultSnippetLocationString)
     {
-      v10 = [v5 _geoMapItem];
-      v9 = [v10 _resultSnippetLocationString];
+      _geoMapItem = [itemCopy _geoMapItem];
+      _resultSnippetLocationString = [_geoMapItem _resultSnippetLocationString];
     }
   }
 
   else
   {
-    v9 = 0;
+    _resultSnippetLocationString = 0;
   }
 
-  if ([v5 _hasPriceDescription])
+  if ([itemCopy _hasPriceDescription])
   {
-    [v5 _priceDescription];
+    [itemCopy _priceDescription];
   }
 
   else
   {
-    [v5 _priceRangeString];
+    [itemCopy _priceRangeString];
   }
   v11 = ;
   v12 = +[NSMutableArray array];
-  if ([v8 length])
+  if ([_firstLocalizedCategoryName length])
   {
-    [v12 addObject:v8];
+    [v12 addObject:_firstLocalizedCategoryName];
   }
 
-  if ([v9 length])
+  if ([_resultSnippetLocationString length])
   {
-    [v12 addObject:v9];
+    [v12 addObject:_resultSnippetLocationString];
   }
 
   if ([v11 length])
@@ -2135,46 +2135,46 @@ LABEL_37:
   v21 = 3221225472;
   v22 = sub_100C50F40;
   v23 = &unk_10164E908;
-  v24 = v5;
-  v17 = v5;
-  v18 = [(_BasicTwoLinesContentViewModel *)v16 initWithTitleText:v7 subtitleText:v15 imageCreationBlock:&v20];
+  v24 = itemCopy;
+  v17 = itemCopy;
+  v18 = [(_BasicTwoLinesContentViewModel *)v16 initWithTitleText:name subtitleText:v15 imageCreationBlock:&v20];
   [(_BasicTwoLinesContentViewModel *)v18 setAxIdentifier:@"GuideItemCell", v20, v21, v22, v23];
 
   return v18;
 }
 
-+ (id)cellModelForTransitLine:(id)a3
++ (id)cellModelForTransitLine:(id)line
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v4 length];
+  lineCopy = line;
+  name = [lineCopy name];
+  v5 = [name length];
 
   if (v5)
   {
-    v6 = [v3 name];
-    v7 = [v3 system];
-    v8 = [v7 name];
+    name2 = [lineCopy name];
+    system = [lineCopy system];
+    name3 = [system name];
   }
 
   else
   {
-    v9 = [v3 system];
-    v10 = [v9 name];
-    v11 = [v10 length];
+    system2 = [lineCopy system];
+    name4 = [system2 name];
+    v11 = [name4 length];
 
     if (v11)
     {
-      v7 = [v3 system];
-      [v7 name];
+      system = [lineCopy system];
+      [system name];
     }
 
     else
     {
-      v7 = +[NSBundle mainBundle];
-      [v7 localizedStringForKey:@"Transit_Line_Cell_Default" value:@"localized string not found" table:0];
+      system = +[NSBundle mainBundle];
+      [system localizedStringForKey:@"Transit_Line_Cell_Default" value:@"localized string not found" table:0];
     }
-    v6 = ;
-    v8 = 0;
+    name2 = ;
+    name3 = 0;
   }
 
   v12 = [_BasicTwoLinesContentViewModel alloc];
@@ -2182,28 +2182,28 @@ LABEL_37:
   v16[1] = 3221225472;
   v16[2] = sub_100C511D0;
   v16[3] = &unk_10164E908;
-  v17 = v3;
-  v13 = v3;
-  v14 = [(_BasicTwoLinesContentViewModel *)v12 initWithTitleText:v6 subtitleText:v8 imageCreationBlock:v16];
+  v17 = lineCopy;
+  v13 = lineCopy;
+  v14 = [(_BasicTwoLinesContentViewModel *)v12 initWithTitleText:name2 subtitleText:name3 imageCreationBlock:v16];
   [(_BasicTwoLinesContentViewModel *)v14 setImageStyle:4];
   [(_BasicTwoLinesContentViewModel *)v14 setAxIdentifier:@"TransitLineCell"];
 
   return v14;
 }
 
-+ (id)cellModelForCollection:(id)a3
++ (id)cellModelForCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = [_CollectionTwoLinesContentViewModel alloc];
-  v5 = [v3 title];
-  v6 = [v3 subtitle];
+  title = [collectionCopy title];
+  subtitle = [collectionCopy subtitle];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100C514D0;
   v10[3] = &unk_10164E908;
-  v11 = v3;
-  v7 = v3;
-  v8 = [(_BasicTwoLinesContentViewModel *)v4 initWithTitleText:v5 subtitleText:v6 imageCreationBlock:v10];
+  v11 = collectionCopy;
+  v7 = collectionCopy;
+  v8 = [(_BasicTwoLinesContentViewModel *)v4 initWithTitleText:title subtitleText:subtitle imageCreationBlock:v10];
 
   [(_CollectionTwoLinesContentViewModel *)v8 setCollection:v7];
   [(_BasicTwoLinesContentViewModel *)v8 setImageStyle:3];
@@ -2212,19 +2212,19 @@ LABEL_37:
   return v8;
 }
 
-+ (id)cellModelForMapsFavoriteItem:(id)a3 title:(id)a4 subtitle:(id)a5
++ (id)cellModelForMapsFavoriteItem:(id)item title:(id)title subtitle:(id)subtitle
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  itemCopy = item;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v10 = [_MapsFavoriteItemTwoLinesContentViewModel alloc];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100C5185C;
   v16[3] = &unk_10164E908;
-  v11 = v7;
+  v11 = itemCopy;
   v17 = v11;
-  v12 = [(_BasicTwoLinesContentViewModel *)v10 initWithTitleText:v9 subtitleText:v8 imageCreationBlock:v16];
+  v12 = [(_BasicTwoLinesContentViewModel *)v10 initWithTitleText:titleCopy subtitleText:subtitleCopy imageCreationBlock:v16];
 
   if ([v11 isSetupPlaceholder])
   {
@@ -2242,36 +2242,36 @@ LABEL_37:
   return v12;
 }
 
-+ (id)cellModelForMapsFavoriteItem:(id)a3
++ (id)cellModelForMapsFavoriteItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 subtitle];
-  v7 = [a1 cellModelForMapsFavoriteItem:v4 title:v5 subtitle:v6];
+  itemCopy = item;
+  title = [itemCopy title];
+  subtitle = [itemCopy subtitle];
+  v7 = [self cellModelForMapsFavoriteItem:itemCopy title:title subtitle:subtitle];
 
   return v7;
 }
 
-+ (id)cellModelForMapsSuggestionEntry:(id)a3 title:(id)a4 subtitle:(id)a5 menuProvider:(id)a6
++ (id)cellModelForMapsSuggestionEntry:(id)entry title:(id)title subtitle:(id)subtitle menuProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  entryCopy = entry;
+  providerCopy = provider;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v13 = [_MapsSuggestionsEntryTwoLinesContentViewModel alloc];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100C51F48;
   v26[3] = &unk_10164E908;
-  v14 = v9;
+  v14 = entryCopy;
   v27 = v14;
-  v15 = [(_BasicTwoLinesContentViewModel *)v13 initWithTitleText:v12 subtitleText:v11 imageCreationBlock:v26];
+  v15 = [(_BasicTwoLinesContentViewModel *)v13 initWithTitleText:titleCopy subtitleText:subtitleCopy imageCreationBlock:v26];
 
   [(_MapsSuggestionsEntryTwoLinesContentViewModel *)v15 setObservedEntry:v14];
   [(_BasicTwoLinesContentViewModel *)v15 setImageStyle:4];
-  if (v10)
+  if (providerCopy)
   {
-    v16 = [TwoLinesContentViewModelComposer _moreButtonAccessoryWithMenuProvider:v10 axID:@"MsgCurrentLocationCellMoreButton"];
+    v16 = [TwoLinesContentViewModelComposer _moreButtonAccessoryWithMenuProvider:providerCopy axID:@"MsgCurrentLocationCellMoreButton"];
     v28 = v16;
     v17 = [NSArray arrayWithObjects:&v28 count:1];
     [(_BasicTwoLinesContentViewModel *)v15 setCellAccessories:v17];
@@ -2306,26 +2306,26 @@ LABEL_37:
   return v15;
 }
 
-+ (id)cellModelForMapsSuggestionEntry:(id)a3 menuProvider:(id)a4
++ (id)cellModelForMapsSuggestionEntry:(id)entry menuProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 title];
-  v9 = [v7 subtitle];
-  v10 = [a1 cellModelForMapsSuggestionEntry:v7 title:v8 subtitle:v9 menuProvider:v6];
+  providerCopy = provider;
+  entryCopy = entry;
+  title = [entryCopy title];
+  subtitle = [entryCopy subtitle];
+  v10 = [self cellModelForMapsSuggestionEntry:entryCopy title:title subtitle:subtitle menuProvider:providerCopy];
 
   return v10;
 }
 
-+ (id)cellModelForMapsSuggestionsShortcut:(id)a3
++ (id)cellModelForMapsSuggestionsShortcut:(id)shortcut
 {
-  v3 = a3;
-  v4 = [v3 isSetupPlaceholder];
-  v5 = v3;
+  shortcutCopy = shortcut;
+  isSetupPlaceholder = [shortcutCopy isSetupPlaceholder];
+  v5 = shortcutCopy;
   if ([v5 type] == 6)
   {
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:@"NearbyTransit"];
+    identifier = [v5 identifier];
+    v7 = [identifier isEqualToString:@"NearbyTransit"];
   }
 
   else
@@ -2337,47 +2337,47 @@ LABEL_37:
   {
     if (v7)
     {
-      v8 = MapsSuggestionsLocalizedNearbyTransitFullString();
+      placeName = MapsSuggestionsLocalizedNearbyTransitFullString();
       MapsSuggestionsLocalizedNearbyTransitFullSubtitleString();
     }
 
     else
     {
-      v8 = [v5 placeName];
+      placeName = [v5 placeName];
       [v5 shortAddress];
     }
     v9 = ;
-    v10 = [v5 proposedFavoriteStyleAttributes];
+    proposedFavoriteStyleAttributes = [v5 proposedFavoriteStyleAttributes];
   }
 
   else
   {
     if (v7)
     {
-      v8 = MapsSuggestionsLocalizedNearbyTransitFullString();
+      placeName = MapsSuggestionsLocalizedNearbyTransitFullString();
       MapsSuggestionsLocalizedNearbyTransitFullSubtitleString();
     }
 
     else
     {
-      v8 = [v5 title];
+      placeName = [v5 title];
       [v5 subtitle];
     }
     v9 = ;
-    v10 = [v5 styleAttributes];
+    proposedFavoriteStyleAttributes = [v5 styleAttributes];
   }
 
-  v11 = v10;
+  v11 = proposedFavoriteStyleAttributes;
   v12 = [_BasicTwoLinesContentViewModel alloc];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100C5235C;
   v20 = &unk_10164E980;
-  v22 = v4;
+  v22 = isSetupPlaceholder;
   v13 = v11;
   v21 = v13;
-  v14 = [(_BasicTwoLinesContentViewModel *)v12 initWithTitleText:v8 subtitleText:v9 imageCreationBlock:&v17];
-  [(_BasicTwoLinesContentViewModel *)v14 setVibrantBackground:v4, v17, v18, v19, v20];
+  v14 = [(_BasicTwoLinesContentViewModel *)v12 initWithTitleText:placeName subtitleText:v9 imageCreationBlock:&v17];
+  [(_BasicTwoLinesContentViewModel *)v14 setVibrantBackground:isSetupPlaceholder, v17, v18, v19, v20];
   if (+[LibraryUIUtilities isMyPlacesEnabled](_TtC4Maps18LibraryUIUtilities, "isMyPlacesEnabled") && [v5 isSetupPlaceholder])
   {
     v15 = +[UIColor linkColor];
@@ -2394,24 +2394,24 @@ LABEL_37:
   return v14;
 }
 
-+ (id)_searchResultModelWithSearchResult:(id)a3 title:(id)a4 subtitle:(id)a5 isAuthorizedForPreciseLocation:(BOOL)a6 placeContextViewModel:(id)a7
++ (id)_searchResultModelWithSearchResult:(id)result title:(id)title subtitle:(id)subtitle isAuthorizedForPreciseLocation:(BOOL)location placeContextViewModel:(id)model
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = a4;
+  locationCopy = location;
+  resultCopy = result;
+  subtitleCopy = subtitle;
+  modelCopy = model;
+  titleCopy = title;
   v15 = [_SearchResultTwoLinesContentViewModel alloc];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100C5267C;
   v25[3] = &unk_10164E908;
-  v16 = v11;
+  v16 = resultCopy;
   v26 = v16;
-  v17 = [(_BasicTwoLinesContentViewModel *)v15 initWithTitleText:v14 subtitleText:v12 imageCreationBlock:v25];
+  v17 = [(_BasicTwoLinesContentViewModel *)v15 initWithTitleText:titleCopy subtitleText:subtitleCopy imageCreationBlock:v25];
 
   [(_SearchResultTwoLinesContentViewModel *)v17 setPreferredAddressFormat:0];
-  if ((![v16 isDynamicCurrentLocation] || v8) && !objc_msgSend(v12, "length"))
+  if ((![v16 isDynamicCurrentLocation] || locationCopy) && !objc_msgSend(subtitleCopy, "length"))
   {
     [(_SearchResultTwoLinesContentViewModel *)v17 setObservedSearchResult:v16];
   }
@@ -2423,23 +2423,23 @@ LABEL_37:
   v24 = v16;
   v18 = v16;
   [(_BasicTwoLinesContentViewModel *)v17 setPersonalizedItemForQuickActionMenuCreator:&v20];
-  [(_BasicTwoLinesContentViewModel *)v17 setPlaceContextViewModel:v13, v20, v21, v22, v23];
+  [(_BasicTwoLinesContentViewModel *)v17 setPlaceContextViewModel:modelCopy, v20, v21, v22, v23];
 
   [(_BasicTwoLinesContentViewModel *)v17 setAxIdentifier:@"SearchResultCell"];
 
   return v17;
 }
 
-+ (id)cellModelForDroppedPinFromSearchResult:(id)a3
++ (id)cellModelForDroppedPinFromSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 mapItem];
-  v6 = [v5 _addressFormattedAsShortenedAddress];
+  resultCopy = result;
+  mapItem = [resultCopy mapItem];
+  _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
 
   v7 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:5];
-  if ([(__CFString *)v6 length])
+  if ([(__CFString *)_addressFormattedAsShortenedAddress length])
   {
-    v8 = v6;
+    v8 = _addressFormattedAsShortenedAddress;
   }
 
   else
@@ -2448,7 +2448,7 @@ LABEL_37:
   }
 
   v9 = v8;
-  if ([(__CFString *)v9 isEqual:v6])
+  if ([(__CFString *)v9 isEqual:_addressFormattedAsShortenedAddress])
   {
     v10 = v7;
   }
@@ -2458,97 +2458,97 @@ LABEL_37:
     v10 = &stru_1016631F0;
   }
 
-  v11 = [a1 _searchResultModelWithSearchResult:v4 title:v9 subtitle:v10 isAuthorizedForPreciseLocation:0 placeContextViewModel:0];
+  v11 = [self _searchResultModelWithSearchResult:resultCopy title:v9 subtitle:v10 isAuthorizedForPreciseLocation:0 placeContextViewModel:0];
 
   return v11;
 }
 
-+ (id)cellModelForSearchResult:(id)a3 typedACQuery:(id)a4 showAutocompleteClientSource:(BOOL)a5
++ (id)cellModelForSearchResult:(id)result typedACQuery:(id)query showAutocompleteClientSource:(BOOL)source
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  resultCopy = result;
+  queryCopy = query;
   v10 = +[MKLocationManager sharedLocationManager];
-  v11 = [v10 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v10 isAuthorizedForPreciseLocation];
 
-  v12 = [v8 mapItem];
-  v13 = [v12 _addressFormattedAsShortenedAddress];
+  mapItem = [resultCopy mapItem];
+  _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
 
-  if ([v8 isDynamicCurrentLocation])
+  if ([resultCopy isDynamicCurrentLocation])
   {
-    if (v11)
+    if (isAuthorizedForPreciseLocation)
     {
-      v14 = [v8 title];
-      v15 = [v8 mapItem];
-      v16 = [v15 _addressFormattedAsShortenedAddress];
-      v17 = sub_100C47980(v16);
+      title = [resultCopy title];
+      mapItem2 = [resultCopy mapItem];
+      _addressFormattedAsShortenedAddress2 = [mapItem2 _addressFormattedAsShortenedAddress];
+      v17 = sub_100C47980(_addressFormattedAsShortenedAddress2);
     }
 
     else
     {
-      v14 = MKLocalizedStringForCurrentLocation();
+      title = MKLocalizedStringForCurrentLocation();
       v17 = 0;
     }
 
-    v22 = [[PlaceContextViewModel alloc] initWithCurrentLocation];
+    initWithCurrentLocation = [[PlaceContextViewModel alloc] initWithCurrentLocation];
   }
 
   else
   {
-    if (v5 && [v8 type] == 3 && objc_msgSend(v9, "length") && (objc_msgSend(v13, "lowercaseString"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "lowercaseString"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "containsString:", v19), v19, v18, v20))
+    if (sourceCopy && [resultCopy type] == 3 && objc_msgSend(queryCopy, "length") && (objc_msgSend(_addressFormattedAsShortenedAddress, "lowercaseString"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(queryCopy, "lowercaseString"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "containsString:", v19), v19, v18, v20))
     {
-      v14 = v13;
+      title = _addressFormattedAsShortenedAddress;
       v21 = [AutocompleteClientSource autocompleteClientSourceTitleWithType:5];
     }
 
     else
     {
-      v14 = [v8 name];
-      v21 = v13;
+      title = [resultCopy name];
+      v21 = _addressFormattedAsShortenedAddress;
     }
 
     v17 = v21;
-    v22 = 0;
+    initWithCurrentLocation = 0;
   }
 
-  v23 = [a1 _searchResultModelWithSearchResult:v8 title:v14 subtitle:v17 isAuthorizedForPreciseLocation:v11 placeContextViewModel:v22];
+  v23 = [self _searchResultModelWithSearchResult:resultCopy title:title subtitle:v17 isAuthorizedForPreciseLocation:isAuthorizedForPreciseLocation placeContextViewModel:initWithCurrentLocation];
 
   return v23;
 }
 
-+ (id)cellModelForOfflineSearchResult:(id)a3
++ (id)cellModelForOfflineSearchResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[MKLocationManager sharedLocationManager];
-  v5 = [v4 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v4 isAuthorizedForPreciseLocation];
 
-  v6 = [v3 mapItem];
-  v7 = [v6 _addressFormattedAsCity];
+  mapItem = [resultCopy mapItem];
+  _addressFormattedAsCity = [mapItem _addressFormattedAsCity];
 
-  if ([v3 isDynamicCurrentLocation])
+  if ([resultCopy isDynamicCurrentLocation])
   {
     v8 = +[NSBundle mainBundle];
-    v9 = [v8 localizedStringForKey:@"[Offline Search] Current Location" value:@"localized string not found" table:@"Offline"];
+    name = [v8 localizedStringForKey:@"[Offline Search] Current Location" value:@"localized string not found" table:@"Offline"];
 
-    if (v5)
+    if (isAuthorizedForPreciseLocation)
     {
-      v10 = [v3 mapItem];
-      v11 = [v10 _addressFormattedAsCity];
+      mapItem2 = [resultCopy mapItem];
+      _addressFormattedAsCity2 = [mapItem2 _addressFormattedAsCity];
     }
 
     else
     {
-      v11 = 0;
+      _addressFormattedAsCity2 = 0;
     }
 
-    v12 = [[PlaceContextViewModel alloc] initWithCurrentLocation];
+    initWithCurrentLocation = [[PlaceContextViewModel alloc] initWithCurrentLocation];
   }
 
   else
   {
-    v9 = [v3 name];
-    v11 = v7;
-    v12 = 0;
+    name = [resultCopy name];
+    _addressFormattedAsCity2 = _addressFormattedAsCity;
+    initWithCurrentLocation = 0;
   }
 
   v13 = [_SearchResultTwoLinesContentViewModel alloc];
@@ -2556,11 +2556,11 @@ LABEL_37:
   v23[1] = 3221225472;
   v23[2] = sub_100C52DBC;
   v23[3] = &unk_10164E908;
-  v14 = v3;
+  v14 = resultCopy;
   v24 = v14;
-  v15 = [(_BasicTwoLinesContentViewModel *)v13 initWithTitleText:v9 subtitleText:v11 imageCreationBlock:v23];
+  v15 = [(_BasicTwoLinesContentViewModel *)v13 initWithTitleText:name subtitleText:_addressFormattedAsCity2 imageCreationBlock:v23];
   [(_SearchResultTwoLinesContentViewModel *)v15 setPreferredAddressFormat:1];
-  if (v5 & 1 | (([v14 isDynamicCurrentLocation] & 1) == 0) && !objc_msgSend(v11, "length"))
+  if (isAuthorizedForPreciseLocation & 1 | (([v14 isDynamicCurrentLocation] & 1) == 0) && !objc_msgSend(_addressFormattedAsCity2, "length"))
   {
     [(_SearchResultTwoLinesContentViewModel *)v15 setObservedSearchResult:v14];
   }
@@ -2572,38 +2572,38 @@ LABEL_37:
   v22 = v14;
   v16 = v14;
   [(_BasicTwoLinesContentViewModel *)v15 setPersonalizedItemForQuickActionMenuCreator:&v18];
-  [(_BasicTwoLinesContentViewModel *)v15 setPlaceContextViewModel:v12, v18, v19, v20, v21];
+  [(_BasicTwoLinesContentViewModel *)v15 setPlaceContextViewModel:initWithCurrentLocation, v18, v19, v20, v21];
   [(_BasicTwoLinesContentViewModel *)v15 setAxIdentifier:@"SearchResultCell"];
 
   return v15;
 }
 
-+ (id)cellModelForAddressBookAddress:(id)a3
++ (id)cellModelForAddressBookAddress:(id)address
 {
-  v3 = a3;
-  if ([v3 isMeCard])
+  addressCopy = address;
+  if ([addressCopy isMeCard])
   {
-    v4 = [v3 localizedLabel];
-    v5 = [v4 capitalizedString];
+    localizedLabel = [addressCopy localizedLabel];
+    capitalizedString = [localizedLabel capitalizedString];
   }
 
   else
   {
-    v5 = [v3 compositeName];
+    capitalizedString = [addressCopy compositeName];
   }
 
-  v6 = [v3 shortAddress];
+  shortAddress = [addressCopy shortAddress];
   v7 = [_BasicTwoLinesContentViewModel alloc];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100C531E4;
   v21[3] = &unk_10164E908;
-  v8 = v3;
+  v8 = addressCopy;
   v22 = v8;
-  v9 = [(_BasicTwoLinesContentViewModel *)v7 initWithTitleText:v5 subtitleText:v6 imageCreationBlock:v21];
-  v10 = [v8 geocodedMapItem];
-  v11 = v10;
-  if (v10 && ([v10 _geoMapItem], v12 = objc_claimAutoreleasedReturnValue(), v12, v12) || (v13 = [MKMapItem alloc], objc_msgSend(v8, "addressDictionary"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "initWithAddressDictionary:", v14), v11, v14, (v11 = v15) != 0))
+  v9 = [(_BasicTwoLinesContentViewModel *)v7 initWithTitleText:capitalizedString subtitleText:shortAddress imageCreationBlock:v21];
+  geocodedMapItem = [v8 geocodedMapItem];
+  v11 = geocodedMapItem;
+  if (geocodedMapItem && ([geocodedMapItem _geoMapItem], v12 = objc_claimAutoreleasedReturnValue(), v12, v12) || (v13 = [MKMapItem alloc], objc_msgSend(v8, "addressDictionary"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "initWithAddressDictionary:", v14), v11, v14, (v11 = v15) != 0))
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -2620,29 +2620,29 @@ LABEL_37:
   return v9;
 }
 
-+ (id)cellModelForAddMissingPlaceWithUserEnteredText:(id)a3
++ (id)cellModelForAddMissingPlaceWithUserEnteredText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Add to Maps [Home / Work Search Results]" value:@"localized string not found" table:0];
 
-  v6 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v5 subtitleText:v3 imageCreationBlock:&stru_10164E8E0];
+  v6 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v5 subtitleText:textCopy imageCreationBlock:&stru_10164E8E0];
   [(_BasicTwoLinesContentViewModel *)v6 setAxIdentifier:@"AddMissingPlaceCell"];
 
   return v6;
 }
 
-+ (id)cellModelForPlaceNotFoundWithUserEnteredText:(id)a3
++ (id)cellModelForPlaceNotFoundWithUserEnteredText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"More Results for <user typed string> [Home / Work]" value:@"localized string not found" table:0];
 
-  v6 = [NSString stringWithFormat:v5, v3];
-  v7 = [v6 rangeOfString:v3];
+  textCopy = [NSString stringWithFormat:v5, textCopy];
+  v7 = [textCopy rangeOfString:textCopy];
   v9 = v8;
 
-  v10 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:v6 subtitleText:0 imageCreationBlock:&stru_10164E8C0];
+  v10 = [[_BasicTwoLinesContentViewModel alloc] initWithTitleText:textCopy subtitleText:0 imageCreationBlock:&stru_10164E8C0];
   v11 = [NSValue valueWithRange:v7, v9];
   v14 = v11;
   v12 = [NSArray arrayWithObjects:&v14 count:1];
@@ -2671,35 +2671,35 @@ LABEL_37:
   return v3;
 }
 
-+ (id)cellModelForLibraryManagementItem:(id)a3
++ (id)cellModelForLibraryManagementItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 symbol];
+  itemCopy = item;
+  title = [itemCopy title];
+  symbol = [itemCopy symbol];
 
   v6 = [_BasicTwoLinesContentViewModel alloc];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100C54058;
   v11[3] = &unk_10164E908;
-  v12 = v5;
-  v7 = v5;
-  v8 = [(_BasicTwoLinesContentViewModel *)v6 initWithTitleText:v4 subtitleText:0 imageCreationBlock:v11];
+  v12 = symbol;
+  v7 = symbol;
+  v8 = [(_BasicTwoLinesContentViewModel *)v6 initWithTitleText:title subtitleText:0 imageCreationBlock:v11];
   [(_BasicTwoLinesContentViewModel *)v8 setImageStyle:4];
-  v9 = [(_BasicTwoLinesContentViewModel *)v8 titleText];
-  [(_BasicTwoLinesContentViewModel *)v8 setAccessibilityLabel:v9];
+  titleText = [(_BasicTwoLinesContentViewModel *)v8 titleText];
+  [(_BasicTwoLinesContentViewModel *)v8 setAccessibilityLabel:titleText];
 
   return v8;
 }
 
-+ (id)cellModelForHistoryEntryRecentsItemProtocol:(id)a3 showAutocompleteClientSource:(BOOL)a4
++ (id)cellModelForHistoryEntryRecentsItemProtocol:(id)protocol showAutocompleteClientSource:(BOOL)source
 {
-  v4 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  protocolCopy = protocol;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = protocolCopy;
   }
 
   else
@@ -2710,7 +2710,7 @@ LABEL_37:
   v8 = v7;
   if (v8)
   {
-    v9 = [a1 cellModelForHistoryEntryRecentsItem:v8 showAutocompleteClientSource:v4];
+    v9 = [self cellModelForHistoryEntryRecentsItem:v8 showAutocompleteClientSource:sourceCopy];
   }
 
   else

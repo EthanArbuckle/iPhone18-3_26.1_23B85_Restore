@@ -1,95 +1,95 @@
 @interface CLSCalendar
 + (BOOL)currentLocaleSupportsSeasons;
-+ (BOOL)isCountryCodePartOfNorthernHemisphere:(id)a3;
-+ (BOOL)isCountryCodePartOfSouthernHemisphere:(id)a3;
-+ (BOOL)isDateValid:(id)a3;
-+ (BOOL)isFirstMonthOfSeasonForLocalDate:(id)a3;
-+ (BOOL)isFirstTenDaysOfSeasonForLocalDate:(id)a3;
-+ (BOOL)isFirstTwoWeeksOfMonthForLocalDate:(id)a3;
-+ (BOOL)isLastMonthOfSeasonForLocalDate:(id)a3;
-+ (BOOL)isLastTwoWeeksOfMonthForLocalDate:(id)a3;
-+ (BOOL)isLastWeekOfMonthForLocalDate:(id)a3;
-+ (BOOL)isLeapYearForDate:(id)a3 withCalendarIdentifier:(id)a4;
-+ (BOOL)isMiddleMonthOfSeasonForLocalDate:(id)a3;
-+ (BOOL)isSecondHalfOfSeasonForLocalDate:(id)a3;
-+ (BOOL)supportsSeasonsWithLocale:(id)a3;
-+ (_NSRange)rangeOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5 withCalendarIdentifier:(id)a6;
-+ (id)_calendarForIdentifier:(id)a3;
-+ (id)components:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5 options:(unint64_t)a6;
-+ (id)components:(unint64_t)a3 fromDate:(id)a4 withCalendarIdentifier:(id)a5;
-+ (id)components:(unint64_t)a3 fromDateComponents:(id)a4 toDateComponents:(id)a5 options:(unint64_t)a6;
-+ (id)componentsFromDate:(id)a3 inTimeZone:(id)a4;
++ (BOOL)isCountryCodePartOfNorthernHemisphere:(id)hemisphere;
++ (BOOL)isCountryCodePartOfSouthernHemisphere:(id)hemisphere;
++ (BOOL)isDateValid:(id)valid;
++ (BOOL)isFirstMonthOfSeasonForLocalDate:(id)date;
++ (BOOL)isFirstTenDaysOfSeasonForLocalDate:(id)date;
++ (BOOL)isFirstTwoWeeksOfMonthForLocalDate:(id)date;
++ (BOOL)isLastMonthOfSeasonForLocalDate:(id)date;
++ (BOOL)isLastTwoWeeksOfMonthForLocalDate:(id)date;
++ (BOOL)isLastWeekOfMonthForLocalDate:(id)date;
++ (BOOL)isLeapYearForDate:(id)date withCalendarIdentifier:(id)identifier;
++ (BOOL)isMiddleMonthOfSeasonForLocalDate:(id)date;
++ (BOOL)isSecondHalfOfSeasonForLocalDate:(id)date;
++ (BOOL)supportsSeasonsWithLocale:(id)locale;
++ (_NSRange)rangeOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date withCalendarIdentifier:(id)identifier;
++ (id)_calendarForIdentifier:(id)identifier;
++ (id)components:(unint64_t)components fromDate:(id)date toDate:(id)toDate options:(unint64_t)options;
++ (id)components:(unint64_t)components fromDate:(id)date withCalendarIdentifier:(id)identifier;
++ (id)components:(unint64_t)components fromDateComponents:(id)dateComponents toDateComponents:(id)toDateComponents options:(unint64_t)options;
++ (id)componentsFromDate:(id)date inTimeZone:(id)zone;
 + (id)currentLocalDate;
-+ (id)dateByAddingDays:(int64_t)a3 toDate:(id)a4 withCalendarIdentifier:(id)a5;
-+ (id)dateByAddingHours:(int64_t)a3 toDate:(id)a4;
-+ (id)dateByAddingMonths:(int64_t)a3 toDate:(id)a4;
-+ (id)dateByAddingWeeksOfYear:(int64_t)a3 toDate:(id)a4;
-+ (id)dateByAddingYears:(int64_t)a3 toDate:(id)a4 withCalendarIdentifier:(id)a5;
-+ (id)dateBySettingYear:(int64_t)a3 ofDate:(id)a4;
-+ (id)dateComponentsWithLocalDate:(id)a3;
-+ (id)dateComponentsWithUTCDate:(id)a3 localDate:(id)a4;
-+ (id)dateFromComponents:(id)a3 inTimeZone:(id)a4 withCalendarIdentifier:(id)a5;
-+ (id)dateFromComponents:(unint64_t)a3 ofDate:(id)a4;
-+ (id)endOfDayForDate:(id)a3;
-+ (id)endOfMonthForDate:(id)a3;
-+ (id)endOfWeekForDate:(id)a3;
-+ (id)localDateFormatterWithFormat:(id)a3;
-+ (id)localDateFromUniversalDate:(id)a3;
-+ (id)localDateFromUniversalDate:(id)a3 atLocation:(id)a4;
-+ (id)localDateFromUniversalDate:(id)a3 inTimeZone:(id)a4;
-+ (id)localDateIntervalOfFirstTenDaysOfSeasonForLocalDate:(id)a3;
-+ (id)localStartDateForNextSeasonAfterLocalDate:(id)a3;
-+ (id)localStartSeasonDateForLocalDate:(id)a3;
-+ (id)northernMeteorologicalSeasonNameForDateComponents:(id)a3;
++ (id)dateByAddingDays:(int64_t)days toDate:(id)date withCalendarIdentifier:(id)identifier;
++ (id)dateByAddingHours:(int64_t)hours toDate:(id)date;
++ (id)dateByAddingMonths:(int64_t)months toDate:(id)date;
++ (id)dateByAddingWeeksOfYear:(int64_t)year toDate:(id)date;
++ (id)dateByAddingYears:(int64_t)years toDate:(id)date withCalendarIdentifier:(id)identifier;
++ (id)dateBySettingYear:(int64_t)year ofDate:(id)date;
++ (id)dateComponentsWithLocalDate:(id)date;
++ (id)dateComponentsWithUTCDate:(id)date localDate:(id)localDate;
++ (id)dateFromComponents:(id)components inTimeZone:(id)zone withCalendarIdentifier:(id)identifier;
++ (id)dateFromComponents:(unint64_t)components ofDate:(id)date;
++ (id)endOfDayForDate:(id)date;
++ (id)endOfMonthForDate:(id)date;
++ (id)endOfWeekForDate:(id)date;
++ (id)localDateFormatterWithFormat:(id)format;
++ (id)localDateFromUniversalDate:(id)date;
++ (id)localDateFromUniversalDate:(id)date atLocation:(id)location;
++ (id)localDateFromUniversalDate:(id)date inTimeZone:(id)zone;
++ (id)localDateIntervalOfFirstTenDaysOfSeasonForLocalDate:(id)date;
++ (id)localStartDateForNextSeasonAfterLocalDate:(id)date;
++ (id)localStartSeasonDateForLocalDate:(id)date;
++ (id)northernMeteorologicalSeasonNameForDateComponents:(id)components;
 + (id)s_seasonCountryCodesDictionary;
-+ (id)seasonNameForDateComponents:(id)a3 locale:(id)a4;
-+ (id)seasonNameForLocalDate:(id)a3 locale:(id)a4;
-+ (id)southernMeteorologicalSeasonNameForDateComponents:(id)a3;
-+ (id)startOfDayForDate:(id)a3;
-+ (id)startOfMonthForDate:(id)a3;
-+ (id)startOfWeekForDate:(id)a3;
-+ (id)universalDateFromLocalDate:(id)a3;
-+ (id)universalDateFromLocalDate:(id)a3 atLocation:(id)a4;
-+ (id)universalDateFromLocalDate:(id)a3 inTimeZone:(id)a4;
-+ (id)validDateForDate:(id)a3;
-+ (int64_t)compareDate:(id)a3 toDate:(id)a4 toUnitGranularities:(unint64_t)a5;
-+ (int64_t)compareDate:(id)a3 toDate:(id)a4 toUnitGranularity:(unint64_t)a5;
-+ (int64_t)countOfWeekday:(int64_t)a3 inMonthOfDate:(id)a4 withCalendarIdentifier:(id)a5;
-+ (int64_t)dayFromDate:(id)a3;
-+ (int64_t)dayOfWeekFromDate:(id)a3;
-+ (int64_t)hourFromDate:(id)a3;
-+ (int64_t)monthFromDate:(id)a3 withCalendarIdentifier:(id)a4;
-+ (int64_t)numberOfDaysBetweenDate:(id)a3 andDate:(id)a4;
-+ (int64_t)weekOfMonthFromDate:(id)a3;
-+ (int64_t)weekOfYearFromDate:(id)a3;
-+ (int64_t)yearForWeekOfYearFromDate:(id)a3;
-+ (int64_t)yearFromDate:(id)a3 withCalendarIdentifier:(id)a4;
++ (id)seasonNameForDateComponents:(id)components locale:(id)locale;
++ (id)seasonNameForLocalDate:(id)date locale:(id)locale;
++ (id)southernMeteorologicalSeasonNameForDateComponents:(id)components;
++ (id)startOfDayForDate:(id)date;
++ (id)startOfMonthForDate:(id)date;
++ (id)startOfWeekForDate:(id)date;
++ (id)universalDateFromLocalDate:(id)date;
++ (id)universalDateFromLocalDate:(id)date atLocation:(id)location;
++ (id)universalDateFromLocalDate:(id)date inTimeZone:(id)zone;
++ (id)validDateForDate:(id)date;
++ (int64_t)compareDate:(id)date toDate:(id)toDate toUnitGranularities:(unint64_t)granularities;
++ (int64_t)compareDate:(id)date toDate:(id)toDate toUnitGranularity:(unint64_t)granularity;
++ (int64_t)countOfWeekday:(int64_t)weekday inMonthOfDate:(id)date withCalendarIdentifier:(id)identifier;
++ (int64_t)dayFromDate:(id)date;
++ (int64_t)dayOfWeekFromDate:(id)date;
++ (int64_t)hourFromDate:(id)date;
++ (int64_t)monthFromDate:(id)date withCalendarIdentifier:(id)identifier;
++ (int64_t)numberOfDaysBetweenDate:(id)date andDate:(id)andDate;
++ (int64_t)weekOfMonthFromDate:(id)date;
++ (int64_t)weekOfYearFromDate:(id)date;
++ (int64_t)yearForWeekOfYearFromDate:(id)date;
++ (int64_t)yearFromDate:(id)date withCalendarIdentifier:(id)identifier;
 + (void)initialize;
 @end
 
 @implementation CLSCalendar
 
-+ (BOOL)isLeapYearForDate:(id)a3 withCalendarIdentifier:(id)a4
++ (BOOL)isLeapYearForDate:(id)date withCalendarIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x277CBE5C8]])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CBE5C8]])
   {
-    [a1 rangeOfUnit:16 inUnit:4 forDate:v6 withCalendarIdentifier:v7];
+    [self rangeOfUnit:16 inUnit:4 forDate:dateCopy withCalendarIdentifier:identifierCopy];
     v9 = v8 > 0x172;
   }
 
   else
   {
     v10 = +[CLSLogging sharedLogging];
-    v11 = [v10 loggingConnection];
+    loggingConnection = [v10 loggingConnection];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_FAULT))
     {
       v13 = 138412290;
-      v14 = v7;
-      _os_log_fault_impl(&dword_22F907000, v11, OS_LOG_TYPE_FAULT, "Unsupported calendar identifier for SPI: %@", &v13, 0xCu);
+      v14 = identifierCopy;
+      _os_log_fault_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_FAULT, "Unsupported calendar identifier for SPI: %@", &v13, 0xCu);
     }
 
     v9 = 0;
@@ -98,12 +98,12 @@
   return v9;
 }
 
-+ (id)localStartSeasonDateForLocalDate:(id)a3
++ (id)localStartSeasonDateForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 monthFromDate:v4];
+    v5 = [self monthFromDate:dateCopy];
     v6 = 3;
     v7 = 9;
     if (v5 < 9)
@@ -126,31 +126,31 @@
       v8 = 12;
     }
 
-    v9 = [sCLSDateHelperCalendar dateBySettingUnit:8 value:v8 ofDate:v4 options:260];
-    v10 = [a1 startOfMonthForDate:v9];
+    v9 = [sCLSDateHelperCalendar dateBySettingUnit:8 value:v8 ofDate:dateCopy options:260];
+    v10 = [self startOfMonthForDate:v9];
   }
 
   else
   {
-    v10 = [a1 validDateForDate:v4];
+    v10 = [self validDateForDate:dateCopy];
   }
 
   return v10;
 }
 
-+ (BOOL)supportsSeasonsWithLocale:(id)a3
++ (BOOL)supportsSeasonsWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [v4 countryCode];
-  if ([a1 isCountryCodePartOfNorthernHemisphere:v5])
+  localeCopy = locale;
+  countryCode = [localeCopy countryCode];
+  if ([self isCountryCodePartOfNorthernHemisphere:countryCode])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 countryCode];
-    v6 = [a1 isCountryCodePartOfSouthernHemisphere:v7];
+    countryCode2 = [localeCopy countryCode];
+    v6 = [self isCountryCodePartOfSouthernHemisphere:countryCode2];
   }
 
   return v6;
@@ -158,26 +158,26 @@
 
 + (BOOL)currentLocaleSupportsSeasons
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  LOBYTE(a1) = [a1 supportsSeasonsWithLocale:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  LOBYTE(self) = [self supportsSeasonsWithLocale:currentLocale];
 
-  return a1;
+  return self;
 }
 
-+ (id)localStartDateForNextSeasonAfterLocalDate:(id)a3
++ (id)localStartDateForNextSeasonAfterLocalDate:(id)date
 {
-  v4 = [a1 dateByAddingMonths:3 toDate:a3];
-  v5 = [a1 localStartSeasonDateForLocalDate:v4];
+  v4 = [self dateByAddingMonths:3 toDate:date];
+  v5 = [self localStartSeasonDateForLocalDate:v4];
 
   return v5;
 }
 
-+ (BOOL)isLastMonthOfSeasonForLocalDate:(id)a3
++ (BOOL)isLastMonthOfSeasonForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 monthFromDate:v4];
+    v5 = [self monthFromDate:dateCopy];
     if (v5 <= 0xB)
     {
       v6 = 0x8A4u >> v5;
@@ -197,12 +197,12 @@
   return v6 & 1;
 }
 
-+ (BOOL)isMiddleMonthOfSeasonForLocalDate:(id)a3
++ (BOOL)isMiddleMonthOfSeasonForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 monthFromDate:v4];
+    v5 = [self monthFromDate:dateCopy];
     if (v5 <= 0xA)
     {
       v6 = 0x492u >> v5;
@@ -222,13 +222,13 @@
   return v6 & 1;
 }
 
-+ (id)localDateIntervalOfFirstTenDaysOfSeasonForLocalDate:(id)a3
++ (id)localDateIntervalOfFirstTenDaysOfSeasonForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 localStartSeasonDateForLocalDate:v4];
-    v6 = [a1 dateByAddingDays:11 toDate:v5];
+    v5 = [self localStartSeasonDateForLocalDate:dateCopy];
+    v6 = [self dateByAddingDays:11 toDate:v5];
     v7 = [v6 dateByAddingTimeInterval:-0.01];
 
     v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v5 endDate:v7];
@@ -242,14 +242,14 @@
   return v8;
 }
 
-+ (BOOL)isFirstTenDaysOfSeasonForLocalDate:(id)a3
++ (BOOL)isFirstTenDaysOfSeasonForLocalDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 localDateIntervalOfFirstTenDaysOfSeasonForLocalDate:v4];
+  dateCopy = date;
+  v5 = [self localDateIntervalOfFirstTenDaysOfSeasonForLocalDate:dateCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 containsDate:v4];
+    v7 = [v5 containsDate:dateCopy];
   }
 
   else
@@ -260,12 +260,12 @@
   return v7;
 }
 
-+ (BOOL)isFirstMonthOfSeasonForLocalDate:(id)a3
++ (BOOL)isFirstMonthOfSeasonForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 monthFromDate:v4];
+    v5 = [self monthFromDate:dateCopy];
     if (v5 <= 0xC)
     {
       v6 = 0x1248u >> v5;
@@ -285,20 +285,20 @@
   return v6 & 1;
 }
 
-+ (BOOL)isSecondHalfOfSeasonForLocalDate:(id)a3
++ (BOOL)isSecondHalfOfSeasonForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 componentsFromDate:v4 inTimeZone:0];
-    v6 = [v5 month];
+    v5 = [self componentsFromDate:dateCopy inTimeZone:0];
+    month = [v5 month];
     v7 = [v5 day];
-    v9 = v6 == 4 && v7 > 14;
-    v11 = v6 == 7 && v7 > 14;
-    v13 = v6 == 10 && v7 > 14;
-    v16 = v6 == 1 && v7 > 14 || v6 == 2;
+    v9 = month == 4 && v7 > 14;
+    v11 = month == 7 && v7 > 14;
+    v13 = month == 10 && v7 > 14;
+    v16 = month == 1 && v7 > 14 || month == 2;
     v17 = v13 || v16;
-    if (v6 == 11)
+    if (month == 11)
     {
       v17 = 1;
     }
@@ -313,7 +313,7 @@
       v18 = v17;
     }
 
-    if (v6 == 8)
+    if (month == 8)
     {
       v18 = 1;
     }
@@ -328,7 +328,7 @@
       v19 = v18;
     }
 
-    if (v6 == 5)
+    if (month == 5)
     {
       v20 = 1;
     }
@@ -347,41 +347,41 @@
   return v20;
 }
 
-+ (id)seasonNameForLocalDate:(id)a3 locale:(id)a4
++ (id)seasonNameForLocalDate:(id)date locale:(id)locale
 {
-  v6 = a4;
-  v7 = [a1 componentsFromDate:a3 inTimeZone:0];
-  v8 = [a1 seasonNameForDateComponents:v7 locale:v6];
+  localeCopy = locale;
+  v7 = [self componentsFromDate:date inTimeZone:0];
+  v8 = [self seasonNameForDateComponents:v7 locale:localeCopy];
 
   return v8;
 }
 
-+ (id)seasonNameForDateComponents:(id)a3 locale:(id)a4
++ (id)seasonNameForDateComponents:(id)components locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  componentsCopy = components;
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
+    localeCopy = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  v8 = [v7 countryCode];
-  v9 = [a1 isCountryCodePartOfNorthernHemisphere:v8];
+  countryCode = [localeCopy countryCode];
+  v9 = [self isCountryCodePartOfNorthernHemisphere:countryCode];
 
   if (v9)
   {
-    v10 = [a1 northernMeteorologicalSeasonNameForDateComponents:v6];
+    v10 = [self northernMeteorologicalSeasonNameForDateComponents:componentsCopy];
 LABEL_7:
     v13 = v10;
     goto LABEL_9;
   }
 
-  v11 = [v7 countryCode];
-  v12 = [a1 isCountryCodePartOfSouthernHemisphere:v11];
+  countryCode2 = [localeCopy countryCode];
+  v12 = [self isCountryCodePartOfSouthernHemisphere:countryCode2];
 
   if (v12)
   {
-    v10 = [a1 southernMeteorologicalSeasonNameForDateComponents:v6];
+    v10 = [self southernMeteorologicalSeasonNameForDateComponents:componentsCopy];
     goto LABEL_7;
   }
 
@@ -391,22 +391,22 @@ LABEL_9:
   return v13;
 }
 
-+ (BOOL)isCountryCodePartOfSouthernHemisphere:(id)a3
++ (BOOL)isCountryCodePartOfSouthernHemisphere:(id)hemisphere
 {
-  v4 = a3;
-  v5 = [a1 s_seasonCountryCodesDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"southernHemisphereCountryCodes"];
-  v7 = [v6 containsObject:v4];
+  hemisphereCopy = hemisphere;
+  s_seasonCountryCodesDictionary = [self s_seasonCountryCodesDictionary];
+  v6 = [s_seasonCountryCodesDictionary objectForKeyedSubscript:@"southernHemisphereCountryCodes"];
+  v7 = [v6 containsObject:hemisphereCopy];
 
   return v7;
 }
 
-+ (BOOL)isCountryCodePartOfNorthernHemisphere:(id)a3
++ (BOOL)isCountryCodePartOfNorthernHemisphere:(id)hemisphere
 {
-  v4 = a3;
-  v5 = [a1 s_seasonCountryCodesDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"northernHemisphereCountryCodes"];
-  v7 = [v6 containsObject:v4];
+  hemisphereCopy = hemisphere;
+  s_seasonCountryCodesDictionary = [self s_seasonCountryCodesDictionary];
+  v6 = [s_seasonCountryCodesDictionary objectForKeyedSubscript:@"northernHemisphereCountryCodes"];
+  v7 = [v6 containsObject:hemisphereCopy];
 
   return v7;
 }
@@ -417,7 +417,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (s_seasonCountryCodesDictionary_onceToken != -1)
   {
     dispatch_once(&s_seasonCountryCodesDictionary_onceToken, block);
@@ -438,22 +438,22 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   s_seasonCountryCodesDictionary_s_seasonCountryCodesDictionary = v1;
 }
 
-+ (id)southernMeteorologicalSeasonNameForDateComponents:(id)a3
++ (id)southernMeteorologicalSeasonNameForDateComponents:(id)components
 {
-  v3 = [a3 month];
+  month = [components month];
   v4 = @"Autumn";
   v5 = @"Spring";
-  if (v3 < 9)
+  if (month < 9)
   {
     v5 = @"Winter";
   }
 
-  if (v3 >= 6)
+  if (month >= 6)
   {
     v4 = v5;
   }
 
-  if (v3 - 12 >= 0xFFFFFFFFFFFFFFF7)
+  if (month - 12 >= 0xFFFFFFFFFFFFFFF7)
   {
     return v4;
   }
@@ -464,22 +464,22 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   }
 }
 
-+ (id)northernMeteorologicalSeasonNameForDateComponents:(id)a3
++ (id)northernMeteorologicalSeasonNameForDateComponents:(id)components
 {
-  v3 = [a3 month];
+  month = [components month];
   v4 = @"Spring";
   v5 = @"Autumn";
-  if (v3 < 9)
+  if (month < 9)
   {
     v5 = @"Summer";
   }
 
-  if (v3 >= 6)
+  if (month >= 6)
   {
     v4 = v5;
   }
 
-  if (v3 - 12 >= 0xFFFFFFFFFFFFFFF7)
+  if (month - 12 >= 0xFFFFFFFFFFFFFFF7)
   {
     return v4;
   }
@@ -490,47 +490,47 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   }
 }
 
-+ (id)components:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5 options:(unint64_t)a6
++ (id)components:(unint64_t)components fromDate:(id)date toDate:(id)toDate options:(unint64_t)options
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  dateCopy = date;
+  toDateCopy = toDate;
+  v11 = toDateCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (dateCopy && toDateCopy)
   {
     v13 = sCLSDateHelperCalendar;
     objc_sync_enter(v13);
-    v12 = [sCLSDateHelperCalendar components:a3 fromDate:v9 toDate:v11 options:a6];
+    v12 = [sCLSDateHelperCalendar components:components fromDate:dateCopy toDate:v11 options:options];
     objc_sync_exit(v13);
   }
 
   return v12;
 }
 
-+ (id)components:(unint64_t)a3 fromDateComponents:(id)a4 toDateComponents:(id)a5 options:(unint64_t)a6
++ (id)components:(unint64_t)components fromDateComponents:(id)dateComponents toDateComponents:(id)toDateComponents options:(unint64_t)options
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  dateComponentsCopy = dateComponents;
+  toDateComponentsCopy = toDateComponents;
+  v11 = toDateComponentsCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (dateComponentsCopy && toDateComponentsCopy)
   {
     v13 = sCLSDateHelperCalendar;
     objc_sync_enter(v13);
-    v12 = [sCLSDateHelperCalendar components:a3 fromDateComponents:v9 toDateComponents:v11 options:a6];
+    v12 = [sCLSDateHelperCalendar components:components fromDateComponents:dateComponentsCopy toDateComponents:v11 options:options];
     objc_sync_exit(v13);
   }
 
   return v12;
 }
 
-+ (BOOL)isFirstTwoWeeksOfMonthForLocalDate:(id)a3
++ (BOOL)isFirstTwoWeeksOfMonthForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 rangeOfUnit:16 inUnit:8 forDate:v4 withCalendarIdentifier:sCLSDefaultCalendarIdentifier];
-    v6 = [a1 dayFromDate:v4] - 14 < v5;
+    v5 = [self rangeOfUnit:16 inUnit:8 forDate:dateCopy withCalendarIdentifier:sCLSDefaultCalendarIdentifier];
+    v6 = [self dayFromDate:dateCopy] - 14 < v5;
   }
 
   else
@@ -541,13 +541,13 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (BOOL)isLastTwoWeeksOfMonthForLocalDate:(id)a3
++ (BOOL)isLastTwoWeeksOfMonthForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    [a1 rangeOfUnit:16 inUnit:8 forDate:v4 withCalendarIdentifier:sCLSDefaultCalendarIdentifier];
-    v6 = [a1 dayFromDate:v4] + 14 > v5;
+    [self rangeOfUnit:16 inUnit:8 forDate:dateCopy withCalendarIdentifier:sCLSDefaultCalendarIdentifier];
+    v6 = [self dayFromDate:dateCopy] + 14 > v5;
   }
 
   else
@@ -558,13 +558,13 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (BOOL)isLastWeekOfMonthForLocalDate:(id)a3
++ (BOOL)isLastWeekOfMonthForLocalDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    [a1 rangeOfUnit:16 inUnit:8 forDate:v4 withCalendarIdentifier:sCLSDefaultCalendarIdentifier];
-    v6 = [a1 dayFromDate:v4] + 7 > v5;
+    [self rangeOfUnit:16 inUnit:8 forDate:dateCopy withCalendarIdentifier:sCLSDefaultCalendarIdentifier];
+    v6 = [self dayFromDate:dateCopy] + 7 > v5;
   }
 
   else
@@ -575,37 +575,37 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (int64_t)countOfWeekday:(int64_t)a3 inMonthOfDate:(id)a4 withCalendarIdentifier:(id)a5
++ (int64_t)countOfWeekday:(int64_t)weekday inMonthOfDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a1 isDateValid:v8])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
-    v10 = a1;
-    objc_sync_enter(v10);
-    v11 = [v10 _calendarForIdentifier:v9];
-    v12 = [v11 components:14 fromDate:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v12 = [v11 components:14 fromDate:dateCopy];
     [v12 setDay:1];
     v13 = [v11 dateFromComponents:v12];
     if (v13)
     {
       v23 = [v11 component:512 fromDate:v13];
       v14 = [v12 copy];
-      [v11 rangeOfUnit:16 inUnit:8 forDate:v8];
+      [v11 rangeOfUnit:16 inUnit:8 forDate:dateCopy];
       [v14 setDay:v15];
       v16 = [v11 dateFromComponents:v14];
       if (v16)
       {
         v17 = [v11 component:512 fromDate:v16];
-        [v11 rangeOfUnit:1024 inUnit:8 forDate:v8];
+        [v11 rangeOfUnit:1024 inUnit:8 forDate:dateCopy];
         if (v23 <= v17)
         {
-          v19 = v23 > a3 || v17 < a3;
+          v19 = v23 > weekday || v17 < weekday;
         }
 
         else
         {
-          v19 = v23 > a3 && v17 < a3;
+          v19 = v23 > weekday && v17 < weekday;
         }
 
         v21 = v19;
@@ -623,7 +623,7 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
       v20 = -1;
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -634,19 +634,19 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v20;
 }
 
-+ (_NSRange)rangeOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5 withCalendarIdentifier:(id)a6
++ (_NSRange)rangeOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v10 = a5;
-  v11 = a6;
-  if ([a1 isDateValid:v10])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
-    v12 = a1;
-    objc_sync_enter(v12);
-    v13 = [v12 _calendarForIdentifier:v11];
-    v14 = [v13 rangeOfUnit:a3 inUnit:a4 forDate:v10];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v13 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v14 = [v13 rangeOfUnit:unit inUnit:inUnit forDate:dateCopy];
     v16 = v15;
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -662,48 +662,48 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return result;
 }
 
-+ (int64_t)compareDate:(id)a3 toDate:(id)a4 toUnitGranularity:(unint64_t)a5
++ (int64_t)compareDate:(id)date toDate:(id)toDate toUnitGranularity:(unint64_t)granularity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  dateCopy = date;
+  toDateCopy = toDate;
+  v10 = toDateCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (dateCopy && toDateCopy)
   {
-    v12 = a1;
-    objc_sync_enter(v12);
-    v11 = [sCLSDateHelperCalendar compareDate:v8 toDate:v10 toUnitGranularity:a5];
-    objc_sync_exit(v12);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [sCLSDateHelperCalendar compareDate:dateCopy toDate:v10 toUnitGranularity:granularity];
+    objc_sync_exit(selfCopy);
   }
 
   return v11;
 }
 
-+ (int64_t)compareDate:(id)a3 toDate:(id)a4 toUnitGranularities:(unint64_t)a5
++ (int64_t)compareDate:(id)date toDate:(id)toDate toUnitGranularities:(unint64_t)granularities
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  granularitiesCopy = granularities;
+  dateCopy = date;
+  toDateCopy = toDate;
+  v10 = toDateCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (dateCopy && toDateCopy)
   {
-    v12 = a1;
-    objc_sync_enter(v12);
-    if (((v5 & 4) == 0 || (v11 = [sCLSDateHelperCalendar compareDate:v8 toDate:v10 toUnitGranularity:4]) == 0) && ((v5 & 8) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", v8, v10, 8)) == 0) && ((v5 & 0x10) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", v8, v10, 16)) == 0) && ((v5 & 0x20) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", v8, v10, 32)) == 0) && ((v5 & 0x40) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", v8, v10, 64)) == 0) && ((v5 & 0x80) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", v8, v10, 128)) == 0))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (((granularitiesCopy & 4) == 0 || (v11 = [sCLSDateHelperCalendar compareDate:dateCopy toDate:v10 toUnitGranularity:4]) == 0) && ((granularitiesCopy & 8) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", dateCopy, v10, 8)) == 0) && ((granularitiesCopy & 0x10) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", dateCopy, v10, 16)) == 0) && ((granularitiesCopy & 0x20) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", dateCopy, v10, 32)) == 0) && ((granularitiesCopy & 0x40) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", dateCopy, v10, 64)) == 0) && ((granularitiesCopy & 0x80) == 0 || (v11 = objc_msgSend(sCLSDateHelperCalendar, "compareDate:toDate:toUnitGranularity:", dateCopy, v10, 128)) == 0))
     {
       v11 = 0;
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 
   return v11;
 }
 
-+ (int64_t)numberOfDaysBetweenDate:(id)a3 andDate:(id)a4
++ (int64_t)numberOfDaysBetweenDate:(id)date andDate:(id)andDate
 {
-  v4 = [sCLSDateHelperCalendar components:16 fromDate:a3 toDate:a4 options:0];
+  v4 = [sCLSDateHelperCalendar components:16 fromDate:date toDate:andDate options:0];
   v5 = [v4 day];
   if (v5 >= 0)
   {
@@ -718,147 +718,147 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (id)dateFromComponents:(unint64_t)a3 ofDate:(id)a4
++ (id)dateFromComponents:(unint64_t)components ofDate:(id)date
 {
-  v6 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v7 = a1;
-    objc_sync_enter(v7);
-    v8 = [sCLSDateHelperCalendar components:a3 fromDate:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [sCLSDateHelperCalendar components:components fromDate:dateCopy];
     v9 = [sCLSDateHelperCalendar dateFromComponents:v8];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)dateByAddingWeeksOfYear:(int64_t)a3 toDate:(id)a4
++ (id)dateByAddingWeeksOfYear:(int64_t)year toDate:(id)date
 {
-  v6 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v7 setWeekOfYear:a3];
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [sCLSDateHelperCalendar dateByAddingComponents:v7 toDate:v6 options:0];
-    objc_sync_exit(v8);
+    [v7 setWeekOfYear:year];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [sCLSDateHelperCalendar dateByAddingComponents:v7 toDate:dateCopy options:0];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)dateByAddingYears:(int64_t)a3 toDate:(id)a4 withCalendarIdentifier:(id)a5
++ (id)dateByAddingYears:(int64_t)years toDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a1 isDateValid:v8])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v10 setYear:a3];
-    v11 = a1;
-    objc_sync_enter(v11);
-    v12 = [v11 _calendarForIdentifier:v9];
-    v13 = [v12 dateByAddingComponents:v10 toDate:v8 options:0];
+    [v10 setYear:years];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v13 = [v12 dateByAddingComponents:v10 toDate:dateCopy options:0];
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v13 = [a1 validDateForDate:v8];
+    v13 = [self validDateForDate:dateCopy];
   }
 
   return v13;
 }
 
-+ (id)dateByAddingMonths:(int64_t)a3 toDate:(id)a4
++ (id)dateByAddingMonths:(int64_t)months toDate:(id)date
 {
-  v6 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v7 setMonth:a3];
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [sCLSDateHelperCalendar dateByAddingComponents:v7 toDate:v6 options:0];
-    objc_sync_exit(v8);
+    [v7 setMonth:months];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [sCLSDateHelperCalendar dateByAddingComponents:v7 toDate:dateCopy options:0];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)dateByAddingDays:(int64_t)a3 toDate:(id)a4 withCalendarIdentifier:(id)a5
++ (id)dateByAddingDays:(int64_t)days toDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a1 isDateValid:v8])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v10 setDay:a3];
-    v11 = a1;
-    objc_sync_enter(v11);
-    v12 = [v11 _calendarForIdentifier:v9];
-    v13 = [v12 dateByAddingComponents:v10 toDate:v8 options:0];
+    [v10 setDay:days];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v13 = [v12 dateByAddingComponents:v10 toDate:dateCopy options:0];
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v13 = [a1 validDateForDate:v8];
+    v13 = [self validDateForDate:dateCopy];
   }
 
   return v13;
 }
 
-+ (id)dateByAddingHours:(int64_t)a3 toDate:(id)a4
++ (id)dateByAddingHours:(int64_t)hours toDate:(id)date
 {
-  v6 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v7 setHour:a3];
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [sCLSDateHelperCalendar dateByAddingComponents:v7 toDate:v6 options:0];
-    objc_sync_exit(v8);
+    [v7 setHour:hours];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [sCLSDateHelperCalendar dateByAddingComponents:v7 toDate:dateCopy options:0];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (int64_t)hourFromDate:(id)a3
++ (int64_t)hourFromDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar component:32 fromDate:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar component:32 fromDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -869,14 +869,14 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (int64_t)dayOfWeekFromDate:(id)a3
++ (int64_t)dayOfWeekFromDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar component:512 fromDate:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar component:512 fromDate:dateCopy];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = -1;
@@ -887,7 +887,7 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
       v7 = v6;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -898,15 +898,15 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v7;
 }
 
-+ (int64_t)dayFromDate:(id)a3
++ (int64_t)dayFromDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar component:16 fromDate:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar component:16 fromDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -917,15 +917,15 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (int64_t)weekOfMonthFromDate:(id)a3
++ (int64_t)weekOfMonthFromDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar component:4096 fromDate:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar component:4096 fromDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -936,15 +936,15 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (int64_t)weekOfYearFromDate:(id)a3
++ (int64_t)weekOfYearFromDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar component:0x2000 fromDate:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar component:0x2000 fromDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -955,18 +955,18 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (int64_t)monthFromDate:(id)a3 withCalendarIdentifier:(id)a4
++ (int64_t)monthFromDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [v8 _calendarForIdentifier:v7];
-    v10 = [v9 component:8 fromDate:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v10 = [v9 component:8 fromDate:dateCopy];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -977,15 +977,15 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v10;
 }
 
-+ (int64_t)yearForWeekOfYearFromDate:(id)a3
++ (int64_t)yearForWeekOfYearFromDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar component:0x4000 fromDate:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar component:0x4000 fromDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -996,18 +996,18 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v6;
 }
 
-+ (int64_t)yearFromDate:(id)a3 withCalendarIdentifier:(id)a4
++ (int64_t)yearFromDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [v8 _calendarForIdentifier:v7];
-    v10 = [v9 component:4 fromDate:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v10 = [v9 component:4 fromDate:dateCopy];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1018,18 +1018,18 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v10;
 }
 
-+ (id)components:(unint64_t)a3 fromDate:(id)a4 withCalendarIdentifier:(id)a5
++ (id)components:(unint64_t)components fromDate:(id)date withCalendarIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a1 isDateValid:v8])
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([self isDateValid:dateCopy])
   {
-    v10 = a1;
-    objc_sync_enter(v10);
-    v11 = [v10 _calendarForIdentifier:v9];
-    v12 = [v11 components:a3 fromDate:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v12 = [v11 components:components fromDate:dateCopy];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1040,136 +1040,136 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v12;
 }
 
-+ (id)endOfMonthForDate:(id)a3
++ (id)endOfMonthForDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 startOfMonthForDate:v4];
+    v5 = [self startOfMonthForDate:dateCopy];
 
-    v6 = [a1 dateByAddingMonths:1 toDate:v5];
+    v6 = [self dateByAddingMonths:1 toDate:v5];
     v7 = [v6 dateByAddingTimeInterval:-0.01];
 
-    v4 = v5;
+    dateCopy = v5;
   }
 
   else
   {
-    v7 = [a1 validDateForDate:v4];
+    v7 = [self validDateForDate:dateCopy];
   }
 
   return v7;
 }
 
-+ (id)startOfMonthForDate:(id)a3
++ (id)startOfMonthForDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar components:14 fromDate:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar components:14 fromDate:dateCopy];
     v7 = [sCLSDateHelperCalendar dateFromComponents:v6];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = [a1 validDateForDate:v4];
+    v7 = [self validDateForDate:dateCopy];
   }
 
   return v7;
 }
 
-+ (id)endOfWeekForDate:(id)a3
++ (id)endOfWeekForDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 startOfWeekForDate:v4];
+    v5 = [self startOfWeekForDate:dateCopy];
 
-    v6 = [a1 dateByAddingWeeksOfYear:1 toDate:v5];
+    v6 = [self dateByAddingWeeksOfYear:1 toDate:v5];
     v7 = [v6 dateByAddingTimeInterval:-0.01];
 
-    v4 = v5;
+    dateCopy = v5;
   }
 
   else
   {
-    v7 = [a1 validDateForDate:v4];
+    v7 = [self validDateForDate:dateCopy];
   }
 
   return v7;
 }
 
-+ (id)startOfWeekForDate:(id)a3
++ (id)startOfWeekForDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar components:24576 fromDate:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar components:24576 fromDate:dateCopy];
     v7 = [sCLSDateHelperCalendar dateFromComponents:v6];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = [a1 validDateForDate:v4];
+    v7 = [self validDateForDate:dateCopy];
   }
 
   return v7;
 }
 
-+ (id)endOfDayForDate:(id)a3
++ (id)endOfDayForDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = [a1 startOfDayForDate:v4];
+    v5 = [self startOfDayForDate:dateCopy];
 
-    v6 = [a1 dateByAddingDays:1 toDate:v5];
+    v6 = [self dateByAddingDays:1 toDate:v5];
     v7 = [v6 dateByAddingTimeInterval:-0.01];
 
-    v4 = v5;
+    dateCopy = v5;
   }
 
   else
   {
-    v7 = [a1 validDateForDate:v4];
+    v7 = [self validDateForDate:dateCopy];
   }
 
   return v7;
 }
 
-+ (id)startOfDayForDate:(id)a3
++ (id)startOfDayForDate:(id)date
 {
-  v4 = a3;
-  if ([a1 isDateValid:v4])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [sCLSDateHelperCalendar startOfDayForDate:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [sCLSDateHelperCalendar startOfDayForDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v6 = [a1 validDateForDate:v4];
+    v6 = [self validDateForDate:dateCopy];
   }
 
   return v6;
 }
 
-+ (id)localDateFormatterWithFormat:(id)a3
++ (id)localDateFormatterWithFormat:(id)format
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  formatCopy = format;
   v5 = objc_alloc_init(v3);
-  [v5 setDateFormat:v4];
+  [v5 setDateFormat:formatCopy];
 
   v6 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
   [v5 setTimeZone:v6];
@@ -1177,112 +1177,112 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v5;
 }
 
-+ (id)dateBySettingYear:(int64_t)a3 ofDate:(id)a4
++ (id)dateBySettingYear:(int64_t)year ofDate:(id)date
 {
-  v6 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  if ([self isDateValid:dateCopy])
   {
-    v7 = a1;
-    objc_sync_enter(v7);
-    v8 = [v7 components:-24577 fromDate:v6];
-    [v8 setYear:a3];
-    v9 = [v7 dateFromComponents:v8 inTimeZone:0];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [selfCopy components:-24577 fromDate:dateCopy];
+    [v8 setYear:year];
+    v9 = [selfCopy dateFromComponents:v8 inTimeZone:0];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)localDateFromUniversalDate:(id)a3 atLocation:(id)a4
++ (id)localDateFromUniversalDate:(id)date atLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  locationCopy = location;
+  if ([self isDateValid:dateCopy])
   {
-    if (v7)
+    if (locationCopy)
     {
-      v8 = [v7 timeZone];
+      timeZone = [locationCopy timeZone];
     }
 
     else
     {
-      v8 = sCLSDateHelperGMTTimeZone_5052;
+      timeZone = sCLSDateHelperGMTTimeZone_5052;
     }
 
-    v10 = v8;
-    v9 = [a1 localDateFromUniversalDate:v6 inTimeZone:v8];
+    v10 = timeZone;
+    v9 = [self localDateFromUniversalDate:dateCopy inTimeZone:timeZone];
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)universalDateFromLocalDate:(id)a3 atLocation:(id)a4
++ (id)universalDateFromLocalDate:(id)date atLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  locationCopy = location;
+  if ([self isDateValid:dateCopy])
   {
-    if (v7)
+    if (locationCopy)
     {
-      v8 = [v7 timeZone];
+      timeZone = [locationCopy timeZone];
     }
 
     else
     {
-      v8 = sCLSDateHelperGMTTimeZone_5052;
+      timeZone = sCLSDateHelperGMTTimeZone_5052;
     }
 
-    v10 = v8;
-    v9 = [a1 universalDateFromLocalDate:v6 inTimeZone:v8];
+    v10 = timeZone;
+    v9 = [self universalDateFromLocalDate:dateCopy inTimeZone:timeZone];
   }
 
   else
   {
-    v9 = [a1 validDateForDate:v6];
+    v9 = [self validDateForDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)localDateFromUniversalDate:(id)a3
++ (id)localDateFromUniversalDate:(id)date
 {
   v4 = MEMORY[0x277CBEBB0];
-  v5 = a3;
-  v6 = [v4 localTimeZone];
-  v7 = [a1 localDateFromUniversalDate:v5 inTimeZone:v6];
+  dateCopy = date;
+  localTimeZone = [v4 localTimeZone];
+  v7 = [self localDateFromUniversalDate:dateCopy inTimeZone:localTimeZone];
 
   return v7;
 }
 
-+ (id)localDateFromUniversalDate:(id)a3 inTimeZone:(id)a4
++ (id)localDateFromUniversalDate:(id)date inTimeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  zoneCopy = zone;
+  if ([self isDateValid:dateCopy])
   {
-    v8 = a1;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v9 = sCLSDateHelperGMTTimeZone_5052;
-    if (v7)
+    if (zoneCopy)
     {
-      v9 = v7;
+      v9 = zoneCopy;
     }
 
     v10 = v9;
     if (v10)
     {
-      v11 = [sCLSDateHelperCalendar componentsInTimeZone:v10 fromDate:v6];
+      v11 = [sCLSDateHelperCalendar componentsInTimeZone:v10 fromDate:dateCopy];
       [v11 setTimeZone:sCLSDateHelperGMTTimeZone_5052];
       v12 = [sCLSDateHelperCalendar dateFromComponents:v11];
     }
@@ -1292,40 +1292,40 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
       v12 = 0;
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v12 = [a1 validDateForDate:v6];
+    v12 = [self validDateForDate:dateCopy];
   }
 
   return v12;
 }
 
-+ (id)universalDateFromLocalDate:(id)a3
++ (id)universalDateFromLocalDate:(id)date
 {
   v4 = MEMORY[0x277CBEBB0];
-  v5 = a3;
-  v6 = [v4 localTimeZone];
-  v7 = [a1 universalDateFromLocalDate:v5 inTimeZone:v6];
+  dateCopy = date;
+  localTimeZone = [v4 localTimeZone];
+  v7 = [self universalDateFromLocalDate:dateCopy inTimeZone:localTimeZone];
 
   return v7;
 }
 
-+ (id)universalDateFromLocalDate:(id)a3 inTimeZone:(id)a4
++ (id)universalDateFromLocalDate:(id)date inTimeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6])
+  dateCopy = date;
+  zoneCopy = zone;
+  if ([self isDateValid:dateCopy])
   {
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [sCLSDateHelperCalendar componentsInTimeZone:sCLSDateHelperGMTTimeZone_5052 fromDate:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [sCLSDateHelperCalendar componentsInTimeZone:sCLSDateHelperGMTTimeZone_5052 fromDate:dateCopy];
     v10 = v9;
-    if (v7)
+    if (zoneCopy)
     {
-      v11 = v7;
+      v11 = zoneCopy;
     }
 
     else
@@ -1336,50 +1336,50 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
     [v9 setTimeZone:v11];
     v12 = [sCLSDateHelperCalendar dateFromComponents:v10];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v12 = [a1 validDateForDate:v6];
+    v12 = [self validDateForDate:dateCopy];
   }
 
   return v12;
 }
 
-+ (id)componentsFromDate:(id)a3 inTimeZone:(id)a4
++ (id)componentsFromDate:(id)date inTimeZone:(id)zone
 {
-  v6 = a4;
-  v7 = [a1 validDateForDate:a3];
-  v8 = a1;
-  objc_sync_enter(v8);
-  if (!v6)
+  zoneCopy = zone;
+  v7 = [self validDateForDate:date];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!zoneCopy)
   {
-    v6 = sCLSDateHelperGMTTimeZone_5052;
+    zoneCopy = sCLSDateHelperGMTTimeZone_5052;
   }
 
-  v9 = [sCLSDateHelperCalendar componentsInTimeZone:v6 fromDate:v7];
-  objc_sync_exit(v8);
+  v9 = [sCLSDateHelperCalendar componentsInTimeZone:zoneCopy fromDate:v7];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-+ (id)dateFromComponents:(id)a3 inTimeZone:(id)a4 withCalendarIdentifier:(id)a5
++ (id)dateFromComponents:(id)components inTimeZone:(id)zone withCalendarIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  componentsCopy = components;
+  zoneCopy = zone;
+  identifierCopy = identifier;
+  if (componentsCopy)
   {
-    v11 = a1;
-    objc_sync_enter(v11);
-    v12 = [v11 _calendarForIdentifier:v10];
-    v13 = [v12 dateFromComponents:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = [selfCopy _calendarForIdentifier:identifierCopy];
+    v13 = [v12 dateFromComponents:componentsCopy];
 
-    objc_sync_exit(v11);
-    if (v9)
+    objc_sync_exit(selfCopy);
+    if (zoneCopy)
     {
-      v14 = [v13 dateByAddingTimeInterval:{objc_msgSend(v9, "secondsFromGMTForDate:", v13)}];
+      v14 = [v13 dateByAddingTimeInterval:{objc_msgSend(zoneCopy, "secondsFromGMTForDate:", v13)}];
 
       v13 = v14;
     }
@@ -1393,34 +1393,34 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
   return v13;
 }
 
-+ (id)dateComponentsWithLocalDate:(id)a3
++ (id)dateComponentsWithLocalDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [a1 validDateForDate:v4];
+    v5 = [self validDateForDate:dateCopy];
 
-    v6 = a1;
-    objc_sync_enter(v6);
-    v4 = [sCLSDateHelperCalendar componentsInTimeZone:sCLSDateHelperGMTTimeZone_5052 fromDate:v5];
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    dateCopy = [sCLSDateHelperCalendar componentsInTimeZone:sCLSDateHelperGMTTimeZone_5052 fromDate:v5];
+    objc_sync_exit(selfCopy);
   }
 
-  return v4;
+  return dateCopy;
 }
 
-+ (id)dateComponentsWithUTCDate:(id)a3 localDate:(id)a4
++ (id)dateComponentsWithUTCDate:(id)date localDate:(id)localDate
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDateValid:v6] && objc_msgSend(a1, "isDateValid:", v7))
+  dateCopy = date;
+  localDateCopy = localDate;
+  if ([self isDateValid:dateCopy] && objc_msgSend(self, "isDateValid:", localDateCopy))
   {
-    [v7 timeIntervalSinceDate:v6];
+    [localDateCopy timeIntervalSinceDate:dateCopy];
     v9 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:v8];
-    v10 = a1;
-    objc_sync_enter(v10);
-    v11 = [sCLSDateHelperCalendar componentsInTimeZone:v9 fromDate:v6];
-    objc_sync_exit(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [sCLSDateHelperCalendar componentsInTimeZone:v9 fromDate:dateCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1434,43 +1434,43 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
 + (id)currentLocalDate
 {
   v2 = MEMORY[0x277CBEAA8];
-  v3 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v2 dateWithTimeIntervalSinceNow:{objc_msgSend(v3, "secondsFromGMTForDate:", v4)}];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v2 dateWithTimeIntervalSinceNow:{objc_msgSend(systemTimeZone, "secondsFromGMTForDate:", date)}];
 
   return v5;
 }
 
-+ (id)validDateForDate:(id)a3
++ (id)validDateForDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v8 = 0;
+    distantFuture2 = 0;
     goto LABEL_9;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  v5 = [v3 compare:v4];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v5 = [dateCopy compare:distantPast];
 
   if (v5 != -1)
   {
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
-    v7 = [v6 compare:v3];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v7 = [distantFuture compare:dateCopy];
 
-    v8 = v3;
+    distantFuture2 = dateCopy;
     if (v7 != -1)
     {
       goto LABEL_9;
     }
 
-    v8 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
 
     v9 = +[CLSLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_8;
     }
@@ -1478,43 +1478,43 @@ void __45__CLSCalendar_s_seasonCountryCodesDictionary__block_invoke()
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantPast];
 
   v11 = +[CLSLogging sharedLogging];
-  v10 = [v11 loggingConnection];
+  loggingConnection = [v11 loggingConnection];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
 LABEL_12:
     v13 = 138412546;
-    v14 = v3;
+    v14 = dateCopy;
     v15 = 2112;
-    v16 = v8;
-    _os_log_error_impl(&dword_22F907000, v10, OS_LOG_TYPE_ERROR, "Invalid date found: %@, using %@ instead.", &v13, 0x16u);
+    v16 = distantFuture2;
+    _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Invalid date found: %@, using %@ instead.", &v13, 0x16u);
   }
 
 LABEL_8:
 
 LABEL_9:
 
-  return v8;
+  return distantFuture2;
 }
 
-+ (BOOL)isDateValid:(id)a3
++ (BOOL)isDateValid:(id)valid
 {
-  v3 = a3;
-  if (v3)
+  validCopy = valid;
+  if (validCopy)
   {
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
-    if ([v3 compare:v4] == -1)
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    if ([validCopy compare:distantPast] == -1)
     {
       v6 = 0;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEAA8] distantFuture];
-      v6 = [v5 compare:v3] != -1;
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v6 = [distantFuture compare:validCopy] != -1;
     }
   }
 
@@ -1526,15 +1526,15 @@ LABEL_9:
   return v6;
 }
 
-+ (id)_calendarForIdentifier:(id)a3
++ (id)_calendarForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [sCLSDateHelperCalendarByIdentifier objectForKeyedSubscript:v3];
+  identifierCopy = identifier;
+  v4 = [sCLSDateHelperCalendarByIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v4)
   {
-    v4 = [MEMORY[0x277CBEA80] calendarWithIdentifier:v3];
+    v4 = [MEMORY[0x277CBEA80] calendarWithIdentifier:identifierCopy];
     [v4 setTimeZone:sCLSDateHelperGMTTimeZone_5052];
-    [sCLSDateHelperCalendarByIdentifier setObject:v4 forKeyedSubscript:v3];
+    [sCLSDateHelperCalendarByIdentifier setObject:v4 forKeyedSubscript:identifierCopy];
   }
 
   return v4;
@@ -1542,9 +1542,9 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3.receiver = a1;
+    v3.receiver = self;
     v3.super_class = &OBJC_METACLASS___CLSCalendar;
     objc_msgSendSuper2(&v3, sel_initialize);
     if (initialize_onceToken != -1)

@@ -4,16 +4,16 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCallIdentifier:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCallIdentifier:(id)identifier;
 @end
 
 @implementation INHangUpCallIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INHangUpCallIntent *)self _typedBackingStore:a3];
+  v6 = [(INHangUpCallIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -22,16 +22,16 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"callIdentifier";
-  v2 = [(INHangUpCallIntent *)self callIdentifier];
-  v3 = v2;
-  if (!v2)
+  callIdentifier = [(INHangUpCallIntent *)self callIdentifier];
+  null = callIdentifier;
+  if (!callIdentifier)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!callIdentifier)
   {
   }
 
@@ -40,18 +40,18 @@
   return v4;
 }
 
-- (void)setCallIdentifier:(id)a3
+- (void)setCallIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INHangUpCallIntent *)self _typedBackingStore];
-  [v5 setCallIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INHangUpCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setCallIdentifier:identifierCopy];
 }
 
 - (NSString)callIdentifier
 {
-  v2 = [(INHangUpCallIntent *)self _typedBackingStore];
-  v3 = [v2 callIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INHangUpCallIntent *)self _typedBackingStore];
+  callIdentifier = [_typedBackingStore callIdentifier];
+  v4 = [callIdentifier copy];
 
   return v4;
 }
@@ -71,28 +71,28 @@
   return v6;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INHangUpCallIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INHangUpCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INHangUpCallIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INHangUpCallIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

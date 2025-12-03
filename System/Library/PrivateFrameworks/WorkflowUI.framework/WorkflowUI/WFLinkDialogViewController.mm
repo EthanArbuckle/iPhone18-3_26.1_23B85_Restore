@@ -1,49 +1,49 @@
 @interface WFLinkDialogViewController
-- (double)contentHeightForWidth:(double)a3 withMaximumVisibleHeight:(double)a4;
-- (double)platterHeightForWidth:(double)a3 withMaximumHeight:(double)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (double)contentHeightForWidth:(double)width withMaximumVisibleHeight:(double)height;
+- (double)platterHeightForWidth:(double)width withMaximumHeight:(double)height;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewDidLoad;
 @end
 
 @implementation WFLinkDialogViewController
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(WFLinkDialogViewController *)self snippetViewController];
+  containerCopy = container;
+  snippetViewController = [(WFLinkDialogViewController *)self snippetViewController];
 
-  if (v5 == v4)
+  if (snippetViewController == containerCopy)
   {
 
     [(WFCompactPlatterViewController *)self invalidateContentSize];
   }
 }
 
-- (double)contentHeightForWidth:(double)a3 withMaximumVisibleHeight:(double)a4
+- (double)contentHeightForWidth:(double)width withMaximumVisibleHeight:(double)height
 {
-  v4 = [(WFLinkDialogViewController *)self snippetViewController:a3];
-  v5 = [v4 view];
-  [v5 intrinsicContentSize];
+  v4 = [(WFLinkDialogViewController *)self snippetViewController:width];
+  view = [v4 view];
+  [view intrinsicContentSize];
   v7 = v6;
 
   return v7;
 }
 
-- (double)platterHeightForWidth:(double)a3 withMaximumHeight:(double)a4
+- (double)platterHeightForWidth:(double)width withMaximumHeight:(double)height
 {
-  v7 = [(WFCompactPlatterViewController *)self platterView];
-  [v7 sizeThatFits:{a3, a4}];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  [platterView sizeThatFits:{width, height}];
   v9 = v8;
 
   v10 = 0.0;
-  v11 = fmax(a4 - v9, 0.0);
-  v12 = [(WFCompactPlatterViewController *)self platterView];
-  if ([v12 insetsContent])
+  v11 = fmax(height - v9, 0.0);
+  platterView2 = [(WFCompactPlatterViewController *)self platterView];
+  if ([platterView2 insetsContent])
   {
     v10 = 30.0;
   }
 
-  [(WFLinkDialogViewController *)self contentHeightForWidth:a3 - v10 withMaximumVisibleHeight:v11];
+  [(WFLinkDialogViewController *)self contentHeightForWidth:width - v10 withMaximumVisibleHeight:v11];
   return v9 + fmin(v13, 340.0);
 }
 
@@ -53,10 +53,10 @@
   v11.super_class = WFLinkDialogViewController;
   [(WFLinkDialogViewController *)&v11 viewDidLoad];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D75348] systemPurpleColor];
-  [v3 setBackgroundColor:v4];
+  systemPurpleColor = [MEMORY[0x277D75348] systemPurpleColor];
+  [v3 setBackgroundColor:systemPurpleColor];
 
-  v5 = [(WFCompactDialogViewController *)self request];
+  request = [(WFCompactDialogViewController *)self request];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__WFLinkDialogViewController_viewDidLoad__block_invoke;
@@ -72,7 +72,7 @@
   v8[1] = 3221225472;
   v8[2] = __41__WFLinkDialogViewController_viewDidLoad__block_invoke_3;
   v8[3] = &unk_279EE8380;
-  v6 = [v5 viewControllerWithSnippetEnvironmentProvider:v10 snippetResultValueUpdated:v9 tapHandler:v8];
+  v6 = [request viewControllerWithSnippetEnvironmentProvider:v10 snippetResultValueUpdated:v9 tapHandler:v8];
 
   [(WFCompactPlatterViewController *)self setContentViewController:v6];
   snippetViewController = self->_snippetViewController;

@@ -7,14 +7,14 @@
 - (id)_lock_accessor;
 - (void)_beginMonitoringForChanges;
 - (void)_endMonitoringForChanges;
-- (void)_lock_setCompanionCloudSyncPreferenceEnabled:(BOOL)a3;
+- (void)_lock_setCompanionCloudSyncPreferenceEnabled:(BOOL)enabled;
 - (void)_lock_updateCompanionCloudSyncPreference;
 - (void)_lock_updatePairSyncPreferences;
-- (void)_lock_updateSyncSettingsIfNewSettingsDiffer:(id)a3;
+- (void)_lock_updateSyncSettingsIfNewSettingsDiffer:(id)differ;
 - (void)_updateCloudSyncPreferences;
 - (void)_updatePairSyncPreferences;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pairedDeviceDidChange;
 @end
 
@@ -61,22 +61,22 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setCompanionCloudSyncPreferenceEnabled:(BOOL)a3
+- (void)_lock_setCompanionCloudSyncPreferenceEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_assert_owner(&self->_lock);
-  v4 = [MEMORY[0x277D058F8] currentDevice];
-  v5 = [v4 deviceClass];
+  currentDevice = [MEMORY[0x277D058F8] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  if (v5 == 1)
+  if (deviceClass == 1)
   {
-    v6 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v7 = [v6 isPaired];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    isPaired = [mEMORY[0x277D2BCF8] isPaired];
 
-    if (v7)
+    if (isPaired)
     {
-      v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v8 setBool:!v3 forKey:@"dndCompanionCloudSyncDisabled"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults setBool:!enabledCopy forKey:@"dndCompanionCloudSyncDisabled"];
 
       v10 = objc_opt_new();
       v9 = [MEMORY[0x277CBEB98] setWithObject:@"dndCompanionCloudSyncDisabled"];
@@ -88,33 +88,33 @@
 - (void)_lock_updateCompanionCloudSyncPreference
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(DNDSSyncSettingsProvider *)self syncSettings];
-  -[DNDSSyncSettingsProvider _lock_setCompanionCloudSyncPreferenceEnabled:](self, "_lock_setCompanionCloudSyncPreferenceEnabled:", [v3 isCloudSyncEnabled]);
+  syncSettings = [(DNDSSyncSettingsProvider *)self syncSettings];
+  -[DNDSSyncSettingsProvider _lock_setCompanionCloudSyncPreferenceEnabled:](self, "_lock_setCompanionCloudSyncPreferenceEnabled:", [syncSettings isCloudSyncEnabled]);
 }
 
 - (BOOL)_isCloudSyncPreferenceEnabled
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(DNDSSyncSettingsProvider *)self _lock_isCloudSyncPreferenceEnabled];
+  _lock_isCloudSyncPreferenceEnabled = [(DNDSSyncSettingsProvider *)self _lock_isCloudSyncPreferenceEnabled];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_isCloudSyncPreferenceEnabled;
 }
 
 - (BOOL)_lock_isCloudSyncPreferenceEnabled
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"disableCloudSync"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"disableCloudSync"];
 
   if (v3)
   {
-    v4 = v2;
+    v4 = standardUserDefaults;
     v5 = @"disableCloudSync";
   }
 
   else
   {
-    v6 = [v2 objectForKey:@"disableSync"];
+    v6 = [standardUserDefaults objectForKey:@"disableSync"];
 
     if (v6)
     {
@@ -126,7 +126,7 @@
       v5 = @"disableModeConfigurationsSync";
     }
 
-    v4 = v2;
+    v4 = standardUserDefaults;
   }
 
   v7 = [v4 BOOLForKey:v5];
@@ -140,8 +140,8 @@
   accessor = self->_accessor;
   if (!accessor)
   {
-    v4 = [MEMORY[0x277D058F8] currentDevice];
-    if ([v4 deviceClass] == 1 || objc_msgSend(v4, "deviceClass") == 5)
+    currentDevice = [MEMORY[0x277D058F8] currentDevice];
+    if ([currentDevice deviceClass] == 1 || objc_msgSend(currentDevice, "deviceClass") == 5)
     {
       v5 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano"];
       v6 = self->_accessor;
@@ -149,10 +149,10 @@
 
       if (!self->_accessor)
       {
-        v7 = [MEMORY[0x277D2BCF8] sharedInstance];
-        v8 = [v7 isPaired];
+        mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+        isPaired = [mEMORY[0x277D2BCF8] isPaired];
 
-        if (v8)
+        if (isPaired)
         {
           v9 = DNDSLogSettings;
           if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_FAULT))
@@ -171,10 +171,10 @@
 
 - (BOOL)_lock_isPairSyncPreferenceEnabled
 {
-  v2 = [(DNDSSyncSettingsProvider *)self _lock_accessor];
-  v3 = [v2 synchronize];
+  _lock_accessor = [(DNDSSyncSettingsProvider *)self _lock_accessor];
+  synchronize = [_lock_accessor synchronize];
   v7 = 0;
-  v4 = [v2 BOOLForKey:@"mirrorDNDState" keyExistsAndHasValidFormat:&v7];
+  v4 = [_lock_accessor BOOLForKey:@"mirrorDNDState" keyExistsAndHasValidFormat:&v7];
   v5 = v4 | ~v7;
 
   return v5 & 1;
@@ -182,8 +182,8 @@
 
 - (void)_beginMonitoringForChanges
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 addObserver:self forKeyPath:@"disableCloudSync" options:1 context:0];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults addObserver:self forKeyPath:@"disableCloudSync" options:1 context:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -208,41 +208,41 @@
 - (void)_lock_updatePairSyncPreferences
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(DNDSSyncSettingsProvider *)self _lock_isPairSyncPreferenceEnabled];
-  v4 = [(DNDSSyncSettingsProvider *)self syncSettings];
-  v5 = [v4 mutableCopy];
+  _lock_isPairSyncPreferenceEnabled = [(DNDSSyncSettingsProvider *)self _lock_isPairSyncPreferenceEnabled];
+  syncSettings = [(DNDSSyncSettingsProvider *)self syncSettings];
+  v5 = [syncSettings mutableCopy];
 
-  [v5 setPairSyncEnabled:v3];
+  [v5 setPairSyncEnabled:_lock_isPairSyncPreferenceEnabled];
   [(DNDSSyncSettingsProvider *)self _lock_updateSyncSettingsIfNewSettingsDiffer:v5];
 }
 
 - (void)_updateCloudSyncPreferences
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(DNDSSyncSettingsProvider *)self _lock_isCloudSyncPreferenceEnabled];
-  v4 = [(DNDSSyncSettingsProvider *)self syncSettings];
-  v5 = [v4 isCloudSyncEnabled];
+  _lock_isCloudSyncPreferenceEnabled = [(DNDSSyncSettingsProvider *)self _lock_isCloudSyncPreferenceEnabled];
+  syncSettings = [(DNDSSyncSettingsProvider *)self syncSettings];
+  isCloudSyncEnabled = [syncSettings isCloudSyncEnabled];
 
-  if (v3 != v5)
+  if (_lock_isCloudSyncPreferenceEnabled != isCloudSyncEnabled)
   {
-    [(DNDSSyncSettingsProvider *)self _lock_setCompanionCloudSyncPreferenceEnabled:v3];
+    [(DNDSSyncSettingsProvider *)self _lock_setCompanionCloudSyncPreferenceEnabled:_lock_isCloudSyncPreferenceEnabled];
   }
 
-  v6 = [(DNDSSyncSettingsProvider *)self syncSettings];
-  v7 = [v6 mutableCopy];
+  syncSettings2 = [(DNDSSyncSettingsProvider *)self syncSettings];
+  v7 = [syncSettings2 mutableCopy];
 
-  [v7 setCloudSyncEnabled:v3];
+  [v7 setCloudSyncEnabled:_lock_isCloudSyncPreferenceEnabled];
   [(DNDSSyncSettingsProvider *)self _lock_updateSyncSettingsIfNewSettingsDiffer:v7];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_updateSyncSettingsIfNewSettingsDiffer:(id)a3
+- (void)_lock_updateSyncSettingsIfNewSettingsDiffer:(id)differ
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  differCopy = differ;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(DNDSSyncSettingsProvider *)self syncSettings];
-  v6 = [v5 isEqual:v4];
+  syncSettings = [(DNDSSyncSettingsProvider *)self syncSettings];
+  v6 = [syncSettings isEqual:differCopy];
   initialized = self->_initialized;
   if (v6)
   {
@@ -257,7 +257,7 @@ LABEL_7:
     if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
     {
       *v15 = 138412290;
-      *&v15[4] = v4;
+      *&v15[4] = differCopy;
       v9 = "Initialized sync settings to %@";
       v10 = v12;
       v11 = 12;
@@ -276,9 +276,9 @@ LABEL_7:
   if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     *v15 = 138412546;
-    *&v15[4] = v4;
+    *&v15[4] = differCopy;
     *&v15[12] = 2112;
-    *&v15[14] = v5;
+    *&v15[14] = syncSettings;
     v9 = "New sync settings: %@. Old: %@";
     v10 = v8;
     v11 = 22;
@@ -287,17 +287,17 @@ LABEL_9:
   }
 
 LABEL_10:
-  [(DNDSSyncSettingsProvider *)self setSyncSettings:v4, *v15, *&v15[16], v16];
-  v13 = [(DNDSSyncSettingsProvider *)self delegate];
-  [v13 syncSettingsProvider:self didReceiveUpdatedSyncSettings:v4];
+  [(DNDSSyncSettingsProvider *)self setSyncSettings:differCopy, *v15, *&v15[16], v16];
+  delegate = [(DNDSSyncSettingsProvider *)self delegate];
+  [delegate syncSettingsProvider:self didReceiveUpdatedSyncSettings:differCopy];
 
 LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"disableCloudSync", a4, a5, a6}])
+  if ([path isEqualToString:{@"disableCloudSync", object, change, context}])
   {
 
     [(DNDSSyncSettingsProvider *)self _updateCloudSyncPreferences];

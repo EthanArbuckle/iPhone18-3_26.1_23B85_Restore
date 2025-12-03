@@ -1,5 +1,5 @@
 @interface CAFCharacteristicMetadata
-- (CAFCharacteristicMetadata)initWithConfig:(id)a3;
+- (CAFCharacteristicMetadata)initWithConfig:(id)config;
 - (NSString)formatString;
 @end
 
@@ -7,14 +7,14 @@
 
 - (NSString)formatString
 {
-  v2 = [(CAFCharacteristicMetadata *)self format];
+  format = [(CAFCharacteristicMetadata *)self format];
 
-  return NSStringFromCharacteristicMetadataFormat(v2);
+  return NSStringFromCharacteristicMetadataFormat(format);
 }
 
-- (CAFCharacteristicMetadata)initWithConfig:(id)a3
+- (CAFCharacteristicMetadata)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v30.receiver = self;
   v30.super_class = CAFCharacteristicMetadata;
   v5 = [(CAFCharacteristicMetadata *)&v30 init];
@@ -24,7 +24,7 @@
   }
 
   objc_opt_class();
-  v6 = [v4 objectForKeyedSubscript:@"format"];
+  v6 = [configCopy objectForKeyedSubscript:@"format"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -48,7 +48,7 @@
 
   v5->_format = [v7 unsignedIntValue];
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"minimumValue"];
+  v8 = [configCopy objectForKeyedSubscript:@"minimumValue"];
   if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v8;
@@ -63,7 +63,7 @@
   v5->_minimumValue = v9;
 
   objc_opt_class();
-  v11 = [v4 objectForKeyedSubscript:@"maximumValue"];
+  v11 = [configCopy objectForKeyedSubscript:@"maximumValue"];
   if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v12 = v11;
@@ -78,7 +78,7 @@
   v5->_maximumValue = v12;
 
   objc_opt_class();
-  v14 = [v4 objectForKeyedSubscript:@"maximumLength"];
+  v14 = [configCopy objectForKeyedSubscript:@"maximumLength"];
   if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v15 = v14;
@@ -93,7 +93,7 @@
   v5->_maximumLength = v15;
 
   objc_opt_class();
-  v17 = [v4 objectForKeyedSubscript:@"stepValue"];
+  v17 = [configCopy objectForKeyedSubscript:@"stepValue"];
   if (v17 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v18 = v17;
@@ -108,7 +108,7 @@
   v5->_stepValue = v18;
 
   objc_opt_class();
-  v20 = [v4 objectForKeyedSubscript:@"validValues"];
+  v20 = [configCopy objectForKeyedSubscript:@"validValues"];
   if (v20 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v21 = v20;
@@ -123,7 +123,7 @@
   v5->_validValues = v21;
 
   objc_opt_class();
-  v23 = [v4 objectForKeyedSubscript:@"units"];
+  v23 = [configCopy objectForKeyedSubscript:@"units"];
   if (v23 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v24 = v23;

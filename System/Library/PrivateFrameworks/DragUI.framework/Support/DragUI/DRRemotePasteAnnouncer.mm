@@ -1,8 +1,8 @@
 @interface DRRemotePasteAnnouncer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DRRemotePasteAnnouncer)init;
 - (void)announceDeniedPaste;
-- (void)announcePaste:(id)a3;
+- (void)announcePaste:(id)paste;
 @end
 
 @implementation DRRemotePasteAnnouncer
@@ -32,12 +32,12 @@
   [v8 setPrimaryTitleText:v2];
 
   v3 = +[DREnterpriseInfo sharedInstance];
-  v4 = [v3 orgName];
+  orgName = [v3 orgName];
 
-  v5 = sub_100004A98(v4);
-  if (v4)
+  v5 = sub_100004A98(orgName);
+  if (orgName)
   {
-    v6 = sub_1000049EC(v4);
+    v6 = sub_1000049EC(orgName);
     [v8 setSecondaryTitleText:v6];
   }
 
@@ -51,31 +51,31 @@
   [v8 postBanner];
 }
 
-- (void)announcePaste:(id)a3
+- (void)announcePaste:(id)paste
 {
-  v3 = a3;
+  pasteCopy = paste;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v5 = objc_alloc_init(_UISystemBannerRequest);
-  v4 = [v3 localizedAnnouncementText];
+  localizedAnnouncementText = [pasteCopy localizedAnnouncementText];
 
-  [v5 setPrimaryTitleText:v4];
+  [v5 setPrimaryTitleText:localizedAnnouncementText];
   [v5 setBannerTimeoutDuration:1.5];
   [v5 postBanner];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:DRPasteAnnouncementEntitlement];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:DRPasteAnnouncementEntitlement];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 BOOLValue])
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DRPasteAnnouncing];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    [v5 setExportedObject:self];
-    [v5 _setQueue:&_dispatch_main_q];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy _setQueue:&_dispatch_main_q];
+    [connectionCopy resume];
     v8 = 1;
   }
 

@@ -1,20 +1,20 @@
 @interface ATXAnchorModelPBModeMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsStart:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsStart:(BOOL)start;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXAnchorModelPBModeMetadata
 
-- (void)setHasIsStart:(BOOL)a3
+- (void)setHasIsStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = ATXAnchorModelPBModeMetadata;
   v4 = [(ATXAnchorModelPBModeMetadata *)&v8 description];
-  v5 = [(ATXAnchorModelPBModeMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXAnchorModelPBModeMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   modeId = self->_modeId;
   if (modeId)
   {
-    [v3 setObject:modeId forKey:@"modeId"];
+    [dictionary setObject:modeId forKey:@"modeId"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -58,8 +58,8 @@
   modeHistory = self->_modeHistory;
   if (modeHistory)
   {
-    v8 = [(ATXAnchorModelPBLaunchHistoryMetadata *)modeHistory dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"modeHistory"];
+    dictionaryRepresentation = [(ATXAnchorModelPBLaunchHistoryMetadata *)modeHistory dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"modeHistory"];
   }
 
   if (*&self->_has)
@@ -71,70 +71,70 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_modeId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     isStart = self->_isStart;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_modeHistory)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     relativeTimeSinceAnchorInSeconds = self->_relativeTimeSinceAnchorInSeconds;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_modeId)
   {
-    [v4 setModeId:?];
-    v4 = v5;
+    [toCopy setModeId:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 28) = self->_isStart;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 28) = self->_isStart;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_modeHistory)
   {
     [v5 setModeHistory:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_relativeTimeSinceAnchorInSeconds;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 6) = self->_relativeTimeSinceAnchorInSeconds;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_modeId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_modeId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -144,7 +144,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v8 = [(ATXAnchorModelPBLaunchHistoryMetadata *)self->_modeHistory copyWithZone:a3];
+  v8 = [(ATXAnchorModelPBLaunchHistoryMetadata *)self->_modeHistory copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -157,16 +157,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   modeId = self->_modeId;
-  if (modeId | *(v4 + 2))
+  if (modeId | *(equalCopy + 2))
   {
     if (![(NSString *)modeId isEqual:?])
     {
@@ -175,36 +175,36 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 32);
+  v7 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_14;
     }
 
-    v11 = *(v4 + 28);
+    v11 = *(equalCopy + 28);
     if (self->_isStart)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   modeHistory = self->_modeHistory;
-  if (modeHistory | *(v4 + 1))
+  if (modeHistory | *(equalCopy + 1))
   {
     if (![(ATXAnchorModelPBLaunchHistoryMetadata *)modeHistory isEqual:?])
     {
@@ -214,10 +214,10 @@
     has = self->_has;
   }
 
-  v9 = (*(v4 + 32) & 1) == 0;
+  v9 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_relativeTimeSinceAnchorInSeconds == *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_relativeTimeSinceAnchorInSeconds == *(equalCopy + 6))
     {
       v9 = 1;
       goto LABEL_15;
@@ -259,24 +259,24 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ATXAnchorModelPBModeMetadata *)self setModeId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_isStart = *(v4 + 28);
+    self->_isStart = *(fromCopy + 28);
     *&self->_has |= 2u;
   }
 
   modeHistory = self->_modeHistory;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (modeHistory)
   {
     if (!v6)
@@ -297,11 +297,11 @@ LABEL_15:
     [(ATXAnchorModelPBModeMetadata *)self setModeHistory:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_11:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_relativeTimeSinceAnchorInSeconds = *(v4 + 6);
+    self->_relativeTimeSinceAnchorInSeconds = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 

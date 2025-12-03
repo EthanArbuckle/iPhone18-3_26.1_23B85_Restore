@@ -1,13 +1,13 @@
 @interface VCPProtoImagePetsFaceResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImagePetsFaceResult
@@ -18,54 +18,54 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImagePetsFaceResult;
   v4 = [(VCPProtoImagePetsFaceResult *)&v8 description];
-  v5 = [(VCPProtoImagePetsFaceResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImagePetsFaceResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_confidence;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"confidence"];
+  [dictionary setObject:v5 forKey:@"confidence"];
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v7 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"bounds"];
+    dictionaryRepresentation = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"bounds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteSubmessage();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_confidence;
-  v6 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v6 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_confidence == *(v4 + 4))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_confidence == *(equalCopy + 4))
   {
     bounds = self->_bounds;
-    if (bounds | v4[1])
+    if (bounds | equalCopy[1])
     {
       v6 = [(VCPProtoBounds *)bounds isEqual:?];
     }
@@ -119,12 +119,12 @@
   return [(VCPProtoBounds *)self->_bounds hash]^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_confidence = v4[4];
+  fromCopy = from;
+  self->_confidence = fromCopy[4];
   bounds = self->_bounds;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (bounds)
   {
     if (!v6)
@@ -132,7 +132,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoBounds *)bounds mergeFrom:?];
   }
 
@@ -143,17 +143,17 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoImagePetsFaceResult *)self setBounds:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"petsConfidence"];
   v5 = [v3 objectForKeyedSubscript:@"petsBounds"];
   v6 = v5;
@@ -195,8 +195,8 @@ LABEL_7:
   v4 = [v3 numberWithFloat:?];
   v11[0] = v4;
   v10[1] = @"petsBounds";
-  v5 = [(VCPProtoImagePetsFaceResult *)self bounds];
-  [v5 rectValue];
+  bounds = [(VCPProtoImagePetsFaceResult *)self bounds];
+  [bounds rectValue];
   v6 = NSStringFromRect(v15);
   v11[1] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];

@@ -3,30 +3,30 @@
 - (CarSessionController)init;
 - (NSSet)sessionObservers;
 - (PlatformController)platformController;
-- (void)_handleIncomingSession:(id)a3;
-- (void)_handleTransportType:(int64_t)a3;
-- (void)_navigationSessionDidChangeState:(unint64_t)a3;
-- (void)_promptToEndNavigationAccepted:(id)a3;
-- (void)_routeGeniusSessionDidChangeState:(unint64_t)a3;
-- (void)_routePlanningSessionDidChangeState:(unint64_t)a3;
-- (void)_startNavigatingAnimated:(BOOL)a3;
+- (void)_handleIncomingSession:(id)session;
+- (void)_handleTransportType:(int64_t)type;
+- (void)_navigationSessionDidChangeState:(unint64_t)state;
+- (void)_promptToEndNavigationAccepted:(id)accepted;
+- (void)_routeGeniusSessionDidChangeState:(unint64_t)state;
+- (void)_routePlanningSessionDidChangeState:(unint64_t)state;
+- (void)_startNavigatingAnimated:(BOOL)animated;
 - (void)_stopNavigation;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)didUpdateRouteGenius:(id)a3;
-- (void)endNavigationIfNeededWithPrompt:(BOOL)a3 andPerformBlock:(id)a4;
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4;
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)navigationServicePredictingDidArrive:(id)a3;
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)setActive:(BOOL)a3;
-- (void)setNavigationSession:(id)a3;
-- (void)setRouteGeniusSession:(id)a3;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)didUpdateRouteGenius:(id)genius;
+- (void)endNavigationIfNeededWithPrompt:(BOOL)prompt andPerformBlock:(id)block;
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state;
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)navigationServicePredictingDidArrive:(id)arrive;
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)removeObserver:(id)observer;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)setActive:(BOOL)active;
+- (void)setNavigationSession:(id)session;
+- (void)setRouteGeniusSession:(id)session;
+- (void)setRoutePlanningSession:(id)session;
 @end
 
 @implementation CarSessionController
@@ -62,20 +62,20 @@
 
 - (NSSet)sessionObservers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CarSessionController *)v2 observers];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(CarSessionController *)selfCopy observers];
+  v4 = [observers copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v4 = a3;
-  if (!v4)
+  geniusCopy = genius;
+  if (!geniusCopy)
   {
     v12 = sub_100799CA8();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -84,14 +84,14 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "didUpdateRouteGenius with nil entry, will pop RG session.", v17, 2u);
     }
 
-    v11 = [(CarSessionController *)self platformController];
-    [(RouteGeniusSession *)v11 clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
+    platformController = [(CarSessionController *)self platformController];
+    [(RouteGeniusSession *)platformController clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
     goto LABEL_12;
   }
 
-  v5 = [(CarSessionController *)self platformController];
-  v6 = [v5 sessionStack];
-  v7 = [v6 count];
+  platformController2 = [(CarSessionController *)self platformController];
+  sessionStack = [platformController2 sessionStack];
+  v7 = [sessionStack count];
 
   if (!v7)
   {
@@ -102,43 +102,43 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "RG: pushing routeGeniusSession on platform sessionStack.", v15, 2u);
     }
 
-    v11 = objc_alloc_init(RouteGeniusSession);
-    v14 = [(CarSessionController *)self platformController];
-    [v14 pushSession:v11];
+    platformController = objc_alloc_init(RouteGeniusSession);
+    platformController3 = [(CarSessionController *)self platformController];
+    [platformController3 pushSession:platformController];
 
     goto LABEL_12;
   }
 
-  v8 = [(CarSessionController *)self platformController];
-  v9 = [v8 currentSession];
+  platformController4 = [(CarSessionController *)self platformController];
+  currentSession = [platformController4 currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v11 = sub_100799CA8();
-    if (os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
+    platformController = sub_100799CA8();
+    if (os_log_type_enabled(&platformController->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, &v11->super, OS_LOG_TYPE_ERROR, "didUpdateRouteGenius, but the platform controller is in an invalid state.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, &platformController->super, OS_LOG_TYPE_ERROR, "didUpdateRouteGenius, but the platform controller is in an invalid state.", buf, 2u);
     }
 
 LABEL_12:
   }
 }
 
-- (void)_routeGeniusSessionDidChangeState:(unint64_t)a3
+- (void)_routeGeniusSessionDidChangeState:(unint64_t)state
 {
   v4 = sub_100799CA8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = @"NotStarted";
-    if (a3 == 1)
+    if (state == 1)
     {
       v5 = @"Running";
     }
 
-    if (a3 == 2)
+    if (state == 2)
     {
       v5 = @"Suspended";
     }
@@ -148,7 +148,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "_routeGeniusSessionDidChangeState: %@", &v9, 0xCu);
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     if (GEOConfigGetBOOL())
     {
@@ -162,7 +162,7 @@ LABEL_12:
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -178,48 +178,48 @@ LABEL_12:
   }
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
-  v5 = a5;
+  initiatedCopy = initiated;
   v8 = sub_100799CA8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    if ((a4 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v9 = @"Undefined";
     }
 
     else
     {
-      v9 = *(&off_101631F58 + a4 - 1);
+      v9 = *(&off_101631F58 + type - 1);
     }
 
     v10 = 138412546;
     v11 = v9;
     v12 = 1024;
-    v13 = v5;
+    v13 = initiatedCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "routePlanningSession:didChangeCurrentTransportType %@ userInitiated:%d", &v10, 0x12u);
   }
 
-  [(CarSessionController *)self _handleTransportType:a4];
+  [(CarSessionController *)self _handleTransportType:type];
 }
 
-- (void)_routePlanningSessionDidChangeState:(unint64_t)a3
+- (void)_routePlanningSessionDidChangeState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     if (!GEOConfigGetBOOL())
     {
       return;
     }
 
-    v8 = +[MapsSuggestionsPredictor sharedPredictor];
-    [v8 cancelCapturingAnalytics];
+    routePlanningSession2 = +[MapsSuggestionsPredictor sharedPredictor];
+    [routePlanningSession2 cancelCapturingAnalytics];
   }
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -230,32 +230,32 @@ LABEL_12:
       [v4 capturePredictedTransportationMode:0];
     }
 
-    v5 = [(CarSessionController *)self routePlanningSession];
-    v6 = [v5 sessionInitiator];
+    routePlanningSession = [(CarSessionController *)self routePlanningSession];
+    sessionInitiator = [routePlanningSession sessionInitiator];
 
-    if (v6 != 2)
+    if (sessionInitiator != 2)
     {
       v7 = +[CarChromeModeCoordinator sharedInstance];
       [v7 displayRoutePlanningForExistingRoute];
     }
 
-    v8 = [(CarSessionController *)self routePlanningSession];
-    -[CarSessionController _handleTransportType:](self, "_handleTransportType:", [v8 currentTransportType]);
+    routePlanningSession2 = [(CarSessionController *)self routePlanningSession];
+    -[CarSessionController _handleTransportType:](self, "_handleTransportType:", [routePlanningSession2 currentTransportType]);
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 arrivalState] - 1 <= 5)
+  serviceCopy = service;
+  infoCopy = info;
+  if ([infoCopy arrivalState] - 1 <= 5)
   {
-    v9 = [v7 route];
-    v10 = [v9 isLegIndexOfLastLeg:{objc_msgSend(v8, "legIndex")}];
+    route = [serviceCopy route];
+    v10 = [route isLegIndexOfLastLeg:{objc_msgSend(infoCopy, "legIndex")}];
 
     if (v10)
     {
-      v11 = a5 - 1;
+      v11 = state - 1;
       v12 = sub_100799CA8();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
       if (v11 > 5)
@@ -263,7 +263,7 @@ LABEL_12:
         if (v13)
         {
           v15 = 138412290;
-          v16 = v8;
+          v16 = infoCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "CarSessionController: didUpdateArrivalInfo: %@, displaying navigation", &v15, 0xCu);
         }
 
@@ -275,7 +275,7 @@ LABEL_12:
       if (v13)
       {
         v15 = 138412290;
-        v16 = v8;
+        v16 = infoCopy;
         v14 = "CarSessionController: didUpdateArrivalInfo: %@, has already arrived";
 LABEL_8:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v14, &v15, 0xCu);
@@ -288,7 +288,7 @@ LABEL_8:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v15 = 138412290;
-        v16 = v8;
+        v16 = infoCopy;
         v14 = "CarSessionController: didUpdateArrivalInfo: %@, did not arrive at destination";
         goto LABEL_8;
       }
@@ -298,21 +298,21 @@ LABEL_12:
   }
 }
 
-- (void)navigationServicePredictingDidArrive:(id)a3
+- (void)navigationServicePredictingDidArrive:(id)arrive
 {
-  v3 = [(CarSessionController *)self platformController];
-  [v3 clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
+  platformController = [(CarSessionController *)self platformController];
+  [platformController clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
 }
 
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [(CarSessionController *)self navigationSession];
+  sessionCopy = session;
+  navigationSession = [(CarSessionController *)self navigationSession];
 
-  if (v6 == v5)
+  if (navigationSession == sessionCopy)
   {
-    v8 = [(CarSessionController *)self navigationSession];
-    -[CarSessionController _handleTransportType:](self, "_handleTransportType:", [v8 currentTransportType]);
+    navigationSession2 = [(CarSessionController *)self navigationSession];
+    -[CarSessionController _handleTransportType:](self, "_handleTransportType:", [navigationSession2 currentTransportType]);
   }
 
   else
@@ -326,15 +326,15 @@ LABEL_12:
   }
 }
 
-- (void)_promptToEndNavigationAccepted:(id)a3
+- (void)_promptToEndNavigationAccepted:(id)accepted
 {
-  v9 = a3;
+  acceptedCopy = accepted;
   v4 = +[MNNavigationService sharedService];
-  v5 = [v4 isInNavigatingState];
+  isInNavigatingState = [v4 isInNavigatingState];
 
-  if (v5)
+  if (isInNavigatingState)
   {
-    v6 = [v9 copy];
+    v6 = [acceptedCopy copy];
     navigationEndedHandler = self->_navigationEndedHandler;
     self->_navigationEndedHandler = v6;
 
@@ -342,21 +342,21 @@ LABEL_12:
     [v8 stopNavigationWithReason:2];
   }
 
-  else if (v9)
+  else if (acceptedCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(acceptedCopy + 2))(acceptedCopy, 1);
   }
 }
 
-- (void)endNavigationIfNeededWithPrompt:(BOOL)a3 andPerformBlock:(id)a4
+- (void)endNavigationIfNeededWithPrompt:(BOOL)prompt andPerformBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   [(CarSessionController *)self setNavigationEndedHandler:0];
-  v7 = [(CarSessionController *)self navigationSession];
+  navigationSession = [(CarSessionController *)self navigationSession];
 
-  if (v7)
+  if (navigationSession)
   {
-    if (a3)
+    if (prompt)
     {
       objc_initWeak(location, self);
       v8 = sub_100799CA8();
@@ -372,7 +372,7 @@ LABEL_12:
       v11[2] = sub_100A191BC;
       v11[3] = &unk_10165E7A0;
       objc_copyWeak(&v13, location);
-      v12 = v6;
+      v12 = blockCopy;
       [v9 interruptApplicationWithKind:7 userInfo:0 completionHandler:v11];
 
       objc_destroyWeak(&v13);
@@ -388,13 +388,13 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "CarSessionController : Will not kMapsInterruptionMaybeEndNavigation, ending navigation and performing block immediately", location, 2u);
       }
 
-      [(CarSessionController *)self _promptToEndNavigationAccepted:v6];
+      [(CarSessionController *)self _promptToEndNavigationAccepted:blockCopy];
     }
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 }
 
@@ -413,9 +413,9 @@ LABEL_12:
   v5 = +[CarDisplayController sharedInstance];
   [v5 _carSessionController_updateNavigationHostingState];
 
-  v6 = [(CarSessionController *)self navigationEndedHandler];
+  navigationEndedHandler = [(CarSessionController *)self navigationEndedHandler];
 
-  if (v6)
+  if (navigationEndedHandler)
   {
     v7 = objc_retainBlock(self->_navigationEndedHandler);
     [(CarSessionController *)self setNavigationEndedHandler:0];
@@ -425,47 +425,47 @@ LABEL_12:
   else
   {
     v8 = +[MNNavigationService sharedService];
-    v9 = [v8 isDetour];
+    isDetour = [v8 isDetour];
 
-    if (!v9)
+    if (!isDetour)
     {
       return;
     }
 
     v7 = +[CarChromeModeCoordinator sharedInstance];
     v10 = +[MNNavigationService sharedService];
-    v11 = [v10 originalDestination];
+    originalDestination = [v10 originalDestination];
     v14 = @"isOriginalDestination";
     v15 = &__kCFBooleanTrue;
     v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    [v7 displayRoutePlanningForDestination:v11 userInfo:v12];
+    [v7 displayRoutePlanningForDestination:originalDestination userInfo:v12];
   }
 }
 
-- (void)_startNavigatingAnimated:(BOOL)a3
+- (void)_startNavigatingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(CarSessionController *)self navigationSession];
-  v5 = [v4 currentRouteCollection];
-  v6 = [v5 currentRoute];
+  animatedCopy = animated;
+  navigationSession = [(CarSessionController *)self navigationSession];
+  currentRouteCollection = [navigationSession currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
 
-  v7 = [v6 origin];
-  v8 = [v7 geoMapItem];
+  origin = [currentRoute origin];
+  geoMapItem = [origin geoMapItem];
 
-  v9 = [v6 destination];
-  v10 = [v9 geoMapItem];
+  destination = [currentRoute destination];
+  geoMapItem2 = [destination geoMapItem];
 
-  if (![v6 isMultipointRoute] && v8 && v10 && GEOConfigGetBOOL())
+  if (![currentRoute isMultipointRoute] && geoMapItem && geoMapItem2 && GEOConfigGetBOOL())
   {
     v11 = +[MapsSuggestionsPredictor sharedPredictor];
-    [v11 captureActualTransportationMode:0 originMapItem:v8 destinationMapItem:v10];
+    [v11 captureActualTransportationMode:0 originMapItem:geoMapItem destinationMapItem:geoMapItem2];
   }
 
   v12 = sub_100799CA8();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = @"NO";
-    if (v3)
+    if (animatedCopy)
     {
       v13 = @"YES";
     }
@@ -477,16 +477,16 @@ LABEL_12:
   }
 
   v15 = +[CarDisplayController sharedInstance];
-  v16 = [v15 isCurrentlyConnectedToCarAppScene];
+  isCurrentlyConnectedToCarAppScene = [v15 isCurrentlyConnectedToCarAppScene];
   v17 = +[MNNavigationService sharedService];
-  [v17 setIsConnectedToCarplay:v16];
+  [v17 setIsConnectedToCarplay:isCurrentlyConnectedToCarAppScene];
 
   v18 = +[NavigationFeedbackCollector sharedFeedbackCollector];
-  [v18 setIsConnectedToCarplay:v16];
+  [v18 setIsConnectedToCarplay:isCurrentlyConnectedToCarAppScene];
 
   v19 = +[CarChromeModeCoordinator sharedInstance];
   v20 = v19;
-  if (v3)
+  if (animatedCopy)
   {
     [v19 displayNavigation];
   }
@@ -499,22 +499,22 @@ LABEL_12:
   [v15 _carSessionController_updateNavigationHostingState];
 }
 
-- (void)_navigationSessionDidChangeState:(unint64_t)a3
+- (void)_navigationSessionDidChangeState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     [(CarSessionController *)self _stopNavigation];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     [(CarSessionController *)self _startNavigatingAnimated:?];
   }
 }
 
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = sub_100799CA8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -522,12 +522,12 @@ LABEL_12:
     v9 = NSStringFromClass(v8);
     v10 = v9;
     v11 = @"NotStarted";
-    if (a4 == 1)
+    if (state == 1)
     {
       v11 = @"Running";
     }
 
-    if (a4 == 2)
+    if (state == 2)
     {
       v11 = @"Suspended";
     }
@@ -539,27 +539,27 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "mapsSession:didChangeState: class: %@, state: %@", &v30, 0x16u);
   }
 
-  v12 = [(CarSessionController *)self navigationSession];
-  if (v12 && ((v13 = v12, v14 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v15 = 0) : (v15 = v14), v16 = v15, v14, [(CarSessionController *)self navigationSession], v17 = objc_claimAutoreleasedReturnValue(), v16, v17, v13, v16 == v17))
+  navigationSession = [(CarSessionController *)self navigationSession];
+  if (navigationSession && ((v13 = navigationSession, v14 = sessionCopy, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v15 = 0) : (v15 = v14), v16 = v15, v14, [(CarSessionController *)self navigationSession], v17 = objc_claimAutoreleasedReturnValue(), v16, v17, v13, v16 == v17))
   {
-    [(CarSessionController *)self _navigationSessionDidChangeState:a4];
+    [(CarSessionController *)self _navigationSessionDidChangeState:state];
   }
 
   else
   {
-    v18 = [(CarSessionController *)self routePlanningSession];
-    if (v18 && ((v19 = v18, v20 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v21 = 0) : (v21 = v20), v22 = v21, v20, [(CarSessionController *)self routePlanningSession], v23 = objc_claimAutoreleasedReturnValue(), v22, v23, v19, v22 == v23))
+    routePlanningSession = [(CarSessionController *)self routePlanningSession];
+    if (routePlanningSession && ((v19 = routePlanningSession, v20 = sessionCopy, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v21 = 0) : (v21 = v20), v22 = v21, v20, [(CarSessionController *)self routePlanningSession], v23 = objc_claimAutoreleasedReturnValue(), v22, v23, v19, v22 == v23))
     {
-      [(CarSessionController *)self _routePlanningSessionDidChangeState:a4];
+      [(CarSessionController *)self _routePlanningSessionDidChangeState:state];
     }
 
     else
     {
-      v24 = [(CarSessionController *)self routeGeniusSession];
-      if (v24)
+      routeGeniusSession = [(CarSessionController *)self routeGeniusSession];
+      if (routeGeniusSession)
       {
-        v25 = v24;
-        v26 = v6;
+        v25 = routeGeniusSession;
+        v26 = sessionCopy;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -573,72 +573,72 @@ LABEL_12:
 
         v28 = v27;
 
-        v29 = [(CarSessionController *)self routeGeniusSession];
+        routeGeniusSession2 = [(CarSessionController *)self routeGeniusSession];
 
-        if (v28 == v29)
+        if (v28 == routeGeniusSession2)
         {
-          [(CarSessionController *)self _routeGeniusSessionDidChangeState:a4];
+          [(CarSessionController *)self _routeGeniusSessionDidChangeState:state];
         }
       }
     }
   }
 }
 
-- (void)setRouteGeniusSession:(id)a3
+- (void)setRouteGeniusSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   routeGeniusSession = self->_routeGeniusSession;
-  if (routeGeniusSession != v5)
+  if (routeGeniusSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(RouteGeniusSession *)routeGeniusSession unregisterObserver:self];
-    objc_storeStrong(&self->_routeGeniusSession, a3);
+    objc_storeStrong(&self->_routeGeniusSession, session);
     [(RouteGeniusSession *)self->_routeGeniusSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   navigationSession = self->_navigationSession;
-  if (navigationSession != v5)
+  if (navigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(NavigationSession *)navigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_navigationSession, a3);
+    objc_storeStrong(&self->_navigationSession, session);
     [(NavigationSession *)self->_navigationSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   routePlanningSession = self->_routePlanningSession;
-  if (routePlanningSession != v5)
+  if (routePlanningSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(RoutePlanningSession *)routePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_routePlanningSession, a3);
+    objc_storeStrong(&self->_routePlanningSession, session);
     [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)_handleTransportType:(int64_t)a3
+- (void)_handleTransportType:(int64_t)type
 {
   v4 = sub_100799CA8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v5 = @"Undefined";
     }
 
     else
     {
-      v5 = *(&off_101631F58 + a3 - 1);
+      v5 = *(&off_101631F58 + type - 1);
     }
 
     v8 = 138412290;
@@ -646,29 +646,29 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "_handleTransportType: %@", &v8, 0xCu);
   }
 
-  if (a3)
+  if (type)
   {
     v6 = +[UIApplication sharedMapsDelegate];
-    if (a3 == 1)
+    if (type == 1)
     {
       [v6 dismissCurrentInterruptionOfKind:8];
     }
 
     else
     {
-      v7 = sub_100FB1B44(a3);
+      v7 = sub_100FB1B44(type);
       [v6 interruptApplicationWithKind:8 userInfo:v7 completionHandler:0];
     }
   }
 }
 
-- (void)_handleIncomingSession:(id)a3
+- (void)_handleIncomingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sessionCopy;
   }
 
   else
@@ -679,7 +679,7 @@ LABEL_12:
   v6 = v5;
   [(CarSessionController *)self setRoutePlanningSession:v6];
 
-  v7 = v4;
+  v7 = sessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -715,10 +715,10 @@ LABEL_12:
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v9 = sub_100799CA8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -733,19 +733,19 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "didChangeCurrentSessionFromSession from: %@ to: %@", &v34, 0x16u);
   }
 
-  v14 = v8;
+  v14 = toSessionCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (!v14 || (isKindOfClass & 1) == 0)
   {
     v16 = +[CarDisplayController sharedInstance];
-    v17 = [v16 routeGeniusManager];
-    [v17 deactivateForAllChromes];
+    routeGeniusManager = [v16 routeGeniusManager];
+    [routeGeniusManager deactivateForAllChromes];
   }
 
   [(CarSessionController *)self _handleIncomingSession:v14];
-  v18 = v7;
+  v18 = sessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -818,17 +818,17 @@ LABEL_24:
     [v30 endRouteGenius];
 
     v31 = +[CarDisplayController sharedInstance];
-    v32 = [v31 routeGeniusManager];
-    [v32 deactivateForAllChromes];
+    routeGeniusManager2 = [v31 routeGeniusManager];
+    [routeGeniusManager2 deactivateForAllChromes];
 
 LABEL_25:
   }
 }
 
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a4;
-  v7 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v8 = sub_100799CA8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -843,7 +843,7 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "willChangeCurrentSessionFromSession from: %@ to: %@", &v27, 0x16u);
   }
 
-  v13 = v6;
+  v13 = sessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -857,7 +857,7 @@ LABEL_25:
 
   v15 = v14;
 
-  v16 = v7;
+  v16 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -875,9 +875,9 @@ LABEL_25:
   {
     if (v18)
     {
-      v19 = [v15 configuration];
-      v20 = [v19 automaticSharingContacts];
-      v21 = [v20 count];
+      configuration = [v15 configuration];
+      automaticSharingContacts = [configuration automaticSharingContacts];
+      v21 = [automaticSharingContacts count];
 
       if (v21)
       {
@@ -888,11 +888,11 @@ LABEL_25:
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Adding automatic sharing contacts from planning session to navigation session", &v27, 2u);
         }
 
-        v23 = [v15 configuration];
-        v24 = [v23 automaticSharingContacts];
-        v25 = [v18 configuration];
-        v26 = [v25 sharedTripPrefetchContext];
-        [v26 setAutomaticSharingContacts:v24];
+        configuration2 = [v15 configuration];
+        automaticSharingContacts2 = [configuration2 automaticSharingContacts];
+        configuration3 = [v18 configuration];
+        sharedTripPrefetchContext = [configuration3 sharedTripPrefetchContext];
+        [sharedTripPrefetchContext setAutomaticSharingContacts:automaticSharingContacts2];
       }
     }
   }
@@ -901,20 +901,20 @@ LABEL_25:
 - (PlatformController)platformController
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 platformController];
+  platformController = [v2 platformController];
 
-  return v3;
+  return platformController;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
-      v4 = [(CarSessionController *)self platformController];
-      [v4 registerObserver:self];
+      platformController = [(CarSessionController *)self platformController];
+      [platformController registerObserver:self];
 
       v5 = +[MNNavigationService sharedService];
       [v5 registerObserver:self];
@@ -922,22 +922,22 @@ LABEL_25:
       v6 = +[CarRouteGeniusService sharedService];
       [v6 registerObserver:self];
 
-      v7 = [(CarSessionController *)self platformController];
-      v8 = [v7 currentSession];
-      [(CarSessionController *)self _handleIncomingSession:v8];
+      platformController2 = [(CarSessionController *)self platformController];
+      currentSession = [platformController2 currentSession];
+      [(CarSessionController *)self _handleIncomingSession:currentSession];
     }
 
     else
     {
       [(CarSessionController *)self _handleIncomingSession:0];
-      v9 = [(CarSessionController *)self platformController];
-      [v9 unregisterObserver:self];
+      platformController3 = [(CarSessionController *)self platformController];
+      [platformController3 unregisterObserver:self];
 
       v10 = +[MNNavigationService sharedService];
       [v10 unregisterObserver:self];
 
-      v7 = +[CarRouteGeniusService sharedService];
-      [v7 unregisterObserver:self];
+      platformController2 = +[CarRouteGeniusService sharedService];
+      [platformController2 unregisterObserver:self];
     }
 
     v11 = +[CarDisplayController sharedInstance];
@@ -964,25 +964,25 @@ LABEL_25:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CarSessionController *)v5 observers];
-  v7 = [v6 containsObject:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(CarSessionController *)selfCopy observers];
+  v7 = [observers containsObject:observerCopy];
 
   if (v7)
   {
-    v8 = [(CarSessionController *)v5 observers];
-    [v8 removeObject:v4];
+    observers2 = [(CarSessionController *)selfCopy observers];
+    [observers2 removeObject:observerCopy];
 
-    v9 = [(CarSessionController *)v5 observers];
-    v10 = [v9 count];
+    observers3 = [(CarSessionController *)selfCopy observers];
+    v10 = [observers3 count];
 
     if (!v10)
     {
-      [(CarSessionController *)v5 setActive:0];
+      [(CarSessionController *)selfCopy setActive:0];
     }
 
     v11 = sub_100799CA8();
@@ -990,11 +990,11 @@ LABEL_25:
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [(CarSessionController *)v5 observers];
-      v15 = [v14 count];
-      v16 = [(CarSessionController *)v5 isActive];
+      observers4 = [(CarSessionController *)selfCopy observers];
+      v15 = [observers4 count];
+      isActive = [(CarSessionController *)selfCopy isActive];
       v17 = @"NO";
-      if (v16)
+      if (isActive)
       {
         v17 = @"YES";
       }
@@ -1009,41 +1009,41 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "removeObserver: %@, observersCount: %lu, active: %@", &v20, 0x20u);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v19 = +[NSNotificationCenter defaultCenter];
-    [v19 postNotificationName:@"CarSessionControllerObserversDidChangeNotification" object:v5];
+    [v19 postNotificationName:@"CarSessionControllerObserversDidChangeNotification" object:selfCopy];
   }
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CarSessionController *)v5 observers];
-  v7 = [v6 containsObject:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(CarSessionController *)selfCopy observers];
+  v7 = [observers containsObject:observerCopy];
 
   if (v7)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v8 = [(CarSessionController *)v5 observers];
-    [v8 addObject:v4];
+    observers2 = [(CarSessionController *)selfCopy observers];
+    [observers2 addObject:observerCopy];
 
-    v9 = [(CarSessionController *)v5 observers];
-    v10 = [v9 count];
+    observers3 = [(CarSessionController *)selfCopy observers];
+    v10 = [observers3 count];
 
     if (v10)
     {
-      [(CarSessionController *)v5 setActive:1];
+      [(CarSessionController *)selfCopy setActive:1];
     }
 
     v11 = sub_100799CA8();
@@ -1051,11 +1051,11 @@ LABEL_25:
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [(CarSessionController *)v5 observers];
-      v15 = [v14 count];
-      v16 = [(CarSessionController *)v5 isActive];
+      observers4 = [(CarSessionController *)selfCopy observers];
+      v15 = [observers4 count];
+      isActive = [(CarSessionController *)selfCopy isActive];
       v17 = @"NO";
-      if (v16)
+      if (isActive)
       {
         v17 = @"YES";
       }
@@ -1070,9 +1070,9 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "addObserver: %@, observersCount: %lu, active: %@", &v20, 0x20u);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v19 = +[NSNotificationCenter defaultCenter];
-    [v19 postNotificationName:@"CarSessionControllerObserversDidChangeNotification" object:v5];
+    [v19 postNotificationName:@"CarSessionControllerObserversDidChangeNotification" object:selfCopy];
   }
 }
 

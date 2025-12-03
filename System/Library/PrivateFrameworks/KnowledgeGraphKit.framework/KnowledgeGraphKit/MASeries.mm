@@ -1,10 +1,10 @@
 @interface MASeries
-- (BOOL)isEqual:(id)a3;
-- (MASeries)initWithName:(id)a3 indexCache:(id)a4 vector:(id)a5;
-- (MASeries)initWithName:(id)a3 labels:(id)a4 vector:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MASeries)initWithName:(id)name indexCache:(id)cache vector:(id)vector;
+- (MASeries)initWithName:(id)name labels:(id)labels vector:(id)vector;
 - (id)description;
 - (id)valueByLabels;
-- (id)valueForLabel:(id)a3;
+- (id)valueForLabel:(id)label;
 - (unint64_t)hash;
 @end
 
@@ -13,10 +13,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MASeries *)self name];
-  v5 = [(MASeries *)self labels];
-  v6 = [(MASeries *)self vector];
-  v7 = [v3 stringWithFormat:@"%@\n%@\n%@\n", v4, v5, v6];
+  name = [(MASeries *)self name];
+  labels = [(MASeries *)self labels];
+  vector = [(MASeries *)self vector];
+  v7 = [v3 stringWithFormat:@"%@\n%@\n%@\n", name, labels, vector];
 
   return v7;
 }
@@ -28,10 +28,10 @@
   return v4 ^ [(MAFloatVector *)self->_vector hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -41,13 +41,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       name = self->_name;
       if (name)
       {
-        v8 = [(MASeries *)v5 name];
-        v9 = [(NSString *)name isEqual:v8];
+        name = [(MASeries *)v5 name];
+        v9 = [(NSString *)name isEqual:name];
 
         if (!v9)
         {
@@ -65,8 +65,8 @@ LABEL_10:
       else
       {
         vector = self->_vector;
-        v14 = [(MASeries *)v6 vector];
-        v15 = [(MAFloatVector *)vector isEqual:v14];
+        vector = [(MASeries *)v6 vector];
+        v15 = [(MAFloatVector *)vector isEqual:vector];
       }
     }
 
@@ -89,8 +89,8 @@ LABEL_10:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MASeries *)self labels];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  labels = [(MASeries *)self labels];
+  v6 = [labels countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -101,7 +101,7 @@ LABEL_10:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(labels);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -109,7 +109,7 @@ LABEL_10:
         [v4 setObject:v11 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [labels countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -120,12 +120,12 @@ LABEL_10:
   return v4;
 }
 
-- (id)valueForLabel:(id)a3
+- (id)valueForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = self->_indexCache;
   v6 = v5;
-  if (v5 && (v7 = [(MAIndexCache *)v5 indexOfLabel:v4], v7 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v5 && (v7 = [(MAIndexCache *)v5 indexOfLabel:labelCopy], v7 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = MEMORY[0x277CCABB0];
     [(MASeries *)self valueAtIndex:v7];
@@ -140,29 +140,29 @@ LABEL_10:
   return v8;
 }
 
-- (MASeries)initWithName:(id)a3 labels:(id)a4 vector:(id)a5
+- (MASeries)initWithName:(id)name labels:(id)labels vector:(id)vector
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  nameCopy = name;
+  vectorCopy = vector;
+  if (labels)
   {
-    v10 = a4;
-    a4 = [[MAIndexCache alloc] initWithLabels:v10];
+    labelsCopy = labels;
+    labels = [[MAIndexCache alloc] initWithLabels:labelsCopy];
   }
 
-  v11 = [(MASeries *)self initWithName:v8 indexCache:a4 vector:v9];
+  v11 = [(MASeries *)self initWithName:nameCopy indexCache:labels vector:vectorCopy];
 
   return v11;
 }
 
-- (MASeries)initWithName:(id)a3 indexCache:(id)a4 vector:(id)a5
+- (MASeries)initWithName:(id)name indexCache:(id)cache vector:(id)vector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && ([v9 labels], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v13 = objc_msgSend(v10, "count"), v11, v12 != v13))
+  nameCopy = name;
+  cacheCopy = cache;
+  vectorCopy = vector;
+  if (cacheCopy && ([cacheCopy labels], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v13 = objc_msgSend(vectorCopy, "count"), v11, v12 != v13))
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -172,22 +172,22 @@ LABEL_10:
     v14 = [(MASeries *)&v21 init];
     if (v14)
     {
-      v15 = [v8 copy];
+      v15 = [nameCopy copy];
       name = v14->_name;
       v14->_name = v15;
 
-      v17 = [v10 copy];
+      v17 = [vectorCopy copy];
       vector = v14->_vector;
       v14->_vector = v17;
 
-      objc_storeStrong(&v14->_indexCache, a4);
+      objc_storeStrong(&v14->_indexCache, cache);
     }
 
     self = v14;
-    v19 = self;
+    selfCopy = self;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 @end

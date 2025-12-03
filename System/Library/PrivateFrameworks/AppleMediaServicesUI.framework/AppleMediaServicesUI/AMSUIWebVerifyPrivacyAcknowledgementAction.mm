@@ -1,19 +1,19 @@
 @interface AMSUIWebVerifyPrivacyAcknowledgementAction
-- (AMSUIWebVerifyPrivacyAcknowledgementAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebVerifyPrivacyAcknowledgementAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebVerifyPrivacyAcknowledgementAction
 
-- (AMSUIWebVerifyPrivacyAcknowledgementAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebVerifyPrivacyAcknowledgementAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebVerifyPrivacyAcknowledgementAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"privacyIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"privacyIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,10 +37,10 @@
   v14[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = AMSUIWebVerifyPrivacyAcknowledgementAction;
-  v3 = [(AMSUIWebAction *)&v12 runAction];
+  runAction = [(AMSUIWebAction *)&v12 runAction];
   v4 = MEMORY[0x1E698C790];
-  v5 = [(AMSUIWebVerifyPrivacyAcknowledgementAction *)self privacyIdentifier];
-  LODWORD(v4) = [v4 acknowledgementNeededForPrivacyIdentifier:v5];
+  privacyIdentifier = [(AMSUIWebVerifyPrivacyAcknowledgementAction *)self privacyIdentifier];
+  LODWORD(v4) = [v4 acknowledgementNeededForPrivacyIdentifier:privacyIdentifier];
 
   v6 = MEMORY[0x1E698CAD0];
   v13 = @"acknowledged";

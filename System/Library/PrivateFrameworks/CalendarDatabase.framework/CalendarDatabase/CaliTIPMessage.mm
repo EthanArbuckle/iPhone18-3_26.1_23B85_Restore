@@ -1,5 +1,5 @@
 @interface CaliTIPMessage
-- (CaliTIPMessage)initWithData:(id)a3 document:(id)a4 filename:(id)a5 scheduleChanges:(id)a6;
+- (CaliTIPMessage)initWithData:(id)data document:(id)document filename:(id)filename scheduleChanges:(id)changes;
 - (ICSCalendar)calendar;
 - (ICSDocument)document;
 - (ICSEvent)event;
@@ -7,27 +7,27 @@
 - (NSArray)allOccurrences;
 - (NSArray)occurrences;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CaliTIPMessage
 
-- (CaliTIPMessage)initWithData:(id)a3 document:(id)a4 filename:(id)a5 scheduleChanges:(id)a6
+- (CaliTIPMessage)initWithData:(id)data document:(id)document filename:(id)filename scheduleChanges:(id)changes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  documentCopy = document;
+  filenameCopy = filename;
+  changesCopy = changes;
   v17.receiver = self;
   v17.super_class = CaliTIPMessage;
   v14 = [(CaliTIPMessage *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(CaliTIPMessage *)v14 setData:v10];
-    objc_storeStrong(&v15->_document, a4);
-    [(CaliTIPMessage *)v15 setFilename:v12];
-    [(CaliTIPMessage *)v15 setScheduleChanges:v13];
+    [(CaliTIPMessage *)v14 setData:dataCopy];
+    objc_storeStrong(&v15->_document, document);
+    [(CaliTIPMessage *)v15 setFilename:filenameCopy];
+    [(CaliTIPMessage *)v15 setScheduleChanges:changesCopy];
   }
 
   return v15;
@@ -50,10 +50,10 @@
 
 - (ICSCalendar)calendar
 {
-  v2 = [(CaliTIPMessage *)self document];
-  v3 = [v2 calendar];
+  document = [(CaliTIPMessage *)self document];
+  calendar = [document calendar];
 
-  return v3;
+  return calendar;
 }
 
 - (ICSEvent)event
@@ -67,21 +67,21 @@ LABEL_2:
     goto LABEL_27;
   }
 
-  v5 = [(CaliTIPMessage *)self calendar];
-  v6 = [v5 componentKeys];
-  if ([v6 count])
+  calendar = [(CaliTIPMessage *)self calendar];
+  componentKeys = [calendar componentKeys];
+  if ([componentKeys count])
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v7 = v6;
+    v7 = componentKeys;
     v8 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v42;
-      v35 = v6;
+      v35 = componentKeys;
       v36 = v7;
       v33 = *v42;
       while (2)
@@ -96,7 +96,7 @@ LABEL_2:
           }
 
           v12 = *(*(&v41 + 1) + 8 * v11);
-          v13 = [v5 componentForKey:v12];
+          v13 = [calendar componentForKey:v12];
           if (v13)
           {
             objc_opt_class();
@@ -107,12 +107,12 @@ LABEL_2:
               NSLog(&cfstr_ComponentNotSu.isa, v30, v31);
 LABEL_24:
 
-              v6 = v35;
+              componentKeys = v35;
               goto LABEL_26;
             }
           }
 
-          v14 = [v5 componentOccurrencesForKey:v12];
+          v14 = [calendar componentOccurrencesForKey:v12];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
@@ -162,7 +162,7 @@ LABEL_24:
 
         while (v11 != v34);
         v9 = [v36 countByEnumeratingWithState:&v41 objects:v46 count:16];
-        v6 = v35;
+        componentKeys = v35;
         if (v9)
         {
           continue;
@@ -175,10 +175,10 @@ LABEL_24:
     if ([v7 count] < 2)
     {
       v26 = [v7 objectAtIndexedSubscript:0];
-      v27 = [v5 componentForKey:v26];
+      v27 = [calendar componentForKey:v26];
       if (!v27)
       {
-        v28 = [v5 componentOccurrencesForKey:v26];
+        v28 = [calendar componentOccurrencesForKey:v26];
         if ([v28 count])
         {
           v27 = [v28 objectAtIndexedSubscript:0];
@@ -218,81 +218,81 @@ LABEL_27:
 
 - (ICSEvent)masterEvent
 {
-  v3 = [(CaliTIPMessage *)self event];
-  v4 = [v3 recurrence_id];
+  event = [(CaliTIPMessage *)self event];
+  recurrence_id = [event recurrence_id];
 
-  if (v4)
+  if (recurrence_id)
   {
-    v5 = 0;
+    event2 = 0;
   }
 
   else
   {
-    v5 = [(CaliTIPMessage *)self event];
+    event2 = [(CaliTIPMessage *)self event];
   }
 
-  return v5;
+  return event2;
 }
 
 - (NSArray)allOccurrences
 {
-  v3 = [(CaliTIPMessage *)self event];
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (v3)
+  event = [(CaliTIPMessage *)self event];
+  array = [MEMORY[0x1E695DF70] array];
+  if (event)
   {
-    v5 = [v3 recurrence_id];
+    recurrence_id = [event recurrence_id];
 
-    if (!v5)
+    if (!recurrence_id)
     {
-      [v4 addObject:v3];
+      [array addObject:event];
     }
 
-    v6 = [(CaliTIPMessage *)self calendar];
-    v7 = [v3 uid];
-    v8 = [v6 componentOccurrencesForKey:v7];
-    [v4 addObjectsFromArray:v8];
+    calendar = [(CaliTIPMessage *)self calendar];
+    v7 = [event uid];
+    v8 = [calendar componentOccurrencesForKey:v7];
+    [array addObjectsFromArray:v8];
   }
 
-  return v4;
+  return array;
 }
 
 - (NSArray)occurrences
 {
-  v3 = [(CaliTIPMessage *)self event];
-  v4 = [v3 recurrence_id];
+  event = [(CaliTIPMessage *)self event];
+  recurrence_id = [event recurrence_id];
 
-  if (v4)
+  if (recurrence_id)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(CaliTIPMessage *)self calendar];
-    v7 = [v3 uid];
-    v5 = [v6 componentOccurrencesForKey:v7];
+    calendar = [(CaliTIPMessage *)self calendar];
+    v7 = [event uid];
+    v5 = [calendar componentOccurrencesForKey:v7];
   }
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CaliTIPMessage *)self event];
-  v6 = [v4 event];
+  compareCopy = compare;
+  event = [(CaliTIPMessage *)self event];
+  event2 = [compareCopy event];
 
-  v7 = [v5 sequence];
-  if (v7 >= [v6 sequence])
+  sequence = [event sequence];
+  if (sequence >= [event2 sequence])
   {
-    v9 = [v5 sequence];
-    if (v9 <= [v6 sequence])
+    sequence2 = [event sequence];
+    if (sequence2 <= [event2 sequence])
     {
-      v10 = [v5 dtstamp];
-      v11 = [v10 value];
-      v12 = [v6 dtstamp];
-      v13 = [v12 value];
-      v8 = [v11 compare:v13];
+      dtstamp = [event dtstamp];
+      value = [dtstamp value];
+      dtstamp2 = [event2 dtstamp];
+      value2 = [dtstamp2 value];
+      v8 = [value compare:value2];
     }
 
     else
@@ -311,17 +311,17 @@ LABEL_27:
 
 - (id)description
 {
-  v3 = [(CaliTIPMessage *)self calendar];
-  v4 = [(CaliTIPMessage *)self event];
+  calendar = [(CaliTIPMessage *)self calendar];
+  event = [(CaliTIPMessage *)self event];
   v14 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x1E69E3C68] ICSStringFromMethod:{objc_msgSend(v3, "method")}];
-  v7 = [v4 uid];
-  v8 = [v4 sequence];
-  v9 = [v4 dtstamp];
-  v10 = [v9 value];
-  v11 = [v4 summary];
-  v12 = [v14 stringWithFormat:@"%@ <%p> { %@ %@ %ld %@ %@}", v5, self, v6, v7, v8, v10, v11];
+  v6 = [MEMORY[0x1E69E3C68] ICSStringFromMethod:{objc_msgSend(calendar, "method")}];
+  v7 = [event uid];
+  sequence = [event sequence];
+  dtstamp = [event dtstamp];
+  value = [dtstamp value];
+  summary = [event summary];
+  v12 = [v14 stringWithFormat:@"%@ <%p> { %@ %@ %ld %@ %@}", v5, self, v6, v7, sequence, value, summary];
 
   return v12;
 }

@@ -1,12 +1,12 @@
 @interface RPApplicationServiceMonitor
 + (_TtC8rapportd27RPApplicationServiceMonitor)shared;
-- (BOOL)isServiceAvailableFor:(id)a3 serviceIdentifier:(id)a4;
-- (id)payloadFor:(id)a3 serviceIdentifier:(id)a4;
+- (BOOL)isServiceAvailableFor:(id)for serviceIdentifier:(id)identifier;
+- (id)payloadFor:(id)for serviceIdentifier:(id)identifier;
 - (void)activate;
-- (void)deregisterForNotificationsWithIdentifier:(id)a3;
+- (void)deregisterForNotificationsWithIdentifier:(id)identifier;
 - (void)discoverAndPublish;
 - (void)invalidate;
-- (void)registerForNotificationsWithIdentifier:(id)a3 changeHandler:(id)a4;
+- (void)registerForNotificationsWithIdentifier:(id)identifier changeHandler:(id)handler;
 @end
 
 @implementation RPApplicationServiceMonitor
@@ -23,12 +23,12 @@
   return v3;
 }
 
-- (id)payloadFor:(id)a3 serviceIdentifier:(id)a4
+- (id)payloadFor:(id)for serviceIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_lock);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 4);
   sub_1000FEE6C();
   os_unfair_lock_unlock(v5 + 4);
@@ -44,34 +44,34 @@
   return v7;
 }
 
-- (void)registerForNotificationsWithIdentifier:(id)a3 changeHandler:(id)a4
+- (void)registerForNotificationsWithIdentifier:(id)identifier changeHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(swift_allocObject() + 16) = v5;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_lock);
-  v7 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v6 + 4);
   sub_1000FEE6C();
   os_unfair_lock_unlock(v6 + 4);
 }
 
-- (void)deregisterForNotificationsWithIdentifier:(id)a3
+- (void)deregisterForNotificationsWithIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_lock);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 4);
   sub_1000FEE6C();
   os_unfair_lock_unlock(v4 + 4);
 }
 
-- (BOOL)isServiceAvailableFor:(id)a3 serviceIdentifier:(id)a4
+- (BOOL)isServiceAvailableFor:(id)for serviceIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_lock);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 4);
   sub_1000FEDE0(&v8);
   os_unfair_lock_unlock(v5 + 4);
@@ -82,13 +82,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F67DC();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F6C04();
 }
 
@@ -106,10 +106,10 @@
   v9[3] = 0;
   v9[4] = self;
   v9[5] = ObjectType;
-  v10 = self;
+  selfCopy = self;
   v11 = sub_1000C1E34(0, 0, v7, &unk_10014BB48, v9);
-  v12 = *(&v10->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_monitorTask);
-  *(&v10->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_monitorTask) = v11;
+  v12 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_monitorTask);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC8rapportd27RPApplicationServiceMonitor_monitorTask) = v11;
 }
 
 @end

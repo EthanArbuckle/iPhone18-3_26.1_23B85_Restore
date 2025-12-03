@@ -2,10 +2,10 @@
 + (HRProfileManager)sharedInstance;
 - (HRProfile)currentProfile;
 - (HRProfile)primaryProfile;
-- (id)profileWithHealthStore:(id)a3;
-- (id)profileWithProfileIdentifier:(id)a3;
-- (void)setCurrentProfile:(id)a3;
-- (void)switchCurrentProfileWithIdentifier:(id)a3;
+- (id)profileWithHealthStore:(id)store;
+- (id)profileWithProfileIdentifier:(id)identifier;
+- (void)setCurrentProfile:(id)profile;
+- (void)switchCurrentProfileWithIdentifier:(id)identifier;
 @end
 
 @implementation HRProfileManager
@@ -15,7 +15,7 @@
   sub_1D138D96C();
   sub_1D118C3B4();
   sub_1D10DC8AC();
-  v3 = self;
+  selfCopy = self;
 
   sub_1D138ED0C();
 
@@ -29,13 +29,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCurrentProfile:(id)a3
+- (void)setCurrentProfile:(id)profile
 {
   v5 = OBJC_IVAR___HRProfileManager_currentProfile;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = profile;
+  profileCopy = profile;
 }
 
 + (HRProfileManager)sharedInstance
@@ -50,36 +50,36 @@
   return v3;
 }
 
-- (void)switchCurrentProfileWithIdentifier:(id)a3
+- (void)switchCurrentProfileWithIdentifier:(id)identifier
 {
   sub_1D138D96C();
   sub_1D10DC8AC();
-  v5 = a3;
-  v6 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_1D138ED1C();
 }
 
-- (id)profileWithHealthStore:(id)a3
+- (id)profileWithHealthStore:(id)store
 {
   sub_1D138D96C();
   sub_1D118C3B4();
   sub_1D10DC8AC();
-  v5 = a3;
-  v6 = self;
+  storeCopy = store;
+  selfCopy = self;
 
   sub_1D138ED0C();
 
   return v8;
 }
 
-- (id)profileWithProfileIdentifier:(id)a3
+- (id)profileWithProfileIdentifier:(id)identifier
 {
   sub_1D138D96C();
   sub_1D118C3B4();
   sub_1D10DC8AC();
-  v5 = a3;
-  v6 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_1D138ED0C();
 

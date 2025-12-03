@@ -1,6 +1,6 @@
 @interface SFTabSwitcherDropDestination
 - (SFTabSwitcherDropDestination)init;
-- (SFTabSwitcherDropDestination)initWithPage:(id)a3 section:(id)a4 droppingBefore:(id)a5;
+- (SFTabSwitcherDropDestination)initWithPage:(id)page section:(id)section droppingBefore:(id)before;
 - (SFTabSwitcherItem)item;
 - (SFTabSwitcherPage)page;
 - (SFTabSwitcherSection)section;
@@ -8,19 +8,19 @@
 
 @implementation SFTabSwitcherDropDestination
 
-- (SFTabSwitcherDropDestination)initWithPage:(id)a3 section:(id)a4 droppingBefore:(id)a5
+- (SFTabSwitcherDropDestination)initWithPage:(id)page section:(id)section droppingBefore:(id)before
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_18BA93488(v7, v8, a5);
+  pageCopy = page;
+  sectionCopy = section;
+  beforeCopy = before;
+  v10 = sub_18BA93488(pageCopy, sectionCopy, before);
 
   return v10;
 }
 
 - (SFTabSwitcherPage)page
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA89FE8();
 
   return v3;
@@ -28,7 +28,7 @@
 
 - (SFTabSwitcherSection)section
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA8A1BC();
 
   return v3;
@@ -36,7 +36,7 @@
 
 - (SFTabSwitcherItem)item
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA8A3A0();
 
   return v3;

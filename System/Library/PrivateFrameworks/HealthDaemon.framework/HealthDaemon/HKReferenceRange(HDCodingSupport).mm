@@ -12,14 +12,14 @@
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
-    v5 = [v4 identifier];
+    identifier = [v4 identifier];
     v6 = MEMORY[0x277CCD558];
-    v7 = [v4 valueRange];
-    v8 = [v6 createWithCodable:v7];
+    valueRange = [v4 valueRange];
+    v8 = [v6 createWithCodable:valueRange];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCD890] referenceRangeWithIdentifier:v5 inspectableValueRange:v8];
+      v9 = [MEMORY[0x277CCD890] referenceRangeWithIdentifier:identifier inspectableValueRange:v8];
     }
 
     else
@@ -39,12 +39,12 @@
 - (HDCodableReferenceRange)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableReferenceRange);
-  v3 = [a1 referenceRangeIdentifier];
-  [(HDCodableReferenceRange *)v2 setIdentifier:v3];
+  referenceRangeIdentifier = [self referenceRangeIdentifier];
+  [(HDCodableReferenceRange *)v2 setIdentifier:referenceRangeIdentifier];
 
-  v4 = [a1 valueRange];
-  v5 = [v4 codableRepresentationForSync];
-  [(HDCodableReferenceRange *)v2 setValueRange:v5];
+  valueRange = [self valueRange];
+  codableRepresentationForSync = [valueRange codableRepresentationForSync];
+  [(HDCodableReferenceRange *)v2 setValueRange:codableRepresentationForSync];
 
   return v2;
 }

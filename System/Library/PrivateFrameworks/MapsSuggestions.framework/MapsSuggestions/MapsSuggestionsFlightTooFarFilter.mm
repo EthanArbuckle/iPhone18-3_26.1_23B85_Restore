@@ -1,17 +1,17 @@
 @interface MapsSuggestionsFlightTooFarFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsFlightTooFarFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    if ([v3 type] == 15)
+    if ([entryCopy type] == 15)
     {
       GEOConfigGetDouble();
       v6 = v5;

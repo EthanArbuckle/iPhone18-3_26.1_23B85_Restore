@@ -1,49 +1,49 @@
 @interface CDASchemaCDAParticipant
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAParticipant)initWithDictionary:(id)a3;
-- (CDASchemaCDAParticipant)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAParticipant)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAParticipant)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasProductType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasProductType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAParticipant
 
-- (CDASchemaCDAParticipant)initWithDictionary:(id)a3
+- (CDASchemaCDAParticipant)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = CDASchemaCDAParticipant;
   v5 = [(CDASchemaCDAParticipant *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"goodnessScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"goodnessScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAParticipant setGoodnessScore:](v5, "setGoodnessScore:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"deviceClass"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAParticipant setDeviceClass:](v5, "setDeviceClass:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"productType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAParticipant setProductType:](v5, "setProductType:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"electionParticipantId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"electionParticipantId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(CDASchemaCDAParticipant *)v5 setElectionParticipantId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"rotatedElectionParticipantId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"rotatedElectionParticipantId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (CDASchemaCDAParticipant)initWithJSON:(id)a3
+- (CDASchemaCDAParticipant)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAParticipant *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAParticipant *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAParticipant *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,7 +101,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [(CDASchemaCDAParticipant *)self deviceClass]- 1;
@@ -115,22 +115,22 @@
       v5 = off_1E78D2830[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"deviceClass"];
+    [dictionary setObject:v5 forKeyedSubscript:@"deviceClass"];
   }
 
   if (self->_electionParticipantId)
   {
-    v6 = [(CDASchemaCDAParticipant *)self electionParticipantId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    electionParticipantId = [(CDASchemaCDAParticipant *)self electionParticipantId];
+    dictionaryRepresentation = [electionParticipantId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"electionParticipantId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"electionParticipantId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"electionParticipantId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"electionParticipantId"];
     }
   }
 
@@ -138,7 +138,7 @@
   if (has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAParticipant goodnessScore](self, "goodnessScore")}];
-    [v3 setObject:v10 forKeyedSubscript:@"goodnessScore"];
+    [dictionary setObject:v10 forKeyedSubscript:@"goodnessScore"];
 
     has = self->_has;
   }
@@ -146,28 +146,28 @@
   if ((has & 4) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAParticipant productType](self, "productType")}];
-    [v3 setObject:v11 forKeyedSubscript:@"productType"];
+    [dictionary setObject:v11 forKeyedSubscript:@"productType"];
   }
 
   if (self->_rotatedElectionParticipantId)
   {
-    v12 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    rotatedElectionParticipantId = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+    dictionaryRepresentation2 = [rotatedElectionParticipantId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"rotatedElectionParticipantId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"rotatedElectionParticipantId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"rotatedElectionParticipantId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"rotatedElectionParticipantId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -212,16 +212,16 @@ LABEL_8:
   return v6 ^ [(SISchemaUUID *)self->_rotatedElectionParticipantId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_23;
@@ -230,13 +230,13 @@ LABEL_8:
   if (*&has)
   {
     goodnessScore = self->_goodnessScore;
-    if (goodnessScore != [v4 goodnessScore])
+    if (goodnessScore != [equalCopy goodnessScore])
     {
       goto LABEL_23;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -245,13 +245,13 @@ LABEL_8:
     if (v8)
     {
       deviceClass = self->_deviceClass;
-      if (deviceClass != [v4 deviceClass])
+      if (deviceClass != [equalCopy deviceClass])
       {
         goto LABEL_23;
       }
 
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -263,26 +263,26 @@ LABEL_8:
     if (v10)
     {
       productType = self->_productType;
-      if (productType != [v4 productType])
+      if (productType != [equalCopy productType])
       {
         goto LABEL_23;
       }
     }
 
-    v12 = [(CDASchemaCDAParticipant *)self electionParticipantId];
-    v13 = [v4 electionParticipantId];
-    if ((v12 != 0) == (v13 == 0))
+    electionParticipantId = [(CDASchemaCDAParticipant *)self electionParticipantId];
+    electionParticipantId2 = [equalCopy electionParticipantId];
+    if ((electionParticipantId != 0) == (electionParticipantId2 == 0))
     {
       goto LABEL_22;
     }
 
-    v14 = [(CDASchemaCDAParticipant *)self electionParticipantId];
-    if (v14)
+    electionParticipantId3 = [(CDASchemaCDAParticipant *)self electionParticipantId];
+    if (electionParticipantId3)
     {
-      v15 = v14;
-      v16 = [(CDASchemaCDAParticipant *)self electionParticipantId];
-      v17 = [v4 electionParticipantId];
-      v18 = [v16 isEqual:v17];
+      v15 = electionParticipantId3;
+      electionParticipantId4 = [(CDASchemaCDAParticipant *)self electionParticipantId];
+      electionParticipantId5 = [equalCopy electionParticipantId];
+      v18 = [electionParticipantId4 isEqual:electionParticipantId5];
 
       if (!v18)
       {
@@ -294,12 +294,12 @@ LABEL_8:
     {
     }
 
-    v12 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
-    v13 = [v4 rotatedElectionParticipantId];
-    if ((v12 != 0) != (v13 == 0))
+    electionParticipantId = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+    electionParticipantId2 = [equalCopy rotatedElectionParticipantId];
+    if ((electionParticipantId != 0) != (electionParticipantId2 == 0))
     {
-      v19 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
-      if (!v19)
+      rotatedElectionParticipantId = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+      if (!rotatedElectionParticipantId)
       {
 
 LABEL_26:
@@ -307,10 +307,10 @@ LABEL_26:
         goto LABEL_24;
       }
 
-      v20 = v19;
-      v21 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
-      v22 = [v4 rotatedElectionParticipantId];
-      v23 = [v21 isEqual:v22];
+      v20 = rotatedElectionParticipantId;
+      rotatedElectionParticipantId2 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+      rotatedElectionParticipantId3 = [equalCopy rotatedElectionParticipantId];
+      v23 = [rotatedElectionParticipantId2 isEqual:rotatedElectionParticipantId3];
 
       if (v23)
       {
@@ -331,9 +331,9 @@ LABEL_24:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -364,29 +364,29 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(CDASchemaCDAParticipant *)self electionParticipantId];
+  electionParticipantId = [(CDASchemaCDAParticipant *)self electionParticipantId];
 
-  if (v5)
+  if (electionParticipantId)
   {
-    v6 = [(CDASchemaCDAParticipant *)self electionParticipantId];
+    electionParticipantId2 = [(CDASchemaCDAParticipant *)self electionParticipantId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+  rotatedElectionParticipantId = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (rotatedElectionParticipantId)
   {
-    v9 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+    rotatedElectionParticipantId2 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasProductType:(BOOL)a3
+- (void)setHasProductType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -399,9 +399,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 2;
   }
@@ -414,26 +414,26 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = CDASchemaCDAParticipant;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(CDASchemaCDAParticipant *)self electionParticipantId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  electionParticipantId = [(CDASchemaCDAParticipant *)self electionParticipantId];
+  v7 = [electionParticipantId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CDASchemaCDAParticipant *)self deleteElectionParticipantId];
   }
 
-  v9 = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  rotatedElectionParticipantId = [(CDASchemaCDAParticipant *)self rotatedElectionParticipantId];
+  v10 = [rotatedElectionParticipantId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CDASchemaCDAParticipant *)self deleteRotatedElectionParticipantId];
   }

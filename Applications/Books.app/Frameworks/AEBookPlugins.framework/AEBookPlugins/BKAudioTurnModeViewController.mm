@@ -1,22 +1,22 @@
 @interface BKAudioTurnModeViewController
 - (BKAudioControllerDelegate)delegate;
-- (BKAudioTurnModeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (BKAudioTurnModeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)releaseViews;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKAudioTurnModeViewController
 
-- (BKAudioTurnModeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKAudioTurnModeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = BKAudioTurnModeViewController;
-  return [(BKViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(BKViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (void)dealloc
@@ -37,11 +37,11 @@
   [(BKAudioTurnModeViewController *)self setTitle:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKAudioTurnModeViewController;
-  [(BKAudioTurnModeViewController *)&v4 viewWillAppear:a3];
+  [(BKAudioTurnModeViewController *)&v4 viewWillAppear:appear];
   [(UITableView *)self->_tableView reloadData];
 }
 
@@ -63,28 +63,28 @@
   [(BKAudioTurnModeViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"BKAudioController"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"BKAudioController"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"BKAudioController"];
   }
 
-  v8 = [(BKAudioTurnModeViewController *)self delegate];
-  v9 = [v8 turnState];
+  delegate = [(BKAudioTurnModeViewController *)self delegate];
+  turnState = [delegate turnState];
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   v11 = AEBundle();
   v12 = v11;
   if (v10)
   {
     v13 = [v11 localizedStringForKey:@"Manually" value:&stru_1E7188 table:0];
-    v14 = [v7 textLabel];
-    [v14 setText:v13];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v13];
 
-    if (v9)
+    if (turnState)
     {
       goto LABEL_6;
     }
@@ -93,10 +93,10 @@
   }
 
   v17 = [v11 localizedStringForKey:@"Automatically" value:&stru_1E7188 table:0];
-  v18 = [v7 textLabel];
-  [v18 setText:v17];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setText:v17];
 
-  if (v9)
+  if (turnState)
   {
 LABEL_5:
     [v7 setAccessoryType:3];
@@ -109,25 +109,25 @@ LABEL_6:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a4 row] == 0;
-  v6 = [(BKAudioTurnModeViewController *)self delegate];
-  [v6 setTurnState:v5];
+  v5 = [path row] == 0;
+  delegate = [(BKAudioTurnModeViewController *)self delegate];
+  [delegate setTurnState:v5];
 
-  v7 = [(BKAudioTurnModeViewController *)self delegate];
-  LODWORD(v6) = [v7 readAloudState];
+  delegate2 = [(BKAudioTurnModeViewController *)self delegate];
+  LODWORD(delegate) = [delegate2 readAloudState];
 
-  if (v6)
+  if (delegate)
   {
-    v9 = [(BKAudioTurnModeViewController *)self delegate];
-    [v9 dismissPopover];
+    delegate3 = [(BKAudioTurnModeViewController *)self delegate];
+    [delegate3 dismissPopover];
   }
 
   else
   {
-    v9 = [(BKAudioTurnModeViewController *)self navigationController];
-    v8 = [v9 popViewControllerAnimated:1];
+    delegate3 = [(BKAudioTurnModeViewController *)self navigationController];
+    v8 = [delegate3 popViewControllerAnimated:1];
   }
 }
 

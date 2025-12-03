@@ -1,24 +1,24 @@
 @interface SXAutoPlacement
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
 - (NSString)description;
 @end
 
 @implementation SXAutoPlacement
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"advertisement"] || objc_msgSend(v6, "isEqualToString:", @"suggestedArticles"))
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"advertisement"] || objc_msgSend(propertyCopy, "isEqualToString:", @"suggestedArticles"))
   {
     v8 = objc_opt_class();
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___SXAutoPlacement;
-    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, v6, v7);
+    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
   }
 
   v9 = v8;
@@ -29,20 +29,20 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(SXAutoPlacement *)self advertisement];
+  advertisement = [(SXAutoPlacement *)self advertisement];
 
-  if (v4)
+  if (advertisement)
   {
-    v5 = [(SXAutoPlacement *)self advertisement];
-    [v3 appendFormat:@"; advertisement: %@", v5];
+    advertisement2 = [(SXAutoPlacement *)self advertisement];
+    [v3 appendFormat:@"; advertisement: %@", advertisement2];
   }
 
-  v6 = [(SXAutoPlacement *)self suggestedArticles];
+  suggestedArticles = [(SXAutoPlacement *)self suggestedArticles];
 
-  if (v6)
+  if (suggestedArticles)
   {
-    v7 = [(SXAutoPlacement *)self suggestedArticles];
-    [v3 appendFormat:@"; suggestedArticles: %@", v7];
+    suggestedArticles2 = [(SXAutoPlacement *)self suggestedArticles];
+    [v3 appendFormat:@"; suggestedArticles: %@", suggestedArticles2];
   }
 
   [v3 appendString:@">"];

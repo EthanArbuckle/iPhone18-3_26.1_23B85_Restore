@@ -1,28 +1,28 @@
 @interface MCKeyboardInput
 - (BOOL)hasDrawInput;
-- (BOOL)hasKindOf:(Class)a3;
+- (BOOL)hasKindOf:(Class)of;
 - (BOOL)hasRemainingComposingInput;
 - (MCKeyboardInput)composingInput;
-- (MCKeyboardInput)initWithSourceKeyboardState:(id)a3;
+- (MCKeyboardInput)initWithSourceKeyboardState:(id)state;
 - (NSArray)inputs;
 - (NSMutableArray)mutableInputs;
-- (id)_asInputStringWithCursorIndex:(unint64_t *)a3 remainingComposingInputIndex:(unint64_t *)a4 typeInputs:(id)a5 forSearch:(BOOL)a6 suffix:(id)a7;
+- (id)_asInputStringWithCursorIndex:(unint64_t *)index remainingComposingInputIndex:(unint64_t *)inputIndex typeInputs:(id)inputs forSearch:(BOOL)search suffix:(id)suffix;
 - (id)asCommittedText;
-- (id)asMecabraGestures:(BOOL *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)shortDescriptionWithLeadingString:(id)a3;
+- (id)asMecabraGestures:(BOOL *)gestures;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)shortDescriptionWithLeadingString:(id)string;
 - (unint64_t)asInlineTextCursorIndex;
 - (unint64_t)asSearchTextCursorIndex;
 - (unint64_t)totalDrawSamples;
-- (void)_addNearbyKeys:(id)a3 to:(void *)a4 likelihoodThreshold:(float)a5;
-- (void)composeNew:(id)a3;
-- (void)insertInput:(id)a3 atIndex:(unint64_t)a4;
+- (void)_addNearbyKeys:(id)keys to:(void *)to likelihoodThreshold:(float)threshold;
+- (void)composeNew:(id)new;
+- (void)insertInput:(id)input atIndex:(unint64_t)index;
 - (void)removeAllInputs;
 - (void)removeComposingInput;
-- (void)removeInputAtIndex:(unint64_t)a3;
-- (void)replaceComposingInputWith:(id)a3;
-- (void)replaceInputAtIndex:(unint64_t)a3 with:(id)a4;
-- (void)setComposingInput:(id)a3;
+- (void)removeInputAtIndex:(unint64_t)index;
+- (void)replaceComposingInputWith:(id)with;
+- (void)replaceInputAtIndex:(unint64_t)index with:(id)with;
+- (void)setComposingInput:(id)input;
 @end
 
 @implementation MCKeyboardInput
@@ -34,8 +34,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(MCKeyboardInput *)self inputs];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inputs = [(MCKeyboardInput *)self inputs];
+  v3 = [inputs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -47,19 +47,19 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputs);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 inputs];
-          v5 += [v9 count];
+          inputs2 = [v8 inputs];
+          v5 += [inputs2 count];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [inputs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -74,15 +74,15 @@
   return v5;
 }
 
-- (BOOL)hasKindOf:(Class)a3
+- (BOOL)hasKindOf:(Class)of
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(MCKeyboardInput *)self inputs];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inputs = [(MCKeyboardInput *)self inputs];
+  v4 = [inputs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -93,7 +93,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputs);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -104,7 +104,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [inputs countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -121,28 +121,28 @@ LABEL_11:
   return v9;
 }
 
-- (void)insertInput:(id)a3 atIndex:(unint64_t)a4
+- (void)insertInput:(id)input atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(MCKeyboardInput *)self inputs];
-  v8 = [v7 count];
+  inputCopy = input;
+  inputs = [(MCKeyboardInput *)self inputs];
+  v8 = [inputs count];
 
-  if (v8 < a4)
+  if (v8 < index)
   {
-    v9 = [(MCKeyboardInput *)self inputs];
-    a4 = [v9 count];
+    inputs2 = [(MCKeyboardInput *)self inputs];
+    index = [inputs2 count];
   }
 
-  v10 = [(MCKeyboardInput *)self mutableInputs];
-  [v10 insertObject:v6 atIndex:a4];
+  mutableInputs = [(MCKeyboardInput *)self mutableInputs];
+  [mutableInputs insertObject:inputCopy atIndex:index];
 
-  v11 = [(MCKeyboardInput *)self composingInput];
-  if (v11)
+  composingInput = [(MCKeyboardInput *)self composingInput];
+  if (composingInput)
   {
-    v12 = v11;
-    v13 = [(MCKeyboardInput *)self composingInputIndex];
+    v12 = composingInput;
+    composingInputIndex = [(MCKeyboardInput *)self composingInputIndex];
 
-    if (a4 <= v13)
+    if (index <= composingInputIndex)
     {
       v14 = [(MCKeyboardInput *)self composingInputIndex]+ 1;
 
@@ -151,50 +151,50 @@ LABEL_11:
   }
 }
 
-- (void)replaceComposingInputWith:(id)a3
+- (void)replaceComposingInputWith:(id)with
 {
-  v5 = a3;
-  v4 = [(MCKeyboardInput *)self composingInput];
+  withCopy = with;
+  composingInput = [(MCKeyboardInput *)self composingInput];
 
-  if (v4)
+  if (composingInput)
   {
-    [(MCKeyboardInput *)self replaceInputAtIndex:[(MCKeyboardInput *)self composingInputIndex] with:v5];
+    [(MCKeyboardInput *)self replaceInputAtIndex:[(MCKeyboardInput *)self composingInputIndex] with:withCopy];
   }
 }
 
-- (void)replaceInputAtIndex:(unint64_t)a3 with:(id)a4
+- (void)replaceInputAtIndex:(unint64_t)index with:(id)with
 {
-  v11 = a4;
-  v6 = [(MCKeyboardInput *)self inputs];
-  v7 = [v6 count];
+  withCopy = with;
+  inputs = [(MCKeyboardInput *)self inputs];
+  v7 = [inputs count];
 
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v8 = [(MCKeyboardInput *)self inputs];
-    v9 = [v8 objectAtIndexedSubscript:a3];
-    v10 = [(MCKeyboardInput *)self composingInput];
+    inputs2 = [(MCKeyboardInput *)self inputs];
+    v9 = [inputs2 objectAtIndexedSubscript:index];
+    composingInput = [(MCKeyboardInput *)self composingInput];
 
-    [(MCKeyboardInput *)self removeInputAtIndex:a3];
-    [(MCKeyboardInput *)self insertInput:v11 atIndex:a3];
-    if (v9 == v10)
+    [(MCKeyboardInput *)self removeInputAtIndex:index];
+    [(MCKeyboardInput *)self insertInput:withCopy atIndex:index];
+    if (v9 == composingInput)
     {
-      [(MCKeyboardInput *)self setComposingInput:v11];
+      [(MCKeyboardInput *)self setComposingInput:withCopy];
     }
   }
 }
 
-- (void)removeInputAtIndex:(unint64_t)a3
+- (void)removeInputAtIndex:(unint64_t)index
 {
-  v5 = [(MCKeyboardInput *)self inputs];
-  v6 = [v5 count];
+  inputs = [(MCKeyboardInput *)self inputs];
+  v6 = [inputs count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(MCKeyboardInput *)self inputs];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [(MCKeyboardInput *)self composingInput];
+    inputs2 = [(MCKeyboardInput *)self inputs];
+    v8 = [inputs2 objectAtIndexedSubscript:index];
+    composingInput = [(MCKeyboardInput *)self composingInput];
 
-    if (v8 == v9)
+    if (v8 == composingInput)
     {
 
       [(MCKeyboardInput *)self removeComposingInput];
@@ -202,10 +202,10 @@ LABEL_11:
 
     else
     {
-      v10 = [(MCKeyboardInput *)self mutableInputs];
-      [v10 removeObjectAtIndex:a3];
+      mutableInputs = [(MCKeyboardInput *)self mutableInputs];
+      [mutableInputs removeObjectAtIndex:index];
 
-      if ([(MCKeyboardInput *)self composingInputIndex]> a3)
+      if ([(MCKeyboardInput *)self composingInputIndex]> index)
       {
         v11 = [(MCKeyboardInput *)self composingInputIndex]- 1;
 
@@ -217,12 +217,12 @@ LABEL_11:
 
 - (void)removeComposingInput
 {
-  v3 = [(MCKeyboardInput *)self composingInput];
+  composingInput = [(MCKeyboardInput *)self composingInput];
 
-  if (v3)
+  if (composingInput)
   {
-    v4 = [(MCKeyboardInput *)self mutableInputs];
-    [v4 removeObjectAtIndex:{-[MCKeyboardInput composingInputIndex](self, "composingInputIndex")}];
+    mutableInputs = [(MCKeyboardInput *)self mutableInputs];
+    [mutableInputs removeObjectAtIndex:{-[MCKeyboardInput composingInputIndex](self, "composingInputIndex")}];
 
     if ([(MCKeyboardInput *)self composingInputIndex])
     {
@@ -241,25 +241,25 @@ LABEL_11:
 
 - (void)removeAllInputs
 {
-  v3 = [(MCKeyboardInput *)self mutableInputs];
-  [v3 removeAllObjects];
+  mutableInputs = [(MCKeyboardInput *)self mutableInputs];
+  [mutableInputs removeAllObjects];
 
   [(MCKeyboardInput *)self setComposingInput:0];
 }
 
-- (void)composeNew:(id)a3
+- (void)composeNew:(id)new
 {
-  v9 = a3;
+  newCopy = new;
   if ([(MCKeyboardInput *)self canComposeNew:?])
   {
-    v4 = [(MCKeyboardInput *)self composingInputIndex];
-    v5 = [(MCKeyboardInput *)self mutableInputs];
-    v6 = [v5 count];
+    composingInputIndex = [(MCKeyboardInput *)self composingInputIndex];
+    mutableInputs = [(MCKeyboardInput *)self mutableInputs];
+    v6 = [mutableInputs count];
 
-    if (v4 >= v6)
+    if (composingInputIndex >= v6)
     {
-      v7 = [(MCKeyboardInput *)self mutableInputs];
-      -[MCKeyboardInput setComposingInputIndex:](self, "setComposingInputIndex:", [v7 count]);
+      mutableInputs2 = [(MCKeyboardInput *)self mutableInputs];
+      -[MCKeyboardInput setComposingInputIndex:](self, "setComposingInputIndex:", [mutableInputs2 count]);
     }
 
     else
@@ -267,18 +267,18 @@ LABEL_11:
       [(MCKeyboardInput *)self setComposingInputIndex:[(MCKeyboardInput *)self composingInputIndex]+ 1];
     }
 
-    v8 = [(MCKeyboardInput *)self mutableInputs];
-    [v8 insertObject:v9 atIndex:{-[MCKeyboardInput composingInputIndex](self, "composingInputIndex")}];
+    mutableInputs3 = [(MCKeyboardInput *)self mutableInputs];
+    [mutableInputs3 insertObject:newCopy atIndex:{-[MCKeyboardInput composingInputIndex](self, "composingInputIndex")}];
   }
 }
 
-- (void)setComposingInput:(id)a3
+- (void)setComposingInput:(id)input
 {
-  v9 = a3;
-  if (v9)
+  inputCopy = input;
+  if (inputCopy)
   {
-    v4 = [(MCKeyboardInput *)self inputs];
-    v5 = [v4 indexOfObjectIdenticalTo:v9];
+    inputs = [(MCKeyboardInput *)self inputs];
+    v5 = [inputs indexOfObjectIdenticalTo:inputCopy];
 
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -288,33 +288,33 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = v5;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [(MCKeyboardInput *)v7 setComposingInputIndex:v8];
+  [(MCKeyboardInput *)selfCopy2 setComposingInputIndex:v8];
 LABEL_7:
 }
 
 - (MCKeyboardInput)composingInput
 {
-  v3 = [(MCKeyboardInput *)self composingInputIndex];
-  v4 = [(MCKeyboardInput *)self inputs];
-  if (v3 >= [v4 count])
+  composingInputIndex = [(MCKeyboardInput *)self composingInputIndex];
+  inputs = [(MCKeyboardInput *)self inputs];
+  if (composingInputIndex >= [inputs count])
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(MCKeyboardInput *)self inputs];
-    v6 = [v5 objectAtIndexedSubscript:{-[MCKeyboardInput composingInputIndex](self, "composingInputIndex")}];
+    inputs2 = [(MCKeyboardInput *)self inputs];
+    v6 = [inputs2 objectAtIndexedSubscript:{-[MCKeyboardInput composingInputIndex](self, "composingInputIndex")}];
   }
 
   return v6;
@@ -348,28 +348,28 @@ LABEL_7:
   return mutableInputs;
 }
 
-- (id)shortDescriptionWithLeadingString:(id)a3
+- (id)shortDescriptionWithLeadingString:(id)string
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = [(MCKeyboardInput *)self shortDescriptionExcludingSubInputs];
+  stringCopy = string;
+  string = [MEMORY[0x277CCAB68] string];
+  shortDescriptionExcludingSubInputs = [(MCKeyboardInput *)self shortDescriptionExcludingSubInputs];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v5 appendFormat:@"%@: %@", v8, v6];
+  [string appendFormat:@"%@: %@", v8, shortDescriptionExcludingSubInputs];
 
-  if ([v6 length])
+  if ([shortDescriptionExcludingSubInputs length])
   {
-    [v5 appendString:@" "];
+    [string appendString:@" "];
   }
 
-  v9 = [(MCKeyboardInput *)self inputs];
-  v10 = [v9 count];
+  inputs = [(MCKeyboardInput *)self inputs];
+  v10 = [inputs count];
 
   if (v10)
   {
-    v26 = v6;
-    objc_msgSend(v5, "appendString:", @"(\n");
+    v26 = shortDescriptionExcludingSubInputs;
+    objc_msgSend(string, "appendString:", @"(\n");
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -390,27 +390,27 @@ LABEL_7:
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          [v5 appendString:v4];
-          v16 = [(MCKeyboardInput *)self composingInput];
+          [string appendString:stringCopy];
+          composingInput = [(MCKeyboardInput *)self composingInput];
 
-          if (v15 == v16)
+          if (v15 == composingInput)
           {
-            [v5 appendString:@"*"];
+            [string appendString:@"*"];
           }
 
-          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v4, v4];
-          v18 = [v15 shortDescriptionWithLeadingString:v17];
-          [v5 appendString:v18];
+          stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", stringCopy, stringCopy];
+          v18 = [v15 shortDescriptionWithLeadingString:stringCopy];
+          [string appendString:v18];
 
-          v19 = [(MCKeyboardInput *)self inputs];
-          v20 = [v19 lastObject];
+          inputs2 = [(MCKeyboardInput *)self inputs];
+          lastObject = [inputs2 lastObject];
 
-          if (v15 != v20)
+          if (v15 != lastObject)
           {
-            [v5 appendString:{@", "}];
+            [string appendString:{@", "}];
           }
 
-          [v5 appendString:@"\n"];
+          [string appendString:@"\n"];
         }
 
         v12 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -419,26 +419,26 @@ LABEL_7:
       while (v12);
     }
 
-    v21 = [v4 length];
+    v21 = [stringCopy length];
     v22 = v21 - [@"    " length];
     if (v22 >= 1)
     {
-      v23 = [v4 substringToIndex:v22 & 0x7FFFFFFF];
-      [v5 appendString:v23];
+      0x7FFFFFFF = [stringCopy substringToIndex:v22 & 0x7FFFFFFF];
+      [string appendString:0x7FFFFFFF];
     }
 
-    [v5 appendString:@""]);
-    v6 = v26;
+    [string appendString:@""]);
+    shortDescriptionExcludingSubInputs = v26;
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return string;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     if (self->_mutableInputs)
@@ -461,9 +461,9 @@ LABEL_7:
   return v4;
 }
 
-- (MCKeyboardInput)initWithSourceKeyboardState:(id)a3
+- (MCKeyboardInput)initWithSourceKeyboardState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = MCKeyboardInput;
   v6 = [(MCKeyboardInput *)&v9 init];
@@ -471,7 +471,7 @@ LABEL_7:
   if (v6)
   {
     v6->_composingInputIndex = 0x7FFFFFFFFFFFFFFFLL;
-    objc_storeStrong(&v6->_sourceKeyboardState, a3);
+    objc_storeStrong(&v6->_sourceKeyboardState, state);
   }
 
   return v7;
@@ -484,28 +484,28 @@ LABEL_7:
   return [(MCKeyboardInput *)self hasKindOf:v3];
 }
 
-- (id)_asInputStringWithCursorIndex:(unint64_t *)a3 remainingComposingInputIndex:(unint64_t *)a4 typeInputs:(id)a5 forSearch:(BOOL)a6 suffix:(id)a7
+- (id)_asInputStringWithCursorIndex:(unint64_t *)index remainingComposingInputIndex:(unint64_t *)inputIndex typeInputs:(id)inputs forSearch:(BOOL)search suffix:(id)suffix
 {
-  v126 = a6;
+  searchCopy = search;
   v144 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a7;
+  inputsCopy = inputs;
+  suffixCopy = suffix;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || v126 && ([(MCKeyboardInput *)self useSubInputsAsSearchString]& 1) != 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || searchCopy && ([(MCKeyboardInput *)self useSubInputsAsSearchString]& 1) != 0)
   {
-    v124 = v11;
+    v124 = inputsCopy;
     if ([(MCKeyboardInput *)self hasDrawInput])
     {
-      v114 = a4;
-      v116 = a3;
-      v118 = v12;
-      v13 = [MEMORY[0x277CCAB68] string];
+      inputIndexCopy = inputIndex;
+      indexCopy = index;
+      v118 = suffixCopy;
+      string = [MEMORY[0x277CCAB68] string];
       v138 = 0u;
       v139 = 0u;
       v140 = 0u;
       v141 = 0u;
-      v14 = [(MCKeyboardInput *)self inputs];
-      v15 = [v14 countByEnumeratingWithState:&v138 objects:v143 count:16];
+      inputs = [(MCKeyboardInput *)self inputs];
+      v15 = [inputs countByEnumeratingWithState:&v138 objects:v143 count:16];
       if (!v15)
       {
         v17 = 0;
@@ -521,7 +521,7 @@ LABEL_7:
         {
           if (*v139 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(inputs);
           }
 
           v20 = *(*(&v138 + 1) + 8 * i);
@@ -530,23 +530,23 @@ LABEL_7:
           {
             v21 = v20;
 
-            v22 = [v21 convertedInput];
-            if (v22)
+            convertedInput = [v21 convertedInput];
+            if (convertedInput)
             {
             }
 
             else
             {
-              v24 = [v21 candidateText];
-              v25 = [v24 rangeOfString:v13];
+              candidateText = [v21 candidateText];
+              v25 = [candidateText rangeOfString:string];
 
               if (!v25)
               {
-                [(__CFString *)v13 setString:&stru_283FDFAF8];
+                [(__CFString *)string setString:&stru_283FDFAF8];
               }
             }
 
-            v23 = [v21 candidateText];
+            candidateText2 = [v21 candidateText];
             v17 = v21;
           }
 
@@ -558,55 +558,55 @@ LABEL_7:
               continue;
             }
 
-            v23 = [v20 committedText];
+            candidateText2 = [v20 committedText];
           }
 
-          [(__CFString *)v13 appendString:v23];
+          [(__CFString *)string appendString:candidateText2];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v138 objects:v143 count:16];
+        v16 = [inputs countByEnumeratingWithState:&v138 objects:v143 count:16];
         if (!v16)
         {
 LABEL_42:
 
-          if (v114)
+          if (inputIndexCopy)
           {
-            *v114 = [(__CFString *)v13 length];
+            *inputIndexCopy = [(__CFString *)string length];
           }
 
-          v39 = [v17 remainingInputString];
+          remainingInputString = [v17 remainingInputString];
 
-          v11 = v124;
-          v12 = v118;
-          if (v39)
+          inputsCopy = v124;
+          suffixCopy = v118;
+          if (remainingInputString)
           {
-            v40 = [v17 remainingInputString];
-            [(__CFString *)v13 appendString:v40];
+            remainingInputString2 = [v17 remainingInputString];
+            [(__CFString *)string appendString:remainingInputString2];
           }
 
-          if (v116)
+          if (indexCopy)
           {
-            *v116 = [(__CFString *)v13 length];
+            *indexCopy = [(__CFString *)string length];
           }
 
-          v41 = [v17 remainingInputString];
-          v42 = v41;
+          remainingInputString3 = [v17 remainingInputString];
+          v42 = remainingInputString3;
           v43 = &stru_283FDFAF8;
-          if (v41)
+          if (remainingInputString3)
           {
-            v43 = v41;
+            v43 = remainingInputString3;
           }
 
           v44 = v43;
 
-          if (v126)
+          if (searchCopy)
           {
             v45 = v44;
           }
 
           else
           {
-            v45 = v13;
+            v45 = string;
           }
 
           v32 = v45;
@@ -619,12 +619,12 @@ LABEL_42:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [(MCKeyboardInput *)self characters];
-      v30 = [v29 copy];
+      characters = [(MCKeyboardInput *)self characters];
+      convertedInput2 = [characters copy];
 
-      [v11 composeNew:self];
+      [inputsCopy composeNew:self];
       v31 = 0;
-      if (v30)
+      if (convertedInput2)
       {
         goto LABEL_28;
       }
@@ -635,27 +635,27 @@ LABEL_42:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v30 = [(MCKeyboardInput *)self convertedInput];
-        v31 = [(__CFString *)v30 length];
-        if (v30)
+        convertedInput2 = [(MCKeyboardInput *)self convertedInput];
+        v31 = [(__CFString *)convertedInput2 length];
+        if (convertedInput2)
         {
 LABEL_28:
-          if (!a3)
+          if (!index)
           {
 LABEL_30:
-            if (a4)
+            if (inputIndex)
             {
-              *a4 = v31;
+              *inputIndex = v31;
             }
 
-            v32 = v30;
+            v32 = convertedInput2;
 LABEL_129:
 
             goto LABEL_153;
           }
 
 LABEL_29:
-          *a3 = [(__CFString *)v30 length];
+          *index = [(__CFString *)convertedInput2 length];
           goto LABEL_30;
         }
       }
@@ -666,8 +666,8 @@ LABEL_29:
         if (objc_opt_isKindOfClass())
         {
           v31 = 0;
-          v30 = &stru_283FDFAF8;
-          if (!a3)
+          convertedInput2 = &stru_283FDFAF8;
+          if (!index)
           {
             goto LABEL_30;
           }
@@ -677,16 +677,16 @@ LABEL_29:
       }
     }
 
-    v115 = a4;
-    v117 = a3;
-    v119 = v12;
+    inputIndexCopy2 = inputIndex;
+    indexCopy2 = index;
+    v119 = suffixCopy;
     v47 = objc_opt_new();
     v48 = objc_opt_new();
     v134 = 0u;
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
-    v122 = self;
+    selfCopy = self;
     obj = [(MCKeyboardInput *)self inputs];
     v130 = [obj countByEnumeratingWithState:&v134 objects:v142 count:16];
     if (!v130)
@@ -717,7 +717,7 @@ LABEL_61:
       {
         v132 = 0;
         v133 = 0;
-        v56 = [v52 _asInputStringWithCursorIndex:&v133 remainingComposingInputIndex:&v132 typeInputs:v11 forSearch:v126 suffix:v48];
+        v56 = [v52 _asInputStringWithCursorIndex:&v133 remainingComposingInputIndex:&v132 typeInputs:inputsCopy forSearch:searchCopy suffix:v48];
         [v47 appendString:v56];
         if ((v49 & 1) == 0)
         {
@@ -728,8 +728,8 @@ LABEL_61:
           }
         }
 
-        v57 = [(MCKeyboardInput *)v122 composingInput];
-        v58 = v52 == v57;
+        composingInput = [(MCKeyboardInput *)selfCopy composingInput];
+        v58 = v52 == composingInput;
 
         if (v128)
         {
@@ -747,10 +747,10 @@ LABEL_61:
             v61 = v50;
             v62 = v48;
             v63 = v49;
-            v64 = [v60 cursorIndex];
-            v65 = [v60 committedText];
+            cursorIndex = [v60 cursorIndex];
+            committedText = [v60 committedText];
 
-            v66 = v64 >= [v65 length];
+            v66 = cursorIndex >= [committedText length];
             v49 = v63;
             v48 = v62;
             v50 = v61;
@@ -768,7 +768,7 @@ LABEL_61:
         v49 |= v58;
         v50 += v59;
 
-        v11 = v124;
+        inputsCopy = v124;
         goto LABEL_115;
       }
 
@@ -776,14 +776,14 @@ LABEL_61:
       v53 = v52;
       [v47 appendString:v48];
       [v48 deleteCharactersInRange:{0, objc_msgSend(v48, "length")}];
-      v54 = [v53 convertedInput];
-      if ([v54 length])
+      convertedInput3 = [v53 convertedInput];
+      if ([convertedInput3 length])
       {
         break;
       }
 
-      v68 = [v53 candidateText];
-      if (![v68 length])
+      candidateText3 = [v53 candidateText];
+      if (![candidateText3 length])
       {
         goto LABEL_110;
       }
@@ -819,24 +819,24 @@ LABEL_119:
 
           v90 = v89;
           v91 = v125;
-          if (v117)
+          if (indexCopy2)
           {
-            if ([(MCKeyboardInput *)v122 hasKindOf:objc_opt_class()])
+            if ([(MCKeyboardInput *)selfCopy hasKindOf:objc_opt_class()])
             {
               v91 = [v90 length];
             }
 
-            *v117 = v91;
+            *indexCopy2 = v91;
           }
 
-          if (v115)
+          if (inputIndexCopy2)
           {
-            *v115 = v50;
+            *inputIndexCopy2 = v50;
           }
 
           v32 = v90;
 
-          v12 = v119;
+          suffixCopy = v119;
           goto LABEL_129;
         }
 
@@ -853,13 +853,13 @@ LABEL_119:
 
 LABEL_80:
     v70 = [v47 length];
-    v71 = [v53 convertedInput];
-    v72 = [v71 length];
-    v73 = [v53 candidateText];
-    v54 = v73;
+    convertedInput4 = [v53 convertedInput];
+    v72 = [convertedInput4 length];
+    candidateText4 = [v53 candidateText];
+    convertedInput3 = candidateText4;
     if (v72)
     {
-      if ([v73 isEqualToString:v47])
+      if ([candidateText4 isEqualToString:v47])
       {
         [v53 candidateText];
       }
@@ -870,10 +870,10 @@ LABEL_80:
       }
       v74 = ;
 
-      v54 = v74;
+      convertedInput3 = v74;
     }
 
-    if ([v54 isEqualToString:@"☻"])
+    if ([convertedInput3 isEqualToString:@"☻"])
     {
       v75 = [v47 length];
       v76 = 0;
@@ -881,7 +881,7 @@ LABEL_80:
 
     else
     {
-      v76 = [v47 rangeOfString:v54 options:1 range:{v50, v70 - v50}];
+      v76 = [v47 rangeOfString:convertedInput3 options:1 range:{v50, v70 - v50}];
       v75 = v77;
     }
 
@@ -897,13 +897,13 @@ LABEL_80:
         v79 = 0;
       }
 
-      if (v126)
+      if (searchCopy)
       {
         v125 = v79;
         [v47 deleteCharactersInRange:{v76, v75}];
         if (v75)
         {
-          v11 = v124;
+          inputsCopy = v124;
           do
           {
             [v124 removeInputAtIndex:0];
@@ -917,30 +917,30 @@ LABEL_80:
 
       else
       {
-        v86 = [v53 candidateText];
-        v125 = [v86 length] + v79;
+        candidateText5 = [v53 candidateText];
+        v125 = [candidateText5 length] + v79;
 
-        v87 = [v53 candidateText];
-        [v47 replaceCharactersInRange:v76 withString:{v75, v87}];
+        candidateText6 = [v53 candidateText];
+        [v47 replaceCharactersInRange:v76 withString:{v75, candidateText6}];
 
-        v88 = [v53 candidateText];
-        v50 += [v88 length];
+        candidateText7 = [v53 candidateText];
+        v50 += [candidateText7 length];
       }
 
-      v11 = v124;
+      inputsCopy = v124;
     }
 
-    else if (!v126)
+    else if (!searchCopy)
     {
-      v78 = [v53 convertedInput];
-      if ([v78 length])
+      convertedInput5 = [v53 convertedInput];
+      if ([convertedInput5 length])
       {
       }
 
       else
       {
-        v80 = [v53 candidateText];
-        v81 = [v47 isEqualToString:v80];
+        candidateText8 = [v53 candidateText];
+        v81 = [v47 isEqualToString:candidateText8];
 
         if (v81)
         {
@@ -951,26 +951,26 @@ LABEL_80:
 
       if (v50 >= [v47 length])
       {
-        v85 = [v53 candidateText];
-        [v47 appendString:v85];
+        candidateText9 = [v53 candidateText];
+        [v47 appendString:candidateText9];
       }
 
       else
       {
-        v82 = [v53 remainingMecabraInputs];
+        remainingMecabraInputs = [v53 remainingMecabraInputs];
 
-        if (!v82)
+        if (!remainingMecabraInputs)
         {
           goto LABEL_113;
         }
 
         v83 = [v47 length] - v50;
-        v84 = [v53 candidateText];
-        [v47 replaceCharactersInRange:v50 withString:{v83, v84}];
+        candidateText10 = [v53 candidateText];
+        [v47 replaceCharactersInRange:v50 withString:{v83, candidateText10}];
       }
 
-      v68 = [v53 candidateText];
-      v50 += [v68 length];
+      candidateText3 = [v53 candidateText];
+      v50 += [candidateText3 length];
 LABEL_110:
     }
 
@@ -979,17 +979,17 @@ LABEL_113:
     goto LABEL_114;
   }
 
-  v26 = self;
-  v27 = [(MCKeyboardInput *)v26 text];
-  v28 = [(MCKeyboardInput *)v26 uncommittedText];
-  if (a4)
+  selfCopy2 = self;
+  text = [(MCKeyboardInput *)selfCopy2 text];
+  uncommittedText = [(MCKeyboardInput *)selfCopy2 uncommittedText];
+  if (inputIndex)
   {
-    if (!v126)
+    if (!searchCopy)
     {
-      v46 = [(MCKeyboardInput *)v26 committedText];
-      *a4 = [v46 length];
+      committedText2 = [(MCKeyboardInput *)selfCopy2 committedText];
+      *inputIndex = [committedText2 length];
 
-      if (!a3)
+      if (!index)
       {
         goto LABEL_132;
       }
@@ -997,8 +997,8 @@ LABEL_113:
       goto LABEL_55;
     }
 
-    *a4 = 0;
-    if (!a3)
+    *inputIndex = 0;
+    if (!index)
     {
       goto LABEL_132;
     }
@@ -1006,67 +1006,67 @@ LABEL_113:
 
   else
   {
-    if (!a3)
+    if (!index)
     {
       goto LABEL_132;
     }
 
-    if (!v126)
+    if (!searchCopy)
     {
       goto LABEL_55;
     }
   }
 
-  v33 = [(MCKeyboardInput *)v26 uncommittedText];
-  v34 = [v33 length];
+  uncommittedText2 = [(MCKeyboardInput *)selfCopy2 uncommittedText];
+  v34 = [uncommittedText2 length];
 
   if (!v34)
   {
 LABEL_55:
-    *a3 = [(MCKeyboardInput *)v26 cursorIndex];
+    *index = [(MCKeyboardInput *)selfCopy2 cursorIndex];
     goto LABEL_132;
   }
 
-  v35 = [(MCKeyboardInput *)v26 cursorIndex];
-  v36 = [(MCKeyboardInput *)v26 committedText];
-  if (v35 <= [v36 length])
+  cursorIndex2 = [(MCKeyboardInput *)selfCopy2 cursorIndex];
+  committedText3 = [(MCKeyboardInput *)selfCopy2 committedText];
+  if (cursorIndex2 <= [committedText3 length])
   {
-    *a3 = 0;
+    *index = 0;
   }
 
   else
   {
-    v37 = [(MCKeyboardInput *)v26 cursorIndex];
-    v38 = [(MCKeyboardInput *)v26 committedText];
-    *a3 = v37 - [v38 length];
+    cursorIndex3 = [(MCKeyboardInput *)selfCopy2 cursorIndex];
+    committedText4 = [(MCKeyboardInput *)selfCopy2 committedText];
+    *index = cursorIndex3 - [committedText4 length];
   }
 
 LABEL_132:
-  v92 = v27;
-  v93 = [(__CFString *)v92 substringWithRange:[(MCKeyboardInput *)v26 cursorIndex], [(__CFString *)v92 length]- [(MCKeyboardInput *)v26 cursorIndex]];
-  v94 = [(MCKeyboardInput *)v26 cursorIndex];
-  v131 = v28;
-  if (!v126)
+  v92 = text;
+  v93 = [(__CFString *)v92 substringWithRange:[(MCKeyboardInput *)selfCopy2 cursorIndex], [(__CFString *)v92 length]- [(MCKeyboardInput *)selfCopy2 cursorIndex]];
+  cursorIndex4 = [(MCKeyboardInput *)selfCopy2 cursorIndex];
+  v131 = uncommittedText;
+  if (!searchCopy)
   {
     v32 = v92;
-    if (v94 < [(__CFString *)v92 length])
+    if (cursorIndex4 < [(__CFString *)v92 length])
     {
-      [v12 appendString:v93];
-      v32 = [(__CFString *)v92 substringToIndex:[(MCKeyboardInput *)v26 cursorIndex]];
+      [suffixCopy appendString:v93];
+      v32 = [(__CFString *)v92 substringToIndex:[(MCKeyboardInput *)selfCopy2 cursorIndex]];
     }
 
     goto LABEL_148;
   }
 
-  v95 = [(MCKeyboardInput *)v26 committedText];
-  if (v94 <= [v95 length])
+  committedText5 = [(MCKeyboardInput *)selfCopy2 committedText];
+  if (cursorIndex4 <= [committedText5 length])
   {
-    v96 = [v28 length];
+    v96 = [uncommittedText length];
 
     if (v96)
     {
 
-      [v12 appendString:v28];
+      [suffixCopy appendString:uncommittedText];
       v32 = &stru_283FDFAF8;
       goto LABEL_148;
     }
@@ -1076,53 +1076,53 @@ LABEL_132:
   {
   }
 
-  v97 = [(MCKeyboardInput *)v26 cursorIndex];
-  v98 = [(MCKeyboardInput *)v26 committedText];
-  if (v97 <= [v98 length])
+  cursorIndex5 = [(MCKeyboardInput *)selfCopy2 cursorIndex];
+  committedText6 = [(MCKeyboardInput *)selfCopy2 committedText];
+  if (cursorIndex5 <= [committedText6 length])
   {
   }
 
   else
   {
-    v99 = [v28 length];
+    v99 = [uncommittedText length];
 
     if (v99)
     {
-      v100 = [(MCKeyboardInput *)v26 cursorIndex];
-      v101 = [(MCKeyboardInput *)v26 committedText];
-      v102 = v100 - [v101 length];
+      cursorIndex6 = [(MCKeyboardInput *)selfCopy2 cursorIndex];
+      committedText7 = [(MCKeyboardInput *)selfCopy2 committedText];
+      v102 = cursorIndex6 - [committedText7 length];
 
-      v32 = [v28 substringWithRange:{0, v102}];
+      v32 = [uncommittedText substringWithRange:{0, v102}];
 
 LABEL_147:
-      [v12 appendString:v93];
+      [suffixCopy appendString:v93];
       goto LABEL_148;
     }
   }
 
-  v103 = [(MCKeyboardInput *)v26 cursorIndex];
-  v104 = [(MCKeyboardInput *)v26 committedText];
-  if (v103 > [v104 length])
+  cursorIndex7 = [(MCKeyboardInput *)selfCopy2 cursorIndex];
+  committedText8 = [(MCKeyboardInput *)selfCopy2 committedText];
+  if (cursorIndex7 > [committedText8 length])
   {
 
     v32 = v92;
     goto LABEL_148;
   }
 
-  v105 = [v28 length];
+  v105 = [uncommittedText length];
 
   v32 = v92;
   if (!v105)
   {
-    v106 = [(MCKeyboardInput *)v26 committedText];
-    v32 = [v106 substringWithRange:{0, -[MCKeyboardInput cursorIndex](v26, "cursorIndex")}];
+    committedText9 = [(MCKeyboardInput *)selfCopy2 committedText];
+    v32 = [committedText9 substringWithRange:{0, -[MCKeyboardInput cursorIndex](selfCopy2, "cursorIndex")}];
 
     goto LABEL_147;
   }
 
 LABEL_148:
-  v120 = v12;
-  if (v11 && [(__CFString *)v32 length])
+  v120 = suffixCopy;
+  if (inputsCopy && [(__CFString *)v32 length])
   {
     v107 = 0;
     v108 = MEMORY[0x277CBEBF8];
@@ -1132,14 +1132,14 @@ LABEL_148:
       v110 = [(__CFString *)v32 substringWithRange:v107, 1];
       v111 = [(MCTypeInput *)v109 initWithCharacters:v110 nearbyKeys:v108];
 
-      [v11 composeNew:v111];
+      [inputsCopy composeNew:v111];
       ++v107;
     }
 
     while ([(__CFString *)v32 length]> v107);
   }
 
-  v12 = v120;
+  suffixCopy = v120;
 LABEL_153:
 
   v112 = *MEMORY[0x277D85DE8];
@@ -1147,18 +1147,18 @@ LABEL_153:
   return v32;
 }
 
-- (void)_addNearbyKeys:(id)a3 to:(void *)a4 likelihoodThreshold:(float)a5
+- (void)_addNearbyKeys:(id)keys to:(void *)to likelihoodThreshold:(float)threshold
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  keysCopy = keys;
+  v8 = keysCopy;
+  if (to)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v7;
+    v9 = keysCopy;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -1175,7 +1175,7 @@ LABEL_153:
 
           v14 = *(*(&v17 + 1) + 8 * i);
           [v14 logLikelihood];
-          if (v15 < a5)
+          if (v15 < threshold)
           {
 
             goto LABEL_14;
@@ -1205,31 +1205,31 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)asMecabraGestures:(BOOL *)a3
+- (id)asMecabraGestures:(BOOL *)gestures
 {
   v112 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CCAB68] string];
-  v93 = a3;
-  v95 = v6;
+  array = [MEMORY[0x277CBEB18] array];
+  string = [MEMORY[0x277CCAB68] string];
+  gesturesCopy = gestures;
+  v95 = string;
   if ([(MCKeyboardInput *)self hasKindOf:objc_opt_class()])
   {
     v107 = 0;
     v108 = &v107;
     v109 = 0x2020000000;
     v110 = 0;
-    v7 = [(MCKeyboardInput *)self inputs];
+    inputs = [(MCKeyboardInput *)self inputs];
     v106[0] = MEMORY[0x277D85DD0];
     v106[1] = 3221225472;
     v106[2] = __54__MCKeyboardInput_ChineseJapanese__asMecabraGestures___block_invoke;
     v106[3] = &unk_278730CB0;
     v106[4] = self;
     v106[5] = &v107;
-    v8 = [v7 indexOfObjectWithOptions:2 passingTest:v106];
+    v8 = [inputs indexOfObjectWithOptions:2 passingTest:v106];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = self;
+      selfCopy = self;
       v98 = 0;
 LABEL_23:
       _Block_object_dispose(&v107, 8);
@@ -1238,25 +1238,25 @@ LABEL_23:
 
     v11 = 0x27872D000uLL;
     v96 = objc_opt_new();
-    v12 = [(MCKeyboardInput *)self inputs];
-    v13 = [v12 objectAtIndexedSubscript:v8];
+    inputs2 = [(MCKeyboardInput *)self inputs];
+    v13 = [inputs2 objectAtIndexedSubscript:v8];
 
     if (*(v108 + 24) != 1)
     {
       goto LABEL_12;
     }
 
-    v14 = [v13 remainingInputString];
+    remainingInputString = [v13 remainingInputString];
 
-    if (v14)
+    if (remainingInputString)
     {
-      v15 = [v13 remainingInputString];
-      if ([v15 length])
+      remainingInputString2 = [v13 remainingInputString];
+      if ([remainingInputString2 length])
       {
         v16 = 0;
         do
         {
-          v105 = [v15 characterAtIndex:{v16, v93}];
+          v105 = [remainingInputString2 characterAtIndex:{v16, gesturesCopy}];
           v17 = [MEMORY[0x277CCACA8] stringWithCharacters:&v105 length:1];
           v18 = [[MCTypeInput alloc] initWithCharacters:v17 nearbyKeys:0];
           [(MCKeyboardInput *)v96 composeNew:v18];
@@ -1264,7 +1264,7 @@ LABEL_23:
           ++v16;
         }
 
-        while ([v15 length] > v16);
+        while ([remainingInputString2 length] > v16);
         v98 = 0;
         v11 = 0x27872D000;
       }
@@ -1280,12 +1280,12 @@ LABEL_23:
     if ((v108[3] & 1) == 0)
     {
 LABEL_12:
-      v19 = [v13 remainingMecabraInputs];
+      remainingMecabraInputs = [v13 remainingMecabraInputs];
 
-      if (v19)
+      if (remainingMecabraInputs)
       {
-        v15 = [v13 remainingMecabraInputs];
-        [v5 addObjectsFromArray:v15];
+        remainingInputString2 = [v13 remainingMecabraInputs];
+        [array addObjectsFromArray:remainingInputString2];
         v98 = 1;
 LABEL_16:
 
@@ -1295,23 +1295,23 @@ LABEL_16:
 
     v98 = 0;
 LABEL_17:
-    v20 = [(MCKeyboardInput *)self inputs];
-    v21 = [v20 count];
+    inputs3 = [(MCKeyboardInput *)self inputs];
+    v21 = [inputs3 count];
 
-    v9 = v96;
+    selfCopy = v96;
     if (v21 > v8 + 1)
     {
       v22 = v8 + 1;
       v23 = v8 + 2;
       do
       {
-        v24 = [(MCKeyboardInput *)self inputs];
-        v25 = [v24 objectAtIndexedSubscript:v22];
+        inputs4 = [(MCKeyboardInput *)self inputs];
+        v25 = [inputs4 objectAtIndexedSubscript:v22];
         [(MCKeyboardInput *)v96 composeNew:v25];
 
         v22 = v23;
-        v26 = [(MCKeyboardInput *)self inputs];
-        v27 = [v26 count];
+        inputs5 = [(MCKeyboardInput *)self inputs];
+        v27 = [inputs5 count];
       }
 
       while (v27 > v23++);
@@ -1323,14 +1323,14 @@ LABEL_17:
       v30 = objc_opt_new();
       v31 = [(MCKeyboardInput *)v96 _asInputStringWithCursorIndex:0 remainingComposingInputIndex:0 typeInputs:v30 forSearch:1 suffix:0];
 
-      v9 = v30;
+      selfCopy = v30;
     }
 
     goto LABEL_23;
   }
 
-  v9 = objc_opt_new();
-  v10 = [(MCKeyboardInput *)self _asInputStringWithCursorIndex:0 remainingComposingInputIndex:0 typeInputs:v9 forSearch:1 suffix:v6];
+  selfCopy = objc_opt_new();
+  v10 = [(MCKeyboardInput *)self _asInputStringWithCursorIndex:0 remainingComposingInputIndex:0 typeInputs:selfCopy forSearch:1 suffix:string];
   v98 = 0;
 LABEL_24:
   v32 = s_interface_idiom_is_pad;
@@ -1338,8 +1338,8 @@ LABEL_24:
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v97 = v9;
-  obj = [(MCKeyboardInput *)v9 inputs];
+  v97 = selfCopy;
+  obj = [(MCKeyboardInput *)selfCopy inputs];
   v33 = [obj countByEnumeratingWithState:&v101 objects:v111 count:16];
   if (!v33)
   {
@@ -1377,26 +1377,26 @@ LABEL_24:
         if (objc_opt_isKindOfClass())
         {
           v47 = v38;
-          v48 = [v47 inputs];
-          v49 = [v48 count];
+          inputs6 = [v47 inputs];
+          v49 = [inputs6 count];
 
           if (v49)
           {
             v50 = 0;
             do
             {
-              v51 = [v47 inputs];
-              v52 = [v51 objectAtIndexedSubscript:v50];
+              inputs7 = [v47 inputs];
+              v52 = [inputs7 objectAtIndexedSubscript:v50];
 
-              v53 = [v47 inputs];
-              v54 = [v53 firstObject];
+              inputs8 = [v47 inputs];
+              firstObject = [inputs8 firstObject];
 
-              if (v52 != v54)
+              if (v52 != firstObject)
               {
-                v55 = [v47 inputs];
-                v56 = [v55 lastObject];
+                inputs9 = [v47 inputs];
+                lastObject = [inputs9 lastObject];
 
-                if (v52 == v56)
+                if (v52 == lastObject)
                 {
                   [v47 isComplete];
                 }
@@ -1407,16 +1407,16 @@ LABEL_24:
               [v52 timestamp];
               [v52 isInflectionPoint];
               CPGesture = MecabraCreateCPGesture();
-              v58 = [v52 nearbyKeys];
+              nearbyKeys = [v52 nearbyKeys];
               *&v59 = v35;
-              [(MCKeyboardInput *)self _addNearbyKeys:v58 to:CPGesture likelihoodThreshold:v59];
+              [(MCKeyboardInput *)self _addNearbyKeys:nearbyKeys to:CPGesture likelihoodThreshold:v59];
 
-              [v5 addObject:CPGesture];
+              [array addObject:CPGesture];
               CFRelease(CPGesture);
 
               ++v50;
-              v60 = [v47 inputs];
-              v61 = [v60 count];
+              inputs10 = [v47 inputs];
+              v61 = [inputs10 count];
             }
 
             while (v61 > v50);
@@ -1436,46 +1436,46 @@ LABEL_24:
         v62 = v38;
         if ([v62 useSubInputsAsSearchString])
         {
-          v42 = [v62 asSearchString];
+          asSearchString = [v62 asSearchString];
           goto LABEL_65;
         }
 
-        v42 = [v62 uncommittedText];
-        v66 = [(MCKeyboardInput *)v97 inputs];
-        v67 = [v66 lastObject];
-        v68 = v67;
-        if (v62 != v67)
+        asSearchString = [v62 uncommittedText];
+        inputs11 = [(MCKeyboardInput *)v97 inputs];
+        lastObject2 = [inputs11 lastObject];
+        v68 = lastObject2;
+        if (v62 != lastObject2)
         {
 
           goto LABEL_60;
         }
 
-        v69 = [v42 length];
+        v69 = [asSearchString length];
 
         if (!v69)
         {
           [v62 committedText];
-          v42 = v66 = v42;
+          asSearchString = inputs11 = asSearchString;
 LABEL_60:
         }
 
-        v70 = [v62 cursorIndex];
-        v71 = [v62 committedText];
-        v72 = v70 - [v71 length];
+        cursorIndex = [v62 cursorIndex];
+        committedText = [v62 committedText];
+        v72 = cursorIndex - [committedText length];
         v73 = v72;
 
-        if (v72 >= 1 && (v72 & 0x7FFFFFFFu) <= [v42 length])
+        if (v72 >= 1 && (v72 & 0x7FFFFFFFu) <= [asSearchString length])
         {
           goto LABEL_67;
         }
 
-        v74 = [(MCKeyboardInput *)v97 inputs];
-        v75 = [v74 count];
+        inputs12 = [(MCKeyboardInput *)v97 inputs];
+        v75 = [inputs12 count];
 
         if (v75 == 1)
         {
 LABEL_65:
-          v73 = [v42 length];
+          v73 = [asSearchString length];
         }
 
         if (v73 >= 1)
@@ -1484,9 +1484,9 @@ LABEL_67:
           v76 = 0;
           do
           {
-            [v42 characterAtIndex:v76];
+            [asSearchString characterAtIndex:v76];
             TypeGesture = MecabraCreateTypeGesture();
-            [v5 addObject:TypeGesture];
+            [array addObject:TypeGesture];
             CFRelease(TypeGesture);
             ++v76;
           }
@@ -1494,11 +1494,11 @@ LABEL_67:
           while (v73 != v76);
         }
 
-        v78 = [v62 text];
-        v79 = [v62 cursorIndex];
-        if (v79 < [v78 length])
+        text = [v62 text];
+        cursorIndex2 = [v62 cursorIndex];
+        if (cursorIndex2 < [text length])
         {
-          v80 = [v78 substringWithRange:{objc_msgSend(v62, "cursorIndex"), objc_msgSend(v78, "length") - objc_msgSend(v62, "cursorIndex")}];
+          v80 = [text substringWithRange:{objc_msgSend(v62, "cursorIndex"), objc_msgSend(text, "length") - objc_msgSend(v62, "cursorIndex")}];
           [v95 appendString:v80];
         }
 
@@ -1509,28 +1509,28 @@ LABEL_72:
       }
 
       v39 = v38;
-      v40 = [v39 characters];
-      v41 = [v40 length];
+      characters = [v39 characters];
+      v41 = [characters length];
 
       if (v41)
       {
-        v42 = [v39 sourceKeyboardState];
-        if ([v42 userInterfaceIdiom] != 4 && (objc_msgSend(v42, "userInterfaceIdiom") || (objc_msgSend(v42, "isSplitKeyboard") & 1) != 0 || (objc_msgSend(v42, "isFloatingKeyboard") & 1) != 0 || (objc_msgSend(v42, "isHardwareKeyboard") & 1) != 0) || (objc_msgSend(v39, "nearbyKeys"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count"), v43, !v44))
+        asSearchString = [v39 sourceKeyboardState];
+        if ([asSearchString userInterfaceIdiom] != 4 && (objc_msgSend(asSearchString, "userInterfaceIdiom") || (objc_msgSend(asSearchString, "isSplitKeyboard") & 1) != 0 || (objc_msgSend(asSearchString, "isFloatingKeyboard") & 1) != 0 || (objc_msgSend(asSearchString, "isHardwareKeyboard") & 1) != 0) || (objc_msgSend(v39, "nearbyKeys"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count"), v43, !v44))
         {
-          v45 = [v39 characters];
-          [v45 characterAtIndex:0];
+          characters2 = [v39 characters];
+          [characters2 characterAtIndex:0];
           TypeGestureWithTouchEvent = MecabraCreateTypeGesture();
         }
 
         else
         {
-          if ([v42 userInterfaceIdiom] == 4)
+          if ([asSearchString userInterfaceIdiom] == 4)
           {
             v35 = -3.0;
           }
 
-          v45 = [v39 characters];
-          [v45 characterAtIndex:0];
+          characters2 = [v39 characters];
+          [characters2 characterAtIndex:0];
           [v39 point];
           [v39 point];
           TypeGestureWithTouchEvent = MecabraCreateTypeGestureWithTouchEvent();
@@ -1538,11 +1538,11 @@ LABEL_72:
 
         v63 = TypeGestureWithTouchEvent;
 
-        v64 = [v39 nearbyKeys];
+        nearbyKeys2 = [v39 nearbyKeys];
         *&v65 = v35;
-        [(MCKeyboardInput *)self _addNearbyKeys:v64 to:v63 likelihoodThreshold:v65];
+        [(MCKeyboardInput *)self _addNearbyKeys:nearbyKeys2 to:v63 likelihoodThreshold:v65];
 
-        [v5 addObject:v63];
+        [array addObject:v63];
         CFRelease(v63);
         goto LABEL_72;
       }
@@ -1561,17 +1561,17 @@ LABEL_74:
   while (v81);
 LABEL_78:
 
-  v82 = [(MCKeyboardInput *)self inputs];
-  v83 = [v82 lastObject];
+  inputs13 = [(MCKeyboardInput *)self inputs];
+  lastObject3 = [inputs13 lastObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_81;
   }
 
-  v84 = [(MCKeyboardInput *)self inputs];
-  v85 = [v84 lastObject];
-  if ([v85 includeSuffixAsSearchString])
+  inputs14 = [(MCKeyboardInput *)self inputs];
+  lastObject4 = [inputs14 lastObject];
+  if ([lastObject4 includeSuffixAsSearchString])
   {
 
 LABEL_81:
@@ -1584,7 +1584,7 @@ LABEL_82:
       {
         [v86 characterAtIndex:v87];
         v88 = MecabraCreateTypeGesture();
-        [v5 addObject:v88];
+        [array addObject:v88];
         CFRelease(v88);
         ++v87;
       }
@@ -1595,8 +1595,8 @@ LABEL_82:
 
   else
   {
-    v89 = [(MCKeyboardInput *)v97 inputs];
-    v90 = [v89 count];
+    inputs15 = [(MCKeyboardInput *)v97 inputs];
+    v90 = [inputs15 count];
 
     v86 = v95;
     if (!v90)
@@ -1612,7 +1612,7 @@ LABEL_82:
 
   v91 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 uint64_t __54__MCKeyboardInput_ChineseJapanese__asMecabraGestures___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1648,32 +1648,32 @@ uint64_t __54__MCKeyboardInput_ChineseJapanese__asMecabraGestures___block_invoke
   if (![(MCKeyboardInput *)self hasDrawInput])
   {
     v14 = 0;
-    v5 = [(MCKeyboardInput *)self _asInputStringWithCursorIndex:0 remainingComposingInputIndex:&v14 typeInputs:0 forSearch:0 suffix:0];
+    composingInput2 = [(MCKeyboardInput *)self _asInputStringWithCursorIndex:0 remainingComposingInputIndex:&v14 typeInputs:0 forSearch:0 suffix:0];
     v12 = v14;
-    v11 = v12 < [v5 length];
+    v11 = v12 < [composingInput2 length];
 LABEL_11:
 
     return v11;
   }
 
-  v3 = [(MCKeyboardInput *)self composingInput];
+  composingInput = [(MCKeyboardInput *)self composingInput];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MCKeyboardInput *)self composingInput];
-    v6 = [v5 convertedInput];
-    v7 = [v6 length];
+    composingInput2 = [(MCKeyboardInput *)self composingInput];
+    convertedInput = [composingInput2 convertedInput];
+    v7 = [convertedInput length];
 
-    v8 = [v5 remainingMecabraInputs];
-    v9 = v8;
+    remainingMecabraInputs = [composingInput2 remainingMecabraInputs];
+    v9 = remainingMecabraInputs;
     if (v7)
     {
-      if (v8)
+      if (remainingMecabraInputs)
       {
-        v10 = [v5 remainingMecabraInputs];
-        v11 = [v10 count] != 0;
+        remainingMecabraInputs2 = [composingInput2 remainingMecabraInputs];
+        v11 = [remainingMecabraInputs2 count] != 0;
       }
 
       else
@@ -1684,7 +1684,7 @@ LABEL_11:
 
     else
     {
-      v11 = v8 != 0;
+      v11 = remainingMecabraInputs != 0;
     }
 
     goto LABEL_11;

@@ -1,23 +1,23 @@
 @interface EDCellIterator
-- (EDCellHeader)adjacentCell:(int)a3;
-- (EDCellHeader)scanToRowNumber:(unsigned int)a3 columnNumber:(unsigned int)a4;
-- (EDCellIterator)initWithWorksheet:(id)a3;
+- (EDCellHeader)adjacentCell:(int)cell;
+- (EDCellHeader)scanToRowNumber:(unsigned int)number columnNumber:(unsigned int)columnNumber;
+- (EDCellIterator)initWithWorksheet:(id)worksheet;
 - (void)dealloc;
 @end
 
 @implementation EDCellIterator
 
-- (EDCellIterator)initWithWorksheet:(id)a3
+- (EDCellIterator)initWithWorksheet:(id)worksheet
 {
-  v4 = a3;
+  worksheetCopy = worksheet;
   v9.receiver = self;
   v9.super_class = EDCellIterator;
   v5 = [(EDCellIterator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 rowBlocks];
+    rowBlocks = [worksheetCopy rowBlocks];
     mRowBlocks = v5->mRowBlocks;
-    v5->mRowBlocks = v6;
+    v5->mRowBlocks = rowBlocks;
 
     v5->mCurrentRowInfoIndex = 0;
     *&v5->mCurrentCellIndex = 0xFFFFFFFF00000000;
@@ -35,27 +35,27 @@
   [(EDCellIterator *)&v3 dealloc];
 }
 
-- (EDCellHeader)scanToRowNumber:(unsigned int)a3 columnNumber:(unsigned int)a4
+- (EDCellHeader)scanToRowNumber:(unsigned int)number columnNumber:(unsigned int)columnNumber
 {
   mDesiredRowNumber = self->mDesiredRowNumber;
-  if (mDesiredRowNumber > a3 && mDesiredRowNumber != -1)
+  if (mDesiredRowNumber > number && mDesiredRowNumber != -1)
   {
     return 0;
   }
 
-  if (mDesiredRowNumber == a3)
+  if (mDesiredRowNumber == number)
   {
     mDesiredColumnNumber = self->mDesiredColumnNumber;
-    if (mDesiredColumnNumber > a4 && mDesiredColumnNumber != -1)
+    if (mDesiredColumnNumber > columnNumber && mDesiredColumnNumber != -1)
     {
       return 0;
     }
   }
 
-  self->mDesiredRowNumber = a3;
-  self->mDesiredColumnNumber = a4;
+  self->mDesiredRowNumber = number;
+  self->mDesiredColumnNumber = columnNumber;
   mCurrentRowInfo = self->mCurrentRowInfo;
-  if (!mCurrentRowInfo || mCurrentRowInfo->var1 < a3)
+  if (!mCurrentRowInfo || mCurrentRowInfo->var1 < number)
   {
     p_mCurrentRowBlock = &self->mCurrentRowBlock;
     v11 = [EDRowBlocks rowBlockForRowNumber:"rowBlockForRowNumber:currentRowBlock:" currentRowBlock:?];
@@ -68,8 +68,8 @@
       mCurrentRowBlock = self->mCurrentRowBlock;
     }
 
-    v13 = [(EDRowBlock *)mCurrentRowBlock rowCount];
-    for (i = self->mCurrentRowInfoIndex; i < v13; self->mCurrentRowInfoIndex = i)
+    rowCount = [(EDRowBlock *)mCurrentRowBlock rowCount];
+    for (i = self->mCurrentRowInfoIndex; i < rowCount; self->mCurrentRowInfoIndex = i)
     {
       v15 = [*p_mCurrentRowBlock rowInfoAtIndex:?];
       self->mCurrentRowInfo = v15;
@@ -137,7 +137,7 @@ LABEL_29:
   return 0;
 }
 
-- (EDCellHeader)adjacentCell:(int)a3
+- (EDCellHeader)adjacentCell:(int)cell
 {
   if (self->mDesiredRowNumber == -1)
   {
@@ -159,7 +159,7 @@ LABEL_29:
   if (mDesiredColumnNumber)
   {
     mCurrentCellIndex = self->mCurrentCellIndex;
-    if (a3 < 0 && !mCurrentCellIndex)
+    if (cell < 0 && !mCurrentCellIndex)
     {
       return 0;
     }
@@ -167,7 +167,7 @@ LABEL_29:
 
   else
   {
-    if (a3 < 0)
+    if (cell < 0)
     {
       return 0;
     }
@@ -175,13 +175,13 @@ LABEL_29:
     mCurrentCellIndex = self->mCurrentCellIndex;
   }
 
-  if (mCurrentCellIndex + a3 >= mCurrentRowInfo->var2)
+  if (mCurrentCellIndex + cell >= mCurrentRowInfo->var2)
   {
     return 0;
   }
 
   v9 = [EDRowBlock cellAtIndex:"cellAtIndex:rowInfo:" rowInfo:?];
-  if (columnNumberForEDCell(v9) == self->mDesiredColumnNumber + a3)
+  if (columnNumberForEDCell(v9) == self->mDesiredColumnNumber + cell)
   {
     return v9;
   }

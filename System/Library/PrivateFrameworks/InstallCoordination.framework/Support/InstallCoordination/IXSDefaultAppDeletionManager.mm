@@ -1,10 +1,10 @@
 @interface IXSDefaultAppDeletionManager
 + (id)sharedInstance;
-- (BOOL)_shouldGateDeletionForAppType:(unint64_t)a3;
-- (BOOL)getAppRecordNeedsDefaultAppDeletionAlert:(BOOL *)a3 forRecord:(id)a4 defaultAppType:(unint64_t *)a5 gateDeletionOfLastApp:(BOOL *)a6 error:(id *)a7;
-- (BOOL)getOtherAppsAreInstalled:(BOOL *)a3 forDefaultAppType:(unint64_t)a4 exceptBundleID:(id)a5 error:(id *)a6;
-- (id)defaultAppMetadataForAppIdentity:(id)a3 error:(id *)a4;
-- (id)defaultAppMetadataListWithError:(id *)a3;
+- (BOOL)_shouldGateDeletionForAppType:(unint64_t)type;
+- (BOOL)getAppRecordNeedsDefaultAppDeletionAlert:(BOOL *)alert forRecord:(id)record defaultAppType:(unint64_t *)type gateDeletionOfLastApp:(BOOL *)app error:(id *)error;
+- (BOOL)getOtherAppsAreInstalled:(BOOL *)installed forDefaultAppType:(unint64_t)type exceptBundleID:(id)d error:(id *)error;
+- (id)defaultAppMetadataForAppIdentity:(id)identity error:(id *)error;
+- (id)defaultAppMetadataListWithError:(id *)error;
 @end
 
 @implementation IXSDefaultAppDeletionManager
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003B61C;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121D98 != -1)
   {
     dispatch_once(&qword_100121D98, block);
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (BOOL)getOtherAppsAreInstalled:(BOOL *)a3 forDefaultAppType:(unint64_t)a4 exceptBundleID:(id)a5 error:(id *)a6
+- (BOOL)getOtherAppsAreInstalled:(BOOL *)installed forDefaultAppType:(unint64_t)type exceptBundleID:(id)d error:(id *)error
 {
   v33 = 0;
-  v9 = sub_10003AF28(a5, 18, &v33);
+  v9 = sub_10003AF28(d, 18, &v33);
   v10 = v33;
   v11 = v10;
   if (v9 && v10)
@@ -50,19 +50,19 @@
     if (!v14)
     {
       v18 = 0;
-      v17 = 0;
+      bOOLValue = 0;
 LABEL_18:
       v20 = 1;
       goto LABEL_19;
     }
 
-    v17 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
 LABEL_17:
     v18 = 0;
     goto LABEL_18;
   }
 
-  if (a4 > 8)
+  if (type > 8)
   {
 LABEL_27:
     v25 = sub_1000031B0(off_100121958);
@@ -75,16 +75,16 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  if (((1 << a4) & 0x1EA) != 0)
+  if (((1 << type) & 0x1EA) != 0)
   {
-    v15 = sub_10003B9C4(a4);
+    v15 = sub_10003B9C4(type);
     if (v15)
     {
       v14 = [LSApplicationRecord enumeratorForViableDefaultAppsForCategory:v15 options:128];
-      v16 = [v14 allObjects];
+      allObjects = [v14 allObjects];
 LABEL_16:
-      v19 = v16;
-      v17 = [v16 count] > 1;
+      v19 = allObjects;
+      bOOLValue = [allObjects count] > 1;
 
       goto LABEL_17;
     }
@@ -92,21 +92,21 @@ LABEL_16:
     v21 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      sub_10009E628(a4, v21);
+      sub_10009E628(type, v21);
     }
 
-    sub_1000405FC("[IXSDefaultAppDeletionManager getOtherAppsAreInstalled:forDefaultAppType:exceptBundleID:error:]", 129, @"IXErrorDomain", 1uLL, 0, 0, @"Found invalid LS category for default app type %lu", v22, a4);
+    sub_1000405FC("[IXSDefaultAppDeletionManager getOtherAppsAreInstalled:forDefaultAppType:exceptBundleID:error:]", 129, @"IXErrorDomain", 1uLL, 0, 0, @"Found invalid LS category for default app type %lu", v22, type);
     v18 = LABEL_30:;
     LOBYTE(v20) = 0;
     goto LABEL_31;
   }
 
-  if (a4 != 2)
+  if (type != 2)
   {
-    if (a4 == 4)
+    if (type == 4)
     {
       v14 = [SESNFCAppSettingsContext contextWithBundleId:0 onChange:&stru_100102498];
-      v16 = [v14 defaultAppCandidates];
+      allObjects = [v14 defaultAppCandidates];
       goto LABEL_16;
     }
 
@@ -122,7 +122,7 @@ LABEL_16:
   if (v24)
   {
     v18 = 0;
-    v17 = [v24 count] > 1;
+    bOOLValue = [v24 count] > 1;
   }
 
   else
@@ -134,22 +134,22 @@ LABEL_16:
     }
 
     v18 = sub_1000405FC("[IXSDefaultAppDeletionManager getOtherAppsAreInstalled:forDefaultAppType:exceptBundleID:error:]", 151, @"IXErrorDomain", 1uLL, v14, 0, @"Failed to get list of preferred app marketplaces", v30, v31);
-    v17 = 0;
+    bOOLValue = 0;
   }
 
 LABEL_19:
-  if (a3 && v20)
+  if (installed && v20)
   {
-    *a3 = v17;
+    *installed = bOOLValue;
     LOBYTE(v20) = 1;
     goto LABEL_34;
   }
 
 LABEL_31:
-  if (a6 && !v20)
+  if (error && !v20)
   {
     v27 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
 LABEL_34:
@@ -157,9 +157,9 @@ LABEL_34:
   return v20;
 }
 
-- (BOOL)_shouldGateDeletionForAppType:(unint64_t)a3
+- (BOOL)_shouldGateDeletionForAppType:(unint64_t)type
 {
-  if (a3 - 1 >= 8)
+  if (type - 1 >= 8)
   {
     v4 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -172,23 +172,23 @@ LABEL_34:
 
   else
   {
-    v3 = 7u >> (a3 - 1);
+    v3 = 7u >> (type - 1);
   }
 
   return v3 & 1;
 }
 
-- (BOOL)getAppRecordNeedsDefaultAppDeletionAlert:(BOOL *)a3 forRecord:(id)a4 defaultAppType:(unint64_t *)a5 gateDeletionOfLastApp:(BOOL *)a6 error:(id *)a7
+- (BOOL)getAppRecordNeedsDefaultAppDeletionAlert:(BOOL *)alert forRecord:(id)record defaultAppType:(unint64_t *)type gateDeletionOfLastApp:(BOOL *)app error:(id *)error
 {
-  v9 = a4;
+  recordCopy = record;
   v56 = 0;
-  v10 = [v9 bundleIdentifier];
+  bundleIdentifier = [recordCopy bundleIdentifier];
   v11 = +[LSApplicationWorkspace defaultWorkspace];
-  if ((sub_10003B2E0(v10, 21) & 1) == 0)
+  if ((sub_10003B2E0(bundleIdentifier, 21) & 1) == 0)
   {
-    v47 = v9;
+    v47 = recordCopy;
     v55 = 0;
-    v20 = sub_10003AF28(v10, 18, &v55);
+    v20 = sub_10003AF28(bundleIdentifier, 18, &v55);
     v21 = v55;
     v22 = v21;
     if (v20)
@@ -196,14 +196,14 @@ LABEL_34:
       v23 = [v21 objectForKey:@"TEST_MODE_RESTRICT_DEFAULT_APP_DELETION_DEFAULT_APP_TYPE_KEY"];
       objc_opt_class();
       v24 = v23;
-      v25 = (objc_opt_isKindOfClass() & 1) != 0 ? v24 : 0;
+      defaultAppCandidates = (objc_opt_isKindOfClass() & 1) != 0 ? v24 : 0;
 
-      if (v25)
+      if (defaultAppCandidates)
       {
         v48 = v22;
         v12 = v11;
-        v17 = [v25 longLongValue];
-        v19 = [(IXSDefaultAppDeletionManager *)self _shouldGateDeletionForAppType:v17];
+        longLongValue = [defaultAppCandidates longLongValue];
+        v19 = [(IXSDefaultAppDeletionManager *)self _shouldGateDeletionForAppType:longLongValue];
         v13 = 0;
         v14 = 0;
         v15 = 0;
@@ -223,7 +223,7 @@ LABEL_49:
       if ([v16 count])
       {
         v26 = [v16 objectAtIndexedSubscript:0];
-        v27 = [v10 isEqualToString:v26];
+        v27 = [bundleIdentifier isEqualToString:v26];
 
         if (v27)
         {
@@ -232,45 +232,45 @@ LABEL_49:
           v13 = 0;
           v14 = 0;
           v19 = 1;
-          v17 = 2;
+          longLongValue = 2;
           v18 = 1;
 LABEL_50:
-          v9 = v47;
+          recordCopy = v47;
           goto LABEL_51;
         }
       }
 
-      v45 = a7;
+      errorCopy2 = error;
       v14 = [SESNFCAppSettingsContext contextWithBundleId:0 onChange:&stru_1001024B8];
-      v28 = [v14 getDefaultNFCApplication];
-      v13 = v28;
-      if (v28)
+      getDefaultNFCApplication = [v14 getDefaultNFCApplication];
+      v13 = getDefaultNFCApplication;
+      if (getDefaultNFCApplication)
       {
-        v29 = [v28 bundleId];
-        v30 = [v29 isEqualToString:v10];
+        bundleId = [getDefaultNFCApplication bundleId];
+        v30 = [bundleId isEqualToString:bundleIdentifier];
 
         if (v30)
         {
           v48 = v22;
           v12 = v11;
-          v25 = [v14 defaultAppCandidates];
-          [v25 count];
+          defaultAppCandidates = [v14 defaultAppCandidates];
+          [defaultAppCandidates count];
           v19 = 0;
           v18 = 1;
-          v17 = 4;
+          longLongValue = 4;
           goto LABEL_49;
         }
       }
 
       v53 = v15;
-      v9 = v47;
+      recordCopy = v47;
       v34 = [v11 getDefaultApplicationCategories:&v56 withCurrentDefaultApplication:v47 error:&v53];
       v44 = v53;
 
       if (v34)
       {
         v35 = LSDefaultAppCategoryForMask();
-        v17 = v35;
+        longLongValue = v35;
         v48 = v22;
         if (v35 <= 2)
         {
@@ -297,19 +297,19 @@ LABEL_43:
             {
               v12 = v11;
               v19 = 1;
-              v17 = v36;
+              longLongValue = v36;
               v15 = v44;
               v18 = 1;
               goto LABEL_51;
             }
 
             v46 = v36;
-            v25 = [LSApplicationRecord enumeratorForViableDefaultAppsForCategory:v17 options:128];
-            v41 = [v25 allObjects];
+            defaultAppCandidates = [LSApplicationRecord enumeratorForViableDefaultAppsForCategory:longLongValue options:128];
+            allObjects = [defaultAppCandidates allObjects];
             v12 = v11;
-            if ([v41 count] == 1)
+            if ([allObjects count] == 1)
             {
-              v18 = [v11 canChangeDefaultAppForCategory:v17];
+              v18 = [v11 canChangeDefaultAppForCategory:longLongValue];
 
               v19 = 0;
             }
@@ -322,7 +322,7 @@ LABEL_43:
             }
 
             v15 = v44;
-            v17 = v46;
+            longLongValue = v46;
             goto LABEL_49;
           }
         }
@@ -354,17 +354,17 @@ LABEL_43:
         }
 
         v12 = v11;
-        v25 = sub_1000031B0(off_100121958);
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        defaultAppCandidates = sub_1000031B0(off_100121958);
+        if (os_log_type_enabled(defaultAppCandidates, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
           v58 = "[IXSDefaultAppDeletionManager getAppRecordNeedsDefaultAppDeletionAlert:forRecord:defaultAppType:gateDeletionOfLastApp:error:]";
           v59 = 2112;
-          v60 = v10;
-          _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s: Found unknown app category for bundleID %@; assuming default app alerts aren't required and allowing deletion", buf, 0x16u);
+          v60 = bundleIdentifier;
+          _os_log_impl(&_mh_execute_header, defaultAppCandidates, OS_LOG_TYPE_DEFAULT, "%s: Found unknown app category for bundleID %@; assuming default app alerts aren't required and allowing deletion", buf, 0x16u);
         }
 
-        v17 = 0;
+        longLongValue = 0;
         v18 = 0;
         v19 = 1;
         v15 = v44;
@@ -378,32 +378,32 @@ LABEL_43:
         sub_10009E7C0();
       }
 
-      v52 = v10;
-      v33 = sub_1000405FC("[IXSDefaultAppDeletionManager getAppRecordNeedsDefaultAppDeletionAlert:forRecord:defaultAppType:gateDeletionOfLastApp:error:]", 298, @"IXErrorDomain", 1uLL, v44, 0, @"Failed to find default app categories applicable to bundleID %@", v38, v10);
+      v52 = bundleIdentifier;
+      v33 = sub_1000405FC("[IXSDefaultAppDeletionManager getAppRecordNeedsDefaultAppDeletionAlert:forRecord:defaultAppType:gateDeletionOfLastApp:error:]", 298, @"IXErrorDomain", 1uLL, v44, 0, @"Failed to find default app categories applicable to bundleID %@", v38, bundleIdentifier);
     }
 
     else
     {
-      v45 = a7;
+      errorCopy2 = error;
       v31 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         sub_10009E850();
       }
 
-      v52 = v10;
+      v52 = bundleIdentifier;
 
       v33 = sub_1000405FC("[IXSDefaultAppDeletionManager getAppRecordNeedsDefaultAppDeletionAlert:forRecord:defaultAppType:gateDeletionOfLastApp:error:]", 261, @"IXErrorDomain", 1uLL, v15, 0, @"Failed to get list of preferred app marketplaces", v32, v43);
       v14 = 0;
       v13 = 0;
-      v9 = v47;
+      recordCopy = v47;
     }
 
-    if (v45)
+    if (errorCopy2)
     {
       v39 = v33;
       v40 = 0;
-      *v45 = v33;
+      *errorCopy2 = v33;
     }
 
     else
@@ -411,7 +411,7 @@ LABEL_43:
       v40 = 0;
     }
 
-    v10 = v52;
+    bundleIdentifier = v52;
     goto LABEL_58;
   }
 
@@ -421,24 +421,24 @@ LABEL_43:
   v15 = 0;
   v48 = 0;
   v16 = 0;
-  v17 = 0;
+  longLongValue = 0;
   v18 = 0;
   v19 = 1;
 LABEL_51:
-  if (a5)
+  if (type)
   {
-    *a5 = v17;
+    *type = longLongValue;
   }
 
-  if (a3)
+  if (alert)
   {
-    *a3 = v18;
+    *alert = v18;
   }
 
   v33 = 0;
-  if (a6)
+  if (app)
   {
-    *a6 = v19;
+    *app = v19;
   }
 
   v40 = 1;
@@ -449,14 +449,14 @@ LABEL_58:
   return v40;
 }
 
-- (id)defaultAppMetadataForAppIdentity:(id)a3 error:(id *)a4
+- (id)defaultAppMetadataForAppIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v26 = 0;
   v25 = 0;
-  v7 = [v6 bundleID];
+  bundleID = [identityCopy bundleID];
   v24 = 0;
-  v8 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v7 allowPlaceholder:0 error:&v24];
+  v8 = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleID allowPlaceholder:0 error:&v24];
   v9 = v24;
   v10 = v9;
   if (!v8)
@@ -472,7 +472,7 @@ LABEL_58:
   {
     v17 = 0;
     v10 = v12;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -489,14 +489,14 @@ LABEL_58:
 
   v22 = 0;
   v21 = v12;
-  v13 = [(IXSDefaultAppDeletionManager *)self getOtherAppsAreInstalled:&v22 forDefaultAppType:v26 exceptBundleID:v7 error:&v21];
+  v13 = [(IXSDefaultAppDeletionManager *)self getOtherAppsAreInstalled:&v22 forDefaultAppType:v26 exceptBundleID:bundleID error:&v21];
   v10 = v21;
 
   if (!v13)
   {
 LABEL_12:
     v17 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -528,8 +528,8 @@ LABEL_12:
 
 LABEL_17:
   v18 = [IXDefaultAppMetadata alloc];
-  v17 = [(IXDefaultAppMetadata *)v18 initWithAppIdentity:v6 appType:v26 offloadAnswer:v16];
-  if (!a4)
+  v17 = [(IXDefaultAppMetadata *)v18 initWithAppIdentity:identityCopy appType:v26 offloadAnswer:v16];
+  if (!error)
   {
     goto LABEL_20;
   }
@@ -538,7 +538,7 @@ LABEL_18:
   if (!v17)
   {
     v19 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_20:
@@ -546,7 +546,7 @@ LABEL_20:
   return v17;
 }
 
-- (id)defaultAppMetadataListWithError:(id *)a3
+- (id)defaultAppMetadataListWithError:(id *)error
 {
   v5 = objc_opt_new();
   v55 = 0;
@@ -572,7 +572,7 @@ LABEL_20:
   }
 
   v50 = v8;
-  v51 = a3;
+  errorCopy = error;
   v12 = 0;
   v13 = 0;
   v14 = 1;
@@ -581,7 +581,7 @@ LABEL_20:
     if (v9)
     {
       v15 = [NSNumber numberWithUnsignedInteger:v14];
-      v16 = [v9 objectForKeyedSubscript:v15];
+      bundleId = [v9 objectForKeyedSubscript:v15];
 
       goto LABEL_35;
     }
@@ -604,7 +604,7 @@ LABEL_23:
       v20 = sub_1000405FC("_bundleIDForDefaultAppType", 455, @"IXErrorDomain", 1uLL, 0, 0, @"Unexpectedly got unknown default app type %lu", v26, v14);
 LABEL_32:
       v31 = v20;
-      v16 = 0;
+      bundleId = 0;
       v29 = 1;
       v30 = v20;
       goto LABEL_33;
@@ -620,14 +620,14 @@ LABEL_32:
 
       if (v19)
       {
-        v21 = [v19 bundleIdentifier];
+        bundleIdentifier = [v19 bundleIdentifier];
 LABEL_14:
-        v16 = v21;
+        bundleId = bundleIdentifier;
         goto LABEL_30;
       }
 
 LABEL_22:
-      v16 = 0;
+      bundleId = 0;
       goto LABEL_30;
     }
 
@@ -645,7 +645,7 @@ LABEL_22:
 
       if ([v19 count])
       {
-        v21 = [v19 objectAtIndexedSubscript:0];
+        bundleIdentifier = [v19 objectAtIndexedSubscript:0];
         goto LABEL_14;
       }
 
@@ -661,7 +661,7 @@ LABEL_22:
 
       v45 = sub_1000405FC("_bundleIDForDefaultAppType", 434, @"IXErrorDomain", 1uLL, 0, 0, @"Unexpectedly got empty list of preferred app marketplaces", v44, v49);
 
-      v16 = 0;
+      bundleId = 0;
       v20 = v45;
     }
 
@@ -673,11 +673,11 @@ LABEL_22:
       }
 
       v19 = [SESNFCAppSettingsContext contextWithBundleId:0 onChange:&stru_1001024D8];
-      v22 = [v19 getDefaultNFCApplication];
-      v23 = v22;
-      if (v22)
+      getDefaultNFCApplication = [v19 getDefaultNFCApplication];
+      v23 = getDefaultNFCApplication;
+      if (getDefaultNFCApplication)
       {
-        v16 = [v22 bundleId];
+        bundleId = [getDefaultNFCApplication bundleId];
         v20 = 0;
       }
 
@@ -694,13 +694,13 @@ LABEL_22:
         }
 
         v20 = sub_1000405FC("_bundleIDForDefaultAppType", 445, @"IXErrorDomain", 1uLL, 0, 0, @"Unexpectedly got nil for default NFC app", v28, v49);
-        v16 = 0;
+        bundleId = 0;
       }
     }
 
 LABEL_30:
 
-    if (!v16)
+    if (!bundleId)
     {
       goto LABEL_32;
     }
@@ -718,7 +718,7 @@ LABEL_33:
 
     v13 = v32;
 LABEL_35:
-    v12 = v16;
+    v12 = bundleId;
     v33 = v13;
     v53 = v13;
     v34 = [(IXSDefaultAppDeletionManager *)self getOtherAppsAreInstalled:&v55 forDefaultAppType:v14 exceptBundleID:v12 error:&v53];
@@ -778,10 +778,10 @@ LABEL_53:
 LABEL_56:
   v46 = 0;
 LABEL_57:
-  if (v51 && !v46)
+  if (errorCopy && !v46)
   {
     v47 = v32;
-    *v51 = v32;
+    *errorCopy = v32;
   }
 
   return v46;

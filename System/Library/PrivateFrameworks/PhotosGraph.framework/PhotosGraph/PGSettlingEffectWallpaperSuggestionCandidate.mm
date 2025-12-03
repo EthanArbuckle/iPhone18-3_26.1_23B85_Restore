@@ -1,26 +1,26 @@
 @interface PGSettlingEffectWallpaperSuggestionCandidate
 + (id)sortDescriptorsForProcessing;
-- (PGSettlingEffectWallpaperSuggestionCandidate)initWithAsset:(id)a3 suggestion:(id)a4;
+- (PGSettlingEffectWallpaperSuggestionCandidate)initWithAsset:(id)asset suggestion:(id)suggestion;
 @end
 
 @implementation PGSettlingEffectWallpaperSuggestionCandidate
 
-- (PGSettlingEffectWallpaperSuggestionCandidate)initWithAsset:(id)a3 suggestion:(id)a4
+- (PGSettlingEffectWallpaperSuggestionCandidate)initWithAsset:(id)asset suggestion:(id)suggestion
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  suggestionCopy = suggestion;
   v14.receiver = self;
   v14.super_class = PGSettlingEffectWallpaperSuggestionCandidate;
   v9 = [(PGSettlingEffectWallpaperSuggestionCandidate *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    v11 = [objc_alloc(MEMORY[0x277D3C828]) initWithAsset:v7 classification:5];
+    objc_storeStrong(&v9->_asset, asset);
+    v11 = [objc_alloc(MEMORY[0x277D3C828]) initWithAsset:assetCopy classification:5];
     cropResult = v10->_cropResult;
     v10->_cropResult = v11;
 
-    objc_storeStrong(&v10->_suggestion, a4);
+    objc_storeStrong(&v10->_suggestion, suggestion);
   }
 
   return v10;

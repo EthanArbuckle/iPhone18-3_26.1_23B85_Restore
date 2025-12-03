@@ -2,8 +2,8 @@
 - (STUIStatusBarImageView)conditionView;
 - (STUIStatusBarStringView)aqiView;
 - (STUIStatusBarStringView)temperatureView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_aqiView;
 - (void)_create_conditionView;
 - (void)_create_temperatureView;
@@ -11,134 +11,134 @@
 
 @implementation STUIStatusBarWeatherItem
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v37.receiver = self;
   v37.super_class = STUIStatusBarWeatherItem;
-  v8 = [(STUIStatusBarItem *)&v37 applyUpdate:v6 toDisplayItem:v7];
-  if (![v6 dataChanged])
+  v8 = [(STUIStatusBarItem *)&v37 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if (![updateCopy dataChanged])
   {
     goto LABEL_30;
   }
 
-  v9 = [v7 identifier];
-  v10 = [objc_opt_class() temperatureDisplayIdentifier];
+  identifier = [itemCopy identifier];
+  temperatureDisplayIdentifier = [objc_opt_class() temperatureDisplayIdentifier];
 
-  if (v9 == v10)
+  if (identifier == temperatureDisplayIdentifier)
   {
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v19 = [v6 data];
-      v20 = [v19 weatherEntry];
-      if ([v20 isEnabled])
+      data = [updateCopy data];
+      weatherEntry = [data weatherEntry];
+      if ([weatherEntry isEnabled])
       {
-        v21 = [v6 data];
-        v22 = [v21 weatherEntry];
-        v23 = [v22 temperature];
-        [v7 setEnabled:v23 != 0];
+        data2 = [updateCopy data];
+        weatherEntry2 = [data2 weatherEntry];
+        temperature = [weatherEntry2 temperature];
+        [itemCopy setEnabled:temperature != 0];
       }
 
       else
       {
-        [v7 setEnabled:0];
+        [itemCopy setEnabled:0];
       }
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
 
-    if (![v7 isEnabled])
+    if (![itemCopy isEnabled])
     {
       goto LABEL_30;
     }
 
-    v30 = [v6 data];
-    v31 = [v30 weatherEntry];
-    v32 = [v31 temperature];
-    v35 = [(STUIStatusBarWeatherItem *)self temperatureView];
+    data3 = [updateCopy data];
+    weatherEntry3 = [data3 weatherEntry];
+    temperature2 = [weatherEntry3 temperature];
+    temperatureView = [(STUIStatusBarWeatherItem *)self temperatureView];
 LABEL_28:
-    v33 = v35;
-    [v35 setText:v32];
+    v33 = temperatureView;
+    [temperatureView setText:temperature2];
     goto LABEL_29;
   }
 
-  v11 = [v7 identifier];
-  v12 = [objc_opt_class() aqiDisplayIdentifier];
+  identifier2 = [itemCopy identifier];
+  aqiDisplayIdentifier = [objc_opt_class() aqiDisplayIdentifier];
 
-  v13 = [v7 isEnabled];
-  if (v11 == v12)
+  isEnabled = [itemCopy isEnabled];
+  if (identifier2 == aqiDisplayIdentifier)
   {
-    if (v13)
+    if (isEnabled)
     {
-      v24 = [v6 data];
-      v25 = [v24 weatherEntry];
-      if ([v25 isEnabled])
+      data4 = [updateCopy data];
+      weatherEntry4 = [data4 weatherEntry];
+      if ([weatherEntry4 isEnabled])
       {
-        v26 = [v6 data];
-        v27 = [v26 weatherEntry];
-        v28 = [v27 aqi];
-        [v7 setEnabled:v28 != 0];
+        data5 = [updateCopy data];
+        weatherEntry5 = [data5 weatherEntry];
+        v28 = [weatherEntry5 aqi];
+        [itemCopy setEnabled:v28 != 0];
       }
 
       else
       {
-        [v7 setEnabled:0];
+        [itemCopy setEnabled:0];
       }
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
 
-    if (![v7 isEnabled])
+    if (![itemCopy isEnabled])
     {
       goto LABEL_30;
     }
 
-    v30 = [v6 data];
-    v31 = [v30 weatherEntry];
-    v32 = [v31 aqi];
-    v35 = [(STUIStatusBarWeatherItem *)self aqiView];
+    data3 = [updateCopy data];
+    weatherEntry3 = [data3 weatherEntry];
+    temperature2 = [weatherEntry3 aqi];
+    temperatureView = [(STUIStatusBarWeatherItem *)self aqiView];
     goto LABEL_28;
   }
 
-  if (v13)
+  if (isEnabled)
   {
-    v14 = [v6 data];
-    v15 = [v14 weatherEntry];
-    if ([v15 isEnabled])
+    data6 = [updateCopy data];
+    weatherEntry6 = [data6 weatherEntry];
+    if ([weatherEntry6 isEnabled])
     {
-      v16 = [v6 data];
-      v17 = [v16 weatherEntry];
-      v18 = [v17 imageName];
-      [v7 setEnabled:v18 != 0];
+      data7 = [updateCopy data];
+      weatherEntry7 = [data7 weatherEntry];
+      imageName = [weatherEntry7 imageName];
+      [itemCopy setEnabled:imageName != 0];
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
   }
 
   else
   {
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
   }
 
-  if ([v7 isEnabled])
+  if ([itemCopy isEnabled])
   {
     v29 = MEMORY[0x277D755B8];
-    v30 = [v6 data];
-    v31 = [v30 weatherEntry];
-    v32 = [v31 imageName];
-    v33 = [v29 _systemImageNamed:v32];
-    v34 = [(STUIStatusBarWeatherItem *)self conditionView];
-    [v34 setImage:v33];
+    data3 = [updateCopy data];
+    weatherEntry3 = [data3 weatherEntry];
+    temperature2 = [weatherEntry3 imageName];
+    v33 = [v29 _systemImageNamed:temperature2];
+    conditionView = [(STUIStatusBarWeatherItem *)self conditionView];
+    [conditionView setImage:v33];
 
 LABEL_29:
   }
@@ -214,21 +214,21 @@ LABEL_30:
   MEMORY[0x2821F96F8](v4, aqiView);
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() temperatureDisplayIdentifier];
+  identifierCopy = identifier;
+  temperatureDisplayIdentifier = [objc_opt_class() temperatureDisplayIdentifier];
 
-  if (v5 == v4)
+  if (temperatureDisplayIdentifier == identifierCopy)
   {
-    v7 = [(STUIStatusBarWeatherItem *)self temperatureView];
+    temperatureView = [(STUIStatusBarWeatherItem *)self temperatureView];
   }
 
   else
   {
-    v6 = [objc_opt_class() aqiDisplayIdentifier];
+    aqiDisplayIdentifier = [objc_opt_class() aqiDisplayIdentifier];
 
-    if (v6 == v4)
+    if (aqiDisplayIdentifier == identifierCopy)
     {
       [(STUIStatusBarWeatherItem *)self aqiView];
     }
@@ -237,10 +237,10 @@ LABEL_30:
     {
       [(STUIStatusBarWeatherItem *)self conditionView];
     }
-    v7 = ;
+    temperatureView = ;
   }
 
-  v8 = v7;
+  v8 = temperatureView;
 
   return v8;
 }

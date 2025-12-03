@@ -2,15 +2,15 @@
 - (IMADockViewController)init;
 - (IMADockViewControllerDelegate)delegate;
 - (double)minimizedDockHeight;
-- (id)imageViewForSticker:(id)a3;
+- (id)imageViewForSticker:(id)sticker;
 - (void)cleanupRunningApps;
-- (void)setDelegate:(id)a3;
-- (void)setShowIconBorders:(BOOL)a3;
-- (void)switcherView:(id)a3 didSelectPluginAtIndex:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)setShowIconBorders:(BOOL)borders;
+- (void)switcherView:(id)view didSelectPluginAtIndex:(id)index;
 - (void)updateAppStripFrame;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation IMADockViewController
@@ -51,8 +51,8 @@
   [(CKBrowserSwitcherFooterView *)self->_appStrip setDataSource:self->_appStripDataSource];
   [(CKBrowserSwitcherFooterView *)self->_appStrip setScrollsLastUsedAppIconIntoView:0];
   [(CKBrowserSwitcherFooterView *)self->_appStrip setShowBorders:[(IMADockViewController *)self showIconBorders]];
-  v8 = [(IMADockViewController *)self view];
-  [v8 addSubview:self->_appStrip];
+  view = [(IMADockViewController *)self view];
+  [view addSubview:self->_appStrip];
 }
 
 - (void)viewDidLayoutSubviews
@@ -63,25 +63,25 @@
   [(IMADockViewController *)self updateAppStripFrame];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = IMADockViewController;
-  v7 = a4;
-  [(IMADockViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(IMADockViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__IMADockViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_27A66DED0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -91,11 +91,11 @@
   }
 }
 
-- (void)setShowIconBorders:(BOOL)a3
+- (void)setShowIconBorders:(BOOL)borders
 {
-  if (self->_showIconBorders != a3)
+  if (self->_showIconBorders != borders)
   {
-    self->_showIconBorders = a3;
+    self->_showIconBorders = borders;
     [(CKBrowserSwitcherFooterView *)self->_appStrip setShowBorders:?];
   }
 }
@@ -103,16 +103,16 @@
 - (double)minimizedDockHeight
 {
   v2 = CKIsRunningInCameraAppsClient();
-  v3 = [MEMORY[0x277CF97E0] sharedBehaviors];
-  v4 = v3;
+  mEMORY[0x277CF97E0] = [MEMORY[0x277CF97E0] sharedBehaviors];
+  v4 = mEMORY[0x277CF97E0];
   if (v2)
   {
-    [v3 cameraAppsMinimizedDockHeight];
+    [mEMORY[0x277CF97E0] cameraAppsMinimizedDockHeight];
   }
 
   else
   {
-    [v3 chatChromeBottomInset];
+    [mEMORY[0x277CF97E0] chatChromeBottomInset];
   }
 
   v6 = v5;
@@ -120,15 +120,15 @@
   return v6;
 }
 
-- (id)imageViewForSticker:(id)a3
+- (id)imageViewForSticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   v4 = objc_alloc(MEMORY[0x277CF97C8]);
-  v5 = [v3 fileURL];
-  v6 = [v4 initWithURL:v5];
+  fileURL = [stickerCopy fileURL];
+  v6 = [v4 initWithURL:fileURL];
 
   v7 = [v6 durationsWithMaxCount:0x7FFFFFFFLL];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([v6 count])
   {
     v9 = 0;
@@ -137,7 +137,7 @@
       v10 = [v6 thumbnailAtIndex:v9 fillToSize:0x7FFFFFFFLL maxCount:{1.79769313e308, 1.79769313e308}];
       if (v10)
       {
-        [v8 addObject:v10];
+        [array addObject:v10];
       }
 
       ++v9;
@@ -146,7 +146,7 @@
     while (v9 < [v6 count]);
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CF9768]) initWithImages:v8 durations:v7];
+  v11 = [objc_alloc(MEMORY[0x277CF9768]) initWithImages:array durations:v7];
   v12 = objc_alloc_init(MEMORY[0x277CF9770]);
   [v12 setAnimatedImage:v11];
   [v12 setAutomaticallyObserveWindowForAnimationTimer:1];
@@ -156,19 +156,19 @@
 
 - (void)cleanupRunningApps
 {
-  v2 = [MEMORY[0x277CF9788] sharedInstance];
-  [v2 invalidateAllActivePlugins];
+  mEMORY[0x277CF9788] = [MEMORY[0x277CF9788] sharedInstance];
+  [mEMORY[0x277CF9788] invalidateAllActivePlugins];
 
-  v3 = [MEMORY[0x277CF9788] sharedInstance];
-  [v3 forceKillRemoteExtensionsWithDelay:1];
+  mEMORY[0x277CF9788]2 = [MEMORY[0x277CF9788] sharedInstance];
+  [mEMORY[0x277CF9788]2 forceKillRemoteExtensionsWithDelay:1];
 }
 
 - (void)updateAppStripFrame
 {
   [(CKBrowserSwitcherFooterView *)self->_appStrip contentHeight];
   v4 = v3;
-  v5 = [(IMADockViewController *)self view];
-  [v5 bounds];
+  view = [(IMADockViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -189,24 +189,24 @@
   [(CKBrowserSwitcherFooterView *)appStrip setFrame:0.0, v14, Width, v4];
 }
 
-- (void)switcherView:(id)a3 didSelectPluginAtIndex:(id)a4
+- (void)switcherView:(id)view didSelectPluginAtIndex:(id)index
 {
   v5 = MEMORY[0x277CF9788];
-  v6 = a4;
-  v7 = [v5 sharedInstance];
-  v8 = [v7 visibleDrawerPlugins];
-  v9 = [v6 item];
+  indexCopy = index;
+  sharedInstance = [v5 sharedInstance];
+  visibleDrawerPlugins = [sharedInstance visibleDrawerPlugins];
+  item = [indexCopy item];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [visibleDrawerPlugins objectAtIndexedSubscript:item];
 
   appPresenter = self->_appPresenter;
-  v12 = [v10 identifier];
+  identifier = [v10 identifier];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__IMADockViewController_switcherView_didSelectPluginAtIndex___block_invoke;
   v13[3] = &unk_27A66DEF8;
   v13[4] = self;
-  [(IMAAppPresenter *)appPresenter presentAppWithBundleIdentifier:v12 completion:v13];
+  [(IMAAppPresenter *)appPresenter presentAppWithBundleIdentifier:identifier completion:v13];
 }
 
 - (IMADockViewControllerDelegate)delegate

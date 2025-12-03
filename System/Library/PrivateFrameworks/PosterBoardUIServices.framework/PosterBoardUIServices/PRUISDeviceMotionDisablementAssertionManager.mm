@@ -2,15 +2,15 @@
 + (PRUISDeviceMotionDisablementAssertionManager)sharedInstance;
 - (BOOL)isDeviceMotionDisabled;
 - (PRUISDeviceMotionDisablementAssertionManager)init;
-- (id)_queue_acquireDeviceMotionDisablementAssertionForReason:(id)a3;
-- (id)acquireDeviceMotionDisablementAssertionForReason:(id)a3;
-- (void)_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)a3;
-- (void)_queue_addObserver:(id)a3;
-- (void)_queue_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)a3;
-- (void)_queue_removeObserver:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)_queue_acquireDeviceMotionDisablementAssertionForReason:(id)reason;
+- (id)acquireDeviceMotionDisablementAssertionForReason:(id)reason;
+- (void)_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)state;
+- (void)_queue_addObserver:(id)observer;
+- (void)_queue_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)state;
+- (void)_queue_removeObserver:(id)observer;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PRUISDeviceMotionDisablementAssertionManager
@@ -132,9 +132,9 @@ void __55__PRUISDeviceMotionDisablementAssertionManager_dealloc__block_invoke(ui
   *(v2 + 32) = 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -142,8 +142,8 @@ void __55__PRUISDeviceMotionDisablementAssertionManager_dealloc__block_invoke(ui
   block[2] = __60__PRUISDeviceMotionDisablementAssertionManager_addObserver___block_invoke;
   block[3] = &unk_1E83A7DA0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -161,9 +161,9 @@ void __60__PRUISDeviceMotionDisablementAssertionManager_addObserver___block_invo
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -171,8 +171,8 @@ void __60__PRUISDeviceMotionDisablementAssertionManager_addObserver___block_invo
   block[2] = __63__PRUISDeviceMotionDisablementAssertionManager_removeObserver___block_invoke;
   block[3] = &unk_1E83A7DA0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -190,41 +190,41 @@ void __63__PRUISDeviceMotionDisablementAssertionManager_removeObserver___block_i
   }
 }
 
-- (void)_queue_addObserver:(id)a3
+- (void)_queue_addObserver:(id)observer
 {
-  v8 = a3;
+  observerCopy = observer;
   v4 = BSDispatchQueueAssert();
-  if (v8)
+  if (observerCopy)
   {
     observers = self->_observers;
     if (!observers)
     {
-      v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v8];
+    v4 = [(NSHashTable *)observers addObject:observerCopy];
   }
 
   MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)_queue_removeObserver:(id)a3
+- (void)_queue_removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = BSDispatchQueueAssert();
-  if (v5)
+  if (observerCopy)
   {
     v4 = [(NSHashTable *)self->_observers count];
     if (v4)
     {
-      v4 = [(NSHashTable *)self->_observers containsObject:v5];
+      v4 = [(NSHashTable *)self->_observers containsObject:observerCopy];
       if (v4)
       {
-        v4 = [(NSHashTable *)self->_observers removeObject:v5];
+        v4 = [(NSHashTable *)self->_observers removeObject:observerCopy];
       }
     }
   }
@@ -232,9 +232,9 @@ void __63__PRUISDeviceMotionDisablementAssertionManager_removeObserver___block_i
   MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)a3
+- (void)_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   objc_initWeak(&location, self);
   notifyQueue = self->_notifyQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -242,8 +242,8 @@ void __63__PRUISDeviceMotionDisablementAssertionManager_removeObserver___block_i
   block[2] = __107__PRUISDeviceMotionDisablementAssertionManager__notifyObserversDidChangeDeviceMotionDisableAssertionState___block_invoke;
   block[3] = &unk_1E83A7DA0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(notifyQueue, block);
 
   objc_destroyWeak(&v9);
@@ -256,10 +256,10 @@ void __107__PRUISDeviceMotionDisablementAssertionManager__notifyObserversDidChan
   [WeakRetained _queue_notifyObserversDidChangeDeviceMotionDisableAssertionState:*(a1 + 32)];
 }
 
-- (void)_queue_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)a3
+- (void)_queue_notifyObserversDidChangeDeviceMotionDisableAssertionState:(id)state
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   BSDispatchQueueAssert();
   v16 = 0;
   v17 = &v16;
@@ -279,8 +279,8 @@ void __107__PRUISDeviceMotionDisablementAssertionManager__notifyObserversDidChan
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [v17[5] allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v22 count:16];
+  allObjects = [v17[5] allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v11 objects:v22 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -291,20 +291,20 @@ void __107__PRUISDeviceMotionDisablementAssertionManager__notifyObserversDidChan
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 deviceMotionDisableAssertionManager:self didDisableDeviceMotion:{objc_msgSend(v4, "isActive")}];
+          [v10 deviceMotionDisableAssertionManager:self didDisableDeviceMotion:{objc_msgSend(stateCopy, "isActive")}];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v22 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v11 objects:v22 count:16];
     }
 
     while (v7);
@@ -352,9 +352,9 @@ void *__70__PRUISDeviceMotionDisablementAssertionManager_isDeviceMotionDisabled_
   return result;
 }
 
-- (id)acquireDeviceMotionDisablementAssertionForReason:(id)a3
+- (id)acquireDeviceMotionDisablementAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -368,9 +368,9 @@ void *__70__PRUISDeviceMotionDisablementAssertionManager_isDeviceMotionDisabled_
   v9[2] = __97__PRUISDeviceMotionDisablementAssertionManager_acquireDeviceMotionDisablementAssertionForReason___block_invoke;
   v9[3] = &unk_1E83A8050;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = reasonCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = reasonCopy;
   dispatch_sync(assertionQueue, v9);
   v7 = v15[5];
 
@@ -390,27 +390,27 @@ void __97__PRUISDeviceMotionDisablementAssertionManager_acquireDeviceMotionDisab
   *(v3 + 40) = v2;
 }
 
-- (id)_queue_acquireDeviceMotionDisablementAssertionForReason:(id)a3
+- (id)_queue_acquireDeviceMotionDisablementAssertionForReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssert();
   v5 = PRUISLogMotionEvents();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(BSCompoundAssertion *)self->_assertionQueue_deviceMotionDisableCompoundAssertion reasons];
+    reasons = [(BSCompoundAssertion *)self->_assertionQueue_deviceMotionDisableCompoundAssertion reasons];
     v11 = 138543874;
     v12 = v7;
     v13 = 2112;
-    v14 = v4;
+    v14 = reasonCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = reasons;
     _os_log_impl(&dword_1CAE63000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - Acquiring device motion disable assertion with reason %@, already acquired reasons: %@", &v11, 0x20u);
   }
 
-  v9 = [(BSCompoundAssertion *)self->_assertionQueue_deviceMotionDisableCompoundAssertion acquireForReason:v4];
+  v9 = [(BSCompoundAssertion *)self->_assertionQueue_deviceMotionDisableCompoundAssertion acquireForReason:reasonCopy];
 
   return v9;
 }

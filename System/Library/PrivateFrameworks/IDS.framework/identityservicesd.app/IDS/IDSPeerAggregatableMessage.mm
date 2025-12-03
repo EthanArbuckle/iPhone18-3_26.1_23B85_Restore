@@ -1,47 +1,47 @@
 @interface IDSPeerAggregatableMessage
-- (IDSPeerAggregatableMessage)initWithTargetToken:(id)a3 sessionToken:(id)a4 targetPeerID:(id)a5 encryptedData:(id)a6 wantsDeliveryStatus:(BOOL)a7 wantsCertifiedDelivery:(BOOL)a8 ackBlock:(id)a9 completionBlock:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSPeerAggregatableMessage)initWithTargetToken:(id)token sessionToken:(id)sessionToken targetPeerID:(id)d encryptedData:(id)data wantsDeliveryStatus:(BOOL)status wantsCertifiedDelivery:(BOOL)delivery ackBlock:(id)block completionBlock:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)sizeOfKeysWithValues;
 @end
 
 @implementation IDSPeerAggregatableMessage
 
-- (IDSPeerAggregatableMessage)initWithTargetToken:(id)a3 sessionToken:(id)a4 targetPeerID:(id)a5 encryptedData:(id)a6 wantsDeliveryStatus:(BOOL)a7 wantsCertifiedDelivery:(BOOL)a8 ackBlock:(id)a9 completionBlock:(id)a10
+- (IDSPeerAggregatableMessage)initWithTargetToken:(id)token sessionToken:(id)sessionToken targetPeerID:(id)d encryptedData:(id)data wantsDeliveryStatus:(BOOL)status wantsCertifiedDelivery:(BOOL)delivery ackBlock:(id)block completionBlock:(id)self0
 {
-  v29 = a7;
-  v31 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = a10;
+  statusCopy = status;
+  tokenCopy = token;
+  sessionTokenCopy = sessionToken;
+  dCopy = d;
+  dataCopy = data;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v32.receiver = self;
   v32.super_class = IDSPeerAggregatableMessage;
   v20 = [(IDSPeerAggregatableMessage *)&v32 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_targetToken, a3);
-    objc_storeStrong(&v21->_targetSessionToken, a4);
-    objc_storeStrong(&v21->_targetPeerID, a5);
-    objc_storeStrong(&v21->_encryptedData, a6);
-    v22 = objc_retainBlock(v18);
+    objc_storeStrong(&v20->_targetToken, token);
+    objc_storeStrong(&v21->_targetSessionToken, sessionToken);
+    objc_storeStrong(&v21->_targetPeerID, d);
+    objc_storeStrong(&v21->_encryptedData, data);
+    v22 = objc_retainBlock(blockCopy);
     ackBlock = v21->_ackBlock;
     v21->_ackBlock = v22;
 
-    v24 = objc_retainBlock(v19);
+    v24 = objc_retainBlock(completionBlockCopy);
     completionBlock = v21->_completionBlock;
     v21->_completionBlock = v24;
 
-    if (v29)
+    if (statusCopy)
     {
       v26 = [NSNumber numberWithBool:1];
       wantsDeliveryStatus = v21->_wantsDeliveryStatus;
       v21->_wantsDeliveryStatus = v26;
     }
 
-    v21->_wantsCertifiedDelivery = a8;
+    v21->_wantsCertifiedDelivery = delivery;
   }
 
   return v21;
@@ -55,12 +55,12 @@
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v4 = [(IDSPeerAggregatableMessage *)self targetToken];
-  v5 = [v4 rawToken];
+  targetToken = [(IDSPeerAggregatableMessage *)self targetToken];
+  rawToken = [targetToken rawToken];
 
-  if (v5)
+  if (rawToken)
   {
-    CFDictionarySetValue(Mutable, @"t", v5);
+    CFDictionarySetValue(Mutable, @"t", rawToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -68,10 +68,10 @@
     sub_10091EC58();
   }
 
-  v6 = [(IDSPeerAggregatableMessage *)self targetSessionToken];
-  if (v6)
+  targetSessionToken = [(IDSPeerAggregatableMessage *)self targetSessionToken];
+  if (targetSessionToken)
   {
-    CFDictionarySetValue(Mutable, @"sT", v6);
+    CFDictionarySetValue(Mutable, @"sT", targetSessionToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -79,12 +79,12 @@
     sub_10091ECE0();
   }
 
-  v7 = [(IDSPeerAggregatableMessage *)self targetPeerID];
-  v8 = [v7 prefixedURI];
+  targetPeerID = [(IDSPeerAggregatableMessage *)self targetPeerID];
+  prefixedURI = [targetPeerID prefixedURI];
 
-  if (v8)
+  if (prefixedURI)
   {
-    CFDictionarySetValue(Mutable, @"tP", v8);
+    CFDictionarySetValue(Mutable, @"tP", prefixedURI);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -92,22 +92,22 @@
     sub_10091ED68();
   }
 
-  v9 = [(IDSPeerAggregatableMessage *)self targetShortHandle];
-  if (v9)
+  targetShortHandle = [(IDSPeerAggregatableMessage *)self targetShortHandle];
+  if (targetShortHandle)
   {
-    CFDictionarySetValue(Mutable, @"tPs", v9);
+    CFDictionarySetValue(Mutable, @"tPs", targetShortHandle);
   }
 
-  v10 = [(IDSPeerAggregatableMessage *)self senderShortHandle];
-  if (v10)
+  senderShortHandle = [(IDSPeerAggregatableMessage *)self senderShortHandle];
+  if (senderShortHandle)
   {
-    CFDictionarySetValue(Mutable, @"sTs", v10);
+    CFDictionarySetValue(Mutable, @"sTs", senderShortHandle);
   }
 
-  v11 = [(IDSPeerAggregatableMessage *)self encryptedData];
-  if (v11)
+  encryptedData = [(IDSPeerAggregatableMessage *)self encryptedData];
+  if (encryptedData)
   {
-    CFDictionarySetValue(Mutable, @"P", v11);
+    CFDictionarySetValue(Mutable, @"P", encryptedData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -115,10 +115,10 @@
     sub_10091EDF0();
   }
 
-  v12 = [(IDSPeerAggregatableMessage *)self wantsDeliveryStatus];
-  if (v12)
+  wantsDeliveryStatus = [(IDSPeerAggregatableMessage *)self wantsDeliveryStatus];
+  if (wantsDeliveryStatus)
   {
-    CFDictionarySetValue(Mutable, @"D", v12);
+    CFDictionarySetValue(Mutable, @"D", wantsDeliveryStatus);
   }
 
   if ([(IDSPeerAggregatableMessage *)self wantsCertifiedDelivery])
@@ -130,28 +130,28 @@
     }
   }
 
-  v14 = [(IDSPeerAggregatableMessage *)self anonymizedSenderID];
-  if (v14)
+  anonymizedSenderID = [(IDSPeerAggregatableMessage *)self anonymizedSenderID];
+  if (anonymizedSenderID)
   {
-    CFDictionarySetValue(Mutable, @"sI", v14);
+    CFDictionarySetValue(Mutable, @"sI", anonymizedSenderID);
   }
 
-  v15 = [(IDSPeerAggregatableMessage *)self encryptionType];
-  if (v15)
+  encryptionType = [(IDSPeerAggregatableMessage *)self encryptionType];
+  if (encryptionType)
   {
-    CFDictionarySetValue(Mutable, @"E", v15);
+    CFDictionarySetValue(Mutable, @"E", encryptionType);
   }
 
-  v16 = [(IDSPeerAggregatableMessage *)self payloadMetadata];
-  if (v16)
+  payloadMetadata = [(IDSPeerAggregatableMessage *)self payloadMetadata];
+  if (payloadMetadata)
   {
-    CFDictionarySetValue(Mutable, @"Pm", v16);
+    CFDictionarySetValue(Mutable, @"Pm", payloadMetadata);
   }
 
-  v17 = [(IDSPeerAggregatableMessage *)self dataLength];
-  if (v17)
+  dataLength = [(IDSPeerAggregatableMessage *)self dataLength];
+  if (dataLength)
   {
-    CFDictionarySetValue(Mutable, @"mT", v17);
+    CFDictionarySetValue(Mutable, @"mT", dataLength);
   }
 
   return Mutable;
@@ -159,65 +159,65 @@
 
 - (unint64_t)sizeOfKeysWithValues
 {
-  v3 = [(IDSPeerAggregatableMessage *)self encryptedData];
-  v4 = [v3 length];
+  encryptedData = [(IDSPeerAggregatableMessage *)self encryptedData];
+  v4 = [encryptedData length];
 
-  v5 = [(IDSPeerAggregatableMessage *)self targetToken];
-  v6 = [v5 rawToken];
-  v7 = [v6 length];
+  targetToken = [(IDSPeerAggregatableMessage *)self targetToken];
+  rawToken = [targetToken rawToken];
+  v7 = [rawToken length];
 
-  v8 = [(IDSPeerAggregatableMessage *)self targetSessionToken];
-  v9 = [v8 length];
+  targetSessionToken = [(IDSPeerAggregatableMessage *)self targetSessionToken];
+  v9 = [targetSessionToken length];
 
-  v10 = [(IDSPeerAggregatableMessage *)self targetPeerID];
-  v11 = [v10 prefixedURI];
-  v12 = [v11 lengthOfBytesUsingEncoding:4];
+  targetPeerID = [(IDSPeerAggregatableMessage *)self targetPeerID];
+  prefixedURI = [targetPeerID prefixedURI];
+  v12 = [prefixedURI lengthOfBytesUsingEncoding:4];
 
-  v13 = [(IDSPeerAggregatableMessage *)self payloadMetadata];
-  v14 = [v13 length];
+  payloadMetadata = [(IDSPeerAggregatableMessage *)self payloadMetadata];
+  v14 = [payloadMetadata length];
 
   return v7 + v9 + v4 + v14 + v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(IDSPeerAggregatableMessage *)self encryptedData];
-  [v4 setEncryptedData:v5];
+  encryptedData = [(IDSPeerAggregatableMessage *)self encryptedData];
+  [v4 setEncryptedData:encryptedData];
 
-  v6 = [(IDSPeerAggregatableMessage *)self targetPeerID];
-  [v4 setTargetPeerID:v6];
+  targetPeerID = [(IDSPeerAggregatableMessage *)self targetPeerID];
+  [v4 setTargetPeerID:targetPeerID];
 
-  v7 = [(IDSPeerAggregatableMessage *)self targetToken];
-  [v4 setTargetToken:v7];
+  targetToken = [(IDSPeerAggregatableMessage *)self targetToken];
+  [v4 setTargetToken:targetToken];
 
-  v8 = [(IDSPeerAggregatableMessage *)self targetSessionToken];
-  [v4 setTargetSessionToken:v8];
+  targetSessionToken = [(IDSPeerAggregatableMessage *)self targetSessionToken];
+  [v4 setTargetSessionToken:targetSessionToken];
 
-  v9 = [(IDSPeerAggregatableMessage *)self targetShortHandle];
-  [v4 setTargetShortHandle:v9];
+  targetShortHandle = [(IDSPeerAggregatableMessage *)self targetShortHandle];
+  [v4 setTargetShortHandle:targetShortHandle];
 
-  v10 = [(IDSPeerAggregatableMessage *)self senderShortHandle];
-  [v4 setSenderShortHandle:v10];
+  senderShortHandle = [(IDSPeerAggregatableMessage *)self senderShortHandle];
+  [v4 setSenderShortHandle:senderShortHandle];
 
-  v11 = [(IDSPeerAggregatableMessage *)self completionBlock];
-  [v4 setCompletionBlock:v11];
+  completionBlock = [(IDSPeerAggregatableMessage *)self completionBlock];
+  [v4 setCompletionBlock:completionBlock];
 
-  v12 = [(IDSPeerAggregatableMessage *)self ackBlock];
-  [v4 setAckBlock:v12];
+  ackBlock = [(IDSPeerAggregatableMessage *)self ackBlock];
+  [v4 setAckBlock:ackBlock];
 
-  v13 = [(IDSPeerAggregatableMessage *)self wantsDeliveryStatus];
-  [v4 setWantsDeliveryStatus:v13];
+  wantsDeliveryStatus = [(IDSPeerAggregatableMessage *)self wantsDeliveryStatus];
+  [v4 setWantsDeliveryStatus:wantsDeliveryStatus];
 
   [v4 setWantsCertifiedDelivery:{-[IDSPeerAggregatableMessage wantsCertifiedDelivery](self, "wantsCertifiedDelivery")}];
-  v14 = [(IDSPeerAggregatableMessage *)self anonymizedSenderID];
-  [v4 setAnonymizedSenderID:v14];
+  anonymizedSenderID = [(IDSPeerAggregatableMessage *)self anonymizedSenderID];
+  [v4 setAnonymizedSenderID:anonymizedSenderID];
 
-  v15 = [(IDSPeerAggregatableMessage *)self encryptionType];
-  [v4 setEncryptionType:v15];
+  encryptionType = [(IDSPeerAggregatableMessage *)self encryptionType];
+  [v4 setEncryptionType:encryptionType];
 
-  v16 = [(IDSPeerAggregatableMessage *)self payloadMetadata];
-  [v4 setPayloadMetadata:v16];
+  payloadMetadata = [(IDSPeerAggregatableMessage *)self payloadMetadata];
+  [v4 setPayloadMetadata:payloadMetadata];
 
   [v4 setCommand:self->_command];
   [v4 setDataLength:self->_dataLength];

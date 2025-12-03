@@ -1,49 +1,49 @@
 @interface FMDAudioChannelStatus
-- (FMDAudioChannelStatus)initWithCoder:(id)a3;
-- (FMDAudioChannelStatus)initWithConfiguration:(id)a3;
-- (FMDAudioChannelStatus)initWithDictionary:(id)a3;
+- (FMDAudioChannelStatus)initWithCoder:(id)coder;
+- (FMDAudioChannelStatus)initWithConfiguration:(id)configuration;
+- (FMDAudioChannelStatus)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
 - (NSNumber)muted;
 - (NSNumber)playingSound;
 - (NSString)description;
 - (unint64_t)availability;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDAudioChannelStatus
 
-- (FMDAudioChannelStatus)initWithConfiguration:(id)a3
+- (FMDAudioChannelStatus)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = FMDAudioChannelStatus;
-  v5 = [(FMDBLEBeacon *)&v8 initWithConfiguration:v4];
+  v5 = [(FMDBLEBeacon *)&v8 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 name];
-    [(FMDAudioChannelStatus *)v5 setChannelName:v6];
+    name = [configurationCopy name];
+    [(FMDAudioChannelStatus *)v5 setChannelName:name];
 
-    -[FMDAudioChannelStatus setInEar:](v5, "setInEar:", [v4 inEarStatus]);
-    -[FMDAudioChannelStatus setOnHeadStatus:](v5, "setOnHeadStatus:", [v4 onHeadStatus]);
-    -[FMDAudioChannelStatus setInCase:](v5, "setInCase:", [v4 inCaseStatus]);
-    -[FMDAudioChannelStatus setLidClosed:](v5, "setLidClosed:", [v4 lidClosedStatus]);
-    -[FMDAudioChannelStatus setAvailability:](v5, "setAvailability:", [v4 availability]);
-    -[FMDAudioChannelStatus setAudioState:](v5, "setAudioState:", [v4 audioStateStatus]);
+    -[FMDAudioChannelStatus setInEar:](v5, "setInEar:", [configurationCopy inEarStatus]);
+    -[FMDAudioChannelStatus setOnHeadStatus:](v5, "setOnHeadStatus:", [configurationCopy onHeadStatus]);
+    -[FMDAudioChannelStatus setInCase:](v5, "setInCase:", [configurationCopy inCaseStatus]);
+    -[FMDAudioChannelStatus setLidClosed:](v5, "setLidClosed:", [configurationCopy lidClosedStatus]);
+    -[FMDAudioChannelStatus setAvailability:](v5, "setAvailability:", [configurationCopy availability]);
+    -[FMDAudioChannelStatus setAudioState:](v5, "setAudioState:", [configurationCopy audioStateStatus]);
   }
 
   return v5;
 }
 
-- (FMDAudioChannelStatus)initWithDictionary:(id)a3
+- (FMDAudioChannelStatus)initWithDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = FMDAudioChannelStatus;
   return [(FMDBLEBeacon *)&v4 init];
 }
 
-- (FMDAudioChannelStatus)initWithCoder:(id)a3
+- (FMDAudioChannelStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDAudioChannelStatus;
   v5 = [(FMDBLEBeacon *)&v10 init];
@@ -51,7 +51,7 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("channelName");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [(FMDAudioChannelStatus *)v5 setChannelName:v8];
   }
 
@@ -106,17 +106,17 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(FMDAudioChannelStatus *)self playingSound];
-  [v3 fm_safelySetObject:v4 forKey:@"playing"];
+  playingSound = [(FMDAudioChannelStatus *)self playingSound];
+  [v3 fm_safelySetObject:playingSound forKey:@"playing"];
 
   v5 = [NSNumber numberWithUnsignedInteger:[(FMDAudioChannelStatus *)self availability]];
   [v3 fm_safelySetObject:v5 forKey:@"available"];
 
-  v6 = [(FMDAudioChannelStatus *)self channelName];
-  [v3 fm_safelySetObject:v6 forKey:@"name"];
+  channelName = [(FMDAudioChannelStatus *)self channelName];
+  [v3 fm_safelySetObject:channelName forKey:@"name"];
 
-  v7 = [(FMDAudioChannelStatus *)self muted];
-  [v3 fm_safeSetObject:v7 forKey:@"muted"];
+  muted = [(FMDAudioChannelStatus *)self muted];
+  [v3 fm_safeSetObject:muted forKey:@"muted"];
 
   v8 = +[FMSystemInfo sharedInstance];
   if ([v8 isInternalBuild])
@@ -161,8 +161,8 @@ LABEL_5:
   v5 = [NSNumber numberWithBool:[(FMDBLEBeacon *)self utpConnected]];
   [v3 fm_safelySetObject:v5 forKey:@"utpConnected"];
 
-  v6 = [(FMDAudioChannelStatus *)self playingSound];
-  [v3 fm_safelySetObject:v6 forKey:@"playing"];
+  playingSound = [(FMDAudioChannelStatus *)self playingSound];
+  [v3 fm_safelySetObject:playingSound forKey:@"playing"];
 
   v7 = [NSNumber numberWithUnsignedInteger:[(FMDAudioChannelStatus *)self availability]];
   [v3 fm_safelySetObject:v7 forKey:@"available"];
@@ -179,20 +179,20 @@ LABEL_5:
   v11 = [NSNumber numberWithUnsignedInteger:[(FMDAudioChannelStatus *)self lidClosed]];
   [v3 fm_safelySetObject:v11 forKey:@"Lid Closed"];
 
-  v12 = [(FMDAudioChannelStatus *)self channelName];
-  [v3 fm_safelySetObject:v12 forKey:@"name"];
+  channelName = [(FMDAudioChannelStatus *)self channelName];
+  [v3 fm_safelySetObject:channelName forKey:@"name"];
 
   v13 = [v3 description];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(FMDAudioChannelStatus *)self channelName];
+  coderCopy = coder;
+  channelName = [(FMDAudioChannelStatus *)self channelName];
   v5 = NSStringFromSelector("channelName");
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:channelName forKey:v5];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MFNanoBridgeSettingsMailbox
 + (id)defaultSelectedMailboxes;
-+ (unint64_t)sourceTypeForMailboxFilterType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (unint64_t)sourceTypeForMailboxFilterType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation MFNanoBridgeSettingsMailbox
@@ -80,18 +80,18 @@
   return v8;
 }
 
-+ (unint64_t)sourceTypeForMailboxFilterType:(unint64_t)a3
++ (unint64_t)sourceTypeForMailboxFilterType:(unint64_t)type
 {
-  if (a3 > 15)
+  if (type > 15)
   {
-    if (a3 == 16)
+    if (type == 16)
     {
       return 4;
     }
 
-    if (a3 != 32)
+    if (type != 32)
     {
-      if (a3 == 64)
+      if (type == 64)
       {
         return 7;
       }
@@ -104,14 +104,14 @@
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return 1;
     }
 
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         return 3;
       }
@@ -123,10 +123,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if (v3)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

@@ -1,17 +1,17 @@
 @interface MPSImageIntegral
-- (MPSImageIntegral)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageIntegral)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSImageIntegral)initWithCoder:(id)coder device:(id)device;
+- (MPSImageIntegral)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageIntegral
 
-- (MPSImageIntegral)initWithDevice:(id)a3
+- (MPSImageIntegral)initWithDevice:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSImageIntegral;
-  result = [(MPSUnaryImageKernel *)&v10 initWithDevice:a3];
+  result = [(MPSUnaryImageKernel *)&v10 initWithDevice:device];
   if (result)
   {
     v9 = result;
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (MPSImageIntegral)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageIntegral)initWithCoder:(id)coder device:(id)device
 {
   v13.receiver = self;
   v13.super_class = MPSImageIntegral;
-  v4 = [(MPSUnaryImageKernel *)&v13 initWithCoder:a3 device:a4];
+  v4 = [(MPSUnaryImageKernel *)&v13 initWithCoder:coder device:device];
   v10 = v4;
   if (!v4)
   {
@@ -51,19 +51,19 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSImageIntegral;
-  [(MPSUnaryImageKernel *)&v3 encodeWithCoder:a3];
+  [(MPSUnaryImageKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v12.receiver = self;
   v12.super_class = MPSImageIntegral;
-  result = [(MPSUnaryImageKernel *)&v12 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v12 copyWithZone:zone device:device];
   if (result)
   {
     v11 = result;

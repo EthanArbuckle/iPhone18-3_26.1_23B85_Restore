@@ -1,13 +1,13 @@
 @interface PXComposeRecipientAddRecipientTableViewCell
-- (PXComposeRecipientAddRecipientTableViewCell)initWithCoder:(id)a3;
-- (PXComposeRecipientAddRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PXComposeRecipientAddRecipientTableViewCell)initWithCoder:(id)coder;
+- (PXComposeRecipientAddRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PXComposeRecipientAddRecipientTableViewCell
 
-- (PXComposeRecipientAddRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PXComposeRecipientAddRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1A524C674();
     v6 = sub_1A524C634();
@@ -20,7 +20,7 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for ComposeRecipientAddRecipientTableViewCell();
-  v7 = [(PXComposeRecipientAddRecipientTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PXComposeRecipientAddRecipientTableViewCell *)&v10 initWithStyle:style reuseIdentifier:v6];
 
   v8 = v7;
   sub_1A524D314();
@@ -28,7 +28,7 @@
   return v8;
 }
 
-- (PXComposeRecipientAddRecipientTableViewCell)initWithCoder:(id)a3
+- (PXComposeRecipientAddRecipientTableViewCell)initWithCoder:(id)coder
 {
   result = sub_1A524E6E4();
   __break(1u);

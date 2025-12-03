@@ -1,18 +1,18 @@
 @interface TSCHChartRootLayoutItem
 - ($6BF1DF173A55784CAE4B3BED4B6FCF3F)layoutSettings;
 - (BOOL)isInResize;
-- (CGPoint)bottomLegendOffsetForChartAreaFrame:(CGRect)a3 legendFrame:(CGRect)a4;
+- (CGPoint)bottomLegendOffsetForChartAreaFrame:(CGRect)frame legendFrame:(CGRect)legendFrame;
 - (CGRect)calcDrawingRect;
 - (CGRect)calcOverhangRect;
 - (CGSize)startingSize;
 - (NSDictionary)seriesIndexedPieNormalizedLabelDistancesFromWedgeTips;
 - (NSDictionary)seriesIndexedPieWedgeExplosions;
 - (TSCHChartAbstractAreaLayoutItem)chartAreaLayoutItem;
-- (TSCHChartRootLayoutItem)initWithChartInfo:(id)a3 styleProvidingSource:(id)a4;
+- (TSCHChartRootLayoutItem)initWithChartInfo:(id)info styleProvidingSource:(id)source;
 - (TSCHLegendAreaLayoutItem)legendAreaLayoutItem;
 - (id)chartInfo;
 - (id)model;
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (id)root;
 - (id)styleProvidingSource;
 - (unint64_t)dataSetIndex;
@@ -24,22 +24,22 @@
 - (void)layoutOutward;
 - (void)p_updatePieWedgeExplosionsFromModel;
 - (void)positionLegendAtBottom;
-- (void)setChartBodySize:(CGSize)a3;
-- (void)setChartInnerFrame:(CGRect)a3 legendInnerFrame:(CGRect)a4;
-- (void)setDataSetIndex:(unint64_t)a3;
-- (void)setLayoutSettings:(id *)a3;
-- (void)setLegendSize:(CGSize)a3;
+- (void)setChartBodySize:(CGSize)size;
+- (void)setChartInnerFrame:(CGRect)frame legendInnerFrame:(CGRect)innerFrame;
+- (void)setDataSetIndex:(unint64_t)index;
+- (void)setLayoutSettings:(id *)settings;
+- (void)setLegendSize:(CGSize)size;
 - (void)updateLayoutOffset;
 - (void)updateLayoutSize;
 @end
 
 @implementation TSCHChartRootLayoutItem
 
-- (TSCHChartRootLayoutItem)initWithChartInfo:(id)a3 styleProvidingSource:(id)a4
+- (TSCHChartRootLayoutItem)initWithChartInfo:(id)info styleProvidingSource:(id)source
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  infoCopy = info;
+  sourceCopy = source;
+  if (!infoCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHChartRootLayoutItem initWithChartInfo:styleProvidingSource:]");
@@ -55,10 +55,10 @@
   v28 = v27;
   if (v27)
   {
-    objc_storeWeak(&v27->_chartInfo, v6);
-    v33 = objc_msgSend_model(v6, v29, v30, v31, v32);
+    objc_storeWeak(&v27->_chartInfo, infoCopy);
+    v33 = objc_msgSend_model(infoCopy, v29, v30, v31, v32);
     v38 = objc_msgSend_multiDataSetIndex(v33, v34, v35, v36, v37);
-    v43 = objc_msgSend_modelForDataSetIndex_(v6, v39, v40, v41, v42, v38);
+    v43 = objc_msgSend_modelForDataSetIndex_(infoCopy, v39, v40, v41, v42, v38);
     chartModel = v28->_chartModel;
     v28->_chartModel = v43;
 
@@ -69,7 +69,7 @@
     v28->_chartInnerFrame.origin = v45;
     v28->_chartInnerFrame.size = v46;
     v28->_startingSize = *MEMORY[0x277CBF3A8];
-    objc_storeWeak(&v28->_styleProvidingSource, v8);
+    objc_storeWeak(&v28->_styleProvidingSource, sourceCopy);
   }
 
   return v28;
@@ -94,15 +94,15 @@
     }
 
     v31 = objc_msgSend_parent(self, v12, v13, v14, v15);
-    v36 = objc_msgSend_root(v31, v32, v33, v34, v35);
+    selfCopy = objc_msgSend_root(v31, v32, v33, v34, v35);
   }
 
   else
   {
-    v36 = self;
+    selfCopy = self;
   }
 
-  return v36;
+  return selfCopy;
 }
 
 - ($6BF1DF173A55784CAE4B3BED4B6FCF3F)layoutSettings
@@ -142,7 +142,7 @@
   return result;
 }
 
-- (void)setLayoutSettings:(id *)a3
+- (void)setLayoutSettings:(id *)settings
 {
   v8 = objc_msgSend_parent(self, a2, v3, v4, v5);
 
@@ -154,8 +154,8 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v21, v22, v23, v14, v19, 78, 0, "This object is supposed to be the root, but somehow has a parent. Sup with that?");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
-    v43 = *&a3->var0;
-    var9 = a3->var9;
+    v43 = *&settings->var0;
+    var9 = settings->var9;
     v31 = objc_msgSend_parent(self, v28, *&v43, v29, v30);
     objc_msgSend_setLayoutSettings_(v31, v32, v33, v34, v35, &v43);
   }
@@ -164,13 +164,13 @@
   {
     v43 = *&self->_layoutSettings.forceOmitLegend;
     var9 = self->_layoutSettings.max3DLimitingSeries;
-    v41 = *&a3->var0;
-    v42 = a3->var9;
+    v41 = *&settings->var0;
+    v42 = settings->var9;
     if (!sub_27635FBE4(&v43, &v41))
     {
       objc_msgSend_clearAll(self, v36, v37, v38, v39);
-      v40 = *&a3->var0;
-      self->_layoutSettings.max3DLimitingSeries = a3->var9;
+      v40 = *&settings->var0;
+      self->_layoutSettings.max3DLimitingSeries = settings->var9;
       *&self->_layoutSettings.forceOmitLegend = v40;
     }
   }
@@ -326,13 +326,13 @@
   return result;
 }
 
-- (void)setChartInnerFrame:(CGRect)a3 legendInnerFrame:(CGRect)a4
+- (void)setChartInnerFrame:(CGRect)frame legendInnerFrame:(CGRect)innerFrame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_legendInnerFrame = CGRectStandardize(a4);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_legendInnerFrame = CGRectStandardize(innerFrame);
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;
@@ -340,12 +340,12 @@
   self->_chartInnerFrame = CGRectStandardize(v9);
 }
 
-- (void)setLegendSize:(CGSize)a3
+- (void)setLegendSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  self->_legendInnerFrame.size = a3;
-  v7 = objc_msgSend_chartInfo(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  self->_legendInnerFrame.size = size;
+  v7 = objc_msgSend_chartInfo(self, a2, size.width, size.height, v3);
   v12 = objc_msgSend_intValueForProperty_defaultValue_(v7, v8, v9, v10, v11, 1113, 1);
 
   v17 = objc_msgSend_legendAreaLayoutItem(self, v13, v14, v15, v16);
@@ -357,12 +357,12 @@
   }
 }
 
-- (CGPoint)bottomLegendOffsetForChartAreaFrame:(CGRect)a3 legendFrame:(CGRect)a4
+- (CGPoint)bottomLegendOffsetForChartAreaFrame:(CGRect)frame legendFrame:(CGRect)legendFrame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   TSUCenterRectOverRect();
   MinX = CGRectGetMinX(v13);
   v14.origin.x = x;
@@ -760,11 +760,11 @@ LABEL_12:
 LABEL_12:
 }
 
-- (void)setChartBodySize:(CGSize)a3
+- (void)setChartBodySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if ((objc_msgSend_treeBuilt(self, a2, a3.width, a3.height, v3) & 1) == 0)
+  height = size.height;
+  width = size.width;
+  if ((objc_msgSend_treeBuilt(self, a2, size.width, size.height, v3) & 1) == 0)
   {
     objc_msgSend_buildSubTree(self, v7, v8, v9, v10);
   }
@@ -873,22 +873,22 @@ LABEL_12:
   [(TSCHChartLayoutItem *)&v87 buildSubTree];
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = [TSCHChartBackgroundRenderer alloc];
-  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, repCopy, self);
   objc_msgSend_addObject_(v5, v12, v13, v14, v15, v11);
   v20 = objc_msgSend_chartAreaLayoutItem(self, v16, v17, v18, v19);
-  v25 = objc_msgSend_renderersWithRep_(v20, v21, v22, v23, v24, v4);
+  v25 = objc_msgSend_renderersWithRep_(v20, v21, v22, v23, v24, repCopy);
   objc_msgSend_addObjectsFromArray_(v5, v26, v27, v28, v29, v25);
 
   v34 = objc_msgSend_legendAreaLayoutItem(self, v30, v31, v32, v33);
   v39 = v34;
   if (v34)
   {
-    v40 = objc_msgSend_renderersWithRep_(v34, v35, v36, v37, v38, v4);
+    v40 = objc_msgSend_renderersWithRep_(v34, v35, v36, v37, v38, repCopy);
     objc_msgSend_addObjectsFromArray_(v5, v41, v42, v43, v44, v40);
   }
 
@@ -990,7 +990,7 @@ LABEL_12:
   if (hasExplodableSeriesElements)
   {
     v21 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v17, v18, v19, v20);
-    v74 = self;
+    selfCopy = self;
     v26 = objc_msgSend_model(self, v22, v23, v24, v25);
     v75 = 0u;
     v76 = 0u;
@@ -1031,8 +1031,8 @@ LABEL_12:
     }
 
     v72 = objc_msgSend_copy(v21, v68, v69, v70, v71);
-    seriesIndexedPieWedgeExplosions = v74->_seriesIndexedPieWedgeExplosions;
-    v74->_seriesIndexedPieWedgeExplosions = v72;
+    seriesIndexedPieWedgeExplosions = selfCopy->_seriesIndexedPieWedgeExplosions;
+    selfCopy->_seriesIndexedPieWedgeExplosions = v72;
   }
 }
 
@@ -1061,7 +1061,7 @@ LABEL_12:
   return objc_msgSend_multiDataSetIndex(chartModel, a2, v2, v3, v4);
 }
 
-- (void)setDataSetIndex:(unint64_t)a3
+- (void)setDataSetIndex:(unint64_t)index
 {
   chartModel = self->_chartModel;
   if (!chartModel)
@@ -1075,7 +1075,7 @@ LABEL_12:
     chartModel = self->_chartModel;
   }
 
-  objc_msgSend_setMultiDataSetIndex_(chartModel, a2, v3, v4, v5, a3);
+  objc_msgSend_setMultiDataSetIndex_(chartModel, a2, v3, v4, v5, index);
 }
 
 - (void)invalidateTransientModel

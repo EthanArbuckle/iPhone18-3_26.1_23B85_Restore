@@ -1,55 +1,55 @@
 @interface HDContributorReference
 + (id)contributorReferenceForNoContributor;
-+ (id)contributorReferenceForOtherUserWithUUID:(id)a3;
-+ (id)contributorReferenceForPersistentID:(id)a3;
++ (id)contributorReferenceForOtherUserWithUUID:(id)d;
++ (id)contributorReferenceForPersistentID:(id)d;
 + (id)contributorReferenceForPrimaryUser;
-- (BOOL)isEqual:(id)a3;
-- (HDContributorReference)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDContributorReference)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_initWithContributorType:(void *)a3 persistentID:(void *)a4 uuid:;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithContributorType:(void *)type persistentID:(void *)d uuid:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDContributorReference
 
-- (void)_initWithContributorType:(void *)a3 persistentID:(void *)a4 uuid:
+- (void)_initWithContributorType:(void *)type persistentID:(void *)d uuid:
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  typeCopy = type;
+  dCopy = d;
+  v9 = dCopy;
+  if (self)
   {
-    if (v7 && v8)
+    if (typeCopy && dCopy)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:sel__initWithContributorType_persistentID_uuid_ object:a1 file:@"HDContributorReference.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"persistentID == nil || uuid == nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithContributorType_persistentID_uuid_ object:self file:@"HDContributorReference.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"persistentID == nil || uuid == nil"}];
     }
 
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = HDContributorReference;
     v10 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       v10[1] = a2;
-      v11 = [v7 copy];
-      v12 = a1[2];
-      a1[2] = v11;
+      v11 = [typeCopy copy];
+      v12 = self[2];
+      self[2] = v11;
 
       v13 = [v9 copy];
-      v14 = a1[3];
-      a1[3] = v13;
+      v14 = self[3];
+      self[3] = v13;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)contributorReferenceForPersistentID:(id)a3
++ (id)contributorReferenceForPersistentID:(id)d
 {
-  v3 = a3;
-  v4 = [[HDContributorReference alloc] _initWithContributorType:v3 persistentID:0 uuid:?];
+  dCopy = d;
+  v4 = [[HDContributorReference alloc] _initWithContributorType:dCopy persistentID:0 uuid:?];
 
   return v4;
 }
@@ -68,10 +68,10 @@
   return v2;
 }
 
-+ (id)contributorReferenceForOtherUserWithUUID:(id)a3
++ (id)contributorReferenceForOtherUserWithUUID:(id)d
 {
-  v3 = a3;
-  v4 = [[HDContributorReference alloc] _initWithContributorType:0 persistentID:v3 uuid:?];
+  dCopy = d;
+  v4 = [[HDContributorReference alloc] _initWithContributorType:0 persistentID:dCopy uuid:?];
 
   return v4;
 }
@@ -94,29 +94,29 @@
   return [v3 stringWithFormat:@"<%@:%p %@, %@, %@>", v4, self, v6, self->_persistentID, self->_UUID];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if (self->_contributorType != v4[1])
+  if (self->_contributorType != equalCopy[1])
   {
     goto LABEL_9;
   }
 
   persistentID = self->_persistentID;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (persistentID != v6 && (!v6 || ![(NSNumber *)persistentID isEqual:?]))
   {
     goto LABEL_9;
   }
 
   UUID = self->_UUID;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (UUID == v8)
   {
     v9 = 1;
@@ -139,20 +139,20 @@ LABEL_10:
   return v9;
 }
 
-- (HDContributorReference)initWithCoder:(id)a3
+- (HDContributorReference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HDContributorReference;
   v5 = [(HDContributorReference *)&v11 init];
   if (v5)
   {
-    v5->_contributorType = [v4 decodeIntForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentID"];
+    v5->_contributorType = [coderCopy decodeIntForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentID"];
     persistentID = v5->_persistentID;
     v5->_persistentID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     UUID = v5->_UUID;
     v5->_UUID = v8;
   }
@@ -160,18 +160,18 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contributorType = self->_contributorType;
-  v5 = a3;
-  [v5 encodeInteger:contributorType forKey:@"type"];
-  [v5 encodeObject:self->_persistentID forKey:@"persistentID"];
-  [v5 encodeObject:self->_UUID forKey:@"uuid"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:contributorType forKey:@"type"];
+  [coderCopy encodeObject:self->_persistentID forKey:@"persistentID"];
+  [coderCopy encodeObject:self->_UUID forKey:@"uuid"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HDContributorReference allocWithZone:a3];
+  v4 = [HDContributorReference allocWithZone:zone];
   contributorType = self->_contributorType;
   persistentID = self->_persistentID;
   UUID = self->_UUID;

@@ -19,13 +19,13 @@
 {
   if (!obj)
   {
-    v14 = [NSString stringWithFormat:@"%@: value parameter is nil", _NSMethodExceptionProem(a1, a2)];
+    v14 = [NSString stringWithFormat:@"%@: value parameter is nil", _NSMethodExceptionProem(self, a2)];
     goto LABEL_10;
   }
 
   if ((opt & 4) == 0 && (_NSIsNSArray() & 1) == 0 && (_NSIsNSDictionary() & 1) == 0)
   {
-    v14 = [NSString stringWithFormat:@"%@: Invalid top-level type in JSON write", _NSMethodExceptionProem(a1, a2)];
+    v14 = [NSString stringWithFormat:@"%@: Invalid top-level type in JSON write", _NSMethodExceptionProem(self, a2)];
 LABEL_10:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v14 userInfo:0]);
   }
@@ -69,19 +69,19 @@ LABEL_8:
 {
   if (!obj)
   {
-    v16 = [NSString stringWithFormat:@"%@: value parameter is nil", _NSMethodExceptionProem(a1, a2)];
+    v16 = [NSString stringWithFormat:@"%@: value parameter is nil", _NSMethodExceptionProem(self, a2)];
     goto LABEL_13;
   }
 
   if (!stream || ![(NSOutputStream *)stream streamStatus])
   {
-    v16 = [NSString stringWithFormat:@"%@: stream is not open for writing", _NSMethodExceptionProem(a1, a2)];
+    v16 = [NSString stringWithFormat:@"%@: stream is not open for writing", _NSMethodExceptionProem(self, a2)];
     goto LABEL_13;
   }
 
   if ((opt & 4) == 0 && (_NSIsNSArray() & 1) == 0 && (_NSIsNSDictionary() & 1) == 0)
   {
-    v16 = [NSString stringWithFormat:@"%@: Invalid top-level type in JSON write", _NSMethodExceptionProem(a1, a2)];
+    v16 = [NSString stringWithFormat:@"%@: Invalid top-level type in JSON write", _NSMethodExceptionProem(self, a2)];
 LABEL_13:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v16 userInfo:0]);
   }
@@ -101,7 +101,7 @@ LABEL_13:
 {
   if (!stream)
   {
-    v12 = [NSString stringWithFormat:@"%@: stream parameter is nil", _NSMethodExceptionProem(a1, a2)];
+    v12 = [NSString stringWithFormat:@"%@: stream parameter is nil", _NSMethodExceptionProem(self, a2)];
 LABEL_9:
     v13 = v12;
     v14 = MEMORY[0x1E695DF30];
@@ -111,7 +111,7 @@ LABEL_9:
 
   if (![(NSInputStream *)stream streamStatus])
   {
-    v12 = [NSString stringWithFormat:@"%@: stream is not open for reading", _NSMethodExceptionProem(a1, a2)];
+    v12 = [NSString stringWithFormat:@"%@: stream is not open for reading", _NSMethodExceptionProem(self, a2)];
     goto LABEL_9;
   }
 

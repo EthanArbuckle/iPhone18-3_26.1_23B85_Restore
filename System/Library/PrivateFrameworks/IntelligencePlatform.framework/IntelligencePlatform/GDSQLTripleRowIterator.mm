@@ -1,7 +1,7 @@
 @interface GDSQLTripleRowIterator
-- (GDSQLTripleRowIterator)initWithColumns:(unint64_t)a3 statement:(id)a4 subjectOverride:(id)a5;
+- (GDSQLTripleRowIterator)initWithColumns:(unint64_t)columns statement:(id)statement subjectOverride:(id)override;
 - (id)relationshipIdIterator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation GDSQLTripleRowIterator
@@ -26,9 +26,9 @@
     lazyTripleRow->_subject = v5;
 
     v7 = [[GDEntityIdentifier alloc] initWithString:lazyTripleRow->_subject];
-    v8 = [(GDEntityIdentifier *)v7 stringValue];
+    stringValue = [(GDEntityIdentifier *)v7 stringValue];
     v9 = lazyTripleRow->_subject;
-    lazyTripleRow->_subject = v8;
+    lazyTripleRow->_subject = stringValue;
 
     predicate = lazyTripleRow->_predicate;
     if (predicate)
@@ -166,14 +166,14 @@
   return v40;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   p_lazyTripleRow = &self->_lazyTripleRow;
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var1 = p_lazyTripleRow;
-    a3->var2 = self;
-    a3->var0 = 1;
+    state->var1 = p_lazyTripleRow;
+    state->var2 = self;
+    state->var0 = 1;
     if (self->_iterateSubjectValue)
     {
       goto LABEL_17;
@@ -192,9 +192,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [(GDLazyGraphTripleRow *)lazyTripleRow subject];
-  v10 = [(GDLazyGraphTripleRow *)*p_lazyTripleRow predicate];
-  v11 = [(GDLazyGraphTripleRow *)*p_lazyTripleRow relationshipId];
+  subject = [(GDLazyGraphTripleRow *)lazyTripleRow subject];
+  predicate = [(GDLazyGraphTripleRow *)*p_lazyTripleRow predicate];
+  relationshipId = [(GDLazyGraphTripleRow *)*p_lazyTripleRow relationshipId];
   sub_1ABAAEFEC(*p_lazyTripleRow);
   while (1)
   {
@@ -211,22 +211,22 @@ LABEL_13:
       }
     }
 
-    v14 = [(GDLazyGraphTripleRow *)v12 subject];
-    if (![v14 isEqualToString:v9])
+    subject2 = [(GDLazyGraphTripleRow *)v12 subject];
+    if (![subject2 isEqualToString:subject])
     {
       goto LABEL_15;
     }
 
-    v15 = [(GDLazyGraphTripleRow *)*p_lazyTripleRow predicate];
-    if (([v15 isEqualToString:v10] & 1) == 0)
+    predicate2 = [(GDLazyGraphTripleRow *)*p_lazyTripleRow predicate];
+    if (([predicate2 isEqualToString:predicate] & 1) == 0)
     {
 
 LABEL_15:
       break;
     }
 
-    v16 = [(GDLazyGraphTripleRow *)*p_lazyTripleRow relationshipId];
-    v17 = [v16 isEqualToString:v11];
+    relationshipId2 = [(GDLazyGraphTripleRow *)*p_lazyTripleRow relationshipId];
+    v17 = [relationshipId2 isEqualToString:relationshipId];
 
     if (!v17)
     {
@@ -258,20 +258,20 @@ LABEL_17:
     return 1;
   }
 
-  v22 = [(GDLazyGraphTripleRow *)v18 subject];
-  v23 = [(NSString *)iterateSubjectValue isEqualToString:v22];
+  subject3 = [(GDLazyGraphTripleRow *)v18 subject];
+  v23 = [(NSString *)iterateSubjectValue isEqualToString:subject3];
 
   return v23;
 }
 
-- (GDSQLTripleRowIterator)initWithColumns:(unint64_t)a3 statement:(id)a4 subjectOverride:(id)a5
+- (GDSQLTripleRowIterator)initWithColumns:(unint64_t)columns statement:(id)statement subjectOverride:(id)override
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = sub_1ABF081D8([GDLazyGraphTripleRowCursor alloc], v6, v9);
+  columnsCopy = columns;
+  overrideCopy = override;
+  statementCopy = statement;
+  v10 = sub_1ABF081D8([GDLazyGraphTripleRowCursor alloc], columnsCopy, statementCopy);
 
-  v11 = sub_1ABF07EF4([GDLazyGraphTripleRow alloc], v10, v8);
+  v11 = sub_1ABF07EF4([GDLazyGraphTripleRow alloc], v10, overrideCopy);
   v12 = sub_1ABF08294(self, v11);
 
   return v12;

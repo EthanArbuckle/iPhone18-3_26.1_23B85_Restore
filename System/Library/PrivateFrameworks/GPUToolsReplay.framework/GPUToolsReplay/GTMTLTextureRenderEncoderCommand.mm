@@ -2,7 +2,7 @@
 - (CGPoint)anchor;
 - (CGRect)bounds;
 - (GTMTLTextureRenderEncoderCommand)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation GTMTLTextureRenderEncoderCommand
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GTMTLTextureRenderEncoderCommand);
   v5 = *&self->_transform.m33;

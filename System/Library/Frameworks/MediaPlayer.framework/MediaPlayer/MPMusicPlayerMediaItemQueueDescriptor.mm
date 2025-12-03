@@ -1,13 +1,13 @@
 @interface MPMusicPlayerMediaItemQueueDescriptor
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPMediaItemCollection)itemCollection;
 - (MPMediaQuery)query;
-- (MPMusicPlayerMediaItemQueueDescriptor)initWithCoder:(id)a3;
+- (MPMusicPlayerMediaItemQueueDescriptor)initWithCoder:(id)coder;
 - (MPMusicPlayerMediaItemQueueDescriptor)initWithItemCollection:(MPMediaItemCollection *)itemCollection;
 - (MPMusicPlayerMediaItemQueueDescriptor)initWithQuery:(MPMediaQuery *)query;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setEndTime:(NSTimeInterval)endTime forItem:(MPMediaItem *)mediaItem;
 - (void)setStartTime:(NSTimeInterval)startTime forItem:(MPMediaItem *)mediaItem;
 @end
@@ -26,8 +26,8 @@
     itemCollection = self->_itemCollection;
     if (itemCollection)
     {
-      v4 = [(MPMediaItemCollection *)itemCollection items];
-      LOBYTE(v2) = [v4 count] != 0;
+      items = [(MPMediaItemCollection *)itemCollection items];
+      LOBYTE(v2) = [items count] != 0;
     }
 
     else
@@ -45,8 +45,8 @@
   if (!v3)
   {
     v4 = [MPMediaItemCollection alloc];
-    v5 = [(MPMediaQuery *)self->_query items];
-    v3 = [(MPMediaItemCollection *)v4 initWithItems:v5];
+    items = [(MPMediaQuery *)self->_query items];
+    v3 = [(MPMediaItemCollection *)v4 initWithItems:items];
   }
 
   return v3;
@@ -63,8 +63,8 @@
   else
   {
     v7 = [MPMediaQuery alloc];
-    v8 = [(MPMediaItemCollection *)self->_itemCollection items];
-    v4 = [(MPMediaQuery *)v7 initWithEntities:v8 entityType:0];
+    items = [(MPMediaItemCollection *)self->_itemCollection items];
+    v4 = [(MPMediaQuery *)v7 initWithEntities:items entityType:0];
   }
 
   v5 = [(MPMediaQuery *)v4 copy];
@@ -174,45 +174,45 @@ void __62__MPMusicPlayerMediaItemQueueDescriptor_setStartTime_forItem___block_in
   [v3 setPersistentID:{objc_msgSend(v2, "persistentID")}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPMusicPlayerMediaItemQueueDescriptor;
-  v4 = [(MPMusicPlayerQueueDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MPMusicPlayerQueueDescriptor *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 11, self->_query);
   objc_storeStrong(v4 + 12, self->_itemCollection);
   objc_storeStrong(v4 + 13, self->_startItem);
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPMusicPlayerMediaItemQueueDescriptor;
-  v4 = a3;
-  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_query forKey:{@"MPMusicPlayerMediaItemQueueDescriptorQuery", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_itemCollection forKey:@"MPMusicPlayerMediaItemQueueDescriptorItemCollection"];
-  [v4 encodeObject:self->_startItem forKey:@"MPMusicPlayerMediaItemQueueDescriptorStartItem"];
+  coderCopy = coder;
+  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_query forKey:{@"MPMusicPlayerMediaItemQueueDescriptorQuery", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_itemCollection forKey:@"MPMusicPlayerMediaItemQueueDescriptorItemCollection"];
+  [coderCopy encodeObject:self->_startItem forKey:@"MPMusicPlayerMediaItemQueueDescriptorStartItem"];
 }
 
-- (MPMusicPlayerMediaItemQueueDescriptor)initWithCoder:(id)a3
+- (MPMusicPlayerMediaItemQueueDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MPMusicPlayerMediaItemQueueDescriptor;
-  v5 = [(MPMusicPlayerQueueDescriptor *)&v13 initWithCoder:v4];
+  v5 = [(MPMusicPlayerQueueDescriptor *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerMediaItemQueueDescriptorQuery"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerMediaItemQueueDescriptorQuery"];
     query = v5->_query;
     v5->_query = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerMediaItemQueueDescriptorItemCollection"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerMediaItemQueueDescriptorItemCollection"];
     itemCollection = v5->_itemCollection;
     v5->_itemCollection = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerMediaItemQueueDescriptorStartItem"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerMediaItemQueueDescriptorStartItem"];
     startItem = v5->_startItem;
     v5->_startItem = v10;
   }
@@ -220,14 +220,14 @@ void __62__MPMusicPlayerMediaItemQueueDescriptor_setStartTime_forItem___block_in
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v20.receiver = self;
   v20.super_class = MPMusicPlayerMediaItemQueueDescriptor;
-  if ([(MPMusicPlayerQueueDescriptor *)&v20 isEqual:v4])
+  if ([(MPMusicPlayerQueueDescriptor *)&v20 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[11];
     v7 = self->_query;
     v8 = v7;
@@ -283,11 +283,11 @@ void __62__MPMusicPlayerMediaItemQueueDescriptor_setStartTime_forItem___block_in
   v5 = itemCollection;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerMediaItemQueueDescriptor;
-  v6 = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 12, itemCollection);
+    objc_storeStrong(_init + 12, itemCollection);
   }
 
   return v7;
@@ -298,11 +298,11 @@ void __62__MPMusicPlayerMediaItemQueueDescriptor_setStartTime_forItem___block_in
   v5 = query;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerMediaItemQueueDescriptor;
-  v6 = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 11, query);
+    objc_storeStrong(_init + 11, query);
     if ([(MPMediaQuery *)v7->_query groupingType]== MPMediaGroupingPlaylist)
     {
       [(MPMediaQuery *)v7->_query setGroupingType:0];

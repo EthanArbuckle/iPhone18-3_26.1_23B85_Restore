@@ -8,9 +8,9 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v6 components:16 fromDate:a1 toDate:v7 options:0];
-  v9 = [v6 components:24 fromDate:a1 toDate:v7 options:0];
-  v10 = [v6 components:12 fromDate:a1 toDate:v7 options:0];
+  v8 = [v6 components:16 fromDate:self toDate:v7 options:0];
+  v9 = [v6 components:24 fromDate:self toDate:v7 options:0];
+  v10 = [v6 components:12 fromDate:self toDate:v7 options:0];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([v8 day] == 0x7FFFFFFFFFFFFFFFLL || (v12 = objc_msgSend(v8, "day"), v13 = v8, v12 >= 61))
@@ -22,9 +22,9 @@
   }
 
   v15 = v13;
-  v16 = [MEMORY[0x277CBEAF8] currentLocale];
-  v17 = [v16 languageCode];
-  v18 = [v17 isEqualToString:@"en"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v18 = [languageCode isEqualToString:@"en"];
 
   if (v18)
   {

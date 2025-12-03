@@ -10,7 +10,7 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v9 = a3;
-  v10 = [a1 objectForKeyedSubscript:v9];
+  v10 = [self objectForKeyedSubscript:v9];
   if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v12 = MEMORY[0x1E696AEC0];
@@ -55,7 +55,7 @@
   v37 = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = a4;
-  v12 = [a1 objectForKeyedSubscript:v10];
+  v12 = [self objectForKeyedSubscript:v10];
   if (v12)
   {
     v30 = 0u;
@@ -134,14 +134,14 @@ LABEL_16:
 
 - (id)avt_mutableContainersCopy
 {
-  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__NSDictionary_AVTSecureDecoding__avt_mutableContainersCopy__block_invoke;
   v5[3] = &unk_1E7F48E68;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateKeysAndObjectsUsingBlock:v5];
+  [self enumerateKeysAndObjectsUsingBlock:v5];
 
   return v3;
 }

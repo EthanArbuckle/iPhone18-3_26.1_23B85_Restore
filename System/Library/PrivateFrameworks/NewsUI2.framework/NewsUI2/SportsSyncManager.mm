@@ -4,11 +4,11 @@
 - (void)handleSyncCompletionNotification;
 - (void)handleSyncSettingChangedNotification;
 - (void)handleiTunesAccountChanged;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
-- (void)subscriptionControllerDidStopSyncingRemoteChanges:(id)a3;
-- (void)subscriptionControllerWillStartSyncingRemoteChanges:(id)a3;
-- (void)userInfoDidChangeSportsSyncState:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
+- (void)subscriptionControllerDidStopSyncingRemoteChanges:(id)changes;
+- (void)subscriptionControllerWillStartSyncingRemoteChanges:(id)changes;
+- (void)userInfoDidChangeSportsSyncState:(id)state;
 @end
 
 @implementation SportsSyncManager
@@ -22,42 +22,42 @@
 
 - (void)handleSyncCompletionNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C76BDC("Sports sync manager received sync completion notification from watchlist", sub_218C82ADC, &block_descriptor_144);
 }
 
 - (void)handleSyncSettingChangedNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C76BDC("Sports sync manager received sync setting notification from watchlist", sub_218C82AA4, &block_descriptor_139);
 }
 
 - (void)handleiTunesAccountChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C76BDC("Sports sync manager detected apple account changed", sub_218C82A20, &block_descriptor_135);
 }
 
-- (void)subscriptionControllerWillStartSyncingRemoteChanges:(id)a3
+- (void)subscriptionControllerWillStartSyncingRemoteChanges:(id)changes
 {
-  v4 = a3;
-  v5 = self;
+  changesCopy = changes;
+  selfCopy = self;
   sub_218C813B0("Sports manager will start syncing with remote, will ignore local changes to watchlist");
 }
 
-- (void)subscriptionControllerDidStopSyncingRemoteChanges:(id)a3
+- (void)subscriptionControllerDidStopSyncingRemoteChanges:(id)changes
 {
-  v4 = a3;
-  v5 = self;
+  changesCopy = changes;
+  selfCopy = self;
   sub_218C813B0("Sports manager did stop syncing with remote, will resume processing local changes to watchlist");
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  if (a4)
+  if (tags)
   {
     v14 = sub_219BF5D44();
-    if (!a5)
+    if (!changeTags)
     {
       goto LABEL_4;
     }
@@ -66,22 +66,22 @@
   }
 
   v14 = 0;
-  if (a5)
+  if (changeTags)
   {
 LABEL_3:
     sub_219BF5D44();
   }
 
 LABEL_4:
-  if (a6)
+  if (moveTags)
   {
     sub_219BF5D44();
   }
 
-  v15 = a3;
-  v16 = a7;
-  v17 = self;
-  if (v16)
+  controllerCopy = controller;
+  removeTagsCopy = removeTags;
+  selfCopy = self;
+  if (removeTagsCopy)
   {
     v18 = sub_219BF5D44();
   }
@@ -91,28 +91,28 @@ LABEL_4:
     v18 = 0;
   }
 
-  sub_218C814C8(v14, v18, a8);
+  sub_218C814C8(v14, v18, type);
 }
 
-- (void)userInfoDidChangeSportsSyncState:(id)a3
+- (void)userInfoDidChangeSportsSyncState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_218C77A20(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_218C77A20(stateCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v9 = sub_219BF5414();
     v11 = v10;
-    if (a4)
+    if (object)
     {
 LABEL_3:
       swift_unknownObjectRetain();
-      v12 = a5;
-      v13 = self;
+      changeCopy = change;
+      selfCopy = self;
       sub_219BF70B4();
       swift_unknownObjectRelease();
       goto LABEL_6;
@@ -123,18 +123,18 @@ LABEL_3:
   {
     v9 = 0;
     v11 = 0;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
   }
 
   memset(v18, 0, sizeof(v18));
-  v14 = a5;
-  v15 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
 LABEL_6:
   v16 = MEMORY[0x277D84F70];
-  if (a5)
+  if (change)
   {
     type metadata accessor for NSKeyValueChangeKey(0);
     sub_21874E0F0(&qword_27CC0A748, type metadata accessor for NSKeyValueChangeKey);
@@ -153,7 +153,7 @@ LABEL_6:
 
 - (void)appleAccountChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C78360();
 }
 

@@ -1,25 +1,25 @@
 @interface UARPAssetManagerServiceMobileAsset
 - (BOOL)isBusy;
-- (BOOL)saveSubscriptionAndCheckIfRunnable:(id)a3 asyncUpdate:(BOOL)a4;
-- (UARPAssetManagerServiceMobileAsset)initWithDelegate:(id)a3;
-- (id)buildAssetTypeForSubscription:(id)a3;
-- (id)checkCacheForSubscription:(id)a3;
+- (BOOL)saveSubscriptionAndCheckIfRunnable:(id)runnable asyncUpdate:(BOOL)update;
+- (UARPAssetManagerServiceMobileAsset)initWithDelegate:(id)delegate;
+- (id)buildAssetTypeForSubscription:(id)subscription;
+- (id)checkCacheForSubscription:(id)subscription;
 - (id)copyCache;
 - (id)copySubscriptions;
 - (void)checkForUpdate;
-- (void)clearAssetCacheForDomain:(id)a3;
-- (void)overrideMobileAssetURL:(id)a3 forAssetType:(id)a4;
-- (void)overridePallasAudience:(id)a3 forAssetType:(id)a4;
-- (void)performQuery:(id)a3 assetType:(id)a4 asyncUpdate:(BOOL)a5;
-- (void)primeCacheForSubscription:(id)a3 assetVersion:(id)a4 filePath:(id)a5;
-- (void)subscribeForAsset:(id)a3;
+- (void)clearAssetCacheForDomain:(id)domain;
+- (void)overrideMobileAssetURL:(id)l forAssetType:(id)type;
+- (void)overridePallasAudience:(id)audience forAssetType:(id)type;
+- (void)performQuery:(id)query assetType:(id)type asyncUpdate:(BOOL)update;
+- (void)primeCacheForSubscription:(id)subscription assetVersion:(id)version filePath:(id)path;
+- (void)subscribeForAsset:(id)asset;
 @end
 
 @implementation UARPAssetManagerServiceMobileAsset
 
-- (UARPAssetManagerServiceMobileAsset)initWithDelegate:(id)a3
+- (UARPAssetManagerServiceMobileAsset)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = UARPAssetManagerServiceMobileAsset;
   v6 = [(UARPAssetManagerServiceMobileAsset *)&v18 init];
@@ -37,7 +37,7 @@
     assetCache = v6->_assetCache;
     v6->_assetCache = &v11->super;
 
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v13 = objc_opt_new();
     outstandingAssetSubscriptions = v6->_outstandingAssetSubscriptions;
     v6->_outstandingAssetSubscriptions = v13;
@@ -69,45 +69,45 @@
   return v3;
 }
 
-- (id)buildAssetTypeForSubscription:(id)a3
+- (id)buildAssetTypeForSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [v4 appleModelNumber];
-  v6 = mobileAssetPrefixForAppleModelNumber(v5);
+  subscriptionCopy = subscription;
+  appleModelNumber = [subscriptionCopy appleModelNumber];
+  v6 = mobileAssetPrefixForAppleModelNumber(appleModelNumber);
 
-  v7 = [v4 appleModelNumber];
-  v8 = [NSMutableString stringWithFormat:@"%@%@", v6, v7];
+  appleModelNumber2 = [subscriptionCopy appleModelNumber];
+  v8 = [NSMutableString stringWithFormat:@"%@%@", v6, appleModelNumber2];
 
-  v9 = [v4 hwFusing];
-  if (v9)
+  hwFusing = [subscriptionCopy hwFusing];
+  if (hwFusing)
   {
-    v10 = v9;
-    v11 = [v4 softwareUpdateAsset];
+    v10 = hwFusing;
+    softwareUpdateAsset = [subscriptionCopy softwareUpdateAsset];
 
-    if ((v11 & 1) == 0)
+    if ((softwareUpdateAsset & 1) == 0)
     {
-      v12 = [v4 hwFusing];
-      v13 = [v12 caseInsensitiveCompare:@"prod"];
+      hwFusing2 = [subscriptionCopy hwFusing];
+      v13 = [hwFusing2 caseInsensitiveCompare:@"prod"];
 
       if (v13)
       {
         v14 = self->_log;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [v4 hwFusing];
-          v16 = [v4 assetAudience];
-          if (v16)
+          hwFusing3 = [subscriptionCopy hwFusing];
+          assetAudience = [subscriptionCopy assetAudience];
+          if (assetAudience)
           {
-            [v4 assetAudience];
+            [subscriptionCopy assetAudience];
           }
 
           else
           {
-            [v4 assetURL];
+            [subscriptionCopy assetURL];
           }
           v17 = ;
           *buf = 138412802;
-          v21 = v15;
+          v21 = hwFusing3;
           v22 = 2112;
           v23 = v8;
           v24 = 2112;
@@ -115,8 +115,8 @@
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Appending hwFusingType:%@ to assetType:%@ at location:%@", buf, 0x20u);
         }
 
-        v18 = [v4 hwFusing];
-        [v8 appendFormat:@"-%@", v18];
+        hwFusing4 = [subscriptionCopy hwFusing];
+        [v8 appendFormat:@"-%@", hwFusing4];
       }
     }
   }
@@ -124,19 +124,19 @@
   return v8;
 }
 
-- (BOOL)saveSubscriptionAndCheckIfRunnable:(id)a3 asyncUpdate:(BOOL)a4
+- (BOOL)saveSubscriptionAndCheckIfRunnable:(id)runnable asyncUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
+  updateCopy = update;
+  runnableCopy = runnable;
   v7 = self->_outstandingAssetSubscriptions;
-  if (v4)
+  if (updateCopy)
   {
     v8 = self->_outstandingAsyncAssetSubscriptions;
 
     v7 = v8;
   }
 
-  v9 = [(UARPAssetManagerServiceMobileAsset *)self buildAssetTypeForSubscription:v6];
+  v9 = [(UARPAssetManagerServiceMobileAsset *)self buildAssetTypeForSubscription:runnableCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -179,7 +179,7 @@
   v17 = 1;
 LABEL_13:
 
-  [(NSMutableSet *)v10 addObject:v6];
+  [(NSMutableSet *)v10 addObject:runnableCopy];
   return v17;
 }
 
@@ -194,23 +194,23 @@ LABEL_13:
   dispatch_sync(serviceQueue, block);
 }
 
-- (void)subscribeForAsset:(id)a3
+- (void)subscribeForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002A9C;
   v7[3] = &unk_1000143B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetCopy;
+  selfCopy = self;
+  v6 = assetCopy;
   dispatch_sync(serviceQueue, v7);
 }
 
-- (id)checkCacheForSubscription:(id)a3
+- (id)checkCacheForSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -222,10 +222,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_100002E74;
   block[3] = &unk_1000143D8;
-  v10 = v4;
+  v10 = subscriptionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = subscriptionCopy;
   dispatch_sync(serviceQueue, block);
   v7 = v13[5];
 
@@ -278,26 +278,26 @@ LABEL_13:
   return v3;
 }
 
-- (void)clearAssetCacheForDomain:(id)a3
+- (void)clearAssetCacheForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000031B4;
   v7[3] = &unk_1000143B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = domainCopy;
+  v6 = domainCopy;
   dispatch_sync(serviceQueue, v7);
 }
 
-- (void)primeCacheForSubscription:(id)a3 assetVersion:(id)a4 filePath:(id)a5
+- (void)primeCacheForSubscription:(id)subscription assetVersion:(id)version filePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UARPAssetManagerServiceAssetCache *)self->_assetCache subscribeForAsset:v8];
+  subscriptionCopy = subscription;
+  versionCopy = version;
+  pathCopy = path;
+  v11 = [(UARPAssetManagerServiceAssetCache *)self->_assetCache subscribeForAsset:subscriptionCopy];
   if (v11)
   {
     log = self->_log;
@@ -306,7 +306,7 @@ LABEL_13:
       v26 = 138412546;
       v27 = v11;
       v28 = 2112;
-      v29 = v9;
+      v29 = versionCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Overwriting cache record %@ with version %@", &v26, 0x16u);
     }
   }
@@ -315,40 +315,40 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v26 = 138412802;
-    v27 = v9;
+    v27 = versionCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = pathCopy;
     v30 = 2112;
-    v31 = v8;
+    v31 = subscriptionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Moving Firmware File %@ / %@ from MobileAsset to UARP Cache for subscription:%@", &v26, 0x20u);
   }
 
-  v14 = v8;
-  v15 = [(UARPAssetManagerServiceAssetCache *)self->_assetCache assetCacheFileURLForAsset:v9 withSubscription:v14];
-  v16 = [v15 path];
-  v17 = copyFileToLocalPath(v10, v16);
+  v14 = subscriptionCopy;
+  v15 = [(UARPAssetManagerServiceAssetCache *)self->_assetCache assetCacheFileURLForAsset:versionCopy withSubscription:v14];
+  path = [v15 path];
+  v17 = copyFileToLocalPath(pathCopy, path);
 
   if (v17)
   {
     if ([v14 softwareUpdateAsset])
     {
-      v18 = [v10 lastPathComponent];
-      v19 = [v15 URLByAppendingPathComponent:v18];
+      lastPathComponent = [pathCopy lastPathComponent];
+      v19 = [v15 URLByAppendingPathComponent:lastPathComponent];
 
       v15 = v19;
     }
 
-    v20 = [v15 path];
+    path2 = [v15 path];
     if (([v14 softwareUpdateAsset] & 1) == 0)
     {
-      v21 = [v10 lastPathComponent];
-      v22 = [v15 path];
-      v23 = [v22 stringByAppendingPathComponent:v21];
+      lastPathComponent2 = [pathCopy lastPathComponent];
+      path3 = [v15 path];
+      v23 = [path3 stringByAppendingPathComponent:lastPathComponent2];
 
-      v20 = v23;
+      path2 = v23;
     }
 
-    v24 = [(UARPAssetManagerServiceAssetCache *)self->_assetCache updateSubscription:v14 forAsset:v9 withPath:v20];
+    v24 = [(UARPAssetManagerServiceAssetCache *)self->_assetCache updateSubscription:v14 forAsset:versionCopy withPath:path2];
 
     v25 = self->_log;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -376,10 +376,10 @@ LABEL_13:
   }
 }
 
-- (void)overrideMobileAssetURL:(id)a3 forAssetType:(id)a4
+- (void)overrideMobileAssetURL:(id)l forAssetType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  typeCopy = type;
   if (MASetPallasEnabled() && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     sub_10000B884();
@@ -388,10 +388,10 @@ LABEL_13:
   ASSetAssetServerURLForAssetType();
 }
 
-- (void)overridePallasAudience:(id)a3 forAssetType:(id)a4
+- (void)overridePallasAudience:(id)audience forAssetType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  audienceCopy = audience;
+  typeCopy = type;
   if (MASetPallasEnabled() && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     sub_10000B8F8();
@@ -407,9 +407,9 @@ LABEL_13:
       v11 = 136315906;
       v12 = "[UARPAssetManagerServiceMobileAsset overridePallasAudience:forAssetType:]";
       v13 = 2114;
-      v14 = v7;
+      v14 = typeCopy;
       v15 = 2114;
-      v16 = v6;
+      v16 = audienceCopy;
       v17 = 2050;
       v18 = v9;
       _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "%s: Failed to update asset type %{public}@ to: %{public}@ with result: %{public}lld", &v11, 0x2Au);
@@ -417,14 +417,14 @@ LABEL_13:
   }
 }
 
-- (void)performQuery:(id)a3 assetType:(id)a4 asyncUpdate:(BOOL)a5
+- (void)performQuery:(id)query assetType:(id)type asyncUpdate:(BOOL)update
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[MAAssetQuery alloc] initWithType:v9];
+  queryCopy = query;
+  typeCopy = type;
+  v10 = [[MAAssetQuery alloc] initWithType:typeCopy];
   v11 = objc_alloc_init(MADownloadOptions);
-  v12 = [v8 assetAudience];
-  [v11 setLiveServerCatalogOnly:v12 != 0];
+  assetAudience = [queryCopy assetAudience];
+  [v11 setLiveServerCatalogOnly:assetAudience != 0];
 
   [v11 setLiveServerCatalogOnlyIsOverridden:1];
   [v11 setDiscretionary:0];
@@ -434,12 +434,12 @@ LABEL_13:
   v15[2] = sub_100003A54;
   v15[3] = &unk_100014428;
   v15[4] = self;
-  v16 = v8;
+  v16 = queryCopy;
   v17 = v10;
-  v18 = a5;
+  updateCopy = update;
   v13 = v10;
-  v14 = v8;
-  [MAAsset startCatalogDownload:v9 options:v11 then:v15];
+  v14 = queryCopy;
+  [MAAsset startCatalogDownload:typeCopy options:v11 then:v15];
 }
 
 @end

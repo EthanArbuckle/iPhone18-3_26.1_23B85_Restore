@@ -1,6 +1,6 @@
 @interface _MADObjCThemeGenerator
 - (_MADObjCThemeGenerator)init;
-- (void)generateThemesMM:(id)a3 setGMSBackgroundTaskPriority:(BOOL)a4 completion:(id)a5;
+- (void)generateThemesMM:(id)m setGMSBackgroundTaskPriority:(BOOL)priority completion:(id)completion;
 @end
 
 @implementation _MADObjCThemeGenerator
@@ -16,15 +16,15 @@
   return [(_MADObjCThemeGenerator *)&v5 init];
 }
 
-- (void)generateThemesMM:(id)a3 setGMSBackgroundTaskPriority:(BOOL)a4 completion:(id)a5
+- (void)generateThemesMM:(id)m setGMSBackgroundTaskPriority:(BOOL)priority completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   sub_1001C6338(0, &qword_1002B7FD8);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = self;
-  _MADObjCThemeGenerator.generateThemesMM(_:setGMSBackgroundTaskPriority:completion:)(v8, a4, sub_1001C6380, v9);
+  selfCopy = self;
+  _MADObjCThemeGenerator.generateThemesMM(_:setGMSBackgroundTaskPriority:completion:)(v8, priority, sub_1001C6380, v9);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface EDContentFormatsCollection
 - (EDContentFormatsCollection)init;
-- (unint64_t)addObject:(id)a3;
-- (unint64_t)addOrEquivalentObject:(id)a3;
-- (void)addDefaultWithNSString:(id)a3 formatId:(unint64_t)a4;
+- (unint64_t)addObject:(id)object;
+- (unint64_t)addOrEquivalentObject:(id)object;
+- (void)addDefaultWithNSString:(id)string formatId:(unint64_t)id;
 - (void)setupDefaults;
 @end
 
@@ -71,23 +71,23 @@
   [(EDContentFormatsCollection *)self addDefaultWithNSString:@"ggge年m月d日" formatId:58];
 }
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v6 = [v4 formatId];
+    formatId = [objectCopy formatId];
     mNextContentFormatId = self->mNextContentFormatId;
-    if (v6 == -1)
+    if (formatId == -1)
     {
       self->mNextContentFormatId = mNextContentFormatId + 1;
       [v5 setFormatId:?];
     }
 
-    else if (v6 >= mNextContentFormatId)
+    else if (formatId >= mNextContentFormatId)
     {
-      self->mNextContentFormatId = v6 + 1;
+      self->mNextContentFormatId = formatId + 1;
     }
 
     v10.receiver = self;
@@ -107,20 +107,20 @@
   return v8;
 }
 
-- (unint64_t)addOrEquivalentObject:(id)a3
+- (unint64_t)addOrEquivalentObject:(id)object
 {
-  v4 = a3;
-  [v4 setReferenced:1];
+  objectCopy = object;
+  [objectCopy setReferenced:1];
   v7.receiver = self;
   v7.super_class = EDContentFormatsCollection;
-  v5 = [(EDCollection *)&v7 addOrEquivalentObject:v4];
+  v5 = [(EDCollection *)&v7 addOrEquivalentObject:objectCopy];
 
   return v5;
 }
 
-- (void)addDefaultWithNSString:(id)a3 formatId:(unint64_t)a4
+- (void)addDefaultWithNSString:(id)string formatId:(unint64_t)id
 {
-  v5 = [EDContentFormat contentFormatWithNSString:a3 formatId:a4 builtIn:1];
+  v5 = [EDContentFormat contentFormatWithNSString:string formatId:id builtIn:1];
   [(EDContentFormatsCollection *)self addObject:?];
   [v5 setReferenced:0];
 }

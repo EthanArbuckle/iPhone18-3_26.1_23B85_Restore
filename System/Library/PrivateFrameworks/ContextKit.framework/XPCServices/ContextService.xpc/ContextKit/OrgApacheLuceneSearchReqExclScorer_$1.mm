@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneSearchReqExclScorer_$1
 - (BOOL)matches;
-- (OrgApacheLuceneSearchReqExclScorer_$1)initWithOrgApacheLuceneSearchReqExclScorer:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4;
+- (OrgApacheLuceneSearchReqExclScorer_$1)initWithOrgApacheLuceneSearchReqExclScorer:(id)scorer withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
@@ -14,15 +14,15 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(OrgApacheLuceneSearchDocIdSetIterator *)exclApproximation docID];
-  if (v6 < v4)
+  docID = [(OrgApacheLuceneSearchDocIdSetIterator *)exclApproximation docID];
+  if (docID < v4)
   {
-    v6 = [(OrgApacheLuceneSearchDocIdSetIterator *)self->this$0_->exclApproximation_ advanceWithInt:v4];
+    docID = [(OrgApacheLuceneSearchDocIdSetIterator *)self->this$0_->exclApproximation_ advanceWithInt:v4];
   }
 
   v7 = self->this$0_;
   reqTwoPhaseIterator = v7->reqTwoPhaseIterator_;
-  if (v4 != v6)
+  if (v4 != docID)
   {
     goto LABEL_9;
   }
@@ -56,10 +56,10 @@ LABEL_9:
   return exclTwoPhaseIterator;
 }
 
-- (OrgApacheLuceneSearchReqExclScorer_$1)initWithOrgApacheLuceneSearchReqExclScorer:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4
+- (OrgApacheLuceneSearchReqExclScorer_$1)initWithOrgApacheLuceneSearchReqExclScorer:(id)scorer withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  JreStrongAssign(&self->this$0_, a3);
-  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, a4);
+  JreStrongAssign(&self->this$0_, scorer);
+  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, iterator);
   return self;
 }
 

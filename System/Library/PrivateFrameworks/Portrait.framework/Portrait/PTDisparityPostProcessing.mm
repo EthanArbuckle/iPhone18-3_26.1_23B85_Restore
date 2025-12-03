@@ -1,49 +1,49 @@
 @interface PTDisparityPostProcessing
 + (int)prewarmForCameraCaptured;
-+ (int)prewarmWithDescriptor:(id)a3;
-- (PTDisparityPostProcessing)initWithCommandQueue:(id)a3 disparitySize:(id *)a4 filteredDisparitySize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9;
-- (PTDisparityPostProcessing)initWithDescriptor:(id)a3;
-- (int)computeOpticalFlow:(id)a3 inRGBA:(id)a4 outDisplacement:(id)a5;
-- (int)computeOpticalFlow:(id)a3 outDisplacement:(id)a4;
-- (int)temporalDisparityFilter:(id)a3 inDisparity:(id)a4 inDisplacement:(id)a5 inDisparityFilteredPrev:(id)a6 outDisparityFiltered:(id)a7 disparityBias:(float)a8;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityFilteredPrev:(id)a5 outDisparityFiltered:(id)a6 disparityBias:(float)a7;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparityFiltered:(id)a7 outState:(id)a8;
-- (int)temporalDisparityFilter:(id)a3 inStatePrev:(id)a4 inDisparity:(id)a5 outDisparityFiltered:(id)a6 outState:(id)a7;
++ (int)prewarmWithDescriptor:(id)descriptor;
+- (PTDisparityPostProcessing)initWithCommandQueue:(id)queue disparitySize:(id *)size filteredDisparitySize:(id *)disparitySize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port;
+- (PTDisparityPostProcessing)initWithDescriptor:(id)descriptor;
+- (int)computeOpticalFlow:(id)flow inRGBA:(id)a outDisplacement:(id)displacement;
+- (int)computeOpticalFlow:(id)flow outDisplacement:(id)displacement;
+- (int)temporalDisparityFilter:(id)filter inDisparity:(id)disparity inDisplacement:(id)displacement inDisparityFilteredPrev:(id)prev outDisparityFiltered:(id)filtered disparityBias:(float)bias;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityFilteredPrev:(id)prev outDisparityFiltered:(id)filtered disparityBias:(float)bias;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparityFiltered:(id)filtered outState:(id)state;
+- (int)temporalDisparityFilter:(id)filter inStatePrev:(id)prev inDisparity:(id)disparity outDisparityFiltered:(id)filtered outState:(id)state;
 @end
 
 @implementation PTDisparityPostProcessing
 
-- (PTDisparityPostProcessing)initWithDescriptor:(id)a3
+- (PTDisparityPostProcessing)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 commandQueue];
-  if (v4)
+  descriptorCopy = descriptor;
+  commandQueue = [descriptorCopy commandQueue];
+  if (descriptorCopy)
   {
-    [v4 disparitySize];
-    [v4 filteredDisparitySize];
-    v6 = [v4 disparityPixelFormat];
-    [v4 colorSize];
+    [descriptorCopy disparitySize];
+    [descriptorCopy filteredDisparitySize];
+    disparityPixelFormat = [descriptorCopy disparityPixelFormat];
+    [descriptorCopy colorSize];
   }
 
   else
   {
     memset(v13, 0, sizeof(v13));
     memset(v12, 0, sizeof(v12));
-    v6 = [0 disparityPixelFormat];
+    disparityPixelFormat = [0 disparityPixelFormat];
     memset(v11, 0, sizeof(v11));
   }
 
-  v7 = [v4 colorPixelFormat];
-  v8 = [v4 sensorPort];
-  v9 = [(PTDisparityPostProcessing *)self initWithCommandQueue:v5 disparitySize:v13 filteredDisparitySize:v12 disparityPixelFormat:v6 colorSize:v11 colorPixelFormat:v7 sensorPort:v8];
+  colorPixelFormat = [descriptorCopy colorPixelFormat];
+  sensorPort = [descriptorCopy sensorPort];
+  v9 = [(PTDisparityPostProcessing *)self initWithCommandQueue:commandQueue disparitySize:v13 filteredDisparitySize:v12 disparityPixelFormat:disparityPixelFormat colorSize:v11 colorPixelFormat:colorPixelFormat sensorPort:sensorPort];
 
   return v9;
 }
 
-- (PTDisparityPostProcessing)initWithCommandQueue:(id)a3 disparitySize:(id *)a4 filteredDisparitySize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9
+- (PTDisparityPostProcessing)initWithCommandQueue:(id)queue disparitySize:(id *)size filteredDisparitySize:(id *)disparitySize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port
 {
-  v15 = a3;
-  v16 = a9;
+  queueCopy = queue;
+  portCopy = port;
   v36.receiver = self;
   v36.super_class = PTDisparityPostProcessing;
   v17 = [(PTDisparityPostProcessing *)&v36 init];
@@ -54,16 +54,16 @@
 
   PTKTraceInit();
   kdebug_trace();
-  v18 = *&a5->var0;
-  *(v17 + 5) = a5->var2;
+  v18 = *&disparitySize->var0;
+  *(v17 + 5) = disparitySize->var2;
   *(v17 + 24) = v18;
-  var2 = a4->var2;
-  *(v17 + 3) = *&a4->var0;
+  var2 = size->var2;
+  *(v17 + 3) = *&size->var0;
   *(v17 + 8) = var2;
-  v20 = a7->var2;
-  *(v17 + 72) = *&a7->var0;
+  v20 = colorSize->var2;
+  *(v17 + 72) = *&colorSize->var0;
   *(v17 + 11) = v20;
-  v21 = [[PTMetalContext alloc] initWithCommandQueue:v15 bundleClass:objc_opt_class()];
+  v21 = [[PTMetalContext alloc] initWithCommandQueue:queueCopy bundleClass:objc_opt_class()];
   v22 = *(v17 + 2);
   *(v17 + 2) = v21;
 
@@ -80,13 +80,13 @@
 
   v23 = [PTDisparityFilterDEMA_LKT alloc];
   v24 = *(v17 + 2);
-  v34 = *&a4->var0;
-  v35 = a4->var2;
-  v32 = *&a5->var0;
-  v33 = a5->var2;
-  v30 = *&a7->var0;
-  v31 = a7->var2;
-  v25 = [(PTDisparityFilterDEMA_LKT *)v23 initWithMetalContext:v24 disparitySize:&v34 disparityFilteredSize:&v32 disparityPixelFormat:a6 colorSize:&v30 colorPixelFormat:a8 sensorPort:v16];
+  v34 = *&size->var0;
+  v35 = size->var2;
+  v32 = *&disparitySize->var0;
+  v33 = disparitySize->var2;
+  v30 = *&colorSize->var0;
+  v31 = colorSize->var2;
+  v25 = [(PTDisparityFilterDEMA_LKT *)v23 initWithMetalContext:v24 disparitySize:&v34 disparityFilteredSize:&v32 disparityPixelFormat:format colorSize:&v30 colorPixelFormat:pixelFormat sensorPort:portCopy];
   v26 = *(v17 + 1);
   *(v17 + 1) = v25;
 
@@ -112,10 +112,10 @@ LABEL_11:
   return v27;
 }
 
-+ (int)prewarmWithDescriptor:(id)a3
++ (int)prewarmWithDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [[PTDisparityPostProcessing alloc] initWithDescriptor:v3];
+  descriptorCopy = descriptor;
+  v4 = [[PTDisparityPostProcessing alloc] initWithDescriptor:descriptorCopy];
 
   if (v4)
   {
@@ -133,14 +133,14 @@ LABEL_11:
 + (int)prewarmForCameraCaptured
 {
   v2 = MTLCreateSystemDefaultDevice();
-  v3 = [v2 newCommandQueue];
+  newCommandQueue = [v2 newCommandQueue];
   v12 = xmmword_2244A57C0;
   v13 = 1;
   v10 = xmmword_2244A57C0;
   v11 = 1;
   v8 = xmmword_2244A57C0;
   v9 = 1;
-  v4 = [[PTDisparityPostProcessingDescriptor alloc] initWithCommandQueue:v3 disparitySize:&v12 filteredDisparitySize:&v10 disparityPixelFormat:25 colorSize:&v8 colorPixelFormat:71 sensorPort:@"PortTypeBackSuperWide"];
+  v4 = [[PTDisparityPostProcessingDescriptor alloc] initWithCommandQueue:newCommandQueue disparitySize:&v12 filteredDisparitySize:&v10 disparityPixelFormat:25 colorSize:&v8 colorPixelFormat:71 sensorPort:@"PortTypeBackSuperWide"];
   v5 = [PTDisparityPostProcessing prewarmWithDescriptor:v4];
   if (v5)
   {
@@ -154,15 +154,15 @@ LABEL_11:
   return v5;
 }
 
-- (int)computeOpticalFlow:(id)a3 outDisplacement:(id)a4
+- (int)computeOpticalFlow:(id)flow outDisplacement:(id)displacement
 {
   metalContext = self->_metalContext;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PTMetalContext *)metalContext commandQueue];
-  v10 = [v9 commandBuffer];
+  displacementCopy = displacement;
+  flowCopy = flow;
+  commandQueue = [(PTMetalContext *)metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v10)
+  if (!commandBuffer)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -171,22 +171,22 @@ LABEL_11:
     }
   }
 
-  [v10 setLabel:@"PTDisparityPostProcessing computeOpticalFlow"];
-  v12 = [(PTDisparityPostProcessing *)self computeOpticalFlow:v10 inRGBA:v8 outDisplacement:v7];
+  [commandBuffer setLabel:@"PTDisparityPostProcessing computeOpticalFlow"];
+  v12 = [(PTDisparityPostProcessing *)self computeOpticalFlow:commandBuffer inRGBA:flowCopy outDisplacement:displacementCopy];
 
-  [v10 commit];
+  [commandBuffer commit];
   return v12;
 }
 
-- (int)computeOpticalFlow:(id)a3 inRGBA:(id)a4 outDisplacement:(id)a5
+- (int)computeOpticalFlow:(id)flow inRGBA:(id)a outDisplacement:(id)displacement
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  flowCopy = flow;
+  aCopy = a;
+  displacementCopy = displacement;
   colorSize = self->_colorSize;
-  if (isExpectedSize(v10, &colorSize, @"Invalid size of outDisplacement"))
+  if (isExpectedSize(displacementCopy, &colorSize, @"Invalid size of outDisplacement"))
   {
-    if (!v8)
+    if (!flowCopy)
     {
       v11 = _PTLogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -195,8 +195,8 @@ LABEL_11:
       }
     }
 
-    [v8 setLabel:@"PTDisparityPostProcessing prepare filter"];
-    v12 = [(PTAbstractDisparityFilter *)self->_disparityFilter prepareFilter:v8 inRGBA:v9 outDisplacement:v10];
+    [flowCopy setLabel:@"PTDisparityPostProcessing prepare filter"];
+    v12 = [(PTAbstractDisparityFilter *)self->_disparityFilter prepareFilter:flowCopy inRGBA:aCopy outDisplacement:displacementCopy];
   }
 
   else
@@ -207,17 +207,17 @@ LABEL_11:
   return v12;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityFilteredPrev:(id)a5 outDisparityFiltered:(id)a6 disparityBias:(float)a7
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityFilteredPrev:(id)prev outDisparityFiltered:(id)filtered disparityBias:(float)bias
 {
   metalContext = self->_metalContext;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(PTMetalContext *)metalContext commandQueue];
-  v18 = [v17 commandBuffer];
+  filteredCopy = filtered;
+  prevCopy = prev;
+  displacementCopy = displacement;
+  filterCopy = filter;
+  commandQueue = [(PTMetalContext *)metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v18)
+  if (!commandBuffer)
   {
     v19 = _PTLogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -226,26 +226,26 @@ LABEL_11:
     }
   }
 
-  [v18 setLabel:@"PTDisparityPostProcessing temporalDisparityFilter"];
-  *&v20 = a7;
-  v21 = [(PTDisparityPostProcessing *)self temporalDisparityFilter:v18 inDisparity:v16 inDisplacement:v15 inDisparityFilteredPrev:v14 outDisparityFiltered:v13 disparityBias:v20];
+  [commandBuffer setLabel:@"PTDisparityPostProcessing temporalDisparityFilter"];
+  *&v20 = bias;
+  v21 = [(PTDisparityPostProcessing *)self temporalDisparityFilter:commandBuffer inDisparity:filterCopy inDisplacement:displacementCopy inDisparityFilteredPrev:prevCopy outDisparityFiltered:filteredCopy disparityBias:v20];
 
-  [v18 commit];
+  [commandBuffer commit];
   return v21;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisparity:(id)a4 inDisplacement:(id)a5 inDisparityFilteredPrev:(id)a6 outDisparityFiltered:(id)a7 disparityBias:(float)a8
+- (int)temporalDisparityFilter:(id)filter inDisparity:(id)disparity inDisplacement:(id)displacement inDisparityFilteredPrev:(id)prev outDisparityFiltered:(id)filtered disparityBias:(float)bias
 {
   v34 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  filterCopy = filter;
+  disparityCopy = disparity;
+  displacementCopy = displacement;
+  prevCopy = prev;
+  filteredCopy = filtered;
   disparitySize = self->_disparitySize;
-  if (isExpectedSize(v15, &disparitySize, @"Invalid size of inDisparity") && (disparitySize = self->_colorSize, isExpectedSize(v16, &disparitySize, @"Invalid size of inDisplacement")) && (disparitySize = self->_filteredDisparitySize, (isExpectedSize(v18, &disparitySize, @"Invalid size of outDisparity") & 1) != 0))
+  if (isExpectedSize(disparityCopy, &disparitySize, @"Invalid size of inDisparity") && (disparitySize = self->_colorSize, isExpectedSize(displacementCopy, &disparitySize, @"Invalid size of inDisplacement")) && (disparitySize = self->_filteredDisparitySize, (isExpectedSize(filteredCopy, &disparitySize, @"Invalid size of outDisparity") & 1) != 0))
   {
-    if (!v14)
+    if (!filterCopy)
     {
       v19 = _PTLogSystem();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -254,9 +254,9 @@ LABEL_11:
       }
     }
 
-    [v14 setLabel:@"PTEffectTemporalFilter temporalDisparityFilter"];
-    *&v20 = a8;
-    v21 = [(PTAbstractDisparityFilter *)self->_disparityFilter temporalDisparityFilter:v14 inDisplacement:v16 inDisparityPrev:v17 inDisparity:v15 outDisparity:v18 disparityBias:v20];
+    [filterCopy setLabel:@"PTEffectTemporalFilter temporalDisparityFilter"];
+    *&v20 = bias;
+    v21 = [(PTAbstractDisparityFilter *)self->_disparityFilter temporalDisparityFilter:filterCopy inDisplacement:displacementCopy inDisparityPrev:prevCopy inDisparity:disparityCopy outDisparity:filteredCopy disparityBias:v20];
   }
 
   else
@@ -266,16 +266,16 @@ LABEL_11:
     {
       width = self->_disparitySize.width;
       height = self->_disparitySize.height;
-      v28 = [v15 width];
-      v29 = [v15 height];
+      width = [disparityCopy width];
+      height = [disparityCopy height];
       LODWORD(disparitySize.width) = 134218752;
       *(&disparitySize.width + 4) = width;
       WORD2(disparitySize.height) = 2048;
       *(&disparitySize.height + 6) = height;
       HIWORD(disparitySize.depth) = 2048;
-      v31 = v28;
+      v31 = width;
       v32 = 2048;
-      v33 = v29;
+      v33 = height;
       _os_log_error_impl(&dword_2243FB000, v22, OS_LOG_TYPE_ERROR, "disparity size expected (%zu x %zu) was (%zu x %zu)", &disparitySize, 0x2Au);
     }
 
@@ -297,18 +297,18 @@ LABEL_11:
   return v21;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inStatePrev:(id)a4 inDisparity:(id)a5 outDisparityFiltered:(id)a6 outState:(id)a7
+- (int)temporalDisparityFilter:(id)filter inStatePrev:(id)prev inDisparity:(id)disparity outDisparityFiltered:(id)filtered outState:(id)state
 {
   metalContext = self->_metalContext;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(PTMetalContext *)metalContext commandQueue];
-  v19 = [v18 commandBuffer];
+  stateCopy = state;
+  filteredCopy = filtered;
+  disparityCopy = disparity;
+  prevCopy = prev;
+  filterCopy = filter;
+  commandQueue = [(PTMetalContext *)metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v19)
+  if (!commandBuffer)
   {
     v20 = _PTLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -317,26 +317,26 @@ LABEL_11:
     }
   }
 
-  [v19 setLabel:@"PTEffectTemporalFilter temporalDisparityFilter"];
-  v21 = [(PTDisparityPostProcessing *)self temporalDisparityFilter:v19 inDisplacement:v17 inStatePrev:v16 inDisparity:v15 outDisparityFiltered:v14 outState:v13];
+  [commandBuffer setLabel:@"PTEffectTemporalFilter temporalDisparityFilter"];
+  v21 = [(PTDisparityPostProcessing *)self temporalDisparityFilter:commandBuffer inDisplacement:filterCopy inStatePrev:prevCopy inDisparity:disparityCopy outDisparityFiltered:filteredCopy outState:stateCopy];
 
-  [v19 commit];
+  [commandBuffer commit];
   return v21;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparityFiltered:(id)a7 outState:(id)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparityFiltered:(id)filtered outState:(id)state
 {
   v34 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  filterCopy = filter;
+  displacementCopy = displacement;
+  prevCopy = prev;
+  disparityCopy = disparity;
+  filteredCopy = filtered;
+  stateCopy = state;
   buf = self->_disparitySize;
-  if (isExpectedSize(v17, &buf, @"Invalid size of inDisparity") && (buf = self->_colorSize, isExpectedSize(v15, &buf, @"Invalid size of inDisplacement")) && (buf = self->_filteredDisparitySize, (isExpectedSize(v18, &buf, @"Invalid size of outDisparityFiltered") & 1) != 0))
+  if (isExpectedSize(disparityCopy, &buf, @"Invalid size of inDisparity") && (buf = self->_colorSize, isExpectedSize(displacementCopy, &buf, @"Invalid size of inDisplacement")) && (buf = self->_filteredDisparitySize, (isExpectedSize(filteredCopy, &buf, @"Invalid size of outDisparityFiltered") & 1) != 0))
   {
-    if (!v14)
+    if (!filterCopy)
     {
       v20 = _PTLogSystem();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -345,8 +345,8 @@ LABEL_11:
       }
     }
 
-    [v14 setLabel:@"PTEffectTemporalFilter temporalDisparityFilter"];
-    v21 = [(PTAbstractDisparityFilter *)self->_disparityFilter temporalDisparityFilter:v14 inDisplacement:v15 inStatePrev:v16 inDisparity:v17 outDisparity:v18 outState:v19];
+    [filterCopy setLabel:@"PTEffectTemporalFilter temporalDisparityFilter"];
+    v21 = [(PTAbstractDisparityFilter *)self->_disparityFilter temporalDisparityFilter:filterCopy inDisplacement:displacementCopy inStatePrev:prevCopy inDisparity:disparityCopy outDisparity:filteredCopy outState:stateCopy];
   }
 
   else
@@ -356,16 +356,16 @@ LABEL_11:
     {
       width = self->_disparitySize.width;
       height = self->_disparitySize.height;
-      v27 = [v17 width];
-      v28 = [v17 height];
+      width = [disparityCopy width];
+      height = [disparityCopy height];
       LODWORD(buf.width) = 134218752;
       *(&buf.width + 4) = width;
       WORD2(buf.height) = 2048;
       *(&buf.height + 6) = height;
       HIWORD(buf.depth) = 2048;
-      v31 = v27;
+      v31 = width;
       v32 = 2048;
-      v33 = v28;
+      v33 = height;
       _os_log_error_impl(&dword_2243FB000, v22, OS_LOG_TYPE_ERROR, "disparity size expected (%zu x %zu) was (%zu x %zu)", &buf, 0x2Au);
     }
 

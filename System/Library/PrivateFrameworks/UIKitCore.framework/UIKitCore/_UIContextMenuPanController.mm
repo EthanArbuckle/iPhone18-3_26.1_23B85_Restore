@@ -1,11 +1,11 @@
 @interface _UIContextMenuPanController
 - ($9638EFF0CCCAFE90921E224CC361F7AC)menuAnchor;
-- (BOOL)_canBeginDraggingWithTranslation:(CAPoint3D)a3 location:(CAPoint3D)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CAPoint3D)_rubberBandedTranslationForGestureTranslation:(CAPoint3D)a3;
+- (BOOL)_canBeginDraggingWithTranslation:(CAPoint3D)translation location:(CAPoint3D)location;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CAPoint3D)_rubberBandedTranslationForGestureTranslation:(CAPoint3D)translation;
 - (CGPoint)originalMenuCenter;
 - (CGPoint)originalPlatterCenter;
 - (CGVector)_currentPlatterVelocity;
@@ -13,31 +13,31 @@
 - (UIView)menuView;
 - (UIView)platterView;
 - (UIViewSpringAnimationBehavior)animationBehavior;
-- (_UIContextMenuPanController)initWithContainerView:(id)a3 platterView:(id)a4 menuView:(id)a5;
+- (_UIContextMenuPanController)initWithContainerView:(id)view platterView:(id)platterView menuView:(id)menuView;
 - (_UIContextMenuPanControllerDelegate)delegate;
 - (double)_dragTearOffThreshold;
 - (double)_rangeOfMotion;
 - (double)_tearOffSpeedMultiplier;
-- (id)_createAnimationBehaviorWithCriticalDamping:(BOOL)a3;
+- (id)_createAnimationBehaviorWithCriticalDamping:(BOOL)damping;
 - (id)_currentPlatformMetrics;
-- (int)_nearestDetentWithTranslation:(CGPoint)a3;
+- (int)_nearestDetentWithTranslation:(CGPoint)translation;
 - (int64_t)_userInterfaceIdiom;
-- (void)_animationsForActionsStyleWithLocation:(CAPoint3D)a3 ended:(BOOL)a4;
+- (void)_animationsForActionsStyleWithLocation:(CAPoint3D)location ended:(BOOL)ended;
 - (void)_animationsForAnyAttachedAccessoryViews;
-- (void)_animationsForPreviewPlusActionsStyleWithTranslation:(CAPoint3D)a3 location:(CAPoint3D)a4;
-- (void)_handlePanGesture:(id)a3;
-- (void)_updateForGestureWithState:(int64_t)a3 translation:(CAPoint3D)a4 location:(CAPoint3D)a5 allowsDragging:(BOOL)a6;
+- (void)_animationsForPreviewPlusActionsStyleWithTranslation:(CAPoint3D)translation location:(CAPoint3D)location;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_updateForGestureWithState:(int64_t)state translation:(CAPoint3D)translation location:(CAPoint3D)location allowsDragging:(BOOL)dragging;
 - (void)_updateForSignificantLayoutChange;
-- (void)_updateMenuScrubPathWithLocationIfNecessary:(CGPoint)a3;
-- (void)_updatePlatterGestureDebugUIWithTranslation:(CGPoint)a3 location:(CGPoint)a4 invalidate:(BOOL)a5;
-- (void)_updateViewPositionsWithTranslation:(CAPoint3D)a3 location:(CAPoint3D)a4 ended:(BOOL)a5 withVelocity:(BOOL)a6;
-- (void)moveToDetentPosition:(int64_t)a3 updateScrubPath:(BOOL)a4;
-- (void)scrollObservationInteraction:(id)a3 didUpdateWithTranslation:(CGPoint)a4 location:(CGPoint)a5 ended:(BOOL)a6;
-- (void)setDetents:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMenuAnchor:(id *)a3;
-- (void)setOriginalMenuCenter:(CGPoint)a3;
-- (void)setOriginalPlatterCenter:(CGPoint)a3;
+- (void)_updateMenuScrubPathWithLocationIfNecessary:(CGPoint)necessary;
+- (void)_updatePlatterGestureDebugUIWithTranslation:(CGPoint)translation location:(CGPoint)location invalidate:(BOOL)invalidate;
+- (void)_updateViewPositionsWithTranslation:(CAPoint3D)translation location:(CAPoint3D)location ended:(BOOL)ended withVelocity:(BOOL)velocity;
+- (void)moveToDetentPosition:(int64_t)position updateScrubPath:(BOOL)path;
+- (void)scrollObservationInteraction:(id)interaction didUpdateWithTranslation:(CGPoint)translation location:(CGPoint)location ended:(BOOL)ended;
+- (void)setDetents:(id)detents;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMenuAnchor:(id *)anchor;
+- (void)setOriginalMenuCenter:(CGPoint)center;
+- (void)setOriginalPlatterCenter:(CGPoint)center;
 @end
 
 @implementation _UIContextMenuPanController
@@ -57,18 +57,18 @@
 
 - (id)_currentPlatformMetrics
 {
-  v2 = [(_UIContextMenuPanController *)self _userInterfaceIdiom];
+  _userInterfaceIdiom = [(_UIContextMenuPanController *)self _userInterfaceIdiom];
 
-  return _UIContextMenuGetPlatformMetrics(v2);
+  return _UIContextMenuGetPlatformMetrics(_userInterfaceIdiom);
 }
 
 - (int64_t)_userInterfaceIdiom
 {
-  v2 = [(_UIContextMenuPanController *)self platterView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  platterView = [(_UIContextMenuPanController *)self platterView];
+  traitCollection = [platterView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  return v4;
+  return userInterfaceIdiom;
 }
 
 - (UIView)platterView
@@ -80,8 +80,8 @@
 
 - (double)_dragTearOffThreshold
 {
-  v3 = [(_UIContextMenuPanController *)self _currentPlatformMetrics];
-  [v3 previewActionsStyleDragTearOffThreshold];
+  _currentPlatformMetrics = [(_UIContextMenuPanController *)self _currentPlatformMetrics];
+  [_currentPlatformMetrics previewActionsStyleDragTearOffThreshold];
   v5 = v4;
 
   if ([(_UIContextMenuPanController *)self _canSwipeDownToDismiss])
@@ -154,8 +154,8 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v3 = [(_UIContextMenuPanController *)self accessoryViews];
-  v4 = [v3 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  accessoryViews = [(_UIContextMenuPanController *)self accessoryViews];
+  v4 = [accessoryViews countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -170,7 +170,7 @@ LABEL_3:
     {
       if (*v39 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(accessoryViews);
       }
 
       v8 = *(*(&v38 + 1) + 8 * v7);
@@ -179,21 +179,21 @@ LABEL_3:
         break;
       }
 
-      v9 = [v8 location];
-      if (v9 == 1)
+      location = [v8 location];
+      if (location == 1)
       {
-        v14 = [(_UIContextMenuPanController *)self platterView];
+        platterView = [(_UIContextMenuPanController *)self platterView];
       }
 
       else
       {
-        if (v9 != 2)
+        if (location != 2)
         {
           v10 = v33;
           v11 = v34;
           v12 = v35;
           v13 = v36;
-          if (!v9)
+          if (!location)
           {
             break;
           }
@@ -201,11 +201,11 @@ LABEL_3:
           goto LABEL_14;
         }
 
-        v14 = [(_UIContextMenuPanController *)self menuView];
+        platterView = [(_UIContextMenuPanController *)self menuView];
       }
 
-      v15 = v14;
-      [v14 frame];
+      v15 = platterView;
+      [platterView frame];
       v13 = v16;
       v12 = v17;
       v11 = v18;
@@ -293,7 +293,7 @@ LABEL_14:
       [v8 setCenter:{v21, v23}];
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v5 = [accessoryViews countByEnumeratingWithState:&v38 objects:v42 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -307,8 +307,8 @@ LABEL_14:
 
 - (CGVector)_currentPlatterVelocity
 {
-  v2 = [(_UIContextMenuPanController *)self velocityIntegrator];
-  [v2 velocity];
+  velocityIntegrator = [(_UIContextMenuPanController *)self velocityIntegrator];
+  [velocityIntegrator velocity];
   v4 = v3;
   v6 = v5;
 
@@ -352,38 +352,38 @@ LABEL_14:
 
 - (double)_rangeOfMotion
 {
-  v3 = [(NSArray *)self->_detents firstObject];
-  [v3 CGPointValue];
+  firstObject = [(NSArray *)self->_detents firstObject];
+  [firstObject CGPointValue];
   v5 = v4;
 
-  v6 = [(NSArray *)self->_detents lastObject];
-  [v6 CGPointValue];
+  lastObject = [(NSArray *)self->_detents lastObject];
+  [lastObject CGPointValue];
   v8 = v7;
 
   return v8 - v5;
 }
 
-- (_UIContextMenuPanController)initWithContainerView:(id)a3 platterView:(id)a4 menuView:(id)a5
+- (_UIContextMenuPanController)initWithContainerView:(id)view platterView:(id)platterView menuView:(id)menuView
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  platterViewCopy = platterView;
+  menuViewCopy = menuView;
   v31.receiver = self;
   v31.super_class = _UIContextMenuPanController;
   v11 = [(_UIContextMenuPanController *)&v31 init];
   v12 = v11;
   if (v11)
   {
-    [(_UIContextMenuPanController *)v11 setContainerView:v8];
-    [(_UIContextMenuPanController *)v12 setPlatterView:v9];
-    [(_UIContextMenuPanController *)v12 setMenuView:v10];
-    v13 = [(_UIContextMenuPanController *)v12 containerView];
-    v14 = [v13 traitCollection];
-    v15 = [v14 userInterfaceIdiom];
+    [(_UIContextMenuPanController *)v11 setContainerView:viewCopy];
+    [(_UIContextMenuPanController *)v12 setPlatterView:platterViewCopy];
+    [(_UIContextMenuPanController *)v12 setMenuView:menuViewCopy];
+    containerView = [(_UIContextMenuPanController *)v12 containerView];
+    traitCollection = [containerView traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v16 = off_1E70EAFC8;
-    if (v15 != 6)
+    if (userInterfaceIdiom != 6)
     {
       v16 = off_1E70EA358;
     }
@@ -394,7 +394,7 @@ LABEL_14:
     [v17 setDelegate:v12];
     [v17 setMaximumNumberOfTouches:1];
     [v17 setAllowedScrollTypesMask:3];
-    [v8 addGestureRecognizer:v17];
+    [viewCopy addGestureRecognizer:v17];
     [(_UIContextMenuPanController *)v12 setPanGestureRecognizer:v17];
     v18 = objc_opt_new();
     [(_UIContextMenuPanController *)v12 setVelocityIntegrator:v18];
@@ -408,10 +408,10 @@ LABEL_14:
     v12->_detents = v20;
 
     v12->_currentDetentIndex = 0;
-    [v9 center];
+    [platterViewCopy center];
     v12->_originalPlatterCenter.x = v22;
     v12->_originalPlatterCenter.y = v23;
-    [v10 center];
+    [menuViewCopy center];
     v12->_originalMenuCenter.x = v24;
     v12->_originalMenuCenter.y = v25;
     *&v12->_menuAnchor.attachment = xmmword_18A6790D0;
@@ -420,57 +420,57 @@ LABEL_14:
     v12->_menuAnchor.attachmentOffset = 0.0;
     v12->_rubberbandingEdges = 15;
     v12->_menuViewIsVisible = 1;
-    v26 = [(_UIContextMenuPanController *)v12 _currentPlatformMetrics];
-    [v26 baseMenuOffset];
+    _currentPlatformMetrics = [(_UIContextMenuPanController *)v12 _currentPlatformMetrics];
+    [_currentPlatformMetrics baseMenuOffset];
     v12->_defaultZPosition = v27;
 
     v28 = [_UIContextMenuScrollObservationInteraction interactionWithDelegate:v12];
-    [v9 addInteraction:v28];
+    [platterViewCopy addInteraction:v28];
   }
 
   return v12;
 }
 
-- (void)moveToDetentPosition:(int64_t)a3 updateScrubPath:(BOOL)a4
+- (void)moveToDetentPosition:(int64_t)position updateScrubPath:(BOOL)path
 {
-  v4 = a4;
+  pathCopy = path;
   if (![(_UIContextMenuPanController *)self _canSwipeDownToDismiss])
   {
     goto LABEL_10;
   }
 
-  if (a3)
+  if (position)
   {
-    if (a3 != 2)
+    if (position != 2)
     {
       goto LABEL_10;
     }
 
-    a3 = [(NSArray *)self->_detents count]- 1;
+    position = [(NSArray *)self->_detents count]- 1;
   }
 
-  if (a3 != self->_currentDetentIndex)
+  if (position != self->_currentDetentIndex)
   {
     v7 = [(NSArray *)self->_detents count];
-    if (a3 >= v7 - 1)
+    if (position >= v7 - 1)
     {
-      v8 = v7 - 1;
+      positionCopy = v7 - 1;
     }
 
     else
     {
-      v8 = a3;
+      positionCopy = position;
     }
 
-    self->_currentDetentIndex = v8;
+    self->_currentDetentIndex = positionCopy;
     v9 = [(NSArray *)self->_detents objectAtIndexedSubscript:?];
     [v9 CGPointValue];
     v11 = v10;
     v13 = v12;
 
     self->_initialYTranslation = v13;
-    v14 = [(_UIContextMenuPanController *)self platterView];
-    [v14 frame];
+    platterView = [(_UIContextMenuPanController *)self platterView];
+    [platterView frame];
     v17 = v16 + v15 * 0.5;
     v20 = v19 + v18 * 0.5;
 
@@ -479,7 +479,7 @@ LABEL_14:
   }
 
 LABEL_10:
-  if (v4)
+  if (pathCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -490,51 +490,51 @@ LABEL_10:
   }
 }
 
-- (void)setDetents:(id)a3
+- (void)setDetents:(id)detents
 {
-  v5 = a3;
-  if (self->_detents != v5)
+  detentsCopy = detents;
+  if (self->_detents != detentsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_detents, a3);
+    v7 = detentsCopy;
+    objc_storeStrong(&self->_detents, detents);
     v6 = [(NSArray *)self->_detents count];
-    v5 = v7;
+    detentsCopy = v7;
     self->_currentDetentIndex = v6 - 1;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
-    v5 = [(_UIContextMenuPanController *)self panGestureRecognizer];
-    [v5 setEnabled:v4];
+    enabledCopy = enabled;
+    self->_enabled = enabled;
+    panGestureRecognizer = [(_UIContextMenuPanController *)self panGestureRecognizer];
+    [panGestureRecognizer setEnabled:enabledCopy];
   }
 }
 
-- (void)setOriginalPlatterCenter:(CGPoint)a3
+- (void)setOriginalPlatterCenter:(CGPoint)center
 {
-  if (a3.x != self->_originalPlatterCenter.x || a3.y != self->_originalPlatterCenter.y)
+  if (center.x != self->_originalPlatterCenter.x || center.y != self->_originalPlatterCenter.y)
   {
-    self->_originalPlatterCenter = a3;
+    self->_originalPlatterCenter = center;
     [(_UIContextMenuPanController *)self _updateForSignificantLayoutChange];
   }
 }
 
-- (void)setOriginalMenuCenter:(CGPoint)a3
+- (void)setOriginalMenuCenter:(CGPoint)center
 {
-  if (a3.x != self->_originalMenuCenter.x || a3.y != self->_originalMenuCenter.y)
+  if (center.x != self->_originalMenuCenter.x || center.y != self->_originalMenuCenter.y)
   {
-    self->_originalMenuCenter = a3;
+    self->_originalMenuCenter = center;
     [(_UIContextMenuPanController *)self _updateForSignificantLayoutChange];
   }
 }
 
-- (int)_nearestDetentWithTranslation:(CGPoint)a3
+- (int)_nearestDetentWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
+  y = translation.y;
   v5 = [(NSArray *)self->_detents count];
   v6 = v5;
   if (y <= 250.0 && v5)
@@ -563,22 +563,22 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v5 = a4;
-  if ([v5 type] == 10)
+  eventCopy = event;
+  if ([eventCopy type] == 10)
   {
-    v6 = v5;
+    v6 = eventCopy;
     if ([(_UIContextMenuPanController *)self _canSwipeDownToDismiss])
     {
-      v7 = [(_UIContextMenuPanController *)self platterView];
-      [v7 bounds];
+      platterView = [(_UIContextMenuPanController *)self platterView];
+      [platterView bounds];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(_UIContextMenuPanController *)self platterView];
-      [v6 locationInView:v16];
+      platterView2 = [(_UIContextMenuPanController *)self platterView];
+      [v6 locationInView:platterView2];
       v21.x = v17;
       v21.y = v18;
       v22.origin.x = v9;
@@ -602,20 +602,20 @@ LABEL_10:
   return v19;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 phase] <= 0 && (-[_UIContextMenuPanController panGestureRecognizer](self, "panGestureRecognizer"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v6))
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if ([touchCopy phase] <= 0 && (-[_UIContextMenuPanController panGestureRecognizer](self, "panGestureRecognizer"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == recognizerCopy))
   {
-    v11 = [(_UIContextMenuPanController *)self platterView];
-    [v11 bounds];
+    platterView = [(_UIContextMenuPanController *)self platterView];
+    [platterView bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(_UIContextMenuPanController *)self platterView];
-    [v7 locationInView:v20];
+    platterView2 = [(_UIContextMenuPanController *)self platterView];
+    [touchCopy locationInView:platterView2];
     v27.x = v21;
     v27.y = v22;
     v28.origin.x = v13;
@@ -624,15 +624,15 @@ LABEL_10:
     v28.size.height = v19;
     v9 = CGRectContainsPoint(v28, v27);
 
-    v23 = [(_UIContextMenuPanController *)self menuView];
-    v24 = [(_UIContextMenuPanController *)self menuView];
-    [v7 locationInView:v24];
-    v25 = [v23 hitTest:0 withEvent:?];
+    menuView = [(_UIContextMenuPanController *)self menuView];
+    menuView2 = [(_UIContextMenuPanController *)self menuView];
+    [touchCopy locationInView:menuView2];
+    v25 = [menuView hitTest:0 withEvent:?];
 
-    v26 = [(_UIContextMenuPanController *)self _userInterfaceIdiom];
-    if (v26 != 6)
+    _userInterfaceIdiom = [(_UIContextMenuPanController *)self _userInterfaceIdiom];
+    if (_userInterfaceIdiom != 6)
     {
-      if (v26 == 1)
+      if (_userInterfaceIdiom == 1)
       {
         if (v25)
         {
@@ -655,17 +655,17 @@ LABEL_10:
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuPanController *)self panGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  panGestureRecognizer = [(_UIContextMenuPanController *)self panGestureRecognizer];
 
   v11 = 0;
-  if (v8 == v7)
+  if (panGestureRecognizer == recognizerCopy)
   {
-    v9 = [v6 name];
-    v10 = [v9 isEqualToString:@"com.apple.UIKit.ContextMenuActionsListSelection"];
+    name = [gestureRecognizerCopy name];
+    v10 = [name isEqualToString:@"com.apple.UIKit.ContextMenuActionsListSelection"];
 
     if (v10)
     {
@@ -676,17 +676,17 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuPanController *)self panGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  panGestureRecognizer = [(_UIContextMenuPanController *)self panGestureRecognizer];
 
-  if (v8 == v7 && self->_currentDetentIndex && [v6 _isGestureType:8])
+  if (panGestureRecognizer == recognizerCopy && self->_currentDetentIndex && [gestureRecognizerCopy _isGestureType:8])
   {
-    v11 = [v6 view];
-    v12 = [(_UIContextMenuPanController *)self menuView];
-    v9 = [v11 isDescendantOfView:v12];
+    view = [gestureRecognizerCopy view];
+    menuView = [(_UIContextMenuPanController *)self menuView];
+    v9 = [view isDescendantOfView:menuView];
   }
 
   else
@@ -697,93 +697,93 @@ LABEL_10:
   return v9;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuPanController *)self containerView];
-  [v4 translationInView:v5];
+  gestureCopy = gesture;
+  containerView = [(_UIContextMenuPanController *)self containerView];
+  [gestureCopy translationInView:containerView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UIContextMenuPanController *)self containerView];
-  [v4 locationInView:v10];
+  containerView2 = [(_UIContextMenuPanController *)self containerView];
+  [gestureCopy locationInView:containerView2];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 _activeEvents];
-  v16 = [v15 anyObject];
-  v17 = [v16 type];
+  _activeEvents = [gestureCopy _activeEvents];
+  anyObject = [_activeEvents anyObject];
+  type = [anyObject type];
 
-  if (v17 == 10)
+  if (type == 10)
   {
     v7 = 0.0;
   }
 
-  v18 = [v4 state];
+  state = [gestureCopy state];
 
-  [(_UIContextMenuPanController *)self _updateForGestureWithState:v18 translation:v17 != 10 location:v7 allowsDragging:v9, 0.0, v12, v14, 0.0];
+  [(_UIContextMenuPanController *)self _updateForGestureWithState:state translation:type != 10 location:v7 allowsDragging:v9, 0.0, v12, v14, 0.0];
 }
 
-- (void)_updateForGestureWithState:(int64_t)a3 translation:(CAPoint3D)a4 location:(CAPoint3D)a5 allowsDragging:(BOOL)a6
+- (void)_updateForGestureWithState:(int64_t)state translation:(CAPoint3D)translation location:(CAPoint3D)location allowsDragging:(BOOL)dragging
 {
-  v6 = a6;
-  z = a5.z;
-  y = a5.y;
-  x = a5.x;
-  v10 = a4.z;
-  v11 = a4.y;
-  v12 = a4.x;
+  draggingCopy = dragging;
+  z = location.z;
+  y = location.y;
+  x = location.x;
+  v10 = translation.z;
+  v11 = translation.y;
+  v12 = translation.x;
   if (![(_UIContextMenuPanController *)self enabled])
   {
     return;
   }
 
-  v48 = [(_UIContextMenuPanController *)self containerView];
-  v15 = [(_UIContextMenuPanController *)self _canSwipeDownToDismiss];
-  if (a3 <= 2)
+  containerView = [(_UIContextMenuPanController *)self containerView];
+  _canSwipeDownToDismiss = [(_UIContextMenuPanController *)self _canSwipeDownToDismiss];
+  if (state <= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v17 = [(NSArray *)self->_detents objectAtIndexedSubscript:self->_currentDetentIndex];
       [v17 CGPointValue];
       self->_initialYTranslation = v18;
 
-      v19 = [(_UIContextMenuPanController *)self velocityIntegrator];
-      [v19 reset];
+      velocityIntegrator = [(_UIContextMenuPanController *)self velocityIntegrator];
+      [velocityIntegrator reset];
 
-      if (!v15)
+      if (!_canSwipeDownToDismiss)
       {
         [(_UIContextMenuPanController *)self _updateMenuScrubPathWithLocationIfNecessary:x, y];
         self->_initialLocationInsidePreview = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
       }
 
-      v20 = [(_UIContextMenuPanController *)self delegate];
-      [v20 platterPanInteractionBegan:self allowSwipeToDismiss:&self->_clientAllowsDismissal];
+      delegate = [(_UIContextMenuPanController *)self delegate];
+      [delegate platterPanInteractionBegan:self allowSwipeToDismiss:&self->_clientAllowsDismissal];
     }
 
-    else if (a3 != 2)
+    else if (state != 2)
     {
       goto LABEL_32;
     }
 
     initialYTranslation = self->_initialYTranslation;
-    if (!v15)
+    if (!_canSwipeDownToDismiss)
     {
       [(_UIContextMenuPanController *)self _updateMenuScrubPathWithLocationIfNecessary:x, y];
       self->_currentDistanceToMenuScrubPath = UIDistanceBetweenPointAndPolygon(self->_menuScrubPath, x, y);
     }
 
     v22 = v11 + initialYTranslation;
-    if (v6 && [(_UIContextMenuPanController *)self _canBeginDraggingWithTranslation:v12 location:v22, v10, x, y, z])
+    if (draggingCopy && [(_UIContextMenuPanController *)self _canBeginDraggingWithTranslation:v12 location:v22, v10, x, y, z])
     {
-      v23 = [(_UIContextMenuPanController *)self delegate];
-      [v23 platterPanControllerDidTearOff:self];
+      delegate2 = [(_UIContextMenuPanController *)self delegate];
+      [delegate2 platterPanControllerDidTearOff:self];
     }
 
-    v24 = [(_UIContextMenuPanController *)self velocityIntegrator];
-    [v24 addSample:{x, y}];
+    velocityIntegrator2 = [(_UIContextMenuPanController *)self velocityIntegrator];
+    [velocityIntegrator2 addSample:{x, y}];
 
-    v25 = self;
+    selfCopy2 = self;
     v26 = v12;
     v27 = v22;
     v28 = v10;
@@ -795,16 +795,16 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     self->_currentDistanceToMenuScrubPath = 0.0;
     [(_UIContextMenuPanController *)self _currentPlatterVelocity];
     v35 = v34;
     currentDetentIndex = self->_currentDetentIndex;
-    v37 = [(_UIContextMenuPanController *)self delegate];
-    [v37 platterPanInteractionEnded:self];
+    delegate3 = [(_UIContextMenuPanController *)self delegate];
+    [delegate3 platterPanInteractionEnded:self];
 
-    if (v15)
+    if (_canSwipeDownToDismiss)
     {
       if (v35 >= 2000.0)
       {
@@ -855,7 +855,7 @@ LABEL_26:
 
       self->_currentDetentIndex = currentDetentIndex;
       v28 = 0.0;
-      v25 = self;
+      selfCopy2 = self;
       v26 = v41;
       v27 = v43;
       v29 = x;
@@ -864,40 +864,40 @@ LABEL_26:
       v30 = 1;
       v33 = v38;
 LABEL_19:
-      [(_UIContextMenuPanController *)v25 _updateViewPositionsWithTranslation:v30 location:v33 ended:v26 withVelocity:v27, v28, v29, v31, v32];
+      [(_UIContextMenuPanController *)selfCopy2 _updateViewPositionsWithTranslation:v30 location:v33 ended:v26 withVelocity:v27, v28, v29, v31, v32];
       goto LABEL_32;
     }
 
-    v16 = [MEMORY[0x1E696B098] valueWithCGPoint:{0.0, fmax(fmin(v35, 4500.0), 0.0)}];
-    v44 = [(_UIContextMenuPanController *)self platterView];
-    [v44 _setVelocity:v16 forKey:@"position"];
+    delegate5 = [MEMORY[0x1E696B098] valueWithCGPoint:{0.0, fmax(fmin(v35, 4500.0), 0.0)}];
+    platterView = [(_UIContextMenuPanController *)self platterView];
+    [platterView _setVelocity:delegate5 forKey:@"position"];
 
-    v45 = [(_UIContextMenuPanController *)self menuView];
-    [v45 _setVelocity:v16 forKey:@"position"];
+    menuView = [(_UIContextMenuPanController *)self menuView];
+    [menuView _setVelocity:delegate5 forKey:@"position"];
 
-    v46 = [(_UIContextMenuPanController *)self delegate];
-    [v46 platterPanControllerDidSwipeDown:self];
+    delegate4 = [(_UIContextMenuPanController *)self delegate];
+    [delegate4 platterPanControllerDidSwipeDown:self];
 
 LABEL_31:
     goto LABEL_32;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
-    v16 = [(_UIContextMenuPanController *)self delegate];
-    [v16 platterPanInteractionEnded:self];
+    delegate5 = [(_UIContextMenuPanController *)self delegate];
+    [delegate5 platterPanInteractionEnded:self];
     goto LABEL_31;
   }
 
 LABEL_32:
 }
 
-- (void)_updateMenuScrubPathWithLocationIfNecessary:(CGPoint)a3
+- (void)_updateMenuScrubPathWithLocationIfNecessary:(CGPoint)necessary
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIContextMenuPanController *)self menuView];
-  [v6 frame];
+  y = necessary.y;
+  x = necessary.x;
+  menuView = [(_UIContextMenuPanController *)self menuView];
+  [menuView frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -949,13 +949,13 @@ LABEL_32:
   v176 = 0;
   if (!v19)
   {
-    v49 = [(_UIContextMenuPanController *)self _currentPlatformMetrics];
-    [v49 previewActionsStyleDragTearOffThreshold];
+    _currentPlatformMetrics = [(_UIContextMenuPanController *)self _currentPlatformMetrics];
+    [_currentPlatformMetrics previewActionsStyleDragTearOffThreshold];
     v51 = v50;
 
-    v52 = [(_UIContextMenuPanController *)self containerView];
-    v53 = [v52 _screen];
-    [v53 scale];
+    containerView = [(_UIContextMenuPanController *)self containerView];
+    _screen = [containerView _screen];
+    [_screen scale];
     UIRectCenteredAboutPointScale(0.0, 0.0, v51, v51, x, y, v54);
     rect = v55;
     v57 = v56;
@@ -1453,14 +1453,14 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v21 = [UIBezierPath bezierPathWithRect:v17, v18, width, height];
+  height = [UIBezierPath bezierPathWithRect:v17, v18, width, height];
   v22 = v172[5];
-  v172[5] = v21;
+  v172[5] = height;
 
   [(_UIContextMenuPanController *)self menuAnchor];
   v23 = v170;
-  v24 = [(_UIContextMenuPanController *)self platterView];
-  [v24 bounds];
+  platterView = [(_UIContextMenuPanController *)self platterView];
+  [platterView bounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -1468,9 +1468,9 @@ LABEL_46:
   [(_UIContextMenuPanController *)self originalPlatterCenter];
   v34 = v33;
   v36 = v35;
-  v37 = [(_UIContextMenuPanController *)self containerView];
-  v38 = [v37 _screen];
-  [v38 scale];
+  containerView2 = [(_UIContextMenuPanController *)self containerView];
+  _screen2 = [containerView2 _screen];
+  [_screen2 scale];
   UIRectCenteredAboutPointScale(v26, v28, v30, v32, v34, v36, v39);
   v41 = v40;
   v43 = v42;
@@ -1554,8 +1554,8 @@ LABEL_46:
   }
 
   CGRectDivide(slice, &slice, &remainder, v100, v101);
-  v102 = [(_UIContextMenuPanController *)self menuView];
-  [v102 frame];
+  menuView2 = [(_UIContextMenuPanController *)self menuView];
+  [menuView2 frame];
   v107 = UIDistanceBetweenRects(v103, v104, v105, v106, v41, v43, v45, v47);
 
   slice.origin.x = UIRectInsetEdges(v15, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, -v107);
@@ -1567,24 +1567,24 @@ LABEL_46:
   [v111 appendPath:v112];
 
 LABEL_47:
-  v146 = [(_UIContextMenuPanController *)self menuView];
+  menuView3 = [(_UIContextMenuPanController *)self menuView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v148 = [(_UIContextMenuPanController *)self menuView];
-    if ([v148 hierarchyStyle] == 2)
+    menuView4 = [(_UIContextMenuPanController *)self menuView];
+    if ([menuView4 hierarchyStyle] == 2)
     {
-      v149 = [v148 submenus];
+      submenus = [menuView4 submenus];
       v164[0] = MEMORY[0x1E69E9820];
       v164[1] = 3221225472;
       v164[2] = __75___UIContextMenuPanController__updateMenuScrubPathWithLocationIfNecessary___block_invoke;
       v164[3] = &unk_1E70F80B8;
-      v165 = v148;
-      v166 = self;
+      v165 = menuView4;
+      selfCopy = self;
       v167 = &v171;
-      [v149 enumerateNodes:v164];
+      [submenus enumerateNodes:v164];
     }
   }
 
@@ -1593,12 +1593,12 @@ LABEL_47:
   _Block_object_dispose(&v171, 8);
 }
 
-- (BOOL)_canBeginDraggingWithTranslation:(CAPoint3D)a3 location:(CAPoint3D)a4
+- (BOOL)_canBeginDraggingWithTranslation:(CAPoint3D)translation location:(CAPoint3D)location
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  [(_UIContextMenuPanController *)self _dragTearOffThreshold:a3.x];
+  z = translation.z;
+  y = translation.y;
+  x = translation.x;
+  [(_UIContextMenuPanController *)self _dragTearOffThreshold:translation.x];
   v9 = v8;
   [(_UIContextMenuPanController *)self _tearOffSpeedMultiplier];
   v11 = v9 * v10;
@@ -1628,8 +1628,8 @@ LABEL_47:
     if ([(_UIContextMenuPanController *)self _userInterfaceIdiom]== 6)
     {
       v19 = v18 > v9;
-      v20 = [(_UIContextMenuPanController *)self _currentPlatformMetrics];
-      [v20 previewActionsStyleDragZTearOffThreshold];
+      _currentPlatformMetrics = [(_UIContextMenuPanController *)self _currentPlatformMetrics];
+      [_currentPlatformMetrics previewActionsStyleDragZTearOffThreshold];
       v22 = v21;
 
       return z > v22 || v19;
@@ -1642,42 +1642,42 @@ LABEL_47:
   }
 }
 
-- (void)_updateViewPositionsWithTranslation:(CAPoint3D)a3 location:(CAPoint3D)a4 ended:(BOOL)a5 withVelocity:(BOOL)a6
+- (void)_updateViewPositionsWithTranslation:(CAPoint3D)translation location:(CAPoint3D)location ended:(BOOL)ended withVelocity:(BOOL)velocity
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  velocityCopy = velocity;
+  y = location.y;
+  x = location.x;
+  v9 = translation.y;
+  v10 = translation.x;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95___UIContextMenuPanController__updateViewPositionsWithTranslation_location_ended_withVelocity___block_invoke;
   aBlock[3] = &unk_1E71016A8;
   aBlock[4] = self;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  translationCopy = translation;
+  locationCopy = location;
+  endedCopy = ended;
   v12 = _Block_copy(aBlock);
-  v13 = [(_UIContextMenuPanController *)self animationBehavior];
+  animationBehavior = [(_UIContextMenuPanController *)self animationBehavior];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95___UIContextMenuPanController__updateViewPositionsWithTranslation_location_ended_withVelocity___block_invoke_2;
   v15[3] = &unk_1E70F0F78;
   v16 = v12;
   v14 = v12;
-  [UIView _animateUsingSpringBehavior:v13 tracking:!v6 animations:v15 completion:0];
+  [UIView _animateUsingSpringBehavior:animationBehavior tracking:!velocityCopy animations:v15 completion:0];
 
   [(_UIContextMenuPanController *)self _updatePlatterGestureDebugUIWithTranslation:0 location:v10 invalidate:v9, x, y];
 }
 
-- (id)_createAnimationBehaviorWithCriticalDamping:(BOOL)a3
+- (id)_createAnimationBehaviorWithCriticalDamping:(BOOL)damping
 {
-  v3 = a3;
+  dampingCopy = damping;
   v4 = objc_opt_new();
   [v4 setInertialTargetSmoothing:0.15];
   [v4 setInertialProjectionDeceleration:0.996];
   v5 = 0.85;
-  if (v3)
+  if (dampingCopy)
   {
     v5 = 1.0;
     v6 = 1.0;
@@ -1694,14 +1694,14 @@ LABEL_47:
   return v4;
 }
 
-- (void)_animationsForPreviewPlusActionsStyleWithTranslation:(CAPoint3D)a3 location:(CAPoint3D)a4
+- (void)_animationsForPreviewPlusActionsStyleWithTranslation:(CAPoint3D)translation location:(CAPoint3D)location
 {
-  y = a4.y;
-  z = a3.z;
-  v6 = a3.y;
-  x = a3.x;
+  y = location.y;
+  z = translation.z;
+  v6 = translation.y;
+  x = translation.x;
   v67 = *MEMORY[0x1E69E9840];
-  v9 = [(_UIContextMenuPanController *)self platterView:a3.x];
+  v9 = [(_UIContextMenuPanController *)self platterView:translation.x];
   [v9 bounds];
   Height = CGRectGetHeight(v68);
   [v9 bounds];
@@ -1794,11 +1794,11 @@ LABEL_47:
 
 LABEL_18:
   [v9 setCenter:{vaddq_f64(*&v64.tx, vaddq_f64(vmulq_n_f64(*&v64.a, self->_originalPlatterCenter.x), vmulq_n_f64(*&v64.c, self->_originalPlatterCenter.y)))}];
-  v28 = [v9 layer];
-  [v28 setZPosition:v17];
+  layer = [v9 layer];
+  [layer setZPosition:v17];
 
-  v29 = [(_UIContextMenuPanController *)self menuView];
-  if (v29)
+  menuView = [(_UIContextMenuPanController *)self menuView];
+  if (menuView)
   {
     [(_UIContextMenuPanController *)self originalMenuCenter];
     v31 = v30;
@@ -1843,7 +1843,7 @@ LABEL_18:
       v38 = v37;
     }
 
-    [v29 center];
+    [menuView center];
     v40 = v39;
     [v9 frame];
     MinY = CGRectGetMinY(v72);
@@ -1854,9 +1854,9 @@ LABEL_18:
     *&v63.tx = v51;
     if (self->_clientAllowsDismissal)
     {
-      v43 = [(_UIContextMenuPanController *)self _canSwipeDownToDismiss];
+      _canSwipeDownToDismiss = [(_UIContextMenuPanController *)self _canSwipeDownToDismiss];
       v44 = 1;
-      if (v15 > 50.0 && v43)
+      if (v15 > 50.0 && _canSwipeDownToDismiss)
       {
         CGAffineTransformMakeScale(&v63, 0.2, 0.2);
         v44 = 0;
@@ -1876,8 +1876,8 @@ LABEL_18:
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v45 = [(_UIContextMenuPanController *)self accessoryViews];
-      v46 = [v45 countByEnumeratingWithState:&v57 objects:v66 count:16];
+      accessoryViews = [(_UIContextMenuPanController *)self accessoryViews];
+      v46 = [accessoryViews countByEnumeratingWithState:&v57 objects:v66 count:16];
       if (v46)
       {
         v47 = v46;
@@ -1888,55 +1888,55 @@ LABEL_18:
           {
             if (*v58 != v48)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(accessoryViews);
             }
 
             [*(*(&v57 + 1) + 8 * i) setVisible:self->_menuViewIsVisible animated:1];
           }
 
-          v47 = [v45 countByEnumeratingWithState:&v57 objects:v66 count:16];
+          v47 = [accessoryViews countByEnumeratingWithState:&v57 objects:v66 count:16];
         }
 
         while (v47);
       }
     }
 
-    [v29 setCenter:{v40, v35 + v42}];
+    [menuView setCenter:{v40, v35 + v42}];
     v56 = v63;
-    [v29 setTransform:&v56];
-    [v29 setAlpha:v36];
-    [v29 updateTraitsIfNeeded];
+    [menuView setTransform:&v56];
+    [menuView setAlpha:v36];
+    [menuView updateTraitsIfNeeded];
   }
 }
 
-- (void)_animationsForActionsStyleWithLocation:(CAPoint3D)a3 ended:(BOOL)a4
+- (void)_animationsForActionsStyleWithLocation:(CAPoint3D)location ended:(BOOL)ended
 {
-  v4 = a4;
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v9 = [(_UIContextMenuPanController *)self platterView];
-  v10 = [(_UIContextMenuPanController *)self menuView];
-  if (v4)
+  endedCopy = ended;
+  z = location.z;
+  y = location.y;
+  x = location.x;
+  platterView = [(_UIContextMenuPanController *)self platterView];
+  menuView = [(_UIContextMenuPanController *)self menuView];
+  if (endedCopy)
   {
     [(_UIContextMenuPanController *)self originalPlatterCenter];
-    [v9 setCenter:?];
+    [platterView setCenter:?];
     defaultZPosition = self->_defaultZPosition;
-    v12 = [v9 layer];
-    [v12 setZPosition:defaultZPosition];
+    layer = [platterView layer];
+    [layer setZPosition:defaultZPosition];
 
     v13 = *(MEMORY[0x1E695EFD0] + 16);
     *&v45.a = *MEMORY[0x1E695EFD0];
     *&v45.c = v13;
     *&v45.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v10 setTransform:&v45];
+    [menuView setTransform:&v45];
   }
 
   else
   {
     if (![(_UIContextMenuPanController *)self _initialPointInPlatterIsValid])
     {
-      [v9 frame];
+      [platterView frame];
       v46.x = x;
       v46.y = y;
       if (CGRectContainsPoint(v48, v46))
@@ -2037,17 +2037,17 @@ LABEL_18:
         v35 = v31;
       }
 
-      [v10 frame];
+      [menuView frame];
       v47.x = x;
       v47.y = y;
       if (!CGRectContainsPoint(v49, v47))
       {
-        [v9 setCenter:{v35, v34}];
+        [platterView setCenter:{v35, v34}];
       }
     }
 
-    v36 = [v10 traitCollection];
-    v37 = _UIContextMenuGetPlatformMetrics([v36 userInterfaceIdiom]);
+    traitCollection = [menuView traitCollection];
+    v37 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     currentDistanceToMenuScrubPath = self->_currentDistanceToMenuScrubPath;
     [(_UIContextMenuPanController *)self _dragTearOffThreshold];
@@ -2056,13 +2056,13 @@ LABEL_18:
     v42 = fmax(v41, fmin(1.0 - v40 + v40 * 0.95, 1.0));
     CGAffineTransformMakeScale(&v43, v42, v42);
     v45 = v43;
-    [v10 setTransform:&v45];
+    [menuView setTransform:&v45];
   }
 }
 
-- (void)scrollObservationInteraction:(id)a3 didUpdateWithTranslation:(CGPoint)a4 location:(CGPoint)a5 ended:(BOOL)a6
+- (void)scrollObservationInteraction:(id)interaction didUpdateWithTranslation:(CGPoint)translation location:(CGPoint)location ended:(BOOL)ended
 {
-  if (a6)
+  if (ended)
   {
     v6 = 3;
   }
@@ -2072,14 +2072,14 @@ LABEL_18:
     v6 = 2;
   }
 
-  [(_UIContextMenuPanController *)self _updateForGestureWithState:v6 translation:0 location:a4.x allowsDragging:a4.y, 0.0, a5.x, a5.y, 0.0];
+  [(_UIContextMenuPanController *)self _updateForGestureWithState:v6 translation:0 location:translation.x allowsDragging:translation.y, 0.0, location.x, location.y, 0.0];
 }
 
-- (CAPoint3D)_rubberBandedTranslationForGestureTranslation:(CAPoint3D)a3
+- (CAPoint3D)_rubberBandedTranslationForGestureTranslation:(CAPoint3D)translation
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = translation.z;
+  y = translation.y;
+  x = translation.x;
   [(_UIContextMenuPanController *)self _rangeOfMotion];
   v8 = v7;
   [(_UIContextMenuPanController *)self _dragTearOffThreshold];
@@ -2140,13 +2140,13 @@ LABEL_18:
   return result;
 }
 
-- (void)_updatePlatterGestureDebugUIWithTranslation:(CGPoint)a3 location:(CGPoint)a4 invalidate:(BOOL)a5
+- (void)_updatePlatterGestureDebugUIWithTranslation:(CGPoint)translation location:(CGPoint)location invalidate:(BOOL)invalidate
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  invalidateCopy = invalidate;
+  y = location.y;
+  x = location.x;
+  v8 = translation.y;
+  v9 = translation.x;
   if ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ClickUIDebugEnabled, @"ClickUIDebugEnabled", _UIInternalPreferenceUpdateBool) & 1) != 0 || !byte_1EA95E0FC)
   {
     return;
@@ -2159,7 +2159,7 @@ LABEL_18:
     v13 = _MergedGlobals_16;
     _MergedGlobals_16 = v12;
 
-    v5 = 1;
+    invalidateCopy = 1;
   }
 
   if (!qword_1EA968350)
@@ -2186,7 +2186,7 @@ LABEL_18:
     qword_1EA968360 = v21;
   }
 
-  if (v5)
+  if (invalidateCopy)
   {
     [qword_1EA968368 removeFromSuperview];
     v23 = qword_1EA968368;
@@ -2200,13 +2200,13 @@ LABEL_18:
     qword_1EA968368 = v24;
 
     v26 = +[UIColor redColor];
-    v27 = [v26 CGColor];
-    v28 = [qword_1EA968368 shapeLayer];
-    [v28 setFillColor:v27];
+    cGColor = [v26 CGColor];
+    shapeLayer = [qword_1EA968368 shapeLayer];
+    [shapeLayer setFillColor:cGColor];
 
-    v29 = [(UIBezierPath *)self->_menuScrubPath CGPath];
-    v30 = [qword_1EA968368 shapeLayer];
-    [v30 setPath:v29];
+    cGPath = [(UIBezierPath *)self->_menuScrubPath CGPath];
+    shapeLayer2 = [qword_1EA968368 shapeLayer];
+    [shapeLayer2 setPath:cGPath];
 
     [qword_1EA968368 setAlpha:0.2];
   }
@@ -2229,8 +2229,8 @@ LABEL_18:
       [qword_1EA968370 setFont:v35];
     }
 
-    v36 = [(_UIContextMenuPanController *)self containerView];
-    [v36 addSubview:qword_1EA968370];
+    containerView = [(_UIContextMenuPanController *)self containerView];
+    [containerView addSubview:qword_1EA968370];
 
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Distance from path edge: %.2f", *&self->_currentDistanceToMenuScrubPath];
     [qword_1EA968370 setText:v37];
@@ -2239,8 +2239,8 @@ LABEL_18:
     [qword_1EA968370 sizeToFit];
     [qword_1EA968370 setClipsToBounds:1];
     [qword_1EA968370 _setContinuousCornerRadius:4.0];
-    v38 = [(_UIContextMenuPanController *)self containerView];
-    [v38 safeAreaInsets];
+    containerView2 = [(_UIContextMenuPanController *)self containerView];
+    [containerView2 safeAreaInsets];
     v40 = v39;
 
     if (v40 < 8.0)
@@ -2248,8 +2248,8 @@ LABEL_18:
       v40 = 8.0;
     }
 
-    v41 = [(_UIContextMenuPanController *)self containerView];
-    [v41 safeAreaInsets];
+    containerView3 = [(_UIContextMenuPanController *)self containerView];
+    [containerView3 safeAreaInsets];
     v43 = v42;
 
     if (v43 < 8.0)
@@ -2264,19 +2264,19 @@ LABEL_18:
 
   if (qword_1EA968378)
   {
-    if (v5)
+    if (invalidateCopy)
     {
 LABEL_25:
-      v44 = [(_UIContextMenuPanController *)self platterView];
-      [v44 center];
+      platterView = [(_UIContextMenuPanController *)self platterView];
+      [platterView center];
       [qword_1EA968358 setCenter:?];
 
-      v45 = [(_UIContextMenuPanController *)self platterView];
-      [v45 center];
+      platterView2 = [(_UIContextMenuPanController *)self platterView];
+      [platterView2 center];
       [qword_1EA968350 setCenter:?];
 
-      v46 = [(_UIContextMenuPanController *)self platterView];
-      [v46 center];
+      platterView3 = [(_UIContextMenuPanController *)self platterView];
+      [platterView3 center];
       [_MergedGlobals_16 setCenter:?];
 
       goto LABEL_28;
@@ -2290,7 +2290,7 @@ LABEL_25:
     v49 = qword_1EA968378;
     qword_1EA968378 = v48;
 
-    if (v5)
+    if (invalidateCopy)
     {
       goto LABEL_25;
     }
@@ -2307,53 +2307,53 @@ LABEL_25:
   [qword_1EA968350 setTransform:&v64];
   [qword_1EA968360 setCenter:{x, y}];
 LABEL_28:
-  v54 = [(_UIContextMenuPanController *)self menuView];
-  [v54 center];
+  menuView = [(_UIContextMenuPanController *)self menuView];
+  [menuView center];
   [qword_1EA968378 setCenter:?];
 
-  v55 = [qword_1EA968368 superview];
+  superview = [qword_1EA968368 superview];
 
-  if (!v55)
+  if (!superview)
   {
-    v56 = [(_UIContextMenuPanController *)self platterView];
-    v57 = [v56 superview];
-    v58 = v57;
-    if (v57)
+    platterView4 = [(_UIContextMenuPanController *)self platterView];
+    superview2 = [platterView4 superview];
+    v58 = superview2;
+    if (superview2)
     {
-      v59 = v57;
+      superview3 = superview2;
     }
 
     else
     {
-      v60 = [(_UIContextMenuPanController *)self menuView];
-      v59 = [v60 superview];
+      menuView2 = [(_UIContextMenuPanController *)self menuView];
+      superview3 = [menuView2 superview];
     }
 
-    [v59 addSubview:qword_1EA968368];
-    [v59 addSubview:qword_1EA968360];
-    v61 = [(_UIContextMenuPanController *)self platterView];
+    [superview3 addSubview:qword_1EA968368];
+    [superview3 addSubview:qword_1EA968360];
+    platterView5 = [(_UIContextMenuPanController *)self platterView];
 
-    if (v61)
+    if (platterView5)
     {
-      [v59 addSubview:qword_1EA968358];
-      [v59 addSubview:qword_1EA968350];
-      [v59 addSubview:_MergedGlobals_16];
+      [superview3 addSubview:qword_1EA968358];
+      [superview3 addSubview:qword_1EA968350];
+      [superview3 addSubview:_MergedGlobals_16];
     }
 
-    v62 = [(_UIContextMenuPanController *)self menuView];
+    menuView3 = [(_UIContextMenuPanController *)self menuView];
 
-    if (v62)
+    if (menuView3)
     {
-      [v59 addSubview:qword_1EA968378];
+      [superview3 addSubview:qword_1EA968378];
     }
   }
 }
 
-- (void)setMenuAnchor:(id *)a3
+- (void)setMenuAnchor:(id *)anchor
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->_menuAnchor.gravity = a3->var4;
+  v3 = *&anchor->var0;
+  v4 = *&anchor->var2;
+  self->_menuAnchor.gravity = anchor->var4;
   *&self->_menuAnchor.attachmentOffset = v4;
   *&self->_menuAnchor.attachment = v3;
 }

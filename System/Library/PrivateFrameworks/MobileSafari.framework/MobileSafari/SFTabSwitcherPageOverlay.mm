@@ -1,6 +1,6 @@
 @interface SFTabSwitcherPageOverlay
 + (SFTabSwitcherPageOverlay)emptyPrivateBrowsing;
-+ (id)lockedPrivateBrowsingOverlayWithUnlockHandler:(id)a3;
++ (id)lockedPrivateBrowsingOverlayWithUnlockHandler:(id)handler;
 - (SFTabSwitcherPageOverlay)init;
 @end
 
@@ -19,9 +19,9 @@
   return v4;
 }
 
-+ (id)lockedPrivateBrowsingOverlayWithUnlockHandler:(id)a3
++ (id)lockedPrivateBrowsingOverlayWithUnlockHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = objc_allocWithZone(SFTabSwitcherPageOverlay);

@@ -4,10 +4,10 @@
 - (NSMutableArray)mutableKeychainItemsAddedAfterRecoverEMCS;
 - (id)dictionary;
 - (id)switchTypeString;
-- (void)addKeychainItemAdditionEvent:(id)a3;
+- (void)addKeychainItemAdditionEvent:(id)event;
 - (void)removeLastKeychainItemAdditionEvent;
-- (void)setRecoverEMCSOperation:(id)a3;
-- (void)setSwitchType:(unint64_t)a3;
+- (void)setRecoverEMCSOperation:(id)operation;
+- (void)setSwitchType:(unint64_t)type;
 @end
 
 @implementation LKSwitchOperation
@@ -28,29 +28,29 @@
   return v3;
 }
 
-- (void)setRecoverEMCSOperation:(id)a3
+- (void)setRecoverEMCSOperation:(id)operation
 {
-  v5 = a3;
-  if (self->_recoverEMCSOperation != v5)
+  operationCopy = operation;
+  if (self->_recoverEMCSOperation != operationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_recoverEMCSOperation, a3);
-    v5 = v6;
+    v6 = operationCopy;
+    objc_storeStrong(&self->_recoverEMCSOperation, operation);
+    operationCopy = v6;
   }
 }
 
-- (void)setSwitchType:(unint64_t)a3
+- (void)setSwitchType:(unint64_t)type
 {
-  if (self->_switchType != a3)
+  if (self->_switchType != type)
   {
-    self->_switchType = a3;
+    self->_switchType = type;
   }
 }
 
 - (NSArray)keychainItemsAddedAfterRecoverEMCS
 {
-  v2 = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
-  v3 = [v2 copy];
+  mutableKeychainItemsAddedAfterRecoverEMCS = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
+  v3 = [mutableKeychainItemsAddedAfterRecoverEMCS copy];
 
   return v3;
 }
@@ -70,39 +70,39 @@
   return mutableKeychainItemsAddedAfterRecoverEMCS;
 }
 
-- (void)addKeychainItemAdditionEvent:(id)a3
+- (void)addKeychainItemAdditionEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
-    v4 = a3;
-    v5 = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
-    [v5 addObject:v4];
+    eventCopy = event;
+    mutableKeychainItemsAddedAfterRecoverEMCS = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
+    [mutableKeychainItemsAddedAfterRecoverEMCS addObject:eventCopy];
   }
 }
 
 - (void)removeLastKeychainItemAdditionEvent
 {
-  v3 = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
-  v4 = [v3 count];
+  mutableKeychainItemsAddedAfterRecoverEMCS = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
+  v4 = [mutableKeychainItemsAddedAfterRecoverEMCS count];
 
   if (v4)
   {
-    v5 = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
-    [v5 removeLastObject];
+    mutableKeychainItemsAddedAfterRecoverEMCS2 = [(LKSwitchOperation *)self mutableKeychainItemsAddedAfterRecoverEMCS];
+    [mutableKeychainItemsAddedAfterRecoverEMCS2 removeLastObject];
   }
 }
 
 - (id)switchTypeString
 {
-  v2 = [(LKSwitchOperation *)self switchType];
-  if (v2 > 4)
+  switchType = [(LKSwitchOperation *)self switchType];
+  if (switchType > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_279826630[v2];
+    return off_279826630[switchType];
   }
 }
 
@@ -111,20 +111,20 @@
   v27 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = LKSwitchOperation;
-  v3 = [(LKOperation *)&v25 dictionary];
-  v4 = [v3 mutableCopy];
+  dictionary = [(LKOperation *)&v25 dictionary];
+  v4 = [dictionary mutableCopy];
 
-  v5 = [(LKSwitchOperation *)self recoverEMCSOperation];
-  v6 = [v5 dictionary];
-  [v4 setObject:v6 forKeyedSubscript:@"recoverKeychainOperation"];
+  recoverEMCSOperation = [(LKSwitchOperation *)self recoverEMCSOperation];
+  dictionary2 = [recoverEMCSOperation dictionary];
+  [v4 setObject:dictionary2 forKeyedSubscript:@"recoverKeychainOperation"];
 
   v7 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(LKSwitchOperation *)self keychainItemsAddedAfterRecoverEMCS];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  keychainItemsAddedAfterRecoverEMCS = [(LKSwitchOperation *)self keychainItemsAddedAfterRecoverEMCS];
+  v9 = [keychainItemsAddedAfterRecoverEMCS countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -135,20 +135,20 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keychainItemsAddedAfterRecoverEMCS);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 keychainItemAdded];
+        keychainItemAdded = [v13 keychainItemAdded];
 
-        if (v14)
+        if (keychainItemAdded)
         {
-          v15 = [v13 dictionary];
-          [v7 addObject:v15];
+          dictionary3 = [v13 dictionary];
+          [v7 addObject:dictionary3];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v10 = [keychainItemsAddedAfterRecoverEMCS countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v10);
@@ -165,8 +165,8 @@
     [v4 setObject:MEMORY[0x277CBEBF8] forKeyedSubscript:@"keychainItemsAddedAfterKeychainRecovery"];
   }
 
-  v17 = [(LKSwitchOperation *)self switchTypeString];
-  [v4 setObject:v17 forKeyedSubscript:@"switchType"];
+  switchTypeString = [(LKSwitchOperation *)self switchTypeString];
+  [v4 setObject:switchTypeString forKeyedSubscript:@"switchType"];
 
   v18 = [v4 copy];
   v19 = *MEMORY[0x277D85DE8];

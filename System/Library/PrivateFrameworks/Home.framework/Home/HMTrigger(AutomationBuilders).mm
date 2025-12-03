@@ -35,8 +35,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:a1 file:@"HMTrigger+AutomationBuilders.m" lineNumber:35 description:{@"Unknown trigger builder type: %@", v7}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HMTrigger+AutomationBuilders.m" lineNumber:35 description:{@"Unknown trigger builder type: %@", v7}];
 
   v10 = 0;
 LABEL_7:

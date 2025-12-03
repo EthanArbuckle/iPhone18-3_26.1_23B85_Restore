@@ -1,32 +1,32 @@
 @interface CDPUICustodianCodeEntryViewController
-- (BOOL)validatePIN:(id)a3;
-- (CDPUICustodianCodeEntryViewController)initWithViewModel:(id)a3 cdpContext:(id)a4;
+- (BOOL)validatePIN:(id)n;
+- (CDPUICustodianCodeEntryViewController)initWithViewModel:(id)model cdpContext:(id)context;
 - (CGSize)preferredContentSize;
 - (id)_makeViewDidAppearEvent;
 - (id)pinInstructionsPrompt;
 - (id)stringsBundle;
 - (void)_disableUserInteractionAndStartSpinner;
 - (void)_enableUserInteractionAndStopSpinner;
-- (void)setPane:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setPane:(id)pane;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CDPUICustodianCodeEntryViewController
 
-- (CDPUICustodianCodeEntryViewController)initWithViewModel:(id)a3 cdpContext:(id)a4
+- (CDPUICustodianCodeEntryViewController)initWithViewModel:(id)model cdpContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = CDPUICustodianCodeEntryViewController;
   v9 = [(DevicePINController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewModel, a3);
-    objc_storeStrong(&v10->_cdpContext, a4);
+    objc_storeStrong(&v9->_viewModel, model);
+    objc_storeStrong(&v10->_cdpContext, context);
     v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"CDPUICustodianCodeEntry" target:0 set:0 get:0 detail:0 cell:13 edit:0];
     [v11 setEditPaneClass:objc_opt_class()];
     [(DevicePINController *)v10 setSpecifier:v11];
@@ -37,74 +37,74 @@
     [(DevicePINController *)v10 setPinDelegate:v10];
     [(DevicePINController *)v10 setPinLength:6];
     [(DevicePINController *)v10 setNumericPIN:1];
-    v12 = [MEMORY[0x277D3FA48] appearance];
-    v13 = [MEMORY[0x277D75348] labelColor];
-    [v12 setTextColor:v13];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [appearance setTextColor:labelColor];
 
-    v14 = [MEMORY[0x277D3FA48] appearance];
-    v15 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v14 setBackgroundColor:v15];
+    appearance2 = [MEMORY[0x277D3FA48] appearance];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [appearance2 setBackgroundColor:systemBackgroundColor];
   }
 
   return v10;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CDPUICustodianCodeEntryViewController;
-  [(DevicePINController *)&v6 viewDidAppear:a3];
-  v4 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  v5 = [(CDPUICustodianCodeEntryViewController *)self _makeViewDidAppearEvent];
-  [v4 sendEvent:v5];
+  [(DevicePINController *)&v6 viewDidAppear:appear];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  _makeViewDidAppearEvent = [(CDPUICustodianCodeEntryViewController *)self _makeViewDidAppearEvent];
+  [rtcAnalyticsReporter sendEvent:_makeViewDidAppearEvent];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CDPUICustodianCodeEntryViewController;
-  [(DevicePINController *)&v10 viewWillAppear:a3];
-  v4 = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
-  [v4 setTitle:&stru_285826188];
+  [(DevicePINController *)&v10 viewWillAppear:appear];
+  navigationItem = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
+  [navigationItem setTitle:&stru_285826188];
 
-  v5 = [(CDPUICustodianCodeEntryViewController *)self navigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 firstObject];
+  navigationController = [(CDPUICustodianCodeEntryViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v7 == self)
+  if (firstObject == self)
   {
-    v8 = [(CDPUICustodianCodeEntryViewController *)self navigationController];
-    v9 = [v8 navigationBar];
-    [v9 _setBackgroundOpacity:0.0];
+    navigationController2 = [(CDPUICustodianCodeEntryViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar _setBackgroundOpacity:0.0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CDPUICustodianCodeEntryViewController;
-  [(DevicePINController *)&v4 viewDidDisappear:a3];
+  [(DevicePINController *)&v4 viewDidDisappear:disappear];
   [(CDPUICustodianCodeEntryViewController *)self _enableUserInteractionAndStopSpinner];
 }
 
 - (id)_makeViewDidAppearEvent
 {
   v3 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD7E0] category:*MEMORY[0x277CFD930]];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
-  v6 = [v5 backBarButtonItem];
+  array = [MEMORY[0x277CBEB18] array];
+  navigationItem = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
+  backBarButtonItem = [navigationItem backBarButtonItem];
 
-  if (v6)
+  if (backBarButtonItem)
   {
     v7 = MEMORY[0x277CFD950];
   }
 
   else
   {
-    v8 = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
-    v9 = [v8 leftBarButtonItem];
+    navigationItem2 = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
 
-    if (!v9)
+    if (!leftBarButtonItem)
     {
       goto LABEL_6;
     }
@@ -112,22 +112,22 @@
     v7 = MEMORY[0x277CFD958];
   }
 
-  [v4 addObject:*v7];
+  [array addObject:*v7];
 LABEL_6:
-  v10 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
-  v11 = [v10 titleTelemetryKey];
+  escapeOffer = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+  titleTelemetryKey = [escapeOffer titleTelemetryKey];
 
-  if (v11)
+  if (titleTelemetryKey)
   {
-    v12 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
-    v13 = [v12 titleTelemetryKey];
-    [v4 addObject:v13];
+    escapeOffer2 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+    titleTelemetryKey2 = [escapeOffer2 titleTelemetryKey];
+    [array addObject:titleTelemetryKey2];
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v14 = [v4 aaf_arrayAsCommaSeperatedString];
-    [v3 setObject:v14 forKeyedSubscript:*MEMORY[0x277CFD6C8]];
+    aaf_arrayAsCommaSeperatedString = [array aaf_arrayAsCommaSeperatedString];
+    [v3 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x277CFD6C8]];
   }
 
   return v3;
@@ -150,16 +150,16 @@ LABEL_6:
   return result;
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   v5.receiver = self;
   v5.super_class = CDPUICustodianCodeEntryViewController;
-  [(DevicePINController *)&v5 setPane:v4];
+  [(DevicePINController *)&v5 setPane:paneCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setViewModel:self->_viewModel];
+    [paneCopy setViewModel:self->_viewModel];
   }
 }
 
@@ -176,24 +176,24 @@ LABEL_6:
   }
 }
 
-- (BOOL)validatePIN:(id)a3
+- (BOOL)validatePIN:(id)n
 {
-  v4 = a3;
-  v5 = [(PSDetailController *)self pane];
-  [v5 resignFirstResponder];
+  nCopy = n;
+  pane = [(PSDetailController *)self pane];
+  [pane resignFirstResponder];
 
-  v6 = [(CDPUICodeEntryViewModel *)self->_viewModel codeEnteredAction];
+  codeEnteredAction = [(CDPUICodeEntryViewModel *)self->_viewModel codeEnteredAction];
 
-  if (v6)
+  if (codeEnteredAction)
   {
     [(CDPUICustodianCodeEntryViewController *)self _disableUserInteractionAndStartSpinner];
-    v7 = [(CDPUICodeEntryViewModel *)self->_viewModel codeEnteredAction];
-    v8 = (v7)[2](v7, v4);
+    codeEnteredAction2 = [(CDPUICodeEntryViewModel *)self->_viewModel codeEnteredAction];
+    v8 = (codeEnteredAction2)[2](codeEnteredAction2, nCopy);
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(PSDetailController *)self pane];
-      [v9 becomeFirstResponder];
+      pane2 = [(PSDetailController *)self pane];
+      [pane2 becomeFirstResponder];
 
       v10 = CDPLocalizedString();
       pinInstructions = self->_pinInstructions;
@@ -213,21 +213,21 @@ LABEL_6:
 
 - (void)_disableUserInteractionAndStartSpinner
 {
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v4 = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
-  [v3 startAnimatingInNavItem:v4 forIdentifier:@"CDPUICustodianCodeEntry" hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(CDPUICustodianCodeEntryViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"CDPUICustodianCodeEntry" hideBackButton:1];
 
-  v5 = [(CDPUICustodianCodeEntryViewController *)self view];
-  [v5 setUserInteractionEnabled:0];
+  view = [(CDPUICustodianCodeEntryViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)_enableUserInteractionAndStopSpinner
 {
-  v2 = [(CDPUICustodianCodeEntryViewController *)self view];
-  [v2 setUserInteractionEnabled:1];
+  view = [(CDPUICustodianCodeEntryViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  [v3 stopAnimatingForIdentifier:@"CDPUICustodianCodeEntry"];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"CDPUICustodianCodeEntry"];
 }
 
 @end

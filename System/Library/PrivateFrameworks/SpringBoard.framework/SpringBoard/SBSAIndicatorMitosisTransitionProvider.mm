@@ -1,45 +1,45 @@
 @interface SBSAIndicatorMitosisTransitionProvider
-- (BOOL)_milestoneDidReachExpectedMilestone:(double)a3 property:(id)a4 context:(id)a5;
-- (BOOL)_wantsIndicatorUnderAssociatedContainerWithPreferences:(id)a3 context:(id)a4;
-- (SBSAIndicatorMitosisTransitionProvider)initWithType:(unint64_t)a3 reversed:(BOOL)a4;
-- (double)milestoneForPhase:(unint64_t)a3;
-- (id)_associatedContainerViewDescriptionFromPreferences:(id)a3 context:(id)a4 outIndex:(unint64_t *)a5;
-- (id)_mitosisPhaseSettingsForPhase:(unint64_t)a3;
+- (BOOL)_milestoneDidReachExpectedMilestone:(double)milestone property:(id)property context:(id)context;
+- (BOOL)_wantsIndicatorUnderAssociatedContainerWithPreferences:(id)preferences context:(id)context;
+- (SBSAIndicatorMitosisTransitionProvider)initWithType:(unint64_t)type reversed:(BOOL)reversed;
+- (double)milestoneForPhase:(unint64_t)phase;
+- (id)_associatedContainerViewDescriptionFromPreferences:(id)preferences context:(id)context outIndex:(unint64_t *)index;
+- (id)_mitosisPhaseSettingsForPhase:(unint64_t)phase;
 - (id)_mitosisSettings;
-- (id)_positionIndicatorUnderAssociatedContainerWithPreferences:(id)a3 context:(id)a4;
-- (id)_updateMaintainedPreferencesForActivePhaseWithContext:(id)a3;
-- (id)_updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedPreferencesWithPhaseSettings:(id)a3 preferences:(id)a4 context:(id)a5;
+- (id)_positionIndicatorUnderAssociatedContainerWithPreferences:(id)preferences context:(id)context;
+- (id)_updateMaintainedPreferencesForActivePhaseWithContext:(id)context;
+- (id)_updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedPreferencesWithPhaseSettings:(id)settings preferences:(id)preferences context:(id)context;
 - (id)debugDescription;
-- (id)preferencesFromContext:(id)a3;
-- (void)_advancePhaseWithContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
+- (void)_advancePhaseWithContext:(id)context;
 @end
 
 @implementation SBSAIndicatorMitosisTransitionProvider
 
-- (SBSAIndicatorMitosisTransitionProvider)initWithType:(unint64_t)a3 reversed:(BOOL)a4
+- (SBSAIndicatorMitosisTransitionProvider)initWithType:(unint64_t)type reversed:(BOOL)reversed
 {
   v7.receiver = self;
   v7.super_class = SBSAIndicatorMitosisTransitionProvider;
   result = [(SBSABasePreferencesProvider *)&v7 initWithParentProvider:0];
   if (result)
   {
-    result->_type = a3;
-    result->_reversed = a4;
+    result->_type = type;
+    result->_reversed = reversed;
     result->_activePhase = 0;
   }
 
   return result;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -71,7 +71,7 @@
     v9 = 0;
   }
 
-  v10 = [v9 preferences];
+  preferences = [v9 preferences];
   v11 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisPhaseSettingsForPhase:self->_activePhase];
   [(SBSAIndicatorMitosisTransitionProvider *)self _advancePhaseWithContext:v9];
   if (self->_activePhase == 4)
@@ -184,7 +184,7 @@
             v27 = SBLogSystemAperturePreferencesStackIndicator();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
-              v50 = [v9 queryIteration];
+              queryIteration = [v9 queryIteration];
               activePhase = self->_activePhase;
               if (activePhase > 4)
               {
@@ -205,12 +205,12 @@
               }
 
               v47 = v40;
-              v41 = [(NSUUID *)self->_pendingPhaseTransitionTimerIdentity UUIDString];
-              v49 = v41;
+              uUIDString = [(NSUUID *)self->_pendingPhaseTransitionTimerIdentity UUIDString];
+              v49 = uUIDString;
               v42 = @"nil";
-              if (v41)
+              if (uUIDString)
               {
-                v42 = v41;
+                v42 = uUIDString;
               }
 
               v45 = v42;
@@ -223,7 +223,7 @@
                 v44 = v43;
               }
 
-              v62 = v50;
+              v62 = queryIteration;
               v63 = 2112;
               v64 = v48;
               v65 = 2112;
@@ -408,15 +408,15 @@ void __65__SBSAIndicatorMitosisTransitionProvider_preferencesFromContext___block
   return v15;
 }
 
-- (void)_advancePhaseWithContext:(id)a3
+- (void)_advancePhaseWithContext:(id)context
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   [(SBSAIndicatorMitosisTransitionProvider *)self milestoneForPhase:self->_activePhase];
   pendingPhaseTransitionPropertyIdentity = self->_pendingPhaseTransitionPropertyIdentity;
   if (pendingPhaseTransitionPropertyIdentity)
   {
-    v6 = [(SBSAIndicatorMitosisTransitionProvider *)self _milestoneDidReachExpectedMilestone:pendingPhaseTransitionPropertyIdentity property:v4 context:?];
+    v6 = [(SBSAIndicatorMitosisTransitionProvider *)self _milestoneDidReachExpectedMilestone:pendingPhaseTransitionPropertyIdentity property:contextCopy context:?];
     v7 = v6;
     p_pendingPhaseTransitionTimerIdentity = &self->_pendingPhaseTransitionTimerIdentity;
     if (!self->_pendingPhaseTransitionTimerIdentity)
@@ -442,13 +442,13 @@ void __65__SBSAIndicatorMitosisTransitionProvider_preferencesFromContext___block
     v7 = 0;
   }
 
-  v10 = [v4 elapsedTimerDescriptions];
+  elapsedTimerDescriptions = [contextCopy elapsedTimerDescriptions];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __67__SBSAIndicatorMitosisTransitionProvider__advancePhaseWithContext___block_invoke;
   v37[3] = &unk_2783AF4C0;
   v37[4] = self;
-  v9 = [v10 bs_containsObjectPassingTest:v37];
+  v9 = [elapsedTimerDescriptions bs_containsObjectPassingTest:v37];
 
   if (v7)
   {
@@ -456,7 +456,7 @@ LABEL_8:
     v11 = SBLogSystemAperturePreferencesStackIndicator();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v4 queryIteration];
+      queryIteration = [contextCopy queryIteration];
       activePhase = self->_activePhase;
       if (activePhase > 4)
       {
@@ -505,7 +505,7 @@ LABEL_8:
         v20 = @"nil";
       }
 
-      v39 = v34;
+      v39 = queryIteration;
       v40 = 2112;
       v41 = v32;
       v42 = 2112;
@@ -539,7 +539,7 @@ LABEL_26:
     v11 = SBLogSystemAperturePreferencesStackIndicator();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v35 = [v4 queryIteration];
+      queryIteration2 = [contextCopy queryIteration];
       v13 = self->_activePhase;
       if (v13 > 4)
       {
@@ -587,7 +587,7 @@ LABEL_26:
         v30 = @"nil";
       }
 
-      v39 = v35;
+      v39 = queryIteration2;
       v40 = 2112;
       v41 = v33;
       v42 = 2112;
@@ -626,12 +626,12 @@ uint64_t __67__SBSAIndicatorMitosisTransitionProvider__advancePhaseWithContext__
   return v4;
 }
 
-- (id)_positionIndicatorUnderAssociatedContainerWithPreferences:(id)a3 context:(id)a4
+- (id)_positionIndicatorUnderAssociatedContainerWithPreferences:(id)preferences context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v10 = [(SBSAIndicatorMitosisTransitionProvider *)self _associatedContainerViewDescriptionFromPreferences:v9 context:v8 outIndex:0];
+  preferencesCopy = preferences;
+  contextCopy = context;
+  v9 = preferencesCopy;
+  v10 = [(SBSAIndicatorMitosisTransitionProvider *)self _associatedContainerViewDescriptionFromPreferences:v9 context:contextCopy outIndex:0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __108__SBSAIndicatorMitosisTransitionProvider__positionIndicatorUnderAssociatedContainerWithPreferences_context___block_invoke;
@@ -640,8 +640,8 @@ uint64_t __67__SBSAIndicatorMitosisTransitionProvider__advancePhaseWithContext__
   v19 = a2;
   v15[4] = self;
   v16 = v10;
-  v17 = v8;
-  v11 = v8;
+  v17 = contextCopy;
+  v11 = contextCopy;
   v12 = v10;
   v13 = [v9 copyWithBlock:v15];
 
@@ -773,20 +773,20 @@ void __108__SBSAIndicatorMitosisTransitionProvider__positionIndicatorUnderAssoci
   [v7 setCenter:?];
 }
 
-- (BOOL)_wantsIndicatorUnderAssociatedContainerWithPreferences:(id)a3 context:(id)a4
+- (BOOL)_wantsIndicatorUnderAssociatedContainerWithPreferences:(id)preferences context:(id)context
 {
-  v5 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisSettings:a3];
-  v6 = [v5 microIndicatorTranslationTransitionBeginPhase];
+  v5 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisSettings:preferences];
+  microIndicatorTranslationTransitionBeginPhase = [v5 microIndicatorTranslationTransitionBeginPhase];
   activePhase = self->_activePhase;
-  if (v6 <= 1)
+  if (microIndicatorTranslationTransitionBeginPhase <= 1)
   {
-    if (!v6)
+    if (!microIndicatorTranslationTransitionBeginPhase)
     {
       v8 = 1;
       goto LABEL_14;
     }
 
-    if (v6 == 1)
+    if (microIndicatorTranslationTransitionBeginPhase == 1)
     {
       v8 = activePhase != 0;
       goto LABEL_14;
@@ -800,14 +800,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v6 == 2)
+  if (microIndicatorTranslationTransitionBeginPhase == 2)
   {
     v9 = activePhase > 1;
   }
 
   else
   {
-    if (v6 != 3)
+    if (microIndicatorTranslationTransitionBeginPhase != 3)
     {
       goto LABEL_8;
     }
@@ -829,39 +829,39 @@ LABEL_18:
   return v11 & 1;
 }
 
-- (id)_updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v8 = a3;
-  v9 = a4;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v10 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisPhaseSettingsForPhase:self->_activePhase];
-  v11 = v8;
-  v12 = [v10 phaseEndMilestoneTargetProperty];
+  v11 = preferencesCopy;
+  phaseEndMilestoneTargetProperty = [v10 phaseEndMilestoneTargetProperty];
   v13 = v11;
-  if ([(SBSAIndicatorMitosisTransitionProvider *)self _wantsIndicatorUnderAssociatedContainerWithPreferences:v11 context:v9])
+  if ([(SBSAIndicatorMitosisTransitionProvider *)self _wantsIndicatorUnderAssociatedContainerWithPreferences:v11 context:contextCopy])
   {
-    v13 = [(SBSAIndicatorMitosisTransitionProvider *)self _positionIndicatorUnderAssociatedContainerWithPreferences:v11 context:v9];
+    v13 = [(SBSAIndicatorMitosisTransitionProvider *)self _positionIndicatorUnderAssociatedContainerWithPreferences:v11 context:contextCopy];
   }
 
   if (v10)
   {
-    v14 = [(SBSAIndicatorMitosisTransitionProvider *)self _associatedContainerViewDescriptionFromPreferences:v11 context:v9 outIndex:0];
-    v15 = [v10 phaseEndMilestoneTarget];
-    if (v15 == 3)
+    v14 = [(SBSAIndicatorMitosisTransitionProvider *)self _associatedContainerViewDescriptionFromPreferences:v11 context:contextCopy outIndex:0];
+    phaseEndMilestoneTarget = [v10 phaseEndMilestoneTarget];
+    if (phaseEndMilestoneTarget == 3)
     {
-      v22 = [v11 indicatorElementDescription];
+      indicatorElementDescription = [v11 indicatorElementDescription];
     }
 
     else
     {
-      if (v15 != 2)
+      if (phaseEndMilestoneTarget != 2)
       {
-        if (v15 == 1)
+        if (phaseEndMilestoneTarget == 1)
         {
           v34 = a2;
-          v35 = v12;
-          v16 = [v14 associatedSystemApertureElementIdentity];
-          v17 = [v13 elementDescriptions];
-          SBSAElementDescriptionAssociatedWithElementIdentity(v16, v17, 0);
+          v35 = phaseEndMilestoneTargetProperty;
+          associatedSystemApertureElementIdentity = [v14 associatedSystemApertureElementIdentity];
+          elementDescriptions = [v13 elementDescriptions];
+          SBSAElementDescriptionAssociatedWithElementIdentity(associatedSystemApertureElementIdentity, elementDescriptions, 0);
           v19 = v18 = v14;
 
           if (v19)
@@ -869,7 +869,7 @@ LABEL_18:
             v20 = v19;
             v21 = v18;
 
-            v12 = v35;
+            phaseEndMilestoneTargetProperty = v35;
           }
 
           else
@@ -878,11 +878,11 @@ LABEL_18:
             v23 = SBLogSystemAperturePreferencesStackIndicator();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              [SBSAIndicatorMitosisTransitionProvider _updatedPreferencesFromPreferences:v9 context:? relevantPropertyIdentity:?];
+              [SBSAIndicatorMitosisTransitionProvider _updatedPreferencesFromPreferences:contextCopy context:? relevantPropertyIdentity:?];
             }
 
-            v24 = [MEMORY[0x277CCA890] currentHandler];
-            v25 = v24;
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            v25 = currentHandler;
             activePhase = self->_activePhase;
             if (activePhase > 4)
             {
@@ -894,9 +894,9 @@ LABEL_18:
               v27 = off_2783AF558[activePhase];
             }
 
-            [v24 handleFailureInMethod:v34 object:self file:@"SBSAIndicatorMitosisTransitionProvider.m" lineNumber:178 description:{@"unexpected lost the preferred target: %@", v27}];
+            [currentHandler handleFailureInMethod:v34 object:self file:@"SBSAIndicatorMitosisTransitionProvider.m" lineNumber:178 description:{@"unexpected lost the preferred target: %@", v27}];
 
-            v12 = @"bounds";
+            phaseEndMilestoneTargetProperty = @"bounds";
             v20 = v21;
           }
 
@@ -911,22 +911,22 @@ LABEL_18:
         goto LABEL_20;
       }
 
-      v22 = [v11 indicatorContainerViewDescription];
+      indicatorElementDescription = [v11 indicatorContainerViewDescription];
     }
 
-    v20 = v22;
+    v20 = indicatorElementDescription;
 
 LABEL_20:
     v28 = [SBSAInterfaceElementPropertyIdentity alloc];
-    v29 = [v20 interfaceElementIdentifier];
-    v30 = [(SBSAInterfaceElementPropertyIdentity *)v28 initWithAssociatedInterfaceElementIdentifier:v29 andProperty:v12];
+    interfaceElementIdentifier = [v20 interfaceElementIdentifier];
+    v30 = [(SBSAInterfaceElementPropertyIdentity *)v28 initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier andProperty:phaseEndMilestoneTargetProperty];
 
-    v31 = [(SBSAIndicatorMitosisTransitionProvider *)self _updatedPreferencesWithPhaseSettings:v10 preferences:v13 context:v9];
+    v31 = [(SBSAIndicatorMitosisTransitionProvider *)self _updatedPreferencesWithPhaseSettings:v10 preferences:v13 context:contextCopy];
 
-    if (a5)
+    if (identity)
     {
       v32 = v30;
-      *a5 = v30;
+      *identity = v30;
     }
 
     v13 = v31;
@@ -935,23 +935,23 @@ LABEL_20:
   return v13;
 }
 
-- (id)_updatedPreferencesWithPhaseSettings:(id)a3 preferences:(id)a4 context:(id)a5
+- (id)_updatedPreferencesWithPhaseSettings:(id)settings preferences:(id)preferences context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  settingsCopy = settings;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __99__SBSAIndicatorMitosisTransitionProvider__updatedPreferencesWithPhaseSettings_preferences_context___block_invoke;
   v17[3] = &unk_2783AE068;
-  v20 = v11;
+  v20 = contextCopy;
   v21 = a2;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v18 = settingsCopy;
+  v19 = preferencesCopy;
+  v12 = contextCopy;
+  v13 = preferencesCopy;
+  v14 = settingsCopy;
   v15 = [v13 copyWithBlock:v17];
 
   return v15;
@@ -1273,32 +1273,32 @@ void __99__SBSAIndicatorMitosisTransitionProvider__updatedPreferencesWithPhaseSe
   [v6 setSensorObscuringShadowProgress:?];
 }
 
-- (id)_updateMaintainedPreferencesForActivePhaseWithContext:(id)a3
+- (id)_updateMaintainedPreferencesForActivePhaseWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisSettings];
+  contextCopy = context;
+  _mitosisSettings = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisSettings];
   activePhase = self->_activePhase;
   v7 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisPhaseSettingsForPhase:activePhase];
-  v8 = [v4 preferences];
-  v9 = [v8 indicatorElementDescription];
-  v10 = [v9 interfaceElementIdentifier];
+  preferences = [contextCopy preferences];
+  indicatorElementDescription = [preferences indicatorElementDescription];
+  interfaceElementIdentifier = [indicatorElementDescription interfaceElementIdentifier];
 
-  v11 = [v4 preferences];
-  v12 = [v11 indicatorContainerViewDescription];
-  v13 = [v12 interfaceElementIdentifier];
+  preferences2 = [contextCopy preferences];
+  indicatorContainerViewDescription = [preferences2 indicatorContainerViewDescription];
+  interfaceElementIdentifier2 = [indicatorContainerViewDescription interfaceElementIdentifier];
 
-  v14 = [v5 interSensorIndicatorAppearanceTransitionBeginPhase];
+  interSensorIndicatorAppearanceTransitionBeginPhase = [_mitosisSettings interSensorIndicatorAppearanceTransitionBeginPhase];
   v15 = 0;
-  if (v14 > 1)
+  if (interSensorIndicatorAppearanceTransitionBeginPhase > 1)
   {
-    if (v14 == 2)
+    if (interSensorIndicatorAppearanceTransitionBeginPhase == 2)
     {
       v16 = activePhase > 1;
     }
 
     else
     {
-      if (v14 != 3)
+      if (interSensorIndicatorAppearanceTransitionBeginPhase != 3)
       {
         goto LABEL_13;
       }
@@ -1309,9 +1309,9 @@ void __99__SBSAIndicatorMitosisTransitionProvider__updatedPreferencesWithPhaseSe
     v15 = v16;
   }
 
-  else if (v14)
+  else if (interSensorIndicatorAppearanceTransitionBeginPhase)
   {
-    if (v14 == 1)
+    if (interSensorIndicatorAppearanceTransitionBeginPhase == 1)
     {
       v15 = activePhase != 0;
     }
@@ -1323,18 +1323,18 @@ void __99__SBSAIndicatorMitosisTransitionProvider__updatedPreferencesWithPhaseSe
   }
 
 LABEL_13:
-  v17 = [v5 microIndicatorAppearanceTransitionBeginPhase];
+  microIndicatorAppearanceTransitionBeginPhase = [_mitosisSettings microIndicatorAppearanceTransitionBeginPhase];
   v18 = 0;
-  if (v17 > 1)
+  if (microIndicatorAppearanceTransitionBeginPhase > 1)
   {
-    if (v17 == 2)
+    if (microIndicatorAppearanceTransitionBeginPhase == 2)
     {
       v19 = activePhase > 1;
     }
 
     else
     {
-      if (v17 != 3)
+      if (microIndicatorAppearanceTransitionBeginPhase != 3)
       {
         goto LABEL_25;
       }
@@ -1345,9 +1345,9 @@ LABEL_13:
     v18 = v19;
   }
 
-  else if (v17)
+  else if (microIndicatorAppearanceTransitionBeginPhase)
   {
-    if (v17 == 1)
+    if (microIndicatorAppearanceTransitionBeginPhase == 1)
     {
       v18 = activePhase != 0;
     }
@@ -1359,18 +1359,18 @@ LABEL_13:
   }
 
 LABEL_25:
-  v20 = [v5 microIndicatorTranslationTransitionBeginPhase];
+  microIndicatorTranslationTransitionBeginPhase = [_mitosisSettings microIndicatorTranslationTransitionBeginPhase];
   v21 = 0;
-  if (v20 > 1)
+  if (microIndicatorTranslationTransitionBeginPhase > 1)
   {
-    if (v20 == 2)
+    if (microIndicatorTranslationTransitionBeginPhase == 2)
     {
       v22 = activePhase > 1;
     }
 
     else
     {
-      if (v20 != 3)
+      if (microIndicatorTranslationTransitionBeginPhase != 3)
       {
         goto LABEL_37;
       }
@@ -1381,9 +1381,9 @@ LABEL_25:
     v21 = v22;
   }
 
-  else if (v20)
+  else if (microIndicatorTranslationTransitionBeginPhase)
   {
-    if (v20 == 1)
+    if (microIndicatorTranslationTransitionBeginPhase == 1)
     {
       v21 = activePhase != 0;
     }
@@ -1395,7 +1395,7 @@ LABEL_25:
   }
 
 LABEL_37:
-  v23 = [v4 preferences];
+  preferences3 = [contextCopy preferences];
   if (v15 || v18 || v21)
   {
     v29[0] = MEMORY[0x277D85DD0];
@@ -1405,18 +1405,18 @@ LABEL_37:
     v34 = v28;
     v29[4] = self;
     v35 = v15;
-    v30 = v4;
+    v30 = contextCopy;
     v36 = v18;
     v37 = v21;
     v31 = v7;
-    v32 = v10;
-    v33 = v13;
-    v24 = [v23 copyWithBlock:v29];
+    v32 = interfaceElementIdentifier;
+    v33 = interfaceElementIdentifier2;
+    v24 = [preferences3 copyWithBlock:v29];
 
-    v23 = v24;
+    preferences3 = v24;
   }
 
-  v25 = [v4 copyByUpdatingPreferences:v23];
+  v25 = [contextCopy copyByUpdatingPreferences:preferences3];
 
   return v25;
 }
@@ -1795,31 +1795,31 @@ LABEL_51:
 LABEL_52:
 }
 
-- (id)_associatedContainerViewDescriptionFromPreferences:(id)a3 context:(id)a4 outIndex:(unint64_t *)a5
+- (id)_associatedContainerViewDescriptionFromPreferences:(id)preferences context:(id)context outIndex:(unint64_t *)index
 {
-  v7 = [a3 containerViewDescriptions];
-  v8 = v7;
-  if (self->_pendingPhaseTransitionPropertyIdentity && (v13[0] = MEMORY[0x277D85DD0], v13[1] = 3221225472, v13[2] = __110__SBSAIndicatorMitosisTransitionProvider__associatedContainerViewDescriptionFromPreferences_context_outIndex___block_invoke, v13[3] = &unk_2783AE040, v13[4] = self, v9 = [v7 indexOfObjectPassingTest:v13], v9 != 0x7FFFFFFFFFFFFFFFLL))
+  containerViewDescriptions = [preferences containerViewDescriptions];
+  v8 = containerViewDescriptions;
+  if (self->_pendingPhaseTransitionPropertyIdentity && (v13[0] = MEMORY[0x277D85DD0], v13[1] = 3221225472, v13[2] = __110__SBSAIndicatorMitosisTransitionProvider__associatedContainerViewDescriptionFromPreferences_context_outIndex___block_invoke, v13[3] = &unk_2783AE040, v13[4] = self, v9 = [containerViewDescriptions indexOfObjectPassingTest:v13], v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    if (a5)
+    if (index)
     {
-      *a5 = v9;
+      *index = v9;
     }
 
-    v10 = [v8 objectAtIndex:v9];
+    lastObject = [v8 objectAtIndex:v9];
   }
 
   else
   {
-    if (a5)
+    if (index)
     {
-      *a5 = [v8 count] - 1;
+      *index = [v8 count] - 1;
     }
 
-    v10 = [v8 lastObject];
+    lastObject = [v8 lastObject];
   }
 
-  v11 = v10;
+  v11 = lastObject;
 
   return v11;
 }
@@ -1842,44 +1842,44 @@ uint64_t __110__SBSAIndicatorMitosisTransitionProvider__associatedContainerViewD
 
 - (id)_mitosisSettings
 {
-  v3 = [objc_opt_class() settings];
-  v4 = v3;
+  settings = [objc_opt_class() settings];
+  v4 = settings;
   type = self->_type;
   switch(type)
   {
     case 0uLL:
       if (self->_reversed)
       {
-        [v3 reversedCompactIndicatorMitosisSettings];
+        [settings reversedCompactIndicatorMitosisSettings];
       }
 
       else
       {
-        [v3 compactIndicatorMitosisSettings];
+        [settings compactIndicatorMitosisSettings];
       }
 
       goto LABEL_10;
     case 1uLL:
       if (self->_reversed)
       {
-        [v3 reversedBabyJindoIndicatorMitosisSettings];
+        [settings reversedBabyJindoIndicatorMitosisSettings];
       }
 
       else
       {
-        [v3 babyJindoIndicatorMitosisSettings];
+        [settings babyJindoIndicatorMitosisSettings];
       }
 
       goto LABEL_10;
     case 2uLL:
       if (self->_reversed)
       {
-        [v3 reversedCustomIndicatorMitosisSettings];
+        [settings reversedCustomIndicatorMitosisSettings];
       }
 
       else
       {
-        [v3 customIndicatorMitosisSettings];
+        [settings customIndicatorMitosisSettings];
       }
 
       v6 = LABEL_10:;
@@ -1893,53 +1893,53 @@ LABEL_15:
   return v7;
 }
 
-- (id)_mitosisPhaseSettingsForPhase:(unint64_t)a3
+- (id)_mitosisPhaseSettingsForPhase:(unint64_t)phase
 {
-  v4 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisSettings];
-  v5 = v4;
+  _mitosisSettings = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisSettings];
+  v5 = _mitosisSettings;
   v6 = 0;
-  if (a3 > 1)
+  if (phase > 1)
   {
-    if (a3 == 2)
+    if (phase == 2)
     {
-      v7 = [v4 preparingToSettlePhaseSettings];
+      preparingToSettlePhaseSettings = [_mitosisSettings preparingToSettlePhaseSettings];
     }
 
     else
     {
-      if (a3 != 3)
+      if (phase != 3)
       {
         goto LABEL_11;
       }
 
-      v7 = [v4 settlingPhaseSettings];
+      preparingToSettlePhaseSettings = [_mitosisSettings settlingPhaseSettings];
     }
   }
 
-  else if (a3)
+  else if (phase)
   {
-    if (a3 != 1)
+    if (phase != 1)
     {
       goto LABEL_11;
     }
 
-    v7 = [v4 kickedPhaseSettings];
+    preparingToSettlePhaseSettings = [_mitosisSettings kickedPhaseSettings];
   }
 
   else
   {
-    v7 = [v4 kickingPhaseSettings];
+    preparingToSettlePhaseSettings = [_mitosisSettings kickingPhaseSettings];
   }
 
-  v6 = v7;
+  v6 = preparingToSettlePhaseSettings;
 LABEL_11:
 
   return v6;
 }
 
-- (double)milestoneForPhase:(unint64_t)a3
+- (double)milestoneForPhase:(unint64_t)phase
 {
-  v3 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisPhaseSettingsForPhase:a3];
+  v3 = [(SBSAIndicatorMitosisTransitionProvider *)self _mitosisPhaseSettingsForPhase:phase];
   v4 = v3;
   if (v3)
   {
@@ -1960,16 +1960,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_milestoneDidReachExpectedMilestone:(double)a3 property:(id)a4 context:(id)a5
+- (BOOL)_milestoneDidReachExpectedMilestone:(double)milestone property:(id)property context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  propertyCopy = property;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a5 animatedTransitionResults];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  animatedTransitionResults = [context animatedTransitionResults];
+  v8 = [animatedTransitionResults countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1981,39 +1981,39 @@ LABEL_11:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(animatedTransitionResults);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 associatedInterfaceElementPropertyIdentity];
+        associatedInterfaceElementPropertyIdentity = [v13 associatedInterfaceElementPropertyIdentity];
         v15 = BSEqualObjects();
 
         if (v15)
         {
           if ([v13 finished])
           {
-            v16 = 0;
+            retargeted = 0;
           }
 
           else
           {
-            v16 = [v13 retargeted];
+            retargeted = [v13 retargeted];
           }
 
           [&unk_28336F620 bs_CGFloatValue];
           v17 = BSFloatEqualToFloat();
           [v13 targetedMilestone];
-          v18 = BSFloatApproximatelyEqualToFloat();
+          isTransitionEndTargeted = BSFloatApproximatelyEqualToFloat();
           if (v17)
           {
-            v18 = [v13 isTransitionEndTargeted];
+            isTransitionEndTargeted = [v13 isTransitionEndTargeted];
           }
 
-          v10 |= v16 | v18;
+          v10 |= retargeted | isTransitionEndTargeted;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [animatedTransitionResults countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);

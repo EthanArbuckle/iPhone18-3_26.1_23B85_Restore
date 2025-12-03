@@ -1,12 +1,12 @@
 @interface SleepScheduleComponentsHeader
-- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
 @implementation SleepScheduleComponentsHeader
 
-- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_269D01EA8();
 }
 
@@ -33,12 +33,12 @@
 
   v5.receiver = self;
   v5.super_class = ObjectType;
-  v4 = self;
+  selfCopy = self;
   [(SleepScheduleComponentsHeader *)&v5 tintColorDidChange];
   sub_269CFF1C4();
 }
 
-- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI29SleepScheduleComponentsHeader)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

@@ -2,17 +2,17 @@
 - (BOOL)_isNewSearchSettings;
 - (BOOL)_searchSettingsAreEmpty;
 - (LDAPSettingsAccountsUIController)accountController;
-- (id)accountPropertyWithSpecifier:(id)a3;
+- (id)accountPropertyWithSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)_checkScopeCell;
-- (void)_confirmationView:(id)a3 clickedButtonAtIndex:(int64_t)a4;
-- (void)_updateDescriptionFromSearchBase:(id)a3;
-- (void)confirmDeleteSettings:(id)a3;
+- (void)_confirmationView:(id)view clickedButtonAtIndex:(int64_t)index;
+- (void)_updateDescriptionFromSearchBase:(id)base;
+- (void)confirmDeleteSettings:(id)settings;
 - (void)dealloc;
-- (void)didConfirmDeleteSettings:(BOOL)a3;
-- (void)setAccountIntProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didConfirmDeleteSettings:(BOOL)settings;
+- (void)setAccountIntProperty:(id)property withSpecifier:(id)specifier;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation LDAPSettingsSearchBaseController
@@ -27,8 +27,8 @@
 
 - (BOOL)_isNewSearchSettings
 {
-  v2 = [(LDAPSettingsSearchBaseController *)self specifier];
-  v3 = [v2 propertyForKey:@"LDAPSettingsSearchSettingsKey"];
+  specifier = [(LDAPSettingsSearchBaseController *)self specifier];
+  v3 = [specifier propertyForKey:@"LDAPSettingsSearchSettingsKey"];
   v4 = v3 == 0;
 
   return v4;
@@ -47,16 +47,16 @@
     return 0;
   }
 
-  v4 = [(LDAPSearchSettings *)self->_searchSettings searchBase];
-  if ([v4 length])
+  searchBase = [(LDAPSearchSettings *)self->_searchSettings searchBase];
+  if ([searchBase length])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(LDAPSearchSettings *)self->_searchSettings searchDescription];
-    v5 = [v6 length] == 0;
+    searchDescription = [(LDAPSearchSettings *)self->_searchSettings searchDescription];
+    v5 = [searchDescription length] == 0;
   }
 
   return v5;
@@ -68,14 +68,14 @@
   v4 = @"SUBTREE";
   if (searchSettings)
   {
-    v5 = [(LDAPSearchSettings *)searchSettings scope];
+    scope = [(LDAPSearchSettings *)searchSettings scope];
     v6 = @"ONE_LEVEL";
-    if (v5 != &dword_0 + 1)
+    if (scope != &dword_0 + 1)
     {
       v6 = @"SUBTREE";
     }
 
-    if (v5)
+    if (scope)
     {
       v4 = v6;
     }
@@ -97,13 +97,13 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v6 = [(LDAPSettingsSearchBaseController *)self specifier];
-    v7 = [v6 propertyForKey:@"LDAPSettingsAccountKey"];
+    specifier = [(LDAPSettingsSearchBaseController *)self specifier];
+    v7 = [specifier propertyForKey:@"LDAPSettingsAccountKey"];
     account = self->_account;
     self->_account = v7;
 
-    v9 = [(LDAPSettingsSearchBaseController *)self specifier];
-    v10 = [v9 propertyForKey:@"LDAPSettingsSearchSettingsKey"];
+    specifier2 = [(LDAPSettingsSearchBaseController *)self specifier];
+    v10 = [specifier2 propertyForKey:@"LDAPSettingsSearchSettingsKey"];
     searchSettings = self->_searchSettings;
     self->_searchSettings = v10;
 
@@ -145,17 +145,17 @@
   return v4;
 }
 
-- (void)_updateDescriptionFromSearchBase:(id)a3
+- (void)_updateDescriptionFromSearchBase:(id)base
 {
-  v20 = a3;
-  v4 = [(LDAPSearchSettings *)self->_searchSettings searchBase];
-  v5 = [v4 ldapHumanReadableStringFromSearchBase];
+  baseCopy = base;
+  searchBase = [(LDAPSearchSettings *)self->_searchSettings searchBase];
+  ldapHumanReadableStringFromSearchBase = [searchBase ldapHumanReadableStringFromSearchBase];
 
-  v6 = [(LDAPSearchSettings *)self->_searchSettings searchDescription];
-  if (!v6 || (v7 = v6, -[LDAPSearchSettings searchDescription](self->_searchSettings, "searchDescription"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:v5], v8, v7, v9))
+  searchDescription = [(LDAPSearchSettings *)self->_searchSettings searchDescription];
+  if (!searchDescription || (v7 = searchDescription, -[LDAPSearchSettings searchDescription](self->_searchSettings, "searchDescription"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:ldapHumanReadableStringFromSearchBase], v8, v7, v9))
   {
-    v10 = [v20 ldapHumanReadableStringFromSearchBase];
-    [(LDAPSearchSettings *)self->_searchSettings setSearchDescription:v10];
+    ldapHumanReadableStringFromSearchBase2 = [baseCopy ldapHumanReadableStringFromSearchBase];
+    [(LDAPSearchSettings *)self->_searchSettings setSearchDescription:ldapHumanReadableStringFromSearchBase2];
     v11 = OBJC_IVAR___PSListController__specifiers;
     v12 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] count];
     if (v12)
@@ -165,9 +165,9 @@
       while (1)
       {
         v15 = [*&self->PSListController_opaque[v11] objectAtIndexedSubscript:v14];
-        v16 = [v15 identifier];
+        identifier = [v15 identifier];
 
-        if ([v16 isEqualToString:@"DESCRIPTION"])
+        if ([identifier isEqualToString:@"DESCRIPTION"])
         {
           break;
         }
@@ -178,21 +178,21 @@
         }
       }
 
-      v17 = [(LDAPSettingsSearchBaseController *)self table];
+      table = [(LDAPSettingsSearchBaseController *)self table];
       v18 = [(LDAPSettingsSearchBaseController *)self indexPathForIndex:v14];
-      v19 = [v17 cellForRowAtIndexPath:v18];
+      v19 = [table cellForRowAtIndexPath:v18];
 
-      [v19 setValue:v10];
+      [v19 setValue:ldapHumanReadableStringFromSearchBase2];
     }
 
 LABEL_9:
   }
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = [a4 identifier];
+  propertyCopy = property;
+  identifier = [specifier identifier];
   if (!self->_searchSettings)
   {
     v7 = objc_opt_new();
@@ -203,35 +203,35 @@ LABEL_9:
     [(LDAPAccount *)self->_account addSearchSettings:self->_searchSettings];
   }
 
-  if ([v6 isEqualToString:@"SEARCH_BASE"])
+  if ([identifier isEqualToString:@"SEARCH_BASE"])
   {
-    [(LDAPSettingsSearchBaseController *)self _updateDescriptionFromSearchBase:v10];
-    [(LDAPSearchSettings *)self->_searchSettings setSearchBase:v10];
+    [(LDAPSettingsSearchBaseController *)self _updateDescriptionFromSearchBase:propertyCopy];
+    [(LDAPSearchSettings *)self->_searchSettings setSearchBase:propertyCopy];
   }
 
-  else if ([v6 isEqualToString:@"DESCRIPTION"])
+  else if ([identifier isEqualToString:@"DESCRIPTION"])
   {
-    [(LDAPSearchSettings *)self->_searchSettings setSearchDescription:v10];
+    [(LDAPSearchSettings *)self->_searchSettings setSearchDescription:propertyCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_accountController);
   [WeakRetained _markAccountDirty];
 }
 
-- (id)accountPropertyWithSpecifier:(id)a3
+- (id)accountPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"SEARCH_BASE"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"SEARCH_BASE"])
   {
-    v5 = [(LDAPSearchSettings *)self->_searchSettings searchBase];
+    searchBase = [(LDAPSearchSettings *)self->_searchSettings searchBase];
 LABEL_5:
-    v6 = v5;
+    v6 = searchBase;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"DESCRIPTION"])
+  if ([identifier isEqualToString:@"DESCRIPTION"])
   {
-    v5 = [(LDAPSearchSettings *)self->_searchSettings searchDescription];
+    searchBase = [(LDAPSearchSettings *)self->_searchSettings searchDescription];
     goto LABEL_5;
   }
 
@@ -241,9 +241,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)setAccountIntProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountIntProperty:(id)property withSpecifier:(id)specifier
 {
-  v10 = [a4 propertyForKey:@"bundleID"];
+  v10 = [specifier propertyForKey:@"bundleID"];
   if ([v10 isEqualToString:@"BASE_CELL"])
   {
     v5 = 0;
@@ -279,17 +279,17 @@ LABEL_10:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = LDAPSettingsSearchBaseController;
-  v6 = a4;
-  v7 = a3;
-  [(LDAPSettingsSearchBaseController *)&v11 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [(LDAPSettingsSearchBaseController *)self specifierAtIndex:[(LDAPSettingsSearchBaseController *)self indexForIndexPath:v6]];
+  pathCopy = path;
+  viewCopy = view;
+  [(LDAPSettingsSearchBaseController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(LDAPSettingsSearchBaseController *)self specifierAtIndex:[(LDAPSettingsSearchBaseController *)self indexForIndexPath:pathCopy]];
   v10.receiver = self;
   v10.super_class = LDAPSettingsSearchBaseController;
-  v9 = [(LDAPSettingsSearchBaseController *)&v10 tableView:v7 cellForRowAtIndexPath:v6];
+  v9 = [(LDAPSettingsSearchBaseController *)&v10 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   if ([v9 type] == &dword_0 + 3)
   {
@@ -297,12 +297,12 @@ LABEL_10:
   }
 }
 
-- (void)confirmDeleteSettings:(id)a3
+- (void)confirmDeleteSettings:(id)settings
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v23 = [UIAlertView alloc];
     v24 = [NSBundle bundleForClass:objc_opt_class()];
@@ -332,25 +332,25 @@ LABEL_10:
 
     [v13 setDestructiveButtonIndex:0];
     [v13 setCancelButtonIndex:1];
-    v21 = [(LDAPSettingsSearchBaseController *)self view];
-    [v13 showInView:v21];
+    view = [(LDAPSettingsSearchBaseController *)self view];
+    [v13 showInView:view];
   }
 
   confirmDeleteSettingsSheetOrAlert = self->_confirmDeleteSettingsSheetOrAlert;
   self->_confirmDeleteSettingsSheetOrAlert = v13;
 }
 
-- (void)didConfirmDeleteSettings:(BOOL)a3
+- (void)didConfirmDeleteSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     [(LDAPAccount *)self->_account removeSearchSettings:self->_searchSettings];
     WeakRetained = objc_loadWeakRetained(&self->_accountController);
     [WeakRetained _markAccountDirty];
 
     [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] selectRowAtIndexPath:0 animated:0 scrollPosition:0];
-    v7 = [(LDAPSettingsSearchBaseController *)self rootController];
-    v5 = [v7 popViewControllerAnimated:1];
+    rootController = [(LDAPSettingsSearchBaseController *)self rootController];
+    v5 = [rootController popViewControllerAnimated:1];
   }
 
   else
@@ -361,15 +361,15 @@ LABEL_10:
   }
 }
 
-- (void)_confirmationView:(id)a3 clickedButtonAtIndex:(int64_t)a4
+- (void)_confirmationView:(id)view clickedButtonAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(CalCancelable *)v6 cancelButtonIndex];
+  viewCopy = view;
+  cancelButtonIndex = [(CalCancelable *)viewCopy cancelButtonIndex];
   confirmDeleteSettingsSheetOrAlert = self->_confirmDeleteSettingsSheetOrAlert;
 
-  if (confirmDeleteSettingsSheetOrAlert == v6)
+  if (confirmDeleteSettingsSheetOrAlert == viewCopy)
   {
-    [(LDAPSettingsSearchBaseController *)self didConfirmDeleteSettings:v7 != a4];
+    [(LDAPSettingsSearchBaseController *)self didConfirmDeleteSettings:cancelButtonIndex != index];
     v9 = self->_confirmDeleteSettingsSheetOrAlert;
     self->_confirmDeleteSettingsSheetOrAlert = 0;
   }

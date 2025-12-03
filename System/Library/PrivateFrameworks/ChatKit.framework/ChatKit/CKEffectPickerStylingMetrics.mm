@@ -3,7 +3,7 @@
 - (double)roundTrackContainerViewCornerRadius;
 - (double)roundTrackContainerViewWidth;
 - (double)roundTrackPadding;
-- (void)setRoundTrackPadding:(double)a3;
+- (void)setRoundTrackPadding:(double)padding;
 @end
 
 @implementation CKEffectPickerStylingMetrics
@@ -15,16 +15,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRoundTrackPadding:(double)a3
+- (void)setRoundTrackPadding:(double)padding
 {
   v5 = OBJC_IVAR____TtC7ChatKit28CKEffectPickerStylingMetrics_roundTrackPadding;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = padding;
 }
 
 - (double)roundTrackContainerViewWidth
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C908F4();
   v4 = v3;
 
@@ -33,7 +33,7 @@
 
 - (double)roundTrackContainerViewCornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C90A0C();
   v4 = v3;
 

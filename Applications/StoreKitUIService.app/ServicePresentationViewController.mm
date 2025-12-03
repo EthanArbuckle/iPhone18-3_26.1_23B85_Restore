@@ -1,35 +1,35 @@
 @interface ServicePresentationViewController
 - (CGRect)presentationBounds;
 - (ServiceBridgedPresentationControllerProxy)proxyHandler;
-- (ServicePresentationViewController)initWithChildViewController:(id)a3 animated:(BOOL)a4 presentationBounds:(CGRect)a5 proxyHandler:(id)a6;
-- (void)_correctPopover:(id)a3;
+- (ServicePresentationViewController)initWithChildViewController:(id)controller animated:(BOOL)animated presentationBounds:(CGRect)bounds proxyHandler:(id)handler;
+- (void)_correctPopover:(id)popover;
 - (void)_presentChildViewController;
 - (void)loadView;
 @end
 
 @implementation ServicePresentationViewController
 
-- (ServicePresentationViewController)initWithChildViewController:(id)a3 animated:(BOOL)a4 presentationBounds:(CGRect)a5 proxyHandler:(id)a6
+- (ServicePresentationViewController)initWithChildViewController:(id)controller animated:(BOOL)animated presentationBounds:(CGRect)bounds proxyHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v15 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = ServicePresentationViewController;
   v16 = [(ServicePresentationViewController *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_childViewController, a3);
-    v17->_animated = a4;
+    objc_storeStrong(&v16->_childViewController, controller);
+    v17->_animated = animated;
     v17->_presentationBounds.origin.x = x;
     v17->_presentationBounds.origin.y = y;
     v17->_presentationBounds.size.width = width;
     v17->_presentationBounds.size.height = height;
-    objc_storeWeak(&v17->_proxyHandler, v15);
+    objc_storeWeak(&v17->_proxyHandler, handlerCopy);
     [(ServicePresentationViewController *)v17 setModalPresentationStyle:5];
   }
 
@@ -48,46 +48,46 @@
 
 - (void)_presentChildViewController
 {
-  v3 = [(ServicePresentationViewController *)self childViewController];
-  if (v3)
+  childViewController = [(ServicePresentationViewController *)self childViewController];
+  if (childViewController)
   {
-    v4 = v3;
-    [(ServicePresentationViewController *)self _correctPopover:v3];
+    v4 = childViewController;
+    [(ServicePresentationViewController *)self _correctPopover:childViewController];
     [(ServicePresentationViewController *)self presentViewController:v4 animated:[(ServicePresentationViewController *)self animated] completion:0];
   }
 
   _objc_release_x1();
 }
 
-- (void)_correctPopover:(id)a3
+- (void)_correctPopover:(id)popover
 {
-  rect_8 = [a3 popoverPresentationController];
-  v4 = [rect_8 sourceView];
-  v5 = [v4 window];
-  if (rect_8 && v4 && v5)
+  rect_8 = [popover popoverPresentationController];
+  sourceView = [rect_8 sourceView];
+  window = [sourceView window];
+  if (rect_8 && sourceView && window)
   {
-    v6 = [v4 superview];
-    [v4 frame];
-    [v6 convertRect:v5 toView:?];
+    superview = [sourceView superview];
+    [sourceView frame];
+    [superview convertRect:window toView:?];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(ServicePresentationViewController *)self view];
-    [v15 bounds];
+    view = [(ServicePresentationViewController *)self view];
+    [view bounds];
     v17 = v16;
     [(ServicePresentationViewController *)self presentationBounds];
     v19 = v8 + v17 - v18;
 
-    v20 = [(ServicePresentationViewController *)self view];
-    [v20 bounds];
+    view2 = [(ServicePresentationViewController *)self view];
+    [view2 bounds];
     v22 = v21;
     [(ServicePresentationViewController *)self presentationBounds];
     v24 = v10 + v22 - v23;
 
-    v25 = [(ServicePresentationViewController *)self view];
-    [rect_8 setSourceView:v25];
+    view3 = [(ServicePresentationViewController *)self view];
+    [rect_8 setSourceView:view3];
 
     [rect_8 sourceRect];
     rect = v26;

@@ -1,13 +1,13 @@
 @interface JavaUtilAbstractList_FullListIterator
 - (id)previous;
-- (void)addWithId:(id)a3;
+- (void)addWithId:(id)id;
 - (void)dealloc;
-- (void)setWithId:(id)a3;
+- (void)setWithId:(id)id;
 @end
 
 @implementation JavaUtilAbstractList_FullListIterator
 
-- (void)addWithId:(id)a3
+- (void)addWithId:(id)id
 {
   v4 = self->this$1_;
   if (self->super.expectedModCount_ != v4->modCount_)
@@ -16,7 +16,7 @@
     objc_exception_throw(v7);
   }
 
-  [(JavaUtilAbstractList *)v4 addWithInt:(self->super.pos_ + 1) withId:a3];
+  [(JavaUtilAbstractList *)v4 addWithInt:(self->super.pos_ + 1) withId:id];
   expectedModCount = self->super.expectedModCount_;
   ++self->super.pos_;
   self->super.lastPosition_ = -1;
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (void)setWithId:(id)a3
+- (void)setWithId:(id)id
 {
   if (self->super.expectedModCount_ != self->this$1_->modCount_)
   {
@@ -51,7 +51,7 @@
     objc_exception_throw(v3);
   }
 
-  [(JavaUtilAbstractList *)self->this$1_ setWithInt:self->super.lastPosition_ withId:a3];
+  [(JavaUtilAbstractList *)self->this$1_ setWithInt:self->super.lastPosition_ withId:id];
 }
 
 - (void)dealloc

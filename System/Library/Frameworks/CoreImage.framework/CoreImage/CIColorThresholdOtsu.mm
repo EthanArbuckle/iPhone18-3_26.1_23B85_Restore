@@ -44,12 +44,12 @@
     *&v8 = 1024.0 / v10;
     *&v6 = 1024.0 / v12;
     v14 = fminf(fminf(*&v8, *&v6), 1.0);
-    v15 = [(CIImage *)v5 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)v5 imageByUnpremultiplyingAlpha];
     memset(&v28, 0, sizeof(v28));
     CGAffineTransformMakeScale(&v28, v14, v14);
-    v16 = [(CIImage *)v15 imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)imageByUnpremultiplyingAlpha imageByClampingToExtent];
     v27 = v28;
-    v17 = [(CIImage *)v16 imageByApplyingTransform:&v27];
+    v17 = [(CIImage *)imageByClampingToExtent imageByApplyingTransform:&v27];
     v27 = v28;
     v36.origin.x = v7;
     v36.origin.y = v9;
@@ -69,8 +69,8 @@
     v30[0] = v19;
     v30[1] = &unk_1F1081980;
     v22 = -[CIImage imageByClampingToExtent](-[CIKernel applyWithExtent:roiCallback:arguments:](v20, "applyWithExtent:roiCallback:arguments:", &__block_literal_global_12, [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2], 0.0, 0.0, 1.0, 1.0), "imageByClampingToExtent");
-    [(CIImage *)v15 extent];
-    v29[0] = v15;
+    [(CIImage *)imageByUnpremultiplyingAlpha extent];
+    v29[0] = imageByUnpremultiplyingAlpha;
     v29[1] = v22;
     return -[CIImage imageByPremultiplyingAlpha](-[CIColorKernel applyWithExtent:arguments:](v21, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2], v23, v24, v25, v26), "imageByPremultiplyingAlpha");
   }

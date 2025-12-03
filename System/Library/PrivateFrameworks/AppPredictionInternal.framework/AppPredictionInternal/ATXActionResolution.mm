@@ -1,8 +1,8 @@
 @interface ATXActionResolution
 - (ATXActionResolution)init;
-- (ATXActionResolution)initWithSlotResolver:(id)a3 predictionContextBuilder:(id)a4;
-- (id)statisticsForActionKey:(id)a3;
-- (id)statisticsForActionKey:(id)a3 context:(id)a4;
+- (ATXActionResolution)initWithSlotResolver:(id)resolver predictionContextBuilder:(id)builder;
+- (id)statisticsForActionKey:(id)key;
+- (id)statisticsForActionKey:(id)key context:(id)context;
 @end
 
 @implementation ATXActionResolution
@@ -16,40 +16,40 @@
   return v5;
 }
 
-- (ATXActionResolution)initWithSlotResolver:(id)a3 predictionContextBuilder:(id)a4
+- (ATXActionResolution)initWithSlotResolver:(id)resolver predictionContextBuilder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
+  resolverCopy = resolver;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = ATXActionResolution;
   v9 = [(ATXActionResolution *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_slotResolver, a3);
-    objc_storeStrong(&v10->_predictionContextBuilder, a4);
+    objc_storeStrong(&v9->_slotResolver, resolver);
+    objc_storeStrong(&v10->_predictionContextBuilder, builder);
   }
 
   return v10;
 }
 
-- (id)statisticsForActionKey:(id)a3
+- (id)statisticsForActionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   slotResolver = self->_slotResolver;
-  v6 = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder predictionContextForCurrentContext];
-  v7 = [(ATXSlotResolution *)slotResolver statisticsForActionKey:v4 context:v6];
+  predictionContextForCurrentContext = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder predictionContextForCurrentContext];
+  v7 = [(ATXSlotResolution *)slotResolver statisticsForActionKey:keyCopy context:predictionContextForCurrentContext];
 
   return v7;
 }
 
-- (id)statisticsForActionKey:(id)a3 context:(id)a4
+- (id)statisticsForActionKey:(id)key context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v8 = [(ATXSlotResolution *)self->_slotResolver statisticsForActionKey:v6 context:v7];
+    v8 = [(ATXSlotResolution *)self->_slotResolver statisticsForActionKey:keyCopy context:contextCopy];
   }
 
   else

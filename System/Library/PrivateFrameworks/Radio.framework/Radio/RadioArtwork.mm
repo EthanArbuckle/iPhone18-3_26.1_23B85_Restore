@@ -1,9 +1,9 @@
 @interface RadioArtwork
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)pixelSize;
 - (CGSize)pointSize;
-- (RadioArtwork)initWithArtworkDictionary:(id)a3;
-- (RadioArtwork)initWithArtworkURL:(id)a3 pixelSize:(CGSize)a4;
+- (RadioArtwork)initWithArtworkDictionary:(id)dictionary;
+- (RadioArtwork)initWithArtworkURL:(id)l pixelSize:(CGSize)size;
 @end
 
 @implementation RadioArtwork
@@ -38,10 +38,10 @@ uint64_t __25__RadioArtwork_pointSize__block_invoke()
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -51,8 +51,8 @@ uint64_t __25__RadioArtwork_pointSize__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RadioArtwork *)v4 URL];
-      [(RadioArtwork *)v4 pixelSize];
+      v5 = [(RadioArtwork *)equalCopy URL];
+      [(RadioArtwork *)equalCopy pixelSize];
       if (v7 == self->_pixelSize.width && v6 == self->_pixelSize.height)
       {
         if (self->_URL | v5)
@@ -81,12 +81,12 @@ uint64_t __25__RadioArtwork_pointSize__block_invoke()
   return v9;
 }
 
-- (RadioArtwork)initWithArtworkURL:(id)a3 pixelSize:(CGSize)a4
+- (RadioArtwork)initWithArtworkURL:(id)l pixelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  if (v8)
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  if (lCopy)
   {
     v13.receiver = self;
     v13.super_class = RadioArtwork;
@@ -96,25 +96,25 @@ uint64_t __25__RadioArtwork_pointSize__block_invoke()
     {
       v9->_pixelSize.width = width;
       v9->_pixelSize.height = height;
-      objc_storeStrong(&v9->_URL, a3);
+      objc_storeStrong(&v9->_URL, l);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (RadioArtwork)initWithArtworkDictionary:(id)a3
+- (RadioArtwork)initWithArtworkDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"height"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"height"];
   v6 = 0.0;
   if (objc_opt_respondsToSelector())
   {
@@ -122,21 +122,21 @@ uint64_t __25__RadioArtwork_pointSize__block_invoke()
     v6 = v7;
   }
 
-  v8 = [v4 objectForKey:@"width"];
+  v8 = [dictionaryCopy objectForKey:@"width"];
   if ((objc_opt_respondsToSelector() & 1) == 0 || (([v8 doubleValue], v10 = v9, v9 >= 0.00000011920929) ? (v11 = v6 < 0.00000011920929) : (v11 = 1), v11))
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v13 = [v4 objectForKey:@"url"];
+    v13 = [dictionaryCopy objectForKey:@"url"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v12 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-      if (v12)
+      selfCopy = [MEMORY[0x277CBEBC0] URLWithString:v13];
+      if (selfCopy)
       {
         v18.receiver = self;
         v18.super_class = RadioArtwork;
@@ -146,22 +146,22 @@ uint64_t __25__RadioArtwork_pointSize__block_invoke()
         {
           v15->_pixelSize.width = v6;
           v15->_pixelSize.height = v10;
-          objc_storeStrong(&v15->_URL, v12);
+          objc_storeStrong(&v15->_URL, selfCopy);
         }
 
         self = v16;
 
-        v12 = self;
+        selfCopy = self;
       }
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

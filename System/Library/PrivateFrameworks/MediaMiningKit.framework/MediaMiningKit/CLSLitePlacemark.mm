@@ -1,15 +1,15 @@
 @interface CLSLitePlacemark
-+ (BOOL)_isIslandForGeoMapItem:(id)a3;
-+ (id)popularityScoresOrderedByAOIFromAdditionalPlaceInfos:(id)a3 areasOfInterest:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)_isIslandForGeoMapItem:(id)item;
++ (id)popularityScoresOrderedByAOIFromAdditionalPlaceInfos:(id)infos areasOfInterest:(id)interest;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOcean;
-- (CLSLitePlacemark)initWithCLPlacemark:(id)a3;
-- (CLSLitePlacemark)initWithCLPlacemark:(id)a3 popularityScoresOrderedByAOI:(id)a4;
-- (CLSLitePlacemark)initWithCoder:(id)a3;
-- (CLSLitePlacemark)initWithRTMapItem:(id)a3;
+- (CLSLitePlacemark)initWithCLPlacemark:(id)placemark;
+- (CLSLitePlacemark)initWithCLPlacemark:(id)placemark popularityScoresOrderedByAOI:(id)i;
+- (CLSLitePlacemark)initWithCoder:(id)coder;
+- (CLSLitePlacemark)initWithRTMapItem:(id)item;
 - (id)description;
-- (void)_extractValuesFromGeoMapItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_extractValuesFromGeoMapItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSLitePlacemark
@@ -35,11 +35,11 @@
     v13 = MEMORY[0x277CCACA8];
     v22.receiver = self;
     v22.super_class = CLSLitePlacemark;
-    v14 = [(CLSLitePlacemark *)&v22 description];
-    v15 = [(CLSLitePlacemark *)self location];
-    v16 = [(CLSLitePlacemark *)self region];
+    location2 = [(CLSLitePlacemark *)&v22 description];
+    location = [(CLSLitePlacemark *)self location];
+    region = [(CLSLitePlacemark *)self region];
     v17 = [v5 componentsJoinedByString:{@", "}];
-    v18 = [v13 stringWithFormat:@"%@ loc %@, region %@ (score(s): %@)", v14, v15, v16, v17];
+    v18 = [v13 stringWithFormat:@"%@ loc %@, region %@ (score(s): %@)", location2, location, region, v17];
   }
 
   else
@@ -48,28 +48,28 @@
     v21.receiver = self;
     v21.super_class = CLSLitePlacemark;
     v5 = [(CLSLitePlacemark *)&v21 description];
-    v14 = [(CLSLitePlacemark *)self location];
-    v15 = [(CLSLitePlacemark *)self region];
-    v18 = [v19 stringWithFormat:@"%@ loc %@, region %@", v5, v14, v15];
+    location2 = [(CLSLitePlacemark *)self location];
+    location = [(CLSLitePlacemark *)self region];
+    v18 = [v19 stringWithFormat:@"%@ loc %@, region %@", v5, location2, location];
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CLSLitePlacemark *)self location];
-    [v6 coordinate];
+    v5 = equalCopy;
+    location = [(CLSLitePlacemark *)self location];
+    [location coordinate];
     v8 = v7;
     v10 = v9;
 
-    v11 = [v5 location];
-    [v11 coordinate];
+    location2 = [v5 location];
+    [location2 coordinate];
     v13 = v12;
     v15 = v14;
 
@@ -78,13 +78,13 @@
       goto LABEL_54;
     }
 
-    v17 = [(CLSLitePlacemark *)self region];
-    if (v17)
+    region = [(CLSLitePlacemark *)self region];
+    if (region)
     {
-      v18 = v17;
-      v19 = [(CLSLitePlacemark *)self region];
-      v20 = [v5 region];
-      v21 = [v19 isEqual:v20];
+      v18 = region;
+      region2 = [(CLSLitePlacemark *)self region];
+      region3 = [v5 region];
+      v21 = [region2 isEqual:region3];
 
       if (!v21)
       {
@@ -94,21 +94,21 @@
 
     else
     {
-      v23 = [v5 region];
+      region4 = [v5 region];
 
-      if (v23)
+      if (region4)
       {
         goto LABEL_54;
       }
     }
 
-    v24 = [(CLSLitePlacemark *)self thoroughfare];
-    if (v24)
+    thoroughfare = [(CLSLitePlacemark *)self thoroughfare];
+    if (thoroughfare)
     {
-      v25 = v24;
-      v26 = [(CLSLitePlacemark *)self thoroughfare];
-      v27 = [v5 thoroughfare];
-      v28 = [v26 isEqualToString:v27];
+      v25 = thoroughfare;
+      thoroughfare2 = [(CLSLitePlacemark *)self thoroughfare];
+      thoroughfare3 = [v5 thoroughfare];
+      v28 = [thoroughfare2 isEqualToString:thoroughfare3];
 
       if (!v28)
       {
@@ -118,21 +118,21 @@
 
     else
     {
-      v29 = [v5 thoroughfare];
+      thoroughfare4 = [v5 thoroughfare];
 
-      if (v29)
+      if (thoroughfare4)
       {
         goto LABEL_54;
       }
     }
 
-    v30 = [(CLSLitePlacemark *)self subThoroughfare];
-    if (v30)
+    subThoroughfare = [(CLSLitePlacemark *)self subThoroughfare];
+    if (subThoroughfare)
     {
-      v31 = v30;
-      v32 = [(CLSLitePlacemark *)self subThoroughfare];
-      v33 = [v5 subThoroughfare];
-      v34 = [v32 isEqualToString:v33];
+      v31 = subThoroughfare;
+      subThoroughfare2 = [(CLSLitePlacemark *)self subThoroughfare];
+      subThoroughfare3 = [v5 subThoroughfare];
+      v34 = [subThoroughfare2 isEqualToString:subThoroughfare3];
 
       if (!v34)
       {
@@ -142,21 +142,21 @@
 
     else
     {
-      v35 = [v5 subThoroughfare];
+      subThoroughfare4 = [v5 subThoroughfare];
 
-      if (v35)
+      if (subThoroughfare4)
       {
         goto LABEL_54;
       }
     }
 
-    v36 = [(CLSLitePlacemark *)self locality];
-    if (v36)
+    locality = [(CLSLitePlacemark *)self locality];
+    if (locality)
     {
-      v37 = v36;
-      v38 = [(CLSLitePlacemark *)self locality];
-      v39 = [v5 locality];
-      v40 = [v38 isEqualToString:v39];
+      v37 = locality;
+      locality2 = [(CLSLitePlacemark *)self locality];
+      locality3 = [v5 locality];
+      v40 = [locality2 isEqualToString:locality3];
 
       if (!v40)
       {
@@ -166,21 +166,21 @@
 
     else
     {
-      v41 = [v5 locality];
+      locality4 = [v5 locality];
 
-      if (v41)
+      if (locality4)
       {
         goto LABEL_54;
       }
     }
 
-    v42 = [(CLSLitePlacemark *)self subLocality];
-    if (v42)
+    subLocality = [(CLSLitePlacemark *)self subLocality];
+    if (subLocality)
     {
-      v43 = v42;
-      v44 = [(CLSLitePlacemark *)self subLocality];
-      v45 = [v5 subLocality];
-      v46 = [v44 isEqualToString:v45];
+      v43 = subLocality;
+      subLocality2 = [(CLSLitePlacemark *)self subLocality];
+      subLocality3 = [v5 subLocality];
+      v46 = [subLocality2 isEqualToString:subLocality3];
 
       if (!v46)
       {
@@ -190,21 +190,21 @@
 
     else
     {
-      v47 = [v5 subLocality];
+      subLocality4 = [v5 subLocality];
 
-      if (v47)
+      if (subLocality4)
       {
         goto LABEL_54;
       }
     }
 
-    v48 = [(CLSLitePlacemark *)self administrativeArea];
-    if (v48)
+    administrativeArea = [(CLSLitePlacemark *)self administrativeArea];
+    if (administrativeArea)
     {
-      v49 = v48;
-      v50 = [(CLSLitePlacemark *)self administrativeArea];
-      v51 = [v5 administrativeArea];
-      v52 = [v50 isEqualToString:v51];
+      v49 = administrativeArea;
+      administrativeArea2 = [(CLSLitePlacemark *)self administrativeArea];
+      administrativeArea3 = [v5 administrativeArea];
+      v52 = [administrativeArea2 isEqualToString:administrativeArea3];
 
       if (!v52)
       {
@@ -214,21 +214,21 @@
 
     else
     {
-      v53 = [v5 administrativeArea];
+      administrativeArea4 = [v5 administrativeArea];
 
-      if (v53)
+      if (administrativeArea4)
       {
         goto LABEL_54;
       }
     }
 
-    v54 = [(CLSLitePlacemark *)self ISOcountryCode];
-    if (v54)
+    iSOcountryCode = [(CLSLitePlacemark *)self ISOcountryCode];
+    if (iSOcountryCode)
     {
-      v55 = v54;
-      v56 = [(CLSLitePlacemark *)self ISOcountryCode];
-      v57 = [v5 ISOcountryCode];
-      v58 = [v56 isEqualToString:v57];
+      v55 = iSOcountryCode;
+      iSOcountryCode2 = [(CLSLitePlacemark *)self ISOcountryCode];
+      iSOcountryCode3 = [v5 ISOcountryCode];
+      v58 = [iSOcountryCode2 isEqualToString:iSOcountryCode3];
 
       if (!v58)
       {
@@ -238,21 +238,21 @@
 
     else
     {
-      v59 = [v5 ISOcountryCode];
+      iSOcountryCode4 = [v5 ISOcountryCode];
 
-      if (v59)
+      if (iSOcountryCode4)
       {
         goto LABEL_54;
       }
     }
 
-    v60 = [(CLSLitePlacemark *)self inlandWater];
-    if (v60)
+    inlandWater = [(CLSLitePlacemark *)self inlandWater];
+    if (inlandWater)
     {
-      v61 = v60;
-      v62 = [(CLSLitePlacemark *)self inlandWater];
-      v63 = [v5 inlandWater];
-      v64 = [v62 isEqualToString:v63];
+      v61 = inlandWater;
+      inlandWater2 = [(CLSLitePlacemark *)self inlandWater];
+      inlandWater3 = [v5 inlandWater];
+      v64 = [inlandWater2 isEqualToString:inlandWater3];
 
       if (!v64)
       {
@@ -262,21 +262,21 @@
 
     else
     {
-      v65 = [v5 inlandWater];
+      inlandWater4 = [v5 inlandWater];
 
-      if (v65)
+      if (inlandWater4)
       {
         goto LABEL_54;
       }
     }
 
-    v66 = [(CLSLitePlacemark *)self areasOfInterest];
-    if (v66)
+    areasOfInterest = [(CLSLitePlacemark *)self areasOfInterest];
+    if (areasOfInterest)
     {
-      v67 = v66;
-      v68 = [(CLSLitePlacemark *)self areasOfInterest];
-      v69 = [v5 areasOfInterest];
-      v70 = [v68 isEqual:v69];
+      v67 = areasOfInterest;
+      areasOfInterest2 = [(CLSLitePlacemark *)self areasOfInterest];
+      areasOfInterest3 = [v5 areasOfInterest];
+      v70 = [areasOfInterest2 isEqual:areasOfInterest3];
 
       if (!v70)
       {
@@ -286,21 +286,21 @@
 
     else
     {
-      v71 = [v5 areasOfInterest];
+      areasOfInterest4 = [v5 areasOfInterest];
 
-      if (v71)
+      if (areasOfInterest4)
       {
         goto LABEL_54;
       }
     }
 
-    v72 = [(CLSLitePlacemark *)self ocean];
-    if (v72)
+    ocean = [(CLSLitePlacemark *)self ocean];
+    if (ocean)
     {
-      v73 = v72;
-      v74 = [(CLSLitePlacemark *)self ocean];
-      v75 = [v5 ocean];
-      v76 = [v74 isEqual:v75];
+      v73 = ocean;
+      ocean2 = [(CLSLitePlacemark *)self ocean];
+      ocean3 = [v5 ocean];
+      v76 = [ocean2 isEqual:ocean3];
 
       if (!v76)
       {
@@ -310,40 +310,40 @@
 
     else
     {
-      v77 = [v5 ocean];
+      ocean4 = [v5 ocean];
 
-      if (v77)
+      if (ocean4)
       {
         goto LABEL_54;
       }
     }
 
-    v78 = [(CLSLitePlacemark *)self isIsland];
-    if (v78 == [v5 isIsland])
+    isIsland = [(CLSLitePlacemark *)self isIsland];
+    if (isIsland == [v5 isIsland])
     {
-      v79 = [(CLSLitePlacemark *)self revGeoLocationData];
-      if (v79)
+      revGeoLocationData = [(CLSLitePlacemark *)self revGeoLocationData];
+      if (revGeoLocationData)
       {
-        v80 = v79;
-        v81 = [(CLSLitePlacemark *)self revGeoLocationData];
-        v82 = [v5 revGeoLocationData];
-        v83 = [v81 isEqual:v82];
+        v80 = revGeoLocationData;
+        revGeoLocationData2 = [(CLSLitePlacemark *)self revGeoLocationData];
+        revGeoLocationData3 = [v5 revGeoLocationData];
+        v83 = [revGeoLocationData2 isEqual:revGeoLocationData3];
 
         if (v83)
         {
 LABEL_51:
-          v84 = [(CLSLitePlacemark *)self popularityScoresOrderedByAOI];
-          if (v84)
+          popularityScoresOrderedByAOI = [(CLSLitePlacemark *)self popularityScoresOrderedByAOI];
+          if (popularityScoresOrderedByAOI)
           {
-            v85 = [(CLSLitePlacemark *)self popularityScoresOrderedByAOI];
-            v86 = [v5 popularityScoresOrderedByAOI];
-            v22 = [v85 isEqual:v86];
+            popularityScoresOrderedByAOI2 = [(CLSLitePlacemark *)self popularityScoresOrderedByAOI];
+            popularityScoresOrderedByAOI3 = [v5 popularityScoresOrderedByAOI];
+            v22 = [popularityScoresOrderedByAOI2 isEqual:popularityScoresOrderedByAOI3];
           }
 
           else
           {
-            v85 = [v5 popularityScoresOrderedByAOI];
-            v22 = v85 == 0;
+            popularityScoresOrderedByAOI2 = [v5 popularityScoresOrderedByAOI];
+            v22 = popularityScoresOrderedByAOI2 == 0;
           }
 
           goto LABEL_55;
@@ -352,9 +352,9 @@ LABEL_51:
 
       else
       {
-        v87 = [v5 revGeoLocationData];
+        revGeoLocationData4 = [v5 revGeoLocationData];
 
-        if (!v87)
+        if (!revGeoLocationData4)
         {
           goto LABEL_51;
         }
@@ -374,170 +374,170 @@ LABEL_56:
   return v22;
 }
 
-- (void)_extractValuesFromGeoMapItem:(id)a3
+- (void)_extractValuesFromGeoMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 geoAddress];
-  v31 = [v5 structuredAddress];
+  itemCopy = item;
+  geoAddress = [itemCopy geoAddress];
+  structuredAddress = [geoAddress structuredAddress];
 
-  v6 = [v31 thoroughfare];
+  thoroughfare = [structuredAddress thoroughfare];
   thoroughfare = self->_thoroughfare;
-  self->_thoroughfare = v6;
+  self->_thoroughfare = thoroughfare;
 
-  v8 = [v31 subThoroughfare];
+  subThoroughfare = [structuredAddress subThoroughfare];
   subThoroughfare = self->_subThoroughfare;
-  self->_subThoroughfare = v8;
+  self->_subThoroughfare = subThoroughfare;
 
-  v10 = [v31 locality];
+  locality = [structuredAddress locality];
   locality = self->_locality;
-  self->_locality = v10;
+  self->_locality = locality;
 
-  v12 = [v31 subLocality];
+  subLocality = [structuredAddress subLocality];
   subLocality = self->_subLocality;
-  self->_subLocality = v12;
+  self->_subLocality = subLocality;
 
-  v14 = [v31 administrativeArea];
+  administrativeArea = [structuredAddress administrativeArea];
   administrativeArea = self->_administrativeArea;
-  self->_administrativeArea = v14;
+  self->_administrativeArea = administrativeArea;
 
-  v16 = [v31 subAdministrativeArea];
+  subAdministrativeArea = [structuredAddress subAdministrativeArea];
   subAdministrativeArea = self->_subAdministrativeArea;
-  self->_subAdministrativeArea = v16;
+  self->_subAdministrativeArea = subAdministrativeArea;
 
-  v18 = [v31 countryCode];
+  countryCode = [structuredAddress countryCode];
   ISOcountryCode = self->_ISOcountryCode;
-  self->_ISOcountryCode = v18;
+  self->_ISOcountryCode = countryCode;
 
-  v20 = [v31 inlandWater];
+  inlandWater = [structuredAddress inlandWater];
   inlandWater = self->_inlandWater;
-  self->_inlandWater = v20;
+  self->_inlandWater = inlandWater;
 
-  v22 = [v31 ocean];
+  ocean = [structuredAddress ocean];
   ocean = self->_ocean;
-  self->_ocean = v22;
+  self->_ocean = ocean;
 
-  v24 = [v31 areaOfInterests];
+  areaOfInterests = [structuredAddress areaOfInterests];
   areasOfInterest = self->_areasOfInterest;
-  self->_areasOfInterest = v24;
+  self->_areasOfInterest = areaOfInterests;
 
-  v26 = [v31 administrativeAreaCode];
+  administrativeAreaCode = [structuredAddress administrativeAreaCode];
   administrativeAreaCode = self->_administrativeAreaCode;
-  self->_administrativeAreaCode = v26;
+  self->_administrativeAreaCode = administrativeAreaCode;
 
-  self->_isIsland = [objc_opt_class() _isIslandForGeoMapItem:v4];
-  v28 = [objc_alloc(MEMORY[0x277D3AD68]) initWithGEOMapItem:v4];
+  self->_isIsland = [objc_opt_class() _isIslandForGeoMapItem:itemCopy];
+  v28 = [objc_alloc(MEMORY[0x277D3AD68]) initWithGEOMapItem:itemCopy];
 
-  v29 = [v28 plistData];
+  plistData = [v28 plistData];
   revGeoLocationData = self->_revGeoLocationData;
-  self->_revGeoLocationData = v29;
+  self->_revGeoLocationData = plistData;
 }
 
 - (BOOL)isOcean
 {
-  v2 = [(CLSLitePlacemark *)self ocean];
-  v3 = [v2 length] != 0;
+  ocean = [(CLSLitePlacemark *)self ocean];
+  v3 = [ocean length] != 0;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   region = self->_region;
-  v6 = a3;
-  [v6 encodeObject:region forKey:@"region"];
-  [v6 encodeObject:self->_location forKey:@"location"];
-  [v6 encodeObject:self->_thoroughfare forKey:@"thoroughfare"];
-  [v6 encodeObject:self->_subThoroughfare forKey:@"subThoroughfare"];
-  [v6 encodeObject:self->_locality forKey:@"locality"];
-  [v6 encodeObject:self->_subLocality forKey:@"subLocality"];
-  [v6 encodeObject:self->_administrativeArea forKey:@"administrativeArea"];
-  [v6 encodeObject:self->_subAdministrativeArea forKey:@"subAdministrativeArea"];
-  [v6 encodeObject:self->_ISOcountryCode forKey:@"ISOCountryCode"];
-  [v6 encodeObject:self->_inlandWater forKey:@"inlandWater"];
-  [v6 encodeObject:self->_ocean forKey:@"ocean"];
-  [v6 encodeObject:self->_areasOfInterest forKey:@"areasOfInterest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:region forKey:@"region"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeObject:self->_thoroughfare forKey:@"thoroughfare"];
+  [coderCopy encodeObject:self->_subThoroughfare forKey:@"subThoroughfare"];
+  [coderCopy encodeObject:self->_locality forKey:@"locality"];
+  [coderCopy encodeObject:self->_subLocality forKey:@"subLocality"];
+  [coderCopy encodeObject:self->_administrativeArea forKey:@"administrativeArea"];
+  [coderCopy encodeObject:self->_subAdministrativeArea forKey:@"subAdministrativeArea"];
+  [coderCopy encodeObject:self->_ISOcountryCode forKey:@"ISOCountryCode"];
+  [coderCopy encodeObject:self->_inlandWater forKey:@"inlandWater"];
+  [coderCopy encodeObject:self->_ocean forKey:@"ocean"];
+  [coderCopy encodeObject:self->_areasOfInterest forKey:@"areasOfInterest"];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isIsland];
-  [v6 encodeObject:v5 forKey:@"isIsland"];
+  [coderCopy encodeObject:v5 forKey:@"isIsland"];
 
-  [v6 encodeObject:self->_revGeoLocationData forKey:@"revGeoLocationData"];
-  [v6 encodeObject:self->_geoServiceProvider forKey:@"geoServiceProvider"];
-  [v6 encodeObject:self->_popularityScoresOrderedByAOI forKey:@"popularityScoresOrderedByAOI"];
+  [coderCopy encodeObject:self->_revGeoLocationData forKey:@"revGeoLocationData"];
+  [coderCopy encodeObject:self->_geoServiceProvider forKey:@"geoServiceProvider"];
+  [coderCopy encodeObject:self->_popularityScoresOrderedByAOI forKey:@"popularityScoresOrderedByAOI"];
 }
 
-- (CLSLitePlacemark)initWithCoder:(id)a3
+- (CLSLitePlacemark)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CLSLitePlacemark *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     region = v5->_region;
     v5->_region = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thoroughfare"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thoroughfare"];
     thoroughfare = v5->_thoroughfare;
     v5->_thoroughfare = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subThoroughfare"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subThoroughfare"];
     subThoroughfare = v5->_subThoroughfare;
     v5->_subThoroughfare = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locality"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locality"];
     locality = v5->_locality;
     v5->_locality = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subLocality"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subLocality"];
     subLocality = v5->_subLocality;
     v5->_subLocality = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"administrativeArea"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"administrativeArea"];
     administrativeArea = v5->_administrativeArea;
     v5->_administrativeArea = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subAdministrativeArea"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subAdministrativeArea"];
     subAdministrativeArea = v5->_subAdministrativeArea;
     v5->_subAdministrativeArea = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ISOCountryCode"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ISOCountryCode"];
     ISOcountryCode = v5->_ISOcountryCode;
     v5->_ISOcountryCode = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inlandWater"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inlandWater"];
     inlandWater = v5->_inlandWater;
     v5->_inlandWater = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ocean"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ocean"];
     ocean = v5->_ocean;
     v5->_ocean = v26;
 
     v28 = MEMORY[0x277CBEB98];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"areasOfInterest"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"areasOfInterest"];
     areasOfInterest = v5->_areasOfInterest;
     v5->_areasOfInterest = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isIsland"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isIsland"];
     v5->_isIsland = [v33 BOOLValue];
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"revGeoLocationData"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"revGeoLocationData"];
     revGeoLocationData = v5->_revGeoLocationData;
     v5->_revGeoLocationData = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoServiceProvider"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoServiceProvider"];
     geoServiceProvider = v5->_geoServiceProvider;
     v5->_geoServiceProvider = v36;
 
-    if ([v4 containsValueForKey:@"popularityScoresOrderedByAOI"])
+    if ([coderCopy containsValueForKey:@"popularityScoresOrderedByAOI"])
     {
       v38 = MEMORY[0x277CBEB98];
       v39 = objc_opt_class();
       v40 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-      v41 = [v4 decodeObjectOfClasses:v40 forKey:@"popularityScoresOrderedByAOI"];
+      v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"popularityScoresOrderedByAOI"];
       popularityScoresOrderedByAOI = v5->_popularityScoresOrderedByAOI;
       v5->_popularityScoresOrderedByAOI = v41;
 
@@ -567,21 +567,21 @@ LABEL_56:
   return v5;
 }
 
-- (CLSLitePlacemark)initWithRTMapItem:(id)a3
+- (CLSLitePlacemark)initWithRTMapItem:(id)item
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v69.receiver = self;
   v69.super_class = CLSLitePlacemark;
   v5 = [(CLSLitePlacemark *)&v69 init];
   if (v5)
   {
-    v6 = [v4 location];
-    [v6 latitude];
+    location = [itemCopy location];
+    [location latitude];
     v8 = v7;
-    [v6 longitude];
+    [location longitude];
     v10 = v9;
-    [v6 horizontalUncertainty];
+    [location horizontalUncertainty];
     v12 = v11;
     v13 = objc_alloc(MEMORY[0x277CBFBC8]);
     v14 = CLLocationCoordinate2DMake(v8, v10);
@@ -590,53 +590,53 @@ LABEL_56:
     region = v5->_region;
     v5->_region = v16;
 
-    v18 = [v4 address];
-    v19 = [v18 thoroughfare];
+    address = [itemCopy address];
+    thoroughfare = [address thoroughfare];
     thoroughfare = v5->_thoroughfare;
-    v5->_thoroughfare = v19;
+    v5->_thoroughfare = thoroughfare;
 
-    v21 = [v18 locality];
+    locality = [address locality];
     locality = v5->_locality;
-    v5->_locality = v21;
+    v5->_locality = locality;
 
-    v23 = [v18 administrativeArea];
+    administrativeArea = [address administrativeArea];
     administrativeArea = v5->_administrativeArea;
-    v5->_administrativeArea = v23;
+    v5->_administrativeArea = administrativeArea;
 
-    v25 = [v18 subAdministrativeArea];
+    subAdministrativeArea = [address subAdministrativeArea];
     subAdministrativeArea = v5->_subAdministrativeArea;
-    v5->_subAdministrativeArea = v25;
+    v5->_subAdministrativeArea = subAdministrativeArea;
 
-    v27 = [v18 countryCode];
+    countryCode = [address countryCode];
     ISOcountryCode = v5->_ISOcountryCode;
-    v5->_ISOcountryCode = v27;
+    v5->_ISOcountryCode = countryCode;
 
-    v29 = [MEMORY[0x277D3AD60] currentRevGeoProvider];
+    currentRevGeoProvider = [MEMORY[0x277D3AD60] currentRevGeoProvider];
     geoServiceProvider = v5->_geoServiceProvider;
-    v5->_geoServiceProvider = v29;
+    v5->_geoServiceProvider = currentRevGeoProvider;
 
-    v31 = [v18 subThoroughfare];
+    subThoroughfare = [address subThoroughfare];
     subThoroughfare = v5->_subThoroughfare;
-    v5->_subThoroughfare = v31;
+    v5->_subThoroughfare = subThoroughfare;
 
-    v33 = [v18 administrativeAreaCode];
+    administrativeAreaCode = [address administrativeAreaCode];
     administrativeAreaCode = v5->_administrativeAreaCode;
-    v5->_administrativeAreaCode = v33;
+    v5->_administrativeAreaCode = administrativeAreaCode;
 
-    v35 = [v18 inlandWater];
+    inlandWater = [address inlandWater];
     inlandWater = v5->_inlandWater;
-    v5->_inlandWater = v35;
+    v5->_inlandWater = inlandWater;
 
-    v37 = [v18 ocean];
+    ocean = [address ocean];
     ocean = v5->_ocean;
-    v5->_ocean = v37;
+    v5->_ocean = ocean;
 
-    v39 = [v18 areasOfInterest];
+    areasOfInterest = [address areasOfInterest];
     areasOfInterest = v5->_areasOfInterest;
-    v5->_areasOfInterest = v39;
+    v5->_areasOfInterest = areasOfInterest;
 
-    v5->_isIsland = [v18 isIsland];
-    v41 = [MEMORY[0x277D0EBD0] sharedService];
+    v5->_isIsland = [address isIsland];
+    mEMORY[0x277D0EBD0] = [MEMORY[0x277D0EBD0] sharedService];
     v63 = 0;
     v64 = &v63;
     v65 = 0x3032000000;
@@ -649,32 +649,32 @@ LABEL_56:
     v60 = __Block_byref_object_copy__6256;
     v61 = __Block_byref_object_dispose__6257;
     v62 = 0;
-    v42 = [(CLSLitePlacemark *)v5 areasOfInterest];
-    v43 = [v4 geoMapItemHandle];
+    areasOfInterest2 = [(CLSLitePlacemark *)v5 areasOfInterest];
+    geoMapItemHandle = [itemCopy geoMapItemHandle];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __38__CLSLitePlacemark_initWithRTMapItem___block_invoke;
     v53[3] = &unk_2788A8708;
     v55 = &v63;
-    v44 = v42;
+    v44 = areasOfInterest2;
     v54 = v44;
     v56 = &v57;
-    [v41 resolveMapItemLocallyFromHandle:v43 completionHandler:v53];
+    [mEMORY[0x277D0EBD0] resolveMapItemLocallyFromHandle:geoMapItemHandle completionHandler:v53];
 
     objc_storeStrong(&v5->_popularityScoresOrderedByAOI, v58[5]);
     v45 = v64[5];
     if (!v45)
     {
       v46 = +[CLSLogging sharedLogging];
-      v47 = [v46 loggingConnection];
+      loggingConnection = [v46 loggingConnection];
 
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v51 = [v4 identifier];
-        v52 = [v51 UUIDString];
+        identifier = [itemCopy identifier];
+        uUIDString = [identifier UUIDString];
         *buf = 138412290;
-        v71 = v52;
-        _os_log_error_impl(&dword_22F907000, v47, OS_LOG_TYPE_ERROR, "Could not resolve geo map item from handle for map item %@. Using region center as fallback", buf, 0xCu);
+        v71 = uUIDString;
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Could not resolve geo map item from handle for map item %@. Using region center as fallback", buf, 0xCu);
       }
 
       v48 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v8 longitude:v10];
@@ -716,19 +716,19 @@ void __38__CLSLitePlacemark_initWithRTMapItem___block_invoke(void *a1, void *a2,
   }
 }
 
-- (CLSLitePlacemark)initWithCLPlacemark:(id)a3 popularityScoresOrderedByAOI:(id)a4
+- (CLSLitePlacemark)initWithCLPlacemark:(id)placemark popularityScoresOrderedByAOI:(id)i
 {
-  v7 = a4;
-  v8 = [(CLSLitePlacemark *)self initWithCLPlacemark:a3];
+  iCopy = i;
+  v8 = [(CLSLitePlacemark *)self initWithCLPlacemark:placemark];
   if (v8)
   {
-    v9 = [v7 count];
-    v10 = [(CLSLitePlacemark *)v8 areasOfInterest];
-    v11 = [v10 count];
+    v9 = [iCopy count];
+    areasOfInterest = [(CLSLitePlacemark *)v8 areasOfInterest];
+    v11 = [areasOfInterest count];
 
     if (v9 == v11)
     {
-      objc_storeStrong(&v8->_popularityScoresOrderedByAOI, a4);
+      objc_storeStrong(&v8->_popularityScoresOrderedByAOI, i);
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -741,34 +741,34 @@ void __38__CLSLitePlacemark_initWithRTMapItem___block_invoke(void *a1, void *a2,
   return v8;
 }
 
-- (CLSLitePlacemark)initWithCLPlacemark:(id)a3
+- (CLSLitePlacemark)initWithCLPlacemark:(id)placemark
 {
-  v4 = a3;
+  placemarkCopy = placemark;
   v19.receiver = self;
   v19.super_class = CLSLitePlacemark;
   v5 = [(CLSLitePlacemark *)&v19 init];
   if (v5)
   {
-    v6 = [v4 region];
+    region = [placemarkCopy region];
     region = v5->_region;
-    v5->_region = v6;
+    v5->_region = region;
 
-    v8 = [v4 location];
+    location = [placemarkCopy location];
     location = v5->_location;
-    v5->_location = v8;
+    v5->_location = location;
 
-    v10 = [MEMORY[0x277D3AD60] currentRevGeoProvider];
+    currentRevGeoProvider = [MEMORY[0x277D3AD60] currentRevGeoProvider];
     geoServiceProvider = v5->_geoServiceProvider;
-    v5->_geoServiceProvider = v10;
+    v5->_geoServiceProvider = currentRevGeoProvider;
 
-    v12 = [v4 _geoMapItem];
-    [(CLSLitePlacemark *)v5 _extractValuesFromGeoMapItem:v12];
+    _geoMapItem = [placemarkCopy _geoMapItem];
+    [(CLSLitePlacemark *)v5 _extractValuesFromGeoMapItem:_geoMapItem];
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [(CLSLitePlacemark *)v5 areasOfInterest];
-    v15 = v14;
-    if (v14)
+    areasOfInterest = [(CLSLitePlacemark *)v5 areasOfInterest];
+    v15 = areasOfInterest;
+    if (areasOfInterest)
     {
-      if ([v14 count] && objc_msgSend(v15, "count"))
+      if ([areasOfInterest count] && objc_msgSend(v15, "count"))
       {
         v16 = 0;
         do
@@ -793,35 +793,35 @@ void __38__CLSLitePlacemark_initWithRTMapItem___block_invoke(void *a1, void *a2,
   return v5;
 }
 
-+ (BOOL)_isIslandForGeoMapItem:(id)a3
++ (BOOL)_isIslandForGeoMapItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 areasOfInterest];
-  v6 = [v5 count];
+  areasOfInterest = [itemCopy areasOfInterest];
+  v6 = [areasOfInterest count];
 
   if (!v6)
   {
     goto LABEL_14;
   }
 
-  v7 = [v3 _additionalPlaceInfos];
+  _additionalPlaceInfos = [itemCopy _additionalPlaceInfos];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [_additionalPlaceInfos countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v8)
   {
 
 LABEL_14:
-    v10 = [v3 _placeType];
+    _placeType = [itemCopy _placeType];
     goto LABEL_15;
   }
 
   v9 = v8;
-  v10 = 0;
+  _placeType = 0;
   v11 = *v16;
   do
   {
@@ -829,22 +829,22 @@ LABEL_14:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(_additionalPlaceInfos);
       }
 
-      v13 = [*(*(&v15 + 1) + 8 * i) placeType];
-      if (v13 > v10)
+      placeType = [*(*(&v15 + 1) + 8 * i) placeType];
+      if (placeType > _placeType)
       {
-        v10 = v13;
+        _placeType = placeType;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [_additionalPlaceInfos countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v9);
 
-  if (!v10)
+  if (!_placeType)
   {
     goto LABEL_14;
   }
@@ -852,23 +852,23 @@ LABEL_14:
 LABEL_15:
   objc_autoreleasePoolPop(v4);
 
-  return v10 == 11;
+  return _placeType == 11;
 }
 
-+ (id)popularityScoresOrderedByAOIFromAdditionalPlaceInfos:(id)a3 areasOfInterest:(id)a4
++ (id)popularityScoresOrderedByAOIFromAdditionalPlaceInfos:(id)infos areasOfInterest:(id)interest
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  infosCopy = infos;
+  interestCopy = interest;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (v5)
+  if (infosCopy)
   {
-    v30 = v6;
+    v30 = interestCopy;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = v5;
+    v8 = infosCopy;
     v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v9)
     {
@@ -886,8 +886,8 @@ LABEL_15:
           v13 = *(*(&v36 + 1) + 8 * i);
           if ([v13 placeType] == 8)
           {
-            v14 = [v13 name];
-            if (v14)
+            name = [v13 name];
+            if (name)
             {
               v15 = MEMORY[0x277CCABB0];
               [v13 photosMemoryScore];
@@ -902,7 +902,7 @@ LABEL_15:
                 v17 = &unk_28449B7D0;
               }
 
-              [v7 setObject:v17 forKeyedSubscript:v14];
+              [v7 setObject:v17 forKeyedSubscript:name];
             }
           }
         }
@@ -913,13 +913,13 @@ LABEL_15:
       while (v10);
     }
 
-    v6 = v30;
+    interestCopy = v30;
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v43 = v6;
+    v43 = interestCopy;
     _os_log_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CLSLitePlacemark] additionalPlaceInfos is nil for AOI array %@", buf, 0xCu);
   }
 
@@ -928,7 +928,7 @@ LABEL_15:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = v6;
+  v19 = interestCopy;
   v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v20)
   {
@@ -964,7 +964,7 @@ LABEL_15:
 
         else
         {
-          v28 = v5 == 0;
+          v28 = infosCopy == 0;
         }
 
         if (!v28)

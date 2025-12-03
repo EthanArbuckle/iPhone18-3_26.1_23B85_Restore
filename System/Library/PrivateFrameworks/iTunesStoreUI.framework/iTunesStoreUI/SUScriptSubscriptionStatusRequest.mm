@@ -1,6 +1,6 @@
 @interface SUScriptSubscriptionStatusRequest
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)carrierBundleProvisioningStyleName;
 - (NSString)reasonName;
@@ -9,13 +9,13 @@
 - (id)ignoreCache;
 - (id)scriptAttributeKeys;
 - (id)wantsPartialResults;
-- (void)_handleRequestCompletionWithSubscriptionStatus:(id)a3 isFinal:(BOOL)a4 scriptCallbackFunction:(id)a5;
-- (void)performRequestWithCallbackFunction:(id)a3;
-- (void)setCarrierBundleProvisioningStyleName:(id)a3;
-- (void)setIgnoreCache:(id)a3;
-- (void)setReasonName:(id)a3;
-- (void)setServiceName:(id)a3;
-- (void)setWantsPartialResults:(id)a3;
+- (void)_handleRequestCompletionWithSubscriptionStatus:(id)status isFinal:(BOOL)final scriptCallbackFunction:(id)function;
+- (void)performRequestWithCallbackFunction:(id)function;
+- (void)setCarrierBundleProvisioningStyleName:(id)name;
+- (void)setIgnoreCache:(id)cache;
+- (void)setReasonName:(id)name;
+- (void)setServiceName:(id)name;
+- (void)setWantsPartialResults:(id)results;
 @end
 
 @implementation SUScriptSubscriptionStatusRequest
@@ -74,15 +74,15 @@
   [(SUScriptObject *)self unlock];
   if (reason == 1)
   {
-    v4 = [(SUScriptSubscriptionStatusRequest *)self reasonNameDeepLink];
+    reasonNameDeepLink = [(SUScriptSubscriptionStatusRequest *)self reasonNameDeepLink];
   }
 
   else
   {
-    v4 = 0;
+    reasonNameDeepLink = 0;
   }
 
-  return v4;
+  return reasonNameDeepLink;
 }
 
 - (NSString)serviceName
@@ -92,35 +92,35 @@
   [(SUScriptObject *)self unlock];
   if (service == 1)
   {
-    v4 = [(SUScriptSubscriptionStatusRequest *)self serviceNameAppleMusic];
+    serviceNameAppleMusic = [(SUScriptSubscriptionStatusRequest *)self serviceNameAppleMusic];
   }
 
   else
   {
-    v4 = 0;
+    serviceNameAppleMusic = 0;
   }
 
-  return v4;
+  return serviceNameAppleMusic;
 }
 
-- (void)setCarrierBundleProvisioningStyleName:(id)a3
+- (void)setCarrierBundleProvisioningStyleName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v5 isEqualToString:@"never"])
+    if ([nameCopy isEqualToString:@"never"])
     {
       v4 = 0;
       goto LABEL_9;
     }
 
-    if ([v5 isEqualToString:@"once"])
+    if ([nameCopy isEqualToString:@"once"])
     {
       goto LABEL_8;
     }
 
-    if ([v5 isEqualToString:@"always"])
+    if ([nameCopy isEqualToString:@"always"])
     {
       v4 = 2;
       goto LABEL_9;
@@ -140,16 +140,16 @@ LABEL_9:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setIgnoreCache:(id)a3
+- (void)setIgnoreCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v5 BOOLValue];
+    bOOLValue = [cacheCopy BOOLValue];
     [(SUScriptObject *)self lock];
-    if (self->_ignoreCache != v4)
+    if (self->_ignoreCache != bOOLValue)
     {
-      self->_ignoreCache = v4;
+      self->_ignoreCache = bOOLValue;
     }
 
     [(SUScriptObject *)self unlock];
@@ -161,11 +161,11 @@ LABEL_9:
   }
 }
 
-- (void)setReasonName:(id)a3
+- (void)setReasonName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (-[SUScriptSubscriptionStatusRequest reasonNameDeepLink](self, "reasonNameDeepLink"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v7 isEqualToString:v4], v4, (v5))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (-[SUScriptSubscriptionStatusRequest reasonNameDeepLink](self, "reasonNameDeepLink"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [nameCopy isEqualToString:v4], v4, (v5))
   {
     v6 = 1;
   }
@@ -185,11 +185,11 @@ LABEL_9:
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (-[SUScriptSubscriptionStatusRequest serviceNameAppleMusic](self, "serviceNameAppleMusic"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v7 isEqualToString:v4], v4, (v5))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (-[SUScriptSubscriptionStatusRequest serviceNameAppleMusic](self, "serviceNameAppleMusic"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [nameCopy isEqualToString:v4], v4, (v5))
   {
     v6 = 1;
   }
@@ -225,16 +225,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)setWantsPartialResults:(id)a3
+- (void)setWantsPartialResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v5 BOOLValue];
+    bOOLValue = [resultsCopy BOOLValue];
     [(SUScriptObject *)self lock];
-    if (self->_wantsPartialResults != v4)
+    if (self->_wantsPartialResults != bOOLValue)
     {
-      self->_wantsPartialResults = v4;
+      self->_wantsPartialResults = bOOLValue;
     }
 
     [(SUScriptObject *)self unlock];
@@ -246,13 +246,13 @@ LABEL_9:
   }
 }
 
-- (void)performRequestWithCallbackFunction:(id)a3
+- (void)performRequestWithCallbackFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptFunction alloc] initWithScriptObject:v4];
+    v5 = [[SUScriptFunction alloc] initWithScriptObject:functionCopy];
     [(SUScriptFunction *)v5 setThisObject:self];
     [(SUScriptObject *)self lock];
     service = self->_service;
@@ -282,7 +282,7 @@ LABEL_9:
       [v13 setAllowsFallbackToStatusNeedingReload:1];
     }
 
-    v14 = [(objc_class *)getICMusicSubscriptionStatusControllerClass() sharedStatusController];
+    sharedStatusController = [(objc_class *)getICMusicSubscriptionStatusControllerClass() sharedStatusController];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__SUScriptSubscriptionStatusRequest_performRequestWithCallbackFunction___block_invoke_2;
@@ -292,7 +292,7 @@ LABEL_9:
     v16[4] = self;
     v17 = v5;
     v15 = v5;
-    [v14 performSubscriptionStatusRequest:v13 withStatusHandler:v16];
+    [sharedStatusController performSubscriptionStatusRequest:v13 withStatusHandler:v16];
   }
 
   else
@@ -355,28 +355,28 @@ void __72__SUScriptSubscriptionStatusRequest_performRequestWithCallbackFunction_
 LABEL_9:
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_54 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_54 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptSubscriptionStatusRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_39, 1);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_39, 1);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptSubscriptionStatusRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -386,16 +386,16 @@ LABEL_9:
 {
   v5.receiver = self;
   v5.super_class = SUScriptSubscriptionStatusRequest;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_54 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_54 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_39 = sel_performRequestWithCallbackFunction_;
     *algn_1EBF3B458 = @"perform";
@@ -404,19 +404,19 @@ LABEL_9:
   }
 }
 
-- (void)_handleRequestCompletionWithSubscriptionStatus:(id)a3 isFinal:(BOOL)a4 scriptCallbackFunction:(id)a5
+- (void)_handleRequestCompletionWithSubscriptionStatus:(id)status isFinal:(BOOL)final scriptCallbackFunction:(id)function
 {
-  v5 = a4;
-  v10 = a5;
-  v7 = a3;
-  v8 = [[SUScriptSubscriptionStatusResponse alloc] initWithSubscriptionStatus:v7 isFinal:v5];
+  finalCopy = final;
+  functionCopy = function;
+  statusCopy = status;
+  v8 = [[SUScriptSubscriptionStatusResponse alloc] initWithSubscriptionStatus:statusCopy isFinal:finalCopy];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v8, 0}];
-  [v10 callWithArguments:v9];
+  [functionCopy callWithArguments:v9];
 
-  if (v5)
+  if (finalCopy)
   {
-    [v10 setThisObject:0];
+    [functionCopy setThisObject:0];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface DNDSClientDetails
-+ (id)_detailsForClientIdentifier:(id)a3 bundleInfoDictionary:(id)a4;
-+ (id)detailsForBundleAtURL:(id)a3;
-+ (id)detailsForClientIdentifier:(id)a3 applicationBundleURL:(id)a4;
-- (DNDSClientDetails)initWithClientIdentifier:(id)a3 identifiers:(id)a4 resolutionContextAssumingDeviceUILocked:(BOOL)a5 userInteractionClient:(BOOL)a6 persistentAssertionClient:(BOOL)a7 syncSuppressedClient:(BOOL)a8 iOS14SyncSuppressedClient:(BOOL)a9 forcesAssertionStatusUpdate:(BOOL)a10;
++ (id)_detailsForClientIdentifier:(id)identifier bundleInfoDictionary:(id)dictionary;
++ (id)detailsForBundleAtURL:(id)l;
++ (id)detailsForClientIdentifier:(id)identifier applicationBundleURL:(id)l;
+- (DNDSClientDetails)initWithClientIdentifier:(id)identifier identifiers:(id)identifiers resolutionContextAssumingDeviceUILocked:(BOOL)locked userInteractionClient:(BOOL)client persistentAssertionClient:(BOOL)assertionClient syncSuppressedClient:(BOOL)suppressedClient iOS14SyncSuppressedClient:(BOOL)syncSuppressedClient forcesAssertionStatusUpdate:(BOOL)self0;
 @end
 
 @implementation DNDSClientDetails
 
-+ (id)detailsForBundleAtURL:(id)a3
++ (id)detailsForBundleAtURL:(id)l
 {
-  v4 = CFBundleCopyInfoDictionaryInDirectory(a3);
+  v4 = CFBundleCopyInfoDictionaryInDirectory(l);
   if (v4)
   {
-    v5 = [a1 _detailsForClientIdentifier:0 bundleInfoDictionary:v4];
+    v5 = [self _detailsForClientIdentifier:0 bundleInfoDictionary:v4];
   }
 
   else
@@ -23,15 +23,15 @@
   return v5;
 }
 
-+ (id)detailsForClientIdentifier:(id)a3 applicationBundleURL:(id)a4
++ (id)detailsForClientIdentifier:(id)identifier applicationBundleURL:(id)l
 {
-  v6 = a3;
-  v7 = CFBundleCopyInfoDictionaryInDirectory(a4);
+  identifierCopy = identifier;
+  v7 = CFBundleCopyInfoDictionaryInDirectory(l);
   v8 = [(__CFDictionary *)v7 bs_safeDictionaryForKey:@"DNDClientDetails"];
-  v9 = [v8 bs_safeDictionaryForKey:v6];
+  v9 = [v8 bs_safeDictionaryForKey:identifierCopy];
   if (v9)
   {
-    v10 = [a1 _detailsForClientIdentifier:v6 bundleInfoDictionary:v9];
+    v10 = [self _detailsForClientIdentifier:identifierCopy bundleInfoDictionary:v9];
   }
 
   else
@@ -42,14 +42,14 @@
   return v10;
 }
 
-+ (id)_detailsForClientIdentifier:(id)a3 bundleInfoDictionary:(id)a4
++ (id)_detailsForClientIdentifier:(id)identifier bundleInfoDictionary:(id)dictionary
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 bs_safeDictionaryForKey:@"DNDModeAssertionServiceOptions"];
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy bs_safeDictionaryForKey:@"DNDModeAssertionServiceOptions"];
   v8 = v7;
-  if (v5)
+  if (identifierCopy)
   {
     v9 = 0;
   }
@@ -60,12 +60,12 @@
     v11 = v10;
     if (v10)
     {
-      v5 = v10;
+      identifierCopy = v10;
     }
 
     else
     {
-      v12 = [v6 bs_safeStringForKey:*MEMORY[0x277CBED38]];
+      v12 = [dictionaryCopy bs_safeStringForKey:*MEMORY[0x277CBED38]];
       v13 = v12;
       v14 = &stru_285C26090;
       if (v12)
@@ -73,44 +73,44 @@
         v14 = v12;
       }
 
-      v5 = v14;
+      identifierCopy = v14;
     }
 
     v15 = [v8 bs_safeArrayForKey:@"DNDClientIdentifier"];
     v9 = [v15 bs_filter:&__block_literal_global_29];
   }
 
-  v34 = v5;
+  v34 = identifierCopy;
   if (![v9 count])
   {
-    v36[0] = v5;
+    v36[0] = identifierCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
 
     v9 = v16;
   }
 
-  v17 = [v6 bs_safeDictionaryForKey:@"DNDEventBehaviorResolutionServiceOptions"];
+  v17 = [dictionaryCopy bs_safeDictionaryForKey:@"DNDEventBehaviorResolutionServiceOptions"];
   v18 = [v17 bs_safeNumberForKey:@"DNDEventBehaviorResolutionContextDeviceUILocked"];
-  v33 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
 
   v19 = [v8 bs_safeNumberForKey:@"DNDUserInteractive"];
-  v20 = [v19 BOOLValue];
+  bOOLValue2 = [v19 BOOLValue];
 
   v21 = [v8 bs_safeNumberForKey:@"DNDAssertionsPersist"];
-  v22 = [v21 BOOLValue];
+  bOOLValue3 = [v21 BOOLValue];
 
   v23 = [v8 bs_safeNumberForKey:@"DNDSyncSuppressed"];
-  v24 = [v23 BOOLValue];
+  bOOLValue4 = [v23 BOOLValue];
 
   v25 = [v8 bs_safeNumberForKey:@"DNDiOS14SyncSuppressed"];
-  v26 = [v25 BOOLValue];
+  bOOLValue5 = [v25 BOOLValue];
 
   v27 = [v8 bs_safeNumberForKey:@"DNDForceAssertionStatusUpdate"];
-  v28 = [v27 BOOLValue];
+  bOOLValue6 = [v27 BOOLValue];
 
-  BYTE1(v32) = v28;
-  LOBYTE(v32) = v26;
-  v29 = [[a1 alloc] initWithClientIdentifier:v34 identifiers:v9 resolutionContextAssumingDeviceUILocked:v33 userInteractionClient:v20 persistentAssertionClient:v22 syncSuppressedClient:v24 iOS14SyncSuppressedClient:v32 forcesAssertionStatusUpdate:?];
+  BYTE1(v32) = bOOLValue6;
+  LOBYTE(v32) = bOOLValue5;
+  v29 = [[self alloc] initWithClientIdentifier:v34 identifiers:v9 resolutionContextAssumingDeviceUILocked:bOOLValue userInteractionClient:bOOLValue2 persistentAssertionClient:bOOLValue3 syncSuppressedClient:bOOLValue4 iOS14SyncSuppressedClient:v32 forcesAssertionStatusUpdate:?];
 
   v30 = *MEMORY[0x277D85DE8];
 
@@ -126,29 +126,29 @@ uint64_t __70__DNDSClientDetails__detailsForClientIdentifier_bundleInfoDictionar
   return isKindOfClass & 1;
 }
 
-- (DNDSClientDetails)initWithClientIdentifier:(id)a3 identifiers:(id)a4 resolutionContextAssumingDeviceUILocked:(BOOL)a5 userInteractionClient:(BOOL)a6 persistentAssertionClient:(BOOL)a7 syncSuppressedClient:(BOOL)a8 iOS14SyncSuppressedClient:(BOOL)a9 forcesAssertionStatusUpdate:(BOOL)a10
+- (DNDSClientDetails)initWithClientIdentifier:(id)identifier identifiers:(id)identifiers resolutionContextAssumingDeviceUILocked:(BOOL)locked userInteractionClient:(BOOL)client persistentAssertionClient:(BOOL)assertionClient syncSuppressedClient:(BOOL)suppressedClient iOS14SyncSuppressedClient:(BOOL)syncSuppressedClient forcesAssertionStatusUpdate:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v24.receiver = self;
   v24.super_class = DNDSClientDetails;
   v18 = [(DNDSClientDetails *)&v24 init];
   if (v18)
   {
-    v19 = [v16 copy];
+    v19 = [identifierCopy copy];
     clientIdentifier = v18->_clientIdentifier;
     v18->_clientIdentifier = v19;
 
-    v21 = [v17 copy];
+    v21 = [identifiersCopy copy];
     identifiers = v18->_identifiers;
     v18->_identifiers = v21;
 
-    v18->_resolutionContextAssumingDeviceUILocked = a5;
-    v18->_userInteractionClient = a6;
-    v18->_persistentAssertionClient = a7;
-    v18->_syncSuppressedClient = a8;
-    v18->_iOS14SyncSuppressedClient = a9;
-    v18->_forcesAssertionStatusUpdate = a10;
+    v18->_resolutionContextAssumingDeviceUILocked = locked;
+    v18->_userInteractionClient = client;
+    v18->_persistentAssertionClient = assertionClient;
+    v18->_syncSuppressedClient = suppressedClient;
+    v18->_iOS14SyncSuppressedClient = syncSuppressedClient;
+    v18->_forcesAssertionStatusUpdate = update;
   }
 
   return v18;

@@ -7,7 +7,7 @@
 
 - (NSString)offerIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D78046CC();
   v4 = v3;
 

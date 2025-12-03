@@ -4,33 +4,33 @@
 - (BOOL)_useTableLayout;
 - (SetupChoice)selectedChoice;
 - (SetupChoiceController)init;
-- (double)heightForFooterInTableView:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)heightForFooterInTableView:(id)view;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_footerIcon;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)viewForFooterInTableView:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)viewForFooterInTableView:(id)view;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_primaryButtonPressed;
 - (void)_secondaryButtonPressed;
 - (void)_updateSelectedChoiceCheckmark;
 - (void)checkChoiceValid;
-- (void)choiceCancelled:(id)a3;
-- (void)choiceConfirmed:(id)a3;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4;
+- (void)choiceCancelled:(id)cancelled;
+- (void)choiceConfirmed:(id)confirmed;
+- (void)configureCell:(id)cell atIndexPath:(id)path;
 - (void)controllerDone;
-- (void)finishWithChoiceForIdentifier:(id)a3;
-- (void)learnMoreButtonTapped:(id)a3;
+- (void)finishWithChoiceForIdentifier:(id)identifier;
+- (void)learnMoreButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)setChoices:(id)a3;
-- (void)setSelectedChoice:(id)a3;
-- (void)setSelectedChoiceIndex:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setChoices:(id)choices;
+- (void)setSelectedChoice:(id)choice;
+- (void)setSelectedChoiceIndex:(unint64_t)index;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -39,7 +39,7 @@
 
 + (id)cloudConfigSkipKey
 {
-  v7 = a1;
+  selfCopy = self;
   aSelector = a2;
   oslog = _BYLoggingFacility();
   v4 = OS_LOG_TYPE_DEFAULT;
@@ -80,8 +80,8 @@
       v9 = [v3 initWithTitle:v5 style:2 target:location action:"checkChoiceValid"];
 
       [v9 setEnabled:0];
-      v6 = [location navigationItem];
-      [v6 setRightBarButtonItem:v9];
+      navigationItem = [location navigationItem];
+      [navigationItem setRightBarButtonItem:v9];
 
       objc_storeStrong(&v9, 0);
     }
@@ -94,20 +94,20 @@
 
 - (id)_footerIcon
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(SetupChoiceController *)self footerIcon];
   if (!location[0])
   {
-    v6 = [(SetupChoiceController *)v8 footerIconName];
-    if (v6)
+    footerIconName = [(SetupChoiceController *)selfCopy footerIconName];
+    if (footerIconName)
     {
-      v2 = [UIImage imageNamed:v6];
+      v2 = [UIImage imageNamed:footerIconName];
       v3 = location[0];
       location[0] = v2;
     }
 
-    objc_storeStrong(&v6, 0);
+    objc_storeStrong(&footerIconName, 0);
   }
 
   v4 = location[0];
@@ -117,95 +117,95 @@
 
 - (void)loadView
 {
-  v56 = self;
+  selfCopy = self;
   v55 = a2;
   v54.receiver = self;
   v54.super_class = SetupChoiceController;
   [(BuddyTableViewController *)&v54 loadView];
-  objc_storeStrong(&v56->_serviceFooterView, 0);
-  objc_storeStrong(&v56->_learnMoreView, 0);
-  v53 = [(SetupChoiceController *)v56 footerTitleText];
-  v52 = [(SetupChoiceController *)v56 footerDetailText];
-  v51 = [(SetupChoiceController *)v56 learnMoreButtonText];
-  v50 = [(SetupChoiceController *)v56 _footerIcon];
-  if ([v53 length] || objc_msgSend(v52, "length") || objc_msgSend(v51, "length") || v50)
+  objc_storeStrong(&selfCopy->_serviceFooterView, 0);
+  objc_storeStrong(&selfCopy->_learnMoreView, 0);
+  footerTitleText = [(SetupChoiceController *)selfCopy footerTitleText];
+  footerDetailText = [(SetupChoiceController *)selfCopy footerDetailText];
+  learnMoreButtonText = [(SetupChoiceController *)selfCopy learnMoreButtonText];
+  _footerIcon = [(SetupChoiceController *)selfCopy _footerIcon];
+  if ([footerTitleText length] || objc_msgSend(footerDetailText, "length") || objc_msgSend(learnMoreButtonText, "length") || _footerIcon)
   {
-    if ([(SetupChoiceController *)v56 _useTableLayout])
+    if ([(SetupChoiceController *)selfCopy _useTableLayout])
     {
-      if ([v53 length] || objc_msgSend(v52, "length"))
+      if ([footerTitleText length] || objc_msgSend(footerDetailText, "length"))
       {
         v2 = [[BuddyAppleIDTableHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-        serviceFooterView = v56->_serviceFooterView;
-        v56->_serviceFooterView = v2;
+        serviceFooterView = selfCopy->_serviceFooterView;
+        selfCopy->_serviceFooterView = v2;
 
-        if ([v53 length])
+        if ([footerTitleText length])
         {
           v4 = [NSAttributedString alloc];
           v5 = +[BuddyAppleIDTableHeaderView defaultTitleTextAttributes];
-          v6 = [v4 initWithString:v53 attributes:v5];
-          v7 = [(BuddyAppleIDTableHeaderView *)v56->_serviceFooterView textLabel];
-          [(UILabel *)v7 setAttributedText:v6];
+          v6 = [v4 initWithString:footerTitleText attributes:v5];
+          textLabel = [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView textLabel];
+          [(UILabel *)textLabel setAttributedText:v6];
         }
 
-        if ([v52 length])
+        if ([footerDetailText length])
         {
           v8 = [NSAttributedString alloc];
           v9 = +[BuddyAppleIDTableHeaderView defaultDetailTextAttributes];
-          v10 = [v8 initWithString:v52 attributes:v9];
-          v11 = [(BuddyAppleIDTableHeaderView *)v56->_serviceFooterView detailTextLabel];
-          [(UILabel *)v11 setAttributedText:v10];
+          v10 = [v8 initWithString:footerDetailText attributes:v9];
+          detailTextLabel = [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView detailTextLabel];
+          [(UILabel *)detailTextLabel setAttributedText:v10];
         }
       }
 
-      if ([v51 length])
+      if ([learnMoreButtonText length])
       {
         v12 = [[BuddyAppleIDLinkView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-        learnMoreView = v56->_learnMoreView;
-        v56->_learnMoreView = v12;
+        learnMoreView = selfCopy->_learnMoreView;
+        selfCopy->_learnMoreView = v12;
 
-        [(BuddyAppleIDLinkView *)v56->_learnMoreView setButtonTopPadding:15.0];
-        v14 = [(BuddyAppleIDLinkView *)v56->_learnMoreView linkButton];
-        [(UIButton *)v14 setTitle:v51 forState:0];
+        [(BuddyAppleIDLinkView *)selfCopy->_learnMoreView setButtonTopPadding:15.0];
+        linkButton = [(BuddyAppleIDLinkView *)selfCopy->_learnMoreView linkButton];
+        [(UIButton *)linkButton setTitle:learnMoreButtonText forState:0];
 
-        v15 = [(BuddyAppleIDLinkView *)v56->_learnMoreView linkButton];
-        [(UIButton *)v15 addTarget:v56 action:"learnMoreButtonTapped:" forControlEvents:64];
+        linkButton2 = [(BuddyAppleIDLinkView *)selfCopy->_learnMoreView linkButton];
+        [(UIButton *)linkButton2 addTarget:selfCopy action:"learnMoreButtonTapped:" forControlEvents:64];
       }
 
-      [(BuddyAppleIDTableHeaderView *)v56->_serviceFooterView setLinkButtonTopPadding:10.0];
-      v16 = [(BuddyAppleIDTableHeaderView *)v56->_serviceFooterView topIconName];
-      v17 = [(NSString *)v16 length];
+      [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView setLinkButtonTopPadding:10.0];
+      topIconName = [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView topIconName];
+      v17 = [(NSString *)topIconName length];
 
       if (v17)
       {
-        [(BuddyAppleIDTableHeaderView *)v56->_serviceFooterView setBottomPadding:2.0];
+        [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView setBottomPadding:2.0];
       }
 
       else
       {
-        [(BuddyAppleIDTableHeaderView *)v56->_serviceFooterView setBottomPadding:20.0];
+        [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView setBottomPadding:20.0];
       }
     }
 
     else
     {
-      objc_initWeak(&location, v56);
-      if ([v52 length])
+      objc_initWeak(&location, selfCopy);
+      if ([footerDetailText length])
       {
-        v18 = [(BuddyTableViewController *)v56 headerView];
-        v19 = [(BFFPaneHeaderView *)v18 detailTextLabel];
-        [v19 setText:v52];
+        headerView = [(BuddyTableViewController *)selfCopy headerView];
+        detailTextLabel2 = [(BFFPaneHeaderView *)headerView detailTextLabel];
+        [detailTextLabel2 setText:footerDetailText];
       }
 
-      if ([v51 length])
+      if ([learnMoreButtonText length])
       {
-        v20 = [(BuddyTableViewController *)v56 headerView];
-        v21 = v51;
+        headerView2 = [(BuddyTableViewController *)selfCopy headerView];
+        v21 = learnMoreButtonText;
         v44 = _NSConcreteStackBlock;
         v45 = 3221225472;
         v46 = sub_1000FBE64;
         v47 = &unk_10032AF58;
         objc_copyWeak(&v48, &location);
-        [(BFFPaneHeaderView *)v20 setLinkText:v21 handler:&v44];
+        [(BFFPaneHeaderView *)headerView2 setLinkText:v21 handler:&v44];
 
         objc_destroyWeak(&v48);
       }
@@ -213,75 +213,75 @@
       objc_destroyWeak(&location);
     }
 
-    if (v50)
+    if (_footerIcon)
     {
-      v22 = [(BuddyTableViewController *)v56 headerView];
-      [(BFFPaneHeaderView *)v22 setIcon:v50];
+      headerView3 = [(BuddyTableViewController *)selfCopy headerView];
+      [(BFFPaneHeaderView *)headerView3 setIcon:_footerIcon];
     }
   }
 
-  if (![(SetupChoiceController *)v56 _useTableLayout:v44])
+  if (![(SetupChoiceController *)selfCopy _useTableLayout:v44])
   {
-    v23 = [(SetupChoiceController *)v56 choices];
-    v24 = [(NSArray *)v23 count];
+    choices = [(SetupChoiceController *)selfCopy choices];
+    v24 = [(NSArray *)choices count];
 
     if (v24)
     {
       v25 = +[BFFStyle sharedStyle];
-      v26 = [(SetupChoiceController *)v56 choices];
-      v27 = [(NSArray *)v26 firstObject];
-      v28 = [v27 localizedTitle];
-      v29 = [(BuddyTableViewController *)v56 tableView];
-      v30 = [v25 continueButtonWithTitle:v28 inView:v29];
-      primaryChoiceButton = v56->_primaryChoiceButton;
-      v56->_primaryChoiceButton = v30;
+      choices2 = [(SetupChoiceController *)selfCopy choices];
+      firstObject = [(NSArray *)choices2 firstObject];
+      localizedTitle = [firstObject localizedTitle];
+      tableView = [(BuddyTableViewController *)selfCopy tableView];
+      v30 = [v25 continueButtonWithTitle:localizedTitle inView:tableView];
+      primaryChoiceButton = selfCopy->_primaryChoiceButton;
+      selfCopy->_primaryChoiceButton = v30;
 
-      [(UIButton *)v56->_primaryChoiceButton addTarget:v56 action:"_primaryButtonPressed" forControlEvents:0x2000];
+      [(UIButton *)selfCopy->_primaryChoiceButton addTarget:selfCopy action:"_primaryButtonPressed" forControlEvents:0x2000];
     }
 
-    v32 = [(SetupChoiceController *)v56 choices];
-    v33 = [(NSArray *)v32 count];
+    choices3 = [(SetupChoiceController *)selfCopy choices];
+    v33 = [(NSArray *)choices3 count];
 
     if (v33 > 1)
     {
       v34 = [UIButton buttonWithType:1];
-      secondaryChoiceButton = v56->_secondaryChoiceButton;
-      v56->_secondaryChoiceButton = v34;
+      secondaryChoiceButton = selfCopy->_secondaryChoiceButton;
+      selfCopy->_secondaryChoiceButton = v34;
 
       v36 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-      v37 = [(UIButton *)v56->_secondaryChoiceButton titleLabel];
-      [(UILabel *)v37 setFont:v36];
+      titleLabel = [(UIButton *)selfCopy->_secondaryChoiceButton titleLabel];
+      [(UILabel *)titleLabel setFont:v36];
 
-      v38 = [(UIButton *)v56->_secondaryChoiceButton titleLabel];
-      [(UILabel *)v38 setAdjustsFontSizeToFitWidth:1];
+      titleLabel2 = [(UIButton *)selfCopy->_secondaryChoiceButton titleLabel];
+      [(UILabel *)titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-      v39 = v56->_secondaryChoiceButton;
-      v40 = [(SetupChoiceController *)v56 choices];
-      v41 = [(NSArray *)v40 lastObject];
-      v42 = [v41 localizedTitle];
-      [(UIButton *)v39 setTitle:v42 forState:0];
+      v39 = selfCopy->_secondaryChoiceButton;
+      choices4 = [(SetupChoiceController *)selfCopy choices];
+      lastObject = [(NSArray *)choices4 lastObject];
+      localizedTitle2 = [lastObject localizedTitle];
+      [(UIButton *)v39 setTitle:localizedTitle2 forState:0];
 
-      [(UIButton *)v56->_secondaryChoiceButton addTarget:v56 action:"_secondaryButtonPressed" forControlEvents:0x2000];
-      v43 = [(BuddyTableViewController *)v56 tableView];
-      [(UITableView *)v43 addSubview:v56->_secondaryChoiceButton];
+      [(UIButton *)selfCopy->_secondaryChoiceButton addTarget:selfCopy action:"_secondaryButtonPressed" forControlEvents:0x2000];
+      tableView2 = [(BuddyTableViewController *)selfCopy tableView];
+      [(UITableView *)tableView2 addSubview:selfCopy->_secondaryChoiceButton];
     }
   }
 
-  objc_storeStrong(&v50, 0);
-  objc_storeStrong(&v51, 0);
-  objc_storeStrong(&v52, 0);
-  objc_storeStrong(&v53, 0);
+  objc_storeStrong(&_footerIcon, 0);
+  objc_storeStrong(&learnMoreButtonText, 0);
+  objc_storeStrong(&footerDetailText, 0);
+  objc_storeStrong(&footerTitleText, 0);
 }
 
 - (void)_primaryButtonPressed
 {
-  v2 = [(SetupChoiceController *)self choices];
-  v3 = [(NSArray *)v2 count];
+  choices = [(SetupChoiceController *)self choices];
+  v3 = [(NSArray *)choices count];
 
   if (v3)
   {
-    v4 = [(SetupChoiceController *)self choices];
-    v5 = [(NSArray *)v4 objectAtIndexedSubscript:0];
+    choices2 = [(SetupChoiceController *)self choices];
+    v5 = [(NSArray *)choices2 objectAtIndexedSubscript:0];
     objc_storeWeak(&self->_selectedChoice, v5);
 
     [(SetupChoiceController *)self checkChoiceValid];
@@ -290,26 +290,26 @@
 
 - (void)_secondaryButtonPressed
 {
-  v2 = [(SetupChoiceController *)self choices];
-  v3 = [(NSArray *)v2 count];
+  choices = [(SetupChoiceController *)self choices];
+  v3 = [(NSArray *)choices count];
 
   if (v3 > 1)
   {
-    v4 = [(SetupChoiceController *)self choices];
-    v5 = [(NSArray *)v4 objectAtIndexedSubscript:1];
+    choices2 = [(SetupChoiceController *)self choices];
+    v5 = [(NSArray *)choices2 objectAtIndexedSubscript:1];
     objc_storeWeak(&self->_selectedChoice, v5);
 
     [(SetupChoiceController *)self checkChoiceValid];
   }
 }
 
-- (void)setChoices:(id)a3
+- (void)setChoices:(id)choices
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v16->_choices != location[0])
+  objc_storeStrong(location, choices);
+  if (selfCopy->_choices != location[0])
   {
     memset(__b, 0, sizeof(__b));
     v3 = location[0];
@@ -336,9 +336,9 @@
       while (v4);
     }
 
-    objc_storeStrong(&v16->_choices, location[0]);
+    objc_storeStrong(&selfCopy->_choices, location[0]);
     memset(v11, 0, sizeof(v11));
-    v7 = v16->_choices;
+    v7 = selfCopy->_choices;
     v8 = [(NSArray *)v7 countByEnumeratingWithState:v11 objects:v17 count:16];
     if (v8)
     {
@@ -353,7 +353,7 @@
           }
 
           v12 = *(v11[1] + 8 * j);
-          [v12 setChoiceController:v16];
+          [v12 setChoiceController:selfCopy];
         }
 
         v8 = [(NSArray *)v7 countByEnumeratingWithState:v11 objects:v17 count:16];
@@ -368,58 +368,58 @@
 
 - (BOOL)_useTableLayout
 {
-  v2 = [(SetupChoiceController *)self choices];
-  if ([(NSArray *)v2 count]< 3)
+  choices = [(SetupChoiceController *)self choices];
+  if ([(NSArray *)choices count]< 3)
   {
-    v3 = [(SetupChoiceController *)self useTableLayout];
+    useTableLayout = [(SetupChoiceController *)self useTableLayout];
   }
 
   else
   {
-    v3 = 1;
+    useTableLayout = 1;
   }
 
-  v4 = v3 != 0;
+  v4 = useTableLayout != 0;
 
   return v4;
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   objc_storeStrong(location, 0);
 }
 
-- (void)finishWithChoiceForIdentifier:(id)a3
+- (void)finishWithChoiceForIdentifier:(id)identifier
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   for (i = 0; ; ++i)
   {
     v3 = i;
-    v4 = [(SetupChoiceController *)v14 choices];
-    v5 = [(NSArray *)v4 count];
+    choices = [(SetupChoiceController *)selfCopy choices];
+    v5 = [(NSArray *)choices count];
 
     if (v3 >= v5)
     {
       break;
     }
 
-    v6 = [(SetupChoiceController *)v14 choices];
-    v11 = [(NSArray *)v6 objectAtIndex:i];
+    choices2 = [(SetupChoiceController *)selfCopy choices];
+    v11 = [(NSArray *)choices2 objectAtIndex:i];
 
-    v7 = [v11 identifier];
-    v8 = [v7 isEqual:location[0]];
+    identifier = [v11 identifier];
+    v8 = [identifier isEqual:location[0]];
 
     if (v8)
     {
-      [(SetupChoiceController *)v14 setSelectedChoiceIndex:i];
-      [(SetupChoiceController *)v14 controllerDone];
+      [(SetupChoiceController *)selfCopy setSelectedChoiceIndex:i];
+      [(SetupChoiceController *)selfCopy controllerDone];
       v10 = 1;
     }
 
@@ -438,7 +438,7 @@
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100078180(buf, v14, location[0]);
+    sub_100078180(buf, selfCopy, location[0]);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%@ cannot finish with controller identifier choice %@", buf, 0x16u);
   }
 
@@ -450,27 +450,27 @@ LABEL_11:
 
 - (void)_updateSelectedChoiceCheckmark
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   WeakRetained = objc_loadWeakRetained(&self->_selectedChoice);
 
   if (WeakRetained)
   {
-    choices = v16->_choices;
-    v4 = objc_loadWeakRetained(&v16->_selectedChoice);
+    choices = selfCopy->_choices;
+    v4 = objc_loadWeakRetained(&selfCopy->_selectedChoice);
     v5 = [(NSArray *)choices indexOfObject:v4];
 
     v14 = v5;
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = [NSIndexPath indexPathForRow:v14 inSection:0];
-      v6 = [(BuddyTableViewController *)v16 tableView];
-      location = [(UITableView *)v6 cellForRowAtIndexPath:v13];
+      tableView = [(BuddyTableViewController *)selfCopy tableView];
+      location = [(UITableView *)tableView cellForRowAtIndexPath:v13];
 
       [location setAccessoryType:3];
-      v7 = [location textLabel];
+      textLabel = [location textLabel];
       v8 = +[UIColor tableCellBlueTextColor];
-      [v7 setTextColor:v8];
+      [textLabel setTextColor:v8];
 
       [location setNeedsLayout];
       objc_storeStrong(&location, 0);
@@ -478,72 +478,72 @@ LABEL_11:
     }
   }
 
-  if ([(SetupChoiceController *)v16 wantsNextButton])
+  if ([(SetupChoiceController *)selfCopy wantsNextButton])
   {
-    v9 = [(SetupChoiceController *)v16 navigationItem];
-    v10 = [v9 rightBarButtonItem];
-    v11 = objc_loadWeakRetained(&v16->_selectedChoice);
-    [v10 setEnabled:v11 != 0];
+    navigationItem = [(SetupChoiceController *)selfCopy navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    v11 = objc_loadWeakRetained(&selfCopy->_selectedChoice);
+    [rightBarButtonItem setEnabled:v11 != 0];
   }
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(SetupChoiceController *)self _updateSelectedChoiceCheckmark];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = SetupChoiceController;
   [(SetupChoiceController *)&v2 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SetupChoiceController;
-  [(SetupChoiceController *)&v6 viewDidAppear:a3];
-  if (![(SetupChoiceController *)v9 wantsNextButton])
+  [(SetupChoiceController *)&v6 viewDidAppear:appear];
+  if (![(SetupChoiceController *)selfCopy wantsNextButton])
   {
-    v3 = [(BuddyTableViewController *)v9 tableView];
-    v5 = [(UITableView *)v3 indexPathForSelectedRow];
+    tableView = [(BuddyTableViewController *)selfCopy tableView];
+    indexPathForSelectedRow = [(UITableView *)tableView indexPathForSelectedRow];
 
-    if (v5)
+    if (indexPathForSelectedRow)
     {
-      v4 = [(BuddyTableViewController *)v9 tableView];
-      [(UITableView *)v4 deselectRowAtIndexPath:v5 animated:1];
+      tableView2 = [(BuddyTableViewController *)selfCopy tableView];
+      [(UITableView *)tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
     }
 
-    objc_storeStrong(&v5, 0);
+    objc_storeStrong(&indexPathForSelectedRow, 0);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   if (([(SetupChoiceController *)self isMovingFromParentViewController]& 1) != 0)
   {
-    [(SetupChoiceController *)v6 controllerBack];
+    [(SetupChoiceController *)selfCopy controllerBack];
   }
 
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = SetupChoiceController;
-  [(SetupChoiceController *)&v3 viewDidDisappear:v4];
+  [(SetupChoiceController *)&v3 viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v115 = self;
+  selfCopy = self;
   v114 = a2;
-  v2 = [(SetupChoiceController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass] == 1;
+  traitCollection = [(SetupChoiceController *)self traitCollection];
+  v3 = [traitCollection horizontalSizeClass] == 1;
 
   v113 = v3;
-  [(SetupChoiceController *)v115 choiceButtonsBottomInset];
+  [(SetupChoiceController *)selfCopy choiceButtonsBottomInset];
   v112 = v4 + 24.0;
   v5 = 120.0;
   if (v3)
@@ -552,18 +552,18 @@ LABEL_11:
   }
 
   v111 = v112 + v5;
-  v110.receiver = v115;
+  v110.receiver = selfCopy;
   v110.super_class = SetupChoiceController;
   [(BuddyTableViewController *)&v110 viewDidLayoutSubviews];
-  v6 = [(BuddyTableViewController *)v115 tableView];
-  [(UITableView *)v6 bounds];
+  tableView = [(BuddyTableViewController *)selfCopy tableView];
+  [(UITableView *)tableView bounds];
   v109.origin.y = v7;
   v109.origin.x = v8;
   v109.size.height = v9;
   v109.size.width = v10;
 
-  v11 = [(BuddyTableViewController *)v115 headerView];
-  [(BFFPaneHeaderView *)v11 frame];
+  headerView = [(BuddyTableViewController *)selfCopy headerView];
+  [(BFFPaneHeaderView *)headerView frame];
   v108.origin.y = v12;
   v108.origin.x = v13;
   v108.size.height = v14;
@@ -571,23 +571,23 @@ LABEL_11:
 
   memset(__b, 0, sizeof(__b));
   v16 = +[BFFStyle sharedStyle];
-  v17 = [(BuddyTableViewController *)v115 tableView];
-  [v16 edgeInsetsForTable:v17];
+  tableView2 = [(BuddyTableViewController *)selfCopy tableView];
+  [v16 edgeInsetsForTable:tableView2];
   __b[0] = v18;
   __b[1] = v19;
   __b[2] = v20;
   __b[3] = v21;
 
   v22 = +[BFFStyle sharedStyle];
-  v23 = [(SetupChoiceController *)v115 view];
-  [v22 horizontalMarginForView:v23];
+  view = [(SetupChoiceController *)selfCopy view];
+  [v22 horizontalMarginForView:view];
   v105 = 0;
   v103 = 0;
   if (v24 * 2.0 - *&__b[1] - *&__b[3] >= 0.0)
   {
     v106 = +[BFFStyle sharedStyle];
     v105 = 1;
-    v104 = [(SetupChoiceController *)v115 view];
+    view2 = [(SetupChoiceController *)selfCopy view];
     v103 = 1;
     [v106 horizontalMarginForView:?];
     v25 = v26 * 2.0 - *&__b[1] - *&__b[3];
@@ -609,9 +609,9 @@ LABEL_11:
   v101 = 0;
   if (!v113)
   {
-    v102 = [(BuddyTableViewController *)v115 tableView];
+    tableView3 = [(BuddyTableViewController *)selfCopy tableView];
     v101 = 1;
-    [(UITableView *)v102 separatorInset];
+    [(UITableView *)tableView3 separatorInset];
   }
 
   if (v101)
@@ -619,25 +619,25 @@ LABEL_11:
   }
 
   v100 = v109.size.width - v25;
-  [(UIButton *)v115->_primaryChoiceButton frame];
+  [(UIButton *)selfCopy->_primaryChoiceButton frame];
   rect.origin.y = v27;
   rect.origin.x = v28;
   rect.size.height = v29;
   rect.size.width = v30;
-  if (v115->_primaryChoiceButton)
+  if (selfCopy->_primaryChoiceButton)
   {
     v31 = +[BFFStyle sharedStyle];
-    v32 = [(SetupChoiceController *)v115 view];
-    [v31 sizeForContinueButtonInAncestor:v32];
+    view3 = [(SetupChoiceController *)selfCopy view];
+    [v31 sizeForContinueButtonInAncestor:view3];
     v98.width = v33;
     v98.height = v34;
     rect.size = v98;
 
     UIRoundToViewScale();
     rect.origin.x = v35;
-    v36 = [(SetupChoiceController *)v115 view];
-    v37 = [v36 safeAreaLayoutGuide];
-    [v37 layoutFrame];
+    view4 = [(SetupChoiceController *)selfCopy view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v39 = v38 - v98.height - v111;
     v96 = 0;
     v94 = 0;
@@ -648,11 +648,11 @@ LABEL_11:
 
     else
     {
-      v97 = [(SetupChoiceController *)v115 view];
+      view5 = [(SetupChoiceController *)selfCopy view];
       v96 = 1;
-      v95 = [v97 safeAreaLayoutGuide];
+      safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
       v94 = 1;
-      [v95 layoutFrame];
+      [safeAreaLayoutGuide2 layoutFrame];
       v41 = v40 - v98.height - v111;
     }
 
@@ -665,14 +665,14 @@ LABEL_11:
     {
     }
 
-    [(UIButton *)v115->_primaryChoiceButton setFrame:rect.origin.x, rect.origin.y, v98];
+    [(UIButton *)selfCopy->_primaryChoiceButton setFrame:rect.origin.x, rect.origin.y, v98];
   }
 
-  if (v115->_secondaryChoiceButton)
+  if (selfCopy->_secondaryChoiceButton)
   {
-    v42 = [(UIButton *)v115->_secondaryChoiceButton titleLabel];
+    titleLabel = [(UIButton *)selfCopy->_secondaryChoiceButton titleLabel];
     sub_1000FD4C0();
-    [(UILabel *)v42 sizeThatFits:v43, v44];
+    [(UILabel *)titleLabel sizeThatFits:v43, v44];
     v93.size.width = v45;
     v93.size.height = v46;
 
@@ -689,12 +689,12 @@ LABEL_11:
     v93.size.width = width;
     UIRoundToViewScale();
     v93.origin.x = v48;
-    v49 = [(SetupChoiceController *)v115 view];
-    v50 = [v49 safeAreaLayoutGuide];
-    [v50 layoutFrame];
+    view6 = [(SetupChoiceController *)selfCopy view];
+    safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide3 layoutFrame];
     v52 = v51;
-    v53 = [(UIButton *)v115->_secondaryChoiceButton titleLabel];
-    [(UILabel *)v53 _firstLineBaselineOffsetFromBoundsTop];
+    titleLabel2 = [(UIButton *)selfCopy->_secondaryChoiceButton titleLabel];
+    [(UILabel *)titleLabel2 _firstLineBaselineOffsetFromBoundsTop];
     v55 = v52 - v54 - v112;
     v91 = 0;
     v89 = 0;
@@ -706,15 +706,15 @@ LABEL_11:
 
     else
     {
-      v92 = [(SetupChoiceController *)v115 view];
+      view7 = [(SetupChoiceController *)selfCopy view];
       v91 = 1;
-      v90 = [v92 safeAreaLayoutGuide];
+      safeAreaLayoutGuide4 = [view7 safeAreaLayoutGuide];
       v89 = 1;
-      [v90 layoutFrame];
+      [safeAreaLayoutGuide4 layoutFrame];
       v57 = v56;
-      v88 = [(UIButton *)v115->_secondaryChoiceButton titleLabel];
+      titleLabel3 = [(UIButton *)selfCopy->_secondaryChoiceButton titleLabel];
       v87 = 1;
-      [(UILabel *)v88 _firstLineBaselineOffsetFromBoundsTop];
+      [(UILabel *)titleLabel3 _firstLineBaselineOffsetFromBoundsTop];
       v59 = v57 - v58 - v112;
     }
 
@@ -731,40 +731,40 @@ LABEL_11:
     {
     }
 
-    [(UIButton *)v115->_secondaryChoiceButton setFrame:v93.origin.x, v93.origin.y, v93.size.width, v93.size.height];
+    [(UIButton *)selfCopy->_secondaryChoiceButton setFrame:v93.origin.x, v93.origin.y, v93.size.width, v93.size.height];
     MaxY = CGRectGetMaxY(v93);
     if (MaxY > CGRectGetMaxY(v109))
     {
-      v61 = [(BuddyTableViewController *)v115 headerView];
-      v62 = [(BFFPaneHeaderView *)v61 icon];
+      headerView2 = [(BuddyTableViewController *)selfCopy headerView];
+      icon = [(BFFPaneHeaderView *)headerView2 icon];
 
-      if (v62)
+      if (icon)
       {
-        v63 = [(BuddyTableViewController *)v115 headerView];
-        v64 = [(BFFPaneHeaderView *)v63 detailTextLabel];
-        v65 = [(BuddyTableViewController *)v115 headerView];
-        v66 = [(BFFPaneHeaderView *)v65 detailTextLabel];
-        v67 = [v66 font];
-        v68 = [(BuddyTableViewController *)v115 headerView];
-        v69 = [(BFFPaneHeaderView *)v68 detailTextLabel];
-        v70 = [v69 font];
-        [v70 pointSize];
-        v72 = [v67 fontWithSize:v71 - 1.0];
-        [v64 setFont:v72];
+        headerView3 = [(BuddyTableViewController *)selfCopy headerView];
+        detailTextLabel = [(BFFPaneHeaderView *)headerView3 detailTextLabel];
+        headerView4 = [(BuddyTableViewController *)selfCopy headerView];
+        detailTextLabel2 = [(BFFPaneHeaderView *)headerView4 detailTextLabel];
+        font = [detailTextLabel2 font];
+        headerView5 = [(BuddyTableViewController *)selfCopy headerView];
+        detailTextLabel3 = [(BFFPaneHeaderView *)headerView5 detailTextLabel];
+        font2 = [detailTextLabel3 font];
+        [font2 pointSize];
+        v72 = [font fontWithSize:v71 - 1.0];
+        [detailTextLabel setFont:v72];
 
-        v73 = [(BuddyTableViewController *)v115 headerView];
-        [(BFFPaneHeaderView *)v73 setIcon:0];
+        headerView6 = [(BuddyTableViewController *)selfCopy headerView];
+        [(BFFPaneHeaderView *)headerView6 setIcon:0];
 
-        v74 = [(BuddyTableViewController *)v115 tableView];
-        [(UITableView *)v74 reloadData];
+        tableView4 = [(BuddyTableViewController *)selfCopy tableView];
+        [(UITableView *)tableView4 reloadData];
 
-        v75 = [(SetupChoiceController *)v115 view];
-        [(UITableView *)v75 setNeedsLayout];
+        view8 = [(SetupChoiceController *)selfCopy view];
+        [(UITableView *)view8 setNeedsLayout];
       }
 
       else
       {
-        v76 = [(BuddyTableViewController *)v115 tableView:0];
+        v76 = [(BuddyTableViewController *)selfCopy tableView:0];
         [(UITableView *)v76 frame];
         v83 = v77;
         v82 = v78;
@@ -773,53 +773,53 @@ LABEL_11:
 
         v81 = CGRectGetMaxY(v93);
         v86 = v85 + v81 - CGRectGetMaxY(v109);
-        v75 = [(BuddyTableViewController *)v115 tableView:v82];
-        [(UITableView *)v75 setContentSize:v84, v86];
+        view8 = [(BuddyTableViewController *)selfCopy tableView:v82];
+        [(UITableView *)view8 setContentSize:v84, v86];
       }
     }
   }
 }
 
-- (void)setSelectedChoiceIndex:(unint64_t)a3
+- (void)setSelectedChoiceIndex:(unint64_t)index
 {
-  v4 = [(NSArray *)self->_choices objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_choices objectAtIndexedSubscript:index];
   [(SetupChoiceController *)self setSelectedChoice:v4];
 }
 
-- (void)setSelectedChoice:(id)a3
+- (void)setSelectedChoice:(id)choice
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v15->_selectedChoice);
+  objc_storeStrong(location, choice);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_selectedChoice);
   v4 = location[0];
 
   if (WeakRetained != v4)
   {
-    v13 = [(SetupChoiceController *)v15 wantsNextButton];
-    v5 = objc_loadWeakRetained(&v15->_selectedChoice);
+    wantsNextButton = [(SetupChoiceController *)selfCopy wantsNextButton];
+    v5 = objc_loadWeakRetained(&selfCopy->_selectedChoice);
 
-    if (v5 && (v13 & 1) != 0)
+    if (v5 && (wantsNextButton & 1) != 0)
     {
-      v6 = [(BuddyTableViewController *)v15 tableView];
-      choices = v15->_choices;
-      v8 = objc_loadWeakRetained(&v15->_selectedChoice);
+      tableView = [(BuddyTableViewController *)selfCopy tableView];
+      choices = selfCopy->_choices;
+      v8 = objc_loadWeakRetained(&selfCopy->_selectedChoice);
       v9 = [NSIndexPath indexPathForRow:[(NSArray *)choices indexOfObject:v8] inSection:0];
-      v12 = [(UITableView *)v6 cellForRowAtIndexPath:v9];
+      v12 = [(UITableView *)tableView cellForRowAtIndexPath:v9];
 
       [v12 setAccessoryType:0];
-      v10 = [v12 textLabel];
+      textLabel = [v12 textLabel];
       v11 = +[UIColor _labelColor];
-      [v10 setTextColor:v11];
+      [textLabel setTextColor:v11];
 
       objc_storeStrong(&v12, 0);
     }
 
-    objc_storeWeak(&v15->_selectedChoice, location[0]);
-    if (v13)
+    objc_storeWeak(&selfCopy->_selectedChoice, location[0]);
+    if (wantsNextButton)
     {
-      [(SetupChoiceController *)v15 _updateSelectedChoiceCheckmark];
+      [(SetupChoiceController *)selfCopy _updateSelectedChoiceCheckmark];
     }
   }
 
@@ -842,58 +842,58 @@ LABEL_11:
   }
 }
 
-- (void)choiceConfirmed:(id)a3
+- (void)choiceConfirmed:(id)confirmed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SetupChoiceController *)v4 controllerDone];
+  objc_storeStrong(location, confirmed);
+  [(SetupChoiceController *)selfCopy controllerDone];
   objc_storeStrong(location, 0);
 }
 
-- (void)choiceCancelled:(id)a3
+- (void)choiceCancelled:(id)cancelled
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTableViewController *)v8 tableView];
-  choices = v8->_choices;
-  WeakRetained = objc_loadWeakRetained(&v8->_selectedChoice);
+  objc_storeStrong(location, cancelled);
+  tableView = [(BuddyTableViewController *)selfCopy tableView];
+  choices = selfCopy->_choices;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_selectedChoice);
   v6 = [NSIndexPath indexPathForRow:[(NSArray *)choices indexOfObject:WeakRetained] inSection:0];
-  [(UITableView *)v3 deselectRowAtIndexPath:v6 animated:1];
+  [(UITableView *)tableView deselectRowAtIndexPath:v6 animated:1];
 
-  [(SetupChoiceController *)v8 setSelectedChoice:0];
+  [(SetupChoiceController *)selfCopy setSelectedChoice:0];
   objc_storeStrong(location, 0);
 }
 
 - (void)controllerDone
 {
-  v2 = [(SetupChoiceController *)self delegate];
+  delegate = [(SetupChoiceController *)self delegate];
   WeakRetained = objc_loadWeakRetained(&self->_selectedChoice);
-  -[BFFFlowItemDelegate flowItemDone:nextItemClass:](v2, "flowItemDone:nextItemClass:", self, [WeakRetained nextControllerClass]);
+  -[BFFFlowItemDelegate flowItemDone:nextItemClass:](delegate, "flowItemDone:nextItemClass:", self, [WeakRetained nextControllerClass]);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(SetupChoiceController *)v6 _useTableLayout])
+  objc_storeStrong(location, view);
+  if ([(SetupChoiceController *)selfCopy _useTableLayout])
   {
-    v7 = [(NSArray *)v6->_choices count];
+    v7 = [(NSArray *)selfCopy->_choices count];
   }
 
   else
@@ -905,26 +905,26 @@ LABEL_11:
   return v7;
 }
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4
+- (void)configureCell:(id)cell atIndexPath:(id)path
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cell);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v5 = [location[0] textLabel];
-  v6 = -[NSArray objectAtIndexedSubscript:](v17->_choices, "objectAtIndexedSubscript:", [v15 row]);
-  v7 = [v6 localizedTitle];
-  [v5 setText:v7];
+  objc_storeStrong(&v15, path);
+  textLabel = [location[0] textLabel];
+  v6 = -[NSArray objectAtIndexedSubscript:](selfCopy->_choices, "objectAtIndexedSubscript:", [v15 row]);
+  localizedTitle = [v6 localizedTitle];
+  [textLabel setText:localizedTitle];
 
   v13 = 0;
   v8 = 0;
-  if ([(SetupChoiceController *)v17 wantsNextButton])
+  if ([(SetupChoiceController *)selfCopy wantsNextButton])
   {
     v9 = [v15 row];
-    choices = v17->_choices;
-    WeakRetained = objc_loadWeakRetained(&v17->_selectedChoice);
+    choices = selfCopy->_choices;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_selectedChoice);
     v13 = 1;
     v8 = v9 == [(NSArray *)choices indexOfObject:?];
   }
@@ -936,25 +936,25 @@ LABEL_11:
   if (v8)
   {
     [location[0] setAccessoryType:3];
-    v11 = [location[0] textLabel];
+    textLabel2 = [location[0] textLabel];
     v12 = +[UIColor tableCellBlueTextColor];
-    [v11 setTextColor:v12];
+    [textLabel2 setTextColor:v12];
   }
 
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, cell);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, path);
   [v8 setSeparatorStyle:1];
   [v8 _setShouldHaveFullLengthTopSeparator:0];
   [v8 _setShouldHaveFullLengthBottomSeparator:0];
@@ -963,21 +963,21 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, path);
   v7 = [location[0] dequeueReusableCellWithIdentifier:@"CELL"];
   if (!v7)
   {
     v7 = [[BuddySetupTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"CELL"];
   }
 
-  [(SetupChoiceController *)v10 configureCell:v7 atIndexPath:v8];
+  [(SetupChoiceController *)selfCopy configureCell:v7 atIndexPath:v8];
   v5 = v7;
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
@@ -985,15 +985,15 @@ LABEL_11:
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = [(SetupChoiceController *)v16 tableView:location[0] cellForRowAtIndexPath:v14];
+  objc_storeStrong(&v14, path);
+  v5 = [(SetupChoiceController *)selfCopy tableView:location[0] cellForRowAtIndexPath:v14];
   [v5 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v7 = v6;
   v8 = +[BFFStyle sharedStyle];
@@ -1017,60 +1017,60 @@ LABEL_11:
   return v17;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  -[SetupChoiceController setSelectedChoiceIndex:](v7, "setSelectedChoiceIndex:", [v5 row]);
-  if ([(SetupChoiceController *)v7 wantsNextButton])
+  objc_storeStrong(&v5, path);
+  -[SetupChoiceController setSelectedChoiceIndex:](selfCopy, "setSelectedChoiceIndex:", [v5 row]);
+  if ([(SetupChoiceController *)selfCopy wantsNextButton])
   {
     [location[0] deselectRowAtIndexPath:v5 animated:1];
   }
 
   else
   {
-    [(SetupChoiceController *)v7 checkChoiceValid];
+    [(SetupChoiceController *)selfCopy checkChoiceValid];
   }
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v7->_serviceFooterView;
+  objc_storeStrong(location, view);
+  v4 = selfCopy->_serviceFooterView;
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v14->_serviceFooterView)
+  objc_storeStrong(location, view);
+  if (selfCopy->_serviceFooterView)
   {
-    v4 = [(BuddyTableViewController *)v14 tableView];
-    [(UITableView *)v4 separatorInset];
-    [(BuddyAppleIDTableHeaderView *)v14->_serviceFooterView setLeftPadding:v5];
+    tableView = [(BuddyTableViewController *)selfCopy tableView];
+    [(UITableView *)tableView separatorInset];
+    [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView setLeftPadding:v5];
 
     if ((BFFIsiPad() & 1) == 0)
     {
-      v6 = [(BuddyTableViewController *)v14 tableView];
-      [(UITableView *)v6 separatorInset];
-      [(BuddyAppleIDTableHeaderView *)v14->_serviceFooterView setRightPadding:v7];
+      tableView2 = [(BuddyTableViewController *)selfCopy tableView];
+      [(UITableView *)tableView2 separatorInset];
+      [(BuddyAppleIDTableHeaderView *)selfCopy->_serviceFooterView setRightPadding:v7];
     }
 
-    serviceFooterView = v14->_serviceFooterView;
+    serviceFooterView = selfCopy->_serviceFooterView;
     [location[0] bounds];
     sub_1000FD4C0();
     [(BuddyAppleIDTableHeaderView *)serviceFooterView sizeThatFits:v9, v10];
@@ -1086,30 +1086,30 @@ LABEL_11:
   return v15;
 }
 
-- (id)viewForFooterInTableView:(id)a3
+- (id)viewForFooterInTableView:(id)view
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6->_learnMoreView;
+  objc_storeStrong(location, view);
+  v3 = selfCopy->_learnMoreView;
   objc_storeStrong(location, 0);
   return v3;
 }
 
-- (double)heightForFooterInTableView:(id)a3
+- (double)heightForFooterInTableView:(id)view
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTableViewController *)v12 tableView];
-  [(UITableView *)v3 separatorInset];
-  [(BuddyAppleIDLinkView *)v12->_learnMoreView setSidePadding:v4];
+  objc_storeStrong(location, view);
+  tableView = [(BuddyTableViewController *)selfCopy tableView];
+  [(UITableView *)tableView separatorInset];
+  [(BuddyAppleIDLinkView *)selfCopy->_learnMoreView setSidePadding:v4];
 
-  if (v12->_learnMoreView)
+  if (selfCopy->_learnMoreView)
   {
-    learnMoreView = v12->_learnMoreView;
+    learnMoreView = selfCopy->_learnMoreView;
     [location[0] bounds];
     sub_1000FD4C0();
     [(BuddyAppleIDLinkView *)learnMoreView sizeThatFits:v6, v7];

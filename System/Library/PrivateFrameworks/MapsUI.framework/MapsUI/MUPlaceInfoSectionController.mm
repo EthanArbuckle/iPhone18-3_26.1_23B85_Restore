@@ -2,7 +2,7 @@
 - (BOOL)_shouldShowRapEditButtonForDetails;
 - (BOOL)_shouldShowRapEditButtonForHours;
 - (GEOInlineRapEnablement)inlineRapEnablement;
-- (MUPlaceInfoSectionController)initWithPlaceItem:(id)a3 configuration:(id)a4;
+- (MUPlaceInfoSectionController)initWithPlaceItem:(id)item configuration:(id)configuration;
 - (MUPlaceInfoSectionControllerDelegate)placeInfoDelegate;
 - (MUPlaceSectionFooterViewModel)sectionFooterViewModel;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
@@ -10,28 +10,28 @@
 - (NSArray)sectionViews;
 - (id)_createAddressItem;
 - (id)_loadHoursContentViewIfNeeded;
-- (id)_loadPlaceInfoAddress:(id)a3 contact:(id)a4;
+- (id)_loadPlaceInfoAddress:(id)address contact:(id)contact;
 - (id)_loadPlaceInfoContentIfNeeded;
 - (id)_loadRAPStatusViewIfNeeded;
-- (id)_loadViewWithContactMetadata:(id)a3;
+- (id)_loadViewWithContactMetadata:(id)metadata;
 - (id)_rapEditPlaceDetailsMenu;
 - (id)draggableContent;
 - (id)hoursSectionHeaderViewModel;
-- (id)labeledValuesForContactValues:(id)a3 type:(int64_t)a4;
+- (id)labeledValuesForContactValues:(id)values type:(int64_t)type;
 - (int)_attributionStyle;
 - (void)_buildSections;
-- (void)_handleFactoidTap:(id)a3 withReference:(id)a4;
-- (void)_performActionItem:(id)a3 withOptions:(id)a4;
-- (void)_populateRevealedAnalyticsModule:(id)a3;
+- (void)_handleFactoidTap:(id)tap withReference:(id)reference;
+- (void)_performActionItem:(id)item withOptions:(id)options;
+- (void)_populateRevealedAnalyticsModule:(id)module;
 - (void)_rapEditPlaceHoursSectionHeaderButtonTapped;
-- (void)_refineMapItemForIdentifier:(id)a3 completion:(id)a4;
+- (void)_refineMapItemForIdentifier:(id)identifier completion:(id)completion;
 - (void)_tappedAddressItem;
-- (void)_tappedContactOfType:(int64_t)a3 withLabeledValue:(id)a4;
+- (void)_tappedContactOfType:(int64_t)type withLabeledValue:(id)value;
 - (void)_tappedMessageType;
 - (void)_tappedViewRAPReport;
-- (void)hoursSectionView:(id)a3 didExpand:(BOOL)a4 forConfiguration:(id)a5;
+- (void)hoursSectionView:(id)view didExpand:(BOOL)expand forConfiguration:(id)configuration;
 - (void)refreshContents;
-- (void)setPlaceNumberOfReportsInReview:(unint64_t)a3;
+- (void)setPlaceNumberOfReportsInReview:(unint64_t)review;
 @end
 
 @implementation MUPlaceInfoSectionController
@@ -50,21 +50,21 @@
   return WeakRetained;
 }
 
-- (void)_populateRevealedAnalyticsModule:(id)a3
+- (void)_populateRevealedAnalyticsModule:(id)module
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  moduleCopy = module;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  v7 = [v6 supportsInlineReportAnIssue];
+  availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  supportsInlineReportAnIssue = [availability supportsInlineReportAnIssue];
 
-  if (v7)
+  if (supportsInlineReportAnIssue)
   {
-    v30 = v4;
-    v8 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-    v9 = [v8 supportsHours];
+    v30 = moduleCopy;
+    availability2 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+    supportsHours = [availability2 supportsHours];
 
-    if ((v9 & 1) == 0)
+    if ((supportsHours & 1) == 0)
     {
       v10 = [MEMORY[0x1E69A24B0] moduleButtonForType:53];
       [v5 _mapsui_addObjectIfNotNil:v10];
@@ -95,8 +95,8 @@
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v16 = [v15 viewModels];
-          v17 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
+          viewModels = [v15 viewModels];
+          v17 = [viewModels countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v17)
           {
             v18 = v17;
@@ -108,22 +108,22 @@
               {
                 if (*v37 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(viewModels);
                 }
 
                 v21 = *(*(&v36 + 1) + 8 * v20);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v22 = [v21 analyticsButtonValue];
-                  [v5 _mapsui_addObjectIfNotNil:v22];
+                  analyticsButtonValue = [v21 analyticsButtonValue];
+                  [v5 _mapsui_addObjectIfNotNil:analyticsButtonValue];
                 }
 
                 ++v20;
               }
 
               while (v18 != v20);
-              v18 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
+              v18 = [viewModels countByEnumeratingWithState:&v36 objects:v45 count:16];
             }
 
             while (v18);
@@ -139,7 +139,7 @@
       while (v12);
     }
 
-    v4 = v30;
+    moduleCopy = v30;
   }
 
   if ([v5 count])
@@ -175,7 +175,7 @@
       while (v26);
     }
 
-    [v4 setInfos:v23];
+    [moduleCopy setInfos:v23];
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -183,8 +183,8 @@
 
 - (id)draggableContent
 {
-  v3 = [(NSArray *)self->_sectionViews firstObject];
-  v4 = MUIdiomInTraitEnvironment(v3);
+  firstObject = [(NSArray *)self->_sectionViews firstObject];
+  v4 = MUIdiomInTraitEnvironment(firstObject);
 
   if (v4 == 5)
   {
@@ -222,96 +222,96 @@ uint64_t __48__MUPlaceInfoSectionController_draggableContent__block_invoke(uint6
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)hoursSectionView:(id)a3 didExpand:(BOOL)a4 forConfiguration:(id)a5
+- (void)hoursSectionView:(id)view didExpand:(BOOL)expand forConfiguration:(id)configuration
 {
-  v5 = a4;
-  v7 = a5;
-  if (v5)
+  expandCopy = expand;
+  configurationCopy = configuration;
+  if (expandCopy)
   {
-    v9 = v7;
-    if ([v7 isServiceHours])
+    v9 = configurationCopy;
+    if ([configurationCopy isServiceHours])
     {
-      v8 = [v9 hoursName];
+      hoursName = [v9 hoursName];
     }
 
     else
     {
-      v8 = 0;
+      hoursName = 0;
     }
 
-    [(MUPlaceSectionController *)self captureInfoCardAction:6012 eventValue:v8 feedbackType:0];
+    [(MUPlaceSectionController *)self captureInfoCardAction:6012 eventValue:hoursName feedbackType:0];
 
-    v7 = v9;
+    configurationCopy = v9;
   }
 }
 
-- (void)_performActionItem:(id)a3 withOptions:(id)a4
+- (void)_performActionItem:(id)item withOptions:(id)options
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v14 = *MEMORY[0x1E696F108];
-  v7 = a3;
+  itemCopy = item;
   v8 = [(MUPlaceSectionController *)self analyticsModuleForAction:0 presentationOptions:0];
   v15[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v10 = [v9 mutableCopy];
 
-  if (v6)
+  if (optionsCopy)
   {
-    [v10 addEntriesFromDictionary:v6];
+    [v10 addEntriesFromDictionary:optionsCopy];
   }
 
-  v11 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration actionDelegate];
+  actionDelegate = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration actionDelegate];
   v12 = [v10 copy];
-  [v11 performAction:v7 options:v12 completion:0];
+  [actionDelegate performAction:itemCopy options:v12 completion:0];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_rapEditPlaceHoursSectionHeaderButtonTapped
 {
-  v3 = [(MUPlaceInfoSectionController *)self placeInfoDelegate];
-  [v3 placeInfoSectionController:self didSelectEditPlaceDetailsOfType:4];
+  placeInfoDelegate = [(MUPlaceInfoSectionController *)self placeInfoDelegate];
+  [placeInfoDelegate placeInfoSectionController:self didSelectEditPlaceDetailsOfType:4];
 }
 
 - (id)_rapEditPlaceDetailsMenu
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  inlineRapEnablement = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+  v5 = inlineRapEnablement;
+  if (inlineRapEnablement)
   {
-    if ([v4 isPhoneEditable])
+    if ([inlineRapEnablement isPhoneEditable])
     {
-      [v3 addObject:&unk_1F450DF28];
+      [array addObject:&unk_1F450DF28];
     }
 
     if ([v5 isWebsiteEditable])
     {
-      [v3 addObject:&unk_1F450DF40];
+      [array addObject:&unk_1F450DF40];
     }
 
     if ([v5 isAddressEditable])
     {
-      [v3 addObject:&unk_1F450DF58];
+      [array addObject:&unk_1F450DF58];
     }
 
-    [v3 addObject:&unk_1F450DF70];
+    [array addObject:&unk_1F450DF70];
   }
 
   else
   {
-    [v3 addObjectsFromArray:{&unk_1F450E398, 0}];
+    [array addObjectsFromArray:{&unk_1F450E398, 0}];
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = array;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
@@ -325,13 +325,13 @@ uint64_t __48__MUPlaceInfoSectionController_draggableContent__block_invoke(uint6
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * i) integerValue];
-        v11 = v10;
+        integerValue = [*(*(&v22 + 1) + 8 * i) integerValue];
+        v11 = integerValue;
         v12 = MEMORY[0x1E69DC628];
         v13 = &stru_1F44CA030;
-        if (v10 <= 5)
+        if (integerValue <= 5)
         {
-          v13 = _MULocalizedStringFromThisBundle(off_1E821A440[v10]);
+          v13 = _MULocalizedStringFromThisBundle(off_1E821A440[integerValue]);
         }
 
         v20[0] = MEMORY[0x1E69E9820];
@@ -342,7 +342,7 @@ uint64_t __48__MUPlaceInfoSectionController_draggableContent__block_invoke(uint6
         v21[1] = v11;
         v14 = [v12 actionWithTitle:v13 image:0 identifier:0 handler:v20];
 
-        [v6 addObject:v14];
+        [array2 addObject:v14];
         objc_destroyWeak(v21);
       }
 
@@ -352,7 +352,7 @@ uint64_t __48__MUPlaceInfoSectionController_draggableContent__block_invoke(uint6
     while (v7);
   }
 
-  v15 = [MEMORY[0x1E69DCC60] menuWithChildren:v6];
+  v15 = [MEMORY[0x1E69DCC60] menuWithChildren:array2];
   objc_destroyWeak(&location);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -375,45 +375,45 @@ void __56__MUPlaceInfoSectionController__rapEditPlaceDetailsMenu__block_invoke(u
 
 - (BOOL)_shouldShowRapEditButtonForHours
 {
-  v3 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-  if (v3)
+  inlineRapEnablement = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+  if (inlineRapEnablement)
   {
-    v4 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-    v5 = [v4 isHoursEditable];
+    inlineRapEnablement2 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+    isHoursEditable = [inlineRapEnablement2 isHoursEditable];
   }
 
   else
   {
-    v5 = 1;
+    isHoursEditable = 1;
   }
 
-  return v5;
+  return isHoursEditable;
 }
 
 - (BOOL)_shouldShowRapEditButtonForDetails
 {
-  v3 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-  if (v3)
+  inlineRapEnablement = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+  if (inlineRapEnablement)
   {
-    v4 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-    if ([v4 isPhoneEditable])
+    inlineRapEnablement2 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+    if ([inlineRapEnablement2 isPhoneEditable])
     {
-      v5 = 1;
+      isWebsiteEditable = 1;
     }
 
     else
     {
-      v6 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-      v5 = [v6 isWebsiteEditable];
+      inlineRapEnablement3 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+      isWebsiteEditable = [inlineRapEnablement3 isWebsiteEditable];
     }
   }
 
   else
   {
-    v5 = 1;
+    isWebsiteEditable = 1;
   }
 
-  return v5;
+  return isWebsiteEditable;
 }
 
 - (void)_tappedViewRAPReport
@@ -424,10 +424,10 @@ void __56__MUPlaceInfoSectionController__rapEditPlaceDetailsMenu__block_invoke(u
 
 - (void)_tappedAddressItem
 {
-  v3 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  v4 = [v3 showEditAddressForHome];
+  availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  showEditAddressForHome = [availability showEditAddressForHome];
 
-  if (v4)
+  if (showEditAddressForHome)
   {
     v5 = 25;
   }
@@ -454,25 +454,25 @@ void __56__MUPlaceInfoSectionController__rapEditPlaceDetailsMenu__block_invoke(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_tappedContactOfType:(int64_t)a3 withLabeledValue:(id)a4
+- (void)_tappedContactOfType:(int64_t)type withLabeledValue:(id)value
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ((a3 - 1) > 2)
+  valueCopy = value;
+  if ((type - 1) > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_1C587A1B8[a3 - 1];
+    v7 = qword_1C587A1B8[type - 1];
   }
 
   v8 = [MEMORY[0x1E696F308] actionItemWithType:v7];
-  if (v6)
+  if (valueCopy)
   {
     v11 = *MEMORY[0x1E696F0E8];
-    v12[0] = v6;
+    v12[0] = valueCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
@@ -486,18 +486,18 @@ void __56__MUPlaceInfoSectionController__rapEditPlaceDetailsMenu__block_invoke(u
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)labeledValuesForContactValues:(id)a3 type:(int64_t)a4
+- (id)labeledValuesForContactValues:(id)values type:(int64_t)type
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  if (![v6 supportsInlineReportAnIssue])
+  valuesCopy = values;
+  availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  if (![availability supportsInlineReportAnIssue])
   {
 
     goto LABEL_11;
   }
 
-  v7 = [v22 count];
+  v7 = [valuesCopy count];
 
   if (v7)
   {
@@ -507,7 +507,7 @@ LABEL_11:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v22;
+    obj = valuesCopy;
     v11 = [obj countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v11)
     {
@@ -522,7 +522,7 @@ LABEL_11:
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          v15 = [[MUContactLabeledValue alloc] initWithContactLabeledValue:v14 type:a4];
+          v15 = [[MUContactLabeledValue alloc] initWithContactLabeledValue:v14 type:type];
           [(MUContactLabeledValue *)v15 setActionVariant:1];
           objc_initWeak(&location, self);
           v24[0] = MEMORY[0x1E69E9820];
@@ -530,7 +530,7 @@ LABEL_11:
           v24[2] = __67__MUPlaceInfoSectionController_labeledValuesForContactValues_type___block_invoke_2;
           v24[3] = &unk_1E821A3D0;
           objc_copyWeak(v25, &location);
-          v25[1] = a4;
+          v25[1] = type;
           v24[4] = v14;
           [(MUContactLabeledValue *)v15 setActionBlock:v24];
           [(MUAddMissingDataLabeledValue *)v10 addObject:v15];
@@ -548,19 +548,19 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v8 = 3;
   }
 
   else
   {
-    v8 = 2 * (a4 == 1);
+    v8 = 2 * (type == 1);
   }
 
-  v9 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+  inlineRapEnablement = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
 
-  if (!v9 || v8 <= 1)
+  if (!inlineRapEnablement || v8 <= 1)
   {
     if (!v8)
     {
@@ -587,18 +587,18 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v19 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+  inlineRapEnablement2 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
   if (v8 == 3)
   {
-    v20 = [v19 isWebsiteEditable];
+    isWebsiteEditable = [inlineRapEnablement2 isWebsiteEditable];
   }
 
   else
   {
-    v20 = [v19 isPhoneEditable];
+    isWebsiteEditable = [inlineRapEnablement2 isPhoneEditable];
   }
 
-  v21 = v20;
+  v21 = isWebsiteEditable;
 
   if (v21)
   {
@@ -639,17 +639,17 @@ void __67__MUPlaceInfoSectionController_labeledValuesForContactValues_type___blo
 
 - (int)_attributionStyle
 {
-  v3 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+  moduleConfiguration = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
 
-  if (!v3)
+  if (!moduleConfiguration)
   {
     return 0;
   }
 
-  v4 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
-  v5 = [v4 attributionStyle];
+  moduleConfiguration2 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+  attributionStyle = [moduleConfiguration2 attributionStyle];
 
-  return v5;
+  return attributionStyle;
 }
 
 - (MUPlaceSectionFooterViewModel)sectionFooterViewModel
@@ -663,28 +663,28 @@ void __67__MUPlaceInfoSectionController_labeledValuesForContactValues_type___blo
 
   else
   {
-    v5 = [(MUPlaceInfoSectionController *)self _attributionStyle];
-    if (v5 == 1)
+    _attributionStyle = [(MUPlaceInfoSectionController *)self _attributionStyle];
+    if (_attributionStyle == 1)
     {
       v13 = _MULocalizedStringFromThisBundle(@"Developed in partnership with %@");
-      v14 = [(MUPlaceSectionController *)self mapItem];
-      v15 = [v14 name];
+      mapItem = [(MUPlaceSectionController *)self mapItem];
+      name = [mapItem name];
 
       v16 = [MUPlaceFooterAtributionViewModel alloc];
-      v26[0] = v15;
+      v26[0] = name;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
       v18 = [(MUPlaceFooterAtributionViewModel *)v16 initWithFormatString:v13 providerNames:v17 isInteractable:0];
       v19 = self->_sectionFooterViewModel;
       self->_sectionFooterViewModel = v18;
     }
 
-    else if (!v5)
+    else if (!_attributionStyle)
     {
       if (!-[MUPlaceInfoSectionControllerConfiguration isDeveloperPlaceCard](self->_configuration, "isDeveloperPlaceCard") || (-[MUPlaceSectionController mapItem](self, "mapItem"), v6 = objc_claimAutoreleasedReturnValue(), [v6 _attribution], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "requiresAttributionInDeveloperPlaceCard"), v7, v6, v8))
       {
-        v9 = [(MUPlaceSectionController *)self mapItem];
-        v10 = [v9 _attribution];
-        v11 = [MUPlaceFooterAtributionViewModel viewModelForMapItemAttribution:v10];
+        mapItem2 = [(MUPlaceSectionController *)self mapItem];
+        _attribution = [mapItem2 _attribution];
+        v11 = [MUPlaceFooterAtributionViewModel viewModelForMapItemAttribution:_attribution];
         v12 = self->_sectionFooterViewModel;
         self->_sectionFooterViewModel = v11;
       }
@@ -725,17 +725,17 @@ void __54__MUPlaceInfoSectionController_sectionFooterViewModel__block_invoke(uin
 
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel
 {
-  v3 = [(MUPlaceInfoSectionController *)self _shouldShowRapEditButtonForDetails];
+  _shouldShowRapEditButtonForDetails = [(MUPlaceInfoSectionController *)self _shouldShowRapEditButtonForDetails];
   v4 = [MUPlaceSectionHeaderViewModel alloc];
   v5 = _MULocalizedStringFromThisBundle(@"Details [Placecard]");
-  v6 = [(MUPlaceSectionHeaderViewModel *)v4 initWithTitleString:v5 showSeeMore:v3];
+  v6 = [(MUPlaceSectionHeaderViewModel *)v4 initWithTitleString:v5 showSeeMore:_shouldShowRapEditButtonForDetails];
 
-  v7 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  v8 = [v7 supportsInlineReportAnIssue];
+  availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  supportsInlineReportAnIssue = [availability supportsInlineReportAnIssue];
 
-  if (v8)
+  if (supportsInlineReportAnIssue)
   {
-    v9 = !v3;
+    v9 = !_shouldShowRapEditButtonForDetails;
   }
 
   else
@@ -748,8 +748,8 @@ void __54__MUPlaceInfoSectionController_sectionFooterViewModel__block_invoke(uin
     v10 = _MULocalizedStringFromThisBundle(@"Edit [Placecard RAP]");
     [(MUPlaceSectionHeaderViewModel *)v6 setSeeMoreButtonText:v10];
 
-    v11 = [(MUPlaceInfoSectionController *)self _rapEditPlaceDetailsMenu];
-    [(MUPlaceSectionHeaderViewModel *)v6 setSeeMoreButtonMenu:v11];
+    _rapEditPlaceDetailsMenu = [(MUPlaceInfoSectionController *)self _rapEditPlaceDetailsMenu];
+    [(MUPlaceSectionHeaderViewModel *)v6 setSeeMoreButtonMenu:_rapEditPlaceDetailsMenu];
 
     [(MUPlaceSectionHeaderViewModel *)v6 setTarget:self selector:sel__rapEditPlaceDetailsButtonTapped];
   }
@@ -759,17 +759,17 @@ void __54__MUPlaceInfoSectionController_sectionFooterViewModel__block_invoke(uin
 
 - (id)hoursSectionHeaderViewModel
 {
-  v3 = [(MUPlaceInfoSectionController *)self _shouldShowRapEditButtonForHours];
+  _shouldShowRapEditButtonForHours = [(MUPlaceInfoSectionController *)self _shouldShowRapEditButtonForHours];
   v4 = [MUPlaceSectionHeaderViewModel alloc];
   v5 = _MULocalizedStringFromThisBundle(@"Hours [Placecard Section Header]");
   v6 = [(MUPlaceSectionHeaderViewModel *)v4 initWithTitleString:v5 showSeeMore:1];
 
-  v7 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  v8 = [v7 supportsInlineReportAnIssue];
+  availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  supportsInlineReportAnIssue = [availability supportsInlineReportAnIssue];
 
-  if (v8)
+  if (supportsInlineReportAnIssue)
   {
-    v9 = !v3;
+    v9 = !_shouldShowRapEditButtonForHours;
   }
 
   else
@@ -788,23 +788,23 @@ void __54__MUPlaceInfoSectionController_sectionFooterViewModel__block_invoke(uin
   return v6;
 }
 
-- (void)_refineMapItemForIdentifier:(id)a3 completion:(id)a4
+- (void)_refineMapItemForIdentifier:(id)identifier completion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E696F298];
-  v7 = a3;
-  v8 = [v6 sharedService];
-  v15[0] = v7;
+  identifierCopy = identifier;
+  sharedService = [v6 sharedService];
+  v15[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v10 = [v8 ticketForIdentifiers:v9 traits:0];
+  v10 = [sharedService ticketForIdentifiers:v9 traits:0];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__MUPlaceInfoSectionController__refineMapItemForIdentifier_completion___block_invoke;
   v13[3] = &unk_1E821A3A8;
-  v14 = v5;
-  v11 = v5;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [v10 submitWithHandler:v13 networkActivity:0];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -822,13 +822,13 @@ void __71__MUPlaceInfoSectionController__refineMapItemForIdentifier_completion__
   }
 }
 
-- (void)_handleFactoidTap:(id)a3 withReference:(id)a4
+- (void)_handleFactoidTap:(id)tap withReference:(id)reference
 {
-  v6 = a3;
-  v7 = a4;
+  tapCopy = tap;
+  referenceCopy = reference;
   v8 = objc_alloc(MEMORY[0x1E696F280]);
-  v9 = [v6 placeIdentifier];
-  v10 = [v8 initWithGEOMapItemIdentifier:v9];
+  placeIdentifier = [tapCopy placeIdentifier];
+  v10 = [v8 initWithGEOMapItemIdentifier:placeIdentifier];
 
   if (v10)
   {
@@ -839,7 +839,7 @@ void __71__MUPlaceInfoSectionController__refineMapItemForIdentifier_completion__
     v13[2] = __64__MUPlaceInfoSectionController__handleFactoidTap_withReference___block_invoke;
     v13[3] = &unk_1E821A380;
     objc_copyWeak(&v16, &location);
-    v14 = v7;
+    v14 = referenceCopy;
     v12 = v11;
     v15 = v12;
     [(MUPlaceInfoSectionController *)self _refineMapItemForIdentifier:v10 completion:v13];
@@ -880,10 +880,10 @@ LABEL_7:
 - (id)_createAddressItem
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceSectionController *)self mapItem];
-  v4 = [v3 _addressFormattedAsLocation];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _addressFormattedAsLocation = [mapItem _addressFormattedAsLocation];
 
-  v5 = [v4 length];
+  v5 = [_addressFormattedAsLocation length];
   v6 = v5 != 0;
   if (v5)
   {
@@ -891,35 +891,35 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v22 = 138412290;
-      v23 = v4;
+      v23 = _addressFormattedAsLocation;
       _os_log_impl(&dword_1C5620000, v7, OS_LOG_TYPE_DEBUG, "We have a location formatted string %@", &v22, 0xCu);
     }
   }
 
   else
   {
-    v8 = [(MUPlaceSectionController *)self mapItem];
-    v9 = [v8 _addressFormattedAsMultilineAddress];
+    mapItem2 = [(MUPlaceSectionController *)self mapItem];
+    _addressFormattedAsMultilineAddress = [mapItem2 _addressFormattedAsMultilineAddress];
 
     v7 = MUGetPlaceCardLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v22 = 138412290;
-      v23 = v9;
+      v23 = _addressFormattedAsMultilineAddress;
       _os_log_impl(&dword_1C5620000, v7, OS_LOG_TYPE_DEBUG, "We have a multiline address string %@", &v22, 0xCu);
     }
 
-    v4 = v9;
+    _addressFormattedAsLocation = _addressFormattedAsMultilineAddress;
   }
 
-  v10 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+  moduleConfiguration = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
 
-  if (v10)
+  if (moduleConfiguration)
   {
-    v11 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
-    v12 = [v11 locationStyle];
+    moduleConfiguration2 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+    locationStyle = [moduleConfiguration2 locationStyle];
 
-    if (v12 == 2)
+    if (locationStyle == 2)
     {
       v13 = MUGetPlaceCardLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -931,10 +931,10 @@ LABEL_7:
       goto LABEL_19;
     }
 
-    v6 = v12 == 1;
+    v6 = locationStyle == 1;
   }
 
-  if (![v4 length])
+  if (![_addressFormattedAsLocation length])
   {
 LABEL_19:
     v14 = 0;
@@ -955,12 +955,12 @@ LABEL_19:
   v16 = _MULocalizedStringFromThisBundle(v15);
   [(MULabeledValueActionViewModel *)v14 setTitleString:v16];
 
-  [(MULabeledValueActionViewModel *)v14 setValueString:v4];
+  [(MULabeledValueActionViewModel *)v14 setValueString:_addressFormattedAsLocation];
   [(MULabeledValueActionViewModel *)v14 setAnalyticsTarget:1502];
-  v17 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  v18 = [v17 showEditAddressForHome];
+  availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  showEditAddressForHome = [availability showEditAddressForHome];
 
-  if (v18)
+  if (showEditAddressForHome)
   {
     [(MULabeledValueActionViewModel *)v14 setSymbolName:@"pencil"];
   }
@@ -987,25 +987,25 @@ LABEL_20:
 
 - (id)_loadRAPStatusViewIfNeeded
 {
-  v3 = [(MUPlaceInfoSectionController *)self placeNumberOfReportsInReview];
-  if (v3)
+  placeNumberOfReportsInReview = [(MUPlaceInfoSectionController *)self placeNumberOfReportsInReview];
+  if (placeNumberOfReportsInReview)
   {
-    v4 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-    if ([(MUDisclosureActionViewModel *)v4 supportsReportsInReview])
+    availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+    if ([(MUDisclosureActionViewModel *)availability supportsReportsInReview])
     {
-      v5 = [(MUPlaceInfoSectionController *)self placeNumberOfReportsInReview];
+      placeNumberOfReportsInReview2 = [(MUPlaceInfoSectionController *)self placeNumberOfReportsInReview];
 
-      if (!v5)
+      if (!placeNumberOfReportsInReview2)
       {
 LABEL_11:
-        v3 = self->_rapStatusContentView;
+        placeNumberOfReportsInReview = self->_rapStatusContentView;
         goto LABEL_12;
       }
 
-      v4 = objc_alloc_init(MUDisclosureActionViewModel);
-      v6 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-      v7 = [v6 countryCode];
-      v8 = [v7 isEqualToString:@"CN"];
+      availability = objc_alloc_init(MUDisclosureActionViewModel);
+      mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+      countryCode = [mEMORY[0x1E69A1CD8] countryCode];
+      v8 = [countryCode isEqualToString:@"CN"];
 
       if (v8)
       {
@@ -1019,10 +1019,10 @@ LABEL_11:
 
       v10 = _MULocalizedStringFromThisBundle(v9);
       v11 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v10 validFormatSpecifiers:@"%lu" error:0, -[MUPlaceInfoSectionController placeNumberOfReportsInReview](self, "placeNumberOfReportsInReview")];
-      [(MUDisclosureActionViewModel *)v4 setTitleString:v11];
-      v12 = [(MUPlaceInfoSectionController *)self userInfoProvider];
-      v13 = [v12 userIcon];
-      [(MUDisclosureActionViewModel *)v4 setImage:v13];
+      [(MUDisclosureActionViewModel *)availability setTitleString:v11];
+      userInfoProvider = [(MUPlaceInfoSectionController *)self userInfoProvider];
+      userIcon = [userInfoProvider userIcon];
+      [(MUDisclosureActionViewModel *)availability setImage:userIcon];
 
       objc_initWeak(&location, self);
       v18[0] = MEMORY[0x1E69E9820];
@@ -1030,13 +1030,13 @@ LABEL_11:
       v18[2] = __58__MUPlaceInfoSectionController__loadRAPStatusViewIfNeeded__block_invoke;
       v18[3] = &unk_1E821BAA0;
       objc_copyWeak(&v19, &location);
-      [(MUDisclosureActionViewModel *)v4 setActionBlock:v18];
+      [(MUDisclosureActionViewModel *)availability setActionBlock:v18];
       rapStatusContentView = self->_rapStatusContentView;
       if (!rapStatusContentView)
       {
         v15 = objc_alloc_init(MUDisclosureActionRowView);
         [(MKViewWithHairline *)v15 setBottomHairlineHidden:1];
-        [(MUDisclosureActionRowView *)v15 setViewModel:v4];
+        [(MUDisclosureActionRowView *)v15 setViewModel:availability];
         [(MUDisclosureActionRowView *)v15 setAccessibilityIdentifier:@"PlaceDetailsReportInReview"];
         v16 = self->_rapStatusContentView;
         self->_rapStatusContentView = v15;
@@ -1044,7 +1044,7 @@ LABEL_11:
         rapStatusContentView = self->_rapStatusContentView;
       }
 
-      [(MUDisclosureActionRowView *)rapStatusContentView setViewModel:v4];
+      [(MUDisclosureActionRowView *)rapStatusContentView setViewModel:availability];
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
     }
@@ -1054,7 +1054,7 @@ LABEL_11:
 
 LABEL_12:
 
-  return v3;
+  return placeNumberOfReportsInReview;
 }
 
 void __58__MUPlaceInfoSectionController__loadRAPStatusViewIfNeeded__block_invoke(uint64_t a1)
@@ -1068,22 +1068,22 @@ void __58__MUPlaceInfoSectionController__loadRAPStatusViewIfNeeded__block_invoke
   }
 }
 
-- (id)_loadViewWithContactMetadata:(id)a3
+- (id)_loadViewWithContactMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 emailAddresses];
-  v8 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:v7 type:2];
+  emailAddresses = [metadataCopy emailAddresses];
+  v8 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:emailAddresses type:2];
   [v6 addObjectsFromArray:v8];
 
-  v9 = [v5 phoneNumbers];
-  v10 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:v9 type:1];
+  phoneNumbers = [metadataCopy phoneNumbers];
+  v10 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:phoneNumbers type:1];
   [v6 addObjectsFromArray:v10];
 
-  v11 = [v5 urlAddresses];
+  urlAddresses = [metadataCopy urlAddresses];
 
-  v12 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:v11 type:3];
+  v12 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:urlAddresses type:3];
   [v6 addObjectsFromArray:v12];
 
   v13 = [MUPlaceInfoSectionView alloc];
@@ -1097,19 +1097,19 @@ void __58__MUPlaceInfoSectionController__loadRAPStatusViewIfNeeded__block_invoke
   return v15;
 }
 
-- (id)_loadPlaceInfoAddress:(id)a3 contact:(id)a4
+- (id)_loadPlaceInfoAddress:(id)address contact:(id)contact
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  contactCopy = contact;
   v8 = MUGetPlaceCardLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 identifier];
+    identifier = [addressCopy identifier];
     *buf = 138412546;
-    v32 = v9;
+    v32 = identifier;
     v33 = 2112;
-    v34 = v7;
+    v34 = contactCopy;
     _os_log_impl(&dword_1C5620000, v8, OS_LOG_TYPE_DEBUG, "Building section view for address: %@, contact: %@", buf, 0x16u);
   }
 
@@ -1121,16 +1121,16 @@ void __58__MUPlaceInfoSectionController__loadRAPStatusViewIfNeeded__block_invoke
   v11 = v10;
   v30 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(MUContactsViewModelGenerator *)self->_contactsViewModelGenerator viewModelForAddress:v6];
+  v13 = [(MUContactsViewModelGenerator *)self->_contactsViewModelGenerator viewModelForAddress:addressCopy];
   objc_initWeak(buf, self);
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __62__MUPlaceInfoSectionController__loadPlaceInfoAddress_contact___block_invoke_2;
   v25 = &unk_1E821A358;
   objc_copyWeak(&v28, buf);
-  v14 = v6;
+  v14 = addressCopy;
   v26 = v14;
-  v15 = v7;
+  v15 = contactCopy;
   v27 = v15;
   v12[2](v12, v13, &v22);
   v16 = [MUPlaceInfoSectionView alloc];
@@ -1194,37 +1194,37 @@ void __62__MUPlaceInfoSectionController__loadPlaceInfoAddress_contact___block_in
   v54 = v5;
   v70 = v54;
   v56 = _Block_copy(aBlock);
-  v6 = [(_MKPlaceItem *)self->_placeItem contact];
-  if (!v6)
+  contact = [(_MKPlaceItem *)self->_placeItem contact];
+  if (!contact)
   {
-    v7 = [(MUPlaceSectionController *)self mapItem];
-    v8 = [v7 _placeCardContact];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _placeCardContact = [mapItem _placeCardContact];
 
-    v6 = v8;
+    contact = _placeCardContact;
   }
 
-  v53 = v6;
-  v9 = [v6 emailAddresses];
-  v10 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:v9 type:2];
+  v53 = contact;
+  emailAddresses = [contact emailAddresses];
+  v10 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:emailAddresses type:2];
   [v54 addObjectsFromArray:v10];
 
-  v11 = [v53 phoneNumbers];
-  v12 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:v11 type:1];
+  phoneNumbers = [v53 phoneNumbers];
+  v12 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:phoneNumbers type:1];
   [v54 addObjectsFromArray:v12];
 
-  v13 = [v53 urlAddresses];
-  v14 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:v13 type:3];
+  urlAddresses = [v53 urlAddresses];
+  v14 = [(MUPlaceInfoSectionController *)self labeledValuesForContactValues:urlAddresses type:3];
   [v54 addObjectsFromArray:v14];
 
   if (![(MUPlaceInfoSectionControllerConfiguration *)self->_configuration isDeveloperPlaceCard])
   {
-    v15 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-    v16 = [v15 supportsMessagesForBusiness];
+    availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+    supportsMessagesForBusiness = [availability supportsMessagesForBusiness];
 
-    if (v16)
+    if (supportsMessagesForBusiness)
     {
-      v17 = [(MUPlaceSectionController *)self mapItem];
-      v18 = [MULabeledValueActionViewModel messageItemWithMapItem:v17];
+      mapItem2 = [(MUPlaceSectionController *)self mapItem];
+      v18 = [MULabeledValueActionViewModel messageItemWithMapItem:mapItem2];
 
       objc_initWeak(location, self);
       v67[0] = MEMORY[0x1E69E9820];
@@ -1240,20 +1240,20 @@ void __62__MUPlaceInfoSectionController__loadPlaceInfoAddress_contact___block_in
 
   if ([(MUPlaceInfoSectionControllerConfiguration *)self->_configuration isDeveloperPlaceCard])
   {
-    v19 = 0;
+    factoidReferences = 0;
   }
 
   else
   {
-    v20 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
-    v19 = [v20 factoidReferences];
+    moduleConfiguration = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+    factoidReferences = [moduleConfiguration factoidReferences];
   }
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v19;
+  obj = factoidReferences;
   v21 = [obj countByEnumeratingWithState:&v63 objects:v71 count:16];
   if (v21)
   {
@@ -1268,22 +1268,22 @@ void __62__MUPlaceInfoSectionController__loadPlaceInfoAddress_contact___block_in
         }
 
         v24 = *(*(&v63 + 1) + 8 * i);
-        v25 = [(_MKPlaceItem *)self->_placeItem mapItem];
-        v26 = [v25 _geoMapItem];
-        v27 = [v26 _encyclopedicInfo];
-        v28 = [v27 factoidAtIndex:{objc_msgSend(v24, "indexInFactoidComponent")}];
+        mapItem3 = [(_MKPlaceItem *)self->_placeItem mapItem];
+        _geoMapItem = [mapItem3 _geoMapItem];
+        _encyclopedicInfo = [_geoMapItem _encyclopedicInfo];
+        v28 = [_encyclopedicInfo factoidAtIndex:{objc_msgSend(v24, "indexInFactoidComponent")}];
 
         if (v28)
         {
           v29 = objc_alloc_init(MULabeledValueActionViewModel);
-          v30 = [v28 title];
-          [(MULabeledValueActionViewModel *)v29 setTitleString:v30];
+          title = [v28 title];
+          [(MULabeledValueActionViewModel *)v29 setTitleString:title];
 
-          v31 = [v28 unstructuredValue];
-          [(MULabeledValueActionViewModel *)v29 setValueString:v31];
+          unstructuredValue = [v28 unstructuredValue];
+          [(MULabeledValueActionViewModel *)v29 setValueString:unstructuredValue];
 
-          v32 = [v24 linkStyle];
-          switch(v32)
+          linkStyle = [v24 linkStyle];
+          switch(linkStyle)
           {
             case 2:
               [(MULabeledValueActionViewModel *)v29 setActionVariant:1];
@@ -1304,8 +1304,8 @@ LABEL_24:
               [(MULabeledValueActionViewModel *)v29 setSymbolName:v35];
               break;
             case 0:
-              v33 = [v28 placeIdentifier];
-              v34 = v33 == 0;
+              placeIdentifier = [v28 placeIdentifier];
+              v34 = placeIdentifier == 0;
 
               if (!v34)
               {
@@ -1329,8 +1329,8 @@ LABEL_24:
           if ([v28 shouldUseStructuredData])
           {
             v37 = [MUFactoidViewModel viewModelForFactoid:v28];
-            v38 = [v37 valueString];
-            [(MULabeledValueActionViewModel *)v29 setAlternativeTitleString:v38];
+            valueString = [v37 valueString];
+            [(MULabeledValueActionViewModel *)v29 setAlternativeTitleString:valueString];
 
             [(MULabeledValueActionViewModel *)v29 setEmphasizeValueString:1];
           }
@@ -1353,9 +1353,9 @@ LABEL_24:
         v29 = MUGetPlaceCardLog();
         if (os_log_type_enabled(&v29->super, OS_LOG_TYPE_FAULT))
         {
-          v36 = [v24 indexInFactoidComponent];
+          indexInFactoidComponent = [v24 indexInFactoidComponent];
           LODWORD(location[0]) = 67109120;
-          HIDWORD(location[0]) = v36;
+          HIDWORD(location[0]) = indexInFactoidComponent;
           _os_log_impl(&dword_1C5620000, &v29->super, OS_LOG_TYPE_FAULT, "Could not get factoid at index %d", location, 8u);
         }
 
@@ -1369,29 +1369,29 @@ LABEL_34:
   }
 
   objc_initWeak(location, self);
-  v39 = [(MUPlaceInfoSectionController *)self _createAddressItem];
+  _createAddressItem = [(MUPlaceInfoSectionController *)self _createAddressItem];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __61__MUPlaceInfoSectionController__loadPlaceInfoContentIfNeeded__block_invoke_2_82;
   v57[3] = &unk_1E821BAA0;
   objc_copyWeak(&v58, location);
-  v56[2](v56, v39, v57);
+  v56[2](v56, _createAddressItem, v57);
 
-  v40 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-  v41 = [v40 supportsShowingCoordinates];
+  availability2 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+  supportsShowingCoordinates = [availability2 supportsShowingCoordinates];
 
-  if (v41)
+  if (supportsShowingCoordinates)
   {
     v42 = [MUCoordinateViewModel alloc];
-    v43 = [(MUPlaceSectionController *)self mapItem];
-    v44 = [(MUCoordinateViewModel *)v42 initWithMapItem:v43 isUserLocation:[(_MKPlaceItem *)self->_placeItem options]& 1];
+    mapItem4 = [(MUPlaceSectionController *)self mapItem];
+    v44 = [(MUCoordinateViewModel *)v42 initWithMapItem:mapItem4 isUserLocation:[(_MKPlaceItem *)self->_placeItem options]& 1];
 
     v45 = objc_alloc_init(MULabeledValueActionViewModel);
-    v46 = [(MUCoordinateViewModel *)v44 titleString];
-    [(MULabeledValueActionViewModel *)v45 setTitleString:v46];
+    titleString = [(MUCoordinateViewModel *)v44 titleString];
+    [(MULabeledValueActionViewModel *)v45 setTitleString:titleString];
 
-    v47 = [(MUCoordinateViewModel *)v44 valueString];
-    [(MULabeledValueActionViewModel *)v45 setValueString:v47];
+    valueString2 = [(MUCoordinateViewModel *)v44 valueString];
+    [(MULabeledValueActionViewModel *)v45 setValueString:valueString2];
 
     v56[2](v56, v45, 0);
   }
@@ -1489,24 +1489,24 @@ void __61__MUPlaceInfoSectionController__loadPlaceInfoContentIfNeeded__block_inv
     goto LABEL_11;
   }
 
-  v5 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration hoursConfiguration];
+  hoursConfiguration = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration hoursConfiguration];
 
-  if (!v5)
+  if (!hoursConfiguration)
   {
-    v9 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-    if ([v9 supportsInlineReportAnIssue])
+    availability = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+    if ([availability supportsInlineReportAnIssue])
     {
-      v10 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
-      if (![v10 supportsHours])
+      availability2 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration availability];
+      if (![availability2 supportsHours])
       {
-        v14 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-        if (v14)
+        inlineRapEnablement = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+        if (inlineRapEnablement)
         {
-          v15 = v14;
-          v16 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
-          v17 = [v16 isHoursEditable];
+          v15 = inlineRapEnablement;
+          inlineRapEnablement2 = [(MUPlaceInfoSectionController *)self inlineRapEnablement];
+          isHoursEditable = [inlineRapEnablement2 isHoursEditable];
 
-          if (!v17)
+          if (!isHoursEditable)
           {
             goto LABEL_9;
           }
@@ -1545,8 +1545,8 @@ LABEL_9:
   }
 
   v6 = [MUPlaceHoursSectionView alloc];
-  v7 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration hoursConfiguration];
-  v8 = [(MUPlaceHoursSectionView *)v6 initWithSectionViewConfiguration:v7];
+  hoursConfiguration2 = [(MUPlaceInfoSectionControllerConfiguration *)self->_configuration hoursConfiguration];
+  v8 = [(MUPlaceHoursSectionView *)v6 initWithSectionViewConfiguration:hoursConfiguration2];
 
   [(UIView *)v8 setExpandDelegate:self];
   [(UIView *)v8 setAccessibilityIdentifier:@"PlaceDetailsHours"];
@@ -1584,28 +1584,28 @@ void __61__MUPlaceInfoSectionController__loadHoursContentViewIfNeeded__block_inv
   sectionStackViews = self->_sectionStackViews;
   self->_sectionStackViews = v5;
 
-  v7 = [(_MKPlaceItem *)self->_placeItem contact];
-  if (v7 && MapsFeature_IsEnabled_MapsWally() && [(_MKPlaceItem *)self->_placeItem representsPerson])
+  contact = [(_MKPlaceItem *)self->_placeItem contact];
+  if (contact && MapsFeature_IsEnabled_MapsWally() && [(_MKPlaceItem *)self->_placeItem representsPerson])
   {
-    v8 = [[MUContactsViewModelGenerator alloc] initWithContact:v7];
+    v8 = [[MUContactsViewModelGenerator alloc] initWithContact:contact];
     contactsViewModelGenerator = self->_contactsViewModelGenerator;
     self->_contactsViewModelGenerator = v8;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [v7 postalAddresses];
-    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+    postalAddresses = [contact postalAddresses];
+    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __46__MUPlaceInfoSectionController__buildSections__block_invoke;
     v35[3] = &unk_1E821A2B8;
     v36 = v10;
-    v37 = self;
-    v13 = v7;
+    selfCopy = self;
+    v13 = contact;
     v38 = v13;
     v39 = v12;
     v14 = v12;
     v15 = v10;
-    [v11 enumerateObjectsUsingBlock:v35];
+    [postalAddresses enumerateObjectsUsingBlock:v35];
     v16 = [(MUPlaceInfoSectionController *)self _loadViewWithContactMetadata:v13];
     [v15 _mapsui_addObjectIfNotNil:v16];
 
@@ -1625,20 +1625,20 @@ void __61__MUPlaceInfoSectionController__loadHoursContentViewIfNeeded__block_inv
   else
   {
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v24 = [(MUPlaceInfoSectionController *)self _loadRAPStatusViewIfNeeded];
-    [v23 _mapsui_addObjectIfNotNil:v24];
+    _loadRAPStatusViewIfNeeded = [(MUPlaceInfoSectionController *)self _loadRAPStatusViewIfNeeded];
+    [v23 _mapsui_addObjectIfNotNil:_loadRAPStatusViewIfNeeded];
 
-    v25 = [(MUPlaceInfoSectionController *)self _loadHoursContentViewIfNeeded];
-    [v23 _mapsui_addObjectIfNotNil:v25];
+    _loadHoursContentViewIfNeeded = [(MUPlaceInfoSectionController *)self _loadHoursContentViewIfNeeded];
+    [v23 _mapsui_addObjectIfNotNil:_loadHoursContentViewIfNeeded];
 
-    v11 = [(MUPlaceInfoSectionController *)self _loadPlaceInfoContentIfNeeded];
-    [(NSMutableArray *)self->_sectionStackViews _mapsui_addObjectIfNotNil:v11];
-    [v23 _mapsui_addObjectIfNotNil:v11];
+    postalAddresses = [(MUPlaceInfoSectionController *)self _loadPlaceInfoContentIfNeeded];
+    [(NSMutableArray *)self->_sectionStackViews _mapsui_addObjectIfNotNil:postalAddresses];
+    [v23 _mapsui_addObjectIfNotNil:postalAddresses];
     v29 = MEMORY[0x1E69E9820];
     v30 = 3221225472;
     v31 = __46__MUPlaceInfoSectionController__buildSections__block_invoke_2;
     v32 = &unk_1E821A2E0;
-    v33 = self;
+    selfCopy2 = self;
     v34 = v23;
     v15 = v23;
     v26 = MUMap(v15, &v29);
@@ -1733,11 +1733,11 @@ MUPlaceSectionView *__46__MUPlaceInfoSectionController__buildSections__block_inv
 
 - (GEOInlineRapEnablement)inlineRapEnablement
 {
-  v2 = [(MUPlaceSectionController *)self mapItem];
-  v3 = [v2 _geoMapItem];
-  v4 = [v3 _inlineRapEnablement];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  _inlineRapEnablement = [_geoMapItem _inlineRapEnablement];
 
-  return v4;
+  return _inlineRapEnablement;
 }
 
 - (void)refreshContents
@@ -1746,28 +1746,28 @@ MUPlaceSectionView *__46__MUPlaceInfoSectionController__buildSections__block_inv
   {
     self->_needsUpdate = 0;
     [(MUPlaceInfoSectionController *)self _buildSections];
-    v4 = [(MUPlaceSectionController *)self delegate];
-    [v4 placeSectionControllerDidUpdateContent:self];
+    delegate = [(MUPlaceSectionController *)self delegate];
+    [delegate placeSectionControllerDidUpdateContent:self];
   }
 }
 
-- (void)setPlaceNumberOfReportsInReview:(unint64_t)a3
+- (void)setPlaceNumberOfReportsInReview:(unint64_t)review
 {
-  if (self->_placeNumberOfReportsInReview != a3)
+  if (self->_placeNumberOfReportsInReview != review)
   {
-    self->_placeNumberOfReportsInReview = a3;
+    self->_placeNumberOfReportsInReview = review;
     self->_needsUpdate = 1;
   }
 }
 
-- (MUPlaceInfoSectionController)initWithPlaceItem:(id)a3 configuration:(id)a4
+- (MUPlaceInfoSectionController)initWithPlaceItem:(id)item configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mapItem];
+  itemCopy = item;
+  configurationCopy = configuration;
+  mapItem = [itemCopy mapItem];
   v15.receiver = self;
   v15.super_class = MUPlaceInfoSectionController;
-  v10 = [(MUPlaceSectionController *)&v15 initWithMapItem:v9];
+  v10 = [(MUPlaceSectionController *)&v15 initWithMapItem:mapItem];
 
   if (v10)
   {
@@ -1778,8 +1778,8 @@ MUPlaceSectionView *__46__MUPlaceInfoSectionController__buildSections__block_inv
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceInfoSectionControllerInit", "", v14, 2u);
     }
 
-    objc_storeStrong(&v10->_configuration, a4);
-    objc_storeStrong(&v10->_placeItem, a3);
+    objc_storeStrong(&v10->_configuration, configuration);
+    objc_storeStrong(&v10->_placeItem, item);
     [(MUPlaceInfoSectionController *)v10 _buildSections];
     v12 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v12))

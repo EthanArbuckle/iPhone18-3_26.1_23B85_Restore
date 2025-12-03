@@ -26,7 +26,7 @@
   v7 = v5;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v9 = [a1 prs_errorWithCode:a3 underlyingError:0 userInfo:v8];
+  v9 = [self prs_errorWithCode:a3 underlyingError:0 userInfo:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 
@@ -72,7 +72,7 @@
   }
 
   [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  v15 = [a1 errorWithDomain:@"com.apple.PosterBoardServices.errorDomain" code:a3 userInfo:v12];
+  v15 = [self errorWithDomain:@"com.apple.PosterBoardServices.errorDomain" code:a3 userInfo:v12];
 
   return v15;
 }
@@ -84,7 +84,7 @@
   v10 = *MEMORY[0x1E696A578];
   v11[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [a1 prs_errorWithCode:2 userInfo:v6];
+  v7 = [self prs_errorWithCode:2 userInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 

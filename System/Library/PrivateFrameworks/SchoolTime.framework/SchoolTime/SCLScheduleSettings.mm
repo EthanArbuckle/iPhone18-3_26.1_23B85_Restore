@@ -1,18 +1,18 @@
 @interface SCLScheduleSettings
-- (BOOL)isActiveAtDate:(id)a3 calendar:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isActiveAtDate:(id)date calendar:(id)calendar;
+- (BOOL)isEqual:(id)equal;
 - (SCLScheduleSettings)init;
-- (SCLScheduleSettings)initWithCoder:(id)a3;
-- (SCLScheduleSettings)initWithSchoolModeScheduleSettings:(id)a3;
-- (id)dateIntervalForActiveScheduleOnOrAfterDate:(id)a3 calendar:(id)a4;
+- (SCLScheduleSettings)initWithCoder:(id)coder;
+- (SCLScheduleSettings)initWithSchoolModeScheduleSettings:(id)settings;
+- (id)dateIntervalForActiveScheduleOnOrAfterDate:(id)date calendar:(id)calendar;
 - (id)debugDescription;
 - (id)description;
-- (id)endTimeForDay:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)recurrenceForActiveScheduleOnOrAfterDate:(id)a3 calendar:(id)a4;
-- (id)startTimeForDay:(int64_t)a3;
+- (id)endTimeForDay:(int64_t)day;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)recurrenceForActiveScheduleOnOrAfterDate:(id)date calendar:(id)calendar;
+- (id)startTimeForDay:(int64_t)day;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLScheduleSettings
@@ -32,34 +32,34 @@
   return v2;
 }
 
-- (SCLScheduleSettings)initWithSchoolModeScheduleSettings:(id)a3
+- (SCLScheduleSettings)initWithSchoolModeScheduleSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = SCLScheduleSettings;
   v5 = [(SCLScheduleSettings *)&v9 init];
   if (v5)
   {
-    v6 = [v4 schedule];
+    schedule = [settingsCopy schedule];
     schedule = v5->_schedule;
-    v5->_schedule = v6;
+    v5->_schedule = schedule;
 
-    v5->_enabled = [v4 isEnabled];
+    v5->_enabled = [settingsCopy isEnabled];
     v5->_version = [objc_opt_class() version];
   }
 
   return v5;
 }
 
-- (SCLScheduleSettings)initWithCoder:(id)a3
+- (SCLScheduleSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SCLScheduleSettings;
   v5 = [(SCLScheduleSettings *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"schedule"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"schedule"];
     schedule = v5->_schedule;
     v5->_schedule = v6;
 
@@ -70,23 +70,23 @@
       v5->_schedule = v8;
     }
 
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   schedule = self->_schedule;
-  v5 = a3;
-  [v5 encodeObject:schedule forKey:@"schedule"];
-  [v5 encodeBool:self->_enabled forKey:@"enabled"];
-  [v5 encodeInteger:self->_version forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:schedule forKey:@"schedule"];
+  [coderCopy encodeBool:self->_enabled forKey:@"enabled"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SCLMutableScheduleSettings alloc];
 
@@ -95,26 +95,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SCLScheduleSettings *)self schedule];
-  v4 = [v3 hash];
+  schedule = [(SCLScheduleSettings *)self schedule];
+  v4 = [schedule hash];
   enabled = self->_enabled;
 
   return v4 ^ enabled;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 isEnabled];
-    if (v6 == [(SCLScheduleSettings *)self isEnabled])
+    v5 = equalCopy;
+    isEnabled = [v5 isEnabled];
+    if (isEnabled == [(SCLScheduleSettings *)self isEnabled])
     {
-      v8 = [v5 schedule];
-      v9 = [(SCLScheduleSettings *)self schedule];
-      v7 = [v8 isEqual:v9];
+      schedule = [v5 schedule];
+      schedule2 = [(SCLScheduleSettings *)self schedule];
+      v7 = [schedule isEqual:schedule2];
     }
 
     else
@@ -136,9 +136,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SCLScheduleSettings *)self isEnabled];
-  v7 = [(SCLScheduleSettings *)self schedule];
-  v8 = [v3 stringWithFormat:@"<%@ %p enabled=%u; schedule=%@>", v5, self, v6, v7];;
+  isEnabled = [(SCLScheduleSettings *)self isEnabled];
+  schedule = [(SCLScheduleSettings *)self schedule];
+  v8 = [v3 stringWithFormat:@"<%@ %p enabled=%u; schedule=%@>", v5, self, isEnabled, schedule];;
 
   return v8;
 }
@@ -148,46 +148,46 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SCLScheduleSettings *)self isEnabled];
-  v7 = [(SCLScheduleSettings *)self schedule];
-  v8 = [v7 debugDescription];
-  v9 = [v3 stringWithFormat:@"<%@ %p enabled=%u; schedule=%@>", v5, self, v6, v8];;
+  isEnabled = [(SCLScheduleSettings *)self isEnabled];
+  schedule = [(SCLScheduleSettings *)self schedule];
+  v8 = [schedule debugDescription];
+  v9 = [v3 stringWithFormat:@"<%@ %p enabled=%u; schedule=%@>", v5, self, isEnabled, v8];;
 
   return v9;
 }
 
-- (id)startTimeForDay:(int64_t)a3
+- (id)startTimeForDay:(int64_t)day
 {
-  v4 = [(SCLScheduleSettings *)self schedule];
-  v5 = [v4 startTimeForDay:a3];
+  schedule = [(SCLScheduleSettings *)self schedule];
+  v5 = [schedule startTimeForDay:day];
 
   return v5;
 }
 
-- (id)endTimeForDay:(int64_t)a3
+- (id)endTimeForDay:(int64_t)day
 {
-  v4 = [(SCLScheduleSettings *)self schedule];
-  v5 = [v4 endTimeForDay:a3];
+  schedule = [(SCLScheduleSettings *)self schedule];
+  v5 = [schedule endTimeForDay:day];
 
   return v5;
 }
 
-- (BOOL)isActiveAtDate:(id)a3 calendar:(id)a4
+- (BOOL)isActiveAtDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = [(SCLScheduleSettings *)self dateIntervalForActiveScheduleOnOrAfterDate:v6 calendar:a4];
-  LOBYTE(self) = [v7 containsDate:v6];
+  dateCopy = date;
+  v7 = [(SCLScheduleSettings *)self dateIntervalForActiveScheduleOnOrAfterDate:dateCopy calendar:calendar];
+  LOBYTE(self) = [v7 containsDate:dateCopy];
 
   return self;
 }
 
-- (id)dateIntervalForActiveScheduleOnOrAfterDate:(id)a3 calendar:(id)a4
+- (id)dateIntervalForActiveScheduleOnOrAfterDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dateCopy = date;
+  calendarCopy = calendar;
+  v8 = calendarCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (dateCopy && calendarCopy)
   {
     if (!-[SCLScheduleSettings isEnabled](self, "isEnabled") || (-[SCLScheduleSettings schedule](self, "schedule"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEmpty], v10, (v11 & 1) != 0))
     {
@@ -195,29 +195,29 @@
       goto LABEL_21;
     }
 
-    v12 = [(SCLScheduleSettings *)self schedule];
-    v13 = [v12 recurrences];
+    schedule = [(SCLScheduleSettings *)self schedule];
+    recurrences = [schedule recurrences];
 
-    v14 = [(SCLScheduleSettings *)self schedule];
-    v15 = [v14 scheduledDays];
+    schedule2 = [(SCLScheduleSettings *)self schedule];
+    scheduledDays = [schedule2 scheduledDays];
 
-    if (v15 == 127)
+    if (scheduledDays == 127)
     {
       v70 = 0;
       v71 = &v70;
       v72 = 0x2020000000;
-      v16 = [v13 firstObject];
-      v17 = [v13 lastObject];
-      if ([v16 intersectsRecurrence:v17])
+      firstObject = [recurrences firstObject];
+      lastObject = [recurrences lastObject];
+      if ([firstObject intersectsRecurrence:lastObject])
       {
         v18 = 1;
       }
 
       else
       {
-        v19 = [v13 lastObject];
-        v20 = [v13 firstObject];
-        v18 = [v19 isContiguousWithRecurrence:v20];
+        lastObject2 = [recurrences lastObject];
+        firstObject2 = [recurrences firstObject];
+        v18 = [lastObject2 isContiguousWithRecurrence:firstObject2];
       }
 
       LOBYTE(v73) = v18;
@@ -227,16 +227,16 @@
         v76[1] = 3221225472;
         v76[2] = __85__SCLScheduleSettings_Extended__dateIntervalForActiveScheduleOnOrAfterDate_calendar___block_invoke;
         v76[3] = &unk_279B6C8C0;
-        v77 = v13;
+        v77 = recurrences;
         v78 = &v70;
         [v77 enumerateObjectsUsingBlock:v76];
 
         if (v71[3])
         {
           v21 = objc_alloc(MEMORY[0x277CCA970]);
-          v22 = [MEMORY[0x277CBEAA8] distantPast];
-          v23 = [MEMORY[0x277CBEAA8] distantFuture];
-          v9 = [v21 initWithStartDate:v22 endDate:v23];
+          distantPast = [MEMORY[0x277CBEAA8] distantPast];
+          distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+          v9 = [v21 initWithStartDate:distantPast endDate:distantFuture];
 
           _Block_object_dispose(&v70, 8);
 LABEL_20:
@@ -262,34 +262,34 @@ LABEL_20:
     v61[1] = 3221225472;
     v61[2] = __85__SCLScheduleSettings_Extended__dateIntervalForActiveScheduleOnOrAfterDate_calendar___block_invoke_70;
     v61[3] = &unk_279B6C8E8;
-    v62 = v6;
+    v62 = dateCopy;
     v24 = v8;
     v63 = v24;
     v64 = &v70;
     v65 = &v66;
-    [v13 enumerateObjectsUsingBlock:v61];
-    if (v67[3] != 0x7FFFFFFFFFFFFFFFLL && [v13 count] >= 2)
+    [recurrences enumerateObjectsUsingBlock:v61];
+    if (v67[3] != 0x7FFFFFFFFFFFFFFFLL && [recurrences count] >= 2)
     {
-      v25 = [v13 objectAtIndexedSubscript:v67[3]];
-      v26 = [MEMORY[0x277CBEB18] array];
+      v25 = [recurrences objectAtIndexedSubscript:v67[3]];
+      array = [MEMORY[0x277CBEB18] array];
       v27 = v67[3];
-      v28 = [v13 count];
-      v29 = [v13 subarrayWithRange:{v27, v28 - v67[3]}];
-      [v26 addObjectsFromArray:v29];
+      v28 = [recurrences count];
+      v29 = [recurrences subarrayWithRange:{v27, v28 - v67[3]}];
+      [array addObjectsFromArray:v29];
 
-      v30 = [v13 subarrayWithRange:{0, v67[3]}];
-      [v26 addObjectsFromArray:v30];
+      v30 = [recurrences subarrayWithRange:{0, v67[3]}];
+      [array addObjectsFromArray:v30];
 
       v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
       [v31 addObject:v25];
       v54 = v25;
-      v32 = [v26 count];
+      v32 = [array count];
       v33 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{1, v32 - 1}];
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
       v58[2] = __85__SCLScheduleSettings_Extended__dateIntervalForActiveScheduleOnOrAfterDate_calendar___block_invoke_2;
       v58[3] = &unk_279B6C910;
-      v34 = v26;
+      v34 = array;
       v59 = v34;
       v35 = v31;
       v60 = v35;
@@ -311,22 +311,22 @@ LABEL_20:
 
       if ([v39 count] >= 2)
       {
-        v53 = [v39 firstObject];
-        v40 = [v53 timeInterval];
-        v41 = [v40 startTime];
-        v42 = [v41 dateComponents];
+        firstObject3 = [v39 firstObject];
+        timeInterval = [firstObject3 timeInterval];
+        startTime = [timeInterval startTime];
+        dateComponents = [startTime dateComponents];
 
-        [v42 setWeekday:{objc_msgSend(v53, "day")}];
-        v52 = v42;
-        v43 = [v39 lastObject];
-        v44 = [v43 timeInterval];
-        v45 = [v44 endTime];
-        v46 = [v45 dateComponents];
+        [dateComponents setWeekday:{objc_msgSend(firstObject3, "day")}];
+        v52 = dateComponents;
+        lastObject3 = [v39 lastObject];
+        timeInterval2 = [lastObject3 timeInterval];
+        endTime = [timeInterval2 endTime];
+        dateComponents2 = [endTime dateComponents];
 
-        [v46 setWeekday:{objc_msgSend(v43, "day")}];
+        [dateComponents2 setWeekday:{objc_msgSend(lastObject3, "day")}];
         v47 = MEMORY[0x277CCA970];
-        v48 = [v71[5] startDate];
-        v49 = [v47 SCL_dateIntervalForActiveScheduleOnOrAfterDate:v48 calendar:v24 startComponents:v52 endComponents:v46];
+        startDate = [v71[5] startDate];
+        v49 = [v47 SCL_dateIntervalForActiveScheduleOnOrAfterDate:startDate calendar:v24 startComponents:v52 endComponents:dateComponents2];
         v50 = v71[5];
         v71[5] = v49;
       }
@@ -444,18 +444,18 @@ void __85__SCLScheduleSettings_Extended__dateIntervalForActiveScheduleOnOrAfterD
   }
 }
 
-- (id)recurrenceForActiveScheduleOnOrAfterDate:(id)a3 calendar:(id)a4
+- (id)recurrenceForActiveScheduleOnOrAfterDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dateCopy = date;
+  calendarCopy = calendar;
+  v8 = calendarCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (dateCopy && calendarCopy)
   {
     if (-[SCLScheduleSettings isEnabled](self, "isEnabled") && (-[SCLScheduleSettings schedule](self, "schedule"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEmpty], v10, (v11 & 1) == 0))
     {
-      v12 = [(SCLScheduleSettings *)self schedule];
-      v13 = [v12 recurrences];
+      schedule = [(SCLScheduleSettings *)self schedule];
+      recurrences = [schedule recurrences];
 
       v27[0] = 0;
       v27[1] = v27;
@@ -471,11 +471,11 @@ void __85__SCLScheduleSettings_Extended__dateIntervalForActiveScheduleOnOrAfterD
       v16 = 3221225472;
       v17 = __83__SCLScheduleSettings_Extended__recurrenceForActiveScheduleOnOrAfterDate_calendar___block_invoke;
       v18 = &unk_279B6C8E8;
-      v19 = v6;
+      v19 = dateCopy;
       v20 = v8;
       v21 = v27;
       v22 = &v23;
-      [v13 enumerateObjectsUsingBlock:&v15];
+      [recurrences enumerateObjectsUsingBlock:&v15];
       if (v24[3] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = 0;
@@ -483,7 +483,7 @@ void __85__SCLScheduleSettings_Extended__dateIntervalForActiveScheduleOnOrAfterD
 
       else
       {
-        v9 = [v13 objectAtIndexedSubscript:{v15, v16, v17, v18, v19}];
+        v9 = [recurrences objectAtIndexedSubscript:{v15, v16, v17, v18, v19}];
       }
 
       _Block_object_dispose(&v23, 8);

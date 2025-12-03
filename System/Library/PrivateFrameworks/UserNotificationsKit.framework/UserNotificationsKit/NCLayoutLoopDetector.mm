@@ -1,10 +1,10 @@
 @interface NCLayoutLoopDetector
-- (BOOL)layoutInProgressContainsNotificationRequest:(id)a3;
+- (BOOL)layoutInProgressContainsNotificationRequest:(id)request;
 - (NCLayoutLoopDetector)init;
 - (id)_savedNotificationLayoutsInProgress;
 - (void)_saveNotificationLayoutsInProgress;
-- (void)addNotificationRequestToLayoutsInProgress:(id)a3;
-- (void)removeNotificationRequestFromLayoutsInProgress:(id)a3;
+- (void)addNotificationRequestToLayoutsInProgress:(id)progress;
+- (void)removeNotificationRequestFromLayoutsInProgress:(id)progress;
 @end
 
 @implementation NCLayoutLoopDetector
@@ -17,10 +17,10 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(NCLayoutLoopDetector *)v2 _savedNotificationLayoutsInProgress];
-    if (v4)
+    _savedNotificationLayoutsInProgress = [(NCLayoutLoopDetector *)v2 _savedNotificationLayoutsInProgress];
+    if (_savedNotificationLayoutsInProgress)
     {
-      v5 = v4;
+      v5 = _savedNotificationLayoutsInProgress;
     }
 
     else
@@ -41,46 +41,46 @@
   return v3;
 }
 
-- (BOOL)layoutInProgressContainsNotificationRequest:(id)a3
+- (BOOL)layoutInProgressContainsNotificationRequest:(id)request
 {
   notificationLayoutsInProgress = self->_notificationLayoutsInProgress;
-  v4 = [a3 notificationIdentifier];
-  LOBYTE(notificationLayoutsInProgress) = [(NSMutableArray *)notificationLayoutsInProgress containsObject:v4];
+  notificationIdentifier = [request notificationIdentifier];
+  LOBYTE(notificationLayoutsInProgress) = [(NSMutableArray *)notificationLayoutsInProgress containsObject:notificationIdentifier];
 
   return notificationLayoutsInProgress;
 }
 
-- (void)addNotificationRequestToLayoutsInProgress:(id)a3
+- (void)addNotificationRequestToLayoutsInProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   notificationLayoutsInProgress = self->_notificationLayoutsInProgress;
-  v9 = v4;
-  v6 = [v4 notificationIdentifier];
-  LOBYTE(notificationLayoutsInProgress) = [(NSMutableArray *)notificationLayoutsInProgress containsObject:v6];
+  v9 = progressCopy;
+  notificationIdentifier = [progressCopy notificationIdentifier];
+  LOBYTE(notificationLayoutsInProgress) = [(NSMutableArray *)notificationLayoutsInProgress containsObject:notificationIdentifier];
 
   if ((notificationLayoutsInProgress & 1) == 0)
   {
     v7 = self->_notificationLayoutsInProgress;
-    v8 = [v9 notificationIdentifier];
-    [(NSMutableArray *)v7 addObject:v8];
+    notificationIdentifier2 = [v9 notificationIdentifier];
+    [(NSMutableArray *)v7 addObject:notificationIdentifier2];
 
     [(NCLayoutLoopDetector *)self _saveNotificationLayoutsInProgress];
   }
 }
 
-- (void)removeNotificationRequestFromLayoutsInProgress:(id)a3
+- (void)removeNotificationRequestFromLayoutsInProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   notificationLayoutsInProgress = self->_notificationLayoutsInProgress;
-  v9 = v4;
-  v6 = [v4 notificationIdentifier];
-  LODWORD(notificationLayoutsInProgress) = [(NSMutableArray *)notificationLayoutsInProgress containsObject:v6];
+  v9 = progressCopy;
+  notificationIdentifier = [progressCopy notificationIdentifier];
+  LODWORD(notificationLayoutsInProgress) = [(NSMutableArray *)notificationLayoutsInProgress containsObject:notificationIdentifier];
 
   if (notificationLayoutsInProgress)
   {
     v7 = self->_notificationLayoutsInProgress;
-    v8 = [v9 notificationIdentifier];
-    [(NSMutableArray *)v7 removeObject:v8];
+    notificationIdentifier2 = [v9 notificationIdentifier];
+    [(NSMutableArray *)v7 removeObject:notificationIdentifier2];
 
     [(NCLayoutLoopDetector *)self _saveNotificationLayoutsInProgress];
   }
@@ -89,8 +89,8 @@
 - (id)_savedNotificationLayoutsInProgress
 {
   objc_opt_class();
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"NCNotificationLayoutsInProgress"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"NCNotificationLayoutsInProgress"];
   v4 = UNSafeCast();
 
   return v4;

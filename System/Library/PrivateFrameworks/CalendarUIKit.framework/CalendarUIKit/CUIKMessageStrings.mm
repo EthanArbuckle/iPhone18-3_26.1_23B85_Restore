@@ -1,23 +1,23 @@
 @interface CUIKMessageStrings
-- (CUIKMessageStrings)initWithTitles:(id)a3 bodyStrings:(id)a4 comments:(int64_t)a5 timeProposals:(BOOL)a6 importantAttendee:(id)a7;
+- (CUIKMessageStrings)initWithTitles:(id)titles bodyStrings:(id)strings comments:(int64_t)comments timeProposals:(BOOL)proposals importantAttendee:(id)attendee;
 @end
 
 @implementation CUIKMessageStrings
 
-- (CUIKMessageStrings)initWithTitles:(id)a3 bodyStrings:(id)a4 comments:(int64_t)a5 timeProposals:(BOOL)a6 importantAttendee:(id)a7
+- (CUIKMessageStrings)initWithTitles:(id)titles bodyStrings:(id)strings comments:(int64_t)comments timeProposals:(BOOL)proposals importantAttendee:(id)attendee
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  titlesCopy = titles;
+  stringsCopy = strings;
+  attendeeCopy = attendee;
   v16 = [(CUIKMessageStrings *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_titleStrings, a3);
-    objc_storeStrong(&v17->_bodyStrings, a4);
-    v17->_comments = a5;
-    objc_storeStrong(&v17->_importantAttendee, a7);
-    v17->_timeProposals = a6;
+    objc_storeStrong(&v16->_titleStrings, titles);
+    objc_storeStrong(&v17->_bodyStrings, strings);
+    v17->_comments = comments;
+    objc_storeStrong(&v17->_importantAttendee, attendee);
+    v17->_timeProposals = proposals;
   }
 
   return v17;

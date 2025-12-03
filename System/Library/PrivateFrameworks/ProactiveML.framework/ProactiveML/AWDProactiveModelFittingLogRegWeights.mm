@@ -1,26 +1,26 @@
 @interface AWDProactiveModelFittingLogRegWeights
 - (BOOL)hasWeights;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWeightsL2norm:(BOOL)a3;
-- (void)setHasWeightsScaleFactor:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWeightsL2norm:(BOOL)l2norm;
+- (void)setHasWeightsScaleFactor:(BOOL)factor;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingLogRegWeights
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[9])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[9])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
@@ -274,24 +274,24 @@ LABEL_33:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v11 ^ v16 ^ [(AWDProactiveModelFittingQuantizedDenseVector *)self->_denseQuantizedWeights hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_29:
     v13 = 0;
@@ -299,13 +299,13 @@ LABEL_29:
   }
 
   modelInfo = self->_modelInfo;
-  if (modelInfo | *(v4 + 5) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
+  if (modelInfo | *(equalCopy + 5) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
   {
     goto LABEL_29;
   }
 
   sparseFloatWeights = self->_sparseFloatWeights;
-  if (sparseFloatWeights | *(v4 + 6))
+  if (sparseFloatWeights | *(equalCopy + 6))
   {
     if (![(AWDProactiveModelFittingSparseFloatVector *)sparseFloatWeights isEqual:?])
     {
@@ -314,7 +314,7 @@ LABEL_29:
   }
 
   minibatchStats = self->_minibatchStats;
-  if (minibatchStats | *(v4 + 4))
+  if (minibatchStats | *(equalCopy + 4))
   {
     if (![(AWDProactiveModelFittingMinibatchStats *)minibatchStats isEqual:?])
     {
@@ -323,7 +323,7 @@ LABEL_29:
   }
 
   evaluationMetrics = self->_evaluationMetrics;
-  if (evaluationMetrics | *(v4 + 3))
+  if (evaluationMetrics | *(equalCopy + 3))
   {
     if (![(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics isEqual:?])
     {
@@ -332,7 +332,7 @@ LABEL_29:
   }
 
   sparseQuantizedWeights = self->_sparseQuantizedWeights;
-  if (sparseQuantizedWeights | *(v4 + 7))
+  if (sparseQuantizedWeights | *(equalCopy + 7))
   {
     if (![(AWDProactiveModelFittingQuantizedSparseVector *)sparseQuantizedWeights isEqual:?])
     {
@@ -340,35 +340,35 @@ LABEL_29:
     }
   }
 
-  v11 = *(v4 + 72);
+  v11 = *(equalCopy + 72);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_weightsScaleFactor != *(v4 + 17))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_weightsScaleFactor != *(equalCopy + 17))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_weightsL2norm != *(v4 + 16))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_weightsL2norm != *(equalCopy + 16))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   denseQuantizedWeights = self->_denseQuantizedWeights;
-  if (denseQuantizedWeights | *(v4 + 2))
+  if (denseQuantizedWeights | *(equalCopy + 2))
   {
     v13 = [(AWDProactiveModelFittingQuantizedDenseVector *)denseQuantizedWeights isEqual:?];
   }
@@ -383,9 +383,9 @@ LABEL_30:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -393,23 +393,23 @@ LABEL_30:
     *(v5 + 72) |= 1u;
   }
 
-  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:a3];
+  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
-  v9 = [(AWDProactiveModelFittingSparseFloatVector *)self->_sparseFloatWeights copyWithZone:a3];
+  v9 = [(AWDProactiveModelFittingSparseFloatVector *)self->_sparseFloatWeights copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
-  v11 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:a3];
+  v11 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
-  v13 = [(AWDProactiveModelFittingEvalMetrics *)self->_evaluationMetrics copyWithZone:a3];
+  v13 = [(AWDProactiveModelFittingEvalMetrics *)self->_evaluationMetrics copyWithZone:zone];
   v14 = *(v6 + 24);
   *(v6 + 24) = v13;
 
-  v15 = [(AWDProactiveModelFittingQuantizedSparseVector *)self->_sparseQuantizedWeights copyWithZone:a3];
+  v15 = [(AWDProactiveModelFittingQuantizedSparseVector *)self->_sparseQuantizedWeights copyWithZone:zone];
   v16 = *(v6 + 56);
   *(v6 + 56) = v15;
 
@@ -427,113 +427,113 @@ LABEL_30:
     *(v6 + 72) |= 2u;
   }
 
-  v18 = [(AWDProactiveModelFittingQuantizedDenseVector *)self->_denseQuantizedWeights copyWithZone:a3];
+  v18 = [(AWDProactiveModelFittingQuantizedDenseVector *)self->_denseQuantizedWeights copyWithZone:zone];
   v19 = *(v6 + 16);
   *(v6 + 16) = v18;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 72) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_modelInfo)
   {
-    [v4 setModelInfo:?];
-    v4 = v6;
+    [toCopy setModelInfo:?];
+    toCopy = v6;
   }
 
   if (self->_sparseFloatWeights)
   {
     [v6 setSparseFloatWeights:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_minibatchStats)
   {
     [v6 setMinibatchStats:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_evaluationMetrics)
   {
     [v6 setEvaluationMetrics:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sparseQuantizedWeights)
   {
     [v6 setSparseQuantizedWeights:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 17) = LODWORD(self->_weightsScaleFactor);
-    *(v4 + 72) |= 4u;
+    *(toCopy + 17) = LODWORD(self->_weightsScaleFactor);
+    *(toCopy + 72) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 16) = LODWORD(self->_weightsL2norm);
-    *(v4 + 72) |= 2u;
+    *(toCopy + 16) = LODWORD(self->_weightsL2norm);
+    *(toCopy + 72) |= 2u;
   }
 
   if (self->_denseQuantizedWeights)
   {
     [v6 setDenseQuantizedWeights:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_modelInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sparseFloatWeights)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_minibatchStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_evaluationMetrics)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sparseQuantizedWeights)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -541,7 +541,7 @@ LABEL_30:
   {
     weightsScaleFactor = self->_weightsScaleFactor;
     PBDataWriterWriteFloatField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -549,58 +549,58 @@ LABEL_30:
   {
     weightsL2norm = self->_weightsL2norm;
     PBDataWriterWriteFloatField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_denseQuantizedWeights)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
   }
 
   modelInfo = self->_modelInfo;
   if (modelInfo)
   {
-    v7 = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"modelInfo"];
+    dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelInfo"];
   }
 
   sparseFloatWeights = self->_sparseFloatWeights;
   if (sparseFloatWeights)
   {
-    v9 = [(AWDProactiveModelFittingSparseFloatVector *)sparseFloatWeights dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"sparseFloatWeights"];
+    dictionaryRepresentation2 = [(AWDProactiveModelFittingSparseFloatVector *)sparseFloatWeights dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sparseFloatWeights"];
   }
 
   minibatchStats = self->_minibatchStats;
   if (minibatchStats)
   {
-    v11 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"minibatchStats"];
+    dictionaryRepresentation3 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"minibatchStats"];
   }
 
   evaluationMetrics = self->_evaluationMetrics;
   if (evaluationMetrics)
   {
-    v13 = [(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"evaluationMetrics"];
+    dictionaryRepresentation4 = [(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"evaluationMetrics"];
   }
 
   sparseQuantizedWeights = self->_sparseQuantizedWeights;
   if (sparseQuantizedWeights)
   {
-    v15 = [(AWDProactiveModelFittingQuantizedSparseVector *)sparseQuantizedWeights dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"sparseQuantizedWeights"];
+    dictionaryRepresentation5 = [(AWDProactiveModelFittingQuantizedSparseVector *)sparseQuantizedWeights dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"sparseQuantizedWeights"];
   }
 
   has = self->_has;
@@ -608,7 +608,7 @@ LABEL_30:
   {
     *&v4 = self->_weightsScaleFactor;
     v17 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v17 forKey:@"weightsScaleFactor"];
+    [dictionary setObject:v17 forKey:@"weightsScaleFactor"];
 
     has = self->_has;
   }
@@ -617,17 +617,17 @@ LABEL_30:
   {
     *&v4 = self->_weightsL2norm;
     v18 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v18 forKey:@"weightsL2norm"];
+    [dictionary setObject:v18 forKey:@"weightsL2norm"];
   }
 
   denseQuantizedWeights = self->_denseQuantizedWeights;
   if (denseQuantizedWeights)
   {
-    v20 = [(AWDProactiveModelFittingQuantizedDenseVector *)denseQuantizedWeights dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"denseQuantizedWeights"];
+    dictionaryRepresentation6 = [(AWDProactiveModelFittingQuantizedDenseVector *)denseQuantizedWeights dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"denseQuantizedWeights"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -636,15 +636,15 @@ LABEL_30:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingLogRegWeights;
   v4 = [(AWDProactiveModelFittingLogRegWeights *)&v8 description];
-  v5 = [(AWDProactiveModelFittingLogRegWeights *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingLogRegWeights *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasWeightsL2norm:(BOOL)a3
+- (void)setHasWeightsL2norm:(BOOL)l2norm
 {
-  if (a3)
+  if (l2norm)
   {
     v3 = 2;
   }
@@ -657,9 +657,9 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasWeightsScaleFactor:(BOOL)a3
+- (void)setHasWeightsScaleFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 4;
   }

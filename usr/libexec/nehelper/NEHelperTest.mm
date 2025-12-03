@@ -1,13 +1,13 @@
 @interface NEHelperTest
-- (NEHelperTest)initWithFirstMessage:(id)a3;
-- (void)handleMessage:(id)a3;
+- (NEHelperTest)initWithFirstMessage:(id)message;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperTest
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   uint64 = xpc_dictionary_get_uint64(xdict, "operation");
   switch(uint64)
   {
@@ -78,15 +78,15 @@ LABEL_15:
   sub_10000BA0C(NEHelperServer, xdict, v15, 0);
 }
 
-- (NEHelperTest)initWithFirstMessage:(id)a3
+- (NEHelperTest)initWithFirstMessage:(id)message
 {
-  v4 = xpc_dictionary_get_remote_connection(a3);
+  v4 = xpc_dictionary_get_remote_connection(message);
   if (sub_10000E080(NEHelperServer, v4))
   {
     v9.receiver = self;
     v9.super_class = NEHelperTest;
     self = [(NEHelperTest *)&v9 init];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -102,10 +102,10 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Denying test connection because %@ does not have the %s entitlement", buf, 0x16u);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

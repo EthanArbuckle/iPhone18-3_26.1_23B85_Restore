@@ -1,21 +1,21 @@
 @interface _PSCachedFaceTimeableHandle
-- (_PSCachedFaceTimeableHandle)initWithExpirationDate:(id)a3 handle:(id)a4;
+- (_PSCachedFaceTimeableHandle)initWithExpirationDate:(id)date handle:(id)handle;
 @end
 
 @implementation _PSCachedFaceTimeableHandle
 
-- (_PSCachedFaceTimeableHandle)initWithExpirationDate:(id)a3 handle:(id)a4
+- (_PSCachedFaceTimeableHandle)initWithExpirationDate:(id)date handle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = _PSCachedFaceTimeableHandle;
   v9 = [(_PSCachedFaceTimeableHandle *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_expirationDate, a3);
-    objc_storeStrong(&v10->_handle, a4);
+    objc_storeStrong(&v9->_expirationDate, date);
+    objc_storeStrong(&v10->_handle, handle);
   }
 
   return v10;

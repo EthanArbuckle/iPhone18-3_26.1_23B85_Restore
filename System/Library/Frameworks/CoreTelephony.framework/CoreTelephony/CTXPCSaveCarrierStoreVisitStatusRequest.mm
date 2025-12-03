@@ -2,30 +2,30 @@
 + (id)allowedClassesForArguments;
 - (BOOL)visited;
 - (id)carrier;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCSaveCarrierStoreVisitStatusRequest
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCSaveCarrierStoreVisitStatusRequest *)self carrier];
-  v9 = [(CTXPCSaveCarrierStoreVisitStatusRequest *)self visited];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  carrier = [(CTXPCSaveCarrierStoreVisitStatusRequest *)self carrier];
+  visited = [(CTXPCSaveCarrierStoreVisitStatusRequest *)self visited];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__CTXPCSaveCarrierStoreVisitStatusRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A43CC8;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 saveCarrierStoreVisitStatus:v8 visited:v9 completion:v11];
+  [handlerCopy saveCarrierStoreVisitStatus:carrier visited:visited completion:v11];
 }
 
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCSaveCarrierStoreVisitStatusRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -40,8 +40,8 @@
 
 - (id)carrier
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"carrier"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"carrier"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
@@ -49,12 +49,12 @@
 
 - (BOOL)visited
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"visited"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"visited"];
   v4 = CTThrowingCastIfClass<NSNumber>(v3);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

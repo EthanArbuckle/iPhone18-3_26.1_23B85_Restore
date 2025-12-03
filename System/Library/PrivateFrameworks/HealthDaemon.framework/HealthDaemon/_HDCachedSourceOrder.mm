@@ -1,7 +1,7 @@
 @interface _HDCachedSourceOrder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_HDCachedSourceOrder)init;
-- (char)initWithSources:(char)a3 userOrdered:(char)a4 isDefaultOrder:;
+- (char)initWithSources:(char)sources userOrdered:(char)ordered isDefaultOrder:;
 - (id).cxx_construct;
 - (id)description;
 - (id)sources;
@@ -12,11 +12,11 @@
 
 - (id)sources
 {
-  if (a1)
+  if (self)
   {
-    v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a1 + 24) - *(a1 + 16)) >> 3)];
-    v4 = *(a1 + 16);
-    v3 = *(a1 + 24);
+    v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(self + 24) - *(self + 16)) >> 3)];
+    v4 = *(self + 16);
+    v3 = *(self + 24);
     while (v4 != v3)
     {
       [v2 addObject:*v4];
@@ -32,14 +32,14 @@
   return v2;
 }
 
-- (char)initWithSources:(char)a3 userOrdered:(char)a4 isDefaultOrder:
+- (char)initWithSources:(char)sources userOrdered:(char)ordered isDefaultOrder:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = _HDCachedSourceOrder;
   v7 = objc_msgSendSuper2(&v25, sel_init);
   v8 = v7;
@@ -117,8 +117,8 @@
       }
     }
 
-    v8[8] = a3;
-    v8[9] = a4;
+    v8[8] = sources;
+    v8[9] = ordered;
   }
 
   return v8;
@@ -153,8 +153,8 @@
   end = self->_orderedSources.__end_;
   while (begin != end)
   {
-    v6 = [*begin bundleIdentifier];
-    [v3 addObject:v6];
+    bundleIdentifier = [*begin bundleIdentifier];
+    [v3 addObject:bundleIdentifier];
 
     begin += 3;
   }
@@ -175,16 +175,16 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_userOrdered == *(v4 + 8) && self->_isDefaultSourceOrder == *(v4 + 9))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_userOrdered == *(equalCopy + 8) && self->_isDefaultSourceOrder == *(equalCopy + 9))
   {
     begin = self->_orderedSources.__begin_;
     end = self->_orderedSources.__end_;
-    v7 = v4[2];
-    if (end - begin == v4[3] - v7)
+    v7 = equalCopy[2];
+    if (end - begin == equalCopy[3] - v7)
     {
       if (begin == end)
       {

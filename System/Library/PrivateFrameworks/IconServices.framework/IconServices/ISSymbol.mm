@@ -1,29 +1,29 @@
 @interface ISSymbol
-+ (id)_generateVariantKeyFromOptions:(unint64_t)a3;
-+ (id)symbolForType:(id)a3;
-+ (id)symbolForTypeIdentifier:(id)a3 withResolutionStrategy:(int64_t)a4 variantOptions:(unint64_t)a5 error:(id *)a6;
-+ (id)symbolForURL:(id)a3;
++ (id)_generateVariantKeyFromOptions:(unint64_t)options;
++ (id)symbolForType:(id)type;
++ (id)symbolForTypeIdentifier:(id)identifier withResolutionStrategy:(int64_t)strategy variantOptions:(unint64_t)options error:(id *)error;
++ (id)symbolForURL:(id)l;
 @end
 
 @implementation ISSymbol
 
-+ (id)symbolForURL:(id)a3
++ (id)symbolForURL:(id)l
 {
-  v3 = a3;
-  if ([v3 __is_isApplication])
+  lCopy = l;
+  if ([lCopy __is_isApplication])
   {
-    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:v3 allowPlaceholder:1 error:0];
+    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:lCopy allowPlaceholder:1 error:0];
   }
 
   else
   {
-    if (![v3 __is_isAppExtension])
+    if (![lCopy __is_isAppExtension])
     {
       v5 = 0;
       goto LABEL_10;
     }
 
-    v4 = [objc_alloc(MEMORY[0x1E69635D0]) initWithURL:v3 error:0];
+    v4 = [objc_alloc(MEMORY[0x1E69635D0]) initWithURL:lCopy error:0];
   }
 
   v5 = v4;
@@ -31,13 +31,13 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 iconDictionary];
-      v7 = [v6 _IF_stringForKey:0x1F1A4F300];
+      iconDictionary = [v5 iconDictionary];
+      __is_typeIdentifier = [iconDictionary _IF_stringForKey:0x1F1A4F300];
 
-      if (v7)
+      if (__is_typeIdentifier)
       {
         v8 = [v5 URL];
-        v9 = [(IFSymbol *)[ISSymbol alloc] initWithSymbolName:v7 bundleURL:v8];
+        v9 = [(IFSymbol *)[ISSymbol alloc] initWithSymbolName:__is_typeIdentifier bundleURL:v8];
 
         goto LABEL_11;
       }
@@ -45,30 +45,30 @@
   }
 
 LABEL_10:
-  v7 = [v3 __is_typeIdentifier];
-  v9 = [ISSymbol symbolForType:v7];
+  __is_typeIdentifier = [lCopy __is_typeIdentifier];
+  v9 = [ISSymbol symbolForType:__is_typeIdentifier];
 LABEL_11:
 
   return v9;
 }
 
-+ (id)symbolForType:(id)a3
++ (id)symbolForType:(id)type
 {
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v4 = *MEMORY[0x1E6963800];
+    typeCopy = *MEMORY[0x1E6963800];
   }
 
   v9 = 0;
-  v5 = [a1 symbolForTypeIdentifier:v4 withResolutionStrategy:0 variantOptions:1 error:&v9];
+  v5 = [self symbolForTypeIdentifier:typeCopy withResolutionStrategy:0 variantOptions:1 error:&v9];
   v6 = v9;
   if (!v5)
   {
     v7 = _ISDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(ISSymbol *)v4 symbolForType:v6, v7];
+      [(ISSymbol *)typeCopy symbolForType:v6, v7];
     }
 
     v5 = [(IFSymbol *)[ISSymbol alloc] initWithSymbolName:@"questionmark.square" bundleURL:0];
@@ -77,25 +77,25 @@ LABEL_11:
   return v5;
 }
 
-+ (id)symbolForTypeIdentifier:(id)a3 withResolutionStrategy:(int64_t)a4 variantOptions:(unint64_t)a5 error:(id *)a6
++ (id)symbolForTypeIdentifier:(id)identifier withResolutionStrategy:(int64_t)strategy variantOptions:(unint64_t)options error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (v10)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v11 = [a1 _generateVariantKeyFromOptions:a5];
-    v12 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:v10];
+    v11 = [self _generateVariantKeyFromOptions:options];
+    v12 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:identifierCopy];
     v13 = v12;
     v14 = 0;
-    if (a4 <= 1)
+    if (strategy <= 1)
     {
-      if (!a4)
+      if (!strategy)
       {
         v15 = [v12 _IS_symbolProvidingRecordWithVariantKey:v11 allowNonVariantMatch:0];
         goto LABEL_20;
       }
 
-      if (a4 != 1)
+      if (strategy != 1)
       {
         goto LABEL_26;
       }
@@ -107,31 +107,31 @@ LABEL_11:
         goto LABEL_21;
       }
 
-      v19 = [v18 _IS_symbolHeroName];
-      if (!v19)
+      _IS_symbolHeroName = [v18 _IS_symbolHeroName];
+      if (!_IS_symbolHeroName)
       {
 LABEL_22:
-        v22 = [v14 _IS_symbolName];
+        _IS_symbolName = [v14 _IS_symbolName];
 LABEL_23:
-        v21 = v22;
-        if (v22)
+        v21 = _IS_symbolName;
+        if (_IS_symbolName)
         {
           goto LABEL_24;
         }
 
 LABEL_26:
-        if (!a6)
+        if (!error)
         {
           v17 = 0;
           goto LABEL_31;
         }
 
-        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to find symbol using type id: %@. Options: %lu, strategy: %ld", v10, a5, a4, *MEMORY[0x1E696A578]];
+        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to find symbol using type id: %@. Options: %lu, strategy: %ld", identifierCopy, options, strategy, *MEMORY[0x1E696A578]];
         v28 = v24;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
         [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.iconServices.symbol-error" code:-1 userInfo:v21];
-        *a6 = v17 = 0;
+        *error = v17 = 0;
 LABEL_30:
 
 LABEL_31:
@@ -141,7 +141,7 @@ LABEL_31:
 
     else
     {
-      switch(a4)
+      switch(strategy)
       {
         case 2:
           v20 = [v12 _IS_symbolProvidingRecordWithVariantKey:v11 allowNonVariantMatch:1];
@@ -156,7 +156,7 @@ LABEL_20:
           if (v11)
           {
 LABEL_21:
-            v22 = [v14 _IS_symbolNameForVariantKey:v11];
+            _IS_symbolName = [v14 _IS_symbolNameForVariantKey:v11];
             goto LABEL_23;
           }
 
@@ -166,31 +166,31 @@ LABEL_21:
       }
 
       v14 = v20;
-      v19 = [v20 _IS_symbolNameForVariantKey:v11];
-      if (!v19)
+      _IS_symbolHeroName = [v20 _IS_symbolNameForVariantKey:v11];
+      if (!_IS_symbolHeroName)
       {
         goto LABEL_22;
       }
     }
 
-    v21 = v19;
+    v21 = _IS_symbolHeroName;
 LABEL_24:
     if ([v14 isCoreType])
     {
-      v23 = 0;
+      iconResourceBundleURL = 0;
     }
 
     else
     {
-      v23 = [v14 iconResourceBundleURL];
+      iconResourceBundleURL = [v14 iconResourceBundleURL];
     }
 
-    v17 = [(IFSymbol *)[ISSymbol alloc] initWithSymbolName:v21 bundleURL:v23];
+    v17 = [(IFSymbol *)[ISSymbol alloc] initWithSymbolName:v21 bundleURL:iconResourceBundleURL];
 
     goto LABEL_30;
   }
 
-  if (!a6)
+  if (!error)
   {
     v17 = 0;
     goto LABEL_33;
@@ -202,7 +202,7 @@ LABEL_24:
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
 
   [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.iconServices.symbol-error" code:-2 userInfo:v11];
-  *a6 = v17 = 0;
+  *error = v17 = 0;
 LABEL_32:
 
 LABEL_33:
@@ -211,10 +211,10 @@ LABEL_33:
   return v17;
 }
 
-+ (id)_generateVariantKeyFromOptions:(unint64_t)a3
++ (id)_generateVariantKeyFromOptions:(unint64_t)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (options)
   {
     v12 = 0;
   }
@@ -247,7 +247,7 @@ LABEL_33:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          if (([v10 unsignedIntegerValue] & a3) != 0)
+          if (([v10 unsignedIntegerValue] & options) != 0)
           {
             v11 = [_generateVariantKeyFromOptions__optionsToKeyPieces objectForKeyedSubscript:v10];
             [v4 addObject:v11];

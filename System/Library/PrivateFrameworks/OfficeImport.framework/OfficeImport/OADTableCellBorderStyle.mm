@@ -3,34 +3,34 @@
 + (id)defaultStyle;
 - (id)description;
 - (id)shallowCopy;
-- (id)stroke:(int)a3;
-- (void)applyOverridesFrom:(id)a3;
-- (void)setStrokeOfType:(int)a3 toValue:(id)a4;
+- (id)stroke:(int)stroke;
+- (void)applyOverridesFrom:(id)from;
+- (void)setStrokeOfType:(int)type toValue:(id)value;
 @end
 
 @implementation OADTableCellBorderStyle
 
-- (id)stroke:(int)a3
+- (id)stroke:(int)stroke
 {
-  v4 = 0;
-  if (a3 <= 4)
+  leftStroke = 0;
+  if (stroke <= 4)
   {
-    if (a3 <= 2)
+    if (stroke <= 2)
     {
-      if (a3 == 1)
+      if (stroke == 1)
       {
-        v4 = [(OADTableCellBorderStyle *)self leftStroke];
+        leftStroke = [(OADTableCellBorderStyle *)self leftStroke];
       }
 
-      else if (a3 == 2)
+      else if (stroke == 2)
       {
-        v4 = [(OADTableCellBorderStyle *)self rightStroke];
+        leftStroke = [(OADTableCellBorderStyle *)self rightStroke];
       }
 
       goto LABEL_19;
     }
 
-    if (a3 == 3)
+    if (stroke == 3)
     {
       [(OADTableCellBorderStyle *)self topStroke];
     }
@@ -40,13 +40,13 @@
       [(OADTableCellBorderStyle *)self bottomStroke];
     }
 
-    v4 = LABEL_9:;
+    leftStroke = LABEL_9:;
     goto LABEL_19;
   }
 
-  if (a3 <= 6)
+  if (stroke <= 6)
   {
-    if (a3 == 5)
+    if (stroke == 5)
     {
       [(OADTableCellBorderStyle *)self horzInsideStroke];
     }
@@ -59,72 +59,72 @@
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (stroke == 7)
   {
-    v4 = [(OADTableCellBorderStyle *)self topLeftToBottomRightStroke];
+    leftStroke = [(OADTableCellBorderStyle *)self topLeftToBottomRightStroke];
   }
 
-  else if (a3 == 8)
+  else if (stroke == 8)
   {
-    v4 = [(OADTableCellBorderStyle *)self bottomLeftToTopRightStroke];
+    leftStroke = [(OADTableCellBorderStyle *)self bottomLeftToTopRightStroke];
   }
 
 LABEL_19:
 
-  return v4;
+  return leftStroke;
 }
 
-- (void)setStrokeOfType:(int)a3 toValue:(id)a4
+- (void)setStrokeOfType:(int)type toValue:(id)value
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 4)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (type > 4)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
-        [(OADTableCellBorderStyle *)self setTopLeftToBottomRightStroke:v6];
+        [(OADTableCellBorderStyle *)self setTopLeftToBottomRightStroke:valueCopy];
       }
 
-      else if (a3 == 8)
+      else if (type == 8)
       {
-        [(OADTableCellBorderStyle *)self setBottomLeftToTopRightStroke:v6];
+        [(OADTableCellBorderStyle *)self setBottomLeftToTopRightStroke:valueCopy];
       }
     }
 
-    else if (a3 == 5)
+    else if (type == 5)
     {
-      [(OADTableCellBorderStyle *)self setHorzInsideStroke:v6];
+      [(OADTableCellBorderStyle *)self setHorzInsideStroke:valueCopy];
     }
 
     else
     {
-      [(OADTableCellBorderStyle *)self setVertInsideStroke:v6];
+      [(OADTableCellBorderStyle *)self setVertInsideStroke:valueCopy];
     }
   }
 
-  else if (a3 > 2)
+  else if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      [(OADTableCellBorderStyle *)self setTopStroke:v6];
+      [(OADTableCellBorderStyle *)self setTopStroke:valueCopy];
     }
 
     else
     {
-      [(OADTableCellBorderStyle *)self setBottomStroke:v6];
+      [(OADTableCellBorderStyle *)self setBottomStroke:valueCopy];
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    [(OADTableCellBorderStyle *)self setLeftStroke:v6];
+    [(OADTableCellBorderStyle *)self setLeftStroke:valueCopy];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    [(OADTableCellBorderStyle *)self setRightStroke:v6];
+    [(OADTableCellBorderStyle *)self setRightStroke:valueCopy];
   }
 }
 
@@ -156,36 +156,36 @@ LABEL_19:
     +[OADTableCellBorderStyle defaultStyle]::defaultStyle = v4;
 
     v6 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v7 = [a1 defaultAxisParallelStroke];
-    [v6 setLeftStroke:v7];
+    defaultAxisParallelStroke = [self defaultAxisParallelStroke];
+    [v6 setLeftStroke:defaultAxisParallelStroke];
 
     v8 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v9 = [a1 defaultAxisParallelStroke];
-    [v8 setRightStroke:v9];
+    defaultAxisParallelStroke2 = [self defaultAxisParallelStroke];
+    [v8 setRightStroke:defaultAxisParallelStroke2];
 
     v10 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v11 = [a1 defaultAxisParallelStroke];
-    [v10 setTopStroke:v11];
+    defaultAxisParallelStroke3 = [self defaultAxisParallelStroke];
+    [v10 setTopStroke:defaultAxisParallelStroke3];
 
     v12 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v13 = [a1 defaultAxisParallelStroke];
-    [v12 setBottomStroke:v13];
+    defaultAxisParallelStroke4 = [self defaultAxisParallelStroke];
+    [v12 setBottomStroke:defaultAxisParallelStroke4];
 
     v14 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v15 = [a1 defaultAxisParallelStroke];
-    [v14 setHorzInsideStroke:v15];
+    defaultAxisParallelStroke5 = [self defaultAxisParallelStroke];
+    [v14 setHorzInsideStroke:defaultAxisParallelStroke5];
 
     v16 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v17 = [a1 defaultAxisParallelStroke];
-    [v16 setVertInsideStroke:v17];
+    defaultAxisParallelStroke6 = [self defaultAxisParallelStroke];
+    [v16 setVertInsideStroke:defaultAxisParallelStroke6];
 
     v18 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v19 = [a1 defaultObliqueStroke];
-    [v18 setTopLeftToBottomRightStroke:v19];
+    defaultObliqueStroke = [self defaultObliqueStroke];
+    [v18 setTopLeftToBottomRightStroke:defaultObliqueStroke];
 
     v20 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
-    v21 = [a1 defaultObliqueStroke];
-    [v20 setBottomLeftToTopRightStroke:v21];
+    defaultObliqueStroke2 = [self defaultObliqueStroke];
+    [v20 setBottomLeftToTopRightStroke:defaultObliqueStroke2];
 
     v3 = +[OADTableCellBorderStyle defaultStyle]::defaultStyle;
   }
@@ -196,104 +196,104 @@ LABEL_19:
 - (id)shallowCopy
 {
   v3 = objc_alloc_init(OADTableCellBorderStyle);
-  v4 = [(OADTableCellBorderStyle *)self leftStroke];
-  [(OADTableCellBorderStyle *)v3 setLeftStroke:v4];
+  leftStroke = [(OADTableCellBorderStyle *)self leftStroke];
+  [(OADTableCellBorderStyle *)v3 setLeftStroke:leftStroke];
 
-  v5 = [(OADTableCellBorderStyle *)self rightStroke];
-  [(OADTableCellBorderStyle *)v3 setRightStroke:v5];
+  rightStroke = [(OADTableCellBorderStyle *)self rightStroke];
+  [(OADTableCellBorderStyle *)v3 setRightStroke:rightStroke];
 
-  v6 = [(OADTableCellBorderStyle *)self topStroke];
-  [(OADTableCellBorderStyle *)v3 setTopStroke:v6];
+  topStroke = [(OADTableCellBorderStyle *)self topStroke];
+  [(OADTableCellBorderStyle *)v3 setTopStroke:topStroke];
 
-  v7 = [(OADTableCellBorderStyle *)self bottomStroke];
-  [(OADTableCellBorderStyle *)v3 setBottomStroke:v7];
+  bottomStroke = [(OADTableCellBorderStyle *)self bottomStroke];
+  [(OADTableCellBorderStyle *)v3 setBottomStroke:bottomStroke];
 
-  v8 = [(OADTableCellBorderStyle *)self horzInsideStroke];
-  [(OADTableCellBorderStyle *)v3 setHorzInsideStroke:v8];
+  horzInsideStroke = [(OADTableCellBorderStyle *)self horzInsideStroke];
+  [(OADTableCellBorderStyle *)v3 setHorzInsideStroke:horzInsideStroke];
 
-  v9 = [(OADTableCellBorderStyle *)self vertInsideStroke];
-  [(OADTableCellBorderStyle *)v3 setVertInsideStroke:v9];
+  vertInsideStroke = [(OADTableCellBorderStyle *)self vertInsideStroke];
+  [(OADTableCellBorderStyle *)v3 setVertInsideStroke:vertInsideStroke];
 
-  v10 = [(OADTableCellBorderStyle *)self topLeftToBottomRightStroke];
-  [(OADTableCellBorderStyle *)v3 setTopLeftToBottomRightStroke:v10];
+  topLeftToBottomRightStroke = [(OADTableCellBorderStyle *)self topLeftToBottomRightStroke];
+  [(OADTableCellBorderStyle *)v3 setTopLeftToBottomRightStroke:topLeftToBottomRightStroke];
 
-  v11 = [(OADTableCellBorderStyle *)self bottomLeftToTopRightStroke];
-  [(OADTableCellBorderStyle *)v3 setBottomLeftToTopRightStroke:v11];
+  bottomLeftToTopRightStroke = [(OADTableCellBorderStyle *)self bottomLeftToTopRightStroke];
+  [(OADTableCellBorderStyle *)v3 setBottomLeftToTopRightStroke:bottomLeftToTopRightStroke];
 
   return v3;
 }
 
-- (void)applyOverridesFrom:(id)a3
+- (void)applyOverridesFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v21 = v4;
-    v5 = [v4 leftStroke];
+    v21 = fromCopy;
+    leftStroke = [fromCopy leftStroke];
 
-    if (v5)
+    if (leftStroke)
     {
-      v6 = [v21 leftStroke];
-      [(OADTableCellBorderStyle *)self setLeftStroke:v6];
+      leftStroke2 = [v21 leftStroke];
+      [(OADTableCellBorderStyle *)self setLeftStroke:leftStroke2];
     }
 
-    v7 = [v21 rightStroke];
+    rightStroke = [v21 rightStroke];
 
-    if (v7)
+    if (rightStroke)
     {
-      v8 = [v21 rightStroke];
-      [(OADTableCellBorderStyle *)self setRightStroke:v8];
+      rightStroke2 = [v21 rightStroke];
+      [(OADTableCellBorderStyle *)self setRightStroke:rightStroke2];
     }
 
-    v9 = [v21 topStroke];
+    topStroke = [v21 topStroke];
 
-    if (v9)
+    if (topStroke)
     {
-      v10 = [v21 topStroke];
-      [(OADTableCellBorderStyle *)self setTopStroke:v10];
+      topStroke2 = [v21 topStroke];
+      [(OADTableCellBorderStyle *)self setTopStroke:topStroke2];
     }
 
-    v11 = [v21 bottomStroke];
+    bottomStroke = [v21 bottomStroke];
 
-    if (v11)
+    if (bottomStroke)
     {
-      v12 = [v21 bottomStroke];
-      [(OADTableCellBorderStyle *)self setBottomStroke:v12];
+      bottomStroke2 = [v21 bottomStroke];
+      [(OADTableCellBorderStyle *)self setBottomStroke:bottomStroke2];
     }
 
-    v13 = [v21 horzInsideStroke];
+    horzInsideStroke = [v21 horzInsideStroke];
 
-    if (v13)
+    if (horzInsideStroke)
     {
-      v14 = [v21 horzInsideStroke];
-      [(OADTableCellBorderStyle *)self setHorzInsideStroke:v14];
+      horzInsideStroke2 = [v21 horzInsideStroke];
+      [(OADTableCellBorderStyle *)self setHorzInsideStroke:horzInsideStroke2];
     }
 
-    v15 = [v21 vertInsideStroke];
+    vertInsideStroke = [v21 vertInsideStroke];
 
-    if (v15)
+    if (vertInsideStroke)
     {
-      v16 = [v21 vertInsideStroke];
-      [(OADTableCellBorderStyle *)self setVertInsideStroke:v16];
+      vertInsideStroke2 = [v21 vertInsideStroke];
+      [(OADTableCellBorderStyle *)self setVertInsideStroke:vertInsideStroke2];
     }
 
-    v17 = [v21 topLeftToBottomRightStroke];
+    topLeftToBottomRightStroke = [v21 topLeftToBottomRightStroke];
 
-    if (v17)
+    if (topLeftToBottomRightStroke)
     {
-      v18 = [v21 topLeftToBottomRightStroke];
-      [(OADTableCellBorderStyle *)self setTopLeftToBottomRightStroke:v18];
+      topLeftToBottomRightStroke2 = [v21 topLeftToBottomRightStroke];
+      [(OADTableCellBorderStyle *)self setTopLeftToBottomRightStroke:topLeftToBottomRightStroke2];
     }
 
-    v19 = [v21 bottomLeftToTopRightStroke];
+    bottomLeftToTopRightStroke = [v21 bottomLeftToTopRightStroke];
 
-    v4 = v21;
-    if (v19)
+    fromCopy = v21;
+    if (bottomLeftToTopRightStroke)
     {
-      v20 = [v21 bottomLeftToTopRightStroke];
-      [(OADTableCellBorderStyle *)self setBottomLeftToTopRightStroke:v20];
+      bottomLeftToTopRightStroke2 = [v21 bottomLeftToTopRightStroke];
+      [(OADTableCellBorderStyle *)self setBottomLeftToTopRightStroke:bottomLeftToTopRightStroke2];
 
-      v4 = v21;
+      fromCopy = v21;
     }
   }
 }

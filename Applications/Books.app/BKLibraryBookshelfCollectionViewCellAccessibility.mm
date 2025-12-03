@@ -6,10 +6,10 @@
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didReceiveSingleTap;
 - (void)prepareForReuse;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)updateGestureRecognizerForFKAWorkaround;
 @end
 
@@ -17,10 +17,10 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
-  v4 = [v3 delegate];
-  v5 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxIndexPathOfTarget];
-  v6 = [v4 isAudiobookAtIndexpath:v5];
+  bkaxTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
+  delegate = [bkaxTarget delegate];
+  bkaxIndexPathOfTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxIndexPathOfTarget];
+  v6 = [delegate isAudiobookAtIndexpath:bkaxIndexPathOfTarget];
 
   if (v6)
   {
@@ -47,10 +47,10 @@
   v6.receiver = self;
   v6.super_class = BKLibraryBookshelfCollectionViewCellAccessibility;
   [(BKLibraryBookshelfCollectionViewCellAccessibility *)&v6 accessibilityElementDidBecomeFocused];
-  v3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
-  v4 = [v3 delegate];
-  v5 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxIndexPathOfTarget];
-  [v4 selectItemAtIndexPath:v5 animated:1 scrollPosition:0];
+  bkaxTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
+  delegate = [bkaxTarget delegate];
+  bkaxIndexPathOfTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxIndexPathOfTarget];
+  [delegate selectItemAtIndexPath:bkaxIndexPathOfTarget animated:1 scrollPosition:0];
 }
 
 - (void)accessibilityElementDidLoseFocus
@@ -58,10 +58,10 @@
   v6.receiver = self;
   v6.super_class = BKLibraryBookshelfCollectionViewCellAccessibility;
   [(BKLibraryBookshelfCollectionViewCellAccessibility *)&v6 accessibilityElementDidLoseFocus];
-  v3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
-  v4 = [v3 delegate];
-  v5 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxIndexPathOfTarget];
-  [v4 deselectItemAtIndexPath:v5 animated:1];
+  bkaxTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
+  delegate = [bkaxTarget delegate];
+  bkaxIndexPathOfTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxIndexPathOfTarget];
+  [delegate deselectItemAtIndexPath:bkaxIndexPathOfTarget animated:1];
 }
 
 - (void)didReceiveSingleTap
@@ -91,19 +91,19 @@
   [(BKLibraryBookshelfCollectionViewCellAccessibility *)self updateGestureRecognizerForFKAWorkaround];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = BKLibraryBookshelfCollectionViewCellAccessibility;
-  [(BKLibraryBookshelfCollectionViewCellAccessibility *)&v5 touchesBegan:a3 withEvent:a4];
+  [(BKLibraryBookshelfCollectionViewCellAccessibility *)&v5 touchesBegan:began withEvent:event];
   [(BKLibraryBookshelfCollectionViewCellAccessibility *)self updateGestureRecognizerForFKAWorkaround];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = BKLibraryBookshelfCollectionViewCellAccessibility;
-  [(BKLibraryBookshelfCollectionViewCellAccessibility *)&v4 applyLayoutAttributes:a3];
+  [(BKLibraryBookshelfCollectionViewCellAccessibility *)&v4 applyLayoutAttributes:attributes];
   [(BKLibraryBookshelfCollectionViewCellAccessibility *)self updateGestureRecognizerForFKAWorkaround];
 }
 
@@ -117,10 +117,10 @@
 
 - (id)bkaxIndexPathOfTarget
 {
-  v3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
-  v4 = [v3 delegate];
-  v5 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
-  v6 = [v4 indexPathForCell:v5];
+  bkaxTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
+  delegate = [bkaxTarget delegate];
+  bkaxTarget2 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
+  v6 = [delegate indexPathForCell:bkaxTarget2];
 
   return v6;
 }
@@ -132,29 +132,29 @@
     return 0;
   }
 
-  v3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
-  v4 = [v3 delegate];
-  v5 = [v4 allowsOpeningBooks];
+  bkaxTarget = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self bkaxTarget];
+  delegate = [bkaxTarget delegate];
+  allowsOpeningBooks = [delegate allowsOpeningBooks];
 
-  return v5;
+  return allowsOpeningBooks;
 }
 
 - (void)updateGestureRecognizerForFKAWorkaround
 {
-  v3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self singleTapGestureRecognizer];
+  singleTapGestureRecognizer = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self singleTapGestureRecognizer];
 
-  if (!v3)
+  if (!singleTapGestureRecognizer)
   {
     v4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"didReceiveSingleTap"];
     [(BKLibraryBookshelfCollectionViewCellAccessibility *)self setSingleTapGestureRecognizer:v4];
 
-    v5 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self singleTapGestureRecognizer];
-    [(BKLibraryBookshelfCollectionViewCellAccessibility *)self addGestureRecognizer:v5];
+    singleTapGestureRecognizer2 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self singleTapGestureRecognizer];
+    [(BKLibraryBookshelfCollectionViewCellAccessibility *)self addGestureRecognizer:singleTapGestureRecognizer2];
   }
 
-  v6 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self shouldInterceptTapsForFKAWorkaround];
-  v7 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self singleTapGestureRecognizer];
-  [v7 setEnabled:v6];
+  shouldInterceptTapsForFKAWorkaround = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self shouldInterceptTapsForFKAWorkaround];
+  singleTapGestureRecognizer3 = [(BKLibraryBookshelfCollectionViewCellAccessibility *)self singleTapGestureRecognizer];
+  [singleTapGestureRecognizer3 setEnabled:shouldInterceptTapsForFKAWorkaround];
 }
 
 @end

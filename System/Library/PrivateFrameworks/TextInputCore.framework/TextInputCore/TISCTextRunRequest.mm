@@ -1,5 +1,5 @@
 @interface TISCTextRunRequest
-+ (id)textRunRequestWithStrings:(id)a3 color:(CGColor *)a4 maxFontSize:(double)a5 minFontSize:(double)a6 allowTruncation:(BOOL)a7 truncationSentinel:(id)a8 widthGroup:(unint64_t)a9;
++ (id)textRunRequestWithStrings:(id)strings color:(CGColor *)color maxFontSize:(double)size minFontSize:(double)fontSize allowTruncation:(BOOL)truncation truncationSentinel:(id)sentinel widthGroup:(unint64_t)group;
 - (void)dealloc;
 @end
 
@@ -13,25 +13,25 @@
   [(TISCTextRunRequest *)&v3 dealloc];
 }
 
-+ (id)textRunRequestWithStrings:(id)a3 color:(CGColor *)a4 maxFontSize:(double)a5 minFontSize:(double)a6 allowTruncation:(BOOL)a7 truncationSentinel:(id)a8 widthGroup:(unint64_t)a9
++ (id)textRunRequestWithStrings:(id)strings color:(CGColor *)color maxFontSize:(double)size minFontSize:(double)fontSize allowTruncation:(BOOL)truncation truncationSentinel:(id)sentinel widthGroup:(unint64_t)group
 {
-  v15 = a3;
-  v16 = a8;
+  stringsCopy = strings;
+  sentinelCopy = sentinel;
   v17 = objc_opt_new();
   v18 = *(v17 + 8);
-  *(v17 + 8) = v15;
-  v19 = v15;
+  *(v17 + 8) = stringsCopy;
+  v19 = stringsCopy;
 
-  *(v17 + 16) = CGColorRetain(a4);
-  *(v17 + 24) = a5;
-  *(v17 + 32) = a6;
-  *(v17 + 40) = a7;
-  v20 = [v16 copy];
+  *(v17 + 16) = CGColorRetain(color);
+  *(v17 + 24) = size;
+  *(v17 + 32) = fontSize;
+  *(v17 + 40) = truncation;
+  v20 = [sentinelCopy copy];
 
   v21 = *(v17 + 48);
   *(v17 + 48) = v20;
 
-  *(v17 + 56) = a9;
+  *(v17 + 56) = group;
 
   return v17;
 }

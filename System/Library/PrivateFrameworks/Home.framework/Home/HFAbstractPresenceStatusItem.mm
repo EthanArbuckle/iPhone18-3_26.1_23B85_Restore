@@ -1,34 +1,34 @@
 @interface HFAbstractPresenceStatusItem
 + (NSSet)serviceTypes;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)descriptionStringForTriggeredServices:(id)a3;
-- (id)titleStringForTriggeredServices:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)descriptionStringForTriggeredServices:(id)services;
+- (id)titleStringForTriggeredServices:(id)services;
 @end
 
 @implementation HFAbstractPresenceStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() serviceTypes];
-  v6 = [v5 anyObject];
+  optionsCopy = options;
+  serviceTypes = [objc_opt_class() serviceTypes];
+  anyObject = [serviceTypes anyObject];
 
-  v7 = [objc_opt_class() characteristicTypesForServiceType:v6 includingAssociatedTypes:1];
-  v21[0] = v6;
+  v7 = [objc_opt_class() characteristicTypesForServiceType:anyObject includingAssociatedTypes:1];
+  v21[0] = anyObject;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v9 = [v7 allObjects];
-  v10 = [(HFStatusItem *)self filteredServicesOfTypes:v8 containingCharacteristicTypes:v9];
+  allObjects = [v7 allObjects];
+  v10 = [(HFStatusItem *)self filteredServicesOfTypes:v8 containingCharacteristicTypes:allObjects];
 
   objc_initWeak(&location, self);
-  v11 = [(HFStatusItem *)self valueSource];
-  v12 = [v11 readValuesForCharacteristicTypes:v7 inServices:v10];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v12 = [valueSource readValuesForCharacteristicTypes:v7 inServices:v10];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __60__HFAbstractPresenceStatusItem__subclass_updateWithOptions___block_invoke;
   v17[3] = &unk_277DF61A0;
   objc_copyWeak(&v19, &location);
-  v13 = v6;
+  v13 = anyObject;
   v18 = v13;
   v14 = [v12 flatMap:v17];
 
@@ -104,24 +104,24 @@ id __60__HFAbstractPresenceStatusItem__subclass_updateWithOptions___block_invoke
 
 + (NSSet)serviceTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFPresenceStatusItem.m" lineNumber:73 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractPresenceStatusItem serviceTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPresenceStatusItem.m" lineNumber:73 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractPresenceStatusItem serviceTypes]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)titleStringForTriggeredServices:(id)a3
+- (id)titleStringForTriggeredServices:(id)services
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFPresenceStatusItem.m" lineNumber:79 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPresenceStatusItem titleStringForTriggeredServices:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPresenceStatusItem.m" lineNumber:79 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPresenceStatusItem titleStringForTriggeredServices:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)descriptionStringForTriggeredServices:(id)a3
+- (id)descriptionStringForTriggeredServices:(id)services
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFPresenceStatusItem.m" lineNumber:85 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPresenceStatusItem descriptionStringForTriggeredServices:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPresenceStatusItem.m" lineNumber:85 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractPresenceStatusItem descriptionStringForTriggeredServices:]", objc_opt_class()}];
 
   return 0;
 }

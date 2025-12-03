@@ -1,11 +1,11 @@
 @interface SUUIViewControllerContainerCollectionView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)view;
 - (void)_endDynamicHysteresisIncrease;
 - (void)_updateStateForDynamicHysteresisIncrease;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SUUIViewControllerContainerCollectionView
@@ -18,11 +18,11 @@
   [(SUUIViewControllerContainerCollectionView *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_SUUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext == a6)
+  if (_SUUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext == context)
   {
-    v7 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer:a3];
+    v7 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer:path];
     if (([v7 state] - 3) <= 2)
     {
       [(SUUIViewControllerContainerCollectionView *)self _endDynamicHysteresisIncrease];
@@ -33,28 +33,28 @@
   {
     v8.receiver = self;
     v8.super_class = SUUIViewControllerContainerCollectionView;
-    [(SUUIViewControllerContainerCollectionView *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SUUIViewControllerContainerCollectionView *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panGestureRecognizer = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
 
-  if (v9 == v7)
+  if (panGestureRecognizer == recognizerCopy)
   {
-    v10 = [v8 delegate];
-    if (v10 != self)
+    delegate = [gestureRecognizerCopy delegate];
+    if (delegate != self)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
-        v12 = [(SUUIViewControllerContainerCollectionView *)v11 panGestureRecognizer];
+        v11 = delegate;
+        panGestureRecognizer2 = [(SUUIViewControllerContainerCollectionView *)v11 panGestureRecognizer];
 
-        if (v12 == v8 && _SUUIScrollViewIsCompetingWithScrollView(self, v11) && (_SUUIScrollViewWantsToBeginTrackingImmediately(v11) & 1) != 0)
+        if (panGestureRecognizer2 == gestureRecognizerCopy && _SUUIScrollViewIsCompetingWithScrollView(self, v11) && (_SUUIScrollViewWantsToBeginTrackingImmediately(v11) & 1) != 0)
         {
           [(SUUIViewControllerContainerCollectionView *)self _beginDynamicHysteresisIncreaseWithCompetingScrollView:v11];
 
@@ -69,7 +69,7 @@
   {
     v15.receiver = self;
     v15.super_class = SUUIViewControllerContainerCollectionView;
-    v13 = [(SUUIViewControllerContainerCollectionView *)&v15 gestureRecognizer:v7 shouldBeRequiredToFailByGestureRecognizer:v8];
+    v13 = [(SUUIViewControllerContainerCollectionView *)&v15 gestureRecognizer:recognizerCopy shouldBeRequiredToFailByGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -82,19 +82,19 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panGestureRecognizer = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
 
-  if (v9 != v7)
+  if (panGestureRecognizer != recognizerCopy)
   {
     goto LABEL_10;
   }
 
-  v10 = [v8 delegate];
-  if (v10 == self)
+  delegate = [gestureRecognizerCopy delegate];
+  if (delegate == self)
   {
     goto LABEL_9;
   }
@@ -105,10 +105,10 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v11 = v10;
-  v12 = [(SUUIViewControllerContainerCollectionView *)v11 panGestureRecognizer];
+  v11 = delegate;
+  panGestureRecognizer2 = [(SUUIViewControllerContainerCollectionView *)v11 panGestureRecognizer];
 
-  if (v12 != v8 || !_SUUIScrollViewIsCompetingWithScrollView(self, v11))
+  if (panGestureRecognizer2 != gestureRecognizerCopy || !_SUUIScrollViewIsCompetingWithScrollView(self, v11))
   {
 
 LABEL_9:
@@ -128,7 +128,7 @@ LABEL_10:
   {
     v16.receiver = self;
     v16.super_class = SUUIViewControllerContainerCollectionView;
-    v14 = [(SUUIViewControllerContainerCollectionView *)&v16 gestureRecognizer:v7 shouldRequireFailureOfGestureRecognizer:v8];
+    v14 = [(SUUIViewControllerContainerCollectionView *)&v16 gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -141,21 +141,21 @@ LABEL_13:
   return v14;
 }
 
-- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)a3
+- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
+  viewCopy = view;
+  v5 = viewCopy;
   if (!self->_forcingIncreasedPanGestureRecognizerHysteresis)
   {
-    v6 = [v4 panGestureRecognizer];
-    [v6 _hysteresis];
+    panGestureRecognizer = [viewCopy panGestureRecognizer];
+    [panGestureRecognizer _hysteresis];
     self->_competingScrollViewPanGestureRecognizerHysteresis = v7;
 
-    v8 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-    [v8 _hysteresis];
+    panGestureRecognizer2 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+    [panGestureRecognizer2 _hysteresis];
     self->_originalPanGestureRecognizerHysteresis = v9;
-    [v8 _setHysteresis:88.0];
-    [v8 addObserver:self forKeyPath:@"state" options:0 context:_SUUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
+    [panGestureRecognizer2 _setHysteresis:88.0];
+    [panGestureRecognizer2 addObserver:self forKeyPath:@"state" options:0 context:_SUUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
     self->_forcingIncreasedPanGestureRecognizerHysteresis = 1;
     objc_initWeak(&location, self);
     v10 = *MEMORY[0x277CBECE8];
@@ -184,9 +184,9 @@ void __100__SUUIViewControllerContainerCollectionView__beginDynamicHysteresisInc
   if (self->_forcingIncreasedPanGestureRecognizerHysteresis)
   {
     self->_competingScrollViewPanGestureRecognizerHysteresis = 0.0;
-    v4 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-    [v4 _setHysteresis:self->_originalPanGestureRecognizerHysteresis];
-    [v4 removeObserver:self forKeyPath:@"state" context:&_SUUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
+    panGestureRecognizer = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+    [panGestureRecognizer _setHysteresis:self->_originalPanGestureRecognizerHysteresis];
+    [panGestureRecognizer removeObserver:self forKeyPath:@"state" context:&_SUUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
     self->_originalPanGestureRecognizerHysteresis = 0.0;
     self->_forcingIncreasedPanGestureRecognizerHysteresis = 0;
     if (self->_runLoopObserver)
@@ -202,15 +202,15 @@ void __100__SUUIViewControllerContainerCollectionView__beginDynamicHysteresisInc
 
 - (void)_updateStateForDynamicHysteresisIncrease
 {
-  v7 = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-  if (![v7 state])
+  panGestureRecognizer = [(SUUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+  if (![panGestureRecognizer state])
   {
-    [v7 translationInView:self];
+    [panGestureRecognizer translationInView:self];
     v4 = fabs(v3);
     v6 = fabs(v5);
     if (v6 > v4 && v6 > self->_competingScrollViewPanGestureRecognizerHysteresis)
     {
-      [v7 setState:5];
+      [panGestureRecognizer setState:5];
     }
   }
 }

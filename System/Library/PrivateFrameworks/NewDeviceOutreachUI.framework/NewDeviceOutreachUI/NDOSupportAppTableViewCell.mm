@@ -1,36 +1,36 @@
 @interface NDOSupportAppTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NDOSupportAppTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)presentingViewControllerForLockupView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NDOSupportAppTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)presentingViewControllerForLockupView:(id)view;
 - (void)_setupAppSuportCell;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidBeginRequest:(id)a3;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidBeginRequest:(id)request;
+- (void)lockupViewDidFinishRequest:(id)request;
 - (void)openButtonAction;
 - (void)updateConstraints;
 @end
 
 @implementation NDOSupportAppTableViewCell
 
-- (NDOSupportAppTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (NDOSupportAppTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v17.receiver = self;
   v17.super_class = NDOSupportAppTableViewCell;
-  v9 = [(PSTableCell *)&v17 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v17 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
     [(NDOSupportAppTableViewCell *)v9 _setupAppSuportCell];
-    v11 = [v8 propertyForKey:@"NDOWarranty"];
-    v12 = [v11 supportAppURL];
-    v13 = v12;
-    if (v12)
+    v11 = [specifierCopy propertyForKey:@"NDOWarranty"];
+    supportAppURL = [v11 supportAppURL];
+    v13 = supportAppURL;
+    if (supportAppURL)
     {
-      v14 = v12;
+      v14 = supportAppURL;
     }
 
     else
@@ -53,8 +53,8 @@
 - (void)layoutSubviews
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 lockupView];
-  [v3 frame];
+  lockupView = [self lockupView];
+  [lockupView frame];
   v4 = NSStringFromRect(v8);
   v6[0] = 136446466;
   OUTLINED_FUNCTION_0();
@@ -70,47 +70,47 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(NDOSupportAppTableViewCell *)self setLockupView:v4];
 
-  v5 = [(NDOSupportAppTableViewCell *)self lockupView];
-  [v5 setDelegate:self];
+  lockupView = [(NDOSupportAppTableViewCell *)self lockupView];
+  [lockupView setDelegate:self];
 
-  v6 = [(NDOSupportAppTableViewCell *)self lockupView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lockupView2 = [(NDOSupportAppTableViewCell *)self lockupView];
+  [lockupView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v7 = *MEMORY[0x277CEC248];
-  v8 = [(NDOSupportAppTableViewCell *)self lockupView];
-  [v8 setSize:v7];
+  lockupView3 = [(NDOSupportAppTableViewCell *)self lockupView];
+  [lockupView3 setSize:v7];
 
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v10 isEqualToString:@"com.apple.Bridge"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.Bridge"])
   {
-    v11 = [MEMORY[0x277CEC2B8] primaryTheme];
+    primaryTheme = [MEMORY[0x277CEC2B8] primaryTheme];
     v12 = objc_alloc(MEMORY[0x277CEC2B8]);
-    v31 = [v11 titleBackgroundColor];
+    titleBackgroundColor = [primaryTheme titleBackgroundColor];
     [MEMORY[0x277D75348] orangeColor];
-    v13 = v32 = v10;
-    v14 = [MEMORY[0x277D75348] orangeColor];
-    v15 = [v14 colorWithAlphaComponent:0.3];
-    v16 = [v11 subtitleTextColor];
-    v17 = [MEMORY[0x277D75348] orangeColor];
-    v18 = [v11 progressColor];
-    v19 = [v12 initWithTitleBackgroundColor:v31 titleTextColor:v13 titleTextDisabledColor:v15 subtitleTextColor:v16 iconTintColor:v17 progressColor:v18];
-    v20 = [(NDOSupportAppTableViewCell *)self lockupView];
-    [v20 setOfferTheme:v19];
+    v13 = v32 = bundleIdentifier;
+    orangeColor = [MEMORY[0x277D75348] orangeColor];
+    v15 = [orangeColor colorWithAlphaComponent:0.3];
+    subtitleTextColor = [primaryTheme subtitleTextColor];
+    orangeColor2 = [MEMORY[0x277D75348] orangeColor];
+    progressColor = [primaryTheme progressColor];
+    v19 = [v12 initWithTitleBackgroundColor:titleBackgroundColor titleTextColor:v13 titleTextDisabledColor:v15 subtitleTextColor:subtitleTextColor iconTintColor:orangeColor2 progressColor:progressColor];
+    lockupView4 = [(NDOSupportAppTableViewCell *)self lockupView];
+    [lockupView4 setOfferTheme:v19];
 
-    v10 = v32;
+    bundleIdentifier = v32;
   }
 
   v21 = [objc_alloc(MEMORY[0x277CEC258]) initWithStringValue:@"1130498044"];
   v22 = objc_alloc(MEMORY[0x277CEC290]);
   v23 = [v22 _initWithID:v21 kind:*MEMORY[0x277CEC230] context:*MEMORY[0x277CEC218] clientID:@"SupportApp"];
-  v24 = [(NDOSupportAppTableViewCell *)self lockupView];
-  [v24 setRequest:v23];
+  lockupView5 = [(NDOSupportAppTableViewCell *)self lockupView];
+  [lockupView5 setRequest:v23];
 
-  v25 = [(NDOSupportAppTableViewCell *)self contentView];
-  v26 = [(NDOSupportAppTableViewCell *)self lockupView];
-  [v25 addSubview:v26];
+  contentView = [(NDOSupportAppTableViewCell *)self contentView];
+  lockupView6 = [(NDOSupportAppTableViewCell *)self lockupView];
+  [contentView addSubview:lockupView6];
 
   [(NDOSupportAppTableViewCell *)self layoutSubviews];
   v33[0] = objc_opt_class();
@@ -126,23 +126,23 @@
 {
   v22[3] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277CCAAD0];
-  v20 = [(NDOSupportAppTableViewCell *)self contentView];
-  v18 = [v20 leadingAnchor];
-  v19 = [(NDOSupportAppTableViewCell *)self lockupView];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  contentView = [(NDOSupportAppTableViewCell *)self contentView];
+  leadingAnchor = [contentView leadingAnchor];
+  lockupView = [(NDOSupportAppTableViewCell *)self lockupView];
+  leadingAnchor2 = [lockupView leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v22[0] = v16;
-  v15 = [(NDOSupportAppTableViewCell *)self contentView];
-  v13 = [v15 trailingAnchor];
-  v3 = [(NDOSupportAppTableViewCell *)self lockupView];
-  v4 = [v3 trailingAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4];
+  contentView2 = [(NDOSupportAppTableViewCell *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  lockupView2 = [(NDOSupportAppTableViewCell *)self lockupView];
+  trailingAnchor2 = [lockupView2 trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v22[1] = v5;
-  v6 = [(NDOSupportAppTableViewCell *)self contentView];
-  v7 = [v6 topAnchor];
-  v8 = [(NDOSupportAppTableViewCell *)self lockupView];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  contentView3 = [(NDOSupportAppTableViewCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  lockupView3 = [(NDOSupportAppTableViewCell *)self lockupView];
+  topAnchor2 = [lockupView3 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[2] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
   [v14 activateConstraints:v11];
@@ -153,12 +153,12 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(NDOSupportAppTableViewCell *)self lockupView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  lockupView = [(NDOSupportAppTableViewCell *)self lockupView];
+  [lockupView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -181,18 +181,18 @@
 {
   v2 = MEMORY[0x277CBEBC0];
   supportAppURL = self->_supportAppURL;
-  v4 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v5 = [(NSString *)supportAppURL stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v5 = [(NSString *)supportAppURL stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   v6 = [v2 URLWithString:v5];
 
-  v7 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke;
   v9[3] = &unk_279978278;
   v10 = v6;
   v8 = v6;
-  [v7 openURL:v8 options:MEMORY[0x277CBEC10] completionHandler:v9];
+  [mEMORY[0x277D75128] openURL:v8 options:MEMORY[0x277CBEC10] completionHandler:v9];
 }
 
 void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1, char a2)
@@ -207,7 +207,7 @@ void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1
   }
 }
 
-- (id)presentingViewControllerForLockupView:(id)a3
+- (id)presentingViewControllerForLockupView:(id)view
 {
   v4 = _NDOLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -215,12 +215,12 @@ void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1
     [NDOSupportAppTableViewCell presentingViewControllerForLockupView:];
   }
 
-  v5 = [(NDOSupportAppTableViewCell *)self parentViewController];
+  parentViewController = [(NDOSupportAppTableViewCell *)self parentViewController];
 
-  return v5;
+  return parentViewController;
 }
 
-- (void)lockupViewDidBeginRequest:(id)a3
+- (void)lockupViewDidBeginRequest:(id)request
 {
   v3 = _NDOLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -229,9 +229,9 @@ void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1
   }
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = _NDOLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -240,21 +240,21 @@ void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1
 
   if (!self->_originalAppOffer)
   {
-    v6 = [v4 lockup];
-    v7 = [v6 offer];
+    lockup = [requestCopy lockup];
+    offer = [lockup offer];
     originalAppOffer = self->_originalAppOffer;
-    self->_originalAppOffer = v7;
+    self->_originalAppOffer = offer;
   }
 
-  v9 = [MEMORY[0x277CEC2A8] sharedMetrics];
-  v10 = [v4 lockup];
-  v11 = [v10 lockupWithOffer:self->_originalAppOffer];
-  v12 = [v9 recordCampaignToken:@"coverage.settings" providerToken:@"2003" withLockup:v11];
+  mEMORY[0x277CEC2A8] = [MEMORY[0x277CEC2A8] sharedMetrics];
+  lockup2 = [requestCopy lockup];
+  v11 = [lockup2 lockupWithOffer:self->_originalAppOffer];
+  v12 = [mEMORY[0x277CEC2A8] recordCampaignToken:@"coverage.settings" providerToken:@"2003" withLockup:v11];
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = _NDOLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -262,17 +262,17 @@ void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1
   }
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  changeCopy = change;
   v8 = _NDOLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [NDOSupportAppTableViewCell lockupView:appStateDidChange:];
   }
 
-  if (([v7 isEqual:*MEMORY[0x277CEC1A0]] & 1) != 0 || objc_msgSend(v7, "isEqual:", *MEMORY[0x277CEC1A8]))
+  if (([changeCopy isEqual:*MEMORY[0x277CEC1A0]] & 1) != 0 || objc_msgSend(changeCopy, "isEqual:", *MEMORY[0x277CEC1A8]))
   {
     v9 = MEMORY[0x277CEC2B0];
     v10 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/NewDeviceOutreachUI.framework"];
@@ -286,9 +286,9 @@ void __46__NDOSupportAppTableViewCell_openButtonAction__block_invoke(uint64_t a1
     v17[3] = &unk_2799782A0;
     v17[4] = self;
     v14 = [v13 initWithMetadata:v12 action:v17];
-    v15 = [v6 lockup];
-    v16 = [v15 lockupWithOffer:v14];
-    [v6 setLockup:v16];
+    lockup = [viewCopy lockup];
+    v16 = [lockup lockupWithOffer:v14];
+    [viewCopy setLockup:v16];
   }
 }
 

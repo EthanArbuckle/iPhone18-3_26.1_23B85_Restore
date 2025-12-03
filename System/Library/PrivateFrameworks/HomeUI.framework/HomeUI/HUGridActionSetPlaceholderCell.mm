@@ -15,13 +15,13 @@
     v5 = self->_iconView;
     self->_iconView = v4;
 
-    v6 = [(HUGridActionSetPlaceholderCell *)self contentView];
-    [v6 addSubview:self->_iconView];
+    contentView = [(HUGridActionSetPlaceholderCell *)self contentView];
+    [contentView addSubview:self->_iconView];
 
     [(HUIconView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUIconView *)self->_iconView setContentMode:1];
-    v7 = [(HUGridCell *)self contentEffect];
-    [(HUIconView *)self->_iconView setVibrancyEffect:v7];
+    contentEffect = [(HUGridCell *)self contentEffect];
+    [(HUIconView *)self->_iconView setVibrancyEffect:contentEffect];
 
     iconView = self->_iconView;
   }
@@ -35,124 +35,124 @@
   v5.super_class = HUGridActionSetPlaceholderCell;
   [(HUGridActionSetCell *)&v5 _setupActionSetCell];
   v3 = [MEMORY[0x277D75210] effectWithStyle:6];
-  v4 = [(HUGridCell *)self gridBackgroundView];
-  [v4 setOverrideBackgroundEffect:v3];
+  gridBackgroundView = [(HUGridCell *)self gridBackgroundView];
+  [gridBackgroundView setOverrideBackgroundEffect:v3];
 }
 
 - (void)updateConstraints
 {
-  v3 = [(HUGridActionSetCell *)self actionSetCellConstraints];
+  actionSetCellConstraints = [(HUGridActionSetCell *)self actionSetCellConstraints];
 
-  if (!v3)
+  if (!actionSetCellConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUGridActionSetPlaceholderCell *)self iconView];
-    v6 = [v5 leadingAnchor];
-    v7 = [(HUGridActionSetPlaceholderCell *)self contentView];
-    v8 = [v7 leadingAnchor];
-    v9 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
-    [v9 iconInnerHorizontalMargin];
-    v10 = [v6 constraintEqualToAnchor:v8 constant:?];
-    [v4 addObject:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    iconView = [(HUGridActionSetPlaceholderCell *)self iconView];
+    leadingAnchor = [iconView leadingAnchor];
+    contentView = [(HUGridActionSetPlaceholderCell *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    sceneCellLayoutOptions = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
+    [sceneCellLayoutOptions iconInnerHorizontalMargin];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
+    [array addObject:v10];
 
-    v11 = [(HUGridActionSetPlaceholderCell *)self iconView];
-    v12 = [v11 centerYAnchor];
-    v13 = [(HUGridActionSetPlaceholderCell *)self contentView];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
-    [v4 addObject:v15];
+    iconView2 = [(HUGridActionSetPlaceholderCell *)self iconView];
+    centerYAnchor = [iconView2 centerYAnchor];
+    contentView2 = [(HUGridActionSetPlaceholderCell *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v15];
 
-    v16 = [(HUGridActionSetPlaceholderCell *)self iconView];
-    v17 = [v16 widthAnchor];
-    v18 = [(HUGridCell *)self layoutOptions];
-    [v18 iconSize];
-    v19 = [v17 constraintEqualToConstant:?];
-    [v4 addObject:v19];
+    iconView3 = [(HUGridActionSetPlaceholderCell *)self iconView];
+    widthAnchor = [iconView3 widthAnchor];
+    layoutOptions = [(HUGridCell *)self layoutOptions];
+    [layoutOptions iconSize];
+    v19 = [widthAnchor constraintEqualToConstant:?];
+    [array addObject:v19];
 
-    v20 = [(HUGridActionSetPlaceholderCell *)self iconView];
-    v21 = [v20 heightAnchor];
-    v22 = [(HUGridCell *)self layoutOptions];
-    [v22 iconSize];
-    v23 = [v21 constraintEqualToConstant:?];
-    [v4 addObject:v23];
+    iconView4 = [(HUGridActionSetPlaceholderCell *)self iconView];
+    heightAnchor = [iconView4 heightAnchor];
+    layoutOptions2 = [(HUGridCell *)self layoutOptions];
+    [layoutOptions2 iconSize];
+    v23 = [heightAnchor constraintEqualToConstant:?];
+    [array addObject:v23];
 
-    v24 = [(HUGridActionSetCell *)self titleAndDescriptionView];
-    v25 = [v24 leadingAnchor];
-    v26 = [(HUGridActionSetPlaceholderCell *)self iconView];
-    v27 = [v26 trailingAnchor];
-    v28 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
-    [v28 iconInnerHorizontalMargin];
-    v29 = [v25 constraintEqualToAnchor:v27 constant:?];
-    [v4 addObject:v29];
+    titleAndDescriptionView = [(HUGridActionSetCell *)self titleAndDescriptionView];
+    leadingAnchor3 = [titleAndDescriptionView leadingAnchor];
+    iconView5 = [(HUGridActionSetPlaceholderCell *)self iconView];
+    trailingAnchor = [iconView5 trailingAnchor];
+    sceneCellLayoutOptions2 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
+    [sceneCellLayoutOptions2 iconInnerHorizontalMargin];
+    v29 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
+    [array addObject:v29];
 
-    v30 = [(HUGridActionSetCell *)self titleAndDescriptionView];
-    v31 = [v30 centerYAnchor];
-    v32 = [(HUGridActionSetPlaceholderCell *)self contentView];
-    v33 = [v32 centerYAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
-    [v4 addObject:v34];
+    titleAndDescriptionView2 = [(HUGridActionSetCell *)self titleAndDescriptionView];
+    centerYAnchor3 = [titleAndDescriptionView2 centerYAnchor];
+    contentView3 = [(HUGridActionSetPlaceholderCell *)self contentView];
+    centerYAnchor4 = [contentView3 centerYAnchor];
+    v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    [array addObject:v34];
 
-    v35 = [(HUGridActionSetCell *)self accessoryView];
+    accessoryView = [(HUGridActionSetCell *)self accessoryView];
 
-    v36 = [(HUGridActionSetCell *)self titleAndDescriptionView];
-    v37 = [v36 trailingAnchor];
-    if (v35)
+    titleAndDescriptionView3 = [(HUGridActionSetCell *)self titleAndDescriptionView];
+    trailingAnchor2 = [titleAndDescriptionView3 trailingAnchor];
+    if (accessoryView)
     {
-      v38 = [(HUGridActionSetCell *)self accessoryView];
-      [v38 leadingAnchor];
+      accessoryView2 = [(HUGridActionSetCell *)self accessoryView];
+      [accessoryView2 leadingAnchor];
     }
 
     else
     {
-      v38 = [(HUGridActionSetPlaceholderCell *)self contentView];
-      [v38 trailingAnchor];
+      accessoryView2 = [(HUGridActionSetPlaceholderCell *)self contentView];
+      [accessoryView2 trailingAnchor];
     }
     v39 = ;
-    v40 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
-    [v40 iconInnerHorizontalMargin];
-    v42 = [v37 constraintEqualToAnchor:v39 constant:-v41];
+    sceneCellLayoutOptions3 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
+    [sceneCellLayoutOptions3 iconInnerHorizontalMargin];
+    v42 = [trailingAnchor2 constraintEqualToAnchor:v39 constant:-v41];
 
     LODWORD(v43) = 1148829696;
     [v42 setPriority:v43];
-    [v4 addObject:v42];
-    v44 = [(HUGridActionSetCell *)self accessoryView];
+    [array addObject:v42];
+    accessoryView3 = [(HUGridActionSetCell *)self accessoryView];
 
-    if (v44)
+    if (accessoryView3)
     {
-      v45 = [(HUGridActionSetCell *)self accessoryView];
-      v46 = [v45 centerYAnchor];
-      v47 = [(HUGridActionSetPlaceholderCell *)self contentView];
-      v48 = [v47 centerYAnchor];
-      v49 = [v46 constraintEqualToAnchor:v48];
-      [v4 addObject:v49];
+      accessoryView4 = [(HUGridActionSetCell *)self accessoryView];
+      centerYAnchor5 = [accessoryView4 centerYAnchor];
+      contentView4 = [(HUGridActionSetPlaceholderCell *)self contentView];
+      centerYAnchor6 = [contentView4 centerYAnchor];
+      v49 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
+      [array addObject:v49];
 
-      v50 = [(HUGridActionSetCell *)self accessoryView];
-      v51 = [v50 trailingAnchor];
-      v52 = [(HUGridActionSetPlaceholderCell *)self contentView];
-      v53 = [v52 trailingAnchor];
-      v54 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
-      [v54 iconInnerHorizontalMargin];
-      v56 = [v51 constraintEqualToAnchor:v53 constant:-v55];
-      [v4 addObject:v56];
+      accessoryView5 = [(HUGridActionSetCell *)self accessoryView];
+      trailingAnchor3 = [accessoryView5 trailingAnchor];
+      contentView5 = [(HUGridActionSetPlaceholderCell *)self contentView];
+      trailingAnchor4 = [contentView5 trailingAnchor];
+      sceneCellLayoutOptions4 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
+      [sceneCellLayoutOptions4 iconInnerHorizontalMargin];
+      v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v55];
+      [array addObject:v56];
 
-      v57 = [(HUGridActionSetCell *)self accessoryView];
-      v58 = [v57 heightAnchor];
-      v59 = [(HUGridActionSetPlaceholderCell *)self contentView];
-      v60 = [v59 heightAnchor];
-      v61 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
-      [v61 iconInnerHorizontalMargin];
-      v63 = [v58 constraintLessThanOrEqualToAnchor:v60 constant:v62 * -2.0];
-      [v4 addObject:v63];
+      accessoryView6 = [(HUGridActionSetCell *)self accessoryView];
+      heightAnchor2 = [accessoryView6 heightAnchor];
+      contentView6 = [(HUGridActionSetPlaceholderCell *)self contentView];
+      heightAnchor3 = [contentView6 heightAnchor];
+      sceneCellLayoutOptions5 = [(HUGridActionSetCell *)self sceneCellLayoutOptions];
+      [sceneCellLayoutOptions5 iconInnerHorizontalMargin];
+      v63 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3 constant:v62 * -2.0];
+      [array addObject:v63];
 
-      v64 = [(HUGridActionSetCell *)self accessoryView];
+      accessoryView7 = [(HUGridActionSetCell *)self accessoryView];
       LODWORD(v65) = 1144750080;
-      [v64 setContentHuggingPriority:0 forAxis:v65];
+      [accessoryView7 setContentHuggingPriority:0 forAxis:v65];
     }
 
-    [(HUGridActionSetCell *)self setActionSetCellConstraints:v4];
+    [(HUGridActionSetCell *)self setActionSetCellConstraints:array];
     v66 = MEMORY[0x277CCAAD0];
-    v67 = [(HUGridActionSetCell *)self actionSetCellConstraints];
-    [v66 activateConstraints:v67];
+    actionSetCellConstraints2 = [(HUGridActionSetCell *)self actionSetCellConstraints];
+    [v66 activateConstraints:actionSetCellConstraints2];
   }
 
   v68.receiver = self;

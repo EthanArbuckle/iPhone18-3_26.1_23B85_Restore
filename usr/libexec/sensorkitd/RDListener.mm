@@ -1,6 +1,6 @@
 @interface RDListener
 + (void)initialize;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_1000719B8 = os_log_create("com.apple.SensorKit", "DaemonListener");
   }
@@ -33,7 +33,7 @@
   [(RDListener *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v6 = qword_1000719B8;
   if (os_log_type_enabled(qword_1000719B8, OS_LOG_TYPE_DEFAULT))
@@ -76,25 +76,25 @@
   }
 
 LABEL_11:
-  [a4 _setQueue:self->_q];
-  [a4 setExportedInterface:self->_exportedInterface];
-  [a4 setExportedObject:self->_exportedObject];
-  [a4 setRemoteObjectInterface:self->_remoteObjectInterface];
+  [connection _setQueue:self->_q];
+  [connection setExportedInterface:self->_exportedInterface];
+  [connection setExportedObject:self->_exportedObject];
+  [connection setRemoteObjectInterface:self->_remoteObjectInterface];
   objc_initWeak(buf, self);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100008024;
   v18[3] = &unk_100060CE0;
   objc_copyWeak(&v19, buf);
-  [a4 setInterruptionHandler:v18];
+  [connection setInterruptionHandler:v18];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000080CC;
   v16[3] = &unk_100060D08;
   objc_copyWeak(&v17, buf);
-  v16[4] = a4;
-  [a4 setInvalidationHandler:v16];
-  [a4 resume];
+  v16[4] = connection;
+  [connection setInvalidationHandler:v16];
+  [connection resume];
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);

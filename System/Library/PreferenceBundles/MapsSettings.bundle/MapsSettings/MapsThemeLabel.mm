@@ -2,34 +2,34 @@
 - (void)_updateAttributedText;
 - (void)_updateTextColor;
 - (void)didMoveToWindow;
-- (void)setAttributedTextProvider:(id)a3;
-- (void)setTextColorProvider:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAttributedTextProvider:(id)provider;
+- (void)setTextColorProvider:(id)provider;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTheme;
 @end
 
 @implementation MapsThemeLabel
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeLabel;
-  [(MapsThemeLabel *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeLabel traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeLabel *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeLabel traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeLabel *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeLabel *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeLabel *)self updateTheme];
     }
@@ -41,9 +41,9 @@
   v4.receiver = self;
   v4.super_class = MapsThemeLabel;
   [(MapsThemeLabel *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeLabel *)self window];
+  window = [(MapsThemeLabel *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeLabel *)self updateTheme];
   }
@@ -56,11 +56,11 @@
   [(MapsThemeLabel *)self _updateTextColor];
 }
 
-- (void)setAttributedTextProvider:(id)a3
+- (void)setAttributedTextProvider:(id)provider
 {
-  if (self->_attributedTextProvider != a3)
+  if (self->_attributedTextProvider != provider)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(provider);
     attributedTextProvider = self->_attributedTextProvider;
     self->_attributedTextProvider = v4;
 
@@ -70,22 +70,22 @@
 
 - (void)_updateAttributedText
 {
-  v3 = [(MapsThemeLabel *)self attributedTextProvider];
+  attributedTextProvider = [(MapsThemeLabel *)self attributedTextProvider];
 
-  if (v3)
+  if (attributedTextProvider)
   {
-    v6 = [(MapsThemeLabel *)self attributedTextProvider];
+    attributedTextProvider2 = [(MapsThemeLabel *)self attributedTextProvider];
     v4 = +[MapsTheme sharedTheme];
-    v5 = v6[2](v6, v4);
+    v5 = attributedTextProvider2[2](attributedTextProvider2, v4);
     [(MapsThemeLabel *)self setAttributedText:v5];
   }
 }
 
-- (void)setTextColorProvider:(id)a3
+- (void)setTextColorProvider:(id)provider
 {
-  if (self->_textColorProvider != a3)
+  if (self->_textColorProvider != provider)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(provider);
     textColorProvider = self->_textColorProvider;
     self->_textColorProvider = v4;
 
@@ -95,13 +95,13 @@
 
 - (void)_updateTextColor
 {
-  v3 = [(MapsThemeLabel *)self textColorProvider];
+  textColorProvider = [(MapsThemeLabel *)self textColorProvider];
 
-  if (v3)
+  if (textColorProvider)
   {
-    v6 = [(MapsThemeLabel *)self textColorProvider];
+    textColorProvider2 = [(MapsThemeLabel *)self textColorProvider];
     v4 = +[MapsTheme sharedTheme];
-    v5 = v6[2](v6, v4);
+    v5 = textColorProvider2[2](textColorProvider2, v4);
     [(MapsThemeLabel *)self setTextColor:v5];
   }
 }

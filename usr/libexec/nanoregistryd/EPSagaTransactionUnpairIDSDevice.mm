@@ -1,12 +1,12 @@
 @interface EPSagaTransactionUnpairIDSDevice
-+ (id)countdown:(int64_t)a3 toCompletion:(id)a4;
++ (id)countdown:(int64_t)countdown toCompletion:(id)completion;
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionUnpairIDSDevice
 
-+ (id)countdown:(int64_t)a3 toCompletion:(id)a4
++ (id)countdown:(int64_t)countdown toCompletion:(id)completion
 {
   v31[0] = 0;
   v31[1] = v31;
@@ -16,7 +16,7 @@
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
-  v30[3] = a3;
+  v30[3] = countdown;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -30,9 +30,9 @@
   v20 = v31;
   v21 = v30;
   v22 = &v24;
-  v23 = a3;
-  v5 = a4;
-  v19 = v5;
+  countdownCopy = countdown;
+  completionCopy = completion;
+  v19 = completionCopy;
   v6 = objc_retainBlock(&v15);
   v7 = v25[5];
   v25[5] = v6;
@@ -46,7 +46,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_retainBlock(v25[5]);
-      v12 = [NSNumber numberWithInteger:a3, v15, v16, v17, v18];
+      v12 = [NSNumber numberWithInteger:countdown, v15, v16, v17, v18];
       *buf = 134218242;
       v34 = v11;
       v35 = 2112;
@@ -64,10 +64,10 @@
   return v13;
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = [a3 objectForKeyedSubscript:@"idsDeviceIdentifier"];
+  registryCopy = registry;
+  v7 = [entry objectForKeyedSubscript:@"idsDeviceIdentifier"];
   v8 = dispatch_get_global_queue(25, 0);
   if (v7)
   {
@@ -80,7 +80,7 @@
     v21 = v7;
     v10 = v8;
     v22 = v10;
-    v11 = v6;
+    v11 = registryCopy;
     v23 = v11;
     v12 = [v9 countdown:2 toCompletion:v20];
     v13 = +[NSMutableSet set];
@@ -100,8 +100,8 @@
 
   else
   {
-    v16 = [(EPSagaTransactionUnpairIDSDevice *)self delegate];
-    [v16 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionUnpairIDSDevice *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 

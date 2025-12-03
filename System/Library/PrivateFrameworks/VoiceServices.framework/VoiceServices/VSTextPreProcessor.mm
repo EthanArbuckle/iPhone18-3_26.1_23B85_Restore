@@ -1,22 +1,22 @@
 @interface VSTextPreProcessor
-- (VSTextPreProcessor)initWithContentsOfPath:(id)a3 languageIdentifier:(id)a4;
-- (id)processedTextFromString:(id)a3;
+- (VSTextPreProcessor)initWithContentsOfPath:(id)path languageIdentifier:(id)identifier;
+- (id)processedTextFromString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation VSTextPreProcessor
 
-- (id)processedTextFromString:(id)a3
+- (id)processedTextFromString:(id)string
 {
-  v3 = a3;
-  v5 = [a3 length];
+  stringCopy = string;
+  v5 = [string length];
   v6 = [(NSArray *)self->_rules count];
   tokenizer = self->_tokenizer;
   if (tokenizer)
   {
     v19.location = 0;
     v19.length = v5;
-    CFStringTokenizerSetString(tokenizer, v3, v19);
+    CFStringTokenizerSetString(tokenizer, stringCopy, v19);
   }
 
   else
@@ -28,7 +28,7 @@
       v17 = CFLocaleCreate(*MEMORY[0x277CBECE8], languageID);
       v20.location = 0;
       v20.length = v5;
-      self->_tokenizer = CFStringTokenizerCreate(v16, v3, v20, 0, v17);
+      self->_tokenizer = CFStringTokenizerCreate(v16, stringCopy, v20, 0, v17);
       if (v17)
       {
         CFRelease(v17);
@@ -39,7 +39,7 @@
     {
       v21.location = 0;
       v21.length = v5;
-      self->_tokenizer = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], v3, v21, 0, 0);
+      self->_tokenizer = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], stringCopy, v21, 0, 0);
     }
   }
 
@@ -55,7 +55,7 @@
       v10 = 1;
       do
       {
-        v11 = [-[NSArray objectAtIndex:](self->_rules objectAtIndex:{v10 - 1, CurrentTokenRange.location), "matchedString:forTokenInRange:", v3, &CurrentTokenRange}];
+        v11 = [-[NSArray objectAtIndex:](self->_rules objectAtIndex:{v10 - 1, CurrentTokenRange.location), "matchedString:forTokenInRange:", stringCopy, &CurrentTokenRange}];
         v12 = v11;
         if (v10 >= v6)
         {
@@ -70,7 +70,7 @@
       {
         if (!v9)
         {
-          v9 = [(__CFString *)v3 mutableCopy];
+          v9 = [(__CFString *)stringCopy mutableCopy];
         }
 
         [v9 replaceCharactersInRange:CurrentTokenRange.location - v8 withString:{CurrentTokenRange.length, v12}];
@@ -85,7 +85,7 @@
     return v9;
   }
 
-  return v3;
+  return stringCopy;
 }
 
 - (void)dealloc
@@ -101,13 +101,13 @@
   [(VSTextPreProcessor *)&v4 dealloc];
 }
 
-- (VSTextPreProcessor)initWithContentsOfPath:(id)a3 languageIdentifier:(id)a4
+- (VSTextPreProcessor)initWithContentsOfPath:(id)path languageIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
   v6 = [(VSTextPreProcessor *)self init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEA60]) initWithContentsOfFile:a3];
+    v7 = [objc_alloc(MEMORY[0x277CBEA60]) initWithContentsOfFile:path];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -116,7 +116,7 @@
     if (v8)
     {
       v9 = v8;
-      v18 = a4;
+      identifierCopy = identifier;
       v10 = 0;
       v11 = *v20;
       while (2)
@@ -161,7 +161,7 @@
       if (v10)
       {
         v6->_rules = v10;
-        v6->_languageID = v18;
+        v6->_languageID = identifierCopy;
         goto LABEL_19;
       }
     }

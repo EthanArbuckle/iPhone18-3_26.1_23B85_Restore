@@ -2,12 +2,12 @@
 - (NSString)domain;
 - (_TtC13caraccessoryd22CAFDAssetVariantsAgent)init;
 - (_TtC13caraccessoryd27CAFDVehicleResourcesManager)vehicleResourcesManager;
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)clusterThemeManager:(id)a3 didUpdateExtraAssetsURL:(id)a4;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setVehicleResourcesManager:(id)a3;
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)clusterThemeManager:(id)manager didUpdateExtraAssetsURL:(id)l;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setVehicleResourcesManager:(id)manager;
 @end
 
 @implementation CAFDAssetVariantsAgent
@@ -19,14 +19,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setVehicleResourcesManager:(id)a3
+- (void)setVehicleResourcesManager:(id)manager
 {
   v5 = OBJC_IVAR____TtC13caraccessoryd22CAFDAssetVariantsAgent_vehicleResourcesManager;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.isa + v5) = manager;
+  managerCopy = manager;
+  selfCopy = self;
 
   CAFDAssetVariantsAgent.vehicleResourcesManager.didset();
 }
@@ -38,43 +38,43 @@
   return result;
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CAFDAssetVariantsAgent.carManager(_:didUpdateCurrentCar:)(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  specialized CAFDAssetVariantsAgent.carManager(_:didUpdateCurrentCar:)(car);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  CAFDAssetVariantsAgent.carDidUpdateAccessories(_:)(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  CAFDAssetVariantsAgent.carDidUpdateAccessories(_:)(accessoriesCopy);
 }
 
-- (void)clusterThemeManager:(id)a3 didUpdateExtraAssetsURL:(id)a4
+- (void)clusterThemeManager:(id)manager didUpdateExtraAssetsURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CAFDAssetVariantsAgent.clusterThemeManager(_:didUpdateExtraAssetsURL:)(a4);
+  managerCopy = manager;
+  lCopy = l;
+  selfCopy = self;
+  specialized CAFDAssetVariantsAgent.clusterThemeManager(_:didUpdateExtraAssetsURL:)(l);
 }
 
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v5 = a3;
-  v6 = self;
+  updateCopy = update;
+  selfCopy = self;
   specialized CAFDAssetVariantsAgent.accessoryDidUpdate(_:receivedAllValues:)();
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  specialized CAFDAssetVariantsAgent.listener(_:didReceive:withContext:)(v8);
+  selfCopy = self;
+  specialized CAFDAssetVariantsAgent.listener(_:didReceive:withContext:)(connectionCopy);
 
   swift_unknownObjectRelease();
 }

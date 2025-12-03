@@ -1,37 +1,37 @@
 @interface MergedTransitRoutingIncidentMessage
-- (MergedTransitRoutingIncidentMessage)initWithGEOComposedRouteAdvisory:(id)a3 transitIncidents:(id)a4;
+- (MergedTransitRoutingIncidentMessage)initWithGEOComposedRouteAdvisory:(id)advisory transitIncidents:(id)incidents;
 @end
 
 @implementation MergedTransitRoutingIncidentMessage
 
-- (MergedTransitRoutingIncidentMessage)initWithGEOComposedRouteAdvisory:(id)a3 transitIncidents:(id)a4
+- (MergedTransitRoutingIncidentMessage)initWithGEOComposedRouteAdvisory:(id)advisory transitIncidents:(id)incidents
 {
-  v7 = a3;
-  v8 = a4;
+  advisoryCopy = advisory;
+  incidentsCopy = incidents;
   v20.receiver = self;
   v20.super_class = MergedTransitRoutingIncidentMessage;
   v9 = [(MergedTransitRoutingIncidentMessage *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_advisory, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_advisory, advisory);
+    v11 = [incidentsCopy copy];
     transitIncidents = v10->_transitIncidents;
     v10->_transitIncidents = v11;
 
     if (v10->_advisory)
     {
-      v13 = [v7 titleString];
-      v14 = [v13 stringWithDefaultOptions];
+      titleString = [advisoryCopy titleString];
+      stringWithDefaultOptions = [titleString stringWithDefaultOptions];
     }
 
     else
     {
       if ([(NSArray *)v10->_transitIncidents count]== 1)
       {
-        v13 = [(NSArray *)v10->_transitIncidents objectAtIndexedSubscript:0];
-        v15 = [v13 title];
-        v16 = [v15 copy];
+        titleString = [(NSArray *)v10->_transitIncidents objectAtIndexedSubscript:0];
+        title = [titleString title];
+        v16 = [title copy];
         routingMessage = v10->_routingMessage;
         v10->_routingMessage = v16;
 
@@ -40,13 +40,13 @@ LABEL_8:
       }
 
       v18 = +[NSBundle mainBundle];
-      v13 = [v18 localizedStringForKey:@"Transit_Routing_Incident_Message_Multiple_Incidents_Synthesized_Title" value:@"localized string not found" table:0];
+      titleString = [v18 localizedStringForKey:@"Transit_Routing_Incident_Message_Multiple_Incidents_Synthesized_Title" value:@"localized string not found" table:0];
 
-      v14 = [NSString stringWithFormat:v13, [(NSArray *)v10->_transitIncidents count]];
+      stringWithDefaultOptions = [NSString stringWithFormat:titleString, [(NSArray *)v10->_transitIncidents count]];
     }
 
-    v15 = v10->_routingMessage;
-    v10->_routingMessage = v14;
+    title = v10->_routingMessage;
+    v10->_routingMessage = stringWithDefaultOptions;
     goto LABEL_8;
   }
 

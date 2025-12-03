@@ -3,9 +3,9 @@
 - (CGSize)imageSize;
 - (NSString)description;
 - (_TtC15UIUnderstanding11BoundingBox)init;
-- (_TtC15UIUnderstanding11BoundingBox)initWithRect:(CGRect)a3 imageSize:(CGSize)a4;
-- (void)setImageSize:(CGSize)a3;
-- (void)setRect:(CGRect)a3;
+- (_TtC15UIUnderstanding11BoundingBox)initWithRect:(CGRect)rect imageSize:(CGSize)size;
+- (void)setImageSize:(CGSize)size;
+- (void)setRect:(CGRect)rect;
 @end
 
 @implementation BoundingBox
@@ -25,12 +25,12 @@
   return result;
 }
 
-- (void)setRect:(CGRect)a3
+- (void)setRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR____TtC15UIUnderstanding11BoundingBox_rect);
   swift_beginAccess();
   *v7 = x;
@@ -50,20 +50,20 @@
   return result;
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = (self + OBJC_IVAR____TtC15UIUnderstanding11BoundingBox_imageSize);
   swift_beginAccess();
   *v5 = width;
   v5[1] = height;
 }
 
-- (_TtC15UIUnderstanding11BoundingBox)initWithRect:(CGRect)a3 imageSize:(CGSize)a4
+- (_TtC15UIUnderstanding11BoundingBox)initWithRect:(CGRect)rect imageSize:(CGSize)size
 {
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding11BoundingBox_rect) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding11BoundingBox_imageSize) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding11BoundingBox_rect) = rect;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding11BoundingBox_imageSize) = size;
   v5.receiver = self;
   v5.super_class = type metadata accessor for BoundingBox();
   return [(BoundingBox *)&v5 init];
@@ -71,7 +71,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_270298C94();
 
   v3 = sub_2702B3FFC();

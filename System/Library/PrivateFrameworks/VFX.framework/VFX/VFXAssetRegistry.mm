@@ -1,11 +1,11 @@
 @interface VFXAssetRegistry
 - (VFXAssetRegistry)init;
-- (VFXAssetRegistry)initWithCoder:(id)a3;
+- (VFXAssetRegistry)initWithCoder:(id)coder;
 - (VFXWorld)world;
 - (__CFXWorld)worldRef;
-- (void)addWorldReference:(id)a3;
+- (void)addWorldReference:(id)reference;
 - (void)dealloc;
-- (void)setWorld:(id)a3;
+- (void)setWorld:(id)world;
 @end
 
 @implementation VFXAssetRegistry
@@ -37,7 +37,7 @@
   [(VFXAssetRegistry *)&v5 dealloc];
 }
 
-- (VFXAssetRegistry)initWithCoder:(id)a3
+- (VFXAssetRegistry)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = VFXAssetRegistry;
@@ -45,24 +45,24 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_root = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"root");
+    v4->_root = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"root");
   }
 
   return v4;
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
-  if (self->_world != a3)
+  if (self->_world != reference)
   {
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -76,8 +76,8 @@
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;

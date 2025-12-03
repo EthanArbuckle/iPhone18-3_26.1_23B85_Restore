@@ -1,24 +1,24 @@
 @interface BWNoiseReducerNode
-- (BWNoiseReducerNode)initWithCameraTuningDictionary:(id)a3 sensorIDDictionary:(id)a4;
-- (BWVideoFormatRequirements)_outputRequirementsForInputFormat:(uint64_t)a1;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (BWNoiseReducerNode)initWithCameraTuningDictionary:(id)dictionary sensorIDDictionary:(id)dDictionary;
+- (BWVideoFormatRequirements)_outputRequirementsForInputFormat:(uint64_t)format;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWNoiseReducerNode
 
-- (BWNoiseReducerNode)initWithCameraTuningDictionary:(id)a3 sensorIDDictionary:(id)a4
+- (BWNoiseReducerNode)initWithCameraTuningDictionary:(id)dictionary sensorIDDictionary:(id)dDictionary
 {
   v15.receiver = self;
   v15.super_class = BWNoiseReducerNode;
   v6 = [(BWNode *)&v15 init];
   if (v6)
   {
-    v8 = [a4 objectForKeyedSubscript:@"ChromaNoiseReduction"];
+    v8 = [dDictionary objectForKeyedSubscript:@"ChromaNoiseReduction"];
     v9 = objc_alloc(MEMORY[0x1E695DF90]);
     v10 = [v9 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 1), @"Synchronization", 0}];
     v11 = v10;
@@ -28,11 +28,11 @@
     }
 
     v6->_noiseReductionOptions = v11;
-    v6->_cameraTuningOptions = a3;
+    v6->_cameraTuningOptions = dictionary;
     v6->_contextSynchronization = 3;
     *&v6->_threaded = 1;
     v6->_gpuPriority = 0;
-    v6->_useInPlaceAlgorithm = !noiseReductionRequiresOutputSampleBuffer(a3);
+    v6->_useInPlaceAlgorithm = !noiseReductionRequiresOutputSampleBuffer(dictionary);
     v12 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v6];
     v13 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v13 setSupportedPixelFormats:&unk_1F2248B80];
@@ -72,9 +72,9 @@
   self->_context = noiseReductionContextCreateWithOptions(self->_contextSynchronization, self->_gpuPriority, self->_cameraTuningOptions);
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (a4)
+  if (format)
   {
     outputFormatDescription = self->_outputFormatDescription;
     if (outputFormatDescription)
@@ -86,10 +86,10 @@
 
   v10.receiver = self;
   v10.super_class = BWNoiseReducerNode;
-  [(BWNode *)&v10 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v10 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   outputFormatDescription = self->_outputFormatDescription;
   if (outputFormatDescription)
@@ -103,10 +103,10 @@
   self->_context = 0;
   v6.receiver = self;
   v6.super_class = BWNoiseReducerNode;
-  [(BWNode *)&v6 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v6 didReachEndOfDataForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -115,7 +115,7 @@
 
   noiseReductionOptions = self->_noiseReductionOptions;
   v43 = 0;
-  v7 = CMGetAttachment(a3, @"StillSettings", 0);
+  v7 = CMGetAttachment(buffer, @"StillSettings", 0);
   v8 = v7;
   if (!v7)
   {
@@ -134,18 +134,18 @@
   {
     v9 = noiseReductionOptions;
     v10 = *off_1E798A3C8;
-    value = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    value = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     v11 = value;
-    v12 = CMGetAttachment(a3, @"NoiseReductionAlternateMetadata", 0);
+    v12 = CMGetAttachment(buffer, @"NoiseReductionAlternateMetadata", 0);
     v13 = v12;
     if (v12)
     {
       v14 = v12;
-      CMSetAttachment(a3, v10, v13, 1u);
+      CMSetAttachment(buffer, v10, v13, 1u);
     }
 
     v15 = *off_1E798D3A8;
-    v16 = CMGetAttachment(a3, *off_1E798D3A8, 0);
+    v16 = CMGetAttachment(buffer, *off_1E798D3A8, 0);
     v42 = v16 != 0;
     if (v16)
     {
@@ -170,9 +170,9 @@
     cf = v21;
     if (self->_useInPlaceAlgorithm)
     {
-      v27 = noiseReductionWithTuningOptions(self->_context, a3, self->_processLuma, self->_threaded, v21);
+      v27 = noiseReductionWithTuningOptions(self->_context, buffer, self->_processLuma, self->_threaded, v21);
       v25 = 0;
-      v43 = CFRetain(a3);
+      v43 = CFRetain(buffer);
       if (!v13)
       {
         goto LABEL_21;
@@ -181,19 +181,19 @@
       goto LABEL_17;
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-    v29 = [(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool] newPixelBuffer];
-    v25 = v29;
-    if (!v29)
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+    newPixelBuffer = [(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool] newPixelBuffer];
+    v25 = newPixelBuffer;
+    if (!newPixelBuffer)
     {
       [BWNoiseReducerNode renderSampleBuffer:forInput:];
       v27 = 4294954510;
       goto LABEL_28;
     }
 
-    CMSetAttachment(v29, @"InputPixelBufferForAsyncNR", ImageBuffer, 0);
-    BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v25, &self->_outputFormatDescription, &v43);
-    v30 = noiseReductionInOutWithTuningOptions(self->_context, a3, v43, self->_processLuma, self->_threaded, v21);
+    CMSetAttachment(newPixelBuffer, @"InputPixelBufferForAsyncNR", ImageBuffer, 0);
+    BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v25, &self->_outputFormatDescription, &v43);
+    v30 = noiseReductionInOutWithTuningOptions(self->_context, buffer, v43, self->_processLuma, self->_threaded, v21);
     if (v30)
     {
       v31 = v30;
@@ -219,7 +219,7 @@ LABEL_21:
   }
 
   cf = noiseReductionOptions;
-  v24 = CFRetain(a3);
+  v24 = CFRetain(buffer);
   v25 = 0;
   v23 = 0;
   v42 = 0;
@@ -296,9 +296,9 @@ LABEL_33:
   }
 }
 
-- (BWVideoFormatRequirements)_outputRequirementsForInputFormat:(uint64_t)a1
+- (BWVideoFormatRequirements)_outputRequirementsForInputFormat:(uint64_t)format
 {
-  if (!a1)
+  if (!format)
   {
     return 0;
   }
@@ -338,14 +338,14 @@ LABEL_33:
   return v4;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  [(BWNodeOutput *)self->super._output setFormatRequirements:[(BWNoiseReducerNode *)self _outputRequirementsForInputFormat:a3]];
+  [(BWNodeOutput *)self->super._output setFormatRequirements:[(BWNoiseReducerNode *)self _outputRequirementsForInputFormat:format]];
   if (self->_useInPlaceAlgorithm)
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output setFormat:a3];
+    [(BWNodeOutput *)output setFormat:format];
   }
 }
 

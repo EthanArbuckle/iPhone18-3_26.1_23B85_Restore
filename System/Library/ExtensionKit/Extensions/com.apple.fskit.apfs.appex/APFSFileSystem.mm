@@ -1,20 +1,20 @@
 @interface APFSFileSystem
-- (id)startCheckWithTask:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)startFormatWithTask:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)syncRead:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6;
-- (void)dispatchAsyncBlock:(id)a3;
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
-- (void)probeResource:(id)a3 replyHandler:(id)a4;
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
+- (id)startCheckWithTask:(id)task options:(id)options error:(id *)error;
+- (id)startFormatWithTask:(id)task options:(id)options error:(id *)error;
+- (id)syncRead:(id)read into:(void *)into startingAt:(int64_t)at length:(unint64_t)length;
+- (void)dispatchAsyncBlock:(id)block;
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler;
+- (void)probeResource:(id)resource replyHandler:(id)handler;
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler;
 @end
 
 @implementation APFSFileSystem
 
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = fskit_std_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -26,7 +26,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [FSBlockDeviceResource dynamicCast:v8];
+    v12 = [FSBlockDeviceResource dynamicCast:resourceCopy];
     resource = self->_resource;
     self->_resource = v12;
 
@@ -34,9 +34,9 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v14 = [v9 taskOptions];
+    taskOptions = [optionsCopy taskOptions];
     v15 = 0;
-    v16 = [v14 countByEnumeratingWithState:&v34 objects:v47 count:16];
+    v16 = [taskOptions countByEnumeratingWithState:&v34 objects:v47 count:16];
     if (v16)
     {
       v17 = *v35;
@@ -46,13 +46,13 @@
         {
           if (*v35 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(taskOptions);
           }
 
           v15 |= [*(*(&v34 + 1) + 8 * i) containsString:@"-f"];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v34 objects:v47 count:16];
+        v16 = [taskOptions countByEnumeratingWithState:&v34 objects:v47 count:16];
       }
 
       while (v16);
@@ -76,12 +76,12 @@
     v27[3] = &unk_1000E4FB8;
     v27[4] = &v28;
     v27[5] = &buf;
-    [(APFSFileSystem *)self probeResource:v8 replyHandler:v27];
+    [(APFSFileSystem *)self probeResource:resourceCopy replyHandler:v27];
     if (v29[5])
     {
       if ((v15 & 1) == 0)
       {
-        v10[2](v10, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_22;
       }
     }
@@ -93,18 +93,18 @@
         v22 = fskit_std_log();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [*(*(&buf + 1) + 40) containerID];
+          containerID = [*(*(&buf + 1) + 40) containerID];
           *v38 = 136315394;
           v39 = "[APFSFileSystem loadResource:options:replyHandler:]";
           v40 = 2112;
-          v41 = v23;
+          v41 = containerID;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s: loaded resource with ID (%@)", v38, 0x16u);
         }
 
         v24 = +[FSContainerStatus ready];
         [(APFSFileSystem *)self setContainerStatus:v24];
 
-        (v10[2])(v10, &__NSArray0__struct, 0);
+        (handlerCopy[2])(handlerCopy, &__NSArray0__struct, 0);
         goto LABEL_22;
       }
 
@@ -118,7 +118,7 @@
         }
 
         v19 = fs_errorForPOSIXError();
-        (v10[2])(v10, 0, v19);
+        (handlerCopy[2])(handlerCopy, 0, v19);
         goto LABEL_14;
       }
     }
@@ -127,7 +127,7 @@
     v20 = [FSContainerStatus notReadyWithStatus:v19];
     [(APFSFileSystem *)self setContainerStatus:v20];
 
-    (v10[2])(v10, 0, v19);
+    (handlerCopy[2])(handlerCopy, 0, v19);
 LABEL_14:
 
 LABEL_22:
@@ -138,36 +138,36 @@ LABEL_22:
   }
 
   v21 = fs_errorForPOSIXError();
-  (v10[2])(v10, 0, v21);
+  (handlerCopy[2])(handlerCopy, 0, v21);
 
 LABEL_23:
 }
 
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
   resource = self->_resource;
   if (resource)
   {
     self->_resource = 0;
-    v7 = a5;
+    handlerCopy = handler;
 
     v8 = 0;
   }
 
   else
   {
-    v9 = a5;
+    handlerCopy2 = handler;
     v8 = fs_errorForPOSIXError();
   }
 
   v10 = v8;
-  (*(a5 + 2))(a5);
+  (*(handler + 2))(handler);
 }
 
-- (id)syncRead:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6
+- (id)syncRead:(id)read into:(void *)into startingAt:(int64_t)at length:(unint64_t)length
 {
   v13 = 0;
-  v7 = [a3 readInto:a4 startingAt:a5 length:a6 error:&v13];
+  v7 = [read readInto:into startingAt:at length:length error:&v13];
   v8 = v13;
   if (v8)
   {
@@ -179,7 +179,7 @@ LABEL_23:
     }
   }
 
-  else if (v7 == a6)
+  else if (v7 == length)
   {
     v9 = 0;
   }
@@ -198,44 +198,44 @@ LABEL_23:
   return v9;
 }
 
-- (void)probeResource:(id)a3 replyHandler:(id)a4
+- (void)probeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 kind] == 1)
+  resourceCopy = resource;
+  handlerCopy = handler;
+  if ([resourceCopy kind] == 1)
   {
-    v8 = [FSBlockDeviceResource dynamicCast:v6];
-    v9 = [v8 blockSize];
-    if (v9 <= 0x1000)
+    v8 = [FSBlockDeviceResource dynamicCast:resourceCopy];
+    blockSize = [v8 blockSize];
+    if (blockSize <= 0x1000)
     {
       v10 = 4096;
     }
 
     else
     {
-      v10 = v9;
+      v10 = blockSize;
     }
 
     v11 = [[NSMutableData alloc] initWithLength:v10];
     v12 = -[APFSFileSystem syncRead:into:startingAt:length:](self, "syncRead:into:startingAt:length:", v8, [v11 mutableBytes], 0, v10);
     if (!v12)
     {
-      v13 = [v11 mutableBytes];
-      if (!nx_check_superblock(v13, 0x10001u, 0, v14, v15))
+      mutableBytes = [v11 mutableBytes];
+      if (!nx_check_superblock(mutableBytes, 0x10001u, 0, v14, v15))
       {
-        v23 = *(v13 + 72);
+        v23 = *(mutableBytes + 72);
         v18 = [[NSUUID alloc] initWithUUIDBytes:&v23];
         v19 = [FSContainerIdentifier alloc];
         v20 = [v19 initWithUUID:{v18, v23}];
-        if ((*(v13 + 8) & 0xFFFFFFFFFFFFFFFDLL) != 0)
+        if ((*(mutableBytes + 8) & 0xFFFFFFFFFFFFFFFDLL) != 0)
         {
           v21 = [FSProbeResult resultWithResult:1 name:0 containerID:v20];
-          v7[2](v7, v21, 0);
+          handlerCopy[2](handlerCopy, v21, 0);
         }
 
         else
         {
-          if (*(v13 + 7))
+          if (*(mutableBytes + 7))
           {
             v22 = 2;
           }
@@ -246,7 +246,7 @@ LABEL_23:
           }
 
           v21 = [FSProbeResult resultWithResult:v22 name:0 containerID:v20];
-          v7[2](v7, v21, 0);
+          handlerCopy[2](handlerCopy, v21, 0);
         }
 
         goto LABEL_9;
@@ -256,7 +256,7 @@ LABEL_23:
     }
 
     v16 = v12;
-    v7[2](v7, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
 
 LABEL_9:
     goto LABEL_13;
@@ -271,20 +271,20 @@ LABEL_9:
   }
 
   v11 = fs_errorForPOSIXError();
-  (v7)[2](v7, 0, v11);
+  (handlerCopy)[2](handlerCopy, 0, v11);
 LABEL_13:
 }
 
-- (void)dispatchAsyncBlock:(id)a3
+- (void)dispatchAsyncBlock:(id)block
 {
   v4 = dispatch_get_global_queue(0, 0);
-  dispatch_async(v4, a3);
+  dispatch_async(v4, block);
 }
 
-- (id)startCheckWithTask:(id)a3 options:(id)a4 error:(id *)a5
+- (id)startCheckWithTask:(id)task options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  optionsCopy = options;
   v61 = 0;
   v59 = 0u;
   v60 = 0u;
@@ -292,10 +292,10 @@ LABEL_13:
   v58 = 0u;
   v56 = 0u;
   v10 = objc_alloc_init(NSProgress);
-  v11 = [v9 taskOptions];
+  taskOptions = [optionsCopy taskOptions];
   v12 = [FSBlockDeviceResource dynamicCast:self->_resource];
   v13 = &unk_100103000;
-  v42 = a5;
+  errorCopy = error;
   if (!v12)
   {
     v31 = 0;
@@ -314,11 +314,11 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v15 = [v8 connection];
+  connection = [taskCopy connection];
   v16 = *v14;
-  *v14 = v15;
+  *v14 = connection;
 
-  v38 = self;
+  selfCopy = self;
   v17 = [NSBundle bundleForClass:objc_opt_class()];
   v18 = v14[2];
   v14[2] = v17;
@@ -326,22 +326,22 @@ LABEL_20:
   qword_1001037A0 = v14;
   LODWORD(v58) = 1;
   [v10 setTotalUnitCount:2];
-  if (![v11 count])
+  if (![taskOptions count])
   {
     v21 = 0;
     goto LABEL_26;
   }
 
   v39 = v10;
-  v40 = v9;
-  v41 = v8;
+  v40 = optionsCopy;
+  v41 = taskCopy;
   v19 = 0;
   v20 = 0;
   v21 = 0;
   v22 = 0;
   do
   {
-    v23 = [v11 objectAtIndexedSubscript:v19];
+    v23 = [taskOptions objectAtIndexedSubscript:v19];
     if ([v23 isEqual:@"-q"])
     {
       BYTE8(v58) = 1;
@@ -379,8 +379,8 @@ LABEL_12:
 
         v31 = 0;
         v32 = 0;
-        v9 = v40;
-        v8 = v41;
+        optionsCopy = v40;
+        taskCopy = v41;
         v10 = v39;
         goto LABEL_32;
       }
@@ -391,24 +391,24 @@ LABEL_13:
     ++v19;
   }
 
-  while (v19 < [v11 count]);
+  while (v19 < [taskOptions count]);
   if (v20 & v22)
   {
     log_err("%s:%d: Invalid options can't have -n (check only) and -y (repair) together \n", v24, v25, v26, v27, v28, v29, v30, "[APFSFileSystem startCheckWithTask:options:error:]");
     v31 = 0;
     v32 = 0;
-    v9 = v40;
-    v8 = v41;
+    optionsCopy = v40;
+    taskCopy = v41;
     v10 = v39;
     goto LABEL_32;
   }
 
-  v9 = v40;
-  v8 = v41;
+  optionsCopy = v40;
+  taskCopy = v41;
   v10 = v39;
 LABEL_26:
-  v33 = [v12 devicePath];
-  v31 = strdup([v33 UTF8String]);
+  devicePath = [v12 devicePath];
+  v31 = strdup([devicePath UTF8String]);
 
   if (!v31)
   {
@@ -433,8 +433,8 @@ LABEL_26:
       v32[3] = [v12 blockSize];
       *(v32 + 24) = [v12 isWritable];
       v32[5] = [v12 partitionBase];
-      v34 = [v12 devicePath];
-      *v32 = strdup([v34 UTF8String]);
+      devicePath2 = [v12 devicePath];
+      *v32 = strdup([devicePath2 UTF8String]);
 
       if (*v32)
       {
@@ -448,7 +448,7 @@ LABEL_26:
         v43[1] = 3221225472;
         v43[2] = sub_1000594CC;
         v43[3] = &unk_1000E4FE0;
-        v44 = v8;
+        v44 = taskCopy;
         v35 = v10;
         v49 = v58;
         v50 = v59;
@@ -461,8 +461,8 @@ LABEL_26:
         v53 = v32;
         v54 = v21;
         v55 = v31;
-        [(APFSFileSystem *)v38 dispatchAsyncBlock:v43];
-        *v42 = 0;
+        [(APFSFileSystem *)selfCopy dispatchAsyncBlock:v43];
+        *errorCopy = 0;
         v36 = v35;
 
         goto LABEL_36;
@@ -474,7 +474,7 @@ LABEL_32:
   }
 
 LABEL_33:
-  *v42 = fs_errorForPOSIXError();
+  *errorCopy = fs_errorForPOSIXError();
   free(v14);
   v13[244] = 0;
   free(v21);
@@ -491,14 +491,14 @@ LABEL_36:
   return v36;
 }
 
-- (id)startFormatWithTask:(id)a3 options:(id)a4 error:(id *)a5
+- (id)startFormatWithTask:(id)task options:(id)options error:(id *)error
 {
-  v8 = a3;
+  taskCopy = task;
   memset(__str, 0, sizeof(__str));
   v62 = 0;
   *out = 0u;
   v61 = 0u;
-  v9 = [a4 taskOptions];
+  taskOptions = [options taskOptions];
   v10 = [FSBlockDeviceResource dynamicCast:self->_resource];
   v11 = objc_alloc_init(NSProgress);
   v12 = malloc_type_malloc(0x18uLL, 0x80040D6874129uLL);
@@ -507,9 +507,9 @@ LABEL_36:
     goto LABEL_29;
   }
 
-  v13 = [v8 connection];
+  connection = [taskCopy connection];
   v14 = *v12;
-  *v12 = v13;
+  *v12 = connection;
 
   v15 = [NSBundle bundleForClass:objc_opt_class()];
   v16 = v12[2];
@@ -523,7 +523,7 @@ LABEL_36:
 LABEL_29:
     free(v12);
     qword_1001037A0 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_42;
     }
@@ -538,8 +538,8 @@ LABEL_29:
   v18[3] = [v10 blockSize];
   *(v18 + 24) = [v10 isWritable];
   v18[5] = [v10 partitionBase];
-  v19 = [v10 devicePath];
-  *v18 = strdup([v19 UTF8String]);
+  devicePath = [v10 devicePath];
+  *v18 = strdup([devicePath UTF8String]);
 
   if (!*v18)
   {
@@ -552,30 +552,30 @@ LABEL_29:
   [v11 setTotalUnitCount:2];
   memset(__src, 0, sizeof(__src));
   parse_apfs_format_options(0, __src);
-  if (![v9 count])
+  if (![taskOptions count])
   {
     v33 = 0;
-    v42 = -1;
+    intValue = -1;
     goto LABEL_37;
   }
 
-  v40 = a5;
-  v41 = v8;
+  errorCopy = error;
+  v41 = taskCopy;
   v43 = 0;
   v39 = 0;
   v20 = 0;
-  v42 = -1;
+  intValue = -1;
   do
   {
-    v21 = [v9 objectAtIndexedSubscript:v20];
-    if (++v20 >= [v9 count])
+    v21 = [taskOptions objectAtIndexedSubscript:v20];
+    if (++v20 >= [taskOptions count])
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = [v9 objectAtIndexedSubscript:v20];
+      v22 = [taskOptions objectAtIndexedSubscript:v20];
     }
 
     if ([v21 isEqual:@"-v"])
@@ -588,8 +588,8 @@ LABEL_29:
 LABEL_35:
         log_err(v34, v23, v24, v25, v26, v27, v28, v29, v38);
 
-        v8 = v41;
-        a5 = v40;
+        taskCopy = v41;
+        error = errorCopy;
         goto LABEL_40;
       }
 
@@ -639,7 +639,7 @@ LABEL_24:
         goto LABEL_17;
       }
 
-      v42 = [v22 intValue];
+      intValue = [v22 intValue];
       v39 = 1;
     }
 
@@ -647,18 +647,18 @@ LABEL_24:
 LABEL_17:
   }
 
-  while (v20 < [v9 count]);
+  while (v20 < [taskOptions count]);
   if (v39)
   {
     BYTE4(v43) = 1;
     LOBYTE(v33) = 1;
-    v8 = v41;
-    a5 = v40;
+    taskCopy = v41;
+    error = errorCopy;
     goto LABEL_38;
   }
 
-  v8 = v41;
-  a5 = v40;
+  taskCopy = v41;
+  error = errorCopy;
   v33 = v43;
 LABEL_37:
   __strlcpy_chk();
@@ -672,7 +672,7 @@ LABEL_41:
     qword_1001037A0 = 0;
     free(*v18);
     free(v18);
-    if (!a5)
+    if (!error)
     {
 LABEL_42:
       v32 = 0;
@@ -681,7 +681,7 @@ LABEL_42:
 
 LABEL_30:
     fs_errorForPOSIXError();
-    *a5 = v32 = 0;
+    *error = v32 = 0;
     goto LABEL_46;
   }
 
@@ -698,7 +698,7 @@ LABEL_30:
   v44[1] = 3221225472;
   v44[2] = sub_100059CB4;
   v44[3] = &unk_1000E5008;
-  v45 = v8;
+  v45 = taskCopy;
   v36 = v11;
   v46 = v36;
   v55 = v43 & 1;
@@ -709,7 +709,7 @@ LABEL_30:
   v51 = v62;
   v47 = v10;
   v52 = v18;
-  v54 = v42;
+  v54 = intValue;
   v53 = v12;
   [(APFSFileSystem *)self dispatchAsyncBlock:v44];
   v32 = v36;

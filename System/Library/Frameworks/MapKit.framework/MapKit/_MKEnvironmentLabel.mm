@@ -1,5 +1,5 @@
 @interface _MKEnvironmentLabel
-- (_MKEnvironmentLabel)initWithFrame:(CGRect)a3;
+- (_MKEnvironmentLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 @end
@@ -13,8 +13,8 @@
   [(_MKEnvironmentLabel *)&v6 layoutSubviews];
   [(_MKEnvironmentLabel *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(_MKEnvironmentLabel *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(_MKEnvironmentLabel *)self layer];
+  [layer setCornerRadius:v4];
 }
 
 - (void)sizeToFit
@@ -27,11 +27,11 @@
   [(_MKEnvironmentLabel *)self setFrame:v4];
 }
 
-- (_MKEnvironmentLabel)initWithFrame:(CGRect)a3
+- (_MKEnvironmentLabel)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = _MKEnvironmentLabel;
-  v3 = [(_MKEnvironmentLabel *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKEnvironmentLabel *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -43,8 +43,8 @@
     [(_MKEnvironmentLabel *)v3 setBackgroundColor:v7];
 
     [(UILabel *)v3->_label setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v3->_label setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v3->_label setTextColor:whiteColor];
 
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
     [(UILabel *)v3->_label setFont:v9];

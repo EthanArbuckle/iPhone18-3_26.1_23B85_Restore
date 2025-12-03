@@ -14,9 +14,9 @@
 
   if (![(_UIActivityContentCollectionView *)self initialValidLayoutWasCalled])
   {
-    v3 = [(_UIActivityContentCollectionView *)self window];
+    window = [(_UIActivityContentCollectionView *)self window];
 
-    if (v3)
+    if (window)
     {
       [(_UIActivityContentCollectionView *)self setInitialValidLayoutWasCalled:1];
       [(_UIActivityContentCollectionView *)self setIsInitialLayoutPass:1];

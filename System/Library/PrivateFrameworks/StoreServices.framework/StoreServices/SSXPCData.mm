@@ -1,20 +1,20 @@
 @interface SSXPCData
-- (SSXPCData)initWithXPCData:(id)a3;
+- (SSXPCData)initWithXPCData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation SSXPCData
 
-- (SSXPCData)initWithXPCData:(id)a3
+- (SSXPCData)initWithXPCData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v6.receiver = self;
     v6.super_class = SSXPCData;
     v4 = [(SSXPCData *)&v6 init];
     if (v4)
     {
-      v4->_xpcData = xpc_retain(a3);
+      v4->_xpcData = xpc_retain(data);
     }
   }
 

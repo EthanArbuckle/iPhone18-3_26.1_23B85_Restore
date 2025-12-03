@@ -1,13 +1,13 @@
 @interface _UICursorAccessoryHostView
 - (CGRect)selectionRect;
-- (_UICursorAccessoryHostView)initWithCursorItemDataSource:(id)a3;
-- (void)_didRecognizeDismissGestureRecognizer:(id)a3;
+- (_UICursorAccessoryHostView)initWithCursorItemDataSource:(id)source;
+- (void)_didRecognizeDismissGestureRecognizer:(id)recognizer;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setTouchFallbackEnabled:(BOOL)a3;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setHidden:(BOOL)hidden;
+- (void)setTouchFallbackEnabled:(BOOL)enabled;
 @end
 
 @implementation _UICursorAccessoryHostView
@@ -41,17 +41,17 @@ LABEL_29:
       return;
     }
 
-    v13 = [(UIView *)self keyboardSceneDelegate];
-    [v13 visibleFrameInView:self];
+    keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+    [keyboardSceneDelegate visibleFrameInView:self];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [(UIView *)self window];
-    v23 = [v22 windowScene];
-    v24 = [v23 _coordinateSpace];
-    [(UIView *)self convertRect:v24 fromCoordinateSpace:v15, v17, v19, v21];
+    window = [(UIView *)self window];
+    windowScene = [window windowScene];
+    _coordinateSpace = [windowScene _coordinateSpace];
+    [(UIView *)self convertRect:_coordinateSpace fromCoordinateSpace:v15, v17, v19, v21];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -93,24 +93,24 @@ LABEL_29:
       MinY = Height;
       if (Height <= 0.0 || (v148.origin.x = v26, v148.origin.y = v28, v148.size.width = v30, v148.size.height = v32, MinY = CGRectGetMinY(v148), v11 * 0.5 + v138 <= MinY))
       {
-        v37 = [(UIView *)self window];
-        [v37 safeAreaInsets];
+        window2 = [(UIView *)self window];
+        [window2 safeAreaInsets];
         v39 = v38;
         v41 = v40;
         v43 = v42;
         v45 = v44;
 
-        v46 = [(UIView *)self window];
-        [v46 frame];
+        window3 = [(UIView *)self window];
+        [window3 frame];
         v48 = v41 + v47;
         v132 = v39 + v49;
         v51 = v50 - (v41 + v45);
         v53 = v52 - (v39 + v43);
 
-        v54 = [(UIView *)self window];
-        v55 = [v54 windowScene];
-        v56 = [v55 _coordinateSpace];
-        [(UIView *)self convertRect:v56 fromCoordinateSpace:v48, v132, v51, v53];
+        window4 = [(UIView *)self window];
+        windowScene2 = [window4 windowScene];
+        _coordinateSpace2 = [windowScene2 _coordinateSpace];
+        [(UIView *)self convertRect:_coordinateSpace2 fromCoordinateSpace:v48, v132, v51, v53];
         v58 = v57;
         v60 = v59;
         v62 = v61;
@@ -136,8 +136,8 @@ LABEL_29:
     preferredPlacementEdge = 1;
 LABEL_11:
     self->_resolvedPlacement = preferredPlacementEdge;
-    v65 = [(UIView *)self->_cursorAccessoryView window];
-    [v65 bounds];
+    window5 = [(UIView *)self->_cursorAccessoryView window];
+    [window5 bounds];
     [(UIView *)self convertRect:0 fromView:?];
     v67 = v66;
     v69 = v68;
@@ -182,15 +182,15 @@ LABEL_11:
     }
 
     v141 = v78;
-    v79 = [(UIView *)self _scroller];
-    v80 = v79;
-    if (!v79)
+    _scroller = [(UIView *)self _scroller];
+    v80 = _scroller;
+    if (!_scroller)
     {
       goto LABEL_27;
     }
 
     v81 = v74;
-    if (![v79 _canScrollY])
+    if (![_scroller _canScrollY])
     {
       goto LABEL_27;
     }
@@ -207,8 +207,8 @@ LABEL_11:
     v97 = v96 - (v83 + v87);
     if (Height > 0.0)
     {
-      v98 = [(UIView *)self keyboardSceneDelegate];
-      [v98 visibleFrameInView:0];
+      keyboardSceneDelegate2 = [(UIView *)self keyboardSceneDelegate];
+      [keyboardSceneDelegate2 visibleFrameInView:0];
       v100 = v99;
       v102 = v101;
       v134 = v95;
@@ -288,9 +288,9 @@ LABEL_27:
   }
 }
 
-- (_UICursorAccessoryHostView)initWithCursorItemDataSource:(id)a3
+- (_UICursorAccessoryHostView)initWithCursorItemDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = _UICursorAccessoryHostView;
   v5 = *MEMORY[0x1E695F058];
@@ -303,7 +303,7 @@ LABEL_27:
   {
     v9->_preferredPlacementEdge = 4;
     v9->_resolvedPlacement = 0;
-    v11 = [[_UICursorAccessoryView alloc] initWithDataSource:v4];
+    v11 = [[_UICursorAccessoryView alloc] initWithDataSource:sourceCopy];
     cursorAccessoryView = v10->_cursorAccessoryView;
     v10->_cursorAccessoryView = v11;
 
@@ -329,8 +329,8 @@ LABEL_27:
 
 - (void)dealloc
 {
-  v3 = [(UIView *)self window];
-  [v3 removeGestureRecognizer:self->_dismissGestureRecognizer];
+  window = [(UIView *)self window];
+  [window removeGestureRecognizer:self->_dismissGestureRecognizer];
 
   [(UIView *)self->_touchFallbackView removeFromSuperview];
   v4.receiver = self;
@@ -346,9 +346,9 @@ LABEL_27:
   [(UIView *)&v3 removeFromSuperview];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v4.receiver = self;
     v4.super_class = _UICursorAccessoryHostView;
@@ -369,41 +369,41 @@ LABEL_27:
   }
 }
 
-- (void)setTouchFallbackEnabled:(BOOL)a3
+- (void)setTouchFallbackEnabled:(BOOL)enabled
 {
-  if (self->_touchFallbackEnabled != a3)
+  if (self->_touchFallbackEnabled != enabled)
   {
-    v3 = a3;
-    v5 = [(UIView *)self window];
-    v6 = v5;
+    enabledCopy = enabled;
+    window = [(UIView *)self window];
+    v6 = window;
     dismissGestureRecognizer = self->_dismissGestureRecognizer;
-    if (v3)
+    if (enabledCopy)
     {
-      [v5 addGestureRecognizer:dismissGestureRecognizer];
+      [window addGestureRecognizer:dismissGestureRecognizer];
 
-      v8 = [(UIView *)self window];
-      [v8 bounds];
+      window2 = [(UIView *)self window];
+      [window2 bounds];
       [(UIView *)self->_touchFallbackView setFrame:?];
 
-      v9 = [(UIView *)self window];
-      [v9 insertSubview:self->_touchFallbackView atIndex:0];
+      window3 = [(UIView *)self window];
+      [window3 insertSubview:self->_touchFallbackView atIndex:0];
     }
 
     else
     {
-      [v5 removeGestureRecognizer:dismissGestureRecognizer];
+      [window removeGestureRecognizer:dismissGestureRecognizer];
 
       [(UIView *)self->_touchFallbackView removeFromSuperview];
     }
 
-    self->_touchFallbackEnabled = v3;
+    self->_touchFallbackEnabled = enabledCopy;
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  self->_collapsed = a3;
-  if (a3)
+  self->_collapsed = collapsed;
+  if (collapsed)
   {
     [(UIView *)self layoutIfNeeded];
     resolvedPlacement = self->_resolvedPlacement;
@@ -440,9 +440,9 @@ LABEL_27:
   [(UIView *)cursorAccessoryView setAlpha:v7];
 }
 
-- (void)_didRecognizeDismissGestureRecognizer:(id)a3
+- (void)_didRecognizeDismissGestureRecognizer:(id)recognizer
 {
-  if (([a3 state] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (([recognizer state] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v3 = +[UIKeyboardImpl sharedInstance];
     [v3 dismissCursorAccessory];

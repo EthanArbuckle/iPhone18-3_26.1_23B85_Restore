@@ -1,26 +1,26 @@
 @interface SUScriptFacebookSession
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (SUScriptFacebookSession)initWithAppleAccount:(id)a3;
+- (SUScriptFacebookSession)initWithAppleAccount:(id)account;
 - (id)hasAccounts;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)fetchLikeStatusForURL:(id)a3 flags:(id)a4 completionFunction:(id)a5;
-- (void)likeURL:(id)a3 completionFunction:(id)a4;
-- (void)unlikeURL:(id)a3 completionFunction:(id)a4;
+- (void)fetchLikeStatusForURL:(id)l flags:(id)flags completionFunction:(id)function;
+- (void)likeURL:(id)l completionFunction:(id)function;
+- (void)unlikeURL:(id)l completionFunction:(id)function;
 @end
 
 @implementation SUScriptFacebookSession
 
-- (SUScriptFacebookSession)initWithAppleAccount:(id)a3
+- (SUScriptFacebookSession)initWithAppleAccount:(id)account
 {
   v6.receiver = self;
   v6.super_class = SUScriptFacebookSession;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_account = a3;
+    v4->_account = account;
   }
 
   return v4;
@@ -33,46 +33,46 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (void)fetchLikeStatusForURL:(id)a3 flags:(id)a4 completionFunction:(id)a5
+- (void)fetchLikeStatusForURL:(id)l flags:(id)flags completionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    flags = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!flags || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
-      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l];
       if (self->_account)
       {
         v11 = ISWeakLinkedClassForString();
-        v12 = [(SUScriptAppleAccount *)self->_account nativeAccount];
+        nativeAccount = [(SUScriptAppleAccount *)self->_account nativeAccount];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __74__SUScriptFacebookSession_fetchLikeStatusForURL_flags_completionFunction___block_invoke;
         v17[3] = &unk_1E8167330;
         v17[4] = v9;
-        v17[5] = a5;
-        [v11 fetchLikeStatusForURL:v10 flags:a4 account:v12 completion:v17];
+        v17[5] = function;
+        [v11 fetchLikeStatusForURL:v10 flags:flags account:nativeAccount completion:v17];
       }
 
       else
       {
-        v14 = [ISWeakLinkedClassForString() sharedSession];
-        v15 = [a4 integerValue];
+        iSWeakLinkedClassForString() = [ISWeakLinkedClassForString() sharedSession];
+        integerValue = [flags integerValue];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __74__SUScriptFacebookSession_fetchLikeStatusForURL_flags_completionFunction___block_invoke_2;
         v16[3] = &unk_1E8167330;
         v16[4] = v9;
-        v16[5] = a5;
-        [v14 fetchLikeStatusForURL:v10 flags:v15 completion:v16];
+        v16[5] = function;
+        [iSWeakLinkedClassForString() fetchLikeStatusForURL:v10 flags:integerValue completion:v16];
       }
 
       return;
@@ -105,7 +105,7 @@ void __74__SUScriptFacebookSession_fetchLikeStatusForURL_flags_completionFunctio
   _callTwoArgumentFunction(v7, v6, a2, a3);
 }
 
-- (void)likeURL:(id)a3 completionFunction:(id)a4
+- (void)likeURL:(id)l completionFunction:(id)function
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -116,30 +116,30 @@ void __74__SUScriptFacebookSession_fetchLikeStatusForURL_flags_completionFunctio
     if (objc_opt_isKindOfClass())
     {
       v9 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
-      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l];
       if (self->_account)
       {
         v11 = ISWeakLinkedClassForString();
-        v12 = [(SUScriptAppleAccount *)self->_account nativeAccount];
+        nativeAccount = [(SUScriptAppleAccount *)self->_account nativeAccount];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __54__SUScriptFacebookSession_likeURL_completionFunction___block_invoke;
         v15[3] = &unk_1E8165FD8;
         v15[4] = v9;
-        v15[5] = a4;
-        [v11 likeURL:v10 account:v12 completion:v15];
+        v15[5] = function;
+        [v11 likeURL:v10 account:nativeAccount completion:v15];
       }
 
       else
       {
-        v13 = [ISWeakLinkedClassForString() sharedSession];
+        iSWeakLinkedClassForString() = [ISWeakLinkedClassForString() sharedSession];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __54__SUScriptFacebookSession_likeURL_completionFunction___block_invoke_2;
         v14[3] = &unk_1E8165FD8;
         v14[4] = v9;
-        v14[5] = a4;
-        [v13 likeURL:v10 completion:v14];
+        v14[5] = function;
+        [iSWeakLinkedClassForString() likeURL:v10 completion:v14];
       }
 
       return;
@@ -167,7 +167,7 @@ void __54__SUScriptFacebookSession_likeURL_completionFunction___block_invoke_2(u
   _callOneArgumentFunction(v5, v4, a2);
 }
 
-- (void)unlikeURL:(id)a3 completionFunction:(id)a4
+- (void)unlikeURL:(id)l completionFunction:(id)function
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -178,30 +178,30 @@ void __54__SUScriptFacebookSession_likeURL_completionFunction___block_invoke_2(u
     if (objc_opt_isKindOfClass())
     {
       v9 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
-      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+      v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l];
       if (self->_account)
       {
         v11 = ISWeakLinkedClassForString();
-        v12 = [(SUScriptAppleAccount *)self->_account nativeAccount];
+        nativeAccount = [(SUScriptAppleAccount *)self->_account nativeAccount];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __56__SUScriptFacebookSession_unlikeURL_completionFunction___block_invoke;
         v15[3] = &unk_1E8165FD8;
         v15[4] = v9;
-        v15[5] = a4;
-        [v11 unlikeURL:v10 account:v12 completion:v15];
+        v15[5] = function;
+        [v11 unlikeURL:v10 account:nativeAccount completion:v15];
       }
 
       else
       {
-        v13 = [ISWeakLinkedClassForString() sharedSession];
+        iSWeakLinkedClassForString() = [ISWeakLinkedClassForString() sharedSession];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __56__SUScriptFacebookSession_unlikeURL_completionFunction___block_invoke_2;
         v14[3] = &unk_1E8165FD8;
         v14[4] = v9;
-        v14[5] = a4;
-        [v13 unlikeURL:v10 completion:v14];
+        v14[5] = function;
+        [iSWeakLinkedClassForString() unlikeURL:v10 completion:v14];
       }
 
       return;
@@ -242,27 +242,27 @@ void __56__SUScriptFacebookSession_unlikeURL_completionFunction___block_invoke_2
   return *v4;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_74 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptFacebookSession;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_57, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_57, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptFacebookSession;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -272,14 +272,14 @@ void __56__SUScriptFacebookSession_unlikeURL_completionFunction___block_invoke_2
 {
   v4.receiver = self;
   v4.super_class = SUScriptFacebookSession;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_74 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_74 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_57 = sel_fetchLikeStatusForURL_flags_completionFunction_;
     unk_1EBF3B930 = @"fetchLikeStatus";

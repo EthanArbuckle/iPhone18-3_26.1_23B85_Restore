@@ -1,6 +1,6 @@
 @interface ChannelUpsellHandler
 - (_TtC7NewsUI220ChannelUpsellHandler)init;
-- (void)handledAction:(id)a3 state:(unint64_t)a4;
+- (void)handledAction:(id)action state:(unint64_t)state;
 @end
 
 @implementation ChannelUpsellHandler
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)handledAction:(id)a3 state:(unint64_t)a4
+- (void)handledAction:(id)action state:(unint64_t)state
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_218B9EBA0();
   swift_unknownObjectRelease();
 }

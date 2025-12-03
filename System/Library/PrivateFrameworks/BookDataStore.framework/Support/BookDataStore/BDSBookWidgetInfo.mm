@@ -1,16 +1,16 @@
 @interface BDSBookWidgetInfo
-- (BDSBookWidgetInfo)initWithAssetID:(id)a3;
-- (BDSBookWidgetInfo)initWithAssetID:(id)a3 title:(id)a4 coverURL:(id)a5 pageProgressionDirection:(id)a6 cloudAssetType:(id)a7 libraryContentAssetType:(id)a8;
-- (BDSBookWidgetInfo)initWithAssetID:(id)a3 title:(id)a4 coverURL:(id)a5 pageProgressionDirection:(id)a6 cloudAssetType:(id)a7 libraryContentAssetType:(id)a8 lastEngagedDate:(id)a9 isTrackedAsRecent:(BOOL)a10;
-- (BDSBookWidgetInfo)initWithCoder:(id)a3;
+- (BDSBookWidgetInfo)initWithAssetID:(id)d;
+- (BDSBookWidgetInfo)initWithAssetID:(id)d title:(id)title coverURL:(id)l pageProgressionDirection:(id)direction cloudAssetType:(id)type libraryContentAssetType:(id)assetType;
+- (BDSBookWidgetInfo)initWithAssetID:(id)d title:(id)title coverURL:(id)l pageProgressionDirection:(id)direction cloudAssetType:(id)type libraryContentAssetType:(id)assetType lastEngagedDate:(id)date isTrackedAsRecent:(BOOL)self0;
+- (BDSBookWidgetInfo)initWithCoder:(id)coder;
 - (id)description;
-- (id)insertMatchingManagedObjectIntoContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)insertMatchingManagedObjectIntoContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSBookWidgetInfo
 
-- (id)insertMatchingManagedObjectIntoContext:(id)a3
+- (id)insertMatchingManagedObjectIntoContext:(id)context
 {
   v9 = 0;
   v10 = &v9;
@@ -23,10 +23,10 @@
   v6[2] = sub_100041D04;
   v6[3] = &unk_10023FA70;
   v6[4] = self;
-  v3 = a3;
-  v7 = v3;
+  contextCopy = context;
+  v7 = contextCopy;
   v8 = &v9;
-  [v3 performBlockAndWait:v6];
+  [contextCopy performBlockAndWait:v6];
   v4 = v10[5];
 
   _Block_object_dispose(&v9, 8);
@@ -34,129 +34,129 @@
   return v4;
 }
 
-- (BDSBookWidgetInfo)initWithAssetID:(id)a3
+- (BDSBookWidgetInfo)initWithAssetID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = BDSBookWidgetInfo;
   v6 = [(BDSBookWidgetInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetID, a3);
+    objc_storeStrong(&v6->_assetID, d);
   }
 
   return v7;
 }
 
-- (BDSBookWidgetInfo)initWithAssetID:(id)a3 title:(id)a4 coverURL:(id)a5 pageProgressionDirection:(id)a6 cloudAssetType:(id)a7 libraryContentAssetType:(id)a8
+- (BDSBookWidgetInfo)initWithAssetID:(id)d title:(id)title coverURL:(id)l pageProgressionDirection:(id)direction cloudAssetType:(id)type libraryContentAssetType:(id)assetType
 {
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(BDSBookWidgetInfo *)self initWithAssetID:a3];
+  titleCopy = title;
+  lCopy = l;
+  directionCopy = direction;
+  typeCopy = type;
+  assetTypeCopy = assetType;
+  v18 = [(BDSBookWidgetInfo *)self initWithAssetID:d];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_title, a4);
-    objc_storeStrong(&v19->_coverURL, a5);
-    objc_storeStrong(&v19->_pageProgressionDirection, a6);
-    objc_storeStrong(&v19->_cloudAssetType, a7);
-    objc_storeStrong(&v19->_libraryContentAssetType, a8);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v19->_coverURL, l);
+    objc_storeStrong(&v19->_pageProgressionDirection, direction);
+    objc_storeStrong(&v19->_cloudAssetType, type);
+    objc_storeStrong(&v19->_libraryContentAssetType, assetType);
   }
 
   return v19;
 }
 
-- (BDSBookWidgetInfo)initWithAssetID:(id)a3 title:(id)a4 coverURL:(id)a5 pageProgressionDirection:(id)a6 cloudAssetType:(id)a7 libraryContentAssetType:(id)a8 lastEngagedDate:(id)a9 isTrackedAsRecent:(BOOL)a10
+- (BDSBookWidgetInfo)initWithAssetID:(id)d title:(id)title coverURL:(id)l pageProgressionDirection:(id)direction cloudAssetType:(id)type libraryContentAssetType:(id)assetType lastEngagedDate:(id)date isTrackedAsRecent:(BOOL)self0
 {
-  v17 = a9;
-  v18 = [(BDSBookWidgetInfo *)self initWithAssetID:a3 title:a4 coverURL:a5 pageProgressionDirection:a6 cloudAssetType:a7 libraryContentAssetType:a8];
+  dateCopy = date;
+  v18 = [(BDSBookWidgetInfo *)self initWithAssetID:d title:title coverURL:l pageProgressionDirection:direction cloudAssetType:type libraryContentAssetType:assetType];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_lastEngagedDate, a9);
-    v19->_isTrackedAsRecent = a10;
+    objc_storeStrong(&v18->_lastEngagedDate, date);
+    v19->_isTrackedAsRecent = recent;
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(BDSBookWidgetInfo *)self assetID];
-  [v12 encodeObject:v4 forKey:@"assetID"];
+  coderCopy = coder;
+  assetID = [(BDSBookWidgetInfo *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"assetID"];
 
-  v5 = [(BDSBookWidgetInfo *)self title];
-  [v12 encodeObject:v5 forKey:@"title"];
+  title = [(BDSBookWidgetInfo *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(BDSBookWidgetInfo *)self coverURL];
-  [v12 encodeObject:v6 forKey:@"coverURL"];
+  coverURL = [(BDSBookWidgetInfo *)self coverURL];
+  [coderCopy encodeObject:coverURL forKey:@"coverURL"];
 
-  v7 = [(BDSBookWidgetInfo *)self pageProgressionDirection];
-  [v12 encodeObject:v7 forKey:@"pageProgressionDirection"];
+  pageProgressionDirection = [(BDSBookWidgetInfo *)self pageProgressionDirection];
+  [coderCopy encodeObject:pageProgressionDirection forKey:@"pageProgressionDirection"];
 
-  v8 = [(BDSBookWidgetInfo *)self libraryContentAssetType];
-  [v12 encodeObject:v8 forKey:@"libraryContentAssetType"];
+  libraryContentAssetType = [(BDSBookWidgetInfo *)self libraryContentAssetType];
+  [coderCopy encodeObject:libraryContentAssetType forKey:@"libraryContentAssetType"];
 
-  v9 = [(BDSBookWidgetInfo *)self cloudAssetType];
-  [v12 encodeObject:v9 forKey:@"cloudAssetType"];
+  cloudAssetType = [(BDSBookWidgetInfo *)self cloudAssetType];
+  [coderCopy encodeObject:cloudAssetType forKey:@"cloudAssetType"];
 
-  v10 = [(BDSBookWidgetInfo *)self totalDuration];
-  [v12 encodeObject:v10 forKey:@"totalDuration"];
+  totalDuration = [(BDSBookWidgetInfo *)self totalDuration];
+  [coderCopy encodeObject:totalDuration forKey:@"totalDuration"];
 
-  v11 = [(BDSBookWidgetInfo *)self lastEngagedDate];
-  [v12 encodeObject:v11 forKey:@"lastEngagedDate"];
+  lastEngagedDate = [(BDSBookWidgetInfo *)self lastEngagedDate];
+  [coderCopy encodeObject:lastEngagedDate forKey:@"lastEngagedDate"];
 
-  [v12 encodeBool:-[BDSBookWidgetInfo isTrackedAsRecent](self forKey:{"isTrackedAsRecent"), @"isTrackedAsRecent"}];
-  [v12 encodeBool:-[BDSBookWidgetInfo isExplicit](self forKey:{"isExplicit"), @"isExplicit"}];
+  [coderCopy encodeBool:-[BDSBookWidgetInfo isTrackedAsRecent](self forKey:{"isTrackedAsRecent"), @"isTrackedAsRecent"}];
+  [coderCopy encodeBool:-[BDSBookWidgetInfo isExplicit](self forKey:{"isExplicit"), @"isExplicit"}];
 }
 
-- (BDSBookWidgetInfo)initWithCoder:(id)a3
+- (BDSBookWidgetInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = BDSBookWidgetInfo;
   v5 = [(BDSBookWidgetInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
     assetID = v5->_assetID;
     v5->_assetID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coverURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coverURL"];
     coverURL = v5->_coverURL;
     v5->_coverURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pageProgressionDirection"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pageProgressionDirection"];
     pageProgressionDirection = v5->_pageProgressionDirection;
     v5->_pageProgressionDirection = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryContentAssetType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryContentAssetType"];
     libraryContentAssetType = v5->_libraryContentAssetType;
     v5->_libraryContentAssetType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudAssetType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudAssetType"];
     cloudAssetType = v5->_cloudAssetType;
     v5->_cloudAssetType = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalDuration"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalDuration"];
     totalDuration = v5->_totalDuration;
     v5->_totalDuration = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastEngagedDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastEngagedDate"];
     lastEngagedDate = v5->_lastEngagedDate;
     v5->_lastEngagedDate = v20;
 
-    v5->_isTrackedAsRecent = [v4 decodeBoolForKey:@"isTrackedAsRecent"];
-    v5->_isExplicit = [v4 decodeBoolForKey:@"isExplicit"];
+    v5->_isTrackedAsRecent = [coderCopy decodeBoolForKey:@"isTrackedAsRecent"];
+    v5->_isExplicit = [coderCopy decodeBoolForKey:@"isExplicit"];
   }
 
   return v5;
@@ -166,17 +166,17 @@
 {
   v3 = objc_opt_class();
   v15 = NSStringFromClass(v3);
-  v16 = [(BDSBookWidgetInfo *)self assetID];
-  v4 = [(BDSBookWidgetInfo *)self title];
-  v5 = [(BDSBookWidgetInfo *)self cloudAssetType];
-  v6 = [(BDSBookWidgetInfo *)self lastEngagedDate];
-  v7 = [(BDSBookWidgetInfo *)self isTrackedAsRecent];
-  v8 = [(BDSBookWidgetInfo *)self coverURL];
+  assetID = [(BDSBookWidgetInfo *)self assetID];
+  title = [(BDSBookWidgetInfo *)self title];
+  cloudAssetType = [(BDSBookWidgetInfo *)self cloudAssetType];
+  lastEngagedDate = [(BDSBookWidgetInfo *)self lastEngagedDate];
+  isTrackedAsRecent = [(BDSBookWidgetInfo *)self isTrackedAsRecent];
+  coverURL = [(BDSBookWidgetInfo *)self coverURL];
   v9 = [NSNumber numberWithBool:[(BDSBookWidgetInfo *)self isExplicit]];
-  v10 = [(BDSBookWidgetInfo *)self pageProgressionDirection];
-  v11 = [(BDSBookWidgetInfo *)self libraryContentAssetType];
-  v12 = [(BDSBookWidgetInfo *)self totalDuration];
-  v13 = [NSString stringWithFormat:@"<%@:%p assetID=%@ title=%@ cloudAssetType=%@ lastEngagedDate=%@ isTrackedAsRecent=%d coverURL=%@ isExplicit=%@ pageProgressionDirection=%@ libraryContentAssetType=%@ duration=%@>", v15, self, v16, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  pageProgressionDirection = [(BDSBookWidgetInfo *)self pageProgressionDirection];
+  libraryContentAssetType = [(BDSBookWidgetInfo *)self libraryContentAssetType];
+  totalDuration = [(BDSBookWidgetInfo *)self totalDuration];
+  v13 = [NSString stringWithFormat:@"<%@:%p assetID=%@ title=%@ cloudAssetType=%@ lastEngagedDate=%@ isTrackedAsRecent=%d coverURL=%@ isExplicit=%@ pageProgressionDirection=%@ libraryContentAssetType=%@ duration=%@>", v15, self, assetID, title, cloudAssetType, lastEngagedDate, isTrackedAsRecent, coverURL, v9, pageProgressionDirection, libraryContentAssetType, totalDuration];
 
   return v13;
 }

@@ -1,7 +1,7 @@
 @interface VCPVideoTrackSyncDecoder
-- (VCPVideoTrackSyncDecoder)initWithTrack:(id)a3 timerange:(id *)a4;
-- (int)decodeSample:(id *)a3 sample:(opaqueCMSampleBuffer *)a4;
-- (int)findNextSample:(BOOL)a3 timerange:(id *)a4;
+- (VCPVideoTrackSyncDecoder)initWithTrack:(id)track timerange:(id *)timerange;
+- (int)decodeSample:(id *)sample sample:(opaqueCMSampleBuffer *)a4;
+- (int)findNextSample:(BOOL)sample timerange:(id *)timerange;
 - (int64_t)status;
 - (opaqueCMSampleBuffer)copyNextSampleBuffer;
 - (void)dealloc;
@@ -10,17 +10,17 @@
 
 @implementation VCPVideoTrackSyncDecoder
 
-- (VCPVideoTrackSyncDecoder)initWithTrack:(id)a3 timerange:(id *)a4
+- (VCPVideoTrackSyncDecoder)initWithTrack:(id)track timerange:(id *)timerange
 {
-  v6 = a3;
+  trackCopy = track;
   v30.receiver = self;
   v30.super_class = VCPVideoTrackSyncDecoder;
-  v7 = [(VCPVideoTrackDecoder *)&v30 initWithTrack:v6];
+  v7 = [(VCPVideoTrackDecoder *)&v30 initWithTrack:trackCopy];
   if (v7)
   {
-    if (v6)
+    if (trackCopy)
     {
-      [v6 timeRange];
+      [trackCopy timeRange];
     }
 
     else
@@ -28,10 +28,10 @@
       memset(&range, 0, sizeof(range));
     }
 
-    v9 = *&a4->var0.var3;
-    *&v27.start.value = *&a4->var0.var0;
+    v9 = *&timerange->var0.var3;
+    *&v27.start.value = *&timerange->var0.var0;
     *&v27.start.epoch = v9;
-    *&v27.duration.timescale = *&a4->var1.var1;
+    *&v27.duration.timescale = *&timerange->var1.var1;
     CMTimeRangeGetIntersection(&v29, &range, &v27);
     v11 = *&v29.start.epoch;
     v10 = *&v29.duration.timescale;
@@ -64,8 +64,8 @@
     dispatch_semaphore_signal(*(v7 + 13));
     dispatch_semaphore_signal(*(v7 + 13));
     v19 = MEMORY[0x1E6987E78];
-    v20 = [*(v7 + 1) asset];
-    v21 = [v19 assetReaderWithAsset:v20 error:0];
+    asset = [*(v7 + 1) asset];
+    v21 = [v19 assetReaderWithAsset:asset error:0];
     v22 = *(v7 + 2);
     *(v7 + 2) = v21;
 
@@ -156,14 +156,14 @@
   }
 }
 
-- (int)findNextSample:(BOOL)a3 timerange:(id *)a4
+- (int)findNextSample:(BOOL)sample timerange:(id *)timerange
 {
   v7 = 0;
   v8 = *MEMORY[0x1E6960C98];
   v9 = *(MEMORY[0x1E6960C98] + 32);
-  *&a4->var0.var3 = *(MEMORY[0x1E6960C98] + 16);
-  *&a4->var1.var1 = v9;
-  *&a4->var0.var0 = v8;
+  *&timerange->var0.var3 = *(MEMORY[0x1E6960C98] + 16);
+  *&timerange->var1.var1 = v9;
+  *&timerange->var0.var0 = v8;
   key = *MEMORY[0x1E6960458];
   cf2 = *MEMORY[0x1E695E4D0];
   v10 = MEMORY[0x1E6960CC0];
@@ -174,15 +174,15 @@
       CFRelease(v7);
     }
 
-    v11 = [(AVAssetReaderSampleReferenceOutput *)self->_trackReader copyNextSampleBuffer];
-    if (!v11)
+    copyNextSampleBuffer = [(AVAssetReaderSampleReferenceOutput *)self->_trackReader copyNextSampleBuffer];
+    if (!copyNextSampleBuffer)
     {
       break;
     }
 
-    v7 = v11;
+    v7 = copyNextSampleBuffer;
     memset(&v26, 0, sizeof(v26));
-    CMSampleBufferGetOutputPresentationTimeStamp(&start.start, v11);
+    CMSampleBufferGetOutputPresentationTimeStamp(&start.start, copyNextSampleBuffer);
     CMSampleBufferGetOutputDuration(&duration.start, v7);
     CMTimeRangeMake(&v26, &start.start, &duration.start);
     v12 = *&self->_timerange.start.epoch;
@@ -199,12 +199,12 @@
       duration.start.epoch = *(v10 + 16);
       if (CMTimeCompare(&start.start, &duration.start) >= 1)
       {
-        if (a3 || (SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(v7, 0)) != 0 && (v14 = SampleAttachmentsArray, CFArrayGetCount(SampleAttachmentsArray)) && ((ValueAtIndex = CFArrayGetValueAtIndex(v14, 0), (Value = CFDictionaryGetValue(ValueAtIndex, key)) == 0) || (v17 = Value, v18 = CFGetTypeID(Value), v18 != CFBooleanGetTypeID()) || !CFEqual(v17, cf2)))
+        if (sample || (SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(v7, 0)) != 0 && (v14 = SampleAttachmentsArray, CFArrayGetCount(SampleAttachmentsArray)) && ((ValueAtIndex = CFArrayGetValueAtIndex(v14, 0), (Value = CFDictionaryGetValue(ValueAtIndex, key)) == 0) || (v17 = Value, v18 = CFGetTypeID(Value), v18 != CFBooleanGetTypeID()) || !CFEqual(v17, cf2)))
         {
           v19 = *&v26.start.epoch;
-          *&a4->var0.var0 = *&v26.start.value;
-          *&a4->var0.var3 = v19;
-          *&a4->var1.var1 = *&v26.duration.timescale;
+          *&timerange->var0.var0 = *&v26.start.value;
+          *&timerange->var0.var3 = v19;
+          *&timerange->var1.var1 = *&v26.duration.timescale;
           CFRelease(v7);
           return 0;
         }
@@ -223,14 +223,14 @@
   }
 }
 
-- (int)decodeSample:(id *)a3 sample:(opaqueCMSampleBuffer *)a4
+- (int)decodeSample:(id *)sample sample:(opaqueCMSampleBuffer *)a4
 {
   *a4 = 0;
   v7 = objc_autoreleasePoolPush();
   v8 = MEMORY[0x1E6987E78];
-  v9 = [(AVAssetTrack *)self->super._track asset];
+  asset = [(AVAssetTrack *)self->super._track asset];
   v22 = 0;
-  v10 = [v8 assetReaderWithAsset:v9 error:&v22];
+  v10 = [v8 assetReaderWithAsset:asset error:&v22];
   v11 = v22;
 
   if (v10)
@@ -251,15 +251,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v14 = *&a3->var0.var3;
-  v21[0] = *&a3->var0.var0;
+  v14 = *&sample->var0.var3;
+  v21[0] = *&sample->var0.var0;
   v21[1] = v14;
-  v21[2] = *&a3->var1.var1;
+  v21[2] = *&sample->var1.var1;
   [v10 setTimeRange:v21];
   v15 = MEMORY[0x1E6987EA8];
   track = self->super._track;
-  v17 = [(VCPVideoTrackDecoder *)self settings];
-  v13 = [v15 assetReaderTrackOutputWithTrack:track outputSettings:v17];
+  settings = [(VCPVideoTrackDecoder *)self settings];
+  v13 = [v15 assetReaderTrackOutputWithTrack:track outputSettings:settings];
 
   if (!v13)
   {
@@ -280,9 +280,9 @@ LABEL_9:
 
   if ([v10 startReading])
   {
-    v20 = [v13 copyNextSampleBuffer];
-    *a4 = v20;
-    if (v20)
+    copyNextSampleBuffer = [v13 copyNextSampleBuffer];
+    *a4 = copyNextSampleBuffer;
+    if (copyNextSampleBuffer)
     {
       v18 = 0;
     }
@@ -429,54 +429,54 @@ LABEL_3:
 
 - (opaqueCMSampleBuffer)copyNextSampleBuffer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_launchOnce)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_launchOnce)
   {
     v3 = dispatch_group_create();
-    group = v2->_group;
-    v2->_group = v3;
+    group = selfCopy->_group;
+    selfCopy->_group = v3;
 
-    v5 = v2->_group;
-    queue = v2->_queue;
+    v5 = selfCopy->_group;
+    queue = selfCopy->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__VCPVideoTrackSyncDecoder_copyNextSampleBuffer__block_invoke;
     block[3] = &unk_1E834BDC0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_group_async(v5, queue, block);
-    v2->_launchOnce = 1;
+    selfCopy->_launchOnce = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (v2->_decodeError || v2->_decodeFinished && v2->_outputFrameIdx >= v2->_decodedFrames)
+  if (selfCopy->_decodeError || selfCopy->_decodeFinished && selfCopy->_outputFrameIdx >= selfCopy->_decodedFrames)
   {
     return 0;
   }
 
-  dispatch_semaphore_wait(v2->_outputSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (v2->_decodeError)
+  dispatch_semaphore_wait(selfCopy->_outputSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+  if (selfCopy->_decodeError)
   {
     return 0;
   }
 
-  outputFrameIdx = v2->_outputFrameIdx;
-  if (v2->_decodeFinished && outputFrameIdx >= v2->_decodedFrames)
+  outputFrameIdx = selfCopy->_outputFrameIdx;
+  if (selfCopy->_decodeFinished && outputFrameIdx >= selfCopy->_decodedFrames)
   {
     return 0;
   }
 
-  v10 = v2->_outputFrameIdx & 1;
+  v10 = selfCopy->_outputFrameIdx & 1;
   if (outputFrameIdx < 0)
   {
     v10 = -v10;
   }
 
-  v7 = v2->_sampleBuffer[v10];
-  v2->_sampleBuffer[v10] = 0;
-  v2->_outputFrameIdx = outputFrameIdx + 1;
-  dispatch_semaphore_signal(v2->_inputSemaphore);
+  v7 = selfCopy->_sampleBuffer[v10];
+  selfCopy->_sampleBuffer[v10] = 0;
+  selfCopy->_outputFrameIdx = outputFrameIdx + 1;
+  dispatch_semaphore_signal(selfCopy->_inputSemaphore);
   return v7;
 }
 

@@ -1,66 +1,66 @@
 @interface _MKStaticMapView
 - ($9433BFB5400FDC760880D1BFD6845728)visibleMapRect;
-- (BOOL)annotationContainerIsRotated:(id)a3;
+- (BOOL)annotationContainerIsRotated:(id)rotated;
 - (BOOL)hasUserLocation;
-- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)a3 toPointToView:(id)a4;
-- (CGRect)visibleRectInView:(id)a3;
-- (CLLocationCoordinate2D)convertPoint:(CGPoint)a3 toCoordinateFromView:(id)a4;
+- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)coordinate toPointToView:(id)view;
+- (CGRect)visibleRectInView:(id)view;
+- (CLLocationCoordinate2D)convertPoint:(CGPoint)point toCoordinateFromView:(id)view;
 - (NSArray)mapItems;
 - (NSArray)overlays;
-- (_MKStaticMapView)initWithFrame:(CGRect)a3 locationManager:(id)a4;
+- (_MKStaticMapView)initWithFrame:(CGRect)frame locationManager:(id)manager;
 - (_MKStaticMapViewDelegate)delegate;
-- (double)annotationContainer:(id)a3 pinDropDistanceForCoordinate:(CLLocationCoordinate2D)a4 maxDistance:(double *)a5;
-- (id)annotationManager:(id)a3 representationForAnnotation:(id)a4;
+- (double)annotationContainer:(id)container pinDropDistanceForCoordinate:(CLLocationCoordinate2D)coordinate maxDistance:(double *)distance;
+- (id)annotationManager:(id)manager representationForAnnotation:(id)annotation;
 - (unint64_t)_incrementSnapshotGeneration;
-- (void)_addKVOForOverlayRenderer:(id)a3;
-- (void)_displayGridWithCompletionHandler:(id)a3;
+- (void)_addKVOForOverlayRenderer:(id)renderer;
+- (void)_displayGridWithCompletionHandler:(id)handler;
 - (void)_executeWhenSizedBlock;
-- (void)_handleGridSnapshot:(id)a3;
-- (void)_handleSnapshot:(id)a3;
-- (void)_handleSnapshotError:(id)a3;
+- (void)_handleGridSnapshot:(id)snapshot;
+- (void)_handleSnapshot:(id)snapshot;
+- (void)_handleSnapshotError:(id)error;
 - (void)_hideAllAnnotations;
-- (void)_removeKVOForOverlayRenderer:(id)a3;
+- (void)_removeKVOForOverlayRenderer:(id)renderer;
 - (void)_showAllAnnotations;
 - (void)_startSnapshotRequest;
-- (void)_updateSnapshot:(BOOL)a3;
+- (void)_updateSnapshot:(BOOL)snapshot;
 - (void)_updateSnapshotOptionsWithOverlayRenderers;
-- (void)addAnnotation:(id)a3;
-- (void)addAnnotationRepresentation:(id)a3 allowAnimation:(BOOL)a4;
-- (void)addAnnotations:(id)a3;
-- (void)addMapItems:(id)a3;
-- (void)addOverlays:(id)a3;
-- (void)addOverlays:(id)a3 level:(int64_t)a4;
-- (void)addWhenSizedBlock:(id)a3;
-- (void)annotationManager:(id)a3 didAddAnnotationRepresentations:(id)a4;
-- (void)annotationManagerDidChangeVisibleAnnotationRepresentations:(id)a3;
+- (void)addAnnotation:(id)annotation;
+- (void)addAnnotationRepresentation:(id)representation allowAnimation:(BOOL)animation;
+- (void)addAnnotations:(id)annotations;
+- (void)addMapItems:(id)items;
+- (void)addOverlays:(id)overlays;
+- (void)addOverlays:(id)overlays level:(int64_t)level;
+- (void)addWhenSizedBlock:(id)block;
+- (void)annotationManager:(id)manager didAddAnnotationRepresentations:(id)representations;
+- (void)annotationManagerDidChangeVisibleAnnotationRepresentations:(id)representations;
 - (void)dealloc;
-- (void)deselectAnnotationRepresentation:(id)a3 animated:(BOOL)a4;
-- (void)deselectMapItem:(id)a3;
+- (void)deselectAnnotationRepresentation:(id)representation animated:(BOOL)animated;
+- (void)deselectMapItem:(id)item;
 - (void)endUpdates;
 - (void)layoutMarginsDidChange;
-- (void)locationManagerFailedToUpdateLocation:(id)a3 withError:(id)a4;
-- (void)locationManagerUpdatedLimitsPrecisionState:(id)a3;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)moveAnnotationRepresentation:(id)a3 fromCoordinate:(CLLocationCoordinate2D)a4 animated:(BOOL)a5 duration:(double)a6;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeAnnotation:(id)a3;
-- (void)removeAnnotationRepresentation:(id)a3;
-- (void)removeAnnotations:(id)a3;
-- (void)removeMapItems:(id)a3;
-- (void)removeOverlay:(id)a3;
-- (void)removeOverlays:(id)a3;
-- (void)selectAnnotationRepresentation:(id)a3 animated:(BOOL)a4;
-- (void)selectMapItem:(id)a3;
-- (void)selectUserLocationAnimated:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCamera:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPreferredConfiguration:(id)a3;
-- (void)setRegion:(id *)a3;
-- (void)setSelectedTrailWithId:(id)a3 name:(id)a4 locale:(id)a5;
-- (void)setShowsUserLocation:(BOOL)a3;
-- (void)setVisibleMapRect:(id)a3 edgePadding:(UIEdgeInsets)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)locationManagerFailedToUpdateLocation:(id)location withError:(id)error;
+- (void)locationManagerUpdatedLimitsPrecisionState:(id)state;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)moveAnnotationRepresentation:(id)representation fromCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated duration:(double)duration;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeAnnotation:(id)annotation;
+- (void)removeAnnotationRepresentation:(id)representation;
+- (void)removeAnnotations:(id)annotations;
+- (void)removeMapItems:(id)items;
+- (void)removeOverlay:(id)overlay;
+- (void)removeOverlays:(id)overlays;
+- (void)selectAnnotationRepresentation:(id)representation animated:(BOOL)animated;
+- (void)selectMapItem:(id)item;
+- (void)selectUserLocationAnimated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCamera:(id)camera;
+- (void)setFrame:(CGRect)frame;
+- (void)setPreferredConfiguration:(id)configuration;
+- (void)setRegion:(id *)region;
+- (void)setSelectedTrailWithId:(id)id name:(id)name locale:(id)locale;
+- (void)setShowsUserLocation:(BOOL)location;
+- (void)setVisibleMapRect:(id)rect edgePadding:(UIEdgeInsets)padding;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation _MKStaticMapView
@@ -114,11 +114,11 @@
   }
 }
 
-- (void)addWhenSizedBlock:(id)a3
+- (void)addWhenSizedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   whenSizedBlocks = self->_whenSizedBlocks;
-  v9 = v4;
+  v9 = blockCopy;
   if (!whenSizedBlocks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -132,9 +132,9 @@
   [(NSMutableArray *)whenSizedBlocks addObject:v8];
 }
 
-- (void)selectMapItem:(id)a3
+- (void)selectMapItem:(id)item
 {
-  v4 = [(NSMapTable *)self->_mapItemsToMapItemCustomFeatures objectForKey:a3];
+  v4 = [(NSMapTable *)self->_mapItemsToMapItemCustomFeatures objectForKey:item];
   v5 = v4;
   if (v4)
   {
@@ -150,9 +150,9 @@
   }
 }
 
-- (void)deselectMapItem:(id)a3
+- (void)deselectMapItem:(id)item
 {
-  v4 = [(NSMapTable *)self->_mapItemsToMapItemCustomFeatures objectForKey:a3];
+  v4 = [(NSMapTable *)self->_mapItemsToMapItemCustomFeatures objectForKey:item];
   v5 = v4;
   if (v4)
   {
@@ -168,26 +168,26 @@
   }
 }
 
-- (void)removeMapItems:(id)a3
+- (void)removeMapItems:(id)items
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
-  v6 = v5;
+  itemsCopy = items;
+  _customFeatureAnnotations = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
+  v6 = _customFeatureAnnotations;
   v7 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (_customFeatureAnnotations)
   {
-    v7 = v5;
+    v7 = _customFeatureAnnotations;
   }
 
   v18 = v7;
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -223,8 +223,8 @@
     v15 = [v18 mutableCopy];
     [v15 removeObjectsInArray:v8];
     [(MKMapSnapshotOptions *)self->_snapshotOptions _setCustomFeatureAnnotations:v15];
-    v16 = [(_MKStaticMapView *)self mapItems];
-    -[MKMapSnapshotOptions _setSearchResultsType:](self->_snapshotOptions, "_setSearchResultsType:", [v16 count] != 0);
+    mapItems = [(_MKStaticMapView *)self mapItems];
+    -[MKMapSnapshotOptions _setSearchResultsType:](self->_snapshotOptions, "_setSearchResultsType:", [mapItems count] != 0);
 
     v17 = MKGetSnapshotLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -237,26 +237,26 @@
   }
 }
 
-- (void)addMapItems:(id)a3
+- (void)addMapItems:(id)items
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
-  v6 = v5;
+  itemsCopy = items;
+  _customFeatureAnnotations = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
+  v6 = _customFeatureAnnotations;
   v7 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (_customFeatureAnnotations)
   {
-    v7 = v5;
+    v7 = _customFeatureAnnotations;
   }
 
   v19 = v7;
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v4;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -310,15 +310,15 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  _customFeatureAnnotations = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(_customFeatureAnnotations, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _customFeatureAnnotations2 = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
+  v7 = [_customFeatureAnnotations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -329,7 +329,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_customFeatureAnnotations2);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -341,7 +341,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [_customFeatureAnnotations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -352,11 +352,11 @@
   return v13;
 }
 
-- (CGRect)visibleRectInView:(id)a3
+- (CGRect)visibleRectInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_MKStaticMapView *)self bounds];
-  [(_MKStaticMapView *)self convertRect:v4 toView:?];
+  [(_MKStaticMapView *)self convertRect:viewCopy toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -373,38 +373,38 @@
   return result;
 }
 
-- (double)annotationContainer:(id)a3 pinDropDistanceForCoordinate:(CLLocationCoordinate2D)a4 maxDistance:(double *)a5
+- (double)annotationContainer:(id)container pinDropDistanceForCoordinate:(CLLocationCoordinate2D)coordinate maxDistance:(double *)distance
 {
-  [(_MKStaticMapView *)self convertCoordinate:self toPointToView:a4.latitude, a4.longitude];
+  [(_MKStaticMapView *)self convertCoordinate:self toPointToView:coordinate.latitude, coordinate.longitude];
   v8 = v7;
-  if (a5)
+  if (distance)
   {
     [(_MKStaticMapView *)self bounds];
-    *a5 = v9;
+    *distance = v9;
   }
 
   return v8;
 }
 
-- (BOOL)annotationContainerIsRotated:(id)a3
+- (BOOL)annotationContainerIsRotated:(id)rotated
 {
-  v3 = [(MKMapSnapshotOptions *)self->_snapshotOptions camera];
-  [v3 heading];
+  camera = [(MKMapSnapshotOptions *)self->_snapshotOptions camera];
+  [camera heading];
   v5 = v4 != 0.0;
 
   return v5;
 }
 
-- (id)annotationManager:(id)a3 representationForAnnotation:(id)a4
+- (id)annotationManager:(id)manager representationForAnnotation:(id)annotation
 {
-  v5 = a4;
+  annotationCopy = annotation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 mapView:self viewForAnnotation:v5];
+    v9 = [v8 mapView:self viewForAnnotation:annotationCopy];
   }
 
   else
@@ -415,7 +415,7 @@
   return v9;
 }
 
-- (void)annotationManagerDidChangeVisibleAnnotationRepresentations:(id)a3
+- (void)annotationManagerDidChangeVisibleAnnotationRepresentations:(id)representations
 {
   v26 = *MEMORY[0x1E69E9840];
   [(MKAnnotationContainerView *)self->_annotationContainer updateAnnotationViewsForReason:0];
@@ -424,8 +424,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  annotationViews = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
+  v5 = [annotationViews countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -436,13 +436,13 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationViews);
         }
 
         [*(*(&v20 + 1) + 8 * i) _performStateUpdatesIfNeeded];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v6 = [annotationViews countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v6);
@@ -502,15 +502,15 @@ LABEL_19:
   self->_currentUpdateRemovedCustomFeatureAnnotation = 0;
 }
 
-- (void)annotationManager:(id)a3 didAddAnnotationRepresentations:(id)a4
+- (void)annotationManager:(id)manager didAddAnnotationRepresentations:(id)representations
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  representationsCopy = representations;
+  v6 = [representationsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -521,7 +521,7 @@ LABEL_19:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(representationsCopy);
         }
 
         if (*(*(&v11 + 1) + 8 * i) == self->_userLocationView)
@@ -540,7 +540,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [representationsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -553,13 +553,13 @@ LABEL_19:
 LABEL_12:
 }
 
-- (void)moveAnnotationRepresentation:(id)a3 fromCoordinate:(CLLocationCoordinate2D)a4 animated:(BOOL)a5 duration:(double)a6
+- (void)moveAnnotationRepresentation:(id)representation fromCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated duration:(double)duration
 {
-  v7 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MKAnnotationContainerView *)self->_annotationContainer updateAnnotationView:v7];
+    [(MKAnnotationContainerView *)self->_annotationContainer updateAnnotationView:representationCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -569,29 +569,29 @@ LABEL_12:
   }
 }
 
-- (void)deselectAnnotationRepresentation:(id)a3 animated:(BOOL)a4
+- (void)deselectAnnotationRepresentation:(id)representation animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   annotationContainer = self->_annotationContainer;
-  v6 = [a3 viewRepresentation];
-  [(MKAnnotationContainerView *)annotationContainer deselectAnnotationView:v6 animated:v4];
+  viewRepresentation = [representation viewRepresentation];
+  [(MKAnnotationContainerView *)annotationContainer deselectAnnotationView:viewRepresentation animated:animatedCopy];
 }
 
-- (void)selectAnnotationRepresentation:(id)a3 animated:(BOOL)a4
+- (void)selectAnnotationRepresentation:(id)representation animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   annotationContainer = self->_annotationContainer;
-  v6 = [a3 viewRepresentation];
-  [(MKAnnotationContainerView *)annotationContainer selectAnnotationView:v6 animated:v4];
+  viewRepresentation = [representation viewRepresentation];
+  [(MKAnnotationContainerView *)annotationContainer selectAnnotationView:viewRepresentation animated:animatedCopy];
 }
 
-- (void)removeAnnotationRepresentation:(id)a3
+- (void)removeAnnotationRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = representationCopy;
     if ([(MKAnnotationView *)v5 isProvidingCustomFeature])
     {
       self->_currentUpdateRemovedCustomFeatureAnnotation = 1;
@@ -616,28 +616,28 @@ LABEL_12:
   }
 }
 
-- (void)addAnnotationRepresentation:(id)a3 allowAnimation:(BOOL)a4
+- (void)addAnnotationRepresentation:(id)representation allowAnimation:(BOOL)animation
 {
-  v4 = a4;
-  v7 = a3;
+  animationCopy = animation;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = representationCopy;
     [v8 _setStaticMapView:self];
-    v9 = [v8 annotation];
+    annotation = [v8 annotation];
     userLocation = self->_userLocation;
 
-    if (v9 != userLocation)
+    if (annotation != userLocation)
     {
 LABEL_16:
-      [(MKAnnotationContainerView *)self->_annotationContainer addAnnotationView:v8 allowAnimation:v4];
+      [(MKAnnotationContainerView *)self->_annotationContainer addAnnotationView:v8 allowAnimation:animationCopy];
       currentUpdateAddedAnnotations = self->_currentUpdateAddedAnnotations;
       if (!currentUpdateAddedAnnotations)
       {
-        v20 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v21 = self->_currentUpdateAddedAnnotations;
-        self->_currentUpdateAddedAnnotations = v20;
+        self->_currentUpdateAddedAnnotations = array;
 
         currentUpdateAddedAnnotations = self->_currentUpdateAddedAnnotations;
       }
@@ -647,12 +647,12 @@ LABEL_16:
       goto LABEL_19;
     }
 
-    objc_storeStrong(&self->_userLocationView, a3);
+    objc_storeStrong(&self->_userLocationView, representation);
     v11 = v8;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      _mkUserLocationView2 = v11;
     }
 
     else
@@ -663,15 +663,15 @@ LABEL_16:
         v13 = 0;
 LABEL_9:
 
-        v14 = [(MKUserLocation *)self->_userLocation location];
-        [v13 updateStateFromLocation:v14 duration:0.0];
+        location = [(MKUserLocation *)self->_userLocation location];
+        [v13 updateStateFromLocation:location duration:0.0];
 
-        v15 = [(MKLocationManager *)self->_locationManager isAuthorizedForPreciseLocation];
+        isAuthorizedForPreciseLocation = [(MKLocationManager *)self->_locationManager isAuthorizedForPreciseLocation];
         v16 = v11;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = v16;
+          _mkUserLocationView = v16;
         }
 
         else
@@ -683,21 +683,21 @@ LABEL_9:
             goto LABEL_15;
           }
 
-          v17 = [v16 _mkUserLocationView];
+          _mkUserLocationView = [v16 _mkUserLocationView];
         }
 
-        v18 = v17;
+        v18 = _mkUserLocationView;
 LABEL_15:
 
-        [v18 _setShouldShowDynamicLocationAnimations:v15];
+        [v18 _setShouldShowDynamicLocationAnimations:isAuthorizedForPreciseLocation];
         [(MKAnnotationContainerView *)self->_annotationContainer setUserLocationView:v16];
         goto LABEL_16;
       }
 
-      v12 = [v11 _mkUserLocationView];
+      _mkUserLocationView2 = [v11 _mkUserLocationView];
     }
 
-    v13 = v12;
+    v13 = _mkUserLocationView2;
     goto LABEL_9;
   }
 
@@ -710,14 +710,14 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)locationManagerUpdatedLimitsPrecisionState:(id)a3
+- (void)locationManagerUpdatedLimitsPrecisionState:(id)state
 {
-  v7 = a3;
+  stateCopy = state;
   v4 = self->_userLocationView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    _mkUserLocationView = v4;
   }
 
   else
@@ -729,38 +729,38 @@ LABEL_19:
       goto LABEL_8;
     }
 
-    v5 = [(MKAnnotationView *)v4 _mkUserLocationView];
+    _mkUserLocationView = [(MKAnnotationView *)v4 _mkUserLocationView];
   }
 
-  v6 = v5;
+  v6 = _mkUserLocationView;
 
   if (!v6)
   {
     goto LABEL_9;
   }
 
-  -[MKAnnotationView _setShouldShowDynamicLocationAnimations:](v6, "_setShouldShowDynamicLocationAnimations:", [v7 isAuthorizedForPreciseLocation]);
+  -[MKAnnotationView _setShouldShowDynamicLocationAnimations:](v6, "_setShouldShowDynamicLocationAnimations:", [stateCopy isAuthorizedForPreciseLocation]);
 LABEL_8:
 
 LABEL_9:
 }
 
-- (void)locationManagerFailedToUpdateLocation:(id)a3 withError:(id)a4
+- (void)locationManagerFailedToUpdateLocation:(id)location withError:(id)error
 {
   v4 = self->_userLocationView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    _mkUserLocationView = v4;
 LABEL_5:
-    v6 = v5;
+    v6 = _mkUserLocationView;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MKAnnotationView *)v4 _mkUserLocationView];
+    _mkUserLocationView = [(MKAnnotationView *)v4 _mkUserLocationView];
     goto LABEL_5;
   }
 
@@ -770,22 +770,22 @@ LABEL_7:
   [(MKAnnotationView *)v6 locationManagerFailedToUpdateLocation];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 lastLocation];
+  locationCopy = location;
+  lastLocation = [locationCopy lastLocation];
   userLocation = self->_userLocation;
   if (userLocation)
   {
     v7 = MEMORY[0x1E69DD250];
-    [v4 expectedGpsUpdateInterval];
+    [locationCopy expectedGpsUpdateInterval];
     v9 = v8;
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __51___MKStaticMapView_locationManagerUpdatedLocation___block_invoke;
     v19 = &unk_1E76CD810;
-    v20 = self;
-    v21 = v5;
+    selfCopy = self;
+    v21 = lastLocation;
     [v7 _mapkit_animateWithDuration:&v16 animations:0 completion:v9];
   }
 
@@ -795,16 +795,16 @@ LABEL_7:
     v11 = self->_userLocation;
     self->_userLocation = v10;
 
-    [(MKUserLocation *)self->_userLocation setLocation:v5];
+    [(MKUserLocation *)self->_userLocation setLocation:lastLocation];
   }
 
-  [v5 course];
+  [lastLocation course];
   [(MKUserLocation *)self->_userLocation setCourse:?];
   if (!userLocation)
   {
-    v12 = [(UIImageView *)self->_imageView image];
+    image = [(UIImageView *)self->_imageView image];
 
-    if (v12)
+    if (image)
     {
       [(MKAnnotationManager *)self->_annotationManager addAnnotation:self->_userLocation];
     }
@@ -814,7 +814,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    _mkUserLocationView = v13;
   }
 
   else
@@ -826,29 +826,29 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v14 = [(MKAnnotationView *)v13 _mkUserLocationView];
+    _mkUserLocationView = [(MKAnnotationView *)v13 _mkUserLocationView];
   }
 
-  v15 = v14;
+  v15 = _mkUserLocationView;
 LABEL_13:
 
-  [v4 expectedGpsUpdateInterval];
-  [(MKAnnotationView *)v15 updateStateFromLocation:v5 duration:?];
+  [locationCopy expectedGpsUpdateInterval];
+  [(MKAnnotationView *)v15 updateStateFromLocation:lastLocation duration:?];
 }
 
-- (void)setShowsUserLocation:(BOOL)a3
+- (void)setShowsUserLocation:(BOOL)location
 {
-  if (self->_showsUserLocation == a3)
+  if (self->_showsUserLocation == location)
   {
     return;
   }
 
-  self->_showsUserLocation = a3;
-  if (a3)
+  self->_showsUserLocation = location;
+  if (location)
   {
-    v4 = [(UIImageView *)self->_imageView image];
+    image = [(UIImageView *)self->_imageView image];
 
-    if (v4)
+    if (image)
     {
 
       [(_MKStaticMapView *)self _startUpdatingUserLocation];
@@ -872,8 +872,8 @@ LABEL_13:
 
 - (BOOL)hasUserLocation
 {
-  v2 = [(MKUserLocation *)self->_userLocation location];
-  v3 = v2 != 0;
+  location = [(MKUserLocation *)self->_userLocation location];
+  v3 = location != 0;
 
   return v3;
 }
@@ -926,16 +926,16 @@ LABEL_13:
   while ((v5 & 1) != 0);
 }
 
-- (void)removeOverlay:(id)a3
+- (void)removeOverlay:(id)overlay
 {
-  v8 = a3;
+  overlayCopy = overlay;
   v4 = 0;
   v5 = 1;
   while (1)
   {
     v6 = v5;
     v7 = self->_overlays[v4];
-    if ([(NSMutableOrderedSet *)v7 containsObject:v8])
+    if ([(NSMutableOrderedSet *)v7 containsObject:overlayCopy])
     {
       break;
     }
@@ -948,23 +948,23 @@ LABEL_13:
     }
   }
 
-  [(NSMutableOrderedSet *)v7 removeObject:v8];
-  [(NSMapTable *)self->_overlaysToRenderers removeObjectForKey:v8];
+  [(NSMutableOrderedSet *)v7 removeObject:overlayCopy];
+  [(NSMapTable *)self->_overlaysToRenderers removeObjectForKey:overlayCopy];
 
 LABEL_6:
 }
 
-- (void)removeOverlays:(id)a3
+- (void)removeOverlays:(id)overlays
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  overlaysCopy = overlays;
+  if ([overlaysCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v4;
+    v5 = overlaysCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -1002,10 +1002,10 @@ LABEL_6:
   }
 }
 
-- (void)_removeKVOForOverlayRenderer:(id)a3
+- (void)_removeKVOForOverlayRenderer:(id)renderer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rendererCopy = renderer;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1029,7 +1029,7 @@ LABEL_6:
         NSSelectorFromString(v10);
         if (objc_opt_respondsToSelector())
         {
-          [v4 removeObserver:self forKeyPath:v10 context:{MKOverlayRendererKVOContext, v11}];
+          [rendererCopy removeObserver:self forKeyPath:v10 context:{MKOverlayRendererKVOContext, v11}];
         }
       }
 
@@ -1040,10 +1040,10 @@ LABEL_6:
   }
 }
 
-- (void)_addKVOForOverlayRenderer:(id)a3
+- (void)_addKVOForOverlayRenderer:(id)renderer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rendererCopy = renderer;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1067,7 +1067,7 @@ LABEL_6:
         NSSelectorFromString(v10);
         if (objc_opt_respondsToSelector())
         {
-          [v4 addObserver:self forKeyPath:v10 options:0 context:{MKOverlayRendererKVOContext, v11}];
+          [rendererCopy addObserver:self forKeyPath:v10 options:0 context:{MKOverlayRendererKVOContext, v11}];
         }
       }
 
@@ -1078,19 +1078,19 @@ LABEL_6:
   }
 }
 
-- (void)addOverlays:(id)a3 level:(int64_t)a4
+- (void)addOverlays:(id)overlays level:(int64_t)level
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  overlaysCopy = overlays;
+  if ([overlaysCopy count])
   {
-    v17 = v6;
-    v18 = self->_overlays[a4];
+    v17 = overlaysCopy;
+    v18 = self->_overlays[level];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v6;
+    obj = overlaysCopy;
     v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
@@ -1144,47 +1144,47 @@ LABEL_6:
     }
 
     [(_MKStaticMapView *)self _updateSnapshot:1];
-    v6 = v17;
+    overlaysCopy = v17;
   }
 }
 
-- (void)addOverlays:(id)a3
+- (void)addOverlays:(id)overlays
 {
-  v4 = a3;
-  [(_MKStaticMapView *)self addOverlays:v4 level:+[MKOverlayContainerView _defaultOverlayLevel]];
+  overlaysCopy = overlays;
+  [(_MKStaticMapView *)self addOverlays:overlaysCopy level:+[MKOverlayContainerView _defaultOverlayLevel]];
 }
 
 - (NSArray)overlays
 {
   overlays = self->_overlays;
-  v3 = [(NSMutableOrderedSet *)self->_overlays[0] array];
-  v4 = [(NSMutableOrderedSet *)overlays[1] array];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  array = [(NSMutableOrderedSet *)self->_overlays[0] array];
+  array2 = [(NSMutableOrderedSet *)overlays[1] array];
+  v5 = [array arrayByAddingObjectsFromArray:array2];
 
   return v5;
 }
 
-- (void)selectUserLocationAnimated:(BOOL)a3
+- (void)selectUserLocationAnimated:(BOOL)animated
 {
   self->_userLocationSelected = 1;
   if (self->_userLocationView)
   {
-    [(MKAnnotationManager *)self->_annotationManager selectAnnotation:self->_userLocation animated:a3];
+    [(MKAnnotationManager *)self->_annotationManager selectAnnotation:self->_userLocation animated:animated];
   }
 }
 
-- (void)removeAnnotations:(id)a3
+- (void)removeAnnotations:(id)annotations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  annotationsCopy = annotations;
+  if ([annotationsCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(annotationsCopy, "count")}];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = annotationsCopy;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -1219,40 +1219,40 @@ LABEL_6:
   }
 }
 
-- (void)removeAnnotation:(id)a3
+- (void)removeAnnotation:(id)annotation
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (annotation)
   {
-    v7 = a3;
+    annotationCopy = annotation;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    annotationCopy2 = annotation;
+    v6 = [v4 arrayWithObjects:&annotationCopy count:1];
 
-    [(_MKStaticMapView *)self removeAnnotations:v6, v7, v8];
+    [(_MKStaticMapView *)self removeAnnotations:v6, annotationCopy, v8];
   }
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
-  v4 = a3;
-  if ([v4 count])
+  annotationsCopy = annotations;
+  if ([annotationsCopy count])
   {
-    [(MKAnnotationManager *)self->_annotationManager addAnnotations:v4];
+    [(MKAnnotationManager *)self->_annotationManager addAnnotations:annotationsCopy];
   }
 }
 
-- (void)addAnnotation:(id)a3
+- (void)addAnnotation:(id)annotation
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (annotation)
   {
-    v7 = a3;
+    annotationCopy = annotation;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    annotationCopy2 = annotation;
+    v6 = [v4 arrayWithObjects:&annotationCopy count:1];
 
-    [(_MKStaticMapView *)self addAnnotations:v6, v7, v8];
+    [(_MKStaticMapView *)self addAnnotations:v6, annotationCopy, v8];
   }
 }
 
@@ -1268,8 +1268,8 @@ LABEL_6:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  annotationViews = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
+  v4 = [annotationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1281,14 +1281,14 @@ LABEL_6:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(annotationViews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setHidden:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [annotationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1307,8 +1307,8 @@ LABEL_6:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  annotationViews = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
+  v4 = [annotationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1320,26 +1320,26 @@ LABEL_6:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(annotationViews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setHidden:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [annotationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_handleSnapshotError:(id)a3
+- (void)_handleSnapshotError:(id)error
 {
-  v8 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  errorCopy = error;
+  image = [(UIImageView *)self->_imageView image];
 
-  if (!v4)
+  if (!image)
   {
     [(_MKStaticMapView *)self _stopUpdatingUserLocation];
   }
@@ -1350,16 +1350,16 @@ LABEL_6:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 mapViewDidFailLoadingMap:self withError:v8];
+    [v7 mapViewDidFailLoadingMap:self withError:errorCopy];
   }
 }
 
-- (void)_handleSnapshot:(id)a3
+- (void)_handleSnapshot:(id)snapshot
 {
-  v9 = a3;
-  objc_storeStrong(&self->_snapshot, a3);
-  v5 = [v9 image];
-  [(UIImageView *)self->_imageView setImage:v5];
+  snapshotCopy = snapshot;
+  objc_storeStrong(&self->_snapshot, snapshot);
+  image = [snapshotCopy image];
+  [(UIImageView *)self->_imageView setImage:image];
 
   [(_MKStaticMapView *)self _showAllAnnotations];
   [(MKAnnotationContainerView *)self->_annotationContainer updateAnnotationViewsForReason:2];
@@ -1422,13 +1422,13 @@ LABEL_6:
     }
 
     [(MKMapSnapshotOptions *)self->_snapshotOptions _setEdgeInsets:v11 + top, v12 + left, v14 + bottom, v13 + right];
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v49 = 0u;
     v50 = 0u;
     v48 = 0u;
     v47 = 0u;
-    v24 = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
-    v25 = [v24 countByEnumeratingWithState:&v47 objects:v52 count:16];
+    _customFeatureAnnotations = [(MKMapSnapshotOptions *)self->_snapshotOptions _customFeatureAnnotations];
+    v25 = [_customFeatureAnnotations countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v25)
     {
       v26 = *v48;
@@ -1438,18 +1438,18 @@ LABEL_6:
         {
           if (*v48 != v26)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(_customFeatureAnnotations);
           }
 
           v28 = *(*(&v47 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v23 addObject:v28];
+            [array addObject:v28];
           }
         }
 
-        v25 = [v24 countByEnumeratingWithState:&v47 objects:v52 count:16];
+        v25 = [_customFeatureAnnotations countByEnumeratingWithState:&v47 objects:v52 count:16];
       }
 
       while (v25);
@@ -1459,8 +1459,8 @@ LABEL_6:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v29 = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
-    v30 = [v29 countByEnumeratingWithState:&v43 objects:v51 count:16];
+    annotationViews = [(MKAnnotationContainerView *)self->_annotationContainer annotationViews];
+    v30 = [annotationViews countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v30)
     {
       v31 = *v44;
@@ -1470,24 +1470,24 @@ LABEL_6:
         {
           if (*v44 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(annotationViews);
           }
 
           v33 = *(*(&v43 + 1) + 8 * j);
           if ([v33 isProvidingCustomFeature])
           {
-            v34 = [v33 customFeatureAnnotation];
-            [v23 addObject:v34];
+            customFeatureAnnotation = [v33 customFeatureAnnotation];
+            [array addObject:customFeatureAnnotation];
           }
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v30 = [annotationViews countByEnumeratingWithState:&v43 objects:v51 count:16];
       }
 
       while (v30);
     }
 
-    [(MKMapSnapshotOptions *)self->_snapshotOptions _setCustomFeatureAnnotations:v23];
+    [(MKMapSnapshotOptions *)self->_snapshotOptions _setCustomFeatureAnnotations:array];
     v35 = [[MKMapSnapshotter alloc] initWithOptions:self->_snapshotOptions];
     currentSnapshotter = self->_currentSnapshotter;
     self->_currentSnapshotter = v35;
@@ -1508,7 +1508,7 @@ LABEL_6:
   }
 }
 
-- (void)_updateSnapshot:(BOOL)a3
+- (void)_updateSnapshot:(BOOL)snapshot
 {
   if (self->_batchingCount)
   {
@@ -1517,8 +1517,8 @@ LABEL_6:
 
   else
   {
-    v4 = a3;
-    v5 = [(_MKStaticMapView *)self _incrementSnapshotGeneration];
+    snapshotCopy = snapshot;
+    _incrementSnapshotGeneration = [(_MKStaticMapView *)self _incrementSnapshotGeneration];
     if (!self->_loading)
     {
       self->_loading = 1;
@@ -1546,7 +1546,7 @@ LABEL_6:
       [(_MKStaticMapView *)self _startUpdatingUserLocation];
     }
 
-    if (v4)
+    if (snapshotCopy)
     {
       objc_initWeak(&location, self);
       v13[0] = MEMORY[0x1E69E9820];
@@ -1554,7 +1554,7 @@ LABEL_6:
       v13[2] = __36___MKStaticMapView__updateSnapshot___block_invoke;
       v13[3] = &unk_1E76CA208;
       objc_copyWeak(v14, &location);
-      v14[1] = v5;
+      v14[1] = _incrementSnapshotGeneration;
       [(_MKStaticMapView *)self _displayGridWithCompletionHandler:v13];
       objc_destroyWeak(v14);
       objc_destroyWeak(&location);
@@ -1568,40 +1568,40 @@ LABEL_6:
   }
 }
 
-- (void)_handleGridSnapshot:(id)a3
+- (void)_handleGridSnapshot:(id)snapshot
 {
-  objc_storeStrong(&self->_gridSnapshot, a3);
-  v6 = a3;
-  v5 = [v6 image];
-  [(UIImageView *)self->_imageView setImage:v5];
+  objc_storeStrong(&self->_gridSnapshot, snapshot);
+  snapshotCopy = snapshot;
+  image = [snapshotCopy image];
+  [(UIImageView *)self->_imageView setImage:image];
 
   [(_MKStaticMapView *)self _showAllAnnotations];
   [(MKAnnotationContainerView *)self->_annotationContainer updateAnnotationViewsForReason:2];
 }
 
-- (void)_displayGridWithCompletionHandler:(id)a3
+- (void)_displayGridWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(_MKStaticMapView *)self bounds];
   v6 = v5;
   [(_MKStaticMapView *)self bounds];
   v8.n128_f64[0] = v6 * v7;
   if (v6 * v7 == 0.0 || ([(UIImageView *)self->_imageView setImage:0, v8.n128_f64[0]], [(_MKStaticMapView *)self _hideAllAnnotations], !self->_canShowGrid))
   {
-    v4[2](v4, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 
   else
   {
     v9 = objc_alloc_init(MKMapSnapshotOptions);
-    v10 = [(_MKStaticMapView *)self traitCollection];
-    [(MKMapSnapshotOptions *)v9 setTraitCollection:v10];
+    traitCollection = [(_MKStaticMapView *)self traitCollection];
+    [(MKMapSnapshotOptions *)v9 setTraitCollection:traitCollection];
 
     [(_MKStaticMapView *)self bounds];
     [(MKMapSnapshotOptions *)v9 setSize:v11, v12];
     [(MKMapSnapshotOptions *)v9 setMapType:105];
-    v13 = [(MKMapSnapshotOptions *)self->_snapshotOptions camera];
-    [(MKMapSnapshotOptions *)v9 setCamera:v13];
+    camera = [(MKMapSnapshotOptions *)self->_snapshotOptions camera];
+    [(MKMapSnapshotOptions *)v9 setCamera:camera];
 
     [(MKMapSnapshotOptions *)v9 _setNetworkUsageMode:1];
     v14 = [[MKMapSnapshotter alloc] initWithOptions:v9];
@@ -1619,7 +1619,7 @@ LABEL_6:
     v20[3] = &unk_1E76CA1E0;
     objc_copyWeak(v22, &location);
     v22[1] = snapshotGeneration;
-    v21 = v4;
+    v21 = handlerCopy;
     [(MKMapSnapshotter *)v17 startWithQueue:v18 completionHandler:v20];
 
     objc_destroyWeak(v22);
@@ -1644,9 +1644,9 @@ LABEL_6:
   return result;
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [(_MKStaticMapView *)self traitCollection:a3];
+  v5 = [(_MKStaticMapView *)self traitCollection:environment];
   [(MKMapSnapshotOptions *)self->_snapshotOptions setTraitCollection:v5];
 
   v6 = MKGetSnapshotLog();
@@ -1659,12 +1659,12 @@ LABEL_6:
   [(_MKStaticMapView *)self _updateSnapshot:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (MKMapConfigurationKVOContext_30131 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (MKMapConfigurationKVOContext_30131 == context)
   {
     [(MKMapSnapshotOptions *)self->_snapshotOptions setPreferredConfiguration:self->_preferredConfiguration];
     v13 = MKGetSnapshotLog();
@@ -1682,7 +1682,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (MKOverlayRendererKVOContext == a6)
+  if (MKOverlayRendererKVOContext == context)
   {
     [(_MKStaticMapView *)self _updateSnapshotOptionsWithOverlayRenderers];
     v13 = MKGetSnapshotLog();
@@ -1698,17 +1698,17 @@ LABEL_9:
 
   v15.receiver = self;
   v15.super_class = _MKStaticMapView;
-  [(_MKStaticMapView *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(_MKStaticMapView *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_10:
 }
 
-- (void)setPreferredConfiguration:(id)a3
+- (void)setPreferredConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 | self->_preferredConfiguration)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy | self->_preferredConfiguration)
   {
-    v7 = [v4 isEqual:?];
+    v7 = [configurationCopy isEqual:?];
     preferredConfiguration = self->_preferredConfiguration;
   }
 
@@ -1758,7 +1758,7 @@ LABEL_10:
   }
 }
 
-- (CLLocationCoordinate2D)convertPoint:(CGPoint)a3 toCoordinateFromView:(id)a4
+- (CLLocationCoordinate2D)convertPoint:(CGPoint)point toCoordinateFromView:(id)view
 {
   v4 = *MEMORY[0x1E6985CC0];
   v5 = *(MEMORY[0x1E6985CC0] + 8);
@@ -1767,19 +1767,19 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)a3 toPointToView:(id)a4
+- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)coordinate toPointToView:(id)view
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   snapshot = self->_snapshot;
   if (!snapshot)
   {
     snapshot = self->_gridSnapshot;
   }
 
-  v8 = a4;
+  viewCopy = view;
   [(MKMapSnapshot *)snapshot pointForCoordinate:latitude, longitude];
-  [(_MKStaticMapView *)self convertPoint:v8 toView:?];
+  [(_MKStaticMapView *)self convertPoint:viewCopy toView:?];
   v10 = v9;
   v12 = v11;
 
@@ -1790,9 +1790,9 @@ LABEL_10:
   return result;
 }
 
-- (void)setSelectedTrailWithId:(id)a3 name:(id)a4 locale:(id)a5
+- (void)setSelectedTrailWithId:(id)id name:(id)name locale:(id)locale
 {
-  [(MKMapSnapshotOptions *)self->_snapshotOptions _setSelectedTrailWithId:a3 name:a4 locale:a5];
+  [(MKMapSnapshotOptions *)self->_snapshotOptions _setSelectedTrailWithId:id name:name locale:locale];
   v6 = MKGetSnapshotLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1803,15 +1803,15 @@ LABEL_10:
   [(_MKStaticMapView *)self _updateSnapshot:1];
 }
 
-- (void)setCamera:(id)a3
+- (void)setCamera:(id)camera
 {
-  v4 = a3;
-  v5 = [(MKMapSnapshotOptions *)self->_snapshotOptions _viewportMode];
+  cameraCopy = camera;
+  _viewportMode = [(MKMapSnapshotOptions *)self->_snapshotOptions _viewportMode];
   v6 = MEMORY[0x1E69DDCE0];
-  if (v5 == 2)
+  if (_viewportMode == 2)
   {
-    v7 = [(MKMapSnapshotOptions *)self->_snapshotOptions camera];
-    if ([v4 isEqual:v7] && (self->_additionalEdgeInsets.left == v6[1] ? (v8 = self->_additionalEdgeInsets.top == *v6) : (v8 = 0), v8 ? (v9 = self->_additionalEdgeInsets.right == v6[3]) : (v9 = 0), v9))
+    camera = [(MKMapSnapshotOptions *)self->_snapshotOptions camera];
+    if ([cameraCopy isEqual:camera] && (self->_additionalEdgeInsets.left == v6[1] ? (v8 = self->_additionalEdgeInsets.top == *v6) : (v8 = 0), v8 ? (v9 = self->_additionalEdgeInsets.right == v6[3]) : (v9 = 0), v9))
     {
       v12 = v6[2];
       bottom = self->_additionalEdgeInsets.bottom;
@@ -1827,7 +1827,7 @@ LABEL_10:
     }
   }
 
-  [(MKMapSnapshotOptions *)self->_snapshotOptions setCamera:v4];
+  [(MKMapSnapshotOptions *)self->_snapshotOptions setCamera:cameraCopy];
   v10 = *(v6 + 1);
   *&self->_additionalEdgeInsets.top = *v6;
   *&self->_additionalEdgeInsets.bottom = v10;
@@ -1843,16 +1843,16 @@ LABEL_10:
 LABEL_14:
 }
 
-- (void)setVisibleMapRect:(id)a3 edgePadding:(UIEdgeInsets)a4
+- (void)setVisibleMapRect:(id)rect edgePadding:(UIEdgeInsets)padding
 {
-  bottom = a4.bottom;
-  right = a4.right;
-  top = a4.top;
-  left = a4.left;
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v6 = a3.var0.var1;
-  v7 = a3.var0.var0;
+  bottom = padding.bottom;
+  right = padding.right;
+  top = padding.top;
+  left = padding.left;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v6 = rect.var0.var1;
+  v7 = rect.var0.var0;
   if ([(MKMapSnapshotOptions *)self->_snapshotOptions _viewportMode]!= 1 || (([(MKMapSnapshotOptions *)self->_snapshotOptions mapRect], v7 == v12) ? (v13 = v6 == v9) : (v13 = 0), v13 ? (v14 = var0 == v10) : (v14 = 0), v14 ? (v15 = var1 == v11) : (v15 = 0), !v15 || (v17.f64[0] = top, v17.f64[1] = left, v18.f64[0] = bottom, v18.f64[1] = right, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v17, *&self->_additionalEdgeInsets.top), vceqq_f64(v18, *&self->_additionalEdgeInsets.bottom)))) & 1) == 0)))
   {
     [(MKMapSnapshotOptions *)self->_snapshotOptions setMapRect:v7, v6, var0, var1];
@@ -1882,15 +1882,15 @@ LABEL_14:
   return result;
 }
 
-- (void)setRegion:(id *)a3
+- (void)setRegion:(id *)region
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v10 = v3;
-  v12 = [(MKMapSnapshotOptions *)self->_snapshotOptions _viewportMode];
+  _viewportMode = [(MKMapSnapshotOptions *)self->_snapshotOptions _viewportMode];
   v13 = MEMORY[0x1E69DDCE0];
-  if (v12 || ([(MKMapSnapshotOptions *)self->_snapshotOptions region], vabdd_f64(v10, v17) >= 0.00000000999999994) || vabdd_f64(v9, v14) >= 0.00000000999999994 || vabdd_f64(v8, v15) >= 0.00000000999999994 || vabdd_f64(v7, v16) >= 0.00000000999999994 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalEdgeInsets.top, *v13), vceqq_f64(*&self->_additionalEdgeInsets.bottom, v13[1])))) & 1) == 0)
+  if (_viewportMode || ([(MKMapSnapshotOptions *)self->_snapshotOptions region], vabdd_f64(v10, v17) >= 0.00000000999999994) || vabdd_f64(v9, v14) >= 0.00000000999999994 || vabdd_f64(v8, v15) >= 0.00000000999999994 || vabdd_f64(v7, v16) >= 0.00000000999999994 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalEdgeInsets.top, *v13), vceqq_f64(*&self->_additionalEdgeInsets.bottom, v13[1])))) & 1) == 0)
   {
     [(MKMapSnapshotOptions *)self->_snapshotOptions setRegion:v10, v9, v8, v7];
     v18 = v13[1];
@@ -1954,12 +1954,12 @@ LABEL_14:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_MKStaticMapView *)self bounds];
   v10 = height != v9 || width != v8;
   self->_changingSize = v10;
@@ -1983,12 +1983,12 @@ LABEL_14:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_MKStaticMapView *)self frame];
   v10 = height != v9 || width != v8;
   self->_changingSize = v10;
@@ -2019,21 +2019,21 @@ LABEL_14:
   [(_MKStaticMapView *)&v2 dealloc];
 }
 
-- (_MKStaticMapView)initWithFrame:(CGRect)a3 locationManager:(id)a4
+- (_MKStaticMapView)initWithFrame:(CGRect)frame locationManager:(id)manager
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v72[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  managerCopy = manager;
   v69.receiver = self;
   v69.super_class = _MKStaticMapView;
-  v10 = [(_MKStaticMapView *)&v69 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(_MKStaticMapView *)&v69 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v68 = v9;
-    if (v9 && (v11 = [[MKLocationManager alloc] initWithCLLocationManager:v9]) != 0)
+    v68 = managerCopy;
+    if (managerCopy && (v11 = [[MKLocationManager alloc] initWithCLLocationManager:managerCopy]) != 0)
     {
       v12 = 0;
       v67 = v11;
@@ -2047,118 +2047,118 @@ LABEL_14:
       v12 = 1;
     }
 
-    objc_storeStrong(&v10->_locationManager, v13);
+    objc_storeStrong(&height->_locationManager, v13);
     if (v12)
     {
     }
 
     v14 = [MEMORY[0x1E69DC888] _mapkit_colorNamed:@"CartographyBackgroundColor"];
-    [(_MKStaticMapView *)v10 setBackgroundColor:v14];
+    [(_MKStaticMapView *)height setBackgroundColor:v14];
 
     v15 = objc_alloc_init(MKMapSnapshotOptions);
-    snapshotOptions = v10->_snapshotOptions;
-    v10->_snapshotOptions = v15;
+    snapshotOptions = height->_snapshotOptions;
+    height->_snapshotOptions = v15;
 
-    v17 = [(_MKStaticMapView *)v10 traitCollection];
-    [(MKMapSnapshotOptions *)v10->_snapshotOptions setTraitCollection:v17];
+    traitCollection = [(_MKStaticMapView *)height traitCollection];
+    [(MKMapSnapshotOptions *)height->_snapshotOptions setTraitCollection:traitCollection];
 
-    [(_MKStaticMapView *)v10 bounds];
+    [(_MKStaticMapView *)height bounds];
     v19 = v18;
-    [(_MKStaticMapView *)v10 bounds];
+    [(_MKStaticMapView *)height bounds];
     if (v19 * v20 > 0.0)
     {
-      [(_MKStaticMapView *)v10 bounds];
-      [(MKMapSnapshotOptions *)v10->_snapshotOptions setSize:v21, v22];
+      [(_MKStaticMapView *)height bounds];
+      [(MKMapSnapshotOptions *)height->_snapshotOptions setSize:v21, v22];
     }
 
     v23 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    imageView = v10->_imageView;
-    v10->_imageView = v23;
+    imageView = height->_imageView;
+    height->_imageView = v23;
 
-    [(UIImageView *)v10->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIImageView *)v10->_imageView _mapkit_setImageContentMode:4];
-    [(_MKStaticMapView *)v10 addSubview:v10->_imageView];
+    [(UIImageView *)height->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIImageView *)height->_imageView _mapkit_setImageContentMode:4];
+    [(_MKStaticMapView *)height addSubview:height->_imageView];
     v25 = MEMORY[0x1E696ACD8];
-    v26 = [(UIImageView *)v10->_imageView centerXAnchor];
-    v27 = [(_MKStaticMapView *)v10 centerXAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    centerXAnchor = [(UIImageView *)height->_imageView centerXAnchor];
+    centerXAnchor2 = [(_MKStaticMapView *)height centerXAnchor];
+    v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v72[0] = v28;
-    v29 = [(UIImageView *)v10->_imageView centerYAnchor];
-    v30 = [(_MKStaticMapView *)v10 centerYAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    centerYAnchor = [(UIImageView *)height->_imageView centerYAnchor];
+    centerYAnchor2 = [(_MKStaticMapView *)height centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v72[1] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
     [v25 activateConstraints:v32];
 
     v33 = objc_alloc_init(MKAnnotationManager);
-    annotationManager = v10->_annotationManager;
-    v10->_annotationManager = v33;
+    annotationManager = height->_annotationManager;
+    height->_annotationManager = v33;
 
-    [(MKAnnotationManager *)v10->_annotationManager setContainer:v10];
-    [(MKAnnotationManager *)v10->_annotationManager setDelegate:v10];
+    [(MKAnnotationManager *)height->_annotationManager setContainer:height];
+    [(MKAnnotationManager *)height->_annotationManager setDelegate:height];
     v35 = objc_alloc_init(MKAnnotationContainerView);
-    annotationContainer = v10->_annotationContainer;
-    v10->_annotationContainer = v35;
+    annotationContainer = height->_annotationContainer;
+    height->_annotationContainer = v35;
 
-    [(MKAnnotationContainerView *)v10->_annotationContainer setDelegate:v10];
-    [(MKAnnotationContainerView *)v10->_annotationContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(_MKStaticMapView *)v10 addSubview:v10->_annotationContainer];
+    [(MKAnnotationContainerView *)height->_annotationContainer setDelegate:height];
+    [(MKAnnotationContainerView *)height->_annotationContainer setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(_MKStaticMapView *)height addSubview:height->_annotationContainer];
     v62 = MEMORY[0x1E696ACD8];
-    v66 = [(MKAnnotationContainerView *)v10->_annotationContainer topAnchor];
-    v65 = [(_MKStaticMapView *)v10 topAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    topAnchor = [(MKAnnotationContainerView *)height->_annotationContainer topAnchor];
+    topAnchor2 = [(_MKStaticMapView *)height topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v71[0] = v64;
-    v63 = [(MKAnnotationContainerView *)v10->_annotationContainer leftAnchor];
-    v37 = [(_MKStaticMapView *)v10 leftAnchor];
-    v38 = [v63 constraintEqualToAnchor:v37];
+    leftAnchor = [(MKAnnotationContainerView *)height->_annotationContainer leftAnchor];
+    leftAnchor2 = [(_MKStaticMapView *)height leftAnchor];
+    v38 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v71[1] = v38;
-    v39 = [(MKAnnotationContainerView *)v10->_annotationContainer rightAnchor];
-    v40 = [(_MKStaticMapView *)v10 rightAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    rightAnchor = [(MKAnnotationContainerView *)height->_annotationContainer rightAnchor];
+    rightAnchor2 = [(_MKStaticMapView *)height rightAnchor];
+    v41 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v71[2] = v41;
-    v42 = [(MKAnnotationContainerView *)v10->_annotationContainer bottomAnchor];
-    v43 = [(_MKStaticMapView *)v10 bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    bottomAnchor = [(MKAnnotationContainerView *)height->_annotationContainer bottomAnchor];
+    bottomAnchor2 = [(_MKStaticMapView *)height bottomAnchor];
+    v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v71[3] = v44;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:4];
     [v62 activateConstraints:v45];
 
     v46 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-    v47 = v10->_overlays[0];
-    v10->_overlays[0] = v46;
+    v47 = height->_overlays[0];
+    height->_overlays[0] = v46;
 
     v48 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-    v49 = v10->_overlays[1];
-    v10->_overlays[1] = v48;
+    v49 = height->_overlays[1];
+    height->_overlays[1] = v48;
 
     v50 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:10];
-    overlaysToRenderers = v10->_overlaysToRenderers;
-    v10->_overlaysToRenderers = v50;
+    overlaysToRenderers = height->_overlaysToRenderers;
+    height->_overlaysToRenderers = v50;
 
     v52 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:10];
-    mapItemCustomFeaturesToMapItems = v10->_mapItemCustomFeaturesToMapItems;
-    v10->_mapItemCustomFeaturesToMapItems = v52;
+    mapItemCustomFeaturesToMapItems = height->_mapItemCustomFeaturesToMapItems;
+    height->_mapItemCustomFeaturesToMapItems = v52;
 
     v54 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:10];
-    mapItemsToMapItemCustomFeatures = v10->_mapItemsToMapItemCustomFeatures;
-    v10->_mapItemsToMapItemCustomFeatures = v54;
+    mapItemsToMapItemCustomFeatures = height->_mapItemsToMapItemCustomFeatures;
+    height->_mapItemsToMapItemCustomFeatures = v54;
 
     v56 = objc_alloc_init(MKStandardMapConfiguration);
-    preferredConfiguration = v10->_preferredConfiguration;
-    v10->_preferredConfiguration = &v56->super;
+    preferredConfiguration = height->_preferredConfiguration;
+    height->_preferredConfiguration = &v56->super;
 
-    [(MKMapConfiguration *)v10->_preferredConfiguration _addObserver:v10 options:0 context:MKMapConfigurationKVOContext_30131];
-    v10->_canShowGrid = 1;
+    [(MKMapConfiguration *)height->_preferredConfiguration _addObserver:height options:0 context:MKMapConfigurationKVOContext_30131];
+    height->_canShowGrid = 1;
     v70[0] = objc_opt_class();
     v70[1] = objc_opt_class();
     v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
-    v59 = [(_MKStaticMapView *)v10 registerForTraitChanges:v58 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+    v59 = [(_MKStaticMapView *)height registerForTraitChanges:v58 withAction:sel_traitEnvironment_didChangeTraitCollection_];
 
-    v60 = v10;
-    v9 = v68;
+    v60 = height;
+    managerCopy = v68;
   }
 
-  return v10;
+  return height;
 }
 
 @end

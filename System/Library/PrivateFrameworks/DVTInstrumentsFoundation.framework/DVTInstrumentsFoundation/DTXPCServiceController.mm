@@ -1,13 +1,13 @@
 @interface DTXPCServiceController
 + (id)sharedInstance;
 - (DTXPCServiceController)init;
-- (int)_configureInstance:(id)a3 identifier:(id)a4 servicePid:(int)a5 environment:(id)a6 arguments:(id)a7 options:(id)a8;
-- (void)_matchRemove:(id)a3;
-- (void)_registryModify:(BOOL)a3 identifier:(id)a4 parent:(int)a5 client:(id)a6 block:(id)a7;
-- (void)registerClient:(id)a3 forXPCService:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8;
-- (void)releaseAssertionsMadeByClient:(id)a3;
-- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)a3 programPath:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8;
-- (void)unregisterClient:(id)a3 withIdentifier:(id)a4 parent:(int)a5;
+- (int)_configureInstance:(id)instance identifier:(id)identifier servicePid:(int)pid environment:(id)environment arguments:(id)arguments options:(id)options;
+- (void)_matchRemove:(id)remove;
+- (void)_registryModify:(BOOL)modify identifier:(id)identifier parent:(int)parent client:(id)client block:(id)block;
+- (void)registerClient:(id)client forXPCService:(id)service environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler;
+- (void)releaseAssertionsMadeByClient:(id)client;
+- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)specifier programPath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler;
+- (void)unregisterClient:(id)client withIdentifier:(id)identifier parent:(int)parent;
 @end
 
 @implementation DTXPCServiceController
@@ -47,60 +47,60 @@
   return v2;
 }
 
-- (void)releaseAssertionsMadeByClient:(id)a3
+- (void)releaseAssertionsMadeByClient:(id)client
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  clientCopy = client;
   if (sub_247FD13F4() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2112;
-    v10 = v3;
+    v10 = clientCopy;
     v4 = v8;
     _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%@ releasing active assertions taken on behalf of client %@", &v7, 0x16u);
   }
 
-  if (v3)
+  if (clientCopy)
   {
     v5 = +[DTAssertionManager sharedInstance];
-    [v5 removeClaimsHeldByClient:v3];
+    [v5 removeClaimsHeldByClient:clientCopy];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerClient:(id)a3 forXPCService:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8
+- (void)registerClient:(id)client forXPCService:(id)service environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler
 {
   v219 = *MEMORY[0x277D85DE8];
-  v132 = a3;
-  v133 = a4;
-  v127 = a5;
-  v128 = a6;
-  v134 = a7;
-  v13 = a8;
-  if (v13)
+  clientCopy = client;
+  serviceCopy = service;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v125 = v13;
-    v14 = v133;
+    v125 = handlerCopy;
+    v14 = serviceCopy;
     v120 = sub_247FD13F4();
-    v15 = [v134 objectForKeyedSubscript:@"KillExisting"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"KillExisting"];
     v118 = [v15 isEqualToNumber:MEMORY[0x277CBEC28]];
 
-    v16 = [v134 objectForKeyedSubscript:@"RequestingPid"];
-    v126 = [v16 intValue];
+    v16 = [optionsCopy objectForKeyedSubscript:@"RequestingPid"];
+    intValue = [v16 intValue];
 
-    v17 = [v134 objectForKeyedSubscript:@"OnceOnly"];
-    v119 = [v17 BOOLValue];
+    v17 = [optionsCopy objectForKeyedSubscript:@"OnceOnly"];
+    bOOLValue = [v17 BOOLValue];
 
-    v18 = [v134 objectForKeyedSubscript:@"EnableExtension"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"EnableExtension"];
     v121 = [v18 isEqualToNumber:MEMORY[0x277CBEC38]];
 
-    v19 = [v134 objectForKeyedSubscript:@"DisableMemoryLimits"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"DisableMemoryLimits"];
     v117 = [v19 isEqualToNumber:MEMORY[0x277CBEC38]];
 
-    v124 = [v134 objectForKeyedSubscript:@"AppExtensionHoldBundleID"];
-    v129 = [v134 objectForKeyedSubscript:@"AppExtensionHoldURL"];
+    v124 = [optionsCopy objectForKeyedSubscript:@"AppExtensionHoldBundleID"];
+    v129 = [optionsCopy objectForKeyedSubscript:@"AppExtensionHoldURL"];
     if (!v121)
     {
       v122 = 0;
@@ -114,7 +114,7 @@
       goto LABEL_44;
     }
 
-    v130 = [MEMORY[0x277D3D350] defaultManager];
+    defaultManager = [MEMORY[0x277D3D350] defaultManager];
     if (v124)
     {
       v185 = 0;
@@ -147,7 +147,7 @@
       }
 
       v184 = 0;
-      v122 = [v130 holdPlugInsInApplication:v129 withError:&v184];
+      v122 = [defaultManager holdPlugInsInApplication:v129 withError:&v184];
       v116 = v184;
       if (((v116 != 0) & v120) == 1)
       {
@@ -166,9 +166,9 @@
         v183 = 0u;
         v180 = 0u;
         v181 = 0u;
-        v23 = [v114 builtInPlugInsURL];
-        v24 = [v23 relativePath];
-        v25 = [v114 URLsForResourcesWithExtension:@"appex" subdirectory:v24];
+        builtInPlugInsURL = [v114 builtInPlugInsURL];
+        relativePath = [builtInPlugInsURL relativePath];
+        v25 = [v114 URLsForResourcesWithExtension:@"appex" subdirectory:relativePath];
 
         v26 = [v25 countByEnumeratingWithState:&v180 objects:v217 count:16];
         if (v26)
@@ -185,8 +185,8 @@ LABEL_24:
 
             v29 = *(*(&v180 + 1) + 8 * v28);
             v30 = [MEMORY[0x277CCA8D8] bundleWithURL:v29];
-            v31 = [v30 bundleIdentifier];
-            v32 = [v31 isEqualToString:v14];
+            bundleIdentifier = [v30 bundleIdentifier];
+            v32 = [bundleIdentifier isEqualToString:v14];
 
             if (v32)
             {
@@ -222,7 +222,7 @@ LABEL_24:
           }
 
           v179 = 0;
-          [v130 terminatePlugInAtURL:v33 withError:&v179];
+          [defaultManager terminatePlugInAtURL:v33 withError:&v179];
           v34 = v179;
           if (v34 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -276,12 +276,12 @@ LABEL_43:
 LABEL_44:
     v35 = [v14 containsString:@"LaunchDaemons"];
     v36 = [v14 containsString:@"LaunchAgents"];
-    v37 = [v14 pathExtension];
-    v38 = [v37 isEqualToString:@"plist"];
+    pathExtension = [v14 pathExtension];
+    v38 = [pathExtension isEqualToString:@"plist"];
 
     if (!v38)
     {
-      v43 = 0;
+      firstObject = 0;
       v44 = 0;
       v45 = v14;
       goto LABEL_53;
@@ -303,7 +303,7 @@ LABEL_106:
         goto LABEL_108;
       }
 
-      v126 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
       v131 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v14];
       v44 = [v131 objectForKeyedSubscript:@"Label"];
 
@@ -311,13 +311,13 @@ LABEL_106:
       v108 = v107;
       if (v107)
       {
-        v43 = v107;
+        firstObject = v107;
       }
 
       else
       {
         v109 = [v131 objectForKeyedSubscript:@"ProgramArguments"];
-        v43 = [v109 firstObject];
+        firstObject = [v109 firstObject];
       }
 
       if (!v44)
@@ -330,7 +330,7 @@ LABEL_106:
         v113 = [v110 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v112];
         (v125[2])(v125, 0, 0, 0xFFFFFFFFLL, 0xFFFFFFFFLL, v113);
 
-        v14 = v43;
+        v14 = firstObject;
         goto LABEL_108;
       }
 
@@ -344,16 +344,16 @@ LABEL_53:
         v214 = v79;
         v80 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v214 forKeys:&v213 count:1];
         v81 = [v78 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v80];
-        (v125[2])(v125, v45, 0, v126, 0xFFFFFFFFLL, v81);
+        (v125[2])(v125, v45, 0, intValue, 0xFFFFFFFFLL, v81);
 
         v14 = v45;
 LABEL_109:
 
-        v13 = v125;
+        handlerCopy = v125;
         goto LABEL_110;
       }
 
-      if (v126 == -1)
+      if (intValue == -1)
       {
         v46 = 3;
       }
@@ -370,7 +370,7 @@ LABEL_109:
         *&buf[8] = 2112;
         *&buf[10] = v45;
         *&buf[18] = 1024;
-        *&buf[20] = v126 & ~(v126 >> 31);
+        *&buf[20] = intValue & ~(intValue >> 31);
         _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "DTXPCServiceController: calling xpc_service_create: serviceType=%d, identifier=%@, pid %d", buf, 0x18u);
       }
 
@@ -398,8 +398,8 @@ LABEL_109:
       block[4] = self;
       v48 = v45;
       v166 = v48;
-      v173 = v126;
-      v49 = v132;
+      v173 = intValue;
+      v49 = clientCopy;
       v167 = v49;
       v170 = &v199;
       v175 = 1;
@@ -412,18 +412,18 @@ LABEL_109:
       v171 = buf;
       v174 = v46;
       v172 = &v203;
-      v178 = v119;
+      v178 = bOOLValue;
       dispatch_sync(guard, block);
       if (*(v200 + 24) == 1)
       {
         v51 = MEMORY[0x277CCA9B8];
         v197 = *MEMORY[0x277CCA450];
-        [MEMORY[0x277CCACA8] stringWithFormat:@"XPC service name %@ already under observation for pid: %d", v48, v126];
-        v53 = v52 = v43;
+        [MEMORY[0x277CCACA8] stringWithFormat:@"XPC service name %@ already under observation for pid: %d", v48, intValue];
+        v53 = v52 = firstObject;
         v198 = v53;
-        v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v198 forKeys:&v197 count:1];
-        v55 = [v51 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v54];
-        (v50[2])(v50, v48, 0, v126, 0xFFFFFFFFLL, v55);
+        v1262 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v198 forKeys:&v197 count:1];
+        v55 = [v51 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v1262];
+        (v50[2])(v50, v48, 0, intValue, 0xFFFFFFFFLL, v55);
 
 LABEL_102:
         _Block_object_dispose(&v199, 8);
@@ -436,22 +436,22 @@ LABEL_108:
         goto LABEL_109;
       }
 
-      v52 = v43;
+      v52 = firstObject;
       if (!*(*&buf[8] + 40) && !v204[5])
       {
         v96 = MEMORY[0x277CCA9B8];
         v195 = *MEMORY[0x277CCA450];
         v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to create xpc registration object."];
         v196 = v53;
-        v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v196 forKeys:&v195 count:1];
-        v97 = [v96 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v54];
-        (v50[2])(v50, v48, 0, v126, 0xFFFFFFFFLL, v97);
+        v1262 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v196 forKeys:&v195 count:1];
+        v97 = [v96 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v1262];
+        (v50[2])(v50, v48, 0, intValue, 0xFFFFFFFFLL, v97);
 
         goto LABEL_102;
       }
 
       v53 = _Block_copy(v50);
-      if (v119)
+      if (bOOLValue)
       {
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
@@ -461,7 +461,7 @@ LABEL_108:
         aBlock[4] = self;
         v161 = v49;
         v162 = v48;
-        v164 = v126;
+        v164 = intValue;
         v59 = _Block_copy(aBlock);
 
         v53 = v59;
@@ -473,28 +473,28 @@ LABEL_108:
         if (v82)
         {
           v83 = v14;
-          v84 = [v14 UTF8String];
+          uTF8String = [v14 UTF8String];
           v135[0] = MEMORY[0x277D85DD0];
           v135[1] = 3221225472;
           v135[2] = sub_247FD408C;
           v135[3] = &unk_278EF35F8;
           v53 = v53;
           v136 = v53;
-          v137 = v126;
-          if (authorized_xpc_attach(v82, 0, v84, v127, v128, v134, v135))
+          v137 = intValue;
+          if (authorized_xpc_attach(v82, 0, uTF8String, environmentCopy, argumentsCopy, optionsCopy, v135))
           {
             v85 = MEMORY[0x277CCA9B8];
             v189 = *MEMORY[0x277CCA450];
             v86 = MEMORY[0x277CCACA8];
             v87 = v48;
-            v88 = [v86 stringWithFormat:@"Unable to use privileged helper to register for xpc-based launch: %s (parent: %d)", objc_msgSend(v48, "UTF8String"), v126];
-            v190 = v88;
+            v126 = [v86 stringWithFormat:@"Unable to use privileged helper to register for xpc-based launch: %s (parent: %d)", objc_msgSend(v48, "UTF8String"), intValue];
+            v190 = v126;
             v89 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v190 forKeys:&v189 count:1];
             v90 = [v85 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v89];
-            (*(v53 + 2))(v53, v48, 0, v126, 0xFFFFFFFFLL, v90);
+            (*(v53 + 2))(v53, v48, 0, intValue, 0xFFFFFFFFLL, v90);
           }
 
-          v54 = v136;
+          v1262 = v136;
         }
 
         else
@@ -503,23 +503,23 @@ LABEL_108:
           v187 = *MEMORY[0x277CCA450];
           v99 = MEMORY[0x277CCACA8];
           v100 = v48;
-          v54 = [v99 stringWithFormat:@"Unable to register for xpc-based launch: %s (parent: %d)", objc_msgSend(v48, "UTF8String"), v126];
-          v188 = v54;
+          v1262 = [v99 stringWithFormat:@"Unable to register for xpc-based launch: %s (parent: %d)", objc_msgSend(v48, "UTF8String"), intValue];
+          v188 = v1262;
           v101 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v188 forKeys:&v187 count:1];
           v102 = [v98 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v101];
-          (*(v53 + 2))(v53, v48, 0, v126, 0xFFFFFFFFLL, v102);
+          (*(v53 + 2))(v53, v48, 0, intValue, 0xFFFFFFFFLL, v102);
         }
 
         goto LABEL_102;
       }
 
-      if (!((v126 > 0) | v118 & 1))
+      if (!((intValue > 0) | v118 & 1))
       {
         v155[0] = MEMORY[0x277D85DD0];
         v155[1] = 3221225472;
         v156 = sub_247FD3304;
         v157 = &unk_278EF3508;
-        v158 = v43;
+        v158 = firstObject;
         v159 = v48;
         v60 = v155;
         v186 = 0;
@@ -556,16 +556,16 @@ LABEL_108:
       v152 = v120;
       v66 = v48;
       v144 = v66;
-      v145 = v134;
+      v145 = optionsCopy;
       v153 = v117;
       v67 = v49;
       v146 = v67;
-      v147 = self;
-      v148 = v127;
-      v149 = v128;
+      selfCopy = self;
+      v148 = environmentCopy;
+      v149 = argumentsCopy;
       v53 = v53;
       v150 = v53;
-      v151 = v126;
+      v151 = intValue;
       v154 = v118 ^ 1;
       xpc_service_set_attach_handler();
       if (v122)
@@ -577,9 +577,9 @@ LABEL_108:
           _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "DTXPCServiceController: ExtensionAssertion Release Start %@", v218, 0xCu);
         }
 
-        v68 = [MEMORY[0x277D3D350] defaultManager];
+        defaultManager2 = [MEMORY[0x277D3D350] defaultManager];
         v143[0] = 0;
-        [v68 releaseHold:v122 withError:v143];
+        [defaultManager2 releaseHold:v122 withError:v143];
         v69 = v143[0];
 
         if (((v69 != 0) & v120) == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -597,7 +597,7 @@ LABEL_108:
         {
 LABEL_99:
 
-          v54 = v144;
+          v1262 = v144;
           goto LABEL_102;
         }
 
@@ -616,11 +616,11 @@ LABEL_99:
 
         v74 = MEMORY[0x277CCA9B8];
         v193 = *MEMORY[0x277CCA450];
-        v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to launch: %@ (parent: %d) Error: %s", v66, v126, xpc_strerror()];
+        v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to launch: %@ (parent: %d) Error: %s", v66, intValue, xpc_strerror()];
         v194 = v75;
         v76 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v194 forKeys:&v193 count:1];
         v77 = [v74 errorWithDomain:@"DTXPCServiceController" code:3 userInfo:v76];
-        (*(v53 + 2))(v53, v66, 0, v126, 0xFFFFFFFFLL, v77);
+        (*(v53 + 2))(v53, v66, 0, intValue, 0xFFFFFFFFLL, v77);
       }
 
       else
@@ -630,7 +630,7 @@ LABEL_99:
           goto LABEL_99;
         }
 
-        v91 = [MEMORY[0x277D3D348] defaultHost];
+        defaultHost = [MEMORY[0x277D3D348] defaultHost];
         v191 = *MEMORY[0x277D3D360];
         v192 = v66;
         v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v192 forKeys:&v191 count:1];
@@ -641,7 +641,7 @@ LABEL_99:
         v93 = v66;
         v141 = v93;
         v142 = v121;
-        v94 = [v91 continuouslyDiscoverPlugInsForAttributes:v92 flags:512 found:v140];
+        v94 = [defaultHost continuouslyDiscoverPlugInsForAttributes:v92 flags:512 found:v140];
 
         v138[0] = MEMORY[0x277D85DD0];
         v138[1] = 3221225472;
@@ -649,7 +649,7 @@ LABEL_99:
         v138[3] = &unk_278EF35D0;
         v95 = v94;
         v139 = v95;
-        [(DTXPCServiceController *)self _registryModify:1 identifier:v93 parent:v126 client:v67 block:v138];
+        [(DTXPCServiceController *)self _registryModify:1 identifier:v93 parent:intValue client:v67 block:v138];
 
         v75 = v141;
       }
@@ -695,22 +695,22 @@ LABEL_110:
   v106 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_configureInstance:(id)a3 identifier:(id)a4 servicePid:(int)a5 environment:(id)a6 arguments:(id)a7 options:(id)a8
+- (int)_configureInstance:(id)instance identifier:(id)identifier servicePid:(int)pid environment:(id)environment arguments:(id)arguments options:(id)options
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a8;
+  instanceCopy = instance;
+  environmentCopy = environment;
+  optionsCopy = options;
   v13 = sub_247FD13F4();
-  v14 = [v12 objectForKeyedSubscript:@"StartSuspendedKey"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"StartSuspendedKey"];
   v15 = [v14 isEqualToNumber:MEMORY[0x277CBEC28]];
 
-  ShouldCaptureOutputWithOptions = DTProcessShouldCaptureOutputWithOptions(v12);
-  v17 = [v12 objectForKeyedSubscript:@"DisableMemoryLimits"];
+  ShouldCaptureOutputWithOptions = DTProcessShouldCaptureOutputWithOptions(optionsCopy);
+  v17 = [optionsCopy objectForKeyedSubscript:@"DisableMemoryLimits"];
   v18 = [v17 isEqualToNumber:MEMORY[0x277CBEC38]];
 
-  v19 = [v12 objectForKeyedSubscript:@"EnableMTE"];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"EnableMTE"];
+  bOOLValue = [v19 BOOLValue];
 
   if (v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -718,7 +718,7 @@ LABEL_110:
     _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "xpc_service_instance_is_configurable(): true", buf, 2u);
   }
 
-  if ([v11 count])
+  if ([environmentCopy count])
   {
     v21 = xpc_dictionary_create(0, 0, 0);
     v31[0] = MEMORY[0x277D85DD0];
@@ -727,7 +727,7 @@ LABEL_110:
     v31[3] = &unk_278EF3620;
     v32 = v21;
     v22 = v21;
-    [v11 enumerateKeysAndObjectsUsingBlock:v31];
+    [environmentCopy enumerateKeysAndObjectsUsingBlock:v31];
     xpc_service_instance_set_environment();
   }
 
@@ -773,12 +773,12 @@ LABEL_17:
     xpc_service_instance_set_jetsam_properties();
   }
 
-  if (v20)
+  if (bOOLValue)
   {
     xpc_service_instance_set_use_sec_transition_shims();
   }
 
-  v24 = [v12 objectForKeyedSubscript:@"CPUType"];
+  v24 = [optionsCopy objectForKeyedSubscript:@"CPUType"];
   v25 = v24;
   if (v24)
   {
@@ -786,86 +786,86 @@ LABEL_17:
   }
 
   xpc_service_instance_set_binpref();
-  v26 = [v12 objectForKeyedSubscript:@"CPUSubType"];
+  v26 = [optionsCopy objectForKeyedSubscript:@"CPUSubType"];
   v27 = v26;
   if (v26)
   {
-    v28 = [v26 intValue];
+    intValue = [v26 intValue];
   }
 
   else
   {
-    v28 = 0xFFFFFFFFLL;
+    intValue = 0xFFFFFFFFLL;
   }
 
-  xpc_service_instance_set_archpref_shim(v10, v28);
+  xpc_service_instance_set_archpref_shim(instanceCopy, intValue);
 
   v29 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)a3 programPath:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8
+- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)specifier programPath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  specifierCopy = specifier;
+  pathCopy = path;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
+  optionsCopy = options;
+  handlerCopy = handler;
   sub_247FD13F4();
-  [v13 UTF8String];
+  [specifierCopy UTF8String];
   v19 = xpc_service_create_from_specifier();
   if (v19)
   {
-    v25 = v17;
-    v26 = v13;
-    v27 = v15;
-    v28 = v16;
-    v31 = v18;
-    v29 = v14;
+    v25 = optionsCopy;
+    v26 = specifierCopy;
+    v27 = environmentCopy;
+    v28 = argumentsCopy;
+    v31 = handlerCopy;
+    v29 = pathCopy;
     v30 = v19;
     xpc_service_set_attach_handler();
     xpc_service_kickstart_with_flags();
 
-    v20 = v25;
+    specifierCopy = v25;
   }
 
   else
   {
     v21 = MEMORY[0x277CCA9B8];
     v32 = *MEMORY[0x277CCA450];
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find service with specifier '%@'.", v13];
-    v33[0] = v20;
+    specifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find service with specifier '%@'.", specifierCopy];
+    v33[0] = specifierCopy;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v23 = [v21 errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v22];
-    (*(v18 + 2))(v18, v13, 0, 0, 0xFFFFFFFFLL, v23);
+    (*(handlerCopy + 2))(handlerCopy, specifierCopy, 0, 0, 0xFFFFFFFFLL, v23);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registryModify:(BOOL)a3 identifier:(id)a4 parent:(int)a5 client:(id)a6 block:(id)a7
+- (void)_registryModify:(BOOL)modify identifier:(id)identifier parent:(int)parent client:(id)client block:(id)block
 {
-  v10 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  modifyCopy = modify;
+  identifierCopy = identifier;
+  clientCopy = client;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_247FD4CF8;
   aBlock[3] = &unk_278EF3698;
   aBlock[4] = self;
-  v15 = v13;
+  v15 = clientCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = identifierCopy;
   v22 = v16;
-  v24 = a5;
-  v17 = v14;
+  parentCopy = parent;
+  v17 = blockCopy;
   v23 = v17;
   v18 = _Block_copy(aBlock);
   v19 = v18;
-  if (v10)
+  if (modifyCopy)
   {
     dispatch_sync(self->_guard, v18);
   }
@@ -876,34 +876,34 @@ LABEL_17:
   }
 }
 
-- (void)_matchRemove:(id)a3
+- (void)_matchRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   registrationDictsByPid = self->_registrationDictsByPid;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247FD4FD4;
   v7[3] = &unk_278EF36E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = removeCopy;
+  v6 = removeCopy;
   [(NSMutableDictionary *)registrationDictsByPid enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)unregisterClient:(id)a3 withIdentifier:(id)a4 parent:(int)a5
+- (void)unregisterClient:(id)client withIdentifier:(id)identifier parent:(int)parent
 {
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   guard = self->_guard;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_247FD5374;
   v13[3] = &unk_278EF28C0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = clientCopy;
+  v15 = identifierCopy;
+  parentCopy = parent;
+  v11 = identifierCopy;
+  v12 = clientCopy;
   dispatch_sync(guard, v13);
 }
 

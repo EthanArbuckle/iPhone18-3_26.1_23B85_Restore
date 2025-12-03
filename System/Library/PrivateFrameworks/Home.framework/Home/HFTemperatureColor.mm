@@ -1,9 +1,9 @@
 @interface HFTemperatureColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFTemperatureColor)init;
-- (HFTemperatureColor)initWithTemperatureInMired:(float)a3;
+- (HFTemperatureColor)initWithTemperatureInMired:(float)mired;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hf_RGBColorRepresentation;
 - (id)valueDescription;
 - (id)valueDescriptionInKelvin;
@@ -14,27 +14,27 @@
 
 - (HFTemperatureColor)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithTemperatureInMired_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFColorPrimitive.m" lineNumber:110 description:{@"%s is unavailable; use %@ instead", "-[HFTemperatureColor init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFColorPrimitive.m" lineNumber:110 description:{@"%s is unavailable; use %@ instead", "-[HFTemperatureColor init]", v5}];
 
   return 0;
 }
 
-- (HFTemperatureColor)initWithTemperatureInMired:(float)a3
+- (HFTemperatureColor)initWithTemperatureInMired:(float)mired
 {
   v5.receiver = self;
   v5.super_class = HFTemperatureColor;
   result = [(HFTemperatureColor *)&v5 init];
   if (result)
   {
-    result->_temperatureInMired = a3;
+    result->_temperatureInMired = mired;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(HFTemperatureColor *)self temperatureInMired];
@@ -61,10 +61,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -76,7 +76,7 @@
     {
       [(HFTemperatureColor *)self temperatureInMired];
       v6 = v5;
-      [(HFTemperatureColor *)v4 temperatureInMired];
+      [(HFTemperatureColor *)equalCopy temperatureInMired];
       v8 = vabds_f32(v6, v7) < 0.001;
     }
 
@@ -119,8 +119,8 @@
   v8.receiver = self;
   v8.super_class = HFTemperatureColor;
   v4 = [(HFTemperatureColor *)&v8 description];
-  v5 = [(HFTemperatureColor *)self valueDescription];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  valueDescription = [(HFTemperatureColor *)self valueDescription];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, valueDescription];
 
   return v6;
 }

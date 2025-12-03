@@ -1,14 +1,14 @@
 @interface HMDAudioAnalysisEventBulletinNotificationRegistration
-- (BOOL)isEqual:(id)a3;
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithCoder:(id)a3;
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithConditions:(id)a3 audioAnalysisClassifierOptions:(unint64_t)a4 accessoryUUID:(id)a5;
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithDictionary:(id)a3;
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithLocalBulletinAudioAnalysisRegistration:(id)a3;
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithPredicate:(id)a3 accessoryUUID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithCoder:(id)coder;
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithConditions:(id)conditions audioAnalysisClassifierOptions:(unint64_t)options accessoryUUID:(id)d;
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithDictionary:(id)dictionary;
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithLocalBulletinAudioAnalysisRegistration:(id)registration;
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithPredicate:(id)predicate accessoryUUID:(id)d;
 - (id)attributeDescriptions;
 - (id)predicate;
 - (id)serializedRegistrationForRemoteMessage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAudioAnalysisEventBulletinNotificationRegistration
@@ -18,42 +18,42 @@
   v15[2] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = HMDAudioAnalysisEventBulletinNotificationRegistration;
-  v3 = [(HMDBulletinNotificationRegistration *)&v14 attributeDescriptions];
+  attributeDescriptions = [(HMDBulletinNotificationRegistration *)&v14 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID];
-  v6 = [v4 initWithName:@"accessoryUUID" value:v5];
+  accessoryUUID = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID];
+  v6 = [v4 initWithName:@"accessoryUUID" value:accessoryUUID];
   v15[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAudioAnalysisEventBulletinNotificationRegistration audioAnalysisClassifierOptions](self, "audioAnalysisClassifierOptions")}];
   v9 = [v7 initWithName:@"classifiers" value:v8];
   v15[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  v11 = [v3 arrayByAddingObjectsFromArray:v10];
+  v11 = [attributeDescriptions arrayByAddingObjectsFromArray:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithDictionary:(id)a3
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_class();
-  v6 = [objc_opt_class() type];
-  LODWORD(v5) = [v5 doesTypeMatch:v4 against:v6];
+  type = [objc_opt_class() type];
+  LODWORD(v5) = [v5 doesTypeMatch:dictionaryCopy against:type];
 
   if (v5)
   {
     v16.receiver = self;
     v16.super_class = HMDAudioAnalysisEventBulletinNotificationRegistration;
-    v7 = [(HMDBulletinNotificationRegistration *)&v16 initWithDictionary:v4];
+    v7 = [(HMDBulletinNotificationRegistration *)&v16 initWithDictionary:dictionaryCopy];
     if (v7)
     {
-      v8 = [v4 hmf_UUIDForKey:@"Accessory"];
+      v8 = [dictionaryCopy hmf_UUIDForKey:@"Accessory"];
       accessoryUUID = v7->_accessoryUUID;
       v7->_accessoryUUID = v8;
 
-      v10 = [v4 objectForKeyedSubscript:@"Classifier"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"Classifier"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -67,32 +67,32 @@
 
       v12 = v11;
 
-      v13 = [v12 unsignedIntValue];
-      v7->_audioAnalysisClassifierOptions = v13;
+      unsignedIntValue = [v12 unsignedIntValue];
+      v7->_audioAnalysisClassifierOptions = unsignedIntValue;
     }
 
     self = v7;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)serializedRegistrationForRemoteMessage
 {
   v9.receiver = self;
   v9.super_class = HMDAudioAnalysisEventBulletinNotificationRegistration;
-  v3 = [(HMDBulletinNotificationRegistration *)&v9 serializedRegistrationForRemoteMessage];
-  v4 = [v3 mutableCopy];
+  serializedRegistrationForRemoteMessage = [(HMDBulletinNotificationRegistration *)&v9 serializedRegistrationForRemoteMessage];
+  v4 = [serializedRegistrationForRemoteMessage mutableCopy];
 
-  v5 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID];
-  v6 = [v5 UUIDString];
-  [v4 setObject:v6 forKeyedSubscript:@"Accessory"];
+  accessoryUUID = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"Accessory"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAudioAnalysisEventBulletinNotificationRegistration audioAnalysisClassifierOptions](self, "audioAnalysisClassifierOptions")}];
   [v4 setObject:v7 forKeyedSubscript:@"Classifier"];
@@ -100,49 +100,49 @@
   return v4;
 }
 
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithCoder:(id)a3
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [[HMDBulletinNotificationRegistration alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMDBulletinNotificationRegistration alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Accessory"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Classifier"];
-    v8 = [v7 unsignedIntegerValue];
-    v9 = [(HMDBulletinNotificationRegistration *)v5 conditions];
-    self = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self initWithConditions:v9 audioAnalysisClassifierOptions:v8 accessoryUUID:v6];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Accessory"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Classifier"];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
+    conditions = [(HMDBulletinNotificationRegistration *)v5 conditions];
+    self = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self initWithConditions:conditions audioAnalysisClassifierOptions:unsignedIntegerValue accessoryUUID:v6];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMDAudioAnalysisEventBulletinNotificationRegistration;
-  v4 = a3;
-  [(HMDBulletinNotificationRegistration *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDBulletinNotificationRegistration *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"Accessory"];
+  [coderCopy encodeObject:v5 forKey:@"Accessory"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAudioAnalysisEventBulletinNotificationRegistration audioAnalysisClassifierOptions](self, "audioAnalysisClassifierOptions")}];
-  [v4 encodeObject:v6 forKey:@"Classifier"];
+  [coderCopy encodeObject:v6 forKey:@"Classifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -159,16 +159,16 @@
 
   else
   {
-    v8 = [(HMDBulletinNotificationRegistration *)v6 conditions];
-    v9 = [(HMDBulletinNotificationRegistration *)self conditions];
-    if ([v8 isEqual:v9])
+    conditions = [(HMDBulletinNotificationRegistration *)v6 conditions];
+    conditions2 = [(HMDBulletinNotificationRegistration *)self conditions];
+    if ([conditions isEqual:conditions2])
     {
-      v10 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)v7 accessoryUUID];
-      v11 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID];
-      if ([v10 isEqual:v11])
+      accessoryUUID = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)v7 accessoryUUID];
+      accessoryUUID2 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self accessoryUUID];
+      if ([accessoryUUID isEqual:accessoryUUID2])
       {
-        v12 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)v7 audioAnalysisClassifierOptions];
-        v13 = v12 == [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self audioAnalysisClassifierOptions];
+        audioAnalysisClassifierOptions = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)v7 audioAnalysisClassifierOptions];
+        v13 = audioAnalysisClassifierOptions == [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self audioAnalysisClassifierOptions];
       }
 
       else
@@ -186,26 +186,26 @@
   return v13;
 }
 
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithPredicate:(id)a3 accessoryUUID:(id)a4
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithPredicate:(id)predicate accessoryUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [HMDNotificationConditionConverter conditionsFromPredicate:v7];
-  v9 = [MEMORY[0x277CD1D18] audioAnalysisNotificationOptionsInPredicate:v7];
+  dCopy = d;
+  predicateCopy = predicate;
+  v8 = [HMDNotificationConditionConverter conditionsFromPredicate:predicateCopy];
+  v9 = [MEMORY[0x277CD1D18] audioAnalysisNotificationOptionsInPredicate:predicateCopy];
 
-  LODWORD(v7) = [v9 unsignedIntValue];
-  v10 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self initWithConditions:v8 audioAnalysisClassifierOptions:v7 accessoryUUID:v6];
+  LODWORD(predicateCopy) = [v9 unsignedIntValue];
+  v10 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self initWithConditions:v8 audioAnalysisClassifierOptions:predicateCopy accessoryUUID:dCopy];
 
   return v10;
 }
 
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithLocalBulletinAudioAnalysisRegistration:(id)a3
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithLocalBulletinAudioAnalysisRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [v4 conditions];
-  if (v5)
+  registrationCopy = registration;
+  conditions = [registrationCopy conditions];
+  if (conditions)
   {
-    v6 = [HMDBulletinNotificationRegistrationUtilities conditionsFromLocalConditions:v5];
+    v6 = [HMDBulletinNotificationRegistrationUtilities conditionsFromLocalConditions:conditions];
   }
 
   else
@@ -214,24 +214,24 @@
     v6 = [HMDBulletinNotificationRegistrationUtilities conditionsFromLocalConditions:v7];
   }
 
-  v8 = [v4 classifierOptions];
-  v9 = [v4 accessoryModelID];
+  classifierOptions = [registrationCopy classifierOptions];
+  accessoryModelID = [registrationCopy accessoryModelID];
 
-  v10 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self initWithConditions:v6 audioAnalysisClassifierOptions:v8 accessoryUUID:v9];
+  v10 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)self initWithConditions:v6 audioAnalysisClassifierOptions:classifierOptions accessoryUUID:accessoryModelID];
   return v10;
 }
 
-- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithConditions:(id)a3 audioAnalysisClassifierOptions:(unint64_t)a4 accessoryUUID:(id)a5
+- (HMDAudioAnalysisEventBulletinNotificationRegistration)initWithConditions:(id)conditions audioAnalysisClassifierOptions:(unint64_t)options accessoryUUID:(id)d
 {
-  v9 = a5;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = HMDAudioAnalysisEventBulletinNotificationRegistration;
-  v10 = [(HMDBulletinNotificationRegistration *)&v13 initWithConditions:a3];
+  v10 = [(HMDBulletinNotificationRegistration *)&v13 initWithConditions:conditions];
   v11 = v10;
   if (v10)
   {
-    v10->_audioAnalysisClassifierOptions = a4;
-    objc_storeStrong(&v10->_accessoryUUID, a5);
+    v10->_audioAnalysisClassifierOptions = options;
+    objc_storeStrong(&v10->_accessoryUUID, d);
   }
 
   return v11;
@@ -239,12 +239,12 @@
 
 - (id)predicate
 {
-  v3 = [(HMDBulletinNotificationRegistration *)self conditions];
-  v4 = [HMDNotificationConditionConverter predicatesFromConditions:v3];
-  v5 = [v4 allObjects];
+  conditions = [(HMDBulletinNotificationRegistration *)self conditions];
+  v4 = [HMDNotificationConditionConverter predicatesFromConditions:conditions];
+  allObjects = [v4 allObjects];
 
   v6 = [MEMORY[0x277CD1858] predicateForAudioAnalysisOptions:{-[HMDAudioAnalysisEventBulletinNotificationRegistration audioAnalysisClassifierOptions](self, "audioAnalysisClassifierOptions")}];
-  v7 = [v5 arrayByAddingObject:v6];
+  v7 = [allObjects arrayByAddingObject:v6];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;

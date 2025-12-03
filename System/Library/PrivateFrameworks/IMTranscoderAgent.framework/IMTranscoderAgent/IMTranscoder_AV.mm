@@ -1,27 +1,27 @@
 @interface IMTranscoder_AV
-- (BOOL)_isHEVCVideo:(id)a3;
-- (int64_t)shouldTranscodeTransfer:(id)a3 transcoderUserInfo:(id)a4 target:(int64_t)a5 utiType:(id)a6 allowUnfilteredUTIs:(id)a7 fileSizeLimit:(unint64_t)a8 commonCapabilities:(id)a9;
-- (int64_t)shouldTranscodeTransfer:(id)a3 transcoderUserInfo:(id)a4 target:(int64_t)a5 utiType:(id)a6 allowUnfilteredUTIs:(id)a7 isAnimojiV2:(BOOL)a8 removeAlpha:(BOOL)a9 isHDR:(BOOL)a10 preserveHDR:(BOOL)a11 isAA:(BOOL)a12 preserveAA:(BOOL)a13 fileSizeLimit:(unint64_t)a14;
-- (unint64_t)_fileSizeForTransfer:(id)a3;
-- (void)_transcodeVideoAsync:(id)a3 target:(int64_t)a4 maxBytes:(unint64_t)a5 isAnimojiV2:(BOOL)a6 removeAlpha:(BOOL)a7 preserveHDR:(BOOL)a8 isAA:(BOOL)a9 preserveAA:(BOOL)a10 userInfo:(id)a11 completionHandler:(id)a12;
-- (void)_transcodeVideoPassThrough:(id)a3 completionHandler:(id)a4;
-- (void)transcodeFileTransfer:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13;
+- (BOOL)_isHEVCVideo:(id)video;
+- (int64_t)shouldTranscodeTransfer:(id)transfer transcoderUserInfo:(id)info target:(int64_t)target utiType:(id)type allowUnfilteredUTIs:(id)is fileSizeLimit:(unint64_t)limit commonCapabilities:(id)capabilities;
+- (int64_t)shouldTranscodeTransfer:(id)transfer transcoderUserInfo:(id)info target:(int64_t)target utiType:(id)type allowUnfilteredUTIs:(id)is isAnimojiV2:(BOOL)v2 removeAlpha:(BOOL)alpha isHDR:(BOOL)self0 preserveHDR:(BOOL)self1 isAA:(BOOL)self2 preserveAA:(BOOL)self3 fileSizeLimit:(unint64_t)self4;
+- (unint64_t)_fileSizeForTransfer:(id)transfer;
+- (void)_transcodeVideoAsync:(id)async target:(int64_t)target maxBytes:(unint64_t)bytes isAnimojiV2:(BOOL)v2 removeAlpha:(BOOL)alpha preserveHDR:(BOOL)r isAA:(BOOL)a preserveAA:(BOOL)self0 userInfo:(id)self1 completionHandler:(id)self2;
+- (void)_transcodeVideoPassThrough:(id)through completionHandler:(id)handler;
+- (void)transcodeFileTransfer:(id)transfer utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3;
 @end
 
 @implementation IMTranscoder_AV
 
-- (BOOL)_isHEVCVideo:(id)a3
+- (BOOL)_isHEVCVideo:(id)video
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  videoCopy = video;
   v4 = IMAVURLAssetOptionsDefault();
   v5 = objc_alloc(MEMORY[0x277CE6650]);
-  v53 = v3;
+  v53 = videoCopy;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v52 = objc_msgSend_initWithURL_options_(v5, v6, v3, v4, v7, v8, v9);
+  v52 = objc_msgSend_initWithURL_options_(v5, v6, videoCopy, v4, v7, v8, v9);
   obj = objc_msgSend_tracks(v52, v10, v11, v12, v13, v14, v15);
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, &v59, v64, 16, v17, v18);
   if (v19)
@@ -90,49 +90,49 @@
   return v27 & 1;
 }
 
-- (int64_t)shouldTranscodeTransfer:(id)a3 transcoderUserInfo:(id)a4 target:(int64_t)a5 utiType:(id)a6 allowUnfilteredUTIs:(id)a7 fileSizeLimit:(unint64_t)a8 commonCapabilities:(id)a9
+- (int64_t)shouldTranscodeTransfer:(id)transfer transcoderUserInfo:(id)info target:(int64_t)target utiType:(id)type allowUnfilteredUTIs:(id)is fileSizeLimit:(unint64_t)limit commonCapabilities:(id)capabilities
 {
-  if (!a3)
+  if (!transfer)
   {
     return 0;
   }
 
   v14 = *MEMORY[0x277D19DB8];
-  v15 = a9;
-  v16 = a7;
-  v17 = a6;
-  v18 = a4;
-  v19 = a3;
-  v45 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v20, v18, v14, v21, v22, v23);
-  v28 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v24, v18, *MEMORY[0x277D19DD8], v25, v26, v27);
+  capabilitiesCopy = capabilities;
+  isCopy = is;
+  typeCopy = type;
+  infoCopy = info;
+  transferCopy = transfer;
+  v45 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v20, infoCopy, v14, v21, v22, v23);
+  v28 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v24, infoCopy, *MEMORY[0x277D19DD8], v25, v26, v27);
   IMCheckVideoURLProperties();
-  shouldPreserveHDREncoding = objc_msgSend_shouldPreserveHDREncoding_(IMTranscoder, v29, v15, v30, v31, v32, v33);
+  shouldPreserveHDREncoding = objc_msgSend_shouldPreserveHDREncoding_(IMTranscoder, v29, capabilitiesCopy, v30, v31, v32, v33);
   v35 = IMIsAAVideoURL();
-  LOBYTE(v14) = objc_msgSend_shouldPreserveAAEncoding_(IMTranscoder, v36, v15, v37, v38, v39, v40);
+  LOBYTE(v14) = objc_msgSend_shouldPreserveAAEncoding_(IMTranscoder, v36, capabilitiesCopy, v37, v38, v39, v40);
 
   BYTE4(v44) = v14;
   BYTE3(v44) = v35;
   BYTE2(v44) = shouldPreserveHDREncoding;
   LOWORD(v44) = v28;
-  v42 = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_isAnimojiV2_removeAlpha_isHDR_preserveHDR_isAA_preserveAA_fileSizeLimit_(self, v41, v19, v18, a5, v17, v16, v45, v44, a8);
+  v42 = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_isAnimojiV2_removeAlpha_isHDR_preserveHDR_isAA_preserveAA_fileSizeLimit_(self, v41, transferCopy, infoCopy, target, typeCopy, isCopy, v45, v44, limit);
 
   return v42;
 }
 
-- (int64_t)shouldTranscodeTransfer:(id)a3 transcoderUserInfo:(id)a4 target:(int64_t)a5 utiType:(id)a6 allowUnfilteredUTIs:(id)a7 isAnimojiV2:(BOOL)a8 removeAlpha:(BOOL)a9 isHDR:(BOOL)a10 preserveHDR:(BOOL)a11 isAA:(BOOL)a12 preserveAA:(BOOL)a13 fileSizeLimit:(unint64_t)a14
+- (int64_t)shouldTranscodeTransfer:(id)transfer transcoderUserInfo:(id)info target:(int64_t)target utiType:(id)type allowUnfilteredUTIs:(id)is isAnimojiV2:(BOOL)v2 removeAlpha:(BOOL)alpha isHDR:(BOOL)self0 preserveHDR:(BOOL)self1 isAA:(BOOL)self2 preserveAA:(BOOL)self3 fileSizeLimit:(unint64_t)self4
 {
-  v14 = a8;
+  v2Copy = v2;
   v196 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
-  v22 = a6;
-  v28 = a7;
-  if (!v20)
+  transferCopy = transfer;
+  infoCopy = info;
+  typeCopy = type;
+  isCopy = is;
+  if (!transferCopy)
   {
     goto LABEL_20;
   }
 
-  v29 = objc_msgSend_objectForKey_(v21, v23, *MEMORY[0x277D19DC0], v24, v25, v26, v27);
+  v29 = objc_msgSend_objectForKey_(infoCopy, v23, *MEMORY[0x277D19DC0], v24, v25, v26, v27);
   v36 = objc_msgSend_BOOLValue(v29, v30, v31, v32, v33, v34, v35);
 
   if (IMOSLoggingEnabled())
@@ -141,7 +141,7 @@
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
       v190 = 138412290;
-      v191 = *&v22;
+      v191 = *&typeCopy;
       _os_log_impl(&dword_254811000, v37, OS_LOG_TYPE_INFO, "Checking if we support the AV uti: %@", &v190, 0xCu);
     }
   }
@@ -158,7 +158,7 @@
 
   v39 = objc_opt_class();
   v46 = objc_msgSend_supportedUTIs(v39, v40, v41, v42, v43, v44, v45);
-  v52 = objc_msgSend_containsObject_(v46, v47, v22, v48, v49, v50, v51);
+  v52 = objc_msgSend_containsObject_(v46, v47, typeCopy, v48, v49, v50, v51);
 
   if (!v52)
   {
@@ -167,9 +167,9 @@ LABEL_20:
     goto LABEL_85;
   }
 
-  if (a5 == 2)
+  if (target == 2)
   {
-    v59 = objc_msgSend_typeWithIdentifier_(MEMORY[0x277CE1CB8], v53, v22, v55, v56, v57, v58);
+    v59 = objc_msgSend_typeWithIdentifier_(MEMORY[0x277CE1CB8], v53, typeCopy, v55, v56, v57, v58);
     v70 = objc_msgSend_typeWithIdentifier_(MEMORY[0x277CE1CB8], v60, @"org.3gpp.adaptive-multi-rate-audio", v61, v62, v63, v64);
     if (v36 && (objc_msgSend_conformsToType_(v59, v65, v70, v66, v67, v68, v69) & 1) == 0)
     {
@@ -183,7 +183,7 @@ LABEL_20:
           v190 = 138412802;
           v191 = *&v153;
           v192 = 2112;
-          v193 = v22;
+          v193 = typeCopy;
           v194 = 2112;
           v195 = v160;
           _os_log_impl(&dword_254811000, v146, OS_LOG_TYPE_INFO, "RCS expects AMR type (ext %@) for audio message, not %@ (ext %@), we need to transcode", &v190, 0x20u);
@@ -203,7 +203,7 @@ LABEL_20:
           if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
           {
             v190 = 138412290;
-            v191 = *&v22;
+            v191 = *&typeCopy;
             _os_log_impl(&dword_254811000, v76, OS_LOG_TYPE_INFO, "RCS Allows %@ as-is", &v190, 0xCu);
           }
         }
@@ -224,7 +224,7 @@ LABEL_20:
         if (os_log_type_enabled(v146, OS_LOG_TYPE_INFO))
         {
           v190 = 138412290;
-          v191 = *&v22;
+          v191 = *&typeCopy;
           _os_log_impl(&dword_254811000, v146, OS_LOG_TYPE_INFO, "RCS does not expect AV type %@, we need to transcode", &v190, 0xCu);
         }
 
@@ -239,21 +239,21 @@ LABEL_84:
   }
 
 LABEL_24:
-  if (objc_msgSend_count(v21, v53, v54, v55, v56, v57, v58))
+  if (objc_msgSend_count(infoCopy, v53, v54, v55, v56, v57, v58))
   {
-    v88 = objc_msgSend_objectForKey_(v21, v83, *MEMORY[0x277D19DE0], v84, v85, v86, v87);
+    v88 = objc_msgSend_objectForKey_(infoCopy, v83, *MEMORY[0x277D19DE0], v84, v85, v86, v87);
     objc_msgSend_doubleValue(v88, v89, v90, v91, v92, v93, v94);
     v96 = v95;
 
-    v102 = objc_msgSend_objectForKey_(v21, v97, *MEMORY[0x277D19DB0], v98, v99, v100, v101);
+    v102 = objc_msgSend_objectForKey_(infoCopy, v97, *MEMORY[0x277D19DB0], v98, v99, v100, v101);
     objc_msgSend_doubleValue(v102, v103, v104, v105, v106, v107, v108);
     v110 = v109;
 
-    v116 = objc_msgSend_objectForKey_(v21, v111, *MEMORY[0x277D19DA8], v112, v113, v114, v115);
+    v116 = objc_msgSend_objectForKey_(infoCopy, v111, *MEMORY[0x277D19DA8], v112, v113, v114, v115);
     objc_msgSend_doubleValue(v116, v117, v118, v119, v120, v121, v122);
     v124 = v123;
 
-    v130 = objc_msgSend_objectForKey_(v21, v125, *MEMORY[0x277D19D98], v126, v127, v128, v129);
+    v130 = objc_msgSend_objectForKey_(infoCopy, v125, *MEMORY[0x277D19D98], v126, v127, v128, v129);
     if (IMOSLoggingEnabled())
     {
       v131 = OSLogHandleForIMFoundationCategory();
@@ -304,7 +304,7 @@ LABEL_24:
       if (os_log_type_enabled(v135, OS_LOG_TYPE_INFO))
       {
         v136 = @"NO";
-        if (a9)
+        if (alpha)
         {
           v136 = @"YES";
         }
@@ -321,7 +321,7 @@ LABEL_24:
       if (os_log_type_enabled(v143, OS_LOG_TYPE_INFO))
       {
         v144 = @"NO";
-        if (a11)
+        if (dR)
         {
           v144 = @"YES";
         }
@@ -407,7 +407,7 @@ LABEL_78:
     }
   }
 
-  if (v14 && a9)
+  if (v2Copy && alpha)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -426,7 +426,7 @@ LABEL_120:
     goto LABEL_78;
   }
 
-  if (a10 && !a11)
+  if (r && !dR)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -444,7 +444,7 @@ LABEL_120:
   }
 
   v164 = IMOSLoggingEnabled();
-  if (a12 && !a13)
+  if (a && !aA)
   {
     if (!v164)
     {
@@ -471,8 +471,8 @@ LABEL_120:
     }
   }
 
-  v171 = objc_msgSend__fileSizeForTransfer_(self, v165, v20, v166, v167, v168, v169);
-  v172 = v28;
+  v171 = objc_msgSend__fileSizeForTransfer_(self, v165, transferCopy, v166, v167, v168, v169);
+  v172 = isCopy;
   if (IMOSLoggingEnabled())
   {
     v178 = OSLogHandleForIMFoundationCategory();
@@ -484,9 +484,9 @@ LABEL_120:
     }
   }
 
-  if (v172 && ((v179 = objc_msgSend_containsObject_(v172, v173, v22, v174, v175, v176, v177), v171) ? (v185 = v171 >= a14) : (v185 = 1), !v185 ? (v186 = v179) : (v186 = 0), v186 == 1))
+  if (v172 && ((v179 = objc_msgSend_containsObject_(v172, v173, typeCopy, v174, v175, v176, v177), v171) ? (v185 = v171 >= limit) : (v185 = 1), !v185 ? (v186 = v179) : (v186 = 0), v186 == 1))
   {
-    v187 = objc_msgSend__isHEVCVideo_(self, v180, v20, v181, v182, v183, v184) & a9 ^ 1;
+    v187 = objc_msgSend__isHEVCVideo_(self, v180, transferCopy, v181, v182, v183, v184) & alpha ^ 1;
   }
 
   else
@@ -526,12 +526,12 @@ LABEL_85:
   return v77;
 }
 
-- (unint64_t)_fileSizeForTransfer:(id)a3
+- (unint64_t)_fileSizeForTransfer:(id)transfer
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  transferCopy = transfer;
   v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v4, v5, v6, v7, v8, v9);
-  v17 = objc_msgSend_path(v3, v11, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_path(transferCopy, v11, v12, v13, v14, v15, v16);
   v34 = 0;
   v22 = objc_msgSend_attributesOfItemAtPath_error_(v10, v18, v17, &v34, v19, v20, v21);
   v23 = v34;
@@ -545,7 +545,7 @@ LABEL_85:
       *buf = 134218498;
       v36 = v30;
       v37 = 2112;
-      v38 = v3;
+      v38 = transferCopy;
       v39 = 2112;
       v40 = v23;
       _os_log_impl(&dword_254811000, v31, OS_LOG_TYPE_INFO, "Found size %llu of file %@ with error %@", buf, 0x20u);
@@ -561,19 +561,19 @@ LABEL_85:
   return v30;
 }
 
-- (void)_transcodeVideoAsync:(id)a3 target:(int64_t)a4 maxBytes:(unint64_t)a5 isAnimojiV2:(BOOL)a6 removeAlpha:(BOOL)a7 preserveHDR:(BOOL)a8 isAA:(BOOL)a9 preserveAA:(BOOL)a10 userInfo:(id)a11 completionHandler:(id)a12
+- (void)_transcodeVideoAsync:(id)async target:(int64_t)target maxBytes:(unint64_t)bytes isAnimojiV2:(BOOL)v2 removeAlpha:(BOOL)alpha preserveHDR:(BOOL)r isAA:(BOOL)a preserveAA:(BOOL)self0 userInfo:(id)self1 completionHandler:(id)self2
 {
-  v12 = a8;
-  v492 = a7;
-  v489 = a6;
+  rCopy = r;
+  alphaCopy = alpha;
+  v2Copy = v2;
   v513 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a11;
-  v16 = a12;
-  if (v16)
+  asyncCopy = async;
+  infoCopy = info;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v23 = v16;
-    v24 = objc_msgSend_copy(v16, v17, v18, v19, v20, v21, v22);
+    v23 = handlerCopy;
+    v24 = objc_msgSend_copy(handlerCopy, v17, v18, v19, v20, v21, v22);
   }
 
   else
@@ -581,10 +581,10 @@ LABEL_85:
     v24 = 0;
   }
 
-  v25 = objc_msgSend_tracksWithMediaType_(v14, v17, *MEMORY[0x277CE5EA8], v19, v20, v21, v22);
+  v25 = objc_msgSend_tracksWithMediaType_(asyncCopy, v17, *MEMORY[0x277CE5EA8], v19, v20, v21, v22);
   v32 = objc_msgSend_count(v25, v26, v27, v28, v29, v30, v31);
 
-  v38 = objc_msgSend_tracksWithMediaType_(v14, v33, *MEMORY[0x277CE5E48], v34, v35, v36, v37);
+  v38 = objc_msgSend_tracksWithMediaType_(asyncCopy, v33, *MEMORY[0x277CE5E48], v34, v35, v36, v37);
   v45 = objc_msgSend_count(v38, v39, v40, v41, v42, v43, v44);
 
   if (!(v32 | v45))
@@ -608,7 +608,7 @@ LABEL_85:
     goto LABEL_281;
   }
 
-  v55 = objc_msgSend_objectForKeyedSubscript_(v15, v46, *MEMORY[0x277D19DC0], v47, v48, v49, v50);
+  v55 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v46, *MEMORY[0x277D19DC0], v47, v48, v49, v50);
   v485 = objc_msgSend_BOOLValue(v55, v56, v57, v58, v59, v60, v61);
 
   if (v45)
@@ -635,7 +635,7 @@ LABEL_85:
       }
     }
 
-    if (a4 == 2)
+    if (target == 2)
     {
       v82 = MEMORY[0x277CE5BE8];
       if (!v485)
@@ -644,7 +644,7 @@ LABEL_85:
       }
     }
 
-    else if (a4 == 1)
+    else if (target == 1)
     {
       v82 = MEMORY[0x277CE5BE8];
     }
@@ -659,10 +659,10 @@ LABEL_85:
     goto LABEL_47;
   }
 
-  if (a4 == 1)
+  if (target == 1)
   {
-    v69 = objc_msgSend_objectForKey_(v15, v63, *MEMORY[0x277D1A7D8], v64, v65, v66, v67);
-    v75 = objc_msgSend_objectForKey_(v15, v70, *MEMORY[0x277D1A7E0], v71, v72, v73, v74);
+    v69 = objc_msgSend_objectForKey_(infoCopy, v63, *MEMORY[0x277D1A7D8], v64, v65, v66, v67);
+    v75 = objc_msgSend_objectForKey_(infoCopy, v70, *MEMORY[0x277D1A7E0], v71, v72, v73, v74);
     if (objc_msgSend_IMMMSSupportsH264VideoForPhoneNumber_simID_(MEMORY[0x277D1A8F8], v76, v69, v75, v77, v78, v79))
     {
       v495 = *MEMORY[0x277CE5BC0];
@@ -699,21 +699,21 @@ LABEL_40:
       }
     }
 
-    v492 = 1;
+    alphaCopy = 1;
 LABEL_47:
 
-    v85 = a4 == 2;
+    v85 = target == 2;
     goto LABEL_48;
   }
 
-  if (v12)
+  if (rCopy)
   {
     v83 = *MEMORY[0x277CE5C70];
 
     v68 = v83;
   }
 
-  if (a9 && a10)
+  if (a && aA)
   {
     v84 = MEMORY[0x277CE5C78];
 LABEL_36:
@@ -722,10 +722,10 @@ LABEL_36:
     goto LABEL_95;
   }
 
-  if (v489)
+  if (v2Copy)
   {
     v84 = MEMORY[0x277CE5BD8];
-    if (!v492)
+    if (!alphaCopy)
     {
       v84 = MEMORY[0x277CE5BF0];
     }
@@ -735,7 +735,7 @@ LABEL_36:
 
   v495 = v68;
 LABEL_95:
-  if (a4 != 2)
+  if (target != 2)
   {
     v85 = 0;
 LABEL_48:
@@ -745,7 +745,7 @@ LABEL_48:
       if (os_log_type_enabled(v92, OS_LOG_TYPE_INFO))
       {
         v93 = @"NO";
-        if (v12)
+        if (rCopy)
         {
           v94 = @"YES";
         }
@@ -757,7 +757,7 @@ LABEL_48:
 
         *buf = 138413570;
         *&buf[4] = v495;
-        if (v489)
+        if (v2Copy)
         {
           v95 = @"YES";
         }
@@ -769,7 +769,7 @@ LABEL_48:
 
         *&buf[12] = 2112;
         *&buf[14] = v94;
-        if (v492)
+        if (alphaCopy)
         {
           v96 = @"YES";
         }
@@ -781,7 +781,7 @@ LABEL_48:
 
         *&buf[22] = 2112;
         *&buf[24] = v95;
-        if (a9)
+        if (a)
         {
           v97 = @"YES";
         }
@@ -792,7 +792,7 @@ LABEL_48:
         }
 
         *v510 = 2112;
-        if (a10)
+        if (aA)
         {
           v93 = @"YES";
         }
@@ -808,13 +808,13 @@ LABEL_48:
 
     v507 = 0uLL;
     v508 = 0;
-    if (v14)
+    if (asyncCopy)
     {
-      objc_msgSend_duration(v14, v86, v87, v88, v89, v90, v91);
+      objc_msgSend_duration(asyncCopy, v86, v87, v88, v89, v90, v91);
     }
 
-    v488 = objc_msgSend_objectForKey_(v15, v86, *MEMORY[0x277D19DD0], v88, v89, v90, v91);
-    v493 = objc_msgSend_objectForKey_(v15, v98, *MEMORY[0x277D19D98], v99, v100, v101, v102);
+    v488 = objc_msgSend_objectForKey_(infoCopy, v86, *MEMORY[0x277D19DD0], v88, v89, v90, v91);
+    v493 = objc_msgSend_objectForKey_(infoCopy, v98, *MEMORY[0x277D19D98], v99, v100, v101, v102);
     if (objc_msgSend_length(v493, v103, v104, v105, v106, v107, v108))
     {
       v114 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v109, v493, v110, v111, v112, v113);
@@ -826,7 +826,7 @@ LABEL_48:
           *buf = 138412802;
           *&buf[4] = v114;
           *&buf[12] = 2112;
-          *&buf[14] = v14;
+          *&buf[14] = asyncCopy;
           *&buf[22] = 2112;
           *&buf[24] = v495;
           _os_log_impl(&dword_254811000, v115, OS_LOG_TYPE_INFO, "Trying to use assetLibURL %@, asset %@, presetName %@", buf, 0x20u);
@@ -836,7 +836,7 @@ LABEL_48:
       v116 = MEMORY[0x259C1B1F0](@"PhotoLibraryServices", @"PLPhotoLibrary");
       v117 = MEMORY[0x259C1B1F0](@"PhotoLibraryServices", @"PLAssetSharingUtilities");
       v124 = objc_msgSend_systemPhotoLibrary(v116, v118, v119, v120, v121, v122, v123);
-      v131 = objc_msgSend_URL(v14, v125, v126, v127, v128, v129, v130);
+      v131 = objc_msgSend_URL(asyncCopy, v125, v126, v127, v128, v129, v130);
       v138 = objc_msgSend_absoluteString(v131, v132, v133, v134, v135, v136, v137);
       v141 = objc_msgSend_exportSessionForVideoURL_library_fallbackFilePath_exportPreset_(v117, v139, v114, v124, v138, v495, v140);
 
@@ -886,7 +886,7 @@ LABEL_102:
           *buf = 138412802;
           *&buf[4] = v488;
           *&buf[12] = 2112;
-          *&buf[14] = v14;
+          *&buf[14] = asyncCopy;
           *&buf[22] = 2112;
           *&buf[24] = v495;
           _os_log_impl(&dword_254811000, v164, OS_LOG_TYPE_INFO, "Trying to use metadata %@, asset %@, presetName %@", buf, 0x20u);
@@ -894,7 +894,7 @@ LABEL_102:
       }
 
       v165 = MEMORY[0x259C1B1F0](@"PhotoLibraryServices", @"PLAssetSharingUtilities");
-      v172 = objc_msgSend_URL(v14, v166, v167, v168, v169, v170, v171);
+      v172 = objc_msgSend_URL(asyncCopy, v166, v167, v168, v169, v170, v171);
       v179 = objc_msgSend_relativePath(v172, v173, v174, v175, v176, v177, v178);
       v141 = objc_msgSend_exportSessionForVideoFilePath_metadata_exportPreset_(v165, v180, v179, v488, v495, v181, v182);
 
@@ -943,7 +943,7 @@ LABEL_102:
     }
 
     v237 = objc_alloc(MEMORY[0x277CE6400]);
-    v141 = objc_msgSend_initWithAsset_presetName_(v237, v238, v14, v495, v239, v240, v241);
+    v141 = objc_msgSend_initWithAsset_presetName_(v237, v238, asyncCopy, v495, v239, v240, v241);
     if (!v141)
     {
       if (IMOSLoggingEnabled())
@@ -981,7 +981,7 @@ LABEL_114:
     v256 = objc_msgSend_supportedFileTypes(v141, v242, v243, v244, v245, v246, v247);
     v262 = objc_msgSend_objectAtIndex_(v256, v257, 0, v258, v259, v260, v261);
 
-    if (a4 == 1)
+    if (target == 1)
     {
       if (inUTI)
       {
@@ -1011,20 +1011,20 @@ LABEL_149:
             objc_msgSend_setOutputFileType_(v141, v293, inUTIa, v294, v295, v296, v297);
             v486 = UTTypeCopyPreferredTagWithClass(inUTIa, *MEMORY[0x277CC1F58]);
             v305 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v299, v300, v301, v302, v303, v304);
-            v312 = objc_msgSend_URL(v14, v306, v307, v308, v309, v310, v311);
+            v312 = objc_msgSend_URL(asyncCopy, v306, v307, v308, v309, v310, v311);
             v319 = objc_msgSend_lastPathComponent(v312, v313, v314, v315, v316, v317, v318);
             v326 = objc_msgSend_stringByDeletingPathExtension(v319, v320, v321, v322, v323, v324, v325);
             v484 = objc_msgSend__randomTemporaryPathWithSuffix_fileName_(v305, v327, v486, v326, v328, v329, v330);
 
-            v336 = objc_msgSend_objectForKey_(v15, v331, *MEMORY[0x277D19DE0], v332, v333, v334, v335);
+            v336 = objc_msgSend_objectForKey_(infoCopy, v331, *MEMORY[0x277D19DE0], v332, v333, v334, v335);
             objc_msgSend_doubleValue(v336, v337, v338, v339, v340, v341, v342);
             v344 = v343;
 
-            v350 = objc_msgSend_objectForKey_(v15, v345, *MEMORY[0x277D19DB0], v346, v347, v348, v349);
+            v350 = objc_msgSend_objectForKey_(infoCopy, v345, *MEMORY[0x277D19DB0], v346, v347, v348, v349);
             objc_msgSend_doubleValue(v350, v351, v352, v353, v354, v355, v356);
             v358 = v357;
 
-            v364 = objc_msgSend_objectForKey_(v15, v359, *MEMORY[0x277D19DA8], v360, v361, v362, v363);
+            v364 = objc_msgSend_objectForKey_(infoCopy, v359, *MEMORY[0x277D19DA8], v360, v361, v362, v363);
             objc_msgSend_doubleValue(v364, v365, v366, v367, v368, v369, v370);
             v372 = v371;
 
@@ -1141,16 +1141,16 @@ LABEL_149:
               if (os_log_type_enabled(v387, OS_LOG_TYPE_INFO))
               {
                 *buf = 134217984;
-                *&buf[4] = a5;
+                *&buf[4] = bytes;
                 _os_log_impl(&dword_254811000, v387, OS_LOG_TYPE_INFO, "       Max bytes: %zd", buf, 0xCu);
               }
             }
 
-            if (a4 == 1)
+            if (target == 1)
             {
               v388 = v32 == 0;
-              v389 = objc_msgSend_objectForKey_(v15, v382, *MEMORY[0x277D1A7D8], v383, v384, v385, v386);
-              v399 = objc_msgSend_objectForKey_(v15, v390, *MEMORY[0x277D1A7E0], v391, v392, v393, v394);
+              v389 = objc_msgSend_objectForKey_(infoCopy, v382, *MEMORY[0x277D1A7D8], v383, v384, v385, v386);
+              v399 = objc_msgSend_objectForKey_(infoCopy, v390, *MEMORY[0x277D1A7E0], v391, v392, v393, v394);
               if (v388)
               {
                 objc_msgSend_IMMMSMaximumAudioDurationForPhoneNumber_simID_(MEMORY[0x277D1A8F8], v395, v389, v399, v396, v397, v398);
@@ -1285,15 +1285,15 @@ LABEL_149:
               v434 = 0x277CBE000;
             }
 
-            if (!a9 || !a10)
+            if (!a || !aA)
             {
-              objc_msgSend_setFileLengthLimit_(v141, v423, a5, v424, v425, v426, v427);
+              objc_msgSend_setFileLengthLimit_(v141, v423, bytes, v424, v425, v426, v427);
             }
 
             v436 = objc_msgSend_fileURLWithPath_(*(v434 + 3008), v423, v484, v424, v425, v426, v427);
             objc_msgSend_setOutputURL_(v141, v437, v436, v438, v439, v440, v441);
 
-            if (v492 && v489)
+            if (alphaCopy && v2Copy)
             {
               if (IMOSLoggingEnabled())
               {
@@ -1308,12 +1308,12 @@ LABEL_149:
               v443 = objc_alloc_init(MEMORY[0x277CE6570]);
               SRGB = CGColorCreateSRGB(1.0, 1.0, 1.0, 1.0);
               objc_msgSend_setBackgroundColor_(v443, v445, SRGB, v446, v447, v448, v449);
-              v454 = objc_msgSend_videoCompositionWithPropertiesOfAsset_prototypeInstruction_(MEMORY[0x277CE6568], v450, v14, v443, v451, v452, v453);
+              v454 = objc_msgSend_videoCompositionWithPropertiesOfAsset_prototypeInstruction_(MEMORY[0x277CE6568], v450, asyncCopy, v443, v451, v452, v453);
               objc_msgSend_setVideoComposition_(v141, v455, v454, v456, v457, v458, v459);
               CFRelease(SRGB);
             }
 
-            if (!a4)
+            if (!target)
             {
               if (IMOSLoggingEnabled())
               {
@@ -1356,7 +1356,7 @@ LABEL_149:
               if (os_log_type_enabled(v468, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                *&buf[4] = v14;
+                *&buf[4] = asyncCopy;
                 _os_log_impl(&dword_254811000, v468, OS_LOG_TYPE_INFO, "           Asset: %@", buf, 0xCu);
               }
             }
@@ -1509,11 +1509,11 @@ LABEL_145:
   }
 
   v210 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v204, v205, v206, v207, v208, v209);
-  v217 = objc_msgSend_URL(v14, v211, v212, v213, v214, v215, v216);
+  v217 = objc_msgSend_URL(asyncCopy, v211, v212, v213, v214, v215, v216);
   v224 = objc_msgSend_path(v217, v218, v219, v220, v221, v222, v223);
   v230 = objc_msgSend__im_fileSizeFor_(v210, v225, v224, v226, v227, v228, v229);
 
-  if (v230 > a5)
+  if (v230 > bytes)
   {
 LABEL_98:
     v85 = 1;
@@ -1530,17 +1530,17 @@ LABEL_98:
     }
   }
 
-  objc_msgSend__transcodeVideoPassThrough_completionHandler_(self, v231, v14, v24, v232, v233, v234);
+  objc_msgSend__transcodeVideoPassThrough_completionHandler_(self, v231, asyncCopy, v24, v232, v233, v234);
 LABEL_281:
 
   v483 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transcodeVideoPassThrough:(id)a3 completionHandler:(id)a4
+- (void)_transcodeVideoPassThrough:(id)through completionHandler:(id)handler
 {
   v90 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  throughCopy = through;
+  handlerCopy = handler;
   v7 = IMOSLoggingEnabled();
   v8 = MEMORY[0x277CE5D98];
   if (v7)
@@ -1568,12 +1568,12 @@ LABEL_281:
   v83[4] = sub_254815F20;
   v84 = 0;
   v11 = objc_alloc(MEMORY[0x277CE6400]);
-  v16 = objc_msgSend_initWithAsset_presetName_(v11, v12, v5, *MEMORY[0x277CE5C78], v13, v14, v15);
+  v16 = objc_msgSend_initWithAsset_presetName_(v11, v12, throughCopy, *MEMORY[0x277CE5C78], v13, v14, v15);
   v17 = *v8;
   objc_msgSend_setOutputFileType_(v16, v18, *v8, v19, v20, v21, v22);
   v23 = UTTypeCopyPreferredTagWithClass(v17, *MEMORY[0x277CC1F58]);
   v30 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v24, v25, v26, v27, v28, v29);
-  v37 = objc_msgSend_URL(v5, v31, v32, v33, v34, v35, v36);
+  v37 = objc_msgSend_URL(throughCopy, v31, v32, v33, v34, v35, v36);
   v44 = objc_msgSend_lastPathComponent(v37, v38, v39, v40, v41, v42, v43);
   v51 = objc_msgSend_stringByDeletingPathExtension(v44, v45, v46, v47, v48, v49, v50);
   v56 = objc_msgSend__randomTemporaryPathWithSuffix_fileName_(v30, v52, v23, v51, v53, v54, v55);
@@ -1589,9 +1589,9 @@ LABEL_281:
   v78 = v68;
   v81 = v83;
   p_buf = &buf;
-  v69 = v6;
+  v69 = handlerCopy;
   v80 = v69;
-  v70 = v5;
+  v70 = throughCopy;
   v79 = v70;
   objc_msgSend_exportAsynchronouslyWithCompletionHandler_(v68, v71, v77, v72, v73, v74, v75);
 
@@ -1601,34 +1601,34 @@ LABEL_281:
   v76 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transcodeFileTransfer:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13
+- (void)transcodeFileTransfer:(id)transfer utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3
 {
   v340[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v266 = a4;
-  v267 = a5;
-  v18 = a7;
-  v271 = a8;
-  v273 = a10;
-  v268 = a13;
-  v263 = v18;
-  v25 = objc_msgSend_firstObject(v18, v19, v20, v21, v22, v23, v24);
+  transferCopy = transfer;
+  typeCopy = type;
+  isCopy = is;
+  sizesCopy = sizes;
+  capabilitiesCopy = capabilities;
+  infoCopy = info;
+  blockCopy = block;
+  v263 = sizesCopy;
+  v25 = objc_msgSend_firstObject(sizesCopy, v19, v20, v21, v22, v23, v24);
   v265 = objc_msgSend_unsignedLongValue(v25, v26, v27, v28, v29, v30, v31);
 
-  v38 = objc_msgSend_lastObject(v18, v32, v33, v34, v35, v36, v37);
+  v38 = objc_msgSend_lastObject(sizesCopy, v32, v33, v34, v35, v36, v37);
   v272 = objc_msgSend_unsignedLongValue(v38, v39, v40, v41, v42, v43, v44);
 
   v329 = 0;
-  shouldPreserveHDREncoding = objc_msgSend_shouldPreserveHDREncoding_(IMTranscoder, v45, v271, v46, v47, v48, v49);
-  v55 = objc_msgSend_objectForKey_(v273, v50, *MEMORY[0x277D19DB8], v51, v52, v53, v54);
+  shouldPreserveHDREncoding = objc_msgSend_shouldPreserveHDREncoding_(IMTranscoder, v45, capabilitiesCopy, v46, v47, v48, v49);
+  v55 = objc_msgSend_objectForKey_(infoCopy, v50, *MEMORY[0x277D19DB8], v51, v52, v53, v54);
   v62 = objc_msgSend_BOOLValue(v55, v56, v57, v58, v59, v60, v61);
 
-  v68 = objc_msgSend_objectForKey_(v273, v63, *MEMORY[0x277D19DD8], v64, v65, v66, v67);
+  v68 = objc_msgSend_objectForKey_(infoCopy, v63, *MEMORY[0x277D19DD8], v64, v65, v66, v67);
   v262 = objc_msgSend_BOOLValue(v68, v69, v70, v71, v72, v73, v74);
 
   IMCheckVideoURLProperties();
   v258 = IMIsAAVideoURL();
-  shouldPreserveAAEncoding = objc_msgSend_shouldPreserveAAEncoding_(IMTranscoder, v75, v271, v76, v77, v78, v79);
+  shouldPreserveAAEncoding = objc_msgSend_shouldPreserveAAEncoding_(IMTranscoder, v75, capabilitiesCopy, v76, v77, v78, v79);
   if (IMOSLoggingEnabled())
   {
     v81 = OSLogHandleForIMFoundationCategory();
@@ -1642,7 +1642,7 @@ LABEL_281:
     }
   }
 
-  if ((a11 && v265 == v272 || a11 != 1 && v265 != v272) && IMOSLoggingEnabled())
+  if ((representations && v265 == v272 || representations != 1 && v265 != v272) && IMOSLoggingEnabled())
   {
     v82 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
@@ -1652,7 +1652,7 @@ LABEL_281:
       v332 = 2048;
       *v333 = v272;
       *&v333[8] = 1024;
-      LODWORD(v334) = a11;
+      LODWORD(v334) = representations;
       _os_log_impl(&dword_254811000, v82, OS_LOG_TYPE_INFO, "Warning - bigSize (%lu), smallSize (%lu) combination does not match the number of reps requested (%d)", buf, 0x1Cu);
     }
   }
@@ -1662,7 +1662,7 @@ LABEL_281:
   BYTE2(v250) = shouldPreserveHDREncoding;
   BYTE1(v250) = v329;
   LOBYTE(v250) = v262;
-  v83 = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_isAnimojiV2_removeAlpha_isHDR_preserveHDR_isAA_preserveAA_fileSizeLimit_(self, v80, v17, v273, a6, v266, v267, v62, v250, v272);
+  v83 = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_isAnimojiV2_removeAlpha_isHDR_preserveHDR_isAA_preserveAA_fileSizeLimit_(self, v80, transferCopy, infoCopy, target, typeCopy, isCopy, v62, v250, v272);
   if (IMOSLoggingEnabled())
   {
     v84 = OSLogHandleForIMFoundationCategory();
@@ -1707,7 +1707,7 @@ LABEL_281:
       if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v331 = v17;
+        v331 = transferCopy;
         _os_log_impl(&dword_254811000, v93, OS_LOG_TYPE_INFO, "Transfer %@ is a supported format, will transcode", buf, 0xCu);
       }
     }
@@ -1718,7 +1718,7 @@ LABEL_281:
     v264 = IMAVURLAssetOptionsWithExtraOptionsForWrite();
 
     v95 = objc_alloc(MEMORY[0x277CE6650]);
-    v269 = objc_msgSend_initWithURL_options_(v95, v96, v17, v264, v97, v98, v99);
+    v269 = objc_msgSend_initWithURL_options_(v95, v96, transferCopy, v264, v97, v98, v99);
     v105 = objc_msgSend_tracksWithMediaType_(v269, v100, *MEMORY[0x277CE5EA8], v101, v102, v103, v104);
     v112 = objc_msgSend_count(v105, v106, v107, v108, v109, v110, v111);
 
@@ -1765,9 +1765,9 @@ LABEL_281:
       }
 
       v138 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v134, @"__kIMTranscodeErrorDomain", -3, 0, v135, v136);
-      if (v268)
+      if (blockCopy)
       {
-        (*(v268 + 2))(v268, v17, 0, 0, v138, 0, 1, 0);
+        (*(blockCopy + 2))(blockCopy, transferCopy, 0, 0, v138, 0, 1, 0);
       }
 
 LABEL_136:
@@ -1848,7 +1848,7 @@ LABEL_137:
     BYTE2(v251) = shouldPreserveHDREncoding;
     BYTE1(v251) = v329;
     LOBYTE(v251) = v262;
-    v156 = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_isAnimojiV2_removeAlpha_isHDR_preserveHDR_isAA_preserveAA_fileSizeLimit_(self, v154, v17, v273, a6, v266, v267, v62, v251, v265);
+    v156 = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_isAnimojiV2_removeAlpha_isHDR_preserveHDR_isAA_preserveAA_fileSizeLimit_(self, v154, transferCopy, infoCopy, target, typeCopy, isCopy, v62, v251, v265);
     if (IMOSLoggingEnabled())
     {
       v163 = OSLogHandleForIMFoundationCategory();
@@ -1906,7 +1906,7 @@ LABEL_137:
 
     if (v156 < 2)
     {
-      v176 = _IMTranscoderLinkFile(v17, v157, v158, v159, v160, v161, v162);
+      v176 = _IMTranscoderLinkFile(transferCopy, v157, v158, v159, v160, v161, v162);
       v177 = v299[5];
       v299[5] = v176;
 
@@ -1931,7 +1931,7 @@ LABEL_137:
       v282 = v168;
       BYTE1(v252) = shouldPreserveAAEncoding;
       LOBYTE(v252) = v258;
-      objc_msgSend__transcodeVideoAsync_target_maxBytes_isAnimojiV2_removeAlpha_preserveHDR_isAA_preserveAA_userInfo_completionHandler_(self, v169, v269, a6, v265, v62, v262, shouldPreserveHDREncoding, v252, v273, v281);
+      objc_msgSend__transcodeVideoAsync_target_maxBytes_isAnimojiV2_removeAlpha_preserveHDR_isAA_preserveAA_userInfo_completionHandler_(self, v169, v269, target, v265, v62, v262, shouldPreserveHDREncoding, v252, infoCopy, v281);
       dispatch_group_wait(v168, 0xFFFFFFFFFFFFFFFFLL);
     }
 
@@ -2086,7 +2086,7 @@ LABEL_123:
             if (os_log_type_enabled(v224, OS_LOG_TYPE_INFO))
             {
               *buf = 138412802;
-              v331 = v17;
+              v331 = transferCopy;
               v332 = 2112;
               *v333 = v184;
               *&v333[8] = 2112;
@@ -2095,9 +2095,9 @@ LABEL_123:
             }
           }
 
-          if (v268)
+          if (blockCopy)
           {
-            (*(v268 + 2))(v268, v17, v184, v191, v223, v223 == 0, 1, 0);
+            (*(blockCopy + 2))(blockCopy, transferCopy, v184, v191, v223, v223 == 0, 1, 0);
           }
 
           _Block_object_dispose(&v288, 8);
@@ -2183,7 +2183,7 @@ LABEL_106:
         v275 = v218;
         BYTE1(v252) = shouldPreserveAAEncoding;
         LOBYTE(v252) = v258;
-        objc_msgSend__transcodeVideoAsync_target_maxBytes_isAnimojiV2_removeAlpha_preserveHDR_isAA_preserveAA_userInfo_completionHandler_(self, v219, v269, a6, v272, v62, v262, 0, v252, v273, v274);
+        objc_msgSend__transcodeVideoAsync_target_maxBytes_isAnimojiV2_removeAlpha_preserveHDR_isAA_preserveAA_userInfo_completionHandler_(self, v219, v269, target, v272, v62, v262, 0, v252, infoCopy, v274);
         dispatch_group_wait(v218, 0xFFFFFFFFFFFFFFFFLL);
 
         goto LABEL_123;
@@ -2223,12 +2223,12 @@ LABEL_103:
     if (os_log_type_enabled(v145, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v331 = v17;
+      v331 = transferCopy;
       _os_log_impl(&dword_254811000, v145, OS_LOG_TYPE_INFO, "Transfer %@ doesn't need any processing", buf, 0xCu);
     }
   }
 
-  v264 = _IMTranscoderLinkFile(v17, v139, v140, v141, v142, v143, v144);
+  v264 = _IMTranscoderLinkFile(transferCopy, v139, v140, v141, v142, v143, v144);
   if (IMOSLoggingEnabled())
   {
     v151 = OSLogHandleForIMFoundationCategory();
@@ -2241,18 +2241,18 @@ LABEL_103:
   }
 
   v152 = v264;
-  if (v268)
+  if (blockCopy)
   {
     if (v264)
     {
       v269 = objc_msgSend_arrayWithObjects_(MEMORY[0x277CBEA60], v146, v264, v147, v148, v149, v150, 0);
-      (*(v268 + 2))(v268, v17, v269, 0, 0, 1, 0, 0);
+      (*(blockCopy + 2))(blockCopy, transferCopy, v269, 0, 0, 1, 0, 0);
     }
 
     else
     {
       v269 = objc_msgSend_array(MEMORY[0x277CBEA60], v146, 0, v147, v148, v149, v150);
-      (*(v268 + 2))(v268, v17, v269, 0, 0, 0, 0, 0);
+      (*(blockCopy + 2))(blockCopy, transferCopy, v269, 0, 0, 0, 0, 0);
     }
 
     goto LABEL_137;

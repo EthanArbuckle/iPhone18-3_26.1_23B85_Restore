@@ -1,9 +1,9 @@
 @interface QSSSiriPayloadTranslationInfo
 - (NSString)post_itn_payload;
 - (NSString)pre_itn_payload;
-- (Offset<siri::speech::schema_fb::SiriPayloadTranslationInfo>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::SiriPayloadTranslationInfo>)addObjectToBuffer:(void *)buffer;
 - (QSSRecognitionSausage)pre_sausage_payload;
-- (QSSSiriPayloadTranslationInfo)initWithFlatbuffData:(id)a3 root:(const SiriPayloadTranslationInfo *)a4 verify:(BOOL)a5;
+- (QSSSiriPayloadTranslationInfo)initWithFlatbuffData:(id)data root:(const SiriPayloadTranslationInfo *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -38,42 +38,42 @@ flatbuffers::DetachedBuffer *__45__QSSSiriPayloadTranslationInfo_flatbuffData__b
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::SiriPayloadTranslationInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SiriPayloadTranslationInfo>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSSiriPayloadTranslationInfo *)self pre_itn_payload];
-  v6 = v5;
-  if (!v5)
+  pre_itn_payload = [(QSSSiriPayloadTranslationInfo *)self pre_itn_payload];
+  v6 = pre_itn_payload;
+  if (!pre_itn_payload)
   {
-    v5 = &stru_2879AE8E0;
+    pre_itn_payload = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)pre_itn_payload UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSSiriPayloadTranslationInfo *)self post_itn_payload];
-  v11 = v10;
-  if (!v10)
+  post_itn_payload = [(QSSSiriPayloadTranslationInfo *)self post_itn_payload];
+  v11 = post_itn_payload;
+  if (!post_itn_payload)
   {
-    v10 = &stru_2879AE8E0;
+    post_itn_payload = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v12) = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)post_itn_payload UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v14 = [(QSSSiriPayloadTranslationInfo *)self pre_sausage_payload];
-  v15 = [v14 addObjectToBuffer:a3];
+  pre_sausage_payload = [(QSSSiriPayloadTranslationInfo *)self pre_sausage_payload];
+  v15 = [pre_sausage_payload addObjectToBuffer:buffer];
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v16 = *(a3 + 10);
-  v17 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v15);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v16 = *(buffer + 10);
+  v17 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, uTF8String2);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v15);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v17 + v16);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v17 + v16);
 }
 
 - (QSSRecognitionSausage)pre_sausage_payload
@@ -147,42 +147,42 @@ flatbuffers::DetachedBuffer *__45__QSSSiriPayloadTranslationInfo_flatbuffData__b
   return v6;
 }
 
-- (QSSSiriPayloadTranslationInfo)initWithFlatbuffData:(id)a3 root:(const SiriPayloadTranslationInfo *)a4 verify:(BOOL)a5
+- (QSSSiriPayloadTranslationInfo)initWithFlatbuffData:(id)data root:(const SiriPayloadTranslationInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSSiriPayloadTranslationInfo;
   v10 = [(QSSSiriPayloadTranslationInfo *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -204,9 +204,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -18,121 +18,121 @@
   v3 = a3;
   v4 = objc_opt_new();
   [v4 setObject:@"http://schema.org/Flight" forKeyedSubscript:@"@type"];
-  v5 = [v3 airline];
+  airline = [v3 airline];
 
-  if (v5)
+  if (airline)
   {
     v6 = MEMORY[0x277CD3C28];
-    v7 = [v3 airline];
-    v8 = [v6 schemaFromAirline:v7];
+    airline2 = [v3 airline];
+    v8 = [v6 schemaFromAirline:airline2];
     [v4 setObject:v8 forKeyedSubscript:@"airline"];
   }
 
-  v9 = [v3 flightNumber];
+  flightNumber = [v3 flightNumber];
 
-  if (v9)
+  if (flightNumber)
   {
-    v10 = [v3 flightNumber];
-    [v4 setObject:v10 forKeyedSubscript:@"flightNumber"];
+    flightNumber2 = [v3 flightNumber];
+    [v4 setObject:flightNumber2 forKeyedSubscript:@"flightNumber"];
   }
 
-  v11 = [v3 boardingTime];
-  v12 = [v11 startDateComponents];
+  boardingTime = [v3 boardingTime];
+  startDateComponents = [boardingTime startDateComponents];
 
-  if (v12)
+  if (startDateComponents)
   {
-    v13 = [v3 boardingTime];
-    v14 = [v13 startDateComponents];
-    v15 = [v14 schema];
-    [v4 setObject:v15 forKeyedSubscript:@"boardingTime"];
+    boardingTime2 = [v3 boardingTime];
+    startDateComponents2 = [boardingTime2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v4 setObject:schema forKeyedSubscript:@"boardingTime"];
   }
 
-  v16 = [v3 flightDuration];
+  flightDuration = [v3 flightDuration];
 
-  if (v16)
+  if (flightDuration)
   {
-    v17 = [v3 flightDuration];
-    v18 = [v17 startDateComponents];
+    flightDuration2 = [v3 flightDuration];
+    startDateComponents3 = [flightDuration2 startDateComponents];
 
-    if (v18)
+    if (startDateComponents3)
     {
-      v19 = [v3 flightDuration];
-      v20 = [v19 startDateComponents];
-      v21 = [v20 schema];
-      [v4 setObject:v21 forKeyedSubscript:@"departureTime"];
+      flightDuration3 = [v3 flightDuration];
+      startDateComponents4 = [flightDuration3 startDateComponents];
+      schema2 = [startDateComponents4 schema];
+      [v4 setObject:schema2 forKeyedSubscript:@"departureTime"];
     }
 
-    v22 = [v3 flightDuration];
-    v23 = [v22 endDateComponents];
+    flightDuration4 = [v3 flightDuration];
+    endDateComponents = [flightDuration4 endDateComponents];
 
-    if (v23)
+    if (endDateComponents)
     {
-      v24 = [v3 flightDuration];
-      v25 = [v24 endDateComponents];
-      v26 = [v25 schema];
-      [v4 setObject:v26 forKeyedSubscript:@"arrivalTime"];
+      flightDuration5 = [v3 flightDuration];
+      endDateComponents2 = [flightDuration5 endDateComponents];
+      schema3 = [endDateComponents2 schema];
+      [v4 setObject:schema3 forKeyedSubscript:@"arrivalTime"];
     }
   }
 
-  v27 = [v3 departureAirportGate];
-  v28 = v27;
-  if (v27)
+  departureAirportGate = [v3 departureAirportGate];
+  v28 = departureAirportGate;
+  if (departureAirportGate)
   {
-    v29 = [v27 airport];
+    airport = [departureAirportGate airport];
 
-    if (v29)
+    if (airport)
     {
       v30 = MEMORY[0x277CD3C28];
-      v31 = [v28 airport];
-      v32 = [v30 schemaFromAirport:v31];
+      airport2 = [v28 airport];
+      v32 = [v30 schemaFromAirport:airport2];
       [v4 setObject:v32 forKeyedSubscript:@"departureAirport"];
     }
 
-    v33 = [v28 terminal];
+    terminal = [v28 terminal];
 
-    if (v33)
+    if (terminal)
     {
-      v34 = [v28 terminal];
-      [v4 setObject:v34 forKeyedSubscript:@"departureTerminal"];
+      terminal2 = [v28 terminal];
+      [v4 setObject:terminal2 forKeyedSubscript:@"departureTerminal"];
     }
 
-    v35 = [v28 gate];
+    gate = [v28 gate];
 
-    if (v35)
+    if (gate)
     {
-      v36 = [v28 gate];
-      [v4 setObject:v36 forKeyedSubscript:@"departureGate"];
+      gate2 = [v28 gate];
+      [v4 setObject:gate2 forKeyedSubscript:@"departureGate"];
     }
   }
 
-  v37 = [v3 arrivalAirportGate];
-  v38 = v37;
-  if (v37)
+  arrivalAirportGate = [v3 arrivalAirportGate];
+  v38 = arrivalAirportGate;
+  if (arrivalAirportGate)
   {
-    v39 = [v37 airport];
+    airport3 = [arrivalAirportGate airport];
 
-    if (v39)
+    if (airport3)
     {
       v40 = MEMORY[0x277CD3C28];
-      v41 = [v38 airport];
-      v42 = [v40 schemaFromAirport:v41];
+      airport4 = [v38 airport];
+      v42 = [v40 schemaFromAirport:airport4];
       [v4 setObject:v42 forKeyedSubscript:@"arrivalAirport"];
     }
 
-    v43 = [v38 terminal];
+    terminal3 = [v38 terminal];
 
-    if (v43)
+    if (terminal3)
     {
-      v44 = [v38 terminal];
-      [v4 setObject:v44 forKeyedSubscript:@"arrivalTerminal"];
+      terminal4 = [v38 terminal];
+      [v4 setObject:terminal4 forKeyedSubscript:@"arrivalTerminal"];
     }
 
-    v45 = [v38 gate];
+    gate3 = [v38 gate];
 
-    if (v45)
+    if (gate3)
     {
-      v46 = [v38 gate];
-      [v4 setObject:v46 forKeyedSubscript:@"arrivalGate"];
+      gate4 = [v38 gate];
+      [v4 setObject:gate4 forKeyedSubscript:@"arrivalGate"];
     }
   }
 
@@ -144,28 +144,28 @@
   v3 = a3;
   v4 = objc_opt_new();
   [v4 setObject:@"http://schema.org/Airport" forKeyedSubscript:@"@type"];
-  v5 = [v3 name];
+  name = [v3 name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    [v4 setObject:v6 forKeyedSubscript:@"name"];
+    name2 = [v3 name];
+    [v4 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v7 = [v3 iataCode];
+  iataCode = [v3 iataCode];
 
-  if (v7)
+  if (iataCode)
   {
-    v8 = [v3 iataCode];
-    [v4 setObject:v8 forKeyedSubscript:@"iataCode"];
+    iataCode2 = [v3 iataCode];
+    [v4 setObject:iataCode2 forKeyedSubscript:@"iataCode"];
   }
 
-  v9 = [v3 icaoCode];
+  icaoCode = [v3 icaoCode];
 
-  if (v9)
+  if (icaoCode)
   {
-    v10 = [v3 icaoCode];
-    [v4 setObject:v10 forKeyedSubscript:@"icaoCode"];
+    icaoCode2 = [v3 icaoCode];
+    [v4 setObject:icaoCode2 forKeyedSubscript:@"icaoCode"];
   }
 
   return v4;
@@ -176,28 +176,28 @@
   v3 = a3;
   v4 = objc_opt_new();
   [v4 setObject:@"http://schema.org/Airline" forKeyedSubscript:@"@type"];
-  v5 = [v3 name];
+  name = [v3 name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    [v4 setObject:v6 forKeyedSubscript:@"name"];
+    name2 = [v3 name];
+    [v4 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v7 = [v3 iataCode];
+  iataCode = [v3 iataCode];
 
-  if (v7)
+  if (iataCode)
   {
-    v8 = [v3 iataCode];
-    [v4 setObject:v8 forKeyedSubscript:@"iataCode"];
+    iataCode2 = [v3 iataCode];
+    [v4 setObject:iataCode2 forKeyedSubscript:@"iataCode"];
   }
 
-  v9 = [v3 icaoCode];
+  icaoCode = [v3 icaoCode];
 
-  if (v9)
+  if (icaoCode)
   {
-    v10 = [v3 icaoCode];
-    [v4 setObject:v10 forKeyedSubscript:@"icaoCode"];
+    icaoCode2 = [v3 icaoCode];
+    [v4 setObject:icaoCode2 forKeyedSubscript:@"icaoCode"];
   }
 
   return v4;
@@ -210,19 +210,19 @@
   v4 = [MEMORY[0x277CD3F90] schemaFromReservation:v3];
   v5 = [v4 mutableCopy];
 
-  v6 = [v3 reservedSeat];
+  reservedSeat = [v3 reservedSeat];
 
-  if (v6)
+  if (reservedSeat)
   {
-    v7 = [v3 reservedSeat];
-    v8 = [v7 schema];
+    reservedSeat2 = [v3 reservedSeat];
+    schema = [reservedSeat2 schema];
 
-    if (v8)
+    if (schema)
     {
       v15[0] = @"@type";
       v15[1] = @"ticketedSeat";
       v16[0] = @"http://schema.org/Ticket";
-      v16[1] = v8;
+      v16[1] = schema;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
       [v5 setObject:v9 forKeyedSubscript:@"reservedTicket"];
     }
@@ -230,8 +230,8 @@
 
   [v5 setObject:@"http://schema.org/FlightReservation" forKeyedSubscript:@"@type"];
   v10 = MEMORY[0x277CD3C28];
-  v11 = [v3 flight];
-  v12 = [v10 schemaFromFlight:v11];
+  flight = [v3 flight];
+  v12 = [v10 schemaFromFlight:flight];
   [v5 setObject:v12 forKeyedSubscript:@"reservationFor"];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -348,8 +348,8 @@
 
   v11 = objc_alloc(MEMORY[0x277CD4188]);
   v12 = objc_opt_new();
-  v13 = [v12 UUIDString];
-  v14 = [v11 initWithVocabularyIdentifier:v13 spokenPhrase:@"Flight" pronunciationHint:0];
+  uUIDString = [v12 UUIDString];
+  v14 = [v11 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Flight" pronunciationHint:0];
 
   v15 = [objc_alloc(MEMORY[0x277CD3C28]) initWithItemReference:v14 reservationNumber:v5 bookingTime:v6 reservationStatus:v17 reservationHolderName:v7 actions:0 URL:v8 reservedSeat:v9 flight:v10];
 

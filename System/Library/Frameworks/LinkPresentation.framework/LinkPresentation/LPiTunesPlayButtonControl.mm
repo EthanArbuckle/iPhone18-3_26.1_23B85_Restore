@@ -1,15 +1,15 @@
 @interface LPiTunesPlayButtonControl
 - (BOOL)isPlaying;
 - (BOOL)matchesNowPlayingItem;
-- (LPiTunesPlayButtonControl)initWithPlaybackInformation:(id)a3 style:(id)a4 theme:(id)a5;
+- (LPiTunesPlayButtonControl)initWithPlaybackInformation:(id)information style:(id)style theme:(id)theme;
 - (_MRSystemAppPlaybackQueue)createPlaybackQueue;
-- (double)desiredUpdateIntervalForMediaRemotePlaybackObserver:(id)a3;
+- (double)desiredUpdateIntervalForMediaRemotePlaybackObserver:(id)observer;
 - (id)mediaPlaybackApplicationID;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 - (void)createPlaybackQueue;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setPlaying:(BOOL)a3;
+- (void)setPlaying:(BOOL)playing;
 - (void)startPlaybackForLyricExcerpt;
 - (void)startPlaying;
 - (void)updatePlayState;
@@ -17,16 +17,16 @@
 
 @implementation LPiTunesPlayButtonControl
 
-- (LPiTunesPlayButtonControl)initWithPlaybackInformation:(id)a3 style:(id)a4 theme:(id)a5
+- (LPiTunesPlayButtonControl)initWithPlaybackInformation:(id)information style:(id)style theme:(id)theme
 {
-  v9 = a3;
+  informationCopy = information;
   v14.receiver = self;
   v14.super_class = LPiTunesPlayButtonControl;
-  v10 = [(LPPlayButtonControl *)&v14 initWithStyle:a4 theme:a5];
+  v10 = [(LPPlayButtonControl *)&v14 initWithStyle:style theme:theme];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_playbackInformation, a3);
+    objc_storeStrong(&v10->_playbackInformation, information);
     v12 = v11;
   }
 
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_playbackDidEndNotificationToken];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_playbackDidEndNotificationToken];
 
   v4.receiver = self;
   v4.super_class = LPiTunesPlayButtonControl;
@@ -45,29 +45,29 @@
 
 - (void)updatePlayState
 {
-  v3 = [(LPiTunesPlayButtonControl *)self window];
+  window = [(LPiTunesPlayButtonControl *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return;
   }
 
-  v4 = [(LPiTunesPlayButtonControl *)self matchesNowPlayingItem];
+  matchesNowPlayingItem = [(LPiTunesPlayButtonControl *)self matchesNowPlayingItem];
   if ([(LPPlayButtonControl *)self isIndeterminate])
   {
-    if (v4)
+    if (matchesNowPlayingItem)
     {
       v7 = +[LPMediaRemotePlaybackObserver shared];
-      v5 = [v7 isPlaying];
+      isPlaying = [v7 isPlaying];
 
-      if (v5)
+      if (isPlaying)
       {
         [(LPPlayButtonControl *)self endIndeterminateAnimation];
       }
     }
   }
 
-  if (v4 || [(LPPlayButtonControl *)self isIndeterminate])
+  if (matchesNowPlayingItem || [(LPPlayButtonControl *)self isIndeterminate])
   {
     [(LPPlayButtonControl *)self setPlayButtonState:1];
     if ([(LPPlayButtonControl *)self isIndeterminate])
@@ -75,7 +75,7 @@
       return;
     }
 
-    if (v4)
+    if (matchesNowPlayingItem)
     {
       v8 = +[LPMediaRemotePlaybackObserver shared];
       [v8 elapsedFractionForPlaybackInformation:self->_playbackInformation];
@@ -103,10 +103,10 @@
   [(LPPlayButtonControl *)self showPlayIndicator:1];
 }
 
-- (double)desiredUpdateIntervalForMediaRemotePlaybackObserver:(id)a3
+- (double)desiredUpdateIntervalForMediaRemotePlaybackObserver:(id)observer
 {
-  v3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
-  if (v3)
+  lyricExcerpt = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
+  if (lyricExcerpt)
   {
     v4 = 0.1;
   }
@@ -124,11 +124,11 @@
   v6.receiver = self;
   v6.super_class = LPiTunesPlayButtonControl;
   [(LPiTunesPlayButtonControl *)&v6 didMoveToWindow];
-  v3 = [(LPiTunesPlayButtonControl *)self window];
+  window = [(LPiTunesPlayButtonControl *)self window];
 
   v4 = +[LPMediaRemotePlaybackObserver shared];
   v5 = v4;
-  if (v3)
+  if (window)
   {
     [v4 addClient:self];
 
@@ -144,12 +144,12 @@
 - (void)startPlaybackForLyricExcerpt
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v3 = [getMPMusicPlayerControllerClass() systemMusicPlayer];
-  v4 = [getMPMusicPlayerControllerClass() applicationMusicPlayer];
-  self->_wasPlayingMusicWhenLyricExcerptPlaybackStarted = [v3 playbackState] == 1;
+  systemMusicPlayer = [getMPMusicPlayerControllerClass() systemMusicPlayer];
+  applicationMusicPlayer = [getMPMusicPlayerControllerClass() applicationMusicPlayer];
+  self->_wasPlayingMusicWhenLyricExcerptPlaybackStarted = [systemMusicPlayer playbackState] == 1;
   if (!self->_playbackDidEndNotificationToken)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v40 = 0;
     v41 = &v40;
     v42 = 0x2020000000;
@@ -171,9 +171,9 @@
     _Block_object_dispose(&v40, 8);
     if (!v6)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMusicPlayerControllerItemPlaybackDidEndNotification(void)"];
-      [v29 handleFailureInFunction:v30 file:@"LPiTunesPlayButtonControl.m" lineNumber:29 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v30 file:@"LPiTunesPlayButtonControl.m" lineNumber:29 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -184,9 +184,9 @@
     v33[2] = __57__LPiTunesPlayButtonControl_startPlaybackForLyricExcerpt__block_invoke;
     v33[3] = &unk_1E7A36690;
     v33[4] = self;
-    v34 = v3;
+    v34 = systemMusicPlayer;
     v9 = v8;
-    v10 = [v5 addObserverForName:v9 object:0 queue:0 usingBlock:v33];
+    v10 = [defaultCenter addObserverForName:v9 object:0 queue:0 usingBlock:v33];
     playbackDidEndNotificationToken = self->_playbackDidEndNotificationToken;
     self->_playbackDidEndNotificationToken = v10;
   }
@@ -210,32 +210,32 @@
   v13 = v12;
   _Block_object_dispose(&v40, 8);
   v14 = [v12 alloc];
-  v15 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
-  v44[0] = v15;
+  storeIdentifier = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+  v44[0] = storeIdentifier;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
   v17 = [v14 initWithStoreIDs:v16];
 
-  v18 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
-  v19 = [v18 startTime];
-  [v19 doubleValue];
+  lyricExcerpt = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
+  startTime = [lyricExcerpt startTime];
+  [startTime doubleValue];
   v21 = v20;
-  v22 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
-  [v17 setStartTime:v22 forItemWithStoreID:v21 + -1.0];
+  storeIdentifier2 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+  [v17 setStartTime:storeIdentifier2 forItemWithStoreID:v21 + -1.0];
 
-  v23 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
-  v24 = [v23 endTime];
-  [v24 doubleValue];
+  lyricExcerpt2 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
+  endTime = [lyricExcerpt2 endTime];
+  [endTime doubleValue];
   v26 = v25;
-  v27 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
-  [v17 setEndTime:v27 forItemWithStoreID:v26 + 1.0];
+  storeIdentifier3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+  [v17 setEndTime:storeIdentifier3 forItemWithStoreID:v26 + 1.0];
 
   [v17 setPlayActivityFeatureName:@"iMessage_LyricsShare"];
-  [v4 setQueueWithDescriptor:v17];
+  [applicationMusicPlayer setQueueWithDescriptor:v17];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __57__LPiTunesPlayButtonControl_startPlaybackForLyricExcerpt__block_invoke_2;
   v31[3] = &unk_1E7A366B8;
-  v28 = v4;
+  v28 = applicationMusicPlayer;
   v32 = v28;
   [v28 prepareToPlayWithCompletionHandler:v31];
 }
@@ -260,9 +260,9 @@ void __57__LPiTunesPlayButtonControl_startPlaybackForLyricExcerpt__block_invoke(
 - (_MRSystemAppPlaybackQueue)createPlaybackQueue
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+  storeIdentifier = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
 
-  if (!v3)
+  if (!storeIdentifier)
   {
     v15 = LPLogChannelFetching();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -273,15 +273,15 @@ void __57__LPiTunesPlayButtonControl_startPlaybackForLyricExcerpt__block_invoke(
     abort();
   }
 
-  v4 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
+  type = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
   v5 = 0;
-  if (v4 > 3)
+  if (type > 3)
   {
-    if (v4 == 4)
+    if (type == 4)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
-      v12 = [v10 stringWithFormat:@"podcasts://playPodcast?storeTrackId=%@", v11];
+      storeIdentifier2 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+      v12 = [v10 stringWithFormat:@"podcasts://playPodcast?storeTrackId=%@", storeIdentifier2];
 
       v5 = MRSystemAppPlaybackQueueCreate();
       v17 = v12;
@@ -291,24 +291,24 @@ void __57__LPiTunesPlayButtonControl_startPlaybackForLyricExcerpt__block_invoke(
       return v5;
     }
 
-    if (v4 == 6)
+    if (type == 6)
     {
       v5 = MRSystemAppPlaybackQueueCreate();
-      v13 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation persistentIdentifier];
-      [v13 longLongValue];
+      persistentIdentifier = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation persistentIdentifier];
+      [persistentIdentifier longLongValue];
       MRSystemAppPlaybackQueueSetLocalQueryFirstItemPID();
       goto LABEL_14;
     }
 
-    if (v4 != 5)
+    if (type != 5)
     {
       return v5;
     }
 
 LABEL_10:
     v5 = MRSystemAppPlaybackQueueCreate();
-    v9 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
-    v18[0] = v9;
+    storeIdentifier3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+    v18[0] = storeIdentifier3;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     MRSystemAppPlaybackQueueSetGenericTrackIdentifiers();
 
@@ -316,27 +316,27 @@ LABEL_10:
     return v5;
   }
 
-  if (v4 < 2)
+  if (type < 2)
   {
     goto LABEL_10;
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = MRSystemAppPlaybackQueueCreate();
     MRSystemAppPlaybackQueueSetRadioStationIDType();
-    v13 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+    persistentIdentifier = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
     MRSystemAppPlaybackQueueSetRadioStationStringIdentifier();
 LABEL_14:
 
     return v5;
   }
 
-  if (v4 == 3)
+  if (type == 3)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
-    v8 = [v6 stringWithFormat:@"podcasts://playPodcast?storeCollectionId=%@", v7];
+    storeIdentifier4 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storeIdentifier];
+    v8 = [v6 stringWithFormat:@"podcasts://playPodcast?storeCollectionId=%@", storeIdentifier4];
 
     v5 = MRSystemAppPlaybackQueueCreate();
     v16 = v8;
@@ -349,18 +349,18 @@ LABEL_14:
 
 - (id)mediaPlaybackApplicationID
 {
-  v2 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
-  if (v2 > 6)
+  type = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
+  if (type > 6)
   {
     v3 = 0;
   }
 
-  else if (((1 << v2) & 0x27) != 0)
+  else if (((1 << type) & 0x27) != 0)
   {
     v3 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
   }
 
-  else if (((1 << v2) & 0x18) != 0)
+  else if (((1 << type) & 0x18) != 0)
   {
     v3 = @"com.apple.podcasts";
   }
@@ -381,9 +381,9 @@ LABEL_14:
   block[3] = &unk_1E7A35450;
   block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
-  v3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
+  lyricExcerpt = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation lyricExcerpt];
 
-  if (v3)
+  if (lyricExcerpt)
   {
     [(LPiTunesPlayButtonControl *)self startPlaybackForLyricExcerpt];
   }
@@ -393,7 +393,7 @@ LABEL_14:
     [(LPiTunesPlayButtonControl *)self createPlaybackQueue];
     MRSystemAppPlaybackQueueSetIsRequestingImmediatePlayback();
     MRSystemAppPlaybackQueueSetShouldOverrideManuallyCuratedQueue();
-    v4 = [(LPiTunesPlayButtonControl *)self mediaPlaybackApplicationID];
+    mediaPlaybackApplicationID = [(LPiTunesPlayButtonControl *)self mediaPlaybackApplicationID];
     MRMediaRemoteSetAppPlaybackQueue();
   }
 }
@@ -423,7 +423,7 @@ uint64_t __41__LPiTunesPlayButtonControl_startPlaying__block_invoke_2(uint64_t r
   return result;
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   v5[1] = *MEMORY[0x1E69E9840];
   if ([(LPiTunesPlayButtonControl *)self matchesNowPlayingItem])
@@ -457,12 +457,12 @@ uint64_t __41__LPiTunesPlayButtonControl_startPlaying__block_invoke_2(uint64_t r
   }
 
   v2 = +[LPMediaRemotePlaybackObserver shared];
-  v3 = [v2 isPlaying];
+  isPlaying = [v2 isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
   v5[1] = *MEMORY[0x1E69E9840];
   if ([(LPiTunesPlayButtonControl *)self matchesNowPlayingItem])
@@ -483,7 +483,7 @@ uint64_t __41__LPiTunesPlayButtonControl_startPlaying__block_invoke_2(uint64_t r
 - (void)createPlaybackQueue
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_1AE886000, a2, OS_LOG_TYPE_ERROR, "store identifier for playback information %@ is nil", &v3, 0xCu);

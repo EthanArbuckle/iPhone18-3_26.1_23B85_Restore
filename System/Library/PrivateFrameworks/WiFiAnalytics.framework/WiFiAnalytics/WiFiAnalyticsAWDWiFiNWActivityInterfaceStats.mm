@@ -1,82 +1,82 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityInterfaceStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAwdlMode:(id)a3;
-- (void)addBytes:(id)a3;
-- (void)addEnableState:(id)a3;
-- (void)addNss:(id)a3;
-- (void)addPackets:(id)a3;
-- (void)addPeer:(id)a3;
-- (void)addPhymode:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDps:(BOOL)a3;
-- (void)setHasEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAwdlMode:(id)mode;
+- (void)addBytes:(id)bytes;
+- (void)addEnableState:(id)state;
+- (void)addNss:(id)nss;
+- (void)addPackets:(id)packets;
+- (void)addPeer:(id)peer;
+- (void)addPhymode:(id)phymode;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDps:(BOOL)dps;
+- (void)setHasEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityInterfaceStats
 
-- (void)addPackets:(id)a3
+- (void)addPackets:(id)packets
 {
-  v4 = a3;
+  packetsCopy = packets;
   packets = self->_packets;
-  v8 = v4;
+  v8 = packetsCopy;
   if (!packets)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_packets;
     self->_packets = v6;
 
-    v4 = v8;
+    packetsCopy = v8;
     packets = self->_packets;
   }
 
-  [(NSMutableArray *)packets addObject:v4];
+  [(NSMutableArray *)packets addObject:packetsCopy];
 }
 
-- (void)addBytes:(id)a3
+- (void)addBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   bytes = self->_bytes;
-  v8 = v4;
+  v8 = bytesCopy;
   if (!bytes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bytes;
     self->_bytes = v6;
 
-    v4 = v8;
+    bytesCopy = v8;
     bytes = self->_bytes;
   }
 
-  [(NSMutableArray *)bytes addObject:v4];
+  [(NSMutableArray *)bytes addObject:bytesCopy];
 }
 
-- (void)addPeer:(id)a3
+- (void)addPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   peers = self->_peers;
-  v8 = v4;
+  v8 = peerCopy;
   if (!peers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_peers;
     self->_peers = v6;
 
-    v4 = v8;
+    peerCopy = v8;
     peers = self->_peers;
   }
 
-  [(NSMutableArray *)peers addObject:v4];
+  [(NSMutableArray *)peers addObject:peerCopy];
 }
 
-- (void)setHasDps:(BOOL)a3
+- (void)setHasDps:(BOOL)dps
 {
-  if (a3)
+  if (dps)
   {
     v3 = 2;
   }
@@ -89,27 +89,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAwdlMode:(id)a3
+- (void)addAwdlMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   awdlModes = self->_awdlModes;
-  v8 = v4;
+  v8 = modeCopy;
   if (!awdlModes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_awdlModes;
     self->_awdlModes = v6;
 
-    v4 = v8;
+    modeCopy = v8;
     awdlModes = self->_awdlModes;
   }
 
-  [(NSMutableArray *)awdlModes addObject:v4];
+  [(NSMutableArray *)awdlModes addObject:modeCopy];
 }
 
-- (void)setHasEnabled:(BOOL)a3
+- (void)setHasEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -122,58 +122,58 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addEnableState:(id)a3
+- (void)addEnableState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   enableStates = self->_enableStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!enableStates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_enableStates;
     self->_enableStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     enableStates = self->_enableStates;
   }
 
-  [(NSMutableArray *)enableStates addObject:v4];
+  [(NSMutableArray *)enableStates addObject:stateCopy];
 }
 
-- (void)addNss:(id)a3
+- (void)addNss:(id)nss
 {
-  v4 = a3;
+  nssCopy = nss;
   nss = self->_nss;
-  v8 = v4;
+  v8 = nssCopy;
   if (!nss)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nss;
     self->_nss = v6;
 
-    v4 = v8;
+    nssCopy = v8;
     nss = self->_nss;
   }
 
-  [(NSMutableArray *)nss addObject:v4];
+  [(NSMutableArray *)nss addObject:nssCopy];
 }
 
-- (void)addPhymode:(id)a3
+- (void)addPhymode:(id)phymode
 {
-  v4 = a3;
+  phymodeCopy = phymode;
   phymodes = self->_phymodes;
-  v8 = v4;
+  v8 = phymodeCopy;
   if (!phymodes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_phymodes;
     self->_phymodes = v6;
 
-    v4 = v8;
+    phymodeCopy = v8;
     phymodes = self->_phymodes;
   }
 
-  [(NSMutableArray *)phymodes addObject:v4];
+  [(NSMutableArray *)phymodes addObject:phymodeCopy];
 }
 
 - (id)description
@@ -182,8 +182,8 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityInterfaceStats;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -191,12 +191,12 @@
 - (id)dictionaryRepresentation
 {
   v100 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   role = self->_role;
   if (role)
   {
-    [v3 setObject:role forKey:@"role"];
+    [dictionary setObject:role forKey:@"role"];
   }
 
   if ([(NSMutableArray *)self->_packets count])
@@ -221,8 +221,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v89 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v89 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v89 objects:v99 count:16];
@@ -256,8 +256,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v85 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v85 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v85 objects:v98 count:16];
@@ -291,8 +291,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v81 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v81 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v81 objects:v97 count:16];
@@ -322,8 +322,8 @@
   assoc = self->_assoc;
   if (assoc)
   {
-    v31 = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)assoc dictionaryRepresentation];
-    [v4 setObject:v31 forKey:@"assoc"];
+    dictionaryRepresentation4 = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)assoc dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"assoc"];
   }
 
   if ([(NSMutableArray *)self->_awdlModes count])
@@ -348,8 +348,8 @@
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v77 + 1) + 8 * m) dictionaryRepresentation];
-          [v32 addObject:v38];
+          dictionaryRepresentation5 = [*(*(&v77 + 1) + 8 * m) dictionaryRepresentation];
+          [v32 addObject:dictionaryRepresentation5];
         }
 
         v35 = [(NSMutableArray *)v33 countByEnumeratingWithState:&v77 objects:v96 count:16];
@@ -389,8 +389,8 @@
             objc_enumerationMutation(v41);
           }
 
-          v46 = [*(*(&v73 + 1) + 8 * n) dictionaryRepresentation];
-          [v40 addObject:v46];
+          dictionaryRepresentation6 = [*(*(&v73 + 1) + 8 * n) dictionaryRepresentation];
+          [v40 addObject:dictionaryRepresentation6];
         }
 
         v43 = [(NSMutableArray *)v41 countByEnumeratingWithState:&v73 objects:v95 count:16];
@@ -424,8 +424,8 @@
             objc_enumerationMutation(v48);
           }
 
-          v53 = [*(*(&v69 + 1) + 8 * ii) dictionaryRepresentation];
-          [v47 addObject:v53];
+          dictionaryRepresentation7 = [*(*(&v69 + 1) + 8 * ii) dictionaryRepresentation];
+          [v47 addObject:dictionaryRepresentation7];
         }
 
         v50 = [(NSMutableArray *)v48 countByEnumeratingWithState:&v69 objects:v94 count:16];
@@ -459,8 +459,8 @@
             objc_enumerationMutation(v55);
           }
 
-          v60 = [*(*(&v65 + 1) + 8 * jj) dictionaryRepresentation];
-          [v54 addObject:v60];
+          dictionaryRepresentation8 = [*(*(&v65 + 1) + 8 * jj) dictionaryRepresentation];
+          [v54 addObject:dictionaryRepresentation8];
         }
 
         v57 = [(NSMutableArray *)v55 countByEnumeratingWithState:&v65 objects:v93 count:16];
@@ -475,8 +475,8 @@
   rxStall = self->_rxStall;
   if (rxStall)
   {
-    v62 = [(WiFiAnalyticsAWDWiFiRxDataStallStats *)rxStall dictionaryRepresentation];
-    [v4 setObject:v62 forKey:@"rxStall"];
+    dictionaryRepresentation9 = [(WiFiAnalyticsAWDWiFiRxDataStallStats *)rxStall dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation9 forKey:@"rxStall"];
   }
 
   v63 = *MEMORY[0x1E69E9840];
@@ -484,10 +484,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_role)
   {
     PBDataWriterWriteStringField();
@@ -729,55 +729,55 @@
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v33 = a3;
+  toCopy = to;
   if (self->_role)
   {
-    [v33 setRole:?];
+    [toCopy setRole:?];
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self packetsCount])
   {
-    [v33 clearPackets];
-    v4 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self packetsCount];
-    if (v4)
+    [toCopy clearPackets];
+    packetsCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self packetsCount];
+    if (packetsCount)
     {
-      v5 = v4;
+      v5 = packetsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self packetsAtIndex:i];
-        [v33 addPackets:v7];
+        [toCopy addPackets:v7];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self bytesCount])
   {
-    [v33 clearBytes];
-    v8 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self bytesCount];
-    if (v8)
+    [toCopy clearBytes];
+    bytesCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self bytesCount];
+    if (bytesCount)
     {
-      v9 = v8;
+      v9 = bytesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self bytesAtIndex:j];
-        [v33 addBytes:v11];
+        [toCopy addBytes:v11];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self peersCount])
   {
-    [v33 clearPeers];
-    v12 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self peersCount];
-    if (v12)
+    [toCopy clearPeers];
+    peersCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self peersCount];
+    if (peersCount)
     {
-      v13 = v12;
+      v13 = peersCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self peerAtIndex:k];
-        [v33 addPeer:v15];
+        [toCopy addPeer:v15];
       }
     }
   }
@@ -785,99 +785,99 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v33 + 9) = self->_dps;
-    *(v33 + 104) |= 2u;
+    *(toCopy + 9) = self->_dps;
+    *(toCopy + 104) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v33 + 8) = self->_consecutivedps;
-    *(v33 + 104) |= 1u;
+    *(toCopy + 8) = self->_consecutivedps;
+    *(toCopy + 104) |= 1u;
   }
 
   if (self->_assoc)
   {
-    [v33 setAssoc:?];
+    [toCopy setAssoc:?];
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self awdlModesCount])
   {
-    [v33 clearAwdlModes];
-    v17 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self awdlModesCount];
-    if (v17)
+    [toCopy clearAwdlModes];
+    awdlModesCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self awdlModesCount];
+    if (awdlModesCount)
     {
-      v18 = v17;
+      v18 = awdlModesCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self awdlModeAtIndex:m];
-        [v33 addAwdlMode:v20];
+        [toCopy addAwdlMode:v20];
       }
     }
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v33 + 12) = self->_enabled;
-    *(v33 + 104) |= 4u;
+    *(toCopy + 12) = self->_enabled;
+    *(toCopy + 104) |= 4u;
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self enableStatesCount])
   {
-    [v33 clearEnableStates];
-    v21 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self enableStatesCount];
-    if (v21)
+    [toCopy clearEnableStates];
+    enableStatesCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self enableStatesCount];
+    if (enableStatesCount)
     {
-      v22 = v21;
+      v22 = enableStatesCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self enableStateAtIndex:n];
-        [v33 addEnableState:v24];
+        [toCopy addEnableState:v24];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self nssCount])
   {
-    [v33 clearNss];
-    v25 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self nssCount];
-    if (v25)
+    [toCopy clearNss];
+    nssCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self nssCount];
+    if (nssCount)
     {
-      v26 = v25;
+      v26 = nssCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self nssAtIndex:ii];
-        [v33 addNss:v28];
+        [toCopy addNss:v28];
       }
     }
   }
 
   if ([(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self phymodesCount])
   {
-    [v33 clearPhymodes];
-    v29 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self phymodesCount];
-    if (v29)
+    [toCopy clearPhymodes];
+    phymodesCount = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self phymodesCount];
+    if (phymodesCount)
     {
-      v30 = v29;
+      v30 = phymodesCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self phymodeAtIndex:jj];
-        [v33 addPhymode:v32];
+        [toCopy addPhymode:v32];
       }
     }
   }
 
   if (self->_rxStall)
   {
-    [v33 setRxStall:?];
+    [toCopy setRxStall:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v92 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_role copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_role copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
@@ -900,7 +900,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v81 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v81 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPackets:v13];
       }
 
@@ -929,7 +929,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v77 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v77 + 1) + 8 * j) copyWithZone:zone];
         [v5 addBytes:v19];
       }
 
@@ -958,7 +958,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v73 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v73 + 1) + 8 * k) copyWithZone:zone];
         [v5 addPeer:v25];
       }
 
@@ -982,7 +982,7 @@
     *(v5 + 104) |= 1u;
   }
 
-  v27 = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)self->_assoc copyWithZone:a3];
+  v27 = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)self->_assoc copyWithZone:zone];
   v28 = *(v5 + 8);
   *(v5 + 8) = v27;
 
@@ -1005,7 +1005,7 @@
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v69 + 1) + 8 * m) copyWithZone:a3];
+        v34 = [*(*(&v69 + 1) + 8 * m) copyWithZone:zone];
         [v5 addAwdlMode:v34];
       }
 
@@ -1040,7 +1040,7 @@
           objc_enumerationMutation(v35);
         }
 
-        v40 = [*(*(&v65 + 1) + 8 * n) copyWithZone:a3];
+        v40 = [*(*(&v65 + 1) + 8 * n) copyWithZone:zone];
         [v5 addEnableState:v40];
       }
 
@@ -1069,7 +1069,7 @@
           objc_enumerationMutation(v41);
         }
 
-        v46 = [*(*(&v61 + 1) + 8 * ii) copyWithZone:a3];
+        v46 = [*(*(&v61 + 1) + 8 * ii) copyWithZone:zone];
         [v5 addNss:v46];
       }
 
@@ -1098,7 +1098,7 @@
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v57 + 1) + 8 * jj) copyWithZone:{a3, v57}];
+        v52 = [*(*(&v57 + 1) + 8 * jj) copyWithZone:{zone, v57}];
         [v5 addPhymode:v52];
       }
 
@@ -1108,7 +1108,7 @@
     while (v49);
   }
 
-  v53 = [(WiFiAnalyticsAWDWiFiRxDataStallStats *)self->_rxStall copyWithZone:a3];
+  v53 = [(WiFiAnalyticsAWDWiFiRxDataStallStats *)self->_rxStall copyWithZone:zone];
   v54 = *(v5 + 96);
   *(v5 + 96) = v53;
 
@@ -1116,16 +1116,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
   role = self->_role;
-  if (role | *(v4 + 11))
+  if (role | *(equalCopy + 11))
   {
     if (![(NSString *)role isEqual:?])
     {
@@ -1134,7 +1134,7 @@
   }
 
   packets = self->_packets;
-  if (packets | *(v4 + 8))
+  if (packets | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)packets isEqual:?])
     {
@@ -1143,7 +1143,7 @@
   }
 
   bytes = self->_bytes;
-  if (bytes | *(v4 + 3))
+  if (bytes | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)bytes isEqual:?])
     {
@@ -1152,7 +1152,7 @@
   }
 
   peers = self->_peers;
-  if (peers | *(v4 + 9))
+  if (peers | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)peers isEqual:?])
     {
@@ -1160,16 +1160,16 @@
     }
   }
 
-  v9 = *(v4 + 104);
+  v9 = *(equalCopy + 104);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_dps != *(v4 + 9))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_dps != *(equalCopy + 9))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
 LABEL_37:
     v17 = 0;
@@ -1178,25 +1178,25 @@ LABEL_37:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_consecutivedps != *(v4 + 8))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_consecutivedps != *(equalCopy + 8))
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_37;
   }
 
   assoc = self->_assoc;
-  if (assoc | *(v4 + 1) && ![(WiFiAnalyticsAWDWiFiNWActivityAssoc *)assoc isEqual:?])
+  if (assoc | *(equalCopy + 1) && ![(WiFiAnalyticsAWDWiFiNWActivityAssoc *)assoc isEqual:?])
   {
     goto LABEL_37;
   }
 
   awdlModes = self->_awdlModes;
-  if (awdlModes | *(v4 + 2))
+  if (awdlModes | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)awdlModes isEqual:?])
     {
@@ -1204,28 +1204,28 @@ LABEL_37:
     }
   }
 
-  v12 = *(v4 + 104);
+  v12 = *(equalCopy + 104);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_enabled != *(v4 + 12))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_enabled != *(equalCopy + 12))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_37;
   }
 
   enableStates = self->_enableStates;
-  if (enableStates | *(v4 + 5) && ![(NSMutableArray *)enableStates isEqual:?])
+  if (enableStates | *(equalCopy + 5) && ![(NSMutableArray *)enableStates isEqual:?])
   {
     goto LABEL_37;
   }
 
   nss = self->_nss;
-  if (nss | *(v4 + 7))
+  if (nss | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)nss isEqual:?])
     {
@@ -1234,7 +1234,7 @@ LABEL_37:
   }
 
   phymodes = self->_phymodes;
-  if (phymodes | *(v4 + 10))
+  if (phymodes | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)phymodes isEqual:?])
     {
@@ -1243,7 +1243,7 @@ LABEL_37:
   }
 
   rxStall = self->_rxStall;
-  if (rxStall | *(v4 + 12))
+  if (rxStall | *(equalCopy + 12))
   {
     v17 = [(WiFiAnalyticsAWDWiFiRxDataStallStats *)rxStall isEqual:?];
   }
@@ -1305,11 +1305,11 @@ LABEL_6:
   return v15 ^ [(WiFiAnalyticsAWDWiFiRxDataStallStats *)self->_rxStall hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 11))
+  fromCopy = from;
+  if (*(fromCopy + 11))
   {
     [(WiFiAnalyticsAWDWiFiNWActivityInterfaceStats *)self setRole:?];
   }
@@ -1318,7 +1318,7 @@ LABEL_6:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v5 = *(v4 + 8);
+  v5 = *(fromCopy + 8);
   v6 = [v5 countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (v6)
   {
@@ -1346,7 +1346,7 @@ LABEL_6:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v66 objects:v79 count:16];
   if (v11)
   {
@@ -1374,7 +1374,7 @@ LABEL_6:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v15 = *(v4 + 9);
+  v15 = *(fromCopy + 9);
   v16 = [v15 countByEnumeratingWithState:&v62 objects:v78 count:16];
   if (v16)
   {
@@ -1398,22 +1398,22 @@ LABEL_6:
     while (v17);
   }
 
-  v20 = *(v4 + 104);
+  v20 = *(fromCopy + 104);
   if ((v20 & 2) != 0)
   {
-    self->_dps = *(v4 + 9);
+    self->_dps = *(fromCopy + 9);
     *&self->_has |= 2u;
-    v20 = *(v4 + 104);
+    v20 = *(fromCopy + 104);
   }
 
   if (v20)
   {
-    self->_consecutivedps = *(v4 + 8);
+    self->_consecutivedps = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
   assoc = self->_assoc;
-  v22 = *(v4 + 1);
+  v22 = *(fromCopy + 1);
   if (assoc)
   {
     if (v22)
@@ -1431,7 +1431,7 @@ LABEL_6:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v23 = *(v4 + 2);
+  v23 = *(fromCopy + 2);
   v24 = [v23 countByEnumeratingWithState:&v58 objects:v77 count:16];
   if (v24)
   {
@@ -1455,9 +1455,9 @@ LABEL_6:
     while (v25);
   }
 
-  if ((*(v4 + 104) & 4) != 0)
+  if ((*(fromCopy + 104) & 4) != 0)
   {
-    self->_enabled = *(v4 + 12);
+    self->_enabled = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
@@ -1465,7 +1465,7 @@ LABEL_6:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v28 = *(v4 + 5);
+  v28 = *(fromCopy + 5);
   v29 = [v28 countByEnumeratingWithState:&v54 objects:v76 count:16];
   if (v29)
   {
@@ -1493,7 +1493,7 @@ LABEL_6:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v33 = *(v4 + 7);
+  v33 = *(fromCopy + 7);
   v34 = [v33 countByEnumeratingWithState:&v50 objects:v75 count:16];
   if (v34)
   {
@@ -1521,7 +1521,7 @@ LABEL_6:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v38 = *(v4 + 10);
+  v38 = *(fromCopy + 10);
   v39 = [v38 countByEnumeratingWithState:&v46 objects:v74 count:16];
   if (v39)
   {
@@ -1546,7 +1546,7 @@ LABEL_6:
   }
 
   rxStall = self->_rxStall;
-  v44 = *(v4 + 12);
+  v44 = *(fromCopy + 12);
   if (rxStall)
   {
     if (v44)

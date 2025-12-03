@@ -1,7 +1,7 @@
 @interface HKDisplayTypePresentationConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDisplayTypePresentationConfiguration)init;
-- (HKDisplayTypePresentationConfiguration)initWithCurrentValue:(int64_t)a3 secondaryValue:(int64_t)a4 detailChart:(int64_t)a5 singleDailyValue:(BOOL)a6;
+- (HKDisplayTypePresentationConfiguration)initWithCurrentValue:(int64_t)value secondaryValue:(int64_t)secondaryValue detailChart:(int64_t)chart singleDailyValue:(BOOL)dailyValue;
 @end
 
 @implementation HKDisplayTypePresentationConfiguration
@@ -16,27 +16,27 @@
   return 0;
 }
 
-- (HKDisplayTypePresentationConfiguration)initWithCurrentValue:(int64_t)a3 secondaryValue:(int64_t)a4 detailChart:(int64_t)a5 singleDailyValue:(BOOL)a6
+- (HKDisplayTypePresentationConfiguration)initWithCurrentValue:(int64_t)value secondaryValue:(int64_t)secondaryValue detailChart:(int64_t)chart singleDailyValue:(BOOL)dailyValue
 {
   v11.receiver = self;
   v11.super_class = HKDisplayTypePresentationConfiguration;
   result = [(HKDisplayTypePresentationConfiguration *)&v11 init];
   if (result)
   {
-    result->_currentValue = a3;
-    result->_secondaryValue = a4;
-    result->_detailChart = a5;
-    result->_singleDailyValue = a6;
+    result->_currentValue = value;
+    result->_secondaryValue = secondaryValue;
+    result->_detailChart = chart;
+    result->_singleDailyValue = dailyValue;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_currentValue == v4[2] && self->_secondaryValue == v4[3] && self->_detailChart == v4[4] && self->_singleDailyValue == *(v4 + 8);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_currentValue == equalCopy[2] && self->_secondaryValue == equalCopy[3] && self->_detailChart == equalCopy[4] && self->_singleDailyValue == *(equalCopy + 8);
 
   return v5;
 }

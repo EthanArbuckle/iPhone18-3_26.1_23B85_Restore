@@ -1,9 +1,9 @@
 @interface CKPKPushRegistry
 + (id)sharedPushRegistry;
 - (id)initInternal;
-- (void)addDelegate:(id)a3;
-- (void)pushRegistry:(id)a3 didReceiveIncomingPushWithPayload:(id)a4 forType:(id)a5 withCompletionHandler:(id)a6;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)pushRegistry:(id)registry didReceiveIncomingPushWithPayload:(id)payload forType:(id)type withCompletionHandler:(id)handler;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CKPKPushRegistry
@@ -45,41 +45,41 @@
   return v4;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_delegates(v4, v5, v6);
-  objc_msgSend_addObject_(v7, v8, v9);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_delegates(selfCopy, v5, v6);
+  objc_msgSend_addObject_(v7, v8, delegateCopy);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_delegates(v4, v5, v6);
-  objc_msgSend_removeObject_(v7, v8, v9);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_delegates(selfCopy, v5, v6);
+  objc_msgSend_removeObject_(v7, v8, delegateCopy);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)pushRegistry:(id)a3 didReceiveIncomingPushWithPayload:(id)a4 forType:(id)a5 withCompletionHandler:(id)a6
+- (void)pushRegistry:(id)registry didReceiveIncomingPushWithPayload:(id)payload forType:(id)type withCompletionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v10 = a4;
-  v32 = a5;
-  v33 = a6;
-  v11 = self;
-  objc_sync_enter(v11);
-  v14 = objc_msgSend_delegates(v11, v12, v13);
+  registryCopy = registry;
+  payloadCopy = payload;
+  typeCopy = type;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v14 = objc_msgSend_delegates(selfCopy, v12, v13);
   v17 = objc_msgSend_allObjects(v14, v15, v16);
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   if (objc_msgSend_count(v17, v18, v19))
   {
     v20 = dispatch_group_create();
@@ -108,7 +108,7 @@
           v36[2] = sub_18864B6B8;
           v36[3] = &unk_1E70BC388;
           v37 = v20;
-          objc_msgSend_didReceiveIncomingPushWithPayload_withCompletionHandler_(v26, v27, v10, v36);
+          objc_msgSend_didReceiveIncomingPushWithPayload_withCompletionHandler_(v26, v27, payloadCopy, v36);
         }
 
         v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v28, &v38, v42, 16);
@@ -122,13 +122,13 @@
     block[1] = 3221225472;
     block[2] = sub_18864B6C0;
     block[3] = &unk_1E70BC2C0;
-    v35 = v33;
+    v35 = handlerCopy;
     dispatch_group_notify(v20, v29, block);
   }
 
-  else if (v33)
+  else if (handlerCopy)
   {
-    v33[2]();
+    handlerCopy[2]();
   }
 
   v30 = *MEMORY[0x1E69E9840];

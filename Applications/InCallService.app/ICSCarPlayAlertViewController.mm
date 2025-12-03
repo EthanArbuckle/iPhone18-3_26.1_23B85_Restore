@@ -1,14 +1,14 @@
 @interface ICSCarPlayAlertViewController
-- (ICSCarPlayAlertViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICSCarPlayAlertViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP13InCallService34CarPlayAlertViewControllerDelegate_)delegate;
 - (void)callAgain;
 - (void)closeAlert;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadView;
 - (void)playSound;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICSCarPlayAlertViewController
@@ -20,60 +20,60 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001F56E8();
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F5788();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F5830();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001F59AC(a3);
+  selfCopy = self;
+  sub_1001F59AC(disappear);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001F5A74(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_1001F5A74(contextCopy, coordinatorCopy);
 }
 
 - (void)playSound
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F6534(&selRef_shouldPlaySound);
 }
 
 - (void)callAgain
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F6534(&selRef_shouldCallAgain);
 }
 
 - (void)closeAlert
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F65E8();
 }
 
-- (ICSCarPlayAlertViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSCarPlayAlertViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -85,8 +85,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1001F6648(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1001F6648(v5, v7, bundle);
 }
 
 @end

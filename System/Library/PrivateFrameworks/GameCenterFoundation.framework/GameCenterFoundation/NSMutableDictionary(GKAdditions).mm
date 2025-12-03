@@ -35,8 +35,8 @@
             v9 = [v8 rangeOfString:@"="];
             if (v9 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v11 = [v8 _gkStringByUnescapingFromURLQuery];
-              v12 = &stru_283AFD1E0;
+              _gkStringByUnescapingFromURLQuery = [v8 _gkStringByUnescapingFromURLQuery];
+              _gkStringByUnescapingFromURLQuery2 = &stru_283AFD1E0;
             }
 
             else
@@ -44,15 +44,15 @@
               v13 = v9;
               v14 = v10;
               v15 = [v8 substringToIndex:v9];
-              v11 = [v15 _gkStringByUnescapingFromURLQuery];
+              _gkStringByUnescapingFromURLQuery = [v15 _gkStringByUnescapingFromURLQuery];
 
               v16 = [v8 substringFromIndex:v13 + v14];
-              v12 = [v16 _gkStringByUnescapingFromURLQuery];
+              _gkStringByUnescapingFromURLQuery2 = [v16 _gkStringByUnescapingFromURLQuery];
             }
 
-            if (v11)
+            if (_gkStringByUnescapingFromURLQuery)
             {
-              v17 = v12 == 0;
+              v17 = _gkStringByUnescapingFromURLQuery2 == 0;
             }
 
             else
@@ -62,7 +62,7 @@
 
             if (!v17)
             {
-              [a1 setObject:v12 forKey:v11];
+              [self setObject:_gkStringByUnescapingFromURLQuery2 forKey:_gkStringByUnescapingFromURLQuery];
             }
           }
         }
@@ -81,10 +81,10 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKeyedSubscript:?];
+    return [self setObject:? forKeyedSubscript:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

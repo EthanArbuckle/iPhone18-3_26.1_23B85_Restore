@@ -1,15 +1,15 @@
 @interface CalSpotlightQueryController
-+ (id)searchWithString:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5;
++ (id)searchWithString:(id)string clientBundleID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation CalSpotlightQueryController
 
-+ (id)searchWithString:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5
++ (id)searchWithString:(id)string clientBundleID:(id)d completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CalSpotlightPendingSearch alloc] initWithString:v9 clientBundleID:v8 completionHandler:v7];
+  handlerCopy = handler;
+  dCopy = d;
+  stringCopy = string;
+  v10 = [[CalSpotlightPendingSearch alloc] initWithString:stringCopy clientBundleID:dCopy completionHandler:handlerCopy];
 
   return v10;
 }

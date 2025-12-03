@@ -1,12 +1,12 @@
 @interface PCPHomeKitHome
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPHomeKitHome
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = PCPHomeKitHome;
   v4 = [(PCPHomeKitHome *)&v8 description];
-  v5 = [(PCPHomeKitHome *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPHomeKitHome *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   if (*&self->_has)
@@ -42,64 +42,64 @@
   location = self->_location;
   if (location)
   {
-    v8 = [(PCPLocation *)location dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"location"];
+    dictionaryRepresentation = [(PCPLocation *)location dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"location"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     primary = self->_primary;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_primary;
-    v4[28] |= 1u;
+    toCopy[24] = self->_primary;
+    toCopy[28] |= 1u;
   }
 
   if (self->_location)
   {
     [v5 setLocation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -109,23 +109,23 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(PCPLocation *)self->_location copyWithZone:a3];
+  v8 = [(PCPLocation *)self->_location copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 1))
+  if (identifier | *(equalCopy + 1))
   {
     if (![(NSData *)identifier isEqual:?])
     {
@@ -133,18 +133,18 @@
     }
   }
 
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (!self->_primary)
   {
 LABEL_5:
@@ -158,14 +158,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((*(v4 + 24) & 1) == 0)
+  if ((*(equalCopy + 24) & 1) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
   location = self->_location;
-  if (location | *(v4 + 2))
+  if (location | *(equalCopy + 2))
   {
     v8 = [(PCPLocation *)location isEqual:?];
   }
@@ -196,24 +196,24 @@ LABEL_10:
   return v4 ^ v3 ^ [(PCPLocation *)self->_location hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(PCPHomeKitHome *)self setIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_primary = v4[24];
+    self->_primary = fromCopy[24];
     *&self->_has |= 1u;
   }
 
   location = self->_location;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (location)
   {
     if (v6)

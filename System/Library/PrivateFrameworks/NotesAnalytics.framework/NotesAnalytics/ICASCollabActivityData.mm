@@ -1,28 +1,28 @@
 @interface ICASCollabActivityData
-- (ICASCollabActivityData)initWithCollabActivityContextPath:(id)a3 clickContext:(id)a4 mode:(id)a5 isUserMentioned:(id)a6 hasRecentUpdates:(id)a7;
+- (ICASCollabActivityData)initWithCollabActivityContextPath:(id)path clickContext:(id)context mode:(id)mode isUserMentioned:(id)mentioned hasRecentUpdates:(id)updates;
 - (id)toDict;
 @end
 
 @implementation ICASCollabActivityData
 
-- (ICASCollabActivityData)initWithCollabActivityContextPath:(id)a3 clickContext:(id)a4 mode:(id)a5 isUserMentioned:(id)a6 hasRecentUpdates:(id)a7
+- (ICASCollabActivityData)initWithCollabActivityContextPath:(id)path clickContext:(id)context mode:(id)mode isUserMentioned:(id)mentioned hasRecentUpdates:(id)updates
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  contextCopy = context;
+  modeCopy = mode;
+  mentionedCopy = mentioned;
+  updatesCopy = updates;
   v21.receiver = self;
   v21.super_class = ICASCollabActivityData;
   v17 = [(ICASCollabActivityData *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_collabActivityContextPath, a3);
-    objc_storeStrong(&v18->_clickContext, a4);
-    objc_storeStrong(&v18->_mode, a5);
-    objc_storeStrong(&v18->_isUserMentioned, a6);
-    objc_storeStrong(&v18->_hasRecentUpdates, a7);
+    objc_storeStrong(&v17->_collabActivityContextPath, path);
+    objc_storeStrong(&v18->_clickContext, context);
+    objc_storeStrong(&v18->_mode, mode);
+    objc_storeStrong(&v18->_isUserMentioned, mentioned);
+    objc_storeStrong(&v18->_hasRecentUpdates, updates);
   }
 
   return v18;
@@ -32,75 +32,75 @@
 {
   v23[5] = *MEMORY[0x277D85DE8];
   v22[0] = @"collabActivityContextPath";
-  v20 = [(ICASCollabActivityData *)self collabActivityContextPath];
-  if (v20)
+  collabActivityContextPath = [(ICASCollabActivityData *)self collabActivityContextPath];
+  if (collabActivityContextPath)
   {
-    v3 = [(ICASCollabActivityData *)self collabActivityContextPath];
+    collabActivityContextPath2 = [(ICASCollabActivityData *)self collabActivityContextPath];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    collabActivityContextPath2 = objc_opt_new();
   }
 
-  v4 = v3;
-  v23[0] = v3;
+  v4 = collabActivityContextPath2;
+  v23[0] = collabActivityContextPath2;
   v22[1] = @"clickContext";
-  v5 = [(ICASCollabActivityData *)self clickContext];
-  if (v5)
+  clickContext = [(ICASCollabActivityData *)self clickContext];
+  if (clickContext)
   {
-    v6 = [(ICASCollabActivityData *)self clickContext];
+    clickContext2 = [(ICASCollabActivityData *)self clickContext];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    clickContext2 = objc_opt_new();
   }
 
-  v7 = v6;
-  v23[1] = v6;
+  v7 = clickContext2;
+  v23[1] = clickContext2;
   v22[2] = @"mode";
-  v8 = [(ICASCollabActivityData *)self mode];
-  if (v8)
+  mode = [(ICASCollabActivityData *)self mode];
+  if (mode)
   {
-    v9 = [(ICASCollabActivityData *)self mode];
+    mode2 = [(ICASCollabActivityData *)self mode];
   }
 
   else
   {
-    v9 = objc_opt_new();
+    mode2 = objc_opt_new();
   }
 
-  v10 = v9;
-  v23[2] = v9;
+  v10 = mode2;
+  v23[2] = mode2;
   v22[3] = @"isUserMentioned";
-  v11 = [(ICASCollabActivityData *)self isUserMentioned];
-  if (v11)
+  isUserMentioned = [(ICASCollabActivityData *)self isUserMentioned];
+  if (isUserMentioned)
   {
-    v12 = [(ICASCollabActivityData *)self isUserMentioned];
+    isUserMentioned2 = [(ICASCollabActivityData *)self isUserMentioned];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    isUserMentioned2 = objc_opt_new();
   }
 
-  v13 = v12;
-  v23[3] = v12;
+  v13 = isUserMentioned2;
+  v23[3] = isUserMentioned2;
   v22[4] = @"hasRecentUpdates";
-  v14 = [(ICASCollabActivityData *)self hasRecentUpdates];
-  if (v14)
+  hasRecentUpdates = [(ICASCollabActivityData *)self hasRecentUpdates];
+  if (hasRecentUpdates)
   {
-    v15 = [(ICASCollabActivityData *)self hasRecentUpdates];
+    hasRecentUpdates2 = [(ICASCollabActivityData *)self hasRecentUpdates];
   }
 
   else
   {
-    v15 = objc_opt_new();
+    hasRecentUpdates2 = objc_opt_new();
   }
 
-  v16 = v15;
-  v23[4] = v15;
+  v16 = hasRecentUpdates2;
+  v23[4] = hasRecentUpdates2;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:5];
 
   v18 = *MEMORY[0x277D85DE8];

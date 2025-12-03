@@ -1,16 +1,16 @@
 @interface HDFHIRCredentialEntity
-+ (BOOL)_insertCodableCredentialFromSync:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)_shouldReplaceCurrentCredential:(id)a3 withIncomingCredential:(id)a4 account:(id)a5 profile:(id)a6 recordEvent:(id *)a7 error:(id *)a8;
-+ (BOOL)insertCodableCredentialsFromSync:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_credentialWithRow:(HDSQLiteRow *)a3;
-+ (id)_insertCodableCredential:(id)a3 syncProvenance:(int64_t)a4 syncIdentity:(int64_t)a5 transaction:(id)a6 error:(id *)a7;
-+ (id)_insertCredential:(id)a3 receivedDate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
++ (BOOL)_insertCodableCredentialFromSync:(id)sync syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (BOOL)_shouldReplaceCurrentCredential:(id)credential withIncomingCredential:(id)incomingCredential account:(id)account profile:(id)profile recordEvent:(id *)event error:(id *)error;
++ (BOOL)insertCodableCredentialsFromSync:(id)sync syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (id)_credentialWithRow:(HDSQLiteRow *)row;
++ (id)_insertCodableCredential:(id)credential syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error;
++ (id)_insertCredential:(id)credential receivedDate:(id)date profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (id)allProperties;
-+ (id)codableCredentialWithAccountSyncIdentifier:(id)a3 persistentID:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)codableWithRow:(HDSQLiteRow *)a3 accountSyncIdentifier:(id)a4;
-+ (id)credentialWithPersistentID:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)insertCredential:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-- (id)credentialInDatabase:(id)a3 error:(id *)a4;
++ (id)codableCredentialWithAccountSyncIdentifier:(id)identifier persistentID:(id)d database:(id)database error:(id *)error;
++ (id)codableWithRow:(HDSQLiteRow *)row accountSyncIdentifier:(id)identifier;
++ (id)credentialWithPersistentID:(id)d database:(id)database error:(id *)error;
++ (id)insertCredential:(id)credential profile:(id)profile transaction:(id)transaction error:(id *)error;
+- (id)credentialInDatabase:(id)database error:(id *)error;
 @end
 
 @implementation HDFHIRCredentialEntity
@@ -31,11 +31,11 @@
   return v2;
 }
 
-+ (id)_credentialWithRow:(HDSQLiteRow *)a3
++ (id)_credentialWithRow:(HDSQLiteRow *)row
 {
-  if (!a3)
+  if (!row)
   {
-    sub_A2CF4(a2, a1);
+    sub_A2CF4(a2, self);
   }
 
   v3 = HDSQLiteColumnWithNameAsUUID();
@@ -48,13 +48,13 @@
   return v8;
 }
 
-+ (id)codableWithRow:(HDSQLiteRow *)a3 accountSyncIdentifier:(id)a4
++ (id)codableWithRow:(HDSQLiteRow *)row accountSyncIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (row)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -62,16 +62,16 @@
 
   else
   {
-    sub_A2D70(a2, a1);
+    sub_A2D70(a2, self);
     if (v8)
     {
       goto LABEL_3;
     }
   }
 
-  sub_A2DEC(a2, a1);
+  sub_A2DEC(a2, self);
 LABEL_3:
-  v9 = [a1 _credentialWithRow:a3];
+  v9 = [self _credentialWithRow:row];
   v10 = HDSQLiteColumnWithNameAsDate();
   v11 = HDSQLiteColumnWithNameAsBoolean();
   v12 = [v9 asNewCodableForAccountSyncIdentifier:v8 receivedDate:v10];
@@ -84,38 +84,38 @@ LABEL_3:
   return v13;
 }
 
-+ (id)codableCredentialWithAccountSyncIdentifier:(id)a3 persistentID:(id)a4 database:(id)a5 error:(id *)a6
++ (id)codableCredentialWithAccountSyncIdentifier:(id)identifier persistentID:(id)d database:(id)database error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [HDFHIRCredentialEntity entityWithPersistentID:v11];
+  identifierCopy = identifier;
+  dCopy = d;
+  databaseCopy = database;
+  v13 = [HDFHIRCredentialEntity entityWithPersistentID:dCopy];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = sub_4D47C;
   v30 = sub_4D48C;
   v31 = 0;
-  v14 = [objc_opt_class() allProperties];
+  allProperties = [objc_opt_class() allProperties];
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_4D494;
   v22 = &unk_107828;
   v24 = &v26;
-  v25 = a1;
-  v15 = v10;
+  selfCopy = self;
+  v15 = identifierCopy;
   v23 = v15;
-  LOBYTE(v10) = [v13 getValuesForProperties:v14 database:v12 handler:&v19];
+  LOBYTE(identifierCopy) = [v13 getValuesForProperties:allProperties database:databaseCopy handler:&v19];
 
-  if (v10)
+  if (identifierCopy)
   {
     v16 = v27[5];
   }
 
   else
   {
-    v17 = [v13 persistentID];
-    [NSError hk_assignError:a6 code:100 format:@"Failed to populate FHIR credential object from credential entity %lld", v17, v19, v20, v21, v22];
+    persistentID = [v13 persistentID];
+    [NSError hk_assignError:error code:100 format:@"Failed to populate FHIR credential object from credential entity %lld", persistentID, v19, v20, v21, v22];
     v16 = 0;
   }
 
@@ -124,23 +124,23 @@ LABEL_3:
   return v16;
 }
 
-- (id)credentialInDatabase:(id)a3 error:(id *)a4
+- (id)credentialInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_4D47C;
   v16 = sub_4D48C;
   v17 = 0;
-  v7 = [objc_opt_class() allProperties];
+  allProperties = [objc_opt_class() allProperties];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_4D678;
   v11[3] = &unk_106788;
   v11[4] = self;
   v11[5] = &v12;
-  v8 = [(HDFHIRCredentialEntity *)self getValuesForProperties:v7 database:v6 handler:v11];
+  v8 = [(HDFHIRCredentialEntity *)self getValuesForProperties:allProperties database:databaseCopy handler:v11];
 
   if (v8)
   {
@@ -149,7 +149,7 @@ LABEL_3:
 
   else
   {
-    [NSError hk_assignError:a4 code:100 format:@"Failed to populate FHIR credential object from credential entity %lld", [(HDFHIRCredentialEntity *)self persistentID]];
+    [NSError hk_assignError:error code:100 format:@"Failed to populate FHIR credential object from credential entity %lld", [(HDFHIRCredentialEntity *)self persistentID]];
     v9 = 0;
   }
 
@@ -158,31 +158,31 @@ LABEL_3:
   return v9;
 }
 
-+ (id)credentialWithPersistentID:(id)a3 database:(id)a4 error:(id *)a5
++ (id)credentialWithPersistentID:(id)d database:(id)database error:(id *)error
 {
-  v7 = a4;
-  v8 = [HDFHIRCredentialEntity entityWithPersistentID:a3];
-  v9 = [v8 credentialInDatabase:v7 error:a5];
+  databaseCopy = database;
+  v8 = [HDFHIRCredentialEntity entityWithPersistentID:d];
+  v9 = [v8 credentialInDatabase:databaseCopy error:error];
 
   return v9;
 }
 
-+ (BOOL)insertCodableCredentialsFromSync:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertCodableCredentialsFromSync:(id)sync syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 healthRecordsExtension];
-  v13 = [v12 accountManager];
+  syncCopy = sync;
+  profileCopy = profile;
+  healthRecordsExtension = [profileCopy healthRecordsExtension];
+  accountManager = [healthRecordsExtension accountManager];
 
-  if (v13)
+  if (accountManager)
   {
-    v26 = v13;
-    v27 = v10;
+    v26 = accountManager;
+    v27 = syncCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = v10;
+    v14 = syncCopy;
     v15 = [v14 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v15)
     {
@@ -200,7 +200,7 @@ LABEL_3:
 
           v19 = *(*(&v31 + 1) + 8 * v18);
           v30 = 0;
-          v20 = [a1 _insertCodableCredentialFromSync:v19 syncProvenance:a4 profile:v11 error:{&v30, v26, v27}];
+          v20 = [self _insertCodableCredentialFromSync:v19 syncProvenance:provenance profile:profileCopy error:{&v30, v26, v27}];
           v21 = v30;
           if ((v20 & 1) == 0)
           {
@@ -211,11 +211,11 @@ LABEL_3:
               log = v22;
               v23 = objc_opt_class();
               v28 = NSStringFromClass(v23);
-              v24 = [v19 accountSyncIdentifier];
+              accountSyncIdentifier = [v19 accountSyncIdentifier];
               *buf = 138543874;
               v36 = v28;
               v37 = 2114;
-              v38 = v24;
+              v38 = accountSyncIdentifier;
               v39 = 2114;
               v40 = v21;
               _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "%{public}@ did not insert incoming credential for account with sync identifier %{public}@, ignoring. Error: %{public}@", buf, 0x20u);
@@ -232,24 +232,24 @@ LABEL_3:
       while (v16);
     }
 
-    v13 = v26;
-    v10 = v27;
+    accountManager = v26;
+    syncCopy = v27;
   }
 
   else
   {
-    [NSError hk_assignError:a6 code:127 format:@"Credential sync is not supported for profiles without a clinical account manager."];
+    [NSError hk_assignError:error code:127 format:@"Credential sync is not supported for profiles without a clinical account manager."];
   }
 
-  return v13 != 0;
+  return accountManager != 0;
 }
 
-+ (BOOL)_insertCodableCredentialFromSync:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_insertCodableCredentialFromSync:(id)sync syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  syncCopy = sync;
+  profileCopy = profile;
   v30[0] = 0;
-  v12 = [HDFHIRCredential credentialFromCodable:v10 accountSyncIdentifier:v30 ifValidWithError:0];
+  v12 = [HDFHIRCredential credentialFromCodable:syncCopy accountSyncIdentifier:v30 ifValidWithError:0];
   v13 = v30[0];
   v14 = v13;
   if (v12)
@@ -275,44 +275,44 @@ LABEL_3:
 
   else
   {
-    v16 = [v11 database];
+    database = [profileCopy database];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_4DBCC;
     v23[3] = &unk_107850;
-    v28 = a1;
+    selfCopy = self;
     v24 = v14;
-    v25 = v10;
-    v26 = v11;
+    v25 = syncCopy;
+    v26 = profileCopy;
     v27 = v12;
-    v29 = a4;
+    provenanceCopy = provenance;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_4E220;
     v19[3] = &unk_106800;
     v20 = v25;
-    v22 = a4;
+    provenanceCopy2 = provenance;
     v21 = v26;
-    v17 = [a1 performWriteTransactionWithHealthDatabase:v16 error:a6 block:v23 inaccessibilityHandler:v19];
+    v17 = [self performWriteTransactionWithHealthDatabase:database error:error block:v23 inaccessibilityHandler:v19];
   }
 
   return v17;
 }
 
-+ (BOOL)_shouldReplaceCurrentCredential:(id)a3 withIncomingCredential:(id)a4 account:(id)a5 profile:(id)a6 recordEvent:(id *)a7 error:(id *)a8
++ (BOOL)_shouldReplaceCurrentCredential:(id)credential withIncomingCredential:(id)incomingCredential account:(id)account profile:(id)profile recordEvent:(id *)event error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [a6 healthRecordsExtension];
-  v17 = [v16 accountManager];
+  credentialCopy = credential;
+  incomingCredentialCopy = incomingCredential;
+  accountCopy = account;
+  healthRecordsExtension = [profile healthRecordsExtension];
+  accountManager = [healthRecordsExtension accountManager];
 
-  if (v17)
+  if (accountManager)
   {
-    v18 = [v17 credentialFromCodableCredential:v14];
-    if (v13)
+    v18 = [accountManager credentialFromCodableCredential:incomingCredentialCopy];
+    if (credentialCopy)
     {
-      v19 = [v17 credentialFromCodableCredential:v13];
+      v19 = [accountManager credentialFromCodableCredential:credentialCopy];
     }
 
     else
@@ -320,31 +320,31 @@ LABEL_3:
       v19 = 0;
     }
 
-    if ([v14 hasDeleted] && objc_msgSend(v14, "deleted"))
+    if ([incomingCredentialCopy hasDeleted] && objc_msgSend(incomingCredentialCopy, "deleted"))
     {
-      v87 = v13;
-      v21 = a7;
+      v87 = credentialCopy;
+      eventCopy = event;
       v22 = [HKClinicalAccountEvent alloc];
-      v91 = v15;
-      v23 = [v15 identifier];
+      v91 = accountCopy;
+      identifier = [accountCopy identifier];
       v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 335, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
       v25 = +[NSDate date];
       v92 = v18;
       v26 = [v18 fetchRefreshTokenWithError:0];
       v27 = [v19 fetchRefreshTokenWithError:0];
-      v28 = [v22 initWithAccountIdentifier:v23 type:2 caller:v24 timestamp:v25 eventDescription:@"E01: The incoming credential was marked as deleted." incomingToken:v26 currentToken:v27];
+      v28 = [v22 initWithAccountIdentifier:identifier type:2 caller:v24 timestamp:v25 eventDescription:@"E01: The incoming credential was marked as deleted." incomingToken:v26 currentToken:v27];
       v20 = 0;
-      *v21 = v28;
-      v13 = v87;
+      *eventCopy = v28;
+      credentialCopy = v87;
 LABEL_23:
 
       v18 = v92;
-      v15 = v91;
+      accountCopy = v91;
       goto LABEL_24;
     }
 
-    v29 = [v18 hasRefreshTokenWithError:a8];
-    if (*a8)
+    v29 = [v18 hasRefreshTokenWithError:error];
+    if (*error)
     {
       v20 = 0;
 LABEL_24:
@@ -356,12 +356,12 @@ LABEL_24:
     v92 = v18;
     if (v29)
     {
-      if (!v13)
+      if (!credentialCopy)
       {
-        v85 = a7;
+        eventCopy3 = event;
         v30 = [HKClinicalAccountEvent alloc];
-        v91 = v15;
-        v31 = [v15 identifier];
+        v91 = accountCopy;
+        identifier2 = [accountCopy identifier];
         v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 363, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
         v33 = +[NSDate date];
         [v18 fetchRefreshTokenWithError:0];
@@ -372,16 +372,16 @@ LABEL_24:
         goto LABEL_21;
       }
 
-      if ([v13 hasDeleted] && objc_msgSend(v13, "deleted"))
+      if ([credentialCopy hasDeleted] && objc_msgSend(credentialCopy, "deleted"))
       {
-        v85 = a7;
+        eventCopy3 = event;
         v30 = [HKClinicalAccountEvent alloc];
-        v91 = v15;
-        v31 = [v15 identifier];
+        v91 = accountCopy;
+        identifier2 = [accountCopy identifier];
         v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 374, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
         v33 = +[NSDate date];
         [v18 fetchRefreshTokenWithError:0];
-        v35 = v34 = v13;
+        v35 = v34 = credentialCopy;
         v36 = v90;
         v27 = [v90 fetchRefreshTokenWithError:0];
         v75 = v27;
@@ -389,31 +389,31 @@ LABEL_21:
         v45 = v30;
         v46 = v33;
         v26 = v35;
-        v13 = v34;
+        credentialCopy = v34;
         v24 = v32;
         v47 = v32;
         v25 = v46;
-        *v85 = [v45 initWithAccountIdentifier:v31 type:1 caller:v47 timestamp:v75 eventDescription:? incomingToken:? currentToken:?];
+        *eventCopy3 = [v45 initWithAccountIdentifier:identifier2 type:1 caller:v47 timestamp:v75 eventDescription:? incomingToken:? currentToken:?];
         v19 = v36;
-        v23 = v31;
+        identifier = identifier2;
 LABEL_22:
         v20 = 1;
         goto LABEL_23;
       }
 
-      v44 = [v19 hasRefreshTokenWithError:a8];
-      if (*a8)
+      v44 = [v19 hasRefreshTokenWithError:error];
+      if (*error)
       {
         v20 = 0;
         goto LABEL_24;
       }
 
-      v86 = a7;
-      v91 = v15;
-      if ((([v15 credentialState] != &dword_0 + 1) & v44) == 0)
+      eventCopy4 = event;
+      v91 = accountCopy;
+      if ((([accountCopy credentialState] != &dword_0 + 1) & v44) == 0)
       {
         v54 = [HKClinicalAccountEvent alloc];
-        v23 = [v15 identifier];
+        identifier = [accountCopy identifier];
         v55 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 390, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
         v56 = +[NSDate date];
         v26 = [v18 fetchRefreshTokenWithError:0];
@@ -421,17 +421,17 @@ LABEL_22:
         v24 = v55;
         v57 = v55;
         v25 = v56;
-        *v86 = [v54 initWithAccountIdentifier:v23 type:1 caller:v57 timestamp:v56 eventDescription:@"E05: Using incoming credential from sync because the account is either marked as needing relogin incomingToken:or the refresh token is missing in keychain." currentToken:{v26, v27}];
+        *eventCopy4 = [v54 initWithAccountIdentifier:identifier type:1 caller:v57 timestamp:v56 eventDescription:@"E05: Using incoming credential from sync because the account is either marked as needing relogin incomingToken:or the refresh token is missing in keychain." currentToken:{v26, v27}];
         v19 = v90;
         goto LABEL_22;
       }
 
-      if (![v15 credentialHasOutdatedScopes:v18])
+      if (![accountCopy credentialHasOutdatedScopes:v18])
       {
-        if ([v15 credentialState] == &dword_0 + 2 || objc_msgSend(v15, "currentCredentialHasOutdatedScopes"))
+        if ([accountCopy credentialState] == &dword_0 + 2 || objc_msgSend(accountCopy, "currentCredentialHasOutdatedScopes"))
         {
           v82 = [HKClinicalAccountEvent alloc];
-          v23 = [v15 identifier];
+          identifier = [accountCopy identifier];
           v58 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 417, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
           v88 = +[NSDate date];
           v26 = [v18 fetchRefreshTokenWithError:0];
@@ -440,28 +440,28 @@ LABEL_22:
           v24 = v58;
           v59 = v58;
           v25 = v88;
-          *v86 = [v82 initWithAccountIdentifier:v23 type:1 caller:v59 timestamp:v27 eventDescription:? incomingToken:? currentToken:?];
+          *eventCopy4 = [v82 initWithAccountIdentifier:identifier type:1 caller:v59 timestamp:v27 eventDescription:? incomingToken:? currentToken:?];
         }
 
         else
         {
-          v60 = [v18 scopes];
-          v23 = [HKOAuth2ScopeSet scopeSetWithScopes:v60];
+          scopes = [v18 scopes];
+          identifier = [HKOAuth2ScopeSet scopeSetWithScopes:scopes];
 
-          v61 = [v19 scopes];
-          v79 = [HKOAuth2ScopeSet scopeSetWithScopes:v61];
+          scopes2 = [v19 scopes];
+          v79 = [HKOAuth2ScopeSet scopeSetWithScopes:scopes2];
 
-          v62 = [v23 compareTo:v79];
-          [v13 receivedDate];
+          v62 = [identifier compareTo:v79];
+          [credentialCopy receivedDate];
           v64 = v63;
-          [v14 receivedDate];
+          [incomingCredentialCopy receivedDate];
           v67 = v64 <= v65 && (v62 & 0xFFFFFFFFFFFFFFFELL) != 2;
-          [v14 receivedDate];
+          [incomingCredentialCopy receivedDate];
           v69 = v68;
-          [v13 receivedDate];
+          [credentialCopy receivedDate];
           v72 = v69 > v70 || v62 == 1;
           v80 = [HKClinicalAccountEvent alloc];
-          v89 = [v15 identifier];
+          identifier3 = [accountCopy identifier];
           v20 = v67 && v72;
           v73 = @"E09: Both the current and incoming credentials are viable and the incoming credential was not deemed better (WorseAtNothing: %@, BetterAtSomething: %@).";
           if (v67 && v72)
@@ -484,15 +484,15 @@ LABEL_22:
           v24 = v79;
           v81 = [v92 fetchRefreshTokenWithError:0];
           v76 = [v19 fetchRefreshTokenWithError:0];
-          v25 = v89;
-          *v86 = [v80 initWithAccountIdentifier:v76 type:? caller:? timestamp:? eventDescription:? incomingToken:? currentToken:?];
+          v25 = identifier3;
+          *eventCopy4 = [v80 initWithAccountIdentifier:v76 type:? caller:? timestamp:? eventDescription:? incomingToken:? currentToken:?];
         }
 
         goto LABEL_23;
       }
 
       v49 = [HKClinicalAccountEvent alloc];
-      v23 = [v15 identifier];
+      identifier = [accountCopy identifier];
       v50 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 406, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
       v51 = +[NSDate date];
       v26 = [v18 fetchRefreshTokenWithError:0];
@@ -500,49 +500,49 @@ LABEL_22:
       v24 = v50;
       v52 = v50;
       v25 = v51;
-      v53 = [v49 initWithAccountIdentifier:v23 type:2 caller:v52 timestamp:v51 eventDescription:@"E06: The current credential did not need relogin and the incoming credential had outdated scope." incomingToken:v26 currentToken:v27];
+      v53 = [v49 initWithAccountIdentifier:identifier type:2 caller:v52 timestamp:v51 eventDescription:@"E06: The current credential did not need relogin and the incoming credential had outdated scope." incomingToken:v26 currentToken:v27];
       v20 = 0;
-      *v86 = v53;
+      *eventCopy4 = v53;
     }
 
     else
     {
-      v37 = a7;
+      eventCopy5 = event;
       v38 = [HKClinicalAccountEvent alloc];
-      v91 = v15;
-      v23 = [v15 identifier];
+      v91 = accountCopy;
+      identifier = [accountCopy identifier];
       v39 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d (%s)", "+[HDFHIRCredentialEntity(HealthRecordsPlugin) _shouldReplaceCurrentCredential:withIncomingCredential:account:profile:recordEvent:error:]", 352, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Database/Entities/HDFHIRCredentialEntity+HealthRecordsPlugin.m");
       v40 = +[NSDate date];
       [v18 fetchRefreshTokenWithError:0];
-      v42 = v41 = v13;
+      v42 = v41 = credentialCopy;
       v27 = [v90 fetchRefreshTokenWithError:0];
-      v43 = [v38 initWithAccountIdentifier:v23 type:2 caller:v39 timestamp:v40 eventDescription:@"E02: The refresh token for the incoming credential was not found in the keychain." incomingToken:v42 currentToken:v27];
+      v43 = [v38 initWithAccountIdentifier:identifier type:2 caller:v39 timestamp:v40 eventDescription:@"E02: The refresh token for the incoming credential was not found in the keychain." incomingToken:v42 currentToken:v27];
       v20 = 0;
-      *v37 = v43;
+      *eventCopy5 = v43;
       v24 = v39;
       v25 = v40;
       v26 = v42;
-      v13 = v41;
+      credentialCopy = v41;
     }
 
     v19 = v90;
     goto LABEL_23;
   }
 
-  [NSError hk_assignError:a8 code:127 format:@"Credential sync is not supported for profiles without a clinical account manager."];
+  [NSError hk_assignError:error code:127 format:@"Credential sync is not supported for profiles without a clinical account manager."];
   v20 = 0;
 LABEL_25:
 
   return v20 & 1;
 }
 
-+ (id)_insertCodableCredential:(id)a3 syncProvenance:(int64_t)a4 syncIdentity:(int64_t)a5 transaction:(id)a6 error:(id *)a7
++ (id)_insertCodableCredential:(id)credential syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = [HDFHIRCredential validateInsertableCodableCredential:v12 error:a7];
-  v15 = [v12 identifier];
-  v16 = [NSUUID hk_UUIDWithData:v15];
+  credentialCopy = credential;
+  transactionCopy = transaction;
+  v14 = [HDFHIRCredential validateInsertableCodableCredential:credentialCopy error:error];
+  identifier = [credentialCopy identifier];
+  v16 = [NSUUID hk_UUIDWithData:identifier];
 
   if (v14)
   {
@@ -561,41 +561,41 @@ LABEL_25:
 
   else
   {
-    v18 = [v13 protectedDatabase];
-    v19 = [a1 allProperties];
+    protectedDatabase = [transactionCopy protectedDatabase];
+    allProperties = [self allProperties];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_4EE48;
     v22[3] = &unk_107878;
     v23 = v16;
-    v25 = a4;
-    v24 = v12;
-    v26 = a5;
-    v20 = [a1 insertOrReplaceEntity:0 database:v18 properties:v19 error:a7 bindingHandler:v22];
+    provenanceCopy = provenance;
+    v24 = credentialCopy;
+    identityCopy = identity;
+    v20 = [self insertOrReplaceEntity:0 database:protectedDatabase properties:allProperties error:error bindingHandler:v22];
   }
 
   return v20;
 }
 
-+ (id)insertCredential:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)insertCredential:(id)credential profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  credentialCopy = credential;
   v13 = +[NSDate date];
-  v14 = [a1 _insertCredential:v12 receivedDate:v13 profile:v11 transaction:v10 error:a6];
+  v14 = [self _insertCredential:credentialCopy receivedDate:v13 profile:profileCopy transaction:transactionCopy error:error];
 
   return v14;
 }
 
-+ (id)_insertCredential:(id)a3 receivedDate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (id)_insertCredential:(id)credential receivedDate:(id)date profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = [a3 asNewCodableForAccountSyncIdentifier:0 receivedDate:a4];
-  v15 = [v13 currentSyncIdentityPersistentID];
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v14 = [credential asNewCodableForAccountSyncIdentifier:0 receivedDate:date];
+  currentSyncIdentityPersistentID = [profileCopy currentSyncIdentityPersistentID];
 
-  v16 = [a1 _insertCodableCredential:v14 syncProvenance:0 syncIdentity:v15 transaction:v12 error:a7];
+  v16 = [self _insertCodableCredential:v14 syncProvenance:0 syncIdentity:currentSyncIdentityPersistentID transaction:transactionCopy error:error];
 
   return v16;
 }

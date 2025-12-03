@@ -1,16 +1,16 @@
 @interface _SBModalViewControllerStackTransition
-+ (_SBModalViewControllerStackTransition)transitionForViewController:(unint64_t)a3 operation:(BOOL)a4 animated:(void *)a5 completion:;
++ (_SBModalViewControllerStackTransition)transitionForViewController:(unint64_t)controller operation:(BOOL)operation animated:(void *)animated completion:;
 - (uint64_t)setAnimated:(uint64_t)result;
 - (uint64_t)setOperation:(uint64_t)result;
-- (void)invokeCompletionIfNecessaryWithResult:(uint64_t)a1;
-- (void)setCompletion:(void *)a1;
+- (void)invokeCompletionIfNecessaryWithResult:(uint64_t)result;
+- (void)setCompletion:(void *)completion;
 @end
 
 @implementation _SBModalViewControllerStackTransition
 
-+ (_SBModalViewControllerStackTransition)transitionForViewController:(unint64_t)a3 operation:(BOOL)a4 animated:(void *)a5 completion:
++ (_SBModalViewControllerStackTransition)transitionForViewController:(unint64_t)controller operation:(BOOL)operation animated:(void *)animated completion:
 {
-  v8 = a5;
+  animatedCopy = animated;
   v9 = a2;
   objc_opt_self();
   v10 = objc_alloc_init(_SBModalViewControllerStackTransition);
@@ -18,9 +18,9 @@
 
   if (v10)
   {
-    v10->_operation = a3;
-    v10->_animated = a4;
-    objc_setProperty_nonatomic_copy(v10, v11, v8, 32);
+    v10->_operation = controller;
+    v10->_animated = operation;
+    objc_setProperty_nonatomic_copy(v10, v11, animatedCopy, 32);
   }
 
   return v10;
@@ -46,24 +46,24 @@
   return result;
 }
 
-- (void)setCompletion:(void *)a1
+- (void)setCompletion:(void *)completion
 {
-  if (a1)
+  if (completion)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 32);
+    objc_setProperty_nonatomic_copy(completion, newValue, newValue, 32);
   }
 }
 
-- (void)invokeCompletionIfNecessaryWithResult:(uint64_t)a1
+- (void)invokeCompletionIfNecessaryWithResult:(uint64_t)result
 {
-  if (a1)
+  if (result)
   {
-    v2 = *(a1 + 32);
+    v2 = *(result + 32);
     if (v2)
     {
       (*(v2 + 16))();
-      v3 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v3 = *(result + 32);
+      *(result + 32) = 0;
     }
   }
 }

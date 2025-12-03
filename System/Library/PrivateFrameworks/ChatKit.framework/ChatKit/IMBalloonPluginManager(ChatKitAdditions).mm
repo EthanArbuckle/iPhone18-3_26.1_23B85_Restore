@@ -11,8 +11,8 @@
   v7 = a4;
   if (v7)
   {
-    v8 = [v6 type];
-    v9 = [a1 balloonPluginForBundleID:v8];
+    type = [v6 type];
+    v9 = [self balloonPluginForBundleID:type];
 
     if (v9)
     {
@@ -37,9 +37,9 @@
         v15 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = [v6 type];
+          type2 = [v6 type];
           *buf = 138412290;
-          v21 = v16;
+          v21 = type2;
           _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Unable to get balloon controller for chat item type: %@", buf, 0xCu);
         }
       }
@@ -52,9 +52,9 @@
         v13 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v6 type];
+          type3 = [v6 type];
           *buf = 138412290;
-          v21 = v14;
+          v21 = type3;
           _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Unable to get plugin for chat item type: %@", buf, 0xCu);
         }
       }

@@ -1,36 +1,36 @@
 @interface DMCReauthSpecifierProvider
 - (BOOL)_shouldAutoPresentReauthFlow;
-- (BOOL)handleURL:(id)a3;
-- (DMCReauthSpecifierProvider)initWithAccount:(id)a3;
-- (DMCReauthSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (BOOL)handleURL:(id)l;
+- (DMCReauthSpecifierProvider)initWithAccount:(id)account;
+- (DMCReauthSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (PSListController)presenter;
 - (id)_reauthSpecifier;
 - (id)specifiers;
-- (void)presentReauthFlow:(id)a3;
-- (void)registerCustomCellClassesInTableView:(id)a3;
+- (void)presentReauthFlow:(id)flow;
+- (void)registerCustomCellClassesInTableView:(id)view;
 @end
 
 @implementation DMCReauthSpecifierProvider
 
-- (DMCReauthSpecifierProvider)initWithAccount:(id)a3
+- (DMCReauthSpecifierProvider)initWithAccount:(id)account
 {
   v3 = *MEMORY[0x277D24CC8];
   v5.receiver = self;
   v5.super_class = DMCReauthSpecifierProvider;
-  return [(DMCSpecifierProvider *)&v5 initWithAccount:a3 reloadNotification:v3 isLocalNotification:0 reloadIfMissingRMAccount:0];
+  return [(DMCSpecifierProvider *)&v5 initWithAccount:account reloadNotification:v3 isLocalNotification:0 reloadIfMissingRMAccount:0];
 }
 
-- (DMCReauthSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (DMCReauthSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v6 = a4;
+  presenterCopy = presenter;
   v7 = *MEMORY[0x277D24CC8];
   v11.receiver = self;
   v11.super_class = DMCReauthSpecifierProvider;
-  v8 = [(DMCSpecifierProvider *)&v11 initWithAccountManager:a3 reloadNotification:v7 isLocalNotification:0 reloadIfMissingRMAccount:0];
+  v8 = [(DMCSpecifierProvider *)&v11 initWithAccountManager:manager reloadNotification:v7 isLocalNotification:0 reloadIfMissingRMAccount:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presenter, v6);
+    objc_storeWeak(&v8->_presenter, presenterCopy);
     v9->_isReauthing = 0;
   }
 
@@ -42,29 +42,29 @@
   v13[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = DMCReauthSpecifierProvider;
-  v3 = [(DMCSpecifierProvider *)&v12 specifiers];
+  specifiers = [(DMCSpecifierProvider *)&v12 specifiers];
 
-  if (v3)
+  if (specifiers)
   {
     v11.receiver = self;
     v11.super_class = DMCReauthSpecifierProvider;
-    v4 = [(DMCSpecifierProvider *)&v11 specifiers];
+    specifiers2 = [(DMCSpecifierProvider *)&v11 specifiers];
 LABEL_3:
-    v5 = v4;
+    v5 = specifiers2;
     goto LABEL_6;
   }
 
-  v6 = [(DMCSpecifierProvider *)self rmAccount];
-  v7 = [v6 dmc_bearerReauthURL];
+  rmAccount = [(DMCSpecifierProvider *)self rmAccount];
+  dmc_bearerReauthURL = [rmAccount dmc_bearerReauthURL];
 
-  if (!v7)
+  if (!dmc_bearerReauthURL)
   {
-    v4 = [(DMCSpecifierProvider *)self cachedSpecifiers:MEMORY[0x277CBEBF8]];
+    specifiers2 = [(DMCSpecifierProvider *)self cachedSpecifiers:MEMORY[0x277CBEBF8]];
     goto LABEL_3;
   }
 
-  v8 = [(DMCReauthSpecifierProvider *)self _reauthSpecifier];
-  v13[0] = v8;
+  _reauthSpecifier = [(DMCReauthSpecifierProvider *)self _reauthSpecifier];
+  v13[0] = _reauthSpecifier;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v5 = [(DMCSpecifierProvider *)self cachedSpecifiers:v9];
 
@@ -75,16 +75,16 @@ LABEL_6:
 
 - (id)_reauthSpecifier
 {
-  v3 = [(DMCReauthSpecifierProvider *)self presenter];
-  if (v3)
+  presenter = [(DMCReauthSpecifierProvider *)self presenter];
+  if (presenter)
   {
     v4 = objc_opt_new();
     [v4 setTarget:self];
     [v4 setButtonAction:sel_presentReauthFlow_];
     if (![(DMCSpecifierProvider *)self isReloading]&& [(DMCReauthSpecifierProvider *)self _shouldAutoPresentReauthFlow])
     {
-      v5 = [v3 specifier];
-      [v5 setProperty:MEMORY[0x277CBEC28] forKey:@"PSDMCHandleReauthKey"];
+      specifier = [presenter specifier];
+      [specifier setProperty:MEMORY[0x277CBEC28] forKey:@"PSDMCHandleReauthKey"];
 
       [(DMCReauthSpecifierProvider *)self presentReauthFlow:0];
     }
@@ -93,16 +93,16 @@ LABEL_6:
   else
   {
     v6 = MEMORY[0x277CE8568];
-    v7 = [(DMCSpecifierProvider *)self rmAccount];
-    v8 = [v7 copy];
+    rmAccount = [(DMCSpecifierProvider *)self rmAccount];
+    v8 = [rmAccount copy];
     v4 = [v6 specifierWithStyle:0 account:v8 target:self controllerLoadAction:sel_presentReauthFlow_];
 
     [v4 setProperty:MEMORY[0x277CBEC38] forKey:@"PSDMCHandleReauthKey"];
   }
 
-  v9 = [(DMCSpecifierProvider *)self rmAccount];
-  v10 = [v9 username];
-  v11 = [DMCAccountSpecifierProvider itemSpecifierIDForReauthAccountUsername:v10];
+  rmAccount2 = [(DMCSpecifierProvider *)self rmAccount];
+  username = [rmAccount2 username];
+  v11 = [DMCAccountSpecifierProvider itemSpecifierIDForReauthAccountUsername:username];
   [v4 setIdentifier:v11];
 
   v12 = DMCLocalizedString();
@@ -116,21 +116,21 @@ LABEL_6:
   return v4;
 }
 
-- (void)registerCustomCellClassesInTableView:(id)a3
+- (void)registerCustomCellClassesInTableView:(id)view
 {
   v6.receiver = self;
   v6.super_class = DMCReauthSpecifierProvider;
-  v3 = a3;
-  [(DMCSpecifierProvider *)&v6 registerCustomCellClassesInTableView:v3];
+  viewCopy = view;
+  [(DMCSpecifierProvider *)&v6 registerCustomCellClassesInTableView:viewCopy];
   v4 = objc_opt_class();
   v5 = [(PSTableCell *)DMCReauthCell cellReuseIdentifier:v6.receiver];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [viewCopy registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)presentReauthFlow:(id)a3
+- (void)presentReauthFlow:(id)flow
 {
-  v4 = [(DMCReauthSpecifierProvider *)self presenter];
-  if (v4)
+  presenter = [(DMCReauthSpecifierProvider *)self presenter];
+  if (presenter)
   {
     if ([(DMCReauthSpecifierProvider *)self isReauthing])
     {
@@ -152,16 +152,16 @@ LABEL_6:
         v12[2] = __48__DMCReauthSpecifierProvider_presentReauthFlow___block_invoke;
         v12[3] = &unk_278EE7CA8;
         v12[4] = self;
-        v7 = [(DMCEnrollmentInterface *)v6 initFromViewController:v4 enrollmentResultBlock:v12];
+        v7 = [(DMCEnrollmentInterface *)v6 initFromViewController:presenter enrollmentResultBlock:v12];
         enrollmentInterface = self->_enrollmentInterface;
         self->_enrollmentInterface = v7;
       }
 
       [(DMCReauthSpecifierProvider *)self setIsReauthing:1];
-      v9 = [(DMCReauthSpecifierProvider *)self enrollmentInterface];
-      v10 = [(DMCSpecifierProvider *)self rmAccount];
-      v11 = [v10 identifier];
-      [v9 startReauthWithRMAccountID:v11];
+      enrollmentInterface = [(DMCReauthSpecifierProvider *)self enrollmentInterface];
+      rmAccount = [(DMCSpecifierProvider *)self rmAccount];
+      identifier = [rmAccount identifier];
+      [enrollmentInterface startReauthWithRMAccountID:identifier];
     }
   }
 }
@@ -176,49 +176,49 @@ id __48__DMCReauthSpecifierProvider_presentReauthFlow___block_invoke(uint64_t a1
 
 - (BOOL)_shouldAutoPresentReauthFlow
 {
-  v2 = [(DMCReauthSpecifierProvider *)self presenter];
-  v3 = v2;
-  if (v2)
+  presenter = [(DMCReauthSpecifierProvider *)self presenter];
+  v3 = presenter;
+  if (presenter)
   {
-    v4 = [v2 specifier];
-    v5 = [v4 propertyForKey:@"PSDMCHandleReauthKey"];
+    specifier = [presenter specifier];
+    v5 = [specifier propertyForKey:@"PSDMCHandleReauthKey"];
 
     if (v5)
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [(DMCSpecifierProvider *)self rmAccount];
-    v6 = [v5 username];
+    rmAccount = [(DMCSpecifierProvider *)self rmAccount];
+    username = [rmAccount username];
 
-    if (v6)
+    if (username)
     {
-      v7 = [v4 objectForKeyedSubscript:@"path"];
-      v8 = [(DMCSpecifierProvider *)self rmAccount];
-      v9 = [v8 username];
-      v10 = [DMCAccountSpecifierProvider itemSpecifierIDForReauthAccountUsername:v9];
-      LODWORD(v6) = [v7 containsString:v10];
+      v7 = [lCopy objectForKeyedSubscript:@"path"];
+      rmAccount2 = [(DMCSpecifierProvider *)self rmAccount];
+      username2 = [rmAccount2 username];
+      v10 = [DMCAccountSpecifierProvider itemSpecifierIDForReauthAccountUsername:username2];
+      LODWORD(username) = [v7 containsString:v10];
 
-      if (v6)
+      if (username)
       {
         [(DMCReauthSpecifierProvider *)self presentReauthFlow:0];
       }
@@ -227,10 +227,10 @@ id __48__DMCReauthSpecifierProvider_presentReauthFlow___block_invoke(uint64_t a1
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(username) = 0;
   }
 
-  return v6;
+  return username;
 }
 
 - (PSListController)presenter

@@ -1,20 +1,20 @@
 @interface CAMSlashView
-- (CAMSlashView)initWithFrame:(CGRect)a3;
+- (CAMSlashView)initWithFrame:(CGRect)frame;
 - (void)_updateShapeLayerColor;
 - (void)_updateShapeLayerLineWidth;
 - (void)_updateShapeLayerPath;
-- (void)_updateShapeLayerProgressAnimated:(BOOL)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateShapeLayerProgressAnimated:(BOOL)animated;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation CAMSlashView
 
-- (CAMSlashView)initWithFrame:(CGRect)a3
+- (CAMSlashView)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = CAMSlashView;
-  v3 = [(CAMSlashView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSlashView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,19 +36,19 @@
 
 - (void)_updateShapeLayerColor
 {
-  v6 = [(CAMSlashView *)self tintColor];
-  v3 = v6;
-  v4 = [v6 CGColor];
-  v5 = [(CAMSlashView *)self _shapeLayer];
-  [v5 setStrokeColor:v4];
+  tintColor = [(CAMSlashView *)self tintColor];
+  v3 = tintColor;
+  cGColor = [tintColor CGColor];
+  _shapeLayer = [(CAMSlashView *)self _shapeLayer];
+  [_shapeLayer setStrokeColor:cGColor];
 }
 
 - (void)_updateShapeLayerLineWidth
 {
-  v3 = [(CAMSlashView *)self traitCollection];
-  v4 = [v3 legibilityWeight];
+  traitCollection = [(CAMSlashView *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
 
-  if (v4 == 1)
+  if (legibilityWeight == 1)
   {
     v5 = 1.75;
   }
@@ -58,8 +58,8 @@
     v5 = 1.0;
   }
 
-  v6 = [(CAMSlashView *)self _shapeLayer];
-  [v6 setLineWidth:v5];
+  _shapeLayer = [(CAMSlashView *)self _shapeLayer];
+  [_shapeLayer setLineWidth:v5];
 }
 
 - (void)_updateShapeLayerPath
@@ -75,31 +75,31 @@
   v15.size.width = width;
   v15.size.height = height;
   MaxY = CGRectGetMaxY(v15);
-  v12 = [MEMORY[0x1E69DC728] bezierPath];
-  [v12 moveToPoint:{x, y}];
-  [v12 addLineToPoint:{MaxX, MaxY}];
-  v9 = v12;
-  v10 = [v12 CGPath];
-  v11 = [(CAMSlashView *)self _shapeLayer];
-  [v11 setPath:v10];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath moveToPoint:{x, y}];
+  [bezierPath addLineToPoint:{MaxX, MaxY}];
+  v9 = bezierPath;
+  cGPath = [bezierPath CGPath];
+  _shapeLayer = [(CAMSlashView *)self _shapeLayer];
+  [_shapeLayer setPath:cGPath];
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
-    [(CAMSlashView *)self _updateShapeLayerProgressAnimated:a4];
+    self->_visible = visible;
+    [(CAMSlashView *)self _updateShapeLayerProgressAnimated:animated];
   }
 }
 
-- (void)_updateShapeLayerProgressAnimated:(BOOL)a3
+- (void)_updateShapeLayerProgressAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v18 = [(CAMSlashView *)self _shapeLayer];
-  v5 = [(CAMSlashView *)self isVisible];
+  animatedCopy = animated;
+  _shapeLayer = [(CAMSlashView *)self _shapeLayer];
+  isVisible = [(CAMSlashView *)self isVisible];
   v8 = 1.0;
-  if (v5)
+  if (isVisible)
   {
     v9 = 1.0;
   }
@@ -109,21 +109,21 @@
     v9 = 0.0;
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     LODWORD(v6) = 1041865114;
     LODWORD(v7) = 1.0;
     LODWORD(v8) = 1045220557;
     v10 = [MEMORY[0x1E69793D0] functionWithControlPoints:COERCE_DOUBLE(1045220557) :v8 :v6 :v7];
-    v11 = [v18 presentationLayer];
-    if (v11)
+    presentationLayer = [_shapeLayer presentationLayer];
+    if (presentationLayer)
     {
-      v12 = v11;
+      v12 = presentationLayer;
     }
 
     else
     {
-      v12 = v18;
+      v12 = _shapeLayer;
     }
 
     v13 = v12;
@@ -139,10 +139,10 @@
 
     [v14 setTimingFunction:v10];
     [v14 setDuration:0.4];
-    [v18 addAnimation:v14 forKey:@"slashProgress"];
+    [_shapeLayer addAnimation:v14 forKey:@"slashProgress"];
   }
 
-  [v18 setStrokeEnd:v9];
+  [_shapeLayer setStrokeEnd:v9];
 }
 
 @end

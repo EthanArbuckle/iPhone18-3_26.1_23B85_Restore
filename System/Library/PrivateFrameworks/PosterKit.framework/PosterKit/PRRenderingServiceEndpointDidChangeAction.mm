@@ -1,18 +1,18 @@
 @interface PRRenderingServiceEndpointDidChangeAction
 - (BSServiceConnectionEndpoint)endpoint;
-- (PRRenderingServiceEndpointDidChangeAction)initWithEndpoint:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (PRRenderingServiceEndpointDidChangeAction)initWithEndpoint:(id)endpoint;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation PRRenderingServiceEndpointDidChangeAction
 
-- (PRRenderingServiceEndpointDidChangeAction)initWithEndpoint:(id)a3
+- (PRRenderingServiceEndpointDidChangeAction)initWithEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = objc_alloc_init(v4);
-  [v6 setObject:v5 forSetting:1];
+  [v6 setObject:endpointCopy forSetting:1];
 
   v9.receiver = self;
   v9.super_class = PRRenderingServiceEndpointDidChangeAction;
@@ -23,15 +23,15 @@
 
 - (BSServiceConnectionEndpoint)endpoint
 {
-  v2 = [(PRRenderingServiceEndpointDidChangeAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(PRRenderingServiceEndpointDidChangeAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"endpoint";
   }
@@ -42,13 +42,13 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  if (a5 == 1)
+  objectCopy = object;
+  if (setting == 1)
   {
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = objectCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())

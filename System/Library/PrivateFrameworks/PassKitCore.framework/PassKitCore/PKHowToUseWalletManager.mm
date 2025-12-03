@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (BOOL)hasContent;
 - (PKHowToUseWalletManager)init;
-- (id)_hiddenCardsPassingTest:(id)a3;
-- (id)_jsonDictionaryForURL:(id)a3;
-- (id)howToUseWalletModelForURL:(id)a3 bundle:(id)a4;
-- (id)latestCardForLotIdentifier:(id)a3;
+- (id)_hiddenCardsPassingTest:(id)test;
+- (id)_jsonDictionaryForURL:(id)l;
+- (id)howToUseWalletModelForURL:(id)l bundle:(id)bundle;
+- (id)latestCardForLotIdentifier:(id)identifier;
 - (id)latestHowToUseWalletModel;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __41__PKHowToUseWalletManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_255 != -1)
   {
     dispatch_once(&_MergedGlobals_255, block);
@@ -53,12 +53,12 @@ void __41__PKHowToUseWalletManager_sharedInstance__block_invoke(uint64_t a1)
 - (BOOL)hasContent
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(PKHowToUseWalletManager *)self latestHowToUseWalletModel];
-  v3 = v2;
-  if (v2)
+  latestHowToUseWalletModel = [(PKHowToUseWalletManager *)self latestHowToUseWalletModel];
+  v3 = latestHowToUseWalletModel;
+  if (latestHowToUseWalletModel)
   {
-    v4 = [v2 sections];
-    v5 = [v4 count];
+    sections = [latestHowToUseWalletModel sections];
+    v5 = [sections count];
 
     if (v5)
     {
@@ -66,8 +66,8 @@ void __41__PKHowToUseWalletManager_sharedInstance__block_invoke(uint64_t a1)
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = [v3 sections];
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      sections2 = [v3 sections];
+      v7 = [sections2 countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v7)
       {
         v8 = v7;
@@ -78,11 +78,11 @@ void __41__PKHowToUseWalletManager_sharedInstance__block_invoke(uint64_t a1)
           {
             if (*v17 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(sections2);
             }
 
-            v11 = [*(*(&v16 + 1) + 8 * i) cards];
-            v12 = [v11 count];
+            cards = [*(*(&v16 + 1) + 8 * i) cards];
+            v12 = [cards count];
 
             if (v12)
             {
@@ -91,7 +91,7 @@ void __41__PKHowToUseWalletManager_sharedInstance__block_invoke(uint64_t a1)
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+          v8 = [sections2 countByEnumeratingWithState:&v16 objects:v21 count:16];
           if (v8)
           {
             continue;
@@ -101,20 +101,20 @@ void __41__PKHowToUseWalletManager_sharedInstance__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = PKLogFacilityTypeGetObject(0x11uLL);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      sections2 = PKLogFacilityTypeGetObject(0x11uLL);
+      if (os_log_type_enabled(sections2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v13 = "How to Use Wallet model does not have cards to display";
 LABEL_18:
-        _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
+        _os_log_impl(&dword_1AD337000, sections2, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
       }
     }
 
     else
     {
-      v6 = PKLogFacilityTypeGetObject(0x11uLL);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      sections2 = PKLogFacilityTypeGetObject(0x11uLL);
+      if (os_log_type_enabled(sections2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v13 = "How to Use Wallet model has no sections to display";
@@ -125,8 +125,8 @@ LABEL_18:
 
   else
   {
-    v6 = PKLogFacilityTypeGetObject(0x11uLL);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    sections2 = PKLogFacilityTypeGetObject(0x11uLL);
+    if (os_log_type_enabled(sections2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v13 = "How to Use Wallet model not found, so no content is available";
@@ -146,9 +146,9 @@ LABEL_20:
   v4 = self->_cachedBaseModel;
   if (!v4)
   {
-    v5 = [(PKHowToUseWalletManager *)self _baseResourceBundle];
-    v6 = [v5 URLForResource:@"WalletEducation/how-to-use-wallet" withExtension:@"json"];
-    v4 = [(PKHowToUseWalletManager *)self howToUseWalletModelForURL:v6 bundle:v5];
+    _baseResourceBundle = [(PKHowToUseWalletManager *)self _baseResourceBundle];
+    v6 = [_baseResourceBundle URLForResource:@"WalletEducation/how-to-use-wallet" withExtension:@"json"];
+    v4 = [(PKHowToUseWalletManager *)self howToUseWalletModelForURL:v6 bundle:_baseResourceBundle];
     objc_storeStrong(p_cachedBaseModel, v4);
   }
 
@@ -173,11 +173,11 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v14 = [(PKMobileAssetManager *)self->_mobileAssetManager cachedHowToUseWalletModelAsset];
-  if (v14)
+  cachedHowToUseWalletModelAsset = [(PKMobileAssetManager *)self->_mobileAssetManager cachedHowToUseWalletModelAsset];
+  if (cachedHowToUseWalletModelAsset)
   {
-    v15 = v14;
-    v8 = [[PKHowToUseWalletModel alloc] initWithMobileAssetBundle:v14];
+    v15 = cachedHowToUseWalletModelAsset;
+    v8 = [[PKHowToUseWalletModel alloc] initWithMobileAssetBundle:cachedHowToUseWalletModelAsset];
     cachedMobileAssetModel = self->_cachedMobileAssetModel;
     self->_cachedMobileAssetModel = v8;
 
@@ -201,24 +201,24 @@ LABEL_13:
   return v13;
 }
 
-- (id)howToUseWalletModelForURL:(id)a3 bundle:(id)a4
+- (id)howToUseWalletModelForURL:(id)l bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = [(PKHowToUseWalletManager *)self _jsonDictionaryForURL:a3];
-  v8 = [[PKHowToUseWalletModel alloc] initWithDictionary:v7 bundle:v6];
+  bundleCopy = bundle;
+  v7 = [(PKHowToUseWalletManager *)self _jsonDictionaryForURL:l];
+  v8 = [[PKHowToUseWalletModel alloc] initWithDictionary:v7 bundle:bundleCopy];
 
   return v8;
 }
 
-- (id)latestCardForLotIdentifier:(id)a3
+- (id)latestCardForLotIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PKLogFacilityTypeGetObject(0x11uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v4;
+    v41 = identifierCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Fetching latest card for lotIdentifier '%@'", buf, 0xCu);
   }
 
@@ -230,18 +230,18 @@ LABEL_13:
   v7 = v6;
   v38 = v7;
   v8 = _Block_copy(aBlock);
-  v27 = [(PKMobileAssetManager *)self->_mobileAssetManager cachedHowToUseWalletCardAssetsForLotIdentifier:v4];
+  v27 = [(PKMobileAssetManager *)self->_mobileAssetManager cachedHowToUseWalletCardAssetsForLotIdentifier:identifierCopy];
   v9 = [v27 pk_arrayBySafelyApplyingBlock:&__block_literal_global_177];
   v8[2](v8, v9);
-  v10 = [(PKHowToUseWalletManager *)self latestHowToUseWalletModel];
+  latestHowToUseWalletModel = [(PKHowToUseWalletManager *)self latestHowToUseWalletModel];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __54__PKHowToUseWalletManager_latestCardForLotIdentifier___block_invoke_3;
   v35[3] = &unk_1E79DDFE8;
-  v11 = v4;
+  v11 = identifierCopy;
   v36 = v11;
-  v26 = v10;
-  v12 = [v10 cardsPassingTest:v35];
+  v26 = latestHowToUseWalletModel;
+  v12 = [latestHowToUseWalletModel cardsPassingTest:v35];
 
   v8[2](v8, v12);
   v33[0] = MEMORY[0x1E69E9820];
@@ -258,8 +258,8 @@ LABEL_13:
   v29 = 0u;
   v30 = 0u;
   v28 = v7;
-  v14 = [v7 allValues];
-  v15 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
+  allValues = [v7 allValues];
+  v15 = [allValues countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v15)
   {
     v16 = v15;
@@ -273,7 +273,7 @@ LABEL_13:
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v21 = [PKHowToUseWalletCard cardToPrioritize:v20 otherCard:*(*(&v29 + 1) + 8 * v19)];
@@ -295,7 +295,7 @@ LABEL_13:
       }
 
       while (v16 != v19);
-      v16 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v29 objects:v39 count:16];
     }
 
     while (v16);
@@ -431,9 +431,9 @@ uint64_t __54__PKHowToUseWalletManager_latestCardForLotIdentifier___block_invoke
   return v8;
 }
 
-- (id)_hiddenCardsPassingTest:(id)a3
+- (id)_hiddenCardsPassingTest:(id)test
 {
-  v29 = a3;
+  testCopy = test;
   v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = [(NSDictionary *)self->_cachedHiddenCards mutableCopy];
   v5 = v4;
@@ -454,11 +454,11 @@ uint64_t __54__PKHowToUseWalletManager_latestCardForLotIdentifier___block_invoke
   v9 = @"cardWithDemo";
   v10 = 1;
   v11 = 0x1E696A000uLL;
-  v26 = self;
+  selfCopy = self;
   while (1)
   {
     v12 = v8;
-    v13 = [*(v11 + 3480) numberWithUnsignedInteger:{v10, v26}];
+    v13 = [*(v11 + 3480) numberWithUnsignedInteger:{v10, selfCopy}];
     v14 = [(NSDictionary *)v7 objectForKey:v13];
 
     if (!v14)
@@ -467,14 +467,14 @@ uint64_t __54__PKHowToUseWalletManager_latestCardForLotIdentifier___block_invoke
     }
 
     v31 = 0;
-    if (v29[2](v29, v14, &v31))
+    if (testCopy[2](testCopy, v14, &v31))
     {
       [v27 addObject:v14];
     }
 
     if (v31)
     {
-      v23 = v14;
+      _baseResourceBundleHiddenCards = v14;
       goto LABEL_20;
     }
 
@@ -489,9 +489,9 @@ LABEL_18:
     }
   }
 
-  v23 = [(PKHowToUseWalletManager *)self _baseResourceBundleHiddenCards];
-  v15 = [v23 bundleURL];
-  v16 = [v15 URLByAppendingPathComponent:@"WalletEducation/HiddenCards/HowToUseApplePay"];
+  _baseResourceBundleHiddenCards = [(PKHowToUseWalletManager *)self _baseResourceBundleHiddenCards];
+  bundleURL = [_baseResourceBundleHiddenCards bundleURL];
+  v16 = [bundleURL URLByAppendingPathComponent:@"WalletEducation/HiddenCards/HowToUseApplePay"];
 
   v17 = [MEMORY[0x1E696AAE8] bundleWithURL:v16];
   v18 = v9;
@@ -516,7 +516,7 @@ LABEL_17:
   [(NSDictionary *)v28 setObject:v21 forKey:v22];
 
   v30 = 0;
-  if (v29[2](v29, v21, &v30))
+  if (testCopy[2](testCopy, v21, &v30))
   {
     [v27 addObject:v21];
   }
@@ -525,11 +525,11 @@ LABEL_17:
   {
 LABEL_16:
 
-    self = v26;
+    self = selfCopy;
     goto LABEL_17;
   }
 
-  self = v26;
+  self = selfCopy;
   v7 = v28;
 LABEL_20:
 
@@ -540,11 +540,11 @@ LABEL_21:
   return v27;
 }
 
-- (id)_jsonDictionaryForURL:(id)a3
+- (id)_jsonDictionaryForURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3];
+  lCopy = l;
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
   if ([v4 length])
   {
     v11 = 0;
@@ -574,9 +574,9 @@ LABEL_21:
     v6 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v3 absoluteString];
+      absoluteString = [lCopy absoluteString];
       *buf = 138412290;
-      v13 = v9;
+      v13 = absoluteString;
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "JSON not found at provided URL: %@", buf, 0xCu);
     }
 

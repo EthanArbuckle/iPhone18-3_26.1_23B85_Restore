@@ -1,36 +1,36 @@
 @interface FCAdStatusCondition
-+ (id)adStatusConditionsFromConditionsArray:(id)a3;
-- (FCAdStatusCondition)initWithStatusConditionType:(unint64_t)a3 identifier:(id)a4;
++ (id)adStatusConditionsFromConditionsArray:(id)array;
+- (FCAdStatusCondition)initWithStatusConditionType:(unint64_t)type identifier:(id)identifier;
 @end
 
 @implementation FCAdStatusCondition
 
-- (FCAdStatusCondition)initWithStatusConditionType:(unint64_t)a3 identifier:(id)a4
+- (FCAdStatusCondition)initWithStatusConditionType:(unint64_t)type identifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = FCAdStatusCondition;
   v8 = [(FCAdStatusCondition *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a4);
-    v9->_type = a3;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-+ (id)adStatusConditionsFromConditionsArray:(id)a3
++ (id)adStatusConditionsFromConditionsArray:(id)array
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  arrayCopy = array;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = v3;
+  v4 = arrayCopy;
   v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -68,7 +68,7 @@
                 v19 = adStatusConditionTypeForType(v12);
                 v20 = [[FCAdStatusCondition alloc] initWithStatusConditionType:v19 identifier:v13];
                 v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v19];
-                [v24 setObject:v20 forKey:v21];
+                [dictionary setObject:v20 forKey:v21];
 
                 v4 = v18;
                 v9 = v17;
@@ -87,7 +87,7 @@
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return dictionary;
 }
 
 @end

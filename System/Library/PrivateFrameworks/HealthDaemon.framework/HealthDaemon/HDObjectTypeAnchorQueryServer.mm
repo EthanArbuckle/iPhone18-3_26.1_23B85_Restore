@@ -1,23 +1,23 @@
 @interface HDObjectTypeAnchorQueryServer
-- (HDObjectTypeAnchorQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDObjectTypeAnchorQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (uint64_t)_queue_unconditionallyScheduleUpdate;
 - (void)_queue_fetchAndDeliver;
 - (void)_queue_scheduleUpdate;
 - (void)_queue_start;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4;
-- (void)samplesJournaled:(id)a3 type:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor;
+- (void)samplesJournaled:(id)journaled type:(id)type;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDObjectTypeAnchorQueryServer
 
-- (HDObjectTypeAnchorQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDObjectTypeAnchorQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v19.receiver = self;
   v19.super_class = HDObjectTypeAnchorQueryServer;
-  v11 = [(HDQueryServer *)&v19 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDQueryServer *)&v19 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   v12 = v11;
   if (v11)
   {
@@ -26,10 +26,10 @@
     quota = v12->_quota;
     v12->_quota = v13;
 
-    v15 = [v10 profile];
-    v16 = [v15 database];
-    v17 = [(HDQueryServer *)v12 queryQueue];
-    [v16 addProtectedDataObserver:v12 queue:v17];
+    profile = [clientCopy profile];
+    database = [profile database];
+    queryQueue = [(HDQueryServer *)v12 queryQueue];
+    [database addProtectedDataObserver:v12 queue:queryQueue];
   }
 
   return v12;
@@ -37,9 +37,9 @@
 
 - (void)_queue_fetchAndDeliver
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 208) = 0;
+    *(self + 208) = 0;
     v13 = 0;
     v15 = 0;
     v16 = &v15;
@@ -47,16 +47,16 @@
     v18 = __Block_byref_object_copy__184;
     v19 = __Block_byref_object_dispose__184;
     v20 = 0;
-    v2 = [a1 profile];
-    v3 = [v2 database];
+    profile = [self profile];
+    database = [profile database];
     v4 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__HDObjectTypeAnchorQueryServer__fetchAnchorsWithError___block_invoke;
     v14[3] = &unk_278614110;
-    v14[4] = a1;
+    v14[4] = self;
     v14[5] = &v15;
-    v5 = [v3 performTransactionWithContext:v4 error:&v13 block:v14 inaccessibilityHandler:0];
+    v5 = [database performTransactionWithContext:v4 error:&v13 block:v14 inaccessibilityHandler:0];
 
     if (v5)
     {
@@ -75,25 +75,25 @@
     v9 = v8;
     if (v7)
     {
-      if ([v7 isEqual:*(a1 + 216)])
+      if ([v7 isEqual:*(self + 216)])
       {
 LABEL_10:
 
         return;
       }
 
-      objc_storeStrong((a1 + 216), v6);
-      v10 = [a1 clientProxy];
-      v11 = [a1 queryUUID];
-      [v10 client_deliverAnchor:v7 query:v11];
+      objc_storeStrong((self + 216), v6);
+      clientProxy = [self clientProxy];
+      queryUUID = [self queryUUID];
+      [clientProxy client_deliverAnchor:v7 query:queryUUID];
     }
 
     else
     {
       v12 = v8;
-      v10 = [a1 clientProxy];
-      v11 = [a1 queryUUID];
-      [v10 client_deliverError:v12 forQuery:v11];
+      clientProxy = [self clientProxy];
+      queryUUID = [self queryUUID];
+      [clientProxy client_deliverError:v12 forQuery:queryUUID];
     }
 
     goto LABEL_10;
@@ -154,15 +154,15 @@ void __69__HDObjectTypeAnchorQueryServer__queue_unconditionallyScheduleUpdate__b
 - (void)_queue_scheduleUpdate
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a1 || (*(a1 + 208) & 1) != 0)
+  if (!self || (*(self + 208) & 1) != 0)
   {
 LABEL_7:
     v7 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  *(a1 + 208) = 1;
-  [*(a1 + 224) timeUntilNextAvailableTrigger];
+  *(self + 208) = 1;
+  [*(self + 224) timeUntilNextAvailableTrigger];
   if (v2 > 0.0)
   {
     v3 = v2;
@@ -171,21 +171,21 @@ LABEL_7:
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = a1;
+      selfCopy = self;
       v13 = 2048;
       v14 = v3;
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Scheduling update after %0.3lfs", buf, 0x16u);
     }
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, self);
     v5 = dispatch_time(0, (v3 * 1000000000.0));
-    v6 = [a1 queryQueue];
+    queryQueue = [self queryQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__HDObjectTypeAnchorQueryServer__queue_scheduleUpdate__block_invoke;
     block[3] = &unk_278616F38;
     objc_copyWeak(&v10, buf);
-    dispatch_after(v5, v6, block);
+    dispatch_after(v5, queryQueue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -194,7 +194,7 @@ LABEL_7:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  [(HDObjectTypeAnchorQueryServer *)a1 _queue_unconditionallyScheduleUpdate];
+  [(HDObjectTypeAnchorQueryServer *)self _queue_unconditionallyScheduleUpdate];
 }
 
 void __54__HDObjectTypeAnchorQueryServer__queue_scheduleUpdate__block_invoke(uint64_t a1)
@@ -260,19 +260,19 @@ uint64_t __56__HDObjectTypeAnchorQueryServer__fetchAnchorsWithError___block_invo
   [(HDObjectTypeAnchorQueryServer *)self _queue_fetchAndDeliver];
 }
 
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  typesCopy = types;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC308];
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = [v5 count];
+    v13 = [typesCopy count];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Notified of updated samples (%ld types).", buf, 0x16u);
   }
 
@@ -286,18 +286,18 @@ uint64_t __56__HDObjectTypeAnchorQueryServer__fetchAnchorsWithError___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesJournaled:(id)a3 type:(id)a4
+- (void)samplesJournaled:(id)journaled type:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  typeCopy = type;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC308];
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v5;
+    v12 = typeCopy;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Notified of samples journaled (%@).", buf, 0x16u);
   }
 
@@ -311,19 +311,19 @@ uint64_t __56__HDObjectTypeAnchorQueryServer__fetchAnchorsWithError___block_invo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  removedCopy = removed;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC308];
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = [v5 count];
+    v13 = [removedCopy count];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Notified of removed samples (%ld types).", buf, 0x16u);
   }
 
@@ -337,13 +337,13 @@ uint64_t __56__HDObjectTypeAnchorQueryServer__fetchAnchorsWithError___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = [(HDQueryServer *)self queryQueue];
-  dispatch_assert_queue_V2(v6);
+  availableCopy = available;
+  queryQueue = [(HDQueryServer *)self queryQueue];
+  dispatch_assert_queue_V2(queryQueue);
 
-  if (v4 && self && self->_needsRequery)
+  if (availableCopy && self && self->_needsRequery)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;

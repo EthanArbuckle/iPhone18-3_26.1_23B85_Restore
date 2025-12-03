@@ -1,5 +1,5 @@
 @interface NSURL
-+ (id)fileURLWithString:(id)a3;
++ (id)fileURLWithString:(id)string;
 - (id)fileHash;
 @end
 
@@ -9,15 +9,15 @@
 {
   if ([(NSURL *)self isFileURL])
   {
-    v3 = [(NSURL *)self path];
-    v4 = [NSFileHandle fileHandleForReadingAtPath:v3];
+    path = [(NSURL *)self path];
+    v4 = [NSFileHandle fileHandleForReadingAtPath:path];
   }
 
   else
   {
-    v3 = [(NSURL *)self absoluteString];
-    v5 = [v3 stringByRemovingPercentEncoding];
-    v4 = [NSFileHandle fileHandleForReadingAtPath:v5];
+    path = [(NSURL *)self absoluteString];
+    stringByRemovingPercentEncoding = [path stringByRemovingPercentEncoding];
+    v4 = [NSFileHandle fileHandleForReadingAtPath:stringByRemovingPercentEncoding];
   }
 
   memset(&c, 0, sizeof(c));
@@ -75,18 +75,18 @@ LABEL_12:
   return v11;
 }
 
-+ (id)fileURLWithString:(id)a3
++ (id)fileURLWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"file://"])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"file://"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"file://", "length")}];
+    v4 = [stringCopy substringFromIndex:{objc_msgSend(@"file://", "length")}];
     v5 = [NSURL fileURLWithPath:v4];
   }
 
   else
   {
-    v5 = [NSURL fileURLWithPath:v3];
+    v5 = [NSURL fileURLWithPath:stringCopy];
   }
 
   return v5;

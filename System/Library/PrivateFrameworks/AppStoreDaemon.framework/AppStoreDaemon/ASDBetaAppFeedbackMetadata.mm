@@ -1,15 +1,15 @@
 @interface ASDBetaAppFeedbackMetadata
-- (ASDBetaAppFeedbackMetadata)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDBetaAppFeedbackMetadata)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDBetaAppFeedbackMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_5;
@@ -18,14 +18,14 @@
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v9 = [(ASDBetaAppFeedbackMetadata *)self incidentID];
-    if (v9 || ([(ASDBetaAppFeedbackMetadata *)v5 incidentID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    incidentID = [(ASDBetaAppFeedbackMetadata *)self incidentID];
+    if (incidentID || ([(ASDBetaAppFeedbackMetadata *)equalCopy incidentID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(ASDBetaAppFeedbackMetadata *)self incidentID];
-      v11 = [(ASDBetaAppFeedbackMetadata *)v5 incidentID];
-      v12 = [v10 isEqualToString:v11];
+      incidentID2 = [(ASDBetaAppFeedbackMetadata *)self incidentID];
+      incidentID3 = [(ASDBetaAppFeedbackMetadata *)equalCopy incidentID];
+      v12 = [incidentID2 isEqualToString:incidentID3];
 
-      if (v9)
+      if (incidentID)
       {
 
         if (!v12)
@@ -44,14 +44,14 @@
       }
     }
 
-    v13 = [(ASDBetaAppFeedbackMetadata *)self email];
-    if (v13 || ([(ASDBetaAppFeedbackMetadata *)v5 email], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    email = [(ASDBetaAppFeedbackMetadata *)self email];
+    if (email || ([(ASDBetaAppFeedbackMetadata *)equalCopy email], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = [(ASDBetaAppFeedbackMetadata *)self email];
-      v15 = [(ASDBetaAppFeedbackMetadata *)v5 email];
-      v16 = [v14 isEqualToString:v15];
+      email2 = [(ASDBetaAppFeedbackMetadata *)self email];
+      email3 = [(ASDBetaAppFeedbackMetadata *)equalCopy email];
+      v16 = [email2 isEqualToString:email3];
 
-      if (v13)
+      if (email)
       {
 
         if (!v16)
@@ -70,9 +70,9 @@
       }
     }
 
-    v17 = [(ASDBetaAppFeedbackMetadata *)self version];
-    v18 = [(ASDBetaAppFeedbackMetadata *)v5 version];
-    v7 = [v17 isEqual:v18];
+    version = [(ASDBetaAppFeedbackMetadata *)self version];
+    version2 = [(ASDBetaAppFeedbackMetadata *)equalCopy version];
+    v7 = [version isEqual:version2];
 
     goto LABEL_5;
   }
@@ -84,32 +84,32 @@ LABEL_5:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   incidentID = self->_incidentID;
-  v5 = a3;
-  [v5 encodeObject:incidentID forKey:@"A"];
-  [v5 encodeObject:self->_email forKey:@"B"];
-  [v5 encodeObject:self->_version forKey:@"C"];
+  coderCopy = coder;
+  [coderCopy encodeObject:incidentID forKey:@"A"];
+  [coderCopy encodeObject:self->_email forKey:@"B"];
+  [coderCopy encodeObject:self->_version forKey:@"C"];
 }
 
-- (ASDBetaAppFeedbackMetadata)initWithCoder:(id)a3
+- (ASDBetaAppFeedbackMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ASDBetaAppFeedbackMetadata;
   v5 = [(ASDBetaAppFeedbackMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"A"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"A"];
     incidentID = v5->_incidentID;
     v5->_incidentID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"B"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"B"];
     email = v5->_email;
     v5->_email = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"C"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"C"];
     version = v5->_version;
     v5->_version = v10;
   }

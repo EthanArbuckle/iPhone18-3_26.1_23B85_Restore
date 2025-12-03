@@ -1,26 +1,26 @@
 @interface AXVKExplorationVertexElement
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinates;
-- (AXVKExplorationVertexElement)initWithCoordinates:(id)a3 betweenRoads:(id)a4;
+- (AXVKExplorationVertexElement)initWithCoordinates:(id)coordinates betweenRoads:(id)roads;
 - (CGPoint)getScreenPoint;
 - (VKMapView)mapView;
 - (id)accessibilityLabel;
-- (id)connectingRoadWith:(id)a3;
+- (id)connectingRoadWith:(id)with;
 - (id)description;
-- (void)setIsComputed:(BOOL)a3;
-- (void)setRoads:(id)a3;
+- (void)setIsComputed:(BOOL)computed;
+- (void)setRoads:(id)roads;
 @end
 
 @implementation AXVKExplorationVertexElement
 
-- (AXVKExplorationVertexElement)initWithCoordinates:(id)a3 betweenRoads:(id)a4
+- (AXVKExplorationVertexElement)initWithCoordinates:(id)coordinates betweenRoads:(id)roads
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = coordinates.var1;
+  var0 = coordinates.var0;
+  roadsCopy = roads;
   v19.receiver = self;
   v19.super_class = AXVKExplorationVertexElement;
   v8 = [(AXVKExplorationVertexElement *)&v19 init];
-  if (v8 && [v7 count])
+  if (v8 && [roadsCopy count])
   {
     v9 = objc_opt_new();
     edges = v8->_edges;
@@ -30,17 +30,17 @@
     neighbors = v8->_neighbors;
     v8->_neighbors = v11;
 
-    v13 = [v7 mutableCopy];
+    v13 = [roadsCopy mutableCopy];
     roads = v8->_roads;
     v8->_roads = v13;
 
     v8->_coordinates.latitude = var0;
     v8->_coordinates.longitude = var1;
-    v15 = [v7 firstObject];
-    v16 = [v15 accessibilityContainer];
-    objc_storeWeak(&v8->_mapView, v16);
+    firstObject = [roadsCopy firstObject];
+    accessibilityContainer = [firstObject accessibilityContainer];
+    objc_storeWeak(&v8->_mapView, accessibilityContainer);
 
-    v8->_isDeadEnd = [v7 count] == 1;
+    v8->_isDeadEnd = [roadsCopy count] == 1;
     v17 = v8;
   }
 
@@ -52,42 +52,42 @@
   return v17;
 }
 
-- (void)setIsComputed:(BOOL)a3
+- (void)setIsComputed:(BOOL)computed
 {
-  if (!a3)
+  if (!computed)
   {
-    v5 = [(AXVKExplorationVertexElement *)self neighbors];
-    [v5 removeAllObjects];
+    neighbors = [(AXVKExplorationVertexElement *)self neighbors];
+    [neighbors removeAllObjects];
 
-    v6 = [(AXVKExplorationVertexElement *)self edges];
-    [v6 removeAllObjects];
+    edges = [(AXVKExplorationVertexElement *)self edges];
+    [edges removeAllObjects];
   }
 
-  self->_isComputed = a3;
+  self->_isComputed = computed;
 }
 
-- (void)setRoads:(id)a3
+- (void)setRoads:(id)roads
 {
-  v4 = a3;
-  if (![(NSMutableArray *)v4 count])
+  roadsCopy = roads;
+  if (![(NSMutableArray *)roadsCopy count])
   {
     _AXAssert();
   }
 
   roads = self->_roads;
-  self->_roads = v4;
+  self->_roads = roadsCopy;
 }
 
-- (id)connectingRoadWith:(id)a3
+- (id)connectingRoadWith:(id)with
 {
   v26 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  withCopy = with;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(AXVKExplorationVertexElement *)self edges];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  edges = [(AXVKExplorationVertexElement *)self edges];
+  v6 = [edges countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = *v21;
@@ -97,7 +97,7 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(edges);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
@@ -105,8 +105,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v10 = [v9 vertices];
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        vertices = [v9 vertices];
+        v11 = [vertices countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v11)
         {
           v12 = *v17;
@@ -116,18 +116,18 @@
             {
               if (*v17 != v12)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(vertices);
               }
 
-              if (*(*(&v16 + 1) + 8 * j) == v4)
+              if (*(*(&v16 + 1) + 8 * j) == withCopy)
               {
-                v14 = [v9 road];
+                road = [v9 road];
 
                 goto LABEL_19;
               }
             }
 
-            v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v11 = [vertices countByEnumeratingWithState:&v16 objects:v24 count:16];
             if (v11)
             {
               continue;
@@ -138,8 +138,8 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
-      v14 = 0;
+      v6 = [edges countByEnumeratingWithState:&v20 objects:v25 count:16];
+      road = 0;
     }
 
     while (v6);
@@ -147,19 +147,19 @@
 
   else
   {
-    v14 = 0;
+    road = 0;
   }
 
 LABEL_19:
 
-  return v14;
+  return road;
 }
 
 - (CGPoint)getScreenPoint
 {
-  v3 = [(AXVKExplorationVertexElement *)self mapView];
+  mapView = [(AXVKExplorationVertexElement *)self mapView];
   [(AXVKExplorationVertexElement *)self coordinates];
-  [v3 accessibilityConvertCoordinateToWindow:?];
+  [mapView accessibilityConvertCoordinateToWindow:?];
   v5 = v4;
   v7 = v6;
 
@@ -178,8 +178,8 @@ LABEL_19:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(AXVKExplorationVertexElement *)self roads];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  roads = [(AXVKExplorationVertexElement *)self roads];
+  v5 = [roads countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -189,12 +189,12 @@ LABEL_19:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(roads);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 trueLabel];
-        v10 = v9 == 0;
+        trueLabel = [v8 trueLabel];
+        v10 = trueLabel == 0;
 
         if (v10)
         {
@@ -209,7 +209,7 @@ LABEL_19:
         [v3 addObject:v11];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [roads countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -231,8 +231,8 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(AXVKExplorationVertexElement *)self roads];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  roads = [(AXVKExplorationVertexElement *)self roads];
+  v7 = [roads countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -242,21 +242,21 @@ LABEL_19:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(roads);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 trueLabel];
-        v12 = v11 == 0;
+        trueLabel = [v10 trueLabel];
+        v12 = trueLabel == 0;
 
         if (!v12)
         {
-          v13 = [v10 trueLabel];
-          [v5 addObject:v13];
+          trueLabel2 = [v10 trueLabel];
+          [v5 addObject:trueLabel2];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [roads countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);

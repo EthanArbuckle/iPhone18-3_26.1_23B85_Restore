@@ -1,7 +1,7 @@
 @interface MapsSuggestionsDarwinNotificationTrigger
-- (MapsSuggestionsDarwinNotificationTrigger)initWithName:(id)a3;
-- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)a3;
-- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)a3 triggerName:(id)a4;
+- (MapsSuggestionsDarwinNotificationTrigger)initWithName:(id)name;
+- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)name;
+- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)name triggerName:(id)triggerName;
 - (void)dealloc;
 - (void)didAddFirstObserver;
 - (void)didRemoveLastObserver;
@@ -11,29 +11,29 @@
 
 - (void)didAddFirstObserver
 {
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   objc_initWeak(&location, self);
-  v4 = [(NSString *)self->_notificationName UTF8String];
-  v5 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  uTF8String = [(NSString *)self->_notificationName UTF8String];
+  dispatchQueue2 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__MapsSuggestionsDarwinNotificationTrigger_didAddFirstObserver__block_invoke;
   v6[3] = &unk_1E81F7200;
   objc_copyWeak(&v7, &location);
-  notify_register_dispatch(v4, &self->_notificationToken, v5, v6);
+  notify_register_dispatch(uTF8String, &self->_notificationToken, dispatchQueue2, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)a3 triggerName:(id)a4
+- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)name triggerName:(id)triggerName
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (!a3)
+  triggerNameCopy = triggerName;
+  v7 = triggerNameCopy;
+  if (!name)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -53,11 +53,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!triggerNameCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -77,14 +77,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"MapsSuggestionsDarwinNotificationTrigger{%s}", a3];
+  name = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"MapsSuggestionsDarwinNotificationTrigger{%s}", name];
   v16.receiver = self;
   v16.super_class = MapsSuggestionsDarwinNotificationTrigger;
-  v9 = [(MapsSuggestionsBaseTrigger *)&v16 initWithName:v8];
+  v9 = [(MapsSuggestionsBaseTrigger *)&v16 initWithName:name];
 
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3];
+    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:name];
     notificationName = v9->_notificationName;
     v9->_notificationName = v10;
 
@@ -92,16 +92,16 @@ LABEL_11:
   }
 
   self = v9;
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
-- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)a3
+- (MapsSuggestionsDarwinNotificationTrigger)initWithNotificationName:(const char *)name
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"MapsSuggestionsDarwinNotificationTrigger{%s}", a3];
-  v6 = [(MapsSuggestionsDarwinNotificationTrigger *)self initWithNotificationName:a3 triggerName:v5];
+  name = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"MapsSuggestionsDarwinNotificationTrigger{%s}", name];
+  v6 = [(MapsSuggestionsDarwinNotificationTrigger *)self initWithNotificationName:name triggerName:name];
 
   return v6;
 }
@@ -120,7 +120,7 @@ LABEL_12:
   [(MapsSuggestionsDarwinNotificationTrigger *)&v4 dealloc];
 }
 
-- (MapsSuggestionsDarwinNotificationTrigger)initWithName:(id)a3
+- (MapsSuggestionsDarwinNotificationTrigger)initWithName:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();
@@ -193,8 +193,8 @@ void __63__MapsSuggestionsDarwinNotificationTrigger_didAddFirstObserver__block_i
 
 - (void)didRemoveLastObserver
 {
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   notify_cancel(self->_notificationToken);
   self->_notificationToken = 0;

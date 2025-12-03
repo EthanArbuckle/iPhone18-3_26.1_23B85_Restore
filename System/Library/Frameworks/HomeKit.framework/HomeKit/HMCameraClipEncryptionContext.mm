@@ -1,19 +1,19 @@
 @interface HMCameraClipEncryptionContext
-- (BOOL)isEqual:(id)a3;
-- (HMCameraClipEncryptionContext)initWithCoder:(id)a3;
-- (HMCameraClipEncryptionContext)initWithKey:(id)a3 scheme:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraClipEncryptionContext)initWithCoder:(id)coder;
+- (HMCameraClipEncryptionContext)initWithKey:(id)key scheme:(unint64_t)scheme;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCameraClipEncryptionContext
 
-- (HMCameraClipEncryptionContext)initWithCoder:(id)a3
+- (HMCameraClipEncryptionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"k"];
-  v6 = [v4 decodeIntegerForKey:@"s"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"k"];
+  v6 = [coderCopy decodeIntegerForKey:@"s"];
 
   if (v5)
   {
@@ -27,25 +27,25 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HMCameraClipEncryptionContext *)self initWithKey:v5 scheme:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [(HMCameraClipEncryptionContext *)self key];
-  [v5 encodeObject:v4 forKey:@"k"];
+  [coderCopy encodeObject:v4 forKey:@"k"];
 
-  [v5 encodeInteger:-[HMCameraClipEncryptionContext scheme](self forKey:{"scheme"), @"s"}];
+  [coderCopy encodeInteger:-[HMCameraClipEncryptionContext scheme](self forKey:{"scheme"), @"s"}];
 }
 
 - (unint64_t)hash
@@ -56,13 +56,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -78,8 +78,8 @@
     v9 = [(HMCameraClipEncryptionContext *)self key];
     if ([v8 isEqualToData:v9])
     {
-      v10 = [v7 scheme];
-      v11 = v10 == [(HMCameraClipEncryptionContext *)self scheme];
+      scheme = [v7 scheme];
+      v11 = scheme == [(HMCameraClipEncryptionContext *)self scheme];
     }
 
     else
@@ -111,23 +111,23 @@
   return v6;
 }
 
-- (HMCameraClipEncryptionContext)initWithKey:(id)a3 scheme:(unint64_t)a4
+- (HMCameraClipEncryptionContext)initWithKey:(id)key scheme:(unint64_t)scheme
 {
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!scheme)
   {
 LABEL_7:
     v12 = _HMFPreconditionFailure();
     return +[(HMCameraClipEncryptionContext *)v12];
   }
 
-  v7 = v6;
+  v7 = keyCopy;
   v14.receiver = self;
   v14.super_class = HMCameraClipEncryptionContext;
   v8 = [(HMCameraClipEncryptionContext *)&v14 init];
@@ -137,7 +137,7 @@ LABEL_7:
     key = v8->_key;
     v8->_key = v9;
 
-    v8->_scheme = a4;
+    v8->_scheme = scheme;
   }
 
   return v8;

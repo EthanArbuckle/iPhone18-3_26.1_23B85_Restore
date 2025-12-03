@@ -3,14 +3,14 @@
 + (void)load;
 - (NSArray)arrayValue;
 - (id)formattedValue;
-- (void)setArrayValue:(id)a3;
+- (void)setArrayValue:(id)value;
 @end
 
 @implementation CAFArrayCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFArrayCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,10 +18,10 @@
 - (NSArray)arrayValue
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -32,20 +32,20 @@
   return v4;
 }
 
-- (void)setArrayValue:(id)a3
+- (void)setArrayValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   [(CAFCharacteristic *)self setValue:v4];
 }
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFArrayCharacteristic *)self arrayValue];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+    v6 = [arrayValue componentsJoinedByString:{@", "}];
     v7 = [v4 stringWithFormat:@"[%@]", v6];
   }
 

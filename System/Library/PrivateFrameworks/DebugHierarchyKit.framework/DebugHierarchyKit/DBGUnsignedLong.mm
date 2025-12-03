@@ -1,7 +1,7 @@
 @interface DBGUnsignedLong
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(unint64_t)a3;
-- (DBGUnsignedLong)initWithUnsignedLong:(unint64_t)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(unint64_t)value;
+- (DBGUnsignedLong)initWithUnsignedLong:(unint64_t)long;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,21 +10,21 @@
 
 @implementation DBGUnsignedLong
 
-+ (id)withValue:(unint64_t)a3
++ (id)withValue:(unint64_t)value
 {
-  v3 = [[a1 alloc] initWithUnsignedLong:a3];
+  v3 = [[self alloc] initWithUnsignedLong:value];
 
   return v3;
 }
 
-- (DBGUnsignedLong)initWithUnsignedLong:(unint64_t)a3
+- (DBGUnsignedLong)initWithUnsignedLong:(unint64_t)long
 {
   v5.receiver = self;
   v5.super_class = DBGUnsignedLong;
   result = [(DBGUnsignedLong *)&v5 init];
   if (result)
   {
-    result->_unsignedLongValue = a3;
+    result->_unsignedLongValue = long;
   }
 
   return result;
@@ -32,15 +32,15 @@
 
 - (id)objectValue
 {
-  v2 = [(DBGUnsignedLong *)self unsignedLongValue];
+  unsignedLongValue = [(DBGUnsignedLong *)self unsignedLongValue];
 
-  return [NSNumber numberWithUnsignedLong:v2];
+  return [NSNumber numberWithUnsignedLong:unsignedLongValue];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGUnsignedLong *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGUnsignedLong *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -55,37 +55,37 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"ul"])
+  valueCopy = value;
+  if ([format isEqualToString:@"ul"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 unsignedLongValue];
+      unsignedLongValue = [valueCopy unsignedLongValue];
 LABEL_6:
-      v10 = v9;
+      v10 = unsignedLongValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 dbgUnsignedLongValue];
+      unsignedLongValue = [valueCopy dbgUnsignedLongValue];
       goto LABEL_6;
     }
   }
 
   v10 = 0;
-  if (!v8 && a5)
+  if (!valueCopy && error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_10:
-  v11 = [a1 withValue:v10];
+  v11 = [self withValue:v10];
 
   return v11;
 }

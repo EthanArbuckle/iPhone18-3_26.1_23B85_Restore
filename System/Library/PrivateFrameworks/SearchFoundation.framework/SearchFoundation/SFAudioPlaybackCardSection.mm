@@ -1,27 +1,27 @@
 @interface SFAudioPlaybackCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAudioPlaybackCardSection)initWithCoder:(id)a3;
-- (SFAudioPlaybackCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAudioPlaybackCardSection)initWithCoder:(id)coder;
+- (SFAudioPlaybackCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAudioPlaybackCardSection
 
-- (SFAudioPlaybackCardSection)initWithProtobuf:(id)a3
+- (SFAudioPlaybackCardSection)initWithProtobuf:(id)protobuf
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v72.receiver = self;
   v72.super_class = SFAudioPlaybackCardSection;
   v5 = [(SFCardSection *)&v72 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -35,8 +35,8 @@
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v68 objects:v75 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v68 objects:v75 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,7 +47,7 @@
         {
           if (*v69 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v68 + 1) + 8 * i)];
@@ -57,74 +57,74 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v68 objects:v75 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v68 objects:v75 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFAudioPlaybackCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFAudioPlaybackCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    if ([v4 state])
+    if ([protobufCopy state])
     {
-      -[SFAudioPlaybackCardSection setState:](v5, "setState:", [v4 state]);
+      -[SFAudioPlaybackCardSection setState:](v5, "setState:", [protobufCopy state]);
     }
 
-    v24 = [v4 playCommands];
-    if (v24)
+    playCommands = [protobufCopy playCommands];
+    if (playCommands)
     {
       v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -138,8 +138,8 @@
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v26 = [v4 playCommands];
-    v27 = [v26 countByEnumeratingWithState:&v64 objects:v74 count:16];
+    playCommands2 = [protobufCopy playCommands];
+    v27 = [playCommands2 countByEnumeratingWithState:&v64 objects:v74 count:16];
     if (v27)
     {
       v28 = v27;
@@ -150,7 +150,7 @@
         {
           if (*v65 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(playCommands2);
           }
 
           v31 = [[SFAbstractCommand alloc] initWithProtobuf:*(*(&v64 + 1) + 8 * j)];
@@ -160,16 +160,16 @@
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v64 objects:v74 count:16];
+        v28 = [playCommands2 countByEnumeratingWithState:&v64 objects:v74 count:16];
       }
 
       while (v28);
     }
 
     [(SFAudioPlaybackCardSection *)v5 setPlayCommands:v25];
-    v32 = [v4 stopCommands];
+    stopCommands = [protobufCopy stopCommands];
     v59 = v5;
-    if (v32)
+    if (stopCommands)
     {
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -183,8 +183,8 @@
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v34 = [v4 stopCommands];
-    v35 = [v34 countByEnumeratingWithState:&v60 objects:v73 count:16];
+    stopCommands2 = [protobufCopy stopCommands];
+    v35 = [stopCommands2 countByEnumeratingWithState:&v60 objects:v73 count:16];
     if (v35)
     {
       v36 = v35;
@@ -195,7 +195,7 @@
         {
           if (*v61 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(stopCommands2);
           }
 
           v39 = [[SFAbstractCommand alloc] initWithProtobuf:*(*(&v60 + 1) + 8 * k)];
@@ -205,7 +205,7 @@
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v60 objects:v73 count:16];
+        v36 = [stopCommands2 countByEnumeratingWithState:&v60 objects:v73 count:16];
       }
 
       while (v36);
@@ -213,43 +213,43 @@
 
     v5 = v59;
     [(SFAudioPlaybackCardSection *)v59 setStopCommands:v33];
-    v40 = [v4 detailText];
+    detailText = [protobufCopy detailText];
 
-    if (v40)
+    if (detailText)
     {
       v41 = [SFRichText alloc];
-      v42 = [v4 detailText];
-      v43 = [(SFRichText *)v41 initWithProtobuf:v42];
+      detailText2 = [protobufCopy detailText];
+      v43 = [(SFRichText *)v41 initWithProtobuf:detailText2];
       [(SFAudioPlaybackCardSection *)v59 setDetailText:v43];
     }
 
-    v44 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v44)
+    if (title)
     {
       v45 = [SFRichText alloc];
-      v46 = [v4 title];
-      v47 = [(SFRichText *)v45 initWithProtobuf:v46];
+      title2 = [protobufCopy title];
+      v47 = [(SFRichText *)v45 initWithProtobuf:title2];
       [(SFAudioPlaybackCardSection *)v59 setTitle:v47];
     }
 
-    v48 = [v4 subtitle];
+    subtitle = [protobufCopy subtitle];
 
-    if (v48)
+    if (subtitle)
     {
       v49 = [SFRichText alloc];
-      v50 = [v4 subtitle];
-      v51 = [(SFRichText *)v49 initWithProtobuf:v50];
+      subtitle2 = [protobufCopy subtitle];
+      v51 = [(SFRichText *)v49 initWithProtobuf:subtitle2];
       [(SFAudioPlaybackCardSection *)v59 setSubtitle:v51];
     }
 
-    v52 = [v4 thumbnail];
+    thumbnail = [protobufCopy thumbnail];
 
-    if (v52)
+    if (thumbnail)
     {
       v53 = [SFImage alloc];
-      v54 = [v4 thumbnail];
-      v55 = [(SFImage *)v53 initWithProtobuf:v54];
+      thumbnail2 = [protobufCopy thumbnail];
+      v55 = [(SFImage *)v53 initWithProtobuf:thumbnail2];
       [(SFAudioPlaybackCardSection *)v59 setThumbnail:v55];
     }
 
@@ -265,57 +265,57 @@
   v32.receiver = self;
   v32.super_class = SFAudioPlaybackCardSection;
   v3 = [(SFCardSection *)&v32 hash];
-  v31 = [(SFCardSection *)self punchoutOptions];
-  v4 = [v31 hash];
-  v30 = [(SFCardSection *)self punchoutPickerTitle];
-  v5 = v4 ^ [v30 hash];
-  v6 = [(SFCardSection *)self punchoutPickerDismissText];
-  v7 = v5 ^ [v6 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v4 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v5 = v4 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v7 = v5 ^ [punchoutPickerDismissText hash];
   v8 = v7 ^ [(SFCardSection *)self canBeHidden];
   v9 = v8 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v10 = [(SFCardSection *)self hasBottomPadding];
-  v11 = [(SFAudioPlaybackCardSection *)self type];
-  v12 = v10 ^ [v11 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFAudioPlaybackCardSection *)self type];
+  v12 = hasBottomPadding ^ [type hash];
   v13 = v12 ^ [(SFCardSection *)self separatorStyle];
-  v14 = [(SFCardSection *)self backgroundColor];
-  v15 = v13 ^ [v14 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v15 = v13 ^ [backgroundColor hash];
   v29 = v9 ^ v15 ^ [(SFAudioPlaybackCardSection *)self state];
-  v16 = [(SFAudioPlaybackCardSection *)self playCommands];
-  v17 = [v16 hash];
-  v18 = [(SFAudioPlaybackCardSection *)self stopCommands];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(SFAudioPlaybackCardSection *)self detailText];
-  v21 = v19 ^ [v20 hash];
-  v22 = [(SFAudioPlaybackCardSection *)self title];
-  v23 = v21 ^ [v22 hash];
-  v24 = [(SFAudioPlaybackCardSection *)self subtitle];
-  v25 = v23 ^ [v24 hash];
-  v26 = [(SFAudioPlaybackCardSection *)self thumbnail];
-  v27 = v25 ^ [v26 hash];
+  playCommands = [(SFAudioPlaybackCardSection *)self playCommands];
+  v17 = [playCommands hash];
+  stopCommands = [(SFAudioPlaybackCardSection *)self stopCommands];
+  v19 = v17 ^ [stopCommands hash];
+  detailText = [(SFAudioPlaybackCardSection *)self detailText];
+  v21 = v19 ^ [detailText hash];
+  title = [(SFAudioPlaybackCardSection *)self title];
+  v23 = v21 ^ [title hash];
+  subtitle = [(SFAudioPlaybackCardSection *)self subtitle];
+  v25 = v23 ^ [subtitle hash];
+  thumbnail = [(SFAudioPlaybackCardSection *)self thumbnail];
+  v27 = v25 ^ [thumbnail hash];
 
   return v29 ^ v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_77;
   }
 
-  if (![(SFAudioPlaybackCardSection *)v4 isMemberOfClass:objc_opt_class()]|| (v120.receiver = self, v120.super_class = SFAudioPlaybackCardSection, ![(SFCardSection *)&v120 isEqual:v4]))
+  if (![(SFAudioPlaybackCardSection *)equalCopy isMemberOfClass:objc_opt_class()]|| (v120.receiver = self, v120.super_class = SFAudioPlaybackCardSection, ![(SFCardSection *)&v120 isEqual:equalCopy]))
   {
     v19 = 0;
     goto LABEL_77;
   }
 
-  v5 = v4;
-  v118 = [(SFCardSection *)self punchoutOptions];
-  v117 = [(SFCardSection *)v5 punchoutOptions];
-  v115 = v117 == 0;
-  v116 = v118 != 0;
+  v5 = equalCopy;
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  punchoutOptions2 = [(SFCardSection *)v5 punchoutOptions];
+  v115 = punchoutOptions2 == 0;
+  v116 = punchoutOptions != 0;
   if (v116 == v115)
   {
     memset(v114, 0, sizeof(v114));
@@ -334,15 +334,15 @@
     goto LABEL_16;
   }
 
-  v7 = [(SFCardSection *)self punchoutOptions];
-  v8 = v7 != 0;
-  v112 = v7;
-  if (v7)
+  punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+  v8 = punchoutOptions3 != 0;
+  v112 = punchoutOptions3;
+  if (punchoutOptions3)
   {
-    v9 = [(SFCardSection *)self punchoutOptions];
+    punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
     [(SFCardSection *)v5 punchoutOptions];
-    v107 = v108 = v9;
-    if (![v9 isEqual:?])
+    v107 = v108 = punchoutOptions4;
+    if (![punchoutOptions4 isEqual:?])
     {
       memset(v114, 0, 28);
       memset(v113, 0, sizeof(v113));
@@ -362,10 +362,10 @@
     }
   }
 
-  v110 = [(SFCardSection *)self punchoutPickerTitle];
-  v109 = [(SFCardSection *)v5 punchoutPickerTitle];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  punchoutPickerTitle2 = [(SFCardSection *)v5 punchoutPickerTitle];
   HIDWORD(v114[3]) = v8;
-  if ((v110 != 0) == (v109 == 0))
+  if ((punchoutPickerTitle != 0) == (punchoutPickerTitle2 == 0))
   {
     *(v114 + 4) = 0;
     memset(v113, 0, sizeof(v113));
@@ -385,15 +385,15 @@
     goto LABEL_16;
   }
 
-  v20 = [(SFCardSection *)self punchoutPickerTitle];
-  v21 = v20 != 0;
-  v106 = v20;
-  if (v20)
+  punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+  v21 = punchoutPickerTitle3 != 0;
+  v106 = punchoutPickerTitle3;
+  if (punchoutPickerTitle3)
   {
-    v22 = [(SFCardSection *)self punchoutPickerTitle];
-    v102 = [(SFCardSection *)v5 punchoutPickerTitle];
-    v103 = v22;
-    if (![v22 isEqual:?])
+    punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle5 = [(SFCardSection *)v5 punchoutPickerTitle];
+    v103 = punchoutPickerTitle4;
+    if (![punchoutPickerTitle4 isEqual:?])
     {
       v114[0] = 0;
       memset(v113, 0, sizeof(v113));
@@ -422,9 +422,9 @@
     LODWORD(v114[3]) = 0;
   }
 
-  v105 = [(SFCardSection *)self punchoutPickerDismissText];
-  v104 = [(SFCardSection *)v5 punchoutPickerDismissText];
-  if ((v105 != 0) == (v104 == 0))
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  punchoutPickerDismissText2 = [(SFCardSection *)v5 punchoutPickerDismissText];
+  if ((punchoutPickerDismissText != 0) == (punchoutPickerDismissText2 == 0))
   {
     memset(v113, 0, 28);
     v114[2] = 0;
@@ -446,18 +446,18 @@
 
   else
   {
-    v35 = [(SFCardSection *)self punchoutPickerDismissText];
-    v36 = v35 != 0;
-    v101 = v35;
-    if (!v35 || (-[SFCardSection punchoutPickerDismissText](self, "punchoutPickerDismissText"), v37 = objc_claimAutoreleasedReturnValue(), -[SFCardSection punchoutPickerDismissText](v5, "punchoutPickerDismissText"), v99 = objc_claimAutoreleasedReturnValue(), v100 = v37, [v37 isEqual:?]))
+    punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+    v36 = punchoutPickerDismissText3 != 0;
+    v101 = punchoutPickerDismissText3;
+    if (!punchoutPickerDismissText3 || (-[SFCardSection punchoutPickerDismissText](self, "punchoutPickerDismissText"), v37 = objc_claimAutoreleasedReturnValue(), -[SFCardSection punchoutPickerDismissText](v5, "punchoutPickerDismissText"), v99 = objc_claimAutoreleasedReturnValue(), v100 = v37, [v37 isEqual:?]))
     {
-      v38 = [(SFCardSection *)self canBeHidden];
+      canBeHidden = [(SFCardSection *)self canBeHidden];
       HIDWORD(v114[2]) = v36;
-      if (v38 == [(SFCardSection *)v5 canBeHidden]&& (v39 = [(SFCardSection *)self hasTopPadding], v39 == [(SFCardSection *)v5 hasTopPadding]) && (v40 = [(SFCardSection *)self hasBottomPadding], v40 == [(SFCardSection *)v5 hasBottomPadding]))
+      if (canBeHidden == [(SFCardSection *)v5 canBeHidden]&& (v39 = [(SFCardSection *)self hasTopPadding], v39 == [(SFCardSection *)v5 hasTopPadding]) && (v40 = [(SFCardSection *)self hasBottomPadding], v40 == [(SFCardSection *)v5 hasBottomPadding]))
       {
-        v98 = [(SFAudioPlaybackCardSection *)self type];
-        v97 = [(SFAudioPlaybackCardSection *)v5 type];
-        if ((v98 != 0) == (v97 == 0))
+        type = [(SFAudioPlaybackCardSection *)self type];
+        type2 = [(SFAudioPlaybackCardSection *)v5 type];
+        if ((type != 0) == (type2 == 0))
         {
           v11 = 0;
           v12 = 0;
@@ -480,18 +480,18 @@
 
         else
         {
-          v41 = [(SFAudioPlaybackCardSection *)self type];
-          v42 = v41 != 0;
-          v96 = v41;
-          if (!v41 || (-[SFAudioPlaybackCardSection type](self, "type"), v43 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection type](v5, "type"), v94 = objc_claimAutoreleasedReturnValue(), v95 = v43, [v43 isEqual:?]))
+          type3 = [(SFAudioPlaybackCardSection *)self type];
+          v42 = type3 != 0;
+          v96 = type3;
+          if (!type3 || (-[SFAudioPlaybackCardSection type](self, "type"), v43 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection type](v5, "type"), v94 = objc_claimAutoreleasedReturnValue(), v95 = v43, [v43 isEqual:?]))
           {
             LODWORD(v114[2]) = v42;
-            v44 = [(SFCardSection *)self separatorStyle];
-            if (v44 == [(SFCardSection *)v5 separatorStyle])
+            separatorStyle = [(SFCardSection *)self separatorStyle];
+            if (separatorStyle == [(SFCardSection *)v5 separatorStyle])
             {
-              v93 = [(SFCardSection *)self backgroundColor];
-              v92 = [(SFCardSection *)v5 backgroundColor];
-              if ((v93 != 0) == (v92 == 0))
+              backgroundColor = [(SFCardSection *)self backgroundColor];
+              backgroundColor2 = [(SFCardSection *)v5 backgroundColor];
+              if ((backgroundColor != 0) == (backgroundColor2 == 0))
               {
                 v13 = 0;
                 v114[0] = 0;
@@ -513,17 +513,17 @@
 
               else
               {
-                v45 = [(SFCardSection *)self backgroundColor];
-                HIDWORD(v119[2]) = v45 != 0;
-                v91 = v45;
-                if (!v45 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v89 = objc_claimAutoreleasedReturnValue(), v90 = v46, [v46 isEqual:?]))
+                backgroundColor3 = [(SFCardSection *)self backgroundColor];
+                HIDWORD(v119[2]) = backgroundColor3 != 0;
+                v91 = backgroundColor3;
+                if (!backgroundColor3 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v89 = objc_claimAutoreleasedReturnValue(), v90 = v46, [v46 isEqual:?]))
                 {
-                  v47 = [(SFAudioPlaybackCardSection *)self state];
-                  if (v47 == [(SFAudioPlaybackCardSection *)v5 state])
+                  state = [(SFAudioPlaybackCardSection *)self state];
+                  if (state == [(SFAudioPlaybackCardSection *)v5 state])
                   {
-                    v88 = [(SFAudioPlaybackCardSection *)self playCommands];
-                    v87 = [(SFAudioPlaybackCardSection *)v5 playCommands];
-                    if ((v88 != 0) == (v87 == 0))
+                    playCommands = [(SFAudioPlaybackCardSection *)self playCommands];
+                    playCommands2 = [(SFAudioPlaybackCardSection *)v5 playCommands];
+                    if ((playCommands != 0) == (playCommands2 == 0))
                     {
                       v114[0] = 0;
                       memset(v113 + 4, 0, 20);
@@ -545,14 +545,14 @@
 
                     else
                     {
-                      v48 = [(SFAudioPlaybackCardSection *)self playCommands];
-                      LODWORD(v119[2]) = v48 != 0;
-                      v86 = v48;
-                      if (!v48 || (-[SFAudioPlaybackCardSection playCommands](self, "playCommands"), v49 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection playCommands](v5, "playCommands"), v82 = objc_claimAutoreleasedReturnValue(), v83 = v49, [v49 isEqual:?]))
+                      playCommands3 = [(SFAudioPlaybackCardSection *)self playCommands];
+                      LODWORD(v119[2]) = playCommands3 != 0;
+                      v86 = playCommands3;
+                      if (!playCommands3 || (-[SFAudioPlaybackCardSection playCommands](self, "playCommands"), v49 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection playCommands](v5, "playCommands"), v82 = objc_claimAutoreleasedReturnValue(), v83 = v49, [v49 isEqual:?]))
                       {
-                        v85 = [(SFAudioPlaybackCardSection *)self stopCommands];
-                        v84 = [(SFAudioPlaybackCardSection *)v5 stopCommands];
-                        if ((v85 != 0) == (v84 == 0))
+                        stopCommands = [(SFAudioPlaybackCardSection *)self stopCommands];
+                        stopCommands2 = [(SFAudioPlaybackCardSection *)v5 stopCommands];
+                        if ((stopCommands != 0) == (stopCommands2 == 0))
                         {
                           v119[0] = 0;
                           v119[1] = 0;
@@ -577,14 +577,14 @@
 
                         else
                         {
-                          v50 = [(SFAudioPlaybackCardSection *)self stopCommands];
-                          HIDWORD(v119[1]) = v50 != 0;
-                          v81 = v50;
-                          if (!v50 || (-[SFAudioPlaybackCardSection stopCommands](self, "stopCommands"), v51 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection stopCommands](v5, "stopCommands"), v77 = objc_claimAutoreleasedReturnValue(), v78 = v51, [v51 isEqual:?]))
+                          stopCommands3 = [(SFAudioPlaybackCardSection *)self stopCommands];
+                          HIDWORD(v119[1]) = stopCommands3 != 0;
+                          v81 = stopCommands3;
+                          if (!stopCommands3 || (-[SFAudioPlaybackCardSection stopCommands](self, "stopCommands"), v51 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection stopCommands](v5, "stopCommands"), v77 = objc_claimAutoreleasedReturnValue(), v78 = v51, [v51 isEqual:?]))
                           {
-                            v80 = [(SFAudioPlaybackCardSection *)self detailText];
-                            v79 = [(SFAudioPlaybackCardSection *)v5 detailText];
-                            if ((v80 != 0) == (v79 == 0))
+                            detailText = [(SFAudioPlaybackCardSection *)self detailText];
+                            detailText2 = [(SFAudioPlaybackCardSection *)v5 detailText];
+                            if ((detailText != 0) == (detailText2 == 0))
                             {
                               v14 = 0;
                               *(v119 + 4) = 0;
@@ -608,14 +608,14 @@
 
                             else
                             {
-                              v52 = [(SFAudioPlaybackCardSection *)self detailText];
-                              LODWORD(v119[1]) = v52 != 0;
-                              v76 = v52;
-                              if (!v52 || (-[SFAudioPlaybackCardSection detailText](self, "detailText"), v53 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection detailText](v5, "detailText"), v72 = objc_claimAutoreleasedReturnValue(), v73 = v53, [v53 isEqual:?]))
+                              detailText3 = [(SFAudioPlaybackCardSection *)self detailText];
+                              LODWORD(v119[1]) = detailText3 != 0;
+                              v76 = detailText3;
+                              if (!detailText3 || (-[SFAudioPlaybackCardSection detailText](self, "detailText"), v53 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection detailText](v5, "detailText"), v72 = objc_claimAutoreleasedReturnValue(), v73 = v53, [v53 isEqual:?]))
                               {
-                                v75 = [(SFAudioPlaybackCardSection *)self title];
-                                v74 = [(SFAudioPlaybackCardSection *)v5 title];
-                                if ((v75 != 0) == (v74 == 0))
+                                title = [(SFAudioPlaybackCardSection *)self title];
+                                title2 = [(SFAudioPlaybackCardSection *)v5 title];
+                                if ((title != 0) == (title2 == 0))
                                 {
                                   v119[0] = 0;
                                   v15 = 0;
@@ -638,14 +638,14 @@
 
                                 else
                                 {
-                                  v54 = [(SFAudioPlaybackCardSection *)self title];
-                                  HIDWORD(v119[0]) = v54 != 0;
-                                  v71 = v54;
-                                  if (!v54 || (-[SFAudioPlaybackCardSection title](self, "title"), v55 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection title](v5, "title"), v67 = objc_claimAutoreleasedReturnValue(), v68 = v55, [v55 isEqual:?]))
+                                  title3 = [(SFAudioPlaybackCardSection *)self title];
+                                  HIDWORD(v119[0]) = title3 != 0;
+                                  v71 = title3;
+                                  if (!title3 || (-[SFAudioPlaybackCardSection title](self, "title"), v55 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection title](v5, "title"), v67 = objc_claimAutoreleasedReturnValue(), v68 = v55, [v55 isEqual:?]))
                                   {
-                                    v70 = [(SFAudioPlaybackCardSection *)self subtitle];
-                                    v69 = [(SFAudioPlaybackCardSection *)v5 subtitle];
-                                    if ((v70 != 0) == (v69 == 0))
+                                    subtitle = [(SFAudioPlaybackCardSection *)self subtitle];
+                                    subtitle2 = [(SFAudioPlaybackCardSection *)v5 subtitle];
+                                    if ((subtitle != 0) == (subtitle2 == 0))
                                     {
                                       v15 = 0;
                                       LODWORD(v119[0]) = 0;
@@ -668,14 +668,14 @@
 
                                     else
                                     {
-                                      v56 = [(SFAudioPlaybackCardSection *)self subtitle];
-                                      LODWORD(v119[0]) = v56 != 0;
-                                      v66 = v56;
-                                      if (!v56 || (-[SFAudioPlaybackCardSection subtitle](self, "subtitle"), v57 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection subtitle](v5, "subtitle"), v62 = objc_claimAutoreleasedReturnValue(), v63 = v57, [v57 isEqual:?]))
+                                      subtitle3 = [(SFAudioPlaybackCardSection *)self subtitle];
+                                      LODWORD(v119[0]) = subtitle3 != 0;
+                                      v66 = subtitle3;
+                                      if (!subtitle3 || (-[SFAudioPlaybackCardSection subtitle](self, "subtitle"), v57 = objc_claimAutoreleasedReturnValue(), -[SFAudioPlaybackCardSection subtitle](v5, "subtitle"), v62 = objc_claimAutoreleasedReturnValue(), v63 = v57, [v57 isEqual:?]))
                                       {
-                                        v65 = [(SFAudioPlaybackCardSection *)self thumbnail];
-                                        v64 = [(SFAudioPlaybackCardSection *)v5 thumbnail];
-                                        if ((v65 != 0) == (v64 == 0))
+                                        thumbnail = [(SFAudioPlaybackCardSection *)self thumbnail];
+                                        thumbnail2 = [(SFAudioPlaybackCardSection *)v5 thumbnail];
+                                        if ((thumbnail != 0) == (thumbnail2 == 0))
                                         {
                                           v17 = 0;
                                           v18 = 0;
@@ -697,14 +697,14 @@
 
                                         else
                                         {
-                                          v61 = [(SFAudioPlaybackCardSection *)self thumbnail];
-                                          if (v61)
+                                          thumbnail3 = [(SFAudioPlaybackCardSection *)self thumbnail];
+                                          if (thumbnail3)
                                           {
-                                            v58 = [(SFAudioPlaybackCardSection *)self thumbnail];
-                                            v59 = [(SFAudioPlaybackCardSection *)v5 thumbnail];
-                                            v60 = v58;
-                                            v19 = [v58 isEqual:v59];
-                                            v6 = v59;
+                                            thumbnail4 = [(SFAudioPlaybackCardSection *)self thumbnail];
+                                            thumbnail5 = [(SFAudioPlaybackCardSection *)v5 thumbnail];
+                                            v60 = thumbnail4;
+                                            v19 = [thumbnail4 isEqual:thumbnail5];
+                                            v6 = thumbnail5;
                                             v18 = 1;
                                             v114[1] = 0x100000001;
                                             v113[3] = 0x100000001;
@@ -724,7 +724,7 @@
 
                                           else
                                           {
-                                            v61 = 0;
+                                            thumbnail3 = 0;
                                             v18 = 0;
                                             v114[1] = 0x100000001;
                                             v113[3] = 0x100000001;
@@ -1000,7 +1000,7 @@
 LABEL_16:
   if (v18)
   {
-    v111 = v4;
+    v111 = equalCopy;
     v23 = v19;
     v24 = v14;
     v25 = v16;
@@ -1022,7 +1022,7 @@ LABEL_16:
     v16 = v25;
     v14 = v24;
     v19 = v23;
-    v4 = v111;
+    equalCopy = v111;
     if (!v33)
     {
       goto LABEL_18;
@@ -1184,58 +1184,58 @@ LABEL_77:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = SFAudioPlaybackCardSection;
-  v4 = [(SFCardSection *)&v28 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v28 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFAudioPlaybackCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFAudioPlaybackCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
   [v4 setState:{-[SFAudioPlaybackCardSection state](self, "state")}];
-  v15 = [(SFAudioPlaybackCardSection *)self playCommands];
-  v16 = [v15 copy];
+  playCommands = [(SFAudioPlaybackCardSection *)self playCommands];
+  v16 = [playCommands copy];
   [v4 setPlayCommands:v16];
 
-  v17 = [(SFAudioPlaybackCardSection *)self stopCommands];
-  v18 = [v17 copy];
+  stopCommands = [(SFAudioPlaybackCardSection *)self stopCommands];
+  v18 = [stopCommands copy];
   [v4 setStopCommands:v18];
 
-  v19 = [(SFAudioPlaybackCardSection *)self detailText];
-  v20 = [v19 copy];
+  detailText = [(SFAudioPlaybackCardSection *)self detailText];
+  v20 = [detailText copy];
   [v4 setDetailText:v20];
 
-  v21 = [(SFAudioPlaybackCardSection *)self title];
-  v22 = [v21 copy];
+  title = [(SFAudioPlaybackCardSection *)self title];
+  v22 = [title copy];
   [v4 setTitle:v22];
 
-  v23 = [(SFAudioPlaybackCardSection *)self subtitle];
-  v24 = [v23 copy];
+  subtitle = [(SFAudioPlaybackCardSection *)self subtitle];
+  v24 = [subtitle copy];
   [v4 setSubtitle:v24];
 
-  v25 = [(SFAudioPlaybackCardSection *)self thumbnail];
-  v26 = [v25 copy];
+  thumbnail = [(SFAudioPlaybackCardSection *)self thumbnail];
+  v26 = [thumbnail copy];
   [v4 setThumbnail:v26];
 
   return v4;
@@ -1244,158 +1244,158 @@ LABEL_77:
 - (NSData)jsonData
 {
   v2 = [[_SFPBAudioPlaybackCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBAudioPlaybackCardSection *)v2 jsonData];
+  jsonData = [(_SFPBAudioPlaybackCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAudioPlaybackCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBAudioPlaybackCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAudioPlaybackCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFAudioPlaybackCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFAudioPlaybackCardSection)initWithCoder:(id)a3
+- (SFAudioPlaybackCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFAudioPlaybackCardSection *)v5 setType:v12];
+    type = [(SFCardSection *)v8 type];
+    [(SFAudioPlaybackCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFAudioPlaybackCardSection *)v5 setState:[(SFCardSection *)v8 state]];
-    v14 = [(SFCardSection *)v8 playCommands];
-    [(SFAudioPlaybackCardSection *)v5 setPlayCommands:v14];
+    playCommands = [(SFCardSection *)v8 playCommands];
+    [(SFAudioPlaybackCardSection *)v5 setPlayCommands:playCommands];
 
-    v15 = [(SFCardSection *)v8 stopCommands];
-    [(SFAudioPlaybackCardSection *)v5 setStopCommands:v15];
+    stopCommands = [(SFCardSection *)v8 stopCommands];
+    [(SFAudioPlaybackCardSection *)v5 setStopCommands:stopCommands];
 
-    v16 = [(SFCardSection *)v8 detailText];
-    [(SFAudioPlaybackCardSection *)v5 setDetailText:v16];
+    detailText = [(SFCardSection *)v8 detailText];
+    [(SFAudioPlaybackCardSection *)v5 setDetailText:detailText];
 
-    v17 = [(SFCardSection *)v8 title];
-    [(SFAudioPlaybackCardSection *)v5 setTitle:v17];
+    title = [(SFCardSection *)v8 title];
+    [(SFAudioPlaybackCardSection *)v5 setTitle:title];
 
-    v18 = [(SFCardSection *)v8 subtitle];
-    [(SFAudioPlaybackCardSection *)v5 setSubtitle:v18];
+    subtitle = [(SFCardSection *)v8 subtitle];
+    [(SFAudioPlaybackCardSection *)v5 setSubtitle:subtitle];
 
-    v19 = [(SFCardSection *)v8 thumbnail];
-    [(SFAudioPlaybackCardSection *)v5 setThumbnail:v19];
+    thumbnail = [(SFCardSection *)v8 thumbnail];
+    [(SFAudioPlaybackCardSection *)v5 setThumbnail:thumbnail];
 
-    v20 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v20];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v21 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v21];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v22 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v22];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v23 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v23];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v24 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v24];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v25 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v25];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v26 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v26];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v27 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v27];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v28 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v28];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v29 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v29];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v30 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v30];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v31 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v31];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v32 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v32];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v33 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v33];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v34 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v34];
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
 
-    v35 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v35];
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
 
-    v36 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v36];
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v37 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v37];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v38 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v38];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v39 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v39];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v40 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v40];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v41 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v41];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v42 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v42];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v43 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v43];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v44 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v44];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;

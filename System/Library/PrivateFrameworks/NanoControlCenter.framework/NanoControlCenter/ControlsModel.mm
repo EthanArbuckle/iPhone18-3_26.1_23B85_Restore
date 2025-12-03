@@ -1,6 +1,6 @@
 @interface ControlsModel
 - (_TtC17NanoControlCenter13ControlsModel)init;
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
 @end
 
 @implementation ControlsModel
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FA24790);
   MEMORY[0x28223BE20]();
@@ -28,13 +28,13 @@
   v6 = sub_25B005B64();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   sub_25B005B34();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_25B005B24();
   v9 = swift_allocObject();
   v10 = MEMORY[0x277D85700];
   v9[2] = v8;
   v9[3] = v10;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_25AF6C7F8(0, 0, v5, &unk_25B009178, v9);
 }
 

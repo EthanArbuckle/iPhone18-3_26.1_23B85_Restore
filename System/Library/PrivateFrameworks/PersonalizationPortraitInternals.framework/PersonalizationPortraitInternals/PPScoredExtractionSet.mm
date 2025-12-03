@@ -1,7 +1,7 @@
 @interface PPScoredExtractionSet
 - (id)description;
 - (id)numberOfExtractions;
-- (unint64_t)_donateLocationsWithContextualNamedEntities:(id)a3;
+- (unint64_t)_donateLocationsWithContextualNamedEntities:(id)entities;
 - (void)flushWrites;
 - (void)writeSynchronous;
 @end
@@ -95,16 +95,16 @@
   v28 = pp_default_log_handle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(PPSource *)self->_source documentId];
-    v30 = [(PPSource *)self->_source bundleId];
+    documentId = [(PPSource *)self->_source documentId];
+    bundleId = [(PPSource *)self->_source bundleId];
     v32 = self->_entityAlgorithm;
     v31 = self->_topicAlgorithm;
     v33 = [(NSArray *)self->_entities count];
     v34 = [(NSArray *)self->_topics count];
     *buf = 138413826;
-    v46 = v29;
+    v46 = documentId;
     v47 = 2112;
-    v48 = v30;
+    v48 = bundleId;
     v49 = 2048;
     v50 = v32;
     v51 = 2048;
@@ -175,8 +175,8 @@
 
 - (id)numberOfExtractions
 {
-  v3 = [(NSMutableDictionary *)self->_locations allValues];
-  v4 = [v3 _pas_leftFoldWithInitialObject:&unk_284784F08 accumulate:&__block_literal_global_23237];
+  allValues = [(NSMutableDictionary *)self->_locations allValues];
+  v4 = [allValues _pas_leftFoldWithInitialObject:&unk_284784F08 accumulate:&__block_literal_global_23237];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](self->_topics, "count") + -[NSArray count](self->_entities, "count") + objc_msgSend(v4, "intValue")}];
 
@@ -225,9 +225,9 @@ void __41__PPScoredExtractionSet_writeSynchronous__block_invoke_3(uint64_t a1, v
   }
 }
 
-- (unint64_t)_donateLocationsWithContextualNamedEntities:(id)a3
+- (unint64_t)_donateLocationsWithContextualNamedEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   if ([(NSMutableDictionary *)self->_locations count])
   {
     v18 = 0;
@@ -235,9 +235,9 @@ void __41__PPScoredExtractionSet_writeSynchronous__block_invoke_3(uint64_t a1, v
     v20 = 0x2020000000;
     v21 = 0;
     v5 = +[PPConfiguration sharedInstance];
-    v6 = [(PPSource *)self->_source bundleId];
-    v7 = [(PPSource *)self->_source language];
-    v8 = [v5 extractionAlgorithmsForBundleId:v6 sourceLanguage:v7 conservative:0 domain:2];
+    bundleId = [(PPSource *)self->_source bundleId];
+    language = [(PPSource *)self->_source language];
+    v8 = [v5 extractionAlgorithmsForBundleId:bundleId sourceLanguage:language conservative:0 domain:2];
 
     locations = self->_locations;
     v13[0] = MEMORY[0x277D85DD0];
@@ -246,8 +246,8 @@ void __41__PPScoredExtractionSet_writeSynchronous__block_invoke_3(uint64_t a1, v
     v13[3] = &unk_278978518;
     v10 = v8;
     v14 = v10;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = entitiesCopy;
     v17 = &v18;
     [(NSMutableDictionary *)locations enumerateKeysAndObjectsUsingBlock:v13];
     v11 = v19[3];
@@ -318,8 +318,8 @@ LABEL_9:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(PPSource *)self->_source documentId];
-  v5 = [v3 initWithFormat:@"<PPScoredExtractionSet doc:%@ n:%tu na:%tu t:%tu ta:%tu l:%tu>", v4, -[NSArray count](self->_entities, "count"), self->_entityAlgorithm, -[NSArray count](self->_topics, "count"), self->_topicAlgorithm, -[NSMutableDictionary count](self->_locations, "count")];
+  documentId = [(PPSource *)self->_source documentId];
+  v5 = [v3 initWithFormat:@"<PPScoredExtractionSet doc:%@ n:%tu na:%tu t:%tu ta:%tu l:%tu>", documentId, -[NSArray count](self->_entities, "count"), self->_entityAlgorithm, -[NSArray count](self->_topics, "count"), self->_topicAlgorithm, -[NSMutableDictionary count](self->_locations, "count")];
 
   return v5;
 }

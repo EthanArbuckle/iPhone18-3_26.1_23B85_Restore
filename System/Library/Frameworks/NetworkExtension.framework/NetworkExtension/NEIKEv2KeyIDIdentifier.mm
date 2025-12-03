@@ -1,26 +1,26 @@
 @interface NEIKEv2KeyIDIdentifier
-- (NEIKEv2KeyIDIdentifier)initWithKeyID:(id)a3;
-- (NEIKEv2KeyIDIdentifier)initWithKeyIDString:(id)a3;
+- (NEIKEv2KeyIDIdentifier)initWithKeyID:(id)d;
+- (NEIKEv2KeyIDIdentifier)initWithKeyIDString:(id)string;
 @end
 
 @implementation NEIKEv2KeyIDIdentifier
 
-- (NEIKEv2KeyIDIdentifier)initWithKeyIDString:(id)a3
+- (NEIKEv2KeyIDIdentifier)initWithKeyIDString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   v5 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:v4];
 
   return v5;
 }
 
-- (NEIKEv2KeyIDIdentifier)initWithKeyID:(id)a3
+- (NEIKEv2KeyIDIdentifier)initWithKeyID:(id)d
 {
-  v3 = self;
+  selfCopy = self;
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
-    v3 = [(NEIKEv2Identifier *)self initWithIdentifierData:a3];
-    v4 = v3;
+    selfCopy = [(NEIKEv2Identifier *)self initWithIdentifierData:d];
+    v4 = selfCopy;
   }
 
   else

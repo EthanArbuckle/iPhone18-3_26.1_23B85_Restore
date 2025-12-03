@@ -1,48 +1,48 @@
 @interface CardDAVFolderSyncTaskGroup
-- (id)copyGetTaskWithURL:(id)a3;
-- (id)copyMultiGetTaskWithURLs:(id)a3;
-- (void)applyAdditionalPropertiesFromPutTask:(id)a3;
+- (id)copyGetTaskWithURL:(id)l;
+- (id)copyMultiGetTaskWithURLs:(id)ls;
+- (void)applyAdditionalPropertiesFromPutTask:(id)task;
 @end
 
 @implementation CardDAVFolderSyncTaskGroup
 
-- (id)copyMultiGetTaskWithURLs:(id)a3
+- (id)copyMultiGetTaskWithURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [[CardDAVFolderMultiGetTask alloc] initWithURLs:v4 atContainerURL:self->super._folderURL appSpecificDataItemClass:self->super._appSpecificDataItemClass];
+  lsCopy = ls;
+  v5 = [[CardDAVFolderMultiGetTask alloc] initWithURLs:lsCopy atContainerURL:self->super._folderURL appSpecificDataItemClass:self->super._appSpecificDataItemClass];
 
   return v5;
 }
 
-- (id)copyGetTaskWithURL:(id)a3
+- (id)copyGetTaskWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [(CoreDAVTask *)[CardDAVFolderGetTask alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [(CoreDAVTask *)[CardDAVFolderGetTask alloc] initWithURL:lCopy];
 
   return v4;
 }
 
-- (void)applyAdditionalPropertiesFromPutTask:(id)a3
+- (void)applyAdditionalPropertiesFromPutTask:(id)task
 {
-  v13 = a3;
-  v4 = [v13 responseHeaders];
-  v5 = [v4 CDVObjectForKeyCaseInsensitive:@"Location"];
+  taskCopy = task;
+  responseHeaders = [taskCopy responseHeaders];
+  v5 = [responseHeaders CDVObjectForKeyCaseInsensitive:@"Location"];
 
   if (v5)
   {
-    v6 = [(CoreDAVTaskGroup *)self delegate];
+    delegate = [(CoreDAVTaskGroup *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CoreDAVTaskGroup *)self delegate];
-      v9 = [v13 url];
-      v10 = [v8 setExternalLocation:v5 forItemWithURL:v9 inFolderWithURL:self->super._folderURL];
+      delegate2 = [(CoreDAVTaskGroup *)self delegate];
+      v9 = [taskCopy url];
+      v10 = [delegate2 setExternalLocation:v5 forItemWithURL:v9 inFolderWithURL:self->super._folderURL];
 
       if (v10)
       {
         locationChangedURLs = self->super._locationChangedURLs;
-        v12 = [v13 url];
+        v12 = [taskCopy url];
         [(NSMutableSet *)locationChangedURLs addObject:v12];
       }
     }

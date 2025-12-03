@@ -1,23 +1,23 @@
 @interface ECSubjectParser
-+ (id)subjectWithoutPrefixForSubject:(id)a3;
-+ (id)subjectWithoutPrefixForSubject:(id)a3 prefix:(id *)a4;
-+ (id)subjectWithoutPrefixIncludingListMarkersForSubject:(id)a3 prefix:(id *)a4;
-+ (unint64_t)_fastPrefixLengthForSubject:(id)a3 includingPrefix:(int64_t)a4;
-+ (unint64_t)_lastPrefixDelimiterLocationForSubject:(id)a3;
-+ (unint64_t)_prefixLengthForSubject:(id)a3 forPrefix:(int64_t)a4;
-+ (unint64_t)prefixLengthForSubject:(id)a3 includingPrefix:(int64_t)a4;
++ (id)subjectWithoutPrefixForSubject:(id)subject;
++ (id)subjectWithoutPrefixForSubject:(id)subject prefix:(id *)prefix;
++ (id)subjectWithoutPrefixIncludingListMarkersForSubject:(id)subject prefix:(id *)prefix;
++ (unint64_t)_fastPrefixLengthForSubject:(id)subject includingPrefix:(int64_t)prefix;
++ (unint64_t)_lastPrefixDelimiterLocationForSubject:(id)subject;
++ (unint64_t)_prefixLengthForSubject:(id)subject forPrefix:(int64_t)prefix;
++ (unint64_t)prefixLengthForSubject:(id)subject includingPrefix:(int64_t)prefix;
 @end
 
 @implementation ECSubjectParser
 
-+ (id)subjectWithoutPrefixIncludingListMarkersForSubject:(id)a3 prefix:(id *)a4
++ (id)subjectWithoutPrefixIncludingListMarkersForSubject:(id)subject prefix:(id *)prefix
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAC68] ec_regularExpressionForList];
-  v8 = [a1 prefixLengthForSubject:v6 includingPrefix:2];
+  subjectCopy = subject;
+  ec_regularExpressionForList = [MEMORY[0x277CCAC68] ec_regularExpressionForList];
+  v8 = [self prefixLengthForSubject:subjectCopy includingPrefix:2];
   if (v8)
   {
-    v9 = [v6 substringToIndex:v8];
+    v9 = [subjectCopy substringToIndex:v8];
   }
 
   else
@@ -25,14 +25,14 @@
     v9 = 0;
   }
 
-  v10 = [v6 length];
+  v10 = [subjectCopy length];
   if (v10 <= v8)
   {
     v17 = &stru_284041D88;
     goto LABEL_15;
   }
 
-  if ([v7 rangeOfFirstMatchInString:v6 options:0 range:{v8, v10 - v8}] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([ec_regularExpressionForList rangeOfFirstMatchInString:subjectCopy options:0 range:{v8, v10 - v8}] == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_14;
   }
@@ -43,13 +43,13 @@
     goto LABEL_14;
   }
 
-  v13 = [v6 substringFromIndex:v11 + v8];
-  v14 = [a1 prefixLengthForSubject:v13 includingPrefix:2];
+  v13 = [subjectCopy substringFromIndex:v11 + v8];
+  v14 = [self prefixLengthForSubject:v13 includingPrefix:2];
   if (!v14)
   {
 
 LABEL_14:
-    v17 = [v6 substringFromIndex:v8];
+    v17 = [subjectCopy substringFromIndex:v8];
     goto LABEL_15;
   }
 
@@ -67,7 +67,7 @@ LABEL_14:
   }
 
   v18 = [v13 substringFromIndex:v14];
-  v19 = [v6 substringWithRange:{v8, v12}];
+  v19 = [subjectCopy substringWithRange:{v8, v12}];
   v17 = [v19 stringByAppendingString:v18];
 
   if (!v17)
@@ -76,53 +76,53 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (a4)
+  if (prefix)
   {
     v20 = v9;
-    *a4 = v9;
+    *prefix = v9;
   }
 
   return v17;
 }
 
-+ (unint64_t)prefixLengthForSubject:(id)a3 includingPrefix:(int64_t)a4
++ (unint64_t)prefixLengthForSubject:(id)subject includingPrefix:(int64_t)prefix
 {
-  v6 = a3;
-  if ([v6 length] < 2 || (v7 = objc_msgSend(a1, "_lastPrefixDelimiterLocationForSubject:", v6), v7 == 0x7FFFFFFFFFFFFFFFLL))
+  subjectCopy = subject;
+  if ([subjectCopy length] < 2 || (v7 = objc_msgSend(self, "_lastPrefixDelimiterLocationForSubject:", subjectCopy), v7 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [a1 _fastPrefixLengthForSubject:v6 includingPrefix:a4];
+    v8 = [self _fastPrefixLengthForSubject:subjectCopy includingPrefix:prefix];
     if (v8 < v7 + 1)
     {
-      v8 = [a1 _prefixLengthForSubject:v6 forPrefix:a4];
+      v8 = [self _prefixLengthForSubject:subjectCopy forPrefix:prefix];
     }
   }
 
   return v8;
 }
 
-+ (unint64_t)_lastPrefixDelimiterLocationForSubject:(id)a3
++ (unint64_t)_lastPrefixDelimiterLocationForSubject:(id)subject
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] ec_prefixDelimiterCharacterSet];
-  v5 = [v3 rangeOfCharacterFromSet:v4 options:4];
+  subjectCopy = subject;
+  ec_prefixDelimiterCharacterSet = [MEMORY[0x277CCA900] ec_prefixDelimiterCharacterSet];
+  v5 = [subjectCopy rangeOfCharacterFromSet:ec_prefixDelimiterCharacterSet options:4];
 
   return v5;
 }
 
-+ (unint64_t)_prefixLengthForSubject:(id)a3 forPrefix:(int64_t)a4
++ (unint64_t)_prefixLengthForSubject:(id)subject forPrefix:(int64_t)prefix
 {
-  v7 = a3;
+  subjectCopy = subject;
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __53__ECSubjectParser__prefixLengthForSubject_forPrefix___block_invoke;
   v17 = &__block_descriptor_48_e5_v8__0l;
   v18 = a2;
-  v19 = a1;
+  selfCopy = self;
   if (_prefixLengthForSubject_forPrefix__predicate != -1)
   {
     dispatch_once(&_prefixLengthForSubject_forPrefix__predicate, &v14);
@@ -130,18 +130,18 @@ LABEL_15:
 
   v8 = &_prefixLengthForSubject_forPrefix__replyRegex;
   v9 = &_prefixLengthForSubject_forPrefix__forwardRegex;
-  if (a4 != 1)
+  if (prefix != 1)
   {
     v9 = &_prefixLengthForSubject_forPrefix__prefixRegex;
   }
 
-  if (a4)
+  if (prefix)
   {
     v8 = v9;
   }
 
   v10 = *v8;
-  if ([v10 rangeOfFirstMatchInString:v7 options:0 range:{0, objc_msgSend(v7, "length", v14, v15, v16, v17, v18, v19)}] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([v10 rangeOfFirstMatchInString:subjectCopy options:0 range:{0, objc_msgSend(subjectCopy, "length", v14, v15, v16, v17, v18, selfCopy)}] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
   }
@@ -191,10 +191,10 @@ void __53__ECSubjectParser__prefixLengthForSubject_forPrefix___block_invoke(uint
   _prefixLengthForSubject_forPrefix__prefixRegex = v17;
 }
 
-+ (unint64_t)_fastPrefixLengthForSubject:(id)a3 includingPrefix:(int64_t)a4
++ (unint64_t)_fastPrefixLengthForSubject:(id)subject includingPrefix:(int64_t)prefix
 {
-  v5 = a3;
-  v6 = [(__CFString *)v5 length];
+  subjectCopy = subject;
+  v6 = [(__CFString *)subjectCopy length];
   v7 = v6 - 2;
   if (v6 < 2)
   {
@@ -211,11 +211,11 @@ void __53__ECSubjectParser__prefixLengthForSubject_forPrefix___block_invoke(uint
   v96 = 0u;
   v97 = 0u;
   *buffer = 0u;
-  theString[0] = v5;
+  theString[0] = subjectCopy;
   v106 = 0;
   v105 = v6;
-  v93 = v5;
-  theString[1] = CFStringGetCharactersPtr(v5);
+  v93 = subjectCopy;
+  theString[1] = CFStringGetCharactersPtr(subjectCopy);
   if (theString[1])
   {
     CStringPtr = 0;
@@ -223,7 +223,7 @@ void __53__ECSubjectParser__prefixLengthForSubject_forPrefix___block_invoke(uint
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(subjectCopy, 0x600u);
   }
 
   *(&v105 + 1) = 0;
@@ -237,8 +237,8 @@ void __53__ECSubjectParser__prefixLengthForSubject_forPrefix___block_invoke(uint
 
   v10 = 0;
   v11 = 0;
-  v92 = a4 & 0xFFFFFFFFFFFFFFFDLL;
-  v94 = a4 - 1;
+  v92 = prefix & 0xFFFFFFFFFFFFFFFDLL;
+  v94 = prefix - 1;
   while (1)
   {
     if (v11 >= -2)
@@ -728,29 +728,29 @@ LABEL_140:
 LABEL_141:
   v8 = v11;
 LABEL_143:
-  v5 = v93;
+  subjectCopy = v93;
 LABEL_144:
 
   return v8;
 }
 
-+ (id)subjectWithoutPrefixForSubject:(id)a3
++ (id)subjectWithoutPrefixForSubject:(id)subject
 {
-  v3 = [a1 subjectWithoutPrefixForSubject:a3 prefix:0];
+  v3 = [self subjectWithoutPrefixForSubject:subject prefix:0];
 
   return v3;
 }
 
-+ (id)subjectWithoutPrefixForSubject:(id)a3 prefix:(id *)a4
++ (id)subjectWithoutPrefixForSubject:(id)subject prefix:(id *)prefix
 {
-  v6 = a3;
-  v7 = [a1 prefixLengthForSubject:v6];
-  if (a4)
+  subjectCopy = subject;
+  v7 = [self prefixLengthForSubject:subjectCopy];
+  if (prefix)
   {
-    *a4 = [v6 substringToIndex:v7];
+    *prefix = [subjectCopy substringToIndex:v7];
   }
 
-  v8 = [v6 substringFromIndex:v7];
+  v8 = [subjectCopy substringFromIndex:v7];
 
   return v8;
 }

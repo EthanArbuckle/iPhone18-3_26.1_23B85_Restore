@@ -1,6 +1,6 @@
 @interface TVRIntentExtensionDeviceQuery
 + (id)sharedInstance;
-- (void)provideDeviceOptionsWithCompletion:(id)a3;
+- (void)provideDeviceOptionsWithCompletion:(id)completion;
 @end
 
 @implementation TVRIntentExtensionDeviceQuery
@@ -24,15 +24,15 @@ void __47__TVRIntentExtensionDeviceQuery_sharedInstance__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)provideDeviceOptionsWithCompletion:(id)a3
+- (void)provideDeviceOptionsWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __68__TVRIntentExtensionDeviceQuery_provideDeviceOptionsWithCompletion___block_invoke;
   v4[3] = &unk_1000105C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

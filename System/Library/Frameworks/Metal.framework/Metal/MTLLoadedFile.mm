@@ -1,5 +1,5 @@
 @interface MTLLoadedFile
-- (MTLLoadedFile)initWithData:(id)a3 parent:(void *)a4;
+- (MTLLoadedFile)initWithData:(id)data parent:(void *)parent;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   [(MTLLoadedFile *)&v3 dealloc];
 }
 
-- (MTLLoadedFile)initWithData:(id)a3 parent:(void *)a4
+- (MTLLoadedFile)initWithData:(id)data parent:(void *)parent
 {
   v9.receiver = self;
   v9.super_class = MTLLoadedFile;
@@ -25,8 +25,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_fileData = a3;
-    v6->_parent = a4;
+    v6->_fileData = data;
+    v6->_parent = parent;
   }
 
   else

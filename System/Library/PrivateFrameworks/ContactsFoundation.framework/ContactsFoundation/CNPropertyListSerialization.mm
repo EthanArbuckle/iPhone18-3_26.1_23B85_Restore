@@ -1,28 +1,28 @@
 @interface CNPropertyListSerialization
-+ (id)dataWithObject:(id)a3;
-+ (id)dataWithObject:(id)a3 error:(id *)a4;
-+ (id)mutableObjectWithData:(id)a3;
-+ (id)objectWithData:(id)a3;
-+ (id)objectWithData:(id)a3 options:(unint64_t)a4 error:(id *)a5;
++ (id)dataWithObject:(id)object;
++ (id)dataWithObject:(id)object error:(id *)error;
++ (id)mutableObjectWithData:(id)data;
++ (id)objectWithData:(id)data;
++ (id)objectWithData:(id)data options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation CNPropertyListSerialization
 
-+ (id)dataWithObject:(id)a3
++ (id)dataWithObject:(id)object
 {
   v7 = 0;
-  v3 = [a1 dataWithObject:a3 error:&v7];
+  v3 = [self dataWithObject:object error:&v7];
   v4 = v7;
   v5 = [CNResult resultWithValue:v3 orError:v4];
 
   return v5;
 }
 
-+ (id)dataWithObject:(id)a3 error:(id *)a4
++ (id)dataWithObject:(id)object error:(id *)error
 {
-  if (a3)
+  if (object)
   {
-    v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:a4];
+    v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:object format:200 options:0 error:error];
   }
 
   else
@@ -33,57 +33,57 @@
   return v5;
 }
 
-+ (id)objectWithData:(id)a3
++ (id)objectWithData:(id)data
 {
   v7 = 0;
-  v3 = [a1 objectWithData:a3 error:&v7];
+  v3 = [self objectWithData:data error:&v7];
   v4 = v7;
   v5 = [CNResult resultWithValue:v3 orError:v4];
 
   return v5;
 }
 
-+ (id)mutableObjectWithData:(id)a3
++ (id)mutableObjectWithData:(id)data
 {
   v7 = 0;
-  v3 = [a1 mutableObjectWithData:a3 error:&v7];
+  v3 = [self mutableObjectWithData:data error:&v7];
   v4 = v7;
   v5 = [CNResult resultWithValue:v3 orError:v4];
 
   return v5;
 }
 
-+ (id)objectWithData:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)objectWithData:(id)data options:(unint64_t)options error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || ![v7 length])
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!dataCopy || ![dataCopy length])
   {
     v9 = 0;
     goto LABEL_10;
   }
 
   v14 = 0;
-  v9 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:a4 format:0 error:&v14];
+  v9 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:options format:0 error:&v14];
   v10 = v14;
   if (!v9)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [CNPropertyListSerialization objectWithData:v10 options:? error:?];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_9;
     }
 
     v12 = v10;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_9;
   }
 

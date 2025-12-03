@@ -1,13 +1,13 @@
 @interface UITextSelectionRect
-+ (BOOL)endIsHorizontal:(id)a3;
-+ (BOOL)startIsHorizontal:(id)a3;
-+ (CGRect)endEdgeFromRects:(id)a3;
-+ (CGRect)startEdgeFromRects:(id)a3;
-+ (id)endCustomSelectionPathFromRects:(id)a3;
-+ (id)endRectFromRects:(id)a3;
-+ (id)startCustomSelectionPathFromRects:(id)a3;
-+ (id)startRectFromRects:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)endIsHorizontal:(id)horizontal;
++ (BOOL)startIsHorizontal:(id)horizontal;
++ (CGRect)endEdgeFromRects:(id)rects;
++ (CGRect)startEdgeFromRects:(id)rects;
++ (id)endCustomSelectionPathFromRects:(id)rects;
++ (id)endRectFromRects:(id)rects;
++ (id)startCustomSelectionPathFromRects:(id)rects;
++ (id)startRectFromRects:(id)rects;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (CGRect)_endEdgeRect;
 - (CGRect)_startEdgeRect;
@@ -17,7 +17,7 @@
 - (UITextSelectionRectImpl)_isImpl;
 - (id)mutableCopy;
 - (unint64_t)hash;
-- (void)_appendToPath:(CGPath *)a3 cornerRadius:(double)a4 edgeInsets:(UIEdgeInsets)a5;
+- (void)_appendToPath:(CGPath *)path cornerRadius:(double)radius edgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation UITextSelectionRect
@@ -33,8 +33,8 @@
   v12 = [_UIMutableTextSelectionRect selectionRectWithRect:v11 fromView:v4, v6, v8, v10];
 
   [v12 _setDrawsOwnHighlight:{-[UITextSelectionRect _drawsOwnHighlight](self, "_drawsOwnHighlight")}];
-  v13 = [(UITextSelectionRect *)self _customHandleInfo];
-  [v12 set_customHandleInfo:v13];
+  _customHandleInfo = [(UITextSelectionRect *)self _customHandleInfo];
+  [v12 set_customHandleInfo:_customHandleInfo];
 
   [v12 setWritingDirection:{-[UITextSelectionRect writingDirection](self, "writingDirection")}];
   [v12 setContainsStart:{-[UITextSelectionRect containsStart](self, "containsStart")}];
@@ -45,23 +45,23 @@
   v16[1] = v16[4];
   v16[2] = v16[5];
   [v12 setTransform:v16];
-  v14 = [(UITextSelectionRect *)self _path];
-  [v12 set_path:v14];
+  _path = [(UITextSelectionRect *)self _path];
+  [v12 set_path:_path];
 
   return v12;
 }
 
-+ (id)startRectFromRects:(id)a3
++ (id)startRectFromRects:(id)rects
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] && (objc_msgSend(v3, "lastObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
+  rectsCopy = rects;
+  if ([rectsCopy count] && (objc_msgSend(rectsCopy, "lastObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v3;
+    v6 = rectsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -108,9 +108,9 @@ LABEL_14:
   return v12;
 }
 
-+ (CGRect)startEdgeFromRects:(id)a3
++ (CGRect)startEdgeFromRects:(id)rects
 {
-  v3 = [a1 startRectFromRects:a3];
+  v3 = [self startRectFromRects:rects];
   [v3 _startEdgeRect];
   v5 = v4;
   v7 = v6;
@@ -128,17 +128,17 @@ LABEL_14:
   return result;
 }
 
-+ (id)endRectFromRects:(id)a3
++ (id)endRectFromRects:(id)rects
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] && (objc_msgSend(v3, "lastObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
+  rectsCopy = rects;
+  if ([rectsCopy count] && (objc_msgSend(rectsCopy, "lastObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v3;
+    v6 = rectsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -156,7 +156,7 @@ LABEL_14:
           v11 = *(*(&v14 + 1) + 8 * i);
           if ([v11 containsEnd])
           {
-            v12 = v11;
+            lastObject = v11;
 
             goto LABEL_14;
           }
@@ -172,22 +172,22 @@ LABEL_14:
       }
     }
 
-    v12 = [v6 lastObject];
+    lastObject = [v6 lastObject];
   }
 
   else
   {
-    v12 = 0;
+    lastObject = 0;
   }
 
 LABEL_14:
 
-  return v12;
+  return lastObject;
 }
 
-+ (CGRect)endEdgeFromRects:(id)a3
++ (CGRect)endEdgeFromRects:(id)rects
 {
-  v3 = [a1 endRectFromRects:a3];
+  v3 = [self endRectFromRects:rects];
   [v3 _endEdgeRect];
   v5 = v4;
   v7 = v6;
@@ -205,66 +205,66 @@ LABEL_14:
   return result;
 }
 
-+ (id)startCustomSelectionPathFromRects:(id)a3
++ (id)startCustomSelectionPathFromRects:(id)rects
 {
-  v3 = [a1 startRectFromRects:a3];
-  v4 = [v3 _endCustomSelectionPath];
+  v3 = [self startRectFromRects:rects];
+  _endCustomSelectionPath = [v3 _endCustomSelectionPath];
 
-  return v4;
+  return _endCustomSelectionPath;
 }
 
-+ (id)endCustomSelectionPathFromRects:(id)a3
++ (id)endCustomSelectionPathFromRects:(id)rects
 {
-  v3 = [a1 endRectFromRects:a3];
-  v4 = [v3 _endCustomSelectionPath];
+  v3 = [self endRectFromRects:rects];
+  _endCustomSelectionPath = [v3 _endCustomSelectionPath];
 
-  return v4;
+  return _endCustomSelectionPath;
 }
 
-+ (BOOL)startIsHorizontal:(id)a3
++ (BOOL)startIsHorizontal:(id)horizontal
 {
-  v3 = [a1 startRectFromRects:a3];
-  v4 = [v3 isVertical];
+  v3 = [self startRectFromRects:horizontal];
+  isVertical = [v3 isVertical];
 
-  return v4 ^ 1;
+  return isVertical ^ 1;
 }
 
-+ (BOOL)endIsHorizontal:(id)a3
++ (BOOL)endIsHorizontal:(id)horizontal
 {
-  v3 = [a1 endRectFromRects:a3];
-  v4 = [v3 isVertical];
+  v3 = [self endRectFromRects:horizontal];
+  isVertical = [v3 isVertical];
 
-  return v4 ^ 1;
+  return isVertical ^ 1;
 }
 
 - (UISelectionGrabberCustomPath)_startCustomSelectionPath
 {
-  v3 = [(UITextSelectionRect *)self _customHandleInfo];
-  if (!v3)
+  _customHandleInfo = [(UITextSelectionRect *)self _customHandleInfo];
+  if (!_customHandleInfo)
   {
     v4 = 0;
     goto LABEL_8;
   }
 
   v4 = objc_alloc_init(UISelectionGrabberCustomPath);
-  v5 = [(UITextSelectionRect *)self writingDirection];
-  if ((v5 + 1) >= 2)
+  writingDirection = [(UITextSelectionRect *)self writingDirection];
+  if ((writingDirection + 1) >= 2)
   {
-    if (v5 != NSWritingDirectionRightToLeft)
+    if (writingDirection != NSWritingDirectionRightToLeft)
     {
       goto LABEL_8;
     }
 
-    [v3 topRight];
+    [_customHandleInfo topRight];
     [(UISelectionGrabberCustomPath *)v4 setTopPoint:?];
-    [v3 bottomRight];
+    [_customHandleInfo bottomRight];
   }
 
   else
   {
-    [v3 topLeft];
+    [_customHandleInfo topLeft];
     [(UISelectionGrabberCustomPath *)v4 setTopPoint:?];
-    [v3 bottomLeft];
+    [_customHandleInfo bottomLeft];
   }
 
   [(UISelectionGrabberCustomPath *)v4 setBottomPoint:?];
@@ -275,32 +275,32 @@ LABEL_8:
 
 - (UISelectionGrabberCustomPath)_endCustomSelectionPath
 {
-  v3 = [(UITextSelectionRect *)self _customHandleInfo];
-  if (!v3)
+  _customHandleInfo = [(UITextSelectionRect *)self _customHandleInfo];
+  if (!_customHandleInfo)
   {
     v4 = 0;
     goto LABEL_8;
   }
 
   v4 = objc_alloc_init(UISelectionGrabberCustomPath);
-  v5 = [(UITextSelectionRect *)self writingDirection];
-  if ((v5 + 1) >= 2)
+  writingDirection = [(UITextSelectionRect *)self writingDirection];
+  if ((writingDirection + 1) >= 2)
   {
-    if (v5 != NSWritingDirectionRightToLeft)
+    if (writingDirection != NSWritingDirectionRightToLeft)
     {
       goto LABEL_8;
     }
 
-    [v3 topLeft];
+    [_customHandleInfo topLeft];
     [(UISelectionGrabberCustomPath *)v4 setTopPoint:?];
-    [v3 bottomLeft];
+    [_customHandleInfo bottomLeft];
   }
 
   else
   {
-    [v3 topRight];
+    [_customHandleInfo topRight];
     [(UISelectionGrabberCustomPath *)v4 setTopPoint:?];
-    [v3 bottomRight];
+    [_customHandleInfo bottomRight];
   }
 
   [(UISelectionGrabberCustomPath *)v4 setBottomPoint:?];
@@ -316,13 +316,13 @@ LABEL_8:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UITextSelectionRect *)self isVertical];
-  v12 = [(UITextSelectionRect *)self writingDirection];
-  if ((v12 + 1) >= 2)
+  isVertical = [(UITextSelectionRect *)self isVertical];
+  writingDirection = [(UITextSelectionRect *)self writingDirection];
+  if ((writingDirection + 1) >= 2)
   {
-    if (v12 == NSWritingDirectionRightToLeft)
+    if (writingDirection == NSWritingDirectionRightToLeft)
     {
-      if (v11)
+      if (isVertical)
       {
         v6 = v6 + v10 + -1.0;
         v10 = 1.0;
@@ -336,7 +336,7 @@ LABEL_8:
     }
   }
 
-  else if (v11)
+  else if (isVertical)
   {
     v10 = 1.0;
   }
@@ -364,12 +364,12 @@ LABEL_8:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UITextSelectionRect *)self isVertical];
-  v12 = [(UITextSelectionRect *)self writingDirection];
-  if ((v12 + 1) >= 2)
+  isVertical = [(UITextSelectionRect *)self isVertical];
+  writingDirection = [(UITextSelectionRect *)self writingDirection];
+  if ((writingDirection + 1) >= 2)
   {
     v13 = 1.0;
-    if (v11)
+    if (isVertical)
     {
       v14 = 1.0;
     }
@@ -379,19 +379,19 @@ LABEL_8:
       v14 = v10;
     }
 
-    if (v11)
+    if (isVertical)
     {
       v13 = v8;
     }
 
-    if (v12 == NSWritingDirectionRightToLeft)
+    if (writingDirection == NSWritingDirectionRightToLeft)
     {
       v10 = v14;
       v8 = v13;
     }
   }
 
-  else if (v11)
+  else if (isVertical)
   {
     v6 = v6 + v10 + -1.0;
     v10 = 1.0;
@@ -432,21 +432,21 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -456,15 +456,15 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(UITextSelectionRect *)self _path];
-      if (v7 || ([(UITextSelectionRect *)v6 _path], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      v6 = equalCopy;
+      _path = [(UITextSelectionRect *)self _path];
+      if (_path || ([(UITextSelectionRect *)v6 _path], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v8 = [(UITextSelectionRect *)self _path];
-        v9 = [(UITextSelectionRect *)v6 _path];
-        v10 = [v8 isEqual:v9];
+        _path2 = [(UITextSelectionRect *)self _path];
+        _path3 = [(UITextSelectionRect *)v6 _path];
+        v10 = [_path2 isEqual:_path3];
 
-        if (v7)
+        if (_path)
         {
 
           if (!v10)
@@ -512,17 +512,17 @@ LABEL_8:
         v31.size.height = v19;
         if (CGRectEqualToRect(v31, v32))
         {
-          v24 = [(UITextSelectionRect *)self writingDirection];
-          if (v24 == [(UITextSelectionRect *)v6 writingDirection])
+          writingDirection = [(UITextSelectionRect *)self writingDirection];
+          if (writingDirection == [(UITextSelectionRect *)v6 writingDirection])
           {
-            v25 = [(UITextSelectionRect *)self containsStart];
-            if (v25 == [(UITextSelectionRect *)v6 containsStart])
+            containsStart = [(UITextSelectionRect *)self containsStart];
+            if (containsStart == [(UITextSelectionRect *)v6 containsStart])
             {
-              v26 = [(UITextSelectionRect *)self containsEnd];
-              if (v26 == [(UITextSelectionRect *)v6 containsEnd])
+              containsEnd = [(UITextSelectionRect *)self containsEnd];
+              if (containsEnd == [(UITextSelectionRect *)v6 containsEnd])
               {
-                v28 = [(UITextSelectionRect *)self isVertical];
-                v11 = v28 ^ [(UITextSelectionRect *)v6 isVertical]^ 1;
+                isVertical = [(UITextSelectionRect *)self isVertical];
+                v11 = isVertical ^ [(UITextSelectionRect *)v6 isVertical]^ 1;
                 goto LABEL_20;
               }
             }
@@ -556,24 +556,24 @@ LABEL_21:
   v7 = 257 * (v6 + [(UITextSelectionRect *)self containsStart]);
   v8 = 257 * (v7 + [(UITextSelectionRect *)self containsEnd]);
   v9 = v8 + [(UITextSelectionRect *)self isVertical]+ 0x1060F140F0601;
-  v10 = [(UITextSelectionRect *)self _path];
-  v11 = [v10 hash];
+  _path = [(UITextSelectionRect *)self _path];
+  v11 = [_path hash];
 
   return v9 ^ v11;
 }
 
 - (CGAffineTransform)transform
 {
-  v5 = [(UITextSelectionRect *)self _transform];
+  _transform = [(UITextSelectionRect *)self _transform];
 
-  if (v5)
+  if (_transform)
   {
-    v7 = [(UITextSelectionRect *)self _transform];
-    if (v7)
+    _transform2 = [(UITextSelectionRect *)self _transform];
+    if (_transform2)
     {
-      v10 = v7;
-      [v7 CGAffineTransformValue];
-      v7 = v10;
+      v10 = _transform2;
+      [_transform2 CGAffineTransformValue];
+      _transform2 = v10;
     }
 
     else
@@ -596,12 +596,12 @@ LABEL_21:
   return result;
 }
 
-- (void)_appendToPath:(CGPath *)a3 cornerRadius:(double)a4 edgeInsets:(UIEdgeInsets)a5
+- (void)_appendToPath:(CGPath *)path cornerRadius:(double)radius edgeInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(UITextSelectionRect *)self rect];
   v12 = v11;
   v14 = v13;
@@ -623,14 +623,14 @@ LABEL_21:
     [(UITextSelectionRect *)self transform];
   }
 
-  v21 = [(UITextSelectionRect *)self _path];
+  _path = [(UITextSelectionRect *)self _path];
 
-  if (v21)
+  if (_path)
   {
     memset(&m, 0, sizeof(m));
     CGAffineTransformMakeTranslation(&m, v12, v14);
-    v22 = [(UITextSelectionRect *)self _path];
-    CGPathAddPath(a3, &m, [v22 CGPath]);
+    _path2 = [(UITextSelectionRect *)self _path];
+    CGPathAddPath(path, &m, [_path2 CGPath]);
   }
 
   else if (![(UITextSelectionRect *)self _drawsOwnHighlight])
@@ -639,15 +639,15 @@ LABEL_21:
     v24 = top + v14;
     v25 = v16 - (left + right);
     v26 = v18 - (top + bottom);
-    if (a4 <= 2.22044605e-16)
+    if (radius <= 2.22044605e-16)
     {
-      CGPathAddRect(a3, v20, *&v23);
+      CGPathAddRect(path, v20, *&v23);
     }
 
     else
     {
-      v27 = fmin(a4, v25 * 0.5);
-      CGPathAddRoundedRect(a3, v20, *&v23, v27, v27);
+      v27 = fmin(radius, v25 * 0.5);
+      CGPathAddRoundedRect(path, v20, *&v23, v27, v27);
     }
   }
 }

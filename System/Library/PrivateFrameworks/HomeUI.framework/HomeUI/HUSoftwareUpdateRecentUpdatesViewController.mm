@@ -1,17 +1,17 @@
 @interface HUSoftwareUpdateRecentUpdatesViewController
 - (HUPresentationDelegate)presentationDelegate;
-- (HUSoftwareUpdateRecentUpdatesViewController)initWithHome:(id)a3;
-- (HUSoftwareUpdateRecentUpdatesViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
+- (HUSoftwareUpdateRecentUpdatesViewController)initWithHome:(id)home;
+- (HUSoftwareUpdateRecentUpdatesViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
 - (id)itemModuleControllers;
 - (void)viewDidLoad;
 @end
 
 @implementation HUSoftwareUpdateRecentUpdatesViewController
 
-- (HUSoftwareUpdateRecentUpdatesViewController)initWithHome:(id)a3
+- (HUSoftwareUpdateRecentUpdatesViewController)initWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [[HUSoftwareUpdateRecentUpdatesItemManager alloc] initWithDelegate:self home:v4];
+  homeCopy = home;
+  v5 = [[HUSoftwareUpdateRecentUpdatesItemManager alloc] initWithDelegate:self home:homeCopy];
 
   v8.receiver = self;
   v8.super_class = HUSoftwareUpdateRecentUpdatesViewController;
@@ -20,11 +20,11 @@
   return v6;
 }
 
-- (HUSoftwareUpdateRecentUpdatesViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUSoftwareUpdateRecentUpdatesViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateRecentUpdatesViewController.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateRecentUpdatesViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateRecentUpdatesViewController.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateRecentUpdatesViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
@@ -40,20 +40,20 @@
 
 - (id)itemModuleControllers
 {
-  v3 = [(HUSoftwareUpdateRecentUpdatesViewController *)self softwareUpdateItemModuleController];
+  softwareUpdateItemModuleController = [(HUSoftwareUpdateRecentUpdatesViewController *)self softwareUpdateItemModuleController];
 
-  if (!v3)
+  if (!softwareUpdateItemModuleController)
   {
     v4 = [HUSoftwareUpdateItemModuleController alloc];
-    v5 = [(HUItemTableViewController *)self itemManager];
-    v6 = [v5 softwareUpdateModule];
-    v7 = [(HUSoftwareUpdateItemModuleController *)v4 initWithModule:v6 delegate:0 expandableTextViewCellDelegate:self];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    softwareUpdateModule = [itemManager softwareUpdateModule];
+    v7 = [(HUSoftwareUpdateItemModuleController *)v4 initWithModule:softwareUpdateModule delegate:0 expandableTextViewCellDelegate:self];
     [(HUSoftwareUpdateRecentUpdatesViewController *)self setSoftwareUpdateItemModuleController:v7];
   }
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HUSoftwareUpdateRecentUpdatesViewController *)self softwareUpdateItemModuleController];
-  v10 = [v8 setWithObject:v9];
+  softwareUpdateItemModuleController2 = [(HUSoftwareUpdateRecentUpdatesViewController *)self softwareUpdateItemModuleController];
+  v10 = [v8 setWithObject:softwareUpdateItemModuleController2];
 
   return v10;
 }

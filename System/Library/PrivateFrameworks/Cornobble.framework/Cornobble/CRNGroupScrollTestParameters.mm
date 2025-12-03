@@ -1,34 +1,34 @@
 @interface CRNGroupScrollTestParameters
-+ (id)parametersByCombining:(id)a3 testName:(id)a4 completionHandler:(id)a5;
-- (CRNGroupScrollTestParameters)initWithTestName:(id)a3 withParameters:(id)a4 completionHandler:(id)a5;
++ (id)parametersByCombining:(id)combining testName:(id)name completionHandler:(id)handler;
+- (CRNGroupScrollTestParameters)initWithTestName:(id)name withParameters:(id)parameters completionHandler:(id)handler;
 - (RCPSyntheticEventStream)eventStream;
 - (id)composerBlock;
 @end
 
 @implementation CRNGroupScrollTestParameters
 
-+ (id)parametersByCombining:(id)a3 testName:(id)a4 completionHandler:(id)a5
++ (id)parametersByCombining:(id)combining testName:(id)name completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CRNGroupScrollTestParameters alloc] initWithTestName:v8 withParameters:v9 completionHandler:v7];
+  handlerCopy = handler;
+  nameCopy = name;
+  combiningCopy = combining;
+  v10 = [[CRNGroupScrollTestParameters alloc] initWithTestName:nameCopy withParameters:combiningCopy completionHandler:handlerCopy];
 
   return v10;
 }
 
-- (CRNGroupScrollTestParameters)initWithTestName:(id)a3 withParameters:(id)a4 completionHandler:(id)a5
+- (CRNGroupScrollTestParameters)initWithTestName:(id)name withParameters:(id)parameters completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = CRNGroupScrollTestParameters;
   v9 = [(CRNGroupScrollTestParameters *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(CRNGroupScrollTestParameters *)v9 setParameters:v7];
-    [(CRNGroupScrollTestParameters *)v10 setCompletionHandler:v8];
+    [(CRNGroupScrollTestParameters *)v9 setParameters:parametersCopy];
+    [(CRNGroupScrollTestParameters *)v10 setCompletionHandler:handlerCopy];
   }
 
   return v10;
@@ -56,8 +56,8 @@
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [(CRNGroupScrollTestParameters *)self composerBlock];
-    v6 = [v3 eventStreamWithEventActions:v5];
+    composerBlock = [(CRNGroupScrollTestParameters *)self composerBlock];
+    v6 = [v3 eventStreamWithEventActions:composerBlock];
   }
 
   else

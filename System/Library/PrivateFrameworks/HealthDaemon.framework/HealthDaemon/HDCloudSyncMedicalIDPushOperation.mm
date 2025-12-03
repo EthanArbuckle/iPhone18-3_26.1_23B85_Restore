@@ -7,14 +7,14 @@
 - (void)main
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 primaryCKContainer];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  primaryCKContainer = [repository primaryCKContainer];
 
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [v6 repository];
-  v8 = [v7 profileIdentifier];
-  v9 = HDDatabaseForContainer(v5, v8);
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository2 = [configuration2 repository];
+  profileIdentifier = [repository2 profileIdentifier];
+  v9 = HDDatabaseForContainer(primaryCKContainer, profileIdentifier);
 
   if ([(_HKMedicalIDData *)self->_cloudMedicalIDData isEqualToSyncedData:self->_medicalIDDataToPush])
   {
@@ -33,21 +33,21 @@
 
   if (!self->_medicalIDRecord)
   {
-    v25 = [(HDCloudSyncOperation *)self configuration];
-    v26 = [v25 cachedCloudState];
-    v27 = [v5 containerIdentifier];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration3 cachedCloudState];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v58 = 0;
-    v28 = [v26 unifiedSyncZoneForContainerID:v27 error:&v58];
+    v28 = [cachedCloudState unifiedSyncZoneForContainerID:containerIdentifier error:&v58];
     v29 = v58;
 
     if (v28 || !v29)
     {
       if (v28)
       {
-        v47 = [v28 zoneIdentifier];
-        v48 = [v47 zoneIdentifier];
+        zoneIdentifier = [v28 zoneIdentifier];
+        v47ZoneIdentifier = [zoneIdentifier zoneIdentifier];
 
-        v49 = [[HDCloudSyncMedicalIDRecord alloc] initInZone:v48];
+        v49 = [[HDCloudSyncMedicalIDRecord alloc] initInZone:v47ZoneIdentifier];
         medicalIDRecord = self->_medicalIDRecord;
         self->_medicalIDRecord = v49;
 
@@ -78,46 +78,46 @@
   }
 
 LABEL_6:
-  v56 = v5;
+  v56 = primaryCKContainer;
   v57 = v9;
-  v11 = [(_HKMedicalIDData *)self->_medicalIDDataToPush codableRepresentationForSync];
-  [(HDCloudSyncMedicalIDRecord *)self->_medicalIDRecord setMedicalIDData:v11];
+  codableRepresentationForSync = [(_HKMedicalIDData *)self->_medicalIDDataToPush codableRepresentationForSync];
+  [(HDCloudSyncMedicalIDRecord *)self->_medicalIDRecord setMedicalIDData:codableRepresentationForSync];
 
   v12 = self->_medicalIDRecord;
-  v13 = [(HDCloudSyncOperation *)self configuration];
-  v14 = [v13 repository];
-  v15 = [v14 behavior];
+  configuration4 = [(HDCloudSyncOperation *)self configuration];
+  repository3 = [configuration4 repository];
+  behavior = [repository3 behavior];
 
   v16 = MEMORY[0x277CCACA8];
-  v54 = [(HDCloudSyncOperation *)self configuration];
-  v53 = [v54 repository];
-  v17 = [v53 profileIdentifier];
-  v18 = [v15 currentDeviceProductType];
-  v19 = [v15 currentOSBuild];
-  v20 = [v15 currentDeviceDisplayName];
-  v21 = [(HDCloudSyncOperation *)self configuration];
-  v22 = [v21 repository];
-  v23 = [v22 deviceMode];
+  configuration5 = [(HDCloudSyncOperation *)self configuration];
+  repository4 = [configuration5 repository];
+  profileIdentifier2 = [repository4 profileIdentifier];
+  currentDeviceProductType = [behavior currentDeviceProductType];
+  currentOSBuild = [behavior currentOSBuild];
+  currentDeviceDisplayName = [behavior currentDeviceDisplayName];
+  configuration6 = [(HDCloudSyncOperation *)self configuration];
+  repository5 = [configuration6 repository];
+  deviceMode = [repository5 deviceMode];
   v55 = v12;
-  if (v23 == 1)
+  if (deviceMode == 1)
   {
     v24 = @"Basic";
   }
 
-  else if (v23 == 2)
+  else if (deviceMode == 2)
   {
     v24 = @"Satellite";
   }
 
   else
   {
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v23];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", deviceMode];
   }
 
-  v31 = [v16 stringWithFormat:@"ProfileIdentifier: %@, ProductType: %@, SystemBuildVersion: %@, DeviceName: %@, DeviceMode: %@, ", v17, v18, v19, v20, v24];
+  v31 = [v16 stringWithFormat:@"ProfileIdentifier: %@, ProductType: %@, SystemBuildVersion: %@, DeviceName: %@, DeviceMode: %@, ", profileIdentifier2, currentDeviceProductType, currentOSBuild, currentDeviceDisplayName, v24];
 
   [(HDCloudSyncMedicalIDRecord *)v55 addMedicalIDEvent:v31];
-  v5 = v56;
+  primaryCKContainer = v56;
   v32 = v56;
   v33 = v57;
   _HKInitializeLogging();
@@ -127,26 +127,26 @@ LABEL_6:
     v35 = v34;
     [v33 databaseScope];
     v36 = CKDatabaseScopeString();
-    v37 = [v32 containerIdentifier];
+    containerIdentifier2 = [v32 containerIdentifier];
     v38 = self->_medicalIDRecord;
     *buf = 138544130;
     *&buf[4] = self;
     *&buf[12] = 2114;
     *&buf[14] = v36;
     *&buf[22] = 2114;
-    v61 = v37;
+    v61 = containerIdentifier2;
     LOWORD(v62) = 2114;
     *(&v62 + 2) = v38;
     _os_log_impl(&dword_228986000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ Beginning MedicalID record push to cloud for %{public}@ in %{public}@. %{public}@", buf, 0x2Au);
   }
 
   v39 = [HDCloudSyncModifyRecordsOperation alloc];
-  v40 = [(HDCloudSyncOperation *)self configuration];
-  v41 = [(HDCloudSyncRecord *)self->_medicalIDRecord record];
-  v42 = [v41 copy];
+  configuration7 = [(HDCloudSyncOperation *)self configuration];
+  record = [(HDCloudSyncRecord *)self->_medicalIDRecord record];
+  v42 = [record copy];
   v64[0] = v42;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:1];
-  v44 = [(HDCloudSyncModifyRecordsOperation *)v39 initWithConfiguration:v40 container:v32 recordsToSave:v43 recordIDsToDelete:0];
+  v44 = [(HDCloudSyncModifyRecordsOperation *)v39 initWithConfiguration:configuration7 container:v32 recordsToSave:v43 recordIDsToDelete:0];
 
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;

@@ -1,12 +1,12 @@
 @interface WFStaccatoActionTemplate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionTemplate:(id)a3;
-- (WFStaccatoActionTemplate)initWithCoder:(id)a3;
-- (WFStaccatoActionTemplate)initWithIdentifier:(id)a3 sectionIdentifier:(id)a4 actionIdentifier:(id)a5 localizedTitle:(id)a6 localizedDescription:(id)a7 parameters:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionTemplate:(id)template;
+- (WFStaccatoActionTemplate)initWithCoder:(id)coder;
+- (WFStaccatoActionTemplate)initWithIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier actionIdentifier:(id)actionIdentifier localizedTitle:(id)title localizedDescription:(id)description parameters:(id)parameters;
 - (id)description;
 - (id)tintColor;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFStaccatoActionTemplate
@@ -14,51 +14,51 @@
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFStaccatoActionTemplate *)self identifier];
-  v5 = [v3 combine:v4];
+  identifier = [(WFStaccatoActionTemplate *)self identifier];
+  v5 = [v3 combine:identifier];
 
-  v6 = [(WFStaccatoActionTemplate *)self sectionIdentifier];
-  v7 = [v3 combine:v6];
+  sectionIdentifier = [(WFStaccatoActionTemplate *)self sectionIdentifier];
+  v7 = [v3 combine:sectionIdentifier];
 
-  v8 = [(WFStaccatoActionTemplate *)self actionIdentifier];
-  v9 = [v3 combine:v8];
+  actionIdentifier = [(WFStaccatoActionTemplate *)self actionIdentifier];
+  v9 = [v3 combine:actionIdentifier];
 
-  v10 = [(WFStaccatoActionTemplate *)self localizedTitle];
-  v11 = [v3 combine:v10];
+  localizedTitle = [(WFStaccatoActionTemplate *)self localizedTitle];
+  v11 = [v3 combine:localizedTitle];
 
-  v12 = [(WFStaccatoActionTemplate *)self parameters];
-  v13 = [v3 combine:v12];
+  parameters = [(WFStaccatoActionTemplate *)self parameters];
+  v13 = [v3 combine:parameters];
 
   v14 = [v3 finalize];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFStaccatoActionTemplate *)self isEqualToActionTemplate:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFStaccatoActionTemplate *)self isEqualToActionTemplate:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToActionTemplate:(id)a3
+- (BOOL)isEqualToActionTemplate:(id)template
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  templateCopy = template;
+  v5 = templateCopy;
+  if (templateCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (templateCopy)
     {
-      v6 = [(WFStaccatoActionTemplate *)self identifier];
-      v7 = [(WFStaccatoActionTemplate *)v5 identifier];
-      v8 = v6;
-      v9 = v7;
+      identifier = [(WFStaccatoActionTemplate *)self identifier];
+      identifier2 = [(WFStaccatoActionTemplate *)v5 identifier];
+      v8 = identifier;
+      v9 = identifier2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -85,10 +85,10 @@ LABEL_32:
         }
       }
 
-      v15 = [(WFStaccatoActionTemplate *)self sectionIdentifier];
-      v16 = [(WFStaccatoActionTemplate *)v5 sectionIdentifier];
-      v13 = v15;
-      v17 = v16;
+      sectionIdentifier = [(WFStaccatoActionTemplate *)self sectionIdentifier];
+      sectionIdentifier2 = [(WFStaccatoActionTemplate *)v5 sectionIdentifier];
+      v13 = sectionIdentifier;
+      v17 = sectionIdentifier2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -115,10 +115,10 @@ LABEL_31:
         }
       }
 
-      v21 = [(WFStaccatoActionTemplate *)self localizedTitle];
-      v22 = [(WFStaccatoActionTemplate *)v5 localizedTitle];
-      v19 = v21;
-      v23 = v22;
+      localizedTitle = [(WFStaccatoActionTemplate *)self localizedTitle];
+      localizedTitle2 = [(WFStaccatoActionTemplate *)v5 localizedTitle];
+      v19 = localizedTitle;
+      v23 = localizedTitle2;
       v18 = v23;
       v30 = v19;
       if (v19 == v23)
@@ -148,10 +148,10 @@ LABEL_30:
         }
       }
 
-      v26 = [(WFStaccatoActionTemplate *)self parameters];
-      v27 = [(WFStaccatoActionTemplate *)v5 parameters];
-      v19 = v26;
-      v28 = v27;
+      parameters = [(WFStaccatoActionTemplate *)self parameters];
+      parameters2 = [(WFStaccatoActionTemplate *)v5 parameters];
+      v19 = parameters;
+      v28 = parameters2;
       v24 = v28;
       if (v19 == v28)
       {
@@ -184,84 +184,84 @@ LABEL_33:
   v12.receiver = self;
   v12.super_class = WFStaccatoActionTemplate;
   v4 = [(WFStaccatoActionTemplate *)&v12 description];
-  v5 = [(WFStaccatoActionTemplate *)self identifier];
-  v6 = [(WFStaccatoActionTemplate *)self sectionIdentifier];
-  v7 = [(WFStaccatoActionTemplate *)self actionIdentifier];
-  v8 = [(WFStaccatoActionTemplate *)self localizedTitle];
-  v9 = [(WFStaccatoActionTemplate *)self parameters];
-  v10 = [v3 stringWithFormat:@"<%@: id: %@ section: %@, action: %@ title: %@, parameters: %@>", v4, v5, v6, v7, v8, v9];
+  identifier = [(WFStaccatoActionTemplate *)self identifier];
+  sectionIdentifier = [(WFStaccatoActionTemplate *)self sectionIdentifier];
+  actionIdentifier = [(WFStaccatoActionTemplate *)self actionIdentifier];
+  localizedTitle = [(WFStaccatoActionTemplate *)self localizedTitle];
+  parameters = [(WFStaccatoActionTemplate *)self parameters];
+  v10 = [v3 stringWithFormat:@"<%@: id: %@ section: %@, action: %@ title: %@, parameters: %@>", v4, identifier, sectionIdentifier, actionIdentifier, localizedTitle, parameters];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFStaccatoActionTemplate *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFStaccatoActionTemplate *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(WFStaccatoActionTemplate *)self sectionIdentifier];
-  [v4 encodeObject:v6 forKey:@"sectionIdentifier"];
+  sectionIdentifier = [(WFStaccatoActionTemplate *)self sectionIdentifier];
+  [coderCopy encodeObject:sectionIdentifier forKey:@"sectionIdentifier"];
 
-  v7 = [(WFStaccatoActionTemplate *)self actionIdentifier];
-  [v4 encodeObject:v7 forKey:@"actionIdentifier"];
+  actionIdentifier = [(WFStaccatoActionTemplate *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v8 = [(WFStaccatoActionTemplate *)self localizedTitle];
-  [v4 encodeObject:v8 forKey:@"localizedTitle"];
+  localizedTitle = [(WFStaccatoActionTemplate *)self localizedTitle];
+  [coderCopy encodeObject:localizedTitle forKey:@"localizedTitle"];
 
-  v9 = [(WFStaccatoActionTemplate *)self localizedDescription];
-  [v4 encodeObject:v9 forKey:@"localizedDescription"];
+  localizedDescription = [(WFStaccatoActionTemplate *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v10 = [(WFStaccatoActionTemplate *)self parameters];
-  [v4 encodeObject:v10 forKey:@"parameters"];
+  parameters = [(WFStaccatoActionTemplate *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 }
 
-- (WFStaccatoActionTemplate)initWithCoder:(id)a3
+- (WFStaccatoActionTemplate)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
   v10 = MEMORY[0x1E695DFD8];
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v12 = [v10 setWithArray:v11];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"parameters"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"parameters"];
 
-  v14 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7 && v8 && v13)
   {
     self = [(WFStaccatoActionTemplate *)self initWithIdentifier:v5 sectionIdentifier:v6 actionIdentifier:v7 localizedTitle:v8 localizedDescription:v9 parameters:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)tintColor
 {
-  v2 = [(WFStaccatoActionTemplate *)self sectionIdentifier];
-  v3 = WFStaccatoTintColorForSectionIdentifier(v2);
+  sectionIdentifier = [(WFStaccatoActionTemplate *)self sectionIdentifier];
+  v3 = WFStaccatoTintColorForSectionIdentifier(sectionIdentifier);
 
   return v3;
 }
 
-- (WFStaccatoActionTemplate)initWithIdentifier:(id)a3 sectionIdentifier:(id)a4 actionIdentifier:(id)a5 localizedTitle:(id)a6 localizedDescription:(id)a7 parameters:(id)a8
+- (WFStaccatoActionTemplate)initWithIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier actionIdentifier:(id)actionIdentifier localizedTitle:(id)title localizedDescription:(id)description parameters:(id)parameters
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  identifierCopy = identifier;
+  sectionIdentifierCopy = sectionIdentifier;
+  actionIdentifierCopy = actionIdentifier;
+  titleCopy = title;
+  descriptionCopy = description;
+  parametersCopy = parameters;
+  if (identifierCopy)
   {
-    if (v16)
+    if (sectionIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -269,13 +269,13 @@ LABEL_33:
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v16)
+    if (sectionIdentifierCopy)
     {
 LABEL_3:
-      if (v17)
+      if (actionIdentifierCopy)
       {
         goto LABEL_4;
       }
@@ -284,22 +284,22 @@ LABEL_3:
     }
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifier"}];
 
-  if (v17)
+  if (actionIdentifierCopy)
   {
 LABEL_4:
-    if (v18)
+    if (titleCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"localizedTitle"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"localizedTitle"}];
 
-    if (v20)
+    if (parametersCopy)
     {
       goto LABEL_6;
     }
@@ -308,23 +308,23 @@ LABEL_12:
   }
 
 LABEL_11:
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-  if (!v18)
+  if (!titleCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v20)
+  if (parametersCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_13:
-  v38 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v38 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
 
 LABEL_6:
   v39.receiver = self;
@@ -332,27 +332,27 @@ LABEL_6:
   v21 = [(WFStaccatoActionTemplate *)&v39 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [sectionIdentifierCopy copy];
     sectionIdentifier = v21->_sectionIdentifier;
     v21->_sectionIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [actionIdentifierCopy copy];
     actionIdentifier = v21->_actionIdentifier;
     v21->_actionIdentifier = v26;
 
-    v28 = [v18 copy];
+    v28 = [titleCopy copy];
     localizedTitle = v21->_localizedTitle;
     v21->_localizedTitle = v28;
 
-    v30 = [v19 copy];
+    v30 = [descriptionCopy copy];
     localizedDescription = v21->_localizedDescription;
     v21->_localizedDescription = v30;
 
-    objc_storeStrong(&v21->_parameters, a8);
+    objc_storeStrong(&v21->_parameters, parameters);
     v32 = v21;
   }
 

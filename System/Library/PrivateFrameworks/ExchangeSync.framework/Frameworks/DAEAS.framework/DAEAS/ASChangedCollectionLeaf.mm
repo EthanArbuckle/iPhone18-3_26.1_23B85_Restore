@@ -6,12 +6,12 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (ASChangedCollectionLeaf)init;
-- (ASChangedCollectionLeaf)initWithCoder:(id)a3;
+- (ASChangedCollectionLeaf)initWithCoder:(id)coder;
 - (int64_t)dataclass;
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadClientIDs;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 @end
 
 @implementation ASChangedCollectionLeaf
@@ -25,7 +25,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_21 = v2;
     acceptsTopLevelLeaves___haveChecked_21 = 1;
   }
@@ -42,7 +42,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_21 = v2;
     parsingLeafNode___haveChecked_21 = 1;
   }
@@ -59,7 +59,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_21 = v2;
     parsingWithSubItems___haveChecked_21 = 1;
   }
@@ -76,7 +76,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_21 = v2;
     frontingBasicTypes___haveChecked_21 = 1;
   }
@@ -93,7 +93,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_21 = v2;
     notifyOfUnknownTokens___haveChecked_21 = 1;
   }
@@ -115,12 +115,12 @@
   return v3;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v51 = *MEMORY[0x277D85DE8];
   v46.receiver = self;
   v46.super_class = ASChangedCollectionLeaf;
-  [(ASItem *)&v46 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v46 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState < 2)
   {
@@ -146,14 +146,14 @@
   {
     if (v11 == 7)
     {
-      v12 = self;
+      selfCopy5 = self;
       v13 = 0;
       goto LABEL_19;
     }
 
     if (v11 == 8)
     {
-      v12 = self;
+      selfCopy5 = self;
       v13 = 1;
       goto LABEL_19;
     }
@@ -173,8 +173,8 @@ LABEL_38:
       _os_log_impl(&dword_24A0AC000, v37, v38, "%@ created with unknown token %d", buf, 0x12u);
     }
 
-    v42 = [(ASChangedCollectionLeaf *)self status];
-    if (!v42 || (v43 = v42, -[ASChangedCollectionLeaf status](self, "status"), v44 = objc_claimAutoreleasedReturnValue(), v45 = [v44 intValue], v44, v43, v45 == 1))
+    status = [(ASChangedCollectionLeaf *)self status];
+    if (!status || (v43 = status, -[ASChangedCollectionLeaf status](self, "status"), v44 = objc_claimAutoreleasedReturnValue(), v45 = [v44 intValue], v44, v43, v45 == 1))
     {
       [(ASChangedCollectionLeaf *)self setStatus:&unk_285D57B88];
     }
@@ -184,14 +184,14 @@ LABEL_38:
 
   if (v11 == 9)
   {
-    v12 = self;
+    selfCopy5 = self;
     v13 = 2;
     goto LABEL_19;
   }
 
   if (v11 == 10)
   {
-    v12 = self;
+    selfCopy5 = self;
     v13 = 3;
     goto LABEL_19;
   }
@@ -201,10 +201,10 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v12 = self;
+  selfCopy5 = self;
   v13 = 7;
 LABEL_19:
-  [(ASChangedCollectionLeaf *)v12 setChangeType:v13];
+  [(ASChangedCollectionLeaf *)selfCopy5 setChangeType:v13];
 LABEL_20:
   if (self->super._codePage)
   {
@@ -222,40 +222,40 @@ LABEL_20:
       _os_log_impl(&dword_24A0AC000, v14, v15, "%@ created with unknown code page %d", buf, 0x12u);
     }
 
-    v19 = [(ASChangedCollectionLeaf *)self status];
-    if (!v19 || (v20 = v19, -[ASChangedCollectionLeaf status](self, "status"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 intValue], v21, v20, v22 == 1))
+    status2 = [(ASChangedCollectionLeaf *)self status];
+    if (!status2 || (v20 = status2, -[ASChangedCollectionLeaf status](self, "status"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 intValue], v21, v20, v22 == 1))
     {
       [(ASChangedCollectionLeaf *)self setStatus:&unk_285D57B88];
     }
   }
 
-  v23 = [(ASChangedCollectionLeaf *)self status];
+  status3 = [(ASChangedCollectionLeaf *)self status];
 
-  if (!v23)
+  if (!status3)
   {
     [(ASChangedCollectionLeaf *)self setStatus:&unk_285D57BA0];
   }
 
-  v24 = [(ASChangedCollectionLeaf *)self status];
-  v25 = [v24 intValue];
+  status4 = [(ASChangedCollectionLeaf *)self status];
+  intValue = [status4 intValue];
 
-  if (v25 != 1)
+  if (intValue != 1)
   {
     v26 = DALoggingwithCategory();
     v27 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v26, v27))
     {
-      v28 = [(ASChangedCollectionLeaf *)self status];
-      v29 = [v28 intValue];
+      status5 = [(ASChangedCollectionLeaf *)self status];
+      intValue2 = [status5 intValue];
       *buf = 67109120;
-      LODWORD(v48) = v29;
+      LODWORD(v48) = intValue2;
       _os_log_impl(&dword_24A0AC000, v26, v27, "This leaf node has an unsuccessful status code (has %d)", buf, 8u);
     }
   }
 
-  v30 = [(ASChangedCollectionLeaf *)self serverID];
+  serverID = [(ASChangedCollectionLeaf *)self serverID];
 
-  if (!v30)
+  if (!serverID)
   {
     v31 = DALoggingwithCategory();
     v32 = *(MEMORY[0x277D03988] + 3);
@@ -265,8 +265,8 @@ LABEL_20:
       _os_log_impl(&dword_24A0AC000, v31, v32, "ServerID for this leaf node was not set in the response.", buf, 2u);
     }
 
-    v33 = [(ASChangedCollectionLeaf *)self status];
-    if (!v33 || (v34 = v33, -[ASChangedCollectionLeaf status](self, "status"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 intValue], v35, v34, v36 == 1))
+    status6 = [(ASChangedCollectionLeaf *)self status];
+    if (!status6 || (v34 = status6, -[ASChangedCollectionLeaf status](self, "status"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 intValue], v35, v34, v36 == 1))
     {
       [(ASChangedCollectionLeaf *)self setStatus:&unk_285D57B88];
     }
@@ -276,7 +276,7 @@ LABEL_5:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = DALoggingwithCategory();
@@ -325,8 +325,8 @@ LABEL_5:
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v22 = a1;
-  v4 = NSStringFromClass(a1);
+  selfCopy = self;
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -347,17 +347,17 @@ LABEL_5:
     v5 = [v20 dictionaryWithObjectsAndKeys:{v21, v19, v18, v17, v6, v7, v8, v16, v15, v9, v10, v11, 0}];
 
     v12 = +[ASItem parseRuleCache];
-    v13 = NSStringFromClass(v22);
+    v13 = NSStringFromClass(selfCopy);
     [v12 setObject:v5 forKey:v13];
   }
 
   return v5;
 }
 
-- (ASChangedCollectionLeaf)initWithCoder:(id)a3
+- (ASChangedCollectionLeaf)initWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASChangedCollectionLeaf *)a2 initWithCoder:?];
   }
@@ -367,17 +367,17 @@ LABEL_5:
   v6 = [(ASItem *)&v19 init];
   if (v6)
   {
-    -[ASChangedCollectionLeaf setChangeType:](v6, "setChangeType:", [v5 decodeInt64ForKey:@"ASCCLChangeType"]);
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLServerID"];
+    -[ASChangedCollectionLeaf setChangeType:](v6, "setChangeType:", [coderCopy decodeInt64ForKey:@"ASCCLChangeType"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLServerID"];
     [(ASChangedCollectionLeaf *)v6 setServerID:v7];
 
-    v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLClientID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLClientID"];
     [(ASChangedCollectionLeaf *)v6 setClientID:v8];
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLInstanceID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLInstanceID"];
     [(ASChangedCollectionLeaf *)v6 setInstanceID:v9];
 
-    v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLStatus"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASCCLStatus"];
     [(ASChangedCollectionLeaf *)v6 setStatus:v10];
 
     v11 = MEMORY[0x277CBEB98];
@@ -386,42 +386,42 @@ LABEL_5:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v11 setWithObjects:{v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v5 decodeObjectOfClasses:v16 forKey:@"ASCCLApplicationData"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"ASCCLApplicationData"];
     [(ASChangedCollectionLeaf *)v6 setApplicationData:v17];
 
-    -[ASChangedCollectionLeaf setIsResponse:](v6, "setIsResponse:", [v5 decodeBoolForKey:@"ASCCLIsResponse"]);
-    -[ASChangedCollectionLeaf setValidateOpeningTokens:](v6, "setValidateOpeningTokens:", [v5 decodeBoolForKey:@"ASCCLValidateOpeningTokens"]);
+    -[ASChangedCollectionLeaf setIsResponse:](v6, "setIsResponse:", [coderCopy decodeBoolForKey:@"ASCCLIsResponse"]);
+    -[ASChangedCollectionLeaf setValidateOpeningTokens:](v6, "setValidateOpeningTokens:", [coderCopy decodeBoolForKey:@"ASCCLValidateOpeningTokens"]);
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  if (([v10 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASChangedCollectionLeaf *)a2 encodeWithCoder:?];
   }
 
-  [v10 encodeInt64:-[ASChangedCollectionLeaf changeType](self forKey:{"changeType"), @"ASCCLChangeType"}];
-  v5 = [(ASChangedCollectionLeaf *)self serverID];
-  [v10 encodeObject:v5 forKey:@"ASCCLServerID"];
+  [coderCopy encodeInt64:-[ASChangedCollectionLeaf changeType](self forKey:{"changeType"), @"ASCCLChangeType"}];
+  serverID = [(ASChangedCollectionLeaf *)self serverID];
+  [coderCopy encodeObject:serverID forKey:@"ASCCLServerID"];
 
-  v6 = [(ASChangedCollectionLeaf *)self clientID];
-  [v10 encodeObject:v6 forKey:@"ASCCLClientID"];
+  clientID = [(ASChangedCollectionLeaf *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"ASCCLClientID"];
 
-  v7 = [(ASChangedCollectionLeaf *)self instanceID];
-  [v10 encodeObject:v7 forKey:@"ASCCLInstanceID"];
+  instanceID = [(ASChangedCollectionLeaf *)self instanceID];
+  [coderCopy encodeObject:instanceID forKey:@"ASCCLInstanceID"];
 
-  v8 = [(ASChangedCollectionLeaf *)self status];
-  [v10 encodeObject:v8 forKey:@"ASCCLStatus"];
+  status = [(ASChangedCollectionLeaf *)self status];
+  [coderCopy encodeObject:status forKey:@"ASCCLStatus"];
 
-  v9 = [(ASChangedCollectionLeaf *)self applicationData];
-  [v10 encodeObject:v9 forKey:@"ASCCLApplicationData"];
+  applicationData = [(ASChangedCollectionLeaf *)self applicationData];
+  [coderCopy encodeObject:applicationData forKey:@"ASCCLApplicationData"];
 
-  [v10 encodeBool:-[ASChangedCollectionLeaf isResponse](self forKey:{"isResponse"), @"ASCCLIsResponse"}];
-  [v10 encodeBool:-[ASChangedCollectionLeaf validateOpeningTokens](self forKey:{"validateOpeningTokens"), @"ASCCLValidateOpeningTokens"}];
+  [coderCopy encodeBool:-[ASChangedCollectionLeaf isResponse](self forKey:{"isResponse"), @"ASCCLIsResponse"}];
+  [coderCopy encodeBool:-[ASChangedCollectionLeaf validateOpeningTokens](self forKey:{"validateOpeningTokens"), @"ASCCLValidateOpeningTokens"}];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

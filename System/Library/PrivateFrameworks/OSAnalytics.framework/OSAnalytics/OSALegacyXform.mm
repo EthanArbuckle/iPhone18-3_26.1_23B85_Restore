@@ -1,16 +1,16 @@
 @interface OSALegacyXform
-+ (id)rollSchemaForward:(id)a3;
-+ (id)transformURL:(id)a3 template:(id)a4 options:(id)a5;
-- (BOOL)prepareTemplate:(id)a3 forLogType:(id)a4 error:(id *)a5;
-- (BOOL)transformJSON:(id)a3 header:(id)a4 error:(id *)a5 streamingBlock:(id)a6;
-- (BOOL)transformLines:(id)a3 withDefinitions:(id)a4 body:(id)a5 header:(id)a6 error:(id *)a7 streamingBlock:(id)a8;
++ (id)rollSchemaForward:(id)forward;
++ (id)transformURL:(id)l template:(id)template options:(id)options;
+- (BOOL)prepareTemplate:(id)template forLogType:(id)type error:(id *)error;
+- (BOOL)transformJSON:(id)n header:(id)header error:(id *)error streamingBlock:(id)block;
+- (BOOL)transformLines:(id)lines withDefinitions:(id)definitions body:(id)body header:(id)header error:(id *)error streamingBlock:(id)block;
 - (OSALegacyXform)init;
-- (id)_getValueForKey:(id)a3 fromBody:(id)a4 orHeader:(id)a5;
-- (id)_hexDump:(id)a3 offset:(int)a4 indicator:(BOOL)a5;
-- (id)formatCallstacks:(id)a3 withImages:(id)a4 macosStyle:(BOOL)a5;
-- (id)formatFrame:(id)a3 withImages:(id)a4 macosStyle:(BOOL)a5;
-- (id)formatImages:(id)a3 macosStyle:(BOOL)a4;
-- (id)formatLastException:(id)a3 withImages:(id)a4;
+- (id)_getValueForKey:(id)key fromBody:(id)body orHeader:(id)header;
+- (id)_hexDump:(id)dump offset:(int)offset indicator:(BOOL)indicator;
+- (id)formatCallstacks:(id)callstacks withImages:(id)images macosStyle:(BOOL)style;
+- (id)formatFrame:(id)frame withImages:(id)images macosStyle:(BOOL)style;
+- (id)formatImages:(id)images macosStyle:(BOOL)style;
+- (id)formatLastException:(id)exception withImages:(id)images;
 @end
 
 @implementation OSALegacyXform
@@ -30,25 +30,25 @@
   return v2;
 }
 
-- (BOOL)prepareTemplate:(id)a3 forLogType:(id)a4 error:(id *)a5
+- (BOOL)prepareTemplate:(id)template forLogType:(id)type error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 componentsSeparatedByString:@"\n"];
-  [(NSMutableDictionary *)self->_templates setValue:v8 forKey:v7];
+  typeCopy = type;
+  v8 = [template componentsSeparatedByString:@"\n"];
+  [(NSMutableDictionary *)self->_templates setValue:v8 forKey:typeCopy];
 
   return 0;
 }
 
-- (id)formatFrame:(id)a3 withImages:(id)a4 macosStyle:(BOOL)a5
+- (id)formatFrame:(id)frame withImages:(id)images macosStyle:(BOOL)style
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"imageIndex"];
+  frameCopy = frame;
+  imagesCopy = images;
+  v9 = [frameCopy objectForKeyedSubscript:@"imageIndex"];
   v10 = v9;
   if (v9)
   {
-    v11 = [v8 objectAtIndexedSubscript:{objc_msgSend(v9, "intValue")}];
+    v11 = [imagesCopy objectAtIndexedSubscript:{objc_msgSend(v9, "intValue")}];
   }
 
   else
@@ -74,7 +74,7 @@
 
   else
   {
-    if (a5)
+    if (style)
     {
       goto LABEL_12;
     }
@@ -89,24 +89,24 @@
   v13 = v16;
 LABEL_12:
   v17 = [v11 objectForKeyedSubscript:@"base"];
-  v18 = [v17 unsignedLongLongValue];
+  unsignedLongLongValue = [v17 unsignedLongLongValue];
 
-  v19 = [v7 objectForKeyedSubscript:@"imageOffset"];
-  v20 = [v19 unsignedLongLongValue];
+  v19 = [frameCopy objectForKeyedSubscript:@"imageOffset"];
+  unsignedLongLongValue2 = [v19 unsignedLongLongValue];
 
-  v21 = v18 + v20;
-  if ([v7 count] < 3)
+  v21 = unsignedLongLongValue + unsignedLongLongValue2;
+  if ([frameCopy count] < 3)
   {
-    if (v18 && v20)
+    if (unsignedLongLongValue && unsignedLongLongValue2)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p + %llu", v18, v20];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p + %llu", unsignedLongLongValue, unsignedLongLongValue2];
     }
 
     else
     {
-      if (!v18)
+      if (!unsignedLongLongValue)
       {
-        v21 = v20;
+        v21 = unsignedLongLongValue2;
       }
 
       v23 = @"???";
@@ -115,15 +115,15 @@ LABEL_12:
 
   else
   {
-    v47 = [v7 objectForKeyedSubscript:@"symbol"];
-    v22 = [v7 objectForKeyedSubscript:@"symbolLocation"];
-    v48 = v18 + v20;
+    v47 = [frameCopy objectForKeyedSubscript:@"symbol"];
+    v22 = [frameCopy objectForKeyedSubscript:@"symbolLocation"];
+    v48 = unsignedLongLongValue + unsignedLongLongValue2;
     if (v22)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v22 unsignedLongLongValue];
+        unsignedLongLongValue2 = [v22 unsignedLongLongValue];
       }
 
       else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -134,9 +134,9 @@ LABEL_12:
       }
     }
 
-    v46 = v8;
-    v24 = [v7 objectForKeyedSubscript:@"sourceFile"];
-    v25 = [v7 objectForKeyedSubscript:@"sourceLine"];
+    v46 = imagesCopy;
+    v24 = [frameCopy objectForKeyedSubscript:@"sourceFile"];
+    v25 = [frameCopy objectForKeyedSubscript:@"sourceLine"];
     v26 = v25;
     v44 = v22;
     v45 = v11;
@@ -146,50 +146,50 @@ LABEL_12:
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%@:%@)", v24, v25];
     }
 
-    v28 = [v7 objectForKeyedSubscript:@"inline"];
+    v28 = [frameCopy objectForKeyedSubscript:@"inline"];
     v29 = v28;
     v30 = v47;
     if (v47)
     {
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v28 BOOLValue];
+      bOOLValue = [v28 BOOLValue];
       v33 = @" [inlined]";
-      if (!v32)
+      if (!bOOLValue)
       {
         v33 = &stru_1F2411100;
       }
 
-      v23 = [v31 stringWithFormat:@"%@ + %llu%@%@", v47, v20, v27, v33, v44];
+      v23 = [v31 stringWithFormat:@"%@ + %llu%@%@", v47, unsignedLongLongValue2, v27, v33, v44];
     }
 
     else
     {
-      if (v18 && v20)
+      if (unsignedLongLongValue && unsignedLongLongValue2)
       {
         v34 = MEMORY[0x1E696AEC0];
-        v35 = [v28 BOOLValue];
+        bOOLValue2 = [v28 BOOLValue];
         v36 = @" [inlined]";
-        if (!v35)
+        if (!bOOLValue2)
         {
           v36 = &stru_1F2411100;
         }
 
-        v23 = [v34 stringWithFormat:@"%p + %llu%@%@", v48 - v20, v20, v27, v36, v44];
+        v23 = [v34 stringWithFormat:@"%p + %llu%@%@", v48 - unsignedLongLongValue2, unsignedLongLongValue2, v27, v36, v44];
       }
 
       else
       {
         v37 = v48;
-        if (!v18)
+        if (!unsignedLongLongValue)
         {
-          v37 = v20;
+          v37 = unsignedLongLongValue2;
         }
 
         v48 = v37;
         v23 = @"???";
       }
 
-      v38 = [v7 objectForKeyedSubscript:@"region"];
+      v38 = [frameCopy objectForKeyedSubscript:@"region"];
       v39 = v38;
       if (v38)
       {
@@ -201,7 +201,7 @@ LABEL_12:
       v30 = 0;
     }
 
-    v8 = v46;
+    imagesCopy = v46;
     v21 = v48;
     v11 = v45;
   }
@@ -213,25 +213,25 @@ LABEL_12:
   return v41;
 }
 
-- (id)formatCallstacks:(id)a3 withImages:(id)a4 macosStyle:(BOOL)a5
+- (id)formatCallstacks:(id)callstacks withImages:(id)images macosStyle:(BOOL)style
 {
-  v75 = a5;
+  styleCopy = style;
   v90 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v76 = [MEMORY[0x1E695DF70] array];
+  callstacksCopy = callstacks;
+  imagesCopy = images;
+  array = [MEMORY[0x1E695DF70] array];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v6;
+  obj = callstacksCopy;
   v63 = [obj countByEnumeratingWithState:&v84 objects:v89 count:16];
   if (v63)
   {
     v8 = -1;
     v62 = *v85;
     v9 = 0x1E696A000uLL;
-    v68 = v7;
+    v68 = imagesCopy;
     do
     {
       v10 = 0;
@@ -249,7 +249,7 @@ LABEL_12:
         v15 = v14;
         v66 = v10;
         v67 = v12;
-        if (v75)
+        if (styleCopy)
         {
           v16 = *(v9 + 3776);
           v17 = [v11 objectForKeyedSubscript:@"triggered"];
@@ -319,7 +319,7 @@ LABEL_12:
             v57 = v24;
             v58 = v25;
             v26 = [*(v9 + 3776) stringWithFormat:@"Thread %d name:  %@%@%@", v12, v23];
-            [v76 addObject:v26];
+            [array addObject:v26];
           }
 
           v27 = *(v9 + 3776);
@@ -335,12 +335,12 @@ LABEL_12:
         v29 = ;
         v64 = v15;
         v65 = v13;
-        [v76 addObject:v29];
+        [array addObject:v29];
 
         v30 = [v11 objectForKeyedSubscript:@"originalLength"];
-        v31 = [v30 unsignedIntValue];
+        unsignedIntValue = [v30 unsignedIntValue];
 
-        v32 = [*(v9 + 3776) stringWithFormat:@"%u", v31];
+        v32 = [*(v9 + 3776) stringWithFormat:@"%u", unsignedIntValue];
         v33 = [v32 length];
 
         if (v33 <= 3)
@@ -372,7 +372,7 @@ LABEL_12:
 
         v70 = 0;
         v36 = 0;
-        v37 = 0;
+        depth = 0;
         v38 = 0;
         v78 = 0;
         v73 = *v81;
@@ -403,16 +403,16 @@ LABEL_12:
             {
               v42 = [v79 objectAtIndexedSubscript:v70];
               v36 = [objc_alloc(MEMORY[0x1E69D4F30]) initWithDictionary:v42];
-              v37 = [v36 depth];
+              depth = [v36 depth];
               v43 = [v42 objectForKeyedSubscript:@"keyFrame"];
             }
 
             v44 = MEMORY[0x1E696AEC0];
-            v57 = [(OSALegacyXform *)self formatFrame:v41 withImages:v7 macosStyle:v75];
+            v57 = [(OSALegacyXform *)self formatFrame:v41 withImages:imagesCopy macosStyle:styleCopy];
             v45 = [v44 stringWithFormat:@"%-*u %@", v74, (v78 + v39 + 1)];
-            [v76 addObject:v45];
+            [array addObject:v45];
 
-            if (!v37)
+            if (!depth)
             {
               goto LABEL_46;
             }
@@ -437,24 +437,24 @@ LABEL_46:
 
               if (!v51)
               {
-                v7 = v68;
+                imagesCopy = v68;
                 goto LABEL_46;
               }
 
               v38 = v43;
-              if (v37 == [v36 depth] - 2)
+              if (depth == [v36 depth] - 2)
               {
-                v52 = [v36 coldestElided];
-                v78 = v78 + v52 - [v36 hottestElided] + 1;
-                v37 = 3;
-                v7 = v68;
+                coldestElided = [v36 coldestElided];
+                v78 = v78 + coldestElided - [v36 hottestElided] + 1;
+                depth = 3;
+                imagesCopy = v68;
               }
 
               else
               {
-                --v37;
-                v7 = v68;
-                if (!v37)
+                --depth;
+                imagesCopy = v68;
+                if (!depth)
                 {
                   ++v70;
 
@@ -479,7 +479,7 @@ LABEL_47:
 
         while (v53);
 LABEL_60:
-        [v76 addObject:&stru_1F2411100];
+        [array addObject:&stru_1F2411100];
 
         v8 = v67;
         v10 = v66 + 1;
@@ -493,29 +493,29 @@ LABEL_60:
     while (v63);
   }
 
-  v54 = [v76 componentsJoinedByString:@"\n"];
+  v54 = [array componentsJoinedByString:@"\n"];
 
   v55 = *MEMORY[0x1E69E9840];
 
   return v54;
 }
 
-- (id)formatImages:(id)a3 macosStyle:(BOOL)a4
+- (id)formatImages:(id)images macosStyle:(BOOL)style
 {
-  v4 = a4;
+  styleCopy = style;
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  imagesCopy = images;
   v39 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = imagesCopy;
   v40 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v40)
   {
     v38 = *v44;
-    v35 = v4;
+    v35 = styleCopy;
     do
     {
       for (i = 0; i != v40; ++i)
@@ -528,7 +528,7 @@ LABEL_60:
         v7 = *(*(&v43 + 1) + 8 * i);
         v8 = [v7 objectForKeyedSubscript:@"uuid"];
         v9 = v8;
-        if (!v4)
+        if (!styleCopy)
         {
           v10 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1F2411100];
 
@@ -536,15 +536,15 @@ LABEL_60:
         }
 
         v42 = [v7 objectForKeyedSubscript:@"base"];
-        v11 = [v42 unsignedLongLongValue];
+        unsignedLongLongValue = [v42 unsignedLongLongValue];
         v12 = [v7 objectForKeyedSubscript:@"size"];
-        v41 = v11 + [v12 unsignedLongLongValue] - 1;
+        v41 = unsignedLongLongValue + [v12 unsignedLongLongValue] - 1;
 
         v13 = [v7 objectForKeyedSubscript:@"name"];
         v14 = [v7 objectForKeyedSubscript:@"arch"];
         v15 = [v7 objectForKeyedSubscript:@"path"];
         v16 = v15;
-        if (v4)
+        if (styleCopy)
         {
           v17 = [v7 objectForKeyedSubscript:@"CFBundleIdentifier"];
           if ([v17 length])
@@ -587,14 +587,14 @@ LABEL_60:
             v26 = v16;
           }
 
-          v27 = [v20 stringWithFormat:@"%18p - %18p %@ (%@) <%@> %@", v11, v41, v22, v19, v9, v26];
+          v27 = [v20 stringWithFormat:@"%18p - %18p %@ (%@) <%@> %@", unsignedLongLongValue, v41, v22, v19, v9, v26];
           [v39 addObject:v27];
 
           if (v21)
           {
           }
 
-          v4 = v35;
+          styleCopy = v35;
 LABEL_33:
 
           goto LABEL_34;
@@ -632,7 +632,7 @@ LABEL_33:
           v29 = v16;
         }
 
-        v30 = [v23 stringWithFormat:@"%18p - %18p %@ %@  <%@> %@", v11, v41, v25, v28, v9, v29];
+        v30 = [v23 stringWithFormat:@"%18p - %18p %@ %@  <%@> %@", unsignedLongLongValue, v41, v25, v28, v9, v29];
         [v39 addObject:v30];
 
         v17 = v37;
@@ -657,17 +657,17 @@ LABEL_34:
   return v31;
 }
 
-- (id)formatLastException:(id)a3 withImages:(id)a4
+- (id)formatLastException:(id)exception withImages:(id)images
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  exceptionCopy = exception;
+  imagesCopy = images;
   v8 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = exceptionCopy;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -685,7 +685,7 @@ LABEL_34:
 
         v12 = (v12 + 1);
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [(OSALegacyXform *)self formatFrame:*(*(&v21 + 1) + 8 * i) withImages:v7 macosStyle:0];
+        v15 = [(OSALegacyXform *)self formatFrame:*(*(&v21 + 1) + 8 * i) withImages:imagesCopy macosStyle:0];
         v16 = [v14 stringWithFormat:@"%-3d %@", v12, v15];
         [v8 addObject:v16];
       }
@@ -703,24 +703,24 @@ LABEL_34:
   return v17;
 }
 
-- (id)_hexDump:(id)a3 offset:(int)a4 indicator:(BOOL)a5
+- (id)_hexDump:(id)dump offset:(int)offset indicator:(BOOL)indicator
 {
-  v5 = a5;
+  indicatorCopy = indicator;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dumpCopy = dump;
   v8 = objc_opt_new();
   v24 = 0u;
   memset(v25, 0, 28);
   v22 = 0u;
   v23 = 0u;
   *__str = 0;
-  if ([v7 count])
+  if ([dumpCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:v9];
-      v11 = [v10 intValue];
+      v10 = [dumpCopy objectAtIndexedSubscript:v9];
+      intValue = [v10 intValue];
 
       v12 = v9 & 0xF;
       if (v12 == 9)
@@ -739,19 +739,19 @@ LABEL_34:
         v23 = v13;
       }
 
-      if (v11 > 0x7F)
+      if (intValue > 0x7F)
       {
-        v14 = __maskrune(v11, 0x40000uLL);
+        v14 = __maskrune(intValue, 0x40000uLL);
       }
 
       else
       {
-        v14 = *(MEMORY[0x1E69E9830] + 4 * v11 + 60) & 0x40000;
+        v14 = *(MEMORY[0x1E69E9830] + 4 * intValue + 60) & 0x40000;
       }
 
       if (v14)
       {
-        v15 = v11;
+        v15 = intValue;
       }
 
       else
@@ -759,22 +759,22 @@ LABEL_34:
         v15 = 46;
       }
 
-      snprintf(__str, 4uLL, "%02x%c", v11, v15);
+      snprintf(__str, 4uLL, "%02x%c", intValue, v15);
       v16 = (3 * v12);
       *(&v22 + v16 + 2) = *__str;
       *((v12 | &v22) + 0x33) = __str[2];
-      if (a4 == v9)
+      if (offset == v9)
       {
         v17 = &v22 + v16;
         v17[1] = 91;
         v17[4] = 93;
-        if (v5)
+        if (indicatorCopy)
         {
           __sprintf_chk(&v25[1] + 3, 0, 9uLL, "\t<==");
         }
       }
 
-      if (v12 == 15 || v9 == [v7 count] - 1)
+      if (v12 == 15 || v9 == [dumpCopy count] - 1)
       {
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&v22];
         [v8 addObject:v18];
@@ -783,7 +783,7 @@ LABEL_34:
       ++v9;
     }
 
-    while ([v7 count] > v9);
+    while ([dumpCopy count] > v9);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -791,41 +791,41 @@ LABEL_34:
   return v8;
 }
 
-- (id)_getValueForKey:(id)a3 fromBody:(id)a4 orHeader:(id)a5
+- (id)_getValueForKey:(id)key fromBody:(id)body orHeader:(id)header
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([&unk_1F241F248 containsObject:v8])
+  keyCopy = key;
+  bodyCopy = body;
+  headerCopy = header;
+  if ([&unk_1F241F248 containsObject:keyCopy])
   {
-    v11 = [(OSALegacyXform *)self _getValueForKey:@"faultingThread" fromBody:v9 orHeader:0];
+    v11 = [(OSALegacyXform *)self _getValueForKey:@"faultingThread" fromBody:bodyCopy orHeader:0];
     if (!v11)
     {
       v26 = 0;
       goto LABEL_21;
     }
 
-    v12 = [v9 objectForKeyedSubscript:@"threads"];
+    v12 = [bodyCopy objectForKeyedSubscript:@"threads"];
     v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v11, "intValue")}];
-    v14 = v13;
-    v15 = v8;
+    lastObject = v13;
+    v15 = keyCopy;
   }
 
   else
   {
-    v11 = v9;
-    if ([v8 hasPrefix:@"metadata:"])
+    v11 = bodyCopy;
+    if ([keyCopy hasPrefix:@"metadata:"])
     {
-      v16 = v10;
+      v16 = headerCopy;
 
-      v17 = [v8 stringByReplacingOccurrencesOfString:@"metadata:" withString:&stru_1F2411100];
+      v17 = [keyCopy stringByReplacingOccurrencesOfString:@"metadata:" withString:&stru_1F2411100];
 
       v11 = v16;
-      v8 = v17;
+      keyCopy = v17;
     }
 
-    v18 = [v8 componentsSeparatedByString:@"."];
+    v18 = [keyCopy componentsSeparatedByString:@"."];
     v19 = [v18 count];
     v31 = 0u;
     v32 = 0u;
@@ -837,8 +837,8 @@ LABEL_34:
     {
       v21 = v20;
       v22 = *v32;
-      v29 = v10;
-      v30 = v9;
+      v29 = headerCopy;
+      v30 = bodyCopy;
       while (2)
       {
         v23 = 0;
@@ -864,8 +864,8 @@ LABEL_34:
 
 LABEL_18:
             v11 = v25;
-            v10 = v29;
-            v9 = v30;
+            headerCopy = v29;
+            bodyCopy = v30;
             goto LABEL_19;
           }
 
@@ -875,8 +875,8 @@ LABEL_18:
 
         while (v21 != v23);
         v21 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
-        v10 = v29;
-        v9 = v30;
+        headerCopy = v29;
+        bodyCopy = v30;
         if (v21)
         {
           continue;
@@ -888,9 +888,9 @@ LABEL_18:
 
 LABEL_19:
 
-    v14 = [v12 lastObject];
+    lastObject = [v12 lastObject];
     v13 = v11;
-    v15 = v14;
+    v15 = lastObject;
   }
 
   v26 = [v13 objectForKeyedSubscript:{v15, v29, v30, v31}];
@@ -901,29 +901,29 @@ LABEL_21:
   return v26;
 }
 
-- (BOOL)transformJSON:(id)a3 header:(id)a4 error:(id *)a5 streamingBlock:(id)a6
+- (BOOL)transformJSON:(id)n header:(id)header error:(id *)error streamingBlock:(id)block
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 objectForKeyedSubscript:@"bug_type"];
+  nCopy = n;
+  headerCopy = header;
+  blockCopy = block;
+  v13 = [headerCopy objectForKeyedSubscript:@"bug_type"];
   v14 = [(NSMutableDictionary *)self->_templates objectForKeyedSubscript:v13];
   v15 = objc_opt_new();
   if (v14)
   {
-    v16 = [(OSALegacyXform *)self transformLines:v14 withDefinitions:v15 body:v10 header:v11 error:a5 streamingBlock:v12];
+    v16 = [(OSALegacyXform *)self transformLines:v14 withDefinitions:v15 body:nCopy header:headerCopy error:error streamingBlock:blockCopy];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' template not found", v13, *MEMORY[0x1E696A578]];
       v23[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      *a5 = [v17 errorWithDomain:@"OSALegacyXform" code:1 userInfo:v19];
+      *error = [v17 errorWithDomain:@"OSALegacyXform" code:1 userInfo:v19];
     }
 
     v16 = 0;
@@ -933,27 +933,27 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)transformLines:(id)a3 withDefinitions:(id)a4 body:(id)a5 header:(id)a6 error:(id *)a7 streamingBlock:(id)a8
+- (BOOL)transformLines:(id)lines withDefinitions:(id)definitions body:(id)body header:(id)header error:(id *)error streamingBlock:(id)block
 {
-  v46 = a7;
+  errorCopy = error;
   v89 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v54 = a4;
-  v61 = a5;
-  v59 = a6;
-  v52 = a8;
+  linesCopy = lines;
+  definitionsCopy = definitions;
+  bodyCopy = body;
+  headerCopy = header;
+  blockCopy = block;
   v84 = 0;
   v51 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\$\\((([^\\)\"]+|\"[^\"]+\"" options:? error:?], 0, &v84);
   v47 = v84;
-  v13 = [(OSALegacyXform *)self _getValueForKey:@"osVersion.train" fromBody:v61 orHeader:v59];
+  v13 = [(OSALegacyXform *)self _getValueForKey:@"osVersion.train" fromBody:bodyCopy orHeader:headerCopy];
   v49 = [v13 hasPrefix:@"macOS"];
 
-  v50 = [(OSALegacyXform *)self _getValueForKey:@"faultingThread" fromBody:v61 orHeader:0];
+  v50 = [(OSALegacyXform *)self _getValueForKey:@"faultingThread" fromBody:bodyCopy orHeader:0];
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v12;
+  obj = linesCopy;
   v57 = [obj countByEnumeratingWithState:&v80 objects:v88 count:16];
   v48 = v57 == 0;
   if (!v57)
@@ -969,7 +969,7 @@ LABEL_47:
   v58 = 0;
   v14 = 0;
   v56 = *v81;
-  v53 = v52 + 2;
+  v53 = blockCopy + 2;
   do
   {
     for (i = 0; i != v57; ++i)
@@ -988,7 +988,7 @@ LABEL_47:
           continue;
         }
 
-        [v54 setObject:v58 forKeyedSubscript:v14];
+        [definitionsCopy setObject:v58 forKeyedSubscript:v14];
 
         v58 = 0;
       }
@@ -1049,7 +1049,7 @@ LABEL_47:
                   v30 = 0;
                 }
 
-                v31 = [v28 hasPrefix:{@"*", v46}];
+                v31 = [v28 hasPrefix:{@"*", errorCopy}];
                 if (v31)
                 {
                   v32 = [v28 substringFromIndex:1];
@@ -1057,8 +1057,8 @@ LABEL_47:
                   v28 = v32;
                 }
 
-                v33 = [(OSALegacyXform *)self _getValueForKey:v28 fromBody:v61 orHeader:v59];
-                v34 = v33 != 0;
+                v33 = [(OSALegacyXform *)self _getValueForKey:v28 fromBody:bodyCopy orHeader:headerCopy];
+                bOOLValue = v33 != 0;
                 if (v33)
                 {
                   v35 = v31;
@@ -1074,16 +1074,16 @@ LABEL_47:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
                   {
-                    v34 = [v33 count] != 0;
+                    bOOLValue = [v33 count] != 0;
                   }
 
                   else
                   {
-                    v34 = [v33 BOOLValue];
+                    bOOLValue = [v33 BOOLValue];
                   }
                 }
 
-                v36 = v30 == v34;
+                v36 = v30 == bOOLValue;
 
                 if (v36)
                 {
@@ -1103,22 +1103,22 @@ LABEL_47:
           }
         }
 
-        v37 = [v16 substringFromIndex:{v77[3], v46}];
+        v37 = [v16 substringFromIndex:{v77[3], errorCopy}];
         v77[3] = 0;
         v38 = [v37 length];
         v62[0] = MEMORY[0x1E69E9820];
         v62[1] = 3221225472;
         v62[2] = __82__OSALegacyXform_transformLines_withDefinitions_body_header_error_streamingBlock___block_invoke;
         v62[3] = &unk_1E7A27E38;
-        v39 = v52;
+        v39 = blockCopy;
         v69 = v39;
         v40 = v37;
         v63 = v40;
         v70 = &v76;
-        v64 = v54;
-        v65 = self;
-        v66 = v61;
-        v67 = v59;
+        v64 = definitionsCopy;
+        selfCopy = self;
+        v66 = bodyCopy;
+        v67 = headerCopy;
         v71 = v49;
         v68 = v50;
         [v51 enumerateMatchesInString:v40 options:0 range:0 usingBlock:{v38, v62}];
@@ -1147,13 +1147,13 @@ LABEL_39:
 
   if (v14)
   {
-    if (v46)
+    if (errorCopy)
     {
       v42 = MEMORY[0x1E696ABC0];
       v85 = *MEMORY[0x1E696A578];
       v86 = @"template has illformed definition";
       v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-      *v46 = [v42 errorWithDomain:@"OSALegacyXform" code:2 userInfo:v43];
+      *errorCopy = [v42 errorWithDomain:@"OSALegacyXform" code:2 userInfo:v43];
       goto LABEL_47;
     }
 
@@ -1546,17 +1546,17 @@ LABEL_79:
   v69 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)rollSchemaForward:(id)a3
++ (id)rollSchemaForward:(id)forward
 {
   v134 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  forwardCopy = forward;
   v62 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"^([A-Z_]+) options:(\\[0x[0-9a-zA-Z]\\])?(.*)$" error:{0, 0}];
   v65 = objc_opt_new();
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v3;
+  obj = forwardCopy;
   v68 = [obj countByEnumeratingWithState:&v116 objects:v133 count:16];
   if (v68)
   {
@@ -1824,9 +1824,9 @@ LABEL_29:
             }
 
             v30 = [v79 objectForKeyedSubscript:@"triggered"];
-            v31 = [v30 BOOLValue];
+            bOOLValue = [v30 BOOLValue];
 
-            if (v31)
+            if (bOOLValue)
             {
               v32 = [obj objectForKeyedSubscript:@"threadState"];
               if (v32)
@@ -2004,31 +2004,31 @@ uint64_t __36__OSALegacyXform_rollSchemaForward___block_invoke(uint64_t a1, void
   return result;
 }
 
-+ (id)transformURL:(id)a3 template:(id)a4 options:(id)a5
++ (id)transformURL:(id)l template:(id)template options:(id)options
 {
   v123[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  templateCopy = template;
+  optionsCopy = options;
   v10 = objc_opt_new();
   v11 = [OSALog alloc];
-  v12 = [v7 path];
+  path = [lCopy path];
   v114 = 0;
-  v13 = [(OSALog *)v11 initWithPath:v12 forRouting:&stru_1F2411100 options:&unk_1F241F148 error:&v114];
+  v13 = [(OSALog *)v11 initWithPath:path forRouting:&stru_1F2411100 options:&unk_1F241F148 error:&v114];
   v14 = v114;
 
   if (!v13)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load log '%@'", v7];
-    v25 = [v14 augmentWithPrefix:v15];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load log '%@'", lCopy];
+    v25 = [v14 augmentWithPrefix:lCopy];
     goto LABEL_86;
   }
 
-  v107 = v9;
-  v15 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:{fileno(-[OSALog stream](v13, "stream"))}];
+  v107 = optionsCopy;
+  lCopy = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:{fileno(-[OSALog stream](v13, "stream"))}];
   v16 = MEMORY[0x1B2702E10]([(OSALog *)v13 stream]);
-  v17 = [(OSALog *)v13 metaData];
-  v18 = [v17 count];
+  metaData = [(OSALog *)v13 metaData];
+  v18 = [metaData count];
 
   if (!v18)
   {
@@ -2042,24 +2042,24 @@ uint64_t __36__OSALegacyXform_rollSchemaForward___block_invoke(uint64_t a1, void
     v16 = 0;
   }
 
-  v106 = v8;
-  [v15 seekToFileOffset:v16];
-  [v15 availableData];
+  v106 = templateCopy;
+  [lCopy seekToFileOffset:v16];
+  [lCopy availableData];
   v105 = v113[1] = v14;
   v19 = [MEMORY[0x1E696ACB0] JSONObjectWithData:? options:? error:?];
-  v20 = v14;
+  bugType = v14;
 
   if (v19)
   {
-    v104 = v20;
-    v20 = [(OSALog *)v13 bugType];
-    v21 = [(OSALog *)v13 metaData];
-    v22 = [(OSALog *)v13 metaData];
-    v23 = [v22 count];
+    v104 = bugType;
+    bugType = [(OSALog *)v13 bugType];
+    metaData2 = [(OSALog *)v13 metaData];
+    metaData3 = [(OSALog *)v13 metaData];
+    v23 = [metaData3 count];
 
     if (v23)
     {
-      v24 = v21;
+      v24 = metaData2;
     }
 
     else
@@ -2106,18 +2106,18 @@ uint64_t __36__OSALegacyXform_rollSchemaForward___block_invoke(uint64_t a1, void
         v19 = v35;
       }
 
-      v20 = v27;
+      bugType = v27;
     }
 
-    if (![&unk_1F241F260 containsObject:v20])
+    if (![&unk_1F241F260 containsObject:bugType])
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [(OSALog *)v13 bugType];
+        bugType2 = [(OSALog *)v13 bugType];
         *buf = 138412546;
-        *&buf[4] = v42;
+        *&buf[4] = bugType2;
         *&buf[12] = 2112;
-        *&buf[14] = v20;
+        *&buf[14] = bugType;
         _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "unsupported log type '%@' effective (%@)", buf, 0x16u);
       }
 
@@ -2141,9 +2141,9 @@ uint64_t __36__OSALegacyXform_rollSchemaForward___block_invoke(uint64_t a1, void
     else
     {
       v37 = [v19 objectForKeyedSubscript:@"variantVersion"];
-      v38 = [v37 intValue];
+      intValue = [v37 intValue];
 
-      if (v38 <= 1)
+      if (intValue <= 1)
       {
         v39 = [OSALegacyXform rollSchemaForward:v19];
 
@@ -2233,7 +2233,7 @@ LABEL_83:
       v101 = v10;
       v113[0] = v104;
       v106 = v58;
-      [(OSALegacyXform *)v102 prepareTemplate:v58 forLogType:v20 error:v113];
+      [(OSALegacyXform *)v102 prepareTemplate:v58 forLogType:bugType error:v113];
       v60 = v113[0];
 
       v61 = objc_opt_new();
@@ -2257,20 +2257,20 @@ LABEL_83:
       v98 = v64;
       v64 = v62;
       v65 = [v107 objectForKeyedSubscript:OSATransformOptionSymbolicate];
-      v66 = [v65 BOOLValue];
+      bOOLValue = [v65 BOOLValue];
 
-      if (!v66)
+      if (!bOOLValue)
       {
         v25 = v98;
 LABEL_68:
         v74 = [v107 objectForKeyedSubscript:OSATransformOptionFullReport];
-        v75 = [v74 BOOLValue];
+        bOOLValue2 = [v74 BOOLValue];
 
-        if (v75)
+        if (bOOLValue2)
         {
           v76 = v64;
           v109 = 0;
-          v77 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v7 encoding:4 error:&v109];
+          v77 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:lCopy encoding:4 error:&v109];
           v78 = v109;
           if (!v77)
           {
@@ -2399,7 +2399,7 @@ LABEL_67:
 
     v51 = [v103 mutableCopy];
     v52 = [MEMORY[0x1E695DFD8] setWithObjects:{@"308", @"309", @"409", @"509", 0}];
-    v53 = [v52 containsObject:v20];
+    v53 = [v52 containsObject:bugType];
 
     if (v53)
     {
@@ -2419,14 +2419,14 @@ LABEL_67:
     else
     {
       v55 = 0x1E696A000uLL;
-      if ([v20 isEqualToString:@"385"])
+      if ([bugType isEqualToString:@"385"])
       {
         v54 = @"185";
       }
 
       else
       {
-        if (![v20 isEqualToString:@"327"])
+        if (![bugType isEqualToString:@"327"])
         {
 LABEL_50:
           v56 = [*(v55 + 3248) dataWithJSONObject:v51 options:0 error:0];
@@ -2447,22 +2447,22 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  v25 = [v20 augmentWithPrefix:@"Unable to read JSON"];
+  v25 = [bugType augmentWithPrefix:@"Unable to read JSON"];
 LABEL_85:
 
   v14 = v105;
-  v8 = v106;
-  v9 = v107;
+  templateCopy = v106;
+  optionsCopy = v107;
 LABEL_86:
 
   if (v25)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v86 = [v25 localizedDescription];
-      v87 = [v86 UTF8String];
+      localizedDescription = [v25 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
       *buf = 136315138;
-      *&buf[4] = v87;
+      *&buf[4] = uTF8String;
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 

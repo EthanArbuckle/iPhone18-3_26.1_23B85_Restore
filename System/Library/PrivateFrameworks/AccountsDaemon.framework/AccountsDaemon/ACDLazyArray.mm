@@ -1,16 +1,16 @@
 @interface ACDLazyArray
-- (ACDLazyArray)initWithCoder:(id)a3;
-- (ACDLazyArray)initWithInitializer:(id)a3;
-- (ACDLazyArray)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (ACDLazyArray)initWithCoder:(id)coder;
+- (ACDLazyArray)initWithInitializer:(id)initializer;
+- (ACDLazyArray)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
 @end
 
 @implementation ACDLazyArray
 
-- (ACDLazyArray)initWithInitializer:(id)a3
+- (ACDLazyArray)initWithInitializer:(id)initializer
 {
-  v4 = a3;
+  initializerCopy = initializer;
   v11.receiver = self;
   v11.super_class = ACDLazyArray;
   v5 = [(ACDLazyArray *)&v11 init];
@@ -18,7 +18,7 @@
   if (v5)
   {
     v5->_initializationLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [initializerCopy copy];
     initializationBlock = v6->_initializationBlock;
     v6->_initializationBlock = v7;
 
@@ -29,11 +29,11 @@
   return v6;
 }
 
-- (ACDLazyArray)initWithCoder:(id)a3
+- (ACDLazyArray)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = ACDLazyArray;
-  v3 = [(ACDLazyArray *)&v8 initWithCoder:a3];
+  v3 = [(ACDLazyArray *)&v8 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (ACDLazyArray)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (ACDLazyArray)initWithObjects:(const void *)objects count:(unint64_t)count
 {
-  [(ACDLazyArray *)self doesNotRecognizeSelector:a2, a4];
+  [(ACDLazyArray *)self doesNotRecognizeSelector:a2, count];
 
   return 0;
 }
@@ -63,12 +63,12 @@
   return [(NSArray *)underlyingArray count];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   _ACDLazyArrayInitializeIfNecessary(self);
   underlyingArray = self->_underlyingArray;
 
-  return [(NSArray *)underlyingArray objectAtIndex:a3];
+  return [(NSArray *)underlyingArray objectAtIndex:index];
 }
 
 @end

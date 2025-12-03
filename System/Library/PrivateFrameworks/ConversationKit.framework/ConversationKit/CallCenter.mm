@@ -1,224 +1,224 @@
 @interface CallCenter
-- (void)audioDeviceControllerMutedTalkerDidEnd:(id)a3;
-- (void)audioDeviceControllerMutedTalkerDidStart:(id)a3;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 activitySessionsChangedForConversation:(id)a4 fromOldConversation:(id)a5;
-- (void)conversationManager:(id)a3 addedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 cameraMixedWithScreenDidChangeForConversation:(id)a4;
-- (void)conversationManager:(id)a3 collaborationChanged:(id)a4 forConversation:(id)a5 collaborationState:(int64_t)a6;
-- (void)conversationManager:(id)a3 conversation:(id)a4 buzzedMember:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 launchStateChanged:(unint64_t)a5 forActivitySession:(id)a6;
-- (void)conversationManager:(id)a3 conversation:(id)a4 updatedMessagesGroupPhoto:(id)a5;
-- (void)conversationManager:(id)a3 ignoreLMIRequestsChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 letMeInRequestStateChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 linkChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 linkInvitedMemberHandlesChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 localVideoToggledForConversation:(id)a4;
-- (void)conversationManager:(id)a3 migratingFromConversation:(id)a4 toConversation:(id)a5;
-- (void)conversationManager:(id)a3 oneToOneModeChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 otherInvitedHandlesChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 pendingMembersChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 rejectedMembersChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 remoteScreenShareAttributesChanged:(id)a4 isLocallySharing:(BOOL)a5;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 resolvedAudioVideoModeChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 screenSharingAvailableChanged:(BOOL)a4;
-- (void)conversationManager:(id)a3 screenSharingRequestsChangedForConversation:(id)a4 fromOldConversation:(id)a5;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
-- (void)mediaController:(id)a3 participantMediaPrioritiesChangedForConversation:(id)a4;
-- (void)reactionsController:(id)a3 conversation:(id)a4 participant:(id)a5 didReact:(id)a6;
-- (void)reactionsController:(id)a3 conversation:(id)a4 participantDidStopReacting:(id)a5;
-- (void)routesChangedForRouteController:(id)a3;
+- (void)audioDeviceControllerMutedTalkerDidEnd:(id)end;
+- (void)audioDeviceControllerMutedTalkerDidStart:(id)start;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager activitySessionsChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)conversationManager:(id)manager addedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager cameraMixedWithScreenDidChangeForConversation:(id)conversation;
+- (void)conversationManager:(id)manager collaborationChanged:(id)changed forConversation:(id)conversation collaborationState:(int64_t)state;
+- (void)conversationManager:(id)manager conversation:(id)conversation buzzedMember:(id)member;
+- (void)conversationManager:(id)manager conversation:(id)conversation launchStateChanged:(unint64_t)changed forActivitySession:(id)session;
+- (void)conversationManager:(id)manager conversation:(id)conversation updatedMessagesGroupPhoto:(id)photo;
+- (void)conversationManager:(id)manager ignoreLMIRequestsChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager letMeInRequestStateChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager linkChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager linkInvitedMemberHandlesChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager localVideoToggledForConversation:(id)conversation;
+- (void)conversationManager:(id)manager migratingFromConversation:(id)conversation toConversation:(id)toConversation;
+- (void)conversationManager:(id)manager oneToOneModeChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager otherInvitedHandlesChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager pendingMembersChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager rejectedMembersChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager remoteScreenShareAttributesChanged:(id)changed isLocallySharing:(BOOL)sharing;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager resolvedAudioVideoModeChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager screenSharingAvailableChanged:(BOOL)changed;
+- (void)conversationManager:(id)manager screenSharingRequestsChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
+- (void)mediaController:(id)controller participantMediaPrioritiesChangedForConversation:(id)conversation;
+- (void)reactionsController:(id)controller conversation:(id)conversation participant:(id)participant didReact:(id)react;
+- (void)reactionsController:(id)controller conversation:(id)conversation participantDidStopReacting:(id)reacting;
+- (void)routesChangedForRouteController:(id)controller;
 @end
 
 @implementation CallCenter
 
-- (void)audioDeviceControllerMutedTalkerDidStart:(id)a3
+- (void)audioDeviceControllerMutedTalkerDidStart:(id)start
 {
-  v4 = a3;
-  v5 = self;
+  startCopy = start;
+  selfCopy = self;
   CallCenter.audioDeviceControllerMutedTalkerDidStart(_:)();
 }
 
-- (void)audioDeviceControllerMutedTalkerDidEnd:(id)a3
+- (void)audioDeviceControllerMutedTalkerDidEnd:(id)end
 {
-  v4 = a3;
-  v5 = self;
+  endCopy = end;
+  selfCopy = self;
   CallCenter.audioDeviceControllerMutedTalkerDidEnd(_:)();
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:stateChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 localVideoToggledForConversation:(id)a4
+- (void)conversationManager:(id)manager localVideoToggledForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:localVideoToggledFor:)();
 }
 
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:remoteMembersChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CallCenter.conversationManager(_:activeRemoteParticipantsChangedFor:)(v8, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  CallCenter.conversationManager(_:activeRemoteParticipantsChangedFor:)(selfCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 pendingMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager pendingMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:pendingMembersChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 otherInvitedHandlesChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager otherInvitedHandlesChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:otherInvitedHandlesChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 oneToOneModeChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager oneToOneModeChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:oneToOneModeChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:avModeChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 resolvedAudioVideoModeChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager resolvedAudioVideoModeChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:resolvedAudioVideoModeChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:removedActiveConversation:)();
 }
 
-- (void)conversationManager:(id)a3 addedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager addedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:addedActiveConversation:)();
 }
 
-- (void)conversationManager:(id)a3 letMeInRequestStateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager letMeInRequestStateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:letMeInRequestStateChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 ignoreLMIRequestsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager ignoreLMIRequestsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:ignoreLMIRequestsChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 rejectedMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager rejectedMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:rejectedMembersChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 linkChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager linkChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:linkChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 screenSharingAvailableChanged:(BOOL)a4
+- (void)conversationManager:(id)manager screenSharingAvailableChanged:(BOOL)changed
 {
-  v5 = a3;
-  v6 = self;
+  managerCopy = manager;
+  selfCopy = self;
   CallCenter.conversationManager(_:screenSharingAvailableChanged:)();
 }
 
-- (void)conversationManager:(id)a3 linkInvitedMemberHandlesChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager linkInvitedMemberHandlesChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:linkInvitedMemberHandlesChangedFor:)();
 }
 
-- (void)conversationManager:(id)a3 migratingFromConversation:(id)a4 toConversation:(id)a5
+- (void)conversationManager:(id)manager migratingFromConversation:(id)conversation toConversation:(id)toConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  toConversationCopy = toConversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:migratingFrom:to:)();
 }
 
-- (void)conversationManager:(id)a3 activitySessionsChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager activitySessionsChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:activitySessionsChangedFor:fromOldConversation:)();
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 updatedMessagesGroupPhoto:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation updatedMessagesGroupPhoto:(id)photo
 {
-  if (a5)
+  if (photo)
   {
-    v8 = a3;
-    v9 = a4;
-    v10 = self;
-    v11 = a5;
+    managerCopy = manager;
+    conversationCopy = conversation;
+    selfCopy = self;
+    photoCopy = photo;
     v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = v13;
   }
 
   else
   {
-    v15 = a3;
-    v16 = a4;
-    v17 = self;
+    managerCopy2 = manager;
+    conversationCopy2 = conversation;
+    selfCopy2 = self;
     v12 = 0;
     v14 = 0xF000000000000000;
   }
@@ -227,91 +227,91 @@
   outlined consume of Data?(v12, v14);
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 launchStateChanged:(unint64_t)a5 forActivitySession:(id)a6
+- (void)conversationManager:(id)manager conversation:(id)conversation launchStateChanged:(unint64_t)changed forActivitySession:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  sessionCopy = session;
+  selfCopy = self;
   CallCenter.conversationManager(_:conversation:launchStateChanged:session:)();
 }
 
-- (void)conversationManager:(id)a3 remoteScreenShareAttributesChanged:(id)a4 isLocallySharing:(BOOL)a5
+- (void)conversationManager:(id)manager remoteScreenShareAttributesChanged:(id)changed isLocallySharing:(BOOL)sharing
 {
-  v8 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v9 = self;
-  CallCenter.conversationManager(_:remoteScreenShareAttributesChanged:isLocallySharing:)(v9, a4, a5);
+  selfCopy = self;
+  CallCenter.conversationManager(_:remoteScreenShareAttributesChanged:isLocallySharing:)(selfCopy, changed, sharing);
 
   swift_unknownObjectRelease();
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 buzzedMember:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation buzzedMember:(id)member
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  memberCopy = member;
+  selfCopy = self;
   CallCenter.conversationManager(_:conversation:buzzedMember:)();
 }
 
-- (void)conversationManager:(id)a3 collaborationChanged:(id)a4 forConversation:(id)a5 collaborationState:(int64_t)a6
+- (void)conversationManager:(id)manager collaborationChanged:(id)changed forConversation:(id)conversation collaborationState:(int64_t)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
+  managerCopy = manager;
+  changedCopy = changed;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:collaborationChanged:for:collaborationState:)();
 }
 
-- (void)conversationManager:(id)a3 cameraMixedWithScreenDidChangeForConversation:(id)a4
+- (void)conversationManager:(id)manager cameraMixedWithScreenDidChangeForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:cameraMixedWithScreenDidChangeFor:)();
 }
 
-- (void)conversationManager:(id)a3 screenSharingRequestsChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager screenSharingRequestsChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  selfCopy = self;
   CallCenter.conversationManager(_:screenSharingRequestsChangedFor:fromOldConversation:)();
 }
 
-- (void)mediaController:(id)a3 participantMediaPrioritiesChangedForConversation:(id)a4
+- (void)mediaController:(id)controller participantMediaPrioritiesChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   CallCenter.mediaController(_:participantMediaPrioritiesChangedFor:)();
 }
 
-- (void)reactionsController:(id)a3 conversation:(id)a4 participant:(id)a5 didReact:(id)a6
+- (void)reactionsController:(id)controller conversation:(id)conversation participant:(id)participant didReact:(id)react
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  participantCopy = participant;
+  selfCopy = self;
   CallCenter.reactionsController(_:conversation:participant:didReact:)();
 }
 
-- (void)reactionsController:(id)a3 conversation:(id)a4 participantDidStopReacting:(id)a5
+- (void)reactionsController:(id)controller conversation:(id)conversation participantDidStopReacting:(id)reacting
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  reactingCopy = reacting;
+  selfCopy = self;
   CallCenter.reactionsController(_:conversation:participantDidStopReacting:)();
 }
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   CallCenter.routesChanged(for:)();
 }
 

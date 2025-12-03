@@ -6,11 +6,11 @@
 
 - (void)expandedPlatterPresentationController
 {
-  v1 = [a1 pl_presentingPresentationController];
+  pl_presentingPresentationController = [self pl_presentingPresentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = pl_presentingPresentationController;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface VOTCustomSliderCell
 - (id)accessibilityValue;
-- (void)accessibilityIncrementOrDecrement:(BOOL)a3;
+- (void)accessibilityIncrementOrDecrement:(BOOL)decrement;
 @end
 
 @implementation VOTCustomSliderCell
 
 - (id)accessibilityValue
 {
-  v2 = [(VOTCustomSliderCell *)self specifier];
-  v3 = [v2 propertyForKey:@"VOSSettingsItem"];
+  specifier = [(VOTCustomSliderCell *)self specifier];
+  v3 = [specifier propertyForKey:@"VOSSettingsItem"];
 
   v4 = +[VOSSettingsHelper sharedInstance];
   v5 = [v4 valueForSettingsItem:v3];
@@ -19,13 +19,13 @@
   return v7;
 }
 
-- (void)accessibilityIncrementOrDecrement:(BOOL)a3
+- (void)accessibilityIncrementOrDecrement:(BOOL)decrement
 {
-  v3 = a3;
-  v5 = [(VOTCustomSliderCell *)self specifier];
-  v6 = [v5 propertyForKey:@"VOSSettingsItem"];
+  decrementCopy = decrement;
+  specifier = [(VOTCustomSliderCell *)self specifier];
+  v6 = [specifier propertyForKey:@"VOSSettingsItem"];
 
-  v7 = [(VOTCustomSliderCell *)self control];
+  control = [(VOTCustomSliderCell *)self control];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -43,7 +43,7 @@
 
       if (v6 != v11)
       {
-        if (v3)
+        if (decrementCopy)
         {
           [(VOTCustomSliderCell *)&v28 accessibilityIncrement:v27.receiver];
         }
@@ -57,18 +57,18 @@
       }
     }
 
-    v12 = [(VOTCustomSliderCell *)self control];
-    [v12 value];
+    control2 = [(VOTCustomSliderCell *)self control];
+    [control2 value];
     v14 = -0.05;
-    if (v3)
+    if (decrementCopy)
     {
       v14 = 0.05;
     }
 
     v15 = (v13 + v14);
-    [v12 minimumValue];
+    [control2 minimumValue];
     v17 = v16;
-    [v12 maximumValue];
+    [control2 maximumValue];
     v19 = (v15 * 100.0);
     v20 = 5 * (v19 / 5);
     if (v19 % 5 >= 3)
@@ -98,7 +98,7 @@
     }
 
     *&v18 = v23;
-    [v12 setValue:0 animated:v18];
+    [control2 setValue:0 animated:v18];
     v24 = +[VOSSettingsHelper sharedInstance];
     *&v25 = v23;
     v26 = [NSNumber numberWithFloat:v25];

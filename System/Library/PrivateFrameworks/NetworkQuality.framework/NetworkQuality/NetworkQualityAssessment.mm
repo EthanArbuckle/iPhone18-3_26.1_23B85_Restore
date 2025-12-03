@@ -1,28 +1,28 @@
 @interface NetworkQualityAssessment
-- (NetworkQualityAssessment)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (void)finalizeResults:(id)a3 withError:(id)a4 withCompletionHandler:(id)a5;
-- (void)progress:(id)a3;
-- (void)runWithCompletionHandler:(id)a3;
+- (NetworkQualityAssessment)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
+- (void)finalizeResults:(id)results withError:(id)error withCompletionHandler:(id)handler;
+- (void)progress:(id)progress;
+- (void)runWithCompletionHandler:(id)handler;
 @end
 
 @implementation NetworkQualityAssessment
 
-- (NetworkQualityAssessment)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (NetworkQualityAssessment)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = NetworkQualityAssessment;
   v11 = [(NetworkQualityAssessment *)&v22 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [configurationCopy copy];
     config = v11->_config;
     v11->_config = v12;
 
-    objc_storeStrong(&v11->_delegate, a4);
-    objc_storeStrong(&v11->_delegateQueue, a5);
+    objc_storeStrong(&v11->_delegate, delegate);
+    objc_storeStrong(&v11->_delegateQueue, queue);
     v11->_testRunning = 0;
     v14 = objc_alloc_init(NetworkQualityResult);
     progressResults = v11->_progressResults;
@@ -49,26 +49,26 @@
   return v11;
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = [v4 workingLatencyResults];
-  v7 = [v6 copy];
+  progressCopy = progress;
+  v5 = [progressCopy copy];
+  workingLatencyResults = [progressCopy workingLatencyResults];
+  v7 = [workingLatencyResults copy];
   [v5 setWorkingLatencyValues:v7];
 
-  v8 = [v4 idleLatencyResults];
-  v9 = [v8 copy];
+  idleLatencyResults = [progressCopy idleLatencyResults];
+  v9 = [idleLatencyResults copy];
   [v5 setIdleLatencyValues:v9];
 
-  v10 = [v4 mutableOtherValues];
+  mutableOtherValues = [progressCopy mutableOtherValues];
 
-  v11 = [v10 objectForKey:@"protocols_seen"];
+  v11 = [mutableOtherValues objectForKey:@"protocols_seen"];
 
   if (v11 && [v11 count])
   {
-    v12 = [v11 allKeys];
-    v13 = [v12 objectAtIndex:0];
+    allKeys = [v11 allKeys];
+    v13 = [allKeys objectAtIndex:0];
     [v5 setAppProtocol:v13];
   }
 
@@ -88,63 +88,63 @@
   }
 }
 
-- (void)finalizeResults:(id)a3 withError:(id)a4 withCompletionHandler:(id)a5
+- (void)finalizeResults:(id)results withError:(id)error withCompletionHandler:(id)handler
 {
-  v34 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v34 copy];
-  v11 = [v34 workingLatencyResults];
-  v12 = [v11 copy];
+  resultsCopy = results;
+  handlerCopy = handler;
+  errorCopy = error;
+  v10 = [resultsCopy copy];
+  workingLatencyResults = [resultsCopy workingLatencyResults];
+  v12 = [workingLatencyResults copy];
   [v10 setWorkingLatencyValues:v12];
 
-  v13 = [v34 idleLatencyResults];
-  v14 = [v13 copy];
+  idleLatencyResults = [resultsCopy idleLatencyResults];
+  v14 = [idleLatencyResults copy];
   [v10 setIdleLatencyValues:v14];
 
-  v15 = [v34 mutableOtherValues];
-  v16 = [v15 objectForKeyedSubscript:@"protocols_seen"];
+  mutableOtherValues = [resultsCopy mutableOtherValues];
+  v16 = [mutableOtherValues objectForKeyedSubscript:@"protocols_seen"];
 
   if (v16 && [v16 count])
   {
-    v17 = [v16 allKeys];
-    v18 = [v17 objectAtIndex:0];
+    allKeys = [v16 allKeys];
+    v18 = [allKeys objectAtIndex:0];
     [v10 setAppProtocol:v18];
 
     [v10 setProtocolNames:v16];
   }
 
-  v19 = [v34 mutableOtherValues];
-  v20 = [v19 objectForKeyedSubscript:@"protocols_seen"];
+  mutableOtherValues2 = [resultsCopy mutableOtherValues];
+  v20 = [mutableOtherValues2 objectForKeyedSubscript:@"protocols_seen"];
   v21 = [v20 objectForKeyedSubscript:@"proxied"];
   [v10 setProxied:v21 != 0];
 
-  v22 = [v34 mutableOtherValues];
-  v23 = [v22 copy];
+  mutableOtherValues3 = [resultsCopy mutableOtherValues];
+  v23 = [mutableOtherValues3 copy];
   [v10 setOtherValues:v23];
 
-  v24 = [v34 mutableURLSessionMetrics];
-  v25 = [v24 copy];
+  mutableURLSessionMetrics = [resultsCopy mutableURLSessionMetrics];
+  v25 = [mutableURLSessionMetrics copy];
   [v10 setUrlSessionMetrics:v25];
 
-  v26 = [(NetworkQualityResult *)self->_progressResults testEndpoint];
+  testEndpoint = [(NetworkQualityResult *)self->_progressResults testEndpoint];
 
-  if (v26)
+  if (testEndpoint)
   {
-    v27 = [(NetworkQualityResult *)self->_progressResults testEndpoint];
-    [v10 setTestEndpoint:v27];
+    testEndpoint2 = [(NetworkQualityResult *)self->_progressResults testEndpoint];
+    [v10 setTestEndpoint:testEndpoint2];
   }
 
-  v28 = [(NetworkQualityConfiguration *)self->_config hostOverride];
-  if (v28)
+  hostOverride = [(NetworkQualityConfiguration *)self->_config hostOverride];
+  if (hostOverride)
   {
-    v29 = v28;
-    v30 = [v10 testEndpoint];
+    v29 = hostOverride;
+    testEndpoint3 = [v10 testEndpoint];
 
-    if (!v30)
+    if (!testEndpoint3)
     {
-      v31 = [(NetworkQualityConfiguration *)self->_config hostOverride];
-      [v10 setTestEndpoint:v31];
+      hostOverride2 = [(NetworkQualityConfiguration *)self->_config hostOverride];
+      [v10 setTestEndpoint:hostOverride2];
     }
   }
 
@@ -163,34 +163,34 @@
   ++self->_resultsIndex;
   [v10 setIndex:?];
   [v10 finalizeResult];
-  v8[2](v8, v10, v9);
+  handlerCopy[2](handlerCopy, v10, errorCopy);
 }
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_testRunning)
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_testRunning)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v6 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"NetworkQualityErrorDomain" code:1002 userInfo:0];
-    v4[2](v4, 0, v6);
+    handlerCopy[2](handlerCopy, 0, v6);
   }
 
   else
   {
-    v5->_testRunning = 1;
-    objc_sync_exit(v5);
+    selfCopy->_testRunning = 1;
+    objc_sync_exit(selfCopy);
 
-    execution = v5->_execution;
+    execution = selfCopy->_execution;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__NetworkQualityAssessment_runWithCompletionHandler___block_invoke;
     v8[3] = &unk_2799696A0;
-    v8[4] = v5;
-    v9 = v4;
+    v8[4] = selfCopy;
+    v9 = handlerCopy;
     [(NetworkQualityExecutions *)execution runWithCompletionHandler:v8];
   }
 }

@@ -6,27 +6,27 @@
 - (NSArray)viewOptionsMenuItems;
 - (NSString)filterMenuSubtitle;
 - (NSString)viewOptionsMenuSubtitle;
-- (PXContentFilterToggleButtonController)initWithButtonConfiguration:(id)a3 roundedButton:(BOOL)a4;
+- (PXContentFilterToggleButtonController)initWithButtonConfiguration:(id)configuration roundedButton:(BOOL)button;
 - (id)_deferredMenu;
-- (id)updatedMenuIfNecessary:(id)a3;
+- (id)updatedMenuIfNecessary:(id)necessary;
 - (void)_setNeedsUpdate;
-- (void)_setupButtonWithConfiguration:(id)a3 roundedButton:(BOOL)a4;
+- (void)_setupButtonWithConfiguration:(id)configuration roundedButton:(BOOL)button;
 - (void)_updateButton;
 - (void)_updateButtonMenu;
 - (void)_updateButtonNonSolarium;
 - (void)_updateButtonSolarium;
 - (void)invalidateButton;
 - (void)invalidateButtonMenu;
-- (void)performChanges:(id)a3;
-- (void)setBaseBackgroundColor:(id)a3;
-- (void)setContentFilterState:(id)a3;
-- (void)setFilteringSymbolConfiguration:(id)a3;
-- (void)setFilteringSymbolName:(id)a3;
-- (void)setLibraryFilterState:(id)a3;
-- (void)setPrimaryTintColor:(id)a3;
-- (void)setSecondaryTintColor:(id)a3;
-- (void)setSymbolConfiguration:(id)a3;
-- (void)setSymbolName:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setBaseBackgroundColor:(id)color;
+- (void)setContentFilterState:(id)state;
+- (void)setFilteringSymbolConfiguration:(id)configuration;
+- (void)setFilteringSymbolName:(id)name;
+- (void)setLibraryFilterState:(id)state;
+- (void)setPrimaryTintColor:(id)color;
+- (void)setSecondaryTintColor:(id)color;
+- (void)setSymbolConfiguration:(id)configuration;
+- (void)setSymbolName:(id)name;
 @end
 
 @implementation PXContentFilterToggleButtonController
@@ -57,8 +57,8 @@
 {
   if (!self->_isPerformingChanges)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"_isPerformingChanges"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"_isPerformingChanges"}];
   }
 }
 
@@ -79,49 +79,49 @@
 
 - (void)_updateButtonSolarium
 {
-  v11 = [(PXContentFilterToggleButtonController *)self libraryFilterState];
-  v3 = [(PXContentFilterToggleButtonController *)self contentFilterState];
+  libraryFilterState = [(PXContentFilterToggleButtonController *)self libraryFilterState];
+  contentFilterState = [(PXContentFilterToggleButtonController *)self contentFilterState];
   if ([(PXContentFilterToggleButtonController *)self isUsingCustomSortOrder]&& [(PXContentFilterToggleButtonController *)self shouldHighlightOnCustomSortOrder])
   {
-    v4 = 1;
+    isFiltering = 1;
   }
 
   else
   {
-    v4 = [v3 isFiltering];
+    isFiltering = [contentFilterState isFiltering];
   }
 
-  v5 = [(PXContentFilterToggleButtonController *)self customDefaultImageName];
-  v6 = PXContentFilterImageNameForFilterStatesAndCustomDefaultImageName(v11, v3, v5);
+  customDefaultImageName = [(PXContentFilterToggleButtonController *)self customDefaultImageName];
+  v6 = PXContentFilterImageNameForFilterStatesAndCustomDefaultImageName(libraryFilterState, contentFilterState, customDefaultImageName);
 
   v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v6];
-  if (v4)
+  if (isFiltering)
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [v7 imageWithTintColor:v8 renderingMode:1];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v9 = [v7 imageWithTintColor:whiteColor renderingMode:1];
 
     v7 = v9;
   }
 
-  v10 = [(PXContentFilterToggleButtonController *)self barButtonItem];
-  [v10 setImage:v7];
-  [v10 setSelected:v4];
-  [v10 setHidden:{-[PXContentFilterToggleButtonController shouldHideButton](self, "shouldHideButton")}];
+  barButtonItem = [(PXContentFilterToggleButtonController *)self barButtonItem];
+  [barButtonItem setImage:v7];
+  [barButtonItem setSelected:isFiltering];
+  [barButtonItem setHidden:{-[PXContentFilterToggleButtonController shouldHideButton](self, "shouldHideButton")}];
   [(PXContentFilterToggleButtonController *)self _invalidateButtonMenu];
 }
 
 - (BOOL)shouldHideButton
 {
-  v3 = [(PXContentFilterToggleButtonController *)self libraryFilterState];
-  if (v3)
+  libraryFilterState = [(PXContentFilterToggleButtonController *)self libraryFilterState];
+  if (libraryFilterState)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PXContentFilterToggleButtonController *)self contentFilterState];
-    v4 = v5 == 0;
+    contentFilterState = [(PXContentFilterToggleButtonController *)self contentFilterState];
+    v4 = contentFilterState == 0;
   }
 
   return v4;
@@ -132,26 +132,26 @@
   objc_initWeak(&location, self);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIBarButtonItem *)self->_barButtonItem _contextMenuInteraction];
+    _contextMenuInteraction = [(UIBarButtonItem *)self->_barButtonItem _contextMenuInteraction];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __58__PXContentFilterToggleButtonController__updateButtonMenu__block_invoke;
     v7[3] = &unk_1E7731A80;
     objc_copyWeak(&v8, &location);
-    [v3 updateVisibleMenuWithBlock:v7];
+    [_contextMenuInteraction updateVisibleMenuWithBlock:v7];
 
     objc_destroyWeak(&v8);
   }
 
   if (![(PXContentFilterToggleButtonController *)self _shouldUseSolariumBehavior])
   {
-    v4 = [(UIButton *)self->_button contextMenuInteraction];
+    contextMenuInteraction = [(UIButton *)self->_button contextMenuInteraction];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __58__PXContentFilterToggleButtonController__updateButtonMenu__block_invoke_2;
     v5[3] = &unk_1E7731A80;
     objc_copyWeak(&v6, &location);
-    [v4 updateVisibleMenuWithBlock:v5];
+    [contextMenuInteraction updateVisibleMenuWithBlock:v5];
 
     objc_destroyWeak(&v6);
   }
@@ -201,49 +201,49 @@ void *__58__PXContentFilterToggleButtonController__updateButtonMenu__block_invok
   return v7;
 }
 
-- (id)updatedMenuIfNecessary:(id)a3
+- (id)updatedMenuIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"com.apple.photos.menu.contentFilterMainMenu"];
+  necessaryCopy = necessary;
+  identifier = [necessaryCopy identifier];
+  v6 = [identifier isEqualToString:@"com.apple.photos.menu.contentFilterMainMenu"];
 
   if (v6)
   {
-    v7 = [(PXContentFilterToggleButtonController *)self allMenuItems];
+    allMenuItems = [(PXContentFilterToggleButtonController *)self allMenuItems];
     goto LABEL_3;
   }
 
-  v10 = [v4 identifier];
-  v11 = [v10 isEqualToString:@"com.apple.photos.menu.contentFilterSubmenu"];
+  identifier2 = [necessaryCopy identifier];
+  v11 = [identifier2 isEqualToString:@"com.apple.photos.menu.contentFilterSubmenu"];
 
   if (v11)
   {
-    v8 = [(PXContentFilterToggleButtonController *)self filterMenuItems];
-    if (!v8)
+    filterMenuItems = [(PXContentFilterToggleButtonController *)self filterMenuItems];
+    if (!filterMenuItems)
     {
       goto LABEL_14;
     }
 
-    v9 = [v4 menuByReplacingChildren:v8];
-    v12 = [(PXContentFilterToggleButtonController *)self filterMenuSubtitle];
+    v9 = [necessaryCopy menuByReplacingChildren:filterMenuItems];
+    filterMenuSubtitle = [(PXContentFilterToggleButtonController *)self filterMenuSubtitle];
 LABEL_8:
-    v13 = v12;
-    [v9 setSubtitle:v12];
+    v13 = filterMenuSubtitle;
+    [v9 setSubtitle:filterMenuSubtitle];
 
     goto LABEL_15;
   }
 
-  v14 = [v4 identifier];
-  v15 = [v14 isEqualToString:@"com.apple.photos.menu.contentFilterInlineSubmenu"];
+  identifier3 = [necessaryCopy identifier];
+  v15 = [identifier3 isEqualToString:@"com.apple.photos.menu.contentFilterInlineSubmenu"];
 
   if (v15)
   {
-    v7 = [(PXContentFilterToggleButtonController *)self filterInlineMenuItems];
+    allMenuItems = [(PXContentFilterToggleButtonController *)self filterInlineMenuItems];
 LABEL_3:
-    v8 = v7;
-    if (v7)
+    filterMenuItems = allMenuItems;
+    if (allMenuItems)
     {
-      v9 = [v4 menuByReplacingChildren:v7];
+      v9 = [necessaryCopy menuByReplacingChildren:allMenuItems];
 LABEL_15:
 
       goto LABEL_16;
@@ -254,19 +254,19 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v16 = [v4 identifier];
-  v17 = [v16 isEqualToString:@"com.apple.photos.menu.contentFilterViewOptionsSubmenu"];
+  identifier4 = [necessaryCopy identifier];
+  v17 = [identifier4 isEqualToString:@"com.apple.photos.menu.contentFilterViewOptionsSubmenu"];
 
   if (v17)
   {
-    v8 = [(PXContentFilterToggleButtonController *)self viewOptionsMenuItems];
-    if (!v8)
+    filterMenuItems = [(PXContentFilterToggleButtonController *)self viewOptionsMenuItems];
+    if (!filterMenuItems)
     {
       goto LABEL_14;
     }
 
-    v9 = [v4 menuByReplacingChildren:v8];
-    v12 = [(PXContentFilterToggleButtonController *)self viewOptionsMenuSubtitle];
+    v9 = [necessaryCopy menuByReplacingChildren:filterMenuItems];
+    filterMenuSubtitle = [(PXContentFilterToggleButtonController *)self viewOptionsMenuSubtitle];
     goto LABEL_8;
   }
 
@@ -295,38 +295,38 @@ void __54__PXContentFilterToggleButtonController__deferredMenu__block_invoke(uin
 
 - (void)_updateButtonNonSolarium
 {
-  v35 = [(PXContentFilterToggleButtonController *)self libraryFilterState];
-  v3 = [(PXContentFilterToggleButtonController *)self contentFilterState];
-  if (-[PXContentFilterToggleButtonController isUsingCustomSortOrder](self, "isUsingCustomSortOrder") && -[PXContentFilterToggleButtonController shouldHighlightOnCustomSortOrder](self, "shouldHighlightOnCustomSortOrder") || ([v35 isFiltering] & 1) != 0)
+  libraryFilterState = [(PXContentFilterToggleButtonController *)self libraryFilterState];
+  contentFilterState = [(PXContentFilterToggleButtonController *)self contentFilterState];
+  if (-[PXContentFilterToggleButtonController isUsingCustomSortOrder](self, "isUsingCustomSortOrder") && -[PXContentFilterToggleButtonController shouldHighlightOnCustomSortOrder](self, "shouldHighlightOnCustomSortOrder") || ([libraryFilterState isFiltering] & 1) != 0)
   {
-    v4 = 1;
+    isFiltering = 1;
   }
 
   else
   {
-    v4 = [v3 isFiltering];
+    isFiltering = [contentFilterState isFiltering];
   }
 
-  v5 = [(PXContentFilterToggleButtonController *)self button];
-  v6 = [v5 configuration];
-  v7 = [v6 copy];
+  button = [(PXContentFilterToggleButtonController *)self button];
+  configuration = [button configuration];
+  v7 = [configuration copy];
 
   if (self->_shouldUpdateButtonSymbol)
   {
     if (self->_roundedButton)
     {
-      v8 = [(PXContentFilterToggleButtonController *)self baseBackgroundColor];
-      v9 = v8;
-      if (v8)
+      baseBackgroundColor = [(PXContentFilterToggleButtonController *)self baseBackgroundColor];
+      v9 = baseBackgroundColor;
+      if (baseBackgroundColor)
       {
-        v10 = v8;
+        v10 = baseBackgroundColor;
       }
 
       else
       {
-        v11 = [v5 backgroundColor];
-        originalUnfilteredBackgroundColor = v11;
-        if (!v11)
+        backgroundColor = [button backgroundColor];
+        originalUnfilteredBackgroundColor = backgroundColor;
+        if (!backgroundColor)
         {
           originalUnfilteredBackgroundColor = self->_originalUnfilteredBackgroundColor;
         }
@@ -334,49 +334,49 @@ void __54__PXContentFilterToggleButtonController__deferredMenu__block_invoke(uin
         v10 = originalUnfilteredBackgroundColor;
       }
 
-      v13 = v10;
-      if (v4)
+      tintColor = v10;
+      if (isFiltering)
       {
-        v13 = [v5 tintColor];
+        tintColor = [button tintColor];
       }
 
-      v14 = [v7 background];
-      [v14 setBackgroundColor:v13];
+      background = [v7 background];
+      [background setBackgroundColor:tintColor];
 
-      if (v4)
+      if (isFiltering)
       {
       }
     }
 
-    v15 = [(PXContentFilterToggleButtonController *)self symbolName];
-    v16 = v15;
-    if (v15)
+    symbolName = [(PXContentFilterToggleButtonController *)self symbolName];
+    v16 = symbolName;
+    if (symbolName)
     {
-      v17 = v15;
+      v17 = symbolName;
     }
 
     else
     {
-      v18 = [(PXContentFilterToggleButtonController *)self allMenuItems];
-      if ([v18 count] < 2)
+      allMenuItems = [(PXContentFilterToggleButtonController *)self allMenuItems];
+      if ([allMenuItems count] < 2)
       {
         v17 = @"line.3.horizontal.decrease";
       }
 
       else
       {
-        v17 = PXContentFilterImageNameForFilterStatesAndCustomDefaultImageName(v35, v3, 0);
+        v17 = PXContentFilterImageNameForFilterStatesAndCustomDefaultImageName(libraryFilterState, contentFilterState, 0);
       }
     }
 
-    v19 = [(PXContentFilterToggleButtonController *)self symbolConfiguration];
-    if (v4)
+    symbolConfiguration = [(PXContentFilterToggleButtonController *)self symbolConfiguration];
+    if (isFiltering)
     {
-      v20 = [(PXContentFilterToggleButtonController *)self filteringSymbolName];
-      v21 = v20;
-      if (v20)
+      filteringSymbolName = [(PXContentFilterToggleButtonController *)self filteringSymbolName];
+      v21 = filteringSymbolName;
+      if (filteringSymbolName)
       {
-        v22 = v20;
+        v22 = filteringSymbolName;
       }
 
       else
@@ -386,40 +386,40 @@ void __54__PXContentFilterToggleButtonController__deferredMenu__block_invoke(uin
 
       v23 = v22;
 
-      v24 = [(PXContentFilterToggleButtonController *)self filteringSymbolConfiguration];
-      v25 = v24;
-      if (v24)
+      filteringSymbolConfiguration = [(PXContentFilterToggleButtonController *)self filteringSymbolConfiguration];
+      v25 = filteringSymbolConfiguration;
+      if (filteringSymbolConfiguration)
       {
-        v26 = v24;
+        v26 = filteringSymbolConfiguration;
       }
 
       else
       {
-        v26 = v19;
+        v26 = symbolConfiguration;
       }
 
       v27 = v26;
 
       v17 = v23;
-      v19 = v27;
+      symbolConfiguration = v27;
     }
 
     v28 = MEMORY[0x1E69DCAB8];
-    if (v19)
+    if (symbolConfiguration)
     {
       v29 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v17];
       [v7 setImage:v29];
 
-      [v7 setPreferredSymbolConfigurationForImage:v19];
+      [v7 setPreferredSymbolConfigurationForImage:symbolConfiguration];
     }
 
     else
     {
-      v30 = [v7 image];
-      v31 = [v30 configuration];
-      v32 = [v28 _systemImageNamed:v17 withConfiguration:v31];
+      image = [v7 image];
+      configuration2 = [image configuration];
+      v32 = [v28 _systemImageNamed:v17 withConfiguration:configuration2];
 
-      if (v4)
+      if (isFiltering)
       {
         [MEMORY[0x1E69DC888] whiteColor];
       }
@@ -434,22 +434,22 @@ void __54__PXContentFilterToggleButtonController__deferredMenu__block_invoke(uin
     }
   }
 
-  [v5 setConfiguration:v7];
-  [v5 setHidden:{-[PXContentFilterToggleButtonController shouldHideButton](self, "shouldHideButton")}];
+  [button setConfiguration:v7];
+  [button setHidden:{-[PXContentFilterToggleButtonController shouldHideButton](self, "shouldHideButton")}];
   [(PXContentFilterToggleButtonController *)self _invalidateButtonMenu];
 }
 
-- (void)_setupButtonWithConfiguration:(id)a3 roundedButton:(BOOL)a4
+- (void)_setupButtonWithConfiguration:(id)configuration roundedButton:(BOOL)button
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_roundedButton___block_invoke;
   v8[3] = &unk_1E7731A58;
-  v10 = a4;
+  buttonCopy = button;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   [(PXContentFilterToggleButtonController *)self performChanges:v8];
 }
 
@@ -523,69 +523,69 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
 
 - (BOOL)isUsingCustomSortOrder
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:196 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController isUsingCustomSortOrder]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:196 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController isUsingCustomSortOrder]", v6}];
 
   abort();
 }
 
 - (NSArray)allMenuItems
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:184 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController allMenuItems]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:184 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController allMenuItems]", v6}];
 
   abort();
 }
 
 - (NSString)viewOptionsMenuSubtitle
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:180 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController viewOptionsMenuSubtitle]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:180 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController viewOptionsMenuSubtitle]", v6}];
 
   abort();
 }
 
 - (NSArray)viewOptionsMenuItems
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:176 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController viewOptionsMenuItems]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:176 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController viewOptionsMenuItems]", v6}];
 
   abort();
 }
 
 - (NSString)filterMenuSubtitle
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:172 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController filterMenuSubtitle]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:172 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController filterMenuSubtitle]", v6}];
 
   abort();
 }
 
 - (NSArray)filterMenuItems
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:168 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController filterMenuItems]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterToggleButtonController.m" lineNumber:168 description:{@"Method %s is a responsibility of subclass %@", "-[PXContentFilterToggleButtonController filterMenuItems]", v6}];
 
   abort();
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  (*(a3 + 2))(a3, self);
+  (*(changes + 2))(changes, self);
   if (!isPerformingChanges)
   {
     [(PXUpdater *)self->_updater updateIfNeeded];
@@ -594,15 +594,15 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
   self->_isPerformingChanges = isPerformingChanges;
 }
 
-- (void)setBaseBackgroundColor:(id)a3
+- (void)setBaseBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   baseBackgroundColor = self->_baseBackgroundColor;
-  if (baseBackgroundColor != v4)
+  if (baseBackgroundColor != colorCopy)
   {
-    v9 = v4;
-    v6 = [(UIColor *)baseBackgroundColor isEqual:v4];
-    v4 = v9;
+    v9 = colorCopy;
+    v6 = [(UIColor *)baseBackgroundColor isEqual:colorCopy];
+    colorCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIColor *)v9 copy];
@@ -610,20 +610,20 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_baseBackgroundColor = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      colorCopy = v9;
     }
   }
 }
 
-- (void)setFilteringSymbolConfiguration:(id)a3
+- (void)setFilteringSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   filteringSymbolConfiguration = self->_filteringSymbolConfiguration;
-  if (filteringSymbolConfiguration != v4)
+  if (filteringSymbolConfiguration != configurationCopy)
   {
-    v9 = v4;
-    v6 = [(UIImageSymbolConfiguration *)filteringSymbolConfiguration isEqual:v4];
-    v4 = v9;
+    v9 = configurationCopy;
+    v6 = [(UIImageSymbolConfiguration *)filteringSymbolConfiguration isEqual:configurationCopy];
+    configurationCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIImageSymbolConfiguration *)v9 copy];
@@ -631,20 +631,20 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_filteringSymbolConfiguration = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      configurationCopy = v9;
     }
   }
 }
 
-- (void)setSymbolConfiguration:(id)a3
+- (void)setSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   symbolConfiguration = self->_symbolConfiguration;
-  if (symbolConfiguration != v4)
+  if (symbolConfiguration != configurationCopy)
   {
-    v9 = v4;
-    v6 = [(UIImageSymbolConfiguration *)symbolConfiguration isEqual:v4];
-    v4 = v9;
+    v9 = configurationCopy;
+    v6 = [(UIImageSymbolConfiguration *)symbolConfiguration isEqual:configurationCopy];
+    configurationCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIImageSymbolConfiguration *)v9 copy];
@@ -652,20 +652,20 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_symbolConfiguration = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      configurationCopy = v9;
     }
   }
 }
 
-- (void)setFilteringSymbolName:(id)a3
+- (void)setFilteringSymbolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   filteringSymbolName = self->_filteringSymbolName;
-  if (filteringSymbolName != v4)
+  if (filteringSymbolName != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)filteringSymbolName isEqual:v4];
-    v4 = v9;
+    v9 = nameCopy;
+    v6 = [(NSString *)filteringSymbolName isEqual:nameCopy];
+    nameCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -673,20 +673,20 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_filteringSymbolName = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      nameCopy = v9;
     }
   }
 }
 
-- (void)setSymbolName:(id)a3
+- (void)setSymbolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   symbolName = self->_symbolName;
-  if (symbolName != v4)
+  if (symbolName != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)symbolName isEqual:v4];
-    v4 = v9;
+    v9 = nameCopy;
+    v6 = [(NSString *)symbolName isEqual:nameCopy];
+    nameCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -694,20 +694,20 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_symbolName = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      nameCopy = v9;
     }
   }
 }
 
-- (void)setSecondaryTintColor:(id)a3
+- (void)setSecondaryTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   secondaryTintColor = self->_secondaryTintColor;
-  if (secondaryTintColor != v4)
+  if (secondaryTintColor != colorCopy)
   {
-    v9 = v4;
-    v6 = [(UIColor *)secondaryTintColor isEqual:v4];
-    v4 = v9;
+    v9 = colorCopy;
+    v6 = [(UIColor *)secondaryTintColor isEqual:colorCopy];
+    colorCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIColor *)v9 copy];
@@ -715,20 +715,20 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_secondaryTintColor = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      colorCopy = v9;
     }
   }
 }
 
-- (void)setPrimaryTintColor:(id)a3
+- (void)setPrimaryTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   primaryTintColor = self->_primaryTintColor;
-  if (primaryTintColor != v4)
+  if (primaryTintColor != colorCopy)
   {
-    v9 = v4;
-    v6 = [(UIColor *)primaryTintColor isEqual:v4];
-    v4 = v9;
+    v9 = colorCopy;
+    v6 = [(UIColor *)primaryTintColor isEqual:colorCopy];
+    colorCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIColor *)v9 copy];
@@ -736,16 +736,16 @@ void __85__PXContentFilterToggleButtonController__setupButtonWithConfiguration_r
       self->_primaryTintColor = v7;
 
       [(PXContentFilterToggleButtonController *)self _invalidateButton];
-      v4 = v9;
+      colorCopy = v9;
     }
   }
 }
 
-- (void)setContentFilterState:(id)a3
+- (void)setContentFilterState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_contentFilterState != v4 && ![(PXContentFilterState *)v4 isEqual:?])
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_contentFilterState != stateCopy && ![(PXContentFilterState *)stateCopy isEqual:?])
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -765,11 +765,11 @@ uint64_t __63__PXContentFilterToggleButtonController_setContentFilterState___blo
   return [v2 _invalidateButton];
 }
 
-- (void)setLibraryFilterState:(id)a3
+- (void)setLibraryFilterState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_libraryFilterState != v4 && ![(PXLibraryFilterState *)v4 isEqual:?])
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_libraryFilterState != stateCopy && ![(PXLibraryFilterState *)stateCopy isEqual:?])
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -789,46 +789,46 @@ uint64_t __63__PXContentFilterToggleButtonController_setLibraryFilterState___blo
   return [v2 _invalidateButton];
 }
 
-- (PXContentFilterToggleButtonController)initWithButtonConfiguration:(id)a3 roundedButton:(BOOL)a4
+- (PXContentFilterToggleButtonController)initWithButtonConfiguration:(id)configuration roundedButton:(BOOL)button
 {
-  v4 = a4;
-  v6 = a3;
+  buttonCopy = button;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = PXContentFilterToggleButtonController;
   v7 = [(PXContentFilterToggleButtonController *)&v22 init];
   if (v7)
   {
-    v8 = [v6 baseBackgroundColor];
+    baseBackgroundColor = [configurationCopy baseBackgroundColor];
 
-    if (v8)
+    if (baseBackgroundColor)
     {
-      v9 = [v6 baseBackgroundColor];
+      baseBackgroundColor2 = [configurationCopy baseBackgroundColor];
       v10 = 32;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       primaryTintColor = v7->_primaryTintColor;
-      v7->_primaryTintColor = v11;
+      v7->_primaryTintColor = whiteColor;
 
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
+      baseBackgroundColor2 = [MEMORY[0x1E69DC888] whiteColor];
       v10 = 40;
     }
 
     v13 = *(&v7->super.isa + v10);
-    *(&v7->super.isa + v10) = v9;
+    *(&v7->super.isa + v10) = baseBackgroundColor2;
 
-    v14 = [v6 background];
-    v15 = [v14 backgroundColor];
+    background = [configurationCopy background];
+    backgroundColor = [background backgroundColor];
     originalUnfilteredBackgroundColor = v7->_originalUnfilteredBackgroundColor;
-    v7->_originalUnfilteredBackgroundColor = v15;
+    v7->_originalUnfilteredBackgroundColor = backgroundColor;
 
-    v17 = [v6 preferredSymbolConfigurationForImage];
+    preferredSymbolConfigurationForImage = [configurationCopy preferredSymbolConfigurationForImage];
     symbolConfiguration = v7->_symbolConfiguration;
-    v7->_symbolConfiguration = v17;
+    v7->_symbolConfiguration = preferredSymbolConfigurationForImage;
 
-    v7->_roundedButton = v4;
+    v7->_roundedButton = buttonCopy;
     v7->_shouldUpdateButtonSymbol = 1;
     v19 = [[off_1E7721940 alloc] initWithTarget:v7 needsUpdateSelector:sel__setNeedsUpdate];
     updater = v7->_updater;
@@ -836,7 +836,7 @@ uint64_t __63__PXContentFilterToggleButtonController_setLibraryFilterState___blo
 
     [(PXUpdater *)v7->_updater addUpdateSelector:sel__updateButton];
     [(PXUpdater *)v7->_updater addUpdateSelector:sel__updateButtonMenu];
-    [(PXContentFilterToggleButtonController *)v7 _setupButtonWithConfiguration:v6 roundedButton:v4];
+    [(PXContentFilterToggleButtonController *)v7 _setupButtonWithConfiguration:configurationCopy roundedButton:buttonCopy];
   }
 
   return v7;

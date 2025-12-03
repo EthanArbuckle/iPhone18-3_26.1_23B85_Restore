@@ -1,19 +1,19 @@
 @interface _EARInterpolator
-+ (id)interpolate:(id)a3 configPath:(id)a4 dataRoot:(id)a5 modelRoot:(id)a6;
++ (id)interpolate:(id)interpolate configPath:(id)path dataRoot:(id)root modelRoot:(id)modelRoot;
 @end
 
 @implementation _EARInterpolator
 
-+ (id)interpolate:(id)a3 configPath:(id)a4 dataRoot:(id)a5 modelRoot:(id)a6
++ (id)interpolate:(id)interpolate configPath:(id)path dataRoot:(id)root modelRoot:(id)modelRoot
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  interpolateCopy = interpolate;
+  pathCopy = path;
+  rootCopy = root;
+  modelRootCopy = modelRoot;
+  if (pathCopy)
   {
-    [v10 ear_toString];
+    [pathCopy ear_toString];
   }
 
   *buf = 0u;

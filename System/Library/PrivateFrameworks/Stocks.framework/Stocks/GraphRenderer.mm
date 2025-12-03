@@ -2,7 +2,7 @@
 + (id)sharedRenderer;
 + (void)clearSharedRenderer;
 - (GraphRenderer)init;
-- (void)performRenderOperation:(id)a3;
+- (void)performRenderOperation:(id)operation;
 @end
 
 @implementation GraphRenderer
@@ -43,16 +43,16 @@
   return v2;
 }
 
-- (void)performRenderOperation:(id)a3
+- (void)performRenderOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__GraphRenderer_performRenderOperation___block_invoke;
   block[3] = &unk_279D15BF0;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   dispatch_async(queue, block);
 }
 

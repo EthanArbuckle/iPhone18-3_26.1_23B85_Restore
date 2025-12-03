@@ -1,8 +1,8 @@
 @interface SavingsDashboardMessageSource
 - (_TtC9PassKitUI29SavingsDashboardMessageSource)init;
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4;
-- (void)discoveryService:(id)a3 dialogRequestsChangedForPlacement:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier;
+- (void)discoveryService:(id)service dialogRequestsChangedForPlacement:(id)placement;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
 @end
 
 @implementation SavingsDashboardMessageSource
@@ -14,9 +14,9 @@
   return result;
 }
 
-- (void)discoveryService:(id)a3 dialogRequestsChangedForPlacement:(id)a4
+- (void)discoveryService:(id)service dialogRequestsChangedForPlacement:(id)placement
 {
-  if (a4)
+  if (placement)
   {
     v6 = sub_1BE052434();
     v8 = v7;
@@ -28,14 +28,14 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_1BD9D09F0(v6, v8);
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_1BE052434();
     v8 = v7;
@@ -47,22 +47,22 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  v10 = self;
-  sub_1BD9CFDB4(v6, v8, a4);
+  transactionCopy = transaction;
+  selfCopy = self;
+  sub_1BD9CFDB4(v6, v8, transaction);
 }
 
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier
 {
-  if (a3)
+  if (sources)
   {
     sub_1BD0E5E8C(0, &qword_1EBD4E090);
     sub_1BE052744();
   }
 
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1BE052434();
+    identifier = sub_1BE052434();
     v7 = v6;
   }
 
@@ -71,8 +71,8 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_1BD9D0D7C(a4, v7);
+  selfCopy = self;
+  sub_1BD9D0D7C(identifier, v7);
 }
 
 @end

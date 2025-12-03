@@ -1,21 +1,21 @@
 @interface ML3DatabaseCachedRow
-- (ML3DatabaseCachedRow)initWithArray:(id)a3;
-- (const)cStringForColumnIndex:(unint64_t)a3;
-- (double)doubleForColumnIndex:(unint64_t)a3;
-- (id)_numberOrZeroForColumnIndex:(unint64_t)a3;
+- (ML3DatabaseCachedRow)initWithArray:(id)array;
+- (const)cStringForColumnIndex:(unint64_t)index;
+- (double)doubleForColumnIndex:(unint64_t)index;
+- (id)_numberOrZeroForColumnIndex:(unint64_t)index;
 - (id)arrayRepresentation;
 - (id)dictionaryRepresentation;
-- (id)valueForColumnIndex:(unint64_t)a3;
-- (int)intForColumnIndex:(unint64_t)a3;
-- (int64_t)int64ForColumnIndex:(unint64_t)a3;
-- (void)getBlobBytes:(const void *)a3 outLength:(int *)a4 forColumnIndex:(unint64_t)a5;
+- (id)valueForColumnIndex:(unint64_t)index;
+- (int)intForColumnIndex:(unint64_t)index;
+- (int64_t)int64ForColumnIndex:(unint64_t)index;
+- (void)getBlobBytes:(const void *)bytes outLength:(int *)length forColumnIndex:(unint64_t)index;
 @end
 
 @implementation ML3DatabaseCachedRow
 
-- (id)_numberOrZeroForColumnIndex:(unint64_t)a3
+- (id)_numberOrZeroForColumnIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_arrayRepresentation objectAtIndex:a3];
+  v3 = [(NSArray *)self->_arrayRepresentation objectAtIndex:index];
   if (!v3 || ([MEMORY[0x277CBEB68] null], v4 = objc_claimAutoreleasedReturnValue(), v4, v3 == v4))
   {
 
@@ -53,12 +53,12 @@
   return v3;
 }
 
-- (id)valueForColumnIndex:(unint64_t)a3
+- (id)valueForColumnIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_arrayRepresentation objectAtIndex:a3];
-  v4 = [MEMORY[0x277CBEB68] null];
+  v3 = [(NSArray *)self->_arrayRepresentation objectAtIndex:index];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
 
     v3 = 0;
@@ -67,79 +67,79 @@
   return v3;
 }
 
-- (void)getBlobBytes:(const void *)a3 outLength:(int *)a4 forColumnIndex:(unint64_t)a5
+- (void)getBlobBytes:(const void *)bytes outLength:(int *)length forColumnIndex:(unint64_t)index
 {
-  v9 = [(ML3DatabaseCachedRow *)self dataForColumnIndex:a5];
-  v10 = v9;
-  if (v9)
+  bytes = [(ML3DatabaseCachedRow *)self dataForColumnIndex:index];
+  v10 = bytes;
+  if (bytes)
   {
-    v13 = v9;
+    v13 = bytes;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"ML3DatabaseCachedRow.m" lineNumber:80 description:@"Attempted to read cached blob data from non-NSData type."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseCachedRow.m" lineNumber:80 description:@"Attempted to read cached blob data from non-NSData type."];
     }
 
-    *a4 = [v13 length];
+    *length = [v13 length];
     v11 = v13;
-    v9 = [v13 bytes];
+    bytes = [v13 bytes];
     v10 = v13;
   }
 
   else
   {
-    *a4 = 0;
+    *length = 0;
   }
 
-  *a3 = v9;
+  *bytes = bytes;
 
-  MEMORY[0x2821F96F8](v9, v10);
+  MEMORY[0x2821F96F8](bytes, v10);
 }
 
-- (const)cStringForColumnIndex:(unint64_t)a3
+- (const)cStringForColumnIndex:(unint64_t)index
 {
-  v3 = [(ML3DatabaseCachedRow *)self valueForColumnIndex:a3];
-  v4 = [v3 UTF8String];
+  v3 = [(ML3DatabaseCachedRow *)self valueForColumnIndex:index];
+  uTF8String = [v3 UTF8String];
 
-  return v4;
+  return uTF8String;
 }
 
-- (int64_t)int64ForColumnIndex:(unint64_t)a3
+- (int64_t)int64ForColumnIndex:(unint64_t)index
 {
-  v3 = [(ML3DatabaseCachedRow *)self _numberOrZeroForColumnIndex:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(ML3DatabaseCachedRow *)self _numberOrZeroForColumnIndex:index];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (int)intForColumnIndex:(unint64_t)a3
+- (int)intForColumnIndex:(unint64_t)index
 {
-  v3 = [(ML3DatabaseCachedRow *)self _numberOrZeroForColumnIndex:a3];
-  v4 = [v3 intValue];
+  v3 = [(ML3DatabaseCachedRow *)self _numberOrZeroForColumnIndex:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (double)doubleForColumnIndex:(unint64_t)a3
+- (double)doubleForColumnIndex:(unint64_t)index
 {
-  v3 = [(ML3DatabaseCachedRow *)self _numberOrZeroForColumnIndex:a3];
+  v3 = [(ML3DatabaseCachedRow *)self _numberOrZeroForColumnIndex:index];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (ML3DatabaseCachedRow)initWithArray:(id)a3
+- (ML3DatabaseCachedRow)initWithArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = ML3DatabaseCachedRow;
   v6 = [(ML3DatabaseRow *)&v9 initWithParentResult:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_arrayRepresentation, a3);
+    objc_storeStrong(&v6->_arrayRepresentation, array);
   }
 
   return v7;

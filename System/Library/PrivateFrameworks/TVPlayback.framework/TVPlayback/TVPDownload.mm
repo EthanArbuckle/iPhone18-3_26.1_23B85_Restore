@@ -1,26 +1,26 @@
 @interface TVPDownload
 + (void)initialize;
 - (BOOL)_anyDelegateRespondsToProcessFinishedDownload;
-- (TVPDownload)initWithMediaItem:(id)a3 downloadSession:(id)a4 existingDownloadTask:(id)a5;
+- (TVPDownload)initWithMediaItem:(id)item downloadSession:(id)session existingDownloadTask:(id)task;
 - (TVPDownloadSession)downloadSession;
 - (double)progress;
-- (id)_legibleInterstitialDownloadCriteriaForSubtitleLanguages:(id)a3 includeSDH:(BOOL)a4;
-- (id)_variantQualifiersForCurrentSettingsUsingMultichannelAudio:(BOOL)a3;
-- (id)descriptionForState:(int64_t)a3;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadToURL:(id)a5;
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadVariants:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_addMediaSelectionOptionsIfNotAlreadyAdded:(id)a3 toMediaSelections:(id)a4 forMediaSelectionGroup:(id)a5 baseMediaSelection:(id)a6;
+- (id)_legibleInterstitialDownloadCriteriaForSubtitleLanguages:(id)languages includeSDH:(BOOL)h;
+- (id)_variantQualifiersForCurrentSettingsUsingMultichannelAudio:(BOOL)audio;
+- (id)descriptionForState:(int64_t)state;
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadToURL:(id)l;
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadVariants:(id)variants;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_addMediaSelectionOptionsIfNotAlreadyAdded:(id)added toMediaSelections:(id)selections forMediaSelectionGroup:(id)group baseMediaSelection:(id)selection;
 - (void)_downloadProgressDidChange;
-- (void)_mediaItemLoaderStateDidChangeTo:(id)a3;
-- (void)_processFinishedDownloadWithCompletion:(id)a3;
+- (void)_mediaItemLoaderStateDidChangeTo:(id)to;
+- (void)_processFinishedDownloadWithCompletion:(id)completion;
 - (void)_registerStateMachineHandlers;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)cancel;
 - (void)dealloc;
-- (void)failWithError:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeDelegate:(id)a3;
+- (void)failWithError:(id)error;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeDelegate:(id)delegate;
 - (void)start;
 @end
 
@@ -41,25 +41,25 @@ uint64_t __25__TVPDownload_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (TVPDownload)initWithMediaItem:(id)a3 downloadSession:(id)a4 existingDownloadTask:(id)a5
+- (TVPDownload)initWithMediaItem:(id)item downloadSession:(id)session existingDownloadTask:(id)task
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  sessionCopy = session;
+  taskCopy = task;
   v30.receiver = self;
   v30.super_class = TVPDownload;
   v12 = [(TVPDownload *)&v30 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mediaItem, a3);
-    objc_storeWeak(&v13->_downloadSession, v10);
+    objc_storeStrong(&v12->_mediaItem, item);
+    objc_storeWeak(&v13->_downloadSession, sessionCopy);
     v13->_state = 0;
-    objc_storeStrong(&v13->_downloadTask, a5);
-    v14 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    objc_storeStrong(&v13->_downloadTask, task);
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     delegates = v13->_delegates;
-    v13->_delegates = v14;
+    v13->_delegates = weakObjectsPointerArray;
 
     v16 = *MEMORY[0x277D767B0];
     v13->_downloadInitiationBackgroundTask = *MEMORY[0x277D767B0];
@@ -68,7 +68,7 @@ uint64_t __25__TVPDownload_initialize__block_invoke()
     downloadTask = v13->_downloadTask;
     if (downloadTask)
     {
-      [v10 registerDownloadTask:downloadTask forDownload:v13];
+      [sessionCopy registerDownloadTask:downloadTask forDownload:v13];
       [(AVAssetDownloadTask *)v13->_downloadTask addObserver:v13 forKeyPath:@"progress.fractionCompleted" options:0 context:__DownloadTaskProgressKVOContext];
       v13->_addedProgressObserver = 1;
     }
@@ -117,19 +117,19 @@ uint64_t __25__TVPDownload_initialize__block_invoke()
   [(TVPDownload *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (__TVPMediaItemLoaderStateKVOContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (__TVPMediaItemLoaderStateKVOContext == context)
   {
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     [(TVPDownload *)self _mediaItemLoaderStateDidChangeTo:v14];
   }
 
-  else if (__DownloadTaskProgressKVOContext == a6)
+  else if (__DownloadTaskProgressKVOContext == context)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -143,44 +143,44 @@ uint64_t __25__TVPDownload_initialize__block_invoke()
   {
     v15.receiver = self;
     v15.super_class = TVPDownload;
-    [(TVPDownload *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TVPDownload *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
-    v5 = [(TVPDownload *)self delegates];
-    [v5 addPointer:v4];
+    delegateCopy = delegate;
+    delegates = [(TVPDownload *)self delegates];
+    [delegates addPointer:delegateCopy];
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v12 = a3;
-  if (v12)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v4 = [(TVPDownload *)self delegates];
-    v5 = [v4 count];
+    delegates = [(TVPDownload *)self delegates];
+    v5 = [delegates count];
 
     if (v5)
     {
       v6 = 0;
       while (1)
       {
-        v7 = [(TVPDownload *)self delegates];
-        v8 = [v7 pointerAtIndex:v6];
+        delegates2 = [(TVPDownload *)self delegates];
+        v8 = [delegates2 pointerAtIndex:v6];
 
-        if (v8 == v12)
+        if (v8 == delegateCopy)
         {
           break;
         }
 
         ++v6;
-        v9 = [(TVPDownload *)self delegates];
-        v10 = [v9 count];
+        delegates3 = [(TVPDownload *)self delegates];
+        v10 = [delegates3 count];
 
         if (v6 >= v10)
         {
@@ -188,8 +188,8 @@ uint64_t __25__TVPDownload_initialize__block_invoke()
         }
       }
 
-      v11 = [(TVPDownload *)self delegates];
-      [v11 removePointerAtIndex:v6];
+      delegates4 = [(TVPDownload *)self delegates];
+      [delegates4 removePointerAtIndex:v6];
     }
   }
 
@@ -198,23 +198,23 @@ LABEL_8:
 
 - (double)progress
 {
-  v3 = [(TVPDownload *)self stateMachine];
-  v4 = [v3 currentState];
-  v5 = [v4 isEqualToString:@"Downloading"];
+  stateMachine = [(TVPDownload *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v5 = [currentState isEqualToString:@"Downloading"];
 
   if (v5)
   {
-    v6 = [(TVPDownload *)self downloadTask];
-    v7 = [v6 progress];
-    [v7 fractionCompleted];
+    downloadTask = [(TVPDownload *)self downloadTask];
+    progress = [downloadTask progress];
+    [progress fractionCompleted];
     v9 = v8;
 
     return v9;
   }
 
-  v11 = [(TVPDownload *)self stateMachine];
-  v12 = [v11 currentState];
-  v13 = [v12 isEqualToString:@"Terminating"];
+  stateMachine2 = [(TVPDownload *)self stateMachine];
+  currentState2 = [stateMachine2 currentState];
+  v13 = [currentState2 isEqualToString:@"Terminating"];
 
   if (v13)
   {
@@ -224,17 +224,17 @@ LABEL_8:
 
   else
   {
-    v14 = [(TVPDownload *)self stateMachine];
-    v15 = [v14 currentState];
-    if ([v15 isEqualToString:@"Download complete"])
+    stateMachine3 = [(TVPDownload *)self stateMachine];
+    currentState3 = [stateMachine3 currentState];
+    if ([currentState3 isEqualToString:@"Download complete"])
     {
     }
 
     else
     {
-      v16 = [(TVPDownload *)self stateMachine];
-      v17 = [v16 currentState];
-      v18 = [v17 isEqualToString:@"Processing finished download"];
+      stateMachine4 = [(TVPDownload *)self stateMachine];
+      currentState4 = [stateMachine4 currentState];
+      v18 = [currentState4 isEqualToString:@"Processing finished download"];
 
       result = 0.0;
       if (!v18)
@@ -251,96 +251,96 @@ LABEL_8:
 
 - (void)start
 {
-  v3 = [(TVPDownload *)self startError];
+  startError = [(TVPDownload *)self startError];
 
-  if (v3)
+  if (startError)
   {
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_ERROR))
     {
       [TVPDownload start];
     }
 
-    v4 = [(TVPDownload *)self stateMachine];
-    v5 = [(TVPDownload *)self startError];
-    [v4 postEvent:@"Error did occur" withContext:v5];
+    stateMachine = [(TVPDownload *)self stateMachine];
+    startError2 = [(TVPDownload *)self startError];
+    [stateMachine postEvent:@"Error did occur" withContext:startError2];
   }
 
   else
   {
-    v6 = [(TVPDownload *)self stateMachine];
-    [v6 postEvent:@"Start"];
+    stateMachine2 = [(TVPDownload *)self stateMachine];
+    [stateMachine2 postEvent:@"Start"];
   }
 }
 
 - (void)cancel
 {
-  v2 = [(TVPDownload *)self stateMachine];
-  [v2 postEvent:@"Cancel"];
+  stateMachine = [(TVPDownload *)self stateMachine];
+  [stateMachine postEvent:@"Cancel"];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(TVPDownload *)self stateMachine];
-  [v5 postEvent:@"Error did occur" withContext:v4];
+  errorCopy = error;
+  stateMachine = [(TVPDownload *)self stateMachine];
+  [stateMachine postEvent:@"Error did occur" withContext:errorCopy];
 }
 
-- (id)descriptionForState:(int64_t)a3
+- (id)descriptionForState:(int64_t)state
 {
-  if (a3 > 6)
+  if (state > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_279D7C040[a3];
+    return off_279D7C040[state];
   }
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadToURL:(id)a5
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadToURL:(id)l
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   v11 = sLogObject_2;
   if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(TVPDownload *)self mediaItem];
+    mediaItem = [(TVPDownload *)self mediaItem];
     v23 = 138412802;
-    v24 = v9;
+    v24 = taskCopy;
     v25 = 2112;
-    v26 = v13;
+    v26 = mediaItem;
     v27 = 2112;
-    v28 = v10;
+    v28 = lCopy;
     _os_log_impl(&dword_26CEDD000, v12, OS_LOG_TYPE_DEFAULT, "Task [%@] for media item [%@] will download to [%@]", &v23, 0x20u);
   }
 
-  v14 = [(TVPDownload *)self delegates];
-  v15 = [v14 count];
+  delegates = [(TVPDownload *)self delegates];
+  v15 = [delegates count];
 
   if (v15)
   {
     v16 = 0;
     do
     {
-      v17 = [(TVPDownload *)self delegates];
-      v18 = [v17 pointerAtIndex:v16];
+      delegates2 = [(TVPDownload *)self delegates];
+      v18 = [delegates2 pointerAtIndex:v16];
 
       if (v18)
       {
         v19 = v18;
         if (objc_opt_respondsToSelector())
         {
-          [v19 download:self willDownloadToURL:v10];
+          [v19 download:self willDownloadToURL:lCopy];
         }
       }
 
       ++v16;
-      v20 = [(TVPDownload *)self delegates];
-      v21 = [v20 count];
+      delegates3 = [(TVPDownload *)self delegates];
+      v21 = [delegates3 count];
     }
 
     while (v16 < v21);
@@ -349,14 +349,14 @@ LABEL_8:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 assetDownloadTask:(id)a4 willDownloadVariants:(id)a5
+- (void)URLSession:(id)session assetDownloadTask:(id)task willDownloadVariants:(id)variants
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  variantsCopy = variants;
   v9 = dispatch_queue_create("com.apple.tv AVAssetVariant logging queue", 0);
-  v10 = [v7 description];
-  v11 = [(TVPDownload *)self mediaItem];
-  v12 = [v11 description];
+  v10 = [taskCopy description];
+  mediaItem = [(TVPDownload *)self mediaItem];
+  v12 = [mediaItem description];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -366,19 +366,19 @@ LABEL_8:
   v25 = v13;
   v14 = v12;
   v26 = v14;
-  v15 = v8;
+  v15 = variantsCopy;
   v27 = v15;
   dispatch_async(v9, block);
-  v16 = [(TVPDownload *)self delegates];
-  v17 = [v16 count];
+  delegates = [(TVPDownload *)self delegates];
+  v17 = [delegates count];
 
   if (v17)
   {
     v18 = 0;
     do
     {
-      v19 = [(TVPDownload *)self delegates];
-      v20 = [v19 pointerAtIndex:v18];
+      delegates2 = [(TVPDownload *)self delegates];
+      v20 = [delegates2 pointerAtIndex:v18];
 
       if (v20)
       {
@@ -390,8 +390,8 @@ LABEL_8:
       }
 
       ++v18;
-      v22 = [(TVPDownload *)self delegates];
-      v23 = [v22 count];
+      delegates3 = [(TVPDownload *)self delegates];
+      v23 = [delegates3 count];
     }
 
     while (v18 < v23);
@@ -419,27 +419,27 @@ void __65__TVPDownload_URLSession_assetDownloadTask_willDownloadVariants___block
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(TVPDownload *)self downloadTerminationBackgroundTask];
-  if (v9 == *MEMORY[0x277D767B0])
+  taskCopy = task;
+  errorCopy = error;
+  downloadTerminationBackgroundTask = [(TVPDownload *)self downloadTerminationBackgroundTask];
+  if (downloadTerminationBackgroundTask == *MEMORY[0x277D767B0])
   {
-    v10 = v9;
+    v10 = downloadTerminationBackgroundTask;
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(TVPDownload *)self stateMachine];
-    v13 = [v12 name];
-    v14 = [v11 stringWithFormat:@"Download termination [%@]", v13];
+    stateMachine = [(TVPDownload *)self stateMachine];
+    name = [stateMachine name];
+    v14 = [v11 stringWithFormat:@"Download termination [%@]", name];
 
-    v15 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __52__TVPDownload_URLSession_task_didCompleteWithError___block_invoke;
     v23[3] = &unk_279D7BDC8;
     v23[4] = self;
-    v16 = [v15 beginBackgroundTaskWithName:v14 expirationHandler:v23];
+    v16 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:v14 expirationHandler:v23];
 
     v17 = sLogObject_2;
     if (v16 == v10)
@@ -468,18 +468,18 @@ void __65__TVPDownload_URLSession_assetDownloadTask_willDownloadVariants___block
   }
 
   v18 = sLogObject_2;
-  if (v8)
+  if (errorCopy)
   {
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
-      v20 = [(TVPDownload *)self mediaItem];
+      mediaItem = [(TVPDownload *)self mediaItem];
       *buf = 138412802;
-      v25 = v7;
+      v25 = taskCopy;
       v26 = 2112;
-      v27 = v20;
+      v27 = mediaItem;
       v28 = 2112;
-      v29 = v8;
+      v29 = errorCopy;
       _os_log_error_impl(&dword_26CEDD000, v19, OS_LOG_TYPE_ERROR, "Task [%@] for media item [%@] did complete with error: %@", buf, 0x20u);
 LABEL_15:
     }
@@ -488,17 +488,17 @@ LABEL_15:
   else if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [(TVPDownload *)self mediaItem];
+    mediaItem = [(TVPDownload *)self mediaItem];
     *buf = 138412546;
-    v25 = v7;
+    v25 = taskCopy;
     v26 = 2112;
-    v27 = v20;
+    v27 = mediaItem;
     _os_log_impl(&dword_26CEDD000, v19, OS_LOG_TYPE_DEFAULT, "Task [%@] for media item [%@] did complete download task successfully", buf, 0x16u);
     goto LABEL_15;
   }
 
-  v21 = [(TVPDownload *)self stateMachine];
-  [v21 postEvent:@"Download task did complete" withContext:v8];
+  stateMachine2 = [(TVPDownload *)self stateMachine];
+  [stateMachine2 postEvent:@"Download task did complete" withContext:errorCopy];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -528,55 +528,55 @@ uint64_t __52__TVPDownload_URLSession_task_didCompleteWithError___block_invoke(u
 - (void)_downloadProgressDidChange
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 downloadTask];
-  v5 = [v4 progress];
-  [v5 fractionCompleted];
+  selfCopy = self;
+  downloadTask = [a2 downloadTask];
+  progress = [downloadTask progress];
+  [progress fractionCompleted];
   v8 = 134217984;
   v9 = v6 * 100.0;
-  _os_log_debug_impl(&dword_26CEDD000, v3, OS_LOG_TYPE_DEBUG, "Download progress did change to %.2f%%", &v8, 0xCu);
+  _os_log_debug_impl(&dword_26CEDD000, selfCopy, OS_LOG_TYPE_DEBUG, "Download progress did change to %.2f%%", &v8, 0xCu);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mediaItemLoaderStateDidChangeTo:(id)a3
+- (void)_mediaItemLoaderStateDidChangeTo:(id)to
 {
-  v7 = a3;
-  if ([v7 isEqualToString:0x287E4F0D8])
+  toCopy = to;
+  if ([toCopy isEqualToString:0x287E4F0D8])
   {
-    v4 = [(TVPDownload *)self stateMachine];
-    [v4 postEvent:@"AVAsset keys did load"];
+    stateMachine = [(TVPDownload *)self stateMachine];
+    [stateMachine postEvent:@"AVAsset keys did load"];
   }
 
   else
   {
-    if (![v7 isEqualToString:0x287E4AA38])
+    if (![toCopy isEqualToString:0x287E4AA38])
     {
       goto LABEL_6;
     }
 
-    v4 = [(TVPDownload *)self stateMachine];
-    v5 = [(TVPDownload *)self mediaItemLoader];
-    v6 = [v5 error];
-    [v4 postEvent:@"Error did occur" withContext:v6];
+    stateMachine = [(TVPDownload *)self stateMachine];
+    mediaItemLoader = [(TVPDownload *)self mediaItemLoader];
+    error = [mediaItemLoader error];
+    [stateMachine postEvent:@"Error did occur" withContext:error];
   }
 
 LABEL_6:
 }
 
-- (void)_addMediaSelectionOptionsIfNotAlreadyAdded:(id)a3 toMediaSelections:(id)a4 forMediaSelectionGroup:(id)a5 baseMediaSelection:(id)a6
+- (void)_addMediaSelectionOptionsIfNotAlreadyAdded:(id)added toMediaSelections:(id)selections forMediaSelectionGroup:(id)group baseMediaSelection:(id)selection
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v27 = a4;
-  v10 = a5;
-  v24 = a6;
-  obj = v9;
+  addedCopy = added;
+  selectionsCopy = selections;
+  groupCopy = group;
+  selectionCopy = selection;
+  obj = addedCopy;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  v11 = [addedCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v11)
   {
     v12 = v11;
@@ -596,7 +596,7 @@ LABEL_6:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v15 = v27;
+        v15 = selectionsCopy;
         v16 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v16)
         {
@@ -611,7 +611,7 @@ LABEL_8:
               objc_enumerationMutation(v15);
             }
 
-            v20 = [*(*(&v28 + 1) + 8 * v19) selectedMediaOptionInMediaSelectionGroup:v10];
+            v20 = [*(*(&v28 + 1) + 8 * v19) selectedMediaOptionInMediaSelectionGroup:groupCopy];
             v21 = [v14 isEqual:v20];
 
             if (v21)
@@ -636,8 +636,8 @@ LABEL_8:
         {
 LABEL_14:
 
-          v22 = [v24 mutableCopy];
-          [v22 selectMediaOption:v14 inMediaSelectionGroup:v10];
+          v22 = [selectionCopy mutableCopy];
+          [v22 selectMediaOption:v14 inMediaSelectionGroup:groupCopy];
           [v15 addObject:v22];
           v15 = v22;
         }
@@ -655,12 +655,12 @@ LABEL_14:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_variantQualifiersForCurrentSettingsUsingMultichannelAudio:(BOOL)a3
+- (id)_variantQualifiersForCurrentSettingsUsingMultichannelAudio:(BOOL)audio
 {
-  v3 = a3;
+  audioCopy = audio;
   v75[2] = *MEMORY[0x277D85DE8];
   v65 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3)
+  if (audioCopy)
   {
     v5 = 2;
   }
@@ -671,13 +671,13 @@ LABEL_14:
   }
 
   v6 = [MEMORY[0x277CE6458] predicateForChannelCount:2 operatorType:v5];
-  v7 = [(TVPDownload *)self maximumPresentationWidth];
+  maximumPresentationWidth = [(TVPDownload *)self maximumPresentationWidth];
 
-  if (v7)
+  if (maximumPresentationWidth)
   {
     v8 = MEMORY[0x277CE6458];
-    v9 = [(TVPDownload *)self maximumPresentationWidth];
-    [v9 doubleValue];
+    maximumPresentationWidth2 = [(TVPDownload *)self maximumPresentationWidth];
+    [maximumPresentationWidth2 doubleValue];
     v10 = [v8 predicateForPresentationWidth:0 operatorType:?];
 
     v11 = MEMORY[0x277CCA920];
@@ -713,13 +713,13 @@ LABEL_14:
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
     v24 = [v22 andPredicateWithSubpredicates:v23];
 
-    v25 = [(TVPDownload *)self maximumAverageBitrateForHDR];
+    maximumAverageBitrateForHDR = [(TVPDownload *)self maximumAverageBitrateForHDR];
 
-    if (v25)
+    if (maximumAverageBitrateForHDR)
     {
       v26 = MEMORY[0x277CCAC30];
-      v27 = [(TVPDownload *)self maximumAverageBitrateForHDR];
-      v28 = [v26 predicateWithFormat:@"averageBitRate < %@", v27];
+      maximumAverageBitrateForHDR2 = [(TVPDownload *)self maximumAverageBitrateForHDR];
+      v28 = [v26 predicateWithFormat:@"averageBitRate < %@", maximumAverageBitrateForHDR2];
 
       v29 = MEMORY[0x277CCA920];
       v71[0] = v21;
@@ -750,13 +750,13 @@ LABEL_14:
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:2];
     v40 = [v38 andPredicateWithSubpredicates:v39];
 
-    v41 = [(TVPDownload *)self maximumAverageBitrateForSDRHEVC];
+    maximumAverageBitrateForSDRHEVC = [(TVPDownload *)self maximumAverageBitrateForSDRHEVC];
 
-    if (v41)
+    if (maximumAverageBitrateForSDRHEVC)
     {
       v42 = MEMORY[0x277CCAC30];
-      v43 = [(TVPDownload *)self maximumAverageBitrateForSDRHEVC];
-      v44 = [v42 predicateWithFormat:@"averageBitRate < %@", v43];
+      maximumAverageBitrateForSDRHEVC2 = [(TVPDownload *)self maximumAverageBitrateForSDRHEVC];
+      v44 = [v42 predicateWithFormat:@"averageBitRate < %@", maximumAverageBitrateForSDRHEVC2];
 
       v45 = MEMORY[0x277CCA920];
       v68[0] = v40;
@@ -778,13 +778,13 @@ LABEL_14:
   v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:2];
   v52 = [v50 andPredicateWithSubpredicates:v51];
 
-  v53 = [(TVPDownload *)self maximumAverageBitrateForAVC];
+  maximumAverageBitrateForAVC = [(TVPDownload *)self maximumAverageBitrateForAVC];
 
-  if (v53)
+  if (maximumAverageBitrateForAVC)
   {
     v54 = MEMORY[0x277CCAC30];
-    v55 = [(TVPDownload *)self maximumAverageBitrateForAVC];
-    v56 = [v54 predicateWithFormat:@"averageBitRate < %@", v55];
+    maximumAverageBitrateForAVC2 = [(TVPDownload *)self maximumAverageBitrateForAVC];
+    v56 = [v54 predicateWithFormat:@"averageBitRate < %@", maximumAverageBitrateForAVC2];
 
     v57 = MEMORY[0x277CCA920];
     v66[0] = v52;
@@ -805,8 +805,8 @@ LABEL_14:
 
 - (BOOL)_anyDelegateRespondsToProcessFinishedDownload
 {
-  v3 = [(TVPDownload *)self delegates];
-  v4 = [v3 count];
+  delegates = [(TVPDownload *)self delegates];
+  v4 = [delegates count];
 
   v5 = 0;
   if (v4)
@@ -814,8 +814,8 @@ LABEL_14:
     v6 = 0;
     do
     {
-      v7 = [(TVPDownload *)self delegates];
-      v8 = [v7 pointerAtIndex:v6];
+      delegates2 = [(TVPDownload *)self delegates];
+      v8 = [delegates2 pointerAtIndex:v6];
 
       if (v8)
       {
@@ -823,8 +823,8 @@ LABEL_14:
       }
 
       ++v6;
-      v9 = [(TVPDownload *)self delegates];
-      v10 = [v9 count];
+      delegates3 = [(TVPDownload *)self delegates];
+      v10 = [delegates3 count];
     }
 
     while (v6 < v10);
@@ -833,9 +833,9 @@ LABEL_14:
   return v5 & 1;
 }
 
-- (void)_processFinishedDownloadWithCompletion:(id)a3
+- (void)_processFinishedDownloadWithCompletion:(id)completion
 {
-  v12 = a3;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -845,16 +845,16 @@ LABEL_14:
   v4 = dispatch_group_create();
   for (i = 0; ; ++i)
   {
-    v6 = [(TVPDownload *)self delegates];
-    v7 = [v6 count];
+    delegates = [(TVPDownload *)self delegates];
+    v7 = [delegates count];
 
     if (i >= v7)
     {
       break;
     }
 
-    v8 = [(TVPDownload *)self delegates];
-    v9 = [v8 pointerAtIndex:i];
+    delegates2 = [(TVPDownload *)self delegates];
+    v9 = [delegates2 pointerAtIndex:i];
 
     if (v9)
     {
@@ -877,9 +877,9 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __54__TVPDownload__processFinishedDownloadWithCompletion___block_invoke_2;
   block[3] = &unk_279D7BE40;
-  v14 = v12;
+  v14 = completionCopy;
   v15 = v19;
-  v11 = v12;
+  v11 = completionCopy;
   dispatch_group_notify(v4, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v19, 8);
@@ -932,11 +932,11 @@ LABEL_7:
   return result;
 }
 
-- (id)_legibleInterstitialDownloadCriteriaForSubtitleLanguages:(id)a3 includeSDH:(BOOL)a4
+- (id)_legibleInterstitialDownloadCriteriaForSubtitleLanguages:(id)languages includeSDH:(BOOL)h
 {
-  v4 = a4;
+  hCopy = h;
   v46[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  languagesCopy = languages;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc(MEMORY[0x277CE65E8]);
   v8 = *MEMORY[0x277CE5E28];
@@ -948,7 +948,7 @@ LABEL_7:
   [v6 addObject:v10];
   v11 = MEMORY[0x277CE5E00];
   v12 = MEMORY[0x277CE5E38];
-  if (v4)
+  if (hCopy)
   {
     v13 = objc_alloc(MEMORY[0x277CE65E8]);
     v14 = *v11;
@@ -965,7 +965,7 @@ LABEL_7:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = languagesCopy;
   v17 = [obj countByEnumeratingWithState:&v37 objects:v44 count:16];
   v18 = 0x277CE6000uLL;
   if (v17)
@@ -991,7 +991,7 @@ LABEL_7:
         v26 = [v24 initWithPreferredLanguages:v25 preferredMediaCharacteristics:0];
 
         [v6 addObject:v26];
-        if (v4)
+        if (hCopy)
         {
           v27 = objc_alloc(*(v18 + 1512));
           v42 = v23;
@@ -1021,7 +1021,7 @@ LABEL_7:
 {
   v42[2] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v3 = [(TVPDownload *)self stateMachine];
+  stateMachine = [(TVPDownload *)self stateMachine];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __44__TVPDownload__registerStateMachineHandlers__block_invoke;
@@ -1043,23 +1043,23 @@ LABEL_7:
   objc_copyWeak(&v32, &location);
   v15 = v5;
   v31 = v15;
-  [v3 registerHandlerForEvent:@"Start" onState:@"Not started" withBlock:v30];
+  [stateMachine registerHandlerForEvent:@"Start" onState:@"Not started" withBlock:v30];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __44__TVPDownload__registerStateMachineHandlers__block_invoke_2_139;
   v28[3] = &unk_279D7BFD0;
   objc_copyWeak(&v29, &location);
-  [v3 registerHandlerForEvent:@"AVAsset keys did load" onState:@"Waiting for AVAsset keys to load" withBlock:v28];
+  [stateMachine registerHandlerForEvent:@"AVAsset keys did load" onState:@"Waiting for AVAsset keys to load" withBlock:v28];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __44__TVPDownload__registerStateMachineHandlers__block_invoke_2_195;
   v26[3] = &unk_279D7BFD0;
   objc_copyWeak(&v27, &location);
-  [v3 registerHandlerForEvent:@"Key fetch attempt complete" onState:@"Fetching playback keys" withBlock:v26];
+  [stateMachine registerHandlerForEvent:@"Key fetch attempt complete" onState:@"Fetching playback keys" withBlock:v26];
   v42[0] = @"Waiting for AVAsset keys to load";
   v42[1] = @"Fetching playback keys";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
-  [v3 registerHandlerForEvent:@"Download task did complete" onStates:v7 withBlock:&__block_literal_global_225];
+  [stateMachine registerHandlerForEvent:@"Download task did complete" onStates:v7 withBlock:&__block_literal_global_225];
 
   v41[0] = @"Not started";
   v41[1] = @"Downloading";
@@ -1071,16 +1071,16 @@ LABEL_7:
   objc_copyWeak(&v25, &location);
   v9 = v6;
   v24 = v9;
-  [v3 registerHandlerForEvent:@"Download task did complete" onStates:v8 withBlock:v23];
+  [stateMachine registerHandlerForEvent:@"Download task did complete" onStates:v8 withBlock:v23];
 
-  [v3 registerHandlerForEvent:@"Download task did complete" onState:@"Terminating" withBlock:&__block_literal_global_231];
+  [stateMachine registerHandlerForEvent:@"Download task did complete" onState:@"Terminating" withBlock:&__block_literal_global_231];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __44__TVPDownload__registerStateMachineHandlers__block_invoke_2_233;
   v21[3] = &unk_279D7C020;
   v10 = v9;
   v22 = v10;
-  [v3 registerHandlerForEvent:@"Did process finished download" onState:@"Processing finished download" withBlock:v21];
+  [stateMachine registerHandlerForEvent:@"Did process finished download" onState:@"Processing finished download" withBlock:v21];
   v40[0] = @"Cancel";
   v40[1] = @"Error did occur";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
@@ -1095,7 +1095,7 @@ LABEL_7:
   v19[2] = __44__TVPDownload__registerStateMachineHandlers__block_invoke_4_235;
   v19[3] = &unk_279D7BFD0;
   objc_copyWeak(&v20, &location);
-  [v3 registerHandlerForEvents:v11 onStates:v12 withBlock:v19];
+  [stateMachine registerHandlerForEvents:v11 onStates:v12 withBlock:v19];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1104,7 +1104,7 @@ LABEL_7:
   objc_copyWeak(&v18, &location);
   v13 = v10;
   v17 = v13;
-  [v3 registerHandlerForEvent:@"Termination delay did finish" onState:@"Terminating" withBlock:v16];
+  [stateMachine registerHandlerForEvent:@"Termination delay did finish" onState:@"Terminating" withBlock:v16];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);

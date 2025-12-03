@@ -1,21 +1,21 @@
 @interface SIRINLUEXTERNALUserWantedToPause
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUserWantedToPause
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   taskId = self->_taskId;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (taskId)
   {
     if (!v6)
@@ -36,10 +36,10 @@
     [(SIRINLUEXTERNALUserWantedToPause *)self setTaskId:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   reference = self->_reference;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (reference)
   {
     if (v8)
@@ -56,13 +56,13 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((taskId = self->_taskId, !(taskId | v4[2])) || -[SIRINLUEXTERNALUUID isEqual:](taskId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((taskId = self->_taskId, !(taskId | equalCopy[2])) || -[SIRINLUEXTERNALUUID isEqual:](taskId, "isEqual:")))
   {
     reference = self->_reference;
-    if (reference | v4[1])
+    if (reference | equalCopy[1])
     {
       v7 = [(SIRINLUEXTERNALUsoGraph *)reference isEqual:?];
     }
@@ -81,72 +81,72 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_taskId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_taskId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(SIRINLUEXTERNALUsoGraph *)self->_reference copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALUsoGraph *)self->_reference copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskId)
   {
-    [v4 setTaskId:?];
-    v4 = v5;
+    [toCopy setTaskId:?];
+    toCopy = v5;
   }
 
   if (self->_reference)
   {
     [v5 setReference:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_reference)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   taskId = self->_taskId;
   if (taskId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)taskId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)taskId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"task_id"];
   }
 
   reference = self->_reference;
   if (reference)
   {
-    v7 = [(SIRINLUEXTERNALUsoGraph *)reference dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"reference"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALUsoGraph *)reference dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"reference"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -155,8 +155,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUserWantedToPause;
   v4 = [(SIRINLUEXTERNALUserWantedToPause *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUserWantedToPause *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUserWantedToPause *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

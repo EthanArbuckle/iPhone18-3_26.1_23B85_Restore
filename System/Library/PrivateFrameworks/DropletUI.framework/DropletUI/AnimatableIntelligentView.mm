@@ -1,13 +1,13 @@
 @interface AnimatableIntelligentView
-- (_TtC9DropletUI25AnimatableIntelligentView)initWithCoder:(id)a3;
-- (_TtC9DropletUI25AnimatableIntelligentView)initWithFrame:(CGRect)a3;
+- (_TtC9DropletUI25AnimatableIntelligentView)initWithCoder:(id)coder;
+- (_TtC9DropletUI25AnimatableIntelligentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation AnimatableIntelligentView
 
-- (_TtC9DropletUI25AnimatableIntelligentView)initWithCoder:(id)a3
+- (_TtC9DropletUI25AnimatableIntelligentView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DropletUI25AnimatableIntelligentView____lazy_storage___lightView) = 0;
   result = sub_249ED6E50();
@@ -26,9 +26,9 @@
   [v3 setFrame_];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = sub_249ED6C70();
     v8 = v7;
@@ -40,12 +40,12 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_249ED3258(a3, v6, v8);
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_249ED3258(settings, v6, v8);
 }
 
-- (_TtC9DropletUI25AnimatableIntelligentView)initWithFrame:(CGRect)a3
+- (_TtC9DropletUI25AnimatableIntelligentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

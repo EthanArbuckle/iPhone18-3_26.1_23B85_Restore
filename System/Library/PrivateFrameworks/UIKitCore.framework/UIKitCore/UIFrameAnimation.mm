@@ -1,16 +1,16 @@
 @interface UIFrameAnimation
 - (CGRect)endFrame;
-- (UIFrameAnimation)initWithTarget:(id)a3;
-- (void)setProgress:(float)a3;
+- (UIFrameAnimation)initWithTarget:(id)target;
+- (void)setProgress:(float)progress;
 @end
 
 @implementation UIFrameAnimation
 
-- (UIFrameAnimation)initWithTarget:(id)a3
+- (UIFrameAnimation)initWithTarget:(id)target
 {
   v4.receiver = self;
   v4.super_class = UIFrameAnimation;
-  result = [(UIAnimation *)&v4 initWithTarget:a3];
+  result = [(UIAnimation *)&v4 initWithTarget:target];
   if (result)
   {
     result->_fieldsToChange = 255;
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
   [self->super._target frame];
   x = v32.origin.x;
@@ -55,7 +55,7 @@
 LABEL_12:
     v19 = self->_startFrame.origin.y;
     v20 = self->_endFrame.origin.y - v19;
-    v21 = v19 + (v20 * a3);
+    v21 = v19 + (v20 * progress);
     if (v20 >= 0.0)
     {
       y = ceil(v21);
@@ -85,7 +85,7 @@ LABEL_4:
 
   v16 = self->_startFrame.origin.x;
   v17 = self->_endFrame.origin.x - v16;
-  v18 = v16 + (v17 * a3);
+  v18 = v16 + (v17 * progress);
   if (v17 >= 0.0)
   {
     x = ceil(v18);
@@ -113,7 +113,7 @@ LABEL_3:
 LABEL_16:
   v22 = self->_startFrame.size.width;
   v23 = self->_endFrame.size.width - v22;
-  v24 = v22 + (v23 * a3);
+  v24 = v22 + (v23 * progress);
   if (v23 >= 0.0)
   {
     width = ceil(v24);
@@ -135,7 +135,7 @@ LABEL_16:
 LABEL_5:
   v13 = self->_startFrame.size.height;
   v14 = self->_endFrame.size.height - v13;
-  v15 = v13 + (v14 * a3);
+  v15 = v13 + (v14 * progress);
   if (v14 >= 0.0)
   {
     height = ceil(v15);

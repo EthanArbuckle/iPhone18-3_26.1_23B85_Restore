@@ -1,12 +1,12 @@
 @interface CalendarViewLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC8HealthUI28CalendarViewLayoutAttributes)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation CalendarViewLayoutAttributes
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -16,8 +16,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1C3CD5C5C(a3, v8);
+  selfCopy = self;
+  sub_1C3CD5C5C(zone, v8);
 
   __swift_project_boxed_opaque_existential_0(v8, v8[3]);
   v6 = sub_1C3D20A44();
@@ -26,11 +26,11 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C3D20774();
     swift_unknownObjectRelease();
@@ -39,7 +39,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1C3CD5EC8(v8);

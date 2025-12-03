@@ -1,8 +1,8 @@
 @interface CAIOSurfaceCodingProxy
-- (CAIOSurfaceCodingProxy)initWithCoder:(id)a3;
-- (CAIOSurfaceCodingProxy)initWithObject:(id)a3;
+- (CAIOSurfaceCodingProxy)initWithCoder:(id)coder;
+- (CAIOSurfaceCodingProxy)initWithObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAIOSurfaceCodingProxy
@@ -26,7 +26,7 @@
   [(CAIOSurfaceCodingProxy *)&v4 dealloc];
 }
 
-- (CAIOSurfaceCodingProxy)initWithCoder:(id)a3
+- (CAIOSurfaceCodingProxy)initWithCoder:(id)coder
 {
   v76 = *MEMORY[0x1E69E9840];
   v50.receiver = self;
@@ -40,7 +40,7 @@
       dispatch_once(&iosurface_info_classes(void)::once, &__block_literal_global_515);
     }
 
-    v5 = [a3 decodeObjectOfClasses:iosurface_info_classes(void)::classes forKey:@"IOSurfaceInfo"];
+    v5 = [coder decodeObjectOfClasses:iosurface_info_classes(void)::classes forKey:@"IOSurfaceInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
 
       v7 = iosurface_plane_keys_allow_list(void)::keys;
       v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-      v42 = a3;
+      coderCopy = coder;
       v43 = v4;
       v74 = 0u;
       v75 = 0u;
@@ -92,7 +92,7 @@
       }
 
       v41 = *MEMORY[0x1E696D0A8];
-      a3 = v42;
+      coder = coderCopy;
       v4 = v43;
       v14 = [v5 objectForKeyedSubscript:?];
       objc_opt_class();
@@ -201,7 +201,7 @@ LABEL_27:
           }
 
           [v8 setObject:v47 forKeyedSubscript:v41];
-          a3 = v42;
+          coder = coderCopy;
           v4 = v43;
         }
       }
@@ -242,7 +242,7 @@ LABEL_70:
 LABEL_74:
       if (v4->_surface)
       {
-        v29 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"IOSurfaceData"];
+        v29 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"IOSurfaceData"];
         v30 = v29;
         if (v29)
         {
@@ -269,7 +269,7 @@ LABEL_74:
           dispatch_once(&iosurface_property_classes(void)::once, &__block_literal_global_517);
         }
 
-        v35 = [a3 decodeObjectOfClasses:iosurface_property_classes(void)::classes forKey:@"IOSurfaceProperties"];
+        v35 = [coder decodeObjectOfClasses:iosurface_property_classes(void)::classes forKey:@"IOSurfaceProperties"];
         v36 = v35;
         if (v35)
         {
@@ -300,7 +300,7 @@ LABEL_74:
           }
         }
 
-        if ([a3 decodeIntForKey:@"IOSurfaceYCbCrMatrixInt"])
+        if ([coder decodeIntForKey:@"IOSurfaceYCbCrMatrixInt"])
         {
           IOSurfaceSetYCbCrMatrix();
         }
@@ -313,7 +313,7 @@ LABEL_74:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v55 = *MEMORY[0x1E69E9840];
   if (self->_surface)
@@ -342,7 +342,7 @@ LABEL_74:
       v7 = iosurface_keys_allow_list(void)::keys;
       v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(iosurface_keys_allow_list(void)::keys, "count") + 1}];
       v33 = v5;
-      v35 = a3;
+      coderCopy = coder;
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
@@ -430,8 +430,8 @@ LABEL_74:
         [v8 setObject:v37 forKey:*MEMORY[0x1E696D0A8]];
       }
 
-      v23 = v35;
-      [v35 encodeObject:v8 forKey:@"IOSurfaceInfo"];
+      v23 = coderCopy;
+      [coderCopy encodeObject:v8 forKey:@"IOSurfaceInfo"];
       if (iosurface_property_names(void)::once[0] != -1)
       {
         dispatch_once(iosurface_property_names(void)::once, &__block_literal_global_513);
@@ -445,7 +445,7 @@ LABEL_74:
       v25 = [iosurface_property_names(void)::names countByEnumeratingWithState:&v41 objects:v40 count:16];
       if (v25)
       {
-        v26 = 0;
+        dictionary = 0;
         v27 = *v42;
         do
         {
@@ -460,12 +460,12 @@ LABEL_74:
             v30 = IOSurfaceCopyValue(self->_surface, v29);
             if (v30)
             {
-              if (!v26)
+              if (!dictionary)
               {
-                v26 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary = [MEMORY[0x1E695DF90] dictionary];
               }
 
-              [v26 setObject:v30 forKey:v29];
+              [dictionary setObject:v30 forKey:v29];
               CFRelease(v30);
             }
           }
@@ -474,10 +474,10 @@ LABEL_74:
         }
 
         while (v25);
-        v23 = v35;
-        if (v26)
+        v23 = coderCopy;
+        if (dictionary)
         {
-          [v35 encodeObject:v26 forKey:@"IOSurfaceProperties"];
+          [coderCopy encodeObject:dictionary forKey:@"IOSurfaceProperties"];
         }
       }
 
@@ -490,16 +490,16 @@ LABEL_74:
   }
 }
 
-- (CAIOSurfaceCodingProxy)initWithObject:(id)a3
+- (CAIOSurfaceCodingProxy)initWithObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CAIOSurfaceCodingProxy;
   v4 = [(CAIOSurfaceCodingProxy *)&v16 init];
   v5 = v4;
-  if (a3 && v4)
+  if (object && v4)
   {
-    v6 = CFGetTypeID(a3);
+    v6 = CFGetTypeID(object);
     if (CAMachPortGetTypeID::once[0] != -1)
     {
       dispatch_once(CAMachPortGetTypeID::once, &__block_literal_global_6212);
@@ -507,10 +507,10 @@ LABEL_74:
 
     if (v6 != CAMachPortGetTypeID::type)
     {
-      v9 = CFGetTypeID(a3);
+      v9 = CFGetTypeID(object);
       if (v9 == CVPixelBufferGetTypeID())
       {
-        IOSurface = CVPixelBufferGetIOSurface(a3);
+        IOSurface = CVPixelBufferGetIOSurface(object);
         if (!IOSurface)
         {
           return v5;
@@ -519,7 +519,7 @@ LABEL_74:
 
       else
       {
-        v11 = CFGetTypeID(a3);
+        v11 = CFGetTypeID(object);
         if (CAImageQueueGetTypeID::once[0] != -1)
         {
           dispatch_once(CAImageQueueGetTypeID::once, &__block_literal_global_44_15357);
@@ -527,11 +527,11 @@ LABEL_74:
 
         if (v11 == CAImageQueueGetTypeID::type)
         {
-          v8 = CAImageQueueCopyLastIOSurface(a3);
+          v8 = CAImageQueueCopyLastIOSurface(object);
           goto LABEL_22;
         }
 
-        v12 = CFGetTypeID(a3);
+        v12 = CFGetTypeID(object);
         if (CAIOSurfaceGetTypeID::once != -1)
         {
           dispatch_once(&CAIOSurfaceGetTypeID::once, &__block_literal_global_2576);
@@ -539,7 +539,7 @@ LABEL_74:
 
         if (v12 == CAIOSurfaceGetTypeID::type)
         {
-          v13 = *(a3 + 2);
+          v13 = *(object + 2);
           v14 = *(v13 + 128);
           if (v14)
           {
@@ -549,14 +549,14 @@ LABEL_74:
           goto LABEL_23;
         }
 
-        IOSurface = a3;
+        IOSurface = object;
       }
 
       v8 = CFRetain(IOSurface);
       goto LABEL_22;
     }
 
-    v7 = *(a3 + 4);
+    v7 = *(object + 4);
     if (v7)
     {
       v8 = IOSurfaceLookupFromMachPort(v7);

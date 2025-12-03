@@ -3,13 +3,13 @@
 - (STUIStatusBarImageView)chargingView;
 - (STUIStatusBarStaticBatteryView)staticBatteryView;
 - (STUIStatusBarStringView)percentView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_batteryView;
 - (void)_create_chargingView;
 - (void)_create_percentView;
 - (void)_create_staticBatteryView;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation STUIStatusBarBatteryItem
@@ -59,26 +59,26 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v55.receiver = self;
   v55.super_class = STUIStatusBarBatteryItem;
-  v8 = [(STUIStatusBarItem *)&v55 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 mainBatteryEntry];
+  v8 = [(STUIStatusBarItem *)&v55 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  mainBatteryEntry = [data mainBatteryEntry];
 
-  v11 = [v7 identifier];
-  v12 = [objc_opt_class() iconDisplayIdentifier];
-  v13 = v12;
-  if (v11 == v12)
+  identifier = [itemCopy identifier];
+  iconDisplayIdentifier = [objc_opt_class() iconDisplayIdentifier];
+  v13 = iconDisplayIdentifier;
+  if (identifier == iconDisplayIdentifier)
   {
 
 LABEL_12:
-    v24 = [v7 identifier];
-    v25 = [objc_opt_class() iconDisplayIdentifier];
-    if (v24 == v25)
+    identifier2 = [itemCopy identifier];
+    iconDisplayIdentifier2 = [objc_opt_class() iconDisplayIdentifier];
+    if (identifier2 == iconDisplayIdentifier2)
     {
       [(STUIStatusBarBatteryItem *)self batteryView];
     }
@@ -87,69 +87,69 @@ LABEL_12:
     {
       [(STUIStatusBarBatteryItem *)self staticBatteryView];
     }
-    v20 = ;
+    detailString = ;
 
-    v26 = [v6 styleAttributes];
-    if (![v6 dataChanged])
+    styleAttributes = [updateCopy styleAttributes];
+    if (![updateCopy dataChanged])
     {
 LABEL_26:
-      if ([v6 styleAttributesChanged])
+      if ([updateCopy styleAttributesChanged])
       {
-        v31 = [v26 imageTintColor];
-        [v20 setFillColor:v31];
+        imageTintColor = [styleAttributes imageTintColor];
+        [detailString setFillColor:imageTintColor];
 
-        v32 = [v7 identifier];
-        v33 = [objc_opt_class() iconDisplayIdentifier];
+        identifier3 = [itemCopy identifier];
+        iconDisplayIdentifier3 = [objc_opt_class() iconDisplayIdentifier];
 
-        if (v32 == v33)
+        if (identifier3 == iconDisplayIdentifier3)
         {
-          v34 = [v20 layer];
-          [v34 setShouldRasterize:1];
+          layer = [detailString layer];
+          [layer setShouldRasterize:1];
 
-          v35 = [v26 traitCollection];
-          [v35 displayScale];
+          traitCollection = [styleAttributes traitCollection];
+          [traitCollection displayScale];
           v37 = v36;
-          v38 = [v20 layer];
-          [v38 setRasterizationScale:v37];
+          layer2 = [detailString layer];
+          [layer2 setRasterizationScale:v37];
         }
 
-        v39 = [v26 mode];
+        mode = [styleAttributes mode];
         v40 = -0.333333333;
-        if (v39 == 1)
+        if (mode == 1)
         {
           v40 = -1.0;
         }
 
-        [v7 setBaselineOffset:v40];
+        [itemCopy setBaselineOffset:v40];
       }
 
       goto LABEL_32;
     }
 
-    v27 = [v10 capacity];
-    if (v27 / 100.0 <= 0.01)
+    capacity = [mainBatteryEntry capacity];
+    if (capacity / 100.0 <= 0.01)
     {
       v28 = 0.0;
     }
 
     else
     {
-      v28 = v27 / 100.0;
+      v28 = capacity / 100.0;
     }
 
-    v29 = [v10 state];
-    if (v29 <= 3)
+    state = [mainBatteryEntry state];
+    if (state <= 3)
     {
-      [v20 setChargingState:qword_26C581FE0[v29]];
+      [detailString setChargingState:qword_26C581FE0[state]];
     }
 
-    if (-[STUIStatusBarBatteryItem usesCondensedPercentageDisplay](self, "usesCondensedPercentageDisplay") && [v26 mode] != 1)
+    if (-[STUIStatusBarBatteryItem usesCondensedPercentageDisplay](self, "usesCondensedPercentageDisplay") && [styleAttributes mode] != 1)
     {
-      if (![v10 prominentlyShowsDetailString])
+      if (![mainBatteryEntry prominentlyShowsDetailString])
       {
         v47 = +[STUIStatusBarSettingsDomain rootSettings];
-        v48 = [v47 itemSettings];
-        [v20 setShowsPercentage:{objc_msgSend(v48, "batteryCondensedPercentageForceEnabled")}];
+        itemSettings = [v47 itemSettings];
+        [detailString setShowsPercentage:{objc_msgSend(itemSettings, "batteryCondensedPercentageForceEnabled")}];
 
         goto LABEL_25;
       }
@@ -162,29 +162,29 @@ LABEL_26:
       v30 = 0;
     }
 
-    [v20 setShowsPercentage:v30];
+    [detailString setShowsPercentage:v30];
 LABEL_25:
-    [v20 setChargePercent:v28];
-    [v20 setSaverModeActive:{objc_msgSend(v10, "saverModeActive")}];
+    [detailString setChargePercent:v28];
+    [detailString setSaverModeActive:{objc_msgSend(mainBatteryEntry, "saverModeActive")}];
     goto LABEL_26;
   }
 
-  v14 = [v7 identifier];
-  v15 = [objc_opt_class() staticIconDisplayIdentifier];
+  identifier4 = [itemCopy identifier];
+  staticIconDisplayIdentifier = [objc_opt_class() staticIconDisplayIdentifier];
 
-  if (v14 == v15)
+  if (identifier4 == staticIconDisplayIdentifier)
   {
     goto LABEL_12;
   }
 
-  v16 = [v7 identifier];
-  v17 = [objc_opt_class() chargingDisplayIdentifier];
+  identifier5 = [itemCopy identifier];
+  chargingDisplayIdentifier = [objc_opt_class() chargingDisplayIdentifier];
 
-  if (v16 == v17)
+  if (identifier5 == chargingDisplayIdentifier)
   {
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v42 = [v10 state] == 1;
+      v42 = [mainBatteryEntry state] == 1;
     }
 
     else
@@ -192,65 +192,65 @@ LABEL_25:
       v42 = 0;
     }
 
-    [v7 setEnabled:v42];
-    if (![v7 isEnabled])
+    [itemCopy setEnabled:v42];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_34;
     }
 
-    v43 = [(STUIStatusBarBatteryItem *)self chargingView];
-    v44 = [v43 image];
+    chargingView = [(STUIStatusBarBatteryItem *)self chargingView];
+    image = [chargingView image];
 
-    if (v44)
+    if (image)
     {
       goto LABEL_34;
     }
 
-    v20 = +[STUIStatusBarImageProvider sharedProvider];
-    v26 = [v6 styleAttributes];
-    v45 = [v20 imageNamed:@"Large_Bolt" styleAttributes:v26];
-    v46 = [(STUIStatusBarBatteryItem *)self chargingView];
-    [v46 setImage:v45];
+    detailString = +[STUIStatusBarImageProvider sharedProvider];
+    styleAttributes = [updateCopy styleAttributes];
+    v45 = [detailString imageNamed:@"Large_Bolt" styleAttributes:styleAttributes];
+    chargingView2 = [(STUIStatusBarBatteryItem *)self chargingView];
+    [chargingView2 setImage:v45];
 
     goto LABEL_32;
   }
 
-  v18 = [v7 identifier];
-  v19 = [objc_opt_class() percentDisplayIdentifier];
+  identifier6 = [itemCopy identifier];
+  percentDisplayIdentifier = [objc_opt_class() percentDisplayIdentifier];
 
-  if (v18 != v19)
+  if (identifier6 != percentDisplayIdentifier)
   {
     goto LABEL_34;
   }
 
-  v20 = [v10 detailString];
-  v21 = [v6 styleAttributes];
-  if ([v21 mode] == 1)
+  detailString = [mainBatteryEntry detailString];
+  styleAttributes2 = [updateCopy styleAttributes];
+  if ([styleAttributes2 mode] == 1)
   {
     goto LABEL_8;
   }
 
-  v22 = [v10 prominentlyShowsDetailString];
+  prominentlyShowsDetailString = [mainBatteryEntry prominentlyShowsDetailString];
 
-  if ((v22 & 1) == 0)
+  if ((prominentlyShowsDetailString & 1) == 0)
   {
-    v21 = v20;
-    v20 = 0;
+    styleAttributes2 = detailString;
+    detailString = 0;
 LABEL_8:
   }
 
-  if ([v20 length])
+  if ([detailString length])
   {
-    v23 = [(STUIStatusBarBatteryItem *)self percentView];
-    [v23 setText:v20];
+    percentView = [(STUIStatusBarBatteryItem *)self percentView];
+    [percentView setText:detailString];
   }
 
   else
   {
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
   }
 
-  if (![v6 styleAttributesChanged])
+  if (![updateCopy styleAttributesChanged])
   {
     goto LABEL_33;
   }
@@ -259,10 +259,10 @@ LABEL_8:
   v50 = *(MEMORY[0x277D768C8] + 8);
   v51 = *(MEMORY[0x277D768C8] + 16);
   v52 = *(MEMORY[0x277D768C8] + 24);
-  v53 = [v6 styleAttributes];
-  v54 = [v53 effectiveLayoutDirection];
+  styleAttributes3 = [updateCopy styleAttributes];
+  effectiveLayoutDirection = [styleAttributes3 effectiveLayoutDirection];
 
-  if (v54 == 1)
+  if (effectiveLayoutDirection == 1)
   {
     v50 = 2.0;
   }
@@ -272,8 +272,8 @@ LABEL_8:
     v52 = 2.0;
   }
 
-  v26 = [(STUIStatusBarBatteryItem *)self percentView];
-  [v26 setAlignmentRectInsets:{v49, v50, v51, v52}];
+  styleAttributes = [(STUIStatusBarBatteryItem *)self percentView];
+  [styleAttributes setAlignmentRectInsets:{v49, v50, v51, v52}];
 LABEL_32:
 
 LABEL_33:
@@ -282,27 +282,27 @@ LABEL_34:
   return v8;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    v4 = a3;
-    self->_highlighted = a3;
-    v6 = [(STUIStatusBarBatteryItem *)self batteryView];
-    if (v4)
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
+    batteryView = [(STUIStatusBarBatteryItem *)self batteryView];
+    if (highlightedCopy)
     {
-      [v6 setBodyColorAlpha:0.8];
+      [batteryView setBodyColorAlpha:0.8];
       v5 = 0.9;
     }
 
     else
     {
-      [v6 setBodyColorAlpha:*MEMORY[0x277D77378]];
+      [batteryView setBodyColorAlpha:*MEMORY[0x277D77378]];
       v5 = *MEMORY[0x277D77380];
     }
 
-    [v6 setPinColorAlpha:v5];
-    [v6 setShowsInlineChargingIndicator:!v4];
+    [batteryView setPinColorAlpha:v5];
+    [batteryView setShowsInlineChargingIndicator:!highlightedCopy];
   }
 }
 
@@ -354,54 +354,54 @@ LABEL_34:
   [(STUIStatusBarImageView *)self->_chargingView setAccessibilityHUDImage:v6];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() iconDisplayIdentifier];
+  identifierCopy = identifier;
+  iconDisplayIdentifier = [objc_opt_class() iconDisplayIdentifier];
 
-  if (v5 == v4)
+  if (iconDisplayIdentifier == identifierCopy)
   {
-    v9 = [(STUIStatusBarBatteryItem *)self batteryView];
+    batteryView = [(STUIStatusBarBatteryItem *)self batteryView];
   }
 
   else
   {
-    v6 = [objc_opt_class() staticIconDisplayIdentifier];
+    staticIconDisplayIdentifier = [objc_opt_class() staticIconDisplayIdentifier];
 
-    if (v6 == v4)
+    if (staticIconDisplayIdentifier == identifierCopy)
     {
-      v9 = [(STUIStatusBarBatteryItem *)self staticBatteryView];
+      batteryView = [(STUIStatusBarBatteryItem *)self staticBatteryView];
     }
 
     else
     {
-      v7 = [objc_opt_class() chargingDisplayIdentifier];
+      chargingDisplayIdentifier = [objc_opt_class() chargingDisplayIdentifier];
 
-      if (v7 == v4)
+      if (chargingDisplayIdentifier == identifierCopy)
       {
-        v9 = [(STUIStatusBarBatteryItem *)self chargingView];
+        batteryView = [(STUIStatusBarBatteryItem *)self chargingView];
       }
 
       else
       {
-        v8 = [objc_opt_class() percentDisplayIdentifier];
+        percentDisplayIdentifier = [objc_opt_class() percentDisplayIdentifier];
 
-        if (v8 == v4)
+        if (percentDisplayIdentifier == identifierCopy)
         {
-          v9 = [(STUIStatusBarBatteryItem *)self percentView];
+          batteryView = [(STUIStatusBarBatteryItem *)self percentView];
         }
 
         else
         {
           v12.receiver = self;
           v12.super_class = STUIStatusBarBatteryItem;
-          v9 = [(STUIStatusBarItem *)&v12 viewForIdentifier:v4];
+          batteryView = [(STUIStatusBarItem *)&v12 viewForIdentifier:identifierCopy];
         }
       }
     }
   }
 
-  v10 = v9;
+  v10 = batteryView;
 
   return v10;
 }

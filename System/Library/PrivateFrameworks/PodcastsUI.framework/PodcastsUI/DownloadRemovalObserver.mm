@@ -1,15 +1,15 @@
 @interface DownloadRemovalObserver
-- (void)removeDownloadedEpisodeWithUuid:(id)a3 completion:(id)a4;
+- (void)removeDownloadedEpisodeWithUuid:(id)uuid completion:(id)completion;
 @end
 
 @implementation DownloadRemovalObserver
 
-- (void)removeDownloadedEpisodeWithUuid:(id)a3 completion:(id)a4
+- (void)removeDownloadedEpisodeWithUuid:(id)uuid completion:(id)completion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v17 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(completion);
   v10 = sub_21B4C9708();
   v12 = v11;
   if (v9)

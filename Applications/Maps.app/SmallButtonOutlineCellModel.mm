@@ -1,7 +1,7 @@
 @interface SmallButtonOutlineCellModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SmallButtonOutlineCellDelegate)delegate;
-- (SmallButtonOutlineCellModel)initWithStyle:(int64_t)a3 title:(id)a4 image:(id)a5 hoverImage:(id)a6 delegate:(id)a7;
+- (SmallButtonOutlineCellModel)initWithStyle:(int64_t)style title:(id)title image:(id)image hoverImage:(id)hoverImage delegate:(id)delegate;
 @end
 
 @implementation SmallButtonOutlineCellModel
@@ -13,42 +13,42 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if ([(SmallButtonOutlineCellModel *)v6 style]== self->_style)
     {
-      v7 = [(SmallButtonOutlineCellModel *)v6 title];
-      v8 = v7;
-      if (v7 == self->_title || [(NSString *)v7 isEqual:?])
+      title = [(SmallButtonOutlineCellModel *)v6 title];
+      v8 = title;
+      if (title == self->_title || [(NSString *)title isEqual:?])
       {
-        v9 = [(SmallButtonOutlineCellModel *)v6 image];
-        v10 = v9;
-        if (v9 == self->_image || [(UIImage *)v9 isEqual:?])
+        image = [(SmallButtonOutlineCellModel *)v6 image];
+        v10 = image;
+        if (image == self->_image || [(UIImage *)image isEqual:?])
         {
-          v11 = [(SmallButtonOutlineCellModel *)v6 hoverImage];
-          v12 = v11;
-          if (v11 == self->_hoverImage || [(UIImage *)v11 isEqual:?])
+          hoverImage = [(SmallButtonOutlineCellModel *)v6 hoverImage];
+          v12 = hoverImage;
+          if (hoverImage == self->_hoverImage || [(UIImage *)hoverImage isEqual:?])
           {
-            v13 = [(SmallButtonOutlineCellModel *)v6 delegate];
+            delegate = [(SmallButtonOutlineCellModel *)v6 delegate];
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
-            if (v13 == WeakRetained)
+            if (delegate == WeakRetained)
             {
               v15 = 1;
             }
 
             else
             {
-              v15 = [v13 isEqual:WeakRetained];
+              v15 = [delegate isEqual:WeakRetained];
             }
           }
 
@@ -84,26 +84,26 @@
   return v15;
 }
 
-- (SmallButtonOutlineCellModel)initWithStyle:(int64_t)a3 title:(id)a4 image:(id)a5 hoverImage:(id)a6 delegate:(id)a7
+- (SmallButtonOutlineCellModel)initWithStyle:(int64_t)style title:(id)title image:(id)image hoverImage:(id)hoverImage delegate:(id)delegate
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  imageCopy = image;
+  hoverImageCopy = hoverImage;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = SmallButtonOutlineCellModel;
   v16 = [(SmallButtonOutlineCellModel *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    v16->_style = a3;
-    v18 = [v12 copy];
+    v16->_style = style;
+    v18 = [titleCopy copy];
     title = v17->_title;
     v17->_title = v18;
 
-    objc_storeStrong(&v17->_image, a5);
-    objc_storeStrong(&v17->_hoverImage, a6);
-    objc_storeWeak(&v17->_delegate, v15);
+    objc_storeStrong(&v17->_image, image);
+    objc_storeStrong(&v17->_hoverImage, hoverImage);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
   }
 
   return v17;

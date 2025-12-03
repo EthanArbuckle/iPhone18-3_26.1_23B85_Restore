@@ -1,15 +1,15 @@
 @interface TVStackedImageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFrameDelegate;
 @end
 
 @implementation TVStackedImageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVStackedImageView" hasInstanceVariable:@"_impl" withType:"NSObject"];
-  [v3 validateClass:@"_UIStackedImageContainerView" hasInstanceMethod:@"imageStackLayer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVStackedImageView" hasInstanceVariable:@"_impl" withType:"NSObject"];
+  [validationsCopy validateClass:@"_UIStackedImageContainerView" hasInstanceMethod:@"imageStackLayer" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityFrameDelegate

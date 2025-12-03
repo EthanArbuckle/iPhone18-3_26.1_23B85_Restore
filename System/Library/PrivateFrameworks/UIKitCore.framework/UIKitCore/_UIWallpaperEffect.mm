@@ -1,21 +1,21 @@
 @interface _UIWallpaperEffect
-+ (id)wallpaperEffectWithStyle:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithStyle:(int64_t)a3;
++ (id)wallpaperEffectWithStyle:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithStyle:(int64_t)style;
 - (id)description;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation _UIWallpaperEffect
 
-+ (id)wallpaperEffectWithStyle:(int64_t)a3
++ (id)wallpaperEffectWithStyle:(int64_t)style
 {
-  v3 = [[a1 alloc] _initWithStyle:a3];
+  v3 = [[self alloc] _initWithStyle:style];
 
   return v3;
 }
 
-- (id)_initWithStyle:(int64_t)a3
+- (id)_initWithStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = _UIWallpaperEffect;
@@ -23,9 +23,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 > 2)
+    if (style > 2)
     {
-      switch(a3)
+      switch(style)
       {
         case 3:
           v4 = +[UIColor systemGroupedBackgroundColor];
@@ -39,14 +39,14 @@
       }
     }
 
-    else if (a3)
+    else if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
         v4 = +[UIColor secondarySystemBackgroundColor];
       }
 
-      else if (a3 == 2)
+      else if (style == 2)
       {
         v4 = +[UIColor tertiarySystemBackgroundColor];
       }
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
 LABEL_7:
     v7 = 1;
@@ -100,14 +100,14 @@ LABEL_8:
   return v7;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
   if (self->_color)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
     v7 = objc_alloc_init(_UIWallpaperEffectEntry);
     [(_UIWallpaperEffectEntry *)v7 setBackgroundColor:self->_color];
-    [v6 addUnderlay:v7];
+    [descriptorCopy addUnderlay:v7];
   }
 }
 

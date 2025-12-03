@@ -1,7 +1,7 @@
 @interface OADTableStyleCollection
 - (OADTableStyleCollection)init;
-- (id)tableStyleWithId:(id)a3;
-- (void)addTableStyle:(id)a3;
+- (id)tableStyleWithId:(id)id;
+- (void)addTableStyle:(id)style;
 @end
 
 @implementation OADTableStyleCollection
@@ -25,18 +25,18 @@
   return v2;
 }
 
-- (void)addTableStyle:(id)a3
+- (void)addTableStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   [(NSMutableArray *)self->_styles addObject:?];
   styleMap = self->_styleMap;
-  v5 = [v6 id];
-  [(NSMutableDictionary *)styleMap setObject:v6 forKeyedSubscript:v5];
+  v5 = [styleCopy id];
+  [(NSMutableDictionary *)styleMap setObject:styleCopy forKeyedSubscript:v5];
 }
 
-- (id)tableStyleWithId:(id)a3
+- (id)tableStyleWithId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_styleMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_styleMap objectForKeyedSubscript:id];
 
   return v3;
 }

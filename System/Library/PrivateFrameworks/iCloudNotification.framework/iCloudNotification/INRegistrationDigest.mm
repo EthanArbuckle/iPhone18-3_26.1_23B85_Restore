@@ -1,21 +1,21 @@
 @interface INRegistrationDigest
-- (BOOL)isEqual:(id)a3;
-- (INRegistrationDigest)initWithData:(id)a3;
-- (INRegistrationDigest)initWithRegistrationRequest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRegistrationDigest)initWithData:(id)data;
+- (INRegistrationDigest)initWithRegistrationRequest:(id)request;
 @end
 
 @implementation INRegistrationDigest
 
-- (INRegistrationDigest)initWithRegistrationRequest:(id)a3
+- (INRegistrationDigest)initWithRegistrationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = INRegistrationDigest;
   v5 = [(INRegistrationDigest *)&v14 init];
   if (v5)
   {
-    v6 = [v4 parameters];
-    v7 = [v6 mutableCopy];
+    parameters = [requestCopy parameters];
+    v7 = [parameters mutableCopy];
 
     [v7 removeObjectForKey:@"cause"];
     v8 = [NSKeyedArchiver archivedDataWithRootObject:v7];
@@ -41,25 +41,25 @@
   return v5;
 }
 
-- (INRegistrationDigest)initWithData:(id)a3
+- (INRegistrationDigest)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = INRegistrationDigest;
   v6 = [(INRegistrationDigest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hashData, a3);
+    objc_storeStrong(&v6->_hashData, data);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -70,8 +70,8 @@
     if (objc_opt_isKindOfClass())
     {
       hashData = self->_hashData;
-      v6 = [(INRegistrationDigest *)v4 data];
-      v7 = [(NSData *)hashData isEqualToData:v6];
+      data = [(INRegistrationDigest *)equalCopy data];
+      v7 = [(NSData *)hashData isEqualToData:data];
     }
 
     else

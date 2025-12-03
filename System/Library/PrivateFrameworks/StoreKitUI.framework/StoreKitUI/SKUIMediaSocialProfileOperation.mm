@@ -1,11 +1,11 @@
 @interface SKUIMediaSocialProfileOperation
 - (SKUIMediaSocialProfileOperation)init;
-- (SKUIMediaSocialProfileOperation)initWithClientContext:(id)a3;
-- (id)_profileWithResponseDictionary:(id)a3;
+- (SKUIMediaSocialProfileOperation)initWithClientContext:(id)context;
+- (id)_profileWithResponseDictionary:(id)dictionary;
 - (id)outputBlock;
 - (void)init;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SKUIMediaSocialProfileOperation
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (SKUIMediaSocialProfileOperation)initWithClientContext:(id)a3
+- (SKUIMediaSocialProfileOperation)initWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMediaSocialProfileOperation initWithClientContext:];
@@ -43,8 +43,8 @@
   v5 = [(SKUIMediaSocialProfileOperation *)self init];
   if (v5)
   {
-    v6 = [v4 URLBag];
-    [(SSVComplexOperation *)v5 configureWithURLBag:v6];
+    uRLBag = [contextCopy URLBag];
+    [(SSVComplexOperation *)v5 configureWithURLBag:uRLBag];
   }
 
   return v5;
@@ -60,13 +60,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -82,8 +82,8 @@
   v40 = __Block_byref_object_copy__100;
   v41 = __Block_byref_object_dispose__100;
   v42 = 0;
-  v3 = [(SSVComplexOperation *)self URLBagDictionary];
-  v4 = [v3 objectForKey:*MEMORY[0x277D6A670]];
+  uRLBagDictionary = [(SSVComplexOperation *)self URLBagDictionary];
+  v4 = [uRLBagDictionary objectForKey:*MEMORY[0x277D6A670]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -103,14 +103,14 @@
     v7 = [MEMORY[0x277CBEBC0] URLWithString:v5];
     v8 = [v6 initWithURL:v7 resolvingAgainstBaseURL:0];
 
-    v9 = [MEMORY[0x277D69A20] defaultStore];
-    v10 = [v9 activeAccount];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount = [defaultStore activeAccount];
 
     v11 = objc_alloc(MEMORY[0x277CCAD18]);
-    v12 = [v10 uniqueIdentifier];
-    v13 = [v12 stringValue];
-    v14 = [v11 initWithName:@"user" value:v13];
-    v29 = v10;
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
+    stringValue = [uniqueIdentifier stringValue];
+    v14 = [v11 initWithName:@"user" value:stringValue];
+    v29 = activeAccount;
 
     v15 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v14, 0}];
     [v8 setQueryItems:v15];
@@ -120,8 +120,8 @@
 
     SSVAddMediaSocialHeadersToURLRequest();
     v19 = [(SSVComplexOperation *)self newLoadURLOperationWithRequest:v18];
-    v20 = [MEMORY[0x277D69D48] consumer];
-    [v19 setDataConsumer:v20];
+    consumer = [MEMORY[0x277D69D48] consumer];
+    [v19 setDataConsumer:consumer];
 
     v31 = 0;
     v32 = &v31;
@@ -149,8 +149,8 @@
 
     if (!(v38[5] | v21))
     {
-      v23 = [v19 URLResponse];
-      if ([v23 statusCode] == 403)
+      uRLResponse = [v19 URLResponse];
+      if ([uRLResponse statusCode] == 403)
       {
         v24 = 3;
       }
@@ -176,11 +176,11 @@
     v38[5] = v22;
   }
 
-  v27 = [(SKUIMediaSocialProfileOperation *)self outputBlock];
-  v28 = v27;
-  if (v27)
+  outputBlock = [(SKUIMediaSocialProfileOperation *)self outputBlock];
+  v28 = outputBlock;
+  if (outputBlock)
   {
-    (*(v27 + 16))(v27, v21, v38[5]);
+    (*(outputBlock + 16))(outputBlock, v21, v38[5]);
   }
 
   _Block_object_dispose(&v37, 8);
@@ -215,9 +215,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)_profileWithResponseDictionary:(id)a3
+- (id)_profileWithResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"profile"];
+  v3 = [dictionary objectForKey:@"profile"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

@@ -1,11 +1,11 @@
 @interface HMDPrimaryResidentMessageRouter
 + (id)logCategory;
-- (HMDPrimaryResidentMessageRouter)initWithHomeUUID:(id)a3 messageDispatcher:(id)a4 metricsDispatcher:(id)a5;
+- (HMDPrimaryResidentMessageRouter)initWithHomeUUID:(id)d messageDispatcher:(id)dispatcher metricsDispatcher:(id)metricsDispatcher;
 - (HMDPrimaryResidentMessageRouterDataSource)dataSource;
-- (id)dataSourcePrimaryResidentDeviceWithMessage:(id)a3;
+- (id)dataSourcePrimaryResidentDeviceWithMessage:(id)message;
 - (id)logIdentifier;
-- (void)relayMessage:(id)a3 device:(id)a4;
-- (void)routeMessage:(id)a3 allowRemoteRelayFromPrimary:(BOOL)a4 localHandler:(id)a5;
+- (void)relayMessage:(id)message device:(id)device;
+- (void)routeMessage:(id)message allowRemoteRelayFromPrimary:(BOOL)primary localHandler:(id)handler;
 @end
 
 @implementation HMDPrimaryResidentMessageRouter
@@ -19,21 +19,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPrimaryResidentMessageRouter *)self homeUUID];
-  v3 = [v2 UUIDString];
+  homeUUID = [(HMDPrimaryResidentMessageRouter *)self homeUUID];
+  uUIDString = [homeUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)relayMessage:(id)a3 device:(id)a4
+- (void)relayMessage:(id)message device:(id)device
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isRemote])
+  messageCopy = message;
+  deviceCopy = device;
+  if ([messageCopy isRemote])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -41,35 +41,35 @@
       v26 = 138543618;
       v27 = v11;
       v28 = 2112;
-      v29 = v6;
+      v29 = messageCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Cannot relay message that is already remote: %@", &v26, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
     v12 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
-    [v6 respondWithError:v12];
+    [messageCopy respondWithError:v12];
 
-    v13 = [(HMDPrimaryResidentMessageRouter *)v9 metricsDispatcher];
-    v14 = [v6 name];
-    [v13 submitFailureEventWithMessageName:v14 failureType:1];
+    metricsDispatcher = [(HMDPrimaryResidentMessageRouter *)selfCopy metricsDispatcher];
+    name = [messageCopy name];
+    [metricsDispatcher submitFailureEventWithMessageName:name failureType:1];
   }
 
   else
   {
-    v15 = [v6 copy];
-    v13 = [v15 mutableCopy];
+    v15 = [messageCopy copy];
+    metricsDispatcher = [v15 mutableCopy];
 
-    [v13 setRemote:1];
-    [v13 setSecureRemote:1];
+    [metricsDispatcher setRemote:1];
+    [metricsDispatcher setSecureRemote:1];
     v16 = [HMDRemoteHomeMessageDestination alloc];
-    v17 = [v6 destination];
-    v18 = [v17 target];
-    v19 = [(HMDPrimaryResidentMessageRouter *)self homeUUID];
-    v20 = [(HMDRemoteHomeMessageDestination *)v16 initWithTarget:v18 homeUUID:v19];
-    [v13 setDestination:v20];
+    destination = [messageCopy destination];
+    target = [destination target];
+    homeUUID = [(HMDPrimaryResidentMessageRouter *)self homeUUID];
+    v20 = [(HMDRemoteHomeMessageDestination *)v16 initWithTarget:target homeUUID:homeUUID];
+    [metricsDispatcher setDestination:v20];
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -77,45 +77,45 @@
       v26 = 138543618;
       v27 = v24;
       v28 = 2112;
-      v29 = v13;
+      v29 = metricsDispatcher;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Relaying remote message: %@", &v26, 0x16u);
     }
 
     objc_autoreleasePoolPop(v21);
-    v14 = [(HMDPrimaryResidentMessageRouter *)v22 messageDispatcher];
-    [v14 sendMessage:v13];
+    name = [(HMDPrimaryResidentMessageRouter *)selfCopy2 messageDispatcher];
+    [name sendMessage:metricsDispatcher];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)routeMessage:(id)a3 allowRemoteRelayFromPrimary:(BOOL)a4 localHandler:(id)a5
+- (void)routeMessage:(id)message allowRemoteRelayFromPrimary:(BOOL)primary localHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     v39 = 138543618;
     v40 = v12;
     v41 = 2112;
-    v42 = v13;
+    v42 = shortDescription;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Routing message: %@", &v39, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [(HMDPrimaryResidentMessageRouter *)v10 dataSourcePrimaryResidentDeviceWithMessage:v7];
+  v14 = [(HMDPrimaryResidentMessageRouter *)selfCopy dataSourcePrimaryResidentDeviceWithMessage:messageCopy];
   v15 = v14;
   if (!v14)
   {
     v17 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2032];
     v18 = objc_autoreleasePoolPush();
-    v19 = v10;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -128,11 +128,11 @@
     }
 
     objc_autoreleasePoolPop(v18);
-    [v7 respondWithError:v17];
-    v22 = [(HMDPrimaryResidentMessageRouter *)v19 metricsDispatcher];
-    v23 = [v7 name];
-    v24 = v22;
-    v25 = v23;
+    [messageCopy respondWithError:v17];
+    metricsDispatcher = [(HMDPrimaryResidentMessageRouter *)v19 metricsDispatcher];
+    name = [messageCopy name];
+    v24 = metricsDispatcher;
+    v25 = name;
     v26 = 3;
     goto LABEL_14;
   }
@@ -141,7 +141,7 @@
   {
     v17 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2033];
     v27 = objc_autoreleasePoolPush();
-    v28 = v10;
+    v28 = selfCopy;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -154,11 +154,11 @@
     }
 
     objc_autoreleasePoolPop(v27);
-    [v7 respondWithError:v17];
-    v22 = [(HMDPrimaryResidentMessageRouter *)v28 metricsDispatcher];
-    v23 = [v7 name];
-    v24 = v22;
-    v25 = v23;
+    [messageCopy respondWithError:v17];
+    metricsDispatcher = [(HMDPrimaryResidentMessageRouter *)v28 metricsDispatcher];
+    name = [messageCopy name];
+    v24 = metricsDispatcher;
+    v25 = name;
     v26 = 4;
 LABEL_14:
     [v24 submitFailureEventWithMessageName:v25 failureType:v26];
@@ -166,18 +166,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v16 = [v15 device];
-  if (v16)
+  device = [v15 device];
+  if (device)
   {
-    v17 = v16;
-    if ([v16 isCurrentDevice])
+    v17 = device;
+    if ([device isCurrentDevice])
     {
-      v8[2](v8, v7);
+      handlerCopy[2](handlerCopy, messageCopy);
     }
 
     else
     {
-      [(HMDPrimaryResidentMessageRouter *)v10 relayMessage:v7 device:v17];
+      [(HMDPrimaryResidentMessageRouter *)selfCopy relayMessage:messageCopy device:v17];
     }
   }
 
@@ -185,7 +185,7 @@ LABEL_14:
   {
     v32 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2034];
     v33 = objc_autoreleasePoolPush();
-    v34 = v10;
+    v34 = selfCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -198,10 +198,10 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v33);
-    [v7 respondWithError:v32];
-    v37 = [(HMDPrimaryResidentMessageRouter *)v34 metricsDispatcher];
-    v38 = [v7 name];
-    [v37 submitFailureEventWithMessageName:v38 failureType:5];
+    [messageCopy respondWithError:v32];
+    metricsDispatcher2 = [(HMDPrimaryResidentMessageRouter *)v34 metricsDispatcher];
+    name2 = [messageCopy name];
+    [metricsDispatcher2 submitFailureEventWithMessageName:name2 failureType:5];
 
     v17 = 0;
   }
@@ -211,21 +211,21 @@ LABEL_15:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataSourcePrimaryResidentDeviceWithMessage:(id)a3
+- (id)dataSourcePrimaryResidentDeviceWithMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPrimaryResidentMessageRouter *)self dataSource];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  dataSource = [(HMDPrimaryResidentMessageRouter *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 primaryResidentDeviceForPrimaryResidentMessageRouter:self];
+    v7 = [dataSource primaryResidentDeviceForPrimaryResidentMessageRouter:self];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -236,9 +236,9 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMDPrimaryResidentMessageRouter *)v9 metricsDispatcher];
-    v13 = [v4 name];
-    [v12 submitFailureEventWithMessageName:v13 failureType:2];
+    metricsDispatcher = [(HMDPrimaryResidentMessageRouter *)selfCopy metricsDispatcher];
+    name = [messageCopy name];
+    [metricsDispatcher submitFailureEventWithMessageName:name failureType:2];
 
     v7 = 0;
   }
@@ -248,34 +248,34 @@ LABEL_15:
   return v7;
 }
 
-- (HMDPrimaryResidentMessageRouter)initWithHomeUUID:(id)a3 messageDispatcher:(id)a4 metricsDispatcher:(id)a5
+- (HMDPrimaryResidentMessageRouter)initWithHomeUUID:(id)d messageDispatcher:(id)dispatcher metricsDispatcher:(id)metricsDispatcher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  dispatcherCopy = dispatcher;
+  metricsDispatcherCopy = metricsDispatcher;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!dispatcherCopy)
   {
 LABEL_7:
     v16 = _HMFPreconditionFailure();
     return +[(HMDPrimaryResidentMessageRouter *)v16];
   }
 
-  v12 = v11;
+  v12 = metricsDispatcherCopy;
   v18.receiver = self;
   v18.super_class = HMDPrimaryResidentMessageRouter;
   v13 = [(HMDPrimaryResidentMessageRouter *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_homeUUID, a3);
-    objc_storeStrong(&v14->_messageDispatcher, a4);
-    objc_storeStrong(&v14->_metricsDispatcher, a5);
+    objc_storeStrong(&v13->_homeUUID, d);
+    objc_storeStrong(&v14->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v14->_metricsDispatcher, metricsDispatcher);
   }
 
   return v14;

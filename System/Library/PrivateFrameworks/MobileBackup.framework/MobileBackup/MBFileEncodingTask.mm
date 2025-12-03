@@ -1,12 +1,12 @@
 @interface MBFileEncodingTask
-- (BOOL)_handleCompressionOperation:(int)a3 algorithm:(int)a4 destinationSize:(unint64_t *)a5 error:(id *)a6;
-- (MBFileEncodingTask)initWithCoder:(id)a3;
+- (BOOL)_handleCompressionOperation:(int)operation algorithm:(int)algorithm destinationSize:(unint64_t *)size error:(id *)error;
+- (MBFileEncodingTask)initWithCoder:(id)coder;
 - (id)_archive;
 - (id)_compress;
 - (id)_decompress;
 - (id)_unarchive;
-- (void)_finishWithError:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_finishWithError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)start;
 @end
 
@@ -14,15 +14,15 @@
 
 - (void)start
 {
-  v3 = [(MBFileEncodingTask *)self type];
-  if ((v3 - 3) <= 0xFDu)
+  type = [(MBFileEncodingTask *)self type];
+  if ((type - 3) <= 0xFDu)
   {
     __assert_rtn("[MBFileEncodingTask start]", "MBFileEncodingTask.m", 94, "type == MBFileEncodingTypeEncode || type == MBFileEncodingTypeDecode");
   }
 
-  v4 = v3;
-  v5 = [(MBFileEncodingTask *)self group];
-  if (!v5)
+  v4 = type;
+  group = [(MBFileEncodingTask *)self group];
+  if (!group)
   {
     __assert_rtn("[MBFileEncodingTask start]", "MBFileEncodingTask.m", 95, "self.group");
   }
@@ -32,15 +32,15 @@
     __assert_rtn("[MBFileEncodingTask start]", "MBFileEncodingTask.m", 96, "!self.validate || MBIsInternalInstall()");
   }
 
-  v6 = [(MBFileEncodingTask *)self group];
-  dispatch_group_enter(v6);
+  group2 = [(MBFileEncodingTask *)self group];
+  dispatch_group_enter(group2);
 
-  v7 = [(MBFileEncodingTask *)self sourcePath];
-  if (v7 && [(MBFileEncodingTask *)self compressionMethod])
+  sourcePath = [(MBFileEncodingTask *)self sourcePath];
+  if (sourcePath && [(MBFileEncodingTask *)self compressionMethod])
   {
-    v8 = [(MBFileEncodingTask *)self protectionClass];
+    protectionClass = [(MBFileEncodingTask *)self protectionClass];
 
-    if (v8 != 255)
+    if (protectionClass != 255)
     {
       if (v4 == 1)
       {
@@ -105,17 +105,17 @@ LABEL_21:
   [(MBFileEncodingTask *)self _finishWithError:v15];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     [(MBFileEncodingTask *)self setError:?];
     [(MBFileEncodingTask *)self setDestinationSize:0];
     [(MBFileEncodingTask *)self setCompressionMethod:0];
   }
 
-  v4 = [(MBFileEncodingTask *)self group];
-  dispatch_group_leave(v4);
+  group = [(MBFileEncodingTask *)self group];
+  dispatch_group_leave(group);
 
   [(MBFileEncodingTask *)self setGroup:0];
 }
@@ -181,9 +181,9 @@ LABEL_21:
   {
     if (![(MBFileEncodingTask *)self sourceIsLive])
     {
-      v9 = [(MBFileEncodingTask *)self sourceDigest];
+      sourceDigest = [(MBFileEncodingTask *)self sourceDigest];
 
-      if (v9)
+      if (sourceDigest)
       {
         v34 = 0;
         if ((sub_10025E33C(v40, &v34, 0) & 1) == 0)
@@ -191,13 +191,13 @@ LABEL_21:
           __assert_rtn("[MBFileEncodingTask _compress]", "MBFileEncodingTask.m", 246, "result");
         }
 
-        v10 = [(MBFileEncodingTask *)self destinationPath];
-        if (!v10)
+        destinationPath = [(MBFileEncodingTask *)self destinationPath];
+        if (!destinationPath)
         {
           __assert_rtn("[MBFileEncodingTask _compress]", "MBFileEncodingTask.m", 248, "destinationPath");
         }
 
-        v11 = v10;
+        v11 = destinationPath;
         v12 = dispatch_group_create();
         v13 = [MBFileEncodingTask decodingTaskWithEncodingMethod:[(MBFileEncodingTask *)self encodingMethod]];
         [v13 setSourcePath:v11];
@@ -208,32 +208,32 @@ LABEL_21:
         [v13 setGroup:v12];
         [v13 start];
         dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-        v14 = [v13 error];
+        error = [v13 error];
 
-        if (v14)
+        if (error)
         {
           v15 = MBGetDefaultLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
           {
-            v16 = [(MBFileEncodingTask *)self sourcePath];
-            v17 = [(MBFileEncodingTask *)self encodingMethod];
+            sourcePath = [(MBFileEncodingTask *)self sourcePath];
+            encodingMethod = [(MBFileEncodingTask *)self encodingMethod];
             v18 = v34;
-            v19 = [v13 error];
+            error2 = [v13 error];
             *buf = 138413314;
             v42 = v11;
             v43 = 2112;
-            v44 = v16;
+            v44 = sourcePath;
             v45 = 2048;
-            v46 = v17;
+            v46 = encodingMethod;
             v47 = 2048;
             v48 = v18;
             v49 = 2112;
-            v50 = v19;
+            v50 = error2;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_FAULT, "Failed to validate the compressed file at %@(%@), e:%ld/0x%lx, error:%@", buf, 0x34u);
 
-            v20 = [(MBFileEncodingTask *)self sourcePath];
+            sourcePath2 = [(MBFileEncodingTask *)self sourcePath];
             [(MBFileEncodingTask *)self encodingMethod];
-            v33 = [v13 error];
+            error3 = [v13 error];
             _MBLog();
           }
 
@@ -244,36 +244,36 @@ LABEL_21:
 
         else
         {
-          v26 = [v13 destinationDigest];
-          if (!v26)
+          destinationDigest = [v13 destinationDigest];
+          if (!destinationDigest)
           {
             __assert_rtn("[MBFileEncodingTask _compress]", "MBFileEncodingTask.m", 266, "destinationDigest");
           }
 
-          v22 = v26;
-          v27 = [(MBFileEncodingTask *)self sourceDigest];
-          v21 = [v27 isEqualToData:v22];
+          v22 = destinationDigest;
+          sourceDigest2 = [(MBFileEncodingTask *)self sourceDigest];
+          v21 = [sourceDigest2 isEqualToData:v22];
 
           if ((v21 & 1) == 0)
           {
             v28 = MBGetDefaultLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
             {
-              v29 = [(MBFileEncodingTask *)self sourceDigest];
+              sourceDigest3 = [(MBFileEncodingTask *)self sourceDigest];
               *buf = 138412802;
               v42 = v11;
               v43 = 2112;
-              v44 = v29;
+              v44 = sourceDigest3;
               v45 = 2112;
               v46 = v22;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_FAULT, "Mismatched SHA256 for the file at %@, %@ != %@", buf, 0x20u);
 
-              v32 = [(MBFileEncodingTask *)self sourceDigest];
+              sourceDigest4 = [(MBFileEncodingTask *)self sourceDigest];
               _MBLog();
             }
 
-            v30 = [(MBFileEncodingTask *)self sourceDigest];
-            v31 = [MBError errorWithCode:1 path:v11 format:@"Mismatched digests, %@ != %@", v30, v22];
+            sourceDigest5 = [(MBFileEncodingTask *)self sourceDigest];
+            v31 = [MBError errorWithCode:1 path:v11 format:@"Mismatched digests, %@ != %@", sourceDigest5, v22];
 
             v5 = v31;
           }
@@ -357,46 +357,46 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)_handleCompressionOperation:(int)a3 algorithm:(int)a4 destinationSize:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_handleCompressionOperation:(int)operation algorithm:(int)algorithm destinationSize:(unint64_t *)size error:(id *)error
 {
-  if (a3 >= 2)
+  if (operation >= 2)
   {
     __assert_rtn("[MBFileEncodingTask _handleCompressionOperation:algorithm:destinationSize:error:]", "MBFileEncodingTask.m", 304, "operation == COMPRESSION_STREAM_ENCODE || operation == COMPRESSION_STREAM_DECODE");
   }
 
-  if (!a5)
+  if (!size)
   {
     __assert_rtn("[MBFileEncodingTask _handleCompressionOperation:algorithm:destinationSize:error:]", "MBFileEncodingTask.m", 305, "destinationSize");
   }
 
-  if (!a6)
+  if (!error)
   {
     __assert_rtn("[MBFileEncodingTask _handleCompressionOperation:algorithm:destinationSize:error:]", "MBFileEncodingTask.m", 306, "error");
   }
 
-  v11 = [(MBFileEncodingTask *)self sourcePath];
-  if (!v11)
+  sourcePath = [(MBFileEncodingTask *)self sourcePath];
+  if (!sourcePath)
   {
     __assert_rtn("[MBFileEncodingTask _handleCompressionOperation:algorithm:destinationSize:error:]", "MBFileEncodingTask.m", 308, "srcPath");
   }
 
-  v12 = v11;
-  v13 = [(MBFileEncodingTask *)self destinationPath];
-  v14 = [(MBFileEncodingTask *)self protectionClass];
-  if (v14 == 255)
+  v12 = sourcePath;
+  destinationPath = [(MBFileEncodingTask *)self destinationPath];
+  protectionClass = [(MBFileEncodingTask *)self protectionClass];
+  if (protectionClass == 255)
   {
     __assert_rtn("[MBFileEncodingTask _handleCompressionOperation:algorithm:destinationSize:error:]", "MBFileEncodingTask.m", 311, "pc != MBProtectionClassUnspecified");
   }
 
-  v15 = v14;
-  if (v14 == 7)
+  v15 = protectionClass;
+  if (protectionClass == 7)
   {
     v16 = 3;
   }
 
   else
   {
-    v16 = v14;
+    v16 = protectionClass;
   }
 
   v125 = 0.0;
@@ -418,22 +418,22 @@ LABEL_13:
 LABEL_14:
     v21 = [MBError posixErrorWithPath:v20 format:v19];
     v22 = 0;
-    *a6 = v21;
+    *error = v21;
     goto LABEL_15;
   }
 
-  algorithm = a4;
+  algorithm = algorithm;
   v118 = v16;
-  v114 = a5;
+  sizeCopy = size;
   st_size = v124.st_size;
   tv_sec = v124.st_mtimespec.tv_sec;
-  if (v13)
+  if (destinationPath)
   {
-    v24 = open([v13 fileSystemRepresentation], 1794, 384);
+    v24 = open([destinationPath fileSystemRepresentation], 1794, 384);
     if (v24 == -1)
     {
       v19 = @"Failed to create dst file";
-      v20 = v13;
+      v20 = destinationPath;
       goto LABEL_14;
     }
 
@@ -447,7 +447,7 @@ LABEL_14:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *&buf[4] = v13;
+        *&buf[4] = destinationPath;
         *&buf[12] = 2112;
         *&buf[14] = v21;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Failed to set protection class on the file at %@, error:%@", buf, 0x16u);
@@ -455,7 +455,7 @@ LABEL_14:
       }
 
       v33 = v21;
-      *a6 = v21;
+      *error = v21;
       goto LABEL_134;
     }
   }
@@ -472,7 +472,7 @@ LABEL_14:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v13;
+      *&buf[4] = destinationPath;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Source file is 0 bytes, returning empty 0 byte file at %@", buf, 0xCu);
       _MBLog();
     }
@@ -482,27 +482,27 @@ LABEL_14:
 
   __fd = v25;
   Current = CFAbsoluteTimeGetCurrent();
-  v28 = [(MBFileEncodingTask *)self validate];
-  v29 = v28 ^ 1;
+  validate = [(MBFileEncodingTask *)self validate];
+  v29 = validate ^ 1;
   v107 = v21;
-  if (a3)
+  if (operation)
   {
     v30 = &v125;
-    if (!v28)
+    if (!validate)
     {
       v30 = 0;
     }
 
     location = 0;
     v104 = v30;
-    v112 = v28 ^ 1;
+    v112 = validate ^ 1;
     v29 = 1;
   }
 
   else
   {
     v34 = &v126;
-    if (!v28)
+    if (!validate)
     {
       v34 = 0;
     }
@@ -513,7 +513,7 @@ LABEL_14:
   }
 
   cancellationHandler = self->_cancellationHandler;
-  v109 = v13;
+  v109 = destinationPath;
   v110 = cancellationHandler;
   v36 = malloc_type_malloc(0x10000uLL, 0xA9F6ACCAuLL);
   v105 = v29;
@@ -544,8 +544,8 @@ LABEL_14:
 
   *v128 = 0;
   memset(buf, 0, sizeof(buf));
-  v106 = a6;
-  if (compression_stream_init(buf, a3, algorithm))
+  errorCopy = error;
+  if (compression_stream_init(buf, operation, algorithm))
   {
     v37 = [MBError errorWithCode:1 format:@"compression_stream_init failed"];
 LABEL_49:
@@ -564,7 +564,7 @@ LABEL_49:
     *&buf[8] = 0x10000;
     v40 = v110;
     obja = 1;
-    for (i = v13; ; v13 = i)
+    for (i = destinationPath; ; destinationPath = i)
     {
       v41 = -1;
 LABEL_52:
@@ -572,7 +572,7 @@ LABEL_52:
       {
         v37 = [MBError errorWithCode:202 format:@"File encoding cancelled"];
         *&v121 = 0.0;
-        v99 = 0;
+        final = 0;
         obj = 0;
         v54 = 0;
         goto LABEL_92;
@@ -620,7 +620,7 @@ LABEL_52:
 
         v37 = [MBError posixErrorWithFormat:@"Failed to mmap the src file"];
         compression_stream_destroy(buf);
-        v13 = i;
+        destinationPath = i;
         goto LABEL_49;
       }
 
@@ -644,16 +644,16 @@ LABEL_66:
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
           {
             *v145 = 134218240;
-            v146 = a3;
+            operationCopy = operation;
             v147 = 2048;
             v148 = v47;
             _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "compression_stream_process(%ld) failed with status:%ld", v145, 0x16u);
-            v84 = a3;
+            operationCopy2 = operation;
             v86 = v47;
             _MBLog();
           }
 
-          if (a3)
+          if (operation)
           {
             v53 = 11;
           }
@@ -663,12 +663,12 @@ LABEL_66:
             v53 = 10;
           }
 
-          v37 = [MBError errorWithCode:v53 format:@"compression_stream_process failed", v84, v86];
+          v37 = [MBError errorWithCode:v53 format:@"compression_stream_process failed", operationCopy2, v86];
           *&v121 = 0.0;
-          v99 = 0;
+          final = 0;
           obj = 0;
           v54 = 0;
-          v13 = i;
+          destinationPath = i;
           v41 = v100;
           goto LABEL_92;
         }
@@ -715,7 +715,7 @@ LABEL_66:
 
             v41 = v100;
             v81 = "decompressed";
-            if (!a3)
+            if (!operation)
             {
               v81 = "compressed";
             }
@@ -723,10 +723,10 @@ LABEL_66:
             v37 = [MBError errorWithErrno:v77 format:@"Failed to write to the %s file", v81];
             MBDiagnoseFile(v109, v77, "write");
             *&v121 = 0.0;
-            v99 = 0;
+            final = 0;
             obj = 0;
             v54 = 0;
-            v13 = i;
+            destinationPath = i;
             goto LABEL_92;
           }
         }
@@ -742,7 +742,7 @@ LABEL_66:
     while (v48);
 LABEL_82:
     v51 = v47 == COMPRESSION_STATUS_END;
-    v13 = i;
+    destinationPath = i;
     v40 = v110;
     v39 = v98;
     v41 = v100;
@@ -753,13 +753,13 @@ LABEL_82:
 
     if (v105)
     {
-      v99 = 0;
+      final = 0;
     }
 
     else
     {
-      v99 = [v108 final];
-      v82 = v99;
+      final = [v108 final];
+      v82 = final;
     }
 
     if (v112)
@@ -787,11 +787,11 @@ LABEL_92:
     {
       v55 = 1;
       v56 = v107;
-      v38 = v99;
+      v38 = final;
       goto LABEL_98;
     }
 
-    v38 = v99;
+    v38 = final;
   }
 
   v57 = v37;
@@ -815,8 +815,8 @@ LABEL_98:
   if (v55)
   {
     v58 = CFAbsoluteTimeGetCurrent();
-    v59 = v106;
-    if (!v13)
+    v59 = errorCopy;
+    if (!destinationPath)
     {
       goto LABEL_108;
     }
@@ -833,18 +833,18 @@ LABEL_132:
 
     if (v124.st_size != v121)
     {
-      [MBError errorWithCode:1 path:v109 format:@"Mismatched size (%llu != %llu)", v124.st_size, v121, v88, v89, v90, v91, v92, *&v93, *&v94, *&v95, *&v96, *&v97];
+      [MBError errorWithCode:1 path:v109 format:@"Mismatched size (%llu != %llu)", v124.st_size, v121, encodingMethod2, algorithmCopy2, v90, v91, v92, *&v93, *&v94, *&v95, *&v96, *&v97];
     }
 
     else
     {
 LABEL_108:
-      if (a3)
+      if (operation)
       {
         v61 = MBGetDefaultLog();
         if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
         {
-          v62 = [(MBFileEncodingTask *)self encodingMethod];
+          encodingMethod = [(MBFileEncodingTask *)self encodingMethod];
           v63 = v125;
           v113 = v126;
           v64 = v58 - Current;
@@ -853,7 +853,7 @@ LABEL_108:
           *&buf[12] = 2112;
           *&buf[14] = v109;
           *&buf[22] = 2048;
-          *&buf[24] = v62;
+          *&buf[24] = encodingMethod;
           *v128 = 2048;
           *&v128[2] = algorithm;
           v129 = 1024;
@@ -874,12 +874,12 @@ LABEL_108:
           v93 = v64;
           v91 = st_size;
           v92 = v121;
-          v89 = algorithm;
+          algorithmCopy2 = algorithm;
           v90 = v118;
           v25 = __fd;
           v86 = v109;
-          v88 = [(MBFileEncodingTask *)self encodingMethod];
-          v84 = v12;
+          encodingMethod2 = [(MBFileEncodingTask *)self encodingMethod];
+          operationCopy2 = v12;
           _MBLog();
         }
 
@@ -895,9 +895,9 @@ LABEL_108:
       v66 = MBGetDefaultLog();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
       {
-        v67 = [(MBFileEncodingTask *)self encodingMethod];
+        encodingMethod3 = [(MBFileEncodingTask *)self encodingMethod];
         v68 = v58 - Current;
-        v69 = v13;
+        v69 = destinationPath;
         v71 = v125;
         v70 = v126;
         *buf = 138415106;
@@ -905,7 +905,7 @@ LABEL_108:
         *&buf[12] = 2112;
         *&buf[14] = v109;
         *&buf[22] = 2048;
-        *&buf[24] = v67;
+        *&buf[24] = encodingMethod3;
         *v128 = 2048;
         *&v128[2] = algorithm;
         v129 = 1024;
@@ -927,24 +927,24 @@ LABEL_108:
         _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_INFO, "Finished compressing, srcPath:%@, dstPath:%@, e:%ld/0x%lx, pc:%d, srcMTime:%ld, srcSize:%llu, dstSize:%llu, savings:%.3f, time:%.3fs, srcDigest:%@, dstDigest:%@", buf, 0x76u);
         v96 = v70;
         v97 = v71;
-        v13 = v69;
+        destinationPath = v69;
         v25 = __fd;
-        v59 = v106;
+        v59 = errorCopy;
         v94 = v65;
         v95 = v68;
         v92 = st_size;
         v93 = *&v121;
         v90 = v118;
         v91 = tv_sec;
-        v88 = [(MBFileEncodingTask *)self encodingMethod];
-        v89 = algorithm;
-        v84 = v12;
+        encodingMethod2 = [(MBFileEncodingTask *)self encodingMethod];
+        algorithmCopy2 = algorithm;
+        operationCopy2 = v12;
         v86 = v109;
         _MBLog();
       }
 
-      v72 = [(MBFileEncodingTask *)self spaceSavingsThreshold];
-      [v72 doubleValue];
+      spaceSavingsThreshold = [(MBFileEncodingTask *)self spaceSavingsThreshold];
+      [spaceSavingsThreshold doubleValue];
       v74 = v73;
 
       if (v74 == 0.0)
@@ -964,9 +964,9 @@ LABEL_108:
         if (v74 <= 0.0 || v65 >= v74)
         {
 LABEL_117:
-          [(MBFileEncodingTask *)self setSourceDigest:*&v126, v84, v86, v88, v89, v90, v91, v92, *&v93, *&v94, *&v95, *&v96, *&v97];
+          [(MBFileEncodingTask *)self setSourceDigest:*&v126, operationCopy2, v86, encodingMethod2, algorithmCopy2, v90, v91, v92, *&v93, *&v94, *&v95, *&v96, *&v97];
           [(MBFileEncodingTask *)self setDestinationDigest:*&v125];
-          *v114 = v121;
+          *sizeCopy = v121;
           if (v15 != 7)
           {
 LABEL_32:
@@ -1008,13 +1008,13 @@ LABEL_31:
         v78 = @"Insufficient space savings: %.3f < %.3f";
       }
 
-      [MBError errorWithCode:1 path:v12 format:v78, *&v85, *&v87, v88, v89, v90, v91, v92, *&v93, *&v94, *&v95, *&v96, *&v97];
+      [MBError errorWithCode:1 path:v12 format:v78, *&v85, *&v87, encodingMethod2, algorithmCopy2, v90, v91, v92, *&v93, *&v94, *&v95, *&v96, *&v97];
     }
     v60 = ;
     goto LABEL_132;
   }
 
-  v59 = v106;
+  v59 = errorCopy;
 LABEL_133:
   v80 = v21;
   *v59 = v21;
@@ -1039,9 +1039,9 @@ LABEL_15:
 - (id)_archive
 {
   v105 = 0;
-  v3 = [(MBFileEncodingTask *)self destinationPath];
+  destinationPath = [(MBFileEncodingTask *)self destinationPath];
 
-  if (!v3)
+  if (!destinationPath)
   {
     v5 = [MBError errorWithCode:1 format:@"Invalid argument: no destination path"];
     goto LABEL_7;
@@ -1057,16 +1057,16 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v6 = [(MBFileEncodingTask *)self sourcePath];
-  v7 = [v6 fileSystemRepresentation];
+  sourcePath = [(MBFileEncodingTask *)self sourcePath];
+  fileSystemRepresentation = [sourcePath fileSystemRepresentation];
 
   memset(&v103, 0, sizeof(v103));
-  if (stat(v7, &v103))
+  if (stat(fileSystemRepresentation, &v103))
   {
-    v8 = [(MBFileEncodingTask *)self sourcePath];
+    sourcePath2 = [(MBFileEncodingTask *)self sourcePath];
     v9 = @"Failed to stat src file";
 LABEL_5:
-    v10 = [MBError posixErrorWithPath:v8 format:v9];
+    v102 = [MBError posixErrorWithPath:sourcePath2 format:v9];
 
     LODWORD(v11) = 0;
     goto LABEL_14;
@@ -1074,12 +1074,12 @@ LABEL_5:
 
   st_size = v103.st_size;
   tv_sec = v103.st_mtimespec.tv_sec;
-  v14 = [(MBFileEncodingTask *)self destinationPath];
-  v15 = [v14 fileSystemRepresentation];
+  destinationPath2 = [(MBFileEncodingTask *)self destinationPath];
+  fileSystemRepresentation2 = [destinationPath2 fileSystemRepresentation];
 
   [MBProtectionClassUtils sqliteOpenFlagForProtectionClass:[(MBFileEncodingTask *)self protectionClass]];
-  v16 = [(MBFileEncodingTask *)self encodingMethod];
-  if (v16 != 3 && v16 != 2)
+  encodingMethod = [(MBFileEncodingTask *)self encodingMethod];
+  if (encodingMethod != 3 && encodingMethod != 2)
   {
     __assert_rtn("[MBFileEncodingTask _archive]", "MBFileEncodingTask.m", 594, "0");
   }
@@ -1095,33 +1095,33 @@ LABEL_5:
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v20 = [(MBFileEncodingTask *)self encodingMethod];
-      v21 = [(MBFileEncodingTask *)self compressionMethod];
-      v22 = [(MBFileEncodingTask *)self sourcePath];
-      v23 = [(MBFileEncodingTask *)self destinationPath];
+      encodingMethod2 = [(MBFileEncodingTask *)self encodingMethod];
+      compressionMethod = [(MBFileEncodingTask *)self compressionMethod];
+      sourcePath3 = [(MBFileEncodingTask *)self sourcePath];
+      destinationPath3 = [(MBFileEncodingTask *)self destinationPath];
       *buf = 67110402;
       *v110 = v18;
       *&v110[4] = 2080;
       *&v110[6] = v102;
       *&v110[14] = 2048;
-      *&v110[16] = v20;
+      *&v110[16] = encodingMethod2;
       *&v110[24] = 2048;
-      *&v110[26] = v21;
+      *&v110[26] = compressionMethod;
       *&v110[34] = 2112;
-      *&v110[36] = v22;
+      *&v110[36] = sourcePath3;
       *&v110[44] = 2112;
-      *&v110[46] = v23;
+      *&v110[46] = destinationPath3;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "_sqlite3_apple_archive failed, rc:%d, msg:%s, e:%ld/%ld, srcPath:%@, dstPath:%@", buf, 0x3Au);
 
       [(MBFileEncodingTask *)self encodingMethod];
       [(MBFileEncodingTask *)self compressionMethod];
-      v24 = [(MBFileEncodingTask *)self sourcePath];
-      v82 = [(MBFileEncodingTask *)self destinationPath];
+      sourcePath4 = [(MBFileEncodingTask *)self sourcePath];
+      destinationPath4 = [(MBFileEncodingTask *)self destinationPath];
       _MBLog();
     }
 
-    v25 = [(MBFileEncodingTask *)self sourcePath];
-    v10 = [MBError errorWithCode:10 path:v25 format:@"_sqlite3_apple_archive failed, rc:%d, %s", v18, v102];
+    sourcePath5 = [(MBFileEncodingTask *)self sourcePath];
+    v102 = [MBError errorWithCode:10 path:sourcePath5 format:@"_sqlite3_apple_archive failed, rc:%d, %s", v18, v102];
 
     sqlite3_free(v102);
     LODWORD(v11) = 0;
@@ -1131,9 +1131,9 @@ LABEL_5:
 
   v29 = v19;
   sqlite3_free(v101);
-  if (stat(v15, &v103))
+  if (stat(fileSystemRepresentation2, &v103))
   {
-    v8 = [(MBFileEncodingTask *)self destinationPath];
+    sourcePath2 = [(MBFileEncodingTask *)self destinationPath];
     v9 = @"Failed to stat dst file";
     goto LABEL_5;
   }
@@ -1163,7 +1163,7 @@ LABEL_16:
   v100 = 0;
   v99 = v5;
   v30 = sub_10025E33C(v105, &v100, &v99);
-  v10 = v99;
+  v102 = v99;
 
   if ((v30 & 1) == 0)
   {
@@ -1188,12 +1188,12 @@ LABEL_16:
   v31 = MBGetDefaultLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v91 = v10;
-    v32 = [(MBFileEncodingTask *)self sourcePath];
-    v33 = [(MBFileEncodingTask *)self destinationPath];
-    v34 = [(MBFileEncodingTask *)self encodingMethod];
+    v91 = v102;
+    sourcePath6 = [(MBFileEncodingTask *)self sourcePath];
+    destinationPath5 = [(MBFileEncodingTask *)self destinationPath];
+    encodingMethod3 = [(MBFileEncodingTask *)self encodingMethod];
     v35 = v105;
-    v36 = [(MBFileEncodingTask *)self protectionClass];
+    protectionClass = [(MBFileEncodingTask *)self protectionClass];
     if (st_size)
     {
       v37 = v11 <= st_size;
@@ -1209,11 +1209,11 @@ LABEL_16:
     v39 = v11 / st_size;
     v40 = 0.0;
     *buf = 138414594;
-    *v110 = v32;
+    *v110 = sourcePath6;
     *&v110[8] = 2112;
-    *&v110[10] = v33;
+    *&v110[10] = destinationPath5;
     *&v110[18] = 2048;
-    *&v110[20] = v34;
+    *&v110[20] = encodingMethod3;
     *&v110[28] = 2048;
     *&v110[30] = v35;
     v41 = 1.0 - v39;
@@ -1228,7 +1228,7 @@ LABEL_16:
     }
 
     *&v110[38] = 1024;
-    *&v110[40] = v36;
+    *&v110[40] = protectionClass;
     *&v110[44] = 2048;
     *&v110[46] = tv_sec;
     v111 = 2048;
@@ -1242,11 +1242,11 @@ LABEL_16:
     v118 = v43;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Finished archiving, srcPath:%@, dstPath:%@, e:%ld/0x%lx, pc:%d, srcMTime:%ld, srcSize:%llu, dstSize:%llu, savings:%.3f, time:%.3fs", buf, 0x62u);
 
-    v44 = [(MBFileEncodingTask *)self sourcePath];
-    v45 = [(MBFileEncodingTask *)self destinationPath];
-    v46 = [(MBFileEncodingTask *)self encodingMethod];
+    sourcePath7 = [(MBFileEncodingTask *)self sourcePath];
+    destinationPath6 = [(MBFileEncodingTask *)self destinationPath];
+    encodingMethod4 = [(MBFileEncodingTask *)self encodingMethod];
     v47 = v105;
-    v48 = [(MBFileEncodingTask *)self protectionClass];
+    protectionClass2 = [(MBFileEncodingTask *)self protectionClass];
     if ((v89 & 1) == 0)
     {
       v40 = v41;
@@ -1256,15 +1256,15 @@ LABEL_16:
     v86 = v43;
     v83 = st_size;
     v84 = v11;
-    v80 = v48;
+    v80 = protectionClass2;
     v81 = tv_sec;
-    v78 = v46;
+    v78 = encodingMethod4;
     v79 = v47;
-    v76 = v44;
-    v77 = v45;
+    v76 = sourcePath7;
+    v77 = destinationPath6;
     _MBLog();
 
-    v10 = v91;
+    v102 = v91;
   }
 
   [(MBFileEncodingTask *)self setCompressionMethod:v100];
@@ -1292,8 +1292,8 @@ LABEL_62:
         v90 = v50;
         v11 = dispatch_group_create();
         v55 = [MBFileEncodingTask decodingTaskWithEncodingMethod:[(MBFileEncodingTask *)self encodingMethod]];
-        v56 = [(MBFileEncodingTask *)self destinationPath];
-        [v55 setSourcePath:v56];
+        destinationPath7 = [(MBFileEncodingTask *)self destinationPath];
+        [v55 setSourcePath:destinationPath7];
 
         [v55 setDestinationPath:v52];
         [v55 setCompressionMethod:v98];
@@ -1302,55 +1302,55 @@ LABEL_62:
         [v55 start];
         v88 = v11;
         dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-        v57 = [v55 error];
+        error = [v55 error];
 
-        LODWORD(v11) = v57 == 0;
-        if (v57)
+        LODWORD(v11) = error == 0;
+        if (error)
         {
           v58 = MBGetDefaultLog();
           if (os_log_type_enabled(v58, OS_LOG_TYPE_FAULT))
           {
-            v59 = [(MBFileEncodingTask *)self destinationPath];
-            v60 = [(MBFileEncodingTask *)self sourcePath];
+            destinationPath8 = [(MBFileEncodingTask *)self destinationPath];
+            sourcePath8 = [(MBFileEncodingTask *)self sourcePath];
             log = v58;
-            v61 = [(MBFileEncodingTask *)self encodingMethod];
-            v92 = v10;
+            encodingMethod5 = [(MBFileEncodingTask *)self encodingMethod];
+            v92 = v102;
             v62 = v98;
-            v63 = [v55 error];
+            error2 = [v55 error];
             *buf = 138413314;
-            *v110 = v59;
+            *v110 = destinationPath8;
             *&v110[8] = 2112;
-            *&v110[10] = v60;
+            *&v110[10] = sourcePath8;
             *&v110[18] = 2048;
-            *&v110[20] = v61;
+            *&v110[20] = encodingMethod5;
             *&v110[28] = 2048;
             *&v110[30] = v62;
             *&v110[38] = 2112;
-            *&v110[40] = v63;
+            *&v110[40] = error2;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_FAULT, "Failed to validate the archived SQLite file at %@(%@), e:%ld/0x%lx: %@", buf, 0x34u);
 
-            v64 = [(MBFileEncodingTask *)self destinationPath];
-            v65 = [(MBFileEncodingTask *)self sourcePath];
-            v66 = [(MBFileEncodingTask *)self encodingMethod];
+            destinationPath9 = [(MBFileEncodingTask *)self destinationPath];
+            sourcePath9 = [(MBFileEncodingTask *)self sourcePath];
+            encodingMethod6 = [(MBFileEncodingTask *)self encodingMethod];
             v67 = v98;
             [v55 error];
             v80 = v79 = v67;
             v58 = log;
-            v77 = v65;
-            v78 = v66;
-            v10 = v92;
-            v76 = v64;
+            v77 = sourcePath9;
+            v78 = encodingMethod6;
+            v102 = v92;
+            v76 = destinationPath9;
             _MBLog();
           }
 
-          v68 = [v55 error];
+          error3 = [v55 error];
 
-          v93 = v68;
+          v93 = error3;
         }
 
         else
         {
-          v93 = v10;
+          v93 = v102;
         }
 
         v69 = [NSFileManager defaultManager:v76];
@@ -1390,7 +1390,7 @@ LABEL_62:
           close(v90);
         }
 
-        v10 = v93;
+        v102 = v93;
       }
 
       else
@@ -1399,7 +1399,7 @@ LABEL_62:
       }
 
 LABEL_14:
-      v5 = v10;
+      v5 = v102;
       if (v11)
       {
         goto LABEL_16;
@@ -1455,7 +1455,7 @@ LABEL_59:
     goto LABEL_61;
   }
 
-  v5 = v10;
+  v5 = v102;
 LABEL_17:
   v26 = 0;
 LABEL_18:
@@ -1466,9 +1466,9 @@ LABEL_18:
 
 - (id)_unarchive
 {
-  v3 = [(MBFileEncodingTask *)self destinationPath];
+  destinationPath = [(MBFileEncodingTask *)self destinationPath];
 
-  if (!v3)
+  if (!destinationPath)
   {
     v5 = [MBError errorWithCode:1 format:@"Invalid argument: no destination path"];
     goto LABEL_12;
@@ -1483,16 +1483,16 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v6 = [(MBFileEncodingTask *)self sourcePath];
-  v7 = [v6 fileSystemRepresentation];
+  sourcePath = [(MBFileEncodingTask *)self sourcePath];
+  fileSystemRepresentation = [sourcePath fileSystemRepresentation];
 
   memset(&v42, 0, sizeof(v42));
-  if (stat(v7, &v42))
+  if (stat(fileSystemRepresentation, &v42))
   {
-    v8 = [(MBFileEncodingTask *)self sourcePath];
+    sourcePath2 = [(MBFileEncodingTask *)self sourcePath];
     v9 = @"Failed to stat src file";
 LABEL_5:
-    v10 = [MBError posixErrorWithPath:v8 format:v9];
+    v10 = [MBError posixErrorWithPath:sourcePath2 format:v9];
 
 LABEL_11:
     v5 = v10;
@@ -1507,8 +1507,8 @@ LABEL_12:
   }
 
   st_size = v42.st_size;
-  v12 = [(MBFileEncodingTask *)self destinationPath];
-  v13 = [v12 fileSystemRepresentation];
+  destinationPath2 = [(MBFileEncodingTask *)self destinationPath];
+  fileSystemRepresentation2 = [destinationPath2 fileSystemRepresentation];
 
   [MBProtectionClassUtils sqliteOpenFlagForProtectionClass:[(MBFileEncodingTask *)self protectionClass]];
   v40 = 0;
@@ -1521,25 +1521,25 @@ LABEL_12:
     v17 = MBGetDefaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      v18 = [(MBFileEncodingTask *)self sourcePath];
-      v19 = [(MBFileEncodingTask *)self destinationPath];
+      sourcePath3 = [(MBFileEncodingTask *)self sourcePath];
+      destinationPath3 = [(MBFileEncodingTask *)self destinationPath];
       *buf = 67109890;
       *v46 = v15;
       *&v46[4] = 2080;
       *&v46[6] = v41;
       *&v46[14] = 2112;
-      *&v46[16] = v18;
+      *&v46[16] = sourcePath3;
       *&v46[24] = 2112;
-      *&v46[26] = v19;
+      *&v46[26] = destinationPath3;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_FAULT, "_sqlite3_apple_unarchive failed, rc:%d, msg:%s, srcPath:%@, dstPath:%@", buf, 0x26u);
 
-      v20 = [(MBFileEncodingTask *)self sourcePath];
-      v37 = [(MBFileEncodingTask *)self destinationPath];
+      sourcePath4 = [(MBFileEncodingTask *)self sourcePath];
+      destinationPath4 = [(MBFileEncodingTask *)self destinationPath];
       _MBLog();
     }
 
-    v21 = [(MBFileEncodingTask *)self sourcePath];
-    v10 = [MBError errorWithCode:11 path:v21 format:@"_sqlite3_apple_unarchive failed, rc:%d, %s", v15, v41];
+    sourcePath5 = [(MBFileEncodingTask *)self sourcePath];
+    v10 = [MBError errorWithCode:11 path:sourcePath5 format:@"_sqlite3_apple_unarchive failed, rc:%d, %s", v15, v41];
 
     sqlite3_free(v41);
     v41 = 0;
@@ -1548,9 +1548,9 @@ LABEL_12:
 
   v25 = v16;
   sqlite3_free(v40);
-  if (stat(v13, &v42))
+  if (stat(fileSystemRepresentation2, &v42))
   {
-    v8 = [(MBFileEncodingTask *)self destinationPath];
+    sourcePath2 = [(MBFileEncodingTask *)self destinationPath];
     v9 = @"Failed to stat dst file";
     goto LABEL_5;
   }
@@ -1569,21 +1569,21 @@ LABEL_12:
   v29 = MBGetDefaultLog();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [(MBFileEncodingTask *)self sourcePath];
-    v31 = [(MBFileEncodingTask *)self destinationPath];
-    v32 = [(MBFileEncodingTask *)self encodingMethod];
+    sourcePath6 = [(MBFileEncodingTask *)self sourcePath];
+    destinationPath5 = [(MBFileEncodingTask *)self destinationPath];
+    encodingMethod = [(MBFileEncodingTask *)self encodingMethod];
     v33 = v44;
-    v34 = [(MBFileEncodingTask *)self protectionClass];
+    protectionClass = [(MBFileEncodingTask *)self protectionClass];
     *buf = 138414082;
-    *v46 = v30;
+    *v46 = sourcePath6;
     *&v46[8] = 2112;
-    *&v46[10] = v31;
+    *&v46[10] = destinationPath5;
     *&v46[18] = 2048;
-    *&v46[20] = v32;
+    *&v46[20] = encodingMethod;
     *&v46[28] = 2048;
     *&v46[30] = v33;
     v47 = 1024;
-    v48 = v34;
+    v48 = protectionClass;
     v49 = 2048;
     v50 = st_size;
     v51 = 2048;
@@ -1592,8 +1592,8 @@ LABEL_12:
     v54 = v25 - Current;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Finished unarchiving, srcPath:%@, dstPath:%@, e:%ld/0x%lx, pc:%d, srcSize:%llu, dstSize:%llu, time:%.3fs", buf, 0x4Eu);
 
-    v35 = [(MBFileEncodingTask *)self sourcePath];
-    v36 = [(MBFileEncodingTask *)self destinationPath];
+    sourcePath7 = [(MBFileEncodingTask *)self sourcePath];
+    destinationPath6 = [(MBFileEncodingTask *)self destinationPath];
     [(MBFileEncodingTask *)self encodingMethod];
     [(MBFileEncodingTask *)self protectionClass];
     _MBLog();
@@ -1609,27 +1609,27 @@ LABEL_13:
   return v22;
 }
 
-- (MBFileEncodingTask)initWithCoder:(id)a3
+- (MBFileEncodingTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MBFileEncodingTask;
   v5 = [(MBFileEncodingTask *)&v11 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    -[MBFileEncodingTask setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
-    -[MBFileEncodingTask setEncodingMethod:](v5, "setEncodingMethod:", [v4 decodeIntegerForKey:@"encodingMethod"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourcePath"];
+    -[MBFileEncodingTask setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+    -[MBFileEncodingTask setEncodingMethod:](v5, "setEncodingMethod:", [coderCopy decodeIntegerForKey:@"encodingMethod"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourcePath"];
     [(MBFileEncodingTask *)v5 setSourcePath:v7];
 
-    -[MBFileEncodingTask setSourceIsLive:](v5, "setSourceIsLive:", [v4 decodeBoolForKey:@"sourceIsLive"]);
-    -[MBFileEncodingTask setCompressionMethod:](v5, "setCompressionMethod:", [v4 decodeIntegerForKey:@"compressionMethod"]);
-    -[MBFileEncodingTask setProtectionClass:](v5, "setProtectionClass:", [v4 decodeIntForKey:@"protectionClass"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spaceSavingsThreshold"];
+    -[MBFileEncodingTask setSourceIsLive:](v5, "setSourceIsLive:", [coderCopy decodeBoolForKey:@"sourceIsLive"]);
+    -[MBFileEncodingTask setCompressionMethod:](v5, "setCompressionMethod:", [coderCopy decodeIntegerForKey:@"compressionMethod"]);
+    -[MBFileEncodingTask setProtectionClass:](v5, "setProtectionClass:", [coderCopy decodeIntForKey:@"protectionClass"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spaceSavingsThreshold"];
     [(MBFileEncodingTask *)v5 setSpaceSavingsThreshold:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationPath"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationPath"];
     [(MBFileEncodingTask *)v5 setDestinationPath:v9];
 
     objc_autoreleasePoolPop(v6);
@@ -1638,23 +1638,23 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v8 encodeInteger:-[MBFileEncodingTask type](self forKey:{"type"), @"type"}];
-  [v8 encodeInteger:-[MBFileEncodingTask encodingMethod](self forKey:{"encodingMethod"), @"encodingMethod"}];
-  v5 = [(MBFileEncodingTask *)self sourcePath];
-  [v8 encodeObject:v5 forKey:@"sourcePath"];
+  [coderCopy encodeInteger:-[MBFileEncodingTask type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[MBFileEncodingTask encodingMethod](self forKey:{"encodingMethod"), @"encodingMethod"}];
+  sourcePath = [(MBFileEncodingTask *)self sourcePath];
+  [coderCopy encodeObject:sourcePath forKey:@"sourcePath"];
 
-  [v8 encodeBool:-[MBFileEncodingTask sourceIsLive](self forKey:{"sourceIsLive"), @"sourceIsLive"}];
-  [v8 encodeInteger:-[MBFileEncodingTask compressionMethod](self forKey:{"compressionMethod"), @"compressionMethod"}];
-  [v8 encodeInt:-[MBFileEncodingTask protectionClass](self forKey:{"protectionClass"), @"protectionClass"}];
-  v6 = [(MBFileEncodingTask *)self spaceSavingsThreshold];
-  [v8 encodeObject:v6 forKey:@"spaceSavingsThreshold"];
+  [coderCopy encodeBool:-[MBFileEncodingTask sourceIsLive](self forKey:{"sourceIsLive"), @"sourceIsLive"}];
+  [coderCopy encodeInteger:-[MBFileEncodingTask compressionMethod](self forKey:{"compressionMethod"), @"compressionMethod"}];
+  [coderCopy encodeInt:-[MBFileEncodingTask protectionClass](self forKey:{"protectionClass"), @"protectionClass"}];
+  spaceSavingsThreshold = [(MBFileEncodingTask *)self spaceSavingsThreshold];
+  [coderCopy encodeObject:spaceSavingsThreshold forKey:@"spaceSavingsThreshold"];
 
-  v7 = [(MBFileEncodingTask *)self destinationPath];
-  [v8 encodeObject:v7 forKey:@"destinationPath"];
+  destinationPath = [(MBFileEncodingTask *)self destinationPath];
+  [coderCopy encodeObject:destinationPath forKey:@"destinationPath"];
 
   objc_autoreleasePoolPop(v4);
 }

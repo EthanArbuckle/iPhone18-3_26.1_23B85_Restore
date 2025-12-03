@@ -1,38 +1,38 @@
 @interface OSAOsLogPackParser
-- (OSAOsLogPackParser)initWithMaxNumAruments:(unint64_t)a3;
-- (id)compose:(id)a3;
-- (id)extractArguments:(id)a3;
-- (id)filterOutSensitiveParts:(id)a3 withFormats:(id)a4;
-- (id)parse:(id)a3;
+- (OSAOsLogPackParser)initWithMaxNumAruments:(unint64_t)aruments;
+- (id)compose:(id)compose;
+- (id)extractArguments:(id)arguments;
+- (id)filterOutSensitiveParts:(id)parts withFormats:(id)formats;
+- (id)parse:(id)parse;
 @end
 
 @implementation OSAOsLogPackParser
 
-- (OSAOsLogPackParser)initWithMaxNumAruments:(unint64_t)a3
+- (OSAOsLogPackParser)initWithMaxNumAruments:(unint64_t)aruments
 {
   v5.receiver = self;
   v5.super_class = OSAOsLogPackParser;
   result = [(OSAOsLogPackParser *)&v5 init];
   if (result)
   {
-    result->_maxNumArguments = a3;
+    result->_maxNumArguments = aruments;
   }
 
   return result;
 }
 
-- (id)parse:(id)a3
+- (id)parse:(id)parse
 {
-  v4 = a3;
+  parseCopy = parse;
   v5 = objc_opt_new();
-  v6 = [v4 bytes];
-  v7 = *(v6 + 69);
+  bytes = [parseCopy bytes];
+  v7 = *(bytes + 69);
   v67 = 0;
   v68 = &v67;
   v69 = 0x3032000000;
   v70 = __Block_byref_object_copy__1;
   v71 = __Block_byref_object_dispose__1;
-  v8 = *(v6 + 40);
+  v8 = *(bytes + 40);
   v72 = (*(self->_readCStringFromTarget + 2))();
   v9 = v68[5];
   if (v9 && [v9 length] && objc_msgSend(v68[5], "length") < 0x401)
@@ -44,12 +44,12 @@
     v66[3] = &unk_1E7A272E8;
     v66[4] = &v67;
     v12 = MEMORY[0x1B2703360](v66);
-    v13 = *(v6 + 40);
+    v13 = *(bytes + 40);
     self->_formatStringIsSafe = (*(self->_pointerPointsToSafeMemory + 2))();
-    v14 = *(v6 + 40);
+    v14 = *(bytes + 40);
     v15 = (*(self->_modulePathForMemoryPointer + 2))();
     v64 = v7;
-    v65 = (v6 + 70);
+    v65 = (bytes + 70);
     formatStringOriginatingModulePath = self->_formatStringOriginatingModulePath;
     self->_formatStringOriginatingModulePath = v15;
 
@@ -384,11 +384,11 @@ uint64_t __28__OSAOsLogPackParser_parse___block_invoke(uint64_t a1, uint64_t a2)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)filterOutSensitiveParts:(id)a3 withFormats:(id)a4
+- (id)filterOutSensitiveParts:(id)parts withFormats:(id)formats
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  partsCopy = parts;
+  formatsCopy = formats;
   v8 = objc_opt_new();
   if (self->_formatStringIsSafe)
   {
@@ -396,8 +396,8 @@ uint64_t __28__OSAOsLogPackParser_parse___block_invoke(uint64_t a1, uint64_t a2)
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v28 = v6;
-    v9 = v6;
+    v28 = partsCopy;
+    v9 = partsCopy;
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (!v10)
     {
@@ -416,18 +416,18 @@ uint64_t __28__OSAOsLogPackParser_parse___block_invoke(uint64_t a1, uint64_t a2)
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 isSafe];
-        v16 = v15;
-        if (v7)
+        isSafe = [v14 isSafe];
+        v16 = isSafe;
+        if (formatsCopy)
         {
-          v17 = [v14 argSpecifier];
+          argSpecifier = [v14 argSpecifier];
 
-          if (v17)
+          if (argSpecifier)
           {
             if (v16)
             {
-              v18 = [v14 argSpecifier];
-              v19 = [v7 containsObject:v18];
+              argSpecifier2 = [v14 argSpecifier];
+              v19 = [formatsCopy containsObject:argSpecifier2];
 
               if (v19)
               {
@@ -444,15 +444,15 @@ LABEL_13:
           }
         }
 
-        else if (v15)
+        else if (isSafe)
         {
           goto LABEL_13;
         }
 
         v20 = [OSAParsedOsLogPart alloc];
-        v21 = [v14 argSpecifier];
-        v22 = [v14 argSpecifier];
-        v23 = [(OSAParsedOsLogPart *)v20 initWithArgument:v21 argSpecifier:v22 isSafe:1];
+        argSpecifier3 = [v14 argSpecifier];
+        argSpecifier4 = [v14 argSpecifier];
+        v23 = [(OSAParsedOsLogPart *)v20 initWithArgument:argSpecifier3 argSpecifier:argSpecifier4 isSafe:1];
         [v8 addObject:v23];
       }
 
@@ -462,7 +462,7 @@ LABEL_13:
 LABEL_18:
 
         v24 = [v8 copy];
-        v6 = v28;
+        partsCopy = v28;
         goto LABEL_20;
       }
     }
@@ -479,16 +479,16 @@ LABEL_20:
   return v24;
 }
 
-- (id)compose:(id)a3
+- (id)compose:(id)compose
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  composeCopy = compose;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = composeCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -504,12 +504,12 @@ LABEL_20:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 stringValue];
+        stringValue = [v10 stringValue];
 
-        if (v11)
+        if (stringValue)
         {
-          v12 = [v10 stringValue];
-          [v4 appendString:v12];
+          stringValue2 = [v10 stringValue];
+          [v4 appendString:stringValue2];
         }
 
         else
@@ -530,16 +530,16 @@ LABEL_20:
   return v13;
 }
 
-- (id)extractArguments:(id)a3
+- (id)extractArguments:(id)arguments
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  argumentsCopy = arguments;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = argumentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -557,12 +557,12 @@ LABEL_20:
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 isArgument])
         {
-          v11 = [v10 stringValue];
+          stringValue = [v10 stringValue];
 
-          if (v11)
+          if (stringValue)
           {
-            v12 = [v10 stringValue];
-            [v4 addObject:v12];
+            stringValue2 = [v10 stringValue];
+            [v4 addObject:stringValue2];
           }
 
           else

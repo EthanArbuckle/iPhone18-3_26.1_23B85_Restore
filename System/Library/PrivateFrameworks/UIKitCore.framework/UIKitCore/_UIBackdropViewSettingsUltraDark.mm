@@ -9,8 +9,8 @@
   v9.receiver = self;
   v9.super_class = _UIBackdropViewSettingsUltraDark;
   [(_UIBackdropViewSettingsNonAdaptive *)&v9 setDefaultValues];
-  v3 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  if (v3 == 10)
+  graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+  if (graphicsQuality == 10)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:0];
@@ -43,7 +43,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v3 == 100)
+  if (graphicsQuality == 100)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:1];

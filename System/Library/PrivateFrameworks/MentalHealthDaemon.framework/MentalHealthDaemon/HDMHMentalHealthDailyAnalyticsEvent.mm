@@ -1,163 +1,163 @@
 @interface HDMHMentalHealthDailyAnalyticsEvent
-- (HDMHMentalHealthDailyAnalyticsEvent)initWithProfile:(id)a3 settingsManager:(id)a4 userDefaults:(id)a5;
-- (id)_IHAGatedDemographicsFieldsWithDataSource:(id)a3;
-- (id)_determineDaysSinceLastSampleWithSampleType:(id)a3 dataSource:(id)a4;
-- (id)_enumeratorForPastNDays:(int64_t)a3 withDataSource:(id)a4 forSampleType:(id)a5 withExtraPredicate:(id)a6;
-- (id)_featureStatusForFeatureIdentifier:(id)a3 dataSource:(id)a4 error:(id *)a5;
+- (HDMHMentalHealthDailyAnalyticsEvent)initWithProfile:(id)profile settingsManager:(id)manager userDefaults:(id)defaults;
+- (id)_IHAGatedDemographicsFieldsWithDataSource:(id)source;
+- (id)_determineDaysSinceLastSampleWithSampleType:(id)type dataSource:(id)source;
+- (id)_enumeratorForPastNDays:(int64_t)days withDataSource:(id)source forSampleType:(id)type withExtraPredicate:(id)predicate;
+- (id)_featureStatusForFeatureIdentifier:(id)identifier dataSource:(id)source error:(id *)error;
 - (id)_fetchDeviceContextAnalytics;
-- (id)_hasLaunchedHealthAppInInterval:(int64_t)a3 withDataSource:(id)a4;
-- (id)_hasLoggedStateOfMindInPastNDays:(int64_t)a3 withDataSource:(id)a4;
-- (id)_isFeatureEnabledForFeatureIdentifier:(id)a3 dataSource:(id)a4 featureAvailabilityContext:(id)a5;
-- (id)_isFeatureOnboardedForFeatureIdentifier:(id)a3 dataSource:(id)a4;
+- (id)_hasLaunchedHealthAppInInterval:(int64_t)interval withDataSource:(id)source;
+- (id)_hasLoggedStateOfMindInPastNDays:(int64_t)days withDataSource:(id)source;
+- (id)_isFeatureEnabledForFeatureIdentifier:(id)identifier dataSource:(id)source featureAvailabilityContext:(id)context;
+- (id)_isFeatureOnboardedForFeatureIdentifier:(id)identifier dataSource:(id)source;
 - (id)_mostRecentAssessmentCategories;
-- (id)_mostRecentAssessmentCategoryWithSampleType:(id)a3;
+- (id)_mostRecentAssessmentCategoryWithSampleType:(id)type;
 - (id)_mostRecentStateOfMindPleasantnessRatings;
-- (id)_mostRecentStateOfMindWithReflectiveInterval:(int64_t)a3;
-- (id)_numAssessmentsCompletedWithDataSource:(id)a3;
-- (id)_numAssessmentsInPastNDays:(int64_t)a3 withDataSource:(id)a4;
-- (id)_numDailyStateOfMindLogsInPastNDays:(int64_t)a3 withDataSource:(id)a4;
-- (id)_numDaysStateOfMindLoggedInPast14DaysWithDataSource:(id)a3;
-- (id)_numDaysStateOfMindLoggedInPast30DaysWithDataSource:(id)a3;
-- (id)_numDaysStateOfMindLoggedInPastDayWithDataSource:(id)a3;
-- (id)_stateOfMindDaySummaryEnumeratorForPastNDays:(int64_t)a3 withDataSource:(id)a4;
-- (id)_weeksSinceLastHealthAppLaunchWithDataSource:(id)a3;
-- (id)_weeksSinceOnboardingWithDataSource:(id)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (int64_t)_bucketedWeeksSinceDate:(id)a3 dataSource:(id)a4;
-- (int64_t)numberOfDaysBetweenStartDate:(id)a3 endDate:(id)a4 withCalendar:(id)a5;
+- (id)_mostRecentStateOfMindWithReflectiveInterval:(int64_t)interval;
+- (id)_numAssessmentsCompletedWithDataSource:(id)source;
+- (id)_numAssessmentsInPastNDays:(int64_t)days withDataSource:(id)source;
+- (id)_numDailyStateOfMindLogsInPastNDays:(int64_t)days withDataSource:(id)source;
+- (id)_numDaysStateOfMindLoggedInPast14DaysWithDataSource:(id)source;
+- (id)_numDaysStateOfMindLoggedInPast30DaysWithDataSource:(id)source;
+- (id)_numDaysStateOfMindLoggedInPastDayWithDataSource:(id)source;
+- (id)_stateOfMindDaySummaryEnumeratorForPastNDays:(int64_t)days withDataSource:(id)source;
+- (id)_weeksSinceLastHealthAppLaunchWithDataSource:(id)source;
+- (id)_weeksSinceOnboardingWithDataSource:(id)source;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (int64_t)_bucketedWeeksSinceDate:(id)date dataSource:(id)source;
+- (int64_t)numberOfDaysBetweenStartDate:(id)date endDate:(id)endDate withCalendar:(id)calendar;
 @end
 
 @implementation HDMHMentalHealthDailyAnalyticsEvent
 
-- (HDMHMentalHealthDailyAnalyticsEvent)initWithProfile:(id)a3 settingsManager:(id)a4 userDefaults:(id)a5
+- (HDMHMentalHealthDailyAnalyticsEvent)initWithProfile:(id)profile settingsManager:(id)manager userDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  managerCopy = manager;
+  defaultsCopy = defaults;
   v14.receiver = self;
   v14.super_class = HDMHMentalHealthDailyAnalyticsEvent;
   v11 = [(HDMHMentalHealthDailyAnalyticsEvent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    objc_storeStrong(&v12->_settingsManager, a4);
-    objc_storeStrong(&v12->_userDefaults, a5);
+    objc_storeWeak(&v11->_profile, profileCopy);
+    objc_storeStrong(&v12->_settingsManager, manager);
+    objc_storeStrong(&v12->_userDefaults, defaults);
   }
 
   return v12;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 environmentDataSource];
-  v9 = [v8 activePairedDeviceProductType];
-  [v7 setObject:v9 forKeyedSubscript:@"activePairedWatchType"];
+  sourceCopy = source;
+  dictionary = [v5 dictionary];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  activePairedDeviceProductType = [environmentDataSource activePairedDeviceProductType];
+  [dictionary setObject:activePairedDeviceProductType forKeyedSubscript:@"activePairedWatchType"];
 
-  v10 = [v6 environmentDataSource];
-  v11 = [v10 activePairedDeviceOSBuildNumber];
-  [v7 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCB7B0]];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
+  activePairedDeviceOSBuildNumber = [environmentDataSource2 activePairedDeviceOSBuildNumber];
+  [dictionary setObject:activePairedDeviceOSBuildNumber forKeyedSubscript:*MEMORY[0x277CCB7B0]];
 
-  v12 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _fetchDeviceContextAnalytics];
-  [v7 addEntriesFromDictionary:v12];
+  _fetchDeviceContextAnalytics = [(HDMHMentalHealthDailyAnalyticsEvent *)self _fetchDeviceContextAnalytics];
+  [dictionary addEntriesFromDictionary:_fetchDeviceContextAnalytics];
 
   v13 = MEMORY[0x277CCABB0];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained notificationManager];
-  v16 = [v13 numberWithBool:{objc_msgSend(v15, "areHealthNotificationsAuthorized")}];
-  [v7 setObject:v16 forKeyedSubscript:*MEMORY[0x277CCB7C8]];
+  notificationManager = [WeakRetained notificationManager];
+  v16 = [v13 numberWithBool:{objc_msgSend(notificationManager, "areHealthNotificationsAuthorized")}];
+  [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277CCB7C8]];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v6 environmentDataSource];
-  v19 = [v17 numberWithBool:{objc_msgSend(v18, "isImproveHealthAndActivityEnabled")}];
-  [v7 setObject:v19 forKeyedSubscript:*MEMORY[0x277CCB7F8]];
+  environmentDataSource3 = [sourceCopy environmentDataSource];
+  v19 = [v17 numberWithBool:{objc_msgSend(environmentDataSource3, "isImproveHealthAndActivityEnabled")}];
+  [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CCB7F8]];
 
-  v20 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLaunchedHealthAppInInterval:7 withDataSource:v6];
-  [v7 setObject:v20 forKeyedSubscript:@"hasLaunchedHealthAppInLastWeek"];
+  v20 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLaunchedHealthAppInInterval:7 withDataSource:sourceCopy];
+  [dictionary setObject:v20 forKeyedSubscript:@"hasLaunchedHealthAppInLastWeek"];
 
-  v21 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLaunchedHealthAppInInterval:30 withDataSource:v6];
-  [v7 setObject:v21 forKeyedSubscript:@"hasLaunchedHealthAppInLastMonth"];
+  v21 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLaunchedHealthAppInInterval:30 withDataSource:sourceCopy];
+  [dictionary setObject:v21 forKeyedSubscript:@"hasLaunchedHealthAppInLastMonth"];
 
-  v22 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _weeksSinceLastHealthAppLaunchWithDataSource:v6];
-  [v7 setObject:v22 forKeyedSubscript:@"weeksSinceLastHealthAppLaunch"];
+  v22 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _weeksSinceLastHealthAppLaunchWithDataSource:sourceCopy];
+  [dictionary setObject:v22 forKeyedSubscript:@"weeksSinceLastHealthAppLaunch"];
 
-  v23 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureOnboardedForFeatureIdentifier:*MEMORY[0x277CCC100] dataSource:v6];
-  [v7 setObject:v23 forKeyedSubscript:@"isOnboarded"];
+  v23 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureOnboardedForFeatureIdentifier:*MEMORY[0x277CCC100] dataSource:sourceCopy];
+  [dictionary setObject:v23 forKeyedSubscript:@"isOnboarded"];
 
-  v24 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _weeksSinceOnboardingWithDataSource:v6];
-  [v7 setObject:v24 forKeyedSubscript:@"weeksSinceOnboarded"];
+  v24 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _weeksSinceOnboardingWithDataSource:sourceCopy];
+  [dictionary setObject:v24 forKeyedSubscript:@"weeksSinceOnboarded"];
 
   v25 = *MEMORY[0x277CCC0C0];
-  v26 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureOnboardedForFeatureIdentifier:*MEMORY[0x277CCC0C0] dataSource:v6];
-  [v7 setObject:v26 forKeyedSubscript:@"wereAssessmentsDelivered"];
+  v26 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureOnboardedForFeatureIdentifier:*MEMORY[0x277CCC0C0] dataSource:sourceCopy];
+  [dictionary setObject:v26 forKeyedSubscript:@"wereAssessmentsDelivered"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:{-[HKMHSettingsManager hasAnyStateOfMindReminderEnabled](self->_settingsManager, "hasAnyStateOfMindReminderEnabled")}];
-  [v7 setObject:v27 forKeyedSubscript:@"hasStateOfMindNotificationEnabled"];
+  [dictionary setObject:v27 forKeyedSubscript:@"hasStateOfMindNotificationEnabled"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithBool:{-[HKMHSettingsManager middayNotificationsEnabled](self->_settingsManager, "middayNotificationsEnabled")}];
-  [v7 setObject:v28 forKeyedSubscript:@"hasStateOfMindMidDayNotificationEnabled"];
+  [dictionary setObject:v28 forKeyedSubscript:@"hasStateOfMindMidDayNotificationEnabled"];
 
   v29 = [MEMORY[0x277CCABB0] numberWithBool:{-[HKMHSettingsManager endOfDayNotificationsEnabled](self->_settingsManager, "endOfDayNotificationsEnabled")}];
-  [v7 setObject:v29 forKeyedSubscript:@"hasStateOfMindEndOfDayNotificationEnabled"];
+  [dictionary setObject:v29 forKeyedSubscript:@"hasStateOfMindEndOfDayNotificationEnabled"];
 
   v30 = MEMORY[0x277CCABB0];
-  v31 = [(HKMHSettingsManager *)self->_settingsManager customReminderSchedule];
-  v32 = [v30 numberWithInt:{objc_msgSend(v31, "count") != 0}];
-  [v7 setObject:v32 forKeyedSubscript:@"hasStateOfMindCustomNotificationEnabled"];
+  customReminderSchedule = [(HKMHSettingsManager *)self->_settingsManager customReminderSchedule];
+  v32 = [v30 numberWithInt:{objc_msgSend(customReminderSchedule, "count") != 0}];
+  [dictionary setObject:v32 forKeyedSubscript:@"hasStateOfMindCustomNotificationEnabled"];
 
   v33 = *MEMORY[0x277CCBEA0];
-  v34 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureEnabledForFeatureIdentifier:v25 dataSource:v6 featureAvailabilityContext:*MEMORY[0x277CCBEA0]];
-  [v7 setObject:v34 forKeyedSubscript:@"hasScheduledQuestionnairesEnabled"];
+  v34 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureEnabledForFeatureIdentifier:v25 dataSource:sourceCopy featureAvailabilityContext:*MEMORY[0x277CCBEA0]];
+  [dictionary setObject:v34 forKeyedSubscript:@"hasScheduledQuestionnairesEnabled"];
 
-  v35 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureEnabledForFeatureIdentifier:*MEMORY[0x277CCC108] dataSource:v6 featureAvailabilityContext:v33];
-  [v7 setObject:v35 forKeyedSubscript:@"hasUnpleasantLoggingPatternsEnabled"];
+  v35 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _isFeatureEnabledForFeatureIdentifier:*MEMORY[0x277CCC108] dataSource:sourceCopy featureAvailabilityContext:v33];
+  [dictionary setObject:v35 forKeyedSubscript:@"hasUnpleasantLoggingPatternsEnabled"];
 
-  v36 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLoggedStateOfMindInPastNDays:30 withDataSource:v6];
-  [v7 setObject:v36 forKeyedSubscript:@"hasLoggedStateOfMindInPast30Days"];
+  v36 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLoggedStateOfMindInPastNDays:30 withDataSource:sourceCopy];
+  [dictionary setObject:v36 forKeyedSubscript:@"hasLoggedStateOfMindInPast30Days"];
 
-  v37 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLoggedStateOfMindInPastNDays:7 withDataSource:v6];
+  v37 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _hasLoggedStateOfMindInPastNDays:7 withDataSource:sourceCopy];
 
-  [v7 setObject:v37 forKeyedSubscript:@"hasLoggedStateOfMindInPast7Days"];
+  [dictionary setObject:v37 forKeyedSubscript:@"hasLoggedStateOfMindInPast7Days"];
 
-  return v7;
+  return dictionary;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _IHAGatedDemographicsFieldsWithDataSource:v6];
-  [v7 addEntriesFromDictionary:v8];
+  sourceCopy = source;
+  dictionary = [v5 dictionary];
+  v8 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _IHAGatedDemographicsFieldsWithDataSource:sourceCopy];
+  [dictionary addEntriesFromDictionary:v8];
 
-  v9 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDaysStateOfMindLoggedInPast14DaysWithDataSource:v6];
-  [v7 addEntriesFromDictionary:v9];
+  v9 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDaysStateOfMindLoggedInPast14DaysWithDataSource:sourceCopy];
+  [dictionary addEntriesFromDictionary:v9];
 
-  v10 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDaysStateOfMindLoggedInPast30DaysWithDataSource:v6];
-  [v7 addEntriesFromDictionary:v10];
+  v10 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDaysStateOfMindLoggedInPast30DaysWithDataSource:sourceCopy];
+  [dictionary addEntriesFromDictionary:v10];
 
-  v11 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDaysStateOfMindLoggedInPastDayWithDataSource:v6];
-  [v7 addEntriesFromDictionary:v11];
+  v11 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDaysStateOfMindLoggedInPastDayWithDataSource:sourceCopy];
+  [dictionary addEntriesFromDictionary:v11];
 
-  v12 = [MEMORY[0x277CCD8D8] stateOfMindType];
-  v13 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _determineDaysSinceLastSampleWithSampleType:v12 dataSource:v6];
-  [v7 setObject:v13 forKeyedSubscript:@"daysSinceLastStateOfMindLogged"];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
+  v13 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _determineDaysSinceLastSampleWithSampleType:stateOfMindType dataSource:sourceCopy];
+  [dictionary setObject:v13 forKeyedSubscript:@"daysSinceLastStateOfMindLogged"];
 
-  v14 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _mostRecentStateOfMindPleasantnessRatings];
-  [v7 addEntriesFromDictionary:v14];
+  _mostRecentStateOfMindPleasantnessRatings = [(HDMHMentalHealthDailyAnalyticsEvent *)self _mostRecentStateOfMindPleasantnessRatings];
+  [dictionary addEntriesFromDictionary:_mostRecentStateOfMindPleasantnessRatings];
 
-  v15 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numAssessmentsCompletedWithDataSource:v6];
-  [v7 addEntriesFromDictionary:v15];
+  v15 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numAssessmentsCompletedWithDataSource:sourceCopy];
+  [dictionary addEntriesFromDictionary:v15];
 
   v16 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD60]];
-  v17 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _determineDaysSinceLastSampleWithSampleType:v16 dataSource:v6];
+  v17 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _determineDaysSinceLastSampleWithSampleType:v16 dataSource:sourceCopy];
 
   v18 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD68]];
-  v19 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _determineDaysSinceLastSampleWithSampleType:v18 dataSource:v6];
+  v19 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _determineDaysSinceLastSampleWithSampleType:v18 dataSource:sourceCopy];
 
   if (v17 >= v19)
   {
@@ -170,20 +170,20 @@
   }
 
   v21 = v20;
-  [v7 setObject:v21 forKeyedSubscript:@"daysSinceLastAssessment"];
+  [dictionary setObject:v21 forKeyedSubscript:@"daysSinceLastAssessment"];
 
-  v22 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _mostRecentAssessmentCategories];
-  [v7 addEntriesFromDictionary:v22];
+  _mostRecentAssessmentCategories = [(HDMHMentalHealthDailyAnalyticsEvent *)self _mostRecentAssessmentCategories];
+  [dictionary addEntriesFromDictionary:_mostRecentAssessmentCategories];
 
-  return v7;
+  return dictionary;
 }
 
 - (id)_fetchDeviceContextAnalytics
 {
   v32[4] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained deviceContextManager];
-  v4 = [v3 numberOfDeviceContextsPerDeviceType:0];
+  deviceContextManager = [WeakRetained deviceContextManager];
+  v4 = [deviceContextManager numberOfDeviceContextsPerDeviceType:0];
 
   if (v4)
   {
@@ -275,28 +275,28 @@
   return v22;
 }
 
-- (id)_IHAGatedDemographicsFieldsWithDataSource:(id)a3
+- (id)_IHAGatedDemographicsFieldsWithDataSource:(id)source
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 healthDataSource];
-  v6 = [v5 biologicalSexWithError:0];
+  sourceCopy = source;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  healthDataSource = [sourceCopy healthDataSource];
+  v6 = [healthDataSource biologicalSexWithError:0];
 
   if (v6)
   {
     v7 = HKAnalyticsPropertyValueForBiologicalSex();
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCB7D0]];
+    [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277CCB7D0]];
   }
 
   else
   {
-    [v4 setObject:*MEMORY[0x277CCB800] forKeyedSubscript:*MEMORY[0x277CCB7D0]];
+    [dictionary setObject:*MEMORY[0x277CCB800] forKeyedSubscript:*MEMORY[0x277CCB7D0]];
   }
 
-  v8 = [v3 healthDataSource];
-  v9 = [v3 environmentDataSource];
-  v10 = [v9 currentDate];
-  v11 = [v8 ageWithCurrentDate:v10 error:0];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
+  v11 = [healthDataSource2 ageWithCurrentDate:currentDate error:0];
 
   if (v11)
   {
@@ -308,26 +308,26 @@
     v12 = &unk_2869D07D8;
   }
 
-  [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277CCB7C0]];
-  v13 = [v4 copy];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277CCB7C0]];
+  v13 = [dictionary copy];
 
   return v13;
 }
 
-- (id)_featureStatusForFeatureIdentifier:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (id)_featureStatusForFeatureIdentifier:(id)identifier dataSource:(id)source error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 healthDataSource];
-  v9 = [v8 featureStatusProviderForIdentifier:v7];
+  identifierCopy = identifier;
+  healthDataSource = [source healthDataSource];
+  v9 = [healthDataSource featureStatusProviderForIdentifier:identifierCopy];
 
-  v10 = [v9 featureStatusWithError:a5];
+  v10 = [v9 featureStatusWithError:error];
 
   return v10;
 }
 
-- (id)_isFeatureOnboardedForFeatureIdentifier:(id)a3 dataSource:(id)a4
+- (id)_isFeatureOnboardedForFeatureIdentifier:(id)identifier dataSource:(id)source
 {
-  v4 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _featureStatusForFeatureIdentifier:a3 dataSource:a4 error:0];
+  v4 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _featureStatusForFeatureIdentifier:identifier dataSource:source error:0];
   v5 = v4;
   if (v4)
   {
@@ -344,14 +344,14 @@
   return v7;
 }
 
-- (id)_isFeatureEnabledForFeatureIdentifier:(id)a3 dataSource:(id)a4 featureAvailabilityContext:(id)a5
+- (id)_isFeatureEnabledForFeatureIdentifier:(id)identifier dataSource:(id)source featureAvailabilityContext:(id)context
 {
-  v8 = a5;
-  v9 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _featureStatusForFeatureIdentifier:a3 dataSource:a4 error:0];
+  contextCopy = context;
+  v9 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _featureStatusForFeatureIdentifier:identifier dataSource:source error:0];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 objectForKeyedSubscript:v8];
+    v11 = [v9 objectForKeyedSubscript:contextCopy];
     v12 = [v11 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF38]];
 
     v13 = [MEMORY[0x277CCABB0] numberWithBool:v12];
@@ -367,21 +367,21 @@
   return v14;
 }
 
-- (id)_hasLaunchedHealthAppInInterval:(int64_t)a3 withDataSource:(id)a4
+- (id)_hasLaunchedHealthAppInInterval:(int64_t)interval withDataSource:(id)source
 {
-  v6 = a4;
-  v7 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _healthAppLastOpenedDate];
-  if (v7)
+  sourceCopy = source;
+  _healthAppLastOpenedDate = [(HDMHMentalHealthDailyAnalyticsEvent *)self _healthAppLastOpenedDate];
+  if (_healthAppLastOpenedDate)
   {
-    v8 = [v6 environmentDataSource];
-    v9 = [v8 currentDate];
+    environmentDataSource = [sourceCopy environmentDataSource];
+    currentDate = [environmentDataSource currentDate];
 
-    v10 = [v6 environmentDataSource];
-    v11 = [v10 calendarCache];
-    v12 = [v11 currentCalendar];
+    environmentDataSource2 = [sourceCopy environmentDataSource];
+    calendarCache = [environmentDataSource2 calendarCache];
+    currentCalendar = [calendarCache currentCalendar];
 
-    v13 = [(HDMHMentalHealthDailyAnalyticsEvent *)self numberOfDaysBetweenStartDate:v7 endDate:v9 withCalendar:v12];
-    v14 = v13 > -1 && v13 <= a3;
+    v13 = [(HDMHMentalHealthDailyAnalyticsEvent *)self numberOfDaysBetweenStartDate:_healthAppLastOpenedDate endDate:currentDate withCalendar:currentCalendar];
+    v14 = v13 > -1 && v13 <= interval;
     v15 = MEMORY[0x277CBEC28];
     if (v14)
     {
@@ -399,13 +399,13 @@
   return v16;
 }
 
-- (id)_weeksSinceLastHealthAppLaunchWithDataSource:(id)a3
+- (id)_weeksSinceLastHealthAppLaunchWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _healthAppLastOpenedDate];
-  if (v5)
+  sourceCopy = source;
+  _healthAppLastOpenedDate = [(HDMHMentalHealthDailyAnalyticsEvent *)self _healthAppLastOpenedDate];
+  if (_healthAppLastOpenedDate)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDMHMentalHealthDailyAnalyticsEvent _bucketedWeeksSinceDate:dataSource:](self, "_bucketedWeeksSinceDate:dataSource:", v5, v4)}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDMHMentalHealthDailyAnalyticsEvent _bucketedWeeksSinceDate:dataSource:](self, "_bucketedWeeksSinceDate:dataSource:", _healthAppLastOpenedDate, sourceCopy)}];
   }
 
   else
@@ -418,31 +418,31 @@
   return v7;
 }
 
-- (id)_stateOfMindDaySummaryEnumeratorForPastNDays:(int64_t)a3 withDataSource:(id)a4
+- (id)_stateOfMindDaySummaryEnumeratorForPastNDays:(int64_t)days withDataSource:(id)source
 {
-  v6 = a4;
-  v7 = [v6 environmentDataSource];
-  v8 = [v7 currentDate];
+  sourceCopy = source;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
 
-  v9 = [v6 environmentDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
 
-  v10 = [v9 calendarCache];
-  v11 = [v10 currentCalendar];
+  calendarCache = [environmentDataSource2 calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v12 = [v8 hk_dayIndexWithCalendar:v11] - a3;
+  v12 = [currentDate hk_dayIndexWithCalendar:currentCalendar] - days;
   v13 = [HDMHDaySummaryEnumerator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   LOBYTE(v17) = 1;
-  v15 = [(HDMHDaySummaryEnumerator *)v13 initWithProfile:WeakRetained dayIndexRange:v12 gregorianCalendar:a3 predicate:v11 pendingDailyStateOfMind:0 ascending:0, v17];
+  v15 = [(HDMHDaySummaryEnumerator *)v13 initWithProfile:WeakRetained dayIndexRange:v12 gregorianCalendar:days predicate:currentCalendar pendingDailyStateOfMind:0 ascending:0, v17];
 
   return v15;
 }
 
-- (id)_numDaysStateOfMindLoggedInPast14DaysWithDataSource:(id)a3
+- (id)_numDaysStateOfMindLoggedInPast14DaysWithDataSource:(id)source
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:14 withDataSource:v4];
+  sourceCopy = source;
+  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:14 withDataSource:sourceCopy];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -508,11 +508,11 @@ void __91__HDMHMentalHealthDailyAnalyticsEvent__numDaysStateOfMindLoggedInPast14
   }
 }
 
-- (id)_numDaysStateOfMindLoggedInPast30DaysWithDataSource:(id)a3
+- (id)_numDaysStateOfMindLoggedInPast30DaysWithDataSource:(id)source
 {
   v41[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:30 withDataSource:v4];
+  sourceCopy = source;
+  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:30 withDataSource:sourceCopy];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -629,11 +629,11 @@ void __91__HDMHMentalHealthDailyAnalyticsEvent__numDaysStateOfMindLoggedInPast30
   *(v9 + 24) = v10;
 }
 
-- (id)_numDaysStateOfMindLoggedInPastDayWithDataSource:(id)a3
+- (id)_numDaysStateOfMindLoggedInPastDayWithDataSource:(id)source
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:1 withDataSource:v4];
+  sourceCopy = source;
+  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:1 withDataSource:sourceCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -646,7 +646,7 @@ void __91__HDMHMentalHealthDailyAnalyticsEvent__numDaysStateOfMindLoggedInPast30
   v14[3] = &unk_2798AAF40;
   v6 = [v5 enumerateWithError:&v15 handler:v14];
   v7 = v15;
-  v8 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDailyStateOfMindLogsInPastNDays:1 withDataSource:v4];
+  v8 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numDailyStateOfMindLogsInPastNDays:1 withDataSource:sourceCopy];
   if (v6)
   {
     v20[0] = @"numMomentaryStateOfMindLogsPastDay";
@@ -679,10 +679,10 @@ void __88__HDMHMentalHealthDailyAnalyticsEvent__numDaysStateOfMindLoggedInPastDa
   *(*(*(a1 + 32) + 8) + 24) = [v3 count];
 }
 
-- (id)_hasLoggedStateOfMindInPastNDays:(int64_t)a3 withDataSource:(id)a4
+- (id)_hasLoggedStateOfMindInPastNDays:(int64_t)days withDataSource:(id)source
 {
-  v6 = a4;
-  v7 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:a3 withDataSource:v6];
+  sourceCopy = source;
+  v7 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _stateOfMindDaySummaryEnumeratorForPastNDays:days withDataSource:sourceCopy];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -735,42 +735,42 @@ void __87__HDMHMentalHealthDailyAnalyticsEvent__hasLoggedStateOfMindInPastNDays_
 LABEL_5:
 }
 
-- (id)_enumeratorForPastNDays:(int64_t)a3 withDataSource:(id)a4 forSampleType:(id)a5 withExtraPredicate:(id)a6
+- (id)_enumeratorForPastNDays:(int64_t)days withDataSource:(id)source forSampleType:(id)type withExtraPredicate:(id)predicate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v12 environmentDataSource];
-  v14 = [v13 calendarCache];
-  v15 = [v14 currentCalendar];
+  predicateCopy = predicate;
+  typeCopy = type;
+  sourceCopy = source;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  calendarCache = [environmentDataSource calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v16 = [v12 environmentDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
 
-  v17 = [v16 currentDate];
+  currentDate = [environmentDataSource2 currentDate];
 
-  v18 = [v15 dateByAddingUnit:16 value:-a3 toDate:v17 options:0];
+  v18 = [currentCalendar dateByAddingUnit:16 value:-days toDate:currentDate options:0];
   v19 = objc_alloc(MEMORY[0x277CCA970]);
-  v20 = [v19 initWithStartDate:v18 duration:(*MEMORY[0x277CCB828] * a3)];
-  v21 = [objc_msgSend(v11 "dataObjectClass")];
+  v20 = [v19 initWithStartDate:v18 duration:(*MEMORY[0x277CCB828] * days)];
+  v21 = [objc_msgSend(typeCopy "dataObjectClass")];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v23 = [v21 entityEnumeratorWithProfile:WeakRetained];
 
   v24 = MEMORY[0x277D10B70];
   v25 = HDSampleEntityPredicateForDateInterval();
 
-  v26 = [v24 compoundPredicateWithPredicate:v25 otherPredicate:v10];
+  v26 = [v24 compoundPredicateWithPredicate:v25 otherPredicate:predicateCopy];
 
   [v23 setPredicate:v26];
 
   return v23;
 }
 
-- (id)_numAssessmentsInPastNDays:(int64_t)a3 withDataSource:(id)a4
+- (id)_numAssessmentsInPastNDays:(int64_t)days withDataSource:(id)source
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  sourceCopy = source;
   v7 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD68]];
-  v8 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _enumeratorForPastNDays:a3 withDataSource:v6 forSampleType:v7 withExtraPredicate:0];
+  v8 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _enumeratorForPastNDays:days withDataSource:sourceCopy forSampleType:v7 withExtraPredicate:0];
 
   v21 = 0;
   v22 = &v21;
@@ -831,12 +831,12 @@ uint64_t __81__HDMHMentalHealthDailyAnalyticsEvent__numAssessmentsInPastNDays_wi
   return 1;
 }
 
-- (id)_numAssessmentsCompletedWithDataSource:(id)a3
+- (id)_numAssessmentsCompletedWithDataSource:(id)source
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numAssessmentsInPastNDays:30 withDataSource:v4];
-  v6 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numAssessmentsInPastNDays:180 withDataSource:v4];
+  sourceCopy = source;
+  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numAssessmentsInPastNDays:30 withDataSource:sourceCopy];
+  v6 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _numAssessmentsInPastNDays:180 withDataSource:sourceCopy];
 
   v14[0] = @"numDepressionAssessmentsCompletedPast30Days";
   v7 = [v5 objectAtIndexedSubscript:0];
@@ -857,13 +857,13 @@ uint64_t __81__HDMHMentalHealthDailyAnalyticsEvent__numAssessmentsInPastNDays_wi
   return v11;
 }
 
-- (id)_numDailyStateOfMindLogsInPastNDays:(int64_t)a3 withDataSource:(id)a4
+- (id)_numDailyStateOfMindLogsInPastNDays:(int64_t)days withDataSource:(id)source
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  sourceCopy = source;
   v7 = [MEMORY[0x277D10880] predicateForReflectiveInterval:2 equals:1];
-  v8 = [MEMORY[0x277CCD8D8] stateOfMindType];
-  v9 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _enumeratorForPastNDays:a3 withDataSource:v6 forSampleType:v8 withExtraPredicate:v7];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
+  v9 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _enumeratorForPastNDays:days withDataSource:sourceCopy forSampleType:stateOfMindType withExtraPredicate:v7];
 
   v20 = 0;
   v21 = &v20;
@@ -916,22 +916,22 @@ uint64_t __90__HDMHMentalHealthDailyAnalyticsEvent__numDailyStateOfMindLogsInPas
   return 1;
 }
 
-- (id)_determineDaysSinceLastSampleWithSampleType:(id)a3 dataSource:(id)a4
+- (id)_determineDaysSinceLastSampleWithSampleType:(id)type dataSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 environmentDataSource];
-  v9 = [v8 currentDate];
+  sourceCopy = source;
+  typeCopy = type;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
 
-  v10 = [v6 environmentDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
 
-  v11 = [v10 calendarCache];
-  v12 = [v11 currentCalendar];
+  calendarCache = [environmentDataSource2 calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
   v13 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v22 = 0;
-  v15 = [v13 mostRecentSampleWithType:v7 profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v22];
+  v15 = [v13 mostRecentSampleWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v22];
 
   v16 = v22;
   if (v16 && (_HKInitializeLogging(), v17 = *MEMORY[0x277CCC2F0], os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_ERROR)))
@@ -947,8 +947,8 @@ uint64_t __90__HDMHMentalHealthDailyAnalyticsEvent__numDailyStateOfMindLogsInPas
   {
 LABEL_4:
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v15 startDate];
-    v20 = [v18 numberWithInteger:{-[HDMHMentalHealthDailyAnalyticsEvent numberOfDaysBetweenStartDate:endDate:withCalendar:](self, "numberOfDaysBetweenStartDate:endDate:withCalendar:", v19, v9, v12)}];
+    startDate = [v15 startDate];
+    v20 = [v18 numberWithInteger:{-[HDMHMentalHealthDailyAnalyticsEvent numberOfDaysBetweenStartDate:endDate:withCalendar:](self, "numberOfDaysBetweenStartDate:endDate:withCalendar:", startDate, currentDate, currentCalendar)}];
 
     goto LABEL_7;
   }
@@ -959,9 +959,9 @@ LABEL_7:
   return v20;
 }
 
-- (int64_t)numberOfDaysBetweenStartDate:(id)a3 endDate:(id)a4 withCalendar:(id)a5
+- (int64_t)numberOfDaysBetweenStartDate:(id)date endDate:(id)endDate withCalendar:(id)calendar
 {
-  v5 = [a5 components:16 fromDate:a3 toDate:a4 options:0];
+  v5 = [calendar components:16 fromDate:date toDate:endDate options:0];
   v6 = [v5 day];
 
   return v6;
@@ -1003,20 +1003,20 @@ LABEL_7:
   return v5;
 }
 
-- (id)_weeksSinceOnboardingWithDataSource:(id)a3
+- (id)_weeksSinceOnboardingWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _featureStatusForFeatureIdentifier:*MEMORY[0x277CCC100] dataSource:v4 error:0];
+  sourceCopy = source;
+  v5 = [(HDMHMentalHealthDailyAnalyticsEvent *)self _featureStatusForFeatureIdentifier:*MEMORY[0x277CCC100] dataSource:sourceCopy error:0];
   v6 = v5;
   if (v5)
   {
     if ([v5 isOnboardingRecordPresent])
     {
       v7 = MEMORY[0x277CCABB0];
-      v8 = [v6 onboardingRecord];
-      v9 = [v8 onboardingCompletion];
-      v10 = [v9 completionDate];
-      v11 = [v7 numberWithInteger:{-[HDMHMentalHealthDailyAnalyticsEvent _bucketedWeeksSinceDate:dataSource:](self, "_bucketedWeeksSinceDate:dataSource:", v10, v4)}];
+      onboardingRecord = [v6 onboardingRecord];
+      onboardingCompletion = [onboardingRecord onboardingCompletion];
+      completionDate = [onboardingCompletion completionDate];
+      v11 = [v7 numberWithInteger:{-[HDMHMentalHealthDailyAnalyticsEvent _bucketedWeeksSinceDate:dataSource:](self, "_bucketedWeeksSinceDate:dataSource:", completionDate, sourceCopy)}];
     }
 
     else
@@ -1033,11 +1033,11 @@ LABEL_7:
   return v11;
 }
 
-- (int64_t)_bucketedWeeksSinceDate:(id)a3 dataSource:(id)a4
+- (int64_t)_bucketedWeeksSinceDate:(id)date dataSource:(id)source
 {
-  v5 = a3;
-  v6 = [a4 environmentDataSource];
-  v7 = [v6 bucketedNumberOfWeeksSinceDate:v5];
+  dateCopy = date;
+  environmentDataSource = [source environmentDataSource];
+  v7 = [environmentDataSource bucketedNumberOfWeeksSinceDate:dateCopy];
 
   v8 = *MEMORY[0x277CCB7A0];
   if (v7)
@@ -1047,18 +1047,18 @@ LABEL_7:
 
   v9 = v8;
 
-  v10 = [v9 integerValue];
-  return v10;
+  integerValue = [v9 integerValue];
+  return integerValue;
 }
 
-- (id)_mostRecentAssessmentCategoryWithSampleType:(id)a3
+- (id)_mostRecentAssessmentCategoryWithSampleType:(id)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v18 = 0;
-  v7 = [v5 mostRecentSampleWithType:v4 profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v18];
+  v7 = [v5 mostRecentSampleWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v18];
   v8 = v18;
 
   if (v8)
@@ -1072,7 +1072,7 @@ LABEL_7:
       *buf = 138543874;
       v20 = v16;
       v21 = 2112;
-      v22 = v4;
+      v22 = typeCopy;
       v23 = 2112;
       v24 = v8;
       v17 = v16;
@@ -1118,15 +1118,15 @@ LABEL_10:
   return v10;
 }
 
-- (id)_mostRecentStateOfMindWithReflectiveInterval:(int64_t)a3
+- (id)_mostRecentStateOfMindWithReflectiveInterval:(int64_t)interval
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277D10880] predicateForReflectiveInterval:?];
   v5 = MEMORY[0x277D10848];
-  v6 = [MEMORY[0x277CCD8D8] stateOfMindType];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v19 = 0;
-  v8 = [v5 mostRecentSampleWithType:v6 profile:WeakRetained encodingOptions:0 predicate:v4 anchor:0 error:&v19];
+  v8 = [v5 mostRecentSampleWithType:stateOfMindType profile:WeakRetained encodingOptions:0 predicate:v4 anchor:0 error:&v19];
   v9 = v19;
 
   if (v9)

@@ -1,7 +1,7 @@
 @interface TTRIHashtagCollectionCell
 + (Class)containerViewClass;
-- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRIHashtagCollectionCell
@@ -13,11 +13,11 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_21DBFA16C();
+    identifier = sub_21DBFA16C();
     v6 = v5;
   }
 
@@ -26,10 +26,10 @@
     v6 = 0;
   }
 
-  return sub_21DAD2004(a3, a4, v6);
+  return sub_21DAD2004(style, identifier, v6);
 }
 
-- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore25TTRIHashtagCollectionCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC15RemindersUICore25TTRIHashtagCollectionCell_delegate) = 0;
   swift_unknownObjectWeakInit();

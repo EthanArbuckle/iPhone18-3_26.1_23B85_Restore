@@ -1,21 +1,21 @@
 @interface CKUserIdentityLookupInfo
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKRoughlyEquivalentProperties)equivalencyProperties;
-- (CKUserIdentityLookupInfo)initWithCoder:(id)a3;
+- (CKUserIdentityLookupInfo)initWithCoder:(id)coder;
 - (CKUserIdentityLookupInfo)initWithEmailAddress:(NSString *)emailAddress;
 - (CKUserIdentityLookupInfo)initWithPhoneNumber:(NSString *)phoneNumber;
 - (CKUserIdentityLookupInfo)initWithUserRecordID:(CKRecordID *)userRecordID;
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5;
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand;
 - (id)ckShortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
 - (id)lookupValue;
 - (int64_t)lookupField;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
 - (void)_stripPersonalInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKUserIdentityLookupInfo
@@ -216,12 +216,12 @@ LABEL_8:
   return v16;
 }
 
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand
 {
-  v5 = a5;
-  v6 = a4;
+  expandCopy = expand;
+  privateCopy = private;
   v10 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], a2, 1);
-  if (v6)
+  if (privateCopy)
   {
     v11 = objc_msgSend_emailAddress(self, v8, v9);
     v14 = objc_msgSend_phoneNumber(self, v12, v13);
@@ -238,7 +238,7 @@ LABEL_8:
 
     else if (v17)
     {
-      if (v5)
+      if (expandCopy)
       {
         v24 = objc_msgSend_CKDescriptionPropertiesWithPublic_private_shouldExpand_(v17, v22, 1, 1, 1);
         objc_msgSend_CKAddPropertySafelyForKey_value_(v10, v25, @"userID", v24);
@@ -254,7 +254,7 @@ LABEL_8:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   inited = objc_msgSend_initInternal(v4, v5, v6);
@@ -293,13 +293,13 @@ LABEL_8:
   return v13 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_emailAddress(self, v6, v7);
     v11 = objc_msgSend_emailAddress(v5, v9, v10);
     if (CKObjectsAreBothNilOrEqual(v8, v11))
@@ -333,58 +333,58 @@ LABEL_8:
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v27 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_phoneNumber(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v27, v8, v7, @"PhoneNumber");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"PhoneNumber");
 
   v11 = objc_msgSend_emailAddress(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v27, v12, v11, @"EmailAddress");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"EmailAddress");
 
   v15 = objc_msgSend_userRecordID(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v27, v16, v15, @"RecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"RecordID");
 
-  if ((objc_msgSend_ck_isCodingForCKSQLiteDatabase(v27, v17, v18) & 1) == 0)
+  if ((objc_msgSend_ck_isCodingForCKSQLiteDatabase(coderCopy, v17, v18) & 1) == 0)
   {
     shouldReportMissingIdentity = objc_msgSend_shouldReportMissingIdentity(self, v19, v20);
-    objc_msgSend_encodeBool_forKey_(v27, v22, shouldReportMissingIdentity, @"ReportsMissing");
+    objc_msgSend_encodeBool_forKey_(coderCopy, v22, shouldReportMissingIdentity, @"ReportsMissing");
     v25 = objc_msgSend_encryptedPersonalInfo(self, v23, v24);
-    objc_msgSend_encodeObject_forKey_(v27, v26, v25, @"EncryptedPersonalInfo");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v26, v25, @"EncryptedPersonalInfo");
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKUserIdentityLookupInfo)initWithCoder:(id)a3
+- (CKUserIdentityLookupInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = CKUserIdentityLookupInfo;
   v5 = [(CKUserIdentityLookupInfo *)&v26 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"EmailAddress");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"EmailAddress");
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"PhoneNumber");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"PhoneNumber");
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"RecordID");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"RecordID");
     userRecordID = v5->_userRecordID;
     v5->_userRecordID = v16;
 
-    if ((objc_msgSend_ck_isDecodingForCKSQLiteDatabase(v4, v18, v19) & 1) == 0)
+    if ((objc_msgSend_ck_isDecodingForCKSQLiteDatabase(coderCopy, v18, v19) & 1) == 0)
     {
-      v5->_shouldReportMissingIdentity = objc_msgSend_decodeBoolForKey_(v4, v20, @"ReportsMissing");
+      v5->_shouldReportMissingIdentity = objc_msgSend_decodeBoolForKey_(coderCopy, v20, @"ReportsMissing");
       v21 = objc_opt_class();
-      v23 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v22, v21, @"EncryptedPersonalInfo");
+      v23 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v22, v21, @"EncryptedPersonalInfo");
       encryptedPersonalInfo = v5->_encryptedPersonalInfo;
       v5->_encryptedPersonalInfo = v23;
     }
@@ -393,17 +393,17 @@ LABEL_8:
   return v5;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_emailAddress(self, v5, v6);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v8, @"emailAddress", v7, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v8, @"emailAddress", v7, 1);
 
   v11 = objc_msgSend_phoneNumber(self, v9, v10);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v12, @"phoneNumber", v11, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v12, @"phoneNumber", v11, 1);
 
   v16 = objc_msgSend_userRecordID(self, v13, v14);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v15, @"userRecordID", v16, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v15, @"userRecordID", v16, 0);
 }
 
 @end

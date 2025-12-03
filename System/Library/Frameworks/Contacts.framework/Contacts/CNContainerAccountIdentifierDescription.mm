@@ -1,10 +1,10 @@
 @interface CNContainerAccountIdentifierDescription
-- (void)ABValueForABSource:(void *)a3;
+- (void)ABValueForABSource:(void *)source;
 @end
 
 @implementation CNContainerAccountIdentifierDescription
 
-- (void)ABValueForABSource:(void *)a3
+- (void)ABValueForABSource:(void *)source
 {
   ABRecordGetAddressBook();
   if (!ABAddressBookGetAccountForSource())

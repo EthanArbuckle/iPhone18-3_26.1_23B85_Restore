@@ -1,43 +1,43 @@
 @interface PKNSBundleProxy
-- (BOOL)loadAndReturnError:(id *)a3;
+- (BOOL)loadAndReturnError:(id *)error;
 - (Class)principalClass;
 - (NSDictionary)infoDictionary;
 - (NSDictionary)localizedInfoDictionary;
 - (NSString)bundleIdentifier;
 - (NSURL)builtInPlugInsURL;
 - (NSURL)bundleURL;
-- (PKNSBundleProxy)initWithNSBundle:(id)a3;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
+- (PKNSBundleProxy)initWithNSBundle:(id)bundle;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
 @end
 
 @implementation PKNSBundleProxy
 
 - (NSDictionary)infoDictionary
 {
-  v2 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v3 = [v2 infoDictionary];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  infoDictionary = [_underlyingNSBundle infoDictionary];
 
-  return v3;
+  return infoDictionary;
 }
 
 - (NSURL)bundleURL
 {
-  v2 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v3 = [v2 bundleURL];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  bundleURL = [_underlyingNSBundle bundleURL];
 
-  return v3;
+  return bundleURL;
 }
 
-- (PKNSBundleProxy)initWithNSBundle:(id)a3
+- (PKNSBundleProxy)initWithNSBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = PKNSBundleProxy;
   v6 = [(PKNSBundleProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__underlyingNSBundle, a3);
+    objc_storeStrong(&v6->__underlyingNSBundle, bundle);
   }
 
   return v7;
@@ -45,51 +45,51 @@
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v3 = [v2 bundleIdentifier];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  bundleIdentifier = [_underlyingNSBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSURL)builtInPlugInsURL
 {
-  v2 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v3 = [v2 builtInPlugInsURL];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  builtInPlugInsURL = [_underlyingNSBundle builtInPlugInsURL];
 
-  return v3;
+  return builtInPlugInsURL;
 }
 
 - (NSDictionary)localizedInfoDictionary
 {
-  v2 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v3 = [v2 localizedInfoDictionary];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  localizedInfoDictionary = [_underlyingNSBundle localizedInfoDictionary];
 
-  return v3;
+  return localizedInfoDictionary;
 }
 
 - (Class)principalClass
 {
-  v2 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v3 = [v2 principalClass];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  principalClass = [_underlyingNSBundle principalClass];
 
-  return v3;
+  return principalClass;
 }
 
-- (BOOL)loadAndReturnError:(id *)a3
+- (BOOL)loadAndReturnError:(id *)error
 {
-  v4 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  LOBYTE(a3) = [v4 loadAndReturnError:a3];
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  LOBYTE(error) = [_underlyingNSBundle loadAndReturnError:error];
 
-  return a3;
+  return error;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKNSBundleProxy *)self _underlyingNSBundle];
-  v12 = [v11 localizedStringForKey:v10 value:v9 table:v8];
+  tableCopy = table;
+  valueCopy = value;
+  keyCopy = key;
+  _underlyingNSBundle = [(PKNSBundleProxy *)self _underlyingNSBundle];
+  v12 = [_underlyingNSBundle localizedStringForKey:keyCopy value:valueCopy table:tableCopy];
 
   return v12;
 }

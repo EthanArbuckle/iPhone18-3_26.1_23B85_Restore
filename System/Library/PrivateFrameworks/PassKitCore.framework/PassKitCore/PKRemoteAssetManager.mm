@@ -1,39 +1,39 @@
 @interface PKRemoteAssetManager
-- (BOOL)addRemoteAssetData:(id)a3 shouldWriteData:(BOOL)a4 forManifestItem:(id)a5 error:(id *)a6;
-- (BOOL)assetExistsLocally:(id)a3;
-- (BOOL)hasEncryptedDeviceSpecificItemWithRelativePath:(id)a3;
-- (PKRemoteAssetManager)initWithDirectoryCoordinator:(id)a3;
-- (PKRemoteAssetManager)initWithFileURL:(id)a3;
+- (BOOL)addRemoteAssetData:(id)data shouldWriteData:(BOOL)writeData forManifestItem:(id)item error:(id *)error;
+- (BOOL)assetExistsLocally:(id)locally;
+- (BOOL)hasEncryptedDeviceSpecificItemWithRelativePath:(id)path;
+- (PKRemoteAssetManager)initWithDirectoryCoordinator:(id)coordinator;
+- (PKRemoteAssetManager)initWithFileURL:(id)l;
 - (id)deviceSpecificItems;
-- (id)deviceSpecificItemsForScreenScale:(double)a3 suffix:(id)a4;
-- (id)itemWithRelativePath:(id)a3;
+- (id)deviceSpecificItemsForScreenScale:(double)scale suffix:(id)suffix;
+- (id)itemWithRelativePath:(id)path;
 - (id)pendingRemoteAssetsItems;
-- (id)pendingRemoteAssetsItemsForScreenScale:(double)a3 suffix:(id)a4;
+- (id)pendingRemoteAssetsItemsForScreenScale:(double)scale suffix:(id)suffix;
 - (id)remoteAssetManifests;
-- (id)sha1HexFromRelativeManifestWithRelativePath:(id)a3;
-- (void)_callCompletionHandlersWithFinishState:(BOOL)a3 progress:(float)a4 error:(id)a5;
-- (void)_downloadRemoteAssetItem:(id)a3 withCloudStoreCoordinatorDelegate:(id)a4 shouldWriteData:(BOOL)a5 completion:(id)a6;
-- (void)_downloadRemoteAssetsWithScreenScale:(double)a3 suffix:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 requireRequiredAssets:(BOOL)a6 includeEncryptedAssets:(BOOL)a7 completion:(id)a8;
-- (void)cacheRemoteAssetData:(id)a3 forManifestItem:(id)a4;
-- (void)downloadRemoteAssetItem:(id)a3 withCloudStoreCoordinatorDelegate:(id)a4 completion:(id)a5;
-- (void)downloadRemoteAssetsWithCompletion:(id)a3;
-- (void)downloadRemoteAssetsWithScreenScale:(double)a3 suffix:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 ignoreRequiredAssetDownloadFailures:(BOOL)a6 includeEncryptedAssets:(BOOL)a7 completion:(id)a8;
+- (id)sha1HexFromRelativeManifestWithRelativePath:(id)path;
+- (void)_callCompletionHandlersWithFinishState:(BOOL)state progress:(float)progress error:(id)error;
+- (void)_downloadRemoteAssetItem:(id)item withCloudStoreCoordinatorDelegate:(id)delegate shouldWriteData:(BOOL)data completion:(id)completion;
+- (void)_downloadRemoteAssetsWithScreenScale:(double)scale suffix:(id)suffix cloudStoreCoordinatorDelegate:(id)delegate requireRequiredAssets:(BOOL)assets includeEncryptedAssets:(BOOL)encryptedAssets completion:(id)completion;
+- (void)cacheRemoteAssetData:(id)data forManifestItem:(id)item;
+- (void)downloadRemoteAssetItem:(id)item withCloudStoreCoordinatorDelegate:(id)delegate completion:(id)completion;
+- (void)downloadRemoteAssetsWithCompletion:(id)completion;
+- (void)downloadRemoteAssetsWithScreenScale:(double)scale suffix:(id)suffix cloudStoreCoordinatorDelegate:(id)delegate ignoreRequiredAssetDownloadFailures:(BOOL)failures includeEncryptedAssets:(BOOL)assets completion:(id)completion;
 @end
 
 @implementation PKRemoteAssetManager
 
-- (PKRemoteAssetManager)initWithFileURL:(id)a3
+- (PKRemoteAssetManager)initWithFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [[PKDirectoryCoordinator alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[PKDirectoryCoordinator alloc] initWithURL:lCopy];
 
   v6 = [(PKRemoteAssetManager *)self initWithDirectoryCoordinator:v5];
   return v6;
 }
 
-- (PKRemoteAssetManager)initWithDirectoryCoordinator:(id)a3
+- (PKRemoteAssetManager)initWithDirectoryCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = PKRemoteAssetManager;
   v6 = [(PKRemoteAssetManager *)&v18 init];
@@ -48,10 +48,10 @@
     v13[2] = __53__PKRemoteAssetManager_initWithDirectoryCoordinator___block_invoke;
     v13[3] = &unk_1E79C88C0;
     v13[4] = &v14;
-    [v5 performCoordinatedAction:v13];
+    [coordinatorCopy performCoordinatedAction:v13];
     if (*(v15 + 24) == 1)
     {
-      objc_storeStrong(&v6->_coordinator, a3);
+      objc_storeStrong(&v6->_coordinator, coordinator);
       p_super = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v8 = dispatch_queue_create("com.apple.passKitCore.remoteAssetManager", p_super);
       queue = v6->_queue;
@@ -191,17 +191,17 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
   return [(PKRemoteAssetManager *)self deviceSpecificItemsForScreenScale:0 suffix:v3];
 }
 
-- (id)deviceSpecificItemsForScreenScale:(double)a3 suffix:(id)a4
+- (id)deviceSpecificItemsForScreenScale:(double)scale suffix:(id)suffix
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PKRemoteAssetManager *)self remoteAssetManifests];
+  suffixCopy = suffix;
+  remoteAssetManifests = [(PKRemoteAssetManager *)self remoteAssetManifests];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = remoteAssetManifests;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -216,12 +216,12 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) deviceSpecificAssetForScreenScale:v6 suffix:{a3, v19}];
+        v14 = [*(*(&v19 + 1) + 8 * i) deviceSpecificAssetForScreenScale:suffixCopy suffix:{scale, v19}];
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 seid];
-          if (!v16 || (seids = self->_seids) == 0 || [(NSArray *)seids containsObject:v16])
+          seid = [v14 seid];
+          if (!seid || (seids = self->_seids) == 0 || [(NSArray *)seids containsObject:seid])
           {
             [v8 addObject:v15];
           }
@@ -246,9 +246,9 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (id)pendingRemoteAssetsItemsForScreenScale:(double)a3 suffix:(id)a4
+- (id)pendingRemoteAssetsItemsForScreenScale:(double)scale suffix:(id)suffix
 {
-  v5 = [(PKRemoteAssetManager *)self deviceSpecificItemsForScreenScale:a4 suffix:a3];
+  v5 = [(PKRemoteAssetManager *)self deviceSpecificItemsForScreenScale:suffix suffix:scale];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__PKRemoteAssetManager_pendingRemoteAssetsItemsForScreenScale_suffix___block_invoke;
@@ -259,14 +259,14 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (id)itemWithRelativePath:(id)a3
+- (id)itemWithRelativePath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   manifestItemsByRelativeURL = self->_manifestItemsByRelativeURL;
   if (!manifestItemsByRelativeURL)
   {
-    v21 = v4;
+    v21 = pathCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7 = self->_manifestItemsByRelativeURL;
     self->_manifestItemsByRelativeURL = v6;
@@ -290,12 +290,12 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
             objc_enumerationMutation(obj);
           }
 
-          v11 = [*(*(&v28 + 1) + 8 * i) remoteAssets];
+          remoteAssets = [*(*(&v28 + 1) + 8 * i) remoteAssets];
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v12 = [remoteAssets countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v12)
           {
             v13 = v12;
@@ -306,24 +306,24 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
               {
                 if (*v25 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(remoteAssets);
                 }
 
-                v16 = [v11 objectForKey:*(*(&v24 + 1) + 8 * j)];
-                v17 = [v16 relativeLocalPath];
-                if (v17)
+                v16 = [remoteAssets objectForKey:*(*(&v24 + 1) + 8 * j)];
+                relativeLocalPath = [v16 relativeLocalPath];
+                if (relativeLocalPath)
                 {
-                  [(NSMutableDictionary *)self->_manifestItemsByRelativeURL setObject:v16 forKey:v17];
+                  [(NSMutableDictionary *)self->_manifestItemsByRelativeURL setObject:v16 forKey:relativeLocalPath];
                 }
 
-                v18 = [v16 relativeEncryptedContentsLocalPath];
-                if (v18)
+                relativeEncryptedContentsLocalPath = [v16 relativeEncryptedContentsLocalPath];
+                if (relativeEncryptedContentsLocalPath)
                 {
-                  [(NSMutableDictionary *)self->_manifestItemsByRelativeURL setObject:v16 forKey:v18];
+                  [(NSMutableDictionary *)self->_manifestItemsByRelativeURL setObject:v16 forKey:relativeEncryptedContentsLocalPath];
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v13 = [remoteAssets countByEnumeratingWithState:&v24 objects:v32 count:16];
             }
 
             while (v13);
@@ -337,18 +337,18 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
     }
 
     manifestItemsByRelativeURL = self->_manifestItemsByRelativeURL;
-    v4 = v21;
+    pathCopy = v21;
   }
 
-  v19 = [(NSMutableDictionary *)manifestItemsByRelativeURL objectForKey:v4];
+  v19 = [(NSMutableDictionary *)manifestItemsByRelativeURL objectForKey:pathCopy];
 
   return v19;
 }
 
-- (id)sha1HexFromRelativeManifestWithRelativePath:(id)a3
+- (id)sha1HexFromRelativeManifestWithRelativePath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   sha1HexFromRelativeManifest = self->_sha1HexFromRelativeManifest;
   if (!sha1HexFromRelativeManifest)
   {
@@ -356,12 +356,12 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
     v7 = self->_sha1HexFromRelativeManifest;
     self->_sha1HexFromRelativeManifest = v6;
 
-    v8 = [(PKRemoteAssetManager *)self remoteAssetManifests];
+    remoteAssetManifests = [(PKRemoteAssetManager *)self remoteAssetManifests];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v9 = [remoteAssetManifests countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -372,19 +372,19 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(remoteAssetManifests);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) remoteAssets];
+          remoteAssets = [*(*(&v17 + 1) + 8 * i) remoteAssets];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __68__PKRemoteAssetManager_sha1HexFromRelativeManifestWithRelativePath___block_invoke;
           v16[3] = &unk_1E79D9180;
           v16[4] = self;
-          [v13 enumerateKeysAndObjectsUsingBlock:v16];
+          [remoteAssets enumerateKeysAndObjectsUsingBlock:v16];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [remoteAssetManifests countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -393,7 +393,7 @@ void __44__PKRemoteAssetManager_remoteAssetManifests__block_invoke(uint64_t a1, 
     sha1HexFromRelativeManifest = self->_sha1HexFromRelativeManifest;
   }
 
-  v14 = [(NSMutableDictionary *)sha1HexFromRelativeManifest objectForKey:v4];
+  v14 = [(NSMutableDictionary *)sha1HexFromRelativeManifest objectForKey:pathCopy];
 
   return v14;
 }
@@ -427,11 +427,11 @@ void __68__PKRemoteAssetManager_sha1HexFromRelativeManifestWithRelativePath___bl
   }
 }
 
-- (BOOL)hasEncryptedDeviceSpecificItemWithRelativePath:(id)a3
+- (BOOL)hasEncryptedDeviceSpecificItemWithRelativePath:(id)path
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKRemoteAssetManager *)self remoteAssetManifests];
+  pathCopy = path;
+  remoteAssetManifests = [(PKRemoteAssetManager *)self remoteAssetManifests];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -449,7 +449,7 @@ void __68__PKRemoteAssetManager_sha1HexFromRelativeManifestWithRelativePath___bl
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v5;
+  v7 = remoteAssetManifests;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v8)
   {
@@ -466,16 +466,16 @@ void __68__PKRemoteAssetManager_sha1HexFromRelativeManifestWithRelativePath___bl
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = v35[5];
-        v12 = [v10 fileURL];
-        v13 = [v12 URLByDeletingLastPathComponent];
-        v14 = PKRelativePathAfterResolvingSymlinks(v11, v13);
+        fileURL = [v10 fileURL];
+        uRLByDeletingLastPathComponent = [fileURL URLByDeletingLastPathComponent];
+        v14 = PKRelativePathAfterResolvingSymlinks(v11, uRLByDeletingLastPathComponent);
 
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v15 = [v10 encryptedDeviceSpecificRemoteAssetFilenames];
-        v16 = [v15 countByEnumeratingWithState:&v25 objects:v40 count:16];
+        encryptedDeviceSpecificRemoteAssetFilenames = [v10 encryptedDeviceSpecificRemoteAssetFilenames];
+        v16 = [encryptedDeviceSpecificRemoteAssetFilenames countByEnumeratingWithState:&v25 objects:v40 count:16];
         if (v16)
         {
           v17 = *v26;
@@ -485,11 +485,11 @@ void __68__PKRemoteAssetManager_sha1HexFromRelativeManifestWithRelativePath___bl
             {
               if (*v26 != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(encryptedDeviceSpecificRemoteAssetFilenames);
               }
 
               v19 = [v14 stringByAppendingString:*(*(&v25 + 1) + 8 * j)];
-              v20 = [v4 isEqualToString:v19];
+              v20 = [pathCopy isEqualToString:v19];
 
               if (v20)
               {
@@ -499,7 +499,7 @@ void __68__PKRemoteAssetManager_sha1HexFromRelativeManifestWithRelativePath___bl
               }
             }
 
-            v16 = [v15 countByEnumeratingWithState:&v25 objects:v40 count:16];
+            v16 = [encryptedDeviceSpecificRemoteAssetFilenames countByEnumeratingWithState:&v25 objects:v40 count:16];
             if (v16)
             {
               continue;
@@ -528,9 +528,9 @@ LABEL_19:
   return v21;
 }
 
-- (BOOL)assetExistsLocally:(id)a3
+- (BOOL)assetExistsLocally:(id)locally
 {
-  v4 = a3;
+  locallyCopy = locally;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -540,7 +540,7 @@ LABEL_19:
   v8[1] = 3221225472;
   v8[2] = __43__PKRemoteAssetManager_assetExistsLocally___block_invoke;
   v8[3] = &unk_1E79C87C0;
-  v6 = v4;
+  v6 = locallyCopy;
   v9 = v6;
   v10 = &v11;
   [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v8];
@@ -586,17 +586,17 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)downloadRemoteAssetsWithScreenScale:(double)a3 suffix:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 ignoreRequiredAssetDownloadFailures:(BOOL)a6 includeEncryptedAssets:(BOOL)a7 completion:(id)a8
+- (void)downloadRemoteAssetsWithScreenScale:(double)scale suffix:(id)suffix cloudStoreCoordinatorDelegate:(id)delegate ignoreRequiredAssetDownloadFailures:(BOOL)failures includeEncryptedAssets:(BOOL)assets completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  suffixCopy = suffix;
+  delegateCopy = delegate;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v17 = [(NSMutableArray *)self->_completionHandlers count];
-  if (v16)
+  if (completionCopy)
   {
     completionHandlers = self->_completionHandlers;
-    v19 = _Block_copy(v16);
+    v19 = _Block_copy(completionCopy);
     [(NSMutableArray *)completionHandlers addObject:v19];
   }
 
@@ -608,12 +608,12 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
     v22[2] = __167__PKRemoteAssetManager_downloadRemoteAssetsWithScreenScale_suffix_cloudStoreCoordinatorDelegate_ignoreRequiredAssetDownloadFailures_includeEncryptedAssets_completion___block_invoke;
     v22[3] = &unk_1E79D91A8;
     v22[4] = self;
-    v26 = a3;
-    v23 = v14;
-    v24 = v15;
-    v27 = a6;
-    v28 = a7;
-    v25 = v16;
+    scaleCopy = scale;
+    v23 = suffixCopy;
+    v24 = delegateCopy;
+    failuresCopy = failures;
+    assetsCopy = assets;
+    v25 = completionCopy;
     v20 = _Block_copy(v22);
     if (PKPaymentPassArtDownloadDelayEnabled())
     {
@@ -628,15 +628,15 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_downloadRemoteAssetsWithScreenScale:(double)a3 suffix:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 requireRequiredAssets:(BOOL)a6 includeEncryptedAssets:(BOOL)a7 completion:(id)a8
+- (void)_downloadRemoteAssetsWithScreenScale:(double)scale suffix:(id)suffix cloudStoreCoordinatorDelegate:(id)delegate requireRequiredAssets:(BOOL)assets includeEncryptedAssets:(BOOL)encryptedAssets completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v35 = a5;
-  v32 = v13;
-  v33 = a8;
-  v36 = self;
-  v34 = [(PKRemoteAssetManager *)self pendingRemoteAssetsItemsForScreenScale:v13 suffix:a3];
+  suffixCopy = suffix;
+  delegateCopy = delegate;
+  v32 = suffixCopy;
+  completionCopy = completion;
+  selfCopy = self;
+  v34 = [(PKRemoteAssetManager *)self pendingRemoteAssetsItemsForScreenScale:suffixCopy suffix:scale];
   v14 = v34;
   if ([v34 count])
   {
@@ -668,9 +668,9 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
           }
 
           v21 = [*(*(&v51 + 1) + 8 * i) size];
-          v22 = [v21 unsignedIntegerValue];
+          unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-          v17 += v22;
+          v17 += unsignedIntegerValue;
         }
 
         v18 = [v16 countByEnumeratingWithState:&v51 objects:v58 count:16];
@@ -689,11 +689,11 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
     aBlock[1] = 3221225472;
     aBlock[2] = __154__PKRemoteAssetManager__downloadRemoteAssetsWithScreenScale_suffix_cloudStoreCoordinatorDelegate_requireRequiredAssets_includeEncryptedAssets_completion___block_invoke;
     aBlock[3] = &unk_1E79D91D0;
-    v48 = a6;
+    assetsCopy = assets;
     aBlock[6] = v56;
     aBlock[7] = v49;
     aBlock[8] = v17;
-    aBlock[4] = v36;
+    aBlock[4] = selfCopy;
     aBlock[5] = v55;
     v23 = _Block_copy(aBlock);
     v24 = objc_alloc_init(PKAsyncUnaryOperationComposer);
@@ -716,15 +716,15 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
           }
 
           v29 = *(*(&v43 + 1) + 8 * j);
-          if (a7 || ![*(*(&v43 + 1) + 8 * j) encryptionSource])
+          if (encryptedAssets || ![*(*(&v43 + 1) + 8 * j) encryptionSource])
           {
             v39[0] = MEMORY[0x1E69E9820];
             v39[1] = 3221225472;
             v39[2] = __154__PKRemoteAssetManager__downloadRemoteAssetsWithScreenScale_suffix_cloudStoreCoordinatorDelegate_requireRequiredAssets_includeEncryptedAssets_completion___block_invoke_45;
             v39[3] = &unk_1E79D9220;
-            v39[4] = v36;
+            v39[4] = selfCopy;
             v39[5] = v29;
-            v40 = v35;
+            v40 = delegateCopy;
             v41 = v23;
             v42 = v49;
             [(PKAsyncUnaryOperationComposer *)v24 addOperation:v39];
@@ -737,14 +737,14 @@ void __43__PKRemoteAssetManager_assetExistsLocally___block_invoke(uint64_t a1, v
       while (v26);
     }
 
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __154__PKRemoteAssetManager__downloadRemoteAssetsWithScreenScale_suffix_cloudStoreCoordinatorDelegate_requireRequiredAssets_includeEncryptedAssets_completion___block_invoke_3;
     v38[3] = &unk_1E79D9248;
-    v38[4] = v36;
+    v38[4] = selfCopy;
     v38[5] = v49;
-    v31 = [(PKAsyncUnaryOperationComposer *)v24 evaluateWithInput:v30 completion:v38];
+    v31 = [(PKAsyncUnaryOperationComposer *)v24 evaluateWithInput:null completion:v38];
 
     _Block_object_dispose(v49, 8);
     _Block_object_dispose(v55, 8);
@@ -837,16 +837,16 @@ uint64_t __154__PKRemoteAssetManager__downloadRemoteAssetsWithScreenScale_suffix
   return v2();
 }
 
-- (void)downloadRemoteAssetItem:(id)a3 withCloudStoreCoordinatorDelegate:(id)a4 completion:(id)a5
+- (void)downloadRemoteAssetItem:(id)item withCloudStoreCoordinatorDelegate:(id)delegate completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordinatorDelegate_completion___block_invoke;
   v10[3] = &unk_1E79C5240;
-  v11 = v8;
-  v9 = v8;
-  [(PKRemoteAssetManager *)self _downloadRemoteAssetItem:a3 withCloudStoreCoordinatorDelegate:a4 shouldWriteData:1 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKRemoteAssetManager *)self _downloadRemoteAssetItem:item withCloudStoreCoordinatorDelegate:delegate shouldWriteData:1 completion:v10];
 }
 
 uint64_t __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordinatorDelegate_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -871,14 +871,14 @@ uint64_t __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordi
   return result;
 }
 
-- (void)_downloadRemoteAssetItem:(id)a3 withCloudStoreCoordinatorDelegate:(id)a4 shouldWriteData:(BOOL)a5 completion:(id)a6
+- (void)_downloadRemoteAssetItem:(id)item withCloudStoreCoordinatorDelegate:(id)delegate shouldWriteData:(BOOL)data completion:(id)completion
 {
-  v7 = a5;
+  dataCopy = data;
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 localURL];
+  itemCopy = item;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  localURL = [itemCopy localURL];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -890,9 +890,9 @@ uint64_t __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordi
   v30[1] = 3221225472;
   v30[2] = __110__PKRemoteAssetManager__downloadRemoteAssetItem_withCloudStoreCoordinatorDelegate_shouldWriteData_completion___block_invoke;
   v30[3] = &unk_1E79D92C0;
-  v15 = v13;
+  v15 = localURL;
   v31 = v15;
-  v16 = v10;
+  v16 = itemCopy;
   v32 = v16;
   v33 = &v34;
   [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v30];
@@ -901,33 +901,33 @@ uint64_t __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordi
     v17 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v16 remoteURL];
+      remoteURL = [v16 remoteURL];
       *buf = 138412290;
-      v41 = v18;
+      v41 = remoteURL;
       _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Not downloading: %@ since the asset already exists in the pass directory", buf, 0xCu);
     }
 
     [(PKRemoteAssetManager *)self addRemoteAssetData:v35[5] shouldWriteData:0 forManifestItem:v16 error:0];
-    v12[2](v12, v35[5], 0);
+    completionCopy[2](completionCopy, v35[5], 0);
   }
 
   else
   {
-    v19 = [v16 sha1Hex];
-    v20 = PKCachedFileForSHA1(v19);
+    sha1Hex = [v16 sha1Hex];
+    v20 = PKCachedFileForSHA1(sha1Hex);
 
     if (v20)
     {
-      v21 = [v16 sha1Hex];
+      sha1Hex2 = [v16 sha1Hex];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __110__PKRemoteAssetManager__downloadRemoteAssetItem_withCloudStoreCoordinatorDelegate_shouldWriteData_completion___block_invoke_50;
       v28[3] = &unk_1E79C8898;
       v22 = v16;
       v29 = v22;
-      PKPassAssetDownloadCacheCreateFileURLReadOnly(0, v21, v28);
+      PKPassAssetDownloadCacheCreateFileURLReadOnly(0, sha1Hex2, v28);
 
-      if (v7)
+      if (dataCopy)
       {
         v27 = 0;
         [(PKRemoteAssetManager *)self addRemoteAssetData:v20 forManifestItem:v22 error:&v27];
@@ -939,7 +939,7 @@ uint64_t __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordi
         v23 = 0;
       }
 
-      (v12)[2](v12, v20, v23);
+      (completionCopy)[2](completionCopy, v20, v23);
     }
 
     else
@@ -950,8 +950,8 @@ uint64_t __93__PKRemoteAssetManager_downloadRemoteAssetItem_withCloudStoreCoordi
       v24[3] = &unk_1E79D9270;
       v24[4] = self;
       v25 = v16;
-      v26 = v12;
-      [v25 downloadAssetWithCloudStoreCoordinatorDelegate:v11 completion:v24];
+      v26 = completionCopy;
+      [v25 downloadAssetWithCloudStoreCoordinatorDelegate:delegateCopy completion:v24];
     }
   }
 
@@ -1038,27 +1038,27 @@ void __110__PKRemoteAssetManager__downloadRemoteAssetItem_withCloudStoreCoordina
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)cacheRemoteAssetData:(id)a3 forManifestItem:(id)a4
+- (void)cacheRemoteAssetData:(id)data forManifestItem:(id)item
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 SHA1Hash];
-  v7 = [v6 hexEncoding];
+  dataCopy = data;
+  itemCopy = item;
+  sHA1Hash = [dataCopy SHA1Hash];
+  hexEncoding = [sHA1Hash hexEncoding];
 
-  v8 = [v5 itemType];
-  if (v8 != 1 && (PKCachedFileForSHA1Exists(v7) & 1) == 0)
+  itemType = [itemCopy itemType];
+  if (itemType != 1 && (PKCachedFileForSHA1Exists(hexEncoding) & 1) == 0)
   {
-    PKCacheFile(v9, v7);
+    PKCacheFile(dataCopy, hexEncoding);
   }
 }
 
-- (void)_callCompletionHandlersWithFinishState:(BOOL)a3 progress:(float)a4 error:(id)a5
+- (void)_callCompletionHandlersWithFinishState:(BOOL)state progress:(float)progress error:(id)error
 {
-  v6 = a3;
-  v8 = a5;
+  stateCopy = state;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   v9 = [(NSMutableArray *)self->_completionHandlers copy];
-  if (v6)
+  if (stateCopy)
   {
     [(NSMutableArray *)self->_completionHandlers removeAllObjects];
   }
@@ -1069,11 +1069,11 @@ void __110__PKRemoteAssetManager__downloadRemoteAssetItem_withCloudStoreCoordina
   block[1] = 3221225472;
   block[2] = __78__PKRemoteAssetManager__callCompletionHandlersWithFinishState_progress_error___block_invoke;
   block[3] = &unk_1E79D9298;
-  v17 = v6;
-  v16 = a4;
+  v17 = stateCopy;
+  progressCopy = progress;
   v14 = v9;
-  v15 = v8;
-  v11 = v8;
+  v15 = errorCopy;
+  v11 = errorCopy;
   v12 = v9;
   dispatch_async(queue, block);
 }
@@ -1112,53 +1112,53 @@ void __78__PKRemoteAssetManager__callCompletionHandlersWithFinishState_progress_
   }
 }
 
-- (BOOL)addRemoteAssetData:(id)a3 shouldWriteData:(BOOL)a4 forManifestItem:(id)a5 error:(id *)a6
+- (BOOL)addRemoteAssetData:(id)data shouldWriteData:(BOOL)writeData forManifestItem:(id)item error:(id *)error
 {
-  v8 = a4;
+  writeDataCopy = writeData;
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (v10)
+  dataCopy = data;
+  itemCopy = item;
+  if (dataCopy)
   {
-    v12 = [v10 SHA1Hash];
-    v13 = [v12 hexEncoding];
+    sHA1Hash = [dataCopy SHA1Hash];
+    hexEncoding = [sHA1Hash hexEncoding];
 
-    v14 = [v11 encryptedContentsLocalURL];
-    v15 = v14;
-    if (v14)
+    encryptedContentsLocalURL = [itemCopy encryptedContentsLocalURL];
+    v15 = encryptedContentsLocalURL;
+    if (encryptedContentsLocalURL)
     {
-      v16 = v14;
+      localURL = encryptedContentsLocalURL;
     }
 
     else
     {
-      v16 = [v11 localURL];
+      localURL = [itemCopy localURL];
     }
 
-    v18 = v16;
+    v18 = localURL;
 
-    v19 = [v11 sha1Hex];
-    v20 = [v19 isEqualToString:v13];
+    sha1Hex = [itemCopy sha1Hex];
+    v20 = [sha1Hex isEqualToString:hexEncoding];
 
     if ((v20 & 1) == 0)
     {
       v24 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v11 sha1Hex];
+        sha1Hex2 = [itemCopy sha1Hex];
         *v55 = 138412802;
         *&v55[4] = v18;
         *&v55[12] = 2112;
-        *&v55[14] = v25;
+        *&v55[14] = sha1Hex2;
         *&v55[22] = 2112;
-        v56 = v13;
+        v56 = hexEncoding;
         _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "SHA1 Invalid Hash: For file %@, manifest's listed SHA1 hash %@ doesn't match computed hash, %@. Please file a radar and include this faulty pass", v55, 0x20u);
       }
 
-      if (a6)
+      if (error)
       {
-        v44 = [v11 sha1Hex];
-        *a6 = PKSignatureErrorWithReason(@"For file %@, manifest's listed SHA1 hash %@ doesn't match computed hash, %@", v26, v27, v28, v29, v30, v31, v32, v18);
+        sha1Hex3 = [itemCopy sha1Hex];
+        *error = PKSignatureErrorWithReason(@"For file %@, manifest's listed SHA1 hash %@ doesn't match computed hash, %@", v26, v27, v28, v29, v30, v31, v32, v18);
       }
 
       v17 = 0;
@@ -1169,7 +1169,7 @@ void __78__PKRemoteAssetManager__callCompletionHandlersWithFinishState_progress_
     *&v55[8] = v55;
     *&v55[16] = 0x2020000000;
     LOBYTE(v56) = 0;
-    if (v8)
+    if (writeDataCopy)
     {
       v21 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1185,7 +1185,7 @@ void __78__PKRemoteAssetManager__callCompletionHandlersWithFinishState_progress_
       v49[2] = __81__PKRemoteAssetManager_addRemoteAssetData_shouldWriteData_forManifestItem_error___block_invoke;
       v49[3] = &unk_1E79D92C0;
       v52 = v55;
-      v50 = v10;
+      v50 = dataCopy;
       v51 = v18;
       [(PKDirectoryCoordinator *)coordinator performCoordinatedAction:v49];
       v23 = *(*&v55[8] + 24);
@@ -1202,23 +1202,23 @@ void __78__PKRemoteAssetManager__callCompletionHandlersWithFinishState_progress_
       LOBYTE(v56) = 1;
     }
 
-    if ([v11 isZipFile])
+    if ([itemCopy isZipFile])
     {
-      v33 = [v11 localURL];
+      localURL2 = [itemCopy localURL];
       v34 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v33 lastPathComponent];
+        lastPathComponent = [localURL2 lastPathComponent];
         *buf = 138412290;
-        v54 = v35;
+        v54 = lastPathComponent;
         _os_log_impl(&dword_1AD337000, v34, OS_LOG_TYPE_DEFAULT, "Unpacking zip file %@.", buf, 0xCu);
       }
 
-      v36 = [v33 URLByDeletingPathExtension];
-      v37 = [v36 lastPathComponent];
+      uRLByDeletingPathExtension = [localURL2 URLByDeletingPathExtension];
+      lastPathComponent2 = [uRLByDeletingPathExtension lastPathComponent];
 
-      v38 = [v11 passURL];
-      v39 = [v38 URLByAppendingPathComponent:v37];
+      passURL = [itemCopy passURL];
+      v39 = [passURL URLByAppendingPathComponent:lastPathComponent2];
 
       v40 = self->_coordinator;
       v45[0] = MEMORY[0x1E69E9820];
@@ -1228,7 +1228,7 @@ void __78__PKRemoteAssetManager__callCompletionHandlersWithFinishState_progress_
       v41 = v39;
       v46 = v41;
       v48 = v55;
-      v47 = v10;
+      v47 = dataCopy;
       [(PKDirectoryCoordinator *)v40 performCoordinatedAction:v45];
       if (v23)
       {
@@ -1342,10 +1342,10 @@ void __42__PKRemoteAssetManager__flushBundleCaches__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)downloadRemoteAssetsWithCompletion:(id)a3
+- (void)downloadRemoteAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(PKRemoteAssetManager *)self downloadRemoteAssetsWithScreenScale:0 suffix:v4 completion:PKScreenScale()];
+  completionCopy = completion;
+  [(PKRemoteAssetManager *)self downloadRemoteAssetsWithScreenScale:0 suffix:completionCopy completion:PKScreenScale()];
 }
 
 @end

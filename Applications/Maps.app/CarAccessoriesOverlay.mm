@@ -2,16 +2,16 @@
 - (BOOL)_shouldShowHeadingIndicator;
 - (BOOL)_shouldShowSpeedSign;
 - (BOOL)_wantsHorizontalLayout;
-- (CarAccessoriesOverlay)initWithCarSceneType:(int64_t)a3;
+- (CarAccessoriesOverlay)initWithCarSceneType:(int64_t)type;
 - (ChromeOverlayHosting)host;
 - (void)dealloc;
-- (void)lightLevelController:(id)a3 didUpdateLightLevel:(int64_t)a4;
-- (void)reloadAnimated:(BOOL)a3;
-- (void)setContentView:(id)a3 layoutGuide:(id)a4;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
-- (void)setShowSpeedSign:(BOOL)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)lightLevelController:(id)controller didUpdateLightLevel:(int64_t)level;
+- (void)reloadAnimated:(BOOL)animated;
+- (void)setContentView:(id)view layoutGuide:(id)guide;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
+- (void)setShowSpeedSign:(BOOL)sign;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation CarAccessoriesOverlay
@@ -52,13 +52,13 @@
     return 0;
   }
 
-  v2 = [(UIStackView *)self->_accessoryStackView window];
-  v3 = [v2 _car_hybridInstrumentClusterAlignment] == 0;
+  window = [(UIStackView *)self->_accessoryStackView window];
+  v3 = [window _car_hybridInstrumentClusterAlignment] == 0;
 
   return v3;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
   BOOL = GEOConfigGetBOOL();
   v5 = GEOConfigGetBOOL();
@@ -95,43 +95,43 @@ LABEL_6:
   [(CarAccessoriesOverlay *)self reloadAnimated:1];
 }
 
-- (void)lightLevelController:(id)a3 didUpdateLightLevel:(int64_t)a4
+- (void)lightLevelController:(id)controller didUpdateLightLevel:(int64_t)level
 {
-  v5 = [a3 shouldUseNightMode];
-  [(CarSpeedSignView *)self->_speedSignView setDimmed:v5 animated:1];
+  shouldUseNightMode = [controller shouldUseNightMode];
+  [(CarSpeedSignView *)self->_speedSignView setDimmed:shouldUseNightMode animated:1];
   v6 = sub_10008DF8C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(CarAccessoriesOverlay *)self host];
-    v8 = [v7 overlayContentView];
-    v9 = [v8 sceneIdentifierForLogging];
+    host = [(CarAccessoriesOverlay *)self host];
+    overlayContentView = [host overlayContentView];
+    sceneIdentifierForLogging = [overlayContentView sceneIdentifierForLogging];
     v10 = @"NO";
-    if (v5)
+    if (shouldUseNightMode)
     {
       v10 = @"YES";
     }
 
     v11 = v10;
     v12 = 134349570;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v9;
+    v15 = sceneIdentifierForLogging;
     v16 = 2112;
     v17 = v11;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] carAccessories lightLevelController:didUpdateLightLevel shuldUseNightMode: %@", &v12, 0x20u);
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
   if (!self->_accessoryStackView)
   {
     return;
   }
 
-  v4 = a3;
-  v5 = self;
-  if (!a4)
+  hiddenCopy = hidden;
+  selfCopy = self;
+  if (!animated)
   {
     goto LABEL_12;
   }
@@ -148,7 +148,7 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v7 = v5;
+    v7 = selfCopy;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
@@ -175,17 +175,17 @@ LABEL_10:
 
   v13 = 1;
 LABEL_14:
-  v14 = !v4;
-  [(UIStackView *)v5->_accessoryStackView alpha];
-  if (v15 != !v4)
+  v14 = !hiddenCopy;
+  [(UIStackView *)selfCopy->_accessoryStackView alpha];
+  if (v15 != !hiddenCopy)
   {
     v16 = sub_10008DF8C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(CarAccessoriesOverlay *)v5 host];
-      v18 = [v17 overlayContentView];
-      v19 = [v18 sceneIdentifierForLogging];
-      if (v4)
+      host = [(CarAccessoriesOverlay *)selfCopy host];
+      overlayContentView = [host overlayContentView];
+      sceneIdentifierForLogging = [overlayContentView sceneIdentifierForLogging];
+      if (hiddenCopy)
       {
         v20 = @"hide";
       }
@@ -195,20 +195,20 @@ LABEL_14:
         v20 = @"show";
       }
 
-      v21 = [(UIStackView *)v5->_accessoryStackView arrangedSubviews];
-      v22 = v21;
+      arrangedSubviews = [(UIStackView *)selfCopy->_accessoryStackView arrangedSubviews];
+      v22 = arrangedSubviews;
       v48 = v20;
-      if (v21)
+      if (arrangedSubviews)
       {
-        if ([v21 count])
+        if ([arrangedSubviews count])
         {
-          v41 = v19;
-          v42 = v18;
+          v41 = sceneIdentifierForLogging;
+          v42 = overlayContentView;
           v43 = v16;
-          v44 = !v4;
+          v44 = !hiddenCopy;
           v45 = v13;
-          v46 = v5;
-          v47 = v4;
+          v46 = selfCopy;
+          v47 = hiddenCopy;
           v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v22 count]);
           v52 = 0u;
           v53 = 0u;
@@ -278,13 +278,13 @@ LABEL_38:
               v36 = [v24 componentsJoinedByString:{@", "}];
               v37 = [NSString stringWithFormat:@"<%p> [%@]", v24, v36];
 
-              LOBYTE(v4) = v47;
-              v5 = v46;
+              LOBYTE(hiddenCopy) = v47;
+              selfCopy = v46;
               v14 = v44;
               v13 = v45;
               v16 = v43;
-              v19 = v41;
-              v18 = v42;
+              sceneIdentifierForLogging = v41;
+              overlayContentView = v42;
               v22 = v40;
               goto LABEL_41;
             }
@@ -302,9 +302,9 @@ LABEL_38:
 LABEL_41:
 
       *buf = 134349826;
-      v57 = v5;
+      v57 = selfCopy;
       v58 = 2112;
-      v59 = v19;
+      v59 = sceneIdentifierForLogging;
       v60 = 2112;
       v61 = v48;
       v62 = 2112;
@@ -327,27 +327,27 @@ LABEL_41:
     v49[1] = 3221225472;
     v49[2] = sub_100E31384;
     v49[3] = &unk_101655CE8;
-    v49[4] = v5;
+    v49[4] = selfCopy;
     v50 = v14;
-    v51 = v4;
+    v51 = hiddenCopy;
     [UIView animateWithDuration:4 delay:v49 options:0 animations:v38 completion:0.0];
   }
 }
 
-- (void)reloadAnimated:(BOOL)a3
+- (void)reloadAnimated:(BOOL)animated
 {
   if (!self->_accessoryStackView)
   {
     v147 = sub_10008DF8C();
     if (os_log_type_enabled(v147, OS_LOG_TYPE_INFO))
     {
-      v15 = [(CarAccessoriesOverlay *)self host];
-      v16 = [v15 overlayContentView];
-      v17 = [v16 sceneIdentifierForLogging];
+      host = [(CarAccessoriesOverlay *)self host];
+      overlayContentView = [host overlayContentView];
+      sceneIdentifierForLogging = [overlayContentView sceneIdentifierForLogging];
       *location = 134349314;
       *&location[4] = self;
       v159 = 2112;
-      v160 = v17;
+      v160 = sceneIdentifierForLogging;
       _os_log_impl(&_mh_execute_header, v147, OS_LOG_TYPE_INFO, "[%{public}p] [%@] Will not reload accessories, overlay not active", location, 0x16u);
     }
 
@@ -355,10 +355,10 @@ LABEL_41:
   }
 
   v147 = [NSMutableArray arrayWithCapacity:2];
-  v3 = self;
-  v4 = [(CarAccessoriesOverlay *)self _shouldShowHeadingIndicator];
+  selfCopy5 = self;
+  _shouldShowHeadingIndicator = [(CarAccessoriesOverlay *)self _shouldShowHeadingIndicator];
   headingIndicator = self->_headingIndicator;
-  if (v4)
+  if (_shouldShowHeadingIndicator)
   {
     if (!headingIndicator)
     {
@@ -388,15 +388,15 @@ LABEL_41:
 
       objc_destroyWeak(&v152);
       objc_destroyWeak(location);
-      v3 = self;
+      selfCopy5 = self;
     }
 
-    v13 = [(CarHeadingIndicatorView *)v3->_headingIndicator contentsHidden];
-    v3 = self;
-    if ((v13 & 1) == 0)
+    contentsHidden = [(CarHeadingIndicatorView *)selfCopy5->_headingIndicator contentsHidden];
+    selfCopy5 = self;
+    if ((contentsHidden & 1) == 0)
     {
       [v147 addObject:self->_headingIndicator];
-      v3 = self;
+      selfCopy5 = self;
     }
   }
 
@@ -406,7 +406,7 @@ LABEL_41:
     if (self->_headingIndicatorObserver)
     {
       v18 = +[NSNotificationCenter defaultCenter];
-      v3 = self;
+      selfCopy5 = self;
       [v18 removeObserver:self->_headingIndicatorObserver];
 
       v19 = self->_headingIndicatorObserver;
@@ -414,20 +414,20 @@ LABEL_41:
     }
   }
 
-  v20 = [(CarAccessoriesOverlay *)v3 _shouldShowSpeedSign];
+  _shouldShowSpeedSign = [(CarAccessoriesOverlay *)selfCopy5 _shouldShowSpeedSign];
   v21 = sub_10008DF8C();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-  if (v20)
+  if (_shouldShowSpeedSign)
   {
     if (v22)
     {
-      v23 = [(CarAccessoriesOverlay *)self host];
-      v24 = [v23 overlayContentView];
-      v25 = [v24 sceneIdentifierForLogging];
+      host2 = [(CarAccessoriesOverlay *)self host];
+      overlayContentView2 = [host2 overlayContentView];
+      sceneIdentifierForLogging2 = [overlayContentView2 sceneIdentifierForLogging];
       *location = 134349314;
       *&location[4] = self;
       v159 = 2112;
-      v160 = v25;
+      v160 = sceneIdentifierForLogging2;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] [%@] Eligible to show speed sign", location, 0x16u);
     }
 
@@ -444,7 +444,7 @@ LABEL_41:
     }
 
     [(CarSpeedSignView *)speedSignView setActive:1];
-    v29 = self;
+    selfCopy7 = self;
     if (!self->_speedSignObserver)
     {
       objc_initWeak(location, self);
@@ -462,12 +462,12 @@ LABEL_41:
 
       objc_destroyWeak(&v150);
       objc_destroyWeak(location);
-      v29 = self;
+      selfCopy7 = self;
     }
 
-    v35 = [(CarSpeedSignView *)v29->_speedSignView contentsHidden];
-    v36 = self;
-    if (v35)
+    contentsHidden2 = [(CarSpeedSignView *)selfCopy7->_speedSignView contentsHidden];
+    selfCopy10 = self;
+    if (contentsHidden2)
     {
       goto LABEL_34;
     }
@@ -479,9 +479,9 @@ LABEL_41:
   {
     if (v22)
     {
-      v37 = [(CarAccessoriesOverlay *)self host];
-      v38 = [v37 overlayContentView];
-      v39 = [v38 sceneIdentifierForLogging];
+      host3 = [(CarAccessoriesOverlay *)self host];
+      overlayContentView3 = [host3 overlayContentView];
+      sceneIdentifierForLogging3 = [overlayContentView3 sceneIdentifierForLogging];
       if ([(CarAccessoriesOverlay *)self userPermitsSpeedSign])
       {
         v40 = @"YES";
@@ -506,7 +506,7 @@ LABEL_41:
       *location = 134349826;
       *&location[4] = self;
       v159 = 2112;
-      v160 = v39;
+      v160 = sceneIdentifierForLogging3;
       v161 = 2112;
       *v162 = v40;
       *&v162[8] = 2112;
@@ -516,7 +516,7 @@ LABEL_41:
     }
 
     [(CarSpeedSignView *)self->_speedSignView setActive:0];
-    v36 = self;
+    selfCopy10 = self;
     if (!self->_speedSignObserver)
     {
       goto LABEL_34;
@@ -529,11 +529,11 @@ LABEL_41:
     self->_speedSignObserver = 0;
   }
 
-  v36 = self;
+  selfCopy10 = self;
 LABEL_34:
-  v46 = [(CarAccessoriesOverlay *)v36 _wantsHorizontalLayout];
+  _wantsHorizontalLayout = [(CarAccessoriesOverlay *)selfCopy10 _wantsHorizontalLayout];
   p_accessoryStackView = &self->_accessoryStackView;
-  if (v46)
+  if (_wantsHorizontalLayout)
   {
     v48 = 1;
   }
@@ -543,7 +543,7 @@ LABEL_34:
     v48 = 4;
   }
 
-  if (v46)
+  if (_wantsHorizontalLayout)
   {
     v49 = 3;
   }
@@ -553,11 +553,11 @@ LABEL_34:
     v49 = 2;
   }
 
-  [(UIStackView *)self->_accessoryStackView setAxis:v46 ^ 1];
+  [(UIStackView *)self->_accessoryStackView setAxis:_wantsHorizontalLayout ^ 1];
   [(UIStackView *)*p_accessoryStackView setAlignment:v48];
   [(UIStackView *)*p_accessoryStackView setDistribution:v49];
   v50 = +[MapsExternalDevice sharedInstance];
-  v51 = [v50 rightHandDrive];
+  rightHandDrive = [v50 rightHandDrive];
 
   if ([(UIStackView *)*p_accessoryStackView axis])
   {
@@ -569,14 +569,14 @@ LABEL_34:
   {
     if ([v147 containsObject:self->_speedSignView])
     {
-      [(NSLayoutConstraint *)self->_leadingConstraint setActive:v51];
-      [(NSLayoutConstraint *)self->_trailingConstraint setActive:v51 ^ 1];
+      [(NSLayoutConstraint *)self->_leadingConstraint setActive:rightHandDrive];
+      [(NSLayoutConstraint *)self->_trailingConstraint setActive:rightHandDrive ^ 1];
     }
 
     else if ([v147 containsObject:self->_headingIndicator])
     {
-      [(NSLayoutConstraint *)self->_leadingConstraint setActive:v51 ^ 1];
-      [(NSLayoutConstraint *)self->_trailingConstraint setActive:v51];
+      [(NSLayoutConstraint *)self->_leadingConstraint setActive:rightHandDrive ^ 1];
+      [(NSLayoutConstraint *)self->_trailingConstraint setActive:rightHandDrive];
     }
 
     else
@@ -615,9 +615,9 @@ LABEL_34:
 
   if (![(CarAccessoriesOverlay *)self ignoresCollisionConstraints])
   {
-    v52 = [(UIStackView *)self->_accessoryStackView window];
-    v53 = [v52 screen];
-    v54 = v53 == 0;
+    window = [(UIStackView *)self->_accessoryStackView window];
+    screen = [window screen];
+    v54 = screen == 0;
 
     if (v54)
     {
@@ -648,11 +648,11 @@ LABEL_34:
       }
     }
 
-    v55 = [(UIStackView *)self->_accessoryStackView window];
-    if ([v55 _car_isHybridInstrumentCluster])
+    window2 = [(UIStackView *)self->_accessoryStackView window];
+    if ([window2 _car_isHybridInstrumentCluster])
     {
-      v56 = [(UIStackView *)self->_accessoryStackView window];
-      v57 = [v56 _car_hybridInstrumentClusterAlignment] == 2;
+      window3 = [(UIStackView *)self->_accessoryStackView window];
+      v57 = [window3 _car_hybridInstrumentClusterAlignment] == 2;
     }
 
     else
@@ -671,37 +671,37 @@ LABEL_34:
       v59 = 8;
     }
 
-    v60 = [(CarAccessoriesOverlay *)self host];
-    v61 = [v60 collisionGuideForEdge:v59];
+    host4 = [(CarAccessoriesOverlay *)self host];
+    v61 = [host4 collisionGuideForEdge:v59];
 
-    v62 = [(CarAccessoriesOverlay *)self host];
-    v63 = [v62 collisionGuideForEdge:1];
+    host5 = [(CarAccessoriesOverlay *)self host];
+    v63 = [host5 collisionGuideForEdge:1];
 
-    v64 = [(CarAccessoriesOverlay *)self host];
-    v65 = [(UIStackView *)self->_accessoryStackView bottomAnchor];
-    v66 = [v61 topAnchor];
-    v67 = [v65 constraintLessThanOrEqualToAnchor:v66];
+    host6 = [(CarAccessoriesOverlay *)self host];
+    bottomAnchor = [(UIStackView *)self->_accessoryStackView bottomAnchor];
+    topAnchor = [v61 topAnchor];
+    v67 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor];
     v157[0] = v67;
-    v68 = [(UIStackView *)self->_accessoryStackView _maps_leftRHDAnchor];
-    v69 = [v63 _maps_rightRHDAnchor];
+    _maps_leftRHDAnchor = [(UIStackView *)self->_accessoryStackView _maps_leftRHDAnchor];
+    _maps_rightRHDAnchor = [v63 _maps_rightRHDAnchor];
     LODWORD(v70) = 1148846080;
-    v71 = [v68 _maps_constraintWithRHDAnchor:v69 relation:1 constant:0.0 priority:v70];
+    v71 = [_maps_leftRHDAnchor _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor relation:1 constant:0.0 priority:v70];
     v157[1] = v71;
     v72 = [NSArray arrayWithObjects:v157 count:2];
-    [v64 setCollisionConstraints:v72 forOverlay:self];
+    [host6 setCollisionConstraints:v72 forOverlay:self];
   }
 
-  v73 = [(UIStackView *)self->_accessoryStackView arrangedSubviews];
-  v74 = [v73 isEqualToArray:v147];
+  arrangedSubviews = [(UIStackView *)self->_accessoryStackView arrangedSubviews];
+  v74 = [arrangedSubviews isEqualToArray:v147];
 
   if (v74)
   {
     log = sub_10008DF8C();
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      v142 = [(CarAccessoriesOverlay *)self host];
-      v140 = [v142 overlayContentView];
-      v136 = [v140 sceneIdentifierForLogging];
+      host7 = [(CarAccessoriesOverlay *)self host];
+      overlayContentView4 = [host7 overlayContentView];
+      sceneIdentifierForLogging4 = [overlayContentView4 sceneIdentifierForLogging];
       v75 = v147;
       if (v75)
       {
@@ -773,21 +773,21 @@ LABEL_72:
 LABEL_76:
 
               v88 = [v77 componentsJoinedByString:@", "];
-              v89 = [NSString stringWithFormat:@"<%p> [%@]", v77, v88];
+              v138 = [NSString stringWithFormat:@"<%p> [%@]", v77, v88];
 
               goto LABEL_106;
             }
           }
         }
 
-        v89 = [NSString stringWithFormat:@"<%p> (empty)", v138];
+        v138 = [NSString stringWithFormat:@"<%p> (empty)", v138];
 LABEL_106:
         v75 = v138;
       }
 
       else
       {
-        v89 = @"<nil>";
+        v138 = @"<nil>";
       }
 
       v111 = v75;
@@ -795,9 +795,9 @@ LABEL_106:
       *location = 134349570;
       *&location[4] = self;
       v159 = 2112;
-      v160 = v136;
+      v160 = sceneIdentifierForLogging4;
       v161 = 2112;
-      *v162 = v89;
+      *v162 = v138;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] Will not reload accessories, nothing has changed: %@", location, 0x20u);
     }
 
@@ -812,14 +812,14 @@ LABEL_106:
     if (v92)
     {
       v137 = v91;
-      v143 = [(CarAccessoriesOverlay *)self host];
-      v141 = [v143 overlayContentView];
-      v139 = [v141 sceneIdentifierForLogging];
-      v93 = [(UIStackView *)self->_accessoryStackView arrangedSubviews];
-      loga = v93;
-      if (v93)
+      host8 = [(CarAccessoriesOverlay *)self host];
+      overlayContentView5 = [host8 overlayContentView];
+      sceneIdentifierForLogging5 = [overlayContentView5 sceneIdentifierForLogging];
+      arrangedSubviews2 = [(UIStackView *)self->_accessoryStackView arrangedSubviews];
+      loga = arrangedSubviews2;
+      if (arrangedSubviews2)
       {
-        if ([v93 count])
+        if ([arrangedSubviews2 count])
         {
           v94 = [NSMutableArray arrayWithCapacity:[loga count]];
           v155 = 0u;
@@ -858,23 +858,23 @@ LABEL_106:
                 v103 = v102;
                 if (v102 && ![v102 isEqualToString:v101])
                 {
-                  v104 = [NSString stringWithFormat:@"%@<%p, %@>", v101, v99, v103];
+                  v103 = [NSString stringWithFormat:@"%@<%p, %@>", v101, v99, v103];
                 }
 
                 else
                 {
 
 LABEL_91:
-                  v104 = [NSString stringWithFormat:@"%@<%p>", v101, v99];
+                  v103 = [NSString stringWithFormat:@"%@<%p>", v101, v99];
                 }
 
                 goto LABEL_94;
               }
 
-              v104 = @"<nil>";
+              v103 = @"<nil>";
 LABEL_94:
 
-              [v94 addObject:v104];
+              [v94 addObject:v103];
               v98 = v98 + 1;
             }
 
@@ -886,24 +886,24 @@ LABEL_94:
 LABEL_98:
 
               v106 = [v95 componentsJoinedByString:@", "];
-              v107 = [NSString stringWithFormat:@"<%p> [%@]", v95, v106];
+              v106 = [NSString stringWithFormat:@"<%p> [%@]", v95, v106];
 
               goto LABEL_116;
             }
           }
         }
 
-        v107 = [NSString stringWithFormat:@"<%p> (empty)", loga];
+        v106 = [NSString stringWithFormat:@"<%p> (empty)", loga];
 LABEL_116:
-        v93 = loga;
+        arrangedSubviews2 = loga;
       }
 
       else
       {
-        v107 = @"<nil>";
+        v106 = @"<nil>";
       }
 
-      v135 = v107;
+      v135 = v106;
       v115 = v147;
       if (v115)
       {
@@ -947,23 +947,23 @@ LABEL_116:
                 v125 = v124;
                 if (v124 && ![v124 isEqualToString:v123])
                 {
-                  v126 = [NSString stringWithFormat:@"%@<%p, %@>", v123, v121, v125];
+                  v125 = [NSString stringWithFormat:@"%@<%p, %@>", v123, v121, v125];
                 }
 
                 else
                 {
 
 LABEL_129:
-                  v126 = [NSString stringWithFormat:@"%@<%p>", v123, v121];
+                  v125 = [NSString stringWithFormat:@"%@<%p>", v123, v121];
                 }
 
                 goto LABEL_132;
               }
 
-              v126 = @"<nil>";
+              v125 = @"<nil>";
 LABEL_132:
 
-              [v116 addObject:v126];
+              [v116 addObject:v125];
               v120 = v120 + 1;
             }
 
@@ -975,21 +975,21 @@ LABEL_132:
 LABEL_136:
 
               v128 = [v117 componentsJoinedByString:@", "];
-              v129 = [NSString stringWithFormat:@"<%p> [%@]", v117, v128];
+              v128 = [NSString stringWithFormat:@"<%p> [%@]", v117, v128];
 
               goto LABEL_139;
             }
           }
         }
 
-        v129 = [NSString stringWithFormat:@"<%p> (empty)", v134];
+        v128 = [NSString stringWithFormat:@"<%p> (empty)", v134];
 LABEL_139:
         v115 = v134;
       }
 
       else
       {
-        v129 = @"<nil>";
+        v128 = @"<nil>";
       }
 
       v130 = v115;
@@ -997,11 +997,11 @@ LABEL_139:
       *location = 134349826;
       *&location[4] = self;
       v159 = 2112;
-      v160 = v139;
+      v160 = sceneIdentifierForLogging5;
       v161 = 2112;
       *v162 = v135;
       *&v162[8] = 2112;
-      *&v162[10] = v129;
+      *&v162[10] = v128;
       _os_log_impl(&_mh_execute_header, v137, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] Will update accessories (%@ => %@)", location, 0x2Au);
 
       v91 = v137;
@@ -1017,13 +1017,13 @@ LABEL_142:
 
   if (v92)
   {
-    v108 = [(CarAccessoriesOverlay *)self host];
-    v109 = [v108 overlayContentView];
-    v110 = [v109 sceneIdentifierForLogging];
+    host9 = [(CarAccessoriesOverlay *)self host];
+    overlayContentView6 = [host9 overlayContentView];
+    sceneIdentifierForLogging6 = [overlayContentView6 sceneIdentifierForLogging];
     *location = 134349314;
     *&location[4] = self;
     v159 = 2112;
-    v160 = v110;
+    v160 = sceneIdentifierForLogging6;
     _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] Will remove all accessories", location, 0x16u);
   }
 
@@ -1034,56 +1034,56 @@ LABEL_142:
 LABEL_143:
 }
 
-- (void)setShowSpeedSign:(BOOL)a3
+- (void)setShowSpeedSign:(BOOL)sign
 {
-  if (self->_showSpeedSign != a3)
+  if (self->_showSpeedSign != sign)
   {
-    v3 = a3;
+    signCopy = sign;
     v5 = sub_10008DF8C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CarAccessoriesOverlay *)self host];
-      v7 = [v6 overlayContentView];
-      v8 = [v7 sceneIdentifierForLogging];
+      host = [(CarAccessoriesOverlay *)self host];
+      overlayContentView = [host overlayContentView];
+      sceneIdentifierForLogging = [overlayContentView sceneIdentifierForLogging];
       showSpeedSign = self->_showSpeedSign;
       v10 = 134349826;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v8;
+      v13 = sceneIdentifierForLogging;
       v14 = 1024;
       v15 = showSpeedSign;
       v16 = 1024;
-      v17 = v3;
+      v17 = signCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] [%@] Updating showSpeedSign %d -> %d", &v10, 0x22u);
     }
 
-    self->_showSpeedSign = v3;
+    self->_showSpeedSign = signCopy;
   }
 }
 
-- (void)setContentView:(id)a3 layoutGuide:(id)a4
+- (void)setContentView:(id)view layoutGuide:(id)guide
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIStackView *)self->_accessoryStackView superview];
-  if (v8 != v6)
+  viewCopy = view;
+  guideCopy = guide;
+  superview = [(UIStackView *)self->_accessoryStackView superview];
+  if (superview != viewCopy)
   {
     [(UIStackView *)self->_accessoryStackView removeFromSuperview];
     accessoryStackView = self->_accessoryStackView;
     self->_accessoryStackView = 0;
 
-    if (v6)
+    if (viewCopy)
     {
       v10 = sub_10008DF8C();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [(CarAccessoriesOverlay *)self host];
-        v12 = [v11 overlayContentView];
-        v13 = [v12 sceneIdentifierForLogging];
+        host = [(CarAccessoriesOverlay *)self host];
+        overlayContentView = [host overlayContentView];
+        sceneIdentifierForLogging = [overlayContentView sceneIdentifierForLogging];
         *buf = 134349314;
-        v50 = self;
+        selfCopy = self;
         v51 = 2112;
-        v52 = v13;
+        v52 = sceneIdentifierForLogging;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] Will create new accessory container view", buf, 0x16u);
       }
 
@@ -1096,9 +1096,9 @@ LABEL_143:
       [(UIStackView *)self->_accessoryStackView setSpacing:8.0];
       [(UIStackView *)self->_accessoryStackView setAlpha:0.0];
       v16 = self->_accessoryStackView;
-      v17 = [(UIStackView *)v16 heightAnchor];
+      heightAnchor = [(UIStackView *)v16 heightAnchor];
       LODWORD(v18) = 1112014848;
-      v19 = [v17 constraintEqualToConstant:0.0 priority:v18];
+      v19 = [heightAnchor constraintEqualToConstant:0.0 priority:v18];
       v48 = v19;
       v20 = [NSArray arrayWithObjects:&v48 count:1];
       [(UIStackView *)v16 addConstraints:v20];
@@ -1116,24 +1116,24 @@ LABEL_143:
         [(UIStackView *)self->_accessoryStackView _maps_applyGlassGroup];
       }
 
-      [v6 addSubview:self->_accessoryStackView];
-      v25 = [(UIStackView *)self->_accessoryStackView _maps_leftRHDAnchor];
-      v26 = [v7 _maps_leftRHDAnchor];
+      [viewCopy addSubview:self->_accessoryStackView];
+      _maps_leftRHDAnchor = [(UIStackView *)self->_accessoryStackView _maps_leftRHDAnchor];
+      _maps_leftRHDAnchor2 = [guideCopy _maps_leftRHDAnchor];
       LODWORD(v27) = 1148846080;
-      v28 = [v25 _maps_constraintWithRHDAnchor:v26 relation:1 constant:8.0 priority:v27];
+      v28 = [_maps_leftRHDAnchor _maps_constraintWithRHDAnchor:_maps_leftRHDAnchor2 relation:1 constant:8.0 priority:v27];
       leadingConstraint = self->_leadingConstraint;
       self->_leadingConstraint = v28;
 
-      v30 = [(UIStackView *)self->_accessoryStackView _maps_rightRHDAnchor];
-      v31 = [v7 _maps_rightRHDAnchor];
+      _maps_rightRHDAnchor = [(UIStackView *)self->_accessoryStackView _maps_rightRHDAnchor];
+      _maps_rightRHDAnchor2 = [guideCopy _maps_rightRHDAnchor];
       LODWORD(v32) = 1148846080;
-      v33 = [v30 _maps_constraintWithRHDAnchor:v31 relation:0 constant:-8.0 priority:v32];
+      v33 = [_maps_rightRHDAnchor _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor2 relation:0 constant:-8.0 priority:v32];
       trailingConstraint = self->_trailingConstraint;
       self->_trailingConstraint = v33;
 
-      v35 = [(UIStackView *)self->_accessoryStackView topAnchor];
-      v36 = [v7 topAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36 constant:8.0];
+      topAnchor = [(UIStackView *)self->_accessoryStackView topAnchor];
+      topAnchor2 = [guideCopy topAnchor];
+      v37 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
       v38 = self->_leadingConstraint;
       v39 = self->_trailingConstraint;
       v47[0] = v37;
@@ -1174,71 +1174,71 @@ LABEL_143:
   }
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    objc_storeWeak(&self->_host, v4);
-    if (v4)
+    objc_storeWeak(&self->_host, hostCopy);
+    if (hostCopy)
     {
-      v6 = [v4 containingViewController];
-      v7 = [v6 _maps_carSceneDelegate];
+      containingViewController = [hostCopy containingViewController];
+      _maps_carSceneDelegate = [containingViewController _maps_carSceneDelegate];
 
       v8 = [MapsLightLevelController alloc];
-      v9 = [v7 window];
-      v10 = [v9 windowScene];
-      v11 = [(MapsLightLevelController *)v8 initWithWindowScene:v10];
+      window = [_maps_carSceneDelegate window];
+      windowScene = [window windowScene];
+      v11 = [(MapsLightLevelController *)v8 initWithWindowScene:windowScene];
       lightLevelController = self->_lightLevelController;
       self->_lightLevelController = v11;
 
       [(MapsLightLevelController *)self->_lightLevelController addObserver:self];
-      v13 = [v4 overlayContentView];
-      v14 = [v4 layoutGuideForOverlay:self];
-      [(CarAccessoriesOverlay *)self setContentView:v13 layoutGuide:v14];
+      overlayContentView = [hostCopy overlayContentView];
+      v14 = [hostCopy layoutGuideForOverlay:self];
+      [(CarAccessoriesOverlay *)self setContentView:overlayContentView layoutGuide:v14];
 
       accessoryStackView = self->_accessoryStackView;
       if (accessoryStackView)
       {
-        v16 = [(UIStackView *)accessoryStackView _maps_leftRHDAnchor];
-        v17 = [v4 mapInsetsLayoutGuide];
-        v18 = [v17 _maps_rightRHDAnchor];
+        _maps_leftRHDAnchor = [(UIStackView *)accessoryStackView _maps_leftRHDAnchor];
+        mapInsetsLayoutGuide = [hostCopy mapInsetsLayoutGuide];
+        _maps_rightRHDAnchor = [mapInsetsLayoutGuide _maps_rightRHDAnchor];
         LODWORD(v19) = 1148846080;
-        v20 = [v16 _maps_constraintWithRHDAnchor:v18 relation:1 constant:8.0 priority:v19];
+        v20 = [_maps_leftRHDAnchor _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor relation:1 constant:8.0 priority:v19];
         v30 = v20;
         v21 = [NSArray arrayWithObjects:&v30 count:1];
-        [v4 setMapInsetsConstraints:v21 forOverlay:self];
+        [hostCopy setMapInsetsConstraints:v21 forOverlay:self];
 
-        v22 = [(UIStackView *)self->_accessoryStackView _maps_leftRHDAnchor];
-        v23 = [v4 viewportLayoutGuide];
-        v24 = [v23 _maps_rightRHDAnchor];
+        _maps_leftRHDAnchor2 = [(UIStackView *)self->_accessoryStackView _maps_leftRHDAnchor];
+        viewportLayoutGuide = [hostCopy viewportLayoutGuide];
+        _maps_rightRHDAnchor2 = [viewportLayoutGuide _maps_rightRHDAnchor];
         LODWORD(v25) = 1148846080;
-        v26 = [v22 _maps_constraintWithRHDAnchor:v24 relation:1 constant:8.0 priority:v25];
-        v29 = v26;
+        sceneIdentifierForLogging = [_maps_leftRHDAnchor2 _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor2 relation:1 constant:8.0 priority:v25];
+        v29 = sceneIdentifierForLogging;
         v27 = [NSArray arrayWithObjects:&v29 count:1];
-        [v4 setViewportConstraints:v27 forOverlay:self];
+        [hostCopy setViewportConstraints:v27 forOverlay:self];
       }
 
       else
       {
-        v22 = sub_10008DF8C();
-        if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        _maps_leftRHDAnchor2 = sub_10008DF8C();
+        if (!os_log_type_enabled(_maps_leftRHDAnchor2, OS_LOG_TYPE_ERROR))
         {
 LABEL_9:
 
           goto LABEL_10;
         }
 
-        v23 = [(CarAccessoriesOverlay *)self host];
-        v24 = [v23 overlayContentView];
-        v26 = [v24 sceneIdentifierForLogging];
+        viewportLayoutGuide = [(CarAccessoriesOverlay *)self host];
+        _maps_rightRHDAnchor2 = [viewportLayoutGuide overlayContentView];
+        sceneIdentifierForLogging = [_maps_rightRHDAnchor2 sceneIdentifierForLogging];
         *buf = 134349314;
-        v32 = self;
+        selfCopy = self;
         v33 = 2112;
-        v34 = v26;
-        _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[%{public}p] [%@] Failed to set up constraints for accessory stackView as it was nil at the time.", buf, 0x16u);
+        v34 = sceneIdentifierForLogging;
+        _os_log_impl(&_mh_execute_header, _maps_leftRHDAnchor2, OS_LOG_TYPE_ERROR, "[%{public}p] [%@] Failed to set up constraints for accessory stackView as it was nil at the time.", buf, 0x16u);
       }
 
       goto LABEL_9;
@@ -1254,7 +1254,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (CarAccessoriesOverlay)initWithCarSceneType:(int64_t)a3
+- (CarAccessoriesOverlay)initWithCarSceneType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = CarAccessoriesOverlay;
@@ -1269,7 +1269,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v4->_sceneType = a3;
+    v4->_sceneType = type;
     v4->_userPermitsHeadingIndicator = GEOConfigGetBOOL();
     v4->_userPermitsSpeedSign = GEOConfigGetBOOL();
     _GEOConfigAddDelegateListenerForKey();
@@ -1287,7 +1287,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 

@@ -1,11 +1,11 @@
 @interface SBMultitaskingApplicationShortcutService
 - (SBMultitaskingApplicationShortcutService)init;
-- (int64_t)_switcherShortcutActionForRequestedAction:(int64_t)a3;
-- (void)_handleDisconnectForServiceConnection:(id)a3;
-- (void)fetchSupportedShortcutActionsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)performShortcutAction:(id)a3 forBundleIdentifier:(id)a4;
-- (void)stopObservingUpdatesForBundleIdentifier:(id)a3;
+- (int64_t)_switcherShortcutActionForRequestedAction:(int64_t)action;
+- (void)_handleDisconnectForServiceConnection:(id)connection;
+- (void)fetchSupportedShortcutActionsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)performShortcutAction:(id)action forBundleIdentifier:(id)identifier;
+- (void)stopObservingUpdatesForBundleIdentifier:(id)identifier;
 - (void)updateSupportedShortcutsForInterestedClients;
 @end
 
@@ -58,11 +58,11 @@ void __48__SBMultitaskingApplicationShortcutService_init__block_invoke(uint64_t 
   v25 = *MEMORY[0x277D85DE8];
   if ([(NSMutableSet *)self->_spotlightInterestedBundleIDs count])
   {
-    v3 = [SBApp windowSceneManager];
-    v4 = [v3 activeDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-    v17 = v4;
-    v5 = [v4 homeScreenController];
+    v17 = activeDisplayWindowScene;
+    homeScreenController = [activeDisplayWindowScene homeScreenController];
     v6 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
@@ -84,7 +84,7 @@ void __48__SBMultitaskingApplicationShortcutService_init__block_invoke(uint64_t 
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v5 supportedMultitaskingShortcutActionsForBundleIdentifier:v12];
+          v13 = [homeScreenController supportedMultitaskingShortcutActionsForBundleIdentifier:v12];
           v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
           [v6 setObject:v14 forKey:v12];
         }
@@ -117,12 +117,12 @@ void __88__SBMultitaskingApplicationShortcutService_updateSupportedShortcutsForI
   }
 }
 
-- (void)performShortcutAction:(id)a3 forBundleIdentifier:(id)a4
+- (void)performShortcutAction:(id)action forBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  actionCopy = action;
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  v7 = actionCopy;
   BSDispatchMain();
 }
 
@@ -139,19 +139,19 @@ void __86__SBMultitaskingApplicationShortcutService_performShortcutAction_forBun
   }
 }
 
-- (void)fetchSupportedShortcutActionsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchSupportedShortcutActionsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSServiceConnectionHost *)self->_spotlightConnection remoteProcess];
-  [v8 pid];
-  v9 = [MEMORY[0x277CF3280] currentContext];
-  v10 = [v9 remoteProcess];
-  [v10 pid];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  remoteProcess = [(BSServiceConnectionHost *)self->_spotlightConnection remoteProcess];
+  [remoteProcess pid];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess2 = [currentContext remoteProcess];
+  [remoteProcess2 pid];
 
-  v13 = v6;
-  v11 = v7;
-  v12 = v6;
+  v13 = identifierCopy;
+  v11 = handlerCopy;
+  v12 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -183,30 +183,30 @@ void __115__SBMultitaskingApplicationShortcutService_fetchSupportedShortcutActio
   (*(v9 + 16))(v9, v10, 0);
 }
 
-- (void)stopObservingUpdatesForBundleIdentifier:(id)a3
+- (void)stopObservingUpdatesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSServiceConnectionHost *)self->_spotlightConnection remoteProcess];
-  v6 = [v5 pid];
-  v7 = [MEMORY[0x277CF3280] currentContext];
-  v8 = [v7 remoteProcess];
-  v9 = [v8 pid];
+  identifierCopy = identifier;
+  remoteProcess = [(BSServiceConnectionHost *)self->_spotlightConnection remoteProcess];
+  v6 = [remoteProcess pid];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess2 = [currentContext remoteProcess];
+  v9 = [remoteProcess2 pid];
 
   if (v6 == v9)
   {
-    v10 = v4;
+    v10 = identifierCopy;
     BSDispatchMain();
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v8 = [v6 remoteProcess];
-  v9 = [v8 auditToken];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
   v23 = 0;
-  v10 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v9 error:&v23];
+  v10 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v23];
   v11 = v23;
 
   if (v10)
@@ -216,10 +216,10 @@ void __115__SBMultitaskingApplicationShortcutService_fetchSupportedShortcutActio
     v22[2] = __86__SBMultitaskingApplicationShortcutService_listener_didReceiveConnection_withContext___block_invoke;
     v22[3] = &unk_2783AB730;
     v22[4] = self;
-    [v6 configureConnection:v22];
-    v12 = [v6 remoteProcess];
-    v13 = [v12 bundleIdentifier];
-    v14 = [v13 isEqualToString:@"com.apple.Spotlight"];
+    [connectionCopy configureConnection:v22];
+    remoteProcess2 = [connectionCopy remoteProcess];
+    bundleIdentifier = [remoteProcess2 bundleIdentifier];
+    v14 = [bundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
     if (v14)
     {
@@ -228,17 +228,17 @@ void __115__SBMultitaskingApplicationShortcutService_fetchSupportedShortcutActio
       v17 = 3221225472;
       v18 = __86__SBMultitaskingApplicationShortcutService_listener_didReceiveConnection_withContext___block_invoke_4;
       v19 = &unk_2783A92D8;
-      v20 = self;
-      v21 = v6;
+      selfCopy = self;
+      v21 = connectionCopy;
       dispatch_async(serviceQueue, &v16);
     }
 
-    [v6 activate];
+    [connectionCopy activate];
   }
 
   else
   {
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -293,15 +293,15 @@ void __86__SBMultitaskingApplicationShortcutService_listener_didReceiveConnectio
   }
 }
 
-- (void)_handleDisconnectForServiceConnection:(id)a3
+- (void)_handleDisconnectForServiceConnection:(id)connection
 {
   serviceQueue = self->_serviceQueue;
-  v5 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(serviceQueue);
-  v6 = [v5 remoteProcess];
+  remoteProcess = [connectionCopy remoteProcess];
 
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.Spotlight"];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
   if (v8)
   {
@@ -312,16 +312,16 @@ void __86__SBMultitaskingApplicationShortcutService_listener_didReceiveConnectio
   }
 }
 
-- (int64_t)_switcherShortcutActionForRequestedAction:(int64_t)a3
+- (int64_t)_switcherShortcutActionForRequestedAction:(int64_t)action
 {
-  if (a3 > 4)
+  if (action > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A77B0[a3];
+    return qword_21F8A77B0[action];
   }
 }
 

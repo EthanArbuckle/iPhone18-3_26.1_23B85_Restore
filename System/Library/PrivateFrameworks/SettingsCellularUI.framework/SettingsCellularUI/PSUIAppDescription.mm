@@ -1,27 +1,27 @@
 @interface PSUIAppDescription
-- (PSUIAppDescription)initWithAMSMediaResponseDictionary:(id)a3;
+- (PSUIAppDescription)initWithAMSMediaResponseDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation PSUIAppDescription
 
-- (PSUIAppDescription)initWithAMSMediaResponseDictionary:(id)a3
+- (PSUIAppDescription)initWithAMSMediaResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = PSUIAppDescription;
   v5 = [(PSUIAppDescription *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"attributes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     v7 = [v6 objectForKeyedSubscript:@"name"];
     [(PSUIAppDescription *)v5 setName:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"attributes"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     v9 = [v8 objectForKeyedSubscript:@"artistName"];
     [(PSUIAppDescription *)v5 setPublisher:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"attributes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     v11 = [v10 objectForKeyedSubscript:@"platformAttributes"];
     v12 = [v11 objectForKeyedSubscript:@"ios"];
 
@@ -32,16 +32,16 @@
     v15 = [v12 objectForKeyedSubscript:@"artwork"];
     v16 = [v14 initWithDictionary:v15];
 
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v19 = v18 * 60.0;
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v22 = [v16 URLWithSize:{v19, v21 * 60.0}];
     [(PSUIAppDescription *)v5 setIconURL:v22];
 
     v23 = MEMORY[0x277CBEBC0];
-    v24 = [v4 objectForKeyedSubscript:@"attributes"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     v25 = [v24 objectForKeyedSubscript:@"url"];
     v26 = [v23 URLWithString:v25];
     [(PSUIAppDescription *)v5 setInstallURL:v26];

@@ -1,36 +1,36 @@
 @interface UIImage
-+ (id)phCarPlayImageNamed:(id)a3;
-+ (id)phImageNamed:(id)a3;
-+ (id)phPathForImageNamed:(id)a3;
++ (id)phCarPlayImageNamed:(id)named;
++ (id)phImageNamed:(id)named;
++ (id)phPathForImageNamed:(id)named;
 @end
 
 @implementation UIImage
 
-+ (id)phImageNamed:(id)a3
++ (id)phImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = +[UIScreen _carScreen];
-  v6 = [v5 traitCollection];
-  v7 = [UIImage imageNamed:v3 inBundle:v4 compatibleWithTraitCollection:v6];
+  traitCollection = [v5 traitCollection];
+  v7 = [UIImage imageNamed:namedCopy inBundle:v4 compatibleWithTraitCollection:traitCollection];
 
   return v7;
 }
 
-+ (id)phCarPlayImageNamed:(id)a3
++ (id)phCarPlayImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = +[UIScreen _carScreen];
-  v6 = [v5 traitCollection];
-  v7 = [UIImage imageNamed:v3 inBundle:v4 compatibleWithTraitCollection:v6];
+  traitCollection = [v5 traitCollection];
+  v7 = [UIImage imageNamed:namedCopy inBundle:v4 compatibleWithTraitCollection:traitCollection];
 
   return v7;
 }
 
-+ (id)phPathForImageNamed:(id)a3
++ (id)phPathForImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = +[UIScreen mainScreen];
   [v5 scale];
@@ -42,13 +42,13 @@
     [v8 scale];
     v10 = [NSString stringWithFormat:@"@%dx", v9];
 
-    if ([v3 hasSuffix:v10])
+    if ([namedCopy hasSuffix:v10])
     {
     }
 
     else
     {
-      v11 = [v3 stringByAppendingString:v10];
+      v11 = [namedCopy stringByAppendingString:v10];
       v12 = [v4 pathForResource:v11 ofType:@"png"];
 
       if (v12)
@@ -58,7 +58,7 @@
     }
   }
 
-  v12 = [v4 pathForResource:v3 ofType:@"png"];
+  v12 = [v4 pathForResource:namedCopy ofType:@"png"];
 LABEL_6:
 
   return v12;

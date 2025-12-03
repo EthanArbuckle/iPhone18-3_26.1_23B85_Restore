@@ -1,14 +1,14 @@
 @interface TVRViewServiceManager
 + (id)sharedInstance;
-- (id)_actionForSetting:(unint64_t)a3 animationBlock:(id)a4;
-- (id)_settingNameForValue:(unint64_t)a3;
+- (id)_actionForSetting:(unint64_t)setting animationBlock:(id)block;
+- (id)_settingNameForValue:(unint64_t)value;
 - (void)_fetchActiveEndpointUID;
 - (void)_launchViewServiceSuspended;
-- (void)_prewarmWithLaunchViewService:(BOOL)a3 fetchActiveEndpoint:(BOOL)a4;
+- (void)_prewarmWithLaunchViewService:(BOOL)service fetchActiveEndpoint:(BOOL)endpoint;
 - (void)dismiss;
-- (void)presentWithContext:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentWithContext:(id)context;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation TVRViewServiceManager
@@ -34,14 +34,14 @@ uint64_t __39__TVRViewServiceManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)presentWithContext:(id)a3
+- (void)presentWithContext:(id)context
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _TVRUIViewServiceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [contextCopy description];
     *buf = 136315394;
     v46 = "[TVRViewServiceManager presentWithContext:]";
     v47 = 2114;
@@ -78,19 +78,19 @@ uint64_t __39__TVRViewServiceManager_sharedInstance__block_invoke()
     v14 = *MEMORY[0x277D0AC30];
     v43[2] = v13;
     v43[3] = v14;
-    v15 = [v4 userInfo];
-    v44[3] = v15;
+    userInfo = [contextCopy userInfo];
+    v44[3] = userInfo;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:4];
 
     v17 = objc_alloc_init(MEMORY[0x277CC1F00]);
     [v17 setFrontBoardOptions:v16];
-    v18 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __44__TVRViewServiceManager_presentWithContext___block_invoke;
     v42[3] = &unk_279D891F8;
     v42[4] = self;
-    [v18 openApplicationWithBundleIdentifier:@"com.apple.TVRemoteUIService" usingConfiguration:v17 completionHandler:v42];
+    [defaultWorkspace openApplicationWithBundleIdentifier:@"com.apple.TVRemoteUIService" usingConfiguration:v17 completionHandler:v42];
 
     v19 = _TVRUISignpostLog();
     v20 = v19;
@@ -114,46 +114,46 @@ uint64_t __39__TVRViewServiceManager_sharedInstance__block_invoke()
 
     v11 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.TVRemoteUIService" viewControllerClassName:@"TVRemoteAlertViewController"];
     v16 = objc_alloc_init(MEMORY[0x277D66BD0]);
-    v22 = [(TVRViewServiceManager *)self lastActiveEndpointIdentifier];
+    lastActiveEndpointIdentifier = [(TVRViewServiceManager *)self lastActiveEndpointIdentifier];
 
-    if (v22)
+    if (lastActiveEndpointIdentifier)
     {
-      v23 = [(TVRViewServiceManager *)self lastActiveEndpointIdentifier];
-      [v4 setLastActiveEndpointIdentifier:v23];
+      lastActiveEndpointIdentifier2 = [(TVRViewServiceManager *)self lastActiveEndpointIdentifier];
+      [contextCopy setLastActiveEndpointIdentifier:lastActiveEndpointIdentifier2];
     }
 
-    v24 = [v4 userInfo];
-    [v16 setUserInfo:v24];
+    userInfo2 = [contextCopy userInfo];
+    [v16 setUserInfo:userInfo2];
 
     v25 = _TVRUIViewServiceLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v16 userInfo];
+      userInfo3 = [v16 userInfo];
       *buf = 138543362;
-      v46 = v26;
+      v46 = userInfo3;
       _os_log_impl(&dword_26CFEB000, v25, OS_LOG_TYPE_DEFAULT, "View service manager set userInfo %{public}@", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x277D66BF0] newHandleWithDefinition:v11 configurationContext:v16];
     [v17 registerObserver:self];
     v27 = objc_alloc_init(MEMORY[0x277D66BC0]);
-    if ([v4 launchContext] == 9 || objc_msgSend(v4, "launchContext") == 7)
+    if ([contextCopy launchContext] == 9 || objc_msgSend(contextCopy, "launchContext") == 7)
     {
       [v27 setActivatingForSiri:1];
       v28 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v4 launchContext];
+        launchContext = [contextCopy launchContext];
         *buf = 134217984;
-        v46 = v29;
+        v46 = launchContext;
         _os_log_impl(&dword_26CFEB000, v28, OS_LOG_TYPE_DEFAULT, "Setting activatingForSiri flag to YES. Launch Context %ld", buf, 0xCu);
       }
     }
 
     v30 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v31 = [v4 presentationAnimations];
+    presentationAnimations = [contextCopy presentationAnimations];
 
-    if (v31)
+    if (presentationAnimations)
     {
       v32 = _TVRUIViewServiceLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -166,7 +166,7 @@ uint64_t __39__TVRViewServiceManager_sharedInstance__block_invoke()
       v39[1] = 3221225472;
       v39[2] = __44__TVRViewServiceManager_presentWithContext___block_invoke_33;
       v39[3] = &unk_279D88BE0;
-      v40 = v4;
+      v40 = contextCopy;
       v41 = v7;
       v33 = [(TVRViewServiceManager *)self _actionForSetting:1 animationBlock:v39];
       if (v33)
@@ -175,9 +175,9 @@ uint64_t __39__TVRViewServiceManager_sharedInstance__block_invoke()
       }
     }
 
-    v34 = [v4 dismissalAnimations];
+    dismissalAnimations = [contextCopy dismissalAnimations];
 
-    if (v34)
+    if (dismissalAnimations)
     {
       v35 = _TVRUIViewServiceLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -186,8 +186,8 @@ uint64_t __39__TVRViewServiceManager_sharedInstance__block_invoke()
         _os_log_impl(&dword_26CFEB000, v35, OS_LOG_TYPE_DEFAULT, "View service manager client set dismissal animations", buf, 2u);
       }
 
-      v36 = [v4 dismissalAnimations];
-      v37 = [(TVRViewServiceManager *)self _actionForSetting:2 animationBlock:v36];
+      dismissalAnimations2 = [contextCopy dismissalAnimations];
+      v37 = [(TVRViewServiceManager *)self _actionForSetting:2 animationBlock:dismissalAnimations2];
 
       if (v37)
       {
@@ -245,24 +245,24 @@ void __44__TVRViewServiceManager_presentWithContext___block_invoke_33(uint64_t a
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v4 = [(TVRViewServiceManager *)self alertHandle];
+  alertHandle = [(TVRViewServiceManager *)self alertHandle];
 
-  if (v4)
+  if (alertHandle)
   {
-    v5 = [(TVRViewServiceManager *)self alertHandle];
-    [v5 unregisterObserver:self];
+    alertHandle2 = [(TVRViewServiceManager *)self alertHandle];
+    [alertHandle2 unregisterObserver:self];
 
-    v6 = [(TVRViewServiceManager *)self alertHandle];
-    [v6 invalidate];
+    alertHandle3 = [(TVRViewServiceManager *)self alertHandle];
+    [alertHandle3 invalidate];
 
     [(TVRViewServiceManager *)self setAlertHandle:0];
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = _TVRUIViewServiceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -271,42 +271,42 @@ void __44__TVRViewServiceManager_presentWithContext___block_invoke_33(uint64_t a
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v6 = [(TVRViewServiceManager *)self alertHandle];
-  v7 = [v6 isEqual:v4];
+  alertHandle = [(TVRViewServiceManager *)self alertHandle];
+  v7 = [alertHandle isEqual:deactivateCopy];
 
   if (v7)
   {
-    v8 = [(TVRViewServiceManager *)self alertHandle];
-    [v8 unregisterObserver:self];
+    alertHandle2 = [(TVRViewServiceManager *)self alertHandle];
+    [alertHandle2 unregisterObserver:self];
 
     [(TVRViewServiceManager *)self setAlertHandle:0];
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _TVRUIViewServiceLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [TVRViewServiceManager remoteAlertHandle:v5 didInvalidateWithError:v6];
+    [TVRViewServiceManager remoteAlertHandle:errorCopy didInvalidateWithError:v6];
   }
 
   [(TVRViewServiceManager *)self setAlertHandle:0];
 }
 
-- (id)_actionForSetting:(unint64_t)a3 animationBlock:(id)a4
+- (id)_actionForSetting:(unint64_t)setting animationBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  [v6 setObject:&unk_287E84E30 forSetting:a3];
+  [v6 setObject:&unk_287E84E30 forSetting:setting];
   v7 = MEMORY[0x277CF0B60];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__TVRViewServiceManager__actionForSetting_animationBlock___block_invoke;
   v12[3] = &unk_279D89220;
-  v13 = v5;
-  v8 = v5;
+  v13 = blockCopy;
+  v8 = blockCopy;
   v9 = [v7 responderWithHandler:v12];
   v10 = [objc_alloc(MEMORY[0x277CF0B58]) initWithInfo:v6 responder:v9];
 
@@ -331,30 +331,30 @@ uint64_t __58__TVRViewServiceManager__actionForSetting_animationBlock___block_in
   return result;
 }
 
-- (id)_settingNameForValue:(unint64_t)a3
+- (id)_settingNameForValue:(unint64_t)value
 {
-  if (a3 == 1)
+  if (value == 1)
   {
-    v4 = @"Presentation";
+    value = @"Presentation";
   }
 
-  else if (a3 == 2)
+  else if (value == 2)
   {
-    v4 = @"Dismissal";
+    value = @"Dismissal";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%ld)", a3];
+    value = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%ld)", value];
   }
 
-  return v4;
+  return value;
 }
 
-- (void)_prewarmWithLaunchViewService:(BOOL)a3 fetchActiveEndpoint:(BOOL)a4
+- (void)_prewarmWithLaunchViewService:(BOOL)service fetchActiveEndpoint:(BOOL)endpoint
 {
-  v4 = a4;
-  v5 = a3;
+  endpointCopy = endpoint;
+  serviceCopy = service;
   v7 = _TVRUIPrewarmLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -362,12 +362,12 @@ uint64_t __58__TVRViewServiceManager__actionForSetting_animationBlock___block_in
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "TVRViewServiceManager", v8, 2u);
   }
 
-  if (v5 && ![(TVRViewServiceManager *)self canLaunchAsAnApp])
+  if (serviceCopy && ![(TVRViewServiceManager *)self canLaunchAsAnApp])
   {
     [(TVRViewServiceManager *)self _launchViewServiceSuspended];
   }
 
-  if (v4)
+  if (endpointCopy)
   {
     [(TVRViewServiceManager *)self _fetchActiveEndpointUID];
   }
@@ -445,8 +445,8 @@ void __48__TVRViewServiceManager__fetchActiveEndpointUID__block_invoke(uint64_t 
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [v4 optionsWithDictionary:v5];
 
-  v7 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-  [v7 openApplication:@"com.apple.TVRemoteUIService" withOptions:v6 completion:&__block_literal_global_56];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  [serviceWithDefaultShellEndpoint openApplication:@"com.apple.TVRemoteUIService" withOptions:v6 completion:&__block_literal_global_56];
 }
 
 void __52__TVRViewServiceManager__launchViewServiceSuspended__block_invoke(uint64_t a1, uint64_t a2, void *a3)

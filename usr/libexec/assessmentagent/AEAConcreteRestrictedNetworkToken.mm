@@ -20,15 +20,15 @@
     goto LABEL_5;
   }
 
-  v3 = [(NEPolicySession *)self->_policySession removeAllPolicies];
-  if (v3)
+  removeAllPolicies = [(NEPolicySession *)self->_policySession removeAllPolicies];
+  if (removeAllPolicies)
   {
     sub_10007C448(self, 0);
 LABEL_5:
-    LOBYTE(v3) = 1;
+    LOBYTE(removeAllPolicies) = 1;
   }
 
-  return v3;
+  return removeAllPolicies;
 }
 
 @end

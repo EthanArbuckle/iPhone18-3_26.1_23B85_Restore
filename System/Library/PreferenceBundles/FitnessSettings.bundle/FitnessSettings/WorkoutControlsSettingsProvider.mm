@@ -1,10 +1,10 @@
 @interface WorkoutControlsSettingsProvider
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation WorkoutControlsSettingsProvider
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
   v6 = sub_6DF4(&qword_2D800, &qword_21CA8);
   v7 = *(*(v6 - 8) + 64);
@@ -19,7 +19,7 @@
   *(v12 + 16) = v11;
   *(v12 + 24) = &protocol witness table for MainActor;
   *(v12 + 32) = self;
-  *(v12 + 40) = a4;
+  *(v12 + 40) = change;
   sub_1792C(0, 0, v9, &unk_21CB8, v12);
 }
 

@@ -1,31 +1,31 @@
 @interface AudioAppContentViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC22AudioMessagesExtension29AudioAppContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)displayLinkFiredFrom:(id)a3;
-- (void)longPressFrom:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC22AudioMessagesExtension29AudioAppContentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)displayLinkFiredFrom:(id)from;
+- (void)longPressFrom:(id)from;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation AudioAppContentViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   AudioAppContentViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AudioAppContentViewController();
   v4 = v7.receiver;
-  [(AudioAppContentViewController *)&v7 viewDidAppear:v3];
+  [(AudioAppContentViewController *)&v7 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC22AudioMessagesExtension29AudioAppContentViewController_displayLink];
   if (v5)
   {
@@ -34,19 +34,19 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  AudioAppContentViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  AudioAppContentViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = controller;
   AudioAppContentViewController.willMove(toParent:)(v9);
 }
 
@@ -59,21 +59,21 @@
   sub_350BC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   AudioAppContentViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)displayLinkFiredFrom:(id)a3
+- (void)displayLinkFiredFrom:(id)from
 {
-  if (a3)
+  if (from)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_42AA8();
     swift_unknownObjectRelease();
@@ -82,7 +82,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_361C4();
@@ -90,23 +90,23 @@
   sub_2E3A0(v6, &unk_82040);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = AudioAppContentViewController.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = AudioAppContentViewController.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (void)longPressFrom:(id)a3
+- (void)longPressFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_38250(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_38250(fromCopy);
 }
 
-- (_TtC22AudioMessagesExtension29AudioAppContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22AudioMessagesExtension29AudioAppContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

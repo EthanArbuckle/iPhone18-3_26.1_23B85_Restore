@@ -1,16 +1,16 @@
 @interface InsightQueryRequest
 - (_TtC9EnergyKit19InsightQueryRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation InsightQueryRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v5 = MEMORY[0x2383ED5D0]();
-  sub_238255890(v4, v6);
+  sub_238255890(coderCopy, selfCopy);
   objc_autoreleasePoolPop(v5);
 }
 

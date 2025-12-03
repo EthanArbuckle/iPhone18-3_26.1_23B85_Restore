@@ -1,20 +1,20 @@
 @interface UARPPersonalizationNumberTupleBool
-- (UARPPersonalizationNumberTupleBool)initWithKey:(id)a3 value:(BOOL)a4;
+- (UARPPersonalizationNumberTupleBool)initWithKey:(id)key value:(BOOL)value;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation UARPPersonalizationNumberTupleBool
 
-- (UARPPersonalizationNumberTupleBool)initWithKey:(id)a3 value:(BOOL)a4
+- (UARPPersonalizationNumberTupleBool)initWithKey:(id)key value:(BOOL)value
 {
   v8.receiver = self;
   v8.super_class = UARPPersonalizationNumberTupleBool;
   v6 = [(UARPPersonalizationNumberTupleBool *)&v8 init];
   if (v6)
   {
-    v6->_key = [a3 copy];
-    v6->_value = a4;
+    v6->_key = [key copy];
+    v6->_value = value;
   }
 
   return v6;

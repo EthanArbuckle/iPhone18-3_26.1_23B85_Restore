@@ -10,27 +10,27 @@
 - (BOOL)isVoiceTriggerRequest;
 - (BOOL)isWiredMicOrBTHeadsetOrWx;
 - (BOOL)userTypedInSiri;
-- (SASRequestOptions)initWithCoder:(id)a3;
-- (SASRequestOptions)initWithRequestSource:(int64_t)a3 uiPresentationIdentifier:(id)a4 buttonContext:(id)a5;
-- (SASRequestOptions)initWithRequestSource:(int64_t)a3 uiPresentationIdentifier:(id)a4 systemState:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SASRequestOptions)initWithCoder:(id)coder;
+- (SASRequestOptions)initWithRequestSource:(int64_t)source uiPresentationIdentifier:(id)identifier buttonContext:(id)context;
+- (SASRequestOptions)initWithRequestSource:(int64_t)source uiPresentationIdentifier:(id)identifier systemState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)nullableProperties;
 - (int64_t)inputType;
-- (void)_configureStreamingDictationForSource:(int64_t)a3;
-- (void)_updateWithSystemState:(id)a3 forcefully:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_configureStreamingDictationForSource:(int64_t)source;
+- (void)_updateWithSystemState:(id)state forcefully:(BOOL)forcefully;
+- (void)encodeWithCoder:(id)coder;
 - (void)isATVRemotePTTEligible;
-- (void)setRequestSource:(int64_t)a3;
+- (void)setRequestSource:(int64_t)source;
 @end
 
 @implementation SASRequestOptions
 
 - (BOOL)isWiredMicOrBTHeadsetOrWx
 {
-  v3 = [(SASRequestOptions *)self requestSource];
-  v4 = v3 == 19 && [(SASRequestOptions *)self isH1Activation];
-  return (v3 < 0x2F) & (0x480000000030uLL >> v3) | v4;
+  requestSource = [(SASRequestOptions *)self requestSource];
+  v4 = requestSource == 19 && [(SASRequestOptions *)self isH1Activation];
+  return (requestSource < 0x2F) & (0x480000000030uLL >> requestSource) | v4;
 }
 
 - (int64_t)inputType
@@ -65,27 +65,27 @@
     LOBYTE(v3) = 0;
   }
 
-  v4 = [(SASRequestOptions *)self requestSource];
-  v5 = v4 <= 0x3C && (((1 << v4) & 0x19A5000001010000) != 0 || v4 == 33 && ([MEMORY[0x1E698D258] saeAvailable] & 1) != 0) || -[SASRequestOptions isSuggestionSourceWithTextInput](self, "isSuggestionSourceWithTextInput");
-  v6 = [(SASRequestOptions *)self isForStark];
+  requestSource = [(SASRequestOptions *)self requestSource];
+  v5 = requestSource <= 0x3C && (((1 << requestSource) & 0x19A5000001010000) != 0 || requestSource == 33 && ([MEMORY[0x1E698D258] saeAvailable] & 1) != 0) || -[SASRequestOptions isSuggestionSourceWithTextInput](self, "isSuggestionSourceWithTextInput");
+  isForStark = [(SASRequestOptions *)self isForStark];
   v7 = [(SASRequestOptions *)self requestSource]== 8 || [(SASRequestOptions *)self requestSource]== 9;
   v8 = [(SASRequestOptions *)self isH1Activation]|| [(SASRequestOptions *)self requestSource]== 5;
   v9 = [(SASRequestOptions *)self requestSource]!= 4;
-  return v9 & ~(v6 | ~(v3 | v5) | (v7 || v8)) & ![(SASRequestOptions *)self isHeadunitEyesFree];
+  return v9 & ~(isForStark | ~(v3 | v5) | (v7 || v8)) & ![(SASRequestOptions *)self isHeadunitEyesFree];
 }
 
 - (BOOL)isForStark
 {
-  v3 = [(SASRequestOptions *)self uiPresentationIdentifier];
-  if ([v3 isEqualToString:@"com.apple.siri.CarDisplay"])
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
+  if ([uiPresentationIdentifier isEqualToString:@"com.apple.siri.CarDisplay"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SASRequestOptions *)self uiPresentationIdentifier];
-    v4 = [v5 isEqualToString:@"com.apple.siri.CarDisplay.UIFree"];
+    uiPresentationIdentifier2 = [(SASRequestOptions *)self uiPresentationIdentifier];
+    v4 = [uiPresentationIdentifier2 isEqualToString:@"com.apple.siri.CarDisplay.UIFree"];
   }
 
   return v4;
@@ -93,43 +93,43 @@
 
 - (BOOL)isH1Activation
 {
-  v2 = [(SASRequestOptions *)self requestInfo];
-  v3 = [v2 speechRequestOptions];
-  v4 = [v3 activationEvent];
+  requestInfo = [(SASRequestOptions *)self requestInfo];
+  speechRequestOptions = [requestInfo speechRequestOptions];
+  activationEvent = [speechRequestOptions activationEvent];
 
-  return (v4 < 0x23) & (0x40002C000uLL >> v4);
+  return (activationEvent < 0x23) & (0x40002C000uLL >> activationEvent);
 }
 
 - (BOOL)isHeadunitEyesFree
 {
-  v2 = [(SASRequestOptions *)self uiPresentationIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.siri.EyesFree"];
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
+  v3 = [uiPresentationIdentifier isEqualToString:@"com.apple.siri.EyesFree"];
 
   return v3;
 }
 
 - (BOOL)_isForSpeechRequest
 {
-  v3 = [(SASRequestOptions *)self requestSource];
-  v4 = [(SASRequestOptions *)self isAnnounceRequest];
-  if (v3 <= 0x26 && ((1 << v3) & 0x4000006000) != 0 || (v3 == 43 ? (v7 = 1) : (v7 = v4), (v7 & 1) != 0 || [(SASRequestOptions *)self requestSource]== 19 && ![(SASRequestOptions *)self isH1Activation]|| [(SASRequestOptions *)self requestSource]== 22))
+  requestSource = [(SASRequestOptions *)self requestSource];
+  isAnnounceRequest = [(SASRequestOptions *)self isAnnounceRequest];
+  if (requestSource <= 0x26 && ((1 << requestSource) & 0x4000006000) != 0 || (requestSource == 43 ? (v7 = 1) : (v7 = isAnnounceRequest), (v7 & 1) != 0 || [(SASRequestOptions *)self requestSource]== 19 && ![(SASRequestOptions *)self isH1Activation]|| [(SASRequestOptions *)self requestSource]== 22))
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v8 = [(SASRequestOptions *)self text];
-    if ([v8 length])
+    text = [(SASRequestOptions *)self text];
+    if ([text length])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v9 = [(SASRequestOptions *)self speechFileURL];
-      v10 = [v9 absoluteString];
-      if ([v10 length] || -[SASRequestOptions requestSource](self, "requestSource") == 24 || -[SASRequestOptions _isTypeToSiriPermittedAndEnabledForRequestOptions](self, "_isTypeToSiriPermittedAndEnabledForRequestOptions") || -[SASRequestOptions requestSource](self, "requestSource") == 36 || -[SASRequestOptions requestSource](self, "requestSource") == 40)
+      speechFileURL = [(SASRequestOptions *)self speechFileURL];
+      absoluteString = [speechFileURL absoluteString];
+      if ([absoluteString length] || -[SASRequestOptions requestSource](self, "requestSource") == 24 || -[SASRequestOptions _isTypeToSiriPermittedAndEnabledForRequestOptions](self, "_isTypeToSiriPermittedAndEnabledForRequestOptions") || -[SASRequestOptions requestSource](self, "requestSource") == 36 || -[SASRequestOptions requestSource](self, "requestSource") == 40)
       {
         LOBYTE(v5) = 0;
       }
@@ -151,65 +151,65 @@
   v5 = SASRequestSourceGetName([(SASRequestOptions *)self requestSource]);
   v6 = [v3 stringWithFormat:@"<%@ %p requestSource=%@", v4, self, v5];;
 
-  v7 = [(SASRequestOptions *)self activationDeviceIdentifier];
+  activationDeviceIdentifier = [(SASRequestOptions *)self activationDeviceIdentifier];
 
-  if (v7)
+  if (activationDeviceIdentifier)
   {
-    v8 = [(SASRequestOptions *)self activationDeviceIdentifier];
-    [v6 appendFormat:@";activationDeviceIdentifier=%@", v8];
+    activationDeviceIdentifier2 = [(SASRequestOptions *)self activationDeviceIdentifier];
+    [v6 appendFormat:@";activationDeviceIdentifier=%@", activationDeviceIdentifier2];
   }
 
-  v9 = [(SASRequestOptions *)self bulletin];
+  bulletin = [(SASRequestOptions *)self bulletin];
 
-  if (v9)
+  if (bulletin)
   {
-    v10 = [(SASRequestOptions *)self bulletin];
-    [v6 appendFormat:@";bulletin=%@", v10];
+    bulletin2 = [(SASRequestOptions *)self bulletin];
+    [v6 appendFormat:@";bulletin=%@", bulletin2];
   }
 
-  v11 = [(SASRequestOptions *)self appBundleIdentifier];
+  appBundleIdentifier = [(SASRequestOptions *)self appBundleIdentifier];
 
-  if (v11)
+  if (appBundleIdentifier)
   {
-    v12 = [(SASRequestOptions *)self appBundleIdentifier];
-    [v6 appendFormat:@";appBundleIdentifier=%@", v12];
+    appBundleIdentifier2 = [(SASRequestOptions *)self appBundleIdentifier];
+    [v6 appendFormat:@";appBundleIdentifier=%@", appBundleIdentifier2];
   }
 
   [(SASRequestOptions *)self directActionEvent];
   v13 = AFDirectActionEventGetName();
   [v6 appendFormat:@";directActionEvent=%@", v13];
 
-  v14 = [(SASRequestOptions *)self serverCommandId];
+  serverCommandId = [(SASRequestOptions *)self serverCommandId];
 
-  if (v14)
+  if (serverCommandId)
   {
-    v15 = [(SASRequestOptions *)self serverCommandId];
-    [v6 appendFormat:@";serverCommandId=%@", v15];
+    serverCommandId2 = [(SASRequestOptions *)self serverCommandId];
+    [v6 appendFormat:@";serverCommandId=%@", serverCommandId2];
   }
 
   [v6 appendFormat:@";isPronunciationRequest=%i", -[SASRequestOptions isPronunciationRequest](self, "isPronunciationRequest")];
-  v16 = [(SASRequestOptions *)self pronunciationContext];
+  pronunciationContext = [(SASRequestOptions *)self pronunciationContext];
 
-  if (v16)
+  if (pronunciationContext)
   {
-    v17 = [(SASRequestOptions *)self pronunciationContext];
-    [v6 appendFormat:@";pronunciationContext=%@", v17];
+    pronunciationContext2 = [(SASRequestOptions *)self pronunciationContext];
+    [v6 appendFormat:@";pronunciationContext=%@", pronunciationContext2];
   }
 
-  v18 = [(SASRequestOptions *)self text];
+  text = [(SASRequestOptions *)self text];
 
-  if (v18)
+  if (text)
   {
-    v19 = [(SASRequestOptions *)self text];
-    [v6 appendFormat:@";text=%@", v19];
+    text2 = [(SASRequestOptions *)self text];
+    [v6 appendFormat:@";text=%@", text2];
   }
 
-  v20 = [(SASRequestOptions *)self speechFileURL];
+  speechFileURL = [(SASRequestOptions *)self speechFileURL];
 
-  if (v20)
+  if (speechFileURL)
   {
-    v21 = [(SASRequestOptions *)self speechFileURL];
-    [v6 appendFormat:@";speechFileURL=%@", v21];
+    speechFileURL2 = [(SASRequestOptions *)self speechFileURL];
+    [v6 appendFormat:@";speechFileURL=%@", speechFileURL2];
   }
 
   [(SASRequestOptions *)self expectedTimestamp];
@@ -220,114 +220,114 @@
   v27 = v26;
   [(SASRequestOptions *)self computedActivationTime];
   [v6 appendFormat:@";expectedTimestamp=%0.1f;timestamp=%0.1f;buttonDownTimestamp=%0.1f;computedActivationTime=%0.1f;isInitialBringUp=%i;useAutomaticEndpointing=%i;useStreamingDictation=%i;acousticId=%i;releaseAudioSessionORC=%i;predictedZLL=%i", v23, v25, v27, v28, -[SASRequestOptions isInitialBringUp](self, "isInitialBringUp"), -[SASRequestOptions useAutomaticEndpointing](self, "useAutomaticEndpointing"), -[SASRequestOptions useStreamingDictation](self, "useStreamingDictation"), -[SASRequestOptions acousticIdEnabled](self, "acousticIdEnabled"), -[SASRequestOptions releaseAudioSessionOnRecordingCompletion](self, "releaseAudioSessionOnRecordingCompletion"), -[SASRequestOptions predictedRecordRouteIsZLL](self, "predictedRecordRouteIsZLL")];
-  v29 = [(SASRequestOptions *)self uiPresentationIdentifier];
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
 
-  if (v29)
+  if (uiPresentationIdentifier)
   {
-    v30 = [(SASRequestOptions *)self uiPresentationIdentifier];
-    [v6 appendFormat:@";uiPresentationIdentifier=%@", v30];
+    uiPresentationIdentifier2 = [(SASRequestOptions *)self uiPresentationIdentifier];
+    [v6 appendFormat:@";uiPresentationIdentifier=%@", uiPresentationIdentifier2];
   }
 
-  v31 = [(SASRequestOptions *)self testingContext];
+  testingContext = [(SASRequestOptions *)self testingContext];
 
-  if (v31)
+  if (testingContext)
   {
-    v32 = [(SASRequestOptions *)self testingContext];
-    [v6 appendFormat:@";testingContext=%@", v32];
+    testingContext2 = [(SASRequestOptions *)self testingContext];
+    [v6 appendFormat:@";testingContext=%@", testingContext2];
   }
 
   v66 = [(SASRequestOptions *)self inputType]== 2;
   v65 = [(SASRequestOptions *)self inputType]== 1;
-  v33 = [(SASRequestOptions *)self isForStark];
-  v34 = [(SASRequestOptions *)self isConnectedToCarPlay];
-  v35 = [(SASRequestOptions *)self isForCarDND];
-  v36 = [(SASRequestOptions *)self isRightHandDrive];
-  v37 = [(SASRequestOptions *)self isForBluetoothCar];
+  isForStark = [(SASRequestOptions *)self isForStark];
+  isConnectedToCarPlay = [(SASRequestOptions *)self isConnectedToCarPlay];
+  isForCarDND = [(SASRequestOptions *)self isForCarDND];
+  isRightHandDrive = [(SASRequestOptions *)self isRightHandDrive];
+  isForBluetoothCar = [(SASRequestOptions *)self isForBluetoothCar];
   v38 = CARAutomaticFeatureStateGetName([(SASRequestOptions *)self carDNDStatus]);
-  [v6 appendFormat:@";is(speech=%i; textInput=%i;stark=%i;CPconnected=%i;dnd=%i;rightHandDrive=%i;isForBluetoothCar=%i);carDNDStatus=%@;remotePresentationBringUp=%i;supportsCarPlayVehicleData=%i;carOwnsMainAudio=%i", v66, v65, v33, v34, v35, v36, v37, v38, -[SASRequestOptions isRemotePresentationBringUp](self, "isRemotePresentationBringUp"), -[SASRequestOptions supportsCarPlayVehicleData](self, "supportsCarPlayVehicleData"), -[SASRequestOptions carOwnsMainAudio](self, "carOwnsMainAudio")];
+  [v6 appendFormat:@";is(speech=%i; textInput=%i;stark=%i;CPconnected=%i;dnd=%i;rightHandDrive=%i;isForBluetoothCar=%i);carDNDStatus=%@;remotePresentationBringUp=%i;supportsCarPlayVehicleData=%i;carOwnsMainAudio=%i", v66, v65, isForStark, isConnectedToCarPlay, isForCarDND, isRightHandDrive, isForBluetoothCar, v38, -[SASRequestOptions isRemotePresentationBringUp](self, "isRemotePresentationBringUp"), -[SASRequestOptions supportsCarPlayVehicleData](self, "supportsCarPlayVehicleData"), -[SASRequestOptions carOwnsMainAudio](self, "carOwnsMainAudio")];
 
-  v39 = [(SASRequestOptions *)self homeButtonUpFromBeep];
+  homeButtonUpFromBeep = [(SASRequestOptions *)self homeButtonUpFromBeep];
 
-  if (v39)
+  if (homeButtonUpFromBeep)
   {
-    v40 = [(SASRequestOptions *)self homeButtonUpFromBeep];
-    [v6 appendFormat:@";homeButtonUpFromBeep=%@", v40];
+    homeButtonUpFromBeep2 = [(SASRequestOptions *)self homeButtonUpFromBeep];
+    [v6 appendFormat:@";homeButtonUpFromBeep=%@", homeButtonUpFromBeep2];
   }
 
-  v41 = [(SASRequestOptions *)self continuityInfo];
+  continuityInfo = [(SASRequestOptions *)self continuityInfo];
 
-  if (v41)
+  if (continuityInfo)
   {
-    v42 = [(SASRequestOptions *)self continuityInfo];
-    [v6 appendFormat:@";continuityInfo=%@", v42];
+    continuityInfo2 = [(SASRequestOptions *)self continuityInfo];
+    [v6 appendFormat:@";continuityInfo=%@", continuityInfo2];
   }
 
-  v43 = [(SASRequestOptions *)self requestInfo];
+  requestInfo = [(SASRequestOptions *)self requestInfo];
 
-  if (v43)
+  if (requestInfo)
   {
-    v44 = [(SASRequestOptions *)self requestInfo];
-    [v6 appendFormat:@";requestInfo=%@", v44];
+    requestInfo2 = [(SASRequestOptions *)self requestInfo];
+    [v6 appendFormat:@";requestInfo=%@", requestInfo2];
   }
 
   v45 = SASLockStateGetName([(SASRequestOptions *)self currentLockState]);
   [v6 appendFormat:@";currentLockState=%@", v45];
 
-  v46 = [(SASRequestOptions *)self previousInteractionInputType];
-  if ((v46 - 1) > 2)
+  previousInteractionInputType = [(SASRequestOptions *)self previousInteractionInputType];
+  if ((previousInteractionInputType - 1) > 2)
   {
     v47 = @"SASRequestInputTypeNone";
   }
 
   else
   {
-    v47 = *(&off_1E82F4540 + v46 - 1);
+    v47 = *(&off_1E82F4540 + previousInteractionInputType - 1);
   }
 
   [v6 appendFormat:@";previousInteractionInputType=%@", v47];
-  v48 = [(SASRequestOptions *)self suggestionRequestType];
-  if (v48 > 3)
+  suggestionRequestType = [(SASRequestOptions *)self suggestionRequestType];
+  if (suggestionRequestType > 3)
   {
     v49 = @"Unknown";
   }
 
   else
   {
-    v49 = *(&off_1E82F4558 + v48);
+    v49 = *(&off_1E82F4558 + suggestionRequestType);
   }
 
   [v6 appendFormat:@";suggestionRequestType=%@", v49];
-  v50 = [(SASRequestOptions *)self directActionApplicationContext];
+  directActionApplicationContext = [(SASRequestOptions *)self directActionApplicationContext];
 
-  if (v50)
+  if (directActionApplicationContext)
   {
-    v51 = [(SASRequestOptions *)self directActionApplicationContext];
-    [v6 appendFormat:@";directActionApplicationContext=%@", v51];
+    directActionApplicationContext2 = [(SASRequestOptions *)self directActionApplicationContext];
+    [v6 appendFormat:@";directActionApplicationContext=%@", directActionApplicationContext2];
   }
 
-  v52 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
+  currentCarPlaySupportedOEMAppIdList = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
 
-  if (v52)
+  if (currentCarPlaySupportedOEMAppIdList)
   {
-    v53 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
-    [v6 appendFormat:@";carPlayOEMList=%@", v53];
+    currentCarPlaySupportedOEMAppIdList2 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
+    [v6 appendFormat:@";carPlayOEMList=%@", currentCarPlaySupportedOEMAppIdList2];
   }
 
   [v6 appendFormat:@";isShortButtonPressAction=%i", -[SASRequestOptions isShortButtonPressAction](self, "isShortButtonPressAction")];
-  v54 = [(SASRequestOptions *)self startRecordingSoundId];
+  startRecordingSoundId = [(SASRequestOptions *)self startRecordingSoundId];
 
-  if (v54)
+  if (startRecordingSoundId)
   {
-    v55 = [(SASRequestOptions *)self startRecordingSoundId];
-    [v6 appendFormat:@";startRecordingSoundId=%@", v55];
+    startRecordingSoundId2 = [(SASRequestOptions *)self startRecordingSoundId];
+    [v6 appendFormat:@";startRecordingSoundId=%@", startRecordingSoundId2];
   }
 
-  v56 = [(SASRequestOptions *)self originalRequestOptions];
+  originalRequestOptions = [(SASRequestOptions *)self originalRequestOptions];
 
-  if (v56)
+  if (originalRequestOptions)
   {
-    v57 = [(SASRequestOptions *)self originalRequestOptions];
-    v58 = SASRequestSourceGetName([v57 requestSource]);
+    originalRequestOptions2 = [(SASRequestOptions *)self originalRequestOptions];
+    v58 = SASRequestSourceGetName([originalRequestOptions2 requestSource]);
     [v6 appendFormat:@";originalRequestOptions.requestSource=%@", v58];
   }
 
@@ -344,16 +344,16 @@
 
   [v6 appendFormat:@";isTVRemoteSourcePTTEligible=%i", -[SASRequestOptions isTVRemoteSourcePTTEligible](self, "isTVRemoteSourcePTTEligible")];
   [v6 appendFormat:@";longPressBehavior=%ld", -[SASRequestOptions longPressBehavior](self, "longPressBehavior")];
-  v60 = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
+  activationPreparationReferenceIdentifier = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
 
-  if (v60)
+  if (activationPreparationReferenceIdentifier)
   {
-    v61 = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
-    [v6 appendFormat:@"; activationPreparationIdentifier=%@", v61];
+    activationPreparationReferenceIdentifier2 = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
+    [v6 appendFormat:@"; activationPreparationIdentifier=%@", activationPreparationReferenceIdentifier2];
   }
 
-  v62 = [(SASRequestOptions *)self userEngagementContext];
-  v63 = [v62 description];
+  userEngagementContext = [(SASRequestOptions *)self userEngagementContext];
+  v63 = [userEngagementContext description];
   [v6 appendFormat:@";userEngagementContext=%@", v63];
 
   return v6;
@@ -361,16 +361,16 @@
 
 - (BOOL)isForUIFree
 {
-  v3 = [(SASRequestOptions *)self uiPresentationIdentifier];
-  if ([v3 isEqualToString:@"com.apple.siri.UIFree"])
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
+  if ([uiPresentationIdentifier isEqualToString:@"com.apple.siri.UIFree"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SASRequestOptions *)self uiPresentationIdentifier];
-    v4 = [v5 isEqualToString:@"com.apple.siri.CarDisplay.UIFree"];
+    uiPresentationIdentifier2 = [(SASRequestOptions *)self uiPresentationIdentifier];
+    v4 = [uiPresentationIdentifier2 isEqualToString:@"com.apple.siri.CarDisplay.UIFree"];
   }
 
   return v4;
@@ -378,96 +378,96 @@
 
 - (BOOL)isVoiceTriggerRequest
 {
-  v3 = [(SASRequestOptions *)self requestInfo];
-  v4 = [v3 speechRequestOptions];
-  v5 = [v4 activationEvent];
+  requestInfo = [(SASRequestOptions *)self requestInfo];
+  speechRequestOptions = [requestInfo speechRequestOptions];
+  activationEvent = [speechRequestOptions activationEvent];
 
   if ([(SASRequestOptions *)self requestSource]== 8)
   {
     return 1;
   }
 
-  return [(SASRequestOptions *)self requestSource]== 19 && v5 == 15;
+  return [(SASRequestOptions *)self requestSource]== 19 && activationEvent == 15;
 }
 
 - (BOOL)userTypedInSiri
 {
-  v3 = [(SASRequestOptions *)self isSuggestionSourceWithTextInput];
-  v4 = [(SASRequestOptions *)self requestSource]== 33 || [(SASRequestOptions *)self requestSource]== 24 || v3;
+  isSuggestionSourceWithTextInput = [(SASRequestOptions *)self isSuggestionSourceWithTextInput];
+  v4 = [(SASRequestOptions *)self requestSource]== 33 || [(SASRequestOptions *)self requestSource]== 24 || isSuggestionSourceWithTextInput;
   return v4 & 1;
 }
 
 - (BOOL)isForAppleTV
 {
-  v2 = [(SASRequestOptions *)self uiPresentationIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.siri.SiriTVPresentation"];
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
+  v3 = [uiPresentationIdentifier isEqualToString:@"com.apple.siri.SiriTVPresentation"];
 
   return v3;
 }
 
-- (SASRequestOptions)initWithRequestSource:(int64_t)a3 uiPresentationIdentifier:(id)a4 systemState:(id)a5
+- (SASRequestOptions)initWithRequestSource:(int64_t)source uiPresentationIdentifier:(id)identifier systemState:(id)state
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = SASRequestOptions;
   v11 = [(SASRequestOptions *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    v11->_requestSource = a3;
-    v13 = [MEMORY[0x1E696AE30] processInfo];
-    [v13 systemUptime];
+    v11->_requestSource = source;
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v12->_timestamp = v14;
 
     v12->_useAutomaticEndpointing = 1;
     v12->_acousticIdEnabled = 0;
-    objc_storeStrong(&v12->_uiPresentationIdentifier, a4);
+    objc_storeStrong(&v12->_uiPresentationIdentifier, identifier);
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     instrumentationEvents = v12->_instrumentationEvents;
     v12->_instrumentationEvents = v15;
 
-    [(SASRequestOptions *)v12 _configureStreamingDictationForSource:a3];
+    [(SASRequestOptions *)v12 _configureStreamingDictationForSource:source];
     v12->_longPressBehavior = -1;
-    if (v10)
+    if (stateCopy)
     {
-      [(SASRequestOptions *)v12 _updateWithSystemState:v10 forcefully:1];
+      [(SASRequestOptions *)v12 _updateWithSystemState:stateCopy forcefully:1];
     }
   }
 
   return v12;
 }
 
-- (SASRequestOptions)initWithRequestSource:(int64_t)a3 uiPresentationIdentifier:(id)a4 buttonContext:(id)a5
+- (SASRequestOptions)initWithRequestSource:(int64_t)source uiPresentationIdentifier:(id)identifier buttonContext:(id)context
 {
-  v8 = a5;
-  v9 = [(SASRequestOptions *)self initWithRequestSource:a3 uiPresentationIdentifier:a4 systemState:0];
+  contextCopy = context;
+  v9 = [(SASRequestOptions *)self initWithRequestSource:source uiPresentationIdentifier:identifier systemState:0];
   if ([MEMORY[0x1E698D148] isTVPushToTalkEnabled])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v8;
+      v10 = contextCopy;
       -[SASRequestOptions setTvRemoteType:](v9, "setTvRemoteType:", SASRemoteTypeFromSiriTVRemoteType([v10 remoteType]));
-      v11 = [v10 isPTTEligible];
+      isPTTEligible = [v10 isPTTEligible];
 
-      [(SASRequestOptions *)v9 setIsTVRemoteSourcePTTEligible:v11];
+      [(SASRequestOptions *)v9 setIsTVRemoteSourcePTTEligible:isPTTEligible];
     }
   }
 
-  v12 = [v8 activationEventInstrumentationIdentifier];
-  [(SASRequestOptions *)v9 setActivationEventInstrumentationIdenifier:v12];
+  activationEventInstrumentationIdentifier = [contextCopy activationEventInstrumentationIdentifier];
+  [(SASRequestOptions *)v9 setActivationEventInstrumentationIdenifier:activationEventInstrumentationIdentifier];
 
   return v9;
 }
 
-- (void)setRequestSource:(int64_t)a3
+- (void)setRequestSource:(int64_t)source
 {
-  if (a3 == 24)
+  if (source == 24)
   {
     if (AFPreferencesTypeToSiriEnabled())
     {
-      a3 = 24;
+      source = 24;
     }
 
     else
@@ -478,18 +478,18 @@
         [SASRequestOptions setRequestSource:v4];
       }
 
-      a3 = 0;
+      source = 0;
     }
   }
 
-  self->_requestSource = a3;
+  self->_requestSource = source;
 }
 
-- (void)_configureStreamingDictationForSource:(int64_t)a3
+- (void)_configureStreamingDictationForSource:(int64_t)source
 {
   v5 = AFPreferencesStreamingDictationEnabled();
-  v6 = 0x202820BC03FEuLL >> a3;
-  if (a3 > 0x2D)
+  v6 = 0x202820BC03FEuLL >> source;
+  if (source > 0x2D)
   {
     LOBYTE(v6) = 0;
   }
@@ -502,38 +502,38 @@
   [(SASRequestOptions *)self setUseStreamingDictation:v6 & 1];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SASRequestOptions *)self requestSource];
-  v6 = [(SASRequestOptions *)self uiPresentationIdentifier];
-  v7 = [v4 initWithRequestSource:v5 uiPresentationIdentifier:v6];
+  requestSource = [(SASRequestOptions *)self requestSource];
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
+  v7 = [v4 initWithRequestSource:requestSource uiPresentationIdentifier:uiPresentationIdentifier];
 
-  v8 = [(SASRequestOptions *)self activationDeviceIdentifier];
-  [v7 setActivationDeviceIdentifier:v8];
+  activationDeviceIdentifier = [(SASRequestOptions *)self activationDeviceIdentifier];
+  [v7 setActivationDeviceIdentifier:activationDeviceIdentifier];
 
-  v9 = [(SASRequestOptions *)self bulletin];
-  [v7 setBulletin:v9];
+  bulletin = [(SASRequestOptions *)self bulletin];
+  [v7 setBulletin:bulletin];
 
-  v10 = [(SASRequestOptions *)self appBundleIdentifier];
-  [v7 setAppBundleIdentifier:v10];
+  appBundleIdentifier = [(SASRequestOptions *)self appBundleIdentifier];
+  [v7 setAppBundleIdentifier:appBundleIdentifier];
 
   [v7 setDirectActionEvent:{-[SASRequestOptions directActionEvent](self, "directActionEvent")}];
-  v11 = [(SASRequestOptions *)self directActionApplicationContext];
-  [v7 setDirectActionApplicationContext:v11];
+  directActionApplicationContext = [(SASRequestOptions *)self directActionApplicationContext];
+  [v7 setDirectActionApplicationContext:directActionApplicationContext];
 
-  v12 = [(SASRequestOptions *)self serverCommandId];
-  [v7 setServerCommandId:v12];
+  serverCommandId = [(SASRequestOptions *)self serverCommandId];
+  [v7 setServerCommandId:serverCommandId];
 
   [v7 setPronunciationRequest:{-[SASRequestOptions isPronunciationRequest](self, "isPronunciationRequest")}];
-  v13 = [(SASRequestOptions *)self pronunciationContext];
-  [v7 setPronunciationContext:v13];
+  pronunciationContext = [(SASRequestOptions *)self pronunciationContext];
+  [v7 setPronunciationContext:pronunciationContext];
 
-  v14 = [(SASRequestOptions *)self text];
-  [v7 setText:v14];
+  text = [(SASRequestOptions *)self text];
+  [v7 setText:text];
 
-  v15 = [(SASRequestOptions *)self speechFileURL];
-  [v7 setSpeechFileURL:v15];
+  speechFileURL = [(SASRequestOptions *)self speechFileURL];
+  [v7 setSpeechFileURL:speechFileURL];
 
   [(SASRequestOptions *)self timestamp];
   [v7 setTimestamp:?];
@@ -546,23 +546,23 @@
   [v7 setInitialBringUp:{-[SASRequestOptions isInitialBringUp](self, "isInitialBringUp")}];
   [v7 setUseAutomaticEndpointing:{-[SASRequestOptions useAutomaticEndpointing](self, "useAutomaticEndpointing")}];
   [v7 setUseStreamingDictation:{-[SASRequestOptions useStreamingDictation](self, "useStreamingDictation")}];
-  v16 = [(SASRequestOptions *)self homeButtonUpFromBeep];
-  [v7 setHomeButtonUpFromBeep:v16];
+  homeButtonUpFromBeep = [(SASRequestOptions *)self homeButtonUpFromBeep];
+  [v7 setHomeButtonUpFromBeep:homeButtonUpFromBeep];
 
-  v17 = [(SASRequestOptions *)self continuityInfo];
-  [v7 setContinuityInfo:v17];
+  continuityInfo = [(SASRequestOptions *)self continuityInfo];
+  [v7 setContinuityInfo:continuityInfo];
 
-  v18 = [(SASRequestOptions *)self requestInfo];
-  [v7 setRequestInfo:v18];
+  requestInfo = [(SASRequestOptions *)self requestInfo];
+  [v7 setRequestInfo:requestInfo];
 
-  v19 = [(SASRequestOptions *)self speechRequestOptions];
-  [v7 setSpeechRequestOptions:v19];
+  speechRequestOptions = [(SASRequestOptions *)self speechRequestOptions];
+  [v7 setSpeechRequestOptions:speechRequestOptions];
 
   [v7 setAcousticIdEnabled:{-[SASRequestOptions acousticIdEnabled](self, "acousticIdEnabled")}];
   [v7 setReleaseAudioSessionOnRecordingCompletion:{-[SASRequestOptions releaseAudioSessionOnRecordingCompletion](self, "releaseAudioSessionOnRecordingCompletion")}];
   [v7 setPredictedRecordRouteIsZLL:{-[SASRequestOptions predictedRecordRouteIsZLL](self, "predictedRecordRouteIsZLL")}];
-  v20 = [(SASRequestOptions *)self testingContext];
-  [v7 setTestingContext:v20];
+  testingContext = [(SASRequestOptions *)self testingContext];
+  [v7 setTestingContext:testingContext];
 
   [v7 setIsConnectedToCarPlay:{-[SASRequestOptions isConnectedToCarPlay](self, "isConnectedToCarPlay")}];
   [v7 setIsForCarDND:{-[SASRequestOptions isForCarDND](self, "isForCarDND")}];
@@ -571,178 +571,178 @@
   [v7 setPreviousInteractionInputType:{-[SASRequestOptions previousInteractionInputType](self, "previousInteractionInputType")}];
   [v7 setSuggestionRequestType:{-[SASRequestOptions suggestionRequestType](self, "suggestionRequestType")}];
   [v7 setIsForBluetoothCar:{-[SASRequestOptions isForBluetoothCar](self, "isForBluetoothCar")}];
-  v21 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
-  [v7 setCurrentCarPlaySupportedOEMAppIdList:v21];
+  currentCarPlaySupportedOEMAppIdList = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
+  [v7 setCurrentCarPlaySupportedOEMAppIdList:currentCarPlaySupportedOEMAppIdList];
 
   [v7 setShortButtonPressAction:{-[SASRequestOptions isShortButtonPressAction](self, "isShortButtonPressAction")}];
-  v22 = [(SASRequestOptions *)self instrumentationEvents];
-  [v7 setInstrumentationEvents:v22];
+  instrumentationEvents = [(SASRequestOptions *)self instrumentationEvents];
+  [v7 setInstrumentationEvents:instrumentationEvents];
 
-  v23 = [(SASRequestOptions *)self startRecordingSoundId];
-  [v7 setStartRecordingSoundId:v23];
+  startRecordingSoundId = [(SASRequestOptions *)self startRecordingSoundId];
+  [v7 setStartRecordingSoundId:startRecordingSoundId];
 
-  v24 = [(SASRequestOptions *)self originalRequestOptions];
-  [v7 setOriginalRequestOptions:v24];
+  originalRequestOptions = [(SASRequestOptions *)self originalRequestOptions];
+  [v7 setOriginalRequestOptions:originalRequestOptions];
 
   [v7 setPresentationMode:{-[SASRequestOptions presentationMode](self, "presentationMode")}];
   [v7 setRightHandDrive:{-[SASRequestOptions isRightHandDrive](self, "isRightHandDrive")}];
   [v7 setTvRemoteType:{-[SASRequestOptions tvRemoteType](self, "tvRemoteType")}];
   [v7 setIsTVRemoteSourcePTTEligible:{-[SASRequestOptions isTVRemoteSourcePTTEligible](self, "isTVRemoteSourcePTTEligible")}];
   [v7 setLongPressBehavior:{-[SASRequestOptions longPressBehavior](self, "longPressBehavior")}];
-  v25 = [(SASRequestOptions *)self activationEventInstrumentationIdenifier];
-  [v7 setActivationEventInstrumentationIdenifier:v25];
+  activationEventInstrumentationIdenifier = [(SASRequestOptions *)self activationEventInstrumentationIdenifier];
+  [v7 setActivationEventInstrumentationIdenifier:activationEventInstrumentationIdenifier];
 
-  v26 = [(SASRequestOptions *)self userEngagementContext];
-  [v7 setUserEngagementContext:v26];
+  userEngagementContext = [(SASRequestOptions *)self userEngagementContext];
+  [v7 setUserEngagementContext:userEngagementContext];
 
-  v27 = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
-  [v7 setActivationPreparationReferenceIdentifier:v27];
+  activationPreparationReferenceIdentifier = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
+  [v7 setActivationPreparationReferenceIdentifier:activationPreparationReferenceIdentifier];
 
   return v7;
 }
 
-- (SASRequestOptions)initWithCoder:(id)a3
+- (SASRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v69.receiver = self;
   v69.super_class = SASRequestOptions;
   v5 = [(SASRequestOptions *)&v69 init];
   if (v5)
   {
-    v5->_requestSource = [v4 decodeIntegerForKey:@"SASRequestOptionsSourceCodingKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsActivationDeviceIdentifierCodingKey"];
+    v5->_requestSource = [coderCopy decodeIntegerForKey:@"SASRequestOptionsSourceCodingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsActivationDeviceIdentifierCodingKey"];
     v7 = [v6 copy];
     activationDeviceIdentifier = v5->_activationDeviceIdentifier;
     v5->_activationDeviceIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsBulletinCodingKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsBulletinCodingKey"];
     bulletin = v5->_bulletin;
     v5->_bulletin = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsAppBundleIdentifierCodingKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsAppBundleIdentifierCodingKey"];
     v12 = [v11 copy];
     appBundleIdentifier = v5->_appBundleIdentifier;
     v5->_appBundleIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsMessagesDirectActionApplicationContextCodingKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsMessagesDirectActionApplicationContextCodingKey"];
     directActionApplicationContext = v5->_directActionApplicationContext;
     v5->_directActionApplicationContext = v14;
 
-    v5->_directActionEvent = [v4 decodeIntegerForKey:@"SASRequestOptionsDirectActionEventCodingKey"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsServerCommandAceIdentifierCodingKey"];
+    v5->_directActionEvent = [coderCopy decodeIntegerForKey:@"SASRequestOptionsDirectActionEventCodingKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsServerCommandAceIdentifierCodingKey"];
     v17 = [v16 copy];
     serverCommandId = v5->_serverCommandId;
     v5->_serverCommandId = v17;
 
-    v5->_pronunciationRequest = [v4 decodeBoolForKey:@"SASRequestOptionsPronunciationRequestCodingKey"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsPronunciationContextCodingKey"];
+    v5->_pronunciationRequest = [coderCopy decodeBoolForKey:@"SASRequestOptionsPronunciationRequestCodingKey"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsPronunciationContextCodingKey"];
     pronunciationContext = v5->_pronunciationContext;
     v5->_pronunciationContext = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsTextCodingKey"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsTextCodingKey"];
     v22 = [v21 copy];
     text = v5->_text;
     v5->_text = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsSpeechFileURLCodingKey"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsSpeechFileURLCodingKey"];
     v25 = [v24 copy];
     speechFileURL = v5->_speechFileURL;
     v5->_speechFileURL = v25;
 
-    [v4 decodeDoubleForKey:@"SASRequestOptionsTimestampCodingKey"];
+    [coderCopy decodeDoubleForKey:@"SASRequestOptionsTimestampCodingKey"];
     v5->_timestamp = v27;
-    [v4 decodeDoubleForKey:@"SASRequestOptionsExpectedTimestampCodingKey"];
+    [coderCopy decodeDoubleForKey:@"SASRequestOptionsExpectedTimestampCodingKey"];
     v5->_expectedTimestamp = v28;
-    [v4 decodeDoubleForKey:@"SASRequestOptionsButtonDownTimestampCodingKey"];
+    [coderCopy decodeDoubleForKey:@"SASRequestOptionsButtonDownTimestampCodingKey"];
     v5->_buttonDownTimestamp = v29;
-    [v4 decodeDoubleForKey:@"SASRequestOptionsComputedActivationTimestampCodingKey"];
+    [coderCopy decodeDoubleForKey:@"SASRequestOptionsComputedActivationTimestampCodingKey"];
     v5->_computedActivationTime = v30;
-    v5->_initialBringUp = [v4 decodeBoolForKey:@"SASRequestOptionsIsInitialBringUpKey"];
-    v5->_useAutomaticEndpointing = [v4 decodeBoolForKey:@"SASRequestOptionsUseAutomaticEndpointingKey"];
-    v5->_useStreamingDictation = [v4 decodeBoolForKey:@"SASRequestOptionsUseStreamingDictationKey"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestHomeButtonUpFromBeepKey"];
+    v5->_initialBringUp = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsInitialBringUpKey"];
+    v5->_useAutomaticEndpointing = [coderCopy decodeBoolForKey:@"SASRequestOptionsUseAutomaticEndpointingKey"];
+    v5->_useStreamingDictation = [coderCopy decodeBoolForKey:@"SASRequestOptionsUseStreamingDictationKey"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestHomeButtonUpFromBeepKey"];
     homeButtonUpFromBeep = v5->_homeButtonUpFromBeep;
     v5->_homeButtonUpFromBeep = v31;
 
-    v33 = [v4 decodePropertyListForKey:@"SASRequestContinuityDataKey"];
+    v33 = [coderCopy decodePropertyListForKey:@"SASRequestContinuityDataKey"];
     continuityInfo = v5->_continuityInfo;
     v5->_continuityInfo = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestRequestInfoKey"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestRequestInfoKey"];
     requestInfo = v5->_requestInfo;
     v5->_requestInfo = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestSpeechRequestOptionsKey"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestSpeechRequestOptionsKey"];
     speechRequestOptions = v5->_speechRequestOptions;
     v5->_speechRequestOptions = v37;
 
-    v5->_acousticIdEnabled = [v4 decodeBoolForKey:@"SASRequestOptionsAcousticIdEnabledKey"];
-    v5->_releaseAudioSessionOnRecordingCompletion = [v4 decodeBoolForKey:@"SASRequestOptionsReleaseAudioSessionOnRecordingCompletionKey"];
-    v5->_predictedRecordRouteIsZLL = [v4 decodeBoolForKey:@"SASRequestPredictedRecordRouteIsZLL"];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsUIPresentationIdentifierCodingKey"];
+    v5->_acousticIdEnabled = [coderCopy decodeBoolForKey:@"SASRequestOptionsAcousticIdEnabledKey"];
+    v5->_releaseAudioSessionOnRecordingCompletion = [coderCopy decodeBoolForKey:@"SASRequestOptionsReleaseAudioSessionOnRecordingCompletionKey"];
+    v5->_predictedRecordRouteIsZLL = [coderCopy decodeBoolForKey:@"SASRequestPredictedRecordRouteIsZLL"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsUIPresentationIdentifierCodingKey"];
     v40 = [v39 copy];
     uiPresentationIdentifier = v5->_uiPresentationIdentifier;
     v5->_uiPresentationIdentifier = v40;
 
-    v42 = [v4 decodePropertyListForKey:@"SASRequestOptionsTestingContextKey"];
+    v42 = [coderCopy decodePropertyListForKey:@"SASRequestOptionsTestingContextKey"];
     testingContext = v5->_testingContext;
     v5->_testingContext = v42;
 
-    v5->_isConnectedToCarPlay = [v4 decodeBoolForKey:@"SASRequestOptionsIsConnectedToCarPlayCodingKey"];
-    v5->_supportsCarPlayVehicleData = [v4 decodeBoolForKey:@"SASRequestOptionsSupportsCarPlayVehicleData"];
-    v5->_carOwnsMainAudio = [v4 decodeBoolForKey:@"SASRequestOptionsCarOwnsMainAudioCodingKey"];
-    v5->_isForCarDND = [v4 decodeBoolForKey:@"SASRequestOptionsIsForCarDNDCodingKey"];
-    v5->_carDNDStatus = [v4 decodeIntegerForKey:@"SASRequestOptionsCarDNDStatusCodingKey"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsCurrentLockStateCodingKey"];
+    v5->_isConnectedToCarPlay = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsConnectedToCarPlayCodingKey"];
+    v5->_supportsCarPlayVehicleData = [coderCopy decodeBoolForKey:@"SASRequestOptionsSupportsCarPlayVehicleData"];
+    v5->_carOwnsMainAudio = [coderCopy decodeBoolForKey:@"SASRequestOptionsCarOwnsMainAudioCodingKey"];
+    v5->_isForCarDND = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsForCarDNDCodingKey"];
+    v5->_carDNDStatus = [coderCopy decodeIntegerForKey:@"SASRequestOptionsCarDNDStatusCodingKey"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsCurrentLockStateCodingKey"];
     v5->_currentLockState = [v44 unsignedIntegerValue];
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsPreviousInteractionInputTypeCodingKey"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsPreviousInteractionInputTypeCodingKey"];
     v5->_previousInteractionInputType = [v45 unsignedIntegerValue];
 
-    v5->_suggestionRequestType = [v4 decodeIntegerForKey:@"SASRequestOptionsSuggestionRequestTypeCodingKey"];
-    v5->_isForBluetoothCar = [v4 decodeBoolForKey:@"SASRequestOptionsBluetoothCarCodingKey"];
+    v5->_suggestionRequestType = [coderCopy decodeIntegerForKey:@"SASRequestOptionsSuggestionRequestTypeCodingKey"];
+    v5->_isForBluetoothCar = [coderCopy decodeBoolForKey:@"SASRequestOptionsBluetoothCarCodingKey"];
     v46 = MEMORY[0x1E695DFD8];
     v47 = objc_opt_class();
     v48 = [v46 setWithObjects:{v47, objc_opt_class(), 0}];
-    v49 = [v4 decodeObjectOfClasses:v48 forKey:@"SASRequestOptionsInstrumentationEventsCodingKey"];
+    v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"SASRequestOptionsInstrumentationEventsCodingKey"];
     instrumentationEvents = v5->_instrumentationEvents;
     v5->_instrumentationEvents = v49;
 
     v51 = MEMORY[0x1E695DFD8];
     v52 = objc_opt_class();
     v53 = [v51 setWithObjects:{v52, objc_opt_class(), 0}];
-    v54 = [v4 decodeObjectOfClasses:v53 forKey:@"SASRequestOptionsCurrentCarPlaySupportedOEMAppIdListKey"];
+    v54 = [coderCopy decodeObjectOfClasses:v53 forKey:@"SASRequestOptionsCurrentCarPlaySupportedOEMAppIdListKey"];
     currentCarPlaySupportedOEMAppIdList = v5->_currentCarPlaySupportedOEMAppIdList;
     v5->_currentCarPlaySupportedOEMAppIdList = v54;
 
-    v5->_shortButtonPressAction = [v4 decodeBoolForKey:@"SASRequestOptionsIsTVShortButtonPressAction"];
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsStartRecordingSoundIDCodingKey"];
+    v5->_shortButtonPressAction = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsTVShortButtonPressAction"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsStartRecordingSoundIDCodingKey"];
     startRecordingSoundId = v5->_startRecordingSoundId;
     v5->_startRecordingSoundId = v56;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsOriginalOptionsCodingKey"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsOriginalOptionsCodingKey"];
     originalRequestOptions = v5->_originalRequestOptions;
     v5->_originalRequestOptions = v58;
 
-    v5->_presentationMode = [v4 decodeIntegerForKey:@"SASRequestOptionsPresentationModeCodingKey"];
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsPreviousTurnIdentifierCodingKey"];
+    v5->_presentationMode = [coderCopy decodeIntegerForKey:@"SASRequestOptionsPresentationModeCodingKey"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsPreviousTurnIdentifierCodingKey"];
     previousTurnIdentifier = v5->_previousTurnIdentifier;
     v5->_previousTurnIdentifier = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsActivationEventIdentifierCodingKey"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsActivationEventIdentifierCodingKey"];
     activationEventInstrumentationIdenifier = v5->_activationEventInstrumentationIdenifier;
     v5->_activationEventInstrumentationIdenifier = v62;
 
-    v5->_rightHandDrive = [v4 decodeBoolForKey:@"SASRequestOptionsIsRightHandDriveKey"];
-    v5->_tvRemoteType = [v4 decodeIntegerForKey:@"SASRequestOptionsTVRemoteType"];
-    v5->_isRemotePresentationBringUp = [v4 decodeBoolForKey:@"SASRequestOptionsIsRemotePresentationBringUpCodingKey"];
-    v5->_isTVRemoteSourcePTTEligible = [v4 decodeBoolForKey:@"SASRequestOptionsIsTVRemoteSourcePTTEligibleCodingKey"];
-    v5->_longPressBehavior = [v4 decodeIntegerForKey:@"SASRequestOptionsLongPressBehavior"];
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsUserEngagementContextCodingKey"];
+    v5->_rightHandDrive = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsRightHandDriveKey"];
+    v5->_tvRemoteType = [coderCopy decodeIntegerForKey:@"SASRequestOptionsTVRemoteType"];
+    v5->_isRemotePresentationBringUp = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsRemotePresentationBringUpCodingKey"];
+    v5->_isTVRemoteSourcePTTEligible = [coderCopy decodeBoolForKey:@"SASRequestOptionsIsTVRemoteSourcePTTEligibleCodingKey"];
+    v5->_longPressBehavior = [coderCopy decodeIntegerForKey:@"SASRequestOptionsLongPressBehavior"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsUserEngagementContextCodingKey"];
     userEngagementContext = v5->_userEngagementContext;
     v5->_userEngagementContext = v64;
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsActivationPreparationReferenceIdentifierCodingKey"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASRequestOptionsActivationPreparationReferenceIdentifierCodingKey"];
     activationPreparationReferenceIdentifier = v5->_activationPreparationReferenceIdentifier;
     v5->_activationPreparationReferenceIdentifier = v66;
   }
@@ -750,111 +750,111 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SASRequestOptions requestSource](self forKey:{"requestSource"), @"SASRequestOptionsSourceCodingKey"}];
-  v5 = [(SASRequestOptions *)self activationDeviceIdentifier];
-  [v4 encodeObject:v5 forKey:@"SASRequestOptionsActivationDeviceIdentifierCodingKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SASRequestOptions requestSource](self forKey:{"requestSource"), @"SASRequestOptionsSourceCodingKey"}];
+  activationDeviceIdentifier = [(SASRequestOptions *)self activationDeviceIdentifier];
+  [coderCopy encodeObject:activationDeviceIdentifier forKey:@"SASRequestOptionsActivationDeviceIdentifierCodingKey"];
 
-  v6 = [(SASRequestOptions *)self bulletin];
-  [v4 encodeObject:v6 forKey:@"SASRequestOptionsBulletinCodingKey"];
+  bulletin = [(SASRequestOptions *)self bulletin];
+  [coderCopy encodeObject:bulletin forKey:@"SASRequestOptionsBulletinCodingKey"];
 
-  v7 = [(SASRequestOptions *)self appBundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"SASRequestOptionsAppBundleIdentifierCodingKey"];
+  appBundleIdentifier = [(SASRequestOptions *)self appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"SASRequestOptionsAppBundleIdentifierCodingKey"];
 
-  v8 = [(SASRequestOptions *)self directActionApplicationContext];
-  [v4 encodeObject:v8 forKey:@"SASRequestOptionsMessagesDirectActionApplicationContextCodingKey"];
+  directActionApplicationContext = [(SASRequestOptions *)self directActionApplicationContext];
+  [coderCopy encodeObject:directActionApplicationContext forKey:@"SASRequestOptionsMessagesDirectActionApplicationContextCodingKey"];
 
-  [v4 encodeInteger:-[SASRequestOptions directActionEvent](self forKey:{"directActionEvent"), @"SASRequestOptionsDirectActionEventCodingKey"}];
-  v9 = [(SASRequestOptions *)self serverCommandId];
-  [v4 encodeObject:v9 forKey:@"SASRequestOptionsServerCommandAceIdentifierCodingKey"];
+  [coderCopy encodeInteger:-[SASRequestOptions directActionEvent](self forKey:{"directActionEvent"), @"SASRequestOptionsDirectActionEventCodingKey"}];
+  serverCommandId = [(SASRequestOptions *)self serverCommandId];
+  [coderCopy encodeObject:serverCommandId forKey:@"SASRequestOptionsServerCommandAceIdentifierCodingKey"];
 
-  [v4 encodeBool:-[SASRequestOptions isPronunciationRequest](self forKey:{"isPronunciationRequest"), @"SASRequestOptionsPronunciationRequestCodingKey"}];
-  v10 = [(SASRequestOptions *)self pronunciationContext];
-  [v4 encodeObject:v10 forKey:@"SASRequestOptionsPronunciationContextCodingKey"];
+  [coderCopy encodeBool:-[SASRequestOptions isPronunciationRequest](self forKey:{"isPronunciationRequest"), @"SASRequestOptionsPronunciationRequestCodingKey"}];
+  pronunciationContext = [(SASRequestOptions *)self pronunciationContext];
+  [coderCopy encodeObject:pronunciationContext forKey:@"SASRequestOptionsPronunciationContextCodingKey"];
 
-  v11 = [(SASRequestOptions *)self text];
-  [v4 encodeObject:v11 forKey:@"SASRequestOptionsTextCodingKey"];
+  text = [(SASRequestOptions *)self text];
+  [coderCopy encodeObject:text forKey:@"SASRequestOptionsTextCodingKey"];
 
-  v12 = [(SASRequestOptions *)self speechFileURL];
-  [v4 encodeObject:v12 forKey:@"SASRequestOptionsSpeechFileURLCodingKey"];
+  speechFileURL = [(SASRequestOptions *)self speechFileURL];
+  [coderCopy encodeObject:speechFileURL forKey:@"SASRequestOptionsSpeechFileURLCodingKey"];
 
   [(SASRequestOptions *)self timestamp];
-  [v4 encodeDouble:@"SASRequestOptionsTimestampCodingKey" forKey:?];
+  [coderCopy encodeDouble:@"SASRequestOptionsTimestampCodingKey" forKey:?];
   [(SASRequestOptions *)self expectedTimestamp];
-  [v4 encodeDouble:@"SASRequestOptionsExpectedTimestampCodingKey" forKey:?];
+  [coderCopy encodeDouble:@"SASRequestOptionsExpectedTimestampCodingKey" forKey:?];
   [(SASRequestOptions *)self buttonDownTimestamp];
-  [v4 encodeDouble:@"SASRequestOptionsButtonDownTimestampCodingKey" forKey:?];
+  [coderCopy encodeDouble:@"SASRequestOptionsButtonDownTimestampCodingKey" forKey:?];
   [(SASRequestOptions *)self computedActivationTime];
-  [v4 encodeDouble:@"SASRequestOptionsComputedActivationTimestampCodingKey" forKey:?];
-  [v4 encodeBool:-[SASRequestOptions isInitialBringUp](self forKey:{"isInitialBringUp"), @"SASRequestOptionsIsInitialBringUpKey"}];
-  [v4 encodeBool:-[SASRequestOptions useStreamingDictation](self forKey:{"useStreamingDictation"), @"SASRequestOptionsUseStreamingDictationKey"}];
-  v13 = [(SASRequestOptions *)self homeButtonUpFromBeep];
-  [v4 encodeObject:v13 forKey:@"SASRequestHomeButtonUpFromBeepKey"];
+  [coderCopy encodeDouble:@"SASRequestOptionsComputedActivationTimestampCodingKey" forKey:?];
+  [coderCopy encodeBool:-[SASRequestOptions isInitialBringUp](self forKey:{"isInitialBringUp"), @"SASRequestOptionsIsInitialBringUpKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions useStreamingDictation](self forKey:{"useStreamingDictation"), @"SASRequestOptionsUseStreamingDictationKey"}];
+  homeButtonUpFromBeep = [(SASRequestOptions *)self homeButtonUpFromBeep];
+  [coderCopy encodeObject:homeButtonUpFromBeep forKey:@"SASRequestHomeButtonUpFromBeepKey"];
 
-  v14 = [(SASRequestOptions *)self continuityInfo];
-  [v4 encodeObject:v14 forKey:@"SASRequestContinuityDataKey"];
+  continuityInfo = [(SASRequestOptions *)self continuityInfo];
+  [coderCopy encodeObject:continuityInfo forKey:@"SASRequestContinuityDataKey"];
 
-  v15 = [(SASRequestOptions *)self requestInfo];
-  [v4 encodeObject:v15 forKey:@"SASRequestRequestInfoKey"];
+  requestInfo = [(SASRequestOptions *)self requestInfo];
+  [coderCopy encodeObject:requestInfo forKey:@"SASRequestRequestInfoKey"];
 
-  [v4 encodeBool:-[SASRequestOptions useAutomaticEndpointing](self forKey:{"useAutomaticEndpointing"), @"SASRequestOptionsUseAutomaticEndpointingKey"}];
-  v16 = [(SASRequestOptions *)self speechRequestOptions];
-  [v4 encodeObject:v16 forKey:@"SASRequestSpeechRequestOptionsKey"];
+  [coderCopy encodeBool:-[SASRequestOptions useAutomaticEndpointing](self forKey:{"useAutomaticEndpointing"), @"SASRequestOptionsUseAutomaticEndpointingKey"}];
+  speechRequestOptions = [(SASRequestOptions *)self speechRequestOptions];
+  [coderCopy encodeObject:speechRequestOptions forKey:@"SASRequestSpeechRequestOptionsKey"];
 
-  [v4 encodeBool:-[SASRequestOptions acousticIdEnabled](self forKey:{"acousticIdEnabled"), @"SASRequestOptionsAcousticIdEnabledKey"}];
-  [v4 encodeBool:-[SASRequestOptions releaseAudioSessionOnRecordingCompletion](self forKey:{"releaseAudioSessionOnRecordingCompletion"), @"SASRequestOptionsReleaseAudioSessionOnRecordingCompletionKey"}];
-  [v4 encodeBool:-[SASRequestOptions predictedRecordRouteIsZLL](self forKey:{"predictedRecordRouteIsZLL"), @"SASRequestPredictedRecordRouteIsZLL"}];
-  v17 = [(SASRequestOptions *)self uiPresentationIdentifier];
-  [v4 encodeObject:v17 forKey:@"SASRequestOptionsUIPresentationIdentifierCodingKey"];
+  [coderCopy encodeBool:-[SASRequestOptions acousticIdEnabled](self forKey:{"acousticIdEnabled"), @"SASRequestOptionsAcousticIdEnabledKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions releaseAudioSessionOnRecordingCompletion](self forKey:{"releaseAudioSessionOnRecordingCompletion"), @"SASRequestOptionsReleaseAudioSessionOnRecordingCompletionKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions predictedRecordRouteIsZLL](self forKey:{"predictedRecordRouteIsZLL"), @"SASRequestPredictedRecordRouteIsZLL"}];
+  uiPresentationIdentifier = [(SASRequestOptions *)self uiPresentationIdentifier];
+  [coderCopy encodeObject:uiPresentationIdentifier forKey:@"SASRequestOptionsUIPresentationIdentifierCodingKey"];
 
-  v18 = [(SASRequestOptions *)self testingContext];
-  [v4 encodeObject:v18 forKey:@"SASRequestOptionsTestingContextKey"];
+  testingContext = [(SASRequestOptions *)self testingContext];
+  [coderCopy encodeObject:testingContext forKey:@"SASRequestOptionsTestingContextKey"];
 
-  [v4 encodeBool:-[SASRequestOptions isConnectedToCarPlay](self forKey:{"isConnectedToCarPlay"), @"SASRequestOptionsIsConnectedToCarPlayCodingKey"}];
-  [v4 encodeBool:-[SASRequestOptions supportsCarPlayVehicleData](self forKey:{"supportsCarPlayVehicleData"), @"SASRequestOptionsSupportsCarPlayVehicleData"}];
-  [v4 encodeBool:-[SASRequestOptions carOwnsMainAudio](self forKey:{"carOwnsMainAudio"), @"SASRequestOptionsCarOwnsMainAudioCodingKey"}];
-  [v4 encodeBool:-[SASRequestOptions isForCarDND](self forKey:{"isForCarDND"), @"SASRequestOptionsIsForCarDNDCodingKey"}];
-  [v4 encodeInteger:-[SASRequestOptions carDNDStatus](self forKey:{"carDNDStatus"), @"SASRequestOptionsCarDNDStatusCodingKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions isConnectedToCarPlay](self forKey:{"isConnectedToCarPlay"), @"SASRequestOptionsIsConnectedToCarPlayCodingKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions supportsCarPlayVehicleData](self forKey:{"supportsCarPlayVehicleData"), @"SASRequestOptionsSupportsCarPlayVehicleData"}];
+  [coderCopy encodeBool:-[SASRequestOptions carOwnsMainAudio](self forKey:{"carOwnsMainAudio"), @"SASRequestOptionsCarOwnsMainAudioCodingKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions isForCarDND](self forKey:{"isForCarDND"), @"SASRequestOptionsIsForCarDNDCodingKey"}];
+  [coderCopy encodeInteger:-[SASRequestOptions carDNDStatus](self forKey:{"carDNDStatus"), @"SASRequestOptionsCarDNDStatusCodingKey"}];
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SASRequestOptions currentLockState](self, "currentLockState")}];
-  [v4 encodeObject:v19 forKey:@"SASRequestOptionsCurrentLockStateCodingKey"];
+  [coderCopy encodeObject:v19 forKey:@"SASRequestOptionsCurrentLockStateCodingKey"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SASRequestOptions previousInteractionInputType](self, "previousInteractionInputType")}];
-  [v4 encodeObject:v20 forKey:@"SASRequestOptionsPreviousInteractionInputTypeCodingKey"];
+  [coderCopy encodeObject:v20 forKey:@"SASRequestOptionsPreviousInteractionInputTypeCodingKey"];
 
-  [v4 encodeInteger:-[SASRequestOptions suggestionRequestType](self forKey:{"suggestionRequestType"), @"SASRequestOptionsSuggestionRequestTypeCodingKey"}];
-  [v4 encodeBool:-[SASRequestOptions isForBluetoothCar](self forKey:{"isForBluetoothCar"), @"SASRequestOptionsBluetoothCarCodingKey"}];
-  v21 = [(SASRequestOptions *)self instrumentationEvents];
-  [v4 encodeObject:v21 forKey:@"SASRequestOptionsInstrumentationEventsCodingKey"];
+  [coderCopy encodeInteger:-[SASRequestOptions suggestionRequestType](self forKey:{"suggestionRequestType"), @"SASRequestOptionsSuggestionRequestTypeCodingKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions isForBluetoothCar](self forKey:{"isForBluetoothCar"), @"SASRequestOptionsBluetoothCarCodingKey"}];
+  instrumentationEvents = [(SASRequestOptions *)self instrumentationEvents];
+  [coderCopy encodeObject:instrumentationEvents forKey:@"SASRequestOptionsInstrumentationEventsCodingKey"];
 
-  v22 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
-  [v4 encodeObject:v22 forKey:@"SASRequestOptionsCurrentCarPlaySupportedOEMAppIdListKey"];
+  currentCarPlaySupportedOEMAppIdList = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
+  [coderCopy encodeObject:currentCarPlaySupportedOEMAppIdList forKey:@"SASRequestOptionsCurrentCarPlaySupportedOEMAppIdListKey"];
 
-  [v4 encodeBool:-[SASRequestOptions isShortButtonPressAction](self forKey:{"isShortButtonPressAction"), @"SASRequestOptionsIsTVShortButtonPressAction"}];
-  v23 = [(SASRequestOptions *)self startRecordingSoundId];
-  [v4 encodeObject:v23 forKey:@"SASRequestOptionsStartRecordingSoundIDCodingKey"];
+  [coderCopy encodeBool:-[SASRequestOptions isShortButtonPressAction](self forKey:{"isShortButtonPressAction"), @"SASRequestOptionsIsTVShortButtonPressAction"}];
+  startRecordingSoundId = [(SASRequestOptions *)self startRecordingSoundId];
+  [coderCopy encodeObject:startRecordingSoundId forKey:@"SASRequestOptionsStartRecordingSoundIDCodingKey"];
 
-  v24 = [(SASRequestOptions *)self originalRequestOptions];
-  [v4 encodeObject:v24 forKey:@"SASRequestOptionsOriginalOptionsCodingKey"];
+  originalRequestOptions = [(SASRequestOptions *)self originalRequestOptions];
+  [coderCopy encodeObject:originalRequestOptions forKey:@"SASRequestOptionsOriginalOptionsCodingKey"];
 
-  [v4 encodeInteger:-[SASRequestOptions presentationMode](self forKey:{"presentationMode"), @"SASRequestOptionsPresentationModeCodingKey"}];
-  v25 = [(SASRequestOptions *)self previousTurnIdentifier];
-  [v4 encodeObject:v25 forKey:@"SASRequestOptionsPreviousTurnIdentifierCodingKey"];
+  [coderCopy encodeInteger:-[SASRequestOptions presentationMode](self forKey:{"presentationMode"), @"SASRequestOptionsPresentationModeCodingKey"}];
+  previousTurnIdentifier = [(SASRequestOptions *)self previousTurnIdentifier];
+  [coderCopy encodeObject:previousTurnIdentifier forKey:@"SASRequestOptionsPreviousTurnIdentifierCodingKey"];
 
-  v26 = [(SASRequestOptions *)self activationEventInstrumentationIdenifier];
-  [v4 encodeObject:v26 forKey:@"SASRequestOptionsActivationEventIdentifierCodingKey"];
+  activationEventInstrumentationIdenifier = [(SASRequestOptions *)self activationEventInstrumentationIdenifier];
+  [coderCopy encodeObject:activationEventInstrumentationIdenifier forKey:@"SASRequestOptionsActivationEventIdentifierCodingKey"];
 
-  [v4 encodeBool:-[SASRequestOptions isRightHandDrive](self forKey:{"isRightHandDrive"), @"SASRequestOptionsIsRightHandDriveKey"}];
-  [v4 encodeInteger:-[SASRequestOptions tvRemoteType](self forKey:{"tvRemoteType"), @"SASRequestOptionsTVRemoteType"}];
-  [v4 encodeBool:-[SASRequestOptions isRemotePresentationBringUp](self forKey:{"isRemotePresentationBringUp"), @"SASRequestOptionsIsRemotePresentationBringUpCodingKey"}];
-  [v4 encodeBool:-[SASRequestOptions isTVRemoteSourcePTTEligible](self forKey:{"isTVRemoteSourcePTTEligible"), @"SASRequestOptionsIsTVRemoteSourcePTTEligibleCodingKey"}];
-  [v4 encodeInteger:-[SASRequestOptions longPressBehavior](self forKey:{"longPressBehavior"), @"SASRequestOptionsLongPressBehavior"}];
-  v27 = [(SASRequestOptions *)self userEngagementContext];
-  [v4 encodeObject:v27 forKey:@"SASRequestOptionsUserEngagementContextCodingKey"];
+  [coderCopy encodeBool:-[SASRequestOptions isRightHandDrive](self forKey:{"isRightHandDrive"), @"SASRequestOptionsIsRightHandDriveKey"}];
+  [coderCopy encodeInteger:-[SASRequestOptions tvRemoteType](self forKey:{"tvRemoteType"), @"SASRequestOptionsTVRemoteType"}];
+  [coderCopy encodeBool:-[SASRequestOptions isRemotePresentationBringUp](self forKey:{"isRemotePresentationBringUp"), @"SASRequestOptionsIsRemotePresentationBringUpCodingKey"}];
+  [coderCopy encodeBool:-[SASRequestOptions isTVRemoteSourcePTTEligible](self forKey:{"isTVRemoteSourcePTTEligible"), @"SASRequestOptionsIsTVRemoteSourcePTTEligibleCodingKey"}];
+  [coderCopy encodeInteger:-[SASRequestOptions longPressBehavior](self forKey:{"longPressBehavior"), @"SASRequestOptionsLongPressBehavior"}];
+  userEngagementContext = [(SASRequestOptions *)self userEngagementContext];
+  [coderCopy encodeObject:userEngagementContext forKey:@"SASRequestOptionsUserEngagementContextCodingKey"];
 
-  v28 = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
-  [v4 encodeObject:v28 forKey:@"SASRequestOptionsActivationPreparationReferenceIdentifierCodingKey"];
+  activationPreparationReferenceIdentifier = [(SASRequestOptions *)self activationPreparationReferenceIdentifier];
+  [coderCopy encodeObject:activationPreparationReferenceIdentifier forKey:@"SASRequestOptionsActivationPreparationReferenceIdentifierCodingKey"];
 }
 
 - (id)nullableProperties
@@ -873,10 +873,10 @@
       return 0;
     }
 
-    v7 = [(SASRequestOptions *)self tvRemoteType];
-    if (v7 - 5 >= 2)
+    tvRemoteType = [(SASRequestOptions *)self tvRemoteType];
+    if (tvRemoteType - 5 >= 2)
     {
-      if (v7 != 1)
+      if (tvRemoteType != 1)
       {
         return 0;
       }
@@ -899,74 +899,74 @@
   return 1;
 }
 
-- (void)_updateWithSystemState:(id)a3 forcefully:(BOOL)a4
+- (void)_updateWithSystemState:(id)state forcefully:(BOOL)forcefully
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [v6 isConnectedToCarPlay];
-  if (a4)
+  isConnectedToCarPlay = [stateCopy isConnectedToCarPlay];
+  if (forcefully)
   {
-    [(SASRequestOptions *)self setIsConnectedToCarPlay:v8];
-    -[SASRequestOptions setSupportsCarPlayVehicleData:](self, "setSupportsCarPlayVehicleData:", [v6 supportsCarPlayVehicleData]);
-    -[SASRequestOptions setCarOwnsMainAudio:](self, "setCarOwnsMainAudio:", [v6 carOwnsMainAudio]);
-    -[SASRequestOptions setRightHandDrive:](self, "setRightHandDrive:", [v6 isRightHandDrive]);
-    -[SASRequestOptions setIsForCarDND:](self, "setIsForCarDND:", [v6 carDNDActive]);
-    -[SASRequestOptions setCarDNDStatus:](self, "setCarDNDStatus:", [v6 carDNDStatus]);
-    v9 = [v6 currentCarPlaySupportedOEMAppIdList];
-    [(SASRequestOptions *)self setCurrentCarPlaySupportedOEMAppIdList:v9];
+    [(SASRequestOptions *)self setIsConnectedToCarPlay:isConnectedToCarPlay];
+    -[SASRequestOptions setSupportsCarPlayVehicleData:](self, "setSupportsCarPlayVehicleData:", [stateCopy supportsCarPlayVehicleData]);
+    -[SASRequestOptions setCarOwnsMainAudio:](self, "setCarOwnsMainAudio:", [stateCopy carOwnsMainAudio]);
+    -[SASRequestOptions setRightHandDrive:](self, "setRightHandDrive:", [stateCopy isRightHandDrive]);
+    -[SASRequestOptions setIsForCarDND:](self, "setIsForCarDND:", [stateCopy carDNDActive]);
+    -[SASRequestOptions setCarDNDStatus:](self, "setCarDNDStatus:", [stateCopy carDNDStatus]);
+    currentCarPlaySupportedOEMAppIdList = [stateCopy currentCarPlaySupportedOEMAppIdList];
+    [(SASRequestOptions *)self setCurrentCarPlaySupportedOEMAppIdList:currentCarPlaySupportedOEMAppIdList];
   }
 
   else
   {
-    if (v8 != [(SASRequestOptions *)self isConnectedToCarPlay])
+    if (isConnectedToCarPlay != [(SASRequestOptions *)self isConnectedToCarPlay])
     {
-      [(SASRequestOptions *)self setIsConnectedToCarPlay:v8];
+      [(SASRequestOptions *)self setIsConnectedToCarPlay:isConnectedToCarPlay];
       [v7 addObject:@"isConnectedToCarPlay"];
     }
 
-    v10 = [v6 supportsCarPlayVehicleData];
-    if (v10 != [(SASRequestOptions *)self supportsCarPlayVehicleData])
+    supportsCarPlayVehicleData = [stateCopy supportsCarPlayVehicleData];
+    if (supportsCarPlayVehicleData != [(SASRequestOptions *)self supportsCarPlayVehicleData])
     {
-      [(SASRequestOptions *)self setSupportsCarPlayVehicleData:v10];
+      [(SASRequestOptions *)self setSupportsCarPlayVehicleData:supportsCarPlayVehicleData];
       [v7 addObject:@"supportsCarPlayVehicleData"];
     }
 
-    v11 = [v6 carOwnsMainAudio];
-    if (v11 != [(SASRequestOptions *)self carOwnsMainAudio])
+    carOwnsMainAudio = [stateCopy carOwnsMainAudio];
+    if (carOwnsMainAudio != [(SASRequestOptions *)self carOwnsMainAudio])
     {
-      [(SASRequestOptions *)self setCarOwnsMainAudio:v11];
+      [(SASRequestOptions *)self setCarOwnsMainAudio:carOwnsMainAudio];
       [v7 addObject:@"carOwnsMainAudio"];
     }
 
-    v12 = [v6 isRightHandDrive];
-    if (v12 != [(SASRequestOptions *)self isRightHandDrive])
+    isRightHandDrive = [stateCopy isRightHandDrive];
+    if (isRightHandDrive != [(SASRequestOptions *)self isRightHandDrive])
     {
-      [(SASRequestOptions *)self setRightHandDrive:v12];
+      [(SASRequestOptions *)self setRightHandDrive:isRightHandDrive];
       [v7 addObject:@"rightHandDrive"];
     }
 
-    v13 = [v6 carDNDActive];
-    if (v13 != [(SASRequestOptions *)self isForCarDND])
+    carDNDActive = [stateCopy carDNDActive];
+    if (carDNDActive != [(SASRequestOptions *)self isForCarDND])
     {
-      [(SASRequestOptions *)self setIsForCarDND:v13];
+      [(SASRequestOptions *)self setIsForCarDND:carDNDActive];
       [v7 addObject:@"isForCarDND"];
     }
 
-    v14 = [v6 carDNDStatus];
-    if ([(SASRequestOptions *)self carDNDStatus]!= v14)
+    carDNDStatus = [stateCopy carDNDStatus];
+    if ([(SASRequestOptions *)self carDNDStatus]!= carDNDStatus)
     {
-      [(SASRequestOptions *)self setCarDNDStatus:v14];
+      [(SASRequestOptions *)self setCarDNDStatus:carDNDStatus];
       [v7 addObject:@"carDNDStatus"];
     }
 
-    v9 = [v6 currentCarPlaySupportedOEMAppIdList];
-    v15 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
-    v16 = [v15 isEqualToArray:v9];
+    currentCarPlaySupportedOEMAppIdList = [stateCopy currentCarPlaySupportedOEMAppIdList];
+    currentCarPlaySupportedOEMAppIdList2 = [(SASRequestOptions *)self currentCarPlaySupportedOEMAppIdList];
+    v16 = [currentCarPlaySupportedOEMAppIdList2 isEqualToArray:currentCarPlaySupportedOEMAppIdList];
 
     if ((v16 & 1) == 0)
     {
-      [(SASRequestOptions *)self setCurrentCarPlaySupportedOEMAppIdList:v9];
+      [(SASRequestOptions *)self setCurrentCarPlaySupportedOEMAppIdList:currentCarPlaySupportedOEMAppIdList];
       [v7 addObject:@"currentCarPlaySupportedOEMAppIdList"];
     }
   }

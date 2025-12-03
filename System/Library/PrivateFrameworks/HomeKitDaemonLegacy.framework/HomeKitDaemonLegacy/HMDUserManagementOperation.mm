@@ -1,8 +1,8 @@
 @interface HMDUserManagementOperation
-+ (id)addUserManagementOperationForUser:(id)a3 accessory:(id)a4 model:(id)a5;
-+ (id)auditUserManagementOperationAccessory:(id)a3 model:(id)a4;
-+ (id)operationWithDictionary:(id)a3 home:(id)a4;
-+ (id)removeUserManagementOperationForUser:(id)a3 accessory:(id)a4 model:(id)a5;
++ (id)addUserManagementOperationForUser:(id)user accessory:(id)accessory model:(id)model;
++ (id)auditUserManagementOperationAccessory:(id)accessory model:(id)model;
++ (id)operationWithDictionary:(id)dictionary home:(id)home;
++ (id)removeUserManagementOperationForUser:(id)user accessory:(id)accessory model:(id)model;
 + (id)shortDescription;
 + (void)initialize;
 - (BOOL)isBackingOff;
@@ -12,43 +12,43 @@
 - (BOOL)isReady;
 - (BOOL)isValid;
 - (BOOL)lastOperationFailed;
-- (BOOL)mergeWithOperation:(id)a3;
+- (BOOL)mergeWithOperation:(id)operation;
 - (HMDAccessoryInvitation)accessoryInvitation;
 - (HMDUserManagementOperation)init;
-- (HMDUserManagementOperation)initWithCoder:(id)a3;
-- (HMDUserManagementOperation)initWithOperationType:(unint64_t)a3 identifier:(id)a4 user:(id)a5 accessory:(id)a6 expiration:(id)a7;
+- (HMDUserManagementOperation)initWithCoder:(id)coder;
+- (HMDUserManagementOperation)initWithOperationType:(unint64_t)type identifier:(id)identifier user:(id)user accessory:(id)accessory expiration:(id)expiration;
 - (HMDUserManagementOperationDelegate)delegate;
 - (HMDUserManagementOperationManager)operationManager;
 - (NSArray)dependencies;
 - (NSDictionary)accessoryInvitationInformation;
 - (double)nextBackoffInterval;
-- (id)_findConflictingAccessory:(id)a3;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (id)_findConflictingAccessory:(id)accessory;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)dictionaryEncoding;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
-- (id)modelObjectWithChangeType:(unint64_t)a3 parentUUID:(id)a4;
+- (id)modelObjectWithChangeType:(unint64_t)type;
+- (id)modelObjectWithChangeType:(unint64_t)type parentUUID:(id)d;
 - (id)shortDescription;
-- (id)transactionWithObjectChangeType:(unint64_t)a3 parentUUID:(id)a4;
+- (id)transactionWithObjectChangeType:(unint64_t)type parentUUID:(id)d;
 - (int64_t)_accessoryInvitationState;
 - (unint64_t)state;
-- (void)_addPairingToHAPAccessory:(id)a3 completionHandler:(id)a4;
-- (void)_auditPairingsForHAPAccessory:(id)a3 completionHandler:(id)a4;
+- (void)_addPairingToHAPAccessory:(id)accessory completionHandler:(id)handler;
+- (void)_auditPairingsForHAPAccessory:(id)accessory completionHandler:(id)handler;
 - (void)_endBackoffTimer;
-- (void)_removePairingFromHAPAccessory:(id)a3 completionHandler:(id)a4;
+- (void)_removePairingFromHAPAccessory:(id)accessory completionHandler:(id)handler;
 - (void)_setupExpirationTimer;
 - (void)_startBackoffTimer;
-- (void)addDependency:(id)a3;
+- (void)addDependency:(id)dependency;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)populateModelObjectWithChangeType:(id)a3 version:(int64_t)a4;
-- (void)setBackingOff:(BOOL)a3;
-- (void)setExecuting:(BOOL)a3;
-- (void)setLastOperationFailed:(BOOL)a3;
-- (void)setOperationManager:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)timerDidFire:(id)a3;
-- (void)updateDelegate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)populateModelObjectWithChangeType:(id)type version:(int64_t)version;
+- (void)setBackingOff:(BOOL)off;
+- (void)setExecuting:(BOOL)executing;
+- (void)setLastOperationFailed:(BOOL)failed;
+- (void)setOperationManager:(id)manager;
+- (void)setState:(unint64_t)state;
+- (void)timerDidFire:(id)fire;
+- (void)updateDelegate:(id)delegate;
 @end
 
 @implementation HMDUserManagementOperation
@@ -60,14 +60,14 @@
   return WeakRetained;
 }
 
-- (void)populateModelObjectWithChangeType:(id)a3 version:(int64_t)a4
+- (void)populateModelObjectWithChangeType:(id)type version:(int64_t)version
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = typeCopy;
   }
 
   else
@@ -79,17 +79,17 @@
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserManagementOperation operationType](self, "operationType")}];
   [v7 setOperationType:v8];
 
-  v9 = [(HMDUserManagementOperation *)self user];
-  v10 = [v9 pairingIdentity];
-  [v7 setUserPairingIdentity:v10];
+  user = [(HMDUserManagementOperation *)self user];
+  pairingIdentity = [user pairingIdentity];
+  [v7 setUserPairingIdentity:pairingIdentity];
 
-  v11 = [(HMDUserManagementOperation *)self ownerPairingIdentity];
-  [v7 setOwnerPairingIdentity:v11];
+  ownerPairingIdentity = [(HMDUserManagementOperation *)self ownerPairingIdentity];
+  [v7 setOwnerPairingIdentity:ownerPairingIdentity];
 
-  v12 = [(HMDUserManagementOperation *)self accessory];
-  if ([v12 conformsToProtocol:&unk_286699670])
+  accessory = [(HMDUserManagementOperation *)self accessory];
+  if ([accessory conformsToProtocol:&unk_286699670])
   {
-    v13 = v12;
+    v13 = accessory;
   }
 
   else
@@ -101,28 +101,28 @@
 
   if (v14)
   {
-    v15 = [v14 pairingIdentity];
-    [v7 setAccessoryPairingIdentity:v15];
+    pairingIdentity2 = [v14 pairingIdentity];
+    [v7 setAccessoryPairingIdentity:pairingIdentity2];
   }
 
-  v16 = [(HMDUserManagementOperation *)self expirationDate];
-  [v7 setExpirationDate:v16];
+  expirationDate = [(HMDUserManagementOperation *)self expirationDate];
+  [v7 setExpirationDate:expirationDate];
 
-  v17 = [(HMDUserManagementOperation *)self dependencies];
-  v18 = [v17 count];
+  dependencies = [(HMDUserManagementOperation *)self dependencies];
+  v18 = [dependencies count];
 
   if (v18)
   {
     v19 = MEMORY[0x277CBEB18];
-    v20 = [(HMDUserManagementOperation *)self dependencies];
-    v21 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+    dependencies2 = [(HMDUserManagementOperation *)self dependencies];
+    v21 = [v19 arrayWithCapacity:{objc_msgSend(dependencies2, "count")}];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [(HMDUserManagementOperation *)self dependencies];
-    v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    dependencies3 = [(HMDUserManagementOperation *)self dependencies];
+    v23 = [dependencies3 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v23)
     {
       v24 = v23;
@@ -134,18 +134,18 @@
         {
           if (*v32 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(dependencies3);
           }
 
-          v27 = [*(*(&v31 + 1) + 8 * v26) identifier];
-          v28 = [v27 UUIDString];
-          [v21 addObject:v28];
+          identifier = [*(*(&v31 + 1) + 8 * v26) identifier];
+          uUIDString = [identifier UUIDString];
+          [v21 addObject:uUIDString];
 
           ++v26;
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v24 = [dependencies3 countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v24);
@@ -158,45 +158,45 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = objc_alloc(MEMORY[0x277CCAD78]);
   v6 = [v5 initWithUUIDString:*MEMORY[0x277CD23C8]];
-  v7 = [(HMDUserManagementOperation *)self modelObjectWithChangeType:a3 parentUUID:v6];
+  v7 = [(HMDUserManagementOperation *)self modelObjectWithChangeType:type parentUUID:v6];
 
   return v7;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 parentUUID:(id)a4
+- (id)modelObjectWithChangeType:(unint64_t)type parentUUID:(id)d
 {
-  v5 = [(HMDUserManagementOperation *)self transactionWithObjectChangeType:a3 parentUUID:a4];
+  v5 = [(HMDUserManagementOperation *)self transactionWithObjectChangeType:type parentUUID:d];
   [(HMDUserManagementOperation *)self populateModelObjectWithChangeType:v5 version:4];
 
   return v5;
 }
 
-- (id)transactionWithObjectChangeType:(unint64_t)a3 parentUUID:(id)a4
+- (id)transactionWithObjectChangeType:(unint64_t)type parentUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v7 = [HMDUserManagementOperationModel alloc];
-  v8 = [(HMDUserManagementOperation *)self identifier];
-  v9 = [(HMDBackingStoreModelObject *)v7 initWithObjectChangeType:a3 uuid:v8 parentUUID:v6];
+  identifier = [(HMDUserManagementOperation *)self identifier];
+  v9 = [(HMDBackingStoreModelObject *)v7 initWithObjectChangeType:type uuid:identifier parentUUID:dCopy];
 
   return v9;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperation *)self clientQueue];
+  fireCopy = fire;
+  clientQueue = [(HMDUserManagementOperation *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HMDUserManagementOperation_timerDidFire___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = fireCopy;
+  selfCopy = self;
+  v6 = fireCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
@@ -227,60 +227,60 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
 
 - (id)dictionaryEncoding
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDUserManagementOperation *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"HM.identifier"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [(HMDUserManagementOperation *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"HM.identifier"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserManagementOperation operationType](self, "operationType")}];
-  [v3 setObject:v6 forKeyedSubscript:@"HM.operationType"];
+  [dictionary setObject:v6 forKeyedSubscript:@"HM.operationType"];
 
-  v7 = [(HMDUserManagementOperation *)self user];
-  v8 = [v7 uuid];
-  v9 = [v8 UUIDString];
-  [v3 setObject:v9 forKeyedSubscript:@"HM.user"];
+  user = [(HMDUserManagementOperation *)self user];
+  uuid = [user uuid];
+  uUIDString2 = [uuid UUIDString];
+  [dictionary setObject:uUIDString2 forKeyedSubscript:@"HM.user"];
 
-  v10 = [(HMDUserManagementOperation *)self accessory];
-  v11 = [v10 uuid];
-  v12 = [v11 UUIDString];
-  [v3 setObject:v12 forKeyedSubscript:@"accessory"];
+  accessory = [(HMDUserManagementOperation *)self accessory];
+  uuid2 = [accessory uuid];
+  uUIDString3 = [uuid2 UUIDString];
+  [dictionary setObject:uUIDString3 forKeyedSubscript:@"accessory"];
 
-  v13 = [(HMDUserManagementOperation *)self expirationDate];
-  [v3 setObject:v13 forKeyedSubscript:@"HM.expiry"];
+  expirationDate = [(HMDUserManagementOperation *)self expirationDate];
+  [dictionary setObject:expirationDate forKeyedSubscript:@"HM.expiry"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserManagementOperation state](self, "state")}];
-  [v3 setObject:v14 forKeyedSubscript:@"HM.state"];
+  [dictionary setObject:v14 forKeyedSubscript:@"HM.state"];
 
-  v15 = [v3 copy];
+  v15 = [dictionary copy];
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeInteger:-[HMDUserManagementOperation operationType](self forKey:{"operationType"), @"HM.operationType"}];
-    v5 = [(HMDUserManagementOperation *)self user];
-    [v4 encodeObject:v5 forKey:@"HM.user"];
+    [coderCopy encodeInteger:-[HMDUserManagementOperation operationType](self forKey:{"operationType"), @"HM.operationType"}];
+    user = [(HMDUserManagementOperation *)self user];
+    [coderCopy encodeObject:user forKey:@"HM.user"];
 
-    v6 = [(HMDUserManagementOperation *)self accessory];
-    [v4 encodeObject:v6 forKey:@"accessory"];
+    accessory = [(HMDUserManagementOperation *)self accessory];
+    [coderCopy encodeObject:accessory forKey:@"accessory"];
 
-    v7 = [(HMDUserManagementOperation *)self identifier];
-    [v4 encodeObject:v7 forKey:@"HM.identifier"];
+    identifier = [(HMDUserManagementOperation *)self identifier];
+    [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 
-    v8 = [(HMDUserManagementOperation *)self expirationDate];
-    [v4 encodeObject:v8 forKey:@"HM.expiry"];
+    expirationDate = [(HMDUserManagementOperation *)self expirationDate];
+    [coderCopy encodeObject:expirationDate forKey:@"HM.expiry"];
 
-    v9 = [(HMDUserManagementOperation *)self ownerPairingIdentity];
-    [v4 encodeObject:v9 forKey:@"HM.ownerPairingIdentity"];
+    ownerPairingIdentity = [(HMDUserManagementOperation *)self ownerPairingIdentity];
+    [coderCopy encodeObject:ownerPairingIdentity forKey:@"HM.ownerPairingIdentity"];
 
-    [v4 encodeBool:-[HMDUserManagementOperation state](self forKey:{"state") != 0, @"HM.state"}];
-    v10 = [(HMDUserManagementOperation *)self dependencies];
-    [v4 encodeObject:v10 forKey:@"kUserManagementOperationsKey"];
+    [coderCopy encodeBool:-[HMDUserManagementOperation state](self forKey:{"state") != 0, @"HM.state"}];
+    dependencies = [(HMDUserManagementOperation *)self dependencies];
+    [coderCopy encodeObject:dependencies forKey:@"kUserManagementOperationsKey"];
   }
 
   else
@@ -304,22 +304,22 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserManagementOperation)initWithCoder:(id)a3
+- (HMDUserManagementOperation)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeIntegerForKey:@"HM.operationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.expiry"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+    v5 = [coderCopy decodeIntegerForKey:@"HM.operationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.expiry"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
     self = [(HMDUserManagementOperation *)self initWithOperationType:v5 identifier:v9 user:v6 accessory:v7 expiration:v8];
     if (self)
     {
-      self->_state = [v4 decodeBoolForKey:@"HM.state"];
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.ownerPairingIdentity"];
+      self->_state = [coderCopy decodeBoolForKey:@"HM.state"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.ownerPairingIdentity"];
       ownerPairingIdentity = self->_ownerPairingIdentity;
       self->_ownerPairingIdentity = v10;
 
@@ -329,7 +329,7 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
       v14 = [v12 setWithArray:v13];
 
-      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"kUserManagementOperationsKey"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"kUserManagementOperationsKey"];
       v16 = v15;
       if (v15)
       {
@@ -347,23 +347,23 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
 - (NSDictionary)accessoryInvitationInformation
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserManagementOperation *)self identifier];
-  v4 = [v3 UUIDString];
+  identifier = [(HMDUserManagementOperation *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  v5 = [(HMDUserManagementOperation *)self accessory];
-  v6 = [v5 uuid];
-  v7 = [v6 UUIDString];
+  accessory = [(HMDUserManagementOperation *)self accessory];
+  uuid = [accessory uuid];
+  uUIDString2 = [uuid UUIDString];
 
-  v8 = [(HMDUserManagementOperation *)self _accessoryInvitationState];
+  _accessoryInvitationState = [(HMDUserManagementOperation *)self _accessoryInvitationState];
   v9 = 0;
-  if (v4 && v7)
+  if (uUIDString && uUIDString2)
   {
     v13[0] = @"HM.accessoryInvitationIdentifier";
     v13[1] = @"HM.accessoryInvitationAccessoryUUID";
-    v14[0] = v4;
-    v14[1] = v7;
+    v14[0] = uUIDString;
+    v14[1] = uUIDString2;
     v13[2] = @"HM.accessoryInvitationState";
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:_accessoryInvitationState];
     v14[2] = v10;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   }
@@ -375,11 +375,11 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
 
 - (HMDAccessoryInvitation)accessoryInvitation
 {
-  v3 = [(HMDUserManagementOperation *)self _accessoryInvitationState];
+  _accessoryInvitationState = [(HMDUserManagementOperation *)self _accessoryInvitationState];
   v4 = [HMDAccessoryInvitation alloc];
-  v5 = [(HMDUserManagementOperation *)self accessory];
-  v6 = [(HMDUserManagementOperation *)self identifier];
-  v7 = [(HMDAccessoryInvitation *)v4 initWithAccessory:v5 identifier:v6 state:v3];
+  accessory = [(HMDUserManagementOperation *)self accessory];
+  identifier = [(HMDUserManagementOperation *)self identifier];
+  v7 = [(HMDAccessoryInvitation *)v4 initWithAccessory:accessory identifier:identifier state:_accessoryInvitationState];
 
   return v7;
 }
@@ -403,48 +403,48 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)mergeWithOperation:(id)a3
+- (BOOL)mergeWithOperation:(id)operation
 {
-  v4 = a3;
-  -[HMDUserManagementOperation setLastOperationFailed:](self, "setLastOperationFailed:", [v4 lastOperationFailed]);
-  if (v4 && !-[HMDUserManagementOperation isFinished](self, "isFinished") && [v4 isFinished])
+  operationCopy = operation;
+  -[HMDUserManagementOperation setLastOperationFailed:](self, "setLastOperationFailed:", [operationCopy lastOperationFailed]);
+  if (operationCopy && !-[HMDUserManagementOperation isFinished](self, "isFinished") && [operationCopy isFinished])
   {
     [(HMDUserManagementOperation *)self cancel];
   }
 
-  return v4 != 0;
+  return operationCopy != 0;
 }
 
-- (void)_auditPairingsForHAPAccessory:(id)a3 completionHandler:(id)a4
+- (void)_auditPairingsForHAPAccessory:(id)accessory completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 name];
-    v13 = [v6 identifier];
+    name = [accessoryCopy name];
+    identifier = [accessoryCopy identifier];
     *buf = 138543874;
     v40 = v11;
     v41 = 2112;
-    v42 = v12;
+    v42 = name;
     v43 = 2112;
-    v44 = v13;
+    v44 = identifier;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Attempting to audit pairing for accessory %@(%@)", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v14 = [(HMDUserManagementOperation *)v9 accessory];
-  v15 = [v14 home];
+  accessory = [(HMDUserManagementOperation *)selfCopy accessory];
+  home = [accessory home];
 
-  if (!v15)
+  if (!home)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -455,22 +455,22 @@ void __43__HMDUserManagementOperation_timerDidFire___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v16);
-    if (v7)
+    if (handlerCopy)
     {
       v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:12];
-      v7[2](v7, v20);
+      handlerCopy[2](handlerCopy, v20);
     }
   }
 
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__HMDUserManagementOperation__auditPairingsForHAPAccessory_completionHandler___block_invoke;
   aBlock[3] = &unk_27972B4B8;
   objc_copyWeak(&v38, buf);
-  v21 = v7;
+  v21 = handlerCopy;
   v37 = v21;
-  v22 = v6;
+  v22 = accessoryCopy;
   v36 = v22;
   v23 = _Block_copy(aBlock);
   v32[0] = MEMORY[0x277D85DD0];
@@ -1062,32 +1062,32 @@ void __78__HMDUserManagementOperation__auditPairingsForHAPAccessory_completionHa
   }
 }
 
-- (void)_removePairingFromHAPAccessory:(id)a3 completionHandler:(id)a4
+- (void)_removePairingFromHAPAccessory:(id)accessory completionHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDUserManagementOperation *)self shortDescription];
-    v12 = [v6 name];
-    v13 = [v6 identifier];
+    shortDescription = [(HMDUserManagementOperation *)self shortDescription];
+    name = [accessoryCopy name];
+    identifier = [accessoryCopy identifier];
     *buf = 138544130;
     v37 = v10;
     v38 = 2112;
-    v39 = v11;
+    v39 = shortDescription;
     v40 = 2112;
-    v41 = v12;
+    v41 = name;
     v42 = 2112;
-    v43 = v13;
+    v43 = identifier;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@[%@] Attempting to remove pairing from accessory %@(%@)", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  v14 = [(HMDUserManagementOperation *)self _findConflictingAccessory:v6];
+  v14 = [(HMDUserManagementOperation *)self _findConflictingAccessory:accessoryCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1108,20 +1108,20 @@ void __78__HMDUserManagementOperation__auditPairingsForHAPAccessory_completionHa
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [(HMDUserManagementOperation *)self shortDescription];
+      shortDescription2 = [(HMDUserManagementOperation *)self shortDescription];
       *buf = 138543874;
       v37 = v19;
       v38 = 2112;
-      v39 = v20;
+      v39 = shortDescription2;
       v40 = 2112;
       v41 = v16;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@[%@] Do not remove pairing for this accessory because this looks removed and another exists '%@'", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -1131,21 +1131,21 @@ void __78__HMDUserManagementOperation__auditPairingsForHAPAccessory_completionHa
     aBlock[1] = 3221225472;
     aBlock[2] = __79__HMDUserManagementOperation__removePairingFromHAPAccessory_completionHandler___block_invoke;
     aBlock[3] = &unk_279735558;
-    v35 = v7;
+    v35 = handlerCopy;
     v21 = _Block_copy(aBlock);
     v22 = objc_autoreleasePoolPush();
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [(HMDUserManagementOperation *)self shortDescription];
-      v26 = [v6 name];
+      shortDescription3 = [(HMDUserManagementOperation *)self shortDescription];
+      name2 = [accessoryCopy name];
       *buf = 138543874;
       v37 = v24;
       v38 = 2112;
-      v39 = v25;
+      v39 = shortDescription3;
       v40 = 2112;
-      v41 = v26;
+      v41 = name2;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_INFO, "%{public}@[%@] Removing local pairing from accessory '%@'", buf, 0x20u);
     }
 
@@ -1161,7 +1161,7 @@ void __78__HMDUserManagementOperation__auditPairingsForHAPAccessory_completionHa
     v29[2] = __79__HMDUserManagementOperation__removePairingFromHAPAccessory_completionHandler___block_invoke_2;
     v29[3] = &unk_279735168;
     v29[4] = self;
-    v30 = v6;
+    v30 = accessoryCopy;
     v31 = v33;
     v27 = v33;
     [v30 performOperation:6 linkType:0 operationBlock:v32 errorBlock:v29];
@@ -1245,32 +1245,32 @@ void __79__HMDUserManagementOperation__removePairingFromHAPAccessory_completionH
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addPairingToHAPAccessory:(id)a3 completionHandler:(id)a4
+- (void)_addPairingToHAPAccessory:(id)accessory completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDUserManagementOperation *)self shortDescription];
-    v12 = [v6 name];
-    v13 = [v6 identifier];
+    shortDescription = [(HMDUserManagementOperation *)self shortDescription];
+    name = [accessoryCopy name];
+    identifier = [accessoryCopy identifier];
     *buf = 138544130;
     v32 = v10;
     v33 = 2112;
-    v34 = v11;
+    v34 = shortDescription;
     v35 = 2112;
-    v36 = v12;
+    v36 = name;
     v37 = 2112;
-    v38 = v13;
+    v38 = identifier;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@[%@] Attempting to add pairing to accessory %@(%@)", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  v14 = [(HMDUserManagementOperation *)self _findConflictingAccessory:v6];
+  v14 = [(HMDUserManagementOperation *)self _findConflictingAccessory:accessoryCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1291,20 +1291,20 @@ void __79__HMDUserManagementOperation__removePairingFromHAPAccessory_completionH
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [(HMDUserManagementOperation *)self shortDescription];
+      shortDescription2 = [(HMDUserManagementOperation *)self shortDescription];
       *buf = 138543874;
       v32 = v19;
       v33 = 2112;
-      v34 = v20;
+      v34 = shortDescription2;
       v35 = 2112;
       v36 = v16;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@[%@] Do not add pairing for this accessory because it looks removed and another exists '%@'", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -1314,7 +1314,7 @@ void __79__HMDUserManagementOperation__removePairingFromHAPAccessory_completionH
     aBlock[1] = 3221225472;
     aBlock[2] = __74__HMDUserManagementOperation__addPairingToHAPAccessory_completionHandler___block_invoke;
     aBlock[3] = &unk_279735558;
-    v30 = v7;
+    v30 = handlerCopy;
     v21 = _Block_copy(aBlock);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -1327,7 +1327,7 @@ void __79__HMDUserManagementOperation__removePairingFromHAPAccessory_completionH
     v24[2] = __74__HMDUserManagementOperation__addPairingToHAPAccessory_completionHandler___block_invoke_3;
     v24[3] = &unk_279735168;
     v24[4] = self;
-    v25 = v6;
+    v25 = accessoryCopy;
     v26 = v28;
     v22 = v28;
     [v25 performOperation:5 linkType:0 operationBlock:v27 errorBlock:v24];
@@ -1411,23 +1411,23 @@ void __74__HMDUserManagementOperation__addPairingToHAPAccessory_completionHandle
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_findConflictingAccessory:(id)a3
+- (id)_findConflictingAccessory:(id)accessory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 home];
+  accessoryCopy = accessory;
+  home = [accessoryCopy home];
 
-  if (v5)
+  if (home)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(HMDUserManagementOperation *)self operationManager];
-    v8 = [v7 homeManager];
-    v9 = [v4 identifier];
-    v10 = [v8 accessoriesMatchingIdentifier:v9];
+    operationManager = [(HMDUserManagementOperation *)self operationManager];
+    homeManager = [operationManager homeManager];
+    identifier = [accessoryCopy identifier];
+    v10 = [homeManager accessoriesMatchingIdentifier:identifier];
 
     v22 = 0u;
     v23 = 0u;
@@ -1448,9 +1448,9 @@ void __74__HMDUserManagementOperation__addPairingToHAPAccessory_completionHandle
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v4 uuid];
-          v16 = [v14 uuid];
-          v17 = [v15 isEqual:v16];
+          uuid = [accessoryCopy uuid];
+          uuid2 = [v14 uuid];
+          v17 = [uuid isEqual:uuid2];
 
           if (!v17)
           {
@@ -1477,21 +1477,21 @@ LABEL_13:
   return v6;
 }
 
-- (void)executeWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)executeWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserManagementOperation *)self clientQueue];
+  queueCopy = queue;
+  handlerCopy = handler;
+  clientQueue = [(HMDUserManagementOperation *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDUserManagementOperation_executeWithCompletionQueue_completionHandler___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __75__HMDUserManagementOperation_executeWithCompletionQueue_completionHandler___block_invoke(uint64_t a1)
@@ -1760,13 +1760,13 @@ void __75__HMDUserManagementOperation_executeWithCompletionQueue_completionHandl
 
 - (void)cancel
 {
-  v3 = [(HMDUserManagementOperation *)self clientQueue];
+  clientQueue = [(HMDUserManagementOperation *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__HMDUserManagementOperation_cancel__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
@@ -1782,16 +1782,16 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
-  v4 = a3;
-  if (v4)
+  dependencyCopy = dependency;
+  if (dependencyCopy)
   {
-    v5 = v4;
+    v5 = dependencyCopy;
     os_unfair_lock_lock_with_options();
     [(NSMutableArray *)self->_dependencies addObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    dependencyCopy = v5;
   }
 }
 
@@ -1808,8 +1808,8 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
 {
   [(HMDUserManagementOperation *)self setBackoffTimer:0];
   [(HMDUserManagementOperation *)self setBackingOff:0];
-  v3 = [(HMDUserManagementOperation *)self operationManager];
-  [v3 operationStoppedBackingOff:self];
+  operationManager = [(HMDUserManagementOperation *)self operationManager];
+  [operationManager operationStoppedBackingOff:self];
 }
 
 - (void)_startBackoffTimer
@@ -1824,11 +1824,11 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [(HMDUserManagementOperation *)self shortDescription];
+      shortDescription = [(HMDUserManagementOperation *)self shortDescription];
       v11 = 138543874;
       v12 = v7;
       v13 = 2112;
-      v14 = v8;
+      v14 = shortDescription;
       v15 = 2048;
       v16 = v4;
       _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@[%@] Starting operation backoff timer with expiration interval of %f seconds", &v11, 0x20u);
@@ -1852,10 +1852,10 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setBackingOff:(BOOL)a3
+- (void)setBackingOff:(BOOL)off
 {
   os_unfair_lock_lock_with_options();
-  self->_backingOff = a3;
+  self->_backingOff = off;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1868,12 +1868,12 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
   return backingOff;
 }
 
-- (void)setOperationManager:(id)a3
+- (void)setOperationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   os_unfair_lock_lock_with_options();
   operationManager = self->_operationManager;
-  self->_operationManager = v4;
+  self->_operationManager = managerCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1887,9 +1887,9 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)updateDelegate:(id)a3
+- (void)updateDelegate:(id)delegate
 {
-  v6 = a3;
+  delegateCopy = delegate;
   if ((-[HMDUserManagementOperation isAddOperation](self, "isAddOperation") || -[HMDUserManagementOperation isAuditOperation](self, "isAuditOperation")) && (-[HMDUserManagementOperation accessory](self, "accessory"), v4 = objc_claimAutoreleasedReturnValue(), [v4 home], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
     [(HMDUserManagementOperation *)self setDelegate:v5];
@@ -1897,14 +1897,14 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
 
   else
   {
-    [(HMDUserManagementOperation *)self setDelegate:v6];
+    [(HMDUserManagementOperation *)self setDelegate:delegateCopy];
   }
 }
 
-- (void)setLastOperationFailed:(BOOL)a3
+- (void)setLastOperationFailed:(BOOL)failed
 {
   os_unfair_lock_lock_with_options();
-  self->_lastOperationFailed = a3;
+  self->_lastOperationFailed = failed;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1917,12 +1917,12 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
   return lastOperationFailed;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v25 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
     if (state)
     {
@@ -1931,16 +1931,16 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = HMFGetLogIdentifier();
-        v9 = [(HMDUserManagementOperation *)self shortDescription];
+        shortDescription = [(HMDUserManagementOperation *)self shortDescription];
         v10 = self->_state;
         *buf = 138544130;
         v18 = v8;
         v19 = 2112;
-        v20 = v9;
+        v20 = shortDescription;
         v21 = 2048;
         v22 = v10;
         v23 = 2048;
-        v24 = a3;
+        stateCopy = state;
         _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@[%@] Invalid state change from %tu to %tu", buf, 0x2Au);
       }
 
@@ -1949,32 +1949,32 @@ uint64_t __36__HMDUserManagementOperation_cancel__block_invoke(uint64_t a1)
 
     else
     {
-      self->_state = a3;
+      self->_state = state;
       if ([(HMDUserManagementOperation *)self _isFinished])
       {
-        v11 = [(HMDUserManagementOperation *)self delegate];
+        delegate = [(HMDUserManagementOperation *)self delegate];
 
-        if (v11)
+        if (delegate)
         {
-          v12 = [(HMDUserManagementOperation *)self clientQueue];
+          clientQueue = [(HMDUserManagementOperation *)self clientQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __39__HMDUserManagementOperation_setState___block_invoke;
           block[3] = &unk_279735D00;
           block[4] = self;
-          dispatch_async(v12, block);
+          dispatch_async(clientQueue, block);
         }
       }
 
-      if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
-        v13 = [(HMDUserManagementOperation *)self clientQueue];
+        clientQueue2 = [(HMDUserManagementOperation *)self clientQueue];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __39__HMDUserManagementOperation_setState___block_invoke_2;
         v15[3] = &unk_279735D00;
         v15[4] = self;
-        dispatch_async(v13, v15);
+        dispatch_async(clientQueue2, v15);
       }
     }
   }
@@ -2010,8 +2010,8 @@ void __39__HMDUserManagementOperation_setState___block_invoke_2(uint64_t a1)
     return 1;
   }
 
-  v3 = [(HMDUserManagementOperation *)self expirationDate];
-  [v3 timeIntervalSinceNow];
+  expirationDate = [(HMDUserManagementOperation *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v5 = v4;
 
   if (v5 < 0.0)
@@ -2025,7 +2025,7 @@ void __39__HMDUserManagementOperation_setState___block_invoke_2(uint64_t a1)
 
 - (BOOL)isReady
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
   if ([(HMDUserManagementOperation *)self isExecuting])
   {
@@ -2034,11 +2034,11 @@ void __39__HMDUserManagementOperation_setState___block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = HMFGetLogIdentifier();
-      v6 = [(HMDUserManagementOperation *)v2 shortDescription];
+      shortDescription = [(HMDUserManagementOperation *)selfCopy shortDescription];
       *buf = 138543618;
       v34 = v5;
       v35 = 2112;
-      v36 = v6;
+      v36 = shortDescription;
       v7 = "%{public}@[%@] Operation is currently executing";
 LABEL_24:
       _os_log_impl(&dword_2531F8000, v4, OS_LOG_TYPE_INFO, v7, buf, 0x16u);
@@ -2047,18 +2047,18 @@ LABEL_25:
     }
   }
 
-  else if ([(HMDUserManagementOperation *)v2 isFinished])
+  else if ([(HMDUserManagementOperation *)selfCopy isFinished])
   {
     v3 = objc_autoreleasePoolPush();
     v4 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = HMFGetLogIdentifier();
-      v6 = [(HMDUserManagementOperation *)v2 shortDescription];
+      shortDescription = [(HMDUserManagementOperation *)selfCopy shortDescription];
       *buf = 138543618;
       v34 = v5;
       v35 = 2112;
-      v36 = v6;
+      v36 = shortDescription;
       v7 = "%{public}@[%@] Operation is finished";
       goto LABEL_24;
     }
@@ -2066,14 +2066,14 @@ LABEL_25:
 
   else
   {
-    if (![(HMDUserManagementOperation *)v2 isBackingOff])
+    if (![(HMDUserManagementOperation *)selfCopy isBackingOff])
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v8 = [(HMDUserManagementOperation *)v2 dependencies];
-      v9 = [v8 countByEnumeratingWithState:&v29 objects:v39 count:16];
+      dependencies = [(HMDUserManagementOperation *)selfCopy dependencies];
+      v9 = [dependencies countByEnumeratingWithState:&v29 objects:v39 count:16];
       if (v9)
       {
         v11 = v9;
@@ -2087,7 +2087,7 @@ LABEL_25:
           {
             if (*v30 != v13)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(dependencies);
             }
 
             v15 = *(*(&v29 + 1) + 8 * i);
@@ -2098,8 +2098,8 @@ LABEL_25:
               if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
               {
                 v18 = HMFGetLogIdentifier();
-                [(HMDUserManagementOperation *)v2 shortDescription];
-                v20 = v19 = v2;
+                [(HMDUserManagementOperation *)selfCopy shortDescription];
+                v20 = v19 = selfCopy;
                 *buf = v28;
                 v34 = v18;
                 v35 = 2112;
@@ -2108,7 +2108,7 @@ LABEL_25:
                 v38 = v15;
                 _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[%@] Operation has unfinished dependency operation %@", buf, 0x20u);
 
-                v2 = v19;
+                selfCopy = v19;
               }
 
               objc_autoreleasePoolPop(v16);
@@ -2116,7 +2116,7 @@ LABEL_25:
             }
           }
 
-          v11 = [v8 countByEnumeratingWithState:&v29 objects:v39 count:16];
+          v11 = [dependencies countByEnumeratingWithState:&v29 objects:v39 count:16];
         }
 
         while (v11);
@@ -2128,11 +2128,11 @@ LABEL_25:
           if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
           {
             v5 = HMFGetLogIdentifier();
-            v6 = [(HMDUserManagementOperation *)v2 shortDescription];
+            shortDescription = [(HMDUserManagementOperation *)selfCopy shortDescription];
             *buf = 138543618;
             v34 = v5;
             v35 = 2112;
-            v36 = v6;
+            v36 = shortDescription;
             v7 = "%{public}@[%@] Operation has unfinished dependency operations";
             goto LABEL_24;
           }
@@ -2145,10 +2145,10 @@ LABEL_25:
       {
       }
 
-      v23 = [(HMDUserManagementOperation *)v2 accessory];
-      v24 = [v23 isReachable];
+      accessory = [(HMDUserManagementOperation *)selfCopy accessory];
+      isReachable = [accessory isReachable];
 
-      if (v24)
+      if (isReachable)
       {
         result = 1;
         goto LABEL_27;
@@ -2159,15 +2159,15 @@ LABEL_25:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v5 = HMFGetLogIdentifier();
-        v25 = [(HMDUserManagementOperation *)v2 shortDescription];
-        v26 = [(HMDUserManagementOperation *)v2 accessory];
-        v27 = [v26 name];
+        shortDescription2 = [(HMDUserManagementOperation *)selfCopy shortDescription];
+        accessory2 = [(HMDUserManagementOperation *)selfCopy accessory];
+        name = [accessory2 name];
         *buf = 138543874;
         v34 = v5;
         v35 = 2112;
-        v36 = v25;
+        v36 = shortDescription2;
         v37 = 2112;
-        v38 = v27;
+        v38 = name;
         _os_log_impl(&dword_2531F8000, v4, OS_LOG_TYPE_INFO, "%{public}@[%@] Operation accessory '%@' is unreachable", buf, 0x20u);
 
         goto LABEL_25;
@@ -2181,11 +2181,11 @@ LABEL_25:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = HMFGetLogIdentifier();
-      v6 = [(HMDUserManagementOperation *)v2 shortDescription];
+      shortDescription = [(HMDUserManagementOperation *)selfCopy shortDescription];
       *buf = 138543618;
       v34 = v5;
       v35 = 2112;
-      v36 = v6;
+      v36 = shortDescription;
       v7 = "%{public}@[%@] Operation is currently in backoff";
       goto LABEL_24;
     }
@@ -2203,15 +2203,15 @@ LABEL_27:
 - (BOOL)isFinished
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDUserManagementOperation *)self _isFinished];
+  _isFinished = [(HMDUserManagementOperation *)self _isFinished];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _isFinished;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
   os_unfair_lock_lock_with_options();
-  self->_executing = a3;
+  self->_executing = executing;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2229,17 +2229,17 @@ LABEL_27:
   v29 = *MEMORY[0x277D85DE8];
   if ([(HMDUserManagementOperation *)self isAuditOperation])
   {
-    v3 = [(HMDUserManagementOperation *)self accessory];
-    v4 = [v3 home];
+    accessory = [(HMDUserManagementOperation *)self accessory];
+    home = [accessory home];
 
-    if (v4)
+    if (home)
     {
       v5 = 1;
       goto LABEL_15;
     }
 
     v14 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -2253,14 +2253,14 @@ LABEL_27:
     goto LABEL_13;
   }
 
-  v6 = [(HMDUserManagementOperation *)self user];
-  v7 = [v6 pairingUsername];
-  v5 = v7 != 0;
+  user = [(HMDUserManagementOperation *)self user];
+  pairingUsername = [user pairingUsername];
+  v5 = pairingUsername != 0;
 
-  if (!v7)
+  if (!pairingUsername)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -2273,13 +2273,13 @@ LABEL_27:
     objc_autoreleasePoolPop(v8);
   }
 
-  v12 = [(HMDUserManagementOperation *)self user];
-  v13 = [v12 publicKey];
+  user2 = [(HMDUserManagementOperation *)self user];
+  publicKey = [user2 publicKey];
 
-  if (!v13)
+  if (!publicKey)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy3 = self;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -2301,13 +2301,13 @@ LABEL_13:
   }
 
 LABEL_15:
-  v20 = [(HMDUserManagementOperation *)self accessory];
-  v21 = [v20 isPrimary];
+  accessory2 = [(HMDUserManagementOperation *)self accessory];
+  isPrimary = [accessory2 isPrimary];
 
-  if ((v21 & 1) == 0)
+  if ((isPrimary & 1) == 0)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy4 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -2325,13 +2325,13 @@ LABEL_15:
   return v5;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v18 = MEMORY[0x277CCACA8];
-  v20 = [(HMDUserManagementOperation *)self shortDescription];
-  v19 = v3;
-  if (v3)
+  shortDescription = [(HMDUserManagementOperation *)self shortDescription];
+  v19 = pointerCopy;
+  if (pointerCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -2362,10 +2362,10 @@ LABEL_15:
   v11 = HMFBooleanToString();
   [(HMDUserManagementOperation *)self isExpired];
   v12 = HMFBooleanToString();
-  v13 = [(HMDUserManagementOperation *)self expirationDate];
-  v14 = [(HMDUserManagementOperation *)self user];
-  v15 = [(HMDUserManagementOperation *)self accessory];
-  v16 = [v18 stringWithFormat:@"<%@%@, Operation Type = %@, Finished = %@, Ready = %@, Executing = %@, Cancelled = %@, Expired = %@, Expiration Date = %@, User = %@, Accessory = %@>", v20, v5, v7, v8, v9, v10, v11, v12, v13, v14, v15];
+  expirationDate = [(HMDUserManagementOperation *)self expirationDate];
+  user = [(HMDUserManagementOperation *)self user];
+  accessory = [(HMDUserManagementOperation *)self accessory];
+  v16 = [v18 stringWithFormat:@"<%@%@, Operation Type = %@, Finished = %@, Ready = %@, Executing = %@, Cancelled = %@, Expired = %@, Expiration Date = %@, User = %@, Accessory = %@>", shortDescription, v5, v7, v8, v9, v10, v11, v12, expirationDate, user, accessory];
 
   if (v19)
   {
@@ -2377,10 +2377,10 @@ LABEL_15:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDUserManagementOperation *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDUserManagementOperation *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
@@ -2389,9 +2389,9 @@ LABEL_15:
 {
   if (![(HMDUserManagementOperation *)self state])
   {
-    v3 = [(HMDUserManagementOperation *)self expirationDate];
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:v4];
+    expirationDate = [(HMDUserManagementOperation *)self expirationDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [expirationDate timeIntervalSinceDate:date];
     v6 = v5;
 
     if (v6 <= 0.0)
@@ -2406,22 +2406,22 @@ LABEL_15:
       expirationTimer = self->_expirationTimer;
       self->_expirationTimer = v7;
 
-      v9 = [(HMDUserManagementOperation *)self expirationTimer];
-      [v9 setDelegate:self];
+      expirationTimer = [(HMDUserManagementOperation *)self expirationTimer];
+      [expirationTimer setDelegate:self];
 
-      v10 = [(HMDUserManagementOperation *)self expirationTimer];
-      [v10 resume];
+      expirationTimer2 = [(HMDUserManagementOperation *)self expirationTimer];
+      [expirationTimer2 resume];
     }
   }
 }
 
-- (HMDUserManagementOperation)initWithOperationType:(unint64_t)a3 identifier:(id)a4 user:(id)a5 accessory:(id)a6 expiration:(id)a7
+- (HMDUserManagementOperation)initWithOperationType:(unint64_t)type identifier:(id)identifier user:(id)user accessory:(id)accessory expiration:(id)expiration
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  userCopy = user;
+  accessoryCopy = accessory;
+  expirationCopy = expiration;
   v42.receiver = self;
   v42.super_class = HMDUserManagementOperation;
   v16 = [(HMDUserManagementOperation *)&v42 init];
@@ -2430,32 +2430,32 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v40 = v15;
-  v41 = v13;
-  if (v12)
+  v40 = expirationCopy;
+  v41 = userCopy;
+  if (identifierCopy)
   {
-    v17 = v12;
+    v17 = identifierCopy;
     identifier = v16->_identifier;
     v16->_identifier = v17;
   }
 
-  else if (a3 && v13 && v14)
+  else if (type && userCopy && accessoryCopy)
   {
-    if (a3 > 3)
+    if (type > 3)
     {
       v19 = @"unknown";
     }
 
     else
     {
-      v19 = off_27972B528[a3 - 1];
+      v19 = off_27972B528[type - 1];
     }
 
-    identifier = [v14 uuid];
+    identifier = [accessoryCopy uuid];
     v47[0] = v19;
-    v21 = [v13 uuid];
-    v39 = [v21 UUIDString];
-    v47[1] = v39;
+    uuid = [userCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v47[1] = uUIDString;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
     v23 = [v38 hm_deriveUUIDFromBaseUUID:identifier identifierSalt:0 withSalts:v22];
     v24 = v16->_identifier;
@@ -2464,29 +2464,29 @@ LABEL_15:
 
   else
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v16->_identifier;
-    v16->_identifier = v20;
+    v16->_identifier = uUID;
   }
 
   v25 = HMDispatchQueueNameString();
-  v26 = [v25 UTF8String];
+  uTF8String = [v25 UTF8String];
   v27 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v28 = dispatch_queue_create(v26, v27);
+  v28 = dispatch_queue_create(uTF8String, v27);
   clientQueue = v16->_clientQueue;
   v16->_clientQueue = v28;
 
-  v16->_operationType = a3;
-  objc_storeStrong(&v16->_user, a5);
-  objc_storeStrong(&v16->_accessory, a6);
-  objc_storeStrong(&v16->_expirationDate, a7);
+  v16->_operationType = type;
+  objc_storeStrong(&v16->_user, user);
+  objc_storeStrong(&v16->_accessory, accessory);
+  objc_storeStrong(&v16->_expirationDate, expiration);
   v16->_backoffInterval = 10.0;
   v16->_lastOperationFailed = 0;
   if ([(HMDUserManagementOperation *)v16 isValid])
   {
     [(HMDUserManagementOperation *)v16 _setupExpirationTimer];
-    v15 = v40;
-    v13 = v41;
+    expirationCopy = v40;
+    userCopy = v41;
 LABEL_14:
     v30 = v16;
     goto LABEL_18;
@@ -2508,8 +2508,8 @@ LABEL_14:
 
   objc_autoreleasePoolPop(v31);
   v30 = 0;
-  v15 = v40;
-  v13 = v41;
+  expirationCopy = v40;
+  userCopy = v41;
 LABEL_18:
 
   v36 = *MEMORY[0x277D85DE8];
@@ -2529,47 +2529,47 @@ LABEL_18:
   objc_exception_throw(v7);
 }
 
-+ (id)operationWithDictionary:(id)a3 home:(id)a4
++ (id)operationWithDictionary:(id)dictionary home:(id)home
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_numberForKey:@"HM.operationType"];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  v8 = [dictionaryCopy hmf_numberForKey:@"HM.operationType"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
-    if (v7)
+    integerValue = [v8 integerValue];
+    if (homeCopy)
     {
 LABEL_3:
-      v11 = [v6 hmf_UUIDForKey:@"HM.user"];
-      v12 = [v7 userWithUUID:v11];
+      v11 = [dictionaryCopy hmf_UUIDForKey:@"HM.user"];
+      v12 = [homeCopy userWithUUID:v11];
       if (v12)
       {
-        v13 = [v6 hmf_UUIDForKey:@"accessory"];
-        v14 = [v7 accessoryWithUUID:v13];
+        v13 = [dictionaryCopy hmf_UUIDForKey:@"accessory"];
+        v14 = [homeCopy accessoryWithUUID:v13];
         if (v14)
         {
-          v15 = [v6 hmf_dateForKey:@"HM.expiry"];
+          v15 = [dictionaryCopy hmf_dateForKey:@"HM.expiry"];
           if (!v15)
           {
-            v16 = [MEMORY[0x277D0F8D0] sharedPreferences];
-            v34 = [v16 preferenceForKey:@"userManagementOperationExpiryTime"];
+            mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+            v34 = [mEMORY[0x277D0F8D0] preferenceForKey:@"userManagementOperationExpiryTime"];
 
             v17 = MEMORY[0x277CBEAA8];
-            v18 = [v34 numberValue];
-            [v18 doubleValue];
+            numberValue = [v34 numberValue];
+            [numberValue doubleValue];
             v15 = [v17 dateWithTimeIntervalSinceNow:?];
           }
 
-          v19 = [[HMDUserManagementOperation alloc] initWithOperationType:v10 identifier:0 user:v12 accessory:v14 expiration:v15];
-          [(HMDUserManagementOperation *)v19 setDelegate:v7];
+          v19 = [[HMDUserManagementOperation alloc] initWithOperationType:integerValue identifier:0 user:v12 accessory:v14 expiration:v15];
+          [(HMDUserManagementOperation *)v19 setDelegate:homeCopy];
         }
 
         else
         {
           v28 = objc_autoreleasePoolPush();
-          v29 = a1;
+          selfCopy = self;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
@@ -2592,7 +2592,7 @@ LABEL_3:
       else
       {
         v24 = objc_autoreleasePoolPush();
-        v25 = a1;
+        selfCopy2 = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
@@ -2614,15 +2614,15 @@ LABEL_3:
 
   else
   {
-    v10 = 1;
-    if (v7)
+    integerValue = 1;
+    if (homeCopy)
     {
       goto LABEL_3;
     }
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = a1;
+  selfCopy3 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -2648,94 +2648,94 @@ LABEL_20:
   return NSStringFromClass(v2);
 }
 
-+ (id)removeUserManagementOperationForUser:(id)a3 accessory:(id)a4 model:(id)a5
++ (id)removeUserManagementOperationForUser:(id)user accessory:(id)accessory model:(id)model
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 uuid];
-  v11 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v12 = [v11 preferenceForKey:@"userManagementOperationExpiryTime"];
+  modelCopy = model;
+  accessoryCopy = accessory;
+  userCopy = user;
+  uuid = [modelCopy uuid];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v12 = [mEMORY[0x277D0F8D0] preferenceForKey:@"userManagementOperationExpiryTime"];
 
   v13 = MEMORY[0x277CBEAA8];
-  v14 = [v12 numberValue];
-  [v14 doubleValue];
+  numberValue = [v12 numberValue];
+  [numberValue doubleValue];
   v15 = [v13 dateWithTimeIntervalSinceNow:?];
 
-  if (v7)
+  if (modelCopy)
   {
-    v16 = [v7 expirationDate];
+    expirationDate = [modelCopy expirationDate];
 
-    if (v16)
+    if (expirationDate)
     {
-      v17 = [v7 expirationDate];
+      expirationDate2 = [modelCopy expirationDate];
 
-      v15 = v17;
+      v15 = expirationDate2;
     }
   }
 
-  v18 = [[HMDUserManagementOperation alloc] initWithOperationType:2 identifier:v10 user:v9 accessory:v8 expiration:v15];
+  v18 = [[HMDUserManagementOperation alloc] initWithOperationType:2 identifier:uuid user:userCopy accessory:accessoryCopy expiration:v15];
 
   return v18;
 }
 
-+ (id)addUserManagementOperationForUser:(id)a3 accessory:(id)a4 model:(id)a5
++ (id)addUserManagementOperationForUser:(id)user accessory:(id)accessory model:(id)model
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 uuid];
-  v11 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v12 = [v11 preferenceForKey:@"userManagementOperationExpiryTime"];
+  modelCopy = model;
+  accessoryCopy = accessory;
+  userCopy = user;
+  uuid = [modelCopy uuid];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v12 = [mEMORY[0x277D0F8D0] preferenceForKey:@"userManagementOperationExpiryTime"];
 
   v13 = MEMORY[0x277CBEAA8];
-  v14 = [v12 numberValue];
-  [v14 doubleValue];
+  numberValue = [v12 numberValue];
+  [numberValue doubleValue];
   v15 = [v13 dateWithTimeIntervalSinceNow:?];
 
-  if (v7)
+  if (modelCopy)
   {
-    v16 = [v7 expirationDate];
+    expirationDate = [modelCopy expirationDate];
 
-    if (v16)
+    if (expirationDate)
     {
-      v17 = [v7 expirationDate];
+      expirationDate2 = [modelCopy expirationDate];
 
-      v15 = v17;
+      v15 = expirationDate2;
     }
   }
 
-  v18 = [[HMDUserManagementOperation alloc] initWithOperationType:1 identifier:v10 user:v9 accessory:v8 expiration:v15];
+  v18 = [[HMDUserManagementOperation alloc] initWithOperationType:1 identifier:uuid user:userCopy accessory:accessoryCopy expiration:v15];
 
   return v18;
 }
 
-+ (id)auditUserManagementOperationAccessory:(id)a3 model:(id)a4
++ (id)auditUserManagementOperationAccessory:(id)accessory model:(id)model
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 uuid];
-  v8 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v9 = [v8 preferenceForKey:@"userManagementOperationAuditExpiryTime"];
+  modelCopy = model;
+  accessoryCopy = accessory;
+  uuid = [modelCopy uuid];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v9 = [mEMORY[0x277D0F8D0] preferenceForKey:@"userManagementOperationAuditExpiryTime"];
 
   v10 = MEMORY[0x277CBEAA8];
-  v11 = [v9 numberValue];
-  [v11 doubleValue];
+  numberValue = [v9 numberValue];
+  [numberValue doubleValue];
   v12 = [v10 dateWithTimeIntervalSinceNow:?];
 
-  if (v5)
+  if (modelCopy)
   {
-    v13 = [v5 expirationDate];
+    expirationDate = [modelCopy expirationDate];
 
-    if (v13)
+    if (expirationDate)
     {
-      v14 = [v5 expirationDate];
+      expirationDate2 = [modelCopy expirationDate];
 
-      v12 = v14;
+      v12 = expirationDate2;
     }
   }
 
-  v15 = [[HMDUserManagementOperation alloc] initWithOperationType:3 identifier:v7 user:0 accessory:v6 expiration:v12];
+  v15 = [[HMDUserManagementOperation alloc] initWithOperationType:3 identifier:uuid user:0 accessory:accessoryCopy expiration:v12];
 
   return v15;
 }

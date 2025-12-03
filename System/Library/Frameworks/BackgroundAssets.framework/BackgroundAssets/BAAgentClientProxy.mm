@@ -1,22 +1,22 @@
 @interface BAAgentClientProxy
-- (id)currentDownloads:(void *)a1;
-- (id)initWithApplicationIdentifier:(void *)a3 downloadManager:;
+- (id)currentDownloads:(void *)downloads;
+- (id)initWithApplicationIdentifier:(void *)identifier downloadManager:;
 - (uint64_t)_setupConnection;
-- (uint64_t)cancelDownload:(void *)a3 error:;
-- (uint64_t)markPurgeableWithFileURL:(void *)a3 error:;
-- (uint64_t)scheduleDownload:(void *)a3 error:;
-- (uint64_t)startForegroundDownload:(void *)a3 error:;
-- (void)_exclusiveControlEndedWithToken:(void *)a1;
-- (void)acquireExclusiveControlBeforeDate:(void *)a3 handler:;
-- (void)acquireExclusiveControlWithHandler:(uint64_t)a1;
-- (void)currentDownloadsWithCompletion:(uint64_t)a1;
+- (uint64_t)cancelDownload:(void *)download error:;
+- (uint64_t)markPurgeableWithFileURL:(void *)l error:;
+- (uint64_t)scheduleDownload:(void *)download error:;
+- (uint64_t)startForegroundDownload:(void *)download error:;
+- (void)_exclusiveControlEndedWithToken:(void *)token;
+- (void)acquireExclusiveControlBeforeDate:(void *)date handler:;
+- (void)acquireExclusiveControlWithHandler:(uint64_t)handler;
+- (void)currentDownloadsWithCompletion:(uint64_t)completion;
 @end
 
 @implementation BAAgentClientProxy
 
 - (uint64_t)_setupConnection
 {
-  Property = objc_getProperty(a1, a2, 24, 1);
+  Property = objc_getProperty(self, a2, 24, 1);
 
   return [Property unlock];
 }
@@ -33,11 +33,11 @@ void __53__BAAgentClientProxy_currentDownloadsWithCompletion___block_invoke(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)currentDownloads:(void *)a1
+- (id)currentDownloads:(void *)downloads
 {
-  if (a1)
+  if (downloads)
   {
-    [(BAAgentClientProxy *)a1 _setupConnection];
+    [(BAAgentClientProxy *)downloads _setupConnection];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -50,7 +50,7 @@ void __53__BAAgentClientProxy_currentDownloadsWithCompletion___block_invoke(uint
     v14 = __Block_byref_object_copy__0;
     v15 = __Block_byref_object_dispose__0;
     v16 = 0;
-    v5 = objc_getProperty(a1, v4, 8, 1);
+    v5 = objc_getProperty(downloads, v4, 8, 1);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __39__BAAgentClientProxy_currentDownloads___block_invoke;
@@ -120,12 +120,12 @@ void __39__BAAgentClientProxy_currentDownloads___block_invoke_110(uint64_t a1, v
   *(v8 + 40) = v9;
 }
 
-- (uint64_t)scheduleDownload:(void *)a3 error:
+- (uint64_t)scheduleDownload:(void *)download error:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    [(BAAgentClientProxy *)a1 _setupConnection];
+    [(BAAgentClientProxy *)self _setupConnection];
     v18 = 0;
     v19 = &v18;
     v20 = 0x3032000000;
@@ -136,7 +136,7 @@ void __39__BAAgentClientProxy_currentDownloads___block_invoke_110(uint64_t a1, v
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v8 = objc_getProperty(a1, v7, 8, 1);
+    v8 = objc_getProperty(self, v7, 8, 1);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __45__BAAgentClientProxy_scheduleDownload_error___block_invoke;
@@ -151,9 +151,9 @@ void __39__BAAgentClientProxy_currentDownloads___block_invoke_110(uint64_t a1, v
     v12[5] = &v18;
     [v9 scheduleDownload:v6 reply:v12];
 
-    if (a3)
+    if (download)
     {
-      *a3 = v19[5];
+      *download = v19[5];
     }
 
     v10 = *(v15 + 24);
@@ -241,12 +241,12 @@ void __54__BAAgentClientProxy__exclusiveControlEndedWithToken___block_invoke(uin
   }
 }
 
-- (uint64_t)startForegroundDownload:(void *)a3 error:
+- (uint64_t)startForegroundDownload:(void *)download error:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    [(BAAgentClientProxy *)a1 _setupConnection];
+    [(BAAgentClientProxy *)self _setupConnection];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -257,7 +257,7 @@ void __54__BAAgentClientProxy__exclusiveControlEndedWithToken___block_invoke(uin
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    v8 = objc_getProperty(a1, v7, 8, 1);
+    v8 = objc_getProperty(self, v7, 8, 1);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__BAAgentClientProxy_startForegroundDownload_error___block_invoke;
@@ -272,9 +272,9 @@ void __54__BAAgentClientProxy__exclusiveControlEndedWithToken___block_invoke(uin
     v12[5] = &v20;
     [v9 startForegroundDownload:v6 reply:v12];
 
-    if (a3)
+    if (download)
     {
-      *a3 = v15[5];
+      *download = v15[5];
     }
 
     v10 = *(v21 + 24);
@@ -312,12 +312,12 @@ void __52__BAAgentClientProxy_startForegroundDownload_error___block_invoke_116(u
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (uint64_t)cancelDownload:(void *)a3 error:
+- (uint64_t)cancelDownload:(void *)download error:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    [(BAAgentClientProxy *)a1 _setupConnection];
+    [(BAAgentClientProxy *)self _setupConnection];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
@@ -328,25 +328,25 @@ void __52__BAAgentClientProxy_startForegroundDownload_error___block_invoke_116(u
     v18 = __Block_byref_object_copy__0;
     v19 = __Block_byref_object_dispose__0;
     v20 = 0;
-    v8 = objc_getProperty(a1, v7, 8, 1);
+    v8 = objc_getProperty(self, v7, 8, 1);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __43__BAAgentClientProxy_cancelDownload_error___block_invoke;
     v14[3] = &unk_278A0D0B8;
     v14[4] = &v15;
     v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v14];
-    v10 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [v6 uniqueIdentifier];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __43__BAAgentClientProxy_cancelDownload_error___block_invoke_117;
     v13[3] = &unk_278A0CFA0;
     v13[4] = &v21;
     v13[5] = &v15;
-    [v9 cancelDownload:v10 reply:v13];
+    [v9 cancelDownload:uniqueIdentifier reply:v13];
 
-    if (a3)
+    if (download)
     {
-      *a3 = v16[5];
+      *download = v16[5];
     }
 
     v11 = *(v22 + 24);
@@ -377,15 +377,15 @@ void __43__BAAgentClientProxy_cancelDownload_error___block_invoke(uint64_t a1, v
   *(v5 + 40) = v3;
 }
 
-- (uint64_t)markPurgeableWithFileURL:(void *)a3 error:
+- (uint64_t)markPurgeableWithFileURL:(void *)l error:
 {
   v31[1] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    [(BAAgentClientProxy *)a1 _setupConnection];
+    [(BAAgentClientProxy *)self _setupConnection];
     [v6 fileSystemRepresentation];
-    Property = objc_getProperty(a1, v7, 8, 1);
+    Property = objc_getProperty(self, v7, 8, 1);
     if (Property)
     {
       [Property auditToken];
@@ -414,7 +414,7 @@ void __43__BAAgentClientProxy_cancelDownload_error___block_invoke(uint64_t a1, v
       *(&v23 + 1) = __Block_byref_object_copy__0;
       v24 = __Block_byref_object_dispose__0;
       v25 = 0;
-      v14 = objc_getProperty(a1, v13, 8, 1);
+      v14 = objc_getProperty(self, v13, 8, 1);
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __53__BAAgentClientProxy_markPurgeableWithFileURL_error___block_invoke;
@@ -429,12 +429,12 @@ void __43__BAAgentClientProxy_cancelDownload_error___block_invoke(uint64_t a1, v
       v20[5] = &v22;
       [v15 markPurgeableWithFileURL:v6 sandboxToken:v12 reply:v20];
 
-      if (a3)
+      if (l)
       {
-        *a3 = *(*(&v22 + 1) + 40);
+        *l = *(*(&v22 + 1) + 40);
       }
 
-      LOBYTE(a1) = *(v27 + 24);
+      LOBYTE(self) = *(v27 + 24);
       _Block_object_dispose(&v22, 8);
 
       _Block_object_dispose(&v26, 8);
@@ -442,28 +442,28 @@ void __43__BAAgentClientProxy_cancelDownload_error___block_invoke(uint64_t a1, v
 
     else
     {
-      if (!a3)
+      if (!l)
       {
-        LOBYTE(a1) = 0;
+        LOBYTE(self) = 0;
         goto LABEL_12;
       }
 
       v16 = MEMORY[0x277CCA9B8];
-      a1 = *__error();
+      self = *__error();
       v30 = @"FileURL";
       v31[0] = v6;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      v12 = [v16 errorWithDomain:*MEMORY[0x277CCA5B8] code:a1 userInfo:v17];
+      v12 = [v16 errorWithDomain:*MEMORY[0x277CCA5B8] code:self userInfo:v17];
 
       NSErrorWithBAErrorDomainCodeUnderlying(@"BAErrorDomain", -107, v12);
-      *a3 = LOBYTE(a1) = 0;
+      *l = LOBYTE(self) = 0;
     }
   }
 
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];
-  return a1 & 1;
+  return self & 1;
 }
 
 void __53__BAAgentClientProxy_markPurgeableWithFileURL_error___block_invoke(uint64_t a1, void *a2)
@@ -480,38 +480,38 @@ void __53__BAAgentClientProxy_markPurgeableWithFileURL_error___block_invoke(uint
   *(v5 + 40) = v3;
 }
 
-- (id)initWithApplicationIdentifier:(void *)a3 downloadManager:
+- (id)initWithApplicationIdentifier:(void *)identifier downloadManager:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = BAAgentClientProxy;
-    a1 = objc_msgSendSuper2(&v13, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v13, sel_init);
+    if (self)
     {
-      v7 = [v5 _baassets_validUTI];
-      if ([v7 isEqualToString:v5])
+      selfCopy = [v5 _baassets_validUTI];
+      if ([selfCopy isEqualToString:v5])
       {
-        objc_setProperty_atomic(a1, v8, v5, 16);
-        objc_storeWeak(a1 + 4, v6);
+        objc_setProperty_atomic(self, v8, v5, 16);
+        objc_storeWeak(self + 4, identifierCopy);
         v9 = objc_alloc_init(MEMORY[0x277CCAAF8]);
-        objc_setProperty_atomic(a1, v10, v9, 24);
+        objc_setProperty_atomic(self, v10, v9, 24);
 
-        [(BAAgentClientProxy *)a1 _setupConnection];
+        [(BAAgentClientProxy *)self _setupConnection];
       }
 
       else
       {
 
-        v7 = a1;
-        a1 = 0;
+        selfCopy = self;
+        self = 0;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __38__BAAgentClientProxy__setupConnection__block_invoke(uint64_t a1)
@@ -536,13 +536,13 @@ void __38__BAAgentClientProxy__setupConnection__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)currentDownloadsWithCompletion:(uint64_t)a1
+- (void)currentDownloadsWithCompletion:(uint64_t)completion
 {
   v4 = a2;
-  if (a1)
+  if (completion)
   {
-    v5 = [(BAAgentClientProxy *)a1 _setupConnection];
-    v7 = OUTLINED_FUNCTION_5(v5, v6);
+    _setupConnection = [(BAAgentClientProxy *)completion _setupConnection];
+    v7 = OUTLINED_FUNCTION_5(_setupConnection, v6);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__BAAgentClientProxy_currentDownloadsWithCompletion___block_invoke;
@@ -559,13 +559,13 @@ void __38__BAAgentClientProxy__setupConnection__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)acquireExclusiveControlWithHandler:(uint64_t)a1
+- (void)acquireExclusiveControlWithHandler:(uint64_t)handler
 {
   v4 = a2;
-  if (a1)
+  if (handler)
   {
-    v5 = [(BAAgentClientProxy *)a1 _setupConnection];
-    v7 = OUTLINED_FUNCTION_5(v5, v6);
+    _setupConnection = [(BAAgentClientProxy *)handler _setupConnection];
+    v7 = OUTLINED_FUNCTION_5(_setupConnection, v6);
     OUTLINED_FUNCTION_4();
     v16 = 3221225472;
     v17 = __57__BAAgentClientProxy_acquireExclusiveControlWithHandler___block_invoke;
@@ -576,42 +576,42 @@ void __38__BAAgentClientProxy__setupConnection__block_invoke_2(uint64_t a1)
     OUTLINED_FUNCTION_3_0();
     v11 = __57__BAAgentClientProxy_acquireExclusiveControlWithHandler___block_invoke_113;
     v12 = &unk_278A0D108;
-    v13 = a1;
+    handlerCopy = handler;
     v14 = v8;
     [v9 performWithExclusiveControlWithHandler:v10];
   }
 }
 
-- (void)_exclusiveControlEndedWithToken:(void *)a1
+- (void)_exclusiveControlEndedWithToken:(void *)token
 {
-  if (a1)
+  if (token)
   {
     v3 = a2;
-    [(BAAgentClientProxy *)a1 _setupConnection];
-    v6 = [objc_getProperty(a1 v5];
+    [(BAAgentClientProxy *)token _setupConnection];
+    v6 = [objc_getProperty(token v5];
     [v6 exclusiveControlExitedWithToken:v3];
   }
 }
 
-- (void)acquireExclusiveControlBeforeDate:(void *)a3 handler:
+- (void)acquireExclusiveControlBeforeDate:(void *)date handler:
 {
-  v5 = a3;
-  if (a1)
+  dateCopy = date;
+  if (self)
   {
     v6 = a2;
-    v8 = [(BAAgentClientProxy *)a1 _setupConnection];
-    v10 = OUTLINED_FUNCTION_5(v8, v9);
+    _setupConnection = [(BAAgentClientProxy *)self _setupConnection];
+    v10 = OUTLINED_FUNCTION_5(_setupConnection, v9);
     OUTLINED_FUNCTION_4();
     v19 = 3221225472;
     v20 = __64__BAAgentClientProxy_acquireExclusiveControlBeforeDate_handler___block_invoke;
     v21 = &unk_278A0D068;
-    v11 = v5;
+    v11 = dateCopy;
     v22 = v11;
     v12 = [v10 remoteObjectProxyWithErrorHandler:v18];
     OUTLINED_FUNCTION_3_0();
     v14 = __64__BAAgentClientProxy_acquireExclusiveControlBeforeDate_handler___block_invoke_115;
     v15 = &unk_278A0D108;
-    v16 = a1;
+    selfCopy = self;
     v17 = v11;
     [v12 performWithExclusiveControlBeforeDate:v6 handler:v13];
   }

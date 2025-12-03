@@ -1,8 +1,8 @@
 @interface RTTimer
-- (RTTimer)initWithIdentifier:(id)a3 dispatchSource:(id)a4;
-- (RTTimer)initWithIdentifier:(id)a3 queue:(id)a4 handler:(id)a5;
+- (RTTimer)initWithIdentifier:(id)identifier dispatchSource:(id)source;
+- (RTTimer)initWithIdentifier:(id)identifier queue:(id)queue handler:(id)handler;
 - (void)dealloc;
-- (void)fireAfterDelay:(double)a3 interval:(double)a4 leeway:(double)a5;
+- (void)fireAfterDelay:(double)delay interval:(double)interval leeway:(double)leeway;
 @end
 
 @implementation RTTimer
@@ -15,15 +15,15 @@
   [(RTTimer *)&v3 dealloc];
 }
 
-- (RTTimer)initWithIdentifier:(id)a3 queue:(id)a4 handler:(id)a5
+- (RTTimer)initWithIdentifier:(id)identifier queue:(id)queue handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    if (v9)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -41,10 +41,10 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", &v16, 0x12u);
     }
 
-    if (v9)
+    if (queueCopy)
     {
 LABEL_3:
-      if (v10)
+      if (handlerCopy)
       {
         goto LABEL_4;
       }
@@ -60,7 +60,7 @@ LABEL_13:
         _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", &v16, 0x12u);
       }
 
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_16;
     }
   }
@@ -75,32 +75,32 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queue (in %s:%d)", &v16, 0x12u);
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  v11 = 0;
-  if (v8 && v9)
+  selfCopy = 0;
+  if (identifierCopy && queueCopy)
   {
-    v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v9);
-    dispatch_source_set_event_handler(v12, v10);
-    self = [(RTTimer *)self initWithIdentifier:v8 dispatchSource:v12];
-    v11 = self;
+    v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
+    dispatch_source_set_event_handler(v12, handlerCopy);
+    self = [(RTTimer *)self initWithIdentifier:identifierCopy dispatchSource:v12];
+    selfCopy = self;
 LABEL_16:
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (RTTimer)initWithIdentifier:(id)a3 dispatchSource:(id)a4
+- (RTTimer)initWithIdentifier:(id)identifier dispatchSource:(id)source
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  identifierCopy = identifier;
+  sourceCopy = source;
+  v8 = sourceCopy;
+  if (!identifierCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -120,7 +120,7 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!sourceCopy)
   {
 LABEL_9:
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -134,7 +134,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -143,24 +143,24 @@ LABEL_12:
   v9 = [(RTTimer *)&v16 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeStrong(&v9->_timer, a4);
+    objc_storeStrong(&v9->_timer, source);
   }
 
   self = v9;
-  v12 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)fireAfterDelay:(double)a3 interval:(double)a4 leeway:(double)a5
+- (void)fireAfterDelay:(double)delay interval:(double)interval leeway:(double)leeway
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (delay <= 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -173,7 +173,7 @@ LABEL_13:
     }
   }
 
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -186,7 +186,7 @@ LABEL_13:
     }
   }
 
-  if (a5 <= 0.0)
+  if (leeway <= 0.0)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -200,7 +200,7 @@ LABEL_13:
   }
 
   timer = self->_timer;
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&delay & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
     v13 = 0;
   }
@@ -210,29 +210,29 @@ LABEL_13:
     v13 = -1;
   }
 
-  if (a3 > 0.0 && (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if (delay > 0.0 && (*&delay & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v13 = dispatch_walltime(0, (a3 * 1000000000.0));
+    v13 = dispatch_walltime(0, (delay * 1000000000.0));
   }
 
-  if ((*&a4 <= -1 || ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&a4 - 1) >= 0xFFFFFFFFFFFFFLL)
+  if ((*&interval <= -1 || ((*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&interval - 1) >= 0xFFFFFFFFFFFFFLL)
   {
     v16 = -1;
   }
 
   else
   {
-    v16 = (a4 * 1000000000.0);
+    v16 = (interval * 1000000000.0);
   }
 
-  if ((*&a5 <= -1 || ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&a5 - 1) >= 0xFFFFFFFFFFFFFLL)
+  if ((*&leeway <= -1 || ((*&leeway & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&leeway - 1) >= 0xFFFFFFFFFFFFFLL)
   {
     v19 = -1;
   }
 
   else
   {
-    v19 = (a5 * 1000000000.0);
+    v19 = (leeway * 1000000000.0);
   }
 
   dispatch_source_set_timer(timer, v13, v16, v19);

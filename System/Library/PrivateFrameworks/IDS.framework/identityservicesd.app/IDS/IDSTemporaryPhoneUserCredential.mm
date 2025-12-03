@@ -1,16 +1,16 @@
 @interface IDSTemporaryPhoneUserCredential
-- (IDSTemporaryPhoneUserCredential)initWithDataRepresentation:(id)a3;
-- (IDSTemporaryPhoneUserCredential)initWithPhoneAuthenticationCertificate:(id)a3;
+- (IDSTemporaryPhoneUserCredential)initWithDataRepresentation:(id)representation;
+- (IDSTemporaryPhoneUserCredential)initWithPhoneAuthenticationCertificate:(id)certificate;
 - (NSData)dataRepresentation;
 - (NSString)description;
 @end
 
 @implementation IDSTemporaryPhoneUserCredential
 
-- (IDSTemporaryPhoneUserCredential)initWithPhoneAuthenticationCertificate:(id)a3
+- (IDSTemporaryPhoneUserCredential)initWithPhoneAuthenticationCertificate:(id)certificate
 {
-  v5 = a3;
-  if (v5)
+  certificateCopy = certificate;
+  if (certificateCopy)
   {
     v11.receiver = self;
     v11.super_class = IDSTemporaryPhoneUserCredential;
@@ -18,11 +18,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_phoneAuthenticationCertificate, a3);
+      objc_storeStrong(&v6->_phoneAuthenticationCertificate, certificate);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -35,18 +35,18 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Trying to create temporary user credential with nil argument. Returning nil. { cert: %@ }", buf, 0xCu);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (IDSTemporaryPhoneUserCredential)initWithDataRepresentation:(id)a3
+- (IDSTemporaryPhoneUserCredential)initWithDataRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [[IDSAuthenticationCertificate alloc] initWithDataRepresentation:v4];
+    representationCopy = representation;
+    v5 = [[IDSAuthenticationCertificate alloc] initWithDataRepresentation:representationCopy];
   }
 
   else
@@ -61,17 +61,17 @@
 
 - (NSData)dataRepresentation
 {
-  v2 = [(IDSTemporaryPhoneUserCredential *)self phoneAuthenticationCertificate];
-  v3 = [v2 dataRepresentation];
+  phoneAuthenticationCertificate = [(IDSTemporaryPhoneUserCredential *)self phoneAuthenticationCertificate];
+  dataRepresentation = [phoneAuthenticationCertificate dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSTemporaryPhoneUserCredential *)self phoneAuthenticationCertificate];
-  v5 = [NSString stringWithFormat:@"<%@:%p> cert: %@", v3, self, v4];
+  phoneAuthenticationCertificate = [(IDSTemporaryPhoneUserCredential *)self phoneAuthenticationCertificate];
+  v5 = [NSString stringWithFormat:@"<%@:%p> cert: %@", v3, self, phoneAuthenticationCertificate];
 
   return v5;
 }

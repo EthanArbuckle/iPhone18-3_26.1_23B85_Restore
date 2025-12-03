@@ -1,19 +1,19 @@
 @interface WFSystemContentWhitelistItem
-- (BOOL)matchesURL:(id)a3;
-- (WFSystemContentWhitelistItem)initWithDomainGlob:(id)a3;
+- (BOOL)matchesURL:(id)l;
+- (WFSystemContentWhitelistItem)initWithDomainGlob:(id)glob;
 - (void)dealloc;
 @end
 
 @implementation WFSystemContentWhitelistItem
 
-- (WFSystemContentWhitelistItem)initWithDomainGlob:(id)a3
+- (WFSystemContentWhitelistItem)initWithDomainGlob:(id)glob
 {
   v6.receiver = self;
   v6.super_class = WFSystemContentWhitelistItem;
   v4 = [(WFSystemContentWhitelistItem *)&v6 init];
   if (v4)
   {
-    v4->_utf8DomainGlob = strdup([a3 UTF8String]);
+    v4->_utf8DomainGlob = strdup([glob UTF8String]);
   }
 
   return v4;
@@ -27,15 +27,15 @@
   [(WFSystemContentWhitelistItem *)&v3 dealloc];
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
-  v4 = [a3 host];
-  if (v4)
+  host = [l host];
+  if (host)
   {
-    LOBYTE(v4) = fnmatch(self->_utf8DomainGlob, [v4 UTF8String], 0) == 0;
+    LOBYTE(host) = fnmatch(self->_utf8DomainGlob, [host UTF8String], 0) == 0;
   }
 
-  return v4;
+  return host;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface MapsSuggestionsDefaultLocationUpdater
 - (MapsSuggestionsDefaultLocationUpdater)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)onStartImplementation;
 - (void)onStopImplementation;
 @end
@@ -31,16 +31,16 @@
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v12, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (self->_locationManager)
   {
-    v5 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    location = GEOFindOrCreateLog();
+    if (os_log_type_enabled(location, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v12) = 0;
-      _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_ERROR, "Already running", &v12, 2u);
+      _os_log_impl(&dword_1C5126000, location, OS_LOG_TYPE_ERROR, "Already running", &v12, 2u);
     }
   }
 
@@ -48,8 +48,8 @@
   {
     v6 = objc_alloc(MEMORY[0x1E695FBE8]);
     v7 = *MEMORY[0x1E69A1A78];
-    v8 = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
-    v9 = [v6 initWithEffectiveBundleIdentifier:v7 delegate:self onQueue:v8];
+    dispatchQueue2 = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
+    v9 = [v6 initWithEffectiveBundleIdentifier:v7 delegate:self onQueue:dispatchQueue2];
     locationManager = self->_locationManager;
     self->_locationManager = v9;
 
@@ -57,15 +57,15 @@
     [(CLLocationManager *)self->_locationManager setDistanceFilter:?];
     [(CLLocationManager *)self->_locationManager setDesiredAccuracy:*MEMORY[0x1E6985C88]];
     [(CLLocationManager *)self->_locationManager startUpdatingLocation];
-    v11 = [(CLLocationManager *)self->_locationManager _limitsPrecision];
-    [(MapsSuggestionsBaseLocationUpdater *)self considerMyAllowanceAsLimited:v11];
-    if (v11)
+    _limitsPrecision = [(CLLocationManager *)self->_locationManager _limitsPrecision];
+    [(MapsSuggestionsBaseLocationUpdater *)self considerMyAllowanceAsLimited:_limitsPrecision];
+    if (_limitsPrecision)
     {
       return;
     }
 
-    v5 = [(CLLocationManager *)self->_locationManager location];
-    [(MapsSuggestionsBaseLocationUpdater *)self considerMyNewLocation:v5];
+    location = [(CLLocationManager *)self->_locationManager location];
+    [(MapsSuggestionsBaseLocationUpdater *)self considerMyNewLocation:location];
   }
 }
 
@@ -80,8 +80,8 @@
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v7, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   locationManager = self->_locationManager;
   if (locationManager)
@@ -92,10 +92,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if (MapsSuggestionsLoggingIsVerbose())
   {
     v8 = GEOFindOrCreateLog();
@@ -106,18 +106,18 @@
     }
   }
 
-  if ([v7 count])
+  if ([locationsCopy count])
   {
     objc_initWeak(buf, self);
-    v9 = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
+    dispatchQueue = [(MapsSuggestionsBaseLocationUpdater *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__MapsSuggestionsDefaultLocationUpdater_locationManager_didUpdateLocations___block_invoke;
     block[3] = &unk_1E81F5410;
     objc_copyWeak(&v13, buf);
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v9, block);
+    v11 = managerCopy;
+    v12 = locationsCopy;
+    dispatch_async(dispatchQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -202,20 +202,20 @@ void __76__MapsSuggestionsDefaultLocationUpdater_locationManager_didUpdateLocati
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 code];
-  if (v5 != 3)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code != 3)
   {
-    if (v5)
+    if (code)
     {
       v6 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = errorCopy;
         v7 = "Location error: %@";
         v8 = v6;
         v9 = OS_LOG_TYPE_ERROR;
@@ -250,11 +250,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 _limitsPrecision];
+  _limitsPrecision = [authorization _limitsPrecision];
 
-  [(MapsSuggestionsBaseLocationUpdater *)self considerMyAllowanceAsLimited:v4];
+  [(MapsSuggestionsBaseLocationUpdater *)self considerMyAllowanceAsLimited:_limitsPrecision];
 }
 
 @end

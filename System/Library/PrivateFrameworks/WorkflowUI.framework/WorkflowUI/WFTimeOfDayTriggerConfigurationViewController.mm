@@ -1,6 +1,6 @@
 @interface WFTimeOfDayTriggerConfigurationViewController
 - (BOOL)showingPicker;
-- (WFTimeOfDayTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFTimeOfDayTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (_CDUserContext)userContext;
 - (id)calendarFooterText;
 - (id)currentDayOfMonth;
@@ -8,50 +8,50 @@
 - (id)currentSunsetTime;
 - (id)customSections;
 - (id)dateComponentsFromTriggerDays;
-- (id)infoForSection:(int64_t)a3;
-- (id)subtitleForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)subtitleForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (id)titleForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)dayOfWeekPickerCell:(id)a3 didChangeSelectedRecurrences:(id)a4;
+- (id)titleForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)dayOfWeekPickerCell:(id)cell didChangeSelectedRecurrences:(id)recurrences;
 - (void)dismissKeyboard;
-- (void)presentOffsetPickerViewControllerForEvent:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)timeOffsetPickerViewController:(id)a3 didSelectOffset:(unint64_t)a4;
-- (void)timePickerUpdated:(id)a3;
+- (void)presentOffsetPickerViewControllerForEvent:(unint64_t)event;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)timeOffsetPickerViewController:(id)controller didSelectOffset:(unint64_t)offset;
+- (void)timePickerUpdated:(id)updated;
 - (void)updateCalendarDayIfNeeded;
 - (void)updateCalendarFooterText;
-- (void)updateTriggerCalendarDayFromDate:(id)a3;
-- (void)updateTriggerTimeFromDate:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updateTriggerCalendarDayFromDate:(id)date;
+- (void)updateTriggerTimeFromDate:(id)date;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFTimeOfDayTriggerConfigurationViewController
 
 - (id)currentSunsetTime
 {
-  v2 = [(WFTimeOfDayTriggerConfigurationViewController *)self userContext];
-  v3 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [(WFTimeOfDayTriggerConfigurationViewController *)self userContext];
+  keyPathForSunriseSunsetDataDictionary = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
+  v4 = [userContext objectForKeyedSubscript:keyPathForSunriseSunsetDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] currentSunsetKey];
-  v6 = [v4 objectForKey:v5];
+  currentSunsetKey = [MEMORY[0x277CFE338] currentSunsetKey];
+  v6 = [v4 objectForKey:currentSunsetKey];
 
   return v6;
 }
 
 - (id)currentSunriseTime
 {
-  v2 = [(WFTimeOfDayTriggerConfigurationViewController *)self userContext];
-  v3 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [(WFTimeOfDayTriggerConfigurationViewController *)self userContext];
+  keyPathForSunriseSunsetDataDictionary = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
+  v4 = [userContext objectForKeyedSubscript:keyPathForSunriseSunsetDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] currentSunriseKey];
-  v6 = [v4 objectForKey:v5];
+  currentSunriseKey = [MEMORY[0x277CFE338] currentSunriseKey];
+  v6 = [v4 objectForKey:currentSunriseKey];
 
   return v6;
 }
@@ -61,9 +61,9 @@
   userContext = self->_userContext;
   if (!userContext)
   {
-    v4 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     v5 = self->_userContext;
-    self->_userContext = v4;
+    self->_userContext = userContext;
 
     userContext = self->_userContext;
   }
@@ -74,15 +74,15 @@
 - (id)dateComponentsFromTriggerDays
 {
   v3 = objc_opt_new();
-  v4 = [(WFTriggerConfigurationViewController *)self trigger];
-  v5 = [v4 daysOfWeek];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  daysOfWeek = [trigger daysOfWeek];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__WFTimeOfDayTriggerConfigurationViewController_dateComponentsFromTriggerDays__block_invoke;
   v8[3] = &unk_279EE8298;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [daysOfWeek enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -98,18 +98,18 @@ void __78__WFTimeOfDayTriggerConfigurationViewController_dateComponentsFromTrigg
   [*(a1 + 32) addObject:v6];
 }
 
-- (void)dayOfWeekPickerCell:(id)a3 didChangeSelectedRecurrences:(id)a4
+- (void)dayOfWeekPickerCell:(id)cell didChangeSelectedRecurrences:(id)recurrences
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = [a4 if_map:&__block_literal_global_14648];
-  v6 = [v5 allObjects];
+  v5 = [recurrences if_map:&__block_literal_global_14648];
+  allObjects = [v5 allObjects];
 
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v9 = [v6 sortedArrayUsingDescriptors:v8];
-  v10 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v10 setDaysOfWeek:v9];
+  v9 = [allObjects sortedArrayUsingDescriptors:v8];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setDaysOfWeek:v9];
 }
 
 uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell_didChangeSelectedRecurrences___block_invoke(uint64_t a1, void *a2)
@@ -122,38 +122,38 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
 
 - (void)dismissKeyboard
 {
-  v2 = [(WFTimeOfDayTriggerConfigurationViewController *)self view];
-  [v2 endEditing:1];
+  view = [(WFTimeOfDayTriggerConfigurationViewController *)self view];
+  [view endEditing:1];
 }
 
 - (id)currentDayOfMonth
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [v2 components:16 fromDate:v3];
+  v4 = [currentCalendar components:16 fromDate:v3];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "day")}];
 
   return v5;
 }
 
-- (void)timeOffsetPickerViewController:(id)a3 didSelectOffset:(unint64_t)a4
+- (void)timeOffsetPickerViewController:(id)controller didSelectOffset:(unint64_t)offset
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(WFTimeOfDayTriggerConfigurationViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v7 = [v6 event];
+  event = [controllerCopy event];
 
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setEvent:v7];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setEvent:event];
 
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v9 setTimeOffset:a4];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger2 setTimeOffset:offset];
 
-  v10 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v10 setTime:0];
+  trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger3 setTime:0];
 
-  v11 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v11 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
@@ -161,13 +161,13 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
 - (id)calendarFooterText
 {
   v3 = MEMORY[0x277D7C960];
-  v4 = [(WFTriggerConfigurationViewController *)self trigger];
-  v5 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunriseTime];
-  v6 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunsetTime];
-  v7 = [v3 nextFireDateFromNowWithTrigger:v4 currentSunriseTime:v5 currentSunsetTime:v6];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  currentSunriseTime = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunriseTime];
+  currentSunsetTime = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunsetTime];
+  v7 = [v3 nextFireDateFromNowWithTrigger:trigger currentSunriseTime:currentSunriseTime currentSunsetTime:currentSunsetTime];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:16 fromDate:v7];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar components:16 fromDate:v7];
   v10 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v10 setNumberStyle:WFLocalizedNumberFormatStyle()];
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "day")}];
@@ -182,20 +182,20 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
 
 - (void)updateCalendarFooterText
 {
-  v6 = [(WFTimeOfDayTriggerConfigurationViewController *)self calendarFooterText];
-  v3 = [(WFTriggerConfigurationViewController *)self tableView];
-  v4 = [v3 footerViewForSection:3];
-  v5 = [v4 textLabel];
-  [v5 setText:v6];
+  calendarFooterText = [(WFTimeOfDayTriggerConfigurationViewController *)self calendarFooterText];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  v4 = [tableView footerViewForSection:3];
+  textLabel = [v4 textLabel];
+  [textLabel setText:calendarFooterText];
 }
 
 - (void)updateCalendarDayIfNeeded
 {
   if ([(WFTimeOfDayTriggerConfigurationViewController *)self timeOfDayInterval]== 2)
   {
-    v3 = [(WFTriggerConfigurationViewController *)self tableView];
+    tableView = [(WFTriggerConfigurationViewController *)self tableView];
     v4 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:3];
-    v5 = [v3 cellForRowAtIndexPath:v4];
+    v5 = [tableView cellForRowAtIndexPath:v4];
 
     v14 = v5;
     if (v14)
@@ -220,26 +220,26 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
     v7 = v6;
 
     v8 = MEMORY[0x277D7C960];
-    v9 = [(WFTriggerConfigurationViewController *)self trigger];
-    v10 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunriseTime];
-    v11 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunsetTime];
-    v12 = [v8 nextFireDateFromNowWithTrigger:v9 currentSunriseTime:v10 currentSunsetTime:v11];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    currentSunriseTime = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunriseTime];
+    currentSunsetTime = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunsetTime];
+    v12 = [v8 nextFireDateFromNowWithTrigger:trigger currentSunriseTime:currentSunriseTime currentSunsetTime:currentSunsetTime];
 
-    v13 = [v7 datePicker];
+    datePicker = [v7 datePicker];
 
-    [v13 setDate:v12];
+    [datePicker setDate:v12];
   }
 }
 
-- (void)timePickerUpdated:(id)a3
+- (void)timePickerUpdated:(id)updated
 {
-  v6 = a3;
-  if ([v6 datePickerMode])
+  updatedCopy = updated;
+  if ([updatedCopy datePickerMode])
   {
-    if ([v6 datePickerMode] == 1)
+    if ([updatedCopy datePickerMode] == 1)
     {
-      v4 = [v6 date];
-      [(WFTimeOfDayTriggerConfigurationViewController *)self updateTriggerCalendarDayFromDate:v4];
+      date = [updatedCopy date];
+      [(WFTimeOfDayTriggerConfigurationViewController *)self updateTriggerCalendarDayFromDate:date];
 
       [(WFTimeOfDayTriggerConfigurationViewController *)self updateCalendarFooterText];
     }
@@ -247,8 +247,8 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
 
   else
   {
-    v5 = [v6 date];
-    [(WFTimeOfDayTriggerConfigurationViewController *)self updateTriggerTimeFromDate:v5];
+    date2 = [updatedCopy date];
+    [(WFTimeOfDayTriggerConfigurationViewController *)self updateTriggerTimeFromDate:date2];
 
     [(WFTimeOfDayTriggerConfigurationViewController *)self updateCalendarDayIfNeeded];
   }
@@ -256,49 +256,49 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)updateTriggerCalendarDayFromDate:(id)a3
+- (void)updateTriggerCalendarDayFromDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v9 = [v6 components:16 fromDate:v5];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v9 = [currentCalendar components:16 fromDate:dateCopy];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "day")}];
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setDayOfMonth:v7];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setDayOfMonth:v7];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)updateTriggerTimeFromDate:(id)a3
+- (void)updateTriggerTimeFromDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v8 = [v6 components:96 fromDate:v5];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v8 = [currentCalendar components:96 fromDate:dateCopy];
 
-  v7 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v7 setTime:v8];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setTime:v8];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)presentOffsetPickerViewControllerForEvent:(unint64_t)a3
+- (void)presentOffsetPickerViewControllerForEvent:(unint64_t)event
 {
   v5 = [WFTimeOffsetPickerViewController alloc];
-  v6 = [(WFTriggerConfigurationViewController *)self trigger];
-  v8 = -[WFTimeOffsetPickerViewController initWithTimeTriggerEvent:timeOffset:](v5, "initWithTimeTriggerEvent:timeOffset:", a3, [v6 timeOffset]);
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  v8 = -[WFTimeOffsetPickerViewController initWithTimeTriggerEvent:timeOffset:](v5, "initWithTimeTriggerEvent:timeOffset:", event, [trigger timeOffset]);
 
   [(WFTimeOffsetPickerViewController *)v8 setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
   [(WFTimeOfDayTriggerConfigurationViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v28 = a4;
-  [a3 deselectRowAtIndexPath:v28 animated:1];
-  v6 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v28 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v7 = [v6 objectForKeyedSubscript:@"identifier"];
   v8 = [v7 isEqual:@"timeSection"];
 
@@ -312,54 +312,54 @@ uint64_t __98__WFTimeOfDayTriggerConfigurationViewController_dayOfWeekPickerCell
       goto LABEL_18;
     }
 
-    if ([v28 row])
+    if ([pathCopy row])
     {
-      if ([v28 row] == 1)
+      if ([pathCopy row] == 1)
       {
-        v12 = [(WFTriggerConfigurationViewController *)self trigger];
-        [v12 setMode:0];
+        trigger = [(WFTriggerConfigurationViewController *)self trigger];
+        [trigger setMode:0];
 
-        v13 = [(WFTriggerConfigurationViewController *)self trigger];
-        [v13 setDayOfMonth:0];
+        trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+        [trigger2 setDayOfMonth:0];
 
-        v14 = [(WFTimeOfDayTriggerConfigurationViewController *)self allDaysOfWeek];
-        v15 = [(WFTriggerConfigurationViewController *)self trigger];
-        [v15 setDaysOfWeek:v14];
+        allDaysOfWeek = [(WFTimeOfDayTriggerConfigurationViewController *)self allDaysOfWeek];
+        trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+        [trigger3 setDaysOfWeek:allDaysOfWeek];
         v16 = 1;
       }
 
       else
       {
-        if ([v28 row] != 2)
+        if ([pathCopy row] != 2)
         {
 LABEL_17:
-          v26 = [(WFTriggerConfigurationViewController *)self tableView];
-          [v26 reloadData];
+          tableView = [(WFTriggerConfigurationViewController *)self tableView];
+          [tableView reloadData];
 
           goto LABEL_18;
         }
 
-        v24 = [(WFTriggerConfigurationViewController *)self trigger];
-        [v24 setMode:1];
+        trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+        [trigger4 setMode:1];
 
-        v25 = [(WFTriggerConfigurationViewController *)self trigger];
-        [v25 setDaysOfWeek:MEMORY[0x277CBEBF8]];
+        trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+        [trigger5 setDaysOfWeek:MEMORY[0x277CBEBF8]];
 
-        v14 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentDayOfMonth];
-        v15 = [(WFTriggerConfigurationViewController *)self trigger];
-        [v15 setDayOfMonth:v14];
+        allDaysOfWeek = [(WFTimeOfDayTriggerConfigurationViewController *)self currentDayOfMonth];
+        trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+        [trigger3 setDayOfMonth:allDaysOfWeek];
         v16 = 2;
       }
     }
 
     else
     {
-      v23 = [(WFTriggerConfigurationViewController *)self trigger];
-      [v23 setMode:0];
+      trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+      [trigger6 setMode:0];
 
-      v14 = [(WFTimeOfDayTriggerConfigurationViewController *)self allDaysOfWeek];
-      v15 = [(WFTriggerConfigurationViewController *)self trigger];
-      [v15 setDaysOfWeek:v14];
+      allDaysOfWeek = [(WFTimeOfDayTriggerConfigurationViewController *)self allDaysOfWeek];
+      trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+      [trigger3 setDaysOfWeek:allDaysOfWeek];
       v16 = 0;
     }
 
@@ -367,12 +367,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ([v28 row] > 2)
+  if ([pathCopy row] > 2)
   {
     goto LABEL_18;
   }
 
-  v9 = [v28 row];
+  v9 = [pathCopy row];
   if (v9 < 2)
   {
     [(WFTimeOfDayTriggerConfigurationViewController *)self presentOffsetPickerViewControllerForEvent:v9];
@@ -381,18 +381,18 @@ LABEL_17:
 
   if (v9 == 2)
   {
-    v17 = [(WFTriggerConfigurationViewController *)self trigger];
-    v18 = [v17 event];
+    trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+    event = [trigger7 event];
 
-    v19 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v19 setEvent:2];
+    trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger8 setEvent:2];
 
-    if (v18 != 2)
+    if (event != 2)
     {
-      v20 = [(WFTriggerConfigurationViewController *)self trigger];
-      v21 = [v20 time];
+      trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+      time = [trigger9 time];
 
-      if (!v21)
+      if (!time)
       {
         v22 = objc_opt_new();
         [(WFTimeOfDayTriggerConfigurationViewController *)self updateTriggerTimeFromDate:v22];
@@ -403,52 +403,52 @@ LABEL_17:
   }
 
 LABEL_18:
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v28 withSectionInfo:v6];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v6];
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
-  v27 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v27 reloadData];
+  tableView2 = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(WFTimeOfDayTriggerConfigurationViewController *)self timeOfDayInterval];
-  v7 = 0;
-  if (a4 == 3 && v6 == 2)
+  timeOfDayInterval = [(WFTimeOfDayTriggerConfigurationViewController *)self timeOfDayInterval];
+  calendarFooterText = 0;
+  if (section == 3 && timeOfDayInterval == 2)
   {
-    v7 = [(WFTimeOfDayTriggerConfigurationViewController *)self calendarFooterText];
+    calendarFooterText = [(WFTimeOfDayTriggerConfigurationViewController *)self calendarFooterText];
   }
 
-  return v7;
+  return calendarFooterText;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFTimeOfDayTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFTimeOfDayTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)subtitleForIndexPath:(id)a3
+- (id)subtitleForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v4 section]);
+  pathCopy = path;
+  v5 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"timeSection"];
 
-  if (!v7 || [v4 row] > 1)
+  if (!v7 || [pathCopy row] > 1)
   {
     goto LABEL_5;
   }
 
-  v8 = [v4 row];
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  if (v8 == [v9 event])
+  v8 = [pathCopy row];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  if (v8 == [trigger event])
   {
-    v10 = [(WFTriggerConfigurationViewController *)self trigger];
-    v11 = [v10 timeOffset];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    timeOffset = [trigger2 timeOffset];
 
-    if (v11 == 7)
+    if (timeOffset == 7)
     {
 LABEL_5:
       v12 = 0;
@@ -456,10 +456,10 @@ LABEL_5:
     }
 
     v14 = MEMORY[0x277D7C958];
-    v9 = [(WFTriggerConfigurationViewController *)self trigger];
-    v15 = [v9 event];
-    v16 = [(WFTriggerConfigurationViewController *)self trigger];
-    v12 = [v14 localizedSunriseSunsetDescriptionForTriggerEvent:v15 timeOffset:{objc_msgSend(v16, "timeOffset")}];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    event = [trigger event];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    v12 = [v14 localizedSunriseSunsetDescriptionForTriggerEvent:event timeOffset:{objc_msgSend(trigger3, "timeOffset")}];
   }
 
   else
@@ -472,16 +472,16 @@ LABEL_6:
   return v12;
 }
 
-- (id)titleForIndexPath:(id)a3
+- (id)titleForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v4 section]);
+  pathCopy = path;
+  v5 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"timeSection"];
 
   if (v7)
   {
-    v8 = [v4 row];
+    v8 = [pathCopy row];
     if (v8 < 3)
     {
       v9 = off_279EE8EA0;
@@ -498,7 +498,7 @@ LABEL_7:
 
     if (v11)
     {
-      v8 = [v4 row];
+      v8 = [pathCopy row];
       if (v8 < 3)
       {
         v9 = off_279EE8EB8;
@@ -513,13 +513,13 @@ LABEL_9:
   return v12;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[WFTimeOfDayTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9 forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
   v12 = [v11 isEqual:@"triggerDescription"];
@@ -538,66 +538,66 @@ LABEL_3:
 
   if (v17)
   {
-    v18 = [(WFTimeOfDayTriggerConfigurationViewController *)self titleForIndexPath:v7];
-    v19 = [v10 textLabel];
-    [v19 setText:v18];
+    v18 = [(WFTimeOfDayTriggerConfigurationViewController *)self titleForIndexPath:pathCopy];
+    textLabel = [v10 textLabel];
+    [textLabel setText:v18];
 
-    v20 = [(WFTimeOfDayTriggerConfigurationViewController *)self subtitleForIndexPath:v7];
-    v21 = [v10 detailTextLabel];
-    [v21 setText:v20];
+    v20 = [(WFTimeOfDayTriggerConfigurationViewController *)self subtitleForIndexPath:pathCopy];
+    detailTextLabel = [v10 detailTextLabel];
+    [detailTextLabel setText:v20];
 
-    v22 = [(WFTriggerConfigurationViewController *)self trigger];
-    v23 = [v22 event];
-    v24 = [v7 row];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    event = [trigger event];
+    v24 = [pathCopy row];
 
-    if (v23 == v24)
+    if (event == v24)
     {
       [v10 setAccessoryType:3];
     }
 
-    if ([v7 row] != 3)
+    if ([pathCopy row] != 3)
     {
       goto LABEL_3;
     }
 
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    v64 = v6;
-    v13 = [v6 dequeueReusableCellWithIdentifier:v26 forIndexPath:v7];
+    v64 = viewCopy;
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v26 forIndexPath:pathCopy];
 
-    v27 = [v13 datePicker];
-    [v27 setDatePickerMode:0];
+    datePicker = [v13 datePicker];
+    [datePicker setDatePickerMode:0];
 
-    v28 = [v13 datePicker];
-    [v28 addTarget:self action:sel_timePickerUpdated_ forControlEvents:4096];
+    datePicker2 = [v13 datePicker];
+    [datePicker2 addTarget:self action:sel_timePickerUpdated_ forControlEvents:4096];
 
-    v29 = [(WFTriggerConfigurationViewController *)self trigger];
-    v30 = [v29 time];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    time = [trigger2 time];
 
-    if (v30)
+    if (time)
     {
-      v60 = [MEMORY[0x277CBEA80] currentCalendar];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
       v61 = objc_opt_new();
-      v62 = [(WFTriggerConfigurationViewController *)self trigger];
-      v31 = [v62 time];
-      v32 = [v60 nextDateAfterDate:v61 matchingComponents:v31 options:5120];
+      trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+      time2 = [trigger3 time];
+      v32 = [currentCalendar nextDateAfterDate:v61 matchingComponents:time2 options:5120];
       [v13 datePicker];
       v33 = v9;
-      v35 = v34 = v30;
+      v35 = v34 = time;
       [v35 setDate:v32];
 
-      v30 = v34;
+      time = v34;
       v9 = v33;
 
-      v36 = v60;
-      v37 = v61;
+      v36 = currentCalendar;
+      datePicker3 = v61;
     }
 
     else
     {
       v36 = objc_opt_new();
-      v37 = [v13 datePicker];
-      [v37 setDate:v36];
+      datePicker3 = [v13 datePicker];
+      [datePicker3 setDate:v36];
     }
   }
 
@@ -608,15 +608,15 @@ LABEL_3:
 
     if (v39)
     {
-      v40 = [(WFTimeOfDayTriggerConfigurationViewController *)self titleForIndexPath:v7];
-      v41 = [v10 textLabel];
-      [v41 setText:v40];
+      v40 = [(WFTimeOfDayTriggerConfigurationViewController *)self titleForIndexPath:pathCopy];
+      textLabel2 = [v10 textLabel];
+      [textLabel2 setText:v40];
 
-      v42 = [(WFTimeOfDayTriggerConfigurationViewController *)self subtitleForIndexPath:v7];
-      v43 = [v10 detailTextLabel];
-      [v43 setText:v42];
+      v42 = [(WFTimeOfDayTriggerConfigurationViewController *)self subtitleForIndexPath:pathCopy];
+      detailTextLabel2 = [v10 detailTextLabel];
+      [detailTextLabel2 setText:v42];
 
-      if (![v7 row] && !-[WFTimeOfDayTriggerConfigurationViewController timeOfDayInterval](self, "timeOfDayInterval") || objc_msgSend(v7, "row") == 1 && -[WFTimeOfDayTriggerConfigurationViewController timeOfDayInterval](self, "timeOfDayInterval") == 1 || objc_msgSend(v7, "row") == 2 && -[WFTimeOfDayTriggerConfigurationViewController timeOfDayInterval](self, "timeOfDayInterval") == 2)
+      if (![pathCopy row] && !-[WFTimeOfDayTriggerConfigurationViewController timeOfDayInterval](self, "timeOfDayInterval") || objc_msgSend(pathCopy, "row") == 1 && -[WFTimeOfDayTriggerConfigurationViewController timeOfDayInterval](self, "timeOfDayInterval") == 1 || objc_msgSend(pathCopy, "row") == 2 && -[WFTimeOfDayTriggerConfigurationViewController timeOfDayInterval](self, "timeOfDayInterval") == 2)
       {
         [v10 setAccessoryType:3];
       }
@@ -651,8 +651,8 @@ LABEL_3:
 
       v50 = v46;
 
-      v51 = [(WFTimeOfDayTriggerConfigurationViewController *)self dateComponentsFromTriggerDays];
-      [v50 setSelectedRecurrences:v51];
+      dateComponentsFromTriggerDays = [(WFTimeOfDayTriggerConfigurationViewController *)self dateComponentsFromTriggerDays];
+      [v50 setSelectedRecurrences:dateComponentsFromTriggerDays];
 
       [v50 setDelegate:self];
       goto LABEL_4;
@@ -667,7 +667,7 @@ LABEL_3:
     }
 
     v13 = v10;
-    v64 = v6;
+    v64 = viewCopy;
     if (v13)
     {
       objc_opt_class();
@@ -689,33 +689,33 @@ LABEL_3:
 
     v52 = v49;
 
-    v53 = [v52 datePicker];
-    [v53 setDatePickerMode:1];
+    datePicker4 = [v52 datePicker];
+    [datePicker4 setDatePickerMode:1];
 
     v54 = MEMORY[0x277D7C960];
-    v63 = [(WFTriggerConfigurationViewController *)self trigger];
-    v55 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunriseTime];
-    v56 = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunsetTime];
-    v57 = [v54 nextFireDateFromNowWithTrigger:v63 currentSunriseTime:v55 currentSunsetTime:v56];
-    v58 = [v52 datePicker];
-    [v58 setDate:v57];
+    trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+    currentSunriseTime = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunriseTime];
+    currentSunsetTime = [(WFTimeOfDayTriggerConfigurationViewController *)self currentSunsetTime];
+    v57 = [v54 nextFireDateFromNowWithTrigger:trigger4 currentSunriseTime:currentSunriseTime currentSunsetTime:currentSunsetTime];
+    datePicker5 = [v52 datePicker];
+    [datePicker5 setDate:v57];
 
-    v59 = [v52 datePicker];
-    [v59 addTarget:self action:sel_timePickerUpdated_ forControlEvents:4096];
+    datePicker6 = [v52 datePicker];
+    [datePicker6 addTarget:self action:sel_timePickerUpdated_ forControlEvents:4096];
 
     [v52 setSelectionStyle:0];
   }
 
-  v6 = v64;
+  viewCopy = v64;
 LABEL_4:
-  v14 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v13 indexPath:v7 sectionInfo:v8, v60];
+  v14 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v13 indexPath:pathCopy sectionInfo:v8, currentCalendar];
 
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFTimeOfDayTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFTimeOfDayTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"triggerDescription"];
 
@@ -773,42 +773,42 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
 - (BOOL)showingPicker
 {
-  v2 = [(WFTriggerConfigurationViewController *)self trigger];
-  v3 = [v2 event] == 2;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  v3 = [trigger event] == 2;
 
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WFTimeOfDayTriggerConfigurationViewController;
-  [(WFTimeOfDayTriggerConfigurationViewController *)&v7 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFTimeOfDayTriggerConfigurationViewController *)&v7 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_dismissKeyboard];
   [v5 setCancelsTouchesInView:0];
-  v6 = [(WFTimeOfDayTriggerConfigurationViewController *)self view];
-  [v6 addGestureRecognizer:v5];
+  view = [(WFTimeOfDayTriggerConfigurationViewController *)self view];
+  [view addGestureRecognizer:v5];
 }
 
 - (id)customSections
@@ -888,30 +888,30 @@ LABEL_6:
   return v4;
 }
 
-- (WFTimeOfDayTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFTimeOfDayTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFTimeOfDayTriggerConfigurationViewController.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFTimeOfDayTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTimeOfDayTriggerConfigurationViewController.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFTimeOfDayTrigger class]]"}];
   }
 
   v15.receiver = self;
   v15.super_class = WFTimeOfDayTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v15 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v15 initWithTrigger:triggerCopy mode:mode];
   if (v8)
   {
-    if ([v7 mode])
+    if ([triggerCopy mode])
     {
       v9 = 2;
     }
 
     else
     {
-      v10 = [v7 daysOfWeek];
-      v11 = [v10 count];
+      daysOfWeek = [triggerCopy daysOfWeek];
+      v11 = [daysOfWeek count];
 
       if (v11 == 7)
       {

@@ -1,36 +1,36 @@
 @interface MOSuggestedEventManager
-- (MOSuggestedEventManager)initWithPortraitStore:(id)a3 momentStore:(id)a4;
-- (MOSuggestedEventManager)initWithUniverse:(id)a3;
-- (id)createEventFromSuggestedEvent:(id)a3;
-- (id)rehydratedSuggestedEvents:(id)a3;
-- (void)_enrichSuggestedEventsWithEventKit:(id)a3;
-- (void)_fetchTripsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_removeSuggestedEventsDeletedAtSource:(id)a3 handler:(id)a4;
-- (void)fetchAndSaveSuggestedEventBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)fetchSuggestedEventBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)removeSuggestedEventsDeletedAtSource:(id)a3 handler:(id)a4;
-- (void)saveSuggestedEvents:(id)a3 handler:(id)a4;
+- (MOSuggestedEventManager)initWithPortraitStore:(id)store momentStore:(id)momentStore;
+- (MOSuggestedEventManager)initWithUniverse:(id)universe;
+- (id)createEventFromSuggestedEvent:(id)event;
+- (id)rehydratedSuggestedEvents:(id)events;
+- (void)_enrichSuggestedEventsWithEventKit:(id)kit;
+- (void)_fetchTripsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_removeSuggestedEventsDeletedAtSource:(id)source handler:(id)handler;
+- (void)fetchAndSaveSuggestedEventBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)fetchSuggestedEventBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)removeSuggestedEventsDeletedAtSource:(id)source handler:(id)handler;
+- (void)saveSuggestedEvents:(id)events handler:(id)handler;
 @end
 
 @implementation MOSuggestedEventManager
 
-- (MOSuggestedEventManager)initWithUniverse:(id)a3
+- (MOSuggestedEventManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_alloc_init(PPEventStore);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   v9 = [(MOSuggestedEventManager *)self initWithPortraitStore:v5 momentStore:v8];
   return v9;
 }
 
-- (MOSuggestedEventManager)initWithPortraitStore:(id)a3 momentStore:(id)a4
+- (MOSuggestedEventManager)initWithPortraitStore:(id)store momentStore:(id)momentStore
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  storeCopy = store;
+  momentStoreCopy = momentStore;
+  if (!momentStoreCopy)
   {
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -44,10 +44,10 @@
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!storeCopy)
   {
 LABEL_9:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -61,35 +61,35 @@ LABEL_9:
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_portraitStore, a3);
-    objc_storeStrong(&v10->_momentStore, a4);
+    objc_storeStrong(&v10->_portraitStore, store);
+    objc_storeStrong(&v10->_momentStore, momentStore);
   }
 
   self = v10;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)_fetchTripsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchTripsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOSuggestedEventManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MOSuggestedEventManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __81__MOSuggestedEventManager__fetchTripsBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v15[3] = &unk_1003361C0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
 void __81__MOSuggestedEventManager__fetchTripsBetweenStartDate_EndDate_CompletionHandler___block_invoke(void *a1)
@@ -173,24 +173,24 @@ void *__81__MOSuggestedEventManager__fetchTripsBetweenStartDate_EndDate_Completi
   return result;
 }
 
-- (void)fetchSuggestedEventBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)fetchSuggestedEventBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOSuggestedEventManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MOSuggestedEventManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v15[3] = &unk_1003361C0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
 void __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_CompletionHandler___block_invoke(void *a1)
@@ -273,10 +273,10 @@ void __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_C
   }
 }
 
-- (id)createEventFromSuggestedEvent:(id)a3
+- (id)createEventFromSuggestedEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 category] == 12)
+  eventCopy = event;
+  if ([eventCopy category] == 12)
   {
     v4 = 12;
   }
@@ -288,50 +288,50 @@ void __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_C
 
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v3 startDate];
-  v8 = [v3 endDate];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:3 category:v4];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v9 provider:3 category:v4];
 
-  v11 = [v3 eventIdentifier];
+  eventIdentifier = [eventCopy eventIdentifier];
 
-  if (v11)
+  if (eventIdentifier)
   {
-    v12 = [v3 eventIdentifier];
-    [(MOEvent *)v10 setSuggestedEventIdentifier:v12];
+    eventIdentifier2 = [eventCopy eventIdentifier];
+    [(MOEvent *)v10 setSuggestedEventIdentifier:eventIdentifier2];
 
-    v13 = [v3 eventIdentifier];
-    [(MOEvent *)v10 setIdentifierFromProvider:v13];
+    eventIdentifier3 = [eventCopy eventIdentifier];
+    [(MOEvent *)v10 setIdentifierFromProvider:eventIdentifier3];
 
     v14 = _mo_log_facility_get_os_log(&MOLogFacilitySuggestedEvent);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(MOEvent *)v10 suggestedEventIdentifier];
+      suggestedEventIdentifier = [(MOEvent *)v10 suggestedEventIdentifier];
       v19 = 138412290;
-      v20 = v15;
+      v20 = suggestedEventIdentifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "has eventIdentifier, %@", &v19, 0xCu);
     }
 
-    v16 = [v3 endDate];
-    v17 = [v16 dateByAddingTimeInterval:2419200.0];
+    endDate2 = [eventCopy endDate];
+    v17 = [endDate2 dateByAddingTimeInterval:2419200.0];
     [(MOEvent *)v10 setExpirationDate:v17];
 
-    v11 = v10;
+    eventIdentifier = v10;
   }
 
-  return v11;
+  return eventIdentifier;
 }
 
-- (void)saveSuggestedEvents:(id)a3 handler:(id)a4
+- (void)saveSuggestedEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v8 = +[NSDate distantFuture];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
@@ -346,14 +346,14 @@ void __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_C
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 startDate];
-        v15 = [v8 isAfterDate:v14];
+        startDate = [v13 startDate];
+        v15 = [v8 isAfterDate:startDate];
 
         if (v15)
         {
-          v16 = [v13 startDate];
+          startDate2 = [v13 startDate];
 
-          v8 = v16;
+          v8 = startDate2;
         }
       }
 
@@ -369,21 +369,21 @@ void __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_C
   v29[3] = __Block_byref_object_copy__12;
   v29[4] = __Block_byref_object_dispose__12;
   v30 = 0;
-  v17 = [(MOSuggestedEventManager *)self momentStore];
+  momentStore = [(MOSuggestedEventManager *)self momentStore];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __55__MOSuggestedEventManager_saveSuggestedEvents_handler___block_invoke;
   v28[3] = &unk_100337E98;
   v28[4] = v29;
-  [v17 fetchEventsWithStartDateAfter:v8 Category:11 CompletionHandler:v28];
+  [momentStore fetchEventsWithStartDateAfter:v8 Category:11 CompletionHandler:v28];
 
-  v18 = [(MOSuggestedEventManager *)self momentStore];
+  momentStore2 = [(MOSuggestedEventManager *)self momentStore];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __55__MOSuggestedEventManager_saveSuggestedEvents_handler___block_invoke_3;
   v27[3] = &unk_100337E98;
   v27[4] = v29;
-  [v18 fetchEventsWithStartDateAfter:v8 Category:12 CompletionHandler:v27];
+  [momentStore2 fetchEventsWithStartDateAfter:v8 Category:12 CompletionHandler:v27];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -392,16 +392,16 @@ void __89__MOSuggestedEventManager_fetchSuggestedEventBetweenStartDate_EndDate_C
   v26[4] = self;
   v26[5] = v29;
   v19 = [v9 _pas_mappedArrayWithTransform:v26];
-  v20 = [(MOSuggestedEventManager *)self momentStore];
+  momentStore3 = [(MOSuggestedEventManager *)self momentStore];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __55__MOSuggestedEventManager_saveSuggestedEvents_handler___block_invoke_6;
   v23[3] = &unk_1003377B8;
   v21 = v19;
   v24 = v21;
-  v22 = v7;
+  v22 = handlerCopy;
   v25 = v22;
-  [v20 storeEvents:v21 CompletionHandler:v23];
+  [momentStore3 storeEvents:v21 CompletionHandler:v23];
 
   _Block_object_dispose(v29, 8);
 }
@@ -471,11 +471,11 @@ void __55__MOSuggestedEventManager_saveSuggestedEvents_handler___block_invoke_6(
   }
 }
 
-- (void)fetchAndSaveSuggestedEventBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)fetchAndSaveSuggestedEventBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -487,16 +487,16 @@ void __55__MOSuggestedEventManager_saveSuggestedEvents_handler___block_invoke_6(
   v15[2] = __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDate_EndDate_handler___block_invoke;
   v15[3] = &unk_100337F08;
   v15[4] = v16;
-  [(MOSuggestedEventManager *)self _fetchTripsBetweenStartDate:v8 EndDate:v9 CompletionHandler:v15];
+  [(MOSuggestedEventManager *)self _fetchTripsBetweenStartDate:dateCopy EndDate:endDateCopy CompletionHandler:v15];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDate_EndDate_handler___block_invoke_2;
   v12[3] = &unk_100337F58;
-  v11 = v10;
+  v11 = handlerCopy;
   v12[4] = self;
   v13 = v11;
   v14 = v16;
-  [(MOSuggestedEventManager *)self fetchSuggestedEventBetweenStartDate:v8 EndDate:v9 CompletionHandler:v12];
+  [(MOSuggestedEventManager *)self fetchSuggestedEventBetweenStartDate:dateCopy EndDate:endDateCopy CompletionHandler:v12];
 
   _Block_object_dispose(v16, 8);
 }
@@ -626,9 +626,9 @@ uint64_t __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDat
   return result;
 }
 
-- (void)_enrichSuggestedEventsWithEventKit:(id)a3
+- (void)_enrichSuggestedEventsWithEventKit:(id)kit
 {
-  v4 = a3;
+  kitCopy = kit;
   if (!self->_ekStore)
   {
     v5 = [[EKEventStore alloc] initWithEKOptions:128];
@@ -647,7 +647,7 @@ uint64_t __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDat
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v4;
+  v9 = kitCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -664,8 +664,8 @@ uint64_t __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDat
 
         v14 = *(*(&v19 + 1) + 8 * i);
         v15 = self->_ekStore;
-        v16 = [v14 suggestedEventIdentifier];
-        v17 = [(EKEventStore *)v15 eventWithIdentifier:v16];
+        suggestedEventIdentifier = [v14 suggestedEventIdentifier];
+        v17 = [(EKEventStore *)v15 eventWithIdentifier:suggestedEventIdentifier];
 
         v18 = [[PPEvent alloc] initWithEKEvent:v17 calendarInternPool:self->_calendarInternPool];
         [v14 setSuggestedEvent:v18];
@@ -678,24 +678,24 @@ uint64_t __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDat
   }
 }
 
-- (id)rehydratedSuggestedEvents:(id)a3
+- (id)rehydratedSuggestedEvents:(id)events
 {
-  v4 = a3;
-  v5 = [v4 getDurationOfMOEventArray];
+  eventsCopy = events;
+  getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__12;
   v17 = __Block_byref_object_dispose__12;
   v18 = 0;
-  v6 = [v5 startDate];
-  v7 = [v5 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __53__MOSuggestedEventManager_rehydratedSuggestedEvents___block_invoke;
   v12[3] = &unk_100337E98;
   v12[4] = &v13;
-  [(MOSuggestedEventManager *)self fetchSuggestedEventBetweenStartDate:v6 EndDate:v7 CompletionHandler:v12];
+  [(MOSuggestedEventManager *)self fetchSuggestedEventBetweenStartDate:startDate EndDate:endDate CompletionHandler:v12];
 
   [(MOSuggestedEventManager *)self waitForQueueEmpty];
   if (v14[5])
@@ -705,7 +705,7 @@ uint64_t __86__MOSuggestedEventManager_fetchAndSaveSuggestedEventBetweenStartDat
     v11[2] = __53__MOSuggestedEventManager_rehydratedSuggestedEvents___block_invoke_134;
     v11[3] = &unk_100337F80;
     v11[4] = &v13;
-    v8 = [v4 _pas_mappedArrayWithTransform:v11];
+    v8 = [eventsCopy _pas_mappedArrayWithTransform:v11];
     [(MOSuggestedEventManager *)self _enrichSuggestedEventsWithEventKit:v8];
   }
 
@@ -800,15 +800,15 @@ id __53__MOSuggestedEventManager_rehydratedSuggestedEvents___block_invoke_134(ui
   return v7;
 }
 
-- (void)removeSuggestedEventsDeletedAtSource:(id)a3 handler:(id)a4
+- (void)removeSuggestedEventsDeletedAtSource:(id)source handler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __72__MOSuggestedEventManager_removeSuggestedEventsDeletedAtSource_handler___block_invoke;
   v7[3] = &unk_100336198;
-  v8 = a4;
-  v6 = v8;
-  [(MOSuggestedEventManager *)self _removeSuggestedEventsDeletedAtSource:a3 handler:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [(MOSuggestedEventManager *)self _removeSuggestedEventsDeletedAtSource:source handler:v7];
   [(MOSuggestedEventManager *)self waitForQueueEmpty];
 }
 
@@ -823,25 +823,25 @@ uint64_t __72__MOSuggestedEventManager_removeSuggestedEventsDeletedAtSource_hand
   return result;
 }
 
-- (void)_removeSuggestedEventsDeletedAtSource:(id)a3 handler:(id)a4
+- (void)_removeSuggestedEventsDeletedAtSource:(id)source handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getDurationOfMOEventArray];
+  sourceCopy = source;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [sourceCopy getDurationOfMOEventArray];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__12;
   v26 = __Block_byref_object_dispose__12;
   v27 = 0;
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = __73__MOSuggestedEventManager__removeSuggestedEventsDeletedAtSource_handler___block_invoke;
   v21[3] = &unk_100337E98;
   v21[4] = &v22;
-  [(MOSuggestedEventManager *)self fetchSuggestedEventBetweenStartDate:v9 EndDate:v10 CompletionHandler:v21];
+  [(MOSuggestedEventManager *)self fetchSuggestedEventBetweenStartDate:startDate EndDate:endDate CompletionHandler:v21];
 
   [(MOSuggestedEventManager *)self waitForQueueEmpty];
   if (v23[5])
@@ -851,7 +851,7 @@ uint64_t __72__MOSuggestedEventManager_removeSuggestedEventsDeletedAtSource_hand
     v20[2] = __73__MOSuggestedEventManager__removeSuggestedEventsDeletedAtSource_handler___block_invoke_135;
     v20[3] = &unk_100337F80;
     v20[4] = &v22;
-    v11 = [v6 _pas_mappedArrayWithTransform:v20];
+    v11 = [sourceCopy _pas_mappedArrayWithTransform:v20];
     v12 = _mo_log_facility_get_os_log(&MOLogFacilitySuggestedEvent);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -861,15 +861,15 @@ uint64_t __72__MOSuggestedEventManager_removeSuggestedEventsDeletedAtSource_hand
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%ld source suggested event(s) not found, therefore deleting them.", buf, 0xCu);
     }
 
-    v14 = [(MOSuggestedEventManager *)self momentStore];
+    momentStore = [(MOSuggestedEventManager *)self momentStore];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __73__MOSuggestedEventManager__removeSuggestedEventsDeletedAtSource_handler___block_invoke_136;
     v17[3] = &unk_1003377B8;
     v15 = v11;
     v18 = v15;
-    v19 = v7;
-    [v14 removeEvents:v15 CompletionHandler:v17];
+    v19 = handlerCopy;
+    [momentStore removeEvents:v15 CompletionHandler:v17];
   }
 
   else
@@ -880,9 +880,9 @@ uint64_t __72__MOSuggestedEventManager_removeSuggestedEventsDeletedAtSource_hand
       [MOSuggestedEventManager _removeSuggestedEventsDeletedAtSource:handler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, &__NSDictionary0__struct);
+      (*(handlerCopy + 2))(handlerCopy, 0, &__NSDictionary0__struct);
     }
   }
 

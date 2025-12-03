@@ -1,12 +1,12 @@
 @interface CRAgent
-+ (BOOL)clientMayConnect:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (BOOL)clientMayConnect:(id)connect;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CRAgent)init;
-- (id)clientForConnection:(id)a3;
-- (id)daemonLibraryForClient:(id)a3;
-- (void)_adjustLibraryStoreSyncBehaviorWithLockedState:(BOOL)a3;
-- (void)_executeAfterFirstUnlock:(id)a3;
-- (void)_lockStateChanged:(id)a3;
+- (id)clientForConnection:(id)connection;
+- (id)daemonLibraryForClient:(id)client;
+- (void)_adjustLibraryStoreSyncBehaviorWithLockedState:(BOOL)state;
+- (void)_executeAfterFirstUnlock:(id)unlock;
+- (void)_lockStateChanged:(id)changed;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -42,7 +42,7 @@
   [(CRAgent *)&v3 dealloc];
 }
 
-- (id)clientForConnection:(id)a3
+- (id)clientForConnection:(id)connection
 {
   v9 = 0;
   v10 = &v9;
@@ -59,21 +59,21 @@
   v8[5] = &v9;
   dispatch_sync(startupQueue, v8);
   v5 = [CRDClient alloc];
-  v6 = [(CRDClient *)v5 initWithConnection:a3 library:v10[5]];
+  v6 = [(CRDClient *)v5 initWithConnection:connection library:v10[5]];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (id)daemonLibraryForClient:(id)a3
+- (id)daemonLibraryForClient:(id)client
 {
-  v3 = [[CRDRecentContactsLibrary alloc] initWithClient:a3];
+  v3 = [[CRDRecentContactsLibrary alloc] initWithClient:client];
 
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = [(CRAgent *)self clientForConnection:a4];
+  v6 = [(CRAgent *)self clientForConnection:connection];
   if ([objc_opt_class() clientMayConnect:v6])
   {
     *&buf = 0;
@@ -92,10 +92,10 @@
     if (v8)
     {
       v9 = [CRWeakReference weakReferenceWithObject:v6];
-      v10 = [CRWeakReference weakReferenceWithObject:a4];
+      v10 = [CRWeakReference weakReferenceWithObject:connection];
       v11 = [(CRAgent *)self daemonLibraryForClient:v6];
-      [a4 setExportedInterface:{+[CRDRecentContactsLibraryInterface XPCInterface](CRDRecentContactsLibraryInterface, "XPCInterface")}];
-      [a4 setExportedObject:v11];
+      [connection setExportedInterface:{+[CRDRecentContactsLibraryInterface XPCInterface](CRDRecentContactsLibraryInterface, "XPCInterface")}];
+      [connection setExportedObject:v11];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100003EFC;
@@ -103,7 +103,7 @@
       v16[4] = v9;
       v16[5] = v10;
       v16[6] = self;
-      [a4 setInvalidationHandler:v16];
+      [connection setInvalidationHandler:v16];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100004004;
@@ -111,10 +111,10 @@
       v15[4] = v9;
       v15[5] = v10;
       v15[6] = self;
-      [a4 setInterruptionHandler:v15];
+      [connection setInterruptionHandler:v15];
       objc_sync_enter(self);
       [(NSMutableSet *)self->_clients addObject:v6];
-      [a4 resume];
+      [connection resume];
       objc_sync_exit(self);
     }
 
@@ -124,7 +124,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *v18 = 138543362;
-        v19 = a4;
+        connectionCopy = connection;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "dropping connection %{public}@ because library is not available (probable cause: device not unlocked after boot)", v18, 0xCu);
       }
     }
@@ -139,7 +139,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = a4;
+      *(&buf + 4) = connection;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "dropping unentitled connection %{public}@", &buf, 0xCu);
       return 0;
     }
@@ -148,20 +148,20 @@
   return v8;
 }
 
-+ (BOOL)clientMayConnect:(id)a3
++ (BOOL)clientMayConnect:(id)connect
 {
-  if ([a3 hasEntitlement:@"com.apple.private.corerecents"])
+  if ([connect hasEntitlement:@"com.apple.private.corerecents"])
   {
     return 1;
   }
 
-  return [a3 hasEntitlement:@"com.apple.private.contactsui"];
+  return [connect hasEntitlement:@"com.apple.private.contactsui"];
 }
 
-- (void)_adjustLibraryStoreSyncBehaviorWithLockedState:(BOOL)a3
+- (void)_adjustLibraryStoreSyncBehaviorWithLockedState:(BOOL)state
 {
   v4 = *&qword_100034068;
-  if (a3)
+  if (state)
   {
     v4 = 1.79769313e308;
   }
@@ -172,21 +172,21 @@
   [(_CRRecentsLibrary *)library synchronize];
 }
 
-- (void)_lockStateChanged:(id)a3
+- (void)_lockStateChanged:(id)changed
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(objc_msgSend(changed "userInfo")];
 
   [(CRAgent *)self _adjustLibraryStoreSyncBehaviorWithLockedState:v4];
 }
 
-- (void)_executeAfterFirstUnlock:(id)a3
+- (void)_executeAfterFirstUnlock:(id)unlock
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (off_100033FA0())
   {
     startupQueue = self->_startupQueue;
 
-    dispatch_async(startupQueue, a3);
+    dispatch_async(startupQueue, unlock);
   }
 
   else
@@ -198,7 +198,7 @@
     handler[2] = sub_100004374;
     handler[3] = &unk_10002CBA8;
     handler[4] = self;
-    handler[5] = a3;
+    handler[5] = unlock;
     v7 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &out_token, global_queue, handler);
     v8 = +[CRLogging log];
     v9 = v8;

@@ -2,16 +2,16 @@
 - (BOOL)isCustomLocationTrigger;
 - (BOOL)locationCanBeEdited;
 - (HFLocationEventBuilder)locationEventBuilder;
-- (void)setLocationEventBuilder:(id)a3;
+- (void)setLocationEventBuilder:(id)builder;
 @end
 
 @implementation HFEventBuilderLocationInterface
 
-- (void)setLocationEventBuilder:(id)a3
+- (void)setLocationEventBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   locationEventBuilder = self->_locationEventBuilder;
-  v6 = v4;
+  v6 = builderCopy;
   v12 = v6;
   if (locationEventBuilder == v6)
   {
@@ -33,11 +33,11 @@ LABEL_8:
   if ((v7 & 1) == 0)
   {
 LABEL_7:
-    v9 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    [v9 removeEventBuilder:self->_locationEventBuilder];
+    triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    [triggerBuilder removeEventBuilder:self->_locationEventBuilder];
 
-    v10 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    [v10 addEventBuilder:v12];
+    triggerBuilder2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    [triggerBuilder2 addEventBuilder:v12];
 
     v11 = v12;
     locationEventBuilder = self->_locationEventBuilder;
@@ -52,9 +52,9 @@ LABEL_9:
 {
   if (!self->_locationEventBuilder || (-[HFEventTriggerBuilderInterface triggerBuilder](self, "triggerBuilder"), v3 = objc_claimAutoreleasedReturnValue(), [v3 eventBuilders], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "containsObject:", self->_locationEventBuilder), v4, v3, (v5 & 1) == 0))
   {
-    v6 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    v7 = [v6 eventBuilders];
-    v8 = [v7 na_firstObjectPassingTest:&__block_literal_global_123_1];
+    triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    eventBuilders = [triggerBuilder eventBuilders];
+    v8 = [eventBuilders na_firstObjectPassingTest:&__block_literal_global_123_1];
     locationEventBuilder = self->_locationEventBuilder;
     self->_locationEventBuilder = v8;
   }
@@ -67,10 +67,10 @@ LABEL_9:
 - (BOOL)isCustomLocationTrigger
 {
   objc_opt_class();
-  v3 = [(HFEventBuilderLocationInterface *)self locationEventBuilder];
+  locationEventBuilder = [(HFEventBuilderLocationInterface *)self locationEventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = locationEventBuilder;
   }
 
   else
@@ -82,9 +82,9 @@ LABEL_9:
 
   if (v5)
   {
-    v6 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    v7 = [v6 home];
-    v8 = [v5 isRegionAtHome:v7] ^ 1;
+    triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    home = [triggerBuilder home];
+    v8 = [v5 isRegionAtHome:home] ^ 1;
   }
 
   else
@@ -97,10 +97,10 @@ LABEL_9:
 
 - (BOOL)locationCanBeEdited
 {
-  v2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v3 = [v2 isShortcutOwned];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  isShortcutOwned = [triggerBuilder isShortcutOwned];
 
-  return v3 ^ 1;
+  return isShortcutOwned ^ 1;
 }
 
 @end

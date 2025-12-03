@@ -8,7 +8,7 @@
 {
   v8.receiver = self;
   v8.super_class = UIDimmingViewAccessibility__MessageUI__UIKit;
-  v3 = [(UIDimmingViewAccessibility__MessageUI__UIKit *)&v8 passthroughViews];
+  passthroughViews = [(UIDimmingViewAccessibility__MessageUI__UIKit *)&v8 passthroughViews];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v4 = [(UIDimmingViewAccessibility__MessageUI__UIKit *)self safeValueForKey:@"superview"];
@@ -16,13 +16,13 @@
 
     if (v5)
     {
-      v6 = [v3 arrayByAddingObject:v5];
+      v6 = [passthroughViews arrayByAddingObject:v5];
 
-      v3 = v6;
+      passthroughViews = v6;
     }
   }
 
-  return v3;
+  return passthroughViews;
 }
 
 @end

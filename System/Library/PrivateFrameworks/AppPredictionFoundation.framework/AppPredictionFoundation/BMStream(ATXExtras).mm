@@ -10,18 +10,18 @@
 
 - (id)atx_DSLPublisher
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
-  v4 = [v3 isEqualToString:@"SpringBoard"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v4 = [processName isEqualToString:@"SpringBoard"];
 
   if (v4)
   {
-    [a1 DSLPublisher];
+    [self DSLPublisher];
   }
 
   else
   {
-    [a1 DSLPublisherWithUseCase:@"ProactiveAppPrediction"];
+    [self DSLPublisherWithUseCase:@"ProactiveAppPrediction"];
   }
   v5 = ;
 
@@ -36,12 +36,12 @@
     v5 = objc_alloc(MEMORY[0x277CBEAA8]);
     [v4 doubleValue];
     v6 = [v5 initWithTimeIntervalSinceReferenceDate:?];
-    v7 = [a1 atx_publisherFromStartDate:v6];
+    v7 = [self atx_publisherFromStartDate:v6];
   }
 
   else
   {
-    v7 = [a1 atx_publisherFromStartDate:0];
+    v7 = [self atx_publisherFromStartDate:0];
   }
 
   return v7;
@@ -73,7 +73,7 @@ LABEL_3:
       v18 = objc_alloc(MEMORY[0x277CBEAA8]);
       [v13 doubleValue];
       v19 = [v18 initWithTimeIntervalSinceReferenceDate:?];
-      v20 = [a1 atx_publisherWithStartDate:v17 endDate:v19 maxEvents:v14 lastN:v15 reversed:a7];
+      v20 = [self atx_publisherWithStartDate:v17 endDate:v19 maxEvents:v14 lastN:v15 reversed:a7];
 
       if (!v12)
       {
@@ -84,7 +84,7 @@ LABEL_3:
     }
   }
 
-  v20 = [a1 atx_publisherWithStartDate:v17 endDate:0 maxEvents:v14 lastN:v15 reversed:a7];
+  v20 = [self atx_publisherWithStartDate:v17 endDate:0 maxEvents:v14 lastN:v15 reversed:a7];
   if (v12)
   {
 LABEL_4:
@@ -102,30 +102,30 @@ LABEL_5:
   v14 = a5;
   v15 = a4;
   v16 = a3;
-  v17 = [v12 processInfo];
-  v18 = [v17 processName];
-  v19 = [v18 isEqualToString:@"SpringBoard"];
+  processInfo = [v12 processInfo];
+  processName = [processInfo processName];
+  v19 = [processName isEqualToString:@"SpringBoard"];
 
   if (v19)
   {
     v20 = objc_alloc(MEMORY[0x277CF1A50]);
-    v21 = [v14 integerValue];
+    integerValue = [v14 integerValue];
 
-    v22 = [v13 integerValue];
-    v23 = [v20 initWithStartDate:v16 endDate:v15 maxEvents:v21 lastN:v22 reversed:a7];
+    integerValue2 = [v13 integerValue];
+    v23 = [v20 initWithStartDate:v16 endDate:v15 maxEvents:integerValue lastN:integerValue2 reversed:a7];
 
-    [a1 publisherWithOptions:v23];
+    [self publisherWithOptions:v23];
   }
 
   else
   {
     v24 = objc_alloc(MEMORY[0x277CF1A50]);
-    v25 = [v14 integerValue];
+    integerValue3 = [v14 integerValue];
 
-    v26 = [v13 integerValue];
-    v23 = [v24 initWithStartDate:v16 endDate:v15 maxEvents:v25 lastN:v26 reversed:a7];
+    integerValue4 = [v13 integerValue];
+    v23 = [v24 initWithStartDate:v16 endDate:v15 maxEvents:integerValue3 lastN:integerValue4 reversed:a7];
 
-    [a1 publisherWithUseCase:@"ProactiveAppPrediction" options:v23];
+    [self publisherWithUseCase:@"ProactiveAppPrediction" options:v23];
   }
   v27 = ;
 
@@ -135,7 +135,7 @@ LABEL_5:
 - (id)atx_dateOfLastEvent
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_283988F18 lastN:&unk_283988F18 reversed:0];
+  v3 = [self atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_283988F18 lastN:&unk_283988F18 reversed:0];
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -146,7 +146,7 @@ LABEL_5:
   v8[1] = 3221225472;
   v8[2] = __42__BMStream_ATXExtras__atx_dateOfLastEvent__block_invoke;
   v8[3] = &unk_278590808;
-  v8[4] = a1;
+  v8[4] = self;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__BMStream_ATXExtras__atx_dateOfLastEvent__block_invoke_5;

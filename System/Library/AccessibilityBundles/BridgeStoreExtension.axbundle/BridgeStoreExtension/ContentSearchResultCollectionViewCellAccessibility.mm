@@ -8,26 +8,26 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ContentSearchResultCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 accessibilityLabel];
+  _axLockupView = [(ContentSearchResultCollectionViewCellAccessibility *)self _axLockupView];
+  accessibilityLabel = [_axLockupView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(ContentSearchResultCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 accessibilityTraits];
+  _axLockupView = [(ContentSearchResultCollectionViewCellAccessibility *)self _axLockupView];
+  accessibilityTraits = [_axLockupView accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(ContentSearchResultCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 _accessibilitySupplementaryFooterViews];
+  _axLockupView = [(ContentSearchResultCollectionViewCellAccessibility *)self _axLockupView];
+  _accessibilitySupplementaryFooterViews = [_axLockupView _accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface ClockSessionRefCounter
-- (ClockSessionRefCounter)initWithSession:(id)a3;
+- (ClockSessionRefCounter)initWithSession:(id)session;
 - (unint64_t)getRefTotal;
 @end
 
 @implementation ClockSessionRefCounter
 
-- (ClockSessionRefCounter)initWithSession:(id)a3
+- (ClockSessionRefCounter)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = ClockSessionRefCounter;
   v6 = [(ClockSessionRefCounter *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = +[NSMutableDictionary dictionary];
     refCntsByPid = v7->_refCntsByPid;
     v7->_refCntsByPid = v8;

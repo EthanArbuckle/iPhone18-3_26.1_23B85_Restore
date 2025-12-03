@@ -5,9 +5,9 @@
 - (id)axisLabels;
 - (id)axisSubLabels;
 - (void)invalidateCaches;
-- (void)setAxisSpacing:(id)a3;
-- (void)setRecoveryHeartRateReadings:(id)a3;
-- (void)setSubAxisSpacing:(id)a3;
+- (void)setAxisSpacing:(id)spacing;
+- (void)setRecoveryHeartRateReadings:(id)readings;
+- (void)setSubAxisSpacing:(id)spacing;
 @end
 
 @implementation CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (void)setRecoveryHeartRateReadings:(id)a3
+- (void)setRecoveryHeartRateReadings:(id)readings
 {
-  v4 = a3;
-  v5 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self minValue];
-  v6 = [_HKHeartRateRecoveryQueryUtility perMinuteWorkoutRecoveryHeartRateFromReadings:v4 workoutEndDate:v5];
+  readingsCopy = readings;
+  minValue = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self minValue];
+  v6 = [_HKHeartRateRecoveryQueryUtility perMinuteWorkoutRecoveryHeartRateFromReadings:readingsCopy workoutEndDate:minValue];
 
   recoveryHeartRateReadingsByMinute = self->_recoveryHeartRateReadingsByMinute;
   self->_recoveryHeartRateReadingsByMinute = v6;
@@ -40,20 +40,20 @@
   self->_cachedSubLabels = 0;
 }
 
-- (void)setAxisSpacing:(id)a3
+- (void)setAxisSpacing:(id)spacing
 {
   v5.receiver = self;
   v5.super_class = CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor;
-  [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)&v5 setAxisSpacing:a3];
+  [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)&v5 setAxisSpacing:spacing];
   cachedLabels = self->_cachedLabels;
   self->_cachedLabels = 0;
 }
 
-- (void)setSubAxisSpacing:(id)a3
+- (void)setSubAxisSpacing:(id)spacing
 {
   v5.receiver = self;
   v5.super_class = CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor;
-  [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)&v5 setSubAxisSpacing:a3];
+  [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)&v5 setSubAxisSpacing:spacing];
   cachedSubLabels = self->_cachedSubLabels;
   self->_cachedSubLabels = 0;
 }
@@ -75,9 +75,9 @@
   cachedLabels = self->_cachedLabels;
   if (!cachedLabels)
   {
-    v4 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self _labelsForHeartRateRecovery];
+    _labelsForHeartRateRecovery = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self _labelsForHeartRateRecovery];
     v5 = self->_cachedLabels;
-    self->_cachedLabels = v4;
+    self->_cachedLabels = _labelsForHeartRateRecovery;
 
     cachedLabels = self->_cachedLabels;
   }
@@ -90,9 +90,9 @@
   cachedSubLabels = self->_cachedSubLabels;
   if (!cachedSubLabels)
   {
-    v4 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self _subLabelsForHeartRateRecovery];
+    _subLabelsForHeartRateRecovery = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self _subLabelsForHeartRateRecovery];
     v5 = self->_cachedSubLabels;
-    self->_cachedSubLabels = v4;
+    self->_cachedSubLabels = _subLabelsForHeartRateRecovery;
 
     cachedSubLabels = self->_cachedSubLabels;
   }
@@ -102,8 +102,8 @@
 
 - (id)_labelsForHeartRateRecovery
 {
-  v3 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self minValue];
-  if (v3)
+  minValue = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self minValue];
+  if (minValue)
   {
     v4 = +[NSMutableArray array];
     v5 = +[NSCalendar currentCalendar];
@@ -126,16 +126,16 @@
 
     v10 = ARUIRingsViewRenderer_ptr;
     v11 = objc_alloc_init(FIUIChartAxisLabel);
-    v27 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self _stringFromDate:v3 withTimeInterval:0 textStyle:2 forceAMPM:1];
+    v27 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self _stringFromDate:minValue withTimeInterval:0 textStyle:2 forceAMPM:1];
     [v11 setText:?];
-    [v11 setLocation:v3];
-    v12 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self highlightedLabelColor];
-    [v11 setLabelColor:v12];
+    [v11 setLocation:minValue];
+    highlightedLabelColor = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self highlightedLabelColor];
+    [v11 setLabelColor:highlightedLabelColor];
 
     v28 = v11;
     [v4 addObject:v11];
-    v29 = v3;
-    v13 = v3;
+    v29 = minValue;
+    v13 = minValue;
     v14 = v13;
     if (kHKWorkoutHeartRateRecoveryIntervalInMinutes < 2)
     {
@@ -164,8 +164,8 @@
 
         [v17 setText:v23];
         [v17 setLocation:v16];
-        v24 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self highlightedLabelColor];
-        [v17 setLabelColor:v24];
+        highlightedLabelColor2 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self highlightedLabelColor];
+        [v17 setLabelColor:highlightedLabelColor2];
 
         [v19 addObject:v17];
         ++v15;
@@ -177,7 +177,7 @@
 
     v25 = [v4 copy];
 
-    v3 = v29;
+    minValue = v29;
   }
 
   else
@@ -190,8 +190,8 @@
 
 - (id)_subLabelsForHeartRateRecovery
 {
-  v3 = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self minValue];
-  if (v3)
+  minValue = [(CHWorkoutDetailHeartRateChartHeartRateRecoveryAxisDescriptor *)self minValue];
+  if (minValue)
   {
     v4 = +[NSMutableArray array];
     v5 = +[NSCalendar currentCalendar];
@@ -205,10 +205,10 @@
         v7 = *&self->FIUIChartTimeAxisDescriptor_opaque[v18];
         v8 = [NSNumber numberWithInt:v6, v18];
         v9 = [v7 objectForKeyedSubscript:v8];
-        v10 = [v9 quantity];
+        quantity = [v9 quantity];
 
-        v11 = [(FIUIFormattingManager *)self->_formattingManager localizedStringWithHeartRate:v10 unitStyle:1];
-        v12 = [v5 dateByAddingUnit:64 value:v6 toDate:v3 options:0];
+        v11 = [(FIUIFormattingManager *)self->_formattingManager localizedStringWithHeartRate:quantity unitStyle:1];
+        v12 = [v5 dateByAddingUnit:64 value:v6 toDate:minValue options:0];
         v13 = objc_alloc_init(FIUIChartAxisLabel);
         [v13 setText:v11];
         [v13 setLocation:v12];

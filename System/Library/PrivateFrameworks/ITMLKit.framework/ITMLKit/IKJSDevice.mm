@@ -1,9 +1,9 @@
 @interface IKJSDevice
-+ (id)getMobileGestaltString:(__CFString *)a3;
++ (id)getMobileGestaltString:(__CFString *)string;
 - (BOOL)isInAirplaneMode;
 - (BOOL)isNetworkReachable;
 - (IKAppDeviceConfig)deviceConfig;
-- (IKJSDevice)initWithAppContext:(id)a3 deviceConfig:(id)a4;
+- (IKJSDevice)initWithAppContext:(id)context deviceConfig:(id)config;
 - (NSNumber)pixelRatio;
 - (NSString)appIdentifier;
 - (NSString)appVersion;
@@ -15,7 +15,7 @@
 - (NSString)vendorIdentifier;
 - (double)lastNetworkChangedTime;
 - (id)asPrivateIKJSDevice;
-- (id)capacity:(id)a3;
+- (id)capacity:(id)capacity;
 - (void)dealloc;
 @end
 
@@ -25,37 +25,37 @@
 {
   if ([(IKJSDevice *)self conformsToProtocol:&unk_286706CF0])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (IKJSDevice)initWithAppContext:(id)a3 deviceConfig:(id)a4
+- (IKJSDevice)initWithAppContext:(id)context deviceConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = IKJSDevice;
-  v8 = [(IKJSObject *)&v18 initWithAppContext:v6];
+  v8 = [(IKJSObject *)&v18 initWithAppContext:contextCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_deviceConfig, v7);
+    objc_storeWeak(&v8->_deviceConfig, configCopy);
     objc_initWeak(&location, v9);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = +[IKNetworkUtilities sharedInstance];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __46__IKJSDevice_initWithAppContext_deviceConfig___block_invoke;
     v15[3] = &unk_27979A088;
     objc_copyWeak(&v16, &location);
-    v12 = [v10 addObserverForName:@"IKNetworkPropertiesChangedNotification" object:v11 queue:0 usingBlock:v15];
+    v12 = [defaultCenter addObserverForName:@"IKNetworkPropertiesChangedNotification" object:v11 queue:0 usingBlock:v15];
     networkPropertiesChangedToken = v9->_networkPropertiesChangedToken;
     v9->_networkPropertiesChangedToken = v12;
 
@@ -103,8 +103,8 @@ void __46__IKJSDevice_initWithAppContext_deviceConfig___block_invoke_2(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_networkPropertiesChangedToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_networkPropertiesChangedToken];
 
   v4.receiver = self;
   v4.super_class = IKJSDevice;
@@ -113,59 +113,59 @@ void __46__IKJSDevice_initWithAppContext_deviceConfig___block_invoke_2(uint64_t 
 
 - (NSString)vendorIdentifier
 {
-  v2 = [(IKJSObject *)self appContext];
-  v3 = [v2 app];
-  v4 = [v3 vendorIdentifier];
-  v5 = v4;
-  if (v4)
+  appContext = [(IKJSObject *)self appContext];
+  v3 = [appContext app];
+  vendorIdentifier = [v3 vendorIdentifier];
+  v5 = vendorIdentifier;
+  if (vendorIdentifier)
   {
-    v6 = v4;
+    uUIDString = vendorIdentifier;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 identifierForVendor];
-    v6 = [v8 UUIDString];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    identifierForVendor = [currentDevice identifierForVendor];
+    uUIDString = [identifierForVendor UUIDString];
   }
 
-  return v6;
+  return uUIDString;
 }
 
 - (NSString)appVersion
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v4 = [v3 objectForKey:@"CFBundleVersion"];
+  v4 = [infoDictionary objectForKey:@"CFBundleVersion"];
 
   return v4;
 }
 
 - (NSString)appIdentifier
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 infoDictionary];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__23;
   v15 = __Block_byref_object_dispose__23;
-  v16 = [v4 objectForKey:@"CFBundleIdentifier"];
-  v5 = [(IKJSDevice *)self deviceConfig];
+  v16 = [infoDictionary objectForKey:@"CFBundleIdentifier"];
+  deviceConfig = [(IKJSDevice *)self deviceConfig];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKJSObject *)self appContext];
+    appContext = [(IKJSObject *)self appContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __27__IKJSDevice_appIdentifier__block_invoke;
     v10[3] = &unk_279799028;
     v10[4] = self;
     v10[5] = &v11;
-    [v7 evaluateDelegateBlockSync:v10];
+    [appContext evaluateDelegateBlockSync:v10];
   }
 
   v8 = v12[5];
@@ -185,18 +185,18 @@ void __27__IKJSDevice_appIdentifier__block_invoke(uint64_t a1)
 
 - (NSString)systemVersion
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 systemVersion];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  systemVersion = [currentDevice systemVersion];
 
-  return v3;
+  return systemVersion;
 }
 
 - (NSString)model
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
 
-  return v3;
+  return model;
 }
 
 - (NSString)productType
@@ -209,8 +209,8 @@ void __27__IKJSDevice_appIdentifier__block_invoke(uint64_t a1)
 - (NSNumber)pixelRatio
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = [v2 numberWithDouble:?];
 
   return v4;
@@ -219,25 +219,25 @@ void __27__IKJSDevice_appIdentifier__block_invoke(uint64_t a1)
 - (BOOL)isNetworkReachable
 {
   v2 = +[IKNetworkUtilities sharedInstance];
-  v3 = [v2 isNetworkReachable];
+  isNetworkReachable = [v2 isNetworkReachable];
 
-  return v3;
+  return isNetworkReachable;
 }
 
 - (BOOL)isInAirplaneMode
 {
   v2 = +[IKNetworkUtilities sharedInstance];
-  v3 = [v2 isAirplaneModeEnabled];
+  isAirplaneModeEnabled = [v2 isAirplaneModeEnabled];
 
-  return v3;
+  return isAirplaneModeEnabled;
 }
 
 - (NSString)networkType
 {
   v2 = +[IKNetworkUtilities sharedInstance];
-  v3 = [v2 networkType];
+  networkType = [v2 networkType];
 
-  return v3;
+  return networkType;
 }
 
 - (double)lastNetworkChangedTime
@@ -249,11 +249,11 @@ void __27__IKJSDevice_appIdentifier__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)capacity:(id)a3
+- (id)capacity:(id)capacity
 {
-  v3 = a3;
+  capacityCopy = capacity;
   v4 = MGCopyAnswer();
-  if ([v3 isEqualToString:@"totalSystemCapacity"])
+  if ([capacityCopy isEqualToString:@"totalSystemCapacity"])
   {
     v5 = MEMORY[0x277D823E8];
 LABEL_11:
@@ -261,25 +261,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"totalSystemAvailable"])
+  if ([capacityCopy isEqualToString:@"totalSystemAvailable"])
   {
     v5 = MEMORY[0x277D823D8];
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"totalDataCapacity"])
+  if ([capacityCopy isEqualToString:@"totalDataCapacity"])
   {
     v5 = MEMORY[0x277D823C0];
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"totalDataAvailable"])
+  if ([capacityCopy isEqualToString:@"totalDataAvailable"])
   {
     v5 = MEMORY[0x277D823A8];
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"totalDiskCapacity"])
+  if ([capacityCopy isEqualToString:@"totalDiskCapacity"])
   {
     v5 = MEMORY[0x277D823C8];
     goto LABEL_11;
@@ -298,7 +298,7 @@ LABEL_12:
   return [v2 getMobileGestaltString:@"BuildVersion"];
 }
 
-+ (id)getMobileGestaltString:(__CFString *)a3
++ (id)getMobileGestaltString:(__CFString *)string
 {
   v3 = MGCopyAnswer();
   if (v3)

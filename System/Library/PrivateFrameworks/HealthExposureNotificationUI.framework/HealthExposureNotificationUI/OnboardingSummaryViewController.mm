@@ -1,6 +1,6 @@
 @interface OnboardingSummaryViewController
-- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapCancel;
 - (void)didTapPrimaryButton;
 - (void)viewDidLoad;
@@ -15,8 +15,8 @@
   v2 = v4.receiver;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
   sub_25168DF3C();
-  v3 = [v2 navigationItem];
-  [v3 setHidesBackButton_];
+  navigationItem = [v2 navigationItem];
+  [navigationItem setHidesBackButton_];
 }
 
 - (void)didTapPrimaryButton
@@ -25,7 +25,7 @@
   v4 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC28HealthExposureNotificationUI31OnboardingSummaryViewController_flow);
   swift_getObjectType();
   v5 = *(v4 + 120);
-  v6 = self;
+  selfCopy = self;
   v5();
 }
 
@@ -35,18 +35,18 @@
   v4 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC28HealthExposureNotificationUI31OnboardingSummaryViewController_flow);
   swift_getObjectType();
   v5 = *(v4 + 128);
-  v6 = self;
+  selfCopy = self;
   v5();
 }
 
-- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC28HealthExposureNotificationUI31OnboardingSummaryViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

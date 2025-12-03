@@ -1,26 +1,26 @@
 @interface SUUIMediaLibraryInterface
-- (BOOL)isItemLocalAudiobook:(id)a3;
-- (BOOL)performActionForLibraryItem:(id)a3;
+- (BOOL)isItemLocalAudiobook:(id)audiobook;
+- (BOOL)performActionForLibraryItem:(id)item;
 - (id)_newDefaultQuery;
-- (id)_storePlatformKindForMediaItem:(id)a3;
-- (id)stateForLibraryItem:(id)a3;
-- (int64_t)_availabilityForMediaItem:(id)a3;
-- (unint64_t)_AVTypesForMediaItem:(id)a3;
-- (void)_restrictQueryToLocalContent:(id)a3;
-- (void)enumerateStatesForLibraryItems:(id)a3 usingBlock:(id)a4;
-- (void)removeMediaItemsForLibraryItems:(id)a3;
+- (id)_storePlatformKindForMediaItem:(id)item;
+- (id)stateForLibraryItem:(id)item;
+- (int64_t)_availabilityForMediaItem:(id)item;
+- (unint64_t)_AVTypesForMediaItem:(id)item;
+- (void)_restrictQueryToLocalContent:(id)content;
+- (void)enumerateStatesForLibraryItems:(id)items usingBlock:(id)block;
+- (void)removeMediaItemsForLibraryItems:(id)items;
 @end
 
 @implementation SUUIMediaLibraryInterface
 
-- (void)enumerateStatesForLibraryItems:(id)a3 usingBlock:(id)a4
+- (void)enumerateStatesForLibraryItems:(id)items usingBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  blockCopy = block;
   v8 = SUUIMediaPlayerFramework();
-  v22 = self;
-  v9 = [(SUUIMediaLibraryInterface *)self _newDefaultQuery];
+  selfCopy = self;
+  _newDefaultQuery = [(SUUIMediaLibraryInterface *)self _newDefaultQuery];
   v25 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStoreAccountID", v8);
   v24 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyIsHD", v8);
   v23 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStoreID", v8);
@@ -30,7 +30,7 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v10 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v10)
   {
@@ -48,27 +48,27 @@ LABEL_3:
       v13 = *(*(&v32 + 1) + 8 * v12);
       v14 = objc_autoreleasePoolPush();
       v15 = objc_alloc_init(SUUILibraryItemState);
-      v16 = [v13 storeItemIdentifier];
+      storeItemIdentifier = [v13 storeItemIdentifier];
 
-      if (v16)
+      if (storeItemIdentifier)
       {
-        v17 = [v13 storeItemIdentifier];
-        v18 = [v21 predicateWithValue:v17 forProperty:v23];
+        storeItemIdentifier2 = [v13 storeItemIdentifier];
+        v18 = [v21 predicateWithValue:storeItemIdentifier2 forProperty:v23];
 
-        [v9 addFilterPredicate:v18];
+        [_newDefaultQuery addFilterPredicate:v18];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock___block_invoke;
         v27[3] = &unk_2798FD528;
         v28 = v15;
-        v29 = v22;
+        v29 = selfCopy;
         v30 = v24;
         v31 = v25;
-        [v9 _enumerateUnorderedItemsUsingBlock:v27];
-        [v9 removeFilterPredicate:v18];
+        [_newDefaultQuery _enumerateUnorderedItemsUsingBlock:v27];
+        [_newDefaultQuery removeFilterPredicate:v18];
       }
 
-      v7[2](v7, v13, v15, &v36);
+      blockCopy[2](blockCopy, v13, v15, &v36);
       v19 = v36;
 
       objc_autoreleasePoolPop(v14);
@@ -117,10 +117,10 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
   }
 }
 
-- (BOOL)performActionForLibraryItem:(id)a3
+- (BOOL)performActionForLibraryItem:(id)item
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SUUIMediaPlayerFramework();
   v6 = SUUIWeakLinkedClassForString(&cfstr_Mpmediaquery.isa, v5);
   v7 = SUUIWeakLinkedClassForString(&cfstr_Mpmediapropert.isa, v5);
@@ -129,30 +129,30 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
   v10 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStorePlaylistID", v5);
   v61 = v6;
   v11 = objc_alloc_init(v6);
-  v12 = v4;
-  v13 = [v4 storeItemIdentifier];
+  v12 = itemCopy;
+  storeItemIdentifier = [itemCopy storeItemIdentifier];
   v14 = v7;
-  v15 = [v7 predicateWithValue:v13 forProperty:v8];
+  v15 = [v7 predicateWithValue:storeItemIdentifier forProperty:v8];
   [v11 addFilterPredicate:v15];
 
   v64 = v9;
   v16 = [MEMORY[0x277CBEB98] setWithObjects:{v8, v9, v10, 0}];
   [v11 setItemPropertiesToFetch:v16];
 
-  v17 = self;
+  selfCopy = self;
   [(SUUIMediaLibraryInterface *)self _restrictQueryToLocalContent:v11];
   v63 = v11;
-  v18 = [v11 items];
-  v19 = [v18 firstObject];
+  items = [v11 items];
+  firstObject = [items firstObject];
 
-  v20 = [v19 mediaType];
-  v21 = [v19 mediaType];
-  if (v19 && (v20 & 0xFF00) != 0 && (v21 & 0x800) == 0)
+  mediaType = [firstObject mediaType];
+  mediaType2 = [firstObject mediaType];
+  if (firstObject && (mediaType & 0xFF00) != 0 && (mediaType2 & 0x800) == 0)
   {
     v22 = objc_alloc(MEMORY[0x277CCACA8]);
     v23 = v12;
-    v24 = [v12 storeItemIdentifier];
-    v25 = [v22 initWithFormat:@"videos://play?adam-id=%lld&allowCloudPlayback=1", objc_msgSend(v24, "longLongValue")];
+    storeItemIdentifier2 = [v12 storeItemIdentifier];
+    v25 = [v22 initWithFormat:@"videos://play?adam-id=%lld&allowCloudPlayback=1", objc_msgSend(storeItemIdentifier2, "longLongValue")];
 
     v26 = [MEMORY[0x277CBEBC0] URLWithString:v25];
     SUUIMetricsOpenSensitiveURL(v26, 0);
@@ -163,21 +163,21 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
 
   else
   {
-    v58 = v21;
-    v29 = [(objc_class *)v61 albumsQuery];
-    [(SUUIMediaLibraryInterface *)self _restrictQueryToLocalContent:v29];
+    v58 = mediaType2;
+    albumsQuery = [(objc_class *)v61 albumsQuery];
+    [(SUUIMediaLibraryInterface *)self _restrictQueryToLocalContent:albumsQuery];
     v23 = v12;
-    v30 = [v12 storeItemIdentifier];
+    storeItemIdentifier3 = [v12 storeItemIdentifier];
     v31 = v14;
     v60 = v10;
-    v32 = [v14 predicateWithValue:v30 forProperty:v10];
-    [v29 addFilterPredicate:v32];
+    v32 = [v14 predicateWithValue:storeItemIdentifier3 forProperty:v10];
+    [albumsQuery addFilterPredicate:v32];
 
-    v59 = v29;
-    v33 = [v29 items];
-    v34 = [v33 count];
+    v59 = albumsQuery;
+    items2 = [albumsQuery items];
+    v34 = [items2 count];
     v35 = 0;
-    if (!v19 || v34)
+    if (!firstObject || v34)
     {
       v10 = v60;
       v28 = v64;
@@ -185,10 +185,10 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
 
     else
     {
-      v36 = [v19 valueForProperty:v60];
+      v36 = [firstObject valueForProperty:v60];
       if (v36)
       {
-        if (([v19 mediaType] & 4) != 0)
+        if (([firstObject mediaType] & 4) != 0)
         {
           [(objc_class *)v61 audiobooksQuery];
         }
@@ -199,14 +199,14 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
         }
         v37 = ;
 
-        [(SUUIMediaLibraryInterface *)v17 _restrictQueryToLocalContent:v37];
+        [(SUUIMediaLibraryInterface *)selfCopy _restrictQueryToLocalContent:v37];
         v38 = [v31 predicateWithValue:v36 forProperty:v60];
         [v37 addFilterPredicate:v38];
 
-        v39 = [v37 items];
+        items3 = [v37 items];
 
-        v35 = [v19 valueForProperty:v8];
-        v33 = v39;
+        v35 = [firstObject valueForProperty:v8];
+        items2 = items3;
         v59 = v37;
       }
 
@@ -220,7 +220,7 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
       v10 = v60;
     }
 
-    v40 = [v33 count];
+    v40 = [items2 count];
     v27 = v40 != 0;
     if (v40)
     {
@@ -232,13 +232,13 @@ void __71__SUUIMediaLibraryInterface_enumerateStatesForLibraryItems_usingBlock__
       if (v35)
       {
         v55 = v27;
-        v56 = v33;
+        v56 = items2;
         v57 = v23;
         v67 = 0u;
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v44 = v33;
+        v44 = items2;
         v45 = [v44 countByEnumeratingWithState:&v65 objects:v69 count:16];
         if (v45)
         {
@@ -283,7 +283,7 @@ LABEL_27:
         v43 = v58;
         v28 = v64;
         v10 = v60;
-        v33 = v56;
+        items2 = v56;
         v27 = v55;
       }
 
@@ -299,52 +299,52 @@ LABEL_27:
   return v27;
 }
 
-- (BOOL)isItemLocalAudiobook:(id)a3
+- (BOOL)isItemLocalAudiobook:(id)audiobook
 {
-  v3 = a3;
+  audiobookCopy = audiobook;
   v4 = SUUIMediaPlayerFramework();
   v5 = SUUIWeakLinkedClassForString(&cfstr_Mpmediaquery.isa, v4);
   v6 = SUUIWeakLinkedClassForString(&cfstr_Mpmediapropert.isa, v4);
-  v7 = [v5 audiobooksQuery];
+  audiobooksQuery = [v5 audiobooksQuery];
   v8 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStorePlaylistID", v4);
-  v9 = [v3 storeItemIdentifier];
+  storeItemIdentifier = [audiobookCopy storeItemIdentifier];
 
-  v10 = [v6 predicateWithValue:v9 forProperty:v8];
+  v10 = [v6 predicateWithValue:storeItemIdentifier forProperty:v8];
 
-  [v7 addFilterPredicate:v10];
-  v11 = [v7 items];
-  LOBYTE(v8) = [v11 count] != 0;
+  [audiobooksQuery addFilterPredicate:v10];
+  items = [audiobooksQuery items];
+  LOBYTE(v8) = [items count] != 0;
 
   return v8;
 }
 
-- (id)stateForLibraryItem:(id)a3
+- (id)stateForLibraryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(SUUILibraryItemState);
   v6 = SUUIMediaPlayerFramework();
-  v7 = [(SUUIMediaLibraryInterface *)self _newDefaultQuery];
+  _newDefaultQuery = [(SUUIMediaLibraryInterface *)self _newDefaultQuery];
   v8 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStoreAccountID", v6);
   v9 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyIsHD", v6);
   v10 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStoreID", v6);
   v11 = SUUIWeakLinkedClassForString(&cfstr_Mpmediapropert.isa, v6);
-  v12 = [v4 storeItemIdentifier];
+  storeItemIdentifier = [itemCopy storeItemIdentifier];
 
-  v13 = [v11 predicateWithValue:v12 forProperty:v10];
+  v13 = [v11 predicateWithValue:storeItemIdentifier forProperty:v10];
 
-  [v7 addFilterPredicate:v13];
+  [_newDefaultQuery addFilterPredicate:v13];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __49__SUUIMediaLibraryInterface_stateForLibraryItem___block_invoke;
   v20[3] = &unk_2798FD528;
   v14 = v5;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   v23 = v9;
   v24 = v8;
   v15 = v8;
   v16 = v9;
-  [v7 _enumerateUnorderedItemsUsingBlock:v20];
+  [_newDefaultQuery _enumerateUnorderedItemsUsingBlock:v20];
   v17 = v24;
   v18 = v14;
 
@@ -377,22 +377,22 @@ void __49__SUUIMediaLibraryInterface_stateForLibraryItem___block_invoke(uint64_t
   }
 }
 
-- (void)removeMediaItemsForLibraryItems:(id)a3
+- (void)removeMediaItemsForLibraryItems:(id)items
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = SUUIMediaPlayerFramework();
   v5 = SUUIWeakLinkedClassForString(&cfstr_Mpmediaquery.isa, v4);
   v6 = SUUIWeakLinkedClassForString(&cfstr_Mpmediapropert.isa, v4);
   v19 = SUUIWeakLinkedClassForString(&cfstr_Mpmedialibrary.isa, v4);
   v7 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyStoreID", v4);
   v8 = objc_alloc_init(v5);
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -408,16 +408,16 @@ void __49__SUUIMediaLibraryInterface_stateForLibraryItem___block_invoke(uint64_t
           objc_enumerationMutation(obj);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * v13) storeItemIdentifier];
-        v15 = [v6 predicateWithValue:v14 forProperty:v7];
+        storeItemIdentifier = [*(*(&v21 + 1) + 8 * v13) storeItemIdentifier];
+        v15 = [v6 predicateWithValue:storeItemIdentifier forProperty:v7];
 
         [v8 addFilterPredicate:v15];
-        v16 = [v8 items];
-        v17 = [v16 firstObject];
+        items = [v8 items];
+        firstObject = [items firstObject];
 
-        if (v17)
+        if (firstObject)
         {
-          [v9 addObject:v17];
+          [array addObject:firstObject];
         }
 
         [v8 removeFilterPredicate:v15];
@@ -432,25 +432,25 @@ void __49__SUUIMediaLibraryInterface_stateForLibraryItem___block_invoke(uint64_t
     while (v11);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    v18 = [v19 defaultMediaLibrary];
-    [v18 removeItems:v9];
+    defaultMediaLibrary = [v19 defaultMediaLibrary];
+    [defaultMediaLibrary removeItems:array];
   }
 }
 
-- (int64_t)_availabilityForMediaItem:(id)a3
+- (int64_t)_availabilityForMediaItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (_availabilityForMediaItem__sOnce != -1)
   {
     [SUUIMediaLibraryInterface _availabilityForMediaItem:];
   }
 
-  v4 = [v3 valueForProperty:_availabilityForMediaItem__sFamilyAccountIDProperty];
-  if ([v4 unsignedLongLongValue] && (objc_msgSend(v3, "mediaType") & 0x300) != 0)
+  v4 = [itemCopy valueForProperty:_availabilityForMediaItem__sFamilyAccountIDProperty];
+  if ([v4 unsignedLongLongValue] && (objc_msgSend(itemCopy, "mediaType") & 0x300) != 0)
   {
-    v5 = [v3 valueForProperty:_availabilityForMediaItem__sFilePathProperty];
+    v5 = [itemCopy valueForProperty:_availabilityForMediaItem__sFilePathProperty];
     if ([v5 length])
     {
       v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v5 isDirectory:0];
@@ -493,9 +493,9 @@ id __55__SUUIMediaLibraryInterface__availabilityForMediaItem___block_invoke()
   return result;
 }
 
-- (unint64_t)_AVTypesForMediaItem:(id)a3
+- (unint64_t)_AVTypesForMediaItem:(id)item
 {
-  if (([a3 mediaType] & 0xFF00) != 0)
+  if (([item mediaType] & 0xFF00) != 0)
   {
     return 5;
   }
@@ -521,30 +521,30 @@ id __55__SUUIMediaLibraryInterface__availabilityForMediaItem___block_invoke()
   return v4;
 }
 
-- (void)_restrictQueryToLocalContent:(id)a3
+- (void)_restrictQueryToLocalContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = SUUIMediaPlayerFramework();
   v5 = *SUUIWeakLinkedSymbolForString("MPMediaItemPropertyIsLocal", v4);
   v6 = [SUUIWeakLinkedClassForString(&cfstr_Mpmediapropert.isa v4)];
 
-  [v3 addFilterPredicate:v6];
+  [contentCopy addFilterPredicate:v6];
 }
 
-- (id)_storePlatformKindForMediaItem:(id)a3
+- (id)_storePlatformKindForMediaItem:(id)item
 {
-  v3 = [a3 mediaType];
+  mediaType = [item mediaType];
   result = 0;
-  if (v3 <= 255)
+  if (mediaType <= 255)
   {
-    if (v3 > 3)
+    if (mediaType > 3)
     {
-      if (v3 == 4)
+      if (mediaType == 4)
       {
         return @"book";
       }
 
-      if (v3 != 8)
+      if (mediaType != 8)
       {
         return result;
       }
@@ -552,12 +552,12 @@ id __55__SUUIMediaLibraryInterface__availabilityForMediaItem___block_invoke()
 
     else
     {
-      if (v3 == 1)
+      if (mediaType == 1)
       {
         return @"song";
       }
 
-      if (v3 != 2)
+      if (mediaType != 2)
       {
         return result;
       }
@@ -566,15 +566,15 @@ id __55__SUUIMediaLibraryInterface__availabilityForMediaItem___block_invoke()
     return @"podcastEpisode";
   }
 
-  if (v3 <= 1023)
+  if (mediaType <= 1023)
   {
     v5 = @"tvEpisode";
-    if (v3 != 512)
+    if (mediaType != 512)
     {
       v5 = 0;
     }
 
-    if (v3 == 256)
+    if (mediaType == 256)
     {
       return @"movie";
     }
@@ -585,7 +585,7 @@ id __55__SUUIMediaLibraryInterface__availabilityForMediaItem___block_invoke()
     }
   }
 
-  switch(v3)
+  switch(mediaType)
   {
     case 1024:
       return @"podcastEpisode";

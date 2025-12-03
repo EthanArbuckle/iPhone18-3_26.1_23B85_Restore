@@ -1,23 +1,23 @@
 @interface TSProximityWaitingViewController
 - (BOOL)isStartOverRequiredOnBackButtonTapped;
 - (SSProximityDevice)btServer;
-- (TSProximityWaitingViewController)initWithBTServer:(id)a3 transferBackPhoneNumber:(id)a4;
+- (TSProximityWaitingViewController)initWithBTServer:(id)server transferBackPhoneNumber:(id)number;
 - (TSSIMSetupFlowDelegate)delegate;
 @end
 
 @implementation TSProximityWaitingViewController
 
-- (TSProximityWaitingViewController)initWithBTServer:(id)a3 transferBackPhoneNumber:(id)a4
+- (TSProximityWaitingViewController)initWithBTServer:(id)server transferBackPhoneNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  serverCopy = server;
+  numberCopy = number;
+  if (numberCopy)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"PRX_TRANSFER_DETAIL_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v11 = [v7 formattedPhoneNumber];
-    v12 = [v8 stringWithFormat:v10, v11];
+    formattedPhoneNumber = [numberCopy formattedPhoneNumber];
+    v12 = [v8 stringWithFormat:v10, formattedPhoneNumber];
   }
 
   else
@@ -34,7 +34,7 @@
 
   if (v15)
   {
-    objc_storeWeak(&v15->_btServer, v6);
+    objc_storeWeak(&v15->_btServer, serverCopy);
   }
 
   return v15;

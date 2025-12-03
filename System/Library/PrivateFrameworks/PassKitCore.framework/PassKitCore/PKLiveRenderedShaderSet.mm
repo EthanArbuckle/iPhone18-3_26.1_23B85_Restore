@@ -1,25 +1,25 @@
 @interface PKLiveRenderedShaderSet
-- (PKLiveRenderedShaderSet)initWithCoder:(id)a3;
-- (PKLiveRenderedShaderSet)initWithDataAccessor:(id)a3 suffix:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKLiveRenderedShaderSet)initWithCoder:(id)coder;
+- (PKLiveRenderedShaderSet)initWithDataAccessor:(id)accessor suffix:(id)suffix;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKLiveRenderedShaderSet
 
-- (PKLiveRenderedShaderSet)initWithDataAccessor:(id)a3 suffix:(id)a4
+- (PKLiveRenderedShaderSet)initWithDataAccessor:(id)accessor suffix:(id)suffix
 {
   v45[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accessorCopy = accessor;
+  suffixCopy = suffix;
   v44.receiver = self;
   v44.super_class = PKLiveRenderedShaderSet;
   v8 = [(PKLiveRenderedShaderSet *)&v44 init];
   if (v8)
   {
     context = objc_autoreleasePoolPush();
-    if (v7)
+    if (suffixCopy)
     {
-      v9 = [@"geometry" stringByAppendingString:v7];
+      v9 = [@"geometry" stringByAppendingString:suffixCopy];
     }
 
     else
@@ -29,9 +29,9 @@
 
     v10 = v9;
     v11 = [[PKBundleResourceDescriptor alloc] initWithName:v9 extension:@"metal"];
-    if (v7)
+    if (suffixCopy)
     {
-      v12 = [@"lighting" stringByAppendingString:v7];
+      v12 = [@"lighting" stringByAppendingString:suffixCopy];
     }
 
     else
@@ -42,9 +42,9 @@
     v40 = v10;
     v39 = v12;
     v13 = [[PKBundleResourceDescriptor alloc] initWithName:v12 extension:@"metal"];
-    if (v7)
+    if (suffixCopy)
     {
-      v14 = [@"surface" stringByAppendingString:v7];
+      v14 = [@"surface" stringByAppendingString:suffixCopy];
     }
 
     else
@@ -53,12 +53,12 @@
     }
 
     v15 = v14;
-    v43 = v6;
+    v43 = accessorCopy;
     v16 = [[PKBundleResourceDescriptor alloc] initWithName:v14 extension:@"metal"];
-    v42 = v7;
-    if (v7)
+    v42 = suffixCopy;
+    if (suffixCopy)
     {
-      v17 = [@"fragment" stringByAppendingString:v7];
+      v17 = [@"fragment" stringByAppendingString:suffixCopy];
     }
 
     else
@@ -138,45 +138,45 @@
       v8->_fragmentEntryPointShader = v36;
     }
 
-    v7 = v42;
-    v6 = v43;
+    suffixCopy = v42;
+    accessorCopy = v43;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   geometryEntryPointShader = self->_geometryEntryPointShader;
-  v5 = a3;
-  [v5 encodeObject:geometryEntryPointShader forKey:@"geometry"];
-  [v5 encodeObject:self->_lightingModelEntryPointShader forKey:@"lighting"];
-  [v5 encodeObject:self->_surfaceEntryPointShader forKey:@"surface"];
-  [v5 encodeObject:self->_fragmentEntryPointShader forKey:@"fragment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:geometryEntryPointShader forKey:@"geometry"];
+  [coderCopy encodeObject:self->_lightingModelEntryPointShader forKey:@"lighting"];
+  [coderCopy encodeObject:self->_surfaceEntryPointShader forKey:@"surface"];
+  [coderCopy encodeObject:self->_fragmentEntryPointShader forKey:@"fragment"];
 }
 
-- (PKLiveRenderedShaderSet)initWithCoder:(id)a3
+- (PKLiveRenderedShaderSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v16.receiver = self;
   v16.super_class = PKLiveRenderedShaderSet;
   v6 = [(PKLiveRenderedShaderSet *)&v16 init];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
     geometryEntryPointShader = v6->_geometryEntryPointShader;
     v6->_geometryEntryPointShader = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lighting"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lighting"];
     lightingModelEntryPointShader = v6->_lightingModelEntryPointShader;
     v6->_lightingModelEntryPointShader = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"surface"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"surface"];
     surfaceEntryPointShader = v6->_surfaceEntryPointShader;
     v6->_surfaceEntryPointShader = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fragment"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fragment"];
     fragmentEntryPointShader = v6->_fragmentEntryPointShader;
     v6->_fragmentEntryPointShader = v13;
   }

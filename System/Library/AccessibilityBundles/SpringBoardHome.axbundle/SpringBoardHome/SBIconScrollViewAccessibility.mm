@@ -1,51 +1,51 @@
 @interface SBIconScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCCScrollToNextPage;
 - (BOOL)_accessibilityCCScrollToPreviousPage;
 - (BOOL)_accessibilitySBScrollToNextPage;
 - (BOOL)_accessibilitySBScrollToPreviousPage;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)accessibilityScrollUpPage;
 - (BOOL)accessibilityScrollUpPageSupported;
 - (BOOL)accessibilityViewIsModal;
-- (id)_accessibilityCurrentFolderIconForPage:(int64_t)a3;
+- (id)_accessibilityCurrentFolderIconForPage:(int64_t)page;
 - (id)_accessibilityFolderContentView;
 - (id)_accessibilityScrollStatus;
-- (id)_accessibilityScrollStatus:(BOOL)a3;
+- (id)_accessibilityScrollStatus:(BOOL)status;
 - (id)automationElements;
-- (int64_t)_accessibilityAdjustedPageIndexForPageIndex:(int64_t)a3;
-- (unint64_t)_accessibilityPageActionForNextGesture:(int64_t *)a3;
-- (unint64_t)_accessibilityPageActionForPreviousGesture:(int64_t *)a3;
+- (int64_t)_accessibilityAdjustedPageIndexForPageIndex:(int64_t)index;
+- (unint64_t)_accessibilityPageActionForNextGesture:(int64_t *)gesture;
+- (unint64_t)_accessibilityPageActionForPreviousGesture:(int64_t *)gesture;
 - (void)_accessibilityActivateSpotlight;
 @end
 
 @implementation SBIconScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"presentSpotlightFromSource:animated:completionHandler:" withFullSignature:{"B", "Q", "B", "@?", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isShowingLeadingCustomView" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isShowingSpotlightOrLeadingCustomView" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconViewForIcon:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFolderController"];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"setCurrentPageIndex: animated: completion:" withFullSignature:{"B", "q", "B", "@?", 0}];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"iconListViewAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"_depth" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"firstIconPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"pageCount" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"leadingCustomViewPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBIconScrollView" isKindOfClass:@"BSUIScrollView"];
-  [v3 validateClass:@"BSUIScrollView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderController" isKindOfClass:@"SBFolderController"];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"firstIconPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isDisplayingWidgetIntroductionOnPage:" withFullSignature:{"B", "q", 0}];
-  [v3 validateClass:@"SBFolderController"];
-  [v3 validateClass:@"SBFolderController" hasInstanceVariable:@"_contentView" withType:"SBFolderView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"presentSpotlightFromSource:animated:completionHandler:" withFullSignature:{"B", "Q", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isShowingLeadingCustomView" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isShowingSpotlightOrLeadingCustomView" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconViewForIcon:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFolderController"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"setCurrentPageIndex: animated: completion:" withFullSignature:{"B", "q", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"iconListViewAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"_depth" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"firstIconPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"pageCount" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"leadingCustomViewPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBIconScrollView" isKindOfClass:@"BSUIScrollView"];
+  [validationsCopy validateClass:@"BSUIScrollView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" isKindOfClass:@"SBFolderController"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"firstIconPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isDisplayingWidgetIntroductionOnPage:" withFullSignature:{"B", "q", 0}];
+  [validationsCopy validateClass:@"SBFolderController"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceVariable:@"_contentView" withType:"SBFolderView"];
 }
 
 - (BOOL)accessibilityViewIsModal
@@ -71,7 +71,7 @@ uint64_t __57__SBIconScrollViewAccessibility_accessibilityViewIsModal__block_inv
   return result;
 }
 
-- (id)_accessibilityCurrentFolderIconForPage:(int64_t)a3
+- (id)_accessibilityCurrentFolderIconForPage:(int64_t)page
 {
   v3 = AXSBCurrentFolderController();
   if (v3 && (NSClassFromString(&cfstr_Sbrootfolderco_0.isa), (objc_opt_isKindOfClass() & 1) == 0))
@@ -89,7 +89,7 @@ uint64_t __57__SBIconScrollViewAccessibility_accessibilityViewIsModal__block_inv
     _Block_object_dispose(&v13, 8);
     LOBYTE(v13) = 0;
     objc_opt_class();
-    v6 = [v5 icons];
+    icons = [v5 icons];
     v7 = __UIAccessibilityCastAsClass();
 
     if (v13 == 1)
@@ -97,7 +97,7 @@ uint64_t __57__SBIconScrollViewAccessibility_accessibilityViewIsModal__block_inv
       abort();
     }
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 
     v13 = 0;
     v14 = &v13;
@@ -106,7 +106,7 @@ uint64_t __57__SBIconScrollViewAccessibility_accessibilityViewIsModal__block_inv
     v17 = __Block_byref_object_dispose__7;
     v18 = 0;
     v10 = v5;
-    v11 = v8;
+    v11 = firstObject;
     AXPerformSafeBlock();
     v4 = v14[5];
 
@@ -135,23 +135,23 @@ uint64_t __72__SBIconScrollViewAccessibility__accessibilityCurrentFolderIconForP
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_accessibilityScrollStatus:(BOOL)a3
+- (id)_accessibilityScrollStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = AXSBIconControllerSharedInstance();
   v5 = [v4 safeValueForKey:@"_accessibilityIconListIndex"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v3)
+  if (statusCopy)
   {
     v7 = [v4 safeValueForKey:@"_accessibilityIconListCount"];
     v8 = [v7 intValue] - 1;
 
-    if (v6 < v8)
+    if (intValue < v8)
     {
       v9 = 1;
 LABEL_7:
-      v11 = v9 + v6;
+      v11 = v9 + intValue;
       v12 = AXSBHIconManagerFromSharedIconController();
       v13 = [v12 safeBoolForKey:@"isShowingLeadingCustomView"];
 
@@ -170,7 +170,7 @@ LABEL_7:
     }
   }
 
-  else if (v6 >= 2)
+  else if (intValue >= 2)
   {
     v9 = -1;
     goto LABEL_7;
@@ -188,7 +188,7 @@ LABEL_11:
   {
     objc_opt_class();
     v2 = __UIAccessibilityCastAsClass();
-    v3 = [v2 _allSubviews];
+    _allSubviews = [v2 _allSubviews];
   }
 
   else
@@ -197,10 +197,10 @@ LABEL_11:
     v4 = [v2 safeValueForKey:@"_contentView"];
     objc_opt_class();
     v5 = [v4 safeValueForKey:@"_iconListViews"];
-    v3 = __UIAccessibilityCastAsClass();
+    _allSubviews = __UIAccessibilityCastAsClass();
   }
 
-  return v3;
+  return _allSubviews;
 }
 
 - (id)_accessibilityScrollStatus
@@ -241,13 +241,13 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   if ([(SBIconScrollViewAccessibility *)self _axIsControlCenter])
   {
-    if (a3 != 4)
+    if (scroll != 4)
     {
-      if (a3 == 3)
+      if (scroll == 3)
       {
 
         return [(SBIconScrollViewAccessibility *)self _accessibilityCCScrollToPreviousPage];
@@ -261,12 +261,12 @@ LABEL_11:
 
   if (![(SBIconScrollViewAccessibility *)self _accessibilityApplicationIsRTL])
   {
-    if (a3 == 2)
+    if (scroll == 2)
     {
       goto LABEL_16;
     }
 
-    if (a3 != 1)
+    if (scroll != 1)
     {
       goto LABEL_22;
     }
@@ -276,12 +276,12 @@ LABEL_13:
     return [(SBIconScrollViewAccessibility *)self _accessibilitySBScrollToPreviousPage];
   }
 
-  if (a3 == 2)
+  if (scroll == 2)
   {
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (scroll == 1)
   {
 LABEL_16:
 
@@ -291,16 +291,16 @@ LABEL_16:
 LABEL_22:
   v6 = AXSBIconControllerSharedInstance();
   v7 = [v6 safeValueForKey:@"_accessibilityIconListCount"];
-  v8 = [v7 integerValue];
-  if (a3 != 3 || v8 != 1)
+  integerValue = [v7 integerValue];
+  if (scroll != 3 || integerValue != 1)
   {
 
     return 0;
   }
 
-  v9 = [(SBIconScrollViewAccessibility *)self accessibilityScrollUpPageSupported];
+  accessibilityScrollUpPageSupported = [(SBIconScrollViewAccessibility *)self accessibilityScrollUpPageSupported];
 
-  if (!v9)
+  if (!accessibilityScrollUpPageSupported)
   {
     return 0;
   }
@@ -313,14 +313,14 @@ LABEL_22:
   v2 = accessibilityLocalizedString(@"spotlight.visible");
   UIAccessibilitySpeakAndDoNotBeInterrupted();
 
-  v3 = [MEMORY[0x29EDBDFA8] server];
-  [v3 toggleSpotlight];
+  server = [MEMORY[0x29EDBDFA8] server];
+  [server toggleSpotlight];
 }
 
 - (BOOL)_accessibilitySBScrollToNextPage
 {
-  v3 = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
-  v4 = [v3 safeIntegerForKey:@"currentPageIndex"];
+  _accessibilityFolderContentView = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
+  v4 = [_accessibilityFolderContentView safeIntegerForKey:@"currentPageIndex"];
 
   v8 = v4;
   v5 = [(SBIconScrollViewAccessibility *)self _accessibilityPageActionForNextGesture:&v8];
@@ -346,8 +346,8 @@ LABEL_7:
 
 - (BOOL)_accessibilitySBScrollToPreviousPage
 {
-  v3 = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
-  v4 = [v3 safeIntegerForKey:@"currentPageIndex"];
+  _accessibilityFolderContentView = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
+  v4 = [_accessibilityFolderContentView safeIntegerForKey:@"currentPageIndex"];
 
   v8 = v4;
   v5 = [(SBIconScrollViewAccessibility *)self _accessibilityPageActionForPreviousGesture:&v8];
@@ -516,22 +516,22 @@ void __69__SBIconScrollViewAccessibility__accessibilityCCScrollToPreviousPage__b
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (unint64_t)_accessibilityPageActionForPreviousGesture:(int64_t *)a3
+- (unint64_t)_accessibilityPageActionForPreviousGesture:(int64_t *)gesture
 {
   v5 = AXSBIconControllerSharedInstance();
-  v6 = [v5 _axIsShowingAppLibrary];
+  _axIsShowingAppLibrary = [v5 _axIsShowingAppLibrary];
 
-  if (v6)
+  if (_axIsShowingAppLibrary)
   {
     return 4;
   }
 
-  v8 = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
-  v9 = [v8 safeIntegerForKey:@"minimumPageIndex"];
+  _accessibilityFolderContentView = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
+  v9 = [_accessibilityFolderContentView safeIntegerForKey:@"minimumPageIndex"];
 
-  v10 = *a3;
-  v11 = *a3 - 1;
-  *a3 = v11;
+  v10 = *gesture;
+  v11 = *gesture - 1;
+  *gesture = v11;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -559,23 +559,23 @@ void __76__SBIconScrollViewAccessibility__accessibilityPageActionForPreviousGest
   *(*(*(a1 + 40) + 8) + 24) = [v2 _isValidPageIndex:*(a1 + 48)];
 }
 
-- (unint64_t)_accessibilityPageActionForNextGesture:(int64_t *)a3
+- (unint64_t)_accessibilityPageActionForNextGesture:(int64_t *)gesture
 {
   v5 = AXSBIconControllerSharedInstance();
-  v6 = [v5 _axNeedsToDismissHomeScreenTodayView];
+  _axNeedsToDismissHomeScreenTodayView = [v5 _axNeedsToDismissHomeScreenTodayView];
 
-  if (v6)
+  if (_axNeedsToDismissHomeScreenTodayView)
   {
     return 2;
   }
 
-  v8 = *a3 + 1;
-  *a3 = v8;
+  v8 = *gesture + 1;
+  *gesture = v8;
   v9 = AXSBIconControllerSharedInstance();
   v10 = [v9 safeIntegerForKey:@"_accessibilityIconListCount"];
 
-  v11 = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
-  v12 = [v11 safeIntegerForKey:@"minimumPageIndex"];
+  _accessibilityFolderContentView = [(SBIconScrollViewAccessibility *)self _accessibilityFolderContentView];
+  v12 = [_accessibilityFolderContentView safeIntegerForKey:@"minimumPageIndex"];
 
   v15 = 0;
   v16 = &v15;
@@ -615,14 +615,14 @@ void __72__SBIconScrollViewAccessibility__accessibilityPageActionForNextGesture_
   *(*(*(a1 + 40) + 8) + 24) = [v2 _isValidPageIndex:*(a1 + 48)];
 }
 
-- (int64_t)_accessibilityAdjustedPageIndexForPageIndex:(int64_t)a3
+- (int64_t)_accessibilityAdjustedPageIndexForPageIndex:(int64_t)index
 {
   if ((AXDeviceIsPad() & 1) != 0 || !AXSBFolderControllerIsRootFolder())
   {
-    ++a3;
+    ++index;
   }
 
-  return a3;
+  return index;
 }
 
 - (id)_accessibilityFolderContentView

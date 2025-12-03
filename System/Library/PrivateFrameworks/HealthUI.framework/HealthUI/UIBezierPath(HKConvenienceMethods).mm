@@ -7,26 +7,26 @@
 
 - (void)hk_applyBlock:()HKConvenienceMethods
 {
-  v5 = a1;
+  selfCopy = self;
   info = a3;
-  CGPathApply([a1 CGPath], info, _RunBlockForPointsInPath);
+  CGPathApply([self CGPath], info, _RunBlockForPointsInPath);
 }
 
 - (id)hk_firstPoint
 {
-  if ([a1 isEmpty])
+  if ([self isEmpty])
   {
-    v2 = 0;
+    lastObject = 0;
   }
 
   else
   {
     v3 = objc_opt_new();
-    CGPathApply([a1 CGPath], v3, _FindFirstPoint);
-    v2 = [v3 lastObject];
+    CGPathApply([self CGPath], v3, _FindFirstPoint);
+    lastObject = [v3 lastObject];
   }
 
-  return v2;
+  return lastObject;
 }
 
 @end

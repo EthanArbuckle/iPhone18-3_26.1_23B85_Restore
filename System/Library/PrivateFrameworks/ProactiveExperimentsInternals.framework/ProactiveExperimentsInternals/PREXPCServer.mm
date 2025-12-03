@@ -31,7 +31,7 @@
   v7[1] = 3221225472;
   v7[2] = __39__PREXPCServer_registerPREXPCListeners__block_invoke;
   v7[3] = &__block_descriptor_40_e5_B8__0l;
-  v7[4] = a1;
+  v7[4] = self;
   v2 = MEMORY[0x2666ED060](v7, a2);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;

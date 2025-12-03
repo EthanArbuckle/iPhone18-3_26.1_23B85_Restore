@@ -1,28 +1,28 @@
 @interface TPAlertAction
-+ (id)actionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5;
-+ (id)actionWithType:(unint64_t)a3;
-+ (id)preferencesURLForClassName:(id)a3;
++ (id)actionWithTitle:(id)title style:(int64_t)style handler:(id)handler;
++ (id)actionWithType:(unint64_t)type;
++ (id)preferencesURLForClassName:(id)name;
 @end
 
 @implementation TPAlertAction
 
-+ (id)actionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5
++ (id)actionWithTitle:(id)title style:(int64_t)style handler:(id)handler
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___TPAlertAction;
-  v7 = a5;
-  v8 = objc_msgSendSuper2(&v10, sel_actionWithTitle_style_handler_, a3, a4, v7);
-  [v8 setHandler:{v7, v10.receiver, v10.super_class}];
+  handlerCopy = handler;
+  v8 = objc_msgSendSuper2(&v10, sel_actionWithTitle_style_handler_, title, style, handlerCopy);
+  [v8 setHandler:{handlerCopy, v10.receiver, v10.super_class}];
 
   return v8;
 }
 
-+ (id)actionWithType:(unint64_t)a3
++ (id)actionWithType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = TelephonyUIBundle();
       v5 = [v4 localizedStringForKey:@"ALERT_ACTION_TITLE_CANCEL" value:&stru_1F2CA8008 table:@"General"];
@@ -33,7 +33,7 @@
 
     else
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v4 = TelephonyUIBundle();
         v5 = [v4 localizedStringForKey:@"ALERT_ACTION_TITLE_DISABLE_AIRPLANE_MODE" value:&stru_1F2CA8008 table:@"General"];
@@ -42,7 +42,7 @@
 
       else
       {
-        if (a3 != 3)
+        if (type != 3)
         {
           goto LABEL_17;
         }
@@ -60,9 +60,9 @@
     goto LABEL_16;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       v4 = TelephonyUIBundle();
       v5 = TUStringKeyForNetwork();
@@ -71,7 +71,7 @@
       goto LABEL_15;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       goto LABEL_17;
     }
@@ -171,15 +171,15 @@ void __32__TPAlertAction_actionWithType___block_invoke_4()
   [v0 openSensitiveURL:v1 withOptions:0];
 }
 
-+ (id)preferencesURLForClassName:(id)a3
++ (id)preferencesURLForClassName:(id)name
 {
-  v3 = CUTWeakLinkClass();
-  if (v3)
+  preferencesURL = CUTWeakLinkClass();
+  if (preferencesURL)
   {
-    v3 = [v3 preferencesURL];
+    preferencesURL = [preferencesURL preferencesURL];
   }
 
-  return v3;
+  return preferencesURL;
 }
 
 @end

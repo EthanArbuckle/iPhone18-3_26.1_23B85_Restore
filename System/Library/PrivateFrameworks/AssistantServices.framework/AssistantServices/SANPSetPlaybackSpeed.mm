@@ -1,22 +1,22 @@
 @interface SANPSetPlaybackSpeed
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SANPSetPlaybackSpeed
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
   v11 = kMRMediaRemoteOptionPlaybackRate;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  serviceCopy = service;
   [(SANPSetPlaybackSpeed *)self scalingFactor];
   v8 = [NSNumber numberWithDouble:?];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  v10 = [v7 targetQueue];
+  targetQueue = [serviceCopy targetQueue];
 
-  sub_1001B7630(19, self, v9, v10, v6);
+  sub_1001B7630(19, self, v9, targetQueue, handlerCopy);
 }
 
 @end

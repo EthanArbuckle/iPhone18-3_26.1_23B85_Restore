@@ -1,14 +1,14 @@
 @interface WFScanMachineReadableCodeAction
 + (id)userInterfaceXPCInterface;
 - (id)disabledOnPlatforms;
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 @end
 
 @implementation WFScanMachineReadableCodeAction
 
 + (id)userInterfaceXPCInterface
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___WFScanMachineReadableCodeAction;
   v2 = objc_msgSendSuper2(&v5, sel_userInterfaceXPCInterface);
   v3 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
@@ -17,14 +17,14 @@
   return v2;
 }
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __68__WFScanMachineReadableCodeAction_runWithRemoteUserInterface_input___block_invoke;
   v4[3] = &unk_278C19008;
   v4[4] = self;
-  [a3 showWithCompletionHandler:{v4, a4}];
+  [interface showWithCompletionHandler:{v4, input}];
 }
 
 void __68__WFScanMachineReadableCodeAction_runWithRemoteUserInterface_input___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -45,8 +45,8 @@ void __68__WFScanMachineReadableCodeAction_runWithRemoteUserInterface_input___bl
 {
   v5.receiver = self;
   v5.super_class = WFScanMachineReadableCodeAction;
-  v2 = [(WFScanMachineReadableCodeAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFScanMachineReadableCodeAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

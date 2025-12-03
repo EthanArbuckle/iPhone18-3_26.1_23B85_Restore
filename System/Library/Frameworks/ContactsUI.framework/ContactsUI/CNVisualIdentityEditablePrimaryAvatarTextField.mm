@@ -1,14 +1,14 @@
 @interface CNVisualIdentityEditablePrimaryAvatarTextField
-- (CGRect)caretRectForPosition:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
 @end
 
 @implementation CNVisualIdentityEditablePrimaryAvatarTextField
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v19.receiver = self;
   v19.super_class = CNVisualIdentityEditablePrimaryAvatarTextField;
-  [(CNVisualIdentityEditablePrimaryAvatarTextField *)&v19 caretRectForPosition:a3];
+  [(CNVisualIdentityEditablePrimaryAvatarTextField *)&v19 caretRectForPosition:position];
   v5 = v4;
   v7 = v6;
   v9 = v8;

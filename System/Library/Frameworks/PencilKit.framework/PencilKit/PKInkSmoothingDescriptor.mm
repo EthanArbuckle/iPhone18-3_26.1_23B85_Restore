@@ -1,22 +1,22 @@
 @interface PKInkSmoothingDescriptor
-- (PKInkSmoothingDescriptor)initWithStylusSmoothing:(double)a3 touch:(double)a4 velocity:(double)a5 angle:(double)a6 radius:(double)a7;
+- (PKInkSmoothingDescriptor)initWithStylusSmoothing:(double)smoothing touch:(double)touch velocity:(double)velocity angle:(double)angle radius:(double)radius;
 - (id)mutableCopy;
 @end
 
 @implementation PKInkSmoothingDescriptor
 
-- (PKInkSmoothingDescriptor)initWithStylusSmoothing:(double)a3 touch:(double)a4 velocity:(double)a5 angle:(double)a6 radius:(double)a7
+- (PKInkSmoothingDescriptor)initWithStylusSmoothing:(double)smoothing touch:(double)touch velocity:(double)velocity angle:(double)angle radius:(double)radius
 {
   v13.receiver = self;
   v13.super_class = PKInkSmoothingDescriptor;
   result = [(PKInkSmoothingDescriptor *)&v13 init];
   if (result)
   {
-    result->_stylusSmoothing = a3;
-    result->_touchSmoothing = a4;
-    result->_velocitySmoothing = a5;
-    result->_angleSmoothing = a6;
-    result->_radiusSmoothing = a7;
+    result->_stylusSmoothing = smoothing;
+    result->_touchSmoothing = touch;
+    result->_velocitySmoothing = velocity;
+    result->_angleSmoothing = angle;
+    result->_radiusSmoothing = radius;
   }
 
   return result;

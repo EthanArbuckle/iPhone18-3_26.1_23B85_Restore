@@ -6,15 +6,15 @@
 - (BOOL)supportsAdaptiveTemperatureAutomations;
 - (HMCContext)workingStoreContext;
 - (HMDHome)home;
-- (HMDHomeActivityStateManagerDataSource)initWithHome:(id)a3;
+- (HMDHomeActivityStateManagerDataSource)initWithHome:(id)home;
 - (HMDResidentDevice)currentPrimaryResident;
 - (HMDUser)currentUser;
-- (id)createHomeActivityStateAggregatorManagerWithInitialStateHoldDetails:(id)a3;
+- (id)createHomeActivityStateAggregatorManagerWithInitialStateHoldDetails:(id)details;
 - (id)createPresenceFeeder;
 - (id)makeHomeActivityComingHomeAggregator;
 - (id)makeHomeActivityHomeAwayAggregator;
 - (id)makeHomeActivityStateAggregatorManagerStorage;
-- (id)makeHomeActivityStateMachineWithAggregators:(id)a3 initialStateHoldDetails:(id)a4;
+- (id)makeHomeActivityStateMachineWithAggregators:(id)aggregators initialStateHoldDetails:(id)details;
 - (id)makeHomeActivityStateManagerStorage;
 - (id)makeHomeActivityVacationAggregator;
 - (id)makeUserActivityComingHomeStateDetector;
@@ -55,11 +55,11 @@
 
 - (id)makeUserActivityReportCoordinator
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  if (v2)
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  if (home)
   {
-    v3 = v2;
-    v4 = [HMDUserActivityReportCoordinatorFactory coordinatorWithHome:v2];
+    v3 = home;
+    v4 = [HMDUserActivityReportCoordinatorFactory coordinatorWithHome:home];
 
     return v4;
   }
@@ -106,19 +106,19 @@
   return v2;
 }
 
-- (id)makeHomeActivityStateMachineWithAggregators:(id)a3 initialStateHoldDetails:(id)a4
+- (id)makeHomeActivityStateMachineWithAggregators:(id)aggregators initialStateHoldDetails:(id)details
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HMDHomeActivityStateMachine alloc] initWithDataSource:self aggregators:v7 initialStateHoldDetails:v6];
+  detailsCopy = details;
+  aggregatorsCopy = aggregators;
+  v8 = [[HMDHomeActivityStateMachine alloc] initWithDataSource:self aggregators:aggregatorsCopy initialStateHoldDetails:detailsCopy];
 
   return v8;
 }
 
-- (id)createHomeActivityStateAggregatorManagerWithInitialStateHoldDetails:(id)a3
+- (id)createHomeActivityStateAggregatorManagerWithInitialStateHoldDetails:(id)details
 {
-  v4 = a3;
-  v5 = [[HMDHomeActivityStateAggregatorManager alloc] initWithDataSource:self initialStateHoldDetails:v4];
+  detailsCopy = details;
+  v5 = [[HMDHomeActivityStateAggregatorManager alloc] initWithDataSource:self initialStateHoldDetails:detailsCopy];
 
   return v5;
 }
@@ -132,9 +132,9 @@
 
 - (BOOL)supportsAdaptiveTemperatureAutomations
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  v3 = [v2 hapAccessories];
-  v4 = [v3 na_any:&__block_literal_global_207431];
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  hapAccessories = [home hapAccessories];
+  v4 = [hapAccessories na_any:&__block_literal_global_207431];
 
   return v4;
 }
@@ -149,45 +149,45 @@ uint64_t __79__HMDHomeActivityStateManagerDataSource_supportsAdaptiveTemperature
 
 - (HMDUser)currentUser
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  v3 = [v2 currentUser];
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  currentUser = [home currentUser];
 
-  return v3;
+  return currentUser;
 }
 
 - (HMCContext)workingStoreContext
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  v3 = [v2 backingStore];
-  v4 = [v3 context];
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
-  return v4;
+  return context;
 }
 
 - (HMDResidentDevice)currentPrimaryResident
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  v3 = [v2 residentDeviceManager];
-  v4 = [v3 primaryResidentDevice];
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-  return v4;
+  return primaryResidentDevice;
 }
 
 - (BOOL)isCurrentDeviceConfirmedPrimaryResident
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  v3 = [v2 isCurrentDeviceConfirmedPrimaryResident];
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
 
-  return v3;
+  return isCurrentDeviceConfirmedPrimaryResident;
 }
 
 - (BOOL)hasFinishedLoadingHomeData
 {
-  v2 = [(HMDHomeActivityStateManagerDataSource *)self home];
-  v3 = [v2 homeManager];
-  v4 = [v3 hasLoadedData];
+  home = [(HMDHomeActivityStateManagerDataSource *)self home];
+  homeManager = [home homeManager];
+  hasLoadedData = [homeManager hasLoadedData];
 
-  return v4;
+  return hasLoadedData;
 }
 
 - (BOOL)isResidentCapable
@@ -219,17 +219,17 @@ uint64_t __79__HMDHomeActivityStateManagerDataSource_supportsAdaptiveTemperature
   return self;
 }
 
-- (HMDHomeActivityStateManagerDataSource)initWithHome:(id)a3
+- (HMDHomeActivityStateManagerDataSource)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v24.receiver = self;
   v24.super_class = HMDHomeActivityStateManagerDataSource;
   v5 = [(HMDHomeActivityStateManagerDataSource *)&v24 init];
   if (v5)
   {
-    v6 = [v4 administratorHandler];
+    administratorHandler = [homeCopy administratorHandler];
     administratorHandler = v5->_administratorHandler;
-    v5->_administratorHandler = v6;
+    v5->_administratorHandler = administratorHandler;
 
     v8 = +[HMDBulletinBoard sharedBulletinBoard];
     bulletinBoard = v5->_bulletinBoard;
@@ -239,23 +239,23 @@ uint64_t __79__HMDHomeActivityStateManagerDataSource_supportsAdaptiveTemperature
     featuresDataSource = v5->_featuresDataSource;
     v5->_featuresDataSource = v10;
 
-    objc_storeWeak(&v5->_home, v4);
+    objc_storeWeak(&v5->_home, homeCopy);
     v12 = +[HMDMetricsManager sharedLogEventSubmitter];
     logEventSubmitter = v5->_logEventSubmitter;
     v5->_logEventSubmitter = v12;
 
-    v14 = [v4 uuid];
-    v15 = [v14 UUIDString];
+    uuid = [homeCopy uuid];
+    uUIDString = [uuid UUIDString];
     logIdentifier = v5->_logIdentifier;
-    v5->_logIdentifier = v15;
+    v5->_logIdentifier = uUIDString;
 
-    v17 = [v4 msgDispatcher];
+    msgDispatcher = [homeCopy msgDispatcher];
     messageDispatcher = v5->_messageDispatcher;
-    v5->_messageDispatcher = v17;
+    v5->_messageDispatcher = msgDispatcher;
 
-    v19 = [v4 workQueue];
+    workQueue = [homeCopy workQueue];
     queue = v5->_queue;
-    v5->_queue = v19;
+    v5->_queue = workQueue;
 
     v5->_reportValidityInterval = (60 * (presenceMonitorRefreshGracePeriodInMinutes + presenceFeedRefreshInMinutes));
     v21 = objc_alloc_init(HMDHomeActivityStateLoggerWithTTL);

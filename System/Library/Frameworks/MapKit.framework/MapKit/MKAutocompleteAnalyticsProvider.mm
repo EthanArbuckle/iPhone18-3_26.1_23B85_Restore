@@ -1,15 +1,15 @@
 @interface MKAutocompleteAnalyticsProvider
 - (MKAutocompleteAnalyticsProvider)init;
 - (id)captureNewMetrics;
-- (void)updateStateWithQuery:(id)a3 queryTokens:(id)a4 visibleSuggestionEntries:(id)a5;
+- (void)updateStateWithQuery:(id)query queryTokens:(id)tokens visibleSuggestionEntries:(id)entries;
 @end
 
 @implementation MKAutocompleteAnalyticsProvider
 
 - (id)captureNewMetrics
 {
-  v3 = [(MKAutocompleteAnalyticsProvider *)self isolationQueue];
-  dispatch_assert_queue_not_V2(v3);
+  isolationQueue = [(MKAutocompleteAnalyticsProvider *)self isolationQueue];
+  dispatch_assert_queue_not_V2(isolationQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -17,14 +17,14 @@
   v11 = __Block_byref_object_copy__42253;
   v12 = __Block_byref_object_dispose__42254;
   v13 = 0;
-  v4 = [(MKAutocompleteAnalyticsProvider *)self isolationQueue];
+  isolationQueue2 = [(MKAutocompleteAnalyticsProvider *)self isolationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__MKAutocompleteAnalyticsProvider_captureNewMetrics__block_invoke;
   v7[3] = &unk_1E76CD7E8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(isolationQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -52,24 +52,24 @@ void __52__MKAutocompleteAnalyticsProvider_captureNewMetrics__block_invoke(uint6
   }
 }
 
-- (void)updateStateWithQuery:(id)a3 queryTokens:(id)a4 visibleSuggestionEntries:(id)a5
+- (void)updateStateWithQuery:(id)query queryTokens:(id)tokens visibleSuggestionEntries:(id)entries
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MKAutocompleteAnalyticsProvider *)self isolationQueue];
+  queryCopy = query;
+  tokensCopy = tokens;
+  entriesCopy = entries;
+  isolationQueue = [(MKAutocompleteAnalyticsProvider *)self isolationQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__MKAutocompleteAnalyticsProvider_updateStateWithQuery_queryTokens_visibleSuggestionEntries___block_invoke;
   v15[3] = &unk_1E76CD0D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = queryCopy;
+  v17 = tokensCopy;
+  v18 = entriesCopy;
+  v12 = entriesCopy;
+  v13 = tokensCopy;
+  v14 = queryCopy;
+  dispatch_async(isolationQueue, v15);
 }
 
 void __93__MKAutocompleteAnalyticsProvider_updateStateWithQuery_queryTokens_visibleSuggestionEntries___block_invoke(uint64_t a1)
@@ -86,13 +86,13 @@ void __93__MKAutocompleteAnalyticsProvider_updateStateWithQuery_queryTokens_visi
   if (v2)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v3 stringWithFormat:@"%@.%@.isolationQueue.%p", v5, objc_opt_class(), v2];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [v3 stringWithFormat:@"%@.%@.isolationQueue.%p", bundleIdentifier, objc_opt_class(), v2];
 
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     isolationQueue = v2->_isolationQueue;
     v2->_isolationQueue = v9;
   }

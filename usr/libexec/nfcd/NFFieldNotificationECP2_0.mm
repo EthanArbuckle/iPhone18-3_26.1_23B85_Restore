@@ -1,66 +1,66 @@
 @interface NFFieldNotificationECP2_0
-- (BOOL)isEqual:(id)a3;
-- (NFFieldNotificationECP2_0)initWithCoder:(id)a3;
-- (NFFieldNotificationECP2_0)initWithDictionary:(id)a3;
-- (id)_parseCHTerminalTypeData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NFFieldNotificationECP2_0)initWithCoder:(id)coder;
+- (NFFieldNotificationECP2_0)initWithDictionary:(id)dictionary;
+- (id)_parseCHTerminalTypeData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFFieldNotificationECP2_0
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   odaRequired = self->_odaRequired;
-  v5 = a3;
-  [v5 encodeBool:odaRequired forKey:@"odaRequired"];
-  [v5 encodeInteger:self->_terminalMode forKey:@"terminalMode"];
-  [v5 encodeInteger:self->_terminalType forKey:@"terminalType"];
-  [v5 encodeInteger:self->_terminalSubType forKey:@"terminalSubType"];
-  [v5 encodeObject:self->_tciArray forKey:@"tciArray"];
-  [v5 encodeObject:self->_openLoopSchemeBitfield forKey:@"openLoopSchemeBitfield"];
-  [v5 encodeObject:self->_homeKitSchemeDataPayload forKey:@"homeKitSchemeDataPayload"];
-  [v5 encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
-  [v5 encodeInteger:self->_pairingMode forKey:@"pairingMode"];
-  [v5 encodeBool:self->_ignoreRFTechOnIsEqual forKey:@"ignoreRFTechOnIsEqual"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeBool:odaRequired forKey:@"odaRequired"];
+  [coderCopy encodeInteger:self->_terminalMode forKey:@"terminalMode"];
+  [coderCopy encodeInteger:self->_terminalType forKey:@"terminalType"];
+  [coderCopy encodeInteger:self->_terminalSubType forKey:@"terminalSubType"];
+  [coderCopy encodeObject:self->_tciArray forKey:@"tciArray"];
+  [coderCopy encodeObject:self->_openLoopSchemeBitfield forKey:@"openLoopSchemeBitfield"];
+  [coderCopy encodeObject:self->_homeKitSchemeDataPayload forKey:@"homeKitSchemeDataPayload"];
+  [coderCopy encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
+  [coderCopy encodeInteger:self->_pairingMode forKey:@"pairingMode"];
+  [coderCopy encodeBool:self->_ignoreRFTechOnIsEqual forKey:@"ignoreRFTechOnIsEqual"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
   v6.receiver = self;
   v6.super_class = NFFieldNotificationECP2_0;
-  [(NFFieldNotification *)&v6 encodeWithCoder:v5];
+  [(NFFieldNotification *)&v6 encodeWithCoder:coderCopy];
 }
 
-- (NFFieldNotificationECP2_0)initWithCoder:(id)a3
+- (NFFieldNotificationECP2_0)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = NFFieldNotificationECP2_0;
-  v5 = [(NFFieldNotification *)&v28 initWithCoder:v4];
+  v5 = [(NFFieldNotification *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_odaRequired = [v4 decodeBoolForKey:@"odaRequired"];
-    v5->_terminalMode = [v4 decodeIntegerForKey:@"terminalMode"];
-    v5->_terminalType = [v4 decodeIntegerForKey:@"terminalType"];
-    v5->_terminalSubType = [v4 decodeIntegerForKey:@"terminalSubType"];
-    v6 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"tciArray"];
+    v5->_odaRequired = [coderCopy decodeBoolForKey:@"odaRequired"];
+    v5->_terminalMode = [coderCopy decodeIntegerForKey:@"terminalMode"];
+    v5->_terminalType = [coderCopy decodeIntegerForKey:@"terminalType"];
+    v5->_terminalSubType = [coderCopy decodeIntegerForKey:@"terminalSubType"];
+    v6 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"tciArray"];
     tciArray = v5->_tciArray;
     v5->_tciArray = v6;
 
     v8 = [[NSSet alloc] initWithObjects:{objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"openLoopSchemeBitfield"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"openLoopSchemeBitfield"];
     openLoopSchemeBitfield = v5->_openLoopSchemeBitfield;
     v5->_openLoopSchemeBitfield = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeKitSchemeDataPayload"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeKitSchemeDataPayload"];
     homeKitSchemeDataPayload = v5->_homeKitSchemeDataPayload;
     v5->_homeKitSchemeDataPayload = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v13;
 
-    v5->_pairingMode = [v4 decodeIntForKey:@"pairingMode"];
-    v5->_ignoreRFTechOnIsEqual = [v4 decodeBoolForKey:@"ignoreRFTechOnIsEqual"];
+    v5->_pairingMode = [coderCopy decodeIntForKey:@"pairingMode"];
+    v5->_ignoreRFTechOnIsEqual = [coderCopy decodeBoolForKey:@"ignoreRFTechOnIsEqual"];
     v27 = [NSSet alloc];
     v26 = objc_opt_class();
     v15 = objc_opt_class();
@@ -71,7 +71,7 @@
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v27 initWithObjects:{v26, v15, v16, v17, v18, v19, v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"userInfo"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v23;
   }
@@ -79,23 +79,23 @@
   return v5;
 }
 
-- (NFFieldNotificationECP2_0)initWithDictionary:(id)a3
+- (NFFieldNotificationECP2_0)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v111.receiver = self;
   v111.super_class = NFFieldNotificationECP2_0;
-  v6 = [(NFFieldNotification *)&v111 initWithDictionary:v5];
+  v6 = [(NFFieldNotification *)&v111 initWithDictionary:dictionaryCopy];
   if (!v6)
   {
     goto LABEL_101;
   }
 
-  v7 = [v5 objectForKey:@"ECPData"];
+  v7 = [dictionaryCopy objectForKey:@"ECPData"];
   if ([v7 length] > 4)
   {
     [(NFFieldNotification *)v6 setNotificationType:3];
-    v20 = [v7 bytes];
-    v21 = v20[2];
+    bytes = [v7 bytes];
+    v21 = bytes[2];
     v22 = (v21 & 0xF);
     if ([v7 length] - 5 != v22)
     {
@@ -150,11 +150,11 @@
     }
 
     v6->_odaRequired = (v21 & 0x40) == 0;
-    v6->_terminalType = v20[3];
+    v6->_terminalType = bytes[3];
     v6->_terminalMode = (v21 >> 5) & 4;
-    v6->_terminalSubType = v20[4];
+    v6->_terminalSubType = bytes[4];
     v6->_pairingMode = 0;
-    v23 = [v5 objectForKey:@"IgnoreRFTechOnIsEqual"];
+    v23 = [dictionaryCopy objectForKey:@"IgnoreRFTechOnIsEqual"];
     v6->_ignoreRFTechOnIsEqual = [v23 BOOLValue];
 
     [(NFFieldNotificationECP2_0 *)v6 _initCategoryWithType:v6->_terminalType subType:v6->_terminalSubType];
@@ -377,8 +377,8 @@ LABEL_68:
         p_super = v80;
         if (v80 && [v80 length]>= 3)
         {
-          v81 = [p_super bytes];
-          if (*v81 == 3841 && v81[2] == 255)
+          bytes2 = [p_super bytes];
+          if (*bytes2 == 3841 && bytes2[2] == 255)
           {
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             v83 = NFLogGetLogger();
@@ -618,9 +618,9 @@ LABEL_102:
         terminalSubType = self->_terminalSubType;
         tciArray = self->_tciArray;
         readerIdentifier = self->_readerIdentifier;
-        v12 = [(NFFieldNotification *)self _creationDateString];
-        v70 = v12;
-        v71 = [(NFFieldNotification *)self cachedBeforeRFReset];
+        _creationDateString = [(NFFieldNotification *)self _creationDateString];
+        cachedBeforeRFReset2 = _creationDateString;
+        cachedBeforeRFReset = [(NFFieldNotification *)self cachedBeforeRFReset];
         v68 = readerIdentifier;
         v63 = tciArray;
         v65 = v77;
@@ -637,20 +637,20 @@ LABEL_102:
 
       v75 = [NSString alloc];
       v29 = object_getClassName(self);
-      v30 = [(NFFieldNotification *)self typeFSystemCode];
+      typeFSystemCode = [(NFFieldNotification *)self typeFSystemCode];
       v31 = self->_odaRequired;
       v32 = self->_terminalMode;
       v33 = self->_terminalType;
       v34 = self->_terminalSubType;
       homeKitSchemeDataPayload = self->_homeKitSchemeDataPayload;
-      v12 = [(NFFieldNotification *)self _creationDateString];
-      v68 = v12;
-      v70 = [(NFFieldNotification *)self cachedBeforeRFReset];
+      _creationDateString = [(NFFieldNotification *)self _creationDateString];
+      v68 = _creationDateString;
+      cachedBeforeRFReset2 = [(NFFieldNotification *)self cachedBeforeRFReset];
       v63 = v34;
       v65 = homeKitSchemeDataPayload;
       v59 = v32;
       v61 = v33;
-      v55 = v30;
+      v55 = typeFSystemCode;
       v57 = v31;
       v13 = @"<%s: tech=%@ sc=0x%X, oda=%d, terminalMode=%lu, terminalType=%lu, terminalSubType=%d, homeKitPayload=%@, date=%@, cached=%d>";
       v53 = v29;
@@ -658,7 +658,7 @@ LABEL_102:
 LABEL_24:
       v36 = v75;
 LABEL_31:
-      v44 = [v36 initWithFormat:v13, v53, v54, v55, v57, v59, v61, v63, v65, v68, v70, v71];
+      v44 = [v36 initWithFormat:v13, v53, v54, v55, v57, v59, v61, v63, v65, v68, cachedBeforeRFReset2, cachedBeforeRFReset];
       goto LABEL_32;
     }
 
@@ -667,15 +667,15 @@ LABEL_31:
 LABEL_20:
       v76 = [NSString alloc];
       v73 = object_getClassName(self);
-      v14 = [(NFFieldNotification *)self typeFSystemCode];
+      typeFSystemCode2 = [(NFFieldNotification *)self typeFSystemCode];
       v15 = self->_odaRequired;
       v16 = self->_terminalMode;
       v17 = self->_terminalType;
       v18 = self->_terminalSubType;
-      v12 = [(NSData *)self->_terminalTypeData debugDescription];
+      _creationDateString = [(NSData *)self->_terminalTypeData debugDescription];
       v19 = self->_readerIdentifier;
-      v20 = [(NFFieldNotification *)self _creationDateString];
-      v21 = [v76 initWithFormat:@"<%s: tech=[%@] sc=0x%X, oda=%d, terminalMode=%lu, terminalType=%lu, terminalSubType=%d, terminalTypeData=%@, readerIdentifier=%@, date=%@, cached=%d>", v73, v3, v14, v15, v16, v17, v18, v12, v19, v20, -[NFFieldNotification cachedBeforeRFReset](self, "cachedBeforeRFReset")];
+      _creationDateString2 = [(NFFieldNotification *)self _creationDateString];
+      v21 = [v76 initWithFormat:@"<%s: tech=[%@] sc=0x%X, oda=%d, terminalMode=%lu, terminalType=%lu, terminalSubType=%d, terminalTypeData=%@, readerIdentifier=%@, date=%@, cached=%d>", v73, v3, typeFSystemCode2, v15, v16, v17, v18, _creationDateString, v19, _creationDateString2, -[NFFieldNotification cachedBeforeRFReset](self, "cachedBeforeRFReset")];
 
       goto LABEL_33;
     }
@@ -687,9 +687,9 @@ LABEL_20:
     v41 = self->_terminalType;
     v42 = self->_terminalSubType;
     userInfo = self->_userInfo;
-    v12 = [(NFFieldNotification *)self _creationDateString];
-    v66 = v12;
-    v67 = [(NFFieldNotification *)self cachedBeforeRFReset];
+    _creationDateString = [(NFFieldNotification *)self _creationDateString];
+    cachedBeforeRFReset4 = _creationDateString;
+    cachedBeforeRFReset3 = [(NFFieldNotification *)self cachedBeforeRFReset];
     v62 = v42;
     v64 = userInfo;
     v58 = v40;
@@ -706,16 +706,16 @@ LABEL_20:
       {
         v75 = [NSString alloc];
         v72 = object_getClassName(self);
-        v5 = [(NFFieldNotification *)self typeFSystemCode];
+        typeFSystemCode3 = [(NFFieldNotification *)self typeFSystemCode];
         v6 = self->_odaRequired;
         v7 = self->_terminalMode;
         v8 = self->_terminalType;
         v9 = self->_terminalSubType;
         v10 = self->_tciArray;
         openLoopSchemeBitfield = self->_openLoopSchemeBitfield;
-        v12 = [(NFFieldNotification *)self _creationDateString];
-        v70 = v12;
-        v71 = [(NFFieldNotification *)self cachedBeforeRFReset];
+        _creationDateString = [(NFFieldNotification *)self _creationDateString];
+        cachedBeforeRFReset2 = _creationDateString;
+        cachedBeforeRFReset = [(NFFieldNotification *)self cachedBeforeRFReset];
         v65 = v10;
         v68 = openLoopSchemeBitfield;
         v61 = v8;
@@ -723,7 +723,7 @@ LABEL_20:
         v57 = v6;
         v59 = v7;
         v54 = v3;
-        v55 = v5;
+        v55 = typeFSystemCode3;
         v13 = @"<%s: tech=[%@] sc=0x%X, oda=%d, terminalMode=%lu, terminalType=%lu, terminalSubType=%d, tcis=%@, openLoop=%@, date=%@, cached=%d>";
         v53 = v72;
         goto LABEL_24;
@@ -738,9 +738,9 @@ LABEL_20:
     v25 = self->_terminalMode;
     v26 = self->_terminalType;
     v27 = self->_terminalSubType;
-    v12 = [(NFFieldNotification *)self _creationDateString];
-    v64 = v12;
-    v66 = [(NFFieldNotification *)self cachedBeforeRFReset];
+    _creationDateString = [(NFFieldNotification *)self _creationDateString];
+    v64 = _creationDateString;
+    cachedBeforeRFReset4 = [(NFFieldNotification *)self cachedBeforeRFReset];
     v60 = v26;
     v62 = v27;
     v56 = v24;
@@ -748,7 +748,7 @@ LABEL_20:
     v28 = @"<%s: tech=[%@], oda=%d, terminalMode=%lu, terminalType=%lu, terminalSubType=%d, date=%@, cached=%d>";
   }
 
-  v44 = [v22 initWithFormat:v28, v23, v3, v56, v58, v60, v62, v64, v66, v67, v69, v71];
+  v44 = [v22 initWithFormat:v28, v23, v3, v56, v58, v60, v62, v64, cachedBeforeRFReset4, cachedBeforeRFReset3, v69, cachedBeforeRFReset];
 LABEL_32:
   v21 = v44;
 LABEL_33:
@@ -756,10 +756,10 @@ LABEL_33:
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
@@ -769,47 +769,47 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(NFFieldNotificationECP2_0 *)v6 odaRequired];
-      if (v7 != [(NFFieldNotificationECP2_0 *)self odaRequired])
+      v6 = equalCopy;
+      odaRequired = [(NFFieldNotificationECP2_0 *)v6 odaRequired];
+      if (odaRequired != [(NFFieldNotificationECP2_0 *)self odaRequired])
       {
         goto LABEL_47;
       }
 
-      v8 = [(NFFieldNotificationECP2_0 *)v6 terminalType];
-      if (v8 != [(NFFieldNotificationECP2_0 *)self terminalType])
+      terminalType = [(NFFieldNotificationECP2_0 *)v6 terminalType];
+      if (terminalType != [(NFFieldNotificationECP2_0 *)self terminalType])
       {
         goto LABEL_47;
       }
 
-      v9 = [(NFFieldNotificationECP2_0 *)v6 terminalSubType];
-      if (v9 != [(NFFieldNotificationECP2_0 *)self terminalSubType])
+      terminalSubType = [(NFFieldNotificationECP2_0 *)v6 terminalSubType];
+      if (terminalSubType != [(NFFieldNotificationECP2_0 *)self terminalSubType])
       {
         goto LABEL_47;
       }
 
-      v10 = [(NFFieldNotificationECP2_0 *)v6 terminalMode];
-      if (v10 != [(NFFieldNotificationECP2_0 *)self terminalMode])
+      terminalMode = [(NFFieldNotificationECP2_0 *)v6 terminalMode];
+      if (terminalMode != [(NFFieldNotificationECP2_0 *)self terminalMode])
       {
         goto LABEL_47;
       }
 
-      v11 = [(NFFieldNotificationECP2_0 *)v6 tciArray];
-      v12 = [v11 count];
-      v13 = [(NFFieldNotificationECP2_0 *)self tciArray];
-      v14 = [v13 count];
+      tciArray = [(NFFieldNotificationECP2_0 *)v6 tciArray];
+      v12 = [tciArray count];
+      tciArray2 = [(NFFieldNotificationECP2_0 *)self tciArray];
+      v14 = [tciArray2 count];
 
       if (v12 != v14)
       {
         goto LABEL_47;
       }
 
-      v15 = [(NFFieldNotificationECP2_0 *)v6 tciArray];
-      if ([v15 count])
+      tciArray3 = [(NFFieldNotificationECP2_0 *)v6 tciArray];
+      if ([tciArray3 count])
       {
-        v16 = [(NFFieldNotificationECP2_0 *)v6 tciArray];
-        v17 = [(NFFieldNotificationECP2_0 *)self tciArray];
-        v18 = [v16 isEqualToArray:v17];
+        tciArray4 = [(NFFieldNotificationECP2_0 *)v6 tciArray];
+        tciArray5 = [(NFFieldNotificationECP2_0 *)self tciArray];
+        v18 = [tciArray4 isEqualToArray:tciArray5];
 
         if (!v18)
         {
@@ -821,23 +821,23 @@ LABEL_33:
       {
       }
 
-      v20 = [(NFFieldNotificationECP2_0 *)v6 openLoopSchemeBitfield];
-      v21 = [v20 length];
-      v22 = [(NFFieldNotificationECP2_0 *)self openLoopSchemeBitfield];
-      v23 = [v22 length];
+      openLoopSchemeBitfield = [(NFFieldNotificationECP2_0 *)v6 openLoopSchemeBitfield];
+      v21 = [openLoopSchemeBitfield length];
+      openLoopSchemeBitfield2 = [(NFFieldNotificationECP2_0 *)self openLoopSchemeBitfield];
+      v23 = [openLoopSchemeBitfield2 length];
 
       if (v21 != v23)
       {
         goto LABEL_47;
       }
 
-      v24 = [(NFFieldNotificationECP2_0 *)v6 openLoopSchemeBitfield];
-      if (v24)
+      openLoopSchemeBitfield3 = [(NFFieldNotificationECP2_0 *)v6 openLoopSchemeBitfield];
+      if (openLoopSchemeBitfield3)
       {
-        v25 = v24;
-        v26 = [(NFFieldNotificationECP2_0 *)v6 openLoopSchemeBitfield];
-        v27 = [(NFFieldNotificationECP2_0 *)self openLoopSchemeBitfield];
-        v28 = [v26 isEqualToData:v27];
+        v25 = openLoopSchemeBitfield3;
+        openLoopSchemeBitfield4 = [(NFFieldNotificationECP2_0 *)v6 openLoopSchemeBitfield];
+        openLoopSchemeBitfield5 = [(NFFieldNotificationECP2_0 *)self openLoopSchemeBitfield];
+        v28 = [openLoopSchemeBitfield4 isEqualToData:openLoopSchemeBitfield5];
 
         if (!v28)
         {
@@ -845,22 +845,22 @@ LABEL_33:
         }
       }
 
-      v29 = [(NFFieldNotificationECP2_0 *)v6 readerIdentifier];
-      v30 = [v29 length];
-      v31 = [(NFFieldNotificationECP2_0 *)self readerIdentifier];
-      v32 = [v31 length];
+      readerIdentifier = [(NFFieldNotificationECP2_0 *)v6 readerIdentifier];
+      readerIdentifier4 = [readerIdentifier length];
+      readerIdentifier2 = [(NFFieldNotificationECP2_0 *)self readerIdentifier];
+      v32 = [readerIdentifier2 length];
 
-      if (v30 != v32)
+      if (readerIdentifier4 != v32)
       {
         goto LABEL_47;
       }
 
-      v33 = [(NFFieldNotificationECP2_0 *)v6 readerIdentifier];
-      if ([v33 length])
+      readerIdentifier3 = [(NFFieldNotificationECP2_0 *)v6 readerIdentifier];
+      if ([readerIdentifier3 length])
       {
-        v30 = [(NFFieldNotificationECP2_0 *)v6 readerIdentifier];
-        v34 = [(NFFieldNotificationECP2_0 *)self readerIdentifier];
-        v35 = [v30 isEqualToData:v34];
+        readerIdentifier4 = [(NFFieldNotificationECP2_0 *)v6 readerIdentifier];
+        readerIdentifier5 = [(NFFieldNotificationECP2_0 *)self readerIdentifier];
+        v35 = [readerIdentifier4 isEqualToData:readerIdentifier5];
 
         if (!v35)
         {
@@ -872,8 +872,8 @@ LABEL_33:
       {
       }
 
-      v36 = [(NFFieldNotificationECP2_0 *)v6 pairingMode];
-      if (v36 != [(NFFieldNotificationECP2_0 *)self pairingMode])
+      pairingMode = [(NFFieldNotificationECP2_0 *)v6 pairingMode];
+      if (pairingMode != [(NFFieldNotificationECP2_0 *)self pairingMode])
       {
 LABEL_47:
         v19 = 0;
@@ -903,15 +903,15 @@ LABEL_25:
         goto LABEL_48;
       }
 
-      v38 = [(NFFieldNotificationECP2_0 *)self userInfo];
-      v39 = [v38 count];
-      if (v39 || (-[NFFieldNotificationECP2_0 userInfo](v6, "userInfo"), v30 = objc_claimAutoreleasedReturnValue(), ![v30 count]))
+      userInfo = [(NFFieldNotificationECP2_0 *)self userInfo];
+      v39 = [userInfo count];
+      if (v39 || (-[NFFieldNotificationECP2_0 userInfo](v6, "userInfo"), readerIdentifier4 = objc_claimAutoreleasedReturnValue(), ![readerIdentifier4 count]))
       {
-        v40 = [(NFFieldNotificationECP2_0 *)self userInfo];
-        if ([v40 count])
+        userInfo2 = [(NFFieldNotificationECP2_0 *)self userInfo];
+        if ([userInfo2 count])
         {
-          v41 = [(NFFieldNotificationECP2_0 *)v6 userInfo];
-          v42 = [v41 count];
+          userInfo3 = [(NFFieldNotificationECP2_0 *)v6 userInfo];
+          v42 = [userInfo3 count];
 
           if (!v39)
           {
@@ -931,19 +931,19 @@ LABEL_25:
           }
         }
 
-        v43 = [(NFFieldNotificationECP2_0 *)v6 userInfo];
-        v38 = [v43 objectForKey:@"CHCfgBytes"];
+        userInfo4 = [(NFFieldNotificationECP2_0 *)v6 userInfo];
+        userInfo = [userInfo4 objectForKey:@"CHCfgBytes"];
 
-        v44 = [(NFFieldNotificationECP2_0 *)self userInfo];
-        v30 = [v44 objectForKey:@"CHCfgBytes"];
+        userInfo5 = [(NFFieldNotificationECP2_0 *)self userInfo];
+        readerIdentifier4 = [userInfo5 objectForKey:@"CHCfgBytes"];
 
-        if ((v38 || !v30) && (!v38 || v30))
+        if ((userInfo || !readerIdentifier4) && (!userInfo || readerIdentifier4))
         {
-          v45 = [v38 unsignedShortValue];
-          if (v45 != [v30 unsignedShortValue])
+          unsignedShortValue = [userInfo unsignedShortValue];
+          if (unsignedShortValue != [readerIdentifier4 unsignedShortValue])
           {
-            v46 = [v38 unsignedShortValue];
-            if ((([v30 unsignedShortValue] ^ v46) & 3) != 0)
+            unsignedShortValue2 = [userInfo unsignedShortValue];
+            if ((([readerIdentifier4 unsignedShortValue] ^ unsignedShortValue2) & 3) != 0)
             {
               goto LABEL_46;
             }
@@ -1010,11 +1010,11 @@ LABEL_49:
   return v19;
 }
 
-- (id)_parseCHTerminalTypeData:(id)a3
+- (id)_parseCHTerminalTypeData:(id)data
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  if ([v5 length] <= 2)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  if ([dataCopy length] <= 2)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -1068,8 +1068,8 @@ LABEL_32:
     goto LABEL_69;
   }
 
-  v17 = *v6;
-  if (!*v6)
+  v17 = *bytes;
+  if (!*bytes)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v29 = NFLogGetLogger();
@@ -1123,12 +1123,12 @@ LABEL_32:
   v18 = [[NSNumber alloc] initWithUnsignedChar:v17];
   [v13 setObject:v18 forKeyedSubscript:@"CHVersion"];
 
-  v19 = [[NSNumber alloc] initWithUnsignedShort:bswap32(*(v6 + 1)) >> 16];
+  v19 = [[NSNumber alloc] initWithUnsignedShort:bswap32(*(bytes + 1)) >> 16];
   [v13 setObject:v19 forKeyedSubscript:@"CHCfgBytes"];
 
-  if ([v5 length] > 8)
+  if ([dataCopy length] > 8)
   {
-    if ([v5 length] >= 0xA)
+    if ([dataCopy length] >= 0xA)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v38 = NFLogGetLogger();
@@ -1175,7 +1175,7 @@ LABEL_32:
       }
     }
 
-    v47 = [[NSData alloc] initWithBytes:v6 + 3 length:6];
+    v47 = [[NSData alloc] initWithBytes:bytes + 3 length:6];
     if (v47)
     {
       v26 = v47;
@@ -1339,19 +1339,19 @@ LABEL_69:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NFFieldNotificationECP2_0 alloc];
-  v5 = [(NFFieldNotification *)self notificationType];
-  v6 = [(NFFieldNotification *)self rfTechnology];
-  v7 = [(NFFieldNotification *)self typeFSystemCode];
-  v8 = [(NFFieldNotification *)self creationDate];
-  v9 = [(NFFieldNotification *)self cachedBeforeRFReset];
+  notificationType = [(NFFieldNotification *)self notificationType];
+  rfTechnology = [(NFFieldNotification *)self rfTechnology];
+  typeFSystemCode = [(NFFieldNotification *)self typeFSystemCode];
+  creationDate = [(NFFieldNotification *)self creationDate];
+  cachedBeforeRFReset = [(NFFieldNotification *)self cachedBeforeRFReset];
   LOBYTE(v15) = self->_ignoreRFTechOnIsEqual;
   LODWORD(v14) = self->_pairingMode;
   LOBYTE(v13) = self->_terminalSubType;
   LODWORD(v12) = self->_terminalMode;
-  v10 = [(NFFieldNotificationECP2_0 *)v4 initWithNotificationType:v5 rfTechnology:v6 typeFSystemCode:v7 creationDate:v8 cachedBeforeRFReset:v9 odaRequired:self->_odaRequired terminalMode:v12 terminalType:self->_terminalType terminalSubType:v13 tciArray:self->_tciArray openLoopSchemeBitfield:self->_openLoopSchemeBitfield homeKitSchemeDataPayload:self->_homeKitSchemeDataPayload readerIdentifier:self->_readerIdentifier pairingMode:v14 terminalTypeData:self->_terminalTypeData ignoreRFTechOnIsEqual:v15 userInfo:self->_userInfo];
+  v10 = [(NFFieldNotificationECP2_0 *)v4 initWithNotificationType:notificationType rfTechnology:rfTechnology typeFSystemCode:typeFSystemCode creationDate:creationDate cachedBeforeRFReset:cachedBeforeRFReset odaRequired:self->_odaRequired terminalMode:v12 terminalType:self->_terminalType terminalSubType:v13 tciArray:self->_tciArray openLoopSchemeBitfield:self->_openLoopSchemeBitfield homeKitSchemeDataPayload:self->_homeKitSchemeDataPayload readerIdentifier:self->_readerIdentifier pairingMode:v14 terminalTypeData:self->_terminalTypeData ignoreRFTechOnIsEqual:v15 userInfo:self->_userInfo];
 
   return v10;
 }

@@ -1,24 +1,24 @@
 @interface PGFeatureExtractorAssetImportSource
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetImportSource
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v5 = MEMORY[0x277D22C68];
-  v6 = a3;
+  entityCopy = entity;
   v7 = [v5 zerosOfCount:{-[PGFeatureExtractorAssetImportSource featureLength](self, "featureLength")}];
-  v8 = [v6 importProperties];
+  importProperties = [entityCopy importProperties];
 
-  v9 = [v8 importedBy];
-  if (v9 < 0xC || v9 - 14 < 2 || v9 == 13)
+  importedBy = [importProperties importedBy];
+  if (importedBy < 0xC || importedBy - 14 < 2 || importedBy == 13)
   {
     goto LABEL_2;
   }
 
-  if (v9 == 12)
+  if (importedBy == 12)
   {
     LODWORD(v10) = 1.0;
     [v7 setFloat:v10 atIndex:?];

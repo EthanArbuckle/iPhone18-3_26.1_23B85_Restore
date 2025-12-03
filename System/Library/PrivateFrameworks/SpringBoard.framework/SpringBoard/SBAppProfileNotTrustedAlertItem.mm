@@ -1,42 +1,42 @@
 @interface SBAppProfileNotTrustedAlertItem
-- (SBAppProfileNotTrustedAlertItem)initWithApp:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBAppProfileNotTrustedAlertItem)initWithApp:(id)app;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBAppProfileNotTrustedAlertItem
 
-- (SBAppProfileNotTrustedAlertItem)initWithApp:(id)a3
+- (SBAppProfileNotTrustedAlertItem)initWithApp:(id)app
 {
-  v5 = a3;
+  appCopy = app;
   v6 = [(SBAlertItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_app, a3);
+    objc_storeStrong(&v6->_app, app);
   }
 
   return v7;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"APP_PROFILE_NOT_TRUSTED_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"APP_PROFILE_NOT_TRUSTED_TITLE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setTitle:v7];
 
-  v8 = [(SBApplication *)self->_app info];
-  v9 = [v8 signerIdentity];
+  info = [(SBApplication *)self->_app info];
+  signerIdentity = [info signerIdentity];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
   v12 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"APP_PROFILE_NOT_TRUSTED_BODY"];
-  v13 = [v11 localizedStringForKey:v12 value:&stru_283094718 table:@"SpringBoard"];
-  v14 = [v10 stringWithFormat:v13, v9];
+  v13 = [mainBundle2 localizedStringForKey:v12 value:&stru_283094718 table:@"SpringBoard"];
+  v14 = [v10 stringWithFormat:v13, signerIdentity];
 
   [v5 setMessage:v14];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"APP_PROFILE_NOT_TRUSTED_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle3 localizedStringForKey:@"APP_PROFILE_NOT_TRUSTED_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;

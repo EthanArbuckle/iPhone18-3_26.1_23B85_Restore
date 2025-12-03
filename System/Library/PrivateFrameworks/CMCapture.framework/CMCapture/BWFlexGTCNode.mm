@@ -1,16 +1,16 @@
 @interface BWFlexGTCNode
-- (BWFlexGTCNode)initWithNodeConfiguration:(id)a3 sensorConfigurationsByPortType:(id)a4 metalCommandQueue:(id)a5;
+- (BWFlexGTCNode)initWithNodeConfiguration:(id)configuration sensorConfigurationsByPortType:(id)type metalCommandQueue:(id)queue;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)_releaseResources;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWFlexGTCNode
 
-- (BWFlexGTCNode)initWithNodeConfiguration:(id)a3 sensorConfigurationsByPortType:(id)a4 metalCommandQueue:(id)a5
+- (BWFlexGTCNode)initWithNodeConfiguration:(id)configuration sensorConfigurationsByPortType:(id)type metalCommandQueue:(id)queue
 {
   v24.receiver = self;
   v24.super_class = BWFlexGTCNode;
@@ -23,8 +23,8 @@
 
   [(BWNode *)v8 setSupportsLiveReconfiguration:1];
   v9->_enableHighlightAdjustment = 1;
-  v9->_commandQueue = a5;
-  if (!a3)
+  v9->_commandQueue = queue;
+  if (!configuration)
   {
     [BWFlexGTCNode initWithNodeConfiguration:sensorConfigurationsByPortType:metalCommandQueue:];
 LABEL_15:
@@ -32,19 +32,19 @@ LABEL_15:
     return 0;
   }
 
-  v9->_nodeConfiguration = a3;
-  if (!a4)
+  v9->_nodeConfiguration = configuration;
+  if (!type)
   {
     [BWFlexGTCNode initWithNodeConfiguration:sensorConfigurationsByPortType:metalCommandQueue:];
     goto LABEL_15;
   }
 
-  v9->_sensorIDDictionaryByPortType = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a4, "count")}];
+  v9->_sensorIDDictionaryByPortType = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(type, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a4 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  v10 = [type countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -56,15 +56,15 @@ LABEL_15:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(type);
         }
 
-        -[NSMutableDictionary setObject:forKeyedSubscript:](v9->_sensorIDDictionaryByPortType, "setObject:forKeyedSubscript:", [objc_msgSend(a4 objectForKeyedSubscript:{*(*(&v20 + 1) + 8 * v13)), "sensorIDDictionary"}], *(*(&v20 + 1) + 8 * v13));
+        -[NSMutableDictionary setObject:forKeyedSubscript:](v9->_sensorIDDictionaryByPortType, "setObject:forKeyedSubscript:", [objc_msgSend(type objectForKeyedSubscript:{*(*(&v20 + 1) + 8 * v13)), "sensorIDDictionary"}], *(*(&v20 + 1) + 8 * v13));
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [a4 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v11 = [type countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v11);
@@ -94,16 +94,16 @@ LABEL_15:
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (!a3)
+  if (!d)
   {
     [(BWFlexGTCNode *)&self->super.super.isa _releaseResources];
   }
 
   v7.receiver = self;
   v7.super_class = BWFlexGTCNode;
-  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:d input:input];
 }
 
 - (void)prepareForCurrentConfigurationToBecomeLive
@@ -142,20 +142,20 @@ LABEL_15:
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
 
-    a1[21] = 0;
-    a1[16] = 0;
+    self[21] = 0;
+    self[16] = 0;
 
-    a1[17] = 0;
-    a1[18] = 0;
+    self[17] = 0;
+    self[18] = 0;
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (!a3)
+  if (!buffer)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -164,7 +164,7 @@ LABEL_50:
     goto LABEL_42;
   }
 
-  sbuf = BWSampleBufferGetAttachedMedia(a3, 0x1F217BF50);
+  sbuf = BWSampleBufferGetAttachedMedia(buffer, 0x1F217BF50);
   if (!sbuf)
   {
     goto LABEL_42;
@@ -177,8 +177,8 @@ LABEL_50:
   }
 
   v5 = ImageBuffer;
-  v6 = a3;
-  v7 = CMSampleBufferGetImageBuffer(a3);
+  bufferCopy3 = buffer;
+  v7 = CMSampleBufferGetImageBuffer(buffer);
   if (!v7)
   {
     goto LABEL_49;
@@ -186,7 +186,7 @@ LABEL_50:
 
   v8 = v7;
   v9 = *off_1E798A3C8;
-  v10 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v10 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v10)
   {
     goto LABEL_49;
@@ -254,7 +254,7 @@ LABEL_49:
 
   if (v14 >= 2.21)
   {
-    v6 = a3;
+    bufferCopy3 = buffer;
     v9 = v16;
     if (v18 >= 2.9)
     {
@@ -275,7 +275,7 @@ LABEL_32:
 
   else
   {
-    v6 = a3;
+    bufferCopy3 = buffer;
     v9 = v16;
     if (v14 >= 1.67)
     {
@@ -297,7 +297,7 @@ LABEL_33:
   LODWORD(v67) = 994352038;
   *(&v67 + 1) = v28;
 LABEL_34:
-  v29 = CMGetAttachment(v6, @"StillSettings", 0);
+  v29 = CMGetAttachment(bufferCopy3, @"StillSettings", 0);
   if (!v29)
   {
     goto LABEL_46;
@@ -316,17 +316,17 @@ LABEL_34:
   }
 
   v35 = v34;
-  v36 = [v30 requestedSettings];
-  if (!v36)
+  requestedSettings = [v30 requestedSettings];
+  if (!requestedSettings)
   {
     goto LABEL_42;
   }
 
-  v37 = v36;
+  v37 = requestedSettings;
   FigCaptureMetadataUtilitiesGetFinalCropRect();
   OUTLINED_FUNCTION_2_3();
-  v38 = [v37 outputWidth];
-  v39 = v38 / [v37 outputHeight];
+  outputWidth = [v37 outputWidth];
+  v39 = outputWidth / [v37 outputHeight];
   v40 = OUTLINED_FUNCTION_3();
   FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(v41, v42, v40, v43, v44, v45, v39);
   OUTLINED_FUNCTION_2_3();
@@ -353,7 +353,7 @@ LABEL_46:
   }
 
 LABEL_42:
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 - (uint64_t)initWithNodeConfiguration:sensorConfigurationsByPortType:metalCommandQueue:.cold.1()

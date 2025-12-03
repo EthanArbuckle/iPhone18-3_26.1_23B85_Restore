@@ -1,31 +1,31 @@
 @interface HKMCPregnancyModeSetupCompletionRecord
-- (BOOL)isEqual:(id)a3;
-- (HKMCPregnancyModeSetupCompletionRecord)initWithCoder:(id)a3;
-- (HKMCPregnancyModeSetupCompletionRecord)initWithVersion:(id)a3 sampleUUID:(id)a4 educationalStepsReviewDate:(id)a5 configurationStepsReviewDate:(id)a6 pregnancyAdjustedFeaturesSet:(id)a7 postPregnancyFeatureAdjustmentCompletionLog:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HKMCPregnancyModeSetupCompletionRecord)initWithCoder:(id)coder;
+- (HKMCPregnancyModeSetupCompletionRecord)initWithVersion:(id)version sampleUUID:(id)d educationalStepsReviewDate:(id)date configurationStepsReviewDate:(id)reviewDate pregnancyAdjustedFeaturesSet:(id)set postPregnancyFeatureAdjustmentCompletionLog:(id)log;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCPregnancyModeSetupCompletionRecord
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeObject:version forKey:@"Version"];
-  [v5 encodeObject:self->_sampleUUID forKey:@"SampleUUID"];
-  [v5 encodeObject:self->_educationalStepsReviewDate forKey:@"EducationalStepsReviewDate"];
-  [v5 encodeObject:self->_configurationStepsReviewDate forKey:@"ConfigurationStepsReviewDate"];
-  [v5 encodeObject:self->_pregnancyAdjustedFeaturesSet forKey:@"_PregnancyAdjustedFeaturesSet"];
-  [v5 encodeObject:self->_postPregnancyFeatureAdjustmentCompletionLog forKey:@"PostPregnancyFeatureAdjustmentCompletionLog"];
+  coderCopy = coder;
+  [coderCopy encodeObject:version forKey:@"Version"];
+  [coderCopy encodeObject:self->_sampleUUID forKey:@"SampleUUID"];
+  [coderCopy encodeObject:self->_educationalStepsReviewDate forKey:@"EducationalStepsReviewDate"];
+  [coderCopy encodeObject:self->_configurationStepsReviewDate forKey:@"ConfigurationStepsReviewDate"];
+  [coderCopy encodeObject:self->_pregnancyAdjustedFeaturesSet forKey:@"_PregnancyAdjustedFeaturesSet"];
+  [coderCopy encodeObject:self->_postPregnancyFeatureAdjustmentCompletionLog forKey:@"PostPregnancyFeatureAdjustmentCompletionLog"];
   v6 = [(NSDictionary *)self->_postPregnancyFeatureAdjustmentCompletionLog objectForKey:@"LowCardioFitness"];
-  [v5 encodeObject:v6 forKey:@"_PostPregnancyFeatureAdjustmentCompletionDate"];
+  [coderCopy encodeObject:v6 forKey:@"_PostPregnancyFeatureAdjustmentCompletionDate"];
 }
 
-- (HKMCPregnancyModeSetupCompletionRecord)initWithCoder:(id)a3
+- (HKMCPregnancyModeSetupCompletionRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = HKMCPregnancyModeSetupCompletionRecord;
   v5 = [(HKMCPregnancyModeSetupCompletionRecord *)&v29 init];
@@ -35,38 +35,38 @@
     version = v5->_version;
     v5->_version = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SampleUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SampleUUID"];
     sampleUUID = v5->_sampleUUID;
     v5->_sampleUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EducationalStepsReviewDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EducationalStepsReviewDate"];
     educationalStepsReviewDate = v5->_educationalStepsReviewDate;
     v5->_educationalStepsReviewDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ConfigurationStepsReviewDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ConfigurationStepsReviewDate"];
     configurationStepsReviewDate = v5->_configurationStepsReviewDate;
     v5->_configurationStepsReviewDate = v12;
 
     v14 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_PregnancyAdjustedFeaturesSet"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_PregnancyAdjustedFeaturesSet"];
     pregnancyAdjustedFeaturesSet = v5->_pregnancyAdjustedFeaturesSet;
     v5->_pregnancyAdjustedFeaturesSet = v15;
 
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = [v17 hk_typesForDictionaryMapping:v18 to:objc_opt_class()];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"PostPregnancyFeatureAdjustmentCompletionLog"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"PostPregnancyFeatureAdjustmentCompletionLog"];
     postPregnancyFeatureAdjustmentCompletionLog = v5->_postPregnancyFeatureAdjustmentCompletionLog;
     v5->_postPregnancyFeatureAdjustmentCompletionLog = v20;
 
     if (!v5->_postPregnancyFeatureAdjustmentCompletionLog)
     {
-      v22 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
       v23 = v5->_postPregnancyFeatureAdjustmentCompletionLog;
-      v5->_postPregnancyFeatureAdjustmentCompletionLog = v22;
+      v5->_postPregnancyFeatureAdjustmentCompletionLog = dictionary;
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_PostPregnancyFeatureAdjustmentCompletionDate"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_PostPregnancyFeatureAdjustmentCompletionDate"];
     if (v24)
     {
       v25 = [(NSDictionary *)v5->_postPregnancyFeatureAdjustmentCompletionLog mutableCopy];
@@ -80,35 +80,35 @@
   return v5;
 }
 
-- (HKMCPregnancyModeSetupCompletionRecord)initWithVersion:(id)a3 sampleUUID:(id)a4 educationalStepsReviewDate:(id)a5 configurationStepsReviewDate:(id)a6 pregnancyAdjustedFeaturesSet:(id)a7 postPregnancyFeatureAdjustmentCompletionLog:(id)a8
+- (HKMCPregnancyModeSetupCompletionRecord)initWithVersion:(id)version sampleUUID:(id)d educationalStepsReviewDate:(id)date configurationStepsReviewDate:(id)reviewDate pregnancyAdjustedFeaturesSet:(id)set postPregnancyFeatureAdjustmentCompletionLog:(id)log
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  versionCopy = version;
+  dCopy = d;
+  dateCopy = date;
+  reviewDateCopy = reviewDate;
+  setCopy = set;
+  logCopy = log;
   v24.receiver = self;
   v24.super_class = HKMCPregnancyModeSetupCompletionRecord;
   v18 = [(HKMCPregnancyModeSetupCompletionRecord *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_version, a3);
-    objc_storeStrong(&v19->_sampleUUID, a4);
-    objc_storeStrong(&v19->_educationalStepsReviewDate, a5);
-    objc_storeStrong(&v19->_configurationStepsReviewDate, a6);
-    objc_storeStrong(&v19->_pregnancyAdjustedFeaturesSet, a7);
-    objc_storeStrong(&v19->_postPregnancyFeatureAdjustmentCompletionLog, a8);
+    objc_storeStrong(&v18->_version, version);
+    objc_storeStrong(&v19->_sampleUUID, d);
+    objc_storeStrong(&v19->_educationalStepsReviewDate, date);
+    objc_storeStrong(&v19->_configurationStepsReviewDate, reviewDate);
+    objc_storeStrong(&v19->_pregnancyAdjustedFeaturesSet, set);
+    objc_storeStrong(&v19->_postPregnancyFeatureAdjustmentCompletionLog, log);
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -118,7 +118,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (![(NSNumber *)self->_version isEqualToNumber:v5->_version])
       {
         goto LABEL_19;
@@ -197,8 +197,8 @@ LABEL_21:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   version = self->_version;
-  v6 = [(NSUUID *)self->_sampleUUID UUIDString];
-  v7 = [v3 stringWithFormat:@"<%@:%p version:%@ sampleUUID:%@ educationalStepsReviewDate:%@ configurationStepsReviewDate:%@pregnancyAdjustedFeaturesSet:%@>postPregnancyFeatureAdjustmentCompletionLog:%@>", v4, self, version, v6, self->_educationalStepsReviewDate, self->_configurationStepsReviewDate, self->_pregnancyAdjustedFeaturesSet, self->_postPregnancyFeatureAdjustmentCompletionLog];
+  uUIDString = [(NSUUID *)self->_sampleUUID UUIDString];
+  v7 = [v3 stringWithFormat:@"<%@:%p version:%@ sampleUUID:%@ educationalStepsReviewDate:%@ configurationStepsReviewDate:%@pregnancyAdjustedFeaturesSet:%@>postPregnancyFeatureAdjustmentCompletionLog:%@>", v4, self, version, uUIDString, self->_educationalStepsReviewDate, self->_configurationStepsReviewDate, self->_pregnancyAdjustedFeaturesSet, self->_postPregnancyFeatureAdjustmentCompletionLog];
 
   return v7;
 }

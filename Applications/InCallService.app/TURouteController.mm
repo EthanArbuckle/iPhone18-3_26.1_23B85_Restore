@@ -1,12 +1,12 @@
 @interface TURouteController
-+ (unint64_t)priorityForRoute:(id)a3;
++ (unint64_t)priorityForRoute:(id)route;
 - (BOOL)areNonRelayAuxiliaryRoutesAvailable;
 - (BOOL)hasAirPodsAvailable;
 - (BOOL)hasAirPodsInEar;
 - (NSArray)sortedRoutes;
 - (TURoute)routeForSpeakerDisable;
 - (UIImage)audioRouteGlyph;
-- (void)fetchAudioControlsGlyphWithCompletion:(id)a3;
+- (void)fetchAudioControlsGlyphWithCompletion:(id)completion;
 @end
 
 @implementation TURouteController
@@ -17,8 +17,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(TURouteController *)self routes];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  routes = [(TURouteController *)self routes];
+  v3 = [routes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -28,7 +28,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(routes);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -39,7 +39,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [routes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -60,8 +60,8 @@ LABEL_12:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(TURouteController *)self routes];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  routes = [(TURouteController *)self routes];
+  v3 = [routes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -71,7 +71,7 @@ LABEL_12:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(routes);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -82,7 +82,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [routes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -97,23 +97,23 @@ LABEL_13:
   return v3;
 }
 
-+ (unint64_t)priorityForRoute:(id)a3
++ (unint64_t)priorityForRoute:(id)route
 {
-  v3 = a3;
-  v4 = [v3 deviceType];
+  routeCopy = route;
+  deviceType = [routeCopy deviceType];
   v5 = 6;
-  if (v4 <= 0x27)
+  if (deviceType <= 0x27)
   {
-    if (((1 << v4) & 0xD4273F003ELL) != 0)
+    if (((1 << deviceType) & 0xD4273F003ELL) != 0)
     {
 LABEL_3:
       v5 = 2;
       goto LABEL_10;
     }
 
-    if (((1 << v4) & 0x2298C0FFC0) != 0)
+    if (((1 << deviceType) & 0x2298C0FFC0) != 0)
     {
-      if ([v3 isGuest])
+      if ([routeCopy isGuest])
       {
         v5 = 5;
       }
@@ -123,7 +123,7 @@ LABEL_3:
         v5 = 4;
       }
 
-      if ([v3 isRecommended])
+      if ([routeCopy isRecommended])
       {
         v5 = 3;
       }
@@ -131,23 +131,23 @@ LABEL_3:
 
     else
     {
-      if (v4)
+      if (deviceType)
       {
         goto LABEL_10;
       }
 
-      if ([v3 isSpeaker] & 1) != 0 || (objc_msgSend(v3, "isReceiver") & 1) != 0 || (objc_msgSend(v3, "isDefaultRoute"))
+      if ([routeCopy isSpeaker] & 1) != 0 || (objc_msgSend(routeCopy, "isReceiver") & 1) != 0 || (objc_msgSend(routeCopy, "isDefaultRoute"))
       {
         v5 = 1;
         goto LABEL_10;
       }
 
-      if ([v3 isWiredHeadset] & 1) != 0 || (objc_msgSend(v3, "isWiredHeadphones") & 1) != 0 || (objc_msgSend(v3, "isWirelessHeadset"))
+      if ([routeCopy isWiredHeadset] & 1) != 0 || (objc_msgSend(routeCopy, "isWiredHeadphones") & 1) != 0 || (objc_msgSend(routeCopy, "isWirelessHeadset"))
       {
         goto LABEL_3;
       }
 
-      if ([v3 isRecommended])
+      if ([routeCopy isRecommended])
       {
         v5 = 3;
       }
@@ -166,13 +166,13 @@ LABEL_10:
 
 - (NSArray)sortedRoutes
 {
-  v3 = [(TURouteController *)self routes];
+  routes = [(TURouteController *)self routes];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AEB1C;
   v6[3] = &unk_100358928;
   v6[4] = self;
-  v4 = [v3 sortedArrayUsingComparator:v6];
+  v4 = [routes sortedArrayUsingComparator:v6];
 
   return v4;
 }
@@ -183,8 +183,8 @@ LABEL_10:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(TURouteController *)self routes];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  routes = [(TURouteController *)self routes];
+  v3 = [routes countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -194,7 +194,7 @@ LABEL_10:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(routes);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isAirPodsRoute])
@@ -204,7 +204,7 @@ LABEL_10:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [routes countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -221,26 +221,26 @@ LABEL_11:
 
 - (BOOL)hasAirPodsInEar
 {
-  v2 = [(TURouteController *)self pickedRoute];
-  if ([v2 isAirPodsRoute])
+  pickedRoute = [(TURouteController *)self pickedRoute];
+  if ([pickedRoute isAirPodsRoute])
   {
-    v3 = [v2 isPreferredAndActive];
+    isPreferredAndActive = [pickedRoute isPreferredAndActive];
   }
 
   else
   {
-    v3 = 0;
+    isPreferredAndActive = 0;
   }
 
-  return v3;
+  return isPreferredAndActive;
 }
 
 - (UIImage)audioRouteGlyph
 {
   if ([(TURouteController *)self areAuxiliaryRoutesAvailable])
   {
-    v3 = [(TURouteController *)self pickedRoute];
-    v4 = [v3 audioRouteGlyphForDisplayStyle:0];
+    pickedRoute = [(TURouteController *)self pickedRoute];
+    v4 = [pickedRoute audioRouteGlyphForDisplayStyle:0];
   }
 
   else
@@ -251,17 +251,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)fetchAudioControlsGlyphWithCompletion:(id)a3
+- (void)fetchAudioControlsGlyphWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TURouteController *)self pickedRoute];
+  completionCopy = completion;
+  pickedRoute = [(TURouteController *)self pickedRoute];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AEE38;
   v7[3] = &unk_100358950;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAudioControlsGlyphWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [pickedRoute fetchAudioControlsGlyphWithCompletion:v7];
 }
 
 @end

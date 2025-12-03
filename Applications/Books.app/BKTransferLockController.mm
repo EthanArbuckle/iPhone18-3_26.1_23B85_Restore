@@ -1,42 +1,42 @@
 @interface BKTransferLockController
 - (UIViewController)presentingViewController;
-- (void)_handleTransferLockError:(id)a3;
+- (void)_handleTransferLockError:(id)error;
 - (void)_showTransferLockBackOffAlert;
-- (void)resolveTransferLockWithPresentingViewController:(id)a3 completion:(id)a4;
+- (void)resolveTransferLockWithPresentingViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation BKTransferLockController
 
-- (void)resolveTransferLockWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)resolveTransferLockWithPresentingViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(BKTransferLockController *)self setPresentingViewController:v6];
-  [(BKTransferLockController *)self setCompletion:v7];
+  controllerCopy = controller;
+  completionCopy = completion;
+  [(BKTransferLockController *)self setPresentingViewController:controllerCopy];
+  [(BKTransferLockController *)self setCompletion:completionCopy];
   objc_initWeak(&location, self);
   v8 = objc_alloc_init(BKAcquireSlotRequest);
   [(BKTransferLockController *)self setAcquireSlotRequest:v8];
 
-  v9 = [(BKTransferLockController *)self acquireSlotRequest];
+  acquireSlotRequest = [(BKTransferLockController *)self acquireSlotRequest];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000A1F9C;
   v10[3] = &unk_100A042A0;
   objc_copyWeak(&v11, &location);
-  [v9 performRequestWithResponseHandler:v10];
+  [acquireSlotRequest performRequestWithResponseHandler:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleTransferLockError:(id)a3
+- (void)_handleTransferLockError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [errorCopy userInfo];
   v6 = BUDynamicCast();
 
-  if ([v4 code] == 2 && +[BKAcquireSlotDialogResponse isDialogResponse:](BKAcquireSlotDialogResponse, "isDialogResponse:", v6))
+  if ([errorCopy code] == 2 && +[BKAcquireSlotDialogResponse isDialogResponse:](BKAcquireSlotDialogResponse, "isDialogResponse:", v6))
   {
     objc_initWeak(&location, self);
     v7 = [[BKAcquireSlotDialogResponse alloc] initWithDialogDictionary:v6];
@@ -76,7 +76,7 @@
     objc_destroyWeak(&location);
   }
 
-  else if ([v4 code] == 3)
+  else if ([errorCopy code] == 3)
   {
     [(BKTransferLockController *)self _showTransferLockBackOffAlert];
   }
@@ -115,8 +115,8 @@
   v12 = [UIAlertAction actionWithTitle:v10 style:1 handler:&v14];
   [v11 addAction:{v12, v14, v15, v16, v17}];
 
-  v13 = [(BKTransferLockController *)self presentingViewController];
-  [v13 presentViewController:v11 animated:1 completion:0];
+  presentingViewController = [(BKTransferLockController *)self presentingViewController];
+  [presentingViewController presentViewController:v11 animated:1 completion:0];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);

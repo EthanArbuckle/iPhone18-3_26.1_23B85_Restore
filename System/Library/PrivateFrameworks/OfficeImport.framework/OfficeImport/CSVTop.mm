@@ -1,8 +1,8 @@
 @interface CSVTop
 + (CGSize)_improveSize:(CGSize)result;
-+ (void)fillHTMLArchiveForCSVData:(id)a3 fileName:(id)a4 archiver:(id)a5;
-+ (void)fillHTMLArchiveForCSVString:(id)a3 fileName:(id)a4 archiver:(id)a5;
-+ (void)fillHTMLArchiveForOfficeFile:(id)a3 orData:(id)a4 dataFileName:(id)a5 dataFormat:(unint64_t)a6 archiver:(id)a7;
++ (void)fillHTMLArchiveForCSVData:(id)data fileName:(id)name archiver:(id)archiver;
++ (void)fillHTMLArchiveForCSVString:(id)string fileName:(id)name archiver:(id)archiver;
++ (void)fillHTMLArchiveForOfficeFile:(id)file orData:(id)data dataFileName:(id)name dataFormat:(unint64_t)format archiver:(id)archiver;
 @end
 
 @implementation CSVTop
@@ -35,73 +35,73 @@
   return result;
 }
 
-+ (void)fillHTMLArchiveForCSVString:(id)a3 fileName:(id)a4 archiver:(id)a5
++ (void)fillHTMLArchiveForCSVString:(id)string fileName:(id)name archiver:(id)archiver
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  archiverCopy = archiver;
   v10 = objc_autoreleasePoolPush();
   v22 = 0;
-  v11 = [a3 copyCsvRows:&v22 rowLimit:10000];
+  v11 = [string copyCsvRows:&v22 rowLimit:10000];
   v12 = +[CMXmlUtils copyXhtmlDocument];
   v13 = objc_alloc_init(CMState);
   [(CMState *)v13 setSourceFormat:7];
-  -[CMState setIsThumbnail:](v13, "setIsThumbnail:", [v9 isThumbnail]);
+  -[CMState setIsThumbnail:](v13, "setIsThumbnail:", [archiverCopy isThumbnail]);
   v14 = [CSVMapper alloc];
-  v15 = [(CSVMapper *)v14 initWithRows:v11 fileName:v8 columnCount:v22 archiver:v9];
-  v16 = [v12 rootElement];
-  [(CSVMapper *)v15 mapAt:v16 withState:v13];
+  v15 = [(CSVMapper *)v14 initWithRows:v11 fileName:nameCopy columnCount:v22 archiver:archiverCopy];
+  rootElement = [v12 rootElement];
+  [(CSVMapper *)v15 mapAt:rootElement withState:v13];
 
   [(CSVMapper *)v15 pageSize];
-  [a1 _improveSize:?];
+  [self _improveSize:?];
   v18 = v17;
   v20 = v19;
-  v21 = [v12 XMLString];
-  [v9 setHTMLWidth:v18];
-  [v9 setHTMLHeight:v20];
-  [v9 pushText:v21 toPath:0];
-  [v9 commitDataAtPath:0];
-  [v9 closeResourceAtPath:0];
+  xMLString = [v12 XMLString];
+  [archiverCopy setHTMLWidth:v18];
+  [archiverCopy setHTMLHeight:v20];
+  [archiverCopy pushText:xMLString toPath:0];
+  [archiverCopy commitDataAtPath:0];
+  [archiverCopy closeResourceAtPath:0];
 
   objc_autoreleasePoolPop(v10);
 }
 
-+ (void)fillHTMLArchiveForOfficeFile:(id)a3 orData:(id)a4 dataFileName:(id)a5 dataFormat:(unint64_t)a6 archiver:(id)a7
++ (void)fillHTMLArchiveForOfficeFile:(id)file orData:(id)data dataFileName:(id)name dataFormat:(unint64_t)format archiver:(id)archiver
 {
-  v16 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (v16 && !v11)
+  fileCopy = file;
+  dataCopy = data;
+  nameCopy = name;
+  archiverCopy = archiver;
+  if (fileCopy && !dataCopy)
   {
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v16 options:1 error:0];
+    dataCopy = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy options:1 error:0];
   }
 
-  if (v11)
+  if (dataCopy)
   {
-    v14 = v16;
-    if (!v16)
+    v14 = fileCopy;
+    if (!fileCopy)
     {
-      v14 = v12;
+      v14 = nameCopy;
     }
 
-    v15 = [v14 lastPathComponent];
-    [a1 fillHTMLArchiveForCSVData:v11 fileName:v15 archiver:v13];
+    lastPathComponent = [v14 lastPathComponent];
+    [self fillHTMLArchiveForCSVData:dataCopy fileName:lastPathComponent archiver:archiverCopy];
   }
 }
 
-+ (void)fillHTMLArchiveForCSVData:(id)a3 fileName:(id)a4 archiver:(id)a5
++ (void)fillHTMLArchiveForCSVData:(id)data fileName:(id)name archiver:(id)archiver
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isThumbnail] && objc_msgSend(v16, "length") > 0x4000)
+  dataCopy = data;
+  nameCopy = name;
+  archiverCopy = archiver;
+  if ([archiverCopy isThumbnail] && objc_msgSend(dataCopy, "length") > 0x4000)
   {
-    v10 = [v16 subdataWithRange:{0, 0x4000}];
+    v10 = [dataCopy subdataWithRange:{0, 0x4000}];
 
-    v16 = v10;
+    dataCopy = v10;
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v16 encoding:4];
+  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   if (!v11)
   {
     v12 = QLGuessEncodingForTextFileFromData();
@@ -115,11 +115,11 @@
       v13 = v12;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v16 encoding:CFStringConvertEncodingToNSStringEncoding(v13)];
+    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:CFStringConvertEncodingToNSStringEncoding(v13)];
     v11 = v14;
     if (v13 != 513 && !v14)
     {
-      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v16 encoding:5];
+      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:5];
     }
 
     if (!v11)
@@ -129,7 +129,7 @@
     }
   }
 
-  [a1 fillHTMLArchiveForCSVString:v11 fileName:v8 archiver:v9];
+  [self fillHTMLArchiveForCSVString:v11 fileName:nameCopy archiver:archiverCopy];
 }
 
 @end

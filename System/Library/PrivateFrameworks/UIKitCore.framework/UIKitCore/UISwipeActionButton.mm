@@ -1,68 +1,68 @@
 @interface UISwipeActionButton
 - (BOOL)_heightDemandsCompactLayout;
-- (CGRect)_allowableContentRectForContentRect:(CGRect)a3;
-- (UISwipeActionButton)initWithFrame:(CGRect)a3;
+- (CGRect)_allowableContentRectForContentRect:(CGRect)rect;
+- (UISwipeActionButton)initWithFrame:(CGRect)frame;
 - (_UISwipeActionButtonDelegate)swipeActionButtonDelegate;
 - (double)_horizontalPaddingForCurrentIdiom;
 - (double)_maxFontSizeForCurrentIdiom;
 - (double)_minFontSizeForCurrentIdiom;
-- (double)_minScaleFactorForFont:(id)a3;
+- (double)_minScaleFactorForFont:(id)font;
 - (double)_titleFontWeightForCurrentIdiom;
 - (double)defaultButtonWidth;
 - (id)titleFont;
-- (id)titleFontOfSize:(double)a3;
-- (int64_t)_numberOfLinesForTitle:(id)a3;
-- (unint64_t)_defaultLayoutForHeight:(double)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDefaultBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (id)titleFontOfSize:(double)size;
+- (int64_t)_numberOfLinesForTitle:(id)title;
+- (unint64_t)_defaultLayoutForHeight:(double)height;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)setBackgroundColor:(id)color;
+- (void)setDefaultBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 @end
 
 @implementation UISwipeActionButton
 
-- (UISwipeActionButton)initWithFrame:(CGRect)a3
+- (UISwipeActionButton)initWithFrame:(CGRect)frame
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = UISwipeActionButton;
-  v3 = [(UIButton *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIButton *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 traitCollection];
-    v6 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [v5 userInterfaceIdiom]);
+    traitCollection = [(UIView *)v3 traitCollection];
+    v6 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [traitCollection userInterfaceIdiom]);
     [(UISwipeActionButton *)v4 setVisualStyle:v6];
 
     [(UIButton *)v4 setAdjustsImageWhenHighlighted:0];
     [(UIView *)v4 setTintAdjustmentMode:1];
     [(UIView *)v4 setAutoresizingMask:18];
-    v7 = [(UISwipeActionButton *)v4 visualStyle];
-    v8 = [v7 defaultTintColor];
-    [(UIButton *)v4 setTintColor:v8];
+    visualStyle = [(UISwipeActionButton *)v4 visualStyle];
+    defaultTintColor = [visualStyle defaultTintColor];
+    [(UIButton *)v4 setTintColor:defaultTintColor];
 
     [(UIView *)v4 setClipsToBounds:1];
-    v9 = [(UISwipeActionButton *)v4 titleFont];
-    v10 = [(UIButton *)v4 titleLabel];
-    [v10 setFont:v9];
+    titleFont = [(UISwipeActionButton *)v4 titleFont];
+    titleLabel = [(UIButton *)v4 titleLabel];
+    [titleLabel setFont:titleFont];
 
-    v11 = [(UIButton *)v4 titleLabel];
-    [v11 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(UIButton *)v4 titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v12 = [(UIButton *)v4 titleLabel];
-    v13 = [v12 font];
-    [(UISwipeActionButton *)v4 _minScaleFactorForFont:v13];
+    titleLabel3 = [(UIButton *)v4 titleLabel];
+    font = [titleLabel3 font];
+    [(UISwipeActionButton *)v4 _minScaleFactorForFont:font];
     v15 = v14;
-    v16 = [(UIButton *)v4 titleLabel];
-    [v16 setMinimumScaleFactor:v15];
+    titleLabel4 = [(UIButton *)v4 titleLabel];
+    [titleLabel4 setMinimumScaleFactor:v15];
 
-    v17 = [(UIButton *)v4 titleLabel];
-    [v17 setLineBreakMode:4];
+    titleLabel5 = [(UIButton *)v4 titleLabel];
+    [titleLabel5 setLineBreakMode:4];
 
-    v18 = [(UIButton *)v4 imageView];
-    [v18 setContentMode:4];
+    imageView = [(UIButton *)v4 imageView];
+    [imageView setContentMode:4];
 
     if (dyld_program_sdk_at_least())
     {
@@ -90,12 +90,12 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
   [v7 setMinimumScaleFactor:v6];
 }
 
-- (CGRect)_allowableContentRectForContentRect:(CGRect)a3
+- (CGRect)_allowableContentRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UISwipeActionButton *)self _horizontalPaddingForCurrentIdiom];
   v9 = v8;
   [(UISwipeActionButton *)self buttonWidth];
@@ -116,8 +116,8 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
   v24.size.width = width;
   v24.size.height = height;
   v13 = CGRectGetHeight(v24);
-  v14 = [(UISwipeActionButton *)self visualStyle];
-  [v14 defaultContentHeightForView:self];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  [visualStyle defaultContentHeightForView:self];
   v16 = v15;
 
   if (v13 < v16)
@@ -149,11 +149,11 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
   return 0;
 }
 
-- (unint64_t)_defaultLayoutForHeight:(double)a3
+- (unint64_t)_defaultLayoutForHeight:(double)height
 {
-  if (a3 >= 50.0)
+  if (height >= 50.0)
   {
-    return a3 < 90.0;
+    return height < 90.0;
   }
 
   else
@@ -162,52 +162,52 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
   v6 = MEMORY[0x1E696AB08];
-  v7 = a3;
-  v8 = [v6 whitespaceAndNewlineCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  titleCopy = title;
+  whitespaceAndNewlineCharacterSet = [v6 whitespaceAndNewlineCharacterSet];
+  v9 = [titleCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v15.receiver = self;
   v15.super_class = UISwipeActionButton;
-  [(UIButton *)&v15 setTitle:v9 forState:a4];
-  v10 = [(UIButton *)self titleLabel];
-  v11 = [(UISwipeActionButton *)self visualStyle];
-  v12 = [v11 maxLines];
+  [(UIButton *)&v15 setTitle:v9 forState:state];
+  titleLabel = [(UIButton *)self titleLabel];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  maxLines = [visualStyle maxLines];
 
   v13 = [(UISwipeActionButton *)self _numberOfLinesForTitle:v9];
-  if (v12 >= v13)
+  if (maxLines >= v13)
   {
     v14 = v13;
   }
 
   else
   {
-    v14 = v12;
+    v14 = maxLines;
   }
 
-  [v10 setNumberOfLines:v14];
+  [titleLabel setNumberOfLines:v14];
 }
 
-- (int64_t)_numberOfLinesForTitle:(id)a3
+- (int64_t)_numberOfLinesForTitle:(id)title
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!title)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(UISwipeActionButton *)self titleFont];
+  titleCopy = title;
+  titleFont = [(UISwipeActionButton *)self titleFont];
   [(UIView *)self frame];
   [(UISwipeActionButton *)self _allowableContentRectForContentRect:?];
   v7 = v6;
   v9 = v8;
   v23 = *off_1E70EC918;
-  v24[0] = v5;
+  v24[0] = titleFont;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  [v4 boundingRectWithSize:1 options:v10 attributes:0 context:{v7, v9}];
+  [titleCopy boundingRectWithSize:1 options:v10 attributes:0 context:{v7, v9}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -218,40 +218,40 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
   v25.size.width = v16;
   v25.size.height = v18;
   Height = CGRectGetHeight(v25);
-  [v5 lineHeight];
+  [titleFont lineHeight];
   v21 = vcvtpd_s64_f64(Height / v20);
 
   return v21;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   v4 = +[UIColor clearColor];
-  v5 = [v7 isEqual:v4];
+  v5 = [colorCopy isEqual:v4];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(UISwipeActionButton *)self backgroundView];
-    [v6 setBackgroundColor:v7];
+    backgroundView = [(UISwipeActionButton *)self backgroundView];
+    [backgroundView setBackgroundColor:colorCopy];
   }
 }
 
-- (void)setDefaultBackgroundColor:(id)a3
+- (void)setDefaultBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_defaultBackgroundColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_defaultBackgroundColor, color);
+  colorCopy = color;
   [(UISwipeActionButton *)self setBackgroundColor:self->_defaultBackgroundColor];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = UISwipeActionButton;
   [(UIButton *)&v6 setHighlighted:?];
   v5 = 1;
-  if (!v3)
+  if (!highlightedCopy)
   {
     v5 = 0;
   }
@@ -261,30 +261,30 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
 
 - (double)defaultButtonWidth
 {
-  v2 = [(UISwipeActionButton *)self visualStyle];
-  [v2 defaultButtonWidth];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  [visualStyle defaultButtonWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (id)titleFontOfSize:(double)a3
+- (id)titleFontOfSize:(double)size
 {
   [(UISwipeActionButton *)self _titleFontWeightForCurrentIdiom];
 
-  return [off_1E70ECC18 systemFontOfSize:a3 weight:v4];
+  return [off_1E70ECC18 systemFontOfSize:size weight:v4];
 }
 
 - (id)titleFont
 {
   [(UISwipeActionButton *)self _maxFontSizeForCurrentIdiom];
   v4 = v3;
-  v5 = [UIApp preferredContentSizeCategory];
-  v6 = v5;
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v6 = preferredContentSizeCategory;
   v7 = @"_UICTContentSizeCategoryUnspecified";
-  if (v5)
+  if (preferredContentSizeCategory)
   {
-    v7 = v5;
+    v7 = preferredContentSizeCategory;
   }
 
   v8 = v7;
@@ -309,9 +309,9 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
   return v13;
 }
 
-- (double)_minScaleFactorForFont:(id)a3
+- (double)_minScaleFactorForFont:(id)font
 {
-  [a3 pointSize];
+  [font pointSize];
   v5 = v4;
   [(UISwipeActionButton *)self _minFontSizeForCurrentIdiom];
   v7 = v6;
@@ -326,8 +326,8 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
 
 - (double)_minFontSizeForCurrentIdiom
 {
-  v2 = [(UISwipeActionButton *)self visualStyle];
-  [v2 minFontSize];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  [visualStyle minFontSize];
   v4 = v3;
 
   return v4;
@@ -335,8 +335,8 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
 
 - (double)_maxFontSizeForCurrentIdiom
 {
-  v2 = [(UISwipeActionButton *)self visualStyle];
-  [v2 maxFontSize];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  [visualStyle maxFontSize];
   v4 = v3;
 
   return v4;
@@ -344,8 +344,8 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
 
 - (double)_horizontalPaddingForCurrentIdiom
 {
-  v2 = [(UISwipeActionButton *)self visualStyle];
-  [v2 horizontalPadding];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  [visualStyle horizontalPadding];
   v4 = v3;
 
   return v4;
@@ -353,36 +353,36 @@ void __37__UISwipeActionButton_initWithFrame___block_invoke(uint64_t a1, void *a
 
 - (double)_titleFontWeightForCurrentIdiom
 {
-  v2 = [(UISwipeActionButton *)self visualStyle];
-  [v2 titleFontWeight];
+  visualStyle = [(UISwipeActionButton *)self visualStyle];
+  [visualStyle titleFontWeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v10.receiver = self;
   v10.super_class = UISwipeActionButton;
-  [(UIControl *)&v10 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:v8];
+  [(UIControl *)&v10 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animatorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_swipeActionButtonDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained swipeActionButton:self willDisplayContextMenuWithAnimator:v8];
+    [WeakRetained swipeActionButton:self willDisplayContextMenuWithAnimator:animatorCopy];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v10.receiver = self;
   v10.super_class = UISwipeActionButton;
-  [(UIControl *)&v10 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:v8];
+  [(UIControl *)&v10 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animatorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_swipeActionButtonDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained swipeActionButton:self willDismissContextMenuWithAnimator:v8];
+    [WeakRetained swipeActionButton:self willDismissContextMenuWithAnimator:animatorCopy];
   }
 }
 

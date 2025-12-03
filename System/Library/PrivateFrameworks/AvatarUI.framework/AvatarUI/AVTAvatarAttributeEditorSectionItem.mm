@@ -1,5 +1,5 @@
 @interface AVTAvatarAttributeEditorSectionItem
-- (AVTAvatarAttributeEditorSectionItem)initWithIdentifier:(id)a3 localizedName:(id)a4 thumbnailProvider:(id)a5 stickerResourceProvider:(id)a6 presetResourcesProvider:(id)a7 avatarUpdater:(id)a8 heightRatio:(double)a9 selected:(BOOL)a10;
+- (AVTAvatarAttributeEditorSectionItem)initWithIdentifier:(id)identifier localizedName:(id)name thumbnailProvider:(id)provider stickerResourceProvider:(id)resourceProvider presetResourcesProvider:(id)resourcesProvider avatarUpdater:(id)updater heightRatio:(double)ratio selected:(BOOL)self0;
 - (NSString)description;
 - (NSString)prefetchingIdentifier;
 - (void)discardContent;
@@ -7,45 +7,45 @@
 
 @implementation AVTAvatarAttributeEditorSectionItem
 
-- (AVTAvatarAttributeEditorSectionItem)initWithIdentifier:(id)a3 localizedName:(id)a4 thumbnailProvider:(id)a5 stickerResourceProvider:(id)a6 presetResourcesProvider:(id)a7 avatarUpdater:(id)a8 heightRatio:(double)a9 selected:(BOOL)a10
+- (AVTAvatarAttributeEditorSectionItem)initWithIdentifier:(id)identifier localizedName:(id)name thumbnailProvider:(id)provider stickerResourceProvider:(id)resourceProvider presetResourcesProvider:(id)resourcesProvider avatarUpdater:(id)updater heightRatio:(double)ratio selected:(BOOL)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
+  identifierCopy = identifier;
+  nameCopy = name;
+  providerCopy = provider;
+  resourceProviderCopy = resourceProvider;
+  resourcesProviderCopy = resourcesProvider;
+  updaterCopy = updater;
   v37.receiver = self;
   v37.super_class = AVTAvatarAttributeEditorSectionItem;
   v23 = [(AVTAvatarAttributeEditorSectionItem *)&v37 init];
   if (v23)
   {
-    v24 = [v17 copy];
+    v24 = [identifierCopy copy];
     identifier = v23->_identifier;
     v23->_identifier = v24;
 
-    v26 = [v18 copy];
+    v26 = [nameCopy copy];
     localizedName = v23->_localizedName;
     v23->_localizedName = v26;
 
-    v28 = [v19 copy];
+    v28 = [providerCopy copy];
     thumbnailProvider = v23->_thumbnailProvider;
     v23->_thumbnailProvider = v28;
 
-    v30 = [v20 copy];
+    v30 = [resourceProviderCopy copy];
     stickerResourceProvider = v23->_stickerResourceProvider;
     v23->_stickerResourceProvider = v30;
 
-    v32 = [v21 copy];
+    v32 = [resourcesProviderCopy copy];
     presetResourcesProvider = v23->_presetResourcesProvider;
     v23->_presetResourcesProvider = v32;
 
-    v34 = [v22 copy];
+    v34 = [updaterCopy copy];
     avatarUpdater = v23->_avatarUpdater;
     v23->_avatarUpdater = v34;
 
-    v23->_heightRatio = a9;
-    v23->_selected = a10;
+    v23->_heightRatio = ratio;
+    v23->_selected = selected;
   }
 
   return v23;
@@ -53,8 +53,8 @@
 
 - (NSString)prefetchingIdentifier
 {
-  v2 = [(AVTAvatarAttributeEditorSectionItem *)self identifier];
-  v3 = [v2 copy];
+  identifier = [(AVTAvatarAttributeEditorSectionItem *)self identifier];
+  v3 = [identifier copy];
 
   return v3;
 }
@@ -66,9 +66,9 @@
   v3 = [(AVTAvatarAttributeEditorSectionItem *)&v9 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTAvatarAttributeEditorSectionItem *)self identifier];
-  v6 = [(AVTAvatarAttributeEditorSectionItem *)self localizedName];
-  [v4 appendFormat:@" identifier: %@ name: %@", v5, v6];
+  identifier = [(AVTAvatarAttributeEditorSectionItem *)self identifier];
+  localizedName = [(AVTAvatarAttributeEditorSectionItem *)self localizedName];
+  [v4 appendFormat:@" identifier: %@ name: %@", identifier, localizedName];
 
   if ([(AVTAvatarAttributeEditorSectionItem *)self isSelected])
   {
@@ -83,12 +83,12 @@
 - (void)discardContent
 {
   [(AVTAvatarAttributeEditorSectionItem *)self setCachedThumbnail:0];
-  v3 = [(AVTAvatarAttributeEditorSectionItem *)self discardableContentHandler];
+  discardableContentHandler = [(AVTAvatarAttributeEditorSectionItem *)self discardableContentHandler];
 
-  if (v3)
+  if (discardableContentHandler)
   {
-    v4 = [(AVTAvatarAttributeEditorSectionItem *)self discardableContentHandler];
-    v4[2](v4, self);
+    discardableContentHandler2 = [(AVTAvatarAttributeEditorSectionItem *)self discardableContentHandler];
+    discardableContentHandler2[2](discardableContentHandler2, self);
   }
 }
 

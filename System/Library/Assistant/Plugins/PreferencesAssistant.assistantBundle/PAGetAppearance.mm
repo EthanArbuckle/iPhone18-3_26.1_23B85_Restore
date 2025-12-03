@@ -1,18 +1,18 @@
 @interface PAGetAppearance
 + (id)carPlayAppearanceStyle;
 + (id)iOSAppearanceStyle;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PAGetAppearance
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
-  v9 = [v4 currentSession];
+  completionCopy = completion;
+  initAndWaitUntilSessionUpdated = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
+  currentSession = [initAndWaitUntilSessionUpdated currentSession];
 
-  if (v9)
+  if (currentSession)
   {
     +[PAGetAppearance carPlayAppearanceStyle];
   }
@@ -26,20 +26,20 @@
   [v6 setValue:v5];
   v7 = objc_alloc_init(SASettingGetAppearanceResponse);
   [v7 setSetting:v6];
-  v8 = [v7 dictionary];
-  v3[2](v3, v8);
+  dictionary = [v7 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 + (id)iOSAppearanceStyle
 {
   v2 = [[UISUserInterfaceStyleMode alloc] initWithDelegate:0];
-  v3 = [v2 modeValue];
+  modeValue = [v2 modeValue];
   if (!UISUserInterfaceStyleModeValueIsAutomatic())
   {
-    NSLog(@"Mode value is %ld", v3);
-    if (v3 != &dword_0 + 1)
+    NSLog(@"Mode value is %ld", modeValue);
+    if (modeValue != &dword_0 + 1)
     {
-      if (v3 != &dword_0 + 2)
+      if (modeValue != &dword_0 + 2)
       {
         goto LABEL_10;
       }
@@ -53,14 +53,14 @@ LABEL_8:
   }
 
   NSLog(@"User interface style is automatic");
-  v4 = [v2 override];
-  NSLog(@"Mode override style is %ld", v4);
-  if (v4 == &dword_0 + 1)
+  override = [v2 override];
+  NSLog(@"Mode override style is %ld", override);
+  if (override == &dword_0 + 1)
   {
     goto LABEL_8;
   }
 
-  if (v4 == &dword_0 + 2)
+  if (override == &dword_0 + 2)
   {
 LABEL_7:
     v5 = &SASettingAppearanceDarkValue;
@@ -80,11 +80,11 @@ LABEL_11:
 + (id)carPlayAppearanceStyle
 {
   v2 = +[CARPrototypePref interfaceStyle];
-  v3 = [v2 value];
-  v4 = [v3 integerValue];
+  value = [v2 value];
+  integerValue = [value integerValue];
 
-  NSLog(@"Car style is %ld", v4);
-  if (v4 == &dword_0 + 2)
+  NSLog(@"Car style is %ld", integerValue);
+  if (integerValue == &dword_0 + 2)
   {
     v5 = &SASettingAppearanceDarkValue;
 LABEL_5:
@@ -92,7 +92,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (v4 <= 1)
+  if (integerValue <= 1)
   {
     v5 = &SASettingAppearanceLightValue;
     goto LABEL_5;

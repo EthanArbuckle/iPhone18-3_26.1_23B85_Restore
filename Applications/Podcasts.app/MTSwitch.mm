@@ -1,25 +1,25 @@
 @interface MTSwitch
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)thumbRectForOffset:(double)a3;
-- (CGRect)thumbRectForOn:(BOOL)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTSwitch)initWithFrame:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)thumbRectForOffset:(double)offset;
+- (CGRect)thumbRectForOn:(BOOL)on;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTSwitch)initWithFrame:(CGRect)frame;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4;
-- (void)swiped:(id)a3;
+- (void)setOn:(BOOL)on animated:(BOOL)animated;
+- (void)swiped:(id)swiped;
 @end
 
 @implementation MTSwitch
 
-- (MTSwitch)initWithFrame:(CGRect)a3
+- (MTSwitch)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = MTSwitch;
-  v3 = [(MTSwitch *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTSwitch *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageView alloc];
@@ -46,8 +46,8 @@
     v24 = CGRectInset(v23, 2.0, 2.0);
     [(UIView *)v16 setFrame:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
     v17 = v3->_thumbImageView;
-    v18 = [(UIImageView *)v17 image];
-    [v18 size];
+    image = [(UIImageView *)v17 image];
+    [image size];
     [(UIImageView *)v17 setFrame:-1.0, -1.0, v19, v20];
 
     [(UIView *)v3->_thumbView addSubview:v3->_thumbImageView];
@@ -69,10 +69,10 @@
   [(UIView *)thumbView setFrame:?];
 }
 
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4
+- (void)setOn:(BOOL)on animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_on = a3;
+  animatedCopy = animated;
+  self->_on = on;
   [(MTSwitch *)self setNeedsLayout];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -81,7 +81,7 @@
   v8[4] = self;
   v6 = objc_retainBlock(v8);
   v7 = v6;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v6 animations:0.200000003];
   }
@@ -92,9 +92,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(UIImageView *)self->_backgroundImageView image:a3.width];
+  v3 = [(UIImageView *)self->_backgroundImageView image:fits.width];
   [v3 size];
   v5 = v4;
 
@@ -105,10 +105,10 @@
   return result;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   self->_trackingOffset = 0.0;
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   self->_trackingStartLocation = v5;
   [(UIView *)self->_thumbView frame];
   self->_startThumbRect.origin.x = v6;
@@ -123,9 +123,9 @@
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   self->_trackingOffset = v5 - self->_trackingStartLocation;
   thumbView = self->_thumbView;
   [(MTSwitch *)self thumbRectForOffset:?];
@@ -134,12 +134,12 @@
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   thumbImageView = self->_thumbImageView;
-  v6 = a3;
+  touchCopy = touch;
   [(UIImageView *)thumbImageView setHighlighted:0];
-  [v6 locationInView:self];
+  [touchCopy locationInView:self];
   v8 = v7;
 
   self->_trackingOffset = v8 - self->_trackingStartLocation;
@@ -179,7 +179,7 @@
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   [(UIImageView *)self->_thumbImageView setHighlighted:0];
   on = self->_on;
@@ -218,10 +218,10 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MTSwitch *)self bounds];
   v11 = CGRectInset(v10, -25.0, -25.0);
   v6 = x;
@@ -230,10 +230,10 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (void)swiped:(id)a3
+- (void)swiped:(id)swiped
 {
-  v4 = [a3 direction];
-  if (v4 == 1)
+  direction = [swiped direction];
+  if (direction == 1)
   {
     if (self->_on)
     {
@@ -245,7 +245,7 @@
 
   else
   {
-    if (v4 != 2 || !self->_on)
+    if (direction != 2 || !self->_on)
     {
       return;
     }
@@ -256,12 +256,12 @@
   [(MTSwitch *)self setOn:v5 animated:1];
 }
 
-- (CGRect)thumbRectForOffset:(double)a3
+- (CGRect)thumbRectForOffset:(double)offset
 {
   y = self->_startThumbRect.origin.y;
   width = self->_startThumbRect.size.width;
   height = self->_startThumbRect.size.height;
-  v6 = self->_startThumbRect.origin.x + a3;
+  v6 = self->_startThumbRect.origin.x + offset;
   v7 = 0.0;
   if (v6 >= 0.0)
   {
@@ -298,15 +298,15 @@
   return result;
 }
 
-- (CGRect)thumbRectForOn:(BOOL)a3
+- (CGRect)thumbRectForOn:(BOOL)on
 {
-  v3 = a3;
+  onCopy = on;
   [(UIView *)self->_thumbView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v11 = 0.0;
-  if (v3)
+  if (onCopy)
   {
     [(MTSwitch *)self bounds];
     Width = CGRectGetWidth(v16);

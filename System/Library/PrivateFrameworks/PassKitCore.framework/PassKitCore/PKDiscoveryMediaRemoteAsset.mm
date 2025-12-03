@@ -1,26 +1,26 @@
 @interface PKDiscoveryMediaRemoteAsset
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoveryMediaRemoteAsset)initWithCoder:(id)a3;
-- (PKDiscoveryMediaRemoteAsset)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoveryMediaRemoteAsset)initWithCoder:(id)coder;
+- (PKDiscoveryMediaRemoteAsset)initWithDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDiscoveryMediaRemoteAsset
 
-- (PKDiscoveryMediaRemoteAsset)initWithDictionary:(id)a3
+- (PKDiscoveryMediaRemoteAsset)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKDiscoveryMediaRemoteAsset;
   v5 = [(PKDiscoveryMediaRemoteAsset *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKURLForKey:@"url"];
+    v6 = [dictionaryCopy PKURLForKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 PKStringForKey:@"sha1"];
+    v8 = [dictionaryCopy PKStringForKey:@"sha1"];
     sha1Hex = v5->_sha1Hex;
     v5->_sha1Hex = v8;
   }
@@ -28,9 +28,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -38,7 +38,7 @@
   }
 
   url = self->_url;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!url || !v6)
   {
     if (url == v6)
@@ -58,7 +58,7 @@ LABEL_9:
 
 LABEL_5:
   sha1Hex = self->_sha1Hex;
-  v8 = v4[1];
+  v8 = equalCopy[1];
   if (sha1Hex && v8)
   {
     v9 = [(NSString *)sha1Hex isEqual:?];
@@ -84,27 +84,27 @@ LABEL_10:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeObject:self->_sha1Hex forKey:@"sha1"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeObject:self->_sha1Hex forKey:@"sha1"];
 }
 
-- (PKDiscoveryMediaRemoteAsset)initWithCoder:(id)a3
+- (PKDiscoveryMediaRemoteAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKDiscoveryMediaRemoteAsset;
   v5 = [(PKDiscoveryMediaRemoteAsset *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sha1"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sha1"];
     sha1Hex = v5->_sha1Hex;
     v5->_sha1Hex = v8;
   }

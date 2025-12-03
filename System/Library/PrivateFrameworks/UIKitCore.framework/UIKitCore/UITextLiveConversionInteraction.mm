@@ -1,41 +1,41 @@
 @interface UITextLiveConversionInteraction
-- (UITextLiveConversionInteraction)initWithTextInput:(id)a3;
+- (UITextLiveConversionInteraction)initWithTextInput:(id)input;
 - (double)pointSize;
 - (id)_liveConversionPanGestureRecognizer;
 - (id)_liveConversionTapGestureRecognizer;
-- (void)_pan:(id)a3;
-- (void)_tap:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_pan:(id)_pan;
+- (void)_tap:(id)_tap;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UITextLiveConversionInteraction
 
-- (UITextLiveConversionInteraction)initWithTextInput:(id)a3
+- (UITextLiveConversionInteraction)initWithTextInput:(id)input
 {
-  v5 = a3;
+  inputCopy = input;
   v9.receiver = self;
   v9.super_class = UITextLiveConversionInteraction;
   v6 = [(UITextInteraction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textInput, a3);
+    objc_storeStrong(&v6->_textInput, input);
   }
 
   return v7;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v6.receiver = self;
   v6.super_class = UITextLiveConversionInteraction;
-  [(UITextInteraction *)&v6 willMoveToView:a3];
+  [(UITextInteraction *)&v6 willMoveToView:view];
   self->_panOffset = 0;
-  v4 = [(UITextLiveConversionInteraction *)self _liveConversionTapGestureRecognizer];
-  [(UITextInteraction *)self addGestureRecognizer:v4 withName:0x1EFBA7750];
+  _liveConversionTapGestureRecognizer = [(UITextLiveConversionInteraction *)self _liveConversionTapGestureRecognizer];
+  [(UITextInteraction *)self addGestureRecognizer:_liveConversionTapGestureRecognizer withName:0x1EFBA7750];
 
-  v5 = [(UITextLiveConversionInteraction *)self _liveConversionPanGestureRecognizer];
-  [(UITextInteraction *)self addGestureRecognizer:v5 withName:0x1EFBA7770];
+  _liveConversionPanGestureRecognizer = [(UITextLiveConversionInteraction *)self _liveConversionPanGestureRecognizer];
+  [(UITextInteraction *)self addGestureRecognizer:_liveConversionPanGestureRecognizer withName:0x1EFBA7770];
 }
 
 - (id)_liveConversionTapGestureRecognizer
@@ -52,26 +52,26 @@
   return v2;
 }
 
-- (void)_tap:(id)a3
+- (void)_tap:(id)_tap
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITextInput *)self->_textInput _proxyTextInput];
+  _tapCopy = _tap;
+  _proxyTextInput = [(UITextInput *)self->_textInput _proxyTextInput];
   v6 = +[UIKeyboardImpl activeInstance];
-  v7 = [v5 textInputView];
-  [v4 centroid];
+  textInputView = [_proxyTextInput textInputView];
+  [_tapCopy centroid];
   v9 = v8;
   v11 = v10;
-  v12 = [v4 view];
-  [v7 convertPoint:v12 fromView:{v9, v11}];
+  view = [_tapCopy view];
+  [textInputView convertPoint:view fromView:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [v5 markedTextRange];
-  if (v17)
+  markedTextRange = [_proxyTextInput markedTextRange];
+  if (markedTextRange)
   {
-    v18 = [v5 closestPositionToPoint:v17 withinRange:{v14, v16}];
-    [v5 selectionRectsForRange:v17];
+    v18 = [_proxyTextInput closestPositionToPoint:markedTextRange withinRange:{v14, v16}];
+    [_proxyTextInput selectionRectsForRange:markedTextRange];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -98,22 +98,22 @@
           {
             v41 = v6;
 
-            v25 = [v17 start];
-            v26 = [v5 selectedTextRange];
-            v27 = [v26 start];
-            v40 = [v5 offsetFromPosition:v25 toPosition:v27];
+            start = [markedTextRange start];
+            selectedTextRange = [_proxyTextInput selectedTextRange];
+            start2 = [selectedTextRange start];
+            v40 = [_proxyTextInput offsetFromPosition:start toPosition:start2];
 
-            v28 = [v17 start];
-            v29 = [v5 offsetFromPosition:v28 toPosition:v18];
+            start3 = [markedTextRange start];
+            v29 = [_proxyTextInput offsetFromPosition:start3 toPosition:v18];
 
-            v24 = [v5 textRangeFromPosition:v18 toPosition:v18];
-            v30 = [v5 textInputView];
+            v24 = [_proxyTextInput textRangeFromPosition:v18 toPosition:v18];
+            textInputView2 = [_proxyTextInput textInputView];
             v31 = objc_opt_respondsToSelector();
 
             if (v31)
             {
-              v32 = [v5 textInputView];
-              v33 = [v32 performSelector:sel_attributedSubstringForMarkedRange];
+              textInputView3 = [_proxyTextInput textInputView];
+              v33 = [textInputView3 performSelector:sel_attributedSubstringForMarkedRange];
 
               if (v29 < [v33 length])
               {
@@ -123,10 +123,10 @@
                 if (v43 != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v29 = *buf + v43;
-                  v35 = [v17 start];
-                  v36 = [v5 positionFromPosition:v35 offset:v29];
+                  start4 = [markedTextRange start];
+                  v36 = [_proxyTextInput positionFromPosition:start4 offset:v29];
 
-                  v37 = [v5 textRangeFromPosition:v36 toPosition:v36];
+                  v37 = [_proxyTextInput textRangeFromPosition:v36 toPosition:v36];
 
                   v24 = v37;
                 }
@@ -140,7 +140,7 @@
               v38 = v40;
             }
 
-            [v5 setSelectedTextRange:{v24, v40}];
+            [_proxyTextInput setSelectedTextRange:{v24, v40}];
             if (v29 == v38)
             {
               v6 = v41;
@@ -197,12 +197,12 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_pan:(id)a3
+- (void)_pan:(id)_pan
 {
-  v4 = a3;
+  _panCopy = _pan;
   v11 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 view];
-  [v4 translationInView:v5];
+  view = [_panCopy view];
+  [_panCopy translationInView:view];
   v7 = v6;
 
   [(UITextLiveConversionInteraction *)self pointSize];
@@ -217,9 +217,9 @@ LABEL_25:
 
 - (double)pointSize
 {
-  v2 = [(UITextInput *)self->_textInput _proxyTextInput];
-  v3 = [v2 _fontForCaretSelection];
-  [v3 pointSize];
+  _proxyTextInput = [(UITextInput *)self->_textInput _proxyTextInput];
+  _fontForCaretSelection = [_proxyTextInput _fontForCaretSelection];
+  [_fontForCaretSelection pointSize];
   v5 = v4;
 
   if (v5 <= 0.0)

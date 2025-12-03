@@ -8,8 +8,8 @@
 {
   v7.receiver = self;
   v7.super_class = UIWindowSceneSpecification;
-  v2 = [(FBSSceneSpecification *)&v7 coreSceneComponentClassDictionary];
-  v3 = [v2 mutableCopy];
+  coreSceneComponentClassDictionary = [(FBSSceneSpecification *)&v7 coreSceneComponentClassDictionary];
+  v3 = [coreSceneComponentClassDictionary mutableCopy];
 
   [v3 setObject:objc_opt_class() forKeyedSubscript:_UIFocusSystemSceneComponentKey];
   if (_UIViewMaskingConfigurationSPIEnabled())

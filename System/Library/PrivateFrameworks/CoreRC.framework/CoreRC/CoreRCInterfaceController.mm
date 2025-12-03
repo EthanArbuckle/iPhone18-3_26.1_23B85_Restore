@@ -1,13 +1,13 @@
 @interface CoreRCInterfaceController
-- (BOOL)addBundlesFromPaths:(id)a3 expectedClass:(Class)a4;
-- (BOOL)addInterfaceListenerClass:(Class)a3;
+- (BOOL)addBundlesFromPaths:(id)paths expectedClass:(Class)class;
+- (BOOL)addInterfaceListenerClass:(Class)class;
 - (CECFakeInterfaceListener)fakeInterfaceListener;
 - (CoreRCInterfaceController)init;
 - (id)firstInterface;
 - (void)dealloc;
-- (void)interfaceListener:(id)a3 didAddInterface:(id)a4;
-- (void)interfaceListener:(id)a3 didRemoveInterface:(id)a4;
-- (void)startOnQueue:(id)a3;
+- (void)interfaceListener:(id)listener didAddInterface:(id)interface;
+- (void)interfaceListener:(id)listener didRemoveInterface:(id)interface;
+- (void)startOnQueue:(id)queue;
 @end
 
 @implementation CoreRCInterfaceController
@@ -19,8 +19,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CoreRCInterfaceController *)self interfaceListeners];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  interfaceListeners = [(CoreRCInterfaceController *)self interfaceListeners];
+  v3 = [(NSArray *)interfaceListeners countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -31,7 +31,7 @@ LABEL_3:
     {
       if (*v13 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(interfaceListeners);
       }
 
       v7 = *(*(&v12 + 1) + 8 * v6);
@@ -44,7 +44,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v4 = [(NSArray *)interfaceListeners countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -123,9 +123,9 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addInterfaceListenerClass:(Class)a3
+- (BOOL)addInterfaceListenerClass:(Class)class
 {
-  v4 = [[a3 alloc] initWithInterfaceController:self];
+  v4 = [[class alloc] initWithInterfaceController:self];
   v5 = v4;
   if (v4)
   {
@@ -136,14 +136,14 @@ LABEL_9:
   return v5 != 0;
 }
 
-- (BOOL)addBundlesFromPaths:(id)a3 expectedClass:(Class)a4
+- (BOOL)addBundlesFromPaths:(id)paths expectedClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [paths countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -155,13 +155,13 @@ LABEL_9:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v9 &= -[CoreRCInterfaceController addInterfaceListenerClass:](self, "addInterfaceListenerClass:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleWithPath:{*(*(&v13 + 1) + 8 * i)), "principalClass"}]);
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [paths countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -176,7 +176,7 @@ LABEL_9:
   return v9;
 }
 
-- (void)startOnQueue:(id)a3
+- (void)startOnQueue:(id)queue
 {
   v30 = *MEMORY[0x277D85DE8];
   v24 = 0u;
@@ -214,7 +214,7 @@ LABEL_9:
   v11 = [MEMORY[0x277CCA8D8] pathsForResourcesOfType:@"plugin" inDirectory:{objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "builtInPlugInsPath"), "stringByAppendingPathComponent:", @"InterfacePlugins"}];
   [(CoreRCInterfaceController *)self addBundlesFromPaths:v11 expectedClass:objc_opt_class()];
   [(CoreRCInterfaceController *)self addInterfaceListenerClass:objc_opt_class()];
-  self->_queue = a3;
+  self->_queue = queue;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -241,8 +241,8 @@ LABEL_9:
         v19[2] = __42__CoreRCInterfaceController_startOnQueue___block_invoke;
         v19[3] = &unk_278EA29D8;
         v19[4] = v17;
-        v19[5] = a3;
-        dispatch_async(a3, v19);
+        v19[5] = queue;
+        dispatch_async(queue, v19);
         ++v16;
       }
 
@@ -302,20 +302,20 @@ LABEL_3:
   return result;
 }
 
-- (void)interfaceListener:(id)a3 didAddInterface:(id)a4
+- (void)interfaceListener:(id)listener didAddInterface:(id)interface
 {
-  [a4 scheduleWithDispatchQueue:self->_queue];
-  v6 = [(CoreRCInterfaceController *)self delegate];
+  [interface scheduleWithDispatchQueue:self->_queue];
+  delegate = [(CoreRCInterfaceController *)self delegate];
 
-  [(CoreRCInterfaceControllerDelegate *)v6 interfaceController:self didAddInterface:a4];
+  [(CoreRCInterfaceControllerDelegate *)delegate interfaceController:self didAddInterface:interface];
 }
 
-- (void)interfaceListener:(id)a3 didRemoveInterface:(id)a4
+- (void)interfaceListener:(id)listener didRemoveInterface:(id)interface
 {
-  [(CoreRCInterfaceControllerDelegate *)[(CoreRCInterfaceController *)self delegate] interfaceController:self didRemoveInterface:a4];
+  [(CoreRCInterfaceControllerDelegate *)[(CoreRCInterfaceController *)self delegate] interfaceController:self didRemoveInterface:interface];
   queue = self->_queue;
 
-  [a4 unscheduleFromDispatchQueue:queue];
+  [interface unscheduleFromDispatchQueue:queue];
 }
 
 @end

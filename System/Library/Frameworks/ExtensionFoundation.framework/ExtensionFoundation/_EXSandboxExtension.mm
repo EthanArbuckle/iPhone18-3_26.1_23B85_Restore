@@ -2,9 +2,9 @@
 + (BOOL)sandboxed;
 - (BOOL)consume;
 - (_EXSandboxExtension)init;
-- (_EXSandboxExtension)initWithCoder:(id)a3;
-- (_EXSandboxExtension)initWithExtensionClass:(id)a3 machServiceName:(id)a4 process:(id *)a5;
-- (_EXSandboxExtension)initWithURL:(id)a3 readonly:(BOOL)a4;
+- (_EXSandboxExtension)initWithCoder:(id)coder;
+- (_EXSandboxExtension)initWithExtensionClass:(id)class machServiceName:(id)name process:(id *)process;
+- (_EXSandboxExtension)initWithURL:(id)l readonly:(BOOL)readonly;
 - (void)consume;
 - (void)dealloc;
 @end
@@ -87,10 +87,10 @@ LABEL_14:
     v6 = _EXDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NSString *)*p_sandboxExtensionToken UTF8String];
+      uTF8String = [(NSString *)*p_sandboxExtensionToken UTF8String];
       v9 = *__error();
       v12 = 136446466;
-      v13 = v8;
+      v13 = uTF8String;
       v14 = 1024;
       v15 = v9;
     }
@@ -105,17 +105,17 @@ LABEL_15:
   return v3;
 }
 
-- (_EXSandboxExtension)initWithExtensionClass:(id)a3 machServiceName:(id)a4 process:(id *)a5
+- (_EXSandboxExtension)initWithExtensionClass:(id)class machServiceName:(id)name process:(id *)process
 {
-  v8 = a3;
-  v9 = a4;
+  classCopy = class;
+  nameCopy = name;
   v10 = [(_EXSandboxExtension *)self init];
   if (v10)
   {
-    [v8 UTF8String];
-    [v9 UTF8String];
-    v16 = *a5->var0;
-    v17 = *&a5->var0[4];
+    [classCopy UTF8String];
+    [nameCopy UTF8String];
+    v16 = *process->var0;
+    v17 = *&process->var0[4];
     v11 = sandbox_extension_issue_mach_to_process();
     if (v11)
     {
@@ -132,21 +132,21 @@ LABEL_15:
   return v10;
 }
 
-- (_EXSandboxExtension)initWithURL:(id)a3 readonly:(BOOL)a4
+- (_EXSandboxExtension)initWithURL:(id)l readonly:(BOOL)readonly
 {
-  v4 = a4;
-  v6 = a3;
+  readonlyCopy = readonly;
+  lCopy = l;
   v7 = [(_EXSandboxExtension *)self init];
   if (v7)
   {
     v8 = MEMORY[0x1E69E9BA8];
-    if (!v4)
+    if (!readonlyCopy)
     {
       v8 = MEMORY[0x1E69E9BB0];
     }
 
     v9 = *v8;
-    [v6 fileSystemRepresentation];
+    [lCopy fileSystemRepresentation];
     v10 = *MEMORY[0x1E69E9BE0];
     v11 = sandbox_extension_issue_file();
     if (v11)
@@ -164,9 +164,9 @@ LABEL_15:
   return v7;
 }
 
-- (_EXSandboxExtension)initWithCoder:(id)a3
+- (_EXSandboxExtension)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _EXSandboxExtension;
   v5 = [(_EXSandboxExtension *)&v10 init];
@@ -174,7 +174,7 @@ LABEL_15:
   if (v5)
   {
     v5->_consumedSandboxExtension = -1;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtensionToken"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtensionToken"];
     sandboxExtensionToken = v6->_sandboxExtensionToken;
     v6->_sandboxExtensionToken = v7;
   }
@@ -185,10 +185,10 @@ LABEL_15:
 - (void)consume
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [*a1 UTF8String];
+  uTF8String = [*self UTF8String];
   v6 = *a2;
   v8 = 136446466;
-  v9 = v5;
+  v9 = uTF8String;
   v10 = 2048;
   v11 = v6;
   v7 = *MEMORY[0x1E69E9840];

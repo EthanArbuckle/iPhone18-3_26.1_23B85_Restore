@@ -14,7 +14,7 @@
   else
   {
     v6 = a3;
-    v4 = [[a1 alloc] initWithData:v6];
+    v4 = [[self alloc] initWithData:v6];
   }
 
   return v4;

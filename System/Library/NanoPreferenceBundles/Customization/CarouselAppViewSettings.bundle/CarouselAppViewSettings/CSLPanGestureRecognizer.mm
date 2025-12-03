@@ -1,26 +1,26 @@
 @interface CSLPanGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
 - (CGPoint)touchPoint;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CSLPanGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  [v8 locationInView:0];
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  [anyObject locationInView:0];
   [(CSLPanGestureRecognizer *)self setTouchPoint:?];
   v9.receiver = self;
   v9.super_class = CSLPanGestureRecognizer;
-  [(CSLPanGestureRecognizer *)&v9 touchesBegan:v6 withEvent:v7];
+  [(CSLPanGestureRecognizer *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -31,7 +31,7 @@
   {
     v7.receiver = self;
     v7.super_class = CSLPanGestureRecognizer;
-    v5 = [(CSLPanGestureRecognizer *)&v7 canBePreventedByGestureRecognizer:v4];
+    v5 = [(CSLPanGestureRecognizer *)&v7 canBePreventedByGestureRecognizer:recognizerCopy];
   }
 
   return v5;

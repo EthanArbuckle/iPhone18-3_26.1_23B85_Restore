@@ -43,10 +43,10 @@ void __34__PXTilingSettings_sharedInstance__block_invoke()
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v5 = [v2 sectionWithRows:v4 title:@"Settings"];
 
-  v6 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v7 = MEMORY[0x1E69C6638];
   v11[0] = v5;
-  v11[1] = v6;
+  v11[1] = px_restoreDefaultsSection;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v9 = [v7 moduleWithTitle:@"Tiling" contents:v8];
 

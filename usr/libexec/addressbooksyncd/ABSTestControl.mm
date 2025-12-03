@@ -1,21 +1,21 @@
 @interface ABSTestControl
-- (ABSTestControl)initWithSyncInterface:(id)a3;
+- (ABSTestControl)initWithSyncInterface:(id)interface;
 - (ABSyncInterface)syncInterface;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ABSTestControl
 
-- (ABSTestControl)initWithSyncInterface:(id)a3
+- (ABSTestControl)initWithSyncInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v10.receiver = self;
   v10.super_class = ABSTestControl;
   v5 = [(ABSTestControl *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_syncInterface, v4);
+    objc_storeWeak(&v5->_syncInterface, interfaceCopy);
     v7 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.internal.addressbooksync.testcontrol"];
     listener = v6->_listener;
     v6->_listener = v7;
@@ -27,20 +27,20 @@
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(ABSTestControl *)self syncInterface];
-  if (v6)
+  connectionCopy = connection;
+  syncInterface = [(ABSTestControl *)self syncInterface];
+  if (syncInterface)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ABSTestControlProtocol];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    [v5 setExportedObject:v6];
-    [v5 resume];
+    [connectionCopy setExportedObject:syncInterface];
+    [connectionCopy resume];
   }
 
-  return v6 != 0;
+  return syncInterface != 0;
 }
 
 - (ABSyncInterface)syncInterface

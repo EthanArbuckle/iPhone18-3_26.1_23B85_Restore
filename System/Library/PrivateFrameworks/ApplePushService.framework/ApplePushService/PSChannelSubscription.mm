@@ -1,45 +1,45 @@
 @interface PSChannelSubscription
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSubscriptionInfo:(id)a3;
+- (int)StringAsSubscriptionInfo:(id)info;
 - (int)subscriptionInfo;
 - (unint64_t)hash;
-- (void)addAttributes:(id)a3;
+- (void)addAttributes:(id)attributes;
 - (void)clearOneofValuesForSubscriptionInfo;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCheckpoint:(unint64_t)a3;
-- (void)setHasMessageReplayCount:(BOOL)a3;
-- (void)setHasSubscriptionInfo:(BOOL)a3;
-- (void)setMessageReplayCount:(unint64_t)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCheckpoint:(unint64_t)checkpoint;
+- (void)setHasMessageReplayCount:(BOOL)count;
+- (void)setHasSubscriptionInfo:(BOOL)info;
+- (void)setMessageReplayCount:(unint64_t)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSChannelSubscription
 
-- (void)setCheckpoint:(unint64_t)a3
+- (void)setCheckpoint:(unint64_t)checkpoint
 {
   [(PSChannelSubscription *)self clearOneofValuesForSubscriptionInfo];
   *&self->_has |= 4u;
   self->_subscriptionInfo = 1;
   *&self->_has |= 1u;
-  self->_checkpoint = a3;
+  self->_checkpoint = checkpoint;
 }
 
-- (void)setMessageReplayCount:(unint64_t)a3
+- (void)setMessageReplayCount:(unint64_t)count
 {
   [(PSChannelSubscription *)self clearOneofValuesForSubscriptionInfo];
   *&self->_has |= 4u;
   self->_subscriptionInfo = 2;
   *&self->_has |= 2u;
-  self->_messageReplayCount = a3;
+  self->_messageReplayCount = count;
 }
 
-- (void)setHasMessageReplayCount:(BOOL)a3
+- (void)setHasMessageReplayCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -65,9 +65,9 @@
   }
 }
 
-- (void)setHasSubscriptionInfo:(BOOL)a3
+- (void)setHasSubscriptionInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 4;
   }
@@ -80,20 +80,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSubscriptionInfo:(id)a3
+- (int)StringAsSubscriptionInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  infoCopy = info;
+  if ([infoCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"checkpoint"])
+  else if ([infoCopy isEqualToString:@"checkpoint"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"message_replay_count"])
+  else if ([infoCopy isEqualToString:@"message_replay_count"])
   {
     v4 = 2;
   }
@@ -116,22 +116,22 @@
   self->_messageReplayCount = 0;
 }
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_attributes;
     self->_attributes = v6;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSMutableArray *)attributes addObject:v4];
+  [(NSMutableArray *)attributes addObject:attributesCopy];
 }
 
 - (id)description
@@ -139,8 +139,8 @@
   v7.receiver = self;
   v7.super_class = PSChannelSubscription;
   v3 = [(PSChannelSubscription *)&v7 description];
-  v4 = [(PSChannelSubscription *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSChannelSubscription *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -224,8 +224,8 @@ LABEL_13:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -240,9 +240,9 @@ LABEL_13:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_channelId)
   {
     PBDataWriterWriteDataField();
@@ -293,35 +293,35 @@ LABEL_13:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[10] = self->_subscriptionInfo;
-    *(v4 + 44) |= 4u;
+    toCopy[10] = self->_subscriptionInfo;
+    *(toCopy + 44) |= 4u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_channelId)
   {
-    [v4 setChannelId:?];
-    v4 = v9;
+    [toCopy setChannelId:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_checkpoint;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = self->_checkpoint;
+    *(toCopy + 44) |= 1u;
   }
 
   if ([(PSChannelSubscription *)self attributesCount])
   {
     [v9 clearAttributes];
-    v5 = [(PSChannelSubscription *)self attributesCount];
-    if (v5)
+    attributesCount = [(PSChannelSubscription *)self attributesCount];
+    if (attributesCount)
     {
-      v6 = v5;
+      v6 = attributesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PSChannelSubscription *)self attributesAtIndex:i];
@@ -337,9 +337,9 @@ LABEL_13:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -347,7 +347,7 @@ LABEL_13:
     *(v5 + 44) |= 4u;
   }
 
-  v7 = [(NSData *)self->_channelId copyWithZone:a3];
+  v7 = [(NSData *)self->_channelId copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -377,7 +377,7 @@ LABEL_13:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{a3, v16}];
+        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{zone, v16}];
         [v6 addAttributes:v14];
 
         v13 = v13 + 1;
@@ -399,31 +399,31 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_subscriptionInfo != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_subscriptionInfo != *(equalCopy + 10))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   channelId = self->_channelId;
-  if (channelId | *(v4 + 4))
+  if (channelId | *(equalCopy + 4))
   {
     if (![(NSData *)channelId isEqual:?])
     {
@@ -433,22 +433,22 @@ LABEL_13:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_checkpoint != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_checkpoint != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_22;
   }
 
   attributes = self->_attributes;
-  if (attributes | *(v4 + 3))
+  if (attributes | *(equalCopy + 3))
   {
     if ([(NSMutableArray *)attributes isEqual:?])
     {
@@ -462,10 +462,10 @@ LABEL_22:
   }
 
 LABEL_18:
-  v10 = (*(v4 + 44) & 2) == 0;
+  v10 = (*(equalCopy + 44) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_messageReplayCount != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_messageReplayCount != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
@@ -515,17 +515,17 @@ LABEL_23:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[11] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[11] & 4) != 0)
   {
-    self->_subscriptionInfo = v4[10];
+    self->_subscriptionInfo = fromCopy[10];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PSChannelSubscription *)self setChannelId:?];
   }

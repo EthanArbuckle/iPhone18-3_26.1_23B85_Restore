@@ -1,37 +1,37 @@
 @interface RMSDAAPParser
-+ (id)objectWithData:(id)a3;
-+ (id)objectWithData:(id)a3 error:(id *)a4;
++ (id)objectWithData:(id)data;
++ (id)objectWithData:(id)data error:(id *)error;
 + (id)sharedInstance;
-+ (id)typeForDRCPValueType:(int)a3;
-- (id)parseBrowseResults:(const char *)a3 length:(unsigned int)a4;
-- (id)parseContentCodes:(const char *)a3 length:(unsigned int)a4;
-- (id)parseContentCollectionDict:(const char *)a3 length:(unsigned int)a4;
-- (id)parseControlPromptCollection:(const char *)a3 length:(unsigned int)a4;
-- (id)parseControlPromptResponse:(const char *)a3 length:(unsigned int)a4;
-- (id)parseDACPPropertyResponse:(const char *)a3 length:(unsigned int)a4;
-- (id)parseGetSpeakersResponse:(const char *)a3 length:(unsigned int)a4;
-- (id)parseListingCollection:(const char *)a3 length:(unsigned int)a4 capacity:(int)a5 sectionHeaders:(id *)a6;
-- (id)parseListingHeader:(const char *)a3 length:(unsigned int)a4;
-- (id)parseListingItem:(const char *)a3 length:(unsigned int)a4;
-- (id)parseLogin:(const char *)a3 length:(unsigned int)a4;
-- (id)parseMACAddressListing:(const char *)a3 length:(unsigned int)a4;
-- (id)parseQueueSectionItems:(const char *)a3 length:(unsigned int)a4;
-- (id)parseServerInfo:(const char *)a3 length:(unsigned int)a4;
-- (id)parseUTF8String:(const char *)a3 length:(unsigned int)a4;
-- (id)parseUnicodeCharacter:(const char *)a3 length:(unsigned int)a4;
-- (id)parseXMLContent:(const char *)a3 length:(unsigned int)a4;
-- (id)processResponseCode:(unsigned int)a3 bytes:(const char *)a4 length:(unsigned int)a5;
-- (void)enumerateDAAPChunksInBytes:(const char *)a3 length:(unsigned int)a4 usingBlock:(id)a5;
-- (void)setBool:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setDate:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setFloat32:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setSInt16:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setSInt8:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setString:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt16:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt32:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt64:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
-- (void)setUInt8:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6;
++ (id)typeForDRCPValueType:(int)type;
+- (id)parseBrowseResults:(const char *)results length:(unsigned int)length;
+- (id)parseContentCodes:(const char *)codes length:(unsigned int)length;
+- (id)parseContentCollectionDict:(const char *)dict length:(unsigned int)length;
+- (id)parseControlPromptCollection:(const char *)collection length:(unsigned int)length;
+- (id)parseControlPromptResponse:(const char *)response length:(unsigned int)length;
+- (id)parseDACPPropertyResponse:(const char *)response length:(unsigned int)length;
+- (id)parseGetSpeakersResponse:(const char *)response length:(unsigned int)length;
+- (id)parseListingCollection:(const char *)collection length:(unsigned int)length capacity:(int)capacity sectionHeaders:(id *)headers;
+- (id)parseListingHeader:(const char *)header length:(unsigned int)length;
+- (id)parseListingItem:(const char *)item length:(unsigned int)length;
+- (id)parseLogin:(const char *)login length:(unsigned int)length;
+- (id)parseMACAddressListing:(const char *)listing length:(unsigned int)length;
+- (id)parseQueueSectionItems:(const char *)items length:(unsigned int)length;
+- (id)parseServerInfo:(const char *)info length:(unsigned int)length;
+- (id)parseUTF8String:(const char *)string length:(unsigned int)length;
+- (id)parseUnicodeCharacter:(const char *)character length:(unsigned int)length;
+- (id)parseXMLContent:(const char *)content length:(unsigned int)length;
+- (id)processResponseCode:(unsigned int)code bytes:(const char *)bytes length:(unsigned int)length;
+- (void)enumerateDAAPChunksInBytes:(const char *)bytes length:(unsigned int)length usingBlock:(id)block;
+- (void)setBool:(const char *)bool size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setDate:(const char *)date size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setFloat32:(const char *)float32 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setSInt16:(const char *)int16 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setSInt8:(const char *)int8 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setString:(const char *)string size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt16:(const char *)int16 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt32:(const char *)int32 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt64:(const char *)int64 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
+- (void)setUInt8:(const char *)int8 size:(unsigned int)size inDict:(id)dict forKey:(id)key;
 @end
 
 @implementation RMSDAAPParser
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __31__RMSDAAPParser_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -60,10 +60,10 @@ uint64_t __31__RMSDAAPParser_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)objectWithData:(id)a3
++ (id)objectWithData:(id)data
 {
   v7 = 0;
-  v3 = [a1 objectWithData:a3 error:&v7];
+  v3 = [self objectWithData:data error:&v7];
   v4 = v7;
   if (!v3)
   {
@@ -77,15 +77,15 @@ uint64_t __31__RMSDAAPParser_sharedInstance__block_invoke()
   return v3;
 }
 
-+ (id)objectWithData:(id)a3 error:(id *)a4
++ (id)objectWithData:(id)data error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = +[RMSDAAPParser sharedInstance];
-  v7 = [v5 length];
+  v7 = [dataCopy length];
   if (v7 <= 7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -98,19 +98,19 @@ uint64_t __31__RMSDAAPParser_sharedInstance__block_invoke()
     v11 = v9;
     v12 = 1;
 LABEL_7:
-    *a4 = [v11 errorWithDomain:@"RSDAAPParserErrorDomain" code:v12 userInfo:v10];
+    *error = [v11 errorWithDomain:@"RSDAAPParserErrorDomain" code:v12 userInfo:v10];
 
-    a4 = 0;
+    error = 0;
     goto LABEL_9;
   }
 
-  v13 = [v5 bytes];
-  v14 = bswap64(v13[1] | (*v13 << 32));
+  bytes = [dataCopy bytes];
+  v14 = bswap64(bytes[1] | (*bytes << 32));
   v15 = HIDWORD(v14);
   v16 = v7 - 8;
   if (HIDWORD(v14) > v7 - 8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -128,35 +128,35 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  a4 = [v6 processResponseCode:? bytes:? length:?];
+  error = [v6 processResponseCode:? bytes:? length:?];
 LABEL_9:
 
-  return a4;
+  return error;
 }
 
-- (id)parseUTF8String:(const char *)a3 length:(unsigned int)a4
+- (id)parseUTF8String:(const char *)string length:(unsigned int)length
 {
-  if (a4)
+  if (length)
   {
-    v5 = a4 - 1;
-    if (a4 == 1 && !*a3)
+    v5 = length - 1;
+    if (length == 1 && !*string)
     {
       v7 = &stru_28747BBC0;
     }
 
     else
     {
-      if (a3[v5])
+      if (string[v5])
       {
-        v6 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v6 = v5;
+        lengthCopy = v5;
       }
 
-      v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:v6 encoding:4];
+      v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:string length:lengthCopy encoding:4];
     }
   }
 
@@ -168,11 +168,11 @@ LABEL_9:
   return v7;
 }
 
-- (id)parseUnicodeCharacter:(const char *)a3 length:(unsigned int)a4
+- (id)parseUnicodeCharacter:(const char *)character length:(unsigned int)length
 {
-  if (a4 == 2)
+  if (length == 2)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:2 encoding:2415919360];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:character length:2 encoding:2415919360];
   }
 
   else
@@ -183,11 +183,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)parseXMLContent:(const char *)a3 length:(unsigned int)a4
+- (id)parseXMLContent:(const char *)content length:(unsigned int)length
 {
-  if (a4)
+  if (length)
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:a4];
+    v4 = [MEMORY[0x277CBEA90] dataWithBytes:content length:length];
     v9 = 0;
     v5 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:&v9];
     v6 = v9;
@@ -209,25 +209,25 @@ LABEL_9:
   return v5;
 }
 
-- (void)setBool:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setBool:(const char *)bool size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 > 3)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size > 3)
   {
-    if (a4 == 4)
+    if (size == 4)
     {
-      v11 = *a3;
+      v11 = *bool;
       goto LABEL_13;
     }
 
-    if (a4 == 8)
+    if (size == 8)
     {
-      v12 = *a3 == 0;
+      v12 = *bool == 0;
 LABEL_14:
       v14 = !v12;
       v15 = [MEMORY[0x277CCABB0] numberWithBool:v14];
-      [v9 setObject:v15 forKeyedSubscript:v10];
+      [dictCopy setObject:v15 forKeyedSubscript:keyCopy];
 
       goto LABEL_18;
     }
@@ -235,15 +235,15 @@ LABEL_14:
 
   else
   {
-    if (a4 == 1)
+    if (size == 1)
     {
-      v11 = *a3;
+      v11 = *bool;
       goto LABEL_13;
     }
 
-    if (a4 == 2)
+    if (size == 2)
     {
-      v11 = *a3;
+      v11 = *bool;
 LABEL_13:
       v12 = v11 == 0;
       goto LABEL_14;
@@ -259,14 +259,14 @@ LABEL_13:
 LABEL_18:
 }
 
-- (void)setSInt8:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setSInt8:(const char *)int8 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 1)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 1)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithChar:*a3];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithChar:*int8];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -279,14 +279,14 @@ LABEL_18:
   }
 }
 
-- (void)setUInt8:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt8:(const char *)int8 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 1)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 1)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*int8];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -299,14 +299,14 @@ LABEL_18:
   }
 }
 
-- (void)setSInt16:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setSInt16:(const char *)int16 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 2)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 2)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithShort:(bswap32(*a3) >> 16)];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithShort:(bswap32(*int16) >> 16)];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -319,14 +319,14 @@ LABEL_18:
   }
 }
 
-- (void)setUInt16:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt16:(const char *)int16 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 2)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 2)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*a3) >> 16];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*int16) >> 16];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -339,14 +339,14 @@ LABEL_18:
   }
 }
 
-- (void)setDate:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setDate:(const char *)date size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 4)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 4)
   {
-    v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:bswap32(*a3)];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:bswap32(*date)];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -359,14 +359,14 @@ LABEL_18:
   }
 }
 
-- (void)setUInt32:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt32:(const char *)int32 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 4)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 4)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*a3)];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*int32)];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -379,15 +379,15 @@ LABEL_18:
   }
 }
 
-- (void)setFloat32:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setFloat32:(const char *)float32 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 4)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 4)
   {
-    LODWORD(v11) = *a3;
+    LODWORD(v11) = *float32;
     v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-    [v9 setObject:v12 forKeyedSubscript:v10];
+    [dictCopy setObject:v12 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -400,14 +400,14 @@ LABEL_18:
   }
 }
 
-- (void)setUInt64:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setUInt64:(const char *)int64 size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 == 8)
+  dictCopy = dict;
+  keyCopy = key;
+  if (size == 8)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(*a3)];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(*int64)];
+    [dictCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   else
@@ -420,53 +420,53 @@ LABEL_18:
   }
 }
 
-- (void)setString:(const char *)a3 size:(unsigned int)a4 inDict:(id)a5 forKey:(id)a6
+- (void)setString:(const char *)string size:(unsigned int)size inDict:(id)dict forKey:(id)key
 {
-  if (a4)
+  if (size)
   {
-    v7 = *&a4;
-    v10 = a6;
-    v11 = a5;
-    v12 = [(RMSDAAPParser *)self parseUTF8String:a3 length:v7];
-    [v11 setValue:v12 forKey:v10];
+    v7 = *&size;
+    keyCopy = key;
+    dictCopy = dict;
+    v12 = [(RMSDAAPParser *)self parseUTF8String:string length:v7];
+    [dictCopy setValue:v12 forKey:keyCopy];
   }
 }
 
-- (void)enumerateDAAPChunksInBytes:(const char *)a3 length:(unsigned int)a4 usingBlock:(id)a5
+- (void)enumerateDAAPChunksInBytes:(const char *)bytes length:(unsigned int)length usingBlock:(id)block
 {
-  if (a4)
+  if (length)
   {
-    v6 = a4;
+    lengthCopy = length;
     do
     {
-      v7 = a3 + 8;
-      v8 = bswap64(*(a3 + 1) | (*a3 << 32));
-      (*(a5 + 2))(a5, v8, a3 + 8);
-      a3 = &v7[HIDWORD(v8)];
-      v9 = v6 - HIDWORD(v8);
-      v6 = v6 - HIDWORD(v8) - 8;
+      v7 = bytes + 8;
+      v8 = bswap64(*(bytes + 1) | (*bytes << 32));
+      (*(block + 2))(block, v8, bytes + 8);
+      bytes = &v7[HIDWORD(v8)];
+      v9 = lengthCopy - HIDWORD(v8);
+      lengthCopy = lengthCopy - HIDWORD(v8) - 8;
     }
 
     while (v9 != 8);
   }
 }
 
-- (id)parseMACAddressListing:(const char *)a3 length:(unsigned int)a4
+- (id)parseMACAddressListing:(const char *)listing length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__RMSDAAPParser_parseMACAddressListing_length___block_invoke;
   v9[3] = &unk_279B08E68;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:listing length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -490,22 +490,22 @@ void __47__RMSDAAPParser_parseMACAddressListing_length___block_invoke(uint64_t a
   }
 }
 
-- (id)parseServerInfo:(const char *)a3 length:(unsigned int)a4
+- (id)parseServerInfo:(const char *)info length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__RMSDAAPParser_parseServerInfo_length___block_invoke;
   v9[3] = &unk_279B08E90;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:info length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -918,23 +918,23 @@ LABEL_115:
   [*(*(*(a1 + 40) + 8) + 40) setValue:v30 forKey:@"dmap.macaddresslisting"];
 }
 
-- (id)parseContentCollectionDict:(const char *)a3 length:(unsigned int)a4
+- (id)parseContentCollectionDict:(const char *)dict length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__RMSDAAPParser_parseContentCollectionDict_length___block_invoke;
   v9[3] = &unk_279B08EB8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  v9[6] = dict;
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:dict length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -972,22 +972,22 @@ void __51__RMSDAAPParser_parseContentCollectionDict_length___block_invoke(uint64
   }
 }
 
-- (id)parseContentCodes:(const char *)a3 length:(unsigned int)a4
+- (id)parseContentCodes:(const char *)codes length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__RMSDAAPParser_parseContentCodes_length___block_invoke;
   v9[3] = &unk_279B08E90;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:codes length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -1022,7 +1022,7 @@ void __42__RMSDAAPParser_parseContentCodes_length___block_invoke(uint64_t a1, un
   }
 }
 
-- (id)parseLogin:(const char *)a3 length:(unsigned int)a4
+- (id)parseLogin:(const char *)login length:(unsigned int)length
 {
   v7 = 0;
   v8 = &v7;
@@ -1036,7 +1036,7 @@ void __42__RMSDAAPParser_parseContentCodes_length___block_invoke(uint64_t a1, un
   v6[3] = &unk_279B08E68;
   v6[4] = self;
   v6[5] = &v7;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:*&a4 usingBlock:v6];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:login length:*&length usingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -1072,22 +1072,22 @@ void __35__RMSDAAPParser_parseLogin_length___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (id)parseQueueSectionItems:(const char *)a3 length:(unsigned int)a4
+- (id)parseQueueSectionItems:(const char *)items length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__RMSDAAPParser_parseQueueSectionItems_length___block_invoke;
   v9[3] = &unk_279B08E90;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:items length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -1110,9 +1110,9 @@ void __47__RMSDAAPParser_parseQueueSectionItems_length___block_invoke(uint64_t a
   }
 }
 
-- (id)parseListingItem:(const char *)a3 length:(unsigned int)a4
+- (id)parseListingItem:(const char *)item length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1130,7 +1130,7 @@ void __47__RMSDAAPParser_parseQueueSectionItems_length___block_invoke(uint64_t a
   v9[4] = self;
   v9[5] = &v12;
   v9[6] = v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:item length:v4 usingBlock:v9];
   v7 = v13[5];
   _Block_object_dispose(v10, 8);
   _Block_object_dispose(&v12, 8);
@@ -2893,23 +2893,23 @@ LABEL_413:
   [v17 setSInt8:a3 size:v6 inDict:v18 forKey:@"com.apple.itunes.jukebox-client-vote"];
 }
 
-- (id)parseListingCollection:(const char *)a3 length:(unsigned int)a4 capacity:(int)a5 sectionHeaders:(id *)a6
+- (id)parseListingCollection:(const char *)collection length:(unsigned int)length capacity:(int)capacity sectionHeaders:(id *)headers
 {
-  v7 = *&a4;
+  v7 = *&length;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
-  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
+  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:capacity];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__RMSDAAPParser_parseListingCollection_length_capacity_sectionHeaders___block_invoke;
   v12[3] = &unk_279B08EB8;
   v12[4] = self;
   v12[5] = &v13;
-  v12[6] = a6;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v7 usingBlock:v12];
+  v12[6] = headers;
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:collection length:v7 usingBlock:v12];
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
 
@@ -2944,22 +2944,22 @@ void __71__RMSDAAPParser_parseListingCollection_length_capacity_sectionHeaders__
   }
 }
 
-- (id)parseBrowseResults:(const char *)a3 length:(unsigned int)a4
+- (id)parseBrowseResults:(const char *)results length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__RMSDAAPParser_parseBrowseResults_length___block_invoke;
   v9[3] = &unk_279B08E68;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:results length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -2986,9 +2986,9 @@ void __43__RMSDAAPParser_parseBrowseResults_length___block_invoke(uint64_t a1, u
   }
 }
 
-- (id)parseListingHeader:(const char *)a3 length:(unsigned int)a4
+- (id)parseListingHeader:(const char *)header length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3006,7 +3006,7 @@ void __43__RMSDAAPParser_parseBrowseResults_length___block_invoke(uint64_t a1, u
   v9[4] = self;
   v9[5] = &v12;
   v9[6] = v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:header length:v4 usingBlock:v9];
   v7 = v13[5];
   _Block_object_dispose(v10, 8);
   _Block_object_dispose(&v12, 8);
@@ -3302,22 +3302,22 @@ LABEL_72:
   }
 }
 
-- (id)parseControlPromptCollection:(const char *)a3 length:(unsigned int)a4
+- (id)parseControlPromptCollection:(const char *)collection length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__RMSDAAPParser_parseControlPromptCollection_length___block_invoke;
   v9[3] = &unk_279B08E90;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:collection length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -3346,15 +3346,15 @@ uint64_t __53__RMSDAAPParser_parseControlPromptCollection_length___block_invoke(
   return [v4 unknownChunk:{a2, a3}];
 }
 
-- (id)parseControlPromptResponse:(const char *)a3 length:(unsigned int)a4
+- (id)parseControlPromptResponse:(const char *)response length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -3368,7 +3368,7 @@ uint64_t __53__RMSDAAPParser_parseControlPromptCollection_length___block_invoke(
   v9[4] = self;
   v9[5] = &v16;
   v9[6] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:response length:v4 usingBlock:v9];
   if ([v11[5] count])
   {
     [v17[5] setObject:v11[5] forKeyedSubscript:@"items"];
@@ -3426,22 +3426,22 @@ void __51__RMSDAAPParser_parseControlPromptResponse_length___block_invoke(uint64
   }
 }
 
-- (id)parseGetSpeakersResponse:(const char *)a3 length:(unsigned int)a4
+- (id)parseGetSpeakersResponse:(const char *)response length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__RMSDAAPParser_parseGetSpeakersResponse_length___block_invoke;
   v9[3] = &unk_279B08E90;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:response length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -3476,9 +3476,9 @@ void __49__RMSDAAPParser_parseGetSpeakersResponse_length___block_invoke(uint64_t
   }
 }
 
-- (id)parseDACPPropertyResponse:(const char *)a3 length:(unsigned int)a4
+- (id)parseDACPPropertyResponse:(const char *)response length:(unsigned int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -3491,7 +3491,7 @@ void __49__RMSDAAPParser_parseGetSpeakersResponse_length___block_invoke(uint64_t
   v9[3] = &unk_279B08E90;
   v9[4] = self;
   v9[5] = &v10;
-  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:a3 length:v4 usingBlock:v9];
+  [(RMSDAAPParser *)self enumerateDAAPChunksInBytes:response length:v4 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -4015,33 +4015,33 @@ LABEL_138:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)processResponseCode:(unsigned int)a3 bytes:(const char *)a4 length:(unsigned int)a5
+- (id)processResponseCode:(unsigned int)code bytes:(const char *)bytes length:(unsigned int)length
 {
-  if (a3 > 1668113263)
+  if (code > 1668113263)
   {
-    if (a3 > 1835364977)
+    if (code > 1835364977)
     {
-      if (a3 > 1836282485)
+      if (code > 1836282485)
       {
-        if (a3 == 1836413028 || a3 == 1836409717)
+        if (code == 1836413028 || code == 1836409717)
         {
           goto LABEL_46;
         }
 
-        if (a3 == 1836282486)
+        if (code == 1836282486)
         {
-          v6 = [(RMSDAAPParser *)self parseServerInfo:a4 length:*&a5];
+          v6 = [(RMSDAAPParser *)self parseServerInfo:bytes length:*&length];
           goto LABEL_47;
         }
 
         goto LABEL_53;
       }
 
-      if (a3 - 1835364978 >= 2)
+      if (code - 1835364978 >= 2)
       {
-        if (a3 == 1835822951)
+        if (code == 1835822951)
         {
-          v6 = [(RMSDAAPParser *)self parseLogin:a4 length:*&a5];
+          v6 = [(RMSDAAPParser *)self parseLogin:bytes length:*&length];
           goto LABEL_47;
         }
 
@@ -4052,85 +4052,85 @@ LABEL_138:
       goto LABEL_42;
     }
 
-    if (a3 <= 1668313711)
+    if (code <= 1668313711)
     {
-      if (a3 == 1668113264)
+      if (code == 1668113264)
       {
-        v6 = [(RMSDAAPParser *)self parseControlPromptResponse:a4 length:*&a5];
+        v6 = [(RMSDAAPParser *)self parseControlPromptResponse:bytes length:*&length];
         goto LABEL_47;
       }
 
-      if (a3 == 1668114292 || a3 == 1668117364)
+      if (code == 1668114292 || code == 1668117364)
       {
-        v6 = [(RMSDAAPParser *)self parseDACPPropertyResponse:a4 length:*&a5];
+        v6 = [(RMSDAAPParser *)self parseDACPPropertyResponse:bytes length:*&length];
         goto LABEL_47;
       }
 
       goto LABEL_53;
     }
 
-    if (a3 <= 1835234411)
+    if (code <= 1835234411)
     {
-      if (a3 == 1668313712)
+      if (code == 1668313712)
       {
         goto LABEL_46;
       }
 
-      if (a3 == 1835230066)
+      if (code == 1835230066)
       {
-        v6 = [(RMSDAAPParser *)self parseContentCodes:a4 length:*&a5];
+        v6 = [(RMSDAAPParser *)self parseContentCodes:bytes length:*&length];
         goto LABEL_47;
       }
 
       goto LABEL_53;
     }
 
-    if (a3 == 1835234412)
+    if (code == 1835234412)
     {
       goto LABEL_46;
     }
 
     v7 = 1835361379;
 LABEL_41:
-    if (a3 != v7)
+    if (code != v7)
     {
       goto LABEL_53;
     }
 
 LABEL_42:
-    v6 = [(RMSDAAPParser *)self parseListingItem:a4 length:*&a5];
+    v6 = [(RMSDAAPParser *)self parseListingItem:bytes length:*&length];
     goto LABEL_47;
   }
 
-  if (a3 > 1635148897)
+  if (code > 1635148897)
   {
-    if (a3 > 1667330927)
+    if (code > 1667330927)
     {
-      if (a3 <= 1667584337)
+      if (code <= 1667584337)
       {
-        if (a3 == 1667330928)
+        if (code == 1667330928)
         {
-          v6 = [(RMSDAAPParser *)self parseGetSpeakersResponse:a4 length:*&a5];
+          v6 = [(RMSDAAPParser *)self parseGetSpeakersResponse:bytes length:*&length];
           goto LABEL_47;
         }
 
-        if (a3 == 1667581769)
+        if (code == 1667581769)
         {
-          v6 = [(RMSDAAPParser *)self parseListingCollection:a4 length:*&a5 capacity:0 sectionHeaders:0];
+          v6 = [(RMSDAAPParser *)self parseListingCollection:bytes length:*&length capacity:0 sectionHeaders:0];
           goto LABEL_47;
         }
 
         goto LABEL_53;
       }
 
-      if (a3 == 1667584338)
+      if (code == 1667584338)
       {
         goto LABEL_46;
       }
 
       v5 = 1668113013;
 LABEL_45:
-      if (a3 == v5)
+      if (code == v5)
       {
         goto LABEL_46;
       }
@@ -4138,7 +4138,7 @@ LABEL_45:
       goto LABEL_53;
     }
 
-    if (a3 == 1635148898 || a3 == 1667326825)
+    if (code == 1635148898 || code == 1667326825)
     {
       goto LABEL_46;
     }
@@ -4147,9 +4147,9 @@ LABEL_45:
     goto LABEL_41;
   }
 
-  if (a3 <= 1634165105)
+  if (code <= 1634165105)
   {
-    if (a3 == 1633841775 || a3 == 1633968755)
+    if (code == 1633841775 || code == 1633968755)
     {
       goto LABEL_46;
     }
@@ -4158,28 +4158,28 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (a3 <= 1634759534)
+  if (code <= 1634759534)
   {
-    if (a3 != 1634165106)
+    if (code != 1634165106)
     {
       v5 = 1634757753;
       goto LABEL_45;
     }
 
 LABEL_46:
-    v6 = [(RMSDAAPParser *)self parseListingHeader:a4 length:*&a5];
+    v6 = [(RMSDAAPParser *)self parseListingHeader:bytes length:*&length];
     goto LABEL_47;
   }
 
-  if (a3 == 1634759535)
+  if (code == 1634759535)
   {
     goto LABEL_46;
   }
 
-  if (a3 != 1634890614)
+  if (code != 1634890614)
   {
 LABEL_53:
-    [(RMSDAAPParser *)self unknownChunk:bswap64(*(a4 + 1) | (*a4 << 32)), a4 + 8, *&a5];
+    [(RMSDAAPParser *)self unknownChunk:bswap64(*(bytes + 1) | (*bytes << 32)), bytes + 8, *&length];
   }
 
   v6 = 0;
@@ -4188,16 +4188,16 @@ LABEL_47:
   return v6;
 }
 
-+ (id)typeForDRCPValueType:(int)a3
++ (id)typeForDRCPValueType:(int)type
 {
-  if ((a3 - 1) > 0x13)
+  if ((type - 1) > 0x13)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_279B08F28[a3 - 1];
+    return off_279B08F28[type - 1];
   }
 }
 

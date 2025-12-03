@@ -1,59 +1,59 @@
 @interface PTProxySettings
-+ (id)proxyWithDefinition:(id)a3;
-+ (id)settingsOrProxyWithDefinition:(id)a3;
++ (id)proxyWithDefinition:(id)definition;
++ (id)settingsOrProxyWithDefinition:(id)definition;
 - (PTProxySettings)init;
 - (PTProxySettings)initWithDefaultValues;
-- (id)_createChildForKey:(id)a3;
-- (id)_initWithDefinition:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_createChildForKey:(id)key;
+- (id)_initWithDefinition:(id)definition;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)module;
 - (void)restoreDefaultValues;
-- (void)restoreFromArchiveDictionary:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)restoreFromArchiveDictionary:(id)dictionary;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation PTProxySettings
 
-+ (id)proxyWithDefinition:(id)a3
++ (id)proxyWithDefinition:(id)definition
 {
-  v3 = a3;
-  v4 = [[PTProxySettings alloc] _initWithDefinition:v3];
+  definitionCopy = definition;
+  v4 = [[PTProxySettings alloc] _initWithDefinition:definitionCopy];
 
   return v4;
 }
 
-+ (id)settingsOrProxyWithDefinition:(id)a3
++ (id)settingsOrProxyWithDefinition:(id)definition
 {
-  v3 = a3;
-  if ([v3 allSettingsClassesExistAndHaveCorrectVersion])
+  definitionCopy = definition;
+  if ([definitionCopy allSettingsClassesExistAndHaveCorrectVersion])
   {
-    v4 = [v3 settingsClass];
+    settingsClass = [definitionCopy settingsClass];
 
-    v5 = [[v4 alloc] initWithDefaultValues];
+    initWithDefaultValues = [[settingsClass alloc] initWithDefaultValues];
   }
 
   else
   {
-    v5 = [PTProxySettings proxyWithDefinition:v3];
+    initWithDefaultValues = [PTProxySettings proxyWithDefinition:definitionCopy];
   }
 
-  return v5;
+  return initWithDefaultValues;
 }
 
-- (id)_initWithDefinition:(id)a3
+- (id)_initWithDefinition:(id)definition
 {
-  v5 = a3;
-  v6 = [v5 structure];
+  definitionCopy = definition;
+  structure = [definitionCopy structure];
   v11.receiver = self;
   v11.super_class = PTProxySettings;
-  v7 = [(PTSettings *)&v11 _initWithClassStructure:v6];
+  v7 = [(PTSettings *)&v11 _initWithClassStructure:structure];
 
   if (v7)
   {
-    objc_storeStrong(v7 + 7, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(v7 + 7, definition);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = v7[6];
-    v7[6] = v8;
+    v7[6] = dictionary;
 
     [v7 _createChildrenAndOutlets];
     [v7 restoreDefaultValues];
@@ -64,15 +64,15 @@
 
 - (id)module
 {
-  v2 = [(PTProxySettingsDefinition *)self->_definition module];
-  v3 = [v2 copy];
+  module = [(PTProxySettingsDefinition *)self->_definition module];
+  v3 = [module copy];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initWithDefinition:", self->_definition}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initWithDefinition:", self->_definition}];
   [v4 applySettings:self];
   return v4;
 }
@@ -80,54 +80,54 @@
 - (void)restoreDefaultValues
 {
   [(PTSettings *)self _sendWillRestoreDefaults];
-  v3 = [(PTProxySettingsDefinition *)self->_definition defaultValueArchive];
-  [(PTSettings *)self _applyArchiveDictionary:v3];
+  defaultValueArchive = [(PTProxySettingsDefinition *)self->_definition defaultValueArchive];
+  [(PTSettings *)self _applyArchiveDictionary:defaultValueArchive];
 
   [(PTSettings *)self _sendDidRestoreDefaults];
 }
 
-- (void)restoreFromArchiveDictionary:(id)a3
+- (void)restoreFromArchiveDictionary:(id)dictionary
 {
   definition = self->_definition;
-  v6 = a3;
-  v5 = [(PTProxySettingsDefinition *)definition defaultValueArchive];
-  [(PTSettings *)self _applyArchiveDictionary:v5];
+  dictionaryCopy = dictionary;
+  defaultValueArchive = [(PTProxySettingsDefinition *)definition defaultValueArchive];
+  [(PTSettings *)self _applyArchiveDictionary:defaultValueArchive];
 
-  [(PTSettings *)self _applyArchiveDictionary:v6];
+  [(PTSettings *)self _applyArchiveDictionary:dictionaryCopy];
 }
 
-- (id)_createChildForKey:(id)a3
+- (id)_createChildForKey:(id)key
 {
   definition = self->_definition;
-  v4 = a3;
-  v5 = [(PTProxySettingsDefinition *)definition childDefinitions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  childDefinitions = [(PTProxySettingsDefinition *)definition childDefinitions];
+  v6 = [childDefinitions objectForKeyedSubscript:keyCopy];
 
   v7 = [PTProxySettings settingsOrProxyWithDefinition:v6];
 
   return v7;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(PTProxySettingsDefinition *)self->_definition structure];
-  v8 = [v7 childKeys];
-  v9 = [v8 containsObject:v6];
+  valueCopy = value;
+  keyCopy = key;
+  structure = [(PTProxySettingsDefinition *)self->_definition structure];
+  childKeys = [structure childKeys];
+  v9 = [childKeys containsObject:keyCopy];
 
-  v10 = [v7 outletKeys];
-  v11 = [v10 containsObject:v6];
+  outletKeys = [structure outletKeys];
+  v11 = [outletKeys containsObject:keyCopy];
 
-  v12 = [v7 leafKeys];
-  v13 = [v12 containsObject:v6];
+  leafKeys = [structure leafKeys];
+  v13 = [leafKeys containsObject:keyCopy];
 
-  if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || v13 && (!v14 || PTObjectIsRecursivelyPlistable(v14)))
+  if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || v13 && (!valueCopy || PTObjectIsRecursivelyPlistable(valueCopy)))
   {
-    [(NSMutableDictionary *)self->_values setObject:v14 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_values setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 
-  [(PTSettings *)self invalidateValueForKey:v6];
+  [(PTSettings *)self invalidateValueForKey:keyCopy];
 }
 
 - (PTProxySettings)init

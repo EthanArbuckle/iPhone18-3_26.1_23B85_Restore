@@ -1,23 +1,23 @@
 @interface GDGraphTopic
-- (GDGraphTopic)initWithEntityIdentifierField:(id)a3 qidField:(id)a4 allQidField:(id)a5;
+- (GDGraphTopic)initWithEntityIdentifierField:(id)field qidField:(id)qidField allQidField:(id)allQidField;
 @end
 
 @implementation GDGraphTopic
 
-- (GDGraphTopic)initWithEntityIdentifierField:(id)a3 qidField:(id)a4 allQidField:(id)a5
+- (GDGraphTopic)initWithEntityIdentifierField:(id)field qidField:(id)qidField allQidField:(id)allQidField
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fieldCopy = field;
+  qidFieldCopy = qidField;
+  allQidFieldCopy = allQidField;
   v15.receiver = self;
   v15.super_class = GDGraphTopic;
   v12 = [(GDGraphTopic *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entityIdentifier, a3);
-    objc_storeStrong(&v13->_qid, a4);
-    objc_storeStrong(&v13->_allQid, a5);
+    objc_storeStrong(&v12->_entityIdentifier, field);
+    objc_storeStrong(&v13->_qid, qidField);
+    objc_storeStrong(&v13->_allQid, allQidField);
   }
 
   return v13;

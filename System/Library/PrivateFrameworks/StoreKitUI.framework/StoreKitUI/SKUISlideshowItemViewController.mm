@@ -1,20 +1,20 @@
 @interface SKUISlideshowItemViewController
-- (SKUISlideshowItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUISlideshowItemViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SKUISlideshowItemViewControllerDelegate)delegate;
 - (id)_newLoadingView;
-- (void)_pinchGestureAction:(id)a3;
+- (void)_pinchGestureAction:(id)action;
 - (void)dealloc;
-- (void)setItemImage:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setItemImage:(id)image;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation SKUISlideshowItemViewController
 
-- (SKUISlideshowItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUISlideshowItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISlideshowItemViewController initWithNibName:bundle:];
@@ -22,7 +22,7 @@
 
   v15.receiver = self;
   v15.super_class = SKUISlideshowItemViewController;
-  v8 = [(SKUISlideshowItemViewController *)&v15 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUISlideshowItemViewController *)&v15 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -34,8 +34,8 @@
     [(SKUISlideshowImageScrollView *)v9->_imageScrollView setDelegate:v9];
     [(SKUISlideshowImageScrollView *)v9->_imageScrollView setAutoresizingMask:18];
     v12 = v9->_imageScrollView;
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(SKUISlideshowImageScrollView *)v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUISlideshowImageScrollView *)v12 setBackgroundColor:clearColor];
 
     v9->_zoomingGestureThresholdBroken = 0;
     v9->_lastContentOffset = *MEMORY[0x277CBF348];
@@ -58,29 +58,29 @@
   v11.receiver = self;
   v11.super_class = SKUISlideshowItemViewController;
   [(SKUISlideshowItemViewController *)&v11 viewDidLoad];
-  v3 = [(SKUISlideshowItemViewController *)self view];
+  view = [(SKUISlideshowItemViewController *)self view];
   imageScrollView = self->_imageScrollView;
-  [v3 bounds];
+  [view bounds];
   [(SKUISlideshowImageScrollView *)imageScrollView setFrame:?];
-  [v3 addSubview:self->_imageScrollView];
-  v5 = [(SKUISlideshowItemViewController *)self itemImage];
+  [view addSubview:self->_imageScrollView];
+  itemImage = [(SKUISlideshowItemViewController *)self itemImage];
 
-  if (!v5)
+  if (!itemImage)
   {
     loadingView = self->_loadingView;
     if (!loadingView)
     {
-      v7 = [(SKUISlideshowItemViewController *)self _newLoadingView];
+      _newLoadingView = [(SKUISlideshowItemViewController *)self _newLoadingView];
       v8 = self->_loadingView;
-      self->_loadingView = v7;
+      self->_loadingView = _newLoadingView;
 
       v9 = self->_loadingView;
-      [v3 center];
+      [view center];
       [(UIView *)v9 setCenter:?];
       loadingView = self->_loadingView;
     }
 
-    [v3 addSubview:loadingView];
+    [view addSubview:loadingView];
   }
 
   v10 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:self action:sel__pinchGestureAction_];
@@ -88,19 +88,19 @@
   [(SKUISlideshowImageScrollView *)self->_imageScrollView addGestureRecognizer:v10];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SKUISlideshowItemViewController;
-  [(SKUISlideshowItemViewController *)&v4 viewDidDisappear:a3];
+  [(SKUISlideshowItemViewController *)&v4 viewDidDisappear:disappear];
   [(SKUISlideshowImageScrollView *)self->_imageScrollView resetZoomScale];
 }
 
-- (void)setItemImage:(id)a3
+- (void)setItemImage:(id)image
 {
   [(SKUISlideshowImageScrollView *)self->_imageScrollView setImage:?];
   loadingView = self->_loadingView;
-  if (a3)
+  if (image)
   {
     if (!loadingView)
     {
@@ -116,22 +116,22 @@
   {
     if (!loadingView)
     {
-      v7 = [(SKUISlideshowItemViewController *)self _newLoadingView];
+      _newLoadingView = [(SKUISlideshowItemViewController *)self _newLoadingView];
       v8 = self->_loadingView;
-      self->_loadingView = v7;
+      self->_loadingView = _newLoadingView;
     }
 
-    v9 = [(SKUISlideshowItemViewController *)self view];
-    [(UIView *)v9 addSubview:self->_loadingView];
-    v6 = v9;
+    view = [(SKUISlideshowItemViewController *)self view];
+    [(UIView *)view addSubview:self->_loadingView];
+    v6 = view;
   }
 }
 
 - (id)_newLoadingView
 {
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:1];
   [v3 addSubview:v5];
@@ -150,14 +150,14 @@
   v8 = ;
   [v6 setText:v8];
 
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v6 setTextColor:v9];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v6 setTextColor:whiteColor];
 
   v10 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
   [v6 setFont:v10];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v11];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:clearColor2];
 
   [v6 sizeToFit];
   [v5 bounds];
@@ -199,15 +199,15 @@
   return v3;
 }
 
-- (void)_pinchGestureAction:(id)a3
+- (void)_pinchGestureAction:(id)action
 {
-  v12 = a3;
+  actionCopy = action;
   [(SKUISlideshowImageScrollView *)self->_imageScrollView contentOffset];
   self->_lastContentOffset.x = v4;
   self->_lastContentOffset.y = v5;
   [(SKUISlideshowImageScrollView *)self->_imageScrollView zoomScale];
   self->_lastZoomScale = v6;
-  if ([v12 state] == 1)
+  if ([actionCopy state] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained slideshowItemViewControllerDidBeginPinchGesture:self];
@@ -216,7 +216,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v12 state] == 2)
+  if ([actionCopy state] == 2)
   {
     [(SKUISlideshowImageScrollView *)self->_imageScrollView zoomScale];
     v9 = v8;

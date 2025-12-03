@@ -1,16 +1,16 @@
 @interface DTAllocationsRecorder
 + (id)_libraryPath;
 + (unsigned)allEventsMask;
-- (BOOL)_startWithError:(id *)a3;
+- (BOOL)_startWithError:(id *)error;
 - (DTAllocationsRecorder)init;
 - (id).cxx_construct;
-- (unint64_t)_setupSharedMemoryInTask:(unsigned int)a3;
-- (void)_endAndTossResources:(BOOL)a3;
+- (unint64_t)_setupSharedMemoryInTask:(unsigned int)task;
+- (void)_endAndTossResources:(BOOL)resources;
 - (void)_processIncomingData;
-- (void)addKeyFrame:(id *)a3;
-- (void)createFullEventFromDelta:(id *)a3 withEvent:(id *)a4;
+- (void)addKeyFrame:(id *)frame;
+- (void)createFullEventFromDelta:(id *)delta withEvent:(id *)event;
 - (void)dealloc;
-- (void)processBufferMessage:(id)a3;
+- (void)processBufferMessage:(id)message;
 @end
 
 @implementation DTAllocationsRecorder
@@ -132,9 +132,9 @@
 
 + (unsigned)allEventsMask
 {
-  v3 = [a1 vmEventsMask];
-  v4 = [a1 retainReleaseAutoEventsMask] | v3;
-  return v4 | [a1 mallocReallocFreeEventsMask];
+  vmEventsMask = [self vmEventsMask];
+  v4 = [self retainReleaseAutoEventsMask] | vmEventsMask;
+  return v4 | [self mallocReallocFreeEventsMask];
 }
 
 + (id)_libraryPath
@@ -143,15 +143,15 @@
   v5 = [v4 pathForResource:@"liboainject" ofType:@"dylib"];
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    v8 = [v4 bundlePath];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"DTAllocationsRecorder.mm" lineNumber:144 description:{@"Allocations library could not be located! Expected in bundle with path: %@", v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    bundlePath = [v4 bundlePath];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DTAllocationsRecorder.mm" lineNumber:144 description:{@"Allocations library could not be located! Expected in bundle with path: %@", bundlePath}];
   }
 
   return v5;
 }
 
-- (unint64_t)_setupSharedMemoryInTask:(unsigned int)a3
+- (unint64_t)_setupSharedMemoryInTask:(unsigned int)task
 {
   v38 = *MEMORY[0x277D85DE8];
   if (self->_shmem)
@@ -160,11 +160,11 @@
     goto LABEL_32;
   }
 
-  self->_targetTask = a3;
-  v6 = [(DTAllocationsRecorder *)self sharedMemorySize];
-  if (v6)
+  self->_targetTask = task;
+  sharedMemorySize = [(DTAllocationsRecorder *)self sharedMemorySize];
+  if (sharedMemorySize)
   {
-    v7 = v6;
+    v7 = sharedMemorySize;
   }
 
   else
@@ -197,7 +197,7 @@ LABEL_31:
   atomic_store(0, &v9->var8);
   self->_shmem = v9;
   v10 = MEMORY[0x277D85F48];
-  if (a3 - 1 > 0xFFFFFFFD || (v11 = *MEMORY[0x277D85F48], (*MEMORY[0x277D85F48] - 1) >= 0xFFFFFFFE))
+  if (task - 1 > 0xFFFFFFFD || (v11 = *MEMORY[0x277D85F48], (*MEMORY[0x277D85F48] - 1) >= 0xFFFFFFFE))
   {
 LABEL_26:
     shmem = self->_shmem;
@@ -290,7 +290,7 @@ LABEL_25:
 
   *cur_protection = 0;
   target_address = 0;
-  v17 = mach_vm_remap(a3, &target_address, v16, 0, 1048577, v11, v9, 0, &cur_protection[1], cur_protection, 2u);
+  v17 = mach_vm_remap(task, &target_address, v16, 0, 1048577, v11, v9, 0, &cur_protection[1], cur_protection, 2u);
   if (v17)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -320,7 +320,7 @@ LABEL_25:
       _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to map memory r/w for address: %#llx in task: 0x%x (%d)\n", buf, 0x18u);
     }
 
-    mach_vm_deallocate(a3, target_address, v16);
+    mach_vm_deallocate(task, target_address, v16);
   }
 
   v3 = target_address;
@@ -335,24 +335,24 @@ LABEL_32:
   return v3;
 }
 
-- (BOOL)_startWithError:(id *)a3
+- (BOOL)_startWithError:(id *)error
 {
   stopCollection = self->_stopCollection;
   if (stopCollection)
   {
     self->_stopCollection = 0;
-    v6 = [(DTAllocationsRecorder *)self bufferHandler];
+    bufferHandler = [(DTAllocationsRecorder *)self bufferHandler];
 
-    if (!v6)
+    if (!bufferHandler)
     {
-      v7 = [(DTAllocationsRecorder *)self eventHandler];
+      eventHandler = [(DTAllocationsRecorder *)self eventHandler];
       self->_partialEvent = malloc_type_malloc(0x1030uLL, 0x1000040EED21634uLL);
       self->_fullEvent = malloc_type_malloc(0x1030uLL, 0x1000040EED21634uLL);
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = sub_247FED034;
       aBlock[3] = &unk_278EF3F90;
-      v8 = v7;
+      v8 = eventHandler;
       aBlock[4] = self;
       v15 = v8;
       v16 = a2;
@@ -369,17 +369,17 @@ LABEL_32:
     dispatch_async(processingQueue, v13);
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = sub_247FEC9A4(@"Allocations recording already in process.");
+    *error = sub_247FEC9A4(@"Allocations recording already in process.");
   }
 
   return stopCollection != 0;
 }
 
-- (void)addKeyFrame:(id *)a3
+- (void)addKeyFrame:(id *)frame
 {
-  var1_low = LOBYTE(a3->var1);
+  var1_low = LOBYTE(frame->var1);
   p_end_node = &self->_threadToKeyFramesMap.__tree_.__end_node_;
   left = self->_threadToKeyFramesMap.__tree_.__end_node_.__left_;
   if (!left)
@@ -387,7 +387,7 @@ LABEL_32:
     goto LABEL_9;
   }
 
-  var5 = a3->var5;
+  var5 = frame->var5;
   v8 = &self->_threadToKeyFramesMap.__tree_.__end_node_;
   do
   {
@@ -454,28 +454,28 @@ LABEL_9:
     v21 = var1_low;
     v22[0] = v12;
     sub_247FEE8B4(&v23, &v21);
-    v21 = a3->var5;
+    v21 = frame->var5;
     sub_247FEE52C(v22, &v23);
     sub_247FEE988(&p_end_node[-1], &v21);
     sub_247FEE84C(v22, v22[1]);
     sub_247FEE84C(&v23, v24[0]);
   }
 
-  var2 = a3->var2;
-  a3->var1 &= 0xFF0000FF;
+  var2 = frame->var2;
+  frame->var1 &= 0xFF0000FF;
   v12[2] = 512 - var2;
-  memcpy(&v12[2 * (512 - var2) + 4], a3->var7, 8 * a3->var2);
+  memcpy(&v12[2 * (512 - var2) + 4], frame->var7, 8 * frame->var2);
 }
 
-- (void)createFullEventFromDelta:(id *)a3 withEvent:(id *)a4
+- (void)createFullEventFromDelta:(id *)delta withEvent:(id *)event
 {
   left = self->_threadToKeyFramesMap.__tree_.__end_node_.__left_;
   p_end_node = &self->_threadToKeyFramesMap.__tree_.__end_node_;
   v5 = left;
   if (left)
   {
-    var1_low = LOBYTE(a3->var1);
-    var5 = a3->var5;
+    var1_low = LOBYTE(delta->var1);
+    var5 = delta->var5;
     v11 = p_end_node;
     do
     {
@@ -516,40 +516,40 @@ LABEL_9:
         if (v18 != v15 && var1_low >= LODWORD(v18[4].__left_))
         {
           v21 = v18[5].__left_;
-          v21[2] = LOWORD(a3->var2);
-          memcpy(&v21[2 * a3->var2 + 4], a3->var7, (a3->var2 >> 13) & 0x7FFF8);
+          v21[2] = LOWORD(delta->var2);
+          memcpy(&v21[2 * delta->var2 + 4], delta->var7, (delta->var2 >> 13) & 0x7FFF8);
           v22 = 512 - v21[2];
-          v23 = *&a3->var0;
-          v24 = *&a3->var5;
-          *&a4->var3 = *&a3->var3;
-          *&a4->var5 = v24;
-          *&a4->var0 = v23;
-          memcpy(a4->var7, &v21[2 * v21[2] + 4], 8 * v22);
-          a4->var1 &= 0xFF0000FF;
-          a4->var2 = v22 & 0x1FFFFFFF;
+          v23 = *&delta->var0;
+          v24 = *&delta->var5;
+          *&event->var3 = *&delta->var3;
+          *&event->var5 = v24;
+          *&event->var0 = v23;
+          memcpy(event->var7, &v21[2 * v21[2] + 4], 8 * v22);
+          event->var1 &= 0xFF0000FF;
+          event->var2 = v22 & 0x1FFFFFFF;
         }
       }
     }
   }
 }
 
-- (void)processBufferMessage:(id)a3
+- (void)processBufferMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   processingQueue = self->_processingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247FED71C;
   v7[3] = &unk_278EF3FB8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(processingQueue, v7);
 }
 
-- (void)_endAndTossResources:(BOOL)a3
+- (void)_endAndTossResources:(BOOL)resources
 {
-  if (a3)
+  if (resources)
   {
     v3 = 1;
   }
@@ -573,7 +573,7 @@ LABEL_9:
 {
   v63 = *MEMORY[0x277D85DE8];
   v36 = objc_autoreleasePoolPush();
-  v41 = [(DTAllocationsRecorder *)self bufferHandler];
+  bufferHandler = [(DTAllocationsRecorder *)self bufferHandler];
   if ([(DTAllocationsRecorder *)self readStackLogsUponAttach])
   {
     targetTask = self->_targetTask;
@@ -589,7 +589,7 @@ LABEL_9:
       v52[2] = sub_247FEDF98;
       v52[3] = &unk_278EF3FE0;
       v54 = v35;
-      v53 = v41;
+      v53 = bufferHandler;
       v5 = v52;
       v6 = [objc_alloc(MEMORY[0x277D6AFA0]) initWithTask:v4];
       v57 = MEMORY[0x277D85DD0];
@@ -615,7 +615,7 @@ LABEL_9:
   {
     v42 = v48;
     v35[518] = v44;
-    v38 = self;
+    selfCopy = self;
     do
     {
       shmem = self->_shmem;
@@ -631,7 +631,7 @@ LABEL_9:
       v48[2] = self;
       v37 = v40;
       v49 = v37;
-      v39 = v41;
+      v39 = bufferHandler;
       v50 = v39;
       v51 = &v57;
       v11 = v47;
@@ -696,7 +696,7 @@ LABEL_9:
           {
             atomic_store(1u, &shmem->var9);
 LABEL_48:
-            self = v38;
+            self = selfCopy;
 LABEL_49:
 
             goto LABEL_50;
@@ -760,10 +760,10 @@ LABEL_49:
         v15 = v25;
       }
 
-      self = v38;
+      self = selfCopy;
       if (*(v58 + 24) == 1)
       {
-        serialEventQueue = v38->_serialEventQueue;
+        serialEventQueue = selfCopy->_serialEventQueue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         v44[0] = sub_247FEE2B0;

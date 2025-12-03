@@ -1,15 +1,15 @@
 @interface EMServerConfiguration
-+ (BOOL)isCacheRecentLastRefreshDate:(id *)a3;
++ (BOOL)isCacheRecentLastRefreshDate:(id *)date;
 + (BOOL)refresh;
 + (id)_cachedPropertyList;
 + (id)_dateFormatter;
 + (id)cachedPropertyList;
-+ (id)getValueForKey:(id)a3;
-+ (id)getValueForKey:(id)a3 refreshIfNeeded:(BOOL)a4;
++ (id)getValueForKey:(id)key;
++ (id)getValueForKey:(id)key refreshIfNeeded:(BOOL)needed;
 + (void)_assertNotMainThread;
-+ (void)_savePropertyList:(id)a3 withDate:(id)a4;
++ (void)_savePropertyList:(id)list withDate:(id)date;
 + (void)clearCache;
-+ (void)overrideWithPropertyList:(id)a3;
++ (void)overrideWithPropertyList:(id)list;
 + (void)refreshAsync;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __37__EMServerConfiguration_refreshAsync__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v5, block);
 }
 
@@ -44,9 +44,9 @@ uint64_t __37__EMServerConfiguration_refreshAsync__block_invoke(uint64_t a1)
 
 + (id)_cachedPropertyList
 {
-  v3 = [a1 _userDefaults];
-  v4 = [a1 _userDefaultsKey];
-  v5 = [v3 objectForKey:v4];
+  _userDefaults = [self _userDefaults];
+  _userDefaultsKey = [self _userDefaultsKey];
+  v5 = [_userDefaults objectForKey:_userDefaultsKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -84,33 +84,33 @@ void ___ef_log_EMServerConfiguration_block_invoke()
 {
   if (pthread_main_np())
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:a1 file:@"EMServerConfiguration.m" lineNumber:39 description:@"Current thread is main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMServerConfiguration.m" lineNumber:39 description:@"Current thread is main"];
   }
 }
 
 + (BOOL)refresh
 {
-  [a1 _assertNotMainThread];
+  [self _assertNotMainThread];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   v3 = dispatch_semaphore_create(0);
   v4 = MEMORY[0x1E695AC78];
-  v5 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-  v6 = [v4 sessionWithConfiguration:v5];
+  defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+  v6 = [v4 sessionWithConfiguration:defaultSessionConfiguration];
 
-  v7 = [a1 _configurationLocation];
+  _configurationLocation = [self _configurationLocation];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __32__EMServerConfiguration_refresh__block_invoke;
   v11[3] = &unk_1E826FA60;
   v13 = &v15;
-  v14 = a1;
+  selfCopy = self;
   v8 = v3;
   v12 = v8;
-  v9 = [v6 dataTaskWithURL:v7 completionHandler:v11];
+  v9 = [v6 dataTaskWithURL:_configurationLocation completionHandler:v11];
   [v9 resume];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   LOBYTE(v3) = *(v16 + 24);
@@ -166,23 +166,23 @@ LABEL_9:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_savePropertyList:(id)a3 withDate:(id)a4
++ (void)_savePropertyList:(id)list withDate:(id)date
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  v8 = [a1 _dateFormatter];
-  v9 = [v8 stringFromDate:v6];
+  dateCopy = date;
+  v7 = [list mutableCopy];
+  _dateFormatter = [self _dateFormatter];
+  v9 = [_dateFormatter stringFromDate:dateCopy];
 
   [v7 setValue:v9 forKey:@"EMServerConfiguration-propertyListLastDownloadTime"];
-  v10 = [a1 _userDefaults];
-  v11 = [a1 _userDefaultsKey];
-  [v10 setObject:v7 forKey:v11];
+  _userDefaults = [self _userDefaults];
+  _userDefaultsKey = [self _userDefaultsKey];
+  [_userDefaults setObject:v7 forKey:_userDefaultsKey];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__EMServerConfiguration__savePropertyList_withDate___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_savePropertyList_withDate__onceToken != -1)
   {
     dispatch_once(&_savePropertyList_withDate__onceToken, block);
@@ -196,54 +196,54 @@ void __52__EMServerConfiguration__savePropertyList_withDate___block_invoke(uint6
   [v3 removeObjectForKey:v2];
 }
 
-+ (id)getValueForKey:(id)a3
++ (id)getValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 _cachedPropertyList];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _cachedPropertyList = [self _cachedPropertyList];
+  v6 = [_cachedPropertyList valueForKey:keyCopy];
 
   return v6;
 }
 
-+ (id)getValueForKey:(id)a3 refreshIfNeeded:(BOOL)a4
++ (id)getValueForKey:(id)key refreshIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && ([a1 isCacheRecent] & 1) == 0)
+  neededCopy = needed;
+  keyCopy = key;
+  if (neededCopy && ([self isCacheRecent] & 1) == 0)
   {
-    [a1 refreshAsync];
+    [self refreshAsync];
   }
 
-  v7 = [a1 _cachedPropertyList];
-  v8 = [v7 valueForKey:v6];
+  _cachedPropertyList = [self _cachedPropertyList];
+  v8 = [_cachedPropertyList valueForKey:keyCopy];
 
   return v8;
 }
 
 + (id)cachedPropertyList
 {
-  v2 = [a1 _cachedPropertyList];
-  v3 = [v2 mutableCopy];
+  _cachedPropertyList = [self _cachedPropertyList];
+  v3 = [_cachedPropertyList mutableCopy];
   [v3 removeObjectForKey:@"EMServerConfiguration-propertyListLastDownloadTime"];
 
   return v3;
 }
 
-+ (BOOL)isCacheRecentLastRefreshDate:(id *)a3
++ (BOOL)isCacheRecentLastRefreshDate:(id *)date
 {
-  v5 = [a1 getValueForKey:@"EMServerConfiguration-propertyListLastDownloadTime" refreshIfNeeded:0];
-  v6 = [a1 _dateFormatter];
-  v7 = [v6 dateFromString:v5];
+  v5 = [self getValueForKey:@"EMServerConfiguration-propertyListLastDownloadTime" refreshIfNeeded:0];
+  _dateFormatter = [self _dateFormatter];
+  v7 = [_dateFormatter dateFromString:v5];
 
-  if (a3)
+  if (date)
   {
     v8 = v7;
-    *a3 = v7;
+    *date = v7;
   }
 
   if (v7)
   {
-    [a1 _cacheValidityInterval];
+    [self _cacheValidityInterval];
     v9 = [v7 ef_isMoreThanTimeIntervalAgo:?] ^ 1;
   }
 
@@ -264,14 +264,14 @@ void __52__EMServerConfiguration__savePropertyList_withDate___block_invoke(uint6
     _os_log_impl(&dword_1C6655000, v3, OS_LOG_TYPE_DEFAULT, "Clearing out the cached property list", v6, 2u);
   }
 
-  v4 = [a1 _userDefaults];
-  v5 = [a1 _userDefaultsKey];
-  [v4 setObject:0 forKey:v5];
+  _userDefaults = [self _userDefaults];
+  _userDefaultsKey = [self _userDefaultsKey];
+  [_userDefaults setObject:0 forKey:_userDefaultsKey];
 }
 
-+ (void)overrideWithPropertyList:(id)a3
++ (void)overrideWithPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = _ef_log_EMServerConfiguration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -279,8 +279,8 @@ void __52__EMServerConfiguration__savePropertyList_withDate___block_invoke(uint6
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "Overriding with custom property list", v7, 2u);
   }
 
-  v6 = [MEMORY[0x1E695DF00] distantFuture];
-  [a1 _savePropertyList:v4 withDate:v6];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [self _savePropertyList:listCopy withDate:distantFuture];
 }
 
 void __32__EMServerConfiguration_refresh__block_invoke_cold_1(void *a1, uint8_t *buf, os_log_t log)

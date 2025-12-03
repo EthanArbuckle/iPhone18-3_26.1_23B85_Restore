@@ -1,35 +1,35 @@
 @interface _SESSessionAppStateObserver
-+ (id)observerWithDelegate:(id)a3;
-- (BOOL)isAppBackgroundedOrSuspended:(id)a3;
++ (id)observerWithDelegate:(id)delegate;
+- (BOOL)isAppBackgroundedOrSuspended:(id)suspended;
 - (SESSessionAppStateObserverDelegate)delegate;
-- (_SESSessionAppStateObserver)initWithDelegate:(id)a3;
+- (_SESSessionAppStateObserver)initWithDelegate:(id)delegate;
 - (id)dumpState;
-- (void)applicationStateChanged:(id)a3 stateUpdate:(id)a4;
+- (void)applicationStateChanged:(id)changed stateUpdate:(id)update;
 - (void)dealloc;
-- (void)registerForAppStateChanges:(id)a3;
-- (void)unregisterForAppStateChanges:(id)a3;
+- (void)registerForAppStateChanges:(id)changes;
+- (void)unregisterForAppStateChanges:(id)changes;
 @end
 
 @implementation _SESSessionAppStateObserver
 
-+ (id)observerWithDelegate:(id)a3
++ (id)observerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[_SESSessionAppStateObserver alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[_SESSessionAppStateObserver alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }
 
-- (_SESSessionAppStateObserver)initWithDelegate:(id)a3
+- (_SESSessionAppStateObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = _SESSessionAppStateObserver;
   v5 = [(_SESSessionAppStateObserver *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_new();
     connections = v6->_connections;
     v6->_connections = v7;
@@ -53,28 +53,28 @@
   [(_SESSessionAppStateObserver *)&v3 dealloc];
 }
 
-- (void)registerForAppStateChanges:(id)a3
+- (void)registerForAppStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:&off_1004DCA80];
+  changesCopy = changes;
+  userInfo = [changesCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:&off_1004DCA80];
 
-  v7 = [v4 processIdentifier];
+  processIdentifier = [changesCopy processIdentifier];
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    *v29 = v7;
+    *v29 = processIdentifier;
     *&v29[4] = 2112;
     *&v29[6] = v6;
     v30 = 2112;
-    v31 = v4;
+    v31 = changesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Register for application state changes PID %d (%@) %@", buf, 0x1Cu);
   }
 
   v9 = self->_connections;
   objc_sync_enter(v9);
-  if ([(NSMutableSet *)self->_connections containsObject:v4])
+  if ([(NSMutableSet *)self->_connections containsObject:changesCopy])
   {
     v10 = SESDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -105,12 +105,12 @@
       v24[3] = &unk_1004C32F8;
       v16 = v13;
       v25 = v16;
-      v26 = self;
+      selfCopy = self;
       [(RBSProcessMonitor *)v15 updateConfiguration:v24];
     }
 
     predicates = self->_predicates;
-    v18 = [RBSProcessIdentifier identifierWithPid:v7];
+    v18 = [RBSProcessIdentifier identifierWithPid:processIdentifier];
     v19 = [RBSProcessPredicate predicateMatchingIdentifier:v18];
     [(NSMutableArray *)predicates addObject:v19];
 
@@ -130,37 +130,37 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Current predicates %@", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_connections addObject:v4];
+    [(NSMutableSet *)self->_connections addObject:changesCopy];
   }
 
   objc_sync_exit(v9);
 }
 
-- (void)unregisterForAppStateChanges:(id)a3
+- (void)unregisterForAppStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:&off_1004DCA80];
+  changesCopy = changes;
+  userInfo = [changesCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:&off_1004DCA80];
 
-  v7 = [v4 processIdentifier];
+  processIdentifier = [changesCopy processIdentifier];
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    *v20 = v7;
+    *v20 = processIdentifier;
     *&v20[4] = 2112;
     *&v20[6] = v6;
     v21 = 2112;
-    v22 = v4;
+    v22 = changesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Unregister for application state changes PID %d (%@) %@", buf, 0x1Cu);
   }
 
   v9 = self->_connections;
   objc_sync_enter(v9);
-  if (([(NSMutableSet *)self->_connections containsObject:v4]& 1) != 0)
+  if (([(NSMutableSet *)self->_connections containsObject:changesCopy]& 1) != 0)
   {
     predicates = self->_predicates;
-    v11 = [RBSProcessIdentifier identifierWithPid:v7];
+    v11 = [RBSProcessIdentifier identifierWithPid:processIdentifier];
     v12 = [RBSProcessPredicate predicateMatchingIdentifier:v11];
     [(NSMutableArray *)predicates removeObject:v12];
 
@@ -180,7 +180,7 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Current predicates %@", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_connections removeObject:v4];
+    [(NSMutableSet *)self->_connections removeObject:changesCopy];
     if (![(NSMutableSet *)self->_connections count])
     {
       [(RBSProcessMonitor *)self->_monitor invalidate];
@@ -202,11 +202,11 @@
   objc_sync_exit(v9);
 }
 
-- (void)applicationStateChanged:(id)a3 stateUpdate:(id)a4
+- (void)applicationStateChanged:(id)changed stateUpdate:(id)update
 {
-  v25 = a3;
-  v26 = a4;
-  LODWORD(a4) = [v25 pid];
+  changedCopy = changed;
+  updateCopy = update;
+  LODWORD(update) = [changedCopy pid];
   v6 = self->_connections;
   objc_sync_enter(v6);
   connections = self->_connections;
@@ -214,20 +214,20 @@
   v34 = 3221225472;
   v35 = sub_1000629A8;
   v36 = &unk_1004C3340;
-  v27 = a4;
-  v37 = a4;
+  updateCopy2 = update;
+  updateCopy3 = update;
   v8 = Filter();
   objc_sync_exit(v6);
 
-  v28 = [v26 state];
-  v9 = [v28 taskState];
+  state = [updateCopy state];
+  taskState = [state taskState];
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
-    v40 = v9;
+    v40 = taskState;
     v41 = 2112;
-    v42 = v28;
+    v42 = state;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "applicationStateChanged currentTaskState %d state \n%@ ", buf, 0x12u);
   }
 
@@ -251,9 +251,9 @@
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        if (v9 != 4)
+        if (taskState != 4)
         {
-          if (v9 != 3)
+          if (taskState != 3)
           {
             continue;
           }
@@ -262,7 +262,7 @@
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             *buf = 67109120;
-            v40 = v27;
+            v40 = updateCopy2;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "The application with PID %d has been suspended", buf, 8u);
           }
 
@@ -271,8 +271,8 @@
           goto LABEL_21;
         }
 
-        v19 = [v28 endowmentNamespaces];
-        v20 = [v19 containsObject:v14];
+        endowmentNamespaces = [state endowmentNamespaces];
+        v20 = [endowmentNamespaces containsObject:v14];
 
         v21 = SESDefaultLogObject();
         v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
@@ -281,7 +281,7 @@
           if (v22)
           {
             *buf = 67109120;
-            v40 = v27;
+            v40 = updateCopy2;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "The application with PID %d has entered the background", buf, 8u);
           }
 
@@ -293,7 +293,7 @@
         if (v22)
         {
           *buf = 67109120;
-          v40 = v27;
+          v40 = updateCopy2;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "The application with PID %d has entered the foreground", buf, 8u);
         }
 
@@ -317,11 +317,11 @@ LABEL_21:
   }
 }
 
-- (BOOL)isAppBackgroundedOrSuspended:(id)a3
+- (BOOL)isAppBackgroundedOrSuspended:(id)suspended
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:&off_1004DCA80];
+  suspendedCopy = suspended;
+  userInfo = [suspendedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:&off_1004DCA80];
 
   v6 = SESDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -329,35 +329,35 @@ LABEL_21:
     *buf = 138412546;
     v19 = v5;
     v20 = 2112;
-    v21 = v3;
+    v21 = suspendedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Checking if client is backgrounded or suspended (%@) %@", buf, 0x16u);
   }
 
-  if (v3)
+  if (suspendedCopy)
   {
-    v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 processIdentifier]);
+    v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [suspendedCopy processIdentifier]);
     v17 = 0;
     v8 = [RBSProcessHandle handleForIdentifier:v7 error:&v17];
     v9 = v17;
 
     if (v9 || !v8)
     {
-      v10 = SESDefaultLogObject();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      currentState = SESDefaultLogObject();
+      if (os_log_type_enabled(currentState, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v19 = v9;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to get process handle %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, currentState, OS_LOG_TYPE_ERROR, "Failed to get process handle %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v10 = [v8 currentState];
-      if ([v10 taskState]== 4)
+      currentState = [v8 currentState];
+      if ([currentState taskState]== 4)
       {
-        v11 = [v10 endowmentNamespaces];
-        v12 = [v11 containsObject:FBSSceneVisibilityEndowmentNamespace];
+        endowmentNamespaces = [currentState endowmentNamespaces];
+        v12 = [endowmentNamespaces containsObject:FBSSceneVisibilityEndowmentNamespace];
 
         if ((v12 & 1) == 0)
         {
@@ -375,7 +375,7 @@ LABEL_18:
         }
       }
 
-      else if ([v10 taskState]== 3)
+      else if ([currentState taskState]== 3)
       {
         v13 = SESDefaultLogObject();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -435,8 +435,8 @@ LABEL_22:
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 userInfo];
-        v9 = [v8 objectForKeyedSubscript:&off_1004DCA80];
+        userInfo = [v7 userInfo];
+        v9 = [userInfo objectForKeyedSubscript:&off_1004DCA80];
         v10 = [NSString stringWithFormat:@"Connection %p client %@", v7, v9];
         [v3 addObject:v10];
       }

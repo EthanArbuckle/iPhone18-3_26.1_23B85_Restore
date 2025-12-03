@@ -1,7 +1,7 @@
 @interface TVLNetworkMonitor
 - (TVLNetworkMonitor)init;
 - (void)dealloc;
-- (void)startMonitoringForInterfaceTypes:(unint64_t)a3 updateHandler:(id)a4;
+- (void)startMonitoringForInterfaceTypes:(unint64_t)types updateHandler:(id)handler;
 - (void)stopMonitoring;
 @end
 
@@ -30,9 +30,9 @@
   [(TVLNetworkMonitor *)&v3 dealloc];
 }
 
-- (void)startMonitoringForInterfaceTypes:(unint64_t)a3 updateHandler:(id)a4
+- (void)startMonitoringForInterfaceTypes:(unint64_t)types updateHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (_TVLLogDefault_onceToken_5 != -1)
   {
     [TVLNetworkMonitor startMonitoringForInterfaceTypes:updateHandler:];
@@ -47,8 +47,8 @@
 
   if (![(TVLNetworkMonitor *)self isMonitoring])
   {
-    self->_monitoringOptions = a3;
-    v8 = MEMORY[0x26D6AEC20](v6);
+    self->_monitoringOptions = types;
+    v8 = MEMORY[0x26D6AEC20](handlerCopy);
     updateHandler = self->_updateHandler;
     self->_updateHandler = v8;
 
@@ -59,7 +59,7 @@
     v35[3] = &unk_279D6C1F8;
     objc_copyWeak(&v36, buf);
     v10 = MEMORY[0x26D6AEC20](v35);
-    if ((a3 & 4) != 0 && !self->_awdl_monitor)
+    if ((types & 4) != 0 && !self->_awdl_monitor)
     {
       v15 = objc_alloc_init(MEMORY[0x277CCAB80]);
       awdlServiceBrowser = self->_awdlServiceBrowser;
@@ -91,7 +91,7 @@
       objc_destroyWeak(&v33);
       objc_destroyWeak(&location);
 
-      if ((a3 & 2) != 0)
+      if ((types & 2) != 0)
       {
 LABEL_9:
         if (!self->_wifi_monitor)
@@ -122,12 +122,12 @@ LABEL_9:
       }
     }
 
-    else if ((a3 & 2) != 0)
+    else if ((types & 2) != 0)
     {
       goto LABEL_9;
     }
 
-    if ((a3 & 1) != 0 && !self->_ethernet_monitor)
+    if ((types & 1) != 0 && !self->_ethernet_monitor)
     {
       v21 = MEMORY[0x26D6AE9A0]();
       nw_parameters_set_required_interface_type(v21, nw_interface_type_wired);

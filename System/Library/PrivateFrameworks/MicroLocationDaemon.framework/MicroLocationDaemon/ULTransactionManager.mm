@@ -2,10 +2,10 @@
 + (id)shared;
 - (ULTransactionManager)init;
 - (id)dumpActiveTransactions;
-- (void)beginTransaction:(id)a3;
-- (void)endTransaction:(id)a3;
+- (void)beginTransaction:(id)transaction;
+- (void)endTransaction:(id)transaction;
 - (void)invalidateAllTransactions;
-- (void)performUnderTransaction:(id)a3 block:(id)a4;
+- (void)performUnderTransaction:(id)transaction block:(id)block;
 @end
 
 @implementation ULTransactionManager
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __30__ULTransactionManager_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_ul_once_token_4 != -1)
   {
     dispatch_once(&shared_ul_once_token_4, block);
@@ -45,28 +45,28 @@ void __30__ULTransactionManager_shared__block_invoke(uint64_t a1)
     v4 = dispatch_queue_create("com.apple.milod.ULTransactionManager", v3);
     [(ULTransactionManager *)v2 setQueue:v4];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [(ULTransactionManager *)v2 setTransactions:v5];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ULTransactionManager *)v2 setTransactions:dictionary];
   }
 
   return v2;
 }
 
-- (void)beginTransaction:(id)a3
+- (void)beginTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(ULTransactionManager *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  transactionCopy = transaction;
+  queue = [(ULTransactionManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULTransactionManager *)self queue];
+  queue2 = [(ULTransactionManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__ULTransactionManager_beginTransaction___block_invoke;
   v8[3] = &unk_2798D4280;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = transactionCopy;
+  selfCopy = self;
+  v7 = transactionCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __41__ULTransactionManager_beginTransaction___block_invoke(uint64_t a1)
@@ -114,21 +114,21 @@ void __41__ULTransactionManager_beginTransaction___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endTransaction:(id)a3
+- (void)endTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(ULTransactionManager *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  transactionCopy = transaction;
+  queue = [(ULTransactionManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULTransactionManager *)self queue];
+  queue2 = [(ULTransactionManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__ULTransactionManager_endTransaction___block_invoke;
   v8[3] = &unk_2798D4280;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = transactionCopy;
+  selfCopy = self;
+  v7 = transactionCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __39__ULTransactionManager_endTransaction___block_invoke(uint64_t a1)
@@ -174,34 +174,34 @@ void __39__ULTransactionManager_endTransaction___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performUnderTransaction:(id)a3 block:(id)a4
+- (void)performUnderTransaction:(id)transaction block:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(ULTransactionManager *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  blockCopy = block;
+  transactionCopy = transaction;
+  queue = [(ULTransactionManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  [(ULTransactionManager *)self beginTransaction:v8];
-  v6[2](v6);
+  [(ULTransactionManager *)self beginTransaction:transactionCopy];
+  blockCopy[2](blockCopy);
 
-  [(ULTransactionManager *)self endTransaction:v8];
+  [(ULTransactionManager *)self endTransaction:transactionCopy];
 }
 
 - (void)invalidateAllTransactions
 {
-  v3 = [(ULTransactionManager *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULTransactionManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v4 = [(ULTransactionManager *)self dumpActiveTransactions];
-  v5 = [(ULTransactionManager *)self queue];
+  dumpActiveTransactions = [(ULTransactionManager *)self dumpActiveTransactions];
+  queue2 = [(ULTransactionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__ULTransactionManager_invalidateAllTransactions__block_invoke;
   v7[3] = &unk_2798D4280;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dumpActiveTransactions;
+  selfCopy = self;
+  v6 = dumpActiveTransactions;
+  dispatch_sync(queue2, v7);
 }
 
 void __49__ULTransactionManager_invalidateAllTransactions__block_invoke(uint64_t a1)
@@ -229,8 +229,8 @@ void __49__ULTransactionManager_invalidateAllTransactions__block_invoke(uint64_t
 
 - (id)dumpActiveTransactions
 {
-  v3 = [(ULTransactionManager *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULTransactionManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -238,14 +238,14 @@ void __49__ULTransactionManager_invalidateAllTransactions__block_invoke(uint64_t
   v11 = __Block_byref_object_copy__33;
   v12 = __Block_byref_object_dispose__33;
   v13 = 0;
-  v4 = [(ULTransactionManager *)self queue];
+  queue2 = [(ULTransactionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ULTransactionManager_dumpActiveTransactions__block_invoke;
   v7[3] = &unk_2798D4BB0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);

@@ -1,13 +1,13 @@
 @interface NTKAnalogBreatheFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)faceDescription;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKAnalogBreatheFace
@@ -43,14 +43,14 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v5 = [(NTKAnalogBreatheFace *)self device:12];
     v6 = [v5 supportsPDRCapability:4094027452];
 
-    v7 = [(NTKAnalogBreatheFace *)self device];
+    device = [(NTKAnalogBreatheFace *)self device];
     if (v6)
     {
       v8 = 3;
@@ -61,7 +61,7 @@
       v8 = 0;
     }
 
-    v9 = [NTKBreatheVideoStyleEditOption optionWithStyle:v8 forDevice:v7];
+    v9 = [NTKBreatheVideoStyleEditOption optionWithStyle:v8 forDevice:device];
   }
 
   else
@@ -72,37 +72,37 @@
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKAnalogBreatheFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKAnalogBreatheFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKAnalogBreatheFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAnalogBreatheFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKAnalogBreatheFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKAnalogBreatheFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKAnalogBreatheFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKAnalogBreatheFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKAnalogBreatheFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKAnalogBreatheFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKAnalogBreatheFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAnalogBreatheFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = objc_opt_class();
   }
@@ -115,11 +115,11 @@
   return v4;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v4 = [@"EDIT_MODE_LABEL_DENSITY" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_DENSITY" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString();
   }
 
@@ -133,8 +133,8 @@
 
 - (id)faceDescription
 {
-  v2 = [(NTKAnalogBreatheFace *)self device];
-  v3 = [v2 supportsPDRCapability:4094027452];
+  device = [(NTKAnalogBreatheFace *)self device];
+  v3 = [device supportsPDRCapability:4094027452];
 
   if (v3)
   {

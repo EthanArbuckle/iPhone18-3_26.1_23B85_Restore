@@ -1,6 +1,6 @@
 @interface MCBatterySaverMode
 + (BOOL)isBatterySaverModeActive;
-+ (BOOL)isBatterySaverModeActive:(int)a3;
++ (BOOL)isBatterySaverModeActive:(int)active;
 + (id)batterySaverRestrictions;
 + (id)currentBatterySaverRestrictions;
 + (id)setOfActiveRestrictionUUIDs;
@@ -74,10 +74,10 @@ LABEL_9:
   return v3;
 }
 
-+ (BOOL)isBatterySaverModeActive:(int)a3
++ (BOOL)isBatterySaverModeActive:(int)active
 {
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(active, &state64))
   {
 LABEL_2:
     LOBYTE(v3) = 0;
@@ -111,12 +111,12 @@ LABEL_2:
 
 + (id)batterySaverRestrictions
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = +[MCHacks sharedHacks];
   v4 = [v3 quantizedAutoLockInSeconds:&unk_1F1AA5908];
-  [v2 MCSetValueRestriction:@"maxInactivity" value:v4];
+  [dictionary MCSetValueRestriction:@"maxInactivity" value:v4];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)currentBatterySaverRestrictions

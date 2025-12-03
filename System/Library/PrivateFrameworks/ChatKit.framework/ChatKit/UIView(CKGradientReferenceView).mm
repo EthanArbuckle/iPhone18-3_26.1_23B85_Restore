@@ -12,7 +12,7 @@
   v3[1] = 3221225472;
   v3[2] = __61__UIView_CKGradientReferenceView__setGradientViewsNeedLayout__block_invoke;
   v3[3] = &unk_1E72F4B30;
-  v3[4] = a1;
+  v3[4] = self;
   [v2 enumerateObjectsUsingBlock:v3];
 }
 
@@ -23,7 +23,7 @@
   v3[1] = 3221225472;
   v3[2] = __62__UIView_CKGradientReferenceView__layoutGradientViewsIfNeeded__block_invoke;
   v3[3] = &unk_1E72F4B30;
-  v3[4] = a1;
+  v3[4] = self;
   [v2 enumerateObjectsUsingBlock:v3];
 }
 

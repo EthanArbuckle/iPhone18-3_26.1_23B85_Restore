@@ -1,10 +1,10 @@
 @interface CMMotionAlarmManagerInternal
 + (id)instance;
-- (BOOL)_acknowledgeAlarm:(id)a3 error:(id *)a4;
-- (BOOL)_registerAlarm:(id)a3 error:(id *)a4;
-- (BOOL)_unregisterAlarm:(id)a3 error:(id *)a4;
+- (BOOL)_acknowledgeAlarm:(id)alarm error:(id *)error;
+- (BOOL)_registerAlarm:(id)alarm error:(id *)error;
+- (BOOL)_unregisterAlarm:(id)alarm error:(id *)error;
 - (CMMotionAlarmManagerInternal)init;
-- (void)_handleAlarmFire:(id)a3;
+- (void)_handleAlarmFire:(id)fire;
 - (void)_startListeners;
 - (void)_stopListeners;
 - (void)_teardown;
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = sub_19B679D60;
   block[3] = &unk_1E7532988;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED71D300 != -1)
   {
     dispatch_once(&qword_1ED71D300, block);
@@ -118,20 +118,20 @@
   dispatch_sync(fInternalQueue, block);
 }
 
-- (BOOL)_registerAlarm:(id)a3 error:(id *)a4
+- (BOOL)_registerAlarm:(id)alarm error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  if (objc_msgSend_manager(a3, v7, v8) && (v11 = objc_msgSend_manager(a3, v9, v10), objc_msgSend_delegate(v11, v12, v13)))
+  if (objc_msgSend_manager(alarm, v7, v8) && (v11 = objc_msgSend_manager(alarm, v9, v10), objc_msgSend_delegate(v11, v12, v13)))
   {
-    if (a3 && objc_msgSend_name(a3, v14, v15))
+    if (alarm && objc_msgSend_name(alarm, v14, v15))
     {
       fAlarms = self->fAlarms;
-      v19 = objc_msgSend_name(a3, v16, v17);
-      objc_msgSend_setObject_forKey_(fAlarms, v20, a3, v19);
+      v19 = objc_msgSend_name(alarm, v16, v17);
+      objc_msgSend_setObject_forKey_(fAlarms, v20, alarm, v19);
       v39 = @"CMMotionAlarmKey";
-      v40 = a3;
-      objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v21, &v40, &v39, 1);
+      alarmCopy = alarm;
+      objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v21, &alarmCopy, &v39, 1);
       sub_19B5D379C();
     }
 
@@ -164,7 +164,7 @@
       }
     }
 
-    if (a4)
+    if (error)
     {
       v34 = MEMORY[0x1E696ABC0];
       v41 = *MEMORY[0x1E696A578];
@@ -206,7 +206,7 @@
       }
     }
 
-    if (a4)
+    if (error)
     {
       v26 = MEMORY[0x1E696ABC0];
       v43 = *MEMORY[0x1E696A578];
@@ -214,7 +214,7 @@
       v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v24, &v44, &v43, 1);
       v29 = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"CMErrorDomain", 103, v27);
 LABEL_32:
-      *a4 = v29;
+      *error = v29;
     }
   }
 
@@ -223,17 +223,17 @@ LABEL_32:
   return 0;
 }
 
-- (BOOL)_unregisterAlarm:(id)a3 error:(id *)a4
+- (BOOL)_unregisterAlarm:(id)alarm error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  if (objc_msgSend_manager(a3, v7, v8) && (v11 = objc_msgSend_manager(a3, v9, v10), objc_msgSend_delegate(v11, v12, v13)))
+  if (objc_msgSend_manager(alarm, v7, v8) && (v11 = objc_msgSend_manager(alarm, v9, v10), objc_msgSend_delegate(v11, v12, v13)))
   {
-    if (a3 && objc_msgSend_name(a3, v14, v15))
+    if (alarm && objc_msgSend_name(alarm, v14, v15))
     {
       v28 = @"CMMotionAlarmKey";
-      v29 = a3;
-      objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v16, &v29, &v28, 1);
+      alarmCopy = alarm;
+      objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v16, &alarmCopy, &v28, 1);
       sub_19B67D694();
     }
 
@@ -266,7 +266,7 @@ LABEL_32:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v21 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v24, @"CMErrorDomain", 107, 0);
       goto LABEL_32;
@@ -304,11 +304,11 @@ LABEL_32:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v21 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v19, @"CMErrorDomain", 103, 0);
 LABEL_32:
-      *a4 = v21;
+      *error = v21;
     }
   }
 
@@ -317,11 +317,11 @@ LABEL_32:
   return 0;
 }
 
-- (BOOL)_acknowledgeAlarm:(id)a3 error:(id *)a4
+- (BOOL)_acknowledgeAlarm:(id)alarm error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v8 = objc_msgSend_objectForKey_(self->fAlarms, v7, a3);
+  v8 = objc_msgSend_objectForKey_(self->fAlarms, v7, alarm);
   if (v8)
   {
     objc_initWeak(&location, self);
@@ -361,9 +361,9 @@ LABEL_32:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v12, @"CMErrorDomain", 107, 0);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v12, @"CMErrorDomain", 107, 0);
   }
 
   objc_sync_exit(self);
@@ -371,10 +371,10 @@ LABEL_32:
   return 0;
 }
 
-- (void)_handleAlarmFire:(id)a3
+- (void)_handleAlarmFire:(id)fire
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"CMMotionAlarmKey");
+  v5 = objc_msgSend_objectForKeyedSubscript_(fire, a2, @"CMMotionAlarmKey");
   if (v5 && (v8 = v5, objc_msgSend_name(v5, v6, v7)))
   {
     objc_sync_enter(self);
@@ -385,7 +385,7 @@ LABEL_32:
     if (v14 && (objc_msgSend_isValid(v14, v15, v16) & 1) != 0)
     {
       objc_msgSend_copyPropertiesFromAlarm_(v17, v18, v8);
-      v20 = objc_msgSend_objectForKeyedSubscript_(a3, v19, @"CMErrorMessage");
+      v20 = objc_msgSend_objectForKeyedSubscript_(fire, v19, @"CMErrorMessage");
       if (objc_msgSend_intValue(v20, v21, v22) == 100)
       {
         v36[0] = MEMORY[0x1E69E9820];

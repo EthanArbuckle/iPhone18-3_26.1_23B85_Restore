@@ -1,16 +1,16 @@
 @interface VMUDirectDominees
-- (VMUDirectDominees)initWithDominatorGraph:(id)a3 rootNode:(unsigned int)a4;
+- (VMUDirectDominees)initWithDominatorGraph:(id)graph rootNode:(unsigned int)node;
 - (id)nextObject;
 @end
 
 @implementation VMUDirectDominees
 
-- (VMUDirectDominees)initWithDominatorGraph:(id)a3 rootNode:(unsigned int)a4
+- (VMUDirectDominees)initWithDominatorGraph:(id)graph rootNode:(unsigned int)node
 {
-  v6 = a3;
-  self->_node = [(VMUDominatorGraph *)v6 firstDominates][4 * a4];
+  graphCopy = graph;
+  self->_node = [(VMUDominatorGraph *)graphCopy firstDominates][4 * node];
   dg = self->_dg;
-  self->_dg = v6;
+  self->_dg = graphCopy;
 
   return self;
 }

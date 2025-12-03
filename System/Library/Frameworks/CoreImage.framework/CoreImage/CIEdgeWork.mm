@@ -20,14 +20,14 @@
   v29[2] = [CIVector vectorWithX:0.299 Y:0.587 Z:0.114];
   v7 = -[CIImage imageByApplyingFilter:withInputParameters:](inputImage, "imageByApplyingFilter:withInputParameters:", @"CIColorMatrix", [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:3]);
   v8 = [(CIImage *)v7 imageByApplyingGaussianBlurWithSigma:v4];
-  v9 = [(CIEdgeWork *)self _CIEdgeWork];
+  _CIEdgeWork = [(CIEdgeWork *)self _CIEdgeWork];
   [(CIImage *)v8 extent];
   v27[0] = v7;
   v27[1] = v8;
-  v14 = [v9 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 2), v10, v11, v12, v13}];
+  v14 = [_CIEdgeWork applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 2), v10, v11, v12, v13}];
   [(CIImage *)v7 extent];
   v15 = [objc_msgSend(v14 "imageByCroppingToRect:{"imageByApplyingGaussianBlurWithSigma:", v4}")];
-  v16 = [(CIEdgeWork *)self _CIEdgeWorkContrast];
+  _CIEdgeWorkContrast = [(CIEdgeWork *)self _CIEdgeWorkContrast];
   [v15 extent];
   v18 = v17;
   v20 = v19;
@@ -36,7 +36,7 @@
   v26[0] = v15;
   *&v17 = v6;
   v26[1] = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-  return [v16 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v26, 2), v18, v20, v22, v24}];
+  return [_CIEdgeWorkContrast applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v26, 2), v18, v20, v22, v24}];
 }
 
 + (id)customAttributes

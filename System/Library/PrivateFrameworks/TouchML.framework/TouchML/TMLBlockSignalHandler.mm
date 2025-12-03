@@ -1,19 +1,19 @@
 @interface TMLBlockSignalHandler
-- (TMLBlockSignalHandler)initWithBlock:(id)a3;
-- (id)callWithArguments:(id)a3;
+- (TMLBlockSignalHandler)initWithBlock:(id)block;
+- (id)callWithArguments:(id)arguments;
 @end
 
 @implementation TMLBlockSignalHandler
 
-- (TMLBlockSignalHandler)initWithBlock:(id)a3
+- (TMLBlockSignalHandler)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = TMLBlockSignalHandler;
   v5 = [(TMLBlockSignalHandler *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x27438BB60](v4);
+    v6 = MEMORY[0x27438BB60](blockCopy);
     block = v5->_block;
     v5->_block = v6;
   }
@@ -21,9 +21,9 @@
   return v5;
 }
 
-- (id)callWithArguments:(id)a3
+- (id)callWithArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   if ((atomic_fetch_or(&self->_flags, 0x40u) & 0x40) != 0)
   {
     v9 = MEMORY[0x277CBEAD8];
@@ -34,7 +34,7 @@
     objc_exception_throw(v13);
   }
 
-  v7 = v4;
+  v7 = argumentsCopy;
   (*(self->_block + 2))();
   atomic_fetch_and_explicit(&self->_flags, 0xBFu, memory_order_relaxed);
 

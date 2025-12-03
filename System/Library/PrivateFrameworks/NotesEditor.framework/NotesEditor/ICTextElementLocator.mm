@@ -1,12 +1,12 @@
 @interface ICTextElementLocator
 - (ICTextElementLocator)init;
-- (ICTextElementLocator)initWithTextView:(id)a3;
-- (void)enumerateTextElementsUsingBlock:(id)a3;
+- (ICTextElementLocator)initWithTextView:(id)view;
+- (void)enumerateTextElementsUsingBlock:(id)block;
 @end
 
 @implementation ICTextElementLocator
 
-- (ICTextElementLocator)initWithTextView:(id)a3
+- (ICTextElementLocator)initWithTextView:(id)view
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
@@ -16,12 +16,12 @@
   return [(ICTextElementLocator *)&v6 init];
 }
 
-- (void)enumerateTextElementsUsingBlock:(id)a3
+- (void)enumerateTextElementsUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_21549097C(v5, v4);
+  selfCopy = self;
+  sub_21549097C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

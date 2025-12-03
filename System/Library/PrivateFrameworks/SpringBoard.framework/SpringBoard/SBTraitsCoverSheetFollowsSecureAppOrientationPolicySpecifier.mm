@@ -1,10 +1,10 @@
 @interface SBTraitsCoverSheetFollowsSecureAppOrientationPolicySpecifier
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4;
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context;
 @end
 
 @implementation SBTraitsCoverSheetFollowsSecureAppOrientationPolicySpecifier
 
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context
 {
   v5 = @"SBTraitsParticipantRoleSecureApp";
   v10[0] = MEMORY[0x277D85DD0];
@@ -12,9 +12,9 @@
   v10[2] = __114__SBTraitsCoverSheetFollowsSecureAppOrientationPolicySpecifier_updateStageParticipantsResolutionPolicies_context___block_invoke;
   v10[3] = &unk_2783B13C8;
   v11 = v5;
-  v6 = a3;
-  v7 = [v6 bs_containsObjectPassingTest:v10];
-  v8 = [v6 bs_firstObjectPassingTest:&__block_literal_global_93];
+  policiesCopy = policies;
+  v7 = [policiesCopy bs_containsObjectPassingTest:v10];
+  v8 = [policiesCopy bs_firstObjectPassingTest:&__block_literal_global_93];
 
   if (v8 && v7)
   {

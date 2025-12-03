@@ -1,8 +1,8 @@
 @interface TwoLinesOutlineCellUGCRatingRequestAccessoryModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TwoLinesOutlineCellAccessoryDelegate)delegate;
-- (TwoLinesOutlineCellUGCRatingRequestAccessoryModel)initWithDelegate:(id)a3;
-- (id)createAccessoryConfigurationWithAction:(id)a3;
+- (TwoLinesOutlineCellUGCRatingRequestAccessoryModel)initWithDelegate:(id)delegate;
+- (id)createAccessoryConfigurationWithAction:(id)action;
 @end
 
 @implementation TwoLinesOutlineCellUGCRatingRequestAccessoryModel
@@ -14,31 +14,31 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)v6 visibility];
-    if (v7 == [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)self visibility])
+    visibility = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)v6 visibility];
+    if (visibility == [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)self visibility])
     {
-      v8 = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)v6 delegate];
-      v9 = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)self delegate];
-      if (v8 == v9)
+      delegate = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)v6 delegate];
+      delegate2 = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)self delegate];
+      if (delegate == delegate2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [delegate isEqual:delegate2];
       }
     }
 
@@ -56,12 +56,12 @@
   return v10;
 }
 
-- (id)createAccessoryConfigurationWithAction:(id)a3
+- (id)createAccessoryConfigurationWithAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = [[UGCProactiveCallToActionButtonView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v5 = [(UGCProactiveCallToActionButtonView *)v4 button];
-  [v5 addAction:v3 forControlEvents:0x2000];
+  button = [(UGCProactiveCallToActionButtonView *)v4 button];
+  [button addAction:actionCopy forControlEvents:0x2000];
 
   [(UGCProactiveCallToActionButtonView *)v4 systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   [(UGCProactiveCallToActionButtonView *)v4 setFrame:0.0, 0.0, v6, v7];
@@ -71,16 +71,16 @@
   return v8;
 }
 
-- (TwoLinesOutlineCellUGCRatingRequestAccessoryModel)initWithDelegate:(id)a3
+- (TwoLinesOutlineCellUGCRatingRequestAccessoryModel)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = TwoLinesOutlineCellUGCRatingRequestAccessoryModel;
   v5 = [(TwoLinesOutlineCellUGCRatingRequestAccessoryModel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

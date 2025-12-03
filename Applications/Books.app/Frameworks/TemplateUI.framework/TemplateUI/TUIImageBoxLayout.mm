@@ -6,27 +6,27 @@
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicHeightConsideringSpecified;
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicWidthConsideringSpecified;
 - (CGRect)computedErasableBounds;
-- (TUIImageBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUIImageBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (double)computeIntrinsicAspectRatio;
-- (double)constrainComputedHeight:(double)a3;
-- (double)constrainComputedWidth:(double)a3;
-- (id)_newImageResourcesWithContext:(id)a3;
+- (double)constrainComputedHeight:(double)height;
+- (double)constrainComputedWidth:(double)width;
+- (id)_newImageResourcesWithContext:(id)context;
 - (id)_newIntrinsicImageResource;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_computeIntrinsicContentSize;
 - (void)computeLayout;
 - (void)dealloc;
-- (void)imageResourceDidChangeIntrinsicSize:(id)a3;
+- (void)imageResourceDidChangeIntrinsicSize:(id)size;
 - (void)onInvalidateIntrinsicSize;
 @end
 
 @implementation TUIImageBoxLayout
 
-- (TUIImageBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIImageBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TUIImageBoxLayout;
-  result = [(TUILayout *)&v6 initWithModel:a3 parent:a4 controller:a5];
+  result = [(TUILayout *)&v6 initWithModel:model parent:parent controller:controller];
   if (result)
   {
     result->_intrinsicContentSize = CGSizeZero;
@@ -46,74 +46,74 @@
 - ($E297CC25127479E857BE23A4F8632EA4)specifiedIntrinsicWidth
 {
   v3 = [(TUILayout *)self box];
-  v4 = [v3 intrinsicWidth];
+  intrinsicWidth = [v3 intrinsicWidth];
 
-  return v4;
+  return intrinsicWidth;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)specifiedIntrinsicHeight
 {
   v3 = [(TUILayout *)self box];
-  v4 = [v3 intrinsicHeight];
+  intrinsicHeight = [v3 intrinsicHeight];
 
-  return v4;
+  return intrinsicHeight;
 }
 
-- (void)imageResourceDidChangeIntrinsicSize:(id)a3
+- (void)imageResourceDidChangeIntrinsicSize:(id)size
 {
   v4 = +[TUITransaction currentOrImplicitTransaction];
-  v5 = [(TUILayout *)self controller];
-  v6 = [v5 transactionCoordinator];
+  controller = [(TUILayout *)self controller];
+  transactionCoordinator = [controller transactionCoordinator];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_178BE4;
   v7[3] = &unk_263650;
   v7[4] = self;
-  [v6 scheduleLayoutUpdateWithTransaction:v4 block:v7];
+  [transactionCoordinator scheduleLayoutUpdateWithTransaction:v4 block:v7];
 }
 
 - (id)_newIntrinsicImageResource
 {
   v3 = [(TUILayout *)self box];
-  v4 = [v3 urlString];
+  urlString = [v3 urlString];
 
-  if (v4)
+  if (urlString)
   {
     v5 = [(TUILayout *)self box];
-    v6 = [v5 urlString];
+    urlString2 = [v5 urlString];
     v7 = [(TUILayout *)self box];
-    v8 = [v7 baseURL];
-    v9 = [NSURL URLWithString:v6 relativeToURL:v8];
+    baseURL = [v7 baseURL];
+    v9 = [NSURL URLWithString:urlString2 relativeToURL:baseURL];
 
-    v10 = [(TUILayout *)self controller];
-    v11 = [v10 manager];
-    v12 = [v11 imageResourceCache];
-    v13 = [(TUILayout *)self controller];
-    [v13 contentsScale];
-    v14 = [v12 imageResourceForURL:v9 contentsScale:?];
+    controller = [(TUILayout *)self controller];
+    manager = [controller manager];
+    imageResourceCache = [manager imageResourceCache];
+    controller2 = [(TUILayout *)self controller];
+    [controller2 contentsScale];
+    v14 = [imageResourceCache imageResourceForURL:v9 contentsScale:?];
   }
 
   else
   {
     v15 = [(TUILayout *)self box];
-    v16 = [v15 resourceKind];
+    resourceKind = [v15 resourceKind];
 
-    if (!v16)
+    if (!resourceKind)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    v17 = [(TUILayout *)self controller];
-    v10 = [(TUILayout *)self box];
-    v11 = [v10 resourceKind];
-    v12 = [(TUILayout *)self box];
-    v13 = [v12 resourceInstance];
+    controller3 = [(TUILayout *)self controller];
+    controller = [(TUILayout *)self box];
+    manager = [controller resourceKind];
+    imageResourceCache = [(TUILayout *)self box];
+    controller2 = [imageResourceCache resourceInstance];
     v18 = [(TUILayout *)self box];
-    v19 = [v18 resourceOptions];
-    v14 = [v17 intrinsicImageResourceForKind:v11 instance:v13 options:v19];
+    resourceOptions = [v18 resourceOptions];
+    v14 = [controller3 intrinsicImageResourceForKind:manager instance:controller2 options:resourceOptions];
 
-    v9 = v17;
+    v9 = controller3;
   }
 
 LABEL_6:
@@ -121,46 +121,46 @@ LABEL_6:
   return v14;
 }
 
-- (id)_newImageResourcesWithContext:(id)a3
+- (id)_newImageResourcesWithContext:(id)context
 {
-  v43 = a3;
+  contextCopy = context;
   [(TUILayout *)self computedNaturalSize];
   v5 = v4;
   v7 = v6;
-  [v43 contentsScale];
+  [contextCopy contentsScale];
   v9 = v8;
-  v10 = [(TUILayout *)self controller];
-  v11 = [v10 manager];
-  v12 = [v11 imageResourceCache];
+  controller = [(TUILayout *)self controller];
+  manager = [controller manager];
+  imageResourceCache = [manager imageResourceCache];
 
   v13 = [(TUILayout *)self box];
-  v14 = [v13 urlString];
+  urlString = [v13 urlString];
 
-  if (v14)
+  if (urlString)
   {
-    v15 = [(TUILayout *)self box];
-    v16 = [v15 urlString];
-    v17 = [(TUILayout *)self box];
-    v18 = [v17 baseURL];
-    v19 = [v12 imageResourceForTemplatedURL:v16 baseURL:v18 naturalSize:v5 contentsScale:{v7, v9}];
+    controller2 = [(TUILayout *)self box];
+    urlString2 = [controller2 urlString];
+    resourceKind2 = [(TUILayout *)self box];
+    baseURL = [resourceKind2 baseURL];
+    v19 = [imageResourceCache imageResourceForTemplatedURL:urlString2 baseURL:baseURL naturalSize:v5 contentsScale:{v7, v9}];
 LABEL_5:
 
     goto LABEL_6;
   }
 
   v20 = [(TUILayout *)self box];
-  v21 = [v20 resourceKind];
+  resourceKind = [v20 resourceKind];
 
-  if (v21)
+  if (resourceKind)
   {
-    v15 = [(TUILayout *)self controller];
-    v16 = [(TUILayout *)self box];
-    v17 = [v16 resourceKind];
-    v18 = [(TUILayout *)self box];
-    v22 = [v18 resourceInstance];
+    controller2 = [(TUILayout *)self controller];
+    urlString2 = [(TUILayout *)self box];
+    resourceKind2 = [urlString2 resourceKind];
+    baseURL = [(TUILayout *)self box];
+    resourceInstance = [baseURL resourceInstance];
     v23 = [(TUILayout *)self box];
-    v24 = [v23 resourceOptions];
-    v19 = [v15 imageResourceForKind:v17 naturalSize:v22 contentsScale:v24 instance:v5 options:{v7, v9}];
+    resourceOptions = [v23 resourceOptions];
+    v19 = [controller2 imageResourceForKind:resourceKind2 naturalSize:resourceInstance contentsScale:resourceOptions instance:v5 options:{v7, v9}];
 
     goto LABEL_5;
   }
@@ -168,13 +168,13 @@ LABEL_5:
   v19 = 0;
 LABEL_6:
   v25 = [(TUILayout *)self box];
-  v26 = [v25 maskColor];
+  maskColor = [v25 maskColor];
 
-  if (v26)
+  if (maskColor)
   {
     v27 = [(TUILayout *)self box];
-    v28 = [v27 maskColor];
-    v29 = [v12 imageResource:v19 tintedWithColor:v28];
+    maskColor2 = [v27 maskColor];
+    v29 = [imageResourceCache imageResource:v19 tintedWithColor:maskColor2];
   }
 
   else
@@ -184,27 +184,27 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v29 filterOptions];
+    filterOptions = [v29 filterOptions];
   }
 
   else
   {
-    v30 = 0;
+    filterOptions = 0;
   }
 
   v31 = [(TUILayout *)self box];
-  v32 = [v31 filter];
+  filter = [v31 filter];
 
-  if (v32)
+  if (filter)
   {
     [(TUILayout *)self computedNaturalSize];
     v34 = v33;
     v36 = v35;
-    [v43 contentsScale];
+    [contextCopy contentsScale];
     v38 = v37;
     v39 = [(TUILayout *)self box];
-    v40 = [v39 filter];
-    v41 = [v12 imageResource:v29 naturalSize:v40 contentsScale:v30 withFilter:v34 filterOptions:{v36, v38}];
+    filter2 = [v39 filter];
+    v41 = [imageResourceCache imageResource:v29 naturalSize:filter2 contentsScale:filterOptions withFilter:v34 filterOptions:{v36, v38}];
 
     v29 = v41;
   }
@@ -234,7 +234,7 @@ LABEL_6:
   }
 }
 
-- (double)constrainComputedWidth:(double)a3
+- (double)constrainComputedWidth:(double)width
 {
   v5 = [(TUILayout *)self box];
   [v5 maxAspectRatio];
@@ -243,13 +243,13 @@ LABEL_6:
   [(TUIImageBoxLayout *)self computeIntrinsicAspectRatio];
   if (v8 > v7)
   {
-    return v7 * (a3 / v8);
+    return v7 * (width / v8);
   }
 
-  return a3;
+  return width;
 }
 
-- (double)constrainComputedHeight:(double)a3
+- (double)constrainComputedHeight:(double)height
 {
   v5 = [(TUILayout *)self box];
   [v5 maxAspectRatio];
@@ -258,10 +258,10 @@ LABEL_6:
   [(TUIImageBoxLayout *)self computeIntrinsicAspectRatio];
   if (v8 > v7)
   {
-    return v8 * a3 / v7;
+    return v8 * height / v7;
   }
 
-  return a3;
+  return height;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
@@ -312,7 +312,7 @@ LABEL_6:
 
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicWidthConsideringSpecified
 {
-  v4 = [(TUILayout *)self specifiedWidth];
+  specifiedWidth = [(TUILayout *)self specifiedWidth];
   v6 = v5;
   if ((v5 & 0x6000000000000) == 0x2000000000000)
   {
@@ -333,18 +333,18 @@ LABEL_6:
       }
     }
 
-    v4 = v8 | v4 & 0xFFFFFFFF00000000;
+    specifiedWidth = v8 | specifiedWidth & 0xFFFFFFFF00000000;
     v6 &= 0xFFE8FFFFFFFFFFFFLL;
   }
 
-  v12 = [(TUILayout *)self validatedIntrinsicWidth];
+  validatedIntrinsicWidth = [(TUILayout *)self validatedIntrinsicWidth];
 
-  return TUILengthCombineSpecifiedAndIntrinsic(v4, v6, v12, v11);
+  return TUILengthCombineSpecifiedAndIntrinsic(specifiedWidth, v6, validatedIntrinsicWidth, v11);
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicHeightConsideringSpecified
 {
-  v4 = [(TUILayout *)self specifiedWidth];
+  specifiedWidth = [(TUILayout *)self specifiedWidth];
   v6 = v5;
   if ((v5 & 0x6000000000000) == 0x2000000000000)
   {
@@ -365,13 +365,13 @@ LABEL_6:
       }
     }
 
-    v4 = v8 | v4 & 0xFFFFFFFF00000000;
+    specifiedWidth = v8 | specifiedWidth & 0xFFFFFFFF00000000;
     v6 &= 0xFFE8FFFFFFFFFFFFLL;
   }
 
-  v12 = [(TUILayout *)self validatedIntrinsicHeight];
+  validatedIntrinsicHeight = [(TUILayout *)self validatedIntrinsicHeight];
 
-  return TUILengthCombineSpecifiedAndIntrinsic(v4, v6, v12, v11);
+  return TUILengthCombineSpecifiedAndIntrinsic(specifiedWidth, v6, validatedIntrinsicHeight, v11);
 }
 
 - (double)computeIntrinsicAspectRatio
@@ -398,11 +398,11 @@ LABEL_6:
   [(TUILayout *)self setComputedNaturalSize:v7, v6];
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v44 = a4;
+  contextCopy = context;
   [(TUILayout *)self renderModelSizeWithContext:?];
-  if (a3 - 1 >= 2)
+  if (kind - 1 >= 2)
   {
     v9 = v6;
     v10 = v7;
@@ -413,7 +413,7 @@ LABEL_6:
 
     else
     {
-      v11 = [(TUIImageBoxLayout *)self _newImageResourcesWithContext:v44];
+      v11 = [(TUIImageBoxLayout *)self _newImageResourcesWithContext:contextCopy];
     }
 
     v41 = v11;
@@ -426,10 +426,10 @@ LABEL_6:
     v17 = v16;
 
     v18 = [(TUILayout *)self box];
-    v43 = [v18 fallbackColor];
+    fallbackColor = [v18 fallbackColor];
 
     v19 = [(TUILayout *)self box];
-    v42 = [v19 contentsGravity];
+    contentsGravity = [v19 contentsGravity];
 
     v20 = [(TUILayout *)self box];
     [v20 opacity];
@@ -447,26 +447,26 @@ LABEL_6:
     }
 
     v24 = [(TUILayout *)self box];
-    v25 = [v24 crossfadesContents];
+    crossfadesContents = [v24 crossfadesContents];
 
     v26 = [TUIImageLayerConfig alloc];
-    [v44 contentsScale];
+    [contextCopy contentsScale];
     v28 = v27;
     v29 = [(TUILayout *)self box];
-    v30 = [v29 continuousCorners];
+    continuousCorners = [v29 continuousCorners];
     v31 = [(TUILayout *)self box];
-    v32 = [v31 shouldRasterize];
+    shouldRasterize = [v31 shouldRasterize];
     v33 = [(TUILayout *)self box];
-    v34 = [v33 blendMode];
-    BYTE1(v39) = v32;
-    LOBYTE(v39) = v30;
-    v35 = [(TUIImageLayerConfig *)v26 initWithContentsScale:v41 resource:v14 load:v43 cornerRadius:v42 fallbackColor:v40 contentsGravity:v25 hflip:v28 crossfadesContents:v17 opacity:v22 continuousCorners:v39 shouldRasterize:v34 blendMode:?];
+    blendMode = [v33 blendMode];
+    BYTE1(v39) = shouldRasterize;
+    LOBYTE(v39) = continuousCorners;
+    v35 = [(TUIImageLayerConfig *)v26 initWithContentsScale:v41 resource:v14 load:fallbackColor cornerRadius:contentsGravity fallbackColor:v40 contentsGravity:crossfadesContents hflip:v28 crossfadesContents:v17 opacity:v22 continuousCorners:v39 shouldRasterize:blendMode blendMode:?];
 
     v8 = [[TUIRenderModelLayer alloc] initWithSubmodels:0 config:v35 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     [(TUIRenderModelLayer *)v8 setSize:v9, v10];
     v36 = [(TUILayout *)self box];
-    v37 = [v36 identifier];
-    [(TUIRenderModelLayer *)v8 setIdentifier:v37];
+    identifier = [v36 identifier];
+    [(TUIRenderModelLayer *)v8 setIdentifier:identifier];
   }
 
   else
@@ -485,14 +485,14 @@ LABEL_6:
   v8 = v7;
   v10 = v9;
   v11 = [(TUILayout *)self box];
-  v12 = [v11 filter];
+  filter = [v11 filter];
 
-  if (v12)
+  if (filter)
   {
-    v13 = [(TUILayout *)self controller];
-    v14 = [v13 manager];
-    v15 = [v14 filterRegistry];
-    v16 = [v15 imageFilterWithIdentifier:v12];
+    controller = [(TUILayout *)self controller];
+    manager = [controller manager];
+    filterRegistry = [manager filterRegistry];
+    v16 = [filterRegistry imageFilterWithIdentifier:filter];
   }
 
   else
@@ -505,44 +505,44 @@ LABEL_6:
     [(TUILayout *)self computedNaturalSize];
     v18 = v17;
     v20 = v19;
-    v21 = [(TUILayout *)self controller];
-    [v21 contentsScale];
+    controller2 = [(TUILayout *)self controller];
+    [controller2 contentsScale];
     v23 = v22;
 
     v24 = [(TUILayout *)self box];
-    v25 = [v24 urlString];
+    urlString = [v24 urlString];
 
-    if (v25)
+    if (urlString)
     {
-      v26 = [(TUILayout *)self controller];
-      v27 = [v26 manager];
-      v28 = [v27 imageResourceCache];
+      controller3 = [(TUILayout *)self controller];
+      manager2 = [controller3 manager];
+      imageResourceCache = [manager2 imageResourceCache];
       v29 = [(TUILayout *)self box];
-      v30 = [v29 urlString];
+      urlString2 = [v29 urlString];
       v31 = [(TUILayout *)self box];
-      v32 = [v31 baseURL];
-      v33 = [v28 imageResourceForTemplatedURL:v30 baseURL:v32 naturalSize:v18 contentsScale:{v20, v23}];
+      baseURL = [v31 baseURL];
+      v33 = [imageResourceCache imageResourceForTemplatedURL:urlString2 baseURL:baseURL naturalSize:v18 contentsScale:{v20, v23}];
     }
 
     else
     {
       v45 = [(TUILayout *)self box];
-      v46 = [v45 resourceKind];
+      resourceKind = [v45 resourceKind];
 
-      if (!v46)
+      if (!resourceKind)
       {
         v47 = 0;
         goto LABEL_12;
       }
 
-      v26 = [(TUILayout *)self controller];
-      v27 = [(TUILayout *)self box];
-      v28 = [v27 resourceKind];
+      controller3 = [(TUILayout *)self controller];
+      manager2 = [(TUILayout *)self box];
+      imageResourceCache = [manager2 resourceKind];
       v29 = [(TUILayout *)self box];
-      v30 = [v29 resourceInstance];
+      urlString2 = [v29 resourceInstance];
       v31 = [(TUILayout *)self box];
-      v32 = [v31 resourceOptions];
-      v33 = [v26 imageResourceForKind:v28 naturalSize:v30 contentsScale:v32 instance:v18 options:{v20, v23}];
+      baseURL = [v31 resourceOptions];
+      v33 = [controller3 imageResourceForKind:imageResourceCache naturalSize:urlString2 contentsScale:baseURL instance:v18 options:{v20, v23}];
     }
 
     v47 = v33;
@@ -550,15 +550,15 @@ LABEL_6:
 LABEL_12:
     if (objc_opt_respondsToSelector())
     {
-      v48 = [v47 filterOptions];
+      filterOptions = [v47 filterOptions];
     }
 
     else
     {
-      v48 = 0;
+      filterOptions = 0;
     }
 
-    [v16 insetsForSize:v48 contentsScale:v18 options:{v20, v23}];
+    [v16 insetsForSize:filterOptions contentsScale:v18 options:{v20, v23}];
     v4 = v4 - v49;
     v6 = v6 - v50;
     v8 = v8 + v49 + v51;
@@ -572,8 +572,8 @@ LABEL_12:
     [(TUILayout *)self computedNaturalSize];
     v35 = v34;
     v37 = v36;
-    v38 = [(TUILayout *)self controller];
-    [v38 contentsScale];
+    controller4 = [(TUILayout *)self controller];
+    [controller4 contentsScale];
     v40 = v39;
 
     [v16 insetsForSize:0 contentsScale:v35 options:{v37, v40}];

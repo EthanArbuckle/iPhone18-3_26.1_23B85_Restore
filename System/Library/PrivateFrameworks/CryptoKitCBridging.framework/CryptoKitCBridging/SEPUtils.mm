@@ -1,10 +1,10 @@
 @interface SEPUtils
-+ (id)dataFromACL:(__SecAccessControl *)a3;
++ (id)dataFromACL:(__SecAccessControl *)l;
 @end
 
 @implementation SEPUtils
 
-+ (id)dataFromACL:(__SecAccessControl *)a3
++ (id)dataFromACL:(__SecAccessControl *)l
 {
   v3 = SecAccessControlCopyData();
 

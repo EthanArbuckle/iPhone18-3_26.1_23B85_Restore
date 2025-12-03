@@ -1,20 +1,20 @@
 @interface _GPURawCounter
-- (_GPURawCounter)initWithName:(id)a3 description:(id)a4 valueType:(unint64_t)a5;
+- (_GPURawCounter)initWithName:(id)name description:(id)description valueType:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation _GPURawCounter
 
-- (_GPURawCounter)initWithName:(id)a3 description:(id)a4 valueType:(unint64_t)a5
+- (_GPURawCounter)initWithName:(id)name description:(id)description valueType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = _GPURawCounter;
   v8 = [(_GPURawCounter *)&v10 init];
   if (v8)
   {
-    v8->_name = [a3 copy];
-    v8->_description = [a4 copy];
-    v8->_counterValueType = a5;
+    v8->_name = [name copy];
+    v8->_description = [description copy];
+    v8->_counterValueType = type;
   }
 
   return v8;

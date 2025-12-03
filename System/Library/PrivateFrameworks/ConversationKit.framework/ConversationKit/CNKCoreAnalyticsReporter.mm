@@ -1,55 +1,55 @@
 @interface CNKCoreAnalyticsReporter
-- (void)reportCanceledSOSCountdownToCall:(double)a3;
-- (void)reportCanceledSOSCountdownToNotify:(double)a3;
-- (void)reportIncompatibilityTypeInvalidWithRecipientCount:(int64_t)a3 reason:(int64_t)a4;
-- (void)reportIncompatibilityTypeLegacyWithRecipientCount:(int64_t)a3 reason:(int64_t)a4;
-- (void)reportIncompatibilityTypeNoneWithRecipientCount:(int64_t)a3 reason:(int64_t)a4;
-- (void)reportIncompatibilityTypeWebWithRecipientCount:(int64_t)a3 reason:(int64_t)a4;
-- (void)reportMultipleCallsWaitingUIAction:(int64_t)a3;
+- (void)reportCanceledSOSCountdownToCall:(double)call;
+- (void)reportCanceledSOSCountdownToNotify:(double)notify;
+- (void)reportIncompatibilityTypeInvalidWithRecipientCount:(int64_t)count reason:(int64_t)reason;
+- (void)reportIncompatibilityTypeLegacyWithRecipientCount:(int64_t)count reason:(int64_t)reason;
+- (void)reportIncompatibilityTypeNoneWithRecipientCount:(int64_t)count reason:(int64_t)reason;
+- (void)reportIncompatibilityTypeWebWithRecipientCount:(int64_t)count reason:(int64_t)reason;
+- (void)reportMultipleCallsWaitingUIAction:(int64_t)action;
 @end
 
 @implementation CNKCoreAnalyticsReporter
 
-- (void)reportCanceledSOSCountdownToCall:(double)a3
+- (void)reportCanceledSOSCountdownToCall:(double)call
 {
-  v4 = self;
-  CNKCoreAnalyticsReporter.reportCanceledSOSCountdown(toCall:)(a3);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.reportCanceledSOSCountdown(toCall:)(call);
 }
 
-- (void)reportCanceledSOSCountdownToNotify:(double)a3
+- (void)reportCanceledSOSCountdownToNotify:(double)notify
 {
-  v4 = self;
-  CNKCoreAnalyticsReporter.reportCanceledSOSCountdown(toNotify:)(a3);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.reportCanceledSOSCountdown(toNotify:)(notify);
 }
 
-- (void)reportMultipleCallsWaitingUIAction:(int64_t)a3
+- (void)reportMultipleCallsWaitingUIAction:(int64_t)action
 {
-  v4 = self;
-  CNKCoreAnalyticsReporter.report(_:)(a3);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.report(_:)(action);
 }
 
-- (void)reportIncompatibilityTypeNoneWithRecipientCount:(int64_t)a3 reason:(int64_t)a4
+- (void)reportIncompatibilityTypeNoneWithRecipientCount:(int64_t)count reason:(int64_t)reason
 {
-  v6 = self;
-  CNKCoreAnalyticsReporter.reportIncompatibilityTypeNone(recipientCount:reason:)(a3, a4);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.reportIncompatibilityTypeNone(recipientCount:reason:)(count, reason);
 }
 
-- (void)reportIncompatibilityTypeLegacyWithRecipientCount:(int64_t)a3 reason:(int64_t)a4
+- (void)reportIncompatibilityTypeLegacyWithRecipientCount:(int64_t)count reason:(int64_t)reason
 {
-  v6 = self;
-  CNKCoreAnalyticsReporter.reportIncompatibilityTypeLegacy(recipientCount:reason:)(a3, a4);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.reportIncompatibilityTypeLegacy(recipientCount:reason:)(count, reason);
 }
 
-- (void)reportIncompatibilityTypeWebWithRecipientCount:(int64_t)a3 reason:(int64_t)a4
+- (void)reportIncompatibilityTypeWebWithRecipientCount:(int64_t)count reason:(int64_t)reason
 {
-  v6 = self;
-  CNKCoreAnalyticsReporter.reportIncompatibilityTypeWeb(recipientCount:reason:)(a3, a4);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.reportIncompatibilityTypeWeb(recipientCount:reason:)(count, reason);
 }
 
-- (void)reportIncompatibilityTypeInvalidWithRecipientCount:(int64_t)a3 reason:(int64_t)a4
+- (void)reportIncompatibilityTypeInvalidWithRecipientCount:(int64_t)count reason:(int64_t)reason
 {
-  v6 = self;
-  CNKCoreAnalyticsReporter.reportIncompatibilityTypeInvalid(recipientCount:reason:)(a3, a4);
+  selfCopy = self;
+  CNKCoreAnalyticsReporter.reportIncompatibilityTypeInvalid(recipientCount:reason:)(count, reason);
 }
 
 @end

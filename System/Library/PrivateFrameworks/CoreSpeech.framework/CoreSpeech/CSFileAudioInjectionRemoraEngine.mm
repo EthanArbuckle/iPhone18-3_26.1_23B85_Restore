@@ -1,18 +1,18 @@
 @interface CSFileAudioInjectionRemoraEngine
 - (BOOL)alwaysOnVoiceTriggerEnabled;
-- (BOOL)attachDevice:(id)a3 withOutError:(id *)a4;
-- (BOOL)injectAudio:(id)a3;
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6;
+- (BOOL)attachDevice:(id)device withOutError:(id *)error;
+- (BOOL)injectAudio:(id)audio;
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion;
 - (BOOL)isRecording;
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4;
-- (BOOL)stopAudioStreamWithOutError:(id *)a3;
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error;
+- (BOOL)stopAudioStreamWithOutError:(id *)error;
 - (CSAudioInjectionDevice)connectedDevice;
 - (CSAudioInjectionEngineDelegate)delegate;
-- (CSFileAudioInjectionRemoraEngine)initWithStreamHandleId:(unint64_t)a3;
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8;
+- (CSFileAudioInjectionRemoraEngine)initWithStreamHandleId:(unint64_t)id;
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer;
 - (void)dealloc;
-- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
+- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 - (void)stop;
 @end
@@ -33,24 +33,24 @@
   return WeakRetained;
 }
 
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer
 {
-  v12 = a5;
+  bufferCopy = buffer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100149C40;
   block[3] = &unk_100252C40;
-  v16 = v12;
-  v17 = self;
-  v18 = a4;
-  v19 = a7;
-  v20 = a8;
-  v14 = v12;
+  v16 = bufferCopy;
+  selfCopy = self;
+  idCopy = id;
+  timeCopy = time;
+  loadedBufferCopy = loadedBuffer;
+  v14 = bufferCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)stopAudioStreamWithOutError:(id *)a3
+- (BOOL)stopAudioStreamWithOutError:(id *)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -62,7 +62,7 @@
   return 1;
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -93,18 +93,18 @@
   return v3;
 }
 
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion
 {
   v7.receiver = self;
   v7.super_class = CSFileAudioInjectionRemoraEngine;
-  return [(CSFileAudioInjectionEngine *)&v7 injectAudio:a3 withScaleFactor:a5 playbackStarted:a6 completion:?];
+  return [(CSFileAudioInjectionEngine *)&v7 injectAudio:audio withScaleFactor:started playbackStarted:completion completion:?];
 }
 
-- (BOOL)injectAudio:(id)a3
+- (BOOL)injectAudio:(id)audio
 {
   v4.receiver = self;
   v4.super_class = CSFileAudioInjectionRemoraEngine;
-  return [(CSFileAudioInjectionEngine *)&v4 injectAudio:a3];
+  return [(CSFileAudioInjectionEngine *)&v4 injectAudio:audio];
 }
 
 - (void)stop
@@ -147,22 +147,22 @@
   [(CSFileAudioInjectionEngine *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CSFileAudioInjectionRemoraEngine;
-  v4 = a3;
+  delegateCopy = delegate;
   [(CSFileAudioInjectionEngine *)&v5 setDelegate:self];
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
-- (BOOL)attachDevice:(id)a3 withOutError:(id *)a4
+- (BOOL)attachDevice:(id)device withOutError:(id *)error
 {
-  v5 = a3;
-  [(CSFileAudioInjectionRemoraEngine *)self setConnectedDevice:v5];
-  v6 = [v5 enableAlwaysOnVoiceTrigger];
+  deviceCopy = device;
+  [(CSFileAudioInjectionRemoraEngine *)self setConnectedDevice:deviceCopy];
+  enableAlwaysOnVoiceTrigger = [deviceCopy enableAlwaysOnVoiceTrigger];
 
-  v7 = v6 && [(CSFileAudioInjectionRemoraEngine *)self isAlwaysOnVoiceTriggerAvailable];
+  v7 = enableAlwaysOnVoiceTrigger && [(CSFileAudioInjectionRemoraEngine *)self isAlwaysOnVoiceTriggerAvailable];
   [(CSFileAudioInjectionRemoraEngine *)self setAlwaysOnVoiceTriggerEnabled:v7];
   return 1;
 }
@@ -186,7 +186,7 @@
   return v3;
 }
 
-- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)a3
+- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -194,11 +194,11 @@
   v4[2] = sub_10014AA64;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(queue, v4);
 }
 
-- (CSFileAudioInjectionRemoraEngine)initWithStreamHandleId:(unint64_t)a3
+- (CSFileAudioInjectionRemoraEngine)initWithStreamHandleId:(unint64_t)id
 {
   v19.receiver = self;
   v19.super_class = CSFileAudioInjectionRemoraEngine;
@@ -215,7 +215,7 @@
     v4->_uuid = v7;
 
     v9 = +[CSAudioTimeConverterPool sharedInstance];
-    v10 = [v9 converterForAudioStreamId:a3];
+    v10 = [v9 converterForAudioStreamId:id];
 
     v11 = [CSAudioCircularBuffer alloc];
     v12 = +[CSConfig inputRecordingNumberOfChannels];

@@ -1,26 +1,26 @@
 @interface CKInvisibleInkGestureRecognizer
-- (BOOL)_hasActiveTouchesInEvent:(id)a3;
-- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)a3;
+- (BOOL)_hasActiveTouchesInEvent:(id)event;
+- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)recognizer;
 - (CGPoint)startLocation;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CKInvisibleInkGestureRecognizer
 
-- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)a3
+- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 view];
+    view = [recognizerCopy view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = view;
       v6 = ([v5 isDragging] & 1) != 0 || (objc_msgSend(v5, "isDecelerating") & 1) != 0 || (objc_msgSend(v5, "_isAnimatingScroll") & 1) != 0 || objc_msgSend(v5, "__ck_isVerticallyRubberBanding");
     }
 
@@ -38,22 +38,22 @@
   return v6;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v13 count] == 1 && (-[CKInvisibleInkGestureRecognizer firstTouch](self, "firstTouch"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  beganCopy = began;
+  eventCopy = event;
+  if ([beganCopy count] == 1 && (-[CKInvisibleInkGestureRecognizer firstTouch](self, "firstTouch"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v8 = [v13 anyObject];
-    [(CKInvisibleInkGestureRecognizer *)self setFirstTouch:v8];
+    anyObject = [beganCopy anyObject];
+    [(CKInvisibleInkGestureRecognizer *)self setFirstTouch:anyObject];
 
-    v9 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
-    v10 = [(CKInvisibleInkGestureRecognizer *)self view];
-    [v9 locationInView:v10];
+    firstTouch = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
+    view = [(CKInvisibleInkGestureRecognizer *)self view];
+    [firstTouch locationInView:view];
     [(CKInvisibleInkGestureRecognizer *)self setStartLocation:?];
 
-    v11 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
-    [v11 timestamp];
+    firstTouch2 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
+    [firstTouch2 timestamp];
     [(CKInvisibleInkGestureRecognizer *)self setStartTime:?];
   }
 
@@ -62,39 +62,39 @@
     [(CKInvisibleInkGestureRecognizer *)self setState:1];
   }
 
-  v12 = [(CKInvisibleInkGestureRecognizer *)self view];
-  [v12 touchesBegan:v13 withEvent:v6];
+  view2 = [(CKInvisibleInkGestureRecognizer *)self view];
+  [view2 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v23 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (![(CKInvisibleInkGestureRecognizer *)self state])
   {
-    v7 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
-    [v7 timestamp];
+    firstTouch = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
+    [firstTouch timestamp];
     v9 = v8;
     [(CKInvisibleInkGestureRecognizer *)self startTime];
     v11 = v10;
 
-    v12 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
-    v13 = [v23 containsObject:v12];
+    firstTouch2 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
+    v13 = [movedCopy containsObject:firstTouch2];
 
     if (v13 && (v14 = v9 - v11, v14 <= 0.2))
     {
-      v15 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
-      v16 = [(CKInvisibleInkGestureRecognizer *)self view];
-      [v15 locationInView:v16];
+      firstTouch3 = [(CKInvisibleInkGestureRecognizer *)self firstTouch];
+      view = [(CKInvisibleInkGestureRecognizer *)self view];
+      [firstTouch3 locationInView:view];
       v18 = v17;
 
       [(CKInvisibleInkGestureRecognizer *)self startLocation];
       if (vabdd_f64(v18, v19) >= (1.0 - v14) * 140.0)
       {
         [(CKInvisibleInkGestureRecognizer *)self setState:5];
-        v20 = [(CKInvisibleInkGestureRecognizer *)self view];
-        v21 = [v6 touchesForGestureRecognizer:self];
-        [v20 touchesCancelled:v21 withEvent:v6];
+        view2 = [(CKInvisibleInkGestureRecognizer *)self view];
+        v21 = [eventCopy touchesForGestureRecognizer:self];
+        [view2 touchesCancelled:v21 withEvent:eventCopy];
       }
     }
 
@@ -104,18 +104,18 @@
     }
   }
 
-  v22 = [(CKInvisibleInkGestureRecognizer *)self view];
-  [v22 touchesMoved:v23 withEvent:v6];
+  view3 = [(CKInvisibleInkGestureRecognizer *)self view];
+  [view3 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (BOOL)_hasActiveTouchesInEvent:(id)a3
+- (BOOL)_hasActiveTouchesInEvent:(id)event
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [a3 touchesForGestureRecognizer:{self, 0}];
+  v3 = [event touchesForGestureRecognizer:{self, 0}];
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -151,30 +151,30 @@ LABEL_11:
   return v4;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKInvisibleInkGestureRecognizer *)self view];
-  [v8 touchesEnded:v7 withEvent:v6];
+  eventCopy = event;
+  endedCopy = ended;
+  view = [(CKInvisibleInkGestureRecognizer *)self view];
+  [view touchesEnded:endedCopy withEvent:eventCopy];
 
-  LOBYTE(v7) = [(CKInvisibleInkGestureRecognizer *)self _hasActiveTouchesInEvent:v6];
-  if ((v7 & 1) == 0)
+  LOBYTE(endedCopy) = [(CKInvisibleInkGestureRecognizer *)self _hasActiveTouchesInEvent:eventCopy];
+  if ((endedCopy & 1) == 0)
   {
 
     [(CKInvisibleInkGestureRecognizer *)self setState:3];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKInvisibleInkGestureRecognizer *)self view];
-  [v8 touchesCancelled:v7 withEvent:v6];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  view = [(CKInvisibleInkGestureRecognizer *)self view];
+  [view touchesCancelled:cancelledCopy withEvent:eventCopy];
 
-  LOBYTE(v7) = [(CKInvisibleInkGestureRecognizer *)self _hasActiveTouchesInEvent:v6];
-  if ((v7 & 1) == 0)
+  LOBYTE(cancelledCopy) = [(CKInvisibleInkGestureRecognizer *)self _hasActiveTouchesInEvent:eventCopy];
+  if ((cancelledCopy & 1) == 0)
   {
 
     [(CKInvisibleInkGestureRecognizer *)self setState:3];

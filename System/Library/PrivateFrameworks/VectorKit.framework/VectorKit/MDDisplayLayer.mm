@@ -1,37 +1,37 @@
 @interface MDDisplayLayer
 - (BOOL)hasRenderTarget;
-- (BOOL)insertDisplayLayer:(id)a3;
+- (BOOL)insertDisplayLayer:(id)layer;
 - (BOOL)isDelayedRenderQueueConsumptionSupported;
 - (CALayer)layer;
-- (CGPoint)convertPoint:(CGPoint)a3 toLayer:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point toLayer:(id)layer;
 - (CGRect)bounds;
 - (CGSize)size;
 - (CGSize)sizeInPixels;
 - (GGLRenderQueueSource)renderSource;
-- (MDDisplayLayer)initWithContentScale:(double)a3 useMultisampling:(BOOL)a4 extraColorFormats:(const void *)a5 shouldRasterize:(BOOL)a6 allowBlitToDrawable:(BOOL)a7 taskContext:(const void *)a8 device:(void *)a9 sharedResources:(id)a10 services:(void *)a11 signpostId:(unint64_t)a12;
+- (MDDisplayLayer)initWithContentScale:(double)scale useMultisampling:(BOOL)multisampling extraColorFormats:(const void *)formats shouldRasterize:(BOOL)rasterize allowBlitToDrawable:(BOOL)drawable taskContext:(const void *)context device:(void *)device sharedResources:(id)self0 services:(void *)self1 signpostId:(unint64_t)self2;
 - (id).cxx_construct;
 - (id)drawInContext:registry:;
 - (shared_ptr<ggl::BitmapDataBase>)bitmapData;
-- (void)_didReadPixels:(void *)a3;
-- (void)_notifyObserversSizeChanged:(CGSize)a3;
-- (void)_prepareTexture:(const void *)a3 isDrawable:(BOOL)a4;
+- (void)_didReadPixels:(void *)pixels;
+- (void)_notifyObserversSizeChanged:(CGSize)changed;
+- (void)_prepareTexture:(const void *)texture isDrawable:(BOOL)drawable;
 - (void)createRenderTarget;
 - (void)dealloc;
-- (void)debugConsoleForId:(int)a3;
+- (void)debugConsoleForId:(int)id;
 - (void)destroyRenderTarget;
 - (void)didUpdateFrameTexture;
-- (void)drawInContext:(CGContext *)a3 registry:(void *)a4;
+- (void)drawInContext:(CGContext *)context registry:(void *)registry;
 - (void)drawInContext:registry:;
-- (void)expandedPerformanceHUD:(id)a3;
-- (void)prepareTargetsForPlatormsWithFramebufferFetch:(const void *)a3;
-- (void)prepareTargetsForPlatormsWithoutFramebufferFetch:(const void *)a3 isDrawable:(BOOL)a4;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentScale:(double)a3;
-- (void)setContentsGravity:(id)a3;
-- (void)setNeedsDisplayOnBoundsChange:(BOOL)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setSize:(CGSize)a3;
+- (void)expandedPerformanceHUD:(id)d;
+- (void)prepareTargetsForPlatormsWithFramebufferFetch:(const void *)fetch;
+- (void)prepareTargetsForPlatormsWithoutFramebufferFetch:(const void *)fetch isDrawable:(BOOL)drawable;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentScale:(double)scale;
+- (void)setContentsGravity:(id)gravity;
+- (void)setNeedsDisplayOnBoundsChange:(BOOL)change;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setSize:(CGSize)size;
 - (void)willPresent;
 - (void)willUpdateFrameTexture;
 @end
@@ -84,9 +84,9 @@
 
 - (void)createRenderTarget
 {
-  v3 = [(MDDisplayLayer *)self layer];
+  layer = [(MDDisplayLayer *)self layer];
 
-  if (!v3)
+  if (!layer)
   {
     if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
     {
@@ -160,8 +160,8 @@
 
 - (BOOL)hasRenderTarget
 {
-  v2 = [(MDDisplayLayer *)self layer];
-  v3 = v2 != 0;
+  layer = [(MDDisplayLayer *)self layer];
+  v3 = layer != 0;
 
   return v3;
 }
@@ -183,7 +183,7 @@
   return WeakRetained;
 }
 
-- (void)debugConsoleForId:(int)a3
+- (void)debugConsoleForId:(int)id
 {
   std::mutex::lock((self + 160));
   v5 = *(self + 28);
@@ -192,18 +192,18 @@
     operator new();
   }
 
-  v6 = md::DebugConsoleManager::console(v5, a3);
+  v6 = md::DebugConsoleManager::console(v5, id);
   std::mutex::unlock((self + 160));
   return v6;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toLayer:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(MDDisplayLayer *)self layer];
-  [v8 convertPoint:v7 toLayer:{x, y}];
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  layer = [(MDDisplayLayer *)self layer];
+  [layer convertPoint:layerCopy toLayer:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -236,8 +236,8 @@
     std::__shared_weak_count::__release_shared[abi:nn200100](v4);
   }
 
-  v5 = [(MDDisplayLayer *)self layer];
-  [v5 removeFromSuperlayer];
+  layer = [(MDDisplayLayer *)self layer];
+  [layer removeFromSuperlayer];
 
   v6 = *(self + 2);
   *(self + 1) = 0;
@@ -248,15 +248,15 @@
   }
 }
 
-- (BOOL)insertDisplayLayer:(id)a3
+- (BOOL)insertDisplayLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(MDDisplayLayer *)self layer];
+  layerCopy = layer;
+  layer = [(MDDisplayLayer *)self layer];
 
-  if (v5 && ([v4 sublayers], v6 = objc_claimAutoreleasedReturnValue(), -[MDDisplayLayer layer](self, "layer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "containsObject:", v7), v7, v6, (v8 & 1) == 0))
+  if (layer && ([layerCopy sublayers], v6 = objc_claimAutoreleasedReturnValue(), -[MDDisplayLayer layer](self, "layer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "containsObject:", v7), v7, v6, (v8 & 1) == 0))
   {
-    v10 = [(MDDisplayLayer *)self layer];
-    [v4 insertSublayer:v10 atIndex:0];
+    layer2 = [(MDDisplayLayer *)self layer];
+    [layerCopy insertSublayer:layer2 atIndex:0];
 
     v9 = 1;
   }
@@ -269,34 +269,34 @@
   return v9;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = *(self + 66);
   v9 = *(self + 67);
   *(self + 64) = x;
   *(self + 65) = y;
-  *(self + 66) = *&a3.size.width;
-  *(self + 67) = *&a3.size.height;
-  if (v8 != a3.size.width || v9 != a3.size.height)
+  *(self + 66) = *&bounds.size.width;
+  *(self + 67) = *&bounds.size.height;
+  if (v8 != bounds.size.width || v9 != bounds.size.height)
   {
-    [(MDDisplayLayer *)self _notifyObserversSizeChanged:a3.size.width, a3.size.height];
+    [(MDDisplayLayer *)self _notifyObserversSizeChanged:bounds.size.width, bounds.size.height];
     x = *(self + 64);
     y = *(self + 65);
     width = *(self + 66);
     height = *(self + 67);
   }
 
-  v13 = [(MDDisplayLayer *)self layer];
-  [v13 setFrame:{x, y, width, height}];
+  layer = [(MDDisplayLayer *)self layer];
+  [layer setFrame:{x, y, width, height}];
 
   MidX = CGRectGetMidX(*(self + 16));
   MidY = CGRectGetMidY(*(self + 16));
-  v14 = [(MDDisplayLayer *)self layer];
-  [v14 setPosition:{MidX, MidY}];
+  layer2 = [(MDDisplayLayer *)self layer];
+  [layer2 setPosition:{MidX, MidY}];
 }
 
 - (CGRect)bounds
@@ -312,11 +312,11 @@
   return result;
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  *(self + 68) = a3;
-  v5 = [(MDDisplayLayer *)self layer];
-  [v5 setContentsScale:a3];
+  *(self + 68) = scale;
+  layer = [(MDDisplayLayer *)self layer];
+  [layer setContentsScale:scale];
 
   v6.n128_u64[0] = *(self + 68);
   v6.n128_f32[0] = v6.n128_f64[0];
@@ -325,11 +325,11 @@
   v7(v6);
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  *(self + 66) = *&a3.width;
-  *(self + 67) = *&a3.height;
-  [(MDDisplayLayer *)self setBounds:*(self + 64), *(self + 65), a3.width, a3.height];
+  *(self + 66) = *&size.width;
+  *(self + 67) = *&size.height;
+  [(MDDisplayLayer *)self setBounds:*(self + 64), *(self + 65), size.width, size.height];
 }
 
 - (shared_ptr<ggl::BitmapDataBase>)bitmapData
@@ -344,14 +344,14 @@
   return result;
 }
 
-- (void)_didReadPixels:(void *)a3
+- (void)_didReadPixels:(void *)pixels
 {
   if (*(self + 62))
   {
     v5 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
-    v6 = (*(**a3 + 16))();
-    v7 = CGDataProviderCreateWithData(0, v6, 4 * *(*a3 + 24) * *(*a3 + 32), 0);
-    v8 = CGImageCreate(*(*a3 + 24), *(*a3 + 32), 8uLL, 0x20uLL, 4 * *(*a3 + 24), v5, 0x4001u, v7, 0, 0, kCGRenderingIntentDefault);
+    v6 = (*(**pixels + 16))();
+    v7 = CGDataProviderCreateWithData(0, v6, 4 * *(*pixels + 24) * *(*pixels + 32), 0);
+    v8 = CGImageCreate(*(*pixels + 24), *(*pixels + 32), 8uLL, 0x20uLL, 4 * *(*pixels + 24), v5, 0x4001u, v7, 0, 0, kCGRenderingIntentDefault);
     CGContextSaveGState(*(self + 62));
     CGContextSetBlendMode(*(self + 62), kCGBlendModeCopy);
     v10.origin.x = *(self + 64);
@@ -367,9 +367,9 @@
   }
 }
 
-- (void)drawInContext:(CGContext *)a3 registry:(void *)a4
+- (void)drawInContext:(CGContext *)context registry:(void *)registry
 {
-  if (a3)
+  if (context)
   {
     v6 = *(self + 62);
     if (v6)
@@ -377,14 +377,14 @@
       CGContextRelease(v6);
     }
 
-    *(self + 62) = CGContextRetain(a3);
-    v7 = [(MDDisplayLayer *)self layer];
-    [v7 bounds];
+    *(self + 62) = CGContextRetain(context);
+    layer = [(MDDisplayLayer *)self layer];
+    [layer bounds];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(MDDisplayLayer *)self layer];
-    [v12 contentsScale];
+    layer2 = [(MDDisplayLayer *)self layer];
+    [layer2 contentsScale];
     v14 = v13;
 
     v15 = v14 * v11;
@@ -407,42 +407,42 @@
 - (id)drawInContext:registry:
 {
   *a2 = &unk_1F2A343C8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
-  v4 = [(MDDisplayLayer *)self layer];
-  [v4 setBackgroundColor:a3];
+  layer = [(MDDisplayLayer *)self layer];
+  [layer setBackgroundColor:color];
 }
 
-- (void)setContentsGravity:(id)a3
+- (void)setContentsGravity:(id)gravity
 {
-  v5 = a3;
-  v4 = [(MDDisplayLayer *)self layer];
-  [v4 setContentsGravity:v5];
+  gravityCopy = gravity;
+  layer = [(MDDisplayLayer *)self layer];
+  [layer setContentsGravity:gravityCopy];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  v4 = [(MDDisplayLayer *)self layer];
-  [v4 setOpaque:v3];
+  opaqueCopy = opaque;
+  layer = [(MDDisplayLayer *)self layer];
+  [layer setOpaque:opaqueCopy];
 }
 
-- (void)setNeedsDisplayOnBoundsChange:(BOOL)a3
+- (void)setNeedsDisplayOnBoundsChange:(BOOL)change
 {
-  v3 = a3;
-  v4 = [(MDDisplayLayer *)self layer];
-  [v4 setNeedsDisplayOnBoundsChange:v3];
+  changeCopy = change;
+  layer = [(MDDisplayLayer *)self layer];
+  [layer setNeedsDisplayOnBoundsChange:changeCopy];
 }
 
-- (void)expandedPerformanceHUD:(id)a3
+- (void)expandedPerformanceHUD:(id)d
 {
-  v3 = [a3 name];
-  ggl::Performance::setExpandedMode([v3 isEqualToString:@"VKExtendedPeformanceHUD"]);
+  name = [d name];
+  ggl::Performance::setExpandedMode([name isEqualToString:@"VKExtendedPeformanceHUD"]);
 }
 
 - (void)willPresent
@@ -499,20 +499,20 @@
 - (BOOL)isDelayedRenderQueueConsumptionSupported
 {
   WeakRetained = objc_loadWeakRetained(self + 7);
-  v3 = [WeakRetained isDelayedRenderQueueConsumptionSupported];
+  isDelayedRenderQueueConsumptionSupported = [WeakRetained isDelayedRenderQueueConsumptionSupported];
 
-  return v3;
+  return isDelayedRenderQueueConsumptionSupported;
 }
 
-- (void)prepareTargetsForPlatormsWithoutFramebufferFetch:(const void *)a3 isDrawable:(BOOL)a4
+- (void)prepareTargetsForPlatormsWithoutFramebufferFetch:(const void *)fetch isDrawable:(BOOL)drawable
 {
   if (*(self + 489))
   {
     return;
   }
 
-  v6 = *a3;
-  if (*(*a3 + 56) > 1u)
+  v6 = *fetch;
+  if (*(*fetch + 56) > 1u)
   {
     v23 = 0;
     v7 = 0;
@@ -529,7 +529,7 @@
     operator new();
   }
 
-  if (*(self + 506) == 1 && (*(self + 488) & 1) == 0 && a4)
+  if (*(self + 506) == 1 && (*(self + 488) & 1) == 0 && drawable)
   {
     if (!*(self + 41))
     {
@@ -553,9 +553,9 @@
 
 LABEL_24:
       v12 = *(self + 29);
-      if (*(v12 + 184) != *a3)
+      if (*(v12 + 184) != *fetch)
       {
-        ggl::RenderTarget::setMsaaResolveBuffer(v12, 0, *a3);
+        ggl::RenderTarget::setMsaaResolveBuffer(v12, 0, *fetch);
       }
 
       v10 = *(self + 31);
@@ -596,13 +596,13 @@ LABEL_24:
       atomic_fetch_add_explicit(&v11->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    ggl::RenderTarget::setColorBuffer(*(self + 41), 0, *a3);
+    ggl::RenderTarget::setColorBuffer(*(self + 41), 0, *fetch);
     goto LABEL_32;
   }
 
 LABEL_39:
-  v10 = *a3;
-  v11 = *(a3 + 1);
+  v10 = *fetch;
+  v11 = *(fetch + 1);
   if (v11)
   {
 LABEL_31:
@@ -666,12 +666,12 @@ LABEL_32:
   }
 }
 
-- (void)prepareTargetsForPlatormsWithFramebufferFetch:(const void *)a3
+- (void)prepareTargetsForPlatormsWithFramebufferFetch:(const void *)fetch
 {
   v14 = *MEMORY[0x1E69E9840];
   if (*(self + 489) == 1)
   {
-    v4 = *a3;
+    v4 = *fetch;
     if (*(v4 + 14) > 1u)
     {
       v5 = 0;
@@ -732,7 +732,7 @@ LABEL_32:
   }
 }
 
-- (void)_prepareTexture:(const void *)a3 isDrawable:(BOOL)a4
+- (void)_prepareTexture:(const void *)texture isDrawable:(BOOL)drawable
 {
   if (!*(self + 29))
   {
@@ -742,13 +742,13 @@ LABEL_32:
   if (*(self + 489) == 1)
   {
 
-    [(MDDisplayLayer *)self prepareTargetsForPlatormsWithFramebufferFetch:a3];
+    [(MDDisplayLayer *)self prepareTargetsForPlatormsWithFramebufferFetch:texture];
   }
 
   else
   {
 
-    [(MDDisplayLayer *)self prepareTargetsForPlatormsWithoutFramebufferFetch:a3 isDrawable:a4];
+    [(MDDisplayLayer *)self prepareTargetsForPlatormsWithoutFramebufferFetch:texture isDrawable:drawable];
   }
 }
 
@@ -774,8 +774,8 @@ LABEL_32:
   block[4] = v10;
   block[5] = v4;
   dispatch_async(v3, block);
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6 = *(self + 62);
   if (v6)
@@ -783,8 +783,8 @@ LABEL_32:
     CFRelease(v6);
   }
 
-  v7 = [(MDDisplayLayer *)self layer];
-  [v7 removeFromSuperlayer];
+  layer = [(MDDisplayLayer *)self layer];
+  [layer removeFromSuperlayer];
 
   _Block_object_dispose(v10, 8);
   v8.receiver = self;
@@ -805,10 +805,10 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
   *(v3 + 40) = 0;
 }
 
-- (void)_notifyObserversSizeChanged:(CGSize)a3
+- (void)_notifyObserversSizeChanged:(CGSize)changed
 {
-  height = a3.height;
-  width = a3.width;
+  height = changed.height;
+  width = changed.width;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
@@ -846,28 +846,28 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (MDDisplayLayer)initWithContentScale:(double)a3 useMultisampling:(BOOL)a4 extraColorFormats:(const void *)a5 shouldRasterize:(BOOL)a6 allowBlitToDrawable:(BOOL)a7 taskContext:(const void *)a8 device:(void *)a9 sharedResources:(id)a10 services:(void *)a11 signpostId:(unint64_t)a12
+- (MDDisplayLayer)initWithContentScale:(double)scale useMultisampling:(BOOL)multisampling extraColorFormats:(const void *)formats shouldRasterize:(BOOL)rasterize allowBlitToDrawable:(BOOL)drawable taskContext:(const void *)context device:(void *)device sharedResources:(id)self0 services:(void *)self1 signpostId:(unint64_t)self2
 {
-  v20 = a10;
+  resourcesCopy = resources;
   v59.receiver = self;
   v59.super_class = MDDisplayLayer;
   v21 = [(MDDisplayLayer *)&v59 init];
   v22 = v21;
   if (v21)
   {
-    *(v21 + 60) = a11;
-    *(v21 + 69) = a12;
-    *(v21 + 489) = *(*(a9 + 1) + 20);
-    *(v21 + 488) = a4;
-    *(v21 + 505) = a6;
-    *(v21 + 68) = a3;
-    *(v21 + 18) = a9;
-    v23 = (*(**(a9 + 1) + 16))(*(a9 + 1), *(*a8 + 16), *(a9 + 3));
+    *(v21 + 60) = services;
+    *(v21 + 69) = id;
+    *(v21 + 489) = *(*(device + 1) + 20);
+    *(v21 + 488) = multisampling;
+    *(v21 + 505) = rasterize;
+    *(v21 + 68) = scale;
+    *(v21 + 18) = device;
+    v23 = (*(**(device + 1) + 16))(*(device + 1), *(*context + 16), *(device + 3));
     *(v22 + 19) = v23;
     v24 = +[VKDebugSettings sharedSettings];
     (*(*v23 + 32))(v23, [v24 drawPerformanceHUD]);
 
-    *(v22 + 506) = a7;
+    *(v22 + 506) = drawable;
     if (*(v22 + 488))
     {
       v25 = 4;
@@ -880,7 +880,7 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
 
     LODWORD(__dst) = *(*(*(v22 + 18) + 8) + 60);
     v26 = std::vector<ggl::PixelFormat>::vector[abi:nn200100](&v57, &__dst, 1uLL);
-    std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(v26, v58, *a5, *(a5 + 1), (*(a5 + 1) - *a5) >> 2);
+    std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(v26, v58, *formats, *(formats + 1), (*(formats + 1) - *formats) >> 2);
     __dst = 0uLL;
     *(&v56 + 1) = v25 | 0x1A00000000;
     v27 = v58 - v57;
@@ -898,7 +898,7 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
     {
       LODWORD(__dst) = *(*(*(v22 + 18) + 8) + 56);
       std::vector<ggl::PixelFormat>::vector[abi:nn200100](&location, &__dst, 1uLL);
-      std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(&location, v54, *a5, *(a5 + 1), (*(a5 + 1) - *a5) >> 2);
+      std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(&location, v54, *formats, *(formats + 1), (*(formats + 1) - *formats) >> 2);
       v30 = location;
       __dst = 0uLL;
       *(&v56 + 1) = v25 | 0x1A00000000;
@@ -930,7 +930,7 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
       }
     }
 
-    v34 = v20;
+    v34 = resourcesCopy;
     v35 = v34;
     if (v34)
     {
@@ -947,7 +947,7 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
     *(v22 + 12) = v35;
 
     objc_initWeak(&location, v22);
-    v39 = **a8;
+    v39 = **context;
     v51[1] = MEMORY[0x1E69E9820];
     v51[2] = 3221225472;
     v51[3] = __165__MDDisplayLayer_initWithContentScale_useMultisampling_extraColorFormats_shouldRasterize_allowBlitToDrawable_taskContext_device_sharedResources_services_signpostId___block_invoke;
@@ -965,7 +965,7 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
     }
 
     (*(*v42 + 48))(v42, [MDDisplayLayer initWithContentScale:useMultisampling:extraColorFormats:shouldRasterize:allowBlitToDrawable:taskContext:device:sharedResources:services:signpostId:]::$_2::operator() const(void)::cached_result);
-    v43 = **a8;
+    v43 = **context;
     v50[1] = MEMORY[0x1E69E9820];
     v50[2] = 3221225472;
     v50[3] = __165__MDDisplayLayer_initWithContentScale_useMultisampling_extraColorFormats_shouldRasterize_allowBlitToDrawable_taskContext_device_sharedResources_services_signpostId___block_invoke_2;
@@ -975,7 +975,7 @@ void __25__MDDisplayLayer_dealloc__block_invoke(uint64_t a1)
     v45 = *(v22 + 71);
     *(v22 + 71) = v44;
 
-    v46 = **a8;
+    v46 = **context;
     objc_copyWeak(v50, &location);
     v47 = _GEOConfigAddBlockListenerForKey();
     v48 = *(v22 + 72);

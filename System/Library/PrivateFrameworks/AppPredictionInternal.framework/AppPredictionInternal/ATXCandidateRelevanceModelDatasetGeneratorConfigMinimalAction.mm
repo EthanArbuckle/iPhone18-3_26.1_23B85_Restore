@@ -1,75 +1,75 @@
 @interface ATXCandidateRelevanceModelDatasetGeneratorConfigMinimalAction
-+ (id)candidatePublisherFromStartTime:(double)a3;
-+ (id)candidatePublisherFromStartTime:(double)a3 datastore:(id)a4;
-+ (id)candidatePublisherFromStartTime:(id)a3 endTime:(id)a4 datastore:(id)a5;
-+ (id)candidatePublisherWithStartTime:(id)a3 endTime:(id)a4;
++ (id)candidatePublisherFromStartTime:(double)time;
++ (id)candidatePublisherFromStartTime:(double)time datastore:(id)datastore;
++ (id)candidatePublisherFromStartTime:(id)time endTime:(id)endTime datastore:(id)datastore;
++ (id)candidatePublisherWithStartTime:(id)time endTime:(id)endTime;
 @end
 
 @implementation ATXCandidateRelevanceModelDatasetGeneratorConfigMinimalAction
 
-+ (id)candidatePublisherFromStartTime:(double)a3
++ (id)candidatePublisherFromStartTime:(double)time
 {
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
 
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
   v10 = [v7 candidatePublisherWithStartTime:v8 endTime:v9];
 
   return v10;
 }
 
-+ (id)candidatePublisherWithStartTime:(id)a3 endTime:(id)a4
++ (id)candidatePublisherWithStartTime:(id)time endTime:(id)endTime
 {
-  v5 = a4;
-  v6 = a3;
+  endTimeCopy = endTime;
+  timeCopy = time;
   v7 = objc_opt_class();
   v8 = +[_ATXDataStore sharedInstance];
-  v9 = [v7 candidatePublisherFromStartTime:v6 endTime:v5 datastore:v8];
+  v9 = [v7 candidatePublisherFromStartTime:timeCopy endTime:endTimeCopy datastore:v8];
 
   return v9;
 }
 
-+ (id)candidatePublisherFromStartTime:(double)a3 datastore:(id)a4
++ (id)candidatePublisherFromStartTime:(double)time datastore:(id)datastore
 {
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a4;
-  v7 = [v5 date];
-  [v7 timeIntervalSinceReferenceDate];
+  datastoreCopy = datastore;
+  date = [v5 date];
+  [date timeIntervalSinceReferenceDate];
   v9 = v8;
 
   v10 = objc_opt_class();
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-  v13 = [v10 candidatePublisherFromStartTime:v11 endTime:v12 datastore:v6];
+  v13 = [v10 candidatePublisherFromStartTime:v11 endTime:v12 datastore:datastoreCopy];
 
   return v13;
 }
 
-+ (id)candidatePublisherFromStartTime:(id)a3 endTime:(id)a4 datastore:(id)a5
++ (id)candidatePublisherFromStartTime:(id)time endTime:(id)endTime datastore:(id)datastore
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  datastoreCopy = datastore;
   v10 = objc_opt_new();
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __115__ATXCandidateRelevanceModelDatasetGeneratorConfigMinimalAction_candidatePublisherFromStartTime_endTime_datastore___block_invoke;
   v20 = &unk_2785978C0;
-  v21 = v9;
-  v22 = v7;
-  v23 = v8;
+  v21 = datastoreCopy;
+  v22 = timeCopy;
+  v23 = endTimeCopy;
   v24 = v10;
   v11 = v10;
-  v12 = v8;
-  v13 = v7;
-  v14 = v9;
+  v12 = endTimeCopy;
+  v13 = timeCopy;
+  v14 = datastoreCopy;
   [v14 _doSync:&v17];
-  v15 = [v11 bpsPublisher];
+  bpsPublisher = [v11 bpsPublisher];
 
-  return v15;
+  return bpsPublisher;
 }
 
 void __115__ATXCandidateRelevanceModelDatasetGeneratorConfigMinimalAction_candidatePublisherFromStartTime_endTime_datastore___block_invoke(id *a1)

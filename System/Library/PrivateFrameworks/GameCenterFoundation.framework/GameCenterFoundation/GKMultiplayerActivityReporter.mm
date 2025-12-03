@@ -1,38 +1,38 @@
 @interface GKMultiplayerActivityReporter
-- (GKMultiplayerActivityReporter)initWithLocalPlayerID:(id)a3 matchDataDelegate:(id)a4 apiReporter:(id)a5;
-- (id)instrumentBestHostElectedHandler:(id)a3 transportContext:(id)a4;
-- (id)instrumentClientDelegate:(id)a3 transportContext:(id)a4;
-- (id)instrumentErrorHandler:(id)a3 transportContext:(id)a4;
-- (void)onDisconnectWithTransportContext:(id)a3;
-- (void)onGameplayEndedWithReason:(int64_t)a3 error:(id)a4 transportContext:(id)a5;
-- (void)onGameplayStartedWithTransportContext:(id)a3;
-- (void)onTransportError:(id)a3 transportContext:(id)a4;
+- (GKMultiplayerActivityReporter)initWithLocalPlayerID:(id)d matchDataDelegate:(id)delegate apiReporter:(id)reporter;
+- (id)instrumentBestHostElectedHandler:(id)handler transportContext:(id)context;
+- (id)instrumentClientDelegate:(id)delegate transportContext:(id)context;
+- (id)instrumentErrorHandler:(id)handler transportContext:(id)context;
+- (void)onDisconnectWithTransportContext:(id)context;
+- (void)onGameplayEndedWithReason:(int64_t)reason error:(id)error transportContext:(id)context;
+- (void)onGameplayStartedWithTransportContext:(id)context;
+- (void)onTransportError:(id)error transportContext:(id)context;
 @end
 
 @implementation GKMultiplayerActivityReporter
 
-- (GKMultiplayerActivityReporter)initWithLocalPlayerID:(id)a3 matchDataDelegate:(id)a4 apiReporter:(id)a5
+- (GKMultiplayerActivityReporter)initWithLocalPlayerID:(id)d matchDataDelegate:(id)delegate apiReporter:(id)reporter
 {
   v7 = sub_227A724EC();
   v9 = v8;
   swift_unknownObjectRetain();
-  return MultiplayerActivityReporter.init(localPlayerID:matchDataDelegate:apiReporter:)(v7, v9, a4, a5);
+  return MultiplayerActivityReporter.init(localPlayerID:matchDataDelegate:apiReporter:)(v7, v9, delegate, reporter);
 }
 
-- (id)instrumentClientDelegate:(id)a3 transportContext:(id)a4
+- (id)instrumentClientDelegate:(id)delegate transportContext:(id)context
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  v9 = MultiplayerActivityReporter.instrument(clientDelegate:transportContext:)(a3, v7);
+  contextCopy = context;
+  selfCopy = self;
+  v9 = MultiplayerActivityReporter.instrument(clientDelegate:transportContext:)(delegate, contextCopy);
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (id)instrumentErrorHandler:(id)a3 transportContext:(id)a4
+- (id)instrumentErrorHandler:(id)handler transportContext:(id)context
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -45,7 +45,7 @@
     v6 = 0;
   }
 
-  MultiplayerActivityReporter.instrument(errorHandler:transportContext:)(v5, v6, a4);
+  MultiplayerActivityReporter.instrument(errorHandler:transportContext:)(v5, v6, context);
   v8 = v7;
   sub_22790D4C0(v5);
   v11[4] = sub_2279FCD44;
@@ -59,12 +59,12 @@
   return v9;
 }
 
-- (id)instrumentBestHostElectedHandler:(id)a3 transportContext:(id)a4
+- (id)instrumentBestHostElectedHandler:(id)handler transportContext:(id)context
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  MultiplayerActivityReporter.instrument(bestHostHandler:transportContext:)(sub_2279FF2D0, v6, a4);
+  MultiplayerActivityReporter.instrument(bestHostHandler:transportContext:)(sub_2279FF2D0, v6, context);
   v8 = v7;
 
   v11[4] = sub_2279FCD6C;
@@ -78,33 +78,33 @@
   return v9;
 }
 
-- (void)onDisconnectWithTransportContext:(id)a3
+- (void)onDisconnectWithTransportContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  MultiplayerActivityReporter.onDisconnect(transportContext:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  MultiplayerActivityReporter.onDisconnect(transportContext:)(contextCopy);
 }
 
-- (void)onGameplayStartedWithTransportContext:(id)a3
+- (void)onGameplayStartedWithTransportContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  MultiplayerActivityReporter.onGameplayStarted(transportContext:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  MultiplayerActivityReporter.onGameplayStarted(transportContext:)(contextCopy);
 }
 
-- (void)onGameplayEndedWithReason:(int64_t)a3 error:(id)a4 transportContext:(id)a5
+- (void)onGameplayEndedWithReason:(int64_t)reason error:(id)error transportContext:(id)context
 {
-  v7 = a5;
-  v8 = self;
-  v9 = a4;
+  contextCopy = context;
+  selfCopy = self;
+  errorCopy = error;
   MultiplayerActivityReporter.onGameplayEnded(reason:error:transportContext:)();
 }
 
-- (void)onTransportError:(id)a3 transportContext:(id)a4
+- (void)onTransportError:(id)error transportContext:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
+  errorCopy = error;
+  contextCopy = context;
+  selfCopy = self;
   MultiplayerActivityReporter.onTransportError(error:transportContext:)();
 }
 

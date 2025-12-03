@@ -1,6 +1,6 @@
 @interface TodayFeedWithLargeCarouselAdsScrollTestCase
 - (_TtC7NewsUI243TodayFeedWithLargeCarouselAdsScrollTestCase)init;
-- (id)scrollViewWithContext:(void *)a3;
+- (id)scrollViewWithContext:(void *)context;
 @end
 
 @implementation TodayFeedWithLargeCarouselAdsScrollTestCase
@@ -21,11 +21,11 @@
   return [(TodayFeedWithLargeCarouselAdsScrollTestCase *)&v6 init];
 }
 
-- (id)scrollViewWithContext:(void *)a3
+- (id)scrollViewWithContext:(void *)context
 {
-  v4 = a3;
-  v5 = a1;
-  sub_218A42F20(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_218A42F20(contextCopy);
   v7 = v6;
 
   return v7;

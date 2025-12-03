@@ -1,59 +1,59 @@
 @interface EXTableFilterColumn
-+ (id)edTableFilterColumnFromXmlTableFilterColumnElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)edFilterOperatorFromXmlTypeString:(id)a3;
++ (id)edTableFilterColumnFromXmlTableFilterColumnElement:(_xmlNode *)element state:(id)state;
++ (int)edFilterOperatorFromXmlTypeString:(id)string;
 @end
 
 @implementation EXTableFilterColumn
 
-+ (id)edTableFilterColumnFromXmlTableFilterColumnElement:(_xmlNode *)a3 state:(id)a4
++ (id)edTableFilterColumnFromXmlTableFilterColumnElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
-    v32 = a1;
+    selfCopy = self;
     v7 = objc_alloc_init(EDTableFilterColumn);
     v37 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "colId", &v37))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "colId", &v37))
     {
       [(EDTableFilterColumn *)v7 setColumnIndex:v37];
     }
 
-    v8 = [v6 EXSpreadsheetMLNamespace];
-    v9 = OCXFindChild(a3, v8, "filters");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v9 = OCXFindChild(element, eXSpreadsheetMLNamespace, "filters");
 
     v10 = v9;
-    if (v9 || ([v6 EXSpreadsheetMLNamespace], v11 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(a3, v11, "customFilters"), v11, v10))
+    if (v9 || ([stateCopy EXSpreadsheetMLNamespace], v11 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(element, v11, "customFilters"), v11, v10))
     {
       v36 = 0.0;
       v12 = !CXOptionalLongAttribute(v10, CXNoNamespace, "and", &v36);
       v13 = *&v36 != 1 || v12;
       [(EDTableFilterColumn *)v7 setFiltersRelation:v13];
-      v14 = [v6 EXSpreadsheetMLNamespace];
-      v15 = v9 ? OCXFindChild(v10, v14, "filter") : OCXFindChild(v10, v14, "customFilter");
+      eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+      v15 = v9 ? OCXFindChild(v10, eXSpreadsheetMLNamespace2, "filter") : OCXFindChild(v10, eXSpreadsheetMLNamespace2, "customFilter");
       v16 = v15;
 
       while (v16)
       {
-        v17 = [EXTableFilter edTableFilterFromXmlTableFilterElement:v16 state:v6];
+        v17 = [EXTableFilter edTableFilterFromXmlTableFilterElement:v16 state:stateCopy];
         [(EDTableFilterColumn *)v7 addFilter:v17];
 
-        v18 = [v6 EXSpreadsheetMLNamespace];
+        eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
         if (v9)
         {
-          Child = OCXFindNextChild(v16, v18, "filter");
+          Child = OCXFindNextChild(v16, eXSpreadsheetMLNamespace3, "filter");
         }
 
         else
         {
-          Child = OCXFindNextChild(v16, v18, "customFilter");
+          Child = OCXFindNextChild(v16, eXSpreadsheetMLNamespace3, "customFilter");
         }
 
         v16 = Child;
       }
     }
 
-    v20 = [v6 EXSpreadsheetMLNamespace];
-    v21 = OCXFindChild(a3, v20, "top10");
+    eXSpreadsheetMLNamespace4 = [stateCopy EXSpreadsheetMLNamespace];
+    v21 = OCXFindChild(element, eXSpreadsheetMLNamespace4, "top10");
 
     if (v21)
     {
@@ -101,8 +101,8 @@
       [(EDTableFilterColumn *)v7 addFilter:v22];
     }
 
-    v26 = [v6 EXSpreadsheetMLNamespace];
-    v27 = OCXFindChild(a3, v26, "dynamicFilter");
+    eXSpreadsheetMLNamespace5 = [stateCopy EXSpreadsheetMLNamespace];
+    v27 = OCXFindChild(element, eXSpreadsheetMLNamespace5, "dynamicFilter");
 
     if (v27)
     {
@@ -112,7 +112,7 @@
       v30 = v33;
       if (v29)
       {
-        [v28 setOperatorType:{objc_msgSend(v32, "edFilterOperatorFromXmlTypeString:", v30)}];
+        [v28 setOperatorType:{objc_msgSend(selfCopy, "edFilterOperatorFromXmlTypeString:", v30)}];
       }
 
       v36 = 0.0;
@@ -133,16 +133,16 @@
   return v7;
 }
 
-+ (int)edFilterOperatorFromXmlTypeString:(id)a3
++ (int)edFilterOperatorFromXmlTypeString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_6;
   }
 
-  if (([v3 isEqualToString:@"aboveAverage"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"aboveAverage"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"belowAverage"])
     {

@@ -1,19 +1,19 @@
 @interface EventTap
-+ (EventTap)eventTapWithHandler:(id)a3;
-- (EventTap)initWithHandler:(id)a3;
++ (EventTap)eventTapWithHandler:(id)handler;
+- (EventTap)initWithHandler:(id)handler;
 @end
 
 @implementation EventTap
 
-- (EventTap)initWithHandler:(id)a3
+- (EventTap)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = EventTap;
   v5 = [(EventTap *)&v9 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }
@@ -21,10 +21,10 @@
   return v5;
 }
 
-+ (EventTap)eventTapWithHandler:(id)a3
++ (EventTap)eventTapWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithHandler:handlerCopy];
 
   return v5;
 }

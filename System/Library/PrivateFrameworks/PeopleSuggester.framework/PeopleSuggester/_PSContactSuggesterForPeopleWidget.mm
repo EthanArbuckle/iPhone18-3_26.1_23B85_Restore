@@ -1,8 +1,8 @@
 @interface _PSContactSuggesterForPeopleWidget
 - (_PSContactSuggesterForPeopleWidget)init;
-- (id)allEmailAndPhoneNumberHandlesForContact:(id)a3;
+- (id)allEmailAndPhoneNumberHandlesForContact:(id)contact;
 - (id)contactKeysToFetch;
-- (id)contactSuggestionsWithMaxSuggestions:(int64_t)a3 excludeContactsWithIdentifiers:(id)a4;
+- (id)contactSuggestionsWithMaxSuggestions:(int64_t)suggestions excludeContactsWithIdentifiers:(id)identifiers;
 - (id)familyMemberContactHandles;
 - (id)familyRecommendedContacts;
 - (id)favoritedContacts;
@@ -11,7 +11,7 @@
 - (void)familyMemberContactHandles;
 - (void)familyRecommendedContacts;
 - (void)interactionBasedRecommendedContacts;
-- (void)processFamilyMember:(id)a3 toFillContactArray:(id)a4;
+- (void)processFamilyMember:(id)member toFillContactArray:(id)array;
 @end
 
 @implementation _PSContactSuggesterForPeopleWidget
@@ -41,14 +41,14 @@
   return v2;
 }
 
-- (id)allEmailAndPhoneNumberHandlesForContact:(id)a3
+- (id)allEmailAndPhoneNumberHandlesForContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 valueForKey:@"value"];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v5 = [phoneNumbers valueForKey:@"value"];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -69,12 +69,12 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 unformattedInternationalStringValue];
+        unformattedInternationalStringValue = [v12 unformattedInternationalStringValue];
 
-        if (v13)
+        if (unformattedInternationalStringValue)
         {
-          v14 = [v12 unformattedInternationalStringValue];
-          [v6 addObject:v14];
+          unformattedInternationalStringValue2 = [v12 unformattedInternationalStringValue];
+          [array addObject:unformattedInternationalStringValue2];
         }
       }
 
@@ -84,13 +84,13 @@
     while (v9);
   }
 
-  v15 = [v3 emailAddresses];
-  v16 = [v15 valueForKey:@"value"];
+  emailAddresses = [contactCopy emailAddresses];
+  v16 = [emailAddresses valueForKey:@"value"];
 
-  [v6 addObjectsFromArray:v16];
+  [array addObjectsFromArray:v16];
   v17 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
 - (id)contactKeysToFetch
@@ -318,21 +318,21 @@ LABEL_34:
   return v32;
 }
 
-- (void)processFamilyMember:(id)a3 toFillContactArray:(id)a4
+- (void)processFamilyMember:(id)member toFillContactArray:(id)array
 {
-  v10 = a3;
-  v5 = a4;
-  if (([v10 isMe] & 1) == 0)
+  memberCopy = member;
+  arrayCopy = array;
+  if (([memberCopy isMe] & 1) == 0)
   {
-    v6 = [v10 contact];
+    contact = [memberCopy contact];
 
-    if (v6)
+    if (contact)
     {
       v7 = [_PSContact alloc];
-      v8 = [v10 contact];
-      v9 = -[_PSContact initWithCNContact:isChild:](v7, "initWithCNContact:isChild:", v8, [v10 isChildAccount]);
+      contact2 = [memberCopy contact];
+      v9 = -[_PSContact initWithCNContact:isChild:](v7, "initWithCNContact:isChild:", contact2, [memberCopy isChildAccount]);
 
-      [v5 addObject:v9];
+      [arrayCopy addObject:v9];
     }
   }
 }
@@ -398,7 +398,7 @@ LABEL_34:
     v21 = 3221225472;
     v22 = __64___PSContactSuggesterForPeopleWidget_familyMemberContactHandles__block_invoke_38;
     v23 = &unk_1E7C25020;
-    v24 = self;
+    selfCopy = self;
     v26 = &v30;
     v7 = v12;
     v25 = v7;
@@ -457,10 +457,10 @@ LABEL_34:
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [v9 cnContact];
-        v11 = [v10 identifier];
+        cnContact = [v9 cnContact];
+        identifier = [cnContact identifier];
 
-        if (v11)
+        if (identifier)
         {
           if ([v9 isChild])
           {
@@ -472,13 +472,13 @@ LABEL_34:
             [(_PSContactSuggesterForPeopleWidget *)self nonpriorityFamilyMembers];
           }
           v12 = ;
-          v13 = [v9 cnContact];
-          v14 = [v13 identifier];
-          [v12 addObject:v14];
+          cnContact2 = [v9 cnContact];
+          identifier2 = [cnContact2 identifier];
+          [v12 addObject:identifier2];
 
-          v15 = [v9 cnContact];
-          v16 = [v15 identifier];
-          [v3 addObject:v16];
+          cnContact3 = [v9 cnContact];
+          identifier3 = [cnContact3 identifier];
+          [v3 addObject:identifier3];
 
           v17 = +[_PSLogging generalChannel];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -545,26 +545,26 @@ LABEL_34:
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 recipients];
-        v12 = [v11 count];
+        recipients = [v10 recipients];
+        v12 = [recipients count];
 
         if (v12)
         {
-          v13 = [v10 recipients];
-          v14 = [v13 firstObject];
+          recipients2 = [v10 recipients];
+          firstObject = [recipients2 firstObject];
 
-          v15 = [v14 contact];
+          contact = [firstObject contact];
 
-          if (v15)
+          if (contact)
           {
-            v16 = [v14 contact];
-            v17 = [v16 identifier];
-            [v4 addObject:v17];
+            contact2 = [firstObject contact];
+            identifier = [contact2 identifier];
+            [v4 addObject:identifier];
 
             v18 = +[_PSLogging generalChannel];
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
-              [(_PSContactSuggesterForPeopleWidget *)v34 familyRecommendedContacts:v14];
+              [(_PSContactSuggesterForPeopleWidget *)v34 familyRecommendedContacts:firstObject];
             }
 
             candidateContacts = self->_candidateContacts;
@@ -572,7 +572,7 @@ LABEL_34:
             v26[1] = 3221225472;
             v26[2] = __63___PSContactSuggesterForPeopleWidget_familyRecommendedContacts__block_invoke;
             v26[3] = &unk_1E7C26768;
-            v27 = v14;
+            v27 = firstObject;
             [(_PASLock *)candidateContacts runWithLockAcquired:v26];
           }
         }
@@ -650,10 +650,10 @@ LABEL_34:
   v49 = 0;
 LABEL_12:
   v14 = [_PSContactResolver alloc];
-  v15 = self;
-  v16 = [(_PSContactSuggesterForPeopleWidget *)self contactKeysToFetch];
+  selfCopy2 = self;
+  contactKeysToFetch = [(_PSContactSuggesterForPeopleWidget *)self contactKeysToFetch];
   v45 = v6;
-  v17 = [(_PSContactResolver *)v14 initWithContactStore:v6 keysToFetch:v16];
+  v17 = [(_PSContactResolver *)v14 initWithContactStore:v6 keysToFetch:contactKeysToFetch];
 
   v50 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v59 = 0u;
@@ -678,8 +678,8 @@ LABEL_12:
         }
 
         v23 = *(*(&v59 + 1) + 8 * i);
-        v24 = [v23 contactIdentifier];
-        v25 = [(_PSContactResolver *)v17 contactWithIdentifier:v24];
+        contactIdentifier = [v23 contactIdentifier];
+        v25 = [(_PSContactResolver *)v17 contactWithIdentifier:contactIdentifier];
 
         if (!v25)
         {
@@ -687,8 +687,8 @@ LABEL_12:
           v58 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v26 = [v23 handleAndAppFrequencies];
-          v27 = [v26 countByEnumeratingWithState:&v55 objects:v64 count:16];
+          handleAndAppFrequencies = [v23 handleAndAppFrequencies];
+          v27 = [handleAndAppFrequencies countByEnumeratingWithState:&v55 objects:v64 count:16];
           if (v27)
           {
             v28 = v27;
@@ -699,11 +699,11 @@ LABEL_20:
             {
               if (*v56 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(handleAndAppFrequencies);
               }
 
-              v31 = [*(*(&v55 + 1) + 8 * v30) handle];
-              v25 = [(_PSContactResolver *)v17 resolveContactIfPossibleFromContactIdentifierString:v31 pickFirstOfMultiple:1];
+              handle = [*(*(&v55 + 1) + 8 * v30) handle];
+              v25 = [(_PSContactResolver *)v17 resolveContactIfPossibleFromContactIdentifierString:handle pickFirstOfMultiple:1];
 
               if (v25)
               {
@@ -712,7 +712,7 @@ LABEL_20:
 
               if (v28 == ++v30)
               {
-                v28 = [v26 countByEnumeratingWithState:&v55 objects:v64 count:16];
+                v28 = [handleAndAppFrequencies countByEnumeratingWithState:&v55 objects:v64 count:16];
                 if (v28)
                 {
                   goto LABEL_20;
@@ -723,7 +723,7 @@ LABEL_20:
               }
             }
 
-            v15 = self;
+            selfCopy2 = self;
             v19 = 0x1E7C23000;
           }
 
@@ -747,18 +747,18 @@ LABEL_20:
         {
           if (v25)
           {
-            v36 = [*(v19 + 1360) generalChannel];
-            if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+            generalChannel = [*(v19 + 1360) generalChannel];
+            if (os_log_type_enabled(generalChannel, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
               v68 = v25;
-              _os_log_debug_impl(&dword_1B5ED1000, v36, OS_LOG_TYPE_DEBUG, "Interaction model suggested contact fetched: %@", buf, 0xCu);
+              _os_log_debug_impl(&dword_1B5ED1000, generalChannel, OS_LOG_TYPE_DEBUG, "Interaction model suggested contact fetched: %@", buf, 0xCu);
             }
 
-            v37 = [v25 identifier];
-            [v50 addObject:v37];
+            identifier = [v25 identifier];
+            [v50 addObject:identifier];
 
-            candidateContacts = v15->_candidateContacts;
+            candidateContacts = selfCopy2->_candidateContacts;
             v53[0] = MEMORY[0x1E69E9820];
             v53[1] = 3221225472;
             v53[2] = __73___PSContactSuggesterForPeopleWidget_interactionBasedRecommendedContacts__block_invoke_45;
@@ -775,13 +775,13 @@ LABEL_20:
     while (v20);
   }
 
-  v39 = [*(v19 + 1360) generalChannel];
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  generalChannel2 = [*(v19 + 1360) generalChannel];
+  if (os_log_type_enabled(generalChannel2, OS_LOG_TYPE_DEFAULT))
   {
     v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v50, "count")}];
     *buf = 138412290;
     v68 = v40;
-    _os_log_impl(&dword_1B5ED1000, v39, OS_LOG_TYPE_DEFAULT, "interactionBasedRecommendedContacts count: %@", buf, 0xCu);
+    _os_log_impl(&dword_1B5ED1000, generalChannel2, OS_LOG_TYPE_DEFAULT, "interactionBasedRecommendedContacts count: %@", buf, 0xCu);
   }
 
   v41 = [v50 copy];
@@ -793,28 +793,28 @@ LABEL_20:
 - (id)favoritedContacts
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E69978A8] sharedInstance];
+  mEMORY[0x1E69978A8] = [MEMORY[0x1E69978A8] sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55___PSContactSuggesterForPeopleWidget_favoritedContacts__block_invoke;
   v8[3] = &unk_1E7C24330;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 accessFavoriteContactEntriesWithBlock:v8];
+  selfCopy = self;
+  [mEMORY[0x1E69978A8] accessFavoriteContactEntriesWithBlock:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)contactSuggestionsWithMaxSuggestions:(int64_t)a3 excludeContactsWithIdentifiers:(id)a4
+- (id)contactSuggestionsWithMaxSuggestions:(int64_t)suggestions excludeContactsWithIdentifiers:(id)identifiers
 {
   v179[1] = *MEMORY[0x1E69E9840];
-  v134 = a4;
-  v137 = self;
-  v5 = [(_PSContactSuggesterForPeopleWidget *)self iCloudFamilyMembers];
-  v121 = [(_PSContactSuggesterForPeopleWidget *)self interactionBasedRecommendedContacts];
-  v129 = [(_PSContactSuggesterForPeopleWidget *)self favoritedContacts];
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  iCloudFamilyMembers = [(_PSContactSuggesterForPeopleWidget *)self iCloudFamilyMembers];
+  interactionBasedRecommendedContacts = [(_PSContactSuggesterForPeopleWidget *)self interactionBasedRecommendedContacts];
+  favoritedContacts = [(_PSContactSuggesterForPeopleWidget *)self favoritedContacts];
   v131 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v118 = objc_alloc_init(getCNContactStoreClass_0());
   v6 = getCNContactIdentifierKey_3();
@@ -852,7 +852,7 @@ LABEL_5:
   v167 = 0u;
   v164 = 0u;
   v165 = 0u;
-  obj = v5;
+  obj = iCloudFamilyMembers;
   v10 = [obj countByEnumeratingWithState:&v164 objects:v178 count:16];
   if (v10)
   {
@@ -867,8 +867,8 @@ LABEL_5:
         }
 
         v13 = *(*(&v164 + 1) + 8 * i);
-        v14 = [v136 identifier];
-        v15 = [v14 isEqualToString:v13];
+        identifier = [v136 identifier];
+        v15 = [identifier isEqualToString:v13];
 
         if ((v15 & 1) == 0)
         {
@@ -878,7 +878,7 @@ LABEL_5:
           v175 = __Block_byref_object_copy__16;
           v176 = __Block_byref_object_dispose__16;
           v177 = 0;
-          candidateContacts = v137->_candidateContacts;
+          candidateContacts = selfCopy->_candidateContacts;
           v163[0] = MEMORY[0x1E69E9820];
           v163[1] = 3221225472;
           v163[2] = __106___PSContactSuggesterForPeopleWidget_contactSuggestionsWithMaxSuggestions_excludeContactsWithIdentifiers___block_invoke;
@@ -887,41 +887,41 @@ LABEL_5:
           v163[4] = v13;
           [(_PASLock *)candidateContacts runWithLockAcquired:v163];
           v17 = MEMORY[0x1E695DFD8];
-          v18 = [(_PSContactSuggesterForPeopleWidget *)v137 allEmailAndPhoneNumberHandlesForContact:*(*&buf[8] + 40)];
+          v18 = [(_PSContactSuggesterForPeopleWidget *)selfCopy allEmailAndPhoneNumberHandlesForContact:*(*&buf[8] + 40)];
           v19 = [v17 setWithArray:v18];
 
           if ([v19 intersectsSet:v135])
           {
-            v20 = [v19 allObjects];
-            [v135 addObjectsFromArray:v20];
+            allObjects = [v19 allObjects];
+            [v135 addObjectsFromArray:allObjects];
           }
 
           else
           {
-            v21 = [*(*&buf[8] + 40) identifier];
-            v22 = [v131 objectForKey:v21];
+            identifier2 = [*(*&buf[8] + 40) identifier];
+            v22 = [v131 objectForKey:identifier2];
 
             if (v22)
             {
-              v23 = [*(*&buf[8] + 40) identifier];
-              v24 = [v131 objectForKey:v23];
+              identifier3 = [*(*&buf[8] + 40) identifier];
+              v24 = [v131 objectForKey:identifier3];
 
               [(_PSContactSuggestion *)v24 peopleWidgetScore];
               [(_PSContactSuggestion *)v24 setPeopleWidgetScore:v25 + 4.0];
-              v26 = [*(*&buf[8] + 40) identifier];
-              [v131 setObject:v24 forKeyedSubscript:v26];
+              identifier4 = [*(*&buf[8] + 40) identifier];
+              [v131 setObject:v24 forKeyedSubscript:identifier4];
             }
 
             else
             {
               v27 = [_PSContactSuggestion alloc];
               v24 = [(_PSContactSuggestion *)v27 initWithContact:*(*&buf[8] + 40) andScore:4.0];
-              v26 = [*(*&buf[8] + 40) identifier];
-              [v131 setValue:v24 forKey:v26];
+              identifier4 = [*(*&buf[8] + 40) identifier];
+              [v131 setValue:v24 forKey:identifier4];
             }
 
-            v20 = [v19 allObjects];
-            [v135 addObjectsFromArray:v20];
+            allObjects = [v19 allObjects];
+            [v135 addObjectsFromArray:allObjects];
           }
 
           _Block_object_dispose(buf, 8);
@@ -938,7 +938,7 @@ LABEL_5:
   v162 = 0u;
   v159 = 0u;
   v160 = 0u;
-  v122 = v129;
+  v122 = favoritedContacts;
   v28 = [v122 countByEnumeratingWithState:&v159 objects:v173 count:16];
   if (v28)
   {
@@ -953,8 +953,8 @@ LABEL_5:
         }
 
         v31 = *(*(&v159 + 1) + 8 * j);
-        v32 = [v136 identifier];
-        v33 = [v32 isEqualToString:v31];
+        identifier5 = [v136 identifier];
+        v33 = [identifier5 isEqualToString:v31];
 
         if ((v33 & 1) == 0)
         {
@@ -964,7 +964,7 @@ LABEL_5:
           v175 = __Block_byref_object_copy__16;
           v176 = __Block_byref_object_dispose__16;
           v177 = 0;
-          v34 = v137->_candidateContacts;
+          v34 = selfCopy->_candidateContacts;
           v158[0] = MEMORY[0x1E69E9820];
           v158[1] = 3221225472;
           v158[2] = __106___PSContactSuggesterForPeopleWidget_contactSuggestionsWithMaxSuggestions_excludeContactsWithIdentifiers___block_invoke_2;
@@ -973,41 +973,41 @@ LABEL_5:
           v158[5] = buf;
           [(_PASLock *)v34 runWithLockAcquired:v158];
           v35 = MEMORY[0x1E695DFD8];
-          v36 = [(_PSContactSuggesterForPeopleWidget *)v137 allEmailAndPhoneNumberHandlesForContact:*(*&buf[8] + 40)];
+          v36 = [(_PSContactSuggesterForPeopleWidget *)selfCopy allEmailAndPhoneNumberHandlesForContact:*(*&buf[8] + 40)];
           v37 = [v35 setWithArray:v36];
 
           if ([v37 intersectsSet:v135])
           {
-            v38 = [v37 allObjects];
-            [v135 addObjectsFromArray:v38];
+            allObjects2 = [v37 allObjects];
+            [v135 addObjectsFromArray:allObjects2];
           }
 
           else
           {
-            v39 = [*(*&buf[8] + 40) identifier];
-            v40 = [v131 objectForKey:v39];
+            identifier6 = [*(*&buf[8] + 40) identifier];
+            v40 = [v131 objectForKey:identifier6];
 
             if (v40)
             {
-              v41 = [*(*&buf[8] + 40) identifier];
-              v42 = [v131 objectForKey:v41];
+              identifier7 = [*(*&buf[8] + 40) identifier];
+              v42 = [v131 objectForKey:identifier7];
 
               [(_PSContactSuggestion *)v42 peopleWidgetScore];
               [(_PSContactSuggestion *)v42 setPeopleWidgetScore:v43 + 3.0];
-              v44 = [*(*&buf[8] + 40) identifier];
-              [v131 setObject:v42 forKeyedSubscript:v44];
+              identifier8 = [*(*&buf[8] + 40) identifier];
+              [v131 setObject:v42 forKeyedSubscript:identifier8];
             }
 
             else
             {
               v45 = [_PSContactSuggestion alloc];
               v42 = [(_PSContactSuggestion *)v45 initWithContact:*(*&buf[8] + 40) andScore:3.0];
-              v44 = [*(*&buf[8] + 40) identifier];
-              [v131 setValue:v42 forKey:v44];
+              identifier8 = [*(*&buf[8] + 40) identifier];
+              [v131 setValue:v42 forKey:identifier8];
             }
 
-            v38 = [v37 allObjects];
-            [v135 addObjectsFromArray:v38];
+            allObjects2 = [v37 allObjects];
+            [v135 addObjectsFromArray:allObjects2];
           }
 
           _Block_object_dispose(buf, 8);
@@ -1020,7 +1020,7 @@ LABEL_5:
     while (v28);
   }
 
-  if ([v121 count])
+  if ([interactionBasedRecommendedContacts count])
   {
     v46 = 0;
     v126 = MEMORY[0x1E69E9820];
@@ -1033,58 +1033,58 @@ LABEL_5:
       v175 = __Block_byref_object_copy__16;
       v176 = __Block_byref_object_dispose__16;
       v177 = 0;
-      v48 = v137->_candidateContacts;
+      v48 = selfCopy->_candidateContacts;
       v154[0] = v126;
       v154[1] = 3221225472;
       v154[2] = __106___PSContactSuggesterForPeopleWidget_contactSuggestionsWithMaxSuggestions_excludeContactsWithIdentifiers___block_invoke_3;
       v154[3] = &unk_1E7C26790;
       v156 = buf;
-      v49 = v121;
+      v49 = interactionBasedRecommendedContacts;
       v155 = v49;
       v157 = v46;
       [(_PASLock *)v48 runWithLockAcquired:v154];
-      v50 = [v136 identifier];
-      v51 = [*(*&buf[8] + 40) identifier];
-      v52 = [v50 isEqualToString:v51];
+      identifier9 = [v136 identifier];
+      identifier10 = [*(*&buf[8] + 40) identifier];
+      v52 = [identifier9 isEqualToString:identifier10];
 
       if ((v52 & 1) == 0)
       {
         v53 = MEMORY[0x1E695DFD8];
-        v54 = [(_PSContactSuggesterForPeopleWidget *)v137 allEmailAndPhoneNumberHandlesForContact:*(*&buf[8] + 40)];
+        v54 = [(_PSContactSuggesterForPeopleWidget *)selfCopy allEmailAndPhoneNumberHandlesForContact:*(*&buf[8] + 40)];
         v55 = [v53 setWithArray:v54];
 
         if ([v55 intersectsSet:v135])
         {
-          v56 = [v55 allObjects];
-          [v135 addObjectsFromArray:v56];
+          allObjects3 = [v55 allObjects];
+          [v135 addObjectsFromArray:allObjects3];
         }
 
         else
         {
-          v57 = [*(*&buf[8] + 40) identifier];
-          v58 = [v131 objectForKey:v57];
+          identifier11 = [*(*&buf[8] + 40) identifier];
+          v58 = [v131 objectForKey:identifier11];
 
           if (v58)
           {
-            v59 = [*(*&buf[8] + 40) identifier];
-            v60 = [v131 objectForKey:v59];
+            identifier12 = [*(*&buf[8] + 40) identifier];
+            v60 = [v131 objectForKey:identifier12];
 
             [(_PSContactSuggestion *)v60 peopleWidgetScore];
             [(_PSContactSuggestion *)v60 setPeopleWidgetScore:v61 + ((v47 / 10.0) + (v47 / 10.0))];
-            v62 = [*(*&buf[8] + 40) identifier];
-            [v131 setObject:v60 forKeyedSubscript:v62];
+            identifier13 = [*(*&buf[8] + 40) identifier];
+            [v131 setObject:v60 forKeyedSubscript:identifier13];
           }
 
           else
           {
             v63 = [_PSContactSuggestion alloc];
             v60 = [(_PSContactSuggestion *)v63 initWithContact:*(*&buf[8] + 40) andScore:((v47 / 10.0) + (v47 / 10.0))];
-            v62 = [*(*&buf[8] + 40) identifier];
-            [v131 setValue:v60 forKey:v62];
+            identifier13 = [*(*&buf[8] + 40) identifier];
+            [v131 setValue:v60 forKey:identifier13];
           }
 
-          v56 = [v55 allObjects];
-          [v135 addObjectsFromArray:v56];
+          allObjects3 = [v55 allObjects];
+          [v135 addObjectsFromArray:allObjects3];
         }
       }
 
@@ -1167,32 +1167,32 @@ LABEL_5:
         }
 
         v75 = *(*(&v146 + 1) + 8 * m);
-        v76 = [(_PSContactSuggesterForPeopleWidget *)v137 priorityFamilyMembers];
-        v77 = [v75 contact];
-        v78 = [v77 identifier];
-        if (![v76 containsObject:v78])
+        priorityFamilyMembers = [(_PSContactSuggesterForPeopleWidget *)selfCopy priorityFamilyMembers];
+        contact = [v75 contact];
+        identifier14 = [contact identifier];
+        if (![priorityFamilyMembers containsObject:identifier14])
         {
 
           goto LABEL_75;
         }
 
-        if (!v134 || ![v134 count])
+        if (!identifiersCopy || ![identifiersCopy count])
         {
 
 LABEL_74:
           [v127 addObject:v75];
-          v76 = [v75 contact];
-          v77 = [v76 identifier];
-          [v128 addObject:v77];
-          --a3;
+          priorityFamilyMembers = [v75 contact];
+          contact = [priorityFamilyMembers identifier];
+          [v128 addObject:contact];
+          --suggestions;
 LABEL_75:
 
           continue;
         }
 
-        v79 = [v75 contact];
-        v80 = [v79 identifier];
-        v81 = [v134 containsObject:v80];
+        contact2 = [v75 contact];
+        identifier15 = [contact2 identifier];
+        v81 = [identifiersCopy containsObject:identifier15];
 
         if ((v81 & 1) == 0)
         {
@@ -1228,32 +1228,32 @@ LABEL_75:
       }
 
       v85 = *(*(&v142 + 1) + 8 * n);
-      v86 = [(_PSContactSuggesterForPeopleWidget *)v137 nonpriorityFamilyMembers];
-      v87 = [v85 contact];
-      v88 = [v87 identifier];
-      if (![v86 containsObject:v88])
+      nonpriorityFamilyMembers = [(_PSContactSuggesterForPeopleWidget *)selfCopy nonpriorityFamilyMembers];
+      contact3 = [v85 contact];
+      identifier16 = [contact3 identifier];
+      if (![nonpriorityFamilyMembers containsObject:identifier16])
       {
 
         goto LABEL_91;
       }
 
-      if (!v134 || ![v134 count])
+      if (!identifiersCopy || ![identifiersCopy count])
       {
 
 LABEL_90:
         [v127 addObject:v85];
-        v86 = [v85 contact];
-        v87 = [v86 identifier];
-        [v128 addObject:v87];
-        --a3;
+        nonpriorityFamilyMembers = [v85 contact];
+        contact3 = [nonpriorityFamilyMembers identifier];
+        [v128 addObject:contact3];
+        --suggestions;
 LABEL_91:
 
         continue;
       }
 
-      v89 = [v85 contact];
-      v90 = [v89 identifier];
-      v91 = [v134 containsObject:v90];
+      contact4 = [v85 contact];
+      identifier17 = [contact4 identifier];
+      v91 = [identifiersCopy containsObject:identifier17];
 
       if ((v91 & 1) == 0)
       {
@@ -1267,7 +1267,7 @@ LABEL_91:
   while (v82);
 LABEL_94:
 
-  if (a3 >= 1)
+  if (suggestions >= 1)
   {
     v92 = 0;
     do
@@ -1277,12 +1277,12 @@ LABEL_94:
         break;
       }
 
-      if (v134)
+      if (identifiersCopy)
       {
         v93 = [v125 objectAtIndexedSubscript:v92];
-        v94 = [v93 contact];
-        v95 = [v94 identifier];
-        v96 = [v134 containsObject:v95];
+        contact5 = [v93 contact];
+        identifier18 = [contact5 identifier];
+        v96 = [identifiersCopy containsObject:identifier18];
 
         if (v96)
         {
@@ -1291,14 +1291,14 @@ LABEL_94:
       }
 
       v97 = [v125 objectAtIndexedSubscript:v92];
-      v98 = [v97 contact];
-      v99 = [v98 identifier];
-      v100 = [v128 containsObject:v99];
+      contact6 = [v97 contact];
+      identifier19 = [contact6 identifier];
+      v100 = [v128 containsObject:identifier19];
 
       if (v100)
       {
 LABEL_100:
-        v101 = a3 + 1;
+        suggestionsCopy = suggestions + 1;
       }
 
       else
@@ -1307,18 +1307,18 @@ LABEL_100:
         [v127 addObject:v102];
 
         v103 = [v125 objectAtIndexedSubscript:v92];
-        v104 = [v103 contact];
-        v105 = [v104 identifier];
-        [v128 addObject:v105];
+        contact7 = [v103 contact];
+        identifier20 = [contact7 identifier];
+        [v128 addObject:identifier20];
 
-        v101 = a3;
+        suggestionsCopy = suggestions;
       }
 
       ++v92;
-      a3 = v101;
+      suggestions = suggestionsCopy;
     }
 
-    while (v101 > v92);
+    while (suggestionsCopy > v92);
   }
 
   v140 = 0u;
@@ -1343,13 +1343,13 @@ LABEL_100:
         v111 = +[_PSLogging generalChannel];
         if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
         {
-          v112 = [v110 contact];
-          v113 = [v112 givenName];
+          contact8 = [v110 contact];
+          givenName = [contact8 givenName];
           v114 = MEMORY[0x1E696AD98];
           [v110 peopleWidgetScore];
           v115 = [v114 numberWithDouble:?];
           *buf = 138478083;
-          *&buf[4] = v113;
+          *&buf[4] = givenName;
           *&buf[12] = 2112;
           *&buf[14] = v115;
           _os_log_impl(&dword_1B5ED1000, v111, OS_LOG_TYPE_DEFAULT, "Suggestions: %{private}@, score: %@", buf, 0x16u);
@@ -1370,7 +1370,7 @@ LABEL_100:
 - (void)familyMemberContactHandles
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_1B5ED1000, a2, OS_LOG_TYPE_DEBUG, "familyMembers %@", &v4, 0xCu);
@@ -1379,10 +1379,10 @@ LABEL_100:
 
 - (void)familyRecommendedContacts
 {
-  v7 = [a2 contact];
-  *a1 = 138412290;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_1B5ED1000, a4, OS_LOG_TYPE_DEBUG, "Family-recommender suggested contact fetched: %@", a1, 0xCu);
+  contact = [a2 contact];
+  *self = 138412290;
+  *a3 = contact;
+  _os_log_debug_impl(&dword_1B5ED1000, a4, OS_LOG_TYPE_DEBUG, "Family-recommender suggested contact fetched: %@", self, 0xCu);
 }
 
 - (void)interactionBasedRecommendedContacts

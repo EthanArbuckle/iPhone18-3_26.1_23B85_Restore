@@ -1,22 +1,22 @@
 @interface ATXNowPlayingDuetDataProvider
-- (id)convertNowPlayingEventsToAppLaunchEvents:(id)a3;
-- (id)playbackEventsAfterSecondsOfInactivity:(double)a3 betweenStartDate:(id)a4 endDate:(id)a5;
+- (id)convertNowPlayingEventsToAppLaunchEvents:(id)events;
+- (id)playbackEventsAfterSecondsOfInactivity:(double)inactivity betweenStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation ATXNowPlayingDuetDataProvider
 
-- (id)playbackEventsAfterSecondsOfInactivity:(double)a3 betweenStartDate:(id)a4 endDate:(id)a5
+- (id)playbackEventsAfterSecondsOfInactivity:(double)inactivity betweenStartDate:(id)date endDate:(id)endDate
 {
   v7 = MEMORY[0x277CEBC80];
-  v8 = a5;
-  v9 = a4;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = objc_alloc_init(v7);
   v11 = objc_opt_new();
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __97__ATXNowPlayingDuetDataProvider_playbackEventsAfterSecondsOfInactivity_betweenStartDate_endDate___block_invoke;
   v19[3] = &__block_descriptor_40_e33_B16__0__ATXMediaNowPlayingEvent_8l;
-  *&v19[4] = a3;
+  *&v19[4] = inactivity;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __97__ATXNowPlayingDuetDataProvider_playbackEventsAfterSecondsOfInactivity_betweenStartDate_endDate___block_invoke_2;
@@ -25,7 +25,7 @@
   v18 = v11;
   v12 = v11;
   v13 = v10;
-  [v13 enumerateEventsFromStartDate:v9 endDate:v8 filterBlock:v19 ascending:1 block:v16];
+  [v13 enumerateEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:v19 ascending:1 block:v16];
 
   v14 = [v12 copy];
 
@@ -79,16 +79,16 @@ uint64_t __97__ATXNowPlayingDuetDataProvider_playbackEventsAfterSecondsOfInactiv
   return 0;
 }
 
-- (id)convertNowPlayingEventsToAppLaunchEvents:(id)a3
+- (id)convertNowPlayingEventsToAppLaunchEvents:(id)events
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -106,10 +106,10 @@ uint64_t __97__ATXNowPlayingDuetDataProvider_playbackEventsAfterSecondsOfInactiv
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
         v11 = [ATXAppLaunchDuetEvent alloc];
-        v12 = [v9 bundleId];
-        v13 = [v9 startDate];
-        v14 = [v9 endDate];
-        v15 = [(ATXAppLaunchDuetEvent *)v11 initWithBundleId:v12 startDate:v13 endDate:v14];
+        bundleId = [v9 bundleId];
+        startDate = [v9 startDate];
+        endDate = [v9 endDate];
+        v15 = [(ATXAppLaunchDuetEvent *)v11 initWithBundleId:bundleId startDate:startDate endDate:endDate];
 
         [v4 addObject:v15];
         objc_autoreleasePoolPop(v10);

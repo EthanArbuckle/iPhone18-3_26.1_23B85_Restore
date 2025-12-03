@@ -1,20 +1,20 @@
 @interface MTLDebugSamplerState
-- (MTLDebugSamplerState)initWithSamplerState:(id)a3 descriptor:(id)a4 device:(id)a5;
+- (MTLDebugSamplerState)initWithSamplerState:(id)state descriptor:(id)descriptor device:(id)device;
 - (MTLResourceID)gpuResourceID;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation MTLDebugSamplerState
 
-- (MTLDebugSamplerState)initWithSamplerState:(id)a3 descriptor:(id)a4 device:(id)a5
+- (MTLDebugSamplerState)initWithSamplerState:(id)state descriptor:(id)descriptor device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MTLDebugSamplerState;
-  v6 = [(MTLToolsSamplerState *)&v8 initWithSamplerState:a3 descriptor:a4 device:a5];
+  v6 = [(MTLToolsSamplerState *)&v8 initWithSamplerState:state descriptor:descriptor device:device];
   if (v6)
   {
-    v6->_descriptor = [a4 copy];
+    v6->_descriptor = [descriptor copy];
   }
 
   return v6;
@@ -29,11 +29,11 @@
   [(MTLToolsSamplerState *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v4.receiver = self;
   v4.super_class = MTLDebugSamplerState;
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", -[MTLToolsObject description](&v4, sel_description), -[MTLSamplerDescriptor formattedDescription:](self->_descriptor, "formattedDescription:", a3)];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", -[MTLToolsObject description](&v4, sel_description), -[MTLSamplerDescriptor formattedDescription:](self->_descriptor, "formattedDescription:", description)];
 }
 
 - (MTLResourceID)gpuResourceID

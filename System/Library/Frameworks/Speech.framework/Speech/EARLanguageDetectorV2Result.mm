@@ -1,26 +1,26 @@
 @interface EARLanguageDetectorV2Result
-- (EARLanguageDetectorV2Result)initWithCoder:(id)a3;
-- (EARLanguageDetectorV2Result)initWithLanguageDetectorV2Result:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EARLanguageDetectorV2Result)initWithCoder:(id)coder;
+- (EARLanguageDetectorV2Result)initWithLanguageDetectorV2Result:(id)result;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARLanguageDetectorV2Result
 
-- (EARLanguageDetectorV2Result)initWithCoder:(id)a3
+- (EARLanguageDetectorV2Result)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = EARLanguageDetectorV2Result;
   v5 = [(EARLanguageDetectorV2Result *)&v12 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"_confidences"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"_confidences"];
     confidences = v5->_confidences;
     v5->_confidences = v7;
 
-    v5->_detectedLangauge = [v4 decodeIntegerForKey:@"_detectedLangauge"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dominantLocale"];
+    v5->_detectedLangauge = [coderCopy decodeIntegerForKey:@"_detectedLangauge"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dominantLocale"];
     dominantLocale = v5->_dominantLocale;
     v5->_dominantLocale = v9;
   }
@@ -28,31 +28,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   confidences = self->_confidences;
-  v5 = a3;
-  [v5 encodeObject:confidences forKey:@"_confidences"];
-  [v5 encodeInteger:self->_detectedLangauge forKey:@"_detectedLangauge"];
-  [v5 encodeObject:self->_dominantLocale forKey:@"_dominantLocale"];
+  coderCopy = coder;
+  [coderCopy encodeObject:confidences forKey:@"_confidences"];
+  [coderCopy encodeInteger:self->_detectedLangauge forKey:@"_detectedLangauge"];
+  [coderCopy encodeObject:self->_dominantLocale forKey:@"_dominantLocale"];
 }
 
-- (EARLanguageDetectorV2Result)initWithLanguageDetectorV2Result:(id)a3
+- (EARLanguageDetectorV2Result)initWithLanguageDetectorV2Result:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v13.receiver = self;
   v13.super_class = EARLanguageDetectorV2Result;
   v5 = [(EARLanguageDetectorV2Result *)&v13 init];
   if (v5)
   {
-    v6 = [v4 confidences];
-    v7 = [v6 copy];
+    confidences = [resultCopy confidences];
+    v7 = [confidences copy];
     confidences = v5->_confidences;
     v5->_confidences = v7;
 
-    v5->_detectedLangauge = [v4 detectedLanguage];
-    v9 = [v4 dominantLocale];
-    v10 = [v9 copy];
+    v5->_detectedLangauge = [resultCopy detectedLanguage];
+    dominantLocale = [resultCopy dominantLocale];
+    v10 = [dominantLocale copy];
     dominantLocale = v5->_dominantLocale;
     v5->_dominantLocale = v10;
   }

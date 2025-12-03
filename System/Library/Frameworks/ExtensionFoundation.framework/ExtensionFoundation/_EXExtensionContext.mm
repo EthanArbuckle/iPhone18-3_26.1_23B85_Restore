@@ -1,9 +1,9 @@
 @interface _EXExtensionContext
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
 - (_EXExtensionContext)init;
-- (id)makeXPCConnectionWithError:(id *)a3;
-- (void)completeRequestReturningItems:(id)a3 completionHandler:(id)a4;
-- (void)completeRequestWithHandler:(id)a3;
+- (id)makeXPCConnectionWithError:(id *)error;
+- (void)completeRequestReturningItems:(id)items completionHandler:(id)handler;
+- (void)completeRequestWithHandler:(id)handler;
 - (void)invalidate;
 @end
 
@@ -16,9 +16,9 @@
   return [(_EXExtensionContext *)&v3 init];
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
@@ -38,31 +38,31 @@
   return result;
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
-  v4 = [(_EXExtensionContext *)self internalImplementation];
-  v5 = [v4 makeXPCConnectionWithError:a3];
+  internalImplementation = [(_EXExtensionContext *)self internalImplementation];
+  v5 = [internalImplementation makeXPCConnectionWithError:error];
 
   return v5;
 }
 
 - (void)invalidate
 {
-  v2 = [(_EXExtensionContext *)self internalImplementation];
-  [v2 invalidate];
+  internalImplementation = [(_EXExtensionContext *)self internalImplementation];
+  [internalImplementation invalidate];
 }
 
-- (void)completeRequestWithHandler:(id)a3
+- (void)completeRequestWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(_EXExtensionContext *)self invalidate];
-  v4[2](v4, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)completeRequestReturningItems:(id)a3 completionHandler:(id)a4
+- (void)completeRequestReturningItems:(id)items completionHandler:(id)handler
 {
-  v6 = a4;
-  if ([a3 count])
+  handlerCopy = handler;
+  if ([items count])
   {
     v7 = _EXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -71,13 +71,13 @@
     }
 
     [(_EXExtensionContext *)self invalidate];
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     [(_EXExtensionContext *)self invalidate];
-    v6[2](v6, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 

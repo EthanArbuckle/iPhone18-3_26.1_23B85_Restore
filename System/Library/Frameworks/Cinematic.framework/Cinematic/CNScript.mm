@@ -4,8 +4,8 @@
 - (BOOL)removeDetectionTrack:(CNDetectionTrack *)detectionTrack;
 - (BOOL)removeUserDecision:(CNDecision *)decision;
 - (CMTimeRange)timeRange;
-- (CMTimeRange)timeRangeOfTransitionAfterDecision:(SEL)a3;
-- (CMTimeRange)timeRangeOfTransitionBeforeDecision:(SEL)a3;
+- (CMTimeRange)timeRangeOfTransitionAfterDecision:(SEL)decision;
+- (CMTimeRange)timeRangeOfTransitionBeforeDecision:(SEL)decision;
 - (CNDecision)decisionAfterTime:(CMTime *)time;
 - (CNDecision)decisionAtTime:(CMTime *)time tolerance:(CMTime *)tolerance;
 - (CNDecision)decisionBeforeTime:(CMTime *)time;
@@ -23,7 +23,7 @@
 - (NSArray)framesInTimeRange:(CMTimeRange *)timeRange;
 - (NSArray)userDecisionsInTimeRange:(CMTimeRange *)timeRange;
 - (float)fNumber;
-- (id)_initWithInternalScript:(id)a3;
+- (id)_initWithInternalScript:(id)script;
 - (void)reloadWithChanges:(CNScriptChanges *)changes;
 - (void)removeAllUserDecisions;
 - (void)setFNumber:(float)fNumber;
@@ -31,16 +31,16 @@
 
 @implementation CNScript
 
-- (id)_initWithInternalScript:(id)a3
+- (id)_initWithInternalScript:(id)script
 {
-  v5 = a3;
+  scriptCopy = script;
   v11.receiver = self;
   v11.super_class = CNScript;
   v6 = [(CNScript *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalScript, a3);
+    objc_storeStrong(&v6->_internalScript, script);
     v8 = dispatch_queue_create("com.apple.cinematic.script", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -67,7 +67,7 @@
   }
 
   v15 = v14;
-  v16 = [(CNScriptChanges *)v10 internalChanges];
+  internalChanges = [(CNScriptChanges *)v10 internalChanges];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __61__CNScript_loadFromAsset_changes_progress_completionHandler___block_invoke;
@@ -80,7 +80,7 @@
   v18 = v9;
   v19 = v12;
   v20 = v13;
-  v21 = [v20 loadWithAsset:v18 changesDictionary:v16 completion:&v22];
+  v21 = [v20 loadWithAsset:v18 changesDictionary:internalChanges completion:&v22];
 
   if (v21)
   {
@@ -134,7 +134,7 @@ void __61__CNScript_loadFromAsset_changes_progress_completionHandler___block_inv
 - (void)reloadWithChanges:(CNScriptChanges *)changes
 {
   v4 = changes;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__CNScript_reloadWithChanges___block_invoke;
@@ -142,7 +142,7 @@ void __61__CNScript_loadFromAsset_changes_progress_completionHandler___block_inv
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_sync(v5, v7);
+  dispatch_sync(queue, v7);
 }
 
 void __30__CNScript_reloadWithChanges___block_invoke(uint64_t a1)
@@ -160,14 +160,14 @@ void __30__CNScript_reloadWithChanges___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __19__CNScript_changes__block_invoke;
   v6[3] = &unk_278A16330;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -206,7 +206,7 @@ id __19__CNScript_changes__block_invoke_2(uint64_t a1)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__CNScript_changesTrimmedByTimeRange___block_invoke;
@@ -217,7 +217,7 @@ id __19__CNScript_changes__block_invoke_2(uint64_t a1)
   v10 = *&timeRange->start.value;
   v11 = v6;
   v12 = *&timeRange->duration.timescale;
-  dispatch_sync(v5, v9);
+  dispatch_sync(queue, v9);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -265,14 +265,14 @@ id __38__CNScript_changesTrimmedByTimeRange___block_invoke_2(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __21__CNScript_timeRange__block_invoke;
   v9[3] = &unk_278A16330;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v5, v9);
+  dispatch_sync(queue, v9);
 
   v6 = v11;
   v7 = *(v11 + 3);
@@ -326,7 +326,7 @@ void __21__CNScript_timeRange__block_invoke_2(uint64_t a1@<X0>, _OWORD *a2@<X8>)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v7 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __34__CNScript_frameAtTime_tolerance___block_invoke;
@@ -335,7 +335,7 @@ void __21__CNScript_timeRange__block_invoke_2(uint64_t a1@<X0>, _OWORD *a2@<X8>)
   v10[5] = &v13;
   v11 = *time;
   v12 = *tolerance;
-  dispatch_sync(v7, v10);
+  dispatch_sync(queue, v10);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -390,7 +390,7 @@ id __34__CNScript_frameAtTime_tolerance___block_invoke_2(uint64_t a1)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __30__CNScript_framesInTimeRange___block_invoke;
@@ -401,7 +401,7 @@ id __34__CNScript_frameAtTime_tolerance___block_invoke_2(uint64_t a1)
   v10 = *&timeRange->start.value;
   v11 = v6;
   v12 = *&timeRange->duration.timescale;
-  dispatch_sync(v5, v9);
+  dispatch_sync(queue, v9);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -448,7 +448,7 @@ id __30__CNScript_framesInTimeRange___block_invoke_2(uint64_t a1)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v7 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__CNScript_decisionAtTime_tolerance___block_invoke;
@@ -457,7 +457,7 @@ id __30__CNScript_framesInTimeRange___block_invoke_2(uint64_t a1)
   v10[5] = &v13;
   v11 = *time;
   v12 = *tolerance;
-  dispatch_sync(v7, v10);
+  dispatch_sync(queue, v10);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -525,7 +525,7 @@ id __37__CNScript_decisionAtTime_tolerance___block_invoke_2(uint64_t a1)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__CNScript_decisionsInTimeRange___block_invoke;
@@ -536,7 +536,7 @@ id __37__CNScript_decisionAtTime_tolerance___block_invoke_2(uint64_t a1)
   v10 = *&timeRange->start.value;
   v11 = v6;
   v12 = *&timeRange->duration.timescale;
-  dispatch_sync(v5, v9);
+  dispatch_sync(queue, v9);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -583,7 +583,7 @@ id __33__CNScript_decisionsInTimeRange___block_invoke_2(uint64_t a1)
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__CNScript_decisionAfterTime___block_invoke;
@@ -591,7 +591,7 @@ id __33__CNScript_decisionsInTimeRange___block_invoke_2(uint64_t a1)
   block[4] = self;
   block[5] = &v10;
   v9 = *time;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -642,7 +642,7 @@ id __30__CNScript_decisionAfterTime___block_invoke_2(uint64_t a1)
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__CNScript_decisionBeforeTime___block_invoke;
@@ -650,7 +650,7 @@ id __30__CNScript_decisionAfterTime___block_invoke_2(uint64_t a1)
   block[4] = self;
   block[5] = &v10;
   v9 = *time;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -701,7 +701,7 @@ id __31__CNScript_decisionBeforeTime___block_invoke_2(uint64_t a1)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__CNScript_userDecisionsInTimeRange___block_invoke;
@@ -712,7 +712,7 @@ id __31__CNScript_decisionBeforeTime___block_invoke_2(uint64_t a1)
   v10 = *&timeRange->start.value;
   v11 = v6;
   v12 = *&timeRange->duration.timescale;
-  dispatch_sync(v5, v9);
+  dispatch_sync(queue, v9);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -759,7 +759,7 @@ id __37__CNScript_userDecisionsInTimeRange___block_invoke_2(uint64_t a1)
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__CNScript_baseDecisionsInTimeRange___block_invoke;
@@ -770,7 +770,7 @@ id __37__CNScript_userDecisionsInTimeRange___block_invoke_2(uint64_t a1)
   v10 = *&timeRange->start.value;
   v11 = v6;
   v12 = *&timeRange->duration.timescale;
-  dispatch_sync(v5, v9);
+  dispatch_sync(queue, v9);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -817,7 +817,7 @@ id __37__CNScript_baseDecisionsInTimeRange___block_invoke_2(uint64_t a1)
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__CNScript_primaryDecisionAtTime___block_invoke;
@@ -825,7 +825,7 @@ id __37__CNScript_baseDecisionsInTimeRange___block_invoke_2(uint64_t a1)
   block[4] = self;
   block[5] = &v10;
   v9 = *time;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -876,7 +876,7 @@ id __34__CNScript_primaryDecisionAtTime___block_invoke_2(uint64_t a1)
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__CNScript_secondaryDecisionAtTime___block_invoke;
@@ -884,7 +884,7 @@ id __34__CNScript_primaryDecisionAtTime___block_invoke_2(uint64_t a1)
   block[4] = self;
   block[5] = &v10;
   v9 = *time;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -927,9 +927,9 @@ id __36__CNScript_secondaryDecisionAtTime___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (CMTimeRange)timeRangeOfTransitionAfterDecision:(SEL)a3
+- (CMTimeRange)timeRangeOfTransitionAfterDecision:(SEL)decision
 {
-  v6 = decision;
+  decisionCopy = decision;
   v15 = 0;
   v16 = &v15;
   v17 = 0x5010000000;
@@ -937,16 +937,16 @@ id __36__CNScript_secondaryDecisionAtTime___block_invoke_2(uint64_t a1)
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__CNScript_timeRangeOfTransitionAfterDecision___block_invoke;
   block[3] = &unk_278A164C0;
-  v13 = v6;
+  v13 = decisionCopy;
   v14 = &v15;
   block[4] = self;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v8 = decisionCopy;
+  dispatch_sync(queue, block);
 
   v9 = v16;
   v10 = *(v16 + 3);
@@ -995,9 +995,9 @@ void __47__CNScript_timeRangeOfTransitionAfterDecision___block_invoke_2(uint64_t
   }
 }
 
-- (CMTimeRange)timeRangeOfTransitionBeforeDecision:(SEL)a3
+- (CMTimeRange)timeRangeOfTransitionBeforeDecision:(SEL)decision
 {
-  v6 = decision;
+  decisionCopy = decision;
   v15 = 0;
   v16 = &v15;
   v17 = 0x5010000000;
@@ -1005,16 +1005,16 @@ void __47__CNScript_timeRangeOfTransitionAfterDecision___block_invoke_2(uint64_t
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__CNScript_timeRangeOfTransitionBeforeDecision___block_invoke;
   block[3] = &unk_278A164C0;
-  v13 = v6;
+  v13 = decisionCopy;
   v14 = &v15;
   block[4] = self;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v8 = decisionCopy;
+  dispatch_sync(queue, block);
 
   v9 = v16;
   v10 = *(v16 + 3);
@@ -1071,14 +1071,14 @@ void __48__CNScript_timeRangeOfTransitionBeforeDecision___block_invoke_2(uint64_
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__CNScript_addedDetectionTracks__block_invoke;
   v6[3] = &unk_278A16330;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1152,7 +1152,7 @@ id __32__CNScript_addedDetectionTracks__block_invoke_2(uint64_t a1)
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
   v14 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__CNScript_detectionTrackForID___block_invoke;
@@ -1160,7 +1160,7 @@ id __32__CNScript_addedDetectionTracks__block_invoke_2(uint64_t a1)
   block[4] = self;
   block[5] = &v9;
   block[6] = detectionID;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1210,7 +1210,7 @@ id __32__CNScript_detectionTrackForID___block_invoke_2(uint64_t a1)
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__CNScript_detectionTrackForDecision___block_invoke;
@@ -1219,7 +1219,7 @@ id __32__CNScript_detectionTrackForID___block_invoke_2(uint64_t a1)
   v11 = &v12;
   block[4] = self;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1267,14 +1267,14 @@ id __38__CNScript_detectionTrackForDecision___block_invoke_2(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __19__CNScript_fNumber__block_invoke;
   v6[3] = &unk_278A16330;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[6];
   _Block_object_dispose(&v7, 8);
@@ -1301,14 +1301,14 @@ float __19__CNScript_fNumber__block_invoke_2(uint64_t a1)
 
 - (void)setFNumber:(float)fNumber
 {
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __23__CNScript_setFNumber___block_invoke;
   v6[3] = &unk_278A165B0;
   v6[4] = self;
   v7 = fNumber;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue, v6);
 }
 
 void __23__CNScript_setFNumber___block_invoke(uint64_t a1)
@@ -1326,7 +1326,7 @@ void __23__CNScript_setFNumber___block_invoke(uint64_t a1)
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__CNScript_addUserDecision___block_invoke;
@@ -1335,7 +1335,7 @@ void __23__CNScript_setFNumber___block_invoke(uint64_t a1)
   v10 = &v11;
   block[4] = self;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   LOBYTE(v4) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
@@ -1370,7 +1370,7 @@ uint64_t __28__CNScript_addUserDecision___block_invoke_2(uint64_t a1)
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__CNScript_removeUserDecision___block_invoke;
@@ -1379,7 +1379,7 @@ uint64_t __28__CNScript_addUserDecision___block_invoke_2(uint64_t a1)
   v10 = &v11;
   block[4] = self;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   LOBYTE(v4) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
@@ -1409,13 +1409,13 @@ uint64_t __31__CNScript_removeUserDecision___block_invoke_2(uint64_t a1)
 
 - (void)removeAllUserDecisions
 {
-  v3 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__CNScript_removeAllUserDecisions__block_invoke;
   block[3] = &unk_278A16600;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __34__CNScript_removeAllUserDecisions__block_invoke(uint64_t a1)
@@ -1431,7 +1431,7 @@ void __34__CNScript_removeAllUserDecisions__block_invoke(uint64_t a1)
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__CNScript_addDetectionTrack___block_invoke;
@@ -1440,7 +1440,7 @@ void __34__CNScript_removeAllUserDecisions__block_invoke(uint64_t a1)
   v11 = &v12;
   block[4] = self;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -1487,7 +1487,7 @@ int64_t __30__CNScript_addDetectionTrack___block_invoke_2(uint64_t a1)
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CNScript *)self queue];
+  queue = [(CNScript *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__CNScript_removeDetectionTrack___block_invoke;
@@ -1496,7 +1496,7 @@ int64_t __30__CNScript_addDetectionTrack___block_invoke_2(uint64_t a1)
   v10 = &v11;
   block[4] = self;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   LOBYTE(v4) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);

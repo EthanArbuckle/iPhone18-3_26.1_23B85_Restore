@@ -1,35 +1,35 @@
 @interface MOHDBSCANClustering
-- (MOHDBSCANClustering)initWithParameters:(id)a3;
-- (double)_getEmbeddingDistanceFrom:(id)a3 to:(id)a4;
+- (MOHDBSCANClustering)initWithParameters:(id)parameters;
+- (double)_getEmbeddingDistanceFrom:(id)from to:(id)to;
 - (id)getClusterLabels;
 - (id)getMembershipProbability;
 - (id)getNormalizedClusterLabels;
 - (id)getOutlierScoreDict;
 - (vector<std::vector<double>,)_getDistanceMatrixFrom:(MOHDBSCANClustering *)self;
-- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)a3 :vector<double>;
-- (void)runHDBSCANClusteringOn:(id)a3;
+- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)std :vector<double>;
+- (void)runHDBSCANClusteringOn:(id)on;
 @end
 
 @implementation MOHDBSCANClustering
 
-- (MOHDBSCANClustering)initWithParameters:(id)a3
+- (MOHDBSCANClustering)initWithParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v8.receiver = self;
   v8.super_class = MOHDBSCANClustering;
   v6 = [(MOHDBSCANClustering *)&v8 init];
   if (v6)
   {
-    objc_storeStrong(&v6->_clusteringParams, a3);
+    objc_storeStrong(&v6->_clusteringParams, parameters);
     operator new();
   }
 
   return 0;
 }
 
-- (void)runHDBSCANClusteringOn:(id)a3
+- (void)runHDBSCANClusteringOn:(id)on
 {
-  v4 = a3;
+  onCopy = on;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityHDBSCANClustering);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -44,9 +44,9 @@
   v18[3] = &unk_10033AE28;
   v7 = v6;
   v19 = v7;
-  [v4 enumerateObjectsUsingBlock:v18];
+  [onCopy enumerateObjectsUsingBlock:v18];
   objc_storeStrong(&self->_bundleIDs, v6);
-  [(MOHDBSCANClustering *)self _getDistanceMatrixFrom:v4];
+  [(MOHDBSCANClustering *)self _getDistanceMatrixFrom:onCopy];
   if (self->_HDBSCAN.__ptr_)
   {
     memset(v15, 0, sizeof(v15));
@@ -63,12 +63,12 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "loaded distance matrix with size:%lu", v20, 0xCu);
     }
 
-    v10 = [(MOClusteringParams *)self->_clusteringParams minPoints];
-    v11 = [(MOClusteringParams *)self->_clusteringParams minClusterSize];
+    minPoints = [(MOClusteringParams *)self->_clusteringParams minPoints];
+    minClusterSize = [(MOClusteringParams *)self->_clusteringParams minClusterSize];
     ptr = self->_HDBSCAN.__ptr_;
     *(&__p.__r_.__value_.__s + 23) = 0;
     __p.__r_.__value_.__s.__data_[0] = 0;
-    Hdbscan::execute(ptr, v10, v11, &__p);
+    Hdbscan::execute(ptr, minPoints, minClusterSize, &__p);
   }
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityHDBSCANClustering);
@@ -288,24 +288,24 @@ void __46__MOHDBSCANClustering_runHDBSCANClusteringOn___block_invoke(uint64_t a1
   return result;
 }
 
-- (double)_getEmbeddingDistanceFrom:(id)a3 to:(id)a4
+- (double)_getEmbeddingDistanceFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOClusteringParams *)self->_clusteringParams embeddingDistanceWeights];
-  [v6 getDistanceFrom:v7 withWeights:v8];
+  fromCopy = from;
+  toCopy = to;
+  embeddingDistanceWeights = [(MOClusteringParams *)self->_clusteringParams embeddingDistanceWeights];
+  [fromCopy getDistanceFrom:toCopy withWeights:embeddingDistanceWeights];
   v10 = v9;
 
   return v10;
 }
 
-- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)a3 :vector<double>
+- (void)loadDistanceMatrix:()vector<std:(std::allocator<std::vector<double>>> *)std :vector<double>
 {
   ptr = self->_HDBSCAN.__ptr_;
   if (ptr)
   {
     memset(v5, 0, sizeof(v5));
-    std::vector<std::vector<double>>::__init_with_size[abi:ne200100]<std::vector<double>*,std::vector<double>*>(v5, a3->var0, a3->var1, 0xAAAAAAAAAAAAAAABLL * ((a3->var1 - a3->var0) >> 3));
+    std::vector<std::vector<double>>::__init_with_size[abi:ne200100]<std::vector<double>*,std::vector<double>*>(v5, std->var0, std->var1, 0xAAAAAAAAAAAAAAABLL * ((std->var1 - std->var0) >> 3));
     Hdbscan::loadDistanceMatrix(ptr, v5);
     *buf = v5;
     std::vector<std::vector<double>>::__destroy_vector::operator()[abi:ne200100](buf);

@@ -8,16 +8,16 @@
 {
   if (a3)
   {
-    a1 = [a1 initWithData:a3 encoding:4];
-    v3 = a1;
+    self = [self initWithData:a3 encoding:4];
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

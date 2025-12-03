@@ -1,17 +1,17 @@
 @interface CRLPdfTaggerParagraphContext
-- (CRLPdfTaggerParagraphContext)initWithStateOfTagger:(id)a3 needsSpans:(BOOL)a4;
+- (CRLPdfTaggerParagraphContext)initWithStateOfTagger:(id)tagger needsSpans:(BOOL)spans;
 @end
 
 @implementation CRLPdfTaggerParagraphContext
 
-- (CRLPdfTaggerParagraphContext)initWithStateOfTagger:(id)a3 needsSpans:(BOOL)a4
+- (CRLPdfTaggerParagraphContext)initWithStateOfTagger:(id)tagger needsSpans:(BOOL)spans
 {
   v6.receiver = self;
   v6.super_class = CRLPdfTaggerParagraphContext;
-  result = [(CRLPdfTaggerContext *)&v6 initWithStateOfTagger:a3];
+  result = [(CRLPdfTaggerContext *)&v6 initWithStateOfTagger:tagger];
   if (result)
   {
-    result->_needsSpans = a4;
+    result->_needsSpans = spans;
   }
 
   return result;

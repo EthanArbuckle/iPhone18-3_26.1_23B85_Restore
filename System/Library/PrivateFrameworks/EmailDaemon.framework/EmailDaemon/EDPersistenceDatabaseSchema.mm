@@ -3,11 +3,11 @@
 + (EFSQLSchema)schema;
 + (id)_protectedSchemaProviders;
 + (id)_schemaProviders;
-+ (id)_schemaWithPopulationBlock:(id)a3;
++ (id)_schemaWithPopulationBlock:(id)block;
 + (id)partialMailboxesTableSchema;
 + (id)propertiesTableSchema;
 + (void)_initializeSchemas;
-+ (void)registerAdditionalPropertiesForPropertyMapper:(id)a3;
++ (void)registerAdditionalPropertiesForPropertyMapper:(id)mapper;
 + (void)test_resetSchema;
 @end
 
@@ -17,8 +17,8 @@
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"EDPersistenceDatabaseSchema.m" lineNumber:49 description:{@"%s can only be called from unit tests", "+[EDPersistenceDatabaseSchema test_resetSchema]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseSchema.m" lineNumber:49 description:{@"%s can only be called from unit tests", "+[EDPersistenceDatabaseSchema test_resetSchema]"}];
   }
 
   os_unfair_lock_lock(&sSchemaLock);
@@ -37,7 +37,7 @@
   v3 = sSchema;
   if (!sSchema)
   {
-    [a1 _initializeSchemas];
+    [self _initializeSchemas];
     v3 = sSchema;
   }
 
@@ -53,7 +53,7 @@
   v3 = sProtectedSchema;
   if (!sProtectedSchema)
   {
-    [a1 _initializeSchemas];
+    [self _initializeSchemas];
     v3 = sProtectedSchema;
   }
 
@@ -71,10 +71,10 @@
   v22[1] = 3221225472;
   v22[2] = __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke;
   v22[3] = &unk_1E8255D20;
-  v24 = a1;
+  selfCopy = self;
   v4 = v3;
   v23 = v4;
-  v5 = [a1 _schemaWithPopulationBlock:v22];
+  v5 = [self _schemaWithPopulationBlock:v22];
   v6 = sSchema;
   sSchema = v5;
 
@@ -82,8 +82,8 @@
   v21[1] = 3221225472;
   v21[2] = __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2;
   v21[3] = &__block_descriptor_40_e43_v24__0__NSMutableArray_8__NSMutableArray_16l;
-  v21[4] = a1;
-  v7 = [a1 _schemaWithPopulationBlock:v21];
+  v21[4] = self;
+  v7 = [self _schemaWithPopulationBlock:v21];
   v8 = sProtectedSchema;
   sProtectedSchema = v7;
 
@@ -108,8 +108,8 @@
         v13 = *(*(&v17 + 1) + 8 * i);
         if (([v13 resolveWithSchema:sSchema] & 1) == 0 && (objc_msgSend(v13, "resolveWithSchema:", sProtectedSchema) & 1) == 0)
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:a1 file:@"EDPersistenceDatabaseSchema.m" lineNumber:99 description:{@"Unable to resolve association: %@", v13}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseSchema.m" lineNumber:99 description:{@"Unable to resolve association: %@", v13}];
         }
       }
 
@@ -213,19 +213,19 @@ void __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2(uint64
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_schemaWithPopulationBlock:(id)a3
++ (id)_schemaWithPopulationBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
   v6 = [objc_alloc(MEMORY[0x1E699B940]) initWithTables:v5];
   v7 = objc_alloc(MEMORY[0x1E695DFD8]);
   v8 = +[EDMessagePersistence messagesTableName];
-  v9 = [a1 mailboxesTableName];
-  v10 = [v7 initWithObjects:{v8, v9, 0}];
-  v19 = a1;
+  mailboxesTableName = [self mailboxesTableName];
+  v10 = [v7 initWithObjects:{v8, mailboxesTableName, 0}];
+  selfCopy = self;
 
   v24 = 0u;
   v25 = 0u;
@@ -248,8 +248,8 @@ void __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2(uint64
         v15 = *(*(&v22 + 1) + 8 * i);
         if (([v15 resolveWithSchema:v6] & 1) == 0 && (objc_msgSend(v15, "resolveToStringForTableNames:", v10) & 1) == 0)
         {
-          v16 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v16 handleFailureInMethod:a2 object:v19 file:@"EDPersistenceDatabaseSchema.m" lineNumber:113 description:{@"Unable to resolve foreign key constraint: %@", v15}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"EDPersistenceDatabaseSchema.m" lineNumber:113 description:{@"Unable to resolve foreign key constraint: %@", v15}];
         }
       }
 
@@ -280,14 +280,14 @@ void __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2(uint64
   v8[10] = objc_opt_class();
   v8[11] = objc_opt_class();
   v8[12] = objc_opt_class();
-  v3 = [a1 additionalSchemaProviders];
-  v8[13] = v3;
+  additionalSchemaProviders = [self additionalSchemaProviders];
+  v8[13] = additionalSchemaProviders;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:14];
-  v5 = [v4 ef_flatten];
+  ef_flatten = [v4 ef_flatten];
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return ef_flatten;
 }
 
 + (id)_protectedSchemaProviders
@@ -303,32 +303,32 @@ void __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2(uint64
   return v2;
 }
 
-+ (void)registerAdditionalPropertiesForPropertyMapper:(id)a3
++ (void)registerAdditionalPropertiesForPropertyMapper:(id)mapper
 {
-  v3 = a3;
-  [v3 registerColumnName:@"ROWID" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_eventID];
-  [v3 registerColumnName:@"version" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_version];
-  [v3 registerColumnName:@"date" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_date];
-  [v3 registerColumnName:@"account" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_accountID];
-  [v3 registerColumnName:@"mailbox" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_mailboxID];
-  [v3 registerColumnName:@"conversation" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_conversationID];
-  [v3 registerColumnName:@"message_id_hash" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageIDHash];
-  [v3 registerColumnName:@"message" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messagePersistentID];
-  [v3 registerColumnName:@"name" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_name];
-  [v3 registerColumnName:@"data" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_data];
+  mapperCopy = mapper;
+  [mapperCopy registerColumnName:@"ROWID" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_eventID];
+  [mapperCopy registerColumnName:@"version" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_version];
+  [mapperCopy registerColumnName:@"date" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_date];
+  [mapperCopy registerColumnName:@"account" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_accountID];
+  [mapperCopy registerColumnName:@"mailbox" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_mailboxID];
+  [mapperCopy registerColumnName:@"conversation" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_conversationID];
+  [mapperCopy registerColumnName:@"message_id_hash" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageIDHash];
+  [mapperCopy registerColumnName:@"message" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messagePersistentID];
+  [mapperCopy registerColumnName:@"name" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_name];
+  [mapperCopy registerColumnName:@"data" table:@"interaction_log" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_data];
 }
 
 + (id)propertiesTableSchema
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E699B958]);
-  v4 = [a1 propertiesTableName];
+  propertiesTableName = [self propertiesTableName];
   v5 = [MEMORY[0x1E699B8D0] textColumnWithName:@"key" collation:1 nullable:0];
   v11[0] = v5;
   v6 = [MEMORY[0x1E699B8D0] blobColumnWithName:@"value" nullable:0];
   v11[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-  v8 = [v3 initWithName:v4 rowIDType:1 columns:v7];
+  v8 = [v3 initWithName:propertiesTableName rowIDType:1 columns:v7];
 
   [v8 addUniquenessConstraintForColumns:&unk_1F45E6F10 conflictResolution:1];
   v9 = *MEMORY[0x1E69E9840];
@@ -340,7 +340,7 @@ void __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2(uint64
 {
   v13[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E699B958]);
-  v4 = [a1 mailboxesTableName];
+  mailboxesTableName = [self mailboxesTableName];
   v5 = [MEMORY[0x1E699B8D0] textColumnWithName:@"url" collation:1 nullable:0];
   v13[0] = v5;
   v6 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"total_count" nullable:0 defaultValue:&unk_1F45E6898];
@@ -350,7 +350,7 @@ void __49__EDPersistenceDatabaseSchema__initializeSchemas__block_invoke_2(uint64
   v8 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"deleted_count" nullable:0 defaultValue:&unk_1F45E6898];
   v13[3] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:4];
-  v10 = [v3 initWithName:v4 rowIDType:2 columns:v9];
+  v10 = [v3 initWithName:mailboxesTableName rowIDType:2 columns:v9];
 
   [v10 addUniquenessConstraintForColumns:&unk_1F45E6F28 conflictResolution:1];
   v11 = *MEMORY[0x1E69E9840];

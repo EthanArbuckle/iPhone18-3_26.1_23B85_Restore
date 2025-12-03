@@ -3,7 +3,7 @@
 - (BOOL)aspectRatioLocked;
 - (BOOL)canBeGrouped;
 - (BOOL)canCopyData;
-- (BOOL)crl_isEqualValue:(id)a3;
+- (BOOL)crl_isEqualValue:(id)value;
 - (BOOL)enableDefaultFloatingEffect;
 - (BOOL)forcesPlacementOnBottom;
 - (BOOL)forcesPlacementOnTop;
@@ -15,13 +15,13 @@
 - (BOOL)isLockable;
 - (BOOL)isSelectable;
 - (BOOL)isSupported;
-- (BOOL)isTransactableEqualValue:(id)a3;
+- (BOOL)isTransactableEqualValue:(id)value;
 - (BOOL)locked;
 - (BOOL)shouldBeIgnoredWhenCopying;
-- (BOOL)shouldPreventDragAndDropWithItem:(id)a3;
+- (BOOL)shouldPreventDragAndDropWithItem:(id)item;
 - (CGAffineTransform)computeLayoutFullTransform;
 - (CGAffineTransform)transformInRoot;
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 dynamicallyDraggedLayout:(id)a4;
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry dynamicallyDraggedLayout:(id)layout;
 - (CGPoint)centerForReplacingWithNewItem;
 - (CGRect)visibleBoundsForPositioning;
 - (CRLCanvasInfoGeometry)geometry;
@@ -44,18 +44,18 @@
 - (_TtC8Freeform16CRLContainerItem)parentContainerItem;
 - (_TtC8Freeform8CRLBoard)parentBoard;
 - (__n128)spatialTransform_simd;
-- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)a3;
+- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)children;
 - (id)parentInfo;
-- (id)promisedDataForPublicType:(id)a3;
-- (int64_t)compareUsingUUIDTo:(id)a3;
-- (void)crl_onBoard:(id)a3 moveItemToPosition:(CGPoint)a4 size:(CGSize)a5;
-- (void)p_onBoard:(id)a3 setPositionerCalculatedSize:(CGSize)a4;
-- (void)setHyperlinkURL:(id)a3;
-- (void)setParentInfo:(id)a3;
-- (void)setSpatialTransform:(__n128)a3;
-- (void)takePropertiesFromReplacedBoardItem:(id)a3;
-- (void)updateGeometryToReplaceBoardItem:(id)a3;
-- (void)withTemporaryLayoutPerform:(id)a3;
+- (id)promisedDataForPublicType:(id)type;
+- (int64_t)compareUsingUUIDTo:(id)to;
+- (void)crl_onBoard:(id)board moveItemToPosition:(CGPoint)position size:(CGSize)size;
+- (void)p_onBoard:(id)board setPositionerCalculatedSize:(CGSize)size;
+- (void)setHyperlinkURL:(id)l;
+- (void)setParentInfo:(id)info;
+- (void)setSpatialTransform:(__n128)transform;
+- (void)takePropertiesFromReplacedBoardItem:(id)item;
+- (void)updateGeometryToReplaceBoardItem:(id)item;
+- (void)withTemporaryLayoutPerform:(id)perform;
 @end
 
 @implementation CRLBoardItem
@@ -75,8 +75,8 @@
   v20 = &unk_1016A8115;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(CRLBoardItem *)self geometry];
-  [v3 boundsBeforeRotation];
+  geometry = [(CRLBoardItem *)self geometry];
+  [geometry boundsBeforeRotation];
   *&v21 = v4;
   *(&v21 + 1) = v5;
   *&v22 = v6;
@@ -104,12 +104,12 @@
   return result;
 }
 
-- (void)p_onBoard:(id)a3 setPositionerCalculatedSize:(CGSize)a4
+- (void)p_onBoard:(id)board setPositionerCalculatedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [(CRLBoardItem *)self geometry];
-  v12 = [v7 mutableCopy];
+  height = size.height;
+  width = size.width;
+  geometry = [(CRLBoardItem *)self geometry];
+  v12 = [geometry mutableCopy];
 
   if (fabs(width) < 0.001 && width < 0.0)
   {
@@ -135,13 +135,13 @@
   [(CRLBoardItem *)self setGeometry:v12];
 }
 
-- (void)crl_onBoard:(id)a3 moveItemToPosition:(CGPoint)a4 size:(CGSize)a5
+- (void)crl_onBoard:(id)board moveItemToPosition:(CGPoint)position size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  boardCopy = board;
   [(CRLBoardItem *)self visibleBoundsForPositioning];
   if (v11 != width || v12 != height)
   {
@@ -225,25 +225,25 @@
     memset(&v41, 0, sizeof(v41));
     CGAffineTransformMakeScale(&v41, v15, v19);
     memset(&v40, 0, sizeof(v40));
-    v23 = [(CRLBoardItem *)self geometry];
-    [v23 angle];
+    geometry = [(CRLBoardItem *)self geometry];
+    [geometry angle];
     CGAffineTransformMakeRotation(&v39, v24 * 0.0174532925);
     v38 = v41;
     sub_100139E2C(&v38, &v39, &v40);
 
-    v25 = [(CRLBoardItem *)self geometry];
-    [v25 size];
+    geometry2 = [(CRLBoardItem *)self geometry];
+    [geometry2 size];
     v37 = vmlaq_n_f64(vmulq_n_f64(*&v40.c, v26), *&v40.a, v27);
 
-    [(CRLBoardItem *)self p_onBoard:v10 setPositionerCalculatedSize:*&v37];
+    [(CRLBoardItem *)self p_onBoard:boardCopy setPositionerCalculatedSize:*&v37];
   }
 
   [(CRLBoardItem *)self visibleBoundsForPositioning];
   if (v28 != x || v29 != y)
   {
     v31 = v28;
-    v32 = [(CRLBoardItem *)self geometry];
-    v33 = [v32 mutableCopy];
+    geometry3 = [(CRLBoardItem *)self geometry];
+    v33 = [geometry3 mutableCopy];
 
     v34 = sub_10011F31C(x, y, v31);
     [v33 position];
@@ -262,10 +262,10 @@
     Strong = swift_dynamicCastClass();
     if (!Strong)
     {
-      v5 = self;
-      v6 = [v4 containingGroup];
+      selfCopy = self;
+      containingGroup = [v4 containingGroup];
 
-      Strong = v6;
+      Strong = containingGroup;
     }
   }
 
@@ -297,7 +297,7 @@
   return result;
 }
 
-- (int64_t)compareUsingUUIDTo:(id)a3
+- (int64_t)compareUsingUUIDTo:(id)to
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -306,12 +306,12 @@
   v10 = __chkstk_darwin(v9);
   v12 = &v21 - v11;
   (*((swift_isaMask & *self) + 0x88))(v10);
-  v13 = a3;
-  v14 = self;
+  toCopy = to;
+  selfCopy = self;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   v16 = *(v6 + 8);
   v17 = v16(v12, v5);
-  (*((swift_isaMask & *v13) + 0x88))(v17);
+  (*((swift_isaMask & *toCopy) + 0x88))(v17);
   v18 = UUID._bridgeToObjectiveC()().super.isa;
   v16(v8, v5);
   v19 = [(objc_class *)isa crl_compare:v18];
@@ -333,23 +333,23 @@
   return result;
 }
 
-- (void)setSpatialTransform:(__n128)a3
+- (void)setSpatialTransform:(__n128)transform
 {
   v9 = 0;
   v7[0] = a2;
-  v7[1] = a3;
+  v7[1] = transform;
   v7[2] = a4;
   v7[3] = a5;
   v8 = 0;
-  v5 = *((swift_isaMask & *a1) + 0x118);
-  v6 = a1;
+  v5 = *((swift_isaMask & *self) + 0x118);
+  selfCopy = self;
   v5(v7);
 }
 
 - (BOOL)hasSpatialTransform
 {
   v2 = *((swift_isaMask & *self) + 0x110);
-  v3 = self;
+  selfCopy = self;
   v2(v5);
   LOBYTE(v2) = v6;
 
@@ -358,7 +358,7 @@
 
 - (__n128)spatialTransform_simd
 {
-  v1 = a1;
+  selfCopy = self;
   v3 = sub_1009AF680();
 
   return v3;
@@ -366,7 +366,7 @@
 
 - (BOOL)isDirectlyAnchoredToTable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009AFC00();
 
   return v3;
@@ -374,15 +374,15 @@
 
 - (BOOL)isAnchoredToTable
 {
-  v2 = self;
-  v3 = sub_1009AFD54(v2);
+  selfCopy = self;
+  v3 = sub_1009AFD54(selfCopy);
 
   return v3 & 1;
 }
 
 - (_TtC8Freeform12CRLTableItem)anchoringTableItemIfAny
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1009AFEC4();
 
   return v3;
@@ -423,9 +423,9 @@
   return result;
 }
 
-- (BOOL)shouldPreventDragAndDropWithItem:(id)a3
+- (BOOL)shouldPreventDragAndDropWithItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
@@ -478,12 +478,12 @@
   return v10;
 }
 
-- (void)setHyperlinkURL:(id)a3
+- (void)setHyperlinkURL:(id)l
 {
   v5 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for URL();
@@ -498,7 +498,7 @@
 
   v10 = OBJC_IVAR____TtC8Freeform12CRLBoardItem_hyperlinkURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_10002C638(v7, self + v10, &unk_1019F33C0);
   swift_endAccess();
 }
@@ -512,7 +512,7 @@
 
 - (NSString)suggestedNameWhenDraggingSingleBoardItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_1009B05A0();
   v4 = v3;
 
@@ -529,13 +529,13 @@
   return v5;
 }
 
-- (id)promisedDataForPublicType:(id)a3
+- (id)promisedDataForPublicType:(id)type
 {
   v4 = type metadata accessor for UTType();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = a3;
+  typeCopy = type;
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -546,7 +546,7 @@
 - (BOOL)shouldBeIgnoredWhenCopying
 {
   v2 = *((swift_isaMask & *self) + 0x160);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
     v4 = 1;
@@ -554,7 +554,7 @@
 
   else
   {
-    v4 = (*((swift_isaMask & *v3) + 0x270))();
+    v4 = (*((swift_isaMask & *selfCopy) + 0x270))();
   }
 
   return v4 & 1;
@@ -563,38 +563,38 @@
 - (BOOL)canCopyData
 {
   v2 = *((swift_isaMask & *self) + 0x270);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return (v2 & 1) == 0;
 }
 
-- (void)takePropertiesFromReplacedBoardItem:(id)a3
+- (void)takePropertiesFromReplacedBoardItem:(id)item
 {
   v4 = *((swift_isaMask & *self) + 0x298);
-  v5 = a3;
-  v9 = self;
-  v6 = v4(v5);
-  v7 = *((swift_isaMask & *v5) + 0x110);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = v4(itemCopy);
+  v7 = *((swift_isaMask & *itemCopy) + 0x110);
   v8 = v7(v10, v6);
   if ((v11 & 1) == 0)
   {
     v7(v12, v8);
-    (*((swift_isaMask & *v9) + 0x118))(v12);
+    (*((swift_isaMask & *selfCopy) + 0x118))(v12);
   }
 }
 
-- (void)updateGeometryToReplaceBoardItem:(id)a3
+- (void)updateGeometryToReplaceBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_1009B1D18(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1009B1D18(itemCopy);
 }
 
 - (CGPoint)centerForReplacingWithNewItem
 {
   v2 = *((swift_isaMask & *self) + 0xE0);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   [v4 center];
   v6 = v5;
@@ -607,7 +607,7 @@
   return result;
 }
 
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 dynamicallyDraggedLayout:(id)a4
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry dynamicallyDraggedLayout:(id)layout
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -616,11 +616,11 @@
   return result;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1009B2368(a3);
+  selfCopy = self;
+  sub_1009B2368(info);
 }
 
 - (BOOL)isSelectable
@@ -651,20 +651,20 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)withTemporaryLayoutPerform:(id)a3
+- (void)withTemporaryLayoutPerform:(id)perform
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(perform);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1009B27C4(sub_1009C3294, v5);
 }
 
 - (BOOL)isLockable
 {
-  v2 = [(CRLBoardItem *)self containingGroup];
-  v3 = v2;
-  if (v2)
+  containingGroup = [(CRLBoardItem *)self containingGroup];
+  v3 = containingGroup;
+  if (containingGroup)
   {
   }
 
@@ -674,7 +674,7 @@
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock
 {
   v2 = *((swift_isaMask & *self) + 0xE0);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   [v4 transform];
   v8 = v11;
@@ -686,9 +686,9 @@
   v12 = v7;
   if (sub_100139B08(&v10, 0.0001))
   {
-    if ((*((swift_isaMask & *v3) + 0x190))())
+    if ((*((swift_isaMask & *selfCopy) + 0x190))())
     {
-      v5 = (*((swift_isaMask & *v3) + 0x330))();
+      v5 = (*((swift_isaMask & *selfCopy) + 0x330))();
     }
 
     else
@@ -714,7 +714,7 @@
   v5[6] = 0.0;
   v5[7] = 0.0;
   v5[5] = 1.0;
-  v6 = self;
+  selfCopy = self;
 
   sub_1009B27C4(sub_1009C328C, v5);
 
@@ -733,10 +733,10 @@
 
 - (CGAffineTransform)transformInRoot
 {
-  v4 = self;
+  selfCopy = self;
   b = 0.0;
   a = 1.0;
-  Strong = v4;
+  Strong = selfCopy;
   c = 0.0;
   d = 1.0;
   tx = 0.0;
@@ -796,7 +796,7 @@
   {
     v4 = Strong;
     v5 = *((swift_isaMask & *Strong) + 0x380);
-    v6 = self;
+    selfCopy = self;
     v7 = v5();
   }
 
@@ -815,7 +815,7 @@
   {
     v4 = Strong;
     v5 = *((swift_isaMask & *Strong) + 0x388);
-    v6 = self;
+    selfCopy = self;
     v7 = v5();
   }
 
@@ -834,7 +834,7 @@
   {
     v4 = Strong;
     v5 = *((swift_isaMask & *Strong) + 0x390);
-    v6 = self;
+    selfCopy = self;
     v7 = v5();
   }
 
@@ -846,11 +846,11 @@
   return v7 & 1;
 }
 
-- (BOOL)isTransactableEqualValue:(id)a3
+- (BOOL)isTransactableEqualValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -859,7 +859,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = (*((swift_isaMask & *self) + 0x410))(v8);
@@ -868,7 +868,7 @@
   return v6 & 1;
 }
 
-- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)a3
+- (id)getReferencedAssetIDsWithIncludeChildren:(BOOL)children
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -889,9 +889,9 @@
   return result;
 }
 
-- (BOOL)crl_isEqualValue:(id)a3
+- (BOOL)crl_isEqualValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -925,9 +925,9 @@
     Strong = swift_dynamicCastClass();
     if (!Strong)
     {
-      v4 = [v3 surfaceAncestor];
+      surfaceAncestor = [v3 surfaceAncestor];
 
-      Strong = v4;
+      Strong = surfaceAncestor;
     }
   }
 

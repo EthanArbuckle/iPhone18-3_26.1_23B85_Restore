@@ -1,14 +1,14 @@
 @interface HMMCoreAnalyticsLogEventObserver
 + (id)logCategory;
-- (BOOL)filterAcceptsEvent:(id)a3;
-- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)a3 filters:(id)a4;
-- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)a3 filters:(id)a4 submissionBlock:(id)a5;
+- (BOOL)filterAcceptsEvent:(id)event;
+- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)delegate filters:(id)filters;
+- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)delegate filters:(id)filters submissionBlock:(id)block;
 - (HMMCoreAnalyticsLogEventObserverDelegate)delegate;
-- (id)dictionaryFromEvent:(id)a3;
-- (void)addAccessoryDetailsForLogEvent:(id)a3 toEventDictionary:(id)a4;
-- (void)addErrorDetailsForLogEvent:(id)a3 toEventDictionary:(id)a4;
-- (void)addHomeSummaryForLogEvent:(id)a3 toEventDictionary:(id)a4;
-- (void)observeEvent:(id)a3;
+- (id)dictionaryFromEvent:(id)event;
+- (void)addAccessoryDetailsForLogEvent:(id)event toEventDictionary:(id)dictionary;
+- (void)addErrorDetailsForLogEvent:(id)event toEventDictionary:(id)dictionary;
+- (void)addHomeSummaryForLogEvent:(id)event toEventDictionary:(id)dictionary;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation HMMCoreAnalyticsLogEventObserver
@@ -20,12 +20,12 @@
   return WeakRetained;
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -38,7 +38,7 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = v4;
+  v9 = eventCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -54,18 +54,18 @@
 
   if (v11)
   {
-    v12 = [v11 coreAnalyticsEventName];
-    if ([(HMMCoreAnalyticsLogEventObserver *)v6 filterAcceptsEvent:v11])
+    coreAnalyticsEventName = [v11 coreAnalyticsEventName];
+    if ([(HMMCoreAnalyticsLogEventObserver *)selfCopy filterAcceptsEvent:v11])
     {
-      v13 = [(HMMCoreAnalyticsLogEventObserver *)v6 submissionBlock];
-      v14 = [(HMMCoreAnalyticsLogEventObserver *)v6 dictionaryFromEvent:v11];
-      (v13)[2](v13, v12, v14);
+      submissionBlock = [(HMMCoreAnalyticsLogEventObserver *)selfCopy submissionBlock];
+      v14 = [(HMMCoreAnalyticsLogEventObserver *)selfCopy dictionaryFromEvent:v11];
+      (submissionBlock)[2](submissionBlock, coreAnalyticsEventName, v14);
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = v6;
+      v16 = selfCopy;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
@@ -73,7 +73,7 @@
         v20 = 138543618;
         v21 = v18;
         v22 = 2114;
-        v23 = v12;
+        v23 = coreAnalyticsEventName;
         _os_log_impl(&dword_22B074000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Event %{public}@ is not submitted due to filtering.", &v20, 0x16u);
       }
 
@@ -84,16 +84,16 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)filterAcceptsEvent:(id)a3
+- (BOOL)filterAcceptsEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(HMMCoreAnalyticsLogEventObserver *)self filters];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  filters = [(HMMCoreAnalyticsLogEventObserver *)self filters];
+  v6 = [filters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -104,17 +104,17 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(filters);
         }
 
-        if (![*(*(&v13 + 1) + 8 * i) isEventInSample:v4])
+        if (![*(*(&v13 + 1) + 8 * i) isEventInSample:eventCopy])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [filters countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -131,24 +131,24 @@ LABEL_11:
   return v10;
 }
 
-- (id)dictionaryFromEvent:(id)a3
+- (id)dictionaryFromEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 coreAnalyticsEventDictionary];
-  v6 = [v5 mutableCopy];
+  eventCopy = event;
+  coreAnalyticsEventDictionary = [eventCopy coreAnalyticsEventDictionary];
+  v6 = [coreAnalyticsEventDictionary mutableCopy];
 
-  v7 = [(HMMCoreAnalyticsLogEventObserver *)self delegate];
-  [v7 addCommonDimensionsToEventDictionary:v6];
-  [(HMMCoreAnalyticsLogEventObserver *)self addErrorDetailsForLogEvent:v4 toEventDictionary:v6];
-  [(HMMCoreAnalyticsLogEventObserver *)self addAccessoryDetailsForLogEvent:v4 toEventDictionary:v6];
-  v8 = [v4 error];
+  delegate = [(HMMCoreAnalyticsLogEventObserver *)self delegate];
+  [delegate addCommonDimensionsToEventDictionary:v6];
+  [(HMMCoreAnalyticsLogEventObserver *)self addErrorDetailsForLogEvent:eventCopy toEventDictionary:v6];
+  [(HMMCoreAnalyticsLogEventObserver *)self addAccessoryDetailsForLogEvent:eventCopy toEventDictionary:v6];
+  error = [eventCopy error];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
-  if (v8)
+  if (error)
   {
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -189,7 +189,7 @@ LABEL_11:
 LABEL_7:
   objc_autoreleasePoolPop(v9);
   [v6 setObject:&unk_283EF3D08 forKeyedSubscript:@"numEvents"];
-  [(HMMCoreAnalyticsLogEventObserver *)v10 addHomeSummaryForLogEvent:v4 toEventDictionary:v6];
+  [(HMMCoreAnalyticsLogEventObserver *)selfCopy addHomeSummaryForLogEvent:eventCopy toEventDictionary:v6];
   v16 = [v6 copy];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -197,16 +197,16 @@ LABEL_7:
   return v16;
 }
 
-- (void)addErrorDetailsForLogEvent:(id)a3 toEventDictionary:(id)a4
+- (void)addErrorDetailsForLogEvent:(id)event toEventDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 error];
-  if (v8)
+  eventCopy = event;
+  dictionaryCopy = dictionary;
+  error = [eventCopy error];
+  if (error)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -216,131 +216,131 @@ LABEL_7:
       v41 = 2114;
       v42 = objc_opt_class();
       v43 = 2112;
-      v44 = v8;
+      v44 = error;
       _os_log_impl(&dword_22B074000, v11, OS_LOG_TYPE_INFO, "%{public}@[CA] Adding error details from %{public}@: %@", buf, 0x20u);
     }
 
-    v38 = v6;
+    v38 = eventCopy;
 
     objc_autoreleasePoolPop(v9);
-    v13 = [v8 domain];
-    [v7 setObject:v13 forKeyedSubscript:@"errorDomain"];
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "code")}];
-    [v7 setObject:v14 forKeyedSubscript:@"errorCode"];
+    domain = [error domain];
+    [dictionaryCopy setObject:domain forKeyedSubscript:@"errorDomain"];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(error, "code")}];
+    [dictionaryCopy setObject:v14 forKeyedSubscript:@"errorCode"];
 
-    v15 = [v8 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"InternalErrorMarker"];
+    userInfo = [error userInfo];
+    v16 = [userInfo objectForKeyedSubscript:@"InternalErrorMarker"];
 
     if (v16)
     {
-      [v7 setObject:v16 forKeyedSubscript:@"errorMarker"];
+      [dictionaryCopy setObject:v16 forKeyedSubscript:@"errorMarker"];
     }
 
-    v17 = [v8 underlyingErrors];
-    v18 = [v17 firstObject];
+    underlyingErrors = [error underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
-    if (v18)
+    if (firstObject)
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v18, "code")}];
-      [v7 setObject:v19 forKeyedSubscript:@"underlyingErrorCode"];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject, "code")}];
+      [dictionaryCopy setObject:v19 forKeyedSubscript:@"underlyingErrorCode"];
 
-      v20 = [v18 domain];
-      [v7 setObject:v20 forKeyedSubscript:@"underlyingErrorDomain"];
+      domain2 = [firstObject domain];
+      [dictionaryCopy setObject:domain2 forKeyedSubscript:@"underlyingErrorDomain"];
     }
 
-    v21 = [v18 underlyingErrors];
-    v22 = [v21 firstObject];
+    underlyingErrors2 = [firstObject underlyingErrors];
+    firstObject2 = [underlyingErrors2 firstObject];
 
-    if (v22)
+    if (firstObject2)
     {
-      v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v22, "code")}];
-      [v7 setObject:v23 forKeyedSubscript:@"underlyingErrorCode2"];
+      v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject2, "code")}];
+      [dictionaryCopy setObject:v23 forKeyedSubscript:@"underlyingErrorCode2"];
 
-      v24 = [v22 domain];
-      [v7 setObject:v24 forKeyedSubscript:@"underlyingErrorDomain2"];
+      domain3 = [firstObject2 domain];
+      [dictionaryCopy setObject:domain3 forKeyedSubscript:@"underlyingErrorDomain2"];
     }
 
-    v25 = [v22 underlyingErrors];
-    v26 = [v25 firstObject];
+    underlyingErrors3 = [firstObject2 underlyingErrors];
+    firstObject3 = [underlyingErrors3 firstObject];
 
-    if (v26)
+    if (firstObject3)
     {
-      v27 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v26, "code")}];
-      [v7 setObject:v27 forKeyedSubscript:@"underlyingErrorCode3"];
+      v27 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject3, "code")}];
+      [dictionaryCopy setObject:v27 forKeyedSubscript:@"underlyingErrorCode3"];
 
-      v28 = [v26 domain];
-      [v7 setObject:v28 forKeyedSubscript:@"underlyingErrorDomain3"];
+      domain4 = [firstObject3 domain];
+      [dictionaryCopy setObject:domain4 forKeyedSubscript:@"underlyingErrorDomain3"];
     }
 
-    v29 = [v13 length] - 6;
+    v29 = [domain length] - 6;
     if (v29 >= 1)
     {
-      v30 = [v13 substringFromIndex:v29];
+      v30 = [domain substringFromIndex:v29];
       v31 = [v30 isEqualToString:@"Domain"];
 
       if (v31)
       {
-        v32 = [v13 substringToIndex:v29];
+        v32 = [domain substringToIndex:v29];
 
-        v13 = v32;
+        domain = v32;
       }
     }
 
     v33 = MEMORY[0x277CCACA8];
-    v34 = [v8 code];
-    v6 = v38;
+    code = [error code];
+    eventCopy = v38;
     if (v16)
     {
-      [v33 stringWithFormat:@"%@%zd(%ld)", v13, v34, objc_msgSend(v16, "longValue")];
+      [v33 stringWithFormat:@"%@%zd(%ld)", domain, code, objc_msgSend(v16, "longValue")];
     }
 
     else
     {
-      [v33 stringWithFormat:@"%@%zd", v13, v34, v37];
+      [v33 stringWithFormat:@"%@%zd", domain, code, v37];
     }
     v35 = ;
-    [v7 setObject:v35 forKeyedSubscript:@"error"];
-    [v7 setObject:&unk_283EF3D08 forKeyedSubscript:@"numErrorEvents"];
+    [dictionaryCopy setObject:v35 forKeyedSubscript:@"error"];
+    [dictionaryCopy setObject:&unk_283EF3D08 forKeyedSubscript:@"numErrorEvents"];
   }
 
   else
   {
-    [v7 setObject:&unk_283EF3D20 forKeyedSubscript:@"errorCode"];
+    [dictionaryCopy setObject:&unk_283EF3D20 forKeyedSubscript:@"errorCode"];
   }
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAccessoryDetailsForLogEvent:(id)a3 toEventDictionary:(id)a4
+- (void)addAccessoryDetailsForLogEvent:(id)event toEventDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 coreAnalyticsEventOptions] & 4) != 0)
+  eventCopy = event;
+  dictionaryCopy = dictionary;
+  if (([eventCopy coreAnalyticsEventOptions] & 4) != 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(HMMCoreAnalyticsLogEventObserver *)self delegate];
-      v9 = [v6 accessoryIdentifier];
-      [v8 addDimensionsForAccessoryIdentifier:v9 toEventDictionary:v7];
+      delegate = [(HMMCoreAnalyticsLogEventObserver *)self delegate];
+      accessoryIdentifier = [eventCopy accessoryIdentifier];
+      [delegate addDimensionsForAccessoryIdentifier:accessoryIdentifier toEventDictionary:dictionaryCopy];
 
-      if (([v6 coreAnalyticsEventOptions] & 0x80000000) != 0)
+      if (([eventCopy coreAnalyticsEventOptions] & 0x80000000) != 0)
       {
-        v10 = [v7 objectForKeyedSubscript:@"accessoryManufacturer"];
-        [v7 setObject:v10 forKeyedSubscript:@"cameraManufacturer"];
+        v10 = [dictionaryCopy objectForKeyedSubscript:@"accessoryManufacturer"];
+        [dictionaryCopy setObject:v10 forKeyedSubscript:@"cameraManufacturer"];
 
-        v11 = [v7 objectForKeyedSubscript:@"accessoryModel"];
-        [v7 setObject:v11 forKeyedSubscript:@"cameraModel"];
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"accessoryModel"];
+        [dictionaryCopy setObject:v11 forKeyedSubscript:@"cameraModel"];
 
-        v12 = [v7 objectForKeyedSubscript:@"accessoryFirmwareVersion"];
-        [v7 setObject:v12 forKeyedSubscript:@"cameraFirmware"];
+        v12 = [dictionaryCopy objectForKeyedSubscript:@"accessoryFirmwareVersion"];
+        [dictionaryCopy setObject:v12 forKeyedSubscript:@"cameraFirmware"];
       }
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -359,33 +359,33 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHomeSummaryForLogEvent:(id)a3 toEventDictionary:(id)a4
+- (void)addHomeSummaryForLogEvent:(id)event toEventDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMCoreAnalyticsLogEventObserver *)self delegate];
-  if ([v6 coreAnalyticsEventOptions])
+  eventCopy = event;
+  dictionaryCopy = dictionary;
+  delegate = [(HMMCoreAnalyticsLogEventObserver *)self delegate];
+  if ([eventCopy coreAnalyticsEventOptions])
   {
-    [v8 addAggregatedHomeDimensionsToEventDictionary:v7];
+    [delegate addAggregatedHomeDimensionsToEventDictionary:dictionaryCopy];
   }
 
-  if (([v6 coreAnalyticsEventOptions] & 2) != 0)
+  if (([eventCopy coreAnalyticsEventOptions] & 2) != 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 homeUUID];
-      if (v9)
+      homeUUID = [eventCopy homeUUID];
+      if (homeUUID)
       {
-        v10 = v9;
-        [v8 addDimensionsForHome:v9 toEventDictionary:v7];
+        v10 = homeUUID;
+        [delegate addDimensionsForHome:homeUUID toEventDictionary:dictionaryCopy];
       }
     }
 
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -404,24 +404,24 @@ LABEL_7:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)a3 filters:(id)a4 submissionBlock:(id)a5
+- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)delegate filters:(id)filters submissionBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  filtersCopy = filters;
+  blockCopy = block;
   v28.receiver = self;
   v28.super_class = HMMCoreAnalyticsLogEventObserver;
   v11 = [(HMMCoreAnalyticsLogEventObserver *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     filters = v12->_filters;
-    v12->_filters = v13;
+    v12->_filters = weakObjectsHashTable;
 
-    v15 = _Block_copy(v10);
+    v15 = _Block_copy(blockCopy);
     submissionBlock = v12->_submissionBlock;
     v12->_submissionBlock = v15;
 
@@ -429,7 +429,7 @@ LABEL_7:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v17 = v9;
+    v17 = filtersCopy;
     v18 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v18)
     {
@@ -460,14 +460,14 @@ LABEL_7:
   return v12;
 }
 
-- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)a3 filters:(id)a4
+- (HMMCoreAnalyticsLogEventObserver)initWithDelegate:(id)delegate filters:(id)filters
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__HMMCoreAnalyticsLogEventObserver_initWithDelegate_filters___block_invoke;
   v8[3] = &unk_2786F8FE8;
-  v9 = self;
-  v6 = [(HMMCoreAnalyticsLogEventObserver *)v9 initWithDelegate:a3 filters:a4 submissionBlock:v8];
+  selfCopy = self;
+  v6 = [(HMMCoreAnalyticsLogEventObserver *)selfCopy initWithDelegate:delegate filters:filters submissionBlock:v8];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface CPLRecordComputeState
-- (CPLRecordComputeState)initWithCoder:(id)a3;
-- (CPLRecordComputeState)initWithItemScopedIdentifier:(id)a3 fileStorageIdentifier:(id)a4 version:(id)a5 fileURL:(id)a6 adjustmentFingerprint:(id)a7 lastUpdatedDate:(id)a8;
-- (id)copyAddingFileURL:(id)a3;
+- (CPLRecordComputeState)initWithCoder:(id)coder;
+- (CPLRecordComputeState)initWithItemScopedIdentifier:(id)identifier fileStorageIdentifier:(id)storageIdentifier version:(id)version fileURL:(id)l adjustmentFingerprint:(id)fingerprint lastUpdatedDate:(id)date;
+- (id)copyAddingFileURL:(id)l;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLRecordComputeState
@@ -40,8 +40,8 @@
   adjustmentFingerprint = self->_adjustmentFingerprint;
   if (fileURL)
   {
-    v11 = [(NSURL *)fileURL path];
-    v12 = [v3 initWithFormat:@"<%@ %@ %@ %@ %@ %@ %@>", v4, itemScopedIdentifier, fileStorageIdentifier, version, adjustmentFingerprint, lastUpdatedDate, v11];
+    path = [(NSURL *)fileURL path];
+    v12 = [v3 initWithFormat:@"<%@ %@ %@ %@ %@ %@ %@>", v4, itemScopedIdentifier, fileStorageIdentifier, version, adjustmentFingerprint, lastUpdatedDate, path];
   }
 
   else
@@ -52,80 +52,80 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemScopedIdentifier = self->_itemScopedIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemScopedIdentifier forKey:@"itemScopedIdentifier"];
-  [v5 encodeObject:self->_fileStorageIdentifier forKey:@"fileStorageIdentifier"];
-  [v5 encodeObject:self->_version forKey:@"version"];
-  [v5 encodeObject:self->_fileURL forKey:@"fileURL"];
-  [v5 encodeObject:self->_adjustmentFingerprint forKey:@"adjustmentFingerprint"];
-  [v5 encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemScopedIdentifier forKey:@"itemScopedIdentifier"];
+  [coderCopy encodeObject:self->_fileStorageIdentifier forKey:@"fileStorageIdentifier"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
+  [coderCopy encodeObject:self->_fileURL forKey:@"fileURL"];
+  [coderCopy encodeObject:self->_adjustmentFingerprint forKey:@"adjustmentFingerprint"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
 }
 
-- (CPLRecordComputeState)initWithCoder:(id)a3
+- (CPLRecordComputeState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemScopedIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileStorageIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adjustmentFingerprint"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemScopedIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileStorageIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adjustmentFingerprint"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
 
   v11 = [(CPLRecordComputeState *)self initWithItemScopedIdentifier:v5 fileStorageIdentifier:v6 version:v7 fileURL:v8 adjustmentFingerprint:v9 lastUpdatedDate:v10];
   return v11;
 }
 
-- (id)copyAddingFileURL:(id)a3
+- (id)copyAddingFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [CPLRecordComputeState alloc];
-  v6 = [(CPLRecordComputeState *)self itemScopedIdentifier];
-  v7 = [(CPLRecordComputeState *)self fileStorageIdentifier];
-  v8 = [(CPLRecordComputeState *)self version];
-  v9 = [(CPLRecordComputeState *)self adjustmentFingerprint];
-  v10 = [(CPLRecordComputeState *)self lastUpdatedDate];
-  v11 = [(CPLRecordComputeState *)v5 initWithItemScopedIdentifier:v6 fileStorageIdentifier:v7 version:v8 fileURL:v4 adjustmentFingerprint:v9 lastUpdatedDate:v10];
+  itemScopedIdentifier = [(CPLRecordComputeState *)self itemScopedIdentifier];
+  fileStorageIdentifier = [(CPLRecordComputeState *)self fileStorageIdentifier];
+  version = [(CPLRecordComputeState *)self version];
+  adjustmentFingerprint = [(CPLRecordComputeState *)self adjustmentFingerprint];
+  lastUpdatedDate = [(CPLRecordComputeState *)self lastUpdatedDate];
+  v11 = [(CPLRecordComputeState *)v5 initWithItemScopedIdentifier:itemScopedIdentifier fileStorageIdentifier:fileStorageIdentifier version:version fileURL:lCopy adjustmentFingerprint:adjustmentFingerprint lastUpdatedDate:lastUpdatedDate];
 
   return v11;
 }
 
-- (CPLRecordComputeState)initWithItemScopedIdentifier:(id)a3 fileStorageIdentifier:(id)a4 version:(id)a5 fileURL:(id)a6 adjustmentFingerprint:(id)a7 lastUpdatedDate:(id)a8
+- (CPLRecordComputeState)initWithItemScopedIdentifier:(id)identifier fileStorageIdentifier:(id)storageIdentifier version:(id)version fileURL:(id)l adjustmentFingerprint:(id)fingerprint lastUpdatedDate:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  storageIdentifierCopy = storageIdentifier;
+  versionCopy = version;
+  lCopy = l;
+  fingerprintCopy = fingerprint;
+  dateCopy = date;
   v34.receiver = self;
   v34.super_class = CPLRecordComputeState;
   v20 = [(CPLRecordComputeState *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     itemScopedIdentifier = v20->_itemScopedIdentifier;
     v20->_itemScopedIdentifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [storageIdentifierCopy copy];
     fileStorageIdentifier = v20->_fileStorageIdentifier;
     v20->_fileStorageIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [versionCopy copy];
     version = v20->_version;
     v20->_version = v25;
 
-    v27 = [v17 copy];
+    v27 = [lCopy copy];
     fileURL = v20->_fileURL;
     v20->_fileURL = v27;
 
-    v29 = [v18 copy];
+    v29 = [fingerprintCopy copy];
     adjustmentFingerprint = v20->_adjustmentFingerprint;
     v20->_adjustmentFingerprint = v29;
 
-    v31 = [v19 copy];
+    v31 = [dateCopy copy];
     lastUpdatedDate = v20->_lastUpdatedDate;
     v20->_lastUpdatedDate = v31;
   }

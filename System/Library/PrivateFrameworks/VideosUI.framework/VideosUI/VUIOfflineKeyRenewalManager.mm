@@ -1,19 +1,19 @@
 @interface VUIOfflineKeyRenewalManager
-+ (id)_keyInfosForVideo:(id)a3 outKeyIdentifiers:(id)a4;
++ (id)_keyInfosForVideo:(id)video outKeyIdentifiers:(id)identifiers;
 + (id)sharedInstance;
 - (VUIOfflineKeyRenewalManager)init;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_expirationTimerDidFire:(id)a3;
-- (void)_fetchNewKeysForVideosWithBrokenKeys:(id)a3;
-- (void)_isPlaybackUIBeingShownDidChange:(id)a3;
-- (void)_networkReachbilityDidChange:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_expirationTimerDidFire:(id)fire;
+- (void)_fetchNewKeysForVideosWithBrokenKeys:(id)keys;
+- (void)_isPlaybackUIBeingShownDidChange:(id)change;
+- (void)_networkReachbilityDidChange:(id)change;
 - (void)_registerStateMachineHandlers;
-- (void)_renewKeysForVideos:(id)a3 outCompletedKeyRequests:(id)a4 completion:(id)a5;
-- (void)_renewKeysForVideosGroupedByCertURL:(id)a3 outCompletedKeyRequests:(id)a4 completion:(id)a5;
-- (void)_renewalTimerDidFire:(id)a3;
-- (void)download:(id)a3 didChangeStateTo:(int64_t)a4;
-- (void)storeFPSKeyLoader:(id)a3 didLoadOfflineKeyData:(id)a4 forKeyRequest:(id)a5;
+- (void)_renewKeysForVideos:(id)videos outCompletedKeyRequests:(id)requests completion:(id)completion;
+- (void)_renewKeysForVideosGroupedByCertURL:(id)l outCompletedKeyRequests:(id)requests completion:(id)completion;
+- (void)_renewalTimerDidFire:(id)fire;
+- (void)download:(id)download didChangeStateTo:(int64_t)to;
+- (void)storeFPSKeyLoader:(id)loader didLoadOfflineKeyData:(id)data forKeyRequest:(id)request;
 - (void)updateKeyRenewalAndExpiration;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __45__VUIOfflineKeyRenewalManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_34 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_34, block);
@@ -75,20 +75,20 @@ void __45__VUIOfflineKeyRenewalManager_sharedInstance__block_invoke(uint64_t a1)
     v2->_downloadsForRepairingKeys = v10;
 
     v2->_backgroundTaskIdentifier = *MEMORY[0x1E69DDBE8];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy networkReachabilityDidChangeNotificationName];
-    [v12 addObserver:v2 selector:sel__networkReachbilityDidChange_ name:v13 object:0];
+    [defaultCenter addObserver:v2 selector:sel__networkReachbilityDidChange_ name:v13 object:0];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v15 = VUIPlaybackManagerIsPlaybackUIBeingShownDidChange[0];
     v16 = +[VUIPlaybackManager sharedInstance];
-    [v14 addObserver:v2 selector:sel__isPlaybackUIBeingShownDidChange_ name:v15 object:v16];
+    [defaultCenter2 addObserver:v2 selector:sel__isPlaybackUIBeingShownDidChange_ name:v15 object:v16];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v2 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   return v2;
@@ -98,7 +98,7 @@ void __45__VUIOfflineKeyRenewalManager_sharedInstance__block_invoke(uint64_t a1)
 {
   v47[3] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_invoke_4;
@@ -136,34 +136,34 @@ void __45__VUIOfflineKeyRenewalManager_sharedInstance__block_invoke(uint64_t a1)
   v28 = &__block_literal_global_93_0;
   v10 = v6;
   v29 = v10;
-  [v3 registerHandlerForEvents:v7 onStates:v8 withBlock:v25];
+  [stateMachine registerHandlerForEvents:v7 onStates:v8 withBlock:v25];
 
-  [v3 registerHandlerForEvent:@"Update requested" onState:@"Waiting for network reachability to check for renewals" withBlock:&__block_literal_global_121];
-  [v3 registerHandlerForEvent:@"Update requested" onState:@"Renewal in progress" withBlock:&__block_literal_global_125];
-  [v3 registerHandlerForEvent:@"Update requested" onState:@"Renewal in progress update when done" withBlock:&__block_literal_global_128];
-  [v3 registerHandlerForEvent:@"Renewal did finish" onState:@"Renewal in progress" withBlock:&__block_literal_global_130];
-  [v3 registerHandlerForEvent:@"Renewal did finish" onState:@"Renewal in progress update when done" withBlock:&__block_literal_global_132];
+  [stateMachine registerHandlerForEvent:@"Update requested" onState:@"Waiting for network reachability to check for renewals" withBlock:&__block_literal_global_121];
+  [stateMachine registerHandlerForEvent:@"Update requested" onState:@"Renewal in progress" withBlock:&__block_literal_global_125];
+  [stateMachine registerHandlerForEvent:@"Update requested" onState:@"Renewal in progress update when done" withBlock:&__block_literal_global_128];
+  [stateMachine registerHandlerForEvent:@"Renewal did finish" onState:@"Renewal in progress" withBlock:&__block_literal_global_130];
+  [stateMachine registerHandlerForEvent:@"Renewal did finish" onState:@"Renewal in progress update when done" withBlock:&__block_literal_global_132];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_invoke_8;
   v23[3] = &unk_1E8730120;
   v11 = v9;
   v24 = v11;
-  [v3 registerDefaultHandlerForEvent:@"Expiration timer did fire" withBlock:v23];
-  [v3 registerHandlerForEvent:@"Key renewal timer did fire" onState:@"Waiting for network reachability to check for renewals" withBlock:&__block_literal_global_134];
+  [stateMachine registerDefaultHandlerForEvent:@"Expiration timer did fire" withBlock:v23];
+  [stateMachine registerHandlerForEvent:@"Key renewal timer did fire" onState:@"Waiting for network reachability to check for renewals" withBlock:&__block_literal_global_134];
   v45[0] = @"Renewal in progress";
   v45[1] = @"Renewal in progress update when done";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
-  [v3 registerHandlerForEvent:@"Network error did occur" onStates:v12 withBlock:&__block_literal_global_136];
+  [stateMachine registerHandlerForEvent:@"Network error did occur" onStates:v12 withBlock:&__block_literal_global_136];
 
-  [v3 registerHandlerForEvent:@"Network reachability did change" onState:@"Waiting for network reachability to check for renewals" withBlock:&__block_literal_global_138];
+  [stateMachine registerHandlerForEvent:@"Network reachability did change" onState:@"Waiting for network reachability to check for renewals" withBlock:&__block_literal_global_138];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_invoke_14;
   v21[3] = &unk_1E8730120;
   v13 = v11;
   v22 = v13;
-  [v3 registerDefaultHandlerForEvent:@"Playback UI being shown did change" withBlock:v21];
+  [stateMachine registerDefaultHandlerForEvent:@"Playback UI being shown did change" withBlock:v21];
   v44[0] = @"Idle";
   v44[1] = @"Waiting for network reachability to check for renewals";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
@@ -172,12 +172,12 @@ void __45__VUIOfflineKeyRenewalManager_sharedInstance__block_invoke(uint64_t a1)
   v18 = __60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_invoke_15;
   v19 = &unk_1E872FAD8;
   objc_copyWeak(&v20, &location);
-  [v3 registerHandlerForEvent:@"Application did enter background" onStates:v14 withBlock:&v16];
+  [stateMachine registerHandlerForEvent:@"Application did enter background" onStates:v14 withBlock:&v16];
 
   v43[0] = @"Idle";
   v43[1] = @"Waiting for network reachability to check for renewals";
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:{2, v16, v17, v18, v19}];
-  [v3 registerHandlerForEvent:@"Application will enter foreground" onStates:v15 withBlock:&__block_literal_global_141];
+  [stateMachine registerHandlerForEvent:@"Application will enter foreground" onStates:v15 withBlock:&__block_literal_global_141];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v30);
@@ -190,8 +190,8 @@ void __45__VUIOfflineKeyRenewalManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)updateKeyRenewalAndExpiration
 {
-  v2 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v2 postEvent:@"Update requested"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Update requested"];
 }
 
 __CFString *__60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_invoke_111(uint64_t a1, void *a2)
@@ -907,23 +907,23 @@ uint64_t __60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_
   return v25;
 }
 
-- (void)storeFPSKeyLoader:(id)a3 didLoadOfflineKeyData:(id)a4 forKeyRequest:(id)a5
+- (void)storeFPSKeyLoader:(id)loader didLoadOfflineKeyData:(id)data forKeyRequest:(id)request
 {
-  v5 = a5;
-  v6 = [v5 context];
-  v7 = [v5 keyIdentifier];
-  if (v7)
+  requestCopy = request;
+  context = [requestCopy context];
+  keyIdentifier = [requestCopy keyIdentifier];
+  if (keyIdentifier)
   {
     v8 = +[VUIMediaLibraryManager defaultManager];
-    v9 = [v8 sidebandMediaLibrary];
-    v10 = [v9 fpsKeyInfoForVideo:v6 keyURI:v7 createIfNeeded:1 wasCreated:0];
+    sidebandMediaLibrary = [v8 sidebandMediaLibrary];
+    v10 = [sidebandMediaLibrary fpsKeyInfoForVideo:context keyURI:keyIdentifier createIfNeeded:1 wasCreated:0];
 
-    [v10 populateFromKeyRequest:v5 video:v6];
+    [v10 populateFromKeyRequest:requestCopy video:context];
     v11 = +[VUIMediaLibraryManager defaultManager];
-    v12 = [v11 sidebandMediaLibrary];
-    [v12 saveChangesToManagedObjects];
+    sidebandMediaLibrary2 = [v11 sidebandMediaLibrary];
+    [sidebandMediaLibrary2 saveChangesToManagedObjects];
 
-    if (![v6 downloadState])
+    if (![context downloadState])
     {
       v13 = sLogObject_22;
       if (os_log_type_enabled(sLogObject_22, OS_LOG_TYPE_DEFAULT))
@@ -933,24 +933,24 @@ uint64_t __60__VUIOfflineKeyRenewalManager__registerStateMachineHandlers__block_
       }
 
       v14 = +[VUIMediaLibraryManager defaultManager];
-      v15 = [v14 sidebandMediaLibrary];
-      [v15 removeDownloadedMediaForVideoManagedObject:v6 markAsDeleted:0 invalidateImmediately:1];
+      sidebandMediaLibrary3 = [v14 sidebandMediaLibrary];
+      [sidebandMediaLibrary3 removeDownloadedMediaForVideoManagedObject:context markAsDeleted:0 invalidateImmediately:1];
     }
   }
 }
 
-- (void)download:(id)a3 didChangeStateTo:(int64_t)a4
+- (void)download:(id)download didChangeStateTo:(int64_t)to
 {
-  v6 = a3;
-  v7 = v6;
-  if ((a4 - 3) <= 2)
+  downloadCopy = download;
+  v7 = downloadCopy;
+  if ((to - 3) <= 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke;
     v8[3] = &unk_1E872D990;
     v8[4] = self;
-    v9 = v6;
+    v9 = downloadCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -961,7 +961,7 @@ void __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke(
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)_networkReachbilityDidChange:(id)a3
+- (void)_networkReachbilityDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = sLogObject_22;
@@ -980,11 +980,11 @@ void __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke(
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Network reachability did change.  Is reachable: %@", &v9, 0xCu);
   }
 
-  v8 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v8 postEvent:@"Network reachability did change"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Network reachability did change"];
 }
 
-- (void)_isPlaybackUIBeingShownDidChange:(id)a3
+- (void)_isPlaybackUIBeingShownDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = sLogObject_22;
@@ -992,9 +992,9 @@ void __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke(
   {
     v5 = v4;
     v6 = +[VUIPlaybackManager sharedInstance];
-    v7 = [v6 isPlaybackUIBeingShown];
+    isPlaybackUIBeingShown = [v6 isPlaybackUIBeingShown];
     v8 = @"NO";
-    if (v7)
+    if (isPlaybackUIBeingShown)
     {
       v8 = @"YES";
     }
@@ -1004,59 +1004,59 @@ void __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke(
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "isPlaybackUIBeingShown did change to %@", &v10, 0xCu);
   }
 
-  v9 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v9 postEvent:@"Playback UI being shown did change"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Playback UI being shown did change"];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
-  v3 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v3 postEvent:@"Application did enter background"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Application did enter background"];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v3 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v3 postEvent:@"Application will enter foreground"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Application will enter foreground"];
 }
 
-- (void)_renewalTimerDidFire:(id)a3
+- (void)_renewalTimerDidFire:(id)fire
 {
   [(VUIOfflineKeyRenewalManager *)self setKeyRenewalTimer:0];
-  v4 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v4 postEvent:@"Key renewal timer did fire"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Key renewal timer did fire"];
 }
 
-- (void)_expirationTimerDidFire:(id)a3
+- (void)_expirationTimerDidFire:(id)fire
 {
   [(VUIOfflineKeyRenewalManager *)self setExpirationTimer:0];
-  v4 = [(VUIOfflineKeyRenewalManager *)self stateMachine];
-  [v4 postEvent:@"Expiration timer did fire"];
+  stateMachine = [(VUIOfflineKeyRenewalManager *)self stateMachine];
+  [stateMachine postEvent:@"Expiration timer did fire"];
 }
 
-- (void)_renewKeysForVideosGroupedByCertURL:(id)a3 outCompletedKeyRequests:(id)a4 completion:(id)a5
+- (void)_renewKeysForVideosGroupedByCertURL:(id)l outCompletedKeyRequests:(id)requests completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  lCopy = l;
+  requestsCopy = requests;
+  completionCopy = completion;
+  if ([lCopy count])
   {
-    v11 = [v8 firstObject];
-    v12 = [v11 firstObject];
-    v13 = [v12 fpsCertificateURL];
-    v14 = [v12 fpsKeyServerURL];
+    firstObject = [lCopy firstObject];
+    v11FirstObject = [firstObject firstObject];
+    fpsCertificateURL = [v11FirstObject fpsCertificateURL];
+    fpsKeyServerURL = [v11FirstObject fpsKeyServerURL];
     objc_initWeak(&location, self);
     v15 = sLogObject_22;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v11 count];
+      v16 = [firstObject count];
       *buf = 134218498;
       v25 = v16;
       v26 = 2112;
-      v27 = v13;
+      v27 = fpsCertificateURL;
       v28 = 2112;
-      v29 = v14;
+      v29 = fpsKeyServerURL;
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Renewing %lu video(s) for tuple (%@, %@)", buf, 0x20u);
     }
 
@@ -1065,10 +1065,10 @@ void __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke(
     v18[2] = __102__VUIOfflineKeyRenewalManager__renewKeysForVideosGroupedByCertURL_outCompletedKeyRequests_completion___block_invoke;
     v18[3] = &unk_1E872DFB8;
     objc_copyWeak(&v22, &location);
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
-    [(VUIOfflineKeyRenewalManager *)self _renewKeysForVideos:v11 outCompletedKeyRequests:v20 completion:v18];
+    v19 = lCopy;
+    v20 = requestsCopy;
+    v21 = completionCopy;
+    [(VUIOfflineKeyRenewalManager *)self _renewKeysForVideos:firstObject outCompletedKeyRequests:v20 completion:v18];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -1083,9 +1083,9 @@ void __57__VUIOfflineKeyRenewalManager_download_didChangeStateTo___block_invoke(
       _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "Done renewing keys for all videos", buf, 2u);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1097,15 +1097,15 @@ void __102__VUIOfflineKeyRenewalManager__renewKeysForVideosGroupedByCertURL_outC
   [WeakRetained _renewKeysForVideosGroupedByCertURL:v2 outCompletedKeyRequests:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_renewKeysForVideos:(id)a3 outCompletedKeyRequests:(id)a4 completion:(id)a5
+- (void)_renewKeysForVideos:(id)videos outCompletedKeyRequests:(id)requests completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
-  v9 = a5;
-  if ([v8 count])
+  videosCopy = videos;
+  requestsCopy = requests;
+  completionCopy = completion;
+  if ([videosCopy count])
   {
-    v29 = v9;
+    v29 = completionCopy;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1119,13 +1119,13 @@ void __102__VUIOfflineKeyRenewalManager__renewKeysForVideosGroupedByCertURL_outC
     v44 = v13;
     v14 = v12;
     v45 = v14;
-    [v8 enumerateObjectsUsingBlock:v42];
-    v15 = [v8 firstObject];
-    v16 = [v15 fpsCertificateURL];
-    v17 = [v15 fpsKeyServerURL];
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v16, v17];
-    v19 = [(VUIOfflineKeyRenewalManager *)self contentKeySessions];
-    v20 = [v19 objectForKey:v18];
+    [videosCopy enumerateObjectsUsingBlock:v42];
+    firstObject = [videosCopy firstObject];
+    fpsCertificateURL = [firstObject fpsCertificateURL];
+    fpsKeyServerURL = [firstObject fpsKeyServerURL];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", fpsCertificateURL, fpsKeyServerURL];
+    contentKeySessions = [(VUIOfflineKeyRenewalManager *)self contentKeySessions];
+    v20 = [contentKeySessions objectForKey:v18];
 
     if (!v20)
     {
@@ -1138,8 +1138,8 @@ void __102__VUIOfflineKeyRenewalManager__renewKeysForVideosGroupedByCertURL_outC
       }
 
       v20 = [objc_alloc(MEMORY[0x1E69D5A08]) initWithContentKeyLoader:0 avAsset:0];
-      v22 = [(VUIOfflineKeyRenewalManager *)self contentKeySessions];
-      [v22 setObject:v20 forKey:v18];
+      contentKeySessions2 = [(VUIOfflineKeyRenewalManager *)self contentKeySessions];
+      [contentKeySessions2 setObject:v20 forKey:v18];
     }
 
     objc_initWeak(buf, self);
@@ -1148,25 +1148,25 @@ void __102__VUIOfflineKeyRenewalManager__renewKeysForVideosGroupedByCertURL_outC
     v32[2] = __86__VUIOfflineKeyRenewalManager__renewKeysForVideos_outCompletedKeyRequests_completion___block_invoke_79;
     v32[3] = &unk_1E8736588;
     objc_copyWeak(&v41, buf);
-    v33 = v31;
+    v33 = requestsCopy;
     v23 = v14;
     v34 = v23;
     v24 = v18;
     v35 = v24;
-    v25 = v16;
+    v25 = fpsCertificateURL;
     v36 = v25;
-    v26 = v17;
+    v26 = fpsKeyServerURL;
     v37 = v26;
     v27 = v13;
     v38 = v27;
-    v39 = v8;
+    v39 = videosCopy;
     v40 = v29;
     [v20 generateOfflineKeyRequestsForIdentifiers:v30 completion:v32];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(buf);
 
-    v9 = v29;
+    completionCopy = v29;
   }
 
   else
@@ -1178,9 +1178,9 @@ void __102__VUIOfflineKeyRenewalManager__renewKeysForVideosGroupedByCertURL_outC
       _os_log_impl(&dword_1E323F000, v28, OS_LOG_TYPE_DEFAULT, "Done renewing keys for tuple", buf, 2u);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1532,18 +1532,18 @@ void __86__VUIOfflineKeyRenewalManager__renewKeysForVideos_outCompletedKeyReques
   [WeakRetained _renewKeysForVideos:v11 outCompletedKeyRequests:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-+ (id)_keyInfosForVideo:(id)a3 outKeyIdentifiers:(id)a4
++ (id)_keyInfosForVideo:(id)video outKeyIdentifiers:(id)identifiers
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  videoCopy = video;
+  identifiersCopy = identifiers;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v5 fpsKeyInfo];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  fpsKeyInfo = [videoCopy fpsKeyInfo];
+  v9 = [fpsKeyInfo countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1554,21 +1554,21 @@ void __86__VUIOfflineKeyRenewalManager__renewKeysForVideos_outCompletedKeyReques
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(fpsKeyInfo);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
         [v7 addObject:v13];
-        v14 = [v13 keyURI];
-        v15 = [v14 absoluteString];
+        keyURI = [v13 keyURI];
+        absoluteString = [keyURI absoluteString];
 
-        if (v15)
+        if (absoluteString)
         {
-          [v6 addObject:v15];
+          [identifiersCopy addObject:absoluteString];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [fpsKeyInfo countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -1577,14 +1577,14 @@ void __86__VUIOfflineKeyRenewalManager__renewKeysForVideos_outCompletedKeyReques
   return v7;
 }
 
-- (void)_fetchNewKeysForVideosWithBrokenKeys:(id)a3
+- (void)_fetchNewKeysForVideosWithBrokenKeys:(id)keys
 {
   v27 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = keys;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
@@ -1613,21 +1613,21 @@ void __86__VUIOfflineKeyRenewalManager__renewKeysForVideos_outCompletedKeyReques
 
         v11 = [[VUIStoreAuxMediaItem alloc] initWithVideoManagedObject:v9 isForStartingDownload:0];
         v12 = +[VUIPlaybackManager sharedInstance];
-        v13 = [v12 currentMediaItem];
+        currentMediaItem = [v12 currentMediaItem];
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 isEqualToMediaItem:v11])
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [currentMediaItem isEqualToMediaItem:v11])
         {
-          v14 = v13;
+          v14 = currentMediaItem;
 
           v11 = v14;
         }
 
-        v15 = [MEMORY[0x1E69D5A18] sharedInstance];
-        v16 = [v15 downloadForMediaItem:v11];
+        mEMORY[0x1E69D5A18] = [MEMORY[0x1E69D5A18] sharedInstance];
+        v16 = [mEMORY[0x1E69D5A18] downloadForMediaItem:v11];
 
-        v17 = [(VUIOfflineKeyRenewalManager *)self downloadsForRepairingKeys];
-        [v17 addObject:v16];
+        downloadsForRepairingKeys = [(VUIOfflineKeyRenewalManager *)self downloadsForRepairingKeys];
+        [downloadsForRepairingKeys addObject:v16];
 
         [(VUIStoreAuxMediaItem *)v11 setIgnoreExistingOfflineKeyData:1];
         [v16 setPerformKeyFetchOnly:1];

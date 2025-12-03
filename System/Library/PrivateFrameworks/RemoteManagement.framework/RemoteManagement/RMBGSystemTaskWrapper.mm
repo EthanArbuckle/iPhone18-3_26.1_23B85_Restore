@@ -1,20 +1,20 @@
 @interface RMBGSystemTaskWrapper
-- (RMBGSystemTaskWrapper)initWithTask:(id)a3;
+- (RMBGSystemTaskWrapper)initWithTask:(id)task;
 - (void)setTaskCompleted;
 @end
 
 @implementation RMBGSystemTaskWrapper
 
-- (RMBGSystemTaskWrapper)initWithTask:(id)a3
+- (RMBGSystemTaskWrapper)initWithTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = RMBGSystemTaskWrapper;
   v6 = [(RMBGSystemTaskWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_task, a3);
+    objc_storeStrong(&v6->_task, task);
   }
 
   return v7;
@@ -22,8 +22,8 @@
 
 - (void)setTaskCompleted
 {
-  v2 = [(RMBGSystemTaskWrapper *)self task];
-  [v2 setTaskCompleted];
+  task = [(RMBGSystemTaskWrapper *)self task];
+  [task setTaskCompleted];
 }
 
 @end

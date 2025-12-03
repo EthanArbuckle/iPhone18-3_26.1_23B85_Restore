@@ -1,8 +1,8 @@
 @interface PreferencesDataMigrator
 - (BOOL)performMigration;
 - (float)migrationProgress;
-- (void)_migrateKey:(id)a3 domain:(id)a4 toKey:(id)a5 toDomain:(id)a6 migrateCloud:(BOOL)a7;
-- (void)_performCombinedLocationSettingsMigrationForBundles:(id)a3 key:(id)a4 enable:(id)a5;
+- (void)_migrateKey:(id)key domain:(id)domain toKey:(id)toKey toDomain:(id)toDomain migrateCloud:(BOOL)cloud;
+- (void)_performCombinedLocationSettingsMigrationForBundles:(id)bundles key:(id)key enable:(id)enable;
 - (void)_performImproveMapsSettingsMigration;
 - (void)_performIsAppAndAccessoryAnalyticsAllowedRemovalMigration;
 - (void)_performLocationBasedAlertSettingsMigration;
@@ -111,18 +111,18 @@
   [(PreferencesDataMigrator *)self _performCombinedLocationSettingsMigrationForBundles:v5 key:@"locationImproveMapsMigrationVersionHash" enable:v4];
 }
 
-- (void)_performCombinedLocationSettingsMigrationForBundles:(id)a3 key:(id)a4 enable:(id)a5
+- (void)_performCombinedLocationSettingsMigrationForBundles:(id)bundles key:(id)key enable:(id)enable
 {
-  v53 = self;
-  v7 = a3;
-  key = a4;
-  v54 = a5;
+  selfCopy = self;
+  bundlesCopy = bundles;
+  key = key;
+  enableCopy = enable;
   v8 = objc_opt_new();
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v7;
+  obj = bundlesCopy;
   v9 = [obj countByEnumeratingWithState:&v66 objects:v76 count:16];
   if (v9)
   {
@@ -152,7 +152,7 @@
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v73 = key;
+            keyCopy7 = key;
             v74 = 2114;
             v75 = v13;
             _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Bundle for key %{public}@ in the bundle list but not on disk: %{public}@", buf, 0x16u);
@@ -171,8 +171,8 @@
     v17 = [v8 componentsJoinedByString:{@", "}];
     v18 = [v17 hash];
 
-    v19 = key;
-    if (([(PreferencesDataMigrator *)v53 didUpgrade]& 1) != 0 || [(PreferencesDataMigrator *)v53 didRestoreFromBackup])
+    keyCopy6 = key;
+    if (([(PreferencesDataMigrator *)selfCopy didUpgrade]& 1) != 0 || [(PreferencesDataMigrator *)selfCopy didRestoreFromBackup])
     {
       v55 = v18;
       AppIntegerValue = CFPreferencesGetAppIntegerValue(key, @"com.apple.Preferences", 0);
@@ -181,7 +181,7 @@
       {
         v22 = [NSNumber numberWithInteger:AppIntegerValue];
         *buf = 138543618;
-        v73 = key;
+        keyCopy7 = key;
         v74 = 2114;
         v75 = v22;
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Running combined location settings migration for key: %{public}@ from hash %{public}@", buf, 0x16u);
@@ -189,9 +189,9 @@
 
       v23 = CLCopyAppsUsingLocation();
       v24 = v23;
-      if (v54)
+      if (enableCopy)
       {
-        v25 = [v54 BOOLValue];
+        bOOLValue = [enableCopy BOOLValue];
       }
 
       else
@@ -205,7 +205,7 @@
         if (v29)
         {
           v30 = v29;
-          v53 = v24;
+          selfCopy = v24;
           v31 = *v63;
           while (2)
           {
@@ -217,8 +217,8 @@
               }
 
               v33 = *(*(&v62 + 1) + 8 * j);
-              v34 = [(PreferencesDataMigrator *)v28 objectForKeyedSubscript:v33, v53];
-              v35 = [v34 objectForKeyedSubscript:@"BundlePath"];
+              selfCopy = [(PreferencesDataMigrator *)v28 objectForKeyedSubscript:v33, selfCopy];
+              v35 = [selfCopy objectForKeyedSubscript:@"BundlePath"];
 
               v36 = [v8 objectAtIndexedSubscript:0];
               v37 = [v35 isEqualToString:v36];
@@ -226,7 +226,7 @@
               if (v37)
               {
                 v38 = [(PreferencesDataMigrator *)v28 objectForKeyedSubscript:v33];
-                v25 = [CLLocationManager isEntityAuthorizedForLocationDictionary:v38];
+                bOOLValue = [CLLocationManager isEntityAuthorizedForLocationDictionary:v38];
 
                 goto LABEL_33;
               }
@@ -241,15 +241,15 @@
             break;
           }
 
-          v25 = 0;
+          bOOLValue = 0;
 LABEL_33:
-          v19 = key;
-          v24 = v53;
+          keyCopy6 = key;
+          v24 = selfCopy;
         }
 
         else
         {
-          v25 = 0;
+          bOOLValue = 0;
         }
       }
 
@@ -257,13 +257,13 @@ LABEL_33:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         v40 = @"OFF";
-        if (v25)
+        if (bOOLValue)
         {
           v40 = @"ON";
         }
 
         *buf = 138543618;
-        v73 = v19;
+        keyCopy7 = keyCopy6;
         v74 = 2114;
         v75 = v40;
         _os_log_impl(&dword_0, v39, OS_LOG_TYPE_DEFAULT, "State for key %{public}@ was %{public}@", buf, 0x16u);
@@ -279,7 +279,7 @@ LABEL_33:
       {
         v43 = v42;
         v44 = *v59;
-        if (v25)
+        if (bOOLValue)
         {
           v45 = 4;
         }
@@ -299,8 +299,8 @@ LABEL_33:
             }
 
             v47 = *(*(&v58 + 1) + 8 * k);
-            v48 = [(PreferencesDataMigrator *)v41 objectForKeyedSubscript:v47, v53];
-            v49 = [v48 objectForKeyedSubscript:@"BundlePath"];
+            selfCopy2 = [(PreferencesDataMigrator *)v41 objectForKeyedSubscript:v47, selfCopy];
+            v49 = [selfCopy2 objectForKeyedSubscript:@"BundlePath"];
 
             if ([v8 containsObject:v49])
             {
@@ -315,38 +315,38 @@ LABEL_33:
         while (v43);
       }
 
-      v19 = key;
+      keyCopy6 = key;
       v18 = v55;
     }
 
     v51 = sub_F18();
-    v27 = v54;
+    v27 = enableCopy;
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
       v52 = [NSNumber numberWithInteger:v18];
       *buf = 138543618;
-      v73 = v19;
+      keyCopy7 = keyCopy6;
       v74 = 2114;
       v75 = v52;
       _os_log_impl(&dword_0, v51, OS_LOG_TYPE_DEFAULT, "Ran combined location settings migration for key %{public}@ for version hash %{public}@", buf, 0x16u);
     }
 
     v26 = [NSNumber numberWithInteger:v18];
-    CFPreferencesSetAppValue(v19, v26, @"com.apple.Preferences");
+    CFPreferencesSetAppValue(keyCopy6, v26, @"com.apple.Preferences");
   }
 
   else
   {
     v26 = sub_F18();
-    v19 = key;
+    keyCopy6 = key;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v73 = key;
+      keyCopy7 = key;
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Skipping combined location settings migration for key: %{public}@ because there are no bundles on disk", buf, 0xCu);
     }
 
-    v27 = v54;
+    v27 = enableCopy;
   }
 }
 
@@ -454,8 +454,8 @@ LABEL_33:
 
   v4 = v3;
   _Block_object_dispose(&v7, 8);
-  v5 = [v3 shared];
-  [v5 migrateIfNeededWithCompletion:&stru_82A8];
+  shared = [v3 shared];
+  [shared migrateIfNeededWithCompletion:&stru_82A8];
 }
 
 - (void)_performIsAppAndAccessoryAnalyticsAllowedRemovalMigration
@@ -469,15 +469,15 @@ LABEL_33:
   CFPreferencesSetAppValue(@"isAppAndAccessoryAnalyticsAllowedRemoval", kCFBooleanTrue, @"com.apple.Preferences");
 }
 
-- (void)_migrateKey:(id)a3 domain:(id)a4 toKey:(id)a5 toDomain:(id)a6 migrateCloud:(BOOL)a7
+- (void)_migrateKey:(id)key domain:(id)domain toKey:(id)toKey toDomain:(id)toDomain migrateCloud:(BOOL)cloud
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = CFPreferencesCopyAppValue(v11, v12);
-  v16 = CFPreferencesCopyAppValue(v13, v14);
+  cloudCopy = cloud;
+  keyCopy = key;
+  domainCopy = domain;
+  toKeyCopy = toKey;
+  toDomainCopy = toDomain;
+  v15 = CFPreferencesCopyAppValue(keyCopy, domainCopy);
+  v16 = CFPreferencesCopyAppValue(toKeyCopy, toDomainCopy);
   if (v15)
   {
     v17 = sub_F18();
@@ -487,9 +487,9 @@ LABEL_33:
       if (v18)
       {
         v25 = 138412546;
-        v26 = v12;
+        v26 = domainCopy;
         v27 = 2112;
-        v28 = v11;
+        v28 = keyCopy;
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Removing defunct pref '%@' '%@'", &v25, 0x16u);
       }
     }
@@ -499,20 +499,20 @@ LABEL_33:
       if (v18)
       {
         v25 = 138413058;
-        v26 = v12;
+        v26 = domainCopy;
         v27 = 2112;
-        v28 = v11;
+        v28 = keyCopy;
         v29 = 2112;
-        v30 = v14;
+        v30 = toDomainCopy;
         v31 = 2112;
-        v32 = v13;
+        v32 = toKeyCopy;
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Migrating pref '%@' '%@' => '%@' '%@'", &v25, 0x2Au);
       }
 
-      CFPreferencesSetAppValue(v13, v15, v14);
+      CFPreferencesSetAppValue(toKeyCopy, v15, toDomainCopy);
     }
 
-    CFPreferencesSetAppValue(v11, 0, v12);
+    CFPreferencesSetAppValue(keyCopy, 0, domainCopy);
     CFRelease(v15);
   }
 
@@ -521,15 +521,15 @@ LABEL_33:
     CFRelease(v16);
   }
 
-  if (v7)
+  if (cloudCopy)
   {
-    v19 = [[NSUserDefaults alloc] initWithSuiteName:v12];
-    v20 = [v19 objectForKey:v11];
+    v19 = [[NSUserDefaults alloc] initWithSuiteName:domainCopy];
+    v20 = [v19 objectForKey:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [[NSUserDefaults alloc] initWithSuiteName:v14];
-      v22 = [v21 objectForKey:v13];
+      v21 = [[NSUserDefaults alloc] initWithSuiteName:toDomainCopy];
+      v22 = [v21 objectForKey:toKeyCopy];
       v23 = sub_F18();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
       if (v22)
@@ -537,9 +537,9 @@ LABEL_33:
         if (v24)
         {
           v25 = 138412546;
-          v26 = v12;
+          v26 = domainCopy;
           v27 = 2112;
-          v28 = v11;
+          v28 = keyCopy;
           _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Removing defunct cloud pref '%@' '%@'", &v25, 0x16u);
         }
       }
@@ -549,38 +549,38 @@ LABEL_33:
         if (v24)
         {
           v25 = 138413058;
-          v26 = v12;
+          v26 = domainCopy;
           v27 = 2112;
-          v28 = v11;
+          v28 = keyCopy;
           v29 = 2112;
-          v30 = v14;
+          v30 = toDomainCopy;
           v31 = 2112;
-          v32 = v13;
+          v32 = toKeyCopy;
           _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Migrating cloud pref from '%@' '%@' => '%@' %@'", &v25, 0x2Au);
         }
 
-        [v21 setBool:objc_msgSend(v20 forKey:{"BOOLValue"), v13}];
+        [v21 setBool:objc_msgSend(v20 forKey:{"BOOLValue"), toKeyCopy}];
       }
 
-      [v19 removeObjectForKey:v11];
+      [v19 removeObjectForKey:keyCopy];
     }
   }
 }
 
 - (BOOL)performMigration
 {
-  v3 = [(PreferencesDataMigrator *)self didRestoreFromBackup];
-  v4 = [(PreferencesDataMigrator *)self didUpgrade];
-  v5 = [(PreferencesDataMigrator *)self didMigrateBackupFromDifferentDevice];
+  didRestoreFromBackup = [(PreferencesDataMigrator *)self didRestoreFromBackup];
+  didUpgrade = [(PreferencesDataMigrator *)self didUpgrade];
+  didMigrateBackupFromDifferentDevice = [(PreferencesDataMigrator *)self didMigrateBackupFromDifferentDevice];
   v6 = sub_F18();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109632;
-    DWORD1(buf) = v3;
+    DWORD1(buf) = didRestoreFromBackup;
     WORD4(buf) = 1024;
-    *(&buf + 10) = v4;
+    *(&buf + 10) = didUpgrade;
     HIWORD(buf) = 1024;
-    LODWORD(v20) = v5;
+    LODWORD(v20) = didMigrateBackupFromDifferentDevice;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "PreferencesMigrator: didRestore=%d, didUpgrade=%d, didMigrateFromDifferentDevice=%d", &buf, 0x14u);
   }
 
@@ -614,10 +614,10 @@ LABEL_33:
 
   v10 = v9;
   _Block_object_dispose(&v15, 8);
-  v11 = [v9 sharedManager];
-  v12 = [v11 isMultiUser];
+  sharedManager = [v9 sharedManager];
+  isMultiUser = [sharedManager isMultiUser];
 
-  if ((v12 & 1) == 0)
+  if ((isMultiUser & 1) == 0)
   {
     PSMigrateSoundsDefaults_10_0();
   }

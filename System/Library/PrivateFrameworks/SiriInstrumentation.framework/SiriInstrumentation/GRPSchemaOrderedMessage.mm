@@ -1,36 +1,36 @@
 @interface GRPSchemaOrderedMessage
-- (BOOL)isEqual:(id)a3;
-- (GRPSchemaOrderedMessage)initWithDictionary:(id)a3;
-- (GRPSchemaOrderedMessage)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRPSchemaOrderedMessage)initWithDictionary:(id)dictionary;
+- (GRPSchemaOrderedMessage)initWithJSON:(id)n;
 - (GRPSchemaSiriEventTypeUnion)siriEventTypeUnion;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteSiriEventTypeUnion;
-- (void)setSiriEventTypeUnion:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSiriEventTypeUnion:(id)union;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRPSchemaOrderedMessage
 
-- (GRPSchemaOrderedMessage)initWithDictionary:(id)a3
+- (GRPSchemaOrderedMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = GRPSchemaOrderedMessage;
   v5 = [(GRPSchemaOrderedMessage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"logicalEventTimestampInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"logicalEventTimestampInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GRPSchemaOrderedMessage setLogicalEventTimestampInNs:](v5, "setLogicalEventTimestampInNs:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"siriEventTypeUnion"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"siriEventTypeUnion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,30 +44,30 @@
   return v5;
 }
 
-- (GRPSchemaOrderedMessage)initWithJSON:(id)a3
+- (GRPSchemaOrderedMessage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRPSchemaOrderedMessage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRPSchemaOrderedMessage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRPSchemaOrderedMessage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -80,32 +80,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[GRPSchemaOrderedMessage logicalEventTimestampInNs](self, "logicalEventTimestampInNs")}];
-    [v3 setObject:v4 forKeyedSubscript:@"logicalEventTimestampInNs"];
+    [dictionary setObject:v4 forKeyedSubscript:@"logicalEventTimestampInNs"];
   }
 
   if (self->_siriEventTypeUnion)
   {
-    v5 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    siriEventTypeUnion = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
+    dictionaryRepresentation = [siriEventTypeUnion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"siriEventTypeUnion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriEventTypeUnion"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"siriEventTypeUnion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriEventTypeUnion"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -123,23 +123,23 @@
   return [(GRPSchemaSiriEventTypeUnion *)self->_siriEventTypeUnion hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEvent_Type = self->_whichEvent_Type;
-    if (whichEvent_Type == [v4 whichEvent_Type] && (*&self->_has & 1) == (v4[24] & 1))
+    if (whichEvent_Type == [equalCopy whichEvent_Type] && (*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (logicalEventTimestampInNs = self->_logicalEventTimestampInNs, logicalEventTimestampInNs == [v4 logicalEventTimestampInNs]))
+      if ((*&self->_has & 1) == 0 || (logicalEventTimestampInNs = self->_logicalEventTimestampInNs, logicalEventTimestampInNs == [equalCopy logicalEventTimestampInNs]))
       {
-        v7 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
-        v8 = [v4 siriEventTypeUnion];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        siriEventTypeUnion = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
+        siriEventTypeUnion2 = [equalCopy siriEventTypeUnion];
+        v9 = siriEventTypeUnion2;
+        if ((siriEventTypeUnion != 0) != (siriEventTypeUnion2 == 0))
         {
-          v10 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
-          if (!v10)
+          siriEventTypeUnion3 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
+          if (!siriEventTypeUnion3)
           {
 
 LABEL_14:
@@ -147,10 +147,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
-          v13 = [v4 siriEventTypeUnion];
-          v14 = [v12 isEqual:v13];
+          v11 = siriEventTypeUnion3;
+          siriEventTypeUnion4 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
+          siriEventTypeUnion5 = [equalCopy siriEventTypeUnion];
+          v14 = [siriEventTypeUnion4 isEqual:siriEventTypeUnion5];
 
           if (v14)
           {
@@ -171,23 +171,23 @@ LABEL_12:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
   }
 
-  v4 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
+  siriEventTypeUnion = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (siriEventTypeUnion)
   {
-    v6 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
+    siriEventTypeUnion2 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
@@ -216,29 +216,29 @@ LABEL_12:
   return v3;
 }
 
-- (void)setSiriEventTypeUnion:(id)a3
+- (void)setSiriEventTypeUnion:(id)union
 {
   v3 = 100;
-  if (!a3)
+  if (!union)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_siriEventTypeUnion, a3);
+  objc_storeStrong(&self->_siriEventTypeUnion, union);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GRPSchemaOrderedMessage;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GRPSchemaOrderedMessage *)self siriEventTypeUnion:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GRPSchemaOrderedMessage *)self deleteSiriEventTypeUnion];
   }

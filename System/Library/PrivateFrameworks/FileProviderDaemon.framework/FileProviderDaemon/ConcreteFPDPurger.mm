@@ -1,9 +1,9 @@
 @interface ConcreteFPDPurger
 + (id)sharedPurger;
 - (_TtC18FileProviderDaemon17ConcreteFPDPurger)init;
-- (void)barrierWithCompletionHandler:(id)a3;
-- (void)purgeAndWaitAtUrl:(id)a3;
-- (void)purgeAsyncAtUrl:(id)a3;
+- (void)barrierWithCompletionHandler:(id)handler;
+- (void)purgeAndWaitAtUrl:(id)url;
+- (void)purgeAsyncAtUrl:(id)url;
 @end
 
 @implementation ConcreteFPDPurger
@@ -27,7 +27,7 @@
   return v3;
 }
 
-- (void)purgeAndWaitAtUrl:(id)a3
+- (void)purgeAndWaitAtUrl:(id)url
 {
   v4 = sub_1CF9E5A58();
   v5 = *(v4 - 8);
@@ -36,7 +36,7 @@
   v8 = &v13[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_1CF9E59D8();
   v9 = qword_1EDEA70E0;
-  v10 = self;
+  selfCopy = self;
   if (v9 != -1)
   {
     swift_once();
@@ -44,14 +44,14 @@
 
   v11 = fpfs_current_log();
   MEMORY[0x1EEE9AC00](v11);
-  *&v13[-16] = v10;
+  *&v13[-16] = selfCopy;
   *&v13[-8] = v8;
   sub_1CF741DE8(v12, "purgeAndWait(at:)", 17, 2, sub_1CF745824, &v13[-32]);
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)purgeAsyncAtUrl:(id)a3
+- (void)purgeAsyncAtUrl:(id)url
 {
   v4 = sub_1CF9E5A58();
   v5 = *(v4 - 8);
@@ -62,7 +62,7 @@
   v10 = &v17 - v9;
   sub_1CF9E59D8();
   v11 = qword_1EDEA70E0;
-  v12 = self;
+  selfCopy = self;
   if (v11 != -1)
   {
     swift_once();
@@ -72,17 +72,17 @@
   (*(v5 + 16))(v7, v10, v4);
   v14 = (*(v5 + 80) + 24) & ~*(v5 + 80);
   v15 = swift_allocObject();
-  *(v15 + 16) = v12;
+  *(v15 + 16) = selfCopy;
   (*(v5 + 32))(v15 + v14, v7, v4);
-  v16 = v12;
+  v16 = selfCopy;
   sub_1CF01001C(v13, "purgeAsync(at:)", 15, 2, sub_1CF745820, v15);
 
   (*(v5 + 8))(v10, v4);
 }
 
-- (void)barrierWithCompletionHandler:(id)a3
+- (void)barrierWithCompletionHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   if (qword_1EDEA70E0 != -1)

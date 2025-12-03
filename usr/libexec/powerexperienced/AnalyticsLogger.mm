@@ -1,7 +1,7 @@
 @interface AnalyticsLogger
 + (id)logger;
 - (AnalyticsLogger)init;
-- (void)logCAEventforMode:(id)a3 startDate:(id)a4 endDate:(id)a5 startingSOC:(id)a6 endingSOC:(id)a7 exitReason:(id)a8;
+- (void)logCAEventforMode:(id)mode startDate:(id)date endDate:(id)endDate startingSOC:(id)c endingSOC:(id)oC exitReason:(id)reason;
 @end
 
 @implementation AnalyticsLogger
@@ -30,32 +30,32 @@
   return v2;
 }
 
-- (void)logCAEventforMode:(id)a3 startDate:(id)a4 endDate:(id)a5 startingSOC:(id)a6 endingSOC:(id)a7 exitReason:(id)a8
+- (void)logCAEventforMode:(id)mode startDate:(id)date endDate:(id)endDate startingSOC:(id)c endingSOC:(id)oC exitReason:(id)reason
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(AnalyticsLogger *)self queue];
+  modeCopy = mode;
+  dateCopy = date;
+  endDateCopy = endDate;
+  cCopy = c;
+  oCCopy = oC;
+  reasonCopy = reason;
+  queue = [(AnalyticsLogger *)self queue];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100003E90;
   v27[3] = &unk_10002C5C8;
-  v28 = v16;
-  v29 = v15;
-  v30 = v14;
-  v31 = v19;
-  v32 = v17;
-  v33 = v18;
-  v21 = v18;
-  v22 = v17;
-  v23 = v19;
-  v24 = v14;
-  v25 = v15;
-  v26 = v16;
-  dispatch_async(v20, v27);
+  v28 = endDateCopy;
+  v29 = dateCopy;
+  v30 = modeCopy;
+  v31 = reasonCopy;
+  v32 = cCopy;
+  v33 = oCCopy;
+  v21 = oCCopy;
+  v22 = cCopy;
+  v23 = reasonCopy;
+  v24 = modeCopy;
+  v25 = dateCopy;
+  v26 = endDateCopy;
+  dispatch_async(queue, v27);
 }
 
 @end

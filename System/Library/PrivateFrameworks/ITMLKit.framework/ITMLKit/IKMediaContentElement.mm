@@ -1,6 +1,6 @@
 @interface IKMediaContentElement
 + (id)supportedFeatures;
-- (IKMediaContentElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (IKMediaContentElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation IKMediaContentElement
@@ -15,18 +15,18 @@
   return v2;
 }
 
-- (IKMediaContentElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (IKMediaContentElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v11.receiver = self;
   v11.super_class = IKMediaContentElement;
-  v5 = [(IKViewElement *)&v11 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  v5 = [(IKViewElement *)&v11 initWithDOMElement:element parent:parent elementFactory:factory];
   v6 = v5;
   if (v5)
   {
-    v7 = [(IKViewElement *)v5 features];
-    v8 = [v7 firstObject];
+    features = [(IKViewElement *)v5 features];
+    firstObject = [features firstObject];
     playerBridge = v6->_playerBridge;
-    v6->_playerBridge = v8;
+    v6->_playerBridge = firstObject;
   }
 
   return v6;

@@ -1,8 +1,8 @@
 @interface _UIContextMenuAnimator
-+ (_UIContextMenuAnimator)animatorWithViewController:(id)a3;
++ (_UIContextMenuAnimator)animatorWithViewController:(id)controller;
 - (BOOL)hasAnyActions;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 - (void)performAllAnimations;
 - (void)performAllCompletions;
 @end
@@ -16,7 +16,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "performAllCompletions for animator: %@", buf, 0xCu);
   }
 
@@ -24,8 +24,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(_UIContextMenuAnimator *)self completions];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  completions = [(_UIContextMenuAnimator *)self completions];
+  v5 = [completions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,14 +37,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completions);
         }
 
         (*(*(*(&v10 + 1) + 8 * v8++) + 16))();
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [completions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -61,7 +61,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "performAllAnimations for animator: %@", buf, 0xCu);
   }
 
@@ -69,8 +69,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(_UIContextMenuAnimator *)self animations];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  animations = [(_UIContextMenuAnimator *)self animations];
+  v5 = [animations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -82,14 +82,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animations);
         }
 
         (*(*(*(&v10 + 1) + 8 * v8++) + 16))();
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [animations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -99,19 +99,19 @@
   self->_animations = 0;
 }
 
-+ (_UIContextMenuAnimator)animatorWithViewController:(id)a3
++ (_UIContextMenuAnimator)animatorWithViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
   v5 = v4[2];
-  v4[2] = v3;
-  v6 = v3;
+  v4[2] = controllerCopy;
+  v6 = controllerCopy;
 
-  v7 = [v6 view];
+  view = [v6 view];
 
-  v8 = [v7 window];
-  v9 = [v8 traitCollection];
-  v10 = [v9 horizontalSizeClass] == 1;
+  window = [view window];
+  traitCollection = [window traitCollection];
+  v10 = [traitCollection horizontalSizeClass] == 1;
 
   v4[1] = v10;
 
@@ -120,56 +120,56 @@
 
 - (BOOL)hasAnyActions
 {
-  v3 = [(_UIContextMenuAnimator *)self animations];
-  if ([v3 count])
+  animations = [(_UIContextMenuAnimator *)self animations];
+  if ([animations count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UIContextMenuAnimator *)self completions];
-    v4 = [v5 count] != 0;
+    completions = [(_UIContextMenuAnimator *)self completions];
+    v4 = [completions count] != 0;
   }
 
   return v4;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   animations = self->_animations;
-  aBlock = v4;
+  aBlock = animationsCopy;
   if (!animations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_animations;
-    self->_animations = v6;
+    self->_animations = array;
 
-    v4 = aBlock;
+    animationsCopy = aBlock;
     animations = self->_animations;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(animationsCopy);
   [(NSMutableArray *)animations addObject:v8];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completions = self->_completions;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_completions;
-    self->_completions = v6;
+    self->_completions = array;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completions = self->_completions;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completions addObject:v8];
 }
 

@@ -1,16 +1,16 @@
 @interface MFConversationCellExpansionGestureRecognizer
-- (MFConversationCellExpansionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (MFConversationCellExpansionGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)cancel;
 @end
 
 @implementation MFConversationCellExpansionGestureRecognizer
 
-- (MFConversationCellExpansionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (MFConversationCellExpansionGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = MFConversationCellExpansionGestureRecognizer;
-  v7 = [(MFConversationCellExpansionGestureRecognizer *)&v10 initWithTarget:v6 action:a4];
+  v7 = [(MFConversationCellExpansionGestureRecognizer *)&v10 initWithTarget:targetCopy action:action];
   v8 = v7;
   if (v7)
   {

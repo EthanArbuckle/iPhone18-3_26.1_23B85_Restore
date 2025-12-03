@@ -3,27 +3,27 @@
 - (NSItemProvider)itemProvider;
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate;
 - (UIImage)headerImage;
-- (_SWCollaborationButtonViewImpl)initWithFrame:(CGRect)a3;
-- (_SWCollaborationButtonViewImpl)initWithItemProvider:(id)a3;
+- (_SWCollaborationButtonViewImpl)initWithFrame:(CGRect)frame;
+- (_SWCollaborationButtonViewImpl)initWithItemProvider:(id)provider;
 - (unint64_t)activeParticipantCount;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setActiveParticipantCount:(unint64_t)a3;
-- (void)setHeaderImage:(id)a3;
-- (void)setIsContentShared:(BOOL)a3;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setActiveParticipantCount:(unint64_t)count;
+- (void)setHeaderImage:(id)image;
+- (void)setIsContentShared:(BOOL)shared;
 - (void)tintColorDidChange;
-- (void)updatePlaceHolderSymbolScale:(int64_t)a3 weight:(int64_t)a4 pointSize:(double)a5;
+- (void)updatePlaceHolderSymbolScale:(int64_t)scale weight:(int64_t)weight pointSize:(double)size;
 @end
 
 @implementation _SWCollaborationButtonViewImpl
 
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate
 {
-  v2 = [*(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) cloudSharingControllerDelegate];
+  cloudSharingControllerDelegate = [*(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) cloudSharingControllerDelegate];
 
-  return v2;
+  return cloudSharingControllerDelegate;
 }
 
 - (unint64_t)activeParticipantCount
@@ -33,13 +33,13 @@
   return *(self + v3);
 }
 
-- (void)setActiveParticipantCount:(unint64_t)a3
+- (void)setActiveParticipantCount:(unint64_t)count
 {
   v5 = OBJC_IVAR____SWCollaborationButtonViewImpl_activeParticipantCount;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
-  sub_1BBC2B848(a3);
+  *(self + v5) = count;
+  selfCopy = self;
+  sub_1BBC2B848(count);
 }
 
 - (UIImage)headerImage
@@ -49,11 +49,11 @@
   return *(self + v3);
 }
 
-- (void)setHeaderImage:(id)a3
+- (void)setHeaderImage:(id)image
 {
-  v6 = a3;
-  v5 = self;
-  sub_1BBC306FC(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_1BBC306FC(image);
 }
 
 - (void)layoutSubviews
@@ -65,15 +65,15 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   _SWCollaborationButtonViewImpl.tintColorDidChange()();
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BBC412BC();
     swift_unknownObjectRelease();
@@ -82,7 +82,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1BBC2DF2C();
@@ -90,76 +90,76 @@
   sub_1BBC27FF0(v6, &unk_1EBCA5650, &unk_1BBC45070);
 }
 
-- (void)updatePlaceHolderSymbolScale:(int64_t)a3 weight:(int64_t)a4 pointSize:(double)a5
+- (void)updatePlaceHolderSymbolScale:(int64_t)scale weight:(int64_t)weight pointSize:(double)size
 {
   v5 = *(self + OBJC_IVAR____SWCollaborationButtonViewImpl_attributionView);
-  v6 = self;
+  selfCopy = self;
   sub_1BBC4094C();
 }
 
-- (_SWCollaborationButtonViewImpl)initWithFrame:(CGRect)a3
+- (_SWCollaborationButtonViewImpl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = self;
+  presentationCopy = presentation;
+  selfCopy = self;
   sub_1BBC30C88(&selRef_collaborationViewWillPresentPopover_);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1BBC30C88(&selRef_collaborationViewDidDismissPopover_);
 }
 
 - (NSItemProvider)itemProvider
 {
-  v2 = [*(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) itemProvider];
+  itemProvider = [*(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) itemProvider];
 
-  return v2;
+  return itemProvider;
 }
 
 - (BOOL)isContentShared
 {
   if (*(self + OBJC_IVAR____SWCollaborationButtonViewImpl__isContentShared))
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(collaborationHighlight) = 1;
   }
 
   else
   {
-    v4 = [*(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) collaborationHighlight];
-    if (v4)
+    collaborationHighlight = [*(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) collaborationHighlight];
+    if (collaborationHighlight)
     {
 
-      LOBYTE(v4) = 1;
+      LOBYTE(collaborationHighlight) = 1;
     }
   }
 
-  return v4;
+  return collaborationHighlight;
 }
 
-- (void)setIsContentShared:(BOOL)a3
+- (void)setIsContentShared:(BOOL)shared
 {
   v4 = *(self + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController);
-  v11 = self;
-  v5 = [v4 collaborationHighlight];
-  if (v5)
+  selfCopy = self;
+  collaborationHighlight = [v4 collaborationHighlight];
+  if (collaborationHighlight)
   {
   }
 
   else
   {
-    *(v11 + OBJC_IVAR____SWCollaborationButtonViewImpl__isContentShared) = a3;
+    *(selfCopy + OBJC_IVAR____SWCollaborationButtonViewImpl__isContentShared) = shared;
     v6 = objc_opt_self();
     v7 = swift_allocObject();
-    *(v7 + 16) = v11;
+    *(v7 + 16) = selfCopy;
     v8 = swift_allocObject();
     *(v8 + 16) = sub_1BBC310FC;
     *(v8 + 24) = v7;
@@ -170,7 +170,7 @@
     aBlock[2] = sub_1BBC2C494;
     aBlock[3] = &block_descriptor_61;
     v9 = _Block_copy(aBlock);
-    v10 = v11;
+    v10 = selfCopy;
 
     [v6 performWithoutAnimation_];
     _Block_release(v9);
@@ -183,12 +183,12 @@
   }
 }
 
-- (_SWCollaborationButtonViewImpl)initWithItemProvider:(id)a3
+- (_SWCollaborationButtonViewImpl)initWithItemProvider:(id)provider
 {
   ObjectType = swift_getObjectType();
   v5 = objc_allocWithZone(_SWCollaborationDetailViewController);
-  v6 = a3;
-  v7 = [v5 initWithItemProvider:v6 impl:?];
+  providerCopy = provider;
+  v7 = [v5 initWithItemProvider:providerCopy impl:?];
   v8 = objc_allocWithZone(ObjectType);
   v9 = sub_1BBC2C860(v7);
 

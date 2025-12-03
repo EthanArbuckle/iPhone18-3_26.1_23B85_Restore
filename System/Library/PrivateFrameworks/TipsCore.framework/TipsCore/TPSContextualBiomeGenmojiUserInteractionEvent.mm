@@ -2,39 +2,39 @@
 - (id)_filteringPredicate;
 - (id)filterHandler;
 - (id)filterParametersForBiomeQuery;
-- (id)publisherFromStartTime:(double)a3;
+- (id)publisherFromStartTime:(double)time;
 @end
 
 @implementation TPSContextualBiomeGenmojiUserInteractionEvent
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
   v4 = BiomeLibrary();
-  v5 = [v4 GenerativeExperiences];
-  v6 = [v5 GeneratedImageFeatures];
-  v7 = [v6 UserInteraction];
+  generativeExperiences = [v4 GenerativeExperiences];
+  generatedImageFeatures = [generativeExperiences GeneratedImageFeatures];
+  userInteraction = [generatedImageFeatures UserInteraction];
 
-  v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
   v9 = objc_alloc(MEMORY[0x1E698F2D0]);
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [v9 initWithStartDate:v8 endDate:v10 maxEvents:0 lastN:0 reversed:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [v9 initWithStartDate:v8 endDate:date maxEvents:0 lastN:0 reversed:0];
 
-  v12 = [v7 publisherWithUseCase:@"FeatureDiscoverability" options:v11];
+  v12 = [userInteraction publisherWithUseCase:@"FeatureDiscoverability" options:v11];
 
   return v12;
 }
 
 - (id)filterHandler
 {
-  v2 = [(TPSContextualBiomeGenmojiUserInteractionEvent *)self _filteringPredicate];
-  v3 = v2;
-  if (v2)
+  _filteringPredicate = [(TPSContextualBiomeGenmojiUserInteractionEvent *)self _filteringPredicate];
+  v3 = _filteringPredicate;
+  if (_filteringPredicate)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__TPSContextualBiomeGenmojiUserInteractionEvent_filterHandler__block_invoke;
     aBlock[3] = &unk_1E8101708;
-    v7 = v2;
+    v7 = _filteringPredicate;
     v4 = _Block_copy(aBlock);
   }
 
@@ -65,14 +65,14 @@ uint64_t __62__TPSContextualBiomeGenmojiUserInteractionEvent_filterHandler__bloc
 
 - (id)filterParametersForBiomeQuery
 {
-  v3 = [(TPSContextualBiomeEvent *)self filterInfo];
+  filterInfo = [(TPSContextualBiomeEvent *)self filterInfo];
 
-  if (v3)
+  if (filterInfo)
   {
     v23.receiver = self;
     v23.super_class = TPSContextualBiomeGenmojiUserInteractionEvent;
-    v4 = [(TPSContextualBiomeEvent *)&v23 filterParametersForBiomeQuery];
-    v5 = [v4 mutableCopy];
+    filterParametersForBiomeQuery = [(TPSContextualBiomeEvent *)&v23 filterParametersForBiomeQuery];
+    v5 = [filterParametersForBiomeQuery mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -86,33 +86,33 @@ uint64_t __62__TPSContextualBiomeGenmojiUserInteractionEvent_filterHandler__bloc
 
     v9 = v7;
 
-    v10 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v11 = [v10 TPSSafeObjectForKey:@"personalization"];
+    filterInfo2 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v11 = [filterInfo2 TPSSafeObjectForKey:@"personalization"];
 
     if (v11)
     {
-      v12 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v13 = [v12 TPSSafeStringForKey:@"personalization"];
+      filterInfo3 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v13 = [filterInfo3 TPSSafeStringForKey:@"personalization"];
       [v9 setObject:v13 forKeyedSubscript:@"personalization"];
     }
 
-    v14 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v15 = [v14 TPSSafeObjectForKey:@"result"];
+    filterInfo4 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v15 = [filterInfo4 TPSSafeObjectForKey:@"result"];
 
     if (v15)
     {
-      v16 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v17 = [v16 TPSSafeStringForKey:@"result"];
+      filterInfo5 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v17 = [filterInfo5 TPSSafeStringForKey:@"result"];
       [v9 setObject:v17 forKeyedSubscript:@"result"];
     }
 
-    v18 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v19 = [v18 TPSSafeObjectForKey:@"feature"];
+    filterInfo6 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v19 = [filterInfo6 TPSSafeObjectForKey:@"feature"];
 
     if (v19)
     {
-      v20 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v21 = [v20 TPSSafeStringForKey:@"feature"];
+      filterInfo7 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v21 = [filterInfo7 TPSSafeStringForKey:@"feature"];
       [v9 setObject:v21 forKeyedSubscript:@"feature"];
     }
 
@@ -129,18 +129,18 @@ uint64_t __62__TPSContextualBiomeGenmojiUserInteractionEvent_filterHandler__bloc
 
 - (id)_filteringPredicate
 {
-  v3 = [(TPSContextualBiomeEvent *)self filterInfo];
+  filterInfo = [(TPSContextualBiomeEvent *)self filterInfo];
 
-  if (v3)
+  if (filterInfo)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v6 = [v5 TPSSafeStringForKey:@"personalization"];
+    filterInfo2 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v6 = [filterInfo2 TPSSafeStringForKey:@"personalization"];
 
     if (v6)
     {
-      v7 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v8 = [v7 TPSSafeStringForKey:@"personalization"];
+      filterInfo3 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v8 = [filterInfo3 TPSSafeStringForKey:@"personalization"];
 
       v9 = BMGeneratedImageUserInteractionPersonalizationFromString();
       v29[0] = MEMORY[0x1E69E9820];
@@ -152,13 +152,13 @@ uint64_t __62__TPSContextualBiomeGenmojiUserInteractionEvent_filterHandler__bloc
       [v4 addObject:v10];
     }
 
-    v11 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v12 = [v11 TPSSafeStringForKey:@"result"];
+    filterInfo4 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v12 = [filterInfo4 TPSSafeStringForKey:@"result"];
 
     if (v12)
     {
-      v13 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v14 = [v13 TPSSafeStringForKey:@"result"];
+      filterInfo5 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v14 = [filterInfo5 TPSSafeStringForKey:@"result"];
 
       v15 = BMGeneratedImageUserInteractionResultFromString();
       v27[0] = MEMORY[0x1E69E9820];
@@ -170,13 +170,13 @@ uint64_t __62__TPSContextualBiomeGenmojiUserInteractionEvent_filterHandler__bloc
       [v4 addObject:v16];
     }
 
-    v17 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v18 = [v17 TPSSafeStringForKey:@"feature"];
+    filterInfo6 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v18 = [filterInfo6 TPSSafeStringForKey:@"feature"];
 
     if (v18)
     {
-      v19 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v20 = [v19 TPSSafeStringForKey:@"feature"];
+      filterInfo7 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v20 = [filterInfo7 TPSSafeStringForKey:@"feature"];
 
       v21 = BMGeneratedImageUserInteractionFeatureFromString();
       v25[0] = MEMORY[0x1E69E9820];

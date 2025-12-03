@@ -1,48 +1,48 @@
 @interface TPSImageAssetView
-+ (BOOL)cacheImageAvailableForIdentifier:(id)a3;
++ (BOOL)cacheImageAvailableForIdentifier:(id)identifier;
 - (TPSImageAssetView)init;
-- (TPSImageAssetView)initWithCoder:(id)a3;
-- (TPSImageAssetView)initWithDefaultBackgroundColor:(id)a3 noImageBackgroundColor:(id)a4;
-- (TPSImageAssetView)initWithFrame:(CGRect)a3;
+- (TPSImageAssetView)initWithCoder:(id)coder;
+- (TPSImageAssetView)initWithDefaultBackgroundColor:(id)color noImageBackgroundColor:(id)backgroundColor;
+- (TPSImageAssetView)initWithFrame:(CGRect)frame;
 - (TPSImageAssetViewDelegate)delegate;
-- (void)animateImageView:(BOOL)a3;
+- (void)animateImageView:(BOOL)view;
 - (void)cancel;
 - (void)commonInit;
-- (void)fetchImageWithIdentifier:(id)a3 path:(id)a4;
+- (void)fetchImageWithIdentifier:(id)identifier path:(id)path;
 - (void)layoutSubviews;
-- (void)setAspectFillAsset:(BOOL)a3;
-- (void)setDefaultBackgroundColor:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setNoImageBackgroundColor:(id)a3;
-- (void)setRoundedCorner:(BOOL)a3;
-- (void)showHighlight:(BOOL)a3;
+- (void)setAspectFillAsset:(BOOL)asset;
+- (void)setDefaultBackgroundColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setNoImageBackgroundColor:(id)color;
+- (void)setRoundedCorner:(BOOL)corner;
+- (void)showHighlight:(BOOL)highlight;
 - (void)updateBackgroundColor;
 @end
 
 @implementation TPSImageAssetView
 
-+ (BOOL)cacheImageAvailableForIdentifier:(id)a3
++ (BOOL)cacheImageAvailableForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:identifierCopy];
   v6 = v5 != 0;
 
-  if (v4 && !v5)
+  if (identifierCopy && !v5)
   {
-    v7 = [MEMORY[0x277D755B8] imageNamed:v4];
+    v7 = [MEMORY[0x277D755B8] imageNamed:identifierCopy];
     if (!v7)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = a1;
+      block[4] = self;
       if (cacheImageAvailableForIdentifier__predicate != -1)
       {
         dispatch_once(&cacheImageAvailableForIdentifier__predicate, block);
       }
 
-      v7 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:cacheImageAvailableForIdentifier__gFrameworkBundle compatibleWithTraitCollection:0];
+      v7 = [MEMORY[0x277D755B8] imageNamed:identifierCopy inBundle:cacheImageAvailableForIdentifier__gFrameworkBundle compatibleWithTraitCollection:0];
     }
 
     v6 = v7 != 0;
@@ -90,18 +90,18 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
   }
 }
 
-- (TPSImageAssetView)initWithDefaultBackgroundColor:(id)a3 noImageBackgroundColor:(id)a4
+- (TPSImageAssetView)initWithDefaultBackgroundColor:(id)color noImageBackgroundColor:(id)backgroundColor
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
   v12.receiver = self;
   v12.super_class = TPSImageAssetView;
   v9 = [(TPSImageAssetView *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_defaultBackgroundColor, a3);
-    objc_storeStrong(&v10->_noImageBackgroundColor, a4);
+    objc_storeStrong(&v9->_defaultBackgroundColor, color);
+    objc_storeStrong(&v10->_noImageBackgroundColor, backgroundColor);
     [(TPSImageAssetView *)v10 commonInit];
   }
 
@@ -122,11 +122,11 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
   return v3;
 }
 
-- (TPSImageAssetView)initWithFrame:(CGRect)a3
+- (TPSImageAssetView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TPSImageAssetView;
-  v3 = [(TPSImageAssetView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPSImageAssetView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -136,11 +136,11 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
   return v4;
 }
 
-- (TPSImageAssetView)initWithCoder:(id)a3
+- (TPSImageAssetView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSImageAssetView;
-  v3 = [(TPSImageAssetView *)&v6 initWithCoder:a3];
+  v3 = [(TPSImageAssetView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -150,12 +150,12 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
   return v4;
 }
 
-- (void)setAspectFillAsset:(BOOL)a3
+- (void)setAspectFillAsset:(BOOL)asset
 {
-  if (self->_aspectFillAsset != a3)
+  if (self->_aspectFillAsset != asset)
   {
-    self->_aspectFillAsset = a3;
-    if (a3)
+    self->_aspectFillAsset = asset;
+    if (asset)
     {
       v3 = 2;
     }
@@ -169,13 +169,13 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
   }
 }
 
-- (void)setRoundedCorner:(BOOL)a3
+- (void)setRoundedCorner:(BOOL)corner
 {
-  if (self->_roundedCorner != a3)
+  if (self->_roundedCorner != corner)
   {
-    self->_roundedCorner = a3;
+    self->_roundedCorner = corner;
     roundedCornerRadius = 0.0;
-    if (a3)
+    if (corner)
     {
       roundedCornerRadius = self->_roundedCornerRadius;
     }
@@ -183,15 +183,15 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
     [(TPSImageAssetView *)self _setContinuousCornerRadius:roundedCornerRadius];
     [(TPSImageAssetView *)self _continuousCornerRadius];
     v7 = v6;
-    v8 = [(TPSImageAssetView *)self imageView];
-    [v8 _setContinuousCornerRadius:v7];
+    imageView = [(TPSImageAssetView *)self imageView];
+    [imageView _setContinuousCornerRadius:v7];
   }
 }
 
 - (void)cancel
 {
-  v3 = [MEMORY[0x277D717E0] defaultManager];
-  [v3 cancelSessionItem:self->_imageURLSessionItem];
+  defaultManager = [MEMORY[0x277D717E0] defaultManager];
+  [defaultManager cancelSessionItem:self->_imageURLSessionItem];
 
   imageURLSessionItem = self->_imageURLSessionItem;
   self->_imageURLSessionItem = 0;
@@ -200,50 +200,50 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
   self->_currentDisplayIdentifier = 0;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v4 != v6)
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_imageView setImage:v6];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     if (self->_hideImageWhenNil)
     {
-      v5 = [(TPSImageAssetView *)self imageView];
-      [v5 setHidden:v6 == 0];
+      imageView = [(TPSImageAssetView *)self imageView];
+      [imageView setHidden:imageCopy == 0];
     }
   }
 
   [(TPSImageAssetView *)self updateBackgroundColor];
 }
 
-- (void)setDefaultBackgroundColor:(id)a3
+- (void)setDefaultBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_defaultBackgroundColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_defaultBackgroundColor, a3);
+    objc_storeStrong(&self->_defaultBackgroundColor, color);
     [(TPSImageAssetView *)self updateBackgroundColor];
   }
 }
 
-- (void)setNoImageBackgroundColor:(id)a3
+- (void)setNoImageBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_noImageBackgroundColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_noImageBackgroundColor, a3);
+    objc_storeStrong(&self->_noImageBackgroundColor, color);
     [(TPSImageAssetView *)self updateBackgroundColor];
   }
 }
 
 - (void)updateBackgroundColor
 {
-  v13 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   respectLoadingStatus = self->_respectLoadingStatus;
-  v4 = [(UIImageView *)self->_imageView image];
-  v5 = v4;
+  image = [(UIImageView *)self->_imageView image];
+  v5 = image;
   if (respectLoadingStatus)
   {
 
@@ -269,13 +269,13 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
     }
 
     v9 = *(&self->super.super.super.isa + v7);
-    v10 = v13;
+    v10 = clearColor;
   }
 
   else
   {
     v8 = &OBJC_IVAR___TPSImageAssetView__defaultBackgroundColor;
-    if (!v4)
+    if (!image)
     {
       v8 = &OBJC_IVAR___TPSImageAssetView__noImageBackgroundColor;
     }
@@ -285,28 +285,28 @@ uint64_t __54__TPSImageAssetView_cacheImageAvailableForIdentifier___block_invoke
     v10 = v5;
   }
 
-  v13 = v9;
+  clearColor = v9;
 LABEL_12:
-  v11 = [(TPSImageAssetView *)self backgroundColor];
-  v12 = [v11 isEqual:v13];
+  backgroundColor = [(TPSImageAssetView *)self backgroundColor];
+  v12 = [backgroundColor isEqual:clearColor];
 
   if ((v12 & 1) == 0)
   {
-    [(TPSImageAssetView *)self setBackgroundColor:v13];
+    [(TPSImageAssetView *)self setBackgroundColor:clearColor];
   }
 }
 
-- (void)fetchImageWithIdentifier:(id)a3 path:(id)a4
+- (void)fetchImageWithIdentifier:(id)identifier path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  identifierCopy = identifier;
+  pathCopy = path;
+  if (![identifierCopy length])
   {
     self->_status = 2;
     goto LABEL_8;
   }
 
-  if (![(NSString *)self->_currentDisplayIdentifier isEqualToString:v7])
+  if (![(NSString *)self->_currentDisplayIdentifier isEqualToString:identifierCopy])
   {
     self->_status = 1;
     currentDisplayIdentifier = self->_currentDisplayIdentifier;
@@ -315,18 +315,18 @@ LABEL_12:
     currentImagePath = self->_currentImagePath;
     self->_currentImagePath = 0;
 
-    v11 = [MEMORY[0x277D717E0] defaultManager];
-    [v11 cancelSessionItem:self->_imageURLSessionItem];
+    defaultManager = [MEMORY[0x277D717E0] defaultManager];
+    [defaultManager cancelSessionItem:self->_imageURLSessionItem];
 
     imageURLSessionItem = self->_imageURLSessionItem;
     self->_imageURLSessionItem = 0;
 
     [(TPSImageAssetView *)self setImage:0];
-    if (v8)
+    if (pathCopy)
     {
-      v13 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:v7];
-      objc_storeStrong(&self->_currentDisplayIdentifier, a3);
-      objc_storeStrong(&self->_currentImagePath, a4);
+      v13 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:identifierCopy];
+      objc_storeStrong(&self->_currentDisplayIdentifier, identifier);
+      objc_storeStrong(&self->_currentImagePath, path);
       if (v13)
       {
         [(TPSImageAssetView *)self setImage:v13];
@@ -336,7 +336,7 @@ LABEL_12:
         goto LABEL_10;
       }
 
-      v16 = [MEMORY[0x277D755B8] imageNamed:v7];
+      v16 = [MEMORY[0x277D755B8] imageNamed:identifierCopy];
       if (v16)
       {
         v15 = v16;
@@ -344,8 +344,8 @@ LABEL_12:
 
       else
       {
-        v17 = [v8 lastPathComponent];
-        v18 = [MEMORY[0x277D755B8] imageNamed:v17];
+        lastPathComponent = [pathCopy lastPathComponent];
+        v18 = [MEMORY[0x277D755B8] imageNamed:lastPathComponent];
         if (v18)
         {
           v15 = v18;
@@ -353,16 +353,16 @@ LABEL_12:
 
         else
         {
-          v19 = [v17 componentsSeparatedByString:@"@"];
-          v20 = [v19 firstObject];
+          v19 = [lastPathComponent componentsSeparatedByString:@"@"];
+          firstObject = [v19 firstObject];
 
-          v15 = [MEMORY[0x277D755B8] imageNamed:v20];
+          v15 = [MEMORY[0x277D755B8] imageNamed:firstObject];
 
           if (!v15)
           {
             objc_initWeak(&location, self);
             objc_initWeak(&from, self->_currentDisplayIdentifier);
-            v22 = [TPSImageAssetController dataCacheForIdentifier:v7];
+            v22 = [TPSImageAssetController dataCacheForIdentifier:identifierCopy];
             v23 = v22 != 0;
 
             v24 = *MEMORY[0x277CCA798];
@@ -373,9 +373,9 @@ LABEL_12:
             objc_copyWeak(&v30, &location);
             objc_copyWeak(&v31, &from);
             v32 = v23;
-            v29 = v8;
+            v29 = pathCopy;
             LODWORD(v25) = v24;
-            v26 = [TPSImageAssetController formattedDataForPath:v29 identifier:v7 priority:v28 completionHandler:v25];
+            v26 = [TPSImageAssetController formattedDataForPath:v29 identifier:identifierCopy priority:v28 completionHandler:v25];
             v27 = self->_imageURLSessionItem;
             self->_imageURLSessionItem = v26;
 
@@ -503,14 +503,14 @@ LABEL_16:
   [WeakRetained setImageURLSessionItem:0];
 }
 
-- (void)animateImageView:(BOOL)a3
+- (void)animateImageView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(TPSImageAssetView *)self imageView];
-  v6 = v5;
-  if (v3)
+  viewCopy = view;
+  imageView = [(TPSImageAssetView *)self imageView];
+  v6 = imageView;
+  if (viewCopy)
   {
-    [v5 setAlpha:0.0];
+    [imageView setAlpha:0.0];
 
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -522,7 +522,7 @@ LABEL_16:
 
   else
   {
-    [v5 setAlpha:1.0];
+    [imageView setAlpha:1.0];
   }
 }
 
@@ -532,10 +532,10 @@ void __38__TPSImageAssetView_animateImageView___block_invoke(uint64_t a1)
   [v1 setAlpha:1.0];
 }
 
-- (void)showHighlight:(BOOL)a3
+- (void)showHighlight:(BOOL)highlight
 {
   highlightView = self->_highlightView;
-  if (a3)
+  if (highlight)
   {
     if (!highlightView)
     {

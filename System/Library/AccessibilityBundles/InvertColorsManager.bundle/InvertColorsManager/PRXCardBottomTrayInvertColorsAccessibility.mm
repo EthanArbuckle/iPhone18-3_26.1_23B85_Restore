@@ -1,6 +1,6 @@
 @interface PRXCardBottomTrayInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)setImageView:(id)a3;
+- (void)setImageView:(id)view;
 @end
 
 @implementation PRXCardBottomTrayInvertColorsAccessibility
@@ -11,11 +11,11 @@
   [v2 setAccessibilityIgnoresInvertColors:1];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
   v4.receiver = self;
   v4.super_class = PRXCardBottomTrayInvertColorsAccessibility;
-  [(PRXCardBottomTrayInvertColorsAccessibility *)&v4 setImageView:a3];
+  [(PRXCardBottomTrayInvertColorsAccessibility *)&v4 setImageView:view];
   [(PRXCardBottomTrayInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

@@ -6,15 +6,15 @@
 
 - (__CFString)tokenKindAccessibilityDescription
 {
-  v1 = [a1 tokenKind];
-  if (v1 > 0x2E)
+  tokenKind = [self tokenKind];
+  if (tokenKind > 0x2E)
   {
     return @"suggestion";
   }
 
   else
   {
-    return off_278188930[v1];
+    return off_278188930[tokenKind];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface CNContactOrbHeaderView
-+ (id)descriptorForRequiredKeysForContactFormatter:(id)a3 includingAvatarViewDescriptors:(BOOL)a4;
-+ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (CNContactOrbHeaderView)initWithContact:(id)a3 frame:(CGRect)a4;
++ (id)descriptorForRequiredKeysForContactFormatter:(id)formatter includingAvatarViewDescriptors:(BOOL)descriptors;
++ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)descriptors;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (CNContactOrbHeaderView)initWithContact:(id)contact frame:(CGRect)frame;
 - (UIEdgeInsets)contentMargins;
-- (id)_headerStringForContacts:(id)a3;
-- (id)_taglineStringForContacts:(id)a3;
-- (void)copy:(id)a3;
+- (id)_headerStringForContacts:(id)contacts;
+- (id)_taglineStringForContacts:(id)contacts;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)handleNameLabelLongPress:(id)a3;
-- (void)menuWillHide:(id)a3;
+- (void)handleNameLabelLongPress:(id)press;
+- (void)menuWillHide:(id)hide;
 - (void)reloadData;
-- (void)setContentMargins:(UIEdgeInsets)a3;
-- (void)setMessage:(id)a3;
-- (void)setNameTextAttributes:(id)a3;
-- (void)setTaglineTextAttributes:(id)a3;
+- (void)setContentMargins:(UIEdgeInsets)margins;
+- (void)setMessage:(id)message;
+- (void)setNameTextAttributes:(id)attributes;
+- (void)setTaglineTextAttributes:(id)attributes;
 - (void)tintColorDidChange;
 - (void)updateConstraints;
 - (void)updateFontSizes;
-- (void)updateWithContacts:(id)a3;
+- (void)updateWithContacts:(id)contacts;
 @end
 
 @implementation CNContactOrbHeaderView
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (void)menuWillHide:(id)a3
+- (void)menuWillHide:(id)hide
 {
   [(UILabel *)self->_nameLabel setHighlighted:0];
   taglineLabel = self->_taglineLabel;
@@ -44,11 +44,11 @@
   [(UILabel *)taglineLabel setHighlighted:0];
 }
 
-- (void)handleNameLabelLongPress:(id)a3
+- (void)handleNameLabelLongPress:(id)press
 {
   if ([(CNContactOrbHeaderView *)self becomeFirstResponder])
   {
-    v19 = [MEMORY[0x1E69DCC68] sharedMenuController];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
     nameLabel = self->_nameLabel;
     [(UILabel *)nameLabel bounds];
     [(UILabel *)nameLabel textRectForBounds:[(UILabel *)self->_nameLabel numberOfLines] limitedToNumberOfLines:v5, v6, v7, v8];
@@ -56,198 +56,198 @@
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(UILabel *)self->_taglineLabel text];
+    text = [(UILabel *)self->_taglineLabel text];
 
-    if (v17)
+    if (text)
     {
       [(UILabel *)self->_taglineLabel bounds];
       v16 = v16 + v18;
     }
 
-    [v19 setTargetRect:self->_nameLabel inView:{v10, v12, v14, v16}];
-    [v19 setMenuVisible:1 animated:1];
+    [mEMORY[0x1E69DCC68] setTargetRect:self->_nameLabel inView:{v10, v12, v14, v16}];
+    [mEMORY[0x1E69DCC68] setMenuVisible:1 animated:1];
     [(UILabel *)self->_nameLabel setHighlighted:1];
     [(UILabel *)self->_taglineLabel setHighlighted:1];
   }
 }
 
-- (id)_taglineStringForContacts:(id)a3
+- (id)_taglineStringForContacts:(id)contacts
 {
-  v4 = a3;
-  if ([v4 count] != 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] != 1)
   {
-    v8 = [v4 count];
+    v8 = [contactsCopy count];
 
-    v5 = [CNNumberFormatting localizedStringWithInteger:v8];
+    firstObject = [CNNumberFormatting localizedStringWithInteger:v8];
     v9 = MEMORY[0x1E696AEC0];
     v10 = CNContactsUIBundle();
-    v11 = [v10 localizedStringForKey:@"CARD_NAME_GROUP_MEMBERS_COUNT-%@" value:&stru_1F0CE7398 table:@"Localized"];
-    v6 = [v9 stringWithFormat:v11, v5];
+    organizationName3 = [v10 localizedStringForKey:@"CARD_NAME_GROUP_MEMBERS_COUNT-%@" value:&stru_1F0CE7398 table:@"Localized"];
+    organizationName = [v9 stringWithFormat:organizationName3, firstObject];
     goto LABEL_6;
   }
 
-  v5 = [v4 firstObject];
+  firstObject = [contactsCopy firstObject];
 
-  if ([v5 contactType] == 1)
+  if ([firstObject contactType] == 1)
   {
-    v6 = [v5 organizationName];
+    organizationName = [firstObject organizationName];
 
-    if (!v6)
+    if (!organizationName)
     {
       goto LABEL_12;
     }
 
-    v7 = [v5 personName];
+    personName = [firstObject personName];
     goto LABEL_11;
   }
 
-  v12 = [v5 personName];
-  if (![v12 length])
+  personName2 = [firstObject personName];
+  if (![personName2 length])
   {
 
     goto LABEL_21;
   }
 
-  v13 = [(CNContactOrbHeaderView *)self alternateName];
+  alternateName = [(CNContactOrbHeaderView *)self alternateName];
 
-  if (!v13)
+  if (!alternateName)
   {
 LABEL_21:
-    v6 = [MEMORY[0x1E696AD60] string];
-    v10 = [MEMORY[0x1E695CD80] stringFromContact:v5 style:1];
+    organizationName = [MEMORY[0x1E696AD60] string];
+    v10 = [MEMORY[0x1E695CD80] stringFromContact:firstObject style:1];
     if ([v10 length])
     {
-      [v6 appendString:v10];
+      [organizationName appendString:v10];
     }
 
-    v20 = [v5 nickname];
-    v21 = [v20 length];
+    nickname = [firstObject nickname];
+    v21 = [nickname length];
 
     if (v21)
     {
-      if ([v6 length])
+      if ([organizationName length])
       {
-        [v6 appendString:@"\n"];
+        [organizationName appendString:@"\n"];
       }
 
       v22 = CNContactsUIBundle();
       v23 = [v22 localizedStringForKey:@"CARD_NAME_NICKNAME_FORMAT-%@" value:&stru_1F0CE7398 table:@"Localized"];
-      v24 = [v5 nickname];
-      [v6 appendFormat:v23, v24];
+      nickname2 = [firstObject nickname];
+      [organizationName appendFormat:v23, nickname2];
     }
 
-    v25 = [v5 previousFamilyName];
-    v26 = [v25 length];
+    previousFamilyName = [firstObject previousFamilyName];
+    v26 = [previousFamilyName length];
 
     if (v26)
     {
-      if ([v6 length])
+      if ([organizationName length])
       {
-        [v6 appendString:@"\n"];
+        [organizationName appendString:@"\n"];
       }
 
-      v27 = [v5 previousFamilyName];
-      [v6 appendString:v27];
+      previousFamilyName2 = [firstObject previousFamilyName];
+      [organizationName appendString:previousFamilyName2];
     }
 
-    v28 = [v5 jobTitle];
-    v29 = [v28 length];
+    jobTitle = [firstObject jobTitle];
+    v29 = [jobTitle length];
 
     if (v29)
     {
-      if ([v6 length])
+      if ([organizationName length])
       {
-        [v6 appendString:@"\n"];
+        [organizationName appendString:@"\n"];
       }
 
-      v30 = [v5 jobTitle];
-      [v6 appendString:v30];
+      jobTitle2 = [firstObject jobTitle];
+      [organizationName appendString:jobTitle2];
     }
 
-    v31 = [v5 departmentName];
-    v32 = [v31 length];
+    departmentName = [firstObject departmentName];
+    v32 = [departmentName length];
 
     if (v32)
     {
-      v33 = [v5 jobTitle];
-      v34 = [v33 length];
+      jobTitle3 = [firstObject jobTitle];
+      v34 = [jobTitle3 length];
 
       if (v34)
       {
         v35 = CNContactsUIBundle();
         v36 = [v35 localizedStringForKey:@"CARD_NAME_JOB_TITLE_DEPARTMENT_SEPARATOR" value:&stru_1F0CE7398 table:@"Localized"];
 
-        [v6 appendString:v36];
+        [organizationName appendString:v36];
       }
 
-      else if ([v6 length])
+      else if ([organizationName length])
       {
-        [v6 appendString:@"\n"];
+        [organizationName appendString:@"\n"];
       }
 
-      v37 = [v5 departmentName];
-      [v6 appendString:v37];
+      departmentName2 = [firstObject departmentName];
+      [organizationName appendString:departmentName2];
     }
 
-    v38 = [v5 organizationName];
-    v39 = [v38 length];
+    organizationName2 = [firstObject organizationName];
+    v39 = [organizationName2 length];
 
     if (!v39)
     {
       goto LABEL_7;
     }
 
-    if ([v6 length])
+    if ([organizationName length])
     {
-      [v6 appendString:@"\n"];
+      [organizationName appendString:@"\n"];
     }
 
-    v11 = [v5 organizationName];
-    [v6 appendString:v11];
+    organizationName3 = [firstObject organizationName];
+    [organizationName appendString:organizationName3];
 LABEL_6:
 
 LABEL_7:
     goto LABEL_12;
   }
 
-  v7 = [(CNContactOrbHeaderView *)self alternateName];
+  personName = [(CNContactOrbHeaderView *)self alternateName];
 LABEL_11:
-  v6 = v7;
+  organizationName = personName;
 LABEL_12:
 
-  v14 = [(CNContactOrbHeaderView *)self message];
-  v15 = [v14 length];
+  message = [(CNContactOrbHeaderView *)self message];
+  v15 = [message length];
 
   if (v15)
   {
-    if ([v6 length])
+    if ([organizationName length])
     {
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [(CNContactOrbHeaderView *)self message];
-      v18 = [v16 stringWithFormat:@"%@\n%@", v6, v17];
+      message2 = [(CNContactOrbHeaderView *)self message];
+      message3 = [v16 stringWithFormat:@"%@\n%@", organizationName, message2];
 
-      v6 = v17;
+      organizationName = message2;
     }
 
     else
     {
-      v18 = [(CNContactOrbHeaderView *)self message];
+      message3 = [(CNContactOrbHeaderView *)self message];
     }
 
-    v6 = v18;
+    organizationName = message3;
   }
 
-  return v6;
+  return organizationName;
 }
 
-- (id)_headerStringForContacts:(id)a3
+- (id)_headerStringForContacts:(id)contacts
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
-    v5 = [(CNContactOrbHeaderView *)self contactFormatter];
-    v6 = [v4 firstObject];
-    v7 = [v5 stringFromContact:v6];
+    contactFormatter = [(CNContactOrbHeaderView *)self contactFormatter];
+    firstObject = [contactsCopy firstObject];
+    v7 = [contactFormatter stringFromContact:firstObject];
   }
 
   else
@@ -257,55 +257,55 @@ LABEL_12:
 
   if (![v7 length])
   {
-    v8 = [(CNContactOrbHeaderView *)self alternateName];
+    alternateName = [(CNContactOrbHeaderView *)self alternateName];
 
-    v7 = v8;
+    v7 = alternateName;
   }
 
   return v7;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(UILabel *)self->_nameLabel text];
-  v8 = [v4 mutableCopy];
+  text = [(UILabel *)self->_nameLabel text];
+  v8 = [text mutableCopy];
 
-  v5 = [(UILabel *)self->_taglineLabel text];
+  text2 = [(UILabel *)self->_taglineLabel text];
 
-  if (v5)
+  if (text2)
   {
-    v6 = [(UILabel *)self->_taglineLabel text];
-    [v8 appendFormat:@"\n%@", v6];
+    text3 = [(UILabel *)self->_taglineLabel text];
+    [v8 appendFormat:@"\n%@", text3];
   }
 
-  v7 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v7 setString:v8];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setString:v8];
 }
 
-- (void)setNameTextAttributes:(id)a3
+- (void)setNameTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_nameTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_nameTextAttributes != attributesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_nameTextAttributes, a3);
+    v6 = attributesCopy;
+    objc_storeStrong(&self->_nameTextAttributes, attributes);
     [(UILabel *)self->_nameLabel setAb_textAttributes:v6];
-    v5 = v6;
+    attributesCopy = v6;
   }
 }
 
-- (void)setTaglineTextAttributes:(id)a3
+- (void)setTaglineTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_taglineTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_taglineTextAttributes != attributesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_taglineTextAttributes, a3);
+    v6 = attributesCopy;
+    objc_storeStrong(&self->_taglineTextAttributes, attributes);
     [(UILabel *)self->_taglineLabel setAb_textAttributes:v6];
-    v5 = [(UILabel *)self->_fakeTaglineAlignmentLabel setAb_textAttributes:v6];
+    attributesCopy = [(UILabel *)self->_fakeTaglineAlignmentLabel setAb_textAttributes:v6];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](attributesCopy);
 }
 
 - (void)tintColorDidChange
@@ -313,36 +313,36 @@ LABEL_12:
   v5.receiver = self;
   v5.super_class = CNContactOrbHeaderView;
   [(CNContactOrbHeaderView *)&v5 tintColorDidChange];
-  v3 = [(CNContactOrbHeaderView *)self tintColor];
-  [(UILabel *)self->_nameLabel setHighlightedTextColor:v3];
+  tintColor = [(CNContactOrbHeaderView *)self tintColor];
+  [(UILabel *)self->_nameLabel setHighlightedTextColor:tintColor];
 
-  v4 = [(CNContactOrbHeaderView *)self tintColor];
-  [(UILabel *)self->_taglineLabel setHighlightedTextColor:v4];
+  tintColor2 = [(CNContactOrbHeaderView *)self tintColor];
+  [(UILabel *)self->_taglineLabel setHighlightedTextColor:tintColor2];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
-  if (self->_message != v5)
+  messageCopy = message;
+  if (self->_message != messageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_message, a3);
+    v6 = messageCopy;
+    objc_storeStrong(&self->_message, message);
     [(CNContactOrbHeaderView *)self reloadData];
-    v5 = v6;
+    messageCopy = v6;
   }
 }
 
 - (void)reloadData
 {
   [(CNContactPhotoView *)self->_photoView resetPhoto];
-  v3 = [(CNContactOrbHeaderView *)self contacts];
-  v17 = [(CNContactOrbHeaderView *)self _headerStringForContacts:v3];
+  contacts = [(CNContactOrbHeaderView *)self contacts];
+  v17 = [(CNContactOrbHeaderView *)self _headerStringForContacts:contacts];
 
-  v4 = [(CNContactOrbHeaderView *)self contacts];
-  v5 = [(CNContactOrbHeaderView *)self _taglineStringForContacts:v4];
+  contacts2 = [(CNContactOrbHeaderView *)self contacts];
+  v5 = [(CNContactOrbHeaderView *)self _taglineStringForContacts:contacts2];
 
-  v6 = [(CNContactOrbHeaderView *)self message];
-  if ([v5 isEqualToString:v6])
+  message = [(CNContactOrbHeaderView *)self message];
+  if ([v5 isEqualToString:message])
   {
     v7 = [v17 length];
 
@@ -351,7 +351,7 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    v6 = v17;
+    message = v17;
     v17 = v5;
     v5 = 0;
   }
@@ -363,31 +363,31 @@ LABEL_5:
     v5 = 0;
   }
 
-  v8 = [(UILabel *)self->_nameLabel text];
+  text = [(UILabel *)self->_nameLabel text];
   if (v17)
   {
-    if (!v8)
+    if (!text)
     {
       goto LABEL_17;
     }
   }
 
-  else if (v8)
+  else if (text)
   {
 
     goto LABEL_17;
   }
 
-  v9 = [(UILabel *)self->_taglineLabel text];
+  text2 = [(UILabel *)self->_taglineLabel text];
 
   if (v5)
   {
-    v10 = v9 == 0;
+    v10 = text2 == 0;
   }
 
   else
   {
-    v10 = v9 != 0;
+    v10 = text2 != 0;
   }
 
   if (v17)
@@ -410,19 +410,19 @@ LABEL_17:
 LABEL_18:
   [(UILabel *)self->_nameLabel setAb_text:v17];
   [(UILabel *)self->_taglineLabel setAb_text:v5];
-  v11 = [(CNContactOrbHeaderView *)self photoView];
-  v12 = [v11 isHidden];
-  v13 = [(CNContactOrbHeaderView *)self contacts];
-  if ([v13 count] > 1)
+  photoView = [(CNContactOrbHeaderView *)self photoView];
+  isHidden = [photoView isHidden];
+  contacts3 = [(CNContactOrbHeaderView *)self contacts];
+  if ([contacts3 count] > 1)
   {
-    [v11 setHidden:0];
+    [photoView setHidden:0];
   }
 
   else
   {
-    v14 = [(CNContactOrbHeaderView *)self contacts];
-    v15 = [v14 firstObject];
-    if ([v15 imageDataAvailable])
+    contacts4 = [(CNContactOrbHeaderView *)self contacts];
+    firstObject = [contacts4 firstObject];
+    if ([firstObject imageDataAvailable])
     {
       v16 = 0;
     }
@@ -432,24 +432,24 @@ LABEL_18:
       v16 = [(CNContactOrbHeaderView *)self alwaysShowsMonogram]^ 1;
     }
 
-    [v11 setHidden:v16];
+    [photoView setHidden:v16];
   }
 
-  if (v12 != [v11 isHidden])
+  if (isHidden != [photoView isHidden])
   {
     [(CNContactOrbHeaderView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setContentMargins:(UIEdgeInsets)a3
+- (void)setContentMargins:(UIEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.left;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentMargins.top, v3), vceqq_f64(*&self->_contentMargins.bottom, v4)))) & 1) == 0)
   {
-    self->_contentMargins = a3;
+    self->_contentMargins = margins;
     [(CNContactOrbHeaderView *)self setNeedsUpdateConstraints];
   }
 }
@@ -460,8 +460,8 @@ LABEL_18:
   v14 = *MEMORY[0x1E69DB648];
   v3 = v14;
   v4 = MEMORY[0x1E69DB878];
-  v5 = [(CNContactOrbHeaderView *)self nameTextAttributes];
-  v6 = [v5 objectForKeyedSubscript:@"ABTextStyleAttributeName"];
+  nameTextAttributes = [(CNContactOrbHeaderView *)self nameTextAttributes];
+  v6 = [nameTextAttributes objectForKeyedSubscript:@"ABTextStyleAttributeName"];
   v7 = [v4 ab_preferredRowFontForTextStyle:v6];
   v15[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
@@ -477,19 +477,19 @@ LABEL_18:
   [self cn_updateDictionaryForKey:@"taglineTextAttributes" withChanges:v11];
 }
 
-- (void)updateWithContacts:(id)a3
+- (void)updateWithContacts:(id)contacts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(NSArray *)self->_contacts isEqual:v5]& 1) == 0)
+  contactsCopy = contacts;
+  if (([(NSArray *)self->_contacts isEqual:contactsCopy]& 1) == 0)
   {
     v14 = 448;
-    v15 = a3;
+    contactsCopy2 = contacts;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v5;
+    v6 = contactsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
@@ -517,7 +517,7 @@ LABEL_18:
       while (v8);
     }
 
-    objc_storeStrong(&self->_contacts, a3);
+    objc_storeStrong(&self->_contacts, contacts);
     [(CNContactPhotoView *)self->_photoView setContacts:v6];
     -[CNContactOrbHeaderView setHidden:](self, "setHidden:", [v6 count] == 0);
   }
@@ -532,38 +532,38 @@ LABEL_18:
   v95.receiver = self;
   v95.super_class = CNContactOrbHeaderView;
   [(CNContactOrbHeaderView *)&v95 updateConstraints];
-  v3 = [(CNContactOrbHeaderView *)self headerConstraints];
+  headerConstraints = [(CNContactOrbHeaderView *)self headerConstraints];
 
-  if (v3)
+  if (headerConstraints)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(CNContactOrbHeaderView *)self headerConstraints];
-    [v4 deactivateConstraints:v5];
+    headerConstraints2 = [(CNContactOrbHeaderView *)self headerConstraints];
+    [v4 deactivateConstraints:headerConstraints2];
 
-    v6 = [(CNContactOrbHeaderView *)self headerConstraints];
-    [v6 removeAllObjects];
+    headerConstraints3 = [(CNContactOrbHeaderView *)self headerConstraints];
+    [headerConstraints3 removeAllObjects];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    [(CNContactOrbHeaderView *)self setHeaderConstraints:v6];
+    headerConstraints3 = [MEMORY[0x1E695DF70] array];
+    [(CNContactOrbHeaderView *)self setHeaderConstraints:headerConstraints3];
   }
 
   nameLabel = self->_nameLabel;
   v104[0] = @"name";
   v104[1] = @"photo";
   v105[0] = nameLabel;
-  v8 = [(CNContactOrbHeaderView *)self photoView];
-  v105[1] = v8;
+  photoView = [(CNContactOrbHeaderView *)self photoView];
+  v105[1] = photoView;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:2];
 
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [(CNContactOrbHeaderView *)self photoView];
-  v12 = [v11 isHidden];
+  array = [MEMORY[0x1E695DF70] array];
+  photoView2 = [(CNContactOrbHeaderView *)self photoView];
+  isHidden = [photoView2 isHidden];
 
   v13 = MEMORY[0x1E696ACD8];
-  if (v12)
+  if (isHidden)
   {
     v96[0] = @"leftMargin";
     v14 = MEMORY[0x1E696AD98];
@@ -577,7 +577,7 @@ LABEL_18:
     v97[1] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:2];
     v21 = [v13 constraintsWithVisualFormat:@"H:|-(leftMargin)-[name]-(rightMargin)-|" options:0 metrics:v20 views:v9];
-    [v10 addObjectsFromArray:v21];
+    [array addObjectsFromArray:v21];
   }
 
   else
@@ -596,11 +596,11 @@ LABEL_18:
     v103[2] = &unk_1F0D4B348;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:3];
     v100 = @"photo";
-    v28 = [(CNContactOrbHeaderView *)self photoView];
-    v101 = v28;
+    photoView3 = [(CNContactOrbHeaderView *)self photoView];
+    v101 = photoView3;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
     v30 = [v13 constraintsWithVisualFormat:@"V:|-(>=topMargin)-[photo(photoSize)]-(>=bottomMargin)-|" options:0 metrics:v27 views:v29];
-    [v10 addObjectsFromArray:v30];
+    [array addObjectsFromArray:v30];
 
     v31 = MEMORY[0x1E696ACD8];
     v98[0] = @"leftMargin";
@@ -620,95 +620,95 @@ LABEL_18:
     v99[2] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v99 forKeys:v98 count:3];
     v37 = [v31 constraintsWithVisualFormat:@"H:|-(leftMargin)-[photo]-(photoLabelSpacing)-[name]-(rightMargin)-|" options:0 metrics:v21 views:v9];
-    [v10 addObjectsFromArray:v37];
+    [array addObjectsFromArray:v37];
   }
 
   p_taglineLabel = &self->_taglineLabel;
-  v39 = [(UILabel *)self->_taglineLabel text];
+  text = [(UILabel *)self->_taglineLabel text];
 
   v40 = MEMORY[0x1E696ACD8];
-  if (v39)
+  if (text)
   {
     v41 = *p_taglineLabel;
     [(CNContactOrbHeaderView *)self contentMargins];
-    v43 = [v40 constraintWithItem:self attribute:4 relatedBy:1 toItem:v41 attribute:4 multiplier:1.0 constant:v42];
-    [v10 addObject:v43];
-    v44 = [*p_taglineLabel font];
-    [v44 _scaledValueForValue:20.0];
+    nameLabel = [v40 constraintWithItem:self attribute:4 relatedBy:1 toItem:v41 attribute:4 multiplier:1.0 constant:v42];
+    [array addObject:nameLabel];
+    font = [*p_taglineLabel font];
+    [font _scaledValueForValue:20.0];
     v46 = v45;
 
     v47 = [MEMORY[0x1E696ACD8] constraintWithItem:*p_taglineLabel attribute:12 relatedBy:0 toItem:self->_nameLabel attribute:11 multiplier:1.0 constant:v46];
-    [v10 addObject:v47];
+    [array addObject:v47];
 
     v48 = [MEMORY[0x1E696ACD8] constraintWithItem:*p_taglineLabel attribute:5 relatedBy:0 toItem:self->_nameLabel attribute:5 multiplier:1.0 constant:0.0];
-    [v10 addObject:v48];
+    [array addObject:v48];
 
     v49 = [MEMORY[0x1E696ACD8] constraintWithItem:*p_taglineLabel attribute:6 relatedBy:0 toItem:self->_nameLabel attribute:6 multiplier:1.0 constant:0.0];
-    [v10 addObject:v49];
+    [array addObject:v49];
 
-    v50 = [(CNContactOrbHeaderView *)self photoView];
-    v51 = [v50 isHidden];
+    photoView4 = [(CNContactOrbHeaderView *)self photoView];
+    isHidden2 = [photoView4 isHidden];
 
-    v52 = [(UILabel *)self->_nameLabel font];
-    v53 = v52;
-    if (v51)
+    font2 = [(UILabel *)self->_nameLabel font];
+    v53 = font2;
+    if (isHidden2)
     {
-      [v52 _scaledValueForValue:40.0];
+      [font2 _scaledValueForValue:40.0];
       v55 = v54;
 
       v56 = MEMORY[0x1E696ACD8];
       fakeTaglineAlignmentLabel = self->_nameLabel;
       v58 = 1.0;
       v59 = 12;
-      v60 = self;
+      selfCopy2 = self;
       v61 = 3;
       v62 = v55;
     }
 
     else
     {
-      [v52 _scaledValueForValue:24.0];
+      [font2 _scaledValueForValue:24.0];
       v74 = v73;
 
       v75 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_nameLabel attribute:12 relatedBy:1 toItem:self attribute:3 multiplier:1.0 constant:v74];
-      [v10 addObject:v75];
+      [array addObject:v75];
 
-      v76 = [v10 lastObject];
+      lastObject = [array lastObject];
       LODWORD(v77) = 1148829696;
-      [v76 setPriority:v77];
+      [lastObject setPriority:v77];
 
       v78 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_markerView attribute:3 relatedBy:0 toItem:self->_nameLabel attribute:3 multiplier:1.0 constant:0.0];
-      [v10 addObject:v78];
+      [array addObject:v78];
 
-      v79 = [(CNContactOrbHeaderView *)self centersPhotoAndLabels];
+      centersPhotoAndLabels = [(CNContactOrbHeaderView *)self centersPhotoAndLabels];
       p_fakeTaglineAlignmentLabel = &self->_taglineLabel;
-      if (!v79)
+      if (!centersPhotoAndLabels)
       {
         p_fakeTaglineAlignmentLabel = &self->_fakeTaglineAlignmentLabel;
       }
 
       v81 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_markerView attribute:4 relatedBy:0 toItem:*p_fakeTaglineAlignmentLabel attribute:4 multiplier:1.0 constant:0.0];
-      [v10 addObject:v81];
+      [array addObject:v81];
 
       v82 = MEMORY[0x1E696ACD8];
       markerView = self->_markerView;
-      v84 = [(CNContactOrbHeaderView *)self photoView];
-      v85 = [v82 constraintWithItem:markerView attribute:10 relatedBy:0 toItem:v84 attribute:10 multiplier:1.0 constant:0.0];
-      [v10 addObject:v85];
+      photoView5 = [(CNContactOrbHeaderView *)self photoView];
+      v85 = [v82 constraintWithItem:markerView attribute:10 relatedBy:0 toItem:photoView5 attribute:10 multiplier:1.0 constant:0.0];
+      [array addObject:v85];
 
-      v86 = [v10 lastObject];
+      lastObject2 = [array lastObject];
       LODWORD(v87) = 1148813312;
-      [v86 setPriority:v87];
+      [lastObject2 setPriority:v87];
 
       v88 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_fakeTaglineAlignmentLabel attribute:5 relatedBy:0 toItem:*p_taglineLabel attribute:5 multiplier:1.0 constant:0.0];
-      [v10 addObject:v88];
+      [array addObject:v88];
 
       v89 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_fakeTaglineAlignmentLabel attribute:6 relatedBy:0 toItem:*p_taglineLabel attribute:6 multiplier:1.0 constant:0.0];
-      [v10 addObject:v89];
+      [array addObject:v89];
 
       v56 = MEMORY[0x1E696ACD8];
       fakeTaglineAlignmentLabel = self->_fakeTaglineAlignmentLabel;
-      v60 = *p_taglineLabel;
+      selfCopy2 = *p_taglineLabel;
       v58 = 1.0;
       v62 = 0.0;
       v59 = 3;
@@ -721,62 +721,62 @@ LABEL_18:
     v63 = self->_nameLabel;
     [(CNContactOrbHeaderView *)self contentMargins];
     v65 = [v40 constraintWithItem:self attribute:4 relatedBy:1 toItem:v63 attribute:4 multiplier:1.0 constant:v64];
-    [v10 addObject:v65];
+    [array addObject:v65];
 
-    v66 = [(CNContactOrbHeaderView *)self photoView];
-    v67 = [v66 isHidden];
+    photoView6 = [(CNContactOrbHeaderView *)self photoView];
+    isHidden3 = [photoView6 isHidden];
 
     v68 = MEMORY[0x1E696ACD8];
     v69 = self->_nameLabel;
-    if (v67)
+    if (isHidden3)
     {
       v70 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_nameLabel attribute:12 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:40.0];
-      [v10 addObject:v70];
+      [array addObject:v70];
 
       v71 = MEMORY[0x1E696ACD8];
-      v43 = [(CNContactOrbHeaderView *)self nameLabel];
+      nameLabel = [(CNContactOrbHeaderView *)self nameLabel];
       [(CNContactOrbHeaderView *)self contentMargins];
       v62 = v72;
     }
 
     else
     {
-      v90 = [(CNContactOrbHeaderView *)self photoView];
-      v91 = [v68 constraintWithItem:v69 attribute:10 relatedBy:0 toItem:v90 attribute:10 multiplier:1.0 constant:0.0];
-      [v10 addObject:v91];
+      photoView7 = [(CNContactOrbHeaderView *)self photoView];
+      v91 = [v68 constraintWithItem:v69 attribute:10 relatedBy:0 toItem:photoView7 attribute:10 multiplier:1.0 constant:0.0];
+      [array addObject:v91];
 
       v71 = MEMORY[0x1E696ACD8];
-      v43 = [(CNContactOrbHeaderView *)self photoView];
+      nameLabel = [(CNContactOrbHeaderView *)self photoView];
       [(CNContactOrbHeaderView *)self contentMargins];
       v62 = -v92;
     }
 
     v58 = 1.0;
     v56 = v71;
-    fakeTaglineAlignmentLabel = v43;
+    fakeTaglineAlignmentLabel = nameLabel;
     v59 = 4;
-    v60 = self;
+    selfCopy2 = self;
     v61 = 4;
   }
 
-  v93 = [v56 constraintWithItem:fakeTaglineAlignmentLabel attribute:v59 relatedBy:0 toItem:v60 attribute:v61 multiplier:v58 constant:v62];
-  [v10 addObject:v93];
+  v93 = [v56 constraintWithItem:fakeTaglineAlignmentLabel attribute:v59 relatedBy:0 toItem:selfCopy2 attribute:v61 multiplier:v58 constant:v62];
+  [array addObject:v93];
 
-  v94 = [(CNContactOrbHeaderView *)self headerConstraints];
-  [v94 addObjectsFromArray:v10];
+  headerConstraints4 = [(CNContactOrbHeaderView *)self headerConstraints];
+  [headerConstraints4 addObjectsFromArray:array];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v10];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CNContactOrbHeaderView *)self reloadData];
   v14.receiver = self;
   v14.super_class = CNContactOrbHeaderView;
-  *&v10 = a4;
-  *&v11 = a5;
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [(CNContactOrbHeaderView *)&v14 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
   result.height = v13;
   result.width = v12;
@@ -785,36 +785,36 @@ LABEL_18:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNContactOrbHeaderView;
   [(CNContactOrbHeaderView *)&v4 dealloc];
 }
 
-- (CNContactOrbHeaderView)initWithContact:(id)a3 frame:(CGRect)a4
+- (CNContactOrbHeaderView)initWithContact:(id)contact frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v53[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  contactCopy = contact;
   v48.receiver = self;
   v48.super_class = CNContactOrbHeaderView;
-  v10 = [(CNContactOrbHeaderView *)&v48 initWithFrame:x, y, width, height];
-  *&v10->_contentMargins.top = xmmword_199E43D60;
-  *&v10->_contentMargins.bottom = xmmword_199E43D70;
+  height = [(CNContactOrbHeaderView *)&v48 initWithFrame:x, y, width, height];
+  *&height->_contentMargins.top = xmmword_199E43D60;
+  *&height->_contentMargins.bottom = xmmword_199E43D70;
   v11 = [CNContactPhotoView alloc];
   v12 = +[CNUIContactsEnvironment currentEnvironment];
-  v13 = [v12 cachingLikenessRenderer];
-  v14 = [(CNContactPhotoView *)v11 initWithFrame:0 shouldAllowTakePhotoAction:0 threeDTouchEnabled:0 contactStore:0 allowsImageDrops:v13 imageRenderer:x, y, width, height];
-  photoView = v10->_photoView;
-  v10->_photoView = v14;
+  cachingLikenessRenderer = [v12 cachingLikenessRenderer];
+  height2 = [(CNContactPhotoView *)v11 initWithFrame:0 shouldAllowTakePhotoAction:0 threeDTouchEnabled:0 contactStore:0 allowsImageDrops:cachingLikenessRenderer imageRenderer:x, y, width, height];
+  photoView = height->_photoView;
+  height->_photoView = height2;
 
-  [(CNContactPhotoView *)v10->_photoView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(CNContactOrbHeaderView *)v10 addSubview:v10->_photoView];
+  [(CNContactPhotoView *)height->_photoView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(CNContactOrbHeaderView *)height addSubview:height->_photoView];
   v16 = *MEMORY[0x1E69DDD40];
   v17 = *MEMORY[0x1E69DB650];
   v52[0] = @"ABTextStyleAttributeName";
@@ -823,68 +823,68 @@ LABEL_18:
   v18 = +[CNUIColorRepository contactStyleDefaultTextColor];
   v53[1] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
-  nameTextAttributes = v10->_nameTextAttributes;
-  v10->_nameTextAttributes = v19;
+  nameTextAttributes = height->_nameTextAttributes;
+  height->_nameTextAttributes = v19;
 
-  v21 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v10 action:sel_handleNameLabelLongPress_];
+  v21 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:height action:sel_handleNameLabelLongPress_];
   v22 = objc_alloc(MEMORY[0x1E69DCC10]);
   v23 = *MEMORY[0x1E695F058];
   v24 = *(MEMORY[0x1E695F058] + 8);
   v25 = *(MEMORY[0x1E695F058] + 16);
   v26 = *(MEMORY[0x1E695F058] + 24);
   v27 = [v22 initWithFrame:{*MEMORY[0x1E695F058], v24, v25, v26}];
-  nameLabel = v10->_nameLabel;
-  v10->_nameLabel = v27;
+  nameLabel = height->_nameLabel;
+  height->_nameLabel = v27;
 
-  [(UILabel *)v10->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v10->_nameLabel setTextAlignment:4];
-  [(UILabel *)v10->_nameLabel setNumberOfLines:2];
-  [(UILabel *)v10->_nameLabel setUserInteractionEnabled:1];
-  v29 = [(CNContactOrbHeaderView *)v10 tintColor];
-  [(UILabel *)v10->_nameLabel setHighlightedTextColor:v29];
+  [(UILabel *)height->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)height->_nameLabel setTextAlignment:4];
+  [(UILabel *)height->_nameLabel setNumberOfLines:2];
+  [(UILabel *)height->_nameLabel setUserInteractionEnabled:1];
+  tintColor = [(CNContactOrbHeaderView *)height tintColor];
+  [(UILabel *)height->_nameLabel setHighlightedTextColor:tintColor];
 
   LODWORD(v30) = 1148829696;
-  [(UILabel *)v10->_nameLabel setContentHuggingPriority:1 forAxis:v30];
+  [(UILabel *)height->_nameLabel setContentHuggingPriority:1 forAxis:v30];
   LODWORD(v31) = 1148829696;
-  [(UILabel *)v10->_nameLabel setContentCompressionResistancePriority:1 forAxis:v31];
-  [(UILabel *)v10->_nameLabel addGestureRecognizer:v21];
-  [(UILabel *)v10->_nameLabel _cnui_applyContactStyle];
-  [(UILabel *)v10->_nameLabel setAb_textAttributes:v10->_nameTextAttributes];
-  [(CNContactOrbHeaderView *)v10 addSubview:v10->_nameLabel];
-  v32 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v10 action:sel_handleNameLabelLongPress_];
+  [(UILabel *)height->_nameLabel setContentCompressionResistancePriority:1 forAxis:v31];
+  [(UILabel *)height->_nameLabel addGestureRecognizer:v21];
+  [(UILabel *)height->_nameLabel _cnui_applyContactStyle];
+  [(UILabel *)height->_nameLabel setAb_textAttributes:height->_nameTextAttributes];
+  [(CNContactOrbHeaderView *)height addSubview:height->_nameLabel];
+  v32 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:height action:sel_handleNameLabelLongPress_];
   v33 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v23, v24, v25, v26}];
-  taglineLabel = v10->_taglineLabel;
-  v10->_taglineLabel = v33;
+  taglineLabel = height->_taglineLabel;
+  height->_taglineLabel = v33;
 
-  [(UILabel *)v10->_taglineLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v10->_taglineLabel setTextAlignment:4];
-  [(UILabel *)v10->_taglineLabel setNumberOfLines:0];
-  [(UILabel *)v10->_taglineLabel setUserInteractionEnabled:1];
-  v35 = [(CNContactOrbHeaderView *)v10 tintColor];
-  [(UILabel *)v10->_taglineLabel setHighlightedTextColor:v35];
+  [(UILabel *)height->_taglineLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)height->_taglineLabel setTextAlignment:4];
+  [(UILabel *)height->_taglineLabel setNumberOfLines:0];
+  [(UILabel *)height->_taglineLabel setUserInteractionEnabled:1];
+  tintColor2 = [(CNContactOrbHeaderView *)height tintColor];
+  [(UILabel *)height->_taglineLabel setHighlightedTextColor:tintColor2];
 
   LODWORD(v36) = 1148829696;
-  [(UILabel *)v10->_taglineLabel setContentCompressionResistancePriority:1 forAxis:v36];
-  [(UILabel *)v10->_taglineLabel addGestureRecognizer:v32];
-  [(UILabel *)v10->_taglineLabel _cnui_applyContactStyle];
-  [(CNContactOrbHeaderView *)v10 addSubview:v10->_taglineLabel];
+  [(UILabel *)height->_taglineLabel setContentCompressionResistancePriority:1 forAxis:v36];
+  [(UILabel *)height->_taglineLabel addGestureRecognizer:v32];
+  [(UILabel *)height->_taglineLabel _cnui_applyContactStyle];
+  [(CNContactOrbHeaderView *)height addSubview:height->_taglineLabel];
   v37 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v23, v24, v25, v26}];
-  fakeTaglineAlignmentLabel = v10->_fakeTaglineAlignmentLabel;
-  v10->_fakeTaglineAlignmentLabel = v37;
+  fakeTaglineAlignmentLabel = height->_fakeTaglineAlignmentLabel;
+  height->_fakeTaglineAlignmentLabel = v37;
 
-  [(UILabel *)v10->_fakeTaglineAlignmentLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v10->_fakeTaglineAlignmentLabel setTextAlignment:4];
-  [(UILabel *)v10->_fakeTaglineAlignmentLabel setText:@"X"];
-  [(UILabel *)v10->_fakeTaglineAlignmentLabel setHidden:1];
+  [(UILabel *)height->_fakeTaglineAlignmentLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)height->_fakeTaglineAlignmentLabel setTextAlignment:4];
+  [(UILabel *)height->_fakeTaglineAlignmentLabel setText:@"X"];
+  [(UILabel *)height->_fakeTaglineAlignmentLabel setHidden:1];
   LODWORD(v39) = 1148829696;
-  [(UILabel *)v10->_fakeTaglineAlignmentLabel setContentHuggingPriority:1 forAxis:v39];
-  [(CNContactOrbHeaderView *)v10 addSubview:v10->_fakeTaglineAlignmentLabel];
+  [(UILabel *)height->_fakeTaglineAlignmentLabel setContentHuggingPriority:1 forAxis:v39];
+  [(CNContactOrbHeaderView *)height addSubview:height->_fakeTaglineAlignmentLabel];
   v40 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v23, v24, v25, v26}];
-  markerView = v10->_markerView;
-  v10->_markerView = v40;
+  markerView = height->_markerView;
+  height->_markerView = v40;
 
-  [(UIView *)v10->_markerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(CNContactOrbHeaderView *)v10 addSubview:v10->_markerView];
+  [(UIView *)height->_markerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(CNContactOrbHeaderView *)height addSubview:height->_markerView];
   v42 = *MEMORY[0x1E69DDD80];
   v50[1] = v17;
   v51[0] = v42;
@@ -892,35 +892,35 @@ LABEL_18:
   v43 = +[CNUIColorRepository contactStyleDefaultTextColor];
   v51[1] = v43;
   v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
-  [(CNContactOrbHeaderView *)v10 setTaglineTextAttributes:v44];
+  [(CNContactOrbHeaderView *)height setTaglineTextAttributes:v44];
 
-  [(CNContactOrbHeaderView *)v10 updateFontSizes];
-  v45 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v45 addObserver:v10 selector:sel_menuWillHide_ name:*MEMORY[0x1E69DE0E8] object:0];
+  [(CNContactOrbHeaderView *)height updateFontSizes];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:height selector:sel_menuWillHide_ name:*MEMORY[0x1E69DE0E8] object:0];
 
-  [(CNContactOrbHeaderView *)v10 setNeedsUpdateConstraints];
-  if (v9)
+  [(CNContactOrbHeaderView *)height setNeedsUpdateConstraints];
+  if (contactCopy)
   {
-    v49 = v9;
+    v49 = contactCopy;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-    [(CNContactOrbHeaderView *)v10 updateWithContacts:v46];
+    [(CNContactOrbHeaderView *)height updateWithContacts:v46];
   }
 
   else
   {
-    [(CNContactOrbHeaderView *)v10 updateWithContacts:MEMORY[0x1E695E0F0]];
+    [(CNContactOrbHeaderView *)height updateWithContacts:MEMORY[0x1E695E0F0]];
   }
 
-  return v10;
+  return height;
 }
 
-+ (id)descriptorForRequiredKeysForContactFormatter:(id)a3 includingAvatarViewDescriptors:(BOOL)a4
++ (id)descriptorForRequiredKeysForContactFormatter:(id)formatter includingAvatarViewDescriptors:(BOOL)descriptors
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = [a1 descriptorForRequiredKeysIncludingAvatarViewDescriptors:a4];
+  v6 = [self descriptorForRequiredKeysIncludingAvatarViewDescriptors:descriptors];
   v7 = [v5 arrayWithObject:v6];
 
-  if (a3)
+  if (formatter)
   {
     v8 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
     [v7 addObject:v8];
@@ -933,9 +933,9 @@ LABEL_18:
   return v11;
 }
 
-+ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)a3
++ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v23[21] = *MEMORY[0x1E69E9840];
   v4 = [CNMonogrammer descriptorForRequiredKeysIncludingImage:1];
   v5 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:{1, v4}];
@@ -971,7 +971,7 @@ LABEL_18:
   v23[20] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:21];
 
-  if (v3)
+  if (descriptorsCopy)
   {
     v17 = [CNAvatarView descriptorForRequiredKeysWithThreeDTouchEnabled:0];
     v18 = [v16 arrayByAddingObject:v17];

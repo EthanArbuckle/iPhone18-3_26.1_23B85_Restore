@@ -1,27 +1,27 @@
 @interface MRDAVRoutingDataSource
-+ (MRDAVRoutingDataSource)allocWithZone:(_NSZone *)a3;
++ (MRDAVRoutingDataSource)allocWithZone:(_NSZone *)zone;
 - (MRDAVRoutingDataSource)init;
 - (NSArray)pickedRoutes;
-- (id)authorizationRequestCallbackForRouteID:(id)a3;
-- (void)addAuthorizationCallbackForRouteID:(id)a3 requestCallback:(id)a4;
-- (void)removeAuthorizationCallbackForRouteID:(id)a3;
+- (id)authorizationRequestCallbackForRouteID:(id)d;
+- (void)addAuthorizationCallbackForRouteID:(id)d requestCallback:(id)callback;
+- (void)removeAuthorizationCallbackForRouteID:(id)d;
 @end
 
 @implementation MRDAVRoutingDataSource
 
-+ (MRDAVRoutingDataSource)allocWithZone:(_NSZone *)a3
++ (MRDAVRoutingDataSource)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(MRDAVRoutingDataSource *)MRDMediaServerAVRoutingDataSource allocWithZone:a3];
+    return [(MRDAVRoutingDataSource *)MRDMediaServerAVRoutingDataSource allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MRDAVRoutingDataSource;
-    return objc_msgSendSuper2(&v6, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v6, "allocWithZone:", zone);
   }
 }
 
@@ -43,11 +43,11 @@
 
 - (NSArray)pickedRoutes
 {
-  v2 = [(MRDAVRoutingDataSource *)self pickedRoute];
-  v3 = v2;
-  if (v2)
+  pickedRoute = [(MRDAVRoutingDataSource *)self pickedRoute];
+  v3 = pickedRoute;
+  if (pickedRoute)
   {
-    v6 = v2;
+    v6 = pickedRoute;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -59,40 +59,40 @@
   return v4;
 }
 
-- (void)addAuthorizationCallbackForRouteID:(id)a3 requestCallback:(id)a4
+- (void)addAuthorizationCallbackForRouteID:(id)d requestCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100067E1C;
   block[3] = &unk_1004B8190;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = callbackCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = callbackCopy;
   dispatch_sync(serialQueue, block);
 }
 
-- (void)removeAuthorizationCallbackForRouteID:(id)a3
+- (void)removeAuthorizationCallbackForRouteID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100067F78;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (id)authorizationRequestCallbackForRouteID:(id)a3
+- (id)authorizationRequestCallbackForRouteID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -104,10 +104,10 @@
   block[1] = 3221225472;
   block[2] = sub_100068098;
   block[3] = &unk_1004B7798;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(serialQueue, block);
   v7 = objc_retainBlock(v13[5]);
 

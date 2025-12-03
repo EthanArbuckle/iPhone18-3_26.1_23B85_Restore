@@ -1,22 +1,22 @@
 @interface RWIProtocolCSSDomainEventDispatcher
-- (RWIProtocolCSSDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3;
+- (RWIProtocolCSSDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller;
 - (_DWORD)mediaQueryResultChanged;
 - (void)mediaQueryResultChanged;
-- (void)styleSheetAddedWithHeader:(id)a3;
-- (void)styleSheetChangedWithStyleSheetId:(id)a3;
-- (void)styleSheetRemovedWithStyleSheetId:(id)a3;
+- (void)styleSheetAddedWithHeader:(id)header;
+- (void)styleSheetChangedWithStyleSheetId:(id)id;
+- (void)styleSheetRemovedWithStyleSheetId:(id)id;
 @end
 
 @implementation RWIProtocolCSSDomainEventDispatcher
 
-- (RWIProtocolCSSDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolCSSDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolCSSDomainEventDispatcher;
   result = [(RWIProtocolCSSDomainEventDispatcher *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
@@ -38,11 +38,11 @@
   [(RWIProtocolCSSDomainEventDispatcher *)&v7 mediaQueryResultChanged];
 }
 
-- (void)styleSheetChangedWithStyleSheetId:(id)a3
+- (void)styleSheetChangedWithStyleSheetId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"styleSheetId"}];
   }
@@ -59,7 +59,7 @@
   v8 = v22;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v24[0];
-  MEMORY[0x2743DB520](&v19, a3);
+  MEMORY[0x2743DB520](&v19, id);
   WTF::JSONImpl::ObjectBase::setString(v8, &v20, &v19);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v19);
   v9 = v23;
@@ -111,11 +111,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v24];
 }
 
-- (void)styleSheetAddedWithHeader:(id)a3
+- (void)styleSheetAddedWithHeader:(id)header
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!header)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"header"}];
   }
@@ -132,9 +132,9 @@
   v8 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  if (a3)
+  if (header)
   {
-    [a3 toJSONObject];
+    [header toJSONObject];
     v9 = v26;
   }
 
@@ -231,11 +231,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v32];
 }
 
-- (void)styleSheetRemovedWithStyleSheetId:(id)a3
+- (void)styleSheetRemovedWithStyleSheetId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"styleSheetId"}];
   }
@@ -252,7 +252,7 @@
   v8 = v22;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v24[0];
-  MEMORY[0x2743DB520](&v19, a3);
+  MEMORY[0x2743DB520](&v19, id);
   WTF::JSONImpl::ObjectBase::setString(v8, &v20, &v19);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v19);
   v9 = v23;
@@ -306,7 +306,7 @@
 
 - (_DWORD)mediaQueryResultChanged
 {
-  v1 = OUTLINED_FUNCTION_0_3(a1);
+  v1 = OUTLINED_FUNCTION_0_3(self);
   if (v1)
   {
     v2 = OUTLINED_FUNCTION_1_1(v1);

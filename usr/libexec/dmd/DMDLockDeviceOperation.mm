@@ -1,6 +1,6 @@
 @interface DMDLockDeviceOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,25 +20,25 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   +[DMDLockUtilities lockDevice];
-  v5 = [v4 message];
-  v6 = [v4 phoneNumber];
+  message = [requestCopy message];
+  phoneNumber = [requestCopy phoneNumber];
 
   v7 = +[UMUserManager sharedManager];
   if (([v7 isMultiUser] & 1) == 0)
   {
 
-    if (!(v5 | v6))
+    if (!(message | phoneNumber))
     {
       goto LABEL_4;
     }
 
     v8 = objc_opt_new();
-    [v8 setMessage:v5];
-    [v8 setPhoneNumber:v6];
+    [v8 setMessage:message];
+    [v8 setPhoneNumber:phoneNumber];
     [v8 setLostModeEnabled:1];
     v9 = +[FMDFMIPManager sharedInstance];
     v10 = [v9 enableLostModeWithInfo:v8];
@@ -47,7 +47,7 @@
     {
       if ([v10 code] == 7)
       {
-        v11 = self;
+        selfCopy2 = self;
         v12 = 301;
       }
 
@@ -64,11 +64,11 @@
           goto LABEL_13;
         }
 
-        v11 = self;
+        selfCopy2 = self;
         v12 = 302;
       }
 
-      [(DMDTaskOperation *)v11 endOperationWithDMFErrorCode:v12];
+      [(DMDTaskOperation *)selfCopy2 endOperationWithDMFErrorCode:v12];
     }
 
     else

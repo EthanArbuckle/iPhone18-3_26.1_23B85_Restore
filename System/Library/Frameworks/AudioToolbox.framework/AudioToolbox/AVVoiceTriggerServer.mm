@@ -1,36 +1,36 @@
 @interface AVVoiceTriggerServer
 - (AVVoiceTriggerServer)init;
 - (BOOL)isAssistantVoiceTriggerEnabled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)activateSecureSession:(BOOL)a3 reply:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)activateSecureSession:(BOOL)session reply:(id)reply;
 - (void)dealloc;
-- (void)enableBargeInMode:(BOOL)a3 reply:(id)a4;
-- (void)enableListeningOnPorts:(id)a3 reply:(id)a4;
-- (void)enableSpeakerStateListening:(BOOL)a3 reply:(id)a4;
-- (void)enableVoiceTriggerListening:(BOOL)a3 reply:(id)a4;
-- (void)getInputChannelInfoCompletion:(id)a3;
-- (void)initializeWithReply:(id)a3;
-- (void)listeningEnabledReply:(id)a3;
-- (void)portsActiveReply:(id)a3;
-- (void)sendVoiceTriggerOccuredNotification:(id)a3 triggerTime:(unint64_t)a4;
-- (void)setAggressiveECMode:(BOOL)a3 reply:(id)a4;
-- (void)setListeningProperty:(BOOL)a3 reply:(id)a4;
-- (void)siriClientRecordStateChanged:(BOOL)a3;
-- (void)siriClientsRecordingReply:(id)a3;
-- (void)speakerStateActiveReply:(id)a3;
-- (void)speakerStateMutedReply:(id)a3;
+- (void)enableBargeInMode:(BOOL)mode reply:(id)reply;
+- (void)enableListeningOnPorts:(id)ports reply:(id)reply;
+- (void)enableSpeakerStateListening:(BOOL)listening reply:(id)reply;
+- (void)enableVoiceTriggerListening:(BOOL)listening reply:(id)reply;
+- (void)getInputChannelInfoCompletion:(id)completion;
+- (void)initializeWithReply:(id)reply;
+- (void)listeningEnabledReply:(id)reply;
+- (void)portsActiveReply:(id)reply;
+- (void)sendVoiceTriggerOccuredNotification:(id)notification triggerTime:(unint64_t)time;
+- (void)setAggressiveECMode:(BOOL)mode reply:(id)reply;
+- (void)setListeningProperty:(BOOL)property reply:(id)reply;
+- (void)siriClientRecordStateChanged:(BOOL)changed;
+- (void)siriClientsRecordingReply:(id)reply;
+- (void)speakerStateActiveReply:(id)reply;
+- (void)speakerStateMutedReply:(id)reply;
 - (void)speechDetectionVADCreated;
-- (void)updateVoiceTriggerConfiguration:(id)a3 reply:(id)a4;
-- (void)voiceTriggerPastDataFramesAvailable:(id)a3;
+- (void)updateVoiceTriggerConfiguration:(id)configuration reply:(id)reply;
+- (void)voiceTriggerPastDataFramesAvailable:(id)available;
 @end
 
 @implementation AVVoiceTriggerServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
@@ -38,43 +38,43 @@
     v30 = 1024;
     v31 = 2274;
     v32 = 2112;
-    v33 = v7;
+    v33 = connectionCopy;
     v34 = 1024;
-    v35 = [v7 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d newConnection: %@ from PID: %d", buf, 0x22u);
   }
 
   v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F37D6250];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F37DBEA8];
-  [v7 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __59__AVVoiceTriggerServer_listener_shouldAcceptNewConnection___block_invoke;
   v23[3] = &unk_1E7ECE060;
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
-  [v7 setInterruptionHandler:v23];
+  [connectionCopy setInterruptionHandler:v23];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__AVVoiceTriggerServer_listener_shouldAcceptNewConnection___block_invoke_2;
   v20[3] = &unk_1E7ECE060;
   objc_copyWeak(&v21, &from);
   objc_copyWeak(&v22, &location);
-  [v7 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
   notificationQueue = self->_notificationQueue;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __59__AVVoiceTriggerServer_listener_shouldAcceptNewConnection___block_invoke_2_171;
   v17 = &unk_1E7ECE038;
-  v11 = v7;
+  v11 = connectionCopy;
   v18 = v11;
-  v19 = self;
+  selfCopy = self;
   dispatch_async(notificationQueue, &v14);
   [v11 resume];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -278,16 +278,16 @@ void __59__AVVoiceTriggerServer_listener_shouldAcceptNewConnection___block_invok
   [v2 removeObject:*(a1 + 32)];
 }
 
-- (void)siriClientRecordStateChanged:(BOOL)a3
+- (void)siriClientRecordStateChanged:(BOOL)changed
 {
-  v5 = [(AVVoiceTriggerServer *)self notificationQueue];
+  notificationQueue = [(AVVoiceTriggerServer *)self notificationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__AVVoiceTriggerServer_siriClientRecordStateChanged___block_invoke;
   v6[3] = &unk_1E7ECE010;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  changedCopy = changed;
+  dispatch_async(notificationQueue, v6);
 }
 
 void __53__AVVoiceTriggerServer_siriClientRecordStateChanged___block_invoke(uint64_t a1)
@@ -472,10 +472,10 @@ LABEL_6:
   return var11;
 }
 
-- (void)sendVoiceTriggerOccuredNotification:(id)a3 triggerTime:(unint64_t)a4
+- (void)sendVoiceTriggerOccuredNotification:(id)notification triggerTime:(unint64_t)time
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -483,7 +483,7 @@ LABEL_6:
     v34 = 1024;
     v35 = 2155;
     v36 = 2112;
-    v37 = v6;
+    v37 = notificationCopy;
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%25s:%-5d sending voice trigger notification with trigger dictionary %@", buf, 0x1Cu);
   }
 
@@ -494,13 +494,13 @@ LABEL_6:
     v28[1] = 3221225472;
     v28[2] = __72__AVVoiceTriggerServer_sendVoiceTriggerOccuredNotification_triggerTime___block_invoke;
     v28[3] = &unk_1E7ECDFE8;
-    v29 = v6;
-    v30 = a4;
-    afSiriActivationBuiltInMicVoiceFuncPtr(a4, v29, v28);
+    v29 = notificationCopy;
+    timeCopy = time;
+    afSiriActivationBuiltInMicVoiceFuncPtr(time, v29, v28);
   }
 
-  v8 = [(AVVoiceTriggerServer *)self clientConnections];
-  v9 = [v8 count] == 0;
+  clientConnections = [(AVVoiceTriggerServer *)self clientConnections];
+  v9 = [clientConnections count] == 0;
 
   if (v9)
   {
@@ -520,8 +520,8 @@ LABEL_6:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(AVVoiceTriggerServer *)self clientConnections];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v31 count:16];
+    clientConnections2 = [(AVVoiceTriggerServer *)self clientConnections];
+    v11 = [clientConnections2 countByEnumeratingWithState:&v24 objects:v31 count:16];
     if (v11)
     {
       v13 = *v25;
@@ -534,24 +534,24 @@ LABEL_6:
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(clientConnections2);
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 remoteObjectProxy];
-          v18 = v17 == 0;
+          remoteObjectProxy = [v16 remoteObjectProxy];
+          v18 = remoteObjectProxy == 0;
 
           if (v18)
           {
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
-              v21 = [v16 processIdentifier];
+              processIdentifier = [v16 processIdentifier];
               *buf = v23;
               v33 = "AVVoiceTriggerServer.mm";
               v34 = 1024;
               v35 = 2180;
               v36 = 1024;
-              LODWORD(v37) = v21;
+              LODWORD(v37) = processIdentifier;
               _os_log_impl(&dword_1B9A08000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d remoteObjectProxy is nil for client PID (%d)", buf, 0x18u);
             }
           }
@@ -560,22 +560,22 @@ LABEL_6:
           {
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v16 processIdentifier];
+              processIdentifier2 = [v16 processIdentifier];
               *buf = v23;
               v33 = "AVVoiceTriggerServer.mm";
               v34 = 1024;
               v35 = 2176;
               v36 = 1024;
-              LODWORD(v37) = v19;
+              LODWORD(v37) = processIdentifier2;
               _os_log_impl(&dword_1B9A08000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d sendVoiceTriggerOccuredNotification for client PID (%d)", buf, 0x18u);
             }
 
-            v20 = [v16 remoteObjectProxy];
-            [v20 voiceTriggerNotification:v6];
+            remoteObjectProxy2 = [v16 remoteObjectProxy];
+            [remoteObjectProxy2 voiceTriggerNotification:notificationCopy];
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v24 objects:v31 count:16];
+        v11 = [clientConnections2 countByEnumeratingWithState:&v24 objects:v31 count:16];
       }
 
       while (v11);
@@ -632,11 +632,11 @@ LABEL_7:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateSecureSession:(BOOL)a3 reply:(id)a4
+- (void)activateSecureSession:(BOOL)session reply:(id)reply
 {
-  v4 = a3;
+  sessionCopy = session;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 136315650;
@@ -644,12 +644,12 @@ LABEL_7:
     *&v12[12] = 1024;
     *&v12[14] = 2149;
     *&v12[18] = 1024;
-    *&v12[20] = v4;
+    *&v12[20] = sessionCopy;
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d activateSecureSession: %d", v12, 0x18u);
   }
 
   serverImpl = self->serverImpl;
-  v8 = v6;
+  v8 = replyCopy;
   if (!isHACProduct(0))
   {
     goto LABEL_15;
@@ -661,15 +661,15 @@ LABEL_7:
 
   if ((CASIsDarwinOS(void)::global & 1) == 0)
   {
-    v10 = [serverImpl->var14 notificationQueue];
+    notificationQueue = [serverImpl->var14 notificationQueue];
     *v12 = MEMORY[0x1E69E9820];
     *&v12[8] = 3221225472;
     *&v12[16] = ___ZN24AVVoiceTriggerServerImpl21activateSecureSessionEbU13block_pointerFvP7NSErrorE_block_invoke;
     v13 = &unk_1E7ECE148;
     v15 = serverImpl;
-    v16 = v4;
+    v16 = sessionCopy;
     v14 = v8;
-    dispatch_async(v10, v12);
+    dispatch_async(notificationQueue, v12);
 
     v9 = v14;
   }
@@ -693,11 +693,11 @@ LABEL_15:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAggressiveECMode:(BOOL)a3 reply:(id)a4
+- (void)setAggressiveECMode:(BOOL)mode reply:(id)reply
 {
-  v4 = a3;
+  modeCopy = mode;
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
@@ -705,7 +705,7 @@ LABEL_15:
     v37 = 1024;
     v38 = 2138;
     v39 = 1024;
-    LODWORD(p_inAddress) = v4;
+    LODWORD(p_inAddress) = modeCopy;
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d setAggressiveECMode: %d", buf, 0x18u);
   }
 
@@ -779,7 +779,7 @@ LABEL_15:
     if (AudioObjectHasProperty(SpeechDetectionDeviceID, &inAddress) && AudioObjectHasProperty(inObjectID, &v29) && (inQualifierData = 0, *buf = 4, !AudioObjectGetPropertyData(inObjectID, &v29, 4u, &v28, buf, &inQualifierData)) && inQualifierData)
     {
       v14 = 0.0;
-      if (v4)
+      if (modeCopy)
       {
         v14 = 1.0;
       }
@@ -797,7 +797,7 @@ LABEL_15:
         v36 = "AVVoiceTriggerServer.mm";
         *buf = 136315906;
         v37 = 1024;
-        if (v4)
+        if (modeCopy)
         {
           v24 = "Enable";
         }
@@ -820,7 +820,7 @@ LABEL_15:
         v36 = "AVVoiceTriggerServer.mm";
         *buf = 136316162;
         v37 = 1024;
-        if (v4)
+        if (modeCopy)
         {
           v16 = "Enable";
         }
@@ -867,7 +867,7 @@ LABEL_26:
     v22 = "Disabling";
     v36 = "AVVoiceTriggerServer.mm";
     *buf = 136315650;
-    if (v4)
+    if (modeCopy)
     {
       v22 = "Enabling";
     }
@@ -881,15 +881,15 @@ LABEL_26:
 
   v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:560227702 userInfo:0];
 LABEL_32:
-  v6[2](v6, v21);
+  replyCopy[2](replyCopy, v21);
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)siriClientsRecordingReply:(id)a3
+- (void)siriClientsRecordingReply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *v10 = 136315394;
@@ -900,8 +900,8 @@ LABEL_32:
   }
 
   serverImpl = self->serverImpl;
-  v6 = v4;
-  v7 = [serverImpl->var14 notificationQueue];
+  v6 = replyCopy;
+  notificationQueue = [serverImpl->var14 notificationQueue];
   *v10 = MEMORY[0x1E69E9820];
   *&v10[8] = 3221225472;
   *&v10[16] = ___ZN24AVVoiceTriggerServerImpl25siriClientsRecordingReplyEU13block_pointerFvmP7NSErrorE_block_invoke;
@@ -909,15 +909,15 @@ LABEL_32:
   v12 = v6;
   v13 = serverImpl;
   v8 = v6;
-  dispatch_async(v7, v10);
+  dispatch_async(notificationQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listeningEnabledReply:(id)a3
+- (void)listeningEnabledReply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -928,7 +928,7 @@ LABEL_32:
   }
 
   serverImpl = self->serverImpl;
-  v6 = v4;
+  v6 = replyCopy;
   outData = 0;
   SpeechDetectionDeviceID = AVVoiceTriggerServerImpl::GetSpeechDetectionDeviceID(1, 0, v7);
   if (SpeechDetectionDeviceID)
@@ -1009,7 +1009,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  v14 = [serverImpl->var14 notificationQueue];
+  notificationQueue = [serverImpl->var14 notificationQueue];
   *buf = MEMORY[0x1E69E9820];
   *&buf[8] = 3221225472;
   *&buf[16] = ___ZN24AVVoiceTriggerServerImpl21listeningEnabledReplyEU13block_pointerFvbP7NSErrorE_block_invoke;
@@ -1018,39 +1018,39 @@ LABEL_16:
   v19 = outData;
   v20 = PropertyData;
   v15 = v6;
-  dispatch_async(v14, buf);
+  dispatch_async(notificationQueue, buf);
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getInputChannelInfoCompletion:(id)a3
+- (void)getInputChannelInfoCompletion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   serverImpl = self->serverImpl;
   v26 = 0;
   if ((MGGetBoolAnswer() & 1) == 0)
   {
-    v8 = 0;
-    v12 = 0;
+    unsignedIntValue = 0;
+    unsignedIntValue3 = 0;
     v20 = 0;
-    v10 = 1;
+    unsignedIntValue2 = 1;
     goto LABEL_19;
   }
 
   SpeechDetectionDeviceID = AVVoiceTriggerServerImpl::GetSpeechDetectionDeviceID(0, &v26, v6);
-  v8 = 0;
+  unsignedIntValue = 0;
   v9 = v26;
-  v10 = 1;
+  unsignedIntValue2 = 1;
   if (v26)
   {
-    v12 = 0;
+    unsignedIntValue3 = 0;
   }
 
   else
   {
     v11 = SpeechDetectionDeviceID;
-    v12 = 0;
+    unsignedIntValue3 = 0;
     if (SpeechDetectionDeviceID)
     {
       var16 = serverImpl->var16;
@@ -1078,35 +1078,35 @@ LABEL_16:
             v37 = 2112;
             v38 = v15;
             _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%25s:%-5d Error %s fetching barge-in param dict on device 0x%x. Dict(%@)", &inAddress, 0x2Cu);
-            v8 = 0;
-            v12 = 0;
-            v10 = 1;
+            unsignedIntValue = 0;
+            unsignedIntValue3 = 0;
+            unsignedIntValue2 = 1;
           }
 
           else
           {
-            v8 = 0;
-            v12 = 0;
+            unsignedIntValue = 0;
+            unsignedIntValue3 = 0;
           }
         }
 
         else
         {
           v17 = [v14 objectForKeyedSubscript:@"DSP channels"];
-          v8 = [v17 unsignedIntValue];
+          unsignedIntValue = [v17 unsignedIntValue];
 
           v18 = [v15 objectForKeyedSubscript:@"mics"];
-          v10 = [v18 unsignedIntValue];
+          unsignedIntValue2 = [v18 unsignedIntValue];
 
           v19 = [v15 objectForKeyedSubscript:@"refs"];
-          v12 = [v19 unsignedIntValue];
+          unsignedIntValue3 = [v19 unsignedIntValue];
         }
       }
 
       else
       {
-        v8 = 0;
-        v12 = 0;
+        unsignedIntValue = 0;
+        unsignedIntValue3 = 0;
       }
 
       os_unfair_recursive_lock_unlock();
@@ -1131,13 +1131,13 @@ LABEL_18:
   v20 = 0;
 LABEL_19:
   v27[0] = @"dsp-count";
-  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8];
+  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:unsignedIntValue];
   v28[0] = v21;
   v27[1] = @"mic-count";
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10];
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:unsignedIntValue2];
   v28[1] = v22;
   v27[2] = @"speaker-ref-count";
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:unsignedIntValue3];
   v28[2] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
 
@@ -1152,15 +1152,15 @@ LABEL_19:
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d getInputChannelInfoCompletion: %@", &inAddress, 0x1Cu);
   }
 
-  v4[2](v4, v24, v20);
+  completionCopy[2](completionCopy, v24, v20);
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)voiceTriggerPastDataFramesAvailable:(id)a3
+- (void)voiceTriggerPastDataFramesAvailable:(id)available
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  availableCopy = available;
   outData = 0;
   serverImpl = self->serverImpl;
   SpeechDetectionDeviceID = AVVoiceTriggerServerImpl::GetSpeechDetectionDeviceID(1, 0, v6);
@@ -1240,16 +1240,16 @@ LABEL_14:
     v12 = outData;
   }
 
-  v4[2](v4, v12, v10);
+  availableCopy[2](availableCopy, v12, v10);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableBargeInMode:(BOOL)a3 reply:(id)a4
+- (void)enableBargeInMode:(BOOL)mode reply:(id)reply
 {
-  v4 = a3;
+  modeCopy = mode;
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v8 = 136315394;
@@ -1259,16 +1259,16 @@ LABEL_14:
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%25s:%-5d enableBargeInMode", &v8, 0x12u);
   }
 
-  AVVoiceTriggerServerImpl::enableBargeInMode(self->serverImpl, v4, v6);
+  AVVoiceTriggerServerImpl::enableBargeInMode(self->serverImpl, modeCopy, replyCopy);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateVoiceTriggerConfiguration:(id)a3 reply:(id)a4
+- (void)updateVoiceTriggerConfiguration:(id)configuration reply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -1290,13 +1290,13 @@ LABEL_14:
     }
 
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:1852797029 userInfo:0];
-    v7[2](v7, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
-  else if (v6)
+  else if (configurationCopy)
   {
     serverImpl = self->serverImpl;
-    v8 = v7;
+    v8 = replyCopy;
     if (AVVoiceTriggerServerImpl::GetSpeechDetectionDeviceID(1, 0, v10))
     {
       var16 = serverImpl->var16;
@@ -1333,16 +1333,16 @@ LABEL_14:
     }
 
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
-    v7[2](v7, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)speakerStateMutedReply:(id)a3
+- (void)speakerStateMutedReply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *v10 = 136315394;
@@ -1353,8 +1353,8 @@ LABEL_14:
   }
 
   serverImpl = self->serverImpl;
-  v6 = v4;
-  v7 = [serverImpl->var14 notificationQueue];
+  v6 = replyCopy;
+  notificationQueue = [serverImpl->var14 notificationQueue];
   *v10 = MEMORY[0x1E69E9820];
   *&v10[8] = 3221225472;
   *&v10[16] = ___ZN24AVVoiceTriggerServerImpl12speakerMutedEU13block_pointerFvbP7NSErrorE_block_invoke;
@@ -1362,22 +1362,22 @@ LABEL_14:
   v12 = v6;
   v13 = serverImpl;
   v8 = v6;
-  dispatch_async(v7, v10);
+  dispatch_async(notificationQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)speakerStateActiveReply:(id)a3
+- (void)speakerStateActiveReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__AVVoiceTriggerServer_speakerStateActiveReply___block_invoke;
   v7[3] = &unk_1E7ECE120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -1409,18 +1409,18 @@ void __48__AVVoiceTriggerServer_speakerStateActiveReply___block_invoke(uint64_t 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableSpeakerStateListening:(BOOL)a3 reply:(id)a4
+- (void)enableSpeakerStateListening:(BOOL)listening reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__AVVoiceTriggerServer_enableSpeakerStateListening_reply___block_invoke;
   block[3] = &unk_1E7ECDFC0;
-  v11 = a3;
+  listeningCopy = listening;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = replyCopy;
+  v8 = replyCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -1445,17 +1445,17 @@ uint64_t __58__AVVoiceTriggerServer_enableSpeakerStateListening_reply___block_in
   return result;
 }
 
-- (void)portsActiveReply:(id)a3
+- (void)portsActiveReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__AVVoiceTriggerServer_portsActiveReply___block_invoke;
   v7[3] = &unk_1E7ECE120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -1491,11 +1491,11 @@ void __41__AVVoiceTriggerServer_portsActiveReply___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableListeningOnPorts:(id)a3 reply:(id)a4
+- (void)enableListeningOnPorts:(id)ports reply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  portsCopy = ports;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
@@ -1503,7 +1503,7 @@ void __41__AVVoiceTriggerServer_portsActiveReply___block_invoke(uint64_t a1)
     v18 = 1024;
     v19 = 1995;
     v20 = 2112;
-    v21 = v6;
+    v21 = portsCopy;
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d enableListeningOnPorts: (%@)", buf, 0x1Cu);
   }
 
@@ -1512,11 +1512,11 @@ void __41__AVVoiceTriggerServer_portsActiveReply___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __53__AVVoiceTriggerServer_enableListeningOnPorts_reply___block_invoke;
   block[3] = &unk_1E7ECDF98;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v9 = v6;
-  v10 = v7;
+  v13 = portsCopy;
+  selfCopy = self;
+  v15 = replyCopy;
+  v9 = portsCopy;
+  v10 = replyCopy;
   dispatch_async(notificationQueue, block);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -1584,11 +1584,11 @@ uint64_t __53__AVVoiceTriggerServer_enableListeningOnPorts_reply___block_invoke(
   return result;
 }
 
-- (void)setListeningProperty:(BOOL)a3 reply:(id)a4
+- (void)setListeningProperty:(BOOL)property reply:(id)reply
 {
-  v4 = a3;
+  propertyCopy = property;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
@@ -1596,7 +1596,7 @@ uint64_t __53__AVVoiceTriggerServer_enableListeningOnPorts_reply___block_invoke(
     v25 = 1024;
     v26 = 1984;
     v27 = 1024;
-    LODWORD(v28) = v4;
+    LODWORD(v28) = propertyCopy;
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d setListeningProperty: %d", buf, 0x18u);
   }
 
@@ -1607,7 +1607,7 @@ uint64_t __53__AVVoiceTriggerServer_enableListeningOnPorts_reply___block_invoke(
     var16 = serverImpl->var16;
     os_unfair_recursive_lock_lock_with_options();
     v21.mElement = 0;
-    inData = v4;
+    inData = propertyCopy;
     *&v21.mSelector = 0x676C6F626470656CLL;
     if (AudioObjectHasProperty(SpeechDetectionDeviceID, &v21))
     {
@@ -1622,7 +1622,7 @@ uint64_t __53__AVVoiceTriggerServer_enableListeningOnPorts_reply___block_invoke(
           v27 = 2080;
           *buf = 136316162;
           v25 = 1024;
-          if (v4)
+          if (propertyCopy)
           {
             v12 = "Enable";
           }
@@ -1648,7 +1648,7 @@ uint64_t __53__AVVoiceTriggerServer_enableListeningOnPorts_reply___block_invoke(
         v27 = 2080;
         *buf = 136315906;
         v25 = 1024;
-        if (v4)
+        if (propertyCopy)
         {
           v19 = "Enable";
         }
@@ -1690,7 +1690,7 @@ LABEL_21:
     v17 = "Disabling";
     v24 = "AVVoiceTriggerServer.mm";
     *buf = 136315650;
-    if (v4)
+    if (propertyCopy)
     {
       v17 = "Enabling";
     }
@@ -1704,16 +1704,16 @@ LABEL_21:
 
   v18 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:560227702 userInfo:0];
 LABEL_23:
-  v6[2](v6, v18);
+  replyCopy[2](replyCopy, v18);
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableVoiceTriggerListening:(BOOL)a3 reply:(id)a4
+- (void)enableVoiceTriggerListening:(BOOL)listening reply:(id)reply
 {
-  v4 = a3;
+  listeningCopy = listening;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
@@ -1721,19 +1721,19 @@ LABEL_23:
     v10 = 1024;
     v11 = 1978;
     v12 = 1024;
-    v13 = v4;
+    v13 = listeningCopy;
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d enableVoiceTriggerListening: %d", &v8, 0x18u);
   }
 
-  AVVoiceTriggerServerImpl::enableVoiceTriggerListening(self->serverImpl, v4, 0, v6);
+  AVVoiceTriggerServerImpl::enableVoiceTriggerListening(self->serverImpl, listeningCopy, 0, replyCopy);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initializeWithReply:(id)a3
+- (void)initializeWithReply:(id)reply
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v9 = 136315394;
@@ -1768,7 +1768,7 @@ LABEL_23:
     _os_log_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%25s:%-5d Re-Notifying AOP listening state failed -- device not found", &v9, 0x12u);
   }
 
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 
   v8 = *MEMORY[0x1E69E9840];
 }

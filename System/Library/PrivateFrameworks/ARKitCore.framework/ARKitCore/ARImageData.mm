@@ -1,32 +1,32 @@
 @interface ARImageData
-+ (id)captureDateFromPresentationTimestamp:(id *)a3 session:(id)a4;
++ (id)captureDateFromPresentationTimestamp:(id *)timestamp session:(id)session;
 - (ARImageData)init;
-- (ARImageData)initWithCoder:(id)a3;
-- (ARImageData)initWithDictionary:(id)a3;
-- (ARImageData)initWithImageData:(id)a3;
-- (ARImageData)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 captureFramePerSecond:(int64_t)a4 captureDevice:(id)a5 captureSession:(id)a6;
+- (ARImageData)initWithCoder:(id)coder;
+- (ARImageData)initWithDictionary:(id)dictionary;
+- (ARImageData)initWithImageData:(id)data;
+- (ARImageData)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer captureFramePerSecond:(int64_t)second captureDevice:(id)device captureSession:(id)session;
 - (BOOL)isBackUltraWide;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesPixelBufferPointerRecursively:(void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesPixelBufferPointerRecursively:(void *)recursively;
 - (CGSize)imageResolution;
 - (NSDictionary)tracingEntry;
 - (NSMutableDictionary)extrinsicsMap;
-- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)a1;
+- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)type;
 - (__n128)radialDistortion;
-- (__n128)setCameraIntrinsics:(__n128)a3;
-- (__n128)setVisionTransform:(__n128)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (__n128)setCameraIntrinsics:(__n128)intrinsics;
+- (__n128)setVisionTransform:(__n128)transform;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeToDictionary;
-- (uint64_t)extrinsicMatrixToDeviceType:(void *)a1;
-- (uint64_t)initWithPixelBuffer:(__n128)a3 captureFramePerSecond:(__n128)a4 captureDevice:(uint64_t)a5 captureSession:(__CVBuffer *)a6 timestamp:(uint64_t)a7 intrinsics:(void *)a8 exif:(void *)a9 tiff:(CMTime *)a10 captureLens:(void *)a11;
-- (uint64_t)initWithPixelBuffer:(void *)a1 captureFramePerSecond:(uint64_t)a2 captureDevice:(uint64_t)a3 captureSession:(uint64_t)a4 timestamp:(uint64_t)a5 intrinsics:(uint64_t)a6 exif:(__int128 *)a7;
-- (void)addExtrinsicMatrix4x4:(double)a3 toDeviceType:(double)a4;
-- (void)addExtrinsicMatrix:(void *)a3 toDeviceType:;
+- (uint64_t)extrinsicMatrixToDeviceType:(void *)type;
+- (uint64_t)initWithPixelBuffer:(__n128)buffer captureFramePerSecond:(__n128)second captureDevice:(uint64_t)device captureSession:(__CVBuffer *)session timestamp:(uint64_t)timestamp intrinsics:(void *)intrinsics exif:(void *)exif tiff:(CMTime *)self0 captureLens:(void *)self1;
+- (uint64_t)initWithPixelBuffer:(void *)buffer captureFramePerSecond:(uint64_t)second captureDevice:(uint64_t)device captureSession:(uint64_t)session timestamp:(uint64_t)timestamp intrinsics:(uint64_t)intrinsics exif:(__int128 *)exif;
+- (void)addExtrinsicMatrix4x4:(double)matrix4x4 toDeviceType:(double)type;
+- (void)addExtrinsicMatrix:(void *)matrix toDeviceType:;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPixelBuffer:(__CVBuffer *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPixelBuffer:(__CVBuffer *)buffer;
 - (void)setRadialDistortion:(ARImageData *)self;
-- (void)setVisionData:(__CVBuffer *)a3;
+- (void)setVisionData:(__CVBuffer *)data;
 @end
 
 @implementation ARImageData
@@ -38,9 +38,9 @@
   v2 = [(ARImageData *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     extrinsicsMap = v2->_extrinsicsMap;
-    v2->_extrinsicsMap = v3;
+    v2->_extrinsicsMap = dictionary;
 
     v5 = MEMORY[0x1E69E9B18];
     v6 = *(MEMORY[0x1E69E9B18] + 16);
@@ -54,35 +54,35 @@
   return v2;
 }
 
-- (ARImageData)initWithImageData:(id)a3
+- (ARImageData)initWithImageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(ARImageData *)self init];
   v6 = v5;
   if (v5)
   {
     anon_120 = v5->_anon_120;
-    -[ARImageData setPixelBuffer:](v5, "setPixelBuffer:", [v4 pixelBuffer]);
-    -[ARImageData setVisionData:](v6, "setVisionData:", [v4 visionData]);
-    [v4 timestamp];
+    -[ARImageData setPixelBuffer:](v5, "setPixelBuffer:", [dataCopy pixelBuffer]);
+    -[ARImageData setVisionData:](v6, "setVisionData:", [dataCopy visionData]);
+    [dataCopy timestamp];
     v6->_timestamp = v8;
-    [v4 currentCaptureTimestamp];
+    [dataCopy currentCaptureTimestamp];
     v6->_currentCaptureTimestamp = v9;
-    v10 = [v4 captureDate];
+    captureDate = [dataCopy captureDate];
     captureDate = v6->_captureDate;
-    v6->_captureDate = v10;
+    v6->_captureDate = captureDate;
 
-    [v4 cameraIntrinsics];
+    [dataCopy cameraIntrinsics];
     *&v6->_anon_120[8] = v12;
     *&v6->_anon_120[24] = v13;
     *anon_120 = v14;
     *&v6->_anon_120[16] = v15;
     *&v6->_anon_120[40] = v16;
     *&v6->_anon_120[32] = v17;
-    v6->_mirrored = [v4 isMirrored];
-    if (v4)
+    v6->_mirrored = [dataCopy isMirrored];
+    if (dataCopy)
     {
-      [v4 radialDistortion];
+      [dataCopy radialDistortion];
       v18 = v48;
       v19 = v49;
     }
@@ -95,85 +95,85 @@
 
     *v6->_radialDistortion = v18;
     *&v6->_radialDistortion[16] = v19;
-    [v4 tangentialDistortion];
+    [dataCopy tangentialDistortion];
     *v6->_tangentialDistortion = v20;
-    [v4 exposureDuration];
+    [dataCopy exposureDuration];
     v6->_exposureDuration = v21;
-    [v4 exposureTargetOffset];
+    [dataCopy exposureTargetOffset];
     v6->_exposureTargetOffset = v22;
-    [v4 temperature];
+    [dataCopy temperature];
     v6->_temperature = v23;
-    [v4 signalToNoiseRatio];
+    [dataCopy signalToNoiseRatio];
     v6->_signalToNoiseRatio = v24;
-    [v4 ISO];
+    [dataCopy ISO];
     v6->_ISO = v25;
-    v26 = [v4 faceData];
+    faceData = [dataCopy faceData];
     faceData = v6->_faceData;
-    v6->_faceData = v26;
+    v6->_faceData = faceData;
 
-    v28 = [v4 depthData];
+    depthData = [dataCopy depthData];
     depthData = v6->_depthData;
-    v6->_depthData = v28;
+    v6->_depthData = depthData;
 
-    [v4 depthDataTimestamp];
+    [dataCopy depthDataTimestamp];
     v6->_depthDataTimestamp = v30;
-    v6->_cameraPosition = [v4 cameraPosition];
-    v31 = [v4 cameraType];
-    v32 = [v31 copy];
+    v6->_cameraPosition = [dataCopy cameraPosition];
+    cameraType = [dataCopy cameraType];
+    v32 = [cameraType copy];
     cameraType = v6->_cameraType;
     v6->_cameraType = v32;
 
-    v6->_captureFramesPerSecond = [v4 captureFramesPerSecond];
-    v6->_deviceOrientation = [v4 deviceOrientation];
-    v6->_secondary = [v4 isSecondary];
-    objc_storeStrong(&v6->_exifData, v4[9]);
-    objc_storeStrong(&v6->_tiffData, v4[24]);
-    v6->_captureLens = v4[26];
-    v6->_highResolution = [v4 isHighResolution];
-    v34 = [v4 latestUltraWideImage];
+    v6->_captureFramesPerSecond = [dataCopy captureFramesPerSecond];
+    v6->_deviceOrientation = [dataCopy deviceOrientation];
+    v6->_secondary = [dataCopy isSecondary];
+    objc_storeStrong(&v6->_exifData, dataCopy[9]);
+    objc_storeStrong(&v6->_tiffData, dataCopy[24]);
+    v6->_captureLens = dataCopy[26];
+    v6->_highResolution = [dataCopy isHighResolution];
+    latestUltraWideImage = [dataCopy latestUltraWideImage];
     latestUltraWideImage = v6->_latestUltraWideImage;
-    v6->_latestUltraWideImage = v34;
+    v6->_latestUltraWideImage = latestUltraWideImage;
 
-    [v4 visionTransform];
+    [dataCopy visionTransform];
     *&v6[1].super.isa = v36;
     *&v6[1]._temperature = v37;
     *&v6[1]._timestamp = v38;
     *&v6[1]._currentCaptureTimestamp = v39;
-    [v4 timestampOfSynchronizedWideImageData];
+    [dataCopy timestampOfSynchronizedWideImageData];
     v6->_timestampOfSynchronizedWideImageData = v40;
-    v41 = [v4 pointCloud];
+    pointCloud = [dataCopy pointCloud];
     pointCloud = v6->_pointCloud;
-    v6->_pointCloud = v41;
+    v6->_pointCloud = pointCloud;
 
-    v43 = [v4 calibrationData];
+    calibrationData = [dataCopy calibrationData];
     calibrationData = v6->_calibrationData;
-    v6->_calibrationData = v43;
+    v6->_calibrationData = calibrationData;
 
-    v45 = [v4 adCameraCalibration];
+    adCameraCalibration = [dataCopy adCameraCalibration];
     adCameraCalibration = v6->_adCameraCalibration;
-    v6->_adCameraCalibration = v45;
+    v6->_adCameraCalibration = adCameraCalibration;
 
-    objc_storeStrong(&v6->_extrinsicsMap, v4[23]);
-    v6->_visionDataWasDelivered = [v4 visionDataWasDelivered];
+    objc_storeStrong(&v6->_extrinsicsMap, dataCopy[23]);
+    v6->_visionDataWasDelivered = [dataCopy visionDataWasDelivered];
     kdebug_trace();
   }
 
   return v6;
 }
 
-- (ARImageData)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 captureFramePerSecond:(int64_t)a4 captureDevice:(id)a5 captureSession:(id)a6
+- (ARImageData)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer captureFramePerSecond:(int64_t)second captureDevice:(id)device captureSession:(id)session
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  if (a3 && (ImageBuffer = CMSampleBufferGetImageBuffer(a3)) != 0)
+  deviceCopy = device;
+  sessionCopy = session;
+  if (buffer && (ImageBuffer = CMSampleBufferGetImageBuffer(buffer)) != 0)
   {
     v13 = ImageBuffer;
-    v14 = CMGetAttachment(a3, *MEMORY[0x1E6960470], 0);
+    v14 = CMGetAttachment(buffer, *MEMORY[0x1E6960470], 0);
     memset(&v45, 0, sizeof(v45));
-    CMSampleBufferGetPresentationTimeStamp(&v45, a3);
-    v15 = CMGetAttachment(a3, *MEMORY[0x1E696D9B0], 0);
-    v16 = CMGetAttachment(a3, *MEMORY[0x1E696DF28], 0);
+    CMSampleBufferGetPresentationTimeStamp(&v45, buffer);
+    v15 = CMGetAttachment(buffer, *MEMORY[0x1E696D9B0], 0);
+    v16 = CMGetAttachment(buffer, *MEMORY[0x1E696DF28], 0);
     v17 = v16;
     if (v14)
     {
@@ -187,14 +187,14 @@
     {
       v39 = v16;
       v40 = v15;
-      v22 = [v10 activeFormat];
+      activeFormat = [deviceCopy activeFormat];
       v23 = initWithSampleBuffer_captureFramePerSecond_captureDevice_captureSession__format;
 
-      if (v22 != v23)
+      if (activeFormat != v23)
       {
-        v24 = [v10 activeFormat];
+        activeFormat2 = [deviceCopy activeFormat];
         v25 = initWithSampleBuffer_captureFramePerSecond_captureDevice_captureSession__format;
-        initWithSampleBuffer_captureFramePerSecond_captureDevice_captureSession__format = v24;
+        initWithSampleBuffer_captureFramePerSecond_captureDevice_captureSession__format = activeFormat2;
 
         *&v26 = ARIntrinsicsFromDeviceFormat(initWithSampleBuffer_captureFramePerSecond_captureDevice_captureSession__format);
         DWORD2(initWithSampleBuffer_captureFramePerSecond_captureDevice_captureSession__fallbackIntrinsics) = v27;
@@ -227,48 +227,48 @@
       v15 = v40;
     }
 
-    v36 = CMGetAttachment(a3, *MEMORY[0x1E696DE30], 0);
+    v36 = CMGetAttachment(buffer, *MEMORY[0x1E696DE30], 0);
     v37 = ARCaptureLensFromMakerNotesDictionary(v36);
     buf = v45;
-    self = [(ARImageData *)self initWithPixelBuffer:v13 captureFramePerSecond:a4 captureDevice:v10 captureSession:v11 timestamp:&buf intrinsics:v15 exif:v43 tiff:v42 captureLens:v41, v17, v37];
+    self = [(ARImageData *)self initWithPixelBuffer:v13 captureFramePerSecond:second captureDevice:deviceCopy captureSession:sessionCopy timestamp:&buf intrinsics:v15 exif:v43 tiff:v42 captureLens:v41, v17, v37];
 
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (uint64_t)initWithPixelBuffer:(void *)a1 captureFramePerSecond:(uint64_t)a2 captureDevice:(uint64_t)a3 captureSession:(uint64_t)a4 timestamp:(uint64_t)a5 intrinsics:(uint64_t)a6 exif:(__int128 *)a7
+- (uint64_t)initWithPixelBuffer:(void *)buffer captureFramePerSecond:(uint64_t)second captureDevice:(uint64_t)device captureSession:(uint64_t)session timestamp:(uint64_t)timestamp intrinsics:(uint64_t)intrinsics exif:(__int128 *)exif
 {
-  v8 = *a7;
-  v9 = *(a7 + 2);
-  return [a1 initWithPixelBuffer:a3 captureFramePerSecond:a4 captureDevice:a5 captureSession:a6 timestamp:&v8 intrinsics:0 exif:0 tiff:? captureLens:?];
+  v8 = *exif;
+  v9 = *(exif + 2);
+  return [buffer initWithPixelBuffer:device captureFramePerSecond:session captureDevice:timestamp captureSession:intrinsics timestamp:&v8 intrinsics:0 exif:0 tiff:? captureLens:?];
 }
 
-- (uint64_t)initWithPixelBuffer:(__n128)a3 captureFramePerSecond:(__n128)a4 captureDevice:(uint64_t)a5 captureSession:(__CVBuffer *)a6 timestamp:(uint64_t)a7 intrinsics:(void *)a8 exif:(void *)a9 tiff:(CMTime *)a10 captureLens:(void *)a11
+- (uint64_t)initWithPixelBuffer:(__n128)buffer captureFramePerSecond:(__n128)second captureDevice:(uint64_t)device captureSession:(__CVBuffer *)session timestamp:(uint64_t)timestamp intrinsics:(void *)intrinsics exif:(void *)exif tiff:(CMTime *)self0 captureLens:(void *)self1
 {
-  v20 = a8;
-  v21 = a9;
-  v22 = a11;
+  intrinsicsCopy = intrinsics;
+  exifCopy = exif;
+  lensCopy = lens;
   v23 = a12;
-  v24 = [a1 init];
+  v24 = [self init];
   if (v24)
   {
-    time = *a10;
+    time = *tiff;
     Seconds = CMTimeGetSeconds(&time);
     *(v24 + 32) = Seconds;
     *(v24 + 48) = Seconds;
-    objc_storeStrong((v24 + 200), a8);
-    if (v21)
+    objc_storeStrong((v24 + 200), intrinsics);
+    if (exifCopy)
     {
       v26 = objc_opt_class();
-      time = *a10;
-      [v26 captureDateFromPresentationTimestamp:&time session:v21];
+      time = *tiff;
+      [v26 captureDateFromPresentationTimestamp:&time session:exifCopy];
     }
 
     else
@@ -279,21 +279,21 @@
     v28 = *(v24 + 40);
     *(v24 + 40) = v27;
 
-    *(v24 + 56) = CVPixelBufferRetain(a6);
+    *(v24 + 56) = CVPixelBufferRetain(session);
     *(v24 + 9) = 0;
-    [v20 deviceWhiteBalanceGains];
-    [v20 temperatureAndTintValuesForDeviceWhiteBalanceGains:?];
+    [intrinsicsCopy deviceWhiteBalanceGains];
+    [intrinsicsCopy temperatureAndTintValuesForDeviceWhiteBalanceGains:?];
     *(v24 + 16) = v29;
-    [v20 exposureTargetOffset];
+    [intrinsicsCopy exposureTargetOffset];
     *(v24 + 12) = v30;
-    *(v24 + 128) = [v20 position];
-    v31 = [v20 deviceType];
+    *(v24 + 128) = [intrinsicsCopy position];
+    deviceType = [intrinsicsCopy deviceType];
     v32 = *(v24 + 136);
-    *(v24 + 136) = v31;
+    *(v24 + 136) = deviceType;
 
-    *(v24 + 160) = a7;
+    *(v24 + 160) = timestamp;
     *(v24 + 20) = 2139095040;
-    v33 = CVBufferCopyAttachments(a6, kCVAttachmentMode_ShouldPropagate);
+    v33 = CVBufferCopyAttachments(session, kCVAttachmentMode_ShouldPropagate);
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v55 = __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_captureSession_timestamp_intrinsics_exif_tiff_captureLens___block_invoke;
@@ -314,7 +314,7 @@
       }
     }
 
-    v38 = [v22 valueForKey:{@"ExposureTime", *&a2, *&a3, *&a4}];
+    v38 = [lensCopy valueForKey:{@"ExposureTime", *&a2, *&buffer, *&second}];
     v39 = v38;
     if (v38)
     {
@@ -322,12 +322,12 @@
       *(v24 + 64) = v40;
     }
 
-    [v20 ISO];
+    [intrinsicsCopy ISO];
     *(v24 + 24) = v41;
     *(v24 + 288) = v49;
     *(v24 + 304) = v51;
     *(v24 + 320) = v53;
-    v42 = [v22 copy];
+    v42 = [lensCopy copy];
     v43 = *(v24 + 72);
     *(v24 + 72) = v42;
 
@@ -365,25 +365,25 @@ void __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_
   [(ARImageData *)&v3 dealloc];
 }
 
-- (void)setPixelBuffer:(__CVBuffer *)a3
+- (void)setPixelBuffer:(__CVBuffer *)buffer
 {
   pixelBuffer = self->_pixelBuffer;
-  if (pixelBuffer != a3)
+  if (pixelBuffer != buffer)
   {
     CVPixelBufferRelease(pixelBuffer);
-    self->_pixelBuffer = CVPixelBufferRetain(a3);
+    self->_pixelBuffer = CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setVisionData:(__CVBuffer *)a3
+- (void)setVisionData:(__CVBuffer *)data
 {
   visionData = self->_visionData;
-  if (visionData != a3)
+  if (visionData != data)
   {
     CVPixelBufferRelease(visionData);
-    self->_visionData = a3;
-    CVPixelBufferRetain(a3);
-    if (a3)
+    self->_visionData = data;
+    CVPixelBufferRetain(data);
+    if (data)
     {
       self->_visionDataWasDelivered = 1;
     }
@@ -418,30 +418,30 @@ void __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_
   return result;
 }
 
-- (BOOL)matchesPixelBufferPointerRecursively:(void *)a3
+- (BOOL)matchesPixelBufferPointerRecursively:(void *)recursively
 {
-  if ([(ARImageData *)self pixelBuffer]== a3)
+  if ([(ARImageData *)self pixelBuffer]== recursively)
   {
     return 1;
   }
 
-  v5 = [(ARImageData *)self originalImage];
+  originalImage = [(ARImageData *)self originalImage];
 
-  if (v5 == self)
+  if (originalImage == self)
   {
     return 0;
   }
 
-  v6 = [(ARImageData *)self originalImage];
-  v7 = [v6 matchesPixelBufferPointerRecursively:a3];
+  originalImage2 = [(ARImageData *)self originalImage];
+  v7 = [originalImage2 matchesPixelBufferPointerRecursively:recursively];
 
   return v7;
 }
 
 - (BOOL)isBackUltraWide
 {
-  v3 = [(ARImageData *)self cameraType];
-  if ([v3 isEqualToString:*MEMORY[0x1E6986948]])
+  cameraType = [(ARImageData *)self cameraType];
+  if ([cameraType isEqualToString:*MEMORY[0x1E6986948]])
   {
     v4 = [(ARImageData *)self cameraPosition]== 1;
   }
@@ -454,12 +454,12 @@ void __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v17 = vabdd_f64(self->_timestamp, v5[4]) < 2.22044605e-16 && vabdd_f64(self->_currentCaptureTimestamp, v5[6]) < 2.22044605e-16 && ((captureDate = self->_captureDate, captureDate == *(v6 + 5)) || [(NSDate *)captureDate isEqual:?]) && (v8.i64[0] = 0x3400000034000000, v8.i64[1] = 0x3400000034000000, v9 = vandq_s8(vandq_s8(vcgeq_f32(v8, vabdq_f32(*&self->_anon_120[16], *(v6 + 38))), vcgeq_f32(v8, vabdq_f32(*self->_anon_120, *(v6 + 36)))), vcgeq_f32(v8, vabdq_f32(*&self->_anon_120[32], *(v6 + 40)))), v9.i32[3] = v9.i32[2], (vminvq_u32(v9) & 0x80000000) != 0) && self->_pixelBuffer == *(v6 + 7) && self->_mirrored == *(v6 + 8) && (v10 = vandq_s8(vceqq_f64(*self->_radialDistortion, *(v6 + 32)), vceqq_f64(*&self->_radialDistortion[16], *(v6 + 34))), (vandq_s8(v10, vdupq_laneq_s64(v10, 1)).u64[0] & 0x8000000000000000) != 0) && (v11 = vceqq_f64(*self->_tangentialDistortion, *(v6 + 30)), (vandq_s8(vdupq_laneq_s64(v11, 1), v11).u64[0] & 0x8000000000000000) != 0) && vabdd_f64(self->_exposureDuration, v6[8]) < 2.22044605e-16 && vabds_f32(self->_exposureTargetOffset, *(v6 + 3)) < 0.00000011921 && vabds_f32(self->_temperature, *(v6 + 4)) < 0.00000011921 && vabds_f32(self->_signalToNoiseRatio, *(v6 + 5)) < 0.00000011921 && vabds_f32(self->_ISO, *(v6 + 6)) < 0.00000011921 && ((faceData = self->_faceData, faceData == *(v6 + 11)) || [(ARFaceData *)faceData isEqual:?]) && ((depthData = self->_depthData, depthData == *(v6 + 12)) || [(AVDepthData *)depthData isEqual:?]) && vabdd_f64(self->_depthDataTimestamp, v6[14]) < 2.22044605e-16 && self->_visionData == *(v6 + 15) && self->_visionDataWasDelivered == *(v6 + 11) && self->_cameraPosition == *(v6 + 16) && ((cameraType = self->_cameraType, cameraType == *(v6 + 17)) || [(NSString *)cameraType isEqualToString:?]) && self->_captureFramesPerSecond == *(v6 + 20) && self->_deviceOrientation == *(v6 + 10) && self->_secondary == *(v6 + 9) && self->_highResolution == *(v6 + 10) && ((latestUltraWideImage = self->_latestUltraWideImage, latestUltraWideImage == *(v6 + 21)) || [(ARImageData *)latestUltraWideImage isEqual:?]) && (v16.i64[0] = 0x3400000034000000, v16.i64[1] = 0x3400000034000000, (vminvq_u32(vandq_s8(vandq_s8(vcgeq_f32(v16, vabdq_f32(*&self[1]._temperature, *(v6 + 44))), vcgeq_f32(v16, vabdq_f32(*&self[1].super.isa, *(v6 + 42)))), vandq_s8(vcgeq_f32(v16, vabdq_f32(*&self[1]._timestamp, *(v6 + 46))), vcgeq_f32(v16, vabdq_f32(*&self[1]._currentCaptureTimestamp, *(v6 + 48)))))) & 0x80000000) != 0) && self->_timestampOfSynchronizedWideImageData == v6[22] && [(NSMutableDictionary *)self->_extrinsicsMap isEqualToDictionary:*(v6 + 23)]&& [(NSDictionary *)self->_exifData isEqualToDictionary:*(v6 + 9)]&& ((pointCloud = self->_pointCloud, pointCloud == *(v6 + 13)) || [(ARPointCloud *)pointCloud isEqual:?]) && self->_captureLens == *(v6 + 26);
   }
@@ -472,13 +472,13 @@ void __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_
   return v17;
 }
 
-+ (id)captureDateFromPresentationTimestamp:(id *)a3 session:(id)a4
++ (id)captureDateFromPresentationTimestamp:(id *)timestamp session:(id)session
 {
   memset(&v10, 0, sizeof(v10));
-  CMClockGetTime(&v10, [a4 synchronizationClock]);
+  CMClockGetTime(&v10, [session synchronizationClock]);
   memset(&v9, 0, sizeof(v9));
   lhs = v10;
-  v7 = *a3;
+  v7 = *timestamp;
   CMTimeSubtract(&v9, &lhs, &v7);
   lhs = v9;
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(&lhs)];
@@ -486,36 +486,36 @@ void __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_
   return v5;
 }
 
-- (ARImageData)initWithCoder:(id)a3
+- (ARImageData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ARImageData *)self init];
   if (!v5)
   {
     goto LABEL_32;
   }
 
-  [v4 decodeDoubleForKey:@"timestamp"];
+  [coderCopy decodeDoubleForKey:@"timestamp"];
   v7 = v6;
   v8 = 0.0;
   if (v7 >= 0.0)
   {
-    [v4 decodeDoubleForKey:{@"timestamp", 0.0}];
+    [coderCopy decodeDoubleForKey:{@"timestamp", 0.0}];
   }
 
   [(ARImageData *)v5 setTimestamp:v8];
   [(ARImageData *)v5 timestamp];
   [(ARImageData *)v5 setCurrentCaptureTimestamp:?];
-  [v4 decodeDoubleForKey:@"exposureDuration"];
+  [coderCopy decodeDoubleForKey:@"exposureDuration"];
   [(ARImageData *)v5 setExposureDuration:?];
-  [v4 decodeFloatForKey:@"exposureTargetOffset"];
+  [coderCopy decodeFloatForKey:@"exposureTargetOffset"];
   [(ARImageData *)v5 setExposureTargetOffset:?];
-  [v4 decodeFloatForKey:@"signalToNoiseRatio"];
+  [coderCopy decodeFloatForKey:@"signalToNoiseRatio"];
   [(ARImageData *)v5 setSignalToNoiseRatio:?];
-  [v4 decodeFloatForKey:@"ISO"];
+  [coderCopy decodeFloatForKey:@"ISO"];
   [(ARImageData *)v5 setISO:?];
   v9 = objc_opt_self();
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"cameraParameters"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"cameraParameters"];
 
   if (v10)
   {
@@ -538,25 +538,25 @@ void __129__ARImageData_initWithPixelBuffer_captureFramePerSecond_captureDevice_
 
   else
   {
-    if (![v4 containsValueForKey:@"cameraIntrinsics"])
+    if (![coderCopy containsValueForKey:@"cameraIntrinsics"])
     {
-      v54 = [v4 decodeDataObject];
-      [(ARImageData *)v5 setCameraIntrinsics:ARMatrix3x3FromNSData(v54)];
+      decodeDataObject = [coderCopy decodeDataObject];
+      [(ARImageData *)v5 setCameraIntrinsics:ARMatrix3x3FromNSData(decodeDataObject)];
 
       goto LABEL_9;
     }
 
-    [v4 ar_decodeMatrix3x3ForKey:@"cameraIntrinsics"];
+    [coderCopy ar_decodeMatrix3x3ForKey:@"cameraIntrinsics"];
   }
 
   [(ARImageData *)v5 setCameraIntrinsics:v17, v18, v19];
 LABEL_9:
-  -[ARImageData setCameraPosition:](v5, "setCameraPosition:", [v4 decodeIntegerForKey:@"cameraPosition"]);
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraType"];
+  -[ARImageData setCameraPosition:](v5, "setCameraPosition:", [coderCopy decodeIntegerForKey:@"cameraPosition"]);
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraType"];
   [(ARImageData *)v5 setCameraType:v20];
 
-  -[ARImageData setMirrored:](v5, "setMirrored:", [v4 decodeBoolForKey:@"pixelBufferIsMirrored"]);
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"radialDistortion"];
+  -[ARImageData setMirrored:](v5, "setMirrored:", [coderCopy decodeBoolForKey:@"pixelBufferIsMirrored"]);
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"radialDistortion"];
   v22 = v21;
   if (v21)
   {
@@ -568,7 +568,7 @@ LABEL_9:
     [(ARImageData *)v5 setRadialDistortion:v58];
   }
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tangentialDistortion"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tangentialDistortion"];
 
   if (v23)
   {
@@ -577,25 +577,25 @@ LABEL_9:
     [(ARImageData *)v5 setTangentialDistortion:*&v59];
   }
 
-  -[ARImageData setCaptureFramesPerSecond:](v5, "setCaptureFramesPerSecond:", [v4 decodeIntegerForKey:@"targetFramesPerSecond"]);
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"captureDate"];
+  -[ARImageData setCaptureFramesPerSecond:](v5, "setCaptureFramesPerSecond:", [coderCopy decodeIntegerForKey:@"targetFramesPerSecond"]);
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"captureDate"];
   [(ARImageData *)v5 setCaptureDate:v24];
 
   [(ARImageData *)v5 setPixelBuffer:0];
-  [v4 decodeFloatForKey:@"temperature"];
+  [coderCopy decodeFloatForKey:@"temperature"];
   if (*&v25 == 0.0)
   {
     *&v25 = 6500.0;
   }
 
   [(ARImageData *)v5 setTemperature:v25];
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceData"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceData"];
   [(ARImageData *)v5 setFaceData:v26];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = v4;
+    v27 = coderCopy;
     v5->_pixelBuffer = [v27 ar_decodePixelBufferForKey:@"pixelBuffer"];
     v28 = [v27 ar_decodePixelBufferForKey:@"visionData"];
 
@@ -603,29 +603,29 @@ LABEL_9:
   }
 
   v29 = ARDepthRepresentationDictionaryClassList();
-  v30 = [v4 decodeObjectOfClasses:v29 forKey:@"AVDepthData"];
+  v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"AVDepthData"];
 
   if (v30)
   {
     v31 = [objc_alloc(MEMORY[0x1E6987198]) initWithPixelBuffer:0 depthMetadataDictionary:v30];
     [(ARImageData *)v5 setDepthData:v31];
 
-    [v4 decodeDoubleForKey:@"depthDataTimeStamp"];
+    [coderCopy decodeDoubleForKey:@"depthDataTimeStamp"];
     v33 = v32;
     v34 = 0.0;
     if (v33 >= 0.0)
     {
-      [v4 decodeDoubleForKey:{@"depthDataTimeStamp", 0.0}];
+      [coderCopy decodeDoubleForKey:{@"depthDataTimeStamp", 0.0}];
     }
 
     [(ARImageData *)v5 setDepthDataTimestamp:v34];
   }
 
-  -[ARImageData setDeviceOrientation:](v5, "setDeviceOrientation:", [v4 decodeIntegerForKey:@"deviceOrientation"]);
-  -[ARImageData setSecondary:](v5, "setSecondary:", [v4 decodeBoolForKey:@"secondary"]);
-  if ([v4 containsValueForKey:@"visionTransform"])
+  -[ARImageData setDeviceOrientation:](v5, "setDeviceOrientation:", [coderCopy decodeIntegerForKey:@"deviceOrientation"]);
+  -[ARImageData setSecondary:](v5, "setSecondary:", [coderCopy decodeBoolForKey:@"secondary"]);
+  if ([coderCopy containsValueForKey:@"visionTransform"])
   {
-    [v4 ar_decodeMatrix4x4ForKey:@"visionTransform"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"visionTransform"];
   }
 
   else
@@ -637,11 +637,11 @@ LABEL_9:
   }
 
   [(ARImageData *)v5 setVisionTransform:*&v35, *&v36, *&v37, *&v38];
-  v5->_highResolution = [v4 decodeBoolForKey:@"highResolution"];
+  v5->_highResolution = [coderCopy decodeBoolForKey:@"highResolution"];
   [(ARImageData *)v5 setLatestUltraWideImage:0];
-  [v4 decodeDoubleForKey:@"timestampOfSynchronizedWideImageData"];
+  [coderCopy decodeDoubleForKey:@"timestampOfSynchronizedWideImageData"];
   [(ARImageData *)v5 setTimestampOfSynchronizedWideImageData:?];
-  v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointCloud"];
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointCloud"];
   [(ARImageData *)v5 setPointCloud:v39];
 
   v40 = MEMORY[0x1E695DFD8];
@@ -649,7 +649,7 @@ LABEL_9:
   v42 = objc_opt_class();
   v43 = objc_opt_class();
   v44 = [v40 setWithObjects:{v41, v42, v43, objc_opt_class(), 0}];
-  v45 = [v4 decodeObjectOfClasses:v44 forKey:@"extrinsicsMap"];
+  v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"extrinsicsMap"];
 
   if (v45)
   {
@@ -661,16 +661,16 @@ LABEL_9:
   v48 = objc_opt_class();
   v49 = objc_opt_class();
   v50 = [v46 setWithObjects:{v47, v48, v49, objc_opt_class(), 0}];
-  v51 = [v4 decodeObjectOfClasses:v50 forKey:@"exifData"];
+  v51 = [coderCopy decodeObjectOfClasses:v50 forKey:@"exifData"];
 
   if (v51)
   {
     objc_storeStrong(&v5->_exifData, v51);
   }
 
-  if ([v4 containsValueForKey:@"captureLens"])
+  if ([coderCopy containsValueForKey:@"captureLens"])
   {
-    v52 = [v4 decodeIntegerForKey:@"captureLens"];
+    v52 = [coderCopy decodeIntegerForKey:@"captureLens"];
   }
 
   else
@@ -679,68 +679,68 @@ LABEL_9:
   }
 
   v5->_captureLens = v52;
-  v5->_visionDataWasDelivered = [v4 decodeBoolForKey:@"visionDataWasDelivered"];
+  v5->_visionDataWasDelivered = [coderCopy decodeBoolForKey:@"visionDataWasDelivered"];
 
 LABEL_32:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  [v15 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v15 encodeDouble:@"exposureDuration" forKey:self->_exposureDuration];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"exposureDuration" forKey:self->_exposureDuration];
   *&v4 = self->_exposureTargetOffset;
-  [v15 encodeFloat:@"exposureTargetOffset" forKey:v4];
+  [coderCopy encodeFloat:@"exposureTargetOffset" forKey:v4];
   *&v5 = self->_signalToNoiseRatio;
-  [v15 encodeFloat:@"signalToNoiseRatio" forKey:v5];
+  [coderCopy encodeFloat:@"signalToNoiseRatio" forKey:v5];
   *&v6 = self->_ISO;
-  [v15 encodeFloat:@"ISO" forKey:v6];
+  [coderCopy encodeFloat:@"ISO" forKey:v6];
   *&v7 = self->_temperature;
-  [v15 encodeFloat:@"temperature" forKey:v7];
-  [v15 ar_encodeMatrix3x3:@"cameraIntrinsics" forKey:{*self->_anon_120, *&self->_anon_120[16], *&self->_anon_120[32]}];
-  [v15 encodeInteger:self->_cameraPosition forKey:@"cameraPosition"];
-  [v15 encodeObject:self->_cameraType forKey:@"cameraType"];
-  [v15 encodeBool:self->_mirrored forKey:@"pixelBufferIsMirrored"];
+  [coderCopy encodeFloat:@"temperature" forKey:v7];
+  [coderCopy ar_encodeMatrix3x3:@"cameraIntrinsics" forKey:{*self->_anon_120, *&self->_anon_120[16], *&self->_anon_120[32]}];
+  [coderCopy encodeInteger:self->_cameraPosition forKey:@"cameraPosition"];
+  [coderCopy encodeObject:self->_cameraType forKey:@"cameraType"];
+  [coderCopy encodeBool:self->_mirrored forKey:@"pixelBufferIsMirrored"];
   v8 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_radialDistortion length:32];
-  [v15 encodeObject:v8 forKey:@"radialDistortion"];
+  [coderCopy encodeObject:v8 forKey:@"radialDistortion"];
   v9 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_tangentialDistortion length:16];
 
-  [v15 encodeObject:v9 forKey:@"tangentialDistortion"];
-  [v15 encodeInteger:self->_captureFramesPerSecond forKey:@"targetFramesPerSecond"];
-  [v15 encodeObject:self->_captureDate forKey:@"captureDate"];
-  [v15 encodeObject:self->_faceData forKey:@"faceData"];
-  v10 = [(ARImageData *)self depthData];
+  [coderCopy encodeObject:v9 forKey:@"tangentialDistortion"];
+  [coderCopy encodeInteger:self->_captureFramesPerSecond forKey:@"targetFramesPerSecond"];
+  [coderCopy encodeObject:self->_captureDate forKey:@"captureDate"];
+  [coderCopy encodeObject:self->_faceData forKey:@"faceData"];
+  depthData = [(ARImageData *)self depthData];
 
-  if (v10)
+  if (depthData)
   {
-    v11 = [(ARImageData *)self depthData];
-    v12 = ARDepthRepresentationDictionary(v11);
+    depthData2 = [(ARImageData *)self depthData];
+    v12 = ARDepthRepresentationDictionary(depthData2);
 
     if (v12)
     {
-      [v15 encodeObject:v12 forKey:@"AVDepthData"];
+      [coderCopy encodeObject:v12 forKey:@"AVDepthData"];
     }
 
-    [v15 encodeDouble:@"depthDataTimeStamp" forKey:self->_depthDataTimestamp];
+    [coderCopy encodeDouble:@"depthDataTimeStamp" forKey:self->_depthDataTimestamp];
   }
 
-  [v15 encodeInteger:-[ARImageData deviceOrientation](self forKey:{"deviceOrientation"), @"deviceOrientation"}];
-  [v15 encodeBool:-[ARImageData isSecondary](self forKey:{"isSecondary"), @"secondary"}];
-  [v15 ar_encodeMatrix4x4:@"visionTransform" forKey:{*&self[1].super.isa, *&self[1]._temperature, self[1]._timestamp, self[1]._currentCaptureTimestamp}];
-  [v15 encodeBool:-[ARImageData isHighResolution](self forKey:{"isHighResolution"), @"highResolution"}];
+  [coderCopy encodeInteger:-[ARImageData deviceOrientation](self forKey:{"deviceOrientation"), @"deviceOrientation"}];
+  [coderCopy encodeBool:-[ARImageData isSecondary](self forKey:{"isSecondary"), @"secondary"}];
+  [coderCopy ar_encodeMatrix4x4:@"visionTransform" forKey:{*&self[1].super.isa, *&self[1]._temperature, self[1]._timestamp, self[1]._currentCaptureTimestamp}];
+  [coderCopy encodeBool:-[ARImageData isHighResolution](self forKey:{"isHighResolution"), @"highResolution"}];
   [(ARImageData *)self timestampOfSynchronizedWideImageData];
-  [v15 encodeDouble:@"timestampOfSynchronizedWideImageData" forKey:?];
-  [v15 encodeObject:self->_pointCloud forKey:@"pointCloud"];
-  [v15 encodeObject:self->_extrinsicsMap forKey:@"extrinsicsMap"];
-  [v15 encodeObject:self->_exifData forKey:@"exifData"];
-  [v15 encodeInteger:self->_captureLens forKey:@"captureLens"];
-  [v15 encodeBool:self->_visionDataWasDelivered forKey:@"visionDataWasDelivered"];
+  [coderCopy encodeDouble:@"timestampOfSynchronizedWideImageData" forKey:?];
+  [coderCopy encodeObject:self->_pointCloud forKey:@"pointCloud"];
+  [coderCopy encodeObject:self->_extrinsicsMap forKey:@"extrinsicsMap"];
+  [coderCopy encodeObject:self->_exifData forKey:@"exifData"];
+  [coderCopy encodeInteger:self->_captureLens forKey:@"captureLens"];
+  [coderCopy encodeBool:self->_visionDataWasDelivered forKey:@"visionDataWasDelivered"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     pixelBuffer = self->_pixelBuffer;
-    v14 = v15;
+    v14 = coderCopy;
     [v14 ar_encodePixelBuffer:pixelBuffer forKey:@"pixelBuffer"];
     [v14 ar_encodePixelBuffer:self->_visionData forKey:@"visionData"];
   }
@@ -748,18 +748,18 @@ LABEL_32:
   else
   {
     v14 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_anon_120 length:48];
-    [v15 encodeDataObject:v14];
+    [coderCopy encodeDataObject:v14];
   }
 }
 
-- (ARImageData)initWithDictionary:(id)a3
+- (ARImageData)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ARImageData *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CMSampleBufferPresentationTime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"CMSampleBufferPresentationTime"];
     if (v6)
     {
       v7 = v6;
@@ -767,7 +767,7 @@ LABEL_32:
 
     else
     {
-      v7 = [v4 objectForKeyedSubscript:@"OriginalTimestampWhenWrittenToFile"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"OriginalTimestampWhenWrittenToFile"];
       if (!v7)
       {
         goto LABEL_7;
@@ -786,7 +786,7 @@ LABEL_32:
     }
 
 LABEL_7:
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6960470]];
+    v9 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6960470]];
     if (v9)
     {
       v10 = v9;
@@ -794,7 +794,7 @@ LABEL_7:
 
     else
     {
-      v10 = [v4 objectForKeyedSubscript:@"IntrinsicsMatrix"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"IntrinsicsMatrix"];
       if (!v10)
       {
         goto LABEL_12;
@@ -812,7 +812,7 @@ LABEL_7:
       *&v5->_anon_120[40] = v14;
       *&v5->_anon_120[32] = v15;
 LABEL_15:
-      v19 = [v4 objectForKeyedSubscript:@"ExposureTime"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"ExposureTime"];
       [v19 doubleValue];
       v5->_exposureDuration = v20;
 
@@ -868,16 +868,16 @@ LABEL_16:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithImageData:self];
 }
 
-- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)a1
+- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)type
 {
-  v1 = [*(a1 + 184) objectForKeyedSubscript:?];
+  v1 = [*(type + 184) objectForKeyedSubscript:?];
   v2 = v1;
   if (v1)
   {
@@ -893,25 +893,25 @@ LABEL_16:
   return v5;
 }
 
-- (uint64_t)extrinsicMatrixToDeviceType:(void *)a1
+- (uint64_t)extrinsicMatrixToDeviceType:(void *)type
 {
-  [a1 extrinsicMatrix4x4ToDeviceType:?];
+  [type extrinsicMatrix4x4ToDeviceType:?];
 
   return ARMatrix4x3FromMatrix4x4(v1, v2, v3, v4);
 }
 
-- (void)addExtrinsicMatrix:(void *)a3 toDeviceType:
+- (void)addExtrinsicMatrix:(void *)matrix toDeviceType:
 {
-  v4 = a3;
+  matrixCopy = matrix;
   ARMatrix4x4FromMatrix4x3();
-  [a1 addExtrinsicMatrix4x4:v4 toDeviceType:?];
+  [self addExtrinsicMatrix4x4:matrixCopy toDeviceType:?];
 }
 
-- (void)addExtrinsicMatrix4x4:(double)a3 toDeviceType:(double)a4
+- (void)addExtrinsicMatrix4x4:(double)matrix4x4 toDeviceType:(double)type
 {
   v8 = a7;
-  v13 = [[ARExtrinsicsWrapper alloc] initWithMatrix:a2, a3, a4, a5];
-  [*(a1 + 184) setObject:v13 forKeyedSubscript:v8];
+  v13 = [[ARExtrinsicsWrapper alloc] initWithMatrix:a2, matrix4x4, type, a5];
+  [*(self + 184) setObject:v13 forKeyedSubscript:v8];
 }
 
 - (NSDictionary)tracingEntry
@@ -944,18 +944,18 @@ LABEL_16:
   return v4;
 }
 
-- (__n128)setCameraIntrinsics:(__n128)a3
+- (__n128)setCameraIntrinsics:(__n128)intrinsics
 {
   result[18] = a2;
-  result[19] = a3;
+  result[19] = intrinsics;
   result[20] = a4;
   return result;
 }
 
 - (__n128)radialDistortion
 {
-  result = *(a1 + 256);
-  v3 = *(a1 + 272);
+  result = *(self + 256);
+  v3 = *(self + 272);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;
@@ -968,10 +968,10 @@ LABEL_16:
   *&self->_radialDistortion[16] = v3;
 }
 
-- (__n128)setVisionTransform:(__n128)a3
+- (__n128)setVisionTransform:(__n128)transform
 {
   result[21] = a2;
-  result[22] = a3;
+  result[22] = transform;
   result[23] = a4;
   result[24] = a5;
   return result;

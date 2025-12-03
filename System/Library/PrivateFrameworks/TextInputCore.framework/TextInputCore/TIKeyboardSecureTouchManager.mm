@@ -20,9 +20,9 @@ void __47__TIKeyboardSecureTouchManager_registerSlotID___block_invoke(uint64_t a
   v2 = [(TIKeyboardSecureTouchManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     slots = v2->_slots;
-    v2->_slots = v3;
+    v2->_slots = dictionary;
 
     v2->_lastVerifiedMessageTimestamp = mach_continuous_time();
   }

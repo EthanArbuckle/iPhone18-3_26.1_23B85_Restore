@@ -1,48 +1,48 @@
 @interface CPLStoreMigrationAssistant_107137447
-- (BOOL)performMigrationWithError:(id *)a3;
-- (CPLStoreMigrationAssistant_107137447)initWithStore:(id)a3;
+- (BOOL)performMigrationWithError:(id *)error;
+- (CPLStoreMigrationAssistant_107137447)initWithStore:(id)store;
 @end
 
 @implementation CPLStoreMigrationAssistant_107137447
 
-- (CPLStoreMigrationAssistant_107137447)initWithStore:(id)a3
+- (CPLStoreMigrationAssistant_107137447)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = CPLStoreMigrationAssistant_107137447;
   v6 = [(CPLStoreMigrationAssistant_107137447 *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (BOOL)performMigrationWithError:(id *)a3
+- (BOOL)performMigrationWithError:(id *)error
 {
-  v5 = [(CPLEngineStore *)self->_store scopes];
-  v6 = [(CPLEngineStore *)self->_store platformObject];
-  v7 = [v5 primaryScope];
-  if (!v7)
+  scopes = [(CPLEngineStore *)self->_store scopes];
+  platformObject = [(CPLEngineStore *)self->_store platformObject];
+  primaryScope = [scopes primaryScope];
+  if (!primaryScope)
   {
     goto LABEL_17;
   }
 
-  if ([v5 valueForFlag:16 forScope:v7])
+  if ([scopes valueForFlag:16 forScope:primaryScope])
   {
     goto LABEL_17;
   }
 
-  v8 = [v5 sharingScopeForScope:v7];
+  v8 = [scopes sharingScopeForScope:primaryScope];
   if (!v8)
   {
     goto LABEL_17;
   }
 
   v9 = v8;
-  v10 = [v5 initialSyncAnchorForScope:v7];
+  v10 = [scopes initialSyncAnchorForScope:primaryScope];
   if (!v10)
   {
 
@@ -53,9 +53,9 @@ LABEL_17:
   }
 
   v11 = v10;
-  v12 = [v5 platformObject];
-  v13 = [v12 creationDateForScope:v7];
-  v14 = [v12 creationDateForScope:v9];
+  platformObject2 = [scopes platformObject];
+  v13 = [platformObject2 creationDateForScope:primaryScope];
+  v14 = [platformObject2 creationDateForScope:v9];
   v15 = +[NSUserDefaults standardUserDefaults];
   [v15 doubleForKey:@"CPLRewindForSparseRecordsInterval"];
   v17 = v16;
@@ -87,13 +87,13 @@ LABEL_17:
   {
 LABEL_12:
     v32 = v13;
-    v19 = [v5 scopeChangeForScope:v7];
+    v19 = [scopes scopeChangeForScope:primaryScope];
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v31 = v12;
-      v20 = [v19 rewindAnchorsPerSharingScopes];
-      v21 = [v9 scopeIdentifier];
-      v22 = [v20 objectForKeyedSubscript:v21];
+      v31 = platformObject2;
+      rewindAnchorsPerSharingScopes = [v19 rewindAnchorsPerSharingScopes];
+      scopeIdentifier = [v9 scopeIdentifier];
+      v22 = [rewindAnchorsPerSharingScopes objectForKeyedSubscript:scopeIdentifier];
 
       if (v22)
       {
@@ -113,15 +113,15 @@ LABEL_12:
           }
         }
 
-        [v6 recordUpgradeEvent:@"Triggering anchor reset sync for shared library user to account for missing rewind anchors"];
+        [platformObject recordUpgradeEvent:@"Triggering anchor reset sync for shared library user to account for missing rewind anchors"];
         v35 = 0;
-        v27 = [v5 resetSyncAnchorForScope:v7 error:&v35];
+        v27 = [scopes resetSyncAnchorForScope:primaryScope error:&v35];
         v28 = v35;
         v23 = v28;
         if (v27)
         {
           v34 = v28;
-          v24 = [v5 setInitialSyncAnchor:0 forScope:v7 error:&v34];
+          v24 = [scopes setInitialSyncAnchor:0 forScope:primaryScope error:&v34];
           v29 = v34;
 
           v23 = v29;
@@ -133,7 +133,7 @@ LABEL_12:
         }
       }
 
-      v12 = v31;
+      platformObject2 = v31;
     }
 
     else
@@ -145,11 +145,11 @@ LABEL_12:
     v13 = v32;
   }
 
-  if (a3 && (v24 & 1) == 0)
+  if (error && (v24 & 1) == 0)
   {
     v30 = v23;
     v24 = 0;
-    *a3 = v23;
+    *error = v23;
   }
 
 LABEL_18:

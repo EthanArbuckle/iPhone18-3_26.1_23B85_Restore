@@ -1,25 +1,25 @@
 @interface AKAuthenticationSettingsLauncher
-- (BOOL)launchSettingsForContext:(id)a3 withCheckinID:(id)a4;
-- (id)_settingsPaneIDForContext:(id)a3;
+- (BOOL)launchSettingsForContext:(id)context withCheckinID:(id)d;
+- (id)_settingsPaneIDForContext:(id)context;
 @end
 
 @implementation AKAuthenticationSettingsLauncher
 
-- (BOOL)launchSettingsForContext:(id)a3 withCheckinID:(id)a4
+- (BOOL)launchSettingsForContext:(id)context withCheckinID:(id)d
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, d);
   v28 = +[AKAccountManager sharedInstance];
-  v15 = [v29 UUIDString];
-  v27 = [NSString stringWithFormat:@"prefs:notifyAuthKit=true&authKitContextID=%@", v15];
-  _objc_release(v15);
-  v26 = [(AKAuthenticationSettingsLauncher *)v31 _settingsPaneIDForContext:location[0]];
-  v25 = [location[0] username];
-  v24 = [v28 iCloudAccountForAppleID:v25];
+  uUIDString = [v29 UUIDString];
+  v27 = [NSString stringWithFormat:@"prefs:notifyAuthKit=true&authKitContextID=%@", uUIDString];
+  _objc_release(uUIDString);
+  v26 = [(AKAuthenticationSettingsLauncher *)selfCopy _settingsPaneIDForContext:location[0]];
+  username = [location[0] username];
+  v24 = [v28 iCloudAccountForAppleID:username];
   if (v24)
   {
     if ([v28 isPrimaryiCloudAccount:v24])
@@ -28,7 +28,7 @@
       v22 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        sub_1000194D4(v35, v25);
+        sub_1000194D4(v35, username);
         _os_log_impl(&_mh_execute_header, v23, v22, "Overriding Settings landing spot because the Apple ID %@ is used for iCloud.", v35, 0xCu);
       }
 
@@ -38,12 +38,12 @@
 
     else if ([v26 isEqualToString:@"APPLE_ACCOUNT"])
     {
-      v13 = [v24 identifier];
-      v4 = [NSString stringWithFormat:@"ACCOUNTS_AND_PASSWORDS&path=%@", v13];
+      identifier = [v24 identifier];
+      v4 = [NSString stringWithFormat:@"ACCOUNTS_AND_PASSWORDS&path=%@", identifier];
       v5 = v26;
       v26 = v4;
       _objc_release(v5);
-      _objc_release(v13);
+      _objc_release(identifier);
     }
   }
 
@@ -97,7 +97,7 @@
 
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v24, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&username, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
@@ -106,38 +106,38 @@
   return v32 & 1;
 }
 
-- (id)_settingsPaneIDForContext:(id)a3
+- (id)_settingsPaneIDForContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] serviceType];
-  if (v6 == 1)
+  objc_storeStrong(location, context);
+  serviceType = [location[0] serviceType];
+  if (serviceType == 1)
   {
     v10 = _objc_retain(@"APPLE_ACCOUNT");
     v8 = 1;
   }
 
-  else if (v6 == 2)
+  else if (serviceType == 2)
   {
     v10 = _objc_retain(@"STORE");
     v8 = 1;
   }
 
-  else if (v6 == 4)
+  else if (serviceType == 4)
   {
     v10 = _objc_retain(@"MESSAGES");
     v8 = 1;
   }
 
-  else if (v6 == 5)
+  else if (serviceType == 5)
   {
     v10 = _objc_retain(@"FACETIME");
     v8 = 1;
   }
 
-  else if (v6 == 6)
+  else if (serviceType == 6)
   {
     v10 = _objc_retain(@"GAMECENTER");
     v8 = 1;

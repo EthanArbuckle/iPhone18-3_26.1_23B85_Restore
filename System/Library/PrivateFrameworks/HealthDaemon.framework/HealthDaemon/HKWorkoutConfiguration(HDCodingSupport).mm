@@ -19,8 +19,8 @@
     if ([v4 hasWLengthUnitString])
     {
       v6 = MEMORY[0x277CCDAB0];
-      v7 = [v4 wLengthUnitString];
-      v8 = [v6 unitFromString:v7];
+      wLengthUnitString = [v4 wLengthUnitString];
+      v8 = [v6 unitFromString:wLengthUnitString];
 
       v9 = MEMORY[0x277CCD7E8];
       [v4 wLengthValue];
@@ -40,18 +40,18 @@
 - (HDCodableWorkoutConfiguration)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableWorkoutConfiguration);
-  -[HDCodableWorkoutConfiguration setActivityType:](v2, "setActivityType:", [a1 activityType]);
-  -[HDCodableWorkoutConfiguration setLocationType:](v2, "setLocationType:", [a1 locationType]);
-  -[HDCodableWorkoutConfiguration setWLocationType:](v2, "setWLocationType:", [a1 swimmingLocationType]);
-  v3 = [a1 lapLength];
-  v4 = v3;
-  if (v3)
+  -[HDCodableWorkoutConfiguration setActivityType:](v2, "setActivityType:", [self activityType]);
+  -[HDCodableWorkoutConfiguration setLocationType:](v2, "setLocationType:", [self locationType]);
+  -[HDCodableWorkoutConfiguration setWLocationType:](v2, "setWLocationType:", [self swimmingLocationType]);
+  lapLength = [self lapLength];
+  v4 = lapLength;
+  if (lapLength)
   {
-    v5 = [v3 _unit];
-    [v4 doubleValueForUnit:v5];
+    _unit = [lapLength _unit];
+    [v4 doubleValueForUnit:_unit];
     [(HDCodableWorkoutConfiguration *)v2 setWLengthValue:?];
-    v6 = [v5 unitString];
-    [(HDCodableWorkoutConfiguration *)v2 setWLengthUnitString:v6];
+    unitString = [_unit unitString];
+    [(HDCodableWorkoutConfiguration *)v2 setWLengthUnitString:unitString];
   }
 
   return v2;

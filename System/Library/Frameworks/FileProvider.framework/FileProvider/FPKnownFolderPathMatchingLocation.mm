@@ -1,26 +1,26 @@
 @interface FPKnownFolderPathMatchingLocation
-- (FPKnownFolderPathMatchingLocation)initWithCoder:(id)a3;
-- (FPKnownFolderPathMatchingLocation)initWithParentItemIdentifier:(id)a3 filename:(id)a4;
+- (FPKnownFolderPathMatchingLocation)initWithCoder:(id)coder;
+- (FPKnownFolderPathMatchingLocation)initWithParentItemIdentifier:(id)identifier filename:(id)filename;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPKnownFolderPathMatchingLocation
 
-- (FPKnownFolderPathMatchingLocation)initWithParentItemIdentifier:(id)a3 filename:(id)a4
+- (FPKnownFolderPathMatchingLocation)initWithParentItemIdentifier:(id)identifier filename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  filenameCopy = filename;
   v14.receiver = self;
   v14.super_class = FPKnownFolderPathMatchingLocation;
   v8 = [(FPKnownFolderPathMatchingLocation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     parentItemIdentifier = v8->_parentItemIdentifier;
     v8->_parentItemIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [filenameCopy copy];
     filename = v8->_filename;
     v8->_filename = v11;
   }
@@ -28,19 +28,19 @@
   return v8;
 }
 
-- (FPKnownFolderPathMatchingLocation)initWithCoder:(id)a3
+- (FPKnownFolderPathMatchingLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FPKnownFolderPathMatchingLocation;
   v5 = [(FPKnownFolderPathMatchingLocation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_parentItemIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_parentItemIdentifier"];
     parentItemIdentifier = v5->_parentItemIdentifier;
     v5->_parentItemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
     filename = v5->_filename;
     v5->_filename = v8;
   }
@@ -48,20 +48,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   parentItemIdentifier = self->_parentItemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:parentItemIdentifier forKey:@"_parentItemIdentifier"];
-  [v5 encodeObject:self->_filename forKey:@"_filename"];
+  coderCopy = coder;
+  [coderCopy encodeObject:parentItemIdentifier forKey:@"_parentItemIdentifier"];
+  [coderCopy encodeObject:self->_filename forKey:@"_filename"];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
   parentItemIdentifier = self->_parentItemIdentifier;
-  v4 = [(NSString *)self->_filename fp_obfuscatedPath];
-  v5 = [v2 stringWithFormat:@"<p:%@ n:%@>", parentItemIdentifier, v4];
+  fp_obfuscatedPath = [(NSString *)self->_filename fp_obfuscatedPath];
+  v5 = [v2 stringWithFormat:@"<p:%@ n:%@>", parentItemIdentifier, fp_obfuscatedPath];
 
   return v5;
 }

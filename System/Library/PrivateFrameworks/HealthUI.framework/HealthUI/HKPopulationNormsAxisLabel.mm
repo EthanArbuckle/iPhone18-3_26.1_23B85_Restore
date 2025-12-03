@@ -1,25 +1,25 @@
 @interface HKPopulationNormsAxisLabel
-- (HKPopulationNormsAxisLabel)initWithRangeStart:(id)a3 end:(id)a4;
+- (HKPopulationNormsAxisLabel)initWithRangeStart:(id)start end:(id)end;
 - (NSString)separatorString;
 - (id)stringRepresentation;
 @end
 
 @implementation HKPopulationNormsAxisLabel
 
-- (HKPopulationNormsAxisLabel)initWithRangeStart:(id)a3 end:(id)a4
+- (HKPopulationNormsAxisLabel)initWithRangeStart:(id)start end:(id)end
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  endCopy = end;
   v14.receiver = self;
   v14.super_class = HKPopulationNormsAxisLabel;
   v8 = [(HKPopulationNormsAxisLabel *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [startCopy copy];
     rangeStart = v8->_rangeStart;
     v8->_rangeStart = v9;
 
-    v11 = [v7 copy];
+    v11 = [endCopy copy];
     rangeEnd = v8->_rangeEnd;
     v8->_rangeEnd = v11;
   }
@@ -43,8 +43,8 @@
   {
     v5 = HKLocalizedStringForNumberWithDecimalPrecision(rangeEnd, 0, 0);
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(HKPopulationNormsAxisLabel *)self separatorString];
-    v8 = [v6 stringWithFormat:@"%@%@%@", v3, v7, v5];
+    separatorString = [(HKPopulationNormsAxisLabel *)self separatorString];
+    v8 = [v6 stringWithFormat:@"%@%@%@", v3, separatorString, v5];
   }
 
   else

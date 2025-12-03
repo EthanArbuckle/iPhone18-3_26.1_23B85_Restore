@@ -1,29 +1,29 @@
 @interface UIButtonAccessibility__MusicApplication__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation UIButtonAccessibility__MusicApplication__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIButton" hasInstanceMethod:@"currentImage" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIButton" hasInstanceMethod:@"currentImage" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UIButtonAccessibility__MusicApplication__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXNowPlayingSubtitleButton"];
+  accessibilityIdentifier = [(UIButtonAccessibility__MusicApplication__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXNowPlayingSubtitleButton"];
 
   if (v4)
   {
     v5 = [(UIButtonAccessibility__MusicApplication__UIKit *)self safeValueForKey:@"titleLabel"];
-    v6 = [v5 accessibilityLabel];
-    v7 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v8 = [v6 stringByTrimmingCharactersInSet:v7];
+    accessibilityLabel = [v5 accessibilityLabel];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v8 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v9 = [v8 length];
     v10 = v9 != 0;
 
@@ -46,16 +46,16 @@
 - (id)accessibilityLabel
 {
   v3 = [(UIButtonAccessibility__MusicApplication__UIKit *)self safeValueForKey:@"currentImage"];
-  v4 = [v3 accessibilityIdentifier];
-  if ([v4 isEqualToString:@"Context-Love"])
+  accessibilityIdentifier = [v3 accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"Context-Love"])
   {
     v5 = @"love";
 LABEL_5:
-    v6 = accessibilityMusicLocalizedString(v5);
+    accessibilityLabel = accessibilityMusicLocalizedString(v5);
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Context-Hate"])
+  if ([accessibilityIdentifier isEqualToString:@"Context-Hate"])
   {
     v5 = @"dislike";
     goto LABEL_5;
@@ -63,9 +63,9 @@ LABEL_5:
 
   v9.receiver = self;
   v9.super_class = UIButtonAccessibility__MusicApplication__UIKit;
-  v6 = [(UIButtonAccessibility__MusicApplication__UIKit *)&v9 accessibilityLabel];
+  accessibilityLabel = [(UIButtonAccessibility__MusicApplication__UIKit *)&v9 accessibilityLabel];
 LABEL_7:
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }

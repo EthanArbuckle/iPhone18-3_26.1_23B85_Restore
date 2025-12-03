@@ -1,6 +1,6 @@
 @interface ConversationSearchHandler
 - (ConversationSearchHandler)init;
-- (void)aggregationContextDidFinish:(id)a3 withLoadingController:(id)a4 successfully:(BOOL)a5;
+- (void)aggregationContextDidFinish:(id)finish withLoadingController:(id)controller successfully:(BOOL)successfully;
 - (void)dealloc;
 @end
 
@@ -68,10 +68,10 @@
   [(ConversationSearchHandler *)&v3 dealloc];
 }
 
-- (void)aggregationContextDidFinish:(id)a3 withLoadingController:(id)a4 successfully:(BOOL)a5
+- (void)aggregationContextDidFinish:(id)finish withLoadingController:(id)controller successfully:(BOOL)successfully
 {
-  v7 = a3;
-  v8 = a4;
+  finishCopy = finish;
+  controllerCopy = controller;
   if (self)
   {
     managementQueue = self->_managementQueue;
@@ -86,11 +86,11 @@
   v14 = 3221225472;
   v15 = sub_1004838E0;
   v16 = &unk_10064C6B0;
-  v17 = self;
-  v18 = v7;
+  selfCopy = self;
+  v18 = finishCopy;
   v19 = v10;
   v11 = v10;
-  v12 = v7;
+  v12 = finishCopy;
   dispatch_sync(managementQueue, block);
 }
 

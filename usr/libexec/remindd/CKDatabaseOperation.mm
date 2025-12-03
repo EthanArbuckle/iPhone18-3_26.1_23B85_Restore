@@ -8,11 +8,11 @@
 {
   v8.receiver = self;
   v8.super_class = CKDatabaseOperation;
-  v3 = [(CKDatabaseOperation *)&v8 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(CKDatabaseOperation *)&v8 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(CKDatabaseOperation *)self database];
-  [v5 databaseScope];
+  database = [(CKDatabaseOperation *)self database];
+  [database databaseScope];
   v6 = CKDatabaseScopeString();
   [v4 setObject:v6 forKeyedSubscript:@"databaseScope"];
 

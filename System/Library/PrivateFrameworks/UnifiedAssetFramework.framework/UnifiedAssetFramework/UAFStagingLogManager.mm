@@ -1,20 +1,20 @@
 @interface UAFStagingLogManager
-+ (BOOL)deleteItemAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)findOrCreateDir:(id)a3;
-+ (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4;
-+ (BOOL)writeToFile:(id)a3 content:(id)a4;
-+ (id)createLogEntryWithInfo:(id)a3;
++ (BOOL)deleteItemAtURL:(id)l error:(id *)error;
++ (BOOL)findOrCreateDir:(id)dir;
++ (BOOL)moveItemAtURL:(id)l toURL:(id)rL;
++ (BOOL)writeToFile:(id)file content:(id)content;
++ (id)createLogEntryWithInfo:(id)info;
 + (id)getBuildVersionFromStagingLogsDir;
 + (id)getLastBuildStagingLogsDir;
 + (id)getLatestStagingLogsDir;
-+ (id)getLogFileForTarget:(id)a3 andAssetSetName:(id)a4;
++ (id)getLogFileForTarget:(id)target andAssetSetName:(id)name;
 + (id)getRootStagingLogsDir;
 + (id)getSerialQueue;
-+ (id)serializeJSONObjectToData:(id)a3;
++ (id)serializeJSONObjectToData:(id)data;
 + (void)createBuildVersionFile;
-+ (void)deleteLoggedTargetsForEliminatedAssetSet:(id)a3;
-+ (void)logTargetSync:(id)a3 withAssetSetName:(id)a4 withPlatformAssetVersion:(id)a5;
-+ (void)logTargets:(id)a3 withAssetSetName:(id)a4 withPlatformAssetVersion:(id)a5;
++ (void)deleteLoggedTargetsForEliminatedAssetSet:(id)set;
++ (void)logTargetSync:(id)sync withAssetSetName:(id)name withPlatformAssetVersion:(id)version;
++ (void)logTargets:(id)targets withAssetSetName:(id)name withPlatformAssetVersion:(id)version;
 + (void)rollStagingLogsUponNewBuildVersion;
 @end
 
@@ -215,22 +215,22 @@ LABEL_31:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logTargets:(id)a3 withAssetSetName:(id)a4 withPlatformAssetVersion:(id)a5
++ (void)logTargets:(id)targets withAssetSetName:(id)name withPlatformAssetVersion:(id)version
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count] && -[__CFString length](v8, "length"))
+  targetsCopy = targets;
+  nameCopy = name;
+  versionCopy = version;
+  if ([targetsCopy count] && -[__CFString length](nameCopy, "length"))
   {
     v10 = +[UAFStagingLogManager getSerialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__UAFStagingLogManager_logTargets_withAssetSetName_withPlatformAssetVersion___block_invoke;
     block[3] = &unk_1E7FFDEA0;
-    v16 = v7;
-    v17 = v8;
-    v18 = v9;
+    v16 = targetsCopy;
+    v17 = nameCopy;
+    v18 = versionCopy;
     dispatch_async(v10, block);
 
     v11 = v16;
@@ -241,13 +241,13 @@ LABEL_31:
     v11 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v7 count];
+      v13 = [targetsCopy count];
       v14 = @"nil";
       *buf = 136315650;
       v20 = "+[UAFStagingLogManager logTargets:withAssetSetName:withPlatformAssetVersion:]";
-      if (v8)
+      if (nameCopy)
       {
-        v14 = v8;
+        v14 = nameCopy;
       }
 
       v21 = 2048;
@@ -297,18 +297,18 @@ void __77__UAFStagingLogManager_logTargets_withAssetSetName_withPlatformAssetVer
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)deleteLoggedTargetsForEliminatedAssetSet:(id)a3
++ (void)deleteLoggedTargetsForEliminatedAssetSet:(id)set
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  setCopy = set;
+  if ([setCopy length])
   {
     v4 = +[UAFStagingLogManager getSerialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__UAFStagingLogManager_deleteLoggedTargetsForEliminatedAssetSet___block_invoke;
     block[3] = &unk_1E7FFCFD0;
-    v8 = v3;
+    v8 = setCopy;
     dispatch_async(v4, block);
 
     v5 = v8;
@@ -468,31 +468,31 @@ LABEL_29:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logTargetSync:(id)a3 withAssetSetName:(id)a4 withPlatformAssetVersion:(id)a5
++ (void)logTargetSync:(id)sync withAssetSetName:(id)name withPlatformAssetVersion:(id)version
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && [(__CFString *)v8 length])
+  syncCopy = sync;
+  nameCopy = name;
+  versionCopy = version;
+  if (syncCopy && [(__CFString *)nameCopy length])
   {
     v10 = +[UAFStagingLogManager getLatestStagingLogsDir];
     if (v10)
     {
-      v11 = [UAFStagingLogManager getLogFileForTarget:v7 andAssetSetName:v8];
+      v11 = [UAFStagingLogManager getLogFileForTarget:syncCopy andAssetSetName:nameCopy];
       v12 = v11;
       if (v11)
       {
         v42 = v11;
         v43 = v10;
         v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
-        v45 = v8;
-        [v13 setObject:v8 forKeyedSubscript:@"assetSetName"];
-        v14 = [v7 minTargetOSVersion];
-        v15 = v14;
-        if (v14)
+        v45 = nameCopy;
+        [v13 setObject:nameCopy forKeyedSubscript:@"assetSetName"];
+        minTargetOSVersion = [syncCopy minTargetOSVersion];
+        v15 = minTargetOSVersion;
+        if (minTargetOSVersion)
         {
-          v16 = v14;
+          v16 = minTargetOSVersion;
         }
 
         else
@@ -502,11 +502,11 @@ LABEL_29:
 
         [v13 setObject:v16 forKeyedSubscript:@"minTargetOSVersion"];
 
-        v17 = [v7 maxTargetOSVersion];
-        v18 = v17;
-        if (v17)
+        maxTargetOSVersion = [syncCopy maxTargetOSVersion];
+        v18 = maxTargetOSVersion;
+        if (maxTargetOSVersion)
         {
-          v19 = v17;
+          v19 = maxTargetOSVersion;
         }
 
         else
@@ -516,10 +516,10 @@ LABEL_29:
 
         [v13 setObject:v19 forKeyedSubscript:@"maxTargetOSVersion"];
 
-        v44 = v9;
-        if (v9)
+        v44 = versionCopy;
+        if (versionCopy)
         {
-          v20 = v9;
+          v20 = versionCopy;
         }
 
         else
@@ -529,15 +529,15 @@ LABEL_29:
 
         v41 = v13;
         [v13 setObject:v20 forKeyedSubscript:@"platformAssetVersion"];
-        v21 = [v7 autoAssetEntries];
-        v22 = [v21 count];
+        autoAssetEntries = [syncCopy autoAssetEntries];
+        v22 = [autoAssetEntries count];
 
         v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v22];
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        obj = [v7 autoAssetEntries];
+        obj = [syncCopy autoAssetEntries];
         v24 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
         if (v24)
         {
@@ -554,12 +554,12 @@ LABEL_29:
 
               v28 = *(*(&v47 + 1) + 8 * i);
               v51[0] = @"assetSpecifier";
-              v29 = [v28 assetSelector];
-              v30 = [v29 assetSpecifier];
-              v31 = v30;
-              if (v30)
+              assetSelector = [v28 assetSelector];
+              assetSpecifier = [assetSelector assetSpecifier];
+              v31 = assetSpecifier;
+              if (assetSpecifier)
               {
-                v32 = v30;
+                v32 = assetSpecifier;
               }
 
               else
@@ -590,18 +590,18 @@ LABEL_29:
           v36 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
-            v40 = [v42 path];
+            path = [v42 path];
             *buf = 136315394;
             v55 = "+[UAFStagingLogManager logTargetSync:withAssetSetName:withPlatformAssetVersion:]";
             v56 = 2114;
-            v57 = v40;
+            v57 = path;
             _os_log_error_impl(&dword_1BCF2C000, v36, OS_LOG_TYPE_ERROR, "%s Failed to write to log file %{public}@", buf, 0x16u);
           }
         }
 
-        v8 = v45;
+        nameCopy = v45;
         v10 = v43;
-        v9 = v44;
+        versionCopy = v44;
       }
 
       else
@@ -612,7 +612,7 @@ LABEL_29:
           *buf = 136315394;
           v55 = "+[UAFStagingLogManager logTargetSync:withAssetSetName:withPlatformAssetVersion:]";
           v56 = 2114;
-          v57 = v8;
+          v57 = nameCopy;
           _os_log_error_impl(&dword_1BCF2C000, v35, OS_LOG_TYPE_ERROR, "%s Failed to get log file for target %{public}@", buf, 0x16u);
         }
       }
@@ -638,7 +638,7 @@ LABEL_29:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v37 = @"valid";
-      if (!v7)
+      if (!syncCopy)
       {
         v37 = @"nil";
       }
@@ -647,9 +647,9 @@ LABEL_29:
       v55 = "+[UAFStagingLogManager logTargetSync:withAssetSetName:withPlatformAssetVersion:]";
       v56 = 2114;
       v57 = v37;
-      if (v8)
+      if (nameCopy)
       {
-        v38 = v8;
+        v38 = nameCopy;
       }
 
       else
@@ -666,25 +666,25 @@ LABEL_29:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)writeToFile:(id)a3 content:(id)a4
++ (BOOL)writeToFile:(id)file content:(id)content
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 path];
-  if (v7)
+  fileCopy = file;
+  contentCopy = content;
+  path = [fileCopy path];
+  if (path)
   {
-    v8 = v7;
-    v9 = [v6 count];
+    v8 = path;
+    v9 = [contentCopy count];
 
     if (v9)
     {
-      v10 = [v5 URLByDeletingLastPathComponent];
-      if ([UAFStagingLogManager findOrCreateDir:v10])
+      uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
+      if ([UAFStagingLogManager findOrCreateDir:uRLByDeletingLastPathComponent])
       {
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v5 path];
-        v13 = [v11 fileExistsAtPath:v12];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path2 = [fileCopy path];
+        v13 = [defaultManager fileExistsAtPath:path2];
 
         if (!v13)
         {
@@ -692,21 +692,21 @@ LABEL_29:
         }
 
         v31 = 0;
-        v14 = [UAFStagingLogManager deleteItemAtURL:v5 error:&v31];
+        v14 = [UAFStagingLogManager deleteItemAtURL:fileCopy error:&v31];
         v15 = v31;
         v16 = v15;
         if (v14)
         {
 
 LABEL_7:
-          v16 = [UAFStagingLogManager createLogEntryWithInfo:v6];
+          v16 = [UAFStagingLogManager createLogEntryWithInfo:contentCopy];
           v17 = [UAFStagingLogManager serializeJSONObjectToData:v16];
           v18 = v17;
           if (v17)
           {
             v30 = 0;
             v19 = 1;
-            v20 = [v17 writeToURL:v5 options:1 error:&v30];
+            v20 = [v17 writeToURL:fileCopy options:1 error:&v30];
             v21 = v30;
             if (v20)
             {
@@ -719,11 +719,11 @@ LABEL_24:
             v22 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v29 = [v5 path];
+              path3 = [fileCopy path];
               *buf = 136315650;
               v33 = "+[UAFStagingLogManager writeToFile:content:]";
               v34 = 2114;
-              v35 = v29;
+              v35 = path3;
               v36 = 2114;
               v37 = v21;
               _os_log_error_impl(&dword_1BCF2C000, v22, OS_LOG_TYPE_ERROR, "%s Failed to write to %{public}@ with error %{public}@", buf, 0x20u);
@@ -745,17 +745,17 @@ LABEL_24:
           goto LABEL_19;
         }
 
-        v23 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        path5 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
+        if (os_log_type_enabled(path5, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v5 path];
+          path4 = [fileCopy path];
           *buf = 136315650;
           v33 = "+[UAFStagingLogManager writeToFile:content:]";
           v34 = 2114;
-          v35 = v28;
+          v35 = path4;
           v36 = 2114;
           v37 = v16;
-          _os_log_error_impl(&dword_1BCF2C000, v23, OS_LOG_TYPE_ERROR, "%s Failed to delete existing item at %{public}@: %{public}@", buf, 0x20u);
+          _os_log_error_impl(&dword_1BCF2C000, path5, OS_LOG_TYPE_ERROR, "%s Failed to delete existing item at %{public}@: %{public}@", buf, 0x20u);
         }
       }
 
@@ -769,11 +769,11 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v23 = [v5 path];
+        path5 = [fileCopy path];
         *buf = 136315394;
         v33 = "+[UAFStagingLogManager writeToFile:content:]";
         v34 = 2114;
-        v35 = v23;
+        v35 = path5;
         _os_log_error_impl(&dword_1BCF2C000, v16, OS_LOG_TYPE_ERROR, "%s Failed to get parent directory for %{public}@", buf, 0x16u);
       }
 
@@ -781,12 +781,12 @@ LABEL_23:
     }
   }
 
-  v10 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  uRLByDeletingLastPathComponent = UAFGetLogCategory(&UAFLogContextStagingLogManager);
+  if (os_log_type_enabled(uRLByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
   {
-    v26 = [v5 path];
+    path6 = [fileCopy path];
     v27 = @"empty content";
-    if (!v26)
+    if (!path6)
     {
       v27 = @"nil filePath";
     }
@@ -795,7 +795,7 @@ LABEL_23:
     v33 = "+[UAFStagingLogManager writeToFile:content:]";
     v34 = 2114;
     v35 = v27;
-    _os_log_error_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_ERROR, "%s Bad parameters passed: %{public}@", buf, 0x16u);
+    _os_log_error_impl(&dword_1BCF2C000, uRLByDeletingLastPathComponent, OS_LOG_TYPE_ERROR, "%s Bad parameters passed: %{public}@", buf, 0x16u);
   }
 
   v19 = 0;
@@ -805,18 +805,18 @@ LABEL_25:
   return v19;
 }
 
-+ (BOOL)findOrCreateDir:(id)a3
++ (BOOL)findOrCreateDir:(id)dir
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 path];
+  dirCopy = dir;
+  path = [dirCopy path];
 
-  if (v4)
+  if (path)
   {
     v25 = 0;
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v3 path];
-    v7 = [v5 fileExistsAtPath:v6 isDirectory:&v25];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [dirCopy path];
+    v7 = [defaultManager fileExistsAtPath:path2 isDirectory:&v25];
 
     if (v7)
     {
@@ -829,16 +829,16 @@ LABEL_25:
       v10 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v3 path];
+        path3 = [dirCopy path];
         *buf = 136315394;
         v29 = "+[UAFStagingLogManager findOrCreateDir:]";
         v30 = 2114;
-        v31 = v22;
+        v31 = path3;
         _os_log_fault_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_FAULT, "%s Found unexpected file where directory should exist at %{public}@. Deleting file...", buf, 0x16u);
       }
 
       v24 = 0;
-      v11 = [UAFStagingLogManager deleteItemAtURL:v3 error:&v24];
+      v11 = [UAFStagingLogManager deleteItemAtURL:dirCopy error:&v24];
       v12 = v24;
       v13 = v12;
       if (!v11)
@@ -846,11 +846,11 @@ LABEL_25:
         v17 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v3 path];
+          path4 = [dirCopy path];
           *buf = 136315650;
           v29 = "+[UAFStagingLogManager findOrCreateDir:]";
           v30 = 2114;
-          v31 = v18;
+          v31 = path4;
           v32 = 2114;
           v33 = v13;
           v19 = "%s Failed to delete unexpected file at %{public}@: %{public}@";
@@ -864,12 +864,12 @@ LABEL_17:
       }
     }
 
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v26 = *MEMORY[0x1E696A370];
     v27 = &unk_1F3B731E8;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v23 = 0;
-    v16 = [v14 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:v15 error:&v23];
+    v16 = [defaultManager2 createDirectoryAtURL:dirCopy withIntermediateDirectories:1 attributes:v15 error:&v23];
     v13 = v23;
 
     if (v16)
@@ -884,11 +884,11 @@ LABEL_18:
     v17 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v3 path];
+      path4 = [dirCopy path];
       *buf = 136315650;
       v29 = "+[UAFStagingLogManager findOrCreateDir:]";
       v30 = 2114;
-      v31 = v18;
+      v31 = path4;
       v32 = 2114;
       v33 = v13;
       v19 = "%s Failed to create directory at %{public}@ with error %{public}@";
@@ -916,26 +916,26 @@ LABEL_19:
   return v8;
 }
 
-+ (BOOL)deleteItemAtURL:(id)a3 error:(id *)a4
++ (BOOL)deleteItemAtURL:(id)l error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 path];
+    path = [lCopy path];
     *buf = 136315394;
     v24 = "+[UAFStagingLogManager deleteItemAtURL:error:]";
     v25 = 2114;
-    v26 = v7;
+    v26 = path;
     _os_log_impl(&dword_1BCF2C000, v6, OS_LOG_TYPE_INFO, "%s Deleting %{public}@", buf, 0x16u);
   }
 
-  v8 = [v5 path];
+  path2 = [lCopy path];
 
-  if (!v8)
+  if (!path2)
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_20;
@@ -952,14 +952,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v10 = [v9 removeItemAtURL:v5 error:&v20];
+  v10 = [defaultManager removeItemAtURL:lCopy error:&v20];
   v11 = v20;
 
   if ((v10 & 1) != 0 || !v11 || [v11 code] != 4 || (objc_msgSend(v11, "domain"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", *MEMORY[0x1E696A250]), v12, !v13))
   {
-    if (a4)
+    if (error)
     {
       v15 = v10;
     }
@@ -979,11 +979,11 @@ LABEL_17:
   }
 
   v10 = 1;
-  if (a4)
+  if (error)
   {
     v14 = 0;
 LABEL_18:
-    *a4 = v14;
+    *error = v14;
   }
 
 LABEL_19:
@@ -993,24 +993,24 @@ LABEL_20:
   return v10;
 }
 
-+ (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4
++ (BOOL)moveItemAtURL:(id)l toURL:(id)rL
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v20 = 0;
-  v7 = [UAFStagingLogManager deleteItemAtURL:v6 error:&v20];
+  v7 = [UAFStagingLogManager deleteItemAtURL:rLCopy error:&v20];
   v8 = v20;
   if (!v7)
   {
     v13 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 path];
+      path = [rLCopy path];
       *buf = 136315650;
       v22 = "+[UAFStagingLogManager moveItemAtURL:toURL:]";
       v23 = 2114;
-      v24 = v14;
+      v24 = path;
       v25 = 2114;
       v26 = v8;
       _os_log_error_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_ERROR, "%s Failed to delete item in %{public}@ with error: %{public}@", buf, 0x20u);
@@ -1019,9 +1019,9 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v19 = v8;
-  v10 = [v9 moveItemAtURL:v5 toURL:v6 error:&v19];
+  v10 = [defaultManager moveItemAtURL:lCopy toURL:rLCopy error:&v19];
   v11 = v19;
 
   if ((v10 & 1) == 0)
@@ -1029,14 +1029,14 @@ LABEL_20:
     v13 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v5 path];
-      v18 = [v6 path];
+      path2 = [lCopy path];
+      path3 = [rLCopy path];
       *buf = 136315906;
       v22 = "+[UAFStagingLogManager moveItemAtURL:toURL:]";
       v23 = 2114;
-      v24 = v17;
+      v24 = path2;
       v25 = 2114;
-      v26 = v18;
+      v26 = path3;
       v27 = 2114;
       v28 = v11;
       _os_log_error_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_ERROR, "%s Failed to move item from %{public}@ to %{public}@ with error %{public}@", buf, 0x2Au);
@@ -1147,20 +1147,20 @@ LABEL_10:
   return v4;
 }
 
-+ (id)getLogFileForTarget:(id)a3 andAssetSetName:(id)a4
++ (id)getLogFileForTarget:(id)target andAssetSetName:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 minTargetOSVersion];
-  if (![v7 length])
+  targetCopy = target;
+  nameCopy = name;
+  minTargetOSVersion = [targetCopy minTargetOSVersion];
+  if (![minTargetOSVersion length])
   {
 
 LABEL_6:
     v10 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v6 length];
+      v15 = [nameCopy length];
       v16 = @"Missing minTargetOSVersion";
       if (!v15)
       {
@@ -1177,7 +1177,7 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v8 = [v6 length];
+  v8 = [nameCopy length];
 
   if (!v8)
   {
@@ -1188,9 +1188,9 @@ LABEL_6:
   if (v9)
   {
     v10 = v9;
-    v11 = [v5 minTargetOSVersion];
-    v12 = [v10 URLByAppendingPathComponent:v11];
-    v13 = [v6 stringByAppendingString:@".json"];
+    minTargetOSVersion2 = [targetCopy minTargetOSVersion];
+    v12 = [v10 URLByAppendingPathComponent:minTargetOSVersion2];
+    v13 = [nameCopy stringByAppendingString:@".json"];
     v14 = [v12 URLByAppendingPathComponent:v13];
 
     goto LABEL_14;
@@ -1216,17 +1216,17 @@ LABEL_14:
   return v14;
 }
 
-+ (id)createLogEntryWithInfo:(id)a3
++ (id)createLogEntryWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [UAFCommonUtilities getISO8601Timestamp:v5 withFractionalSeconds:1];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [UAFCommonUtilities getISO8601Timestamp:date withFractionalSeconds:1];
   [v4 setObject:v6 forKeyedSubscript:@"timestamp"];
 
-  if ([v3 count])
+  if ([infoCopy count])
   {
-    [v4 setObject:v3 forKeyedSubscript:@"eventInformation"];
+    [v4 setObject:infoCopy forKeyedSubscript:@"eventInformation"];
   }
 
   v7 = [v4 copy];
@@ -1234,14 +1234,14 @@ LABEL_14:
   return v7;
 }
 
-+ (id)serializeJSONObjectToData:(id)a3
++ (id)serializeJSONObjectToData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
     v10 = 0;
-    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:1 error:&v10];
+    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dataCopy options:1 error:&v10];
     v5 = v10;
     if (v4)
     {
@@ -1293,9 +1293,9 @@ LABEL_14:
 
   v4 = [v2 URLByAppendingPathComponent:@"BuildVersion.json"];
   v26 = 0;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:&v26];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v4 path];
+  v7 = [defaultManager fileExistsAtPath:path isDirectory:&v26];
 
   if (v7)
   {
@@ -1304,11 +1304,11 @@ LABEL_14:
       v8 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v4 path];
+        path2 = [v4 path];
         *buf = 136315394;
         v28 = "+[UAFStagingLogManager getBuildVersionFromStagingLogsDir]";
         v29 = 2114;
-        v30 = v22;
+        v30 = path2;
         _os_log_fault_impl(&dword_1BCF2C000, v8, OS_LOG_TYPE_FAULT, "%s Deleting directory that was found with the path of the build version file %{public}@", buf, 0x16u);
       }
 
@@ -1442,9 +1442,9 @@ LABEL_36:
   v2 = +[UAFStagingLogManager getLatestStagingLogsDir];
   v3 = [v2 URLByAppendingPathComponent:@"BuildVersion.json"];
   v20 = 0;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v20];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path isDirectory:&v20];
 
   if (!v6)
   {
@@ -1456,11 +1456,11 @@ LABEL_36:
     v7 = UAFGetLogCategory(&UAFLogContextStagingLogManager);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      v18 = [v3 path];
+      path2 = [v3 path];
       *buf = 136315394;
       v24 = "+[UAFStagingLogManager createBuildVersionFile]";
       v25 = 2114;
-      v26 = v18;
+      v26 = path2;
       _os_log_fault_impl(&dword_1BCF2C000, v7, OS_LOG_TYPE_FAULT, "%s Deleting directory that was found with the path of %{public}@", buf, 0x16u);
     }
 

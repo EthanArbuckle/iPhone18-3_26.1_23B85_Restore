@@ -7,14 +7,14 @@
 
 - (id)_avtui_deepCopy
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__NSDictionary_AvatarUI___avtui_deepCopy__block_invoke;
   v6[3] = &unk_278CFA4A0;
-  v7 = v2;
-  v3 = v2;
-  [a1 enumerateKeysAndObjectsUsingBlock:v6];
+  v7 = dictionary;
+  v3 = dictionary;
+  [self enumerateKeysAndObjectsUsingBlock:v6];
   v4 = [v3 copy];
 
   return v4;
@@ -25,7 +25,7 @@
   v25 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -53,14 +53,14 @@
           [MEMORY[0x277CBEAD8] raise:v11 format:{@"Nil key provided for %@", v13}];
         }
 
-        v15 = [v7 objectForKeyedSubscript:v14];
+        v15 = [dictionary objectForKeyedSubscript:v14];
 
         if (v15)
         {
           [MEMORY[0x277CBEAD8] raise:v11 format:{@"Already have an object for %@", v14}];
         }
 
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        [dictionary setObject:v13 forKeyedSubscript:v14];
       }
 
       v9 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -69,7 +69,7 @@
     while (v9);
   }
 
-  v16 = [v7 copy];
+  v16 = [dictionary copy];
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;

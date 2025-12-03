@@ -1,23 +1,23 @@
 @interface DKNotableUserDataAccount
-- (DKNotableUserDataAccount)initWithProfilePicture:(id)a3 name:(id)a4 username:(id)a5;
+- (DKNotableUserDataAccount)initWithProfilePicture:(id)picture name:(id)name username:(id)username;
 @end
 
 @implementation DKNotableUserDataAccount
 
-- (DKNotableUserDataAccount)initWithProfilePicture:(id)a3 name:(id)a4 username:(id)a5
+- (DKNotableUserDataAccount)initWithProfilePicture:(id)picture name:(id)name username:(id)username
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pictureCopy = picture;
+  nameCopy = name;
+  usernameCopy = username;
   v15.receiver = self;
   v15.super_class = DKNotableUserDataAccount;
   v12 = [(DKNotableUserDataAccount *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_profilePicture, a3);
-    objc_storeStrong(&v13->_name, a4);
-    objc_storeStrong(&v13->_username, a5);
+    objc_storeStrong(&v12->_profilePicture, picture);
+    objc_storeStrong(&v13->_name, name);
+    objc_storeStrong(&v13->_username, username);
   }
 
   return v13;

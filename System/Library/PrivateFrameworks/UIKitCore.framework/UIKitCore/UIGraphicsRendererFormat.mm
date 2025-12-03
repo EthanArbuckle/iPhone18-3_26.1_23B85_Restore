@@ -2,7 +2,7 @@
 + (UIGraphicsRendererFormat)defaultFormat;
 + (UIGraphicsRendererFormat)preferredFormat;
 - (CGRect)bounds;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIGraphicsRendererFormat
@@ -22,7 +22,7 @@
 
 + (UIGraphicsRendererFormat)defaultFormat
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = *(MEMORY[0x1E695F058] + 16);
   *(v2 + 8) = *MEMORY[0x1E695F058];
   *(v2 + 24) = v3;
@@ -32,7 +32,7 @@
 
 + (UIGraphicsRendererFormat)preferredFormat
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = *(MEMORY[0x1E695F058] + 16);
   *(v2 + 8) = *MEMORY[0x1E695F058];
   *(v2 + 24) = v3;
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(UIGraphicsRendererFormat *)self bounds];
   v4[1] = v5;
   v4[2] = v6;

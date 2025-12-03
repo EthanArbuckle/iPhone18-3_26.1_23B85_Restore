@@ -57,9 +57,9 @@ void __26__SPUIAppService_activate__block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v2 = [v3 bundleIdentifier];
-  runningInSpotlight = [v2 isEqualToString:@"com.apple.springboard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  runningInSpotlight = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 }
 
 + (id)sharedAppService
@@ -87,11 +87,11 @@ uint64_t __34__SPUIAppService_sharedAppService__block_invoke()
 
 - (void)_cancelAwakeNotifyToken
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  awakeNotifyToken = v2->_awakeNotifyToken;
-  v2->_awakeNotifyToken = -1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  awakeNotifyToken = selfCopy->_awakeNotifyToken;
+  selfCopy->_awakeNotifyToken = -1;
+  objc_sync_exit(selfCopy);
 
   if (awakeNotifyToken != -1)
   {
@@ -102,21 +102,21 @@ uint64_t __34__SPUIAppService_sharedAppService__block_invoke()
 
 - (void)registerAwakeNotifyToken
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  awakeNotifyToken = v2->_awakeNotifyToken;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  awakeNotifyToken = selfCopy->_awakeNotifyToken;
   if (awakeNotifyToken != -1)
   {
     notify_cancel(awakeNotifyToken);
   }
 
   out_token = -1;
-  appServiceQueue = v2->_appServiceQueue;
+  appServiceQueue = selfCopy->_appServiceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SPUIAppService_registerAwakeNotifyToken__block_invoke;
   v7[3] = &unk_279D05250;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v5 = notify_register_dispatch("com.apple.searchd.launched", &out_token, appServiceQueue, v7);
   v6 = out_token;
   if (v5)
@@ -124,8 +124,8 @@ uint64_t __34__SPUIAppService_sharedAppService__block_invoke()
     v6 = -1;
   }
 
-  v2->_awakeNotifyToken = v6;
-  objc_sync_exit(v2);
+  selfCopy->_awakeNotifyToken = v6;
+  objc_sync_exit(selfCopy);
 }
 
 void __42__SPUIAppService_registerAwakeNotifyToken__block_invoke(uint64_t a1)
@@ -256,7 +256,7 @@ void __28__SPUIAppService_deactivate__block_invoke(uint64_t a1)
 - (void)init
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

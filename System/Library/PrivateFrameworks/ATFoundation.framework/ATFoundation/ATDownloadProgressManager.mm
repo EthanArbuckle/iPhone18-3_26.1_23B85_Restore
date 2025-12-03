@@ -1,28 +1,28 @@
 @interface ATDownloadProgressManager
 + (id)sharedInstance;
 - (ATDownloadProgressManager)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)assetLinkController:(id)a3 didChangeDownloadStateForAssets:(id)a4;
-- (void)assetLinkController:(id)a3 didEnqueueAsset:(id)a4;
-- (void)assetLinkController:(id)a3 didProcessFinishedAsset:(id)a4;
-- (void)assetLinkController:(id)a3 didUpdateAsset:(id)a4;
-- (void)getAllDownloadsWithReplyBlock:(id)a3;
-- (void)prioritizeDownloadWithStoreForLibraryIdentifier:(int64_t)a3 withReplyBlock:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)assetLinkController:(id)controller didChangeDownloadStateForAssets:(id)assets;
+- (void)assetLinkController:(id)controller didEnqueueAsset:(id)asset;
+- (void)assetLinkController:(id)controller didProcessFinishedAsset:(id)asset;
+- (void)assetLinkController:(id)controller didUpdateAsset:(id)asset;
+- (void)getAllDownloadsWithReplyBlock:(id)block;
+- (void)prioritizeDownloadWithStoreForLibraryIdentifier:(int64_t)identifier withReplyBlock:(id)block;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ATDownloadProgressManager
 
-- (void)prioritizeDownloadWithStoreForLibraryIdentifier:(int64_t)a3 withReplyBlock:(id)a4
+- (void)prioritizeDownloadWithStoreForLibraryIdentifier:(int64_t)identifier withReplyBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v6 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = identifier;
     _os_log_impl(&dword_22392A000, v6, OS_LOG_TYPE_DEFAULT, "got request to prioritize download with library identifier:%lld", &buf, 0xCu);
   }
 
@@ -41,12 +41,12 @@
   p_buf = &buf;
   v9 = v7;
   v12 = v9;
-  [v8 prioritizeAssetWithStoreForLibraryIdentifier:a3 withCompletion:v11];
+  [v8 prioritizeAssetWithStoreForLibraryIdentifier:identifier withCompletion:v11];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  if (v5)
+  if (blockCopy)
   {
-    v5[2](v5, *(*(&buf + 1) + 40));
+    blockCopy[2](blockCopy, *(*(&buf + 1) + 40));
   }
 
   _Block_object_dispose(&buf, 8);
@@ -60,10 +60,10 @@ void __92__ATDownloadProgressManager_prioritizeDownloadWithStoreForLibraryIdenti
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)getAllDownloadsWithReplyBlock:(id)a3
+- (void)getAllDownloadsWithReplyBlock:(id)block
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blockCopy = block;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -71,31 +71,31 @@ void __92__ATDownloadProgressManager_prioritizeDownloadWithStoreForLibraryIdenti
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "got request to get all downloads", v10, 2u);
   }
 
-  if (v3)
+  if (blockCopy)
   {
     v5 = +[ATAssetLinkController sharedInstance];
-    v6 = [v5 allAssets];
+    allAssets = [v5 allAssets];
 
     v7 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 count];
+      v8 = [allAssets count];
       v10[0] = 67109120;
       v10[1] = v8;
       _os_log_impl(&dword_22392A000, v7, OS_LOG_TYPE_DEFAULT, "total number of downloads in ATC queue (%d)", v10, 8u);
     }
 
-    v3[2](v3, v6, 0);
+    blockCopy[2](blockCopy, allAssets, 0);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetLinkController:(id)a3 didChangeDownloadStateForAssets:(id)a4
+- (void)assetLinkController:(id)controller didChangeDownloadStateForAssets:(id)assets
 {
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithArray:v6 copyItems:1];
+  assetsCopy = assets;
+  v7 = [[v5 alloc] initWithArray:assetsCopy copyItems:1];
 
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
@@ -103,7 +103,7 @@ void __92__ATDownloadProgressManager_prioritizeDownloadWithStoreForLibraryIdenti
   v10[2] = __81__ATDownloadProgressManager_assetLinkController_didChangeDownloadStateForAssets___block_invoke;
   v10[3] = &unk_2784E9608;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v9 = v7;
   dispatch_sync(queue, v10);
 }
@@ -254,16 +254,16 @@ void __81__ATDownloadProgressManager_assetLinkController_didChangeDownloadStateF
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetLinkController:(id)a3 didProcessFinishedAsset:(id)a4
+- (void)assetLinkController:(id)controller didProcessFinishedAsset:(id)asset
 {
-  v5 = [a4 copy];
+  v5 = [asset copy];
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__ATDownloadProgressManager_assetLinkController_didProcessFinishedAsset___block_invoke;
   v8[3] = &unk_2784E9608;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_sync(queue, v8);
 }
@@ -324,16 +324,16 @@ void __73__ATDownloadProgressManager_assetLinkController_didProcessFinishedAsset
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetLinkController:(id)a3 didUpdateAsset:(id)a4
+- (void)assetLinkController:(id)controller didUpdateAsset:(id)asset
 {
-  v5 = [a4 copy];
+  v5 = [asset copy];
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__ATDownloadProgressManager_assetLinkController_didUpdateAsset___block_invoke;
   v8[3] = &unk_2784E9608;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_sync(queue, v8);
 }
@@ -393,16 +393,16 @@ void __64__ATDownloadProgressManager_assetLinkController_didUpdateAsset___block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assetLinkController:(id)a3 didEnqueueAsset:(id)a4
+- (void)assetLinkController:(id)controller didEnqueueAsset:(id)asset
 {
-  v5 = [a4 copy];
+  v5 = [asset copy];
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__ATDownloadProgressManager_assetLinkController_didEnqueueAsset___block_invoke;
   v8[3] = &unk_2784E9608;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_sync(queue, v8);
 }
@@ -464,19 +464,19 @@ void __65__ATDownloadProgressManager_assetLinkController_didEnqueueAsset___block
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 processIdentifier];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   v9 = _ATLogCategoryXPC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = self;
+    selfCopy = self;
     v29 = 1024;
-    v30 = v8;
+    v30 = processIdentifier;
     _os_log_impl(&dword_22392A000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ got connection from pid %i", buf, 0x12u);
   }
 
@@ -494,17 +494,17 @@ void __65__ATDownloadProgressManager_assetLinkController_didEnqueueAsset___block
   [v10 setClasses:v14 forSelector:sel_atcDidUpdateDownloadStateForAssets_ argumentIndex:0 ofReply:0];
 
   v15 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2836FDC80];
-  [v7 setExportedInterface:v15];
+  [connectionCopy setExportedInterface:v15];
 
-  [v7 setRemoteObjectInterface:v10];
-  [v7 setExportedObject:self];
+  [connectionCopy setRemoteObjectInterface:v10];
+  [connectionCopy setExportedObject:self];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__ATDownloadProgressManager_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_2784E9608;
   block[4] = self;
-  v17 = v7;
+  v17 = connectionCopy;
   v26 = v17;
   dispatch_sync(queue, block);
   v23[0] = MEMORY[0x277D85DD0];
@@ -512,7 +512,7 @@ void __65__ATDownloadProgressManager_assetLinkController_didEnqueueAsset___block
   v23[2] = __64__ATDownloadProgressManager_listener_shouldAcceptNewConnection___block_invoke_2;
   v23[3] = &unk_2784E9328;
   v23[4] = self;
-  v24 = v8;
+  v24 = processIdentifier;
   [v17 setInterruptionHandler:v23];
   objc_initWeak(buf, v17);
   v20[0] = MEMORY[0x277D85DD0];
@@ -520,7 +520,7 @@ void __65__ATDownloadProgressManager_assetLinkController_didEnqueueAsset___block
   v20[2] = __64__ATDownloadProgressManager_listener_shouldAcceptNewConnection___block_invoke_70;
   v20[3] = &unk_2784E93E8;
   v20[4] = self;
-  v22 = v8;
+  v22 = processIdentifier;
   objc_copyWeak(&v21, buf);
   [v17 setInvalidationHandler:v20];
   [v17 resume];
@@ -593,7 +593,7 @@ void __64__ATDownloadProgressManager_listener_shouldAcceptNewConnection___block_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping", &v7, 0xCu);
   }
 
@@ -617,7 +617,7 @@ void __64__ATDownloadProgressManager_listener_shouldAcceptNewConnection___block_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting", &v9, 0xCu);
   }
 

@@ -1,10 +1,10 @@
 @interface PSUIDefaultVoiceLineSpecifier
-- (PSUIDefaultVoiceLineSpecifier)initWithPlanManagerCache:(id)a3 planManager:(id)a4 simStatusCache:(id)a5;
-- (id)defaultVoiceLine:(id)a3;
+- (PSUIDefaultVoiceLineSpecifier)initWithPlanManagerCache:(id)cache planManager:(id)manager simStatusCache:(id)statusCache;
+- (id)defaultVoiceLine:(id)line;
 - (id)initSpecifier;
-- (id)planItemForListItem:(id)a3;
-- (id)subscriptionContextForListItem:(id)a3;
-- (void)setDefaultVoiceLine:(id)a3 specifier:(id)a4;
+- (id)planItemForListItem:(id)item;
+- (id)subscriptionContextForListItem:(id)item;
+- (void)setDefaultVoiceLine:(id)line specifier:(id)specifier;
 - (void)updateCachedState;
 @end
 
@@ -13,18 +13,18 @@
 - (id)initSpecifier
 {
   v3 = +[PSUICellularPlanManagerCache sharedInstance];
-  v4 = [MEMORY[0x277CF96D8] sharedManager];
-  v5 = [MEMORY[0x277D4D868] sharedInstance];
-  v6 = [(PSUIDefaultVoiceLineSpecifier *)self initWithPlanManagerCache:v3 planManager:v4 simStatusCache:v5];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  v6 = [(PSUIDefaultVoiceLineSpecifier *)self initWithPlanManagerCache:v3 planManager:mEMORY[0x277CF96D8] simStatusCache:mEMORY[0x277D4D868]];
 
   return v6;
 }
 
-- (PSUIDefaultVoiceLineSpecifier)initWithPlanManagerCache:(id)a3 planManager:(id)a4 simStatusCache:(id)a5
+- (PSUIDefaultVoiceLineSpecifier)initWithPlanManagerCache:(id)cache planManager:(id)manager simStatusCache:(id)statusCache
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
+  cacheCopy = cache;
+  managerCopy = manager;
+  statusCacheCopy = statusCache;
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"DEFAULT_VOICE_LINE" value:&stru_287733598 table:@"Gemini-Gemini"];
   v13 = objc_opt_class();
@@ -35,9 +35,9 @@
   if (v14)
   {
     [(PSUIDefaultVoiceLineSpecifier *)v14 setIdentifier:@"VOICE_LINE_SETTINGS"];
-    objc_storeStrong(&v14->_planManagerCache, a3);
-    objc_storeStrong(&v14->_planManager, a4);
-    objc_storeStrong(&v14->_simStatusCache, a5);
+    objc_storeStrong(&v14->_planManagerCache, cache);
+    objc_storeStrong(&v14->_planManager, manager);
+    objc_storeStrong(&v14->_simStatusCache, statusCache);
     [(PSUIDefaultVoiceLineSpecifier *)v14 updateCachedState];
   }
 
@@ -46,18 +46,18 @@
 
 - (void)updateCachedState
 {
-  v3 = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
+  planItems = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
   cachedPlanItems = self->_cachedPlanItems;
-  self->_cachedPlanItems = v3;
+  self->_cachedPlanItems = planItems;
 
-  v5 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+  subscriptionContexts = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
   cachedSubscriptionContexts = self->_cachedSubscriptionContexts;
-  self->_cachedSubscriptionContexts = v5;
+  self->_cachedSubscriptionContexts = subscriptionContexts;
 
   v22 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v21 = self;
+  selfCopy = self;
   v9 = self->_cachedPlanItems;
   if ([(NSArray *)v9 count])
   {
@@ -68,15 +68,15 @@
       if ([v11 isSelected])
       {
         v12 = MEMORY[0x277CCACA8];
-        v13 = [v11 userLabel];
-        v14 = [v13 label];
-        v15 = [v12 stringWithFormat:@"%@", v14];
+        userLabel = [v11 userLabel];
+        label = [userLabel label];
+        v15 = [v12 stringWithFormat:@"%@", label];
         [v22 addObject:v15];
 
         v16 = MEMORY[0x277CCACA8];
-        v17 = [v11 userLabel];
-        v18 = [v17 label];
-        v19 = [v16 stringWithFormat:@"%@", v18];
+        userLabel2 = [v11 userLabel];
+        label2 = [userLabel2 label];
+        v19 = [v16 stringWithFormat:@"%@", label2];
         [v7 addObject:v19];
 
         v20 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
@@ -89,10 +89,10 @@
     while ([(NSArray *)v9 count]> v10);
   }
 
-  [(PSUIDefaultVoiceLineSpecifier *)v21 setValues:v8 titles:v22 shortTitles:v7];
+  [(PSUIDefaultVoiceLineSpecifier *)selfCopy setValues:v8 titles:v22 shortTitles:v7];
 }
 
-- (id)defaultVoiceLine:(id)a3
+- (id)defaultVoiceLine:(id)line
 {
   if ([(NSArray *)self->_cachedPlanItems count])
   {
@@ -101,14 +101,14 @@
     {
       v5 = [(NSArray *)self->_cachedPlanItems objectAtIndexedSubscript:v4];
       v6 = [(PSUICellularPlanManagerCache *)self->_planManagerCache subscriptionContextForPlanItem:v5 cachedSubscriptionContexts:self->_cachedSubscriptionContexts];
-      v7 = [v6 userDefaultVoice];
-      if (v7)
+      userDefaultVoice = [v6 userDefaultVoice];
+      if (userDefaultVoice)
       {
-        v8 = v7;
-        v9 = [v6 userDefaultVoice];
-        v10 = [v9 BOOLValue];
+        v8 = userDefaultVoice;
+        userDefaultVoice2 = [v6 userDefaultVoice];
+        bOOLValue = [userDefaultVoice2 BOOLValue];
 
-        if (v10)
+        if (bOOLValue)
         {
           break;
         }
@@ -132,12 +132,12 @@ LABEL_6:
   return v11;
 }
 
-- (void)setDefaultVoiceLine:(id)a3 specifier:(id)a4
+- (void)setDefaultVoiceLine:(id)line specifier:(id)specifier
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](self->_cachedPlanItems, "objectAtIndexedSubscript:", [a3 integerValue]);
+  v5 = -[NSArray objectAtIndexedSubscript:](self->_cachedPlanItems, "objectAtIndexedSubscript:", [line integerValue]);
   v6 = [(PSUICellularPlanManagerCache *)self->_planManagerCache subscriptionContextForPlanItem:v5 cachedSubscriptionContexts:self->_cachedSubscriptionContexts];
-  v7 = [v6 userDefaultVoice];
-  if (!v7 || (v8 = v7, [v6 userDefaultVoice], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, (v10 & 1) == 0))
+  userDefaultVoice = [v6 userDefaultVoice];
+  if (!userDefaultVoice || (v8 = userDefaultVoice, [v6 userDefaultVoice], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, (v10 & 1) == 0))
   {
     v11 = dispatch_semaphore_create(0);
     planManager = self->_planManager;
@@ -192,25 +192,25 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)planItemForListItem:(id)a3
+- (id)planItemForListItem:(id)item
 {
-  v4 = a3;
-  if ([v4 cellType] != 3)
+  itemCopy = item;
+  if ([itemCopy cellType] != 3)
   {
     goto LABEL_3;
   }
 
-  v5 = [v4 values];
-  v6 = [v5 firstObject];
-  v7 = [MEMORY[0x277CBEB68] null];
-  v8 = [v6 isEqual:v7];
+  values = [itemCopy values];
+  firstObject = [values firstObject];
+  null = [MEMORY[0x277CBEB68] null];
+  v8 = [firstObject isEqual:null];
 
   if ((v8 & 1) == 0)
   {
     cachedPlanItems = self->_cachedPlanItems;
-    v11 = [v4 values];
-    v12 = [v11 firstObject];
-    v9 = -[NSArray objectAtIndexedSubscript:](cachedPlanItems, "objectAtIndexedSubscript:", [v12 integerValue]);
+    values2 = [itemCopy values];
+    firstObject2 = [values2 firstObject];
+    v9 = -[NSArray objectAtIndexedSubscript:](cachedPlanItems, "objectAtIndexedSubscript:", [firstObject2 integerValue]);
   }
 
   else
@@ -222,9 +222,9 @@ LABEL_3:
   return v9;
 }
 
-- (id)subscriptionContextForListItem:(id)a3
+- (id)subscriptionContextForListItem:(id)item
 {
-  v4 = [(PSUIDefaultVoiceLineSpecifier *)self planItemForListItem:a3];
+  v4 = [(PSUIDefaultVoiceLineSpecifier *)self planItemForListItem:item];
   v5 = [(PSUICellularPlanManagerCache *)self->_planManagerCache subscriptionContextForPlanItem:v4 cachedSubscriptionContexts:self->_cachedSubscriptionContexts];
 
   return v5;

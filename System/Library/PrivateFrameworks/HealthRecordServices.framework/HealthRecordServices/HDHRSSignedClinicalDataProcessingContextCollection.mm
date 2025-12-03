@@ -1,10 +1,10 @@
 @interface HDHRSSignedClinicalDataProcessingContextCollection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDHRSSignedClinicalDataProcessingContextCollection)init;
-- (HDHRSSignedClinicalDataProcessingContextCollection)initWithCoder:(id)a3;
-- (HDHRSSignedClinicalDataProcessingContextCollection)initWithReceivedDate:(id)a3 countryCode:(id)a4 options:(unint64_t)a5 contextItems:(id)a6;
+- (HDHRSSignedClinicalDataProcessingContextCollection)initWithCoder:(id)coder;
+- (HDHRSSignedClinicalDataProcessingContextCollection)initWithReceivedDate:(id)date countryCode:(id)code options:(unint64_t)options contextItems:(id)items;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDHRSSignedClinicalDataProcessingContextCollection
@@ -19,26 +19,26 @@
   return 0;
 }
 
-- (HDHRSSignedClinicalDataProcessingContextCollection)initWithReceivedDate:(id)a3 countryCode:(id)a4 options:(unint64_t)a5 contextItems:(id)a6
+- (HDHRSSignedClinicalDataProcessingContextCollection)initWithReceivedDate:(id)date countryCode:(id)code options:(unint64_t)options contextItems:(id)items
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  codeCopy = code;
+  itemsCopy = items;
   v21.receiver = self;
   v21.super_class = HDHRSSignedClinicalDataProcessingContextCollection;
   v13 = [(HDHRSSignedClinicalDataProcessingContextCollection *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dateCopy copy];
     receivedDate = v13->_receivedDate;
     v13->_receivedDate = v14;
 
-    v16 = [v11 copy];
+    v16 = [codeCopy copy];
     countryCode = v13->_countryCode;
     v13->_countryCode = v16;
 
-    v13->_options = a5;
-    v18 = [v12 copy];
+    v13->_options = options;
+    v18 = [itemsCopy copy];
     contextItems = v13->_contextItems;
     v13->_contextItems = v18;
   }
@@ -54,13 +54,13 @@
   return v4 ^ options ^ [(NSArray *)self->_contextItems hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 != self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy != self)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -71,20 +71,20 @@ LABEL_36:
     }
 
     receivedDate = self->_receivedDate;
-    v9 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 receivedDate];
-    if (receivedDate != v9)
+    receivedDate = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 receivedDate];
+    if (receivedDate != receivedDate)
     {
-      v10 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 receivedDate];
-      if (!v10)
+      receivedDate2 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 receivedDate];
+      if (!receivedDate2)
       {
         v13 = 0;
         goto LABEL_35;
       }
 
-      v3 = v10;
+      v3 = receivedDate2;
       v11 = self->_receivedDate;
-      v12 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 receivedDate];
-      if (![(NSDate *)v11 isEqual:v12])
+      receivedDate3 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 receivedDate];
+      if (![(NSDate *)v11 isEqual:receivedDate3])
       {
         v13 = 0;
 LABEL_34:
@@ -92,12 +92,12 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v33 = v12;
+      v33 = receivedDate3;
     }
 
     countryCode = self->_countryCode;
-    v15 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 countryCode];
-    if (countryCode == v15)
+    countryCode = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 countryCode];
+    if (countryCode == countryCode)
     {
       options = self->_options;
       if (options != [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 options])
@@ -111,26 +111,26 @@ LABEL_31:
 
     else
     {
-      v16 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 countryCode];
-      if (!v16)
+      countryCode2 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 countryCode];
+      if (!countryCode2)
       {
         v13 = 0;
         goto LABEL_29;
       }
 
-      v32 = v16;
+      v32 = countryCode2;
       v17 = self->_countryCode;
-      v18 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 countryCode];
-      if (![(NSString *)v17 isEqualToString:v18])
+      countryCode3 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 countryCode];
+      if (![(NSString *)v17 isEqualToString:countryCode3])
       {
 
         v13 = 0;
 LABEL_32:
-        v28 = receivedDate == v9;
+        v28 = receivedDate == receivedDate;
         goto LABEL_33;
       }
 
-      v30 = v18;
+      v30 = countryCode3;
       v19 = self->_options;
       if (v19 != [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 options])
       {
@@ -138,9 +138,9 @@ LABEL_32:
 LABEL_28:
 
 LABEL_29:
-        v12 = v33;
+        receivedDate3 = v33;
 
-        if (receivedDate == v9)
+        if (receivedDate == receivedDate)
         {
           goto LABEL_35;
         }
@@ -151,9 +151,9 @@ LABEL_29:
 
     v31 = v3;
     contextItems = self->_contextItems;
-    v22 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 contextItems];
-    v23 = v22;
-    if (contextItems == v22)
+    contextItems = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 contextItems];
+    v23 = contextItems;
+    if (contextItems == contextItems)
     {
 
       v13 = 1;
@@ -161,22 +161,22 @@ LABEL_29:
 
     else
     {
-      v24 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 contextItems];
-      if (v24)
+      contextItems2 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 contextItems];
+      if (contextItems2)
       {
-        v25 = v24;
+        v25 = contextItems2;
         v26 = self->_contextItems;
-        v27 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 contextItems];
-        v13 = [(NSArray *)v26 isEqualToArray:v27];
+        contextItems3 = [(HDHRSSignedClinicalDataProcessingContextCollection *)v7 contextItems];
+        v13 = [(NSArray *)v26 isEqualToArray:contextItems3];
 
-        if (countryCode != v15)
+        if (countryCode != countryCode)
         {
         }
 
-        v28 = receivedDate == v9;
+        v28 = receivedDate == receivedDate;
         v3 = v31;
 LABEL_33:
-        v12 = v33;
+        receivedDate3 = v33;
         if (!v28)
         {
           goto LABEL_34;
@@ -190,9 +190,9 @@ LABEL_35:
       v13 = 0;
     }
 
-    v18 = v30;
+    countryCode3 = v30;
     v3 = v31;
-    if (countryCode != v15)
+    if (countryCode != countryCode)
     {
       goto LABEL_28;
     }
@@ -206,55 +206,55 @@ LABEL_37:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   receivedDate = self->_receivedDate;
-  v5 = a3;
-  [v5 encodeObject:receivedDate forKey:@"ReceivedDate"];
-  [v5 encodeObject:self->_countryCode forKey:@"CountryCode"];
-  [v5 encodeInteger:self->_options forKey:@"Options"];
-  [v5 encodeObject:self->_contextItems forKey:@"ContextItems"];
+  coderCopy = coder;
+  [coderCopy encodeObject:receivedDate forKey:@"ReceivedDate"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"CountryCode"];
+  [coderCopy encodeInteger:self->_options forKey:@"Options"];
+  [coderCopy encodeObject:self->_contextItems forKey:@"ContextItems"];
 }
 
-- (HDHRSSignedClinicalDataProcessingContextCollection)initWithCoder:(id)a3
+- (HDHRSSignedClinicalDataProcessingContextCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDate"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CountryCode"];
-    if ([v4 containsValueForKey:@"Options"])
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CountryCode"];
+    if ([coderCopy containsValueForKey:@"Options"])
     {
-      v7 = [v4 decodeIntegerForKey:@"Options"];
+      v7 = [coderCopy decodeIntegerForKey:@"Options"];
       v8 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-      v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ContextItems"];
+      v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ContextItems"];
       if (v9)
       {
         self = [(HDHRSSignedClinicalDataProcessingContextCollection *)self initWithReceivedDate:v5 countryCode:v6 options:v7 contextItems:v9];
-        v10 = self;
+        selfCopy = self;
       }
 
       else
       {
-        [v4 hrs_failWithCocoaValueNotFoundError];
-        v10 = 0;
+        [coderCopy hrs_failWithCocoaValueNotFoundError];
+        selfCopy = 0;
       }
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v10 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

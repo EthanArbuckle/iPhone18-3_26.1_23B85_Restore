@@ -1,34 +1,34 @@
 @interface PBItemCollection
-+ (id)unserializeCollectionFromBaseURL:(id)a3 persistenceName:(id)a4 outError:(id *)a5;
-+ (id)unserializeCollectionFromPasteboardURL:(id)a3 baseURL:(id)a4 outError:(id *)a5;
++ (id)unserializeCollectionFromBaseURL:(id)l persistenceName:(id)name outError:(id *)error;
++ (id)unserializeCollectionFromPasteboardURL:(id)l baseURL:(id)rL outError:(id *)error;
 - (id)directoryName;
-- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)a3 timestamp:(unint64_t)a4;
-- (void)recordUserAuthorizationDecision:(BOOL)a3 auditTokenInfo:(id)a4;
-- (void)setStorageBaseURL:(id)a3;
+- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)info timestamp:(unint64_t)timestamp;
+- (void)recordUserAuthorizationDecision:(BOOL)decision auditTokenInfo:(id)info;
+- (void)setStorageBaseURL:(id)l;
 @end
 
 @implementation PBItemCollection
 
-+ (id)unserializeCollectionFromBaseURL:(id)a3 persistenceName:(id)a4 outError:(id *)a5
++ (id)unserializeCollectionFromBaseURL:(id)l persistenceName:(id)name outError:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v8 = PBSHA1HashOfString();
-  v9 = [v7 URLByAppendingPathComponent:v8 isDirectory:1];
-  v10 = [a1 unserializeCollectionFromPasteboardURL:v9 baseURL:v7 outError:a5];
+  v9 = [lCopy URLByAppendingPathComponent:v8 isDirectory:1];
+  v10 = [self unserializeCollectionFromPasteboardURL:v9 baseURL:lCopy outError:error];
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return v10;
 }
 
-+ (id)unserializeCollectionFromPasteboardURL:(id)a3 baseURL:(id)a4 outError:(id *)a5
++ (id)unserializeCollectionFromPasteboardURL:(id)l baseURL:(id)rL outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 URLByAppendingPathComponent:@"Manifest.plist" isDirectory:0];
+  lCopy = l;
+  rLCopy = rL;
+  v10 = [lCopy URLByAppendingPathComponent:@"Manifest.plist" isDirectory:0];
   v11 = [NSData dataWithContentsOfURL:v10];
   if (v11)
   {
@@ -36,15 +36,15 @@
     v12 = [[PBKeyedUnarchiver alloc] initForReadingFromData:v11 error:v19];
     v13 = v19[0];
     [v12 setDecodingFailurePolicy:0];
-    v14 = [a1 allowedClassesForSecureCoding];
-    [v12 setAllowedClasses:v14];
+    allowedClassesForSecureCoding = [self allowedClassesForSecureCoding];
+    [v12 setAllowedClasses:allowedClassesForSecureCoding];
 
     v15 = [v12 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
     [v12 finishDecoding];
     v16 = v15;
-    [v15 setStorageBaseURL:v9];
+    [v15 setStorageBaseURL:rLCopy];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -54,7 +54,7 @@
   {
     v13 = PBCannotUnserializePasteboardError();
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -63,7 +63,7 @@
   if (v13)
   {
     v17 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_7:
@@ -73,25 +73,25 @@ LABEL_7:
 
 - (id)directoryName
 {
-  v2 = [(PBItemCollection *)self persistenceName];
+  persistenceName = [(PBItemCollection *)self persistenceName];
   v3 = PBSHA1HashOfString();
 
   return v3;
 }
 
-- (void)setStorageBaseURL:(id)a3
+- (void)setStorageBaseURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PBItemCollection *)self persistenceName];
+  lCopy = l;
+  persistenceName = [(PBItemCollection *)self persistenceName];
   v6 = PBSHA1HashOfString();
 
-  v7 = [v4 URLByAppendingPathComponent:v6 isDirectory:1];
+  v7 = [lCopy URLByAppendingPathComponent:v6 isDirectory:1];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(PBItemCollection *)self items];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  items = [(PBItemCollection *)self items];
+  v9 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -103,7 +103,7 @@ LABEL_7:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(items);
         }
 
         [*(*(&v13 + 1) + 8 * v12) setStorageBaseURL:v7];
@@ -111,16 +111,16 @@ LABEL_7:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)a3 timestamp:(unint64_t)a4
+- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)info timestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  infoCopy = info;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -131,10 +131,10 @@ LABEL_7:
   v11[2] = sub_10001A9D0;
   v11[3] = &unk_100031D28;
   v11[4] = self;
-  v12 = v6;
+  v12 = infoCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  timestampCopy = timestamp;
+  v8 = infoCopy;
   dispatch_sync(v7, v11);
 
   v9 = v16[3];
@@ -142,18 +142,18 @@ LABEL_7:
   return v9;
 }
 
-- (void)recordUserAuthorizationDecision:(BOOL)a3 auditTokenInfo:(id)a4
+- (void)recordUserAuthorizationDecision:(BOOL)decision auditTokenInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = PBItemQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001AAF8;
   block[3] = &unk_100031D50;
-  v11 = a3;
+  decisionCopy = decision;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = infoCopy;
+  v8 = infoCopy;
   dispatch_sync(v7, block);
 }
 

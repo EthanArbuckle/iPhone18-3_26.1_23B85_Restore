@@ -1,12 +1,12 @@
 @interface HMDSleepConfigurationOperationStatusWrapper
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDSleepConfigurationOperationStatusWrapper)init;
-- (HMDSleepConfigurationOperationStatusWrapper)initWithValue:(int64_t)a3;
+- (HMDSleepConfigurationOperationStatusWrapper)initWithValue:(int64_t)value;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDSleepConfigurationOperationStatusWrapper
@@ -20,10 +20,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -33,11 +33,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDSleepConfigurationOperationStatusWrapper *)self value];
-      v7 = [(HMDSleepConfigurationOperationStatusWrapper *)v5 value];
+      v5 = equalCopy;
+      value = [(HMDSleepConfigurationOperationStatusWrapper *)self value];
+      value2 = [(HMDSleepConfigurationOperationStatusWrapper *)v5 value];
 
-      v8 = v6 == v7;
+      v8 = value == value2;
     }
 
     else
@@ -49,36 +49,36 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDSleepConfigurationOperationStatusWrapper allocWithZone:a3];
-  v5 = [(HMDSleepConfigurationOperationStatusWrapper *)self value];
+  v4 = [HMDSleepConfigurationOperationStatusWrapper allocWithZone:zone];
+  value = [(HMDSleepConfigurationOperationStatusWrapper *)self value];
 
-  return [(HMDSleepConfigurationOperationStatusWrapper *)v4 initWithValue:v5];
+  return [(HMDSleepConfigurationOperationStatusWrapper *)v4 initWithValue:value];
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  v3 = [(HMDSleepConfigurationOperationStatusWrapper *)self value];
+  value = [(HMDSleepConfigurationOperationStatusWrapper *)self value];
 
-  return MEMORY[0x2821501D8](v3);
+  return MEMORY[0x2821501D8](value);
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    [v6 bytes];
-    [v6 length];
+    [dataCopy bytes];
+    [dataCopy length];
     v7 = 1;
     [(HMDSleepConfigurationOperationStatusWrapper *)self setValue:HAPTLVParseUInt64()];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -89,14 +89,14 @@
   return v7;
 }
 
-- (HMDSleepConfigurationOperationStatusWrapper)initWithValue:(int64_t)a3
+- (HMDSleepConfigurationOperationStatusWrapper)initWithValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = HMDSleepConfigurationOperationStatusWrapper;
   result = [(HMDSleepConfigurationOperationStatusWrapper *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
@@ -115,24 +115,24 @@
   return result;
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDSleepConfigurationOperationStatusWrapper);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDSleepConfigurationOperationStatusWrapper *)v6 parseFromData:v5 error:&v11];
+    [(HMDSleepConfigurationOperationStatusWrapper *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

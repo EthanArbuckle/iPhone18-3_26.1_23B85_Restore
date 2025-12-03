@@ -1,17 +1,17 @@
 @interface WiFiWatchdogMonitor
-- (WiFiWatchdogMonitor)initWithServiceName:(id)a3;
+- (WiFiWatchdogMonitor)initWithServiceName:(id)name;
 - (id)description;
 - (void)checkForTimeout;
 - (void)dealloc;
-- (void)handleCrashNotificationWithID:(unint64_t)a3 andCPUName:(id)a4;
-- (void)handleWatchdog:(char *)a3;
+- (void)handleCrashNotificationWithID:(unint64_t)d andCPUName:(id)name;
+- (void)handleWatchdog:(char *)watchdog;
 - (void)handleWatchdogTriggered;
-- (void)setWatchdogCallback:(id)a3 context:(void *)a4;
+- (void)setWatchdogCallback:(id)callback context:(void *)context;
 @end
 
 @implementation WiFiWatchdogMonitor
 
-- (WiFiWatchdogMonitor)initWithServiceName:(id)a3
+- (WiFiWatchdogMonitor)initWithServiceName:(id)name
 {
   v4 = IOServiceNameMatching("AppleWLANDriver");
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v4);
@@ -136,9 +136,9 @@ LABEL_10:
   }
 }
 
-- (void)handleCrashNotificationWithID:(unint64_t)a3 andCPUName:(id)a4
+- (void)handleCrashNotificationWithID:(unint64_t)d andCPUName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v36 = [NSString stringWithFormat:@"</dict></plist>"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -148,7 +148,7 @@ LABEL_10:
   }
 
   mappedFile = self->mappedFile;
-  v35 = v6;
+  v35 = nameCopy;
   if (!mappedFile)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -163,15 +163,15 @@ LABEL_10:
   }
 
   v8 = [[NSString alloc] initWithBytes:self->mappedFile length:memmem(mappedFile encoding:{self->mappedSize, "<dict>", 6uLL) - self->mappedFile, 4}];
-  v34 = [NSString stringWithFormat:@"<key>%@</key>", v6];
-  v9 = [v34 UTF8String];
+  nameCopy = [NSString stringWithFormat:@"<key>%@</key>", nameCopy];
+  uTF8String = [nameCopy UTF8String];
   mappedSize = self->mappedSize;
-  v11 = strlen(v9);
-  v12 = memmem(self->mappedFile, mappedSize, v9, v11);
+  v11 = strlen(uTF8String);
+  v12 = memmem(self->mappedFile, mappedSize, uTF8String, v11);
   if (!v12)
   {
-    v31 = v34;
-    sub_1001AB230(v34, v8);
+    v31 = nameCopy;
+    sub_1001AB230(nameCopy, v8);
     v28 = 0;
     v25 = 0;
 LABEL_25:
@@ -182,11 +182,11 @@ LABEL_25:
   }
 
   v13 = v12;
-  v14 = [NSString stringWithFormat:@"<key>0x%llx</key>", a3];
+  v14 = [NSString stringWithFormat:@"<key>0x%llx</key>", d];
   v15 = (self->mappedFile - v13);
-  v16 = [v14 UTF8String];
-  v17 = strlen(v16);
-  v18 = memmem(v13, &v15[mappedSize], v16, v17);
+  uTF8String2 = [v14 UTF8String];
+  v17 = strlen(uTF8String2);
+  v18 = memmem(v13, &v15[mappedSize], uTF8String2, v17);
   if (!v18)
   {
     sub_1001AB17C(v14, v8);
@@ -196,7 +196,7 @@ LABEL_30:
     v30 = 0;
     v26 = 0;
 LABEL_31:
-    v31 = v34;
+    v31 = nameCopy;
     goto LABEL_16;
   }
 
@@ -254,7 +254,7 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: translated %@\n", buf, 0x16u);
   }
 
-  v31 = v34;
+  v31 = nameCopy;
   v28 = v29;
 LABEL_16:
   [(WiFiWatchdogMonitor *)self setWatchdogStartedTimestamp:0];
@@ -280,12 +280,12 @@ LABEL_16:
 - (void)checkForTimeout
 {
   v3 = +[NSDate date];
-  v4 = [(WiFiWatchdogMonitor *)self watchdogStartedTimestamp];
-  if (v4)
+  watchdogStartedTimestamp = [(WiFiWatchdogMonitor *)self watchdogStartedTimestamp];
+  if (watchdogStartedTimestamp)
   {
-    v5 = v4;
-    v6 = [(WiFiWatchdogMonitor *)self watchdogStartedTimestamp];
-    [v3 timeIntervalSinceDate:v6];
+    v5 = watchdogStartedTimestamp;
+    watchdogStartedTimestamp2 = [(WiFiWatchdogMonitor *)self watchdogStartedTimestamp];
+    [v3 timeIntervalSinceDate:watchdogStartedTimestamp2];
     v8 = v7;
 
     if (v8 >= 5.0)
@@ -295,13 +295,13 @@ LABEL_16:
         sub_1001AB368();
       }
 
-      v9 = [(WiFiWatchdogMonitor *)self internalQ];
+      internalQ = [(WiFiWatchdogMonitor *)self internalQ];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100109DB0;
       block[3] = &unk_10025E9B8;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(internalQ, block);
     }
   }
 }
@@ -317,20 +317,20 @@ LABEL_16:
   return v5;
 }
 
-- (void)handleWatchdog:(char *)a3
+- (void)handleWatchdog:(char *)watchdog
 {
-  v5 = [(WiFiWatchdogMonitor *)self watchdogCallback];
+  watchdogCallback = [(WiFiWatchdogMonitor *)self watchdogCallback];
 
-  if (v5)
+  if (watchdogCallback)
   {
-    v6 = [(WiFiWatchdogMonitor *)self watchdogCallback];
-    v6[2](v6, a3, [(WiFiWatchdogMonitor *)self watchdogContext]);
+    watchdogCallback2 = [(WiFiWatchdogMonitor *)self watchdogCallback];
+    watchdogCallback2[2](watchdogCallback2, watchdog, [(WiFiWatchdogMonitor *)self watchdogContext]);
   }
 }
 
-- (void)setWatchdogCallback:(id)a3 context:(void *)a4
+- (void)setWatchdogCallback:(id)callback context:(void *)context
 {
-  v6 = a3;
+  callbackCopy = callback;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315138;
@@ -338,8 +338,8 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: ENTER", &v7, 0xCu);
   }
 
-  [(WiFiWatchdogMonitor *)self setWatchdogCallback:v6];
-  [(WiFiWatchdogMonitor *)self setWatchdogContext:a4];
+  [(WiFiWatchdogMonitor *)self setWatchdogCallback:callbackCopy];
+  [(WiFiWatchdogMonitor *)self setWatchdogContext:context];
 }
 
 @end

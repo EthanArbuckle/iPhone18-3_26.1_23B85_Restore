@@ -1,12 +1,12 @@
 @interface FigHUDLayer
 - (FigHUDLayer)init;
-- (int64_t)addLine:(__CFString *)a3 withLabelColorIndex:(int)a4 withValueColorIndex:(int)a5;
+- (int64_t)addLine:(__CFString *)line withLabelColorIndex:(int)index withValueColorIndex:(int)colorIndex;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)resetLines;
-- (void)setFont:(__CFString *)a3 withPointSize:(double)a4;
-- (void)setValue:(__CFString *)a3 atIndex:(int)a4;
-- (void)setValueAtIndex:(int)a3 format:(id)a4;
+- (void)setFont:(__CFString *)font withPointSize:(double)size;
+- (void)setValue:(__CFString *)value atIndex:(int)index;
+- (void)setValueAtIndex:(int)index format:(id)format;
 @end
 
 @implementation FigHUDLayer
@@ -95,7 +95,7 @@
   [(FigHUDLayer *)&v10 dealloc];
 }
 
-- (void)setFont:(__CFString *)a3 withPointSize:(double)a4
+- (void)setFont:(__CFString *)font withPointSize:(double)size
 {
   Font = self->_Font;
   v8 = *MEMORY[0x1E695E738];
@@ -105,8 +105,8 @@
     self->_Font = v8;
   }
 
-  self->_FontSize = a4;
-  v9 = CTFontCreateWithName(a3, a4, 0);
+  self->_FontSize = size;
+  v9 = CTFontCreateWithName(font, size, 0);
   self->_Font = v9;
   TextAttributes = self->_TextAttributes;
   v11 = *MEMORY[0x1E6965658];
@@ -142,11 +142,11 @@
   }
 }
 
-- (int64_t)addLine:(__CFString *)a3 withLabelColorIndex:(int)a4 withValueColorIndex:(int)a5
+- (int64_t)addLine:(__CFString *)line withLabelColorIndex:(int)index withValueColorIndex:(int)colorIndex
 {
-  v8 = figHUDCGColorCreateWithIndex(a4);
-  v9 = figHUDCGColorCreateWithIndex(a5);
-  Copy = CFStringCreateCopy(*MEMORY[0x1E695E480], a3);
+  v8 = figHUDCGColorCreateWithIndex(index);
+  v9 = figHUDCGColorCreateWithIndex(colorIndex);
+  Copy = CFStringCreateCopy(*MEMORY[0x1E695E480], line);
   CFArrayAppendValue(self->_Labels, Copy);
   CFArrayAppendValue(self->_LabelColors, v8);
   CFArrayAppendValue(self->_Values, *MEMORY[0x1E695E738]);
@@ -157,30 +157,30 @@
   return CFArrayGetCount(self->_Labels) - 1;
 }
 
-- (void)setValue:(__CFString *)a3 atIndex:(int)a4
+- (void)setValue:(__CFString *)value atIndex:(int)index
 {
-  if (CFArrayGetCount(self->_Values) > a4)
+  if (CFArrayGetCount(self->_Values) > index)
   {
-    Copy = CFStringCreateCopy(*MEMORY[0x1E695E480], a3);
-    CFArraySetValueAtIndex(self->_Values, a4, Copy);
+    Copy = CFStringCreateCopy(*MEMORY[0x1E695E480], value);
+    CFArraySetValueAtIndex(self->_Values, index, Copy);
 
     CFRelease(Copy);
   }
 }
 
-- (void)setValueAtIndex:(int)a3 format:(id)a4
+- (void)setValueAtIndex:(int)index format:(id)format
 {
-  if (CFArrayGetCount(self->_Values) > a3)
+  if (CFArrayGetCount(self->_Values) > index)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a4 arguments:&v8];
-    CFArraySetValueAtIndex(self->_Values, a3, v7);
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v8];
+    CFArraySetValueAtIndex(self->_Values, index, v7);
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   CGAffineTransformMakeScale(&v20, 1.0, -1.0);
-  CGContextSetTextMatrix(a3, &v20);
+  CGContextSetTextMatrix(context, &v20);
   v5 = *MEMORY[0x1E695E738];
   if (self->_Font == *MEMORY[0x1E695E738])
   {
@@ -212,11 +212,11 @@
       v13 = CFAttributedStringCreate(alloc, v10, self->_TextAttributes);
       v14 = CTLineCreateWithAttributedString(cf);
       v15 = CTLineCreateWithAttributedString(v13);
-      CGContextSetTextPosition(a3, 0.0, self->_FontSize * ++v7);
-      CTLineDraw(v14, a3);
+      CGContextSetTextPosition(context, 0.0, self->_FontSize * ++v7);
+      CTLineDraw(v14, context);
       [(FigHUDLayer *)self bounds];
-      CGContextSetTextPosition(a3, v16 * 0.5, self->_FontSize * v7);
-      CTLineDraw(v15, a3);
+      CGContextSetTextPosition(context, v16 * 0.5, self->_FontSize * v7);
+      CTLineDraw(v15, context);
       CFRelease(v14);
       CFRelease(v15);
       CFRelease(cf);

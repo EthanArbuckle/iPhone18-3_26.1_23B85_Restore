@@ -7,33 +7,33 @@
 
 - (uint64_t)pbf_layoutOrientation
 {
-  if ([a1 isViewLoaded])
+  if ([self isViewLoaded])
   {
-    v2 = [a1 view];
-    v3 = [v2 window];
+    view = [self view];
+    window = [view window];
 
-    if (v3)
+    if (window)
     {
-      v4 = [v3 windowScene];
-      v5 = [v4 interfaceOrientation];
+      windowScene = [window windowScene];
+      interfaceOrientation = [windowScene interfaceOrientation];
 
-      if (v5)
+      if (interfaceOrientation)
       {
-        v6 = [v3 pbf_layoutOrientation];
+        pbf_layoutOrientation = [window pbf_layoutOrientation];
 
-        return v6;
+        return pbf_layoutOrientation;
       }
     }
   }
 
-  v8 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  if (v8)
+  if (parentViewController)
   {
-    v9 = [a1 parentViewController];
-    v10 = [v9 pbf_layoutOrientation];
+    parentViewController2 = [self parentViewController];
+    pbf_layoutOrientation2 = [parentViewController2 pbf_layoutOrientation];
 
-    return v10;
+    return pbf_layoutOrientation2;
   }
 
   else
@@ -45,16 +45,16 @@
 
 - (id)pbf_displayContext
 {
-  v2 = [a1 _screen];
-  if (!v2)
+  _screen = [self _screen];
+  if (!_screen)
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
+    _screen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  v3 = [a1 traitCollection];
-  v4 = [PBFGenericDisplayContext displayContextForScreen:v2 traitCollection:v3];
+  traitCollection = [self traitCollection];
+  v4 = [PBFGenericDisplayContext displayContextForScreen:_screen traitCollection:traitCollection];
 
-  v5 = [v4 displayContextWithUpdatedInterfaceOrientation:{objc_msgSend(a1, "pbf_layoutOrientation")}];
+  v5 = [v4 displayContextWithUpdatedInterfaceOrientation:{objc_msgSend(self, "pbf_layoutOrientation")}];
 
   return v5;
 }

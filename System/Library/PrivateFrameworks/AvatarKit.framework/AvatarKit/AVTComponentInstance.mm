@@ -1,14 +1,14 @@
 @interface AVTComponentInstance
 - ($4B578F37DB41A5FD644731DB2D8E0587)uvRemappingInfo;
-- (AVTComponentInstance)initWithComponent:(id)a3 assetResourceCache:(id)a4;
+- (AVTComponentInstance)initWithComponent:(id)component assetResourceCache:(id)cache;
 - (NSString)assetImage;
-- (id)assetImageForAsset:(id)a3;
+- (id)assetImageForAsset:(id)asset;
 - (void)_initializeVariantSkinnerPairsIfNeeded;
-- (void)setImageVariant:(id)a3;
-- (void)setMaterialVariant:(id)a3;
-- (void)setSkinnerVariantIntensity:(float)a3 skeleton:(id)a4;
-- (void)setVisibilityRules:(id)a3 dictatedByCategory:(int64_t)a4;
-- (void)updateMaterialsWithComponent:(id)a3;
+- (void)setImageVariant:(id)variant;
+- (void)setMaterialVariant:(id)variant;
+- (void)setSkinnerVariantIntensity:(float)intensity skeleton:(id)skeleton;
+- (void)setVisibilityRules:(id)rules dictatedByCategory:(int64_t)category;
+- (void)updateMaterialsWithComponent:(id)component;
 @end
 
 @implementation AVTComponentInstance
@@ -73,11 +73,11 @@ LABEL_14:
   return v10;
 }
 
-- (AVTComponentInstance)initWithComponent:(id)a3 assetResourceCache:(id)a4
+- (AVTComponentInstance)initWithComponent:(id)component assetResourceCache:(id)cache
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  cacheCopy = cache;
   v41.receiver = self;
   v41.super_class = AVTComponentInstance;
   v8 = [(AVTComponentInstance *)&v41 init];
@@ -87,9 +87,9 @@ LABEL_14:
   }
 
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
-  v10 = [v6 assets];
+  assets = [componentCopy assets];
   assets = v8->_assets;
-  v8->_assets = v10;
+  v8->_assets = assets;
 
   v39 = 0u;
   v40 = 0u;
@@ -114,13 +114,13 @@ LABEL_14:
       }
 
       v17 = *(*(&v37 + 1) + 8 * i);
-      v18 = [v17 layers];
+      layers = [v17 layers];
       layers = v8->_layers;
-      v8->_layers = v18;
+      v8->_layers = layers;
 
       if ([v17 is3DAsset])
       {
-        v20 = [v7 resourceForAsset:v17];
+        v20 = [cacheCopy resourceForAsset:v17];
         if (v20)
         {
           assetImage = v20;
@@ -144,7 +144,7 @@ LABEL_14:
           continue;
         }
 
-        v22 = [v7 resourceForAsset:v17];
+        v22 = [cacheCopy resourceForAsset:v17];
         assetImage = v8->_assetImage;
         v8->_assetImage = v22;
       }
@@ -165,9 +165,9 @@ LABEL_17:
   v23 = [v9 count];
   if (v23)
   {
-    v24 = [MEMORY[0x1E69DF330] node];
+    node = [MEMORY[0x1E69DF330] node];
     assetNode = v8->_assetNode;
-    v8->_assetNode = v24;
+    v8->_assetNode = node;
 
     v35 = 0u;
     v36 = 0u;
@@ -210,16 +210,16 @@ LABEL_30:
   return v8;
 }
 
-- (void)updateMaterialsWithComponent:(id)a3
+- (void)updateMaterialsWithComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   assetNode = self->_assetNode;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__AVTComponentInstance_updateMaterialsWithComponent___block_invoke;
   v7[3] = &unk_1E7F47B10;
-  v8 = v4;
-  v6 = v4;
+  v8 = componentCopy;
+  v6 = componentCopy;
   [(VFXNode *)assetNode enumerateHierarchyUsingBlock:v7];
 }
 
@@ -365,14 +365,14 @@ LABEL_43:
   return assetImageVariant;
 }
 
-- (void)setImageVariant:(id)a3
+- (void)setImageVariant:(id)variant
 {
-  v4 = a3;
-  if (v4)
+  variantCopy = variant;
+  if (variantCopy)
   {
-    v5 = v4;
-    v6 = [(NSString *)self->_assetImage stringByDeletingLastPathComponent];
-    v7 = [v6 stringByAppendingPathComponent:v5];
+    v5 = variantCopy;
+    stringByDeletingLastPathComponent = [(NSString *)self->_assetImage stringByDeletingLastPathComponent];
+    v7 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v5];
   }
 
   else
@@ -384,23 +384,23 @@ LABEL_43:
   self->_assetImageVariant = v7;
 }
 
-- (void)setMaterialVariant:(id)a3
+- (void)setMaterialVariant:(id)variant
 {
-  v5 = a3;
+  variantCopy = variant;
   if (self->_assetNode)
   {
     materialVariant = self->_materialVariant;
-    if (v5 | materialVariant)
+    if (variantCopy | materialVariant)
     {
-      if (![(NSString *)materialVariant isEqualToString:v5])
+      if (![(NSString *)materialVariant isEqualToString:variantCopy])
       {
-        objc_storeStrong(&self->_materialVariant, a3);
+        objc_storeStrong(&self->_materialVariant, variant);
         assetNode = self->_assetNode;
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __43__AVTComponentInstance_setMaterialVariant___block_invoke;
         v8[3] = &unk_1E7F47B10;
-        v9 = v5;
+        v9 = variantCopy;
         [(VFXNode *)assetNode enumerateHierarchyUsingBlock:v8];
       }
     }
@@ -560,13 +560,13 @@ void __62__AVTComponentInstance__initializeVariantSkinnerPairsIfNeeded__block_in
   }
 }
 
-- (void)setSkinnerVariantIntensity:(float)a3 skeleton:(id)a4
+- (void)setSkinnerVariantIntensity:(float)intensity skeleton:(id)skeleton
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_assetNode && self->_skinnerVariantIntensity != a3)
+  skeletonCopy = skeleton;
+  if (self->_assetNode && self->_skinnerVariantIntensity != intensity)
   {
-    self->_skinnerVariantIntensity = a3;
+    self->_skinnerVariantIntensity = intensity;
     [(AVTComponentInstance *)self _initializeVariantSkinnerPairsIfNeeded];
     v24 = 0u;
     v25 = 0u;
@@ -604,8 +604,8 @@ void __62__AVTComponentInstance__initializeVariantSkinnerPairsIfNeeded__block_in
             v17 = 0;
           }
 
-          *&v13 = a3;
-          v18 = [v15 avt_skinnerByInterpolatingFromSkinner:v16 toSkinner:v17 factor:v6 skeleton:v13];
+          *&v13 = intensity;
+          v18 = [v15 avt_skinnerByInterpolatingFromSkinner:v16 toSkinner:v17 factor:skeletonCopy skeleton:v13];
 
           [v11 setSkinner:v18];
           ++v10;
@@ -623,14 +623,14 @@ void __62__AVTComponentInstance__initializeVariantSkinnerPairsIfNeeded__block_in
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVisibilityRules:(id)a3 dictatedByCategory:(int64_t)a4
+- (void)setVisibilityRules:(id)rules dictatedByCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = v6;
+  rulesCopy = rules;
+  v7 = rulesCopy;
   if (self->_assetNode)
   {
-    v14 = v6;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v14 = rulesCopy;
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:category];
     v9 = [(NSMutableDictionary *)self->_visibilityRules objectForKeyedSubscript:v8];
     if (v9 != v14)
     {
@@ -662,15 +662,15 @@ void __62__AVTComponentInstance__initializeVariantSkinnerPairsIfNeeded__block_in
     v7 = v14;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](rulesCopy, v7);
 }
 
-- (id)assetImageForAsset:(id)a3
+- (id)assetImageForAsset:(id)asset
 {
   assets = self->_assets;
-  v4 = a3;
-  v5 = [(NSArray *)assets firstObject];
-  v6 = [v5 assetImageForAsset:v4];
+  assetCopy = asset;
+  firstObject = [(NSArray *)assets firstObject];
+  v6 = [firstObject assetImageForAsset:assetCopy];
 
   return v6;
 }

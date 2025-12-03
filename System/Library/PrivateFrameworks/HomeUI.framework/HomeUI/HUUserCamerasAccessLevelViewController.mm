@@ -1,29 +1,29 @@
 @interface HUUserCamerasAccessLevelViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUUserCamerasAccessLevelViewController)initWithUserItem:(id)a3 home:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUUserCamerasAccessLevelViewController)initWithUserItem:(id)item home:(id)home;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUUserCamerasAccessLevelViewController
 
-- (HUUserCamerasAccessLevelViewController)initWithUserItem:(id)a3 home:(id)a4
+- (HUUserCamerasAccessLevelViewController)initWithUserItem:(id)item home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  homeCopy = home;
   v8 = [HUUserCamerasAccessLevelItemManager alloc];
-  v9 = [v6 copy];
-  v10 = [(HUUserCamerasAccessLevelItemManager *)v8 initWithHome:v7 userItem:v9 delegate:self];
+  v9 = [itemCopy copy];
+  v10 = [(HUUserCamerasAccessLevelItemManager *)v8 initWithHome:homeCopy userItem:v9 delegate:self];
 
   v15.receiver = self;
   v15.super_class = HUUserCamerasAccessLevelViewController;
   v11 = [(HUItemTableViewController *)&v15 initWithItemManager:v10 tableViewStyle:1];
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [itemCopy copy];
     userItem = v11->_userItem;
     v11->_userItem = v12;
 
@@ -42,13 +42,13 @@
   [(HUUserCamerasAccessLevelViewController *)self setTitle:v3];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
-  v9 = [v8 accessLevelItems];
-  v10 = [v9 containsObject:v6];
+  itemCopy = item;
+  pathCopy = path;
+  camerasAccessLevelItemManager = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
+  accessLevelItems = [camerasAccessLevelItemManager accessLevelItems];
+  v10 = [accessLevelItems containsObject:itemCopy];
 
   if (v10)
   {
@@ -59,7 +59,7 @@
   {
     v14.receiver = self;
     v14.super_class = HUUserCamerasAccessLevelViewController;
-    v11 = [(HUItemTableViewController *)&v14 cellClassForItem:v6 indexPath:v7];
+    v11 = [(HUItemTableViewController *)&v14 cellClassForItem:itemCopy indexPath:pathCopy];
   }
 
   v12 = v11;
@@ -67,33 +67,33 @@
   return v12;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = HUUserCamerasAccessLevelViewController;
-  [(HUItemTableViewController *)&v20 setupCell:v8 forItem:v9 indexPath:a5];
-  v10 = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
-  v11 = [v10 accessLevelItems];
-  v12 = [v11 containsObject:v9];
+  [(HUItemTableViewController *)&v20 setupCell:cellCopy forItem:itemCopy indexPath:path];
+  camerasAccessLevelItemManager = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
+  accessLevelItems = [camerasAccessLevelItemManager accessLevelItems];
+  v12 = [accessLevelItems containsObject:itemCopy];
 
   if (v12)
   {
-    v13 = [v9 latestResults];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v15 = [v8 textLabel];
-    [v15 setText:v14];
+    latestResults = [itemCopy latestResults];
+    v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    textLabel = [cellCopy textLabel];
+    [textLabel setText:v14];
 
-    v16 = [v9 latestResults];
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    LODWORD(v15) = [v17 BOOLValue];
+    latestResults2 = [itemCopy latestResults];
+    v17 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    LODWORD(textLabel) = [v17 BOOLValue];
 
-    [v8 setUserInteractionEnabled:v15 ^ 1];
-    v18 = [v8 textLabel];
-    [v18 setEnabled:v15 ^ 1];
+    [cellCopy setUserInteractionEnabled:textLabel ^ 1];
+    textLabel2 = [cellCopy textLabel];
+    [textLabel2 setEnabled:textLabel ^ 1];
 
-    if (v15)
+    if (textLabel)
     {
       v19 = 0;
     }
@@ -103,32 +103,32 @@
       v19 = 3;
     }
 
-    [v8 setSelectionStyle:v19];
+    [cellCopy setSelectionStyle:v19];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = HUUserCamerasAccessLevelViewController;
-  [(HUItemTableViewController *)&v20 updateCell:v10 forItem:v11 indexPath:v12 animated:v6];
-  v13 = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
-  v14 = [v13 accessLevelItems];
-  v15 = [v14 containsObject:v11];
+  [(HUItemTableViewController *)&v20 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
+  camerasAccessLevelItemManager = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
+  accessLevelItems = [camerasAccessLevelItemManager accessLevelItems];
+  v15 = [accessLevelItems containsObject:itemCopy];
 
   if (v15)
   {
-    v16 = [v11 latestResults];
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-    v18 = [v17 BOOLValue];
+    latestResults = [itemCopy latestResults];
+    v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+    bOOLValue = [v17 BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
-      [(HUUserCamerasAccessLevelViewController *)self setSelectedIndexPath:v12];
+      [(HUUserCamerasAccessLevelViewController *)self setSelectedIndexPath:pathCopy];
       v19 = 3;
     }
 
@@ -137,40 +137,40 @@
       v19 = 0;
     }
 
-    [v10 setAccessoryType:v19];
+    [cellCopy setAccessoryType:v19];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUUserCamerasAccessLevelViewController *)self selectedIndexPath];
-  v7 = [v6 isEqual:v5];
+  pathCopy = path;
+  selectedIndexPath = [(HUUserCamerasAccessLevelViewController *)self selectedIndexPath];
+  v7 = [selectedIndexPath isEqual:pathCopy];
 
   return v7 ^ 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v36.receiver = self;
   v36.super_class = HUUserCamerasAccessLevelViewController;
-  v7 = a3;
-  [(HUItemTableViewController *)&v36 tableView:v7 didSelectRowAtIndexPath:v6];
-  [(HUUserCamerasAccessLevelViewController *)self setSelectedIndexPath:v6];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  viewCopy = view;
+  [(HUItemTableViewController *)&v36 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [(HUUserCamerasAccessLevelViewController *)self setSelectedIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
-  v11 = [v10 user];
+  camerasAccessLevelItemManager = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
+  user = [camerasAccessLevelItemManager user];
 
-  v12 = [(HUItemTableViewController *)self itemManager];
-  v13 = [v12 home];
-  v14 = [v13 homeAccessControlForUser:v11];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager2 home];
+  v14 = [home homeAccessControlForUser:user];
 
-  v15 = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
-  v16 = [v15 accessLevelItems];
-  v17 = [v16 containsObject:v9];
+  camerasAccessLevelItemManager2 = [(HUUserCamerasAccessLevelViewController *)self camerasAccessLevelItemManager];
+  accessLevelItems = [camerasAccessLevelItemManager2 accessLevelItems];
+  v17 = [accessLevelItems containsObject:v9];
 
   if (v17)
   {
@@ -200,12 +200,12 @@
   v26 = 3221225472;
   v27 = __76__HUUserCamerasAccessLevelViewController_tableView_didSelectRowAtIndexPath___block_invoke_3;
   v28 = &unk_277DB7E68;
-  v29 = self;
-  v30 = v11;
-  v22 = v11;
+  selfCopy = self;
+  v30 = user;
+  v22 = user;
   v23 = [v21 addSuccessBlock:&v25];
-  v24 = [v21 addFailureBlock:{&__block_literal_global_147, v25, v26, v27, v28, v29}];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  v24 = [v21 addFailureBlock:{&__block_literal_global_147, v25, v26, v27, v28, selfCopy}];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 void __76__HUUserCamerasAccessLevelViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2)

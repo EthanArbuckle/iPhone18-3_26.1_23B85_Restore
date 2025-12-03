@@ -1,20 +1,20 @@
 @interface FigSDOFRenderingTuningParameters
 - (FigSDOFRenderingTuningParameters)init;
-- (FigSDOFRenderingTuningParameters)initWithTuningDictionary:(id)a3;
+- (FigSDOFRenderingTuningParameters)initWithTuningDictionary:(id)dictionary;
 - (float)maximumSimulatedAperture;
 - (float)minimumSimulatedAperture;
 - (float)simulatedAperture;
-- (id)parameterSetForMode:(int)a3;
-- (int)calculateDynamicTuningParamsForSampleBuffer:(opaqueCMSampleBuffer *)a3 dynamicParams:(const dynamic_tuning_parameters *)a4 outSegmentationFusionConfig:(segmentation_fusion_params *)a5 outSimpleLensModelConfig:(simple_lens_model_params *)a6 outBlurmapRefinementConfig:(blurmap_refinement_params *)a7;
-- (int)calculateXHLRBParamsForSampleBuffer:(opaqueCMSampleBuffer *)a3 tuningParams:(id)a4 outParams:(xhlrb_control_params *)a5;
-- (int)gainMapHeadroomForSampleBuffer:(opaqueCMSampleBuffer *)a3 headroom:(float *)a4;
+- (id)parameterSetForMode:(int)mode;
+- (int)calculateDynamicTuningParamsForSampleBuffer:(opaqueCMSampleBuffer *)buffer dynamicParams:(const dynamic_tuning_parameters *)params outSegmentationFusionConfig:(segmentation_fusion_params *)config outSimpleLensModelConfig:(simple_lens_model_params *)modelConfig outBlurmapRefinementConfig:(blurmap_refinement_params *)refinementConfig;
+- (int)calculateXHLRBParamsForSampleBuffer:(opaqueCMSampleBuffer *)buffer tuningParams:(id)params outParams:(xhlrb_control_params *)outParams;
+- (int)gainMapHeadroomForSampleBuffer:(opaqueCMSampleBuffer *)buffer headroom:(float *)headroom;
 @end
 
 @implementation FigSDOFRenderingTuningParameters
 
-- (id)parameterSetForMode:(int)a3
+- (id)parameterSetForMode:(int)mode
 {
-  if (!a3)
+  if (!mode)
   {
     v4 = 8;
 LABEL_5:
@@ -23,7 +23,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v4 = 16;
     goto LABEL_5;
@@ -34,9 +34,9 @@ LABEL_5:
   return v5;
 }
 
-- (int)calculateDynamicTuningParamsForSampleBuffer:(opaqueCMSampleBuffer *)a3 dynamicParams:(const dynamic_tuning_parameters *)a4 outSegmentationFusionConfig:(segmentation_fusion_params *)a5 outSimpleLensModelConfig:(simple_lens_model_params *)a6 outBlurmapRefinementConfig:(blurmap_refinement_params *)a7
+- (int)calculateDynamicTuningParamsForSampleBuffer:(opaqueCMSampleBuffer *)buffer dynamicParams:(const dynamic_tuning_parameters *)params outSegmentationFusionConfig:(segmentation_fusion_params *)config outSimpleLensModelConfig:(simple_lens_model_params *)modelConfig outBlurmapRefinementConfig:(blurmap_refinement_params *)refinementConfig
 {
-  v11 = CMGetAttachment(a3, *MEMORY[0x29EDBFF98], 0);
+  v11 = CMGetAttachment(buffer, *MEMORY[0x29EDBFF98], 0);
   v14 = v11;
   if (!v11)
   {
@@ -80,16 +80,16 @@ LABEL_12:
   objc_msgSend_floatValue(v30, v33, v34, v35);
   v44[0] = v32 * v36;
   v44[1] = v21;
-  v37 = sub_295EB13B4(&a4->segmentationFusionAdditiveMaxBlur.brightLightExposureLevel, v44);
-  v38 = sub_295EB13B4(&a4->segmentationFusionSubtractiveMaxBlur.brightLightExposureLevel, v44);
-  v39 = sub_295EB13B4(&a4->disparityScalingFactor.brightLightExposureLevel, v44);
-  v40 = sub_295EB13B4(&a4->hairAdditiveMaxBlur.brightLightExposureLevel, v44);
-  v41 = sub_295EB13B4(&a4->hairSubtractiveMaxBlur.brightLightExposureLevel, v44);
-  a5->additiveMaxBlur = v37;
-  a5->subtractiveMaxBlur = v38;
-  a6->disparityScalingFactor = v39;
-  a7->hairParams.fusion.additiveMaxBlur = v40;
-  a7->hairParams.fusion.subtractiveMaxBlur = v41;
+  v37 = sub_295EB13B4(&params->segmentationFusionAdditiveMaxBlur.brightLightExposureLevel, v44);
+  v38 = sub_295EB13B4(&params->segmentationFusionSubtractiveMaxBlur.brightLightExposureLevel, v44);
+  v39 = sub_295EB13B4(&params->disparityScalingFactor.brightLightExposureLevel, v44);
+  v40 = sub_295EB13B4(&params->hairAdditiveMaxBlur.brightLightExposureLevel, v44);
+  v41 = sub_295EB13B4(&params->hairSubtractiveMaxBlur.brightLightExposureLevel, v44);
+  config->additiveMaxBlur = v37;
+  config->subtractiveMaxBlur = v38;
+  modelConfig->disparityScalingFactor = v39;
+  refinementConfig->hairParams.fusion.additiveMaxBlur = v40;
+  refinementConfig->hairParams.fusion.subtractiveMaxBlur = v41;
 
   v42 = 0;
 LABEL_8:
@@ -97,21 +97,21 @@ LABEL_8:
   return v42;
 }
 
-- (int)gainMapHeadroomForSampleBuffer:(opaqueCMSampleBuffer *)a3 headroom:(float *)a4
+- (int)gainMapHeadroomForSampleBuffer:(opaqueCMSampleBuffer *)buffer headroom:(float *)headroom
 {
-  if (!a3)
+  if (!buffer)
   {
     sub_295EB4EC0();
     return -12780;
   }
 
-  if (!a4)
+  if (!headroom)
   {
     sub_295EB4E48();
     return -12780;
   }
 
-  v5 = CMGetAttachment(a3, @"AttachedMedia", 0);
+  v5 = CMGetAttachment(buffer, @"AttachedMedia", 0);
   if (!v5)
   {
     sub_295EB4DD0();
@@ -145,7 +145,7 @@ LABEL_8:
       {
         FigCFNumberGetFloat32();
         result = 0;
-        *a4 = v14;
+        *headroom = v14;
         return result;
       }
 
@@ -230,9 +230,9 @@ LABEL_4:
   return v5;
 }
 
-- (FigSDOFRenderingTuningParameters)initWithTuningDictionary:(id)a3
+- (FigSDOFRenderingTuningParameters)initWithTuningDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = objc_msgSend_init(self, v5, v6, v7);
   if (!v8)
   {
@@ -240,7 +240,7 @@ LABEL_4:
   }
 
   v9 = [FigSDOFRenderingTuningParametersSet alloc];
-  v11 = objc_msgSend_initWithTuningDictionary_suffix_(v9, v10, v4, 0);
+  v11 = objc_msgSend_initWithTuningDictionary_suffix_(v9, v10, dictionaryCopy, 0);
   v12 = v8[1];
   v8[1] = v11;
 
@@ -255,7 +255,7 @@ LABEL_6:
   }
 
   v13 = [FigSDOFRenderingTuningParametersSet alloc];
-  v15 = objc_msgSend_initWithTuningDictionary_suffix_(v13, v14, v4, @"NMP");
+  v15 = objc_msgSend_initWithTuningDictionary_suffix_(v13, v14, dictionaryCopy, @"NMP");
   v16 = v8[2];
   v8[2] = v15;
 
@@ -265,19 +265,19 @@ LABEL_4:
   return v17;
 }
 
-- (int)calculateXHLRBParamsForSampleBuffer:(opaqueCMSampleBuffer *)a3 tuningParams:(id)a4 outParams:(xhlrb_control_params *)a5
+- (int)calculateXHLRBParamsForSampleBuffer:(opaqueCMSampleBuffer *)buffer tuningParams:(id)params outParams:(xhlrb_control_params *)outParams
 {
-  v13 = a4;
-  v17 = v13;
+  paramsCopy = params;
+  v17 = paramsCopy;
   rect = *MEMORY[0x29EDB90E0];
   rect_16 = *(MEMORY[0x29EDB90E0] + 16);
-  v28 = v13;
-  if (v13)
+  v28 = paramsCopy;
+  if (paramsCopy)
   {
-    objc_msgSend_simpleLensModelConfig(v13, v14, v15, v16);
+    objc_msgSend_simpleLensModelConfig(paramsCopy, v14, v15, v16);
     objc_msgSend_xhlrbControlConfig(v17, v18, v19, v20);
-    *&a5->var0 = 0;
-    *&a5->var2 = 0;
+    *&outParams->var0 = 0;
+    *&outParams->var2 = 0;
     sub_295EADC50();
     sub_295EADCE4();
   }
@@ -285,11 +285,11 @@ LABEL_4:
   else
   {
     sub_295EADC98();
-    a3 = 0;
+    buffer = 0;
     v8 = 0;
     sub_295EADCE4();
-    *&a5->var0 = 0;
-    *&a5->var2 = 0;
+    *&outParams->var0 = 0;
+    *&outParams->var2 = 0;
   }
 
   return 0;

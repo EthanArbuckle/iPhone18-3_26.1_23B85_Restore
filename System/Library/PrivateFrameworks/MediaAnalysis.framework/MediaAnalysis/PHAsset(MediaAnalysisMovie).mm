@@ -6,10 +6,10 @@
 
 - (uint64_t)vcp_isShortMovie
 {
-  result = [a1 isVideo];
+  result = [self isVideo];
   if (result)
   {
-    [a1 duration];
+    [self duration];
     return v3 < [objc_opt_class() vcp_shortMovieDurationThreshold];
   }
 

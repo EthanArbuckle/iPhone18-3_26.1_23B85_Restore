@@ -1,20 +1,20 @@
 @interface PXStoryMemoryFeedItemLayoutFactory
-- (BOOL)shouldReloadItemLayout:(id)a3 forChangedItemFromIndexPath:(PXSimpleIndexPath *)a4 inDataSource:(id)a5 toIndexPath:(PXSimpleIndexPath *)a6 inDataSource:(id)a7;
-- (id)createLayoutForFeedItemAtIndexPath:(PXSimpleIndexPath *)a3 inDataSource:(id)a4 viewModel:(id)a5 initialReferenceSize:(CGSize)a6 thumbnailAsset:(id *)a7;
-- (id)itemPlacementControllerForItemReference:(id)a3 itemLayout:(id)a4;
-- (void)collectTapToRadarDiagnosticsForItemLayout:(id)a3 indexPath:(PXSimpleIndexPath *)a4 intoContainer:(id)a5;
-- (void)setItemLayout:(id)a3 isHovered:(BOOL)a4;
-- (void)setItemLayout:(id)a3 isTouched:(BOOL)a4;
-- (void)setItemLayout:(id)a3 shouldAutoplayContent:(BOOL)a4 videoTimeRange:(id *)a5;
+- (BOOL)shouldReloadItemLayout:(id)layout forChangedItemFromIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source toIndexPath:(PXSimpleIndexPath *)indexPath inDataSource:(id)dataSource;
+- (id)createLayoutForFeedItemAtIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source viewModel:(id)model initialReferenceSize:(CGSize)size thumbnailAsset:(id *)asset;
+- (id)itemPlacementControllerForItemReference:(id)reference itemLayout:(id)layout;
+- (void)collectTapToRadarDiagnosticsForItemLayout:(id)layout indexPath:(PXSimpleIndexPath *)path intoContainer:(id)container;
+- (void)setItemLayout:(id)layout isHovered:(BOOL)hovered;
+- (void)setItemLayout:(id)layout isTouched:(BOOL)touched;
+- (void)setItemLayout:(id)layout shouldAutoplayContent:(BOOL)content videoTimeRange:(id *)range;
 @end
 
 @implementation PXStoryMemoryFeedItemLayoutFactory
 
-- (void)collectTapToRadarDiagnosticsForItemLayout:(id)a3 indexPath:(PXSimpleIndexPath *)a4 intoContainer:(id)a5
+- (void)collectTapToRadarDiagnosticsForItemLayout:(id)layout indexPath:(PXSimpleIndexPath *)path intoContainer:(id)container
 {
   v7 = MEMORY[0x1E696AD60];
-  v8 = a5;
-  v9 = a3;
+  containerCopy = container;
+  layoutCopy = layout;
   v10 = objc_alloc_init(v7);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -22,10 +22,10 @@
   v16 = &unk_1E77353A0;
   v17 = v10;
   v11 = v10;
-  [v9 enumerateDescendantsLayoutsUsingBlock:&v13];
+  [layoutCopy enumerateDescendantsLayoutsUsingBlock:&v13];
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Feed Item #%li", a4->item, v13, v14, v15, v16];
-  [v8 addAttachmentWithText:v11 name:v12];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Feed Item #%li", path->item, v13, v14, v15, v16];
+  [containerCopy addAttachmentWithText:v11 name:v12];
 }
 
 void __104__PXStoryMemoryFeedItemLayoutFactory_collectTapToRadarDiagnosticsForItemLayout_indexPath_intoContainer___block_invoke(uint64_t a1, void *a2)
@@ -84,27 +84,27 @@ void __104__PXStoryMemoryFeedItemLayoutFactory_collectTapToRadarDiagnosticsForIt
   }
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3 itemLayout:(id)a4
+- (id)itemPlacementControllerForItemReference:(id)reference itemLayout:(id)layout
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 itemPlacementControllerForItemReference:v6];
+  layoutCopy = layout;
+  referenceCopy = reference;
+  v7 = [layoutCopy itemPlacementControllerForItemReference:referenceCopy];
 
   return v7;
 }
 
-- (BOOL)shouldReloadItemLayout:(id)a3 forChangedItemFromIndexPath:(PXSimpleIndexPath *)a4 inDataSource:(id)a5 toIndexPath:(PXSimpleIndexPath *)a6 inDataSource:(id)a7
+- (BOOL)shouldReloadItemLayout:(id)layout forChangedItemFromIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source toIndexPath:(PXSimpleIndexPath *)indexPath inDataSource:(id)dataSource
 {
-  v11 = a3;
-  v12 = *&a4->item;
-  v37 = *&a4->dataSourceIdentifier;
+  layoutCopy = layout;
+  v12 = *&path->item;
+  v37 = *&path->dataSourceIdentifier;
   v38 = v12;
-  v13 = a7;
-  v14 = [a5 objectAtIndexPath:&v37];
-  v15 = *&a6->item;
-  v37 = *&a6->dataSourceIdentifier;
+  dataSourceCopy = dataSource;
+  v14 = [source objectAtIndexPath:&v37];
+  v15 = *&indexPath->item;
+  v37 = *&indexPath->dataSourceIdentifier;
   v38 = v15;
-  v16 = [v13 objectAtIndexPath:&v37];
+  v16 = [dataSourceCopy objectAtIndexPath:&v37];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -184,12 +184,12 @@ LABEL_13:
 LABEL_25:
 
 LABEL_26:
-  v32 = [v14 isFavorite];
-  if (v32 != [v16 isFavorite])
+  isFavorite = [v14 isFavorite];
+  if (isFavorite != [v16 isFavorite])
   {
-    v33 = [v11 model];
-    v34 = [v16 isFavorite];
-    v22 |= v34 ^ [v33 currentAssetCollectionIsFavorite];
+    model = [layoutCopy model];
+    isFavorite2 = [v16 isFavorite];
+    v22 |= isFavorite2 ^ [model currentAssetCollectionIsFavorite];
   }
 
 LABEL_11:
@@ -263,41 +263,41 @@ uint64_t __127__PXStoryMemoryFeedItemLayoutFactory_shouldReloadItemLayout_forCha
   return v5;
 }
 
-- (void)setItemLayout:(id)a3 isHovered:(BOOL)a4
+- (void)setItemLayout:(id)layout isHovered:(BOOL)hovered
 {
-  v5 = [a3 model];
+  model = [layout model];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__PXStoryMemoryFeedItemLayoutFactory_setItemLayout_isHovered___block_invoke;
   v6[3] = &__block_descriptor_33_e31_v16__0___PXStoryMutableModel__8l;
-  v7 = a4;
-  [v5 performChanges:v6];
+  hoveredCopy = hovered;
+  [model performChanges:v6];
 }
 
-- (void)setItemLayout:(id)a3 isTouched:(BOOL)a4
+- (void)setItemLayout:(id)layout isTouched:(BOOL)touched
 {
-  v5 = [a3 model];
+  model = [layout model];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__PXStoryMemoryFeedItemLayoutFactory_setItemLayout_isTouched___block_invoke;
   v6[3] = &__block_descriptor_33_e31_v16__0___PXStoryMutableModel__8l;
-  v7 = a4;
-  [v5 performChanges:v6];
+  touchedCopy = touched;
+  [model performChanges:v6];
 }
 
-- (void)setItemLayout:(id)a3 shouldAutoplayContent:(BOOL)a4 videoTimeRange:(id *)a5
+- (void)setItemLayout:(id)layout shouldAutoplayContent:(BOOL)content videoTimeRange:(id *)range
 {
-  v7 = [a3 model];
+  model = [layout model];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __89__PXStoryMemoryFeedItemLayoutFactory_setItemLayout_shouldAutoplayContent_videoTimeRange___block_invoke;
   v9[3] = &__block_descriptor_81_e31_v16__0___PXStoryMutableModel__8l;
-  v13 = a4;
-  v8 = *&a5->var0.var3;
-  v10 = *&a5->var0.var0;
+  contentCopy = content;
+  v8 = *&range->var0.var3;
+  v10 = *&range->var0.var0;
   v11 = v8;
-  v12 = *&a5->var1.var1;
-  [v7 performChanges:v9];
+  v12 = *&range->var1.var1;
+  [model performChanges:v9];
 }
 
 void __89__PXStoryMemoryFeedItemLayoutFactory_setItemLayout_shouldAutoplayContent_videoTimeRange___block_invoke(uint64_t a1, void *a2)
@@ -312,21 +312,21 @@ void __89__PXStoryMemoryFeedItemLayoutFactory_setItemLayout_shouldAutoplayConten
   [v4 setThumbnailAutoplayTimeRange:v6];
 }
 
-- (id)createLayoutForFeedItemAtIndexPath:(PXSimpleIndexPath *)a3 inDataSource:(id)a4 viewModel:(id)a5 initialReferenceSize:(CGSize)a6 thumbnailAsset:(id *)a7
+- (id)createLayoutForFeedItemAtIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source viewModel:(id)model initialReferenceSize:(CGSize)size thumbnailAsset:(id *)asset
 {
-  height = a6.height;
-  width = a6.width;
-  v14 = a4;
-  v15 = a5;
-  v16 = *&a3->item;
-  v53[0] = *&a3->dataSourceIdentifier;
+  height = size.height;
+  width = size.width;
+  sourceCopy = source;
+  modelCopy = model;
+  v16 = *&path->item;
+  v53[0] = *&path->dataSourceIdentifier;
   v53[1] = v16;
-  v17 = [v14 objectReferenceAtIndexPath:v53];
+  v17 = [sourceCopy objectReferenceAtIndexPath:v53];
   v18 = v17;
   if (!v17)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedItemLayoutFactory.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"objectReference != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedItemLayoutFactory.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"objectReference != nil"}];
 
     v17 = 0;
   }
@@ -335,67 +335,67 @@ void __89__PXStoryMemoryFeedItemLayoutFactory_setItemLayout_shouldAutoplayConten
   [v19 setLaunchType:@"ForYou"];
   if (!v19)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedItemLayoutFactory.m" lineNumber:63 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedItemLayoutFactory.m" lineNumber:63 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
   v20 = +[PXStorySettings sharedInstance];
   v21 = v20;
-  v43 = a7;
+  assetCopy = asset;
   v44 = v18;
-  if (a3->item)
+  if (path->item)
   {
-    v22 = 0;
+    wantsFullscreenFeedExperience = 0;
   }
 
   else
   {
-    v22 = [v20 wantsFullscreenFeedExperience];
+    wantsFullscreenFeedExperience = [v20 wantsFullscreenFeedExperience];
   }
 
   v23 = [PXStoryMemoryFeedItemExtendedTraitCollection alloc];
-  v24 = [v15 specManager];
-  v42 = [(PXStoryMemoryFeedItemExtendedTraitCollection *)v23 initWithSpecManager:v24 initialReferenceSize:v22 isFullscreen:width, height];
+  specManager = [modelCopy specManager];
+  height = [(PXStoryMemoryFeedItemExtendedTraitCollection *)v23 initWithSpecManager:specManager initialReferenceSize:wantsFullscreenFeedExperience isFullscreen:width, height];
 
   v25 = [v19 copyWithAdditionalOptions:66];
-  v26 = [v15 assetCollectionActionPerformerDelegate];
-  [v25 setAssetCollectionActionPerformerDelegate:v26];
+  assetCollectionActionPerformerDelegate = [modelCopy assetCollectionActionPerformerDelegate];
+  [v25 setAssetCollectionActionPerformerDelegate:assetCollectionActionPerformerDelegate];
 
-  v27 = [v15 presentingViewController];
-  [v25 setPresentingViewController:v27];
+  presentingViewController = [modelCopy presentingViewController];
+  [v25 setPresentingViewController:presentingViewController];
 
-  [v25 setContainerTapToRadarDiagnosticsProvider:v15];
-  v28 = [[PXStoryModel alloc] initWithConfiguration:v25 extendedTraitCollection:v42];
+  [v25 setContainerTapToRadarDiagnosticsProvider:modelCopy];
+  v28 = [[PXStoryModel alloc] initWithConfiguration:v25 extendedTraitCollection:height];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __132__PXStoryMemoryFeedItemLayoutFactory_createLayoutForFeedItemAtIndexPath_inDataSource_viewModel_initialReferenceSize_thumbnailAsset___block_invoke;
   v50[3] = &unk_1E7735330;
   v51 = v21;
-  v52 = v22;
+  v52 = wantsFullscreenFeedExperience;
   v29 = v21;
   [(PXStoryModel *)v28 performChanges:v50];
-  v30 = [v15 actionPerformer];
+  actionPerformer = [modelCopy actionPerformer];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __132__PXStoryMemoryFeedItemLayoutFactory_createLayoutForFeedItemAtIndexPath_inDataSource_viewModel_initialReferenceSize_thumbnailAsset___block_invoke_2;
   v45[3] = &unk_1E7735358;
-  v31 = *&a3->item;
-  v48 = *&a3->dataSourceIdentifier;
+  v31 = *&path->item;
+  v48 = *&path->dataSourceIdentifier;
   v49 = v31;
-  v46 = v30;
-  v47 = v14;
-  v32 = v14;
-  v33 = v30;
-  v34 = [(PXStoryModel *)v28 thumbnailActionPerformer];
-  [v34 setPresentPlayerAction:v45];
+  v46 = actionPerformer;
+  v47 = sourceCopy;
+  v32 = sourceCopy;
+  v33 = actionPerformer;
+  thumbnailActionPerformer = [(PXStoryModel *)v28 thumbnailActionPerformer];
+  [thumbnailActionPerformer setPresentPlayerAction:v45];
 
   v35 = [[PXStoryLayout alloc] initWithModel:v28];
-  v36 = [(PXStoryModel *)v28 resourcesDataSourceManager];
-  v37 = [v36 dataSource];
-  v38 = [v37 keyAssetResource];
-  *v43 = [v38 px_storyResourceDisplayAsset];
+  resourcesDataSourceManager = [(PXStoryModel *)v28 resourcesDataSourceManager];
+  dataSource = [resourcesDataSourceManager dataSource];
+  keyAssetResource = [dataSource keyAssetResource];
+  *assetCopy = [keyAssetResource px_storyResourceDisplayAsset];
 
   return v35;
 }

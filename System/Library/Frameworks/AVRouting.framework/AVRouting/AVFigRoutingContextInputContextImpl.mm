@@ -1,47 +1,47 @@
 @interface AVFigRoutingContextInputContextImpl
-+ (id)inputContextImplForID:(id)a3 type:(id)a4;
++ (id)inputContextImplForID:(id)d type:(id)type;
 + (id)sharedSystemAudioInputContext;
 - (AVFigRoutingContextInputContextImpl)init;
-- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContext:(OpaqueFigRoutingContext *)a3 routingContextReplacementBlock:(id)a4 volumeController:(OpaqueFigVolumeControllerState *)a5;
-- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContextCreator:(id)a3;
-- (AVFigRoutingContextInputContextImpl)initWithRoutingContextUUID:(id)a3 type:(id)a4;
+- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContext:(OpaqueFigRoutingContext *)context routingContextReplacementBlock:(id)block volumeController:(OpaqueFigVolumeControllerState *)controller;
+- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContextCreator:(id)creator;
+- (AVFigRoutingContextInputContextImpl)initWithRoutingContextUUID:(id)d type:(id)type;
 - (AVInputDevice)inputDevice;
 - (BOOL)canSetInputGain;
-- (BOOL)clearUserPreferredInputDevice:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setInputGain:(float)a3 error:(id *)a4;
+- (BOOL)clearUserPreferredInputDevice:(id)device error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setInputGain:(float)gain error:(id *)error;
 - (NSString)ID;
 - (NSString)inputContextType;
-- (__CFDictionary)_createSelectRouteOptionsForSetInputDeviceOptions:(id)a3;
+- (__CFDictionary)_createSelectRouteOptionsForSetInputDeviceOptions:(id)options;
 - (float)inputGain;
-- (id)_createUserPreferredRouteModificationDictionary:(id)a3;
+- (id)_createUserPreferredRouteModificationDictionary:(id)dictionary;
 - (id)routingContextUUID;
-- (id)userPreferredInputDevice:(id)a3;
+- (id)userPreferredInputDevice:(id)device;
 - (unint64_t)hash;
-- (void)_canSetMainVolumeDidChangeForRoutingContextWithID:(id)a3;
+- (void)_canSetMainVolumeDidChangeForRoutingContextWithID:(id)d;
 - (void)_currentRouteChanged;
-- (void)_mainVolumeDidChangeForRoutingContextWithID:(id)a3;
-- (void)_routeChangeEndedWithID:(id)a3 reason:(__CFString *)a4;
-- (void)_routeChangeStartedWithID:(id)a3;
-- (void)_routeConfigUpdateEndedWithID:(__CFString *)a3 reason:(__CFString *)a4;
-- (void)_routeConfigUpdateStartedWithID:(__CFString *)a3;
-- (void)_routeConfigUpdatedWithID:(__CFString *)a3 reason:(__CFString *)a4 initiator:(__CFString *)a5 endedError:(__CFString *)a6 deviceID:(__CFString *)a7 previousDeviceIDs:(__CFArray *)a8;
+- (void)_mainVolumeDidChangeForRoutingContextWithID:(id)d;
+- (void)_routeChangeEndedWithID:(id)d reason:(__CFString *)reason;
+- (void)_routeChangeStartedWithID:(id)d;
+- (void)_routeConfigUpdateEndedWithID:(__CFString *)d reason:(__CFString *)reason;
+- (void)_routeConfigUpdateStartedWithID:(__CFString *)d;
+- (void)_routeConfigUpdatedWithID:(__CFString *)d reason:(__CFString *)reason initiator:(__CFString *)initiator endedError:(__CFString *)error deviceID:(__CFString *)iD previousDeviceIDs:(__CFArray *)ds;
 - (void)_serverConnectionDied;
 - (void)dealloc;
-- (void)setInputDevice:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)setInputDevice:(id)device options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation AVFigRoutingContextInputContextImpl
 
 + (id)sharedSystemAudioInputContext
 {
-  v2 = [a1 routingContextFactory];
+  routingContextFactory = [self routingContextFactory];
   v3 = [AVFigRoutingContextInputContextImpl alloc];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__AVFigRoutingContextInputContextImpl_sharedSystemAudioInputContext__block_invoke;
   v5[3] = &unk_1E794E868;
-  v5[4] = v2;
+  v5[4] = routingContextFactory;
   return [(AVFigRoutingContextInputContextImpl *)v3 initWithFigRoutingContextCreator:v5];
 }
 
@@ -52,9 +52,9 @@ uint64_t __68__AVFigRoutingContextInputContextImpl_sharedSystemAudioInputContext
   return v2;
 }
 
-+ (id)inputContextImplForID:(id)a3 type:(id)a4
++ (id)inputContextImplForID:(id)d type:(id)type
 {
-  v4 = [[a1 alloc] initWithRoutingContextUUID:a3 type:a4];
+  v4 = [[self alloc] initWithRoutingContextUUID:d type:type];
 
   return v4;
 }
@@ -84,13 +84,13 @@ uint64_t __71__AVFigRoutingContextInputContextImpl_initWithRoutingContextUUID_ty
   return v2;
 }
 
-- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContextCreator:(id)a3
+- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContextCreator:(id)creator
 {
-  v5 = (*(a3 + 2))(a3, a2);
+  v5 = (*(creator + 2))(creator, a2);
   FigVolumeControllerCopySharedControllerRemote();
   if (v5)
   {
-    v6 = [(AVFigRoutingContextInputContextImpl *)self initWithFigRoutingContext:v5 routingContextReplacementBlock:a3 volumeController:0];
+    v6 = [(AVFigRoutingContextInputContextImpl *)self initWithFigRoutingContext:v5 routingContextReplacementBlock:creator volumeController:0];
     CFRelease(v5);
   }
 
@@ -159,7 +159,7 @@ uint64_t __71__AVFigRoutingContextInputContextImpl_initWithRoutingContextUUID_ty
   [(AVFigRoutingContextInputContextImpl *)&v12 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -167,24 +167,24 @@ uint64_t __71__AVFigRoutingContextInputContextImpl_initWithRoutingContextUUID_ty
     return 0;
   }
 
-  v5 = [(AVFigRoutingContextInputContextImpl *)self routingContextUUID];
-  v6 = [a3 routingContextUUID];
+  routingContextUUID = [(AVFigRoutingContextInputContextImpl *)self routingContextUUID];
+  routingContextUUID2 = [equal routingContextUUID];
 
-  return [v5 isEqual:v6];
+  return [routingContextUUID isEqual:routingContextUUID2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AVFigRoutingContextInputContextImpl *)self routingContextUUID];
+  routingContextUUID = [(AVFigRoutingContextInputContextImpl *)self routingContextUUID];
 
-  return [v2 hash];
+  return [routingContextUUID hash];
 }
 
 - (NSString)ID
 {
-  v2 = [(AVFigRoutingContextInputContextImpl *)self routingContextUUID];
+  routingContextUUID = [(AVFigRoutingContextInputContextImpl *)self routingContextUUID];
 
-  return [v2 UUIDString];
+  return [routingContextUUID UUIDString];
 }
 
 - (AVInputDevice)inputDevice
@@ -231,7 +231,7 @@ uint64_t __65__AVFigRoutingContextInputContextImpl__routeChangeStartedWithID___b
   return result;
 }
 
-- (void)_routeChangeEndedWithID:(id)a3 reason:(__CFString *)a4
+- (void)_routeChangeEndedWithID:(id)d reason:(__CFString *)reason
 {
   v8 = 0;
   v9 = &v8;
@@ -239,14 +239,14 @@ uint64_t __65__AVFigRoutingContextInputContextImpl__routeChangeStartedWithID___b
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  if (a3)
+  if (d)
   {
     ivarAccessQueue = self->_ivarAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__AVFigRoutingContextInputContextImpl__routeChangeEndedWithID_reason___block_invoke;
     block[3] = &unk_1E794E8E0;
-    block[5] = a3;
+    block[5] = d;
     block[6] = &v8;
     block[4] = self;
     av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
@@ -258,7 +258,7 @@ uint64_t __65__AVFigRoutingContextInputContextImpl__routeChangeStartedWithID___b
     v6 = 0;
   }
 
-  [v6 changeToTerminalStatusBasedOnInputRouteChangeEndedReason:a4];
+  [v6 changeToTerminalStatusBasedOnInputRouteChangeEndedReason:reason];
 
   _Block_object_dispose(&v8, 8);
 }
@@ -276,17 +276,17 @@ uint64_t __70__AVFigRoutingContextInputContextImpl__routeChangeEndedWithID_reaso
 
 - (void)_currentRouteChanged
 {
-  v3 = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
+  parentInputContext = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
 
-  [(AVInputContext *)v3 inputContextImpl:self didChangeInputDeviceWithInitiator:0];
+  [(AVInputContext *)parentInputContext inputContextImpl:self didChangeInputDeviceWithInitiator:0];
 }
 
-- (void)_routeConfigUpdatedWithID:(__CFString *)a3 reason:(__CFString *)a4 initiator:(__CFString *)a5 endedError:(__CFString *)a6 deviceID:(__CFString *)a7 previousDeviceIDs:(__CFArray *)a8
+- (void)_routeConfigUpdatedWithID:(__CFString *)d reason:(__CFString *)reason initiator:(__CFString *)initiator endedError:(__CFString *)error deviceID:(__CFString *)iD previousDeviceIDs:(__CFArray *)ds
 {
   v12 = *MEMORY[0x1E69AF430];
   if (FigCFEqual())
   {
-    [(AVFigRoutingContextInputContextImpl *)self _routeConfigUpdateStartedWithID:a3];
+    [(AVFigRoutingContextInputContextImpl *)self _routeConfigUpdateStartedWithID:d];
   }
 
   else
@@ -294,21 +294,21 @@ uint64_t __70__AVFigRoutingContextInputContextImpl__routeChangeEndedWithID_reaso
     v13 = *MEMORY[0x1E69AF408];
     if (FigCFEqual())
     {
-      [(AVInputContext *)[(AVFigRoutingContextInputContextImpl *)self parentInputContext] inputContextImpl:self didChangeInputDeviceWithInitiator:a5];
+      [(AVInputContext *)[(AVFigRoutingContextInputContextImpl *)self parentInputContext] inputContextImpl:self didChangeInputDeviceWithInitiator:initiator];
     }
 
     else
     {
-      [(AVFigRoutingContextInputContextImpl *)self _routeConfigUpdateEndedWithID:a3 reason:a4];
+      [(AVFigRoutingContextInputContextImpl *)self _routeConfigUpdateEndedWithID:d reason:reason];
     }
   }
 
   v14 = *MEMORY[0x1E69AF3E8];
   if (FigCFEqual() || (v15 = *MEMORY[0x1E69AF3C8], FigCFEqual()) || (v16 = *MEMORY[0x1E69AF3C0], FigCFEqual()) || (v17 = *MEMORY[0x1E69AF3D0], FigCFEqual()))
   {
-    v18 = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
+    parentInputContext = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
 
-    [(AVInputContext *)v18 inputContextImpl:self didChangeInputDeviceWithInitiator:a5];
+    [(AVInputContext *)parentInputContext inputContextImpl:self didChangeInputDeviceWithInitiator:initiator];
   }
 }
 
@@ -322,7 +322,7 @@ uint64_t __71__AVFigRoutingContextInputContextImpl__routeConfigUpdateStartedWith
   return result;
 }
 
-- (void)_routeConfigUpdateEndedWithID:(__CFString *)a3 reason:(__CFString *)a4
+- (void)_routeConfigUpdateEndedWithID:(__CFString *)d reason:(__CFString *)reason
 {
   v8 = 0;
   v9 = &v8;
@@ -330,7 +330,7 @@ uint64_t __71__AVFigRoutingContextInputContextImpl__routeConfigUpdateStartedWith
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  if (a3)
+  if (d)
   {
     ivarAccessQueue = self->_ivarAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -339,7 +339,7 @@ uint64_t __71__AVFigRoutingContextInputContextImpl__routeConfigUpdateStartedWith
     block[3] = &unk_1E794E930;
     block[4] = self;
     block[5] = &v8;
-    block[6] = a3;
+    block[6] = d;
     av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
     v6 = v9[5];
   }
@@ -349,7 +349,7 @@ uint64_t __71__AVFigRoutingContextInputContextImpl__routeConfigUpdateStartedWith
     v6 = 0;
   }
 
-  [v6 changeToTerminalStatusBasedOnInputRouteConfigUpdatedReason:a4];
+  [v6 changeToTerminalStatusBasedOnInputRouteConfigUpdatedReason:reason];
 
   _Block_object_dispose(&v8, 8);
 }
@@ -365,30 +365,30 @@ uint64_t __76__AVFigRoutingContextInputContextImpl__routeConfigUpdateEndedWithID
   return result;
 }
 
-- (void)_canSetMainVolumeDidChangeForRoutingContextWithID:(id)a3
+- (void)_canSetMainVolumeDidChangeForRoutingContextWithID:(id)d
 {
-  if ([a3 isEqualToString:{-[AVFigRoutingContextInputContextImpl ID](self, "ID")}])
+  if ([d isEqualToString:{-[AVFigRoutingContextInputContextImpl ID](self, "ID")}])
   {
-    v4 = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
+    parentInputContext = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
 
-    [(AVInputContext *)v4 inputContextImplDidChangeCanSetInputGain:self];
+    [(AVInputContext *)parentInputContext inputContextImplDidChangeCanSetInputGain:self];
   }
 }
 
-- (void)_mainVolumeDidChangeForRoutingContextWithID:(id)a3
+- (void)_mainVolumeDidChangeForRoutingContextWithID:(id)d
 {
-  if ([a3 isEqualToString:{-[AVFigRoutingContextInputContextImpl ID](self, "ID")}])
+  if ([d isEqualToString:{-[AVFigRoutingContextInputContextImpl ID](self, "ID")}])
   {
-    v4 = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
+    parentInputContext = [(AVFigRoutingContextInputContextImpl *)self parentInputContext];
 
-    [(AVInputContext *)v4 inputContextImplDidChangeInputGain:self];
+    [(AVInputContext *)parentInputContext inputContextImplDidChangeInputGain:self];
   }
 }
 
-- (__CFDictionary)_createSelectRouteOptionsForSetInputDeviceOptions:(id)a3
+- (__CFDictionary)_createSelectRouteOptionsForSetInputDeviceOptions:(id)options
 {
-  v5 = [a3 objectForKeyedSubscript:@"AVInputContextSetInputDeviceInitiatorKey"];
-  v6 = [a3 objectForKeyedSubscript:@"AVInputContextSetInputDeviceHostApplicationBundleIDKey"];
+  v5 = [options objectForKeyedSubscript:@"AVInputContextSetInputDeviceInitiatorKey"];
+  v6 = [options objectForKeyedSubscript:@"AVInputContextSetInputDeviceHostApplicationBundleIDKey"];
   v10 = 0;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
   if ([(AVInputContext *)[(AVFigRoutingContextInputContextImpl *)self parentInputContext] getApplicationProcessID:&v10])
@@ -418,16 +418,16 @@ uint64_t __76__AVFigRoutingContextInputContextImpl__routeConfigUpdateEndedWithID
   return Mutable;
 }
 
-- (void)setInputDevice:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)setInputDevice:(id)device options:(id)options completionHandler:(id)handler
 {
-  v8 = [(AVFigRoutingContextInputContextImpl *)self _createSelectRouteOptionsForSetInputDeviceOptions:a4];
+  v8 = [(AVFigRoutingContextInputContextImpl *)self _createSelectRouteOptionsForSetInputDeviceOptions:options];
   v21 = 0;
   v9 = objc_alloc_init(AVRoutingEventWaiter);
-  if (AVInputDeviceGetFigRouteDescriptor(a3, &v21))
+  if (AVInputDeviceGetFigRouteDescriptor(device, &v21))
   {
     if (AVOutputContextUsesRoutingContextCallbacks())
     {
-      v10 = [[AVFigRoutingContextInputContextCompletionContext alloc] initWithCompletionHandler:a5];
+      v10 = [[AVFigRoutingContextInputContextCompletionContext alloc] initWithCompletionHandler:handler];
       routingContext = self->_routingContext;
       v12 = v21;
       VTable = CMBaseObjectGetVTable();
@@ -450,7 +450,7 @@ uint64_t __76__AVFigRoutingContextInputContextImpl__routeConfigUpdateEndedWithID
       v20[2] = __80__AVFigRoutingContextInputContextImpl_setInputDevice_options_completionHandler___block_invoke;
       v20[3] = &unk_1E794E958;
       v20[5] = v9;
-      v20[6] = a5;
+      v20[6] = handler;
       v20[4] = v19;
       [(AVRoutingRouteConfigUpdatedFigRoutingContextRouteChangeOperation *)v19 setCompletionBlock:v20];
       [(AVRoutingRouteConfigUpdatedFigRoutingContextRouteChangeOperation *)v19 start];
@@ -463,7 +463,7 @@ uint64_t __76__AVFigRoutingContextInputContextImpl__routeConfigUpdateEndedWithID
 
   else
   {
-    [AVFigRoutingContextInputContextImpl setInputDevice:a5 options:? completionHandler:?];
+    [AVFigRoutingContextInputContextImpl setInputDevice:handler options:? completionHandler:?];
   }
 
   if (v8)
@@ -492,11 +492,11 @@ uint64_t __80__AVFigRoutingContextInputContextImpl_setInputDevice_options_comple
   }
 }
 
-- (id)_createUserPreferredRouteModificationDictionary:(id)a3
+- (id)_createUserPreferredRouteModificationDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    return [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a3, @"HostApplicationBundleID", 0}];
+    return [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{dictionary, @"HostApplicationBundleID", 0}];
   }
 
   else
@@ -505,10 +505,10 @@ uint64_t __80__AVFigRoutingContextInputContextImpl_setInputDevice_options_comple
   }
 }
 
-- (id)userPreferredInputDevice:(id)a3
+- (id)userPreferredInputDevice:(id)device
 {
   v11 = 0;
-  v4 = [(AVFigRoutingContextInputContextImpl *)self _createUserPreferredRouteModificationDictionary:a3];
+  v4 = [(AVFigRoutingContextInputContextImpl *)self _createUserPreferredRouteModificationDictionary:device];
   routingContext = self->_routingContext;
   VTable = CMBaseObjectGetVTable();
   v7 = *(*(VTable + 16) + 176);
@@ -531,9 +531,9 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)clearUserPreferredInputDevice:(id)a3 error:(id *)a4
+- (BOOL)clearUserPreferredInputDevice:(id)device error:(id *)error
 {
-  v6 = [(AVFigRoutingContextInputContextImpl *)self _createUserPreferredRouteModificationDictionary:a3];
+  v6 = [(AVFigRoutingContextInputContextImpl *)self _createUserPreferredRouteModificationDictionary:device];
   routingContext = self->_routingContext;
   VTable = CMBaseObjectGetVTable();
   v9 = *(*(VTable + 16) + 184);
@@ -541,7 +541,7 @@ LABEL_8:
   {
     v11 = -12782;
 LABEL_7:
-    [(AVFigRoutingContextInputContextImpl *)v11 clearUserPreferredInputDevice:a4 error:&v14];
+    [(AVFigRoutingContextInputContextImpl *)v11 clearUserPreferredInputDevice:error error:&v14];
     v12 = v14;
     goto LABEL_5;
   }
@@ -607,7 +607,7 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)setInputGain:(float)a3 error:(id *)a4
+- (BOOL)setInputGain:(float)gain error:(id *)error
 {
   volumeController = self->_volumeController;
   if (volumeController)
@@ -619,7 +619,7 @@ LABEL_5:
     if (v10)
     {
       v11 = *(VTable + 16) + 24;
-      v12 = v10(volumeController, routingContext, a3);
+      v12 = v10(volumeController, routingContext, gain);
       if (!v12)
       {
         return v12 == 0;
@@ -632,7 +632,7 @@ LABEL_5:
     }
 
     FigSignalErrorAtGM();
-    if (!a4)
+    if (!error)
     {
       return v12 == 0;
     }
@@ -642,7 +642,7 @@ LABEL_5:
   {
     [AVFigRoutingContextInputContextImpl setInputGain:? error:?];
     v12 = v14;
-    if (!a4)
+    if (!error)
     {
       return v12 == 0;
     }
@@ -650,28 +650,28 @@ LABEL_5:
 
   if (v12)
   {
-    *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v12, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v12, 0);
     v12 = 1;
   }
 
   return v12 == 0;
 }
 
-- (AVFigRoutingContextInputContextImpl)initWithRoutingContextUUID:(id)a3 type:(id)a4
+- (AVFigRoutingContextInputContextImpl)initWithRoutingContextUUID:(id)d type:(id)type
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = [objc_opt_class() routingContextFactory];
+  routingContextFactory = [objc_opt_class() routingContextFactory];
   v24 = *MEMORY[0x1E69AF350];
-  v25[0] = a3;
+  v25[0] = d;
   v8 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)}];
   number = 0;
   cf = 0;
   valuePtr = 0;
   v20 = 0;
-  if (a4)
+  if (type)
   {
     v9 = MEMORY[0x1E696AD98];
-    if ([a4 isEqualToString:@"AVInputContextTypeSharedSystemAudioInput"])
+    if ([type isEqualToString:@"AVInputContextTypeSharedSystemAudioInput"])
     {
       v10 = 13;
     }
@@ -686,7 +686,7 @@ LABEL_5:
   }
 
   v12 = *MEMORY[0x1E695E480];
-  if (![v7 copyContextForUUIDWithAllocator:*MEMORY[0x1E695E480] options:v8 context:&cf] && (v13 = cf) != 0 && (v14 = *(*(CMBaseObjectGetVTable() + 8) + 48)) != 0 && !v14(v13, *MEMORY[0x1E69AF4E0], v12, &number) && CFNumberGetValue(number, kCFNumberIntType, &valuePtr))
+  if (![routingContextFactory copyContextForUUIDWithAllocator:*MEMORY[0x1E695E480] options:v8 context:&cf] && (v13 = cf) != 0 && (v14 = *(*(CMBaseObjectGetVTable() + 8) + 48)) != 0 && !v14(v13, *MEMORY[0x1E69AF4E0], v12, &number) && CFNumberGetValue(number, kCFNumberIntType, &valuePtr))
   {
     FigVolumeControllerCopySharedControllerRemote();
     v18[0] = MEMORY[0x1E69E9820];
@@ -695,14 +695,14 @@ LABEL_5:
     v18[3] = &unk_1E794E890;
     v19 = valuePtr;
     v18[4] = v8;
-    v18[5] = v7;
+    v18[5] = routingContextFactory;
     self = [(AVFigRoutingContextInputContextImpl *)self initWithFigRoutingContext:cf routingContextReplacementBlock:v18 volumeController:v20];
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   if (number)
@@ -721,10 +721,10 @@ LABEL_5:
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContext:(OpaqueFigRoutingContext *)a3 routingContextReplacementBlock:(id)a4 volumeController:(OpaqueFigVolumeControllerState *)a5
+- (AVFigRoutingContextInputContextImpl)initWithFigRoutingContext:(OpaqueFigRoutingContext *)context routingContextReplacementBlock:(id)block volumeController:(OpaqueFigVolumeControllerState *)controller
 {
   number[20] = *MEMORY[0x1E69E9840];
   v9 = [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
@@ -738,21 +738,21 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v11 = [a4 copy];
+  v11 = [block copy];
   v10->_routingContextCreator = v11;
   if (!v11)
   {
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!context)
   {
     v16 = 0;
     v10->_routingContext = 0;
     goto LABEL_21;
   }
 
-  v12 = CFRetain(a3);
+  v12 = CFRetain(context);
   v10->_routingContext = v12;
   if (!v12 || (v13 = v12, (v14 = *(*(CMBaseObjectGetVTable() + 8) + 48)) == 0) || v14(v13, *MEMORY[0x1E69AF4E0], *MEMORY[0x1E695E480], number) || !CFNumberGetValue(number[0], kCFNumberIntType, &valuePtr))
   {
@@ -761,7 +761,7 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!controller)
   {
     v10->_volumeController = 0;
 LABEL_14:
@@ -772,7 +772,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v15 = CFRetain(a5);
+  v15 = CFRetain(controller);
   v10->_volumeController = v15;
   if (!v15)
   {
@@ -899,38 +899,38 @@ LABEL_21:
   return &v4->isa;
 }
 
-- (void)_routeChangeStartedWithID:(id)a3
+- (void)_routeChangeStartedWithID:(id)d
 {
   v5 = objc_alloc_init(AVInputContextDestinationChange);
   [(AVInputContextDestinationChange *)v5 markAsInProgress];
   [(AVInputContext *)[(AVFigRoutingContextInputContextImpl *)self parentInputContext] inputContextImpl:self didInitiateDestinationChange:v5];
-  if (a3)
+  if (d)
   {
     v6 = OUTLINED_FUNCTION_0_0();
     v8 = 3221225472;
     v9 = __65__AVFigRoutingContextInputContextImpl__routeChangeStartedWithID___block_invoke;
     v10 = &unk_1E794E8B8;
-    v11 = self;
+    selfCopy = self;
     v12 = v5;
-    v13 = a3;
+    dCopy = d;
     av_readwrite_dispatch_queue_write(v6, block);
   }
 }
 
-- (void)_routeConfigUpdateStartedWithID:(__CFString *)a3
+- (void)_routeConfigUpdateStartedWithID:(__CFString *)d
 {
   v5 = objc_alloc_init(AVInputContextDestinationChange);
   [(AVInputContextDestinationChange *)v5 markAsInProgress];
   [(AVInputContext *)[(AVFigRoutingContextInputContextImpl *)self parentInputContext] inputContextImpl:self didInitiateDestinationChange:v5];
-  if (a3)
+  if (d)
   {
     v6 = OUTLINED_FUNCTION_0_0();
     v8 = 3221225472;
     v9 = __71__AVFigRoutingContextInputContextImpl__routeConfigUpdateStartedWithID___block_invoke;
     v10 = &unk_1E794E908;
-    v11 = self;
+    selfCopy = self;
     v12 = v5;
-    v13 = a3;
+    dCopy = d;
     av_readwrite_dispatch_queue_write(v6, block);
   }
 }

@@ -1,25 +1,25 @@
 @interface WOWorkoutSupport
-+ (BOOL)shouldTrackPaceWithOdometerFor:(id)a3;
++ (BOOL)shouldTrackPaceWithOdometerFor:(id)for;
 - (WOWorkoutSupport)init;
 @end
 
 @implementation WOWorkoutSupport
 
-+ (BOOL)shouldTrackPaceWithOdometerFor:(id)a3
++ (BOOL)shouldTrackPaceWithOdometerFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if (v4 == 71 || v4 == 70)
+  forCopy = for;
+  identifier = [forCopy identifier];
+  if (identifier == 71 || identifier == 70)
   {
 
     return 1;
   }
 
-  else if (v4 == 13)
+  else if (identifier == 13)
   {
-    v5 = [v3 isIndoor];
+    isIndoor = [forCopy isIndoor];
 
-    return v5 ^ 1;
+    return isIndoor ^ 1;
   }
 
   else

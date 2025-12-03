@@ -1,39 +1,39 @@
 @interface ICIAMMessagePresentationTrigger
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)kindAsString:(int)a3;
-- (int)StringAsKind:(id)a3;
+- (id)kindAsString:(int)string;
+- (int)StringAsKind:(id)kind;
 - (int)kind;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMMessagePresentationTrigger
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ICIAMMessagePresentationTrigger *)self setTriggerName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_kind = v4[4];
+    self->_kind = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ICIAMMessagePresentationTrigger *)self setBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -53,16 +53,16 @@
   return v4 ^ v3 ^ [(NSString *)self->_bundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   triggerName = self->_triggerName;
-  if (triggerName | *(v4 + 3))
+  if (triggerName | *(equalCopy + 3))
   {
     if (![(NSString *)triggerName isEqual:?])
     {
@@ -72,13 +72,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_kind != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_kind != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -86,7 +86,7 @@ LABEL_11:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     v7 = [(NSString *)bundleIdentifier isEqual:?];
   }
@@ -101,10 +101,10 @@ LABEL_12:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_triggerName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_triggerName copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -114,67 +114,67 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_triggerName)
   {
-    [v4 setTriggerName:?];
-    v4 = v5;
+    [toCopy setTriggerName:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_kind;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 4) = self->_kind;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_bundleIdentifier)
   {
     [v5 setBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_triggerName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   triggerName = self->_triggerName;
   if (triggerName)
   {
-    [v3 setObject:triggerName forKey:@"triggerName"];
+    [dictionary setObject:triggerName forKey:@"triggerName"];
   }
 
   if (*&self->_has)
@@ -216,40 +216,40 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = ICIAMMessagePresentationTrigger;
   v4 = [(ICIAMMessagePresentationTrigger *)&v8 description];
-  v5 = [(ICIAMMessagePresentationTrigger *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMMessagePresentationTrigger *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsKind:(id)a3
+- (int)StringAsKind:(id)kind
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Event"])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:@"Event"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ContextProperty"];
+    v4 = [kindCopy isEqualToString:@"ContextProperty"];
   }
 
   return v4;
 }
 
-- (id)kindAsString:(int)a3
+- (id)kindAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"ContextProperty";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 

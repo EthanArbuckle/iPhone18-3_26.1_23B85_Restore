@@ -1,27 +1,27 @@
 @interface HMDPropertyCodingDescription
-- (BOOL)shouldIncludeWithConditions:(id)a3;
+- (BOOL)shouldIncludeWithConditions:(id)conditions;
 - (NSString)shortDescription;
-- (id)initWithModel:(void *)a3 property:;
+- (id)initWithModel:(void *)model property:;
 @end
 
 @implementation HMDPropertyCodingDescription
 
-- (id)initWithModel:(void *)a3 property:
+- (id)initWithModel:(void *)model property:
 {
   v36 = *MEMORY[0x277D85DE8];
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = HMDPropertyCodingDescription;
   v5 = objc_msgSendSuper2(&v30, sel_init);
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(v5 + 1, a3);
-    v7 = [(HMDManagedObjectCodingModel *)a2 codingKeyForProperty:a3];
+    objc_storeStrong(v5 + 1, model);
+    v7 = [(HMDManagedObjectCodingModel *)a2 codingKeyForProperty:model];
     v8 = v6[2];
     v6[2] = v7;
 
-    v9 = [a3 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*(a2 + 112)];
+    userInfo = [model userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*(a2 + 112)];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -40,7 +40,7 @@
     {
       v13 = *(a2 + 40);
       v14 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_."];
-      v15 = [v14 invertedSet];
+      invertedSet = [v14 invertedSet];
 
       v33 = 0u;
       v34 = 0u;
@@ -53,7 +53,7 @@
       {
         v17 = v16;
         v26 = a2;
-        v27 = a3;
+        modelCopy = model;
         v18 = 0;
         v19 = *v32;
         do
@@ -66,13 +66,13 @@
             }
 
             v21 = *(*(&v31 + 1) + 8 * i);
-            if (![v21 length] || objc_msgSend(v21, "rangeOfCharacterFromSet:", v15) != 0x7FFFFFFFFFFFFFFFLL)
+            if (![v21 length] || objc_msgSend(v21, "rangeOfCharacterFromSet:", invertedSet) != 0x7FFFFFFFFFFFFFFFLL)
             {
               v25 = *(v26 + 112);
-              [v27 entity];
+              [modelCopy entity];
               [objc_claimAutoreleasedReturnValue() name];
               objc_claimAutoreleasedReturnValue();
-              [v27 name];
+              [modelCopy name];
               objc_claimAutoreleasedReturnValue();
               _HMFPreconditionFailureWithFormat();
 LABEL_25:
@@ -125,15 +125,15 @@ LABEL_25:
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSPropertyDescription *)self->_property entity];
-  v5 = [v4 name];
-  v6 = [(NSPropertyDescription *)self->_property name];
-  v7 = [v3 stringWithFormat:@"%@.%@", v5, v6];
+  entity = [(NSPropertyDescription *)self->_property entity];
+  name = [entity name];
+  name2 = [(NSPropertyDescription *)self->_property name];
+  v7 = [v3 stringWithFormat:@"%@.%@", name, name2];
 
   return v7;
 }
 
-- (BOOL)shouldIncludeWithConditions:(id)a3
+- (BOOL)shouldIncludeWithConditions:(id)conditions
 {
   conditions = self->_conditions;
   if (!conditions)
@@ -141,9 +141,9 @@ LABEL_25:
     return 1;
   }
 
-  if (a3)
+  if (conditions)
   {
-    v4 = *(a3 + 2);
+    v4 = *(conditions + 2);
   }
 
   else

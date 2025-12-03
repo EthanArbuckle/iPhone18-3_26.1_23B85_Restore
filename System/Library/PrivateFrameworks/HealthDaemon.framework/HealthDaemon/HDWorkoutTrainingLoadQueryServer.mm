@@ -1,21 +1,21 @@
 @interface HDWorkoutTrainingLoadQueryServer
 + (id)requiredEntitlements;
-- (HDWorkoutTrainingLoadQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_queue_fetchTrainingLoadWithError:(id *)a3;
+- (HDWorkoutTrainingLoadQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_queue_fetchTrainingLoadWithError:(id *)error;
 - (void)_queue_start;
 @end
 
 @implementation HDWorkoutTrainingLoadQueryServer
 
-- (HDWorkoutTrainingLoadQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutTrainingLoadQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDWorkoutTrainingLoadQueryServer;
-  v11 = [(HDQueryServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [configurationCopy copy];
     trainingLoadQueryServerConfiguration = v11->_trainingLoadQueryServerConfiguration;
     v11->_trainingLoadQueryServerConfiguration = v12;
   }
@@ -39,11 +39,11 @@
   v17.receiver = self;
   v17.super_class = HDWorkoutTrainingLoadQueryServer;
   [(HDQueryServer *)&v17 _queue_start];
-  v3 = [(HDQueryServer *)self queryUUID];
-  v4 = [(HDQueryServer *)self clientProxy];
-  v5 = [MEMORY[0x277CCD720] workoutType];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
   v16 = 0;
-  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:v5 error:&v16];
+  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:workoutType error:&v16];
   v7 = v16;
 
   if (v6)
@@ -56,12 +56,12 @@
       v10 = v9;
       if (v8 || !v9)
       {
-        [v4 client_deliverTrainingLoadResults:v8 forQuery:v3];
+        [clientProxy client_deliverTrainingLoadResults:v8 forQuery:queryUUID];
       }
 
       else
       {
-        [v4 client_deliverError:v9 forQuery:v3];
+        [clientProxy client_deliverError:v9 forQuery:queryUUID];
       }
 
       _HKInitializeLogging();
@@ -69,30 +69,30 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [v3 UUIDString];
+        uUIDString = [queryUUID UUIDString];
         *buf = 138543618;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
-        v21 = v13;
+        v21 = uUIDString;
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "Completed %{public}@ request for query: %@", buf, 0x16u);
       }
     }
 
     else
     {
-      [v4 client_deliverTrainingLoadResults:0 forQuery:v3];
+      [clientProxy client_deliverTrainingLoadResults:0 forQuery:queryUUID];
     }
   }
 
   else
   {
-    [v4 client_deliverError:v7 forQuery:v3];
+    [clientProxy client_deliverError:v7 forQuery:queryUUID];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_fetchTrainingLoadWithError:(id *)a3
+- (id)_queue_fetchTrainingLoadWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -106,11 +106,11 @@
   v19 = __Block_byref_object_copy__88;
   v20 = __Block_byref_object_dispose__88;
   v21 = 0;
-  v5 = [(_HKWorkoutTrainingLoadQueryServerConfiguration *)self->_trainingLoadQueryServerConfiguration options];
+  options = [(_HKWorkoutTrainingLoadQueryServerConfiguration *)self->_trainingLoadQueryServerConfiguration options];
   v6 = [HDWorkoutTrainingLoadQueryHelper alloc];
-  v7 = [(HDQueryServer *)self filter];
-  v8 = [(HDQueryServer *)self profile];
-  v9 = [(HDWorkoutTrainingLoadQueryHelper *)v6 initWithFilter:v7 options:v5 profile:v8];
+  filter = [(HDQueryServer *)self filter];
+  profile = [(HDQueryServer *)self profile];
+  v9 = [(HDWorkoutTrainingLoadQueryHelper *)v6 initWithFilter:filter options:options profile:profile];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -124,10 +124,10 @@
   v11 = v10;
   if (v10)
   {
-    if (a3)
+    if (error)
     {
       v12 = v10;
-      *a3 = v11;
+      *error = v11;
     }
 
     else

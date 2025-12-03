@@ -1,42 +1,42 @@
 @interface _UIReplacementCandidate
-+ (id)candidateForAutocorrection:(id)a3 range:(id)a4 underlineStyle:(int64_t)a5 promptStyle:(int64_t)a6 promptButton:(int64_t)a7;
-+ (id)candidateForAutocorrectionCandidate:(id)a3 range:(id)a4;
-+ (id)candidateForDocumentText:(id)a3 revertText:(id)a4 candidateChoices:(id)a5 range:(id)a6 underlineStyle:(int64_t)a7 promptStyle:(int64_t)a8 promptButton:(int64_t)a9;
-+ (id)candidateForDocumentText:(id)a3 revertText:(id)a4 textChoices:(id)a5 range:(id)a6 underlineStyle:(int64_t)a7 promptStyle:(int64_t)a8 promptButton:(int64_t)a9 voiceCommandDisambiguationSelectedIndex:(id)a10 voiceCommandDisambiguationTargetCount:(id)a11;
++ (id)candidateForAutocorrection:(id)autocorrection range:(id)range underlineStyle:(int64_t)style promptStyle:(int64_t)promptStyle promptButton:(int64_t)button;
++ (id)candidateForAutocorrectionCandidate:(id)candidate range:(id)range;
++ (id)candidateForDocumentText:(id)text revertText:(id)revertText candidateChoices:(id)choices range:(id)range underlineStyle:(int64_t)style promptStyle:(int64_t)promptStyle promptButton:(int64_t)button;
++ (id)candidateForDocumentText:(id)text revertText:(id)revertText textChoices:(id)choices range:(id)range underlineStyle:(int64_t)style promptStyle:(int64_t)promptStyle promptButton:(int64_t)button voiceCommandDisambiguationSelectedIndex:(id)self0 voiceCommandDisambiguationTargetCount:(id)self1;
 - (NSArray)textChoices;
-- (_UIReplacementCandidate)initWithText:(id)a3;
-- (void)setTextChoices:(id)a3;
+- (_UIReplacementCandidate)initWithText:(id)text;
+- (void)setTextChoices:(id)choices;
 @end
 
 @implementation _UIReplacementCandidate
 
-- (_UIReplacementCandidate)initWithText:(id)a3
+- (_UIReplacementCandidate)initWithText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = _UIReplacementCandidate;
   v6 = [(_UIReplacementCandidate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentTextToReplace, a3);
+    objc_storeStrong(&v6->_documentTextToReplace, text);
   }
 
   return v7;
 }
 
-+ (id)candidateForAutocorrectionCandidate:(id)a3 range:(id)a4
++ (id)candidateForAutocorrectionCandidate:(id)candidate range:(id)range
 {
-  v5 = a4;
-  v6 = a3;
+  rangeCopy = range;
+  candidateCopy = candidate;
   v7 = [_UIReplacementCandidate alloc];
-  v8 = [v6 candidate];
-  v9 = [(_UIReplacementCandidate *)v7 initWithText:v8];
+  candidate = [candidateCopy candidate];
+  v9 = [(_UIReplacementCandidate *)v7 initWithText:candidate];
 
-  v10 = [v6 input];
+  input = [candidateCopy input];
 
-  [(_UIReplacementCandidate *)v9 setRevertText:v10];
-  [(_UIReplacementCandidate *)v9 setRangeInDocument:v5];
+  [(_UIReplacementCandidate *)v9 setRevertText:input];
+  [(_UIReplacementCandidate *)v9 setRangeInDocument:rangeCopy];
 
   [(_UIReplacementCandidate *)v9 setUnderlineStyle:1];
   [(_UIReplacementCandidate *)v9 setPreferredPromptStyle:2];
@@ -45,67 +45,67 @@
   return v9;
 }
 
-+ (id)candidateForAutocorrection:(id)a3 range:(id)a4 underlineStyle:(int64_t)a5 promptStyle:(int64_t)a6 promptButton:(int64_t)a7
++ (id)candidateForAutocorrection:(id)autocorrection range:(id)range underlineStyle:(int64_t)style promptStyle:(int64_t)promptStyle promptButton:(int64_t)button
 {
-  v11 = a4;
-  v12 = a3;
+  rangeCopy = range;
+  autocorrectionCopy = autocorrection;
   v13 = [_UIReplacementCandidate alloc];
-  v14 = [v12 candidate];
-  v15 = [(_UIReplacementCandidate *)v13 initWithText:v14];
+  candidate = [autocorrectionCopy candidate];
+  v15 = [(_UIReplacementCandidate *)v13 initWithText:candidate];
 
-  v16 = [v12 input];
+  input = [autocorrectionCopy input];
 
-  [(_UIReplacementCandidate *)v15 setRevertText:v16];
-  [(_UIReplacementCandidate *)v15 setRangeInDocument:v11];
+  [(_UIReplacementCandidate *)v15 setRevertText:input];
+  [(_UIReplacementCandidate *)v15 setRangeInDocument:rangeCopy];
 
-  [(_UIReplacementCandidate *)v15 setUnderlineStyle:a5];
-  [(_UIReplacementCandidate *)v15 setPreferredPromptStyle:a6];
-  [(_UIReplacementCandidate *)v15 setPreferredPromptButton:a7];
+  [(_UIReplacementCandidate *)v15 setUnderlineStyle:style];
+  [(_UIReplacementCandidate *)v15 setPreferredPromptStyle:promptStyle];
+  [(_UIReplacementCandidate *)v15 setPreferredPromptButton:button];
 
   return v15;
 }
 
-+ (id)candidateForDocumentText:(id)a3 revertText:(id)a4 textChoices:(id)a5 range:(id)a6 underlineStyle:(int64_t)a7 promptStyle:(int64_t)a8 promptButton:(int64_t)a9 voiceCommandDisambiguationSelectedIndex:(id)a10 voiceCommandDisambiguationTargetCount:(id)a11
++ (id)candidateForDocumentText:(id)text revertText:(id)revertText textChoices:(id)choices range:(id)range underlineStyle:(int64_t)style promptStyle:(int64_t)promptStyle promptButton:(int64_t)button voiceCommandDisambiguationSelectedIndex:(id)self0 voiceCommandDisambiguationTargetCount:(id)self1
 {
-  v16 = a11;
-  v17 = a10;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [[_UIReplacementCandidate alloc] initWithText:v21];
-  [(_UIReplacementCandidate *)v22 setRevertText:v20];
+  countCopy = count;
+  indexCopy = index;
+  rangeCopy = range;
+  choicesCopy = choices;
+  revertTextCopy = revertText;
+  textCopy = text;
+  v22 = [[_UIReplacementCandidate alloc] initWithText:textCopy];
+  [(_UIReplacementCandidate *)v22 setRevertText:revertTextCopy];
 
-  v23 = _candidatesChoicesFromTextChoices(v19, v21);
+  v23 = _candidatesChoicesFromTextChoices(choicesCopy, textCopy);
 
   [(_UIReplacementCandidate *)v22 setCandidateChoices:v23];
-  [(_UIReplacementCandidate *)v22 setRangeInDocument:v18];
+  [(_UIReplacementCandidate *)v22 setRangeInDocument:rangeCopy];
 
-  [(_UIReplacementCandidate *)v22 setUnderlineStyle:a7];
-  [(_UIReplacementCandidate *)v22 setPreferredPromptStyle:a8];
-  [(_UIReplacementCandidate *)v22 setPreferredPromptButton:a9];
-  [(_UIReplacementCandidate *)v22 setVoiceCommandDisambiguationSelectedIndex:v17];
+  [(_UIReplacementCandidate *)v22 setUnderlineStyle:style];
+  [(_UIReplacementCandidate *)v22 setPreferredPromptStyle:promptStyle];
+  [(_UIReplacementCandidate *)v22 setPreferredPromptButton:button];
+  [(_UIReplacementCandidate *)v22 setVoiceCommandDisambiguationSelectedIndex:indexCopy];
 
-  [(_UIReplacementCandidate *)v22 setVoiceCommandDisambiguationTargetCount:v16];
+  [(_UIReplacementCandidate *)v22 setVoiceCommandDisambiguationTargetCount:countCopy];
 
   return v22;
 }
 
-+ (id)candidateForDocumentText:(id)a3 revertText:(id)a4 candidateChoices:(id)a5 range:(id)a6 underlineStyle:(int64_t)a7 promptStyle:(int64_t)a8 promptButton:(int64_t)a9
++ (id)candidateForDocumentText:(id)text revertText:(id)revertText candidateChoices:(id)choices range:(id)range underlineStyle:(int64_t)style promptStyle:(int64_t)promptStyle promptButton:(int64_t)button
 {
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[_UIReplacementCandidate alloc] initWithText:v17];
+  rangeCopy = range;
+  choicesCopy = choices;
+  revertTextCopy = revertText;
+  textCopy = text;
+  v18 = [[_UIReplacementCandidate alloc] initWithText:textCopy];
 
-  [(_UIReplacementCandidate *)v18 setRevertText:v16];
-  [(_UIReplacementCandidate *)v18 setCandidateChoices:v15];
+  [(_UIReplacementCandidate *)v18 setRevertText:revertTextCopy];
+  [(_UIReplacementCandidate *)v18 setCandidateChoices:choicesCopy];
 
-  [(_UIReplacementCandidate *)v18 setRangeInDocument:v14];
-  [(_UIReplacementCandidate *)v18 setUnderlineStyle:a7];
-  [(_UIReplacementCandidate *)v18 setPreferredPromptStyle:a8];
-  [(_UIReplacementCandidate *)v18 setPreferredPromptButton:a9];
+  [(_UIReplacementCandidate *)v18 setRangeInDocument:rangeCopy];
+  [(_UIReplacementCandidate *)v18 setUnderlineStyle:style];
+  [(_UIReplacementCandidate *)v18 setPreferredPromptStyle:promptStyle];
+  [(_UIReplacementCandidate *)v18 setPreferredPromptButton:button];
 
   return v18;
 }
@@ -114,15 +114,15 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(_UIReplacementCandidate *)self candidateChoices];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  candidateChoices = [(_UIReplacementCandidate *)self candidateChoices];
+  v5 = [v3 initWithCapacity:{objc_msgSend(candidateChoices, "count")}];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(_UIReplacementCandidate *)self candidateChoices];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  candidateChoices2 = [(_UIReplacementCandidate *)self candidateChoices];
+  v7 = [candidateChoices2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -133,23 +133,23 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(candidateChoices2);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 label];
-        if (v12)
+        label = [v11 label];
+        if (label)
         {
-          [v5 addObject:v12];
+          [v5 addObject:label];
         }
 
         else
         {
-          v13 = [v11 candidate];
-          v14 = v13;
-          if (v13)
+          candidate = [v11 candidate];
+          v14 = candidate;
+          if (candidate)
           {
-            v15 = v13;
+            v15 = candidate;
           }
 
           else
@@ -161,7 +161,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [candidateChoices2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -172,11 +172,11 @@
   return v16;
 }
 
-- (void)setTextChoices:(id)a3
+- (void)setTextChoices:(id)choices
 {
-  v4 = a3;
-  v6 = [(_UIReplacementCandidate *)self documentTextToReplace];
-  v5 = _candidatesChoicesFromTextChoices(v4, v6);
+  choicesCopy = choices;
+  documentTextToReplace = [(_UIReplacementCandidate *)self documentTextToReplace];
+  v5 = _candidatesChoicesFromTextChoices(choicesCopy, documentTextToReplace);
 
   [(_UIReplacementCandidate *)self setCandidateChoices:v5];
 }

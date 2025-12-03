@@ -1,11 +1,11 @@
 @interface ATXCombinedIntentStream
 - (ATXCombinedIntentStream)init;
-- (ATXCombinedIntentStream)initWithIntentStream:(id)a3 activityStream:(id)a4;
-- (ATXCombinedIntentStream)initWithIntentStream:(id)a3 activityStream:(id)a4 menuItemStream:(id)a5 toolKitActionStream:(id)a6;
-- (id)getCombinedIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 ascending:(BOOL)a5;
+- (ATXCombinedIntentStream)initWithIntentStream:(id)stream activityStream:(id)activityStream;
+- (ATXCombinedIntentStream)initWithIntentStream:(id)stream activityStream:(id)activityStream menuItemStream:(id)itemStream toolKitActionStream:(id)actionStream;
+- (id)getCombinedIntentEventsBetweenStartDate:(id)date endDate:(id)endDate ascending:(BOOL)ascending;
 - (id)getCombinedIntentEventsFromLastMonth;
-- (id)getSortedCombinedIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 bundleIdFilter:(id)a5 comparator:(id)a6;
-- (id)getSortedCombinedIntentEventsForTestingActionsBetweenStartDate:(id)a3 endDate:(id)a4;
+- (id)getSortedCombinedIntentEventsBetweenStartDate:(id)date endDate:(id)endDate bundleIdFilter:(id)filter comparator:(id)comparator;
+- (id)getSortedCombinedIntentEventsForTestingActionsBetweenStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation ATXCombinedIntentStream
@@ -19,49 +19,49 @@
   return v5;
 }
 
-- (ATXCombinedIntentStream)initWithIntentStream:(id)a3 activityStream:(id)a4
+- (ATXCombinedIntentStream)initWithIntentStream:(id)stream activityStream:(id)activityStream
 {
-  v6 = a4;
-  v7 = a3;
+  activityStreamCopy = activityStream;
+  streamCopy = stream;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
-  v10 = [(ATXCombinedIntentStream *)self initWithIntentStream:v7 activityStream:v6 menuItemStream:v8 toolKitActionStream:v9];
+  v10 = [(ATXCombinedIntentStream *)self initWithIntentStream:streamCopy activityStream:activityStreamCopy menuItemStream:v8 toolKitActionStream:v9];
 
   return v10;
 }
 
-- (ATXCombinedIntentStream)initWithIntentStream:(id)a3 activityStream:(id)a4 menuItemStream:(id)a5 toolKitActionStream:(id)a6
+- (ATXCombinedIntentStream)initWithIntentStream:(id)stream activityStream:(id)activityStream menuItemStream:(id)itemStream toolKitActionStream:(id)actionStream
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  streamCopy = stream;
+  activityStreamCopy = activityStream;
+  itemStreamCopy = itemStream;
+  actionStreamCopy = actionStream;
   v18.receiver = self;
   v18.super_class = ATXCombinedIntentStream;
   v15 = [(ATXCombinedIntentStream *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_intentStream, a3);
-    objc_storeStrong(&v16->_activityStream, a4);
-    objc_storeStrong(&v16->_menuItemStream, a5);
-    objc_storeStrong(&v16->_toolKitActionStream, a6);
+    objc_storeStrong(&v15->_intentStream, stream);
+    objc_storeStrong(&v16->_activityStream, activityStream);
+    objc_storeStrong(&v16->_menuItemStream, itemStream);
+    objc_storeStrong(&v16->_toolKitActionStream, actionStream);
   }
 
   return v16;
 }
 
-- (id)getSortedCombinedIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 bundleIdFilter:(id)a5 comparator:(id)a6
+- (id)getSortedCombinedIntentEventsBetweenStartDate:(id)date endDate:(id)endDate bundleIdFilter:(id)filter comparator:(id)comparator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  filterCopy = filter;
+  comparatorCopy = comparator;
   context = objc_autoreleasePoolPush();
-  v14 = [(ATXIntentStream *)self->_intentStream getIntentEventsBetweenStartDate:v10 endDate:v11 forSource:1 bundleIdFilter:v12 allowMissingTitles:0];
-  v15 = [(ATXUserActivityStream *)self->_activityStream getActivityIntentEventsBetweenStartDate:v10 endDate:v11 bundleIdFilter:v12];
-  v16 = [(ATXMenuItemStream *)self->_menuItemStream getMenuItemEventsBetweenStartDate:v10 endDate:v11 bundleIdFilter:v12];
-  v17 = [(ATXToolKitActionStream *)self->_toolKitActionStream getToolKitActionEventsBetweenStartDate:v10 endDate:v11 bundleIdFilter:v12];
+  v14 = [(ATXIntentStream *)self->_intentStream getIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy forSource:1 bundleIdFilter:filterCopy allowMissingTitles:0];
+  v15 = [(ATXUserActivityStream *)self->_activityStream getActivityIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy bundleIdFilter:filterCopy];
+  v16 = [(ATXMenuItemStream *)self->_menuItemStream getMenuItemEventsBetweenStartDate:dateCopy endDate:endDateCopy bundleIdFilter:filterCopy];
+  v17 = [(ATXToolKitActionStream *)self->_toolKitActionStream getToolKitActionEventsBetweenStartDate:dateCopy endDate:endDateCopy bundleIdFilter:filterCopy];
   v18 = objc_opt_new();
   if ([v14 count])
   {
@@ -83,9 +83,9 @@
     [v18 addObjectsFromArray:v17];
   }
 
-  if (v13)
+  if (comparatorCopy)
   {
-    [v18 sortUsingComparator:v13];
+    [v18 sortUsingComparator:comparatorCopy];
   }
 
   v19 = [v18 copy];
@@ -95,13 +95,13 @@
   return v19;
 }
 
-- (id)getSortedCombinedIntentEventsForTestingActionsBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)getSortedCombinedIntentEventsForTestingActionsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(ATXIntentStream *)self->_intentStream getIntentEventsBetweenStartDate:v6 endDate:v7 forSource:4 bundleIdFilter:0 allowMissingTitles:0];
-  v10 = [(ATXToolKitActionStream *)self->_toolKitActionStream getToolKitActionEventsBetweenStartDate:v6 endDate:v7 bundleIdFilter:0];
+  v9 = [(ATXIntentStream *)self->_intentStream getIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy forSource:4 bundleIdFilter:0 allowMissingTitles:0];
+  v10 = [(ATXToolKitActionStream *)self->_toolKitActionStream getToolKitActionEventsBetweenStartDate:dateCopy endDate:endDateCopy bundleIdFilter:0];
   v11 = objc_opt_new();
   if ([v9 count])
   {
@@ -131,14 +131,14 @@ uint64_t __98__ATXCombinedIntentStream_getSortedCombinedIntentEventsForTestingAc
   return v7;
 }
 
-- (id)getCombinedIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 ascending:(BOOL)a5
+- (id)getCombinedIntentEventsBetweenStartDate:(id)date endDate:(id)endDate ascending:(BOOL)ascending
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__ATXCombinedIntentStream_getCombinedIntentEventsBetweenStartDate_endDate_ascending___block_invoke;
   v10[3] = &__block_descriptor_33_e43_q24__0__ATXIntentEvent_8__ATXIntentEvent_16l;
-  v11 = a5;
-  v5 = [(ATXCombinedIntentStream *)self getSortedCombinedIntentEventsBetweenStartDate:a3 endDate:a4 bundleIdFilter:0 comparator:v10];
+  ascendingCopy = ascending;
+  v5 = [(ATXCombinedIntentStream *)self getSortedCombinedIntentEventsBetweenStartDate:date endDate:endDate bundleIdFilter:0 comparator:v10];
   v6 = v5;
   if (v5)
   {
@@ -185,9 +185,9 @@ uint64_t __85__ATXCombinedIntentStream_getCombinedIntentEventsBetweenStartDate_e
 
 - (id)getCombinedIntentEventsFromLastMonth
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 dateByAddingTimeInterval:-2419200.0];
-  v5 = [(ATXCombinedIntentStream *)self getCombinedIntentEventsBetweenStartDate:v4 endDate:v3 ascending:1];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date dateByAddingTimeInterval:-2419200.0];
+  v5 = [(ATXCombinedIntentStream *)self getCombinedIntentEventsBetweenStartDate:v4 endDate:date ascending:1];
 
   return v5;
 }

@@ -1,21 +1,21 @@
 @interface HearingSettingsValueSliderCell
-+ (BOOL)shouldAppearAsListForWidth:(double)a3;
++ (BOOL)shouldAppearAsListForWidth:(double)width;
 - (CGPoint)accessibilityActivationPoint;
-- (HearingSettingsValueSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HearingSettingsValueSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)sliderValue;
 - (id)description;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)sliderValueDidChange:(id)a3;
-- (void)updateCenterLabel:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)sliderValueDidChange:(id)change;
+- (void)updateCenterLabel:(id)label;
 - (void)updateConstraints;
 @end
 
 @implementation HearingSettingsValueSliderCell
 
-+ (BOOL)shouldAppearAsListForWidth:(double)a3
++ (BOOL)shouldAppearAsListForWidth:(double)width
 {
   v24 = 0;
   v25 = &v24;
@@ -25,21 +25,21 @@
   v6 = [UIFont _preferredFontForTextStyle:UIFontTextStyleBody maximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
   [v5 setFont:v6];
 
-  v7 = [objc_opt_class() valueLabels];
-  v8 = [v7 count];
+  valueLabels = [objc_opt_class() valueLabels];
+  v8 = [valueLabels count];
 
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v9 = [a1 valueLabels];
+  valueLabels2 = [self valueLabels];
   v10 = v8;
   if (!v8)
   {
     v10 = 3.0;
   }
 
-  v11 = a3 / v10;
+  v11 = width / v10;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1E488;
@@ -49,9 +49,9 @@
   v17 = &v20;
   v19 = v11;
   v18 = &v24;
-  [v9 enumerateObjectsUsingBlock:v15];
+  [valueLabels2 enumerateObjectsUsingBlock:v15];
 
-  if (v21[3] >= a3)
+  if (v21[3] >= width)
   {
     v13 = 1;
     *(v25 + 24) = 1;
@@ -67,11 +67,11 @@
   return v13 & 1;
 }
 
-- (HearingSettingsValueSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HearingSettingsValueSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v40.receiver = self;
   v40.super_class = HearingSettingsValueSliderCell;
-  v4 = [(HearingSettingsValueSliderCell *)&v40 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(HearingSettingsValueSliderCell *)&v40 initWithStyle:1 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(PSSegmentableSlider);
@@ -92,31 +92,31 @@
       [(PSSegmentableSlider *)v4->_slider setSemanticContentAttribute:3];
     }
 
-    v9 = [(HearingSettingsValueSliderCell *)v4 contentView];
-    [v9 addSubview:v4->_slider];
+    contentView = [(HearingSettingsValueSliderCell *)v4 contentView];
+    [contentView addSubview:v4->_slider];
 
     if ([objc_opt_class() shouldForceLeftToRightLayout])
     {
-      v10 = [(HearingSettingsValueSliderCell *)v4 contentView];
-      [v10 setSemanticContentAttribute:3];
+      contentView2 = [(HearingSettingsValueSliderCell *)v4 contentView];
+      [contentView2 setSemanticContentAttribute:3];
     }
 
-    v11 = [objc_opt_class() valueLabels];
-    if ([v11 count])
+    valueLabels = [objc_opt_class() valueLabels];
+    if ([valueLabels count])
     {
       [(PSSegmentableSlider *)v4->_slider setSegmentCount:2];
       [(PSSegmentableSlider *)v4->_slider setSegmented:1];
       [(PSSegmentableSlider *)v4->_slider setLocksToSegment:0];
-      v12 = [v11 firstObject];
-      v13 = [v11 lastObject];
-      if ([v11 count] < 3)
+      firstObject = [valueLabels firstObject];
+      lastObject = [valueLabels lastObject];
+      if ([valueLabels count] < 3)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = [v11 objectAtIndex:1];
+        v14 = [valueLabels objectAtIndex:1];
       }
 
       v18 = objc_alloc_init(UILabel);
@@ -132,17 +132,17 @@
       [(UILabel *)v22 setFont:v23];
 
       [(UILabel *)v4->_valueLeft setTextAlignment:0];
-      [(UILabel *)v4->_valueLeft setText:v12];
+      [(UILabel *)v4->_valueLeft setText:firstObject];
       if ([objc_opt_class() shouldForceLeftToRightLayout])
       {
         [(UILabel *)v4->_valueLeft setSemanticContentAttribute:3];
       }
 
       [(UILabel *)v4->_valueLeft setTranslatesAutoresizingMaskIntoConstraints:0];
-      v24 = [(HearingSettingsValueSliderCell *)v4 contentView];
-      [v24 addSubview:v4->_valueLeft];
+      contentView3 = [(HearingSettingsValueSliderCell *)v4 contentView];
+      [contentView3 addSubview:v4->_valueLeft];
 
-      if ([v11 count] >= 3)
+      if ([valueLabels count] >= 3)
       {
         v25 = objc_alloc_init(UILabel);
         valueCenter = v4->_valueCenter;
@@ -159,8 +159,8 @@
         [(UILabel *)v4->_valueCenter setTextAlignment:1];
         [(UILabel *)v4->_valueCenter setText:v14];
         [(UILabel *)v4->_valueCenter setTranslatesAutoresizingMaskIntoConstraints:0];
-        v31 = [(HearingSettingsValueSliderCell *)v4 contentView];
-        [v31 addSubview:v4->_valueCenter];
+        contentView4 = [(HearingSettingsValueSliderCell *)v4 contentView];
+        [contentView4 addSubview:v4->_valueCenter];
       }
 
       v32 = objc_alloc_init(UILabel);
@@ -176,30 +176,30 @@
       [(UILabel *)v36 setFont:v37];
 
       [(UILabel *)v4->_valueRight setTextAlignment:2];
-      [(UILabel *)v4->_valueRight setText:v13];
+      [(UILabel *)v4->_valueRight setText:lastObject];
       if ([objc_opt_class() shouldForceLeftToRightLayout])
       {
         [(UILabel *)v4->_valueRight setSemanticContentAttribute:3];
       }
 
       [(UILabel *)v4->_valueRight setTranslatesAutoresizingMaskIntoConstraints:0];
-      v38 = [(HearingSettingsValueSliderCell *)v4 contentView];
-      [v38 addSubview:v4->_valueRight];
+      contentView5 = [(HearingSettingsValueSliderCell *)v4 contentView];
+      [contentView5 addSubview:v4->_valueRight];
 
       [(HearingSettingsValueSliderCell *)v4 setNeedsUpdateConstraints];
     }
 
     else
     {
-      v15 = [(HearingSettingsValueSliderCell *)v4 contentView];
+      contentView6 = [(HearingSettingsValueSliderCell *)v4 contentView];
       v16 = _NSDictionaryOfVariableBindings(@"_slider", v4->_slider, 0);
       v17 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_slider]-|", 0, 0, v16);
-      [v15 addConstraints:v17];
+      [contentView6 addConstraints:v17];
 
-      v12 = [(HearingSettingsValueSliderCell *)v4 contentView];
-      v13 = _NSDictionaryOfVariableBindings(@"_slider", v4->_slider, 0);
-      v14 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[_slider]-|", 0, 0, v13);
-      [v12 addConstraints:v14];
+      firstObject = [(HearingSettingsValueSliderCell *)v4 contentView];
+      lastObject = _NSDictionaryOfVariableBindings(@"_slider", v4->_slider, 0);
+      v14 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[_slider]-|", 0, 0, lastObject);
+      [firstObject addConstraints:v14];
     }
   }
 
@@ -209,19 +209,19 @@
 - (double)sliderValue
 {
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
-  v3 = [WeakRetained performGetter];
-  [v3 doubleValue];
+  performGetter = [WeakRetained performGetter];
+  [performGetter doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)sliderValueDidChange:(id)a3
+- (void)sliderValueDidChange:(id)change
 {
   v4 = OBJC_IVAR___PSTableCell__specifier;
-  v5 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[v4]);
-  [v5 value];
+  [changeCopy value];
   v7 = v6;
 
   LODWORD(v8) = v7;
@@ -229,12 +229,12 @@
   [WeakRetained performSetterWithValue:v9];
 }
 
-- (void)updateCenterLabel:(id)a3
+- (void)updateCenterLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   valueCenter = self->_valueCenter;
-  v13 = v4;
-  if (v4 && !valueCenter)
+  v13 = labelCopy;
+  if (labelCopy && !valueCenter)
   {
     v6 = objc_alloc_init(UILabel);
     v7 = self->_valueCenter;
@@ -250,24 +250,24 @@
 
     [(UILabel *)self->_valueCenter setTextAlignment:1];
     [(UILabel *)self->_valueCenter setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(HearingSettingsValueSliderCell *)self contentView];
-    [v12 addSubview:self->_valueCenter];
+    contentView = [(HearingSettingsValueSliderCell *)self contentView];
+    [contentView addSubview:self->_valueCenter];
 
     [(HearingSettingsValueSliderCell *)self setNeedsUpdateConstraints];
-    v4 = v13;
+    labelCopy = v13;
     valueCenter = self->_valueCenter;
   }
 
-  [(UILabel *)valueCenter setText:v4];
+  [(UILabel *)valueCenter setText:labelCopy];
 }
 
 - (void)updateConstraints
 {
-  v3 = [objc_opt_class() valueLabels];
-  if ([v3 count])
+  valueLabels = [objc_opt_class() valueLabels];
+  if ([valueLabels count])
   {
-    v4 = [(HearingSettingsValueSliderCell *)self constraints];
-    [(HearingSettingsValueSliderCell *)self removeConstraints:v4];
+    constraints = [(HearingSettingsValueSliderCell *)self constraints];
+    [(HearingSettingsValueSliderCell *)self removeConstraints:constraints];
 
     v37.receiver = self;
     v37.super_class = HearingSettingsValueSliderCell;
@@ -282,37 +282,37 @@
       v5 = 0;
     }
 
-    if ([v3 count] == &dword_0 + 3 || (v6 = objc_opt_class(), -[HearingSettingsValueSliderCell frame](self, "frame"), objc_msgSend(v6, "shouldAppearAsListForWidth:", CGRectGetWidth(v38))))
+    if ([valueLabels count] == &dword_0 + 3 || (v6 = objc_opt_class(), -[HearingSettingsValueSliderCell frame](self, "frame"), objc_msgSend(v6, "shouldAppearAsListForWidth:", CGRectGetWidth(v38))))
     {
-      v7 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView = [(HearingSettingsValueSliderCell *)self contentView];
       v8 = _NSDictionaryOfVariableBindings(@"_slider", self->_slider, 0);
       v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_slider]-|", v5, 0, v8);
-      [v7 addConstraints:v9];
+      [contentView addConstraints:v9];
 
-      v10 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView2 = [(HearingSettingsValueSliderCell *)self contentView];
       v11 = _NSDictionaryOfVariableBindings(@"_valueLeft, _slider", self->_valueLeft, self->_slider, 0);
       v12 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[_valueLeft]-[_slider]-|", v5, 0, v11);
-      [v10 addConstraints:v12];
+      [contentView2 addConstraints:v12];
 
-      v13 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView3 = [(HearingSettingsValueSliderCell *)self contentView];
       v14 = [NSLayoutConstraint constraintWithItem:self->_valueRight attribute:10 relatedBy:0 toItem:self->_valueLeft attribute:10 multiplier:1.0 constant:0.0];
-      [v13 addConstraint:v14];
+      [contentView3 addConstraint:v14];
 
       valueCenter = self->_valueCenter;
-      v16 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView4 = [(HearingSettingsValueSliderCell *)self contentView];
       if (valueCenter)
       {
         v17 = self->_valueCenter;
         [(HearingSettingsValueSliderCell *)self contentView];
         v18 = v35 = v5;
         v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:9 relatedBy:0 toItem:v18 attribute:9 multiplier:1.0 constant:0.0];
-        [v16 addConstraint:v19];
+        [contentView4 addConstraint:v19];
 
-        v20 = [(HearingSettingsValueSliderCell *)self contentView];
+        contentView5 = [(HearingSettingsValueSliderCell *)self contentView];
         v21 = [NSLayoutConstraint constraintWithItem:self->_valueCenter attribute:10 relatedBy:0 toItem:self->_valueLeft attribute:10 multiplier:1.0 constant:0.0];
-        [v20 addConstraint:v21];
+        [contentView5 addConstraint:v21];
 
-        v16 = [(HearingSettingsValueSliderCell *)self contentView];
+        contentView4 = [(HearingSettingsValueSliderCell *)self contentView];
         v22 = _NSDictionaryOfVariableBindings(@"_valueLeft, _valueRight", self->_valueLeft, self->_valueRight, 0);
         v23 = @"H:|-[_valueLeft(100.0)]-[_valueRight(100.0)]-|";
         v24 = v35;
@@ -328,29 +328,29 @@
 
     else
     {
-      v25 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView6 = [(HearingSettingsValueSliderCell *)self contentView];
       v26 = _NSDictionaryOfVariableBindings(@"_valueLeft", self->_valueLeft, 0);
       v27 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_valueLeft]-|", v5, 0, v26);
-      [v25 addConstraints:v27];
+      [contentView6 addConstraints:v27];
 
-      v28 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView7 = [(HearingSettingsValueSliderCell *)self contentView];
       v29 = _NSDictionaryOfVariableBindings(@"_valueRight", self->_valueRight, 0);
       v30 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_valueRight]-|", v5, 0, v29);
-      [v28 addConstraints:v30];
+      [contentView7 addConstraints:v30];
 
-      v31 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView8 = [(HearingSettingsValueSliderCell *)self contentView];
       v32 = _NSDictionaryOfVariableBindings(@"_slider", self->_slider, 0);
       v33 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_slider]-|", v5, 0, v32);
-      [v31 addConstraints:v33];
+      [contentView8 addConstraints:v33];
 
-      v16 = [(HearingSettingsValueSliderCell *)self contentView];
+      contentView4 = [(HearingSettingsValueSliderCell *)self contentView];
       v22 = _NSDictionaryOfVariableBindings(@"_valueLeft, _slider, _valueRight", self->_valueLeft, self->_slider, self->_valueRight, 0);
       v23 = @"V:|-[_valueLeft]-[_slider]-[_valueRight]-|";
       v24 = v5;
     }
 
     v34 = [NSLayoutConstraint constraintsWithVisualFormat:v23 options:v24 metrics:0 views:v22];
-    [v16 addConstraints:v34];
+    [contentView4 addConstraints:v34];
   }
 
   else
@@ -361,32 +361,32 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = HearingSettingsValueSliderCell;
-  [(HearingSettingsValueSliderCell *)&v12 refreshCellContentsWithSpecifier:a3];
-  v4 = [objc_opt_class() valueLabels];
+  [(HearingSettingsValueSliderCell *)&v12 refreshCellContentsWithSpecifier:specifier];
+  valueLabels = [objc_opt_class() valueLabels];
   slider = self->_slider;
   [(HearingSettingsValueSliderCell *)self sliderValue];
   *&v6 = v6;
   [(PSSegmentableSlider *)slider setValue:v6];
   valueLeft = self->_valueLeft;
-  v8 = [v4 firstObject];
-  [(UILabel *)valueLeft setText:v8];
+  firstObject = [valueLabels firstObject];
+  [(UILabel *)valueLeft setText:firstObject];
 
   valueRight = self->_valueRight;
-  v10 = [v4 lastObject];
-  [(UILabel *)valueRight setText:v10];
+  lastObject = [valueLabels lastObject];
+  [(UILabel *)valueRight setText:lastObject];
 
-  if ([v4 count] < 3)
+  if ([valueLabels count] < 3)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v4 objectAtIndex:1];
+    v11 = [valueLabels objectAtIndex:1];
   }
 
   [(HearingSettingsValueSliderCell *)self updateCenterLabel:v11];
@@ -414,18 +414,18 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(PSSegmentableSlider *)self->_slider accessibilityTraits];
-  v4 = [(HearingSettingsValueSliderCell *)self specifier];
-  v5 = [v4 propertyForKey:PSEnabledKey];
-  v6 = [v5 BOOLValue];
+  accessibilityTraits = [(PSSegmentableSlider *)self->_slider accessibilityTraits];
+  specifier = [(HearingSettingsValueSliderCell *)self specifier];
+  v5 = [specifier propertyForKey:PSEnabledKey];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = UIAccessibilityTraitNotEnabled;
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 0;
   }
 
-  return v7 | v3;
+  return v7 | accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -452,8 +452,8 @@
   v12.super_class = HearingSettingsValueSliderCell;
   v7 = [(HearingSettingsValueSliderCell *)&v12 description];
   v8 = objc_loadWeakRetained(&self->PSTableCell_opaque[v3]);
-  v9 = [v8 userInfo];
-  v10 = [NSString stringWithFormat:@"%@ (%@) - [%@]", v7, v5, v9];
+  userInfo = [v8 userInfo];
+  v10 = [NSString stringWithFormat:@"%@ (%@) - [%@]", v7, v5, userInfo];
 
   return v10;
 }

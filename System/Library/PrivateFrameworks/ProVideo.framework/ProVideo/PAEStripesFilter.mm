@@ -1,19 +1,19 @@
 @interface PAEStripesFilter
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEStripesFilter)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEStripesFilter)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEStripesFilter
 
-- (PAEStripesFilter)initWithAPIManager:(id)a3
+- (PAEStripesFilter)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEStripesFilter;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -44,11 +44,11 @@
   return 1;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  if (a3)
+  if (width)
   {
-    v6 = a4 == 0;
+    v6 = height == 0;
   }
 
   else
@@ -59,38 +59,38 @@
   result = !v6;
   if (!v6)
   {
-    *a3 = a5->var0;
-    *a4 = a5->var1;
+    *width = input->var0;
+    *height = input->var1;
   }
 
   return result;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
   {
     v10 = v9;
-    v11 = [a4 width];
-    v12 = [a4 height];
+    width = [input width];
+    height = [input height];
     v36 = 0.0;
     v37[0] = 0.0;
-    [v10 getXValue:v37 YValue:&v36 fromParm:1 atFxTime:a5->var0.var1];
-    v36 = (v36 + -0.5) * v12;
-    v37[0] = (v37[0] + -0.5) * v11;
+    [v10 getXValue:v37 YValue:&v36 fromParm:1 atFxTime:info->var0.var1];
+    v36 = (v36 + -0.5) * height;
+    v37[0] = (v37[0] + -0.5) * width;
     v35 = 0.0;
-    [v10 getFloatValue:&v35 fromParm:2 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v35 fromParm:2 atFxTime:info->var0.var1];
     v34 = 0.0;
-    [v10 getFloatValue:&v34 fromParm:3 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v34 fromParm:3 atFxTime:info->var0.var1];
     v33 = 0.0;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    if (a3)
+    if (output)
     {
-      [a3 imageInfo];
+      [output imageInfo];
       v13 = v33;
       if (*(&v31 + 1))
       {
@@ -104,14 +104,14 @@
       v13 = 0.0;
     }
 
-    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v9)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -134,7 +134,7 @@
         (*(*v16 + 120))(v16, 0, v14);
         v17 = HGObject::operator new(0x1A0uLL);
         HGCrop::HGCrop(v17);
-        v18 = HGRectMake4i(-v11, 0, v11, 1u);
+        v18 = HGRectMake4i(-width, 0, width, 1u);
         v20 = v19;
         (*(*v17 + 120))(v17, 0, v16);
         (*(*v17 + 96))(v17, 0, v18, SHIDWORD(v18), v20, SHIDWORD(v20));
@@ -152,8 +152,8 @@
         (*(*v23 + 120))(v23, 0, v21);
         v25 = v23;
         (*(*v23 + 16))(v23);
-        [(PAESharedDefaultBase *)self crop:&v25 fromImage:a4 toImage:a3];
-        [a3 setHeliumRef:&v25];
+        [(PAESharedDefaultBase *)self crop:&v25 fromImage:input toImage:output];
+        [output setHeliumRef:&v25];
         if (v25)
         {
           (*(*v25 + 24))(v25);
@@ -184,15 +184,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

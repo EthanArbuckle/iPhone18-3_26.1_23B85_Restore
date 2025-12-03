@@ -1,13 +1,13 @@
 @interface CLSManagedBusinessItem
 - (int64_t)venueCapacity;
-- (void)setVenueCapacity:(int64_t)a3;
+- (void)setVenueCapacity:(int64_t)capacity;
 @end
 
 @implementation CLSManagedBusinessItem
 
-- (void)setVenueCapacity:(int64_t)a3
+- (void)setVenueCapacity:(int64_t)capacity
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (capacity == 0x7FFFFFFFFFFFFFFFLL)
   {
 
     [(CLSManagedBusinessItem *)self setVenueCapacityAsNumber:0];
@@ -22,19 +22,19 @@
 
 - (int64_t)venueCapacity
 {
-  v2 = [(CLSManagedBusinessItem *)self venueCapacityAsNumber];
-  v3 = v2;
-  if (v2)
+  venueCapacityAsNumber = [(CLSManagedBusinessItem *)self venueCapacityAsNumber];
+  v3 = venueCapacityAsNumber;
+  if (venueCapacityAsNumber)
   {
-    v4 = [v2 integerValue];
+    integerValue = [venueCapacityAsNumber integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

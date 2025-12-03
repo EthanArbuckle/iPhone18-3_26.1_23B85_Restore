@@ -1,17 +1,17 @@
 @interface _PSFTZKWTrialData
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _PSFTZKWTrialData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(_PSFTZKWTrialData *)self experimentIdentifiers];
-  [v4 setExperimentIdentifiers:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  experimentIdentifiers = [(_PSFTZKWTrialData *)self experimentIdentifiers];
+  [v4 setExperimentIdentifiers:experimentIdentifiers];
 
-  v6 = [(_PSFTZKWTrialData *)self rolloutIdentifiers];
-  [v4 setRolloutIdentifiers:v6];
+  rolloutIdentifiers = [(_PSFTZKWTrialData *)self rolloutIdentifiers];
+  [v4 setRolloutIdentifiers:rolloutIdentifiers];
 
   [v4 setStructuredCalendarIsEnabled:{-[_PSFTZKWTrialData structuredCalendarIsEnabled](self, "structuredCalendarIsEnabled")}];
   [v4 setStructuredCalendarDefaultConfidenceCategory:{-[_PSFTZKWTrialData structuredCalendarDefaultConfidenceCategory](self, "structuredCalendarDefaultConfidenceCategory")}];

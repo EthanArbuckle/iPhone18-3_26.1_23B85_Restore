@@ -1,27 +1,27 @@
 @interface IMDCoreSpotlightSelectiveReindexingJob
-+ (id)_sanitizedSearchableItemIdentifiers:(id)a3;
++ (id)_sanitizedSearchableItemIdentifiers:(id)identifiers;
 - (BOOL)_indexChats;
 - (BOOL)_indexMessages;
-- (IMDCoreSpotlightSelectiveReindexingJob)initWithItemIdentifiers:(id)a3;
+- (IMDCoreSpotlightSelectiveReindexingJob)initWithItemIdentifiers:(id)identifiers;
 - (void)_enterGroup;
 - (void)_leaveGroup;
-- (void)runWithAcknowledgementHandler:(id)a3;
+- (void)runWithAcknowledgementHandler:(id)handler;
 @end
 
 @implementation IMDCoreSpotlightSelectiveReindexingJob
 
-+ (id)_sanitizedSearchableItemIdentifiers:(id)a3
++ (id)_sanitizedSearchableItemIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = MEMORY[0x1E695DFA8];
-  v7 = objc_msgSend_count(v3, v5, v6);
+  v7 = objc_msgSend_count(identifiersCopy, v5, v6);
   v9 = objc_msgSend_setWithCapacity_(v4, v8, v7);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v3;
+  v10 = identifiersCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v27, v31, 16);
   if (v12)
   {
@@ -54,10 +54,10 @@
   return v24;
 }
 
-- (IMDCoreSpotlightSelectiveReindexingJob)initWithItemIdentifiers:(id)a3
+- (IMDCoreSpotlightSelectiveReindexingJob)initWithItemIdentifiers:(id)identifiers
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v55.receiver = self;
   v55.super_class = IMDCoreSpotlightSelectiveReindexingJob;
   v5 = [(IMDCoreSpotlightSelectiveReindexingJob *)&v55 init];
@@ -73,8 +73,8 @@
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v47 = v4;
-  v8 = v4;
+  v47 = identifiersCopy;
+  v8 = identifiersCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v51, v56, 16);
   if (!v10)
   {
@@ -150,24 +150,24 @@ LABEL_16:
   context = v5->_context;
   v5->_context = v42;
 
-  v4 = v47;
+  identifiersCopy = v47;
 LABEL_19:
 
   v44 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)runWithAcknowledgementHandler:(id)a3
+- (void)runWithAcknowledgementHandler:(id)handler
 {
-  v4 = a3;
-  block = v4;
-  if (v4)
+  handlerCopy = handler;
+  block = handlerCopy;
+  if (handlerCopy)
   {
-    v4 = dispatch_group_create();
+    handlerCopy = dispatch_group_create();
   }
 
   group = self->_group;
-  self->_group = v4;
+  self->_group = handlerCopy;
 
   v8 = objc_msgSend__indexMessages(self, v6, v7);
   v11 = objc_msgSend__indexChats(self, v9, v10);

@@ -1,13 +1,13 @@
 @interface FMPersonAnnotationView
-- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithCoder:(id)a3;
+- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithCoder:(id)coder;
 @end
 
 @implementation FMPersonAnnotationView
 
-- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     swift_unknownObjectRetain();
@@ -22,18 +22,18 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for FMPersonAnnotationView();
-  v7 = [(FMMapAnnotationView *)&v9 initWithAnnotation:a3 reuseIdentifier:v6];
+  v7 = [(FMMapAnnotationView *)&v9 initWithAnnotation:annotation reuseIdentifier:v6];
 
   swift_unknownObjectRelease();
   return v7;
 }
 
-- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithCoder:(id)a3
+- (_TtC26FindMyNotificationsContent22FMPersonAnnotationView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMPersonAnnotationView();
-  v4 = a3;
-  v5 = [(FMMapAnnotationView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FMMapAnnotationView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

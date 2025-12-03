@@ -1,17 +1,17 @@
 @interface VFXMTLLibraryManager
-+ (id)hashCodeForSource:(id)a3 macros:(id)a4;
-- (VFXMTLLibraryManager)initWithDevice:(id)a3;
++ (id)hashCodeForSource:(id)source macros:(id)macros;
+- (VFXMTLLibraryManager)initWithDevice:(id)device;
 - (id)defaultLibrary;
-- (id)libraryForFile:(id)a3;
-- (id)libraryForSourceCode:(id)a3 options:(id)a4;
+- (id)libraryForFile:(id)file;
+- (id)libraryForSourceCode:(id)code options:(id)options;
 - (void)clearCompiledLibraries;
 - (void)dealloc;
-- (void)libraryForProgramDesc:(id *)a3 resourceManager:(id)a4 completionHandler:(id)a5;
+- (void)libraryForProgramDesc:(id *)desc resourceManager:(id)manager completionHandler:(id)handler;
 @end
 
 @implementation VFXMTLLibraryManager
 
-- (VFXMTLLibraryManager)initWithDevice:(id)a3
+- (VFXMTLLibraryManager)initWithDevice:(id)device
 {
   v86 = *MEMORY[0x1E69E9840];
   v84.receiver = self;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_device = a3;
+    v4->_device = device;
     v6 = MEMORY[0x1E696AAE8];
     v7 = objc_opt_class();
     v10 = objc_msgSend_bundleForClass_(v6, v8, v7, v9);
@@ -170,12 +170,12 @@
   [(VFXMTLLibraryManager *)&v3 dealloc];
 }
 
-+ (id)hashCodeForSource:(id)a3 macros:(id)a4
++ (id)hashCodeForSource:(id)source macros:(id)macros
 {
   v50 = *MEMORY[0x1E69E9840];
   CC_SHA256_Init(&c);
-  sub_1AF148DA8(a3, &c);
-  v9 = objc_msgSend_allKeys(a4, v6, v7, v8);
+  sub_1AF148DA8(source, &c);
+  v9 = objc_msgSend_allKeys(macros, v6, v7, v8);
   v12 = objc_msgSend_sortedArrayUsingSelector_(v9, v10, sel_compare_, v11);
   v41 = 0u;
   v42 = 0u;
@@ -196,7 +196,7 @@
         }
 
         v20 = *(*(&v41 + 1) + 8 * i);
-        v21 = objc_msgSend_objectForKeyedSubscript_(a4, v15, v20, v16);
+        v21 = objc_msgSend_objectForKeyedSubscript_(macros, v15, v20, v16);
         sub_1AF148DA8(v20, &c);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -286,7 +286,7 @@
   return objc_msgSend_library(self->_defaultLibrary, a2, v2, v3);
 }
 
-- (id)libraryForFile:(id)a3
+- (id)libraryForFile:(id)file
 {
   v7 = 0;
   v8 = &v7;
@@ -300,7 +300,7 @@
   block[2] = sub_1AF1FC12C;
   block[3] = &unk_1E7A7CAE0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = file;
   block[6] = &v7;
   dispatch_sync(deviceQueue, block);
   v4 = v8[5];
@@ -308,10 +308,10 @@
   return v4;
 }
 
-- (id)libraryForSourceCode:(id)a3 options:(id)a4
+- (id)libraryForSourceCode:(id)code options:(id)options
 {
-  v7 = objc_msgSend_preprocessorMacros(a4, a2, a3, a4);
-  v9 = objc_msgSend_hashCodeForSource_macros_(VFXMTLLibraryManager, v8, a3, v7);
+  v7 = objc_msgSend_preprocessorMacros(options, a2, code, options);
+  v9 = objc_msgSend_hashCodeForSource_macros_(VFXMTLLibraryManager, v8, code, v7);
   os_unfair_lock_lock(&self->_availableCompiledLibrariesLock);
   Value = CFDictionaryGetValue(self->_availableCompiledLibraries, v9);
   if (!Value)
@@ -320,7 +320,7 @@
     ++self->__engineStats->onlineShaderCount;
     v11 = CACurrentMediaTime();
     prof_beginFlame("newLibraryWithSource", "/Library/Caches/com.apple.xbs/Sources/VFX/sources/VFX/CFX/NewRenderer/VFXMTLLibraryManager.mm", 513);
-    Value = objc_msgSend_newLibraryWithSource_options_error_(self->_device, v12, a3, a4, &v21);
+    Value = objc_msgSend_newLibraryWithSource_options_error_(self->_device, v12, code, options, &v21);
     self->__engineStats->onlineShaderCompilationTime = CACurrentMediaTime() - v11 + self->__engineStats->onlineShaderCompilationTime;
     prof_endFlame();
     if (Value)
@@ -342,20 +342,20 @@
   return Value;
 }
 
-- (void)libraryForProgramDesc:(id *)a3 resourceManager:(id)a4 completionHandler:(id)a5
+- (void)libraryForProgramDesc:(id *)desc resourceManager:(id)manager completionHandler:(id)handler
 {
   v158 = *MEMORY[0x1E69E9840];
-  var1 = a3->var1;
+  var1 = desc->var1;
   v10 = sub_1AF1D5DF4(var1);
   if (v10)
   {
     v11 = (*(v10 + 16))(v10, self->_device);
     if (v11)
     {
-      v12 = *(a5 + 2);
+      v12 = *(handler + 2);
       commonProfileCacheLibrary = v11;
 LABEL_14:
-      v20 = a5;
+      handlerCopy2 = handler;
       goto LABEL_15;
     }
   }
@@ -363,7 +363,7 @@ LABEL_14:
   v14 = sub_1AF1D5AC4(var1);
   if (!v14)
   {
-    if (sub_1AF1D5DFC(a3->var1))
+    if (sub_1AF1D5DFC(desc->var1))
     {
       v24 = objc_msgSend_defaultLibrary(self, v21, v22, v23);
     }
@@ -385,12 +385,12 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_availableCompiledLibrariesLock);
   if (Value)
   {
-    v12 = *(a5 + 2);
-    v20 = a5;
+    v12 = *(handler + 2);
+    handlerCopy2 = handler;
     commonProfileCacheLibrary = Value;
 LABEL_15:
 
-    v12(v20, commonProfileCacheLibrary, 0);
+    v12(handlerCopy2, commonProfileCacheLibrary, 0);
     return;
   }
 
@@ -398,10 +398,10 @@ LABEL_15:
   v131 = v18;
   v28 = sub_1AF333168();
   v130 = var1;
-  v124 = a4;
+  managerCopy = manager;
   if (v28)
   {
-    v29 = !sub_1AFDE7A50(a4);
+    v29 = !sub_1AFDE7A50(manager);
   }
 
   else
@@ -420,7 +420,7 @@ LABEL_28:
   }
 
   v34 = v30;
-  v125 = a5;
+  handlerCopy3 = handler;
   if (self->_legacyShaderCache || v29)
   {
     v35 = objc_msgSend_stringByAppendingString_(@"commonprofile_vert", v31, v18, v33);
@@ -435,14 +435,14 @@ LABEL_28:
     v46 = v29;
     v47 = objc_msgSend_stringByAppendingString_(v41, v44, @"commonprofile_frag", v45);
 
-    sub_1AF1D5A3C(a3->var1, 0, v35);
+    sub_1AF1D5A3C(desc->var1, 0, v35);
     cf = v47;
     v48 = v47;
     v29 = v46;
-    sub_1AF1D5A3C(a3->var1, 1, v48);
+    sub_1AF1D5A3C(desc->var1, 1, v48);
   }
 
-  a5 = v125;
+  handler = handlerCopy3;
   if (!v34)
   {
     goto LABEL_28;
@@ -455,7 +455,7 @@ LABEL_28:
     sub_1AF1D5998(v130, self->_commonProfileCacheLibraryHasherBlock, self->_commonProfileCacheLibraryProviderBlock);
     commonProfileCacheLibrary = self->_commonProfileCacheLibrary;
 LABEL_13:
-    v12 = *(a5 + 2);
+    v12 = *(handler + 2);
     goto LABEL_14;
   }
 
@@ -496,7 +496,7 @@ LABEL_31:
 
     else
     {
-      v126 = a5;
+      handlerCopy4 = handler;
       v55 = objc_msgSend_mutableCopy(v15, v31, v32, v33);
       v58 = objc_msgSend_rangeOfString_(v55, v56, @"#pragma mark - Namespace Begin", v57);
       if (v58)
@@ -552,8 +552,8 @@ LABEL_31:
 
       v15 = objc_msgSend_copy(v55, v81, v82, v83);
 
-      sub_1AFDE7A64(v124, v15, v18);
-      a5 = v126;
+      sub_1AFDE7A64(managerCopy, v15, v18);
+      handler = handlerCopy4;
       self = cfa;
       v51 = v130;
     }
@@ -589,26 +589,26 @@ LABEL_31:
   v134[1] = 3221225472;
   v135 = sub_1AF1FCE58;
   v136 = &unk_1E7A7CB80;
-  v113 = *&a3->var14;
-  v145 = *&a3->var11;
+  v113 = *&desc->var14;
+  v145 = *&desc->var11;
   v146 = v113;
-  v147 = *&a3->var15.var1;
-  v114 = *&a3->var2;
-  v141 = *&a3->var0;
+  v147 = *&desc->var15.var1;
+  v114 = *&desc->var2;
+  v141 = *&desc->var0;
   v142 = v114;
-  v115 = *&a3->var4;
-  v144 = *&a3->var6;
+  v115 = *&desc->var4;
+  v144 = *&desc->var6;
   v143 = v115;
   v137 = v15;
-  v138 = self;
+  selfCopy = self;
   v139 = v131;
-  v140 = a5;
+  handlerCopy5 = handler;
   v148 = v98;
   v149 = v109;
   v150 = v51;
   ++self->__engineStats->onlineShaderCount;
-  var13 = a3->var13;
-  p_var13 = &a3->var13;
+  var13 = desc->var13;
+  p_var13 = &desc->var13;
   v116 = var13;
   if (var13)
   {

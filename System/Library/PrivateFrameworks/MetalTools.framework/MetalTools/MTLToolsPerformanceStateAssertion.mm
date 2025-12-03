@@ -7,16 +7,16 @@
 
 - (int64_t)requestedPerformanceState
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 requestedPerformanceState];
+  return [baseObject requestedPerformanceState];
 }
 
 - (BOOL)wasPerformanceStateAssertionMaintained
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 wasPerformanceStateAssertionMaintained];
+  return [baseObject wasPerformanceStateAssertionMaintained];
 }
 
 @end

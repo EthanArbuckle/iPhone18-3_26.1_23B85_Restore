@@ -1,9 +1,9 @@
 @interface MFMailMessageStoreSearchResult
 - (MFMailMessageStoreSearchResult)init;
 - (unint64_t)count;
-- (void)addRemoteID:(id)a3 mailbox:(id)a4;
+- (void)addRemoteID:(id)d mailbox:(id)mailbox;
 - (void)dealloc;
-- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)a3;
+- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)block;
 @end
 
 @implementation MFMailMessageStoreSearchResult
@@ -30,21 +30,21 @@
   [(MFMailMessageStoreSearchResult *)&v2 dealloc];
 }
 
-- (void)addRemoteID:(id)a3 mailbox:(id)a4
+- (void)addRemoteID:(id)d mailbox:(id)mailbox
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  mailboxCopy = mailbox;
+  mailboxToRemoteIdDictionary = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
+  v8 = [mailboxToRemoteIdDictionary objectForKeyedSubscript:mailboxCopy];
 
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v9 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    mailboxToRemoteIdDictionary2 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
+    [mailboxToRemoteIdDictionary2 setObject:v8 forKeyedSubscript:mailboxCopy];
   }
 
-  [v8 addObject:v10];
+  [v8 addObject:dCopy];
 }
 
 - (unint64_t)count
@@ -53,13 +53,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
+  mailboxToRemoteIdDictionary = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__MFMailMessageStoreSearchResult_count__block_invoke;
   v5[3] = &unk_279E35870;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [mailboxToRemoteIdDictionary enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -73,11 +73,11 @@ uint64_t __39__MFMailMessageStoreSearchResult_count__block_invoke(uint64_t a1, u
   return result;
 }
 
-- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)a3
+- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
-  [v5 enumerateKeysAndObjectsUsingBlock:v4];
+  blockCopy = block;
+  mailboxToRemoteIdDictionary = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
+  [mailboxToRemoteIdDictionary enumerateKeysAndObjectsUsingBlock:blockCopy];
 }
 
 @end

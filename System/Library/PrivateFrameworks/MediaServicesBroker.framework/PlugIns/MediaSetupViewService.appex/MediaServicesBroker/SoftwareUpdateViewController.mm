@@ -10,7 +10,7 @@
   if (v2)
   {
     memset(v5, 0, sizeof(v5));
-    v4 = self;
+    selfCopy = self;
     v3 = v2;
     sub_1000056D4(7u, v5);
   }
